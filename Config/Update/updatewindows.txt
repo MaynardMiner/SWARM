@@ -1,0 +1,105 @@
+[
+{
+ "windows":
+  [
+   {
+    "cpu":
+    [
+     {
+      "jayddee":
+      {
+       "path1": ".\\Bin\\JayDDee-Windows-CPU\\cpuminer-avx2.exe",
+       "uri": "https://github.com/JayDDee/cpuminer-opt/files/1996977/cpuminer-opt-3.8.8.1-windows.zip"
+      }
+     }
+    ]
+   },
+
+  {
+   "nvidia":
+    [
+    
+     {
+      "cryptodredge": 
+       { 
+        "path1": ".\\Bin\\CryptoDredge-Windows-CCDevices1\\CryptoDredge.exe",
+        "path2": ".\\Bin\\CryptoDredge-Windows-CCDevices2\\CryptoDredge.exe",
+        "path3": ".\\Bin\\CryptoDredge-Windows-CCDevices3\\CryptoDredge.exe",
+        "uri": "https://github.com/CryptoDredge/beta/releases/download/v0.8.4-beta/CryptoDredge_0.8.4-beta_cuda_9.2_windows.zip" 
+       }
+     },
+
+     { 
+      "claymore":
+       {
+        "path1": ".\\Bin\\Claymore-Windows-ClayDevices1\\EthDcrMiner64.exe",
+        "path2": ".\\Bin\\Claymore-Windows-ClayDevices2\\EthDcrMiner64.exe",
+        "path3": ".\\Bin\\Claymore-Windows-ClayDevices3\\EthDcrMiner64.exe",
+        "uri": "https://github.com/MaynardMiner/ClaymoreMM/releases/download/untagged-e429eb3ca9b1c5f08ae6/ClaymoreWin.zip" 
+       }
+     },
+
+     {
+      "dstm":
+       {
+        "path1": ".\\Bin\\DSTM-Windows-DSTMDevices1\\zm-NVIDIA1",
+        "path2": ".\\Bin\\DSTM-Windows-DSTMDevices2\\zm-NVIDIA2",
+        "path3": ".\\Bin\\DSTM-Windows-DSTMDevices3\\zm-NVIDIA3",
+        "uri": "https://github.com/MaynardMiner/dtsm/releases/download/untagged-ac8fc2a2818d28fb9b06/DTSMWin.zip" 
+       }
+     },
+
+     {
+      "enemy":
+       {
+        "path1": ".\\Bin\\z-enemy-Windows-CCDevices1\\z-enemy.exe",
+        "path2": ".\\Bin\\z-enemy-Windows-CCDevices2\\z-enemy.exe",
+        "path3": ".\\Bin\\z-enemy-Windows-CCDevices3\\z-enemy.exe",
+        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v2.0/z-enemy-117-Windows.zip" 
+       }
+     },
+
+     {
+      "ewbf":
+       {
+        "path1": ".\\Bin\\EWBF-Windows-EWBFDevices1\\miner.exe",
+        "path2": ".\\Bin\\EWBF-Windows-EWBFDevices2\\miner.exe",
+        "path3": ".\\Bin\\EWBF-Windows-EWBFDevices3\\miner.exe",
+        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v2.0/EWBF-05-Windows.zip" 
+       }
+     },
+
+     {
+      "klaust":
+       {
+        "path1": ".\\Bin\\KlausT-Windows-CCDevices1\\ccminer.exe",
+        "path2": ".\\Bin\\KlausT-Windows-CCDevices2\\ccminer.exe",
+        "path3": ".\\Bin\\KlausT-Windows-CCDevices3\\ccminer.exe",
+        "uri": "https://github.com/KlausT/ccminer/releases/download/8.22/ccminer-822-cuda92-x64.zip" 
+       }
+     },
+
+     {
+      "tpruvot":
+       {
+        "path1": ".\\Bin\\Tpruvot-Windows-CCDevices1\\ccminer-x64.exe",
+        "path2": ".\\Bin\\Tpruvot-Windows-CCDevices2\\ccminer-x64.exe",
+        "path3": ".\\Bin\\Tpruvot-Windows-CCDevices3\\ccminer-x64.exe",
+        "uri": "https://github.com/tpruvot/ccminer/releases/download/2.3-tpruvot/ccminer-2.3-cuda9.7z"
+       }
+     },
+
+     {
+      "trex":
+       {
+        "path1": ".\\Bin\\TRex-Windows-CCDevices1\\t-rex.exe",
+        "path2": ".\\Bin\\TRex-Windows-CCDevices2\\t-rex.exe",
+        "path3": ".\\Bin\\TRex-Windows-CCDevices3\\t-rex.exe",
+        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v2.0/t-rex-0.6.2-win-cuda9.1.zip"
+       }
+      }
+     ]
+    }  
+   ]
+  }
+ ]

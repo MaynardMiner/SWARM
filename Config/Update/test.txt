@@ -1,0 +1,82 @@
+[
+  {
+    "name": "claymore",
+    "type": "nvidia",
+    "path1": ".\\Bin\\Claymore-Linux-ClayDevices1\\ethdcrminer64",
+    "path2": ".\\Bin\\Claymore-Linux-ClayDevices2\\ethdcrminer64",
+    "path3": ".\\Bin\\Claymore-Linux-ClayDevices3\\ethdcrminer64",
+    "minername": "ethdcrminer64",
+    "version": "11.9",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.1.4.2b/Claymore-Linux.zip"
+  },
+  {
+    "name": "cryptodredge",
+    "type": "nvidia",
+    "path1": ".\\Bin\\CryptoDredge-Linux-REXDevices1\\CryptoDredge",
+    "path2": ".\\Bin\\CryptoDredge-Linux-REXDevices2\\CryptoDredge",
+    "path3": ".\\Bin\\CryptoDredge-Linux-REXDevices3\\CryptoDredge",
+    "minername": "CryptoDredge",
+    "version": "0.9.1",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.1.4.2b/CryptoDredge-Linux.zip"
+  },
+  {
+    "name": "dstm",
+    "type": "nvidia",
+    "path1": ".\\Bin\\DSTM-Linux-DSTMDevices1\\zm",
+    "path2": ".\\Bin\\DSTM-Linux-DSTMDevices2\\zm",
+    "path3": ".\\Bin\\DSTM-Linux-DSTMDevices3\\zm",
+    "minername": "zm",
+    "version": "0.6.1",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.1.4.2b/zm-Linux.zip"
+  },
+  {
+    "name": "enemy",
+    "type": "nvidia",
+    "path1": ".\\Bin\\z-enemy-Linux-CCDevices1\\z-enemy",
+    "path2": ".\\Bin\\z-enemy-Linux-CCDevices2\\z-enemy",
+    "path3": ".\\Bin\\z-enemy-Linux-CCDevices3\\z-enemy",
+    "minername": "z-enemy",
+    "version": "1.18",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.1.4.2b/z-enemy-Linux.zip"
+  },
+  {
+    "name": "ewbf",
+    "type": "nvidia",
+    "path1": ".\\Bin\\EWBF-Linux-EWBFDevices1\\miner",
+    "path2": ".\\Bin\\EWBF-Linux-EWBFDevices2\\miner",
+    "path3": ".\\Bin\\EWBF-Linux-EWBFDevices3\\miner",
+    "minername": "miner",
+    "version": "0.5",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v1.0/EWBF-05-Linux.zip"
+  },
+  {
+    "name": "klaust",
+    "type": "nvidia",
+    "path1": ".\\Bin\\KlausT-Linux-CCDevices1\\ccminer",
+    "path2": ".\\Bin\\KlausT-Linux-CCDevices2\\ccminer",
+    "path3": ".\\Bin\\KlausT-Linux-CCDevices3\\ccminer",
+    "minername": "ccminer",
+    "version": "8.22",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v1.0/KlausT-Linux-9-1.zip"
+  },
+  {
+    "name": "tpruvot",
+    "type": "nvidia",
+    "path1": ".\\Bin\\Tpruvot-Linux-CCDevices1\\ccminer",
+    "path2": ".\\Bin\\Tpruvot-Linux-CCDevices2\\ccminer",
+    "path3": ".\\Bin\\Tpruvot-Linux-CCDevices3\\ccminer",
+    "minername": "ccminer",
+    "version": "2.3",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v1.0/tpruvot-9-1.zip"
+  },
+  {
+    "name": "trex",
+    "type": "nvidia",
+    "path1": ".\\Bin\\TRex-Linux-REXDevices1\\t-rex",
+    "path2": ".\\Bin\\TRex-Linux-REXDevices2\\t-rex",
+    "path3": ".\\Bin\\TRex-Linux-REXDevices3\\t-rex",
+    "minername": "t-rex",
+    "version": "0.6.3",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.1.4.2b/t-rex-Linux.zip"
+  }
+]

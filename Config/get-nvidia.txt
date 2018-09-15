@@ -1,0 +1,6 @@
+{
+ "aergo": "aeriumx",
+ "polytimos": "poly",
+ "lyra2re": "lyra2z",
+ "lyra2rev2": "lyra2v2",
+}

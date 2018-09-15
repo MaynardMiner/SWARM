@@ -1,0 +1,2 @@
+#!/bin/bash
+pwsh -command "./SWARM.ps1 -HiveOS No -Timeout 1 -Benchmark 140 -Delay 1 -RigName1 MMHash -StatsInterval 1 -No_Algo myr-gr -Currency USD -CoinExchange RVN -Interval 300 -Location US -Auto_Algo Yes -Auto_Coin Yes -Favor_Coins Yes -PoolName nicehash,blockmasters_algo,zergpool_algo,zergpool_coin -Proxy '' -Type NVIDIA1 -Wallet1 1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i -PasswordCurrency1 BTC Nicehash_Wallet1 3JfBiUZZV17DTjAFCnZb97UpBgtLPLLDop -Nicehash_Fee 2 -Donate 2"
