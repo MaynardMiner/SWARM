@@ -1,5 +1,5 @@
 **SWARM**
-
+**Previously known as MM.Hash**
 **Hybrid Profit Switching Miner For HiveOS & Windows.**
 
 **Important Note:**
