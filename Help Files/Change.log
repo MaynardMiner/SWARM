@@ -310,7 +310,7 @@ was faster than enemy.
 -Added some more visual aids.
 -Removed Algorithm from stats screen. "currently mining is set to print algorithm" at bottom.
 
-1.4.7b
+1.4.7b:
 
 Disclaimers
 
@@ -346,4 +346,8 @@ launch miner by
 ./swarm
 
 -New OC-Tuning read "Sample-OC-Nvidia.conf" in config folder to see how to set up.
--
+-Increase donation .05% to reflect additions/new options.
+-Updated LISCENSE
+-Code-Staging For New ASIC version.
+-Code-Staging For 1.4.7a
+-Added Cuda 9.1 Libraries (in case hive libraries fail again)
