@@ -22,6 +22,8 @@ I am a sole developer, and have multiple versions to operate in different OS's. 
 
 **Features**
 
+-Algorithm specific OC Tuning (HIVEOS version).
+
 -Backs up initial benchmarks, making updating or recovery a charm.
 
 -Shows real time hashrates from miners, along with previous hashrates.
