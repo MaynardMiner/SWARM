@@ -1565,8 +1565,11 @@ if($_.Timeout -gt 2 -or $null -eq $_.XProcess -or $_.XProcess.HasExited)
     $_.New = $False
     $_.Timeout = 0
     Write-Host "$($_.Name) $($_.Coins) Hashrate Check Timed Out $($_.Bad_Benchmark) Times- It Was Noted In Timeout Folder" -foregroundcolor "darkred"
-    if$($_.Bad_Benchmark -eq 3){$Stat = Set-Stat -Name "$($_.Name)_$($_.Algo)_HashRate" -Value 0}
-    Write-Host "Benchmarking Has Failed - Setting Stat To 0. Delete Stat In Stats Folder To Reset" -ForegroundColor DarkRed
+    if($_.Bad_Benchmark -eq 3 -or $_.Bad_Benchmark -gt 3)
+     {
+      $Stat = Set-Stat -Name "$($_.Name)_$($_.Algo)_HashRate" -Value 0
+      Write-Host "Benchmarking Has Failed - Setting Stat To 0. Delete Stat In Stats Folder To Reset" -ForegroundColor DarkRed
+     }
     }
    }
   }
