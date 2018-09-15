@@ -40,7 +40,7 @@ I am a sole developer, and have multiple versions to operate in different OS's. 
 
 -Windows Miners Cuda 9.2
 
--HiveOS Miners Cuda 9.1, including miners which github can no longer compile.
+-HiveOS Miners Cuda 9.1 or 9.2.
 
 -HiveOS commands to open new windows to view stats, miner history, real-time data.
 
