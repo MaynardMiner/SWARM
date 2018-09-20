@@ -90,6 +90,11 @@ These arguments can be added for additional customization and options
 
 Argument            Options             Explanation
 
+-Favor_Coins    [Yes or No]	    Default is Yes. When both algopool and coinpool
+				    are the same pool- If Favor_Coins is Yes, then miner will only factor
+				    coins. If Favor_Coins is NO. Miner will factor both algorithms
+				    and coins into final equation.
+
 -Threshold     [.1 - 100000]	    Expressed in BTC/day. Default is .1. If the total daily profits of a
 				    particular algo/coin exceed the -Threshold argument, it will be removed
 				    from database calculation. This is to prevent mining on a particular
