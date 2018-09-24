@@ -31,7 +31,7 @@ if($CoinAlgo -eq $null)
      Path = $Path
      Devices = $Devices
      DeviceCall = "claymore"
-     Arguments = "-mport 3337 -o $($AlgoPools.$_.Protocol)://$($AlgoPools.$_.Host):$($AlgoPools.$_.Port) -dwal $($AlgoPools.$_.User1) -dpsw $($AlgoPools.$_.Pass1) $($Commands.$_)"
+     Arguments = "-mport 3337 -mpsw 1 -dbg -1 -dpool $($AlgoPools.$_.Protocol)://$($AlgoPools.$_.Host):$($AlgoPools.$_.Port) -dwal $($AlgoPools.$_.User1) -dpsw $($AlgoPools.$_.Pass1) $($Commands.$_)"
      HashRates = [PSCustomObject]@{$_ = $Stats."$($Name)_$($_)_HashRate".Day}
      Selected = [PSCustomObject]@{$_ = ""}
      FullName = "$($AlgoPools.$_.Mining)"
@@ -60,7 +60,7 @@ if($CoinAlgo -eq $null)
             Path = $Path
             Devices = $Devices
             DeviceCall = "claymore"
-            Arguments = "-mport 3337 -o $($CoinPools.$_.Protocol)://$($CoinPools.$_.Host):$($CoinPools.$_.Port) -dwal $($CoinPools.$_.User1) -dpsw $($CoinPools.$_.Pass1) $($Commands.$($CoinPools.$_.Algorithm))"
+            Arguments = "-mport 3337 -mpsw -dbg -1 -dpool $($CoinPools.$_.Protocol)://$($CoinPools.$_.Host):$($CoinPools.$_.Port) -dwal $($CoinPools.$_.User1) -dpsw $($CoinPools.$_.Pass1) $($Commands.$($CoinPools.$_.Algorithm))"
             HashRates = [PSCustomObject]@{$CoinPools.$_.Symbol= $Stats."$($Name)_$($CoinPools.$_.Algorithm)_HashRate".Day}
             Selected = [PSCustomObject]@{$($CoinPools.$_.Algorithm) = ""}
             FullName = "$($CoinPools.$_.Mining)"

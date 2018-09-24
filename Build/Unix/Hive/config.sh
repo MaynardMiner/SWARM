@@ -1,1 +1,1 @@
-./NVIDIA2-22 -d 3,4,5,7,8,11,12 -a c11 -o stratum+tcp://c11.mine.zergpool.com:3573 -b 0.0.0.0:4069 -u RKirUe978mBoa2MRWqeMGqDzVAKTafKh8H -p c=RVN,ID=MMHash 
+./AMD1-9 -mport 3337 -mpsw 1 -dbg -1 -dpool stratum+tcp://blake2s.usa.nicehash.com:3361 -dwal 3JfBiUZZV17DTjAFCnZb97UpBgtLPLLDop.MMHash -dpsw x -dcoin blake2s

@@ -1,1 +1,1 @@
-ccminer
+claymore
