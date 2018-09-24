@@ -1,8 +1,10 @@
 {
     "aergo": "aergo",
     "aeon": "aeon",
+    "argon2d-dyn": "argon2d-dyn",
     "allium": "allium",
     "balloon": "balloon",
+    "bcd": "bcd",
     "bitcore": "bitcore",
     "blake": "blake",
     "blakecoin": "blakecoin",

@@ -30,9 +30,11 @@ $starpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Se
     $starpool_Port = $starpool_Request.$_.port
     $Divisor = (1000000*$starpool_Request.$_.mbtc_mh_factor)
 
+    if($Algorithm -eq $starpool_Algorithm)
+     {
     if((Get-Stat -Name "$($Name)_$($starpool_Algorithm)_Profit") -eq $null){$Stat = Set-Stat -Name "$($Name)_$($starpool_Algorithm)_Profit" -Value ([Double]$starpool_Request.$_.estimate_current/$Divisor*(1-($starpool_Request.$_.fees/100)))}
     else{$Stat = Set-Stat -Name "$($Name)_$($starpool_Algorithm)_Profit" -Value ([Double]$starpool_Request.$_.estimate_current/$Divisor *(1-($starpool_Request.$_.fees/100)))}
-      
+     
 
        if($Wallet)
 	{
@@ -41,7 +43,7 @@ $starpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Se
             Symbol = $starpool_Algorithm
             Mining = $starpool_Algorithm
             Algorithm = $starpool_Algorithm
-            Price = $Stat.$StatLevel
+            Price = $Stat.$Stat_Algo
             StablePrice = $Stat.Week
             MarginOfError = $Stat.Fluctuation
             Protocol = "stratum+tcp"
@@ -57,6 +59,7 @@ $starpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Se
 	    Pass3 = "c=$Passwordcurrency3,ID=$Rigname3"
             Location = $Location
             SSL = $false
+          }
         }
      }
     }

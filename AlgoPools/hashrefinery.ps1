@@ -34,10 +34,11 @@
     $Hashrefinery_Algorithm = Get-Algorithm $Hashrefinery_Request.$_.name
     $Divisor = (1000000*$Hashrefinery_Request.$_.mbtc_mh_factor)
 
-
+    if($Algorithm -eq $hashrefinery_Algorithm)
+    {
     if((Get-Stat -Name "$($Name)_$($Hashrefinery_Algorithm)_Profit") -eq $null){$Stat = Set-Stat -Name "$($Name)_$($Hashrefinery_Algorithm)_Profit" -Value ([Double]$Hashrefinery_Request.$_.estimate_current/$Divisor*(1-($Hashrefinery_Request.$_.fees/100)))}
     else{$Stat = Set-Stat -Name "$($Name)_$($Hashrefinery_Algorithm)_Profit" -Value ([Double]$Hashrefinery_Request.$_.estimate_current/$Divisor *(1-($Hashrefinery_Request.$_.fees/100)))}
-
+    
        if($Wallet)
 	    {
         [PSCustomObject]@{
@@ -45,7 +46,7 @@
             Symbol = $Hashrefinery_Algorithm
             Mining = $Hashrefinery_Algorithm
             Algorithm = $Hashrefinery_Algorithm
-            Price = $Stat.$Statlevel
+            Price = $Stat.$Stat_Algo
             StablePrice = $Stat.Week
             MarginOfError = $Stat.Fluctuation
             Protocol = "stratum+tcp"
@@ -62,7 +63,9 @@
             Location = $Location
             SSL = $false
         }
-     }
-  }    
- }
-}
+          }  
+         }
+       }
+      }    
+     } 
+    

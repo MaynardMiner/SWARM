@@ -31,9 +31,11 @@ $Zpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Selec
     $Zpool_Algorithm = Get-Algorithm $Zpool_Request.$_.name
     $Divisor = (1000000*$Zpool_Request.$_.mbtc_mh_factor)
 
+    if($Algorithm -eq $Zpool_Algorithm)
+     {
     if((Get-Stat -Name "$($Name)_$($zpool_Algorithm)_Profit") -eq $null){$Stat = Set-Stat -Name "$($Name)_$($zpool_Algorithm)_Profit" -Value ([Double]$zpool_Request.$_.estimate_current/$Divisor*(1-($zpool_Request.$_.fees/100)))}
-   else{$Stat = Set-Stat -Name "$($Name)_$($zpool_Algorithm)_Profit" -Value ([Double]$zpool_Request.$_.estimate_current/$Divisor *(1-($zpool_Request.$_.fees/100)))}	
-
+    else{$Stat = Set-Stat -Name "$($Name)_$($zpool_Algorithm)_Profit" -Value ([Double]$zpool_Request.$_.estimate_current/$Divisor *(1-($zpool_Request.$_.fees/100)))}	
+     
        if($Wallet)
 	    {
         [PSCustomObject]@{
@@ -57,6 +59,7 @@ $Zpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Selec
 	       Pass3 = "c=$Passwordcurrency3,ID=$Rigname3"
             Location = $Location
             SSL = $false
+         }
         }
       }
      }

@@ -30,18 +30,20 @@ $blazepool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | S
     $blazepool_Port = $blazepool_Request.$_.port
     $Divisor = (1000000*$blazepool_Request.$_.mbtc_mh_factor)
 
+    if($Algorithm -eq $blazepool_Algorithm)
+    {
     if((Get-Stat -Name "$($Name)_$($blazepool_Algorithm)_Profit") -eq $null){$Stat = Set-Stat -Name "$($Name)_$($blazepool_Algorithm)_Profit" -Value ([Double]$blazepool_Request.$_.estimate_current/$Divisor*(1-($blazepool_Request.$_.fees/100)))}
     else{$Stat = Set-Stat -Name "$($Name)_$($blazepool_Algorithm)_Profit" -Value ([Double]$blazepool_Request.$_.estimate_current/$Divisor *(1-($blazepool_Request.$_.fees/100)))}
-
+    
 
        if($Wallet)
-	{
+	    {
         [PSCustomObject]@{
             Coin = "No"
             Symbol = $blazepool_Algorithm
             Mining = $blazepool_Algorithm
             Algorithm = $blazepool_Algorithm
-            Price = $Stat.$Statlevel
+            Price = $Stat.$Stat_Algo
             StablePrice = $Stat.Week
             MarginOfError = $Stat.Fluctuation
             Protocol = "stratum+tcp"
@@ -62,3 +64,4 @@ $blazepool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | S
     }
    }
  }
+}

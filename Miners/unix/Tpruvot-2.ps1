@@ -1,8 +1,8 @@
-[string]$Path = $nvidia.tpruvot.path2
-[string]$Uri = $nvidia.tpruvot.uri
-[string]$MinerName = $nvidia.tpruvot.minername
+$Path = "$($nvidia.tpruvot.path2)"
+$Uri = "$($nvidia.tpruvot.uri)"
+$MinerName = "$($nvidia.tpruvot.minername)"
 
-$Build = "Zip"
+$Build = "Tar"
 
 
 if($CCDevices2 -ne ''){$Devices = $CCDevices2}
@@ -57,7 +57,6 @@ $Commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty 
     URI = $Uri
     BUILD = $Build
     Algo = "$($_)"
-    NewAlgo = ''
      }
     }
    }
@@ -73,7 +72,7 @@ $Commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty 
    Path = $Path
    Devices = $Devices
    DeviceCall = "ccminer"
-   Arguments = "-a $($CoinPools.$_.Algorithm) -o stratum+tcp://$($CoinPools.$_.Host):$($CoinPools.$_.Port) -b 0.0.0.0:4069 -u $($CoinPools.$_.User2) -p $($CoinPools.$_.Pass2) $($CoinPools.$Commands.$($CoinPools.$_.Algorithm))"
+   Arguments = "-a $($CoinPools.$_.Algorithm) -o stratum+tcp://$($CoinPools.$_.Host):$($CoinPools.$_.Port) -b 0.0.0.0:4069 -u $($CoinPools.$_.User2) -p $($CoinPools.$_.Pass2) $($Commands.$($CoinPools.$_.Algorithm))"
    HashRates = [PSCustomObject]@{$CoinPools.$_.Symbol= $Stats."$($Name)_$($CoinPools.$_.Algorithm)_HashRate".Day}
    API = "Ccminer"
    Selected = [PSCustomObject]@{$CoinPools.$_.Algorithm = ""}

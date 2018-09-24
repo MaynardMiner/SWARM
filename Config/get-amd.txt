@@ -3,5 +3,8 @@
     "groestl": "groestlcoin",
     "lyra2z": "lyra2re",
     "lyra2v2": "lyra2rev2",
+    "cryptonightheavy": "cryptonight_heavy",
+    "cryptonightv7": "cryptonight_v7",
+    "cryptonight": "cryptonight"
 }
 

@@ -1,9 +1,9 @@
-[string]$Path = $nvidia.trex.path1
-[string]$Uri = $nvidia.trex.uri
-[string]$MinerName = $nvidia.trex.minername
+$Path = "$($nvidia.trex.path1)"
+$Uri = "$($nvidia.trex.uri)"
+$MinerName = "$($nvidia.trex.minername)"
 
 
-$Build = "Zip"
+$Build = "Tar"
 
 if($RexDevices1 -ne ''){$Devices = $RexDevices1}
 if($GPUDevices1 -ne ''){$Devices = $GPUDevices1}
@@ -25,6 +25,7 @@ $Commands = [PSCustomObject]@{
 "x16r" = ''
 "x16s" = ''
 "hmq1725" = ''
+"bcd" = ''
 }
         
 if($CoinAlgo -eq $null)

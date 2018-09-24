@@ -107,7 +107,7 @@ function Set-Stat {
         Week = [Decimal]$Stat.Week
         Week_Fluctuation = [Double]$Stat.Week_Fluctuation
         Updated = [DateTime]$Stat.Updated
-    } | ConvertTo-Json | Set-Content $Path
+    } | ConvertTo-Json | Set-Content $Path 
 
     $Stat
 }
@@ -360,7 +360,7 @@ function Get-HashRate {
                     if(-not $Safe){break}
 
                     Start-sleep $Interval
-                } while($HashRates.Count -lt 6)
+                } while($HashRates.Count -lt 2)
             }
             "ccminer"
             {
@@ -387,7 +387,7 @@ function Get-HashRate {
                     if(-not $Safe){break}
 
                     Start-Sleep $Interval
-                } while($HashRates.Count -lt 6)
+                } while($HashRates.Count -lt 2)
             }
             "nicehashequihash"
             {
@@ -416,7 +416,7 @@ function Get-HashRate {
                     if(-not $Safe){break}
 
                     Start-Sleep $Interval
-                } while($HashRates.Count -lt 6)
+                } while($HashRates.Count -lt 2)
             }
             "nicehash"
             {
@@ -443,7 +443,7 @@ function Get-HashRate {
                     if(-not $Safe){break}
 
                     Start-Sleep $Interval
-                } while($HashRates.Count -lt 6)
+                } while($HashRates.Count -lt 2)
             }
             "ewbf"
             {
@@ -470,7 +470,7 @@ function Get-HashRate {
                     if(-not $Safe){break}
 
                     Start-Sleep $Interval
-                } while($HashRates.Count -lt 6)
+                } while($HashRates.Count -lt 2)
             }
           "claymore"
             {
@@ -487,7 +487,7 @@ function Get-HashRate {
                     if(-not $Safe){break}
 
 		    Start-Sleep $Interval
-                } while($HashRates.Count -lt 6)
+                } while($HashRates.Count -lt 2)
             }
             "dstm" {
                 $Message = "summary"
@@ -514,31 +514,9 @@ function Get-HashRate {
                     if (-not $Safe) {break}
 
                     Start-Sleep $Interval
-                } while ($HashRates.Count -lt 6)
+                } while ($HashRates.Count -lt 2)
               }
-              
-            "fireice"
-            {
-                do
-                {
-                    $Request = Invoke-WebRequest "http://$($Server):$Port/h" -UseBasicParsing
-
-                    $Data = $Request.Content -split "</tr>" -match "total*" -split "<td>" -replace "<[^>]*>",""
-
-                    $HashRate = $Data[1]
-                    if($HashRate -eq ""){$HashRate = $Data[2]}
-                    if($HashRate -eq ""){$HashRate = $Data[3]}
-
-                    if($HashRate -eq $null){$HashRates = @(); break}
-
-                    $HashRates += [Double]$HashRate
-
-                    if(-not $Safe){break}
-
-                    Start-Sleep $Interval
-               } while($HashRates.Count -lt 6)
-            }
-            "wrapper"
+        "wrapper"
             {
                 do
                 {
@@ -552,7 +530,7 @@ function Get-HashRate {
                     if(-not $Safe){break}
 
 		   Start-Sleep $Interval
-                } while($HashRates.Count -lt 6)
+                } while($HashRates.Count -lt 2)
             }
             "tdxminer"
              {
@@ -568,7 +546,7 @@ function Get-HashRate {
                 Start-Sleep $Interval
                 }
 
-                } while($HashRates.Count -lt 6)
+                } while($HashRates.Count -lt 2)
                 Clear-Content ".\Build\Unix\Hive\logstats.sh"
              }
              "lyclminer"
@@ -585,7 +563,7 @@ function Get-HashRate {
                 Start-Sleep $Interval
                 }
 
-                } while($HashRates.Count -lt 6)
+                } while($HashRates.Count -lt 2)
                 Clear-Content ".\Build\Unix\Hive\logstats.sh"
              }
             "cpulog"
@@ -611,7 +589,45 @@ function Get-HashRate {
                 }
                 else{$HashRates = @(); break}
              }
-        }
+             "lolminer" {
+                do {
+                    $Client = New-Object System.Net.Sockets.TcpClient $server, $port
+                    $Writer = New-Object System.IO.StreamWriter $Client.GetStream()
+                    $Reader = New-Object System.IO.StreamReader $Client.GetStream()
+                    $Writer.AutoFlush = $true
+                    $Request = $Reader.ReadToEnd()
+
+                    $Data = $Request | ConvertFrom-Json
+
+                    $HashRate = [Double]$Data."TotalSpeed(10s)"
+                    if ($HashRate -eq $null) {$HashRates = @(); break}
+                    
+                    $HashRates += [Double]$HashRate
+                    
+                    if (-not $Safe) {break}
+
+                    Start-Sleep $Interval
+                } while ($HashRates.Count -lt 2)
+              }
+            
+          "xmrstak" {
+                  do {
+                   $Request="/api.json"
+                   $Reader = Invoke-WebRequest "http://$($server):$($port)$($Request)" -UseBasicParsing -TimeoutSec 2
+                   if ($Reader -ne "") {
+                        $Data = $Reader.Content | ConvertFrom-Json
+                        $HashRate = [Double]$Data.hashrate.total[0]
+                    }
+
+                    $HashRates += [Double]$HashRate
+
+                    if (-not $Safe) {break}
+
+                    Start-Sleep $Interval
+                   } while ($HashRates.Count -lt 2)
+  
+                  }
+                }
 
         $HashRates_Info = $HashRates | Measure-Object -Maximum -Minimum -Average
         if($HashRates_Info.Maximum-$HashRates_Info.Minimum -le $HashRates_Info.Average*$Delta){$HashRates_Info.Maximum}
@@ -827,8 +843,8 @@ function Expand-WebRequest {
 	    [Parameter(Mandatory=$false)]
         [String]$MineType
           )
-     if (-not (Test-Path ".\Bin")) {New-Item "Bin" -ItemType "directory" | Out-Null}
-     if (-not (Test-Path ".\x64")) {New-Item "x64" -ItemType "directory" | Out-Null}
+     if (-not (Test-Path ".\Bin")) {New-Item "Bin" -ItemType "directory" | Out-Null; Start-Sleep -S 3}
+     if (-not (Test-Path ".\x64")) {New-Item "x64" -ItemType "directory" | Out-Null; Start-Sleep -S 3}
      if (-not $Path) {$Path = Join-Path ".\x64" ([IO.FileInfo](Split-Path $Uri -Leaf)).BaseName}
 	$Old_Path = Split-Path $Uri -Parent
         $New_Path = Split-Path $Old_Path -Leaf
@@ -870,7 +886,7 @@ function Expand-WebRequest {
        Start-Process -FilePath "git" -ArgumentList "clone $Uri $New_Path" -Wait
        Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
        Write-Host "Building Miner" -BackgroundColor "Red" -ForegroundColor "White"
-       Copy-Item .\Build\KlausT\*  -Destination $Filename -recurse -force
+       Copy-Item .\Build\KlausT\*  -Destination $Filename -recurse
        Set-Location $Filename
        Start-Process -Filepath "bash" -ArgumentList "autogen.sh" -Wait
        Start-Process -Filepath "bash" -ArgumentList "configure" -Wait
@@ -890,11 +906,11 @@ function Expand-WebRequest {
       Start-Process -FilePath "wget" -ArgumentList "$Uri -O temp" -Wait
       Start-Process "unzip" -ArgumentList "temp -d zip" -Wait
       Get-ChildItem -Path zip -Recurse -Directory | Move-Item -Destination $MinerFolder
-      Remove-Item "temp" -recurse -force
-      Remove-Item "zip" -recurse -force
+      Remove-Item "temp" -recurse
+      Remove-Item "zip" -recurse
       Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
       Write-Host "Building Miner" -BackgroundColor "Red" -ForegroundColor "White"
-      Copy-Item .\Build\KlausT\*  -Destination $Path -recurse -force
+      Copy-Item .\Build\KlausT\*  -Destination $Path -recurse
       Set-Location $Path
       Start-Process -FilePath "bash" -ArgumentList "build.sh" -Wait
       Write-Host "Miner Completed!" -BackgroundColor "Red" -ForegroundColor "White"
@@ -904,31 +920,31 @@ function Expand-WebRequest {
 
 	if($BuildPath -eq "Zip")
 	 {
-	  if (Test-Path $FileName1) {Remove-Item $FileName1 -Force}
+	  if (Test-Path $FileName1) {Remove-Item $FileName1}
 	    Write-Host "Downloading Windows Binaries"
 	    Start-Process -Filepath "wget" -ArgumentList "$Uri -O $FileName1" -Wait
            if (".msi", ".exe" -contains ([IO.FileInfo](Split-Path $Uri -Leaf)).Extension)
-	    {
+	        {
              Start-Process -FilePath "wine" -ArgumentList "$FileName" -Wait
             }
   	    else {
 		   $Path_Old = (Join-Path (Split-Path $Path) ([IO.FileInfo](Split-Path $Uri -Leaf)).BaseName)
-                   $Path_New = (Join-Path (Split-Path $Path) (Split-Path $Path -Leaf))
+           $Path_New = (Join-Path (Split-Path $Path) (Split-Path $Path -Leaf))
 
 
-                    if (Test-Path $Path_Old) {Remove-Item $Path_Old -Recurse -Force}
+                    if (Test-Path $Path_Old) {Remove-Item $Path_Old -Recurse}
 
                     Start-Process "7z" "x `"$([IO.Path]::GetFullPath($FileName1))`" -o`"$([IO.Path]::GetFullPath($Path_Old))`" -y" -Wait
 
 
-                    if (Test-Path $Path_New) {Remove-Item $Path_New -Recurse -Force}
+                    if (Test-Path $Path_New) {Remove-Item $Path_New -Recurse}
                     if (Get-ChildItem $Path_Old | Where-Object PSIsContainer -EQ $false)
-		     {
+		             {
                      Rename-Item $Path_Old (Split-Path $Path -Leaf)
                      }
                     else
-		       {
-                         Get-ChildItem $Path_Old | Where-Object PSIsContainer -EQ $true | ForEach-Object {Move-Item (Join-Path $Path_Old $_) $Path_New}
+		             {
+                         Get-ChildItem $Path_Old -Directory | ForEach-Object {Move-Item (Join-Path $Path_Old $_) $Path_New}
                          if($MineName -eq "lyclMiner"){
                          Set-Location $Path_New
                          Start-Process "./lyclMiner" -ArgumentList "-g lyclMiner.conf" -Wait
@@ -940,7 +956,7 @@ function Expand-WebRequest {
                            Start-Process "chmod" -ArgumentLIst "+x $MineName"
                            Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
                           }
-                         Remove-Item $Path_Old
+                         Remove-Item $Path_Old -Recurse
 		       }
                   }
 
@@ -953,10 +969,54 @@ if($BuildPath -eq "Linux-Zip")
 	     $NewDir = (Split-Path $Path -Leaf)
 	     Start-Process -Filepath "wget" -ArgumentList "$Uri -O $FileName1" -Wait
 	     New-Item -Path ".\Bin" -Name "$NewDir" -ItemType "directory"
-	     Start-Process tar "-xvf `"$([IO.Path]::GetFullPath($FileName1))`" -C `"$([IO.Path]::GetFullPath($Path))`"" -Wait
+	     Start-Process tar "-xvf -f `"$([IO.Path]::GetFullPath($FileName1))`" -C `"$([IO.Path]::GetFullPath($Path))`"" -Wait
 
           }
-	}
+    }
+
+if($BuildPath -eq "tar")
+ {
+    $DownloadFileURI = Split-Path "$Uri" -Leaf
+    $DownloadFileName = $DownloadFileURI -replace (".tar.gz","")
+    $TargzPath = Join-Path ".\x64" "$($DownloadFileName)"
+    $NewTargzPath = Join-Path ".\Bin" "$($DownloadFileName)"
+    
+    Write-Host "Download Directory is $TargzPath"
+    Write-Host "Miner Exec is $NewTargzPath"
+    Write-Host "Miner Path is $Path"
+
+    if(Test-Path $TargzPath){Remove-Item $TargzPath -Recurse -Force}
+    
+    Write-Host "Downloading .tar.gz File." -ForegroundColor Green
+    
+    Start-Process -Filepath "wget" -ArgumentList "$Uri -O x64/$DownloadFileURI" -Wait
+    if(Test-Path $NewTargzPath){Remove-Item $NewTargzPath -recurse}
+    $Path_New = Join-Path ".\Bin" (Split-Path $Path -Leaf)
+    
+    Set-Location ".\x64"
+    Start-Process "tar" -ArgumentList "-xzvf $DownloadFileURI" -Wait
+    Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+    if(Test-Path $Path_New){Remove-Item $Path_New -Recurse -Force; Start-Sleep -S 1}
+    Copy-Item $TargzPath -Destination ".\Bin" -Recurse
+    Rename-Item $NewTargzPath (Split-Path $Path_New -Leaf)
+    Remove-Item $TargzPath -Recurse -Force
+
+    if($MineName -eq "lyclMiner")
+     {
+      Set-Location $Path_New
+      Start-Process "./lyclMiner" -ArgumentList "-g lyclMiner.conf" -Wait
+      Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+     }
+    
+    if($MinerType -like "*AMD*" -or $MinerType -like "*NVIDIA*")
+     {
+       Set-Location $Path_New
+       Start-Process "chmod" -ArgumentLIst "+x $MineName"
+       Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+     }
+    
+  }
+
  }
 
 
@@ -1015,3 +1075,34 @@ function Convert-DateString ([string]$Date, [string[]]$Format)
 
 		if ($Convertible) { $result }
 	}
+
+    function Get-AlgorithmList {
+        param (
+            [Parameter(Mandatory=$true)]
+            [Array]$DeviceType,
+            [Parameter(Mandatory=$true)]
+            [String]$CmdDir,
+            [Parameter(Mandatory=$false)]
+            [Array]$No_Algo
+        )
+    
+        Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+    
+        $AlgorithmList = @()
+        $GetAlgorithms = Get-Content ".\Config\get-pool.txt" | ConvertFrom-Json
+        $PoolAlgorithms = @()
+        $GetAlgorithms | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+         $PoolAlgorithms += $_
+        }
+        
+        if($No_Algo -ne $null)
+         {
+         $GetNoAlgo = Compare-Object $No_Algo $PoolAlgorithms
+         $GetNoAlgo.InputObject | foreach{$AlgorithmList += $_}
+         }
+         else{$PoolAlgorithms | foreach { $AlgorithmList += $($_)} }
+             
+        $AlgorithmList
+        Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+        }
+    

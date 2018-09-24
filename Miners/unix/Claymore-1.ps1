@@ -1,8 +1,8 @@
-[string]$Path = $nvidia.claymore.path1
-[string]$Uri = $nvidia.claymore.uri
-[string]$MinerName = $nvidia.claymore.minername
+$Path = "$($nvidia.claymore.path1)"
+$Uri = "$($nvidia.claymore.uri)"
+$MinerName = "$($nvidia.claymore.minername)"
 
-$Build = "Zip"
+$Build = "Tar"
 
 if($ClayDevices1 -ne ''){$Devices = $ClayDevices1}
 if($GPUDevices1 -ne '')

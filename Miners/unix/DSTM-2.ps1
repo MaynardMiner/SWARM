@@ -1,9 +1,9 @@
-[string]$Path = $nvidia.dstm.path2
-[string]$Uri = $nvidia.dstm.uri
-[string]$MinerName = $nvidia.dstm.minername
+$Path = "$($nvidia.dstm.path2)"
+$Uri = "$($nvidia.dstm.uri)"
+$MinerName = "$($nvidia.dstm.minername)"
 
 
-$Build = "Zip"
+$Build = "Tar"
 
 if($DSTMDevices2 -ne ''){$Devices = $DSTMDevices2}
 if($GPUDevices2 -ne '')

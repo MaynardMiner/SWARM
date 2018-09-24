@@ -1,8 +1,8 @@
-[string]$Path = $amd.claymore_amd.path1
-[string]$Uri = $amd.claymore_amd.uri
-[string]$MinerName = $amd.claymore_amd.minername
+$Path = "$($amd.claymore_amd.path1)"
+$Uri = "$($amd.claymore_amd.uri)"
+$MinerName = "$($amd.claymore_amd.minername)"
 
-$Build = "Zip"
+$Build = "Tar"
 
 if($ClayDevices1 -ne ''){$Devices = $ClayDevices1}
 if($GPUDevices1 -ne '')

@@ -59,7 +59,6 @@ $Locations | foreach {
       {
         $Stat = Set-Stat -Name "$($Name)_$($MPH_Algo)_Profit" -Value ([decimal]$_.profit/1000000000)
         $Price = (($Stat.Live*(1-[Math]::Min($Stat.Day_Fluctuation,1)))+($Stat.Day*(0+[Math]::Min($Stat.Day_Fluctuation,1))))
-       }
       
       if($Wallet)
        {
@@ -81,6 +80,7 @@ $Locations | foreach {
             Pass3 = 'x'
             Location = $MPH_Location
             SSL = $true
+            }
            }
 		  }
          }   

@@ -9,6 +9,13 @@ get_nvidia_cards_fan(){
 	echo $(jq -c "[.fan$nvidia_indexes_array]" <<< $gpu_stats)
 }
 
+get_amd_cards_temp(){
+	echo $(jq -c "[.temp$amd_indexes_array]" <<< $gpu_stats)
+}
+
+get_amd_cards_fan(){
+	echo $(jq -c "[.fan$amd_indexes_array]" <<< $gpu_stats)
+}
 
 function miner_stats {
 	local mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
@@ -18,6 +25,8 @@ function miner_stats {
 	local mindex=$2 #empty or 2, 3, 4, ...
 	local Ntemp=$(get_nvidia_cards_temp)	# cards temp
 	local Nfan=$(get_nvidia_cards_fan)	# cards fan
+	local Atemp=$(get_amd_cards_temp)	# cards temp
+	local Afan=$(get_amd_cards_fan)	# cards fan
 	khs=0
 	stats=
 	case $miner in
@@ -41,8 +50,9 @@ function miner_stats {
 					--arg ac "$ac" --arg rj "$rj" \
 					--arg algo "$algo" \
 					'{$hs, $hs_units, $temp, $fan, $uptime, ar: [$ac, $rj], $algo}')
-
-			;;
+			
+			truncate -s 0 $mydir/Build/Unix/Hive/hivestats.sh
+		;;
 		tdxminer) 
 				tdkhs=(`echo "$mystats" | grep 'GPU=' | sed -e 's/.*=//'`)
 				algo=`echo "$mystats" | grep -m1 'ALGO=' | sed -e 's/.*=//'`
@@ -55,12 +65,14 @@ function miner_stats {
 			stats=$(jq -n \
 				    --argjson hs "`echo ${tdkhs[@]} | tr " " "\n" | jq -cs '.'`" \
 					--arg hs_units "hs_units=khs" \
-				    --argjson temp "$Ntemp" \
-				    --argjson fan "$Nfan" \
+				    --argjson temp "$Atemp" \
+				    --argjson fan "$Afan" \
 					--arg uptime "0" \
 					--arg ac "$ac" --arg rj "$rj" \
 					--arg algo "$algo" \
 					'{$hs, $hs_units, $temp, $fan, $uptime, ar: [$ac, $rj], $algo}')
+
+            truncate -s 0 $mydir/Build/Unix/Hive/hivestats.sh
 
 			;;
 		lyclminer) 
@@ -75,12 +87,14 @@ function miner_stats {
 			stats=$(jq -n \
 				    --argjson hs "`echo ${tdkhs[@]} | tr " " "\n" | jq -cs '.'`" \
 					--arg hs_units "hs_units=khs" \
-				    --argjson temp "$Ntemp" \
-				    --argjson fan "$Nfan" \
+				    --argjson temp "$Atemp" \
+				    --argjson fan "$Afan" \
 					--arg uptime "0" \
 					--arg ac "$ac" --arg rj "$rj" \
 					--arg algo "$algo" \
 					'{$hs, $hs_units, $temp, $fan, $uptime, ar: [$ac, $rj], $algo}')
+
+			truncate -s 0 $mydir/Build/Unix/Hive/hivestats.sh
 
 			;;
 		cryptozeny) 
@@ -101,7 +115,74 @@ function miner_stats {
 					--arg ac "$ac" --arg rj "$rj" \
 					--arg algo "$algo" \
 					'{$hs, $hs_units, $temp, $fan, $uptime, ar: [$ac, $rj], $algo}')
+
+		truncate -s 0 $mydir/Build/Unix/Hive/hivestats.sh
+
 			;;
+		lolminer) 
+				cpkhs=(`echo "$mystats" | grep 'GPU=' | sed -e 's/.*=//'`)
+				algo=`echo "$mystats" | grep -m1 'ALGO=' | sed -e 's/.*=//'`
+				local ac=`echo "$mystats" | grep -m1 'ACC=' | sed -e 's/.*=//'`
+				local rj=`echo "$mystats" | grep -m1 'REJ=' | sed -e 's/.*=//'`
+
+				khs=`echo "$mystats" | grep -m1 'KHS=' | sed -e 's/.*=//'`
+
+
+			stats=$(jq -n \
+				    --argjson hs "`echo ${cpkhs[@]} | tr " " "\n" | jq -cs '.'`" \
+					--arg hs_units "hs_units=khs" \
+				    --argjson temp "$Ntemp" \
+				    --argjson fan "$Nfan" \
+					--arg uptime "0" \
+					--arg ac "$ac" --arg rj "$rj" \
+					--arg algo "$algo" \
+					'{$hs, $hs_units, $temp, $fan, $uptime, ar: [$ac, $rj], $algo}')
+
+			truncate -s 0 $mydir/Build/Unix/Hive/hivestats.sh
+
+			;;
+		lolamd) 
+				cpkhs=(`echo "$mystats" | grep 'GPU=' | sed -e 's/.*=//'`)
+				algo=`echo "$mystats" | grep -m1 'ALGO=' | sed -e 's/.*=//'`
+				local ac=`echo "$mystats" | grep -m1 'ACC=' | sed -e 's/.*=//'`
+				local rj=`echo "$mystats" | grep -m1 'REJ=' | sed -e 's/.*=//'`
+
+				khs=`echo "$mystats" | grep -m1 'KHS=' | sed -e 's/.*=//'`
+
+
+			stats=$(jq -n \
+				    --argjson hs "`echo ${cpkhs[@]} | tr " " "\n" | jq -cs '.'`" \
+					--arg hs_units "hs_units=khs" \
+				    --argjson temp "$Atemp" \
+				    --argjson fan "$Afan" \
+					--arg uptime "0" \
+					--arg ac "$ac" --arg rj "$rj" \
+					--arg algo "$algo" \
+					'{$hs, $hs_units, $temp, $fan, $uptime, ar: [$ac, $rj], $algo}')
+
+			truncate -s 0 $mydir/Build/Unix/Hive/hivestats.sh
+			;;
+		xmrstak) 
+				cpkhs=(`echo "$mystats" | grep 'GPU=' | sed -e 's/.*=//'`)
+				algo=`echo "$mystats" | grep -m1 'ALGO=' | sed -e 's/.*=//'`
+				local ac=`echo "$mystats" | grep -m1 'ACC=' | sed -e 's/.*=//'`
+				local rj=`echo "$mystats" | grep -m1 'REJ=' | sed -e 's/.*=//'`
+
+				khs=`echo "$mystats" | grep -m1 'KHS=' | sed -e 's/.*=//'`
+
+
+			stats=$(jq -n \
+				    --argjson hs "`echo ${cpkhs[@]} | tr " " "\n" | jq -cs '.'`" \
+					--arg hs_units "hs_units=khs" \
+				    --argjson temp "$Atemp" \
+				    --argjson fan "$Afan" \
+					--arg uptime "0" \
+					--arg ac "$ac" --arg rj "$rj" \
+					--arg algo "$algo" \
+					'{$hs, $hs_units, $temp, $fan, $uptime, ar: [$ac, $rj], $algo}')
+
+			truncate -s 0 $mydir/Build/Unix/Hive/hivestats.sh
+			;;		
 		claymore)
 			stats_raw=`echo '{"id":0,"jsonrpc":"2.0","method":"miner_getstat2"}' | nc -w $API_TIMEOUT localhost $myport | jq '.result'`
 			if [[ $? -ne 0  || -z $stats_raw ]]; then
@@ -135,9 +216,7 @@ function miner_stats {
 					--arg algo "Etherium" \
 					'{$hs, $hs_units, $temp, $fan, $uptime, ar: [$ac, $rj], $algo}')
 
-fi
-			     
-			
+				fi
 		;;
 		claymore-x)
 			stats=`echo '{"id":0,"jsonrpc":"2.0","method":"miner_getstat1"}' | nc -w $API_TIMEOUT localhost $myport | jq '.result'`
@@ -380,26 +459,6 @@ fi
 							ar: [.stratum.accepted_shares, .stratum.rejected_shares]}' <<< "$stats_raw")
 			fi
 		;;
-		lolminer)
-			stats_raw=`/hive/lolminer/lolHelper`
-			if [[ $? -ne 0 || -z $stats_raw ]]; then
-				echo -e "${YELLOW}Failed to read $miner from lolHelper${NOCOLOR}"
-			else
-				local platform=`tac /hive/lolminer/pool.cfg | grep -m1 "^\-\-platform" | awk '{print toupper($2)}'`
-				khs=`echo $stats_raw | jq '.result[].sol_ps' | awk '{s+=$1} END {print s/1000}'`
-				local uptime=$(( `date +%s` - $(stat -c%X /proc/`pidof lolMiner-mnx`) ))
-				local fan='[]'
-				local temp='[]'
-				if [[ $platform = 0 || ($platform = "AUTO" && $amd_indexes_array != "[]") ]]; then #AMD
-					fan=$(jq -c "[.fan$amd_indexes_array]" <<< $gpu_stats)
-					temp=$(jq -c "[.temp$amd_indexes_array]" <<< $gpu_stats)
-				elif [[ $platform = 1 || ($platform = "AUTO" && $nvidia_indexes_array != "[]") ]]; then #Nvidia
-					fan=$(jq -c "[.fan$nvidia_indexes_array]" <<< $gpu_stats)
-					temp=$(jq -c "[.temp$nvidia_indexes_array]" <<< $gpu_stats)
-				fi
-				stats=$(jq --argjson temp "$temp" --argjson fan "$fan" --arg uptime "$uptime" '{ hs: [.result[].sol_ps], $temp, $fan, $uptime}' <<< $stats_raw)
-			fi
-		;;
 		optiminer)
 			stats_raw=`curl --connect-timeout 2 --max-time $API_TIMEOUT --silent --noproxy '*' http://localhost:$myport`
 			if [[ $? -ne 0 || -z $stats_raw ]]; then
@@ -420,48 +479,6 @@ fi
 					fan=$(jq -c "del(.$cpu_indexes_array)" <<< $fan)
 
 				stats=$(jq -nc --arg algo "$OPTIMINER_ALGORITHM" --argjson hs "$hs" --argjson temp "$temp" --argjson fan "$fan" --arg uptime "$uptime" '{$algo, $hs, $temp, $fan, $uptime}')
-			fi
-		;;
-		xmr-stak)
-			stats_raw=`curl --connect-timeout 2 --max-time $API_TIMEOUT --silent --noproxy '*' http://127.0.0.1:$myport/api.json`
-			#echo $stats_raw | jq .
-			if [[ $? -ne 0 || -z $stats_raw ]]; then
-				echo -e "${YELLOW}Failed to read $miner from localhost:$myport${NOCOLOR}"
-			else
-				khs=`echo $stats_raw | jq -r '.hashrate.total[0]' | awk '{print $1/1000}'`
-				local cpu_temp=`cat /sys/class/hwmon/hwmon0/temp*_input | head -n $(nproc) | awk '{print $1/1000}' | jq -rsc .` #just a try to get CPU temps
-				local gpus_disabled=
-				(head -n 40 /var/log/miner/xmr-stak/xmr-stak.log | grep -q "WARNING: backend AMD (OpenCL) disabled") && #AMD disabled found
-				(head -n 40 /var/log/miner/xmr-stak/xmr-stak.log | grep -q "WARNING: backend NVIDIA disabled") && #and nvidia disabled
-				gpus_disabled=1
-				#local amd_on=$(head /hive/xmr-stak/xmr-stak.log | grep -q -E "WARNING: backend (NVIDIA|AMD) disabled")
-				if [[ $gpus_disabled == 1 ]]; then #gpus disabled
-					local temp='[]'
-					local fan='[]'
-				else
-					local temp=$(jq '.temp' <<< $gpu_stats)
-					local fan=$(jq '.fan' <<< $gpu_stats)
-					[[ $cpu_indexes_array != '[]' ]] && #remove Internal Gpus
-						temp=$(jq -c "del(.$cpu_indexes_array)" <<< $temp) &&
-						fan=$(jq -c "del(.$cpu_indexes_array)" <<< $fan)
-				fi
-				#temp=$(jq -sc '.[0] + .[1]'  <<< "$temp $cpu_temp")
-				#fan=$(jq -sc '.[0] + .[1]'  <<< "$fan [-1]")
-				local ac=$(jq '.results.shares_good' <<< "$stats_raw")
-				local rj=$(( $(jq '.results.shares_total' <<< "$stats_raw") - $ac ))
-				stats=$(jq --argjson temp "$temp" --argjson fan "$fan" --argjson cpu_temp "$cpu_temp" --arg ac "$ac" --arg rj "$rj" \
-					'{hs: [.hashrate.threads[][0]], $temp, $fan, $cpu_temp, uptime: .connection.uptime, ar: [$ac, $rj]}' <<< "$stats_raw")
-			fi
-		;;
-		xmrig)
-			stats_raw=`curl --connect-timeout 2 --max-time $API_TIMEOUT --silent --noproxy '*' http://127.0.0.1:$myport`
-			#echo $stats_raw | jq .
-			if [[ $? -ne 0 || -z $stats_raw ]]; then
-				echo -e "${YELLOW}Failed to read $miner from localhost:$myport${NOCOLOR}"
-			else
-				khs=`echo $stats_raw | jq -r '.hashrate.total[0]' | awk '{print $1/1000}'`
-				local cpu_temp=`cat /sys/class/hwmon/hwmon0/temp*_input | head -n $(nproc) | awk '{print $1/1000}' | jq -rsc .` #just a try to get CPU temps
-				stats=`echo $stats_raw | jq '{hs: [.hashrate.threads[][0]], temp: '$cpu_temp', uptime: .connection.uptime}'`
 			fi
 		;;
 		cpuminer-opt)

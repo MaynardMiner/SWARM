@@ -1,31 +1,23 @@
-[string]$Path = $nvidia.krnlx.path1
-[string]$Uri = $nvidia.krnlx.uri
-[string]$MinerName = $nvidia.krnlx.minername
+$Path = "$($amd.sgminerhex.path1)"
+$Uri = "$($amd.sgminerhex.uri)"
+$MinerName = "$($amd.sgminerhex.minername)"
 
+$Build = "Tar"
 
-$Build = "Zip"
-
-if($CCDevices1 -ne ''){$Devices = $CCDevices1}
+if($SGDevices1 -ne ''){$Devices = $SGDevices1}
 if($GPUDevices1 -ne ''){$Devices = $GPUDevices1}
 
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 
-#Algorithms
-#Lyra2v2 
-#Keccak
-#Skunk
-#Tribus
-#Phi
-#Keccakc
-#Quark (Not Used)
-#X12
-#Phi
-#Sib
+#Algorithms:
+#NeoScrypt
+#Groestl
 
 $Commands = [PSCustomObject]@{
-"xevan" = ''
-}
 
+"hex" = ""
+
+}
 
 if($CoinAlgo -eq $null)
 {
@@ -33,20 +25,20 @@ $Commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty 
  if($Algorithm -eq "$($AlgoPools.$_.Algorithm)")
   {
     [PSCustomObject]@{
-      Platform = $Platform
+    Platform = $Platform
     Symbol = "$($_)"
     MinerName = $MinerName
-    Type = "NVIDIA1"
+    Type = "AMD1"
     Path = $Path
     Devices = $Devices
-    DeviceCall = "ccminer"
-    Arguments = "-a $_ -o stratum+tcp://$($AlgoPools.$_.Host):$($AlgoPools.$_.Port) -b 0.0.0.0:4068 -u $($AlgoPools.$_.User1) -p $($AlgoPools.$_.Pass1) $($Commands.$_)"
+    DeviceCall = "sgminer-gm"
+    Arguments = "--gpu-platform 0 --api-listen --api-port 4028 -k $(Get-AMD($_)) -o stratum+tcp://$($AlgoPools.$_.Host):$($AlgoPools.$_.Port) -u $($AlgoPools.$_.User1) -p $($AlgoPools.$_.Pass1) -T $($Commands.$_)"
     HashRates = [PSCustomObject]@{$_ = $Stats."$($Name)_$($_)_HashRate".Day}
     Selected = [PSCustomObject]@{$_ = ""}
-  MinerPool = "$($AlgoPools.$_.Name)"
-  FullName = "$($AlgoPools.$_.Mining)"
-    Port = 4068
-    API = "Ccminer"
+    MinerPool = "$($AlgoPools.$_.Name)"
+    FullName = "$($AlgoPools.$_.Mining)"
+    Port = 4028
+    API = "sgminer-gm"
     Wrap = $false
     URI = $Uri
     BUILD = $Build
@@ -61,20 +53,20 @@ else{
   Where {$($Commands.$($CoinPools.$_.Algorithm)) -NE $null} |
   foreach {
    [PSCustomObject]@{
-    Platform = $Platform
-    Symbol = "$($CoinPools.$_.Symbol)"
-    MinerName = $MinerName
-   Type = "NVIDIA1"
+   Platform = $Platform
+   Symbol = "$($CoinPools.$_.Symbol)"
+   MinerName = $MinerName
+   Type = "AMD1"
    Path = $Path
    Devices = $Devices
-   DeviceCall = "ccminer"
-   Arguments = "-a $($CoinPools.$_.Algorithm) -o stratum+tcp://$($CoinPools.$_.Host):$($CoinPools.$_.Port) -b 0.0.0.0:4068 -u $($CoinPools.$_.User1) -p $($CoinPools.$_.Pass1) $($CoinPools.$Commands.$($CoinPools.$_.Algorithm))"
+   DeviceCall = "sgminer-gm"
+   Arguments = "--gpu-platform 0 --api-listen --api-port 4028 -k $(Get-AMD($CoinPools.$_.Algorithm)) -o stratum+tcp://$($CoinPools.$_.Host):$($CoinPools.$_.Port) -u $($CoinPools.$_.User1) -p $($CoinPools.$_.Pass1) -T $($Commands.$($CoinPools.$_.Algorithm))"
    HashRates = [PSCustomObject]@{$CoinPools.$_.Symbol= $Stats."$($Name)_$($CoinPools.$_.Algorithm)_HashRate".Day}
-   API = "Ccminer"
+   API = "sgminer-gm"
    Selected = [PSCustomObject]@{$CoinPools.$_.Algorithm = ""}
    FullName = "$($CoinPools.$_.Mining)"
-	 MinerPool = "$($CoinPools.$_.Name)"
-   Port = 4068
+  MinerPool = "$($CoinPools.$_.Name)"
+   Port = 4028
    Wrap = $false
    URI = $Uri
    BUILD = $Build

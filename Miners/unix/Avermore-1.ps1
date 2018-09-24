@@ -1,8 +1,8 @@
-[string]$Path = $amd.avermore.path1
-[string]$Uri = $amd.avermore.uri
-[string]$MinerName = $amd.avermore.minername
+$Path = "$($amd.avermore.path1)"
+$Uri = "$($amd.avermore.uri)"
+$MinerName = "$($amd.avermore.minername)"
 
-$Build = "Zip"
+$Build = "Tar"
 
 if($SGDevices1 -ne ''){$Devices = $SGDevices1}
 if($GPUDevices1 -ne ''){$Devices = $GPUDevices1}
@@ -64,7 +64,7 @@ else{
    Path = $Path
    Devices = $Devices
    DeviceCall = "sgminer-gm"
-   Arguments = "--api-listen --api-port 4028 -k $(Get-AMD($CoinPools.$_.Algorithm)) -o stratum+tcp://$($CoinPools.$_.Host):$($CoinPools.$_.Port) -u $($CoinPools.$_.User1) -p $($CoinPools.$_.Pass1) -T $($CoinPools.$Commands.$($CoinPools.$_.Algorithm))"
+   Arguments = "--api-listen --api-port 4028 -k $(Get-AMD($CoinPools.$_.Algorithm)) -o stratum+tcp://$($CoinPools.$_.Host):$($CoinPools.$_.Port) -u $($CoinPools.$_.User1) -p $($CoinPools.$_.Pass1) -T $($Commands.$($CoinPools.$_.Algorithm))"
    HashRates = [PSCustomObject]@{$CoinPools.$_.Symbol= $Stats."$($Name)_$($CoinPools.$_.Algorithm)_HashRate".Day}
    API = "sgminer-gm"
    Selected = [PSCustomObject]@{$CoinPools.$_.Algorithm = ""}

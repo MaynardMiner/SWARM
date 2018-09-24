@@ -1,8 +1,8 @@
-[string]$Path = $nvidia.cryptodredge.path2
-[string]$Uri = $nvidia.cryptodredge.uri
-[string]$MinerName = $nvidia.cryptodredge.minername
+$Path = "$($nvidia.cryptodredge.path2)"
+$Uri = "$($nvidia.cryptodredge.uri)"
+$MinerName = "$($nvidia.cryptodredge.minername)"
 
-$Build = "Zip"
+$Build = "Tar"
 
 if($RexDevices2 -ne ''){$Devices = $RexDevices2}
 if($GPUDevices2 -ne ''){$Devices = $GPUDevices2}

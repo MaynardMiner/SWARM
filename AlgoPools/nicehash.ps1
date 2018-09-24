@@ -47,9 +47,12 @@ $nicehash_Request.result | Select-Object -ExpandProperty simplemultialgo | Where
     $nicehash_Fees = $Nicehash_Fee
     $Divisor = 1000000000
 
+    if($Algorithm -eq $nicehash_Algorithm)
+     {
         $Stat = Set-Stat -Name "$($Name)_$($Nicehash_Algorithm)_Profit" -Value ([Double]$_.paying/$Divisor*(1-($Nicehash_Fees/100)))
         $Price = (($Stat.Live*(1-[Math]::Min($Stat.Day_Fluctuation,1)))+($Stat.Day*(0+[Math]::Min($Stat.Day_Fluctuation,1))))
-   
+     
+     
      if($Wallet)
 	    {
      if($Nicehash_Wallet1 -ne '' -or $Nicehash_Wallet2 -ne '' -or $Nicehash_Wallet3 -ne '')
@@ -59,7 +62,7 @@ $nicehash_Request.result | Select-Object -ExpandProperty simplemultialgo | Where
             Symbol = $nicehash_Algorithm
             Mining = $nicehash_Algorithm
             Algorithm = $nicehash_Algorithm
-            Price = $Stat.$StatLevel
+            Price = $Price
             Fees = $nicehash_Fees
             StablePrice = $Stat.Week
             Protocol = "stratum+tcp"
@@ -75,6 +78,7 @@ $nicehash_Request.result | Select-Object -ExpandProperty simplemultialgo | Where
 	          Pass3 = "x"
             Location = $Location
             SSL = $false
+         }
         }
       }
     }

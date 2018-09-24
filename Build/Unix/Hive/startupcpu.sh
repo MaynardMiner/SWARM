@@ -8,6 +8,7 @@ screen -S $2 -X logfile flush 5
 sleep .5
 screen -S $2 -X log
 sleep .5
+screen -S $2 -X stuff $"export LD_PRELOAD=\n"
 screen -S $2 -X stuff $"cd\n"
 sleep .5
 screen -S $2 -X stuff $"cd $1\n"

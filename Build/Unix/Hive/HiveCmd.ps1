@@ -25,15 +25,15 @@ function Get-GPUCount {
       {
        Write-Host "Getting NVIDIA GPU Count" -foregroundcolor cyan
        lspci | Tee-Object ".\GPUCount.txt" | Out-Null
-       $GCount = Get-Content ".\GPUCount.txt" 
-       $AttachedGPU = $GCount | Select-String "VGA" | Select-String "NVIDIA"   
+       $GCount = Get-Content ".\GPUCount.txt" -Force
+       $AttachedGPU = $GCount | Select-String "VGA","3d" | Select-String "NVIDIA"   
        [int]$GPU_Count = $AttachedGPU.Count
        }
       if($_ -like "*AMD*")
        {
          Write-Host "Getting AMD GPU Count" -foregroundcolor cyan
          lspci | Tee-Object ".\GPUCount.txt" | Out-Null
-         $GCount = Get-Content ".\GPUCount.txt" 
+         $GCount = Get-Content ".\GPUCount.txt" -Force
          $AttachedGPU = $GCount | Select-String "VGA" | Select-String "AMD"   
          [int]$GPU_Count = $AttachedGPU.Count
        }
@@ -161,26 +161,26 @@ function Get-Data {
     
     Set-Location (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "Build")
 
-    if((Get-Item ".\Data\Info.txt" -ErrorAction SilentlyContinue) -eq $null)
-    {New-Item -Path ".\Data" -Name "Info.txt"  | Out-Null}
-   if((Get-Item ".\Data\System.txt" -ErrorAction SilentlyContinue) -eq $null)
-    {New-Item -Path ".\Data" -Name "System.txt"  | Out-Null}
-   if((Get-Item ".\Data\TimeTable.txt" -ErrorAction SilentlyContinue) -eq $null)
-    {New-Item -Path ".\Data" -Name "TimeTable.txt"  | Out-Null}
-    if((Get-Item ".\Data\Error.txt" -ErrorAction SilentlyContinue) -eq $null)
-    {New-Item -Path ".\Data" -Name "Error.txt"  | Out-Null}
-    $TimeoutClear = Get-Content ".\Data\Error.txt" | Out-Null
+    if((Get-Item ".\Data\Info.txt" -Force -ErrorAction SilentlyContinue) -eq $null)
+    {New-Item -Path ".\Data" -Name "Info.txt" -Force | Out-Null}
+   if((Get-Item ".\Data\System.txt" -Force -ErrorAction SilentlyContinue) -eq $null)
+    {New-Item -Path ".\Data" -Name "System.txt" -Force | Out-Null}
+   if((Get-Item ".\Data\TimeTable.txt" -Force -ErrorAction SilentlyContinue) -eq $null)
+    {New-Item -Path ".\Data" -Name "TimeTable.txt" -Force | Out-Null}
+    if((Get-Item ".\Data\Error.txt" -Force -ErrorAction SilentlyContinue) -eq $null)
+    {New-Item -Path ".\Data" -Name "Error.txt" -Force | Out-Null}
+    $TimeoutClear = Get-Content ".\Data\Error.txt" -Force | Out-Null
     if(Test-Path ".\PID"){Remove-Item ".\PID\*" -Force | Out-Null}
-    else{New-Item -Path "." -Name "PID" -ItemType "Directory" | Out-Null}   
+    else{New-Item -Path "." -Name "PID" -ItemType "Directory" -Force | Out-Null}   
     if($TimeoutClear -ne "")
      {
-      Clear-Content ".\Data\System.txt"
-      Get-Date | Out-File ".\Data\Error.txt" | Out-Null
+      Clear-Content ".\Data\System.txt" -Force
+      Get-Date | Out-File ".\Data\Error.txt" -Force | Out-Null
      } 
 
-    $DonationClear = Get-Content ".\Data\Info.txt" | Out-String
+    $DonationClear = Get-Content ".\Data\Info.txt" -Force | Out-String
     if($DonationClear -ne "")
-    {Clear-Content ".\Data\Info.txt"} 
+    {Clear-Content ".\Data\Info.txt" -Force} 
     Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 }
 
@@ -197,7 +197,7 @@ function Get-AlgorithmList {
     Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 
     $AlgorithmList = @()
-    $GetAlgorithms = Get-Content ".\Config\get-pool.txt" | ConvertFrom-Json
+    $GetAlgorithms = Get-Content ".\Config\get-pool.txt" -Force | ConvertFrom-Json
     $PoolAlgorithms = @()
     $GetAlgorithms | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
      $PoolAlgorithms += $_
@@ -257,7 +257,9 @@ function Get-AlgorithmList {
             [parameter(Mandatory=$false)]
             [string]$Connection,
             [parameter(Mandatory=$false)]
-            [string]$Password                                           
+            [string]$Password,
+            [parameter(Mandatory=$false)]
+            [string]$jsonfile                                         
         )
     
         $MinerTimer = New-Object -TypeName System.Diagnostics.Stopwatch
@@ -267,23 +269,60 @@ function Get-AlgorithmList {
         if(Test-Path ".\PID\*$PIDMiners*"){Remove-Item ".\PID\*$PIDMiners*" -Force}
         if($Type -like '*NVIDIA*')
         {
-        if($Devices -eq ''){$MinerArguments = "$($Arguments)"}
+        if($Devices -eq '')
+         {
+        $MinerArguments = "$($Arguments)"
+        if($DeviceCall -eq "lolminer"){$MinerArguments = "-profile=miner -usercfg=$($jsonfile)"}
+         }
         else{
         if($DeviceCall -eq "ccminer"){$MinerArguments = "-d $($Devices) $($Arguments)"}
         if($DeviceCall -eq "ewbf"){$MinerArguments = "--cuda_devices $($Devices) $($Arguments)"}
         if($DeviceCall -eq "dstm"){$MinerArguments = "--dev $($Devices) $($Arguments)"}
         if($DeviceCall -eq "claymore"){$MinerArguments = "-di $($Devices) $($Arguments)"}
         if($DeviceCall -eq "trex"){$MinerArguments = "-d $($Devices) $($Arguments)"}
-        if($DeviceCall -eq "bminer"){$MinerArgument = "-devices $($Devices) $($Arguments)"}
+        if($DeviceCall -eq "bminer"){$MinerArguments = "-devices $($Devices) $($Arguments)"}
+        if($DeviceCall -eq "lolminer"){$MinerArguments = "-devices=$($Devices) -profile=miner -usercfg=$($jsonfile)"}
          }
         }
         if($Type -like '*AMD*')
         {
-        if($Devices -eq ''){$MinerArguments = "$($Arguments)"}
+        if($Devices -eq ''){
+        $MinerArguments = "$($Arguments)"
+	    if($DeviceCall -eq "lolamd"){$MinerArguments = "-profile=miner -usercfg=$($jsonfile)"}
+        if($DeviceCall -eq "lyclminer"){
+        $MinerArguments = ""
+            Set-Location $MinerDir
+            $ConfFile = Get-Content ".\lyclMiner.conf" -Force
+            $NewLines = $ConfFile | ForEach {
+            if($_ -like "*<Connection Url =*"){$_ = "<Connection Url = `"stratum+tcp://$Connection`""}
+            if($_ -like "*Username =*"){$_ = "            Username = `"$Username`"    "}
+            if($_ -like "*Password =*" ){$_ = "            Password = `"$Password`">    "}
+            if($_ -notlike "*<Connection Url*" -or $_ -notlike "*Username*" -or $_ -notlike "*Password*"){$_}
+            }
+            Clear-Content ".\lyclMiner.conf" -force
+            $NewLines | Set-Content ".\lyclMiner.conf"
+            Set-Location $CmdDir
+            }
+           }
         else{
           if($DeviceCall -eq "claymore"){$MinerArguments = "-di $($Devices) $($Arguments)"}
           if($DeviceCall -eq "sgminer"){$MinerArguments = "-d $($Devices) $($Arguments)"}
           if($DeviceCall -eq "tdxminer"){$MinerArguments = "-d $($Devices) $($Arguments)"}
+          if($DeviceCall -eq "lolamd"){$MinerArguments = "-devices=$($Devices) -profile=miner -usercfg=$($jsonfile)"}
+          if($DeviceCall -eq "lyclminer"){
+            $MinerArguments = ""
+            Set-Location $MinerDir
+            $ConfFile = Get-Content ".\lyclMiner.conf" -Force
+            $NewLines = $ConfFile | ForEach {
+            if($_ -like "*<Connection Url =*"){$_ = "<Connection Url = `"stratum+tcp://$Connection`""}
+            if($_ -like "*Username =*"){$_ = "            Username = `"$Username`"    "}
+            if($_ -like "*Password =*" ){$_ = "            Password = `"$Password`">    "}
+            if($_ -notlike "*<Connection Url*" -or $_ -notlike "*Username*" -or $_ -notlike "*Password*"){$_}
+            }
+            Clear-Content ".\lyclMiner.conf" -force
+            $NewLines | Set-Content ".\lyclMiner.conf"
+            Set-Location $CmdDir
+            }
          }
         }
         if($Type -like '*CPU*')
@@ -303,6 +342,7 @@ function Get-AlgorithmList {
          Start-Sleep -S .25
          $DeviceCall | Set-Content ".\Unix\Hive\mineref.sh" -Force
          $Ports | Set-Content ".\Unix\Hive\port.sh" -Force
+         $Name | Set-Content ".\Unix\Hive\minername.sh" -Force
          Start-Process "screen" -ArgumentList "-S LogData -d -m" -Wait
          Start-Process ".\Unix\Hive\LogData.sh" -ArgumentList "LogData $DeviceCall $Type $GPUGroups $MDir $Algos $APIs $Ports" -Wait
          }
@@ -330,26 +370,13 @@ function Get-AlgorithmList {
         Start-Process ".\Unix\Hive\killall.sh" -ArgumentList "$($Type)" -Wait
         Start-Sleep $Delay #Wait to prevent BSOD
         Start-Sleep -S .25
-        if($DeviceCall -eq "lyclminer"){
-        Set-Location $MinerDir
-        $ConfFile = Get-Content ".\lyclMiner.conf"
-        $NewLines = $ConfFile | ForEach {
-        if($_ -like "*<Connection Url =*"){$_ = "<Connection Url = `"stratum+tcp://$Connection`""}
-        if($_ -like "*Username =*"){$_ = "            Username = `"$Username`"    "}
-        if($_ -like "*Password =*" ){$_ = "            Password = `"$Password`">    "}
-        if($_ -notlike "*<Connection Url*" -or $_ -notlike "*Username*" -or $_ -notlike "*Password*"){$_}
-        }
-        Clear-Content ".\lyclMiner.conf" -force
-        $NewLines | Set-Content ".\lyclMiner.conf"
-        Set-Location $CmdDir
-        }
         Set-Location $MinerDIr
         Start-Process "chmod" -ArgumentList "+x $MinerInstance" -Wait
         Set-Location $CmdDir
 	    Start-Sleep -S .25
         Write-Host "Starting $($Name) Mining $($Coins) on $($Type)" -ForegroundColor Cyan
         if($Type -like "*NVIDIA*"){Start-Process ".\Unix\Hive\startupnvidia.sh" -ArgumentList "$MinerDir $($Type) $CmdDir/Unix/Hive $Logs $Export" -Wait}
-        if($Type -like "*AMD*"){Start-Process ".\Unix\Hive\startupamd.sh" -ArgumentList "$MinerDir $($Type) $CmdDir/Unix/Hive $Logs" -Wait}
+        if($Type -like "*AMD*"){Start-Process ".\Unix\Hive\startupamd.sh" -ArgumentList "$MinerDir $($Type) $CmdDir/Unix/Hive $Logs $Export" -Wait}
         if($Type -like "*CPU*"){Start-Process ".\Unix\Hive\startupcpu.sh" -ArgumentList "$MinerDir $($Type) $CmdDir/Unix/Hive $Logs" -Wait}
         $MinerTimer.Restart()
         $MinerProcessId = $null
@@ -385,7 +412,7 @@ function Get-AlgorithmList {
         if(Test-Path $GetPID)
          {
 	  $PIDName = "$($Instance)-$($InstanceNum)"
-          $PIDNumber = Get-Content $GetPID
+          $PIDNumber = Get-Content $GetPID -Force
           $MinerPID = Get-Process -Id $PIDNumber -erroraction SilentlyContinue
  	  if($MinerPID -eq $Null){$MinerPID = Get-Process -Name $PIDName -erroraction SilentlyContinue}
          }

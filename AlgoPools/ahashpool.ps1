@@ -24,13 +24,15 @@ $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty Ba
 $Location = "US"
 
 $ahashpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name |  Where-Object {$ahashpool_Request.$_.hashrate -gt 0} | ForEach-Object {
-    
+ 
     $ahashpool_Host = "$_.mine.ahashpool.com"
     $ahashpool_Port = $ahashpool_Request.$_.port
     $ahashpool_Algorithm = Get-Algorithm $ahashpool_Request.$_.name
     $ahashpool_Fees = $ahashpool_Request.$_.fees
     $Divisor = (1000000*$ahashpool_Request.$_.mbtc_mh_factor)
 
+    if($Algorithm -eq $ahashpool_Algorithm)
+    {
     if((Get-Stat -Name "$($Name)_$($ahashpool_Algorithm)_Profit") -eq $null){$Stat = Set-Stat -Name "$($Name)_$($ahashpool_Algorithm)_Profit" -Value ([Double]$ahashpool_Request.$_.estimate_current/$Divisor*(1-($ahashpool_Request.$_.fees/100)))}
     else{$Stat = Set-Stat -Name "$($Name)_$($ahashpool_Algorithm)_Profit" -Value ([Double]$ahashpool_Request.$_.estimate_current/$Divisor *(1-($ahashpool_Request.$_.fees/100)))}
 
@@ -41,7 +43,7 @@ $ahashpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | S
             Symbol = $ahashpool_Algorithm
             Mining = $ahashpool_Algorithm
             Algorithm = $ahashpool_Algorithm
-            Price = $Stat.$Statlevel
+            Price = $Stat.$Stat_Algo
             Fees = $ahashpool_Fees
             Workers = $ahashpool_Workers
             StablePrice = $Stat.Week
@@ -64,3 +66,4 @@ $ahashpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | S
      }
     }
    }
+  }

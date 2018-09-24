@@ -351,3 +351,88 @@ launch miner by
 -Code-Staging For New ASIC version.
 -Code-Staging For 1.4.7a
 -Added Cuda 9.1 Libraries (in case hive libraries fail again)
+
+
+1.4.8b
+
+Disclaimers: 
+
+I changed unix miner files in attempt to fix the reported
+bug of miners not downloading. I disabled remote updates due to this.
+
+Blockmasters Poolname changed, and has been removed as coinpool.
+
+-New Auto_Coin design:
+ -miner now loads top coin from every coin pool for every selected algo.
+ -Favor_Coins No will factor Algos + Coins from coin pools.
+ -Favor_Coins Yes will always select coins from coin pools.
+ -I reccommend using -Auto_Coin Yes, if you are unsure of it- Select
+  Favor_Coins No. Miner will only switch to coins if it is higer than
+  all api/status algorithms.
+
+-New Arguments
+  -StatLevel removed
+  -Stat_Algo added [Minute_5] [Minute_10] [Day] [Week]
+  -Stat_Coin added [Minute_5] [Minute_10] [Day] [Week]
+  -Cuda default is 9.1 (no need to set if you want it this way)
+
+-Added -Force command to all read-writes to ensure no access denied errors.
+-Re-Wrote "WebRequest" cmdlet to new powershell language in attempt to fix bug reports.
+ I cannot replicate bug reports, so having issues determining cause. (if it is SWARM related or OS).
+
+New Beta Feature:
+Coin-Server
+ -launch in terminal (non-remotely) while in SWARM directory "pwsh coin-server.ps1"
+ -coin server will update coin data every minute- If works well, will add hashrate data as well,
+  and replace coin equations in miner altogether: It will just pull from coin-server. Will likely
+  integrate api as well.
+ -feature is beta. If you use, please monitor, and report errors or high load increases.
+
+-more code staging for asic.
+-started code staging for new windows version. (match HiveOS version)
+
+-Beta version for new coin system. Bugs may be present. Please report so they can be fixed asap.
+ Currently regarded as stable from 48 hours of testing.
+
+1.4.9b
+Disclaimers:
+
+Miner Files were added/modified. Remote Update Versions Were Disabled Again.
+Transferring you oc-tuning file will cause no issues.
+
+-Added lolminer for AMD. Added for NVIDIA version, but stored in "project" folder in miners. Just
+ move to "unix" folder to use.
+-Added xmr-stack for AMD.
+-Fixed HiveOS stats for AMD temp/fan (requires reboot after install)
+-Removed export gpu_force_64bit_ptr 1 from amd launch
+-Fixed miner stat issues for AMD
+-Powershell is now not 'installed' to prevent further image errors.
+-Miner will automatically perform disk-expand
+-Last version P-Card count detection was changed on accident- Changed it back
+-Updated Enemy 1.21
+-Added NLPool.nl
+-Fixed so miners are guranteed to all load in prior to benchmarking process
+-Attempted fix of -Threshold argument
+-Fixed CPU miner so they will compile with latest image
+-export LD_Path= for cpuminers
+-Added Argon2d-dyn to cpu
+
+New Arguments:
+-NlWallet1  For coin specific auto-exchange in NlPool if other than BTC
+-NlPassword For coin specific auto-exchange in NLPool if other than BTC
+
+SGMINERS:
+-Other than Avermore are not plug and play. I moved the other sgminer into "project" folder
+ Move back to use
+-Other SGMiners may require the modification of Build > Unix > Hive > startupamd.sh to use
+-Other SGMiners do NOT work for all AMD cards. See their github/bitcointalk thread.
+-Other SGMiners may require a knowledge/expertise of sgminers to use.
+-Depending on your system, you may need to compile these sgminers yourself
+-Please DEAR GOD someone find an sgminer dev that knows how linux work!
+-My Github is filled with sgminers I had to repair to work in unix environment. They work
+ For My RX580- I can't make any gurantees they work for other cards. That's why I moved them
+ Out Of Main Folder
+
+XMRig:
+-In order to properly parse stats --Nocpu argument was use. HiveOS custom miners
+ do not allow for stats of multiple platforms.

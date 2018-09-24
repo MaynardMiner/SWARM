@@ -66,7 +66,7 @@ While($true)
         Start-Process "screen" -ArgumentList "-S PIDInfo -X quit"
      }
   }
- Start-Sleep -S 4
+ Start-Sleep -S 3.75
  }
 
   

@@ -31,7 +31,9 @@ Write-Host "                   "
 $CmdDir = (Split-Path $script:MyInvocation.MyCommand.Path)
 $Dir = Split-Path $CmdDir
 Set-Location $Dir
-$miner_update_nvidia = Get-Content ".\Config\Update\nvidia-linux.conf" | ConvertFrom-Json
+$CudaVersion = Get-Content ".\Build\Cuda.txt"
+if($CudaVersion -eq "9.1"){$miner_update_nvidia = Get-Content ".\Config\Update\nvidia9.1-linux.conf" | ConvertFrom-Json}
+if($CudaVersion -eq "9.2"){$miner_update_nvidia = Get-Content ".\Config\Update\nvidia9.2-linux.conf" | ConvertFrom-Json}
 $miner_update_amd = Get-Content ".\Config\Update\amd-linux.conf" | ConvertFrom-Json
 $miner_update_cpu = Get-Content ".\Config\Update\cpu-linux.conf" | ConvertFrom-Json
 $Allupdates = @()

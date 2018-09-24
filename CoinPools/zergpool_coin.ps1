@@ -1,58 +1,50 @@
-
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName
 
 $Location = 'US'
 
 $zergpool_Request = [PSCustomObject]@{}
-$ZergpoolAlgo_Request = [PSCustomObject]@{}
-$zergcoinalgo = $CoinAlgo
+$Zergpool_Sorted = [PSCustomObject]@{}
+
 
  if($Poolname -eq $Name)
   {
    try {
      $zergpool_Request = Invoke-RestMethod "http://zergpool.com:8080/api/currencies" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop
-     #$ZergpoolAlgo_Request = Invoke-RestMethod "http://api.zergpool.com/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop
        }
    catch {
-     Write-Warning "MM.Hash contacted ($Name) for a failed API check. (Coins)"
+     Write-Warning "SWARM contacted ($Name) for a failed API check. (Coins)"
      return
         }
 
  if (($zergpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) {
-     Write-Warning "MM.Hash contacted ($Name) but ($Name) Pool API was unreadable. "
+     Write-Warning "SWARM contacted ($Name) but ($Name) Pool API was unreadable. "
      return
    }
-  
-   $zergpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | foreach {
+   
+$zergpool_Request.PSObject.Properties.Name | foreach { $zergpool_Request.$_ | Add-Member "sym" $_ }
+$CoinAlgo | foreach {
+  $Selected = $_
+  $Best = $zergpool_Request.PSObject.Properties.Value | Where Algo -eq $Selected | Where noautotrade -eq "0" | Where estimate -ne "0.00000" | Sort-Object Price -Descending | Select -First 1
+  if($Best -ne $null){$Zergpool_Sorted | Add-Member $Best.sym $Best}
+  }
 
-   if($zergcoinalgo -eq $zergpool_Request.$_.algo)
-    {
-    if($zergpool_Request.$_.hashrate -ne "0")
-     {
-     if($zergpool_Request.$_.noautotrade -eq "0")
-      {
-      if($zergpool_Request.$_.estimate -ne "0.00000")
-       {
+$Zergpool_Sorted | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | foreach {
 
-    $zergpool_Algorithm = Get-Algorithm $zergpool_Request.$_.algo
-    $zergpool_Coin = "$($_)".ToUpper()
-    $zergpool_Symbol = "$($_)".ToUpper()
-    switch ($zergpool_Symbol) {
-     "HSR"{$zergpool_Symbol = "HSR-Coin"}
-     "SIB"{$zergpool_Symbol = "SIB-Coin"}
-     '$PAC'{$zergpool_Symbol = "PAC-Coin"}
+    $zergpool_Algorithm = Get-Algorithm $Zergpool_Sorted.$_.algo
+    $zergpool_Coin = "$($Zergpool_Sorted.$_.sym)".ToUpper()
+    switch ($zergpool_Coin) {
+     "HSR"{$zergpool_Coin = "HSR-Coin"}
+     "SIB"{$zergpool_Coin = "SIB-Coin"}
+     '$PAC'{$zergpool_Coin = "PAC-Coin"}
     }
-    $zergpool_Port = $zergpool_Request.$_.port
-    $zergpool_Host = "$($zergpool_Request.$_.algo).mine.zergpool.com"
+    $zergpool_Port = $Zergpool_Sorted.$_.port
+    $zergpool_Host = "$($Zergpool_Sorted.$_.algo).mine.zergpool.com"
     $zergpool_Fees = .5
-    $zergpool_CoinName = $zergpool_Request.$_.name
-    $zergpool_Estimate = [Double]$zergpool_Request.$_.estimate*.001
+    $zergpool_Estimate = [Double]$Zergpool_Sorted.$_.estimate*.001
     $zergpool_24h= "24h_btc"
-    $Divisor = (1000000*$zergpool_Request.$_.mbtc_mh_factor)
+    $Divisor = (1000000*$Zergpool_Sorted.$_.mbtc_mh_factor)
     
-
-    $Stat = Set-Stat -Name "$($Name)_$($zergpool_Symbol)_Profit"-Value ([Double]$zergpool_Estimate/$Divisor *(1-($zergpool_fees/100)))
-    
+    $Stat = Set-Stat -Name "$($Name)_$($zergpool_Coin)_Profit"-Value ([Double]$zergpool_Estimate/$Divisor *(1-($zergpool_fees/100)))
 
       if($Wallet)
        {
@@ -69,32 +61,26 @@ $zergcoinalgo = $CoinAlgo
         if($Zergpoolpassword3 -ne ''){$Zergpass3 = $Zergpoolpassword3}
         else{$Zergpass3 = $Passwordcurrency3}
         [PSCustomObject]@{
-            Coin = "Yes"
-            Symbol = $zergpool_Symbol
-            Mining = $zergpool_CoinName
-            Algorithm = $zergpool_Algorithm
-            Price = $Stat.Live
-            StablePrice = $Stat.Week
-            MarginOfError = $Stat.Fluctuation
-            Protocol = "stratum+tcp"
-            Host = $zergpool_Host
-            Port = $zergpool_Port
-            User1 = $ZergWallet1
-	          User2 = $ZergWallet2
-            User3 = $ZergWallet3
-            CPUser = $CPUWallet
-            CPUPass = "c=$CPUcurrency,mc=$zergpool_Coin"
-            Pass1 = "c=$Zergpass1,mc=$zergpool_Coin"
-            Pass2 = "c=$Zergpass2,mc=$zergpool_Coin"
-	          Pass3 = "c=$Zergpass3,mc=$zergpool_Coin"
-            Location = $Location
-            SSL = $false
-                }
+          Coin = "Yes"
+          Symbol = $zergpool_Coin
+          Algorithm = $zergpool_Algorithm
+          Price = $Stat.$Stat_Coin
+          StablePrice = $Stat.Week
+          MarginOfError = $Stat.Fluctuation
+          Protocol = "stratum+tcp"
+          Host = $zergpool_Host
+          Port = $zergpool_Port
+          User1 = $ZergWallet1
+          User2 = $ZergWallet2
+          User3 = $ZergWallet3
+          CPUser = $CPUWallet
+          CPUPass = "c=$CPUcurrency,mc=$zergpool_Coin"
+          Pass1 = "c=$Zergpass1,mc=$zergpool_Coin"
+          Pass2 = "c=$Zergpass2,mc=$zergpool_Coin"
+          Pass3 = "c=$Zergpass3,mc=$zergpool_Coin"
+          Location = $Location
+          SSL = $false
+                 } 
              }
            }
           }
-        }
-      }
-    }
-  }
-      

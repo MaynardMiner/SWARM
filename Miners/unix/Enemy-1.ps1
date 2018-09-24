@@ -1,10 +1,10 @@
-[string]$Path = $nvidia.enemy.path1
-[string]$Uri = $nvidia.enemy.uri
-[string]$MinerName = $nvidia.enemy.MinerName
+$Path = "$($nvidia.enemy.path1)"
+$Uri = "$($nvidia.enemy.uri)"
+$MinerName = "$($nvidia.enemy.MinerName)"
 
 
 
-$Build = "Zip"
+$Build = "Tar"
 
 if($CCDevices1 -ne ''){$Devices = $CCDevices1}
 if($GPUDevices1 -ne ''){$Devices = $GPUDevices1}
@@ -23,7 +23,6 @@ $Commands = [PSCustomObject]@{
   "timetravel" = ''
   "xevan" = ''
   "sonoa" = ''
-
 }
   
 if($CoinAlgo -eq $null)

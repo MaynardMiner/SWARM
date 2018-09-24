@@ -6,6 +6,12 @@ Arguments & Explanations:
 
 Argument          Options           Explanation
 
+-GPU_Count1       [1-1000]	    Total number of GPU's for HiveOS. This is needed for miner to determine
+				    correct hashrate for each GPU. If you are dividing your miner into seperate
+				    device groups, then you must add -GPU_Count2 and -GPU_Count3 for each
+				    group respectively. (Stats for other device groups will not show on HiveOS-
+				    Not reccommended unless you have to).
+
 -StatsInterval   1-10000           Expression is in seconds. This is time required for miner apps to run
                                     before miner write/re-writes benchmarking. This is not be confused 
                                     with -Interval argument, which is used for when miner begins swithing 
@@ -77,7 +83,14 @@ Argument          Options           Explanation
 
 -Benchmark     [0-100000]           Expressed in seconds. Default 0. Sets specific interval time for when coin 
 				    is in benchmark mode. Can be used for faster benchmarking. When coin has
-				    a set hashrate- Miner will defer to time expressed in -Interval parameter.				    
+				    a set hashrate- Miner will defer to time expressed in -Interval parameter.
+
+-Threshold     [.1 - 100000]	    Expressed in BTC/day. Default is .1. If the total daily profits of a
+				    particular algo/coin exceed the -Threshold argument, it will be removed
+				    from database calculation. This is to prevent mining on a particular
+		                    coin/algorithm in which the pool is having issues with. It only needs
+				    to be specified if you wish it to be different than .1 btc/day
+				    
 
 ***********************************************************************************************************
 ***********************************************************************************************************
@@ -89,17 +102,6 @@ These arguments can be added for additional customization and options
 
 
 Argument            Options             Explanation
-
--Favor_Coins    [Yes or No]	    Default is Yes. When both algopool and coinpool
-				    are the same pool- If Favor_Coins is Yes, then miner will only factor
-				    coins. If Favor_Coins is NO. Miner will factor both algorithms
-				    and coins into final equation.
-
--Threshold     [.1 - 100000]	    Expressed in BTC/day. Default is .1. If the total daily profits of a
-				    particular algo/coin exceed the -Threshold argument, it will be removed
-				    from database calculation. This is to prevent mining on a particular
-		                    coin/algorithm in which the pool is having issues with. It only needs
-				    to be specified if you wish it to be different than .1 btc/day
 
 -HiveOS         [YES or No]         Default is "Yes". Specifies Unix version whether or not operating system
                                     is HiveOS. HiveOS version operates slightly different that *nix version.
@@ -115,8 +117,8 @@ Argument            Options             Explanation
                                     attempt to perform remote update! Default changes based on miner version
                                     updates, and whether or not it is safe to transfer files.
 
--Stat_Algo	   [Live,		This will allow you to factor period average smoothing. 
--Stat_Coin	    Minute_5,		By default everything is live pricing. This will allow you to
+-Stat_Coin	   [Live,		This will allow you to factor period average smoothing. 
+-Stat_Algo	    Minute_5,		By default everything is live pricing. This will allow you to
 		    Minute_10,		smooth out stat fluctuations if you so desired into the period 
 		    Hour,		specified. Essentially it will allow you choose whether or not 
 		    Day]		you want to base switching on price averages, or live...And if 

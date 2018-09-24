@@ -1,6 +1,6 @@
-$Path = $cpu.bubasik.path1
-$Uri = $cpu.bubasik.uri
-$MinerName = $cpu.bubasik.minername
+$Path = "$($cpu.bubasik.path1)"
+$Uri = "$($cpu.bubasik.uri)"
+$MinerName = "$($cpu.bubasik.minername)"
 
 if($CPUThreads -ne ''){$Devices = $CPUThreads}
 
@@ -14,6 +14,7 @@ $Build = "Linux"
 
 $Commands = [PSCustomObject]@{
     "yespower" = ''
+    "argon2d-dyn" = ""
     #"hodl" = ''
     }
 

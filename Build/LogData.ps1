@@ -96,7 +96,6 @@ if($Card -ne "")
  if($OCArgs -ne $null){Start-Process "nvidia-settings" -ArgumentList "$OCArgs"}
   }
  }
-}
 
 if($Default -eq $true)
 {
@@ -121,8 +120,9 @@ Core Settings: $($OCSettings.$Miner_Algo.Core)
 Memory Settings: $($OCSettings.$Miner_Algo.Memory)
 "
 }
-
 $OCMessage | Out-File ".\Build\OC-Settings.txt"
+}
+
 
  While($true)
  {
@@ -272,31 +272,37 @@ $Hive | Set-Content ".\Build\Unix\Hive\logstats.sh"
 
 Start-Sleep -S 5
       }
+      
     "cpuminer-opt"
      {
       Write-Host "Logging not needed for this miner" -foregroundcolor yellow
       Start-Sleep -S 10
      }
+
     "claymore"
       {
        Write-Host "Logging not needed for this miner" -foregroundcolor yellow
        Start-Sleep -S 10
       }
+
     "dstm"
       {
        Write-Host "Logging not needed for this miner" -foregroundcolor yellow
        Start-Sleep -S 10
       }
+
     "ewbf"
       {
        Write-Host "Logging not needed for this miner" -foregroundcolor yellow
        Start-Sleep -S 10
       }
+
       "sgminer-gm"
       {
        Write-Host "Logging not needed for this miner" -foregroundcolor yellow
        Start-Sleep -S 10
       }
+
       "tdxminer"
       {
       if(Test-Path $HashPath)
@@ -371,6 +377,7 @@ $Hive | Set-Content ".\Build\Unix\Hive\logstats.sh"
         }
 Start-Sleep -S 5
       }
+
     "lyclminer"
      {
       if(Test-Path $HashPath)
@@ -453,7 +460,172 @@ $Hive | Set-Content ".\Build\Unix\Hive\hivestats.sh"
 $Hive | Set-Content ".\Build\Unix\Hive\logstats.sh"
     }
 Start-Sleep -S 5
-    
-    } 
+    }
+
+"lolminer"
+  {
+    $server = "localhost"
+    $Client = New-Object System.Net.Sockets.TcpClient $server, $port
+    $Reader = New-Object System.IO.StreamReader $Client.GetStream()
+    $Request = $Reader.ReadToEnd()
+    $Data = $Request | ConvertFrom-Json
+    Clear-Content ".\Build\Unix\Hive\hivestats.sh" -Force
+    Clear-Content ".\Build\Unix\Hive\logstats.sh" -Force
+    $Convert = [string]$GPUS -replace (","," ")
+    $GPU = $Convert -split ' '
+    $HashArray = @()
+    $Hash = @()
+    if($Data -ne '')
+     {
+      for($i = 0; $i -lt $GPU.Count; $i++)
+      {
+       $Selected = $GPU | Select -skip $i | Select -First 1
+       $HashArray += [Double]$Data."GPU$Selected"."Speed(10s)"
+       $Hash += "khs"
+      }
+     }
+    else
+     {
+      for($i = 0; $i -lt $GPU.Count; $i++)
+       {
+        $HashArray += 0
+        $Hash += "khs"
+       }
+     }             
+     $J = $HashArray | % {iex $_}
+     $K = @()
+     $TotalRaw = 0
+    for($i = 0; $i -lt $Hash.Count; $i++)
+     {
+      $SelectedPattern = $J | Select -skip $i | Select -First 1
+      $SelectedPattern | foreach {$K += "GPU=$(([math]::Round($($_)/1000,5)))"}
+      $SelectedPattern | foreach {$TotalRaw += "$(([math]::Round($($_)/1000,5)))"}
+     }
+
+$Hive=
+"$($K -join "`n")
+RAW=$TotalRaw
+KHS=$TotalRaw
+ACC=1
+RJ=1
+ALGO=$MinerAlgo"
+           
+     $Hive
+           
+     $Hive | Set-Content ".\Build\Unix\Hive\hivestats.sh"
+     Start-Sleep -S 5 
+    }
+
+"lolamd"
+  {
+    $server = "localhost"
+    $Client = New-Object System.Net.Sockets.TcpClient $server, $port
+    $Reader = New-Object System.IO.StreamReader $Client.GetStream()
+    $Request = $Reader.ReadToEnd()
+    $Data = $Request | ConvertFrom-Json
+    Clear-Content ".\Build\Unix\Hive\hivestats.sh" -Force
+    Clear-Content ".\Build\Unix\Hive\logstats.sh" -Force
+    $Convert = [string]$GPUS -replace (","," ")
+    $GPU = $Convert -split ' '
+    $HashArray = @()
+    $Hash = @()
+    if($Data -ne '')
+     {
+      for($i = 0; $i -lt $GPU.Count; $i++)
+      {
+       $Selected = $GPU | Select -skip $i | Select -First 1
+       $HashArray += [Double]$Data."GPU$Selected"."Speed(10s)"
+       $Hash += "khs"
+      }
+     }
+    else
+     {
+      for($i = 0; $i -lt $GPU.Count; $i++)
+       {
+        $HashArray += 0
+        $Hash += "khs"
+       }
+     }             
+     $J = $HashArray | % {iex $_}
+     $K = @()
+     $TotalRaw = 0
+    for($i = 0; $i -lt $Hash.Count; $i++)
+     {
+      $SelectedPattern = $J | Select -skip $i | Select -First 1
+      $SelectedPattern | foreach {$K += "GPU=$(([math]::Round($($_)/1000,5)))"}
+      $SelectedPattern | foreach {$TotalRaw += "$(([math]::Round($($_)/1000,5)))"}
+     }
+
+$Hive=
+"$($K -join "`n")
+RAW=$TotalRaw
+KHS=$TotalRaw
+ACC=1
+RJ=1
+ALGO=$MinerAlgo"
+           
+     $Hive
+           
+     $Hive | Set-Content ".\Build\Unix\Hive\hivestats.sh"
+     Start-Sleep -S 5 
+    }
+
+"xmrstak"
+  {
+   Write-Host "Getting HashRate"
+   $Request="/api.json"
+   $server = "localhost"
+   $Reader = Invoke-WebRequest "http://$($server):$($port)$($Request)" -UseBasicParsing -TimeoutSec 5
+   if($Reader -ne ""){$Data = $Reader.Content | ConvertFrom-Json}
+   $Data = $Data.hashrate.threads
+    Clear-Content ".\Build\Unix\Hive\hivestats.sh" -Force
+    Clear-Content ".\Build\Unix\Hive\logstats.sh" -Force
+    $Convert = [string]$GPUS -replace (","," ")
+    $GPU = $Convert -split ' '
+    $HashArray = @()
+    $Hash = @()
+    if($Data -ne '')
+     {
+      for($i = 0; $i -lt $GPU.Count; $i++)
+      {
+       $Selected = $GPU | Select -skip $i | Select -First 1
+       $ThreadHash = $Data[$Selected] | Select -First 1
+       $HashArray += $ThreadHash
+       $Hash += "khs"
+      }
+     }
+    else
+     {
+      for($i = 0; $i -lt $GPU.Count; $i++)
+       {
+        $HashArray += 0
+        $Hash += "khs"
+       }
+     }             
+     $J = $HashArray | % {iex $_}
+     $K = @()
+     $TotalRaw = 0
+    for($i = 0; $i -lt $Hash.Count; $i++)
+     {
+      $SelectedPattern = $J | Select -skip $i | Select -First 1
+      $SelectedPattern | foreach {$K += "GPU=$(([math]::Round($($_)/1000,5)))"}
+      $SelectedPattern | foreach {$TotalRaw += "$(([math]::Round($($_)/1000,5)))"}
+     }
+
+$Hive=
+"$($K -join "`n")
+RAW=$TotalRaw
+KHS=$TotalRaw
+ACC=1
+RJ=1
+ALGO=$MinerAlgo"
+           
+     $Hive
+           
+     $Hive | Set-Content ".\Build\Unix\Hive\hivestats.sh"
+     Start-Sleep -S 5 
+    }
+
+
    }
   }

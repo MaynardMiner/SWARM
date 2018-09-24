@@ -1,9 +1,9 @@
-[string]$Path = $nvidia.klaust.path3
-[string]$Uri = $nvidia.klaust.uri
-[string]$MinerName = $nvidia.klaust.minername
+$Path = "$($nvidia.klaust.path3)"
+$Uri = "$($nvidia.klaust.uri)"
+$MinerName = "$($nvidia.klaust.minername)"
 
 
-$Build = "Zip"
+$Build = "Tar"
 
 if($CCDevices3 -ne ''){$Devices = $CCDevices3}
 if($GPUDevices3 -ne ''){$Devices = $GPUDevices3}
@@ -60,7 +60,7 @@ else{
    Path = $Path
    Devices = $Devices
    DeviceCall = "ccminer"
-   Arguments = "-a $($CoinPools.$_.Algorithm) -o stratum+tcp://$($CoinPools.$_.Host):$($CoinPools.$_.Port) -b 0.0.0.0:4070 -u $($CoinPools.$_.User3) -p $($CoinPools.$_.Pass3) $($CoinPools.$Commands.$($CoinPools.$_.Algorithm))"
+   Arguments = "-a $($CoinPools.$_.Algorithm) -o stratum+tcp://$($CoinPools.$_.Host):$($CoinPools.$_.Port) -b 0.0.0.0:4070 -u $($CoinPools.$_.User3) -p $($CoinPools.$_.Pass3) $($Commands.$($CoinPools.$_.Algorithm))"
    HashRates = [PSCustomObject]@{$CoinPools.$_.Symbol= $Stats."$($Name)_$($CoinPools.$_.Algorithm)_HashRate".Day}
    API = "Ccminer"
    Selected = [PSCustomObject]@{$CoinPools.$_.Algorithm = ""}

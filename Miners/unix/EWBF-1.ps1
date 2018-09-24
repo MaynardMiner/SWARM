@@ -1,8 +1,8 @@
-[string]$Path = $nvidia.ewbf.path1
-[string]$Uri = $nvidia.ewbf.uri
-[string]$MinerName = $nvidia.ewbf.minername
+$Path = "$($nvidia.ewbf.path1)"
+$Uri = "$($nvidia.ewbf.uri)"
+$MinerName = "$($nvidia.ewbf.minername)"
 
-$Build = "Zip"
+$Build = "Tar"
 
 if($EWBFDevices1 -ne ''){$Devices = $EWBFDevices1}
 if($GPUDevices1 -ne '')

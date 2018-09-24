@@ -1,8 +1,8 @@
-[string]$Path = $amd.sgminerhex.path1
-[string]$Uri = $amd.sgminerhex.uri
-[string]$MinerName = $amd.sgminerhex.minername
+$Path = "$($amd.sgminerphi2.path1)"
+$Uri = "$($amd.sgminerphi2.uri)"
+$MinerName = "$($amd.sgminerphi2.minername)"
 
-$Build = "Zip"
+$Build = "Tar"
 
 if($SGDevices1 -ne ''){$Devices = $SGDevices1}
 if($GPUDevices1 -ne ''){$Devices = $GPUDevices1}
@@ -15,7 +15,7 @@ $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 
 $Commands = [PSCustomObject]@{
 
-"hex" = ""
+ "phi2" = ''
 
 }
 
@@ -32,7 +32,7 @@ $Commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty 
     Path = $Path
     Devices = $Devices
     DeviceCall = "sgminer-gm"
-    Arguments = "--api-listen --api-port 4028 -k $(Get-AMD($_)) -o stratum+tcp://$($AlgoPools.$_.Host):$($AlgoPools.$_.Port) -u $($AlgoPools.$_.User1) -p $($AlgoPools.$_.Pass1) -T $($Commands.$_)"
+    Arguments = "--gpu-platform 0 --api-listen --api-port 4028 -k $(Get-AMD($_)) -o stratum+tcp://$($AlgoPools.$_.Host):$($AlgoPools.$_.Port) -u $($AlgoPools.$_.User1) -p $($AlgoPools.$_.Pass1) -T $($Commands.$_)"
     HashRates = [PSCustomObject]@{$_ = $Stats."$($Name)_$($_)_HashRate".Day}
     Selected = [PSCustomObject]@{$_ = ""}
     MinerPool = "$($AlgoPools.$_.Name)"
@@ -60,7 +60,7 @@ else{
    Path = $Path
    Devices = $Devices
    DeviceCall = "sgminer-gm"
-   Arguments = "--api-listen --api-port 4028 -k $(Get-AMD($CoinPools.$_.Algorithm)) -o stratum+tcp://$($CoinPools.$_.Host):$($CoinPools.$_.Port) -u $($CoinPools.$_.User1) -p $($CoinPools.$_.Pass1) -T $($CoinPools.$Commands.$($CoinPools.$_.Algorithm))"
+   Arguments = "--gpu-platform 0 --api-listen --api-port 4028 -k $(Get-AMD($CoinPools.$_.Algorithm)) -o stratum+tcp://$($CoinPools.$_.Host):$($CoinPools.$_.Port) -u         $($CoinPools.$_.User1) -p $($CoinPools.$_.Pass1) -T $($Commands.$($CoinPools.$_.Algorithm))"
    HashRates = [PSCustomObject]@{$CoinPools.$_.Symbol= $Stats."$($Name)_$($CoinPools.$_.Algorithm)_HashRate".Day}
    API = "sgminer-gm"
    Selected = [PSCustomObject]@{$CoinPools.$_.Algorithm = ""}
@@ -70,7 +70,7 @@ else{
    Wrap = $false
    URI = $Uri
    BUILD = $Build
-	 Algo = "$($CoinPools.$_.Algorithm)"
+   Algo = "$($CoinPools.$_.Algorithm)"
    }
   }
  }

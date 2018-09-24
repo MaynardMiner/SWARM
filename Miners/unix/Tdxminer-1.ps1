@@ -1,8 +1,8 @@
-[string]$Path = $amd.tdxminer.path1
-[string]$Uri = $amd.tdxminer.uri
-[string]$MinerName = $amd.tdxminer.minername
+$Path = "$($amd.tdxminer.path1)"
+$Uri = "$($amd.tdxminer.uri)"
+$MinerName = "$($amd.tdxminer.minername)"
 
-$Build = "Zip"
+$Build = "Tar"
 
 if($SGDevices1 -ne ''){$Devices = $SGDevices1}
 if($GPUDevices1 -ne ''){$Devices = $GPUDevices1}
@@ -56,7 +56,7 @@ else{
    Path = $Path
    Devices = $Devices
    DeviceCall = "tdxminer"
-   Arguments = "-a $($CoinPools.$_.Algorithm) -o stratum+tcp://$($CoinPools.$_.Host):$($CoinPools.$_.Port) -u $($CoinPools.$_.User1) -p $($CoinPools.$_.Pass1) $($CoinPools.$Commands.$($CoinPools.$_.Algorithm))"
+   Arguments = "-a $($CoinPools.$_.Algorithm) -o stratum+tcp://$($CoinPools.$_.Host):$($CoinPools.$_.Port) -u $($CoinPools.$_.User1) -p $($CoinPools.$_.Pass1) $($Commands.$($CoinPools.$_.Algorithm))"
    HashRates = [PSCustomObject]@{$CoinPools.$_.Symbol= $Stats."$($Name)_$($CoinPools.$_.Algorithm)_HashRate".Day}
    API = "tdxminer"
    Selected = [PSCustomObject]@{$CoinPools.$_.Algorithm = ""}
