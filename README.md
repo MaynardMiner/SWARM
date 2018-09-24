@@ -174,6 +174,8 @@ Simple Install Instructions (HIVEOS):
 
 This is an example of how to remote install/update miner. It is the fastest way to get going. Insert link for tar.gz. Enter 'blah' in the fields required just like the photo below. Lastly, your setup arguments go in the last box, labeled extra config <a href="https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration)">arguments</a>. After that, you are are good to go! See wiki on proper argument use. Here is a photo of setup:
 
+**Note** These photos are a little old, the arguments shown like -GPU_Count are no longer needed, and is MM.Hash (previous version). I will change photo soon, but shows the process.
+
 ![alt text](https://raw.githubusercontent.com/MaynardMiner/SWARM/master/Build/Data/First_Step.png)
 
 
