@@ -25,6 +25,7 @@ SWARM is a powershell/bash hyrbid miner that is meant to work in both windows an
 I am a sole developer, and have multiple versions to operate in different OS's. I prioritize them by requests and activity, if you would like me to develop/improve a particular version- Just notify me, and I will prioritize it. Currently, the most popular, most used, and most recommended is the HiveOS version.
 
 **Features**
+
 -Works within HiveOS, all linux miners.
 
 -No Windows WDDM driver stack means faster spool up times compared to windows. Critical for profit switching.
