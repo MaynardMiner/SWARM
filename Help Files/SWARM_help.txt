@@ -89,7 +89,8 @@ Argument            Options             Explanation
 				    algorithms will be calculated. Note: The estimates between 
 				    api/currencies and api/status is asyncrounous in design and are
 				    calculated by yiimp differently. This means values will be different
-				    by yiimp design.
+				    by yiimp design. See https://github.com/MaynardMiner/SWARM/wiki/FAQ	
+				    for more info on the subject.
 
 -Donate      [Percentage]           Percent you wish to donate daily to support further development. 
                                     Miner remembers when you open or close, so it will not steal 
