@@ -4,8 +4,6 @@ $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty Ba
  
  $blockpool_Request = [PSCustomObject]@{} 
  
- if($Auto_Algo -eq "Yes")
-  { 
   if($Poolname -eq $Name)
    {
  try { 
@@ -76,4 +74,3 @@ $blockpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | S
          }
         }
        }
-      }

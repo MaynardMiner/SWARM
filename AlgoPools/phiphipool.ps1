@@ -3,10 +3,7 @@ $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty Ba
  
  
  $phiphipool_Request = [PSCustomObject]@{} 
- 
-  
- if($Auto_Algo -eq "Yes")
- {
+
  if($Poolname -eq $Name)
   {
  try { 
@@ -66,4 +63,3 @@ $phiphipool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
      }
     }
   }
- }

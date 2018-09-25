@@ -4,8 +4,6 @@ $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty Ba
  
  $ahashpool_Request = [PSCustomObject]@{} 
  
- if($Auto_Algo -eq "Yes")
-  {
    if($Poolname -eq $Name)
     {
  try { 
@@ -66,4 +64,3 @@ $ahashpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | S
      }
     }
    }
-  }

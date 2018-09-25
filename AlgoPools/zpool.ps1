@@ -4,9 +4,6 @@ $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty Ba
  
 $Zpool_Request = [PSCustomObject]@{} 
  
-  
-if($Auto_Algo -eq "Yes")
-{
  if($Poolname -eq $Name)
   {
  try { 
@@ -64,4 +61,3 @@ $Zpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Selec
       }
      }
     }
-   }

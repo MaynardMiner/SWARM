@@ -5,8 +5,6 @@ $Location = 'Europe'
 $nlpool_Request = [PSCustomObject]@{}
 $nlpoolAlgo_Request = [PSCustomObject]@{}
 
-if($Auto_Algo -eq "Yes")
-  {
   if($Poolname -eq $Name)
    {
     try {
@@ -75,4 +73,3 @@ if($Auto_Algo -eq "Yes")
             }
           }
         }
-      }

@@ -5,8 +5,6 @@
  
  $Hashrefinery_Request = [PSCustomObject]@{} 
  
-  if($Auto_Algo -eq "Yes")
-   {
    if($Poolname -eq $Name)
     {
  try { 
@@ -66,6 +64,5 @@
           }  
          }
        }
-      }    
-     } 
+      }
     

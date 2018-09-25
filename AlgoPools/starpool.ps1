@@ -4,8 +4,6 @@ $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty Ba
  
  $starpool_Request = [PSCustomObject]@{} 
  
- if($Auto_Algo -eq "Yes")
-  { 
   if($Poolname -eq $Name)
    {
  try { 
@@ -64,4 +62,3 @@ $starpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Se
      }
     }
    }
- }

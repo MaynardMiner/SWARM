@@ -4,8 +4,6 @@ $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty Ba
  
  $nicehash_Request = [PSCustomObject]@{} 
  
- if($Auto_Algo -eq "Yes")
-  {
   if($Poolname -eq $Name)
    {
  try { 
@@ -84,4 +82,3 @@ $nicehash_Request.result | Select-Object -ExpandProperty simplemultialgo | Where
     }
    }
  }
-}
