@@ -176,10 +176,10 @@ This is an example of how to remote install/update miner. It is the fastest way 
 
 **Note** These photos are a little old, the arguments shown like -GPU_Count are no longer needed, and is MM.Hash (previous version). I will change photo soon, but shows the process.
 
-![alt text](https://raw.githubusercontent.com/MaynardMiner/SWARM/master/Build/Data/First_Step.png)
+https://raw.githubusercontent.com/MaynardMiner/SWARM/master/Build/Data/First_Step.png
 
 
-![alt text](https://raw.githubusercontent.com/MaynardMiner/SWARM/master/Build/Data/Second_Step.png)
+https://raw.githubusercontent.com/MaynardMiner/SWARM/master/Build/Data/Second_Step.png
 
 **Note**
 
