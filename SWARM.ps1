@@ -277,8 +277,8 @@ $PreviousVersions | foreach {
       Get-ChildItem -Path "$($OldBackup)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\Stats" -force
       Get-ChildItem -Path "$($OldBackup)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\Backup" -force
       Get-ChildItem -Path "$($OldTime)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\Build\Data" -force
-      Get-ChildItem -Path "$($OldConfig)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\Build\Data" -force
-      Get-ChildItem -Path "$($OldConfig)\*" -Include *.conf -Recurse | Copy-Item -Destination ".\Build\Data" -force
+      Get-ChildItem -Path "$($OldConfig)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\Config" -force
+      Get-ChildItem -Path "$($OldConfig)\*" -Include *.conf -Recurse | Copy-Item -Destination ".\Config" -force
      }
     Remove-Item $PreviousPath -recurse -force
    }
