@@ -1,1 +1,1 @@
-AMD1
+NVIDIA1

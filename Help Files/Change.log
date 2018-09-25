@@ -436,3 +436,23 @@ SGMINERS:
 XMRig:
 -In order to properly parse stats --Nocpu argument was use. HiveOS custom miners
  do not allow for stats of multiple platforms.
+
+ 1.5.0b:
+
+ DISCLAIMERS:
+
+ DO NOT USE -Auto_Algo ARGUMENT! IT HAS BEEN REMOVED.
+ Update set to YES. Remove Nvidia lolminer from unix folder
+ prior to update!
+ Should transfer oc-configurations. To be safe- back them up
+ since this is first time.
+
+-Auto_Algo argument removed. It is depreciated.
+-Fixed GUI Display For -Favor_Coins.
+-Fixed Threshold (confirmed).
+-Attempted Fix For Benchmark Loop.
+-Fixed SGMiners Temp & Fan HiveOS Stats.
+-Changed NLPool location to Europe.
+
+-Removed lolminer from unix miners that were placed on accident.
+-Updated help file for accurate information.

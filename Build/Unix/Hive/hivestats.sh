@@ -1,6 +1,0 @@
-GPU=0
-RAW=0
-KHS=0
-ACC=1
-RJ=1
-ALGO=equihash96

@@ -1,1 +1,1 @@
-Claymore-D-AMD-1
+CryptoDredge-1

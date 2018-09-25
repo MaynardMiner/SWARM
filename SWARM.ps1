@@ -64,7 +64,7 @@ param(
     [Parameter(Mandatory=$false)]
     [Int]$Timeout = 0,  ##Hours Before Mine Clears All Hashrates/Profit 0 files
     [Parameter(Mandatory=$false)]
-    [Int]$Interval = 180, #seconds before reading hash rate from miners
+    [Int]$Interval = 300, #seconds before reading hash rate from miners
     [Parameter(Mandatory=$false)] 
     [Int]$StatsInterval = 1, #seconds of current active to gather hashrate if not gathered yet 
     [Parameter(Mandatory=$false)]
@@ -166,11 +166,9 @@ param(
     [Parameter(Mandatory=$false)]
     [string]$Auto_Coin = "Yes",
     [Parameter(Mandatory=$false)]
-    [string]$Auto_Algo = "Yes",
+    [Int]$Nicehash_Fee = "2",
     [Parameter(Mandatory=$false)]
-    [Int]$Nicehash_Fee,
-    [Parameter(Mandatory=$false)]
-    [Int]$Benchmark = 300,
+    [Int]$Benchmark = 120,
     [Parameter(Mandatory=$false)]
     [Int]$GPU_Count = 13,
     [Parameter(Mandatory=$false)]
@@ -192,7 +190,7 @@ param(
     [Parameter(Mandatory=$false)]
     [string]$HiveOS = "Yes",
     [Parameter(Mandatory=$false)]
-    [string]$Update = "No",
+    [string]$Update = "Yes",
     [Parameter(Mandatory=$false)]
     [string]$Cuda = "9.1"
 )
@@ -254,7 +252,8 @@ $PreviousVersions += "MM.Hash.1.4.2b"
 $PreviousVersions += "MM.Hash.1.4.3b"
 $PreviousVersions += "MM.Hash.1.4.4b"
 $PreviousVersions += "MM.Hash.1.4.6b"
-#$PreviousVersions += "SWARM.1.4.7b"
+$PreviousVersions += "SWARM.1.4.7b"
+$PreviousVersions += "SWARM.1.4.9b"
 
 $PreviousVersions | foreach {
   $PreviousPath = Join-Path "/hive/custom" "$_"
@@ -377,7 +376,7 @@ Write-Host "Device Count = $GPU_Count" -foregroundcolor green
 $LogGPUS = $Count.Substring(0,$Count.Length-1)
 
 ##Reset-Old Stats
-if(Test-Path "Stats"){Get-ChildItemContent "Stats" | ForEach {$Stat = Set-Stat $_.Name $_.Content.Week}}
+if(Test-Path "Stats"){Get-ChildItemContent "Stats" | ForEach {Set-Stat $_.Name $_.Content.Week}}
     
 ##Logo
 Write-Host "
@@ -772,8 +771,9 @@ $AlgoMiners | ForEach {
    }
 
    #Don't penalize active miners & sort by threshold
+   $GoodAlgoMiners = @()
    $ActiveMinerPrograms | ForEach {$AlgoMiners | Where Path -EQ $_.Path | Where Arguments -EQ $_.Arguments | ForEach {$_.Profit_Bias = $_.Profit}}
-   $GoodAlgoMiners = $AlgoMiners | Where Profit -lt $Threshold
+   $AlgoMiners | Foreach {if($_.Profit -lt $Threshold -or $_.Profit -eq $null){$GoodAlgoMiners += $_}}
 
    #Get most profitable algo miner combination i.e. AMD+NVIDIA+CPU add algo miners to miners list
    $Miners = @()
@@ -930,31 +930,50 @@ if($CoinMiners -ne $null)
 
   if($Favor_Coins -eq "Yes")
    {
-    $ProfitsArray = @()
-    $NewCoinAlgo = @()
-    $Miners = @()
+     $Miners = @()
+     $NewCoinSymbol = @()
+     $ProfitsArray = @()
+     $NewCoinAlgo = @()
+
     $BestMiners_Combo | Foreach {
+    $NewCoinSymbol += [PSCustomObject]@{
+      "$($_.Type)" = "$($_.Symbol)"
+      }
+     }  
+
+     $BestMiners_Combo | Foreach {
       $NewCoinAlgo += [PSCustomObject]@{
-       "$($_.Type)" = "$($_.Algo)"
+        "$($_.Type)" = "$($_.Algo)"
         }
        }  
 
-    $BestMiners_Combo | Foreach {
+     $BestMiners_Combo | Foreach {
      $ProfitsArray += [PSCustomObject]@{
      "$($_.Type)" = $($_.Profit)
       }
      }
 
-    $GoodAlgoMiners | Foreach{
-    if($NewCoinAlgo.$($_.Type) -ne $($_.Algo))
-     {
-      if($ProfitsArray.$($_.Type) -gt $($_.Profit))
-       {
+    $Type | Foreach {
+     $Selected = $_
+     $TypeAlgoMiners = $GoodAlgoMiners | Where Type -eq $Selected
+     $TypeAlgoMiners | Foreach{
+     if($NewCoinSymbol.$($_.Type) -eq $_.Symbol)
+      {
        $Miners += $_
+      }
+     else
+      {
+       if($NewCoinAlgo.$($_.Type) -ne $_.Algo)
+        {
+        if($ProfitsArray.$($_.Type) -gt $($_.Profit))
+         {
+         $Miners += $_
+         }
        }
       }
      }
-    $CoinMiners | foreach {$Miners += $_}
+    }
+     $CoinMiners | foreach {$Miners += $_}
     }
     else
      {
@@ -1433,10 +1452,13 @@ $ActiveMinerPrograms | foreach {
   {
    $Miner_HashRates = Get-HashRate -API $_.API -Port $_.Port -CPUThreads $CPUThreads
    $ScreenHash = "$($Miner_HashRates | ConvertTo-Hash)"
-   if($ScreenHash -eq "0.00PH")
+   if($ScreenHash -eq "0.00PH" -or $ScreenHash -eq '')
     {
+    if($BenchmarkMode -eq $false)
+     {
      $_.Status = "Failed"
      $Restart = "Yes"
+     }
     }
    }
   }
@@ -1544,6 +1566,7 @@ if($_.BestMiner -eq $true)
            if($ScreenCheck -eq "0.00 PH" -or $null -eq $StatCheck)
             {
              $_.Timeout++
+             $_.WasBenchmarked = $False
              Write-Host "Stat Failed Write To File" -Foregroundcolor Red
             }
            else
@@ -1581,7 +1604,7 @@ if($_.Timeout -gt 2 -or $null -eq $_.XProcess -or $_.XProcess.HasExited)
     $_.New = $False
     $_.Timeout = 0
     Write-Host "$($_.Name) $($_.Coins) Hashrate Check Timed Out $($_.Bad_Benchmark) Times- It Was Noted In Timeout Folder" -foregroundcolor "darkred"
-    if($_.Bad_Benchmark -eq 3 -or $_.Bad_Benchmark -gt 3)
+    if($_.Bad_Benchmark -ge 3)
      {
       $Stat = Set-Stat -Name "$($_.Name)_$($_.Algo)_HashRate" -Value 0
       Write-Host "Benchmarking Has Failed - Setting Stat To 0. Delete Stat In Stats Folder To Reset" -ForegroundColor DarkRed

@@ -389,8 +389,8 @@ function miner_stats {
 				echo -e "${YELLOW}Failed to read $miner from localhost:$myport${NOCOLOR}"
 			else
 				khs=`echo $stats_raw | jq '.["summary"][0]["SUMMARY"][0]["KHS 5s"]'`
-				stats=`echo $stats_raw | jq '{hs: [.devs[0].DEVS[]."KHS 5s"], hs_units: "'khs'", temp: [.devs[0].DEVS[].Temperature], \
-						fan: [.devs[0].DEVS[]."Fan Percent"], uptime: .summary[0].SUMMARY[0].Elapsed, algo: "'$myalgo'"}'`
+				stats=`echo $stats_raw | jq '{hs: [.devs[0].DEVS[]."KHS 5s"], hs_units: "'khs'", temp: "'$Atemp'", \
+						fan: "'$Afan'", uptime: .summary[0].SUMMARY[0].Elapsed, algo: "'$myalgo'"}'`
 			fi
 		;;
 		dstm)
