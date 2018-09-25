@@ -1,11 +1,5 @@
 **SWARM**
 
-**Previously known as MM.Hash**
-
-Note: This github wiki and repo is under construction. To see previous versions & wiki on how to use: please navigate to former github repository:
-
-https://github.com/MaynardMiner/MM.Hash
-
 **Hybrid Profit Switching Miner For HiveOS & Windows.**
 
 **Important Note:**
