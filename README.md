@@ -18,7 +18,7 @@ I am a sole developer, and have multiple versions to operate in different OS's. 
 
 **Features**
 
--Works within HiveOS, all linux miners.
+-Works within HiveOS, all linux miners- AMD miners Windows cannot use.
 
 -No Windows WDDM driver stack means faster spool up times compared to windows. Critical for profit switching.
 
