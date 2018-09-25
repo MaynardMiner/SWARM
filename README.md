@@ -8,9 +8,7 @@ Version information:
 
 a - Windows version.
 
-b - HiveOS version.
-
-c - Soon to be Ubuntu version.
+b - HiveOS/Unix version.
 
 Depending on which OS you use- Use the latest version release of that version.
 
