@@ -82,6 +82,15 @@ These arguments can be added for additional customization and options
 
 Argument            Options             Explanation
 
+-Favor_Coins  [Yes or No]	    Default is Yes. If Favor_Coins is set to Yes, SWARM will factor
+				    only coins into final profit equation if the pool is a coin pool.
+				    If Favor_Coins is set to No, SWARM will factor both api/currencies
+				    and api/status into final profit equation, meaning both coins and
+				    algorithms will be calculated. Note: The estimates between 
+				    api/currencies and api/status is asyncrounous in design and are
+				    calculated by yiimp differently. This means values will be different
+				    by yiimp design.
+
 -Donate      [Percentage]           Percent you wish to donate daily to support further development. 
                                     Miner remembers when you open or close, so it will not steal 
                                     from you...However it only resets donation switch if miner 
