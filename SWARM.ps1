@@ -388,7 +388,7 @@ Write-Host "
                                                                       ███████║╚███╔███╔╝██║  ██║██║  ██║██║ ╚═╝ ██║
                                                                       ╚══════╝ ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝
                                                                              Parental Discretion Is Advised
-                                                                                      v1.4.9b Unix       
+                                                                                      v1.5.0b Unix       
 
                                                                       GitHub: https://Github.com/MaynardMiner/Swarm
 
