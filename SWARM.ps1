@@ -919,6 +919,11 @@ if($CoinMiners -ne $null)
     $BestAlgoMiners_Combo | foreach {$Miners += $_}
    }
   }
+  else
+   { 
+    $Miners = $CoinMiners | Where Profit -lt $Threshold
+    $BestAlgoMiners_Combo | foreach {$Miners += $_}
+   }
 
   $ActiveMinerPrograms | ForEach {$Miners | Where Path -EQ $_.Path | Where Arguments -EQ $_.Arguments | ForEach {$_.Profit_Bias = $_.Profit}}
 
