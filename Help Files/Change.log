@@ -456,3 +456,8 @@ XMRig:
 
 -Removed lolminer from unix miners that were placed on accident.
 -Updated help file for accurate information.
+
+1.5.1b:
+
+-Fixed -Favor_Coin Value Error
+-Fixed Remote Update
