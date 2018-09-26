@@ -254,6 +254,7 @@ $PreviousVersions += "MM.Hash.1.4.4b"
 $PreviousVersions += "MM.Hash.1.4.6b"
 $PreviousVersions += "SWARM.1.4.7b"
 $PreviousVersions += "SWARM.1.4.9b"
+$PreviousVersions += "SWARM.1.5.0b"
 
 $PreviousVersions | foreach {
   $PreviousPath = Join-Path "/hive/custom" "$_"
@@ -266,24 +267,31 @@ $PreviousVersions | foreach {
      $OldMiners = Join-Path $PreviousPath "Miners\unix"
      $OldTime = Join-Path $PreviousPath "Build\Data"
      $OldConfig = Join-Path $PreviousPath "Config"
-     if(Test-Path $OldBackup)
-      {
       if(-not (Test-Path "Backup")){New-Item "Backup" -ItemType "directory"  | Out-Null }
       if(-not (Test-Path "Stats")){New-Item "Stats" -ItemType "directory"  | Out-Null }
       if(-not (Test-Path "Miners")){New-Item "Miners" -ItemType "directory"  | Out-Null }
       if(-not (Test-Path "Miners\unix")){New-Item "Miners\unix" -ItemType "directory"  | Out-Null }
       if(-not (Test-Path "Config")){New-Item "Config" -ItemType "directory"  | Out-Null }
-      Get-ChildItem -Path "$($OldMiners)\*" -Include *.ps1 -Recurse | Copy-Item -Destination ".\Miners\unix" -force
-      Get-ChildItem -Path "$($OldBackup)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\Stats" -force
-      Get-ChildItem -Path "$($OldBackup)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\Backup" -force
-      Get-ChildItem -Path "$($OldTime)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\Build\Data" -force
-      Get-ChildItem -Path "$($OldConfig)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\Config" -force
-      Get-ChildItem -Path "$($OldConfig)\*" -Include *.conf -Recurse | Copy-Item -Destination ".\Config" -force
+      if(Test-Path $OldMiners){Get-ChildItem -Path "$($OldMiners)\*" -Include *.ps1 -Recurse | Copy-Item -Destination ".\Miners\unix" -force}
+      if(Test-Path $OldBackup)
+       {
+        Get-ChildItem -Path "$($OldBackup)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\Stats" -force
+        Get-ChildItem -Path "$($OldBackup)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\Backup" -force
+       }
+      if(Test-Path $OldTime){Get-ChildItem -Path "$($OldTime)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\Build\Data" -force}
+      if(Test-Path $OldConfig)
+       {
+        Get-ChildItem -Path "$($OldConfig)\get-amd.txt" | Copy-Item -Destination ".\Config" -force
+        Get-ChildItem -Path "$($OldConfig)\get-cpu.txt" | Copy-Item -Destination ".\Config" -force
+        Get-ChildItem -Path "$($OldConfig)\get-hive.txt" | Copy-Item -Destination ".\Config" -force
+        Get-ChildItem -Path "$($OldConfig)\get-nvidia.txt" | Copy-Item -Destination ".\Config" -force
+        Get-ChildItem -Path "$($OldConfig)\get-pool.txt" | Copy-Item -Destination ".\Config" -force
+        Get-ChildItem -Path "$($OldConfig)\OC-Nvidia.conf" | Copy-Item -Destination ".\Config" -force
+       }
      }
     Remove-Item $PreviousPath -recurse -force
    }
   }
-}
 
 ##Set Objects
 $CmdDir = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "Build")
@@ -905,12 +913,12 @@ if($CoinMiners -ne $null)
       Write-Host "User Specified To Favor Coins & Best Pool Is CoinPool: Factoring Only Coins"
       $Miners = $CoinMiners | Where Profit -lt $Threshold 
      }
-  }
   else
    {
     $Miners = $CoinMiners | Where Profit -lt $Threshold
     $BestAlgoMiners_Combo | foreach {$Miners += $_}
    }
+  }
 
   $ActiveMinerPrograms | ForEach {$Miners | Where Path -EQ $_.Path | Where Arguments -EQ $_.Arguments | ForEach {$_.Profit_Bias = $_.Profit}}
 
