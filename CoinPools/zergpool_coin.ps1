@@ -44,7 +44,7 @@ $Zergpool_Sorted | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Sel
     $zergpool_24h= "24h_btc"
     $Divisor = (1000000*$Zergpool_Sorted.$_.mbtc_mh_factor)
     
-    $Stat = Set-Stat -Name "$($Name)_$($zergpool_Coin)_Profit"-Value ([Double]$zergpool_Estimate/$Divisor *(1-($zergpool_fees/100)))
+    $Stat = Set-Stat -Name "$($Name)_$($zergpool_Coin)_Profit" -Value ([Double]$zergpool_Estimate/$Divisor *(1-($zergpool_fees/100)))
 
       if($Wallet)
        {
