@@ -288,8 +288,8 @@ $PreviousVersions | foreach {
         Get-ChildItem -Path "$($OldConfig)\get-pool.txt" | Copy-Item -Destination ".\Config" -force
         Get-ChildItem -Path "$($OldConfig)\OC-Nvidia.conf" | Copy-Item -Destination ".\Config" -force
        }
+       Remove-Item $PreviousPath -recurse -force
      }
-    Remove-Item $PreviousPath -recurse -force
    }
   }
 
