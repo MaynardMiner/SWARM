@@ -36,7 +36,7 @@ SWARM focuses on quality versus quantity, from profit data, miner implementation
 
 -Every part of the code has a double-checking feature, to ensure real time monitoring.
 
--More hard drive integration, less storage on RAM.
+-More hard drive integration.
 
 -Latest miners, updated frequently.
 
