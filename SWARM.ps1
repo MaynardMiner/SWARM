@@ -381,6 +381,13 @@ $LogGPUS = $Count.Substring(0,$Count.Length-1)
 
 ##Reset-Old Stats
 if(Test-Path "Stats"){Get-ChildItemContent "Stats" | ForEach {Set-Stat $_.Name $_.Content.Week}}
+
+##Restart Agent
+if($HiveOS -eq "Yes")
+ {
+  start-process "screen" -ArgumentList "-S agent -X quit" -wait
+  start-process "agent-screen"
+ }
     
 ##Logo
 Write-Host "
