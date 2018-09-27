@@ -80,7 +80,7 @@ SWARM focuses on quality versus quantity, from profit data, miner implementation
     "cryptonightheavy": "cryptonightheavy",
     "cryptonightmonero": "cryptonight",
     "cryptonightv7": "cryptonightv7",
-    "cryptonightsaber"": "cryptonightsaber",
+    "cryptonightsaber": "cryptonightsaber",
     "daggerhashimoto": "daggerhashimoto",
     "equihash": "equihash",
     "equihash96": "equihash96",
