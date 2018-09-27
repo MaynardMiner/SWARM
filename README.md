@@ -64,7 +64,7 @@ SWARM focuses on quality versus quantity, from profit data, miner implementation
 
 
 
-**Algorithms** (As defined by poola and translation required by miners)
+**Algorithms** (As defined by pool and translation required by miners)
 
 ```
     "aergo": "aergo",
