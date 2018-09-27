@@ -355,7 +355,7 @@ if($HiveOS -eq "Yes"){Start-Process ".\Build\Unix\Hive\libc.sh" -wait}
 if($HiveOS -eq "Yes")
  {
   start-process "screen" -ArgumentList "-S agent -X quit" -wait
-  start-process "agent-screen"
+  start-process "agent-screen" -wait
  }
     
 ##GPU Count & Miner Type
