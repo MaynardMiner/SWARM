@@ -457,8 +457,27 @@ XMRig:
 -Removed lolminer from unix miners that were placed on accident.
 -Updated help file for accurate information.
 
-1.5.1b:
 
+1.5.2b:
+
+Disclaimers:
+
+-Best use of SWARM is in Stable Image currently
+-AMD should see MUCH better HiveOS stats
+-AMD MUST use either use stable version, or
+ downgrade driver
+-export for AMD is located in:
+ Build > Unix > Hive > startupamd.sh
+
+-New AMD miner: teamredminer
 -Fixed -Favor_Coin Value Error
 -Fixed Remote Update
--Help File Changes
+-Fixed sgminer hs_units
+-Fixed Logdata for teamredminer
+-Fixed HiveCMD to send algo
+-Fixed IncludeCoin for cpu
+-Fixed Rejected shares for log miners
+-Fixed lolMiner Coin Miner "Disable_Memcheck":0
+-updated Cryptodredge 0.9.2
+-updated Readme
+-updated get-pool.txt
