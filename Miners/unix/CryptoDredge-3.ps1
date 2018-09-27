@@ -26,7 +26,7 @@ $Commands = [PSCustomObject]@{
 "stellite" = ''
 "lbk3" = ''
 "phi2" = ''
-        
+"cryptonightsaber" = ''        
         }
         
         
