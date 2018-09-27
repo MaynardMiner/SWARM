@@ -65,15 +65,15 @@ else{
     {
       $JsonConfig = [PSCustomObject]@{
         miner=[PSCustomObject]@{
-        APIPORT=4040
+        APIPORT=4037
         SHORTSTATS=10
         LONGSTATS=120
         COIN="$($Commands.$($CoinPools.$_.Algorithm).coin)"
         POOL="$($CoinPools.$_.Host)"
         PORT="$($CoinPools.$_.Port)"
-        USER="$($CoinPools.$_.User3)"
-        PASS="$($CoinPools.$_.Pass3)"
-        DISABLE_MEMCHECK="$($Commands.$_.disable_memcheck)"
+        USER="$($CoinPools.$_.User1)"
+        PASS="$($CoinPools.$_.Pass1)"
+        DISABLE_MEMCHECK="$($Commands.$($CoinPools.$_.Algorithm).disable_memcheck)"
         DIGITS=2
          }
         }
@@ -81,7 +81,7 @@ else{
        }
       }
     }
- 
+    
 if($CoinAlgo -eq $null)
 {
 $Commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {

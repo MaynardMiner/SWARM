@@ -566,7 +566,7 @@ function Get-HashRate {
                 } while($HashRates.Count -lt 2)
                 Clear-Content ".\Build\Unix\Hive\logstats.sh"
              }
-            "cpulog"
+             "cpulog"
              {
               $Hashrate = 0
               if(Test-Path ".\Logs\CPU.log")
@@ -588,7 +588,7 @@ function Get-HashRate {
                 $HashRates += [Double]$HashRate
                 }
                 else{$HashRates = @(); break}
-             }
+              }                 
              "lolminer" {
                 do {
                     $Client = New-Object System.Net.Sockets.TcpClient $server, $port

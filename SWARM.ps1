@@ -246,15 +246,11 @@ $Cuda | Out-file ".\Build\Cuda.txt" -Force
 if($Update -eq "Yes")
  {
 $PreviousVersions = @()
-$PreviousVersions += "MM.Hash.1.4.0b"
-$PreviousVersions += "MM.Hash.1.0.4b"
-$PreviousVersions += "MM.Hash.1.4.2b"
-$PreviousVersions += "MM.Hash.1.4.3b"
-$PreviousVersions += "MM.Hash.1.4.4b"
 $PreviousVersions += "MM.Hash.1.4.6b"
 $PreviousVersions += "SWARM.1.4.7b"
 $PreviousVersions += "SWARM.1.4.9b"
 $PreviousVersions += "SWARM.1.5.0b"
+$PreviousVersions += "SWARM.1.5.1b"
 
 $PreviousVersions | foreach {
   $PreviousPath = Join-Path "/hive/custom" "$_"

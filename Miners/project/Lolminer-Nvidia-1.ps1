@@ -65,7 +65,7 @@ else{
     {
       $JsonConfig = [PSCustomObject]@{
         miner=[PSCustomObject]@{
-        APIPORT=4038
+        APIPORT=4037
         SHORTSTATS=10
         LONGSTATS=120
         COIN="$($Commands.$($CoinPools.$_.Algorithm).coin)"
@@ -73,7 +73,7 @@ else{
         PORT="$($CoinPools.$_.Port)"
         USER="$($CoinPools.$_.User1)"
         PASS="$($CoinPools.$_.Pass1)"
-        DISABLE_MEMCHECK="$($Commands.$_.disable_memcheck)"
+        DISABLE_MEMCHECK="$($Commands.$($CoinPools.$_.Algorithm).disable_memcheck)"
         DIGITS=2
          }
         }

@@ -267,6 +267,7 @@ function Get-AlgorithmList {
         Set-Location (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "Build")
         $PIDMiners = "$($Type)"
         if(Test-Path ".\PID\*$PIDMiners*"){Remove-Item ".\PID\*$PIDMiners*" -Force}
+        if($Type -eq "NVIDIA1" -or $Type -eq "AMD1"){$Algo | Set-Content ".\Unix\Hive\algo.sh"}
         if($Type -like '*NVIDIA*')
         {
         if($Devices -eq '')

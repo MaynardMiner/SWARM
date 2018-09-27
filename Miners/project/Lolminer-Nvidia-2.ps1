@@ -58,24 +58,24 @@ $Commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty 
 }
 }
 else{
-    $CoinPools | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name |
+  $CoinPools | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name |
   Where {$($Commands.$($CoinPools.$_.Algorithm)) -NE $null} |
   foreach {
     if($Type -eq $MinerType)
     {
       $JsonConfig = [PSCustomObject]@{
         miner=[PSCustomObject]@{
-        APIPORT=4039
+        APIPORT=4037
         SHORTSTATS=10
         LONGSTATS=120
         COIN="$($Commands.$($CoinPools.$_.Algorithm).coin)"
         POOL="$($CoinPools.$_.Host)"
         PORT="$($CoinPools.$_.Port)"
-        USER="$($CoinPools.$_.User2)"
-        PASS="$($CoinPools.$_.Pass2)"
-        DISABLE_MEMCHECK="$($Commands.$_.disable_memcheck)"
+        USER="$($CoinPools.$_.User1)"
+        PASS="$($CoinPools.$_.Pass1)"
+        DISABLE_MEMCHECK="$($Commands.$($CoinPools.$_.Algorithm).disable_memcheck)"
         DIGITS=2
-        }
+         }
         }
         $JsonConfig | ConvertTo-Json | Set-Content (Join-Path (Split-Path $Path) "$($CoinPools.$_.Symbol).json")
        }

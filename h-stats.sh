@@ -22,6 +22,7 @@ function miner_stats {
 	local mystats=$(< $mydir/Build/Unix/Hive/hivestats.sh)
 	local miner=$(< $mydir/Build/Unix/Hive/mineref.sh)
 	local myport=$(< $mydir/Build/Unix/Hive/port.sh)
+	local myalgo=$(< $mydir/Build/Unix/Hive/algo.sh)
 	local mindex=$2 #empty or 2, 3, 4, ...
 	local Ntemp=$(get_nvidia_cards_temp)	# cards temp
 	local Nfan=$(get_nvidia_cards_fan)	# cards fan
@@ -43,7 +44,7 @@ function miner_stats {
 
 			stats=$(jq -n \
 				    --argjson hs "`echo ${cckhs[@]} | tr " " "\n" | jq -cs '.'`" \
-					--arg hs_units "hs_units=khs" \
+					--arg hs_units "khs" \
 				    --argjson temp "$Ntemp" \
 				    --argjson fan "$Nfan" \
 					--arg uptime "0" \
@@ -64,7 +65,7 @@ function miner_stats {
 
 			stats=$(jq -n \
 				    --argjson hs "`echo ${tdkhs[@]} | tr " " "\n" | jq -cs '.'`" \
-					--arg hs_units "hs_units=khs" \
+					--arg hs_units "khs" \
 				    --argjson temp "$Atemp" \
 				    --argjson fan "$Afan" \
 					--arg uptime "0" \
@@ -86,7 +87,7 @@ function miner_stats {
 
 			stats=$(jq -n \
 				    --argjson hs "`echo ${tdkhs[@]} | tr " " "\n" | jq -cs '.'`" \
-					--arg hs_units "hs_units=khs" \
+					--arg hs_units "khs" \
 				    --argjson temp "$Atemp" \
 				    --argjson fan "$Afan" \
 					--arg uptime "0" \
@@ -108,7 +109,7 @@ function miner_stats {
 
 			stats=$(jq -n \
 				    --argjson hs "`echo ${cpkhs[@]} | tr " " "\n" | jq -cs '.'`" \
-					--arg hs_units "hs_units=khs" \
+					--arg hs_units "khs" \
 				    --argjson temp "$Ntemp" \
 				    --argjson fan "$Nfan" \
 					--arg uptime "0" \
@@ -130,7 +131,7 @@ function miner_stats {
 
 			stats=$(jq -n \
 				    --argjson hs "`echo ${cpkhs[@]} | tr " " "\n" | jq -cs '.'`" \
-					--arg hs_units "hs_units=khs" \
+					--arg hs_units "khs" \
 				    --argjson temp "$Ntemp" \
 				    --argjson fan "$Nfan" \
 					--arg uptime "0" \
@@ -152,7 +153,7 @@ function miner_stats {
 
 			stats=$(jq -n \
 				    --argjson hs "`echo ${cpkhs[@]} | tr " " "\n" | jq -cs '.'`" \
-					--arg hs_units "hs_units=khs" \
+					--arg hs_units "khs" \
 				    --argjson temp "$Atemp" \
 				    --argjson fan "$Afan" \
 					--arg uptime "0" \
@@ -173,7 +174,7 @@ function miner_stats {
 
 			stats=$(jq -n \
 				    --argjson hs "`echo ${cpkhs[@]} | tr " " "\n" | jq -cs '.'`" \
-					--arg hs_units "hs_units=khs" \
+					--arg hs_units "khs" \
 				    --argjson temp "$Atemp" \
 				    --argjson fan "$Afan" \
 					--arg uptime "0" \
@@ -191,8 +192,7 @@ function miner_stats {
 				#[ "10.0 - ETH", "83", "67664;48;0", "28076;27236;12351", "891451;29;0", "421143;408550;61758", "67;40;70;45;69;34", "eth-eu1.nanopool.org:9999;sia-eu1.nanopool.org:7777", "0;0;0;0" ]
 				khs=`echo $stats_raw | jq -r '.[2]' | awk -F';' '{print $1}'`
 				[[ -z $CLAYMORE_VER ]] && CLAYMORE_VER="latest"
-                                local hs=`echo "$stats_raw" | jq -r '.[3]' | tr ';' '\n' | jq -cs '.'`
-
+                local hs=`echo "$stats_raw" | jq -r '.[3]' | tr ';' '\n' | jq -cs '.'`
 				local ac=`echo $stats_raw | jq -r '.[2]' | awk -F';' '{print $2}'`
 				local rj=`echo $stats_raw | jq -r '.[2]' | awk -F';' '{print $3}'`
 				local tempfans=`echo $stats_raw | jq -r '.[6]'` #"56;26; 48;42"
@@ -204,16 +204,12 @@ function miner_stats {
 				done
 				temp=`printf '%s\n' "${temp[@]}" | jq --raw-input . | jq --slurp -c .`
 				fan=`printf '%s\n' "${fan[@]}" | jq --raw-input . | jq --slurp -c .`
-
-
 				stats=$(jq -n \
-					--argjson hs "`echo ${cckhs[@]} | tr " " "\n" | jq -cs '.'`"  \
-					--arg hs_units "hs_units='khs'" \
-					--argjson temp "$temp" \
-					--argjson fan "$fan" \
 					--arg uptime "`echo \"$stats_raw\" | jq -r '.[1]' | awk '{print $1*60}'`" \
+					--arg hs_units "khs" \
+					--argjson hs "$hs" --argjson temp "$temp" --argjson fan "$fan" \
 					--arg ac "$ac" --arg rj "$rj" \
-					--arg algo "Etherium" \
+					--arg algo "$myalgo" \
 					'{$hs, $hs_units, $temp, $fan, $uptime, ar: [$ac, $rj], $algo}')
 
 				fi
@@ -341,7 +337,7 @@ function miner_stats {
 					#'{$khs, $temp, $fan, $uptime, $algo, ar: [$ac, $rj]}')
 	            stats=$(jq -nc \
 				--argjson hs "`echo ${cckhs[@]} | tr " " "\n" | jq -cs '.'`" \
-				--arg hs_units "hs_units='khs'" \
+				--arg hs_units "khs" \
 				--argjson temp "`echo ${cctemps[@]} | tr " " "\n" | jq -cs '.'`" \
 				--argjson fan "`echo \"$striplines\" | grep 'FAN=' | sed -e 's/.*=//' | jq -cs '.'`" \
 				--arg uptime "$uptime", --arg algo "$algo" \
@@ -389,8 +385,8 @@ function miner_stats {
 				echo -e "${YELLOW}Failed to read $miner from localhost:$myport${NOCOLOR}"
 			else
 				khs=`echo $stats_raw | jq '.["summary"][0]["SUMMARY"][0]["KHS 5s"]'`
-				stats=`echo $stats_raw | jq '{hs: [.devs[0].DEVS[]."KHS 5s"], hs_units: "'khs'", temp: "'$Atemp'", \
-						fan: "'$Afan'", uptime: .summary[0].SUMMARY[0].Elapsed, algo: "'$myalgo'"}'`
+				stats=`echo $stats_raw | jq '{hs: [.devs[0].DEVS[]."KHS 5s"], hs_units: "khs", temp: [.devs[0].DEVS[].Temperature], \
+						fan: [.devs[0].DEVS[]."Fan Percent"], uptime: .summary[0].SUMMARY[0].Elapsed, algo: "'$myalgo'"}'`
 			fi
 		;;
 		dstm)
@@ -535,8 +531,9 @@ function miner_stats {
 					--arg acc "$acc" --arg rej "$rej" \
 					--arg uptime "$uptime" --arg algo "$algo" \
 					--argjson hs "`echo ${hs[@]} | tr " " "\n" | jq -cs '.'`" \
+					--arg hs_units "khs" \
 					--argjson temp "`echo ${temps[@]} | tr " " "\n" | jq -cs '.'`" \
-					'{$vers, $algo, $hs, ar: [$acc, $rej], $temp, $uptime}')
+					'{$vers, $algo, $hs, $hs_units, ar: [$acc, $rej], $temp, $uptime}')
 			fi
 		;;
 		custom)

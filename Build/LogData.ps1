@@ -195,7 +195,7 @@ $Hive=
 RAW=$Miner_HashRates
 KHS=$KHS
 ACC=$Accepted
-RJ=$Rejected
+REJ=$Rejected
 ALGO=$MinerAlgo"
 
 $Hive
@@ -215,8 +215,6 @@ $Hive | Set-Content ".\Build\Unix\Hive\logstats.sh"
       {
        if(Test-Path $HashPath)
         {
-        Clear-Content ".\Build\Unix\Hive\hivestats.sh" -Force
-        Clear-Content ".\Build\Unix\Hive\logstats.sh" -Force        
         $Miner_HashRates = Get-HashRate $API $Port
         $Convert = [string]$GPUS -replace (","," ")
         $GPU = $Convert -split ' '
@@ -263,10 +261,11 @@ $Hive=
 RAW=$TotalHash
 KHS=$KHS
 ACC=$Accepted
-RJ=$Rejected
+REJ=$Rejected
 ALGO=$MinerAlgo"
 $Hive
-
+Clear-Content ".\Build\Unix\Hive\hivestats.sh" -Force
+Clear-Content ".\Build\Unix\Hive\logstats.sh" -Force        
 $Hive | Set-Content ".\Build\Unix\Hive\hivestats.sh"
 $Hive | Set-Content ".\Build\Unix\Hive\logstats.sh"
 
@@ -307,8 +306,6 @@ Start-Sleep -S 5
       {
       if(Test-Path $HashPath)
        {
-        Clear-Content ".\Build\Unix\Hive\hivestats.sh" -Force
-        Clear-Content ".\Build\Unix\Hive\logstats.sh" -Force
         $Convert = [string]$GPUS -replace (","," ")
         $GPU = $Convert -split ' '
         $HashArray = @()
@@ -340,6 +337,7 @@ Start-Sleep -S 5
              $HashArray += 0.1
             }
           }
+        }
         else{
           for($i = 0; $i -lt $GPU.Count; $i++)
           {
@@ -347,7 +345,6 @@ Start-Sleep -S 5
             $HashArray += 0.1
           }
          }
-        }
         $J = $HashArray | % {iex $_}
         $K = @()
         $TotalRaw = 0
@@ -367,10 +364,15 @@ $Hive=
 RAW=$TotalRaw
 KHS=$KHS
 ACC=$Accepted
-RJ=$Rejected
+REJ=$Rejected
 ALGO=$MinerAlgo"
 
 $Hive
+
+Clear-Content ".\Build\Unix\Hive\hivestats.sh" -Force
+Clear-Content ".\Build\Unix\Hive\logstats.sh" -Force        
+$Hive | Set-Content ".\Build\Unix\Hive\hivestats.sh"
+$Hive | Set-Content ".\Build\Unix\Hive\logstats.sh"
 
 $Hive | Set-Content ".\Build\Unix\Hive\hivestats.sh"
 $Hive | Set-Content ".\Build\Unix\Hive\logstats.sh"
@@ -382,8 +384,6 @@ Start-Sleep -S 5
      {
       if(Test-Path $HashPath)
        {
-        Clear-Content ".\Build\Unix\Hive\hivestats.sh" -Force
-        Clear-Content ".\Build\Unix\Hive\logstats.sh" -Force
       $Convert = [string]$GPUS -replace (","," ")
       $GPU = $Convert -split ' '
       $HashArray = @()
@@ -451,11 +451,12 @@ $Hive=
 RAW=$TotalRaw
 KHS=$KHS
 ACC=$Accepted
-RJ=$Rejected
+REJ=$Rejected
 ALGO=$MinerAlgo"
       
 $Hive
-      
+Clear-Content ".\Build\Unix\Hive\hivestats.sh" -Force
+Clear-Content ".\Build\Unix\Hive\logstats.sh" -Force        
 $Hive | Set-Content ".\Build\Unix\Hive\hivestats.sh"
 $Hive | Set-Content ".\Build\Unix\Hive\logstats.sh"
     }
@@ -469,8 +470,6 @@ Start-Sleep -S 5
     $Reader = New-Object System.IO.StreamReader $Client.GetStream()
     $Request = $Reader.ReadToEnd()
     $Data = $Request | ConvertFrom-Json
-    Clear-Content ".\Build\Unix\Hive\hivestats.sh" -Force
-    Clear-Content ".\Build\Unix\Hive\logstats.sh" -Force
     $Convert = [string]$GPUS -replace (","," ")
     $GPU = $Convert -split ' '
     $HashArray = @()
@@ -507,13 +506,15 @@ $Hive=
 RAW=$TotalRaw
 KHS=$TotalRaw
 ACC=1
-RJ=1
+REJ=1
 ALGO=$MinerAlgo"
            
      $Hive
-           
+     Clear-Content ".\Build\Unix\Hive\hivestats.sh" -Force
+     Clear-Content ".\Build\Unix\Hive\logstats.sh" -Force        
      $Hive | Set-Content ".\Build\Unix\Hive\hivestats.sh"
-     Start-Sleep -S 5 
+     $Hive | Set-Content ".\Build\Unix\Hive\logstats.sh"
+          Start-Sleep -S 5 
     }
 
 "lolamd"
@@ -523,8 +524,6 @@ ALGO=$MinerAlgo"
     $Reader = New-Object System.IO.StreamReader $Client.GetStream()
     $Request = $Reader.ReadToEnd()
     $Data = $Request | ConvertFrom-Json
-    Clear-Content ".\Build\Unix\Hive\hivestats.sh" -Force
-    Clear-Content ".\Build\Unix\Hive\logstats.sh" -Force
     $Convert = [string]$GPUS -replace (","," ")
     $GPU = $Convert -split ' '
     $HashArray = @()
@@ -561,13 +560,16 @@ $Hive=
 RAW=$TotalRaw
 KHS=$TotalRaw
 ACC=1
-RJ=1
+REJ=1
 ALGO=$MinerAlgo"
            
      $Hive
            
+     Clear-Content ".\Build\Unix\Hive\hivestats.sh" -Force
+     Clear-Content ".\Build\Unix\Hive\logstats.sh" -Force        
      $Hive | Set-Content ".\Build\Unix\Hive\hivestats.sh"
-     Start-Sleep -S 5 
+     $Hive | Set-Content ".\Build\Unix\Hive\logstats.sh"
+          Start-Sleep -S 5 
     }
 
 "xmrstak"
@@ -578,8 +580,6 @@ ALGO=$MinerAlgo"
    $Reader = Invoke-WebRequest "http://$($server):$($port)$($Request)" -UseBasicParsing -TimeoutSec 5
    if($Reader -ne ""){$Data = $Reader.Content | ConvertFrom-Json}
    $Data = $Data.hashrate.threads
-    Clear-Content ".\Build\Unix\Hive\hivestats.sh" -Force
-    Clear-Content ".\Build\Unix\Hive\logstats.sh" -Force
     $Convert = [string]$GPUS -replace (","," ")
     $GPU = $Convert -split ' '
     $HashArray = @()
@@ -617,13 +617,16 @@ $Hive=
 RAW=$TotalRaw
 KHS=$TotalRaw
 ACC=1
-RJ=1
+REJ=1
 ALGO=$MinerAlgo"
            
      $Hive
            
+     Clear-Content ".\Build\Unix\Hive\hivestats.sh" -Force
+     Clear-Content ".\Build\Unix\Hive\logstats.sh" -Force        
      $Hive | Set-Content ".\Build\Unix\Hive\hivestats.sh"
-     Start-Sleep -S 5 
+     $Hive | Set-Content ".\Build\Unix\Hive\logstats.sh"
+          Start-Sleep -S 5 
     }
 
 
