@@ -27,5 +27,5 @@ sudo chmod +x /opt/microsoft/powershell/6.1.0/pwsh
 sudo ln -s /opt/microsoft/powershell/6.1.0/pwsh /usr/bin/pwsh
 sudo rm -rf /tmp/powershell.tar.gz
 fi
-screen -s agent -X quit && agent-screen
+
 pwsh -command "&.\SWARM.ps1 $(< /hive/custom/$CUSTOM_NAME/$CUSTOM_NAME.conf)" $@ && . color
