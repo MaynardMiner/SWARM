@@ -351,6 +351,13 @@ else{$PSDefaultParameterValues["*:Proxy"] = $Proxy}
 ##Check for libc 
 if($HiveOS -eq "Yes"){Start-Process ".\Build\Unix\Hive\libc.sh" -wait}
 
+##Restart Agent
+if($HiveOS -eq "Yes")
+ {
+  start-process "screen" -ArgumentList "-S agent -X quit" -wait
+  start-process "agent-screen"
+ }
+    
 ##GPU Count & Miner Type
 $Type | Foreach {
 if($_ -eq "NVIDIA1"){
@@ -382,13 +389,6 @@ $LogGPUS = $Count.Substring(0,$Count.Length-1)
 ##Reset-Old Stats
 if(Test-Path "Stats"){Get-ChildItemContent "Stats" | ForEach {Set-Stat $_.Name $_.Content.Week}}
 
-##Restart Agent
-if($HiveOS -eq "Yes")
- {
-  start-process "screen" -ArgumentList "-S agent -X quit" -wait
-  start-process "agent-screen"
- }
-    
 ##Logo
 Write-Host "
                                                                                      BEWARE OF THE
