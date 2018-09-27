@@ -137,10 +137,10 @@ SWARM focuses on quality versus quantity, from profit data, miner implementation
 ```
 nicehash
 miningpoolhub (mph)
+nlpool.nl
 zergpool_coin
 zergpool_algo
-blockmasters_algo
-blockmasters_coin
+blockmasters
 starpool
 ahashpool
 blazepool
@@ -164,9 +164,10 @@ JayDDee (CPU)
 SGminer-Phi2 (AMD)
 Cryptozeny (ARM Support)(CPU
 LyclMiner (expirmental) (AMD)
+lolMiner (AMD)
 Sgminer-kl (AMD)
 Sgminer-Hex (AMD)
-tdxminer (AMD)
+teamredminer (AMD)
 ```
 
 Simple Install Instructions (HIVEOS):
