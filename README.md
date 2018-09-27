@@ -58,7 +58,7 @@ SWARM focuses on quality versus quantity, from profit data, miner implementation
 
 -Hashrates monitoring via logging for miners that require it.
 
--New miners than HiveOS.
+-Latest miners, including HiveOS custom miners.
 
 -Strong support via discord. Users with rig setups of 100s of GPU's are using and troubleshooting as updates are released.
 
