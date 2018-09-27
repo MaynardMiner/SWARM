@@ -920,10 +920,12 @@ if($CoinMiners -ne $null)
    }
   }
   else
-   { 
+   {
     $Miners = $CoinMiners | Where Profit -lt $Threshold
     $BestAlgoMiners_Combo | foreach {$Miners += $_}
    }
+
+
 
   $ActiveMinerPrograms | ForEach {$Miners | Where Path -EQ $_.Path | Where Arguments -EQ $_.Arguments | ForEach {$_.Profit_Bias = $_.Profit}}
 
@@ -1363,6 +1365,7 @@ $ActiveMinerPrograms | Foreach {
     if($null -ne $_.Password){$LaunchCodes.Add("Password","$($_.Password)")}
     if($null -ne $_.DeviceCall){$LaunchCodes.Add("DeviceCall",$_.DeviceCall)}
     if($null -ne $_.Devices){$LaunchCodes.Add("Devices",$_.Devices)}
+    if($null -ne $_.JsonFile){$LaunchCodes.Add("jsonfile",$_.JsonFile)}  
 
     Start-LaunchCode @LaunchCodes
 

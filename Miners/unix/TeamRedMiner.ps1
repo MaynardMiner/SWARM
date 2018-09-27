@@ -1,6 +1,6 @@
-$Path = "$($amd.tdxminer.path1)"
-$Uri = "$($amd.tdxminer.uri)"
-$MinerName = "$($amd.tdxminer.minername)"
+$Path = "$($amd.teamredminer.path1)"
+$Uri = "$($amd.teamredminer.uri)"
+$MinerName = "$($amd.teamredminer.minername)"
 
 $Build = "Tar"
 
@@ -12,6 +12,7 @@ $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 
 $Commands = [PSCustomObject]@{
 "lyra2z" = ''
+"phi2" = ''
 }
 
 
