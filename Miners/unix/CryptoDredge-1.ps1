@@ -26,8 +26,8 @@ $Commands = [PSCustomObject]@{
 "stellite" = ''
 "lbk3" = ''
 "phi2" = ''
-        
-        }
+"cryptonightsaber" = ''        
+}
         
 if($CoinAlgo -eq $null)
 {
