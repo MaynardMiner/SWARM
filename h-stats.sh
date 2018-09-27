@@ -52,8 +52,7 @@ function miner_stats {
 					--arg algo "$algo" \
 					'{$hs, $hs_units, $temp, $fan, $uptime, ar: [$ac, $rj], $algo}')
 			
-			truncate -s 0 $mydir/Build/Unix/Hive/hivestats.sh
-		;;
+			;;
 		tdxminer) 
 				tdkhs=(`echo "$mystats" | grep 'GPU=' | sed -e 's/.*=//'`)
 				algo=`echo "$mystats" | grep -m1 'ALGO=' | sed -e 's/.*=//'`
@@ -72,8 +71,6 @@ function miner_stats {
 					--arg ac "$ac" --arg rj "$rj" \
 					--arg algo "$algo" \
 					'{$hs, $hs_units, $temp, $fan, $uptime, ar: [$ac, $rj], $algo}')
-
-            truncate -s 0 $mydir/Build/Unix/Hive/hivestats.sh
 
 			;;
 		lyclminer) 
@@ -95,8 +92,6 @@ function miner_stats {
 					--arg algo "$algo" \
 					'{$hs, $hs_units, $temp, $fan, $uptime, ar: [$ac, $rj], $algo}')
 
-			truncate -s 0 $mydir/Build/Unix/Hive/hivestats.sh
-
 			;;
 		cryptozeny) 
 				cpkhs=(`echo "$mystats" | grep 'GPU=' | sed -e 's/.*=//'`)
@@ -116,8 +111,6 @@ function miner_stats {
 					--arg ac "$ac" --arg rj "$rj" \
 					--arg algo "$algo" \
 					'{$hs, $hs_units, $temp, $fan, $uptime, ar: [$ac, $rj], $algo}')
-
-		truncate -s 0 $mydir/Build/Unix/Hive/hivestats.sh
 
 			;;
 		lolminer) 
@@ -139,8 +132,6 @@ function miner_stats {
 					--arg algo "$algo" \
 					'{$hs, $hs_units, $temp, $fan, $uptime, ar: [$ac, $rj], $algo}')
 
-			truncate -s 0 $mydir/Build/Unix/Hive/hivestats.sh
-
 			;;
 		lolamd) 
 				cpkhs=(`echo "$mystats" | grep 'GPU=' | sed -e 's/.*=//'`)
@@ -160,8 +151,6 @@ function miner_stats {
 					--arg ac "$ac" --arg rj "$rj" \
 					--arg algo "$algo" \
 					'{$hs, $hs_units, $temp, $fan, $uptime, ar: [$ac, $rj], $algo}')
-
-			truncate -s 0 $mydir/Build/Unix/Hive/hivestats.sh
 			;;
 		xmrstak) 
 				cpkhs=(`echo "$mystats" | grep 'GPU=' | sed -e 's/.*=//'`)
@@ -181,8 +170,6 @@ function miner_stats {
 					--arg ac "$ac" --arg rj "$rj" \
 					--arg algo "$algo" \
 					'{$hs, $hs_units, $temp, $fan, $uptime, ar: [$ac, $rj], $algo}')
-
-			truncate -s 0 $mydir/Build/Unix/Hive/hivestats.sh
 			;;		
 		claymore)
 			stats_raw=`echo '{"id":0,"jsonrpc":"2.0","method":"miner_getstat2"}' | nc -w $API_TIMEOUT localhost $myport | jq '.result'`
