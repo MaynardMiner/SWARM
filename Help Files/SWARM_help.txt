@@ -45,7 +45,7 @@ Argument          Options           Explanation
 		starpool,
 		blockmasters_algo,
                 blockmasters_coin
-                Nlpool]
+                nlpool_algo]
 
 -Wallet1      [Wallet Address]      Address of your wallet. By default MM.Hash assumes it to be BTC.
                                     See Advanced arguments to change that.
