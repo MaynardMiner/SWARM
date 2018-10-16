@@ -1,0 +1,443 @@
+Arguments & Explanations:
+
+                   -Simple Arguments-
+
+       These arguments must be specified To Run Miner
+
+Argument          Options           Explanation
+
+-StatsInterval   1-10000           Expression is in seconds. This is time required for miner apps to run
+                                    before miner write/re-writes benchmarking. This is not be confused 
+                                    with -Interval argument, which is used for when miner begins swithing 
+                                    process. leave 1 if you want dynamic benchmarking, and for initial 
+                                    benchmarking. 1000 for more smoother benchmarking. 10000 to disable 
+                                    benchmarking altogether.
+
+-Currency          [Any]            Fiat Currency Of Your Choice. This is used to calculated your 
+                                    profit/day. Only currencies on cryptocompare will work. Default
+                                    is USD
+
+-CoinExchange      [Any]            Coin Symbol Of Your Wallet (Will only work for coins on cryptocompare).
+                                    This will calculate the coin of your choice profit/day. Good if you 
+                                    are mining a coin other than BTC. If not, leave BTC or LTC to see 
+                                    hash exchange rates. Default is LTC
+
+-Interval         [1-1000]          Expression is in seconds. Time before miner begins checking pools for 
+                                    pricing. Ideal target goal should be miner windows close/open every 
+                                    5 minutes. Slower cpus may need to fine tune due to the length of time
+                                    needed to search pools and find most profitable coin/algo. Defaut is 300
+
+-Location       [US,EUROPE,ASIA]    Locations of pools you wish to mine from, for pools that have multiple
+                                    Locations to choose from. Default is US
+
+-Auto_Coin     ["Yes" or "No"]      Zergpool will mine by coin-switching if set to Yes. If set to No,
+				    it will switch by the algorithm. Will only mine coins that can be
+				    mined via mc= argument. Default is Yes.
+                                                            
+-Poolname       [MPH,               Current Pools MM.Hash can mine from. Omit or add as desire. can
+                zergpool_coin,      only use these pools currently. Default is zergpool_algo,
+		zergpool_algo,      zergpool_coin
+                nicehash,  
+                phiphipool,
+                hashrefinery,  
+                blazepool,
+                ahashpool,
+		starpool,
+		blockmasters_algo,
+                blockmasters_coin
+                Nlpool]
+
+-Wallet1      [Wallet Address]      Address of your wallet. By default MM.Hash assumes it to be BTC.
+                                    See Advanced arguments to change that.
+
+-PasswordCurrency1  [Symbol]        Symbol of your wallet address, specifically for Wallet1. Most pools
+                                    only accept BTC for auto-exchange. See pools for options.                                  
+
+
+-Type         [CPU,                 Device groups you wish to mine with. Nvidia has three groups in case
+               NVIDIA1,             you wish to divide your GPU devices into seperate groups to assist in
+               NVIDIA2,             benchmarking, or to prevent entire miner from becoming inoperable if
+               NVIDIA3              one gpu fails. Currently only 1 AMD group supported.
+               AMD1]
+
+-Delay         [0-100000]           Expressed in seconds. When MM.Hash closes miners, to prevent BSOD or
+                                    Crashing, MM.Hash delays the openining of new miner windows momentarily.
+                                    By default, the delay is set to 1 second. Adding the delay argument
+                                    can allow you to increase the delay time before openining new miners,
+                                    which can give your gpu's a 'cooldown' time if you desire that preference.
+
+-Benchmark     [0-100000]           Expressed in seconds. Default 0. Sets specific interval time for when coin 
+				    is in benchmark mode. Can be used for faster benchmarking. When coin has
+				    a set hashrate- Miner will defer to time expressed in -Interval parameter.
+				    
+
+***********************************************************************************************************
+***********************************************************************************************************
+***********************************************************************************************************
+
+                -Advanced Arguments-
+
+These arguments can be added for additional customization and options
+
+
+Argument            Options             Explanation
+
+-Favor_Coins  [Yes or No]	    Default is Yes. If Favor_Coins is set to Yes, SWARM will factor
+				    only coins into final profit equation if the pool is a coin pool.
+				    If Favor_Coins is set to No, SWARM will factor both api/currencies
+				    and api/status into final profit equation, meaning both coins and
+				    algorithms will be calculated. Note: The estimates between 
+				    api/currencies and api/status is asyncrounous in design and are
+				    calculated by yiimp differently. This means values will be different
+				    by yiimp design. See https://github.com/MaynardMiner/SWARM/wiki/FAQ	
+				    for more info on the subject.
+
+-Donate      [Percentage]           Percent you wish to donate daily to support further development. 
+                                    Miner remembers when you open or close, so it will not steal 
+                                    from you...However it only resets donation switch if miner 
+                                    hasn't ran for 24 hours. Default is .5
+
+-Proxy        [Address]             If mining by proxy, insert address here. This feature has not been
+                                    fully tested. Please report to Developer if you have issues so it
+                                    can be worked on. Default is '', which is off.
+
+-WattOMeter   [Yes or No]           This turns on the on the self-generated watt settings for SWARM.
+                                    Default is No. This will allow watts recorded for each algorithm
+                                    as a stat, and continues to be recorded with every switch.
+                                    This may not be stable in larger rigs.                         
+
+-Threshold     [.1 - 100000]	    Expressed in BTC/day. Default is .01. If the total daily profits of a
+				    particular algo/coin exceed the -Threshold argument, it will be removed
+				    from database calculation. This is to prevent mining on a particular
+		                    coin/algorithm in which the pool is having issues with. It only needs
+				    to be specified if you wish it to be different than .1 btc/day
+
+-HiveOS         [YES or No]         Default is "Yes". Specifies Unix version whether or not operating system
+                                    is HiveOS. HiveOS version operates slightly different that *nix version.
+
+-Cuda           [9.1 or 9.2]        Default is 9.1. Specifies Unix version which miners to use. HiveOS currently
+                                    is 9.1 by default. Therefor default is 9.1. If user intends to use 9.1 miners,
+                                    argument is not neccesary.
+
+-Update          [Yes or No]        Allows HiveOS remote update, which will transfer Default set to "No". Old
+                                    miner files/settings from previous version, then remove it for you. Pay
+                                    attention to releases and notes- Changes/additions to internal miner files
+                                    or settings (and previous version bug fixes) may get transferred in if you
+                                    attempt to perform remote update! Default changes based on miner version
+                                    updates, and whether or not it is safe to transfer files.
+
+-Stat_Coin	   [Live,		This will allow you to factor period average smoothing. 
+-Stat_Algo	    Minute_5,		By default everything is live pricing. This will allow you to
+		    Minute_10,		smooth out stat fluctuations if you so desired into the period 
+		    Hour,		specified. Essentially it will allow you choose whether or not 
+		    Day]		you want to base switching on price averages, or live...And if 
+					you choose price averages, what average to base it on.
+
+-CPUOnly	   [Yes or No]		For CPU only miners- This lets HiveOS know whether or not to
+					stat only CPU. Note: Some CPU miners will only send stats on
+					accepted shares, so this means that it can take a while for
+					HiveOS to recieve hashrate. MM.Hash internally pulls hashrates
+					from logs to benchmark fast.
+
+-CPUThreads	 [# of CPU threads]	By default HiveOS MM.Hash uses maximum threads. This option let
+					you limit the number of threads you wish to use if you are cpu
+					mining.
+
+-WorkerName          [Any]              Workname ID of Mining Pool Hub. Must use if you are using MPH 
+                                        pool. Must be specified along with -Poolname MPH. Go to Mining 
+                                        Pool Hub to create account and set up a worker.
+
+-Username            [Any]              Username ID of Mining Pool Hub. Must use if you are using MPH 
+                                        pool. Must be specified along with -Poolname MPH. Go to Mining
+                                        Pool Hub to create account and set up a username.
+
+-CPUWallet         [Address]            Wallet address for CPU. Must be specified and is required
+                                        when -Type CPU is used.
+
+-CPUcurrency       [Symbol]             Wallet symbol for CPUWallet. Must be specified and is required
+                                        when -Type CPU is used.                           
+
+-GPUDevices1     ['0,1,2,3,4' etc.]     GPU's used in device group one, as identified by driver.
+                                        GPUDevices1 will mine from Wallet1, PasswordCurrency1,
+                                        nicehash_wallet1, zergpool_wallet1, Zergpoolpassword1,
+                                        if -Type NVIDIA1 was specified
+
+-GPUDevices2     ['0,1,2,3,4' etc.]     GPU's used in device group one, as identified by driver.
+                                        GPUDevices2 will mine from Wallet2, PasswordCurrency2,
+                                        nicehash_wallet2, zergpool_wallet2, Zergpoolpassword2,
+                                        if -Type NVIDIA2 specified
+
+-GPUDevices3     ['0,1,2,3,4' etc.]     GPU's used in device group one, as identified by driver.
+                                        GPUDevices3 will mine from Wallet3, PasswordCurrency3,
+                                        nicehash_wallet3, zergpool_wallet3, Zergpoolpassword3,
+                                        if -Type NVIDIA3 specified
+
+-Wallet1           [Wallet Address]     Wallet address for NVIDIA1 group. Will be used when -Type NVIDIA1
+                                        is specified. Default is donate BTC address:
+                                        1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i
+
+-Wallet2           [Wallet Address]     Wallet address for NVIDIA2 group. Will be used when -Type NVIDIA2
+                                        is specified.
+
+-Wallet3           [Wallet Address]     Wallet address for NVIDIA3 group. Will be used when -Type NVIDIA3
+                                        is specified
+
+-PasswordCurrency1    [Any]             Coin symbol that matches wallet address for Wallet1. By default
+                                        it is BTC. Used when -Type NVIDIA1 is specified.
+
+-PasswordCurrency2    [Any]             Coin symbol that matches wallet address for Wallet2. By default
+                                        it is BTC. Used when -Type NVIDIA1 is specified.
+
+-PasswordCurrency3    [Any]             Coin symbol that matches wallet address for Wallet3. By default
+                                        it is BTC. Used when -Type NVIDIA1 is specified.                 
+
+-Nicehash_Wallet1    [Wallet Address]   Nicehash wallet address. Must be specified and used if -Poolname
+                                        nicehash is used in combination with Wallet1. 
+                                        Used when -Type NVIDIA1 is specified.
+
+-Nicehash_Wallet2    [Wallet Address]   Nicehash wallet address. Must be specified and used if -Poolname
+                                        nicehash is used in combination with Wallet2. 
+                                        Used when -Type NVIDIA2 is specified.
+
+-Nicehash_Wallet3    [Wallet Address]    Nicehash wallet address. Must be specified and used if -Poolname
+                                        nicehash is used in combination with Wallet3. 
+                                        Used when -Type NVIDIA3 is specified.
+
+-Nicehash_Fee        [1-100]            Expressed as percentage. This is the total fees the user wants to
+                                        have factored into nicehash profit calculation. This allows user
+                                        to fine tune profitability based on the variable rates and extra
+                                        fees associated with using the nicehash service. Default is 2.                     
+
+-ZergpoolWallet1    [Wallet Address]    Zergpool wallet adddress. Is used in combinatation of -Wallet1
+-BlockmastersWallet1                    argument. This will tell MM.Hash if it switches to zergpool
+-NlpoolWallet1                          to auto-exchange into a coin other than BTC. This only works
+                                        for zergpool currently. Used when -Type NVIDIA1 is specified.
+
+-ZergpoolWallet2    [Wallet Address]    Zergpool wallet adddress. Is used in combinatation of -Wallet2
+-BlockmastersWallet2                    argument. This will tell MM.Hash if it switches to zergpool
+-NlpoolWallet3                          to auto-exchange into a coin other than BTC. This only works
+                                        for zergpool currently. Used when -Type NVIDIA2 is specified.
+
+-ZergpoolWallet3    [Wallet Address]    Zergpool wallet address. Is used in combinatation of -Wallet1
+-BlockmastersWallet3                    argument. This will tell MM.Hash if it switches to zergpool
+-NlpoolWallet3                          to auto-exchange into a coin other than BTC. This only works
+                                        for zergpool currently. Used when -Type NVIDIA3 is specified.
+
+-Zergpoolpassword1      [Symbol]        Wallet address symbol of zergpool -ZergpoolWallet1. Is used
+-BlockmastersPassword1                  in combination of -PasswordCurrency1 argument. This will tell
+-NlpoolPassword1                        MM.Hash if it switches to zergpool- to use this coin symbol
+                                        in password arguments. Used when -Type NVIDIA1 is specified. 
+
+-Zergpoolpassword2     [Symbol]         Wallet address symbol of zergpool -ZergpoolWallet2. Is used
+-BlockmastersPassword2                  in combination of -PasswordCurrency1 argument. This will tell
+-NLpoolPassword2                        MM.Hash if it switches to zergpool- to use this coin symbol
+                                        in password arguments. Used when -Type NVIDIA2 is specified.
+					
+-Zergpoolpassword3      [Symbol]        Wallet address symbol of zergpool -ZergpoolWallet3. Is used
+-BlockmastersPassword3                  in combination of -PasswordCurrency3 argument. This will tell
+-NLpoolPassword3                        MM.Hash if it switches to zergpool- to use this coin symbol
+                                        in password arguments. Used when -Type NVIDIA3 is specified.
+							
+-CCDevices1   ['GTX1070ti#0,GTX1080#1'..  Device group 1 CCDevices. Used instead of -GPUDevices1, where
+                           or             the requirement of specifying individual GPUs for CCminer is
+                      '0,1,2,3'..   ]     required. Used if -Type NVIDIA1 is specified
+
+-CCDevices2    ['GTX1070ti#0,GTX1080#1'.. Device group 2 CCDevices. Used instead of -GPUDevices2, where
+                           or             the requirement of specifying individual GPUs for CCminer is
+                       '0,1,2,3'..  ]     required. Used if -Type NVIDIA2 is specified
+
+-CCDevices3   ['GTX1070ti#0,GTX1080#1'..  Device group 3 CCDevices. Used instead of -GPUDevices1, where
+                           or             the requirement of specifying individual GPUs for CCminer is
+                      '0,1,2,3'..   ]     required. Used if -Type NVIDIA3 is specified.
+
+-EWBFDevices1     ['0 1 2 3 4 5 6'..]   Device group 1 EWBFDevices. Used instead of -GPUDevices1, where
+                                        the requirement of specifying individual GPUs for EWBF is
+                                        required. Used if -Type NVIDIA1 is specified
+
+-EWBFDevices2    ['0 1 2 3 4 5 6'..]    Device group 2 EWBFDevices. Used instead of -GPUDevices2, where
+                                        the requirement of specifying individual GPUs for EWBF is
+                                        required. Used if -Type NVIDIA2 is specified
+
+-EWBFDevices3    ['0 1 2 3 4 5 6'..]    Device group 3 EWBFDevices. Used instead of -GPUDevices3, where
+                                        the requirement of specifying individual GPUs for EWBF is
+                                        required. Used if -Type NVIDIA3 is specified.
+
+-DSTMDevices1    ['0 1 2 3 4 5 6'..]    Device group 1 DSTMDevices. Used instead of -GPUDevices1, where
+                                        the requirement of specifying individual GPUs for DSTM is
+                                        required. Used if -Type NVIDIA1 is specified
+
+-DSTMDevices2    ['0 1 2 3 4 5 6'..]    Device group 2 DSTMDevices. Used instead of -GPUDevices2, where
+                                        the requirement of specifying individual GPUs for DSTM is
+                                        required. Used if -Type NVIDIA2 is specified
+
+-DSTMDevices3    ['0 1 2 3 4 5 6'..]    Device group 3 DSTMDevices. Used instead of -GPUDevices3, where
+                                        the requirement of specifying individual GPUs for DSTM is
+                                        required. Used if -Type NVIDIA3 is specified.
+
+-ClayDevices1   ['0123456789abcd'...]   Device group 1 ClayDevices. Used instead of -GPUDevices1, where
+					the requirement of specifying individual GPUs for Claymore is
+					required. Used if -Type NVIDIA1 is specified.
+
+-ClayDevices2   ['0123456789abcd'...]   Device group 2 ClayDevices. Used instead of -GPUDevices2, where
+					the requirement of specifying individual GPUs for Claymore is
+					required. Used if -Type NVIDIA2 is specified.
+
+-ClayDevices3   ['0123456789abcd'...]   Device group 3 ClayDevices. Used instead of -GPUDevices3, where
+					the requirement of specifying individual GPUs for Claymore is
+					required. Used if -Type NVIDIA3 is specified.
+
+
+-CUDevices1     ['0123456789abcd'...]   Device group 1 CUDevices. Used instead of -GPUDevices1, where
+					the requirement of specifying individual GPUs for Cuballoon is
+					required. Used if -Type NVIDIA1 is specified.
+
+-CUDevices2     ['0123456789abcd'...]   Device group 2 CUDevices. Used instead of -GPUDevices2, where
+					the requirement of specifying individual GPUs for Cuballoon is
+					required. Used if -Type NVIDIA2 is specified.
+
+-CUDevices3     ['0123456789abcd'...]   Device group 3 CUDevices. Used instead of -GPUDevices3, where
+					the requirement of specifying individual GPUs for Cuballoon is
+					required. Used if -Type NVIDIA3 is specified.
+
+-RigName1          [Any]		Pool ID of device group 1. Does not work with Zergpool, which
+					mining coin. Using arguments beyond C=,MC= causes increase
+					chance of invalid shares or wallet registration failure.
+
+-RigName2          [Any]		Pool ID of device group 2. Does not work with Zergpool, which
+					mining coin. Using arguments beyond C=,MC= causes increase
+					chance of invalid shares or wallet registration failure.
+					
+-RigName3[         [Any]		Pool ID of device group 3 Does not work with Zergpool, which
+					mining coin. Using arguments beyond C=,MC= causes increase
+					chance of invalid shares or wallet registration failure.					
+
+
+
+******************************************************************************************************
+******************************** Examples of Use *****************************************************
+******************************************************************************************************
+
+Dividing Miner
+
+MM.Hash has the capability of dividing miner into seperate device groups. By default, 
+it is set to use Wallet1 & PasswordCurrency1. You can however choose to divide you miner, up to three 
+different groups. This is the commands/options you must add to do so:
+
+-Type
+ 
+You can specify more than 1 NVIDIA group to mine with. Options are NVIDIA1,NVIDIA2,NVIDIA3. In 
+order to be able to use the arguments for the device group below- You must add to "Type" argument. 
+To all three groups for example it would be:
+
+-Type NIVIDIA1,NVIDIA2,NVIDIA3
+
+To use 2 Groups, and Mine with CPU processor would be:
+
+-Type NVIDIA1,NVIDIA2,CPU
+
+For Type
+if (Type = NVIDIA1)
+
+-GPUDevices1 = Devices you are using for group for all miners.
+
+You can swap GPUDevices1 for miner specific device groups. Useful for larger mining rigs, where gpu 10+
+is expressed differently in each miner:
+
+-CCDevices1 = Devices you are using for group for CCminers. Example: '0,1,2,3'. This must match Type 
+"NIVIDIA1".
+-EWBFDevices1 = Devices you are using for group for EWBF. EWBF Files must be moved to Miners folder.
+-DSTMDevices1 = Devices you are using for group for DSTM.
+
+Lastly you must set your wallet/password info. Here are basic:
+
+-Wallet1 = Wallet for device group 1. BTC works for all pools. See pools to find out if other coins can 
+be used. Zergpool in example accepts RVN as exchange.
+-PasswordCurrency1 = Wallet Symbol (See Pool For More Details, Must Match Wallet)
+
+Example:
+
+-Type NVIDIA1 -CCDevices1 '0,1,2,3,4,5' -EWBFDevices1 '0 1 2 3 4 5' -Wallet1 1ERWEDAe234wehdshWe -PasswordCurrency1 BTC
+
+or
+
+-Type NVIDIA1 -GPUDevices1 '0,1,2,3,4,5' -Wallet1 1ERWEDAe234wehdshWe -PasswordCurrency1 BTC
+
+for Type
+if (Type = NVIDIA2)
+
+-CCDevices2 = Devices you are using for wallet group 2.   (NVIDIA2)
+-EWBFDevices2 = Devices you are using for wallet group 2.
+-Wallet2 = Wallet for device group 2
+-PasswordCurrency2 = Wallet Symbol
+
+If you are using -Type NVIDIA1,NVIDIA2 Example:
+
+-Type NVIDIA1,NVIDIA2 -CCDevices1 '0,1,2' -DSTMDevices1 '0 1 2' -ClayDevices1 '012' -Wallet1 1ERWEDAe234wehdshWe -PasswordCurrency1 BTC -Type NVIDIA2 -CCDevices2 '3,4,5' -DSTM Devices2 '3 4 5 ' -ClayDevices '345' -Wallet2 1aeEdrREglIT45EIWWheee -PasswordCurrency2 BTC
+
+-CCDevices3 = Same as above (group 2) for group 3   (NVIDIA3)
+-EWBFDevices = Same as above (group 2)
+-Wallet3 = Same as above (group 2)
+-PasswordCurrency3 = Same as above (group 2)
+**************************************************
+**************************************************
+Zergpool Wallet And Password
+
+Zergpool gives you the ability to exchange into more than BTC. These options will let you specify a 
+certain coin to exchange to for zergpool only. However, you will continue to mine other pools using BTC. 
+
+Rules:
+1.) Must be used with Wallet1,Wallet2,Wallet3  
+2.) Must be used with PasswordCurrency1, PasswordCurrency2, PasswordCurrency3
+3.) Must be use both Zergpoolpassword & ZergpoolWallet
+4.) Confirm with zergpool that coin can be auto-traded
+5.) Poolname zergpool must be specified
+
+-ZergpoolWallet1 = Wallet for device group 1.
+-ZergpoolWallet2 = Wallet for device group 2.
+-ZergpoolWallet3 = Wallet for device group 3..
+-Zergpoolpassword1 = Wallet Symbol for device group 1.
+-Zergpoolpassword2 = Wallet Symbol for device group 2.
+-Zergpoolpassword3 = Wallet Symbol for device group 3.
+
+Example of use:
+
+" .. -Poolname blazepool,zpool,nicehash,zergpool -Type NVIDIA1 -Wallet1 1ERWEDAe234wehdshWe -PasswordCurrency1 -ZergpoolWallet1 1RHS234GsasierGHT -Zergpoolpassword1 RVN"
+
+This will tell the miner to mine with BTC for all pools in default device group (device group 1) that 
+are not zergpool. However, when the miner switches to zergpool- It will use the Raven Wallet specified.
+***************************************
+***************************************
+Nicehash Mining
+
+Rules:
+1.) Must be used with Wallet1,Wallet2,Wallet3
+2.) Must be used with PasswordCurrency1, PasswordCurrency2, PasswordCurrency3
+3.) Must use only your Nicehash Wallet Address
+4.) Must specify nicehash fee you wish to factor into profitability. See nicehash for their fees.
+4.) -Poolname nicehash must be specified
+
+Example of use
+
+" ..  -Poolname zergpool,blazepool,zpool,nicehash -Type NVIDIA1 -Wallet1 1ERWEDAe234wehdshWe -PasswordCurrency1 -ZergpoolWallet1 1RHS234GsasierGHT -Zergpoolpassword1 RVN -Nicehash_Wallet1 2Rser43534sSDOIWERH -Nicehash_Fee 2"
+
+This will tell the miner to mine with BTC for all pools that require BTC. For zergpool, it will mine ravencoin. When nicehash is most profitable, it will mine on nicehash with the wallet specified.
+**************************
+**************************
+CPU Mining
+
+CPU mining setup is the same for GPU setup, except the arguments are different to specify CPU use.
+If you are using nicehash- It will defer to Nicehash_Wallet1
+If you are using zergpool- It will defer to CPU_Wallet
+
+-Type CPU   (Or -Type NVIDIA1,CPU if combining GPU and CPU mining)
+-CPUWallet = Wallet to be used for CPU
+-CPUcurrency = Password Argument for CPUWallet. Must Match CPU Wallet Address.
+
+Example of use;
+
+" ..-pool zergpool,nicehash -Type NVIDIA1,CPU -Wallet1 1ERWEDAe234wehdshWe -PasswordCurrency1 BTC -CPUWallet 1ERWEDAe234wehdshWe -Nicehash_Wallet1 2Rser43534sSDOIWERH -CPUcurrency BTC"
+
+This will tell miner to use NVIDIA1 with Wallet1 which is BTC, and to use same wallet for CPU which is 
+BTC. It will use CPU_Wallet when mining on zergpool, and -Nicehash_Wallet1 when mining on nicehash. 
+Both are BTC wallets.
+**************************

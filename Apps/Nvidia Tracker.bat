@@ -1,1 +1,0 @@
-powershell -version 5.0 -noexit -executionpolicy bypass -command "&.\Nvidia_Tracker.ps1" 

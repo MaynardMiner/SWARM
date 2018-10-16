@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-screen -r PIDInfo

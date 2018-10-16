@@ -1,0 +1,17 @@
+##DOSEAGE INSTRUCTIONS
+
+1. Unpack your pill (.zip on Windows, .gz on Linux);
+2. Run OhGodAnETHlargementPill (requires administrative rights on Windows, and root as Linux);
+3. Watch your hanging hashrate harden.
+
+##TROUBLESHOOTING
+
+Does your ETHlargement not work as expected? You're likely running an older memory revision. Here at OhGodACompany, we believe in promotiong a healthy mining lifestyle - that's why we've got a solution for our senior users, too!
+
+With the use of --revA, you can specify which device should be fed our senior solution. If, for example, GPU 0, 3 and 4 aren't the young studs you thought they were, feed them with the following commands:
+
+Windows: OhGodAnETHlargementPill.exe --revA 0,3,4
+Powershell: .\OhGodAnETHlargementPill.exe --revA 0,3,4
+Linux: ./OhGodAnETHlargementPill --revA 0,3,4
+
+Be sure to leave ETHlargement running in the background, so your NVIDIA noodle can *aldente*. 

@@ -4,13 +4,6 @@
 
 **Important Note:**
 
-Version information:
-
-a - Windows version.
-
-b - HiveOS/Unix version.
-
-Depending on which OS you use- Use the latest version release of that version.
 
 SWARM is a powershell/bash hyrbid miner that is meant to work in both windows and HiveOS mining systems. It has the capability of switching between mutliple pools, multiple algorithms based on the most profitable calucation. It can also perform coin profit switching as well, on pools that can do so. SWARM fully integrates with HiveOS, sending stats directly to HiveOS with little/no issues. The HiveOS compatibility means you can use all the features of HiveOS, and the dilligent effort HiveOS makes to bring bleeding edge technology to gpu and cpu mining. Working with foundation of HiveOS, mostly every aspect of SWARM can be viewed and modified remotely, from profit statistics, miner runtime, individual miner updates, to even oc profiling for algorithms (nvida only, amd coming soon).
 
@@ -36,7 +29,7 @@ SWARM focuses on quality versus quantity, from profit data, miner implementation
 
 -Every part of the code has a double-checking feature, to ensure real time monitoring.
 
--More hard drive integration.
+-More hard drive integration, less storage on RAM.
 
 -Latest miners, updated frequently.
 
@@ -58,19 +51,20 @@ SWARM focuses on quality versus quantity, from profit data, miner implementation
 
 -Hashrates monitoring via logging for miners that require it.
 
--Latest miners, including HiveOS custom miners.
+-New miners than HiveOS.
 
 -Strong support via discord. Users with rig setups of 100s of GPU's are using and troubleshooting as updates are released.
 
 
 
-**Algorithms** (As defined by pool and translation required by miners)
+**Algorithms** (As defined by poola and translation required by miners)
 
 ```
     "aergo": "aergo",
     "aeon": "aeon",
     "allium": "allium",
     "balloon": "balloon",
+    "bcd": "bcd",
     "bitcore": "bitcore",
     "blake": "blakecoin",
     "blakecoin": "blakecoin",
@@ -91,6 +85,7 @@ SWARM focuses on quality versus quantity, from profit data, miner implementation
     "equihash-btg": "equihash-btg",
     "ethash": "ethash",
     "groestl": "groestl",
+    "geek": "geek",
     "hex": "hex",
     "hmq1725": "hmq1725",
     "hodl": "hodl",
@@ -137,10 +132,10 @@ SWARM focuses on quality versus quantity, from profit data, miner implementation
 ```
 nicehash
 miningpoolhub (mph)
-nlpool.nl
 zergpool_coin
 zergpool_algo
-blockmasters
+blockmasters_algo
+blockmasters_coin
 starpool
 ahashpool
 blazepool
@@ -164,10 +159,9 @@ JayDDee (CPU)
 SGminer-Phi2 (AMD)
 Cryptozeny (ARM Support)(CPU
 LyclMiner (expirmental) (AMD)
-lolMiner (AMD)
 Sgminer-kl (AMD)
 Sgminer-Hex (AMD)
-teamredminer (AMD)
+tdxminer (AMD)
 ```
 
 Simple Install Instructions (HIVEOS):

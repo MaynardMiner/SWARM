@@ -6,4 +6,4 @@ sudo curl -o /etc/apt/sources.list.d/microsoft.list https://packages.microsoft.c
 sudo apt-get update
 sudo apt-get install -y powershell
 fi
-sudo pwsh -command "./Install.ps1"
+sudo pwsh -command "./install.ps1"
