@@ -40,7 +40,7 @@ $Zpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Selec
             Symbol = $Zpool_Algorithm
             Mining = $Zpool_Algorithm
             Algorithm = $Zpool_Algorithm
-            Price = $Stat.$StatLevel
+            Price = $Stat.$Stat_Algo
             StablePrice = $Stat.Week
             MarginOfError = $Stat.Fluctuation
             Protocol = "stratum+tcp"
