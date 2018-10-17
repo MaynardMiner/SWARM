@@ -17,45 +17,41 @@ SWARM focuses on quality versus quantity, from profit data, miner implementation
 
 -No Windows WDDM driver stack means faster spool up times compared to windows. Critical for profit switching.
 
--Algorithm specific OC Tuning (HIVEOS version).
+-Limited (but fairly useful) HiveOS integration for Windows.
+
+-Algorithm specific OC Tuning.
+
+-Watt calculations, manual or a built in resource Watt-O-Meter.
 
 -Backs up initial benchmarks, making updating or recovery a charm.
 
--Shows real time hashrates from miners, along with previous hashrates.
-
--HiveOS integration.
+-Shows real time hashrates from miners, along with previous hashrates. Background Agent for Windows.
 
 -Displays close to real-time monitoring, directly from miners to HiveOS website. Allows for HiveOS monitoring and graph data.
 
 -Every part of the code has a double-checking feature, to ensure real time monitoring.
 
--More hard drive integration, less storage on RAM.
-
 -Latest miners, updated frequently.
 
--Windows Miners Cuda 9.2
+-Windows Miners Cuda 9.2 & 10.
 
--HiveOS Miners Cuda 9.1 or 9.2.
+-HiveOS Miners Cuda 9.1, 9.2, and 10.
 
--HiveOS commands to open new windows to view stats, miner history, real-time data.
-
--Coin profit switching. Can be used with algorithm profit switching.
+-Additional HiveOS online commands to open new windows to view stats, miner history, real-time data.
 
 -Algorithm profit switching.
 
--Miner notifies users of benchmarking timeouts
+-Miner notifies users of benchmarking timeouts. Stores relevant information of failures to file.
 
 -Easy to setup.
 
--HiveOS version is dedicated to creating a solid environment that corrects itself if mistakes are made.
+-HiveOS version is dedicated to creating a solid environment that corrects itself if mistakes are made/works around zombie apps.
 
 -Hashrates monitoring via logging for miners that require it.
 
--New miners than HiveOS.
+-Supports miner not regularly available within HiveOS.
 
 -Strong support via discord. Users with rig setups of 100s of GPU's are using and troubleshooting as updates are released.
-
-
 
 **Algorithms** (As defined by poola and translation required by miners)
 
@@ -181,9 +177,9 @@ You may need to Rocket Launch/Reboot in order to have Agent restart and start re
 
 **Known Issues**
 
--Algorithms: Since HiveOS 2.0 update, algorithms are slow to show on HiveOS website. ```agent``` is clearly sending the algo, but it registers on HiveOS at a severe delay, messing up the stats on HiveOS. This is has been occurring since HiveOS 2.0, and it is website related. It cannot be fixed on my end.
+GPU mining within linux is an efficient process, but is also load intensive on system resources. Both SWARM and HiveOS website require data from drivers and miners, which can be strenous on larger mining rigs. There can be delays to recieve stats in this situation for either SWARM or HiveOS website. I am constantly working on ways to reduce this load.
 
--AMD: AMD miner are new to SWARM as of 1.4.0b. The dev isn't familiar with AMD, but is trying to learn quickly to get more miners and settings correct. Currently AMD is at a beta-level. If you use AMD or are familiar with AMD and want to see more developed- Please beta-test, join discord, and offer suggestions on miners/settings/improvements.
+Windows version, and its ability to contact and communicate its data is a relativly new design. If you use Windows version, please report your results or issues, and ways to better improve the system.
 
 **CONTACT**
 
@@ -201,8 +197,13 @@ Alexander
 Stoogie
 GravityMaster
 Zirillian
+JC
+NLPOOL.NL
+Crypto_Kp
+Castillojim
+Marcel
 
-For their help pointing out bugs and issues, and helping to keep program running well.
+For their help pointing out bugs and issues, and their suggestions, ideas, patience that helped make SWARM what it is today.
 
 Thanks To:
 
