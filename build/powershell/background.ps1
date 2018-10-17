@@ -681,6 +681,8 @@ if($response.result.command -eq "OK"){Write-Host "Hive Recieved Stats"}
 }
 catch{Write-Host "Failed To Contact HiveOS.Farm"}
 
+$response.result.exec
+
 if($response.result.command -ne "OK")
  {
   ##command exec

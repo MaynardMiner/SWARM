@@ -5,7 +5,7 @@
 **Important Note:**
 
 
-SWARM is a powershell/bash hyrbid miner that is meant to work in both windows and HiveOS mining systems. It has the capability of switching between mutliple pools, multiple algorithms based on the most profitable calucation. It can also perform coin profit switching as well, on pools that can do so. SWARM fully integrates with HiveOS, sending stats directly to HiveOS with little/no issues. The HiveOS compatibility means you can use all the features of HiveOS, and the dilligent effort HiveOS makes to bring bleeding edge technology to gpu and cpu mining. Working with foundation of HiveOS, mostly every aspect of SWARM can be viewed and modified remotely, from profit statistics, miner runtime, individual miner updates, to even oc profiling for algorithms (nvida only, amd coming soon).
+SWARM is a powershell/bash hyrbid miner that is meant to work in both Windows and HiveOS mining systems. It has the capability of switching between mutliple pools, multiple algorithms based on the most profitable calucation. SWARM fully integrates with HiveOS, sending stats directly to HiveOS with little/no issues. The HiveOS compatibility means you can use all the features of HiveOS, and the dilligent effort HiveOS makes to bring bleeding edge technology to gpu and cpu mining. Working with foundation of HiveOS, mostly every aspect of SWARM can be viewed and modified remotely, from profit statistics, miner runtime, individual miner updates, to even oc profiling for algorithms (nvida only, amd coming soon).
 
 I am a sole developer, and have multiple versions to operate in different OS's. I prioritize them by requests and activity, if you would like me to develop/improve a particular version- Just notify me, and I will prioritize it. Currently, the most popular, most used, and most recommended is the HiveOS version.
 
@@ -23,7 +23,7 @@ SWARM focuses on quality versus quantity, from profit data, miner implementation
 
 -Shows real time hashrates from miners, along with previous hashrates.
 
--HiveOS full integration.
+-HiveOS integration.
 
 -Displays close to real-time monitoring, directly from miners to HiveOS website. Allows for HiveOS monitoring and graph data.
 

@@ -1253,7 +1253,7 @@ if($_.BestMiner -eq $true)
           }
          else
           {
-           if((Test-Path ".\build\txt\nvidiapower.txt") -or (Test-path ".\build\txt\amdpower.txt"))
+           if((Test-Path ".\build\txt\nvidiapower.txt") -or (Test-path ".\build\txt\amdpower.txt") -or (Test-Path ".\build\txt\nvidiahive.txt"))
             {
              try{$GPUPower = Set-Power -MinerDevices $($_.Devices) -Command "stat" -PwrType $($_.Type)}catch{Write-Host "WattOMeter Failed" $GPUPower = 0}
             }

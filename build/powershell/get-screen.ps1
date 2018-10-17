@@ -13,7 +13,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 param(
         [Parameter(Mandatory=$false)]
-        [String]$Type
+        [String]$Type,
         [Parameter(Mandatory=$false)]
         [String]$platform
      )

@@ -5,6 +5,8 @@
     [Object]$Command
  )
 
+  Write-Host "$($command.result.exec)"
+
  if($command.result.command -eq "OK")
   {
    Write-Host "Hive Received Stats"
@@ -63,8 +65,8 @@
       "*benchmark*"
       {
         $type = "info"
-        $arguments = $data -replace ("benchmark ","")
         $data = "$($command.result.exec)"
+        $arguments = $data -replace ("benchmark ","")
         start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\benchmark.ps1 -name $arguments -platform windows""" -Wait
         Start-Sleep -S 5
         $getpayload = Get-Content ".\build\txt\benchcom.txt"
@@ -75,8 +77,8 @@
       "*get-screen*"
       {
         $type = "info"
-        $arguments = $data -replace ("get-screen ","")
         $data = "$($command.result.exec)"
+        $arguments = $data -replace ("get-screen ","")
         start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\get-screen.ps1 -Type $arguments -platform windows""" -Wait
         Start-Sleep -S 5
         $getpayload = Get-Content ".\build\txt\logcom.txt"

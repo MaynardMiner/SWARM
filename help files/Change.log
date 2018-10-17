@@ -510,7 +510,7 @@ activates watt detection at benchmark. Not stable for larger rigs!
 -fixed version command for miner updating.
 
 
-1.6.0
+1.6.1
 
 Disclaimers:
 -WattOMeter feature causes increased load. Use with discretion with multiple platform use.
@@ -529,7 +529,7 @@ msi afterburner will cause crashes.
 message developer.
 
 -Added first stage Windows HiveOS integration.
--Added stats,active,reboot, version to windows.
+-Added stats,active,reboot,benchmark,get-scren version to windows.
 -Added OC tuning to windows.
 -Added WattOMeter to windows (and watt calcs).
 -Miner now stats to HiveOS directly (windows).
