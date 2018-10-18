@@ -590,7 +590,14 @@ else
   for($i=0; $i -lt $GPUHashrates.PSObject.Properties.Value.Count; $i++){$HashRates[$i] = "GPU=$($GPUHashRates.$i)"}
   for($i=0; $i -lt $GPUFans.PSObject.Properties.Value.Count; $i++){$Fans[$i] = "FAN=$($GPUFans.$i)"}
   for($i=0; $i -lt $GPUTemps.PSObject.Properties.Value.Count; $i++){$Temps[$i] = "TEMP=$($GPUTemps.$i)"}
-  for($i=0; $i -lt $HashRates.count; $i++){if($HashRates[$i] -eq "GPU=0" -or $HashRates[$i] -eq "GPU="){$HashRates[$i] = "GPU=0.01"}}
+  for($i=0; $i -lt $HashRates.count; $i++)
+  {
+   if($HashRates[$i] -eq "GPU=0" -or $HashRates[$i] -eq "GPU=")
+    {
+     if($HS -eq "khs"){$HashRates[$i] = "GPU=0.01"}
+     elseif($HS -eq "hs"){$HashRates[$i] = "GPU=1"}
+    }
+   }
 
 $HIVE="
 $($HashRates -join "`n")
