@@ -176,7 +176,7 @@ if($Platforms -eq "windows")
     if(Test-Path $Logs){Clear-Content $Logs}
     $script = @()
     if($Miner.SetX -ne $null){$Miner.SetX | foreach {$script += $_}}
-    $script += ". C:\Users\Mayna\Desktop\MM.Test\build\powershell\launchcode.ps1;"
+    $script += ". $dir\build\powershell\launchcode.ps1;"
     $script += "`$host.ui.RawUI.WindowTitle = ""$($Miner.Name)"";"
     if($Miner.DeviceCall -eq "ewbf"){$script += "Invoke-Expression `'.\$($Miner.MinerName) $($MinerArguments) --log 3 --logfile $Logs`'"}
     $script += "Invoke-Expression `'.\$($Miner.MinerName) $($MinerArguments) | Tee-ObjectNoColor -FilePath ""$Logs"" -erroraction SilentlyContinue`'"

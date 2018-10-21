@@ -43,11 +43,13 @@ function Start-Background {
     [Parameter(Mandatory=$false)]
     [String]$HivePassword,
     [Parameter(Mandatory=$false)]
-    [String]$HiveMirror
+    [String]$HiveMirror,
+    [Parameter(Mandatory=$false)]
+    [String]$RejPercent
     )
 
     $BackgroundTimer = New-Object -TypeName System.Diagnostics.Stopwatch
-    $command = Start-Process "powershell" -WorkingDirectory $WorkingDir -ArgumentList "-noexit -executionpolicy bypass -windowstyle minimized -command `"&{`$host.ui.RawUI.WindowTitle = `'Background Agent`'; &.\Background.ps1 -WorkingDir `'$dir`' -Platforms `'$Platforms`' -HiveID `'$HiveID`' -HiveMirror $HiveMirror -HivePassword `'$HivePassword`'}`"" -PassThru | foreach {$_.Id} > ".\build\pid\background_pid.txt"
+    $command = Start-Process "powershell" -WorkingDirectory $WorkingDir -ArgumentList "-noexit -executionpolicy bypass -windowstyle minimized -command `"&{`$host.ui.RawUI.WindowTitle = `'Background Agent`'; &.\Background.ps1 -WorkingDir `'$dir`' -Platforms `'$Platforms`' -HiveID `'$HiveID`' -HiveMirror $HiveMirror -HivePassword `'$HivePassword`' -RejPercent $RejPercent}`"" -PassThru | foreach {$_.Id} > ".\build\pid\background_pid.txt"
     $BackgroundTimer.Restart()
     do
     {
