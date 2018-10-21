@@ -78,7 +78,7 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$GPUDevices3, ##Group 3 all miners
     [Parameter(Mandatory=$false)]
-    [Array]$PoolName = ("zpool","blockmasters","ahashpool"), 
+    [Array]$PoolName = ("nlpool"), 
     [Parameter(Mandatory=$false)]
     [Array]$Currency = ("USD"), #i.e. GBP,EUR,ZEC,ETH ect.
     [Parameter(Mandatory=$false)]
@@ -166,7 +166,9 @@ param(
     [Parameter(Mandatory=$false)]
     [string]$HiveMirror,
     [Parameter(Mandatory=$false)]
-    [string]$AMDPlatform = "1"
+    [string]$AMDPlatform = "1",
+    [Parameter(Mandatory=$false)]
+    [Double]$Rejections = 20
 )
 
 
@@ -407,7 +409,6 @@ $Watts = get-content ".\config\power\power.conf" | ConvertFrom-Json
 $MinerWatch = New-Object -TypeName System.Diagnostics.Stopwatch
 $TimeoutTime = [int]$Timeout*3600
 $DecayExponent = [int](((Get-Date)-$DecayStart).TotalSeconds/$DecayPeriod)
-$TimeDeviation = [int]($Deviation + 1.40)
 $InfoCheck = Get-Content ".\build\data\info.txt" -Force | Out-String
 $DonateCheck = Get-Content ".\build\data\system.txt" -Force | Out-String
 $LastRan = Get-Content ".\build\data\timetable.txt" -Force | Out-String
@@ -1214,43 +1215,44 @@ Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 $BestActiveMiners | foreach {
 if($_.BestMiner -eq $true)
  {
- if($null -eq $_.XProcess -or $_.XProcess.HasExited)
+  $Strike = $false
+  if($null -eq $_.XProcess -or $_.XProcess.HasExited)
   {
    $_.Status = "Failed"
    $_.WasBenchMarked = $False
+   $Strike = $true
   }
   else
-   { 
+  { 
    if($TimeDeviation -ne 0)
+   {
+    $_.HashRate = 0
+    $_.WasBenchmarked = $False
+    $Miner_HashRates = Get-HashRate -Type $_.Type
+    $_.HashRate = $Miner_HashRates
+    $WasActive = [math]::Round(((Get-Date)-$_.XProcess.StartTime).TotalSeconds)
+    if($WasActive -ge $StatsInterval)
     {
-     $_.HashRate = 0
-     $_.WasBenchmarked = $False
-     $Miner_HashRates = Get-HashRate -Type $_.Type
-     $_.Timeout = 0
-     $_.HashRate = $Miner_HashRates
-     $WasActive = [math]::Round(((Get-Date)-$_.XProcess.StartTime).TotalSeconds)
-     if($WasActive -ge $StatsInterval)
-      {
-	     Write-Host "$($_.Name) $($_.Coins) Was Active for $WasActive Seconds"
-	     Write-Host "Attempting to record hashrate for $($_.Name) $($_.Coins)" -foregroundcolor "Cyan"
-       for($i=0; $i -lt 4; $i++)
+	   Write-Host "$($_.Name) $($_.Coins) Was Active for $WasActive Seconds"
+	   Write-Host "Attempting to record hashrate for $($_.Name) $($_.Coins)" -foregroundcolor "Cyan"
+     for($i=0; $i -lt 4; $i++)
+     {
+      if($_.WasBenchmarked -eq $False)
+       {
+        $HashRateFilePath = Join-Path ".\stats" "$($_.Name)_$($_.Algo)_hashrate.txt"
+        $PowerFilePath = Join-Path ".\stats" "$($_.Name)_$($_.Algo)_power.txt"
+        $NewHashrateFilePath = Join-Path ".\backup" "$($_.Name)_$($_.Algo)_hashrate.txt"
+        $NewPowerFilePath = Join-Path ".\backup" "$($_.Name)_$($_.Algo)_power.txt"
+        if(-not (Test-Path "backup")){New-Item "backup" -ItemType "directory" | Out-Null}
+        Write-Host "$($_.Name) $($_.Coins) Starting Bench"
+        if($null -eq $Miner_HashRates -or $Miner_HashRates -eq 0)
         {
-        if($_.WasBenchmarked -eq $False)
-         {
-         if(-not (Test-Path "backup")){New-Item "backup" -ItemType "directory" | Out-Null}
-         Write-Host "$($_.Name) $($_.Coins) Starting Bench"
-         $HashRateFilePath = Join-Path ".\stats" "$($_.Name)_$($_.Algo)_hashrate.txt"
-	       $PowerFilePath = Join-Path ".\stats" "$($_.Name)_$($_.Algo)_power.txt"
-         $NewHashrateFilePath = Join-Path ".\backup" "$($_.Name)_$($_.Algo)_hashrate.txt"
-         $NewPowerFilePath = Join-Path ".\backup" "$($_.Name)_$($_.Algo)_power.txt"
-         if($null -eq $Miner_HashRates -or $Miner_HashRates -eq 0)
-          {
-           $_.Timeout++
-           Write-Host "Stat Attempt Yielded 0" -Foregroundcolor Red
-           Start-Sleep -S .25
-           $GPUPower = 0
-           if($WattOMeter -eq "yes"){$Stat = Set-Stat -Name "$($_.Name)_$($_.Algo)_power" -Value $GPUPower}
-          }
+         $Strike = $true
+         Write-Host "Stat Attempt Yielded 0" -Foregroundcolor Red
+         Start-Sleep -S .25
+         $GPUPower = 0
+         if($WattOMeter -eq "yes"){$Stat = Set-Stat -Name "$($_.Name)_$($_.Algo)_power" -Value $GPUPower}
+        }
          else
           {
            if((Test-Path ".\build\txt\nvidiapower.txt") -or (Test-path ".\build\txt\amdpower.txt") -or (Test-Path ".\build\txt\nvidiahive.txt"))
@@ -1266,7 +1268,7 @@ if($_.BestMiner -eq $true)
            $ScreenCheck = "$($StatCheck | ConvertTo-Hash)"
            if($ScreenCheck -eq "0.00 PH" -or $null -eq $StatCheck)
             {
-             $_.Timeout++
+             $Strike = $true
              $_.WasBenchmarked = $False
              Write-Host "Stat Failed Write To File" -Foregroundcolor Red
             }
@@ -1282,33 +1284,61 @@ if($_.BestMiner -eq $true)
               }
              $_.WasBenchmarked = $True
 	           Write-Host "Stat Written" -foregroundcolor green
-             $_.Timeout = 0
              $_.Bad_Benchmark = 0
+             $Strike = $false
             } 
            }
           }
          }
-        }
+      ##Check For High Rejections
+      $RejectCheck = Join-Path ".\timeout" "$($_.Name)_$($_.Algo)_rejection.txt"
+      if(Test-Path $RejectCheck)
+       {
+        Write-Host "Rejection Are Too High" -ForegroundColor DarkRed
+        $_.Timeout++
+        $_.WasBenchmarked = $false
+        $Strike = $true
        }
       }
+     }
+    }
 		 
 
-if($_.Timeout -gt 2 -or $null -eq $_.XProcess -or $_.XProcess.HasExited)
+if($Strike -eq $true -or $null -eq $_.XProcess -or $_.XProcess.HasExited)
  {
   if($_.WasBenchmarked -eq $False)
    {
     if (-not (Test-Path ".\timeout")) {New-Item "timeout" -ItemType "directory" | Out-Null}
     $TimeoutFile = Join-Path ".\timeout" "$($_.Name)_$($_.Algo)_TIMEOUT.txt"
-    $HashRateFilePath = Join-Path ".\stats" "$($_.Name)_$($_.Algo)_hashRate.txt"
+    $HashRateFilePath = Join-Path ".\stats" "$($_.Name)_$($_.Algo)_hashrate.txt"
     $_.Bad_Benchmark++
     if(-not (Test-Path $TimeoutFile)){"$($_.Name) $($_.Coins) Hashrate Check Timed Out $($_.Bad_Benchmark) Times" | Set-Content ".\timeout\$($_.Name)_$($_.Algo)_TIMEOUT.txt" -Force}
     $_.WasBenchmarked = $True
     $_.Timeout = 0
     Write-Host "$($_.Name) $($_.Coins) Hashrate Check Timed Out $($_.Bad_Benchmark) Times- It Was Noted In Timeout Folder" -foregroundcolor "darkred"
-    if($_.Bad_Benchmark -ge 3)
+    if($_.Bad_Benchmark -eq 1)
      {
-      $Stat = Set-Stat -Name "$($_.Name)_$($_.Algo)_hashrate" -Value 0
-      Write-Host "Benchmarking Has Failed - Setting Stat To 0. Delete Stat In Stats Folder To Reset" -ForegroundColor DarkRed
+      if(test-path $HashRateFilePath){remove-item $HashRateFilePath -Force}
+      Write-Host "First Strike: There was issue with benchmarking." -ForegroundColor DarkRed
+     }
+     if($_.Bad_Benchmark -eq 2)
+     {
+      Write-Host "Strike Two: Benchmarking Has Failed - Prohibiting miner from pool" -ForegroundColor DarkRed
+      $NewPoolBlock = @()
+      if(Test-Path ".\timeout\pool_block.txt"){$GetPoolBlock = Get-Content ".\timeout\pool_block.txt" | ConvertFrom-Json}
+      $GetPoolBlock | foreach{$NewPoolBlock += $_}
+      $NewPoolBlock += $_
+      $NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block.txt" 
+     }
+     if($_.Bad_Benchmark -ge 3)
+     {
+      $NewAlgoBlock = @()
+      if(Test-Path ".\timeout\algo_block.txt"){$GetAlgoBlock = Get-Content ".\timeout\algo_block.txt" | ConvertFrom-Json}
+      $GetALgoBlock | foreach{$NewAgloBlock += $_}
+      $NewAlgoBlock += $_
+      $NewAlgoBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block.txt" 
+      Write-Host "Strike three: Benchmarking Has Failed - disabling miner" -ForegroundColor DarkRed
+      $_ | ConvertTo-Json | Set-Content ".\timeout\algo_block.txt"
      }
     }
    }

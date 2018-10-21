@@ -20,7 +20,7 @@ Write-Host '
                                                                       ███████║╚███╔███╔╝██║  ██║██║  ██║██║ ╚═╝ ██║              
                                                                       ╚══════╝ ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝ 
                                                                              Parental Discretion Is Advised 
-                                                                                    v1.6.1 Windows                                                                                                                            
+                                                                                    v1.6.2 Windows                                                                                                                            
                                                                       GitHub: https://Github.com/MaynardMiner/Swarm      
                                                                                                                     
                                                                                    SUDO APT-GET LAMBO 

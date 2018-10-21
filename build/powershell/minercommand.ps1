@@ -22,17 +22,36 @@ function Get-Miners {
         [Array]$Pools
     )
 
+
+if(Test-Path ".\timeout\pool_block.txt"){$GetPoolBlock = Get-Content ".\timeout\pool_block.txt" | ConvertFrom-Json}
+if(Test-Path ".\timeout\algo_block.txt"){$GetAlgoBlock = Get-Content ".\timeout\algo_block.txt" | ConvertFrom-Json}
+
 if($Platforms -eq "linux")
 {
-   $GetMiners = if(Test-Path "miners\linux"){Get-ChildItemContent "miners\linux" | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru} | 
+   $GetMiners = if(Test-Path "miners\linux"){Get-ChildItemContent "miners\linux" | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru} |
    Where {$Type.Count -eq 0 -or (Compare-Object $Type $_.Type -IncludeEqual -ExcludeDifferent | Measure).Count -gt 0}}
-   $GetMiners
 }
+
 if($Platforms -eq "windows")
 {
 $GetMiners = if(Test-Path "miners\windows"){Get-ChildItemContent "miners\windows" | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru} | 
 Where {$Type.Count -eq 0 -or (Compare-Object $Type $_.Type -IncludeEqual -ExcludeDifferent | Measure).Count -gt 0}}
-$GetMiners
 }
+
+$GetMiners | foreach {
+$miner = $_
+   
+$GetPoolBlock | foreach {
+if($_.Algo -eq $miner.Algo -and $_.Name -eq $miner.Name -and $_.Type -eq $miner.Type -and $_.MinerPool -eq $miner.MinerPool){ $miner | Add-Member "PoolBlock" "Yes"}
+}
+   
+$GetAlgoBlock | foreach {
+if($_.Algo -eq $miner.Algo -and $_.Name -eq $miner.Name -and $_.Type -eq $miner.Type){ $miner | Add-Member "AlgoBlock" "Yes"}
+ }
+}
+   
+$GetMiners = $GetMiners | Where PoolBlock -ne "Yes" | Where AlgoBlock -ne "Yes"
+
+$GetMiners
 
 }

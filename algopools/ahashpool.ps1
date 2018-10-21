@@ -1,8 +1,7 @@
 
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
- 
- 
- $ahashpool_Request = [PSCustomObject]@{} 
+
+$ahashpool_Request = [PSCustomObject]@{} 
  
    if($Poolname -eq $Name)
     {

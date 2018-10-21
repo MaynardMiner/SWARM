@@ -40,7 +40,6 @@ While($true)
       else
        {
          Write-Host "Closing SWARM" -foregroundcolor red
-         Start-Process "screen" -ArgumentList "-S miner -X quit"
          Start-Process "screen" -ArgumentList "-S NVIDIA1 -X quit"
          Start-Process "screen" -ArgumentList "-S NVIDIA2 -X quit"
          Start-Process "screen" -ArgumentList "-S NVIDIA3 -X quit"
@@ -56,7 +55,6 @@ While($true)
     else
      {
         Write-Host "Closing SWARM" -foregroundcolor red
-        Start-Process "screen" -ArgumentList "-S miner -X quit"
         Start-Process "screen" -ArgumentList "-S NVIDIA1 -X quit"
         Start-Process "screen" -ArgumentList "-S NVIDIA2 -X quit"
         Start-Process "screen" -ArgumentList "-S NVIDIA3 -X quit"

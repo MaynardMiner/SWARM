@@ -78,6 +78,7 @@ function Start-LaunchCode {
   ##Remove Old PID FIle
   $PIDMiners = "$($_.Type)"
   if(Test-Path ".\build\pid\*$PIDMiners*"){Remove-Item ".\build\pid\*$PIDMiners*" -Force}
+  if(Test-Path ".\build\*$($Miner.Type)*-hash.txt"){Clear-Content ".\build\*$($Miner.Type)*-hash.txt"}
 
 switch -WildCard ($Miner.Type)
  {

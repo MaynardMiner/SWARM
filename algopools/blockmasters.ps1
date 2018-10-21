@@ -1,7 +1,6 @@
 
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
- 
- 
+
  $blockpool_Request = [PSCustomObject]@{} 
  
   if($Poolname -eq $Name)

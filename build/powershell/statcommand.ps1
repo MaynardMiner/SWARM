@@ -26,19 +26,11 @@ $GetStats
 
 if($TimeOuts -eq "Yes")
  {
-  $GetStats = if(Test-Path "./stats"){Get-ChildItemContent "./stats"}
-  $GetStats | ForEach-Object{
-    if($_.Content.Live -eq 0)
-     {
-      $Removed = Join-Path "./stats" "$($_.Name).txt"
-      $Change = $($_.Name) -replace "hashrate","TIMEOUT"
-      if(Test-Path (Join-Path "./timeout" "$($Change).txt")){Remove-Item (Join-Path "./timeout" "$($Change).txt") -Force}
-	  Remove-Item $Removed -Force
-      Write-Host "$($_.Name) Hashrate and Timeout Notification was Removed"
-     }
-   }
-   Write-Host "Cleared Timeouts" -ForegroundColor Red
-}
+    if(Test-Path ".\timeouts"){Remove-Item ".\timeouts" -Force}
+    if(Test-Path "stats"){Get-ChildItemContent "stats" | ForEach {$GetStats | Add-Member $_.Name $_.Content}}
+    $GetStats
+    Write-Host "Cleared Timeouts" -ForegroundColor Red
+ }
 
 }
 

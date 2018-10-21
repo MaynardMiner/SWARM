@@ -1,7 +1,6 @@
 
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
- 
- 
+
  $blazepool_Request = [PSCustomObject]@{} 
  
   if($Poolname -eq $Name)

@@ -565,4 +565,33 @@ message developer.
 -zergpool removed.
 -benchmark command now remove power files for wattometer as well. (if using)
 
+1.6.2
+
+Disclaimers:
+
+CryptoDredge did not release a cuda 10.0 version of his miner
+only cuda 9.1 and 9.2. If you use -cuda 10 and want to use
+his new miner- You have to manually update.
+
+-New Argument -Rejections
+ Default is 20 (Do not need to specify if you like 20)
+ Rejections is the amount of % rejections in order to consider a bad benchmark/strike
+
+-New Strike system for benc
+ -strike 1: Notifications
+ -strike 2: Algorithm ban on said pool
+ -strike 3: Algorithm ban across all pools
+ -resets every [x] hours where [x] is -timeout argument
+
+-Ensure stats are cleared before each miner
+ -prevents cross stat contamination
+
+-Stats will default to 1.000 on HiveOS
+ -allows user to know miner is running,
+  but API is awaiting stats.
+
+-Watchdog does not closes down main program (hiveos)
+ -prevents accidental shutdown of new instance
+
+
 

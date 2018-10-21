@@ -24,6 +24,7 @@ $Commands = [PSCustomObject]@{
   "stellite" = ''
   "lbk3" = ''
   "phi2" = ''
+  "cnv2" = ''
   }
              
   $Difficulty = [PSCustomObject]@{
@@ -42,8 +43,9 @@ $Commands = [PSCustomObject]@{
   "stellite" = ''
   "lbk3" = ''
   "phi2" = ''
+  "cnv2" = ''
   }
-
+  
 if($CoinAlgo -eq $null)
  {
  $Commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {

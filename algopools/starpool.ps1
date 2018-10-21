@@ -1,7 +1,6 @@
 
-$Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
- 
- 
+$Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName
+
  $starpool_Request = [PSCustomObject]@{} 
  
   if($Poolname -eq $Name)

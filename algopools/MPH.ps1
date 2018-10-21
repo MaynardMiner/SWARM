@@ -1,3 +1,4 @@
+$Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 
 if($Poolname -eq $Name)
  {
@@ -14,8 +15,6 @@ if(-not $MiningPoolHub_Request.success)
     return
     Write-Host "Warning: SWARM Failed To Contact Mining Pool Hub."
 }
-
-$Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 
 $Locations = 'Europe', 'US', 'Asia'
 

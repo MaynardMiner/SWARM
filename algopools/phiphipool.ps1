@@ -1,7 +1,6 @@
 
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
  
- 
  $phiphipool_Request = [PSCustomObject]@{} 
 
  if($Poolname -eq $Name)

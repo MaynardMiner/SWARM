@@ -18,7 +18,7 @@ function Get-Pools {
     [Parameter(Mandatory=$true)]
     [Array]$Stats
   )
-
+  
 
 if($PoolType -eq "Algo")
  {

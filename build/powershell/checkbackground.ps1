@@ -22,7 +22,7 @@ if($Restart -eq $true)
   $bprocess = Get-Content $oldbackground
   if(Get-Process -id $bprocess -ErrorAction SilentlyContinue){Stop-Process -id $bprocess; remove-item $oldbackground}
   }
-  Start-Background -WorkingDir $pwsh -Dir $dir -Platforms $Platform -HiveID $HiveID -HiveMirror $HiveMirror -HivePassword $HivePassword
+  Start-Background -WorkingDir $pwsh -Dir $dir -Platforms $Platform -HiveID $HiveID -HiveMirror $HiveMirror -HivePassword $HivePassword -RejPercent $Rejections
   }
  elseif($Platforms -eq "linux")
   {
@@ -30,7 +30,7 @@ if($Restart -eq $true)
    Start-Sleep -S .25
    Start-Process "screen" -ArgumentList "-S background -d -m" -Wait
    Start-Sleep -S .25
-   Start-Process ".\build\bash\background.sh" -ArgumentList "background $dir $Platform $HiveOS" -Wait
+   Start-Process ".\build\bash\background.sh" -ArgumentList "background $dir $Platform $HiveOS $Rejections" -Wait
   }
  } 
 }
