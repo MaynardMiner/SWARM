@@ -70,6 +70,7 @@ SWARM focuses on quality versus quantity, from profit data, miner implementation
     "cryptonightheavy": "cryptonightheavy",
     "cryptonightmonero": "cryptonight",
     "cryptonightv7": "cryptonightv7",
+    "cryptonightv8": "cryptonightv8",
     "cryptonightsaber": "cryptonightsaber",
     "daggerhashimoto": "daggerhashimoto",
     "equihash": "equihash",
@@ -127,11 +128,8 @@ SWARM focuses on quality versus quantity, from profit data, miner implementation
 **Pools**
 ```
 nicehash
-miningpoolhub (mph)
-zergpool_coin
-zergpool_algo
-blockmasters_algo
-blockmasters_coin
+blockmasters
+nlpool
 starpool
 ahashpool
 blazepool
@@ -153,7 +151,6 @@ Dstm (NVIDIA)
 EWBF (NVIDIA)
 JayDDee (CPU)
 SGminer-Phi2 (AMD)
-Cryptozeny (ARM Support)(CPU
 LyclMiner (expirmental) (AMD)
 Sgminer-kl (AMD)
 Sgminer-Hex (AMD)
