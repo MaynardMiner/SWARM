@@ -122,7 +122,7 @@ Argument            Options             Explanation
 -HiveOS         [YES or No]         Default is "Yes". Specifies Unix version whether or not operating system
                                     is HiveOS. HiveOS version operates slightly different that *nix version.
 
--Cuda           [9.1 or 9.2]        Default is 9.1. Specifies Unix version which miners to use. HiveOS currently
+-Cuda           [9.1,9.2,10]        Default is 9.1. Specifies Unix version which miners to use. HiveOS currently
                                     is 9.1 by default. Therefor default is 9.1. If user intends to use 9.1 miners,
                                     argument is not neccesary.
 
@@ -207,34 +207,34 @@ Argument            Options             Explanation
                                         to fine tune profitability based on the variable rates and extra
                                         fees associated with using the nicehash service. Default is 2.                     
 
--ZergpoolWallet1    [Wallet Address]    Zergpool wallet adddress. Is used in combinatation of -Wallet1
--BlockmastersWallet1                    argument. This will tell MM.Hash if it switches to zergpool
--NlWallet1                          to auto-exchange into a coin other than BTC. This only works
-                                        for zergpool currently. Used when -Type NVIDIA1 is specified.
+-BlockmastersWallet1  [Wallet Address]    Pool wallet adddress. Is used in combinatation of -Wallet1
+-NlWallet1                                argument. This will tell SWARM if it switches to pool
+                                          to auto-exchange into a coin other than BTC.
+                                          Used when -Type NVIDIA1 is specified.
 
--ZergpoolWallet2    [Wallet Address]    Zergpool wallet adddress. Is used in combinatation of -Wallet2
--BlockmastersWallet2                    argument. This will tell MM.Hash if it switches to zergpool
--NlWallet3                          to auto-exchange into a coin other than BTC. This only works
-                                        for zergpool currently. Used when -Type NVIDIA2 is specified.
+-BlockmastersWallet2  [Wallet Address]    Pool wallet adddress. Is used in combinatation of -Wallet1
+-NlWallet2                                argument. This will tell SWARM if it switches to pool
+                                          to auto-exchange into a coin other than BTC.
+                                          Used when -Type NVIDIA2 is specified.
 
--ZergpoolWallet3    [Wallet Address]    Zergpool wallet address. Is used in combinatation of -Wallet1
--BlockmastersWallet3                    argument. This will tell MM.Hash if it switches to zergpool
--NlWallet3                          to auto-exchange into a coin other than BTC. This only works
-                                        for zergpool currently. Used when -Type NVIDIA3 is specified.
+-BlockmastersWallet3  [Wallet Address]    Pool wallet adddress. Is used in combinatation of -Wallet1
+-NlWallet3                                argument. This will tell SWARM if it switches to pool
+                                          to auto-exchange into a coin other than BTC.
+                                          Used when -Type NVIDIA2 is specified.
 
--Zergpoolpassword1      [Symbol]        Wallet address symbol of zergpool -ZergpoolWallet1. Is used
--BlockmastersPassword1                  in combination of -PasswordCurrency1 argument. This will tell
--NlPassword1                        MM.Hash if it switches to zergpool- to use this coin symbol
+-BlockmastersPassword1	 [Symbol]       Wallet address symbol of corresponding wallet. Is used
+-NlPassword1                            in combination of -PasswordCurrency1 argument. This will tell
+                                        SWARM if it switches to pool to use this coin symbol
                                         in password arguments. Used when -Type NVIDIA1 is specified. 
 
--Zergpoolpassword2     [Symbol]         Wallet address symbol of zergpool -ZergpoolWallet2. Is used
--BlockmastersPassword2                  in combination of -PasswordCurrency1 argument. This will tell
--NLPassword2                        MM.Hash if it switches to zergpool- to use this coin symbol
-                                        in password arguments. Used when -Type NVIDIA2 is specified.
+-BlockmastersPassword2	 [Symbol]       Wallet address symbol of corresponding wallet. Is used
+-NlPassword2                            in combination of -PasswordCurrency1 argument. This will tell
+                                        SWARM if it switches to pool to use this coin symbol
+                                        in password arguments. Used when -Type NVIDIA2 is specified. 
 					
--Zergpoolpassword3      [Symbol]        Wallet address symbol of zergpool -ZergpoolWallet3. Is used
--BlockmastersPassword3                  in combination of -PasswordCurrency3 argument. This will tell
--NLPassword3                        MM.Hash if it switches to zergpool- to use this coin symbol
+-BlockmastersPassword3	 [Symbol]       Wallet address symbol of corresponding wallet. Is used
+-NlPassword3                            in combination of -PasswordCurrency1 argument. This will tell
+                                        SWARM if it switches to pool to use this coin symbol
                                         in password arguments. Used when -Type NVIDIA3 is specified.
 
 -RigName1          [Any]		Pool ID of device group 1. Does not work with Zergpool, which
@@ -278,14 +278,6 @@ if (Type = NVIDIA1)
 
 -GPUDevices1 = Devices you are using for group for all miners.
 
-You can swap GPUDevices1 for miner specific device groups. Useful for larger mining rigs, where gpu 10+
-is expressed differently in each miner:
-
--CCDevices1 = Devices you are using for group for CCminers. Example: '0,1,2,3'. This must match Type 
-"NIVIDIA1".
--EWBFDevices1 = Devices you are using for group for EWBF. EWBF Files must be moved to Miners folder.
--DSTMDevices1 = Devices you are using for group for DSTM.
-
 Lastly you must set your wallet/password info. Here are basic:
 
 -Wallet1 = Wallet for device group 1. BTC works for all pools. See pools to find out if other coins can 
@@ -294,55 +286,46 @@ be used. Zergpool in example accepts RVN as exchange.
 
 Example:
 
--Type NVIDIA1 -CCDevices1 '0,1,2,3,4,5' -EWBFDevices1 '0 1 2 3 4 5' -Wallet1 1ERWEDAe234wehdshWe -PasswordCurrency1 BTC
-
-or
-
 -Type NVIDIA1 -GPUDevices1 '0,1,2,3,4,5' -Wallet1 1ERWEDAe234wehdshWe -PasswordCurrency1 BTC
 
 for Type
 if (Type = NVIDIA2)
 
--CCDevices2 = Devices you are using for wallet group 2.   (NVIDIA2)
--EWBFDevices2 = Devices you are using for wallet group 2.
 -Wallet2 = Wallet for device group 2
 -PasswordCurrency2 = Wallet Symbol
 
 If you are using -Type NVIDIA1,NVIDIA2 Example:
 
--Type NVIDIA1,NVIDIA2 -CCDevices1 '0,1,2' -DSTMDevices1 '0 1 2' -ClayDevices1 '012' -Wallet1 1ERWEDAe234wehdshWe -PasswordCurrency1 BTC -Type NVIDIA2 -CCDevices2 '3,4,5' -DSTM Devices2 '3 4 5 ' -ClayDevices '345' -Wallet2 1aeEdrREglIT45EIWWheee -PasswordCurrency2 BTC
+-Type NVIDIA1,NVIDIA2 -GPUDevices1 '0,1,2' -Wallet1 1ERWEDAe234wehdshWe -PasswordCurrency1 BTC -GPUDevices2 '3,4,5' -Wallet2 1aeEdrREglIT45EIWWheee -PasswordCurrency2 BTC
 
--CCDevices3 = Same as above (group 2) for group 3   (NVIDIA3)
--EWBFDevices = Same as above (group 2)
 -Wallet3 = Same as above (group 2)
 -PasswordCurrency3 = Same as above (group 2)
 **************************************************
 **************************************************
-Zergpool Wallet And Password
+Extra Wallet And Password
 
-Zergpool gives you the ability to exchange into more than BTC. These options will let you specify a 
-certain coin to exchange to for zergpool only. However, you will continue to mine other pools using BTC. 
+Some pools give you the ability to exchange into more than BTC. These options will let you specify a 
+certain coin to exchange when mining on these pools. However, you will continue to mine other pools using BTC. 
 
 Rules:
 1.) Must be used with Wallet1,Wallet2,Wallet3  
 2.) Must be used with PasswordCurrency1, PasswordCurrency2, PasswordCurrency3
-3.) Must be use both Zergpoolpassword & ZergpoolWallet
-4.) Confirm with zergpool that coin can be auto-traded
-5.) Poolname zergpool must be specified
+4.) Confirm with pool that coin can be auto-traded
+5.) Correct poolname must be specified
 
--ZergpoolWallet1 = Wallet for device group 1.
--ZergpoolWallet2 = Wallet for device group 2.
--ZergpoolWallet3 = Wallet for device group 3..
--Zergpoolpassword1 = Wallet Symbol for device group 1.
--Zergpoolpassword2 = Wallet Symbol for device group 2.
--Zergpoolpassword3 = Wallet Symbol for device group 3.
+-NLWallet1 = Wallet for device group 1.
+-NlWallet2 = Wallet for device group 2.
+-NlWallet3 = Wallet for device group 3..
+-Nlpassword1 = Wallet Symbol for device group 1.
+-Nlpassword2 = Wallet Symbol for device group 2.
+-Nlpassword3 = Wallet Symbol for device group 3.
 
 Example of use:
 
-" .. -Poolname blazepool,zpool,nicehash,zergpool -Type NVIDIA1 -Wallet1 1ERWEDAe234wehdshWe -PasswordCurrency1 -ZergpoolWallet1 1RHS234GsasierGHT -Zergpoolpassword1 RVN"
+" .. -Poolname blazepool,zpool,nicehash,nlpool -Type NVIDIA1 -Wallet1 1ERWEDAe234wehdshWe -PasswordCurrency1 BTC -NLWallet1 1RHS234GsasierGHT -NLpassword1 RVN"
 
 This will tell the miner to mine with BTC for all pools in default device group (device group 1) that 
-are not zergpool. However, when the miner switches to zergpool- It will use the Raven Wallet specified.
+are not zergpool. However, when the miner switches to nlpool- It will use the Raven Wallet specified.
 ***************************************
 ***************************************
 Nicehash Mining
@@ -356,16 +339,17 @@ Rules:
 
 Example of use
 
-" ..  -Poolname zergpool,blazepool,zpool,nicehash -Type NVIDIA1 -Wallet1 1ERWEDAe234wehdshWe -PasswordCurrency1 -ZergpoolWallet1 1RHS234GsasierGHT -Zergpoolpassword1 RVN -Nicehash_Wallet1 2Rser43534sSDOIWERH -Nicehash_Fee 2"
+" ..  -Poolname zergpool,blazepool,zpool,nicehash -Type NVIDIA1 -Wallet1 1ERWEDAe234wehdshWe -PasswordCurrency1 -NLWallet1 1RHS234GsasierGHT -NLpassword1 RVN -Nicehash_Wallet1 2Rser43534sSDOIWERH -Nicehash_Fee 2"
 
-This will tell the miner to mine with BTC for all pools that require BTC. For zergpool, it will mine ravencoin. When nicehash is most profitable, it will mine on nicehash with the wallet specified.
+This will tell the miner to mine with BTC for all pools that require BTC. For nlpool, it will mine ravencoin. When nicehash is most profitable, it will mine on nicehash with the wallet specified.
 **************************
 **************************
 CPU Mining
 
+-CPUThreads must be specified!
 CPU mining setup is the same for GPU setup, except the arguments are different to specify CPU use.
 If you are using nicehash- It will defer to Nicehash_Wallet1
-If you are using zergpool- It will defer to CPU_Wallet
+If you are using pool wallet- It will defer to CPU_Wallet
 
 -Type CPU   (Or -Type NVIDIA1,CPU if combining GPU and CPU mining)
 -CPUWallet = Wallet to be used for CPU
@@ -373,7 +357,7 @@ If you are using zergpool- It will defer to CPU_Wallet
 
 Example of use;
 
-" ..-pool zergpool,nicehash -Type NVIDIA1,CPU -Wallet1 1ERWEDAe234wehdshWe -PasswordCurrency1 BTC -CPUWallet 1ERWEDAe234wehdshWe -Nicehash_Wallet1 2Rser43534sSDOIWERH -CPUcurrency BTC"
+" ..-pool nlpool,nicehash -Type NVIDIA1,CPU -CPUThreads 3 -Wallet1 1ERWEDAe234wehdshWe -PasswordCurrency1 BTC -CPUWallet 1ERWEDAe234wehdshWe -Nicehash_Wallet1 2Rser43534sSDOIWERH -CPUcurrency BTC"
 
 This will tell miner to use NVIDIA1 with Wallet1 which is BTC, and to use same wallet for CPU which is 
 BTC. It will use CPU_Wallet when mining on zergpool, and -Nicehash_Wallet1 when mining on nicehash. 
