@@ -47,10 +47,6 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$nlWallet3 = '',  ##Group 3 Nicehash Wallet
     [Parameter(Mandatory=$false)]
-    [String]$UserName = "MaynardVII", ##MPH Username
-    [Parameter(Mandatory=$false)]
-    [String]$WorkerName = "Rig1",  ##MPH Workername
-    [Parameter(Mandatory=$false)]
     [String]$RigName1 = "MMHash",  ##ID=Rigname (Yiimp Pool) Group 1
     [Parameter(Mandatory=$false)]
     [String]$RigName2 = "MMHash",  ##ID=Rigname (Yiimp Pool) Group 2
