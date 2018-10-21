@@ -23,8 +23,20 @@ function Get-Miners {
     )
 
 
-if(Test-Path ".\timeout\pool_block.txt"){$GetPoolBlock = Get-Content ".\timeout\pool_block.txt" | ConvertFrom-Json}
-if(Test-Path ".\timeout\algo_block.txt"){$GetAlgoBlock = Get-Content ".\timeout\algo_block.txt" | ConvertFrom-Json}
+if(Test-Path ".\timeout\pool_block\pool_block.txt"){$GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json}
+if(Test-Path ".\timeout\algo_block\algo_block.txt"){$GetAlgoBlock = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json}
+
+if($GetPoolBlock -ne $null){
+ $GetPoolBlock | foreach {
+ Write-Host "Warning: Blocking $($_.Algo) on $($_.MinerPool) for $($_.Type)" -ForegroundColor Magenta
+ }
+}
+
+if($GetAlgoBlock -ne $null){
+ $GetAlgoBlock | foreach {
+ Write-Host "Warning: Blocking $($_.Algo) on all pools for $($_.Type)" -ForegroundColor Magenta
+ }
+}
 
 if($Platforms -eq "linux")
 {

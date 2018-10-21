@@ -22,5 +22,25 @@ Write-Host "Checking For $Name Bechmarks"
 if($Platform -eq "windows"){"Removed Hashrate files" | Out-File ".\build\txt\benchcom.txt"}
 if(Test-Path ".\stats\*$($Name)_hashrate.txt*"){Remove-Item ".\stats\*$($Name)_hashrate.txt*" -Force}
 if(Test-Path ".\stats\*$($Name)_power.txt*"){Remove-Item ".\stats\*$($Name)_power.txt*" -Force}
+if(Test-Path ".\timeout\pool_block\pool_block.txt")
+ {
+  $NewPoolBlock = @()
+  $GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json
+  $GetPoolBlock | foreach {
+  if($($_.Algo) -ne $Name){$NewPoolBlock += $_}
+  else{Write-Host "Found $($_.Algo) in Pool Block file"}
+  }  
+  $NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt"
+ }
+ if(Test-Path ".\timeout\algo_block\algo_block.txt")
+ {
+  $NewAlgoBlock = @()
+  $GetAlgoBlock = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json
+  $GetAlgoBlock | foreach {
+  if($_.Algo -ne $Name){$NewAlgoBlock += $_}
+  else{Write-Host "Found $($_.Algo) in Algo Block file"}
+  }
+  $NewAlgoBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block\algo_block.txt"
+ }
 Write-Host "Removed Hashrate files"
 if($Platform -eq "windows"){"Removed Hashrate files" | Out-File ".\build\txt\benchcom.txt"}

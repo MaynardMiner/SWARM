@@ -17,14 +17,13 @@ $Commands = [PSCustomObject]@{
   "neoscrypt" = ''
   "blake2s" = ''
   "skein" = ''
-  "cryptonightv7" = ''
   "cryptonightheavy" = ''
   "aeon" = ''
   "masari" = ''
   "stellite" = ''
   "lbk3" = ''
   "phi2" = ''
-  "cnv2" = ''
+  "cryptonightv8" = ''
   }
              
   $Difficulty = [PSCustomObject]@{
@@ -36,14 +35,13 @@ $Commands = [PSCustomObject]@{
   "neoscrypt" = ''
   "blake2s" = ''
   "skein" = ''
-  "cryptonightv7" = ''
   "cryptonightheavy" = ''
   "aeon" = ''
   "masari" = ''
   "stellite" = ''
   "lbk3" = ''
   "phi2" = ''
-  "cnv2" = ''
+  "cryptonightv8" = ''
   }
   
 if($CoinAlgo -eq $null)

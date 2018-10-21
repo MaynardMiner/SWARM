@@ -174,7 +174,7 @@ Get-ChildItem . -Recurse -Force | Out-Null
 if($Platform -eq "Windows"){$Platform = "windows"}
 if($Platform -eq "Linux"){$Platform = "linux"}
 
-if(-not (Test-Path ".\build\txt")){New-Item -Path ".\build" -Name "txt" -ItemType "directory"}
+if(-not (Test-Path ".\build\txt")){New-Item -Path ".\build" -Name "txt" -ItemType "directory" | Out-Null}
 
 . .\build\powershell\killall.ps1
 . .\build\powershell\startlog.ps1
@@ -795,10 +795,10 @@ if($_.BestMiner -eq $false)
     else
      {
       $_.Status = "Idle"
-      $PIDDate = "$($_.Instance)_Date.txt"
+      $PIDDate = ".\build\pid\$($_.Name)_$($_.Coins)_$($_.InstanceName)_date.txt"
       if(Test-path $PIDDate)
        {
-        $PIDDateFile = Get-Content $PIDDate -Force | Out-String
+        $PIDDateFile = Get-Content $PIDDate | Out-String
         $PIDTime = [DateTime]$PIDDateFile
         $_.Active += (Get-Date)-$PIDTime   
        }
@@ -818,7 +818,7 @@ if($_.BestMiner -eq $false)
      if($Platform -eq "windows"){$_.Xprocess = Start-LaunchCode -Platforms "windows"}
      elseif($Platform -eq "Linux"){$_.Xprocess = Start-LaunchCode -Platforms "linux"}
      $_.Instance = ".\build\pid\$($_.Type)-$($Instance)"
-     $PIDFile = "$($_.Instance)_pid.txt"
+     $PIDFile = "$($_.Name)_$($_.Coins)_$($_.InstanceName)_pid.txt"
      $Instance++
     }
     if($Restart -eq $true)
@@ -1024,7 +1024,7 @@ function Restart-Miner {
      if($Platform -eq "windows"){$_.Xprocess = Start-LaunchCode -Platforms "windows"}
      elseif($Platform -eq "Linux"){$_.Xprocess = Start-LaunchCode -Platforms "linux"}
      $_.Instance = ".\build\pid\$($_.Type)-$($Instance)"
-     $PIDFile = "$($_.Instance)_pid.txt"
+     $PIDFile = "$($_.Name)_$($_.Coins)_$($_.InstanceName)_pid.txt"
      $Instance++
     }
    
@@ -1281,7 +1281,6 @@ if($_.BestMiner -eq $true)
               }
              $_.WasBenchmarked = $True
 	           Write-Host "Stat Written" -foregroundcolor green
-             $_.Bad_Benchmark = 0
              $Strike = $false
             } 
            }
@@ -1291,7 +1290,7 @@ if($_.BestMiner -eq $true)
       $RejectCheck = Join-Path ".\timeout" "$($_.Name)_$($_.Algo)_rejection.txt"
       if(Test-Path $RejectCheck)
        {
-        Write-Host "Rejection Are Too High" -ForegroundColor DarkRed
+        Write-Host "Rejections Are Too High" -ForegroundColor DarkRed
         $_.Timeout++
         $_.WasBenchmarked = $false
         $Strike = $true
@@ -1299,6 +1298,9 @@ if($_.BestMiner -eq $true)
       }
      }
     }
+
+    if($Strike = $true){$_.Bad_Benchmark++}
+    else{$_.Bad_Benchmark = 0}
 		 
 
 if($Strike -eq $true -or $null -eq $_.XProcess -or $_.XProcess.HasExited)
@@ -1306,9 +1308,11 @@ if($Strike -eq $true -or $null -eq $_.XProcess -or $_.XProcess.HasExited)
   if($_.WasBenchmarked -eq $False)
    {
     if (-not (Test-Path ".\timeout")) {New-Item "timeout" -ItemType "directory" | Out-Null}
+    if (-not (Test-Path ".\timeout\pool_block")) {New-Item -Path ".\timeout" -Name "pool_block" -ItemType "directory" | Out-Null}
+    if (-not (Test-Path ".\timeout\algo_block")) {New-Item -Path ".\timeout" -Name "algo_block" -ItemType "directory" | Out-Null}
+    Start-Sleep -S .25
     $TimeoutFile = Join-Path ".\timeout" "$($_.Name)_$($_.Algo)_TIMEOUT.txt"
     $HashRateFilePath = Join-Path ".\stats" "$($_.Name)_$($_.Algo)_hashrate.txt"
-    $_.Bad_Benchmark++
     if(-not (Test-Path $TimeoutFile)){"$($_.Name) $($_.Coins) Hashrate Check Timed Out $($_.Bad_Benchmark) Times" | Set-Content ".\timeout\$($_.Name)_$($_.Algo)_TIMEOUT.txt" -Force}
     $_.WasBenchmarked = $True
     $_.Timeout = 0
@@ -1322,20 +1326,25 @@ if($Strike -eq $true -or $null -eq $_.XProcess -or $_.XProcess.HasExited)
      {
       Write-Host "Strike Two: Benchmarking Has Failed - Prohibiting miner from pool" -ForegroundColor DarkRed
       $NewPoolBlock = @()
-      if(Test-Path ".\timeout\pool_block.txt"){$GetPoolBlock = Get-Content ".\timeout\pool_block.txt" | ConvertFrom-Json}
-      $GetPoolBlock | foreach{$NewPoolBlock += $_}
+      if(test-path $HashRateFilePath){remove-item $HashRateFilePath -Force}
+      if(Test-Path ".\timeout\pool_block\pool_block.txt"){$GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json}
+      Start-Sleep -S 1
+      if($GetPoolBlock){$GetPoolBlock | foreach{$NewPoolBlock += $_}}
       $NewPoolBlock += $_
-      $NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block.txt" 
+      $NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt"
+      Start-Sleep -S 1
      }
      if($_.Bad_Benchmark -ge 3)
      {
-      $NewAlgoBlock = @()
-      if(Test-Path ".\timeout\algo_block.txt"){$GetAlgoBlock = Get-Content ".\timeout\algo_block.txt" | ConvertFrom-Json}
-      $GetALgoBlock | foreach{$NewAgloBlock += $_}
-      $NewAlgoBlock += $_
-      $NewAlgoBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block.txt" 
       Write-Host "Strike three: Benchmarking Has Failed - disabling miner" -ForegroundColor DarkRed
-      $_ | ConvertTo-Json | Set-Content ".\timeout\algo_block.txt"
+      $NewAlgoBlock = @()
+      if(test-path $HashRateFilePath){remove-item $HashRateFilePath -Force}
+      if(Test-Path ".\timeout\algo_block\algo_block.txt"){$GetAlgoBlock = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json}
+      Start-Sleep -S 1
+      if($GetPoolBlock){$GetAlgoBlock | foreach{$NewAlgoBlock += $_}}
+      $NewAlgoBlock += $_
+      $NewAlgoBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block\algo_block.txt" 
+      Start-Sleep -S 1
      }
     }
    }

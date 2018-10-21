@@ -272,13 +272,13 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
         Write-Host "Miner Port is $Port"
         Write-Host "Miner Devices is $Devices"
         try{$GetSummary = Get-TCP -Server $Server -Port $port -Message "summary"}catch{Write-Host "API summary TimedOut"}
-        try{$GetThreads = Get-TCP -Server $Server -Port $port -Message "threads"}catch{Write-Host "API threads TimedOut"}
         $GetKHS = $GetSummary -split ";" | Select-String -pattern '^KHS' | foreach {$_ -replace ("KHS=","")}
         $GetKHS = $GetKHS | % {iex $_}
         $RAW = 0
         $RAW += $GetKHS*1000
         $RAW | Set-Content ".\build\txt\$MinerType-hash.txt";
         $KHS += $GetKHS
+        try{$GetThreads = Get-TCP -Server $Server -Port $port -Message "threads"}catch{Write-Host "API threads TimedOut"}
         $Data = $GetThreads -split "\|"
         $Hash = $Data -split ";" | Select-String "KHS" | foreach {$_ -replace ("KHS=","")}
         for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Hash.Count -eq 1){$Hash}else{$Hash[$i]})}

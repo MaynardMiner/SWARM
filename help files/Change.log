@@ -574,10 +574,15 @@ only cuda 9.1 and 9.2. If you use -cuda 10 and want to use
 his new miner- You have to manually update.
 
 -New Argument -Rejections
- Default is 20 (Do not need to specify if you like 20)
- Rejections is the amount of % rejections in order to consider a bad benchmark/strike
+ -Default is 20 (Do not need to specify if you like 20)
+ -Rejections is the amount of % rejections in order to consider a bad benchmark/strike
+ -Only flaw to this system, is if rejections are too high: It deletes stat 
+  and forces benchmarking, so pool ban can be enforced.
+ -Higher the number, the lower chance of enforcement. 100 is maximum.
 
--New Strike system for benc
+-New Strike system for benchmarking
+ -miner no longer sets any stat to 0
+ -results in more accurate stats.
  -strike 1: Notifications
  -strike 2: Algorithm ban on said pool
  -strike 3: Algorithm ban across all pools
@@ -591,7 +596,10 @@ his new miner- You have to manually update.
   but API is awaiting stats.
 
 -Watchdog does not closes down main program (hiveos)
- -prevents accidental shutdown of new instance
+ -prevents shutdown of new restarted instance
 
-
+-Changed ccminer api
+ -reduces chances of timeouts.
+ -background first gets summary for total HashRates.
+ -background then tries to get threads.
 

@@ -1,0 +1,15 @@
+backup/
+bin/
+build/data/error.txt
+build/data/info.txt
+build/data/system.txt
+build/data/timetable.txt
+build/export/libhwloc.so.5
+build/export/libmicrohttpd.so.10
+build/pid/
+build/txt/
+logs/
+stats/
+timeout/
+x64/
+
