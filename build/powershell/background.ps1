@@ -375,12 +375,15 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
     }
    "cpuminer" 
     {
-    $CPUHS = "khs"
      Write-Host "Miner $MinerType is cpuminer api"
      Write-Host "Miner Port is $Port"
-     Write-Host "Miner Devices is $Devices"  
-     try{$GetCPUThreads = Get-TCP -Server $Server -Port $Port -Message "threads"}catch{Write-Host "API Threads TimedOut"}
+     Write-Host "Miner Devices is $Devices"
      try{$GetCPUSummary = Get-TCP -Server $Server -Port $Port -Message "summary"}catch{Write-Host "API Summary TimedOut"}
+     $CPUSUM = $GetCPUSummary -split ";" | Select-String "KHS=" | foreach {$_ -replace ("KHS=","")}
+     $CPURAW = 0
+     $CPURAW += [double]$CPUSUM*1000
+     $CPURAW | Set-Content ".\build\txt\$MinerType-hash.txt";
+     try{$GetCPUThreads = Get-TCP -Server $Server -Port $Port -Message "threads"}catch{Write-Host "API Threads TimedOut"}
      $Data = $GetCPUThreads -split "\|"
      $kilo = $false
      $KHash = $Data | Select-String "kH/s"
@@ -388,21 +391,18 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
      else{$Hash = $Data -split ";" | Select-String "H/s"; $kilo = $false}
      $Hash = $Hash | foreach {$_ -split "=" | Select -Last 1 }
      $J = $Hash | % {iex $_}
-     $CPURAW = 0
      $CPUHash = @()
      if($kilo -eq $true)
      {
       for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $CPUHashrates.$($GCount.$TypeS.$GPU) = $(if($J.Count -eq 1){$J}else{$J[$i]})}
-      $J |Foreach {$CPURAW += $_*1000}
-      $J |Foreach {$CPUKHS += $J}
+      $J |Foreach {$CPUKHS += $_}
+      $CPUHS = "khs"
      }
      else{
       for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $CPUHashrates.$($GCount.$TypeS.$GPU) = $(if($J.Count -eq 1){$J/1000}else{$J[$i]/1000})}
-      $J |Foreach {$CPURAW += $_}
       $J |Foreach {$CPUKHS += $_}
       $CPUHS = "hs"
      }
-     $CPURAW | Set-Content ".\build\txt\$MinerType-hash.txt";
      $CPUHashrates | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {$CPUHash += "CPU=$($CPUHashRates.$_)"}
      $CPUACC = $GetCPUSummary -split ";" | Select-String "ACC=" | foreach{$_ -replace ("ACC=","")}
      $CPUREJ = $GetCPUSummary -split ";" | Select-String "REJ=" | foreach{$_ -replace ("REJ=","")}
@@ -619,7 +619,7 @@ if($BackgroundTimer.Elapsed.TotalSeconds -gt 60)
   else{if(Test-Path ".\timeout\$($_.Name)_$($_.Algo)_rejection.txt"){Remove-Item ".\timeout\$($_.Name)_$($_.Algo)_rejection.txt" -Force}}
  }
 
-}catch{Write-Host "Warning: There Was An Error Getting Stats" -foreground Red}
+ }catch{Write-Host "Warning: There Was An Error Getting Stats" -foreground Red}
 }
 
 if($CPUOnly -eq $true)
@@ -673,7 +673,7 @@ HS=$HS
 $Agent="$HashRates KHS=$KHS ACC=$ACC REJ=$REJ $Fans $Temps UPTIME=$UPTIME"
 
 $Agent
-if($CPUKHS -ne $null){Write-Host "CPU=$CPUKHS"}
+if($CPUKHS -ne $null){Write-Host "CPU=$CPUSUM"}
 $Hive | Set-Content ".\build\bash\hivestats.sh"
 }
 
