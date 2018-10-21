@@ -6,7 +6,7 @@ $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty Ba
  if($Poolname -eq $Name)
   {
  try { 
-     $phiphipool_Request = Invoke-RestMethod "http://www.phi-phi-pool.com/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop 
+     $phiphipool_Request = Invoke-RestMethod "https://www.phi-phi-pool.com/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop 
  } 
  catch { 
      Write-Warning "SWARM Contacted ($Name) for a failed API check. " 
