@@ -409,6 +409,7 @@ $Watts = get-content ".\config\power\power.conf" | ConvertFrom-Json
 $MinerWatch = New-Object -TypeName System.Diagnostics.Stopwatch
 $TimeoutTime = [int]$Timeout*3600
 $DecayExponent = [int](((Get-Date)-$DecayStart).TotalSeconds/$DecayPeriod)
+$TimeDeviation = [int]($Deviation + 1.40)
 $InfoCheck = Get-Content ".\build\data\info.txt" -Force | Out-String
 $DonateCheck = Get-Content ".\build\data\system.txt" -Force | Out-String
 $LastRan = Get-Content ".\build\data\timetable.txt" -Force | Out-String
