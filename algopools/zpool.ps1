@@ -5,7 +5,8 @@ $Zpool_Request = [PSCustomObject]@{}
  
  if($Poolname -eq $Name)
   {
- try { 
+ try {
+     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
      $Zpool_Request = Invoke-RestMethod "http://www.zpool.ca/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop 
  } 
  catch { 

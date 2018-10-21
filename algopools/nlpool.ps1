@@ -8,6 +8,7 @@ $nlpoolAlgo_Request = [PSCustomObject]@{}
   if($Poolname -eq $Name)
    {
     try {
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
         $nlpoolAlgo_Request = Invoke-RestMethod "https://nlpool.nl/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop
     }
     catch {

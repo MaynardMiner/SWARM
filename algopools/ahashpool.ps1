@@ -5,7 +5,8 @@ $ahashpool_Request = [PSCustomObject]@{}
  
    if($Poolname -eq $Name)
     {
- try { 
+ try {
+     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
      $ahashpool_Request = Invoke-RestMethod "https://www.ahashpool.com/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop 
  } 
  catch { 
