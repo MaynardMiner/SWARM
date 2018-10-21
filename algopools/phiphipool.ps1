@@ -14,7 +14,7 @@ $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty Ba
  }
  
  if (($phiphipool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) { 
-     Write-Warning "SniffDog sniffed near ($Name) but ($Name) Pool API had no scent. " 
+     Write-Warning "SWARM sniffed near ($Name) but ($Name) Pool API had no scent. " 
      return 
  } 
   
