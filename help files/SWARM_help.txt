@@ -82,6 +82,13 @@ These arguments can be added for additional customization and options
 
 Argument            Options             Explanation
 
+-AMDPlatform	    [0-10]	    This is the OpenCL platform for AMD. Default is set to 1. If you
+				    have issues starting AMD, try 0. Some of the miners within SWARM
+				    have an argument you can run which will detect platform for you.
+
+-Rejections 	    [0-100]	    Default is 20. This the % of rejections required for SWARM to 
+				    consider background miner as timing out.
+
 -Favor_Coins  [Yes or No]	    Default is Yes. If Favor_Coins is set to Yes, SWARM will factor
 				    only coins into final profit equation if the pool is a coin pool.
 				    If Favor_Coins is set to No, SWARM will factor both api/currencies
@@ -143,14 +150,6 @@ Argument            Options             Explanation
 					you limit the number of threads you wish to use if you are cpu
 					mining.
 
--WorkerName          [Any]              Workname ID of Mining Pool Hub. Must use if you are using MPH 
-                                        pool. Must be specified along with -Poolname MPH. Go to Mining 
-                                        Pool Hub to create account and set up a worker.
-
--Username            [Any]              Username ID of Mining Pool Hub. Must use if you are using MPH 
-                                        pool. Must be specified along with -Poolname MPH. Go to Mining
-                                        Pool Hub to create account and set up a username.
-
 -CPUWallet         [Address]            Wallet address for CPU. Must be specified and is required
                                         when -Type CPU is used.
 
@@ -210,94 +209,33 @@ Argument            Options             Explanation
 
 -ZergpoolWallet1    [Wallet Address]    Zergpool wallet adddress. Is used in combinatation of -Wallet1
 -BlockmastersWallet1                    argument. This will tell MM.Hash if it switches to zergpool
--NlpoolWallet1                          to auto-exchange into a coin other than BTC. This only works
+-NlWallet1                          to auto-exchange into a coin other than BTC. This only works
                                         for zergpool currently. Used when -Type NVIDIA1 is specified.
 
 -ZergpoolWallet2    [Wallet Address]    Zergpool wallet adddress. Is used in combinatation of -Wallet2
 -BlockmastersWallet2                    argument. This will tell MM.Hash if it switches to zergpool
--NlpoolWallet3                          to auto-exchange into a coin other than BTC. This only works
+-NlWallet3                          to auto-exchange into a coin other than BTC. This only works
                                         for zergpool currently. Used when -Type NVIDIA2 is specified.
 
 -ZergpoolWallet3    [Wallet Address]    Zergpool wallet address. Is used in combinatation of -Wallet1
 -BlockmastersWallet3                    argument. This will tell MM.Hash if it switches to zergpool
--NlpoolWallet3                          to auto-exchange into a coin other than BTC. This only works
+-NlWallet3                          to auto-exchange into a coin other than BTC. This only works
                                         for zergpool currently. Used when -Type NVIDIA3 is specified.
 
 -Zergpoolpassword1      [Symbol]        Wallet address symbol of zergpool -ZergpoolWallet1. Is used
 -BlockmastersPassword1                  in combination of -PasswordCurrency1 argument. This will tell
--NlpoolPassword1                        MM.Hash if it switches to zergpool- to use this coin symbol
+-NlPassword1                        MM.Hash if it switches to zergpool- to use this coin symbol
                                         in password arguments. Used when -Type NVIDIA1 is specified. 
 
 -Zergpoolpassword2     [Symbol]         Wallet address symbol of zergpool -ZergpoolWallet2. Is used
 -BlockmastersPassword2                  in combination of -PasswordCurrency1 argument. This will tell
--NLpoolPassword2                        MM.Hash if it switches to zergpool- to use this coin symbol
+-NLPassword2                        MM.Hash if it switches to zergpool- to use this coin symbol
                                         in password arguments. Used when -Type NVIDIA2 is specified.
 					
 -Zergpoolpassword3      [Symbol]        Wallet address symbol of zergpool -ZergpoolWallet3. Is used
 -BlockmastersPassword3                  in combination of -PasswordCurrency3 argument. This will tell
--NLpoolPassword3                        MM.Hash if it switches to zergpool- to use this coin symbol
+-NLPassword3                        MM.Hash if it switches to zergpool- to use this coin symbol
                                         in password arguments. Used when -Type NVIDIA3 is specified.
-							
--CCDevices1   ['GTX1070ti#0,GTX1080#1'..  Device group 1 CCDevices. Used instead of -GPUDevices1, where
-                           or             the requirement of specifying individual GPUs for CCminer is
-                      '0,1,2,3'..   ]     required. Used if -Type NVIDIA1 is specified
-
--CCDevices2    ['GTX1070ti#0,GTX1080#1'.. Device group 2 CCDevices. Used instead of -GPUDevices2, where
-                           or             the requirement of specifying individual GPUs for CCminer is
-                       '0,1,2,3'..  ]     required. Used if -Type NVIDIA2 is specified
-
--CCDevices3   ['GTX1070ti#0,GTX1080#1'..  Device group 3 CCDevices. Used instead of -GPUDevices1, where
-                           or             the requirement of specifying individual GPUs for CCminer is
-                      '0,1,2,3'..   ]     required. Used if -Type NVIDIA3 is specified.
-
--EWBFDevices1     ['0 1 2 3 4 5 6'..]   Device group 1 EWBFDevices. Used instead of -GPUDevices1, where
-                                        the requirement of specifying individual GPUs for EWBF is
-                                        required. Used if -Type NVIDIA1 is specified
-
--EWBFDevices2    ['0 1 2 3 4 5 6'..]    Device group 2 EWBFDevices. Used instead of -GPUDevices2, where
-                                        the requirement of specifying individual GPUs for EWBF is
-                                        required. Used if -Type NVIDIA2 is specified
-
--EWBFDevices3    ['0 1 2 3 4 5 6'..]    Device group 3 EWBFDevices. Used instead of -GPUDevices3, where
-                                        the requirement of specifying individual GPUs for EWBF is
-                                        required. Used if -Type NVIDIA3 is specified.
-
--DSTMDevices1    ['0 1 2 3 4 5 6'..]    Device group 1 DSTMDevices. Used instead of -GPUDevices1, where
-                                        the requirement of specifying individual GPUs for DSTM is
-                                        required. Used if -Type NVIDIA1 is specified
-
--DSTMDevices2    ['0 1 2 3 4 5 6'..]    Device group 2 DSTMDevices. Used instead of -GPUDevices2, where
-                                        the requirement of specifying individual GPUs for DSTM is
-                                        required. Used if -Type NVIDIA2 is specified
-
--DSTMDevices3    ['0 1 2 3 4 5 6'..]    Device group 3 DSTMDevices. Used instead of -GPUDevices3, where
-                                        the requirement of specifying individual GPUs for DSTM is
-                                        required. Used if -Type NVIDIA3 is specified.
-
--ClayDevices1   ['0123456789abcd'...]   Device group 1 ClayDevices. Used instead of -GPUDevices1, where
-					the requirement of specifying individual GPUs for Claymore is
-					required. Used if -Type NVIDIA1 is specified.
-
--ClayDevices2   ['0123456789abcd'...]   Device group 2 ClayDevices. Used instead of -GPUDevices2, where
-					the requirement of specifying individual GPUs for Claymore is
-					required. Used if -Type NVIDIA2 is specified.
-
--ClayDevices3   ['0123456789abcd'...]   Device group 3 ClayDevices. Used instead of -GPUDevices3, where
-					the requirement of specifying individual GPUs for Claymore is
-					required. Used if -Type NVIDIA3 is specified.
-
-
--CUDevices1     ['0123456789abcd'...]   Device group 1 CUDevices. Used instead of -GPUDevices1, where
-					the requirement of specifying individual GPUs for Cuballoon is
-					required. Used if -Type NVIDIA1 is specified.
-
--CUDevices2     ['0123456789abcd'...]   Device group 2 CUDevices. Used instead of -GPUDevices2, where
-					the requirement of specifying individual GPUs for Cuballoon is
-					required. Used if -Type NVIDIA2 is specified.
-
--CUDevices3     ['0123456789abcd'...]   Device group 3 CUDevices. Used instead of -GPUDevices3, where
-					the requirement of specifying individual GPUs for Cuballoon is
-					required. Used if -Type NVIDIA3 is specified.
 
 -RigName1          [Any]		Pool ID of device group 1. Does not work with Zergpool, which
 					mining coin. Using arguments beyond C=,MC= causes increase
@@ -307,7 +245,7 @@ Argument            Options             Explanation
 					mining coin. Using arguments beyond C=,MC= causes increase
 					chance of invalid shares or wallet registration failure.
 					
--RigName3[         [Any]		Pool ID of device group 3 Does not work with Zergpool, which
+-RigName3          [Any]		Pool ID of device group 3 Does not work with Zergpool, which
 					mining coin. Using arguments beyond C=,MC= causes increase
 					chance of invalid shares or wallet registration failure.					
 
