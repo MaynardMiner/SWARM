@@ -567,39 +567,47 @@ message developer.
 
 1.6.2
 
+
+
 Disclaimers:
 
+Dagger does not work on NLPool- leaving it miner regardless in case it does. It's
+a good test for new timeout system.
+This is mainly update for NVIDIA, and small bug fixes. AMD update coming soon.
+Some miner files were changed, so was stat system. Probably ideal to fresh install.
 CryptoDredge did not release a cuda 10.0 version of his miner
 only cuda 9.1 and 9.2. If you use -cuda 10 and want to use
 his new miner- You have to manually update.
+CryptoDredge was updated.
+Cnv2 added for NVIDIA
+To reset bans- run benchmark [algorithm]
 
 -New Argument -Rejections
- -Default is 20 (Do not need to specify if you like 20)
- -Rejections is the amount of % rejections in order to consider a bad benchmark/strike
- -Only flaw to this system, is if rejections are too high: It deletes stat 
-  and forces benchmarking, so pool ban can be enforced.
- -Higher the number, the lower chance of enforcement. 100 is maximum.
+-Default is 20 (Do not need to specify if you like 20)
+-Rejections is the amount of % rejections in order to consider a bad benchmark/strike
+-Only flaw to this system, is if rejections are too high: It deletes stat
+and forces benchmarking, so pool ban can be enforced.
+-Higher the number, the lower chance of enforcement. 100 is maximum.
 
 -New Strike system for benchmarking
- -miner no longer sets any stat to 0
- -results in more accurate stats.
- -strike 1: Notifications
- -strike 2: Algorithm ban on said pool
- -strike 3: Algorithm ban across all pools
- -resets every [x] hours where [x] is -timeout argument
+-miner no longer sets any stat to 0
+-results in more accurate stats.
+-strike 1: Notifications
+-strike 2: Algorithm ban on said pool
+-strike 3: Algorithm ban across all pools
+-resets every [x] hours where [x] is -timeout argument
 
 -Ensure stats are cleared before each miner
- -prevents cross stat contamination
+-prevents cross stat contamination
 
 -Stats will default to 1.000 on HiveOS
- -allows user to know miner is running,
-  but API is awaiting stats.
+-allows user to know miner is running,
+but API is awaiting stats.
 
 -Watchdog does not closes down main program (hiveos)
- -prevents shutdown of new restarted instance
+-prevents shutdown of new restarted instance
 
 -Changed ccminer api
- -reduces chances of timeouts.
- -background first gets summary for total HashRates.
- -background then tries to get threads.
-
+-reduces chances of timeouts on SWARM.
+-background first gets summary for total HashRates.
+-background then tries to get threads.
