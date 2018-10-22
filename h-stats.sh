@@ -31,22 +31,22 @@ function miner_stats {
 	case $miner in
 
 		GPU)
-				cpkhs=(`echo "$mystats" | grep 'GPU=' | sed -e 's/.*=//'`)
-				cpfan=(`echo "$mystats" | grep 'FAN=' | sed -e 's/.*=//'`)
-				cptemp=(`echo "$mystats" | grep 'TEMP=' | sed -e 's/.*=//'`)
-				algo=`echo "$mystats" | grep -m1 'ALGO=' | sed -e 's/.*=//'`
-				local ac=`echo "$mystats" | grep -m1 'ACC=' | sed -e 's/.*=//'`
-				local rj=`echo "$mystats" | grep -m1 'REJ=' | sed -e 's/.*=//'`
-				uptime=`echo "$mystats" | grep -m1 'UPTIME=' | sed -e 's/.*=//'`
-				khs=`echo "$mystats" | grep -m1 'KHS=' | sed -e 's/.*=//'`
-				hs=`echo "$mystats" | grep -m1 'HS=' | sed -e 's/.*=//'`
+				cpkhs=(`echo "$mystats" | grep 'GPU=' | sed -e 's/.*=//' | tr -d '\r'`)
+				cpfan=(`echo "$mystats" | grep 'FAN=' | sed -e 's/.*=//' | tr -d '\r'`)
+				cptemp=(`echo "$mystats" | grep 'TEMP=' | sed -e 's/.*=//' | tr -d '\r'`)
+				algo=`echo "$mystats" | grep -m1 'ALGO=' | sed -e 's/.*=//' | tr -d '\r'`
+				local ac=`echo "$mystats" | grep -m1 'ACC=' | sed -e 's/.*=//' | tr -d '\r'`
+				local rj=`echo "$mystats" | grep -m1 'REJ=' | sed -e 's/.*=//' | tr -d '\r'`
+				uptime=`echo "$mystats" | grep -m1 'UPTIME=' | sed -e 's/.*=//' | tr -d '\r'`
+				khs=`echo "$mystats" | grep -m1 'KHS=' | sed -e 's/.*=//' | tr -d '\r'`
+				hs=`echo "$mystats" | grep -m1 'HSU=' | sed -e 's/.*=//' | tr -d '\r'`
 
 
 			stats=$(jq -n \
-				    --argjson hs "`echo ${cpkhs[@]} | tr " " "\n" | jq -cs '.'`" \
-					--arg hs_units $hs \
-				    --argjson temp "`echo ${cptemp[@]} | tr " " "\n" | jq -cs '.'`" \
-				    --argjson fan "`echo ${cpfan[@]} | tr " " "\n" | jq -cs '.'`"\
+				    --argjson hs "`echo "${cpkhs[@]}" | tr " " "\n" | jq -cs '.'`" \
+					--arg hs_units "$hs" \
+				    --argjson temp "`echo "${cptemp[@]}" | tr " " "\n" | jq -cs '.'`" \
+				    --argjson fan "`echo "${cpfan[@]}" | tr " " "\n" | jq -cs '.'`"\
 				     --arg uptime "$uptime", --arg algo "$algo" \
 					--arg ac "$ac" --arg rj "$rj" \
 					'{$hs, $hs_units, $temp, $fan, $uptime, ar: [$ac, $rj], $algo}')
