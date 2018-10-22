@@ -572,7 +572,7 @@ ALGO=$CPUALGO
 TEMP=$CPUTEMP
 FAN=$CPUFAN
 UPTIME=$CPUUPTIME
-HS=$CPUHS
+HSU=$CPUHS
 "
 $Hive
 $Hive | Set-Content ".\build\bash\hivestats.sh"
