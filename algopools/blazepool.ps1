@@ -6,7 +6,6 @@ $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty Ba
   if($Poolname -eq $Name)
    {
  try {
-     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
      $blazepool_Request = Invoke-RestMethod "http://api.blazepool.com/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop 
  } 
  catch { 

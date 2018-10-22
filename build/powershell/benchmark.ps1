@@ -27,20 +27,22 @@ if(Test-Path ".\timeout\pool_block\pool_block.txt")
   $NewPoolBlock = @()
   $GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json
   $GetPoolBlock | foreach {
-  if($($_.Algo) -ne $Name){$NewPoolBlock += $_}
+  if($($_.Coins) -ne $Name){$NewPoolBlock += $_}
   else{Write-Host "Found $($_.Algo) in Pool Block file"}
   }  
-  $NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt"
+  if($NewPoolBlock){$NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt"}
+  else{"" | Set-Content ".\timeout\pool_block\pool_block.txt"}
  }
  if(Test-Path ".\timeout\algo_block\algo_block.txt")
  {
   $NewAlgoBlock = @()
   $GetAlgoBlock = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json
   $GetAlgoBlock | foreach {
-  if($_.Algo -ne $Name){$NewAlgoBlock += $_}
+  if($($_.Coins) -ne $Name){$NewAlgoBlock += $_}
   else{Write-Host "Found $($_.Algo) in Algo Block file"}
   }
-  $NewAlgoBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block\algo_block.txt"
+  if($NewAlgoBlock){$NewAlgoBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block\algo_block.txt"}
+  else{"" | Set-Content ".\timeout\algo_block\algo_block.txt"}
  }
 Write-Host "Removed Hashrate files"
 if($Platform -eq "windows"){"Removed Hashrate files" | Out-File ".\build\txt\benchcom.txt"}

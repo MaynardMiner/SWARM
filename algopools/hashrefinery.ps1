@@ -7,7 +7,6 @@
    if($Poolname -eq $Name)
     {
  try {
-     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
      $Hashrefinery_Request = Invoke-RestMethod "http://pool.hashrefinery.com/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop 
  } 
  catch { 

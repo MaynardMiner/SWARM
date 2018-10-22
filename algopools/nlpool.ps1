@@ -8,7 +8,6 @@ $nlpoolAlgo_Request = [PSCustomObject]@{}
   if($Poolname -eq $Name)
    {
     try {
-        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
         $nlpoolAlgo_Request = Invoke-RestMethod "https://nlpool.nl/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop
     }
     catch {
@@ -21,8 +20,9 @@ $nlpoolAlgo_Request = [PSCustomObject]@{}
         return
      }
 
- $nlpoolAlgo_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name |ForEach-Object {
+ $nlpoolAlgo_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Where {$nlpoolAlgo_Request.$_.name -ne "yescrypt"} | Select-Object -ExpandProperty Name |ForEach-Object {
 
+        
         $nlpoolAlgo_Algorithm = Get-Algorithm $nlpoolAlgo_Request.$_.name
         $nlpoolAlgo_Host = "mine.nlpool.nl"
         $nlpoolAlgo_Port = $nlpoolAlgo_Request.$_.port

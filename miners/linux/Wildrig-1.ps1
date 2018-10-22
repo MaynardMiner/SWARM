@@ -21,6 +21,7 @@ $Commands = [PSCustomObject]@{
 "x16s" = ''
 "x16r" = ''
 "x17" = ''
+"bitcore" = ''
 }
 
 $Difficulty = [PSCustomObject]@{
@@ -36,6 +37,7 @@ $Difficulty = [PSCustomObject]@{
 "x16s" = ''
 "x16r" = ''
 "x17" = ''
+"bitcore" = ''
 }
 
 
