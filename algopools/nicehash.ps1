@@ -59,7 +59,7 @@ $nicehash_Request.result | Select-Object -ExpandProperty simplemultialgo | Where
             Symbol = $nicehash_Algorithm
             Mining = $nicehash_Algorithm
             Algorithm = $nicehash_Algorithm
-            Price = $Price
+            Price = $Stat.$Stat_Algo
             Fees = $nicehash_Fees
             StablePrice = $Stat.Week
             Protocol = "stratum+tcp"

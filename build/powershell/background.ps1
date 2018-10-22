@@ -606,7 +606,7 @@ ALGO=$ALGO
 $($Fans -join "`n")
 $($Temps -join "`n")
 UPTIME=$UPTIME
-HS=$HS
+HSU=$HS
 "
 
 $Agent="$HashRates KHS=$KHS ACC=$ACC REJ=$REJ $Fans $Temps UPTIME=$UPTIME"

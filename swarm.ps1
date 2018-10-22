@@ -950,7 +950,7 @@ function Get-MinerStatus {
 #Check For Bechmark
 $BenchmarkMode = $false
 $ActiveMinerPrograms | Foreach {
-if($null -eq (Get-Item ".\Stats\$($_.Name)_$($_.Algo)_HashRate.txt" -ErrorAction SilentlyContinue))
+if(-not (Test-Path ".\stats\$($_.Name)_$($_.Algo)_hashrate.txt"))
  {
   $BenchmarkMode = $true
  }
@@ -1210,9 +1210,9 @@ Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 
 ##Benchmarking/Timeout      
 $BestActiveMiners | foreach {
+$Strike = $false
 if($_.BestMiner -eq $true)
  {
-  $Strike = $false
   if($null -eq $_.XProcess -or $_.XProcess.HasExited)
   {
    $_.Status = "Failed"
@@ -1299,11 +1299,11 @@ if($_.BestMiner -eq $true)
      }
     }
 
-    if($Strike = $true){$_.Bad_Benchmark++}
-    else{$_.Bad_Benchmark = 0}
+  if($Strike -eq $true){$_.Bad_Benchmark++}
+  else{$_.Bad_Benchmark = 0}
 		 
 
-if($Strike -eq $true -or $null -eq $_.XProcess -or $_.XProcess.HasExited)
+if($Strike -eq $true)
  {
   if($_.WasBenchmarked -eq $False)
    {
