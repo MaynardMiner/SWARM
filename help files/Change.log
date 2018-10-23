@@ -611,3 +611,65 @@ but API is awaiting stats.
 -reduces chances of timeouts on SWARM.
 -background first gets summary for total HashRates.
 -background then tries to get threads.
+
+1.6.3
+
+-Improved Strikeout System
+ -Less chance of incorrect Strike
+ -fixed small Typos
+
+-hs_units
+  -fixed typo causing KHS to stat for hs_units
+  -Added truncate to remove \r at end
+
+-cryptonightv8
+  -xmr-stak updated
+
+-repaired download links
+  -fixed broken merges
+  -fixed broken typos
+  -fixed missed pushes
+
+-fixed cpu
+  -bubasik and jaydee stat diffently
+  -noticed differences and fixed
+
+-teamredminer
+  -upgraded
+  -new api
+
+-WildRig
+  -upgraded
+  -prioritized api to get RAW for SWARM first
+  -less chance of 0.00 hashrates for benchmark.
+
+-SGminer
+  -api changed
+  -prioritized api to get RAW for SWARM first
+  -less chance of timeouts
+
+-clear hash log
+  -no incorrect hashrates
+  -increases chances of timeouts
+
+-fixed typo with benchmark
+  -benchmark and interval should work correctly.
+
+-fixed benchmark command
+  -benchmark should now erase bans correctly.
+
+ -nicehash pool
+  -Stat_Algo parameter will now work
+  -Stat_Algo default is live
+
+ -added .gitignore
+  -will help for those who self-develop
+  -ignores stats/timestamps/user specific data
+
+ -added maker.ps1
+  -start of integrating excavator into SWARM
+  -not functional
+
+ -fixed windows version
+  -some better stat work
+  -ensured paths are correct
