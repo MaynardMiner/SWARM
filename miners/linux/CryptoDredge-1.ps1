@@ -23,6 +23,7 @@ $Commands = [PSCustomObject]@{
 "stellite" = ''
 "lbk3" = ''
 "phi2" = ''
+"cryptonightv7" = ''
 "cryptonightv8" = ''
 }
            
@@ -41,6 +42,7 @@ $Difficulty = [PSCustomObject]@{
 "stellite" = ''
 "lbk3" = ''
 "phi2" = ''
+"cryptonightv7" = ''
 "cryptonightv8" = ''
 }
         

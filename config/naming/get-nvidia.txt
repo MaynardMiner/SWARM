@@ -3,5 +3,6 @@
  "polytimos": "poly",
  "lyra2re": "lyra2z",
  "lyra2rev2": "lyra2v2",
- "cryptonightv8": "cnv8" 
+ "cryptonightv8": "cnv8", 
+ "cryptonightv7": "cnv7"
 }

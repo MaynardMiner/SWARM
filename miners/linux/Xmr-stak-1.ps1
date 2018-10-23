@@ -10,13 +10,15 @@ $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 
 $Commands = [PSCustomObject]@{
 "cryptonight" = ""
-"cryptonightv8" = ""
+"cryptonightv7" = ''
+"cryptonightv8" = ''
 "cryptonightheavy" = ''
 }
 
 $Difficulty = [PSCustomObject]@{
 "cryptonight" = ""
-"cryptonightv8" = ""
+"cryptonightv7" = ''
+"cryptonightv8" = ''
 "cryptonightheavy" = ''
 }
   
