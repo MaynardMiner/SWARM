@@ -516,6 +516,29 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
     for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MinerFans.Count -eq 1){$MinerFans}else{$MinerFans[$($GCount.$TypeS.$GPU)]})}
     for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($MinerTemps.Count -eq 1){$MinerTemps}else{$MinerTemps[$($GCount.$TypeS.$GPU)]})}
    }
+   'xmrstak-opt'
+   {
+    Write-Host "Miner $MinerType is xmrstak api"
+    Write-Host "Miner Devices is $Devices"
+    $CPUHS = "hs"
+    $Request="/api.json"
+    try{$Reader = Invoke-WebRequest "http://$($server):$($port)$($Request)" -UseBasicParsing -TimeoutSec 10 | ConvertFrom-Json}catch{Write-Host "API TimedOut"}
+    $Hash = $Reader.Hashrate.threads
+    $CPURAW = 0
+    $CPURAW = [Double]$Reader.hashrate.total[0]
+    $CPUKHS = [Double]$Reader.hashrate.total[0]
+    $CPUSUM = [Double]$Reader.hashrate.total[0]
+    $CPURAW | Set-Content ".\build\txt\$MinerType-hash.txt"
+    for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $CPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Hash.Count -eq 1){[Double]$($Hash[0] | Select -first 1)}else{[Double]$($Hash[$i] | Select -First 1)})}
+    $MinerACC = 0
+    $MinerREJ = 0
+    $MinerACC += $Reader.results.shares_good
+    $MinerREJ += [Double]$Reader.results.shares_total - [Double]$Reader.results.shares_good
+    $CPUACC += $Reader.results.shares_good
+    $CPUREJ += [Double]$Reader.results.shares_total - [Double]$Reader.results.shares_good
+    $CPUUPTIME = $Reader.connection.uptime
+    $CPUALGO = $MinerAlgo
+   }
 'wildrig'
   {
     Write-Host "Miner $MinerType is wildrig api"

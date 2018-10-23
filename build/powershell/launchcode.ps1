@@ -164,6 +164,7 @@ switch -WildCard ($Miner.Type)
      if($Miner.Devices -eq ''){$MinerArguments = "$($Miner.Arguments)"}
      elseif($Miner.DeviceCall -eq "cpuminer-opt"){$MinerArguments = "-t $($Miner.Devices) $($Miner.Arguments)"}
      elseif($Miner.DeviceCall -eq "cryptozeny"){$MinerArguments = "-t $($Miner.Devices) $($Miner.Arguments)"}
+     elseif($miner.DeviceCall -eq "xmrstak-opt"){$MinerArguments = "$($Miner.Devices) $($Miner.Arguments)"}
     }
    }
 
@@ -243,7 +244,7 @@ $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
 $Export = Join-Path $Dir "build\export"
 if($Miner.Type -like "*NVIDIA*"){Start-Process ".\build\bash\startupnvidia.sh" -ArgumentList "$MinerDir $($Miner.Type) $Dir/build/bash $Logs $Export" -Wait}
 if($Miner.Type -like "*AMD*"){Start-Process ".\build\bash\startupamd.sh" -ArgumentList "$MinerDir $($Miner.Type) $Dir/build/bash $Logs $Export" -Wait}
-if($Miner.Type -like "*CPU*"){Start-Process ".\build\bash\startupcpu.sh" -ArgumentList "$MinerDir $($Miner.Type) $Dir/build/bash $Logs" -Wait}
+if($Miner.Type -like "*CPU*"){Start-Process ".\build\bash\startupcpu.sh" -ArgumentList "$MinerDir $($Miner.Type) $Dir/build/bash $Logs $Export" -Wait}
 $MinerTimer.Restart()
 Do{
   Start-Sleep -S 1
