@@ -35,16 +35,14 @@ Argument          Options           Explanation
 				    mined via mc= argument. Default is Yes.
                                                             
 -Poolname       [MPH,               Current Pools MM.Hash can mine from. Omit or add as desire. can
-                zergpool_coin,      only use these pools currently. Default is zergpool_algo,
-		zergpool_algo,      zergpool_coin
+                                    only use these pools currently.      
                 nicehash,  
                 phiphipool,
                 hashrefinery,  
                 blazepool,
                 ahashpool,
 		starpool,
-		blockmasters_algo,
-                blockmasters_coin
+		blockmasters,
                 Nlpool]
 
 -Wallet1      [Wallet Address]      Address of your wallet. By default MM.Hash assumes it to be BTC.
