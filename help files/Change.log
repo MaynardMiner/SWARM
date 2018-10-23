@@ -624,6 +624,7 @@ but API is awaiting stats.
 
 -cryptonightv8
   -xmr-stak updated
+  -no negative rejections
 
 -repaired download links
   -fixed broken merges
@@ -642,6 +643,7 @@ but API is awaiting stats.
   -upgraded
   -prioritized api to get RAW for SWARM first
   -less chance of 0.00 hashrates for benchmark.
+  -no negative rejections
 
 -SGminer
   -api changed
@@ -673,3 +675,7 @@ but API is awaiting stats.
  -fixed windows version
   -some better stat work
   -ensured paths are correct
+
+ -updated wiki
+  -added strike system
+  -added windows version details
