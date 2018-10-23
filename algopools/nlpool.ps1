@@ -20,7 +20,7 @@ $nlpoolAlgo_Request = [PSCustomObject]@{}
         return
      }
 
- $nlpoolAlgo_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Where {$nlpoolAlgo_Request.$_.name -ne "yescrypt"} | Select-Object -ExpandProperty Name |ForEach-Object {
+ $nlpoolAlgo_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name |ForEach-Object {
 
         
         $nlpoolAlgo_Algorithm = Get-Algorithm $nlpoolAlgo_Request.$_.name
