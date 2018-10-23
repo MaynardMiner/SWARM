@@ -41,6 +41,7 @@ $Commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty 
     HashRates = [PSCustomObject]@{$_ = $($Stats."$($Name)_$($_)_hashrate".Day)}
     PowerX = [PSCustomObject]@{$_ = if($WattOMeter -eq "Yes"){$($Stats."$($Name)_$($_)_Power".Day)}elseif($Watts.$($_).AMD1_Watts){$Watts.$($_).AMD1_Watts}elseif($Watts.default.AMD1_Watts){$Watts.default.AMD1_Watts}else{0}}
     FullName = "$($AlgoPools.$_.Mining)"
+    MinerPool = "$($AlgoPools.$_.Name)"
     Port = 60049
     API = "xmrstak"
     Wrap = $false
