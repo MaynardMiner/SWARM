@@ -505,9 +505,9 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
     $MinerACC = 0
     $MinerREJ = 0
     $MinerACC += $Reader.results.shares_good
-    $MinerREJ += $Reader.results.shares_total - [Double]$Reader.results.shares_good 
+    $MinerREJ += [Double]$Reader.results.shares_total - [Double]$Reader.results.shares_good
     $ACC += $Reader.results.shares_good
-    $REJ += - $Reader.results.shares_total - [Double]$Reader.results.shares_good
+    $REJ += [Double]$Reader.results.shares_total - [Double]$Reader.results.shares_good
     $UPTIME = $Reader.connection.uptime
     $ALGO = $MinerAlgo
     $KHS = [Double]$Reader.hashrate.total[0]
@@ -531,9 +531,9 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
     $MinerACC = 0
     $MinerREJ = 0
     $MinerACC += $Reader.results.shares_good
-    $MinerREJ += $Reader.results.shares_total - $Reader.results.shares_good 
+    $MinerREJ += [Double]$Reader.results.shares_total - [Double]$Reader.results.shares_good 
     $ACC += $Reader.results.shares_good
-    $REJ += - $Reader.results.shares_total - $Reader.results.shares_good
+    $REJ += [Double]$Reader.results.shares_total - [Double]$Reader.results.shares_good
     $UPTIME = $Reader.connection.uptime
     $ALGO = $MinerAlgo
     $KHS = [Double]$Reader.hashrate.total[0]/1000
