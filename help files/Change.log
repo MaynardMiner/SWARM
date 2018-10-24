@@ -682,6 +682,14 @@ but API is awaiting stats.
 
     1.6.4
 
+  IMPORTANT NOTE:
+  All xmr-stak miner files were changed. Make copies of files before updating!
+  Then copy your settings over after update. They will be DELETED if you set
+  -Update "Yes"
+  All T-Rex miner files were changed. Make copies of files before updating!
+  Then copy your settings over after update. They will be DELETED if you set
+  -Update "Yes"
+
   -Updates should be working.
   -Safe to remote update.
   -To remote update, add "-Update Yes" to arguments (HiveOS version only)
