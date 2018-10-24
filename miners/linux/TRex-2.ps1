@@ -23,6 +23,8 @@ $Commands = [PSCustomObject]@{
   "x16s" = ''
   "hmq1725" = ''
   "bcd" = ''
+  "sha25t" = ''
+  "timetravel" = ''
   }
   
   $Difficulty = [PSCustomObject]@{
@@ -40,8 +42,11 @@ $Commands = [PSCustomObject]@{
   "x16s" = ''
   "hmq1725" = ''
   "bcd" = ''
+  "sha25t" = ''
+  "timetravel" = ''
   }
 
+  
   if($CoinAlgo -eq $null)
   {
    $Commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {

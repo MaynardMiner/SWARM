@@ -1,7 +1,7 @@
 
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 
- $blazepool_Request = [PSCustomObject]@{} 
+$blazepool_Request = [PSCustomObject]@{} 
  
   if($Poolname -eq $Name)
    {
@@ -20,7 +20,7 @@ $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty Ba
   
 $Location = "US"
 
-$blazepool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name |  Where-Object {$blazepool_Request.$_.hashrate -gt 0} | ForEach-Object {
+$blazepool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name |  Where-Object {$blazepool_Request.$_.hashrate -gt 0} |  Where-Object {$Naming.$($blazepool_Request.$_.name)} | ForEach-Object {
 
     $blazepool_Algorithm = Get-Algorithm $blazepool_Request.$_.name
     $blazepool_Host = "$_.mine.blazepool.com"

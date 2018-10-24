@@ -696,6 +696,8 @@ but API is awaiting stats.
    Strike outs reset to 0 if miner hasn't ran in last hour.
    It still is previously set to reset strikes if a good benchmark occurs.
 
+  -new t-rex added.
+
   -Added kill process to screen shutdown
    -hopefully will stop processes that don't shutdown 
     when background miner screen changes.

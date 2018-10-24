@@ -9,39 +9,42 @@ if($NVIDIADevices1 -ne ''){$Devices = $NVIDIADevices1}
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 
 $Commands = [PSCustomObject]@{
-"tribus" = ''
-"phi" = ''
-"c11" = ''
-"hsr" = ''
-"x17" = ''
-"renesis" = ''
-"balloon" = ''
-"bitcore" = ''
-"polytimos" = ''
-"skunk" = ''
-"x16r" = ''
-"x16s" = ''
-"hmq1725" = ''
-"bcd" = ''
-}
-
-$Difficulty = [PSCustomObject]@{
-"tribus" = ''
-"phi" = ''
-"c11" = ''
-"hsr" = ''
-"x17" = ''
-"renesis" = ''
-"balloon" = ''
-"bitcore" = ''
-"polytimos" = ''
-"skunk" = ''
-"x16r" = ''
-"x16s" = ''
-"hmq1725" = ''
-"bcd" = ''
-}
+  "tribus" = ''
+  "phi" = ''
+  "c11" = ''
+  "hsr" = ''
+  "x17" = ''
+  "renesis" = ''
+  "balloon" = ''
+  "bitcore" = ''
+  "polytimos" = ''
+  "skunk" = ''
+  "x16r" = ''
+  "x16s" = ''
+  "hmq1725" = ''
+  "bcd" = ''
+  "sha25t" = ''
+  "timetravel" = ''
+  }
   
+  $Difficulty = [PSCustomObject]@{
+  "tribus" = ''
+  "phi" = ''
+  "c11" = ''
+  "hsr" = ''
+  "x17" = ''
+  "renesis" = ''
+  "balloon" = ''
+  "bitcore" = ''
+  "polytimos" = ''
+  "skunk" = ''
+  "x16r" = ''
+  "x16s" = ''
+  "hmq1725" = ''
+  "bcd" = ''
+  "sha25t" = ''
+  "timetravel" = ''
+  }  
 
 if($CoinAlgo -eq $null)
  {

@@ -49,6 +49,7 @@
     "polytimos": "polytimos",
     "qubit": "qubit",
     "renesis": "renesis",
+    "sha256t": "sha256t",
     "sib": "sib",
     "skein": "skein",
     "skunk": "skunk",

@@ -20,7 +20,7 @@ $ahashpool_Request = [PSCustomObject]@{}
   
 $Location = "US"
 
-$ahashpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name |  Where-Object {$ahashpool_Request.$_.hashrate -gt 0} | ForEach-Object {
+$ahashpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name |  Where-Object {$ahashpool_Request.$_.hashrate -gt 0} |  Where-Object {$Naming.$($ahashpool_Request.$_.name)} | ForEach-Object {
  
     $ahashpool_Host = "$_.mine.ahashpool.com"
     $ahashpool_Port = $ahashpool_Request.$_.port

@@ -23,6 +23,8 @@ $Commands = [PSCustomObject]@{
 "x16s" = ''
 "hmq1725" = ''
 "bcd" = ''
+"sha25t" = ''
+"timetravel" = ''
 }
 
 $Difficulty = [PSCustomObject]@{
@@ -40,6 +42,8 @@ $Difficulty = [PSCustomObject]@{
 "x16s" = ''
 "hmq1725" = ''
 "bcd" = ''
+"sha25t" = ''
+"timetravel" = ''
 }
   
 

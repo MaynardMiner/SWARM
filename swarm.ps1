@@ -306,6 +306,7 @@ $WorkerSwitch = $WorkerName
 $RigSwitch = $RigName
 $IntervalSwitch = $Interval
 $ActiveMinerPrograms = @()
+$Naming = Get-Content ".\config\naming\get-pool.txt" | ConvertFrom-Json
 
 if($Platform -eq "windows" -and $HivePassword -ne $null){Start-Peekaboo -HiveID $HiveID -HiveMirror $HiveMirror -HivePassword $HivePassword; $hiveresponse}
 
