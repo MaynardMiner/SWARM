@@ -13,3 +13,9 @@ stats/
 timeout/
 x64/
 
+build/bash/config.sh
+build/bash/dir.sh
+build/bash/hivestats.sh
+build/bash/mineractive.sh
+build/bash/minerstats.sh
+build/bash/minertype.sh
