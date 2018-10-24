@@ -22,6 +22,7 @@ if($Update -eq "Yes")
 $PreviousVersions = @()
 $PreviousVersions += "SWARM.1.6.3"
 
+$Exclude = @("TRex-1.ps1","TRex-2.ps1","TRex-3.ps1","Stak-CPU.ps1","Xmr-stak-1.ps1")
 
 $PreviousVersions | foreach {
   $PreviousPath = Join-Path "/hive/custom" "$_"
@@ -41,7 +42,7 @@ $PreviousVersions | foreach {
       if(-not (Test-Path "miners")){New-Item "miners" -ItemType "directory"  | Out-Null }
       if(-not (Test-Path "miners\linux")){New-Item "miners\linux" -ItemType "directory"  | Out-Null }
       if(-not (Test-Path "config")){New-Item "config" -ItemType "directory"  | Out-Null }
-      if(Test-Path $OldMiners){Get-ChildItem -Path "$($OldMiners)\*" -Include *.ps1 -Recurse | Copy-Item -Destination ".\miners\unix"}
+      if(Test-Path $OldMiners){Get-ChildItem -Path "$($OldMiners)\*" -Include *.ps1 -Exclude $Exclude -Recurse | Copy-Item -Destination ".\miners\unix"}
       if(Test-Path $OldBackup)
        {
         Get-ChildItem -Path "$($OldBackup)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\stats"
