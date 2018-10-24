@@ -42,7 +42,7 @@ $PreviousVersions | foreach {
       if(-not (Test-Path "miners")){New-Item "miners" -ItemType "directory"  | Out-Null }
       if(-not (Test-Path "miners\linux")){New-Item "miners\linux" -ItemType "directory"  | Out-Null }
       if(-not (Test-Path "config")){New-Item "config" -ItemType "directory"  | Out-Null }
-      if(Test-Path $OldMiners){Get-ChildItem -Path "$($OldMiners)\*" -Include *.ps1 -Exclude $Exclude -Recurse | Copy-Item -Destination ".\miners\unix"}
+      if(Test-Path $OldMiners){Get-ChildItem -Path "$($OldMiners)\*" -Include *.ps1 -Exclude $Exclude -Recurse | Copy-Item -Destination ".\miners\linux" -Force}
       if(Test-Path $OldBackup)
        {
         Get-ChildItem -Path "$($OldBackup)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\stats"
@@ -51,19 +51,15 @@ $PreviousVersions | foreach {
       if(Test-Path $OldTime){Get-ChildItem -Path "$($OldTime)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\build\data"}
       if(Test-Path $OldConfig)
        {
-        Get-ChildItem -Path "$($OldConfig)\naming" -Include *.txt,*.conf -Recurse | Copy-Item -Destination ".\config\naming"
-        Get-ChildItem -Path "$($OldConfig)\oc" -Include *.txt,*.conf -Recurse | Copy-Item -Destination ".\config\oc"
-        Get-ChildItem -Path "$($OldConfig)\power" -Include *.txt,*.conf -Recurse | Copy-Item -Destination ".\config\power"
-       }
-       if(Test-Path $OldConfig)
-       {
-        Get-ChildItem -Path "$($OldConfig)\naming" -Include *.txt,*.conf -Recurse | Copy-Item -Destination ".\config\naming"
-        Get-ChildItem -Path "$($OldConfig)\oc" -Include *.txt,*.conf -Recurse | Copy-Item -Destination ".\config\oc"
-        Get-ChildItem -Path "$($OldConfig)\power" -Include *.txt,*.conf -Recurse | Copy-Item -Destination ".\config\power"
+        Get-ChildItem -Path "$($OldConfig)\naming" -Include *.txt,*.conf -Recurse | Copy-Item -Destination ".\config\naming" -Force
+        Get-ChildItem -Path "$($OldConfig)\oc" -Include *.txt,*.conf -Recurse | Copy-Item -Destination ".\config\oc" -Force
+        Get-ChildItem -Path "$($OldConfig)\power" -Include *.txt,*.conf -Recurse | Copy-Item -Destination ".\config\power" -Force
        }
        if(Test-Path $OldTimeout)
        {
-        if(-not (Test-Path "timeout")){New-Item "timeout" -ItemType "directory" | Out-Null }
+        if(-not (Test-Path ".\timeout")){New-Item "timeout" -ItemType "directory" | Out-Null }
+        if(-not (Test-Path ".\timeout\algo_block")){New-Item ".\timeout\algo_block" -ItemType "directory" | Out-Null }
+        if(-not (Test-Path ".\timeout\pool_block")){New-Item ".\timeout\pool_block" -ItemType "directory" | Out-Null }
         if(Test-Path "$OldTimeout\algo_block"){Get-ChildItem -Path "$($OldTimeout)\algo_block" -Include *.txt,*.conf -Recurse | Copy-Item -Destination ".\timeout\algo_block"}
         if(Test-Path "$OldTimeout\algo_block"){Get-ChildItem -Path "$($OldTimeout)\pool_block" -Include *.txt,*.conf -Recurse | Copy-Item -Destination ".\timeout\pool_block"}
         Get-ChildItem -Path "$($OldTimeout)\*" -Include *.txt | Copy-Item -Destination ".\timeout"
