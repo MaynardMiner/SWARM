@@ -35,16 +35,13 @@ Argument          Options           Explanation
 				    mined via mc= argument. Default is Yes.
                                                             
 -Poolname       [MPH,               Current Pools MM.Hash can mine from. Omit or add as desire. can
-                zergpool_coin,      only use these pools currently. Default is zergpool_algo,
-		zergpool_algo,      zergpool_coin
-                nicehash,  
+                nicehash,           only use these pools currently.  
                 phiphipool,
                 hashrefinery,  
                 blazepool,
                 ahashpool,
 		starpool,
-		blockmasters_algo,
-                blockmasters_coin
+		blockmasters
                 Nlpool]
 
 -Wallet1      [Wallet Address]      Address of your wallet. By default MM.Hash assumes it to be BTC.
@@ -86,7 +83,7 @@ Argument            Options             Explanation
 				    have issues starting AMD, try 0. Some of the miners within SWARM
 				    have an argument you can run which will detect platform for you.
 
--Rejections 	    [0-100]	    Default is 20. This the % of rejections required for SWARM to 
+-Rejections 	    [0-100]	    Default is 50. This the % of rejections required for SWARM to 
 				    consider background miner as timing out.
 
 -Favor_Coins  [Yes or No]	    Default is Yes. If Favor_Coins is set to Yes, SWARM will factor

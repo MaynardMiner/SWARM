@@ -16,6 +16,8 @@ sleep .5
 screen -S $2 -X logfile flush 5
 sleep .5
 screen -S $2 -X log
+screen -S $2 -X stuff $"export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$5\n"
+sleep .5
 sleep .5
 screen -S $2 -X stuff $"export LD_PRELOAD=\n"
 screen -S $2 -X stuff $"cd\n"

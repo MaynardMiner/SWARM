@@ -164,7 +164,7 @@ param(
     [Parameter(Mandatory=$false)]
     [string]$AMDPlatform = "1",
     [Parameter(Mandatory=$false)]
-    [Double]$Rejections = 20
+    [Double]$Rejections = 50
 )
 
 
@@ -173,7 +173,13 @@ if($HiveOS -eq "Yes" -and $Platform -eq "linux"){Start-Process ".\build\bash\scr
 Get-ChildItem . -Recurse -Force | Out-Null 
 if($Platform -eq "Windows"){$Platform = "windows"}
 if($Platform -eq "Linux"){$Platform = "linux"}
-
+$Type | foreach {
+ if($_ -eq "amd1"){$_ = "AMD1"}
+ if($_ -eq "nvidia1"){$_ = "NVIDIA1"}
+ if($_ -eq "nvidia2"){$_ = "NVIDIA2"}
+ if($_ -eq "nvidia2"){$_ = "NVIDIA3"}
+ if($_ -eq "cpu"){$_ = "CPU"}
+}
 if(-not (Test-Path ".\build\txt")){New-Item -Path ".\build" -Name "txt" -ItemType "directory" | Out-Null}
 
 . .\build\powershell\killall.ps1
@@ -758,6 +764,7 @@ $BestMiners_Combo | ForEach {
    BestMiner = $false
    JsonFile = $_.Config
    LogGPUS = $LogType
+   FirstBad = $null
   }
  }
 }
@@ -1210,6 +1217,11 @@ Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 
 ##Benchmarking/Timeout      
 $BestActiveMiners | foreach {
+ if($_.FirstBad -ne $null)
+  {
+   $BadCheck = [math]::Round(((Get-Date)-$_.FirstBad).TotalSeconds)
+   if($BadCheck -gt 3600){$_.Bad_Benchmark = 0; $_.FirstBad = $null}
+  }
 $Strike = $false
 if($_.BestMiner -eq $true)
  {
@@ -1319,6 +1331,7 @@ if($Strike -eq $true)
     Write-Host "$($_.Name) $($_.Coins) Hashrate Check Timed Out $($_.Bad_Benchmark) Times- It Was Noted In Timeout Folder" -foregroundcolor "darkred"
     if($_.Bad_Benchmark -eq 1)
      {
+      $_.FirstBad = Get-Date
       if(test-path $HashRateFilePath){remove-item $HashRateFilePath -Force}
       Write-Host "First Strike: There was issue with benchmarking." -ForegroundColor DarkRed
      }

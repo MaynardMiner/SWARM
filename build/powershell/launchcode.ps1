@@ -233,6 +233,8 @@ elseif($Platforms -eq "linux")
 "
 Start-Process ".\build\bash\killall.sh" -ArgumentList "$($Miner.Type)" -Wait
 Start-Sleep -S .25
+$OldProcess = Get-Process | Where ProcessName -like "*($Miner.Type)*"
+if($OldProcess){Stop-Process $OldProcess -ErrorAction -Silently SilentlyContinue}
 Set-Location (Split-Path $($Miner.Path))
 Start-Process "chmod" -ArgumentList "+x $($Miner.InstanceName)" -Wait
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
@@ -264,16 +266,3 @@ Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 $MinerProcess
  }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

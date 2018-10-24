@@ -679,3 +679,34 @@ but API is awaiting stats.
  -updated wiki
   -added strike system
   -added windows version details
+
+    1.6.4
+
+  -Updates should be working.
+  -Safe to remote update.
+  -To remote update, add "-Update Yes" to arguments (HiveOS version only)
+  -Update will transfer old miner files and its settings
+  -Update will transfer old oc settings
+  -Update will transfer old naming settings
+  -Update will tranfer old power settings.
+
+  -Fixed Dual Mining For HiveOS (Stats)
+  -Forgot to push cpu export for XMR-Stak- Pushed Now. XMR-CPU should work.
+  -Added New Feature To Timeout System:
+   Strike outs reset to 0 if miner hasn't ran in last hour.
+   It still is previously set to reset strikes if a good benchmark occurs.
+
+  -Added kill process to screen shutdown
+   -hopefully will stop processes that don't shutdown 
+    when background miner screen changes.
+
+  -Default -Rejections changed to 50%
+ 
+  -Added Case-Specific Additions to Hashrate Arrays
+   -Will assist with multi-platform dual mining
+
+  -benchmark command now has the following additions:
+   -benchmark will remove backup hashrates of algo
+   -benchmark will remove backup power of algo
+   "-benchmark timeout"
+    will clear all pool/algo bans

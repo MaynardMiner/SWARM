@@ -22,6 +22,8 @@ Write-Host "Checking For $Name Bechmarks"
 if($Platform -eq "windows"){"Removed Hashrate files" | Out-File ".\build\txt\benchcom.txt"}
 if(Test-Path ".\stats\*$($Name)_hashrate.txt*"){Remove-Item ".\stats\*$($Name)_hashrate.txt*" -Force}
 if(Test-Path ".\stats\*$($Name)_power.txt*"){Remove-Item ".\stats\*$($Name)_power.txt*" -Force}
+if(Test-Path ".\backup\*$($Name)_hashrate.txt*"){Remove-Item ".\backup\*$($Name)_hashrate.txt*" -Force}
+if(Test-Path ".\backup\*$($Name)_power.txt*"){Remove-Item ".\backup\*$($Name)_power.txt*" -Force}
 if(Test-Path ".\timeout\pool_block\pool_block.txt")
  {
   $NewPoolBlock = @()
@@ -43,6 +45,12 @@ if(Test-Path ".\timeout\pool_block\pool_block.txt")
   }
   if($NewAlgoBlock){$NewAlgoBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block\algo_block.txt"}
   else{"" | Set-Content ".\timeout\algo_block\algo_block.txt"}
+ if($Name -eq "timeout")
+  {
+   Remove-Item ".\timeout" -Recurse -Force
+   Write-Host "Removed All Timeouts"
+   if($Platform -eq "windows"){"Removed All Timeouts" | Out-File ".\build\txt\benchcom.txt"}
+  }
  }
 Write-Host "Removed Hashrate files"
 if($Platform -eq "windows"){"Removed Hashrate files" | Out-File ".\build\txt\benchcom.txt"}

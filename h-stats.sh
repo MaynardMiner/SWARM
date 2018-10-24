@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
-                                
+
+cd `dirname $0`
+
+. /hive/custom/$CUSTOM_MINER/h-manifest.conf
 
 get_nvidia_cards_temp(){
 	echo $(jq -c "[.temp$nvidia_indexes_array]" <<< $gpu_stats)
@@ -17,10 +20,10 @@ get_amd_cards_fan(){
 	echo $(jq -c "[.fan$amd_indexes_array]" <<< $gpu_stats)
 }
 
-function miner_stats {
+
 	local mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 	local mystats=$(< $mydir/build/bash/hivestats.sh)
-	local miner=$(< $mydir"/build/txt/miner.txt")
+	local myminer=$(< $mydir"/build/txt/miner.txt")
 	local mindex=$2 #empty or 2, 3, 4, ...
 	local Ntemp=$(get_nvidia_cards_temp)	# cards temp
 	local Nfan=$(get_nvidia_cards_fan)	# cards fan
@@ -28,7 +31,7 @@ function miner_stats {
 	local Afan=$(get_amd_cards_fan)	# cards fan
 	khs=0
 	stats=
-	case $miner in
+	case $myminer in
 
 		GPU)
 				cpkhs=(`echo "$mystats" | grep 'GPU=' | sed -e 's/.*=//' | tr -d '\r'`)
@@ -51,18 +54,4 @@ function miner_stats {
 					--arg ac "$ac" --arg rj "$rj" \
 					'{$hs, $hs_units, $temp, $fan, $uptime, ar: [$ac, $rj], $algo}')
 			;;
-		*)
-			miner="unknown"
-			#MINER=miner
-			eval "MINER${mindex}=unknown"
-		;;
-	esac
-
-
-	[[ -z $khs ]] && khs=0
-	[[ -z $stats ]] && stats="null"
-
-
-#	[[ ! -z $mindex ]] &&
-#		eval "khs${mindex}"
-}
+esac
