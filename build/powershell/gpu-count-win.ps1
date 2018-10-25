@@ -28,20 +28,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     $DeviceType | foreach{
       if($_ -like "*NVIDIA*" -and $nvidiacounted -eq $false)
        {
+        $nvidiacounted = $true
         Write-Host "Getting NVIDIA GPU Count" -foregroundcolor cyan
         invoke-expression ".\build\apps\nvidia-smi.exe -L > "".\build\txt\gpucount.txt"""
         Start-Sleep -S .25
-        $GCount = Get-Content ".\build\txt\gpucount.txt"
-        $AttachedGPU = $GCount | foreach {$_ -split ":" | Select -first 1}
-        $AttachedGPU = $AttachedGPU | foreach {$_ -replace "GPU ",""}        
-        for($i=0; $i -lt $AttachedGPU.Count; $i++){$DeviceList.NVIDIA.Add("$i","$i")}
-       }
-      if($_ -like "*CPU*")
-      {
-       Write-Host "Getting CPU Count"
-       for($i=0; $i -lt $CPUThreads; $i++){$DeviceList.CPU.Add("$($i)",$i)}     
+        $GCount = Get-Content ".\build\txt\gpucount.txt" -Force
+        $AttachedGPU = $GCount | foreach {$_ -split ":" | Select -First 1} | foreach {$_ -replace ("GPU ","")}
+        for($i=0; $i -lt $AttachedGPU.Count; $i++){$DeviceList.NVIDIA.Add("$($i)","$($AttachedGPU[$i])")}
+        }
+        if($_ -like "*CPU*")
+        {
+         Write-Host "Getting CPU Count"
+         for($i=0; $i -lt $CPUThreads; $i++)
+         { 
+          $DeviceList.CPU.Add("$($i)",$i)
+         }     
+        }
       }
-     }
      $DeviceList | ConvertTo-Json | Set-Content ".\build\txt\devicelist.txt"
      $GPUCount = 0
      $GPUCount += $DeviceList.Nvidia.Count
