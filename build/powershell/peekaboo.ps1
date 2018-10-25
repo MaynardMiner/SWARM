@@ -16,7 +16,11 @@ $data1 = $enc.GetBytes($string1)
 $sha = New-Object System.Security.Cryptography.SHA1CryptoServiceProvider 
 $result1 = $sha.ComputeHash($data1)
 $uid = [System.Convert]::ToBase64String($result1)
-$GetbootTime = [math]::Round(((Get-Date)-[DateTime]$((Get-CimInstance -ClassName win32_operatingsystem | select lastbootuptime).lastbootuptime)).TotalSeconds)
+$Date = [int][double]::Parse((Get-Date -UFormat %s))
+$BootTime = (Get-CimInstance -ClassName win32_operatingsystem | select lastbootuptime).lastbootuptime
+$Getboot = [math]::Round(((Get-Date)-[DateTime]$BootTime).TotalSeconds)
+$GetbootTime = $Date - $Getboot
+Write-Host "Last Boot Time Is $GetbootTime"
 $Ip = $(get-WmiObject Win32_NetworkAdapterConfiguration| Where {$_.Ipaddress.length -gt 1}).ipaddress[0]
 Invoke-Expression ".\build\apps\nvidia-smi.exe --query-gpu=gpu_bus_id,vbios_version,gpu_name,memory.total,power.min_limit,power.default_limit,power.max_limit --format=csv > "".\build\txt\getgpu.txt"""
 $GetGPU = Get-Content ".\build\txt\getgpu.txt" | ConvertFrom-Csv
