@@ -17,7 +17,7 @@ $fairpool_Request = [PSCustomObject]@{}
      return 
  } 
   
-$fairpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name |  Where-Object {$fairpool_Request.$_.hashrate -gt 0} |  Where-Object {$Naming.$($fairpool_Request.$_.name)} | ForEach-Object {
+$fairpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | Where-Object {$Naming.$($fairpool_Request.$_.name)} | ForEach-Object {
  
     Switch($Location)
     {
