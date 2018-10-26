@@ -18,11 +18,7 @@
  if (($Hashrefinery_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) { 
      Write-Warning "SWARM contacted ($Name) but ($Name) Pool API was unreadable. " 
      return 
- } 
- 
- 
- $Location = "us" 
- 
+ }  
  
  $Hashrefinery_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name |  Where-Object {$Hashrefinery_Request.$_.hashrate -gt 0} |  Where-Object {$Naming.$($Hashrefinery_Request.$_.name)} | ForEach-Object {
      

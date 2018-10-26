@@ -18,10 +18,14 @@ $Zpool_Request = [PSCustomObject]@{}
      return
  }     
 
-$Location = "US"
-
 $Zpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name |  Where-Object {$Zpool_Request.$_.hashrate -gt 0} |  Where-Object {$Naming.$($Zpool_Request.$_.name)} | ForEach-Object {
     
+    Switch($Location)
+    {
+     "US"{$Zpool_Host = "$_.na.mine.zpool.ca"}
+     "Europe"{$Zpool_Host = "$_.eu.mine.zpool.ca"}
+     "Asia"{$Zpool_Host = "$_.sea.mine.zpool.ca"}
+    }
     $Zpool_Host = "$_.mine.zpool.ca"
     $Zpool_Port = $Zpool_Request.$_.port
     $Zpool_Algorithm = Get-Algorithm $Zpool_Request.$_.name

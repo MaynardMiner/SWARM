@@ -18,8 +18,6 @@ $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty Ba
      return 
  } 
   
-$Location = "US"
-
 $starpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name |  Where-Object {$starpool_Request.$_.hashrate -gt 0} |  Where-Object {$Naming.$($starpool_Request.$_.name)} | ForEach-Object {
 
     $starpool_Algorithm = Get-Algorithm $starpool_Request.$_.name

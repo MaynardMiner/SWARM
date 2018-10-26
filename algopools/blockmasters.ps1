@@ -18,12 +18,14 @@ $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty Ba
      return 
  } 
   
-$Location = "US"
-
 $blockpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name |  Where-Object {$blockpool_Request.$_.hashrate -gt 0} |  Where-Object {$Naming.$($blockpool_Request.$_.name)} | ForEach-Object {
 
+    Switch($location)
+    {
+     "US"{$blockpool_Host = "blockmasters.co"}
+     default{$blockpool_Host = "eu.blockmasters.co"}
+    }
     $blockpool_Algorithm = Get-Algorithm $blockpool_Request.$_.name
-    $blockpool_Host = "blockmasters.co"
     $blockpool_Port = $blockpool_Request.$_.port
     $Divisor = (1000000*$blockpool_Request.$_.mbtc_mh_factor)
 

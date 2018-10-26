@@ -1,7 +1,5 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName
 
-$Location = 'Europe'
-
 $nlpool_Request = [PSCustomObject]@{}
 $nlpoolAlgo_Request = [PSCustomObject]@{}
 

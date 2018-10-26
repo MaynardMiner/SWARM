@@ -18,8 +18,6 @@ $blazepool_Request = [PSCustomObject]@{}
      return 
  } 
   
-$Location = "US"
-
 $blazepool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name |  Where-Object {$blazepool_Request.$_.hashrate -gt 0} |  Where-Object {$Naming.$($blazepool_Request.$_.name)} | ForEach-Object {
 
     $blazepool_Algorithm = Get-Algorithm $blazepool_Request.$_.name
