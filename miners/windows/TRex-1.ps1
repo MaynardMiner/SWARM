@@ -23,7 +23,7 @@ $Commands = [PSCustomObject]@{
   "x16s" = ''
   "hmq1725" = ''
   "bcd" = ''
-  "sha25t" = ''
+  "sha256t" = ''
   "timetravel" = ''
   }
   
@@ -42,7 +42,7 @@ $Commands = [PSCustomObject]@{
   "x16s" = ''
   "hmq1725" = ''
   "bcd" = ''
-  "sha25t" = ''
+  "sha256t" = ''
   "timetravel" = ''
   }  
 
