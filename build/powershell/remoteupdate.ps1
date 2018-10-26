@@ -52,7 +52,6 @@ $PreviousVersions | foreach {
       if(Test-Path $OldTime){Get-ChildItem -Path "$($OldTime)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\build\data"}
       if(Test-Path $OldConfig)
        {
-        Get-ChildItem -Path "$($OldConfig)\naming" -Include *.txt,*.conf -Recurse | Copy-Item -Destination ".\config\naming" -Force
         Get-ChildItem -Path "$($OldConfig)\oc" -Include *.txt,*.conf -Recurse | Copy-Item -Destination ".\config\oc" -Force
         Get-ChildItem -Path "$($OldConfig)\power" -Include *.txt,*.conf -Recurse | Copy-Item -Destination ".\config\power" -Force
        }
