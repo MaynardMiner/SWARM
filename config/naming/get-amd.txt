@@ -6,6 +6,7 @@
     "cryptonightheavy": "cryptonight_heavy",
     "cryptonightv7": "cryptonight_v7",
     "cryptonightv8": "cryptonight_v8",
-    "cryptonight": "cryptonight"
+    "cryptonight": "cryptonight",
+    "skunk": "skunkhash"
 }
 

@@ -722,3 +722,35 @@ but API is awaiting stats.
    -benchmark will remove backup power of algo
    "-benchmark timeout"
     will clear all pool/algo bans
+
+  1.6.5
+
+  Disclaimers:
+
+  Updates are safe.
+  All T-Rex miner files were changed. Make copies of files before updating!
+  Then copy your settings over after update. They will be DELETED if you set
+  -Update "Yes"
+
+  Updates are safe.
+  All WildRig miner files were changed. Make copies of files before updating!
+  Then copy your settings over after update. They will be DELETED if you set
+  -Update "Yes"
+
+
+  -SHA256t
+   Added algo SHA256t (zpool)
+
+  -Changed TRex version in update.
+
+  -Removed hashrate 0 on certain pools
+   -I want to support smaller pools
+   -Some smaller pools have different algos
+
+  -CCMiner API attempted fix:
+   -Attempted fix of ccminer
+   -converts API Data to a native powershell table
+   -hopefully this will stop/reduce Cryptodredge API errors
+  
+  -New WildRig Miner
+   -New Algos Added

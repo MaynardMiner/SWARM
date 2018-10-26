@@ -15,6 +15,7 @@ $Commands = [PSCustomObject]@{
 "hmq1725" = ''
 "phi" = ''
 "renesis" = ''
+"skunk" = ''
 "sonoa" = ''
 "timetravel" = ''
 "tribus" = ''
@@ -22,6 +23,7 @@ $Commands = [PSCustomObject]@{
 "x16r" = ''
 "x17" = ''
 "bitcore" = ''
+"x22i" = ''
 }
 
 $Difficulty = [PSCustomObject]@{
@@ -31,6 +33,7 @@ $Difficulty = [PSCustomObject]@{
 "hmq1725" = ''
 "phi" = ''
 "renesis" = ''
+"skunk" = ''
 "sonoa" = ''
 "timetravel" = ''
 "tribus" = ''
@@ -38,6 +41,7 @@ $Difficulty = [PSCustomObject]@{
 "x16r" = ''
 "x17" = ''
 "bitcore" = ''
+"x22i" = ''
 }
 
 
@@ -55,7 +59,7 @@ $Commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty 
     Path = $Path
     Devices = $Devices
     DeviceCall = "wildrig"
-    Arguments = "--opencl-platform=$AMDPlatform --api-port 60050 --algo $($_) --url stratum+tcp://$($AlgoPools.$_.Host):$($AlgoPools.$_.Port) --user $($AlgoPools.$_.User1) --pass $($AlgoPools.$_.Pass1)$($Diff) $($Commands.$_)"
+    Arguments = "--opencl-platform=$AMDPlatform --api-port 60050 --algo $(Get-AMD($_)) --url stratum+tcp://$($AlgoPools.$_.Host):$($AlgoPools.$_.Port) --user $($AlgoPools.$_.User1) --pass $($AlgoPools.$_.Pass1)$($Diff) $($Commands.$_)"
     HashRates = [PSCustomObject]@{$_ = $($Stats."$($Name)_$($_)_hashrate".Day)}
     PowerX = [PSCustomObject]@{$_ = if($WattOMeter -eq "Yes"){$($Stats."$($Name)_$($_)_Power".Day)}elseif($Watts.$($_).AMD1_Watts){$Watts.$($_).AMD1_Watts}elseif($Watts.default.AMD1_Watts){$Watts.default.AMD1_Watts}else{0}}
     MinerPool = "$($AlgoPools.$_.Name)"
@@ -84,7 +88,7 @@ else{
    Path = $Path
    Devices = $Devices
    DeviceCall = "wildrig"
-   Arguments = "--opencl-platform=$AMDPlatform --api-port 60050 --algo $($CoinPools.$_.Algorithm) --url stratum+tcp://$($CoinPools.$_.Host):$($CoinPools.$_.Port) --user $($CoinPools.$_.User1) --pass $($CoinPools.$_.Pass1)$($Diff) $($Commands.$($CoinPools.$_.Algorithm))"
+   Arguments = "--opencl-platform=$AMDPlatform --api-port 60050 --algo $(Get-AMD($CoinPools.$_.Algorithm)) --url stratum+tcp://$($CoinPools.$_.Host):$($CoinPools.$_.Port) --user $($CoinPools.$_.User1) --pass $($CoinPools.$_.Pass1)$($Diff) $($Commands.$($CoinPools.$_.Algorithm))"
    HashRates = [PSCustomObject]@{$CoinPools.$_.Symbol= $Stats."$($Name)_$($CoinPools.$_.Algorithm)_HashRate".Day}
    API = "wildrig"
    PowerX = [PSCustomObject]@{$CoinPools.$_.Symbol = if($WattOMeter -eq "Yes"){$($Stats."$($Name)_$($CoinPools.$_.Algorithm)_Power".Day)}elseif($Watts.$($CoinPools.$_.Algorithm).AMD1_Watts){$Watts.$($CoinPools.$_.Algorithm).AMD1_Watts}elseif($Watts.default.AMD1_Watts){$Watts.default.AMD1_Watts}else{0}}
