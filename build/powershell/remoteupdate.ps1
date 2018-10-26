@@ -21,6 +21,7 @@ if($Update -eq "Yes")
  {
 $PreviousVersions = @()
 $PreviousVersions += "SWARM.1.6.3"
+$PreviousVersions += "SWARM.1.6.4"
 
 $Exclude = @("TRex-1.ps1","TRex-2.ps1","TRex-3.ps1","Stak-CPU.ps1","Xmr-stak-1.ps1")
 
