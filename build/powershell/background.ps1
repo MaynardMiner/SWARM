@@ -282,12 +282,11 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
         Write-Host "Miner Port is $Port"
         Write-Host "Miner Devices is $Devices"
         try{$GetSummary = Get-TCP -Server $Server -Port $port -Message "summary"}catch{Write-Host "API summary TimedOut"}
-        $GetKHS = $GetSummary -split ";" | Select-String -pattern '^KHS' | foreach {$_ -replace ("KHS=","")}
-        $GetKHS = $GetKHS | % {iex $_}
+        $GetKHS = $GetSummary -split ";" | ConvertFrom-StringData
         $RAW = 0
-        $RAW += $GetKHS*1000
+        $RAW += [Double]$GetKHS.KHS*1000
         $RAW | Set-Content ".\build\txt\$MinerType-hash.txt";
-        $KHS += $GetKHS
+        $KHS += $GetKHS.KHS
         try{$GetThreads = Get-TCP -Server $Server -Port $port -Message "threads"}catch{Write-Host "API threads TimedOut"}
         $Data = $GetThreads -split "\|"
         $Hash = $Data -split ";" | Select-String "KHS" | foreach {$_ -replace ("KHS=","")}
