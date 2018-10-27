@@ -4,6 +4,9 @@
 
 **Important Note:**
 
+If you would like SWARM incorportated into an OS besides HiveOS, contact the developers, and show them this:
+
+https://github.com/MaynardMiner/SWARM/wiki/Developer's-Corner
 
 SWARM is a powershell/bash hyrbid miner that is meant to work in both Windows and HiveOS mining systems. It has the capability of switching between mutliple pools, multiple algorithms based on the most profitable calucation. SWARM fully integrates with HiveOS, sending stats directly to HiveOS with little/no issues. The HiveOS compatibility means you can use all the features of HiveOS, and the dilligent effort HiveOS makes to bring bleeding edge technology to gpu and cpu mining. Working with foundation of HiveOS, mostly every aspect of SWARM can be viewed and modified remotely, from profit statistics, miner runtime, individual miner updates, to even oc profiling for algorithms (nvida only, amd coming soon).
 
