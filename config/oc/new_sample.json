@@ -1,0 +1,92 @@
+Notes On OC-Configuration:
+Leave "Cards": ""  To not use OC tuning
+
+For Cards:
+Enter as shown below in "Cards" example
+P-Model Cards Must Be Specified As Such:
+P106-100
+P106-090
+P104-100
+P102-100
+If you require more p-model cards- Contact Developer.
+
+"Cards": "1070 1050ti 1070 1050ti 1070 1050ti 1050ti 1050ti 1050ti 1070 1070 1050ti 1070",
+
+If you are using windows version, and would like SWARM to start fans, enter
+your fan speeds like thus. Cards Does NOT need to be specified to use. However
+ALL fans the GPUS's SWARM is using must be set.
+
+"windows fan start": "75 75 75 75 75 75 75 75 75 75 75 75 75 75 75",
+
+"default_NVIDIA1":
+{
+ "Power": "150 150 150 150 150 150",
+ "Core": "125 115 100 115 125 100",
+ "Memory": "1000 1000 1000 1000 1000 1000"
+},
+
+This is the oc settings for NVIDIA1 devices group, which is based on
+-Type NVIDIA1
+-GPUDevices1
+
+If was to have -GPUDevices1 set to:
+-GPUDevices '0,2,4,9,10,12'
+
+It follows in order of -GPUDevices, so in the above example:
+
+-GPU 0 Core would be set to 125
+-GPU 2 Core would be set to 115
+-GPU 4 Core would be set to 100
+-GPU 9 Core would be set to 115
+-GPU 10 Core would be set to 125
+-GPU 12 Core would be set to 100
+
+If NO -GPUDevices were specifed, then ALL cards must be listed. Factory Settings is 0.
+If you set Power for 1, you must set Power for all. You can leave Power blank, however.
+Core and memory can be left blank as well.
+
+"default_NVIDIA1":
+{
+ "Power": "150 75 150 75 150 75 75 75 75 150 150 75 150",
+ "Core": "125 0 115 0 100 0 0 0 0 115 125 0 100",
+ "Memory": "1000 0 1000 0 1000 0 0 0 0 1000 1000 0 1000"
+},
+
+{
+    "Cards": "1070 1050ti 1070 1050ti 1070 1050ti 1050ti 1050ti 1050ti 1070 1070 1050ti 1070",
+    "windows fan start": "",
+    "default_NVIDIA1":
+     {
+      "Power": "150 150 150 150 150 150",
+      "Core": "125 125 125 125 125 125",
+      "Memory": "1000 1000 1000 1000 1000 1000"
+     },
+     "default_NVIDIA2":
+      {
+       "Power": "75 75 75 75 75 75 75",
+       "Core": "100 100 100 100 100 100 100",
+       "Memory": "1000 1000 1000 1000 1000 1000 1000"
+      },
+     "default_NVIDIA3":
+      {
+       "Power": "",
+       "Core": "",
+       "Memory": ""
+      },
+     "default_AMD1": 
+     {
+     "pl": "",
+     "dpm": "",
+     "v": "",
+     "core": "",
+     "mem": "",
+     "mdpm": ""
+     }   
+ }
+
+ These are the default settings for GPUs. They are not neccessary for SWARM.
+ Default settings are used if you choose to set OC-Tuning for Algorithms,
+ and no algorithms were specified. You must have default settings if you
+ are using OC tuning in miner files!
+
+ 

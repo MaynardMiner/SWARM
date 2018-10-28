@@ -22,12 +22,12 @@ $Commands = [PSCustomObject]@{
 
 
 $Difficulty = [PSCustomObject]@{
-"equihash-btg" = '--algo 144_5 --pers BgoldPoW'
-"equihash192" = '--algo 192_7 --pers auto'
-"equihash144" =  '--algo 144_5 --pers auto'
-"equihash96" =  '--algo 96_5 --pers auto'
-"equihash210" = '--algo 210_9 --pers auto'
-"equihash200" = '--algo 200_9 --pers auto'
+"equihash-btg" = ''
+"equihash192" = ''
+"equihash144" =  ''
+"equihash96" =  ''
+"equihash210" = ''
+"equihash200" = ''
 }
 
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName

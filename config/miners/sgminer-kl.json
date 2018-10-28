@@ -1,0 +1,77 @@
+{
+  "AMD1": {
+    "name": "AMD1",
+    "prestart": [
+      "export GPU_MAX_HEAP_SIZE=100",
+      "export GPU_USE_SYNC_OBJECTS=1",
+      "export GPU_SINGLE_ALLOC_PERCENT=100",
+      "export GPU_MAX_ALLOC_PERCENT=100"
+    ],
+    "commands": {
+      "phi":"",
+      "tribus":"",
+      "aergo":"",
+      "geek":"",
+      "c11":"",
+      "xevan":""
+    },
+    "difficulty": {
+      "phi":"",
+      "tribus":"",
+      "aergo":"",
+      "geek":"",
+      "c11":"",
+      "xevan":""
+    },
+    "oc": {
+      "phi": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      },
+      "tribus": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      },
+      "aergo": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      },
+      "geek": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      },
+      "c11": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      },
+      "xevan": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      }
+    }
+  }
+}

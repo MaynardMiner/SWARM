@@ -1,0 +1,167 @@
+{
+  "AMD1": {
+    "name": "AMD1",
+    "prestart": [
+      "export GPU_MAX_HEAP_SIZE=100",
+      "export GPU_USE_SYNC_OBJECTS=1",
+      "export GPU_SINGLE_ALLOC_PERCENT=100",
+      "export GPU_MAX_ALLOC_PERCENT=100"
+    ],
+    "commands": {
+      "bcd": "",
+      "c11": "",
+      "geek": "",
+      "hmq1725": "",
+      "phi": "",
+      "renesis": "",
+      "skunk": "",
+      "sonoa": "",
+      "timetravel": "",
+      "tribus": "",
+      "x16s": "",
+      "x16r": "",
+      "x17": "",
+      "bitcore": "",
+      "x22i": ""
+    },
+    "difficulty": {
+      "bcd": "",
+      "c11": "",
+      "geek": "",
+      "hmq1725": "",
+      "phi": "",
+      "renesis": "",
+      "skunk": "",
+      "sonoa": "",
+      "timetravel": "",
+      "tribus": "",
+      "x16s": "",
+      "x16r": "",
+      "x17": "",
+      "bitcore": "",
+      "x22i": ""
+    },
+    "oc": {
+      "bcd": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      },
+      "c11": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      },
+      "geek": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      },
+      "hmq1725": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      },
+      "phi": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      },
+      "renesis": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      },
+      "skunk": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      },
+      "sonoa": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      },
+      "timetravel": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      },
+      "tribus": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      },
+      "x16s": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      },
+      "x16r": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      },
+      "x17": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      },
+      "bitcore": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      },
+      "x22i": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      }
+    }
+  }
+}

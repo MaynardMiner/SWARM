@@ -1,73 +1,53 @@
+##Miner Path Information
 $Path = "$($nvidia.cryptodredge.path2)"
 $Uri = "$($nvidia.cryptodredge.uri)"
 $MinerName = "$($nvidia.cryptodredge.minername)"
-
-$Build = "Tar"
-
-if($NVIDIADevices2 -ne ''){$Devices = $NVIDIADevices2}
-
+if($Platform -eq "Linux"){$Build = "Tar"}
+elseif($Platform -eq "Windows"){$Build = "Zip"}
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 
-$Commands = [PSCustomObject]@{
-  "lyra2v2" = ''
-  "lyra2rev2" = ''
-  "lyra2z" = ''
-  "lyra2re" = ''
-  "allium" = ''
-  "neoscrypt" = ''
-  "blake2s" = ''
-  "skein" = ''
-  "cryptonightheavy" = ''
-  "aeon" = ''
-  "masari" = ''
-  "stellite" = ''
-  "lbk3" = ''
-  "phi2" = ''
-  "cryptonightv7" = ''
-  "cryptonightv8" = ''
-   }
-             
-  $Difficulty = [PSCustomObject]@{
-  "lyra2v2" = ''
-  "lyra2rev2" = ''
-  "lyra2z" = ''
-  "lyra2re" = ''
-  "allium" = ''
-  "neoscrypt" = ''
-  "blake2s" = ''
-  "skein" = ''
-  "cryptonightheavy" = ''
-  "aeon" = ''
-  "masari" = ''
-  "stellite" = ''
-  "lbk3" = ''
-  "phi2" = ''
-  "cryptonightv7" = ''
-  "cryptonightv8" = ''
-    }
+$ConfigType = "NVIDIA2"
+
+##Parse -GPUDevices
+if($NVIDIADevices2 -ne ''){$Devices = $NVIDIADevices2}
+
+##Get Configuration File
+$GetConfig = "$dir\config\miners\cryptodredge.json"
+try{$Config = Get-Content $GetConfig | ConvertFrom-Json}
+catch{Write-Warning "Warning: No config found at $GetConfig"}
+
+##Export would be /path/to/[SWARMVERSION]/build/export##
+$ExportDir = Join-Path $dir "build\export"
+
+##Prestart actions before miner launch
+$Prestart = @()
+$PreStart += "export LD_LIBRARY_PATH=`$LD_LIBRARY_PATH:$ExportDir"
+$Config.$ConfigType.prestart | foreach {$Prestart += "$($_)"}
   
 if($CoinAlgo -eq $null)
- {
- $Commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+{
+ $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
  if($Algorithm -eq "$($AlgoPools.$_.Algorithm)")
   {
-    if($Difficulty.$_){$Diff=",d=$($Difficulty.$_)"}
+  if($Config.$ConfigType.difficulty.$_){$Diff=",d=$($Difficulty.$_)"}
   [PSCustomObject]@{
-  Platform = $Platform
   Symbol = "$($_)"
   MinerName = $MinerName
-  Type = "NVIDIA2"
+  Prestart = $PreStart
+  Type = $ConfigType
   Path = $Path
   Devices = $Devices
   DeviceCall = "ccminer"
-  Arguments = "-a $(Get-Nvidia($_)) -o stratum+tcp://$($AlgoPools.$_.Host):$($AlgoPools.$_.Port) -b 0.0.0.0:4069 -u $($AlgoPools.$_.User2) -p $($AlgoPools.$_.Pass2)$($Diff) $($Commands.$_)"
+  Arguments = "-a $(Get-Nvidia($_)) -o stratum+tcp://$($AlgoPools.$_.Host):$($AlgoPools.$_.Port) -b 0.0.0.0:4069 -u $($AlgoPools.$_.User2) -p $($AlgoPools.$_.Pass2)$($Diff) $($Config.$ConfigType.commands.$_)"
   HashRates = [PSCustomObject]@{$_ = $($Stats."$($Name)_$($_)_hashrate".Day)}
-  PowerX = [PSCustomObject]@{$_ = if($WattOMeter -eq "Yes"){$($Stats."$($Name)_$($_)_Power".Day)}elseif($Watts.$($_).NVIDIA1_Watts){$Watts.$($_).NVIDIA1_Watts}elseif($Watts.default.NVIDIA1_Watts){$Watts.default.NVIDIA1_Watts}else{0}}
+  PowerX = [PSCustomObject]@{$_ = if($WattOMeter -eq "Yes"){$($Stats."$($Name)_$($_)_Power".Day)}elseif($Watts.$($_)."$($ConfigType)_Watts"){$Watts.$($_)."$($ConfigType)_Watts"}elseif($Watts.default."$($ConfigType)_Watts"){$Watts.default."$($ConfigType)_Watts"}else{0}}
+  ocpower = if($Config.$ConfigType.oc.power.$_){$Config.$ConfigType.oc.power.$_}else{$OC."default_$($ConfigType)".Power}
+  occore = if($Config.$ConfigType.oc.core.$_){$Config.$ConfigType.oc.power.$_}else{$OC."default_$($ConfigType)".core}
+  ocmem = if($Config.$ConfigType.oc.memory.$_){$Config.$ConfigType.oc.power.$_}else{$OC."default_$($ConfigType)".memory}
   MinerPool = "$($AlgoPools.$_.Name)"
   FullName = "$($AlgoPools.$_.Mining)"
   Port = 4069
   API = "Ccminer"
-  Wrap = $false
   URI = $Uri
   BUILD = $Build
   Algo = "$($_)"
@@ -75,27 +55,28 @@ if($CoinAlgo -eq $null)
     }
   }
 }  
-else{
-$CoinPools | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name |
- Where {$($Commands.$($CoinPools.$_.Algorithm)) -NE $null} |
- foreach {
-  if($Difficulty.$($CoinPools.$_.Algorithm)){$Diff=",d=$($Difficulty.$($CoinPools.$_.Algorithm))"}
-  [PSCustomObject]@{
-  Platform = $Platform
+else{  
+  $CoinPools | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name |
+  Where {$($Config.$ConfigType.commands.$($CoinPools.$_.Algorithm)) -NE $null} |
+   foreach {
+   if($Config.$ConfigType.difficulty.$_.$($CoinPools.$_.Algorithm)){$Diff=",d=$($Difficulty.$($CoinPools.$_.Algorithm))"}
+    [PSCustomObject]@{
   Symbol = "$($CoinPools.$_.Symbol)"
   MinerName = $MinerName
-  Type = "NVIDIA2"
+  Prestart = $PreStart
+  Type = $ConfigType
   Path = $Path
   Devices = $Devices
   DeviceCall = "ccminer"
-  Arguments = "-a $(Get-Algorithm($CoinPools.$_.Algorithm)) -o stratum+tcp://$($CoinPools.$_.Host):$($CoinPools.$_.Port) -b 0.0.0.0:4069 -u $($CoinPools.$_.User2) -p $($CoinPools.$_.Pass2)$($Diff) $($Commands.$($Coinpools.$_.Algorithm))"
+  Arguments = "-a $(Get-Algorithm($CoinPools.$_.Algorithm)) -o stratum+tcp://$($CoinPools.$_.Host):$($CoinPools.$_.Port) -b 0.0.0.0:4069 -u $($CoinPools.$_.User2) -p $($CoinPools.$_.Pass2)$($Diff) $($Config.$ConfigType.commands.$($Coinpools.$_.Algorithm))"
   HashRates = [PSCustomObject]@{$CoinPools.$_.Symbol= $($Stats."$($Name)_$($CoinPools.$_.Algorithm)_hashrate".Day)}
-  PowerX = [PSCustomObject]@{$_ = if($WattOMeter -eq "Yes"){$($Stats."$($Name)_$($_)_Power".Day)}elseif($Watts.$($_).NVIDIA2_Watts){$Watts.$($_).NVIDIA2_Watts}elseif($Watts.default.NVIDIA2_Watts){$Watts.default.NVIDIA2_Watts}else{0}}
-  API = "Ccminer"
+  PowerX = [PSCustomObject]@{$CoinPools.$_.Symbol = if($WattOMeter -eq "Yes"){$($Stats."$($Name)_$($CoinPools.$_.Algorithm)_Power".Day)}elseif($Watts.$($CoinPools.$_.Algorithm)."$($ConfigType)_Watts"){$Watts.$($CoinPools.$_.Algorithm)."$($ConfigType)_Watts"}elseif($Watts.default."$($ConfigType)_Watts"){$Watts.default."$($ConfigType)_Watts"}else{0}}
+  ocpower = if($Config.$ConfigType.oc.power.$($CoinPools.$_.Algorithm)){$Config.$ConfigType.oc.power.$($CoinPools.$_.Algorithm)}else{$OC."default_$($ConfigType)".Power}
+  occore = if($Config.$ConfigType.oc.core.$($CoinPools.$_.Algorithm)){$Config.$ConfigType.oc.power.$($CoinPools.$_.Algorithm)}else{$OC."default_$($ConfigType)".core}
+  ocmem = if($Config.$ConfigType.oc.memory.$($CoinPools.$_.Algorithm)){$Config.$ConfigType.oc.power.$($CoinPools.$_.Algorithm)}else{$OC."default_$($ConfigType)".memory}
   FullName = "$($CoinPools.$_.Mining)"
   MinerPool = "$($CoinPools.$_.Name)"
   Port = 4069
-  Wrap = $false
   URI = $Uri
   BUILD = $Build
   Algo = "$($CoinPools.$_.Algorithm)"

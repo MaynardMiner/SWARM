@@ -1,0 +1,137 @@
+{
+  "NVIDIA1": {
+    "name": "NVIDIA1",
+    "prestart": [],
+    "commands": {
+      "aergo": "",
+      "hex": "",
+      "timetravel": "",
+      "xevan": "",
+      "sonoa": ""
+    },
+    "difficulty": {
+      "aergo": "",
+      "hex": "",
+      "timetravel": "",
+      "xevan": "",
+      "sonoa": ""
+    },
+    "oc": {
+      "aergo": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "hex": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "timetravel": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "xevan": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "sonoa": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  },
+  "NVIDIA2": {
+    "name": "NVIDIA2",
+    "prestart": [],
+    "commands": {
+      "aergo": "",
+      "hex": "",
+      "timetravel": "",
+      "xevan": "",
+      "sonoa": ""
+    },
+    "difficulty": {
+      "aergo": "",
+      "hex": "",
+      "timetravel": "",
+      "xevan": "",
+      "sonoa": ""
+    },
+    "oc": {
+      "aergo": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "hex": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "timetravel": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "xevan": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "sonoa": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  },
+  "NVIDIA3": {
+    "name": "NVIDIA3",
+    "prestart": [],
+    "commands": {
+      "aergo": "",
+      "hex": "",
+      "timetravel": "",
+      "xevan": "",
+      "sonoa": ""
+    },
+    "difficulty": {
+      "aergo": "",
+      "hex": "",
+      "timetravel": "",
+      "xevan": "",
+      "sonoa": ""
+    },
+    "oc": {
+      "aergo": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "hex": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "timetravel": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "xevan": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "sonoa": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  }
+}

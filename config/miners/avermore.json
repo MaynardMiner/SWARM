@@ -1,0 +1,67 @@
+{
+  "AMD1": {
+    "name": "AMD1",
+    "prestart": [
+      "export GPU_MAX_HEAP_SIZE=100",
+      "export GPU_USE_SYNC_OBJECTS=1",
+      "export GPU_SINGLE_ALLOC_PERCENT=100",
+      "export GPU_MAX_ALLOC_PERCENT=100"
+    ],
+    "commands": {
+      "myr-gr": "",
+      "groestl": "",
+      "x16r": "",
+      "x16s": "",
+      "equihash": ""
+    },
+    "difficulty": {
+      "myr-gr": "",
+      "groestl": "",
+      "x16r": "",
+      "x16s": "",
+      "equihash": ""
+    },
+    "oc": {
+      "myr-gr": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      },
+      "groestl": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      },
+      "x16r": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      },
+      "x16s": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      },
+      "equihash": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      }
+    }
+  }
+}

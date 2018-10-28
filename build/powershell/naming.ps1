@@ -17,7 +17,7 @@ function Get-Nvidia {
         [String]$Coin
     )
 
-    $Coins = Get-Content ".\config\naming\get-nvidia.txt" | ConvertFrom-Json
+    $Coins = Get-Content ".\config\naming\get-nvidia.json" | ConvertFrom-Json
 
     $Coin = (Get-Culture).TextInfo.ToTitleCase(($Coin -replace "_"," ")) -replace " "
 
@@ -31,7 +31,7 @@ function Get-AMD {
         [String]$Coin
     )
 
-    $Coins = Get-Content ".\config\naming\get-amd.txt" | ConvertFrom-Json
+    $Coins = Get-Content ".\config\naming\get-amd.json" | ConvertFrom-Json
 
     $Coin = (Get-Culture).TextInfo.ToTitleCase(($Coin -replace "_"," ")) -replace " "
 
@@ -45,7 +45,7 @@ function Get-Algorithm {
         [String]$Algorithm
     )
 
-    $Algorithms = Get-Content ".\config\naming\get-pool.txt" | ConvertFrom-Json
+    $Algorithms = Get-Content ".\config\naming\get-pool.json" | ConvertFrom-Json
 
     $Algorithm = (Get-Culture).TextInfo.ToTitleCase(($Algorithm -replace "_"," ")) -replace " "
 

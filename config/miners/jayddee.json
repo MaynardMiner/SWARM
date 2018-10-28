@@ -1,0 +1,22 @@
+{
+  "CPU": {
+    "name": "CPU",
+    "prestart": [],
+    "commands": {
+      "yescrypt": "",
+      "yescryptr16": "",
+      "lyra2z": "",
+      "lyra2re": "",
+      "m7m": "",
+      "cryptonightv7": ""
+    },
+    "difficulty": {
+      "yescrypt": "",
+      "yescryptr16": "",
+      "lyra2z": "",
+      "lyra2re": "",
+      "m7m": "",
+      "cryptonightv7": ""
+    }
+  }
+}

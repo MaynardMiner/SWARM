@@ -1,0 +1,179 @@
+{
+  "NVIDIA1": {
+    "name": "NVIDIA1",
+    "prestart": [],
+    "commands": {
+      "qubit": "",
+      "keccak": "",
+      "blakecoin": "",
+      "keccakc": "",
+      "x12": "",
+      "sib": "",
+      "myr-gr": ""
+    },
+    "difficulty": {
+      "qubit": "",
+      "keccak": "",
+      "blakecoin": "",
+      "keccakc": "",
+      "x12": "",
+      "sib": "",
+      "myr-gr": ""
+    },
+    "oc": {
+      "qubit": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "keccak": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "blakecoin": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "keccakc": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "x12": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "sib": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "myr-gr": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  },
+  "NVIDIA2": {
+    "name": "NVIDIA2",
+    "prestart": [],
+    "commands": {
+      "qubit": "",
+      "keccak": "",
+      "blakecoin": "",
+      "keccakc": "",
+      "x12": "",
+      "sib": "",
+      "myr-gr": ""
+    },
+    "difficulty": {
+      "qubit": "",
+      "keccak": "",
+      "blakecoin": "",
+      "keccakc": "",
+      "x12": "",
+      "sib": "",
+      "myr-gr": ""
+    },
+    "oc": {
+      "qubit": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "keccak": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "blakecoin": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "keccakc": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "x12": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "sib": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "myr-gr": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  },
+  "NVIDIA3": {
+    "name": "NVIDIA3",
+    "prestart": [],
+    "commands": {
+      "qubit": "",
+      "keccak": "",
+      "blakecoin": "",
+      "keccakc": "",
+      "x12": "",
+      "sib": "",
+      "myr-gr": ""
+    },
+    "difficulty": {
+      "qubit": "",
+      "keccak": "",
+      "blakecoin": "",
+      "keccakc": "",
+      "x12": "",
+      "sib": "",
+      "myr-gr": ""
+    },
+    "oc": {
+      "qubit": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "keccak": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "blakecoin": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "keccakc": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "x12": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "sib": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "myr-gr": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  }
+}

@@ -1,80 +1,77 @@
+##Miner Path Information
 $Path = "$($cpu.bubasik.path1)"
 $Uri = "$($cpu.bubasik.uri)"
 $MinerName = "$($cpu.bubasik.minername)"
+$Build = "Linux"
+$Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 
+$ConfigType = "CPU"
+
+##Parse -CPUThreads
 if($CPUThreads -ne ''){$Devices = $CPUThreads}
 
-$Build = "Linux"
+##Get Configuration File
+$GetConfig = "$dir\config\miners\bubasik.json"
+try{$Config = Get-Content $GetConfig | ConvertFrom-Json}
+catch{Write-Warning "Warning: No config found at $GetConfig"}
 
-$Commands = [PSCustomObject]@{
-"yespower" = ""
-"argon2d-dyn" = ""
-"lyra2z" = ""
-#"hodl" = ""
-}
-        
-$Difficulty = [PSCustomObject]@{
-"yespower" = ""
-"argon2d-dyn" = ""
-"lyra2z" = ""
-"lyra2v2" = ""
-#"hodl" = ''
-}
+##Export would be /path/to/[SWARMVERSION]/build/export##
+$ExportDir = Join-Path $dir "build\export"
 
-$Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
+##Prestart actions before miner launch
+$Prestart = @()
+$PreStart += "export LD_LIBRARY_PATH=`$LD_LIBRARY_PATH:$ExportDir"
+$Config.$ConfigType.prestart | foreach {$Prestart += "$($_)"}
 
 if($CoinAlgo -eq $null)
 {
- $Commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
- if($Algorithm -eq "$($AlgoPools.$_.Algorithm)")
- {
-  if($Difficulty.$_){$Diff=",d=$($Difficulty.$_)"}
+$Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+if($Algorithm -eq "$($AlgoPools.$_.Algorithm)")
+  {
+  if($Config.$ConfigType.difficulty.$_){$Diff=",d=$($Difficulty.$_)"}
   [PSCustomObject]@{
-  platform = $platform
   Symbol = "$($_)"
   MinerName = $MinerName
-  Type = "CPU"
+  Prestart = $PreStart
+  Type = $ConfigType
   Path = $Path
   Devices = $Devices
   DeviceCall = "cpuminer-opt"
-  Arguments = "-a $_ $($MinerIntensity)-o stratum+tcp://$($AlgoPools.$_.Host):$($AlgoPools.$_.Port) -b 0.0.0.0:4048 -u $($AlgoPools.$_.CPUser) -p $($AlgoPools.$_.CPUPass)$($Diff) $($Commands.$_)"
+  Arguments = "-a $_ $($MinerIntensity)-o stratum+tcp://$($AlgoPools.$_.Host):$($AlgoPools.$_.Port) -b 0.0.0.0:4048 -u $($AlgoPools.$_.CPUser) -p $($AlgoPools.$_.CPUPass)$($Diff) $($Config.$ConfigType.commands.$_)"
   HashRates = [PSCustomObject]@{$_ = $($Stats."$($Name)_$($_)_hashrate".Day)}
-  PowerX = [PSCustomObject]@{$_ = if($($Watts.$($_).CPU_Watts)){$($Watts.$($_).CPU_Watts)}elseif($($Watts.default.CPU_Watts)){$($Watts.default.CPU_Watts)}else{0}}
+  PowerX = [PSCustomObject]@{$_ = if($($Watts.$($_)."$($ConfigType)_Watts")){$($Watts.$($_)."$($ConfigType)_Watts")}elseif($($Watts.default."$($ConfigType)_Watts")){$($Watts.default."$($ConfigType)_Watts")}else{0}}
   MinerPool = "$($AlgoPools.$_.Name)"
   FullName = "$($AlgoPools.$_.Mining)"
   Port = 4048
   API = "cpuminer"
-  Wrap = $false
   URI = $Uri
   BUILD = $Build
   PoolType = "AlgoPools"
   Algo = "$($_)"
-  NewAlgo = ''
    }
   }
  }    
 }
 else{
-    $CoinPools | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name |
-    Where {$($Commands.$($CoinPools.$_.Algorithm)) -NE $null} |
-    foreach {
-    if($Difficulty.$($CoinPools.$_.Algorithm)){$Diff=",d=$($Difficulty.$($CoinPools.$_.Algorithm))"}
-    [PSCustomObject]@{
-    platform = $platform
+$CoinPools | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name |
+Where {$($Config.$ConfigType.commands.$($CoinPools.$_.Algorithm)) -NE $null} |
+foreach {
+if($Config.$ConfigType.difficulty.$($CoinPools.$_.Algorithm)){$Diff=",d=$($Difficulty.$($CoinPools.$_.Algorithm))"}
+   [PSCustomObject]@{
     Symbol = "$($CoinPools.$_.Symbol)"
     MinerName = $MinerName
-    Type = "CPU"
+    Prestart = $PreStart
+    Type = $ConfigType
     Path = $Path
     Devices = $Devices
     DeviceCall = "cpuminer-opt"
-    Arguments = "-a $($CoinPools.$_.Algorithm) -o stratum+tcp://$($CoinPools.$_.Host):$($CoinPools.$_.Port) -b 0.0.0.0:4048 -u $($CoinPools.$_.CPUser) -p $($CoinPools.$_.CPUPass)$($Diff) $($Commands.$($CoinPools.$_.Algorithm))"
+    Arguments = "-a $($CoinPools.$_.Algorithm) -o stratum+tcp://$($CoinPools.$_.Host):$($CoinPools.$_.Port) -b 0.0.0.0:4048 -u $($CoinPools.$_.CPUser) -p $($CoinPools.$_.CPUPass)$($Diff) $($Config.$ConfigType.commands.$($CoinPools.$_.Algorithm))"
     HashRates = [PSCustomObject]@{$CoinPools.$_.Symbol= $($Stats."$($Name)_$($CoinPools.$_.Algorithm)_hashrate".Day)}
-    PowerX = [PSCustomObject]@{$CoinPools.$_.Symbol = if($Watts.$($CoinPools.$_.Algorithm).CPU_Watts){$Watts.$($CoinPools.$_.Algorithm).CPU_Watts}elseif($Watts.default.CPU_Watts){$Watts.default.CPU_Watts}else{0}}
+    PowerX = [PSCustomObject]@{$CoinPools.$_.Symbol = if($Watts.$($CoinPools.$_.Algorithm)."$($ConfigType)_Watts"){$Watts.$($CoinPools.$_.Algorithm)."$($ConfigType)_Watts"}elseif($Watts.default."$($ConfigType)_Watts"){$Watts.default."$($ConfigType)_Watts"}else{0}}
     API = "cpuminer"
     FullName = "$($CoinPools.$_.Mining)"
     MinerPool = "$($CoinPools.$_.Name)"
     Port = 4048
-    Wrap = $false
     URI = $Uri
     BUILD = $Build
     PoolType = "CoinPools"

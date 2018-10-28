@@ -1,0 +1,37 @@
+{
+    "AMD1": {
+      "name": "AMD1",
+      "prestart": [
+        "export GPU_MAX_HEAP_SIZE=100",
+        "export GPU_USE_SYNC_OBJECTS=1",
+        "export GPU_SINGLE_ALLOC_PERCENT=100",
+        "export GPU_MAX_ALLOC_PERCENT=100"
+      ],
+      "commands": {
+        "phi2": "",
+        "lyra2z": ""
+      },
+      "difficulty": {
+        "phi2": "",
+        "lyra2z": ""
+      },
+      "oc": {
+        "phi2": {
+          "pl": "",
+          "dpm": "",
+          "v": "",
+          "core": "",
+          "mem": "",
+          "mdpm": ""
+        },
+        "lyra2z": {
+          "pl": "",
+          "dpm": "",
+          "v": "",
+          "core": "",
+          "mem": "",
+          "mdpm": ""
+        }
+      }
+    }
+  }

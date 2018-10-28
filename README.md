@@ -108,6 +108,7 @@ SWARM focuses on quality versus quantity, from profit data, miner implementation
     "polytimos": "polytimos",
     "qubit": "qubit",
     "renesis": "renesis",
+    "sha256t": "sha256t:,
     "sib": "sib",
     "skein": "skein",
     "skunk": "skunk",
@@ -119,6 +120,7 @@ SWARM focuses on quality versus quantity, from profit data, miner implementation
     "x16r": "x16r",
     "x16s": "x16s",
     "x17": "x17",
+    "x22i": "x22i",
     "xevan": "xevan",
     "xmr": "xmr",
     "yespower": "yespower",
@@ -132,6 +134,7 @@ SWARM focuses on quality versus quantity, from profit data, miner implementation
 ```
 nicehash
 blockmasters
+fairpool
 nlpool
 starpool
 ahashpool
@@ -158,6 +161,7 @@ LyclMiner (expirmental) (AMD)
 Sgminer-kl (AMD)
 Sgminer-Hex (AMD)
 tdxminer (AMD)
+WidRig-Multi
 ```
 
 Simple Install Instructions (HIVEOS):

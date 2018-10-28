@@ -1,0 +1,347 @@
+{
+  "NVIDIA1": {
+    "name": "NVIDIA1",
+    "prestart": [],
+    "commands": {
+      "lyra2v2": "",
+      "lyra2rev2": "",
+      "lyra2z": "",
+      "lyra2re": "",
+      "allium": "",
+      "neoscrypt": "",
+      "blake2s": "",
+      "skein": "",
+      "cryptonightv7": "",
+      "cryptonightheavy": "",
+      "aeon": "",
+      "masari": "",
+      "stellite": "",
+      "lbk3": "",
+      "phi2": ""
+    },
+    "difficulty": {
+      "lyra2v2": "",
+      "lyra2rev2": "",
+      "lyra2z": "",
+      "lyra2re": "",
+      "allium": "",
+      "neoscrypt": "",
+      "blake2s": "",
+      "skein": "",
+      "cryptonightv7": "",
+      "cryptonightheavy": "",
+      "aeon": "",
+      "masari": "",
+      "stellite": "",
+      "lbk3": "",
+      "phi2": ""
+    },
+    "oc": {
+      "lyra2v2": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "lyra2rev2": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "lyra2z": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "lyra2re": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "allium": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "neoscrypt": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "blake2s": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "skein": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "cryptonightv7": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "cryptonightheavy": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "aeon": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "masari": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "stellite": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "lbk3": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "phi2": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  },
+  "NVIDIA2": {
+    "name": "NVIDIA2",
+    "prestart": [],
+    "commands": {
+      "lyra2v2": "",
+      "lyra2rev2": "",
+      "lyra2z": "",
+      "lyra2re": "",
+      "allium": "",
+      "neoscrypt": "",
+      "blake2s": "",
+      "skein": "",
+      "cryptonightv7": "",
+      "cryptonightheavy": "",
+      "aeon": "",
+      "masari": "",
+      "stellite": "",
+      "lbk3": "",
+      "phi2": ""
+    },
+    "difficulty": {
+      "lyra2v2": "",
+      "lyra2rev2": "",
+      "lyra2z": "",
+      "lyra2re": "",
+      "allium": "",
+      "neoscrypt": "",
+      "blake2s": "",
+      "skein": "",
+      "cryptonightv7": "",
+      "cryptonightheavy": "",
+      "aeon": "",
+      "masari": "",
+      "stellite": "",
+      "lbk3": "",
+      "phi2": ""
+    },
+    "oc": {
+      "lyra2v2": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "lyra2rev2": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "lyra2z": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "lyra2re": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "allium": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "neoscrypt": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "blake2s": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "skein": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "cryptonightv7": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "cryptonightheavy": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "aeon": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "masari": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "stellite": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "lbk3": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "phi2": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  },
+  "NVIDIA3": {
+    "name": "NVIDIA3",
+    "prestart": [],
+    "commands": {
+      "lyra2v2": "",
+      "lyra2rev2": "",
+      "lyra2z": "",
+      "lyra2re": "",
+      "allium": "",
+      "neoscrypt": "",
+      "blake2s": "",
+      "skein": "",
+      "cryptonightv7": "",
+      "cryptonightheavy": "",
+      "aeon": "",
+      "masari": "",
+      "stellite": "",
+      "lbk3": "",
+      "phi2": ""
+    },
+    "difficulty": {
+      "lyra2v2": "",
+      "lyra2rev2": "",
+      "lyra2z": "",
+      "lyra2re": "",
+      "allium": "",
+      "neoscrypt": "",
+      "blake2s": "",
+      "skein": "",
+      "cryptonightv7": "",
+      "cryptonightheavy": "",
+      "aeon": "",
+      "masari": "",
+      "stellite": "",
+      "lbk3": "",
+      "phi2": ""
+    },
+    "oc": {
+      "lyra2v2": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "lyra2rev2": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "lyra2z": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "lyra2re": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "allium": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "neoscrypt": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "blake2s": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "skein": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "cryptonightv7": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "cryptonightheavy": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "aeon": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "masari": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "stellite": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "lbk3": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "phi2": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  }
+}

@@ -104,9 +104,21 @@ if($Platforms -eq "windows"){Set-Location $WorkingDir}
 . .\build\powershell\commandweb.ps1
 . .\build\powershell\powerup.ps1
 
+
 ##Data
 $GetMiners = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-Json
 $GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
+
+$DevNVIDIA = $false
+$DevAMD = $false
+$StartTime = Get-Date
+
+$GetMiners | Foreach { 
+  $NEW=0; 
+  $NEW | Set-Content ".\build\txt\$($_.Type)-hash.txt"; 
+  if($_.Type -like "*NVIDIA*"){$DevNVIDIA = $true};
+  if($_.Type -like "*AMD*"){$DevAMD = $true}
+  }
 
 ##Set-OC
 $OC = $false
@@ -114,7 +126,7 @@ $GetMiners | foreach {
  if($_.Type -like "*NVIDIA*" -and $OC -eq $false)
  {
   Write-Host "Starting Tuning"
-  Start-OC -Devices $_.Devices -OCType $($_.Type) -Miner_Algo $($_.Algo) -Platforms $Platforms -Dir $WorkingDir
+  Start-OC -Platforms $Platforms
   $OC = $true
  }
 }
@@ -128,17 +140,6 @@ if($CPUOnly -eq $true){"CPU" | Set-Content ".\build\txt\miner.txt"}
 
 $BackgroundTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $BackgroundTimer.Restart()
-
-$DevNVIDIA = $false
-$DevAMD = $false
-$GetMiners | Foreach { 
-$NEW=0; 
-$NEW | Set-Content ".\build\txt\$($_.Type)-hash.txt"; 
-if($_.Type -like "*NVIDIA*"){$DevNVIDIA = $true};
-if($_.Type -like "*AMD*"){$DevAMD = $true}
-}
-
-$StartTime = Get-Date
 
 While($True)
 {

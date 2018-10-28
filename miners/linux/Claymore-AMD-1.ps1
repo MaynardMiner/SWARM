@@ -1,49 +1,58 @@
+##Miner Path Information
 $Path = "$($amd.claymore_amd.path1)"
 $Uri = "$($amd.claymore_amd.uri)"
 $MinerName = "$($amd.claymore_amd.minername)"
-
 $Build = "Tar"
-
-if($AMDDevices1 -ne ''){
-  $ClayDevices1  = $AMDDevices1 -split ","
-  $ClayDevices1  = Switch($ClayDevices1){"10"{"a"};"11"{"b"};"12"{"c"};"13"{"d"};"14"{"e"};"15"{"f"};"16"{"g"};"17"{"h"};"18"{"i"};"19"{"j"};"20"{"k"};default{"$_"};}
-  $ClayDevices1  = $ClayDevices1 | foreach {$_ -replace ("$($_)",",$($_)")}
-  $ClayDevices1  = $ClayDevices1 -join ""
-  $ClayDevices1  = $ClayDevices1.TrimStart(" ",",")  
-  $ClayDevices1 = $ClayDevices1 -replace(",","")
-  $Devices = $ClayDevices1}
-
-$Commands = [PSCustomObject]@{
-"ethash" = '-esm 2'
-"daggerhashimoto" = '-esm 3 -estale 0'
-"dagger" = '-esm 2'
-}
-   
-$Difficulty = [PSCustomObject]@{
-"ethash" = ''
-"daggerhashimoto" = ''
-"dagger" = ''
-}
-
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 
+$ConfigType = "AMD1"
+
+##Parse -GPUDevices
+if($AMDDevices1 -ne ''){
+$ClayDevices1  = $AMDDevices1 -split ","
+$ClayDevices1  = Switch($ClayDevices1){"10"{"a"};"11"{"b"};"12"{"c"};"13"{"d"};"14"{"e"};"15"{"f"};"16"{"g"};"17"{"h"};"18"{"i"};"19"{"j"};"20"{"k"};default{"$_"};}
+$ClayDevices1  = $ClayDevices1 | foreach {$_ -replace ("$($_)",",$($_)")}
+$ClayDevices1  = $ClayDevices1 -join ""
+$ClayDevices1  = $ClayDevices1.TrimStart(" ",",")  
+$ClayDevices1 = $ClayDevices1 -replace(",","")
+$Devices = $ClayDevices1}
+
+##Get Configuration File
+$GetConfig = "$dir\config\miners\claymore_amd.json"
+try{$Config = Get-Content $GetConfig | ConvertFrom-Json}
+catch{Write-Warning "Warning: No config found at $GetConfig"}
+
+##Export would be /path/to/[SWARMVERSION]/build/export##
+$ExportDir = Join-Path $dir "build\export"
+
+##Prestart actions before miner launch
+$Prestart = @()
+$PreStart += "export LD_LIBRARY_PATH=`$LD_LIBRARY_PATH:$ExportDir"
+$Config.$ConfigType.prestart | foreach {$Prestart += "$($_)"}
+
 if($CoinAlgo -eq $null)
- {
-$Commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
- if($Algorithm -eq "$($AlgoPools.$_.Algorithm)")
+{
+  $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+  if($Algorithm -eq "$($AlgoPools.$_.Algorithm)")
   {
-    if($Difficulty.$_){$Diff=",d=$($Difficulty.$_)"}
+    if($Config.$ConfigType.difficulty.$_){$Diff=",d=$($Difficulty.$_)"}
   [PSCustomObject]@{
-  Platform = $Platform  
   Symbol = "$($_)"
   MinerName = $MinerName
-  Type = "AMD1"
+  Prestart = $PreStart
+  Type = $ConfigType
   Path = $Path
   Devices = $Devices
   DeviceCall = "claymore"
-  Arguments = "-platform $AMDPlatform -mport 3336 -mode 1 -allcoins 1 -allpools 1 -epool $($AlgoPools.$_.Protocol)://$($AlgoPools.$_.Host):$($AlgoPools.$_.Port) -ewal $($AlgoPools.$_.User1) -epsw $($AlgoPools.$_.Pass1)$($Diff) -wd 0 -dbg -1 -eres 2 $($Commands.$_)"
+  Arguments = "-platform 1 -mport 3336 -mode 1 -allcoins 1 -allpools 1 -epool $($AlgoPools.$_.Protocol)://$($AlgoPools.$_.Host):$($AlgoPools.$_.Port) -ewal $($AlgoPools.$_.User1) -epsw $($AlgoPools.$_.Pass1)$($Diff) -wd 0 -dbg -1 -eres 2 $($Config.$ConfigType.commands.$_)"
   HashRates = [PSCustomObject]@{$_ = $($Stats."$($Name)_$($_)_hashrate".Day)}
-  PowerX = [PSCustomObject]@{$_ = if($WattOMeter -eq "Yes"){$($Stats."$($Name)_$($_)_Power".Day)}elseif($Watts.$($_).AMD1_Watts){$Watts.$($_).AMD1_Watts}elseif($Watts.default.AMD1_Watts){$Watts.default.AMD1_Watts}else{0}}
+  PowerX = [PSCustomObject]@{$_ = if($WattOMeter -eq "Yes"){$($Stats."$($Name)_$($_)_Power".Day)}elseif($Watts.$($_)."$($ConfigType)_Watts"){$Watts.$($_)."$($ConfigType)_Watts"}elseif($Watts.default."$($ConfigType)_Watts"){$Watts.default."$($ConfigType)_Watts"}else{0}}
+  ocpl = if($Config.$ConfigType.oc.pl.$_){$Config.$ConfigType.oc.pl.$_}else{"$OC.default_$($ConfigType)".pl}
+  ocdmp = if($Config.$ConfigType.oc.dpm.$_){$Config.$ConfigType.oc.dpm.$_}else{"$OC.default_$($ConfigType)".dpm}
+  ocv = if($Config.$ConfigType.oc.v.$_){$Config.$ConfigType.oc.v.$_}else{"$OC.default_$($ConfigType)".v}
+  occore = if($Config.$ConfigType.oc.core.$_){$Config.$ConfigType.oc.dpm.$_}else{"$OC.default_$($ConfigType)".core}
+  ocmem = if($Config.$ConfigType.oc.mem.$_){$Config.$ConfigType.oc.mem.$_}else{"$OC.default_$($ConfigType)".memory}
+  ocmdmp = if($Config.$ConfigType.oc.mdpm.$_){$Config.$ConfigType.oc.mdpm.$_}else{"$OC.default_$($ConfigType)".mdpm}
   FullName = "$($AlgoPools.$_.Mining)"
   API = "claymore"
   Port = 3336
@@ -52,28 +61,33 @@ $Commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty 
   URI = $Uri
   BUILD = $Build
   Algo = "$($_)"
-  NewAlgo = ''
       }
     }
   }
 }
 else {
 $CoinPools | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name |
-  Where {$($Commands.$($CoinPools.$_.Algorithm)) -NE $null} |
+  Where {$($Config.$ConfigType.commands.$($CoinPools.$_.Algorithm)) -NE $null} |
   foreach {
-    if($Difficulty.$($CoinPools.$_.Algorithm)){$Diff=",d=$($Difficulty.$($CoinPools.$_.Algorithm))"}
-    [PSCustomObject]@{
-  Platform = $Platform
+  if($Config.$ConfigType.difficulty.$($CoinPools.$_.Algorithm)){$Diff=",d=$($Difficulty.$($CoinPools.$_.Algorithm))"}
+  [PSCustomObject]@{
   Coin = "Yes"
   Symbol = "$($CoinPools.$_.Symbol)"
   MinerName = $MinerName
-  Type = "AMD1"
+  Prestart = $PreStart
+  Type = $ConfigType
   Path = $Path
   Devices = $Devices
   DeviceCall = "claymore"
-  Arguments = "-platform $AMDPlatform -mport 3336 -mode 1 -allcoins 1 -allpools 1 -epool $($CoinPools.$_.Protocol)://$($CoinPools.$_.Host):$($CoinPools.$_.Port) -ewal $($CoinPools.$_.User1) -epsw $($CoinPools.$_.Pass1)$($Diff) -wd 0 -dbg -1 -eres 2 $($Commands.$($CoinPools.$_.Algorithm))"
+  Arguments = "-platform 1 -mport 3336 -mode 1 -allcoins 1 -allpools 1 -epool $($CoinPools.$_.Protocol)://$($CoinPools.$_.Host):$($CoinPools.$_.Port) -ewal $($CoinPools.$_.User1) -epsw $($CoinPools.$_.Pass1)$($Diff) -wd 0 -dbg -1 -eres 2 $($Config.$ConfigType.commands.$($CoinPools.$_.Algorithm))"
   HashRates = [PSCustomObject]@{$CoinPools.$_.Symbol= $($Stats."$($Name)_$($CoinPools.$_.Algorithm)_hashrate".Day)}
-  PowerX = [PSCustomObject]@{$CoinPools.$_.Symbol = if($WattOMeter -eq "Yes"){$($Stats."$($Name)_$($CoinPools.$_.Algorithm)_Power".Day)}elseif($Watts.$($CoinPools.$_.Algorithm).AMD1_Watts){$Watts.$($CoinPools.$_.Algorithm).AMD1_Watts}elseif($Watts.default.AMD1_Watts){$Watts.default.AMD1_Watts}else{0}}
+  PowerX = [PSCustomObject]@{$_ = if($WattOMeter -eq "Yes"){$($Stats."$($Name)_$($_)_Power".Day)}elseif($Watts.$($_)."$($ConfigType)_Watts"){$Watts.$($_)."$($ConfigType)_Watts"}elseif($Watts.default."$($ConfigType)_Watts"){$Watts.default."$($ConfigType)_Watts"}else{0}}
+  ocpl = if($Config.$ConfigType.oc.pl.$($CoinPools.$_.Algorithm)){$Config.$ConfigType.oc.pl.$($CoinPools.$_.Algorithm)}else{"$OC.default_$($ConfigType)".pl}
+  ocdmp = if($Config.$ConfigType.oc.dpm.$($CoinPools.$_.Algorithm)){$Config.$ConfigType.oc.dpm.$($CoinPools.$_.Algorithm)}else{"$OC.default_$($ConfigType)".dpm}
+  ocv = if($Config.$ConfigType.oc.v.$($CoinPools.$_.Algorithm)){$Config.$ConfigType.oc.v.$($CoinPools.$_.Algorithm)}else{"$OC.default_$($ConfigType)".v}
+  occore = if($Config.$ConfigType.oc.core.$($CoinPools.$_.Algorithm)){$Config.$ConfigType.oc.dpm.$($CoinPools.$_.Algorithm)}else{"$OC.default_$($ConfigType)".core}
+  ocmem = if($Config.$ConfigType.oc.mem.$($CoinPools.$_.Algorithm)){$Config.$ConfigType.oc.mem.$($CoinPools.$_.Algorithm)}else{"$OC.default_$($ConfigType)".memory}
+  ocmdmp = if($Config.$ConfigType.oc.mdpm.$($CoinPools.$_.Algorithm)){$Config.$ConfigType.oc.mdpm.$($CoinPools.$_.Algorithm)}else{"$OC.default_$($ConfigType)".mdpm}
   FullName = "$($CoinPools.$_.Mining)"
   MinerPool = "$($CoinPools.$_.Name)"
   API = "claymore"

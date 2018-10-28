@@ -19,17 +19,18 @@ param(
 
 if($Timeouts -eq "No")
 { 
-$GetStats = [PSCustomObject]@{}
-if(Test-Path "stats"){Get-ChildItemContent "stats" | ForEach {$GetStats | Add-Member $_.Name $_.Content}}
-$GetStats
+ $GetStats = [PSCustomObject]@{}
+ if(Test-Path "stats"){Get-ChildItemContent "stats" | ForEach {$GetStats | Add-Member $_.Name $_.Content}}
+ $GetStats
 }
 
 if($TimeOuts -eq "Yes")
  {
-    if(Test-Path ".\timeouts"){Remove-Item ".\timeouts" -Force}
-    if(Test-Path "stats"){Get-ChildItemContent "stats" | ForEach {$GetStats | Add-Member $_.Name $_.Content}}
-    $GetStats
-    Write-Host "Cleared Timeouts" -ForegroundColor Red
+  $GetStats = [PSCustomObject]@{}
+  if(Test-Path ".\timeout"){Remove-Item ".\timeout" -Force}
+  if(Test-Path "stats"){Get-ChildItemContent "stats" | ForEach {$GetStats | Add-Member $_.Name $_.Content}}
+  $GetStats
+  Write-Host "Cleared Timeouts" -ForegroundColor Red
  }
 
 }

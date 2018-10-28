@@ -1,0 +1,18 @@
+{
+  "CPU": {
+    "name": "CPU",
+    "prestart": [],
+    "commands": {
+      "cryptonight": "",
+      "cryptonightv7": "",
+      "cryptonightv8": "",
+      "cryptonightheavy": ""
+    },
+    "difficulty": {
+      "cryptonight": "",
+      "cryptonightv7": "",
+      "cryptonightv8": "",
+      "cryptonightheavy": ""
+    }
+  }
+}

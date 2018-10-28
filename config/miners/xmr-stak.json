@@ -1,0 +1,57 @@
+{
+  "AMD1": {
+    "name": "AMD1",
+    "prestart": [
+      "export GPU_MAX_HEAP_SIZE=100",
+      "export GPU_USE_SYNC_OBJECTS=1",
+      "export GPU_SINGLE_ALLOC_PERCENT=100",
+      "export GPU_MAX_ALLOC_PERCENT=100"
+    ],
+    "commands": {
+      "cryptonight": "",
+      "cryptonightv7": "",
+      "cryptonightv8": "",
+      "cryptonightheavy": ""
+    },
+    "difficulty": {
+      "cryptonight": "",
+      "cryptonightv7": "",
+      "cryptonightv8": "",
+      "cryptonightheavy": ""
+    },
+    "oc": {
+      "cryptonight": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      },
+      "cryptonightv7": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      },
+      "cryptonightv8": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      },
+      "cryptonightheavy": {
+        "pl": "",
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      }
+    }
+  }
+}

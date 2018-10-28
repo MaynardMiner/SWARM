@@ -6,9 +6,19 @@ $Build = "Tar"
 
 if($AMDDevices1 -ne ''){$Devices = $AMDDevices1}
 
-#Equihash192
-
 $MinerType = "AMD1"
+
+##Export would be /path/to/[SWARMVERSION]/build/export##
+$ExportDir = Join-Path $dir "build\export"
+
+##Prestart actions before miner launch
+$PreStart = @(
+"export LD_LIBRARY_PATH=`$LD_LIBRARY_PATH:$ExportDir"
+"export GPU_MAX_HEAP_SIZE=100",
+"export GPU_USE_SYNC_OBJECTS=1",
+"export GPU_SINGLE_ALLOC_PERCENT=100",
+"export GPU_MAX_ALLOC_PERCENT=100"
+)
 
 $Commands = [PSCustomObject]@{
   "equihash-btg" = [PSCustomObject]@{
@@ -97,6 +107,7 @@ $Commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty 
       Platform = $Platform
       Symbol = "$($_)"
       MinerName = $MinerName
+      Prestart = $PreStart  
       Type = $MinerType
       Path = $Path
       Devices = $Devices
@@ -126,6 +137,7 @@ else{
           Platform = $Platform
           Symbol = "$($Coinpools.$_.Symbol)"
           MinerName = $MinerName
+          Prestart = $PreStart
           Type = $MinerType
            Path = $Path
            Devices = $Devices

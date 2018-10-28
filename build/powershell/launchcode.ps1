@@ -244,9 +244,23 @@ Start-Sleep -S .25
 $MinerDir = $(Split-Path $($Miner.Path))
 $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
 $Export = Join-Path $Dir "build\export"
-if($Miner.Type -like "*NVIDIA*"){Start-Process ".\build\bash\startupnvidia.sh" -ArgumentList "$MinerDir $($Miner.Type) $Dir/build/bash $Logs $Export" -Wait}
-if($Miner.Type -like "*AMD*"){Start-Process ".\build\bash\startupamd.sh" -ArgumentList "$MinerDir $($Miner.Type) $Dir/build/bash $Logs $Export" -Wait}
-if($Miner.Type -like "*CPU*"){Start-Process ".\build\bash\startupcpu.sh" -ArgumentList "$MinerDir $($Miner.Type) $Dir/build/bash $Logs $Export" -Wait}
+
+$Startup = @()
+$Startup += "`#`!/usr/bin/env bash"
+$Startup += "screen -S $($Miner.Type) -d -m","sleep .1"
+$Startup += "screen -S $($Miner.Type) -X logfile $Logs","sleep .1"
+$Startup += "screen -S $($Miner.Type) -X logfile flush 5","sleep .1"
+$Startup += "screen -S $($Miner.Type) -X log","sleep .1"
+if($Miner.Prestart){$Miner.Prestart | foreach {$Startup += "screen -S $($Miner.Type) -X stuff $`"$($_)\n`"","sleep .1"}}
+$Startup += "screen -S $($Miner.Type) -X stuff $`"cd\n`"","sleep .1"
+$Startup += "screen -S $($Miner.Type) -X stuff $`"cd $MinerDir\n`"","sleep .1"
+$Startup += "screen -S $($Miner.Type) -X stuff $`"`$(< $Dir/build/bash/config.sh)\n`""
+
+$Startup | Set-Content ".\build\bash\startup.sh"
+Start-Sleep -S .25
+Start-Process "chmod" -ArgumentList "+x build/bash/startup.sh" -Wait
+Start-Process ".\build\bash\startup.sh" -Wait
+
 $MinerTimer.Restart()
 Do{
   Start-Sleep -S 1

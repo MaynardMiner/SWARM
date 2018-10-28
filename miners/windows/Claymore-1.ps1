@@ -13,6 +13,8 @@ if($NVIDIADevices1 -ne ''){
   $ClayDevices1 = $ClayDevices1 -replace(",","")
   $Devices = $ClayDevices1}
 
+$Commands
+
 $Commands = [PSCustomObject]@{
  "ethash" = '-esm 2'
  "daggerhashimoto" = '-esm 3 -estale 0'

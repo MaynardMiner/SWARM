@@ -164,7 +164,9 @@ param(
     [Parameter(Mandatory=$false)]
     [string]$AMDPlatform = "1",
     [Parameter(Mandatory=$false)]
-    [Double]$Rejections = 50
+    [Double]$Rejections = 50,
+    [Parameter(Mandatory=$false)]
+    [string]$PoolBans = "Yes"
 )
 
 
@@ -306,7 +308,7 @@ $WorkerSwitch = $WorkerName
 $RigSwitch = $RigName
 $IntervalSwitch = $Interval
 $ActiveMinerPrograms = @()
-$Naming = Get-Content ".\config\naming\get-pool.txt" | ConvertFrom-Json
+$Naming = Get-Content ".\config\naming\get-pool.json" | ConvertFrom-Json
 
 if($Platform -eq "windows" -and $HivePassword -ne $null){Start-Peekaboo -HiveID $HiveID -HiveMirror $HiveMirror -HivePassword $HivePassword; $hiveresponse}
 
@@ -404,10 +406,13 @@ if($Type -like "*AMD*"){$amd = get-minerfiles -Types "AMD" -Platforms $Platform}
 
 While($true)
 {
+##OC-Settings
+$OC = Get-Content ".\config\oc\oc-settings.json" | ConvertFrom-Json
+$OC_AMD1 = $OC.default_AMD1
 ##Reset Coins
 $CoinAlgo = $null  
 ##Get Watt Configuration
-$Watts = get-content ".\config\power\power.conf" | ConvertFrom-Json
+$Watts = get-content ".\config\power\power.json" | ConvertFrom-Json
 ##Check Time Parameters
 $MinerWatch = New-Object -TypeName System.Diagnostics.Stopwatch
 $TimeoutTime = [int]$Timeout*3600
@@ -766,6 +771,16 @@ $BestMiners_Combo | ForEach {
    JsonFile = $_.Config
    LogGPUS = $LogType
    FirstBad = $null
+   Prestart = $_.Prestart
+   ocpl = $_.ocpl
+   ocdmp = $_.ocdmp
+   ocv = $_.ocv
+   occore = $_.occore
+   ocmem = $_.ocmem
+   ocmdmp = $_.ocmdmp
+   ocpower = $_.ocpower
+   ethpill = $_.ethpill
+   pilldelay = $_.pilldelay
   }
  }
 }
@@ -773,13 +788,38 @@ $BestMiners_Combo | ForEach {
 $Restart = $false
 $NoMiners = $false
 
-
 #Determine Which Miner Should Be Active
 $BestActiveMiners = @()
 $ActiveMinerPrograms | foreach {
 if($BestMiners_Combo | Where Path -EQ $_.Path | Where Arguments -EQ $_.Arguments){$_.BestMiner = $true; $BestActiveMiners += $_}
 else{$_.BestMiner = $false}
 }
+
+function Get-MinerStatus {
+  $Y = [string]$CoinExchange
+  $H = [string]$Currency
+  $J = [string]'BTC'
+  $BTCExchangeRate = Invoke-WebRequest "https://min-api.cryptocompare.com/data/pricemulti?fsyms=$Y&tsyms=$J" -UseBasicParsing | ConvertFrom-Json | Select-Object -ExpandProperty $Y | Select-Object -ExpandProperty $J
+  $ProfitTable | Sort-Object -Property Type,Profits -Descending | Format-Table -GroupBy Type (
+  @{Label = "Miner"; Expression={$($_.Miner)}},
+  @{Label = "Coin"; Expression={$($_.Name)}},
+  @{Label = "Speed"; Expression={$($_.HashRates) | ForEach {if($null -ne $_){"$($_ | ConvertTo-Hash)/s"}else{"Bench"}}}; Align='center'},
+  @{Label = "Watt/Day"; Expression={$($_.Power) | ForEach {if($null -ne $_){($_ * $Rates.$Currency).ToString("N2")}else{"Bench"}}}; Align='center'},
+  @{Label = "BTC/Day"; Expression={$($_.Profits) | ForEach {if($null -ne $_){  $_.ToString("N5")}else{"Bench"}}}; Align='right'},
+  @{Label = "$Y/Day"; Expression={$($_.Profits) | ForEach {if($null -ne $_){  ($_ / $BTCExchangeRate).ToString("N5")}else{"Bench"}}}; Align='right'},
+  @{Label = "$Currency/Day"; Expression={$($_.Profits) | ForEach {if($null -ne $_){($_ * $Rates.$Currency).ToString("N2")}else{"Bench"}}}; Align='center'},
+  @{Label = "   Pool"; Expression={$($_.MinerPool)}; Align='center'}
+      )
+}
+
+$StatusDate = Get-Date
+$StatusDate | Out-File ".\build\bash\mineractive.sh"
+$StatusDate | Out-File ".\build\bash\minerstats.sh"
+Get-MinerStatus | Out-File ".\build\bash\minerstats.sh" -Append
+$mcolor = "93"
+$me = [char]27
+$MiningStatus = "$me[${mcolor}mCurrently Mining $($BestMiners_Combo.Algo) Algorithm${me}[0m"
+$MiningStatus | Out-File ".\build\bash\minerstats.sh" -Append
 
 $BestActiveMiners | ConvertTo-Json | Out-File ".\build\txt\bestminers.txt"
 Start-BackgroundCheck -BestMiners $BestActiveMiners -Platforms $Platform
@@ -907,7 +947,6 @@ if($Restart -eq $false)
   " -foreground DarkCyan
   Start-Sleep -s 5
  }
-
  function Get-MinerActive {
 
   $ActiveMinerPrograms | Sort-Object -Descending Status,
@@ -938,22 +977,6 @@ function Get-Logo {
         Write-Host ""
 }
 
-function Get-MinerStatus {
-        $Y = [string]$CoinExchange
-	      $H = [string]$Currency
-      	$J = [string]'BTC'
-        $BTCExchangeRate = Invoke-WebRequest "https://min-api.cryptocompare.com/data/pricemulti?fsyms=$Y&tsyms=$J" -UseBasicParsing | ConvertFrom-Json | Select-Object -ExpandProperty $Y | Select-Object -ExpandProperty $J
-        $ProfitTable | Sort-Object -Property Type,Profits -Descending | Format-Table -GroupBy Type (
-        @{Label = "Miner"; Expression={$($_.Miner)}},
-        @{Label = "Coin"; Expression={$($_.Name)}},
-        @{Label = "Speed"; Expression={$($_.HashRates) | ForEach {if($null -ne $_){"$($_ | ConvertTo-Hash)/s"}else{"Bench"}}}; Align='center'},
-        @{Label = "Watt/Day"; Expression={$($_.Power) | ForEach {if($null -ne $_){($_ * $Rates.$Currency).ToString("N2")}else{"Bench"}}}; Align='center'},
-        @{Label = "BTC/Day"; Expression={$($_.Profits) | ForEach {if($null -ne $_){  $_.ToString("N5")}else{"Bench"}}}; Align='right'},
-        @{Label = "$Y/Day"; Expression={$($_.Profits) | ForEach {if($null -ne $_){  ($_ / $BTCExchangeRate).ToString("N5")}else{"Bench"}}}; Align='right'},
-        @{Label = "$Currency/Day"; Expression={$($_.Profits) | ForEach {if($null -ne $_){($_ * $Rates.$Currency).ToString("N2")}else{"Bench"}}}; Align='center'},
-        @{Label = "   Pool"; Expression={$($_.MinerPool)}; Align='center'}
-            )
-      }
 
 #Check For Bechmark
 $BenchmarkMode = $false
@@ -996,16 +1019,9 @@ if($LogTimer.Elapsed.TotalSeconds -ge 3600)
  }
 
 ##Write Details Of Active Miner And Stats To File
-$StatusDate = Get-Date
-$StatusDate | Out-File ".\build\bash\mineractive.sh"
 Get-MinerActive | Out-File ".\build\bash\mineractive.sh" -Append
 Clear-Content ".\build\bash\minerstats.sh" -Force
-$StatusDate | Out-File ".\build\bash\minerstats.sh"
-Get-MinerStatus | Out-File ".\build\bash\minerstats.sh" -Append
-$mcolor = "93"
-$me = [char]27
-$MiningStatus = "$me[${mcolor}mCurrently Mining $($BestMiners_Combo.Algo) Algorithm${me}[0m"
-$MiningStatus | Out-File ".\build\bash\minerstats.sh" -Append
+
 #if($Favor_Coins -eq "Yes")
  #{
   #if($BenchmarkMode -eq $false)
@@ -1330,13 +1346,13 @@ if($Strike -eq $true)
     $_.WasBenchmarked = $True
     $_.Timeout = 0
     Write-Host "$($_.Name) $($_.Coins) Hashrate Check Timed Out $($_.Bad_Benchmark) Times- It Was Noted In Timeout Folder" -foregroundcolor "darkred"
-    if($_.Bad_Benchmark -eq 1)
+    if($_.Bad_Benchmark -eq 1 -and $PoolBans -eq "Yes")
      {
       $_.FirstBad = Get-Date
       if(test-path $HashRateFilePath){remove-item $HashRateFilePath -Force}
       Write-Host "First Strike: There was issue with benchmarking." -ForegroundColor DarkRed
      }
-     if($_.Bad_Benchmark -eq 2)
+     if($_.Bad_Benchmark -eq 2 -and $PoolBans -eq "Yes")
      {
       Write-Host "Strike Two: Benchmarking Has Failed - Prohibiting miner from pool" -ForegroundColor DarkRed
       $NewPoolBlock = @()

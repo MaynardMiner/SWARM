@@ -1,0 +1,53 @@
+{
+  "NVIDIA1": {
+    "name": "NVIDIA1",
+    "prestart": [],
+    "commands": {
+      "equihash": ""
+    },
+    "difficulty": {
+      "equihash": ""
+    },
+    "oc": {
+      "equihash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  },
+  "NVIDIA2": {
+    "name": "NVIDIA2",
+    "prestart": [],
+    "commands": {
+      "equihash": ""
+    },
+    "difficulty": {
+      "equihash": ""
+    },
+    "oc": {
+      "equihash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  },
+  "NVIDIA3": {
+    "name": "NVIDIA3",
+    "prestart": [],
+    "commands": {
+      "equihash": ""
+    },
+    "difficulty": {
+      "equihash": ""
+    },
+    "oc": {
+      "equihash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  }
+}
