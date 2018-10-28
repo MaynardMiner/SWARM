@@ -812,6 +812,7 @@ function Get-MinerStatus {
       )
 }
 
+Clear-Content ".\build\bash\minerstats.sh" -Force
 $StatusDate = Get-Date
 $StatusDate | Out-File ".\build\bash\mineractive.sh"
 $StatusDate | Out-File ".\build\bash\minerstats.sh"
@@ -1020,7 +1021,6 @@ if($LogTimer.Elapsed.TotalSeconds -ge 3600)
 
 ##Write Details Of Active Miner And Stats To File
 Get-MinerActive | Out-File ".\build\bash\mineractive.sh" -Append
-Clear-Content ".\build\bash\minerstats.sh" -Force
 
 #if($Favor_Coins -eq "Yes")
  #{
