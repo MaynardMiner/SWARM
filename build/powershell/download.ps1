@@ -38,7 +38,7 @@ $FileName = Join-Path ".\bin" $New_Path
      {
         if(-not (Test-Path $Filename))
         {
-        Start-Process "apt-get" "-y install automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev make g++" -Wait
+        Start-Process "apt-get" "-y install git automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev make g++" -Wait
         Write-Host "Cloning Miner" -BackgroundColor "Red" -ForegroundColor "White"
         Set-Location ".\bin"
         Start-Process -FilePath "git" -ArgumentList "clone $Uri $New_Path" -Wait

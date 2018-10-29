@@ -69,10 +69,13 @@ function Start-LaunchCode {
 
     param(
     [Parameter(Mandatory=$true)]
-    [String]$Platforms
+    [String]$Platforms,
+    [Parameter(Mandatory=$true)]
+    [String]$Background
     ) 
 
   $Miner = Get-Content ".\build\txt\current.txt" | ConvertFrom-Json
+  $BestMiners = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-Json
   $MinerTimer = New-Object -TypeName System.Diagnostics.Stopwatch
   $Export = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\export")  
   ##Remove Old PID FIle
@@ -172,6 +175,8 @@ if($Platforms -eq "windows")
 {
   if($MinerProcess -eq $null -or $MinerProcess.HasExited -eq $true)
   {
+    if($Background -eq "No"){Start-BackgroundCheck -BestMiners $BestMiners -Platforms $Platform}
+    Start-Sleep $Delay
     $Logs = Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "logs\$($Miner.Type).log" 
     $WorkingDirectory = Split-Path $($Miner.Path)
     if(Test-Path $Logs){Clear-Content $Logs}
@@ -232,7 +237,8 @@ elseif($Platforms -eq "linux")
         ``._ _ _,'   ``._ _ _,'       ``._____\        
 "
 Start-Process ".\build\bash\killall.sh" -ArgumentList "$($Miner.Type)" -Wait
-Start-Sleep -S .25
+if($Background -eq "No"){Start-BackgroundCheck -BestMiners $BestMiners -Platforms $Platform}
+Start-Sleep $Delay
 $OldProcess = Get-Process | Where Name -clike "*$($Miner.Type)*"
 if($OldProcess){Stop-Process $OldProcess -ErrorAction SilentlyContinue}
 Set-Location (Split-Path $($Miner.Path))

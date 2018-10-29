@@ -58,7 +58,10 @@ $Card = $Card -split ","
 
 #OC For Devices
 $NVIDIAOCArgs = @()
-$NVIDIAPowerArgs = @() 
+$NVIDIAPowerArgs = @()
+$DoAMDOC = $false
+$DoNVIDIAOC = $false
+
 $Miners | foreach {
 ##NVIDIA
 if($_.Type -like "*NVIDIA*")
@@ -76,8 +79,15 @@ if($_.Type -like "*NVIDIA*")
  $ScreenMiners += "$($_.Type) is using $($_.Name) mining $($_.Algo) "
 if($Card)
  {
+  $NScript = @()
+  $NScript += "`#`!/usr/bin/env bash"
+  $NScript += "screen -S OC_NVIDIA -d -m"
+  $NScript += "sleep .1"
+  if($Mem -or $Core){$NScript += "screen -S OC_NVIDIA -X stuff $`"nvidia-settings"}
+
  if($Core)
   {
+   $DONVIDIAOC = $true
    for($i=0; $i -lt $OCDevices.Count; $i++)
    {
    $GPU = $OCDevices[$i]
@@ -90,13 +100,17 @@ if($Card)
    "P104-100"{$X = 1}
    "P102-100"{$X = 1}
     }
-   if($Platforms -eq "linux"){$NVIDIAOCArgs += " -a [gpu:$($GCount.NVIDIA.$GPU)]/GPUGraphicsClockOffset[$X]=$($Core[$i]) "}
-   if($Platforms -eq "windows"){$NVIDIAOCArgs += "-setBaseClockOffset:$($GCount.NVIDIA.$GPU),$X,$($Core[$i]) "}
+   if($Platforms -eq "linux"){$NVIDIACore += " -a [gpu:$($GCount.NVIDIA.$GPU)]/GPUGraphicsClockOffset[$X]=$($Core[$GPU])"}
+   if($Platforms -eq "windows"){$NVIDIAOCArgs += "-setBaseClockOffset:$($GCount.NVIDIA.$GPU),$X,$($Core[$GPU]) "}
    }
    $ScreenCore += "$($_.Type) Core is $($_.occore) "
   }
+  
+ if($Core){$NScript[3] = "$($NScript[3])$NVIDIACore"}
+
  if($Mem)
   {
+    $DONVIDIAOC = $true
    for($i=0; $i -lt $OCDevices.Count; $i++)
    {
    $GPU = $OCDevices[$i]
@@ -109,28 +123,113 @@ if($Card)
    "P104-100"{$X = 1}
    "P102-100"{$X = 1}
     }
-   if($Platforms -eq "linux"){$NVIDIAOCArgs += " -a [gpu:$($GCount.NVIDIA.$GPU)]/GPUMemoryTransferRateOffset[$X]=$($Mem[$i]) "}
+   if($Platforms -eq "linux"){$NVIDIAMem += " -a [gpu:$($GCount.NVIDIA.$GPU)]/GPUMemoryTransferRateOffset[$X]=$($Mem[$i])"}
    if($Platforms -eq "windows"){$NVIDIAOCArgs += "-setMemoryClockOffset:$($GCount.NVIDIA.$GPU),$X,$($Mem[$i]) "} 
    }
    $ScreenMem += "$($_.Type) Memory is $($_.ocmem) "
   }
+
+  if($Mem){$NScript[3] = "$($NScript[3])$NVIDIAMem"}
+  if($Mem -or $Core){$NScript[3] = "$($NScript[3])\n`""}
+  $NScript += "sleep .1"
+
  if($Power)
   {
+   $DONVIDIAOC = $true
    for($i=0; $i -lt $OCDevices.Count; $i++){
    $GPU = $OCDevices[$i]
-   if($Platforms -eq "linux"){$NVIDIAPowerArgs += "-i $($GCount.NVIDIA.$GPU) -pl $($Power[$i])"}
+   if($Platforms -eq "linux"){$NScript += "screen -S OC_NVIDIA -X stuff $`"nvidia-smi -i $($GCount.NVIDIA.$GPU) -pl $($Power[$i])\n`""; $NScript += "sleep .1"}
    elseif($Platforms -eq "windows"){$NVIDIAOCArgs += "-setPowerTarget:$($GCount.NVIDIA.$GPU),$($Power[$i]) "}
   }
   $ScreenPower += "$($_.Type) Power is $($_.ocpower) "
    }
   }
  }
+
+ $NScript += "sleep .1"
+
+if($_.Type -like "*AMD*")
+{
+ if($_.Devices -eq $null){$OCDevices = Get-DeviceString -TypeCount $GCount.AMD.PSObject.Properties.Value.Count}
+ else{$OCDevices = Get-DeviceString -TypeDevices $_.Devices}
+ Write-Host "$($_.Type) is mining with $($_.Name)"
+ Write-Host "Platform is $Platforms"
+ $CoreClock = $_.occore -split ' '
+ $CoreState = $_.ocdpm -split ' '
+ $MemClock = $_.ocmem -split ' '
+ $MemState = $_.ocmdmp -split ' '
+ $Voltage = $_.ocv -split ' '
+ if($Card)
+ {
+  $Script = @()
+  $Script += "`#`!/usr/bin/env bash"
+  $Script += "screen -S OC_AMD -d -m"
+  $Script += "sleep .1"
+
+  if($MemClock -or $MemState)
+   {
+    $DOAmdOC = $true
+    for($i=0; $i -lt $OCDevices.Count; $i++)
+    {
+     $GPU = $OCDevices[$i]
+     if($Platforms -eq "linux")
+     {
+       $MEMArgs = $null
+       $MEMArgs += "screen -S OC_AMD -X stuff $`"wolfamdctrl -i $($GCount.AMD.$GPU)"
+       if($MemClock[$GPU]){$MEMArgs += " --mem-clock $($MemClock[$GPU])"}
+       if($MemState[$GPU]){$MEMArgs += " --mem-state $($MemState[$GPU])"}
+       $MEMArgs += "\n`""
+       $Script += $MEMArgs
+       $Script += "sleep .1"
+     }
+    }
+   }
+
+    if($CoreClock -or $CoreState)
+    {
+     for($i=0; $i -lt $OCDevices.Count; $i++)
+     {
+      $DOAmdOC = $true
+      $GPU = $OCDevices[$i]
+      if($Platforms -eq "linux")
+      {
+        $CoreArgs = $null
+        $CoreArgs += "screen -S OC_AMD -X stuff $`"wolfamdctrl -i $($GCount.AMD.$GPU)"
+        if($CoreClock[$GPU]){$CoreArgs += " --core-clock $($CoreClock[$GPU])"}
+        if($CoreState[$GPU]){$CoreArgs += " --core-state $($CoreState[$GPU])"}
+        $CoreArgs += "\n`""
+        $Script += $CoreArgs
+        $Script += "sleep .1"
+      }
+     }
+    }
+  
+    if($Voltage)
+    {
+      $DOAmdOC = $true
+     for($i=0; $i -lt $OCDevices.Count; $i++)
+     {
+       $GPU = $OCDevices[$i]
+      if($Platforms -eq "linux")
+      {
+        for($i=1; $i -lt 16; $i++)
+        {
+        $VoltArgs = $null
+        $VoltArgs += "screen -S OC_AMD -X stuff $`"wolfamdctrl -i $($GCount.AMD.$GPU)"
+        if($Voltage[$GPU]){$VoltArgs += " --vddc-table-set $($Voltage[$GPU]) --volt-state $i"}
+        $VoltArgs += "\n`""
+        $Script += $VoltArgs
+        $Script += "sleep .1"
+        }
+       }
+      }
+     }
+    
+   }
+
+ }
 }
 
-$NVIDIAOCArgs | Out-File ".\build\txt\NVIDIAOCArgs.txt"
-$NVIDIAPowerArgs | Out-File ".\build\txt\NVIDIAOCArgs.txt" -Append
-
-if($NVIDIAPowerArgs){$NVIDIAPowerArgs | Foreach {Start-Process "nvidia-smi" -ArgumentList $_}}
 if($NVIDIAOCArgs)
 {
 if($Platforms -eq "windows"){
@@ -142,12 +241,28 @@ Set-Location ".\build\apps"
 $script | Out-File "$($_.Type)-oc-start.ps1"
 $Command = start-process "CMD" -ArgumentList "/c ""powershell.exe -executionpolicy bypass -windowstyle minimized -command "".\$($_.Type)-oc-start.ps1""" -PassThru
 Set-Location $Dir
-}
-
-if($Platforms -eq "linux"){
-Start-Process "nvidia-smi" -ArgumentList $NVIDIAOCArgs
  }
 }
+
+if($DOAmdOC -eq $true -and $Platforms -eq "linux")
+{
+Start-Process "./build/bash/killall.sh" -ArgumentList "OC_AMD"
+$Script | Out-File ".\build\bash\amdoc.sh"
+Start-Sleep -S .25
+Start-Process "chmod" -ArgumentList "+x build/bash/amdoc.sh" -Wait
+Start-Process ".\build\bash\amdoc.sh"
+}
+
+if($DoNVIDIAOC -eq $true -and $Platforms -eq "linux")
+{
+ Start-Process "./build/bash/killall.sh" -ArgumentList "OC_NVIDIA"
+ $NScript | Out-File ".\build\bash\nvidiaoc.sh"
+ Start-Sleep -S .25
+ Start-Process "chmod" -ArgumentList "+x build/bash/nvidiaoc.sh" -Wait
+ Start-Process ".\build\bash\nvidiaoc.sh"
+}
+
+
 
 $OCMessage = "
 Current OC Profile:

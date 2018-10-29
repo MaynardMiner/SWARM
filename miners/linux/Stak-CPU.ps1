@@ -36,7 +36,7 @@ if($CoinAlgo -eq $null)
     Path = $Path
     Devices = $Devices
     DeviceCall = "xmrstak-opt"
-    Arguments = "--currency $(Get-AMD($_)) -i 60045 --url stratum+tcp://$($AlgoPools.$_.Host):$($AlgoPools.$_.Port) --user $($AlgoPools.$_.User1) --pass $($AlgoPools.$_.Pass1)$($Diff) --rigid SWARM --noAMD --noNVIDIA --use-nicehash $($AlgoPools.$_.Pass1)$($Diff)"
+    Arguments = "--currency $(Get-AMD($_)) -i 60045 --url stratum+tcp://$($AlgoPools.$_.Host):$($AlgoPools.$_.Port) --user $($AlgoPools.$_.User1) --pass $($AlgoPools.$_.Pass1)$($Diff) --rigid SWARM --noAMD --noNVIDIA --use-nicehash $($Config.$ConfigType.commands.$_)"
     HashRates = [PSCustomObject]@{$_ = $($Stats."$($Name)_$($_)_hashrate".Day)}
     PowerX = [PSCustomObject]@{$_ = if($($Watts.$($_)."$($ConfigType)_Watts")){$($Watts.$($_)."$($ConfigType)_Watts")}elseif($($Watts.default."$($ConfigType)_Watts")){$($Watts.default."$($ConfigType)_Watts")}else{0}}
     MinerPool = "$($AlgoPools.$_.Name)"

@@ -408,7 +408,6 @@ While($true)
 {
 ##OC-Settings
 $OC = Get-Content ".\config\oc\oc-settings.json" | ConvertFrom-Json
-$OC_AMD1 = $OC.default_AMD1
 ##Reset Coins
 $CoinAlgo = $null  
 ##Get Watt Configuration
@@ -823,7 +822,7 @@ $MiningStatus = "$me[${mcolor}mCurrently Mining $($BestMiners_Combo.Algo) Algori
 $MiningStatus | Out-File ".\build\bash\minerstats.sh" -Append
 
 $BestActiveMiners | ConvertTo-Json | Out-File ".\build\txt\bestminers.txt"
-Start-BackgroundCheck -BestMiners $BestActiveMiners -Platforms $Platform
+$BackgroundDone = "No"
 
 $ActiveMinerPrograms | ForEach {
 if($_.BestMiner -eq $false)
@@ -863,9 +862,9 @@ if($_.BestMiner -eq $false)
      $_.InstanceName = "$($_.Type)-$($Instance)"
      $_ | ConvertTo-Json | Out-File ".\build\txt\current.txt"
      Start-Sleep -S .25
-     Start-Sleep $Delay
-     if($Platform -eq "windows"){$_.Xprocess = Start-LaunchCode -Platforms "windows"}
-     elseif($Platform -eq "Linux"){$_.Xprocess = Start-LaunchCode -Platforms "linux"}
+     if($Platform -eq "windows"){$_.Xprocess = Start-LaunchCode -Platforms "windows" -Background $BackgroundDone}
+     elseif($Platform -eq "Linux"){$_.Xprocess = Start-LaunchCode -Platforms "linux" -Background $BackgroundDone}
+     $BackgroundDone = "Yes"
      $_.Instance = ".\build\pid\$($_.Type)-$($Instance)"
      $PIDFile = "$($_.Name)_$($_.Coins)_$($_.InstanceName)_pid.txt"
      $Instance++
@@ -897,6 +896,7 @@ if($Restart -eq $true -and $NoMiners -eq $true)
        
        
   There are miners that have failed! Check Your Settings And Arguments!
+  Type `'mine`' in another terminal to see background miner, and its reason for failure.
   https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration) >> Right Click 'Open URL In Browser'
 
 
