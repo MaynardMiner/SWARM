@@ -796,3 +796,5 @@ but API is awaiting stats.
 
    -Miners now lauch from one single script, made
     on demand: startup.sh.
+
+   -trex updated, x22i added.
