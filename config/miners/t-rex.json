@@ -362,6 +362,11 @@
         "Power": "",
         "Core": "",
         "Memory": ""
+      },
+      "x22i": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
       }
     }
   }
