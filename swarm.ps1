@@ -166,7 +166,9 @@ param(
     [Parameter(Mandatory=$false)]
     [Double]$Rejections = 50,
     [Parameter(Mandatory=$false)]
-    [string]$PoolBans = "Yes"
+    [string]$PoolBans = "Yes",
+    [Parameter(Mandatory=$false)]
+    [string]$OnboardCard = "no"
 )
 
 
@@ -1045,8 +1047,8 @@ function Restart-Miner {
      $_.InstanceName = "$($_.Type)-$($Instance)"
      $_ | ConvertTo-Json | Out-File ".\build\txt\current.txt"
      Start-Sleep -S .25
-     if($Platform -eq "windows"){$_.Xprocess = Start-LaunchCode -Platforms "windows"}
-     elseif($Platform -eq "Linux"){$_.Xprocess = Start-LaunchCode -Platforms "linux"}
+     if($Platform -eq "windows"){$_.Xprocess = Start-LaunchCode -Platforms "windows" -Background "Yes"}
+     elseif($Platform -eq "Linux"){$_.Xprocess = Start-LaunchCode -Platforms "linux" -Background "Yes"}
      $_.Instance = ".\build\pid\$($_.Type)-$($Instance)"
      $PIDFile = "$($_.Name)_$($_.Coins)_$($_.InstanceName)_pid.txt"
      $Instance++
