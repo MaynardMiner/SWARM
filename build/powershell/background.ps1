@@ -113,9 +113,11 @@ $DevNVIDIA = $false
 $DevAMD = $false
 $StartTime = Get-Date
 
-$GetMiners | Foreach { 
+$GetMiners | Foreach {
+  $MinerAlgo = $($_.Algo)
   $NEW=0; 
-  $NEW | Set-Content ".\build\txt\$($_.Type)-hash.txt"; 
+  $NEW | Set-Content ".\build\txt\$($_.Type)-hash.txt";
+  $Name = $($_.Name)
   if($_.Type -like "*NVIDIA*"){$DevNVIDIA = $true};
   if($_.Type -like "*AMD*"){$DevAMD = $true}
   }
@@ -197,9 +199,9 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
   if($_.Type -like "*NVIDIA*"){$TypeS = "NVIDIA"}
   elseif($_.Type -like "*AMD*"){$TypeS = "AMD"}
   elseif($_.Type -like "*CPU*"){$TypeS = "CPU"}
-  $MinerAlgo = $($_.Algo)
-
-  $Name = $($_.Name)
+  $RAW = 0
+  $CPURAW = 0
+  
   if($_.Type -ne "CPU")
   {
   if($_.Devices -eq $null){$Devices = Get-DeviceString -TypeCount $GCount.$TypeS.PSObject.Properties.Value.Count}
@@ -221,7 +223,6 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
       $Data = $Request.Content.Substring($Request.Content.IndexOf("{"), $Request.Content.LastIndexOf("}") - $Request.Content.IndexOf("{") + 1) | ConvertFrom-Json
       $Hash = $Data.result[3] -split ";"
       for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Hash.Count -eq 1){$Hash}else{$Hash[$i]})}
-      $RAW = 0
       $Hash = $Hash | % {iex $_}
       $Hash | foreach {$RAW += $_*1000}
       $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
@@ -244,7 +245,7 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
       }
    'ewbf'
       {
-      $HS = "hs"
+       $HS = "hs"
        Write-Host "Miner $MinerType is ewbf api"
        Write-Host "Miner Port is $Port"
        Write-Host "Miner Devices is $Devices"  
@@ -260,7 +261,6 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
        $Data = $Request | ConvertFrom-Json
        $Data = $Data.result
        $Data.speed_sps | foreach {$RAW += [Double]$_}
-       $RAW = 0
        $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
        for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Data.speed_sps.Count -eq 1){$Data.speed_sps}else{$Data.speed_sps[$i]})}
        $MinerACC = 0
@@ -284,7 +284,6 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
         Write-Host "Miner Devices is $Devices"
         try{$GetSummary = Get-TCP -Server $Server -Port $port -Message "summary"}catch{Write-Host "API summary TimedOut"}
         $GetKHS = $GetSummary -split ";" | ConvertFrom-StringData
-        $RAW = 0
         $RAW += [Double]$GetKHS.KHS*1000
         $RAW | Set-Content ".\build\txt\$MinerType-hash.txt";
         $KHS += $GetKHS.KHS
@@ -313,7 +312,6 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
       Write-Host "Miner Devices is $Devices"  
       try{$Request = Invoke-WebRequest "http://$($server):$($port)/summary" -UseBasicParsing -TimeoutSec 10
       $Data = $Request.Content | ConvertFrom-Json}catch{Write-Host "API TimedOut"}
-      $RAW = 0
       $RAW = $Data.hashrate_minute
       $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
       for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Data.gpus.hashrate_minute.Count -eq 1){[Double]$Data.gpus.hashrate_minute / 1000}else{[Double]$Data.gpus.hashrate_minute[$i] / 1000})}
@@ -338,7 +336,6 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
         try{$GetSummary = Get-TCP -Server $Server -Port $port -Message "summary"
         $Data = $GetSummary | ConvertFrom-Json}catch{Write-Host "API TimedOut"}
         $Data = $Data.result
-        $RAW = 0
         $Data.sol_ps | foreach {$RAW += [Double]$_}
         $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
         for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Data.sol_ps.Count -eq 1){$Data.sol_ps}else{$Data.sol_ps[$i]})}
@@ -356,7 +353,7 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
         elseif($Platforms -eq "windows"){$MinerFans = $NVIDIAFans; for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MinerFans.Count -eq 1){$MinerFans}else{$MinerFans[$($GCount.$TypeS.$GPU)]})}}
       }
   'sgminer-gm'
-    {      
+    {
       $HS = "khs"
       Write-Host "Miner $MinerType is sgminer api"
       Write-Host "Miner Port is $Port"
@@ -369,7 +366,6 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
       else{$Sum = $summary.'KHS 30s'}
       if($threads.'KHS 5s'){$Thread = $threads.'KHS 5s'}
       else{$thread = $threads.'KHS 30s'}
-      $RAW = 0
       $RAW += [Double]$Sum*1000
       $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
       $KHS += $Sum
@@ -394,7 +390,6 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
      Write-Host "Miner Devices is $Devices"
      try{$GetCPUSummary = Get-TCP -Server $Server -Port $Port -Message "summary"}catch{Write-Host "API Summary TimedOut"}
      $CPUSUM = $GetCPUSummary -split ";" | Select-String "KHS=" | foreach {$_ -replace ("KHS=","")}
-     $CPURAW = 0
      $CPURAW += [double]$CPUSUM*1000
      $CPURAW | Set-Content ".\build\txt\$MinerType-hash.txt";
      try{$GetCPUThreads = Get-TCP -Server $Server -Port $Port -Message "threads"}catch{Write-Host "API Threads TimedOut"}
@@ -508,7 +503,6 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
     $Request="/api.json"
     try{$Reader = Invoke-WebRequest "http://$($server):$($port)$($Request)" -UseBasicParsing -TimeoutSec 10 | ConvertFrom-Json}catch{Write-Host "API TimedOut"}
     $Hash = $Reader.Hashrate.threads
-    $RAW = 0
     $RAW = $Reader.hashrate.total[0]
     $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
     for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Hash.Count -eq 1){[Double]$($Hash[0] | Select -first 1)}else{[Double]$($Hash[$i] | Select -First 1)})}
@@ -534,7 +528,6 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
     $Request="/api.json"
     try{$Reader = Invoke-WebRequest "http://$($server):$($port)$($Request)" -UseBasicParsing -TimeoutSec 10 | ConvertFrom-Json}catch{Write-Host "API TimedOut"}
     $Hash = $Reader.Hashrate.threads
-    $CPURAW = 0
     $CPURAW = [Double]$Reader.hashrate.total[0]
     $CPUKHS = [Double]$Reader.hashrate.total[0]
     $CPUSUM = [Double]$Reader.hashrate.total[0]
@@ -556,7 +549,6 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
     $HS = "khs"
     $Request="/api.json"
     try{$Reader = Invoke-WebRequest "http://$($server):$($port)$($Request)" -UseBasicParsing -TimeoutSec 10 | ConvertFrom-Json}catch{Write-Host "API TimedOut"}
-    $RAW = 0
     $RAW = $Reader.hashrate.total[0]
     $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
     $Hash = $Reader.hashrate.threads

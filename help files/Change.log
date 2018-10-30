@@ -754,3 +754,45 @@ but API is awaiting stats.
   
   -New WildRig Miner
    -New Algos Added
+
+   1.6.6
+
+   This is a beta version.
+
+   FRESH INSTALL MANDATORY
+   Linux Version ONLY
+
+   -Wrote small help article for AMD users in help files.
+
+   -Fixed Clamore -Platform issue (AMD)
+
+   -Added argument -OnboardCard. Default is no. Specify Yes if 
+    using amd and rocm-smi detects integrated card. Quick fix
+    will find better fix in near future
+
+   -re-wrote config folder. config now contains miner control
+    files in json format. Adding commands, difficulty, oc
+    and pre-start commands are now done there.
+ 
+   -added install git for CPU compiling.
+
+   -Fixed $RAW=0 placement to prevent double stacking of
+    hashrates, when total API failure occurs.
+
+   -Converted all config files to json for future use.
+
+   -Changed all miner files for new OC tuning.
+
+   -Changed stats file to come before miner launch.
+
+   -Ensured background agent is started before -delay
+    so users can specify delay for OC tuning.
+
+   -OC tuning is now launched in their own screens.
+    OC_NVIDIA is for NVIDIA
+    OC_AMD is for AMD
+    This prevents lockup of any of SWARM's processes
+    And lets users check for oc issues.
+
+   -Miners now lauch from one single script, made
+    on demand: startup.sh.

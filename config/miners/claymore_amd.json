@@ -19,7 +19,6 @@
     },
     "oc": {
       "ethash": {
-        "pl": "",
         "dpm": "",
         "v": "",
         "core": "",
@@ -27,7 +26,6 @@
         "mdpm": ""
       },
       "daggerhashimoto": {
-        "pl": "",
         "dpm": "",
         "v": "",
         "core": "",
@@ -35,7 +33,6 @@
         "mdpm": ""
       },
       "dagger": {
-        "pl": "",
         "dpm": "",
         "v": "",
         "core": "",

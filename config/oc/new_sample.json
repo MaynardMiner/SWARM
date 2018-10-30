@@ -47,9 +47,9 @@ Core and memory can be left blank as well.
 
 "default_NVIDIA1":
 {
- "Power": "150 75 150 75 150 75 75 75 75 150 150 75 150",
- "Core": "125 0 115 0 100 0 0 0 0 115 125 0 100",
- "Memory": "1000 0 1000 0 1000 0 0 0 0 1000 1000 0 1000"
+ "Power": "75",
+ "Core": "100",
+ "Memory": "1000"
 },
 
 {

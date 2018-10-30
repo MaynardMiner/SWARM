@@ -1,17 +1,17 @@
 {
-   "Cards": "1070 1050ti 1070 1050ti 1070 1050ti 1050ti 1050ti 1050ti 1070 1070 1050ti 1070",
+   "Cards": "1050ti RX580",
    "windows fan start": "",
    "default_NVIDIA1":
     {
-     "Power": "150 150 150 150 150 150",
-     "Core": "125 125 125 125 125 125",
-     "Memory": "1000 1000 1000 1000 1000 1000"
+     "Power": "",
+     "Core": "",
+     "Memory": ""
     },
     "default_NVIDIA2":
      {
-      "Power": "75 75 75 75 75 75 75",
-      "Core": "100 100 100 100 100 100 100",
-      "Memory": "1000 1000 1000 1000 1000 1000 1000"
+      "Power": "75",
+      "Core": "100",
+      "Memory": "1000"
      },
     "default_NVIDIA3":
      {
@@ -21,11 +21,10 @@
      },
     "default_AMD1": 
     {
-    "pl": "",
     "dpm": "",
     "v": "",
     "core": "",
-    "mem": "",
+    "memory": "",
     "mdpm": ""
     }   
 }
