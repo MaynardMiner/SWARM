@@ -1,5 +1,5 @@
 {
-   "Cards": "1050ti RX580",
+   "Cards": "",
    "windows fan start": "",
    "default_NVIDIA1":
     {
@@ -9,9 +9,9 @@
     },
     "default_NVIDIA2":
      {
-      "Power": "75",
-      "Core": "100",
-      "Memory": "1000"
+      "Power": "",
+      "Core": "",
+      "Memory": ""
      },
     "default_NVIDIA3":
      {

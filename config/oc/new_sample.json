@@ -88,4 +88,10 @@ Core and memory can be left blank as well.
  and no algorithms were specified. You must have default settings if you
  are using OC tuning in miner files!
 
- 
+  AMD Users USE WITH DISCRETION! AMD-OC is very sensitive. Higher -Delay is recommended.
+  "Cards" Can be anything- "Cards":"RX580 VEGA BLAH" I just need one word for 
+  each card to denote the number of cards you have. It is more critical for
+  Nvidia and their power-mizer. I personally do not recommend playing with
+  power settings, unless you really know what you are doing- Set it to
+  one setting prior to starting SWARM and leave it. If you do play with
+  voltages, know that voltages are agressively changed.
