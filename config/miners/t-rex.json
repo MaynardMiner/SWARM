@@ -1,6 +1,6 @@
 {
   "NVIDIA1": {
-    "name": "NVIDIA2",
+    "name": "NVIDIA1",
     "prestart": [],
     "commands": {
       "tribus": "",
