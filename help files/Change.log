@@ -798,3 +798,31 @@ but API is awaiting stats.
     on demand: startup.sh.
 
    -trex updated, x22i added.
+
+  1.6.7
+
+  There are still beta features in this release.
+  Updates not availiable yet. Next release.
+  Fresh install as changes were made to core
+  program.
+
+  -New code in Background Agent In Attempt fix
+   incorrect hash on screen.
+
+  -Fixed t-rex .json.
+
+  -Fixed benchmark interval on timeouts.
+
+  -Teamredminer 0.3.4
+
+  -Cryptodredge 0.9.4
+
+  -DSTM 0.6.2
+
+  -Moved DSTM to project folder: equihash is
+   asic anyways.
+  
+  -Corrected Arguments in help files
+   added new arguments in help files.
+
+  -Fixed -recurse on timeout command
