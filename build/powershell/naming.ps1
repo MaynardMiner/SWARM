@@ -25,6 +25,20 @@ function Get-Nvidia {
     else{$Coin}
 }
 
+function Get-CPU {
+    param(
+        [Parameter(Mandatory=$true)]
+        [String]$Coin
+    )
+
+    $Coins = Get-Content ".\config\naming\get-cpu.json" | ConvertFrom-Json
+
+    $Coin = (Get-Culture).TextInfo.ToTitleCase(($Coin -replace "_"," ")) -replace " "
+
+    if($Coins.$Coin){$Coins.$Coin}
+    else{$Coin}
+}
+
 function Get-AMD {
     param(
         [Parameter(Mandatory=$true)]

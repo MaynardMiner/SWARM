@@ -37,7 +37,7 @@ if($Algorithm -eq "$($AlgoPools.$_.Algorithm)")
   Path = $Path
   Devices = $Devices
   DeviceCall = "cpuminer-opt"
-  Arguments = "-a $_ $($MinerIntensity)-o stratum+tcp://$($AlgoPools.$_.Host):$($AlgoPools.$_.Port) -b 0.0.0.0:4048 -u $($AlgoPools.$_.CPUser) -p $($AlgoPools.$_.CPUPass)$($Diff) $($Config.$ConfigType.commands.$_)"
+  Arguments = "-a $(Get-CPU($_)) -o stratum+tcp://$($AlgoPools.$_.Host):$($AlgoPools.$_.Port) -b 0.0.0.0:4048 -u $($AlgoPools.$_.CPUser) -p $($AlgoPools.$_.CPUPass)$($Diff) $($Config.$ConfigType.commands.$_)"
   HashRates = [PSCustomObject]@{$_ = $($Stats."$($Name)_$($_)_hashrate".Day)}
   PowerX = [PSCustomObject]@{$_ = if($($Watts.$($_)."$($ConfigType)_Watts")){$($Watts.$($_)."$($ConfigType)_Watts")}elseif($($Watts.default."$($ConfigType)_Watts")){$($Watts.default."$($ConfigType)_Watts")}else{0}}
   MinerPool = "$($AlgoPools.$_.Name)"
@@ -65,7 +65,7 @@ if($Config.$ConfigType.difficulty.$($CoinPools.$_.Algorithm)){$Diff=",d=$($Diffi
     Path = $Path
     Devices = $Devices
     DeviceCall = "cpuminer-opt"
-    Arguments = "-a $($CoinPools.$_.Algorithm) -o stratum+tcp://$($CoinPools.$_.Host):$($CoinPools.$_.Port) -b 0.0.0.0:4048 -u $($CoinPools.$_.CPUser) -p $($CoinPools.$_.CPUPass)$($Diff) $($Config.$ConfigType.commands.$($CoinPools.$_.Algorithm))"
+    Arguments = "-a $(Get-CPU($($CoinPools.$_.Algorithm))) -o stratum+tcp://$($CoinPools.$_.Host):$($CoinPools.$_.Port) -b 0.0.0.0:4048 -u $($CoinPools.$_.CPUser) -p $($CoinPools.$_.CPUPass)$($Diff) $($Config.$ConfigType.commands.$($CoinPools.$_.Algorithm))"
     HashRates = [PSCustomObject]@{$CoinPools.$_.Symbol= $($Stats."$($Name)_$($CoinPools.$_.Algorithm)_hashrate".Day)}
     PowerX = [PSCustomObject]@{$CoinPools.$_.Symbol = if($Watts.$($CoinPools.$_.Algorithm)."$($ConfigType)_Watts"){$Watts.$($CoinPools.$_.Algorithm)."$($ConfigType)_Watts"}elseif($Watts.default."$($ConfigType)_Watts"){$Watts.default."$($ConfigType)_Watts"}else{0}}
     API = "cpuminer"
