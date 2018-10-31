@@ -10,12 +10,12 @@
       "commands": {
         "phi2": "",
         "lyra2z": "",
-        "cnv8": ""
+        "cryptonightv8": ""
       },
       "difficulty": {
         "phi2": "",
         "lyra2z": "",
-        "cnv8": ""
+        "cryptonightv8": ""
       },
       "oc": {
         "phi2": {
@@ -32,7 +32,7 @@
           "mem": "",
           "mdpm": ""
         },
-        "cnv8": {
+        "cryptonightv8": {
           "dpm": "",
           "v": "",
           "core": "",
