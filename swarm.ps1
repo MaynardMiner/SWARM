@@ -899,6 +899,7 @@ if($Restart -eq $true -and $NoMiners -eq $true)
        
   There are miners that have failed! Check Your Settings And Arguments!
   Type `'mine`' in another terminal to see background miner, and its reason for failure.
+  If miner is not your primary miner (AMD1 or NVIDIA1), type 'screen -r [Type]'
   https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration) >> Right Click 'Open URL In Browser'
 
 
