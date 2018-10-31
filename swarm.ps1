@@ -984,9 +984,12 @@ function Get-Logo {
 #Check For Bechmark
 $BenchmarkMode = $false
 $ActiveMinerPrograms | Foreach {
-if(-not (Test-Path ".\stats\$($_.Name)_$($_.Algo)_hashrate.txt"))
+ if($Miners | Where Path -eq $_.Path | Where Arguments -eq $_.Arguments)
  {
-  $BenchmarkMode = $true
+  if(-not (Test-Path ".\stats\$($_.Name)_$($_.Algo)_hashrate.txt"))
+  {
+   $BenchmarkMode = $true
+  }
  }
 }
 
