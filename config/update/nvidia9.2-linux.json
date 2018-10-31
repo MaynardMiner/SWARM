@@ -16,7 +16,7 @@
     "path2": ".\\bin\\cryptodredge-2\\CryptoDredge",
     "path3": ".\\bin\\cryptodredge-3\\CryptoDredge",
     "minername": "CryptoDredge",
-    "version": "0.9.3",
+    "version": "0.9.4",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/CryptoDredge-Linux-9-2.tar.gz"
   },
   "dstm": {
@@ -26,7 +26,7 @@
     "path2": ".\\bin\\dstm-2\\zm",
     "path3": ".\\bin\\dstm-3\\zm",
     "minername": "zm",
-    "version": "0.6.1",
+    "version": "0.6.2",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/zm-Linux.tar.gz"
   },
   "enemy": {

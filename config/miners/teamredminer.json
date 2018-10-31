@@ -9,15 +9,16 @@
       ],
       "commands": {
         "phi2": "",
-        "lyra2z": ""
+        "lyra2z": "",
+        "cnv8": ""
       },
       "difficulty": {
         "phi2": "",
-        "lyra2z": ""
+        "lyra2z": "",
+        "cnv8": ""
       },
       "oc": {
         "phi2": {
-          "pl": "",
           "dpm": "",
           "v": "",
           "core": "",
@@ -25,7 +26,13 @@
           "mdpm": ""
         },
         "lyra2z": {
-          "pl": "",
+          "dpm": "",
+          "v": "",
+          "core": "",
+          "mem": "",
+          "mdpm": ""
+        },
+        "cnv8": {
           "dpm": "",
           "v": "",
           "core": "",
