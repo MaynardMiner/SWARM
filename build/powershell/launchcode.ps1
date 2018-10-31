@@ -263,7 +263,7 @@ $Startup += "screen -S $($Miner.Type) -X stuff $`"cd $MinerDir\n`"","sleep .1"
 $Startup += "screen -S $($Miner.Type) -X stuff $`"`$(< $Dir/build/bash/config.sh)\n`""
 
 $Startup | Set-Content ".\build\bash\startup.sh"
-Start-Sleep -S .25
+Start-Sleep -S 1
 Start-Process "chmod" -ArgumentList "+x build/bash/startup.sh" -Wait
 Start-Process ".\build\bash\startup.sh" -Wait
 
