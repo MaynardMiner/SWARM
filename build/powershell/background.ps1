@@ -568,7 +568,7 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
     $Request = Get-HTTP -Port $Port -Message $Message
     if($Request)
     {
-    $Data = $Request | ConvertFrom-JSon
+    $Data = $Request.Content | ConvertFrom-Json
     $Hash = $Data.Hashrate.threads
     $RAW = $Data.hashrate.total[0]
     $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
@@ -601,7 +601,7 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
     $Request = Get-HTTP -Port $Port -Message $Message
     if($Request)
     {
-    $Data = $Request | ConvertFrom-Json
+    $Data = $Request.Content | ConvertFrom-Json
     $Hash = $Data.Hashrate.threads
     $CPURAW = [Double]$Data.hashrate.total[0]
     $CPUKHS = [Double]$Data.hashrate.total[0]
@@ -624,11 +624,11 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
     Write-Host "Miner $MinerType is wildrig api"
     Write-Host "Miner Devices is $Devices"    
     $HS = "khs"
-    $Message ="/api.json"
+    $Message = '/api.json'
     $Request = Get-HTTP -Port $Port -Message $Message
-    if($Reader)
+    if($Request)
     {
-    $Data = $Request | ConvertFrom-Json
+    $Data = $Request.Content | ConvertFrom-Json
     $RAW = $Data.hashrate.total[0]
     $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
     Write-Host "Miner $Name was clocked at $([Double]$RAW/1000)" -foreground Yellow
