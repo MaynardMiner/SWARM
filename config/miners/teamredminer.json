@@ -10,12 +10,20 @@
       "commands": {
         "phi2": "",
         "lyra2z": "",
-        "cryptonightv8": ""
+        "cryptonightv8": "",
+        "lyra2re": ""
       },
       "difficulty": {
         "phi2": "",
         "lyra2z": "",
-        "cryptonightv8": ""
+        "cryptonightv8": "",
+        "lyra2re": ""
+      },
+      "naming": {
+        "phi2": "phi2",
+        "lyra2z": "lyra2z",
+        "cryptonightv8": "cnv8",
+        "lyra2re": "lyra2z"
       },
       "oc": {
         "phi2": {
@@ -33,6 +41,13 @@
           "mdpm": ""
         },
         "cryptonightv8": {
+          "dpm": "",
+          "v": "",
+          "core": "",
+          "mem": "",
+          "mdpm": ""
+        },
+        "lyra2re": {
           "dpm": "",
           "v": "",
           "core": "",

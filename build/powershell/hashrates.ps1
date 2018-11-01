@@ -89,13 +89,13 @@ $TypeGPU
 function Get-TCP {
      
   param(
-      [Parameter(Mandatory = $true)]
+      [Parameter(Mandatory = $false)]
       [String]$Server = "localhost", 
       [Parameter(Mandatory = $true)]
       [String]$Port, 
       [Parameter(Mandatory = $true)]
       [String]$Message, 
-      [Parameter(Mandatory = $true)]
+      [Parameter(Mandatory = $false)]
       [Int]$Timeout = 10 #seconds
   )
 
@@ -126,13 +126,13 @@ function Get-TCP {
 function Get-HTTP {
      
   param(
-      [Parameter(Mandatory = $true)]
+      [Parameter(Mandatory = $false)]
       [String]$Server = "localhost", 
       [Parameter(Mandatory = $true)]
       [String]$Port, 
       [Parameter(Mandatory = $false)]
       [String]$Message, 
-      [Parameter(Mandatory = $true)]
+      [Parameter(Mandatory = $false)]
       [Int]$Timeout = 10 #seconds
   )
 

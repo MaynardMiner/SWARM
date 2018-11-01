@@ -168,7 +168,11 @@ param(
     [Parameter(Mandatory=$false)]
     [string]$PoolBans = "Yes",
     [Parameter(Mandatory=$false)]
-    [string]$OnboardCard = "no"
+    [string]$OnboardCard = "no",
+    [Parameter(Mandatory=$false)]
+    [Int]$PoolBanCount = 2,
+    [Parameter(Mandatory=$false)]
+    [Int]$AlgoBanCount = 3
 )
 
 
@@ -206,15 +210,16 @@ if(-not (Test-Path ".\build\txt")){New-Item -Path ".\build" -Name "txt" -ItemTyp
 . .\build\powershell\powerup.ps1
 . .\build\powershell\peekaboo.ps1
 . .\build\powershell\checkbackground.ps1
-
 if($Platform -eq "linux"){. .\build\powershell\getbestunix.ps1; . .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
 if($Platform -eq "windows"){. .\build\powershell\getbestwin.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\gpu-count-win.ps1;}
 
+##Start The Log
+$dir = (Split-Path $script:MyInvocation.MyCommand.Path)
+$dir | set-content ".\build\bash\dir.sh"
+start-log -Platforms $Platform -HiveOS $HiveOS
 
 ##filepath dir
-$dir = (Split-Path $script:MyInvocation.MyCommand.Path)
 $build = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build")
-$dir | set-content ".\build\bash\dir.sh"
 $pwsh = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\powershell")
 $bash = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\linux")
 $windows = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\windows")
@@ -228,8 +233,6 @@ if($Platform -eq "windows")
   Start-Fans
  }
 
-##Start The Log
-start-log
 
 if($Platform -eq "windows")
 {
@@ -814,6 +817,10 @@ function Get-MinerStatus {
 }
 
 Clear-Content ".\build\bash\minerstats.sh" -Force
+$StatusAlgoBans = ".\time\algo_bans\algo_bans.txt"
+if(Test-Path $StatusAlgoBans){$StatusAlgoBans = Get-Content $StatusAlgoBans | ConvertFrom-Json}
+$StatusAlgoBans = ".\time\pool_bans\pool_bans.txt"
+if(Test-Path $StatusAlgoBans){$StatusAlgoBans = Get-Content $StatusAlgoBans | ConvertFrom-Json}
 $StatusDate = Get-Date
 $StatusDate | Out-File ".\build\bash\mineractive.sh"
 $StatusDate | Out-File ".\build\bash\minerstats.sh"
@@ -822,6 +829,7 @@ $mcolor = "93"
 $me = [char]27
 $MiningStatus = "$me[${mcolor}mCurrently Mining $($BestMiners_Combo.Algo) Algorithm${me}[0m"
 $MiningStatus | Out-File ".\build\bash\minerstats.sh" -Append
+$MiningStatus = "$me[${mcolor}mCurrently Mining $($BestMiners_Combo.Algo) Algorithm${me}[0m"
 
 $BestActiveMiners | ConvertTo-Json | Out-File ".\build\txt\bestminers.txt"
 $BackgroundDone = "No"
@@ -1358,7 +1366,7 @@ if($Strike -eq $true)
       if(test-path $HashRateFilePath){remove-item $HashRateFilePath -Force}
       Write-Host "First Strike: There was issue with benchmarking." -ForegroundColor DarkRed
      }
-     if($_.Bad_Benchmark -eq 2 -and $PoolBans -eq "Yes")
+     if($_.Bad_Benchmark -eq $PoolBanCount -and $PoolBans -eq "Yes")
      {
       Write-Host "Strike Two: Benchmarking Has Failed - Prohibiting miner from pool" -ForegroundColor DarkRed
       $NewPoolBlock = @()
@@ -1370,7 +1378,7 @@ if($Strike -eq $true)
       $NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt"
       Start-Sleep -S 1
      }
-     if($_.Bad_Benchmark -ge 3)
+     if($_.Bad_Benchmark -ge $AlgoBanCount)
      {
       Write-Host "Strike three: Benchmarking Has Failed - disabling miner" -ForegroundColor DarkRed
       $NewAlgoBlock = @()

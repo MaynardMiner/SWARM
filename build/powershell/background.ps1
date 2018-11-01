@@ -145,11 +145,15 @@ $BackgroundTimer.Restart()
 
 While($True)
 {
+$HashRates = @()
+$Fans = @()
+$Temps = @()
 $GPUHashrates = [PSCustomObject]@{}
 $CPUHashrates = [PSCustomObject]@{}
 $GPUFans = [PSCustomObject]@{}
 $GPUTemps = [PSCustomObject]@{}
 $GPUPower = [PSCustomObject]@{}
+$RAW = 0
 $KHS = 0
 $REJ = 0
 $ACC = 0
@@ -158,7 +162,8 @@ if($DevAMD -eq $true){for($i=0; $i -lt $GCount.AMD.PSObject.Properties.Value.Cou
 if($DevNVIDIA -eq $true){for($i=0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++){$GPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; $GPUFans | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; $GPUTemps | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; $GPUPower | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0}}
 
 Write-Host "Initial Hash Array $GPUHashrates"
-if($RAW){Write-Host "Initial hashes = $RAW"}
+if($RAW -ne $null){Write-Host "Initial hashes = $RAW"}
+if($HashRates -ne $null){Write-host "Initial Stats = $HashRates"}
 
 if($Platforms -eq "windows")
 {
@@ -177,7 +182,7 @@ Write-Host "Power is $NVIDIAPower"
 }
 
 $GetMiners | Foreach {
-
+$Name = $_.Name
 $Server = "localhost"
 $Interval = 15
 $Port = $($_.Port)
@@ -221,9 +226,12 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
       if($Request)
        {
         $Data = $Request.Content.Substring($Request.Content.IndexOf("{"), $Request.Content.LastIndexOf("}") - $Request.Content.IndexOf("{") + 1) | ConvertFrom-Json
-        $RAW += 0
+        $RAW = 0
         $RAW += $Data.result[2] -split ";" | Select -First 1 | foreach {[Double]$_*1000}
         $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
+        Write-Host "Miner $Name was clocked at $([Double]$RAW/1000)" -foreground Yellow
+        $Process = Get-Process | Where Name -clike "*$($MinerType)*"
+        Write-Host "Current Running instances: $($Process.Name)"
         $KHS += $Data.result[2] -split ";" | Select -First 1 | foreach {[Double]$_}
         $Hash = $Data.result[3] -split ";"
         for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Hash.Count -eq 1){$Hash}else{$Hash[$i]})}
@@ -266,6 +274,9 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
          $RAW = 0
          $Data.speed_sps | foreach {$RAW += [Double]$_}
          $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
+         Write-Host "Miner $Name was clocked at $([Double]$RAW/1000)" -foreground Yellow
+         $Process = Get-Process | Where Name -clike "*$($MinerType)*"
+         Write-Host "Current Running instances: $($Process.Name)"
          for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Data.speed_sps.Count -eq 1){$Data.speed_sps}else{$Data.speed_sps[$i]})}
          $Data.accepted_shares | Foreach {$MinerACC += $_}
          $Data.rejected_shares | Foreach {$MinerREJ += $_}
@@ -293,9 +304,12 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
         $GetKHS = $GetSummary -split ";" | ConvertFrom-StringData
         $RAW = if ([Double]$GetKHS.KHS -ne 0 -or [Double]$GetKHS.ACC -ne 0) {[Double]$GetKHS.KHS * $Multiplier}
         $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
-        $KHS += if ([Double]$GetKHS.KHS -ne 0 -or [Double]$GetKHS.ACC -ne 0) {[Double]$GetKHS.KHS * $Multiplier}
-       }
-       else{Write-Host "API Summary Failed- Could Not Total Hashrate" -Foreground Red; $RAW = 0; $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"}
+        $KHS += if ([Double]$GetKHS.KHS -ne 0 -or [Double]$GetKHS.ACC -ne 0) {[Double]$GetKHS.KHS}
+        Write-Host "Miner $Name was clocked at $([Double]$RAW/1000)" -foreground Yellow
+        $Process = Get-Process | Where Name -clike "*$($MinerType)*"
+        Write-Host "Current Running instances: $($Process.Name)"
+      }
+       else{Write-Host "API Summary Failed- Could Not Total Hashrate Or No Accepted Shares" -Foreground Red; $RAW = 0; $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"}
        $GetThreads = Get-TCP -Server $Server -Port $port -Message "threads"
        if($GetThreads)
         {
@@ -327,8 +341,11 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
       if($Request)
        {
         $Data = $Request.Content | ConvertFrom-Json
-        $RAW = $Data.hashrate_minute
+        $RAW = if([Double]$Data.hashrate_minute -ne 0 -or [Double]$Data.accepted_count -ne 0){[Double]$Data.hashrate_minute}
         $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
+        Write-Host "Miner $Name was clocked at $([Double]$RAW/1000)" -foreground Yellow
+        $Process = Get-Process | Where Name -clike "*$($MinerType)*"
+        Write-Host "Current Running instances: $($Process.Name)"
         for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Data.gpus.hashrate_minute.Count -eq 1){[Double]$Data.gpus.hashrate_minute / 1000}else{[Double]$Data.gpus.hashrate_minute[$i] / 1000})}
         $MinerACC = 0
         $MinerREJ = 0
@@ -336,7 +353,7 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
         $Data.rejected_count | Foreach {$MinerREJ += $_}
         $Data.accepted_count | Foreach {$ACC += $_}
         $Data.rejected_count | Foreach {$REJ += $_}
-        $KHS += [Double]$Data.hashrate_minute/1000
+        $KHS = if([Double]$Data.hashrate_minute -ne 0 -or [Double]$Data.accepted_count -ne 0){[Double]$Data.hashrate_minute/1000}
         $UPTIME = $Data.uptime
         for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($Data.gpus.temperature.Count -eq 1){$Data.gpus.temperature}else{$Data.gpus.temperature[$i]})}
         for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) =  $(if($Data.gpus.fan_speed.Count -eq 1){$Data.gpus.fan_speed}else{$Data.gpus.fan_speed[$i]})}
@@ -355,8 +372,12 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
          {
         $Data = $GetSummary | ConvertFrom-Json
         $Data = $Data.result
+        $RAW = 0
         $Data.sol_ps | foreach {$RAW += [Double]$_}
         $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
+        Write-Host "Miner $Name was clocked at $([Double]$RAW/1000)" -foreground Yellow
+        $Process = Get-Process | Where Name -clike "*$($MinerType)*"
+        Write-Host "Current Running instances: $($Process.Name)"
         for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Data.sol_ps.Count -eq 1){$Data.sol_ps}else{$Data.sol_ps[$i]})}
         $MinerACC = 0
         $MinerREJ = 0
@@ -390,8 +411,12 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
       else{$Sum = $summary.'KHS 30s'}
       if($threads.'KHS 5s'){$Thread = $threads.'KHS 5s'}
       else{$thread = $threads.'KHS 30s'}
+      $RAW=0
       $RAW += [Double]$Sum*1000
       $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
+      Write-Host "Miner $Name was clocked at $([Double]$RAW/1000)" -foreground Yellow
+      $Process = Get-Process | Where Name -clike "*$($MinerType)*"
+      Write-Host "Current Running instances: $($Process.Name)"
       $KHS += $Sum
       for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($thread.Count -eq 1){$thread}else{$thread[$i]})}
       $MinerACC = 0
@@ -435,11 +460,13 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
      $CPUHash = @()
      if($kilo -eq $true)
      {
+      $CPUKHS = 0
       for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $CPUHashrates.$($GCount.$TypeS.$GPU) = $(if($J.Count -eq 1){$J}else{$J[$i]})}
       $J |Foreach {$CPUKHS += $_}
       $CPUHS = "khs"
      }
      else{
+      $CPUKHS = 0
       for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $CPUHashrates.$($GCount.$TypeS.$GPU) = $(if($J.Count -eq 1){$J/1000}else{$J[$i]/1000})}
       $J |Foreach {$CPUKHS += $_}
       $CPUHS = "hs"
@@ -510,7 +537,10 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
           for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($K.Count -eq 1){$K}else{$K[$i]})}
           $KHS += [Double]$TotalRaw/1000
           $ALGO = $MinerAlgo
-          $TotalRaw | Set-Content ".\build\txt\$MinerType-hash.txt"      
+          $TotalRaw | Set-Content ".\build\txt\$MinerType-hash.txt"
+          Write-Host "Miner $Name was clocked at $([Double]$RAW/1000)" -foreground Yellow
+          $Process = Get-Process | Where Name -clike "*$($MinerType)*"
+          Write-Host "Current Running instances: $($Process.Name)"
           $AA = $A | Select-String "Accepted"  | Select -Last 1
           $BB = $AA -Split "d" | Select-String "/"
           $CC = $BB -replace (" ","")
@@ -542,6 +572,9 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
     $Hash = $Data.Hashrate.threads
     $RAW = $Data.hashrate.total[0]
     $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
+    Write-Host "Miner $Name was clocked at $([Double]$RAW/1000)" -foreground Yellow
+    $Process = Get-Process | Where Name -clike "*$($MinerType)*"
+    Write-Host "Current Running instances: $($Process.Name)"
     for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Hash.Count -eq 1){[Double]$($Hash[0] | Select -first 1)}else{[Double]$($Hash[$i] | Select -First 1)})}
     $MinerACC = 0
     $MinerREJ = 0
@@ -598,6 +631,9 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
     $Data = $Request | ConvertFrom-Json
     $RAW = $Data.hashrate.total[0]
     $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
+    Write-Host "Miner $Name was clocked at $([Double]$RAW/1000)" -foreground Yellow
+    $Process = Get-Process | Where Name -clike "*$($MinerType)*"
+    Write-Host "Current Running instances: $($Process.Name)"
     $Hash = $Data.hashrate.threads
     for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Hash.Count -eq 1){[Double]$($Hash[0] | Select -first 1) / 1000}else{[Double]$($Hash[$i] | Select -First 1)})}
     $MinerACC = 0
@@ -633,14 +669,11 @@ if($BackgroundTimer.Elapsed.TotalSeconds -gt 60)
  }
 }
 
-$RAW = $null
-$CPURAW = $null
-
 if($CPUOnly -eq $true)
 {
 $HIVE="
 $($CPUHash -join "`n")
-KHS=$CPUKHS
+KHS=$({0:n2} -f $CPUKHS)
 ACC=$CPUACC
 REJ=$CPUREJ
 ALGO=$CPUALGO
@@ -654,16 +687,10 @@ $Hive | Set-Content ".\build\bash\hivestats.sh"
 }
 else
 {
-  $HashRates = $null
-  $Fans = $null
-  $Temps = $null
-  $HashRates = @()
-  $Fans = @()
-  $Temps = @()
   if($DEVNVIDIA -eq $True){if($GCount.NVIDIA.PSObject.Properties.Value.Count -gt 0){for($i=0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++){$HashRates += 0; $Fans += 0; $Temps += 0}}}
   if($DevAMD -eq $True){if($GCount.AMD.PSObject.Properties.Value.Count -gt 0){for($i=0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++){$HashRates += 0; $Fans += 0; $Temps += 0}}}
-  if($DEVNVIDIA -eq $True){for($i=0; $i -lt $GCount.NVIDIA.PSOBject.Properties.Value.Count; $i++){$HashRates[$($GCount.NVIDIA.$i)] = "GPU=$($GPUHashRates.$($GCount.NVIDIA.$i))"}}
-  if($DevAMD -eq $True){for($i=0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++){$HashRates[$($GCount.AMD.$i)] = "GPU=$($GPUHashRates.$($GCount.AMD.$i))"}}
+  if($DEVNVIDIA -eq $True){for($i=0; $i -lt $GCount.NVIDIA.PSOBject.Properties.Value.Count; $i++){$HashRates[$($GCount.NVIDIA.$i)] = "GPU={0:f2}" -f $($GPUHashRates.$($GCount.NVIDIA.$i))}}
+  if($DevAMD -eq $True){for($i=0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++){$HashRates[$($GCount.AMD.$i)] = "GPU={0:f2}" -f $($GPUHashRates.$($GCount.AMD.$i))}}
   if($DEVNVIDIA -eq $True){for($i=0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++){$Fans[$($GCount.NVIDIA.$i)] = "FAN=$($GPUFans.$($GCount.NVIDIA.$i))"}}
   if($DevAMD -eq $True){for($i=0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++){$Fans[$($GCount.AMD.$i)] = "FAN=$($GPUFans.$($GCount.AMD.$i))"}}
   if($DEVNVIDIA -eq $True){for($i=0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++){$Temps[$($GCount.NVIDIA.$i)] = "TEMP=$($GPUTemps.$($GCount.NVIDIA.$i))"}}
@@ -677,6 +704,8 @@ else
      elseif($HS -eq "hs"){$HashRates[$i] = 'GPU=1'; $KHS += 1}
     }
    }
+
+$KHS = '{0:f2}' -f $KHS
 
 $HIVE="
 $($HashRates -join "`n")

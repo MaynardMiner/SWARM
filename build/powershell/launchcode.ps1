@@ -238,9 +238,11 @@ elseif($Platforms -eq "linux")
 "
 Start-Process ".\build\bash\killall.sh" -ArgumentList "$($Miner.Type)" -Wait
 if($Background -eq "No"){Start-BackgroundCheck -BestMiners $BestMiners -Platforms $Platform}
-Start-Sleep $Delay
 $OldProcess = Get-Process | Where Name -clike "*$($Miner.Type)*"
-if($OldProcess){Stop-Process $OldProcess -ErrorAction SilentlyContinue}
+if($OldProcess){kill $OldProcess.Id}
+if($OldProcess){kill $OldProcess.Id}
+if($OldProcess){kill $OldProcess.Id}
+Start-Sleep $Delay
 Set-Location (Split-Path $($Miner.Path))
 Start-Process "chmod" -ArgumentList "+x $($Miner.InstanceName)" -Wait
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)

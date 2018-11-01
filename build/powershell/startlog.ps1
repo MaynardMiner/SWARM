@@ -12,6 +12,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
 function start-log {
+    param (
+    [Parameter(Mandatory=$false)]
+    [String]$Platforms,
+    [Parameter(Mandatory=$false)]
+    [String]$HiveOS
+    )
 #Start the log
 $Log = 1
 if(-not (Test-Path "logs")){New-Item "logs" -ItemType "directory" | Out-Null; Start-Sleep -S 1}
@@ -26,7 +32,8 @@ if(Test-Path ".\logs\*active*")
   } 
  Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 }
-Set-Location ".\logs"
-Start-Transcript "miner$($Log)-active.log"
+$Logs = Join-Path $dir "logs\miner$($Log)-active.log"
+Start-Transcript $Logs
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+if($HiveOS -eq "Yes" -and $Platforms -eq "linux"){Start-Process "screen" -Argumentlist "-S miner -X log" -Wait}
 }
