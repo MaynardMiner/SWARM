@@ -22,7 +22,8 @@ function Get-Miners {
         [Array]$Pools
     )
 
-
+$GetPoolBlock = $null
+$GetAlgoBlock = $null
 if(Test-Path ".\timeout\pool_block\pool_block.txt"){$GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json}
 if(Test-Path ".\timeout\algo_block\algo_block.txt"){$GetAlgoBlock = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json}
 

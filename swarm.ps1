@@ -164,7 +164,7 @@ param(
     [Parameter(Mandatory=$false)]
     [string]$AMDPlatform = "1",
     [Parameter(Mandatory=$false)]
-    [Double]$Rejections = 50,
+    [Double]$Rejections = 75,
     [Parameter(Mandatory=$false)]
     [string]$PoolBans = "Yes",
     [Parameter(Mandatory=$false)]

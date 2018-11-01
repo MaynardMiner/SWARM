@@ -826,3 +826,22 @@ but API is awaiting stats.
    added new arguments in help files.
 
   -Fixed -recurse on timeout command
+
+    1.6.8
+
+  -Added Naming to some miner .json as a test.
+  -Teamredminer updated + naming fixed
+  -Recoded background- attempted fix 
+  -Increaded default rejections to 75%
+  -Added -PoolBanCount Argument
+  -Added -AlgoBanCount Argument
+  -Both above arguments define the
+   number of strikes required to institue
+   their respective bans.
+  -fixed a bad trigger in which if timeout
+   folder was deleted- Bans would not
+   reset unless restarted. Both -Timeout argument and 
+   benchmark timeout commands should now work.
+  
+  
+  
