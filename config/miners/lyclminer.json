@@ -8,13 +8,26 @@
         "export GPU_MAX_ALLOC_PERCENT=100"
       ],
       "commands": {
-        "lyra2v2": ""
+        "lyra2v2": "",
+        "lyra2rev2": ""
       },
       "difficulty": {
-        "lyra2v2": ""
+        "lyra2v2": "",
+        "lyra2rev2": ""
       },
+      "naming": {
+        "lyra2v2": "",
+        "lyra2rev2": ""
+      },      
       "oc": {
         "lyra2v2": {
+          "dpm": "",
+          "v": "",
+          "core": "",
+          "mem": "",
+          "mdpm": ""
+        },
+        "lyra2rev2": {
           "dpm": "",
           "v": "",
           "core": "",
