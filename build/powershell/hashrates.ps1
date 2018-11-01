@@ -87,25 +87,62 @@ $TypeGPU
 }
 
 function Get-TCP {
- param (   
-    [Parameter(Mandatory=$true)]
-    [String]$Server,
-    [Parameter(Mandatory=$true)]
-    [String]$Port,
-    [Parameter(Mandatory=$true)]
-    [String]$Message
-    )
+     
+  param(
+      [Parameter(Mandatory = $true)]
+      [String]$Server = "localhost", 
+      [Parameter(Mandatory = $true)]
+      [String]$Port, 
+      [Parameter(Mandatory = $true)]
+      [String]$Message, 
+      [Parameter(Mandatory = $true)]
+      [Int]$Timeout = 10 #seconds
+  )
 
-    $Client = New-Object System.Net.Sockets.TcpClient $server, $port
-    $Writer = New-Object System.IO.StreamWriter $Client.GetStream()
-    $Reader = New-Object System.IO.StreamReader $Client.GetStream()
-    $client.SendTimeout = 10000
-    $client.ReceiveTimeout = 10000
-    $Writer.AutoFlush = $true
-    $Writer.WriteLine($Message)
-    $Request = $Reader.ReadLine()
-    $Request
+  try {
+      $Client = New-Object System.Net.Sockets.TcpClient $Server, $Port
+      $Stream = $Client.GetStream()
+      $Writer = New-Object System.IO.StreamWriter $Stream
+      $Reader = New-Object System.IO.StreamReader $Stream
+      $client.SendTimeout = $Timeout * 1000
+      $client.ReceiveTimeout = $Timeout * 1000
+      $Writer.AutoFlush = $true
+
+      $Writer.WriteLine($Message)
+      $Response = $Reader.ReadLine()
+  }
+  catch { $Error.Remove($error[$Error.Count - 1])}
+  finally {
+      if ($Reader) {$Reader.Close()}
+      if ($Writer) {$Writer.Close()}
+      if ($Stream) {$Stream.Close()}
+      if ($Client) {$Client.Close()}
+  }
+
+  $response
+  
 }
+
+function Get-HTTP {
+     
+  param(
+      [Parameter(Mandatory = $true)]
+      [String]$Server = "localhost", 
+      [Parameter(Mandatory = $true)]
+      [String]$Port, 
+      [Parameter(Mandatory = $false)]
+      [String]$Message, 
+      [Parameter(Mandatory = $true)]
+      [Int]$Timeout = 10 #seconds
+  )
+
+  try {
+       $response = Invoke-WebRequest "http://$($Server):$Port$Message" -UseBasicParsing -TimeoutSec $timeout
+      }
+  catch {$Error.Remove($error[$Error.Count - 1])}
+  $response 
+}
+
 
 function Get-HashRate {
     param(
