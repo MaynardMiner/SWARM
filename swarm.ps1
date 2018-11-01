@@ -817,10 +817,10 @@ function Get-MinerStatus {
 }
 
 Clear-Content ".\build\bash\minerstats.sh" -Force
-$StatusAlgoBans = ".\time\algo_bans\algo_bans.txt"
-if(Test-Path $StatusAlgoBans){$StatusAlgoBans = Get-Content $StatusAlgoBans | ConvertFrom-Json}
-$StatusAlgoBans = ".\time\pool_bans\pool_bans.txt"
-if(Test-Path $StatusAlgoBans){$StatusAlgoBans = Get-Content $StatusAlgoBans | ConvertFrom-Json}
+$GetStatusAlgoBans = ".\timeout\algo_block\algo_block.txt"
+$GetStatusPoolBans = ".\timeout\pool_block\pool_block.txt"
+if(Test-Path $GetStatusAlgoBans){$StatusAlgoBans = Get-Content $GetStatusAlgoBans | ConvertFrom-Json}
+if(Test-Path $GetStatusPoolBans){$StatusPoolBans = Get-Content $GetStatusPoolBans | ConvertFrom-Json}
 $StatusDate = Get-Date
 $StatusDate | Out-File ".\build\bash\mineractive.sh"
 $StatusDate | Out-File ".\build\bash\minerstats.sh"
@@ -829,8 +829,12 @@ $mcolor = "93"
 $me = [char]27
 $MiningStatus = "$me[${mcolor}mCurrently Mining $($BestMiners_Combo.Algo) Algorithm${me}[0m"
 $MiningStatus | Out-File ".\build\bash\minerstats.sh" -Append
-$MiningStatus = "$me[${mcolor}mCurrently Mining $($BestMiners_Combo.Algo) Algorithm${me}[0m"
-
+$BanMessage = @()
+$mcolor = "91"
+$me = [char]27
+if($StatusAlgoBans){$StatusAlgoBans | foreach {$BanMessage += "$me[${mcolor}m$($_.Name) mining $($_.Algo) is banned from all pools${me}[0m"}}
+if($StatusPoolBans){$StatusPoolBans | foreach {$BanMessage += "$me[${mcolor}m$($_.Name) mining $($_.Algo) is banned from $($_.MinerPool)${me}[0m"}}
+$BanMessage | Out-File ".\build\bash\minerstats.sh" -Append
 $BestActiveMiners | ConvertTo-Json | Out-File ".\build\txt\bestminers.txt"
 $BackgroundDone = "No"
 
