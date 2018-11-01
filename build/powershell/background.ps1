@@ -291,9 +291,9 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
        {
         $Multiplier = 1000
         $GetKHS = $GetSummary -split ";" | ConvertFrom-StringData
-        $RAW = if ([Double]$Data.KHS -ne 0 -or [Double]$Data.ACC -ne 0) {[Double]$GetKHS.KHS * $Multiplier}
+        $RAW = if ([Double]$GetKHS.KHS -ne 0 -or [Double]$GetKHS.ACC -ne 0) {[Double]$GetKHS.KHS * $Multiplier}
         $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
-        $KHS += if ([Double]$Data.KHS -ne 0 -or [Double]$Data.ACC -ne 0) {[Double]$GetKHS.KHS * $Multiplier}
+        $KHS += if ([Double]$GetKHS.KHS -ne 0 -or [Double]$GetKHS.ACC -ne 0) {[Double]$GetKHS.KHS * $Multiplier}
        }
        else{Write-Host "API Summary Failed- Could Not Total Hashrate" -Foreground Red; $RAW = 0; $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"}
        $GetThreads = Get-TCP -Server $Server -Port $port -Message "threads"
