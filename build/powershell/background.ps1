@@ -404,7 +404,7 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
       $Request = Get-TCP -Server $Server -Port $port -Message $Message
       if($Request)
       {
-      $Data - $Request | ConvertFrom-Json
+      $Data = $Request | ConvertFrom-Json
       $summary = $Data.summary.summary
       $threads = $Data.devs.devs
       if($summary.'KHS 5s'){$Sum = $summary.'KHS 5s'}
