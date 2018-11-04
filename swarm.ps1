@@ -655,7 +655,7 @@ $ActiveMinerPrograms | ForEach {$AlgoMiners | Where Path -EQ $_.Path | Where Arg
 $GoodAlgoMiners = @()
 $AlgoMiners | Foreach {if($_.Profit -lt $Threshold -or $_.Profit -eq $null){$GoodAlgoMiners += $_}}
 $Miners = @()
-$AlgoMiners | foreach {$Miners += $_}
+$GoodAlgoMiners | foreach {$Miners += $_}
 if($Platform -eq "windows"){$BestAlgoMiners_Combo = Get-BestWin -SortMiners $Miners}
 elseif($Platform -eq "linux"){$BestAlgoMiners_Combo = Get-BestUnix -SortMiners $Miners}
 $BestMiners_Combo = $BestAlgoMiners_Combo
