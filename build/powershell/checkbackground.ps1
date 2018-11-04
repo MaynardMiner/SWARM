@@ -1,19 +1,9 @@
 function Start-BackgroundCheck {
     param(
         [Parameter(Mandatory=$false)]
-        [object]$BestMiners,
-        [Parameter(Mandatory=$false)]
-        [object]$Platforms
+        [string]$Platforms
     )
 
-$Restart = $false
-
-$BestMiners | foreach {
- if($_.XProcess.HasExited -eq $false -or $_.XProcess -eq $null){$Restart = $true}
-}
-
-if($Restart -eq $true)
- {
   if($Platforms -eq "windows")
   {
   $oldbackground = ".\build\pid\background_pid.txt"
@@ -32,5 +22,4 @@ if($Restart -eq $true)
    Start-Sleep -S .25
    Start-Process ".\build\bash\background.sh" -ArgumentList "background $dir $Platform $HiveOS $Rejections" -Wait
   }
- } 
 }

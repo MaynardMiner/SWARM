@@ -20,6 +20,15 @@
       "sib": "",
       "myr-gr": ""
     },
+    "naming": {
+      "qubit": "qubit",
+      "keccak": "keccak",
+      "blakecoin": "blakecoin",
+      "keccakc": "keccakc",
+      "x12": "x12",
+      "sib": "sib",
+      "myr-gr": "myr-gr"
+    },
     "oc": {
       "qubit": {
         "Power": "",
@@ -79,6 +88,15 @@
       "sib": "",
       "myr-gr": ""
     },
+    "naming": {
+      "qubit": "qubit",
+      "keccak": "keccak",
+      "blakecoin": "blakecoin",
+      "keccakc": "keccakc",
+      "x12": "x12",
+      "sib": "sib",
+      "myr-gr": "myr-gr"
+    },
     "oc": {
       "qubit": {
         "Power": "",
@@ -137,6 +155,15 @@
       "x12": "",
       "sib": "",
       "myr-gr": ""
+    },
+    "naming": {
+      "qubit": "qubit",
+      "keccak": "keccak",
+      "blakecoin": "blakecoin",
+      "keccakc": "keccakc",
+      "x12": "x12",
+      "sib": "sib",
+      "myr-gr": "myr-gr"
     },
     "oc": {
       "qubit": {

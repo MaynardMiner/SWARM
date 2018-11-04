@@ -25,7 +25,7 @@ $blockpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | S
      "US"{$blockpool_Host = "blockmasters.co"}
      default{$blockpool_Host = "eu.blockmasters.co"}
     }
-    $blockpool_Algorithm = Get-Algorithm $blockpool_Request.$_.name
+    $blockpool_Algorithm = $blockpool_Request.$_.name
     $blockpool_Port = $blockpool_Request.$_.port
     $Divisor = (1000000*$blockpool_Request.$_.mbtc_mh_factor)
 

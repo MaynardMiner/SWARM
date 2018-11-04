@@ -41,6 +41,23 @@
       "bitcore": "",
       "x22i": ""
     },
+    "naming": {
+      "bcd": "bcd",
+      "c11": "c11",
+      "geek": "geek",
+      "hmq1725": "hmq1725",
+      "phi": "phi",
+      "renesis": "renesis",
+      "skunk": "skunkhash",
+      "sonoa": "sonoa",
+      "timetravel": "timetravel",
+      "tribus": "tribus",
+      "x16s": "x16s",
+      "x16r": "x16r",
+      "x17": "x17",
+      "bitcore": "bitcore",
+      "x22i": "x22i"
+    },
     "oc": {
       "bcd": {
         "dpm": "",

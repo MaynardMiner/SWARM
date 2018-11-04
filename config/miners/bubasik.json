@@ -13,6 +13,12 @@
         "argon2d-dyn":"",
         "lyra2z":"",
         "hodl":""
+    },
+    "naming": {
+        "yespower":"yespower",
+        "argon2d-dyn":"argon2d-dyn",
+        "lyra2z":"lyra2z",
+        "hodl":"hodl"
     }
   }
 }

@@ -17,6 +17,11 @@
       "daggerhashimoto": "",
       "dagger": ""
     },
+    "naming": {
+      "ethash": "ethash",
+      "daggerhashimoto": "daggerhashimoto",
+      "dagger": "dagger"
+    },
     "oc": {
       "ethash": {
         "dpm": "",

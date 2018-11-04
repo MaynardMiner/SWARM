@@ -1,30 +1,3 @@
 
-    param(
-     
-    )
-$Method = "miners"
-$Name = "t-rex"
-$Param = "NVIDIA1"
-$SubParam = "commands"
-$Algo = "x16r"
-$Command = "-i 10"
-
-if(Test-Path ".\config\$Method\$Name.json"){$Config = Get-Content ".\config\$Method\$Name.json" | ConvertFrom-Json}
-if($Config)
-{
- switch($Method)
- {
-  "miners"
-   {
-    $Config.$Param.$SubParam.$Algo = $Command
-   }
-
- }
-
-}
-else
-{
- $Message = "Could not fine $method $Name config"
- $Message | Out-File ".\build\txt\configcom.txt"
- Write-Host "$Message" -ForegroundColor Red
-}
+$Type | Foreach {$GetType = $_; "bcd" | Select -Unique | foreach {$AlgoMiners | Where Type -eq $GetType | Where Hashrates -match $_ | Sort-Object {Where Hashrates.$_ -eq $null},Quote.$_ -Descending | Select -First 1}}
+$Type | Foreach {$GetType = $_; "bcd" | Select -Unique | foreach {$zero = $AlgoMiners | Where Type -eq $GetType | Where Hashrates -match $_ | Where Quote -EQ 0; $nonzero = $AlgoMiners | Where Type -eq $GetType | Where Hashrates -match $_ | Where Quote -NE 0; if($zero){$NewAlgoMiners += $zero | Sort-Object Quote -Descending | Select -First 1}else{$NewAlgoMiners += $nonzero | Sort-Object Quote -Descending | Select -First 1}}}

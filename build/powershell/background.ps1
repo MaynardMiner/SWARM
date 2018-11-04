@@ -106,6 +106,8 @@ if($Platforms -eq "windows"){Set-Location $WorkingDir}
 
 
 ##Data
+##Delay To Ensure File-Write
+Start-Sleep -S 10
 $GetMiners = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-Json
 $GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
 

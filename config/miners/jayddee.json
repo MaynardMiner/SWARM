@@ -17,6 +17,14 @@
       "lyra2re": "",
       "m7m": "",
       "cryptonightv7": ""
+    },
+    "naming": {
+      "yescrypt": "yescrypt",
+      "yescryptr16": "yescryptr16",
+      "lyra2z": "lyra2z",
+      "lyra2re": "lyra2z",
+      "m7m": "m7m",
+      "cryptonightv7": "cryptonightv7"
     }
   }
 }

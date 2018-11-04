@@ -8,6 +8,9 @@
     "difficulty": {
       "equihash": ""
     },
+    "naming": {
+      "equihash": "equihash"
+    },
     "oc": {
       "equihash": {
         "Power": "",
@@ -25,6 +28,9 @@
     "difficulty": {
       "equihash": ""
     },
+    "naming": {
+      "equihash": "equihash"
+    },
     "oc": {
       "equihash": {
         "Power": "",
@@ -41,6 +47,9 @@
     },
     "difficulty": {
       "equihash": ""
+    },
+    "naming": {
+      "equihash": "equihash"
     },
     "oc": {
       "equihash": {

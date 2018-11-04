@@ -20,7 +20,7 @@ $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty Ba
   
 $starpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name |  Where-Object {$Naming.$($starpool_Request.$_.name)} | ForEach-Object {
 
-    $starpool_Algorithm = Get-Algorithm $starpool_Request.$_.name
+    $starpool_Algorithm = $starpool_Request.$_.name
     $starpool_Host = "$_.starpool.biz"
     $starpool_Port = $starpool_Request.$_.port
     $Divisor = (1000000*$starpool_Request.$_.mbtc_mh_factor)

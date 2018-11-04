@@ -24,7 +24,7 @@
      
     $Hashrefinery_Host = "$_.us.hashrefinery.com"
     $Hashrefinery_Port = $Hashrefinery_Request.$_.port
-    $Hashrefinery_Algorithm = Get-Algorithm $Hashrefinery_Request.$_.name
+    $Hashrefinery_Algorithm = $Hashrefinery_Request.$_.name
     $Divisor = (1000000*$Hashrefinery_Request.$_.mbtc_mh_factor)
 
     if($Algorithm -eq $hashrefinery_Algorithm)

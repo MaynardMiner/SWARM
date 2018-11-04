@@ -71,61 +71,65 @@ function Start-LaunchCode {
     [Parameter(Mandatory=$true)]
     [String]$Platforms,
     [Parameter(Mandatory=$true)]
-    [String]$Background
+    [String]$Background,
+    [Parameter(Mandatory=$true)]
+    [String]$NewMiner,
+    [Parameter(Mandatory=$true)]
+    [String]$MinerRound
     ) 
 
-  $Miner = Get-Content ".\build\txt\current.txt" | ConvertFrom-Json
-  $BestMiners = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-Json
+  $MinerCurrent = $NewMiner | ConvertFrom-Json
+  $BestMiners = $MinerRound | ConvertFrom-Json
   $MinerTimer = New-Object -TypeName System.Diagnostics.Stopwatch
   $Export = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\export")  
   ##Remove Old PID FIle
-  $PIDMiners = "$($_.Type)"
+  $PIDMiners = "$($MinerCurrent.Type)"
   if(Test-Path ".\build\pid\*$PIDMiners*"){Remove-Item ".\build\pid\*$PIDMiners*" -Force}
-  if(Test-Path ".\build\*$($Miner.Type)*-hash.txt"){Clear-Content ".\build\*$($Miner.Type)*-hash.txt"}
+  if(Test-Path ".\build\*$($MinerCurrent.Type)*-hash.txt"){Clear-Content ".\build\*$($MinerCurrent.Type)*-hash.txt"}
 
-switch -WildCard ($Miner.Type)
+switch -WildCard ($MinerCurrent.Type)
  {
   "*NVIDIA*"
     {
-     if($Miner.Devices -ne $null)
+     if($MinerCurrent.Devices -ne $null)
       {
-       switch($Miner.DeviceCall)
+       switch($MinerCurrent.DeviceCall)
        {
-        "ccminer"{$MinerArguments = "-d $($Miner.Devices) $($Miner.Arguments)"}
-        "ewbf"{$MinerArguments = "--cuda_devices $($Miner.Devices) $($Miner.Arguments)"}
-        "dstm"{$MinerArguments = "--dev $($Miner.Devices) $($Miner.Arguments)"}
-        "claymore"{$MinerArguments = "-di $($Miner.Devices) $($Miner.Arguments)"}
-        "trex"{$MinerArguments = "-d $($Miner.Devices) $($Miner.Arguments)"}
-        "bminer"{$MinerArguments = "-devices $($Miner.Devices) $($Miner.Arguments)"}
-        "lolminer"{$MinerArguments = "-devices=$($Miner.Devices) -profile=miner -usercfg=$($Miner.jsonfile)"}
+        "ccminer"{$MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
+        "ewbf"{$MinerArguments = "--cuda_devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
+        "dstm"{$MinerArguments = "--dev $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
+        "claymore"{$MinerArguments = "-di $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
+        "trex"{$MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
+        "bminer"{$MinerArguments = "-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
+        "lolminer"{$MinerArguments = "-devices=$($MinerCurrent.Devices) -profile=miner -usercfg=$($MinerCurrent.jsonfile)"}
        }
       }
      else
       {
-       if($Miner.DeviceCall -eq "lolminer"){$MinerArguments = "-profile=miner -usercfg=$($Miner.jsonfile)"}
-       else{$MinerArguments = "$($Miner.Arguments)"}
+       if($MinerCurrent.DeviceCall -eq "lolminer"){$MinerArguments = "-profile=miner -usercfg=$($MinerCurrent.jsonfile)"}
+       else{$MinerArguments = "$($MinerCurrent.Arguments)"}
       }
     }
 
   "*AMD*"
    {
-    if($Miner.Devices -ne $null)
+    if($MinerCurrent.Devices -ne $null)
      {   
-      switch($Miner.DeviceCall)
+      switch($MinerCurrent.DeviceCall)
        {
-        "claymore"{$MinerArguments = "-di $($Miner.Devices) $($Miner.Arguments)"}
-        "xmrstak"{$MinerArguments = "$($Miner.Arguments)"}
-        "sgminer-gm"{Write-Host "Miner Has Devices"; $MinerArguments = "-d $($Miner.Devices) $($Miner.Arguments)"}
-        "tdxminer"{$MinerArguments = "-d $($Miner.Devices) $($Miner.Arguments)"}
-        "lolamd"{$MinerArguments = "-devices=$($Miner.Devices) -profile=miner -usercfg=$($Miner.jsonfile)"}
-        "wildrig"{$MinerArguments = "$($Miner.Arguments)"}        
+        "claymore"{$MinerArguments = "-di $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
+        "xmrstak"{$MinerArguments = "$($MinerCurrent.Arguments)"}
+        "sgminer-gm"{Write-Host "Miner Has Devices"; $MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
+        "tdxminer"{$MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
+        "lolamd"{$MinerArguments = "-devices=$($MinerCurrent.Devices) -profile=miner -usercfg=$($MinerCurrent.jsonfile)"}
+        "wildrig"{$MinerArguments = "$($MinerCurrent.Arguments)"}        
         "lyclminer"{
         $MinerArguments = ""
-        Set-Location (Split-Path $($Miner.Path))
+        Set-Location (Split-Path $($MinerCurrent.Path))
         $ConfFile = Get-Content ".\lyclMiner.conf" -Force
-        $Connection = $Miner.Connection
-        $Username = $Miner.Username
-        $Password = $Miner.Password
+        $Connection = $MinerCurrent.Connection
+        $Username = $MinerCurrent.Username
+        $Password = $MinerCurrent.Password
         $NewLines = $ConfFile | ForEach {
         if($_ -like "*<Connection Url =*"){$_ = "<Connection Url = `"stratum+tcp://$Connection`""}
         if($_ -like "*Username =*"){$_ = "            Username = `"$Username`"    "}
@@ -140,14 +144,14 @@ switch -WildCard ($Miner.Type)
       }
     else
      {
-      if($Miner.DeviceCall -eq "lolamd"){$MinerArguments = "-profile=miner -usercfg=$($Miner.jsonfile)"}
-      elseif($Miner.DeviceCall -eq "lyclminer"){
+      if($MinerCurrent.DeviceCall -eq "lolamd"){$MinerArguments = "-profile=miner -usercfg=$($MinerCurrent.jsonfile)"}
+      elseif($MinerCurrent.DeviceCall -eq "lyclminer"){
       $MinerArguments = ""
-      Set-Location (Split-Path $($Miner.Path))
+      Set-Location (Split-Path $($MinerCurrent.Path))
       $ConfFile = Get-Content ".\lyclMiner.conf" -Force
-      $Connection = $Miner.Connection
-      $Username = $Miner.Username
-      $Password = $Miner.Password
+      $Connection = $MinerCurrent.Connection
+      $Username = $MinerCurrent.Username
+      $Password = $MinerCurrent.Password
       $NewLines = $ConfFile | ForEach {
       if($_ -like "*<Connection Url =*"){$_ = "<Connection Url = `"stratum+tcp://$Connection`""}
       if($_ -like "*Username =*"){$_ = "            Username = `"$Username`"    "}
@@ -158,16 +162,16 @@ switch -WildCard ($Miner.Type)
       $NewLines | Set-Content ".\lyclMiner.conf"
       Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
       }
-      else{$MinerArguments = "$($Miner.Arguments)"}
+      else{$MinerArguments = "$($MinerCurrent.Arguments)"}
      }
     }  
       
   "*CPU*"
     {
-     if($Miner.Devices -eq ''){$MinerArguments = "$($Miner.Arguments)"}
-     elseif($Miner.DeviceCall -eq "cpuminer-opt"){$MinerArguments = "-t $($Miner.Devices) $($Miner.Arguments)"}
-     elseif($Miner.DeviceCall -eq "cryptozeny"){$MinerArguments = "-t $($Miner.Devices) $($Miner.Arguments)"}
-     elseif($miner.DeviceCall -eq "xmrstak-opt"){$MinerArguments = "$($Miner.Devices) $($Miner.Arguments)"}
+     if($MinerCurrent.Devices -eq ''){$MinerArguments = "$($MinerCurrent.Arguments)"}
+     elseif($MinerCurrent.DeviceCall -eq "cpuminer-opt"){$MinerArguments = "-t $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
+     elseif($MinerCurrent.DeviceCall -eq "cryptozeny"){$MinerArguments = "-t $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
+     elseif($MinerCurrent.DeviceCall -eq "xmrstak-opt"){$MinerArguments = "$($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
     }
    }
 
@@ -177,15 +181,14 @@ if($Platforms -eq "windows")
   {
     if($Background -eq "No"){Start-BackgroundCheck -BestMiners $BestMiners -Platforms $Platform}
     Start-Sleep $Delay
-    $Logs = Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "logs\$($Miner.Type).log" 
-    $WorkingDirectory = Split-Path $($Miner.Path)
+    $Logs = Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "logs\$($MinerCurrent.Type).log" 
+    $WorkingDirectory = Split-Path $($MinerCurrent.Path)
     if(Test-Path $Logs){Clear-Content $Logs}
     $script = @()
-    if($Miner.SetX -ne $null){$Miner.SetX | foreach {$script += $_}}
     $script += ". $dir\build\powershell\launchcode.ps1;"
-    $script += "`$host.ui.RawUI.WindowTitle = ""$($Miner.Name)"";"
-    if($Miner.DeviceCall -eq "ewbf"){$script += "Invoke-Expression `'.\$($Miner.MinerName) $($MinerArguments) --log 3 --logfile $Logs`'"}
-    $script += "Invoke-Expression `'.\$($Miner.MinerName) $($MinerArguments) | Tee-ObjectNoColor -FilePath ""$Logs"" -erroraction SilentlyContinue`'"
+    $script += "`$host.ui.RawUI.WindowTitle = ""$($MinerCurrent.Name)"";"
+    if($MinerCurrent.DeviceCall -eq "ewbf"){$script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) --log 3 --logfile $Logs`'"}
+    $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) | Tee-ObjectNoColor -FilePath ""$Logs"" -erroraction SilentlyContinue`'"
     $script | out-file "$WorkingDirectory\swarm-start.ps1"
     Start-Sleep -S .5
   
@@ -213,12 +216,12 @@ if($Platforms -eq "windows")
 
 elseif($Platforms -eq "linux")
 {
-  $Logs = Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "logs\$($Miner.Type).log" 
+  $Logs = Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "logs\$($MinerCurrent.Type).log" 
   if(Test-Path $Logs){Clear-Content $Logs}
-  Set-Location (Split-Path $($Miner.Path))
-  Rename-Item "$($Miner.Path)" -NewName "$($Miner.InstanceName)" -Force
+  Set-Location (Split-Path $($MinerCurrent.Path))
+  Rename-Item "$($MinerCurrent.Path)" -NewName "$($MinerCurrent.InstanceName)" -Force
   Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
-  $MinerConfig = "./$($Miner.InstanceName) $MinerArguments"
+  $MinerConfig = "./$($MinerCurrent.InstanceName) $MinerArguments"
   $MinerConfig | Set-Content ".\build\bash\config.sh" -Force  
   Write-Host "
          ______________
@@ -232,37 +235,37 @@ elseif($Platforms -eq "linux")
 / [_]o .' _ _'''''''''_ _ `. ``.       __
 |______/.'  _  ``.---.'  _  ``.\  ``._./  \Cl
 |'''''/, .' _ '. . , .' _ '. .``. .o'|   \ear
-``---..|; : (_) : ;-; : (_) : ;-'``--.|    \ing Screen $($Miner.Type) & Tracking
+``---..|; : (_) : ;-; : (_) : ;-'``--.|    \ing Screen $($MinerCurrent.Type) & Tracking
        ' '. _ .' ' ' '. _ .' '      /     \
         ``._ _ _,'   ``._ _ _,'       ``._____\        
 "
-Start-Process ".\build\bash\killall.sh" -ArgumentList "$($Miner.Type)" -Wait
-if($Background -eq "No"){Start-BackgroundCheck -BestMiners $BestMiners -Platforms $Platform}
-$OldProcess = Get-Process | Where Name -clike "*$($Miner.Type)*"
+Start-Process ".\build\bash\killall.sh" -ArgumentList "$($MinerCurrent.Type)" -Wait
+if($Background -eq "No"){Start-BackgroundCheck -Platforms $Platform}
+$OldProcess = Get-Process | Where Name -clike "*$($MinerCurrent.Type)*"
 if($OldProcess){kill $OldProcess.Id -ErrorAction SilentlyContinue}  ##Stab
 if($OldProcess){kill $OldProcess.Id -ErrorAction SilentlyContinue}  ##The Process
 if($OldProcess){kill $OldProcess.Id -ErrorAction SilentlyContinue}  ##To Death
 Start-Sleep $Delay
-Set-Location (Split-Path $($Miner.Path))
-Start-Process "chmod" -ArgumentList "+x $($Miner.InstanceName)" -Wait
+Set-Location (Split-Path $($MinerCurrent.Path))
+Start-Process "chmod" -ArgumentList "+x $($MinerCurrent.InstanceName)" -Wait
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 Start-Sleep -S .25
-Write-Host "Starting $($Miner.Name) Mining $($Miner.Coins) on $($Miner.Type)" -ForegroundColor Cyan
+Write-Host "Starting $($MinerCurrent.Name) Mining $($MinerCurrent.Coins) on $($MinerCurrent.Type)" -ForegroundColor Cyan
 Start-Sleep -S .25
-$MinerDir = $(Split-Path $($Miner.Path))
+$MinerDir = $(Split-Path $($MinerCurrent.Path))
 $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
 $Export = Join-Path $Dir "build\export"
 
 $Startup = @()
 $Startup += "`#`!/usr/bin/env bash"
-$Startup += "screen -S $($Miner.Type) -d -m","sleep .1"
-$Startup += "screen -S $($Miner.Type) -X logfile $Logs","sleep .1"
-$Startup += "screen -S $($Miner.Type) -X logfile flush 5","sleep .1"
-$Startup += "screen -S $($Miner.Type) -X log","sleep .1"
-if($Miner.Prestart){$Miner.Prestart | foreach {$Startup += "screen -S $($Miner.Type) -X stuff $`"$($_)\n`"","sleep .1"}}
-$Startup += "screen -S $($Miner.Type) -X stuff $`"cd\n`"","sleep .1"
-$Startup += "screen -S $($Miner.Type) -X stuff $`"cd $MinerDir\n`"","sleep .1"
-$Startup += "screen -S $($Miner.Type) -X stuff $`"`$(< $Dir/build/bash/config.sh)\n`""
+$Startup += "screen -S $($MinerCurrent.Type) -d -m","sleep .1"
+$Startup += "screen -S $($MinerCurrent.Type) -X logfile $Logs","sleep .1"
+$Startup += "screen -S $($MinerCurrent.Type) -X logfile flush 5","sleep .1"
+$Startup += "screen -S $($MinerCurrent.Type) -X log","sleep .1"
+if($MinerCurrent.Prestart){$MinerCurrent.Prestart | foreach {$Startup += "screen -S $($MinerCurrent.Type) -X stuff $`"$($_)\n`"","sleep .1"}}
+$Startup += "screen -S $($MinerCurrent.Type) -X stuff $`"cd\n`"","sleep .1"
+$Startup += "screen -S $($MinerCurrent.Type) -X stuff $`"cd $MinerDir\n`"","sleep .1"
+$Startup += "screen -S $($MinerCurrent.Type) -X stuff $`"`$(< $Dir/build/bash/config.sh)\n`""
 
 $Startup | Set-Content ".\build\bash\startup.sh"
 Start-Sleep -S 1
@@ -272,17 +275,17 @@ Start-Process ".\build\bash\startup.sh" -Wait
 $MinerTimer.Restart()
 Do{
   Start-Sleep -S 1
-  Write-Host "Getting Process ID for $($Miner.MinerName)"           
-  $MinerProcess = Get-Process -Name "$($Miner.InstanceName)" -ErrorAction SilentlyContinue
+  Write-Host "Getting Process ID for $($MinerCurrent.MinerName)"           
+  $MinerProcess = Get-Process -Name "$($MinerCurrent.InstanceName)" -ErrorAction SilentlyContinue
  }until($MinerProcess -ne $null -or ($MinerTimer.Elapsed.TotalSeconds) -ge 10)  
 if($MinerProcess -ne $null)
 {
-   $MinerProcess.Id | Set-Content ".\build\pid\$($Miner.Name)_$($Miner.Coins)_$($Miner.InstanceName)_pid.txt" -Force
-   Get-Date | Set-Content ".\build\pid\$($Miner.Name)_$($Miner.Coins)_$($Miner.InstanceName)_date.txt" -Force
+   $MinerProcess.Id | Set-Content ".\build\pid\$($MinerCurrent.Name)_$($MinerCurrent.Coins)_$($MinerCurrent.InstanceName)_pid.txt" -Force
+   Get-Date | Set-Content ".\build\pid\$($MinerCurrent.Name)_$($MinerCurrent.Coins)_$($MinerCurrent.InstanceName)_date.txt" -Force
    Start-Sleep -S 1
 }
 $MinerTimer.Stop()
-Rename-Item "$MinerDir\$($Miner.InstanceName)" -NewName "$($Miner.MinerName)" -Force
+Rename-Item "$MinerDir\$($MinerCurrent.InstanceName)" -NewName "$($MinerCurrent.MinerName)" -Force
 Start-Sleep -S .25
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 $MinerProcess

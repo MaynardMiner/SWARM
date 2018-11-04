@@ -21,6 +21,13 @@
       "x16s": "",
       "equihash": ""
     },
+    "naming": {
+      "myr-gr": "myriadcoin-groestl",
+      "groestl": "groestlcoin",
+      "x16r": "x16r",
+      "x16s": "x16s",
+      "equihash": "equihash"
+    },
     "oc": {
       "myr-gr": {
         "dpm": "",

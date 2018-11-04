@@ -22,22 +22,10 @@ function Get-Miners {
         [Array]$Pools
     )
 
-$GetPoolBlock = $null
-$GetAlgoBlock = $null
-if(Test-Path ".\timeout\pool_block\pool_block.txt"){$GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json}
-if(Test-Path ".\timeout\algo_block\algo_block.txt"){$GetAlgoBlock = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json}
-
-if($GetPoolBlock -ne $null){
- $GetPoolBlock | foreach {
- Write-Host "Warning: Blocking $($_.Algo) on $($_.MinerPool) for $($_.Type)" -ForegroundColor Magenta
- }
-}
-
-if($GetAlgoBlock -ne $null){
- $GetAlgoBlock | foreach {
- Write-Host "Warning: Blocking $($_.Algo) on all pools for $($_.Type)" -ForegroundColor Magenta
- }
-}
+$GetPoolBlocks = $null
+$GetAlgoBlocks = $null
+if(Test-Path ".\timeout\pool_block\pool_block.txt"){$GetPoolBlocks = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json}
+if(Test-Path ".\timeout\algo_block\algo_block.txt"){$GetAlgoBlocks = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json}
 
 if($Platforms -eq "linux")
 {
@@ -51,20 +39,29 @@ $GetMiners = if(Test-Path "miners\windows"){Get-ChildItemContent "miners\windows
 Where {$Type.Count -eq 0 -or (Compare-Object $Type $_.Type -IncludeEqual -ExcludeDifferent | Measure).Count -gt 0}}
 }
 
+$ScreenedMiners = @()
+
 $GetMiners | foreach {
-$miner = $_
-   
-$GetPoolBlock | foreach {
-if($_.Algo -eq $miner.Algo -and $_.Name -eq $miner.Name -and $_.Type -eq $miner.Type -and $_.MinerPool -eq $miner.MinerPool){ $miner | Add-Member "PoolBlock" "Yes"}
-}
-   
-$GetAlgoBlock | foreach {
-if($_.Algo -eq $miner.Algo -and $_.Name -eq $miner.Name -and $_.Type -eq $miner.Type){ $miner | Add-Member "AlgoBlock" "Yes"}
+if(-not ($GetPoolBlocks | Where Algo -eq $_.Algo | Where Name -eq $_.Name | Where Type -eq $_.Type | Where MinerPool -eq $_.Minerpool))
+ {
+  if(-not ($GetAlgoBlocks | Where Algo -eq $_.Algo | Where Name -eq $_.Name | Where Type -eq $_.Type))
+   {
+    $ScreenedMiners += $_
+   }
+   else{Write-Host "Warning: Blocking $($_.Algo) on all pools for $($_.Type)" -ForegroundColor Magenta}
  }
+ else{Write-Host "Warning: Blocking $($_.Algo) on $($_.MinerPool) for $($_.Type)" -ForegroundColor Magenta}
 }
+
+#$GetPoolBlocks | foreach {
+#if($_.Algo -eq $miner.Algo -and $_.Name -eq $miner.Name -and $_.Type -eq $miner.Type -and $_.MinerPool -eq $miner.MinerPool){ $miner | Add-Member "PoolBlock" "Yes"}
+#}
    
-$GetMiners = $GetMiners | Where PoolBlock -ne "Yes" | Where AlgoBlock -ne "Yes"
+#$GetAlgoBlocks | foreach {
+#if($_.Algo -eq $miner.Algo -and $_.Name -eq $miner.Name -and $_.Type -eq $miner.Type){ $miner | Add-Member "AlgoBlock" "Yes"}
+# }
+#}  
+#$MinerList = $GetMiners | Where PoolBlock -ne "Yes" | Where AlgoBlock -ne "Yes"
 
-$GetMiners
-
+$ScreenedMiners
 }

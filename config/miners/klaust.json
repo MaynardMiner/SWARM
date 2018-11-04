@@ -10,6 +10,10 @@
       "jackpot": "",
       "groestl": ""
     },
+    "naming": {
+      "jackpot": "jackpot",
+      "groestl": "groestl"
+    },
     "oc": {
       "jackpot": {
         "Power": "",
@@ -34,6 +38,10 @@
       "jackpot": "",
       "groestl": ""
     },
+    "naming": {
+      "jackpot": "jackpot",
+      "groestl": "groestl"
+    },
     "oc": {
       "jackpot": {
         "Power": "",
@@ -57,6 +65,10 @@
     "difficulty": {
       "jackpot": "",
       "groestl": ""
+    },
+    "naming": {
+      "jackpot": "jackpot",
+      "groestl": "groestl"
     },
     "oc": {
       "jackpot": {

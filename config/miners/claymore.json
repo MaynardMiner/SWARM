@@ -12,6 +12,11 @@
       "daggerhashimoto": "",
       "dagger": ""
     },
+    "naming": {
+      "ethash": "ethash",
+      "daggerhashimoto": "daggerhashimoto",
+      "dagger": "dagger"
+    },
     "oc": {
       "ethash": {
         "Power": "",
@@ -49,6 +54,11 @@
       "daggerhashimoto": "",
       "dagger": ""
     },
+    "naming": {
+      "ethash": "ethash",
+      "daggerhashimoto": "daggerhashimoto",
+      "dagger": "dagger"
+    },
     "oc": {
       "ethash": {
         "Power": "",
@@ -85,6 +95,11 @@
       "ethash": "",
       "daggerhashimoto": "",
       "dagger": ""
+    },
+    "naming": {
+      "ethash": "ethash",
+      "daggerhashimoto": "daggerhashimoto",
+      "dagger": "dagger"
     },
     "oc": {
       "ethash": {

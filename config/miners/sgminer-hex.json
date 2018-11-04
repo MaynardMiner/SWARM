@@ -13,6 +13,9 @@
       "difficulty": {
         "hex": ""
       },
+      "naming": {
+        "hex": "hex"
+      },
       "oc": {
         "hex": {
           "dpm": "",

@@ -67,14 +67,14 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$MPHLocation = "US", #europe/us/asia 
     [Parameter(Mandatory=$false)]
-    [Array]$Type = ("NVIDIA1"), #AMD/NVIDIA/CPU
+    [Array]$Type = ("NVIDIA1","NVIDIA2"), #AMD/NVIDIA/CPU
     [String]$GPUDevices1, ##Group 1 all miners
     [Parameter(Mandatory=$false)] 
     [String]$GPUDevices2, ##Group 2 all miners
     [Parameter(Mandatory=$false)]
     [String]$GPUDevices3, ##Group 3 all miners
     [Parameter(Mandatory=$false)]
-    [Array]$PoolName = ("nlpool"), 
+    [Array]$PoolName = ("nlpool","blockmasters","zpool","nicehash"), 
     [Parameter(Mandatory=$false)]
     [Array]$Currency = ("USD"), #i.e. GBP,EUR,ZEC,ETH ect.
     [Parameter(Mandatory=$false)]
@@ -175,8 +175,21 @@ param(
     [Int]$AlgoBanCount = 3
 )
 
-
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+
+$CurrentParams = @{}
+$ParameterList = (Get-Command -Name "swarm.ps1").Parameters;
+foreach ($key in $ParameterList.keys)
+ {
+   $var = Get-Variable -Name $key -ErrorAction SilentlyContinue;
+   if($var)
+   {
+    $CurrentParams.Add("$($var.name)","$($var.value)")
+   }
+ }
+
+$CurrentParams | ConvertTo-Json | Set-Content ".\config\parameters\arguments.json"
+
 if($HiveOS -eq "Yes" -and $Platform -eq "linux"){Start-Process ".\build\bash\screentitle.sh" -Wait}
 Get-ChildItem . -Recurse -Force | Out-Null 
 if($Platform -eq "Windows"){$Platform = "windows"}
@@ -589,15 +602,18 @@ else
 ##GetPools
 Write-Host "Checking Algo Pools" -Foregroundcolor yellow
 $AllAlgoPools = Get-Pools -PoolType "Algo" -Stats $Stats
-$AlgoPools = [PSCustomObject]@{}
-$AlgoPools_Comparison = [PSCustomObject]@{}
-$AllAlgoPools.Symbol | Select -Unique | ForEach {$AlgoPools | Add-Member $_ ($AllAlgoPools | Where Symbol -EQ $_ | Sort-Object Price -Descending | Select -First 1)}
-$AllAlgoPools.Symbol | Select -Unique | ForEach {$AlgoPools_Comparison | Add-Member $_ ($AllAlgoPools | Where Symbol -EQ $_ | Sort-Object StablePrice -Descending | Select -First 1)}
+$AlgoPools = @()
+$AlgoPools_Comparison = @()
+$AllAlgoPools.Symbol | Select -Unique | ForEach {$AlgoPools += ($AllAlgoPools | Where Symbol -EQ $_ | Sort-Object Price -Descending | Select -First 3)}
+$AllAlgoPools.Symbol | Select -Unique | ForEach {$AlgoPools_Comparison += ($AllAlgoPools | Where Symbol -EQ $_ | Sort-Object StablePrice -Descending | Select -First 3)}
 
 ##Load Only Needed Algorithm Miners
 Write-Host "Checking Algo Miners"
 $AlgoMiners = Get-Miners -Platforms $Platform -Stats $Stats -Pools $AlgoPools
-
+$NewAlgoMiners = @()
+$Type | Foreach {$GetType = $_; $AlgoMiners.Symbol | Select -Unique | foreach {$zero = $AlgoMiners | Where Type -eq $GetType | Where Hashrates -match $_ | Where Quote -EQ 0; $nonzero = $AlgoMiners | Where Type -eq $GetType | Where Hashrates -match $_ | Where Quote -NE 0; if($zero){$NewAlgoMiners += $zero | Sort-Object Quote -Descending | Select -First 1}else{$NewAlgoMiners += $nonzero | Sort-Object Quote -Descending | Select -First 1}}}
+$AlgoMiners = @()
+$Type | Foreach {$GetType = $_; $NewAlgoMiners.Symbol | Select -Unique | foreach {$zero = $NewAlgoMiners | Where Type -eq $GetType | Where Hashrates -match $_ | Where Quote -EQ 0; $nonzero = $NewAlgoMiners | Where Type -eq $GetType | Where Hashrates -match $_ | Where Quote -NE 0; if($zero){$AlgoMiners += $zero | Sort-Object Quote -Descending | Select -First 1}else{$AlgoMiners += $nonzero | Sort-Object Quote -Descending | Select -First 1}}}
 ##Re-Name Instance In Case Of Crashes
 $AlgoMiners | ForEach {
 $AlgoMiner = $_
@@ -634,13 +650,13 @@ if($Download -eq $true){continue}
 
 ##Sort Algorithm Miners
 start-minersorting -Command "Algo" -Stats $Stats -Pools $AlgoPools -Pools_Comparison $AlgoPools_Comparison -SortMiners $AlgoMiners -DBase $DecayBase -DExponent $DecayExponent -WattCalc $WattEx
-$GoodAlgoMiners = @()
 $ActiveMinerPrograms | ForEach {$AlgoMiners | Where Path -EQ $_.Path | Where Arguments -EQ $_.Arguments | ForEach {$_.Profit_Bias = $_.Profit}}
+$GoodAlgoMiners = @()
 $AlgoMiners | Foreach {if($_.Profit -lt $Threshold -or $_.Profit -eq $null){$GoodAlgoMiners += $_}}
 $Miners = @()
-$GoodAlgoMiners | foreach {$Miners += $_}
-if($Platform -eq "windows"){$BestAlgoMiners_Combo = Get-BestWin -SortMiners $AlgoMiners}
-elseif($Platform -eq "linux"){$BestAlgoMiners_Combo = Get-BestUnix -SortMiners $AlgoMiners}
+$AlgoMiners | foreach {$Miners += $_}
+if($Platform -eq "windows"){$BestAlgoMiners_Combo = Get-BestWin -SortMiners $Miners}
+elseif($Platform -eq "linux"){$BestAlgoMiners_Combo = Get-BestUnix -SortMiners $Miners}
 $BestMiners_Combo = $BestAlgoMiners_Combo
 
 ##check if Auto_Coin is working- Start Coin Sorting
@@ -785,6 +801,7 @@ $BestMiners_Combo | ForEach {
    ocpower = $_.ocpower
    ethpill = $_.ethpill
    pilldelay = $_.pilldelay
+   quote = 0
   }
  }
 }
@@ -836,6 +853,7 @@ if($StatusAlgoBans){$StatusAlgoBans | foreach {$BanMessage += "$me[${mcolor}m$($
 if($StatusPoolBans){$StatusPoolBans | foreach {$BanMessage += "$me[${mcolor}m$($_.Name) mining $($_.Algo) is banned from $($_.MinerPool)${me}[0m"}}
 $BanMessage | Out-File ".\build\bash\minerstats.sh" -Append
 $BestActiveMiners | ConvertTo-Json | Out-File ".\build\txt\bestminers.txt"
+$Current_BestMiners = $BestActiveMiners | ConvertTo-Json -Compress
 $BackgroundDone = "No"
 
 $ActiveMinerPrograms | ForEach {
@@ -874,10 +892,10 @@ if($_.BestMiner -eq $false)
      $Restart = $true
      $_.Activated++
      $_.InstanceName = "$($_.Type)-$($Instance)"
-     $_ | ConvertTo-Json | Out-File ".\build\txt\current.txt"
+     $Current = $_ | ConvertTo-Json -Compress
      Start-Sleep -S .25
-     if($Platform -eq "windows"){$_.Xprocess = Start-LaunchCode -Platforms "windows" -Background $BackgroundDone}
-     elseif($Platform -eq "Linux"){$_.Xprocess = Start-LaunchCode -Platforms "linux" -Background $BackgroundDone}
+     if($Platform -eq "windows"){$_.Xprocess = Start-LaunchCode -Platforms "windows" -MinerRound $Current_BestMiners -NewMiner $Current -Background $BackgroundDone}
+     elseif($Platform -eq "Linux"){$_.Xprocess = Start-LaunchCode -Platforms "linux" -MinerRound $Current_BestMiners -NewMiner $Current -Background $BackgroundDone}
      $BackgroundDone = "Yes"
      $_.Instance = ".\build\pid\$($_.Type)-$($Instance)"
      $PIDFile = "$($_.Name)_$($_.Coins)_$($_.InstanceName)_pid.txt"
@@ -1007,7 +1025,21 @@ $ActiveMinerPrograms | Foreach {
 }
 
 #Set Interval
-if($BenchmarkMode -eq $true){$MinerInterval = $Benchmark}
+if($BenchmarkMode -eq $true)
+{
+$MinerInterval = $Benchmark
+$Message = 
+"SWARM is now benchmarking miners. It will only be able to 
+properly calculate stats once miners finish benchmarking.
+
+Note: Only one miner per algorithm and platform will show on stats 
+screen. While benchmarking, miner will choose a miner that needs to be
+benched, leaving previously benchmarked miners to vanish from stats 
+screen. They will return if benchmarks were higher than current miner.
+
+This is normal behavior."
+$Message | Out-File ".\build\bash\minerstats.sh" -Append
+}
 else{$MinerInterval = $Interval}
 
 #Clear Logs If There Are 12
@@ -1059,12 +1091,13 @@ function Restart-Miner {
     if($TimeDeviation -ne 0)
     {
      $Restart = $true
+     $BackgroundDone = "Yes"
      $_.Activated++
      $_.InstanceName = "$($_.Type)-$($Instance)"
-     $_ | ConvertTo-Json | Out-File ".\build\txt\current.txt"
+     $Current = $_ | ConvertTo-Json -Compress
      Start-Sleep -S .25
-     if($Platform -eq "windows"){$_.Xprocess = Start-LaunchCode -Platforms "windows" -Background "Yes"}
-     elseif($Platform -eq "Linux"){$_.Xprocess = Start-LaunchCode -Platforms "linux" -Background "Yes"}
+     if($Platform -eq "windows"){$_.Xprocess = Start-LaunchCode -Platforms "windows" -MinerRound $Current_BestMiners -NewMiner $Current -Background $BackgroundDone}
+     elseif($Platform -eq "Linux"){$_.Xprocess = Start-LaunchCode -Platforms "linux" -MinerRound $Current_BestMiners -NewMiner $Current -Background $BackgroundDone}
      $_.Instance = ".\build\pid\$($_.Type)-$($Instance)"
      $PIDFile = "$($_.Name)_$($_.Coins)_$($_.InstanceName)_pid.txt"
      $Instance++

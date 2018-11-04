@@ -7,14 +7,33 @@
       "hex": "",
       "timetravel": "",
       "xevan": "",
-      "sonoa": ""
+      "sonoa": "",
+      "x16r": "",
+      "x16s": "",
+      "bitcore": "",
+      "tribus": ""
     },
     "difficulty": {
       "aergo": "",
       "hex": "",
       "timetravel": "",
       "xevan": "",
-      "sonoa": ""
+      "sonoa": "",
+      "x16r": "",
+      "x16s": "",
+      "bitcore": "",
+      "tribus": ""
+    },
+    "naming": {
+      "aergo": "aeriumx",
+      "hex": "hex",
+      "timetravel": "timetravel",
+      "xevan": "xevan",
+      "sonoa": "sonoa",
+      "x16r": "x16r",
+      "x16s": "x16s",
+      "bitcore": "bitcore",
+      "tribus": "tribus"
     },
     "oc": {
       "aergo": {
@@ -38,6 +57,26 @@
         "Memory": ""
       },
       "sonoa": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "x16r": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },      
+      "x16s": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "bitcore": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "tribus": {
         "Power": "",
         "Core": "",
         "Memory": ""
@@ -52,14 +91,33 @@
       "hex": "",
       "timetravel": "",
       "xevan": "",
-      "sonoa": ""
+      "sonoa": "",
+      "x16r": "",
+      "x16s": "",
+      "bitcore": "",
+      "tribus": ""
     },
     "difficulty": {
       "aergo": "",
       "hex": "",
       "timetravel": "",
       "xevan": "",
-      "sonoa": ""
+      "sonoa": "",
+      "x16r": "",
+      "x16s": "",
+      "bitcore": "",
+      "tribus": ""
+    },
+    "naming": {
+      "aergo": "aeriumx",
+      "hex": "hex",
+      "timetravel": "timetravel",
+      "xevan": "xevan",
+      "sonoa": "sonoa",
+      "x16r": "x16r",
+      "x16s": "x16s",
+      "bitcore": "bitcore",
+      "tribus": "tribus"
     },
     "oc": {
       "aergo": {
@@ -83,6 +141,26 @@
         "Memory": ""
       },
       "sonoa": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "x16r": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },      
+      "x16s": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "bitcore": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "tribus": {
         "Power": "",
         "Core": "",
         "Memory": ""
@@ -97,14 +175,33 @@
       "hex": "",
       "timetravel": "",
       "xevan": "",
-      "sonoa": ""
+      "sonoa": "",
+      "x16r": "",
+      "x16s": "",
+      "bitcore": "",
+      "tribus": ""
     },
     "difficulty": {
       "aergo": "",
       "hex": "",
       "timetravel": "",
       "xevan": "",
-      "sonoa": ""
+      "sonoa": "",
+      "x16r": "",
+      "x16s": "",
+      "bitcore": "",
+      "tribus": ""
+    },
+    "naming": {
+      "aergo": "aeriumx",
+      "hex": "hex",
+      "timetravel": "timetravel",
+      "xevan": "xevan",
+      "sonoa": "sonoa",
+      "x16r": "x16r",
+      "x16s": "x16s",
+      "bitcore": "bitcore",
+      "tribus": "tribus"
     },
     "oc": {
       "aergo": {
@@ -128,6 +225,26 @@
         "Memory": ""
       },
       "sonoa": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "x16r": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },      
+      "x16s": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "bitcore": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "tribus": {
         "Power": "",
         "Core": "",
         "Memory": ""

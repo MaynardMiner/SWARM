@@ -18,6 +18,14 @@
       "equihash210": "",
       "equihash200": ""
     },
+    "naming": {
+      "equihash-btg": "equihash-btg",
+      "equihash192": "equihash192",
+      "equihash144": "equihash144",
+      "equihash96": "equihash96",
+      "equihash210": "equihash210",
+      "equihash200": "equihash200"
+    },
     "oc": {
       "equihash-btg": {
         "Power": "",
@@ -70,6 +78,14 @@
       "equihash210": "",
       "equihash200": ""
     },
+    "naming": {
+      "equihash-btg": "equihash-btg",
+      "equihash192": "equihash192",
+      "equihash144": "equihash144",
+      "equihash96": "equihash96",
+      "equihash210": "equihash210",
+      "equihash200": "equihash200"
+    },
     "oc": {
       "equihash-btg": {
         "Power": "",
@@ -121,6 +137,14 @@
       "equihash96": "",
       "equihash210": "",
       "equihash200": ""
+    },
+    "naming": {
+      "equihash-btg": "equihash-btg",
+      "equihash192": "equihash192",
+      "equihash144": "equihash144",
+      "equihash96": "equihash96",
+      "equihash210": "equihash210",
+      "equihash200": "equihash200"
     },
     "oc": {
       "equihash-btg": {

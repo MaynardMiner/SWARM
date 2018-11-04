@@ -19,7 +19,8 @@
       "bcd": "",
       "sha256t": "",
       "timetravel": "",
-      "x22i":""
+      "x22i":"",
+      "sonoa":""
     },
     "difficulty": {
       "tribus": "",
@@ -38,8 +39,29 @@
       "bcd": "",
       "sha256t": "",
       "timetravel": "",
-      "x22i":""
-    },
+      "x22i":"",
+      "sonoa": ""   
+     },
+     "naming": {
+      "tribus": "tribus",
+      "phi": "phi",
+      "c11": "c11",
+      "hsr": "hsr",
+      "x17": "x17",
+      "renesis": "renesis",
+      "balloon": "balloon",
+      "bitcore": "bitcore",
+      "polytimos": "polytimos",
+      "skunk": "skunk",
+      "x16r": "x16r",
+      "x16s": "x16s",
+      "hmq1725": "hmq1725",
+      "bcd": "bcd",
+      "sha256t": "sha256t",
+      "timetravel": "timetravel",
+      "x22i":"x22i",
+      "sonoa": "sonoa"   
+     },
     "oc": {
       "tribus": {
         "Power": "",
@@ -112,6 +134,11 @@
         "Memory": ""
       },
       "sha256t": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "sonoa": {
         "Power": "",
         "Core": "",
         "Memory": ""
@@ -148,7 +175,8 @@
       "bcd": "",
       "sha256t": "",
       "timetravel": "",
-      "x22i":""
+      "x22i":"",
+      "sonoa": ""
     },
     "difficulty": {
       "tribus": "",
@@ -167,8 +195,29 @@
       "bcd": "",
       "sha256t": "",
       "timetravel": "",
-      "x22i":""
+      "x22i":"",
+      "sonoa": ""
     },
+    "naming": {
+      "tribus": "tribus",
+      "phi": "phi",
+      "c11": "c11",
+      "hsr": "hsr",
+      "x17": "x17",
+      "renesis": "renesis",
+      "balloon": "balloon",
+      "bitcore": "bitcore",
+      "polytimos": "polytimos",
+      "skunk": "skunk",
+      "x16r": "x16r",
+      "x16s": "x16s",
+      "hmq1725": "hmq1725",
+      "bcd": "bcd",
+      "sha256t": "sha256t",
+      "timetravel": "timetravel",
+      "x22i":"x22i",
+      "sonoa": "sonoa"   
+     },
     "oc": {
       "tribus": {
         "Power": "",
@@ -241,6 +290,11 @@
         "Memory": ""
       },
       "sha256t": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "sonoa": {
         "Power": "",
         "Core": "",
         "Memory": ""
@@ -277,7 +331,8 @@
       "bcd": "",
       "sha256t": "",
       "timetravel": "",
-      "x22i":""
+      "x22i":"",
+      "sonoa": ""
     },
     "difficulty": {
       "tribus": "",
@@ -296,8 +351,29 @@
       "bcd": "",
       "sha256t": "",
       "timetravel": "",
-      "x22i":""
+      "x22i":"",
+      "sonoa": ""
     },
+    "naming": {
+      "tribus": "tribus",
+      "phi": "phi",
+      "c11": "c11",
+      "hsr": "hsr",
+      "x17": "x17",
+      "renesis": "renesis",
+      "balloon": "balloon",
+      "bitcore": "bitcore",
+      "polytimos": "polytimos",
+      "skunk": "skunk",
+      "x16r": "x16r",
+      "x16s": "x16s",
+      "hmq1725": "hmq1725",
+      "bcd": "bcd",
+      "sha256t": "sha256t",
+      "timetravel": "timetravel",
+      "x22i":"x22i",
+      "sonoa": "sonoa"   
+     },
     "oc": {
       "tribus": {
         "Power": "",
@@ -370,6 +446,11 @@
         "Memory": ""
       },
       "sha256t": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "sonoa": {
         "Power": "",
         "Core": "",
         "Memory": ""

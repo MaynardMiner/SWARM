@@ -86,6 +86,9 @@ function Get-DeviceString {
 $TypeGPU
 }
 
+
+
+
 function Get-TCP {
      
   param(

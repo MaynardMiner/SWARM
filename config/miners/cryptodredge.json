@@ -12,6 +12,7 @@
       "blake2s": "",
       "skein": "",
       "cryptonightv7": "",
+      "cryptonightv8": "",
       "cryptonightheavy": "",
       "aeon": "",
       "masari": "",
@@ -34,6 +35,7 @@
       "skein": "",
       "cryptonightv7": "",
       "cryptonightheavy": "",
+      "cryptonightv8": "",
       "aeon": "",
       "masari": "",
       "stellite": "",
@@ -43,6 +45,28 @@
       "polytimos": "",
       "skunk": "",
       "bcd":""
+    },
+    "naming": {
+      "lyra2v2": "lyra2v2",
+      "lyra2rev2": "lyra2v2",
+      "lyra2z": "lyra2z",
+      "lyra2re": "lyra2z",
+      "allium": "allium",
+      "neoscrypt": "neoscrypt",
+      "blake2s": "blake2s",
+      "skein": "skein",
+      "cryptonightv7": "cnv7",
+      "cryptonightheavy": "cryptonightheavy",
+      "cryptonightv8": "cnv8",
+      "aeon": "aeon",
+      "masari": "masari",
+      "stellite": "stellite",
+      "lbk3": "lbk3",
+      "phi2": "phi2",
+      "c11": "c11",
+      "polytimos": "poly",
+      "skunk": "skunk",
+      "bcd":"bcd"
     },
     "oc": {
       "lyra2v2": {
@@ -86,6 +110,11 @@
         "Memory": ""
       },
       "cryptonightv7": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "cryptonightv8": {
         "Power": "",
         "Core": "",
         "Memory": ""
@@ -155,6 +184,7 @@
       "blake2s": "",
       "skein": "",
       "cryptonightv7": "",
+      "cryptonightv8": "",
       "cryptonightheavy": "",
       "aeon": "",
       "masari": "",
@@ -176,6 +206,7 @@
       "blake2s": "",
       "skein": "",
       "cryptonightv7": "",
+      "cryptonightv8": "",
       "cryptonightheavy": "",
       "aeon": "",
       "masari": "",
@@ -186,6 +217,28 @@
       "polytimos": "",
       "skunk": "",
       "bcd":""
+    },
+    "naming": {
+      "lyra2v2": "lyra2v2",
+      "lyra2rev2": "lyra2v2",
+      "lyra2z": "lyra2z",
+      "lyra2re": "lyra2z",
+      "allium": "allium",
+      "neoscrypt": "neoscrypt",
+      "blake2s": "blake2s",
+      "skein": "skein",
+      "cryptonightv7": "cnv7",
+      "cryptonightheavy": "cryptonightheavy",
+      "cryptonightv8": "cnv8",
+      "aeon": "aeon",
+      "masari": "masari",
+      "stellite": "stellite",
+      "lbk3": "lbk3",
+      "phi2": "phi2",
+      "c11": "c11",
+      "polytimos": "poly",
+      "skunk": "skunk",
+      "bcd":"bcd"
     },
     "oc": {
       "lyra2v2": {
@@ -229,6 +282,11 @@
         "Memory": ""
       },
       "cryptonightv7": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "cryptonightv8": {
         "Power": "",
         "Core": "",
         "Memory": ""
@@ -297,7 +355,8 @@
       "neoscrypt": "",
       "blake2s": "",
       "skein": "",
-      "cryptonightv7": "",
+      "cryptonightv7": "",      
+      "cryptonightv8": "",
       "cryptonightheavy": "",
       "aeon": "",
       "masari": "",
@@ -319,6 +378,7 @@
       "blake2s": "",
       "skein": "",
       "cryptonightv7": "",
+      "cryptonightv8": "",
       "cryptonightheavy": "",
       "aeon": "",
       "masari": "",
@@ -329,6 +389,28 @@
       "polytimos": "",
       "skunk": "",
       "bcd":""
+    },
+    "naming": {
+      "lyra2v2": "lyra2v2",
+      "lyra2rev2": "lyra2v2",
+      "lyra2z": "lyra2z",
+      "lyra2re": "lyra2z",
+      "allium": "allium",
+      "neoscrypt": "neoscrypt",
+      "blake2s": "blake2s",
+      "skein": "skein",
+      "cryptonightv7": "cnv7",
+      "cryptonightheavy": "cryptonightheavy",
+      "cryptonightv8": "cnv8",
+      "aeon": "aeon",
+      "masari": "masari",
+      "stellite": "stellite",
+      "lbk3": "lbk3",
+      "phi2": "phi2",
+      "c11": "c11",
+      "polytimos": "poly",
+      "skunk": "skunk",
+      "bcd":"bcd"
     },
     "oc": {
       "lyra2v2": {
@@ -372,6 +454,11 @@
         "Memory": ""
       },
       "cryptonightv7": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "cryptonightv8": {
         "Power": "",
         "Core": "",
         "Memory": ""
