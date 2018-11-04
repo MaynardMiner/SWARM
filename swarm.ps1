@@ -269,7 +269,6 @@ start-update -Update $update
   Get-Data -CmdDir $dir
   }
 }
-
 Write-Host "HiveOS = $HiveOS"
 #Startings Settings:
 $BenchmarkMode = "No"
@@ -295,9 +294,6 @@ $WalletSwitch1 = $Wallet1
 $WalletSwitch2 = $Wallet2
 $WalletSwitch3 = $Wallet3
 $CPUWalletSwitch = $CPUWallet
-$ZergpoolWallet1Switch = $ZergpoolWallet1
-$ZergpoolWallet2Switch = $ZergpoolWallet2
-$ZergpoolWallet3Switch = $ZergpoolWallet3
 $PasswordSwitch = $Passwordcurrency
 $PasswordSwitch1 = $Passwordcurrency1
 $PasswordSwitch2 = $Passwordcurrency2
@@ -315,10 +311,6 @@ $nlpoolswitch3 = $nlWallet3
 $nlpassswitch1 = $nlpassword1
 $nlpassswitch2 = $nlpassword2
 $nlpassswitch3 = $nlpassword3
-$Zergpoolpassword1Switch = $Zergpoolpassword1
-$Zergpoolpassword2Switch = $Zergpoolpassword2
-$Zergpoolpassword3Switch = $Zergpoolpassword3
-$Nicehash_Wallet1Switch = $Nicehash_Wallet1
 $Nicehash_Wallet2Switch = $Nicehash_Wallet2
 $Nicehash_Wallet3Switch = $Nicehash_Wallet3
 $UserSwitch = $UserName
@@ -481,9 +473,6 @@ $FinalDonation = (86400/[int]$DonationIntervals)
     $Wallet2 = $InfoPass1
     $Wallet3 = $InfoPass1
     $CPUWallet = $InfoPass1
-    $ZergpoolWallet1 = $InfoPass1
-    $ZergpoolWallet2 = $InfoPass1
-    $ZergpoolWallet3 = $InfoPass1
     $blockmastersWallet1 = $InfoPass1
     $blockmastersWallet2 = $InfoPass1
     $blockmastersWallet3 = $InfoPass1
@@ -508,9 +497,6 @@ $FinalDonation = (86400/[int]$DonationIntervals)
     $Passwordcurrency2 = ("BTC")
     $Passwordcurrency3 = ("BTC")
     $CPUcurrency = ("BTC")
-    $Zergpoolpassword1 = ("BTC")
-    $Zergpoolpassword2 = ("BTC")
-    $Zergpoolpassword3 = ("BTC")
     $blockmasterspassword1 = ("BTC")
     $blockmasterspassword2 = ("BTC")
     $blockmasterspassword3 = ("BTC")
@@ -533,9 +519,6 @@ $FinalDonation = (86400/[int]$DonationIntervals)
         $Wallet1 = $WalletSwitch1
         $Wallet2 = $WalletSwitch2
           $Wallet3 = $WalletSwitch3
-        $ZergpoolWallet1 = $ZergpoolWallet1Switch
-        $ZergpoolWallet2 = $ZergpoolWallet2Switch
-        $ZergpoolWallet3 = $ZergpoolWallet3Switch
         $Nicehash_Wallet1 = $Nicehash_Wallet1Switch
         $Nicehash_Wallet2 = $Nicehash_Wallet2Switch
         $Nicehash_Wallet3 = $Nicehash_Wallet3Switch
@@ -560,9 +543,6 @@ $FinalDonation = (86400/[int]$DonationIntervals)
           $Passwordcurrency1 = $PasswordSwitch1
         $Passwordcurrency2 = $PasswordSwitch2
         $Passwordcurrency3 = $PasswordSwitch3
-        $Zergpoolpassword1 = $Zergpoolpassword1Switch
-        $Zergpoolpassword2 = $Zergpoolpassword2Switch
-        $Zergpoolpassword3 = $Zergpoolpassword3Switch
         $CPUcurrency = $CPUcurrencySwitch
             Clear-Content ".\build\data\info.txt" -Force
 	      Write-Host "Leaving Donation Mode- Thank you For The Support!" -foregroundcolor "darkred"
@@ -611,9 +591,30 @@ $AllAlgoPools.Symbol | Select -Unique | ForEach {$AlgoPools_Comparison += ($AllA
 Write-Host "Checking Algo Miners"
 $AlgoMiners = Get-Miners -Platforms $Platform -Stats $Stats -Pools $AlgoPools
 $NewAlgoMiners = @()
-$Type | Foreach {$GetType = $_; $AlgoMiners.Symbol | Select -Unique | foreach {$zero = $AlgoMiners | Where Type -eq $GetType | Where Hashrates -match $_ | Where Quote -EQ 0; $nonzero = $AlgoMiners | Where Type -eq $GetType | Where Hashrates -match $_ | Where Quote -NE 0; if($zero){$NewAlgoMiners += $zero | Sort-Object Quote -Descending | Select -First 1}else{$NewAlgoMiners += $nonzero | Sort-Object Quote -Descending | Select -First 1}}}
-$AlgoMiners = @()
-$Type | Foreach {$GetType = $_; $NewAlgoMiners.Symbol | Select -Unique | foreach {$zero = $NewAlgoMiners | Where Type -eq $GetType | Where Hashrates -match $_ | Where Quote -EQ 0; $nonzero = $NewAlgoMiners | Where Type -eq $GetType | Where Hashrates -match $_ | Where Quote -NE 0; if($zero){$AlgoMiners += $zero | Sort-Object Quote -Descending | Select -First 1}else{$AlgoMiners += $nonzero | Sort-Object Quote -Descending | Select -First 1}}}
+$Type | Foreach {
+$GetType = $_; 
+$AlgoMiners.Symbol | Select -Unique | foreach {
+$zero = $AlgoMiners | Where Type -eq $GetType | Where Hashrates -match $_ | Where Quote -EQ 0; 
+if($zero)
+{
+ $zerochoice = $zero | Sort-Object Quote | Select -First 1; 
+ if(-not ($NewAlgoMiners | Where Name -EQ $zerochoice.Name | Where Arguments -EQ $zerochoice.Arguments))
+  {
+   $NewAlgoMiners += $zerochoice
+  }
+}
+else
+{
+ $nonzero = $AlgoMiners | Where Type -eq $GetType | Where Hashrates -match $_ | Where Quote -NE 0; 
+ $nonzerochoice = $nonzero | Sort-Object Quote | Select -First 1; 
+ if(-not ($NewAlgoMiners | Where Name -EQ $nonzerochoice.Name | Where Arguments -EQ $nonzerochoice.Arguments))
+   {
+    $NewAlgoMiners += $nonzerochoice
+   }
+  }
+ }
+}
+$AlgoMiners = $NewAlgoMiners
 ##Re-Name Instance In Case Of Crashes
 $AlgoMiners | ForEach {
 $AlgoMiner = $_
