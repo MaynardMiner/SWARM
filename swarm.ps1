@@ -631,7 +631,7 @@ $AlgoMiners.Symbol | Select -Unique | foreach {
 $zero = $AlgoMiners | Where Type -eq $GetType | Where Hashrates -match $_ | Where Quote -EQ 0; 
 if($zero)
 {
- $zerochoice = $zero | Sort-Object Quote | Select -First 1; 
+ $zerochoice = $zero | Sort-Object Quote -Descending | Select -First 1; 
  if(-not ($NewAlgoMiners | Where Name -EQ $zerochoice.Name | Where Arguments -EQ $zerochoice.Arguments))
   {
    $NewAlgoMiners += $zerochoice
@@ -640,7 +640,7 @@ if($zero)
 else
 {
  $nonzero = $AlgoMiners | Where Type -eq $GetType | Where Hashrates -match $_ | Where Quote -NE 0; 
- $nonzerochoice = $nonzero | Sort-Object Quote | Select -First 1; 
+ $nonzerochoice = $nonzero | Sort-Object Quote -Descending | Select -First 1; 
  if(-not ($NewAlgoMiners | Where Name -EQ $nonzerochoice.Name | Where Arguments -EQ $nonzerochoice.Arguments))
    {
     $NewAlgoMiners += $nonzerochoice
