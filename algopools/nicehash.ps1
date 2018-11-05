@@ -40,7 +40,7 @@ $nicehash_Request.result | Select-Object -ExpandProperty simplemultialgo | Where
   
     $nicehash_Host = "$($_.name).$Region.nicehash.com"
     $nicehash_Port = $_.port
-    $nicehash_Algorithm = $_.name
+    $nicehash_Algorithm = Get-Algorithm $_.name
     $nicehash_Fees = $Nicehash_Fee
     $Divisor = 1000000000
 

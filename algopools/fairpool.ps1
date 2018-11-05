@@ -25,7 +25,7 @@ $fairpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Se
      default {$fairpool_Host = "eu1.fairpool.pro"}
     }
     $fairpool_Port = $fairpool_Request.$_.port
-    $fairpool_Algorithm = $fairpool_Request.$_.name
+    $fairpool_Algorithm = Get-Algorithm $fairpool_Request.$_.name
     $fairpool_Fees = $fairpool_Request.$_.fees
     $Divisor = (1000000*$fairpool_Request.$_.mbtc_mh_factor)
 

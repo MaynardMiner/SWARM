@@ -28,7 +28,7 @@ $Zpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Selec
     }
     $Zpool_Host = "$_.mine.zpool.ca"
     $Zpool_Port = $Zpool_Request.$_.port
-    $Zpool_Algorithm = $Zpool_Request.$_.name
+    $Zpool_Algorithm = Get-Algorithm $Zpool_Request.$_.name
     $Divisor = (1000000*$Zpool_Request.$_.mbtc_mh_factor)
 
     if($Algorithm -eq $Zpool_Algorithm)

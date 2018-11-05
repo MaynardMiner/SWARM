@@ -34,7 +34,6 @@ else{$CommandQuery = $Command -replace("!","")
 Write-Host "Executing Command: $CommandQuery"
 Write-Host "                   " }
 $CudaVersion = Get-Content ".\build\txt\cuda.txt"
-if($CudaVersion -eq "9.1"){$updatecheck = ".\config\update\nvidia9.1-linux.json"; $miner_update_nvidia = Get-Content ".\config\update\nvidia9.1-linux.json" | ConvertFrom-Json}
 if($CudaVersion -eq "9.2"){$updatecheck = ".\config\update\nvidia9.2-linux.json"; $miner_update_nvidia = Get-Content ".\config\update\nvidia9.2-linux.json" | ConvertFrom-Json}
 if($CudaVersion -eq "10"){$updatecheck = ".\config\update\nvidia10-linux.json"; $miner_update_nvidia = Get-Content ".\config\update\nvidia10-linux.json" | ConvertFrom-Json}
 $miner_update_amd = Get-Content ".\config\update\amd-linux.json" | ConvertFrom-Json

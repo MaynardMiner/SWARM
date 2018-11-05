@@ -22,7 +22,7 @@ $phiphipool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
     
 #$phiphipool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | Where-Object {$phiphipool_Request.$_.hashrate -gt 0} | foreach {
     $phiphipool_Port = $phiphipool_Request.$_.port
-    $phiphipool_Algorithm = $phiphipool_Request.$_.name
+    $phiphipool_Algorithm = Get-Algorithm $phiphipool_Request.$_.name
     $phiphipool_Host = "pool1.phi-phi-pool.com"
     $Divisor = (1000000*$phiphipool_Request.$_.mbtc_mh_factor)
 

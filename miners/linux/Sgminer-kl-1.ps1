@@ -1,14 +1,17 @@
 ##Miner Path Information
-$Path = "$($amd.xmrstak.path1)"
-$Uri = "$($amd.xmrstak.uri)"
-$MinerName = "$($amd.xmrstak.minername)"
+$Path = "$($amd.sgminerkl.path1)"
+$Uri = "$($amd.sgminerkl.uri)"
+$MinerName = "$($amd.sgminerkl.minername)"
 $Build = "Tar"
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 
 $ConfigType = "AMD1"
 
+##Parse -GPUDevices
+if($AMDDevices1 -ne ''){$Devices = $AMDDevices1}
+
 ##Get Configuration File
-$GetConfig = "$dir\config\miners\xmr-stak.json"
+$GetConfig = "$dir\config\miners\sgminer-kl.json"
 try{$Config = Get-Content $GetConfig | ConvertFrom-Json}
 catch{Write-Warning "Warning: No config found at $GetConfig"}
 
@@ -36,8 +39,8 @@ if($CoinAlgo -eq $null)
     Type = $ConfigType
     Path = $Path
     Devices = $Devices
-    DeviceCall = "xmrstak"
-    Arguments = "--currency $($Config.$ConfigType.naming.$($_.Algorithm)) -i 60049 --url stratum+tcp://$($_.Host):$($_.Port) --user $($_.User1) --pass $($_.Pass1)$($Diff) --rigid SWARM --noCPU --noNVIDIA --use-nicehash $($Config.$ConfigType.commands.$($_.Algorithm))"    
+    DeviceCall = "sgminer-gm"
+    Arguments = "--gpu-platform $AMDPlatform --api-listen --api-port 4028 -k $($Config.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.User1) -p $($_.Pass1)$($Diff) -T $($Config.$ConfigType.commands.$($_.Algorithm))"
     HashRates = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)}
     Quote = if($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)){$($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)*($_.Price)}else{0}
     PowerX = [PSCustomObject]@{$($_.Algorithm) = if($Watts.$($_.Algorithm)."$($ConfigType)_Watts"){$Watts.$($_.Algorithm)."$($ConfigType)_Watts"}elseif($Watts.default."$($ConfigType)_Watts"){$Watts.default."$($ConfigType)_Watts"}else{0}}
@@ -46,11 +49,10 @@ if($CoinAlgo -eq $null)
     occore = if($Config.$ConfigType.oc.$($_.Algorithm).core){$Config.$ConfigType.oc.$($_.Algorithm).dpm}else{$OC."default_$($ConfigType)".core}
     ocmem = if($Config.$ConfigType.oc.$($_.Algorithm).mem){$Config.$ConfigType.oc.$($_.Algorithm).mem}else{$OC."default_$($ConfigType)".memory}
     ocmdmp = if($Config.$ConfigType.oc.$($_.Algorithm).mdpm){$Config.$ConfigType.oc.$($_.Algorithm).mdpm}else{$OC."default_$($ConfigType)".mdpm}
-    FullName = "$($_.Mining)"
     MinerPool = "$($_.Name)"
-    Port = 60049
-    API = "xmrstak"
-    Wrap = $false
+    FullName = "$($_.Mining)"
+    Port = 4028
+    API = "sgminer-gm"
     URI = $Uri
     BUILD = $Build
     Algo = "$($_.Algorithm)"
@@ -58,4 +60,4 @@ if($CoinAlgo -eq $null)
     }
    }
   }
-}
+ }

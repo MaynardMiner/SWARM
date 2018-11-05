@@ -90,6 +90,11 @@ Argument            Options             Explanation
                                     if it detects high rejections or no hashrate. Bans are lifted
                                     every [x] hours, where [x] is your -Timeout parameter.
 
+-PoolBanCount    [0-10]             Default is 2. Number of strikes/bad benchmarks required before
+                                    miner is banned from using pool.
+
+-AlgoBanCount    [0-10]             Default is 3. Number of strikes/bad benchmarks required before
+                                    miner is banned from using algo.
 
 -AMDPlatform	    [0-10]	    This is the OpenCL platform for AMD. Default is set to 1. If you
 				    have issues starting AMD, try 0. Some of the miners within SWARM

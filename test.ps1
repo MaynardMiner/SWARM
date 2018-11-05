@@ -1,3 +1,0 @@
-
-$Type | Foreach {$GetType = $_; "bcd" | Select -Unique | foreach {$AlgoMiners | Where Type -eq $GetType | Where Hashrates -match $_ | Sort-Object {Where Hashrates.$_ -eq $null},Quote.$_ -Descending | Select -First 1}}
-$Type | Foreach {$GetType = $_; "bcd" | Select -Unique | foreach {$zero = $AlgoMiners | Where Type -eq $GetType | Where Hashrates -match $_ | Where Quote -EQ 0; $nonzero = $AlgoMiners | Where Type -eq $GetType | Where Hashrates -match $_ | Where Quote -NE 0; if($zero){$NewAlgoMiners += $zero | Sort-Object Quote -Descending | Select -First 1}else{$NewAlgoMiners += $nonzero | Sort-Object Quote -Descending | Select -First 1}}}

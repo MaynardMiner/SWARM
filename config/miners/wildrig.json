@@ -12,6 +12,7 @@
       "c11": "",
       "geek": "",
       "hmq1725": "",
+      "hex": "",
       "phi": "",
       "renesis": "",
       "skunk": "",
@@ -29,6 +30,7 @@
       "c11": "",
       "geek": "",
       "hmq1725": "",
+      "hex": "",
       "phi": "",
       "renesis": "",
       "skunk": "",
@@ -46,6 +48,7 @@
       "c11": "c11",
       "geek": "geek",
       "hmq1725": "hmq1725",
+      "hex": "hex",
       "phi": "phi",
       "renesis": "renesis",
       "skunk": "skunkhash",
@@ -81,6 +84,13 @@
         "mdpm": ""
       },
       "hmq1725": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": ""
+      },
+      "hex": {
         "dpm": "",
         "v": "",
         "core": "",

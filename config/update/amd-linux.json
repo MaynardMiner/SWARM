@@ -10,6 +10,17 @@
       "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/Claymore-Linux-AMD.tar.gz" 
      },
 
+   "phoenix_amd": {
+        "name": "phoenix_amd",
+        "type": "amd",
+        "path1": ".\\bin\\phoenix-amd-1\\PhoenixMiner",
+        "path2": ".\\bin\\phoenix-amd-2\\PhoenixMiner",
+        "path3": ".\\bin\\phoenix-amd-3\\PhoenixMiner",
+        "minername": "PhoenixMiner",
+        "version": "3.5d",
+        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/pheonix-linux.tar.gz" 
+     },
+
   "lolminer": {
     "name": "lolminer",
     "type": "amd",
@@ -83,7 +94,7 @@
       "path2": ".\\bin\\tdxminer-2\\teamredminer",
       "path3": ".\\bin\\tdxminer-3\\teamredminer",
       "minername": "teamredminer",
-      "version": "0.3.5",
+      "version": "0.3.6",
       "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/teamredminer-linux.tar.gz" 
      },
 
@@ -94,7 +105,7 @@
       "path2": ".\\bin\\xmrstak-2\\xmr-stak",
       "path3": ".\\bin\\xmrstak-3\\xmr-stak",
       "minername": "xmr-stak",
-      "version": "2.5.1",
+      "version": "2.5.2",
       "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/fireice-linux.tar.gz" 
      },
 

@@ -9,6 +9,16 @@
     "version": "11.9",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/Claymore-Linux.tar.gz"
   },
+  "phoenix": {
+    "name": "phoenix",
+    "type": "nvidia",
+    "path1": ".\\bin\\phoenix-1\\PhoenixMiner",
+    "path2": ".\\bin\\phoenix-2\\PhoenixMiner",
+    "path3": ".\\bin\\phoenix-3\\PhoenixMiner",
+    "minername": "PhoenixMiner",
+    "version": "3.5d",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/pheonix-linux.tar.gz" 
+ },
   "cryptodredge": {
     "name": "cryptodredge",
     "type": "nvidia",
@@ -16,7 +26,7 @@
     "path2": ".\\bin\\cryptodredge-2\\CryptoDredge",
     "path3": ".\\bin\\cryptodredge-3\\CryptoDredge",
     "minername": "CryptoDredge",
-    "version": "0.9.4",
+    "version": "0.9.5",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/CryptoDredge-Linux-9-2.tar.gz"
   },
   "dstm": {
@@ -36,7 +46,7 @@
     "path2": ".\\bin\\enemy-2\\z-enemy",
     "path3": ".\\bin\\enemy-3\\z-enemy",
     "minername": "z-enemy",
-    "version": "1.22",
+    "version": "1.23",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/z-enemy-linux-9-2.tar.gz"
   },
   "ewbf": {

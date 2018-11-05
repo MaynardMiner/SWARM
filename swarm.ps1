@@ -67,7 +67,7 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$MPHLocation = "US", #europe/us/asia 
     [Parameter(Mandatory=$false)]
-    [Array]$Type = ("NVIDIA1","NVIDIA2"), #AMD/NVIDIA/CPU
+    [Array]$Type = ("AMD1","NVIDIA2"), #AMD/NVIDIA/CPU
     [String]$GPUDevices1, ##Group 1 all miners
     [Parameter(Mandatory=$false)] 
     [String]$GPUDevices2, ##Group 2 all miners
@@ -150,7 +150,7 @@ param(
     [Parameter(Mandatory=$false)]
     [string]$Update = "No",
     [Parameter(Mandatory=$false)]
-    [string]$Cuda = "9.1",
+    [string]$Cuda = "9.2",
     [Parameter(Mandatory=$false)]
     [string]$Power = "Yes",
     [Parameter(Mandatory=$false)]
@@ -416,6 +416,8 @@ if($Type -like "*AMD*"){$amd = get-minerfiles -Types "AMD" -Platforms $Platform}
 
 While($true)
 {
+##Save Watt Calcs
+if($Watts){$Watts | ConvertTo-Json | Out-File ".\config\power\power.json"}
 ##OC-Settings
 $OC = Get-Content ".\config\oc\oc-settings.json" | ConvertFrom-Json
 ##Reset Coins
@@ -590,6 +592,38 @@ $AllAlgoPools.Symbol | Select -Unique | ForEach {$AlgoPools_Comparison += ($AllA
 ##Load Only Needed Algorithm Miners
 Write-Host "Checking Algo Miners"
 $AlgoMiners = Get-Miners -Platforms $Platform -Stats $Stats -Pools $AlgoPools
+
+##Re-Name Instance In Case Of Crashes
+$AlgoMiners | ForEach {
+  $AlgoMiner = $_
+  if(-not (Test-Path $AlgoMiner.path))
+  {
+   if(Test-Path (Split-Path $Algominer.Path))
+   {
+    Set-Location (Split-Path $AlgoMiner.Path)
+    if(Test-Path "*$($_.Type)*")
+    {
+    $OldInstance = Get-ChildItem "*$($AlgoMiner.Type)-*"
+    Rename-Item $OldInstance -NewName "$($AlgoMiner.MinerName)" -force
+    }
+    Set-Location $Dir
+   }
+  }
+ }
+
+##Download Miners
+$Download = $false
+$AlgoMiners = $AlgoMiners | ForEach {
+  $AlgoMiner = $_
+   if((Test-Path $_.Path) -eq $false)
+   {
+    Expand-WebRequest -URI $AlgoMiner.URI -BuildPath $AlgoMiner.BUILD -Path (Split-Path $AlgoMiner.Path) -MineName (Split-Path $AlgoMiner.Path -Leaf) -MineType $AlgoMiner.Type
+    $Download = $true
+   }
+   else{$AlgoMiner}
+  }  
+if($Download -eq $true){continue}
+
 $NewAlgoMiners = @()
 $Type | Foreach {
 $GetType = $_; 
@@ -615,39 +649,7 @@ else
  }
 }
 $AlgoMiners = $NewAlgoMiners
-##Re-Name Instance In Case Of Crashes
-$AlgoMiners | ForEach {
-$AlgoMiner = $_
-if(-not (Test-Path $AlgoMiner.path))
-{
- if(Test-Path (Split-Path $Algominer.Path))
- {
-  Set-Location (Split-Path $AlgoMiner.Path)
-  if(Test-Path "*$($_.Type)*")
-  {
-  $OldInstance = Get-ChildItem "*$($AlgoMiner.Type)-*"
-  Rename-Item $OldInstance -NewName "$($AlgoMiner.MinerName)" -force
-  }
-  Set-Location $Dir
- }
-}
-}
-
-$Download = $false
-
-##Download Miners
-$AlgoMiners = $AlgoMiners | ForEach {
-$AlgoMiner = $_
- if((Test-Path $_.Path) -eq $false)
- {
-  Expand-WebRequest -URI $AlgoMiner.URI -BuildPath $AlgoMiner.BUILD -Path (Split-Path $AlgoMiner.Path) -MineName (Split-Path $AlgoMiner.Path -Leaf) -MineType $AlgoMiner.Type
-  $Download = $true
- }
- else{$AlgoMiner}
-}
-
 if($AlgoMiners.Count -eq 0){"No Miners!" | Out-Host; start-sleep $Interval; continue}
-if($Download -eq $true){continue}
 
 ##Sort Algorithm Miners
 start-minersorting -Command "Algo" -Stats $Stats -Pools $AlgoPools -Pools_Comparison $AlgoPools_Comparison -SortMiners $AlgoMiners -DBase $DecayBase -DExponent $DecayExponent -WattCalc $WattEx
@@ -1329,7 +1331,7 @@ if($_.BestMiner -eq $true)
          Write-Host "Stat Attempt Yielded 0" -Foregroundcolor Red
          Start-Sleep -S .25
          $GPUPower = 0
-         if($WattOMeter -eq "yes"){$Stat = Set-Stat -Name "$($_.Name)_$($_.Algo)_power" -Value $GPUPower}
+         if($WattOMeter -eq "yes" -and $_.Type -ne "CPU"){$Watts.$($_.Algo)."$($_.Type)_Watts" = "$GPUPower"}
         }
          else
           {
@@ -1338,14 +1340,14 @@ if($_.BestMiner -eq $true)
              try{$GPUPower = Set-Power -MinerDevices $($_.Devices) -Command "stat" -PwrType $($_.Type)}catch{Write-Host "WattOMeter Failed" $GPUPower = 0}
             }
            else{$GPUPower = 1}
-           if($WattOMeter -eq "yes" -and $_.Type -ne "CPU"){$Stat = Set-Stat -Name "$($_.Name)_$($_.Algo)_power" -Value $GPUPower}
-           $Stat = Set-Stat -Name "$($_.Name)_$($_.Algo)_hashrate" -Value $Miner_HashRates
-           Start-Sleep -s 1
-           $GetLiveStat = Get-Stat "$($_.Name)_$($_.Algo)_hashrate"
-           $StatCheck = "$($GetLiveStat.Live)"
-           $ScreenCheck = "$($StatCheck | ConvertTo-Hash)"
-           if($ScreenCheck -eq "0.00 PH" -or $null -eq $StatCheck)
-            {
+           if($WattOMeter -eq "yes" -and $_.Type -ne "CPU"){$Watts.$($_.Algo)."$($_.Type)_Watts" = "$GPUPower"}
+            $Stat = Set-Stat -Name "$($_.Name)_$($_.Algo)_hashrate" -Value $Miner_HashRates
+            Start-Sleep -s 1
+            $GetLiveStat = Get-Stat "$($_.Name)_$($_.Algo)_hashrate"
+            $StatCheck = "$($GetLiveStat.Live)"
+            $ScreenCheck = "$($StatCheck | ConvertTo-Hash)"
+            if($ScreenCheck -eq "0.00 PH" -or $null -eq $StatCheck)
+             {
              $Strike = $true
              $_.WasBenchmarked = $False
              Write-Host "Stat Failed Write To File" -Foregroundcolor Red
@@ -1357,7 +1359,6 @@ if($_.BestMiner -eq $true)
              if(-not (Test-Path $NewHashrateFilePath))
               {
                Copy-Item $HashrateFilePath -Destination $NewHashrateFilePath -force
-               if($WattOMeter -eq "Yes" -and $_.Type -ne "CPU"){Copy-Item $PowerFilePath -Destination $NewPowerFilePath -force}
                Write-Host "$($_.Name) $($_.Coins) Was Benchmarked And Backed Up" -foregroundcolor yellow
               }
              $_.WasBenchmarked = $True

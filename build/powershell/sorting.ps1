@@ -71,7 +71,7 @@ function start-minersorting {
         if($Command -eq "Algo")
          {
             $Miner.HashRates | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | ForEach {
-             if(-not [String]$Miner.HashRates.$_ -or -not [String]$miner.PowerX.$_)
+             if((-not [String]$Miner.HashRates.$_) -or (-not [String]$Miner.PowerX.$_))
               {
                     $Miner_HashRates.$_ = $null
                     $Miner_PowerX.$_ = $null

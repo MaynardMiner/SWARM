@@ -42,7 +42,7 @@ if($CoinAlgo -eq $null)
     Arguments = "--currency $($Config.$ConfigType.naming.$($_.Algorithm)) -i 60045 --url stratum+tcp://$($_.Host):$($_.Port) --user $($_.User1) --pass $($_.Pass1)$($Diff) --rigid SWARM --noAMD --noNVIDIA --use-nicehash $($Config.$ConfigType.commands.$($_.Algorithm))"
     HashRates = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)}
     Quote = if($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)){$($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)*($_.Price)}else{0}
-    PowerX = [PSCustomObject]@{$($_.Algorithm) = if($($Watts.$($_.Algorithm)."$($ConfigType)_Watts")){$($Watts.$($_.Algorithm)."$($ConfigType)_Watts")}elseif($($Watts.default."$($ConfigType)_Watts")){$($Watts.default."$($ConfigType)_Watts")}else{0}}
+    PowerX = [PSCustomObject]@{$($_.Algorithm) = if($Watts.$($_.Algorithm)."$($ConfigType)_Watts"){$Watts.$($_.Algorithm)."$($ConfigType)_Watts"}elseif($Watts.default."$($ConfigType)_Watts"){$Watts.default."$($ConfigType)_Watts"}else{0}}
     MinerPool = "$($_.Name)"
     FullName = "$($_.Mining)"
     Port = 60045

@@ -22,7 +22,7 @@ $ahashpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | S
  
     $ahashpool_Host = "$_.mine.ahashpool.com"
     $ahashpool_Port = $ahashpool_Request.$_.port
-    $ahashpool_Algorithm = $ahashpool_Request.$_.name
+    $ahashpool_Algorithm = Get-Algorithm $ahashpool_Request.$_.name
     $ahashpool_Fees = $ahashpool_Request.$_.fees
     $Divisor = (1000000*$ahashpool_Request.$_.mbtc_mh_factor)
 

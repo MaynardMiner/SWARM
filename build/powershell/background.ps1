@@ -254,6 +254,43 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
        }
        else{Write-Host "$MinerAPI API Failed- Coult Not Get Stats" -Foreground Red; $RAW = 0; $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"}
       }
+   'ethminer'
+    {
+      $HS = "hs"
+      Write-Host "Miner $MinerType is ethminer api"
+      Write-Host "Miner Port is $Port"
+      Write-Host "Miner Devices is $Devices"  
+      $Message = @{id = 1; jsonrpc = "2.0"; method = "miner_getstat1"} | ConvertTo-Json -Compress
+      $Client = Get-TCP -Server $Server -Port $port -Message $Message
+      if($Client)
+      {
+        $Data = $Client | ConvertFrom-Json
+        $RAW = 0
+        $RAW += $Data.result[2] -split ";" | Select -First 1 | foreach {[Double]$_*1000}
+        $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
+        Write-Host "Miner $Name was clocked at $([Double]$RAW/1000)" -foreground Yellow
+        $Process = Get-Process | Where Name -clike "*$($MinerType)*"
+        Write-Host "Current Running instances: $($Process.Name)"
+        $KHS += $Data.result[2] -split ";" | Select -First 1 | foreach {[Double]$_}
+        $Hash = $Data.result[3] -split ";"
+        for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Hash.Count -eq 1){$Hash}else{$Hash[$i]})}
+        $Hash = $Hash | % {iex $_}
+        $MinerACC = $Data.result[2] -split ";" | Select -skip 1 -first 1
+        $MinerREJ = $Data.result[2] -split ";" | Select -skip 2 -first 1
+        $ACC += $Data.result[2] -split ";" | Select -skip 1 -first 1
+        $REJ += $Data.result[2] -split ";" | Select -skip 2 -first 1
+        $UPTIME = $Data.result[1] | Select -first 1 | foreach {[Double]$_*60}
+        $A = $Data.result[6] -split ";"
+        $temp = $true
+        for($i=0; $i -lt $A.count; $i++){if($temp -eq $true){$A[$i] = "$($A[$i])T"; $temp=$false; continue}if($temp -eq $false){$A[$i] = "$($A[$i])F"; $temp=$true; continue}} 
+        $FanSelect = $A | Select-String "F" | foreach {$_ -replace "F"}
+        $TempSelect = $A | Select-String "T"| foreach {$_ -replace "T"}
+        for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($FanSelect.Count -eq 1){$FanSelect}else{$FanSelect[$i]})}
+        for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($TempSelect.Count -eq 1){$TempSelect}else{$TempSelect[$i]})} 
+        $ALGO = $MinerAlgo
+      }
+      else{Write-Host "$MinerAPI API Failed- Coult Not Get Stats" -Foreground Red; $RAW = 0; $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"}
+    }
    'ewbf'
       {
        $HS = "hs"

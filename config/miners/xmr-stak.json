@@ -19,6 +19,12 @@
       "cryptonightv8": "",
       "cryptonightheavy": ""
     },
+    "naming": {
+      "cryptonight": "cryptonight",
+      "cryptonightv7": "cryptonight_v7",
+      "cryptonightv8": "cryptonight_v8",
+      "cryptonightheavy": "cryptonight_heavy"
+    },
     "oc": {
       "cryptonight": {
         "dpm": "",

@@ -1,0 +1,50 @@
+{
+    "AMD1": {
+      "name": "AMD1",
+      "prestart": [
+        "export GPU_MAX_HEAP_SIZE=100",
+        "export GPU_USE_SYNC_OBJECTS=1",
+        "export GPU_SINGLE_ALLOC_PERCENT=100",
+        "export GPU_MAX_ALLOC_PERCENT=100"
+      ],
+      "commands": {
+        "ethash": "-esm 2",
+        "daggerhashimoto": "-esm 3 -estale 0",
+        "dagger": "-esm 2"
+      },
+      "difficulty": {
+        "ethash": "",
+        "daggerhashimoto": "",
+        "dagger": ""
+      },
+      "naming": {
+        "ethash": "ethash",
+        "daggerhashimoto": "daggerhashimoto",
+        "dagger": "dagger"
+      },
+      "oc": {
+        "ethash": {
+          "dpm": "",
+          "v": "",
+          "core": "",
+          "mem": "",
+          "mdpm": ""
+        },
+        "daggerhashimoto": {
+          "dpm": "",
+          "v": "",
+          "core": "",
+          "mem": "",
+          "mdpm": ""
+        },
+        "dagger": {
+          "dpm": "",
+          "v": "",
+          "core": "",
+          "mem": "",
+          "mdpm": ""
+        }
+      }
+    }
+  }
+  

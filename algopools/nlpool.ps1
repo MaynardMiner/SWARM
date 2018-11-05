@@ -21,7 +21,7 @@ $nlpoolAlgo_Request = [PSCustomObject]@{}
  $nlpoolAlgo_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | Where-Object {$Naming.$($nlpoolAlgo_Request.$_.name)} | Where-Object {$($nlpoolAlgo_Request.$_.estimate_current) -ne "0.00000000"} | ForEach-Object {
 
         
-        $nlpoolAlgo_Algorithm = $nlpoolAlgo_Request.$_.name
+        $nlpoolAlgo_Algorithm = Get-Algorithm $nlpoolAlgo_Request.$_.name
         $nlpoolAlgo_Host = "mine.nlpool.nl"
         $nlpoolAlgo_Port = $nlpoolAlgo_Request.$_.port
         $Divisor = (1000000*$nlpoolAlgo_Request.$_.mbtc_mh_factor)

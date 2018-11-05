@@ -7,6 +7,9 @@
       "lyra2rev2": "",
       "lyra2z": "",
       "lyra2re": "",
+      "exosis": "",
+      "x17": "",
+      "bitcore": "",
       "allium": "",
       "neoscrypt": "",
       "blake2s": "",
@@ -29,6 +32,9 @@
       "lyra2rev2": "",
       "lyra2z": "",
       "lyra2re": "",
+      "exosis": "",
+      "x17": "",
+      "bitcore": "",
       "allium": "",
       "neoscrypt": "",
       "blake2s": "",
@@ -51,6 +57,9 @@
       "lyra2rev2": "lyra2v2",
       "lyra2z": "lyra2z",
       "lyra2re": "lyra2z",
+      "exosis": "exosis",
+      "x17": "x17",
+      "bitcore": "bitcore",
       "allium": "allium",
       "neoscrypt": "neoscrypt",
       "blake2s": "blake2s",
@@ -85,6 +94,21 @@
         "Memory": ""
       },
       "lyra2re": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "exosis": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "bitcore": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "x17": {
         "Power": "",
         "Core": "",
         "Memory": ""
@@ -179,6 +203,9 @@
       "lyra2rev2": "",
       "lyra2z": "",
       "lyra2re": "",
+      "exosis": "",
+      "x17": "",
+      "bitcore": "",
       "allium": "",
       "neoscrypt": "",
       "blake2s": "",
@@ -201,6 +228,9 @@
       "lyra2rev2": "",
       "lyra2z": "",
       "lyra2re": "",
+      "exosis": "",
+      "x17": "",
+      "bitcore": "",
       "allium": "",
       "neoscrypt": "",
       "blake2s": "",
@@ -223,6 +253,9 @@
       "lyra2rev2": "lyra2v2",
       "lyra2z": "lyra2z",
       "lyra2re": "lyra2z",
+      "exosis": "exosis",
+      "x17": "x17",
+      "bitcore": "bitcore",
       "allium": "allium",
       "neoscrypt": "neoscrypt",
       "blake2s": "blake2s",
@@ -257,6 +290,21 @@
         "Memory": ""
       },
       "lyra2re": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "exosis": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "bitcore": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "x17": {
         "Power": "",
         "Core": "",
         "Memory": ""
@@ -351,11 +399,14 @@
       "lyra2rev2": "",
       "lyra2z": "",
       "lyra2re": "",
+      "exosis": "",
+      "x17": "",
+      "bitcore": "",
       "allium": "",
       "neoscrypt": "",
       "blake2s": "",
       "skein": "",
-      "cryptonightv7": "",      
+      "cryptonightv7": "",
       "cryptonightv8": "",
       "cryptonightheavy": "",
       "aeon": "",
@@ -373,6 +424,9 @@
       "lyra2rev2": "",
       "lyra2z": "",
       "lyra2re": "",
+      "exosis": "",
+      "x17": "",
+      "bitcore": "",
       "allium": "",
       "neoscrypt": "",
       "blake2s": "",
@@ -395,6 +449,9 @@
       "lyra2rev2": "lyra2v2",
       "lyra2z": "lyra2z",
       "lyra2re": "lyra2z",
+      "exosis": "exosis",
+      "x17": "x17",
+      "bitcore": "",
       "allium": "allium",
       "neoscrypt": "neoscrypt",
       "blake2s": "blake2s",
@@ -429,6 +486,21 @@
         "Memory": ""
       },
       "lyra2re": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "exosis": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "bitcore": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "x17": {
         "Power": "",
         "Core": "",
         "Memory": ""
