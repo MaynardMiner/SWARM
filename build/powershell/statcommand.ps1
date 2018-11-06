@@ -28,10 +28,10 @@ if($Timeouts -eq "Yes")
  {
   $GetStats = [PSCustomObject]@{}
   if(Test-Path ".\timeout"){Remove-Item ".\timeout" -Force -Recurse}
+  Write-Host "Cleared all bans" -ForegroundColor Green
   Start-Sleep -S 3
   if(Test-Path "stats"){Get-ChildItemContent "stats" | ForEach {$GetStats | Add-Member $_.Name $_.Content}}
   $GetStats
-  Write-Host "Cleared all bans" -ForegroundColor Green
  }
 
 }
