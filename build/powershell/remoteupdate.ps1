@@ -53,16 +53,28 @@ $PreviousVersions | foreach {
        }
       $Jsons = @("miners","naming","oc","power")
       $Jsons | foreach {
-        $OldJson_Path = Join-Path $OldConfig "$($_)"
-        $NewJson_Path = Join-Path ".\config" "$($_)"
-        $GetOld_Json =  Get-ChildItem $OldJson_Path
+        $OldJson_Path = Join-Path $OldConfig "$($_)";
+        $NewJson_Path = Join-Path ".\config" "$($_)";
+        $GetOld_Json =  Get-ChildItem $OldJson_Path;
+        $GetOld_Json = $GetOld_Json.Name
         $GetOld_Json | foreach {
-         $NewJson = Join-Path $NewJson_Path $($_.Name)
-         Get-Content $_ | ConvertFrom-Json
-         $_ | ConvertTo-Json | Set-Content $NewJson
+         $ChangeFile = $_
+         $OldJson = Join-Path $OldJson_Path "$($_)";
+         $NewJson = Join-Path $NewJson_Path "$($_)";
+         if($ChangeFile -notlike "*sample_.json*")
+         {
+         $JsonData = Get-Content $OldJson;
+         Write-Host "Pulled $OldJson"
+         $Data = $JsonData | ConvertFrom-Json;
+         $JsonData | ConvertTo-Json -Depth 4 | Set-Content $NewJson;
+         Write-Host "Wrote To $NewJson"
+          }
          }
+        }
+       Write-Host "Removing Old Miner From Trash"
        Remove-Item $PreviousPath -recurse -force
-       }
+       Start-Sleep -S 5
+       Remove-Item ".local/share/Trash/files/$_" -Recurse -Force
      }
     }
    }
