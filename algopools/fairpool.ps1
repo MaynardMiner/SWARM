@@ -31,8 +31,8 @@ $fairpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Se
 
     if($Algorithm -eq $fairpool_Algorithm)
     {
-    if((Get-Stat -Name "$($Name)_$($fairpool_Algorithm)_profit") -eq $null){$Stat = Set-Stat -Name "$($Name)_$($fairpool_Algorithm)_profit" -Value ([Double]$fairpool_Request.$_.estimate_current/$Divisor*(1-($fairpool_Request.$_.fees/100)))}
-    else{$Stat = Set-Stat -Name "$($Name)_$($fairpool_Algorithm)_profit" -Value ([Double]$fairpool_Request.$_.estimate_current/$Divisor *(1-($fairpool_Request.$_.fees/100)))}
+    if($Stat_Algo -ne "Day"){$Stat = Set-Stat -Name "$($Name)_$($fairpool_Algorithm)_profit" -Value ([Double]$fairpool_Request.$_.estimate_current/$Divisor*(1-($fairpool_Request.$_.fees/100)))}
+    else{$Stat = Set-Stat -Name "$($Name)_$($fairpool_Algorithm)_profit" -Value ([Double]$fairpool_Request.$_.estimate_last24h/$Divisor *(1-($fairpool_Request.$_.fees/100)))}
 
        if($Wallet)
 	    {

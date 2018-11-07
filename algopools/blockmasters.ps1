@@ -31,9 +31,9 @@ $blockpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | S
 
     if($Algorithm -eq $blockpool_Algorithm)
     {
-    if((Get-Stat -Name "$($Name)_$($blockpool_Algorithm)_profit") -eq $null){$Stat = Set-Stat -Name "$($Name)_$($blockpool_Algorithm)_profit" -Value ([Double]$blockpool_Request.$_.estimate_current/$Divisor*(1-($blockpool_Request.$_.fees/100)))}
-    else{$Stat = Set-Stat -Name "$($Name)_$($blockpool_Algorithm)_profit" -Value ([Double]$blockpool_Request.$_.estimate_current/$Divisor *(1-($blockpool_Request.$_.fees/100)))}
-    
+     if($Stat_Algo -ne "Day"){$Stat = Set-Stat -Name "$($Name)_$($blockpool_Algorithm)_profit" -Value ([Double]$blockpool_Request.$_.estimate_current/$Divisor*(1-($blockpool_Request.$_.fees/100)))}
+     else{$Stat = Set-Stat -Name "$($Name)_$($blockpool_Algorithm)_profit" -Value ([Double]$blockpool_Request.$_.estimate_last24h/$Divisor *(1-($blockpool_Request.$_.fees/100)))}
+        
     
       if($Wallet)
        {

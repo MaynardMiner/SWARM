@@ -243,11 +243,11 @@ Start-Process ".\build\bash\killall.sh" -ArgumentList "$($MinerCurrent.Type)" -W
 $FileTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $FileTimer.Restart()
 $FileChecked = $false
-do(
+do{
 $FileCheck = ".\build\txt\bestminers.txt"
 if(Test-Path $FileCheck){$FileChecked = $true}
 Start-Sleep -s 1
-)until($FileChecked -eq $true -or $FileTimer.Elapsed.TotalSeconds -gt 9)
+}until($FileChecked -eq $true -or $FileTimer.Elapsed.TotalSeconds -gt 9)
 $FileTimer.Stop()
 if($FileChecked -eq $false){Write-Warning "Failed To Write Miner Details To File"}
 $OldProcess = Get-Process | Where Name -clike "*$($MinerCurrent.Type)*"

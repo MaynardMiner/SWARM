@@ -33,9 +33,9 @@ $Zpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Selec
 
     if($Algorithm -eq $Zpool_Algorithm)
      {
-    if((Get-Stat -Name "$($Name)_$($zpool_Algorithm)_profit") -eq $null){$Stat = Set-Stat -Name "$($Name)_$($zpool_Algorithm)_profit" -Value ([Double]$zpool_Request.$_.estimate_current/$Divisor*(1-($zpool_Request.$_.fees/100)))}
-    else{$Stat = Set-Stat -Name "$($Name)_$($zpool_Algorithm)_profit" -Value ([Double]$zpool_Request.$_.estimate_current/$Divisor *(1-($zpool_Request.$_.fees/100)))}	
-     
+        if($Stat_Algo -ne "Day"){$Stat = Set-Stat -Name "$($Name)_$($Zpool_Algorithm)_profit" -Value ([Double]$Zpool_Request.$_.estimate_current/$Divisor*(1-($Zpool_Request.$_.fees/100)))}
+        else{$Stat = Set-Stat -Name "$($Name)_$($Zpool_Algorithm)_profit" -Value ([Double]$Zpool_Request.$_.estimate_last24h/$Divisor *(1-($Zpool_Request.$_.fees/100)))}
+         
        if($Wallet)
 	    {
         [PSCustomObject]@{

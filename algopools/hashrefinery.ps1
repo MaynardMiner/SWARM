@@ -29,9 +29,9 @@
 
     if($Algorithm -eq $hashrefinery_Algorithm)
     {
-    if((Get-Stat -Name "$($Name)_$($Hashrefinery_Algorithm)_profit") -eq $null){$Stat = Set-Stat -Name "$($Name)_$($Hashrefinery_Algorithm)_profit" -Value ([Double]$Hashrefinery_Request.$_.estimate_current/$Divisor*(1-($Hashrefinery_Request.$_.fees/100)))}
-    else{$Stat = Set-Stat -Name "$($Name)_$($Hashrefinery_Algorithm)_profit" -Value ([Double]$Hashrefinery_Request.$_.estimate_current/$Divisor *(1-($Hashrefinery_Request.$_.fees/100)))}
-    
+     if($Stat_Algo -ne "Day"){$Stat = Set-Stat -Name "$($Name)_$($Hashrefinery_Algorithm)_profit" -Value ([Double]$Hashrefinery_Request.$_.estimate_current/$Divisor*(1-($Hashrefinery_Request.$_.fees/100)))}
+     else{$Stat = Set-Stat -Name "$($Name)_$($Hashrefinery_Algorithm)_profit" -Value ([Double]$Hashrefinery_Request.$_.estimate_last24h/$Divisor *(1-($Hashrefinery_Request.$_.fees/100)))}
+        
        if($Wallet)
 	    {
         [PSCustomObject]@{

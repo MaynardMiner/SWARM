@@ -28,9 +28,9 @@ $nlpoolAlgo_Request = [PSCustomObject]@{}
 
         if($Algorithm -eq $nlpoolAlgo_Algorithm)
          {
-        if((Get-Stat -Name "$($Name)_$($nlpoolAlgo_Algorithm)_profit") -eq $null){$Stat = Set-Stat -Name "$($Name)_$($nlpoolAlgo_Algorithm)_profit" -Value ([Double]$nlpoolAlgo_Request.$_.estimate_current/$Divisor*(1-($nlpoolAlgo_Request.$_.fees/100)))}
-        else{$Stat = Set-Stat -Name "$($Name)_$($nlpoolAlgo_Algorithm)_profit" -Value ([Double]$nlpoolAlgo_Request.$_.Estimate_Current/$Divisor *(1-($nlpoolAlgo_Request.$_.fees/100)))}
-         
+          if($Stat_Algo -ne "Day"){$Stat = Set-Stat -Name "$($Name)_$($nlpoolAlgo_Algorithm)_profit" -Value ([Double]$nlpoolAlgo_Request.$_.estimate_current/$Divisor*(1-($nlpoolAlgo_Request.$_.fees/100)))}
+          else{$Stat = Set-Stat -Name "$($Name)_$($nlpoolAlgo_Algorithm)_profit" -Value ([Double]$nlpoolAlgo_Request.$_.estimate_last24h/$Divisor *(1-($nlpoolAlgo_Request.$_.fees/100)))}
+          
          
           if($Wallet)
            {

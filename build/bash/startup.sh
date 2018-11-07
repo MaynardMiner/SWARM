@@ -7,7 +7,7 @@ screen -S NVIDIA2 -X logfile flush 5
 sleep .1
 screen -S NVIDIA2 -X log
 sleep .1
-screen -S NVIDIA2 -X stuff $"export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/hive/custom/SWARM/build/export\n"
+screen -S NVIDIA2 -X stuff $"export LD_LIBRARY_PATH=/hive/custom/SWARM/build/export\n"
 sleep .1
 screen -S NVIDIA2 -X stuff $"cd\n"
 sleep .1

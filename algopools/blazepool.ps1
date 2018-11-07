@@ -27,8 +27,8 @@ $blazepool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | S
 
     if($Algorithm -eq $blazepool_Algorithm)
     {
-    if((Get-Stat -Name "$($Name)_$($blazepool_Algorithm)_profit") -eq $null){$Stat = Set-Stat -Name "$($Name)_$($blazepool_Algorithm)_profit" -Value ([Double]$blazepool_Request.$_.estimate_current/$Divisor*(1-($blazepool_Request.$_.fees/100)))}
-    else{$Stat = Set-Stat -Name "$($Name)_$($blazepool_Algorithm)_profit" -Value ([Double]$blazepool_Request.$_.estimate_current/$Divisor *(1-($blazepool_Request.$_.fees/100)))}
+    if($Stat_Algo -ne "Day"){$Stat = Set-Stat -Name "$($Name)_$($blazepool_Algorithm)_profit" -Value ([Double]$blazepool_Request.$_.estimate_current/$Divisor*(1-($blazepool_Request.$_.fees/100)))}
+    else{$Stat = Set-Stat -Name "$($Name)_$($blazepool_Algorithm)_profit" -Value ([Double]$blazepool_Request.$_.estimate_last24h/$Divisor *(1-($blazepool_Request.$_.fees/100)))}
     
 
        if($Wallet)

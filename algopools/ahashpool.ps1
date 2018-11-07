@@ -28,8 +28,8 @@ $ahashpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | S
 
     if($Algorithm -eq $ahashpool_Algorithm)
     {
-    if((Get-Stat -Name "$($Name)_$($ahashpool_Algorithm)_profit") -eq $null){$Stat = Set-Stat -Name "$($Name)_$($ahashpool_Algorithm)_profit" -Value ([Double]$ahashpool_Request.$_.estimate_current/$Divisor*(1-($ahashpool_Request.$_.fees/100)))}
-    else{$Stat = Set-Stat -Name "$($Name)_$($ahashpool_Algorithm)_profit" -Value ([Double]$ahashpool_Request.$_.estimate_current/$Divisor *(1-($ahashpool_Request.$_.fees/100)))}
+    if($Stat_Algo -ne "Day"){$Stat = Set-Stat -Name "$($Name)_$($ahashpool_Algorithm)_profit" -Value ([Double]$ahashpool_Request.$_.estimate_current/$Divisor*(1-($ahashpool_Request.$_.fees/100)))}
+    else{$Stat = Set-Stat -Name "$($Name)_$($ahashpool_Algorithm)_profit" -Value ([Double]$ahashpool_Request.$_.estimate_last24h/$Divisor *(1-($ahashpool_Request.$_.fees/100)))}
 
        if($Wallet)
 	    {

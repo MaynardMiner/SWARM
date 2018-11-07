@@ -46,8 +46,7 @@ $nicehash_Request.result | Select-Object -ExpandProperty simplemultialgo | Where
 
     if($Algorithm -eq $nicehash_Algorithm)
      {
-        $Stat = Set-Stat -Name "$($Name)_$($Nicehash_Algorithm)_profit" -Value ([Double]$_.paying/$Divisor*(1-($Nicehash_Fees/100)))
-        $Price = (($Stat.Live*(1-[Math]::Min($Stat.Day_Fluctuation,1)))+($Stat.Day*(0+[Math]::Min($Stat.Day_Fluctuation,1))))
+      $Stat = Set-Stat -Name "$($Name)_$($Nicehash_Algorithm)_profit" -Value ([Double]$_.paying/$Divisor*(1-($Nicehash_Fees/100)))
      
      
      if($Wallet)
