@@ -66,15 +66,12 @@ $PreviousVersions | foreach {
          $JsonData = Get-Content $OldJson;
          Write-Host "Pulled $OldJson"
          $Data = $JsonData | ConvertFrom-Json;
-         $JsonData | ConvertTo-Json -Depth 4 | Set-Content $NewJson;
+         $Data | ConvertTo-Json -Depth 3 | Set-Content $NewJson;
          Write-Host "Wrote To $NewJson"
           }
          }
         }
-       Write-Host "Removing Old Miner From Trash"
        Remove-Item $PreviousPath -recurse -force
-       Start-Sleep -S 5
-       Remove-Item ".local/share/Trash/files/$_" -Recurse -Force
      }
     }
    }
