@@ -107,7 +107,6 @@ if($Platforms -eq "windows"){Set-Location $WorkingDir}
 
 ##Data
 ##Delay To Ensure File-Write
-Start-Sleep -S 10
 $GetMiners = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-Json
 $GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
 
@@ -123,6 +122,17 @@ $GetMiners | Foreach {
   if($_.Type -like "*NVIDIA*"){$DevNVIDIA = $true};
   if($_.Type -like "*AMD*"){$DevAMD = $true}
   }
+
+##Set-OC
+$OC = $false
+$GetMiners | foreach {
+ if($_.Type -like "*NVIDIA*" -or $_.Type -like "*AMD*" -and $OC -eq $false)
+ {
+  Write-Host "Starting Tuning"
+  Start-OC -Platforms $Platforms
+  $OC = $true
+ }
+}
 
 ##Set-OC
 $OC = $false

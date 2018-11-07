@@ -240,11 +240,21 @@ elseif($Platforms -eq "linux")
         ``._ _ _,'   ``._ _ _,'       ``._____\        
 "
 Start-Process ".\build\bash\killall.sh" -ArgumentList "$($MinerCurrent.Type)" -Wait
-if($Background -eq "No"){Start-BackgroundCheck -Platforms $Platform}
+$FileTimer = New-Object -TypeName System.Diagnostics.Stopwatch
+$FileTimer.Restart()
+$FileChecked = $false
+do(
+$FileCheck = ".\build\txt\bestminers.txt"
+if(Test-Path $FileCheck){$FileChecked = $true}
+Start-Sleep -s 1
+)until($FileChecked -eq $true -or $FileTimer.Elapsed.TotalSeconds -gt 9)
+$FileTimer.Stop()
+if($FileChecked -eq $false){Write-Warning "Failed To Write Miner Details To File"}
 $OldProcess = Get-Process | Where Name -clike "*$($MinerCurrent.Type)*"
 if($OldProcess){kill $OldProcess.Id -ErrorAction SilentlyContinue}  ##Stab
 if($OldProcess){kill $OldProcess.Id -ErrorAction SilentlyContinue}  ##The Process
 if($OldProcess){kill $OldProcess.Id -ErrorAction SilentlyContinue}  ##To Death
+if($Background -eq "No"){Start-BackgroundCheck -Platforms $Platform}
 Start-Sleep $Delay
 Set-Location (Split-Path $($MinerCurrent.Path))
 Start-Process "chmod" -ArgumentList "+x $($MinerCurrent.InstanceName)" -Wait
