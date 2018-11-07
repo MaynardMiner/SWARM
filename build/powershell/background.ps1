@@ -145,6 +145,7 @@ $GetMiners | foreach {
  }
 }
 
+Start-Sleep -S 10
 $CPUOnly = $true
 
 $GetMiners | Foreach {

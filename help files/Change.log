@@ -886,3 +886,20 @@ but API is awaiting stats.
   -more json code staging.
    -future implementations
   -more algos on AMD side.
+
+    1.7.1
+
+  -Remote Updates Are Now Safe Again.
+  -Phoenix Miner NVIDIA moved to project folder
+  ``-Stat_Algo`` changed
+     -If you specify Day, SWARM will use 24 hour api data
+  -Fixed Nicehash pool drop
+  -Write-File Check: Miner will confirm information for
+   api and oc have been pulled, if not- try again.
+      -This allows OC to be started before miner starts.
+  -``get`` command added. Limited functionality:
+     ``get help``
+     ``get benchmarks``
+     ``get stats``
+     ``get active``
+       -will add more in near future

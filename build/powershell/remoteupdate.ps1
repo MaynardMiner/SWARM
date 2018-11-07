@@ -20,10 +20,7 @@ param (
 if($Update -eq "Yes")
  {
 $PreviousVersions = @()
-$PreviousVersions += "SWARM.1.6.3"
-$PreviousVersions += "SWARM.1.6.4"
-
-$Exclude = @("TRex-1.ps1","TRex-2.ps1","TRex-3.ps1","WildRig-1.ps1")
+$PreviousVersions += "SWARM.1.7.0"
 
 $PreviousVersions | foreach {
   $PreviousPath = Join-Path "/hive/custom" "$_"
@@ -34,27 +31,17 @@ $PreviousVersions | foreach {
      Write-Host "Gathering Old Version Config And HashRates- Then Deleting"
      Start-Sleep -S 5
      $OldBackup = Join-Path $PreviousPath "backup"
-     $OldMiners = Join-Path $PreviousPath "miners\linux"
      $OldTime = Join-Path $PreviousPath "build\data"
      $OldConfig = Join-Path $PreviousPath "config"
      $OldTimeout = Join-Path $PreviousPath "timeout"
       if(-not (Test-Path "backup")){New-Item "backup" -ItemType "directory"  | Out-Null }
       if(-not (Test-Path "stats")){New-Item "stats" -ItemType "directory"  | Out-Null }
-      if(-not (Test-Path "miners")){New-Item "miners" -ItemType "directory"  | Out-Null }
-      if(-not (Test-Path "miners\linux")){New-Item "miners\linux" -ItemType "directory"  | Out-Null }
-      if(-not (Test-Path "config")){New-Item "config" -ItemType "directory"  | Out-Null }
-      if(Test-Path $OldMiners){Get-ChildItem -Path "$($OldMiners)\*" -Include *.ps1 -Exclude $Exclude -Recurse | Copy-Item -Destination ".\miners\linux" -Force}
       if(Test-Path $OldBackup)
        {
         Get-ChildItem -Path "$($OldBackup)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\stats"
         Get-ChildItem -Path "$($OldBackup)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\backup"
        }
       if(Test-Path $OldTime){Get-ChildItem -Path "$($OldTime)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\build\data"}
-      if(Test-Path $OldConfig)
-       {
-        Get-ChildItem -Path "$($OldConfig)\oc" -Include *.txt,*.conf -Recurse | Copy-Item -Destination ".\config\oc" -Force
-        Get-ChildItem -Path "$($OldConfig)\power" -Include *.txt,*.conf -Recurse | Copy-Item -Destination ".\config\power" -Force
-       }
        if(Test-Path $OldTimeout)
        {
         if(-not (Test-Path ".\timeout")){New-Item "timeout" -ItemType "directory" | Out-Null }
@@ -64,8 +51,19 @@ $PreviousVersions | foreach {
         if(Test-Path "$OldTimeout\algo_block"){Get-ChildItem -Path "$($OldTimeout)\pool_block" -Include *.txt,*.conf -Recurse | Copy-Item -Destination ".\timeout\pool_block"}
         Get-ChildItem -Path "$($OldTimeout)\*" -Include *.txt | Copy-Item -Destination ".\timeout"
        }
+      $Jsons = @("miners","naming","oc","power")
+      $Jsons | foreach {
+        $OldJson_Path = Join-Path $OldConfig "$($_)"
+        $NewJson_Path = Join-Path ".\config" "$($_)"
+        $GetOld_Json =  Get-ChildItem $OldJson_Path
+        $GetOld_Json | foreach {
+         $NewJson = Join-Path $NewJson_Path $($_.Name)
+         Get-Content $_ | ConvertFrom-Json
+         $_ | ConvertTo-Json | Set-Content $NewJson
+         }
        Remove-Item $PreviousPath -recurse -force
+       }
      }
+    }
    }
   }
-}

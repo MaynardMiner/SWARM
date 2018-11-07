@@ -92,8 +92,7 @@ version
     name of miner, as per the names of .json in config/miners
     if you are unsure of miner name, choose 'all' to identify.
 
-
-benchmark
+benchmarks
  used to view current a benchmark.
 
     USES:
@@ -164,10 +163,60 @@ paramters
 $help
 $help | out-file ".\build\txt\get.txt"
     }
+"benchmarks"
+{
+ . .\build\powershell\statcommand.ps1
+ . .\build\powershell\childitems.ps1
+ . .\build\powershell\hashrates.ps1
+ if(Test-path ".\stats")
+ {
+ switch($argument2)
+  {
+   "all"
+   {
+    $StatNames = Get-ChildItem ".\stats" | Where Name -LIKE "*hashrate*"
+    $StatNames = $StatNames.Name -replace ".txt",""
+    $Stats = [PSCustomObject]@{}
+    if(Test-Path "stats"){Get-ChildItemContent "stats" | ForEach {$Stats | Add-Member $_.Name $_.Content}}
+   }
    default
    {
-    $default =
-"item not specified. use:
+    $Stats = [PSCustomObject]@{}
+    $StatNames = Get-ChildItem ".\stats" | Where Name -LIKE "*$($argument2)_hashrate.txt*"
+    $StatNames = $StatNames.Name -replace ".txt",""
+    if(Test-Path "stats"){Get-ChildItemContent "stats" | ForEach {$Stats | Add-Member $_.Name $_.Content}}
+   }
+  }
+ $BenchTable = @()
+ $StatNames | Foreach {
+  $BenchTable += [PSCustomObject]@{
+    Miner = $_ -split "_" | Select -First 1
+    Algo = $_ -split "_" | Select -Skip 1 -First 1
+    HashRates = $Stats."$($_)".Day | ConvertTo-Hash
+  }
+ }
+ $BenchTable | Sort-Object -Property Algo -Descending | Format-Table (
+  @{Label = "Miner"; Expression={$($_.Miner)}},
+  @{Label = "Algorithm"; Expression={$($_.Algo)}},
+  @{Label = "Speed"; Expression={$($_.HashRates)}}    
+)
+}
+ else{Write-Host "No Stats Found"}
+}
+"stats"
+{
+if(Test-Path ".\build\bash\minerstats.sh"){Get-Content ".\build\bash\minerstats.sh"}
+else{Write-Host "No Stats History Found"}
+}
+"active"
+{
+if(Test-Path ".\build\bash\mineractive.sh"){Get-Content ".\build\bash\mineractive.sh"}
+else{Write-Host "No Miner History Found"}    
+}
+default
+{
+ $default =
+"item not found or specified. use:
 
 get help
 
@@ -175,5 +224,5 @@ to see a list of availble items.
 "
 $default
 $default | out-file ".\build\txt\get.txt"
-   }
-  }
+}
+}
