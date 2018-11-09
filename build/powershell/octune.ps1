@@ -82,6 +82,8 @@ if($_.Type -like "*NVIDIA*")
  $Core = $Core -split ","
  $Mem = $Mem -split ","
  $Power = $Power -split ","
+ $NScreenMiners = "$($_.MinerName) "
+
 if($Card)
  {
  if($Core)
@@ -148,8 +150,9 @@ if($_.Type -like "*AMD*")
  $CoreClock = $_.occore -split ' '
  $CoreState = $_.ocdpm -split ' '
  $MemClock = $_.ocmem -split ' '
- $MemState = $_.ocmdmp -split ' '
+ $MemState = $_.ocmdpm -split ' '
  $Voltage = $_.ocv -split ' '
+ $AScreenMiners += "$($_.Minername) "
  if($Card)
  {
 
@@ -169,8 +172,8 @@ if($_.Type -like "*AMD*")
        $AScript += "sleep .1"
      }
     }
-    $AScreenCore += "$($_.Type) Core is $($_.occore) "
-    $AScreenDPM += "$($_.Type) DPM is $($_.ocdpm) "
+    $AScreenCore += "$($_.Type) MEM is $($_.ocmem) "
+    $AScreenDPM += "$($_.Type) MDPM is $($_.ocmdpm) "
    }
 
     if($CoreClock -or $CoreState)
@@ -189,8 +192,8 @@ if($_.Type -like "*AMD*")
         $AScript += "sleep .1"
       }
      }
-     $AScreenMem += "$($_.Type) MEM is $($_.ocmem) "
-     $AScreenMDPM += "$($_.Type) MEM is $($_.ocmdpm) "
+     $AScreenMem += "$($_.Type) CORE is $($_.occore) "
+     $AScreenMDPM += "$($_.Type) DPM is $($_.ocdpm) "
     }
   
     if($Voltage)
@@ -260,7 +263,7 @@ $OCMessage += "Cards: $($OCSettings.Cards)"
 
 if($DoNVIDIAOC -eq $true)
 {
-$OCMessage += "Current NVIDIA OC Profile:"
+$OCMessage += "Current NVIDIA OC Profile-"
 $OCMessage += "NVIDIA Miner: $NScreenMiners"
 $OCMessage += "ETHPill: $ETHPill"
 $OCMessage += "Power: $NScreenPower"
@@ -269,7 +272,7 @@ $OCMessage += "Memory Settings: $NScreenMem"
 }
 if($DoAMDOC -eq $true)
 {
-$OCMessage += "Current AMD OC Profile:"
+$OCMessage += "Current AMD OC Profile-"
 $OCMessage += "AMD Miner: $AScreenMiners"
 $OCMessage += "Power: $AScreenPower"
 $OCMessage += "Core Settings: $AScreenCore"
