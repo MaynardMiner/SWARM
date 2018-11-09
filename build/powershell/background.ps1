@@ -137,7 +137,7 @@ $GetMiners | foreach {
 ##Set-OC
 $OC = $false
 $GetMiners | foreach {
- if($_.Type -like "*NVIDIA*" -and $OC -eq $false)
+ if($_.Type -like "*NVIDIA*" -or $_.Type -like "*AMD*" -and $OC -eq $false)
  {
   Write-Host "Starting Tuning"
   Start-OC -Platforms $Platforms
