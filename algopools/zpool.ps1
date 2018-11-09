@@ -38,6 +38,18 @@ $Zpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Selec
          
        if($Wallet)
 	    {
+          If($AltWallet1 -ne ''){$zWallet1 = $AltWallet1}
+          else{$zwallet1 = $Wallet1}
+          if($AltWallet2 -ne ''){$zWallet2 = $AltWallet2}
+          else{$zwallet2 = $Wallet2}
+          if($AltWallet3 -ne ''){$zWallet3 = $AltWallet3}
+          else{$zwallet3 = $Wallet3}
+          if($AltPassword1 -ne ''){$zpass1 = $Altpassword1}
+          else{$zpass1 = $Passwordcurrency1}
+          if($AltPassword2 -ne ''){$zpass2 = $AltPassword2}
+          else{$zpass2 = $Passwordcurrency2}
+          if($AltPassword3 -ne ''){$zpass3 = $AltPassword3}
+          else{$zpass3 = $Passwordcurrency3}    
         [PSCustomObject]@{
             Coin = "No"
             Symbol = $Zpool_Algorithm
@@ -49,14 +61,14 @@ $Zpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Selec
             Protocol = "stratum+tcp"
             Host = $Zpool_Host
             Port = $Zpool_Port
-            User1 = $Wallet1
-	        User2 = $Wallet2
-            User3 = $Wallet3
-            CPUser = $CPUWallet
-            CPUPass = "c=$CPUcurrency,ID=$Rigname1"
-            Pass1 = "c=$Passwordcurrency1,ID=$Rigname1"
-            Pass2 = "c=$Passwordcurrency2,ID=$Rigname2"
-	       Pass3 = "c=$Passwordcurrency3,ID=$Rigname3"
+            User1 = $zWallet1
+	        User2 = $zWallet2
+            User3 = $zWallet3
+            CPUser = $zWallet1
+            CPUPass = "c=$zpass1,ID=$Rigname1"
+            Pass1 = "c=$zpass1,ID=$Rigname1"
+            Pass2 = "c=$zpass2,ID=$Rigname2"
+	        Pass3 = "c=$zpass3,ID=$Rigname3"
             Location = $Location
             SSL = $false
          }

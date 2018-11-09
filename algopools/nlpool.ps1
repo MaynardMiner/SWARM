@@ -34,17 +34,17 @@ $nlpoolAlgo_Request = [PSCustomObject]@{}
          
           if($Wallet)
            {
-            If($nlWallet1 -ne ''){$nWallet1 = $nlWallet1}
+            If($AltWallet1 -ne ''){$nWallet1 = $AltWallet1}
             else{$nWallet1 = $Wallet1}
-            if($nlWallet2 -ne ''){$nWallet2 = $nlWallet2}
+            if($AltWallet2 -ne ''){$nWallet2 = $AltWallet2}
             else{$nWallet2 = $Wallet2}
-            if($nWallet1 -ne ''){$nWallet3 = $nlWallet3}
+            if($AltWallet3 -ne ''){$nWallet3 = $AltWallet3}
             else{$nWallet3 = $Wallet3}
-            if($nlpassword1 -ne ''){$npass1 = $nlpassword1}
+            if($AltPassword1 -ne ''){$npass1 = $AltPassword1}
             else{$npass1 = $PasswordCurrency1}
-            if($nlpassword2 -ne ''){$npass2 = $nlpassword2}
+            if($AltPassword2 -ne ''){$npass2 = $AltPassword2}
             else{$npass2 = $PasswordCurrency2}
-            if($nlpassword3 -ne ''){$npass3 = $nlpassword3}
+            if($AltPassword3 -ne ''){$npass3 = $AltPassword3}
             else{$npass3 = $PasswordCurrency3}
             [PSCustomObject]@{
                 Coin = "No"

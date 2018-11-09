@@ -23,12 +23,6 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$CPUWallet = '1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i', ##CPU Wallet
     [Parameter(Mandatory=$false)]
-    [String]$ZergpoolWallet1 = '', ##Group 1 Zergpool Wallet
-    [Parameter(Mandatory=$false)]
-    [String]$ZergpoolWallet2 = '', ##Group 2 Zergpool Wallet
-    [Parameter(Mandatory=$false)]
-    [String]$ZergpoolWallet3 = '', ##Group 3 Zergpool Wallet
-    [Parameter(Mandatory=$false)]
     [String]$blockmastersWallet1 = '',  ##Group 1 BlockMasters Wallet
     [Parameter(Mandatory=$false)]
     [String]$blockmastersWallet2 = '',  ##Group 2 BlockMasters Wallet
@@ -41,11 +35,11 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$Nicehash_Wallet3 = '',  ##Group 3 Nicehash Wallet
     [Parameter(Mandatory=$false)]
-    [String]$nlWallet1 = '',  ##Group 3 Nicehash Wallet
+    [String]$AltWallet1 = '',  ##Group 3 Nicehash Wallet
     [Parameter(Mandatory=$false)]
-    [String]$nlWallet2 = '',  ##Group 3 Nicehash Wallet
+    [String]$AltWallet2 = '',  ##Group 3 Nicehash Wallet
     [Parameter(Mandatory=$false)]
-    [String]$nlWallet3 = '',  ##Group 3 Nicehash Wallet
+    [String]$AltWallet3 = '',  ##Group 3 Nicehash Wallet
     [Parameter(Mandatory=$false)]
     [String]$RigName1 = "MMHash",  ##ID=Rigname (Yiimp Pool) Group 1
     [Parameter(Mandatory=$false)]
@@ -65,9 +59,8 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$Location = "US", #europe/us/asia
     [Parameter(Mandatory=$false)]
-    [String]$MPHLocation = "US", #europe/us/asia 
-    [Parameter(Mandatory=$false)]
     [Array]$Type = ("AMD1","NVIDIA2"), #AMD/NVIDIA/CPU
+    [Parameter(Mandatory=$false)]
     [String]$GPUDevices1, ##Group 1 all miners
     [Parameter(Mandatory=$false)] 
     [String]$GPUDevices2, ##Group 2 all miners
@@ -88,23 +81,11 @@ param(
     [Parameter(Mandatory=$false)]
     [Array]$CPUcurrency = ("BTC"), #i.e. BTC,LTC,ZEC,ETH ect.
     [Parameter(Mandatory=$false)]
-    [String]$Zergpoolpassword1 = ("BTC"), #i.e. BTC,LTC,ZEC,ETH ect.
+    [String]$AltPassword1 = ("BTC"), #i.e. BTC,LTC,ZEC,ETH ect.
     [Parameter(Mandatory=$false)]
-    [String]$Zergpoolpassword2 =  '', #i.e. BTC,LTC,ZEC,ETH ect.
+    [String]$AltPassword2 =  '', #i.e. BTC,LTC,ZEC,ETH ect.
     [Parameter(Mandatory=$false)]
-    [String]$Zergpoolpassword3 = '', #i.e. BTC,LTC,ZEC,ETH ect.
-    [Parameter(Mandatory=$false)]
-    [String]$blockmasterspassword1 = ("BTC"), #i.e. BTC,LTC,ZEC,ETH ect.
-    [Parameter(Mandatory=$false)]
-    [String]$blockmasterspassword2 =  '', #i.e. BTC,LTC,ZEC,ETH ect.
-    [Parameter(Mandatory=$false)]
-    [String]$blockmasterspassword3 = '', #i.e. BTC,LTC,ZEC,ETH ect.
-    [Parameter(Mandatory=$false)]
-    [String]$nlpassword1, #i.e. BTC,LTC,ZEC,ETH ect.
-    [Parameter(Mandatory=$false)]
-    [String]$nlpassword2, #i.e. BTC,LTC,ZEC,ETH ect.
-    [Parameter(Mandatory=$false)]
-    [String]$nlpassword3, #i.e. BTC,LTC,ZEC,ETH ect.
+    [String]$AltPassword3 = '', #i.e. BTC,LTC,ZEC,ETH ect.
     [Parameter(Mandatory=$false)]
     [Int]$Donate = .5, #Percent per Day
     [Parameter(Mandatory=$false)]
@@ -114,23 +95,13 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$CoinExchange = "LTC",
     [Parameter(Mandatory=$false)]
-    [array]$Coin= $null,
-    [Parameter(Mandatory=$false)]
-    [array]$GPU_Group1= $null,
-    [Parameter(Mandatory=$false)]
-    [array]$GPU_Group2= $null,
-    [Parameter(Mandatory=$false)]
-    [array]$GPU_Group3= $null,
-    [Parameter(Mandatory=$false)]
-    [string]$Auto_Coin = "Yes",
+    [string]$Auto_Coin = "No",
     [Parameter(Mandatory=$false)]
     [Int]$Nicehash_Fee = "2",
     [Parameter(Mandatory=$false)]
     [Int]$Benchmark = 120,
     [Parameter(Mandatory=$false)]
-    [Int]$GPU_Count = 0,
-    [Parameter(Mandatory=$false)]
-    [array]$No_Algo = "myr-gr",
+    [array]$No_Algo = "",
     [Parameter(Mandatory=$false)]
     [String]$Favor_Coins = "Yes",
     [Parameter(Mandatory=$false)]
@@ -374,7 +345,7 @@ $NVIDIADevices3 = $GPUDevices3
 $AMDDevices1 = $GPUDevices1
 
 ##GPU Count & Miner Type
-if($Platform -eq "linux" -and $HiveOS -eq "Yes")
+if($Platform -eq "linux")
 {
 $Type | Foreach {
 if($_ -eq "NVIDIA1"){

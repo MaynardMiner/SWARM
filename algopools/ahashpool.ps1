@@ -47,7 +47,7 @@ $ahashpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | S
             Host = $ahashpool_Host
             Port = $ahashpool_Port
             User1 = $Wallet1
-	       User2 = $Wallet2
+	        User2 = $Wallet2
             User3 = $Wallet3
             CPUser = $CPUWallet
             CPUPass = "c=$CPUcurrency,ID=$Rigname1"

@@ -37,17 +37,17 @@ $blockpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | S
     
       if($Wallet)
        {
-        If($BlockmastersWallet1 -ne ''){$blockWallet1 = $BlockmastersWallet1}
+        If($AltWallet1 -ne ''){$blockWallet1 = $AltWallet1}
         else{$blockWallet1 = $Wallet1}
-        if($BlockmastersWallet2 -ne ''){$blockWallet2 = $BlockmastersWallet2}
-        else{$blockWallet2 = $Wallet2}
-        if($BlockmastersWallet1 -ne ''){$blockWallet3 = $BlockmastersWallet3}
+        if($AltWallet2 -ne ''){$blockWallet2 = $AltWallet2}
+        else{$AltWallet2 = $Wallet2}
+        if($AltWallet3 -ne ''){$blockWallet3 = $AltWallet3}
         else{$blockWallet3 = $Wallet3}
-        if($Blockmasterspassword1 -ne ''){$blockpass1 = $Blockmasterspassword1}
+        if($AltPassword1 -ne ''){$blockpass1 = $Altpassword1}
         else{$blockpass1 = $Passwordcurrency1}
-        if($Blockmasterspassword2 -ne ''){$blockpass2 = $Blockmasterspassword2}
+        if($AltPassword2 -ne ''){$blockpass2 = $AltPassword2}
         else{$blockpass2 = $Passwordcurrency2}
-        if($Blockmasterspassword3 -ne ''){$blockpass3 = $Blockmasterspassword3}
+        if($AltPassword3 -ne ''){$blockpass3 = $AltPassword3}
         else{$blockpass3 = $Passwordcurrency3}
         [PSCustomObject]@{
             Coin = "No"
