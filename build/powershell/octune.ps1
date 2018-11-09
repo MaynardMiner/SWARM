@@ -66,7 +66,7 @@ $NScript += "`#`!/usr/bin/env bash"
 $AScript = @()
 $AScript += "`#`!/usr/bin/env bash"
 $SettingsArgs = $false
-$OCMiners | foreach {if($_.ocmem -or $_.ocCore){$SettingsArgs = $true}}
+$OCMiners | foreach {if($_.ocmem -or $_.occore){$SettingsArgs = $true}}
 if($SettingsArgs -eq $true){$NScript += "nvidia-settings"}
 
 
