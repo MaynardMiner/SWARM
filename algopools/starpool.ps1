@@ -45,8 +45,6 @@ $starpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Se
         else{$Spass2 = $Passwordcurrency2}
         If($AltPassword3 -ne ''){if($AltPassword3 -eq "DASH" -or $AltPassword3 -eq "LTC" -or $AltPassword3 -eq "CANN" -or $AltPassword3 -eq "DGB"){$SPass3 = $AltPassword3}}
         else{$Spass3 = $Passwordcurrency3}    
-
-        BTC, c=DASH, c=LTC, c=CANN, c=DGB
         [PSCustomObject]@{
             Coin = "No"
             Symbol = $starpool_Algorithm
@@ -61,7 +59,7 @@ $starpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Se
             User1 = $SWallet1
 	        User2 = $SWallet2
             User3 = $SWallet3
-            CPUser = $SPass1
+            CPUser = $SWallet1
             CPUPass = "c=$SPass1,ID=$Rigname1"
             Pass1 = "c=$SPass1,ID=$Rigname1"
             Pass2 = "c=$SPass2,ID=$Rigname2"

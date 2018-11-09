@@ -30,8 +30,8 @@ get [item] [argument2] [argument3] [argument4] [argument5]
 
 EXAMPLE USES:
 
-get miner NVIDIA1 trex x16r difficulty
-get miner CPU jayddee all
+get miners NVIDIA1 trex x16r difficulty
+get miners CPU jayddee all
 get screen miner
 get stats
 get oc NVIDIA1 aergo power 
@@ -212,6 +212,15 @@ else{Write-Host "No Stats History Found"}
 {
 if(Test-Path ".\build\bash\mineractive.sh"){Get-Content ".\build\bash\mineractive.sh"}
 else{Write-Host "No Miner History Found"}    
+}
+"parameters"
+{
+if(Test-Path ".\config\parameters\arguments.json")
+ {
+  $MinerArgs = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
+  $MinerArgs
+ }
+ else{Write-Host "No Parameters For SWARM found"}
 }
 default
 {

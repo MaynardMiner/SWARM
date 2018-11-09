@@ -76,15 +76,12 @@ if($_.Type -like "*NVIDIA*")
 {
  if($_.Devices -eq $null){$OCDevices = Get-DeviceString -TypeCount $GCount.NVIDIA.PSObject.Properties.Value.Count}
  else{$OCDevices = Get-DeviceString -TypeDevices $_.Devices}
- Write-Host "$($_.Type) is mining with $($_.Name)"
- Write-Host "Platform is $Platforms"
  $Core = $_.occore -split ' '
  $Mem = $_.ocmem -split ' '
  $Power = $_.ocpower -split ' '
  $Core = $Core -split ","
  $Mem = $Mem -split ","
  $Power = $Power -split ","
- $NScreenMiners += "$($_.Type) is using $($_.Name) mining $($_.Algo) "
 if($Card)
  {
  if($Core)
@@ -148,14 +145,11 @@ if($_.Type -like "*AMD*")
 {
  if($_.Devices -eq $null){$OCDevices = Get-DeviceString -TypeCount $GCount.AMD.PSObject.Properties.Value.Count}
  else{$OCDevices = Get-DeviceString -TypeDevices $_.Devices}
- Write-Host "$($_.Type) is mining with $($_.Name)"
- Write-Host "Platform is $Platforms"
  $CoreClock = $_.occore -split ' '
  $CoreState = $_.ocdpm -split ' '
  $MemClock = $_.ocmem -split ' '
  $MemState = $_.ocmdmp -split ' '
  $Voltage = $_.ocv -split ' '
- $AScreenMiners += "$($_.Type) is using $($_.Name) mining $($_.Algo) "
  if($Card)
  {
 

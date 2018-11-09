@@ -23,12 +23,6 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$CPUWallet = '1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i', ##CPU Wallet
     [Parameter(Mandatory=$false)]
-    [String]$blockmastersWallet1 = '',  ##Group 1 BlockMasters Wallet
-    [Parameter(Mandatory=$false)]
-    [String]$blockmastersWallet2 = '',  ##Group 2 BlockMasters Wallet
-    [Parameter(Mandatory=$false)]
-    [String]$blockmastersWallet3 = '',  ##Group 3 BlockMasters Wallet
-    [Parameter(Mandatory=$false)]
     [String]$Nicehash_Wallet1 = '',  ##Group 1 Nicehash Wallet
     [Parameter(Mandatory=$false)]
     [String]$Nicehash_Wallet2 = '',  ##Group 2 Nicehash Wallet
@@ -41,11 +35,11 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$AltWallet3 = '',  ##Group 3 Nicehash Wallet
     [Parameter(Mandatory=$false)]
-    [String]$RigName1 = "MMHash",  ##ID=Rigname (Yiimp Pool) Group 1
+    [String]$RigName1 = "MMHash1",  ##ID=Rigname (Yiimp Pool) Group 1
     [Parameter(Mandatory=$false)]
-    [String]$RigName2 = "MMHash",  ##ID=Rigname (Yiimp Pool) Group 2
+    [String]$RigName2 = "MMHash2",  ##ID=Rigname (Yiimp Pool) Group 2
     [Parameter(Mandatory=$false)]
-    [String]$RigName3 = "MMHash", ##ID=Rigname (Yiimp Pool) Group 3
+    [String]$RigName3 = "MMHash3", ##ID=Rigname (Yiimp Pool) Group 3
     [Parameter(Mandatory=$false)]
     [Int]$API_ID = 0, ##Future Implentation
     [Parameter(Mandatory=$false)]
@@ -59,7 +53,7 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$Location = "US", #europe/us/asia
     [Parameter(Mandatory=$false)]
-    [Array]$Type = ("AMD1","NVIDIA2"), #AMD/NVIDIA/CPU
+    [Array]$Type = ("NVIDIA1"), #AMD/NVIDIA/CPU
     [Parameter(Mandatory=$false)]
     [String]$GPUDevices1, ##Group 1 all miners
     [Parameter(Mandatory=$false)] 
@@ -67,7 +61,7 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$GPUDevices3, ##Group 3 all miners
     [Parameter(Mandatory=$false)]
-    [Array]$PoolName = ("nlpool","blockmasters","zpool","nicehash"), 
+    [Array]$PoolName = ("nlpool","blockmasters","ahashpool"), 
     [Parameter(Mandatory=$false)]
     [Array]$Currency = ("USD"), #i.e. GBP,EUR,ZEC,ETH ect.
     [Parameter(Mandatory=$false)]
@@ -81,7 +75,7 @@ param(
     [Parameter(Mandatory=$false)]
     [Array]$CPUcurrency = ("BTC"), #i.e. BTC,LTC,ZEC,ETH ect.
     [Parameter(Mandatory=$false)]
-    [String]$AltPassword1 = ("BTC"), #i.e. BTC,LTC,ZEC,ETH ect.
+    [String]$AltPassword1 = '', #i.e. BTC,LTC,ZEC,ETH ect.
     [Parameter(Mandatory=$false)]
     [String]$AltPassword2 =  '', #i.e. BTC,LTC,ZEC,ETH ect.
     [Parameter(Mandatory=$false)]
@@ -260,35 +254,26 @@ $WalletDonate = "1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i"
 $NicehashDonate = "3JfBiUZZV17DTjAFCnZb97UpBgtLPLLDop"
 $UserDonate = "MaynardVII"
 $WorkerDonate = "Rig1"
-$WalletSwitch = $Wallet
 $WalletSwitch1 = $Wallet1
 $WalletSwitch2 = $Wallet2
 $WalletSwitch3 = $Wallet3
-$CPUWalletSwitch = $CPUWallet
-$PasswordSwitch = $Passwordcurrency
 $PasswordSwitch1 = $Passwordcurrency1
 $PasswordSwitch2 = $Passwordcurrency2
 $PasswordSwitch3 = $Passwordcurrency3
-$CPUcurrencySwitch = $CPUcurrency
-$blockmasterswitch1 = $blockmastersWallet1
-$blockmasterswitch2 = $blockmastersWallet2
-$blockmasterswitch3 = $blockmastersWallet3
-$blockmastersp1 = $blockmastersPassword1
-$blockmastersp2 = $blockmastersPassword2
-$blockmastersp3 = $blockmastersPassword3
-$nlpoolswitch1 = $nlWallet1
-$nlpoolswitch2 = $nlWallet2
-$nlpoolswitch3 = $nlWallet3
-$nlpassswitch1 = $nlpassword1
-$nlpassswitch2 = $nlpassword2
-$nlpassswitch3 = $nlpassword3
+$AltWalletswitch1 = $AltWallet1
+$AltWalletswitch2 = $AltWallet2
+$AltWalletswitch3 = $AltWallet3
+$AltPassSwitch1 = $AltPassword1
+$AltPassSwitch2 = $AltPassword2
+$AltPassSwitch3 = $AltPassword3
 $Nicehash_Wallet1Switch = $Nicehash_Wallet1
 $Nicehash_Wallet2Switch = $Nicehash_Wallet2
 $Nicehash_Wallet3Switch = $Nicehash_Wallet3
-$UserSwitch = $UserName
-$WorkerSwitch = $WorkerName
-$RigSwitch = $RigName
+$Rig1Switch = $RigName1
+$Rig2Switch = $RigName2
+$Rig3Switch = $RigName3
 $IntervalSwitch = $Interval
+$PoolNameSwitch = $PoolName
 $ActiveMinerPrograms = @()
 $Naming = Get-Content ".\config\naming\get-pool.json" | ConvertFrom-Json
 
@@ -442,38 +427,26 @@ $FinalDonation = (86400/[int]$DonationIntervals)
   $CurrentlyDonated = [math]::Round(((Get-Date)-$Donated).TotalSeconds)
   if($CurrentlyDonated -ge [int]$FinalDonation)
   {
-    $Wallet = $InfoPass1
     $Wallet1 = $InfoPass1
     $Wallet2 = $InfoPass1
     $Wallet3 = $InfoPass1
-    $CPUWallet = $InfoPass1
-    $blockmastersWallet1 = $InfoPass1
-    $blockmastersWallet2 = $InfoPass1
-    $blockmastersWallet3 = $InfoPass1
-    $blockmasterspassword1 = ("BTC")
-    $blockmasterspassword2 = ("BTC")
-    $blockmasterspassword3 = ("BTC")
-    $nlWallet1 = $InfoPass1
-    $nlWallet2 = $InfoPass1
-    $nlWallet3 = $InfoPass1
-    $nlpassword1 = ("BTC")
-    $nlpassword2 = ("BTC")
-    $nlpassword3 = ("BTC")
+    $AltWallet1 = $InfoPass1
+    $AltWallet2 = $InfoPass1
+    $AltWallet3 = $InfoPass1
+    $AltPassword1 = ("BTC")
+    $AltPassword2 = ("BTC")
+    $AltPassword3 = ("BTC")
     $Nicehash_Wallet1 = $VerifyPass1
     $Nicehash_Wallet2 = $VerifyPass1
     $Nicehash_Wallet3 = $VerifyPass1
-    $UserName = $InfoPass2
-    $WorkerName = $VerifyPass2
-    $RigName = "DONATING!!!"
+    $RigName1 = "DONATING"
+    $RigName2 = "DONATING"
+    $RigName3 = "DONATING"
     $Interval = 288
-    $Passwordcurrency = ("BTC")
     $Passwordcurrency1 = ("BTC")
     $Passwordcurrency2 = ("BTC")
     $Passwordcurrency3 = ("BTC")
-    $CPUcurrency = ("BTC")
-    $blockmasterspassword1 = ("BTC")
-    $blockmasterspassword2 = ("BTC")
-    $blockmasterspassword3 = ("BTC")
+    $PoolName = "nlpool"
     if(($InfoCheck) -eq ""){Get-Date | Out-File ".\build\data\info.txt"}
      Clear-Content ".\build\data\system.txt" -Force
      Get-Date | Out-File ".\build\data\system.txt"
@@ -489,36 +462,27 @@ $FinalDonation = (86400/[int]$DonationIntervals)
      $LastTimerCheck = [math]::Round(((Get-Date)-$LastRanDonate).TotalSeconds)
      if(((Get-Date)-$TimerCheck).TotalSeconds -ge $Interval)
       {
-        $Wallet = $WalletSwitch
         $Wallet1 = $WalletSwitch1
         $Wallet2 = $WalletSwitch2
-          $Wallet3 = $WalletSwitch3
+        $Wallet3 = $WalletSwitch3
         $Nicehash_Wallet1 = $Nicehash_Wallet1Switch
         $Nicehash_Wallet2 = $Nicehash_Wallet2Switch
         $Nicehash_Wallet3 = $Nicehash_Wallet3Switch
-        $blockmastersWallet1 = $blockmasterswitch1
-        $blockmastersWallet2 = $blockmasterswitch2
-        $blockmastersWallet3 = $blockmasterswitch3
-        $blockmasterspassword1 = $blockmastersp1
-        $blockmasterspassword2 = $blockmastersp2
-        $blockmasterspassword3 = $blockmastersp3
-        $nlWallet1 = $nlpoolswitch1
-        $nlWallet2 = $nlpoolswitch2
-        $nlWallet3 = $nlpoolswitch3
-        $nlpassword1 = $nlpassswitch1
-        $nlpassword2 = $nlpassswitch2
-        $nlpassword3 = $nlpassswitch3
-        $CPUWallet = $CPUWalletSwitch
-          $UserName = $UserSwitch
-          $WorkerName = $WorkerSwitch
-          $RigName = $RigSwitch
+        $AltWallet1 = $AltWalletswitch1
+        $AltWallet2 = $AltWalletswitch2
+        $AltWallet3 = $AltWalletswitch3
+        $AltPassword1 = $AltPassSwitch1
+        $ALtPassword2 = $AltPassSwitch2
+        $ALtPassword3 = $AltPassSwitch3
+        $RigName1 = $RigSwitch1
+        $RigName2 = $RigSwitch2
+        $RigName3 = $RigSwitch3
         $Interval = $IntervalSwitch
-        $Passwordcurrency = $PasswordSwitch
-          $Passwordcurrency1 = $PasswordSwitch1
+        $Passwordcurrency1 = $PasswordSwitch1
         $Passwordcurrency2 = $PasswordSwitch2
         $Passwordcurrency3 = $PasswordSwitch3
-        $CPUcurrency = $CPUcurrencySwitch
-            Clear-Content ".\build\data\info.txt" -Force
+        $PoolName = $PoolNameSwitch
+        Clear-Content ".\build\data\info.txt" -Force
 	      Write-Host "Leaving Donation Mode- Thank you For The Support!" -foregroundcolor "darkred"
 	      Continue
        }
@@ -1012,7 +976,11 @@ screen. While benchmarking, miner will choose a miner that needs to be
 benched, leaving previously benchmarked miners to vanish from stats 
 screen. They will return if benchmarks were higher than current miner.
 
-This is normal behavior."
+This is normal behavior.
+
+To see all miner benchmarks that have been performed use:
+get benchmarks
+command"
 $Message | Out-File ".\build\bash\minerstats.sh" -Append
 }
 else{$MinerInterval = $Interval}
