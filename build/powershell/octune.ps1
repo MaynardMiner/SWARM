@@ -167,7 +167,7 @@ if($_.Type -like "*AMD*")
        $MEMArgs = $null
        if($MemClock[$GPU]){$MEMArgs += " --mem-clock $($MemClock[$i])"}
        if($MemState[$GPU]){$MEMArgs += " --mem-state $($MemState[$i])"}
-       $WolfArgs = "wolfamdctrl -i $($GCount.AMD.$GPU) $MEMArgs"
+       $WolfArgs = "wolfamdctrl -i $($GCount.AMD.$GPU)$MEMArgs"
        $AScript += "$WolfArgs"
        $AScript += "sleep .1"
      }
@@ -187,7 +187,7 @@ if($_.Type -like "*AMD*")
         $CoreArgs = $null
         if($CoreClock[$GPU]){$CoreArgs += " --core-clock $($CoreClock[$i])"}
         if($CoreState[$GPU]){$CoreArgs += " --core-state $($CoreState[$i])"}
-        $WolfArgs = "wolfamdctrl -i $($GCount.AMD.$GPU) $CoreArgs"
+        $WolfArgs = "wolfamdctrl -i $($GCount.AMD.$GPU)$CoreArgs"
         $AScript += $WolfArgs
         $AScript += "sleep .1"
       }
@@ -208,7 +208,7 @@ if($_.Type -like "*AMD*")
         {
         $VoltArgs = $null
         if($Voltage[$GPU]){$VoltArgs += " --vddc-table-set $($Voltage[$GPU]) --volt-state $i"}
-        $WolfArgs = "wolfamdctrl -i $($GCount.AMD.$GPU) $VoltArgs"
+        $WolfArgs = "wolfamdctrl -i $($GCount.AMD.$GPU)$VoltArgs"
         $AScript += $WolfArgs
         $AScript += "sleep .1"
         }
