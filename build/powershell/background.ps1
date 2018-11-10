@@ -45,7 +45,7 @@ function Get-NvidiaTemps {
    else{
     $A = timeout -s9 10 gpu-stats
     if($A){$Stat = $A | ConvertFrom-Json}
-    $Stat.temp | Select -skip 1
+    $Stat.temp
     }  
 }
 
@@ -61,7 +61,7 @@ function Get-NvidiaFans {
   else{
     $A = timeout -s9 10 gpu-stats
     if($A){$Stat = $A | ConvertFrom-Json}
-    $Stat.fan | Select -skip 1
+    $Stat.fan
       }  
     }
 
@@ -75,7 +75,7 @@ function Get-AMDFans{
   $AMDFans
   }
   else{
-    $A = timeout -s9 10 gpu-stats
+    $A = timeout -s9 5 gpu-stats
     if($A){$Stat = $A | ConvertFrom-Json}
     $Stat.fan | Select -skip 1
       }  
@@ -90,7 +90,7 @@ function Get-AMDTemps {
   $AMDTemps
   }
   else{
-    $A = timeout -s9 10 gpu-stats
+    $A = timeout -s9 5 gpu-stats
     if($A){$Stat = $A | ConvertFrom-Json}
     $Stat.temp | Select -skip 1
       }  
@@ -344,9 +344,11 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
          $Hash = $Data -split ";" | Select-String "KHS" | foreach {$_ -replace ("KHS=","")}
          for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Hash.Count -eq 1){$Hash}else{$Hash[$i]})}
          $Mfan = $Data -split ";" | Select-String "FAN" | foreach {$_ -replace ("FAN=","")}
-         for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MFan.Count -eq 1){$MFan}else{$MFan[$i]})}
+         if($MFan){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MFan.Count -eq 1){$MFan}else{$MFan[$i]})}}
+         else{if($Platforms -eq "linux"){$MinerFans = Get-NVIDIAFans; if($MinerFans){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MinerFans.Count -eq 1){$MinerFans}else{$MinerFans[$($GCount.$TypeS.$GPU)]})}}}}
          $MTemp = $Data -split ";" | Select-String "TEMP" | foreach {$_ -replace ("TEMP=","")}
-         for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($MTemp.Count -eq 1){$MTemp}else{$MTemp[$i]})}
+         if($MTemp){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($MTemp.Count -eq 1){$MTemp}else{$MTemp[$i]})}}
+         else{if($Platforms -eq "linux"){$MinerTemps = Get-NVIDIATemps; if($MinerTemps){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($MinerTemps.Count -eq 1){$MinerTemps}else{$MinerTemps[$($GCount.$TypeS.$GPU)]})}}}}
          $MinerACC = 0
          $MinerREJ = 0
          $MinerACC += $GetSummary -split ";" | Select-String "ACC=" | foreach{$_ -replace ("ACC=","")}
@@ -381,7 +383,7 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
         $Data.accepted_count | Foreach {$ACC += $_}
         $Data.rejected_count | Foreach {$REJ += $_}
         $KHS = if([Double]$Data.hashrate_minute -ne 0 -or [Double]$Data.accepted_count -ne 0){[Double]$Data.hashrate_minute/1000}
-        $UPTIME = $Data.uptime
+        $UPTIME = $Data.uptim
         for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($Data.gpus.temperature.Count -eq 1){$Data.gpus.temperature}else{$Data.gpus.temperature[$i]})}
         for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) =  $(if($Data.gpus.fan_speed.Count -eq 1){$Data.gpus.fan_speed}else{$Data.gpus.fan_speed[$i]})}
         $ALGO = $Data.Algorithm

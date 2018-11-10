@@ -1,0 +1,110 @@
+{
+"NVIDIA1": {
+    "name": "NVIDIA1",
+    "prestart": [],
+    "commands": {
+      "cuckoo": "",
+      "bitcash": "",
+      "x22i": ""
+    },
+    "difficulty": {
+        "cuckoo": "",
+        "bitcash": "",
+        "x22i": ""
+      },
+    "naming": {
+        "cuckoo": "cuckoo",
+        "bitcash": "bitcash",
+        "x22i": "x22i"
+      },
+    "oc": {
+      "cuckoo": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "bitcash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "x22i": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  },
+  "NVIDIA2": {
+    "name": "NVIDIA2",
+    "prestart": [],
+    "commands": {
+      "cuckoo": "",
+      "bitcash": "",
+      "x22i": ""
+    },
+    "difficulty": {
+        "cuckoo": "",
+        "bitcash": "",
+        "x22i": ""
+      },
+    "naming": {
+        "cuckoo": "cuckoo",
+        "bitcash": "bitcash",
+        "x22i": "x22i"
+      },
+    "oc": {
+      "cuckoo": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "bitcash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "x22i": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  },
+  "NVIDIA3": {
+    "name": "NVIDIA3",
+    "prestart": [],
+    "commands": {
+      "cuckoo": "",
+      "bitcash": "",
+      "x22i": ""
+    },
+    "difficulty": {
+        "cuckoo": "",
+        "bitcash": "",
+        "x22i": ""
+      },
+    "naming": {
+        "cuckoo": "cuckoo",
+        "bitcash": "bitcash",
+        "x22i": "x22i"
+      },
+    "oc": {
+      "cuckoo": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "bitcash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "x22i": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  }
+}

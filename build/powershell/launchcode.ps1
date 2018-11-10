@@ -102,6 +102,11 @@ switch -WildCard ($MinerCurrent.Type)
         "trex"{$MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
         "bminer"{$MinerArguments = "-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
         "lolminer"{$MinerArguments = "-devices=$($MinerCurrent.Devices) -profile=miner -usercfg=$($MinerCurrent.jsonfile)"}
+        "zjazz"{
+          $GetDevices = $($MinerCurrent.Devices) -split ","
+          $GetDevices | foreach {$LaunchDevices += "-d $($_) "}         
+          $MinerArguments = "$LaunchDevices$($MinerCurrent.Arguments)"
+        }
        }
       }
      else

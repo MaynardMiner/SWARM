@@ -98,5 +98,15 @@
     "minername": "t-rex",
     "version": "0.7.4",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/t-rex-linux-9-2.tar.gz"
+  },
+  "zjazz": {
+    "name": "zjazz",
+    "type": "nvidia",
+    "path1": ".\\bin\\zjazz-1\\zjazz_cuda",
+    "path2": ".\\bin\\zjazz-2\\zjazz_cuda",
+    "path3": ".\\bin\\zjazz-3\\zjazz_cuda",
+    "minername": "zjazz_cuda",
+    "version": "1.2",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/zjazz-linux-9-2.tar.gz"
   }
 }
