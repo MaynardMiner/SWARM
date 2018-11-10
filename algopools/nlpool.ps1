@@ -60,8 +60,8 @@ $nlpoolAlgo_Request = [PSCustomObject]@{}
                 User1 = $nWallet1
                 User2 = $nWallet2
                 User3 = $nWallet3
-                CPUser = $CPUWallet
-                CPUPass = "c=$CPUcurrency,ID=$Rigname1"
+                CPUser = $nWallet1
+                CPUPass = "c=$npass1,ID=$Rigname1"
                 Pass1 = "c=$npass1,ID=$Rigname1"
                 Pass2 = "c=$npass2,ID=$Rigname2"
                 Pass3 = "c=$npass3,ID=$Rigname3"

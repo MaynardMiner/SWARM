@@ -40,7 +40,7 @@ $blockpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | S
         If($AltWallet1 -ne ''){$blockWallet1 = $AltWallet1}
         else{$blockWallet1 = $Wallet1}
         if($AltWallet2 -ne ''){$blockWallet2 = $AltWallet2}
-        else{$AltWallet2 = $Wallet2}
+        else{$blockWallet2 = $Wallet2}
         if($AltWallet3 -ne ''){$blockWallet3 = $AltWallet3}
         else{$blockWallet3 = $Wallet3}
         if($AltPassword1 -ne ''){$blockpass1 = $Altpassword1}
@@ -63,11 +63,11 @@ $blockpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | S
             User1 = $blockwallet1
 	        User2 = $blockwallet2
             User3 = $blockwallet3
-            CPUser = $CPUWallet
-            CPUPass = "c=$CPUcurrency,ID=$Rigname1"
+            CPUser = $blockwallet1
+            CPUPass = "c=$blockpass1,ID=$Rigname1"
             Pass1 = "c=$blockpass1,ID=$Rigname1"
             Pass2 = "c=$blockpass2,ID=$Rigname2"
-	    Pass3 = "c=$blockpass3,ID=$Rigname3"
+	        Pass3 = "c=$blockpass3,ID=$Rigname3"
             Location = $Location
             SSL = $false
            }

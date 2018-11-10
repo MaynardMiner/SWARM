@@ -903,3 +903,33 @@ but API is awaiting stats.
      ``get stats``
      ``get active``
        -will add more in near future
+
+      1.7.2
+
+  -Remote Updates Are Safe.
+  -AMD Users
+    ``-AMDPlatform`` to specify OpenCL platform
+    ``-OnboardCard`` Yes or No to specify motherboard has integrated GPU
+  -Argument Changes IMPORTANT!!
+    -NlWallet1 2 3 removed
+    -NlPassword1 2 3 removed
+    -BlockmastersWallet1 2 3 removed
+    -BlockmastersWallet1 2 3 removed
+  -New ARGUMENTS!
+   ``-AltWallet1`` 2 and 3
+   ``-AltPassword1`` 2 and 3
+     specify these if you wish to use a wallet other than BTC
+     check with pool to confirm wallet is accepted. Is meant
+     to be used in conjucntion with -Wallet1/-PasswordCurrency1 (BTC address)
+  -New COMMANDS!
+     ``get parameters``
+       used to see current arguments you have specified.
+       can be used to troubleshoot issues.
+  -Updated teamredminer
+  -Updated CryptoDredge
+  -Updated T-Rex
+  -Moved lyclMiner to project folder after multiple user requests.
+  -Fixed OC system, both platforms. OC tuning should now work
+    without fail from SWARM.
+  -
+  

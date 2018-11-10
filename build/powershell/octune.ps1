@@ -66,7 +66,7 @@ $NScript += "`#`!/usr/bin/env bash"
 $AScript = @()
 $AScript += "`#`!/usr/bin/env bash"
 $SettingsArgs = $false
-$OCMiners | foreach {if($_.ocmem -or $_.ocCore){$SettingsArgs = $true}}
+$OCMiners | foreach {if($_.ocmem -or $_.occore){$SettingsArgs = $true}}
 if($SettingsArgs -eq $true){$NScript += "nvidia-settings"}
 
 
@@ -76,15 +76,14 @@ if($_.Type -like "*NVIDIA*")
 {
  if($_.Devices -eq $null){$OCDevices = Get-DeviceString -TypeCount $GCount.NVIDIA.PSObject.Properties.Value.Count}
  else{$OCDevices = Get-DeviceString -TypeDevices $_.Devices}
- Write-Host "$($_.Type) is mining with $($_.Name)"
- Write-Host "Platform is $Platforms"
  $Core = $_.occore -split ' '
  $Mem = $_.ocmem -split ' '
  $Power = $_.ocpower -split ' '
  $Core = $Core -split ","
  $Mem = $Mem -split ","
  $Power = $Power -split ","
- $NScreenMiners += "$($_.Type) is using $($_.Name) mining $($_.Algo) "
+ $NScreenMiners = "$($_.MinerName) "
+
 if($Card)
  {
  if($Core)
@@ -148,14 +147,12 @@ if($_.Type -like "*AMD*")
 {
  if($_.Devices -eq $null){$OCDevices = Get-DeviceString -TypeCount $GCount.AMD.PSObject.Properties.Value.Count}
  else{$OCDevices = Get-DeviceString -TypeDevices $_.Devices}
- Write-Host "$($_.Type) is mining with $($_.Name)"
- Write-Host "Platform is $Platforms"
  $CoreClock = $_.occore -split ' '
  $CoreState = $_.ocdpm -split ' '
  $MemClock = $_.ocmem -split ' '
- $MemState = $_.ocmdmp -split ' '
+ $MemState = $_.ocmdpm -split ' '
  $Voltage = $_.ocv -split ' '
- $AScreenMiners += "$($_.Type) is using $($_.Name) mining $($_.Algo) "
+ $AScreenMiners += "$($_.Minername) "
  if($Card)
  {
 
@@ -170,13 +167,13 @@ if($_.Type -like "*AMD*")
        $MEMArgs = $null
        if($MemClock[$GPU]){$MEMArgs += " --mem-clock $($MemClock[$i])"}
        if($MemState[$GPU]){$MEMArgs += " --mem-state $($MemState[$i])"}
-       $WolfArgs = "wolfamdctrl -i $($GCount.AMD.$GPU) $MEMArgs"
+       $WolfArgs = "wolfamdctrl -i $($GCount.AMD.$GPU)$MEMArgs"
        $AScript += "$WolfArgs"
        $AScript += "sleep .1"
      }
     }
-    $AScreenCore += "$($_.Type) Core is $($_.occore) "
-    $AScreenDPM += "$($_.Type) DPM is $($_.ocdpm) "
+    $AScreenCore += "$($_.Type) MEM is $($_.ocmem) "
+    $AScreenDPM += "$($_.Type) MDPM is $($_.ocmdpm) "
    }
 
     if($CoreClock -or $CoreState)
@@ -190,13 +187,13 @@ if($_.Type -like "*AMD*")
         $CoreArgs = $null
         if($CoreClock[$GPU]){$CoreArgs += " --core-clock $($CoreClock[$i])"}
         if($CoreState[$GPU]){$CoreArgs += " --core-state $($CoreState[$i])"}
-        $WolfArgs = "wolfamdctrl -i $($GCount.AMD.$GPU) $CoreArgs"
+        $WolfArgs = "wolfamdctrl -i $($GCount.AMD.$GPU)$CoreArgs"
         $AScript += $WolfArgs
         $AScript += "sleep .1"
       }
      }
-     $AScreenMem += "$($_.Type) MEM is $($_.ocmem) "
-     $AScreenMDPM += "$($_.Type) MEM is $($_.ocmdpm) "
+     $AScreenMem += "$($_.Type) CORE is $($_.occore) "
+     $AScreenMDPM += "$($_.Type) DPM is $($_.ocdpm) "
     }
   
     if($Voltage)
@@ -211,7 +208,7 @@ if($_.Type -like "*AMD*")
         {
         $VoltArgs = $null
         if($Voltage[$GPU]){$VoltArgs += " --vddc-table-set $($Voltage[$GPU]) --volt-state $i"}
-        $WolfArgs = "wolfamdctrl -i $($GCount.AMD.$GPU) $VoltArgs"
+        $WolfArgs = "wolfamdctrl -i $($GCount.AMD.$GPU)$VoltArgs"
         $AScript += $WolfArgs
         $AScript += "sleep .1"
         }
@@ -266,7 +263,7 @@ $OCMessage += "Cards: $($OCSettings.Cards)"
 
 if($DoNVIDIAOC -eq $true)
 {
-$OCMessage += "Current NVIDIA OC Profile:"
+$OCMessage += "Current NVIDIA OC Profile-"
 $OCMessage += "NVIDIA Miner: $NScreenMiners"
 $OCMessage += "ETHPill: $ETHPill"
 $OCMessage += "Power: $NScreenPower"
@@ -275,7 +272,7 @@ $OCMessage += "Memory Settings: $NScreenMem"
 }
 if($DoAMDOC -eq $true)
 {
-$OCMessage += "Current AMD OC Profile:"
+$OCMessage += "Current AMD OC Profile-"
 $OCMessage += "AMD Miner: $AScreenMiners"
 $OCMessage += "Power: $AScreenPower"
 $OCMessage += "Core Settings: $AScreenCore"

@@ -124,30 +124,11 @@ $GetMiners | Foreach {
   }
 
 ##Set-OC
-$OC = $false
-$GetMiners | foreach {
- if($_.Type -like "*NVIDIA*" -or $_.Type -like "*AMD*" -and $OC -eq $false)
- {
-  Write-Host "Starting Tuning"
-  Start-OC -Platforms $Platforms
-  $OC = $true
- }
-}
-
-##Set-OC
-$OC = $false
-$GetMiners | foreach {
- if($_.Type -like "*NVIDIA*" -or $_.Type -like "*AMD*" -and $OC -eq $false)
- {
-  Write-Host "Starting Tuning"
-  Start-OC -Platforms $Platforms
-  $OC = $true
- }
-}
+Write-Host "Starting Tuning"
+Start-OC -Platforms $Platforms
 
 Start-Sleep -S 10
 $CPUOnly = $true
-
 $GetMiners | Foreach {
   if($_.Type -like "*NVIDIA*" -or $_.Type -like "*AMD*"){$CPUOnly = $false; "GPU" | Set-Content ".\build\txt\miner.txt"}
 }
@@ -173,10 +154,6 @@ $ACC = 0
 for($i=0; $i -lt $GCount.CPU.PSObject.Properties.Value.Count; $i++){$CPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.CPU.$i)" -Value 0;}
 if($DevAMD -eq $true){for($i=0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++){$GPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0; $GPUFans | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0; $GPUTemps | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0; $GPUPower | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0}}
 if($DevNVIDIA -eq $true){for($i=0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++){$GPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; $GPUFans | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; $GPUTemps | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; $GPUPower | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0}}
-
-Write-Host "Initial Hash Array $GPUHashrates"
-if($RAW -ne $null){Write-Host "Initial hashes = $RAW"}
-if($HashRates -ne $null){Write-host "Initial Stats = $HashRates"}
 
 if($Platforms -eq "windows")
 {
@@ -534,7 +511,7 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
    'lyclminer'
     {          
       $HS = "khs"
-      Write-Host "Miner $MinerType is tdxminer (logging) api"
+      Write-Host "Miner $MinerType is lyclminer (logging) api"
       Write-Host "Miner Devices is $Devices"
       $HashArray =@()
       $Hashed = @()
@@ -588,7 +565,7 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
           $KHS += [Double]$TotalRaw/1000
           $ALGO = $MinerAlgo
           $TotalRaw | Set-Content ".\build\txt\$MinerType-hash.txt"
-          Write-Host "Miner $Name was clocked at $([Double]$RAW/1000)" -foreground Yellow
+          Write-Host "Miner $Name was clocked at $([Double]$TotalRaw/1000)" -foreground Yellow
           $Process = Get-Process | Where Name -clike "*$($MinerType)*"
           Write-Host "Current Running instances: $($Process.Name)"
           $AA = $A | Select-String "Accepted"  | Select -Last 1

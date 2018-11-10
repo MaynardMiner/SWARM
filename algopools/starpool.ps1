@@ -59,7 +59,7 @@ $starpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Se
             User1 = $SWallet1
 	        User2 = $SWallet2
             User3 = $SWallet3
-            CPUser = $SPass1
+            CPUser = $SWallet1
             CPUPass = "c=$SPass1,ID=$Rigname1"
             Pass1 = "c=$SPass1,ID=$Rigname1"
             Pass2 = "c=$SPass2,ID=$Rigname2"
