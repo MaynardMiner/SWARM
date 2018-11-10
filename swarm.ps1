@@ -996,19 +996,19 @@ if($Log -eq 12)
 if($LogTimer.Elapsed.TotalSeconds -ge 3600)
  {
   Stop-Transcript
-  if(Test-Path ".\logs\*Active*")
+  if(Test-Path ".\logs\*active*")
   {
    Set-Location ".\logs"
-   $OldActiveFile = Get-ChildItem "*Active*"
+   $OldActiveFile = Get-ChildItem "*active*"
    $OldActiveFile | Foreach {
-    $RenameActive = $_ -replace ("-Active","")
+    $RenameActive = $_ -replace ("-active","")
     if(Test-Path $RenameActive){Remove-Item $RenameActive -Force}
     Rename-Item $_ -NewName $RenameActive -force
     }
    Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
   }
   $Log++
-  Start-Transcript ".\logs\miner$($Log)-Active.log"
+  Start-Transcript ".\logs\miner$($Log)-active.log"
   $LogTimer.Restart()
  }
 
