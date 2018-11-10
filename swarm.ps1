@@ -732,11 +732,11 @@ $BestMiners_Combo | ForEach {
    FirstBad = $null
    Prestart = $_.Prestart
    ocpl = $_.ocpl
-   ocdmp = $_.ocdmp
+   ocdpm = $_.ocdpm
    ocv = $_.ocv
    occore = $_.occore
    ocmem = $_.ocmem
-   ocmdmp = $_.ocmdmp
+   ocmdpm = $_.ocmdpm
    ocpower = $_.ocpower
    ethpill = $_.ethpill
    pilldelay = $_.pilldelay
