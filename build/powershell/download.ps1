@@ -55,6 +55,32 @@ $FileName = Join-Path ".\bin" $New_Path
         }
      }
 
+     if($BuildPath -eq "Dpkg")
+     {
+      if(Test-Path "/usr/bin/$MineName")
+      {
+       Write-Host "Detected Excavator Installation" -ForegroundColor Green
+       if(Test-Path $Path){Remove-Item $Path -Recurse}
+       New-Item $Path -ItemType "directory"
+       Copy-Item "/usr/bin/$MineName" -Destination $Path
+      }
+      else{
+        $DownloadFileURI = Split-Path "$Uri" -Leaf
+        Write-Host "Did Not Detect Excavator Installion Attempting install" -ForegroundColor yellow
+        Start-Process -Filepath "wget" -ArgumentList "$Uri -O x64/$DownloadFileURI" -Wait
+        Start-Process "dpkg" -ArgumentList "-i x64/$DownloadFileURI" -Wait
+        Start-Process "apt-get" -ArgumentList "install -f" -Wait
+        if(Test-Path $Path){Remove-Item $Path -Recurse}
+        New-Item $Path -ItemType "directory"
+        if(Test-Path "/usr/bin/$MineName")
+        {
+          Write-Host "Excavator Was Installed!" -ForegroundColor Green
+          Copy-Item "/usr/bin/$MineName" -Destination $Path
+        }
+        else{Write-Host "Excavator Installation Failed- Install Manually" -ForegroundColor Red}
+      }
+     }
+
      if($BuildPath -eq "Zip")
       {
        if (-not $Path) {$Path = Join-Path ".\x64" ([IO.FileInfo](Split-Path $Uri -Leaf)).BaseName}
