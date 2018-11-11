@@ -1,3 +1,13 @@
+if($amd.phoenix_amd.path1){$Path = "$($amd.phoenix_amd.path1)"}
+else{$Path = "None"}
+if($amd.phoenix_amd.uri){$Uri = "$($amd.phoenix_amd.uri)"}
+else{$Uri = "None"}
+if($amd.phoenix_amd.minername){$MinerName = "$($amd.phoenix_amd.minername)"}
+else{$MinerName = "None"}
+if($Platform -eq "linux"){$Build = "Tar"}
+elseif($Platform -eq "windows"){$Build = "Zip"}
+
+
 ##Miner Path Information
 $Path = "$($amd.phoenix_amd.path1)"
 $Uri = "$($amd.phoenix_amd.uri)"
@@ -40,7 +50,8 @@ if($CoinAlgo -eq $null)
   {
   if($Config.$ConfigType.difficulty.$($_.Algorithm)){$Diff=",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))"}
   [PSCustomObject]@{
-  Symbol = "$($_.Algorithm)"
+    Delay = $Config.$ConfigType.delay
+    Symbol = "$($_.Algorithm)"
   MinerName = $MinerName
   Prestart = $PreStart
   Type = $ConfigType

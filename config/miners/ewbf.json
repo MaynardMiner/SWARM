@@ -1,6 +1,7 @@
 {
   "NVIDIA1": {
     "name": "NVIDIA1",
+    "delay": "1",
     "prestart": [],
     "commands": {
       "equihash-btg": "--algo 144_5 --pers BgoldPoW",
@@ -61,6 +62,7 @@
   },
   "NVIDIA2": {
     "name": "NVIDIA2",
+    "delay": "1",
     "prestart": [],
     "commands": {
       "equihash-btg": "--algo 144_5 --pers BgoldPoW",
@@ -121,6 +123,7 @@
   },
   "NVIDIA3": {
     "name": "NVIDIA3",
+    "delay": "1",
     "prestart": [],
     "commands": {
       "equihash-btg": "--algo 144_5 --pers BgoldPoW",

@@ -1,6 +1,7 @@
 {
   "CPU": {
     "name": "CPU",
+    "delay": "1",
     "prestart": [],
     "commands": {
       "cryptonight": "",

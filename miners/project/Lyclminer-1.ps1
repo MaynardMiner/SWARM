@@ -1,9 +1,11 @@
-##Miner Path Information
-$Path = "$($amd.lyclminer.path1)"
-$Uri = "$($amd.lyclminer.uri)"
-$MinerName = "$($amd.lyclminer.minername)"
-$Build = "Tar"
-$Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
+if($amd.lyclminer.path1){$Path = "$($amd.lyclminer.path1)"}
+else{$Path = "None"}
+if($amd.lyclminer.uri){$Uri = "$($amd.lyclminer.uri)"}
+else{$Uri = "None"}
+if($amd.lyclminer.minername){$MinerName = "$($amd.lyclminer.minername)"}
+else{$MinerName = "None"}
+if($Platform -eq "linux"){$Build = "Tar"}
+elseif($Platform -eq "windows"){$Build = "Zip"}
 
 $ConfigType = "AMD1"
 
@@ -33,6 +35,7 @@ if($CoinAlgo -eq $null)
   {
   if($Config.$ConfigType.difficulty.$($_.Algorithm)){$Diff=",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))"}
   [PSCustomObject]@{
+    Delay = $Config.$ConfigType.delay
     Symbol = "$($_.Algorithm)"
     MinerName = $MinerName
     Prestart = $PreStart

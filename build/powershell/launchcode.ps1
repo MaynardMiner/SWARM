@@ -200,7 +200,7 @@ if($Platforms -eq "windows")
   if($MinerProcess -eq $null -or $MinerProcess.HasExited -eq $true)
   {
     if($Background -eq "No"){Start-BackgroundCheck -BestMiners $BestMiners -Platforms $Platform}
-    Start-Sleep $Delay
+    Start-Sleep -S $MinerCurrent.Delay
     $Logs = Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "logs\$($MinerCurrent.Type).log" 
     $WorkingDirectory = Split-Path $($MinerCurrent.Path)
     if(Test-Path $Logs){Clear-Content $Logs}
@@ -275,7 +275,7 @@ if($OldProcess){kill $OldProcess.Id -ErrorAction SilentlyContinue}  ##Stab
 if($OldProcess){kill $OldProcess.Id -ErrorAction SilentlyContinue}  ##The Process
 if($OldProcess){kill $OldProcess.Id -ErrorAction SilentlyContinue}  ##To Death
 if($Background -eq "No"){Start-BackgroundCheck -Platforms $Platform}
-Start-Sleep $Delay
+Start-Sleep -S $MinerCurrent.Delay
 Set-Location (Split-Path $($MinerCurrent.Path))
 Start-Process "chmod" -ArgumentList "+x $($MinerCurrent.InstanceName)" -Wait
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)

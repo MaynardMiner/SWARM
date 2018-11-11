@@ -27,17 +27,11 @@ $GetAlgoBlocks = $null
 if(Test-Path ".\timeout\pool_block\pool_block.txt"){$GetPoolBlocks = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json}
 if(Test-Path ".\timeout\algo_block\algo_block.txt"){$GetAlgoBlocks = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json}
 
-if($Platforms -eq "linux")
-{
-   $GetMiners = if(Test-Path "miners\linux"){Get-ChildItemContent "miners\linux" | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru} |
-   Where {$Type.Count -eq 0 -or (Compare-Object $Type $_.Type -IncludeEqual -ExcludeDifferent | Measure).Count -gt 0}}
-}
-
-if($Platforms -eq "windows")
-{
-$GetMiners = if(Test-Path "miners\windows"){Get-ChildItemContent "miners\windows" | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru} | 
-Where {$Type.Count -eq 0 -or (Compare-Object $Type $_.Type -IncludeEqual -ExcludeDifferent | Measure).Count -gt 0}}
-}
+$GetMiners = if(Test-Path "miners\gpu"){Get-ChildItemContent "miners\gpu" | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru} |
+ Where {$Type.Count -eq 0 -or (Compare-Object $Type $_.Type -IncludeEqual -ExcludeDifferent | Measure).Count -gt 0} |
+ Where {$_.Path -ne "None"} |
+ Where {$_.Uri -ne "None"} |
+ Where {$_.MinerName -ne "None"}}
 
 $ScreenedMiners = @()
 

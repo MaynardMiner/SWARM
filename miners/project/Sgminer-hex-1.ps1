@@ -1,9 +1,11 @@
-##Miner Path Information
-$Path = "$($amd.sgminerhex.path1)"
-$Uri = "$($amd.sgminerhex.uri)"
-$MinerName = "$($amd.sgminerhex.minername)"
-$Build = "Tar"
-$Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
+if($amd.sgminerhex.path1){$Path = "$($amd.sgminerhex.path1)"}
+else{$Path = "None"}
+if($amd.sgminerhex.uri){$Uri = "$($amd.sgminerhex.uri)"}
+else{$Uri = "None"}
+if($amd.sgminerhex.minername){$MinerName = "$($amd.sgminerhex.minername)"}
+else{$MinerName = "None"}
+if($Platform -eq "linux"){$Build = "Tar"}
+elseif($Platform -eq "windows"){$Build = "Zip"}
 
 $ConfigType = "AMD1"
 
@@ -33,6 +35,7 @@ if($CoinAlgo -eq $null)
   {
   if($Config.$ConfigType.difficulty.$($_.Algorithm)){$Diff=",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))"}
   [PSCustomObject]@{
+    Delay = $Config.$ConfigType.delay
     Symbol = "$($_.Algorithm)"
     MinerName = $MinerName
     Prestart = $PreStart

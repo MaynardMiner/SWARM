@@ -85,8 +85,6 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$Proxy = "", #i.e http://192.0.0.1:8080 
     [Parameter(Mandatory=$false)]
-    [Int]$Delay = 1, #seconds before opening each miner
-    [Parameter(Mandatory=$false)]
     [String]$CoinExchange = "LTC",
     [Parameter(Mandatory=$false)]
     [string]$Auto_Coin = "No",
@@ -599,6 +597,9 @@ if($Platform -eq "windows"){$BestAlgoMiners_Combo = Get-BestWin -SortMiners $Min
 elseif($Platform -eq "linux"){$BestAlgoMiners_Combo = Get-BestUnix -SortMiners $Miners}
 $BestMiners_Combo = $BestAlgoMiners_Combo
 
+##Define Wallet Estimates:
+
+
 ##check if Auto_Coin is working- Start Coin Sorting
 #if($Auto_Coin -eq "Yes")
 #{
@@ -700,6 +701,7 @@ $BestMiners_Combo | ForEach {
      else{$LogType = $_.Devices}
     }
   $ActiveMinerPrograms += [PSCustomObject]@{
+   Delay = $_.Delay
    Name = $_.Name
    Type = $_.Type
    Devices = $_.Devices

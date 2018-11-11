@@ -1,6 +1,11 @@
-$Path = "$($amd.lolminer.path1)"
-$Uri = "$($amd.lolminer.uri)"
-$MinerName = "$($amd.lolminer.minername)"
+if($amd.lolminer.path1){$Path = "$($amd.lolminer.path1)"}
+else{$Path = "None"}
+if($amd.lolminer.uri){$Uri = "$($amd.lolminer.uri)"}
+else{$Uri = "None"}
+if($amd.lolminer.minername){$MinerName = "$($amd.lolminer.minername)"}
+else{$MinerName = "None"}
+if($Platform -eq "linux"){$Build = "Tar"}
+elseif($Platform -eq "windows"){$Build = "Zip"}
 
 $Build = "Tar"
 
@@ -104,8 +109,8 @@ $Commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty 
   {
     if($Difficulty.$_){$Diff=",d=$($Difficulty.$_)"}
       [PSCustomObject]@{
-      Platform = $Platform
-      Symbol = "$($_)"
+      Delay = $Config.$ConfigType.delay
+      Symbol = "$($_.Algorithm)"
       MinerName = $MinerName
       Prestart = $PreStart  
       Type = $MinerType
@@ -113,8 +118,8 @@ $Commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty 
       Devices = $Devices
       DeviceCall = "lolamd"
       Config = "$_.json"
-      Arguments = "-APIPORT=4068 -pool=$($AlgoPools.$_.Host) -port=$($AlgoPools.$_.Port) -user=$($AlgoPools.$_.User1)$($Diff) -pass=$($AlgoPools.$_.Pass1)"
-      HashRates = [PSCustomObject]@{$_ = $($Stats."$($Name)_$($_)_hashrate".Day)}
+      Arguments = "-APIPORT=4068 -pool=$($_.Host) -port=$($_.Port) -user=$($_.User1)$($Diff) -pass=$($_.Pass1)"
+      HashRates = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_)_hashrate".Day)}
       PowerX = [PSCustomObject]@{$_ = if($WattOMeter -eq "Yes"){$($Stats."$($Name)_$($_)_Power".Day)}elseif($Watts.$($_).AMD1_Watts){$Watts.$($_).AMD1_Watts}elseif($Watts.default.AMD1_Watts){$Watts.default.AMD1_Watts}else{0}}
       MinerPool = "$($AlgoPools.$_.Name)"
       FullName = "$($AlgoPools.$_.Mining)"

@@ -1,9 +1,11 @@
-##Miner Path Information
-$Path = "$($nvidia.phoenix.path2)"
-$Uri = "$($nvidia.phoenix.uri)"
-$MinerName = "$($nvidia.phoenix.minername)"
-$Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
-$Build = "Tar"
+if($nvidia.phoenix.path2){$Path = "$($nvidia.phoenix.path2)"}
+else{$Path = "None"}
+if($nvidia.phoenix.uri){$Uri = "$($nvidia.phoenix.uri)"}
+else{$Uri = "None"}
+if($nvidia.phoenix.minername){$MinerName = "$($nvidia.phoenix.minername)"}
+else{$MinerName = "None"}
+if($Platform -eq "linux"){$Build = "Tar"}
+elseif($Platform -eq "windows"){$Build = "Zip"}
 
 $ConfigType = "NVIDIA2"
 
@@ -40,7 +42,8 @@ if($CoinAlgo -eq $null)
   {
   if($Config.$ConfigType.difficulty.$($_.Algorithm)){$Diff=",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))"}
   [PSCustomObject]@{
-  Symbol = "$($_.Algorithm)"
+    Delay = $Config.$ConfigType.delay
+    Symbol = "$($_.Algorithm)"
   MinerName = $MinerName
   Prestart = $PreStart
   Type = $ConfigType

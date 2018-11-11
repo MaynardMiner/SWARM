@@ -1,8 +1,9 @@
 {
     "NVIDIA1": {
       "name": "NVIDIA1",
+      "delay": "1",
       "prestart": [],
-      "commands": {
+        "commands": {
         "ethash": "-esm 2",
         "daggerhashimoto": "-esm 3 -estale 0",
         "dagger": "-esm 2"
@@ -43,8 +44,9 @@
     },
     "NVIDIA2": {
       "name": "NVIDIA2",
+      "delay": "1",
       "prestart": [],
-      "commands": {
+        "commands": {
         "ethash": "-esm 2",
         "daggerhashimoto": "-esm 3 -estale 0",
         "dagger": "-esm 2"
@@ -85,8 +87,9 @@
     },
     "NVIDIA3": {
       "name": "NVIDIA3",
+      "delay": "1",
       "prestart": [],
-      "commands": {
+        "commands": {
         "ethash": "-esm 2",
         "daggerhashimoto": "-esm 3 -estale 0",
         "dagger": "-esm 2"
