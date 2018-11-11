@@ -13,7 +13,9 @@ function set-nicehash {
     [Parameter(Position=4,Mandatory=$false)]
     [String]$CommandFile,
     [Parameter(Position=5,Mandatory=$false)]
-    [String]$NHDevices
+    [String]$NHDevices,
+    [Parameter(Position=6,Mandatory=$false)]
+    [String]$NHCommands
   )
 ##apt-get install ocl-icd-libopencl1
 ##sudo dpkg -i excavator_1.5.13a-cuda10_amd64.deb
@@ -27,6 +29,10 @@ function set-nicehash {
 
 $NHMDevices = Get-DeviceString -TypeDevices $NHDevices
 $Workers = @()
+if($NHCommands)
+{
+ $Workers += $NHCommands | ConvertFrom-Json
+}
 $Workers += @{time = 0;commands = @(@{id= 1; method= "subscribe"; params= [array]"$($NHPool):$($NHPort)","$($NHUser)"})}
 $Workers += @{time=2; commands=@(@{id=1; method = "algorithm.add"; params=@($NHAlgo)})}
 $NHMDevices | foreach {$Workers += @{time = 3; commands = @(@{id = 1; method = "worker.add"; params = [array]"$NHAlgo","$($_)";})}}

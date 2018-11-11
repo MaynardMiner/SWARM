@@ -187,6 +187,7 @@ if(-not (Test-Path ".\build\txt")){New-Item -Path ".\build" -Name "txt" -ItemTyp
 . .\build\powershell\peekaboo.ps1
 . .\build\powershell\checkbackground.ps1
 . .\build\powershell\maker.ps1
+. .\build\powershell\intensity.ps1
 if($Platform -eq "linux"){. .\build\powershell\getbestunix.ps1; . .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
 if($Platform -eq "windows"){. .\build\powershell\getbestwin.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\gpu-count-win.ps1;}
 
@@ -689,7 +690,7 @@ Write-Host "Most Ideal Choice Is $($BestMiners_Selected) on $($BestPool_Selected
   MinerPool = $_.MinerPool
  }
 }
-
+if(-not $AcitiveMinerPrograms){$Type | foreach{if(Test-Path ".\logs\$($_).log"){remove-item ".\logs\$($_).log"}}}
 ##Add Instance Settings To Miners For Tracking
 $BestMiners_Combo | ForEach {
  if(-not ($ActiveMinerPrograms | Where Path -eq $_.Path | Where Arguments -eq $_.Arguments ))
@@ -838,7 +839,6 @@ if($_.BestMiner -eq $false)
      $_.Activated++
      $_.InstanceName = "$($_.Type)-$($Instance)"
      $Current = $_ | ConvertTo-Json -Compress
-     Start-Sleep -S .25
      if($Platform -eq "windows"){$_.Xprocess = Start-LaunchCode -Platforms "windows" -MinerRound $Current_BestMiners -NewMiner $Current -Background $BackgroundDone}
      elseif($Platform -eq "Linux"){$_.Xprocess = Start-LaunchCode -Platforms "linux" -MinerRound $Current_BestMiners -NewMiner $Current -Background $BackgroundDone}
      $BackgroundDone = "Yes"
@@ -1308,6 +1308,8 @@ if($_.BestMiner -eq $true)
                Write-Host "$($_.Name) $($_.Coins) Was Benchmarked And Backed Up" -foregroundcolor yellow
               }
              $_.WasBenchmarked = $True
+             $Current = $_ | ConvertTo-Json -Compress
+             Get-Intensity $Current
 	           Write-Host "Stat Written" -foregroundcolor green
              $Strike = $false
             } 

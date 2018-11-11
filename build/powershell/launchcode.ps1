@@ -111,7 +111,7 @@ switch -WildCard ($MinerCurrent.Type)
         {
          $MinerDirectory = Split-Path ($MinerCurrent.Path)
          $MinerArguments = "-c command.json -p $($MinerCurrent.Port)"
-         set-nicehash $($MinerCurrent.NPool) 3200 $($MinerCurrent.NUser) $($MinerCurrent.Algo) $($MinerCurrent.CommandFile) "$($MinerCurrent.Devices)"
+         set-nicehash $($MinerCurrent.NPool) 3200 $($MinerCurrent.NUser) $($MinerCurrent.Algo) $($MinerCurrent.CommandFile) "$($MinerCurrent.Devices)" "$($MinerCurrent.NCommands)"
         }
        }
       }

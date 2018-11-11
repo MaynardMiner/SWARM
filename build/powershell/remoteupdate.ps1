@@ -22,6 +22,7 @@ if($Update -eq "Yes")
 $PreviousVersions = @()
 $PreviousVersions += "SWARM.1.7.0"
 $PreviousVersions += "SWARM.1.7.1"
+$PreviousVersions += "SWARM.1.7.2"
 
 $PreviousVersions | foreach {
   $PreviousPath = Join-Path "/hive/custom" "$_"

@@ -46,6 +46,7 @@ if($CoinAlgo -eq $null)
   Devices = $Devices
   NPool = $($_.Excavator)
   NUser = $($_.User1)
+  NCommand = if($Config.$ConfigType.commands.$($_.Algorithm)){$Config.$ConfigType.commands.$($_.Algorithm) | ConvertTo-Json -Compress}
   Commandfile = $CommandFile
   DeviceCall = "excavator"
   Arguments = "-a $($Config.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -b 0.0.0.0:4068 -u $($_.User1) -p $($_.Pass1)$($Diff) $($Config.$ConfigType.commands.$($_.Algorithm))"
