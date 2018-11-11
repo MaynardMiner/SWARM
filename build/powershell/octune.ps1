@@ -198,6 +198,7 @@ if($_.Type -like "*AMD*")
   
     if($Voltage)
     {
+      $WolfArgs = @()
       $DOAmdOC = $true
      for($i=0; $i -lt $OCDevices.Count; $i++)
      {
@@ -206,14 +207,12 @@ if($_.Type -like "*AMD*")
       {
         for($i=1; $i -lt 16; $i++)
         {
-        $VoltArgs = $null
-        if($Voltage[$GPU]){$VoltArgs += " --vddc-table-set $($Voltage[$GPU]) --volt-state $i"}
-        $WolfArgs = "wolfamdctrl -i $($GCount.AMD.$GPU)$VoltArgs"
-        $AScript += $WolfArgs
-        $AScript += "sleep .1"
+        if($Voltage[$GPU]){$WolfArgs += "wolfamdctrl -i $($GCount.AMD.$GPU) --vddc-table-set $($Voltage[$GPU]) --volt-state $i"}
+        $WolfArgs += "sleep .1"
         }
        }
       }
+      $AScript += $WolfArgs
       $AScreenPower += "$($_.Type) V is $($_.ocv) "
      }
     
