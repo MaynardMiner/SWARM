@@ -9,8 +9,11 @@ $ParseLog = ".\logs\$($GetLogMiner.Type).log"
 if(Test-Path $ParseLog)
 {
  $GetInfo = @()
- $GetInfo += Get-Content $ParseLog | Select-String "intensity","difficulty"
+ $GetInfo += Get-Content $ParseLog
+ $GetIntensity = $GetInfo | Select-String "intensity"
+ $GetDifficulty = $GetInfo | Select-String "difficulty"
  $NotePath = Split-Path $GetLogMiner.Path
- $GetInfo | Set-Content "$NotePath\Swarm_$($GetLogMiner.Algo)_Details"
+ if($GetIntensity){$GetIntensity | Set-Content "$NotePath\$($GetLogMiner.Algo)_Intensity.txt"}
+ if($GetDifficulty){$GetInfo | Set-Content "$NotePath\$($GetLogMiner.Algo)_Difficulty.txt"}
 }
 }
