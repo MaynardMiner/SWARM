@@ -115,7 +115,6 @@ $DevAMD = $false
 $StartTime = Get-Date
 
 $GetMiners | Foreach {
-  $MinerAlgo = $($_.Algo)
   $NEW=0; 
   $NEW | Set-Content ".\build\txt\$($_.Type)-hash.txt";
   $Name = $($_.Name)
@@ -172,6 +171,7 @@ Write-Host "Power is $NVIDIAPower"
 }
 
 $GetMiners | Foreach {
+$MinerAlgo = $($_.Algo)
 $Name = $_.Name
 $Server = "localhost"
 $Interval = 15
@@ -279,6 +279,47 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
       }
       else{Write-Host "$MinerAPI API Failed- Coult Not Get Stats" -Foreground Red; $RAW = 0; $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"}
     }
+   'excavator'
+   {
+   $HS = "khs"
+   Write-Host "Miner $MinerType is excavator api"
+   Write-Host "Miner Port is $Port"
+   Write-Host "Miner Devices is $Devices"
+   $Message = @{id=1; method = "algorithm.list"; params=@()} | ConvertTo-Json -Compress
+   $GetSummary = Get-TCP -Server $Server -Port $port -Message $Message
+   if($GetSummary)
+    {
+    $Summary = $GetSummary | ConvertFrom-Json
+    $RAW = $Summary.algorithms.speed
+    $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
+    Write-Host "Miner $Name was clocked at $([Double]$RAW/1000)" -foreground Yellow
+    $Process = Get-Process | Where Name -clike "*$($MinerType)*"
+    Write-Host "Current Running instances: $($Process.Name)"
+    $KHS += [Double]$Summary.algorithms.speed/1000
+    }
+    else{Write-Host "API Summary Failed- Could Not Total Hashrate Or No Accepted Shares" -Foreground Red; $RAW = 0; $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"}
+    $Message = @{id=1; method = "worker.list"; params=@()} | ConvertTo-Json -Compress
+    $GetThreads = Get-TCP -Server $Server -Port $port -Message $Message
+    if($GetThreads)
+    {
+    $Threads = $GetThreads | ConvertFrom-Json
+    $Hash = $Threads.workers.algorithms.speed
+    if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Hash.Count -eq 1){[Double]$Hash/1000}else{[Double]$Hash[$i]/1000})}}
+    $ACC += $Summary.algorithms.accepted_shares
+    $REJ += $Summary.algorithms.rejected_shares
+    $MinerACC = 0
+    $MinerREJ = 0
+    $MinerACC += $Summary.algorithms.accepted_shares
+    $MinerREJ += $Summary.algorithms.rejected_shares
+    $UPTIME = $Summary.algorithms.uptime
+    $ALGO = $Summary.algorithms.name
+    if($Platforms -eq "linux"){$MinerFans = Get-NVIDIAFans; if($MinerFans){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MinerFans.Count -eq 1){$MinerFans}else{$MinerFans[$($GCount.$TypeS.$GPU)]})}}}
+    if($Platforms -eq "linux"){$MinerTemps = Get-NVIDIATemps; if($MinerTemps){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($MinerTemps.Count -eq 1){$MinerTemps}else{$MinerTemps[$($GCount.$TypeS.$GPU)]})}}}
+    }
+    else{Write-Host "API Threads Failed- Could Not Get Individual GPU Information" -Foreground Red}
+   }
+
+
    'ewbf'
       {
        $HS = "hs"

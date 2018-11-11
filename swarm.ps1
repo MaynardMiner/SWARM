@@ -188,6 +188,7 @@ if(-not (Test-Path ".\build\txt")){New-Item -Path ".\build" -Name "txt" -ItemTyp
 . .\build\powershell\powerup.ps1
 . .\build\powershell\peekaboo.ps1
 . .\build\powershell\checkbackground.ps1
+. .\build\powershell\maker.ps1
 if($Platform -eq "linux"){. .\build\powershell\getbestunix.ps1; . .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
 if($Platform -eq "windows"){. .\build\powershell\getbestwin.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\gpu-count-win.ps1;}
 
@@ -741,6 +742,9 @@ $BestMiners_Combo | ForEach {
    ethpill = $_.ethpill
    pilldelay = $_.pilldelay
    quote = 0
+   NPool = $_.NPool
+   NUser = $_.NUser
+   CommandFile = $_.CommandFile
   }
  }
 }

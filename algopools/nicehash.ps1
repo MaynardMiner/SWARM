@@ -39,6 +39,7 @@ if($Location -eq "EUROPE")
 $nicehash_Request.result | Select-Object -ExpandProperty simplemultialgo | Where paying -ne 0 | Where {$Naming.$($_.Name)} | ForEach-Object {
   
     $nicehash_Host = "$($_.name).$Region.nicehash.com"
+    $nicehash_excavator = "nhmp.$Region.nicehash.com"
     $nicehash_Port = $_.port
     $nicehash_Algorithm = Get-Algorithm $_.name
     $nicehash_Fees = $Nicehash_Fee
@@ -55,6 +56,7 @@ $nicehash_Request.result | Select-Object -ExpandProperty simplemultialgo | Where
         {  
         [PSCustomObject]@{
             Coin = "No"
+            Excavator = $nicehash_excavator
             Symbol = $nicehash_Algorithm
             Mining = $nicehash_Algorithm
             Algorithm = $nicehash_Algorithm

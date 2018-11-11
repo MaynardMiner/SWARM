@@ -108,5 +108,15 @@
     "minername": "zjazz_cuda",
     "version": "1.2",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/zjazz-linux-9-2.tar.gz"
+  },
+  "excavator": {
+    "name": "excavator",
+    "type": "nvidia",
+    "path1": ".\\bin\\excavator-1\\excavator",
+    "path2": ".\\bin\\excavator-2\\excavator",
+    "path3": ".\\bin\\excavator-3\\excavator",
+    "minername": "excavator",
+    "version": "1.5.13",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/zjazz-linux-9-2.tar.gz"
   }
 }

@@ -106,12 +106,27 @@ switch -WildCard ($MinerCurrent.Type)
           $GetDevices = $($MinerCurrent.Devices) -split ","
           $GetDevices | foreach {$LaunchDevices += "-d $($_) "}         
           $MinerArguments = "$LaunchDevices$($MinerCurrent.Arguments)"
+         }
+        "excavator"
+        {
+         $MinerDirectory = Split-Path ($MinerCurrent.Path)
+         $MinerArguments = "-c command.json -p $($MinerCurrent.Port)"
+         set-nicehash $($MinerCurrent.NPool) 3200 $($MinerCurrent.NUser) $($MinerCurrent.Algo) $($MinerCurrent.CommandFile) "$($MinerCurrent.Devices)"
         }
        }
       }
      else
       {
        if($MinerCurrent.DeviceCall -eq "lolminer"){$MinerArguments = "-profile=miner -usercfg=$($MinerCurrent.jsonfile)"}
+       if($MinerCurrent.DeviceCall -eq "excavator")
+       {
+        $MinerDirectory = Split-Path ($MinerCurrent.Path) -Parent
+        $CommandFilePath = Join-Path $dir "$($MinerDirectory)\command.json"
+        $MinerArguments = "-c command.json -p $($MinerCurrent.Port)"
+        $NHDevices = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
+        $NiceDevices = Get-DeviceString -TypeCount $NHDevices.NVIDIA.Count
+        set-nicehash $($MinerCurrent.NPool) 3200 $($MinerCurrent.NUser) $($MinerCurrent.Algo) $($MinerCurrent.CommandFile) "$NiceDevices"
+       }
        else{$MinerArguments = "$($MinerCurrent.Arguments)"}
       }
     }

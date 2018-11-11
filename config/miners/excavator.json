@@ -1,0 +1,351 @@
+{
+    "NVIDIA1": {
+      "name": "NVIDIA1",
+      "prestart": [],
+      "commands": {
+        "equihash": "",
+        "pascal": "",
+        "decred": "",
+        "blake2s": "",
+        "daggerhashimoto": "",
+        "lyra2rev2": "",
+        "keccak": "",
+        "neoscrypt": "",
+        "lyra2z": "",
+        "x16r": "",
+        "cryptonightv7": "",
+        "cryptonightv8": "",
+        "lyra2re": ""
+      },
+      "difficulty": {
+        "equihash": "",
+        "pascal": "",
+        "decred": "",
+        "blake2s": "",
+        "daggerhashimoto": "",
+        "lyra2rev2": "",
+        "keccak": "",
+        "neoscrypt": "",
+        "lyra2z": "",
+        "x16r": "",
+        "cryptonightv7": "",
+        "cryptonightv8": "",
+        "lyra2re": ""
+      },
+      "naming": {
+        "equihash": "equihash",
+        "pascal": "pascal",
+        "decred": "decred",
+        "blake2s": "blake2s",
+        "daggerhashimoto": "daggerhashimoto",
+        "lyra2rev2": "lyra2rev2",
+        "keccak": "keccak",
+        "neoscrypt": "neoscrypt",
+        "lyra2z": "lyra2z",
+        "x16r": "x16r",
+        "cryptonightv7": "cryptonightV7",
+        "cryptonightv8": "cryptonightV8",
+      "lyra2re": "lyra2re"
+      },
+      "oc": {
+        "equihash": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        },
+        "pascal": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        },
+        "decred": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        },
+        "blake2s": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        },
+        "daggerhashimoto": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        },
+        "lyra2rev2": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        },      
+        "keccak": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        },
+        "neoscrypt": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        },
+        "lyra2z": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        },
+        "cryptonightv7": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        },
+        "cryptonightv8": {
+            "Power": "",
+            "Core": "",
+            "Memory": ""
+          },
+          "x16r": {
+            "Power": "",
+            "Core": "",
+            "Memory": ""
+          },
+          "lyra2re": {
+            "Power": "",
+            "Core": "",
+            "Memory": ""
+          }
+      }
+    },
+    "NVIDIA2": {
+        "name": "NVIDIA2",
+        "prestart": [],
+        "commands": {
+          "equihash": "",
+          "pascal": "",
+          "decred": "",
+          "blake2s": "",
+          "daggerhashimoto": "",
+          "lyra2rev2": "",
+          "keccak": "",
+          "neoscrypt": "",
+          "lyra2z": "",
+          "x16r": "",
+          "cryptonightv7": "",
+          "cryptonightv8": "",
+            "lyra2re": ""
+        },
+        "difficulty": {
+          "equihash": "",
+          "pascal": "",
+          "decred": "",
+          "blake2s": "",
+          "daggerhashimoto": "",
+          "lyra2rev2": "",
+          "keccak": "",
+          "neoscrypt": "",
+          "lyra2z": "",
+          "x16r": "",
+          "cryptonightv7": "",
+          "cryptonightv8": "",
+            "lyra2re": ""
+        },
+        "naming": {
+          "equihash": "equihash",
+          "pascal": "pascal",
+          "decred": "decred",
+          "blake2s": "blake2s",
+          "daggerhashimoto": "daggerhashimoto",
+          "lyra2rev2": "lyra2rev2",
+          "keccak": "keccak",
+          "neoscrypt": "neoscrypt",
+          "lyra2z": "lyra2z",
+          "x16r": "x16r",
+          "cryptonightv7": "cryptonightV7",
+          "cryptonightv8": "cryptonightV8",
+          "lyra2re": "lyra2re"
+        },
+        "oc": {
+          "equihash": {
+            "Power": "",
+            "Core": "",
+            "Memory": ""
+          },
+          "pascal": {
+            "Power": "",
+            "Core": "",
+            "Memory": ""
+          },
+          "decred": {
+            "Power": "",
+            "Core": "",
+            "Memory": ""
+          },
+          "blake2s": {
+            "Power": "",
+            "Core": "",
+            "Memory": ""
+          },
+          "daggerhashimoto": {
+            "Power": "",
+            "Core": "",
+            "Memory": ""
+          },
+          "lyra2rev2": {
+            "Power": "",
+            "Core": "",
+            "Memory": ""
+          },      
+          "keccak": {
+            "Power": "",
+            "Core": "",
+            "Memory": ""
+          },
+          "neoscrypt": {
+            "Power": "",
+            "Core": "",
+            "Memory": ""
+          },
+          "lyra2z": {
+            "Power": "",
+            "Core": "",
+            "Memory": ""
+          },
+          "cryptonightv7": {
+              "Power": "",
+              "Core": "",
+              "Memory": ""
+            },
+            "cryptonightv8": {
+              "Power": "",
+              "Core": "",
+              "Memory": ""
+            },
+            "x16r": {
+              "Power": "",
+              "Core": "",
+              "Memory": ""
+            },
+            "lyra2re": {
+              "Power": "",
+              "Core": "",
+              "Memory": ""
+            }
+        }
+      },
+      "NVIDIA3": {
+        "name": "NVIDIA3",
+        "prestart": [],
+        "commands": {
+          "equihash": "",
+          "pascal": "",
+          "decred": "",
+          "blake2s": "",
+          "daggerhashimoto": "",
+          "lyra2rev2": "",
+          "keccak": "",
+          "neoscrypt": "",
+          "lyra2z": "",
+          "x16r": "",
+          "cryptonightv7": "",
+          "cryptonightv8": "",
+            "lyra2re": ""
+        },
+        "difficulty": {
+          "equihash": "",
+          "pascal": "",
+          "decred": "",
+          "blake2s": "",
+          "daggerhashimoto": "",
+          "lyra2rev2": "",
+          "keccak": "",
+          "neoscrypt": "",
+          "lyra2z": "",
+          "x16r": "",
+          "cryptonightv7": "",
+          "cryptonightv8": "",
+            "lyra2re": ""
+        },
+        "naming": {
+          "equihash": "equihash",
+          "pascal": "pascal",
+          "decred": "decred",
+          "blake2s": "blake2s",
+          "daggerhashimoto": "daggerhashimoto",
+          "lyra2rev2": "lyra2rev2",
+          "keccak": "keccak",
+          "neoscrypt": "neoscrypt",
+          "lyra2z": "lyra2z",
+          "x16r": "x16r",
+          "cryptonightv7": "cryptonightV7",
+          "cryptonightv8": "cryptonightV8",
+          "lyra2re": "lyra2re"
+        },
+        "oc": {
+          "equihash": {
+            "Power": "",
+            "Core": "",
+            "Memory": ""
+          },
+          "pascal": {
+            "Power": "",
+            "Core": "",
+            "Memory": ""
+          },
+          "decred": {
+            "Power": "",
+            "Core": "",
+            "Memory": ""
+          },
+          "blake2s": {
+            "Power": "",
+            "Core": "",
+            "Memory": ""
+          },
+          "daggerhashimoto": {
+            "Power": "",
+            "Core": "",
+            "Memory": ""
+          },
+          "lyra2rev2": {
+            "Power": "",
+            "Core": "",
+            "Memory": ""
+          },      
+          "keccak": {
+            "Power": "",
+            "Core": "",
+            "Memory": ""
+          },
+          "neoscrypt": {
+            "Power": "",
+            "Core": "",
+            "Memory": ""
+          },
+          "lyra2z": {
+            "Power": "",
+            "Core": "",
+            "Memory": ""
+          },
+          "cryptonightv7": {
+              "Power": "",
+              "Core": "",
+              "Memory": ""
+            },
+            "cryptonightv8": {
+              "Power": "",
+              "Core": "",
+              "Memory": ""
+            },
+            "x16r": {
+              "Power": "",
+              "Core": "",
+              "Memory": ""
+            },
+            "lyra2re": {
+              "Power": "",
+              "Core": "",
+              "Memory": ""
+            }
+        }
+      }
+    }
+  
