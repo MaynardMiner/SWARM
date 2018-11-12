@@ -29,21 +29,24 @@
           "v": "",
           "core": "",
           "mem": "",
-          "mdpm": ""
+          "mdpm": "",
+          "fans": ""  
         },
         "daggerhashimoto": {
           "dpm": "",
           "v": "",
           "core": "",
           "mem": "",
-          "mdpm": ""
+          "mdpm": "",
+          "fans": ""  
         },
         "dagger": {
           "dpm": "",
           "v": "",
           "core": "",
           "mem": "",
-          "mdpm": ""
+          "mdpm": "",
+          "fans": ""  
         }
       }
     }

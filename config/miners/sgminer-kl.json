@@ -38,42 +38,48 @@
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       },
       "tribus": {
         "dpm": "",
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       },
       "aergo": {
         "dpm": "",
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       },
       "geek": {
         "dpm": "",
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       },
       "c11": {
         "dpm": "",
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       },
       "xevan": {
         "dpm": "",
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       }
     }
   }

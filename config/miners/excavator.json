@@ -14,8 +14,6 @@
         "neoscrypt": "",
         "lyra2z": "",
         "x16r": "",
-        "cryptonightv7": "",
-        "cryptonightv8": "",
         "lyra2re": ""
       },
       "difficulty": {
@@ -29,8 +27,6 @@
         "neoscrypt": "",
         "lyra2z": "",
         "x16r": "",
-        "cryptonightv7": "",
-        "cryptonightv8": "",
         "lyra2re": ""
       },
       "naming": {
@@ -44,8 +40,6 @@
         "neoscrypt": "neoscrypt",
         "lyra2z": "lyra2z",
         "x16r": "x16r",
-        "cryptonightv7": "cryptonightV7",
-        "cryptonightv8": "cryptonightV8",
       "lyra2re": "lyra2re"
       },
       "oc": {
@@ -94,16 +88,6 @@
           "Core": "",
           "Memory": ""
         },
-        "cryptonightv7": {
-          "Power": "",
-          "Core": "",
-          "Memory": ""
-        },
-        "cryptonightv8": {
-            "Power": "",
-            "Core": "",
-            "Memory": ""
-          },
           "x16r": {
             "Power": "",
             "Core": "",
@@ -131,8 +115,6 @@
           "neoscrypt": "",
           "lyra2z": "",
           "x16r": "",
-          "cryptonightv7": "",
-          "cryptonightv8": "",
             "lyra2re": ""
         },
         "difficulty": {
@@ -146,8 +128,6 @@
           "neoscrypt": "",
           "lyra2z": "",
           "x16r": "",
-          "cryptonightv7": "",
-          "cryptonightv8": "",
             "lyra2re": ""
         },
         "naming": {
@@ -161,8 +141,6 @@
           "neoscrypt": "neoscrypt",
           "lyra2z": "lyra2z",
           "x16r": "x16r",
-          "cryptonightv7": "cryptonightV7",
-          "cryptonightv8": "cryptonightV8",
           "lyra2re": "lyra2re"
         },
         "oc": {
@@ -211,16 +189,6 @@
             "Core": "",
             "Memory": ""
           },
-          "cryptonightv7": {
-              "Power": "",
-              "Core": "",
-              "Memory": ""
-            },
-            "cryptonightv8": {
-              "Power": "",
-              "Core": "",
-              "Memory": ""
-            },
             "x16r": {
               "Power": "",
               "Core": "",
@@ -248,8 +216,6 @@
           "neoscrypt": "",
           "lyra2z": "",
           "x16r": "",
-          "cryptonightv7": "",
-          "cryptonightv8": "",
             "lyra2re": ""
         },
         "difficulty": {
@@ -263,8 +229,6 @@
           "neoscrypt": "",
           "lyra2z": "",
           "x16r": "",
-          "cryptonightv7": "",
-          "cryptonightv8": "",
             "lyra2re": ""
         },
         "naming": {
@@ -278,8 +242,6 @@
           "neoscrypt": "neoscrypt",
           "lyra2z": "lyra2z",
           "x16r": "x16r",
-          "cryptonightv7": "cryptonightV7",
-          "cryptonightv8": "cryptonightV8",
           "lyra2re": "lyra2re"
         },
         "oc": {
@@ -328,16 +290,6 @@
             "Core": "",
             "Memory": ""
           },
-          "cryptonightv7": {
-              "Power": "",
-              "Core": "",
-              "Memory": ""
-            },
-            "cryptonightv8": {
-              "Power": "",
-              "Core": "",
-              "Memory": ""
-            },
             "x16r": {
               "Power": "",
               "Core": "",

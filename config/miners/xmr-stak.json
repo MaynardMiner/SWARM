@@ -32,28 +32,32 @@
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       },
       "cryptonightv7": {
         "dpm": "",
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       },
       "cryptonightv8": {
         "dpm": "",
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       },
       "cryptonightheavy": {
         "dpm": "",
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       }
     }
   }

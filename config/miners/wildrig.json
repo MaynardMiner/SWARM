@@ -68,112 +68,128 @@
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       },
       "c11": {
         "dpm": "",
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       },
       "geek": {
         "dpm": "",
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       },
       "hmq1725": {
         "dpm": "",
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       },
       "hex": {
         "dpm": "",
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       },
       "phi": {
         "dpm": "",
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       },
       "renesis": {
         "dpm": "",
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       },
       "skunk": {
         "dpm": "",
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       },
       "sonoa": {
         "dpm": "",
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       },
       "timetravel": {
         "dpm": "",
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       },
       "tribus": {
         "dpm": "",
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       },
       "x16s": {
         "dpm": "",
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       },
       "x16r": {
         "dpm": "",
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       },
       "x17": {
         "dpm": "",
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       },
       "bitcore": {
         "dpm": "",
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       },
       "x22i": {
         "dpm": "",
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       }
     }
   }

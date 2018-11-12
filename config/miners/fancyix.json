@@ -32,28 +32,34 @@
           "v": "",
           "core": "",
           "mem": "",
-          "mdpm": ""
+          "mdpm": "",
+          "fans": ""  
         },
         "lyra2z": {
           "dpm": "",
           "v": "",
           "core": "",
           "mem": "",
-          "mdpm": ""
+          "mdpm": "",
+          "fans": ""
+  
         },
         "phi2": {
           "dpm": "",
           "v": "",
           "core": "",
           "mem": "",
-          "mdpm": ""
+          "mdpm": "",
+          "fans": ""  
         },
         "allium": {
           "dpm": "",
           "v": "",
           "core": "",
           "mem": "",
-          "mdpm": ""
+          "mdpm": "",
+          "fans": ""
+  
         }
       }
     }

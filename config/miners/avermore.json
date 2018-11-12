@@ -35,35 +35,40 @@
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       },
       "groestl": {
         "dpm": "",
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       },
       "x16r": {
         "dpm": "",
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       },
       "x16s": {
         "dpm": "",
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       },
       "equihash": {
         "dpm": "",
         "v": "",
         "core": "",
         "mem": "",
-        "mdpm": ""
+        "mdpm": "",
+        "fans": ""
       }
     }
   }

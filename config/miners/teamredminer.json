@@ -32,28 +32,32 @@
           "v": "",
           "core": "",
           "mem": "",
-          "mdpm": ""
+          "mdpm": "",
+          "fans": ""  
         },
         "lyra2z": {
           "dpm": "",
           "v": "",
           "core": "",
           "mem": "",
-          "mdpm": ""
+          "mdpm": "",
+          "fans": ""  
         },
         "cryptonightv8": {
           "dpm": "",
           "v": "",
           "core": "",
           "mem": "",
-          "mdpm": ""
+          "mdpm": "",
+          "fans": ""  
         },
         "lyra2re": {
           "dpm": "",
           "v": "",
           "core": "",
           "mem": "",
-          "mdpm": ""
+          "mdpm": "",
+          "fans": ""  
         }
       }
     }

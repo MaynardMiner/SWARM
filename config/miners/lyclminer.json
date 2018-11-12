@@ -26,14 +26,16 @@
           "v": "",
           "core": "",
           "mem": "",
-          "mdpm": ""
+          "mdpm": "",
+          "fans": ""
         },
         "lyra2rev2": {
           "dpm": "",
           "v": "",
           "core": "",
           "mem": "",
-          "mdpm": ""
+          "mdpm": "",
+          "fans": ""  
         }
       }
     }
