@@ -688,6 +688,7 @@ Write-Host "Most Ideal Choice Is $($BestMiners_Selected) on $($BestPool_Selected
  $Miners | foreach {
  $ProfitTable += [PSCustomObject]@{
   Power = [Decimal]$($_.Power*24)/1000*$WattEX
+  Pool_Estimate = $_.Pool_Estimate
   Type = $_.Type
   Miner = $_.Name
   Name = $($_.Symbol)
@@ -936,6 +937,16 @@ if($Restart -eq $false)
   " -foreground DarkCyan
   Start-Sleep -s 5
  }
+
+if($Launch -eq "No"){
+$UsePools = $false
+$ProfitTable | foreach{if($_.Profits -ne $null){$UsePools = $true}}
+if($UsePools -eq $false){$APITable = $ProfitTable | Sort-Object -Property Type,Profits -Descending}
+else{$APITable = $ProfitTable | Sort-Object -Property Type,Pool_Estimate}
+$APITable | ConvertTo-Json -Depth 4 | Set-Content ".\build\txt\profittable.txt"
+Start-BackgroundCheck -Platforms $Platform
+}
+
  function Get-MinerActive {
 
   $ActiveMinerPrograms | Sort-Object -Descending Status,

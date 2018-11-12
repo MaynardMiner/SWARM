@@ -40,6 +40,7 @@ function start-minersorting {
             $Miner_Profits_Comparison = [PSCustomObject]@{}
             $Miner_Profits_Bias = [PSCustomObject]@{}
             $Miner_PowerX = [PSCustomObject]@{}
+            $Miner_Pool_Estimate = [PSCustomObject]@{}
      
             $Miner_Types = $Miner.Type | Select -Unique
             $Miner_Indexes = $Miner.Index | Select -Unique
@@ -61,13 +62,15 @@ function start-minersorting {
             $Miner_Profits | Add-Member $_ ([Decimal](($Miner.HashRates.$_*$Pool.Price)-$WattCalc3))
             $Miner_Profits_Comparison | Add-Member $_ ([Decimal](($Miner.HashRates.$_*$Pool_Comparison.Price)-$WattCalc3))
             $Miner_Profits_Bias | Add-Member $_ ([Decimal](($Miner.HashRates.$_*$Pool.Price*(1-($Pool.MarginOfError*[Math]::Pow($DBase,$DExponent))))-$WattCalc3))
+            $Miner_Pool_Estimate | Add-Member $_ ([Decimal]($Pool.Price))
             }
             
             $Miner_Power = [Double]($Miner_PowerX.PSObject.Properties.Value | Measure -Sum).Sum
             $Miner_Profit = [Double]($Miner_Profits.PSObject.Properties.Value | Measure -Sum).Sum
             $Miner_Profit_Comparison = [Double]($Miner_Profits_Comparison.PSObject.Properties.Value | Measure -Sum).Sum
             $Miner_Profit_Bias = [Double]($Miner_Profits_Bias.PSObject.Properties.Value | Measure -Sum).Sum
-            
+            $Miner_Pool_Estimate = [Double]($Miner_Pool_Estimate.PSObject.Properties.Value | Measure -Sum).sum
+
         if($Command -eq "Algo")
          {
             $Miner.HashRates | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | ForEach {
@@ -101,7 +104,7 @@ function start-minersorting {
             $Miner | Add-Member Profit_Comparison $Miner_Profit_Comparison
             $Miner | Add-Member Profit_Bias $Miner_Profit_Bias
             $Miner | Add-Member Power $Miner_Power
-     
+            $Miner | Add-Member Pool_Estimate $Miner_Pool_Estimate
             $Miner | Add-Member Type $Miner_Types -Force
             $Miner | Add-Member Index $Miner_Indexes -Force
      

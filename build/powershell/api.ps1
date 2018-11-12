@@ -21,23 +21,20 @@ while ($true) {
     } else {
 
         # Split request URL to get command and options
-        $requestvars = ([String]$request.Url).split("/");        
-
-        # If a request is sent to http:// :8000/wmi
-        if ($requestvars[3] -eq "summary") {
-         if(Test-Path ".\build\txt\bestminers.txt")
-         {
-         $result = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-JSon;
-         $message = $result | ConvertTo-Json -Depth 4 -Compress; 
-         $response.ContentType = 'application/json';
+        $requestvars = ([String]$request.Url).split("/");
+       if ($requestvars[3] -eq "summary") {
+        if(Test-Path ".\build\txt\profittable.txt")
+        {
+        $result = Get-Content ".\build\txt\profittable.txt" | ConvertFrom-JSon;
+        $message = $result | ConvertTo-Json -Depth 4 -Compress; 
+        $response.ContentType = 'application/json';
+        }
+       else {
+           # If no matching subdirectory/route is found generate a 404 message
+           $message = @("No Data") | ConvertTo-Json -Compress;
+           $response.ContentType = 'application/json';
          }
-       } else {
-
-            # If no matching subdirectory/route is found generate a 404 message
-            $message = "This is not the page you're looking for.";
-            $response.ContentType = 'text/html' ;
-       }
-
+        }
        # Convert the data to UTF8 bytes
        [byte[]]$buffer = [System.Text.Encoding]::UTF8.GetBytes($message)
        
