@@ -1,9 +1,9 @@
 ##Miner Path Information
-if($amd.sgminerkl.path1){$Path = "$($amd.sgminerkl.path1)"}
+if($amd.'sgminer-vii'.path1){$Path = "$($amd.'sgminer-vii'.path1)"}
 else{$Path = "None"}
-if($amd.sgminerkl.uri){$Uri = "$($amd.sgminerkl.uri)"}
+if($amd.'sgminer-vii'.uri){$Uri = "$($amd.'sgminer-vii'.uri)"}
 else{$Uri = "None"}
-if($amd.sgminerkl.minername){$MinerName = "$($amd.sgminerkl.minername)"}
+if($amd.'sgminer-vii'.minername){$MinerName = "$($amd.'sgminer-vii'.minername)"}
 else{$MinerName = "None"}
 if($Platform -eq "linux"){$Build = "Tar"}
 elseif($Platform -eq "windows"){$Build = "Zip"}
@@ -14,7 +14,7 @@ $ConfigType = "AMD1"
 if($AMDDevices1 -ne ''){$Devices = $AMDDevices1}
 
 ##Get Configuration File
-$GetConfig = "$dir\config\miners\sgminervii.json"
+$GetConfig = "$dir\config\miners\sgminer-vii.json"
 try{$Config = Get-Content $GetConfig | ConvertFrom-Json}
 catch{Write-Warning "Warning: No config found at $GetConfig"}
 

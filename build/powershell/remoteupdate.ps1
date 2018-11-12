@@ -64,7 +64,7 @@ $PreviousVersions | foreach {
          $ChangeFile = $_
          $OldJson = Join-Path $OldJson_Path "$ChangeFile";
          $NewJson = Join-Path $NewJson_Path "$ChangeFile";
-         if($ChangeFile -notlike "sample.json*")
+         if($ChangeFile -notlike "sample.json*" -and $ChangeFile -ne "sgminer-kl.json")
          {
          $JsonData = Get-Content $OldJson;
          Write-Host "Pulled $OldJson"
@@ -85,15 +85,6 @@ $PreviousVersions | foreach {
           $Data.$_.difficulty | Add-Member "polytimos" ""
           $Data.$_.naming | Add-Member "polytimos" "polytimos"
           $Data.$_.oc | Add-Member "polytimos" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""}
-           }
-         }
-         if($ChangeFile -eq "sgminer-kl.json")
-          {
-          $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
-          $Data.$_.commands| Add-Member "skunk" ""
-          $Data.$_.difficulty | Add-Member "skunk" ""
-          $Data.$_.naming | Add-Member "skunk" "skunk"
-          $Data.$_.oc | Add-Member "skunk" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""}
            }
          }
          if($Data.AMD1.oc)

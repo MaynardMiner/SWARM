@@ -15,7 +15,9 @@
       "geek": "",
       "c11": "",
       "xevan": "",
-      "skunk": ""
+      "skunk": "",
+      "x16r": "",
+      "x16s": ""
     },
     "difficulty": {
       "phi": "",
@@ -24,7 +26,9 @@
       "geek": "",
       "c11": "",
       "xevan": "",
-      "skunk": ""
+      "skunk": "",
+      "x16r": "",
+      "x16s": ""
     },
     "naming": {
       "phi": "phi",
@@ -33,7 +37,9 @@
       "geek": "geek",
       "c11": "c11",
       "xevan": "xevan",
-      "skunk": "skunk"
+      "skunk": "skunk",
+      "x16r": "x16r",
+      "x16s": "x16s"
     },
     "oc": {
       "phi": {
@@ -85,6 +91,22 @@
         "fans": ""
       },
       "skunk": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },      
+      "x16r": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "x16s": {
         "dpm": "",
         "v": "",
         "core": "",

@@ -43,15 +43,15 @@
       "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/avermore-Linux.tar.gz" 
      },
 
-  "sgminerkl": {
-      "name": "sgminerkl",
+  "sgminer-vii": {
+      "name": "sgminer-vii",
       "type": "amd",
-      "path1": ".\\bin\\sgminerkl-1\\sgminer",
-      "path2": ".\\bin\\sgminerkl-2\\sgminer",
-      "path3": ".\\bin\\sgminerkl-3\\sgminer",
+      "path1": ".\\bin\\sgminer-vii-1\\sgminer",
+      "path2": ".\\bin\\sgminer-vii-2\\sgminer",
+      "path3": ".\\bin\\sgminer-vii-3\\sgminer",
       "minername": "sgminer",
       "version": "1.0.5",
-      "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/sgminer-kl-linux.tar.gz" 
+      "uri": "https://github.com/MaynardMiner/sgminer-VII/releases/download/v1.0.9/sgminer-vii.tar.gz" 
      },
 
   "sgminerphi2": {
