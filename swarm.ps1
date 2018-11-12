@@ -137,7 +137,7 @@ param(
     [Parameter(Mandatory=$false)]
     [Int]$AlgoBanCount = 3,
     [Parameter(Mandatory=$false)]
-    [String]$Launch = "Yes"
+    [String]$Lite = "Yes"
 )
 
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
@@ -286,7 +286,7 @@ $TimeoutTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $TimeoutTimer.Start()
 $logtimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $logtimer.Start()
-if($Launch -Eq "No"){Start-Process ".\build\bash\apiserver.sh" -Wait}
+if($Lite -Eq "Yes"){Start-Process ".\build\bash\apiserver.sh" -Wait}
 
 ##Load Previous Times & PID Data
 Get-DateFiles
@@ -533,7 +533,7 @@ Write-Host "Checking Algo Miners"
 $AlgoMiners = Get-Miners -Platforms $Platform -Stats $Stats -Pools $AlgoPools
 
 ##Re-Name Instance In Case Of Crashes
-if($Launch -eq "Yes")
+if($Lite -eq "No")
  {
 $AlgoMiners | ForEach {
   $AlgoMiner = $_
@@ -555,7 +555,7 @@ $AlgoMiners | ForEach {
 
 ##Download Miners
 $Download = $false
-if($Launch -eq "Yes")
+if($Lite -eq "No")
 {
 $AlgoMiners = $AlgoMiners | ForEach {
   $AlgoMiner = $_
@@ -842,7 +842,7 @@ if($_.BestMiner -eq $false)
       }
      }
     }
- elseif($null -eq $_.XProcess -or $_.XProcess.HasExited -and $Launch -eq "Yes")
+ elseif($null -eq $_.XProcess -or $_.XProcess.HasExited -and $Lite -eq "No")
   {
    if($TimeDeviation -ne 0)
     {
@@ -938,7 +938,7 @@ if($Restart -eq $false)
   Start-Sleep -s 5
  }
 
-if($Launch -eq "No"){
+if($Lite -eq "Yes"){
 $UsePools = $false
 $ProfitTable | foreach{if($_.Profits -ne $null){$UsePools = $true}}
 if($UsePools -eq $false){$APITable = $ProfitTable | Sort-Object -Property Type,Profits -Descending}
@@ -1056,7 +1056,7 @@ Get-MinerActive | Out-File ".\build\bash\mineractive.sh" -Append
 function Restart-Miner {
  $BestActiveMiners | Foreach {
  $Restart = $false
- if($_.XProcess -eq $null -or $_.XProcess.HasExited -and $Launch -eq "Yes")
+ if($_.XProcess -eq $null -or $_.XProcess.HasExited -and $Lite -eq "No")
   {
     if($TimeDeviation -ne 0)
     {

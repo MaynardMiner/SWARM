@@ -54,6 +54,7 @@ $PreviousVersions | foreach {
         Get-ChildItem -Path "$($OldTimeout)\*" -Include *.txt | Copy-Item -Destination ".\timeout"
        }
       $Jsons = @("miners","naming","oc","power")
+      $UpdateType = @("CPU","AMD1","NVIDIA1","NVIDIA2","NVIDIA3")
       $Jsons | foreach {
         $OldJson_Path = Join-Path $OldConfig "$($_)";
         $NewJson_Path = Join-Path ".\config" "$($_)";
@@ -77,6 +78,24 @@ $PreviousVersions | foreach {
           $Data.$_.oc | Add-Member "hmq1725" @{Power=""; Core=""; Memory=""}
            }
          }
+         if($ChangeFile -eq "wildrig.json")
+          {
+          $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+          $Data.$_.commands| Add-Member "polytimos" ""
+          $Data.$_.difficulty | Add-Member "polytimos" ""
+          $Data.$_.naming | Add-Member "polytimos" "polytimos"
+          $Data.$_.oc | Add-Member "polytimos" @{Power=""; Core=""; Memory=""}
+           }
+         }
+         if($ChangeFile -eq "sgminer-kl.json")
+          {
+          $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+          $Data.$_.commands| Add-Member "skunk" ""
+          $Data.$_.difficulty | Add-Member "skunk" ""
+          $Data.$_.naming | Add-Member "skunk" "skunk"
+          $Data.$_.oc | Add-Member "skunk" @{Power=""; Core=""; Memory=""}
+           }
+         }
          if($Data.AMD1.oc)
          {
           $Data.AMD1.oc | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Foreach{
@@ -86,6 +105,12 @@ $PreviousVersions | foreach {
          if($Data.default_AMD1)
          {
            $Data.default_AMD1 | Add-Member "fans" ""
+         }
+         $UpdateType | foreach {
+          if($Data.$_)
+          {
+           $Data.$_ | Add-Member "delay" "1"
+          }
          }
          $Data | ConvertTo-Json -Depth 3 | Set-Content $NewJson;
          Write-Host "Wrote To $NewJson"

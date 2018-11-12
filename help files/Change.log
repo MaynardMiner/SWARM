@@ -931,5 +931,51 @@ but API is awaiting stats.
   -Moved lyclMiner to project folder after multiple user requests.
   -Fixed OC system, both platforms. OC tuning should now work
     without fail from SWARM.
-  -
-  
+
+  1.7.3
+
+  AMD Users: Use -AMDPlatform to specify Opencl platform
+  AMD Users: Use -OnboardCard Yes if you have an integrated Graphics Card
+  ALL USERS: -Delay argument has been removed!
+
+  IMPORTANT UPDATES:
+    -SWARM LITE
+      -Specify ``-Lite Yes`` in arguments
+      -Will launch an HTTP api version of SWARM
+      -http://localhost:4099/summary
+      -Changes based on -Becnhmark or -Interval rate,
+       after miner has calculated database.
+      -Will list all available miner/pool combinations
+       that SWARM can calculate.
+      -Will display best miner to use & arguments
+      -Will relay port to set if you wish SWARM to read
+       miner API's and record benchmarks.
+      -If no benchmarks are made: SWARM will sort list by pool estimates
+      -If there is a benchmark- SWARM will sort by hashrates
+   ``-DELAY`` REMOVED
+      -all delays are decided at miner level
+      -'delay' param added to all miner.json
+
+    New Miners:
+    -excavator
+    -fancyIX sgminer (does allium)
+    -zjazz
+    Note On Excavator:
+    Excavator is unpacked and installed via dpkg.
+    you may have to manually install, and copy
+    'excavator' from "/usr/bin/" to ".\bin\excavator-1"
+    Cryponightv8 and CryptonightV7 did not work.
+
+    New Features:
+    -miner now records intensities and block difficulties
+     from background miners.
+        -these are saved in .txt files located in the ".\bin\minerdir"
+        -These can be used to fine tune miners.
+    -AMD oc fans
+      -Attempted fix of AMD oc settings, added fans
+    
+    -CryptoDredge updated
+    -Wildrig Updated
+    -Sgminer-Kl updated
+    
+    
