@@ -955,6 +955,12 @@ but API is awaiting stats.
    ``-DELAY`` REMOVED
       -all delays are decided at miner level
       -'delay' param added to all miner.json
+    -miners folder changes
+     -lyclminer moved to project folder
+     -excavator moved to project folder
+     -linux folder deleted
+     -windows folder deleted
+     -gpu folder added
 
     New Miners:
     -excavator
@@ -965,6 +971,8 @@ but API is awaiting stats.
     you may have to manually install, and copy
     'excavator' from "/usr/bin/" to ".\bin\excavator-1"
     Cryponightv8 and CryptonightV7 did not work.
+    Excavator miner files is located in ".\miners\project"
+    folder. Move them to ".\miners\gpu" to use.
 
     New Features:
     -miner now records intensities and block difficulties
