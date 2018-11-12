@@ -137,7 +137,7 @@ param(
     [Parameter(Mandatory=$false)]
     [Int]$AlgoBanCount = 3,
     [Parameter(Mandatory=$false)]
-    [String]$Lite = "Yes"
+    [String]$Lite = "No"
 )
 
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
