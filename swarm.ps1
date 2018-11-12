@@ -790,7 +790,7 @@ function Get-MinerStatus {
 }
 
 Clear-Content ".\build\bash\minerstats.sh" -Force
-$type | foreach {Clear-Content ".\build\txt\$($_)-hash.txt" -Force}
+$type | foreach {if(Test-Path ".\build\txt\$($_)-hash.txt"){Clear-Content ".\build\txt\$($_)-hash.txt" -Force}}
 $GetStatusAlgoBans = ".\timeout\algo_block\algo_block.txt"
 $GetStatusPoolBans = ".\timeout\pool_block\pool_block.txt"
 if(Test-Path $GetStatusAlgoBans){$StatusAlgoBans = Get-Content $GetStatusAlgoBans | ConvertFrom-Json}
