@@ -76,7 +76,17 @@ $PreviousVersions | foreach {
           $Data.$_.naming | Add-Member "hmq1725" "hmq1725"
           $Data.$_.oc | Add-Member "hmq1725" @{Power=""; Core=""; Memory=""}
            }
+         }
+         if($Data.AMD1.oc)
+         {
+          $Data.AMD1.oc | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Foreach{
+           $Data.AMD1.oc.$_ | Add-Member "fans" ""
           }
+         }
+         if($Data.default_AMD1)
+         {
+           $Data.default_AMD1 | Add-Member "fans" ""
+         }
          $Data | ConvertTo-Json -Depth 3 | Set-Content $NewJson;
          Write-Host "Wrote To $NewJson"
           }
