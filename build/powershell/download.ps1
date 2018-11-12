@@ -69,7 +69,7 @@ $FileName = Join-Path ".\bin" $New_Path
         Write-Host "Did Not Detect Excavator Installion Attempting install" -ForegroundColor yellow
         Start-Process -Filepath "wget" -ArgumentList "$Uri -O x64/$DownloadFileURI" -Wait
         Start-Process "dpkg" -ArgumentList "-i x64/$DownloadFileURI" -Wait
-        Start-Process "apt-get" -ArgumentList "install -f" -Wait
+        Start-Process "apt-get" -ArgumentList "install -y -f" -Wait
         if(Test-Path $Path){Remove-Item $Path -Recurse}
         New-Item $Path -ItemType "directory"
         if(Test-Path "/usr/bin/$MineName")
