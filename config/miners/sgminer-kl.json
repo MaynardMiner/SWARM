@@ -14,7 +14,8 @@
       "aergo": "",
       "geek": "",
       "c11": "",
-      "xevan": ""
+      "xevan": "",
+      "skunk": ""
     },
     "difficulty": {
       "phi": "",
@@ -22,7 +23,8 @@
       "aergo": "",
       "geek": "",
       "c11": "",
-      "xevan": ""
+      "xevan": "",
+      "skunk": ""
     },
     "naming": {
       "phi": "phi",
@@ -30,7 +32,8 @@
       "aergo": "aergo",
       "geek": "geek",
       "c11": "c11",
-      "xevan": "xevan"
+      "xevan": "xevan",
+      "skunk": "skunk"
     },
     "oc": {
       "phi": {
@@ -74,6 +77,14 @@
         "fans": ""
       },
       "xevan": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "skunk": {
         "dpm": "",
         "v": "",
         "core": "",

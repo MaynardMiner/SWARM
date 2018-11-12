@@ -971,6 +971,7 @@ but API is awaiting stats.
      from background miners.
         -these are saved in .txt files located in the ".\bin\minerdir"
         -These can be used to fine tune miners.
+        -This is done during benchmarking phase.
     -AMD oc fans
       -Attempted fix of AMD oc settings, added fans
     

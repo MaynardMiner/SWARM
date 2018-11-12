@@ -24,7 +24,8 @@
       "x16r": "",
       "x17": "",
       "bitcore": "",
-      "x22i": ""
+      "x22i": "",
+      "polytimos": ""
     },
     "difficulty": {
       "bcd": "",
@@ -42,7 +43,8 @@
       "x16r": "",
       "x17": "",
       "bitcore": "",
-      "x22i": ""
+      "x22i": "",
+      "polytimos": ""
     },
     "naming": {
       "bcd": "bcd",
@@ -60,7 +62,8 @@
       "x16r": "x16r",
       "x17": "x17",
       "bitcore": "bitcore",
-      "x22i": "x22i"
+      "x22i": "x22i",
+      "polytimos": "polytimos"
     },
     "oc": {
       "bcd": {
@@ -184,6 +187,14 @@
         "fans": ""
       },
       "x22i": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "polytimos": {
         "dpm": "",
         "v": "",
         "core": "",

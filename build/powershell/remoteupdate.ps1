@@ -84,7 +84,7 @@ $PreviousVersions | foreach {
           $Data.$_.commands| Add-Member "polytimos" ""
           $Data.$_.difficulty | Add-Member "polytimos" ""
           $Data.$_.naming | Add-Member "polytimos" "polytimos"
-          $Data.$_.oc | Add-Member "polytimos" @{Power=""; Core=""; Memory=""}
+          $Data.$_.oc | Add-Member "polytimos" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""}
            }
          }
          if($ChangeFile -eq "sgminer-kl.json")
@@ -93,7 +93,7 @@ $PreviousVersions | foreach {
           $Data.$_.commands| Add-Member "skunk" ""
           $Data.$_.difficulty | Add-Member "skunk" ""
           $Data.$_.naming | Add-Member "skunk" "skunk"
-          $Data.$_.oc | Add-Member "skunk" @{Power=""; Core=""; Memory=""}
+          $Data.$_.oc | Add-Member "skunk" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""}
            }
          }
          if($Data.AMD1.oc)
