@@ -135,7 +135,9 @@ param(
     [Parameter(Mandatory=$false)]
     [Int]$PoolBanCount = 2,
     [Parameter(Mandatory=$false)]
-    [Int]$AlgoBanCount = 3
+    [Int]$AlgoBanCount = 3,
+    [Parameter(Mandatory=$false)]
+    [String]$Launch = "Yes"
 )
 
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
@@ -284,6 +286,7 @@ $TimeoutTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $TimeoutTimer.Start()
 $logtimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $logtimer.Start()
+if($Launch -Eq "No"){Start-Process ".\build\bash\apiserver.sh" -Wait}
 
 ##Load Previous Times & PID Data
 Get-DateFiles
@@ -530,6 +533,8 @@ Write-Host "Checking Algo Miners"
 $AlgoMiners = Get-Miners -Platforms $Platform -Stats $Stats -Pools $AlgoPools
 
 ##Re-Name Instance In Case Of Crashes
+if($Launch -eq "Yes")
+ {
 $AlgoMiners | ForEach {
   $AlgoMiner = $_
   if(-not (Test-Path $AlgoMiner.path))
@@ -546,9 +551,12 @@ $AlgoMiners | ForEach {
    }
   }
  }
+}
 
 ##Download Miners
 $Download = $false
+if($Launch -eq "Yes")
+{
 $AlgoMiners = $AlgoMiners | ForEach {
   $AlgoMiner = $_
    if((Test-Path $_.Path) -eq $false)
@@ -559,6 +567,7 @@ $AlgoMiners = $AlgoMiners | ForEach {
    else{$AlgoMiner}
   }  
 if($Download -eq $true){continue}
+}
 
 $NewAlgoMiners = @()
 $Type | Foreach {
@@ -780,6 +789,7 @@ function Get-MinerStatus {
 }
 
 Clear-Content ".\build\bash\minerstats.sh" -Force
+$type | foreach {Clear-Content ".\build\txt\$($_)-hash.txt" -Force}
 $GetStatusAlgoBans = ".\timeout\algo_block\algo_block.txt"
 $GetStatusPoolBans = ".\timeout\pool_block\pool_block.txt"
 if(Test-Path $GetStatusAlgoBans){$StatusAlgoBans = Get-Content $GetStatusAlgoBans | ConvertFrom-Json}
@@ -831,7 +841,7 @@ if($_.BestMiner -eq $false)
       }
      }
     }
- elseif($null -eq $_.XProcess -or $_.XProcess.HasExited)
+ elseif($null -eq $_.XProcess -or $_.XProcess.HasExited -and $Launch -eq "Yes")
   {
    if($TimeDeviation -ne 0)
     {
@@ -1035,7 +1045,7 @@ Get-MinerActive | Out-File ".\build\bash\mineractive.sh" -Append
 function Restart-Miner {
  $BestActiveMiners | Foreach {
  $Restart = $false
- if($_.XProcess -eq $null -or $_.XProcess.HasExited)
+ if($_.XProcess -eq $null -or $_.XProcess.HasExited -and $Launch -eq "Yes")
   {
     if($TimeDeviation -ne 0)
     {

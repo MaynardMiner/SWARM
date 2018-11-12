@@ -27,6 +27,7 @@ function start-killscript {
     $OpenScreens += "pidinfo"
     $OpenScreens += "OC_AMD"
     $OpenScreens += "OC_Nvidia"
+    $OpenScreens += "API"
     $OpenScreens | foreach {
     Start-Process ".\build\bash\killall.sh" -ArgumentList $_ -Wait
     }
