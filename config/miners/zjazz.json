@@ -1,5 +1,5 @@
 {
-"NVIDIA1": {
+  "NVIDIA1": {
     "name": "NVIDIA1",
     "delay": "1",
     "prestart": [],
@@ -9,15 +9,15 @@
       "x22i": ""
     },
     "difficulty": {
-        "cuckoo": "",
-        "bitcash": "",
-        "x22i": ""
-      },
+      "cuckoo": "",
+      "bitcash": "",
+      "x22i": ""
+    },
     "naming": {
-        "cuckoo": "cuckoo",
-        "bitcash": "bitcash",
-        "x22i": "x22i"
-      },
+      "cuckoo": "cuckoo",
+      "bitcash": "bitcash",
+      "x22i": "x22i"
+    },
     "oc": {
       "cuckoo": {
         "Power": "",
@@ -46,15 +46,15 @@
       "x22i": ""
     },
     "difficulty": {
-        "cuckoo": "",
-        "bitcash": "",
-        "x22i": ""
-      },
+      "cuckoo": "",
+      "bitcash": "",
+      "x22i": ""
+    },
     "naming": {
-        "cuckoo": "cuckoo",
-        "bitcash": "bitcash",
-        "x22i": "x22i"
-      },
+      "cuckoo": "cuckoo",
+      "bitcash": "bitcash",
+      "x22i": "x22i"
+    },
     "oc": {
       "cuckoo": {
         "Power": "",
@@ -83,15 +83,15 @@
       "x22i": ""
     },
     "difficulty": {
-        "cuckoo": "",
-        "bitcash": "",
-        "x22i": ""
-      },
+      "cuckoo": "",
+      "bitcash": "",
+      "x22i": ""
+    },
     "naming": {
-        "cuckoo": "cuckoo",
-        "bitcash": "bitcash",
-        "x22i": "x22i"
-      },
+      "cuckoo": "cuckoo",
+      "bitcash": "bitcash",
+      "x22i": "x22i"
+    },
     "oc": {
       "cuckoo": {
         "Power": "",

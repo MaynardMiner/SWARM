@@ -1,97 +1,70 @@
-Notes On OC-Configuration:
-Leave "Cards": ""  To not use OC tuning
-
-For Cards:
-Enter as shown below in "Cards" example
-P-Model Cards Must Be Specified As Such:
-P106-100
-P106-090
-P104-100
-P102-100
-If you require more p-model cards- Contact Developer.
-
-"Cards": "1070 1050ti 1070 1050ti 1070 1050ti 1050ti 1050ti 1050ti 1070 1070 1050ti 1070",
-
-If you are using windows version, and would like SWARM to start fans, enter
-your fan speeds like thus. Cards Does NOT need to be specified to use. However
-ALL fans the GPUS's SWARM is using must be set.
-
-"windows fan start": "75 75 75 75 75 75 75 75 75 75 75 75 75 75 75",
-
-"default_NVIDIA1":
 {
- "Power": "150 150 150 150 150 150",
- "Core": "125 115 100 115 125 100",
- "Memory": "1000 1000 1000 1000 1000 1000"
-},
-
-This is the oc settings for NVIDIA1 devices group, which is based on
--Type NVIDIA1
--GPUDevices1
-
-If was to have -GPUDevices1 set to:
--GPUDevices '0,2,4,9,10,12'
-
-It follows in order of -GPUDevices, so in the above example:
-
--GPU 0 Core would be set to 125
--GPU 2 Core would be set to 115
--GPU 4 Core would be set to 100
--GPU 9 Core would be set to 115
--GPU 10 Core would be set to 125
--GPU 12 Core would be set to 100
-
-If NO -GPUDevices were specifed, then ALL cards must be listed. Factory Settings is 0.
-If you set Power for 1, you must set Power for all. You can leave Power blank, however.
-Core and memory can be left blank as well.
-
-"default_NVIDIA1":
-{
- "Power": "75",
- "Core": "100",
- "Memory": "1000"
-},
-
-{
-    "Cards": "1070 1050ti 1070 1050ti 1070 1050ti 1050ti 1050ti 1050ti 1070 1070 1050ti 1070",
-    "windows fan start": "",
-    "default_NVIDIA1":
-     {
-      "Power": "150 150 150 150 150 150",
-      "Core": "125 125 125 125 125 125",
-      "Memory": "1000 1000 1000 1000 1000 1000"
-     },
-     "default_NVIDIA2":
-      {
-       "Power": "75 75 75 75 75 75 75",
-       "Core": "100 100 100 100 100 100 100",
-       "Memory": "1000 1000 1000 1000 1000 1000 1000"
-      },
-     "default_NVIDIA3":
-      {
-       "Power": "",
-       "Core": "",
-       "Memory": ""
-      },
-     "default_AMD1": 
-     {
-     "dpm": "",
-     "v": "",
-     "core": "",
-     "mem": "",
-     "mdpm": ""
-     }   
- }
-
- These are the default settings for GPUs. They are not neccessary for SWARM.
- Default settings are used if you choose to set OC-Tuning for Algorithms,
- and no algorithms were specified. You must have default settings if you
- are using OC tuning in miner files!
-
-  AMD Users USE WITH DISCRETION! AMD-OC is very sensitive. Higher -Delay is recommended.
-  "Cards" Can be anything- "Cards":"RX580 VEGA BLAH" I just need one word for 
-  each card to denote the number of cards you have. It is more critical for
-  Nvidia and their power-mizer. I personally do not recommend playing with
-  power settings, unless you really know what you are doing- Set it to
-  one setting prior to starting SWARM and leave it. If you do play with
-  voltages, know that voltages are agressively changed.
+  "aergo": "aergo",
+  "aeon": "aeon",
+  "argon2d-dyn": "argon2d-dyn",
+  "allium": "allium",
+  "balloon": "balloon",
+  "bcd": "bcd",
+  "bitcore": "bitcore",
+  "blake": "blake",
+  "blakecoin": "blakecoin",
+  "blake2s": "blake2s",
+  "c11": "c11",
+  "cryptonight": "cryptonight",
+  "cryptonightheavy": "cryptonightheavy",
+  "cryptonightmonero": "cryptonight",
+  "cryptonightv7": "cryptonightv7",
+  "cryptonightv8": "cryptonightv8",
+  "dagger": "dagger",
+  "daggerhashimoto": "daggerhashimoto",
+  "equihash": "equihash",
+  "equihash96": "equihash96",
+  "equihash144": "equihash144",
+  "equihash192": "equihash192",
+  "equihash200": "equihash200",
+  "equihash210": "equihash210",
+  "equihash-btg": "equihash-btg",
+  "ethash": "ethash",
+  "geek": "geek",
+  "groestl": "groestl",
+  "hex": "hex",
+  "hmq1725": "hmq1725",
+  "hodl": "hodl",
+  "hsr": "hsr",
+  "jackpot": "jackpot",
+  "keccak": "keccak",
+  "keccakc": "keccakc",
+  "lbk3": "lbk3",
+  "lyra2re": "lyra2re",
+  "lyra2rev2": "lyra2rev2",
+  "lyra2v2": "lyra2v2",
+  "lyra2z": "lyra2z",
+  "m7m": "m7m",
+  "masari": "masari",
+  "myr-gr": "myr-gr",
+  "neoscrypt": "neoscrypt",
+  "nist5": "nist5",
+  "phi": "phi",
+  "phi2": "phi2",
+  "polytimos": "polytimos",
+  "qubit": "qubit",
+  "renesis": "renesis",
+  "sha256t": "sha256t",
+  "sib": "sib",
+  "skein": "skein",
+  "skunk": "skunk",
+  "sonoa": "sonoa",
+  "stellite": "stellite",
+  "timetravel": "timetravel",
+  "tribus": "tribus",
+  "x11": "x11",
+  "x16r": "x16r",
+  "x16s": "x16s",
+  "x17": "x17",
+  "x22i": "x22i",
+  "xevan": "xevan",
+  "xmr": "xmr",
+  "yespower": "yespower",
+  "yescrypt": "yescrypt",
+  "yescryptr16": "yescryptr16"
+}

@@ -20,8 +20,8 @@
       "bcd": "",
       "sha256t": "",
       "timetravel": "",
-      "x22i":"",
-      "sonoa":""
+      "x22i": "",
+      "sonoa": ""
     },
     "difficulty": {
       "tribus": "",
@@ -40,10 +40,10 @@
       "bcd": "",
       "sha256t": "",
       "timetravel": "",
-      "x22i":"",
-      "sonoa": ""   
-     },
-     "naming": {
+      "x22i": "",
+      "sonoa": ""
+    },
+    "naming": {
       "tribus": "tribus",
       "phi": "phi",
       "c11": "c11",
@@ -60,9 +60,9 @@
       "bcd": "bcd",
       "sha256t": "sha256t",
       "timetravel": "timetravel",
-      "x22i":"x22i",
-      "sonoa": "sonoa"   
-     },
+      "x22i": "x22i",
+      "sonoa": "sonoa"
+    },
     "oc": {
       "tribus": {
         "Power": "",
@@ -177,7 +177,7 @@
       "bcd": "",
       "sha256t": "",
       "timetravel": "",
-      "x22i":"",
+      "x22i": "",
       "sonoa": ""
     },
     "difficulty": {
@@ -197,7 +197,7 @@
       "bcd": "",
       "sha256t": "",
       "timetravel": "",
-      "x22i":"",
+      "x22i": "",
       "sonoa": ""
     },
     "naming": {
@@ -217,9 +217,9 @@
       "bcd": "bcd",
       "sha256t": "sha256t",
       "timetravel": "timetravel",
-      "x22i":"x22i",
-      "sonoa": "sonoa"   
-     },
+      "x22i": "x22i",
+      "sonoa": "sonoa"
+    },
     "oc": {
       "tribus": {
         "Power": "",
@@ -334,7 +334,7 @@
       "bcd": "",
       "sha256t": "",
       "timetravel": "",
-      "x22i":"",
+      "x22i": "",
       "sonoa": ""
     },
     "difficulty": {
@@ -354,7 +354,7 @@
       "bcd": "",
       "sha256t": "",
       "timetravel": "",
-      "x22i":"",
+      "x22i": "",
       "sonoa": ""
     },
     "naming": {
@@ -374,9 +374,9 @@
       "bcd": "bcd",
       "sha256t": "sha256t",
       "timetravel": "timetravel",
-      "x22i":"x22i",
-      "sonoa": "sonoa"   
-     },
+      "x22i": "x22i",
+      "sonoa": "sonoa"
+    },
     "oc": {
       "tribus": {
         "Power": "",

@@ -61,13 +61,22 @@ $PreviousVersions | foreach {
         $GetOld_Json = $GetOld_Json.Name
         $GetOld_Json | foreach {
          $ChangeFile = $_
-         $OldJson = Join-Path $OldJson_Path "$($_)";
-         $NewJson = Join-Path $NewJson_Path "$($_)";
-         if($ChangeFile -notlike "*sample_.json*")
+         $OldJson = Join-Path $OldJson_Path "$ChangeFile";
+         $NewJson = Join-Path $NewJson_Path "$ChangeFile";
+         if($ChangeFile -notlike "sample.json*")
          {
          $JsonData = Get-Content $OldJson;
          Write-Host "Pulled $OldJson"
          $Data = $JsonData | ConvertFrom-Json;
+         if($ChangeFile -eq "cryptodredge.json")
+          {
+          $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+          $Data.$_.commands| Add-Member "hmq1725" ""
+          $Data.$_.difficulty | Add-Member "hmq1725" ""
+          $Data.$_.naming | Add-Member "hmq1725" "hmq1725"
+          $Data.$_.oc | Add-Member "hmq1725" @{Power=""; Core=""; Memory=""}
+           }
+          }
          $Data | ConvertTo-Json -Depth 3 | Set-Content $NewJson;
          Write-Host "Wrote To $NewJson"
           }

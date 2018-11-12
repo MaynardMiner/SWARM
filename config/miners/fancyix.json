@@ -1,67 +1,64 @@
 {
-    "AMD1": {
-      "name": "AMD1",
-      "delay": "1",
-      "prestart": [
-          "export GPU_MAX_HEAP_SIZE=100",
-        "export GPU_USE_SYNC_OBJECTS=1",
-        "export GPU_SINGLE_ALLOC_PERCENT=100",
-        "export GPU_MAX_ALLOC_PERCENT=100"
-      ],
-      "commands": {
-        "x22i": "",
-        "lyra2z": "",
-        "phi2": "",
-        "allium": ""
+  "AMD1": {
+    "name": "AMD1",
+    "delay": "1",
+    "prestart": [
+      "export GPU_MAX_HEAP_SIZE=100",
+      "export GPU_USE_SYNC_OBJECTS=1",
+      "export GPU_SINGLE_ALLOC_PERCENT=100",
+      "export GPU_MAX_ALLOC_PERCENT=100"
+    ],
+    "commands": {
+      "x22i": "",
+      "lyra2z": "",
+      "phi2": "",
+      "allium": ""
+    },
+    "difficulty": {
+      "x22i": "",
+      "lyra2z": "",
+      "phi2": "",
+      "allium": ""
+    },
+    "naming": {
+      "x22i": "x22i",
+      "lyra2z": "lyra2z",
+      "phi2": "phi2",
+      "allium": "allium"
+    },
+    "oc": {
+      "x22i": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
       },
-      "difficulty": {
-        "x22i": "",
-        "lyra2z": "",
-        "phi2": "",
-        "allium": ""
+      "lyra2z": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
       },
-      "naming": {
-        "x22i": "x22i",
-        "lyra2z": "lyra2z",
-        "phi2": "phi2",
-        "allium": "allium"
+      "phi2": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
       },
-      "oc": {
-        "x22i": {
-          "dpm": "",
-          "v": "",
-          "core": "",
-          "mem": "",
-          "mdpm": "",
-          "fans": ""  
-        },
-        "lyra2z": {
-          "dpm": "",
-          "v": "",
-          "core": "",
-          "mem": "",
-          "mdpm": "",
-          "fans": ""
-  
-        },
-        "phi2": {
-          "dpm": "",
-          "v": "",
-          "core": "",
-          "mem": "",
-          "mdpm": "",
-          "fans": ""  
-        },
-        "allium": {
-          "dpm": "",
-          "v": "",
-          "core": "",
-          "mem": "",
-          "mdpm": "",
-          "fans": ""
-  
-        }
+      "allium": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
       }
     }
   }
-  
+}

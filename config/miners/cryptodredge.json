@@ -26,7 +26,8 @@
       "c11": "",
       "polytimos": "",
       "skunk": "",
-      "bcd":""
+      "bcd": "",
+      "hmq1725": ""
     },
     "difficulty": {
       "lyra2v2": "",
@@ -51,7 +52,8 @@
       "c11": "",
       "polytimos": "",
       "skunk": "",
-      "bcd":""
+      "bcd": "",
+      "hmq1725": ""
     },
     "naming": {
       "lyra2v2": "lyra2v2",
@@ -76,7 +78,8 @@
       "c11": "c11",
       "polytimos": "poly",
       "skunk": "skunk",
-      "bcd":"bcd"
+      "bcd": "bcd",
+      "hmq1725": "hmq1725"
     },
     "oc": {
       "lyra2v2": {
@@ -193,6 +196,11 @@
         "Power": "",
         "Core": "",
         "Memory": ""
+      },
+      "hmq1725": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
       }
     }
   },
@@ -223,7 +231,8 @@
       "c11": "",
       "polytimos": "",
       "skunk": "",
-      "bcd":""
+      "bcd": "",
+      "hmq1725": ""
     },
     "difficulty": {
       "lyra2v2": "",
@@ -248,7 +257,8 @@
       "c11": "",
       "polytimos": "",
       "skunk": "",
-      "bcd":""
+      "bcd": "",
+      "hmq1725": ""
     },
     "naming": {
       "lyra2v2": "lyra2v2",
@@ -273,7 +283,8 @@
       "c11": "c11",
       "polytimos": "poly",
       "skunk": "skunk",
-      "bcd":"bcd"
+      "bcd": "bcd",
+      "hmq1725": "hmq1725"
     },
     "oc": {
       "lyra2v2": {
@@ -390,6 +401,11 @@
         "Power": "",
         "Core": "",
         "Memory": ""
+      },
+      "hmq1725": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
       }
     }
   },
@@ -420,7 +436,8 @@
       "c11": "",
       "polytimos": "",
       "skunk": "",
-      "bcd":""
+      "bcd": "",
+      "hmq1725": ""
     },
     "difficulty": {
       "lyra2v2": "",
@@ -445,7 +462,8 @@
       "c11": "",
       "polytimos": "",
       "skunk": "",
-      "bcd":""
+      "bcd": "",
+      "hmq1725": ""
     },
     "naming": {
       "lyra2v2": "lyra2v2",
@@ -470,7 +488,8 @@
       "c11": "c11",
       "polytimos": "poly",
       "skunk": "skunk",
-      "bcd":"bcd"
+      "bcd": "bcd",
+      "hmq1725": "hmq1725"
     },
     "oc": {
       "lyra2v2": {
@@ -587,6 +606,11 @@
         "Power": "",
         "Core": "",
         "Memory": ""
+      },
+      "hmq1725": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
       }
     }
   }

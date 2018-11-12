@@ -9,28 +9,28 @@
       "export GPU_MAX_ALLOC_PERCENT=100"
     ],
     "commands": {
-      "phi":"",
-      "tribus":"",
-      "aergo":"",
-      "geek":"",
-      "c11":"",
-      "xevan":""
+      "phi": "",
+      "tribus": "",
+      "aergo": "",
+      "geek": "",
+      "c11": "",
+      "xevan": ""
     },
     "difficulty": {
-      "phi":"",
-      "tribus":"",
-      "aergo":"",
-      "geek":"",
-      "c11":"",
-      "xevan":""
+      "phi": "",
+      "tribus": "",
+      "aergo": "",
+      "geek": "",
+      "c11": "",
+      "xevan": ""
     },
     "naming": {
-      "phi":"phi",
-      "tribus":"tribus",
-      "aergo":"aergo",
-      "geek":"geek",
-      "c11":"c11",
-      "xevan":"xevan"
+      "phi": "phi",
+      "tribus": "tribus",
+      "aergo": "aergo",
+      "geek": "geek",
+      "c11": "c11",
+      "xevan": "xevan"
     },
     "oc": {
       "phi": {
