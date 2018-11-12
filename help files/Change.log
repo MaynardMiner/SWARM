@@ -940,8 +940,10 @@ but API is awaiting stats.
 
   IMPORTANT UPDATES:
     -NEW MINERS 
-      -sgminer-VII (Made by me, faster than kl)
+      -sgminer-VII (Made by ME, faster than kl)
          -sgminer-kl was removed- New version is not compiliable for linux.
+         -sgminer-VII is fastest x16/x16s/skunk/tribus/aergo miner for AMD
+          for linux. Fork of sgminer-kl, repaired his bugs.
       -zjazz
       -excavator
     -SWARM LITE
@@ -971,6 +973,7 @@ but API is awaiting stats.
     -excavator
     -fancyIX sgminer (does allium)
     -zjazz
+    -sgminer-vii
     Note On Excavator:
     Excavator is unpacked and installed via dpkg.
     you may have to manually install, and copy
