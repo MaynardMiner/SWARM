@@ -152,6 +152,7 @@ if($_.Type -like "*AMD*")
  $MemClock = $_.ocmem -split ' '
  $MemState = $_.ocmdpm -split ' '
  $Voltage = $_.ocv -split ' '
+ $Fans = $_.ocfans -split ' '
  $AScreenMiners += "$($_.Minername) "
  if($Card)
  {
@@ -215,6 +216,26 @@ if($_.Type -like "*AMD*")
       $AScript += $VoltArgs
       $AScreenPower += "$($_.Type) V is $($_.ocv) "
      }
+
+     if($Fans)
+     {
+       $FanArgs = @()
+       $DOAmdOC = $true
+      for($i=0; $i -lt $OCDevices.Count; $i++)
+      {
+        $GPU = $OCDevices[$i]
+       if($Platforms -eq "linux")
+       {
+         for($i=1; $i -lt 16; $i++)
+         {
+         if($Fans[$GPU]){$FanArgs += "wolfamdctrl -i $($GCount.AMD.$GPU) --set-fanspeed $($Fans[$GPU])"}
+         $FanArgs += "sleep .1"
+         }
+        }
+       }
+       $AScript += $FanArgs
+       $AScreenFans += "$($_.Type) V is $($_.ocfans) "
+      } 
     
    }
 
