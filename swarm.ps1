@@ -700,7 +700,7 @@ Write-Host "Most Ideal Choice Is $($BestMiners_Selected) on $($BestPool_Selected
   MinerPool = $_.MinerPool
  }
 }
-if(-not $AcitiveMinerPrograms){$Type | foreach{if(Test-Path ".\logs\$($_).log"){remove-item ".\logs\$($_).log"}}}
+if(-not $AcitiveMinerPrograms){$Type | foreach{if(Test-Path ".\logs\$($_).log"){remove-item ".\logs\$($_).log" -Force}}}
 ##Add Instance Settings To Miners For Tracking
 $BestMiners_Combo | ForEach {
  if(-not ($ActiveMinerPrograms | Where Path -eq $_.Path | Where Arguments -eq $_.Arguments ))
