@@ -21,8 +21,6 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$Wallet3 = '', ##Group 3 Wallet
     [Parameter(Mandatory=$false)]
-    [String]$CPUWallet = '1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i', ##CPU Wallet
-    [Parameter(Mandatory=$false)]
     [String]$Nicehash_Wallet1 = '',  ##Group 1 Nicehash Wallet
     [Parameter(Mandatory=$false)]
     [String]$Nicehash_Wallet2 = '',  ##Group 2 Nicehash Wallet
@@ -65,15 +63,11 @@ param(
     [Parameter(Mandatory=$false)]
     [Array]$Currency = ("USD"), #i.e. GBP,EUR,ZEC,ETH ect.
     [Parameter(Mandatory=$false)]
-    [Array]$Passwordcurrency = ("BTC"), #i.e. BTC,LTC,ZEC,ETH ect.
-    [Parameter(Mandatory=$false)]
     [Array]$Passwordcurrency1 = ("BTC"), #i.e. BTC,LTC,ZEC,ETH ect.
     [Parameter(Mandatory=$false)]
     [Array]$Passwordcurrency2 = ("BTC"), #i.e. BTC,LTC,ZEC,ETH ect.
     [Parameter(Mandatory=$false)]
     [Array]$Passwordcurrency3 = ("BTC"), #i.e. BTC,LTC,ZEC,ETH ect.
-    [Parameter(Mandatory=$false)]
-    [Array]$CPUcurrency = ("BTC"), #i.e. BTC,LTC,ZEC,ETH ect.
     [Parameter(Mandatory=$false)]
     [String]$AltPassword1 = '', #i.e. BTC,LTC,ZEC,ETH ect.
     [Parameter(Mandatory=$false)]
@@ -140,20 +134,72 @@ param(
     [String]$Lite = "No"
 )
 
+
+
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
-
 $CurrentParams = @{}
-$ParameterList = (Get-Command -Name "swarm.ps1").Parameters;
-foreach ($key in $ParameterList.keys)
- {
-   $var = Get-Variable -Name $key -ErrorAction SilentlyContinue;
-   if($var)
-   {
-    $CurrentParams.Add("$($var.name)","$($var.value)")
-   }
- }
-
-$CurrentParams | ConvertTo-Json | Set-Content ".\config\parameters\arguments.json"
+$CurrentParams.Add("Wallet",$Wallet)
+$CurrentParams.Add("Wallet1",$Wallet1)
+$CurrentParams.Add("Wallet2",$Wallet1)
+$CurrentParams.Add("Wallet3",$Wallet1)
+$CurrentParams.Add("Nicehash_Wallet1",$Nicehash_Wallet1)
+$CurrentParams.Add("Nicehash_Wallet2",$Nicehash_Wallet2)
+$CurrentParams.Add("Nicehash_Wallet3",$Nicehash_Wallet3)
+$CurrentParams.Add("AltWallet1",$AltWallet1)
+$CurrentParams.Add("AltWallet2",$AltWallet2)
+$CurrentParams.Add("AltWallet3",$AltWallet3)
+$CurrentParams.Add("Passwordcurrency1",$Passwordcurrency1)
+$CurrentParams.Add("Passwordcurrency2",$Passwordcurrency2)
+$CurrentParams.Add("Passwordcurrency3",$Passwordcurrency3)
+$CurrentParams.Add("AltPassword1",$AltPassword1)
+$CurrentParams.Add("AltPassword2",$AltPassword2)
+$CurrentParams.Add("AltPassword3",$AltPassword3)
+$CurrentParams.Add("Rigname1",$RigName1)
+$CurrentParams.Add("Rigname2",$RigName2)
+$CurrentParams.Add("Rigname3",$RigName3)
+$CurrentParams.Add("API_ID",$API_ID)
+$CurrentParams.Add("API_Key",$API_Key)
+$CurrentParams.Add("Timeout",$Timeout)
+$CurrentParams.Add("Interval",$Interval)
+$CurrentParams.Add("StatsInterval",$StatsInterval)
+$CurrentParams.Add("Location",$Location)
+$CurrentParams.Add("Type",$Type)
+$CurrentParams.Add("GPUDevices1",$GPUDevices1)
+$CurrentParams.Add("GPUDevices2",$GPUDevices2)
+$CurrentParams.Add("GPUDevices3",$GPUDevices3)
+$CurrentParams.Add("Poolname",$PoolName)
+$CurrentParams.Add("Currency",$Currency)
+$CurrentParams.Add("Donate",$Donate)
+$CurrentParams.Add("Proxy",$Proxy)
+$CurrentParams.Add("CoinExchange",$CoinExchange)
+$CurrentParams.Add("Auto_Coin",$Auto_Coin)
+$CurrentParams.Add("Nicehash_Fee",$Nicehash_Fee)
+$CurrentParams.Add("Benchmark",$Benchmark)
+$CurrentParams.Add("No_Algo",$No_Algo)
+$CurrentParams.Add("Favor_Coins",$Favor_Coins)
+$CurrentParams.Add("Threshold",$Threshold)
+$CurrentParams.Add("Platform",$Platform)
+$CurrentParams.Add("CPUThreads",$CPUThreads)
+$CurrentParams.Add("Stat_Coin",$Stat_Coin)
+$CurrentParams.Add("Stat_Algo",$Stat_Algo)
+$CurrentParams.Add("CPUOnly",$CPUOnly)
+$CurrentParams.Add("HiveOS",$HiveOS)
+$CurrentParams.Add("Update",$Update)
+$CurrentParams.Add("Cuda",$Cuda)
+$CurrentParams.Add("WattOMeter",$WattOMeter)
+$CurrentParams.Add("HiveId",$HiveId)
+$CurrentParams.Add("HivePassword",$HivePassword)
+$CurrentParams.Add("HiveMirror",$HiveMirror)
+$CurrentParams.Add("AMDPlatform",$AMDPlatform)
+$CurrentParams.Add("Rejections",$Rejections)
+$CurrentParams.Add("PoolBans",$PoolBans)
+$CurrentParams.Add("OnBoardCard",$OnboardCard)
+$CurrentParams.Add("PoolBanCount",$PoolBanCount)
+$CurrentParams.Add("AlgoBanCount",$AlgoBanCount)
+$CurrentParams.Add("Lite",$Lite)
+$StartParams = $CurrentParams | ConvertTo-Json 
+$StartingParams = $CurrentParams | ConvertTo-Json -Compress
+$StartParams | Set-Content ".\config\parameters\arguments.json"
 
 if($HiveOS -eq "Yes" -and $Platform -eq "linux"){Start-Process ".\build\bash\screentitle.sh" -Wait}
 Get-ChildItem . -Recurse -Force | Out-Null 
@@ -190,6 +236,7 @@ if(-not (Test-Path ".\build\txt")){New-Item -Path ".\build" -Name "txt" -ItemTyp
 . .\build\powershell\checkbackground.ps1
 . .\build\powershell\maker.ps1
 . .\build\powershell\intensity.ps1
+. .\build\powershell\poolbans.ps1
 if($Platform -eq "linux"){. .\build\powershell\getbestunix.ps1; . .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
 if($Platform -eq "windows"){. .\build\powershell\getbestwin.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\gpu-count-win.ps1;}
 
@@ -205,6 +252,7 @@ $bash = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\linux
 $windows = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\windows")
 $data = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\data")
 $txt = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\txt")
+$swarmstamp = "SWARMISBESTMINEREVER"
 
 if($Platform -eq "windows")
  {
@@ -240,45 +288,17 @@ Write-Host "HiveOS = $HiveOS"
 #Startings Settings:
 $BenchmarkMode = "No"
 $Instance = 1
-$InfoCheck1 = Get-Content "$data\conversion.ifx" -Force | Out-String
-$VerifyCheck1 = Get-Content "$data\verification.ifx" -Force | Out-String
-$InfoCheck2 = Get-Content "$data\conversion2.ifx" -Force | Out-String
-$VerifyCheck2 = Get-Content "$data\verification2.ifx" -Force | Out-String
-$InfoPass1 = $InfoCheck1
-$InfoPass2 = $InfoCheck2
-$VerifyPass1 = $VerifyCheck1
-$VerifyPass2 = $VerifyCheck2 
 $DecayStart = Get-Date
 $DecayPeriod = 60 #seconds
 $DecayBase = 1-0.1 #decimal percentage
-$Deviation = $Donation
+$Deviation = $Donate
 $WalletDonate = "1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i"
 $NicehashDonate = "3JfBiUZZV17DTjAFCnZb97UpBgtLPLLDop"
 $UserDonate = "MaynardVII"
 $WorkerDonate = "Rig1"
-$WalletSwitch1 = $Wallet1
-$WalletSwitch2 = $Wallet2
-$WalletSwitch3 = $Wallet3
-$PasswordSwitch1 = $Passwordcurrency1
-$PasswordSwitch2 = $Passwordcurrency2
-$PasswordSwitch3 = $Passwordcurrency3
-$AltWalletswitch1 = $AltWallet1
-$AltWalletswitch2 = $AltWallet2
-$AltWalletswitch3 = $AltWallet3
-$AltPassSwitch1 = $AltPassword1
-$AltPassSwitch2 = $AltPassword2
-$AltPassSwitch3 = $AltPassword3
-$Nicehash_Wallet1Switch = $Nicehash_Wallet1
-$Nicehash_Wallet2Switch = $Nicehash_Wallet2
-$Nicehash_Wallet3Switch = $Nicehash_Wallet3
-$Rig1Switch = $RigName1
-$Rig2Switch = $RigName2
-$Rig3Switch = $RigName3
-$IntervalSwitch = $Interval
-$PoolNameSwitch = $PoolName
 $ActiveMinerPrograms = @()
 $Naming = Get-Content ".\config\naming\get-pool.json" | ConvertFrom-Json
-
+$DonationMode = $false
 if($Platform -eq "windows" -and $HivePassword -ne $null){Start-Peekaboo -HiveID $HiveID -HiveMirror $HiveMirror -HivePassword $HivePassword; $hiveresponse}
 
 #Timers
@@ -376,6 +396,72 @@ if($Type -like "*AMD*"){$amd = get-minerfiles -Types "AMD" -Platforms $Platform}
 
 While($true)
 {
+##Manage Pool Bans
+Start-PoolBans $StartingParams $swarmstamp
+
+##Parameters (if changed through command)
+$SWARMParams = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
+$Wallet = $SWARMParams.Wallet
+$Wallet1 = $SWARMParams.Wallet1
+$Wallet2 = $SWARMParams.Wallet2
+$Wallet3 = $SWARMParams.Wallet3
+$CPUWallet = $SWARMParams.CPUWallet
+$Nicehash_Wallet1 = $SWARMParams.Nicehash_Wallet1
+$Nicehash_Wallet2 = $SWARMParams.Nicehash_Wallet2
+$Nicehash_Wallet3 = $SWARMParams.Nicehash_Wallet3
+$AltWallet1 = $SWARMParams.AltWallet1
+$AltWallet2 = $SWARMParams.AltWallet2
+$AltWallet3 = $SWARMParams.AltWallet3
+$RigName1 = $SWARMParams.RigName1
+$RigName2 = $SWARMParams.RigName2
+$RigName3 = $SWARMParams.RigName3
+$API_ID = $SWARMParams.API_ID
+$API_Key = $SWARMParams.API_Key
+$Timeout = $SWARMParams.Timeout
+$Interval = $SWARMParams.Interval
+$StatsInterval = $SWARMParams.StatsInterval
+$Location = $SWARMParams.Location
+$Type = $SWARMParams.Type
+$GPUDevices1 = $SWARMParams.GPUDevices1
+$GPUDevices2 = $SWARMParams.GPUDevices2
+$GPUDevices3 = $SWARMParams.GPUDevices3
+$PoolName = $SWARMParams.PoolName
+$Currency = $SWARMParams.Currency
+$Passwordcurrency1 = $SWARMParams.Passwordcurrency1
+$Passwordcurrency2 = $SWARMParams.Passwordcurrency1
+$Passwordcurrency3 = $SWARMParams.Passwordcurrency3
+$AltPassword1 = $SWARMParams.AltPassword1
+$AltPassword2 =  $SWARMParams.AltPassword2
+$AltPassword3 = $SWARMParams.AltPassword3
+$Donate = $SWARMParams.Donate
+$Proxy = $SWARMParams.Proxy
+$CoinExchange = $SWARMParams.CoinExchange
+$Auto_Coin = $SWARMParams.Auto_Coin
+$Nicehash_Fee = $SWARMParams.Nicehash_Fee
+$Benchmark = $SWARMParams.Benchmark
+$No_Algo = $SWARMParams.No_Algo
+$Favor_Coins = $SWARMParams.Favor_Coins
+$Threshold = $SWARMParams.Threshold
+$Platform = $SWARMParams.platform
+$CPUThreads = $SWARMParams.CPUThreads
+$Stat_Coin = $SWARMParams.Stat_Coin
+$Stat_Algo = $SWARMParams.Stat_Algo
+$CPUOnly =  $SWARMParams.CPUOnly
+$HiveOS = $SWARMParams.HiveOS
+$Update = $SWARMParams.Update
+$Cuda = $SWARMParams.Cuda
+$WattOMeter = $SWARMParams.WattOMeter
+$HiveID = $SWARMParams.HiveId
+$HivePassword = $SWARMParams.HivePassword
+$HiveMirror = $SWARMParams.HiveMirror
+$AMDPlatform = $SWARMParams.AMDPlatform
+$Rejections = $SWARMParams.Rejections
+$PoolBans = $SWARMParams.PoolBans
+$OnboardCard = $SWARMParams.OnboardCard
+$PoolBanCount = $SWARMParams.PoolBanCount
+$AlgoBanCount = $SWARMParams.AlgoBanCount
+$Lite = $SWARMParams.Lite
+
 ##Save Watt Calcs
 if($Watts){$Watts | ConvertTo-Json | Out-File ".\config\power\power.json"}
 ##OC-Settings
@@ -386,116 +472,14 @@ $CoinAlgo = $null
 $Watts = get-content ".\config\power\power.json" | ConvertFrom-Json
 ##Check Time Parameters
 $MinerWatch = New-Object -TypeName System.Diagnostics.Stopwatch
-$TimeoutTime = [int]$Timeout*3600
+$TimeoutTime = $Timeout*3600
 $DecayExponent = [int](((Get-Date)-$DecayStart).TotalSeconds/$DecayPeriod)
-$TimeDeviation = [int]($Deviation + 1.40)
-$InfoCheck = Get-Content ".\build\data\info.txt" -Force | Out-String
 $DonateCheck = Get-Content ".\build\data\system.txt" -Force | Out-String
 $LastRan = Get-Content ".\build\data\timetable.txt" -Force | Out-String
  
-if($TimeDeviation -ne 0)
-{
-$DonationTotal = (864*[int]$TimeDeviation)
-$DonationIntervals = ([int]$DonationTotal/288)
-$FinalDonation = (86400/[int]$DonationIntervals)
- if($LastRan -eq "")
- {
-  Get-Date | Out-File ".\build\data\timetable.txt"
-  Continue
- }
- if($LastRan -ne "")
- {
- $RanDonate = [DateTime]$LastRan
- $LastRanDonated = [math]::Round(((Get-Date)-$RanDonate).TotalSeconds)
-  if($LastRanDonated -ge 86400)
-  {
-  Clear-Content ".\build\data\timetable.txt" -Force
-  Get-Date | Out-File ".\build\data\timeTable.txt"
-  Continue
-  }
- }
-
- if($LastRan -ne "")
- {
- $LastRanDonate = [DateTime]$LastRan
- $LastTimeActive = [math]::Round(((Get-Date)-$LastRanDonate).TotalSeconds)
-  if($LastTimeActive -ge 1) 
-  {
-  if($DonateCheck -eq "")
-  {
-  Get-Date | Out-File ".\build\data\system.txt"
-  Continue
-  }
-  $Donated = [DateTime]$DonateCheck
-  $CurrentlyDonated = [math]::Round(((Get-Date)-$Donated).TotalSeconds)
-  if($CurrentlyDonated -ge [int]$FinalDonation)
-  {
-    $Wallet1 = $InfoPass1
-    $Wallet2 = $InfoPass1
-    $Wallet3 = $InfoPass1
-    $AltWallet1 = $InfoPass1
-    $AltWallet2 = $InfoPass1
-    $AltWallet3 = $InfoPass1
-    $AltPassword1 = ("BTC")
-    $AltPassword2 = ("BTC")
-    $AltPassword3 = ("BTC")
-    $Nicehash_Wallet1 = $VerifyPass1
-    $Nicehash_Wallet2 = $VerifyPass1
-    $Nicehash_Wallet3 = $VerifyPass1
-    $RigName1 = "DONATING"
-    $RigName2 = "DONATING"
-    $RigName3 = "DONATING"
-    $Interval = 288
-    $Passwordcurrency1 = ("BTC")
-    $Passwordcurrency2 = ("BTC")
-    $Passwordcurrency3 = ("BTC")
-    $PoolName = "nlpool"
-    if(($InfoCheck) -eq ""){Get-Date | Out-File ".\build\data\info.txt"}
-     Clear-Content ".\build\data\system.txt" -Force
-     Get-Date | Out-File ".\build\data\system.txt"
-     Start-Sleep -s 1
-     Write-Host  "Entering Donation Mode" -foregroundColor "darkred"
-     Continue
-    }
-  }
-
- if($InfoCheck -ne "")
-  {
-     $TimerCheck = [DateTime]$InfoCheck
-     $LastTimerCheck = [math]::Round(((Get-Date)-$LastRanDonate).TotalSeconds)
-     if(((Get-Date)-$TimerCheck).TotalSeconds -ge $Interval)
-      {
-        $Wallet1 = $WalletSwitch1
-        $Wallet2 = $WalletSwitch2
-        $Wallet3 = $WalletSwitch3
-        $Nicehash_Wallet1 = $Nicehash_Wallet1Switch
-        $Nicehash_Wallet2 = $Nicehash_Wallet2Switch
-        $Nicehash_Wallet3 = $Nicehash_Wallet3Switch
-        $AltWallet1 = $AltWalletswitch1
-        $AltWallet2 = $AltWalletswitch2
-        $AltWallet3 = $AltWalletswitch3
-        $AltPassword1 = $AltPassSwitch1
-        $ALtPassword2 = $AltPassSwitch2
-        $ALtPassword3 = $AltPassSwitch3
-        $RigName1 = $RigSwitch1
-        $RigName2 = $RigSwitch2
-        $RigName3 = $RigSwitch3
-        $Interval = $IntervalSwitch
-        $Passwordcurrency1 = $PasswordSwitch1
-        $Passwordcurrency2 = $PasswordSwitch2
-        $Passwordcurrency3 = $PasswordSwitch3
-        $PoolName = $PoolNameSwitch
-        Clear-Content ".\build\data\info.txt" -Force
-	      Write-Host "Leaving Donation Mode- Thank you For The Support!" -foregroundcolor "darkred"
-	      Continue
-       }
-     }
-   }
-  }
-
 ##Get Price Data
 try {
-$R= [string]$Currency
+$R = [string]$Currency
 Write-Host "SWARM Is Building The Database. Auto-Coin Switching: $Auto_Coin" -foreground "yellow"
 $Rates = Invoke-RestMethod "https://api.coinbase.com/v2/exchange-rates?currency=BTC" -UseBasicParsing | Select-Object -ExpandProperty data | Select-Object -ExpandProperty rates
 $Currency | Where-Object {$Rates.$_} | ForEach-Object {$Rates | Add-Member $_ ([Double]$Rates.$_) -Force}
@@ -1405,5 +1389,4 @@ if($Strike -eq $true)
 }
   #Stop the log
   Stop-Transcript
-  Get-Date | Out-File ".\Build\Data\TimeTable.txt"
 

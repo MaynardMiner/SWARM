@@ -40,7 +40,7 @@ $phiphipool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
             Symbol = $phiphipool_Algorithm
             Mining = $phiphipool_Algorithm
             Algorithm = $phiphipool_Algorithm
-            Price = $Stat.$Stat_Algo
+            Price = if($Stat_Algo -eq "Day"){$Stat.Live}else{$Stat.$Stat_Algo}
             StablePrice = $Stat.Week
             MarginOfError = $Stat.Fluctuation
             Protocol = "stratum+tcp"

@@ -38,7 +38,7 @@ $ahashpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | S
             Symbol = $ahashpool_Algorithm
             Mining = $ahashpool_Algorithm
             Algorithm = $ahashpool_Algorithm
-            Price = $Stat.$Stat_Algo
+            Price = if($Stat_Algo -eq "Day"){$Stat.Live}else{$Stat.$Stat_Algo}
             Fees = $ahashpool_Fees
             Workers = $ahashpool_Workers
             StablePrice = $Stat.Week

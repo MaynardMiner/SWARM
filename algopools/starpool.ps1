@@ -50,7 +50,7 @@ $starpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Se
             Symbol = $starpool_Algorithm
             Mining = $starpool_Algorithm
             Algorithm = $starpool_Algorithm
-            Price = $Stat.$Stat_Algo
+            Price = if($Stat_Algo -eq "Day"){$Stat.Live}else{$Stat.$Stat_Algo}
             StablePrice = $Stat.Week
             MarginOfError = $Stat.Fluctuation
             Protocol = "stratum+tcp"

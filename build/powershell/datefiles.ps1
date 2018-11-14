@@ -16,24 +16,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         [String]$CmdDir
         )
     
-    if((Get-Item ".\build\data\info.txt" -Force -ErrorAction SilentlyContinue) -eq $null)
-    {New-Item -Path ".\build\data" -Name "info.txt" -Force | Out-Null}
    if((Get-Item ".\build\data\system.txt" -Force -ErrorAction SilentlyContinue) -eq $null)
     {New-Item -Path ".\build\data" -Name "system.txt" -Force | Out-Null}
-   if((Get-Item ".\build\data\timeTable.txt" -Force -ErrorAction SilentlyContinue) -eq $null)
+   if((Get-Item ".\build\data\timetable.txt" -Force -ErrorAction SilentlyContinue) -eq $null)
     {New-Item -Path ".\build\data" -Name "timetable.txt" -Force | Out-Null}
-    if((Get-Item ".\build\data\error.txt" -Force -ErrorAction SilentlyContinue) -eq $null)
-    {New-Item -Path ".\build\data\" -Name "error.txt" -Force | Out-Null}
-    $TimeoutClear = Get-Content ".\build\data\error.txt" -Force | Out-Null
     if(Test-Path ".\build\pid"){Remove-Item ".\build\pid\*" -Force | Out-Null}
     else{New-Item -Path ".\build" -Name "pid" -ItemType "Directory" -Force | Out-Null}   
-    if($TimeoutClear -ne "")
-     {
-      Clear-Content ".\build\data\system.txt" -Force
-      Get-Date | Out-File ".\build\data\error.txt" -Force | Out-Null
-     } 
-
-    $DonationClear = Get-Content ".\build\data\info.txt" -Force | Out-String
-    if($DonationClear -ne "")
-    {Clear-Content ".\build\data\info.txt" -Force} 
 }

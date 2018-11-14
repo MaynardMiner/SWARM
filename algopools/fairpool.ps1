@@ -41,7 +41,7 @@ $fairpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Se
             Symbol = $fairpool_Algorithm
             Mining = $fairpool_Algorithm
             Algorithm = $fairpool_Algorithm
-            Price = $Stat.$Stat_Algo
+            Price = if($Stat_Algo -eq "Day"){$Stat.Live}else{$Stat.$Stat_Algo}
             Fees = $fairpool_Fees
             Workers = $fairpool_Workers
             StablePrice = $Stat.Week
