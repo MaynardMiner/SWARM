@@ -79,13 +79,12 @@ else{
       $NewParams.RigName1 = "Donating"
       $NewParams.RigName2 = "Donating"
       $NewParams.RigName3 = "Donating"
-      $NewParams.Interval = 288
+      $NewParams.Interval = 300
       $NewParams.Passwordcurrency1 = @("BTC")
       $NewParams.Passwordcurrency2 = @("BTC")
       $NewParams.Passwordcurrency3 = @("BTC")
       $NewParams.PoolName = @("nlpool")
-      Clear-Content ".\build\data\system.txt" -Force
-      Get-Date | Out-File ".\build\data\system.txt"
+      Get-Date | Set-Content ".\build\data\system.txt"
       Start-Sleep -s 1
       Write-Host  "Entering Donation Mode" -foregroundColor "darkred"
      }

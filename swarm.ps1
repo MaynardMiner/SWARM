@@ -474,8 +474,6 @@ $Watts = get-content ".\config\power\power.json" | ConvertFrom-Json
 $MinerWatch = New-Object -TypeName System.Diagnostics.Stopwatch
 $TimeoutTime = $Timeout*3600
 $DecayExponent = [int](((Get-Date)-$DecayStart).TotalSeconds/$DecayPeriod)
-$DonateCheck = Get-Content ".\build\data\system.txt" -Force | Out-String
-$LastRan = Get-Content ".\build\data\timetable.txt" -Force | Out-String
  
 ##Get Price Data
 try {
@@ -1355,14 +1353,12 @@ if($Strike -eq $true)
     if($_.Bad_Benchmark -eq 1 -and $PoolBans -eq "Yes")
      {
       $_.FirstBad = Get-Date
-      if(test-path $HashRateFilePath){remove-item $HashRateFilePath -Force}
       Write-Host "First Strike: There was issue with benchmarking." -ForegroundColor DarkRed
      }
      if($_.Bad_Benchmark -eq $PoolBanCount -and $PoolBans -eq "Yes")
      {
       Write-Host "Strike Two: Benchmarking Has Failed - Prohibiting miner from pool" -ForegroundColor DarkRed
       $NewPoolBlock = @()
-      if(test-path $HashRateFilePath){remove-item $HashRateFilePath -Force}
       if(Test-Path ".\timeout\pool_block\pool_block.txt"){$GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json}
       Start-Sleep -S 1
       if($GetPoolBlock){$GetPoolBlock | foreach{$NewPoolBlock += $_}}
