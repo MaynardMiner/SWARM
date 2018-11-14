@@ -33,11 +33,11 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$AltWallet3 = '',  ##Group 3 Nicehash Wallet
     [Parameter(Mandatory=$false)]
-    [String]$RigName1 = "MMHash1",  ##ID=Rigname (Yiimp Pool) Group 1
+    [String]$RigName1 = "SWARM1",  ##ID=Rigname (Yiimp Pool) Group 1
     [Parameter(Mandatory=$false)]
-    [String]$RigName2 = "MMHash2",  ##ID=Rigname (Yiimp Pool) Group 2
+    [String]$RigName2 = "SWARM2",  ##ID=Rigname (Yiimp Pool) Group 2
     [Parameter(Mandatory=$false)]
-    [String]$RigName3 = "MMHash3", ##ID=Rigname (Yiimp Pool) Group 3
+    [String]$RigName3 = "SWARM3", ##ID=Rigname (Yiimp Pool) Group 3
     [Parameter(Mandatory=$false)]
     [Int]$API_ID = 0, ##Future Implentation
     [Parameter(Mandatory=$false)]
@@ -400,7 +400,8 @@ While($true)
 Start-PoolBans $StartingParams $swarmstamp
 
 ##Parameters (if changed through command)
-$SWARMParams = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
+$GetSWARMParams = Get-Content ".\config\parameters\arguments.json"
+$SWARMParams = $GetSWARMParams | ConvertFrom-Json
 $Wallet = $SWARMParams.Wallet
 $Wallet1 = $SWARMParams.Wallet1
 $Wallet2 = $SWARMParams.Wallet2

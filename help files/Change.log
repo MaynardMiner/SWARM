@@ -995,4 +995,23 @@ but API is awaiting stats.
     -Wildrig Updated
     -Sgminer-Kl updated
     
-    
+    1.7.4
+
+  AMD Users: Use -AMDPlatform to specify Opencl platform
+  AMD Users: Use -OnboardCard Yes if you have an integrated Graphics Card
+  ALL USERS: -Delay argument has been removed!
+
+    Remote Updates Safe
+    Note: You may see errors on screen while updating. They are not
+    an issue: I was too lazy to silent them.
+
+    -Changed Pool Ban System To prevent
+     potential uneeded re-benchmarking
+    -Updated Wildrig-Multi
+    -Fixed logfile error for SWARM Lite feature.
+    -Fixed Timestamps Issues.
+    -SWARM watchdog will clear hive stats on close.
+    -SWARM will record close time (for 24 donation rollover)
+    -Fixed Rigname switch after Donate.
+    -arguments.json is written as proper json (future implementation)
+    -Ensured 24 hour estimates are accurate.
