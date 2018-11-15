@@ -37,6 +37,7 @@ if($CoinAlgo -eq $null)
   [PSCustomObject]@{
     Delay = $Config.$ConfigType.delay
     Symbol = "$($_.Algorithm)"
+    MinerName = $MinerName
     Prestart = $PreStart
     Type = $ConfigType
     Path = $Path
