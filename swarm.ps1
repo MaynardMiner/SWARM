@@ -463,6 +463,9 @@ $PoolBanCount = $SWARMParams.PoolBanCount
 $AlgoBanCount = $SWARMParams.AlgoBanCount
 $Lite = $SWARMParams.Lite
 
+if($SWARMParams.Rigname1 -eq "Donate"){$Donating = $True}
+else{$Donating = $False}
+
 ##Save Watt Calcs
 if($Watts){$Watts | ConvertTo-Json | Out-File ".\config\power\power.json"}
 ##OC-Settings
