@@ -26,7 +26,17 @@ Switch($Name)
    {
     if(Test-Path ".\timeout"){Remove-Item ".\timeout" -Recurse -Force}
     Write-Host "Removed All Timeouts" -ForegroundColor Green
-    if($Platform -eq "windows"){"Removed All Timeouts" | Out-File ".\build\txt\benchcom.txt"}
+    if($Platform -eq "windows"){"Removed All Bans" | Out-File ".\build\txt\benchcom.txt"}
+   }
+   "all"
+   {
+   if(Test-Path ".\stats\*_hashrate.txt*"){Remove-Item ".\stats\*_hashrate.txt*" -Force}
+   if(Test-Path ".\backup\*_hashrate.txt*"){Remove-Item ".\stats\*_hashrate.txt*" -Force}
+   if(Test-Path ".\timeout\pool_block\pool_block.txt"){Clear-Content ".\timeout\pool_block\pool_block.txt"}
+   if(Test-Path ".\timeout\algo_block\algo_block.txt"){Clear-Content ".\timeout\pool_block\algo_block.txt"}
+   Write-Host "Removed All Benchmarks and Bans" -ForegroundColor Green
+
+   if($Platform -eq "windows"){"Removed All Benchmarks and Bans" | Out-File ".\build\txt\benchcom.txt"}
    }
    default
    {
