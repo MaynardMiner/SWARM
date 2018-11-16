@@ -23,6 +23,7 @@ $PreviousVersions = @()
 $PreviousVersions += "SWARM.1.7.1"
 $PreviousVersions += "SWARM.1.7.2"
 $PreviousVersions += "SWARM.1.7.3"
+$PreviousVersions += "SWARM.1.7.4"
 
 $PreviousVersions | foreach {
   $PreviousPath = Join-Path "/hive/custom" "$_"
@@ -72,35 +73,35 @@ $PreviousVersions | foreach {
          if($ChangeFile -eq "cryptodredge.json")
           {
           $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
-          $Data.$_.commands| Add-Member "hmq1725" ""
-          $Data.$_.difficulty | Add-Member "hmq1725" ""
-          $Data.$_.naming | Add-Member "hmq1725" "hmq1725"
-          $Data.$_.oc | Add-Member "hmq1725" @{Power=""; Core=""; Memory=""}
+          $Data.$_.commands| Add-Member "hmq1725" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "hmq1725" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "hmq1725" "hmq1725" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "hmq1725" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
            }
          }
          if($ChangeFile -eq "wildrig.json")
           {
           $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
-          $Data.$_.commands| Add-Member "polytimos" ""
-          $Data.$_.difficulty | Add-Member "polytimos" ""
-          $Data.$_.naming | Add-Member "polytimos" "polytimos"
-          $Data.$_.oc | Add-Member "polytimos" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""}
+          $Data.$_.commands| Add-Member "polytimos" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "polytimos" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "polytimos" "polytimos" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "polytimos" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue
            }
          }
          if($Data.AMD1.oc)
          {
           $Data.AMD1.oc | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Foreach{
-           $Data.AMD1.oc.$_ | Add-Member "fans" ""
+           $Data.AMD1.oc.$_ | Add-Member "fans" "" -ErrorAction SilentlyContinue
           }
          }
          if($Data.default_AMD1)
          {
-           $Data.default_AMD1 | Add-Member "fans" ""
+           $Data.default_AMD1 | Add-Member "fans" "" -ErrorAction SilentlyContinue
          }
          $UpdateType | foreach {
           if($Data.$_)
           {
-           $Data.$_ | Add-Member "delay" "1"
+           $Data.$_ | Add-Member "delay" "1" -ErrorAction SilentlyContinue
           }
          }
          $Data | ConvertTo-Json -Depth 3 | Set-Content $NewJson;

@@ -1015,3 +1015,45 @@ but API is awaiting stats.
     -Fixed Rigname switch after Donate.
     -arguments.json is written as proper json (future implementation)
     -Ensured 24 hour estimates are accurate.
+
+    1.7.5
+
+    Remote Updates are safe
+  AMD Users: Use -AMDPlatform to specify Opencl platform
+  AMD Users: Use -OnboardCard Yes if you have an integrated Graphics Card
+  ALL USERS: -Delay argument has been removed!
+
+   -Fixed encoding carriage return happening when arguments
+    were saved to config.
+   -Added blakecoin to power.json to prevent errors (note:
+    did not add to remote updates. You will have to add
+    manually) or just ignore error for now.
+   -Donation Wallet goes to only 1 pool. If you see only one
+    pool on stats screen- It is not a bug. I can't make thresholds
+   -Fixed small typo in stak-opt with MinerName/path
+   -Code staging for wallet tracking (not implemented yet)
+   -Code stating for beta profit calc. system (users will be
+    able to use new system or old system when finished.)
+  
+  NEW MINERS!
+  xmrig-amd
+
+  Miners Updated!
+  enemy
+
+  New Arguments
+  ``benchmark [command] [name]``
+
+  Command List:
+
+  timeout
+  algorithm
+  miner
+  all
+
+  -algorithm name must be lower case.
+  -miner name must match name on ``stats`` screen. Case-Sensitive
+  -timeout removes bans only (all of them).
+   however, this may cause miner to bench algo again.
+
+
