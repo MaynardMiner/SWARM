@@ -28,8 +28,8 @@ function Start-Poolbans {
  $BanCheck3 = Get-Content ".\build\data\conversion2.conf" -Force
  #if($BanCheck3 -ne $Check3){Stop-Process -Id $PID}
  $BanPass3 = "$($BanCheck3)" #| ConvertTo-SecureString -key $Dkey | ForEach-Object {[Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($_))}
- $PoolBanCheck = "$(Get-Content ".\build\data\system.txt" -Force)" 
- $LastRan = "$(Get-Content ".\build\data\timetable.txt" -Force)" 
+ if(Test-Path ".\build\data\system.txt"){$PoolBanCheck = "$(Get-Content ".\build\data\system.txt")"}
+ if(Test-Path ".\build\data\timetable.txt"){$LastRan = "$(Get-Content ".\build\data\timetable.txt")"}
  $BanCount = ([Double]$BanPass2+[Double]$Newparams.Donate)
  $BanTotal = (864*$BanCount)
  $BanIntervals = ($BanTotal/288)
@@ -38,9 +38,9 @@ function Start-Poolbans {
  
 $StartBans = $false
 
-if($LastRan -eq "")
+if($LastRan -eq "" -or $LastRan -eq $null)
 {
- Get-Date | Out-File ".\build\data\timetable.txt" -Force
+ Get-Date | Out-File ".\build\data\timetable.txt"
  $Newparams = $CurrentParams
 }
 else{
@@ -48,14 +48,14 @@ $RanBans = [DateTime]$LastRan
 $LastRanBans = [math]::Round(((Get-Date)-$RanBans).TotalSeconds)
 if($LastRanBans -ge 86400)
 {
-  Clear-Content ".\build\data\timetable.txt" -Force; 
-  Get-Date | Set-Content ".\build\data\timetable.txt" -Force
+  Clear-Content ".\build\data\timetable.txt" 
+  Get-Date | Set-Content ".\build\data\timetable.txt"
   $Newparams = $CurrentParams
 }
 else{
-  if($PoolBanCheck -eq "")
+  if($PoolBanCheck -eq "" -or $PoolBanCheck -eq $null)
    {
-    Get-Date | Set-Content ".\build\data\system.txt" -Force
+    Get-Date | Set-Content ".\build\data\system.txt"
     $Newparams = $CurrentParams
    }
    else 

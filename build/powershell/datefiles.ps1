@@ -16,10 +16,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         [String]$CmdDir
         )
     
-   if((Get-Item ".\build\data\system.txt" -Force -ErrorAction SilentlyContinue) -eq $null)
-    {New-Item -Path ".\build\data" -Name "system.txt" -Force | Out-Null}
-   if((Get-Item ".\build\data\timetable.txt" -Force -ErrorAction SilentlyContinue) -eq $null)
-    {New-Item -Path ".\build\data" -Name "timetable.txt" -Force | Out-Null}
     if(Test-Path ".\build\pid"){Remove-Item ".\build\pid\*" -Force | Out-Null}
-    else{New-Item -Path ".\build" -Name "pid" -ItemType "Directory" -Force | Out-Null}   
+    else{New-Item -Path ".\build" -Name "pid" -ItemType "Directory" | Out-Null}   
 }

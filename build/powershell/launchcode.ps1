@@ -84,7 +84,7 @@ function Start-LaunchCode {
   $Export = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\export")  
   ##Remove Old PID FIle
   $PIDMiners = "$($MinerCurrent.Type)"
-  if(Test-Path ".\build\pid\*$PIDMiners*"){Remove-Item ".\build\pid\*$PIDMiners*" -Force}
+  if(Test-Path ".\build\pid\*$PIDMiners*"){Remove-Item ".\build\pid\*$PIDMiners*"}
   if(Test-Path ".\build\*$($MinerCurrent.Type)*-hash.txt"){Clear-Content ".\build\*$($MinerCurrent.Type)*-hash.txt"}
 
 switch -WildCard ($MinerCurrent.Type)
@@ -310,8 +310,8 @@ Do{
  }until($MinerProcess -ne $null -or ($MinerTimer.Elapsed.TotalSeconds) -ge 10)  
 if($MinerProcess -ne $null)
 {
-   $MinerProcess.Id | Set-Content ".\build\pid\$($MinerCurrent.Name)_$($MinerCurrent.Coins)_$($MinerCurrent.InstanceName)_pid.txt" -Force
-   Get-Date | Set-Content ".\build\pid\$($MinerCurrent.Name)_$($MinerCurrent.Coins)_$($MinerCurrent.InstanceName)_date.txt" -Force
+   $MinerProcess.Id | Set-Content ".\build\pid\$($MinerCurrent.Name)_$($MinerCurrent.Coins)_$($MinerCurrent.InstanceName)_pid.txt"
+   Get-Date | Set-Content ".\build\pid\$($MinerCurrent.Name)_$($MinerCurrent.Coins)_$($MinerCurrent.InstanceName)_date.txt"
    Start-Sleep -S 1
 }
 $MinerTimer.Stop()

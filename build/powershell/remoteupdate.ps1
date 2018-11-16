@@ -43,7 +43,7 @@ $PreviousVersions | foreach {
         Get-ChildItem -Path "$($OldBackup)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\stats"
         Get-ChildItem -Path "$($OldBackup)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\backup"
        }
-      if(Test-Path $OldTime){Get-ChildItem -Path "$($OldTime)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\build\data"}
+      #if(Test-Path $OldTime){Get-ChildItem -Path "$($OldTime)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\build\data"}
        if(Test-Path $OldTimeout)
        {
         if(-not (Test-Path ".\timeout")){New-Item "timeout" -ItemType "directory" | Out-Null }

@@ -465,6 +465,7 @@ $Lite = $SWARMParams.Lite
 
 if($SWARMParams.Rigname1 -eq "Donate"){$Donating = $True}
 else{$Donating = $False}
+if($Donating -eq $True){$Test = Get-Date; $DonateTest = "Miner has donated on $Test"; $DonateTest | Set-Content ".\build\txt\donate.txt"}
 
 ##Save Watt Calcs
 if($Watts){$Watts | ConvertTo-Json | Out-File ".\config\power\power.json"}
@@ -780,7 +781,9 @@ $type | foreach {if(Test-Path ".\build\txt\$($_)-hash.txt"){Clear-Content ".\bui
 $GetStatusAlgoBans = ".\timeout\algo_block\algo_block.txt"
 $GetStatusPoolBans = ".\timeout\pool_block\pool_block.txt"
 if(Test-Path $GetStatusAlgoBans){$StatusAlgoBans = Get-Content $GetStatusAlgoBans | ConvertFrom-Json}
+else{$StatusAlgoBans = $null}
 if(Test-Path $GetStatusPoolBans){$StatusPoolBans = Get-Content $GetStatusPoolBans | ConvertFrom-Json}
+else{$StatusPoolBans = $null}
 $StatusDate = Get-Date
 $StatusDate | Out-File ".\build\bash\mineractive.sh"
 $StatusDate | Out-File ".\build\bash\minerstats.sh"
@@ -936,8 +939,7 @@ Start-BackgroundCheck -Platforms $Platform
  function Get-MinerActive {
 
   $ActiveMinerPrograms | Sort-Object -Descending Status,
-  {if($null -eq $_.XProcess){[DateTime]0}else{$_.XProcess.StartTime}
-  } | Select -First (1+6+6) | Format-Table -Wrap -GroupBy Status (
+  {if($null -eq $_.XProcess){[DateTime]0}else{$_.XProcess.StartTime}} | Format-Table -Wrap -GroupBy Status (
   @{Label = "Speed"; Expression={$_.HashRate | ForEach {"$($_ | ConvertTo-Hash)/s"}}; Align='right'},
   @{Label = "Active"; Expression={"{0:dd} Days {0:hh} Hours {0:mm} Minutes" -f $(if($null -eq $_.XProcess){$_.Active}else{if($_.XProcess.HasExited){($_.Active)}else{($_.Active+((Get-Date)-$_.XProcess.StartTime))}})}},
   @{Label = "Launched"; Expression={Switch($_.Activated){0 {"Never"} 1 {"Once"} Default {"$_ Times"}}}},
