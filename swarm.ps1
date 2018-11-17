@@ -741,6 +741,7 @@ $BestMiners_Combo | ForEach {
    ocmem = $_.ocmem
    ocmdpm = $_.ocmdpm
    ocpower = $_.ocpower
+   ocfans = $_.ocfans
    ethpill = $_.ethpill
    pilldelay = $_.pilldelay
    quote = 0
