@@ -733,9 +733,10 @@ if($BackgroundTimer.Elapsed.TotalSeconds -gt 60)
   {
    Write-Host "Warning: Miner is reaching Rejection Limit- $($RJPercent.ToString("N2")) Percent Out of $Shares Shares" -foreground yellow
    if(-not (Test-Path ".\timeout")){New-Item "timeout" -ItemType Directory | Out-Null}
-   "Bad Shares" | Out-File ".\timeout\$($_.Name)_$($_.Algo)_rejection.txt"
+   if(-not (Test-Path ".\timeout\warnings")){New-Item ".\timeout\warnings" -ItemType Directory | Out-Null}
+   "Bad Shares" | Out-File ".\timeout\warnings\$($_.Name)_$($_.Algo)_rejection.txt"
   }
-  else{if(Test-Path ".\timeout\$($_.Name)_$($_.Algo)_rejection.txt"){Remove-Item ".\timeout\$($_.Name)_$($_.Algo)_rejection.txt" -Force}}
+  else{if(Test-Path ".\timeout\warnings\$($_.Name)_$($_.Algo)_rejection.txt"){Remove-Item ".\timeout\warnings\$($_.Name)_$($_.Algo)_rejection.txt" -Force}}
  }
 }
 

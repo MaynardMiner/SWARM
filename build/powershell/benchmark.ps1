@@ -49,15 +49,25 @@ Switch($command)
     {
      $NewPoolBlock = @()
      $GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json
-     $GetPoolBlock | foreach {if($_.Name -ne $Name){$NewPoolBlock += $_}else{Write-Host "Found $($_.Algo) in Pool Block file"}}
+     $GetPoolBlock | foreach {if($_.Name -ne $Name){$NewPoolBlock += $_}else{Write-Host "Found $($_.Name) in Pool Block file"}}
      if($NewPoolBlock){$NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt"}
+     else{Clear-Content ".\timeout\pool_block\pool_block.txt"}
     }
     if(Test-Path ".\timeout\algo_block\algo_block.txt")
     {
      $NewPoolBlock = @()
      $GetPoolBlock = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json
-     $GetPoolBlock | foreach {if($_.Name -ne $Name){$NewPoolBlock += $_}else{Write-Host "Found $($_.Algo) in Pool Block file"}}
-     if($NewPoolBlock){$NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt"}
+     $GetPoolBlock | foreach {if($_.Name -ne $Name){$NewPoolBlock += $_}else{Write-Host "Found $($_.Name) in Algo Block file"}}
+     if($NewPoolBlock){$NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block\algo_block.txt"}
+     else{Clear-Content ".\timeout\algo_block\algo_block.txt"}
+    }
+    if(Test-Path ".\timeout\miner_block\miner_block.txt")
+    {
+     $NewPoolBlock = @()
+     $GetPoolBlock = Get-Content ".\timeout\miner_block\miner_block.txt" | ConvertFrom-Json
+     $GetPoolBlock | foreach {if($_.Name -ne $Name){$NewPoolBlock += $_}else{Write-Host "Found $($_.Name) in Miner Block file"}}
+     if($NewPoolBlock){$NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block\algo_block.txt"}
+     else{Clear-Content ".\timeout\miner_block\miner_block.txt"}
     }
     Write-Host "Removed all $Name stats and bans." -ForegroundColor Green
     "Removed all $Name stats and bans." | Out-File ".\build\txt\benchcom.txt" 
@@ -77,16 +87,23 @@ Switch($command)
      $GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json
      $GetPoolBlock | foreach {if($_.Algo -ne $Name){$NewPoolBlock += $_}else{Write-Host "Found $($_.Algo) in Pool Block file"}}
      if($NewPoolBlock){$NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt"}
+     else{Clear-Content ".\timeout\pool_block\pool_block.txt"}
     }
     if(Test-Path ".\timeout\algo_block\algo_block.txt")
     {
      $NewPoolBlock = @()
      $GetPoolBlock = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json
-     $GetPoolBlock | foreach {if($_.Algo -ne $Name){$NewPoolBlock += $_}else{Write-Host "Found $($_.Algo) in Pool Block file"}}
-     if($NewPoolBlock){$NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt"}
+     $GetPoolBlock | foreach {if($_.Algo -ne $Name){$NewPoolBlock += $_}else{Write-Host "Found $($_.Algo) in Algo Block file"}}
+     if($NewPoolBlock){$NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block\algo_block.txt"}
+     else{Clear-Content ".\timeout\algo_block\algo_block.txt"}
     }
     Write-Host "Removed all $Name stats and bans." -ForegroundColor Green
     "Removed all $Name stats and bans." | Out-File ".\build\txt\benchcom.txt"
     }
    }
- }
+  default
+  {
+   Write-Host "No Command Given"
+   "No Command Given" | Out-File ".\build\txt\benchcom.txt" 
+  }
+}

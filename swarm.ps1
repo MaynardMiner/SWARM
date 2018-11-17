@@ -131,6 +131,8 @@ param(
     [Parameter(Mandatory=$false)]
     [Int]$AlgoBanCount = 3,
     [Parameter(Mandatory=$false)]
+    [Int]$MinerBanCount = 4,    
+    [Parameter(Mandatory=$false)]
     [String]$Lite = "No"
 )
 
@@ -196,6 +198,7 @@ $CurrentParams.Add("PoolBans",$PoolBans)
 $CurrentParams.Add("OnBoardCard",$OnboardCard)
 $CurrentParams.Add("PoolBanCount",$PoolBanCount)
 $CurrentParams.Add("AlgoBanCount",$AlgoBanCount)
+$CurrentParams.Add("MinerBanCount",$MinerBanCount)
 $CurrentParams.Add("Lite",$Lite)
 $StartParams = $CurrentParams | ConvertTo-Json 
 $StartingParams = $CurrentParams | ConvertTo-Json -Compress
@@ -386,6 +389,7 @@ elseif($Platform -eq "linux"){Get-SexyUnixLogo}
  
 #Get-Algorithms
 $Algorithm = @()
+$Warnings = @()
 $NeedsToBeBench = $false
 $Algorithm = Get-Algolist -Devices $Type -No_Algo $No_Algo
 
@@ -715,12 +719,10 @@ $BestMiners_Combo | ForEach {
    Status = "Idle"
    HashRate = 0
    Benchmarked = 0
-   Timeout = 0
    WasBenchmarked = $false
    XProcess = $null
    MinerPool = $_.MinerPool
    Algo = $_.Algo
-   Bad_Benchmark = 0
    FullName = $_.FullName
    Instance = $null
    InstanceName = $null
@@ -780,10 +782,13 @@ Clear-Content ".\build\bash\minerstats.sh" -Force
 $type | foreach {if(Test-Path ".\build\txt\$($_)-hash.txt"){Clear-Content ".\build\txt\$($_)-hash.txt" -Force}}
 $GetStatusAlgoBans = ".\timeout\algo_block\algo_block.txt"
 $GetStatusPoolBans = ".\timeout\pool_block\pool_block.txt"
+$GetStatusMinerBans = ".\timeout\miner_block\miner_block.txt"
 if(Test-Path $GetStatusAlgoBans){$StatusAlgoBans = Get-Content $GetStatusAlgoBans | ConvertFrom-Json}
 else{$StatusAlgoBans = $null}
 if(Test-Path $GetStatusPoolBans){$StatusPoolBans = Get-Content $GetStatusPoolBans | ConvertFrom-Json}
 else{$StatusPoolBans = $null}
+if(Test-Path $GetStatusMinerBans){$StatusMinerBans = Get-Content $GetStatusMinerBans | ConvertFrom-Json}
+else{$StatusMinerBans = $null}
 $StatusDate = Get-Date
 $StatusDate | Out-File ".\build\bash\mineractive.sh"
 $StatusDate | Out-File ".\build\bash\minerstats.sh"
@@ -797,6 +802,7 @@ $mcolor = "91"
 $me = [char]27
 if($StatusAlgoBans){$StatusAlgoBans | foreach {$BanMessage += "$me[${mcolor}m$($_.Name) mining $($_.Algo) is banned from all pools${me}[0m"}}
 if($StatusPoolBans){$StatusPoolBans | foreach {$BanMessage += "$me[${mcolor}m$($_.Name) mining $($_.Algo) is banned from $($_.MinerPool)${me}[0m"}}
+if($StatusMinerBans){$StatusMinerBans | foreach {$BanMessage += "$me[${mcolor}m$($_.Name) is banned${me}[0m"}}
 $BanMessage | Out-File ".\build\bash\minerstats.sh" -Append
 $BestActiveMiners | ConvertTo-Json | Out-File ".\build\txt\bestminers.txt"
 $Current_BestMiners = $BestActiveMiners | ConvertTo-Json -Compress
@@ -817,7 +823,7 @@ if($_.BestMiner -eq $false)
    }
   elseif($Platform -eq "linux")
    {
-    if($_.XProcess.HasExited){if($_.Status -eq "Running"){$_.Status = "Failed"}}
+    if($_.XProcess = $null){$_.Status = "Failed"}
     else
      {
       $_.Status = "Idle"
@@ -936,17 +942,17 @@ $APITable | ConvertTo-Json -Depth 4 | Set-Content ".\build\txt\profittable.txt"
 Start-BackgroundCheck -Platforms $Platform
 }
 
- function Get-MinerActive {
+function Get-MinerActive {
 
   $ActiveMinerPrograms | Sort-Object -Descending Status,
-  {if($null -eq $_.XProcess){[DateTime]0}else{$_.XProcess.StartTime}} | Format-Table -Wrap -GroupBy Status (
+  {if($null -eq $_.XProcess){[DateTime]0}else{$_.XProcess.StartTime}
+  } | Select -First (1+6+6) | Format-Table -Wrap -GroupBy Status (
   @{Label = "Speed"; Expression={$_.HashRate | ForEach {"$($_ | ConvertTo-Hash)/s"}}; Align='right'},
   @{Label = "Active"; Expression={"{0:dd} Days {0:hh} Hours {0:mm} Minutes" -f $(if($null -eq $_.XProcess){$_.Active}else{if($_.XProcess.HasExited){($_.Active)}else{($_.Active+((Get-Date)-$_.XProcess.StartTime))}})}},
   @{Label = "Launched"; Expression={Switch($_.Activated){0 {"Never"} 1 {"Once"} Default {"$_ Times"}}}},
   @{Label = "Command"; Expression={"$($_.MinerName) $($_.Devices) $($_.Arguments)"}}
 )
 }
-
 function Get-Logo {
        Write-Host '
                                                                            (                    (      *     
@@ -1241,13 +1247,13 @@ Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
  }
 }
 
+
+
 ##Benchmarking/Timeout      
 $BestActiveMiners | foreach {
- if($_.FirstBad -ne $null)
-  {
-   $BadCheck = [math]::Round(((Get-Date)-$_.FirstBad).TotalSeconds)
-   if($BadCheck -gt 3600){$_.Bad_Benchmark = 0; $_.FirstBad = $null}
-  }
+$MinerPoolBan = $false
+$MinerAlgoBan = $false
+$MinerBan = $false
 $Strike = $false
 if($_.BestMiner -eq $true)
  {
@@ -1256,6 +1262,7 @@ if($_.BestMiner -eq $true)
    $_.Status = "Failed"
    $_.WasBenchMarked = $False
    $Strike = $true
+   Write-Host "Cannot Benchmark- Miner is not running" -ForegroundColor Red
   }
   else
   { 
@@ -1326,11 +1333,10 @@ if($_.BestMiner -eq $true)
           }
          }
       ##Check For High Rejections
-      $RejectCheck = Join-Path ".\timeout" "$($_.Name)_$($_.Algo)_rejection.txt"
+      $RejectCheck = Join-Path ".\timeout\warnings" "$($_.Name)_$($_.Algo)_rejection.txt"
       if(Test-Path $RejectCheck)
        {
         Write-Host "Rejections Are Too High" -ForegroundColor DarkRed
-        $_.Timeout++
         $_.WasBenchmarked = $false
         $Strike = $true
        }
@@ -1338,8 +1344,12 @@ if($_.BestMiner -eq $true)
      }
     }
 
-  if($Strike -eq $true){$_.Bad_Benchmark++}
-  else{$_.Bad_Benchmark = 0}
+  if($Strike -ne $true)
+  {
+   if($Warnings."$($_.Name)" -ne $null){$Warnings."$($_.Name)" | foreach{try{$_.bad=0}catch{}}}
+   if($Warnings."$($_.Name)_$($_.Algo)" -ne $null){$Warnings."$($_.Name)_$($_.Algo)" | foreach{try{$_.bad=0}catch{}}}
+   if($Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" -ne $null){$Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)"| foreach{try{$_.bad=0}catch{}}}
+  }
 		 
 
 if($Strike -eq $true)
@@ -1349,41 +1359,69 @@ if($Strike -eq $true)
     if (-not (Test-Path ".\timeout")) {New-Item "timeout" -ItemType "directory" | Out-Null}
     if (-not (Test-Path ".\timeout\pool_block")) {New-Item -Path ".\timeout" -Name "pool_block" -ItemType "directory" | Out-Null}
     if (-not (Test-Path ".\timeout\algo_block")) {New-Item -Path ".\timeout" -Name "algo_block" -ItemType "directory" | Out-Null}
+    if (-not (Test-Path ".\timeout\miner_block")) {New-Item -Path ".\timeout" -Name "miner_block" -ItemType "directory" | Out-Null}
+    if (-not (Test-Path ".\timeout\warnings")) {New-Item -Path ".\timeout" -Name "warnings" -ItemType "directory" | Out-Null}
     Start-Sleep -S .25
-    $TimeoutFile = Join-Path ".\timeout" "$($_.Name)_$($_.Algo)_TIMEOUT.txt"
+    $TimeoutFile = Join-Path ".\timeout\warnings" "$($_.Name)_$($_.Algo)_TIMEOUT.txt"
     $HashRateFilePath = Join-Path ".\stats" "$($_.Name)_$($_.Algo)_hashrate.txt"
-    if(-not (Test-Path $TimeoutFile)){"$($_.Name) $($_.Coins) Hashrate Check Timed Out $($_.Bad_Benchmark) Times" | Set-Content ".\timeout\$($_.Name)_$($_.Algo)_TIMEOUT.txt" -Force}
-    $_.WasBenchmarked = $True
-    $_.Timeout = 0
-    Write-Host "$($_.Name) $($_.Coins) Hashrate Check Timed Out $($_.Bad_Benchmark) Times- It Was Noted In Timeout Folder" -foregroundcolor "darkred"
-    if($_.Bad_Benchmark -eq 1 -and $PoolBans -eq "Yes")
+    if(-not (Test-Path $TimeoutFile)){"$($_.Name) $($_.Coins) Hashrate Check Timed Out" | Set-Content ".\timeout\warnings\$($_.Name)_$($_.Algo)_TIMEOUT.txt" -Force}
+    if($Warnings."$($_.Name)" -eq $null){$Warnings += [PSCustomObject]@{"$($_.Name)" = [PSCustomObject]@{bad = 0}}}
+    if($Warnings."$($_.Name)_$($_.Algo)" -eq $null){$Warnings += [PSCustomObject]@{"$($_.Name)_$($_.Algo)" = [PSCustomObject]@{bad = 0}}}
+    if($Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" -eq $null){$Warnings += [PSCustomObject]@{"$($_.Name)_$($_.Algo)_$($_.MinerPool)" = [PSCustomObject]@{bad = 0}}}
+    $Warnings."$($_.Name)" | foreach{try{$_.bad++}catch{}}
+    $Warnings."$($_.Name)_$($_.Algo)" | foreach{try{$_.bad++}catch{}}
+    $Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)"| foreach{try{$_.bad++}catch{}}
+    if($Warnings."$($_.Name)".bad -ge $MinerBanCount){$MinerBan = $true}
+    if($Warnings."$($_.Name)_$($_.Algo)".bad -ge $AlgoBanCount){$MinerAlgoBan = $true}
+    if($Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)".bad -ge $PoolBanCount){$MinerPoolBan = $true}
+    ##Strike One
+    if($MinerPoolBan -eq $false -and $MinerAlgoBan -eq $false -and $MinerBan -eq $false)
+    {
+     Write-Host "First Strike: There was issue with benchmarking." -ForegroundColor DarkRed
+    }
+    ##Strike Two
+    if($MinerPoolBan -eq $true)
+    {
+     Write-Host "Strike Two: Benchmarking Has Failed - Prohibiting miner from pool" -ForegroundColor DarkRed
+     $NewPoolBlock = @()
+     if(Test-Path ".\timeout\pool_block\pool_block.txt"){$GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json}
+     Start-Sleep -S 1
+     if($GetPoolBlock){$GetPoolBlock | foreach{$NewPoolBlock += $_}}
+     $NewPoolBlock += $_
+     $NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt"
+     $Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)"| foreach{try{$_.bad=0}catch{}}
+    }
+    ##Strike Three: He's Outta Here
+     if($MinerAlgoBan -eq $true)
      {
-      $_.FirstBad = Get-Date
-      Write-Host "First Strike: There was issue with benchmarking." -ForegroundColor DarkRed
-     }
-     if($_.Bad_Benchmark -eq $PoolBanCount -and $PoolBans -eq "Yes")
-     {
-      Write-Host "Strike Two: Benchmarking Has Failed - Prohibiting miner from pool" -ForegroundColor DarkRed
-      $NewPoolBlock = @()
-      if(Test-Path ".\timeout\pool_block\pool_block.txt"){$GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json}
-      Start-Sleep -S 1
-      if($GetPoolBlock){$GetPoolBlock | foreach{$NewPoolBlock += $_}}
-      $NewPoolBlock += $_
-      $NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt"
-      Start-Sleep -S 1
-     }
-     if($_.Bad_Benchmark -ge $AlgoBanCount)
-     {
-      Write-Host "Strike three: Benchmarking Has Failed - disabling miner" -ForegroundColor DarkRed
+      Write-Host "Strike three: $($_.Algo) is now banned on $($_.Name)" -ForegroundColor DarkRed
       $NewAlgoBlock = @()
       if(test-path $HashRateFilePath){remove-item $HashRateFilePath -Force}
       if(Test-Path ".\timeout\algo_block\algo_block.txt"){$GetAlgoBlock = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json}
       Start-Sleep -S 1
-      if($GetPoolBlock){$GetAlgoBlock | foreach{$NewAlgoBlock += $_}}
+      if($GetAlgoBlock){$GetAlgoBlock | foreach{$NewAlgoBlock += $_}}
       $NewAlgoBlock += $_
-      $NewAlgoBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block\algo_block.txt" 
+      $NewAlgoBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block\algo_block.txt"
+      $Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)"| foreach{try{$_.bad=0}catch{}}
+      $Warnings."$($_.Name)_$($_.Algo)" | foreach{try{$_.bad=0}catch{}}
       Start-Sleep -S 1
      }
+    ##Strike Four: Miner is Finished
+    if($MinerBan -eq $true)
+    {
+     Write-Host "This miner sucks, shutting it down." -ForegroundColor DarkRed
+     $NewMinerBlock = @()
+     if(test-path $HashRateFilePath){remove-item $HashRateFilePath -Force}
+     if(Test-Path ".\timeout\miner_block\miner_block.txt"){$GetMinerBlock = Get-Content ".\timeout\miner_block\miner_block.txt" | ConvertFrom-Json}
+     Start-Sleep -S 1
+     if($GetMinerBlock){$GetMinerBlock | foreach{$NewMinerBlock += $_}}
+     $NewMinerBlock += $_
+     $NewMinerBlock | ConvertTo-Json | Set-Content ".\timeout\miner_block\miner_block.txt"
+     $Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)"| foreach{try{$_.bad=0}catch{}}
+     $Warnings."$($_.Name)_$($_.Algo)" | foreach{try{$_.bad=0}catch{}}
+     $Warnings."$($_.Name)" | foreach{try{$_.bad=0}catch{}}
+     Start-Sleep -S 1
+    }
     }
    }
   }
