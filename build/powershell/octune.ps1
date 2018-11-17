@@ -206,9 +206,9 @@ if($_.Type -like "*AMD*")
        $GPU = $OCDevices[$i]
       if($Platforms -eq "linux")
       {
-        for($i=1; $i -lt 16; $i++)
+        for($ia=0; $ia -lt 16; $ia++)
         {
-        if($Voltage[$GPU]){$VoltArgs += "wolfamdctrl -i $($GCount.AMD.$GPU) --vddc-table-set $($Voltage[$GPU]) --volt-state $i"}
+        if($Voltage[$GPU]){$VoltArgs += "wolfamdctrl -i $($GCount.AMD.$GPU) --vddc-table-set $($Voltage[$GPU]) --volt-state $ia"}
         $VoltArgs += "sleep .1"
         }
        }
@@ -219,24 +219,22 @@ if($_.Type -like "*AMD*")
 
      if($Fans)
      {
-       $FanArgs = @()
-       $DOAmdOC = $true
       for($i=0; $i -lt $OCDevices.Count; $i++)
       {
-        $GPU = $OCDevices[$i]
+       $DOAmdOC = $true
+       $GPU = $OCDevices[$i]
        if($Platforms -eq "linux")
        {
-         for($i=1; $i -lt 16; $i++)
-         {
-         if($Fans[$GPU]){$FanArgs += "wolfamdctrl -i $($GCount.AMD.$GPU) --set-fanspeed $($Fans[$GPU])"}
-         $FanArgs += "sleep .1"
-         }
-        }
+         $FanArgs = $null
+         if($Fans[$GPU]){$Fanargs += " --set-fanspeed $($Fans[$i])"}
+         $WolfArgs = "wolfamdctrl -i $($GCount.AMD.$GPU)$FanArgs"
+         $AScript += $WolfArgs
+         $AScript += "sleep .1"
        }
-       $AScript += $FanArgs
-       $AScreenFans += "$($_.Type) V is $($_.ocfans) "
-      } 
-    
+      }
+      $AScreenFans += "$($.Type) V is $($.ocfans) "
+    }
+     
    }
 
  }
