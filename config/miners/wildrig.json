@@ -1,0 +1,207 @@
+{
+  "AMD1": {
+    "name": "AMD1",
+    "delay": "1",
+    "prestart": [
+      "export GPU_MAX_HEAP_SIZE=100",
+      "export GPU_USE_SYNC_OBJECTS=1",
+      "export GPU_SINGLE_ALLOC_PERCENT=100",
+      "export GPU_MAX_ALLOC_PERCENT=100"
+    ],
+    "commands": {
+      "bcd": "",
+      "c11": "",
+      "geek": "",
+      "hmq1725": "",
+      "hex": "",
+      "phi": "",
+      "renesis": "",
+      "skunk": "",
+      "sonoa": "",
+      "timetravel": "",
+      "tribus": "",
+      "x16s": "",
+      "x16r": "",
+      "x17": "",
+      "bitcore": "",
+      "x22i": "",
+      "polytimos": ""
+    },
+    "difficulty": {
+      "bcd": "",
+      "c11": "",
+      "geek": "",
+      "hmq1725": "",
+      "hex": "",
+      "phi": "",
+      "renesis": "",
+      "skunk": "",
+      "sonoa": "",
+      "timetravel": "",
+      "tribus": "",
+      "x16s": "",
+      "x16r": "",
+      "x17": "",
+      "bitcore": "",
+      "x22i": "",
+      "polytimos": ""
+    },
+    "naming": {
+      "bcd": "bcd",
+      "c11": "c11",
+      "geek": "geek",
+      "hmq1725": "hmq1725",
+      "hex": "hex",
+      "phi": "phi",
+      "renesis": "renesis",
+      "skunk": "skunkhash",
+      "sonoa": "sonoa",
+      "timetravel": "timetravel",
+      "tribus": "tribus",
+      "x16s": "x16s",
+      "x16r": "x16r",
+      "x17": "x17",
+      "bitcore": "bitcore",
+      "x22i": "x22i",
+      "polytimos": "polytimos"
+    },
+    "oc": {
+      "bcd": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "c11": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "geek": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "hmq1725": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "hex": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "phi": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "renesis": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "skunk": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "sonoa": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "timetravel": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "tribus": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "x16s": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "x16r": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "x17": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "bitcore": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "x22i": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "polytimos": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      }
+    }
+  }
+}

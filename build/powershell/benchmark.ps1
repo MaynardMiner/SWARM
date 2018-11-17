@@ -13,44 +13,97 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 param(
     [parameter(Position=0,Mandatory=$true)]
-    [String]$Name,
+    [String]$command,
     [parameter(Position=1,Mandatory=$false)]
+    [String]$Name,
+    [parameter(Position=2,Mandatory=$false)]
     [String]$Platform
 )
 Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))
-Write-Host "Checking For $Name Bechmarks"
-if($Platform -eq "windows"){"Removed Hashrate files" | Out-File ".\build\txt\benchcom.txt"}
-if(Test-Path ".\stats\*$($Name)_hashrate.txt*"){Remove-Item ".\stats\*$($Name)_hashrate.txt*" -Force}
-if(Test-Path ".\stats\*$($Name)_power.txt*"){Remove-Item ".\stats\*$($Name)_power.txt*" -Force}
-if(Test-Path ".\backup\*$($Name)_hashrate.txt*"){Remove-Item ".\backup\*$($Name)_hashrate.txt*" -Force}
-if(Test-Path ".\backup\*$($Name)_power.txt*"){Remove-Item ".\backup\*$($Name)_power.txt*" -Force}
-if(Test-Path ".\timeout\pool_block\pool_block.txt")
+Write-Host "Checking For $command Benchmarks"
+
+Switch($command)
  {
-  $NewPoolBlock = @()
-  $GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json
-  $GetPoolBlock | foreach {
-  if($($_.Coins) -ne $Name){$NewPoolBlock += $_}
-  else{Write-Host "Found $($_.Algo) in Pool Block file"}
-  }  
-  if($NewPoolBlock){$NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt"}
-  else{"" | Set-Content ".\timeout\pool_block\pool_block.txt"}
- }
- if(Test-Path ".\timeout\algo_block\algo_block.txt")
- {
-  $NewAlgoBlock = @()
-  $GetAlgoBlock = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json
-  $GetAlgoBlock | foreach {
-  if($($_.Coins) -ne $Name){$NewAlgoBlock += $_}
-  else{Write-Host "Found $($_.Algo) in Algo Block file"}
-  }
-  if($NewAlgoBlock){$NewAlgoBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block\algo_block.txt"}
-  else{"" | Set-Content ".\timeout\algo_block\algo_block.txt"}
- if($Name -eq "timeout")
+  "timeout"
+   {
+    if(Test-Path ".\timeout"){Remove-Item ".\timeout" -Recurse -Force}
+    Write-Host "Removed All Timeouts" -ForegroundColor Green
+    if($Platform -eq "windows"){"Removed All Bans" | Out-File ".\build\txt\benchcom.txt"}
+   }
+   "all"
+   {
+   if(Test-Path ".\stats\*_hashrate.txt*"){Remove-Item ".\stats\*_hashrate.txt*" -Force}
+   if(Test-Path ".\backup\*_hashrate.txt*"){Remove-Item ".\stats\*_hashrate.txt*" -Force}
+   if(Test-Path ".\timeout\pool_block\pool_block.txt"){Clear-Content ".\timeout\pool_block\pool_block.txt"}
+   if(Test-Path ".\timeout\algo_block\algo_block.txt"){Clear-Content ".\timeout\pool_block\algo_block.txt"}
+   Write-Host "Removed All Benchmarks and Bans" -ForegroundColor Green
+   if($Platform -eq "windows"){"Removed All Benchmarks and Bans" | Out-File ".\build\txt\benchcom.txt"}
+   }
+   "miner"
+   {
+    if($Name -ne $null)
+    {
+    if(Test-Path ".\stats\*$Name*"){Remove-Item ".\stats\*$Name*" -Force}
+    if(Test-Path ".\backup\*_hashrate.txt*"){Remove-Item ".\stats\*$Name*" -Force}
+    if(Test-Path ".\timeout\pool_block\pool_block.txt")
+    {
+     $NewPoolBlock = @()
+     $GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json
+     $GetPoolBlock | foreach {if($_.Name -ne $Name){$NewPoolBlock += $_}else{Write-Host "Found $($_.Name) in Pool Block file"}}
+     if($NewPoolBlock){$NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt"}
+     else{Clear-Content ".\timeout\pool_block\pool_block.txt"}
+    }
+    if(Test-Path ".\timeout\algo_block\algo_block.txt")
+    {
+     $NewPoolBlock = @()
+     $GetPoolBlock = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json
+     $GetPoolBlock | foreach {if($_.Name -ne $Name){$NewPoolBlock += $_}else{Write-Host "Found $($_.Name) in Algo Block file"}}
+     if($NewPoolBlock){$NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block\algo_block.txt"}
+     else{Clear-Content ".\timeout\algo_block\algo_block.txt"}
+    }
+    if(Test-Path ".\timeout\miner_block\miner_block.txt")
+    {
+     $NewPoolBlock = @()
+     $GetPoolBlock = Get-Content ".\timeout\miner_block\miner_block.txt" | ConvertFrom-Json
+     $GetPoolBlock | foreach {if($_.Name -ne $Name){$NewPoolBlock += $_}else{Write-Host "Found $($_.Name) in Miner Block file"}}
+     if($NewPoolBlock){$NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block\algo_block.txt"}
+     else{Clear-Content ".\timeout\miner_block\miner_block.txt"}
+    }
+    Write-Host "Removed all $Name stats and bans." -ForegroundColor Green
+    "Removed all $Name stats and bans." | Out-File ".\build\txt\benchcom.txt" 
+    }
+   }
+   "algorithm"
+   {
+    if($Name -ne $null)
+    {
+    if(Test-Path ".\stats\*$($Name)_hashrate.txt*"){Remove-Item ".\stats\*$($Name)_hashrate.txt*" -Force}
+    if(Test-Path ".\stats\*$($Name)_power.txt*"){Remove-Item ".\stats\*$($Name)_power.txt*" -Force}
+    if(Test-Path ".\backup\*$($Name)_hashrate.txt*"){Remove-Item ".\backup\*$($Name)_hashrate.txt*" -Force}
+    if(Test-Path ".\backup\*$($Name)_power.txt*"){Remove-Item ".\backup\*$($Name)_power.txt*" -Force}
+    if(Test-Path ".\timeout\pool_block\pool_block.txt")
+    {
+     $NewPoolBlock = @()
+     $GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json
+     $GetPoolBlock | foreach {if($_.Algo -ne $Name){$NewPoolBlock += $_}else{Write-Host "Found $($_.Algo) in Pool Block file"}}
+     if($NewPoolBlock){$NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt"}
+     else{Clear-Content ".\timeout\pool_block\pool_block.txt"}
+    }
+    if(Test-Path ".\timeout\algo_block\algo_block.txt")
+    {
+     $NewPoolBlock = @()
+     $GetPoolBlock = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json
+     $GetPoolBlock | foreach {if($_.Algo -ne $Name){$NewPoolBlock += $_}else{Write-Host "Found $($_.Algo) in Algo Block file"}}
+     if($NewPoolBlock){$NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block\algo_block.txt"}
+     else{Clear-Content ".\timeout\algo_block\algo_block.txt"}
+    }
+    Write-Host "Removed all $Name stats and bans." -ForegroundColor Green
+    "Removed all $Name stats and bans." | Out-File ".\build\txt\benchcom.txt"
+    }
+   }
+  default
   {
-   Remove-Item ".\timeout" -Recurse -Force
-   Write-Host "Removed All Timeouts"
-   if($Platform -eq "windows"){"Removed All Timeouts" | Out-File ".\build\txt\benchcom.txt"}
+   Write-Host "No Command Given"
+   "No Command Given" | Out-File ".\build\txt\benchcom.txt" 
   }
- }
-Write-Host "Removed Hashrate files"
-if($Platform -eq "windows"){"Removed Hashrate files" | Out-File ".\build\txt\benchcom.txt"}
+}

@@ -1,7 +1,5 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName
 
-$Location = 'Europe'
-
 $nlpool_Request = [PSCustomObject]@{}
 $nlpoolAlgo_Request = [PSCustomObject]@{}
 
@@ -20,7 +18,7 @@ $nlpoolAlgo_Request = [PSCustomObject]@{}
         return
      }
 
- $nlpoolAlgo_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name |  Where-Object {$nlpoolAlgo_Request.$_.hashrate -gt 0} |  Where-Object {$Naming.$($nlpoolAlgo_Request.$_.name)} | ForEach-Object {
+ $nlpoolAlgo_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | Where-Object {$Naming.$($nlpoolAlgo_Request.$_.name)} | Where-Object {$($nlpoolAlgo_Request.$_.estimate_current) -ne "0.00000000"} | ForEach-Object {
 
         
         $nlpoolAlgo_Algorithm = Get-Algorithm $nlpoolAlgo_Request.$_.name
@@ -30,30 +28,30 @@ $nlpoolAlgo_Request = [PSCustomObject]@{}
 
         if($Algorithm -eq $nlpoolAlgo_Algorithm)
          {
-        if((Get-Stat -Name "$($Name)_$($nlpoolAlgo_Algorithm)_profit") -eq $null){$Stat = Set-Stat -Name "$($Name)_$($nlpoolAlgo_Algorithm)_profit" -Value ([Double]$nlpoolAlgo_Request.$_.estimate_current/$Divisor*(1-($nlpoolAlgo_Request.$_.fees/100)))}
-        else{$Stat = Set-Stat -Name "$($Name)_$($nlpoolAlgo_Algorithm)_profit" -Value ([Double]$nlpoolAlgo_Request.$_.Estimate_Current/$Divisor *(1-($nlpoolAlgo_Request.$_.fees/100)))}
-         
+          if($Stat_Algo -ne "Day"){$Stat = Set-Stat -Name "$($Name)_$($nlpoolAlgo_Algorithm)_profit" -Value ([Double]$nlpoolAlgo_Request.$_.estimate_current/$Divisor*(1-($nlpoolAlgo_Request.$_.fees/100)))}
+          else{$Stat = Set-Stat -Name "$($Name)_$($nlpoolAlgo_Algorithm)_profit" -Value ([Double]$nlpoolAlgo_Request.$_.estimate_last24h/$Divisor *(1-($nlpoolAlgo_Request.$_.fees/100)))}
+          
          
           if($Wallet)
            {
-            If($nlWallet1 -ne ''){$nWallet1 = $nlWallet1}
+            If($AltWallet1 -ne ''){$nWallet1 = $AltWallet1}
             else{$nWallet1 = $Wallet1}
-            if($nlWallet2 -ne ''){$nWallet2 = $nlWallet2}
+            if($AltWallet2 -ne ''){$nWallet2 = $AltWallet2}
             else{$nWallet2 = $Wallet2}
-            if($nWallet1 -ne ''){$nWallet3 = $nlWallet3}
+            if($AltWallet3 -ne ''){$nWallet3 = $AltWallet3}
             else{$nWallet3 = $Wallet3}
-            if($nlpassword1 -ne ''){$npass1 = $nlpassword1}
+            if($AltPassword1 -ne ''){$npass1 = $AltPassword1}
             else{$npass1 = $PasswordCurrency1}
-            if($nlpassword2 -ne ''){$npass2 = $nlpassword2}
+            if($AltPassword2 -ne ''){$npass2 = $AltPassword2}
             else{$npass2 = $PasswordCurrency2}
-            if($nlpassword3 -ne ''){$npass3 = $nlpassword3}
+            if($AltPassword3 -ne ''){$npass3 = $AltPassword3}
             else{$npass3 = $PasswordCurrency3}
             [PSCustomObject]@{
                 Coin = "No"
                 Symbol = $nlpoolAlgo_Algorithm
                 Mining = $nlpoolAlgo_Algorithm
                 Algorithm = $nlpoolAlgo_Algorithm
-                Price = $Stat.$Stat_Algo
+                Price = if($Stat_Algo -eq "Day"){$Stat.Live}else{$Stat.$Stat_Algo}
                 StablePrice = $Stat.Week
                 MarginOfError = $Stat.Fluctuation
                 Protocol = "stratum+tcp"
@@ -62,8 +60,8 @@ $nlpoolAlgo_Request = [PSCustomObject]@{}
                 User1 = $nWallet1
                 User2 = $nWallet2
                 User3 = $nWallet3
-                CPUser = $CPUWallet
-                CPUPass = "c=$CPUcurrency,ID=$Rigname1"
+                CPUser = $nWallet1
+                CPUPass = "c=$npass1,ID=$Rigname1"
                 Pass1 = "c=$npass1,ID=$Rigname1"
                 Pass2 = "c=$npass2,ID=$Rigname2"
                 Pass3 = "c=$npass3,ID=$Rigname3"

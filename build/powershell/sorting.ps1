@@ -40,6 +40,7 @@ function start-minersorting {
             $Miner_Profits_Comparison = [PSCustomObject]@{}
             $Miner_Profits_Bias = [PSCustomObject]@{}
             $Miner_PowerX = [PSCustomObject]@{}
+            $Miner_Pool_Estimate = [PSCustomObject]@{}
      
             $Miner_Types = $Miner.Type | Select -Unique
             $Miner_Indexes = $Miner.Index | Select -Unique
@@ -52,24 +53,28 @@ function start-minersorting {
             $WattCalc2 = [Decimal]$WattCalc1/$Kilo;
             $WattCalc3 = [Decimal]$WattCalc2*$WattCalc;}
             else{$WattCalc3 = 0}
+            $Pool = $Pools | Where Symbol -EQ $_ | Where Name -EQ $($Miner.MinerPool)
+            $Pool_Comparison = $Pools_Comparison | Where Symbol -EQ $_ | Where Name -EQ $($Miner.MinerPool)
             $Miner_HashRates | Add-Member $_ ([Double]$Miner.HashRates.$_)
             $Miner_PowerX | Add-Member $_ ([Double]$Miner.PowerX.$_)
-            $Miner_Pools | Add-Member $_ ([PSCustomObject]$Pools.$_)
-            $Miner_Pools_Comparison | Add-Member $_ ([PSCustomObject]$Pools_Comparison.$_)
-            $Miner_Profits | Add-Member $_ ([Decimal](($Miner.HashRates.$_*$Pools.$_.Price)-$WattCalc3))
-            $Miner_Profits_Comparison | Add-Member $_ ([Decimal](($Miner.HashRates.$_*$Pools_Comparison.$_.Price)-$WattCalc3))
-            $Miner_Profits_Bias | Add-Member $_ ([Decimal](($Miner.HashRates.$_*$Pools.$_.Price*(1-($Pools.$_.MarginOfError*[Math]::Pow($DBase,$DExponent))))-$WattCalc3))
+            $Miner_Pools | Add-Member $_ ([PSCustomObject]$Pool.Name)
+            $Miner_Pools_Comparison | Add-Member $_ ([PSCustomObject]$Pool_Comparison.Name)
+            $Miner_Profits | Add-Member $_ ([Decimal](($Miner.HashRates.$_*$Pool.Price)-$WattCalc3))
+            $Miner_Profits_Comparison | Add-Member $_ ([Decimal](($Miner.HashRates.$_*$Pool_Comparison.Price)-$WattCalc3))
+            $Miner_Profits_Bias | Add-Member $_ ([Decimal](($Miner.HashRates.$_*$Pool.Price*(1-($Pool.MarginOfError*[Math]::Pow($DBase,$DExponent))))-$WattCalc3))
+            $Miner_Pool_Estimate | Add-Member $_ ([Decimal]($Pool.Price))
             }
             
             $Miner_Power = [Double]($Miner_PowerX.PSObject.Properties.Value | Measure -Sum).Sum
             $Miner_Profit = [Double]($Miner_Profits.PSObject.Properties.Value | Measure -Sum).Sum
             $Miner_Profit_Comparison = [Double]($Miner_Profits_Comparison.PSObject.Properties.Value | Measure -Sum).Sum
             $Miner_Profit_Bias = [Double]($Miner_Profits_Bias.PSObject.Properties.Value | Measure -Sum).Sum
-        
+            $Miner_Pool_Estimate = [Double]($Miner_Pool_Estimate.PSObject.Properties.Value | Measure -Sum).sum
+
         if($Command -eq "Algo")
          {
             $Miner.HashRates | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | ForEach {
-             if(-not [String]$Miner.HashRates.$_ -or -not [String]$miner.PowerX.$_)
+             if((-not [String]$Miner.HashRates.$_) -or (-not [String]$Miner.PowerX.$_))
               {
                     $Miner_HashRates.$_ = $null
                     $Miner_PowerX.$_ = $null
@@ -99,7 +104,7 @@ function start-minersorting {
             $Miner | Add-Member Profit_Comparison $Miner_Profit_Comparison
             $Miner | Add-Member Profit_Bias $Miner_Profit_Bias
             $Miner | Add-Member Power $Miner_Power
-     
+            $Miner | Add-Member Pool_Estimate $Miner_Pool_Estimate
             $Miner | Add-Member Type $Miner_Types -Force
             $Miner | Add-Member Index $Miner_Indexes -Force
      
@@ -114,5 +119,4 @@ function start-minersorting {
             if($Miner_Devices -eq $null){$Miner_Devices = $Miner.Type}
             $Miner | Add-Member Device $Miner_Devices -Force
             }
-
-    }
+   }

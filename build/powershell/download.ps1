@@ -38,7 +38,7 @@ $FileName = Join-Path ".\bin" $New_Path
      {
         if(-not (Test-Path $Filename))
         {
-        Start-Process "apt-get" "-y install automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev make g++" -Wait
+        Start-Process "apt-get" "-y install git automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev make g++" -Wait
         Write-Host "Cloning Miner" -BackgroundColor "Red" -ForegroundColor "White"
         Set-Location ".\bin"
         Start-Process -FilePath "git" -ArgumentList "clone $Uri $New_Path" -Wait
@@ -53,6 +53,32 @@ $FileName = Join-Path ".\bin" $New_Path
         Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
         Write-Host "Miner Completed!" -BackgroundColor "Red" -ForegroundColor "White"
         }
+     }
+
+     if($BuildPath -eq "Dpkg")
+     {
+      if(Test-Path "/usr/bin/$MineName")
+      {
+       Write-Host "Detected Excavator Installation" -ForegroundColor Green
+       if(Test-Path $Path){Remove-Item $Path -Recurse}
+       New-Item $Path -ItemType "directory"
+       Copy-Item "/usr/bin/$MineName" -Destination $Path
+      }
+      else{
+        $DownloadFileURI = Split-Path "$Uri" -Leaf
+        Write-Host "Did Not Detect Excavator Installion Attempting install" -ForegroundColor yellow
+        Start-Process -Filepath "wget" -ArgumentList "$Uri -O x64/$DownloadFileURI" -Wait
+        Start-Process "dpkg" -ArgumentList "-i x64/$DownloadFileURI" -Wait
+        Start-Process "apt-get" -ArgumentList "install -y -f" -Wait
+        if(Test-Path $Path){Remove-Item $Path -Recurse}
+        New-Item $Path -ItemType "directory"
+        if(Test-Path "/usr/bin/$MineName")
+        {
+          Write-Host "Excavator Was Installed!" -ForegroundColor Green
+          Copy-Item "/usr/bin/$MineName" -Destination $Path
+        }
+        else{Write-Host "Excavator Installation Failed- Install Manually" -ForegroundColor Red}
+      }
      }
 
      if($BuildPath -eq "Zip")

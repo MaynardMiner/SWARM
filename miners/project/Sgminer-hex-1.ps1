@@ -1,74 +1,67 @@
-$Path = "$($amd.sgminerhex.path1)"
-$Uri = "$($amd.sgminerhex.uri)"
-$MinerName = "$($amd.sgminerhex.minername)"
+if($amd.sgminerhex.path1){$Path = "$($amd.sgminerhex.path1)"}
+else{$Path = "None"}
+if($amd.sgminerhex.uri){$Uri = "$($amd.sgminerhex.uri)"}
+else{$Uri = "None"}
+if($amd.sgminerhex.minername){$MinerName = "$($amd.sgminerhex.minername)"}
+else{$MinerName = "None"}
+if($Platform -eq "linux"){$Build = "Tar"}
+elseif($Platform -eq "windows"){$Build = "Zip"}
 
-$Build = "Tar"
+$ConfigType = "AMD1"
 
+##Parse -GPUDevices
 if($AMDDevices1 -ne ''){$Devices = $AMDDevices1}
 
-$Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
+##Get Configuration File
+$GetConfig = "$dir\config\miners\sgminer-hex.json"
+try{$Config = Get-Content $GetConfig | ConvertFrom-Json}
+catch{Write-Warning "Warning: No config found at $GetConfig"}
 
-$Commands = [PSCustomObject]@{
-"hex" = ""
-}
+##Export would be /path/to/[SWARMVERSION]/build/export##
+$ExportDir = Join-Path $dir "build\export"
 
-$Difficulty = [PSCustomObject]@{
-"hex" = ""
-}
+##Prestart actions before miner launch
+$Prestart = @()
+$PreStart += "export LD_LIBRARY_PATH=$ExportDir"
+$Config.$ConfigType.prestart | foreach {$Prestart += "$($_)"}
 
+##Build Miner Settings
 if($CoinAlgo -eq $null)
 {
-$Commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
-  if($Algorithm -eq "$($AlgoPools.$_.Algorithm)" -and $Type -eq "AMD1")
+  $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+  $MinerAlgo = $_
+  $AlgoPools | Where Symbol -eq $MinerAlgo | foreach {
+  if($Algorithm -eq "$($_.Algorithm)")
   {
-    if($Difficulty.$_){$Diff=",d=$($Difficulty.$_)"}
-    [PSCustomObject]@{
-    Platform = $Platform
-    Symbol = "$($_)"
+  if($Config.$ConfigType.difficulty.$($_.Algorithm)){$Diff=",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))"}
+  [PSCustomObject]@{
+    Delay = $Config.$ConfigType.delay
+    Symbol = "$($_.Algorithm)"
     MinerName = $MinerName
-    Type = "AMD1"
+    Prestart = $PreStart
+    Type = $ConfigType
     Path = $Path
     Devices = $Devices
     DeviceCall = "sgminer-gm"
-    Arguments = "--gpu-platform $AMDPlatform --api-listen --api-port 4028 -k $(Get-AMD($_)) -o stratum+tcp://$($AlgoPools.$_.Host):$($AlgoPools.$_.Port) -u $($AlgoPools.$_.User1) -p $($AlgoPools.$_.Pass1)$($Diff) -T $($Commands.$_)"
-    HashRates = [PSCustomObject]@{$_ = $($Stats."$($Name)_$($_)_hashrate".Day)}
-    PowerX = [PSCustomObject]@{$_ = if($WattOMeter -eq "Yes"){$($Stats."$($Name)_$($_)_Power".Day)}elseif($Watts.$($_).AMD1_Watts){$Watts.$($_).AMD1_Watts}elseif($Watts.default.AMD1_Watts){$Watts.default.AMD1_Watts}else{0}}
-    MinerPool = "$($AlgoPools.$_.Name)"
-    FullName = "$($AlgoPools.$_.Mining)"
+    Arguments = "--gpu-platform $AMDPlatform --api-listen --api-port 4028 -k $($Config.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.User1) -p $($_.Pass1)$($Diff) -T $($Config.$ConfigType.commands.$($_.Algorithm))"
+    HashRates = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)}
+    Quote = if($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)){$($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)*($_.Price)}else{0}
+    PowerX = [PSCustomObject]@{$($_.Algorithm) = if($Watts.$($_.Algorithm)."$($ConfigType)_Watts"){$Watts.$($_.Algorithm)."$($ConfigType)_Watts"}elseif($Watts.default."$($ConfigType)_Watts"){$Watts.default."$($ConfigType)_Watts"}else{0}}
+    ocdpm = if($Config.$ConfigType.oc.$($_.Algorithm).dpm){$Config.$ConfigType.oc.$($_.Algorithm).dpm}else{$OC."default_$($ConfigType)".dpm}
+    ocv = if($Config.$ConfigType.oc.$($_.Algorithm).v){$Config.$ConfigType.oc.$($_.Algorithm).v}else{$OC."default_$($ConfigType)".v}
+    occore = if($Config.$ConfigType.oc.$($_.Algorithm).core){$Config.$ConfigType.oc.$($_.Algorithm).core}else{$OC."default_$($ConfigType)".core}
+    ocmem = if($Config.$ConfigType.oc.$($_.Algorithm).mem){$Config.$ConfigType.oc.$($_.Algorithm).mem}else{$OC."default_$($ConfigType)".memory}
+    ocmdpm = if($Config.$ConfigType.oc.$($_.Algorithm).mdpm){$Config.$ConfigType.oc.$($_.Algorithm).mdpm}else{$OC."default_$($ConfigType)".mdpm}
+    ocfans = if($Config.$ConfigType.oc.$($_.Algorithm).fans){$Config.$ConfigType.oc.$($_.Algorithm).fans}else{$OC."default_$($ConfigType)".fans}
+    MinerPool = "$($_.Name)"
+    FullName = "$($_.Mining)"
     Port = 4028
     API = "sgminer-gm"
-    Wrap = $false
     URI = $Uri
     BUILD = $Build
-    Algo = "$($_)"
-    NewAlgo = ''
+    Algo = "$($_.Algorithm)"
      }
     }
-   }
-  }
-else{
-  $CoinPools | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name |
-  Where {$($Commands.$($CoinPools.$_.Algorithm)) -NE $null} | foreach {
-    if($Difficulty.$($CoinPools.$_.Algorithm)){$Diff=",d=$($Difficulty.$($CoinPools.$_.Algorithm))"}
-    [PSCustomObject]@{
-   Platform = $Platform
-   Symbol = "$($CoinPools.$_.Symbol)"
-   MinerName = $MinerName
-   Type = "AMD1"
-   Path = $Path
-   Devices = $Devices
-   DeviceCall = "sgminer-gm"
-   Arguments = "--gpu-platform $AMDPlatform --api-listen --api-port 4028 -k $(Get-AMD($CoinPools.$_.Algorithm)) -o stratum+tcp://$($CoinPools.$_.Host):$($CoinPools.$_.Port) -u $($CoinPools.$_.User1) -p $($CoinPools.$_.Pass1)($Diff) -T $($Commands.$($CoinPools.$_.Algorithm))"
-   HashRates = [PSCustomObject]@{$CoinPools.$_.Symbol= $Stats."$($Name)_$($CoinPools.$_.Algorithm)_HashRate".Day}
-   API = "sgminer-gm"
-   PowerX = [PSCustomObject]@{$CoinPools.$_.Symbol = if($WattOMeter -eq "Yes"){$($Stats."$($Name)_$($CoinPools.$_.Algorithm)_Power".Day)}elseif($Watts.$($CoinPools.$_.Algorithm).AMD1_Watts){$Watts.$($CoinPools.$_.Algorithm).AMD1_Watts}elseif($Watts.default.AMD1_Watts){$Watts.default.AMD1_Watts}else{0}}
-   FullName = "$($CoinPools.$_.Mining)"
-  MinerPool = "$($CoinPools.$_.Name)"
-   Port = 4028
-   Wrap = $false
-   URI = $Uri
-   BUILD = $Build
-	 Algo = "$($CoinPools.$_.Algorithm)"
    }
   }
  }

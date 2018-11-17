@@ -1,0 +1,75 @@
+{
+  "AMD1": {
+    "name": "AMD1",
+    "delay": "1",
+    "prestart": [
+      "export GPU_MAX_HEAP_SIZE=100",
+      "export GPU_USE_SYNC_OBJECTS=1",
+      "export GPU_SINGLE_ALLOC_PERCENT=100",
+      "export GPU_MAX_ALLOC_PERCENT=100"
+    ],
+    "commands": {
+      "myr-gr": "",
+      "groestl": "",
+      "x16r": "",
+      "x16s": "",
+      "equihash": ""
+    },
+    "difficulty": {
+      "myr-gr": "",
+      "groestl": "",
+      "x16r": "",
+      "x16s": "",
+      "equihash": ""
+    },
+    "naming": {
+      "myr-gr": "myriadcoin-groestl",
+      "groestl": "groestlcoin",
+      "x16r": "x16r",
+      "x16s": "x16s",
+      "equihash": "equihash"
+    },
+    "oc": {
+      "myr-gr": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "groestl": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "x16r": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "x16s": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "equihash": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      }
+    }
+  }
+}

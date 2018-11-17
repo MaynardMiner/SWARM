@@ -54,4 +54,5 @@ get_amd_cards_fan(){
 					--arg ac "$ac" --arg rj "$rj" \
 					'{$hs, $hs_units, $temp, $fan, $uptime, ar: [$ac, $rj], $algo}')
 			;;
+
 esac

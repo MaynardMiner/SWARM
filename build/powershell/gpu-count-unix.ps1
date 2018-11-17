@@ -45,9 +45,21 @@ function Get-GPUCount {
        rocm-smi -f | Tee-Object ".\build\txt\gpucount.txt" | Out-Null
        $GCount = Get-Content ".\build\txt\gpucount.txt" -Force
        $AttachedGPU = $GCount | Select-String "Fan Level" | foreach{$_ -split "\[" | Select -skip 1 -first 1} | foreach{$_ -split "\]" | Select -first 1}
-       for($i=0; $i -lt $AttachedGPU.Count; $i++)
-       { 
-        $DeviceList.AMD.Add("$($i)",$AttachedGPU[$i])
+       if($OnboardCard -eq "Yes")
+        {
+        Write-Host "User Specified They Have An Integrated Card" -ForegroundColor Yellow
+        for($i=0; $i -lt $AttachedGPU.Count; $i++)
+         {
+          $GPU = "$($AttachedGPU[$i])"
+          $DeviceList.AMD.Add("$($i)","$([Double]$GPU-1)")
+         }
+        }
+       else
+       {
+        for($i=0; $i -lt $AttachedGPU.Count; $i++)
+         { 
+          $DeviceList.AMD.Add("$($i)",$AttachedGPU[$i])
+         }
        }
      }
      if($_ -like "*CPU*")

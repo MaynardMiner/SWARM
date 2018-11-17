@@ -27,25 +27,25 @@ switch($Types)
 {
     "CPU"
      {
-        if($Platforms -eq "linux"){$update = Get-Content ".\config\update\cpu-linux.conf" | ConvertFrom-Json}
-        elseif($Platforms -eq "windows"){$update = Get-Content ".\config\update\cpu-win.conf" | ConvertFrom-Json}
+        if($Platforms -eq "linux"){$update = Get-Content ".\config\update\cpu-linux.json" | ConvertFrom-Json}
+        elseif($Platforms -eq "windows"){$update = Get-Content ".\config\update\cpu-win.json" | ConvertFrom-Json}
      }
 
     "NVIDIA"
      {
         if($Platforms -eq "linux")
          {
-          if($Cudas -eq "10"){$update = Get-Content ".\config\update\nvidia10-linux.conf" | ConvertFrom-Json}
-          if($Cudas -eq "9.2"){$update = Get-Content ".\config\update\nvidia9.2-linux.conf" | ConvertFrom-Json}
-          elseif($Cudas -eq "9.1"){$update = Get-Content ".\config\update\nvidia9.1-linux.conf" | ConvertFrom-Json}
+          if($Cudas -eq "10"){$update = Get-Content ".\config\update\nvidia10-linux.json" | ConvertFrom-Json}
+          if($Cudas -eq "9.2"){$update = Get-Content ".\config\update\nvidia9.2-linux.json" | ConvertFrom-Json}
+          elseif($Cudas -eq "9.1"){$update = Get-Content ".\config\update\nvidia9.1-linux.json" | ConvertFrom-Json}
          }
-         elseif($Platforms -eq "windows"){$update = Get-Content ".\config\update\nvidia-win.conf" | ConvertFrom-Json}
+         elseif($Platforms -eq "windows"){$update = Get-Content ".\config\update\nvidia-win.json" | ConvertFrom-Json}
      }
 
     "AMD"
      {
-        if($Platforms -eq "linux"){$update = Get-Content ".\config\update\amd-linux.conf" | ConvertFrom-Json}
-        elseif($Platforms -eq "windows"){$update = Get-Content ".\config\update\amd-win.conf" | ConvertFrom-Json}
+        if($Platforms -eq "linux"){$update = Get-Content ".\config\update\amd-linux.json" | ConvertFrom-Json}
+        elseif($Platforms -eq "windows"){$update = Get-Content ".\config\update\amd-win.json" | ConvertFrom-Json}
      }
 }
 

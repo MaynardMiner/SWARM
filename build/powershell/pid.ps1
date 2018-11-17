@@ -16,18 +16,16 @@ param(
       [Array]$Name
    )
 
-   set-location (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))
-
 While($true)
  {
   $Name | foreach {
   if($_ -eq "miner"){$Title = "SWARM"}
   else{$Title = "$($_)"}
   Write-Host "Checking To See if Miner $($_) Is Running"
-  $MinerPIDPath = ".\pid\$($_)_pid.txt"
+  $MinerPIDPath = ".\build\pid\$($_)_pid.txt"
   if($MinerPIDPath)
    {
-    $MinerContent = Get-Content ".\pid\$($_)_pid.txt"
+    $MinerContent = Get-Content ".\build\\pid\$($_)_pid.txt"
     if($MinerContent -ne $null)
      {
       Write-Host "Miner Name is $Title"
@@ -40,6 +38,8 @@ While($true)
       else
        {
          Write-Host "Closing SWARM" -foregroundcolor red
+         Get-Date | Out-File ".\build\data\timetable.txt"
+         Clear-Content ".\build\bash\hivestats.sh"
          Start-Process "screen" -ArgumentList "-S NVIDIA1 -X quit"
          Start-Process "screen" -ArgumentList "-S NVIDIA2 -X quit"
          Start-Process "screen" -ArgumentList "-S NVIDIA3 -X quit"
@@ -55,6 +55,8 @@ While($true)
     else
      {
         Write-Host "Closing SWARM" -foregroundcolor red
+        Get-Date | Out-File ".\build\data\timetable.txt"
+        Clear-Content ".\build\bash\hivestats.sh"
         Start-Process "screen" -ArgumentList "-S NVIDIA1 -X quit"
         Start-Process "screen" -ArgumentList "-S NVIDIA2 -X quit"
         Start-Process "screen" -ArgumentList "-S NVIDIA3 -X quit"
@@ -62,7 +64,7 @@ While($true)
         Start-Process "screen" -ArgumentList "-S AMD2 -X quit"
         Start-Process "screen" -ArgumentList "-S AMD3 -X quit"
         Start-Process "screen" -ArgumentList "-S CPU -X quit"
-        Start-Process "screen" -ArgumentList "-S background -X quit"
+        Start-Process "screen" -ArgumentList "-S background -X quit"        
         Start-Process "screen" -ArgumentList "-S pidinfo -X quit"
      }
   }

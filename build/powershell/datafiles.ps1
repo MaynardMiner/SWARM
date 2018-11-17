@@ -27,7 +27,16 @@ function Get-Data {
          Set-Location $CmdDir     
     }
 
-    if(Test-Path ".\build\export\libmicrohttpd.so.10.34.0")
+    if(Test-Path ".\build\bash\get")
+    {
+         Copy-Item ".\build\bash\get" -Destination "/usr/bin" -force | Out-Null
+         Set-Location "/usr/bin"
+         Start-Process "chmod" -ArgumentList "+x get"
+         Set-Location "/"
+         Set-Location $CmdDir     
+    }
+
+    if(-not (Test-Path ".\build\export\libmicrohttpd.so.10"))
      {
       $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
       Start-Process ln -ArgumentList "-s $dir/build/export/libmicrohttpd.so.10.34.0 $dir/build/export/libmicrohttpd.so.10" -Wait
@@ -35,7 +44,7 @@ function Get-Data {
       Set-Location $CmdDir     
      }
 
-     if(Test-Path ".\build\export\libhwloc.so.5.5.0")
+     if(-not (Test-Path ".\build\export\libhwloc.so.5"))
      {
       $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
       Start-Process ln -ArgumentList "-s $dir/build/export/libhwloc.so.5.5.0 $dir/build/export/libhwloc.so.5" -Wait

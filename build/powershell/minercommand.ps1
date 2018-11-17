@@ -22,48 +22,47 @@ function Get-Miners {
         [Array]$Pools
     )
 
+$GetPoolBlocks = $null
+$GetAlgoBlocks = $null
+if(Test-Path ".\timeout\pool_block\pool_block.txt"){$GetPoolBlocks = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json}
+if(Test-Path ".\timeout\algo_block\algo_block.txt"){$GetAlgoBlocks = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json}
+if(Test-Path ".\timeout\miner_block\miner_block.txt"){$GetMinerBlocks = Get-Content ".\timeout\miner_block\miner_block.txt" | ConvertFrom-Json}
 
-if(Test-Path ".\timeout\pool_block\pool_block.txt"){$GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json}
-if(Test-Path ".\timeout\algo_block\algo_block.txt"){$GetAlgoBlock = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json}
+$GetMiners = if(Test-Path "miners\gpu"){Get-ChildItemContent "miners\gpu" | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru} |
+ Where {$Type.Count -eq 0 -or (Compare-Object $Type $_.Type -IncludeEqual -ExcludeDifferent | Measure).Count -gt 0} |
+ Where {$_.Path -ne "None"} |
+ Where {$_.Uri -ne "None"} |
+ Where {$_.MinerName -ne "None"}}
 
-if($GetPoolBlock -ne $null){
- $GetPoolBlock | foreach {
- Write-Host "Warning: Blocking $($_.Algo) on $($_.MinerPool) for $($_.Type)" -ForegroundColor Magenta
- }
-}
-
-if($GetAlgoBlock -ne $null){
- $GetAlgoBlock | foreach {
- Write-Host "Warning: Blocking $($_.Algo) on all pools for $($_.Type)" -ForegroundColor Magenta
- }
-}
-
-if($Platforms -eq "linux")
-{
-   $GetMiners = if(Test-Path "miners\linux"){Get-ChildItemContent "miners\linux" | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru} |
-   Where {$Type.Count -eq 0 -or (Compare-Object $Type $_.Type -IncludeEqual -ExcludeDifferent | Measure).Count -gt 0}}
-}
-
-if($Platforms -eq "windows")
-{
-$GetMiners = if(Test-Path "miners\windows"){Get-ChildItemContent "miners\windows" | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru} | 
-Where {$Type.Count -eq 0 -or (Compare-Object $Type $_.Type -IncludeEqual -ExcludeDifferent | Measure).Count -gt 0}}
-}
+$ScreenedMiners = @()
 
 $GetMiners | foreach {
-$miner = $_
-   
-$GetPoolBlock | foreach {
-if($_.Algo -eq $miner.Algo -and $_.Name -eq $miner.Name -and $_.Type -eq $miner.Type -and $_.MinerPool -eq $miner.MinerPool){ $miner | Add-Member "PoolBlock" "Yes"}
-}
-   
-$GetAlgoBlock | foreach {
-if($_.Algo -eq $miner.Algo -and $_.Name -eq $miner.Name -and $_.Type -eq $miner.Type){ $miner | Add-Member "AlgoBlock" "Yes"}
+if(-not ($GetPoolBlocks | Where Algo -eq $_.Algo | Where Name -eq $_.Name | Where Type -eq $_.Type | Where MinerPool -eq $_.Minerpool))
+ {
+  if(-not ($GetAlgoBlocks | Where Algo -eq $_.Algo | Where Name -eq $_.Name | Where Type -eq $_.Type))
+   {
+    if(-not ($GetMinerBlocks | Where Name -eq $_.Name | Where Type -eq $_.Type))
+     {
+      $ScreenedMiners += $_
+     }
+     else{$BadMessage = "Warning: Blocking $($_.Name) for $($_.Type)"}
+   }
+   else{Write-Host "Warning: Blocking $($_.Name) mining $($_.Algo) on all pools for $($_.Type)" -ForegroundColor Magenta}
  }
+ else{Write-Host "Warning: Blocking $($_.Name) mining $($_.Algo) on $($_.MinerPool) for $($_.Type)" -ForegroundColor Magenta}
 }
+
+if($BadMessage -ne $Null){Write-Host "$BadMessage" -ForegroundColor Magenta}
+
+#$GetPoolBlocks | foreach {
+#if($_.Algo -eq $miner.Algo -and $_.Name -eq $miner.Name -and $_.Type -eq $miner.Type -and $_.MinerPool -eq $miner.MinerPool){ $miner | Add-Member "PoolBlock" "Yes"}
+#}
    
-$GetMiners = $GetMiners | Where PoolBlock -ne "Yes" | Where AlgoBlock -ne "Yes"
+#$GetAlgoBlocks | foreach {
+#if($_.Algo -eq $miner.Algo -and $_.Name -eq $miner.Name -and $_.Type -eq $miner.Type){ $miner | Add-Member "AlgoBlock" "Yes"}
+# }
+#}  
+#$MinerList = $GetMiners | Where PoolBlock -ne "Yes" | Where AlgoBlock -ne "Yes"
 
-$GetMiners
-
+$ScreenedMiners
 }

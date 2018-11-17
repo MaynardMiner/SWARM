@@ -39,6 +39,7 @@ if($Location -eq "EUROPE")
 $nicehash_Request.result | Select-Object -ExpandProperty simplemultialgo | Where paying -ne 0 | Where {$Naming.$($_.Name)} | ForEach-Object {
   
     $nicehash_Host = "$($_.name).$Region.nicehash.com"
+    $nicehash_excavator = "nhmp.$Region.nicehash.com"
     $nicehash_Port = $_.port
     $nicehash_Algorithm = Get-Algorithm $_.name
     $nicehash_Fees = $Nicehash_Fee
@@ -46,8 +47,7 @@ $nicehash_Request.result | Select-Object -ExpandProperty simplemultialgo | Where
 
     if($Algorithm -eq $nicehash_Algorithm)
      {
-        $Stat = Set-Stat -Name "$($Name)_$($Nicehash_Algorithm)_profit" -Value ([Double]$_.paying/$Divisor*(1-($Nicehash_Fees/100)))
-        $Price = (($Stat.Live*(1-[Math]::Min($Stat.Day_Fluctuation,1)))+($Stat.Day*(0+[Math]::Min($Stat.Day_Fluctuation,1))))
+      $Stat = Set-Stat -Name "$($Name)_$($Nicehash_Algorithm)_profit" -Value ([Double]$_.paying/$Divisor*(1-($Nicehash_Fees/100)))
      
      
      if($Wallet)
@@ -56,6 +56,7 @@ $nicehash_Request.result | Select-Object -ExpandProperty simplemultialgo | Where
         {  
         [PSCustomObject]@{
             Coin = "No"
+            Excavator = $nicehash_excavator
             Symbol = $nicehash_Algorithm
             Mining = $nicehash_Algorithm
             Algorithm = $nicehash_Algorithm

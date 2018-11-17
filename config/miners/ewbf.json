@@ -1,0 +1,185 @@
+{
+  "NVIDIA1": {
+    "name": "NVIDIA1",
+    "delay": "1",
+    "prestart": [],
+    "commands": {
+      "equihash-btg": "--algo 144_5 --pers BgoldPoW",
+      "equihash192": "--algo 192_7 --pers auto",
+      "equihash144": "-algo 144_5 --pers auto",
+      "equihash96": "--algo 96_5 --pers auto",
+      "equihash210": "--algo 210_9 --pers auto",
+      "equihash200": "--algo 200_9 --pers auto"
+    },
+    "difficulty": {
+      "equihash-btg": "",
+      "equihash192": "",
+      "equihash144": "",
+      "equihash96": "",
+      "equihash210": "",
+      "equihash200": ""
+    },
+    "naming": {
+      "equihash-btg": "equihash-btg",
+      "equihash192": "equihash192",
+      "equihash144": "equihash144",
+      "equihash96": "equihash96",
+      "equihash210": "equihash210",
+      "equihash200": "equihash200"
+    },
+    "oc": {
+      "equihash-btg": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "equihash192": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "equihash144": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "equihash96": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "equihash210": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "equihash200": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  },
+  "NVIDIA2": {
+    "name": "NVIDIA2",
+    "delay": "1",
+    "prestart": [],
+    "commands": {
+      "equihash-btg": "--algo 144_5 --pers BgoldPoW",
+      "equihash192": "--algo 192_7 --pers auto",
+      "equihash144": "-algo 144_5 --pers auto",
+      "equihash96": "--algo 96_5 --pers auto",
+      "equihash210": "--algo 210_9 --pers auto",
+      "equihash200": "--algo 200_9 --pers auto"
+    },
+    "difficulty": {
+      "equihash-btg": "",
+      "equihash192": "",
+      "equihash144": "",
+      "equihash96": "",
+      "equihash210": "",
+      "equihash200": ""
+    },
+    "naming": {
+      "equihash-btg": "equihash-btg",
+      "equihash192": "equihash192",
+      "equihash144": "equihash144",
+      "equihash96": "equihash96",
+      "equihash210": "equihash210",
+      "equihash200": "equihash200"
+    },
+    "oc": {
+      "equihash-btg": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "equihash192": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "equihash144": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "equihash96": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "equihash210": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "equihash200": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  },
+  "NVIDIA3": {
+    "name": "NVIDIA3",
+    "delay": "1",
+    "prestart": [],
+    "commands": {
+      "equihash-btg": "--algo 144_5 --pers BgoldPoW",
+      "equihash192": "--algo 192_7 --pers auto",
+      "equihash144": "-algo 144_5 --pers auto",
+      "equihash96": "--algo 96_5 --pers auto",
+      "equihash210": "--algo 210_9 --pers auto",
+      "equihash200": "--algo 200_9 --pers auto"
+    },
+    "difficulty": {
+      "equihash-btg": "",
+      "equihash192": "",
+      "equihash144": "",
+      "equihash96": "",
+      "equihash210": "",
+      "equihash200": ""
+    },
+    "naming": {
+      "equihash-btg": "equihash-btg",
+      "equihash192": "equihash192",
+      "equihash144": "equihash144",
+      "equihash96": "equihash96",
+      "equihash210": "equihash210",
+      "equihash200": "equihash200"
+    },
+    "oc": {
+      "equihash-btg": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "equihash192": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "equihash144": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "equihash96": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "equihash210": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "equihash200": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  }
+}

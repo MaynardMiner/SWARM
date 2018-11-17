@@ -1,0 +1,473 @@
+{
+  "NVIDIA1": {
+    "name": "NVIDIA1",
+    "delay": "1",
+    "prestart": [],
+    "commands": {
+      "tribus": "",
+      "phi": "",
+      "c11": "",
+      "hsr": "",
+      "x17": "",
+      "renesis": "",
+      "balloon": "",
+      "bitcore": "",
+      "polytimos": "",
+      "skunk": "",
+      "x16r": "",
+      "x16s": "",
+      "hmq1725": "",
+      "bcd": "",
+      "sha256t": "",
+      "timetravel": "",
+      "x22i": "",
+      "sonoa": ""
+    },
+    "difficulty": {
+      "tribus": "",
+      "phi": "",
+      "c11": "",
+      "hsr": "",
+      "x17": "",
+      "renesis": "",
+      "balloon": "",
+      "bitcore": "",
+      "polytimos": "",
+      "skunk": "",
+      "x16r": "",
+      "x16s": "",
+      "hmq1725": "",
+      "bcd": "",
+      "sha256t": "",
+      "timetravel": "",
+      "x22i": "",
+      "sonoa": ""
+    },
+    "naming": {
+      "tribus": "tribus",
+      "phi": "phi",
+      "c11": "c11",
+      "hsr": "hsr",
+      "x17": "x17",
+      "renesis": "renesis",
+      "balloon": "balloon",
+      "bitcore": "bitcore",
+      "polytimos": "polytimos",
+      "skunk": "skunk",
+      "x16r": "x16r",
+      "x16s": "x16s",
+      "hmq1725": "hmq1725",
+      "bcd": "bcd",
+      "sha256t": "sha256t",
+      "timetravel": "timetravel",
+      "x22i": "x22i",
+      "sonoa": "sonoa"
+    },
+    "oc": {
+      "tribus": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "phi": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "c11": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "hsr": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "x17": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "renesis": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "balloon": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "bitcore": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "polytimos": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "skunk": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "x16r": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "x16s": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "hmq1725": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "bcd": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "sha256t": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "sonoa": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "timetravel": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "x22i": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  },
+  "NVIDIA2": {
+    "name": "NVIDIA2",
+    "delay": "1",
+    "prestart": [],
+    "commands": {
+      "tribus": "",
+      "phi": "",
+      "c11": "",
+      "hsr": "",
+      "x17": "",
+      "renesis": "",
+      "balloon": "",
+      "bitcore": "",
+      "polytimos": "",
+      "skunk": "",
+      "x16r": "",
+      "x16s": "",
+      "hmq1725": "",
+      "bcd": "",
+      "sha256t": "",
+      "timetravel": "",
+      "x22i": "",
+      "sonoa": ""
+    },
+    "difficulty": {
+      "tribus": "",
+      "phi": "",
+      "c11": "",
+      "hsr": "",
+      "x17": "",
+      "renesis": "",
+      "balloon": "",
+      "bitcore": "",
+      "polytimos": "",
+      "skunk": "",
+      "x16r": "",
+      "x16s": "",
+      "hmq1725": "",
+      "bcd": "",
+      "sha256t": "",
+      "timetravel": "",
+      "x22i": "",
+      "sonoa": ""
+    },
+    "naming": {
+      "tribus": "tribus",
+      "phi": "phi",
+      "c11": "c11",
+      "hsr": "hsr",
+      "x17": "x17",
+      "renesis": "renesis",
+      "balloon": "balloon",
+      "bitcore": "bitcore",
+      "polytimos": "polytimos",
+      "skunk": "skunk",
+      "x16r": "x16r",
+      "x16s": "x16s",
+      "hmq1725": "hmq1725",
+      "bcd": "bcd",
+      "sha256t": "sha256t",
+      "timetravel": "timetravel",
+      "x22i": "x22i",
+      "sonoa": "sonoa"
+    },
+    "oc": {
+      "tribus": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "phi": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "c11": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "hsr": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "x17": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "renesis": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "balloon": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "bitcore": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "polytimos": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "skunk": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "x16r": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "x16s": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "hmq1725": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "bcd": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "sha256t": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "sonoa": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "timetravel": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "x22i": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  },
+  "NVIDIA3": {
+    "name": "NVIDIA3",
+    "delay": "1",
+    "prestart": [],
+    "commands": {
+      "tribus": "",
+      "phi": "",
+      "c11": "",
+      "hsr": "",
+      "x17": "",
+      "renesis": "",
+      "balloon": "",
+      "bitcore": "",
+      "polytimos": "",
+      "skunk": "",
+      "x16r": "",
+      "x16s": "",
+      "hmq1725": "",
+      "bcd": "",
+      "sha256t": "",
+      "timetravel": "",
+      "x22i": "",
+      "sonoa": ""
+    },
+    "difficulty": {
+      "tribus": "",
+      "phi": "",
+      "c11": "",
+      "hsr": "",
+      "x17": "",
+      "renesis": "",
+      "balloon": "",
+      "bitcore": "",
+      "polytimos": "",
+      "skunk": "",
+      "x16r": "",
+      "x16s": "",
+      "hmq1725": "",
+      "bcd": "",
+      "sha256t": "",
+      "timetravel": "",
+      "x22i": "",
+      "sonoa": ""
+    },
+    "naming": {
+      "tribus": "tribus",
+      "phi": "phi",
+      "c11": "c11",
+      "hsr": "hsr",
+      "x17": "x17",
+      "renesis": "renesis",
+      "balloon": "balloon",
+      "bitcore": "bitcore",
+      "polytimos": "polytimos",
+      "skunk": "skunk",
+      "x16r": "x16r",
+      "x16s": "x16s",
+      "hmq1725": "hmq1725",
+      "bcd": "bcd",
+      "sha256t": "sha256t",
+      "timetravel": "timetravel",
+      "x22i": "x22i",
+      "sonoa": "sonoa"
+    },
+    "oc": {
+      "tribus": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "phi": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "c11": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "hsr": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "x17": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "renesis": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "balloon": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "bitcore": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "polytimos": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "skunk": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "x16r": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "x16s": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "hmq1725": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "bcd": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "sha256t": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "sonoa": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "timetravel": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "x22i": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "NVIDIA1": {
+    "name": "NVIDIA1",
+    "delay": "1",
+    "prestart": [],
+    "commands": {
+      "jackpot": "",
+      "groestl": ""
+    },
+    "difficulty": {
+      "jackpot": "",
+      "groestl": ""
+    },
+    "naming": {
+      "jackpot": "jackpot",
+      "groestl": "groestl"
+    },
+    "oc": {
+      "jackpot": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "groestl": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  },
+  "NVIDIA2": {
+    "name": "NVIDIA2",
+    "delay": "1",
+    "prestart": [],
+    "commands": {
+      "jackpot": "",
+      "groestl": ""
+    },
+    "difficulty": {
+      "jackpot": "",
+      "groestl": ""
+    },
+    "naming": {
+      "jackpot": "jackpot",
+      "groestl": "groestl"
+    },
+    "oc": {
+      "jackpot": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "groestl": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  },
+  "NVIDIA3": {
+    "name": "NVIDIA3",
+    "delay": "1",
+    "prestart": [],
+    "commands": {
+      "jackpot": "",
+      "groestl": ""
+    },
+    "difficulty": {
+      "jackpot": "",
+      "groestl": ""
+    },
+    "naming": {
+      "jackpot": "jackpot",
+      "groestl": "groestl"
+    },
+    "oc": {
+      "jackpot": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "groestl": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  }
+}

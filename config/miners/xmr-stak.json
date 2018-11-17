@@ -1,0 +1,64 @@
+{
+  "AMD1": {
+    "name": "AMD1",
+    "delay": "1",
+    "prestart": [
+      "export GPU_MAX_HEAP_SIZE=100",
+      "export GPU_USE_SYNC_OBJECTS=1",
+      "export GPU_SINGLE_ALLOC_PERCENT=100",
+      "export GPU_MAX_ALLOC_PERCENT=100"
+    ],
+    "commands": {
+      "cryptonight": "",
+      "cryptonightv7": "",
+      "cryptonightv8": "",
+      "cryptonightheavy": ""
+    },
+    "difficulty": {
+      "cryptonight": "",
+      "cryptonightv7": "",
+      "cryptonightv8": "",
+      "cryptonightheavy": ""
+    },
+    "naming": {
+      "cryptonight": "cryptonight",
+      "cryptonightv7": "cryptonight_v7",
+      "cryptonightv8": "cryptonight_v8",
+      "cryptonightheavy": "cryptonight_heavy"
+    },
+    "oc": {
+      "cryptonight": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "cryptonightv7": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "cryptonightv8": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "cryptonightheavy": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      }
+    }
+  }
+}

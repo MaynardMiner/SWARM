@@ -34,11 +34,10 @@ else{$CommandQuery = $Command -replace("!","")
 Write-Host "Executing Command: $CommandQuery"
 Write-Host "                   " }
 $CudaVersion = Get-Content ".\build\txt\cuda.txt"
-if($CudaVersion -eq "9.1"){$updatecheck = ".\config\update\nvidia9.1-linux.conf"; $miner_update_nvidia = Get-Content ".\config\update\nvidia9.1-linux.conf" | ConvertFrom-Json}
-if($CudaVersion -eq "9.2"){$updatecheck = ".\config\update\nvidia9.2-linux.conf"; $miner_update_nvidia = Get-Content ".\config\update\nvidia9.2-linux.conf" | ConvertFrom-Json}
-if($CudaVersion -eq "10"){$updatecheck = ".\config\update\nvidia10-linux.conf"; $miner_update_nvidia = Get-Content ".\config\update\nvidia10-linux.conf" | ConvertFrom-Json}
-$miner_update_amd = Get-Content ".\config\update\amd-linux.conf" | ConvertFrom-Json
-$miner_update_cpu = Get-Content ".\config\update\cpu-linux.conf" | ConvertFrom-Json
+if($CudaVersion -eq "9.2"){$updatecheck = ".\config\update\nvidia9.2-linux.json"; $miner_update_nvidia = Get-Content ".\config\update\nvidia9.2-linux.json" | ConvertFrom-Json}
+if($CudaVersion -eq "10"){$updatecheck = ".\config\update\nvidia10-linux.json"; $miner_update_nvidia = Get-Content ".\config\update\nvidia10-linux.json" | ConvertFrom-Json}
+$miner_update_amd = Get-Content ".\config\update\amd-linux.json" | ConvertFrom-Json
+$miner_update_cpu = Get-Content ".\config\update\cpu-linux.json" | ConvertFrom-Json
 
 $nvidia = [PSCustomObject]@{}
 $amd = [PSCustomObject]@{}
@@ -142,7 +141,7 @@ if($Command -eq "!update")
        Write-Host "$Name new uri is $newuri"
        Write-Host "$Name new version is $newversion"
        if(Test-Path ".\bin\*$Name*"){Remove-Item ".\bin\*$Name*" -Recurse -Force}
-       $amd | ConvertTo-Json | Out-File ".\config\update\amd-linux.conf"
+       $amd | ConvertTo-Json | Out-File ".\config\update\amd-linux.json"
       }
     }
 
@@ -156,7 +155,7 @@ if($Command -eq "!update")
        Write-Host "$Name new uri is $newuri"
        Write-Host "$Name new version is $newversion"
        if(Test-Path ".\bin\*$Name*"){Remove-Item ".\bin\*$cpu*" -Recurse -Force}
-       $cpu | ConvertTo-Json | Out-File ".\config\update\cpu-linux.conf"
+       $cpu | ConvertTo-Json | Out-File ".\config\update\cpu-linux.json"
       }
     }
 
@@ -169,8 +168,8 @@ else {
     if($Command -eq $null){"No Command Given. Try version query" | Out-File ".\build\txt\version.txt"}
     "Executing Command: $Command" | Out-File ".\build\txt\version.txt"
     "                   " | Out-File ".\build\txt\version.txt" -Append
-    $miner_update_nvidia = Get-Content ".\config\update\nvidia-win.conf" | ConvertFrom-Json
-    $miner_update_cpu = Get-Content ".\config\update\cpu-win.conf" | ConvertFrom-Json
+    $miner_update_nvidia = Get-Content ".\config\update\nvidia-win.json" | ConvertFrom-Json
+    $miner_update_cpu = Get-Content ".\config\update\cpu-win.json" | ConvertFrom-Json
     $cpu = [PSCustomObject]@{}
     $nvidia = [PSCustomObject]@{}
     $miner_update_nvidia | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {$nvidia | Add-Member $miner_update_nvidia.$_.Name $miner_update_nvidia.$_}
@@ -227,7 +226,7 @@ else {
          "$Name new uri is $newuri" | Out-File ".\build\txt\version.txt" -Append;
          "$Name new version is $newversion" | Out-File ".\build\txt\version.txt" -Append;
          if(Test-Path ".\bin\*$Name*"){Remove-Item ".\bin\*$Name*" -Recurse -Force};
-         $nvidia | ConvertTo-Json | Out-File ".\config\update\nvidia-win.conf"
+         $nvidia | ConvertTo-Json | Out-File ".\config\update\nvidia-win.json"
         }
       }
     
@@ -241,7 +240,7 @@ else {
          "$Name new uri is $newuri" | Out-File ".\build\txt\version.txt" -Append
          "$Name new version is $newversion" | Out-File ".\build\txt\version.txt" -Append
          if(Test-Path ".\bin\*$Name*"){Remove-Item ".\bin\*$cpu*" -Recurse -Force}
-         $cpu | ConvertTo-Json | Out-File ".\config\update\cpu-win.conf"
+         $cpu | ConvertTo-Json | Out-File ".\config\update\cpu-win.json"
         }
       }
   

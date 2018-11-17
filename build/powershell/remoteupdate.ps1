@@ -20,9 +20,10 @@ param (
 if($Update -eq "Yes")
  {
 $PreviousVersions = @()
-$PreviousVersions += "SWARM.1.6.3"
-
-$Exclude = @("TRex-1.ps1","TRex-2.ps1","TRex-3.ps1","Stak-CPU.ps1","Xmr-stak-1.ps1")
+$PreviousVersions += "SWARM.1.7.1"
+$PreviousVersions += "SWARM.1.7.2"
+$PreviousVersions += "SWARM.1.7.3"
+$PreviousVersions += "SWARM.1.7.4"
 
 $PreviousVersions | foreach {
   $PreviousPath = Join-Path "/hive/custom" "$_"
@@ -33,28 +34,17 @@ $PreviousVersions | foreach {
      Write-Host "Gathering Old Version Config And HashRates- Then Deleting"
      Start-Sleep -S 5
      $OldBackup = Join-Path $PreviousPath "backup"
-     $OldMiners = Join-Path $PreviousPath "miners\linux"
      $OldTime = Join-Path $PreviousPath "build\data"
      $OldConfig = Join-Path $PreviousPath "config"
      $OldTimeout = Join-Path $PreviousPath "timeout"
       if(-not (Test-Path "backup")){New-Item "backup" -ItemType "directory"  | Out-Null }
       if(-not (Test-Path "stats")){New-Item "stats" -ItemType "directory"  | Out-Null }
-      if(-not (Test-Path "miners")){New-Item "miners" -ItemType "directory"  | Out-Null }
-      if(-not (Test-Path "miners\linux")){New-Item "miners\linux" -ItemType "directory"  | Out-Null }
-      if(-not (Test-Path "config")){New-Item "config" -ItemType "directory"  | Out-Null }
-      if(Test-Path $OldMiners){Get-ChildItem -Path "$($OldMiners)\*" -Include *.ps1 -Exclude $Exclude -Recurse | Copy-Item -Destination ".\miners\linux" -Force}
       if(Test-Path $OldBackup)
        {
         Get-ChildItem -Path "$($OldBackup)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\stats"
         Get-ChildItem -Path "$($OldBackup)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\backup"
        }
-      if(Test-Path $OldTime){Get-ChildItem -Path "$($OldTime)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\build\data"}
-      if(Test-Path $OldConfig)
-       {
-        Get-ChildItem -Path "$($OldConfig)\naming" -Include *.txt,*.conf -Recurse | Copy-Item -Destination ".\config\naming" -Force
-        Get-ChildItem -Path "$($OldConfig)\oc" -Include *.txt,*.conf -Recurse | Copy-Item -Destination ".\config\oc" -Force
-        Get-ChildItem -Path "$($OldConfig)\power" -Include *.txt,*.conf -Recurse | Copy-Item -Destination ".\config\power" -Force
-       }
+      #if(Test-Path $OldTime){Get-ChildItem -Path "$($OldTime)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\build\data"}
        if(Test-Path $OldTimeout)
        {
         if(-not (Test-Path ".\timeout")){New-Item "timeout" -ItemType "directory" | Out-Null }
@@ -64,8 +54,63 @@ $PreviousVersions | foreach {
         if(Test-Path "$OldTimeout\algo_block"){Get-ChildItem -Path "$($OldTimeout)\pool_block" -Include *.txt,*.conf -Recurse | Copy-Item -Destination ".\timeout\pool_block"}
         Get-ChildItem -Path "$($OldTimeout)\*" -Include *.txt | Copy-Item -Destination ".\timeout"
        }
+      $Jsons = @("miners","naming","oc","power")
+      $UpdateType = @("CPU","AMD1","NVIDIA1","NVIDIA2","NVIDIA3")
+      $Jsons | foreach {
+        $OldJson_Path = Join-Path $OldConfig "$($_)";
+        $NewJson_Path = Join-Path ".\config" "$($_)";
+        $GetOld_Json =  Get-ChildItem $OldJson_Path;
+        $GetOld_Json = $GetOld_Json.Name
+        $GetOld_Json | foreach {
+         $ChangeFile = $_
+         $OldJson = Join-Path $OldJson_Path "$ChangeFile";
+         $NewJson = Join-Path $NewJson_Path "$ChangeFile";
+         if($ChangeFile -notlike "sample.json*" -and $ChangeFile -ne "sgminer-kl.json")
+         {
+         $JsonData = Get-Content $OldJson;
+         Write-Host "Pulled $OldJson"
+         $Data = $JsonData | ConvertFrom-Json;
+         if($ChangeFile -eq "cryptodredge.json")
+          {
+          $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+          $Data.$_.commands| Add-Member "hmq1725" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "hmq1725" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "hmq1725" "hmq1725" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "hmq1725" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
+           }
+         }
+         if($ChangeFile -eq "wildrig.json")
+          {
+          $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+          $Data.$_.commands| Add-Member "polytimos" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "polytimos" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "polytimos" "polytimos" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "polytimos" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue
+           }
+         }
+         if($Data.AMD1.oc)
+         {
+          $Data.AMD1.oc | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Foreach{
+           $Data.AMD1.oc.$_ | Add-Member "fans" "" -ErrorAction SilentlyContinue
+          }
+         }
+         if($Data.default_AMD1)
+         {
+           $Data.default_AMD1 | Add-Member "fans" "" -ErrorAction SilentlyContinue
+         }
+         $UpdateType | foreach {
+          if($Data.$_)
+          {
+           $Data.$_ | Add-Member "delay" "1" -ErrorAction SilentlyContinue
+          }
+         }
+         $Data | ConvertTo-Json -Depth 3 | Set-Content $NewJson;
+         Write-Host "Wrote To $NewJson"
+          }
+         }
+        }
        Remove-Item $PreviousPath -recurse -force
      }
+    }
    }
   }
-}

@@ -1,0 +1,119 @@
+{
+  "AMD1": {
+    "name": "AMD1",
+    "delay": "1",
+    "prestart": [
+      "export GPU_MAX_HEAP_SIZE=100",
+      "export GPU_USE_SYNC_OBJECTS=1",
+      "export GPU_SINGLE_ALLOC_PERCENT=100",
+      "export GPU_MAX_ALLOC_PERCENT=100"
+    ],
+    "commands": {
+      "phi": "",
+      "tribus": "",
+      "aergo": "",
+      "geek": "",
+      "c11": "",
+      "xevan": "",
+      "skunk": "",
+      "x16r": "",
+      "x16s": ""
+    },
+    "difficulty": {
+      "phi": "",
+      "tribus": "",
+      "aergo": "",
+      "geek": "",
+      "c11": "",
+      "xevan": "",
+      "skunk": "",
+      "x16r": "",
+      "x16s": ""
+    },
+    "naming": {
+      "phi": "phi",
+      "tribus": "tribus",
+      "aergo": "aergo",
+      "geek": "geek",
+      "c11": "c11",
+      "xevan": "xevan",
+      "skunk": "skunk",
+      "x16r": "x16r",
+      "x16s": "x16s"
+    },
+    "oc": {
+      "phi": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "tribus": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "aergo": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "geek": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "c11": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "xevan": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "skunk": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "x16r": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "x16s": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      }
+    }
+  }
+}

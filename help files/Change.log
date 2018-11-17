@@ -722,3 +722,338 @@ but API is awaiting stats.
    -benchmark will remove backup power of algo
    "-benchmark timeout"
     will clear all pool/algo bans
+
+  1.6.5
+
+  Disclaimers:
+
+  Updates are safe.
+  All T-Rex miner files were changed. Make copies of files before updating!
+  Then copy your settings over after update. They will be DELETED if you set
+  -Update "Yes"
+
+  Updates are safe.
+  All WildRig miner files were changed. Make copies of files before updating!
+  Then copy your settings over after update. They will be DELETED if you set
+  -Update "Yes"
+
+
+  -SHA256t
+   Added algo SHA256t (zpool)
+
+  -Changed TRex version in update.
+
+  -Removed hashrate 0 on certain pools
+   -I want to support smaller pools
+   -Some smaller pools have different algos
+
+  -CCMiner API attempted fix:
+   -Attempted fix of ccminer
+   -converts API Data to a native powershell table
+   -hopefully this will stop/reduce Cryptodredge API errors
+  
+  -New WildRig Miner
+   -New Algos Added
+
+   1.6.6
+
+   This is a beta version.
+
+   FRESH INSTALL MANDATORY
+   Linux Version ONLY
+
+   -Wrote small help article for AMD users in help files.
+
+   -Fixed Clamore -Platform issue (AMD)
+
+   -Added argument -OnboardCard. Default is no. Specify Yes if 
+    using amd and rocm-smi detects integrated card. Quick fix
+    will find better fix in near future
+
+   -re-wrote config folder. config now contains miner control
+    files in json format. Adding commands, difficulty, oc
+    and pre-start commands are now done there.
+ 
+   -added install git for CPU compiling.
+
+   -Fixed $RAW=0 placement to prevent double stacking of
+    hashrates, when total API failure occurs.
+
+   -Converted all config files to json for future use.
+
+   -Changed all miner files for new OC tuning.
+
+   -Changed stats file to come before miner launch.
+
+   -Ensured background agent is started before -delay
+    so users can specify delay for OC tuning.
+
+   -OC tuning is now launched in their own screens.
+    OC_NVIDIA is for NVIDIA
+    OC_AMD is for AMD
+    This prevents lockup of any of SWARM's processes
+    And lets users check for oc issues.
+
+   -Miners now lauch from one single script, made
+    on demand: startup.sh.
+
+   -trex updated, x22i added.
+
+  1.6.7
+
+  There are still beta features in this release.
+  Updates not availiable yet. Next release.
+  Fresh install as changes were made to core
+  program.
+
+  -New code in Background Agent In Attempt fix
+   incorrect hash on screen.
+
+  -Fixed t-rex .json.
+
+  -Fixed benchmark interval on timeouts.
+
+  -Teamredminer 0.3.4
+
+  -Cryptodredge 0.9.4
+
+  -DSTM 0.6.2
+
+  -Moved DSTM to project folder: equihash is
+   asic anyways.
+  
+  -Corrected Arguments in help files
+   added new arguments in help files.
+
+  -Fixed -recurse on timeout command
+
+    1.6.8
+
+  -Added Naming to some miner .json as a test.
+  -Teamredminer updated + naming fixed
+  -Recoded background- attempted fix 
+  -Increaded default rejections to 75%
+  -Added -PoolBanCount Argument
+  -Added -AlgoBanCount Argument
+  -Both above arguments define the
+   number of strikes required to institue
+   their respective bans.
+  -fixed a bad trigger in which if timeout
+   folder was deleted- Bans would not
+   reset unless restarted. Both -Timeout argument and 
+   benchmark timeout commands should now work.
+  
+  
+  1.7.0
+  
+  AMD USERS:
+  use -AMDPlatform to specify your platform.
+  use -OnboardCard Yes if you have an integrated
+  graphics card for hive stats.
+
+  Remote Updates Disabled- Too Many Changes!
+
+  -Phoenix miner added as per user request.
+  -WildRig updated
+  -CryptoDredge updated
+  -Trex Updated
+  -Enemy updated
+  -xmr-stak updated
+  -Added more to export directory for good measure.
+  -Miner now records top 3 pools for each algo.
+    -pool bans extend beyond just initial benchmarking.
+    -SWARM will now choose the best miner of the three pools.
+    -This means not all miner will make screen- only 1.
+    -Future implementations
+  -Database changed for new pool system.
+  -Miners Launched change to single launch script: startup.sh
+  -Added 10 second delay to api screen to prevent incorrect
+    api pulls.
+  -changed how miner launches background screen.
+  -confirmed benchmark timeout command working.
+    -however if you have a lot of timeouts,
+     I suggest restarting miner after using command.
+  -Power system changes:
+    -WattOMeter now records to power.json,
+      not to stat files.
+    -this allows users to lock in power
+      settings, by selecting -WattOMeter "No"
+  -Added Quotes to miner files.
+     -will allow for future implementations
+  -fixed small reported typos.
+  -Removed cuda 9.1. Default is now cuda 9.2
+  -added the start of get.ps1
+  -more json code staging.
+   -future implementations
+  -more algos on AMD side.
+
+    1.7.1
+
+  -Remote Updates Are Now Safe Again.
+  -Phoenix Miner NVIDIA moved to project folder
+  ``-Stat_Algo`` changed
+     -If you specify Day, SWARM will use 24 hour api data
+  -Fixed Nicehash pool drop
+  -Write-File Check: Miner will confirm information for
+   api and oc have been pulled, if not- try again.
+      -This allows OC to be started before miner starts.
+  -``get`` command added. Limited functionality:
+     ``get help``
+     ``get benchmarks``
+     ``get stats``
+     ``get active``
+       -will add more in near future
+
+      1.7.2
+
+  -Remote Updates Are Safe.
+  -AMD Users
+    ``-AMDPlatform`` to specify OpenCL platform
+    ``-OnboardCard`` Yes or No to specify motherboard has integrated GPU
+  -Argument Changes IMPORTANT!!
+    -NlWallet1 2 3 removed
+    -NlPassword1 2 3 removed
+    -BlockmastersWallet1 2 3 removed
+    -BlockmastersWallet1 2 3 removed
+  -New ARGUMENTS!
+   ``-AltWallet1`` 2 and 3
+   ``-AltPassword1`` 2 and 3
+     specify these if you wish to use a wallet other than BTC
+     check with pool to confirm wallet is accepted. Is meant
+     to be used in conjucntion with -Wallet1/-PasswordCurrency1 (BTC address)
+  -New COMMANDS!
+     ``get parameters``
+       used to see current arguments you have specified.
+       can be used to troubleshoot issues.
+  -Updated teamredminer
+  -Updated CryptoDredge
+  -Updated T-Rex
+  -Moved lyclMiner to project folder after multiple user requests.
+  -Fixed OC system, both platforms. OC tuning should now work
+    without fail from SWARM.
+
+  1.7.3
+
+  AMD Users: Use -AMDPlatform to specify Opencl platform
+  AMD Users: Use -OnboardCard Yes if you have an integrated Graphics Card
+  ALL USERS: -Delay argument has been removed!
+
+  IMPORTANT UPDATES:
+    -NEW MINERS 
+      -sgminer-VII (Made by ME, faster than kl)
+         -sgminer-kl was removed- New version is not compiliable for linux.
+         -sgminer-VII is fastest x16/x16s/skunk/tribus/aergo miner for AMD
+          for linux. Fork of sgminer-kl, repaired his bugs.
+      -zjazz
+      -excavator
+    -SWARM LITE
+      -Specify ``-Lite Yes`` in arguments
+      -Will launch an HTTP api version of SWARM
+      -http://localhost:4099/summary
+      -Changes based on -Becnhmark or -Interval rate,
+       after miner has calculated database.
+      -Will list all available miner/pool combinations
+       that SWARM can calculate.
+      -Will display best miner to use & arguments
+      -Will relay port to set if you wish SWARM to read
+       miner API's and record benchmarks.
+      -If no benchmarks are made: SWARM will sort list by pool estimates
+      -If there is a benchmark- SWARM will sort by hashrates
+   ``-DELAY`` REMOVED
+      -all delays are decided at miner level
+      -'delay' param added to all miner.json
+    -miners folder changes
+     -lyclminer moved to project folder
+     -excavator moved to project folder
+     -linux folder deleted
+     -windows folder deleted
+     -gpu folder added
+
+    New Miners:
+    -excavator
+    -fancyIX sgminer (does allium)
+    -zjazz
+    -sgminer-vii
+    Note On Excavator:
+    Excavator is unpacked and installed via dpkg.
+    you may have to manually install, and copy
+    'excavator' from "/usr/bin/" to ".\bin\excavator-1"
+    Cryponightv8 and CryptonightV7 did not work.
+    Excavator miner files is located in ".\miners\project"
+    folder. Move them to ".\miners\gpu" to use.
+
+    New Features:
+    -miner now records intensities and block difficulties
+     from background miners.
+        -these are saved in .txt files located in the ".\bin\minerdir"
+        -These can be used to fine tune miners.
+        -This is done during benchmarking phase.
+    -AMD oc fans
+      -Attempted fix of AMD oc settings, added fans
+    
+    -CryptoDredge updated
+    -Wildrig Updated
+    -Sgminer-Kl updated
+    
+    1.7.4
+
+  AMD Users: Use -AMDPlatform to specify Opencl platform
+  AMD Users: Use -OnboardCard Yes if you have an integrated Graphics Card
+  ALL USERS: -Delay argument has been removed!
+
+    Remote Updates Safe
+    Note: You may see errors on screen while updating. They are not
+    an issue: I was too lazy to silent them.
+
+    -Changed Pool Ban System To prevent
+     potential uneeded re-benchmarking
+    -Updated Wildrig-Multi
+    -Fixed logfile error for SWARM Lite feature.
+    -Fixed Timestamps Issues.
+    -SWARM watchdog will clear hive stats on close.
+    -SWARM will record close time (for 24 donation rollover)
+    -Fixed Rigname switch after Donate.
+    -arguments.json is written as proper json (future implementation)
+    -Ensured 24 hour estimates are accurate.
+
+    1.7.5
+
+    Remote Updates are safe
+  AMD Users: Use -AMDPlatform to specify Opencl platform
+  AMD Users: Use -OnboardCard Yes if you have an integrated Graphics Card
+  ALL USERS: -Delay argument has been removed!
+
+   -Fixed encoding carriage return happening when arguments
+    were saved to config.
+   -Added blakecoin to power.json to prevent errors (note:
+    did not add to remote updates. You will have to add
+    manually) or just ignore error for now.
+   -Donation Wallet goes to only 1 pool. If you see only one
+    pool on stats screen- It is not a bug. I can't make thresholds
+   -Fixed small typo in stak-opt with MinerName/path
+   -Code staging for wallet tracking (not implemented yet)
+   -Code stating for beta profit calc. system (users will be
+    able to use new system or old system when finished.)
+  
+  NEW MINERS!
+  xmrig-amd
+
+  Miners Updated!
+  enemy
+
+  New Arguments
+  ``benchmark [command] [name]``
+
+  Command List:
+
+  timeout
+  algorithm
+  miner
+  all
+
+  -algorithm name must be lower case.
+  -miner name must match name on ``stats`` screen. Case-Sensitive
+  -timeout removes bans only (all of them).
+   however, this may cause miner to bench algo again.
+
+

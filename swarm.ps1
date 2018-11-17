@@ -21,37 +21,23 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$Wallet3 = '', ##Group 3 Wallet
     [Parameter(Mandatory=$false)]
-    [String]$CPUWallet = '1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i', ##CPU Wallet
-    [Parameter(Mandatory=$false)]
-    [String]$ZergpoolWallet1 = '', ##Group 1 Zergpool Wallet
-    [Parameter(Mandatory=$false)]
-    [String]$ZergpoolWallet2 = '', ##Group 2 Zergpool Wallet
-    [Parameter(Mandatory=$false)]
-    [String]$ZergpoolWallet3 = '', ##Group 3 Zergpool Wallet
-    [Parameter(Mandatory=$false)]
-    [String]$blockmastersWallet1 = '',  ##Group 1 BlockMasters Wallet
-    [Parameter(Mandatory=$false)]
-    [String]$blockmastersWallet2 = '',  ##Group 2 BlockMasters Wallet
-    [Parameter(Mandatory=$false)]
-    [String]$blockmastersWallet3 = '',  ##Group 3 BlockMasters Wallet
-    [Parameter(Mandatory=$false)]
     [String]$Nicehash_Wallet1 = '',  ##Group 1 Nicehash Wallet
     [Parameter(Mandatory=$false)]
     [String]$Nicehash_Wallet2 = '',  ##Group 2 Nicehash Wallet
     [Parameter(Mandatory=$false)]
     [String]$Nicehash_Wallet3 = '',  ##Group 3 Nicehash Wallet
     [Parameter(Mandatory=$false)]
-    [String]$nlWallet1 = '',  ##Group 3 Nicehash Wallet
+    [String]$AltWallet1 = '',  ##Group 3 Nicehash Wallet
     [Parameter(Mandatory=$false)]
-    [String]$nlWallet2 = '',  ##Group 3 Nicehash Wallet
+    [String]$AltWallet2 = '',  ##Group 3 Nicehash Wallet
     [Parameter(Mandatory=$false)]
-    [String]$nlWallet3 = '',  ##Group 3 Nicehash Wallet
+    [String]$AltWallet3 = '',  ##Group 3 Nicehash Wallet
     [Parameter(Mandatory=$false)]
-    [String]$RigName1 = "MMHash",  ##ID=Rigname (Yiimp Pool) Group 1
+    [String]$RigName1 = "SWARM1",  ##ID=Rigname (Yiimp Pool) Group 1
     [Parameter(Mandatory=$false)]
-    [String]$RigName2 = "MMHash",  ##ID=Rigname (Yiimp Pool) Group 2
+    [String]$RigName2 = "SWARM2",  ##ID=Rigname (Yiimp Pool) Group 2
     [Parameter(Mandatory=$false)]
-    [String]$RigName3 = "MMHash", ##ID=Rigname (Yiimp Pool) Group 3
+    [String]$RigName3 = "SWARM3", ##ID=Rigname (Yiimp Pool) Group 3
     [Parameter(Mandatory=$false)]
     [Int]$API_ID = 0, ##Future Implentation
     [Parameter(Mandatory=$false)]
@@ -65,20 +51,17 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$Location = "US", #europe/us/asia
     [Parameter(Mandatory=$false)]
-    [String]$MPHLocation = "US", #europe/us/asia 
-    [Parameter(Mandatory=$false)]
     [Array]$Type = ("NVIDIA1"), #AMD/NVIDIA/CPU
+    [Parameter(Mandatory=$false)]
     [String]$GPUDevices1, ##Group 1 all miners
     [Parameter(Mandatory=$false)] 
     [String]$GPUDevices2, ##Group 2 all miners
     [Parameter(Mandatory=$false)]
     [String]$GPUDevices3, ##Group 3 all miners
     [Parameter(Mandatory=$false)]
-    [Array]$PoolName = ("nlpool"), 
+    [Array]$PoolName = ("nlpool","blockmasters","ahashpool"), 
     [Parameter(Mandatory=$false)]
     [Array]$Currency = ("USD"), #i.e. GBP,EUR,ZEC,ETH ect.
-    [Parameter(Mandatory=$false)]
-    [Array]$Passwordcurrency = ("BTC"), #i.e. BTC,LTC,ZEC,ETH ect.
     [Parameter(Mandatory=$false)]
     [Array]$Passwordcurrency1 = ("BTC"), #i.e. BTC,LTC,ZEC,ETH ect.
     [Parameter(Mandatory=$false)]
@@ -86,51 +69,25 @@ param(
     [Parameter(Mandatory=$false)]
     [Array]$Passwordcurrency3 = ("BTC"), #i.e. BTC,LTC,ZEC,ETH ect.
     [Parameter(Mandatory=$false)]
-    [Array]$CPUcurrency = ("BTC"), #i.e. BTC,LTC,ZEC,ETH ect.
+    [String]$AltPassword1 = '', #i.e. BTC,LTC,ZEC,ETH ect.
     [Parameter(Mandatory=$false)]
-    [String]$Zergpoolpassword1 = ("BTC"), #i.e. BTC,LTC,ZEC,ETH ect.
+    [String]$AltPassword2 =  '', #i.e. BTC,LTC,ZEC,ETH ect.
     [Parameter(Mandatory=$false)]
-    [String]$Zergpoolpassword2 =  '', #i.e. BTC,LTC,ZEC,ETH ect.
-    [Parameter(Mandatory=$false)]
-    [String]$Zergpoolpassword3 = '', #i.e. BTC,LTC,ZEC,ETH ect.
-    [Parameter(Mandatory=$false)]
-    [String]$blockmasterspassword1 = ("BTC"), #i.e. BTC,LTC,ZEC,ETH ect.
-    [Parameter(Mandatory=$false)]
-    [String]$blockmasterspassword2 =  '', #i.e. BTC,LTC,ZEC,ETH ect.
-    [Parameter(Mandatory=$false)]
-    [String]$blockmasterspassword3 = '', #i.e. BTC,LTC,ZEC,ETH ect.
-    [Parameter(Mandatory=$false)]
-    [String]$nlpassword1, #i.e. BTC,LTC,ZEC,ETH ect.
-    [Parameter(Mandatory=$false)]
-    [String]$nlpassword2, #i.e. BTC,LTC,ZEC,ETH ect.
-    [Parameter(Mandatory=$false)]
-    [String]$nlpassword3, #i.e. BTC,LTC,ZEC,ETH ect.
+    [String]$AltPassword3 = '', #i.e. BTC,LTC,ZEC,ETH ect.
     [Parameter(Mandatory=$false)]
     [Int]$Donate = .5, #Percent per Day
     [Parameter(Mandatory=$false)]
     [String]$Proxy = "", #i.e http://192.0.0.1:8080 
     [Parameter(Mandatory=$false)]
-    [Int]$Delay = 1, #seconds before opening each miner
-    [Parameter(Mandatory=$false)]
     [String]$CoinExchange = "LTC",
     [Parameter(Mandatory=$false)]
-    [array]$Coin= $null,
-    [Parameter(Mandatory=$false)]
-    [array]$GPU_Group1= $null,
-    [Parameter(Mandatory=$false)]
-    [array]$GPU_Group2= $null,
-    [Parameter(Mandatory=$false)]
-    [array]$GPU_Group3= $null,
-    [Parameter(Mandatory=$false)]
-    [string]$Auto_Coin = "Yes",
+    [string]$Auto_Coin = "No",
     [Parameter(Mandatory=$false)]
     [Int]$Nicehash_Fee = "2",
     [Parameter(Mandatory=$false)]
     [Int]$Benchmark = 120,
     [Parameter(Mandatory=$false)]
-    [Int]$GPU_Count = 0,
-    [Parameter(Mandatory=$false)]
-    [array]$No_Algo = "myr-gr",
+    [array]$No_Algo = "",
     [Parameter(Mandatory=$false)]
     [String]$Favor_Coins = "Yes",
     [Parameter(Mandatory=$false)]
@@ -150,7 +107,7 @@ param(
     [Parameter(Mandatory=$false)]
     [string]$Update = "No",
     [Parameter(Mandatory=$false)]
-    [string]$Cuda = "9.1",
+    [string]$Cuda = "9.2",
     [Parameter(Mandatory=$false)]
     [string]$Power = "Yes",
     [Parameter(Mandatory=$false)]
@@ -164,11 +121,89 @@ param(
     [Parameter(Mandatory=$false)]
     [string]$AMDPlatform = "1",
     [Parameter(Mandatory=$false)]
-    [Double]$Rejections = 50
+    [Double]$Rejections = 75,
+    [Parameter(Mandatory=$false)]
+    [string]$PoolBans = "Yes",
+    [Parameter(Mandatory=$false)]
+    [string]$OnboardCard = "no",
+    [Parameter(Mandatory=$false)]
+    [Int]$PoolBanCount = 2,
+    [Parameter(Mandatory=$false)]
+    [Int]$AlgoBanCount = 3,
+    [Parameter(Mandatory=$false)]
+    [Int]$MinerBanCount = 4,    
+    [Parameter(Mandatory=$false)]
+    [String]$Lite = "No"
 )
 
 
+
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+$CurrentParams = @{}
+$CurrentParams.Add("Wallet",$Wallet)
+$CurrentParams.Add("Wallet1",$Wallet1)
+$CurrentParams.Add("Wallet2",$Wallet1)
+$CurrentParams.Add("Wallet3",$Wallet1)
+$CurrentParams.Add("Nicehash_Wallet1",$Nicehash_Wallet1)
+$CurrentParams.Add("Nicehash_Wallet2",$Nicehash_Wallet2)
+$CurrentParams.Add("Nicehash_Wallet3",$Nicehash_Wallet3)
+$CurrentParams.Add("AltWallet1",$AltWallet1)
+$CurrentParams.Add("AltWallet2",$AltWallet2)
+$CurrentParams.Add("AltWallet3",$AltWallet3)
+$CurrentParams.Add("Passwordcurrency1",$Passwordcurrency1)
+$CurrentParams.Add("Passwordcurrency2",$Passwordcurrency2)
+$CurrentParams.Add("Passwordcurrency3",$Passwordcurrency3)
+$CurrentParams.Add("AltPassword1",$AltPassword1)
+$CurrentParams.Add("AltPassword2",$AltPassword2)
+$CurrentParams.Add("AltPassword3",$AltPassword3)
+$CurrentParams.Add("Rigname1",$RigName1)
+$CurrentParams.Add("Rigname2",$RigName2)
+$CurrentParams.Add("Rigname3",$RigName3)
+$CurrentParams.Add("API_ID",$API_ID)
+$CurrentParams.Add("API_Key",$API_Key)
+$CurrentParams.Add("Timeout",$Timeout)
+$CurrentParams.Add("Interval",$Interval)
+$CurrentParams.Add("StatsInterval",$StatsInterval)
+$CurrentParams.Add("Location",$Location)
+$CurrentParams.Add("Type",$Type)
+$CurrentParams.Add("GPUDevices1",$GPUDevices1)
+$CurrentParams.Add("GPUDevices2",$GPUDevices2)
+$CurrentParams.Add("GPUDevices3",$GPUDevices3)
+$CurrentParams.Add("Poolname",$PoolName)
+$CurrentParams.Add("Currency",$Currency)
+$CurrentParams.Add("Donate",$Donate)
+$CurrentParams.Add("Proxy",$Proxy)
+$CurrentParams.Add("CoinExchange",$CoinExchange)
+$CurrentParams.Add("Auto_Coin",$Auto_Coin)
+$CurrentParams.Add("Nicehash_Fee",$Nicehash_Fee)
+$CurrentParams.Add("Benchmark",$Benchmark)
+$CurrentParams.Add("No_Algo",$No_Algo)
+$CurrentParams.Add("Favor_Coins",$Favor_Coins)
+$CurrentParams.Add("Threshold",$Threshold)
+$CurrentParams.Add("Platform",$Platform)
+$CurrentParams.Add("CPUThreads",$CPUThreads)
+$CurrentParams.Add("Stat_Coin",$Stat_Coin)
+$CurrentParams.Add("Stat_Algo",$Stat_Algo)
+$CurrentParams.Add("CPUOnly",$CPUOnly)
+$CurrentParams.Add("HiveOS",$HiveOS)
+$CurrentParams.Add("Update",$Update)
+$CurrentParams.Add("Cuda",$Cuda)
+$CurrentParams.Add("WattOMeter",$WattOMeter)
+$CurrentParams.Add("HiveId",$HiveId)
+$CurrentParams.Add("HivePassword",$HivePassword)
+$CurrentParams.Add("HiveMirror",$HiveMirror)
+$CurrentParams.Add("AMDPlatform",$AMDPlatform)
+$CurrentParams.Add("Rejections",$Rejections)
+$CurrentParams.Add("PoolBans",$PoolBans)
+$CurrentParams.Add("OnBoardCard",$OnboardCard)
+$CurrentParams.Add("PoolBanCount",$PoolBanCount)
+$CurrentParams.Add("AlgoBanCount",$AlgoBanCount)
+$CurrentParams.Add("MinerBanCount",$MinerBanCount)
+$CurrentParams.Add("Lite",$Lite)
+$StartParams = $CurrentParams | ConvertTo-Json 
+$StartingParams = $CurrentParams | ConvertTo-Json -Compress
+$StartParams | Set-Content ".\config\parameters\arguments.json"
+
 if($HiveOS -eq "Yes" -and $Platform -eq "linux"){Start-Process ".\build\bash\screentitle.sh" -Wait}
 Get-ChildItem . -Recurse -Force | Out-Null 
 if($Platform -eq "Windows"){$Platform = "windows"}
@@ -202,20 +237,25 @@ if(-not (Test-Path ".\build\txt")){New-Item -Path ".\build" -Name "txt" -ItemTyp
 . .\build\powershell\powerup.ps1
 . .\build\powershell\peekaboo.ps1
 . .\build\powershell\checkbackground.ps1
-
+. .\build\powershell\maker.ps1
+. .\build\powershell\intensity.ps1
+. .\build\powershell\poolbans.ps1
 if($Platform -eq "linux"){. .\build\powershell\getbestunix.ps1; . .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
 if($Platform -eq "windows"){. .\build\powershell\getbestwin.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\gpu-count-win.ps1;}
 
+##Start The Log
+$dir = (Split-Path $script:MyInvocation.MyCommand.Path)
+$dir | set-content ".\build\bash\dir.sh"
+start-log -Platforms $Platform -HiveOS $HiveOS
 
 ##filepath dir
-$dir = (Split-Path $script:MyInvocation.MyCommand.Path)
 $build = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build")
-$dir | set-content ".\build\bash\dir.sh"
 $pwsh = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\powershell")
 $bash = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\linux")
 $windows = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\windows")
 $data = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\data")
 $txt = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\txt")
+$swarmstamp = "SWARMISBESTMINEREVER"
 
 if($Platform -eq "windows")
  {
@@ -224,8 +264,6 @@ if($Platform -eq "windows")
   Start-Fans
  }
 
-##Start The Log
-start-log
 
 if($Platform -eq "windows")
 {
@@ -249,65 +287,21 @@ start-update -Update $update
   Get-Data -CmdDir $dir
   }
 }
-
 Write-Host "HiveOS = $HiveOS"
 #Startings Settings:
 $BenchmarkMode = "No"
 $Instance = 1
-$InfoCheck1 = Get-Content "$data\conversion.ifx" -Force | Out-String
-$VerifyCheck1 = Get-Content "$data\verification.ifx" -Force | Out-String
-$InfoCheck2 = Get-Content "$data\conversion2.ifx" -Force | Out-String
-$VerifyCheck2 = Get-Content "$data\verification2.ifx" -Force | Out-String
-$InfoPass1 = $InfoCheck1
-$InfoPass2 = $InfoCheck2
-$VerifyPass1 = $VerifyCheck1
-$VerifyPass2 = $VerifyCheck2 
 $DecayStart = Get-Date
 $DecayPeriod = 60 #seconds
 $DecayBase = 1-0.1 #decimal percentage
-$Deviation = $Donation
+$Deviation = $Donate
 $WalletDonate = "1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i"
 $NicehashDonate = "3JfBiUZZV17DTjAFCnZb97UpBgtLPLLDop"
 $UserDonate = "MaynardVII"
 $WorkerDonate = "Rig1"
-$WalletSwitch = $Wallet
-$WalletSwitch1 = $Wallet1
-$WalletSwitch2 = $Wallet2
-$WalletSwitch3 = $Wallet3
-$CPUWalletSwitch = $CPUWallet
-$ZergpoolWallet1Switch = $ZergpoolWallet1
-$ZergpoolWallet2Switch = $ZergpoolWallet2
-$ZergpoolWallet3Switch = $ZergpoolWallet3
-$PasswordSwitch = $Passwordcurrency
-$PasswordSwitch1 = $Passwordcurrency1
-$PasswordSwitch2 = $Passwordcurrency2
-$PasswordSwitch3 = $Passwordcurrency3
-$CPUcurrencySwitch = $CPUcurrency
-$blockmasterswitch1 = $blockmastersWallet1
-$blockmasterswitch2 = $blockmastersWallet2
-$blockmasterswitch3 = $blockmastersWallet3
-$blockmastersp1 = $blockmastersPassword1
-$blockmastersp2 = $blockmastersPassword2
-$blockmastersp3 = $blockmastersPassword3
-$nlpoolswitch1 = $nlWallet1
-$nlpoolswitch2 = $nlWallet2
-$nlpoolswitch3 = $nlWallet3
-$nlpassswitch1 = $nlpassword1
-$nlpassswitch2 = $nlpassword2
-$nlpassswitch3 = $nlpassword3
-$Zergpoolpassword1Switch = $Zergpoolpassword1
-$Zergpoolpassword2Switch = $Zergpoolpassword2
-$Zergpoolpassword3Switch = $Zergpoolpassword3
-$Nicehash_Wallet1Switch = $Nicehash_Wallet1
-$Nicehash_Wallet2Switch = $Nicehash_Wallet2
-$Nicehash_Wallet3Switch = $Nicehash_Wallet3
-$UserSwitch = $UserName
-$WorkerSwitch = $WorkerName
-$RigSwitch = $RigName
-$IntervalSwitch = $Interval
 $ActiveMinerPrograms = @()
-$Naming = Get-Content ".\config\naming\get-pool.txt" | ConvertFrom-Json
-
+$Naming = Get-Content ".\config\naming\get-pool.json" | ConvertFrom-Json
+$DonationMode = $false
 if($Platform -eq "windows" -and $HivePassword -ne $null){Start-Peekaboo -HiveID $HiveID -HiveMirror $HiveMirror -HivePassword $HivePassword; $hiveresponse}
 
 #Timers
@@ -315,6 +309,7 @@ $TimeoutTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $TimeoutTimer.Start()
 $logtimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $logtimer.Start()
+if($Lite -Eq "Yes"){Start-Process ".\build\bash\apiserver.sh" -Wait}
 
 ##Load Previous Times & PID Data
 Get-DateFiles
@@ -361,7 +356,7 @@ $NVIDIADevices3 = $GPUDevices3
 $AMDDevices1 = $GPUDevices1
 
 ##GPU Count & Miner Type
-if($Platform -eq "linux" -and $HiveOS -eq "Yes")
+if($Platform -eq "linux")
 {
 $Type | Foreach {
 if($_ -eq "NVIDIA1"){
@@ -394,6 +389,7 @@ elseif($Platform -eq "linux"){Get-SexyUnixLogo}
  
 #Get-Algorithms
 $Algorithm = @()
+$Warnings = @()
 $NeedsToBeBench = $false
 $Algorithm = Get-Algolist -Devices $Type -No_Algo $No_Algo
 
@@ -404,155 +400,93 @@ if($Type -like "*AMD*"){$amd = get-minerfiles -Types "AMD" -Platforms $Platform}
 
 While($true)
 {
+##Manage Pool Bans
+Start-PoolBans $StartingParams $swarmstamp
+
+##Parameters (if changed through command)
+$GetSWARMParams = Get-Content ".\config\parameters\arguments.json"
+$SWARMParams = $GetSWARMParams | ConvertFrom-Json
+$Wallet = $SWARMParams.Wallet
+$Wallet1 = $SWARMParams.Wallet1
+$Wallet2 = $SWARMParams.Wallet2
+$Wallet3 = $SWARMParams.Wallet3
+$CPUWallet = $SWARMParams.CPUWallet
+$Nicehash_Wallet1 = $SWARMParams.Nicehash_Wallet1
+$Nicehash_Wallet2 = $SWARMParams.Nicehash_Wallet2
+$Nicehash_Wallet3 = $SWARMParams.Nicehash_Wallet3
+$AltWallet1 = $SWARMParams.AltWallet1
+$AltWallet2 = $SWARMParams.AltWallet2
+$AltWallet3 = $SWARMParams.AltWallet3
+$RigName1 = $SWARMParams.RigName1
+$RigName2 = $SWARMParams.RigName2
+$RigName3 = $SWARMParams.RigName3
+$API_ID = $SWARMParams.API_ID
+$API_Key = $SWARMParams.API_Key
+$Timeout = $SWARMParams.Timeout
+$Interval = $SWARMParams.Interval
+$StatsInterval = $SWARMParams.StatsInterval
+$Location = $SWARMParams.Location
+$Type = $SWARMParams.Type
+$GPUDevices1 = $SWARMParams.GPUDevices1
+$GPUDevices2 = $SWARMParams.GPUDevices2
+$GPUDevices3 = $SWARMParams.GPUDevices3
+$PoolName = $SWARMParams.PoolName
+$Currency = $SWARMParams.Currency
+$Passwordcurrency1 = $SWARMParams.Passwordcurrency1
+$Passwordcurrency2 = $SWARMParams.Passwordcurrency1
+$Passwordcurrency3 = $SWARMParams.Passwordcurrency3
+$AltPassword1 = $SWARMParams.AltPassword1
+$AltPassword2 =  $SWARMParams.AltPassword2
+$AltPassword3 = $SWARMParams.AltPassword3
+$Donate = $SWARMParams.Donate
+$Proxy = $SWARMParams.Proxy
+$CoinExchange = $SWARMParams.CoinExchange
+$Auto_Coin = $SWARMParams.Auto_Coin
+$Nicehash_Fee = $SWARMParams.Nicehash_Fee
+$Benchmark = $SWARMParams.Benchmark
+$No_Algo = $SWARMParams.No_Algo
+$Favor_Coins = $SWARMParams.Favor_Coins
+$Threshold = $SWARMParams.Threshold
+$Platform = $SWARMParams.platform
+$CPUThreads = $SWARMParams.CPUThreads
+$Stat_Coin = $SWARMParams.Stat_Coin
+$Stat_Algo = $SWARMParams.Stat_Algo
+$CPUOnly =  $SWARMParams.CPUOnly
+$HiveOS = $SWARMParams.HiveOS
+$Update = $SWARMParams.Update
+$Cuda = $SWARMParams.Cuda
+$WattOMeter = $SWARMParams.WattOMeter
+$HiveID = $SWARMParams.HiveId
+$HivePassword = $SWARMParams.HivePassword
+$HiveMirror = $SWARMParams.HiveMirror
+$AMDPlatform = $SWARMParams.AMDPlatform
+$Rejections = $SWARMParams.Rejections
+$PoolBans = $SWARMParams.PoolBans
+$OnboardCard = $SWARMParams.OnboardCard
+$PoolBanCount = $SWARMParams.PoolBanCount
+$AlgoBanCount = $SWARMParams.AlgoBanCount
+$Lite = $SWARMParams.Lite
+
+if($SWARMParams.Rigname1 -eq "Donate"){$Donating = $True}
+else{$Donating = $False}
+if($Donating -eq $True){$Test = Get-Date; $DonateTest = "Miner has donated on $Test"; $DonateTest | Set-Content ".\build\txt\donate.txt"}
+
+##Save Watt Calcs
+if($Watts){$Watts | ConvertTo-Json | Out-File ".\config\power\power.json"}
+##OC-Settings
+$OC = Get-Content ".\config\oc\oc-settings.json" | ConvertFrom-Json
 ##Reset Coins
 $CoinAlgo = $null  
 ##Get Watt Configuration
-$Watts = get-content ".\config\power\power.conf" | ConvertFrom-Json
+$Watts = get-content ".\config\power\power.json" | ConvertFrom-Json
 ##Check Time Parameters
 $MinerWatch = New-Object -TypeName System.Diagnostics.Stopwatch
-$TimeoutTime = [int]$Timeout*3600
+$TimeoutTime = $Timeout*3600
 $DecayExponent = [int](((Get-Date)-$DecayStart).TotalSeconds/$DecayPeriod)
-$TimeDeviation = [int]($Deviation + 1.40)
-$InfoCheck = Get-Content ".\build\data\info.txt" -Force | Out-String
-$DonateCheck = Get-Content ".\build\data\system.txt" -Force | Out-String
-$LastRan = Get-Content ".\build\data\timetable.txt" -Force | Out-String
  
-if($TimeDeviation -ne 0)
-{
-$DonationTotal = (864*[int]$TimeDeviation)
-$DonationIntervals = ([int]$DonationTotal/288)
-$FinalDonation = (86400/[int]$DonationIntervals)
- if($LastRan -eq "")
- {
-  Get-Date | Out-File ".\build\data\timetable.txt"
-  Continue
- }
- if($LastRan -ne "")
- {
- $RanDonate = [DateTime]$LastRan
- $LastRanDonated = [math]::Round(((Get-Date)-$RanDonate).TotalSeconds)
-  if($LastRanDonated -ge 86400)
-  {
-  Clear-Content ".\build\data\timetable.txt" -Force
-  Get-Date | Out-File ".\build\data\timeTable.txt"
-  Continue
-  }
- }
-
- if($LastRan -ne "")
- {
- $LastRanDonate = [DateTime]$LastRan
- $LastTimeActive = [math]::Round(((Get-Date)-$LastRanDonate).TotalSeconds)
-  if($LastTimeActive -ge 1) 
-  {
-  if($DonateCheck -eq "")
-  {
-  Get-Date | Out-File ".\build\data\system.txt"
-  Continue
-  }
-  $Donated = [DateTime]$DonateCheck
-  $CurrentlyDonated = [math]::Round(((Get-Date)-$Donated).TotalSeconds)
-  if($CurrentlyDonated -ge [int]$FinalDonation)
-  {
-    $Wallet = $InfoPass1
-    $Wallet1 = $InfoPass1
-    $Wallet2 = $InfoPass1
-    $Wallet3 = $InfoPass1
-    $CPUWallet = $InfoPass1
-    $ZergpoolWallet1 = $InfoPass1
-    $ZergpoolWallet2 = $InfoPass1
-    $ZergpoolWallet3 = $InfoPass1
-    $blockmastersWallet1 = $InfoPass1
-    $blockmastersWallet2 = $InfoPass1
-    $blockmastersWallet3 = $InfoPass1
-    $blockmasterspassword1 = ("BTC")
-    $blockmasterspassword2 = ("BTC")
-    $blockmasterspassword3 = ("BTC")
-    $nlWallet1 = $InfoPass1
-    $nlWallet2 = $InfoPass1
-    $nlWallet3 = $InfoPass1
-    $nlpassword1 = ("BTC")
-    $nlpassword2 = ("BTC")
-    $nlpassword3 = ("BTC")
-    $Nicehash_Wallet1 = $VerifyPass1
-    $Nicehash_Wallet2 = $VerifyPass1
-    $Nicehash_Wallet3 = $VerifyPass1
-    $UserName = $InfoPass2
-    $WorkerName = $VerifyPass2
-    $RigName = "DONATING!!!"
-    $Interval = 288
-    $Passwordcurrency = ("BTC")
-    $Passwordcurrency1 = ("BTC")
-    $Passwordcurrency2 = ("BTC")
-    $Passwordcurrency3 = ("BTC")
-    $CPUcurrency = ("BTC")
-    $Zergpoolpassword1 = ("BTC")
-    $Zergpoolpassword2 = ("BTC")
-    $Zergpoolpassword3 = ("BTC")
-    $blockmasterspassword1 = ("BTC")
-    $blockmasterspassword2 = ("BTC")
-    $blockmasterspassword3 = ("BTC")
-    if(($InfoCheck) -eq ""){Get-Date | Out-File ".\build\data\info.txt"}
-     Clear-Content ".\build\data\system.txt" -Force
-     Get-Date | Out-File ".\build\data\system.txt"
-     Start-Sleep -s 1
-     Write-Host  "Entering Donation Mode" -foregroundColor "darkred"
-     Continue
-    }
-  }
-
- if($InfoCheck -ne "")
-  {
-     $TimerCheck = [DateTime]$InfoCheck
-     $LastTimerCheck = [math]::Round(((Get-Date)-$LastRanDonate).TotalSeconds)
-     if(((Get-Date)-$TimerCheck).TotalSeconds -ge $Interval)
-      {
-        $Wallet = $WalletSwitch
-        $Wallet1 = $WalletSwitch1
-        $Wallet2 = $WalletSwitch2
-          $Wallet3 = $WalletSwitch3
-        $ZergpoolWallet1 = $ZergpoolWallet1Switch
-        $ZergpoolWallet2 = $ZergpoolWallet2Switch
-        $ZergpoolWallet3 = $ZergpoolWallet3Switch
-        $Nicehash_Wallet1 = $Nicehash_Wallet1Switch
-        $Nicehash_Wallet2 = $Nicehash_Wallet2Switch
-        $Nicehash_Wallet3 = $Nicehash_Wallet3Switch
-        $blockmastersWallet1 = $blockmasterswitch1
-        $blockmastersWallet2 = $blockmasterswitch2
-        $blockmastersWallet3 = $blockmasterswitch3
-        $blockmasterspassword1 = $blockmastersp1
-        $blockmasterspassword2 = $blockmastersp2
-        $blockmasterspassword3 = $blockmastersp3
-        $nlWallet1 = $nlpoolswitch1
-        $nlWallet2 = $nlpoolswitch2
-        $nlWallet3 = $nlpoolswitch3
-        $nlpassword1 = $nlpassswitch1
-        $nlpassword2 = $nlpassswitch2
-        $nlpassword3 = $nlpassswitch3
-        $CPUWallet = $CPUWalletSwitch
-          $UserName = $UserSwitch
-          $WorkerName = $WorkerSwitch
-          $RigName = $RigSwitch
-        $Interval = $IntervalSwitch
-        $Passwordcurrency = $PasswordSwitch
-          $Passwordcurrency1 = $PasswordSwitch1
-        $Passwordcurrency2 = $PasswordSwitch2
-        $Passwordcurrency3 = $PasswordSwitch3
-        $Zergpoolpassword1 = $Zergpoolpassword1Switch
-        $Zergpoolpassword2 = $Zergpoolpassword2Switch
-        $Zergpoolpassword3 = $Zergpoolpassword3Switch
-        $CPUcurrency = $CPUcurrencySwitch
-            Clear-Content ".\build\data\info.txt" -Force
-	      Write-Host "Leaving Donation Mode- Thank you For The Support!" -foregroundcolor "darkred"
-	      Continue
-       }
-     }
-   }
-  }
-
 ##Get Price Data
 try {
-$R= [string]$Currency
+$R = [string]$Currency
 Write-Host "SWARM Is Building The Database. Auto-Coin Switching: $Auto_Coin" -foreground "yellow"
 $Rates = Invoke-RestMethod "https://api.coinbase.com/v2/exchange-rates?currency=BTC" -UseBasicParsing | Select-Object -ExpandProperty data | Select-Object -ExpandProperty rates
 $Currency | Where-Object {$Rates.$_} | ForEach-Object {$Rates | Add-Member $_ ([Double]$Rates.$_) -Force}
@@ -580,59 +514,92 @@ else
 ##GetPools
 Write-Host "Checking Algo Pools" -Foregroundcolor yellow
 $AllAlgoPools = Get-Pools -PoolType "Algo" -Stats $Stats
-$AlgoPools = [PSCustomObject]@{}
-$AlgoPools_Comparison = [PSCustomObject]@{}
-$AllAlgoPools.Symbol | Select -Unique | ForEach {$AlgoPools | Add-Member $_ ($AllAlgoPools | Where Symbol -EQ $_ | Sort-Object Price -Descending | Select -First 1)}
-$AllAlgoPools.Symbol | Select -Unique | ForEach {$AlgoPools_Comparison | Add-Member $_ ($AllAlgoPools | Where Symbol -EQ $_ | Sort-Object StablePrice -Descending | Select -First 1)}
+$AlgoPools = @()
+$AlgoPools_Comparison = @()
+$AllAlgoPools.Symbol | Select -Unique | ForEach {$AlgoPools += ($AllAlgoPools | Where Symbol -EQ $_ | Sort-Object Price -Descending | Select -First 3)}
+$AllAlgoPools.Symbol | Select -Unique | ForEach {$AlgoPools_Comparison += ($AllAlgoPools | Where Symbol -EQ $_ | Sort-Object StablePrice -Descending | Select -First 3)}
 
 ##Load Only Needed Algorithm Miners
 Write-Host "Checking Algo Miners"
 $AlgoMiners = Get-Miners -Platforms $Platform -Stats $Stats -Pools $AlgoPools
 
 ##Re-Name Instance In Case Of Crashes
-$AlgoMiners | ForEach {
-$AlgoMiner = $_
-if(-not (Test-Path $AlgoMiner.path))
-{
- if(Test-Path (Split-Path $Algominer.Path))
+if($Lite -eq "No")
  {
-  Set-Location (Split-Path $AlgoMiner.Path)
-  if(Test-Path "*$($_.Type)*")
+$AlgoMiners | ForEach {
+  $AlgoMiner = $_
+  if(-not (Test-Path $AlgoMiner.path))
   {
-  $OldInstance = Get-ChildItem "*$($AlgoMiner.Type)-*"
-  Rename-Item $OldInstance -NewName "$($AlgoMiner.MinerName)" -force
+   if(Test-Path (Split-Path $Algominer.Path))
+   {
+    Set-Location (Split-Path $AlgoMiner.Path)
+    if(Test-Path "*$($_.Type)*")
+    {
+    $OldInstance = Get-ChildItem "*$($AlgoMiner.Type)-*"
+    Rename-Item $OldInstance -NewName "$($AlgoMiner.MinerName)" -force
+    }
+    Set-Location $Dir
+   }
   }
-  Set-Location $Dir
  }
 }
-}
-
-$Download = $false
 
 ##Download Miners
+$Download = $false
+if($Lite -eq "No")
+{
 $AlgoMiners = $AlgoMiners | ForEach {
-$AlgoMiner = $_
- if((Test-Path $_.Path) -eq $false)
- {
-  Expand-WebRequest -URI $AlgoMiner.URI -BuildPath $AlgoMiner.BUILD -Path (Split-Path $AlgoMiner.Path) -MineName (Split-Path $AlgoMiner.Path -Leaf) -MineType $AlgoMiner.Type
-  $Download = $true
- }
- else{$AlgoMiner}
+  $AlgoMiner = $_
+   if((Test-Path $_.Path) -eq $false)
+   {
+    Expand-WebRequest -URI $AlgoMiner.URI -BuildPath $AlgoMiner.BUILD -Path (Split-Path $AlgoMiner.Path) -MineName (Split-Path $AlgoMiner.Path -Leaf) -MineType $AlgoMiner.Type
+    $Download = $true
+   }
+   else{$AlgoMiner}
+  }  
+if($Download -eq $true){continue}
 }
 
+$NewAlgoMiners = @()
+$Type | Foreach {
+$GetType = $_; 
+$AlgoMiners.Symbol | Select -Unique | foreach {
+$zero = $AlgoMiners | Where Type -eq $GetType | Where Hashrates -match $_ | Where Quote -EQ 0; 
+if($zero)
+{
+ $zerochoice = $zero | Sort-Object Quote -Descending | Select -First 1; 
+ if(-not ($NewAlgoMiners | Where Name -EQ $zerochoice.Name | Where Arguments -EQ $zerochoice.Arguments))
+  {
+   $NewAlgoMiners += $zerochoice
+  }
+}
+else
+{
+ $nonzero = $AlgoMiners | Where Type -eq $GetType | Where Hashrates -match $_ | Where Quote -NE 0; 
+ $nonzerochoice = $nonzero | Sort-Object Quote -Descending | Select -First 1; 
+ if(-not ($NewAlgoMiners | Where Name -EQ $nonzerochoice.Name | Where Arguments -EQ $nonzerochoice.Arguments))
+   {
+    $NewAlgoMiners += $nonzerochoice
+   }
+  }
+ }
+}
+$AlgoMiners = $NewAlgoMiners
 if($AlgoMiners.Count -eq 0){"No Miners!" | Out-Host; start-sleep $Interval; continue}
-if($Download -eq $true){continue}
 
 ##Sort Algorithm Miners
 start-minersorting -Command "Algo" -Stats $Stats -Pools $AlgoPools -Pools_Comparison $AlgoPools_Comparison -SortMiners $AlgoMiners -DBase $DecayBase -DExponent $DecayExponent -WattCalc $WattEx
-$GoodAlgoMiners = @()
 $ActiveMinerPrograms | ForEach {$AlgoMiners | Where Path -EQ $_.Path | Where Arguments -EQ $_.Arguments | ForEach {$_.Profit_Bias = $_.Profit}}
+$GoodAlgoMiners = @()
 $AlgoMiners | Foreach {if($_.Profit -lt $Threshold -or $_.Profit -eq $null){$GoodAlgoMiners += $_}}
 $Miners = @()
 $GoodAlgoMiners | foreach {$Miners += $_}
-if($Platform -eq "windows"){$BestAlgoMiners_Combo = Get-BestWin -SortMiners $AlgoMiners}
-elseif($Platform -eq "linux"){$BestAlgoMiners_Combo = Get-BestUnix -SortMiners $AlgoMiners}
+if($Platform -eq "windows"){$BestAlgoMiners_Combo = Get-BestWin -SortMiners $Miners}
+elseif($Platform -eq "linux"){$BestAlgoMiners_Combo = Get-BestUnix -SortMiners $Miners}
 $BestMiners_Combo = $BestAlgoMiners_Combo
+
+##Define Wallet Estimates:
+
 
 ##check if Auto_Coin is working- Start Coin Sorting
 #if($Auto_Coin -eq "Yes")
@@ -712,6 +679,7 @@ Write-Host "Most Ideal Choice Is $($BestMiners_Selected) on $($BestPool_Selected
  $Miners | foreach {
  $ProfitTable += [PSCustomObject]@{
   Power = [Decimal]$($_.Power*24)/1000*$WattEX
+  Pool_Estimate = $_.Pool_Estimate
   Type = $_.Type
   Miner = $_.Name
   Name = $($_.Symbol)
@@ -723,7 +691,7 @@ Write-Host "Most Ideal Choice Is $($BestMiners_Selected) on $($BestPool_Selected
   MinerPool = $_.MinerPool
  }
 }
-
+if(-not $AcitiveMinerPrograms){$Type | foreach{if(Test-Path ".\logs\$($_).log"){remove-item ".\logs\$($_).log" -Force}}}
 ##Add Instance Settings To Miners For Tracking
 $BestMiners_Combo | ForEach {
  if(-not ($ActiveMinerPrograms | Where Path -eq $_.Path | Where Arguments -eq $_.Arguments ))
@@ -735,6 +703,7 @@ $BestMiners_Combo | ForEach {
      else{$LogType = $_.Devices}
     }
   $ActiveMinerPrograms += [PSCustomObject]@{
+   Delay = $_.Delay
    Name = $_.Name
    Type = $_.Type
    Devices = $_.Devices
@@ -750,12 +719,10 @@ $BestMiners_Combo | ForEach {
    Status = "Idle"
    HashRate = 0
    Benchmarked = 0
-   Timeout = 0
    WasBenchmarked = $false
    XProcess = $null
    MinerPool = $_.MinerPool
    Algo = $_.Algo
-   Bad_Benchmark = 0
    FullName = $_.FullName
    Instance = $null
    InstanceName = $null
@@ -766,13 +733,26 @@ $BestMiners_Combo | ForEach {
    JsonFile = $_.Config
    LogGPUS = $LogType
    FirstBad = $null
+   Prestart = $_.Prestart
+   ocpl = $_.ocpl
+   ocdpm = $_.ocdpm
+   ocv = $_.ocv
+   occore = $_.occore
+   ocmem = $_.ocmem
+   ocmdpm = $_.ocmdpm
+   ocpower = $_.ocpower
+   ethpill = $_.ethpill
+   pilldelay = $_.pilldelay
+   quote = 0
+   NPool = $_.NPool
+   NUser = $_.NUser
+   CommandFile = $_.CommandFile
   }
  }
 }
 
 $Restart = $false
 $NoMiners = $false
-
 
 #Determine Which Miner Should Be Active
 $BestActiveMiners = @()
@@ -781,8 +761,52 @@ if($BestMiners_Combo | Where Path -EQ $_.Path | Where Arguments -EQ $_.Arguments
 else{$_.BestMiner = $false}
 }
 
+function Get-MinerStatus {
+  $Y = [string]$CoinExchange
+  $H = [string]$Currency
+  $J = [string]'BTC'
+  $BTCExchangeRate = Invoke-WebRequest "https://min-api.cryptocompare.com/data/pricemulti?fsyms=$Y&tsyms=$J" -UseBasicParsing | ConvertFrom-Json | Select-Object -ExpandProperty $Y | Select-Object -ExpandProperty $J
+  $ProfitTable | Sort-Object -Property Type,Profits -Descending | Format-Table -GroupBy Type (
+  @{Label = "Miner"; Expression={$($_.Miner)}},
+  @{Label = "Coin"; Expression={$($_.Name)}},
+  @{Label = "Speed"; Expression={$($_.HashRates) | ForEach {if($null -ne $_){"$($_ | ConvertTo-Hash)/s"}else{"Bench"}}}; Align='center'},
+  @{Label = "Watt/Day"; Expression={$($_.Power) | ForEach {if($null -ne $_){($_ * $Rates.$Currency).ToString("N2")}else{"Bench"}}}; Align='center'},
+  @{Label = "BTC/Day"; Expression={$($_.Profits) | ForEach {if($null -ne $_){  $_.ToString("N5")}else{"Bench"}}}; Align='right'},
+  @{Label = "$Y/Day"; Expression={$($_.Profits) | ForEach {if($null -ne $_){  ($_ / $BTCExchangeRate).ToString("N5")}else{"Bench"}}}; Align='right'},
+  @{Label = "$Currency/Day"; Expression={$($_.Profits) | ForEach {if($null -ne $_){($_ * $Rates.$Currency).ToString("N2")}else{"Bench"}}}; Align='center'},
+  @{Label = "   Pool"; Expression={$($_.MinerPool)}; Align='center'}
+      )
+}
+
+Clear-Content ".\build\bash\minerstats.sh" -Force
+$type | foreach {if(Test-Path ".\build\txt\$($_)-hash.txt"){Clear-Content ".\build\txt\$($_)-hash.txt" -Force}}
+$GetStatusAlgoBans = ".\timeout\algo_block\algo_block.txt"
+$GetStatusPoolBans = ".\timeout\pool_block\pool_block.txt"
+$GetStatusMinerBans = ".\timeout\miner_block\miner_block.txt"
+if(Test-Path $GetStatusAlgoBans){$StatusAlgoBans = Get-Content $GetStatusAlgoBans | ConvertFrom-Json}
+else{$StatusAlgoBans = $null}
+if(Test-Path $GetStatusPoolBans){$StatusPoolBans = Get-Content $GetStatusPoolBans | ConvertFrom-Json}
+else{$StatusPoolBans = $null}
+if(Test-Path $GetStatusMinerBans){$StatusMinerBans = Get-Content $GetStatusMinerBans | ConvertFrom-Json}
+else{$StatusMinerBans = $null}
+$StatusDate = Get-Date
+$StatusDate | Out-File ".\build\bash\mineractive.sh"
+$StatusDate | Out-File ".\build\bash\minerstats.sh"
+Get-MinerStatus | Out-File ".\build\bash\minerstats.sh" -Append
+$mcolor = "93"
+$me = [char]27
+$MiningStatus = "$me[${mcolor}mCurrently Mining $($BestMiners_Combo.Algo) Algorithm${me}[0m"
+$MiningStatus | Out-File ".\build\bash\minerstats.sh" -Append
+$BanMessage = @()
+$mcolor = "91"
+$me = [char]27
+if($StatusAlgoBans){$StatusAlgoBans | foreach {$BanMessage += "$me[${mcolor}m$($_.Name) mining $($_.Algo) is banned from all pools${me}[0m"}}
+if($StatusPoolBans){$StatusPoolBans | foreach {$BanMessage += "$me[${mcolor}m$($_.Name) mining $($_.Algo) is banned from $($_.MinerPool)${me}[0m"}}
+if($StatusMinerBans){$StatusMinerBans | foreach {$BanMessage += "$me[${mcolor}m$($_.Name) is banned${me}[0m"}}
+$BanMessage | Out-File ".\build\bash\minerstats.sh" -Append
 $BestActiveMiners | ConvertTo-Json | Out-File ".\build\txt\bestminers.txt"
-Start-BackgroundCheck -BestMiners $BestActiveMiners -Platforms $Platform
+$Current_BestMiners = $BestActiveMiners | ConvertTo-Json -Compress
+$BackgroundDone = "No"
 
 $ActiveMinerPrograms | ForEach {
 if($_.BestMiner -eq $false)
@@ -799,7 +823,7 @@ if($_.BestMiner -eq $false)
    }
   elseif($Platform -eq "linux")
    {
-    if($_.XProcess.HasExited){if($_.Status -eq "Running"){$_.Status = "Failed"}}
+    if($_.XProcess = $null){$_.Status = "Failed"}
     else
      {
       $_.Status = "Idle"
@@ -813,18 +837,17 @@ if($_.BestMiner -eq $false)
       }
      }
     }
- elseif($null -eq $_.XProcess -or $_.XProcess.HasExited)
+ elseif($null -eq $_.XProcess -or $_.XProcess.HasExited -and $Lite -eq "No")
   {
    if($TimeDeviation -ne 0)
     {
      $Restart = $true
      $_.Activated++
      $_.InstanceName = "$($_.Type)-$($Instance)"
-     $_ | ConvertTo-Json | Out-File ".\build\txt\current.txt"
-     Start-Sleep -S .25
-     Start-Sleep $Delay
-     if($Platform -eq "windows"){$_.Xprocess = Start-LaunchCode -Platforms "windows"}
-     elseif($Platform -eq "Linux"){$_.Xprocess = Start-LaunchCode -Platforms "linux"}
+     $Current = $_ | ConvertTo-Json -Compress
+     if($Platform -eq "windows"){$_.Xprocess = Start-LaunchCode -Platforms "windows" -MinerRound $Current_BestMiners -NewMiner $Current -Background $BackgroundDone}
+     elseif($Platform -eq "Linux"){$_.Xprocess = Start-LaunchCode -Platforms "linux" -MinerRound $Current_BestMiners -NewMiner $Current -Background $BackgroundDone}
+     $BackgroundDone = "Yes"
      $_.Instance = ".\build\pid\$($_.Type)-$($Instance)"
      $PIDFile = "$($_.Name)_$($_.Coins)_$($_.InstanceName)_pid.txt"
      $Instance++
@@ -856,6 +879,8 @@ if($Restart -eq $true -and $NoMiners -eq $true)
        
        
   There are miners that have failed! Check Your Settings And Arguments!
+  Type `'mine`' in another terminal to see background miner, and its reason for failure.
+  If miner is not your primary miner (AMD1 or NVIDIA1), type 'screen -r [Type]'
   https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration) >> Right Click 'Open URL In Browser'
 
 
@@ -908,7 +933,16 @@ if($Restart -eq $false)
   Start-Sleep -s 5
  }
 
- function Get-MinerActive {
+if($Lite -eq "Yes"){
+$UsePools = $false
+$ProfitTable | foreach{if($_.Profits -ne $null){$UsePools = $true}}
+if($UsePools -eq $false){$APITable = $ProfitTable | Sort-Object -Property Type,Profits -Descending}
+else{$APITable = $ProfitTable | Sort-Object -Property Type,Pool_Estimate}
+$APITable | ConvertTo-Json -Depth 4 | Set-Content ".\build\txt\profittable.txt"
+Start-BackgroundCheck -Platforms $Platform
+}
+
+function Get-MinerActive {
 
   $ActiveMinerPrograms | Sort-Object -Descending Status,
   {if($null -eq $_.XProcess){[DateTime]0}else{$_.XProcess.StartTime}
@@ -919,7 +953,6 @@ if($Restart -eq $false)
   @{Label = "Command"; Expression={"$($_.MinerName) $($_.Devices) $($_.Arguments)"}}
 )
 }
-
 function Get-Logo {
        Write-Host '
                                                                            (                    (      *     
@@ -938,34 +971,39 @@ function Get-Logo {
         Write-Host ""
 }
 
-function Get-MinerStatus {
-        $Y = [string]$CoinExchange
-	      $H = [string]$Currency
-      	$J = [string]'BTC'
-        $BTCExchangeRate = Invoke-WebRequest "https://min-api.cryptocompare.com/data/pricemulti?fsyms=$Y&tsyms=$J" -UseBasicParsing | ConvertFrom-Json | Select-Object -ExpandProperty $Y | Select-Object -ExpandProperty $J
-        $ProfitTable | Sort-Object -Property Type,Profits -Descending | Format-Table -GroupBy Type (
-        @{Label = "Miner"; Expression={$($_.Miner)}},
-        @{Label = "Coin"; Expression={$($_.Name)}},
-        @{Label = "Speed"; Expression={$($_.HashRates) | ForEach {if($null -ne $_){"$($_ | ConvertTo-Hash)/s"}else{"Bench"}}}; Align='center'},
-        @{Label = "Watt/Day"; Expression={$($_.Power) | ForEach {if($null -ne $_){($_ * $Rates.$Currency).ToString("N2")}else{"Bench"}}}; Align='center'},
-        @{Label = "BTC/Day"; Expression={$($_.Profits) | ForEach {if($null -ne $_){  $_.ToString("N5")}else{"Bench"}}}; Align='right'},
-        @{Label = "$Y/Day"; Expression={$($_.Profits) | ForEach {if($null -ne $_){  ($_ / $BTCExchangeRate).ToString("N5")}else{"Bench"}}}; Align='right'},
-        @{Label = "$Currency/Day"; Expression={$($_.Profits) | ForEach {if($null -ne $_){($_ * $Rates.$Currency).ToString("N2")}else{"Bench"}}}; Align='center'},
-        @{Label = "   Pool"; Expression={$($_.MinerPool)}; Align='center'}
-            )
-      }
 
 #Check For Bechmark
 $BenchmarkMode = $false
 $ActiveMinerPrograms | Foreach {
-if(-not (Test-Path ".\stats\$($_.Name)_$($_.Algo)_hashrate.txt"))
+ if($Miners | Where Path -eq $_.Path | Where Arguments -eq $_.Arguments)
  {
-  $BenchmarkMode = $true
+  if(-not (Test-Path ".\stats\$($_.Name)_$($_.Algo)_hashrate.txt"))
+  {
+   $BenchmarkMode = $true
+  }
  }
 }
 
 #Set Interval
-if($BenchmarkMode -eq $true){$MinerInterval = $Benchmark}
+if($BenchmarkMode -eq $true)
+{
+$MinerInterval = $Benchmark
+$Message = 
+"SWARM is now benchmarking miners. It will only be able to 
+properly calculate stats once miners finish benchmarking.
+
+Note: Only one miner per algorithm and platform will show on stats 
+screen. While benchmarking, miner will choose a miner that needs to be
+benched, leaving previously benchmarked miners to vanish from stats 
+screen. They will return if benchmarks were higher than current miner.
+
+This is normal behavior.
+
+To see all miner benchmarks that have been performed use:
+get benchmarks
+command"
+$Message | Out-File ".\build\bash\minerstats.sh" -Append
+}
 else{$MinerInterval = $Interval}
 
 #Clear Logs If There Are 12
@@ -979,33 +1017,25 @@ if($Log -eq 12)
 if($LogTimer.Elapsed.TotalSeconds -ge 3600)
  {
   Stop-Transcript
-  if(Test-Path ".\logs\*Active*")
+  if(Test-Path ".\logs\*active*")
   {
    Set-Location ".\logs"
-   $OldActiveFile = Get-ChildItem "*Active*"
+   $OldActiveFile = Get-ChildItem "*active*"
    $OldActiveFile | Foreach {
-    $RenameActive = $_ -replace ("-Active","")
+    $RenameActive = $_ -replace ("-active","")
     if(Test-Path $RenameActive){Remove-Item $RenameActive -Force}
     Rename-Item $_ -NewName $RenameActive -force
     }
    Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
   }
   $Log++
-  Start-Transcript ".\logs\miner$($Log)-Active.log"
+  Start-Transcript ".\logs\miner$($Log)-active.log"
   $LogTimer.Restart()
  }
 
 ##Write Details Of Active Miner And Stats To File
-$StatusDate = Get-Date
-$StatusDate | Out-File ".\build\bash\mineractive.sh"
 Get-MinerActive | Out-File ".\build\bash\mineractive.sh" -Append
-Clear-Content ".\build\bash\minerstats.sh" -Force
-$StatusDate | Out-File ".\build\bash\minerstats.sh"
-Get-MinerStatus | Out-File ".\build\bash\minerstats.sh" -Append
-$mcolor = "93"
-$me = [char]27
-$MiningStatus = "$me[${mcolor}mCurrently Mining $($BestMiners_Combo.Algo) Algorithm${me}[0m"
-$MiningStatus | Out-File ".\build\bash\minerstats.sh" -Append
+
 #if($Favor_Coins -eq "Yes")
  #{
   #if($BenchmarkMode -eq $false)
@@ -1020,17 +1050,18 @@ $MiningStatus | Out-File ".\build\bash\minerstats.sh" -Append
 function Restart-Miner {
  $BestActiveMiners | Foreach {
  $Restart = $false
- if($_.XProcess -eq $null -or $_.XProcess.HasExited)
+ if($_.XProcess -eq $null -or $_.XProcess.HasExited -and $Lite -eq "No")
   {
     if($TimeDeviation -ne 0)
     {
      $Restart = $true
+     $BackgroundDone = "Yes"
      $_.Activated++
      $_.InstanceName = "$($_.Type)-$($Instance)"
-     $_ | ConvertTo-Json | Out-File ".\build\txt\current.txt"
+     $Current = $_ | ConvertTo-Json -Compress
      Start-Sleep -S .25
-     if($Platform -eq "windows"){$_.Xprocess = Start-LaunchCode -Platforms "windows"}
-     elseif($Platform -eq "Linux"){$_.Xprocess = Start-LaunchCode -Platforms "linux"}
+     if($Platform -eq "windows"){$_.Xprocess = Start-LaunchCode -Platforms "windows" -MinerRound $Current_BestMiners -NewMiner $Current -Background $BackgroundDone}
+     elseif($Platform -eq "Linux"){$_.Xprocess = Start-LaunchCode -Platforms "linux" -MinerRound $Current_BestMiners -NewMiner $Current -Background $BackgroundDone}
      $_.Instance = ".\build\pid\$($_.Type)-$($Instance)"
      $PIDFile = "$($_.Name)_$($_.Coins)_$($_.InstanceName)_pid.txt"
      $Instance++
@@ -1216,13 +1247,13 @@ Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
  }
 }
 
+
+
 ##Benchmarking/Timeout      
 $BestActiveMiners | foreach {
- if($_.FirstBad -ne $null)
-  {
-   $BadCheck = [math]::Round(((Get-Date)-$_.FirstBad).TotalSeconds)
-   if($BadCheck -gt 3600){$_.Bad_Benchmark = 0; $_.FirstBad = $null}
-  }
+$MinerPoolBan = $false
+$MinerAlgoBan = $false
+$MinerBan = $false
 $Strike = $false
 if($_.BestMiner -eq $true)
  {
@@ -1231,6 +1262,7 @@ if($_.BestMiner -eq $true)
    $_.Status = "Failed"
    $_.WasBenchMarked = $False
    $Strike = $true
+   Write-Host "Cannot Benchmark- Miner is not running" -ForegroundColor Red
   }
   else
   { 
@@ -1261,7 +1293,7 @@ if($_.BestMiner -eq $true)
          Write-Host "Stat Attempt Yielded 0" -Foregroundcolor Red
          Start-Sleep -S .25
          $GPUPower = 0
-         if($WattOMeter -eq "yes"){$Stat = Set-Stat -Name "$($_.Name)_$($_.Algo)_power" -Value $GPUPower}
+         if($WattOMeter -eq "yes" -and $_.Type -ne "CPU"){$Watts.$($_.Algo)."$($_.Type)_Watts" = "$GPUPower"}
         }
          else
           {
@@ -1270,14 +1302,14 @@ if($_.BestMiner -eq $true)
              try{$GPUPower = Set-Power -MinerDevices $($_.Devices) -Command "stat" -PwrType $($_.Type)}catch{Write-Host "WattOMeter Failed" $GPUPower = 0}
             }
            else{$GPUPower = 1}
-           if($WattOMeter -eq "yes" -and $_.Type -ne "CPU"){$Stat = Set-Stat -Name "$($_.Name)_$($_.Algo)_power" -Value $GPUPower}
-           $Stat = Set-Stat -Name "$($_.Name)_$($_.Algo)_hashrate" -Value $Miner_HashRates
-           Start-Sleep -s 1
-           $GetLiveStat = Get-Stat "$($_.Name)_$($_.Algo)_hashrate"
-           $StatCheck = "$($GetLiveStat.Live)"
-           $ScreenCheck = "$($StatCheck | ConvertTo-Hash)"
-           if($ScreenCheck -eq "0.00 PH" -or $null -eq $StatCheck)
-            {
+           if($WattOMeter -eq "yes" -and $_.Type -ne "CPU"){$Watts.$($_.Algo)."$($_.Type)_Watts" = "$GPUPower"}
+            $Stat = Set-Stat -Name "$($_.Name)_$($_.Algo)_hashrate" -Value $Miner_HashRates
+            Start-Sleep -s 1
+            $GetLiveStat = Get-Stat "$($_.Name)_$($_.Algo)_hashrate"
+            $StatCheck = "$($GetLiveStat.Live)"
+            $ScreenCheck = "$($StatCheck | ConvertTo-Hash)"
+            if($ScreenCheck -eq "0.00 PH" -or $null -eq $StatCheck)
+             {
              $Strike = $true
              $_.WasBenchmarked = $False
              Write-Host "Stat Failed Write To File" -Foregroundcolor Red
@@ -1289,10 +1321,11 @@ if($_.BestMiner -eq $true)
              if(-not (Test-Path $NewHashrateFilePath))
               {
                Copy-Item $HashrateFilePath -Destination $NewHashrateFilePath -force
-               if($WattOMeter -eq "Yes" -and $_.Type -ne "CPU"){Copy-Item $PowerFilePath -Destination $NewPowerFilePath -force}
                Write-Host "$($_.Name) $($_.Coins) Was Benchmarked And Backed Up" -foregroundcolor yellow
               }
              $_.WasBenchmarked = $True
+             $Current = $_ | ConvertTo-Json -Compress
+             Get-Intensity $Current
 	           Write-Host "Stat Written" -foregroundcolor green
              $Strike = $false
             } 
@@ -1300,11 +1333,10 @@ if($_.BestMiner -eq $true)
           }
          }
       ##Check For High Rejections
-      $RejectCheck = Join-Path ".\timeout" "$($_.Name)_$($_.Algo)_rejection.txt"
+      $RejectCheck = Join-Path ".\timeout\warnings" "$($_.Name)_$($_.Algo)_rejection.txt"
       if(Test-Path $RejectCheck)
        {
         Write-Host "Rejections Are Too High" -ForegroundColor DarkRed
-        $_.Timeout++
         $_.WasBenchmarked = $false
         $Strike = $true
        }
@@ -1312,8 +1344,12 @@ if($_.BestMiner -eq $true)
      }
     }
 
-  if($Strike -eq $true){$_.Bad_Benchmark++}
-  else{$_.Bad_Benchmark = 0}
+  if($Strike -ne $true)
+  {
+   if($Warnings."$($_.Name)" -ne $null){$Warnings."$($_.Name)" | foreach{try{$_.bad=0}catch{}}}
+   if($Warnings."$($_.Name)_$($_.Algo)" -ne $null){$Warnings."$($_.Name)_$($_.Algo)" | foreach{try{$_.bad=0}catch{}}}
+   if($Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" -ne $null){$Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)"| foreach{try{$_.bad=0}catch{}}}
+  }
 		 
 
 if($Strike -eq $true)
@@ -1323,43 +1359,69 @@ if($Strike -eq $true)
     if (-not (Test-Path ".\timeout")) {New-Item "timeout" -ItemType "directory" | Out-Null}
     if (-not (Test-Path ".\timeout\pool_block")) {New-Item -Path ".\timeout" -Name "pool_block" -ItemType "directory" | Out-Null}
     if (-not (Test-Path ".\timeout\algo_block")) {New-Item -Path ".\timeout" -Name "algo_block" -ItemType "directory" | Out-Null}
+    if (-not (Test-Path ".\timeout\miner_block")) {New-Item -Path ".\timeout" -Name "miner_block" -ItemType "directory" | Out-Null}
+    if (-not (Test-Path ".\timeout\warnings")) {New-Item -Path ".\timeout" -Name "warnings" -ItemType "directory" | Out-Null}
     Start-Sleep -S .25
-    $TimeoutFile = Join-Path ".\timeout" "$($_.Name)_$($_.Algo)_TIMEOUT.txt"
+    $TimeoutFile = Join-Path ".\timeout\warnings" "$($_.Name)_$($_.Algo)_TIMEOUT.txt"
     $HashRateFilePath = Join-Path ".\stats" "$($_.Name)_$($_.Algo)_hashrate.txt"
-    if(-not (Test-Path $TimeoutFile)){"$($_.Name) $($_.Coins) Hashrate Check Timed Out $($_.Bad_Benchmark) Times" | Set-Content ".\timeout\$($_.Name)_$($_.Algo)_TIMEOUT.txt" -Force}
-    $_.WasBenchmarked = $True
-    $_.Timeout = 0
-    Write-Host "$($_.Name) $($_.Coins) Hashrate Check Timed Out $($_.Bad_Benchmark) Times- It Was Noted In Timeout Folder" -foregroundcolor "darkred"
-    if($_.Bad_Benchmark -eq 1)
+    if(-not (Test-Path $TimeoutFile)){"$($_.Name) $($_.Coins) Hashrate Check Timed Out" | Set-Content ".\timeout\warnings\$($_.Name)_$($_.Algo)_TIMEOUT.txt" -Force}
+    if($Warnings."$($_.Name)" -eq $null){$Warnings += [PSCustomObject]@{"$($_.Name)" = [PSCustomObject]@{bad = 0}}}
+    if($Warnings."$($_.Name)_$($_.Algo)" -eq $null){$Warnings += [PSCustomObject]@{"$($_.Name)_$($_.Algo)" = [PSCustomObject]@{bad = 0}}}
+    if($Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" -eq $null){$Warnings += [PSCustomObject]@{"$($_.Name)_$($_.Algo)_$($_.MinerPool)" = [PSCustomObject]@{bad = 0}}}
+    $Warnings."$($_.Name)" | foreach{try{$_.bad++}catch{}}
+    $Warnings."$($_.Name)_$($_.Algo)" | foreach{try{$_.bad++}catch{}}
+    $Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)"| foreach{try{$_.bad++}catch{}}
+    if($Warnings."$($_.Name)".bad -ge $MinerBanCount){$MinerBan = $true}
+    if($Warnings."$($_.Name)_$($_.Algo)".bad -ge $AlgoBanCount){$MinerAlgoBan = $true}
+    if($Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)".bad -ge $PoolBanCount){$MinerPoolBan = $true}
+    ##Strike One
+    if($MinerPoolBan -eq $false -and $MinerAlgoBan -eq $false -and $MinerBan -eq $false)
+    {
+     Write-Host "First Strike: There was issue with benchmarking." -ForegroundColor DarkRed
+    }
+    ##Strike Two
+    if($MinerPoolBan -eq $true)
+    {
+     Write-Host "Strike Two: Benchmarking Has Failed - Prohibiting miner from pool" -ForegroundColor DarkRed
+     $NewPoolBlock = @()
+     if(Test-Path ".\timeout\pool_block\pool_block.txt"){$GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json}
+     Start-Sleep -S 1
+     if($GetPoolBlock){$GetPoolBlock | foreach{$NewPoolBlock += $_}}
+     $NewPoolBlock += $_
+     $NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt"
+     $Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)"| foreach{try{$_.bad=0}catch{}}
+    }
+    ##Strike Three: He's Outta Here
+     if($MinerAlgoBan -eq $true)
      {
-      $_.FirstBad = Get-Date
-      if(test-path $HashRateFilePath){remove-item $HashRateFilePath -Force}
-      Write-Host "First Strike: There was issue with benchmarking." -ForegroundColor DarkRed
-     }
-     if($_.Bad_Benchmark -eq 2)
-     {
-      Write-Host "Strike Two: Benchmarking Has Failed - Prohibiting miner from pool" -ForegroundColor DarkRed
-      $NewPoolBlock = @()
-      if(test-path $HashRateFilePath){remove-item $HashRateFilePath -Force}
-      if(Test-Path ".\timeout\pool_block\pool_block.txt"){$GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json}
-      Start-Sleep -S 1
-      if($GetPoolBlock){$GetPoolBlock | foreach{$NewPoolBlock += $_}}
-      $NewPoolBlock += $_
-      $NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt"
-      Start-Sleep -S 1
-     }
-     if($_.Bad_Benchmark -ge 3)
-     {
-      Write-Host "Strike three: Benchmarking Has Failed - disabling miner" -ForegroundColor DarkRed
+      Write-Host "Strike three: $($_.Algo) is now banned on $($_.Name)" -ForegroundColor DarkRed
       $NewAlgoBlock = @()
       if(test-path $HashRateFilePath){remove-item $HashRateFilePath -Force}
       if(Test-Path ".\timeout\algo_block\algo_block.txt"){$GetAlgoBlock = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json}
       Start-Sleep -S 1
-      if($GetPoolBlock){$GetAlgoBlock | foreach{$NewAlgoBlock += $_}}
+      if($GetAlgoBlock){$GetAlgoBlock | foreach{$NewAlgoBlock += $_}}
       $NewAlgoBlock += $_
-      $NewAlgoBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block\algo_block.txt" 
+      $NewAlgoBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block\algo_block.txt"
+      $Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)"| foreach{try{$_.bad=0}catch{}}
+      $Warnings."$($_.Name)_$($_.Algo)" | foreach{try{$_.bad=0}catch{}}
       Start-Sleep -S 1
      }
+    ##Strike Four: Miner is Finished
+    if($MinerBan -eq $true)
+    {
+     Write-Host "This miner sucks, shutting it down." -ForegroundColor DarkRed
+     $NewMinerBlock = @()
+     if(test-path $HashRateFilePath){remove-item $HashRateFilePath -Force}
+     if(Test-Path ".\timeout\miner_block\miner_block.txt"){$GetMinerBlock = Get-Content ".\timeout\miner_block\miner_block.txt" | ConvertFrom-Json}
+     Start-Sleep -S 1
+     if($GetMinerBlock){$GetMinerBlock | foreach{$NewMinerBlock += $_}}
+     $NewMinerBlock += $_
+     $NewMinerBlock | ConvertTo-Json | Set-Content ".\timeout\miner_block\miner_block.txt"
+     $Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)"| foreach{try{$_.bad=0}catch{}}
+     $Warnings."$($_.Name)_$($_.Algo)" | foreach{try{$_.bad=0}catch{}}
+     $Warnings."$($_.Name)" | foreach{try{$_.bad=0}catch{}}
+     Start-Sleep -S 1
+    }
     }
    }
   }
@@ -1367,5 +1429,4 @@ if($Strike -eq $true)
 }
   #Stop the log
   Stop-Transcript
-  Get-Date | Out-File ".\Build\Data\TimeTable.txt"
 

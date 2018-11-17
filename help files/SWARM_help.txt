@@ -6,7 +6,8 @@ Arguments & Explanations:
 
 Argument          Options           Explanation
 
--StatsInterval   1-10000           Expression is in seconds. This is time required for miner apps to run
+
+-StatsInterval   1-10000            Expression is in seconds. This is time required for miner apps to run
                                     before miner write/re-writes benchmarking. This is not be confused 
                                     with -Interval argument, which is used for when miner begins swithing 
                                     process. leave 1 if you want dynamic benchmarking, and for initial 
@@ -42,7 +43,8 @@ Argument          Options           Explanation
                 ahashpool,
 		starpool,
 		blockmasters,
-                Nlpool]
+                Nlpool
+                zpool]
 
 -Wallet1      [Wallet Address]      Address of your wallet. By default MM.Hash assumes it to be BTC.
                                     See Advanced arguments to change that.
@@ -78,6 +80,21 @@ These arguments can be added for additional customization and options
 
 
 Argument            Options             Explanation
+
+-OnboardCard      [Yes or No]       Default is No. This is specifically for AMD users that have multiple
+                                    GPU platforms. If you experience issues with 1 card not statting to
+                                    HiveOS, and you have an Integrated/Non-AMD gpu attached, set
+                                    -OnboardCard Yes. This is not relevant to NIVIDIA users.
+
+-PoolBans       [Yes or No]         Default is "Yes". This option will ban miners from specific pools
+                                    if it detects high rejections or no hashrate. Bans are lifted
+                                    every [x] hours, where [x] is your -Timeout parameter.
+
+-PoolBanCount    [0-10]             Default is 2. Number of strikes/bad benchmarks required before
+                                    miner is banned from using pool.
+
+-AlgoBanCount    [0-10]             Default is 3. Number of strikes/bad benchmarks required before
+                                    miner is banned from using algo.
 
 -AMDPlatform	    [0-10]	    This is the OpenCL platform for AMD. Default is set to 1. If you
 				    have issues starting AMD, try 0. Some of the miners within SWARM
