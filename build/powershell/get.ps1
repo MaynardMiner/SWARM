@@ -218,10 +218,11 @@ else{Write-Host "No Miner History Found"}
 if(Test-Path ".\config\parameters\arguments.json")
  {
   $MinerArgs = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
-  $MinerArgs
+  $MinerArgs | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Foreach{Write-Host "$($_): $($MinerArgs.$_)"}
  }
  else{Write-Host "No Parameters For SWARM found"}
 }
+
 default
 {
  $default =
