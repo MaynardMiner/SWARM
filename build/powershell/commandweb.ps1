@@ -89,6 +89,32 @@
     }
   }
 
+ if($command.result.command -eq "config")
+  {
+   $type = "ok"
+   $data = "Rig config changed"
+   $arguments = $command.result.wallet
+   $start = $arguments.Lastindexof("CUSTOM_USER_CONFIG=") + 20
+   $end = $arguments.LastIndexOf("META") - 3
+   $arguments = $arguments.substring($start,($end-$start))
+   $arguments = $arguments -replace "\'\\\'",""
+   $arguments = $arguments -split "-"
+   $arguments = $arguments | foreach {$_.trim(" ")}
+   $arguments = $arguments | Select -skip 1
+   $argjson = @{}
+   $arguments | foreach {$argument = $_ -split " " | Select -first 1; $argparam = $_ -split " " | Select -last 1; $argjson.Add($argument,$argparam);}
+   $argjson | convertto-Json | Out-File ".\config\argument-json.txt"
+   $arguments = "powershell -version 5.0 -noexit -executionpolicy bypass -windowstyle maximized -command `".\swarm.ps1 " + $arguments + "`""
+   $bat = Get-Content ".\SWARM.bat"
+   if($bat -ne $arguments)
+    {
+     $arguments | Out-File ".\SWARM.bat" -Force
+     "restart" | Out-File ".\build\txt\commands.txt"
+    }
+  }
+
+if($payload -ne $null)
+{
 $myresponse = @{
     method = "message"
     rig_id = $HiveID
@@ -103,6 +129,23 @@ $myresponse = @{
      payload = $payload
      }
     }
+  }
+
+else{
+  $myresponse = @{
+    method = "message"
+    rig_id = $HiveID
+    jsonrpc = "2.0"
+    id= "0"
+    params = @{
+     id = $command.result.id
+     rig_id = $HiveID
+     passwd = $HivePassword
+     type = $type
+     data = $data
+     }
+    }
+  }
 
    $myresponse     
   

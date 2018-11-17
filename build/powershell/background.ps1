@@ -728,15 +728,41 @@ $response.result.exec
 if($response.result.command -ne "OK")
  {
   ##command exec
+  $response | ConvertTo-Json | Out-File ".\test.txt"
   $SwarmResponse = Start-webcommand $response
   if($SwarmResponse -ne $null)
    {
     Write-Host "Sending Command $($response.result.exec) To Hive"
-    try{
+    #try{
       $hiveresponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body ($SwarmResponse | ConvertTo-Json -Depth 1) -ContentType 'application/json'
       if($SwarmResponse.params.payload -eq "rebooting"){Restart-Computer}
+      if(Test-Path ".\build\txt\commands.txt")
+       {
+        $Mycommand = Get-Content ".\build\txt\commands.txt"
+        if($MyCommand -ne $null)
+         {
+          switch($MyCommand)
+           {
+            "restart"
+              {
+                $MinerFile =".\build\pid\miner_pid.txt"
+                if(Test-Path $MinerFile){$MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue}
+                 if($MinerId -ne $null -or $MinerId.HasExited -ne $true)
+                  {
+                    "" | Set-Content ".\build\txt\commands.txt"
+                    $ID = ".\build\pid\background_pid.txt"
+                    $MinerId.CloseMainWindow() | Out-Null
+                    Start-Sleep -S 5
+                    Start-Process ".\SWARM.bat"
+                    $BackGroundID = Get-Process -id (Get-Content "$ID" -ErrorAction SilentlyContinue) -ErrorAction SilentlyContinue
+                    $BackGroundID.CloseMainWindow() | Out-Null
+                  }             
+              }
+           }
+         }
        }
-    catch{Write-Host "Failed To Execute Command"}
+   #}
+   # catch{Write-Host "Failed To Execute Command"}
    }
   }
  }

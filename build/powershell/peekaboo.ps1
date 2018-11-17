@@ -8,7 +8,8 @@ function Start-Peekaboo {
     [String]$HiveMirror
     )
 
-
+$getversion = (Split-Path $script:MyInvocation.MyCommand.Path -Leaf)
+$version = $getversion -replace ("SWARM.","")
 $getuid =  $(Get-NetAdapter | Select MacAddress).MacAddress -replace ("-","")
 $enc = [system.Text.Encoding]::UTF8
 $string1 = "$getuid".ToLower()
@@ -25,7 +26,7 @@ $Ip = $(get-WmiObject Win32_NetworkAdapterConfiguration| Where {$_.Ipaddress.len
 Invoke-Expression ".\build\apps\nvidia-smi.exe --query-gpu=gpu_bus_id,vbios_version,gpu_name,memory.total,power.min_limit,power.default_limit,power.max_limit --format=csv > "".\build\txt\getgpu.txt"""
 $GetGPU = Get-Content ".\build\txt\getgpu.txt" | ConvertFrom-Csv
 $GPUS = @()
-for($i=0; $i -lt $GetGPU.count; $i++){$GPUS += @{busid = $GetGPU."pci.bus_id"[$i]; name =  $GetGPU.name[$i]; brand = "nvidia"; subvendor = ""; mem = $GetGPU."memory.total [MiB]"[$i]; vbios = $GetGPU.vbios_version[$i]; plim_min = $GetGPU."power.min_limit [W]"[$i]; plim_def = $GetGPU."power.default_limit [W]"[$i]; plim_max = $GetGPU."power.max_limit [W]"[$i];}}
+for($i=0; $i -lt $GetGPU.count; $i++){$GPUS += @{busid = $GetGPU."pci.bus_id"[$i] -split ":",2 | Select -Last 1; name =  $GetGPU.name[$i]; brand = "nvidia"; subvendor = "Nvidia"; mem = $GetGPU."memory.total [MiB]"[$i]; vbios = $GetGPU.vbios_version[$i]; plim_min = $GetGPU."power.min_limit [W]"[$i]; plim_def = $GetGPU."power.default_limit [W]"[$i]; plim_max = $GetGPU."power.max_limit [W]"[$i];}}
 $manu = $(Get-CimInstance Win32_BaseBoard | Select-Object Manufacturer).Manufacturer
 $prod = $(Get-WmiObject Win32_BaseBoard | Select-Object Product).Product
 $cpud = Get-WmiObject -Class Win32_processor | ft Name,DeviceID,NumberOfCores
@@ -51,8 +52,9 @@ $Hello = @{
         gpu = $GPUS
         gpu_count_amd = "0"
         gpu_cound_nvidia = "$($GetGPU.Count)"
-        version = '1.6.0'
-        amd_version = ""
+        version = '1.6.5'
+        nvidia_version = "396.54"
+        amd_version = "18.10"
         manufacturer = "$manu"
         product = "$prod" 
         model = "$cpuname"
