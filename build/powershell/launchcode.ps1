@@ -199,7 +199,7 @@ if($Platforms -eq "windows")
 {
   if($MinerProcess -eq $null -or $MinerProcess.HasExited -eq $true)
   {
-    if($Background -eq "No"){Start-BackgroundCheck -BestMiners $BestMiners -Platforms $Platform}
+    if($Background -eq "No"){Start-BackgroundCheck -Platforms $Platform}
     Start-Sleep -S $MinerCurrent.Delay
     $Logs = Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "logs\$($MinerCurrent.Type).log" 
     $WorkingDirectory = Split-Path $($MinerCurrent.Path)

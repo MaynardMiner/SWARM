@@ -12,7 +12,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
 function start-fans {
-  $FanFile = Get-Content ".\config\oc\oc-nvidia.conf" | ConvertFrom-Json
+  $FanFile = Get-Content ".\config\oc\oc-settings.json" | ConvertFrom-Json
   $FanArgs = @()
   
   if($FanFile.'windows fan start')
