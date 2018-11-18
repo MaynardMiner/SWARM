@@ -400,6 +400,14 @@ if($Type -like "*AMD*"){$amd = get-minerfiles -Types "AMD" -Platforms $Platform}
 
 While($true)
 {
+##Check For Param Changes
+$GetChange = Get-Content ".\build\txt\paramchanged.txt"
+if($GetChange -ne "")
+{
+ $GetNewParams = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
+ $StartingParams = $GetNewParams | ConvertTo-Json -Compress
+ Clear-Content ".\build\txt\paramchanged.txt"
+}
 ##Manage Pool Bans
 Start-PoolBans $StartingParams $swarmstamp
 

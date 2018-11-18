@@ -67,7 +67,7 @@
         $type = "info"
         $data = "$($command.result.exec)"
         $arguments = $data -replace ("benchmark ","")
-        start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\benchmark.ps1 -name $arguments -platform windows""" -Wait
+        start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\benchmark.ps1 $arguments windows""" -Wait
         Start-Sleep -S 5
         $getpayload = Get-Content ".\build\txt\benchcom.txt"
         $line = @()
@@ -98,19 +98,27 @@
    $end = $arguments.LastIndexOf("META") - 3
    $arguments = $arguments.substring($start,($end-$start))
    $arguments = $arguments -replace "\'\\\'",""
+   $arguments = $arguments -replace "\u0027","\'"
    $arguments = $arguments -split "-"
    $arguments = $arguments | foreach {$_.trim(" ")}
    $arguments = $arguments | Select -skip 1
    $argjson = @{}
    $arguments | foreach {$argument = $_ -split " " | Select -first 1; $argparam = $_ -split " " | Select -last 1; $argjson.Add($argument,$argparam);}
-   $argjson | convertto-Json | Out-File ".\config\argument-json.txt"
-   $arguments = "powershell -version 5.0 -noexit -executionpolicy bypass -windowstyle maximized -command `".\swarm.ps1 " + $arguments + "`""
-   $bat = Get-Content ".\SWARM.bat"
-   if($bat -ne $arguments)
-    {
-     $arguments | Out-File ".\SWARM.bat" -Force
-     "restart" | Out-File ".\build\txt\commands.txt"
-    }
+   $JsonParam = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
+   $argjson = $argjson | ConvertTo-Json | ConvertFrom-Json
+   $argjson | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name |  foreach{
+    if($JsonParam.$_ -ne $argjson.$_)
+     {
+      $JsonParam.$_ = $argjson.$_
+     }
+     if(-not $JsonParam.$_)
+     {
+      $JsonParam.Add("$($_)",$argjson.$_)
+     }
+   }
+   $JsonParam | convertto-Json | Out-File ".\config\parameters\arguments.json"
+   $Datestamp = Get-Date
+   "Params Have Changed: $DateStamp" | Set-Content ".\build\txt\paramchanged.txt"
   }
 
 if($payload -ne $null)

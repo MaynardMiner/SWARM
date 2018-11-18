@@ -28,6 +28,11 @@ param(
 [Double]$RejPercent
 )
 
+$Platforms = "windows"
+$HiveId = "307175"
+$HivePassword = "kuc72995"
+$HiveMirror = "https://api.hiveos.farm"
+$HiveOS = "Yes"
 #$Platforms = "linux"
 #$RejPercent = 50
 #$WorkingDir = "/hive/custom/SWARM.1.6.3"
@@ -821,7 +826,7 @@ function Start-MinerWatchdog {
     }
   }
 
-if($Platforms -eq "windows" -and $HiveId -ne $null)
+if($Platforms -eq "windows" -and $HiveOS -eq "Yes" -and $HiveId -ne $null)
 {
 $cpu = @(0,$($cpu1.LoadPercentage),$($cpu5.Average))
 $mem = @($($ramfree),$($ramtotal-$ramfree))
@@ -877,7 +882,6 @@ $response.result.exec
 if($response.result.command -ne "OK")
  {
   ##command exec
-  $response | ConvertTo-Json | Out-File ".\test.txt"
   $SwarmResponse = Start-webcommand $response
   if($SwarmResponse -ne $null)
    {
@@ -888,27 +892,6 @@ if($response.result.command -ne "OK")
       if(Test-Path ".\build\txt\commands.txt")
        {
         $Mycommand = Get-Content ".\build\txt\commands.txt"
-        if($MyCommand -ne $null)
-         {
-          switch($MyCommand)
-           {
-            "restart"
-              {
-                $MinerFile =".\build\pid\miner_pid.txt"
-                if(Test-Path $MinerFile){$MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue}
-                 if($MinerId -ne $null -or $MinerId.HasExited -ne $true)
-                  {
-                    "" | Set-Content ".\build\txt\commands.txt"
-                    $ID = ".\build\pid\background_pid.txt"
-                    $MinerId.CloseMainWindow() | Out-Null
-                    Start-Sleep -S 5
-                    Start-Process ".\SWARM.bat"
-                    $BackGroundID = Get-Process -id (Get-Content "$ID" -ErrorAction SilentlyContinue) -ErrorAction SilentlyContinue
-                    $BackGroundID.CloseMainWindow() | Out-Null
-                  }             
-              }
-           }
-         }
        }
    #}
    # catch{Write-Host "Failed To Execute Command"}
@@ -917,9 +900,8 @@ if($response.result.command -ne "OK")
  }
 
 if($BackgroundTimer.Elapsed.TotalSeconds -gt 120){Clear-Content ".\build\bash\hivestats.sh"; $BackgroundTimer.Restart()}
-Start-MinerWatchdog -PlatformMiners $Platforms
-Start-Sleep -S 5
-Start-MinerWatchdog -PlatformMiners $Platforms
-Start-Sleep -S 5
+#Start-Sleep -S 5
+#Start-MinerWatchdog -PlatformMiners $Platforms
+#Start-Sleep -S 5
 #{"method":"stats","jsonrpc":"2.0","id":0,"params":{"rig_id":"","passwd":"","miner":"custom","meta":{"custom":{"coin":"RVN"}},"miner_stats":{"hs":[0,0,0,0,0,0,0,0,0,0,0,0,0],"hs_units":"khs","temp":[56,58,54,0,0,0,59,0,0,57,44,0,0],"fan":[80,80,80,0,0,0,80,0,0,80,80,0,0],"uptime":"6\r,","ar":["0\r","0\r"],"algo":"tribus\r"},"total_khs":"0\r","temp":["0","62","63","61","49","47","46","64","54","45","64","54","51","44"],"fan":["0","80","80","80","80","80","80","80","80","80","80","80","80","80"],"power":["0","143","137","150","0","0","0","147","0","0","143","151","0","0"],"df":"196G","mem":[7681,1669],"cpuavg":[5.29,4.33,4.61]}}
 }

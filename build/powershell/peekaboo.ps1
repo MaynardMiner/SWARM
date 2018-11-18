@@ -8,6 +8,8 @@ function Start-Peekaboo {
     [String]$HiveMirror
     )
 
+ . .\build\powershell\commandweb.ps1
+
 $getversion = (Split-Path $script:MyInvocation.MyCommand.Path -Leaf)
 $version = $getversion -replace ("SWARM.","")
 $getuid =  $(Get-NetAdapter | Select MacAddress).MacAddress -replace ("-","")
@@ -72,7 +74,13 @@ $Hello = @{
 
 try{
     $response = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body ($Hello | ConvertTo-Json -Depth 3 -Compress) -ContentType 'application/json'
-    $message = $response.result.config
+    if($response.result.exec){
+    Write-Host "Sending Command $($response.result.exec) To Hive"
+    $message = Start-webcommand $response
+    if($message){$hiveresponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body ($message | ConvertTo-Json -Depth 1) -ContentType 'application/json'}
+    $message = $hiveresponse
+    }
+    else{$message = $response.result.config}
    }
    catch{$message = "Failed To Contact HiveOS.Farm"}
 
