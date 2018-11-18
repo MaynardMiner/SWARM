@@ -424,7 +424,7 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
         $Data.accepted_count | Foreach {$ACC += $_}
         $Data.rejected_count | Foreach {$REJ += $_}
         $KHS = if([Double]$Data.hashrate_minute -ne 0 -or [Double]$Data.accepted_count -ne 0){[Double]$Data.hashrate_minute/1000}
-        $UPTIME = $Data.uptim
+        $UPTIME = $Data.uptime
         for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($Data.gpus.temperature.Count -eq 1){$Data.gpus.temperature}else{$Data.gpus.temperature[$i]})}
         for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) =  $(if($Data.gpus.fan_speed.Count -eq 1){$Data.gpus.fan_speed}else{$Data.gpus.fan_speed[$i]})}
         $ALGO = $Data.Algorithm

@@ -17,7 +17,7 @@ function start-fans {
   
   if($FanFile.'windows fan start')
    {
-      $Card = $FanFile.'windows fan start'.fans -split ' '
+      $Card = $FanFile.'windows fan start' -split ' '
       for($i=0; $i -lt $Card.count; $i++){$FanArgs += "-setFanSpeed:$i,$($Card[$i]) "}
       Write-Host "Starting Fans" 
       $script = @()
