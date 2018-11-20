@@ -275,7 +275,8 @@ $AlgoBanCount = $SWARMParams.AlgoBanCount
 $Lite = $SWARMParams.Lite
 }
 
-$Version = Split-Path ($script:MyInvocation.MyCommand.Path) -Leaf
+$Version = Split-Path ($script:MyInvocation.MyCommand.Path) -Parent
+$Version = Split-Path $Version -Leaf
 $Version = $Version -replace ".ps1",""
 $Version = $Version -replace "SWARM.","v"
 
