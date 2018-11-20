@@ -203,6 +203,77 @@ $CurrentParams.Add("Lite",$Lite)
 $StartParams = $CurrentParams | ConvertTo-Json 
 $StartingParams = $CurrentParams | ConvertTo-Json -Compress
 $StartParams | Set-Content ".\config\parameters\arguments.json"
+if(Test-Path ".\config\parameters\newarguments.json")
+{
+Write-Host "Detected New Arguments- Changing Parameters" -ForegroundColor Cyan
+$NewParams = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json
+Start-Sleep -S 2
+$NewParams | Convertto-Json | Set-Content ".\config\parameters\arguments.json"
+$StartParams = $NewParams
+$StartingParams = $NewParams | ConvertTo-Json -Compress
+$GetSWARMParams = Get-Content ".\config\parameters\arguments.json"
+$SWARMParams = $GetSWARMParams | ConvertFrom-Json
+$Wallet = $SWARMParams.Wallet
+$Wallet1 = $SWARMParams.Wallet1
+$Wallet2 = $SWARMParams.Wallet2
+$Wallet3 = $SWARMParams.Wallet3
+$CPUWallet = $SWARMParams.CPUWallet
+$Nicehash_Wallet1 = $SWARMParams.Nicehash_Wallet1
+$Nicehash_Wallet2 = $SWARMParams.Nicehash_Wallet2
+$Nicehash_Wallet3 = $SWARMParams.Nicehash_Wallet3
+$AltWallet1 = $SWARMParams.AltWallet1
+$AltWallet2 = $SWARMParams.AltWallet2
+$AltWallet3 = $SWARMParams.AltWallet3
+$RigName1 = $SWARMParams.RigName1
+$RigName2 = $SWARMParams.RigName2
+$RigName3 = $SWARMParams.RigName3
+$API_ID = $SWARMParams.API_ID
+$API_Key = $SWARMParams.API_Key
+$Timeout = $SWARMParams.Timeout
+$Interval = $SWARMParams.Interval
+$StatsInterval = $SWARMParams.StatsInterval
+$Location = $SWARMParams.Location
+$Type = $SWARMParams.Type
+$GPUDevices1 = $SWARMParams.GPUDevices1 -replace "\\'",""
+$GPUDevices2 = $SWARMParams.GPUDevices2 -replace "\\'",""
+$GPUDevices3 = $SWARMParams.GPUDevices3 -replace "\\'",""
+$PoolName = $SWARMParams.PoolName
+$Currency = $SWARMParams.Currency
+$Passwordcurrency1 = $SWARMParams.Passwordcurrency1
+$Passwordcurrency2 = $SWARMParams.Passwordcurrency1
+$Passwordcurrency3 = $SWARMParams.Passwordcurrency3
+$AltPassword1 = $SWARMParams.AltPassword1
+$AltPassword2 =  $SWARMParams.AltPassword2
+$AltPassword3 = $SWARMParams.AltPassword3
+$Donate = $SWARMParams.Donate
+$Proxy = $SWARMParams.Proxy -replace "\\'",""
+$CoinExchange = $SWARMParams.CoinExchange
+$Auto_Coin = $SWARMParams.Auto_Coin
+$Nicehash_Fee = $SWARMParams.Nicehash_Fee
+$Benchmark = $SWARMParams.Benchmark
+$No_Algo = $SWARMParams.No_Algo
+$Favor_Coins = $SWARMParams.Favor_Coins
+$Threshold = $SWARMParams.Threshold
+$Platform = $SWARMParams.platform
+$CPUThreads = $SWARMParams.CPUThreads
+$Stat_Coin = $SWARMParams.Stat_Coin
+$Stat_Algo = $SWARMParams.Stat_Algo
+$CPUOnly =  $SWARMParams.CPUOnly
+$HiveOS = $SWARMParams.HiveOS
+$Update = $SWARMParams.Update
+$Cuda = $SWARMParams.Cuda
+$WattOMeter = $SWARMParams.WattOMeter
+$HiveID = $SWARMParams.HiveId
+$HivePassword = $SWARMParams.HivePassword
+$HiveMirror = $SWARMParams.HiveMirror
+$AMDPlatform = $SWARMParams.AMDPlatform
+$Rejections = $SWARMParams.Rejections
+$PoolBans = $SWARMParams.PoolBans
+$OnboardCard = $SWARMParams.OnboardCard
+$PoolBanCount = $SWARMParams.PoolBanCount
+$AlgoBanCount = $SWARMParams.AlgoBanCount
+$Lite = $SWARMParams.Lite
+}
 
 if($HiveOS -eq "Yes" -and $Platform -eq "linux"){Start-Process ".\build\bash\screentitle.sh" -Wait}
 Get-ChildItem . -Recurse -Force | Out-Null 
@@ -260,7 +331,7 @@ $swarmstamp = "SWARMISBESTMINEREVER"
 if($Platform -eq "windows")
  {
   [Environment]::SetEnvironmentVariable("CUDA_DEVICE_ORDER", "PCI_BUS_ID", "User")
-  $Cuda = "9.2"
+  $Cuda = "10"
   Start-Fans
  }
 
@@ -302,7 +373,7 @@ $WorkerDonate = "Rig1"
 $ActiveMinerPrograms = @()
 $Naming = Get-Content ".\config\naming\get-pool.json" | ConvertFrom-Json
 $DonationMode = $false
-if($Platform -eq "windows" -and $HivePassword -ne $null){Start-Peekaboo -HiveID $HiveID -HiveMirror $HiveMirror -HivePassword $HivePassword; $hiveresponse}
+if($Platform -eq "windows" -and $HiveOS -eq "Yes"){Start-Peekaboo -HiveID $HiveID -HiveMirror $HiveMirror -HivePassword $HivePassword; $hiveresponse}
 
 #Timers
 $TimeoutTimer = New-Object -TypeName System.Diagnostics.Stopwatch
@@ -335,7 +406,7 @@ if($Platform -eq "linux")
 #Start Watchdog
 start-watchdog
  }
-elseif($Platform -eq "windows"){$PID | Set-Content ".\build\pid\miner_pid.txt"}
+$PID | Set-Content ".\build\pid\miner_pid.txt"
 
 if(Test-Path ".\build\txt\nvidiapower.txt"){Remove-Item ".\build\txt\nvidiapower.txt" -Force}
 if(Test-path ".\build\txt\amdpower.txt"){Remove-Item ".\build\txt\amdpower.txt" -Force}
@@ -400,14 +471,6 @@ if($Type -like "*AMD*"){$amd = get-minerfiles -Types "AMD" -Platforms $Platform}
 
 While($true)
 {
-##Check For Param Changes
-$GetChange = Get-Content ".\build\txt\paramchanged.txt"
-if($GetChange -ne "")
-{
- $GetNewParams = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
- $StartingParams = $GetNewParams | ConvertTo-Json -Compress
- Clear-Content ".\build\txt\paramchanged.txt"
-}
 ##Manage Pool Bans
 Start-PoolBans $StartingParams $swarmstamp
 
@@ -435,9 +498,9 @@ $Interval = $SWARMParams.Interval
 $StatsInterval = $SWARMParams.StatsInterval
 $Location = $SWARMParams.Location
 $Type = $SWARMParams.Type
-$GPUDevices1 = $SWARMParams.GPUDevices1
-$GPUDevices2 = $SWARMParams.GPUDevices2
-$GPUDevices3 = $SWARMParams.GPUDevices3
+$GPUDevices1 = $SWARMParams.GPUDevices1 -replace "\\'",""
+$GPUDevices2 = $SWARMParams.GPUDevices2 -replace "\\'",""
+$GPUDevices3 = $SWARMParams.GPUDevices3 -replace "\\'",""
 $PoolName = $SWARMParams.PoolName
 $Currency = $SWARMParams.Currency
 $Passwordcurrency1 = $SWARMParams.Passwordcurrency1
@@ -447,7 +510,7 @@ $AltPassword1 = $SWARMParams.AltPassword1
 $AltPassword2 =  $SWARMParams.AltPassword2
 $AltPassword3 = $SWARMParams.AltPassword3
 $Donate = $SWARMParams.Donate
-$Proxy = $SWARMParams.Proxy
+$Proxy = $SWARMParams.Proxy -replace "\\'",""
 $CoinExchange = $SWARMParams.CoinExchange
 $Auto_Coin = $SWARMParams.Auto_Coin
 $Nicehash_Fee = $SWARMParams.Nicehash_Fee
@@ -699,7 +762,7 @@ Write-Host "Most Ideal Choice Is $($BestMiners_Selected) on $($BestPool_Selected
   MinerPool = $_.MinerPool
  }
 }
-if(-not $AcitiveMinerPrograms){$Type | foreach{if(Test-Path ".\logs\$($_).log"){remove-item ".\logs\$($_).log" -Force}}}
+if(-not $ActiveMinerPrograms){$Type | foreach{if(Test-Path ".\logs\$($_).log"){remove-item ".\logs\$($_).log" -Force}}}
 ##Add Instance Settings To Miners For Tracking
 $BestMiners_Combo | ForEach {
  if(-not ($ActiveMinerPrograms | Where Path -eq $_.Path | Where Arguments -eq $_.Arguments ))
@@ -854,8 +917,7 @@ if($_.BestMiner -eq $false)
      $_.Activated++
      $_.InstanceName = "$($_.Type)-$($Instance)"
      $Current = $_ | ConvertTo-Json -Compress
-     if($Platform -eq "windows"){$_.Xprocess = Start-LaunchCode -Platforms "windows" -MinerRound $Current_BestMiners -NewMiner $Current -Background $BackgroundDone}
-     elseif($Platform -eq "Linux"){$_.Xprocess = Start-LaunchCode -Platforms "linux" -MinerRound $Current_BestMiners -NewMiner $Current -Background $BackgroundDone}
+     $_.Xprocess = Start-LaunchCode -Platforms $Platform -MinerRound $Current_BestMiners -NewMiner $Current -Background $BackgroundDone
      $BackgroundDone = "Yes"
      $_.Instance = ".\build\pid\$($_.Type)-$($Instance)"
      $PIDFile = "$($_.Name)_$($_.Coins)_$($_.InstanceName)_pid.txt"
@@ -1069,8 +1131,7 @@ function Restart-Miner {
      $_.InstanceName = "$($_.Type)-$($Instance)"
      $Current = $_ | ConvertTo-Json -Compress
      Start-Sleep -S .25
-     if($Platform -eq "windows"){$_.Xprocess = Start-LaunchCode -Platforms "windows" -MinerRound $Current_BestMiners -NewMiner $Current -Background $BackgroundDone}
-     elseif($Platform -eq "Linux"){$_.Xprocess = Start-LaunchCode -Platforms "linux" -MinerRound $Current_BestMiners -NewMiner $Current -Background $BackgroundDone}
+     $_.Xprocess = Start-LaunchCode -Platforms $Platform -MinerRound $Current_BestMiners -NewMiner $Current -Background $BackgroundDone
      $_.Instance = ".\build\pid\$($_.Type)-$($Instance)"
      $PIDFile = "$($_.Name)_$($_.Coins)_$($_.InstanceName)_pid.txt"
      $Instance++

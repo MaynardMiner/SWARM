@@ -14,6 +14,7 @@ param(
      )
 
 Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))
+$Get = @()
 
  Switch($argument1)
   {
@@ -149,7 +150,7 @@ paramters
 
     USES:
 
-    get parameters [name]/[help]
+    get parameters [name]
 
     OPTIONS:
 
@@ -157,8 +158,22 @@ paramters
     name of parameter you wish to view. If you are unsure,
     specify 'all'
 
-    help:
-    views SWARM's argument help file
+to see all available SWARM commands, go to:
+
+https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
+
+current windows commands:
+
+get help
+get benchmarks
+get oc
+get active
+get stats
+get screen
+reboot
+version
+benchmark 
+
 "
 $help
 $help | out-file ".\build\txt\get.txt"
@@ -195,44 +210,64 @@ $help | out-file ".\build\txt\get.txt"
     HashRates = $Stats."$($_)".Day | ConvertTo-Hash
   }
  }
- $BenchTable | Sort-Object -Property Algo -Descending | Format-Table (
+ function Get-BenchTable {
+  $BenchTable | Sort-Object -Property Algo -Descending | Format-Table (
   @{Label = "Miner"; Expression={$($_.Miner)}},
   @{Label = "Algorithm"; Expression={$($_.Algo)}},
   @{Label = "Speed"; Expression={$($_.HashRates)}}    
 )
+ }
+Get-BenchTable | Out-File ".\build\txt\get.txt"
 }
- else{Write-Host "No Stats Found"}
+ else{$Get = "No Stats Found"}
 }
 "stats"
 {
-if(Test-Path ".\build\bash\minerstats.sh"){Get-Content ".\build\bash\minerstats.sh"}
-else{Write-Host "No Stats History Found"}
+if(Test-Path ".\build\bash\minerstats.sh"){$Get = Get-Content ".\build\bash\minerstats.sh"}
+else{$Get = "No Stats History Found"}
+
 }
 "active"
 {
-if(Test-Path ".\build\bash\mineractive.sh"){Get-Content ".\build\bash\mineractive.sh"}
-else{Write-Host "No Miner History Found"}    
+if(Test-Path ".\build\bash\mineractive.sh"){$Get = Get-Content ".\build\bash\mineractive.sh"}
+else{$Get = "No Miner History Found"}
 }
 "parameters"
 {
 if(Test-Path ".\config\parameters\arguments.json")
  {
+  $SwarmParameters =@()
   $MinerArgs = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
-  $MinerArgs | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Foreach{Write-Host "$($_): $($MinerArgs.$_)"}
+  $MinerArgs | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Foreach{$SwarmParameters += "$($_): $($MinerArgs.$_)"}
  }
- else{Write-Host "No Parameters For SWARM found"}
+ else{$SwarmParameters += "No Parameters For SWARM found"}
+ $Get = $SwarmParameters
 }
-
+"screen"
+{
+ if(Test-Path ".\logs\$($argument2).log"){$Get = Get-Content ".\logs\$($argument2).log"}
+ if($argument2 -eq "miner"){if(Test-Path ".\logs\*active*"){$Get = Get-Content ".\logs\*active.log*"}}
+ $Get = $Get | Select -Last 300
+}
+"oc"
+{
+ if(Test-Path ".\build\txt\oc-settings.txt"){$Get = Get-Content ".\build\txt\oc-settings.txt"}
+ else{$Get = "No oc settings found"}
+}
 default
 {
- $default =
+ $Get =
 "item not found or specified. use:
 
 get help
 
 to see a list of availble items.
 "
-$default
-$default | out-file ".\build\txt\get.txt"
 }
+}
+
+if($get -ne $null)
+{
+$Get
+$Get | Out-File ".\build\txt\get.txt"
 }

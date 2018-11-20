@@ -1057,3 +1057,43 @@ but API is awaiting stats.
    however, this may cause miner to bench algo again.
 
 
+1.7.6
+
+Windows Update!
+
+Windows core side is 100%, and works with HiveOS
+  -hashrate watchdog works.
+  -oc tuning/clocking does not work (however, SWARM can control oc better- see config > oc).
+  -windows fan set at start.
+  -Auto-Fan does NOT work. (yet)
+  -90% of the commands linux has works in windows.
+  -reboot will reboot computer.
+  -changing flight sheet will restart miner with new arguments.
+  -once flight sheet has been rocket launches (with arguments),
+   bat file arguments is ignored.
+  -HiveOS "No" turns off hiveos integration.
+     -To Use:
+          -Start a new worker on HiveOS. Go to settings on worker. Save worker ID & Password
+          -Open SWARM.bat, edit -HiveID -HivePassword -HiveMirror
+          -Start SWARM.bat
+          -Configure a flight sheet as you would with Linux HiveOS. Add your arguents. (See Wiki)
+          -Rocket Launch Flight Sheet.
+  -save a shortcut of SWARM.bat in your startup folder.
+  -current working windows commands for HiveOS (report if bugs):
+     -get help
+     -get benchmarks
+     -get oc
+     -get active
+     -get stats
+     -get screen
+     -reboot
+     -version
+     -benchmark 
+
+-fixed the benchmark command
+-fixed "minername" issue with Claymore-1
+-code staging for ASIC switching (coming in next release).
+-code staging for AMD Windows (two releases away).
+-code staging for wallet tracking (coming in next release).
+-Strike 4/Miner bans added: Miner will shut off non-functional miners.
+-Ban system greatly improved! Rewritten entirely.

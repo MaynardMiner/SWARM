@@ -28,11 +28,6 @@ param(
 [Double]$RejPercent
 )
 
-$Platforms = "windows"
-$HiveId = "307175"
-$HivePassword = "kuc72995"
-$HiveMirror = "https://api.hiveos.farm"
-$HiveOS = "Yes"
 #$Platforms = "linux"
 #$RejPercent = 50
 #$WorkingDir = "/hive/custom/SWARM.1.6.3"
@@ -129,7 +124,7 @@ $GetMiners | Foreach {
 
 ##Set-OC
 Write-Host "Starting Tuning"
-Start-OC -Platforms $Platforms
+Start-OC -Platforms $Platforms -Dir $WorkingDir
 
 Start-Sleep -S 10
 $CPUOnly = $true
@@ -323,8 +318,6 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
     }
     else{Write-Host "API Threads Failed- Could Not Get Individual GPU Information" -Foreground Red}
    }
-
-
    'ewbf'
       {
        $HS = "hs"
@@ -826,7 +819,7 @@ function Start-MinerWatchdog {
     }
   }
 
-if($Platforms -eq "windows" -and $HiveOS -eq "Yes" -and $HiveId -ne $null)
+if($Platforms -eq "windows" -and $HiveOS -eq "Yes")
 {
 $cpu = @(0,$($cpu1.LoadPercentage),$($cpu5.Average))
 $mem = @($($ramfree),$($ramtotal-$ramfree))
@@ -889,15 +882,27 @@ if($response.result.command -ne "OK")
     #try{
       $hiveresponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body ($SwarmResponse | ConvertTo-Json -Depth 1) -ContentType 'application/json'
       if($SwarmResponse.params.payload -eq "rebooting"){Restart-Computer}
-      if(Test-Path ".\build\txt\commands.txt")
-       {
-        $Mycommand = Get-Content ".\build\txt\commands.txt"
+      $SwarmResponse | ConvertTo-Json -Compress
+      if($SwarmResponse.params.data -eq "Rig config changed")
+      {
+        $MinerFile =".\build\pid\miner_pid.txt"
+        if(Test-Path $MinerFile){$MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue}
+        if($MinerId)
+         {
+          Stop-Process $MinerId
+          Start-Sleep -S 3
+          Start-Process ".\SWARM.bat"
+          Start-Sleep -S 3
+          $ID = ".\build\pid\background_pid.txt"
+          $BackGroundID = Get-Process -id (Get-Content "$ID" -ErrorAction SilentlyContinue) -ErrorAction SilentlyContinue
+          Stop-Process $BackGroundID | Out-Null
+         }
        }
-   #}
+     }
+    #}
    # catch{Write-Host "Failed To Execute Command"}
    }
   }
- }
 
 if($BackgroundTimer.Elapsed.TotalSeconds -gt 120){Clear-Content ".\build\bash\hivestats.sh"; $BackgroundTimer.Restart()}
 #Start-Sleep -S 5

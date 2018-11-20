@@ -2,7 +2,9 @@
 function Start-OC {
   param(
   [Parameter(Mandatory=$false)]
-  [String]$Platforms
+  [String]$Platforms,
+  [Parameter(Mandatory=$false)]
+  [String]$Dir
   )
 
 $OCMiners = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-Json
@@ -102,7 +104,7 @@ if($Card)
    "P102-100"{$X = 1}
     }
    if($Platforms -eq "linux"){$NVIDIACORE += " -a [gpu:$($GCount.NVIDIA.$GPU)]/GPUGraphicsClockOffset[$X]=$($Core[$i])"}
-   if($Platforms -eq "windows"){$NVIDIAOCArgs += "-setBaseClockOffset:$($GCount.NVIDIA.$GPU),$X,$($i) "}
+   if($Platforms -eq "windows"){$NVIDIAOCArgs += "-setBaseClockOffset:$($GCount.NVIDIA.$GPU),0,$($Core[$i]) "}
    }
    $NScreenCore += "$($_.Type) Core is $($_.occore) "
   }
@@ -124,7 +126,7 @@ if($Card)
    "P102-100"{$X = 1}
     }
    if($Platforms -eq "linux"){$NVIDIAMEM += " -a [gpu:$($GCount.NVIDIA.$GPU)]/GPUMemoryTransferRateOffset[$X]=$($Mem[$i])"}
-   if($Platforms -eq "windows"){$NVIDIAOCArgs += "-setMemoryClockOffset:$($GCount.NVIDIA.$GPU),$X,$($Mem[$i]) "} 
+   if($Platforms -eq "windows"){$NVIDIAOCArgs += "-setMemoryClockOffset:$($GCount.NVIDIA.$GPU),0,$($Mem[$i]) "} 
    }
    $NScreenMem += "$($_.Type) Memory is $($_.ocmem) "
   }
@@ -247,8 +249,8 @@ $script = @()
 $script += "`$host.ui.RawUI.WindowTitle = `'OC-Start`';"
 $script += "Invoke-Expression `'.\nvidiaInspector.exe $NVIDIAOCArgs`'"
 Set-Location ".\build\apps"
-$script | Out-File "$($_.Type)-oc-start.ps1"
-$Command = start-process "CMD" -ArgumentList "/c ""powershell.exe -executionpolicy bypass -windowstyle minimized -command "".\$($_.Type)-oc-start.ps1""" -PassThru
+$script | Out-File "NVIDIA-oc-start.ps1"
+$Command = start-process "CMD" -ArgumentList "/c ""powershell.exe -executionpolicy bypass -windowstyle minimized -command "".\NVIDIA-oc-start.ps1""" -PassThru
 Set-Location $Dir
 }
 

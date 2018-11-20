@@ -49,12 +49,34 @@
         $type = "info"
         $data = "$($command.result.exec)"
         $arguments = $data -replace ("version ","")
-        start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command $arguments"""
+        start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command $arguments""" -Wait
         Start-Sleep -S 12
         $getpayload = Get-Content ".\build\txt\version.txt"
         $line = @()
         $getpayload | foreach {$line += "$_`n"}
         $payload = $line
+      }
+      "*get*"
+      {
+        $type = "info"
+        $data = "$($command.result.exec)"
+        $arguments = $data -replace ("get ","")
+        start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\get.ps1 $arguments""" -Wait
+        $getpayload = Get-Content ".\build\txt\get.txt"
+        $line = @()
+        $getpayload | foreach {$line += "$_`n"}
+        $payload = $line 
+      }
+      "*benchmark *"
+      {
+        $type = "info"
+        $data = "$($command.result.exec)"
+        $arguments = $data -replace ("benchmark ","")
+        start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\benchmark.ps1 $arguments""" -Wait
+        $getpayload = Get-Content ".\build\txt\get.txt"
+        $line = @()
+        $getpayload | foreach {$line += "$_`n"}
+        $payload = $line 
       }
       "*reboot*"
       {
@@ -62,36 +84,12 @@
         $data = "$($command.result.exec)"
         $payload = "rebooting"
       }
-      "*benchmark*"
-      {
-        $type = "info"
-        $data = "$($command.result.exec)"
-        $arguments = $data -replace ("benchmark ","")
-        start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\benchmark.ps1 $arguments windows""" -Wait
-        Start-Sleep -S 5
-        $getpayload = Get-Content ".\build\txt\benchcom.txt"
-        $line = @()
-        $getpayload | foreach {$line += "$_`n"}
-        $payload = $line
-      }
-      "*get-screen*"
-      {
-        $type = "info"
-        $data = "$($command.result.exec)"
-        $arguments = $data -replace ("get-screen ","")
-        start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\get-screen.ps1 -Type $arguments -platform windows""" -Wait
-        Start-Sleep -S 5
-        $getpayload = Get-Content ".\build\txt\logcom.txt"
-        $line = @()
-        $getpayload | foreach {$line += "$_`n"}
-        $payload = $line
-      }
     }
   }
 
  if($command.result.command -eq "config")
   {
-   $type = "ok"
+   $type = "success"
    $data = "Rig config changed"
    $arguments = $command.result.wallet
    $start = $arguments.Lastindexof("CUSTOM_USER_CONFIG=") + 20
@@ -109,16 +107,35 @@
    $argjson | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name |  foreach{
     if($JsonParam.$_ -ne $argjson.$_)
      {
-      $JsonParam.$_ = $argjson.$_
-     }
+       switch($_)
+       {
+        default{$JsonParam.$_ = $argjson.$_}
+        "Type"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $JsonParam.$_ = $NewParamArray}
+        "Poolname"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $JsonParam.$_ = $NewParamArray}
+        "Currency"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $JsonParam.$_ = $NewParamArray}
+        "PasswordCurrency1"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $JsonParam.$_ = $NewParamArray}
+        "PasswordCurrency2"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $JsonParam.$_ = $NewParamArray}
+        "PasswordCurrency3"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $JsonParam.$_ = $NewParamArray}
+        "No_Algo"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $JsonParam.$_ = $NewParamArray}
+       }
+      }
      if(-not $JsonParam.$_)
-     {
-      $JsonParam.Add("$($_)",$argjson.$_)
+      {
+       switch($_)
+       {
+        default{$JsonParam.Add("$($_)",$argjson.$_)}
+        "Type"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $JsonParam.Add("$($_)",$NewParamArray)}
+        "Poolname"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $JsonParam.Add("$($_)",$NewParamArray)}
+        "Currency"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $JsonParam.Add("$($_)",$NewParamArray)}
+        "PasswordCurrency1"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $JsonParam.Add("$($_)",$NewParamArray)}
+        "PasswordCurrency2"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $JsonParam.Add("$($_)",$NewParamArray)}
+        "PasswordCurrency3"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $JsonParam.Add("$($_)",$NewParamArray)}
+        "No_Algo"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $JsonParam.Add("$($_)",$NewParamArray)}
+       }
+      }
      }
-   }
-   $JsonParam | convertto-Json | Out-File ".\config\parameters\arguments.json"
+   $JsonParam | convertto-Json | Out-File ".\config\parameters\newarguments.json"
    $Datestamp = Get-Date
-   "Params Have Changed: $DateStamp" | Set-Content ".\build\txt\paramchanged.txt"
   }
 
 if($payload -ne $null)

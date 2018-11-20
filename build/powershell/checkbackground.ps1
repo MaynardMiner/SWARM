@@ -12,7 +12,7 @@ function Start-BackgroundCheck {
   $bprocess = Get-Content $oldbackground
   if(Get-Process -id $bprocess -ErrorAction SilentlyContinue){Stop-Process -id $bprocess; remove-item $oldbackground}
   }
-  Start-Background -WorkingDir $pwsh -Dir $dir -Platforms $Platform -HiveID $HiveID -HiveMirror $HiveMirror -HivePassword $HivePassword -RejPercent $Rejections
+  Start-Background -WorkingDir $pwsh -Dir $dir -Platforms $Platform -HiveID $HiveID -HiveMirror $HiveMirror -HiveOS $HiveOS -HivePassword $HivePassword -RejPercent $Rejections
   }
  elseif($Platforms -eq "linux")
   {
