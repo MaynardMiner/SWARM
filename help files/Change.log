@@ -1097,3 +1097,6 @@ Windows core side is 100%, and works with HiveOS
 -code staging for wallet tracking (coming in next release).
 -Strike 4/Miner bans added: Miner will shut off non-functional miners.
 -Ban system greatly improved! Rewritten entirely.
+-Added user configured oc settings to Lite API
+-AMD oc is 100% working: Multiple user tested.
+-Added fans to AMD OC: 100% working.

@@ -275,6 +275,10 @@ $AlgoBanCount = $SWARMParams.AlgoBanCount
 $Lite = $SWARMParams.Lite
 }
 
+$Version = Split-Path ($script:MyInvocation.MyCommand.Path) -Leaf
+$Version = $Version -replace ".ps1",""
+$Version = $Version -replace "SWARM.","v"
+
 if($HiveOS -eq "Yes" -and $Platform -eq "linux"){Start-Process ".\build\bash\screentitle.sh" -Wait}
 Get-ChildItem . -Recurse -Force | Out-Null 
 if($Platform -eq "Windows"){$Platform = "windows"}
@@ -760,6 +764,13 @@ Write-Host "Most Ideal Choice Is $($BestMiners_Selected) on $($BestPool_Selected
   Algo = $_.Algo
   Fullname = $_.FullName
   MinerPool = $_.MinerPool
+  oc_core = $_.occore
+  oc_mem = $_.ocmem
+  ocp_ower = $_.ocpower
+  oc_v = $_.ocv
+  oc_dpm = $_.ocdpm
+  oc_mdpm = $_.ocmdpm
+  oc_fans = $_.ocfans
  }
 }
 if(-not $ActiveMinerPrograms){$Type | foreach{if(Test-Path ".\logs\$($_).log"){remove-item ".\logs\$($_).log" -Force}}}

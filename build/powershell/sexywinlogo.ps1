@@ -11,7 +11,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 function Get-SexyWinLogo {
-Write-Host '
+Write-Host "
                                                                                      BEWARE OF THE
                                                                       ███████╗██╗    ██╗ █████╗ ██████╗ ███╗   ███╗
                                                                       ██╔════╝██║    ██║██╔══██╗██╔══██╗████╗ ████║
@@ -20,14 +20,14 @@ Write-Host '
                                                                       ███████║╚███╔███╔╝██║  ██║██║  ██║██║ ╚═╝ ██║              
                                                                       ╚══════╝ ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝ 
                                                                              Parental Discretion Is Advised 
-                                                                                    v1.7.5 Windows                                                                                                                            
+                                                                                    $($Version) Windows                                                                                                                            
                                                                       GitHub: https://Github.com/MaynardMiner/Swarm      
                                                                                                                     
                                                                                    SUDO APT-GET LAMBO 
                                                                      .h+.                                      .+h.             
                                                                      +MMd+.                                  .+dMM+          WINDOWS USERS:
                                                                     +sNMMMMd+.                            .+dMMMMNs+         Do NOT use software to
-               "Agression Makes Up For Skill."                      .dMMMMMMMh+.                       .+hMMMMMMMMd.         connect to Hive that is
+               `"Agression Makes Up For Skill.`"                      .dMMMMMMMh+.                       .+hMMMMMMMMd.         connect to Hive that is
                     Caeser Vitus Aurelius                           .mMMMMMMMMMNy:.  -+:        :+-  .:yNMMMMMMMMMm.         not open sourced!
                             VITO                                     -mMMMMMMMMMMMms-  omhdmmdhmo  -smMMMMMMMMMMMm-          YOU CAN BE VERY EASILY
                    http://vitosminions.com/                           -mMMMMMMMMMMMMMd+mMMMMMMMMm+dMMMMMMMMMMMMMm-           HACKED! ONLY USE TRUSTED
@@ -52,5 +52,5 @@ Write-Host '
 				  	             This Software Is Open-Source. However, 1.40% Dev Fee Was Written In This Code
 							   Dev Fee is NOT 1.40% of all Mining. 1.40% of 86400 seconds (24 hours)
 					                   It Can Take Awhile To Load At First Time Start-Up. Please Be Patient!
-' -foregroundColor "yellow"
+" -foregroundColor "yellow"
 }
