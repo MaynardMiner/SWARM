@@ -38,7 +38,7 @@ SWARM is very customizable. At the base layer- It is easy to setup by simply inp
 
 
 
-The key theme SWARM emphasis, is to make SWARM bigger than itself. All commands can be executed via bash scripts/shell commands on the linux side, and we are slowly implementing the same features to the window's side. With the ``Lite`` mode, SWARM can be easily incorporated into any current miningOS available, and users can customer their own launch.
+SWARM was designed to make SWARM bigger than itself. All commands can be executed via bash scripts/shell commands on the linux side, and we are slowly implementing the same features to the window's side. With the ``Lite`` mode, SWARM can be easily incorporated into any current miningOS available, and users can customer their own launch.
 
 
 
