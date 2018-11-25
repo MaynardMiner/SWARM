@@ -52,7 +52,7 @@ https://github.com/MaynardMiner/SWARM/wiki/Developer's-Corner
 
 **Features**
 
--Works within HiveOS, all linux miners- AMD miners Windows cannot use.
+-Works within HiveOS, all linux miners- AMD Miners for windows are new and expirmental.
 
 -No Windows WDDM driver stack means faster spool up times compared to windows. Critical for profit switching.
 
