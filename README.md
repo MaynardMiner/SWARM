@@ -43,9 +43,12 @@ https://github.com/MaynardMiner/SWARM/wiki/Developer's-Corner
  ``SWARM in this phase begins to do a comparative analysis between Pools and Miners- Determining (based on user settings) what the most optimal miner to use is, and what pool should be used. At the end of this phase: The final database is outputted to the API server, and the background agent, which controls the remote features of SWARM as well as initiates the oc settings user has specified (if it was specified)``
  
  ``Launch Phase``
- 
+
  ``SWARM begins the process of launching miners, verifying they are running, and recording their stats- Outputting basic information to main screen. During this phase, SWARM is monitoring miners in background, and is acting as a "watchdog" to restart miners that crash, or stop mining if issues may occur``
+
  ``Benchmark Phase``
+
+``SWARM begins taking the data it has gathered, and saving it to file. At this time, if user specified power calculations: SWARM will take a sample watt calculation. SWARM will also notate if miner had issues, and determines on a three-strike multi-tier system if the miner should be banned from use. SWARM also gathers logs, and records keywords from miner logs such as "intensity" and "difficulty", and outputs this information into the miner directory itself, allowing users to view historically how the miner operated (for fine-tuning).``
 
 **Features**
 
