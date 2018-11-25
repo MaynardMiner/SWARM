@@ -27,18 +27,23 @@ https://github.com/MaynardMiner/SWARM/wiki/Developer's-Corner
  SWARM can be broken down into 6 phases:
 
  ``Startup Phase``
+
  ``SWARM begins initial start by detecting current features/platform/devices, and automatically generating default tables in which to build calculations. Once SWARM has built to its environment, including installing possible missing libraries It begins to gather current recorded stat information from previous launches, as well as initializing an update if it required and user has specified it.``
 
  ``Pool Phase``
+
  ``The next phase is the process of querying remote sites, and gathering their data. Depending on user specification, the type of pricing data gathered and recorded may vary. SWARM through process of elimination determines the most profitable pool/algo combinations, and selects them, and adds them to the database. The rest of the data is stored to drive, so that long term calculations can be made.``
 
  ``Miner Phase``
+
  ``The following phase can vary depending on user specification. Either SWARM will begin to detect if miners are required, and download them, or SWARM LITE will begin to initiate the http API server. As SWARM gathers miner information, through process of elimination, based on previous recorded hashrates and potential 'bans': SWARM begins to collect the most efficient miners to use based on a combination of user settings and previous stored data.``
 
  ``Database Phase``
+
  ``SWARM in this phase begins to do a comparative analysis between Pools and Miners- Determining (based on user settings) what the most optimal miner to use is, and what pool should be used. At the end of this phase: The final database is outputted to the API server, and the background agent, which controls the remote features of SWARM as well as initiates the oc settings user has specified (if it was specified)``
  
  ``Launch Phase``
+ 
  ``SWARM begins the process of launching miners, verifying they are running, and recording their stats- Outputting basic information to main screen. During this phase, SWARM is monitoring miners in background, and is acting as a "watchdog" to restart miners that crash, or stop mining if issues may occur``
  ``Benchmark Phase``
 
