@@ -5,11 +5,18 @@ function Start-Peekaboo {
     [Parameter(Mandatory=$false)]
     [String]$HivePassword,
     [Parameter(Mandatory=$false)]
-    [String]$HiveMirror
+    [String]$HiveMirror,
+    [Parameter(Mandatory=$false)]
+    [String]$GPUData
     )
 
  . .\build\powershell\commandweb.ps1
 
+##"{0:f0}" -f $($Test.AdapterRam/1000000)
+$AMDData = $GPUData | ConvertFrom-Json
+$AMDData = $AMDData | Where PnPID -match "PCI\\VEN_1002*"
+Invoke-Expression ".\build\apps\nvidia-smi.exe --query-gpu=gpu_bus_id,vbios_version,gpu_name,memory.total,power.min_limit,power.default_limit,power.max_limit --format=csv > "".\build\txt\getgpu.txt"""
+$GetGPU = Get-Content ".\build\txt\getgpu.txt" | ConvertFrom-Csv
 $getversion = (Split-Path $script:MyInvocation.MyCommand.Path -Leaf)
 $version = $getversion -replace ("SWARM.","")
 $getuid =  $(Get-NetAdapter | Select MacAddress).MacAddress -replace ("-","")
@@ -25,10 +32,9 @@ $Getboot = [math]::Round(((Get-Date)-[DateTime]$BootTime).TotalSeconds)
 $GetbootTime = $Date - $Getboot
 Write-Host "Last Boot Time Is $GetbootTime"
 $Ip = $(get-WmiObject Win32_NetworkAdapterConfiguration| Where {$_.Ipaddress.length -gt 1}).ipaddress[0]
-Invoke-Expression ".\build\apps\nvidia-smi.exe --query-gpu=gpu_bus_id,vbios_version,gpu_name,memory.total,power.min_limit,power.default_limit,power.max_limit --format=csv > "".\build\txt\getgpu.txt"""
-$GetGPU = Get-Content ".\build\txt\getgpu.txt" | ConvertFrom-Csv
 $GPUS = @()
-for($i=0; $i -lt $GetGPU.count; $i++){$GPUS += @{busid = ($GetGPU."pci.bus_id"[$i] -split ":",2 | Select -Last 1).ToLower(); name =  $GetGPU.name[$i]; brand = "nvidia"; subvendor = "nvidia"; mem = $GetGPU."memory.total [MiB]"[$i]; vbios = ($GetGPU.vbios_version[$i]).ToLower(); plim_min = $GetGPU."power.min_limit [W]"[$i]; plim_def = $GetGPU."power.default_limit [W]"[$i]; plim_max = $GetGPU."power.max_limit [W]"[$i];}}
+if($AMDData){for($i=0; $i -lt $AMDData.name.Count; $i++){$GPUS += @{busid = ($AMDData[$i].PCIBusID).ToLower(); name =  $AMDData[$i].Name; brand = $AMDData[$i].brand; subvendor = $AMDData[$i].subvendor ; mem = $AMDData[$i].ram; mem_type = "unknown"; vbios = "unknown"}}}
+if($GetGPU){for($i=0; $i -lt $GetGPU.name.count; $i++){$GPUS += @{busid = "$($GetGPU[$i]."pci.bus_id" -split ":",2 | Select -Last 1)".ToLower(); name =  $GetGPU[$i].name; brand = "nvidia"; subvendor = "nvidia"; mem = $GetGPU[$i]."memory.total [MiB]"; vbios = "$($GetGPU[$i].vbios_version)".ToLower(); plim_min = $GetGPU[$i]."power.min_limit [W]"; plim_def = $GetGPU[$i]."power.default_limit [W]"; plim_max = $GetGPU[$i]."power.max_limit [W]";}}}
 $manu = $(Get-CimInstance Win32_BaseBoard | Select-Object Manufacturer).Manufacturer
 $prod = $(Get-WmiObject Win32_BaseBoard | Select-Object Product).Product
 $cpud = Get-WmiObject -Class Win32_processor | ft Name,DeviceID,NumberOfCores
@@ -44,16 +50,16 @@ $Hello = @{
     id = "0"
     params = @{
         uid = "$uid"
-        rig_id = "$HiveId"
-        passwd = "$HivePassword"
+        farm_hash = "$FARM_HASH" 
+        worker_name = "$WORKER_NAME" 
         boot_time = "$GetbootTime"
         boot_event = "0"
         ip = "$Ip"
         net_interfaces = ""
         openvpn = ""
         gpu = $GPUS
-        gpu_count_amd = "0"
-        gpu_cound_nvidia = "$($GetGPU.Count)"
+        gpu_count_amd = "$($AMDData.name.Count)"
+        gpu_count_nvidia = "$($GetGPU.name.count)"
         version = '0.5-82'
         nvidia_version = "410.76"
         amd_version = "18.10"
@@ -75,6 +81,19 @@ $Hello = @{
 
 try{
     $response = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body ($Hello | ConvertTo-Json -Depth 3 -Compress) -ContentType 'application/json'
+    $response | ConvertTo-Json | Out-File ".\build\txt\get-hello.txt"
+    $details = $response.result.Config | ConvertFrom-StringData
+    if($details.RIG_ID)
+    {
+    $HiveId = $details.RIG_ID
+    Write-Host "New Hive ID is $HIVEID" -ForegroundColor Green
+    $HivePassword = $details.RIG_PASSWD -replace ("`"","")
+    Write-Host "New Hive Password is $HivePassword" -ForegroundColor Green
+    $newparams = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
+    $newparams | Add-Member "HiveID" "$HiveId" -Force
+    $newparams | Add-member "HivePassword" "$HivePassword" -Force
+    $newparams | ConvertTo-Json | Set-Content ".\config\parameters\arguments.json"
+    }
     if($response.result.exec){
     Write-Host "Sending Command $($response.result.exec) To Hive"
     $message = Start-webcommand $response

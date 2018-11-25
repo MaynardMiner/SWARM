@@ -1,0 +1,101 @@
+{
+    "claymore": {
+        "name": "claymore_amd",
+        "type": "amd",
+        "path1": ".\\bin\\claymore-amd-1\\ethdcrminer64.exe",
+        "path2": ".\\bin\\claymore-amd-2\\ethdcrminer64.exe",
+        "path3": ".\\bin\\claymore-amd-3\\ethdcrminer64.exe",
+        "minername": "ethdcrminer64.exe",
+        "version": "11.9",
+        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/Claymore-Windows.zip" 
+       },
+  
+     "phoenix_amd": {
+          "name": "phoenix_amd",
+          "type": "amd",
+          "path1": ".\\bin\\phoenix-amd-1\\PhoenixMiner.exe",
+          "path2": ".\\bin\\phoenix-amd-2\\PhoenixMiner.exe",
+          "path3": ".\\bin\\phoenix-amd-3\\PhoenixMiner.exe",
+          "minername": "PhoenixMiner.exe",
+          "version": "3.5d",
+          "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/phoenix-miner-windows.zip" 
+       },
+  
+    "avermore": {
+        "name": "avermore",
+        "type": "amd",
+        "path1": ".\\bin\\avermore-1\\sgminer.exe",
+        "path2": ".\\bin\\avermore-2\\sgminer.exe",
+        "path3": ".\\bin\\avermore-3\\sgminer.exe",
+        "minername": "sgminer.exe",
+        "version": "1.4.1",
+        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/avermore-windows.zip" 
+       },
+  
+    "sgminer-vii": {
+        "name": "sgminer-vii",
+        "type": "amd",
+        "path1": ".\\bin\\sgminer-vii-1\\sgminer.exe",
+        "path2": ".\\bin\\sgminer-vii-2\\sgminer.exe",
+        "path3": ".\\bin\\sgminer-vii-3\\sgminer.exe",
+        "minername": "sgminer.exe",
+        "version": "1.0.5",
+        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/sgminer-kl-windows.zip" 
+       },
+
+    "teamredminer": {
+        "name": "teamredminer",
+        "type": "amd",
+        "path1": ".\\bin\\tdxminer-1\\teamredminer.exe",
+        "path2": ".\\bin\\tdxminer-2\\teamredminer.exe",
+        "path3": ".\\bin\\tdxminer-3\\teamredminer.exe",
+        "minername": "teamredminer.exe",
+        "version": "0.3.7",
+        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/teamredminer-windows.zip" 
+       },
+  
+    "xmrstak": {
+        "name": "xmrstak",
+        "type": "amd",
+        "path1": ".\\bin\\xmrstak-1\\xmr-stak.exe",
+        "path2": ".\\bin\\xmrstak-2\\xmr-stak.exe",
+        "path3": ".\\bin\\xmrstak-3\\xmr-stak.exe",
+        "minername": "xmr-stak.exe",
+        "version": "2.5.2",
+        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/xmr-stak-windows.zip" 
+       },
+  
+    "wildrig": {
+        "name": "wildrig",
+        "type": "amd",
+        "path1": ".\\bin\\wildrig-1\\wildrig.exe",
+        "path2": ".\\bin\\wildrig-2\\wildrig.exe",
+        "path3": ".\\bin\\wildrig-3\\wildrig.exe",
+        "minername": "wildrig.exe",
+        "version": "0.12.9",
+        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/wildrig-windows.zip" 
+       },
+
+       "fancyix": {
+          "name": "fancyix",
+          "type": "amd",
+          "path1": ".\\bin\\fancyix-1\\sgminer.exe",
+          "path2": ".\\bin\\fancyix-2\\sgminer.exe",
+          "path3": ".\\bin\\fancyix-3\\sgminer.exe",
+          "minername": "sgminer.exe",
+          "version": "5.6.1.3.b5f",
+          "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/sgminer-fancyIX.zip" 
+         },
+
+         "xmrig": {
+          "name": "xmrig",
+          "type": "amd",
+          "path1": ".\\bin\\xmrig-amd-1\\xmrig-amd.exe",
+          "path2": ".\\bin\\xmrig-amd-2\\xmrig-amd.exe",
+          "path3": ".\\bin\\xmrig-amd-3\\xmrig-amd.exe",
+          "minername": "xmrig-amd.exe",
+          "version": "2.8.5",
+          "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/xmrig-amd-windows.zip" 
+         }
+  }
+  

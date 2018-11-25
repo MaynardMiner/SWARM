@@ -205,8 +205,16 @@ if($Platforms -eq "windows")
     $WorkingDirectory = Split-Path $($MinerCurrent.Path)
     if(Test-Path $Logs){Clear-Content $Logs}
     $script = @()
-    $script += ". $dir\build\powershell\launchcode.ps1;"
+    $script += ". `"$dir\build\powershell\launchcode.ps1`";"
     $script += "`$host.ui.RawUI.WindowTitle = ""$($MinerCurrent.Name)"";"
+    $MinerCurrent.Prestart | foreach{
+    if($_ -notlike "export LD_LIBRARY_PATH=$dir\build\export")
+     {
+      $setx = $_ -replace "export ","setx "
+      $setx = $setx -replace "="," "
+      $script += "$setx"
+     }
+    }
     if($MinerCurrent.DeviceCall -eq "ewbf"){$script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) --log 3 --logfile $Logs`'"}
     $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) | Tee-ObjectNoColor -FilePath ""$Logs"" -erroraction SilentlyContinue`'"
     $script | out-file "$WorkingDirectory\swarm-start.ps1"
