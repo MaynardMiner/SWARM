@@ -35,7 +35,7 @@ Switch($command)
    if(Test-Path ".\stats\*_hashrate.txt*"){Remove-Item ".\stats\*_hashrate.txt*" -Force}
    if(Test-Path ".\backup\*_hashrate.txt*"){Remove-Item ".\stats\*_hashrate.txt*" -Force}
    if(Test-Path ".\timeout\pool_block\pool_block.txt"){Clear-Content ".\timeout\pool_block\pool_block.txt"}
-   if(Test-Path ".\timeout\algo_block\algo_block.txt"){Clear-Content ".\timeout\pool_block\algo_block.txt"}
+   if(Test-Path ".\timeout\algo_block\algo_block.txt"){Clear-Content ".\timeout\algo_block\algo_block.txt"}
    $Get += "Removed All Benchmarks and Bans"
    }
    "miner"

@@ -3,15 +3,17 @@ param (
 [String]$IP = ""
 )
 
+"-o stratum+tcp://pool.ckpool.org:3333 -u 1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i -p x --suggest-diff 32"
+"stratum+tcp://sha256.usa.nicehash.com"
+
+$request = '{"command":"summary","parameter":"0"}'
+$IP = "localhost"
 $Port = 4028
 $timeout = 10
-$request = @{
-  command = "addpool"
-  parameter = "stratum+tcp://equihash.mine.zergpool.com:2142,3PVTDiFSQo9rur1JA5XHdU7oPwo4PEgVYN.ASIC_Z9_Mini_03,x"
- }
+$request = @{command = "addpool"; parameter = "stratum+tcp://sha256.usa.nicehash.com:3334,1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i.test,x"}
 $message = $request | ConvertTo-Json -Compress
 try{
-$response = Invoke-WebRequest "http://$($IP):$($Port)$($Message)" -UseBasicParsing -TimeoutSec $timeout
+$response = Invoke-WebRequest "http://$($IP):$($Port)" -Method Post -Body $Message -UseBasicParsing -TimeoutSec $timeout
 }
 catch{
 $response = "failed To Contact Host"
@@ -19,10 +21,7 @@ $response = "failed To Contact Host"
 
 $response | Out-File ".\test2.txt"
 
-$message = @{
-    command = "switchpool"
-    parameter = "1"
-   }
+$request = @{command = "switchpool"; parameter = "1";}
    $message = $request | ConvertTo-Json -Compress
    try{
    $response = Invoke-WebRequest "http://$($IP):$($Port)$($Message)" -UseBasicParsing -TimeoutSec $timeout

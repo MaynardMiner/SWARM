@@ -117,6 +117,8 @@ param(
     [Parameter(Mandatory=$false)]
     [string]$HivePassword,
     [Parameter(Mandatory=$false)]
+    [string]$Farm_Hash,
+    [Parameter(Mandatory=$false)]
     [string]$HiveMirror,
     [Parameter(Mandatory=$false)]
     [string]$AMDPlatform = "1",
@@ -317,7 +319,7 @@ if(-not (Test-Path ".\build\txt")){New-Item -Path ".\build" -Name "txt" -ItemTyp
 . .\build\powershell\intensity.ps1
 . .\build\powershell\poolbans.ps1
 if($Platform -eq "linux"){. .\build\powershell\getbestunix.ps1; . .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
-if($Platform -eq "windows"){. .\build\powershell\getbestwin.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\gpu-count-win.ps1;}
+if($Platform -eq "windows"){. .\build\powershell\getbestwin.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1;}
 
 ##Start The Log
 $dir = (Split-Path $script:MyInvocation.MyCommand.Path)
@@ -338,6 +340,17 @@ if($Platform -eq "windows")
   [Environment]::SetEnvironmentVariable("CUDA_DEVICE_ORDER", "PCI_BUS_ID", "User")
   $Cuda = "10"
   Start-Fans
+  if(-not (Test-Path "C:\Program Files\NVIDIA Corporation\NVSMI\nvml.dll"))
+  {
+    Write-Host "nvml.dll is missing" -ForegroundColor Red
+    Start-Sleep -S 3
+    Write-Host "To Fix:" -ForegroundColor Blue
+    Write-Host "Copy `"\build\apps\nvml.dll`" to `"C:\Program Files\NVIDIA Corporation\NVSMI\`"" -ForegroundColor Blue
+    Start-Sleep -S 3
+    Write-Host "Closing Miner"
+    Start-Sleep -S 1
+    exit
+  }
  }
 
 
@@ -378,7 +391,16 @@ $WorkerDonate = "Rig1"
 $ActiveMinerPrograms = @()
 $Naming = Get-Content ".\config\naming\get-pool.json" | ConvertFrom-Json
 $DonationMode = $false
-if($Platform -eq "windows" -and $HiveOS -eq "Yes"){Start-Peekaboo -HiveID $HiveID -HiveMirror $HiveMirror -HivePassword $HivePassword; $hiveresponse}
+if($Platform -eq "windows"){$GetBusData = $GetBusData = Get-BusFunctionID | ConvertTo-Json -Compress}
+if($Platform -eq "windows" -and $HiveOS -eq "Yes")
+{
+Start-Peekaboo -HiveID $HiveID -HiveMirror $HiveMirror -HivePassword $HivePassword -GPUData $GetBusData; $hiveresponse
+$newid = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
+$HiveID = $newId.HiveID
+$HivePassword = $NewId.HivePassword
+$StartingParams = $newid | ConvertTo-Json -Compress
+$newid = $null
+}
 
 #Timers
 $TimeoutTimer = New-Object -TypeName System.Diagnostics.Stopwatch
@@ -417,7 +439,10 @@ if(Test-Path ".\build\txt\nvidiapower.txt"){Remove-Item ".\build\txt\nvidiapower
 if(Test-path ".\build\txt\amdpower.txt"){Remove-Item ".\build\txt\amdpower.txt" -Force}
 
 ##Threads
-$GPU_Count = Get-GPUCount -DeviceType $Type -Platforms $Platform -CPUThreads $CPUThreads
+if($Platform -eq "linux"){$GPU_Count = Get-GPUCount -DeviceType $Type -Platforms $Platform -CPUThreads $CPUThreads}
+elseif($Platform -eq "windows"){
+$GPU_Count = Get-GPUCount $GetBusData
+}
 if($GPU_Count -ne 0){$GPUCount = @(); for($i=0; $i -lt $GPU_Count; $i++){[string]$GPUCount += "$i,"}}
 if($CPUThreads -ne 0){$CPUCount = @(); for($i=0; $i -lt $CPUThreads; $i++){[string]$CPUCount += "$i,"}}
 if($GPU_Count -eq 0){$Device_Count = $CPUThreads}
@@ -1379,10 +1404,7 @@ if($_.BestMiner -eq $true)
         }
          else
           {
-           if((Test-Path ".\build\txt\nvidiapower.txt") -or (Test-path ".\build\txt\amdpower.txt") -or (Test-Path ".\build\txt\nvidiahive.txt"))
-            {
-             try{$GPUPower = Set-Power -MinerDevices $($_.Devices) -Command "stat" -PwrType $($_.Type)}catch{Write-Host "WattOMeter Failed" $GPUPower = 0}
-            }
+           if($WattOMeter -eq "yes" -and $_.Type -ne "CPU"){try{$GPUPower = Set-Power -MinerDevices $($_.Devices) -Command "stat" -PwrType $($_.Type)}catch{Write-Host "WattOMeter Failed" $GPUPower = 0}}
            else{$GPUPower = 1}
            if($WattOMeter -eq "yes" -and $_.Type -ne "CPU"){$Watts.$($_.Algo)."$($_.Type)_Watts" = "$GPUPower"}
             $Stat = Set-Stat -Name "$($_.Name)_$($_.Algo)_hashrate" -Value $Miner_HashRates
