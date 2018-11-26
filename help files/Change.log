@@ -1100,3 +1100,40 @@ Windows core side is 100%, and works with HiveOS
 -Added user configured oc settings to Lite API
 -AMD oc is 100% working: Multiple user tested.
 -Added fans to AMD OC: 100% working.
+
+1.7.7
+
+NOTES: -HiveID argument has been removed!
+       -HivePassword argument has been removed!
+
+Use -Farm_Hash argument for Windows version.
+
+ -Windows AMD initial test version!
+   -Type AMD should work on windows version.
+   -coded an entire ADL exectuable to get stats.
+   -oc is not done yet- Do not use OC tuning for AMD.
+   -please report if issues.
+
+ -Fixed typo causing oc setting on HiveOS website
+  for Windows version.
+    -It's not coded yet, but users will soon be
+     able to set oc for windows.
+
+ -Updated  Trex
+ -Updated  Enemy
+ -Updated  CryptoDredge
+ -Updated  Xmrig-amd
+ -Updated  Xmrstak
+ -Updated  fancyIX
+ -Updated  WildRig-Multi
+ 
+ -fixed typo in benchmark all
+ -fixed typo in benchmark timeout
+ -code staging for wallet tracking (not done yet)
+ -fixed busid for NVIDIA gpus
+ -basic subvendors for NVIDIA & AMD (Windows)
+      -Works if it can be detected
+ -codefixes regarding windows stats
+ -background Agent for windows displays power.
+ -more code staging for ASIC.
+ 
