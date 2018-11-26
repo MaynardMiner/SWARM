@@ -207,6 +207,10 @@ WidRig-Multi
 
 Simple Install Instructions (HIVEOS):
 
+SWARM is simple to install in linux environment, IF a user is familiar with linux operating systems. There are plenty of users to help/support you, if you should decide to learn how to operate/use SWARM. However, it does take the commitment of learning how to use/manage linux.
+
+THere is a Windows version that stats to HiveOS, that is constantly being worked on/improved. If you are unsure of your capabilities of using linux- You can always use the Windows version, and get most of the features SWARM has to offer, as well as help me improve it.
+
 This is an example of how to remote install/update miner. It is the fastest way to get going. Insert link for tar.gz. Enter 'blah' in the fields required just like the photo below. Lastly, your setup arguments go in the last box, labeled extra config <a href="https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration)">arguments</a>. After that, you are are good to go! See wiki on proper argument use. Here is a photo of setup:
 
 **Note** These photos are a little old, the arguments shown like -GPU_Count are no longer needed, and is MM.Hash (previous version). I will change photo soon, but shows the process.
