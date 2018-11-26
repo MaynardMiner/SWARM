@@ -26,7 +26,7 @@
     "path2": ".\\bin\\cryptodredge-2\\CryptoDredge",
     "path3": ".\\bin\\cryptodredge-3\\CryptoDredge",
     "minername": "CryptoDredge",
-    "version": "0.10.0",
+    "version": "0.11.0",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/CryptoDredge-Linux-9-2.tar.gz"
   },
   "dstm": {
@@ -46,7 +46,7 @@
     "path2": ".\\bin\\enemy-2\\z-enemy",
     "path3": ".\\bin\\enemy-3\\z-enemy",
     "minername": "z-enemy",
-    "version": "1.23",
+    "version": "1.25",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/z-enemy-linux-9-2.tar.gz"
   },
   "ewbf": {
@@ -96,7 +96,7 @@
     "path2": ".\\bin\\trex-2\\t-rex",
     "path3": ".\\bin\\trex-3\\t-rex",
     "minername": "t-rex",
-    "version": "0.7.4",
+    "version": "0.8.1",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/t-rex-linux-9-2.tar.gz"
   },
   "zjazz": {

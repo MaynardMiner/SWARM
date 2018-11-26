@@ -105,7 +105,7 @@
       "path2": ".\\bin\\xmrstak-2\\xmr-stak",
       "path3": ".\\bin\\xmrstak-3\\xmr-stak",
       "minername": "xmr-stak",
-      "version": "2.5.2",
+      "version": "2.6.0",
       "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/fireice-linux.tar.gz" 
      },
 
@@ -116,7 +116,7 @@
       "path2": ".\\bin\\wildrig-2\\wildrig-multi",
       "path3": ".\\bin\\wildrig-3\\wildrig-multi",
       "minername": "wildrig-multi",
-      "version": "0.12.9",
+      "version": "0.13.2",
       "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/wildrig-linux.tar.gz" 
      },
      "fancyix": {
@@ -136,7 +136,7 @@
         "path2": ".\\bin\\xmrig-amd-2\\xmrig-amd",
         "path3": ".\\bin\\xmrig-amd-3\\xmrig-amd",
         "minername": "xmrig-amd",
-        "version": "2.8.5",
+        "version": "2.8.6",
         "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/xmrig-amd-linux.tar.gz" 
        }
 }
