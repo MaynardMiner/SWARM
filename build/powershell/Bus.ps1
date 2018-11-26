@@ -58,8 +58,7 @@ Function Get-BusFunctionID {
         $subvendorlist = Get-Content ".\build\data\vendor.json" | ConvertFrom-Json
         $getsubvendor = $Devices[$i].PNPDeviceID -split "&REV_" | Select -first 1
         $getsubvendor = $getsubvendor.Substring($getsubvendor.Length - 4)
-        if($subvendorlist.$getsubvendor){$subvendor = $subvendorlist.$getsubvendor}
-        else{if($Devices[$i].PNPDeviceID -match "PCI\\VEN_10DE*"){$subvendor = "nvidia"}else{$subvendor = "amd"}}
+        if($subvendorlist.$getsubvendor){$subvendor = $subvendorlist.$getsubvendor}elseif($Devices[$i].PNPDeviceID -match "PCI\\VEN_10DE*"){$subvendor = "nvidia"}else{$subvendor = "amd"}
         if($Devices[$i].PNPDeviceID -match "PCI\\VEN_10DE*"){$brand = "nvidia"}else{$brand = "amd"}
         $GPURAM = $Devices[$i].AdapterRam
         $GPURAM = (Get-WmiObject Win32_VideoController | where PNPDeviceID -eq $Devices[$i].PNPDeviceID).AdapterRam
