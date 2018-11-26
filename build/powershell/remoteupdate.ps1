@@ -25,9 +25,10 @@ $PreviousVersions += "SWARM.1.7.2"
 $PreviousVersions += "SWARM.1.7.3"
 $PreviousVersions += "SWARM.1.7.4"
 $PreviousVersions += "SWARM.1.7.5"
+$PreviousVersions += "SWARM.1.7.6"
 
 $PreviousVersions | foreach {
-  $PreviousPath = Join-Path "/hive/custom" "$_"
+  $PreviousPath = Join-Path "/hive/miners/custom" "$_"
    if(Test-Path $PreviousPath)
     {
      Write-Host "Detected Previous Version"
