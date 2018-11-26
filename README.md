@@ -52,43 +52,48 @@ https://github.com/MaynardMiner/SWARM/wiki/Developer's-Corner
 
 **Features**
 
--Works within HiveOS, all linux miners- AMD Miners for windows are new and expirmental.
+-Works within HiveOS, or Windows- AMD Miners for windows are new and expirmental.
 
 -No Windows WDDM driver stack means faster spool up times compared to windows. Critical for profit switching.
 
--Limited (but fairly useful) HiveOS integration for Windows.
+-Most users report increases in hashrates using Unix as opposed to windows.
 
--Algorithm specific OC Tuning.
+-80% integration of HiveOS website in Windows Version, by supplying farm hash and rocket launching SWARM as a custom miner.
+
+-Algorithm specific OC Tuning for linux. Nvidia tuning currently only for Windows. (AMD coming soon).
 
 -Watt calculations, manual or a built in resource Watt-O-Meter.
 
--Backs up initial benchmarks, making updating or recovery a charm.
+-Backs up initial benchmarks, making updating or recovery a charm. Remote updates transfers all user settings.
 
--Shows real time hashrates from miners, along with previous hashrates. Background Agent for Windows.
+-Shows real time hashrates from miners on screen, background agent shows fan/temps/power usage.
 
 -Displays close to real-time monitoring, directly from miners to HiveOS website. Allows for HiveOS monitoring and graph data.
 
--Every part of the code has a double-checking feature, to ensure real time monitoring.
+-Despite its size- Memory use is low, more Read/Write of data is incorporated.
 
 -Latest miners, updated frequently.
 
 -Windows Miners Cuda 9.2 & 10.
 
--HiveOS Miners Cuda 9.1, 9.2, and 10.
+-HiveOS Miners Cuda 9.2, and 10.
 
 -Additional HiveOS online commands to open new windows to view stats, miner history, real-time data.
 
--Algorithm profit switching.
+-Hundreds of user configuration options, including the unique ability to build scripts using bash commands on linux version.
 
--Miner notifies users of benchmarking timeouts. Stores relevant information of failures to file.
+-Sophisticated time-out system to avoid pool issues/high rejections/miner issues...All user adjustable.
 
--Easy to setup.
+-Linux launches miners in a unique manner to avoid zombie applications from harming tracking.
 
--HiveOS version is dedicated to creating a solid environment that corrects itself if mistakes are made/works around zombie apps.
+-Sophisticated monitoring system, which tracks all activity of mining. However, simple to use interface to manage it.
 
--Hashrates monitoring via logging for miners that require it.
+-Deviates from the current norm of other miners utilizing GUI system interface, and focuses more on mutli-screen/command
+ interface, allowing more skilled users to generate their own mining system.
 
--Supports miner not regularly available within HiveOS.
+-API interface for statistics with LITE mode- Allows developers to integrate SWARM with their own customized implemtations.
+
+-API command interfacing/bash command control lends towards scalabilty and larger scale implementations.
 
 -Strong support via discord. Users with rig setups of 100s of GPU's are using and troubleshooting as updates are released.
 
@@ -242,6 +247,9 @@ NLPOOL.NL
 Crypto_Kp
 Castillojim
 Marcel
+PKBO
+Incode
+Soliduzhs
 
 For their help pointing out bugs and issues, and their suggestions, ideas, patience that helped make SWARM what it is today.
 
