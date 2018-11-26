@@ -238,17 +238,31 @@ BTC 1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i
 RVN RKirUe978mBoa2MRWqeMGqDzVAKTafKh8H
 
 Special Thanks To Discord Users:
+
 Alexander
+
 Stoogie
+
 GravityMaster
+
 Zirillian
+
 JC
+
 NLPOOL.NL
+
+HerreHesse
+
 Crypto_Kp
+
 Castillojim
+
 Marcel
+
 PKBO
+
 Incode
+
 Soliduzhs
 
 For their help pointing out bugs and issues, and their suggestions, ideas, patience that helped make SWARM what it is today.
