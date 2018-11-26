@@ -195,7 +195,7 @@ if($DevAMD -eq $true)
   $wattcheck = 0
   $amdinfo.keys | foreach {if($_ -like "*Fan*"){$ainfo.Fans += $amdinfo.$_ ; $fancheck++}}
   $amdinfo.keys | foreach {if($_ -like "*Temp*"){$ainfo.Temps += $amdinfo.$_ ; $tempcheck++}}
-  $amdinfo.keys | foreach {if($_ -like "*Watts*"){$ainfo.Watts += $amdinfo.$_ ; $wattcheck++}}
+  $amdinfo.keys | foreach {if($_ -like "*Watts*"){$ainfo.Watts += $amdinfo.$_ ; $wattcheck++}else{$ainfo.Watts += "75"}}
   $AMDFans = $ainfo.Fans
   $AMDTemps = $ainfo.Temps
   $AMDPower = $ainfo.Watts
