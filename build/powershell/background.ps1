@@ -179,7 +179,6 @@ $ninfo = $nvidiaout | ConvertFrom-Csv
 $NVIDIAFans = $ninfo.'fan.speed [%]' | foreach {$_ -replace ("\%","")}
 $NVIDIATemps = $ninfo.'temperature.gpu'
 $NVIDIAPower = $ninfo.'power.draw [W]' | foreach {$_ -replace ("\[Not Supported\]","75")} | foreach {$_ -replace (" W","")}
-Write-Host "Power is $NVIDIAPower"
 }
 if($DevAMD -eq $true)
 {
@@ -189,13 +188,13 @@ if($DevAMD -eq $true)
   $ainfo = @{}
   $ainfo.Add("Fans",@())
   $ainfo.Add("Temps",@())
-  $ainfo.ADD("Watts",@())
+  $ainfo.Add("Watts",@())
   $fancheck = 0
   $tempcheck = 0
   $wattcheck = 0
   $amdinfo.keys | foreach {if($_ -like "*Fan*"){$ainfo.Fans += $amdinfo.$_ ; $fancheck++}}
   $amdinfo.keys | foreach {if($_ -like "*Temp*"){$ainfo.Temps += $amdinfo.$_ ; $tempcheck++}}
-  $amdinfo.keys | foreach {if($_ -like "*Watts*"){$ainfo.Watts += $amdinfo.$_ ; $wattcheck++}else{$ainfo.Watts += "75"}}
+  $amdinfo.keys | foreach {if($_ -like "*Watts*"){if($amdinfo.$_ -ne "0"){$ainfo.Watts += $amdinfo.$_}else{$ainfo.Watts += "75"}; $wattcheck++}}
   $AMDFans = $ainfo.Fans
   $AMDTemps = $ainfo.Temps
   $AMDPower = $ainfo.Watts
@@ -534,9 +533,11 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
       $UPTIME = $summary.Elapsed
       if($Platforms -eq "linux"){$MinerFans = Get-AMDFans}else{$MinerFans = $AMDFans}
       if($Platforms -eq "linux"){$MinerTemps = Get-AMDTemps}else{$MinerTemps = $AMDTemps}
-      for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MinerFans.Count -eq 1){$MinerFans}else{$MinerFans[$($GCount.$TypeS.$GPU)]})}
-      for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($MinerTemps.Count -eq 1){$MinerTemps}else{$MinerTemps[$($GCount.$TypeS.$GPU)]})}
-      }
+      if($Platforms -eq "linux"){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MinerFans.Count -eq 1){$MinerFans}else{$MinerFans[$($GCount.$TypeS.$GPU)]})}}
+      else{for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MinerFans.Count -eq 1){$MinerFans}else{$MinerFans[$i]})}}
+      if($Platforms -eq "linux"){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($MinerTemps.Count -eq 1){$MinerTemps}else{$MinerTemps[$($GCount.$TypeS.$GPU)]})}}
+      else{for($i=0; $i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($MinerTemps.Count -eq 1){$MinerTemps}else{$MinerTemps[$i]})}}
+        }
      else{Write-Host "$MinerAPI API Failed- Could Not Get Stats" -Foreground Red; $RAW = 0; $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"}
     }
    'cpuminer'
@@ -661,9 +662,11 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
           $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
           if($Platforms -eq "linux"){$MinerFans = Get-AMDFans}else{$MinerFans = $AMDFans}
           if($Platforms -eq "linux"){$MinerTemps = Get-AMDTemps}else{$MinerTemps = $AMDTemps}
-          for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MinerFans.Count -eq 1){$MinerFans}else{$MinerFans[$($GCount.$TypeS.$GPU)]})}
-          for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($MinerTemps.Count -eq 1){$MinerTemps}else{$MinerTemps[$($GCount.$TypeS.$GPU)]})}    
-        }
+          if($Platforms -eq "linux"){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MinerFans.Count -eq 1){$MinerFans}else{$MinerFans[$($GCount.$TypeS.$GPU)]})}}
+          else{for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MinerFans.Count -eq 1){$MinerFans}else{$MinerFans[$i]})}}
+          if($Platforms -eq "linux"){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($MinerTemps.Count -eq 1){$MinerTemps}else{$MinerTemps[$($GCount.$TypeS.$GPU)]})}}
+          else{for($i=0; $i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($MinerTemps.Count -eq 1){$MinerTemps}else{$MinerTemps[$i]})}}
+                      }
 'xmrstak'
    {
     Write-Host "Miner $MinerType is xmrstak api"
@@ -692,9 +695,11 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
     $KHS = [Double]$Data.hashrate.total[0]
     if($Platforms -eq "linux"){$MinerFans = Get-AMDFans}else{$MinerFans = $AMDFans}
     if($Platforms -eq "linux"){$MinerTemps = Get-AMDTemps}else{$MinerTemps = $AMDTemps}
-    for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MinerFans.Count -eq 1){$MinerFans}else{$MinerFans[$($GCount.$TypeS.$GPU)]})}
-    for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($MinerTemps.Count -eq 1){$MinerTemps}else{$MinerTemps[$($GCount.$TypeS.$GPU)]})}
-    }
+    if($Platforms -eq "linux"){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MinerFans.Count -eq 1){$MinerFans}else{$MinerFans[$($GCount.$TypeS.$GPU)]})}}
+    else{for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MinerFans.Count -eq 1){$MinerFans}else{$MinerFans[$i]})}}
+    if($Platforms -eq "linux"){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($MinerTemps.Count -eq 1){$MinerTemps}else{$MinerTemps[$($GCount.$TypeS.$GPU)]})}}
+    else{for($i=0; $i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($MinerTemps.Count -eq 1){$MinerTemps}else{$MinerTemps[$i]})}}
+  }
     else{Write-Host "$MinerAPI API Failed- Could Not Get Stats" -Foreground Red; $RAW = 0; $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"}
    }
    'xmrstak-opt'
@@ -752,9 +757,11 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
     $KHS = [Double]$Data.hashrate.total[0]/1000
     if($Platforms -eq "linux"){$MinerFans = Get-AMDFans}else{$MinerFans = $AMDFans}
     if($Platforms -eq "linux"){$MinerTemps = Get-AMDTemps}else{$MinerTemps = $AMDTemps}
-    for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MinerFans.Count -eq 1){$MinerFans}else{$MinerFans[$($GCount.$TypeS.$GPU)]})}
-    for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($MinerTemps.Count -eq 1){$MinerTemps}else{$MinerTemps[$($GCount.$TypeS.$GPU)]})}
-    }
+    if($Platforms -eq "linux"){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MinerFans.Count -eq 1){$MinerFans}else{$MinerFans[$($GCount.$TypeS.$GPU)]})}}
+    else{for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MinerFans.Count -eq 1){$MinerFans}else{$MinerFans[$i]})}}
+    if($Platforms -eq "linux"){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($MinerTemps.Count -eq 1){$MinerTemps}else{$MinerTemps[$($GCount.$TypeS.$GPU)]})}}
+    else{for($i=0; $i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($MinerTemps.Count -eq 1){$MinerTemps}else{$MinerTemps[$i]})}}
+   }
     else{Write-Host "$MinerAPI API Failed- Could Not Get Stats" -Foreground Red; $RAW = 0; $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"}
   }
 }
