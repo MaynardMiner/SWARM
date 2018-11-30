@@ -75,7 +75,11 @@ function Start-LaunchCode {
     [Parameter(Mandatory=$true)]
     [String]$NewMiner,
     [Parameter(Mandatory=$true)]
-    [String]$MinerRound
+    [String]$MinerRound,
+    [Parameter(Mandatory=$true)]
+    [String]$Hive,
+    [Parameter(Mandatory=$true)]
+    [String]$Bleeding
     ) 
 
   $MinerCurrent = $NewMiner | ConvertFrom-Json
@@ -300,7 +304,7 @@ $Startup += "screen -S $($MinerCurrent.Type) -d -m","sleep .1"
 $Startup += "screen -S $($MinerCurrent.Type) -X logfile $Logs","sleep .1"
 $Startup += "screen -S $($MinerCurrent.Type) -X logfile flush 5","sleep .1"
 $Startup += "screen -S $($MinerCurrent.Type) -X log","sleep .1"
-if($HiveOS -eq "Yes" -and $Bleeding_Edge -eq "Yes"){"screen -S $($MinerCurrent.Type) -X stuff $`"export LD_PRELOAD=libcurl-compat.so.3.0.0\n`"","sleep .1"}
+if($Hive -eq "Yes" -and $Bleeding -eq "Yes"){"screen -S $($MinerCurrent.Type) -X stuff $`"export LD_PRELOAD=libcurl-compat.so.3.0.0\n`"","sleep .1"}
 if($MinerCurrent.Prestart){$MinerCurrent.Prestart | foreach {$Startup += "screen -S $($MinerCurrent.Type) -X stuff $`"$($_)\n`"","sleep .1"}}
 $Startup += "screen -S $($MinerCurrent.Type) -X stuff $`"cd\n`"","sleep .1"
 $Startup += "screen -S $($MinerCurrent.Type) -X stuff $`"cd $MinerDir\n`"","sleep .1"
