@@ -135,7 +135,9 @@ param(
     [Parameter(Mandatory=$false)]
     [Int]$MinerBanCount = 4,    
     [Parameter(Mandatory=$false)]
-    [String]$Lite = "No"
+    [String]$Lite = "No",
+    [Parameter(Mandatory=$false)]
+    [String]$Bleeding_Edge = "No",
 )
 
 
