@@ -17,8 +17,8 @@
         "path2": ".\\bin\\phoenix-amd-2\\PhoenixMiner",
         "path3": ".\\bin\\phoenix-amd-3\\PhoenixMiner",
         "minername": "PhoenixMiner",
-        "version": "3.5d",
-        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/pheonix-linux.tar.gz" 
+        "version": "4.0b",
+        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/phoenix-linux.tar.gz" 
      },
 
   "lolminer": {

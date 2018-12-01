@@ -1,34 +1,26 @@
-if($amd.phoenix_amd.path1){$Path = "$($amd.phoenix_amd.path1)"}
+if($nvidia.phoenix.path3){$Path = "$($nvidia.phoenix.path3)"}
 else{$Path = "None"}
-if($amd.phoenix_amd.uri){$Uri = "$($amd.phoenix_amd.uri)"}
+if($nvidia.phoenix.uri){$Uri = "$($nvidia.phoenix.uri)"}
 else{$Uri = "None"}
-if($amd.phoenix_amd.minername){$MinerName = "$($amd.phoenix_amd.minername)"}
+if($nvidia.phoenix.minername){$MinerName = "$($nvidia.phoenix.minername)"}
 else{$MinerName = "None"}
 if($Platform -eq "linux"){$Build = "Tar"}
 elseif($Platform -eq "windows"){$Build = "Zip"}
 
-
-##Miner Path Information
-$Path = "$($amd.phoenix_amd.path1)"
-$Uri = "$($amd.phoenix_amd.uri)"
-$MinerName = "$($amd.phoenix_amd.minername)"
-$Build = "Tar"
-$Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
-
-$ConfigType = "AMD1"
+$ConfigType = "NVIDIA3"
 
 ##Parse -GPUDevices
-if($AMDDevices1 -ne ''){
-$ClayDevices1  = $AMDDevices1 -split ","
-$ClayDevices1  = Switch($ClayDevices1){"10"{"a"};"11"{"b"};"12"{"c"};"13"{"d"};"14"{"e"};"15"{"f"};"16"{"g"};"17"{"h"};"18"{"i"};"19"{"j"};"20"{"k"};default{"$_"};}
-$ClayDevices1  = $ClayDevices1 | foreach {$_ -replace ("$($_)",",$($_)")}
-$ClayDevices1  = $ClayDevices1 -join ""
-$ClayDevices1  = $ClayDevices1.TrimStart(" ",",")  
-$ClayDevices1 = $ClayDevices1 -replace(",","")
-$Devices = $ClayDevices1}
+if($NVIDIADevices3 -ne ''){
+$ClayDevices3  = $NVIDIADevices3 -split ","
+$ClayDevices3  = Switch($ClayDevices3){"10"{"a"};"11"{"b"};"12"{"c"};"13"{"d"};"14"{"e"};"15"{"f"};"16"{"g"};"17"{"h"};"18"{"i"};"19"{"j"};"20"{"k"};default{"$_"};}
+$ClayDevices3  = $ClayDevices3 | foreach {$_ -replace ("$($_)",",$($_)")}
+$ClayDevices3  = $ClayDevices3 -join ""
+$ClayDevices3  = $ClayDevices3.TrimStart(" ",",")  
+$ClayDevices3 = $ClayDevices3 -replace(",","")
+$Devices = $ClayDevices3}
 
 ##Get Configuration File
-$GetConfig = "$dir\config\miners\phoenix_amd.json"
+$GetConfig = "$dir\config\miners\phoenix.json"
 try{$Config = Get-Content $GetConfig | ConvertFrom-Json}
 catch{Write-Warning "Warning: No config found at $GetConfig"}
 
@@ -36,7 +28,9 @@ catch{Write-Warning "Warning: No config found at $GetConfig"}
 $ExportDir = Join-Path $dir "build\export"
 
 ##Prestart actions before miner launch
+$BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
 $Prestart = @()
+if(Test-Path $BE){$Prestart += "export LD_PRELOAD=libcurl.so.4.5.0"}
 $PreStart += "export LD_LIBRARY_PATH=$ExportDir"
 $Config.$ConfigType.prestart | foreach {$Prestart += "$($_)"}
 
@@ -58,26 +52,24 @@ if($CoinAlgo -eq $null)
   Path = $Path
   Devices = $Devices
   DeviceCall = "claymore"
-  Arguments = "-platform 1 -mport 3336 -mode 1 -allcoins 1 -allpools 1 -epool $($_.Protocol)://$($_.Host):$($_.Port) -ewal $($_.User1) -epsw $($_.Pass1)$($Diff) -wd 0 -dbg -1 -eres 2 $($Config.$ConfigType.commands.$($_.Algorithm))"
+  Arguments = "-platform 2 -mport 3335 -mode 1 -allcoins 1 -allpools 1 -epool $($_.Protocol)://$($_.Host):$($_.Port) -ewal $($_.User3) -epsw $($_.Pass3)$($Diff) -wd 0 -dbg -1 -eres 1 $($Config.$ConfigType.commands.$($_.Algorithm))"
   HashRates = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)}
   Quote = if($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)){$($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)*($_.Price)}else{0}
   PowerX = [PSCustomObject]@{$($_.Algorithm) = if($Watts.$($_.Algorithm)."$($ConfigType)_Watts"){$Watts.$($_.Algorithm)."$($ConfigType)_Watts"}elseif($Watts.default."$($ConfigType)_Watts"){$Watts.default."$($ConfigType)_Watts"}else{0}}
-  ocdpm = if($Config.$ConfigType.oc.$($_.Algorithm).dpm){$Config.$ConfigType.oc.$($_.Algorithm).dpm}else{$OC."default_$($ConfigType)".dpm}
-  ocv = if($Config.$ConfigType.oc.$($_.Algorithm).v){$Config.$ConfigType.oc.$($_.Algorithm).v}else{$OC."default_$($ConfigType)".v}
+  ocpower = if($Config.$ConfigType.oc.$($_.Algorithm).power){$Config.$ConfigType.oc.$($_.Algorithm).power}else{$OC."default_$($ConfigType)".Power}
   occore = if($Config.$ConfigType.oc.$($_.Algorithm).core){$Config.$ConfigType.oc.$($_.Algorithm).core}else{$OC."default_$($ConfigType)".core}
-  ocmem = if($Config.$ConfigType.oc.$($_.Algorithm).mem){$Config.$ConfigType.oc.$($_.Algorithm).mem}else{$OC."default_$($ConfigType)".memory}
-  ocmdpm = if($Config.$ConfigType.oc.$($_.Algorithm).mdpm){$Config.$ConfigType.oc.$($_.Algorithm).mdpm}else{$OC."default_$($ConfigType)".mdpm}
-  ocfans = if($Config.$ConfigType.oc.$($_.Algorithm).fans){$Config.$ConfigType.oc.$($_.Algorithm).fans}else{$OC."default_$($ConfigType)".fans}
+  ocmem = if($Config.$ConfigType.oc.$($_.Algorithm).memory){$Config.$ConfigType.oc.$($_.Algorithm).memory}else{$OC."default_$($ConfigType)".memory}
+  ethpill = $Config.$ConfigType.oc.$($_.Algorithm).ethpill
+  pilldelay = $Config.$ConfigType.oc.$($_.Algorithm).pilldelay
   FullName = "$($_.Mining)"
   API = "ethminer"
-  Port = 3336
+  Port = 3335
   MinerPool = "$($_.Name)"
-  Wrap = $false
   URI = $Uri
   BUILD = $Build
   Algo = "$($_.Algorithm)"
       }
-     }
-   }
+    }
+  }
  }
 }

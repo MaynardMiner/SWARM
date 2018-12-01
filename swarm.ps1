@@ -135,9 +135,7 @@ param(
     [Parameter(Mandatory=$false)]
     [Int]$MinerBanCount = 4,    
     [Parameter(Mandatory=$false)]
-    [String]$Lite = "No",
-    [Parameter(Mandatory=$false)]
-    [String]$Bleeding_Edge = "No",
+    [String]$Lite = "No"
 )
 
 
@@ -426,8 +424,6 @@ if($Platform -eq "linux" -and $HiveOS -eq "Yes")
 {
 Start-Process ".\build\bash\libc.sh" -wait
 Start-Process ".\build\bash\libv.sh" -wait
-start-process "screen" -ArgumentList "-S agent -X quit" -wait
-start-process "agent-screen" -wait
 }
 
 if($Platform -eq "linux")

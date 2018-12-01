@@ -22,7 +22,9 @@ catch{Write-Warning "Warning: No config found at $GetConfig"}
 $ExportDir = Join-Path $dir "build\export"
 
 ##Prestart actions before miner launch
+$BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
 $Prestart = @()
+if(Test-Path $BE){$Prestart += "export LD_PRELOAD=libcurl.so.4.5.0"}
 $PreStart += "export LD_LIBRARY_PATH=$ExportDir"
 $Config.$ConfigType.prestart | foreach {$Prestart += "$($_)"}
         

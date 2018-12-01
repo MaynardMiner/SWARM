@@ -20,11 +20,13 @@ $GetConfig = "$dir\config\miners\avermore.json"
 try{$Config = Get-Content $GetConfig | ConvertFrom-Json}
 catch{Write-Warning "Warning: No config found at $GetConfig"}
 
-##Export would be /path/to/[SWARMVERSION]/build/export##
+##Export would be /path/to/[SWARMVERSION]/build/export && Bleeding Edge Check##
 $ExportDir = Join-Path $dir "build\export"
 
 ##Prestart actions before miner launch
+$BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
 $Prestart = @()
+if(Test-Path $BE){$Prestart += "export LD_PRELOAD=libcurl-compat.so.3.0.0"}
 $PreStart += "export LD_LIBRARY_PATH=$ExportDir"
 $Config.$ConfigType.prestart | foreach {$Prestart += "$($_)"}
 

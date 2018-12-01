@@ -16,8 +16,8 @@
     "path2": ".\\bin\\phoenix-2\\PhoenixMiner",
     "path3": ".\\bin\\phoenix-3\\PhoenixMiner",
     "minername": "PhoenixMiner",
-    "version": "3.5d",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/pheonix-linux.tar.gz" 
+    "version": "4.0b",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/phoenix-linux.tar.gz" 
  },
   "cryptodredge": {
     "name": "cryptodredge",
