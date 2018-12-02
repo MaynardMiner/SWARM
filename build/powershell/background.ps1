@@ -135,9 +135,11 @@ if($CPUOnly -eq $true){"CPU" | Set-Content ".\build\txt\miner.txt"}
 
 $BackgroundTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $BackgroundTimer.Restart()
+$RestartTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 
 While($True)
 {
+  $RestartTimer.Restart()
 
 if($Platforms -eq "windows" -and $HiveId -ne $null)
 {
@@ -957,6 +959,13 @@ if($response.result.command -ne "OK")
   }
 
 if($BackgroundTimer.Elapsed.TotalSeconds -gt 120){Clear-Content ".\build\bash\hivestats.sh"; $BackgroundTimer.Restart()}
+
+if($RestartTimer.Elapsed.TotalSeconds -le 10)
+{
+ do{
+    Start-Sleep -S 1
+   }while($RestartTimer.Elapsed.TotalSeconds -le 10)
+}
 #Start-Sleep -S 5
 #Start-MinerWatchdog -PlatformMiners $Platforms
 #Start-Sleep -S 5
