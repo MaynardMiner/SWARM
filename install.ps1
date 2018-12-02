@@ -20,11 +20,31 @@ $dir
 Start-Process ".\build\bash\libc.sh" -wait
 Start-Process ".\build\bash\libv.sh" -wait
 
+$dir | set-content ".\build\bash\dir.sh"
+
     if(Test-Path ".\build\bash\stats")
     {
          Copy-Item ".\build\bash\stats" -Destination "/usr/bin" -force | Out-Null
          Set-Location "/usr/bin"
          Start-Process "chmod" -ArgumentList "+x stats"
+         Set-Location "/"
+         Set-Location $Dir     
+    }
+
+    if(Test-Path ".\build\bash\get")
+    {
+         Copy-Item ".\build\bash\get" -Destination "/usr/bin" -force | Out-Null
+         Set-Location "/usr/bin"
+         Start-Process "chmod" -ArgumentList "+x get"
+         Set-Location "/"
+         Set-Location $Dir     
+    }
+
+    if(Test-Path ".\build\bash\get-lambo")
+    {
+         Copy-Item ".\build\bash\get-lambo" -Destination "/usr/bin" -force | Out-Null
+         Set-Location "/usr/bin"
+         Start-Process "chmod" -ArgumentList "+x get-lambo"
          Set-Location "/"
          Set-Location $Dir     
     }
