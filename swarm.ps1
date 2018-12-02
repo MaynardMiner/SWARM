@@ -121,8 +121,6 @@ param(
     [Parameter(Mandatory=$false)]
     [string]$HiveMirror,
     [Parameter(Mandatory=$false)]
-    [string]$AMDPlatform = "1",
-    [Parameter(Mandatory=$false)]
     [Double]$Rejections = 75,
     [Parameter(Mandatory=$false)]
     [string]$PoolBans = "Yes",
@@ -194,7 +192,6 @@ $CurrentParams.Add("WattOMeter",$WattOMeter)
 $CurrentParams.Add("HiveId",$HiveId)
 $CurrentParams.Add("HivePassword",$HivePassword)
 $CurrentParams.Add("HiveMirror",$HiveMirror)
-$CurrentParams.Add("AMDPlatform",$AMDPlatform)
 $CurrentParams.Add("Rejections",$Rejections)
 $CurrentParams.Add("PoolBans",$PoolBans)
 $CurrentParams.Add("OnBoardCard",$OnboardCard)
@@ -268,7 +265,6 @@ $WattOMeter = $SWARMParams.WattOMeter
 $HiveID = $SWARMParams.HiveId
 $HivePassword = $SWARMParams.HivePassword
 $HiveMirror = $SWARMParams.HiveMirror
-$AMDPlatform = $SWARMParams.AMDPlatform
 $Rejections = $SWARMParams.Rejections
 $PoolBans = $SWARMParams.PoolBans
 $OnboardCard = $SWARMParams.OnboardCard
@@ -318,6 +314,7 @@ if(-not (Test-Path ".\build\txt")){New-Item -Path ".\build" -Name "txt" -ItemTyp
 . .\build\powershell\maker.ps1
 . .\build\powershell\intensity.ps1
 . .\build\powershell\poolbans.ps1
+. .\build\powershell\cl.ps1
 if($Platform -eq "linux"){. .\build\powershell\getbestunix.ps1; . .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
 if($Platform -eq "windows"){. .\build\powershell\getbestwin.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1;}
 
@@ -374,6 +371,7 @@ start-update -Update $update
   if($HiveOS -eq "Yes"){
   Write-Host "Getting Data"
   Get-Data -CmdDir $dir
+if($Type -like "*AMD*"){[string]$AMDPlatform = get-AMDPlatform -Platforms $Platform}
   }
 }
 Write-Host "HiveOS = $HiveOS"
@@ -558,7 +556,6 @@ $WattOMeter = $SWARMParams.WattOMeter
 $HiveID = $SWARMParams.HiveId
 $HivePassword = $SWARMParams.HivePassword
 $HiveMirror = $SWARMParams.HiveMirror
-$AMDPlatform = $SWARMParams.AMDPlatform
 $Rejections = $SWARMParams.Rejections
 $PoolBans = $SWARMParams.PoolBans
 $OnboardCard = $SWARMParams.OnboardCard
