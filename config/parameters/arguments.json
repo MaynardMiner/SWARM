@@ -1,82 +1,77 @@
 {
-  "Threshold": 0.01,
-  "Update": "Yes",
-  "Donate": 50,
-  "HiveMirror": "",
-  "Stat_Algo": "Live",
-  "Passwordcurrency1": [
-    "BTC"
-  ],
-  "GPUDevices3": "",
-  "AltWallet3": "1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i",
-  "Nicehash_Wallet2": "3JfBiUZZV17DTjAFCnZb97UpBgtLPLLDop",
-  "Rejections": 75.0,
-  "Nicehash_Wallet1": "3JfBiUZZV17DTjAFCnZb97UpBgtLPLLDop",
-  "API_ID": 0,
-  "Timeout": 24,
-  "API_Key": "",
-  "AltWallet1": "1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i",
-  "Interval": 300,
-  "Cuda": "10",
-  "PoolBanCount": 2,
-  "Nicehash_Fee": 2,
-  "AltWallet2": "1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i",
-  "OnBoardCard": "no",
-  "Passwordcurrency2": [
-    "BTC"
-  ],
-  "Wallet2": "1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i",
-  "AlgoBanCount": 3,
-  "AltPassword2": [
-    "BTC"
-  ],
   "Currency": [
     "USD"
   ],
   "CPUThreads": 3,
-  "Rigname1": "Donating",
-  "Platform": "linux",
-  "Poolname": [
-    "nlpool"
+  "Favor_Coins": "Yes",
+  "Timeout": 24,
+  "MinerBanCount": 4,
+  "PoolBanCount": 2,
+  "Rigname3": "SWARM3",
+  "Wallet1": "1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i",
+  "Cuda": "9.2",
+  "Passwordcurrency2": [
+    "BTC"
   ],
-  "HivePassword": "",
-  "AMDPlatform": "1",
   "Wallet3": "1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i",
-  "Lite": "No",
+  "AltWallet2": "",
+  "Wallet": "Yes",
+  "Interval": 300,
+  "Donate": 0,
+  "Type": [
+    "CPU"
+  ],
+  "Benchmark": 160,
+  "Rigname2": "SWARM2",
+  "WattOMeter": "No",
+  "Nicehash_Wallet3": "",
+  "Threshold": 0.01,
+  "HiveId": "",
+  "HiveMirror": "",
+  "Rigname1": "MMHash",
+  "CPUOnly": "No",
+  "AltWallet1": "",
+  "API_ID": 0,
+  "AltPassword2": "",
+  "Passwordcurrency1": [
+    "BTC"
+  ],
+  "Auto_Coin": "Yes",
+  "Nicehash_Fee": 2,
+  "Nicehash_Wallet1": "3JfBiUZZV17DTjAFCnZb97UpBgtLPLLDop",
+  "Nicehash_Wallet2": "",
+  "GPUDevices1": "",
+  "GPUDevices3": "",
+  "AlgoBanCount": 3,
+  "Platform": "linux",
+  "AltPassword1": "",
+  "CoinExchange": "RVN",
+  "Poolname": [
+    "nicehash",
+    "nlpool",
+    "zpool"
+  ],
   "No_Algo": [
     ""
   ],
-  "HiveOS": "Yes",
-  "Wallet1": "1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i",
-  "WattOMeter": "No",
-  "Location": "US",
-  "HiveId": "",
-  "Proxy": "",
-  "Type": [
-    "NVIDIA1",
-    "NVIDIA2"
-  ],
-  "Favor_Coins": "No",
-  "CPUOnly": "No",
-  "GPUDevices2": "1,3,5,6,7,8,11",
-  "PoolBans": "Yes",
-  "Benchmark": 120,
-  "Auto_Coin": "No",
-  "Rigname2": "Donating",
+  "Rejections": 75.0,
+  "API_Key": "",
   "Stat_Coin": "Live",
-  "CoinExchange": "LTC",
-  "AltPassword1": [
-    "BTC"
-  ],
+  "Wallet2": "1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i",
+  "AltPassword3": "",
+  "Proxy": "",
+  "PoolBans": "Yes",
   "Passwordcurrency3": [
     "BTC"
   ],
   "StatsInterval": 1,
-  "AltPassword3": [
-    "BTC"
-  ],
-  "Wallet": "Yes",
-  "Nicehash_Wallet3": "3JfBiUZZV17DTjAFCnZb97UpBgtLPLLDop",
-  "GPUDevices1": "0,2,4,9,10,12",
-  "Rigname3": "Donating"
+  "GPUDevices2": "",
+  "OnBoardCard": "no",
+  "HiveOS": "No",
+  "Stat_Algo": "Live",
+  "Lite": "No",
+  "Update": "No",
+  "Location": "US",
+  "HivePassword": "",
+  "AltWallet3": ""
 }
