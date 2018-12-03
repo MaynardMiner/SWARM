@@ -194,15 +194,19 @@ Tpruvot (NVIDIA)
 T-rex (NVIDIA)
 Z-Enemy (NVIDIA) 
 Claymore (NVIDIA) (AMD)
+Phoenix Miner (NVIDIA) (AMD)
 Dstm (NVIDIA)
 EWBF (NVIDIA)
 JayDDee (CPU)
 SGminer-Phi2 (AMD)
 LyclMiner (expirmental) (AMD)
-Sgminer-kl (AMD)
+Sgminer-VII (AMD)
 Sgminer-Hex (AMD)
-tdxminer (AMD)
-WidRig-Multi
+teamredminer (AMD)
+WidRig-Multi (AMD)
+zjazz (NVIDIA)
+excavator (NVIDIA)
+lolminer (expirmental) (AMD) (NVIDIA)
 ```
 
 Simple Install Instructions (HIVEOS):
