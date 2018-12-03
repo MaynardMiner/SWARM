@@ -74,7 +74,7 @@ function start-minersorting {
         if($Command -eq "Algo")
          {
             $Miner.HashRates | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | ForEach {
-             if((-not [String]$Miner.HashRates.$_) -or (-not [String]$Miner.PowerX.$_))
+             if((-not [String]$Miner.HashRates.$_) -or (-not [String]$Miner.PowerX.$_) -and $Miner.Type -ne "ASIC")
               {
                     $Miner_HashRates.$_ = $null
                     $Miner_PowerX.$_ = $null
@@ -88,6 +88,7 @@ function start-minersorting {
               }
             }
          } 
+         
             if($Miner_Types -eq $null){$Miner_Types = $Miners.Type | Select -Unique}
             if($Miner_Indexes -eq $null){$Miner_Indexes = $Miners.Index | Select -Unique}
             

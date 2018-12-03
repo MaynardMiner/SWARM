@@ -28,7 +28,10 @@ if(Test-Path ".\timeout\pool_block\pool_block.txt"){$GetPoolBlocks = Get-Content
 if(Test-Path ".\timeout\algo_block\algo_block.txt"){$GetAlgoBlocks = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json}
 if(Test-Path ".\timeout\miner_block\miner_block.txt"){$GetMinerBlocks = Get-Content ".\timeout\miner_block\miner_block.txt" | ConvertFrom-Json}
 
-$GetMiners = if(Test-Path "miners\gpu"){Get-ChildItemContent "miners\gpu" | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru} |
+if($Type -notlike "*ASIC*"){$minerfilepath = "miners\gpu"}
+else{$minerfilepath = "miners\asic"}
+
+$GetMiners = if(Test-Path $minerfilepath){Get-ChildItemContent $minerfilepath | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru} |
  Where {$Type.Count -eq 0 -or (Compare-Object $Type $_.Type -IncludeEqual -ExcludeDifferent | Measure).Count -gt 0} |
  Where {$_.Path -ne "None"} |
  Where {$_.Uri -ne "None"} |

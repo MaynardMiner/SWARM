@@ -18,7 +18,7 @@ $nlpoolAlgo_Request = [PSCustomObject]@{}
         return
      }
 
- $nlpoolAlgo_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | Where-Object {$Naming.$($nlpoolAlgo_Request.$_.name)} | Where-Object {$($nlpoolAlgo_Request.$_.estimate_current) -ne "0.00000000"} | ForEach-Object {
+ $nlpoolAlgo_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | Where-Object {$Naming.$($nlpoolAlgo_Request.$_.name)} | Where-Object {$nlpoolAlgo_Request.$_.name -NE "sha256"} | Where-Object {$($nlpoolAlgo_Request.$_.estimate_current) -ne "0.00000000"} | ForEach-Object {
 
         
         $nlpoolAlgo_Algorithm = Get-Algorithm $nlpoolAlgo_Request.$_.name

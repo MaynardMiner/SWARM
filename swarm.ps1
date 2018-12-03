@@ -315,6 +315,7 @@ if(-not (Test-Path ".\build\txt")){New-Item -Path ".\build" -Name "txt" -ItemTyp
 . .\build\powershell\intensity.ps1
 . .\build\powershell\poolbans.ps1
 . .\build\powershell\cl.ps1
+if($Type -like "*ASIC*"){. .\build\powershell\icserver.ps1; . .\build\powershell\poolmanager.ps1}
 if($Platform -eq "linux"){. .\build\powershell\getbestunix.ps1; . .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
 if($Platform -eq "windows"){. .\build\powershell\getbestwin.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1;}
 
@@ -386,6 +387,7 @@ $WalletDonate = "1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i"
 $NicehashDonate = "3JfBiUZZV17DTjAFCnZb97UpBgtLPLLDop"
 $UserDonate = "MaynardVII"
 $WorkerDonate = "Rig1"
+$PoolNumber = 1
 $ActiveMinerPrograms = @()
 $Naming = Get-Content ".\config\naming\get-pool.json" | ConvertFrom-Json
 $DonationMode = $false
@@ -567,6 +569,8 @@ if($SWARMParams.Rigname1 -eq "Donate"){$Donating = $True}
 else{$Donating = $False}
 if($Donating -eq $True){$Test = Get-Date; $DonateTest = "Miner has donated on $Test"; $DonateTest | Set-Content ".\build\txt\donate.txt"}
 
+if($Type -notlike "*ASIC*")
+{
 ##Save Watt Calcs
 if($Watts){$Watts | ConvertTo-Json | Out-File ".\config\power\power.json"}
 ##OC-Settings
@@ -1520,11 +1524,16 @@ if($Strike -eq $true)
      $Warnings."$($_.Name)_$($_.Algo)" | foreach{try{$_.bad=0}catch{}}
      $Warnings."$($_.Name)" | foreach{try{$_.bad=0}catch{}}
      Start-Sleep -S 1
-    }
+     }
+     }
     }
    }
   }
  }
+else{
+$ReturnASICActive = start-ASIC -ASICMinerPrograms $GetASICActive
+$ActiveMinerPrograms = $ReturnASICActive
+}
 }
   #Stop the log
   Stop-Transcript
