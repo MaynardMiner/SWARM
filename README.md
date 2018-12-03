@@ -4,7 +4,7 @@
 
  **Important Note:**
 
- If you would like SWARM incorporated into an OS besides HiveOS, contact the developers, and show them this:
+ If you would like SWARM incorporated into an OS besides HiveOS/Windows, contact the developers, and show them this:
 
 https://github.com/MaynardMiner/SWARM/wiki/Developer's-Corner
 
