@@ -97,80 +97,6 @@ https://github.com/MaynardMiner/SWARM/wiki/Developer's-Corner
 
 -Strong support via discord. Users with rig setups of 100s of GPU's are using and troubleshooting as updates are released.
 
-**Algorithms** (As defined by poola and translation required by miners)
-
-```
-    "aergo": "aergo",
-    "aeon": "aeon",
-    "allium": "allium",
-    "balloon": "balloon",
-    "bcd": "bcd",
-    "bitcore": "bitcore",
-    "blake": "blakecoin",
-    "blakecoin": "blakecoin",
-    "blake2s": "blake2s",
-    "c11": "c11",
-    "cryptonight": "cryptonight",
-    "cryptonightheavy": "cryptonightheavy",
-    "cryptonightmonero": "cryptonight",
-    "cryptonightv7": "cryptonightv7",
-    "cryptonightv8": "cryptonightv8",
-    "cryptonightsaber": "cryptonightsaber",
-    "daggerhashimoto": "daggerhashimoto",
-    "equihash": "equihash",
-    "equihash96": "equihash96",
-    "equihash144": "equihash144",
-    "equihash192": "equihash192",
-    "equihash200": "equihash200",
-    "equihash210": "equihash210",
-    "equihash-btg": "equihash-btg",
-    "ethash": "ethash",
-    "groestl": "groestl",
-    "geek": "geek",
-    "hex": "hex",
-    "hmq1725": "hmq1725",
-    "hodl": "hodl",
-    "hsr": "hsr",
-    "jackpot": "jackpot",
-    "keccak": "keccak",
-    "keccakc": "keccakc",
-    "lbk3": "lbk3",
-    "lyra2re": "lyra2re",
-    "lyra2rev2": "lyra2rev2",
-    "lyra2v2": "lyra2v2",
-    "lyra2z": "lyra2z",
-    "m7m": "m7m",
-    "masari": "masari",
-    "myr-gr": "myr-gr",
-    "neoscrypt": "neoscrypt",
-    "nist5": "nist5",
-    "phi": "phi",
-    "phi2": "phi2",
-    "polytimos": "polytimos",
-    "qubit": "qubit",
-    "renesis": "renesis",
-    "sha256t": "sha256t:,
-    "sib": "sib",
-    "skein": "skein",
-    "skunk": "skunk",
-    "sonoa": "sonoa",
-    "stellite": "stellite",
-    "timetravel": "timetravel",
-    "tribus": "tribus",
-    "x11": "x11",
-    "x16r": "x16r",
-    "x16s": "x16s",
-    "x17": "x17",
-    "x22i": "x22i",
-    "xevan": "xevan",
-    "xmr": "xmr",
-    "yespower": "yespower",
-    "yescrypt": "yescrypt",
-    "yescryptR16": "yescryptR16"
-
-```
-
-
 **Pools**
 ```
 nicehash
@@ -215,14 +141,23 @@ SWARM is simple to install in linux environment, IF a user is familiar with linu
 
 THere is a Windows version that stats to HiveOS, that is constantly being worked on/improved. If you are unsure of your capabilities of using linux- You can always use the Windows version, and get most of the features SWARM has to offer, as well as help me improve it.
 
-This is an example of how to remote install/update miner. It is the fastest way to get going. Insert link for tar.gz. Enter 'blah' in the fields required just like the photo below. Lastly, your setup arguments go in the last box, labeled extra config <a href="https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration)">arguments</a>. After that, you are are good to go! See wiki on proper argument use. Here is a photo of setup:
+This is an example of how to remote install/update miner. It is the fastest way to get going. Simply enter tar.gz file name from latest release. Then insert link for tar.gz. Next in wallet/worker templates enter 'blah'. Lastly, your setup arguments go in the last box, labeled extra config arguments. After that, you are are good to go! See wiki on proper argument use. Here is a photo of setup:
 
-**Note** These photos are a little old, the arguments shown like -GPU_Count are no longer needed, and is MM.Hash (previous version). I will change photo soon, but shows the process.
+Coin/Wallet is irrelevant. You can basically enter whatever you want. Then navigate to custom miner:
 
-https://raw.githubusercontent.com/MaynardMiner/SWARM/master/build/data/First_Step.png
+![alt text](https://raw.githubusercontent.com/MaynardMiner/SWARM/master/build/data/First_Step.png)
 
+From there you should see this window. Pool and URL are setup with arguments. However, Hive 2.0 requires those fields to not be empty. You can simply enter anything there. See photo below on how to setup miner. Just insert the name of the latest release, and the release tar.gz file link. Then insert your arguments in the bottom box:
 
-https://raw.githubusercontent.com/MaynardMiner/SWARM/master/build/data/Second_Step.png
+FULL ARGUMENT LIST:
+
+https://github.com/MaynardMiner/SWARM/blob/master/Help%20Files/SWARM_help.txt
+
+SAMPLE ARGUMENT SETUPS:
+
+https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration)
+
+![alt text](https://raw.githubusercontent.com/MaynardMiner/SWARM/master/build/data/Second.png)
 
 **Note**
 
