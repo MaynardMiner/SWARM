@@ -1530,10 +1530,7 @@ if($Strike -eq $true)
    }
   }
  }
-else{
-$ReturnASICActive = start-ASIC -ASICMinerPrograms $GetASICActive
-$ActiveMinerPrograms = $ReturnASICActive
-}
+else{Start-ASIC}
 }
   #Stop the log
   Stop-Transcript

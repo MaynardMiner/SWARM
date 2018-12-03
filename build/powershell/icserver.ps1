@@ -1,8 +1,4 @@
 function Start-ASIC{
-  param (
-  [Parameter(Mandatory=$false)]
-  [array]$ASICMinerPrograms
-  )
 
 $Config = Get-Content ".\config\asic\asic-list.json" | convertfrom-json
 
@@ -18,10 +14,16 @@ $Config.Slaves | foreach {$Slaves += $_}
 $Port = $Config.port
 $API = $Config.miner
 $CoinAlgo = $null
+$ActiveMinerPrograms = @()
 
+
+While($True)
+{
 $MinerWatch = New-Object -TypeName System.Diagnostics.Stopwatch
 $TimeoutTime = $Timeout*3600
 $DecayExponent = [int](((Get-Date)-$DecayStart).TotalSeconds/$DecayPeriod)
+
+$ActiveMinerPrograms | foreach {Write-Host "Current Active Miner Progams: $($_.MinerPool)"}
 
 try {
     $R = [string]$Currency
@@ -58,7 +60,7 @@ try {
     if($AlgoMiners.Count -eq 0){"No Miners!" | Out-Host; start-sleep $Interval; continue}
     
     start-minersorting -Command "Algo" -Stats $Stats -Pools $AlgoPools -Pools_Comparison $AlgoPools_Comparison -SortMiners $AlgoMiners -DBase $DecayBase -DExponent $DecayExponent -WattCalc $WattEx
-    $ASICActiveMiners | ForEach {$AlgoMiners | Where Path -EQ $_.Path | Where Arguments -EQ $_.Arguments | ForEach {$_.Profit_Bias = $_.Profit}}
+    $ActiveMinerPrograms | ForEach {$AlgoMiners | Where Path -EQ $_.Path | Where Arguments -EQ $_.Arguments | ForEach {$_.Profit_Bias = $_.Profit}}
     $GoodAlgoMiners = @()
     $AlgoMiners | Foreach {if($_.Profit -lt $Threshold -or $_.Profit -eq $null){$GoodAlgoMiners += $_}}
     $Miners = @()
@@ -89,10 +91,10 @@ try {
    }
 
  $BestMiners_Combo | ForEach {
- if(-not ($ASICActiveMiners | Where Path -eq $_.Path | Where Arguments -eq $_.Arguments ))
+ if(-not ($ActiveMinerPrograms | Where Path -eq $_.Path | Where Arguments -eq $_.Arguments ))
   {
     Write-Host "Adding To $($_.MinerPool) to active programs"
-    $ASICActiveMiners += [PSCustomObject]@{
+    $ActiveMinerPrograms += [PSCustomObject]@{
         Name = $_.Name
         Type = $_.Type
         Devices = 0
@@ -124,7 +126,7 @@ try {
      $NoMiners = $false
 
      $BestActiveMiners = @()
-     $ASICActiveMiners | foreach {
+     $ActiveMinerPrograms | foreach {
      if($BestMiners_Combo | Where Path -EQ $_.Path | Where Arguments -EQ $_.Arguments){$_.BestMiner = $true; $BestActiveMiners += $_}
      else{$_.BestMiner = $false}
      }
@@ -173,7 +175,7 @@ try {
       if($StatusMinerBans){$StatusMinerBans | foreach {$BanMessage += "$me[${mcolor}m$($_.Name) is banned${me}[0m"}}
       $BanMessage | Out-File ".\build\bash\minerstats.sh" -Append
 
-      $ASICActiveMiners | ForEach {
+    $ActiveMinerPrograms | ForEach {
         if($_.BestMiner -eq $false)
          {
           if($_.IsActive -eq $true)
@@ -285,11 +287,11 @@ if($Restart -eq $false)
 
  function Get-MinerActive {
 
-  $ASICActiveMiners | Sort-Object -Descending Status,
+  $ActiveMinerPrograms | Sort-Object -Descending Status,
   {if($null -eq $_.IsActive){[DateTime]0}else{$_.StartDate}
   } | Select -First (1+6+6) | Format-Table -Wrap -GroupBy Status (
   @{Label = "Speed"; Expression={$_.HashRate | ForEach {"$($_ | ConvertTo-Hash)/s"}}; Align='right'},
-  @{Label = "Active"; Expression={"{0:dd} Days {0:hh} Hours {0:mm} Minutes" -f $(if($null -eq $_.XProcess){$_.Active}else{if($_.XProcess.HasExited){($_.Active)}else{($_.Active+((Get-Date)-$_.XProcess.StartTime))}})}},
+  @{Label = "Active"; Expression={"{0:dd} Days {0:hh} Hours {0:mm} Minutes" -f $(if($null -eq $_.IsActive){$_.Active}else{if($_.IsActive -eq $false){($_.Active)}else{($_.Active+((Get-Date)-$_.StartDate))}})}},
   @{Label = "Launched"; Expression={Switch($_.Activated){0 {"Never"} 1 {"Once"} Default {"$_ Times"}}}},
   @{Label = "Command"; Expression={"$($_.MinerName) $($_.Devices) $($_.Arguments)"}}
 )
@@ -315,7 +317,7 @@ function Get-Logo {
 
 #Check For Bechmark
 $BenchmarkMode = $false
-$ASICActiveMinerss | Foreach {
+$ActiveMinerPrograms | Foreach {
  if($Miners | Where Path -eq $_.Path | Where Arguments -eq $_.Arguments)
  {
   if(-not (Test-Path ".\stats\$($_.Name)_$($_.Algo)_hashrate.txt"))
@@ -649,5 +651,5 @@ Get-MinerActive | Out-File ".\build\bash\mineractive.sh" -Append
        }
       }
      }
-  $ASICActiveMiners
-}
+    }
+   }
