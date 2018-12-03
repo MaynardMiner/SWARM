@@ -43,7 +43,7 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$API_Key = "", ##Future Implementation
     [Parameter(Mandatory=$false)]
-    [Int]$Timeout = 0,  ##Hours Before Mine Clears All Hashrates/Profit 0 files
+    [Int]$Timeout = 24,  ##Hours Before Mine Clears All Hashrates/Profit 0 files
     [Parameter(Mandatory=$false)]
     [Int]$Interval = 300, #seconds before reading hash rate from miners
     [Parameter(Mandatory=$false)] 
@@ -85,7 +85,7 @@ param(
     [Parameter(Mandatory=$false)]
     [Int]$Nicehash_Fee = "2",
     [Parameter(Mandatory=$false)]
-    [Int]$Benchmark = 120,
+    [Int]$Benchmark = 180,
     [Parameter(Mandatory=$false)]
     [array]$No_Algo = "",
     [Parameter(Mandatory=$false)]
@@ -95,7 +95,7 @@ param(
     [Parameter(Mandatory=$false)]
     [string]$Platform = "linux",
     [Parameter(Mandatory=$false)]
-    [int]$CPUThreads = 3,
+    [int]$CPUThreads = 1,
     [Parameter(Mandatory=$false)]
     [string]$Stat_Coin = "Live",
     [Parameter(Mandatory=$false)]
