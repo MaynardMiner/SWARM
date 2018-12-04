@@ -91,7 +91,7 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$Favor_Coins = "Yes",
     [Parameter(Mandatory=$false)]
-    [double]$Threshold = .01,
+    [double]$Threshold = .1,
     [Parameter(Mandatory=$false)]
     [string]$Platform = "linux",
     [Parameter(Mandatory=$false)]
