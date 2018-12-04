@@ -46,6 +46,7 @@ $cpuid = $cpud.DeviceID
 $disk = $(Get-WMIObject win32_diskdrive).model
 $url = $HiveMirror
 
+
 $Hello = @{
     method = "hello"
     jsonrpc = "2.0"
@@ -76,7 +77,6 @@ $Hello = @{
         server_url = "$url"
        }
       }
-
       
    Write-Host "Saying Hello To Hive"
    $Hello | ConvertTo-Json -Depth 3 -Compress | Set-Content ".\build\txt\hello.txt"
@@ -103,7 +103,7 @@ try{
     $message = $hiveresponse
     }
     else{$message = $response.result.config}
-   }
+    }
    catch{$message = "Failed To Contact HiveOS.Farm"}
 
    return $message

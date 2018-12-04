@@ -87,6 +87,7 @@ $Update = $SWARMParams.Update
 $Cuda = $SWARMParams.Cuda
 $WattOMeter = $SWARMParams.WattOMeter
 $HiveID = $SWARMParams.HiveId
+$Farm_Hash = $SWARMParams.Farm_Hash
 $HivePassword = $SWARMParams.HivePassword
 $HiveMirror = $SWARMParams.HiveMirror
 $Rejections = $SWARMParams.Rejections

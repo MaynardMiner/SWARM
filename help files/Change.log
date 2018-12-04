@@ -1142,7 +1142,7 @@ Use -Farm_Hash argument for Windows version.
 This is a HUGE update. Please note any issues,
 so they can be patched asap.
 
--AMDPlatform is no longer needed: it was removed
+-AMDPlatform is no longer needed: it was removed (not for windows)
 -OnboardCard is no longer needed: it was removed
 
 Bleeding Edge is now supported and working.

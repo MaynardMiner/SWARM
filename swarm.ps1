@@ -131,7 +131,9 @@ param(
     [Parameter(Mandatory=$false)]
     [Int]$MinerBanCount = 4,    
     [Parameter(Mandatory=$false)]
-    [String]$Lite = "No"
+    [String]$Lite = "No",
+    [Parameter(Mandatory=$false)]
+    [String]$AMDPlatform
 )
 
 
@@ -188,6 +190,7 @@ $CurrentParams.Add("Update",$Update)
 $CurrentParams.Add("Cuda",$Cuda)
 $CurrentParams.Add("WattOMeter",$WattOMeter)
 $CurrentParams.Add("HiveId",$HiveId)
+$CurrentParams.Add("Farm_Hash",$Farm_Hash)
 $CurrentParams.Add("HivePassword",$HivePassword)
 $CurrentParams.Add("HiveMirror",$HiveMirror)
 $CurrentParams.Add("Rejections",$Rejections)
@@ -195,6 +198,7 @@ $CurrentParams.Add("PoolBans",$PoolBans)
 $CurrentParams.Add("PoolBanCount",$PoolBanCount)
 $CurrentParams.Add("AlgoBanCount",$AlgoBanCount)
 $CurrentParams.Add("MinerBanCount",$MinerBanCount)
+if($Platform -eq "windows"){$CurrentParams.Add("AMDPlatform",$AMDPlatform)}
 $CurrentParams.Add("Lite",$Lite)
 $StartParams = $CurrentParams | ConvertTo-Json 
 $StartingParams = $CurrentParams | ConvertTo-Json -Compress
@@ -260,6 +264,7 @@ $Update = $SWARMParams.Update
 $Cuda = $SWARMParams.Cuda
 $WattOMeter = $SWARMParams.WattOMeter
 $HiveID = $SWARMParams.HiveId
+$Farm_Hash = $SWARMParams.Farm_Hash
 $HivePassword = $SWARMParams.HivePassword
 $HiveMirror = $SWARMParams.HiveMirror
 $Rejections = $SWARMParams.Rejections
@@ -267,6 +272,7 @@ $PoolBans = $SWARMParams.PoolBans
 $PoolBanCount = $SWARMParams.PoolBanCount
 $AlgoBanCount = $SWARMParams.AlgoBanCount
 $Lite = $SWARMParams.Lite
+if($Platform -eq "windows"){$AMDPlatform = $SWARMParams.AMDPlatform}
 }
 
 $Version = Split-Path ($script:MyInvocation.MyCommand.Path) -Parent
@@ -368,9 +374,13 @@ start-update -Update $update
   if($HiveOS -eq "Yes"){
   Write-Host "Getting Data"
   Get-Data -CmdDir $dir
-if($Type -like "*AMD*"){[string]$AMDPlatform = get-AMDPlatform -Platforms $Platform}
+  if($Type -like "*AMD*"){
+    [string]$AMDPlatform = get-AMDPlatform -Platforms $Platform
+    Write-Host "AMD OpenCL Platform is $AMDPlatform"
+    }
   }
 }
+
 Write-Host "HiveOS = $HiveOS"
 #Startings Settings:
 $BenchmarkMode = "No"
@@ -552,6 +562,7 @@ $Update = $SWARMParams.Update
 $Cuda = $SWARMParams.Cuda
 $WattOMeter = $SWARMParams.WattOMeter
 $HiveID = $SWARMParams.HiveId
+$Farm_Hash = $SWARMParams.Farm_Hash
 $HivePassword = $SWARMParams.HivePassword
 $HiveMirror = $SWARMParams.HiveMirror
 $Rejections = $SWARMParams.Rejections
@@ -559,6 +570,7 @@ $PoolBans = $SWARMParams.PoolBans
 $PoolBanCount = $SWARMParams.PoolBanCount
 $AlgoBanCount = $SWARMParams.AlgoBanCount
 $Lite = $SWARMParams.Lite
+if($Platform -eq "windows"){$AMDPlatform = $SWARMParams.AMDPlatform}
 
 if($SWARMParams.Rigname1 -eq "Donate"){$Donating = $True}
 else{$Donating = $False}
