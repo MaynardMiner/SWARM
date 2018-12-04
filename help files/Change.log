@@ -1137,3 +1137,49 @@ Use -Farm_Hash argument for Windows version.
  -background Agent for windows displays power.
  -more code staging for ASIC.
  
+ 1.7.8
+
+This is a HUGE update. Please note any issues,
+so they can be patched asap.
+
+-AMDPlatform is no longer needed: it was removed
+-OnboardCard is no longer needed: it was removed
+
+Bleeding Edge is now supported and working.
+
+Because of Bleeding Edge- SWARM cannot restart
+agent. You may have to manually restart agent
+yourself to update h-stats version.
+
+Type ASIC now in initial test stages. Currently
+only have Linux version (not HiveOS). I will
+create a write-up on how it works. I was side-lined
+with ASIC due to the crazy amount of miner updates/new algos.
+I will create a write-up on how it works, as it works dramatically
+differenly than other platforms.
+
+-phiphipool is fixed and working again. Pool file updated.
+-icserver.ps1 added
+-ccmineryescrypt.ps1's added
+-All miner files updated for Bleeding Edge Support
+-created C++ script to get opencl platform
+-Parse GPU's differently- Report if issues with hiveOS stats
+-AMDPlatform is no longer needed: it was removed
+-OnboardCard is no longer needed: it was removed
+-yescryptR32 added
+-dedal added
+-x18 added
+-lyra2vc0banhash added
+-x21s added (UNSTABLE AS HELL)
+-phoenix miner updated and added back into rotation
+-klausT cuda 10 (compiled by myself)
+-tpruvot cuda 10 (fixed and compiled by myself)
+-ccmineryescrypt (fixed and compiled by myself) Cuda 10 only
+-cpuminer-opt pre-compiled
+-cpuminer-opt-yespower pre-compiled
+-trex updated
+-cryptodredge updated
+-enemy updated
+-wildrig updated
+-SWARM_help.txt accurate now.
+-Wiki heavily updated on github.
