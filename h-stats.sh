@@ -2,7 +2,7 @@
 
 cd `dirname $0`
 
-. /hive/custom/$CUSTOM_MINER/h-manifest.conf
+. /hive/miners/custom/$CUSTOM_MINER/h-manifest.conf
 
 get_nvidia_cards_temp(){
 	echo $(jq -c "[.temp$nvidia_indexes_array]" <<< $gpu_stats)
