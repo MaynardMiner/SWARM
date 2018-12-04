@@ -46,7 +46,7 @@
     "path2": ".\\bin\\enemy-2\\z-enemy",
     "path3": ".\\bin\\enemy-3\\z-enemy",
     "minername": "z-enemy",
-    "version": "1.25",
+    "version": "1.26",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/z-enemy-linux-10.tar.gz"
   },
   "ewbf": {
@@ -59,6 +59,16 @@
     "version": "0.6",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/ewbf-linux.tar.gz"
   },
+  "ccmineryescrypt": {
+    "name": "ccmineryescrypt",
+    "type": "nvidia",
+    "path1": ".\\bin\\ccmineryescrypt-1\\ccminer",
+    "path2": ".\\bin\\ccmineryescrypt-2\\ccminer",
+    "path3": ".\\bin\\ccmineryescrypt-3\\ccminer",
+    "minername": "ccminer",
+    "version": "10a",
+    "uri": "https://github.com/MaynardMiner/ccminerKlausTyescrypt/releases/download/v.10a/ccmineryescrypt-linux-10.tar.gz"
+  },
   "klaust": {
     "name": "klaust",
     "type": "nvidia",
@@ -66,8 +76,8 @@
     "path2": ".\\bin\\klaust-2\\ccminer",
     "path3": ".\\bin\\klaust-3\\ccminer",
     "minername": "ccminer",
-    "version": "8.22",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/Klaust-Linux-9-2.tar.gz"
+    "version": "8.23",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/klaust-linux-10.tar.gz"
   },
   "lolminer": {
     "name": "lolminer",
@@ -87,7 +97,7 @@
     "path3": ".\\bin\\tpruvot-3\\ccminer",
     "minername": "ccminer",
     "version": "2.3",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/tpruvot-Linux-9-2.tar.gz"
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/tpruvot-linux-10.tar.gz"
   },
   "trex": {
     "name": "trex",
@@ -96,7 +106,7 @@
     "path2": ".\\bin\\trex-2\\t-rex",
     "path3": ".\\bin\\trex-3\\t-rex",
     "minername": "t-rex",
-    "version": "0.8.1",
+    "version": "0.8.4",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/t-rex-linux-10.tar.gz"
   },
   "zjazz": {

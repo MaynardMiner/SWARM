@@ -2,6 +2,17 @@ function Start-ASIC{
 
 $Config = Get-Content ".\config\asic\asic-list.json" | convertfrom-json
 
+$BenchmarkMode = "No"
+$Instance = 1
+$DecayStart = Get-Date
+$DecayPeriod = 60 #seconds
+$DecayBase = 1-0.1 #decimal percentage
+$Deviation = $Donate
+$WalletDonate = "1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i"
+$NicehashDonate = "3JfBiUZZV17DTjAFCnZb97UpBgtLPLLDop"
+$UserDonate = "MaynardVII"
+$WorkerDonate = "Rig1"
+$PoolNumber = 1
 $TimeDeviation = 1
 $Algorithm = @()
 $Config.Algorithm | foreach {$Algorithm += $_}
@@ -15,10 +26,79 @@ $Port = $Config.port
 $API = $Config.miner
 $CoinAlgo = $null
 $ActiveMinerPrograms = @()
-
+$PID | Set-Content ".\build\pid\miner_pid.txt"
+$swarmstamp = "SWARMISBESTMINEREVER"
 
 While($True)
 {
+Start-PoolBans $StartingParams $swarmstamp 
+
+##Parameters (if changed through command)
+$GetSWARMParams = Get-Content ".\config\parameters\arguments.json"
+$SWARMParams = $GetSWARMParams | ConvertFrom-Json
+$Wallet = $SWARMParams.Wallet
+$Wallet1 = $SWARMParams.Wallet1
+$Wallet2 = $SWARMParams.Wallet2
+$Wallet3 = $SWARMParams.Wallet3
+$CPUWallet = $SWARMParams.CPUWallet
+$Nicehash_Wallet1 = $SWARMParams.Nicehash_Wallet1
+$Nicehash_Wallet2 = $SWARMParams.Nicehash_Wallet2
+$Nicehash_Wallet3 = $SWARMParams.Nicehash_Wallet3
+$AltWallet1 = $SWARMParams.AltWallet1
+$AltWallet2 = $SWARMParams.AltWallet2
+$AltWallet3 = $SWARMParams.AltWallet3
+$RigName1 = $SWARMParams.RigName1
+$RigName2 = $SWARMParams.RigName2
+$RigName3 = $SWARMParams.RigName3
+$API_ID = $SWARMParams.API_ID
+$API_Key = $SWARMParams.API_Key
+$Timeout = $SWARMParams.Timeout
+$Interval = $SWARMParams.Interval
+$StatsInterval = $SWARMParams.StatsInterval
+$Location = $SWARMParams.Location
+$Type = $SWARMParams.Type
+$GPUDevices1 = $SWARMParams.GPUDevices1 -replace "\\'",""
+$GPUDevices2 = $SWARMParams.GPUDevices2 -replace "\\'",""
+$GPUDevices3 = $SWARMParams.GPUDevices3 -replace "\\'",""
+$PoolName = $SWARMParams.PoolName
+$Currency = $SWARMParams.Currency
+$Passwordcurrency1 = $SWARMParams.Passwordcurrency1
+$Passwordcurrency2 = $SWARMParams.Passwordcurrency1
+$Passwordcurrency3 = $SWARMParams.Passwordcurrency3
+$AltPassword1 = $SWARMParams.AltPassword1
+$AltPassword2 =  $SWARMParams.AltPassword2
+$AltPassword3 = $SWARMParams.AltPassword3
+$Donate = $SWARMParams.Donate
+$Proxy = $SWARMParams.Proxy -replace "\\'",""
+$CoinExchange = $SWARMParams.CoinExchange
+$Auto_Coin = $SWARMParams.Auto_Coin
+$Nicehash_Fee = $SWARMParams.Nicehash_Fee
+$Benchmark = $SWARMParams.Benchmark
+$No_Algo = $SWARMParams.No_Algo
+$Favor_Coins = $SWARMParams.Favor_Coins
+$Threshold = $SWARMParams.Threshold
+$Platform = $SWARMParams.platform
+$CPUThreads = $SWARMParams.CPUThreads
+$Stat_Coin = $SWARMParams.Stat_Coin
+$Stat_Algo = $SWARMParams.Stat_Algo
+$CPUOnly =  $SWARMParams.CPUOnly
+$HiveOS = $SWARMParams.HiveOS
+$Update = $SWARMParams.Update
+$Cuda = $SWARMParams.Cuda
+$WattOMeter = $SWARMParams.WattOMeter
+$HiveID = $SWARMParams.HiveId
+$HivePassword = $SWARMParams.HivePassword
+$HiveMirror = $SWARMParams.HiveMirror
+$Rejections = $SWARMParams.Rejections
+$PoolBans = $SWARMParams.PoolBans
+$PoolBanCount = $SWARMParams.PoolBanCount
+$AlgoBanCount = $SWARMParams.AlgoBanCount
+$Lite = $SWARMParams.Lite
+
+if($SWARMParams.Rigname1 -eq "Donate"){$Donating = $True}
+else{$Donating = $False}
+if($Donating -eq $True){$Test =Get -Date; $DonateTest = "Miner has donated on $Test"; $DonateTest | Set-Content ".\build\txt\donate.txt"}
+
 $MinerWatch = New-Object -TypeName System.Diagnostics.Stopwatch
 $TimeoutTime = $Timeout*3600
 $DecayExponent = [int](((Get-Date)-$DecayStart).TotalSeconds/$DecayPeriod)
