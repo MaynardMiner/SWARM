@@ -23,9 +23,12 @@
       "x16s": "",
       "x16r": "",
       "x17": "",
+      "x18": "",
       "bitcore": "",
       "x22i": "",
-      "polytimos": ""
+      "x21s": "",
+      "polytimos": "",
+      "dedal": ""
     },
     "difficulty": {
       "bcd": "",
@@ -42,9 +45,12 @@
       "x16s": "",
       "x16r": "",
       "x17": "",
+      "x18": "",
       "bitcore": "",
       "x22i": "",
-      "polytimos": ""
+      "x21s": "",
+      "polytimos": "",
+      "dedal": ""
     },
     "naming": {
       "bcd": "bcd",
@@ -61,9 +67,12 @@
       "x16s": "x16s",
       "x16r": "x16r",
       "x17": "x17",
+      "x18": "x18",
       "bitcore": "bitcore",
       "x22i": "x22i",
-      "polytimos": "polytimos"
+      "x21s": "x21s",
+      "polytimos": "polytimos",
+      "dedal": "dedal"
     },
     "oc": {
       "bcd": {
@@ -178,6 +187,14 @@
         "mdpm": "",
         "fans": ""
       },
+      "x18": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
       "bitcore": {
         "dpm": "",
         "v": "",
@@ -194,7 +211,23 @@
         "mdpm": "",
         "fans": ""
       },
+      "x21s": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
       "polytimos": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "dedal": {
         "dpm": "",
         "v": "",
         "core": "",

@@ -125,8 +125,6 @@ param(
     [Parameter(Mandatory=$false)]
     [string]$PoolBans = "Yes",
     [Parameter(Mandatory=$false)]
-    [string]$OnboardCard = "no",
-    [Parameter(Mandatory=$false)]
     [Int]$PoolBanCount = 2,
     [Parameter(Mandatory=$false)]
     [Int]$AlgoBanCount = 3,
@@ -194,7 +192,6 @@ $CurrentParams.Add("HivePassword",$HivePassword)
 $CurrentParams.Add("HiveMirror",$HiveMirror)
 $CurrentParams.Add("Rejections",$Rejections)
 $CurrentParams.Add("PoolBans",$PoolBans)
-$CurrentParams.Add("OnBoardCard",$OnboardCard)
 $CurrentParams.Add("PoolBanCount",$PoolBanCount)
 $CurrentParams.Add("AlgoBanCount",$AlgoBanCount)
 $CurrentParams.Add("MinerBanCount",$MinerBanCount)
@@ -267,7 +264,6 @@ $HivePassword = $SWARMParams.HivePassword
 $HiveMirror = $SWARMParams.HiveMirror
 $Rejections = $SWARMParams.Rejections
 $PoolBans = $SWARMParams.PoolBans
-$OnboardCard = $SWARMParams.OnboardCard
 $PoolBanCount = $SWARMParams.PoolBanCount
 $AlgoBanCount = $SWARMParams.AlgoBanCount
 $Lite = $SWARMParams.Lite
@@ -560,7 +556,6 @@ $HivePassword = $SWARMParams.HivePassword
 $HiveMirror = $SWARMParams.HiveMirror
 $Rejections = $SWARMParams.Rejections
 $PoolBans = $SWARMParams.PoolBans
-$OnboardCard = $SWARMParams.OnboardCard
 $PoolBanCount = $SWARMParams.PoolBanCount
 $AlgoBanCount = $SWARMParams.AlgoBanCount
 $Lite = $SWARMParams.Lite
