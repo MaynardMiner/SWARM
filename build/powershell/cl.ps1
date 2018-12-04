@@ -6,7 +6,7 @@ function get-AMDPlatform {
 
  if($Platforms -eq "linux")
  {
-   $A = Invoke-Expression ".\build\apps\platforms > .\build\txt\platforms.txt"
+   $A = Invoke-Expression ".\build\apps\getplatforms > .\build\txt\platforms.txt"
    $GetPlatforms = Get-Content ".\build\txt\platforms.txt"
    Start-Sleep -S .5
  }
