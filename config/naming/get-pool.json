@@ -17,6 +17,7 @@
   "cryptonightv8": "cryptonightv8",
   "dagger": "dagger",
   "daggerhashimoto": "daggerhashimoto",
+  "dedal": "dedal",
   "equihash": "equihash",
   "equihash96": "equihash96",
   "equihash144": "equihash144",
@@ -25,6 +26,7 @@
   "equihash210": "equihash210",
   "equihash-btg": "equihash-btg",
   "ethash": "ethash",
+  "exosis": "exosis",
   "geek": "geek",
   "groestl": "groestl",
   "hex": "hex",
@@ -39,6 +41,7 @@
   "lyra2rev2": "lyra2rev2",
   "lyra2v2": "lyra2v2",
   "lyra2z": "lyra2z",
+  "lyra2vc0banhash": "lyra2vc0banhash",
   "m7m": "m7m",
   "masari": "masari",
   "myr-gr": "myr-gr",
@@ -61,10 +64,13 @@
   "x16r": "x16r",
   "x16s": "x16s",
   "x17": "x17",
+  "x18": "x18",
+  "x21s": "x21s",
   "x22i": "x22i",
   "xevan": "xevan",
   "xmr": "xmr",
   "yespower": "yespower",
   "yescrypt": "yescrypt",
-  "yescryptr16": "yescryptr16"
+  "yescryptr16": "yescryptr16",
+  "yescryptr32": "yescryptr32"
 }

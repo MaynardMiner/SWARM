@@ -79,6 +79,40 @@ $PreviousVersions | foreach {
           $Data.$_.difficulty | Add-Member "hmq1725" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "hmq1725" "hmq1725" -ErrorAction SilentlyContinue
           $Data.$_.oc | Add-Member "hmq1725" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
+          $Data.$_.commands| Add-Member "exosis" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "exosis" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "exosis" "exosis" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "exosis" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
+          $Data.$_.commands| Add-Member "x21s" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "x21s" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "x21s" "x21s" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "x21s" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
+          $Data.$_.commands| Add-Member "lyra2vc0banhash" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "lyra2vc0banhash" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "lyra2vc0banhash" "lyra2vc0banhash" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "lyra2vc0banhash" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
+           }
+         }
+         if($ChangeFile -eq "t-rex.json")
+          {
+          $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+          $Data.$_.commands| Add-Member "dedal" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "dedal" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "dedal" "dedal" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "dedal" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
+          $Data.$_.commands| Add-Member "x21s" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "x21s" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "x21s" "x21s" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "x21s" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
+          }
+         }
+         if($ChangeFile -eq "klaust.json")
+          {
+          $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+          $Data.$_.commands| Add-Member "yescryptr32" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "yescryptr32" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "yescryptr32" "yescryptr32" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "yescryptr32" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
            }
          }
          if($ChangeFile -eq "wildrig.json")
@@ -87,9 +121,21 @@ $PreviousVersions | foreach {
           $Data.$_.commands| Add-Member "polytimos" "" -ErrorAction SilentlyContinue
           $Data.$_.difficulty | Add-Member "polytimos" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "polytimos" "polytimos" -ErrorAction SilentlyContinue
-          $Data.$_.oc | Add-Member "polytimos" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "polytimos" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue         
+          $Data.$_.commands| Add-Member "dedal" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "dedal" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "dedal" "dedal" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "dedal" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue
+          $Data.$_.commands| Add-Member "x18" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "x18" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "x18" "x18" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "x18" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue
+          $Data.$_.commands| Add-Member "x21s" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "x21s" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "x21s" "x21s" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "x21s" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue
            }
-         }
+          }
          if($Data.AMD1.oc)
          {
           $Data.AMD1.oc | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Foreach{

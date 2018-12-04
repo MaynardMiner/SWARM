@@ -5,15 +5,18 @@
     "prestart": [],
     "commands": {
       "jackpot": "",
-      "groestl": ""
+      "groestl": "",
+      "skein": ""
     },
     "difficulty": {
       "jackpot": "",
-      "groestl": ""
+      "groestl": "",
+      "skein": ""
     },
     "naming": {
       "jackpot": "jackpot",
-      "groestl": "groestl"
+      "groestl": "groestl",
+      "skein": "skein"
     },
     "oc": {
       "jackpot": {
@@ -22,6 +25,11 @@
         "Memory": ""
       },
       "groestl": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "skein": {
         "Power": "",
         "Core": "",
         "Memory": ""
@@ -34,15 +42,18 @@
     "prestart": [],
     "commands": {
       "jackpot": "",
-      "groestl": ""
+      "groestl": "",
+      "skein": ""
     },
     "difficulty": {
       "jackpot": "",
-      "groestl": ""
+      "groestl": "",
+      "skein": ""
     },
     "naming": {
       "jackpot": "jackpot",
-      "groestl": "groestl"
+      "groestl": "groestl",
+      "skein": "skein"
     },
     "oc": {
       "jackpot": {
@@ -51,6 +62,11 @@
         "Memory": ""
       },
       "groestl": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "skein": {
         "Power": "",
         "Core": "",
         "Memory": ""
@@ -63,15 +79,18 @@
     "prestart": [],
     "commands": {
       "jackpot": "",
-      "groestl": ""
+      "groestl": "",
+      "skein": ""
     },
     "difficulty": {
       "jackpot": "",
-      "groestl": ""
+      "groestl": "",
+      "skein": ""
     },
     "naming": {
       "jackpot": "jackpot",
-      "groestl": "groestl"
+      "groestl": "groestl",
+      "skein": "skein"
     },
     "oc": {
       "jackpot": {
@@ -80,6 +99,11 @@
         "Memory": ""
       },
       "groestl": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "skein": {
         "Power": "",
         "Core": "",
         "Memory": ""

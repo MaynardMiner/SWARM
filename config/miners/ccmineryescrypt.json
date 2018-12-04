@@ -1,0 +1,161 @@
+{
+    "NVIDIA1": {
+      "name": "NVIDIA1",
+      "delay": "1",
+      "prestart": [],
+      "commands": {
+        "yescrypt": "",
+        "yescryptr16": "",
+        "yescryptr32": "",
+        "skein": "",
+        "neoscrypt": ""
+      },
+      "difficulty": {
+        "yescrypt": "",
+        "yescryptr16": "",
+        "yescryptr32": "",
+        "skein": "",
+        "neoscrypt": ""
+      },
+      "naming": {
+        "yescrypt": "yescrypt",
+        "yescryptr16": "yescryptr16",
+        "yescryptr32": "yescryptr32",
+        "skein": "skein",
+        "neoscrypt": "neoscrypt"
+      },
+      "oc": {
+        "yescrypt": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        },
+        "yescryptr16": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        },
+        "yescryptr32": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        },
+        "skein": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        },
+        "neoscrypt": {
+            "Power": "",
+            "Core": "",
+            "Memory": ""
+          }
+      }
+    },
+    "NVIDIA2": {
+      "name": "NVIDIA2",
+      "delay": "1",
+      "prestart": [],
+      "commands": {
+        "yescrypt": "",
+        "yescryptr16": "",
+        "yescryptr32": "",
+        "skein": "",
+        "neoscrypt": ""
+      },
+      "difficulty": {
+        "yescrypt": "",
+        "yescryptr16": "",
+        "yescryptr32": "",
+        "skein": "",
+        "neoscrypt": ""
+      },
+      "naming": {
+        "yescrypt": "yescrypt",
+        "yescryptr16": "yescryptr16",
+        "yescryptr32": "yescryptr32",
+        "skein": "skein",
+        "neoscrypt": "neoscrypt"
+      },
+      "oc": {
+        "yescrypt": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        },
+        "yescryptr16": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        },
+        "yescryptr32": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        },
+        "skein": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        },
+        "neoscrypt": {
+            "Power": "",
+            "Core": "",
+            "Memory": ""
+          }
+      }
+    },
+    "NVIDIA3": {
+      "name": "NVIDIA3",
+      "delay": "1",
+      "prestart": [],
+      "commands": {
+        "yescrypt": "",
+        "yescryptr16": "",
+        "yescryptr32": "",
+        "skein": "",
+        "neoscrypt": ""
+      },
+      "difficulty": {
+        "yescrypt": "",
+        "yescryptr16": "",
+        "yescryptr32": "",
+        "skein": "",
+        "neoscrypt": ""
+      },
+      "naming": {
+        "yescrypt": "yescrypt",
+        "yescryptr16": "yescryptr16",
+        "yescryptr32": "yescryptr32",
+        "skein": "skein",
+        "neoscrypt": "neoscrypt"
+      },
+      "oc": {
+        "yescrypt": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        },
+        "yescryptr16": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        },
+        "yescryptr32": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        },
+        "skein": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        },
+        "neoscrypt": {
+            "Power": "",
+            "Core": "",
+            "Memory": ""
+          }
+      }
+    }
+  }

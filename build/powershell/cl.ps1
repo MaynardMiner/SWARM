@@ -10,6 +10,12 @@ function get-AMDPlatform {
    $GetPlatforms = Get-Content ".\build\txt\platforms.txt"
    Start-Sleep -S .5
  }
+ else
+ {
+ $A = Invoke-Expression ".\build\apps\platforms.exe > .\build\txt\platforms.txt"
+ $GetPlatforms = Get-Content ".\build\txt\platforms.txt"
+ Start-Sleep -S .5
+ }
 
  $GPUPlatform = $GetPlatforms | Select-String "AMD Accelerated Parallel Processing"
  $GPUPlatform = $GetPlatforms -replace (" ","")

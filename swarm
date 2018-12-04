@@ -1,2 +1,2 @@
 #!/bin/bash
-pwsh -command "&.\swarm.ps1 -HiveOS No -Timeout 1 -Benchmark 160-RigName1 MMHash -StatsInterval 1 -Currency USD -CoinExchange RVN -Interval 300 -Location US -Auto_Coin Yes -PoolName nicehash,blockmasters -Type CPU -Wallet1 1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i -Nicehash_Wallet1 3JfBiUZZV17DTjAFCnZb97UpBgtLPLLDop -PasswordCurrency1 BTC -Nicehash_Fee 2 -Donate .5 -CPUThreads 3"
+pwsh -command "&.\swarm.ps1 -HiveOS No -Timeout 24 -Benchmark 160 -RigName1 MMHash -StatsInterval 1 -Currency USD -CoinExchange RVN -Interval 300 -Location US -PoolName nicehash,blockmasters,ahashpool,zpool -Type ASIC -Wallet1 1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i -Nicehash_Wallet1 3JfBiUZZV17DTjAFCnZb97UpBgtLPLLDop -PasswordCurrency1 BTC -Nicehash_Fee 2 -Donate .5"

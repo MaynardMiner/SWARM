@@ -5,7 +5,7 @@ if($cpu.jayddee.uri){$Uri = "$($cpu.jayddee.uri)"}
 else{$Uri = "None"}
 if($cpu.jayddee.minername){$MinerName = "$($cpu.jayddee.minername)"}
 else{$MinerName = "None"}
-if($Platform -eq "linux"){$Build = "Linux"}
+if($Platform -eq "linux"){$Build = "Tar"}
 elseif($Platform -eq "windows"){$Build = "Zip"}
 
 $ConfigType = "CPU"

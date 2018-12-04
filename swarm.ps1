@@ -43,7 +43,7 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$API_Key = "", ##Future Implementation
     [Parameter(Mandatory=$false)]
-    [Int]$Timeout = 0,  ##Hours Before Mine Clears All Hashrates/Profit 0 files
+    [Int]$Timeout = 24,  ##Hours Before Mine Clears All Hashrates/Profit 0 files
     [Parameter(Mandatory=$false)]
     [Int]$Interval = 300, #seconds before reading hash rate from miners
     [Parameter(Mandatory=$false)] 
@@ -85,17 +85,17 @@ param(
     [Parameter(Mandatory=$false)]
     [Int]$Nicehash_Fee = "2",
     [Parameter(Mandatory=$false)]
-    [Int]$Benchmark = 120,
+    [Int]$Benchmark = 180,
     [Parameter(Mandatory=$false)]
     [array]$No_Algo = "",
     [Parameter(Mandatory=$false)]
     [String]$Favor_Coins = "Yes",
     [Parameter(Mandatory=$false)]
-    [double]$Threshold = .01,
+    [double]$Threshold = .1,
     [Parameter(Mandatory=$false)]
     [string]$Platform = "linux",
     [Parameter(Mandatory=$false)]
-    [int]$CPUThreads = 3,
+    [int]$CPUThreads = 1,
     [Parameter(Mandatory=$false)]
     [string]$Stat_Coin = "Live",
     [Parameter(Mandatory=$false)]
@@ -125,15 +125,15 @@ param(
     [Parameter(Mandatory=$false)]
     [string]$PoolBans = "Yes",
     [Parameter(Mandatory=$false)]
-    [string]$OnboardCard = "no",
-    [Parameter(Mandatory=$false)]
     [Int]$PoolBanCount = 2,
     [Parameter(Mandatory=$false)]
     [Int]$AlgoBanCount = 3,
     [Parameter(Mandatory=$false)]
     [Int]$MinerBanCount = 4,    
     [Parameter(Mandatory=$false)]
-    [String]$Lite = "No"
+    [String]$Lite = "No",
+    [Parameter(Mandatory=$false)]
+    [String]$AMDPlatform
 )
 
 
@@ -190,14 +190,15 @@ $CurrentParams.Add("Update",$Update)
 $CurrentParams.Add("Cuda",$Cuda)
 $CurrentParams.Add("WattOMeter",$WattOMeter)
 $CurrentParams.Add("HiveId",$HiveId)
+$CurrentParams.Add("Farm_Hash",$Farm_Hash)
 $CurrentParams.Add("HivePassword",$HivePassword)
 $CurrentParams.Add("HiveMirror",$HiveMirror)
 $CurrentParams.Add("Rejections",$Rejections)
 $CurrentParams.Add("PoolBans",$PoolBans)
-$CurrentParams.Add("OnBoardCard",$OnboardCard)
 $CurrentParams.Add("PoolBanCount",$PoolBanCount)
 $CurrentParams.Add("AlgoBanCount",$AlgoBanCount)
 $CurrentParams.Add("MinerBanCount",$MinerBanCount)
+if($Platform -eq "windows"){$CurrentParams.Add("AMDPlatform",$AMDPlatform)}
 $CurrentParams.Add("Lite",$Lite)
 $StartParams = $CurrentParams | ConvertTo-Json 
 $StartingParams = $CurrentParams | ConvertTo-Json -Compress
@@ -263,14 +264,15 @@ $Update = $SWARMParams.Update
 $Cuda = $SWARMParams.Cuda
 $WattOMeter = $SWARMParams.WattOMeter
 $HiveID = $SWARMParams.HiveId
+$Farm_Hash = $SWARMParams.Farm_Hash
 $HivePassword = $SWARMParams.HivePassword
 $HiveMirror = $SWARMParams.HiveMirror
 $Rejections = $SWARMParams.Rejections
 $PoolBans = $SWARMParams.PoolBans
-$OnboardCard = $SWARMParams.OnboardCard
 $PoolBanCount = $SWARMParams.PoolBanCount
 $AlgoBanCount = $SWARMParams.AlgoBanCount
 $Lite = $SWARMParams.Lite
+if($Platform -eq "windows"){$AMDPlatform = $SWARMParams.AMDPlatform}
 }
 
 $Version = Split-Path ($script:MyInvocation.MyCommand.Path) -Parent
@@ -315,6 +317,7 @@ if(-not (Test-Path ".\build\txt")){New-Item -Path ".\build" -Name "txt" -ItemTyp
 . .\build\powershell\intensity.ps1
 . .\build\powershell\poolbans.ps1
 . .\build\powershell\cl.ps1
+if($Type -like "*ASIC*"){. .\build\powershell\icserver.ps1; . .\build\powershell\poolmanager.ps1}
 if($Platform -eq "linux"){. .\build\powershell\getbestunix.ps1; . .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
 if($Platform -eq "windows"){. .\build\powershell\getbestwin.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1;}
 
@@ -371,9 +374,13 @@ start-update -Update $update
   if($HiveOS -eq "Yes"){
   Write-Host "Getting Data"
   Get-Data -CmdDir $dir
-if($Type -like "*AMD*"){[string]$AMDPlatform = get-AMDPlatform -Platforms $Platform}
+  if($Type -like "*AMD*"){
+    [string]$AMDPlatform = get-AMDPlatform -Platforms $Platform
+    Write-Host "AMD OpenCL Platform is $AMDPlatform"
+    }
   }
 }
+
 Write-Host "HiveOS = $HiveOS"
 #Startings Settings:
 $BenchmarkMode = "No"
@@ -386,6 +393,7 @@ $WalletDonate = "1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i"
 $NicehashDonate = "3JfBiUZZV17DTjAFCnZb97UpBgtLPLLDop"
 $UserDonate = "MaynardVII"
 $WorkerDonate = "Rig1"
+$PoolNumber = 1
 $ActiveMinerPrograms = @()
 $Naming = Get-Content ".\config\naming\get-pool.json" | ConvertFrom-Json
 $DonationMode = $false
@@ -554,19 +562,22 @@ $Update = $SWARMParams.Update
 $Cuda = $SWARMParams.Cuda
 $WattOMeter = $SWARMParams.WattOMeter
 $HiveID = $SWARMParams.HiveId
+$Farm_Hash = $SWARMParams.Farm_Hash
 $HivePassword = $SWARMParams.HivePassword
 $HiveMirror = $SWARMParams.HiveMirror
 $Rejections = $SWARMParams.Rejections
 $PoolBans = $SWARMParams.PoolBans
-$OnboardCard = $SWARMParams.OnboardCard
 $PoolBanCount = $SWARMParams.PoolBanCount
 $AlgoBanCount = $SWARMParams.AlgoBanCount
 $Lite = $SWARMParams.Lite
+if($Platform -eq "windows"){$AMDPlatform = $SWARMParams.AMDPlatform}
 
 if($SWARMParams.Rigname1 -eq "Donate"){$Donating = $True}
 else{$Donating = $False}
 if($Donating -eq $True){$Test = Get-Date; $DonateTest = "Miner has donated on $Test"; $DonateTest | Set-Content ".\build\txt\donate.txt"}
 
+if($Type -notlike "*ASIC*")
+{
 ##Save Watt Calcs
 if($Watts){$Watts | ConvertTo-Json | Out-File ".\config\power\power.json"}
 ##OC-Settings
@@ -1520,11 +1531,13 @@ if($Strike -eq $true)
      $Warnings."$($_.Name)_$($_.Algo)" | foreach{try{$_.bad=0}catch{}}
      $Warnings."$($_.Name)" | foreach{try{$_.bad=0}catch{}}
      Start-Sleep -S 1
-    }
+     }
+     }
     }
    }
   }
  }
+else{Start-ASIC}
 }
   #Stop the log
   Stop-Transcript

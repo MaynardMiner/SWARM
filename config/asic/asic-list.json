@@ -1,0 +1,7 @@
+{
+ "algorithm":["sha256"],
+ "miner":"cgminer",
+ "master":"127.0.0.1",
+ "slave_list":["","",""],
+ "port":"4028"
+}

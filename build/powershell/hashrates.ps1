@@ -152,10 +152,32 @@ function Get-HTTP {
 function Get-HashRate {
     param(
         [Parameter(Mandatory=$true)]
-        [String]$Type        
+        [String]$Type,
+        [Parameter(Mandatory=$false)]
+        [String]$API,
+        [Parameter(Mandatory=$false)]
+        [Int]$Port
        )
+
+    if($Type -eq "ASIC")
+    {
+      switch($API)
+      {
+        "cgminer"
+        {
+        $summary = "summary|0"
+        $Master | foreach {try{$response = Get-TCP -Server "$($_)" -Port $Port -Message $summary -Timeout $timeout}catch{}}
+        $response = $response -split "SUMMARY," | Select -Last 1
+        $response = $response -split "," | ConvertFrom-StringData
+        $Hash = [Double]$Response."MHS 5s"*1000000
+        $Hash
+        }
+      }
+    }
+    else{
         $HashFile = Get-Content ".\build\txt\$Type-hash.txt"
         [Double]$HashFile 
+        }
 }
 
 function Get-HiveStats {

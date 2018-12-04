@@ -21,9 +21,15 @@ $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty Ba
 $phiphipool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name |  Where-Object {$phiphipool_Request.$_.hashrate -gt 0} |  Where-Object {$Naming.$($phiphipool_Request.$_.name)} | ForEach-Object {
     
 #$phiphipool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | Where-Object {$phiphipool_Request.$_.hashrate -gt 0} | foreach {
+
     $phiphipool_Port = $phiphipool_Request.$_.port
     $phiphipool_Algorithm = Get-Algorithm $phiphipool_Request.$_.name
-    $phiphipool_Host = "pool1.phi-phi-pool.com"
+    Switch($location)
+    {
+     "Asia"{$phiphipool_Host = "asia.phi-phi-pool.com"}
+     "US"{$phiphipool_Host = "us.phi-phi-pool.com"}
+     "Europe"{$phiphipool_Host = "eu.phi-phi-pool.com"}
+    }
     $Divisor = (1000000*$phiphipool_Request.$_.mbtc_mh_factor)
 
     if($Algorithm -eq $phiphipool_Algorithm)

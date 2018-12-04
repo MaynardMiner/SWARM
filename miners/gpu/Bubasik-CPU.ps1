@@ -5,7 +5,7 @@ if($cpu.bubasik.uri){$Uri = "$($cpu.bubasik.uri)"}
 else{$Uri = "None"}
 if($cpu.bubasik.minername){$MinerName = "$($cpu.bubasik.minername)"}
 else{$MinerName = "None"}
-if($Platform -eq "linux"){$Build = "Linux"}
+if($Platform -eq "linux"){$Build = "Tar"}
 elseif($Platform -eq "windows"){$Build = "Zip"}
 
 $ConfigType = "CPU"
