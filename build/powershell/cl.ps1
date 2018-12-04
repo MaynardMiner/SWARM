@@ -18,7 +18,7 @@ function get-AMDPlatform {
  }
 
  $GPUPlatform = $GetPlatforms | Select-String "AMD Accelerated Parallel Processing"
- $GPUPlatform = $GetPlatforms -replace (" ","")
+ $GPUPlatform = $GPUPlatform -replace (" ","")
  $GPUPlatform = $GPUPlatform -split "AMD" | Select -First 1
 
  $GPUPlatform
