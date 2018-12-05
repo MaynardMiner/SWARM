@@ -9,16 +9,6 @@
     "version": "11.9",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/Claymore-Linux.tar.gz"
   },
-  "phoenix": {
-    "name": "phoenix",
-    "type": "nvidia",
-    "path1": ".\\bin\\phoenix-1\\PhoenixMiner",
-    "path2": ".\\bin\\phoenix-2\\PhoenixMiner",
-    "path3": ".\\bin\\phoenix-3\\PhoenixMiner",
-    "minername": "PhoenixMiner",
-    "version": "4.0b",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/phoenix-linux.tar.gz" 
- },
   "cryptodredge": {
     "name": "cryptodredge",
     "type": "nvidia",
@@ -26,7 +16,7 @@
     "path2": ".\\bin\\cryptodredge-2\\CryptoDredge",
     "path3": ".\\bin\\cryptodredge-3\\CryptoDredge",
     "minername": "CryptoDredge",
-    "version": "0.11.0",
+    "version": "0.13.0",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/CryptoDredge-Linux-9-2.tar.gz"
   },
   "dstm": {
@@ -59,6 +49,16 @@
     "version": "0.6",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/ewbf-linux.tar.gz"
   },
+  "excavator": {
+    "name": "excavator",
+    "type": "nvidia",
+    "path1": ".\\bin\\excavator-1\\excavator",
+    "path2": ".\\bin\\excavator-2\\excavator",
+    "path3": ".\\bin\\excavator-3\\excavator",
+    "minername": "excavator",
+    "version": "1.5.13",
+    "uri": "https://github.com/nicehash/excavator/releases/download/v1.5.13a/excavator_1.5.13a_amd64.deb"
+  },
   "klaust": {
     "name": "klaust",
     "type": "nvidia",
@@ -78,6 +78,16 @@
     "minername": "lolMiner",
     "version": "0.43",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/lolMiner-Linux.tar.gz"
+  },
+  "phoenix": {
+    "name": "phoenix",
+    "type": "nvidia",
+    "path1": ".\\bin\\phoenix-1\\PhoenixMiner",
+    "path2": ".\\bin\\phoenix-2\\PhoenixMiner",
+    "path3": ".\\bin\\phoenix-3\\PhoenixMiner",
+    "minername": "PhoenixMiner",
+    "version": "4.0b",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/phoenix-linux.tar.gz"
   },
   "tpruvot": {
     "name": "tpruvot",
@@ -109,14 +119,14 @@
     "version": "1.2",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/zjazz-linux-9-2.tar.gz"
   },
-  "excavator": {
-    "name": "excavator",
+  "gminer": {
+    "name": "gminer",
     "type": "nvidia",
-    "path1": ".\\bin\\excavator-1\\excavator",
-    "path2": ".\\bin\\excavator-2\\excavator",
-    "path3": ".\\bin\\excavator-3\\excavator",
-    "minername": "excavator",
-    "version": "1.5.13",
-    "uri": "https://github.com/nicehash/excavator/releases/download/v1.5.13a/excavator_1.5.13a_amd64.deb"
+    "path1": ".\\bin\\gminer-1\\miner",
+    "path2": ".\\bin\\gminer-2\\miner",
+    "path3": ".\\bin\\gminer-3\\miner",
+    "minername": "miner",
+    "version": "1.10",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/zjazz-linux-9-2.tar.gz"
   }
 }

@@ -1,9 +1,9 @@
 ##Miner Path Information
-if($nvidia.ewbf.path1){$Path = "$($nvidia.ewbf.path1)"}
+if($nvidia.gminer.path1){$Path = "$($nvidia.gminer.path1)"}
 else{$Path = "None"}
-if($nvidia.ewbf.uri){$Uri = "$($nvidia.ewbf.uri)"}
+if($nvidia.gminer.uri){$Uri = "$($nvidia.gminer.uri)"}
 else{$Uri = "None"}
-if($nvidia.ewbf.minername){$MinerName = "$($nvidia.ewbf.minername)"}
+if($nvidia.gminer.minername){$MinerName = "$($nvidia.gminer.minername)"}
 else{$MinerName = "None"}
 if($Platform -eq "linux"){$Build = "Tar"}
 elseif($Platform -eq "windows"){$Build = "Zip"}
@@ -19,7 +19,7 @@ if($GPUDevices1 -ne '')
  }
 
 ##Get Configuration File
-$GetConfig = "$dir\config\miners\ewbf.json"
+$GetConfig = "$dir\config\miners\gminer.json"
 try{$Config = Get-Content $GetConfig | ConvertFrom-Json}
 catch{Write-Warning "Warning: No config found at $GetConfig"}
 
@@ -40,8 +40,8 @@ if($CoinAlgo -eq $null)
   $AlgoPools | Where Symbol -eq $MinerAlgo | foreach {
   if($Algorithm -eq "$($_.Algorithm)")
   {
-  if($Config.$ConfigType.difficulty.$($_.Algorithm)){$Diff=",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))"}
-  [PSCustomObject]@{
+    if($Config.$ConfigType.difficulty.$($_.Algorithm)){$Diff=",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))"}
+    [PSCustomObject]@{
     Delay = $Config.$ConfigType.delay
     Symbol = "$($_.Algorithm)"
       MinerName = $MinerName
@@ -50,7 +50,7 @@ if($CoinAlgo -eq $null)
       Path = $Path
       Devices = $Devices
       DeviceCall = "ewbf"
-      Arguments = "--api 0.0.0.0:42000 --server $($_.Host) --port $($_.Port) --user $($_.User1) --pass $($_.Pass1)$($Diff) $($Config.$ConfigType.commands.$($_.Algorithm))"
+      Arguments = "--api 42000 --server $($_.Host) --port $($_.Port) --user $($_.User1) --pass $($_.Pass1)$Diff $($Config.$ConfigType.commands.$($_.Algorithm))"
       HashRates = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)}
       Quote = if($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)){$($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)*($_.Price)}else{0}
       PowerX = [PSCustomObject]@{$($_.Algorithm) = if($Watts.$($_.Algorithm)."$($ConfigType)_Watts"){$Watts.$($_.Algorithm)."$($ConfigType)_Watts"}elseif($Watts.default."$($ConfigType)_Watts"){$Watts.default."$($ConfigType)_Watts"}else{0}}

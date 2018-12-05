@@ -50,7 +50,7 @@ if($CoinAlgo -eq $null)
       Path = $Path
       Devices = $Devices
       DeviceCall = "ewbf"
-      Arguments = "--api 0.0.0.0:42002 --server $($_.Host) --port $($_.Port) --user $($_.User3) --pass $($AlgoPools.$_.Pass3)$($Diff) $($Config.$ConfigType.commands.$($_.Algorithm))"
+      Arguments = "--api 0.0.0.0:42002 --server $($_.Host) --port $($_.Port) --user $($_.User3) --pass $($_.Pass3)$($Diff) $($Config.$ConfigType.commands.$($_.Algorithm))"
       HashRates = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)}
       Quote = if($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)){$($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)*($_.Price)}else{0}
       PowerX = [PSCustomObject]@{$($_.Algorithm) = if($Watts.$($_.Algorithm)."$($ConfigType)_Watts"){$Watts.$($_.Algorithm)."$($ConfigType)_Watts"}elseif($Watts.default."$($ConfigType)_Watts"){$Watts.default."$($ConfigType)_Watts"}else{0}}

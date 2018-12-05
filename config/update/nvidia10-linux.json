@@ -26,8 +26,8 @@
     "path2": ".\\bin\\cryptodredge-2\\CryptoDredge",
     "path3": ".\\bin\\cryptodredge-3\\CryptoDredge",
     "minername": "CryptoDredge",
-    "version": "0.11.0",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/CryptoDredge-Linux-9-2.tar.gz"
+    "version": "0.13.0",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/CryptoDredge-Linux-10.tar.gz"
   },
   "dstm": {
     "name": "dstm",
@@ -128,5 +128,15 @@
     "minername": "excavator",
     "version": "1.5.13",
     "uri": "https://github.com/nicehash/excavator/releases/download/v1.5.13a/excavator_1.5.13a-cuda10_amd64.deb"
+  },
+  "gminer": {
+    "name": "gminer",
+    "type": "nvidia",
+    "path1": ".\\bin\\gminer-1\\miner",
+    "path2": ".\\bin\\gminer-2\\miner",
+    "path3": ".\\bin\\gminer-3\\miner",
+    "minername": "miner",
+    "version": "1.10",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/zjazz-linux-9-2.tar.gz"
   }
 }

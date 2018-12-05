@@ -9,7 +9,8 @@
       "equihash144": "-algo 144_5 --pers auto",
       "equihash96": "--algo 96_5 --pers auto",
       "equihash210": "--algo 210_9 --pers auto",
-      "equihash200": "--algo 200_9 --pers auto"
+      "equihash200": "--algo 200_9 --pers auto",
+      "zhash": "--algo 144_5 --pers auto"
     },
     "difficulty": {
       "equihash-btg": "",
@@ -17,7 +18,8 @@
       "equihash144": "",
       "equihash96": "",
       "equihash210": "",
-      "equihash200": ""
+      "equihash200": "",
+      "zhash":""
     },
     "naming": {
       "equihash-btg": "equihash-btg",
@@ -25,7 +27,8 @@
       "equihash144": "equihash144",
       "equihash96": "equihash96",
       "equihash210": "equihash210",
-      "equihash200": "equihash200"
+      "equihash200": "equihash200",
+      "zhash": "zhash"
     },
     "oc": {
       "equihash-btg": {
@@ -57,8 +60,13 @@
         "Power": "",
         "Core": "",
         "Memory": ""
-      }
-    }
+      },  
+      "zhash": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        }
+     }
   },
   "NVIDIA2": {
     "name": "NVIDIA2",
@@ -70,7 +78,8 @@
       "equihash144": "-algo 144_5 --pers auto",
       "equihash96": "--algo 96_5 --pers auto",
       "equihash210": "--algo 210_9 --pers auto",
-      "equihash200": "--algo 200_9 --pers auto"
+      "equihash200": "--algo 200_9 --pers auto",
+      "zhash": "--algo 144_5 --pers auto"
     },
     "difficulty": {
       "equihash-btg": "",
@@ -78,7 +87,8 @@
       "equihash144": "",
       "equihash96": "",
       "equihash210": "",
-      "equihash200": ""
+      "equihash200": "",
+      "zhash":""
     },
     "naming": {
       "equihash-btg": "equihash-btg",
@@ -86,7 +96,8 @@
       "equihash144": "equihash144",
       "equihash96": "equihash96",
       "equihash210": "equihash210",
-      "equihash200": "equihash200"
+      "equihash200": "equihash200",
+      "zhash": "zhash"
     },
     "oc": {
       "equihash-btg": {
@@ -118,8 +129,13 @@
         "Power": "",
         "Core": "",
         "Memory": ""
-      }
-    }
+      },  
+      "zhash": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        }
+     }
   },
   "NVIDIA3": {
     "name": "NVIDIA3",
@@ -131,7 +147,8 @@
       "equihash144": "-algo 144_5 --pers auto",
       "equihash96": "--algo 96_5 --pers auto",
       "equihash210": "--algo 210_9 --pers auto",
-      "equihash200": "--algo 200_9 --pers auto"
+      "equihash200": "--algo 200_9 --pers auto",
+      "zhash": "--algo 144_5 --pers auto"
     },
     "difficulty": {
       "equihash-btg": "",
@@ -139,7 +156,8 @@
       "equihash144": "",
       "equihash96": "",
       "equihash210": "",
-      "equihash200": ""
+      "equihash200": "",
+      "zhash":""
     },
     "naming": {
       "equihash-btg": "equihash-btg",
@@ -147,7 +165,8 @@
       "equihash144": "equihash144",
       "equihash96": "equihash96",
       "equihash210": "equihash210",
-      "equihash200": "equihash200"
+      "equihash200": "equihash200",
+      "zhash": "zhash"
     },
     "oc": {
       "equihash-btg": {
@@ -179,7 +198,12 @@
         "Power": "",
         "Core": "",
         "Memory": ""
-      }
-    }
+      },  
+      "zhash": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        }
+     }
   }
 }

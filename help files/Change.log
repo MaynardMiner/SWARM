@@ -1183,3 +1183,16 @@ differenly than other platforms.
 -wildrig updated
 -SWARM_help.txt accurate now.
 -Wiki heavily updated on github.
+
+
+1.8.0
+
+-Zhash added.
+-EWBF added back to rotation.
+-Gminer added. (Does not work with NiceHash- Contact Dev).
+  added to "project" folder
+-CryptoDredge Cuda 10 link fixed.
+-New zpool URL schema added (It's working in SWARM- seems like pool has issues).
+-trex updated
+
+Note: I am looking for a 144_5 --pers auto miner for AMD

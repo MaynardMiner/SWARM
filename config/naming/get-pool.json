@@ -72,5 +72,6 @@
   "yespower": "yespower",
   "yescrypt": "yescrypt",
   "yescryptr16": "yescryptr16",
-  "yescryptr32": "yescryptr32"
+  "yescryptr32": "yescryptr32",
+  "zhash": "zhash"
 }

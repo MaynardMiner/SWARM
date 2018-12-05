@@ -91,7 +91,7 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$Favor_Coins = "Yes",
     [Parameter(Mandatory=$false)]
-    [double]$Threshold = .1,
+    [double]$Threshold = .02,
     [Parameter(Mandatory=$false)]
     [string]$Platform = "linux",
     [Parameter(Mandatory=$false)]
@@ -1406,13 +1406,37 @@ if($_.BestMiner -eq $true)
          Write-Host "Stat Attempt Yielded 0" -Foregroundcolor Red
          Start-Sleep -S .25
          $GPUPower = 0
-         if($WattOMeter -eq "yes" -and $_.Type -ne "CPU"){$Watts.$($_.Algo)."$($_.Type)_Watts" = "$GPUPower"}
-        }
+         if($WattOMeter -eq "yes" -and $_.Type -ne "CPU")
+          {
+          if($Watts.$($_.Algo))
+           {
+            $Watts.$($_.Algo)."$($_.Type)_Watts" = "$GPUPower"
+           }
+           else
+           {
+            $WattTypes = @{NVIDIA1_Watts="";NVIDIA2_Watts="";NVIDIA3_Watts="";AMD1_Watts="";CPU_Watts=""}
+            $Watts | Add-Member "$($_.Algo)" $WattTypes
+            $Watts.$($_.Algo)."$($_.Type)_Watts" = "$GPUPower"
+           }
+          }
+         }
          else
           {
            if($WattOMeter -eq "yes" -and $_.Type -ne "CPU"){try{$GPUPower = Set-Power -MinerDevices $($_.Devices) -Command "stat" -PwrType $($_.Type)}catch{Write-Host "WattOMeter Failed" $GPUPower = 0}}
            else{$GPUPower = 1}
-           if($WattOMeter -eq "yes" -and $_.Type -ne "CPU"){$Watts.$($_.Algo)."$($_.Type)_Watts" = "$GPUPower"}
+           if($WattOMeter -eq "yes" -and $_.Type -ne "CPU")
+            {
+             if($Watts.$($_.Algo))
+              {
+               $Watts.$($_.Algo)."$($_.Type)_Watts" = "$GPUPower"
+              }
+             else
+              {
+               $WattTypes = @{NVIDIA1="";NVIDIA2="";NVIDIA3="";AMD1="";CPU=""}
+               $Watts | Add-Member "$($_.Algo)" $WattTypes
+               $Watts.$($_.Algo)."$($_.Type)_Watts" = "$GPUPower"
+              }
+            }
             $Stat = Set-Stat -Name "$($_.Name)_$($_.Algo)_hashrate" -Value $Miner_HashRates
             Start-Sleep -s 1
             $GetLiveStat = Get-Stat "$($_.Name)_$($_.Algo)_hashrate"

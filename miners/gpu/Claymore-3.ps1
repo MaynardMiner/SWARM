@@ -42,7 +42,7 @@ if($CoinAlgo -eq $null)
   $AlgoPools | Where Symbol -eq $MinerAlgo | foreach {
   if($Algorithm -eq "$($_.Algorithm)")
   {
-  if($Config.$ConfigType.difficulty.$($_.Algorithm)){$Diff=",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))"}
+    if($Config.$ConfigType.difficulty.$($_.Algorithm)){$Diff=",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))"}else{$Diff=""}
   [PSCustomObject]@{
   Delay = $Config.$ConfigType.delay
   Symbol = "$($_.Algorithm)"
