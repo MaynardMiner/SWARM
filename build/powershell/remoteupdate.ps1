@@ -29,7 +29,7 @@ $PreviousVersions += "SWARM.1.7.6"
 $PreviousVersions += "SWARM.1.7.6"
 $PreviousVersions += "SWARM.1.7.7"
 $PreviousVersions += "SWARM.1.7.8"
-
+$PreviousVersions += "SWARM.1.7.9"
 
 $PreviousVersions | foreach {
   $PreviousPath = Join-Path "/hive/miners/custom" "$_"
