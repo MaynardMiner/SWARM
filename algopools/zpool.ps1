@@ -25,7 +25,7 @@ $Zpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Selec
     $Zpool_Algorithm = Get-Algorithm $Zpool_Request.$_.name
     Switch($Location)
     {
-     "US"{$Zpool_Host = "$ZPool_Algorithm.na.mine.zpool.ca"}
+     "US"{$Zpool_Host = "$ZPool_Algorithm.eu.mine.zpool.ca"}
      "Europe"{$Zpool_Host = "$ZPool_Algorithm.eu.mine.zpool.ca"}
      "Asia"{$Zpool_Host = "$ZPool_Algorithm.sea.mine.zpool.ca"}
     }
