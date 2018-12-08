@@ -1,4 +1,5 @@
 {
+  "name":"bubasik",
   "CPU": {
     "name": "CPU",
     "delay": "1",

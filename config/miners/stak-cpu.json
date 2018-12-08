@@ -1,4 +1,5 @@
 {
+  "name":"stak-cpu",
   "CPU": {
     "name": "CPU",
     "delay": "1",
