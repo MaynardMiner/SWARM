@@ -109,9 +109,9 @@
   },
   "equihash": {
     "NVIDIA1_Watts": "",
-    "NVIDIA2_Watts": "75",
+    "NVIDIA2_Watts": "0",
     "NVIDIA3_Watts": "",
-    "AMD1_Watts": "50.108",
+    "AMD1_Watts": "",
     "CPU_Watts": ""
   },
   "equihash96": {

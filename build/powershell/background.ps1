@@ -33,37 +33,24 @@ param(
 #$WorkingDir = "/hive/custom/SWARM.1.6.3"
 #Set-Location $WorkingDir
 
-function Get-NvidiaTemps {
-  if($HiveOS -eq "No")
-   {
-  timeout -s9 10 nvidia-smi --query-gpu=temperature.gpu --format=csv | Tee-Object ".\build\txt\gputemps.txt" | Out-Null
+function Get-NvidiaStats {
+  timeout -s9 10 ./build/apps/VII-smi | Tee-Object -Variable getstats | Out-Null
   Start-Sleep -S .25
-  if(Test-path ".\build\txt\gputemps.txt"){$gettemps = Get-Content ".\build\txt\gputemps.txt" | ConvertFrom-Csv}
-  $NVIDIATemps = $gettemps.'temperature.gpu'
-  $NVIDIATemps
-   }
-   else{
-    $A = timeout -s9 10 gpu-stats
-    if($A){$Stat = $A | ConvertFrom-Json}
-    $Stat.temp
-    }  
-}
-
-function Get-NvidiaFans {
-  if($HiveOS -eq "No")
+  if($getstats)
   {
-  timeout -s9 10 nvidia-smi --query-gpu=fan.speed --format=csv | Tee-Object ".\build\txt\gpufans.txt" | Out-Null
-  Start-Sleep -S .25
-  if(Test-path ".\build\txt\gpufans.txt"){$getfan = Get-Content ".\build\txt\gpufans.txt" | ConvertFrom-Csv}
-  $NVIDIAFans = $getfan.'fan.speed [%]' | foreach {$_ -replace ("\%","")}
-  $NVIDIAFans
+  $NVIDIAStats = @{}
+  $NVIDIAStats.Add("temps",@{})
+  $NVIDIAStats.Add("fans",@{})
+  $NVIDIAStats.Add("power",@{})
+  $Ntemps = $getstats | Select-String "temperature" | foreach{$_ -replace "GPU ",""} | foreach{$_ -replace " temperature",""} | ConvertFrom-StringData
+  $Nfans = $getstats | Select-String "fan speed" | foreach{$_ -replace "GPU ",""} | foreach{$_ -replace " fan speed",""} | ConvertFrom-StringData
+  $Npower = $getstats | Select-String "power" | foreach{$_ -replace "GPU ",""} | foreach{$_ -replace " power",""} | ConvertFrom-StringData
+  $Ntemps.keys | foreach{$NVIDIAStats.temps.Add("$($_)","$($Ntemps.$_)")}
+  $Nfans.keys | foreach{$NVIDIAStats.fans.Add("$($_)","$($Nfans.$_)")}
+  $NPower.keys | foreach{$NVIDIAStats.power.Add("$($_)","$($NPower.$_ -replace "failed to get","75")")}
   }
-  else{
-    $A = timeout -s9 10 gpu-stats
-    if($A){$Stat = $A | ConvertFrom-Json}
-    $Stat.fan
-      }  
-    }
+  $NVIDIAStats
+}
 
 function Get-AMDFans{
   if($HiveOS -eq "No")
@@ -248,7 +235,8 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
       $HS = "khs"
       Write-Host "Miner $MinerType is claymore api"
       Write-Host "Miner Port is $Port"
-      Write-Host "Miner Devices is $Devices"   
+      Write-Host "Miner Devices is $Devices"
+      $Request = $Null
       $Request = Get-HTTP -Port $Port
       if($Request)
        {
@@ -288,6 +276,7 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
       $Message = @{id = 1; jsonrpc = "2.0"; method = "miner_getstat1"} | ConvertTo-Json -Compress
       #$Response = Invoke-RestMethod "http://$($server):$($port)" -TimeoutSec 10 -Method POST -Body $message -ContentType 'application/json'
       $Message = @{id = 1; jsonrpc = "2.0"; method = "miner_getstat1"} | ConvertTo-Json -Compress
+      $Client = $Null
       $Client = Get-TCP -Server $Server -Port $port -Message $Message
       if($Client)
       {
@@ -325,6 +314,7 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
    Write-Host "Miner Port is $Port"
    Write-Host "Miner Devices is $Devices"
    $Message = @{id=1; method = "algorithm.list"; params=@()} | ConvertTo-Json -Compress
+   $GetSummary = $null
    $GetSummary = Get-TCP -Server $Server -Port $port -Message $Message
    if($GetSummary)
     {
@@ -338,6 +328,7 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
     }
     else{Write-Host "API Summary Failed- Could Not Total Hashrate Or No Accepted Shares" -Foreground Red; $RAW = 0; $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"}
     $Message = @{id=1; method = "worker.list"; params=@()} | ConvertTo-Json -Compress
+    $GetThreads = $Null
     $GetThreads = Get-TCP -Server $Server -Port $port -Message $Message
     if($GetThreads)
     {
@@ -363,6 +354,7 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
     Write-Host "Miner $MinerType is miniz api"
     Write-Host "Miner Port is $Port"
     Write-Host "Miner Devices is $Devices"
+    $Request = $Null
     $Request = Invoke-Webrequest "http://$($server):$port"
     if($Request)
     {
@@ -372,7 +364,7 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
     $RAW = $Hash | Select -Last 1
     $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
     Write-Host "Miner $Name was clocked at $([Double]$RAW/1000)" -foreground Yellow
-    $KHS = [Double]$RAW/1000
+    $KHS += [Double]$RAW/1000
     $Shares = $Data | Select-String "Shares" | Select -Last 1 | foreach{$_ -split "</td>" | Select -First 1} | Foreach{$_ -split ">" | Select -Last 1}
     $ACC += $Shares -split "/" | Select -first 1
     $REJ += $Shares -split "/" | Select -first 1
@@ -381,8 +373,12 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
     $MinerACC = $Shares -split "/" | Select -first 1
     $MinerREJ = $Shares -split "/" | Select -first 1
     for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Hash.Count -eq 1){$Hash}else{$Hash[$i]})}
-    if($Platforms -eq "linux"){$MinerFans = Get-NVIDIAFans; for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MinerFans.Count -eq 1){$MinerFans}else{$MinerFans[$($GCount.$TypeS.$GPU)]})}}
-    if($Platforms -eq "linux"){$MinerTemps = Get-NVIDIATemps; if($MinerTemps){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($MinerTemps.Count -eq 1){$MinerTemps}else{$MinerTemps[$($GCount.$TypeS.$GPU)]})}}}
+    if($Plaforms -eq "linux"){$MinerStats = Get-NVIDIAStats}
+    if($MinerStats)
+    {
+    for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $NVIDIAStats.fans.$_}
+    for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $NVIDIAStats.temps.$_}
+    }
     $ALGO = $MinerAlgo
     $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
     }
@@ -396,6 +392,7 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
        Write-Host "Miner Port is $Port"
        Write-Host "Miner Devices is $Devices"  
        $Message = @{id = 1; method = "getstat"} | ConvertTo-Json -Compress
+       $Client = $Null
        $Client = New-Object System.Net.Sockets.TcpClient $server, $port
        if($Client)
         { 
@@ -434,6 +431,7 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
        Write-Host "Miner $MinerType is ccminer api"
        Write-Host "Miner Port is $Port"
        Write-Host "Miner Devices is $Devices"
+       $GetSummary = $Null
        $GetSummary = Get-TCP -Server $Server -Port $port -Message "summary"
        if($GetSummary)
        {
@@ -447,6 +445,7 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
         Write-Host "Current Running instances: $($Process.Name)"
       }
        else{Write-Host "API Summary Failed- Could Not Total Hashrate Or No Accepted Shares" -Foreground Red; $RAW = 0; $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"}
+       $GetThreads = $Null
        $GetThreads = Get-TCP -Server $Server -Port $port -Message "threads"
        if($GetThreads)
         {
@@ -475,7 +474,8 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
       $HS = "khs"
       Write-Host "Miner $MinerType is trex api"
       Write-Host "Miner Port is $Port"  
-      Write-Host "Miner Devices is $Devices"  
+      Write-Host "Miner Devices is $Devices"
+      $Request = $Null
       $Request = Get-HTTP -Port $Port -Message "/summary"
       if($Request)
        {
@@ -505,7 +505,8 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
         $HS = "hs"
         Write-Host "Miner $MinerType is dstm api"
         Write-Host "Miner Port is $Port"
-        Write-Host "Miner Devices is $Devices"  
+        Write-Host "Miner Devices is $Devices"
+        $GetSummary = $Null
         $GetSummary = Get-TCP -Server $Server -Port $port -Message "summary"
         if($GetSummary)
          {
@@ -540,6 +541,7 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
       Write-Host "Miner Port is $Port"
       Write-Host "Miner Devices is $Devices"  
       $Message = @{command="summary+devs"; parameter=""} | ConvertTo-Json -Compress
+      $Request = $null
       $Request = Get-TCP -Server $Server -Port $port -Message $Message
       if($Request)
       {
@@ -581,6 +583,7 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
      Write-Host "Miner $MinerType is cpuminer api"
      Write-Host "Miner Port is $Port"
      Write-Host "Miner Devices is $Devices"
+     $GetCPUSUmmary = $Null
      $GetCPUSummary = Get-TCP -Server $Server -Port $Port -Message "summary"
      if($GetCPUSummary)
      {
@@ -589,6 +592,7 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
      $CPURAW | Set-Content ".\build\txt\$MinerType-hash.txt"
      }
      else{Write-Host "API Summary Failed- Could Not Total Hashrate" -Foreground Red; $CPURAW = 0; $CPURAW | Set-Content ".\build\txt\$MinerType-hash.txt"}
+     $GetCPUThreads = $Null
      $GetCPUThreads = Get-TCP -Server $Server -Port $Port -Message "threads"
      if($GetCPUThreads)
      {
@@ -709,6 +713,7 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
     Write-Host "Miner Devices is $Devices"
     $HS = "hs"
     $Message="/api.json"
+    $Request = $Null
     $Request = Get-HTTP -Port $Port -Message $Message
     if($Request)
     {
@@ -744,6 +749,7 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
     Write-Host "Miner Devices is $Devices"
     $CPUHS = "hs"
     $Message ="/api.json"
+    $Request = $Null
     $Request = Get-HTTP -Port $Port -Message $Message
     if($Request)
     {
@@ -771,6 +777,7 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
     Write-Host "Miner Devices is $Devices"    
     $HS = "khs"
     $Message = '/api.json'
+    $Request = $Null
     $Request = Get-HTTP -Port $Port -Message $Message
     if($Request)
     {

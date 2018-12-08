@@ -30,7 +30,7 @@
       "hmq1725": "",
       "x21s": "",
       "lyra2vc0banhash": ""
-     },
+    },
     "difficulty": {
       "lyra2v2": "",
       "lyra2rev2": "",
@@ -251,7 +251,7 @@
       "hmq1725": "",
       "x21s": "",
       "lyra2vc0banhash": ""
-     },
+    },
     "difficulty": {
       "lyra2v2": "",
       "lyra2rev2": "",
@@ -441,7 +441,7 @@
       }
     }
   },
-   "NVIDIA3": {
+  "NVIDIA3": {
     "name": "NVIDIA3",
     "delay": "1",
     "prestart": [],
@@ -472,7 +472,7 @@
       "hmq1725": "",
       "x21s": "",
       "lyra2vc0banhash": ""
-     },
+    },
     "difficulty": {
       "lyra2v2": "",
       "lyra2rev2": "",

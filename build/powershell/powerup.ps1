@@ -17,7 +17,7 @@ $PwrType | foreach {
      $Ncheck = $true
      $CardPower = ".\build\txt\nvidiapower.txt"
      if(Test-Path $CardPower){Clear-Content $CardPower}
-     timeout -s9 30 nvidia-smi --query-gpu=power.draw --format=csv | Tee-Object ".\build\txt\nvidiapower.txt" | Out-Null
+     timeout -s9 10 ./build/apps/VII-smi | Tee-Object ".\build\txt\nvidiapower.txt" | Out-Null
     }
 
     elseif($PwrType -like "*AMD*" -and $Acheck -eq $false)
@@ -43,7 +43,7 @@ function Set-Power {
 
  if($Platform -eq "linux")
  {
- if(Test-Path ".\build\txt\nvidiapower.txt"){$NPow = get-content ".\build\txt\nvidiapower.txt" | ConvertFrom-Csv}
+ if(Test-Path ".\build\txt\nvidiapower.txt"){$NPow = get-content ".\build\txt\nvidiapower.txt"}
  if(Test-Path ".\build\txt\amdpower.txt"){$APow = Get-Content ".\build\txt\amdpower.txt" | Select-String -CaseSensitive "W" | foreach {$_ -split (":","") | Select -skip 2 -first 1} | foreach {$_ -replace ("W","")}}
  }
 
@@ -73,6 +73,20 @@ function Set-Power {
 
 if($PwrType -like "*NVIDIA*")
  {
+  if($Platform -eq "linux")
+  {
+   if($MinerDevices){$Devices = Get-DeviceString -TypeDevices "$($MinerDevices)"}
+   else{$Devices = Get-DeviceString -TypeCount $($PwrDevices.$TypeS.PSObject.Properties.Value.Count)}
+   $TotalPower = 0
+   $NVIDIAStats = @{}
+   $NVIDIAStats.Add("power",@{})
+   $Npower = $NPow | Select-String "power" | foreach{$_ -replace "GPU ",""} | foreach{$_ -replace " power",""} | ConvertFrom-StringData
+   $NPower.keys | foreach{$NVIDIAStats.power.Add("$($_)","$($NPower."$($_)" -replace "failed to get","75")")}
+   $Devices | foreach {$TotalPower += $NVIDIAStats.power."$($_)" -replace " ",""}
+   if($Command -eq "hive"){$PowerArray}
+   elseif($Command -eq "stat"){$TotalPower}
+   }
+  else{
   $GPUPower = [PSCustomObject]@{}
   $TypeS = "NVIDIA"
   if($MinerDevices){$Devices = Get-DeviceString -TypeDevices "$($MinerDevices)"}
@@ -87,6 +101,7 @@ if($PwrType -like "*NVIDIA*")
   $PowerArray | foreach {$TotalPower += $_}
   if($Command -eq "hive"){$PowerArray}
   elseif($Command -eq "stat"){$TotalPower}
+  }
  }
 
 if($PwrType -like "*AMD*")
