@@ -49,7 +49,7 @@ if($CoinAlgo -eq $null)
       Type = $ConfigType
       Path = $Path
       Devices = $Devices
-      DeviceCall = "ewbf"
+      DeviceCall = "gminer"
       Arguments = "--api 42000 --server $($_.Host) --port $($_.Port) --user $($_.User1) --pass $($_.Pass1)$Diff $($Config.$ConfigType.commands.$($_.Algorithm))"
       HashRates = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)}
       Quote = if($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)){$($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)*($_.Price)}else{0}

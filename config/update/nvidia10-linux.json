@@ -106,7 +106,7 @@
     "path2": ".\\bin\\trex-2\\t-rex",
     "path3": ".\\bin\\trex-3\\t-rex",
     "minername": "t-rex",
-    "version": "0.8.4",
+    "version": "0.8.5",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/t-rex-linux-10.tar.gz"
   },
   "zjazz": {
@@ -138,5 +138,15 @@
     "minername": "miner",
     "version": "1.10",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/zjazz-linux-9-2.tar.gz"
+  },
+  "miniz": {
+    "name": "miniz",
+    "type": "nvidia",
+    "path1": ".\\bin\\miniz-1\\miniZ",
+    "path2": ".\\bin\\miniz-2\\miniZ",
+    "path3": ".\\bin\\miniz-3\\miniZ",
+    "minername": "miniZ",
+    "version": "1.0h",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/miniz-linux.tar.gz"
   }
 }

@@ -1,25 +1,25 @@
 ##Miner Path Information
-if($nvidia.gminer.path3){$Path = "$($nvidia.gminer.path3)"}
+if($nvidia.miniz.path1){$Path = "$($nvidia.miniz.path1)"}
 else{$Path = "None"}
-if($nvidia.gminer.uri){$Uri = "$($nvidia.gminer.uri)"}
+if($nvidia.miniz.uri){$Uri = "$($nvidia.miniz.uri)"}
 else{$Uri = "None"}
-if($nvidia.gminer.minername){$MinerName = "$($nvidia.gminer.minername)"}
+if($nvidia.miniz.minername){$MinerName = "$($nvidia.miniz.minername)"}
 else{$MinerName = "None"}
 if($Platform -eq "linux"){$Build = "Tar"}
 elseif($Platform -eq "windows"){$Build = "Zip"}
 
-$ConfigType = "NVIDIA3"
+$ConfigType = "NVIDIA1"
 
 ##Parse -GPUDevices
-if($NVIDIADevices3 -ne ''){$GPUDevices3 = $NVIDIADevices3}
-if($GPUDevices3 -ne '')
+if($NVIDIADevices1 -ne ''){$GPUDevices1 = $NVIDIADevices1}
+if($GPUDevices1 -ne '')
  {
-  $GPUEDevices3 = $GPUDevices3 -replace ',',' '
-  $Devices = $GPUEDevices3
+  $GPUEDevices1 = $GPUDevices1 -replace ',',' '
+  $Devices = $GPUEDevices1
  }
 
 ##Get Configuration File
-$GetConfig = "$dir\config\miners\gminer.json"
+$GetConfig = "$dir\config\miners\miniz.json"
 try{$Config = Get-Content $GetConfig | ConvertFrom-Json}
 catch{Write-Warning "Warning: No config found at $GetConfig"}
 
@@ -40,17 +40,17 @@ if($CoinAlgo -eq $null)
   $AlgoPools | Where Symbol -eq $MinerAlgo | foreach {
   if($Algorithm -eq "$($_.Algorithm)")
   {
-    if($Config.$ConfigType.difficulty.$($_.Algorithm)){$Diff=",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))"}else{$Diff=""}
-    [PSCustomObject]@{
-      Delay = $Config.$ConfigType.delay
-      Symbol = "$($_.Algorithm)"
+  if($Config.$ConfigType.difficulty.$($_.Algorithm)){$Diff=",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))"}
+  [PSCustomObject]@{
+    Delay = $Config.$ConfigType.delay
+    Symbol = "$($_.Algorithm)"
       MinerName = $MinerName
       Prestart = $PreStart
       Type = $ConfigType
       Path = $Path
       Devices = $Devices
-      DeviceCall = "gminer"
-      Arguments = "--api 42002 --server $($_.Host) --port $($_.Port) --user $($_.User3) --pass $($_.Pass3)$Diff $($Config.$ConfigType.commands.$($_.Algorithm))"
+      DeviceCall = "miniz"
+      Arguments = "--telemetry 0.0.0.0:42000 --server $($_.Host) --port $($_.Port) --user $($_.User1) --pass $($_.Pass1)$($Diff) $($Config.$ConfigType.commands.$($_.Algorithm))"
       HashRates = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)}
       Quote = if($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)){$($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)*($_.Price)}else{0}
       PowerX = [PSCustomObject]@{$($_.Algorithm) = if($Watts.$($_.Algorithm)."$($ConfigType)_Watts"){$Watts.$($_.Algorithm)."$($ConfigType)_Watts"}elseif($Watts.default."$($ConfigType)_Watts"){$Watts.default."$($ConfigType)_Watts"}else{0}}
@@ -59,8 +59,8 @@ if($CoinAlgo -eq $null)
       ocmem = if($Config.$ConfigType.oc.$($_.Algorithm).memory){$Config.$ConfigType.oc.$($_.Algorithm).memory}else{$OC."default_$($ConfigType)".memory}
       MinerPool = "$($_.Name)"
       FullName = "$($_.Mining)"
-      API = "EWBF"
-      Port = 42002
+      API = "miniz"
+      Port = 42000
       URI = $Uri
       BUILD = $Build
       Algo = "$($_.Algorithm)"

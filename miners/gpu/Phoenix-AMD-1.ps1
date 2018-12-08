@@ -79,5 +79,5 @@ if($CoinAlgo -eq $null)
       }
      }
    }
- }
+  }
 }
