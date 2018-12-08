@@ -1112,6 +1112,42 @@ if($Restart -eq $false)
  }
 
 
+#Check For Bechmark
+$BenchmarkMode = $false
+$ActiveMinerPrograms | Foreach {
+ if($Miners | Where Path -eq $_.Path | Where Arguments -eq $_.Arguments)
+ {
+  if(-not (Test-Path ".\stats\$($_.Name)_$($_.Algo)_hashrate.txt"))
+  {
+   $BenchmarkMode = $true
+  }
+ }
+}
+
+#Set Interval
+if($BenchmarkMode -eq $true)
+{
+$MinerInterval = $Benchmark
+$Message = 
+"
+
+SWARM is now benchmarking miners. It will only be able to 
+properly calculate stats once miners finish benchmarking.
+
+Note: Only one miner per algorithm and platform will show on stats 
+screen. While benchmarking, miner will choose a miner that needs to be
+benched, leaving previously benchmarked miners to vanish from stats 
+screen. They will return if benchmarks were higher than current miner.
+
+This is normal behavior.
+
+To see all miner benchmarks that have been performed use:
+get benchmarks
+command"
+$Message | Out-File ".\build\bash\minerstats.sh" -Append
+}
+else{$MinerInterval = $Interval}
+
 ##Mem cleanup
 $AlgoMiner = $Null
 $AlgoMiners = $Null
@@ -1122,8 +1158,8 @@ $BestAlgoMiners_Combo = $Null
 $BestMiners_Combo = $Null
 $BestPool_Selected = $Null
 $GoodAlgoMiners = $null
-$Miners = $Null
 $Name = $Null
+$Miners = $Null
 $NewAlgoMiners = $Null
 $Nonzerochoice = $Null
 $Stat = $Null
@@ -1166,41 +1202,6 @@ function Get-Logo {
         Write-Host ""
         Write-Host ""
 }
-
-
-#Check For Bechmark
-$BenchmarkMode = $false
-$ActiveMinerPrograms | Foreach {
- if($Miners | Where Path -eq $_.Path | Where Arguments -eq $_.Arguments)
- {
-  if(-not (Test-Path ".\stats\$($_.Name)_$($_.Algo)_hashrate.txt"))
-  {
-   $BenchmarkMode = $true
-  }
- }
-}
-
-#Set Interval
-if($BenchmarkMode -eq $true)
-{
-$MinerInterval = $Benchmark
-$Message = 
-"SWARM is now benchmarking miners. It will only be able to 
-properly calculate stats once miners finish benchmarking.
-
-Note: Only one miner per algorithm and platform will show on stats 
-screen. While benchmarking, miner will choose a miner that needs to be
-benched, leaving previously benchmarked miners to vanish from stats 
-screen. They will return if benchmarks were higher than current miner.
-
-This is normal behavior.
-
-To see all miner benchmarks that have been performed use:
-get benchmarks
-command"
-$Message | Out-File ".\build\bash\minerstats.sh" -Append
-}
-else{$MinerInterval = $Interval}
 
 #Clear Logs If There Are 12
 if($Log -eq 12)

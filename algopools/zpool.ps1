@@ -2,6 +2,8 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
  
 $Zpool_Request = [PSCustomObject]@{} 
+
+[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
  
  if($Poolname -eq $Name)
   {

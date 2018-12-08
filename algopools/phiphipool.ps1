@@ -3,6 +3,8 @@ $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty Ba
  
  $phiphipool_Request = [PSCustomObject]@{} 
 
+ [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
+
  if($Poolname -eq $Name)
   {
  try { 
