@@ -893,6 +893,7 @@ $BestMiners_Combo | ForEach {
 
 $Restart = $false
 $NoMiners = $false
+$ConserveMessage = @()
 
 #Determine Which Miner Should Be Active
 $BestActiveMiners = @()
@@ -905,7 +906,7 @@ $Type | foreach{
   $TypeSel = $_
   if(-not $BestMiners_Combo | Where Type -eq $TypeSel)
    {    
-    Write-Host "Stopping $($_) due to conserve mode being specified"
+    $ConseverMessage += "Stopping $($_) due to conserve mode being specified"
     if($Platform -eq "linux")
     {
      $ActiveMinerPrograms | ForEach {
@@ -930,7 +931,7 @@ $Type | foreach{
         }
       }
 
-
+if($ConserveMessage){$ConserveMessage | %{Write-Host "$_" -ForegroundColor Red}}
 
 function Get-MinerStatus {
   $Y = [string]$CoinExchange
@@ -954,6 +955,11 @@ $type | foreach {if(Test-Path ".\build\txt\$($_)-hash.txt"){Clear-Content ".\bui
 $GetStatusAlgoBans = ".\timeout\algo_block\algo_block.txt"
 $GetStatusPoolBans = ".\timeout\pool_block\pool_block.txt"
 $GetStatusMinerBans = ".\timeout\miner_block\miner_block.txt"
+$GetStatusDownloadBans = ".\timeout\download_block\download_block.txt"
+if(Test-Path $GetStatusDownloadBans){$StatusDownloadBans = Get-Content $GetStatusDownloadBans}
+else{$StatusDownloadBans = $null}
+$GetDLBans = @();
+if($StatusDownloadBans){$StatusDownloadBans | %{if($GetDLBans -notcontains $_){$GetDlBans+=$_}}}
 if(Test-Path $GetStatusAlgoBans){$StatusAlgoBans = Get-Content $GetStatusAlgoBans | ConvertFrom-Json}
 else{$StatusAlgoBans = $null}
 if(Test-Path $GetStatusPoolBans){$StatusPoolBans = Get-Content $GetStatusPoolBans | ConvertFrom-Json}
@@ -974,6 +980,8 @@ $me = [char]27
 if($StatusAlgoBans){$StatusAlgoBans | foreach {$BanMessage += "$me[${mcolor}m$($_.Name) mining $($_.Algo) is banned from all pools${me}[0m"}}
 if($StatusPoolBans){$StatusPoolBans | foreach {$BanMessage += "$me[${mcolor}m$($_.Name) mining $($_.Algo) is banned from $($_.MinerPool)${me}[0m"}}
 if($StatusMinerBans){$StatusMinerBans | foreach {$BanMessage += "$me[${mcolor}m$($_.Name) is banned${me}[0m"}}
+if($GetDLBans){$GetDLBans | foreach {$BanMessage += "$me[${mcolor}m$($_) failed to download${me}[0m"}}
+if($ConserveMessage){$ConserveMessage | foreach {$BanMessage += "$me[${mcolor}m$($_)${me}[0m"}}
 $BanMessage | Out-File ".\build\bash\minerstats.sh" -Append
 $BestActiveMiners | ConvertTo-Json | Out-File ".\build\txt\bestminers.txt"
 $Current_BestMiners = $BestActiveMiners | ConvertTo-Json -Compress
