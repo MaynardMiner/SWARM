@@ -1514,7 +1514,7 @@ if($_.BestMiner -eq $true)
               }
              else
               {
-               $WattTypes = @{NVIDIA1="";NVIDIA2="";NVIDIA3="";AMD1="";CPU=""}
+               $WattTypes = @{NVIDIA1_Watts="";NVIDIA2_Watts="";NVIDIA3_Watts="";AMD1_Watts="";CPU_Watts=""}
                $Watts | Add-Member "$($_.Algo)" $WattTypes
                $Watts.$($_.Algo)."$($_.Type)_Watts" = "$GPUPower"
               }
