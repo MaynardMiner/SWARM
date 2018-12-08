@@ -1047,6 +1047,24 @@ if($Restart -eq $false)
   Start-Sleep -s 5
  }
 
+
+##Mem cleanup
+$AlgoMiner = $Null
+$AlgoMiners = $Null
+$AlgoPools = $Null
+$AlgoPools_Comparison = $Null
+$AllAlgoPools = $Null
+$BestAlgoMiners_Combo = $Null
+$BestMiners_Combo = $Null
+$BestPool_Selected = $Null
+$GoodAlgoMiners = $null
+$Miners = $Null
+$Name = $Null
+$NewAlgoMiners = $Null
+$Nonzerochoice = $Null
+$Stat = $Null
+$GetSWARMParams = $null
+
 if($Lite -eq "Yes"){
 $UsePools = $false
 $ProfitTable | foreach{if($_.Profits -ne $null){$UsePools = $true}}
