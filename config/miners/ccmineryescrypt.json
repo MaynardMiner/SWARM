@@ -44,16 +44,12 @@
     "commands": {
       "yescrypt": "",
       "yescryptr16": "",
-      "yescryptr32": "",
-      "skein": "",
-      "neoscrypt": ""
+      "yescryptr32": ""
     },
     "difficulty": {
       "yescrypt": "",
       "yescryptr16": "",
-      "yescryptr32": "",
-      "skein": "",
-      "neoscrypt": ""
+      "yescryptr32": ""
     },
     "naming": {
       "yescrypt": "yescrypt",
@@ -85,9 +81,7 @@
     "commands": {
       "yescrypt": "",
       "yescryptr16": "",
-      "yescryptr32": "",
-      "skein": "",
-      "neoscrypt": ""
+      "yescryptr32": ""
     },
     "difficulty": {
       "yescrypt": "",
