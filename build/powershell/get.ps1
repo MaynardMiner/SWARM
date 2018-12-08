@@ -53,19 +53,31 @@ miners
 
     name:
     name of miner, as per the names of .json in config/miners
-    if you are unsure of miner name, choose 'all' to identify
+    if you are unsure of miner name, running-
+
+    get miners [platform]
+    
+    to see all miners for that platform
 
     param:
-    [prestart] [commands] [difficulty] [naming]   [oc]   [all]
+    [prestart] [commands] [difficulty] [naming]   [oc]
 
-    sub-param1   [algo]     [algo]      [algo]   [algo]  [all]
+    sub-param1   [algo]     [algo]      [algo]   [algo]
 
-    sub-param2                                   [power] [all]
+    sub-param2                                   [power]
                                                  [core]
                                                  [mem]
                                                  [dpm]
                                                   [v]
                                                  [mdpm]
+
+   example uses of sub-params:
+
+   get miners NVIDIA1 enemy naming 
+   (Will list all naming items)
+
+   get miners NVIDIA1 enemy oc hex core 
+   (Will list core for hex algorithm)
 
 screen
  can be used to remotely view SWARM's transcripts. Great way to
@@ -183,6 +195,7 @@ $help | out-file ".\build\txt\get.txt"
  . .\build\powershell\statcommand.ps1
  . .\build\powershell\childitems.ps1
  . .\build\powershell\hashrates.ps1
+
  if(Test-path ".\stats")
  {
  switch($argument2)
@@ -254,6 +267,92 @@ if(Test-Path ".\config\parameters\arguments.json")
  if(Test-Path ".\build\txt\oc-settings.txt"){$Get = Get-Content ".\build\txt\oc-settings.txt"}
  else{$Get = "No oc settings found"}
 }
+"miners"
+{
+ $GetJsons = Get-ChildItem ".\config\miners"
+ $ConvertJsons = [PSCustomObject]@{}
+ $GetJsons | foreach{$Getfile = Get-Content $_ | ConvertFrom-Json; $ConvertJsons | Add-Member $Getfile.Name $(Get-Content $_ | ConvertFrom-Json)}
+if($argument2)
+ {
+ $Get += "Current $Argument2 Miner List:"
+ $Get += " "   
+ $ConvertJsons.PSObject.Properties.Name | Where {$ConvertJsons.$_.$Argument2} | foreach{$Get += "$($_)"}
+ $Selected = $ConvertJsons.PSObject.Properties.Name | Where {$_ -eq $Argument3} | %{$ConvertJsons.$_}
+ if($Selected)
+ {
+    $Cuda = Get-Content ".\build\txt\cuda.txt"
+    $Platform = Get-Content ".\build\txt\os.txt"
+     if($argument2 -like "*NVIDIA*")
+      {
+       $Number = $argument2 -Replace "NVIDIA",""
+       if($Platform -eq "linux")
+       {
+        switch($Cuda)
+        {
+         "9.2"{$UpdateJson = Get-Content ".\config\update\nvidia9.2-linux.json" | ConvertFrom-Json}
+         "10"{$UpdateJson = Get-Content ".\config\update\nvidia10-linux.json" | ConvertFrom-Json}
+        }
+       }
+       else{$UpdateJson = Get-Content ".\config\update\nvidia-win.json" | ConvertFrom-JSon}
+      }
+     if($argument2 -like "*AMD*")
+     {
+      $Number = $argument2 -Replace "AMD",""
+      switch($Platform)
+      {
+        "linux"{$UpdateJson = Get-Content ".\config\update\amd-linux.json" | ConvertFrom-Json}
+        "windows"{$UpdateJson = Get-Content ".\config\update\amd-windows.json" | ConvertFrom-Json}
+      }
+     }
+     if($argument3 -like "*CPU*")
+      {
+        $Number = 1
+        switch($Platform)
+        {  
+        "linux"{$UpdateJson = Get-Content ".\config\update\cpu-linux.json" | ConvertFrom-Json}
+        "windows"{$UpdateJson = Get-Content ".\config\update\cpu-windows.json" | ConvertFrom-Json}
+        }
+      }
+    $getpath = "path$($Number)"
+    $Get += " "
+    $Get += "Miner Update Information:"
+    $Get += " "
+    $Get += "Miner Name: $($UpdateJson.$Argument3.name)"
+    $Get += "Miner Path: $($UpdateJson.$Argument3.$getpath)"
+    $Get += "Miner executable $($UpdateJson.$Argument3.minername)"
+    $Get += "Miner version $($UpdateJson.$Argument3.version)"
+    $Get += "Miner URI $($UpdateJson.$Argument3.uri)"
+    $Get += " "
+    $Get += "User Seletected $Argument3"
+    if($Argument4)
+     {
+      if($argument5)
+      {
+        $Get += " "
+        $Get += "Getting: $Argument1 $Argument2 $Argument3 $Argument4 $Argument5"
+        $Get += " "
+        $Get += if($selected.$argument2.$argument4.$argument5){$selected.$argument2.$argument4.$argument5}else{"none"}
+      }
+      elseif($argument6)
+      {
+          $Get += " "
+          $Get += "Getting: $Argument1 $Argument2 $Argument3 $Argument4 $Argument5 $Argument6"
+          $Get += " "
+          $Get += if($selected.$argument2.$argument4.$argument5.$Arguement6){$selected.$argument2.$argument4.$argument5.$Arguement6}else{"none"}
+      }
+     else
+      {
+          $Get += " "
+          $Get += "Getting: $Argument1 $Argument2 $Argument3 $Argument4"
+          $Get += " "
+          $Get += if($selected.$argument2.$argument4){$selected.$argument2.$argument4}else{"none"}
+      }
+     }  
+    }
+   }
+   else{$Get += "No Platforms Selected: Please choose a platform NVIDIA1,NVIDIA2,NVIDIA3,AMD1,CPU"}
+  }
+
 default
 {
  $Get =
