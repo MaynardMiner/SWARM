@@ -133,7 +133,9 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$Lite = "No",
     [Parameter(Mandatory=$false)]
-    [String]$AMDPlatform
+    [String]$AMDPlatform,
+    [Parameter(Mandatory=$false)]
+    [String]$Conserve = "No"
 )
 
 
@@ -198,6 +200,7 @@ $CurrentParams.Add("PoolBans",$PoolBans)
 $CurrentParams.Add("PoolBanCount",$PoolBanCount)
 $CurrentParams.Add("AlgoBanCount",$AlgoBanCount)
 $CurrentParams.Add("MinerBanCount",$MinerBanCount)
+$CurrentParams.Add("Conserve",$Conserve)
 if($Platform -eq "windows"){$CurrentParams.Add("AMDPlatform",$AMDPlatform)}
 $CurrentParams.Add("Lite",$Lite)
 $StartParams = $CurrentParams | ConvertTo-Json 
@@ -272,8 +275,11 @@ $PoolBans = $SWARMParams.PoolBans
 $PoolBanCount = $SWARMParams.PoolBanCount
 $AlgoBanCount = $SWARMParams.AlgoBanCount
 $Lite = $SWARMParams.Lite
+$Conserve = $SWARMParams.Conserve
 if($Platform -eq "windows"){$AMDPlatform = $SWARMParams.AMDPlatform}
 }
+
+$Platform | Set-Content ".\build\txt\os.txt"
 
 $Version = Split-Path ($script:MyInvocation.MyCommand.Path) -Parent
 $Version = Split-Path $Version -Leaf
@@ -570,6 +576,7 @@ $PoolBans = $SWARMParams.PoolBans
 $PoolBanCount = $SWARMParams.PoolBanCount
 $AlgoBanCount = $SWARMParams.AlgoBanCount
 $Lite = $SWARMParams.Lite
+$Conserve = $SWARMParams.Conserve
 if($Platform -eq "windows"){$AMDPlatform = $SWARMParams.AMDPlatform}
 
 if($SWARMParams.Rigname1 -eq "Donate"){$Donating = $True}
@@ -655,17 +662,33 @@ $AlgoMiners | ForEach {
 $Download = $false
 if($Lite -eq "No")
 {
-$AlgoMiners = $AlgoMiners | ForEach {
-  $AlgoMiner = $_
-   if((Test-Path $_.Path) -eq $false)
-   {
-    Expand-WebRequest -URI $AlgoMiner.URI -BuildPath $AlgoMiner.BUILD -Path (Split-Path $AlgoMiner.Path) -MineName (Split-Path $AlgoMiner.Path -Leaf) -MineType $AlgoMiner.Type
-    $Download = $true
+$GetAlgoMiners = @()
+$AlgoMiners | ForEach {
+$AlgoMiner = $_
+if(Test-Path ".\timeout\download_block\download_block.txt"){$DLTimeout = Get-Content ".\timeout\download_block\download_block.txt"}
+$DLName = $DLTimeout | Select-String "$($AlgoMiner.Name)"
+if($DLName.Count -lt 3)
+ {
+ if((Test-Path $AlgoMiner.Path) -eq $false)
+  {
+   Expand-WebRequest -URI $AlgoMiner.URI -BuildPath $AlgoMiner.BUILD -Path (Split-Path $AlgoMiner.Path) -MineName (Split-Path $AlgoMiner.Path -Leaf) -MineType $AlgoMiner.Type
+   $Download = $true
+   if(-not (Test-Path $ALgoMiner.Path))
+    {
+     if(-not (Test-Path ".\timeout\download_block")){New-Item -Name "download_block" -Path ".\timeout" -ItemType "directory"}
+     "$($Algominer.Name)" | Add-Content ".\timeout\download_block\download_block.txt"
+    }
+  }
+ else{$GetAlgoMiners += $AlgoMiner}
    }
-   else{$AlgoMiner}
-  }  
+ else{Write-Host "$($AlgoMiner.Name) download failed too many times- Blocking" -ForegroundColor Red}
+  }
+ $Algominers = $GetAlgoMiners
+ $GetAlgoMiners = $Null
+ $DLTimeout  = $null
+ $DlName = $Null
+ }
 if($Download -eq $true){continue}
-}
 
 $NewAlgoMiners = @()
 $Type | Foreach {
@@ -703,7 +726,8 @@ $Miners = @()
 $GoodAlgoMiners | foreach {$Miners += $_}
 if($Platform -eq "windows"){$BestAlgoMiners_Combo = Get-BestWin -SortMiners $Miners}
 elseif($Platform -eq "linux"){$BestAlgoMiners_Combo = Get-BestUnix -SortMiners $Miners}
-$BestMiners_Combo = $BestAlgoMiners_Combo
+if($Conserve = "Yes"){$BestMiners_Combo = $BestAlgoMiners_Combo | Where {$_.Profit -eq $null -or $_.Profit -gt 0}}
+else{$BestMiners_Combo = $BestAlgoMiners_Combo}
 
 ##Define Wallet Estimates:
 
@@ -807,6 +831,7 @@ Write-Host "Most Ideal Choice Is $($BestMiners_Selected) on $($BestPool_Selected
 }
 if(-not $ActiveMinerPrograms){$Type | foreach{if(Test-Path ".\logs\$($_).log"){remove-item ".\logs\$($_).log" -Force}}}
 ##Add Instance Settings To Miners For Tracking
+
 $BestMiners_Combo | ForEach {
  if(-not ($ActiveMinerPrograms | Where Path -eq $_.Path | Where Arguments -eq $_.Arguments ))
   {
@@ -862,9 +887,9 @@ $BestMiners_Combo | ForEach {
    NPool = $_.NPool
    NUser = $_.NUser
    CommandFile = $_.CommandFile
+   }
   }
  }
-}
 
 $Restart = $false
 $NoMiners = $false
@@ -875,6 +900,37 @@ $ActiveMinerPrograms | foreach {
 if($BestMiners_Combo | Where Path -EQ $_.Path | Where Arguments -EQ $_.Arguments){$_.BestMiner = $true; $BestActiveMiners += $_}
 else{$_.BestMiner = $false}
 }
+
+$Type | foreach{
+  $TypeSel = $_
+  if(-not $BestMiners_Combo | Where Type -eq $TypeSel)
+   {    
+    Write-Host "Stopping $($_) due to conserve mode being specified"
+    if($Platform -eq "linux")
+    {
+     $ActiveMinerPrograms | ForEach {
+        if($_.BestMiner -eq $false)
+         {
+          if($_.XProcess = $null){$_.Status = "Failed"}
+          else
+           {
+            $_.Status = "Idle"
+            $PIDDate = ".\build\pid\$($_.Name)_$($_.Coins)_$($_.InstanceName)_date.txt"
+            if(Test-path $PIDDate)
+             {
+              $PIDDateFile = Get-Content $PIDDate | Out-String
+              $PIDTime = [DateTime]$PIDDateFile
+              $_.Active += (Get-Date)-$PIDTime
+              Start-Process ".\build\bash\killall.sh" -ArgumentList "$($TypeSel)" -Wait
+             }
+             }
+            }
+           }
+         }
+        }
+      }
+
+
 
 function Get-MinerStatus {
   $Y = [string]$CoinExchange
