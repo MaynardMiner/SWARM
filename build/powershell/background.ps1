@@ -284,7 +284,9 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
       $HS = "hs"
       Write-Host "Miner $MinerType is ethminer api"
       Write-Host "Miner Port is $Port"
-      Write-Host "Miner Devices is $Devices"  
+      Write-Host "Miner Devices is $Devices"
+      $Message = @{id = 1; jsonrpc = "2.0"; method = "miner_getstat1"} | ConvertTo-Json -Compress
+      #$Response = Invoke-RestMethod "http://$($server):$($port)" -TimeoutSec 10 -Method POST -Body $message -ContentType 'application/json'
       $Message = @{id = 1; jsonrpc = "2.0"; method = "miner_getstat1"} | ConvertTo-Json -Compress
       $Client = Get-TCP -Server $Server -Port $port -Message $Message
       if($Client)
@@ -355,6 +357,38 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
     }
     else{Write-Host "API Threads Failed- Could Not Get Individual GPU Information" -Foreground Red}
    }
+   'miniz'
+   {
+    $HS = "hs"
+    Write-Host "Miner $MinerType is miniz api"
+    Write-Host "Miner Port is $Port"
+    Write-Host "Miner Devices is $Devices"
+    $Request = Invoke-Webrequest "http://$($server):$port"
+    if($Request)
+    {
+    $Data = $Request -split " "
+    $Hash = $Data | Select-String "Sol/s" | Select-STring "data-label" | foreach {$_ -split "</td>" | Select -First 1} | foreach{$_ -split ">" | Select -Last 1}
+    $RAW = 0
+    $RAW = $Hash | Select -Last 1
+    $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
+    Write-Host "Miner $Name was clocked at $([Double]$RAW/1000)" -foreground Yellow
+    $KHS = [Double]$RAW/1000
+    $Shares = $Data | Select-String "Shares" | Select -Last 1 | foreach{$_ -split "</td>" | Select -First 1} | Foreach{$_ -split ">" | Select -Last 1}
+    $ACC += $Shares -split "/" | Select -first 1
+    $REJ += $Shares -split "/" | Select -first 1
+    $MinerACC = 0
+    $MinerREJ = 0
+    $MinerACC = $Shares -split "/" | Select -first 1
+    $MinerREJ = $Shares -split "/" | Select -first 1
+    for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Hash.Count -eq 1){$Hash}else{$Hash[$i]})}
+    if($Platforms -eq "linux"){$MinerFans = Get-NVIDIAFans; for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MinerFans.Count -eq 1){$MinerFans}else{$MinerFans[$($GCount.$TypeS.$GPU)]})}}
+    if($Platforms -eq "linux"){$MinerTemps = Get-NVIDIATemps; if($MinerTemps){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($MinerTemps.Count -eq 1){$MinerTemps}else{$MinerTemps[$($GCount.$TypeS.$GPU)]})}}}
+    $ALGO = $MinerAlgo
+    $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
+    }
+    else{Write-Host "$MinerAPI API Failed- Could Not Get Stats" -Foreground Red; $RAW = 0; $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"}
+   }
+
    'ewbf'
       {
        $HS = "hs"
