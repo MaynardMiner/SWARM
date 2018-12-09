@@ -170,6 +170,15 @@ paramters
     name of parameter you wish to view. If you are unsure,
     specify 'all'
 
+wallets
+ print balance sheet of your current wallet balances
+   
+    USES:
+   
+    get wallet
+   
+    OPTIONS: none
+
 to see all available SWARM commands, go to:
 
 https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
@@ -195,6 +204,7 @@ $help | out-file ".\build\txt\get.txt"
  . .\build\powershell\statcommand.ps1
  . .\build\powershell\childitems.ps1
  . .\build\powershell\hashrates.ps1
+ . .\build\powershell\wallettable.ps1
 
  if(Test-path ".\stats")
  {
@@ -228,6 +238,14 @@ $Get = Get-BenchTable
 Get-BenchTable | Out-File ".\build\txt\get.txt"
 }
  else{$Get = "No Stats Found"}
+}
+"wallets"
+{
+. .\build\powershell\statcommand.ps1
+. .\build\powershell\childitems.ps1
+. .\build\powershell\hashrates.ps1
+. .\build\powershell\wallettable.ps1   
+$Get = Get-WalletTable
 }
 "stats"
 {

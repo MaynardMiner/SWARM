@@ -1,8 +1,5 @@
 function Get-WalletTable {
 
-    . .\build\powershell\childitems.ps1
-    . .\build\powershell\statcommand.ps1
-
 $WalletTable = @()
 if(Test-Path ".\wallet\pools"){Get-ChildItemContent ".\wallet\pools"}
 if(-not $GetWStats){$GetWStats = get-wstats}
