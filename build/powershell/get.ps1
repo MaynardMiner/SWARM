@@ -210,19 +210,13 @@ $help | out-file ".\build\txt\get.txt"
    default
    {
     $Stats = [PSCustomObject]@{}
-    $StatNames = Get-ChildItem ".\stats" | Where Name -LIKE "*$($argument2)_hashrate.txt*"
+    $StatNames = Get-ChildItem ".\stats" | Where Name -like "*$argument2*"
     $StatNames = $StatNames.Name -replace ".txt",""
     if(Test-Path "stats"){Get-ChildItemContent "stats" | ForEach {$Stats | Add-Member $_.Name $_.Content}}
    }
   }
  $BenchTable = @()
- $StatNames | Foreach {
-  $BenchTable += [PSCustomObject]@{
-    Miner = $_ -split "_" | Select -First 1
-    Algo = $_ -split "_" | Select -Skip 1 -First 1
-    HashRates = $Stats."$($_)".Day | ConvertTo-Hash
-  }
- }
+ $StatNames | Foreach {$BenchTable += [PSCustomObject]@{Miner = $_ -split "_" | Select -First 1; Algo = $_ -split "_" | Select -Skip 1 -First 1; HashRates = $Stats."$($_)".Day | ConvertTo-Hash}}
  function Get-BenchTable {
   $BenchTable | Sort-Object -Property Algo -Descending | Format-Table (
   @{Label = "Miner"; Expression={$($_.Miner)}},
@@ -230,6 +224,7 @@ $help | out-file ".\build\txt\get.txt"
   @{Label = "Speed"; Expression={$($_.HashRates)}}    
 )
  }
+$Get = Get-BenchTable
 Get-BenchTable | Out-File ".\build\txt\get.txt"
 }
  else{$Get = "No Stats Found"}
