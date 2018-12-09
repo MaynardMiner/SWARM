@@ -165,6 +165,10 @@ function Set-WStat {
         [Parameter(Mandatory=$true)]
         [String]$Name,
         [Parameter(Mandatory=$true)]
+        [String]$Symbol,
+        [Parameter(Mandatory=$true)]
+        [String]$address,
+        [Parameter(Mandatory=$true)]
         [Double]$balance,
         [Parameter(Mandatory=$true)]
         [Double]$unpaid,
@@ -174,16 +178,23 @@ function Set-WStat {
 
 $Path = ".\wallet\values\$Name.txt"
 $Date = $Date.ToUniversalTime()
+$Pool = $Name -split "_" | Select -First 1
 
 if(Test-Path $Path){$WStat = Get-Content $Path | ConvertFrom-Json}
 if($WStat)
 {
+   $WStat.address = $address;
+   $WStat.symbol = $symbol;
+   $WStat.Pool = $Pool;
    $WStat.balance = $balance;
    $WStat.unpaid = $unpaid;
    $WStat.Date = $Date
 }
 else{
     $WStat = [PSCustomObject]@{
+    Address = $address;
+    Symbol = $symbol;
+    Pool = $Pool;
     Balance = $balance; 
     Unpaid = $unpaid; 
     Date=$Date
@@ -193,4 +204,10 @@ if(-not (Test-Path ".\wallet\values")){New-Item -Name "values" -Path ".\wallet" 
 
 $WStat | ConvertTo-Json | Set-Content $Path 
 
+}
+
+function get-wstats {
+         $GetWStats = [PSCustomObject]@{}
+         if(Test-Path ".\wallet\values"){Get-ChildItemContent ".\wallet\values" | ForEach {$GetWStats | Add-Member $_.Name $_.Content}}
+         $GetWStats
 }
