@@ -143,7 +143,7 @@ param(
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 $Wallets = @()
 $Walletlist = @{}
-$Oldkeys = Get-ChildItem ".\wallet\keys"
+if(Test-Path ".\wallet\keys"){$Oldkeys = Get-ChildItem ".\wallet\keys"}
 if($Oldkeys){$Oldkeys | %{Remove-Item $_ -Force}}
 
 if($AltWallet1){$Walletlist.Add("AltWallet1",$AltWallet1)};
@@ -155,6 +155,7 @@ if($Wallet3){$Walletlist.Add("Wallet3",$Wallet3)};
 if($NiceHash_Wallet1){$Walletlist.Add("NiceHash_Wallet1",$NiceHash_Wallet1)};
 if($NiceHash_Wallet2){$Walletlist.Add("NiceHash_Wallet2",$NiceHash_Wallet2)};
 if($NiceHash_Wallet3){$Walletlist.Add("NiceHash_Wallet3",$NiceHash_Wallet3)};
+if(-Not (Test-Path ".\wallet\wallets")){new-item -Path ".\wallet" -Name "wallets" -ItemType "directory" | Out-Null}
 $WalletList | ConvertTO-Json | Set-Content ".\wallet\wallets\wallets.txt"
 
 if($Wallet1){$Wallets += [PSCustomObject]@{Wallet="Wallet1"; address=$Wallet1; Symbol=$PasswordCurrency1;Response="";Unsold="";Current=""}}
@@ -166,6 +167,7 @@ if($AltWallet3 -and $AltWallet3 -ne $AltWallet2 -and $AltWallet3 -ne $AltWallet1
 if($Nicehash_Wallet1){$Wallets += [PSCustomObject]@{Wallet="Nicehash_Wallet1"; address=$Nicehash_Wallet1; Symbol="NHBTC";Response="";Unsold="";Current=""}}
 if($Nicehash_Wallet2 -and $Nicehash_Wallet2 -ne $Nicehash_Wallet1){$Wallets += [PSCustomObject]@{Wallet="Nicehash_Wallet2"; address=$Nicehash_Wallet2; Symbol="NHBTC";Response="";Unsold="";Current=""}}
 if($Nicehash_Wallet3 -and $Nicehash_Wallet3 -ne $Nicehash_Wallet2 -and $Nicehash_Wallet3 -ne $Nicehash_Wallet1){$Wallets += [PSCustomObject]@{Wallet="Nicehash_Wallet3"; address=$Nicehash_Wallet3; Symbol="NHBTC";Response="";Unsold="";Current=""}}
+if(-Not (Test-Path ".\wallet\keys")){new-item -Path ".\wallet" -Name "keys" -ItemType "directory" | Out-Null}
 $Wallets | %{ $_ | ConvertTo-Json | Set-Content ".\wallet\keys\$($_.Wallet).txt"}
 
 $CurrentParams = @{}

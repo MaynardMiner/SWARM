@@ -21,3 +21,4 @@ build/bash/minerstats.sh
 build/bash/minertype.sh
 wallet/keys/
 wallet/values/
+wallet/wallets/
