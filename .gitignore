@@ -19,3 +19,5 @@ build/bash/hivestats.sh
 build/bash/mineractive.sh
 build/bash/minerstats.sh
 build/bash/minertype.sh
+wallet/keys/
+wallet/values/
