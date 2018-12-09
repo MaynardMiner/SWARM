@@ -129,7 +129,7 @@ Switch($command)
      if($NewPoolBlock){$NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block\algo_block.txt"}
      else{Clear-Content ".\timeout\algo_block\algo_block.txt"}
     }
-    $Get += "Removed all $Name stats and bans."
+     $Get += "Removed all $Name stats and bans."
     }
    }
   default
@@ -138,4 +138,5 @@ Switch($command)
   }
 }
 $Get += "Effects will taked place after next miner benchmark/interval period."
+$Get
 $Get | Out-File ".\build\txt\get.txt"
