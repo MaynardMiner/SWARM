@@ -15,23 +15,23 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$Wallet = "Yes",  ##Miner Can Load Pools
     [Parameter(Mandatory=$false)]
-    [String]$Wallet1 = '1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i',  ##Group 1 Wallet
+    [String]$Wallet1,  ##Group 1 Wallet
     [Parameter(Mandatory=$false)]
-    [String]$Wallet2 = '', ##Group 2 Wallet
+    [String]$Wallet2, ##Group 2 Wallet
     [Parameter(Mandatory=$false)]
-    [String]$Wallet3 = '', ##Group 3 Wallet
+    [String]$Wallet3, ##Group 3 Wallet
     [Parameter(Mandatory=$false)]
-    [String]$Nicehash_Wallet1 = '',  ##Group 1 Nicehash Wallet
+    [String]$Nicehash_Wallet1,  ##Group 1 Nicehash Wallet
     [Parameter(Mandatory=$false)]
-    [String]$Nicehash_Wallet2 = '',  ##Group 2 Nicehash Wallet
+    [String]$Nicehash_Wallet2,  ##Group 2 Nicehash Wallet
     [Parameter(Mandatory=$false)]
-    [String]$Nicehash_Wallet3 = '',  ##Group 3 Nicehash Wallet
+    [String]$Nicehash_Wallet3,  ##Group 3 Nicehash Wallet
     [Parameter(Mandatory=$false)]
-    [String]$AltWallet1 = '',  ##Group 3 Nicehash Wallet
+    [String]$AltWallet1,  ##Group 3 Nicehash Wallet
     [Parameter(Mandatory=$false)]
-    [String]$AltWallet2 = '',  ##Group 3 Nicehash Wallet
+    [String]$AltWallet2,  ##Group 3 Nicehash Wallet
     [Parameter(Mandatory=$false)]
-    [String]$AltWallet3 = '',  ##Group 3 Nicehash Wallet
+    [String]$AltWallet3,  ##Group 3 Nicehash Wallet
     [Parameter(Mandatory=$false)]
     [String]$RigName1 = "SWARM1",  ##ID=Rigname (Yiimp Pool) Group 1
     [Parameter(Mandatory=$false)]
@@ -141,6 +141,17 @@ param(
 
 
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+$Wallets = @{}
+if($Wallet1){$Wallets += @{"Wallet1"=@{name="Wallet1"; value=$Wallet1}}}
+if($Wallet1){$Wallets += @{"Wallet2"=@{name="Wallet2"; value=$Wallet2}}}
+if($Wallet3){$Wallets += @{"Wallet3"=@{name="Wallet3"; value=$Wallet3}}}
+if($AltWallet1){$Wallets += @{"AltWallet1"=@{name="AltWallet1"; value=$AltWallet1}}}
+if($AltWallet2){$Wallets += @{"AltWallet2"=@{name="AltWallet2"; value=$AltWallet2}}}
+if($AltWallet3){$Wallets += @{"AltWallet3"=@{name="AltWallet3"; value=$AltWallet3}}}
+if($Nicehash_Wallet1){$Wallets += @{"Nicehash_Wallet1"=@{name="Nicehash_Wallet1"; value=$Nicehash_Wallet1}}}
+if($Nicehash_Wallet2){$Wallets += @{"Nicehash_Wallet2"=@{name="Nicehash_Wallet2"; value=$Nicehash_Wallet2}}}
+if($Nicehash_Wallet3){$Wallets += @{"Nicehash_Wallet3"=@{name="Nicehash_Wallet3"; value=$Nicehash_Wallet3}}}
+$Wallets | ConvertTo-Json | Set-Content ".\build\txt\wallets.txt"
 $CurrentParams = @{}
 $CurrentParams.Add("Wallet",$Wallet)
 $CurrentParams.Add("Wallet1",$Wallet1)
@@ -218,6 +229,7 @@ $GetSWARMParams = Get-Content ".\config\parameters\arguments.json"
 $SWARMParams = $GetSWARMParams | ConvertFrom-Json
 $Wallet = $SWARMParams.Wallet
 $Wallet1 = $SWARMParams.Wallet1
+$W
 $Wallet2 = $SWARMParams.Wallet2
 $Wallet3 = $SWARMParams.Wallet3
 $CPUWallet = $SWARMParams.CPUWallet
