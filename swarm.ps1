@@ -63,11 +63,11 @@ param(
     [Parameter(Mandatory=$false)]
     [Array]$Currency = ("USD"), #i.e. GBP,EUR,ZEC,ETH ect.
     [Parameter(Mandatory=$false)]
-    [Array]$Passwordcurrency1 = ("BTC"), #i.e. BTC,LTC,ZEC,ETH ect.
+    [String]$Passwordcurrency1 = "BTC", #i.e. BTC,LTC,ZEC,ETH ect.
     [Parameter(Mandatory=$false)]
-    [Array]$Passwordcurrency2 = ("BTC"), #i.e. BTC,LTC,ZEC,ETH ect.
+    [String]$Passwordcurrency2 = "BTC", #i.e. BTC,LTC,ZEC,ETH ect.
     [Parameter(Mandatory=$false)]
-    [Array]$Passwordcurrency3 = ("BTC"), #i.e. BTC,LTC,ZEC,ETH ect.
+    [string]$Passwordcurrency3 = "BTC", #i.e. BTC,LTC,ZEC,ETH ect.
     [Parameter(Mandatory=$false)]
     [String]$AltPassword1 = '', #i.e. BTC,LTC,ZEC,ETH ect.
     [Parameter(Mandatory=$false)]
@@ -141,17 +141,17 @@ param(
 
 
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
-$Wallets = @{}
-if($Wallet1){$Wallets += @{"Wallet1"=@{name="Wallet1"; value=$Wallet1}}}
-if($Wallet1){$Wallets += @{"Wallet2"=@{name="Wallet2"; value=$Wallet2}}}
-if($Wallet3){$Wallets += @{"Wallet3"=@{name="Wallet3"; value=$Wallet3}}}
-if($AltWallet1){$Wallets += @{"AltWallet1"=@{name="AltWallet1"; value=$AltWallet1}}}
-if($AltWallet2){$Wallets += @{"AltWallet2"=@{name="AltWallet2"; value=$AltWallet2}}}
-if($AltWallet3){$Wallets += @{"AltWallet3"=@{name="AltWallet3"; value=$AltWallet3}}}
-if($Nicehash_Wallet1){$Wallets += @{"Nicehash_Wallet1"=@{name="Nicehash_Wallet1"; value=$Nicehash_Wallet1}}}
-if($Nicehash_Wallet2){$Wallets += @{"Nicehash_Wallet2"=@{name="Nicehash_Wallet2"; value=$Nicehash_Wallet2}}}
-if($Nicehash_Wallet3){$Wallets += @{"Nicehash_Wallet3"=@{name="Nicehash_Wallet3"; value=$Nicehash_Wallet3}}}
-$Wallets | ConvertTo-Json | Set-Content ".\build\txt\wallets.txt"
+$Wallets = @()
+if($Wallet1){$Wallets += [PSCustomObject]@{Wallet="Wallet1"; address=$Wallet1; Symbol=$PasswordCurrency1;Response="";Unsold="";Current=""}}
+if($Wallet2 -and $Wallet2 -ne $Wallet1){$Wallets += [PSCustomObject]@{Wallet="Wallet2"; address=$Wallet2; Symbol=$PasswordCurrency2;Response="";Unsold="";Current=""}}
+if($Wallet3 -and $Wallet3 -ne $Wallet2 -and $Wallet3 -ne $Wallet1){$Wallets += [PSCustomObject]@{Wallet="Wallet3"; address=$Wallet3; Symbol=$PasswordCurrency3;Response="";Unsold="";Current=""}}
+if($AltWallet1){$Wallets += [PSCustomObject]@{Wallet="AltWallet1"; address=$AltWallet1; Symbol=$AltPassword1;Response="";Unsold="";Current=""}}
+if($AltWallet2 -and $AltWallet2 -ne $ALtWallet1){$Wallets += [PSCustomObject]@{Wallet="AltWallet2"; address=$AltWallet2; Symbol=$AltPassword2;Response="";Unsold="";Current=""}}
+if($AltWallet3 -and $AltWallet3 -ne $AltWallet2 -and $AltWallet3 -ne $AltWallet1){$Wallets += [PSCustomObject]@{Wallet="AltWallet3"; address=$AltWallet3; Symbol=$AltPassword3;Response="";Unsold="";Current=""}}
+if($Nicehash_Wallet1){$Wallets += [PSCustomObject]@{Wallet="Nicehash_Wallet1"; address=$Nicehash_Wallet1; Symbol="NHBTC";Response="";Unsold="";Current=""}}
+if($Nicehash_Wallet2 -and $Nicehash_Wallet2 -ne $Nicehash_Wallet1){$Wallets += [PSCustomObject]@{Wallet="Nicehash_Wallet2"; address=$Nicehash_Wallet2; Symbol="NHBTC";Response="";Unsold="";Current=""}}
+if($Nicehash_Wallet3 -and $Nicehash_Wallet3 -ne $Nicehash_Wallet2 -and $Nicehash_Wallet3 -ne $Nicehash_Wallet1){$Wallets += [PSCustomObject]@{Wallet="Nicehash_Wallet3"; address=$Nicehash_Wallet3; Symbol="NHBTC";Response="";Unsold="";Current=""}}
+$Wallets | %{ $_ | ConvertTo-Json | Set-Content ".\wallet\keys\$($_.Wallet).txt"}
 $CurrentParams = @{}
 $CurrentParams.Add("Wallet",$Wallet)
 $CurrentParams.Add("Wallet1",$Wallet1)
@@ -229,7 +229,6 @@ $GetSWARMParams = Get-Content ".\config\parameters\arguments.json"
 $SWARMParams = $GetSWARMParams | ConvertFrom-Json
 $Wallet = $SWARMParams.Wallet
 $Wallet1 = $SWARMParams.Wallet1
-$W
 $Wallet2 = $SWARMParams.Wallet2
 $Wallet3 = $SWARMParams.Wallet3
 $CPUWallet = $SWARMParams.CPUWallet

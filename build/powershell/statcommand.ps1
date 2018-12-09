@@ -160,3 +160,37 @@ Remove-Item -path $Remove
     }
 }
 
+function Set-WStat {
+    param(
+        [Parameter(Mandatory=$true)]
+        [String]$Name,
+        [Parameter(Mandatory=$true)]
+        [Double]$balance,
+        [Parameter(Mandatory=$true)]
+        [Double]$unpaid,
+        [Parameter(Mandatory=$false)]
+        [DateTime]$Date = (Get-Date)
+    )
+
+$Path = ".\wallet\values\$Name.txt"
+$Date = $Date.ToUniversalTime()
+
+if(Test-Path $Path){$WStat = Get-Content $Path | ConvertFrom-Json}
+if($WStat)
+{
+   $WStat.balance = $balance;
+   $WStat.unpaid = $unpaid;
+   $WStat.Date = $Date
+}
+else{
+    $WStat = [PSCustomObject]@{
+    Balance = $balance; 
+    Unpaid = $unpaid; 
+    Date=$Date
+    }
+ }
+if(-not (Test-Path ".\wallet\values")){New-Item -Name "values" -Path ".\wallet" -ItemType "directory" | Out-Null}
+
+$WStat | ConvertTo-Json | Set-Content $Path 
+
+}
