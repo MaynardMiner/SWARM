@@ -1309,7 +1309,6 @@ function Get-MinerHashRate {
 	 Write-Host "$($_.Name) current hashrate for $($_.Coins) is" -nonewline
 	 Write-Host " $ScreenHash/s" -foreground green
    Write-Host "$($_.Type) is currently mining on $($_.MinerPool)" -foregroundcolor Cyan
-	 Start-Sleep -S 2
 	 Write-Host "$($_.Type) previous hashrates for $($_.Coins) is" -nonewline
 	 Write-Host " $MinerPrevious/s" -foreground yellow
  }
