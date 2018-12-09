@@ -17,7 +17,7 @@ $PwrType | foreach {
      $Ncheck = $true
      $CardPower = ".\build\txt\nvidiapower.txt"
      if(Test-Path $CardPower){Clear-Content $CardPower}
-     timeout -s9 10 ./build/apps/VII-smi | Tee-Object ".\build\txt\nvidiapower.txt" | Out-Null
+     timeout -s9 30 ./build/apps/VII-smi | Tee-Object ".\build\txt\nvidiapower.txt" | Out-Null
     }
 
     elseif($PwrType -like "*AMD*" -and $Acheck -eq $false)
