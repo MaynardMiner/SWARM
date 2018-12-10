@@ -138,43 +138,13 @@ param(
     [String]$Conserve = "No"
 )
 
-
-
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
-$Wallets = @()
-$Walletlist = @{}
-if(Test-Path ".\wallet\keys"){$Oldkeys = Get-ChildItem ".\wallet\keys"}
-if($Oldkeys){$Oldkeys | %{Remove-Item $_ -Force}}
-
-if($AltWallet1){$Walletlist.Add("AltWallet1",$AltWallet1)};
-if($AltWallet2){$Walletlist.Add("AltWallet2",$AltWallet2)};
-if($AltWallet3){$Walletlist.Add("AltWallet3",$AltWallet3)};
-if($Wallet1){$Walletlist.Add("Wallet1",$Wallet1)};
-if($Wallet2){$Walletlist.Add("Wallet2",$Wallet2)};
-if($Wallet3){$Walletlist.Add("Wallet3",$Wallet3)};
-if($NiceHash_Wallet1){$Walletlist.Add("NiceHash_Wallet1",$NiceHash_Wallet1)};
-if($NiceHash_Wallet2){$Walletlist.Add("NiceHash_Wallet2",$NiceHash_Wallet2)};
-if($NiceHash_Wallet3){$Walletlist.Add("NiceHash_Wallet3",$NiceHash_Wallet3)};
-if(-Not (Test-Path ".\wallet\wallets")){new-item -Path ".\wallet" -Name "wallets" -ItemType "directory" | Out-Null}
-$WalletList | ConvertTO-Json | Set-Content ".\wallet\wallets\wallets.txt"
-
-if($Wallet1){$Wallets += [PSCustomObject]@{Wallet="Wallet1"; address=$Wallet1; Symbol=$PasswordCurrency1;Response="";Unsold="";Current=""}}
-if($Wallet2 -and $Wallet2 -ne $Wallet1){$Wallets += [PSCustomObject]@{Wallet="Wallet2"; address=$Wallet2; Symbol=$PasswordCurrency2;Response="";Unsold="";Current=""}}
-if($Wallet3 -and $Wallet3 -ne $Wallet2 -and $Wallet3 -ne $Wallet1){$Wallets += [PSCustomObject]@{Wallet="Wallet3"; address=$Wallet3; Symbol=$PasswordCurrency3;Response="";Unsold="";Current=""}}
-if($AltWallet1){$Wallets += [PSCustomObject]@{Wallet="AltWallet1"; address=$AltWallet1; Symbol=$AltPassword1;Response="";Unsold="";Current=""}}
-if($AltWallet2 -and $AltWallet2 -ne $ALtWallet1){$Wallets += [PSCustomObject]@{Wallet="AltWallet2"; address=$AltWallet2; Symbol=$AltPassword2;Response="";Unsold="";Current=""}}
-if($AltWallet3 -and $AltWallet3 -ne $AltWallet2 -and $AltWallet3 -ne $AltWallet1){$Wallets += [PSCustomObject]@{Wallet="AltWallet3"; address=$AltWallet3; Symbol=$AltPassword3;Response="";Unsold="";Current=""}}
-if($Nicehash_Wallet1){$Wallets += [PSCustomObject]@{Wallet="Nicehash_Wallet1"; address=$Nicehash_Wallet1; Symbol="NHBTC";Response="";Unsold="";Current=""}}
-if($Nicehash_Wallet2 -and $Nicehash_Wallet2 -ne $Nicehash_Wallet1){$Wallets += [PSCustomObject]@{Wallet="Nicehash_Wallet2"; address=$Nicehash_Wallet2; Symbol="NHBTC";Response="";Unsold="";Current=""}}
-if($Nicehash_Wallet3 -and $Nicehash_Wallet3 -ne $Nicehash_Wallet2 -and $Nicehash_Wallet3 -ne $Nicehash_Wallet1){$Wallets += [PSCustomObject]@{Wallet="Nicehash_Wallet3"; address=$Nicehash_Wallet3; Symbol="NHBTC";Response="";Unsold="";Current=""}}
-if(-Not (Test-Path ".\wallet\keys")){new-item -Path ".\wallet" -Name "keys" -ItemType "directory" | Out-Null}
-$Wallets | %{ $_ | ConvertTo-Json | Set-Content ".\wallet\keys\$($_.Wallet).txt"}
 
 $CurrentParams = @{}
 $CurrentParams.Add("Wallet",$Wallet)
 $CurrentParams.Add("Wallet1",$Wallet1)
-$CurrentParams.Add("Wallet2",$Wallet1)
-$CurrentParams.Add("Wallet3",$Wallet1)
+$CurrentParams.Add("Wallet2",$Wallet2)
+$CurrentParams.Add("Wallet3",$Wallet3)
 $CurrentParams.Add("Nicehash_Wallet1",$Nicehash_Wallet1)
 $CurrentParams.Add("Nicehash_Wallet2",$Nicehash_Wallet2)
 $CurrentParams.Add("Nicehash_Wallet3",$Nicehash_Wallet3)
@@ -307,6 +277,36 @@ $Lite = $SWARMParams.Lite
 $Conserve = $SWARMParams.Conserve
 if($Platform -eq "windows"){$AMDPlatform = $SWARMParams.AMDPlatform}
 }
+
+$Wallets = @()
+$Walletlist = @{}
+if(Test-Path ".\wallet\keys"){$Oldkeys = Get-ChildItem ".\wallet\keys"}
+if($Oldkeys){Remove-Item ".\wallet\keys\*" -Force}
+
+if($AltWallet1){$Walletlist.Add("AltWallet1",$AltWallet1)};
+if($AltWallet2){$Walletlist.Add("AltWallet2",$AltWallet2)};
+if($AltWallet3){$Walletlist.Add("AltWallet3",$AltWallet3)};
+if($Wallet1){$Walletlist.Add("Wallet1",$Wallet1)};
+if($Wallet2){$Walletlist.Add("Wallet2",$Wallet2)};
+if($Wallet3){$Walletlist.Add("Wallet3",$Wallet3)};
+if($NiceHash_Wallet1){$Walletlist.Add("NiceHash_Wallet1",$NiceHash_Wallet1)};
+if($NiceHash_Wallet2){$Walletlist.Add("NiceHash_Wallet2",$NiceHash_Wallet2)};
+if($NiceHash_Wallet3){$Walletlist.Add("NiceHash_Wallet3",$NiceHash_Wallet3)};
+if(-Not (Test-Path ".\wallet\wallets")){new-item -Path ".\wallet" -Name "wallets" -ItemType "directory" | Out-Null}
+$WalletList | ConvertTO-Json | Set-Content ".\wallet\wallets\wallets.txt"
+
+if($Wallet1){$Wallets += [PSCustomObject]@{Wallet="Wallet1"; address=$Wallet1; Symbol=$PasswordCurrency1;Response="";Unsold="";Current=""}}
+if($Wallet2 -and $Wallet2 -ne $Wallet1){$Wallets += [PSCustomObject]@{Wallet="Wallet2"; address=$Wallet2; Symbol=$PasswordCurrency2;Response="";Unsold="";Current=""}}
+if($Wallet3 -and $Wallet3 -ne $Wallet2 -and $Wallet3 -ne $Wallet1){$Wallets += [PSCustomObject]@{Wallet="Wallet3"; address=$Wallet3; Symbol=$PasswordCurrency3;Response="";Unsold="";Current=""}}
+if($AltWallet1){$Wallets += [PSCustomObject]@{Wallet="AltWallet1"; address=$AltWallet1; Symbol=$AltPassword1;Response="";Unsold="";Current=""}}
+if($AltWallet2 -and $AltWallet2 -ne $ALtWallet1){$Wallets += [PSCustomObject]@{Wallet="AltWallet2"; address=$AltWallet2; Symbol=$AltPassword2;Response="";Unsold="";Current=""}}
+if($AltWallet3 -and $AltWallet3 -ne $AltWallet2 -and $AltWallet3 -ne $AltWallet1){$Wallets += [PSCustomObject]@{Wallet="AltWallet3"; address=$AltWallet3; Symbol=$AltPassword3;Response="";Unsold="";Current=""}}
+if($Nicehash_Wallet1){$Wallets += [PSCustomObject]@{Wallet="Nicehash_Wallet1"; address=$Nicehash_Wallet1; Symbol="NHBTC";Response="";Unsold="";Current=""}}
+if($Nicehash_Wallet2 -and $Nicehash_Wallet2 -ne $Nicehash_Wallet1){$Wallets += [PSCustomObject]@{Wallet="Nicehash_Wallet2"; address=$Nicehash_Wallet2; Symbol="NHBTC";Response="";Unsold="";Current=""}}
+if($Nicehash_Wallet3 -and $Nicehash_Wallet3 -ne $Nicehash_Wallet2 -and $Nicehash_Wallet3 -ne $Nicehash_Wallet1){$Wallets += [PSCustomObject]@{Wallet="Nicehash_Wallet3"; address=$Nicehash_Wallet3; Symbol="NHBTC";Response="";Unsold="";Current=""}}
+if(-Not (Test-Path ".\wallet\keys")){new-item -Path ".\wallet" -Name "keys" -ItemType "directory" | Out-Null}
+$Wallets | %{ $_ | ConvertTo-Json | Set-Content ".\wallet\keys\$($_.Wallet).txt"}
+
 
 $Platform | Set-Content ".\build\txt\os.txt"
 

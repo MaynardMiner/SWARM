@@ -205,7 +205,7 @@ if($Platforms -eq "windows")
     Start-Sleep -S $MinerCurrent.Delay
     $Logs = Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "logs\$($MinerCurrent.Type).log" 
     $WorkingDirectory = Split-Path $($MinerCurrent.Path)
-    if(Test-Path $Logs){Clear-Content $Logs}
+    if(Test-Path $Logs){Clear-Content $Logs -ErrorAction SilentlyContinue}
     $script = @()
     $script += ". `"$dir\build\powershell\launchcode.ps1`";"
     $script += "`$host.ui.RawUI.WindowTitle = ""$($MinerCurrent.Name)"";"
