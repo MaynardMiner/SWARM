@@ -1196,3 +1196,31 @@ differenly than other platforms.
 -trex updated
 
 Note: I am looking for a 144_5 --pers auto miner for AMD
+
+
+1.8.1
+
+-new command: ``get miners``
+  use ``get help`` for instructions
+-new command: ``get wallets``
+  use ``get help`` for instructions
+  first run- may be bugs
+  did not do nicehash yet (no public method)
+  plan to integrate into SWARM core
+-new feature: Download bans
+  miner will stop attempting to download on failure
+  miner will notify on stats and screen
+  first run- may be bugs
+-fixed all ``get`` commands
+-fixed all ``benchmark`` commands
+  benchmark command displays more input
+-improved ``wattometer``
+  -using new c++ program using cuda api
+  -increased timeout so it has better change of not failing
+  -fixed issues with adding new algorithms
+-new arguments
+  ``-conserve Yes/No``
+    default is no
+    conserve will stop all miners if profit is negative
+-cleared out some useless algorithms from miners
+
