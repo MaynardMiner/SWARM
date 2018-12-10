@@ -249,9 +249,16 @@ $Get = Get-WalletTable
 }
 "stats"
 {
+if($argument2 -eq "lite")
+ {
+  if(Test-Path ".\build\bash\minerstatslite.sh"){$Get = Get-Content ".\build\bash\minerstatslite.sh"}
+  else{$Get = "No Stats History Found"}
+ }
+else
+ {
 if(Test-Path ".\build\bash\minerstats.sh"){$Get = Get-Content ".\build\bash\minerstats.sh"}
 else{$Get = "No Stats History Found"}
-
+ }
 }
 "active"
 {

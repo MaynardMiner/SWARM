@@ -961,12 +961,12 @@ $Type | foreach{
       }
 
 if($ConserveMessage){$ConserveMessage | %{Write-Host "$_" -ForegroundColor Red}}
+$Y = [string]$CoinExchange
+$H = [string]$Currency
+$J = [string]'BTC'
+$BTCExchangeRate = Invoke-WebRequest "https://min-api.cryptocompare.com/data/pricemulti?fsyms=$Y&tsyms=$J" -UseBasicParsing | ConvertFrom-Json | Select-Object -ExpandProperty $Y | Select-Object -ExpandProperty $J
 
 function Get-MinerStatus {
-  $Y = [string]$CoinExchange
-  $H = [string]$Currency
-  $J = [string]'BTC'
-  $BTCExchangeRate = Invoke-WebRequest "https://min-api.cryptocompare.com/data/pricemulti?fsyms=$Y&tsyms=$J" -UseBasicParsing | ConvertFrom-Json | Select-Object -ExpandProperty $Y | Select-Object -ExpandProperty $J
   $ProfitTable | Sort-Object -Property Type,Profits -Descending | Format-Table -GroupBy Type (
   @{Label = "Miner"; Expression={$($_.Miner)}},
   @{Label = "Coin"; Expression={$($_.Name)}},
@@ -978,6 +978,7 @@ function Get-MinerStatus {
   @{Label = "   Pool"; Expression={$($_.MinerPool)}; Align='center'}
       )
 }
+
 
 Clear-Content ".\build\bash\minerstats.sh" -Force
 $type | foreach {if(Test-Path ".\build\txt\$($_)-hash.txt"){Clear-Content ".\build\txt\$($_)-hash.txt" -Force}}
@@ -1015,6 +1016,21 @@ $BanMessage | Out-File ".\build\bash\minerstats.sh" -Append
 $BestActiveMiners | ConvertTo-Json | Out-File ".\build\txt\bestminers.txt"
 $Current_BestMiners = $BestActiveMiners | ConvertTo-Json -Compress
 $BackgroundDone = "No"
+
+function Get-StatusLite {
+  $ProfitTable | Sort-Object -Property Type,Profits -Descending | Format-Table -GroupBy Type (
+    @{Label = "Miner"; Expression={$($_.Miner)}},
+    @{Label = "Speed"; Expression={$($_.HashRates) | ForEach {if($null -ne $_){"$($_ | ConvertTo-Hash)/s"}else{"Bench"}}}; Align='center'},
+    @{Label = "$Currency/Day"; Expression={$($_.Profits) | ForEach {if($null -ne $_){($_ * $Rates.$Currency).ToString("N2")}else{"Bench"}}}; Align='center'},
+    @{Label = "   Pool"; Expression={$($_.MinerPool)}; Align='center'}
+     )
+  }
+
+$StatusLite = Get-StatusLite
+$StatusDate | Out-File ".\build\bash\minerstatslite.sh"
+$StatusLite | OUt-File ".\build\bash\minerstatslite.sh" -Append
+$MiningStatus | Out-File ".\build\bash\minerstatslite.sh" -Append
+$BanMessage | Out-File ".\build\bash\minerstatslite.sh" -Append
 
 $ActiveMinerPrograms | ForEach {
 if($_.BestMiner -eq $false)
