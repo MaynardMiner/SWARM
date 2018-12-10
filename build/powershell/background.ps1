@@ -274,8 +274,6 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
       Write-Host "Miner Port is $Port"
       Write-Host "Miner Devices is $Devices"
       $Message = @{id = 1; jsonrpc = "2.0"; method = "miner_getstat1"} | ConvertTo-Json -Compress
-      #$Response = Invoke-RestMethod "http://$($server):$($port)" -TimeoutSec 10 -Method POST -Body $message -ContentType 'application/json'
-      $Message = @{id = 1; jsonrpc = "2.0"; method = "miner_getstat1"} | ConvertTo-Json -Compress
       $Client = $Null
       $Client = Get-TCP -Server $Server -Port $port -Message $Message
       if($Client)
