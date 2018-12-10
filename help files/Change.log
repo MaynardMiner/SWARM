@@ -1207,6 +1207,8 @@ Note: I am looking for a 144_5 --pers auto miner for AMD
   first run- may be bugs
   did not do nicehash yet (no public method)
   plan to integrate into SWARM core
+-new command: ``get stats lite``
+  lighter version of stats screen for phones
 -new feature: Download bans
   miner will stop attempting to download on failure
   miner will notify on stats and screen
