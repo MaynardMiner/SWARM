@@ -46,7 +46,8 @@ function Set-Stat {
       [DateTime]$Date = (Get-Date)
   )
 
-  $Path = "stats\$Name.txt"
+  if($name -eq "load-average"){$Path = "build\txt\$Name.txt"}
+  else{$Path = "stats\$Name.txt"}
   $Date = $Date.ToUniversalTime()
   $SmallestValue = 1E-20
 
@@ -144,7 +145,8 @@ function Get-Stat {
   )
 
   if(-not (Test-Path "stats")){New-Item "stats" -ItemType "directory"}
-  Get-ChildItem "stats" | Where-Object Extension -NE ".ps1" | Where-Object BaseName -EQ $Name | Get-Content | ConvertFrom-Json
+  if($name -eq "load-average"){Get-ChildItem "build\txt" | Where-Object Extension -NE ".ps1" | Where-Object BaseName -EQ $Name | Get-Content | ConvertFrom-Json}
+  else{Get-ChildItem "stats" | Where-Object Extension -NE ".ps1" | Where-Object BaseName -EQ $Name | Get-Content | ConvertFrom-Json}
 }
 
 function Remove-Stat {

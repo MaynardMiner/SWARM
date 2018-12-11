@@ -90,6 +90,7 @@ if($Platforms -eq "windows"){Set-Location $WorkingDir}
 . .\build\powershell\octune.ps1
 . .\build\powershell\commandweb.ps1
 . .\build\powershell\powerup.ps1
+. .\build\powershell\statcommand.ps1
 
 
 ##Data
@@ -130,7 +131,10 @@ While($True)
 
 if($Platforms -eq "windows" -and $HiveId -ne $null)
 {
-  $cpu = Get-WmiObject Win32_PerfFormattedData_PerfOS_System | Select ProcessorQueueLength
+  $cpu = $(Get-WmiObject Win32_PerfFormattedData_PerfOS_System).ProcessorQueueLength
+  $LoadAverage = Set-Stat -Name "load-average" -Value $cpu
+  $LA1 = 
+  $LoadAverages = @("$([Math]::Round($LoadAverage.Minute,2))","$([Math]::Round($LoadAverage.Minute_5,2))","$([Math]::Round($LoadAverage.Minute_10,2))")
   $ramfree = $(Get-Counter '\Memory\Available MBytes').CounterSamples.CookedValue
   $ramtotal = Get-Content ".\build\txt\ram.txt"
 } 
@@ -959,7 +963,7 @@ $Stats = @{
    total_khs = $TOTALKHS
    power = @($Power)
    mem = @($mem)
-   cpuavg = @($cpu)
+   cpuavg = $LoadAverages
    df = "0"
   }
 }
