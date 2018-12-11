@@ -16,8 +16,8 @@
                          "path2":  ".\\bin\\cryptodredge-2\\CryptoDredge.exe",
                          "path3":  ".\\bin\\cryptodredge-3\\CryptoDredge.exe",
                          "minername":  "CryptoDredge.exe",
-                         "version":  "0.13.0",
-                         "uri":  "https://github.com/technobyl/CryptoDredge/releases/download/v0.13.0/CryptoDredge_0.13.0_cuda_10.0_windows.zip"
+                         "version":  "0.14.0",
+                         "uri":  "https://github.com/technobyl/CryptoDredge/releases/download/v0.14.0/CryptoDredge_0.14.0_cuda_10.0_windows.zip"
                      },
     "dstm":  {
                  "name":  "dstm",

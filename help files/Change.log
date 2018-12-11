@@ -1227,5 +1227,10 @@ Note: I am looking for a 144_5 --pers auto miner for AMD
 -cleared out some useless algorithms from miners
 -fixed HiveOS boot time for windows version
 -code staging for HiveOS OC setting integration for windows version
+-Ban messages on windows screen.
+-Actual load averages in windows on HiveOS.
+-CryptoDredge 0.14.0
+-Z-Enemy 1.27
+-Xmr-Stak 2.7.1
 
 
