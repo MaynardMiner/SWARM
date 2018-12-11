@@ -307,7 +307,7 @@ if($Nicehash_Wallet3 -and $Nicehash_Wallet3 -ne $Nicehash_Wallet2 -and $Nicehash
 if(-Not (Test-Path ".\wallet\keys")){new-item -Path ".\wallet" -Name "keys" -ItemType "directory" | Out-Null}
 $Wallets | %{ $_ | ConvertTo-Json | Set-Content ".\wallet\keys\$($_.Wallet).txt"}
 
-
+if(-not ".\build\txt"){New-Item -Name "txt" -ItemType "Directory" -Path ".\build" | Out-Null}
 $Platform | Set-Content ".\build\txt\os.txt"
 
 $Version = Split-Path ($script:MyInvocation.MyCommand.Path) -Parent
