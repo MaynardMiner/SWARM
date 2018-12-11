@@ -60,24 +60,6 @@ $PreviousVersions | foreach {
        }
       $Jsons = @("miners","naming","oc","power")
       $UpdateType = @("CPU","AMD1","NVIDIA1","NVIDIA2","NVIDIA3")
-      "miners" | foreach{
-        $OldJson_Path = Join-Path $OldConfig "$($_)";
-        $NewJson_Path = Join-Path ".\config" "$($_)";
-        $GetOld_Json =  Get-ChildItem $OldJson_Path;
-        $GetOld_Json = $GetOld_Json.Name
-        $GetOld_Json | foreach {
-        $ChangeFile = $_
-        $NewName = $ChangeFile -Replace ".json","";
-        $OldJson = Join-Path $OldJson_Path "$ChangeFile";
-        $NewJson = Join-Path $NewJson_Path "$ChangeFile";
-        $JsonData = Get-Content $OldJson;
-        Write-Host "Pulled $OldJson"
-        $Data = $JsonData | ConvertFrom-Json;
-        $Data | Add-Member "name" "$NewName" -ErrorAction SilentlyContinue
-        $Data | ConvertTo-Json -Depth 3 | Set-Content $NewJson;
-        Write-Host "Wrote To $NewJson"
-        }
-       }
       $Jsons | foreach {
         $OldJson_Path = Join-Path $OldConfig "$($_)";
         $NewJson_Path = Join-Path ".\config" "$($_)";
@@ -177,6 +159,20 @@ $PreviousVersions | foreach {
           }
          }
         }
+          $NameJson_Path = Join-Path ".\config" "miners";
+          $GetOld_Json =  Get-ChildItem $NameJson_Path;
+          $GetOld_Json = $GetOld_Json.Name
+          $GetOld_Json | foreach {
+          $ChangeFile = $_
+          $NewName = $ChangeFile -Replace ".json","";
+          $NameJson = Join-Path ".\config\miners" "$ChangeFile";
+          $JsonData = Get-Content $NameJson;
+          Write-Host "Pulled $NameJson"
+          $Data = $JsonData | ConvertFrom-Json;
+          $Data | Add-Member "name" "$NewName" -ErrorAction SilentlyContinue
+          $Data | ConvertTo-Json -Depth 3 | Set-Content $NameJson;
+          Write-Host "Wrote To $NameJson"
+          }
        Remove-Item $PreviousPath -recurse -force
      }
     }
