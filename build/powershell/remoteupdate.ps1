@@ -67,7 +67,7 @@ $PreviousVersions | foreach {
         $GetOld_Json = $GetOld_Json.Name
         $GetOld_Json | foreach {
         $ChangeFile = $_
-        $NewName = $ChangeFile.Name -Replace ".json","";
+        $NewName = $ChangeFile -Replace ".json","";
         $OldJson = Join-Path $OldJson_Path "$ChangeFile";
         $NewJson = Join-Path $NewJson_Path "$ChangeFile";
         $JsonData = Get-Content $OldJson;
