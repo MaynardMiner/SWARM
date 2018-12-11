@@ -1225,4 +1225,7 @@ Note: I am looking for a 144_5 --pers auto miner for AMD
     default is no
     conserve will stop all miners if profit is negative
 -cleared out some useless algorithms from miners
+-fixed HiveOS boot time for windows version
+-code staging for HiveOS OC setting integration for windows version
+
 

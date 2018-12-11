@@ -28,11 +28,9 @@ $data1 = $enc.GetBytes($string1)
 $sha = New-Object System.Security.Cryptography.SHA1CryptoServiceProvider 
 $result1 = $sha.ComputeHash($data1)
 $uid = [System.Convert]::ToBase64String($result1)
-$Date = [int][double]::Parse((Get-Date -UFormat %s))
-$BootTime = (Get-CimInstance -ClassName win32_operatingsystem | select lastbootuptime).lastbootuptime
-$Getboot = [math]::Round(((Get-Date)-[DateTime]$BootTime).TotalSeconds)
-$GetbootTime = $Date - $Getboot
-Write-Host "Last Boot Time Is $GetbootTime"
+$BootTime = $((Get-CimInstance -ClassName win32_operatingsystem | select lastbootuptime).lastbootuptime)
+$Uptime = (New-TimeSpan -Start (Get-Date "01/01/1970") -End ($BootTime.ToUniversalTime())).TotalSeconds
+$UpTime = [Math]::Round($Uptime)
 $Ip = $(get-WmiObject Win32_NetworkAdapterConfiguration| Where {$_.Ipaddress.length -gt 1}).ipaddress[0]
 $GPUS = @()
 if($AMDData){for($i=0; $i -lt $AMDData.name.Count; $i++){$GPUS += @{busid = ($AMDData[$i].PCIBusID).ToLower(); name =  $AMDData[$i].Name; brand = $AMDData[$i].brand; subvendor = $AMDData[$i].subvendor ; mem = $AMDData[$i].ram; mem_type = "unknown"; vbios = "unknown"}}}
@@ -55,7 +53,7 @@ $Hello = @{
         uid = "$uid"
         farm_hash = "$FARM_HASH" 
         worker_name = "$WORKER_NAME" 
-        boot_time = "$GetbootTime"
+        boot_time = "$UpTime"
         boot_event = "0"
         ip = "$Ip"
         net_interfaces = ""

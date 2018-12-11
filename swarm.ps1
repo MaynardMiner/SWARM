@@ -1458,6 +1458,7 @@ else
   Get-MinerActive | Out-Host
   Get-MinerStatus | Out-Host
   Get-VM | Out-Host
+  $BanMessage
 Do{
    Restart-Miner
    if($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval-20)){break}
