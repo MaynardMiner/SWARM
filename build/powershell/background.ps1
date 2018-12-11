@@ -360,7 +360,7 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
     $Request = Invoke-Webrequest "http://$($server):$port" -UseBasicParsing -TimeoutSec 10
     if($Request)
     {
-    $Data = $Request -split " "
+    $Data = $Request.Content -split " "
     $Hash = $Data | Select-String "Sol/s" | Select-STring "data-label" | foreach {$_ -split "</td>" | Select -First 1} | foreach{$_ -split ">" | Select -Last 1}
     $RAW = 0
     $RAW = $Hash | Select -Last 1
@@ -369,11 +369,11 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
     $KHS += [Double]$RAW/1000
     $Shares = $Data | Select-String "Shares" | Select -Last 1 | foreach{$_ -split "</td>" | Select -First 1} | Foreach{$_ -split ">" | Select -Last 1}
     $ACC += $Shares -split "/" | Select -first 1
-    $REJ += $Shares -split "/" | Select -first 1
+    $REJ += $Shares -split "/" | Select -Last 1
     $MinerACC = 0
     $MinerREJ = 0
     $MinerACC = $Shares -split "/" | Select -first 1
-    $MinerREJ = $Shares -split "/" | Select -first 1
+    $MinerREJ = $Shares -split "/" | Select -Last 1
     for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Hash.Count -eq 1){$Hash}else{$Hash[$i]})}
     if($Plaforms -eq "linux"){$MinerStats = Get-NVIDIAStats}
     if($MinerStats)
