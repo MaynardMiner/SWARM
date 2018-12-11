@@ -130,10 +130,9 @@ While($True)
 
 if($Platforms -eq "windows" -and $HiveId -ne $null)
 {
-   $cpu1 = Get-WmiObject win32_processor | select LoadPercentage
-   $cpu5 = Get-WmiObject win32_processor | Measure-Object -property LoadPercentage -Average | Select Average
-   $ramfree = $(Get-Counter '\Memory\Available MBytes').CounterSamples.CookedValue
-   $ramtotal = Get-Content ".\build\txt\ram.txt"
+  $cpu = Get-WmiObject Win32_PerfFormattedData_PerfOS_System | Select ProcessorQueueLength
+  $ramfree = $(Get-Counter '\Memory\Available MBytes').CounterSamples.CookedValue
+  $ramtotal = Get-Content ".\build\txt\ram.txt"
 } 
 $HashRates = @()
 $Fans = @()
@@ -922,7 +921,6 @@ function Start-MinerWatchdog {
 
 if($Platforms -eq "windows" -and $HiveOS -eq "Yes")
 {
-$cpu = @(0,$($cpu1.LoadPercentage),$($cpu5.Average))
 $mem = @($($ramfree),$($ramtotal-$ramfree))
 $HashRates = $HashRates | foreach {$_ -replace ("GPU=","")}
 $HashRates = $HashRates | foreach {$_ -replace ("$($_)","$($_)")}
