@@ -20,7 +20,6 @@ param (
 if($Update -eq "Yes")
  {
 $PreviousVersions = @()
-$PreviousVersions += "SWARM.1.7.1"
 $PreviousVersions += "SWARM.1.7.2"
 $PreviousVersions += "SWARM.1.7.3"
 $PreviousVersions += "SWARM.1.7.4"
@@ -30,6 +29,7 @@ $PreviousVersions += "SWARM.1.7.6"
 $PreviousVersions += "SWARM.1.7.7"
 $PreviousVersions += "SWARM.1.7.8"
 $PreviousVersions += "SWARM.1.7.9"
+$PreviousVersions += "SWARM.1.8.0"
 
 $PreviousVersions | foreach {
   $PreviousPath = Join-Path "/hive/miners/custom" "$_"
