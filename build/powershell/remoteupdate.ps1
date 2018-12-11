@@ -20,16 +20,14 @@ param (
 if($Update -eq "Yes")
  {
 $PreviousVersions = @()
-$PreviousVersions += "SWARM.1.7.2"
-$PreviousVersions += "SWARM.1.7.3"
-$PreviousVersions += "SWARM.1.7.4"
-$PreviousVersions += "SWARM.1.7.5"
 $PreviousVersions += "SWARM.1.7.6"
 $PreviousVersions += "SWARM.1.7.6"
 $PreviousVersions += "SWARM.1.7.7"
 $PreviousVersions += "SWARM.1.7.8"
 $PreviousVersions += "SWARM.1.7.9"
 $PreviousVersions += "SWARM.1.8.0"
+
+Write-Hs
 
 $PreviousVersions | foreach {
   $PreviousPath = Join-Path "/hive/miners/custom" "$_"
@@ -75,7 +73,7 @@ $PreviousVersions | foreach {
         $JsonData = Get-Content $OldJson;
         Write-Host "Pulled $OldJson"
         $Data = $JsonData | ConvertFrom-Json;
-        $Data | Add-Member | Add-Member "name" "$NewName" -ErrorAction SilentlyContinue
+        $Data | Add-Member "name" "$NewName" -ErrorAction SilentlyContinue
         $Data | ConvertTo-Json -Depth 3 | Set-Content $NewJson;
         Write-Host "Wrote To $NewJson"
         }
