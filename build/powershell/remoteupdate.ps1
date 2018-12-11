@@ -27,7 +27,7 @@ $PreviousVersions += "SWARM.1.7.8"
 $PreviousVersions += "SWARM.1.7.9"
 $PreviousVersions += "SWARM.1.8.0"
 
-Write-Hs
+Write-Host "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
 
 $PreviousVersions | foreach {
   $PreviousPath = Join-Path "/hive/miners/custom" "$_"
