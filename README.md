@@ -28,7 +28,7 @@ https://github.com/MaynardMiner/SWARM/wiki/Developer's-Corner
 
  ``Startup Phase``
 
- ``SWARM begins initial start by detecting current features/platform/devices, and automatically generating default tables in which to build calculations. Once SWARM has built to its environment, including installing possible missing libraries It begins to gather current recorded stat information from previous launches, as well as initializing an update if it required and user has specified it.``
+ ``SWARM begins initial start by detecting current features/platform/devices, and automatically generating default tables in which to build calculations. Once SWARM has built to its environment, including installing possible missing libraries- It begins to gather current recorded stat information from previous launches, as well as initializing an update if it required and user has specified it.``
 
  ``Pool Phase``
 
