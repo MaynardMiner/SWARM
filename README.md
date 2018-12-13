@@ -52,6 +52,31 @@ https://github.com/MaynardMiner/SWARM/wiki/Developer's-Corner
 
 **Features**
 
+```
+                          HiveOS |  Windows  | Unix (non HiveOS)
+                                 |           |
+HiveOS Integration          x    |     x     |  
+Fast GPU Start Times        x    |           |       x
+Best Hashrates              x    |           |
+Lowest Watt Use             x    |           |       x
+NVIDIA Algo OC-Tuning       x    |     x     |       x
+AMD Algo OC-Tuning          x    |           |       x
+Power Calculations          x    |     x     |       x
+Backs Up Benchmarks         x    |     x     |       x
+Remote Updates              x    |    soon   |       x
+Real Time Monitoring        x    |     x     |       x
+Cuda 9.2 Miners             x    |           |       x
+Cuda 10 Miners              x    |     x     |       x
+'Lite' version              x    |     x     |       x
+Remote Command Interface    x    |     x     |       x
+Time Out System             x    |     x     |       x
+Bash Script Making          x    |           |       x
+User Support                x    |     x     |       x
+Vega Support                x    |           |       x
+RTX Supoort                      |     x     |                   
+
+```
+
 -Works within HiveOS, or Windows- AMD Miners for windows are new and expirmental.
 
 -No Windows WDDM driver stack means faster spool up times compared to windows. Critical for profit switching.
