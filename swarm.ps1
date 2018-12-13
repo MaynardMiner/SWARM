@@ -1490,6 +1490,7 @@ Do{
 else
 {
   Clear-Host
+  Get-Date | Out-Host
   Get-MinerActive | Out-Host
   Get-MinerStatus | Out-Host
   Get-VM | Out-Host
