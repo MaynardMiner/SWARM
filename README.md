@@ -56,9 +56,9 @@ https://github.com/MaynardMiner/SWARM/wiki/Developer's-Corner
                           HiveOS |  Windows  | Unix (non HiveOS)
                                  |           |
 HiveOS Integration          x    |     x     |  
-Fast GPU Start Times        x    |           |       x
+Fast GPU Start Times        x    |           |       
 Best Hashrates              x    |           |
-Lowest Watt Use             x    |           |       x
+Lowest Watt Use             x    |           |       
 NVIDIA Algo OC-Tuning       x    |     x     |       x
 AMD Algo OC-Tuning          x    |           |       x
 Power Calculations          x    |     x     |       x
