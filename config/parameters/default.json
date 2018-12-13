@@ -1,0 +1,78 @@
+{
+    "Favor_Coins":  "No",
+    "AltWallet2":  "",
+    "Poolname":  [
+                     "nlpool",
+                     "blockmasters",
+                     "ahashpool"
+                 ],
+    "Rigname2":  "SWARM",
+    "Cuda":  "10",
+    "Passwordcurrency3":  [
+                              "BTC"
+                          ],
+    "Currency":  [
+                     "USD"
+                 ],
+    "Nicehash_Wallet2":  "",
+    "AltWallet1":  "",
+    "Stat_Coin":  "Live",
+    "Passwordcurrency2":  [
+                              "BTC"
+                          ],
+    "WattOMeter":  "Yes",
+    "Rigname3":  "SWARM",
+    "AltPassword2":  "",
+    "Location":  "US",
+    "Lite":  "No",
+    "Threshold":  0.02,
+    "AltPassword3":  [
+                         "BTC"
+                     ],
+    "CPUOnly":  "No",
+    "Wallet":  "Yes",
+    "StatsInterval":  1,
+    "Farm_Hash":  "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "Wallet2":  "",
+    "HiveOS":  "Yes",
+    "GPUDevices2":  "",
+    "CoinExchange":  "LTC",
+    "Interval":  300,
+    "Passwordcurrency1":  [
+                              "BTC"
+                          ],
+    "CPUThreads":  1,
+    "Nicehash_Wallet1":  "",
+    "Timeout":  24,
+    "Benchmark":  180,
+    "PoolBanCount":  2,
+    "Platform":  "windows",
+    "Proxy":  "",
+    "AlgoBanCount":  3,
+    "Rigname1":  "SWARM",
+    "AMDPlatform":  "",
+    "API_Key":  "",
+    "GPUDevices3":  "",
+    "API_ID":  0,
+    "Stat_Algo":  "Live",
+    "Nicehash_Wallet3":  "",
+    "Donate":  ".5",
+    "Wallet3":  "",
+    "AltPassword1":  "",
+    "Auto_Coin":  "No",
+    "Type":  [
+                 "NVIDIA1"
+             ],
+    "Conserve":  "No",
+    "GPUDevices1":  "",
+    "Rejections":  75,
+    "AltWallet3":  "",
+    "Nicehash_Fee":  "",
+    "No_Algo":  [
+                    ""
+                ],
+    "MinerBanCount":  4,
+    "Wallet1":  "",
+    "PoolBans":  "Yes",
+    "Update":  "Yes"
+}
