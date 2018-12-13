@@ -69,7 +69,13 @@ Argument          Options           Explanation
 -Benchmark     [0-100000]           Expressed in seconds. Default 0. Sets specific interval time for when coin 
 				    is in benchmark mode. Can be used for faster benchmarking. When coin has
 				    a set hashrate- Miner will defer to time expressed in -Interval parameter.
-				    
+
+-Platform      [linux,windows]      Defualt is linux. Specify this if you are using windows. This lets SWARM
+                                    know to build itself for Windows operation.
+
+-Farm_Hash     [address]            This is required for Windows. Specify Farm_Hash in order to use HiveOS
+                                    website. Farm_Hash is attained by making a user account in HiveOS.
+        
 
 ***********************************************************************************************************
 ***********************************************************************************************************
@@ -85,6 +91,9 @@ Argument            Options             Explanation
 -PoolBans       [Yes or No]         Default is "Yes". This option will ban miners from specific pools
                                     if it detects high rejections or no hashrate. Bans are lifted
                                     every [x] hours, where [x] is your -Timeout parameter.
+
+-Conserve        [Yes or No]        Default is "No". This option will determine if SWARM should continue
+                                    mining even though all estimates are negative figures.
 
 -PoolBanCount    [0-10]             Default is 2. Number of strikes/bad benchmarks required before
                                     miner is banned from using pool.
