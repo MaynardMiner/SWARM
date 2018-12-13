@@ -4,7 +4,7 @@ param(
     [String]$LogMiner,
     [Parameter(Position=1,Mandatory=$false)]
     [String]$LogAlgo,
-    [Parameter(Position=0,Mandatory=$false)]
+    [Parameter(Position=2,Mandatory=$false)]
     [String]$LogPath
 )
 
