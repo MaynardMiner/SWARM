@@ -5,9 +5,13 @@ function Start-Peekaboo {
     [Parameter(Mandatory=$false)]
     [String]$HivePassword,
     [Parameter(Mandatory=$false)]
+    [String]$HiveWorker,
+    [Parameter(Mandatory=$false)]
     [String]$HiveMirror,
     [Parameter(Mandatory=$false)]
-    [String]$GPUData
+    [String]$GPUData,
+    [Parameter(Mandatory=$false)]
+    [String]$version
     )
 
  . .\build\powershell\commandweb.ps1
@@ -52,7 +56,7 @@ $Hello = @{
     params = @{
         uid = "$uid"
         farm_hash = "$FARM_HASH" 
-        worker_name = "$WORKER_NAME" 
+        worker_name = "$HiveWorker" 
         boot_time = "$UpTime"
         boot_event = "0"
         ip = "$Ip"
@@ -61,7 +65,7 @@ $Hello = @{
         gpu = $GPUS
         gpu_count_amd = "$($AMDData.name.Count)"
         gpu_count_nvidia = "$($GetGPU.name.count)"
-        version = '0.6-05@181204-4'
+        version = "$Version"
         nvidia_version = "410.76"
         amd_version = "18.10"
         manufacturer = "$manu"
@@ -71,7 +75,7 @@ $Hello = @{
         aes = ""
         cpu_id = "$cpuid"
         disk_model = "$disk"
-        kernel = '4.13.16-hiveos'
+        kernel = "hive-0.1-02-beta"
         server_url = "$url"
        }
       }
@@ -82,26 +86,8 @@ $Hello = @{
 try{
     $response = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body ($Hello | ConvertTo-Json -Depth 3 -Compress) -ContentType 'application/json'
     $response | ConvertTo-Json | Out-File ".\build\txt\get-hello.txt"
-    $details = $response.result.Config | ConvertFrom-StringData
-    if($details.RIG_ID)
-    {
-    $HiveId = $details.RIG_ID
-    Write-Host "New Hive ID is $HIVEID" -ForegroundColor Green
-    $HivePassword = $details.RIG_PASSWD -replace ("`"","")
-    Write-Host "New Hive Password is $HivePassword" -ForegroundColor Green
-    $newparams = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
-    $newparams | Add-Member "HiveID" "$HiveId" -Force
-    $newparams | Add-member "HivePassword" "$HivePassword" -Force
-    $newparams | ConvertTo-Json | Set-Content ".\config\parameters\arguments.json"
-    }
-    if($response.result.exec){
-    Write-Host "Sending Command $($response.result.exec) To Hive"
-    $message = Start-webcommand $response
-    if($message){$hiveresponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body ($message | ConvertTo-Json -Depth 1) -ContentType 'application/json'}
-    $message = $hiveresponse
-    }
-    else{$message = $response.result.config}
-    }
+    $message = $response
+   }
    catch{$message = "Failed To Contact HiveOS.Farm"}
 
    return $message

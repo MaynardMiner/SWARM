@@ -91,6 +91,7 @@ if($Platforms -eq "windows"){Set-Location $WorkingDir}
 . .\build\powershell\commandweb.ps1
 . .\build\powershell\powerup.ps1
 . .\build\powershell\statcommand.ps1
+. .\build\powershell\response.ps1
 
 
 ##Data
@@ -968,27 +969,17 @@ $Stats = @{
   }
 }
 
-try{
-$response = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body ($Stats | ConvertTo-Json -Depth 4 -Compress) -ContentType 'application/json'
-if($response.result.command -eq "OK"){Write-Host "Hive Recieved Stats"}
-}
-catch{Write-Host "Failed To Contact HiveOS.Farm"}
+try{$response = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body ($Stats | ConvertTo-Json -Depth 4 -Compress) -ContentType 'application/json'}
+catch{Write-Warning "Failed To Contact HiveOS.Farm"; $response = $null}
 
-$response.result.exec
-
-if($response.result.command -ne "OK")
+if($response)
  {
-  ##command exec
   $SwarmResponse = Start-webcommand $response
   if($SwarmResponse -ne $null)
    {
-    Write-Host "Sending Command $($response.result.exec) To Hive"
-    #try{
-      $hiveresponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body ($SwarmResponse | ConvertTo-Json -Depth 1) -ContentType 'application/json'
-      if($SwarmResponse.params.payload -eq "rebooting"){Restart-Computer}
-      $SwarmResponse | ConvertTo-Json -Compress
-      if($SwarmResponse.params.data -eq "Rig config changed")
+      if($SwarmResponse -eq "config")
       {
+        Write-Warning "Config Command Initiated- Restarting SWARM"
         $MinerFile =".\build\pid\miner_pid.txt"
         if(Test-Path $MinerFile){$MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue}
         if($MinerId)
@@ -1002,10 +993,12 @@ if($response.result.command -ne "OK")
           Stop-Process $BackGroundID | Out-Null
          }
        }
+      if($SwarmResponse -eq "stats")
+      {
+       Write-Host "Hive Received Stats"
+      }
      }
-    #}
-   # catch{Write-Host "Failed To Execute Command"}
-   }
+    }
   }
 
 if($BackgroundTimer.Elapsed.TotalSeconds -gt 120){Clear-Content ".\build\bash\hivestats.sh"; $BackgroundTimer.Restart()}

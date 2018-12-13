@@ -2,51 +2,85 @@
  function Start-Webcommand {
   Param(
   [Parameter(Position=0, Mandatory=$false)]
-    [Object]$Command
+  [Object]$Command
  )
 
-  Write-Host "$($command.result.exec)"
+ . .\build\powershell\response.ps1
 
- if($command.result.command -eq "OK")
+  Switch($Command.result.command )
+  { 
+  
+  "OK"{$trigger = "stats"}
+
+  "reboot"
   {
-   Write-Host "Hive Received Stats"
+   $method = "message"
+   $messagetype = "success"
+   $data = "Rebooting"
+   $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id
+   $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+   $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+   Write-Host $method $messagetype $data
+   $trigger = "reboot"
+   Restart-Computer
   }
 
- if($command.result.command -eq "exec")
-  {
-   Switch -Wildcard ($command.result.exec)
+  ##upgrade
+
+  "exec"
+   {
+    Switch -Wildcard ($command.result.exec)
     {
      "*stats*"
       {
-       $type = "info"
+       $method = "message"
+       $messagetype = "info"
        $data = "stats"
        $getpayload = Get-Content ".\build\bash\minerstats.sh"
        $line = @()
        $getpayload | foreach {$line += "$_`n"}
        $payload = $line
+       $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id -Payload $payload
+       $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+       $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+       Write-Host $method $messagetype $data
+       $trigger = "exec"
       }
       "*active*"
       {
-       $type = "info"
+       $method = "message"
+       $messagetype = "info"
        $data = "active"
        $getpayload = Get-Content ".\build\bash\mineractive.sh"
        $line = @()
        $getpayload | foreach {$line += "$_`n"}
        $payload = $line
+       $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id -Payload $payload
+       $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+       $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+       Write-Host $method $messagetype $data
+       $trigger = "exec"
       }
-     "*query*"
+     "*version query*"
       {
-        $type = "info"
+        $method = "message"
+        $messagetype = "info"
         $data = "$($command.result.exec)"
         start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command query""" -Wait
         $getpayload = Get-Content ".\build\txt\version.txt"
         $line = @()
         $getpayload | foreach {$line += "$_`n"}
         $payload = $line
+        $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id -Payload $payload
+        $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+        $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+        Write-Host $method $messagetype $data
+        $trigger = "exec"
       }
-      "*update*"
+      "*version update*"
       {
-        $type = "info"
+        $method = "message"
+        $messagetype = "info"
         $data = "$($command.result.exec)"
         $arguments = $data -replace ("version ","")
         start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command $arguments""" -Wait
@@ -55,21 +89,33 @@
         $line = @()
         $getpayload | foreach {$line += "$_`n"}
         $payload = $line
+        $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id -Payload $payload
+        $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+        $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+        Write-Host $method $messagetype $data
+        $trigger = "exec"
       }
       "*get*"
       {
-        $type = "info"
+        $method = "message"
+        $messagetype = "info"
         $data = "$($command.result.exec)"
         $arguments = $data -replace ("get ","")
         start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\get.ps1 $arguments""" -Wait
         $getpayload = Get-Content ".\build\txt\get.txt"
         $line = @()
         $getpayload | foreach {$line += "$_`n"}
-        $payload = $line 
+        $payload = $line
+        $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id -Payload $payload
+        $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+        $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+        Write-Host $method $messagetype $data
+        $trigger = "exec"
       }
-      "*benchmark *"
+      "*benchmark*"
       {
-        $type = "info"
+        $method = "message"
+        $messagetype = "info"
         $data = "$($command.result.exec)"
         $arguments = $data -replace ("benchmark ","")
         start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\benchmark.ps1 $arguments""" -Wait
@@ -77,101 +123,104 @@
         $line = @()
         $getpayload | foreach {$line += "$_`n"}
         $payload = $line 
+        $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id -Payload $payload
+        $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+        $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+        Write-Host $method $messagetype $data
+        $trigger = "exec"
       }
-      "*reboot*"
-      {
-        $type = "info"
-        $data = "$($command.result.exec)"
-        $payload = "rebooting"
-      }
+     }
     }
-  }
 
- if($command.result.command -eq "config")
+ "config"
   {
-   $type = "success"
-   $data = "Rig config changed"
-   $arguments = $command.result.wallet
-   $start = $arguments.Lastindexof("CUSTOM_USER_CONFIG=") + 20
-   $end = $arguments.LastIndexOf("META") - 3
-   $arguments = $arguments.substring($start,($end-$start))
-   $arguments = $arguments -replace "\'\\\'",""
-   $arguments = $arguments -replace "\u0027","\'"
-   $arguments = $arguments -split "-"
-   $arguments = $arguments | foreach {$_.trim(" ")}
-   $arguments = $arguments | Select -skip 1
-   $argjson = @{}
-   $arguments | foreach {$argument = $_ -split " " | Select -first 1; $argparam = $_ -split " " | Select -last 1; $argjson.Add($argument,$argparam);}
-   $JsonParam = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
-   $argjson = $argjson | ConvertTo-Json | ConvertFrom-Json
-   $argjson | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name |  foreach{
-    if($JsonParam.$_ -ne $argjson.$_)
+
+    $Command.result | ConvertTo-Json | Set-Content ".\build\txt\hiveconfig.txt"
+
+    if($command.result.config)
+    {
+    $config = [string]$command.result.config | ConvertFrom-StringData
+    $worker = $config.WORKER_NAME -replace "`"",""
+    $Pass = $config.RIG_PASSWD -replace "`"",""
+    $mirror = $config.HIVE_HOST_URL -replace "`"",""
+    $WorkerID = $config.RIG_ID
+    $NewHiveKeys = @{}
+    $NewHiveKeys.Add("HiveWorker","$worker")
+    $NewHiveKeys.Add("HivePassword","$Pass")
+    $NewHiveKeys.Add("HiveID","$WorkerID")
+    $NewHiveKeys.Add("HiveMirror","$mirror")
+    if(Test-Path ".\build\txt\hivekeys.txt"){$OldHiveKeys = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json}
+    if($OldHiveKeys)
+     {
+      if($NewHiveKeys.HivePassword -ne $OldHiveKeys.HivePassword)
+       {
+        Write-Warning "Detected New Password"
+        $method = "message"
+        $messagetype = "warning"
+        $data = "Password change received, wait for next message..."
+        $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id
+        $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+        $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+        $SendResponse
+        $DoResponse = @{method = "password_change_received"; params = @{rig_id = $HiveID; passwd = $HivePassword}; jsonrpc = "2.0"; id= "0"}
+        $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+        $Send2Response = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+       }
+     }
+    $NewHiveKeys | ConvertTo-Json | Set-Content ".\build\txt\hivekeys.txt"        
+    }
+    ##DO OC HERE##
+
+    if($Command.result.wallet)
+    {
+    $method = "message"
+    $messagetype = "success"
+    $data = "Rig config changed"
+    $arguments = $command.result.wallet
+    $argjson = @{}
+    $start = $arguments.Lastindexof("CUSTOM_USER_CONFIG=") + 20
+    $end = $arguments.LastIndexOf("META") - 3
+    $arguments = $arguments.substring($start,($end-$start))
+    $arguments = $arguments -replace "\'\\\'",""
+    $arguments = $arguments -replace "\u0027","\'"
+    $arguments = $arguments -split "-"
+    $arguments = $arguments | foreach {$_.trim(" ")}
+    $arguments = $arguments | Select -skip 1
+    $arguments | foreach {$argument = $_ -split " " | Select -first 1; $argparam = $_ -split " " | Select -last 1; $argjson.Add($argument,$argparam);}
+    $argjson = $argjson | ConvertTo-Json | ConvertFrom-Json
+
+    $Defaults= Get-Content ".\config\parameters\default.json" | ConvertFrom-Json   
+    $Params = @{}
+
+    $Defaults |Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | %{$Params.Add("$($_)","$($Defaults.$_)")}
+
+    $argjson | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name |  foreach{
+    if($Params.$_ -ne $argjson.$_)
      {
        switch($_)
        {
-        default{$JsonParam.$_ = $argjson.$_}
-        "Type"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $JsonParam.$_ = $NewParamArray}
-        "Poolname"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $JsonParam.$_ = $NewParamArray}
-        "Currency"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $JsonParam.$_ = $NewParamArray}
-        "PasswordCurrency1"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $JsonParam.$_ = $NewParamArray}
-        "PasswordCurrency2"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $JsonParam.$_ = $NewParamArray}
-        "PasswordCurrency3"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $JsonParam.$_ = $NewParamArray}
-        "No_Algo"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $JsonParam.$_ = $NewParamArray}
-       }
-      }
-     if(-not $JsonParam.$_)
-      {
-       switch($_)
-       {
-        default{$JsonParam.Add("$($_)",$argjson.$_)}
-        "Type"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $JsonParam.Add("$($_)",$NewParamArray)}
-        "Poolname"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $JsonParam.Add("$($_)",$NewParamArray)}
-        "Currency"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $JsonParam.Add("$($_)",$NewParamArray)}
-        "PasswordCurrency1"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $JsonParam.Add("$($_)",$NewParamArray)}
-        "PasswordCurrency2"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $JsonParam.Add("$($_)",$NewParamArray)}
-        "PasswordCurrency3"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $JsonParam.Add("$($_)",$NewParamArray)}
-        "No_Algo"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $JsonParam.Add("$($_)",$NewParamArray)}
+        default{$Params.$_ = $argjson.$_}
+        "Type"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $Params.$_ = $NewParamArray}
+        "Poolname"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $Params.$_ = $NewParamArray}
+        "Currency"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $Params.$_ = $NewParamArray}
+        "PasswordCurrency1"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $Params.$_ = $NewParamArray}
+        "PasswordCurrency2"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $Params.$_ = $NewParamArray}
+        "PasswordCurrency3"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $Params.$_ = $NewParamArray}
+        "No_Algo"{$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $Params.$_ = $NewParamArray}
        }
       }
      }
-   $JsonParam | convertto-Json | Out-File ".\config\parameters\newarguments.json"
-   $Datestamp = Get-Date
-  }
 
-if($payload -ne $null)
-{
-$myresponse = @{
-    method = "message"
-    rig_id = $HiveID
-    jsonrpc = "2.0"
-    id= "0"
-    params = @{
-     id = $command.result.id
-     rig_id = $HiveID
-     passwd = $HivePassword
-     type = $type
-     data = $data
-     payload = $payload
-     }
+   $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id
+   $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+   $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+   $SendResponse
+   $Params | convertto-Json | Out-File ".\config\parameters\newarguments.json"
     }
-  }
+   $trigger = "config"
 
-else{
-  $myresponse = @{
-    method = "message"
-    rig_id = $HiveID
-    jsonrpc = "2.0"
-    id= "0"
-    params = @{
-     id = $command.result.id
-     rig_id = $HiveID
-     passwd = $HivePassword
-     type = $type
-     data = $data
-     }
-    }
+   }
   }
+  $trigger
 
-   $myresponse     
-  
-}
+ }
