@@ -113,13 +113,7 @@ param(
     [Parameter(Mandatory=$false)]
     [string]$WattOMeter = "No",
     [Parameter(Mandatory=$false)]
-    [string]$HiveID,
-    [Parameter(Mandatory=$false)]
-    [string]$HivePassword,
-    [Parameter(Mandatory=$false)]
     [string]$Farm_Hash,
-    [Parameter(Mandatory=$false)]
-    [string]$HiveMirror,
     [Parameter(Mandatory=$false)]
     [Double]$Rejections = 75,
     [Parameter(Mandatory=$false)]
@@ -190,10 +184,7 @@ $CurrentParams.Add("HiveOS",$HiveOS)
 $CurrentParams.Add("Update",$Update)
 $CurrentParams.Add("Cuda",$Cuda)
 $CurrentParams.Add("WattOMeter",$WattOMeter)
-$CurrentParams.Add("HiveId",$HiveId)
 $CurrentParams.Add("Farm_Hash",$Farm_Hash)
-$CurrentParams.Add("HivePassword",$HivePassword)
-$CurrentParams.Add("HiveMirror",$HiveMirror)
 $CurrentParams.Add("Rejections",$Rejections)
 $CurrentParams.Add("PoolBans",$PoolBans)
 $CurrentParams.Add("PoolBanCount",$PoolBanCount)
@@ -265,10 +256,7 @@ $HiveOS = $SWARMParams.HiveOS
 $Update = $SWARMParams.Update
 $Cuda = $SWARMParams.Cuda
 $WattOMeter = $SWARMParams.WattOMeter
-$HiveID = $SWARMParams.HiveId
 $Farm_Hash = $SWARMParams.Farm_Hash
-$HivePassword = $SWARMParams.HivePassword
-$HiveMirror = $SWARMParams.HiveMirror
 $Rejections = $SWARMParams.Rejections
 $PoolBans = $SWARMParams.PoolBans
 $PoolBanCount = $SWARMParams.PoolBanCount
@@ -276,6 +264,25 @@ $AlgoBanCount = $SWARMParams.AlgoBanCount
 $Lite = $SWARMParams.Lite
 $Conserve = $SWARMParams.Conserve
 if($Platform -eq "windows"){$AMDPlatform = $SWARMParams.AMDPlatform}
+}
+
+if($Platform -eq "windows")
+{
+if(test-Path ".\build\txt\hivekeys.txt"){$HiveKeys = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json}
+if($HiveKeys)
+{
+$HiveID = $HiveKeys.HiveID
+$HivePassword = $HiveKeys.HivePassword
+$HiveWorker = $HiveKeys.HiveWorker
+$HiveMirror = $HiveKeys.HiveMirror
+}
+else
+{
+ $HiveID = $null
+ $HivePassword = $null
+ $HiveWorker = $null
+ $HiveMirror = "https://api.hiveos.farm"
+}
 }
 
 $Wallets = @()
@@ -307,10 +314,8 @@ if($Nicehash_Wallet3 -and $Nicehash_Wallet3 -ne $Nicehash_Wallet2 -and $Nicehash
 if(-Not (Test-Path ".\wallet\keys")){new-item -Path ".\wallet" -Name "keys" -ItemType "directory" | Out-Null}
 $Wallets | %{ $_ | ConvertTo-Json | Set-Content ".\wallet\keys\$($_.Wallet).txt"}
 
-$Version = Split-Path ($script:MyInvocation.MyCommand.Path) -Parent
-$Version = Split-Path $Version -Leaf
-$Version = $Version -replace ".ps1",""
-$Version = $Version -replace "SWARM.","v"
+$Version = Get-Content ".\h-manifest.conf" | ConvertFrom-StringData
+$Version = $Version.CUSTOM_VERSION
 
 if($HiveOS -eq "Yes" -and $Platform -eq "linux"){Start-Process ".\build\bash\screentitle.sh" -Wait}
 Get-ChildItem . -Recurse -Force | Out-Null 
@@ -351,7 +356,7 @@ if(-not (Test-Path ".\build\txt")){New-Item -Path ".\build" -Name "txt" -ItemTyp
 . .\build\powershell\cl.ps1
 if($Type -like "*ASIC*"){. .\build\powershell\icserver.ps1; . .\build\powershell\poolmanager.ps1}
 if($Platform -eq "linux"){. .\build\powershell\getbestunix.ps1; . .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
-if($Platform -eq "windows"){. .\build\powershell\getbestwin.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1;}
+if($Platform -eq "windows"){. .\build\powershell\getbestwin.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1; . .\build\powershell\response.ps1;}
 
 ##Start The Log
 $dir = (Split-Path $script:MyInvocation.MyCommand.Path)
@@ -378,7 +383,7 @@ if($Platform -eq "windows")
     Write-Host "nvml.dll is missing" -ForegroundColor Red
     Start-Sleep -S 3
     Write-Host "To Fix:" -ForegroundColor Blue
-    Write-Host "Copy `"\build\apps\nvml.dll`" to `"C:\Program Files\NVIDIA Corporation\NVSMI\`"" -ForegroundColor Blue
+    Write-Host "Update Windows, Purge Old NVIDIA Drivers, And Install Latest Drivers" -ForegroundColor Blue
     Start-Sleep -S 3
     Write-Host "Closing Miner"
     Start-Sleep -S 1
@@ -433,12 +438,47 @@ $DonationMode = $false
 if($Platform -eq "windows"){$GetBusData = $GetBusData = Get-BusFunctionID | ConvertTo-Json -Compress}
 if($Platform -eq "windows" -and $HiveOS -eq "Yes")
 {
-Start-Peekaboo -HiveID $HiveID -HiveMirror $HiveMirror -HivePassword $HivePassword -GPUData $GetBusData; $hiveresponse
-$newid = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
-$HiveID = $newId.HiveID
-$HivePassword = $NewId.HivePassword
-$StartingParams = $newid | ConvertTo-Json -Compress
-$newid = $null
+    $hiveresponse = Start-Peekaboo -HiveID $HiveID -HiveMirror $HiveMirror -HiveWorker $HiveWoker -HivePassword $HivePassword -Version $Version -GPUData $GetBusData; 
+    $hiveresponse.result | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach{
+      $Action = $_
+      if($Action -eq "config")
+      {
+        $config = [string]$hiveresponse.result.config | ConvertFrom-StringData
+        $worker = $config.WORKER_NAME -replace "`"",""
+        $Pass = $config.RIG_PASSWD -replace "`"",""
+        $mirror = $config.HIVE_HOST_URL -replace "`"",""
+        $WorkerID = $config.RIG_ID
+        $NewHiveKeys = @{}
+        $NewHiveKeys.Add("HiveWorker","$worker")
+        $NewHiveKeys.Add("HivePassword","$Pass")
+        $NewHiveKeys.Add("HiveID","$WorkerID")
+        $NewHiveKeys.Add("HiveMirror","$mirror")
+        if(Test-Path ".\build\txt\hivekeys.txt"){$OldHiveKeys = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json}
+        if($OldHiveKeys)
+         {
+          if("$($NewHiveKeys.HivePassword)" -ne "$($OldHiveKeys.HivePassword)")
+           {
+            $method = "message"
+            $messagetype = "warning"
+            $data = "Password change received, wait for next message..."
+            $DoResponse = Add-HiveResponse -Method $method -MessageType $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id
+            $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1 -Compress
+            $SendResponse = Invoke-RestMethod "$mirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+            $SendResponse
+            $DoResponse = @{method = "password_change_received"; params = @{rig_id = $HiveID; passwd = $HivePassword}; jsonrpc = "2.0"; id= "0"}
+            $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1 -Compress
+            $Send2Response = Invoke-RestMethod "$mirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+           }
+         }
+        $NewHiveKeys | ConvertTo-Json | Set-Content ".\build\txt\hivekeys.txt"
+        $HiveID = $NewHiveKeys.HiveID
+        $HivePassword = $NewHiveKeys.HivePassword
+        $HiveWorker = $NewHiveKeys.HiveWorker
+        $HiveMirror = $NewHiveKeys.HiveMirror
+        ##DO OC HERE##
+      }
+    }
+    $hiveresponse.result.config
 }
 
 #Timers
@@ -594,10 +634,7 @@ $HiveOS = $SWARMParams.HiveOS
 $Update = $SWARMParams.Update
 $Cuda = $SWARMParams.Cuda
 $WattOMeter = $SWARMParams.WattOMeter
-$HiveID = $SWARMParams.HiveId
 $Farm_Hash = $SWARMParams.Farm_Hash
-$HivePassword = $SWARMParams.HivePassword
-$HiveMirror = $SWARMParams.HiveMirror
 $Rejections = $SWARMParams.Rejections
 $PoolBans = $SWARMParams.PoolBans
 $PoolBanCount = $SWARMParams.PoolBanCount
