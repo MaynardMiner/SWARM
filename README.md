@@ -72,7 +72,7 @@ Remote Command Interface    x    |     x     |       x
 Time Out System             x    |     x     |       x
 Bash Script Making          x    |           |       x
 User Support                x    |     x     |       x
-Vega Support                x    |           |       x
+Vega Support                x    |           |       
 RTX Supoort                      |     x     |                   
 
 ```
