@@ -1622,8 +1622,7 @@ if($_.BestMiner -eq $true)
                Write-Host "$($_.Name) $($_.Coins) Was Benchmarked And Backed Up" -foregroundcolor yellow
               }
              $_.WasBenchmarked = $True
-             $Current = $_ | ConvertTo-Json -Compress
-             Get-Intensity $Current
+             Get-Intensity $_.Type $_.Coins $_.Path
 	           Write-Host "Stat Written" -foregroundcolor green
              $Strike = $false
             } 
