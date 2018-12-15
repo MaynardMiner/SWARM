@@ -83,7 +83,10 @@ function Get-AMDTemps {
       }  
 }
 
-if($Platforms -eq "windows"){Set-Location $WorkingDir}
+if($Platforms -eq "windows"){
+  Set-Location $WorkingDir
+  Invoke-Expression ".\build\powershell\icon.ps1 `"$WorkingDir\build\apps\comb.ico`""
+}
 
 ##Functions:
 . .\build\powershell\hashrates.ps1
@@ -981,21 +984,25 @@ if($response)
       {
         Write-Warning "Config Command Initiated- Restarting SWARM"
         $MinerFile =".\build\pid\miner_pid.txt"
-        if(Test-Path $MinerFile){$MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue}
-        if($MinerId)
-         {
-          Stop-Process $MinerId
-          Start-Sleep -S 3
+         if(Test-Path $MinerFile){$MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue}
+         if($MinerId)
+          {
+           Stop-Process $MinerId
+           Start-Sleep -S 3
+          }
           Start-Process ".\SWARM.bat"
           Start-Sleep -S 3
           $ID = ".\build\pid\background_pid.txt"
           $BackGroundID = Get-Process -id (Get-Content "$ID" -ErrorAction SilentlyContinue) -ErrorAction SilentlyContinue
           Stop-Process $BackGroundID | Out-Null
-         }
        }
       if($SwarmResponse -eq "stats")
       {
        Write-Host "Hive Received Stats"
+      }
+      if($SwarmResponse -eq "exec")
+      {
+       Write-Host "Sent Command To Hive"
       }
      }
     }

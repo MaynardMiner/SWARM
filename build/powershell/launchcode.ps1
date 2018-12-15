@@ -208,7 +208,9 @@ if($Platforms -eq "windows")
     if(Test-Path $Logs){Clear-Content $Logs -ErrorAction SilentlyContinue}
     $script = @()
     $script += ". `"$dir\build\powershell\launchcode.ps1`";"
+    $script += "$dir\build\powershell\icon.ps1 `"$dir\build\apps\miner.ico`"" 
     $script += "`$host.ui.RawUI.WindowTitle = ""$($MinerCurrent.Name)"";"
+    $script += "`$Host.UI.RawUI.BackgroundColor = (`$bckgrnd = `'black`');"
     $MinerCurrent.Prestart | foreach{
     if($_ -notlike "export LD_LIBRARY_PATH=$dir\build\export")
      {
@@ -227,7 +229,7 @@ if($Platforms -eq "windows")
      Set-Location $WorkingDirectory
      $ControllerProcess = Get-Process -Id $ControllerProcessID
      if($ControllerProcess -eq $null){return}
-     $Process = Start-Process "CMD" -ArgumentList "/c powershell.exe -windowstyle minimized -executionpolicy bypass -command "".\swarm-start.ps1""" -PassThru
+     $Process = Start-Process "Powershell.exe" -ArgumentList "-windowstyle minimized -executionpolicy bypass -command "".\swarm-start.ps1""" -PassThru
      if($Process -eq $null){[PSCustomObject]@{ProcessId = $null}; return};
      [PSCustomObject]@{ProcessId = $Process.Id; ProcessHandle = $Process.Handle};
      $ControllerProcess.Handle | Out-Null; $Process.Handle | Out-Null; 
