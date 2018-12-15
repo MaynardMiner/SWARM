@@ -89,8 +89,8 @@ function start-minersorting {
             }
          } 
          
-            if($Miner_Types -eq $null){$Miner_Types = $Miners.Type | Select -Unique}
-            if($Miner_Indexes -eq $null){$Miner_Indexes = $Miners.Index | Select -Unique}
+            if($Miner_Types -eq $null){$Miner_Types = $SortMiners.Type | Select -Unique}
+            if($Miner_Indexes -eq $null){$Miner_Indexes = $SortMiners.Index | Select -Unique}
             
             if($Miner_Types -eq $null){$Miner_Types = ""}
             if($Miner_Indexes -eq $null){$Miner_Indexes = 0}

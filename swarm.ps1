@@ -129,7 +129,9 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$AMDPlatform,
     [Parameter(Mandatory=$false)]
-    [String]$Conserve = "No"
+    [String]$Conserve = "No",
+    [Parameter(Mandatory=$false)]
+    [Double]$Switch_Threshold = 20
 )
 
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
@@ -354,6 +356,7 @@ if(-not (Test-Path ".\build\txt")){New-Item -Path ".\build" -Name "txt" -ItemTyp
 . .\build\powershell\intensity.ps1
 . .\build\powershell\poolbans.ps1
 . .\build\powershell\cl.ps1
+. .\build\powershell\newsort.ps1
 if($Type -like "*ASIC*"){. .\build\powershell\icserver.ps1; . .\build\powershell\poolmanager.ps1}
 if($Platform -eq "linux"){. .\build\powershell\getbestunix.ps1; . .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
 if($Platform -eq "windows"){. .\build\powershell\getbestwin.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1; . .\build\powershell\response.ps1;}
@@ -375,6 +378,7 @@ $Platform | Set-Content ".\build\txt\os.txt"
 
 if($Platform -eq "windows")
  {
+  Invoke-Expression ".\build\powershell\icon.ps1 `".\build\apps\SWARM.ico`""
   [Environment]::SetEnvironmentVariable("CUDA_DEVICE_ORDER", "PCI_BUS_ID", "User")
   $Cuda = "10"
   Start-Fans
@@ -753,24 +757,24 @@ if($DLName.Count -lt 3)
  $DlName = $Null
  }
 if($Download -eq $true){continue}
-
+$BestActiveMiners | % {$AlgoMiners | Where Algo -EQ $_.Algo | Where Type -EQ $_.Type | % {Write-Host "Switching_Threshold changes $($_.Algo) base factored quote from $(($_.Quote * $Rates.$Currency).ToString("N2"))" -NoNewline; $_.Quote = [Double]$_.Quote*(1+($Switch_Threshold/100)); Write-Host " to $(($_.Quote * $Rates.$Currency).ToString("N2"))"}}
 $NewAlgoMiners = @()
 $Type | Foreach {
-$GetType = $_; 
+$GetType = $_;
 $AlgoMiners.Symbol | Select -Unique | foreach {
 $zero = $AlgoMiners | Where Type -eq $GetType | Where Hashrates -match $_ | Where Quote -EQ 0; 
 if($zero)
 {
- $zerochoice = $zero | Sort-Object Quote -Descending | Select -First 1; 
+ $zerochoice = $zero | Sort-Object @{Expression="Quote";Descending=$true} | Select -First 1; 
  if(-not ($NewAlgoMiners | Where Name -EQ $zerochoice.Name | Where Arguments -EQ $zerochoice.Arguments))
   {
-   $NewAlgoMiners += $zerochoice
+   $NewAlgoMiners += $zerochoice;
   }
 }
 else
 {
  $nonzero = $AlgoMiners | Where Type -eq $GetType | Where Hashrates -match $_ | Where Quote -NE 0; 
- $nonzerochoice = $nonzero | Sort-Object Quote -Descending | Select -First 1; 
+ $nonzerochoice = $nonzero | Sort-Object @{Expression="Quote";Descending=$true} | Select -First 1; 
  if(-not ($NewAlgoMiners | Where Name -EQ $nonzerochoice.Name | Where Arguments -EQ $nonzerochoice.Arguments))
    {
     $NewAlgoMiners += $nonzerochoice
@@ -783,13 +787,12 @@ if($AlgoMiners.Count -eq 0){"No Miners!" | Out-Host; start-sleep $Interval; cont
 
 ##Sort Algorithm Miners
 start-minersorting -Command "Algo" -Stats $Stats -Pools $AlgoPools -Pools_Comparison $AlgoPools_Comparison -SortMiners $AlgoMiners -DBase $DecayBase -DExponent $DecayExponent -WattCalc $WattEx
-$ActiveMinerPrograms | ForEach {$AlgoMiners | Where Path -EQ $_.Path | Where Arguments -EQ $_.Arguments | ForEach {$_.Profit_Bias = $_.Profit}}
 $GoodAlgoMiners = @()
 $AlgoMiners | Foreach {if($_.Profit -lt $Threshold -or $_.Profit -eq $null){$GoodAlgoMiners += $_}}
+$BestActiveMiners | % {$GoodAlgoMiners | Where Path -EQ $_.Path | Where Arguments -EQ $_.Arguments | % {Write-Host "Switching_Threshold changes $($_.Algo) factored profit from $(($_.Profit * $Rates.$Currency).ToString("N2"))" -NoNewline; $_.Profit = $(if($_.Profit -lt 0){[Double]$_.Profit*(1+($Switch_Threshold/-100))}else{[Double]$_.Profit*(1+($Switch_Threshold/100))}); Write-Host " to $(($_.Profit * $Rates.$Currency).ToString("N2"))"}}
 $Miners = @()
 $GoodAlgoMiners | foreach {$Miners += $_}
-if($Platform -eq "windows"){$BestAlgoMiners_Combo = Get-BestWin -SortMiners $Miners}
-elseif($Platform -eq "linux"){$BestAlgoMiners_Combo = Get-BestUnix -SortMiners $Miners}
+$BestAlgoMiners_Combo = Get-BestMiners
 if($Conserve = "Yes"){$BestMiners_Combo = $BestAlgoMiners_Combo | Where {$_.Profit -eq $null -or $_.Profit -gt 0}}
 else{$BestMiners_Combo = $BestAlgoMiners_Combo}
 
@@ -880,7 +883,7 @@ Write-Host "Most Ideal Choice Is $($BestMiners_Selected) on $($BestPool_Selected
   Name = $($_.Symbol)
   Arguments = $($_.Arguments)
   HashRates = $_.HashRates.$($_.Symbol)
-  Profits = $_.Profit_Bias
+  Profits = $_.Profit
   Algo = $_.Algo
   Fullname = $_.FullName
   MinerPool = $_.MinerPool

@@ -47,35 +47,39 @@ $cpucores = $cpud.NumberOfCores
 $cpuid = $cpud.DeviceID
 $disk = $(Get-WMIObject win32_diskdrive).model
 $url = $HiveMirror
-
+$swarmversion = Get-Content ".\h-manifest.conf" | ConvertFrom-StringData
+$swarmversion = $swarmversion.CUSTOM_VERSION
+Invoke-Expression ".\build\apps\nvidia-smi.exe --query-gpu=driver_version --format=csv" | Tee-Object -Variable nversion | Out-Null
+$nvidiaversion = $nversion | ConvertFrom-Csv
+$nvidiaversion = $nvidiaversion.driver_version | Select -First 1
 
 $Hello = @{
     method = "hello"
     jsonrpc = "2.0"
     id = "0"
     params = @{
-        uid = "$uid"
+        uid = $uid
         farm_hash = "$FARM_HASH" 
         worker_name = "$HiveWorker" 
         boot_time = "$UpTime"
         boot_event = "0"
         ip = "$Ip"
         net_interfaces = ""
-        openvpn = ""
+        openvpn = "0"
         gpu = $GPUS
         gpu_count_amd = "$($AMDData.name.Count)"
         gpu_count_nvidia = "$($GetGPU.name.count)"
-        version = "$Version"
-        nvidia_version = "410.76"
+        version = ""
+        nvidia_version = "$nvidiaversion"
         amd_version = "18.10"
         manufacturer = "$manu"
         product = "$prod" 
         model = "$cpuname"
         cores = "$cpucores"
-        aes = ""
+        aes = "2"
         cpu_id = "$cpuid"
         disk_model = "$disk"
-        kernel = "hive-0.1-02-beta"
+        kernel = "$swarmversion"
         server_url = "$url"
        }
       }

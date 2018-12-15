@@ -25,7 +25,7 @@ function start-fans {
       $script += "Invoke-Expression `'.\nvidiaInspector.exe $FanArgs`'"
       Set-Location ".\build\apps"
       $script | Out-File "fan-start.ps1"
-      $Command = start-process "CMD" -ArgumentList "/c ""powershell.exe -executionpolicy bypass -windowstyle minimized -command "".\fan-start.ps1""" -PassThru
+      $Command = start-process "powershell.exe" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\fan-start.ps1""" -PassThru
       Set-Location $Dir
    }
   }
