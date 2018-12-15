@@ -250,7 +250,7 @@ $script += "`$host.ui.RawUI.WindowTitle = `'OC-Start`';"
 $script += "Invoke-Expression `'.\nvidiaInspector.exe $NVIDIAOCArgs`'"
 Set-Location ".\build\apps"
 $script | Out-File "NVIDIA-oc-start.ps1"
-$Command = start-process "CMD" -ArgumentList "/c ""powershell.exe -executionpolicy bypass -windowstyle minimized -command "".\NVIDIA-oc-start.ps1""" -PassThru
+$Command = start-process "powershell.exe" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\NVIDIA-oc-start.ps1""" -PassThru
 Set-Location $Dir
 }
 

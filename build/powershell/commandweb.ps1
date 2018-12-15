@@ -7,7 +7,7 @@
 
  . .\build\powershell\response.ps1
 
-  Switch($Command.result.command )
+  Switch($Command.result.command)
   { 
   
   "OK"{$trigger = "stats"}
@@ -79,21 +79,33 @@
       }
       "*version update*"
       {
-        $method = "message"
-        $messagetype = "info"
-        $data = "$($command.result.exec)"
-        $arguments = $data -replace ("version ","")
-        start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command $arguments""" -Wait
-        Start-Sleep -S 12
-        $getpayload = Get-Content ".\build\txt\version.txt"
-        $line = @()
-        $getpayload | foreach {$line += "$_`n"}
-        $payload = $line
-        $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id -Payload $payload
-        $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-        $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
-        Write-Host $method $messagetype $data
-        $trigger = "exec"
+        $MinerFile =".\build\pid\miner_pid.txt"
+        if(Test-Path $MinerFile){$MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue}
+        if($MinerId)
+         {
+          Stop-Process $MinerId
+          Start-Sleep -S 3
+          $method = "message"
+          $messagetype = "info"
+          $data = "$($command.result.exec)"
+          $arguments = $data -replace ("version ","")
+          start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command $arguments""" -Wait
+          Start-Sleep -S 12
+          $getpayload = Get-Content ".\build\txt\version.txt"
+          $line = @()
+          $getpayload | foreach {$line += "$_`n"}
+          $payload = $line
+          $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id -Payload $payload
+          $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+          $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+          Write-Host $method $messagetype $data
+          $trigger = "config"
+          Start-Process ".\SWARM.bat"
+          Start-Sleep -S 3
+          $ID = ".\build\pid\background_pid.txt"
+          $BackGroundID = Get-Process -id (Get-Content "$ID" -ErrorAction SilentlyContinue) -ErrorAction SilentlyContinue
+          Stop-Process $BackGroundID | Out-Null 
+         }
       }
       "*get*"
       {
@@ -130,9 +142,9 @@
         $trigger = "exec"
       }
      }
-    }
+   }
 
- "config"
+  "config"
   {
 
     $Command.result | ConvertTo-Json | Set-Content ".\build\txt\hiveconfig.txt"
