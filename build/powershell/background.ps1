@@ -95,6 +95,7 @@ if($Platforms -eq "windows"){
 . .\build\powershell\powerup.ps1
 . .\build\powershell\statcommand.ps1
 . .\build\powershell\response.ps1
+. .\build\powershell\hiveoc.ps1
 
 
 ##Data
@@ -974,6 +975,8 @@ $Stats = @{
 
 try{$response = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body ($Stats | ConvertTo-Json -Depth 4 -Compress) -ContentType 'application/json'}
 catch{Write-Warning "Failed To Contact HiveOS.Farm"; $response = $null}
+
+$response | ConvertTo-Json | Set-Content ".\build\txt\response.txt"
 
 if($response)
  {

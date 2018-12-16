@@ -91,7 +91,7 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$Favor_Coins = "Yes",
     [Parameter(Mandatory=$false)]
-    [double]$Threshold = .02,
+    [double]$Threshold = 0.02,
     [Parameter(Mandatory=$false)]
     [string]$Platform = "linux",
     [Parameter(Mandatory=$false)]
@@ -131,7 +131,7 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$Conserve = "No",
     [Parameter(Mandatory=$false)]
-    [Double]$Switch_Threshold = 20
+    [Double]$Switch_Threshold = 1
 )
 
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
@@ -193,6 +193,7 @@ $CurrentParams.Add("PoolBanCount",$PoolBanCount)
 $CurrentParams.Add("AlgoBanCount",$AlgoBanCount)
 $CurrentParams.Add("MinerBanCount",$MinerBanCount)
 $CurrentParams.Add("Conserve",$Conserve)
+$CurrentParams.Add("Switch_Threshold",$Switch_Threshold)
 if($Platform -eq "windows"){$CurrentParams.Add("AMDPlatform",$AMDPlatform)}
 $CurrentParams.Add("Lite",$Lite)
 $StartParams = $CurrentParams | ConvertTo-Json 
@@ -265,6 +266,7 @@ $PoolBanCount = $SWARMParams.PoolBanCount
 $AlgoBanCount = $SWARMParams.AlgoBanCount
 $Lite = $SWARMParams.Lite
 $Conserve = $SWARMParams.Conserve
+$Switch_Threshold = $SWARMParams.Switch_Threshold
 if($Platform -eq "windows"){$AMDPlatform = $SWARMParams.AMDPlatform}
 }
 
@@ -359,7 +361,7 @@ if(-not (Test-Path ".\build\txt")){New-Item -Path ".\build" -Name "txt" -ItemTyp
 . .\build\powershell\newsort.ps1
 if($Type -like "*ASIC*"){. .\build\powershell\icserver.ps1; . .\build\powershell\poolmanager.ps1}
 if($Platform -eq "linux"){. .\build\powershell\getbestunix.ps1; . .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
-if($Platform -eq "windows"){. .\build\powershell\getbestwin.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1; . .\build\powershell\response.ps1;}
+if($Platform -eq "windows"){. .\build\powershell\hiveoc.ps1; . .\build\powershell\getbestwin.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1; . .\build\powershell\response.ps1;}
 
 ##Start The Log
 $dir = (Split-Path $script:MyInvocation.MyCommand.Path)
@@ -443,7 +445,9 @@ if($Platform -eq "windows"){$GetBusData = $GetBusData = Get-BusFunctionID | Conv
 if($Platform -eq "windows" -and $HiveOS -eq "Yes")
 {
     $hiveresponse = Start-Peekaboo -HiveID $HiveID -HiveMirror $HiveMirror -HiveWorker $HiveWoker -HivePassword $HivePassword -Version $Version -GPUData $GetBusData; 
-    $hiveresponse.result | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach{
+    if($hiveresponse.result)
+    {
+     $hiveresponse.result | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach{
       $Action = $_
       if($Action -eq "config")
       {
@@ -481,8 +485,15 @@ if($Platform -eq "windows" -and $HiveOS -eq "Yes")
         $HiveMirror = $NewHiveKeys.HiveMirror
         ##DO OC HERE##
       }
+     if($Action -eq "nvidia_oc")
+     {
+      $WorkingDir = $dir
+      $hiveresponse.result.nvidia_oc | Start-NVIDIAOC 
+     }
     }
     $hiveresponse.result.config
+  }
+  else{Write-Host "failed to contact HiveOS"}
 }
 
 #Timers
@@ -645,6 +656,7 @@ $PoolBanCount = $SWARMParams.PoolBanCount
 $AlgoBanCount = $SWARMParams.AlgoBanCount
 $Lite = $SWARMParams.Lite
 $Conserve = $SWARMParams.Conserve
+$Switch_Threshold = $SWARMParams.Switch_Threshold
 if($Platform -eq "windows"){$AMDPlatform = $SWARMParams.AMDPlatform}
 
 if($SWARMParams.Rigname1 -eq "Donate"){$Donating = $True}
@@ -757,7 +769,18 @@ if($DLName.Count -lt 3)
  $DlName = $Null
  }
 if($Download -eq $true){continue}
-$BestActiveMiners | % {$AlgoMiners | Where Algo -EQ $_.Algo | Where Type -EQ $_.Type | % {Write-Host "Switching_Threshold changes $($_.Algo) base factored quote from $(($_.Quote * $Rates.$Currency).ToString("N2"))" -NoNewline; $_.Quote = [Double]$_.Quote*(1+($Switch_Threshold/100)); Write-Host " to $(($_.Quote * $Rates.$Currency).ToString("N2"))"}}
+$BestActiveMiners | % {$AlgoMiners | Where Algo -EQ $_.Algo | Where Type -EQ $_.Type | % {
+if($_.Quote -NE $Null)
+ {
+  if($Switch_Threshold)
+   {
+   Write-Host "Switching_Threshold changes $($_.Algo) base factored quote from $(($_.Quote * $Rates.$Currency).ToString("N2"))" -NoNewline; 
+   $_.Quote = [Double]$_.Quote*(1+($Switch_Threshold/100)); 
+   Write-Host " to $(($_.Quote * $Rates.$Currency).ToString("N2"))"
+   }
+  }
+ }
+}
 $NewAlgoMiners = @()
 $Type | Foreach {
 $GetType = $_;
@@ -789,11 +812,32 @@ if($AlgoMiners.Count -eq 0){"No Miners!" | Out-Host; start-sleep $Interval; cont
 start-minersorting -Command "Algo" -Stats $Stats -Pools $AlgoPools -Pools_Comparison $AlgoPools_Comparison -SortMiners $AlgoMiners -DBase $DecayBase -DExponent $DecayExponent -WattCalc $WattEx
 $GoodAlgoMiners = @()
 $AlgoMiners | Foreach {if($_.Profit -lt $Threshold -or $_.Profit -eq $null){$GoodAlgoMiners += $_}}
-$BestActiveMiners | % {$GoodAlgoMiners | Where Path -EQ $_.Path | Where Arguments -EQ $_.Arguments | % {Write-Host "Switching_Threshold changes $($_.Algo) factored profit from $(($_.Profit * $Rates.$Currency).ToString("N2"))" -NoNewline; $_.Profit = $(if($_.Profit -lt 0){[Double]$_.Profit*(1+($Switch_Threshold/-100))}else{[Double]$_.Profit*(1+($Switch_Threshold/100))}); Write-Host " to $(($_.Profit * $Rates.$Currency).ToString("N2"))"}}
 $Miners = @()
 $GoodAlgoMiners | foreach {$Miners += $_}
+$BestActiveMiners | % { $Miners | Where Name -EQ $_.Name | Where Path -EQ $_.Path | % {
+  if($_.Price -ne $NULL)
+   {
+    if($Switch_Threshold)
+     {
+      Write-Host "Switching_Threshold changes $($_.Name) $($_.Algo) base factored price from $(($_.Price * $Rates.$Currency).ToString("N2"))" -NoNewline; 
+      if($_.Price -GT 0){$_.Price = [Double]$_.Price*(1+($Switch_Threshold/100))};
+      else{$_.Price = [Double]$_.Price*(1+($Switch_Threshold/-100))};       
+      Write-Host " to $(($_.Price * $Rates.$Currency).ToString("N2"))"
+     }
+   }
+  }
+}
 $BestAlgoMiners_Combo = Get-BestMiners
-if($Conserve = "Yes"){$BestMiners_Combo = $BestAlgoMiners_Combo | Where {$_.Profit -eq $null -or $_.Profit -gt 0}}
+if($Conserve -eq "Yes"){
+ $BestMiners_Combo = @()
+ $Type | Foreach {
+ $SelType = $_
+ $ConserveArray = @()
+ $ConserveArray += $BestAlgoMiners_Combo | Where Type -EQ $SelType | Where Profit -EQ $NULL
+ $ConserveArray += $BestAlgoMiners_Combo | Where Type -EQ $SelType | Where Profit -GT 0
+ }
+ $BestMiners_Combo += $ConserveArray
+ }
 else{$BestMiners_Combo = $BestAlgoMiners_Combo}
 
 ##Define Wallet Estimates:
@@ -950,7 +994,6 @@ $BestMiners_Combo | ForEach {
    ocfans = $_.ocfans
    ethpill = $_.ethpill
    pilldelay = $_.pilldelay
-   quote = 0
    NPool = $_.NPool
    NUser = $_.NUser
    CommandFile = $_.CommandFile

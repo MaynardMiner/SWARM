@@ -144,6 +144,23 @@
      }
    }
 
+  "nvidia_oc"
+  {
+      $method = "message"
+      $messagetype = "success"
+      $data = "Nvidia settings applied"
+      $Command.result.nvidia_oc | Start-NVIDIAOC
+      $getpayload = Get-Content ".\build\txt\ocmessage.txt"
+      $line = @()
+      $getpayload | foreach {$line += "$_`n"}
+      $payload = $line
+      $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id -Payload $payload
+      $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+      $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+      Write-Host $method $messagetype $data
+      $trigger = "exec"
+  }
+
   "config"
   {
 
@@ -181,7 +198,6 @@
      }
     $NewHiveKeys | ConvertTo-Json | Set-Content ".\build\txt\hivekeys.txt"        
     }
-    ##DO OC HERE##
 
     if($Command.result.wallet)
     {
