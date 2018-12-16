@@ -14,8 +14,6 @@ function Start-Peekaboo {
     [String]$version
     )
 
- . .\build\powershell\commandweb.ps1
-
  ##"{0:f0}" -f $($Test.AdapterRam/1000000)
 $AMDData = $GPUData | ConvertFrom-Json
 $NVIDIAData = $GPUData | ConvertFrom-Json
@@ -85,7 +83,9 @@ $Hello = @{
       }
       
    Write-Host "Saying Hello To Hive"
-   $Hello | ConvertTo-Json -Depth 3 -Compress | Set-Content ".\build\txt\hello.txt"
+   $GetHello = $Hello | ConvertTo-Json -Depth 3 -Compress
+   $GetHello | Set-Content ".\build\txt\hello.txt"
+   Write-Host "$GetHello" -ForegroundColor Green
 
 try{
     $response = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body ($Hello | ConvertTo-Json -Depth 3 -Compress) -ContentType 'application/json'

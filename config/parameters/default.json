@@ -74,5 +74,6 @@
     "MinerBanCount":  4,
     "Wallet1":  "",
     "PoolBans":  "Yes",
-    "Update":  "Yes"
+    "Update":  "Yes",
+    "Switch_Threshold": "0"
 }
