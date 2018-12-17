@@ -293,18 +293,28 @@ Get-BenchTable | Out-File ".\build\txt\get.txt"
      $Get += "Detected New Version Should Be $VersionNumber"
      $Get += "Attempting To Download New Version at $Versionlink"
      $Location = Split-Path $dir
+     Write-Host "Main Directory is $Location"
      $NewLocation = Join-Path (Split-Path $dir) "SWARM.$VersionNumber"
-     $FileName = "x64/SWARM.$VersionNumber.zip"
+     $FileName = join-path ".\x64" "SWARM.$VersionNumber.zip"
+     $DLFileName = Join-Path "$Dir" "x64\SWARM.$VersionNumber.zip"
      $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$versionNumber/SWARM.$VersionNumber.zip"
      [System.Net.ServicePointManager]::SecurityProtocol = ("Tls12","Tls11","Tls")
      try{Invoke-WebRequest $URI -OutFile $FileName -UseBasicParsing -ErrorAction Stop}catch{$Failed = $true; $Get += "Failed To Contact Github For Download! Must Do So Manually"}
      if($Failed -eq $false)
      {
-     Start-Process "7z" "x `"$([IO.Path]::GetFullPath($FileName))`" -o`"$([IO.Path]::GetFullPath($Location))`" -y -spe" -Wait
+     Start-Process "7z" "x `"$($DLFileName)`" -o`"$($Location)`" -y -spe" -Wait
+      $Get += "Config Command Initiated- Restarting SWARM"
+      $MinerFile =".\build\pid\miner_pid.txt"
+      if(Test-Path $MinerFile){$MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue}
+      if($MinerId)
+       {
+        Stop-Process $MinerId
+        Start-Sleep -S 3
+       }
      $Get += "Downloaded and extracted SWARM successfully"
      $Trigger = "update"
      Copy-Item ".\SWARM.bat" -Destination $NewLocation -Force
-     Copy-Item ".\config\parameters\newarguments.json" -Destination "$NewLocation\config\parameters\" -Force
+     Copy-Item ".\config\parameters\newarguments.json" -Destination "$NewLocation\config\parameters" -Force
      }
      else{$Get += "Did not perform update."}
     }
@@ -462,29 +472,4 @@ if($get -ne $null)
 $Get
 $Get | Out-File ".\build\txt\get.txt"
 Start-Sleep -S .5
-}
-
-if($Trigger -ne $null)
-{
- if($Trigger -eq "update")
- {
-    $ID = Get-Content ".\build\pid\miner_pid.txt"
-    Stop-Process -Id $ID
-    Start-Sleep -S 5
-    $method = "message"
-    $messagetype = "info"
-    $data = "get update"
-    $getpayload = Get-Content ".\build\txt\get.txt"
-    $line = @()
-    $getpayload | foreach {$line += "$_`n"}
-    $payload = $line
-    $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id -Payload $payload
-    $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-    $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
-    Start-Process "$NewLocation\SWARM.bat"
-    Start-Sleep -S 2
-    $ID = ".\build\pid\background_pid.txt"
-    $BackGroundID = Get-Process -id (Get-Content "$ID" -ErrorAction SilentlyContinue) -ErrorAction SilentlyContinue
-    Stop-Process $BackGroundID | Out-Null
- }
 }
