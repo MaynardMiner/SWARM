@@ -777,7 +777,6 @@ if($_.Quote -NE $Null)
  {
   if($Switch_Threshold)
    {
-   Write-Host "Switching_Threshold changes $($_.Algo) base factored quote from $(($_.Quote * $Rates.$Currency).ToString("N2"))" -NoNewline; 
    $_.Quote = [Double]$_.Quote*(1+($Switch_Threshold/100)); 
    Write-Host " to $(($_.Quote * $Rates.$Currency).ToString("N2"))"
    }
