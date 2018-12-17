@@ -319,6 +319,7 @@ if(-Not (Test-Path ".\wallet\keys")){new-item -Path ".\wallet" -Name "keys" -Ite
 $Wallets | %{ $_ | ConvertTo-Json | Set-Content ".\wallet\keys\$($_.Wallet).txt"}
 
 $Version = Get-Content ".\h-manifest.conf" | ConvertFrom-StringData
+$Version.CUSTOM_NAME | Set-Content ".\build\txt\version.txt"
 $Version = $Version.CUSTOM_VERSION
 
 if($HiveOS -eq "Yes" -and $Platform -eq "linux"){Start-Process ".\build\bash\screentitle.sh" -Wait}
@@ -414,7 +415,6 @@ if($Platform -eq "linux"){start-killscript}
 if($platform -eq "linux")
 {
 $cuda | Out-file ".\build\txt\cuda.txt" -Force
-start-update -Update $update
   if($HiveOS -eq "Yes"){
   Write-Host "Getting Data"
   Get-Data -CmdDir $dir
@@ -424,6 +424,8 @@ start-update -Update $update
     }
   }
 }
+
+start-update -Update $update -Dir $dir -Platforms $Platform
 
 Write-Host "HiveOS = $HiveOS"
 #Startings Settings:

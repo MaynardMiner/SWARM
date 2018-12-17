@@ -14,10 +14,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 function start-update {
 param (
     [Parameter(Mandatory=$true)]
-    [String]$Update
+    [String]$Update,
+    [Parameter(Mandatory=$true)]
+    [String]$Dir,
+    [Parameter(Mandatory=$true)]
+    [String]$Platforms
 )
 
-if($Update -eq "Yes")
+$Location = split-Path $Dir
+$StartUpdate = $True
+if($Platforms -eq "linux" -and $Update -eq "No"){$StartUpdate = $false}
+
+if($StartUpdate -eq $true)
  {
 $PreviousVersions = @()
 $PreviousVersions += "SWARM.1.7.6"
@@ -26,11 +34,13 @@ $PreviousVersions += "SWARM.1.7.7"
 $PreviousVersions += "SWARM.1.7.8"
 $PreviousVersions += "SWARM.1.7.9"
 $PreviousVersions += "SWARM.1.8.0"
+$PreviousVersions += "SWARM.1.8.1"
 
 Write-Host "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
+Write-Host "Check $Location For any Previous Versions"
 
 $PreviousVersions | foreach {
-  $PreviousPath = Join-Path "/hive/miners/custom" "$_"
+  $PreviousPath = Join-Path "$Location" "$_"
    if(Test-Path $PreviousPath)
     {
      Write-Host "Detected Previous Version"

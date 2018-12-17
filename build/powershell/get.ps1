@@ -14,7 +14,17 @@ param(
      )
 
 Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))
+$dir = Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))
+
 $Get = @()
+
+. .\build\powershell\hashrates.ps1
+. .\build\powershell\octune.ps1
+. .\build\powershell\commandweb.ps1
+. .\build\powershell\powerup.ps1
+. .\build\powershell\statcommand.ps1
+. .\build\powershell\response.ps1
+. .\build\powershell\hiveoc.ps1
 
  Switch($argument1)
   {
@@ -179,6 +189,17 @@ wallets
    
     OPTIONS: none
 
+update
+ Windows version will perform a remote update. HiveOS version
+ will list SWARM's current version.
+      
+    USES:
+   
+    get wallet
+     
+    OPTIONS: none
+   
+
 to see all available SWARM commands, go to:
 
 https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
@@ -239,6 +260,57 @@ Get-BenchTable | Out-File ".\build\txt\get.txt"
 }
  else{$Get = "No Stats Found"}
 }
+
+"update"
+{
+    $os = Get-Content ".\build\txt\os.txt"
+    $version = Get-Content ".\build\txt\version.txt"
+    $versionnumber = $version -replace "SWARM.",""
+    $version1 = $versionnumber[4]
+    $version1 = $version1 | % {iex $_}
+    $version1 = $version1+1
+    $version2 = $versionnumber[2]
+    $version3 = $versionnumber[0]
+    if($version1 -eq 10)
+     {
+      $version1 = 0; 
+      $version2 = $version2 | % {iex $_}
+      $version2 = $version2+1
+     }
+     if($version2 -eq 10)
+     {
+      $version2 = 0; 
+      $version3 = $version3 | % {iex $_}
+      $version3 = $version3+1
+     }
+     $versionnumber = "$version3.$version2.$version1"
+    
+    if($os -eq "windows")
+    {
+     $Failed = $false
+     $Get += "Operating System Is Windows: Updating via 'get' is possible"
+     $versionlink = "https://github.com/MaynardMiner/SWARM/releases/download/v$VersionNumber/SWARM.$VersionNumber.zip"
+     $Get += "Detected New Version Should Be $VersionNumber"
+     $Get += "Attempting To Download New Version at $Versionlink"
+     $Location = Split-Path $dir
+     $NewLocation = Join-Path (Split-Path $dir) "SWARM.$VersionNumber"
+     $FileName = "x64/SWARM.$VersionNumber.zip"
+     $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$versionNumber/SWARM.$VersionNumber.zip"
+     [System.Net.ServicePointManager]::SecurityProtocol = ("Tls12","Tls11","Tls")
+     try{Invoke-WebRequest $URI -OutFile $FileName -UseBasicParsing -ErrorAction Stop}catch{$Failed = $true; $Get += "Failed To Contact Github For Download! Must Do So Manually"}
+     if($Failed -eq $false)
+     {
+     Start-Process "7z" "x `"$([IO.Path]::GetFullPath($FileName))`" -o`"$([IO.Path]::GetFullPath($Location))`" -y -spe" -Wait
+     $Get += "Downloaded and extracted SWARM successfully"
+     $Trigger = "update"
+     Copy-Item ".\SWARM.bat" -Destination $NewLocation -Force
+     Copy-Item ".\config\parameters\newarguments.json" -Destination "$NewLocation\config\parameters\" -Force
+     }
+     else{$Get += "Did not perform update."}
+    }
+   else{$Get += Get-Content ".\build\txt\version.txt"}
+}
+
 "wallets"
 {
 . .\build\powershell\statcommand.ps1
@@ -389,4 +461,30 @@ if($get -ne $null)
 {
 $Get
 $Get | Out-File ".\build\txt\get.txt"
+Start-Sleep -S .5
+}
+
+if($Trigger -ne $null)
+{
+ if($Trigger -eq "update")
+ {
+    $ID = Get-Content ".\build\pid\miner_pid.txt"
+    Stop-Process -Id $ID
+    Start-Sleep -S 5
+    $method = "message"
+    $messagetype = "info"
+    $data = "get update"
+    $getpayload = Get-Content ".\build\txt\get.txt"
+    $line = @()
+    $getpayload | foreach {$line += "$_`n"}
+    $payload = $line
+    $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id -Payload $payload
+    $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+    $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+    Start-Process "$NewLocation\SWARM.bat"
+    Start-Sleep -S 2
+    $ID = ".\build\pid\background_pid.txt"
+    $BackGroundID = Get-Process -id (Get-Content "$ID" -ErrorAction SilentlyContinue) -ErrorAction SilentlyContinue
+    Stop-Process $BackGroundID | Out-Null
+ }
 }
