@@ -1,5 +1,4 @@
 {
-  "name":"avermore",
   "AMD1": {
     "name": "AMD1",
     "delay": "1",
@@ -72,5 +71,6 @@
         "fans": ""
       }
     }
-  }
+  },
+  "name": "avermore"
 }

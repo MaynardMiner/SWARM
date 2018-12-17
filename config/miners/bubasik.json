@@ -1,5 +1,4 @@
 {
-  "name":"bubasik",
   "CPU": {
     "name": "CPU",
     "delay": "1",
@@ -22,5 +21,6 @@
       "lyra2z": "lyra2z",
       "hodl": "hodl"
     }
-  }
+  },
+  "name": "bubasik"
 }

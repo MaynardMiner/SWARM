@@ -56,29 +56,34 @@ $Hello = @{
     jsonrpc = "2.0"
     id = "0"
     params = @{
+        farm_hash = "$FARM_HASH"
+        server_url = "$url"
         uid = $uid
-        farm_hash = "$FARM_HASH" 
-        worker_name = "$HiveWorker" 
         boot_time = "$UpTime"
         boot_event = "0"
         ip = "$Ip"
         net_interfaces = ""
         openvpn = "0"
+        lan_config = ""
         gpu = $GPUS
         gpu_count_amd = "$($AMDData.name.Count)"
         gpu_count_nvidia = "$($GetGPU.name.count)"
+        worker_name = "$HiveWorker" 
         version = ""
-        nvidia_version = "$nvidiaversion"
+        kernel = "$swarmversion"
         amd_version = "18.10"
+        nvidia_version = "$nvidiaversion"
+        mb = @{
         manufacturer = "$manu"
         product = "$prod" 
+        }
+        cpu = @{
         model = "$cpuname"
         cores = "$cpucores"
         aes = "2"
         cpu_id = "$cpuid"
+        }
         disk_model = "$disk"
-        kernel = "$swarmversion"
-        server_url = "$url"
        }
       }
       

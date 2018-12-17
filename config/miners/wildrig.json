@@ -1,5 +1,5 @@
 {
-  "name":"wildrig",
+  "name": "wildrig",
   "AMD1": {
     "name": "AMD1",
     "delay": "1",
@@ -29,7 +29,9 @@
       "x22i": "",
       "x21s": "",
       "polytimos": "",
-      "dedal": ""
+      "dedal": "",
+      "exosis": "",
+      "lyra2v3": ""
     },
     "difficulty": {
       "bcd": "",
@@ -51,7 +53,9 @@
       "x22i": "",
       "x21s": "",
       "polytimos": "",
-      "dedal": ""
+      "dedal": "",
+      "exosis": "",
+      "lyra2v3": ""
     },
     "naming": {
       "bcd": "bcd",
@@ -73,7 +77,9 @@
       "x22i": "x22i",
       "x21s": "x21s",
       "polytimos": "polytimos",
-      "dedal": "dedal"
+      "dedal": "dedal",
+      "exosis": "exosis",
+      "lyra2v3": "lyra2v3"
     },
     "oc": {
       "bcd": {
@@ -235,6 +241,22 @@
         "mem": "",
         "mdpm": "",
         "fans": ""
+      },
+      "exosis": {
+        "core": "",
+        "v": "",
+        "mem": "",
+        "fans": "",
+        "mdpm": "",
+        "dpm": ""
+      },
+      "lyra2v3": {
+        "core": "",
+        "v": "",
+        "mem": "",
+        "fans": "",
+        "mdpm": "",
+        "dpm": ""
       }
     }
   }

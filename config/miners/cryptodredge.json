@@ -1,5 +1,5 @@
 {
-  "name":"cryptodredge",
+  "name": "cryptodredge",
   "NVIDIA1": {
     "name": "NVIDIA1",
     "delay": "1",
@@ -30,7 +30,8 @@
       "bcd": "",
       "hmq1725": "",
       "x21s": "",
-      "lyra2vc0banhash": ""
+      "lyra2vc0banhash": "",
+      "lyra2v3": ""
     },
     "difficulty": {
       "lyra2v2": "",
@@ -58,7 +59,8 @@
       "bcd": "",
       "hmq1725": "",
       "x21s": "",
-      "lyra2vc0banhash": ""
+      "lyra2vc0banhash": "",
+      "lyra2v3": ""
     },
     "naming": {
       "lyra2v2": "lyra2v2",
@@ -86,7 +88,8 @@
       "bcd": "bcd",
       "hmq1725": "hmq1725",
       "x21s": "x21s",
-      "lyra2vc0banhash": "lyra2vc0banhash"
+      "lyra2vc0banhash": "lyra2vc0banhash",
+      "lyra2v3": "Lyra2REv3"
     },
     "oc": {
       "lyra2v2": {
@@ -215,6 +218,11 @@
         "Core": ""
       },
       "lyra2vc0banhash": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
+      "lyra2v3": {
         "Power": "",
         "Memory": "",
         "Core": ""
@@ -251,7 +259,8 @@
       "bcd": "",
       "hmq1725": "",
       "x21s": "",
-      "lyra2vc0banhash": ""
+      "lyra2vc0banhash": "",
+      "lyra2v3": ""
     },
     "difficulty": {
       "lyra2v2": "",
@@ -279,7 +288,8 @@
       "bcd": "",
       "hmq1725": "",
       "x21s": "",
-      "lyra2vc0banhash": ""
+      "lyra2vc0banhash": "",
+      "lyra2v3": ""
     },
     "naming": {
       "lyra2v2": "lyra2v2",
@@ -307,7 +317,8 @@
       "bcd": "bcd",
       "hmq1725": "hmq1725",
       "x21s": "x21s",
-      "lyra2vc0banhash": "lyra2vc0banhash"
+      "lyra2vc0banhash": "lyra2vc0banhash",
+      "lyra2v3": "Lyra2REv3"
     },
     "oc": {
       "lyra2v2": {
@@ -436,6 +447,11 @@
         "Core": ""
       },
       "lyra2vc0banhash": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
+      "lyra2v3": {
         "Power": "",
         "Memory": "",
         "Core": ""
@@ -472,7 +488,8 @@
       "bcd": "",
       "hmq1725": "",
       "x21s": "",
-      "lyra2vc0banhash": ""
+      "lyra2vc0banhash": "",
+      "lyra2v3": ""
     },
     "difficulty": {
       "lyra2v2": "",
@@ -500,7 +517,8 @@
       "bcd": "",
       "hmq1725": "",
       "x21s": "",
-      "lyra2vc0banhash": ""
+      "lyra2vc0banhash": "",
+      "lyra2v3": ""
     },
     "naming": {
       "lyra2v2": "lyra2v2",
@@ -528,7 +546,8 @@
       "bcd": "bcd",
       "hmq1725": "hmq1725",
       "x21s": "x21s",
-      "lyra2vc0banhash": "lyra2vc0banhash"
+      "lyra2vc0banhash": "lyra2vc0banhash",
+      "lyra2v3": "Lyra2REv3"
     },
     "oc": {
       "lyra2v2": {
@@ -657,6 +676,11 @@
         "Core": ""
       },
       "lyra2vc0banhash": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
+      "lyra2v3": {
         "Power": "",
         "Memory": "",
         "Core": ""
