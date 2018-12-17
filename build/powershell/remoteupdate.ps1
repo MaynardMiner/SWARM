@@ -95,6 +95,10 @@ $PreviousVersions | foreach {
           $Data.$_.difficulty | Add-Member "lyra2vc0banhash" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "lyra2vc0banhash" "lyra2vc0banhash" -ErrorAction SilentlyContinue
           $Data.$_.oc | Add-Member "lyra2vc0banhash" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
+          $Data.$_.commands| Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "lyra2v3" "Lyra2REv3" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "lyra2v3" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
             }  
            }
          }
@@ -135,6 +139,14 @@ $PreviousVersions | foreach {
           $Data.$_.difficulty | Add-Member "x21s" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "x21s" "x21s" -ErrorAction SilentlyContinue
           $Data.$_.oc | Add-Member "x21s" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue
+          $Data.$_.commands| Add-Member "exosis" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "exosis" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "exosis" "exosis" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "exosis" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue
+          $Data.$_.commands| Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "lyra2v3" "lyra2v3" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "lyra2v3" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue
             }
            }
           }

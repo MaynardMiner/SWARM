@@ -246,7 +246,6 @@ else {
   
      "Miner Was Updated" | Out-File ".\build\txt\version.txt" -Append
       "Restarting Miner With New Settings" | Out-File ".\build\txt\version.txt" -Append
-      Start-Process .\SWARM.bat
     }
   
  }
