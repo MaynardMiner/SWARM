@@ -210,10 +210,10 @@
     $end = $arguments.LastIndexOf("META") - 3
     $arguments = $arguments.substring($start,($end-$start))
     $arguments = $arguments -replace "\'\\\'",""
-    $arguments = $arguments -replace "\u0027","\'"
-    $arguments = $arguments -split "-"
+    $arguments = $arguments -replace "\u0027","`'"
+    $arguments = $arguments -split " -"
     $arguments = $arguments | foreach {$_.trim(" ")}
-    $arguments = $arguments | Select -skip 1
+    $arguments = $arguments | % {$_.trimstart("-")}
     $arguments | foreach {$argument = $_ -split " " | Select -first 1; $argparam = $_ -split " " | Select -last 1; $argjson.Add($argument,$argparam);}
     $argjson = $argjson | ConvertTo-Json | ConvertFrom-Json
 

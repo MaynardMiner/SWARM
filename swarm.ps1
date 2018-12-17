@@ -230,9 +230,9 @@ $Interval = $SWARMParams.Interval
 $StatsInterval = $SWARMParams.StatsInterval
 $Location = $SWARMParams.Location
 $Type = $SWARMParams.Type
-$GPUDevices1 = $SWARMParams.GPUDevices1 -replace "\\'",""
-$GPUDevices2 = $SWARMParams.GPUDevices2 -replace "\\'",""
-$GPUDevices3 = $SWARMParams.GPUDevices3 -replace "\\'",""
+$GPUDevices1 = $SWARMParams.GPUDevices1 -replace "`'",""
+$GPUDevices2 = $SWARMParams.GPUDevices2 -replace "`'",""
+$GPUDevices3 = $SWARMParams.GPUDevices3 -replace "`'",""
 $PoolName = $SWARMParams.PoolName
 $Currency = $SWARMParams.Currency
 $Passwordcurrency1 = $SWARMParams.Passwordcurrency1
@@ -242,7 +242,7 @@ $AltPassword1 = $SWARMParams.AltPassword1
 $AltPassword2 =  $SWARMParams.AltPassword2
 $AltPassword3 = $SWARMParams.AltPassword3
 $Donate = $SWARMParams.Donate
-$Proxy = $SWARMParams.Proxy -replace "\\'",""
+$Proxy = $SWARMParams.Proxy -replace "`'",""
 $CoinExchange = $SWARMParams.CoinExchange
 $Auto_Coin = $SWARMParams.Auto_Coin
 $Nicehash_Fee = $SWARMParams.Nicehash_Fee
@@ -510,7 +510,7 @@ Get-DateFiles
 try{if((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)){Start-Process powershell -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath '$(Convert-Path .)'"}}catch{}
 
 ##Proxy
-if($Proxy -eq ""){$PSDefaultParameterValues.Remove("*:Proxy")}
+if($Proxy -eq "" -or $Proxy -eq ''){$PSDefaultParameterValues.Remove("*:Proxy")}
 else{$PSDefaultParameterValues["*:Proxy"] = $Proxy}
 
 ##Check for lib & restart agent
@@ -620,9 +620,9 @@ $Interval = $SWARMParams.Interval
 $StatsInterval = $SWARMParams.StatsInterval
 $Location = $SWARMParams.Location
 $Type = $SWARMParams.Type
-$GPUDevices1 = $SWARMParams.GPUDevices1 -replace "\\'",""
-$GPUDevices2 = $SWARMParams.GPUDevices2 -replace "\\'",""
-$GPUDevices3 = $SWARMParams.GPUDevices3 -replace "\\'",""
+$GPUDevices1 = $SWARMParams.GPUDevices1 -replace "`'",""
+$GPUDevices2 = $SWARMParams.GPUDevices2 -replace "`'",""
+$GPUDevices3 = $SWARMParams.GPUDevices3 -replace "`'",""
 $PoolName = $SWARMParams.PoolName
 $Currency = $SWARMParams.Currency
 $Passwordcurrency1 = $SWARMParams.Passwordcurrency1
@@ -632,7 +632,7 @@ $AltPassword1 = $SWARMParams.AltPassword1
 $AltPassword2 =  $SWARMParams.AltPassword2
 $AltPassword3 = $SWARMParams.AltPassword3
 $Donate = $SWARMParams.Donate
-$Proxy = $SWARMParams.Proxy -replace "\\'",""
+$Proxy = $SWARMParams.Proxy -replace "`'",""
 $CoinExchange = $SWARMParams.CoinExchange
 $Auto_Coin = $SWARMParams.Auto_Coin
 $Nicehash_Fee = $SWARMParams.Nicehash_Fee
@@ -814,15 +814,15 @@ $GoodAlgoMiners = @()
 $AlgoMiners | Foreach {if($_.Profit -lt $Threshold -or $_.Profit -eq $null){$GoodAlgoMiners += $_}}
 $Miners = @()
 $GoodAlgoMiners | foreach {$Miners += $_}
-$BestActiveMiners | % { $Miners | Where Name -EQ $_.Name | Where Path -EQ $_.Path | % {
-  if($_.Price -ne $NULL)
+$BestActiveMiners | % { $Miners | Where Path -EQ $_.path | Where Arguments -EQ $_.Arguments | % {
+  if($_.Profit -ne $NULL)
    {
     if($Switch_Threshold)
      {
-      Write-Host "Switching_Threshold changes $($_.Name) $($_.Algo) base factored price from $(($_.Price * $Rates.$Currency).ToString("N2"))" -NoNewline; 
-      if($_.Price -GT 0){$_.Price = [Double]$_.Price*(1+($Switch_Threshold/100))};
-      else{$_.Price = [Double]$_.Price*(1+($Switch_Threshold/-100))};       
-      Write-Host " to $(($_.Price * $Rates.$Currency).ToString("N2"))"
+      Write-Host "Switching_Threshold changes $($_.Name) $($_.Algo) base factored price from $(($_.Profit * $Rates.$Currency).ToString("N2"))" -NoNewline; 
+      if($_.Profit -GT 0){$_.Profit = [Double]$_.Profit*(1+($Switch_Threshold/100))}
+      else{$_.Profit = [Double]$_.Profit*(1+($Switch_Threshold/-100))};  
+      Write-Host " to $(($_.Profit * $Rates.$Currency).ToString("N2"))"
      }
    }
   }
@@ -1272,7 +1272,10 @@ get benchmarks
 command"
 $Message | Out-File ".\build\bash\minerstats.sh" -Append
 }
-else{$MinerInterval = $Interval}
+else{
+if($SWARM_Mode -eq "Yes"){$SwitchTime = Get-Date}
+$MinerInterval = $Interval
+}
 
 ##Mem cleanup
 $AlgoMiner = $Null

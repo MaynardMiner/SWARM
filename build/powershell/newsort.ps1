@@ -22,8 +22,8 @@ if($OldMiners)
 if($OldTypeMiners){$MinerCombo += $OldTypeMiners}
 $MinerCombo += $TypeMiners | Where Profit -NE $NULL
 $BestTypeMiners += $TypeMiners | Where Profit -EQ $NULL | Select -First 1
-$BestTypeMiners += $MinerCombo | Where Profit -NE $Null | Where Profit -gt 0 | Sort-Object @{Expression="Profit";Descending=$true} | Select -First 1
-$BestTypeMiners += $MinerCombo | Where Profit -NE $Null | Where Profit -lt 0 | Sort-Object @{Expression="Profit";Descending=$false} | Select -First 1
+$BestTypeMiners += $MinerCombo | Where Profit -NE $Null | Where Profit -gt 0 | Sort-Object {($_ | Measure Profit -Sum).Sum} -Descending | Select -First 1
+$BestTypeMiners += $MinerCombo | Where Profit -NE $Null | Where Profit -lt 0 | Sort-Object {($_ | Measure Profit -Sum).Sum} -Descending | Select -First 1
 $BestMiners += $BestTypeMiners | Select -first 1
 }
 
