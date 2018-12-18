@@ -223,12 +223,15 @@ function Invoke-SwarmMode {
     [int]$ModeDeviation = 5
     )
 
+
+
+
     $DateMinute = [Int]$SwarmMode_Start.Minute + $ModeDeviation
     $DateMinute = ([math]::Floor(($DateMinute/$ModeDeviation))*$ModeDeviation)
-    if($DateMinute -gt 59){$DateMinute = 0; $DateHour = (Get-Date -Format "HH"); $DateHour = [int]$DateHour + 1}else{$DateHour = (Get-Date -Format "HH"); $DateHour = [int]$DateHour}
-    if($DateHour -gt 23){$DateHour = 0; $DateDay = (Get-Date -Format "dd");  $DateDay = [int]$DateDay + 1}else{$DateDay = (Get-Date -Format "dd"); $DateDay = [int]$DateDay}
-    if($DateDay -gt 31){$DateDay = 1; $DateMonth = (Get-Date -Format "MM"); $DateMonth = [int]$DateMonth + 1}else{$DateMonth = (Get-Date -Format "MM"); $DateMonth = [int]$DateMonth}
-    if($DateMonth -gt 12){$DateMonth = 1; $DateYear = (Get-Date -Format "yy"); $DateYear = [int]$DateYear + 2001}else{$DateYear = (Get-Date -Format "yy"); $DateYear = [int]$DateYear + 2000}
+    if($DateMinute -gt 59){$DateMinute = 0; $DateHour = [Int]$SwarmMode_Start.Hour; $DateHour = [int]$DateHour + 1}else{$DateHour = [Int]$SwarmMode_Start.Hour; $DateHour = [int]$DateHour}
+    if($DateHour -gt 23){$DateHour = 0; $DateDay = [Int]$SwarmMode_Start.Day;  $DateDay = [int]$DateDay + 1}else{$DateDay = [Int]$SwarmMode_Start.Day; $DateDay = [int]$DateDay}
+    if($DateDay -gt 31){$DateDay = 1; $DateMonth = [Int]$SwarmMode_Start.Month; $DateMonth = [int]$DateMonth + 1}else{$DateMonth = [Int]$SwarmMode_Start.Month; $DateMonth = [int]$DateMonth}
+    if($DateMonth -gt 12){$DateMonth = 1; $DateYear = [Int]$SwarmMode_Start.Year; $DateYear = [int]$DateYear + 1}else{$DateYear = [Int]$SwarmMode_Start.Year; $DateYear = [int]$DateYear}
     $ReadyValue = (Get-Date -Year $DateYear -Month $DateMonth -Day $DateDay -Hour $DateHour -Minute $DateMinute -Second 0 -Millisecond 0)
     $StartValue = [math]::Round(((Get-Date)-$ReadyValue).TotalSeconds)
     $StartValue

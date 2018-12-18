@@ -1283,6 +1283,7 @@ if($SWARM_Mode -eq "Yes")
 {
 Write-Host "SWARM MODE ACTIVATED!" -ForegroundColor Green;
 $SwitchTime = (Get-Date); 
+Write-Host "SWARM Mode Start Time is $SwitchTime" -ForegroundColor Cyan;
 $MinerInterval = 10000000
 }
 else{$MinerInterval = $Interval}
