@@ -1261,6 +1261,10 @@ This is a Windows update only
 Warning: Larger changes in codebase was made
 prepare to rollback in case you have issues.
 
+Remote Updates are safe.
+Windows Users will be able to update after this
+version with a command.
+
 All Versions:
 
 New Arguments!
@@ -1275,6 +1279,7 @@ New Arguments!
      users!
     -Research shows most cards of the same
      platform will often mine the same algo.
+    -WE ARE THE SWARM!
 
 ``-Switch_Threshold``
      -Default is ``1`` (for testing)
@@ -1295,6 +1300,17 @@ New Arguments!
 Windows:
 
 -Removed annoying update HiveOS on site.
+-Hive Mirror is no longer required.
+-Woker password can now be set successfully.
+-HiveOS mirror can now be set sucessfully.
+-Remote "run" commands have been completely
+ rewritten, and are more efficient.
+-Created HiveReset.bat
+  This is will remove all saved HiveOS
+  parameters.
+  This is ran to re-sync worker to HiveOS.
+  After running, you can now attempt to
+recconnect worker as if it was the first time.
 -OC can now be adjust on HiveOS website.
   -nvidia only
 -Nvidia driver version correct on Hive Site.
@@ -1332,3 +1348,6 @@ To use new features included in this release:
 -Add ``-SWARM_Mode Yes`` to your flight sheet.
 -Add ``Switch_Threshold [number]`` to your flight sheet.
 
+All miners should be up to date. If I missed one, or you
+have a request for a new miner to be added- Contact me via
+discord.
