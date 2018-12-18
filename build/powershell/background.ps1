@@ -281,7 +281,7 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
       Write-Host "Miner $MinerType is ethminer api"
       Write-Host "Miner Port is $Port"
       Write-Host "Miner Devices is $Devices"
-      $Message = @{id = 1; jsonrpc = "2.0"; method = "miner_getstat1"} | ConvertTo-Json -Compress
+      $Message = @{id = 0; jsonrpc = "2.0"; method = "miner_getstat1"} | ConvertTo-Json -Compress
       $Client = $Null
       $Client = Get-TCP -Server $Server -Port $port -Message $Message
       if($Client)

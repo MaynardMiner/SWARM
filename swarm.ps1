@@ -131,7 +131,9 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$Conserve = "No",
     [Parameter(Mandatory=$false)]
-    [Double]$Switch_Threshold = 1
+    [Double]$Switch_Threshold = 1,
+    [Parameter(Mandatory=$false)]
+    [String]$SWARM_Mode = "No"
 )
 
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
@@ -193,6 +195,7 @@ $CurrentParams.Add("PoolBanCount",$PoolBanCount)
 $CurrentParams.Add("AlgoBanCount",$AlgoBanCount)
 $CurrentParams.Add("MinerBanCount",$MinerBanCount)
 $CurrentParams.Add("Conserve",$Conserve)
+$CurrentParams.Add("SWARM_Mode",$SWARM_Mode)
 $CurrentParams.Add("Switch_Threshold",$Switch_Threshold)
 if($Platform -eq "windows"){$CurrentParams.Add("AMDPlatform",$AMDPlatform)}
 $CurrentParams.Add("Lite",$Lite)
@@ -267,6 +270,7 @@ $AlgoBanCount = $SWARMParams.AlgoBanCount
 $Lite = $SWARMParams.Lite
 $Conserve = $SWARMParams.Conserve
 $Switch_Threshold = $SWARMParams.Switch_Threshold
+$SWARM_Mode = $SWARMParams.SWARM_Mode
 if($Platform -eq "windows"){$AMDPlatform = $SWARMParams.AMDPlatform}
 }
 
@@ -660,6 +664,7 @@ $AlgoBanCount = $SWARMParams.AlgoBanCount
 $Lite = $SWARMParams.Lite
 $Conserve = $SWARMParams.Conserve
 $Switch_Threshold = $SWARMParams.Switch_Threshold
+$SWARM_Mode = $SWARMParams.SWARM_Mode
 if($Platform -eq "windows"){$AMDPlatform = $SWARMParams.AMDPlatform}
 
 if($SWARMParams.Rigname1 -eq "Donate"){$Donating = $True}
@@ -778,7 +783,6 @@ if($_.Quote -NE $Null)
   if($Switch_Threshold)
    {
    $_.Quote = [Double]$_.Quote*(1+($Switch_Threshold/100)); 
-   Write-Host " to $(($_.Quote * $Rates.$Currency).ToString("N2"))"
    }
   }
  }
@@ -1275,8 +1279,13 @@ command"
 $Message | Out-File ".\build\bash\minerstats.sh" -Append
 }
 else{
-if($SWARM_Mode -eq "Yes"){$SwitchTime = Get-Date}
-$MinerInterval = $Interval
+if($SWARM_Mode -eq "Yes")
+{
+Write-Host "SWARM MODE ACTIVATED!" -ForegroundColor Green;
+$SwitchTime = (Get-Date); 
+$MinerInterval = 10000000
+}
+else{$MinerInterval = $Interval}
 }
 
 ##Mem cleanup
@@ -1447,9 +1456,11 @@ function Get-MinerHashRate {
 
 ##Function To Adjust/Set Countdown On Screen
 function Set-Countdown {
-$Countdown = ([math]::Round(($MinerInterval-20) - $MinerWatch.Elapsed.TotalSeconds))
-$CountMessage = "Time Left Until Database Starts: $($Countdown)"
-Write-Host $CountMessage -foreground Gray
+if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$CountDown = Invoke-SWARMMode $SwitchTime; $CountDown = $Countdown*-1}
+else{$Countdown = ([math]::Round(($MinerInterval-20) - $MinerWatch.Elapsed.TotalSeconds))}
+if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$CountMessage = "SWARM Mode Starts: $($Countdown) seconds"}
+else{$CountMessage = "Time Left Until Database Starts: $($Countdown) seconds"}
+Write-Host $CountMessage -foreground DarkMagenta
 }
 
 function Restart-Database {
@@ -1494,14 +1505,29 @@ function Get-VM {
 if($Platform -eq "linux")
 {
 Do{
-
   Set-Countdown
   Get-MinerHashRate
-  Start-Sleep -s 15
+  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($ModeCheck -gt 0){break}
+  Start-Sleep -s 5
+  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($ModeCheck -gt 0){break}
+  Start-Sleep -s 5
+  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($ModeCheck -gt 0){break}
+  Start-Sleep -s 5
   if($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval-20)){break}
   Set-Countdown
   Get-MinerHashRate
-  Start-Sleep -s 15
+  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($ModeCheck -gt 0){break}
+  Start-Sleep -s 5
+  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($ModeCheck -gt 0){break}
+  Start-Sleep -s 5
+  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($ModeCheck -gt 0){break}
+  Start-Sleep -s 5
   if($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval-20)){break}
   Set-Countdown
   Restart-Miner
@@ -1512,16 +1538,40 @@ Do{
 
   " -foreground Magenta
   Get-MinerHashRate
-  Start-Sleep -s 15
+  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($ModeCheck -gt 0){break}
+  Start-Sleep -s 5
+  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($ModeCheck -gt 0){break}
+  Start-Sleep -s 5
+  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($ModeCheck -gt 0){break}
+  Start-Sleep -s 5
   if($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval-20)){break}
   Set-Countdown
   Get-MinerHashRate
-  Start-Sleep -s 15
+  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($ModeCheck -gt 0){break}
+  Start-Sleep -s 5
+  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($ModeCheck -gt 0){break}
+  Start-Sleep -s 5
+  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($ModeCheck -gt 0){break}
+  Start-Sleep -s 5
   if($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval-20)){break}
   Set-Countdown
   Restart-Miner
   Get-MinerHashRate
-  Start-Sleep -s 15
+  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($ModeCheck -gt 0){break}
+  Start-Sleep -s 5
+  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($ModeCheck -gt 0){break}
+  Start-Sleep -s 5
+  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($ModeCheck -gt 0){break}
+  Start-Sleep -s 5
   if($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval-20)){break}
   Set-Countdown
   Write-Host "
@@ -1531,7 +1581,12 @@ Do{
 
   " -foreground Magenta
   Get-MinerHashRate
-  Start-Sleep -s 15
+  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($ModeCheck -gt 0){break}
+  Start-Sleep -s 5
+  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($ModeCheck -gt 0){break}
+  Start-Sleep -s 5
   if($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval-20)){break}
   $RestartData = Restart-Database
   if($RestartData -eq "Yes"){break}
@@ -1549,8 +1604,25 @@ else
 Do{
    Restart-Miner
    if($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval-20)){break}
-   Start-Sleep -s 30
-}While($MinerWatch.Elapsed.TotalSeconds -lt ($MinerInterval-20))
+   if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+   if($ModeCheck -gt 0){break}
+   Start-Sleep -s 5
+   if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+   if($ModeCheck -gt 0){break}
+   Start-Sleep -s 5
+   if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+   if($ModeCheck -gt 0){break}
+   Start-Sleep -s 5
+   if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+   if($ModeCheck -gt 0){break}
+   Start-Sleep -s 5
+   if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+   if($ModeCheck -gt 0){break}
+   Start-Sleep -s 5
+   if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+   if($ModeCheck -gt 0){break}
+   Start-Sleep -s 5
+ }While($MinerWatch.Elapsed.TotalSeconds -lt ($MinerInterval-20))
 }
 
 if($Platform -eq "linux" -or $Platform -eq "windows")
