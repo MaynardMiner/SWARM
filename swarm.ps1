@@ -322,7 +322,7 @@ if($Nicehash_Wallet3 -and $Nicehash_Wallet3 -ne $Nicehash_Wallet2 -and $Nicehash
 if(-Not (Test-Path ".\wallet\keys")){new-item -Path ".\wallet" -Name "keys" -ItemType "directory" | Out-Null}
 $Wallets | %{ $_ | ConvertTo-Json | Set-Content ".\wallet\keys\$($_.Wallet).txt"}
 
-if(-Not (Test-Path ".\build\txt")){New-Item "txt" -Path ".\build" -ItemType "directory" | Out-Null}
+if(-Not (Test-Path ".\build\txt")){New-Item -Name "txt" -Path ".\build" -ItemType "directory" | Out-Null}
 $Version = Get-Content ".\h-manifest.conf" | ConvertFrom-StringData
 $Version.CUSTOM_NAME | Set-Content ".\build\txt\version.txt"
 $Version = $Version.CUSTOM_VERSION
