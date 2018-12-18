@@ -1232,29 +1232,6 @@ Note: I am looking for a 144_5 --pers auto miner for AMD
 -CryptoDredge 0.14.0
 -Z-Enemy 1.27
 -Xmr-Stak 2.7.1
-
-1.8.2
-
-Windows Hot Fixes
-
-This is a Windows update only
-
--Hive Mirror is no longer requires.
--Arguments that aren't specified at launch
- will be added to parameters.
--Default json created for Windows users.
-  this Json is for comparing their wallet
-  arguments to all SWARM parameters.
--Woker password can now be set successfully.
--HiveOS mirror can now be set sucessfully.
--Remote "run" commands have been completely
- rewritten, and are more efficient.
--Created HiveReset.bat
-  This is will remove all saved HiveOS
-  parameters.
-  This is ran to re-sync worker to HiveOS.
-  After running, you can now attempt to
-  recconnect worker as if it was the first time.
   
 1.8.2
 

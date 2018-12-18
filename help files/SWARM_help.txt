@@ -6,6 +6,16 @@ Arguments & Explanations:
 
 Argument          Options           Explanation
 
+-SWARM_Mode      Yes or No          SWARM_Mode Allows sycronization of all SWARM Users. SWARM will
+                                    collectively pull database at the same time for all users with
+                                    SWARM_Mode set to "yes". Intervals are based on 5 minute periods.
+                                    This disables -Interval argument.
+
+-Switch_Threshold   0-1000          Expression is in percentage. This will add a percentage based
+                                    increase in profit of current miner, in order to decrease
+                                    switching unless profit breaks over x%, where x is the number
+                                    specified.
+
 
 -StatsInterval   1-10000            Expression is in seconds. This is time required for miner apps to run
                                     before miner write/re-writes benchmarking. This is not be confused 
