@@ -39,7 +39,7 @@ if($AMDData){for($i=0; $i -lt $AMDData.name.Count; $i++){$GPUS += @{busid = ($AM
 if($GetGPU){for($i=0; $i -lt $GetGPU.name.count; $i++){$GPUS += @{busid = "$($GetGPU[$i]."pci.bus_id" -split ":",2 | Select -Last 1)".ToLower(); name =  $GetGPU[$i].name; brand = "nvidia"; subvendor = $NVIDIAData[$i].subvendor ; mem = $GetGPU[$i]."memory.total [MiB]"; vbios = "$($GetGPU[$i].vbios_version)".ToLower(); plim_min = $GetGPU[$i]."power.min_limit [W]"; plim_def = $GetGPU[$i]."power.default_limit [W]"; plim_max = $GetGPU[$i]."power.max_limit [W]";}}}
 $manu = $(Get-CimInstance Win32_BaseBoard | Select-Object Manufacturer).Manufacturer
 $prod = $(Get-WmiObject Win32_BaseBoard | Select-Object Product).Product
-$cpud = Get-WmiObject -Class Win32_processor | ft Name,DeviceID,NumberOfCores
+$cpud = Get-WmiObject -Class Win32_processor | Select Name,DeviceID,NumberOfCores
 $cpuname = $cpud.name
 $cpucores = $cpud.NumberOfCores
 $cpuid = $cpud.DeviceID
