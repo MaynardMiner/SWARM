@@ -36,7 +36,7 @@
     "path2": ".\\bin\\enemy-2\\z-enemy",
     "path3": ".\\bin\\enemy-3\\z-enemy",
     "minername": "z-enemy",
-    "version": "1.27",
+    "version": "1.28",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/z-enemy-linux-9-2.tar.gz"
   },
   "ewbf": {
@@ -106,7 +106,7 @@
     "path2": ".\\bin\\trex-2\\t-rex",
     "path3": ".\\bin\\trex-3\\t-rex",
     "minername": "t-rex",
-    "version": "0.8.5",
+    "version": "0.8.9",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/t-rex-linux-9-2.tar.gz"
   },
   "zjazz": {
