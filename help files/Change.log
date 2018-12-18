@@ -1256,3 +1256,79 @@ This is a Windows update only
   After running, you can now attempt to
   recconnect worker as if it was the first time.
   
+1.8.2
+
+Warning: Larger changes in codebase was made
+prepare to rollback in case you have issues.
+
+All Versions:
+
+New Arguments!
+
+``-SWARM_Mode``  ``Yes No``
+    -Default is ``No``
+    -Sycronized switching across all users!
+    -Sycronize with your friends/other users
+     to switch at the same time on the same
+     pools!
+    -Increases hedged shares for all SWARM
+     users!
+    -Research shows most cards of the same
+     platform will often mine the same algo.
+
+``-Switch_Threshold``
+     -Default is ``1`` (for testing)
+     -This allows a threshold requirement
+      in order to initiate a switch.
+     -Figure is percent based.
+     -Will increase incoming quotes by
+      defined percentage, to prevent too
+      much switching, if user's strategy
+      prefers such method.
+     -Figures are displayed on screen.
+    
+-Profit Database will now correctly factor
+ negative figures, for -Conserve users.
+-Database Sorting was recoded and streamlined:
+ Beta in design. Future implementation.
+
+Windows:
+
+-Removed annoying update HiveOS on site.
+-OC can now be adjust on HiveOS website.
+  -nvidia only
+-Nvidia driver version correct on Hive Site.
+-Added timestamps on main screen.
+-Added added bans on main screen.
+-Removed some of the debug errors in agent.
+   -Some are still present.
+-Small bug fixes in commands.
+-After this version: Windows Users can now
+ run ``get update`` to update their SWARM
+ version.
+-Code staging for autofan.
+-fixes in agent screen.
+-Default Argument .json added.
+-Default Arguments will allow Windows users
+ to add/change/remove arguments from flight sheet.
+ Any argument not specified: Default .json will be
+ referenced.
+-Better NVML monitoring.
+
+Linux:
+-Changed some color outputs on screen for ease of reading.
+-Internal SWARM version now linked to h-manifest.conf.
+-Small bug fixes.
+-Miner changes in ``get wallet`` command.
+-Code Staging for optional xterm windows
+ rather than screen for miners.
+-Attempted fix of Phoenix Miner api failure.
+-Code Staging for ``get power`` command.
+-Minor fix of ``get miners`` command.
+
+
+To use new features included in this release:
+
+-Add ``-SWARM_Mode Yes`` to your flight sheet.
+-Add ``Switch_Threshold [number]`` to your flight sheet.
+
