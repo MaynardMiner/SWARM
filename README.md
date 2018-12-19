@@ -73,7 +73,8 @@ Time Out System             x    |     x     |       x
 Bash Script Making          x    |           |       x
 User Support                x    |     x     |       x
 Vega Support                x    |           |       
-RTX Supoort                      |     x     |                   
+RTX Supoort                      |     x     |          
+Run Commands via HiveOS     x    | x(with ps)|
 
 ```
 
