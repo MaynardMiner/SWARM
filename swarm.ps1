@@ -138,6 +138,12 @@ param(
 
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 
+Write-Host "Stopping Previous Agent"
+$ID = ".\build\pid\background_pid.txt"
+if(Test-Path $ID){$Agent = Get-Content $ID}
+$BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue
+if($BackGroundID){Stop-Process $BackGroundID | Out-Null}
+
 $CurrentParams = @{}
 $CurrentParams.Add("Wallet",$Wallet)
 $CurrentParams.Add("Wallet1",$Wallet1)

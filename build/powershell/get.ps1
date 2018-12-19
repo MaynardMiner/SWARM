@@ -291,7 +291,9 @@ Get-BenchTable | Out-File ".\build\txt\get.txt"
      $Get += "Operating System Is Windows: Updating via 'get' is possible"
      $versionlink = "https://github.com/MaynardMiner/SWARM/releases/download/v$VersionNumber/SWARM.$VersionNumber.zip"
      $Get += "Detected New Version Should Be $VersionNumber"
+     Write-Host "Detected New Version Should Be $VersionNumber"
      $Get += "Attempting To Download New Version at $Versionlink"
+     Write-Host "Attempting To Download New Version at $Versionlink"
      $Location = Split-Path $dir
      Write-Host "Main Directory is $Location"
      $NewLocation = Join-Path (Split-Path $dir) "SWARM.$VersionNumber"
@@ -304,17 +306,25 @@ Get-BenchTable | Out-File ".\build\txt\get.txt"
      {
      Start-Process "7z" "x `"$($DLFileName)`" -o`"$($Location)`" -y -spe" -Wait
       $Get += "Config Command Initiated- Restarting SWARM"
+      Write-Host "Config Command Initiated- Restarting SWARM"
       $MinerFile =".\build\pid\miner_pid.txt"
       if(Test-Path $MinerFile){$MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue}
       if($MinerId)
        {
         Stop-Process $MinerId
         Start-Sleep -S 3
+        $Get += "Attempting to start new SWARM verison at $NewLocation\SWARM.bat"
+        Write-Host "Attempting to start new SWARM verison at $NewLocation\SWARM.bat"
+        $Get += "Downloaded and extracted SWARM successfully"
+        Copy-Item ".\SWARM.bat" -Destination $NewLocation -Force
+        Copy-Item ".\config\parameters\newarguments.json" -Destination "$NewLocation\config\parameters" -Force
+        New-Item -Name "pid" -Path "$NewLocation\build" -ItemType "Directory"
+        Copy-Item ".\build\pid\background_pid.txt" -Force
+        Set-Location $NewLocation
+        Start-Process ".\SWARM.bat"
+        Start-Sleep -S 2
+        Set-Location $dir
        }
-     $Get += "Downloaded and extracted SWARM successfully"
-     $Trigger = "update"
-     Copy-Item ".\SWARM.bat" -Destination $NewLocation -Force
-     Copy-Item ".\config\parameters\newarguments.json" -Destination "$NewLocation\config\parameters" -Force
      }
      else{$Get += "Did not perform update."}
     }
@@ -473,3 +483,4 @@ $Get
 $Get | Out-File ".\build\txt\get.txt"
 Start-Sleep -S .5
 }
+Exit-PSSession

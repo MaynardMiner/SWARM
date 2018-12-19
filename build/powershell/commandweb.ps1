@@ -142,16 +142,14 @@
         $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
         Write-Host $method $messagetype $data
         $trigger = "exec"
-        if($arguments -eq "update")
+        if($data -eq "get update")
         {
           Write-Host $method $messagetype $data
-          Start-Process ".\SWARM.bat"
-          Start-Sleep -S 2
           $ID = ".\build\pid\background_pid.txt"
           $BackGroundID = Get-Process -id (Get-Content "$ID" -ErrorAction SilentlyContinue) -ErrorAction SilentlyContinue
           Stop-Process $BackGroundID | Out-Null
         }
-      }
+       }
       "benchmark"
       {
         $method = "message"
