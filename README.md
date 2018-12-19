@@ -141,6 +141,8 @@ zpool
 ```
 Avermore (AMD)
 Bubalisk (CPU)
+miniz (NVIDIA)
+ccminer-yescrypt (NVIDIA)
 CryptoDredge (NVIDIA)
 Tpruvot (NVIDIA)
 T-rex (NVIDIA)
@@ -151,7 +153,6 @@ Dstm (NVIDIA)
 EWBF (NVIDIA)
 JayDDee (CPU)
 SGminer-Phi2 (AMD)
-LyclMiner (expirmental) (AMD)
 Sgminer-VII (AMD)
 Sgminer-Hex (AMD)
 teamredminer (AMD)
@@ -207,44 +208,31 @@ BTC 1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i
 RVN RKirUe978mBoa2MRWqeMGqDzVAKTafKh8H
 
 Special Thanks To Discord Users:
-
+```
 Alexander
-
 Stoogie
-
 GravityMaster
-
 Zirillian
-
 JC
-
 NLPOOL.NL
-
 HerreHesse
-
 Crypto_Kp
-
 Castillojim
-
 Marcel
-
 PKBO
-
 Incode
-
 Soliduzhs
-
+```
 For their help pointing out bugs and issues, and their suggestions, ideas, patience that helped make SWARM what it is today.
 
 Thanks To:
 
+```
 Sniffdog
-
 Nemosminer
-
 Uselessguru
-
 Aaronsace
+```
 
 They were the pioneers to powershell scriptmining. Their scripts helped me to piece together a buggy but workable linux miner, which was the original purpose of SWARM, since none of them did so at the time. Since then it has grown to what it is today.
 
