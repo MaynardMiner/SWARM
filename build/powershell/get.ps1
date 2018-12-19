@@ -319,7 +319,7 @@ Get-BenchTable | Out-File ".\build\txt\get.txt"
         Copy-Item ".\SWARM.bat" -Destination $NewLocation -Force
         Copy-Item ".\config\parameters\newarguments.json" -Destination "$NewLocation\config\parameters" -Force
         New-Item -Name "pid" -Path "$NewLocation\build" -ItemType "Directory"
-        Copy-Item ".\build\pid\background_pid.txt" -Force
+        Copy-Item ".\build\pid\background_pid.txt" -Destination "$NewLocation\build\pid" -Force
         Set-Location $NewLocation
         Start-Process ".\SWARM.bat"
         Start-Sleep -S 2
