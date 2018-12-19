@@ -8,6 +8,7 @@
 
  . .\build\powershell\response.ps1
 
+
   Switch($Command.result.command)
   { 
   
@@ -30,9 +31,29 @@
 
   "exec"
    {
-    Switch -Wildcard ($command.result.exec)
+    $firstword = $command.result.exec -split " " | Select -First 1
+    $secondword = $command.result.exec -split " " | Select -Skip 1 -First 1
+    Switch ($firstword)
     {
-     "*stats*"
+     "ps"
+     {
+      $method = "message"
+      $messagetype = "info"
+      $data = "ps"
+      $pscommand = $command.result.exec -split "ps ",""
+      Invoke-Expression "powershell.exe -executionpolicy bypass -command `"$pscommand`"" | Tee-Object ".\build\txt\getcommand.txt" | Out-Null
+      $getpayload = Get-Content ".\build\txt\getcommand.txt"
+      $line = @()
+      $getpayload | foreach {$line += "$_`n"}
+      $payload = $line
+      $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id -Payload $payload
+      $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+      $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+      Write-Host $method $messagetype $data
+      $trigger = "exec"
+      if(Test-Path ".\build\txt\getcommand.txt"){Clear-Content ".\build\txt\getcommand.txt"}
+     }
+     "stats"
       {
        $method = "message"
        $messagetype = "info"
@@ -47,7 +68,7 @@
        Write-Host $method $messagetype $data
        $trigger = "exec"
       }
-      "*active*"
+      "active"
       {
        $method = "message"
        $messagetype = "info"
@@ -62,24 +83,28 @@
        Write-Host $method $messagetype $data
        $trigger = "exec"
       }
-     "*version query*"
+     "version"
       {
-        $method = "message"
-        $messagetype = "info"
-        $data = "$($command.result.exec)"
-        start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command query""" -Wait
-        $getpayload = Get-Content ".\build\txt\version.txt"
-        $line = @()
-        $getpayload | foreach {$line += "$_`n"}
-        $payload = $line
-        $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id -Payload $payload
-        $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-        $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
-        Write-Host $method $messagetype $data
-        $trigger = "exec"
-      }
-      "*version update*"
-      {
+        Switch($secondword)
+        {
+         "query"
+          {
+           $method = "message"
+           $messagetype = "info"
+           $data = "$($command.result.exec)"
+           start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command query""" -Wait
+           $getpayload = Get-Content ".\build\txt\version.txt"
+           $line = @()
+           $getpayload | foreach {$line += "$_`n"}
+           $payload = $line
+           $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id -Payload $payload
+           $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+           $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+           Write-Host $method $messagetype $data
+           $trigger = "exec"
+          }
+        "update"
+         {
           $method = "message"
           $messagetype = "info"
           $data = "$($command.result.exec)"
@@ -98,9 +123,11 @@
           $ID = ".\build\pid\background_pid.txt"
           $BackGroundID = Get-Process -id (Get-Content "$ID" -ErrorAction SilentlyContinue) -ErrorAction SilentlyContinue
           Stop-Process $BackGroundID | Out-Null
+         }
+        }
       }
-      "*get*"
-      {
+      "get"
+       {
         $method = "message"
         $messagetype = "info"
         $data = "$($command.result.exec)"
@@ -125,7 +152,7 @@
           Stop-Process $BackGroundID | Out-Null
         }
       }
-      "*benchmark*"
+      "benchmark"
       {
         $method = "message"
         $messagetype = "info"
