@@ -29,12 +29,13 @@ if($StartUpdate -eq $true)
  {
 $PreviousVersions = @()
 $PreviousVersions += "SWARM.1.7.6"
-$PreviousVersions += "SWARM.1.7.6"
 $PreviousVersions += "SWARM.1.7.7"
 $PreviousVersions += "SWARM.1.7.8"
 $PreviousVersions += "SWARM.1.7.9"
 $PreviousVersions += "SWARM.1.8.0"
 $PreviousVersions += "SWARM.1.8.1"
+$PreviousVersions += "SWARM.1.8.2"
+
 
 Write-Host "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
 Write-Host "Check $Location For any Previous Versions"

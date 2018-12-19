@@ -1328,3 +1328,27 @@ To use new features included in this release:
 All miners should be up to date. If I missed one, or you
 have a request for a new miner to be added- Contact me via
 discord.
+
+
+1.8.2
+
+
+-This fixes ``-SWARM_Mode`` parameter and
+ millisecond bug.
+-SWARM_Mode should work as intented.
+
+New Command (Windows)!
+
+``ps``
+  -ps allows you to run powershell/cmd based commands remotely.
+  -can only run commands that will eventually end! Running processes
+   will put your rig offline, just like HiveOS version. You can start
+   processes, but use powershell's ``Start-Process`` cmdlet.
+  -example:  ``ps Get-Process`` will get you a list of running
+   processes on pc.
+
+-Updated trex
+-Fixed background miner versions.
+-RTX series USB-controller fix. (Stats correct number of GPU's)
+
+This release is mainly a patch for users interested in SWARM_Mode.
