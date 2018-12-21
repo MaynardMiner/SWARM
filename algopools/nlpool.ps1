@@ -49,6 +49,7 @@ $nlpoolAlgo_Request = [PSCustomObject]@{}
             if($AltPassword3 -ne ''){$npass3 = $AltPassword3}
             else{$npass3 = $PasswordCurrency3}
             [PSCustomObject]@{
+                Priority = $Priorities.Pool_Priorities.$Name
                 Coin = "No"
                 Symbol = $nlpoolAlgo_Algorithm
                 Mining = $nlpoolAlgo_Algorithm

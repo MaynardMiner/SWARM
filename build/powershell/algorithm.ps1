@@ -21,7 +21,7 @@ function Get-AlgoList {
     Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 
     $AlgorithmList = @()
-    $GetAlgorithms = Get-Content ".\config\naming\get-pool.json" -Force | ConvertFrom-Json
+    $GetAlgorithms = Get-Content ".\config\pools\pool-algos.json" -Force | ConvertFrom-Json
     $PoolAlgorithms = @()
     $GetAlgorithms | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
      $PoolAlgorithms += $_

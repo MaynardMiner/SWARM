@@ -36,6 +36,7 @@ $blazepool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | S
        if($Wallet)
 	    {
         [PSCustomObject]@{
+            Priority = $Priorities.Pool_Priorities.$Name
             Coin = "No"
             Symbol = $blazepool_Algorithm
             Mining = $blazepool_Algorithm

@@ -36,7 +36,8 @@
         
        if($Wallet)
 	    {
-        [PSCustomObject]@{
+        [PSCustomObject]@{            
+            Priority = $Priorities.Pool_Priorities.$Name
             Coin = "No"
             Symbol = $Hashrefinery_Algorithm
             Mining = $Hashrefinery_Algorithm

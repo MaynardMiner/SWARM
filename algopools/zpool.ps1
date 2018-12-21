@@ -53,6 +53,7 @@ $Zpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Selec
           if($AltPassword3 -ne ''){$zpass3 = $AltPassword3}
           else{$zpass3 = $Passwordcurrency3}    
         [PSCustomObject]@{
+            Priority = $Priorities.Pool_Priorities.$Name
             Coin = "No"
             Symbol = $Zpool_Algorithm
             Mining = $Zpool_Algorithm

@@ -57,6 +57,7 @@ $nicehash_Request.result | Select-Object -ExpandProperty simplemultialgo | Where
      if($Nicehash_Wallet1 -ne '' -or $Nicehash_Wallet2 -ne '' -or $Nicehash_Wallet3 -ne '')
         {  
         [PSCustomObject]@{
+            Priority = $Priorities.Pool_Priorities.$Name
             Coin = "No"
             Excavator = $nicehash_excavator
             Symbol = $nicehash_Algorithm

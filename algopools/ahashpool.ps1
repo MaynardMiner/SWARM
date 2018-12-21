@@ -36,6 +36,7 @@ $ahashpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | S
        if($Wallet)
 	    {
         [PSCustomObject]@{
+            Priority = $Priorities.Pool_Priorities.$Name
             Coin = "No"
             Symbol = $ahashpool_Algorithm
             Mining = $ahashpool_Algorithm

@@ -39,4 +39,14 @@ if($PoolType -eq "Coin")
 
 }
 
+function Sort-Pools {
+  Param(
+    [Parameter(Position=0, Mandatory=$true, ValueFromPipeline=$true)]
+    [object]$Pools
+  )
 
+$PoolPriority1 = @()
+$PoolPriority2 = @()
+$PoolPriority3 = @()
+
+}

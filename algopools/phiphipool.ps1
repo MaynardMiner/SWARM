@@ -44,6 +44,7 @@ $phiphipool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
        if($Wallet)
 	    {
         [PSCustomObject]@{
+            Priority = $Priorities.Pool_Priorities.$Name
             Coin = "No"
             Symbol = $phiphipool_Algorithm
             Mining = $phiphipool_Algorithm

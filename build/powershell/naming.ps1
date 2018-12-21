@@ -59,7 +59,7 @@ function Get-Algorithm {
         [String]$Algorithm
     )
 
-    $Algorithms = Get-Content ".\config\naming\get-pool.json" | ConvertFrom-Json
+    $Algorithms = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
 
     $Algorithm = (Get-Culture).TextInfo.ToTitleCase(($Algorithm -replace "_"," ")) -replace " "
 

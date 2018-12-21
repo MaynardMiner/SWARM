@@ -48,6 +48,7 @@ $starpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Se
         If($AltPassword3 -ne ''){if($AltPassword3 -eq "DASH" -or $AltPassword3 -eq "LTC" -or $AltPassword3 -eq "CANN" -or $AltPassword3 -eq "DGB"){$SPass3 = $AltPassword3}}
         else{$Spass3 = $Passwordcurrency3}    
         [PSCustomObject]@{
+            Priority = $Priorities.Pool_Priorities.$Name
             Coin = "No"
             Symbol = $starpool_Algorithm
             Mining = $starpool_Algorithm

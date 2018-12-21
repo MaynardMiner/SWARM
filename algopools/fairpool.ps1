@@ -39,6 +39,7 @@ $fairpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Se
        if($Wallet)
 	    {
         [PSCustomObject]@{
+            Priority = $Priorities.Pool_Priorities.$Name
             Coin = "No"
             Symbol = $fairpool_Algorithm
             Mining = $fairpool_Algorithm

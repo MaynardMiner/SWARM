@@ -51,7 +51,8 @@ $blockpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | S
         else{$blockpass2 = $Passwordcurrency2}
         if($AltPassword3 -ne ''){$blockpass3 = $AltPassword3}
         else{$blockpass3 = $Passwordcurrency3}
-        [PSCustomObject]@{
+        [PSCustomObject]@{            
+            Priority = $Priorities.Pool_Priorities.$Name
             Coin = "No"
             Symbol = $blockpool_Algorithm
             Mining = $blockpool_Algorithm
