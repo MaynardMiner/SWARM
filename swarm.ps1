@@ -133,7 +133,9 @@ param(
     [Parameter(Mandatory=$false)]
     [Double]$Switch_Threshold = 1,
     [Parameter(Mandatory=$false)]
-    [String]$SWARM_Mode = "No"
+    [String]$SWARM_Mode = "No",
+    [Parameter(Mandatory=$false)]
+    [String]$Debug_Mode = "No"
 )
 
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
@@ -203,6 +205,7 @@ $CurrentParams.Add("MinerBanCount",$MinerBanCount)
 $CurrentParams.Add("Conserve",$Conserve)
 $CurrentParams.Add("SWARM_Mode",$SWARM_Mode)
 $CurrentParams.Add("Switch_Threshold",$Switch_Threshold)
+$CurrentParams.Add("Debug_Mode",$Debug_Mode)
 if($Platform -eq "windows"){$CurrentParams.Add("AMDPlatform",$AMDPlatform)}
 $CurrentParams.Add("Lite",$Lite)
 $StartParams = $CurrentParams | ConvertTo-Json 
@@ -277,6 +280,7 @@ $Lite = $SWARMParams.Lite
 $Conserve = $SWARMParams.Conserve
 $Switch_Threshold = $SWARMParams.Switch_Threshold
 $SWARM_Mode = $SWARMParams.SWARM_Mode
+$Debug_Mode = $SWARMParams.Debug_Mode
 if($Platform -eq "windows"){$AMDPlatform = $SWARMParams.AMDPlatform}
 }
 
@@ -452,7 +456,8 @@ $UserDonate = "MaynardVII"
 $WorkerDonate = "Rig1"
 $PoolNumber = 1
 $ActiveMinerPrograms = @()
-$Naming = Get-Content ".\config\naming\get-pool.json" | ConvertFrom-Json
+$Naming = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
+$Priorities = Get-Content ".\config\pools\pool-priority.json" | ConvertFrom-Json
 $DonationMode = $false
 if($Platform -eq "windows"){$GetBusData = $GetBusData = Get-BusFunctionID | ConvertTo-Json -Compress}
 if($Platform -eq "windows" -and $HiveOS -eq "Yes")
@@ -671,7 +676,31 @@ $Lite = $SWARMParams.Lite
 $Conserve = $SWARMParams.Conserve
 $Switch_Threshold = $SWARMParams.Switch_Threshold
 $SWARM_Mode = $SWARMParams.SWARM_Mode
+$Debug_Mode = $SWARMParams.Debug_Mode
 if($Platform -eq "windows"){$AMDPlatform = $SWARMParams.AMDPlatform}
+
+if($Debug_Mode -eq "Yes")
+{
+  $RigName = "MKVITO1"
+  $RigName2 = "MKVITO2"
+  $Currency = "USD"
+  $Location = "US"
+  $PoolName = @("nlpool","nicehash","ahashpool","zpool","blazepool","blockmasters") 
+  $SWARM_Mode = "Yes"
+  $Type = @("NVIDIA1","NVIDIA2")
+  $Wallet1 = "1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i"
+  $Nicehash_Wallet1 = "3JfBiUZZV17DTjAFCnZb97UpBgtLPLLDop"
+  $PasswordCurrency1 = "BTC"
+  $Nicehash_Fee = "2"
+  $Donate = ".1"
+  $Wallet2 = "1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i"
+  $Nicehash_Wallet2 = "3JfBiUZZV17DTjAFCnZb97UpBgtLPLLDop"
+  $GPUDevices1 = '0,2,4,9,10,12' 
+  $GPUDevices2 = '1,3,5,6,7,8,11' 
+  $WattOMeter = "No"
+  $Update = "Yes"
+  $Cuda = "10"
+}
 
 if($SWARMParams.Rigname1 -eq "Donate"){$Donating = $True}
 else{$Donating = $False}
