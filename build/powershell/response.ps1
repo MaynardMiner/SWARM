@@ -15,40 +15,29 @@ function Add-HiveResponse{
      [Parameter(Mandatory=$false)]
      [string]$CommandID
      )
-
-     if($payload -ne $null)
-     {
-     $myresponse = @{
-         method = $method
-         rig_id = $HiveID
-         jsonrpc = "2.0"
-         id= "0"
-         params = @{
-          id = $command.result.id
-          rig_id = $HiveID
-          passwd = $HivePassword
-          type = $messagetype
-          data = $data
-          payload = $payload
-          }
-         }
-       }
      
-     else{
        $myresponse = @{
          method = $method
          rig_id = $HiveID
          jsonrpc = "2.0"
          id= "0"
          params = @{
-          id = $command.result.id
           rig_id = $HiveID
           passwd = $HivePassword
           type = $messagetype
           data = $data
           }
          }
-       }
+
+
+      if($CommandID)
+      {
+       $myresponse.params.Add("id","$CommandID")
+      }
+      if($payload)
+      {
+       $myresponse.params.Add("payload","$Payload")
+      }
      
         $myresponse    
 
