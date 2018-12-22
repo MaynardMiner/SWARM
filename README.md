@@ -10,6 +10,8 @@ https://github.com/MaynardMiner/SWARM/wiki/Developer's-Corner
 
 **What is SWARM?**
 
+SWARM has an in depth github wiki, with instructions on how to setup/manage SWARM!
+
  SWARM is an collection scripts written in both powershell and bash, and is a profit switching mining system that will work within any OS. (The miners that SWARM uses may vary) SWARM, is written to be used as an all purpose/all platform mining system that can be implemented/managed on a large scale basis. It was developed for larger mining administrators, who are generally unable to interact with every mining unit/rig directly. SWARM deviates from conventional in-depth GUI interfaces, or a centralized monitoring system/screen which are a burden to mining administrators. SWARM introduces a new method of interface which is meant to assist larger mining systems, by displaying information per user command. Because SWARM's interface is command based as opposed to GUI- Users are able to create scripts of their own to micro-manage their farms/workers.
 
  SWARM has an api layer, which is produced when ``-LITE Yes`` is specified. This ``LITE`` mode allows for the data of SWARM to be displayed in API format through HTTP. This allows both users and developers to create their own mining administration/launch script for miners, and simply use SWARM to gather data and formulate calculations on which miner/pool/algo combination is most profitable. The linux side the commands SWARM use can be used in any bash script, after they have been installed. The Widows side allow commands to be ran through HiveOS's interface, and has a feature in which you are able to run powershell or cmd commands remotely through HiveOS's website through the use of ``ps``.
