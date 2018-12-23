@@ -31,13 +31,13 @@ function Get-GPUCount {
     $GetBus = Get-Content ".\build\txt\gpucount.txt"
     $GetBus = $GetBus | Select-String "VGA","3D"
     $AMDCards = $GetBus | Select-String "VGA","3D" | Select-String "Advanced Micro Devices","RS880","Stoney"
-    $NVIDIACards = $GetBus | Select-String "VGA","3D controller" | Select-String "NVIDIA","nForce"
+    $NVIDIACards = $GetBus | Select-String "VGA","3D controller" | Select-String "NVIDIA"
     $AMDCount = 0
     $NVIDIACount = 0
     $CardCount = 0
 
 $GetBus | Foreach {
-if($_ -like "*Advanced Micro Devices*" -or $_ -like "*RS880*" -or $_ -like "*Stoney*" -or $_ -like "*NVIDIA*" -or $_ -like "*nForce*")
+if($_ -like "*Advanced Micro Devices*" -or $_ -like "*RS880*" -or $_ -like "*Stoney*" -or $_ -like "*NVIDIA*" -and $_ -notlike "*nForce*")
  {
   if($_ -like "*Advanced Micro Devices*" -or $_ -like "*RS880*" -or $_ -like "*Stoney*")
    {
