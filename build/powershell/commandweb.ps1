@@ -2,8 +2,16 @@
 
  function Start-Webcommand {
   Param(
-  [Parameter(Position=0, Mandatory=$false)]
-  [Object]$Command
+  [Parameter(Mandatory=$false)]
+  [Object]$Command,
+  [Parameter(Mandatory=$false)]
+  [string]$swarm_message,
+  [Parameter( Mandatory=$false)]
+  [string]$HiveID,  
+  [Parameter(Mandatory=$false)]
+  [string]$HivePassword,
+  [Parameter(Mandatory=$false)]
+  [string]$HiveMirror
  )
 
  . .\build\powershell\response.ps1
@@ -11,6 +19,18 @@
 
   Switch($Command.result.command)
   { 
+
+   "timeout"
+   {
+    $method = "message"
+    $messagetype = "warning"
+    $data = $swarm_message
+    $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword
+    $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+    $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+    $trigger = "exec"
+   }
+
   
   "OK"{$trigger = "stats"}
 

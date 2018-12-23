@@ -980,7 +980,7 @@ $response | ConvertTo-Json | Set-Content ".\build\txt\response.txt"
 
 if($response)
  {
-  $SwarmResponse = Start-webcommand $response
+  $SwarmResponse = Start-webcommand -command $response -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror
   if($SwarmResponse -ne $null)
    {
       if($SwarmResponse -eq "config")
