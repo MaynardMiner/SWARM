@@ -852,7 +852,8 @@ if($AlgoMiners.Count -eq 0){"No Miners!" | Out-Host; start-sleep $Interval; cont
 ##Sort Algorithm Miners
 start-minersorting -Command "Algo" -Stats $Stats -Pools $AlgoPools -Pools_Comparison $AlgoPools_Comparison -SortMiners $AlgoMiners -DBase $DecayBase -DExponent $DecayExponent -WattCalc $WattEx
 $GoodAlgoMiners = @()
-$AlgoMiners | Foreach {if($_.Profit -lt $Threshold -or $_.Profit -eq $null){$GoodAlgoMiners += $_}}
+if($Threshold -ne 0){$AlgoMiners | Foreach {if($_.Profit -lt $Threshold -or $_.Profit -eq $null){$GoodAlgoMiners += $_}}}
+else{$AlgoMiners | foreach{$GoodAlgoMiners += $_}}
 $Miners = @()
 $GoodAlgoMiners | foreach {$Miners += $_}
 $BestActiveMiners | % { $Miners | Where Path -EQ $_.path | Where Arguments -EQ $_.Arguments | % {
