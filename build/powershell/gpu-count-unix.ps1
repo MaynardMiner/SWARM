@@ -36,21 +36,28 @@ function Get-GPUCount {
     $NVIDIACount = 0
     $CardCount = 0
 
-$GetBus | Foreach {
-if($_ -like "*Advanced Micro Devices*" -or $_ -like "*RS880*" -or $_ -like "*Stoney*" -or $_ -like "*NVIDIA*" -and $_ -notlike "*nForce*")
- {
-  if($_ -like "*Advanced Micro Devices*" -or $_ -like "*RS880*" -or $_ -like "*Stoney*")
+
+  $GetBus | Foreach {
+  if($_ -like "*Advanced Micro Devices*" -or $_ -like "*RS880*" -or $_ -like "*Stoney*" -or $_ -like "*NVIDIA*" -and $_ -notlike "*nForce*")
    {
-    $DeviceList.AMD.Add("$AMDCount","$CardCount")
-    $AMDCount++
+   if($_ -like "*Advanced Micro Devices*" -or $_ -like "*RS880*" -or $_ -like "*Stoney*")
+    {
+     if($Type -like "*AMD*")
+      {
+       $DeviceList.AMD.Add("$AMDCount","$CardCount")
+       $AMDCount++
+       $CardCount++
+      }
+    }
+   if($_ -like "*NVIDIA*")
+   {
+    if($Type -like "*NVIDIA*")
+     {
+    $DeviceList.NVIDIA.Add("$NVIDIACount","$CardCount")
+    $NVIDIACount++
     $CardCount++
+     }
    }
-  if($_ -like "*NVIDIA*" -or $_ -like "*nForce*")
-  {
-   $DeviceList.NVIDIA.Add("$NVIDIACount","$CardCount")
-   $NVIDIACount++
-   $CardCount++
-  }
  }
 }
 
