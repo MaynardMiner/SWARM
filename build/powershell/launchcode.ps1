@@ -75,7 +75,9 @@ function Start-LaunchCode {
     [Parameter(Mandatory=$true)]
     [String]$NewMiner,
     [Parameter(Mandatory=$true)]
-    [String]$MinerRound
+    [String]$MinerRound,
+    [Parameter(Mandatory=$true)]
+    [String]$PP
     ) 
 
   $MinerCurrent = $NewMiner | ConvertFrom-Json
@@ -253,7 +255,7 @@ elseif($Platforms -eq "linux")
   Set-Location (Split-Path $($MinerCurrent.Path))
   Rename-Item "$($MinerCurrent.Path)" -NewName "$($MinerCurrent.InstanceName)" -Force
   Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
-  $MinerConfig = "./$($MinerCurrent.InstanceName) $MinerArguments"
+  $MinerConfig = "./$($MinerCurrent.InstanceName) $MinerArguments 2>&1 | tee $Logs"
   $MinerConfig | Set-Content ".\build\bash\config.sh" -Force  
   Write-Host "
          ______________
@@ -282,10 +284,14 @@ Start-Sleep -s 1
 }until($FileChecked -eq $true -or $FileTimer.Elapsed.TotalSeconds -gt 9)
 $FileTimer.Stop()
 if($FileChecked -eq $false){Write-Warning "Failed To Write Miner Details To File"}
-$OldProcess = Get-Process | Where Name -clike "*$($MinerCurrent.Type)*"
-if($OldProcess){kill $OldProcess.Id -ErrorAction SilentlyContinue}  ##Stab
-if($OldProcess){kill $OldProcess.Id -ErrorAction SilentlyContinue}  ##The Process
-if($OldProcess){kill $OldProcess.Id -ErrorAction SilentlyContinue}  ##To Death
+if($PP.$($MinerCurrent.Type))
+ {
+  netstat -anp | Tee-Object -Variable netstats | Out-Null
+  $netstats = $netstats | Select-String "TIME_WAIT"
+  $netstats = $netstats | Select-String "$(:$PP.$($MinerCurrent.Type))"
+  $PTC = $netstats  | %{$1 = $_ -split " ";$1 = $1 | %{if($_){$_}};$1 | Select -skip 4 -First 1;}
+  $PTC | %{killcx "$_" lo | Out-Null}
+ }
 if($Background -eq "No"){Start-BackgroundCheck -Platforms $Platform}
 Start-Sleep -S $MinerCurrent.Delay
 Set-Location (Split-Path $($MinerCurrent.Path))
@@ -301,9 +307,6 @@ $Export = Join-Path $Dir "build\export"
 $Startup = @()
 $Startup += "`#`!/usr/bin/env bash"
 $Startup += "screen -S $($MinerCurrent.Type) -d -m","sleep .1"
-$Startup += "screen -S $($MinerCurrent.Type) -X logfile $Logs","sleep .1"
-$Startup += "screen -S $($MinerCurrent.Type) -X logfile flush 5","sleep .1"
-$Startup += "screen -S $($MinerCurrent.Type) -X log","sleep .1"
 if($MinerCurrent.Prestart){$MinerCurrent.Prestart | foreach {$Startup += "screen -S $($MinerCurrent.Type) -X stuff $`"$($_)\n`"","sleep .1"}}
 $Startup += "screen -S $($MinerCurrent.Type) -X stuff $`"cd\n`"","sleep .1"
 $Startup += "screen -S $($MinerCurrent.Type) -X stuff $`"cd $MinerDir\n`"","sleep .1"

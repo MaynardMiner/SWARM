@@ -362,7 +362,6 @@ if(-not (Test-Path ".\build\txt")){New-Item -Path ".\build" -Name "txt" -ItemTyp
 . .\build\powershell\datefiles.ps1
 . .\build\powershell\watchdog.ps1
 . .\build\powershell\miners.ps1
-. .\build\powershell\sorting.ps1
 . .\build\powershell\download.ps1
 . .\build\powershell\hashrates.ps1
 . .\build\powershell\naming.ps1
@@ -375,9 +374,10 @@ if(-not (Test-Path ".\build\txt")){New-Item -Path ".\build" -Name "txt" -ItemTyp
 . .\build\powershell\poolbans.ps1
 . .\build\powershell\cl.ps1
 . .\build\powershell\newsort.ps1
+. .\build\powershell\sorting.ps1
 if($Type -like "*ASIC*"){. .\build\powershell\icserver.ps1; . .\build\powershell\poolmanager.ps1}
-if($Platform -eq "linux"){. .\build\powershell\getbestunix.ps1; . .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
-if($Platform -eq "windows"){. .\build\powershell\hiveoc.ps1; . .\build\powershell\getbestwin.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1; . .\build\powershell\response.ps1;}
+if($Platform -eq "linux"){. .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
+if($Platform -eq "windows"){. .\build\powershell\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1; . .\build\powershell\response.ps1;}
 
 ##Start The Log
 $dir = (Split-Path $script:MyInvocation.MyCommand.Path)
@@ -1154,6 +1154,7 @@ $StatusDate | Out-File ".\build\bash\minerstatslite.sh"
 $StatusLite | OUt-File ".\build\bash\minerstatslite.sh" -Append
 $MiningStatus | Out-File ".\build\bash\minerstatslite.sh" -Append
 $BanMessage | Out-File ".\build\bash\minerstatslite.sh" -Append
+$PreviousMinerPorts = @{AMD1="";NVIDIA1="";NVIDIA2="";NVIDIA3="";CPU=""}
 
 $ActiveMinerPrograms | ForEach {
 if($_.BestMiner -eq $false)
@@ -1173,13 +1174,14 @@ if($_.BestMiner -eq $false)
     if($_.XProcess = $null){$_.Status = "Failed"}
     else
      {
+      $PreviousMinerPorts.$($_.Type) = "($_.Port)"
       $_.Status = "Idle"
       $PIDDate = ".\build\pid\$($_.Name)_$($_.Coins)_$($_.InstanceName)_date.txt"
       if(Test-path $PIDDate)
        {
         $PIDDateFile = Get-Content $PIDDate | Out-String
         $PIDTime = [DateTime]$PIDDateFile
-        $_.Active += (Get-Date)-$PIDTime   
+        $_.Active += (Get-Date)-$PIDTime
        }
       }
      }
@@ -1192,7 +1194,8 @@ if($_.BestMiner -eq $false)
      $_.Activated++
      $_.InstanceName = "$($_.Type)-$($Instance)"
      $Current = $_ | ConvertTo-Json -Compress
-     $_.Xprocess = Start-LaunchCode -Platforms $Platform -MinerRound $Current_BestMiners -NewMiner $Current -Background $BackgroundDone
+     $PreviousPorts = $PreviousMinerPorts | ConvertTo-Json -Compress
+     $_.Xprocess = Start-LaunchCode -PP $PreviousPorts -Platforms $Platform -MinerRound $Current_BestMiners -NewMiner $Current -Background $BackgroundDone
      $BackgroundDone = "Yes"
      $_.Instance = ".\build\pid\$($_.Type)-$($Instance)"
      $PIDFile = "$($_.Name)_$($_.Coins)_$($_.InstanceName)_pid.txt"
@@ -1433,7 +1436,8 @@ function Restart-Miner {
      $_.Activated++
      $_.InstanceName = "$($_.Type)-$($Instance)"
      $Current = $_ | ConvertTo-Json -Compress
-     Start-Sleep -S .25
+     $PreviousPorts = $PreviousMinerPorts | ConvertTo-Json -Compress
+     $_.Xprocess = Start-LaunchCode -PP $PreviousPorts -Platforms $Platform -MinerRound $Current_BestMiners -NewMiner $Current -Background $BackgroundDone
      $_.Xprocess = Start-LaunchCode -Platforms $Platform -MinerRound $Current_BestMiners -NewMiner $Current -Background $BackgroundDone
      $_.Instance = ".\build\pid\$($_.Type)-$($Instance)"
      $PIDFile = "$($_.Name)_$($_.Coins)_$($_.InstanceName)_pid.txt"
