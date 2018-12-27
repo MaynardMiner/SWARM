@@ -41,7 +41,6 @@ if($CoinAlgo -eq $null)
   $AlgoPools | Where Symbol -eq $MinerAlgo | foreach {
   if($Algorithm -eq "$($_.Algorithm)")
   {
-  $ID = $_.Pass -split "," | Select -First 1
   if($Config.$ConfigType.difficulty.$($_.Algorithm)){$Diff="%2Cd=$($Config.$ConfigType.difficulty.$($_.Algorithm))"}else{$Diff=""}
   [PSCustomObject]@{
   Delay = $Config.$ConfigType.delay
