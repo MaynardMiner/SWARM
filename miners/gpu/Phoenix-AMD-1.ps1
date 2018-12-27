@@ -69,7 +69,7 @@ if($CoinAlgo -eq $null)
   ocmdpm = if($Config.$ConfigType.oc.$($_.Algorithm).mdpm){$Config.$ConfigType.oc.$($_.Algorithm).mdpm}else{$OC."default_$($ConfigType)".mdpm}
   ocfans = if($Config.$ConfigType.oc.$($_.Algorithm).fans){$Config.$ConfigType.oc.$($_.Algorithm).fans}else{$OC."default_$($ConfigType)".fans}
   FullName = "$($_.Mining)"
-  API = "ethminer"
+  API = "claymore"
   Port = 3336
   MinerPool = "$($_.Name)"
   Wrap = $false

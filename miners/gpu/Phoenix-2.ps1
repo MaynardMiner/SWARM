@@ -60,7 +60,7 @@ if($CoinAlgo -eq $null)
   ethpill = $Config.$ConfigType.oc.$($_.Algorithm).ethpill
   pilldelay = $Config.$ConfigType.oc.$($_.Algorithm).pilldelay
   FullName = "$($_.Mining)"
-  API = "ethminer"
+  API = "claymore"
   Port = 3334
   MinerPool = "$($_.Name)"
   URI = $Uri
