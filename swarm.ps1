@@ -134,8 +134,6 @@ param(
     [Double]$Switch_Threshold = 1,
     [Parameter(Mandatory=$false)]
     [String]$SWARM_Mode = "No",
-    [Parameter(Mandatory=$false)]
-    [String]$Debug_Mode = "No"
 )
 
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
@@ -146,7 +144,7 @@ $ID = ".\build\pid\background_pid.txt"
 if(Test-Path $ID){$Agent = Get-Content $ID}
 if($Agent){$BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue}
 if($BackGroundID){Stop-Process $BackGroundID | Out-Null}
-$Debug = $true
+$Debug = $false
 if($Debug -ne $true)
 {
 $CurrentParams = @{}
