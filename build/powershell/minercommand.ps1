@@ -22,15 +22,18 @@ function Get-Miners {
         [Array]$Pools
     )
 
+## Reset Arrays In Case Of Weirdness
 $GetPoolBlocks = $null
 $GetAlgoBlocks = $null
+
+## Pool Bans From File && Specify miner folder based on platform
 if(Test-Path ".\timeout\pool_block\pool_block.txt"){$GetPoolBlocks = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json}
 if(Test-Path ".\timeout\algo_block\algo_block.txt"){$GetAlgoBlocks = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json}
 if(Test-Path ".\timeout\miner_block\miner_block.txt"){$GetMinerBlocks = Get-Content ".\timeout\miner_block\miner_block.txt" | ConvertFrom-Json}
-
 if($Type -notlike "*ASIC*"){$minerfilepath = "miners\gpu"}
 else{$minerfilepath = "miners\asic"}
 
+## Start Running miner scripts, Create an array of Miner Hash Tables
 $GetMiners = if(Test-Path $minerfilepath){Get-ChildItemContent $minerfilepath | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru} |
  Where {$Type.Count -eq 0 -or (Compare-Object $Type $_.Type -IncludeEqual -ExcludeDifferent | Measure).Count -gt 0} |
  Where {$_.Path -ne "None"} |
@@ -39,6 +42,7 @@ $GetMiners = if(Test-Path $minerfilepath){Get-ChildItemContent $minerfilepath | 
 
 $ScreenedMiners = @()
 
+## This Creates A New Array Of Miners, Screening Miners That Were Bad. As it does so, it notfies user.
 $GetMiners | foreach {
 if(-not ($GetPoolBlocks | Where Algo -eq $_.Algo | Where Name -eq $_.Name | Where Type -eq $_.Type | Where MinerPool -eq $_.Minerpool))
  {
@@ -48,24 +52,12 @@ if(-not ($GetPoolBlocks | Where Algo -eq $_.Algo | Where Name -eq $_.Name | Wher
      {
       $ScreenedMiners += $_
      }
-     else{$BadMessage = "Warning: Blocking $($_.Name) for $($_.Type)"}
+     else{Write-Host  "Warning: Blocking $($_.Name) for $($_.Type)" -ForegroundColor Magenta}
    }
    else{Write-Host "Warning: Blocking $($_.Name) mining $($_.Algo) on all pools for $($_.Type)" -ForegroundColor Magenta}
  }
  else{Write-Host "Warning: Blocking $($_.Name) mining $($_.Algo) on $($_.MinerPool) for $($_.Type)" -ForegroundColor Magenta}
 }
-
-if($BadMessage -ne $Null){Write-Host "$BadMessage" -ForegroundColor Magenta}
-
-#$GetPoolBlocks | foreach {
-#if($_.Algo -eq $miner.Algo -and $_.Name -eq $miner.Name -and $_.Type -eq $miner.Type -and $_.MinerPool -eq $miner.MinerPool){ $miner | Add-Member "PoolBlock" "Yes"}
-#}
-   
-#$GetAlgoBlocks | foreach {
-#if($_.Algo -eq $miner.Algo -and $_.Name -eq $miner.Name -and $_.Type -eq $miner.Type){ $miner | Add-Member "AlgoBlock" "Yes"}
-# }
-#}  
-#$MinerList = $GetMiners | Where PoolBlock -ne "Yes" | Where AlgoBlock -ne "Yes"
 
 $ScreenedMiners
 }

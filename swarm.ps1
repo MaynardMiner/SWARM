@@ -136,15 +136,23 @@ param(
     [String]$SWARM_Mode = "No"
 )
 
+## Set Current Path
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+
+## Get Child Items
 Get-ChildItem . -Recurse -Force | Out-Null 
 
+## Close Previous Running Agent- Agent is left running to send stats online, even if SWARM crashes
 Write-Host "Stopping Previous Agent"
 $ID = ".\build\pid\background_pid.txt"
 if(Test-Path $ID){$Agent = Get-Content $ID}
 if($Agent){$BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue}
 if($BackGroundID){Stop-Process $BackGroundID | Out-Null}
+
+## Debug Mode
 $Debug = $false
+
+## Convert Arguments Into Hash Table
 if($Debug -ne $true)
 {
 $CurrentParams = @{}
@@ -208,20 +216,31 @@ $CurrentParams.Add("SWARM_Mode",$SWARM_Mode)
 $CurrentParams.Add("Switch_Threshold",$Switch_Threshold)
 if($Platform -eq "windows"){$CurrentParams.Add("AMDPlatform",$AMDPlatform)}
 $CurrentParams.Add("Lite",$Lite)
+
+## Save to Config Folder
 $StartParams = $CurrentParams | ConvertTo-Json 
-$StartingParams = $CurrentParams | ConvertTo-Json -Compress
 $StartParams | Set-Content ".\config\parameters\arguments.json"
+
+## Duplicate Hashtable Compressed To Pass In Pipeline
+$StartingParams = $CurrentParams | ConvertTo-Json -Compress
 }
 
+## Check For Remote Arugments Change Arguments To Remote Arguments
 if((Test-Path ".\config\parameters\newarguments.json") -or $Debug -eq $true)
 {
 Write-Host "Detected New Arguments- Changing Parameters" -ForegroundColor Cyan
 if($Debug -eq $True){$NewParams = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json}
 else{$NewParams = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json}
 Start-Sleep -S 2
+
+## Save to Config Folder
 $NewParams | Convertto-Json | Set-Content ".\config\parameters\arguments.json"
 $StartParams = $NewParams
+
+## Duplicate Hashtable Compressed To Pass In Pipeline
 $StartingParams = $NewParams | ConvertTo-Json -Compress
+
+## Pull From File This is linux Powershell Bug / Weird Parsing. This Corrects it.
 $GetSWARMParams = Get-Content ".\config\parameters\arguments.json"
 $SWARMParams = $GetSWARMParams | ConvertFrom-Json
 $Wallet = $SWARMParams.Wallet
@@ -286,30 +305,25 @@ $SWARM_Mode = $SWARMParams.SWARM_Mode
 if($Platform -eq "windows"){$AMDPlatform = $SWARMParams.AMDPlatform}
 }
 
+## Windows Start Up
 if($Platform -eq "windows")
-{
-if(test-Path ".\build\txt\hivekeys.txt"){$HiveKeys = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json}
-if($HiveKeys)
-{
-$HiveID = $HiveKeys.HiveID
-$HivePassword = $HiveKeys.HivePassword
-$HiveWorker = $HiveKeys.HiveWorker
-$HiveMirror = $HiveKeys.HiveMirror
+{ 
+## Pull Saved Worker Info (If recorded From Remote Command)
+if(test-Path ".\buid\txt\hivekeys.txt"){$HiveKeys = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json}
+
+## Set New Arguments or First Run
+if($HiveKeys){$HiveID = $HiveKeys.HiveID; $HivePassword = $HiveKeys.HivePassword; $HiveWorker = $HiveKeys.HiveWorker; $HiveMirror = $HiveKeys.HiveMirror;}
+else{$HiveID = $null; $HivePassword = $null; $HiveWorker = $null; $HiveMirror = "https://api.hiveos.farm"}
 }
-else
-{
- $HiveID = $null
- $HivePassword = $null
- $HiveWorker = $null
- $HiveMirror = "https://api.hiveos.farm"
-}
-}
+
+## Wallet Information
 
 $Wallets = @()
 $Walletlist = @{}
 if(Test-Path ".\wallet\keys"){$Oldkeys = Get-ChildItem ".\wallet\keys"}
 if($Oldkeys){Remove-Item ".\wallet\keys\*" -Force}
 
+##Build Hash Table
 if($AltWallet1){$Walletlist.Add("AltWallet1",$AltWallet1)};
 if($AltWallet2){$Walletlist.Add("AltWallet2",$AltWallet2)};
 if($AltWallet3){$Walletlist.Add("AltWallet3",$AltWallet3)};
@@ -320,8 +334,10 @@ if($NiceHash_Wallet1){$Walletlist.Add("NiceHash_Wallet1",$NiceHash_Wallet1)};
 if($NiceHash_Wallet2){$Walletlist.Add("NiceHash_Wallet2",$NiceHash_Wallet2)};
 if($NiceHash_Wallet3){$Walletlist.Add("NiceHash_Wallet3",$NiceHash_Wallet3)};
 if(-Not (Test-Path ".\wallet\wallets")){new-item -Path ".\wallet" -Name "wallets" -ItemType "directory" | Out-Null}
+##Record To File
 $WalletList | ConvertTO-Json | Set-Content ".\wallet\wallets\wallets.txt"
 
+## Build Array with non-duplicate wallets, to prevent excessive calls to pool
 if($Wallet1){$Wallets += [PSCustomObject]@{Wallet="Wallet1"; address=$Wallet1; Symbol=$PasswordCurrency1;Response="";Unsold="";Current=""}}
 if($Wallet2 -and $Wallet2 -ne $Wallet1){$Wallets += [PSCustomObject]@{Wallet="Wallet2"; address=$Wallet2; Symbol=$PasswordCurrency2;Response="";Unsold="";Current=""}}
 if($Wallet3 -and $Wallet3 -ne $Wallet2 -and $Wallet3 -ne $Wallet1){$Wallets += [PSCustomObject]@{Wallet="Wallet3"; address=$Wallet3; Symbol=$PasswordCurrency3;Response="";Unsold="";Current=""}}
@@ -332,16 +348,20 @@ if($Nicehash_Wallet1){$Wallets += [PSCustomObject]@{Wallet="Nicehash_Wallet1"; a
 if($Nicehash_Wallet2 -and $Nicehash_Wallet2 -ne $Nicehash_Wallet1){$Wallets += [PSCustomObject]@{Wallet="Nicehash_Wallet2"; address=$Nicehash_Wallet2; Symbol="NHBTC";Response="";Unsold="";Current=""}}
 if($Nicehash_Wallet3 -and $Nicehash_Wallet3 -ne $Nicehash_Wallet2 -and $Nicehash_Wallet3 -ne $Nicehash_Wallet1){$Wallets += [PSCustomObject]@{Wallet="Nicehash_Wallet3"; address=$Nicehash_Wallet3; Symbol="NHBTC";Response="";Unsold="";Current=""}}
 if(-Not (Test-Path ".\wallet\keys")){new-item -Path ".\wallet" -Name "keys" -ItemType "directory" | Out-Null}
+
+## Save Array To File
 $Wallets | %{ $_ | ConvertTo-Json | Set-Content ".\wallet\keys\$($_.Wallet).txt"}
 
+## Version
 if(-Not (Test-Path ".\build\txt")){New-Item -Name "txt" -Path ".\build" -ItemType "directory" | Out-Null}
 $Version = Get-Content ".\h-manifest.conf" | ConvertFrom-StringData
 $Version.CUSTOM_NAME | Set-Content ".\build\txt\version.txt"
 $Version = $Version.CUSTOM_VERSION
 
-
-
+## lower case (Linux file path)
 if($Platform -eq "Windows"){$Platform = "windows"}
+
+## upper case (Linux file path)
 $Type | foreach {
  if($_ -eq "amd1"){$_ = "AMD1"}
  if($_ -eq "nvidia1"){$_ = "NVIDIA1"}
@@ -349,8 +369,11 @@ $Type | foreach {
  if($_ -eq "nvidia2"){$_ = "NVIDIA3"}
  if($_ -eq "cpu"){$_ = "CPU"}
 }
+
+## create debug/command folder
 if(-not (Test-Path ".\build\txt")){New-Item -Path ".\build" -Name "txt" -ItemType "directory" | Out-Null}
 
+## Load Codebase
 . .\build\powershell\killall.ps1
 . .\build\powershell\startlog.ps1
 . .\build\powershell\remoteupdate.ps1
@@ -386,8 +409,10 @@ $dir = (Split-Path $script:MyInvocation.MyCommand.Path)
 $dir | set-content ".\build\bash\dir.sh"
 start-log -Platforms $Platform -HiveOS $HiveOS
 
+##HiveOS Confirmation
 Write-Host "HiveOS = $HiveOS"
-#Startings Settings:
+
+#Startings Settings (Non User Arguments):
 $BenchmarkMode = "No"
 $Instance = 1
 $DecayStart = Get-Date
@@ -414,10 +439,14 @@ $txt = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\txt")
 $swarmstamp = "SWARMISBESTMINEREVER"
 $Platform | Set-Content ".\build\txt\os.txt"
 
+## Initiate Update Check
 start-update -Update $update -Dir $dir -Platforms $Platform
 
+## Linux Initialize
 if($Platform -eq "linux")
  {
+
+  ## HiveOS Only Items
   if($HiveOS -eq "Yes")
   {
    Write-Host "Getting Data"
@@ -431,11 +460,20 @@ if($Platform -eq "linux")
     Start-Process ".\build\bash\libc.sh" -wait
     Start-Process ".\build\bash\libv.sh" -wait
   }
+
+  ## Kill Previous Screens
   start-killscript
+
+  ## Set Cuda for commands
   $cuda | Out-file ".\build\txt\cuda.txt" -Force
-  $Platform = "linux"
+
+  ## Start SWARM watchdog (for automatic shutdown)
   start-watchdog
+
+  ## Get Total GPU Count
   $GPU_Count = Get-GPUCount -DeviceType $Type -Platforms $Platform -CPUThreads $CPUThreads
+
+  ## Let User Know What Platform commands will work for- Will always be Group 1.
   $Type | Foreach {
    if($_ -eq "NVIDIA1"){
    "NVIDIA1" | Out-File ".\build\bash\minertype.sh" -Force
@@ -455,15 +493,27 @@ if($Platform -eq "linux")
      }
     }
    }
+
+## Aaaaannnd...Que that sexy loading screen
 Get-SexyUnixLogo
 }
 
+##Windows Initialize
 if($Platform -eq "windows")
  {
+  ## Change console icon
   Invoke-Expression ".\build\powershell\icon.ps1 `".\build\apps\SWARM.ico`""
+
+  ## Windows Bug- Set Cudas to match PCI Bus Order
   [Environment]::SetEnvironmentVariable("CUDA_DEVICE_ORDER", "PCI_BUS_ID", "User")
+
+  ##Set Cuda For Commands
   $Cuda = "10"
+
+  ##Fan Start For Users not using HiveOS
   Start-Fans
+
+  ##Detect if drivers are installed, not generic- Close if not. Print message on screen
   if(-not (Test-Path "C:\Program Files\NVIDIA Corporation\NVSMI\nvml.dll"))
   {
     Write-Host "nvml.dll is missing" -ForegroundColor Red
@@ -475,16 +525,24 @@ if($Platform -eq "windows")
     Start-Sleep -S 1
     exit
   }
+
+  ## Fetch Ram Size, Write It To File (For Commands)
   $TotalMemory = (systeminfo | Select-String 'Total Physical Memory:').ToString().Split(':')[1].Trim()
   $TotalMemory = $TotalMemory -replace (",","")
   $TotalMemory = $TotalMemory -replace ("MB","")
   $TotalMemory | Set-Content ".\build\txt\ram.txt"
+
+  ## GPU Bus Hash Table
   $GetBusData = $GetBusData = Get-BusFunctionID | ConvertTo-Json -Compress
+
+  ## Say Hello To Hive
   if($HiveOS -eq "Yes")
   {
+   ## Initiate Contact
    $hiveresponse = Start-Peekaboo -HiveID $HiveID -HiveMirror $HiveMirror -HiveWorker $HiveWoker -HivePassword $HivePassword -Version $Version -GPUData $GetBusData; 
    if($hiveresponse.result)
    {
+    ## If Hive Responds with config: Set new config interactively
     $hiveresponse.result | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach{
     $Action = $_
     if($Action -eq "config")
@@ -500,6 +558,7 @@ if($Platform -eq "windows")
       $NewHiveKeys.Add("HiveID","$WorkerID")
       $NewHiveKeys.Add("HiveMirror","$mirror")
       if(Test-Path ".\build\txt\hivekeys.txt"){$OldHiveKeys = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json}
+      ## If password was changed- Let Hive know message was recieved
       if($OldHiveKeys)
        {
        if("$($NewHiveKeys.HivePassword)" -ne "$($OldHiveKeys.HivePassword)")
@@ -516,28 +575,39 @@ if($Platform -eq "windows")
          $Send2Response = Invoke-RestMethod "$mirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
         }
        }
+
+     ## Set Arguments/New Parameters
      $NewHiveKeys | ConvertTo-Json | Set-Content ".\build\txt\hivekeys.txt"
      $HiveID = $NewHiveKeys.HiveID
      $HivePassword = $NewHiveKeys.HivePassword
      $HiveWorker = $NewHiveKeys.HiveWorker
      $HiveMirror = $NewHiveKeys.HiveMirror
-     ##DO OC HERE##
     }
+
+    ##If Hive Sent OC (Currently Only NVIDIA) Start SWARM OC
     if($Action -eq "nvidia_oc")
      {
       $WorkingDir = $dir
       $hiveresponse.result.nvidia_oc | Start-NVIDIAOC 
      }
+    
     }
+
+    ## Print Data to output, so it can be recorded in transcript
     $hiveresponse.result.config
+
   }
   else{Write-Host "failed to contact HiveOS"}
+
+  ## Get Total GPU HashTable
   $GPU_Count = Get-GPUCount $GetBusData
+  ## Aaaaannnnd...Que that sexy logo. Go Time.
   Get-SexyWinLogo
   }
  }
 
 #Timers
+$TimeoutTime = $Timeout*3600
 $TimeoutTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $TimeoutTimer.Start()
 $logtimer = New-Object -TypeName System.Diagnostics.Stopwatch
@@ -554,7 +624,7 @@ else{$PSDefaultParameterValues["*:Proxy"] = $Proxy}
 ##RecordPID
 $PID | Set-Content ".\build\pid\miner_pid.txt"
 
-##GPU-Count
+##GPU-Count- Parse the hashtable between devices.
 if(Test-Path ".\build\txt\nvidiapower.txt"){Remove-Item ".\build\txt\nvidiapower.txt" -Force}
 if(Test-path ".\build\txt\amdpower.txt"){Remove-Item ".\build\txt\amdpower.txt" -Force}
 if($GPU_Count -ne 0){$GPUCount = @(); for($i=0; $i -lt $GPU_Count; $i++){[string]$GPUCount += "$i,"}}
@@ -570,7 +640,7 @@ $NVIDIADevices2 = $GPUDevices2
 $NVIDIADevices3 = $GPUDevices3
 $AMDDevices1 = $GPUDevices1
 
-##Reset-Old Stats
+##Reset-Old Stats And Their Time
 if(Test-Path "stats"){Get-ChildItemContent "stats" | ForEach {$Stat = Set-Stat $_.Name $_.Content.Week}}
  
 #Get-Algorithms
@@ -586,10 +656,11 @@ if($Type -like "*AMD*"){$amd = get-minerfiles -Types "AMD" -Platforms $Platform}
 
 While($true)
 {
+
 ##Manage Pool Bans
 Start-PoolBans $StartingParams $swarmstamp
 
-##Parameters (if changed through command)
+##Parameters (change again interactively if needed)
 $GetSWARMParams = Get-Content ".\config\parameters\arguments.json"
 $SWARMParams = $GetSWARMParams | ConvertFrom-Json
 $Wallet = $SWARMParams.Wallet
@@ -658,6 +729,9 @@ if($Donating -eq $True){$Test = Get-Date; $DonateTest = "Miner has donated on $T
 
 if($Type -notlike "*ASIC*")
 {
+## Main Loop Begins
+## SWARM begins with pulling files that might have been changed from previous loop.
+
 ##Save Watt Calcs
 if($Watts){$Watts | ConvertTo-Json | Out-File ".\config\power\power.json"}
 ##OC-Settings
@@ -666,9 +740,9 @@ $OC = Get-Content ".\config\oc\oc-settings.json" | ConvertFrom-Json
 $CoinAlgo = $null  
 ##Get Watt Configuration
 $Watts = get-content ".\config\power\power.json" | ConvertFrom-Json
+
 ##Check Time Parameters
 $MinerWatch = New-Object -TypeName System.Diagnostics.Stopwatch
-$TimeoutTime = $Timeout*3600
 $DecayExponent = [int](((Get-Date)-$DecayStart).TotalSeconds/$DecayPeriod)
  
 ##Get Price Data
@@ -689,7 +763,7 @@ $Currency | ForEach {$Rates | Add-Member $_ (Invoke-WebRequest "https://api.cryp
 }
 
 
-##Load File Stats
+##Load File Stats, Begin Clearing Bans And Bad Stats Per Timout Setting. Restart Loop if Done
 if($TimeoutTimer.Elapsed.TotalSeconds -lt $TimeoutTime -or $Timeout -eq 0){$Stats = Get-Stats -Timeouts "No"}
 else
 {
@@ -698,7 +772,7 @@ else
  continue
 }
 
-##GetPools
+##Get Algorithm Pools, Select the best three of each algorithm.
 Write-Host "Checking Algo Pools" -Foregroundcolor yellow
 $AllAlgoPools = Get-Pools -PoolType "Algo" -Stats $Stats
 $AlgoPools = @()
@@ -710,7 +784,7 @@ $AllAlgoPools.Symbol | Select -Unique | ForEach {$AlgoPools_Comparison += ($AllA
 Write-Host "Checking Algo Miners"
 $AlgoMiners = Get-Miners -Platforms $Platform -Stats $Stats -Pools $AlgoPools
 
-##Re-Name Instance In Case Of Crashes
+##Re-Name Instance In Case Of Crashes. This is for linux.
 if($Lite -eq "No")
  {
   $AlgoMiners | ForEach {
@@ -731,7 +805,10 @@ if($Lite -eq "No")
  }
 }
 
-##Download Miners
+##Download Miners, If Miner fails three times- A ban is created against miner, and it should stop downloading.
+##This works by every time it fails to download, it writes miner name to the download block list. If it counts
+##The name more than three times- It skips over miner. It also interactively rebuilds the AlgoMiners Array into
+##A new array with the miner removed. I know, complicated, right?
 $Download = $false
 if($Lite -eq "No")
 {
@@ -742,26 +819,33 @@ if(Test-Path ".\timeout\download_block\download_block.txt"){$DLTimeout = Get-Con
 $DLName = $DLTimeout | Select-String "$($AlgoMiner.Name)"
 if($DLName.Count -lt 3)
  {
- if((Test-Path $AlgoMiner.Path) -eq $false)
-  {
+  if((Test-Path $AlgoMiner.Path) -eq $false)
+   {
    Expand-WebRequest -URI $AlgoMiner.URI -BuildPath $AlgoMiner.BUILD -Path (Split-Path $AlgoMiner.Path) -MineName (Split-Path $AlgoMiner.Path -Leaf) -MineType $AlgoMiner.Type
    $Download = $true
    if(-not (Test-Path $ALgoMiner.Path))
     {
      if(-not (Test-Path ".\timeout\download_block")){New-Item -Name "download_block" -Path ".\timeout" -ItemType "directory"}
-     "$($Algominer.Name)" | Add-Content ".\timeout\download_block\download_block.txt"
+     "$($Algominer.Name)" | Out-File ".\timeout\download_block\download_block.txt" -Append
     }
-  }
- else{$GetAlgoMiners += $AlgoMiner}
    }
+ else{$GetAlgoMiners += $AlgoMiner}
+}
+ ## Let User They are having problems
  else{Write-Host "$($AlgoMiner.Name) download failed too many times- Blocking" -ForegroundColor Red}
-  }
+}
+ ## Original Array Becomes New Array. $NUlls out old data
  $Algominers = $GetAlgoMiners
  $GetAlgoMiners = $Null
  $DLTimeout  = $null
  $DlName = $Null
- }
+}
+
+## Linux Bug- Restart Loop if miners were downloaded. If not, miners were skipped over
 if($Download -eq $true){continue}
+
+## All miners had pool quote printed for their respective algorithm. This adjusts them with the Threshold increase.
+## This is done here, so it distributes it to all miners of that particular algorithm, not the just active miner.
 $BestActiveMiners | % {$AlgoMiners | Where Algo -EQ $_.Algo | Where Type -EQ $_.Type | % {
 if($_.Quote -NE $Null)
  {
@@ -773,7 +857,11 @@ if($_.Quote -NE $Null)
  }
 }
 
-##Sort Miners- Remove Extra Pools
+##Sort Miners- There are currently up to three for each algorithm. This process sorts them down to best 1.
+##If Miner has no hashrate- The quote returned was zero, so it needs to be benchmarked. This rebuilds a new
+## Miner array, favoring miners that need to benchmarked first, then miners that had the highest quote. It
+## Is done this way, as sorting via [double] would occasionally glitch. This is more if/else, and less likely
+## To fail.
 $NewAlgoMiners = @()
 $Type | Foreach {
 $GetType = $_;
@@ -798,11 +886,22 @@ else
   }
  }
 }
+#Converts To Original Array
 $AlgoMiners = $NewAlgoMiners
-if($AlgoMiners.Count -eq 0){"No Miners!" | Out-Host; start-sleep $Interval; continue}
+$NewAlgoMiners = $null
 
-##Sort Algorithm Miners By Profit & Watts
+## Print on screen user is screwed if the process failed.
+if($AlgoMiners.Count -eq 0){"No Miners! Check Arguments!" | Out-Host; start-sleep $Interval; continue}
+
+##This starts to refine each miner hashtable, applying watt calculations, and other factors to each miner. ##TODO
 start-minersorting -Command "Algo" -Stats $Stats -Pools $AlgoPools -Pools_Comparison $AlgoPools_Comparison -SortMiners $AlgoMiners -DBase $DecayBase -DExponent $DecayExponent -WattCalc $WattEx
+
+##Okay so now we have all the new applied values to each profit, and adjustments. Now we need to find best miners to use.
+##This part rebuilds the miner array. First it rebuilds the array to account for threshold. Then it rebuilds the array again
+##Applying the switching threshold to each active running miner. If the profit was negative- The bias decreases the negative figure. If it was
+##Positive- the bias increases it, making the current miner more profitable to mine by x%, where x% is Switch_Threshold. Multiple
+##Arrays are built in this process. Finally, the miner gets the best miners. Previous Arrays are destroyed.
+##Super complicated- You're welcome, world.
 $GoodAlgoMiners = @()
 if($Threshold -ne 0){$AlgoMiners | Foreach {if($_.Profit -lt $Threshold -or $_.Profit -eq $null){$GoodAlgoMiners += $_}}}
 else{$AlgoMiners | foreach{$GoodAlgoMiners += $_}}
@@ -822,8 +921,12 @@ $BestActiveMiners | % { $Miners | Where Path -EQ $_.path | Where Arguments -EQ $
   }
 }
 $BestAlgoMiners_Combo = Get-BestMiners
+$GoodAlgoMiners = $null
+$AlgoMiners = $null
 
-##Factor Conserve
+##Final Array Build- If user specified to shut miner off if there were negative figures:
+##Array is rebuilt to remove miner that had negative profit, but it needs to NOT remove
+##Miners that had no profit. (Benchmarking).
 if($Conserve -eq "Yes"){
  $BestMiners_Combo = @()
  $Type | Foreach {
@@ -835,80 +938,14 @@ if($Conserve -eq "Yes"){
  $BestMiners_Combo += $ConserveArray
  }
 else{$BestMiners_Combo = $BestAlgoMiners_Combo}
-
-##check if Auto_Coin is working- Start Coin Sorting
-#if($Auto_Coin -eq "Yes")
-#{
-##Determine Benchmark Mode
-#$NeedsToBeBench = $false
-#$BestAlgoMiners_Combo | foreach {if($_.Profit -eq $null){$NeedsToBeBench = $true; Write-Host "Coins Disabled - Benchmarking Required." -foreground yellow}}
-
-#if($NeedsToBeBench -eq $false)
-#{ 
-#Get Specfic Coin Algorithms
-#$CoinAlgo = $Algorithm
-#Write-Host "CoinPools Are Active: Searching For Coins" -ForegroundColor Magenta
-
-#Load Coin Pools
-#$AllCoinPools = Get-Pools -PoolType "Coin" -Stats $Stats
-#$CoinPools = [PSCustomObject]@{}
-#$CoinPools_Comparison = [PSCustomObject]@{}
-#$AllCoinPools.Symbol | Select -Unique | ForEach {$CoinPools | Add-Member $_ ($AllCoinPools | Where Symbol -EQ $_)}
-#$AllCoinPools.Symbol | Select -Unique | ForEach {$CoinPools_Comparison | Add-Member $_ ($AllCoinPools | Where Symbol -EQ $_)}
-
-#Load Coin Miners
-#$CoinMiners = Get-Miners -Platforms $Platform -Stats $Stats -Pools $CoinPools
-#if($CoinMiners -ne $null){start-minersorting -Command "Coin" -Stats $Stats -Pools $CoinPools -Pools_Comparison $CoinPools_Comparison -SortMiners $CoinMiners -DBase $DecayBase -DExponent $DecayExponent -WattCalc $WattEx}
-#$Miners = @()
-#if($BestAlgoMiners_Combo.MinerPool -like "*algo*")
-#{
-# if($Favor_Coins -eq "Yes"){Write-Host "User Specified To Favor Coins & Best Pool Is CoinPool: Factoring Only Coins";$Miners = $CoinMiners | Where Profit -lt $Threshold}
-# else{$Miners = $CoinMiners | Where Profit -lt $Threshold;$BestAlgoMiners_Combo | foreach {$Miners += $_}}
-#}
-#else{$Miners = $CoinMiners | Where Profit -lt $Threshold; $BestAlgoMiners_Combo | foreach {$Miners += $_}}
-
-#$ActiveMinerPrograms | ForEach {$Miners | Where Path -EQ $_.Path | Where Arguments -EQ $_.Arguments | ForEach {$_.Profit_Bias = $_.Profit}}
-#if($Platform -eq "windows"){$BestMiners_Combo = Get-BestWin -SortMiners $Miners}
-#elseif($Platform -eq "linux"){$BestMiners_Combo = Get-BestUnix -SortMiners $Miners}
-
-#if($Favor_Coins -eq "Yes")
-#{
-#$Miners = @()
-#$NewCoinSymbol = @()
-#$ProfitsArray = @()
-#$NewCoinAlgo = @()
-
-#$BestMiners_Combo | Foreach {$NewCoinSymbol += [PSCustomObject]@{"$($_.Type)" = "$($_.Symbol)"}}  
-#$BestMiners_Combo | Foreach {$NewCoinAlgo += [PSCustomObject]@{"$($_.Type)" = "$($_.Algo)"}}  
-#$BestMiners_Combo | Foreach {$ProfitsArray += [PSCustomObject]@{"$($_.Type)" = $($_.Profit)}}
-
-#$Type | Foreach {
-#$Selected = $_
-#$TypeAlgoMiners = $GoodAlgoMiners | Where Type -eq $Selected
-# $TypeAlgoMiners | Foreach{
-#  if($NewCoinSymbol.$($_.Type) -ceq $($_.Symbol)){$Miners += $_}
-#  else
-#  {
-#   if($NewCoinAlgo.$($_.Type) -cne $($_.Algo))
- #  {
-  # if($ProfitsArray.$($_.Type) -gt $($_.Profit)){$Miners += $_}
-  # }
-  #}
- #}
-#}
-#$CoinMiners | foreach {$Miners += $_}
-#}
-
- #else{$Miners = @(); $GoodAlgoMiners | foreach {$Miners += $_}; $CoinMiners | foreach {$Miners += $_}}
- #}
-#}
+$ConserveArray = $null
 
 ##Write On Screen Best Choice  
 $BestMiners_Selected = $BestMiners_Combo.Symbol
 $BestPool_Selected = $BestMiners_Combo.MinerPool 
 Write-Host "Most Ideal Choice Is $($BestMiners_Selected) on $($BestPool_Selected)" -foregroundcolor green          
 
- ##Build Stats Table
+ ##Build Simple Stats Table For Screen/Command
  $ProfitTable = $null
  $ProfitTable = @()
  $Miners | foreach {
@@ -930,7 +967,9 @@ Write-Host "Most Ideal Choice Is $($BestMiners_Selected) on $($BestPool_Selected
 ##Clear Old Logs
 if(-not $ActiveMinerPrograms){$Type | foreach{if(Test-Path ".\logs\$($_).log"){remove-item ".\logs\$($_).log" -Force}}}
 
-##Add Instance Settings To Miners For Tracking
+##Add new miners to Active Miner Array, if they were not there already.
+##This also does a little weird parsing for CPU only mining,
+##And some parsing for logs.
 $BestMiners_Combo | ForEach {
  if(-not ($ActiveMinerPrograms | Where Path -eq $_.Path | Where Arguments -eq $_.Arguments ))
   {
@@ -1030,6 +1069,8 @@ $Type | foreach{
      }
     }
 
+
+## This section pulls relavant statics that users require, and then outputs them to screen or file, to be pulled on command.
 if($ConserveMessage){$ConserveMessage | %{Write-Host "$_" -ForegroundColor Red}}
 $Y = [string]$CoinExchange
 $H = [string]$Currency
@@ -1076,8 +1117,13 @@ $StatusDate | Out-File ".\build\bash\minerstatslite.sh"
 $StatusLite | OUt-File ".\build\bash\minerstatslite.sh" -Append
 $MiningStatus | Out-File ".\build\bash\minerstatslite.sh" -Append
 $BanMessage | Out-File ".\build\bash\minerstatslite.sh" -Append
+
+## Simple hash table for clearing ports. Used Later
 $PreviousMinerPorts = @{AMD1="";NVIDIA1="";NVIDIA2="";NVIDIA3="";CPU=""}
 
+
+## Records miner run times, and closes them. Starts New Miner instances and records
+## there tracing information.
 $ActiveMinerPrograms | ForEach {
 if($_.BestMiner -eq $false)
  {
@@ -1141,15 +1187,17 @@ if($_.BestMiner -eq $false)
     }
    }
 
-  $MinerWatch.Restart()
 
+##Outputs the correct notification of miner launches.
+##Restarts Timer for Interval.
+$MinerWatch.Restart()
 if($Restart -eq $true -and $NoMiners -eq $true){Invoke-MinerWarning}
 if($Platform -eq "linux" -and $Restart -eq $true -and $NoMiners -eq $false){Invoke-MinerSuccess1}
 if($Platform -eq "windows" -and $Restart -eq $true -and $NoMiners -eq $false){Invoke-MinerSuccess2}
 if($Restart -eq $false){Invoke-NoChange}
 
 
-#Check For Bechmark
+##Check For Miner that are benchmarking, sets flag to $true and notfies user.
 $BenchmarkMode = $false
 $ActiveMinerPrograms | Foreach {
  if($Miners | Where Path -eq $_.Path | Where Arguments -eq $_.Arguments)
@@ -1179,6 +1227,8 @@ else{
 else{$MinerInterval = $Interval}
 }
 
+
+## This Starts restarts background agent, or sets API table for LITE mode.
 if($Lite -eq "Yes"){
 $UsePools = $false
 $ProfitTable | foreach{if($_.Profits -ne $null){$UsePools = $true}}
@@ -1188,6 +1238,7 @@ $APITable | ConvertTo-Json -Depth 4 | Set-Content ".\build\txt\profittable.txt"
 Start-BackgroundCheck -Platforms $Platform
 }
 
+## Load mini logo
 Get-Logo
 
 #Clear Logs If There Are 12
@@ -1320,6 +1371,7 @@ Do{
 }
 else
 {
+  ##Miner Loop Windows:
   Clear-Host
   Get-Date | Out-Host
   Get-MinerActive | Out-Host
@@ -1350,6 +1402,8 @@ Do{
  }While($MinerWatch.Elapsed.TotalSeconds -lt ($MinerInterval-20))
 }
 
+
+## Start WattOMeter function
 if($Platform -eq "linux" -or $Platform -eq "windows")
 {
 if($WattOMeter -eq "Yes")
@@ -1360,7 +1414,7 @@ if($WattOMeter -eq "Yes")
  }
 }
 
-##Benchmarking/Timeout      
+##Benchmarking/Timeout.    
 $BestActiveMiners | foreach {
 $MinerPoolBan = $false
 $MinerAlgoBan = $false
