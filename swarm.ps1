@@ -133,7 +133,7 @@ param(
     [Parameter(Mandatory=$false)]
     [Double]$Switch_Threshold = 1,
     [Parameter(Mandatory=$false)]
-    [String]$SWARM_Mode = "No",
+    [String]$SWARM_Mode = "No"
 )
 
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
