@@ -731,7 +731,7 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
     {
     $Data = $Request.Content | ConvertFrom-Json
     $Hash = $Data.Hashrate.threads
-    $RAW = $Data.hashrate.total[0]
+    $RAW = $Data.hashrate.total | Select -First 1
     $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
     Write-Host "Miner $Name was clocked at $([Double]$RAW/1000)" -foreground Yellow
     $Process = Get-Process | Where Name -clike "*$($MinerType)*"
