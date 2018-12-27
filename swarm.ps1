@@ -1383,8 +1383,6 @@ if($_.BestMiner -eq $true)
    {
     $_.HashRate = 0
     $_.WasBenchmarked = $False
-    $Miner_HashRates = Get-HashRate -Type $_.Type
-    $_.HashRate = $Miner_HashRates
     $WasActive = [math]::Round(((Get-Date)-$_.XProcess.StartTime).TotalSeconds)
     if($WasActive -ge $StatsInterval)
     {
@@ -1392,6 +1390,8 @@ if($_.BestMiner -eq $true)
 	   Write-Host "Attempting to record hashrate for $($_.Name) $($_.Coins)" -foregroundcolor "Cyan"
      for($i=0; $i -lt 4; $i++)
      {
+      $Miner_HashRates = Get-HashRate -Type $_.Type
+      $_.HashRate = $Miner_HashRates
       if($_.WasBenchmarked -eq $False)
        {
         $HashRateFilePath = Join-Path ".\stats" "$($_.Name)_$($_.Algo)_hashrate.txt"
