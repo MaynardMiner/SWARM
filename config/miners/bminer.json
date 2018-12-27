@@ -1,0 +1,121 @@
+{
+    "name": "dstm",
+    "NVIDIA1": {
+      "name": "NVIDIA1",
+      "delay": "1",
+      "prestart": [],
+      "commands": {
+        "zhash": "",
+        "daggerhashimoto": "",
+        "blake2s": ""
+      },
+      "difficulty": {
+        "zhash": "",
+        "daggerhashimoto": "",
+        "blake2s": ""
+      },
+      "naming": {
+        "zhash": "zhash",
+        "daggerhashimoto": "ethstratum",
+        "blake2s": "blake2s"
+      },
+      "oc": {
+        "zhash": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        },
+        "daggerhashimoto": {
+         "Power": "",
+         "Core": "",
+         "Memory": "",
+         "ETHPill": "",
+         "PillDelay": ""
+        },
+         "blake2s": {
+         "Power": "",
+         "Core": "",
+         "Memory": ""
+        }
+      }
+    },
+    "NVIDIA2": {
+      "name": "NVIDIA2",
+      "delay": "1",
+      "prestart": [],
+      "commands": {
+        "zhash": "",
+        "daggerhashimoto": "",
+        "blake2s": ""
+      },
+      "difficulty": {
+        "zhash": "",
+        "daggerhashimoto": "",
+        "blake2s": ""
+      },
+      "naming": {
+        "zhash": "zhash",
+        "daggerhashimoto": "ethstratum",
+        "blake2s": "blake2s"
+      },
+      "oc": {
+        "zhash": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        },
+        "daggerhashimoto": {
+         "Power": "",
+         "Core": "",
+         "Memory": "",
+         "ETHPill": "",
+         "PillDelay": ""
+        },
+         "blake2s": {
+         "Power": "",
+         "Core": "",
+         "Memory": ""
+        }
+      }
+    },
+     "NVIDIA3": {
+      "name": "NVIDIA3",
+      "delay": "1",
+      "prestart": [],
+      "commands": {
+        "zhash": "",
+        "daggerhashimoto": "",
+        "blake2s": ""
+      },
+      "difficulty": {
+        "zhash": "",
+        "daggerhashimoto": "",
+        "blake2s": ""
+      },
+      "naming": {
+        "zhash": "zhash",
+        "daggerhashimoto": "ethstratum",
+        "blake2s": "blake2s"
+      },
+      "oc": {
+        "zhash": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        },
+        "daggerhashimoto": {
+         "Power": "",
+         "Core": "",
+         "Memory": "",
+         "ETHPill": "",
+         "PillDelay": ""
+        },
+         "blake2s": {
+         "Power": "",
+         "Core": "",
+         "Memory": ""
+        }
+      }
+     }
+   }
+  

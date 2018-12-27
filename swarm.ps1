@@ -146,7 +146,9 @@ $ID = ".\build\pid\background_pid.txt"
 if(Test-Path $ID){$Agent = Get-Content $ID}
 if($Agent){$BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue}
 if($BackGroundID){Stop-Process $BackGroundID | Out-Null}
-
+$Debug = $true
+if($Debug -ne $true)
+{
 $CurrentParams = @{}
 $CurrentParams.Add("Wallet",$Wallet)
 $CurrentParams.Add("Wallet1",$Wallet1)
@@ -206,16 +208,18 @@ $CurrentParams.Add("MinerBanCount",$MinerBanCount)
 $CurrentParams.Add("Conserve",$Conserve)
 $CurrentParams.Add("SWARM_Mode",$SWARM_Mode)
 $CurrentParams.Add("Switch_Threshold",$Switch_Threshold)
-$CurrentParams.Add("Debug_Mode",$Debug_Mode)
 if($Platform -eq "windows"){$CurrentParams.Add("AMDPlatform",$AMDPlatform)}
 $CurrentParams.Add("Lite",$Lite)
 $StartParams = $CurrentParams | ConvertTo-Json 
 $StartingParams = $CurrentParams | ConvertTo-Json -Compress
 $StartParams | Set-Content ".\config\parameters\arguments.json"
-if(Test-Path ".\config\parameters\newarguments.json")
+}
+
+if((Test-Path ".\config\parameters\newarguments.json") -or $Debug -eq $true)
 {
 Write-Host "Detected New Arguments- Changing Parameters" -ForegroundColor Cyan
-$NewParams = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json
+if($Debug -eq $True){$NewParams = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json}
+else{$NewParams = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json}
 Start-Sleep -S 2
 $NewParams | Convertto-Json | Set-Content ".\config\parameters\arguments.json"
 $StartParams = $NewParams
@@ -281,7 +285,6 @@ $Lite = $SWARMParams.Lite
 $Conserve = $SWARMParams.Conserve
 $Switch_Threshold = $SWARMParams.Switch_Threshold
 $SWARM_Mode = $SWARMParams.SWARM_Mode
-$Debug_Mode = $SWARMParams.Debug_Mode
 if($Platform -eq "windows"){$AMDPlatform = $SWARMParams.AMDPlatform}
 }
 
@@ -650,7 +653,6 @@ $Lite = $SWARMParams.Lite
 $Conserve = $SWARMParams.Conserve
 $Switch_Threshold = $SWARMParams.Switch_Threshold
 $SWARM_Mode = $SWARMParams.SWARM_Mode
-$Debug_Mode = $SWARMParams.Debug_Mode
 if($Platform -eq "windows"){$AMDPlatform = $SWARMParams.AMDPlatform}
 if($SWARMParams.Rigname1 -eq "Donate"){$Donating = $True}
 else{$Donating = $False}
@@ -1134,6 +1136,7 @@ if($_.BestMiner -eq $false)
      else
       {
        $_.Status = "Running"
+       Write-Host "Process Id is $($_.XProcess.ID)"
        Write-Host "$($_.MinerName) Is Running!" -ForegroundColor Green
       } 
      }

@@ -76,7 +76,7 @@ function Start-LaunchCode {
     [String]$NewMiner,
     [Parameter(Mandatory=$true)]
     [String]$MinerRound,
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory=$false)]
     [String]$PP
     ) 
 
@@ -322,6 +322,7 @@ Do{
   Start-Sleep -S 1
   Write-Host "Getting Process ID for $($MinerCurrent.MinerName)"           
   $MinerProcess = Get-Process -Name "$($MinerCurrent.InstanceName)" -ErrorAction SilentlyContinue
+  if($MinerCurrent.DeviceCall -eq "bminer"){$MinerProcess = $MinerProcess | Select -First 1}
  }until($MinerProcess -ne $null -or ($MinerTimer.Elapsed.TotalSeconds) -ge 10)  
 if($MinerProcess -ne $null)
 {

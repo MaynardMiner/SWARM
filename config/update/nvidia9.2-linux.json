@@ -129,6 +129,16 @@
     "version": "1.10",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/zjazz-linux-9-2.tar.gz"
   },
+  "bminer": {
+    "name": "bminer",
+    "type": "nvidia",
+    "path1": ".\\bin\\bminer-1\\bminer",
+    "path2": ".\\bin\\bminer-2\\bminer",
+    "path3": ".\\bin\\bminer-3\\bminer",
+    "minername": "bminer",
+    "version": "11.0",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/bminer-linux.tar.gz"
+  },
   "miniz": {
     "name": "miniz",
     "type": "nvidia",
