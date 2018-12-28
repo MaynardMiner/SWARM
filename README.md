@@ -8,8 +8,6 @@
 
 https://github.com/MaynardMiner/SWARM/wiki/Developer's-Corner
 
-SWARM has an in depth github wiki, with instructions on how to setup/manage SWARM!
-
 **IF YOU NEED HELP, OR ARE LOST AT USING SWARM- TAKE ADVANTAGE OF THE WIKI:**
 
 https://github.com/MaynardMiner/SWARM/wiki
