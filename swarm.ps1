@@ -143,21 +143,19 @@ Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 Get-ChildItem . -Recurse -Force | Out-Null
 
 ## Crash Reporting
-if($Platform -eq "Windows")
-{
-  Get-CimInstance -ClassName win32_operatingsystem | select lastbootuptime | %{$Boot = [math]::Round(((Get-Date)-$_.LastBootUpTime).TotalSeconds)}
-  if($Boot -lt 600)
+if($Platform -eq "windows"){Get-CimInstance -ClassName win32_operatingsystem | select lastbootuptime | %{$Boot = [math]::Round(((Get-Date)-$_.LastBootUpTime).TotalSeconds)}}
+elseif($Platform -eq "linux"){$Boot = Get-Content "/proc/uptime" | %{$_ -split " " | Select -First 1}};
+if($Boot -lt 600)
+ {
+ if((Test-Path ".\build\txt") -and (Test-Path ".\logs"))
   {
-   if((Test-Path ".\build\txt") -and (Test-Path ".\logs"))
-    {
-     Write-Warning "SWARM was started in 600 seconds of last boot. Generating a crash report to logs directory"
-     $Report = "crash_report_$(Get-Date)";
-     $Report = $Report | %{$_ -replace ":","_"} | %{$_ -replace "\/","-"} | %{$_ -replace " ","_"};
-     New-Item -Path ".\logs" -Name $Report -ItemType "Directory" | Out-Null;
-     Get-ChildItem ".\build\txt" | Copy-Item -Destination ".\logs\$Report"
-     Start-Sleep -S 3
-    } 
-  }
+    Write-Warning "SWARM was started in 600 seconds of last boot. Generating a crash report to logs directory";
+    $Report = "crash_report_$(Get-Date)";
+    $Report = $Report | %{$_ -replace ":","_"} | %{$_ -replace "\/","-"} | %{$_ -replace " ","_"};
+    New-Item -Path ".\logs" -Name $Report -ItemType "Directory" | Out-Null;
+    Get-ChildItem ".\build\txt" | Copy-Item -Destination ".\logs\$Report";
+    Start-Sleep -S 3
+  } 
 }
 
 ## Close Previous Running Agent- Agent is left running to send stats online, even if SWARM crashes
@@ -472,6 +470,12 @@ if($Platform -eq "linux")
   {
    Write-Host "Getting Data"
    Get-Data -CmdDir $dir
+   $config = get-content /hive-config/rig.conf | ConvertFrom-StringData
+   $HivePassword = $config.RIG_PASSWD -replace "`"",""
+   $HiveWorker = $config.WORKER_NAME -replace "`"",""
+   $HiveMirror = $config.HIVE_HOST_URL -replace "`"",""
+   $HiveID = $config.RIG_ID
+
    if($Type -like "*AMD*")
     {
      [string]$AMDPlatform = get-AMDPlatform -Platforms $Platform
