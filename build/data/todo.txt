@@ -1,7 +1,7 @@
 1.) Rig.conf
 2.) Hive Notifications.
 2.) NVML removal on miners.
-3.) Test bminer windows.
+3.) Test bminer windows. X
 4.) Internet time syncronization. X
 5.) Crash Reporting.
 6.) powershell folders.

@@ -452,31 +452,27 @@ if($Platforms -eq "windows" -and $HiveId -ne $null)
       Write-Host "Miner Port is $Port"  
       Write-Host "Miner Devices is $Devices"
       $Request = $Null
-      . .\build\powershell\hashrates.ps1
-      $Port = 44001
-      $Server = "localhost"
       $Request = Get-HTTP -Port $Port -Message "/api/status"
-      $Data.Miners."0"
       if($Request)
        {
         $Data = $Request.Content | ConvertFrom-Json
         $Raw = 0
-        for($i=0;$i -lt $Devices.Count; $i++){$RAW += [Double]$Data.Miners.$i.solver.solution_rate}
+        for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $RAW += [Double]$Data.Miners.$GPU.solver.solution_rate}
         $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
         Write-Host "Miner $Name was clocked at $([Double]$RAW/1000)" -foreground Yellow
         $Process = Get-Process | Where Name -clike "*$($MinerType)*"
         Write-Host "Current Running instances: $($Process.Name)"
-        for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Data.Miners.Count -eq 1){[Double]$Data.Miners.$i.solver.solution_rate / 1000}else{[Double]$Data.Miners.$i.solver.solution_rate / 1000})}
+        for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Data.Miners.Count -eq 1){[Double]$Data.Miners.$GPU.solver.solution_rate / 1000}else{[Double]$Data.Miners.$GPU.solver.solution_rate / 1000})}
         $MinerACC = 0
         $MinerREJ = 0
         $Data.stratum.accepted_shares | Foreach {$MinerACC += $_}
         $Data.stratum.rejected_shares | Foreach {$MinerREJ += $_}
         $Data.stratum.accepted_shares | Foreach {$ACC += $_}
         $Data.stratum.rejected_shares | Foreach {$REJ += $_}
-        for($i=0;$i -lt $Devices.Count; $i++){$KHS += [Double]$Data.Miners.$i.solver.solution_rate/1000}
+        for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $KHS += [Double]$Data.Miners.$GPU.solver.solution_rate/1000}
         $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
-        for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($Data.$Miners.Count -eq 1){$Data.Miners.$i.device.temperature}else{$Data.Miners.$i.device.temperature})}
-        for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) =  $(if($Data.$Miners.Count -eq 1){$Data.Miners.$i.device.fan_speed}else{$Data.Miners.$i.device.fan_speed})}
+        for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($Data.$Miners.Count -eq 1){$Data.Miners.$GPU.device.temperature}else{$Data.Miners.$GPU.device.temperature})}
+        for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) =  $(if($Data.$Miners.Count -eq 1){$Data.Miners.$GPU.device.fan_speed}else{$Data.Miners.$GPU.device.fan_speed})}
         $ALGO = $MinerAlgo
       }
     }
