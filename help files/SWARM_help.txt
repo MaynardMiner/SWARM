@@ -70,12 +70,6 @@ Argument          Options           Explanation
                AMD1,
 	       ASIC]
 
--Delay         [0-100000]           Expressed in seconds. When MM.Hash closes miners, to prevent BSOD or
-                                    Crashing, MM.Hash delays the openining of new miner windows momentarily.
-                                    By default, the delay is set to 1 second. Adding the delay argument
-                                    can allow you to increase the delay time before openining new miners,
-                                    which can give your gpu's a 'cooldown' time if you desire that preference.
-
 -Benchmark     [0-100000]           Expressed in seconds. Default 0. Sets specific interval time for when coin 
 				    is in benchmark mode. Can be used for faster benchmarking. When coin has
 				    a set hashrate- Miner will defer to time expressed in -Interval parameter.
@@ -164,19 +158,19 @@ Argument            Options             Explanation
 
 -GPUDevices1     ['0,1,2,3,4' etc.]     GPU's used in device group one, as identified by driver.
                                         GPUDevices1 will mine from Wallet1, PasswordCurrency1,
-                                        nicehash_wallet1, zergpool_wallet1, Zergpoolpassword1,
+                                        altcoinwallet1, altcoinpassword1,
                                         if -Type NVIDIA1 was specified. Used if using multiple
 					device groups.
 
 -GPUDevices2     ['0,1,2,3,4' etc.]     GPU's used in device group one, as identified by driver.
                                         GPUDevices2 will mine from Wallet2, PasswordCurrency2,
-                                        nicehash_wallet2, zergpool_wallet2, Zergpoolpassword2,
+                                        altcoinwallet2, altcoinpassword2,
                                         if -Type NVIDIA2 specified. Used if using multiple device
 					groups
 
 -GPUDevices3     ['0,1,2,3,4' etc.]     GPU's used in device group one, as identified by driver.
                                         GPUDevices3 will mine from Wallet3, PasswordCurrency3,
-                                        nicehash_wallet3, zergpool_wallet3, Zergpoolpassword3,
+                                        altcoinwallet3, altcoinpassword3,
                                         if -Type NVIDIA3 specified. Used if using multiple device
 					groups.
 
@@ -291,7 +285,7 @@ if (Type = NVIDIA1)
 Lastly you must set your wallet/password info. Here are basic:
 
 -Wallet1 = Wallet for device group 1. BTC works for all pools. See pools to find out if other coins can 
-be used. Zergpool in example accepts RVN as exchange.
+be used. nlpool in example accepts RVN as exchange.
 -PasswordCurrency1 = Wallet Symbol (See Pool For More Details, Must Match Wallet)
 
 Example:
@@ -334,8 +328,7 @@ Example of use:
 
 " .. -Poolname blazepool,zpool,nicehash,nlpool -Type NVIDIA1 -Wallet1 1ERWEDAe234wehdshWe -PasswordCurrency1 BTC -AltCoinWallet1 1RHS234GsasierGHT -AltCoinPassword1 RVN"
 
-This will tell the miner to mine with BTC for all pools in default device group (device group 1) that 
-are not zergpool. However, when the miner switches to nlpool- It will use the Raven Wallet specified.
+This will tell the miner to mine with BTC for all pools in default device group (device group 1). However, when the miner switches to nlpool, or a pool that can accept RVN- It will use the Raven Wallet specified.
 ***************************************
 ***************************************
 Nicehash Mining
@@ -349,7 +342,7 @@ Rules:
 
 Example of use
 
-" ..  -Poolname zergpool,blazepool,zpool,nicehash -Type NVIDIA1 -Wallet1 1ERWEDAe234wehdshWe -PasswordCurrency1 BTC -AltCoinWallet1 1RHS234GsasierGHT -AltCoinPassword1 RVN -Nicehash_Wallet1 2Rser43534sSDOIWERH -Nicehash_Fee 2"
+" ..  -Poolname nlpool,blazepool,zpool,nicehash -Type NVIDIA1 -Wallet1 1ERWEDAe234wehdshWe -PasswordCurrency1 BTC -AltCoinWallet1 1RHS234GsasierGHT -AltCoinPassword1 RVN -Nicehash_Wallet1 2Rser43534sSDOIWERH -Nicehash_Fee 2"
 
 This will tell the miner to mine with BTC for all pools that require BTC. For nlpool, it will mine ravencoin. When nicehash is most profitable, it will mine on nicehash with the wallet specified.
 **************************
@@ -368,6 +361,6 @@ Example of use;
 " ..-pool nlpool,nicehash -Type NVIDIA1,CPU -CPUThreads 3 -Wallet1 1ERWEDAe234wehdshWe -PasswordCurrency1 BTC 1ERWEDAe234wehdshWe -Nicehash_Wallet1 2Rser43534sSDOIWERH"
 
 This will tell miner to use NVIDIA1 with Wallet1 which is BTC, and to use same wallet for CPU which is 
-BTC. It will use CPU_Wallet when mining on zergpool, and -Nicehash_Wallet1 when mining on nicehash. 
+BTC. It will use wallet1 when mining on nlpool, and -Nicehash_Wallet1 when mining on nicehash. 
 Both are BTC wallets.
 **************************
