@@ -12,17 +12,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
 function get-NIST {
+    $progressPreference = 'silentlyContinue'
     try
      {
-      $WebRequest = Invoke-WebRequest -Uri 'http://nist.time.gov/actualtime.cgi'
-      $GetNIST = (Get-Date -Date '1970-01-01 00:00:00Z').AddMilliseconds(([Xml]$WebRequest.Content).timestamp.time / 1000)
+      $WebRequest = Invoke-WebRequest -Uri 'http://nist.time.gov/actualtime.cgi' -UseBasicParsing -TimeoutSec 5
+      $GetNIST = (Get-Date -Date '1970-01-01 00:00:00Z').AddMilliseconds(([XML]$WebRequest.Content | Select -expandproperty timestamp | Select -ExpandProperty time) / 1000)
      }
     Catch
      {
      Write-Warning "Failed To Get NIST time. Using Local Time."
      $GetNIST = Get-Date
      }
-
+    $progressPreference = 'Continue'
    $GetNIST
 }
 
