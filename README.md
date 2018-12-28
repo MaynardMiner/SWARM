@@ -12,6 +12,8 @@ https://github.com/MaynardMiner/SWARM/wiki/Developer's-Corner
 
 SWARM has an in depth github wiki, with instructions on how to setup/manage SWARM!
 
+**IF YOU NEED HELP, OR ARE LOST AT USING SWARM- TAKE ADVANTAGE OF THE WIKI:**
+
 https://github.com/MaynardMiner/SWARM/wiki
 
  SWARM is an collection scripts written in both powershell and bash, and is a profit switching mining system that will work within any OS. (The miners that SWARM uses may vary) SWARM, is written to be used as an all purpose/all platform mining system that can be implemented/managed on a large scale basis. It was developed for larger mining administrators, who are generally unable to interact with every mining unit/rig directly. SWARM deviates from conventional in-depth GUI interfaces, or a centralized monitoring system/screen which are a burden to mining administrators. SWARM introduces a new method of interface which is meant to assist larger mining systems, by displaying information per user command. Because SWARM's interface is command based as opposed to GUI- Users are able to create scripts of their own to micro-manage their farms/workers.
