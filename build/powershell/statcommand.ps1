@@ -11,6 +11,21 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
+function get-NIST {
+    try
+     {
+      $WebRequest = Invoke-WebRequest -Uri 'http://nist.time.gov/actualtime.cgi'
+      $GetNIST = (Get-Date -Date '1970-01-01 00:00:00Z').AddMilliseconds(([Xml]$WebRequest.Content).timestamp.time / 1000)
+     }
+    Catch
+     {
+     Write-Warning "Failed To Get NIST time. Using Local Time."
+     $GetNIST = Get-Date
+     }
+
+   $GetNIST
+}
+
 function get-stats {
 param(
 [Parameter(Mandatory=$true)]
@@ -233,6 +248,6 @@ function Invoke-SwarmMode {
     if($DateDay -gt 31){$DateDay = 1; $DateMonth = [Int]$SwarmMode_Start.Month; $DateMonth = [int]$DateMonth + 1}else{$DateMonth = [Int]$SwarmMode_Start.Month; $DateMonth = [int]$DateMonth}
     if($DateMonth -gt 12){$DateMonth = 1; $DateYear = [Int]$SwarmMode_Start.Year; $DateYear = [int]$DateYear + 1}else{$DateYear = [Int]$SwarmMode_Start.Year; $DateYear = [int]$DateYear}
     $ReadyValue = (Get-Date -Year $DateYear -Month $DateMonth -Day $DateDay -Hour $DateHour -Minute $DateMinute -Second 0 -Millisecond 0)
-    $StartValue = [math]::Round(((Get-Date)-$ReadyValue).TotalSeconds)
+    $StartValue = [math]::Round((([DateTime](get-NIST))-$ReadyValue).TotalSeconds)
     $StartValue
 }
