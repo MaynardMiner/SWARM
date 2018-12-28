@@ -140,14 +140,35 @@ param(
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 
 ## Get Child Items
-Get-ChildItem . -Recurse -Force | Out-Null 
+Get-ChildItem . -Recurse -Force | Out-Null
+
+## Crash Reporting
+if($Platform -eq "Windows")
+{
+  Get-CimInstance -ClassName win32_operatingsystem | select lastbootuptime | %{$Boot = [math]::Round(((Get-Date)-$_.LastBootUpTime).TotalSeconds)}
+  if($Boot -lt 600)
+  {
+   if((Test-Path ".\build\txt") -and (Test-Path ".\logs"))
+    {
+     Write-Warning "SWARM was started in 600 seconds of last boot. Generating a crash report to logs directory"
+     $Report = "crash_report_$(Get-Date)";
+     $Report = $Report | %{$_ -replace ":","_"} | %{$_ -replace "\/","-"} | %{$_ -replace " ","_"};
+     New-Item -Path ".\logs" -Name $Report -ItemType "Directory" | Out-Null;
+     Get-ChildItem ".\build\txt" | Copy-Item -Destination ".\logs\$Report"
+     Start-Sleep -S 3
+    } 
+  }
+}
 
 ## Close Previous Running Agent- Agent is left running to send stats online, even if SWARM crashes
+if($Platform -eq "windows")
+{
 Write-Host "Stopping Previous Agent"
 $ID = ".\build\pid\background_pid.txt"
 if(Test-Path $ID){$Agent = Get-Content $ID}
 if($Agent){$BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue}
 if($BackGroundID){Stop-Process $BackGroundID | Out-Null}
+}
 
 ## Debug Mode
 $Debug = $false
