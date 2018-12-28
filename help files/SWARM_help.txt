@@ -5,45 +5,6 @@ Arguments & Explanations:
        These arguments must be specified To Run Miner
 
 Argument          Options           Explanation
-
--SWARM_Mode      Yes or No          SWARM_Mode Allows sycronization of all SWARM Users. SWARM will
-                                    collectively pull database at the same time for all users with
-                                    SWARM_Mode set to "yes". Intervals are based on 5 minute periods.
-                                    This disables -Interval argument.
-
--Switch_Threshold   0-1000          Expression is in percentage. This will add a percentage based
-                                    increase in profit of current miner, in order to decrease
-                                    switching unless profit breaks over x%, where x is the number
-                                    specified.
-
-
--StatsInterval   1-10000            Expression is in seconds. This is time required for miner apps to run
-                                    before miner write/re-writes benchmarking. This is not be confused 
-                                    with -Interval argument, which is used for when miner begins swithing 
-                                    process. leave 1 if you want dynamic benchmarking, and for initial 
-                                    benchmarking. 1000 for more smoother benchmarking. 10000 to disable 
-                                    benchmarking altogether.
-
--Currency          [Any]            Fiat Currency Of Your Choice. This is used to calculated your 
-                                    profit/day. Only currencies on cryptocompare will work. Default
-                                    is USD
-
--CoinExchange      [Any]            Coin Symbol Of Your Wallet (Will only work for coins on cryptocompare).
-                                    This will calculate the coin of your choice profit/day. Good if you 
-                                    are mining a coin other than BTC. If not, leave BTC or LTC to see 
-                                    hash exchange rates. Default is LTC
-
--Interval         [1-1000]          Expression is in seconds. Time before miner begins checking pools for 
-                                    pricing. Ideal target goal should be miner windows close/open every 
-                                    5 minutes. Slower cpus may need to fine tune due to the length of time
-                                    needed to search pools and find most profitable coin/algo. Defaut is 300
-
--Location       [US,EUROPE,ASIA]    Locations of pools you wish to mine from, for pools that have multiple
-                                    Locations to choose from. Default is US
-
--Auto_Coin     ["Yes" or "No"]      Zergpool will mine by coin-switching if set to Yes. If set to No,
-				    it will switch by the algorithm. Will only mine coins that can be
-				    mined via mc= argument. Default is Yes.
                                                             
 -Poolname       [fairpool,          Current Pools SWARM can mine from. Omit or add as desire. can
                 nicehash,           only use these pools currently.  
@@ -70,16 +31,8 @@ Argument          Options           Explanation
                AMD1,
 	       ASIC]
 
--Benchmark     [0-100000]           Expressed in seconds. Default 0. Sets specific interval time for when coin 
-				    is in benchmark mode. Can be used for faster benchmarking. When coin has
-				    a set hashrate- Miner will defer to time expressed in -Interval parameter.
-
 -Platform      [linux,windows]      Defualt is linux. Specify this if you are using windows. This lets SWARM
-                                    know to build itself for Windows operation.
-
--Farm_Hash     [address]            This is required for Windows. Specify Farm_Hash in order to use HiveOS
-                                    website. Farm_Hash is attained by making a user account in HiveOS.
-        
+                                    know to build itself for Windows operation.        
 
 ***********************************************************************************************************
 ***********************************************************************************************************
@@ -91,6 +44,47 @@ These arguments can be added for additional customization and options
 
 
 Argument            Options             Explanation
+
+-Farm_Hash     [address]            This is required for Windows. Specify Farm_Hash in order to use HiveOS
+                                    website. Farm_Hash is attained by making a user account in HiveOS.
+
+-Benchmark     [0-100000]           Expressed in seconds. Default 0. Sets specific interval time for when coin 
+				    is in benchmark mode. Can be used for faster benchmarking. When coin has
+				    a set hashrate- Miner will defer to time expressed in -Interval parameter.
+
+-Currency          [Any]            Fiat Currency Of Your Choice. This is used to calculated your 
+                                    profit/day. Only currencies on cryptocompare will work. Default
+                                    is USD
+
+-CoinExchange      [Any]            Coin Symbol Of Your Wallet (Will only work for coins on cryptocompare).
+                                    This will calculate the coin of your choice profit/day. Good if you 
+                                    are mining a coin other than BTC. If not, leave BTC or LTC to see 
+                                    hash exchange rates. Default is LTC
+
+-Interval         [1-1000]          Expression is in seconds. Time before miner begins checking pools for 
+                                    pricing. Ideal target goal should be miner windows close/open every 
+                                    5 minutes. Slower cpus may need to fine tune due to the length of time
+                                    needed to search pools and find most profitable coin/algo. Defaut is 300
+
+-Location       [US,EUROPE,ASIA]    Locations of pools you wish to mine from, for pools that have multiple
+                                    Locations to choose from. Default is US
+
+-StatsInterval   1-10000            Expression is in seconds. This is time required for miner apps to run
+                                    before miner write/re-writes benchmarking. This is not be confused 
+                                    with -Interval argument, which is used for when miner begins swithing 
+                                    process. leave 1 if you want dynamic benchmarking, and for initial 
+                                    benchmarking. 1000 for more smoother benchmarking. 10000 to disable 
+                                    benchmarking altogether.
+
+-Switch_Threshold   0-1000          Expression is in percentage. This will add a percentage based
+                                    increase in profit of current miner, in order to decrease
+                                    switching unless profit breaks over x%, where x is the number
+                                    specified.
+
+-SWARM_Mode      Yes or No          SWARM_Mode Allows sycronization of all SWARM Users. SWARM will
+                                    collectively pull database at the same time for all users with
+                                    SWARM_Mode set to "yes". Intervals are based on 5 minute periods.
+                                    This disables -Interval argument.
 
 -PoolBans       [Yes or No]         Default is "Yes". This option will ban miners from specific pools
                                     if it detects high rejections or no hashrate. Bans are lifted
