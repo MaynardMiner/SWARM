@@ -1,9 +1,9 @@
-1.) Rig.conf
-2.) Hive Notifications.
+1.) Rig.conf X
+2.) Hive Notifications. X
 2.) NVML removal on miners.
 3.) Test bminer windows. X
 4.) Internet time syncronization. X
-5.) Crash Reporting.
+5.) Crash Reporting. X
 6.) powershell folders.
 7.) Background Agent code cleanup.
 8.) AMD Windows oc.
