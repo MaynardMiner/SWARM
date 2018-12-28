@@ -48,7 +48,7 @@ Argument            Options             Explanation
 -Farm_Hash     [address]            This is required for Windows. Specify Farm_Hash in order to use HiveOS
                                     website. Farm_Hash is attained by making a user account in HiveOS.
 
--Benchmark     [0-100000]           Expressed in seconds. Default 0. Sets specific interval time for when coin 
+-Benchmark     [0-100000]           Expressed in seconds. Default 180. Sets specific interval time for when coin 
 				    is in benchmark mode. Can be used for faster benchmarking. When coin has
 				    a set hashrate- Miner will defer to time expressed in -Interval parameter.
 
@@ -79,12 +79,12 @@ Argument            Options             Explanation
 -Switch_Threshold   0-1000          Expression is in percentage. This will add a percentage based
                                     increase in profit of current miner, in order to decrease
                                     switching unless profit breaks over x%, where x is the number
-                                    specified.
+                                    specified. Default is 1%.
 
 -SWARM_Mode      Yes or No          SWARM_Mode Allows sycronization of all SWARM Users. SWARM will
                                     collectively pull database at the same time for all users with
                                     SWARM_Mode set to "yes". Intervals are based on 5 minute periods.
-                                    This disables -Interval argument.
+                                    This disables -Interval argument. Default is No.
 
 -PoolBans       [Yes or No]         Default is "Yes". This option will ban miners from specific pools
                                     if it detects high rejections or no hashrate. Bans are lifted
@@ -124,7 +124,7 @@ Argument            Options             Explanation
 
 -Cuda           [9.2,10]            Default is 9.2. Specifies Unix version which miners to use. HiveOS currently
                                     is 9.2 by default. Therefor default is 9.2. If user intends to use 9.2 miners,
-                                    argument is not neccesary.
+                                    argument is not neccesary. Default is 10 for Windows, and only 10 can be used.
 
 -Update          [Yes or No]        Allows HiveOS remote update, which will transfer Default set to "No". Old
                                     miner files/settings from previous version, then remove it for you. Pay
@@ -235,17 +235,11 @@ Argument            Options             Explanation
                                         SWARM if it switches to pool to use this coin symbol
                                         in password arguments. Used when -Type NVIDIA3 is specified.
 
--RigName1          [Any]		Pool ID of device group 1. Does not work with Zergpool, which
-					mining coin. Using arguments beyond C=,MC= causes increase
-					chance of invalid shares or wallet registration failure.
+-RigName1          [Any]		Pool ID of device group 1. 
 
--RigName2          [Any]		Pool ID of device group 2. Does not work with Zergpool, which
-					mining coin. Using arguments beyond C=,MC= causes increase
-					chance of invalid shares or wallet registration failure.
+-RigName2          [Any]		Pool ID of device group 2.
 					
--RigName3          [Any]		Pool ID of device group 3 Does not work with Zergpool, which
-					mining coin. Using arguments beyond C=,MC= causes increase
-					chance of invalid shares or wallet registration failure.					
+-RigName3          [Any]		Pool ID of device group 3.					
 
 
 
