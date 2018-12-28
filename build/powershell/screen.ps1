@@ -198,7 +198,8 @@ function Restart-Miner {
            Write-Host " $ScreenHash/s" -foreground green
          Write-Host "$($_.Type) is currently mining on $($_.MinerPool)" -foregroundcolor Cyan
            Write-Host "$($_.Type) previous hashrates for $($_.Coins) is" -nonewline
-           Write-Host " $MinerPrevious/s" -foreground yellow
+           Write-Host " $MinerPrevious/s
+ " -foreground yellow
        }
       }
 
@@ -207,7 +208,8 @@ function Restart-Miner {
         else{$Countdown = ([math]::Round(($MinerInterval-20) - $MinerWatch.Elapsed.TotalSeconds))}
         if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$CountMessage = "SWARM Mode Starts: $($Countdown) seconds"}
         else{$CountMessage = "Time Left Until Database Starts: $($Countdown) seconds"}
-        Write-Host $CountMessage -foreground DarkMagenta
+        Write-Host "$CountMessage 
+"-foreground DarkMagenta
         }
 
         function Restart-Database {

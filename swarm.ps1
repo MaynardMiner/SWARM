@@ -145,7 +145,7 @@ Get-ChildItem . -Recurse -Force | Out-Null
 ## Crash Reporting
 if($Platform -eq "windows"){Get-CimInstance -ClassName win32_operatingsystem | select lastbootuptime | %{$Boot = [math]::Round(((Get-Date)-$_.LastBootUpTime).TotalSeconds)}}
 elseif($Platform -eq "linux"){$Boot = Get-Content "/proc/uptime" | %{$_ -split " " | Select -First 1}};
-if($Boot -lt 600)
+if([Double]$Boot -lt 600)
  {
  if((Test-Path ".\build\txt") -and (Test-Path ".\logs"))
   {
@@ -169,7 +169,7 @@ if($BackGroundID){Stop-Process $BackGroundID | Out-Null}
 }
 
 ## Debug Mode
-$Debug = $false
+$Debug = $True
 
 ## Convert Arguments Into Hash Table
 if($Debug -ne $true)
@@ -393,35 +393,36 @@ $Type | foreach {
 if(-not (Test-Path ".\build\txt")){New-Item -Path ".\build" -Name "txt" -ItemType "directory" | Out-Null}
 
 ## Load Codebase
-. .\build\powershell\killall.ps1
-. .\build\powershell\startlog.ps1
-. .\build\powershell\remoteupdate.ps1
-. .\build\powershell\datafiles.ps1
-. .\build\powershell\algorithm.ps1
-. .\build\powershell\statcommand.ps1
-. .\build\powershell\poolcommand.ps1
-. .\build\powershell\minercommand.ps1
-. .\build\powershell\launchcode.ps1
-. .\build\powershell\datefiles.ps1
-. .\build\powershell\watchdog.ps1
-. .\build\powershell\miners.ps1
-. .\build\powershell\download.ps1
-. .\build\powershell\hashrates.ps1
-. .\build\powershell\naming.ps1
-. .\build\powershell\childitems.ps1
-. .\build\powershell\powerup.ps1
-. .\build\powershell\peekaboo.ps1
-. .\build\powershell\checkbackground.ps1
-. .\build\powershell\maker.ps1
-. .\build\powershell\intensity.ps1
-. .\build\powershell\poolbans.ps1
-. .\build\powershell\cl.ps1
-. .\build\powershell\newsort.ps1
-. .\build\powershell\sorting.ps1
-. .\build\powershell\screen.ps1
+. .\build\powershell\killall.ps1;
+. .\build\powershell\startlog.ps1;
+. .\build\powershell\remoteupdate.ps1;
+. .\build\powershell\datafiles.ps1;
+. .\build\powershell\algorithm.ps1;
+. .\build\powershell\statcommand.ps1;
+. .\build\powershell\poolcommand.ps1;
+. .\build\powershell\minercommand.ps1;
+. .\build\powershell\launchcode.ps1;
+. .\build\powershell\datefiles.ps1;
+. .\build\powershell\watchdog.ps1;
+. .\build\powershell\miners.ps1;
+. .\build\powershell\download.ps1;
+. .\build\powershell\hashrates.ps1;
+. .\build\powershell\naming.ps1;
+. .\build\powershell\childitems.ps1;
+. .\build\powershell\powerup.ps1;
+. .\build\powershell\peekaboo.ps1;
+. .\build\powershell\checkbackground.ps1;
+. .\build\powershell\maker.ps1;
+. .\build\powershell\intensity.ps1;
+. .\build\powershell\poolbans.ps1;
+. .\build\powershell\cl.ps1;
+. .\build\powershell\newsort.ps1;
+. .\build\powershell\sorting.ps1;
+. .\build\powershell\screen.ps1;
+. .\build\powershell\commandweb.ps1;
 if($Type -like "*ASIC*"){. .\build\powershell\icserver.ps1; . .\build\powershell\poolmanager.ps1}
 if($Platform -eq "linux"){. .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
-if($Platform -eq "windows"){. .\build\powershell\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1; . .\build\powershell\response.ps1;}
+if($Platform -eq "windows"){. .\build\powershell\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1;}
 
 ##Start The Log
 $dir = (Split-Path $script:MyInvocation.MyCommand.Path)
@@ -482,8 +483,9 @@ if($Platform -eq "linux")
      Write-Host "AMD OpenCL Platform is $AMDPlatform"
     }
     Start-Process ".\build\bash\screentitle.sh" -Wait
-    Start-Process ".\build\bash\libc.sh" -wait
-    Start-Process ".\build\bash\libv.sh" -wait
+    ##No Longer Needed
+    #Start-Process ".\build\bash\libc.sh" -wait
+    #Start-Process ".\build\bash\libv.sh" -wait
   }
 
   ## Kill Previous Screens
@@ -948,6 +950,8 @@ $BestActiveMiners | % { $Miners | Where Path -EQ $_.path | Where Arguments -EQ $
 $BestAlgoMiners_Combo = Get-BestMiners
 $GoodAlgoMiners = $null
 $AlgoMiners = $null
+$AlgoPools = $null
+$AlgoPools_Comparison = $null
 
 ##Final Array Build- If user specified to shut miner off if there were negative figures:
 ##Array is rebuilt to remove miner that had negative profit, but it needs to NOT remove
@@ -971,7 +975,6 @@ $BestPool_Selected = $BestMiners_Combo.MinerPool
 Write-Host "Most Ideal Choice Is $($BestMiners_Selected) on $($BestPool_Selected)" -foregroundcolor green          
 
  ##Build Simple Stats Table For Screen/Command
- $ProfitTable = $null
  $ProfitTable = @()
  $Miners | foreach {
  $ProfitTable += [PSCustomObject]@{
@@ -1541,7 +1544,8 @@ if($_.BestMiner -eq $true)
               }
              $_.WasBenchmarked = $True
              Get-Intensity $_.Type $_.Coins $_.Path
-	           Write-Host "Stat Written" -foregroundcolor green
+             Write-Host "Stat Written
+" -foregroundcolor green
              $Strike = $false
             } 
            }
@@ -1592,12 +1596,15 @@ if($Strike -eq $true)
     ##Strike One
     if($MinerPoolBan -eq $false -and $MinerAlgoBan -eq $false -and $MinerBan -eq $false)
     {
-     Write-Host "First Strike: There was issue with benchmarking." -ForegroundColor DarkRed
+     Write-Host "First Strike: There was issue with benchmarking.
+" -ForegroundColor DarkRed;
     }
     ##Strike Two
     if($MinerPoolBan -eq $true)
     {
-     Write-Host "Strike Two: Benchmarking Has Failed - Prohibiting miner from pool" -ForegroundColor DarkRed
+     $HiveMessage = "Banning $($_.Name) Mining $($_.Algo) From $($_.MinerPool)"
+     Write-Host "Strike Two: Benchmarking Has Failed - $HiveMessage
+" -ForegroundColor DarkRed
      $NewPoolBlock = @()
      if(Test-Path ".\timeout\pool_block\pool_block.txt"){$GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json}
      Start-Sleep -S 1
@@ -1605,11 +1612,16 @@ if($Strike -eq $true)
      $NewPoolBlock += $_
      $NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt"
      $Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)"| foreach{try{$_.bad=0}catch{}}
+     $HiveWarning = @{result = @{command = "timeout"}}
+     try{Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch{Write-Warning "Failed To Notify HiveOS"}
+     Start-Sleep -S 1
     }
     ##Strike Three: He's Outta Here
      if($MinerAlgoBan -eq $true)
      {
-      Write-Host "Strike three: $($_.Algo) is now banned on $($_.Name)" -ForegroundColor DarkRed
+      $HiveMessage = "$($_.Algo) is now banned on $($_.Name)"
+      Write-Host "Strike three: $HiveMessage
+" -ForegroundColor DarkRed
       $NewAlgoBlock = @()
       if(test-path $HashRateFilePath){remove-item $HashRateFilePath -Force}
       if(Test-Path ".\timeout\algo_block\algo_block.txt"){$GetAlgoBlock = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json}
@@ -1619,12 +1631,16 @@ if($Strike -eq $true)
       $NewAlgoBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block\algo_block.txt"
       $Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)"| foreach{try{$_.bad=0}catch{}}
       $Warnings."$($_.Name)_$($_.Algo)" | foreach{try{$_.bad=0}catch{}}
+      $HiveWarning = @{result = @{command = "timeout"}}
+      try{Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch{Write-Warning "Failed To Notify HiveOS"} 
       Start-Sleep -S 1
      }
     ##Strike Four: Miner is Finished
     if($MinerBan -eq $true)
     {
-     Write-Host "This miner sucks, shutting it down." -ForegroundColor DarkRed
+     $HiveMessage = "$($_.Name) sucks, shutting it down."
+     Write-Host "$HiveMessage
+" -ForegroundColor DarkRed
      $NewMinerBlock = @()
      if(test-path $HashRateFilePath){remove-item $HashRateFilePath -Force}
      if(Test-Path ".\timeout\miner_block\miner_block.txt"){$GetMinerBlock = Get-Content ".\timeout\miner_block\miner_block.txt" | ConvertFrom-Json}
@@ -1635,6 +1651,8 @@ if($Strike -eq $true)
      $Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)"| foreach{try{$_.bad=0}catch{}}
      $Warnings."$($_.Name)_$($_.Algo)" | foreach{try{$_.bad=0}catch{}}
      $Warnings."$($_.Name)" | foreach{try{$_.bad=0}catch{}}
+     $HiveWarning = @{result = @{command = "timeout"}}
+     try{Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch{Write-Warning "Failed To Notify HiveOS"}
      Start-Sleep -S 1
      }
      }
