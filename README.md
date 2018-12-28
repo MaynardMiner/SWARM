@@ -181,13 +181,19 @@ SWARM requires no installation. However there are a few pre-requisites:
 -HiveOS user account, your farm hash ready.
 
 
-Step 1: Open SWARM.bat, changed wallet with your BTC wallet, modify/add/replace arguments to your specifications.
+Step 1: Open SWARM.bat, changed wallet with your BTC wallet, modify/add/replace arguments to your specifications. See help
+        files for a list of arguments. Or use github wiki.
+
 Step 2: (Optional): If you wish to use HiveOS, add your farm hash.
+
 Step 3: Launch SWARM.bat.
 
 Step 4: (Optional) When miners finish downloading, and background agent starts- Go to HiveOS.
+
 Step 5: (Optional) Create a flight sheet for SWARM (SEE HiveOS install below), you can omit download link, but not arguments!
+
 Step 6: (Optional) Apply flight sheet to your newly created SWARM worker.
+
 Step 7: (Optional) Confirm SWARM has restarted- At this point when background agent starts- SWARM should communicate stats to
         HiveOS, and should be ready to accept commands. You will no longer need to modify the .bat file- You modify arguments
         through HiveOS and your flight sheet.
