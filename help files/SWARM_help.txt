@@ -32,7 +32,10 @@ Argument          Options           Explanation
 	       ASIC]
 
 -Platform      [linux,windows]      Defualt is linux. Specify this if you are using windows. This lets SWARM
-                                    know to build itself for Windows operation.        
+                                    know to build itself for Windows operation.
+
+-AMDPlatform   [0-3]		    For windows only. Needed to specifiy your opencl platform number. Linux
+				    version automatically detects.
 
 ***********************************************************************************************************
 ***********************************************************************************************************
