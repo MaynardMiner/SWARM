@@ -169,7 +169,7 @@ if($BackGroundID){Stop-Process $BackGroundID | Out-Null}
 }
 
 ## Debug Mode
-$Debug = $True
+$Debug = $false
 
 ## Convert Arguments Into Hash Table
 if($Debug -ne $true)
