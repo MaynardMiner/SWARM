@@ -180,6 +180,7 @@ SWARM requires no installation. However there are a few pre-requisites:
 
 -HiveOS user account, your farm hash ready.
 
+*Install Steps:*
 
 Step 1: Open SWARM.bat, changed wallet with your BTC wallet, modify/add/replace arguments to your specifications. See help
         files for a list of arguments. Or use github wiki.
