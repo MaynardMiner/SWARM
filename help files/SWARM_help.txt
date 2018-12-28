@@ -17,7 +17,7 @@ Argument          Options           Explanation
                 Nlpool
                 zpool]
 
--Wallet1      [Wallet Address]      Address of your wallet. By default MM.Hash assumes it to be BTC.
+-Wallet1      [Wallet Address]      Address of your wallet. By default SWARM assumes it to be BTC.
                                     See Advanced arguments to change that.
 
 -PasswordCurrency1  [Symbol]        Symbol of your wallet address, specifically for Wallet1. Most pools
