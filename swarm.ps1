@@ -136,8 +136,16 @@ param(
     [String]$SWARM_Mode = "No"
 )
 
+
 ## Set Current Path
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+
+## Change console icon and title
+if($Platform -eq "windows")
+{
+$host.ui.RawUI.WindowTitle = "SWARM";
+Start-Process "powershell" -ArgumentList "-command .\build\powershell\icon.ps1 `".\build\apps\SWARM.ico`"" -NoNewWindow
+}
 
 ## Get Child Items
 Get-ChildItem . -Recurse -Force | Out-Null
@@ -532,9 +540,6 @@ Get-SexyUnixLogo
 ##Windows Initialize
 if($Platform -eq "windows")
  {
-  ## Change console icon
-  Invoke-Expression ".\build\powershell\icon.ps1 `".\build\apps\SWARM.ico`""
-
   ## Windows Bug- Set Cudas to match PCI Bus Order
   [Environment]::SetEnvironmentVariable("CUDA_DEVICE_ORDER", "PCI_BUS_ID", "User")
 
@@ -648,7 +653,7 @@ if($Lite -Eq "Yes"){Start-Process ".\build\bash\apiserver.sh" -Wait}
 ##Load Previous Times & PID Data
 Get-DateFiles
 ##Remove Exclusion
-try{if((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)){Start-Process powershell -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath '$(Convert-Path .)'"}}catch{}
+try{if((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)){Start-Process powershell -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath '$(Convert-Path .)'" -WindowStyle Minimized}}catch{}
 ##Proxy
 if($Proxy -eq "" -or $Proxy -eq ''){$PSDefaultParameterValues.Remove("*:Proxy")}
 else{$PSDefaultParameterValues["*:Proxy"] = $Proxy}

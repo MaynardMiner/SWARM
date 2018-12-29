@@ -25,7 +25,7 @@ function start-fans {
       $script += "Invoke-Expression `'.\nvidiaInspector.exe $FanArgs`'"
       Set-Location ".\build\apps"
       $script | Out-File "fan-start.ps1"
-      $Command = start-process "powershell.exe" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\fan-start.ps1""" -PassThru
+      $Command = start-process "powershell.exe" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\fan-start.ps1""" -PassThru -WindowStyle Minimized
       Set-Location $Dir
    }
   }
@@ -51,7 +51,7 @@ function Start-Background {
     )
 
     $BackgroundTimer = New-Object -TypeName System.Diagnostics.Stopwatch
-    $command = Start-Process "powershell" -WorkingDirectory $WorkingDir -ArgumentList "-noexit -executionpolicy bypass -windowstyle minimized -command `"&{`$host.ui.RawUI.WindowTitle = `'Background Agent`'; &.\Background.ps1 -WorkingDir `'$dir`' -Platforms `'$Platforms`' -HiveID `'$HiveID`' -HiveOS `'$HiveOS`' -HiveMirror $HiveMirror -HivePassword `'$HivePassword`' -RejPercent $RejPercent}`"" -PassThru | foreach {$_.Id} > ".\build\pid\background_pid.txt"
+    $command = Start-Process "powershell" -WorkingDirectory $WorkingDir -ArgumentList "-noexit -executionpolicy bypass -windowstyle minimized -command `"&{`$host.ui.RawUI.WindowTitle = `'Background Agent`'; &.\Background.ps1 -WorkingDir `'$dir`' -Platforms `'$Platforms`' -HiveID `'$HiveID`' -HiveOS `'$HiveOS`' -HiveMirror $HiveMirror -HivePassword `'$HivePassword`' -RejPercent $RejPercent}`"" -PassThru -WindowStyle Minimized | foreach {$_.Id} > ".\build\pid\background_pid.txt"
     $BackgroundTimer.Restart()
     do
     {

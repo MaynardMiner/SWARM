@@ -112,7 +112,7 @@
            $method = "message"
            $messagetype = "info"
            $data = "$($command.result.exec)"
-           start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command query""" -Wait
+           start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command query""" -Wait -WindowStyle Minimized
            $getpayload = Get-Content ".\build\txt\version.txt"
            $line = @()
            $getpayload | foreach {$line += "$_`n"}
@@ -129,7 +129,7 @@
           $messagetype = "info"
           $data = "$($command.result.exec)"
           $arguments = $data -replace ("version ","")
-          start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command $arguments"""
+          start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command $arguments""" -WindowStyle Minimized
           $getpayload = Get-Content ".\build\txt\version.txt"
           $line = @()
           $getpayload | foreach {$line += "$_`n"}
@@ -152,7 +152,7 @@
         $messagetype = "info"
         $data = "$($command.result.exec)"
         $arguments = $data -replace ("get ","")
-        start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\get.ps1 $arguments""" -Wait
+        start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\get.ps1 $arguments""" -Wait -WindowStyle Minimized
         $getpayload = Get-Content ".\build\txt\get.txt"
         $line = @()
         $getpayload | foreach {$line += "$_`n"}
@@ -176,7 +176,7 @@
         $messagetype = "info"
         $data = "$($command.result.exec)"
         $arguments = $data -replace ("benchmark ","")
-        start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\benchmark.ps1 $arguments""" -Wait
+        start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\benchmark.ps1 $arguments""" -Wait -WindowStyle Minimized
         $getpayload = Get-Content ".\build\txt\get.txt"
         $line = @()
         $getpayload | foreach {$line += "$_`n"}

@@ -61,7 +61,7 @@ $key = $_
 $script += "Invoke-Expression `'.\nvidiaInspector.exe $OCArgs`'"
 Set-Location ".\build\apps"
 $script | Out-File "nvoc-start.ps1"
-$Command = start-process "powershell.exe" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\nvoc-start.ps1""" -PassThru
+$Command = start-process "powershell.exe" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\nvoc-start.ps1""" -PassThru -WindowStyle Minimized
 Set-Location $WorkingDir
 Start-Sleep -s 1
 $ocmessage | Set-Content ".\build\txt\ocmessage.txt"
