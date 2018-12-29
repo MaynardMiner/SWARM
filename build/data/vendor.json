@@ -1,5 +1,7 @@
 {
 "1002": "AMD",
+"3842": "EVGA",
+"10DE": "Nvidia",
 "1043":	"ASUSTeK",
 "196D":	"Club 3D",
 "1092":	"Diamond Multimedia",
@@ -19,5 +21,8 @@
 "103C":	"HP",
 "17AA":	"Lenovo",
 "104D":	"Sony",
-"1179":	"Toshiba"
+"1179":	"Toshiba",
+"19DA": "Zotac",
+"11A9": "Inno3d",
+"196E": "PNY"
 }
