@@ -8,11 +8,11 @@
 
 https://github.com/MaynardMiner/SWARM/wiki/Developer's-Corner
 
-**What is SWARM?**
-
-SWARM has an in depth github wiki, with instructions on how to setup/manage SWARM!
+**IF YOU NEED HELP, OR ARE LOST AT USING SWARM- TAKE ADVANTAGE OF THE WIKI:**
 
 https://github.com/MaynardMiner/SWARM/wiki
+
+**What is SWARM?**
 
  SWARM is an collection scripts written in both powershell and bash, and is a profit switching mining system that will work within any OS. (The miners that SWARM uses may vary) SWARM, is written to be used as an all purpose/all platform mining system that can be implemented/managed on a large scale basis. It was developed for larger mining administrators, who are generally unable to interact with every mining unit/rig directly. SWARM deviates from conventional in-depth GUI interfaces, or a centralized monitoring system/screen which are a burden to mining administrators. SWARM introduces a new method of interface which is meant to assist larger mining systems, by displaying information per user command. Because SWARM's interface is command based as opposed to GUI- Users are able to create scripts of their own to micro-manage their farms/workers.
 
@@ -166,7 +166,40 @@ excavator (NVIDIA)
 lolminer (expirmental) (AMD) (NVIDIA)
 ```
 
-Simple Install Instructions (HIVEOS):
+**Simple Install Instructions (Windows):**
+
+SWARM requires no installation. However there are a few pre-requisites:
+
+-Windows 10 minimum.
+
+-Have the latest cuda/amd drivers installed.
+
+-Latest C++ Redistributable Packages for Visual Studio.
+
+(Optional):
+
+-HiveOS user account, your farm hash ready.
+
+*Install Steps:*
+
+Step 1: Open SWARM.bat, changed wallet with your BTC wallet, modify/add/replace arguments to your specifications. See help
+        files for a list of arguments. Or use github wiki.
+
+Step 2: (Optional): If you wish to use HiveOS, add your farm hash.
+
+Step 3: Launch SWARM.bat.
+
+Step 4: (Optional) When miners finish downloading, and background agent starts- Go to HiveOS.
+
+Step 5: (Optional) Create a flight sheet for SWARM (SEE HiveOS install below), you can omit download link, but not arguments!
+
+Step 6: (Optional) Apply flight sheet to your newly created SWARM worker.
+
+Step 7: (Optional) Confirm SWARM has restarted- At this point when background agent starts- SWARM should communicate stats to
+        HiveOS, and should be ready to accept commands. You will no longer need to modify the .bat file- You modify arguments
+        through HiveOS and your flight sheet.
+
+**Simple Install Instructions (HIVEOS):**
 
 SWARM is simple to install in linux environment, IF a user is familiar with linux operating systems. There are plenty of users to help/support you, if you should decide to learn how to operate/use SWARM. However, it does take the commitment of learning how to use/manage linux.
 

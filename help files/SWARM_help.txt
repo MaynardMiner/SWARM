@@ -5,24 +5,55 @@ Arguments & Explanations:
        These arguments must be specified To Run Miner
 
 Argument          Options           Explanation
+                                                            
+-Poolname       [fairpool,          Current Pools SWARM can mine from. Omit or add as desire. can
+                nicehash,           only use these pools currently.  
+                phiphipool,
+                hashrefinery,  
+                blazepool,
+                ahashpool,
+		starpool,
+		blockmasters,
+                Nlpool
+                zpool]
 
--SWARM_Mode      Yes or No          SWARM_Mode Allows sycronization of all SWARM Users. SWARM will
-                                    collectively pull database at the same time for all users with
-                                    SWARM_Mode set to "yes". Intervals are based on 5 minute periods.
-                                    This disables -Interval argument.
+-Wallet1      [Wallet Address]      Address of your wallet. By default SWARM assumes it to be BTC.
+                                    See Advanced arguments to change that.
 
--Switch_Threshold   0-1000          Expression is in percentage. This will add a percentage based
-                                    increase in profit of current miner, in order to decrease
-                                    switching unless profit breaks over x%, where x is the number
-                                    specified.
+-PasswordCurrency1  [Symbol]        Symbol of your wallet address, specifically for Wallet1. Most pools
+                                    only accept BTC for auto-exchange. See pools for options.                                  
 
 
--StatsInterval   1-10000            Expression is in seconds. This is time required for miner apps to run
-                                    before miner write/re-writes benchmarking. This is not be confused 
-                                    with -Interval argument, which is used for when miner begins swithing 
-                                    process. leave 1 if you want dynamic benchmarking, and for initial 
-                                    benchmarking. 1000 for more smoother benchmarking. 10000 to disable 
-                                    benchmarking altogether.
+-Type         [CPU,                 Device groups you wish to mine with. Nvidia has three groups in case
+               NVIDIA1,             you wish to divide your GPU devices into seperate groups to assist in
+               NVIDIA2,             benchmarking, or to prevent entire miner from becoming inoperable if
+               NVIDIA3              one gpu fails. Currently only 1 AMD group supported.
+               AMD1,
+	       ASIC]
+
+-Platform      [linux,windows]      Defualt is linux. Specify this if you are using windows. This lets SWARM
+                                    know to build itself for Windows operation.
+
+-AMDPlatform   [0-3]		    For windows only. Needed to specifiy your opencl platform number. Linux
+				    version automatically detects.
+
+***********************************************************************************************************
+***********************************************************************************************************
+***********************************************************************************************************
+
+                -Advanced Arguments-
+
+These arguments can be added for additional customization and options
+
+
+Argument            Options             Explanation
+
+-Farm_Hash     [address]            This is required for Windows. Specify Farm_Hash in order to use HiveOS
+                                    website. Farm_Hash is attained by making a user account in HiveOS.
+
+-Benchmark     [0-100000]           Expressed in seconds. Default 180. Sets specific interval time for when coin 
+				    is in benchmark mode. Can be used for faster benchmarking. When coin has
+				    a set hashrate- Miner will defer to time expressed in -Interval parameter.
 
 -Currency          [Any]            Fiat Currency Of Your Choice. This is used to calculated your 
                                     profit/day. Only currencies on cryptocompare will work. Default
@@ -41,62 +72,22 @@ Argument          Options           Explanation
 -Location       [US,EUROPE,ASIA]    Locations of pools you wish to mine from, for pools that have multiple
                                     Locations to choose from. Default is US
 
--Auto_Coin     ["Yes" or "No"]      Zergpool will mine by coin-switching if set to Yes. If set to No,
-				    it will switch by the algorithm. Will only mine coins that can be
-				    mined via mc= argument. Default is Yes.
-                                                            
--Poolname       [fairpool,          Current Pools SWARM can mine from. Omit or add as desire. can
-                nicehash,           only use these pools currently.  
-                phiphipool,
-                hashrefinery,  
-                blazepool,
-                ahashpool,
-		starpool,
-		blockmasters,
-                Nlpool
-                zpool]
+-StatsInterval   1-10000            Expression is in seconds. This is time required for miner apps to run
+                                    before miner write/re-writes benchmarking. This is not be confused 
+                                    with -Interval argument, which is used for when miner begins swithing 
+                                    process. leave 1 if you want dynamic benchmarking, and for initial 
+                                    benchmarking. 1000 for more smoother benchmarking. 10000 to disable 
+                                    benchmarking altogether.
 
--Wallet1      [Wallet Address]      Address of your wallet. By default MM.Hash assumes it to be BTC.
-                                    See Advanced arguments to change that.
+-Switch_Threshold   0-1000          Expression is in percentage. This will add a percentage based
+                                    increase in profit of current miner, in order to decrease
+                                    switching unless profit breaks over x%, where x is the number
+                                    specified. Default is 1%.
 
--PasswordCurrency1  [Symbol]        Symbol of your wallet address, specifically for Wallet1. Most pools
-                                    only accept BTC for auto-exchange. See pools for options.                                  
-
-
--Type         [CPU,                 Device groups you wish to mine with. Nvidia has three groups in case
-               NVIDIA1,             you wish to divide your GPU devices into seperate groups to assist in
-               NVIDIA2,             benchmarking, or to prevent entire miner from becoming inoperable if
-               NVIDIA3              one gpu fails. Currently only 1 AMD group supported.
-               AMD1,
-	       ASIC]
-
--Delay         [0-100000]           Expressed in seconds. When MM.Hash closes miners, to prevent BSOD or
-                                    Crashing, MM.Hash delays the openining of new miner windows momentarily.
-                                    By default, the delay is set to 1 second. Adding the delay argument
-                                    can allow you to increase the delay time before openining new miners,
-                                    which can give your gpu's a 'cooldown' time if you desire that preference.
-
--Benchmark     [0-100000]           Expressed in seconds. Default 0. Sets specific interval time for when coin 
-				    is in benchmark mode. Can be used for faster benchmarking. When coin has
-				    a set hashrate- Miner will defer to time expressed in -Interval parameter.
-
--Platform      [linux,windows]      Defualt is linux. Specify this if you are using windows. This lets SWARM
-                                    know to build itself for Windows operation.
-
--Farm_Hash     [address]            This is required for Windows. Specify Farm_Hash in order to use HiveOS
-                                    website. Farm_Hash is attained by making a user account in HiveOS.
-        
-
-***********************************************************************************************************
-***********************************************************************************************************
-***********************************************************************************************************
-
-                -Advanced Arguments-
-
-These arguments can be added for additional customization and options
-
-
-Argument            Options             Explanation
+-SWARM_Mode      Yes or No          SWARM_Mode Allows sycronization of all SWARM Users. SWARM will
+                                    collectively pull database at the same time for all users with
+                                    SWARM_Mode set to "yes". Intervals are based on 5 minute periods.
+                                    This disables -Interval argument. Default is No.
 
 -PoolBans       [Yes or No]         Default is "Yes". This option will ban miners from specific pools
                                     if it detects high rejections or no hashrate. Bans are lifted
@@ -136,7 +127,7 @@ Argument            Options             Explanation
 
 -Cuda           [9.2,10]            Default is 9.2. Specifies Unix version which miners to use. HiveOS currently
                                     is 9.2 by default. Therefor default is 9.2. If user intends to use 9.2 miners,
-                                    argument is not neccesary.
+                                    argument is not neccesary. Default is 10 for Windows, and only 10 can be used.
 
 -Update          [Yes or No]        Allows HiveOS remote update, which will transfer Default set to "No". Old
                                     miner files/settings from previous version, then remove it for you. Pay
@@ -164,19 +155,19 @@ Argument            Options             Explanation
 
 -GPUDevices1     ['0,1,2,3,4' etc.]     GPU's used in device group one, as identified by driver.
                                         GPUDevices1 will mine from Wallet1, PasswordCurrency1,
-                                        nicehash_wallet1, zergpool_wallet1, Zergpoolpassword1,
+                                        altcoinwallet1, altcoinpassword1,
                                         if -Type NVIDIA1 was specified. Used if using multiple
 					device groups.
 
 -GPUDevices2     ['0,1,2,3,4' etc.]     GPU's used in device group one, as identified by driver.
                                         GPUDevices2 will mine from Wallet2, PasswordCurrency2,
-                                        nicehash_wallet2, zergpool_wallet2, Zergpoolpassword2,
+                                        altcoinwallet2, altcoinpassword2,
                                         if -Type NVIDIA2 specified. Used if using multiple device
 					groups
 
 -GPUDevices3     ['0,1,2,3,4' etc.]     GPU's used in device group one, as identified by driver.
                                         GPUDevices3 will mine from Wallet3, PasswordCurrency3,
-                                        nicehash_wallet3, zergpool_wallet3, Zergpoolpassword3,
+                                        altcoinwallet3, altcoinpassword3,
                                         if -Type NVIDIA3 specified. Used if using multiple device
 					groups.
 
@@ -247,17 +238,11 @@ Argument            Options             Explanation
                                         SWARM if it switches to pool to use this coin symbol
                                         in password arguments. Used when -Type NVIDIA3 is specified.
 
--RigName1          [Any]		Pool ID of device group 1. Does not work with Zergpool, which
-					mining coin. Using arguments beyond C=,MC= causes increase
-					chance of invalid shares or wallet registration failure.
+-RigName1          [Any]		Pool ID of device group 1. 
 
--RigName2          [Any]		Pool ID of device group 2. Does not work with Zergpool, which
-					mining coin. Using arguments beyond C=,MC= causes increase
-					chance of invalid shares or wallet registration failure.
+-RigName2          [Any]		Pool ID of device group 2.
 					
--RigName3          [Any]		Pool ID of device group 3 Does not work with Zergpool, which
-					mining coin. Using arguments beyond C=,MC= causes increase
-					chance of invalid shares or wallet registration failure.					
+-RigName3          [Any]		Pool ID of device group 3.					
 
 
 
@@ -291,7 +276,7 @@ if (Type = NVIDIA1)
 Lastly you must set your wallet/password info. Here are basic:
 
 -Wallet1 = Wallet for device group 1. BTC works for all pools. See pools to find out if other coins can 
-be used. Zergpool in example accepts RVN as exchange.
+be used. nlpool in example accepts RVN as exchange.
 -PasswordCurrency1 = Wallet Symbol (See Pool For More Details, Must Match Wallet)
 
 Example:
@@ -334,8 +319,7 @@ Example of use:
 
 " .. -Poolname blazepool,zpool,nicehash,nlpool -Type NVIDIA1 -Wallet1 1ERWEDAe234wehdshWe -PasswordCurrency1 BTC -AltCoinWallet1 1RHS234GsasierGHT -AltCoinPassword1 RVN"
 
-This will tell the miner to mine with BTC for all pools in default device group (device group 1) that 
-are not zergpool. However, when the miner switches to nlpool- It will use the Raven Wallet specified.
+This will tell the miner to mine with BTC for all pools in default device group (device group 1). However, when the miner switches to nlpool, or a pool that can accept RVN- It will use the Raven Wallet specified.
 ***************************************
 ***************************************
 Nicehash Mining
@@ -349,7 +333,7 @@ Rules:
 
 Example of use
 
-" ..  -Poolname zergpool,blazepool,zpool,nicehash -Type NVIDIA1 -Wallet1 1ERWEDAe234wehdshWe -PasswordCurrency1 BTC -AltCoinWallet1 1RHS234GsasierGHT -AltCoinPassword1 RVN -Nicehash_Wallet1 2Rser43534sSDOIWERH -Nicehash_Fee 2"
+" ..  -Poolname nlpool,blazepool,zpool,nicehash -Type NVIDIA1 -Wallet1 1ERWEDAe234wehdshWe -PasswordCurrency1 BTC -AltCoinWallet1 1RHS234GsasierGHT -AltCoinPassword1 RVN -Nicehash_Wallet1 2Rser43534sSDOIWERH -Nicehash_Fee 2"
 
 This will tell the miner to mine with BTC for all pools that require BTC. For nlpool, it will mine ravencoin. When nicehash is most profitable, it will mine on nicehash with the wallet specified.
 **************************
@@ -368,6 +352,6 @@ Example of use;
 " ..-pool nlpool,nicehash -Type NVIDIA1,CPU -CPUThreads 3 -Wallet1 1ERWEDAe234wehdshWe -PasswordCurrency1 BTC 1ERWEDAe234wehdshWe -Nicehash_Wallet1 2Rser43534sSDOIWERH"
 
 This will tell miner to use NVIDIA1 with Wallet1 which is BTC, and to use same wallet for CPU which is 
-BTC. It will use CPU_Wallet when mining on zergpool, and -Nicehash_Wallet1 when mining on nicehash. 
+BTC. It will use wallet1 when mining on nlpool, and -Nicehash_Wallet1 when mining on nicehash. 
 Both are BTC wallets.
 **************************
