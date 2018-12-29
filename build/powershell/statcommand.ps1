@@ -15,7 +15,7 @@ function get-NIST {
     $progressPreference = 'silentlyContinue'
     try
      {
-      $WebRequest = Invoke-WebRequest -Uri 'http://nist.time.gov/actualtime.cgi' -UseBasicParsing -TimeoutSec 5
+      $WebRequest = Invoke-WebRequest -Uri 'http://nist.time.gov/actualtime.cgi' -UseBasicParsing -TimeoutSec 10
       $GetNIST = (Get-Date -Date '1970-01-01 00:00:00Z').AddMilliseconds(([XML]$WebRequest.Content | Select -expandproperty timestamp | Select -ExpandProperty time) / 1000)
      }
     Catch
