@@ -425,9 +425,8 @@ if($Platform -eq "linux"){. .\build\powershell\sexyunixlogo.ps1; . .\build\power
 if($Platform -eq "windows"){. .\build\powershell\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1;}
 
 ## Time Sych For All SWARM Users
-Write-Host "Sycronizing Time" -ForegroundColor Yellow
-$Time = Get-Nist
-Set-Date $Time
+Write-Host "Sycronizing Time Through Nist" -ForegroundColor Yellow
+Get-Nist | Set-Date
 
 ##Start The Log
 $dir = (Split-Path $script:MyInvocation.MyCommand.Path)
