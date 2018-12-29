@@ -424,6 +424,11 @@ if($Type -like "*ASIC*"){. .\build\powershell\icserver.ps1; . .\build\powershell
 if($Platform -eq "linux"){. .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
 if($Platform -eq "windows"){. .\build\powershell\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1;}
 
+## Time Sych For All SWARM Users
+Write-Host "Sycronizing Time" -ForegroundColor Yellow
+$Time = Get-Nist
+Set-Date $Time
+
 ##Start The Log
 $dir = (Split-Path $script:MyInvocation.MyCommand.Path)
 $dir | set-content ".\build\bash\dir.sh"
@@ -1248,7 +1253,7 @@ else{
  if($SWARM_Mode -eq "Yes")
   {
    Write-Host "SWARM MODE ACTIVATED!" -ForegroundColor Green;
-   $SwitchTime = [DateTime](Get-NIST);
+   $SwitchTime = Get-Date
    Write-Host "SWARM Mode Start Time is $SwitchTime" -ForegroundColor Cyan;
    $MinerInterval = 10000000;
   }
