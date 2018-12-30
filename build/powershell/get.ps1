@@ -304,7 +304,7 @@ Get-BenchTable | Out-File ".\build\txt\get.txt"
      try{Invoke-WebRequest $URI -OutFile $FileName -UseBasicParsing -ErrorAction Stop}catch{$Failed = $true; $Get += "Failed To Contact Github For Download! Must Do So Manually"}
      if($Failed -eq $false)
      {
-     Start-Process "7z" "x `"$($DLFileName)`" -o`"$($Location)`" -y -spe" -Wait -WindowStyle Minimized
+     Start-Process "7z" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -Wait -WindowStyle Minimized
       $Get += "Config Command Initiated- Restarting SWARM"
       Write-Host "Config Command Initiated- Restarting SWARM"
       $MinerFile =".\build\pid\miner_pid.txt"

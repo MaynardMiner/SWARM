@@ -48,7 +48,7 @@ Function Get-BusFunctionID {
 
     for($i=0; $i -lt $Devices.length; $i++) { 
 
-        if(!($Devices[$i].PNPDeviceID -match "PCI\\VEN_10DE*" -and $Devices[$i].Name -ne "High Definition Audio Controller" -and $Devices[$i].Name -ne "NVIDIA USB Type-C Port Policy Controller" -and $Devices[$i].Name -ne "NVIDIA USB 3.10 eXtensible Host Controller - 1.10 (Microsoft)" -or $Devices[$i].PNPDeviceID -match "PCI\\VEN_1002*" -and $Devices[$i].Name -ne "High Definition Audio Controller")) {
+        if(!($Devices[$i].PNPDeviceID -match "PCI\\VEN_10DE*" -and $Devices[$i].Name -ne "High Definition Audio Controller" -and $Devices[$i].Name -ne "NVIDIA USB Type-C Port Policy Controller" -and $Devices[$i].Name -ne "NVIDIA USB 3.10 eXtensible Host Controller - 1.10 (Microsoft)" -or $Devices[$i].PNPDeviceID -match "PCI\\VEN_1002*" -and $Devices[$i].Name -ne "High Definition Audio Controller" -and $Devices[$i].Name -ne "High Definition Audio Bus")) {
             continue
         }
         $deviceId = $Devices[$i].PNPDeviceID

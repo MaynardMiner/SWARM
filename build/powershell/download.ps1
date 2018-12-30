@@ -84,18 +84,18 @@ $FileName = Join-Path ".\bin" $New_Path
      if($BuildPath -eq "Zip")
       {
        if (-not $Path) {$Path = Join-Path ".\x64" ([IO.FileInfo](Split-Path $Uri -Leaf)).BaseName}
-       $FileName = Join-Path ".\x64" (Split-Path $Uri -Leaf)
+       $FileName = Join-Path "x64" (Split-Path $Uri -Leaf)
        if (Test-Path $FileName) {Remove-Item $FileName}
-       [System.Net.ServicePointManager]::SecurityProtocol = ("Tls12","Tls11","Tls")
+       Write-Host "Invoke-WebRequest $Uri -Outfile $FileName -UseBasicParsing"
        Invoke-WebRequest $Uri -OutFile $FileName -UseBasicParsing
-       
        if (".msi", ".exe" -contains ([IO.FileInfo](Split-Path $Uri -Leaf)).Extension) {Start-Process $FileName "-qb" -Wait}
        else {
        $Path_Old = (Join-Path (Split-Path $Path) ([IO.FileInfo](Split-Path $Uri -Leaf)).BaseName)
        $Path_New = (Join-Path (Split-Path $Path) (Split-Path $Path -Leaf))
 
        if (Test-Path $Path_Old) {Remove-Item $Path_Old -Recurse}
-       Start-Process "7z" "x `"$([IO.Path]::GetFullPath($FileName))`" -o`"$([IO.Path]::GetFullPath($Path_Old))`" -y -spe" -Wait
+       Write-Host "7z x `"$dir\$FileName`" -o`"$dir\$Path_Old`" -y"
+       Start-Process "7z" "x `"$dir\$FileName`" -o`"$dir\$Path_Old`" -y -spe" -Wait -WindowStyle Minimized -verb Runas
        if (Test-Path $Path_New) {Remove-Item $Path_New -Recurse}
        
        if (Get-ChildItem $Path_Old | Where-Object PSIsContainer -EQ $false) {Rename-Item $Path_Old (Split-Path $Path -Leaf)}
