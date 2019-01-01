@@ -241,7 +241,6 @@ $CurrentParams.Add("MinerBanCount",$MinerBanCount)
 $CurrentParams.Add("Conserve",$Conserve)
 $CurrentParams.Add("SWARM_Mode",$SWARM_Mode)
 $CurrentParams.Add("Switch_Threshold",$Switch_Threshold)
-if($Platform -eq "windows"){$CurrentParams.Add("AMDPlatform",$AMDPlatform)}
 $CurrentParams.Add("Lite",$Lite)
 
 ## Save to Config Folder
@@ -329,7 +328,6 @@ $Lite = $SWARMParams.Lite
 $Conserve = $SWARMParams.Conserve
 $Switch_Threshold = $SWARMParams.Switch_Threshold
 $SWARM_Mode = $SWARMParams.SWARM_Mode
-if($Platform -eq "windows"){$AMDPlatform = $SWARMParams.AMDPlatform}
 }
 
 ## Windows Start Up
@@ -489,11 +487,6 @@ if($Platform -eq "linux")
    $HiveMirror = $config.HIVE_HOST_URL -replace "`"",""
    $HiveID = $config.RIG_ID
 
-   if($Type -like "*AMD*")
-    {
-     [string]$AMDPlatform = get-AMDPlatform -Platforms $Platform
-     Write-Host "AMD OpenCL Platform is $AMDPlatform"
-    }
     Start-Process ".\build\bash\screentitle.sh" -Wait
     ##No Longer Needed
     #Start-Process ".\build\bash\libc.sh" -wait
@@ -550,7 +543,7 @@ if($Platform -eq "windows")
   Start-Fans
 
   ##Detect if drivers are installed, not generic- Close if not. Print message on screen
-  if(-not (Test-Path "C:\Program Files\NVIDIA Corporation\NVSMI\nvml.dll"))
+  if($Type -like "*NVIDIA*" -and -not (Test-Path "C:\Program Files\NVIDIA Corporation\NVSMI\nvml.dll"))
   {
     Write-Host "nvml.dll is missing" -ForegroundColor Red
     Start-Sleep -S 3
@@ -641,6 +634,13 @@ if($Platform -eq "windows")
   Get-SexyWinLogo
   }
  }
+
+## Determine AMD platform
+if($Type -like "*AMD*")
+{
+ [string]$AMDPlatform = get-AMDPlatform -Platforms $Platform
+ Write-Host "AMD OpenCL Platform is $AMDPlatform"
+}
 
 #Timers
 $TimeoutTime = $Timeout*3600
@@ -758,7 +758,6 @@ $Lite = $SWARMParams.Lite
 $Conserve = $SWARMParams.Conserve
 $Switch_Threshold = $SWARMParams.Switch_Threshold
 $SWARM_Mode = $SWARMParams.SWARM_Mode
-if($Platform -eq "windows"){$AMDPlatform = $SWARMParams.AMDPlatform}
 if($SWARMParams.Rigname1 -eq "Donate"){$Donating = $True}
 else{$Donating = $False}
 if($Donating -eq $True){$Test = Get-Date; $DonateTest = "Miner has donated on $Test"; $DonateTest | Set-Content ".\build\txt\donate.txt"}
