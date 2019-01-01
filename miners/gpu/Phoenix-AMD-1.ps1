@@ -7,14 +7,6 @@ else{$MinerName = "None"}
 if($Platform -eq "linux"){$Build = "Tar"}
 elseif($Platform -eq "windows"){$Build = "Zip"}
 
-
-##Miner Path Information
-$Path = "$($amd.phoenix_amd.path1)"
-$Uri = "$($amd.phoenix_amd.uri)"
-$MinerName = "$($amd.phoenix_amd.minername)"
-$Build = "Tar"
-$Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
-
 $ConfigType = "AMD1"
 
 ##Parse -GPUDevices
