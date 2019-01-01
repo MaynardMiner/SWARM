@@ -50,7 +50,7 @@ if($CoinAlgo -eq $null)
   Path = $Path
   Devices = $Devices
   DeviceCall = "claymore"
-  Arguments = "-platform 2 -mport 3335 -mode 1 -allcoins 1 -allpools 1 -epool $($_.Protocol)://$($_.Host):$($_.Port) -ewal $($_.User3) -epsw $($_.Pass3)$($Diff) -wd 0 -dbg -1 -eres 1 $($Config.$ConfigType.commands.$($_.Algorithm))"
+  Arguments = "-platform 2 -mport 7333 -mode 1 -allcoins 1 -allpools 1 -epool $($_.Protocol)://$($_.Host):$($_.Port) -ewal $($_.User3) -epsw $($_.Pass3)$($Diff) -wd 0 -dbg -1 -eres 1 $($Config.$ConfigType.commands.$($_.Algorithm))"
   HashRates = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)}
   Quote = if($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)){$($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)*($_.Price)}else{0}
   PowerX = [PSCustomObject]@{$($_.Algorithm) = if($Watts.$($_.Algorithm)."$($ConfigType)_Watts"){$Watts.$($_.Algorithm)."$($ConfigType)_Watts"}elseif($Watts.default."$($ConfigType)_Watts"){$Watts.default."$($ConfigType)_Watts"}else{0}}
@@ -61,7 +61,7 @@ if($CoinAlgo -eq $null)
   pilldelay = $Config.$ConfigType.oc.$($_.Algorithm).pilldelay
   FullName = "$($_.Mining)"
   API = "claymore"
-  Port = 3335
+  Port = 7333
   MinerPool = "$($_.Name)"
   URI = $Uri
   BUILD = $Build
