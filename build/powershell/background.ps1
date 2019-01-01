@@ -28,6 +28,9 @@ param(
 [Double]$RejPercent
 )
 
+##Icon for windows
+if($Platforms -eq "windows"){Set-Location $WorkingDir; Invoke-Expression ".\build\powershell\icon.ps1 `"$WorkingDir\build\apps\comb.ico`""}
+
 ## Codebase for Further Functions
 . .\build\powershell\hashrates.ps1
 . .\build\powershell\commandweb.ps1
@@ -38,7 +41,7 @@ param(
 . .\build\powershell\octune.ps1
 
 ## Simplified functions (To Shorten)
-function Get-GPUs {$GPU = $Devices[$i]; $GCount.TypeS.$GPU};
+function Get-GPUs {$GPU = $Devices[$i]; $GCount.$TypeS.$GPU};
 function Write-MinerData1 {
   Write-Host "Miner $MinerType is claymore api"
   Write-Host "Miner Port is $Port"
@@ -139,9 +142,6 @@ $AMDStats
 
 }
 
-##Icon for windows
-if($Platforms -eq "windows"){Set-Location $WorkingDir; Invoke-Expression ".\build\powershell\icon.ps1 `"$WorkingDir\build\apps\comb.ico`""}
-
 ##Get Active Miners And Devices
 $GetMiners = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-Json
 $GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
@@ -157,8 +157,8 @@ $GetMiners | Foreach {
 $NEW=0; 
 $NEW | Set-Content ".\build\txt\$($_.Type)-hash.txt";
 $Name = $($_.Name)
-if($_.Type -like "*NVIDIA*"){$DevNVIDIA = $true};
-if($_.Type -like "*AMD*"){$DevAMD = $true}
+if($_.Type -like "*NVIDIA*"){$DevNVIDIA = $true; Write-Host "NVIDIA Detected"};
+if($_.Type -like "*AMD*"){$DevAMD = $true; "AMD Detected"}
 }
 
 ## Set-OC
@@ -213,15 +213,15 @@ if($Platforms -eq "windows")
   $LoadAverages = @("$([Math]::Round($LoadAverage.Minute,2))","$([Math]::Round($LoadAverage.Minute_5,2))","$([Math]::Round($LoadAverage.Minute_10,2))")
   $ramfree = $(Get-Counter '\Memory\Available MBytes').CounterSamples.CookedValue
   }
-  if($DevNVIDIA = $true){$NVIDIAStats = Set-NvidiaStats}
-  if($DevAMD = $True){$AMDStats = Set-AMDStats}
+  if($DevNVIDIA -eq $true){$NVIDIAStats = Set-NvidiaStats}
+  if($DevAMD -eq $true){$AMDStats = Set-AMDStats}
 }
 
 ## Linux-To-Hive Stats
 if($Platforms -eq "linux")
 {
-  if($DevNVIDIA = $true){$NVIDIAStats = Set-NvidiaStats}
-  if($DevAMD = $true){$AMDStats = Set-AMDStats}
+  if($DevNVIDIA -eq $true){$NVIDIAStats = Set-NvidiaStats}
+  if($DevAMD -eq $true){$AMDStats = Set-AMDStats}
 }
 
 ## Start API Calls For Each Miner
