@@ -22,4 +22,13 @@ function get-AMDPlatform {
  $GPUPlatform = $GPUPlatform -split "AMD" | Select -First 1
 
  $GPUPlatform
+
+if($Platforms -eq "windows")
+{
+ $A = (clinfo) | Select-string "Platform Vendor"
+ for($i = 0; $i -lt $A.count; $i++){$A[$i] = $A[$i] -replace "Platform Vendor","$i"; $A[$i] =  $A[$i] -replace ":","="}
+ $A = $A | ConvertFrom-StringData
+ $A.keys | %{if($A.$_ -eq "AMD Accelerated Parallel Processing" -or $A.$_ -eq "Advanced Micro Devices, Inc."){$B = $_}}
+ $B
+}
 }
