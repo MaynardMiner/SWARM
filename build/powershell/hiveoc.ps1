@@ -68,3 +68,22 @@ $ocmessage | Set-Content ".\build\txt\ocmessage.txt"
 Start-Sleep -S 1
 $ocmessage
 }
+
+function start-fans {
+  $FanFile = Get-Content ".\config\oc\oc-settings.json" | ConvertFrom-Json
+  $FanArgs = @()
+  
+  if($FanFile.'windows fan start')
+   {
+      $Card = $FanFile.'windows fan start' -split ' '
+      for($i=0; $i -lt $Card.count; $i++){$FanArgs += "-setFanSpeed:$i,$($Card[$i]) "}
+      Write-Host "Starting Fans" 
+      $script = @()
+      $script += "`$host.ui.RawUI.WindowTitle = `'OC-Start`';"
+      $script += "Invoke-Expression `'.\nvidiaInspector.exe $FanArgs`'"
+      Set-Location ".\build\apps"
+      $script | Out-File "fan-start.ps1"
+      $Command = start-process "powershell.exe" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\fan-start.ps1""" -PassThru -WindowStyle Minimized
+      Set-Location $Dir
+   }
+  }

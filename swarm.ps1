@@ -163,7 +163,7 @@ if([Double]$Boot -lt 600)
     New-Item -Path ".\logs" -Name $Report -ItemType "Directory" | Out-Null;
     Get-ChildItem ".\build\txt" | Copy-Item -Destination ".\logs\$Report";
     Start-Sleep -S 3
-  } 
+  }
 }
 
 ## Close Previous Running Agent- Agent is left running to send stats online, even if SWARM crashes
@@ -173,7 +173,7 @@ Write-Host "Stopping Previous Agent"
 $ID = ".\build\pid\background_pid.txt"
 if(Test-Path $ID){$Agent = Get-Content $ID}
 if($Agent){$BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue}
-if($BackGroundID){Stop-Process $BackGroundID | Out-Null}
+if($BackGroundID.name -eq "powershell"){Stop-Process $BackGroundID | Out-Null}
 }
 
 ## Debug Mode

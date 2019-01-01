@@ -34,33 +34,50 @@ if($Platforms -eq "windows"){Set-Location $WorkingDir; Invoke-Expression ".\buil
 ## Codebase for Further Functions
 . .\build\powershell\hashrates.ps1
 . .\build\powershell\commandweb.ps1
-. .\build\powershell\powerup.ps1
-. .\build\powershell\statcommand.ps1
 . .\build\powershell\response.ps1
 . .\build\powershell\hiveoc.ps1
 . .\build\powershell\octune.ps1
+. .\build\powershell\statcommand.ps1
 
 ## Simplified functions (To Shorten)
 function Get-GPUs {$GPU = $Devices[$i]; $GCount.$TypeS.$GPU};
+
 function Write-MinerData1 {
-  Write-Host "Miner $MinerType is claymore api"
+  Write-Host "Miner $MinerType is $MinerAPI api"
   Write-Host "Miner Port is $Port"
   Write-Host "Miner Devices is $Devices"
 }
+
 function Write-MinerData2 {
-  Write-Host "Miner $Name was clocked at $([Double]$RAW/1000)" -foreground Yellow
-  $Process = Get-Process | Where Name -clike "*$($MinerType)*"
+  $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
+  Write-Host "Miner $Name was clocked at $([Double]$RAW)" -foreground Yellow
+  if($Platforms -eq "linux"){$Process = Get-Process | Where Name -clike "*$($MinerType)*"}
   Write-Host "Current Running instances: $($Process.Name)"
 }
 function Set-Array{
-param(
-[Parameter(Mandatory=$true, ValueFromPipeline=$true)]
-[Array]$inputObject,
-[Parameter(Position=0, Mandatory=$true)]
-[int]$i
-)
-if($inputObject.Count -eq 1){$InputObject}else{$InputObect[$i]}
+  param(
+  [Parameter(Mandatory=$true, ValueFromPipeline=$true)]
+  [string]$inputObject,
+  [Parameter(Position=0, Mandatory=$true)]
+  [int]$i,
+  [Parameter(Position=1, Mandatory=$false)]
+  [string]$factor
+  )
+  $InputObject = $InputObject | % {iex $_}
+  switch($factor)
+   {
+    "hs"{$factor = 1}
+    "khs"{$factor = 1000}
+    default{$factor = 1}
+   }
+  if($inputObject.Count -eq 1){$InputObject/$factor}else{$InputObject[$i]/$factor}
+  }
+
+function Set-APIFailure {
+  Write-Host "API Summary Failed- Could Not Total Hashrate Or No Accepted Shares" -Foreground Red; 
+  $RAW | Set-Content ".\build\txt\$MinerType-hash.txt";
 }
+  
 
 ## NVIDIA HWMON
 function Set-NvidiaStats {
@@ -232,7 +249,6 @@ $MinerAlgo = "$($_.Algo)"
 $MinerName = "$($_.MinerName)"
 $Name = "$($_.Name)"
 $Server = "localhost"
-$Interval = 15
 $Port = $($_.Port)
 $MinerType = "$($_.Type)"
 $MinerAPI = "$($_.API)"
@@ -264,35 +280,40 @@ if($Platforms -eq "windows" -and $HiveOS -eq "Yes")
 ## Not Fans & Temps
 if($NVIDIAStats)
 {
-  for($i=0;$i -lt $Devices.Count; $i++){$GPUFans.$(Get-GPUS) =  $NVIDIAStats.Fans | Set-Array $i }
-  for($i=0;$i -lt $Devices.Count; $i++){$GPUTemps.$(Get-GPUS) =  $NVIDIAStats.Temps | Set-Array $i }
+  for($i=0;$i -lt $Devices.Count; $i++){$GPUFans.$(Get-GPUS) =  $NVIDIAStats.Fans | Set-Array $i}
+  for($i=0;$i -lt $Devices.Count; $i++){$GPUTemps.$(Get-GPUS) =  $NVIDIAStats.Temps | Set-Array $i}
 }
 if($AMDStats)
 {
-  for($i=0;$i -lt $Devices.Count; $i++){$GPUFans.$(Get-GPUS) =  $AMDStats.Fans | Set-Array $i }
-  for($i=0;$i -lt $Devices.Count; $i++){$GPUTemps.$(Get-GPUS) =  $AMDStats.Temps | Set-Array $i }
+  for($i=0;$i -lt $Devices.Count; $i++){$GPUFans.$(Get-GPUS) =  $AMDStats.Fans | Set-Array $i}
+  for($i=0;$i -lt $Devices.Count; $i++){$GPUTemps.$(Get-GPUS) =  $AMDStats.Temps | Set-Array $i}
 }
 
+## Set Initial Output
+$HS = "khs"
+$RAW = 0
+$MinerACC = 0
+$MinerREJ = 0
+Write-MinerData1
+
 ## Start Calling Miners
+
 switch($MinerAPI)
 {
 
   'claymore'
   {
-   $HS = "khs"
-   Write-MinerData1
    if($MinerName = "PhoenixMiner"){$Message = @{id = 1; jsonrpc = "2.0"; method = "miner_getstat2"} | ConvertTo-Json -Compress}
    else{$Message = @{id = 1; jsonrpc = "2.0"; method = "miner_getstat2"} | ConvertTo-Json -Compress}
-   $Request = $null; $Request = Get-TCP -Server $Server -Port $Port -Message $Message
+   $Request = $null; $Request = Get-TCP -Server $Server -Port $Port -Message $Message 
     if($Request)
     {
-     $Data = $Null; $Data = $Request | ConvertFrom-Json
-     $RAW = 0; $RAW += $Data.result[2] -split ";" | Select -First 1 | %{[Double]$_*1000} | Set-Content $Raw -Path ".\build\txt\$MinerType-hash.txt" -Value $RAW
-     Write-MinerData2
-     $KHS += $Data.result[2] -split ";" | Select -First 1 | %{[Double]$_}
-     $Hash = $Data.result[3] -split ";"
-     if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = $StatPower | Set-Array $i }}
-     $Hash = $Hash | % {iex $_}
+     $Data = $Null; $Data = $Request | ConvertFrom-Json;
+     $RAW += $Data.result[2] -split ";" | Select -First 1 | %{[Double]$_*1000};
+     Write-MinerData2;
+     $KHS += $Data.result[2] -split ";" | Select -First 1 | %{[Double]$_};
+     $Hash = $Null; $Hash = $Data.result[3] -split ";";
+     if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = $Hash | Set-Array $i $HS}};
      $MinerACC = $Data.result[2] -split ";" | Select -skip 1 -first 1
      $MinerREJ = $Data.result[2] -split ";" | Select -skip 2 -first 1
      $ACC += $Data.result[2] -split ";" | Select -skip 1 -first 1
@@ -301,518 +322,295 @@ switch($MinerAPI)
      $A = $Data.result[6] -split ";"
      $ALGO = $MinerAlgo
     }
-    else{Write-Warning "failed to get stats from $Name"; break}
+    else{Set-APIFailure; break}
    }
 
   'excavator'
   {
    $HS = "khs"
+   $RAW = 0
    Write-MinerData1
-   $Message = @{id=1; method = "algorithm.list"; params=@()} | ConvertTo-Json -Compress
-   $GetSummary = $null
-   $GetSummary = Get-TCP -Server $Server -Port $port -Message $Message
-   if($GetSummary)
+   $Message = $null; $Message = @{id=1; method = "algorithm.list"; params=@()} | ConvertTo-Json -Compress
+   $Request = $null; $Request = Get-TCP -Server $Server -Port $port -Message $Message
+   if($Request)
     {
-    $Summary = $GetSummary | ConvertFrom-Json
+    $Data = $null; $Data = $Request | ConvertFrom-Json
     $RAW = $Summary.algorithms.speed
-    $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
-    Write-Host "Miner $Name was clocked at $([Double]$RAW/1000)" -foreground Yellow
-    $Process = Get-Process | Where Name -clike "*$($MinerType)*"
-    Write-Host "Current Running instances: $($Process.Name)"
+    Write-MinerData2;
     $KHS += [Double]$Summary.algorithms.speed/1000
     }
-    else{Write-Host "API Summary Failed- Could Not Total Hashrate Or No Accepted Shares" -Foreground Red; $RAW = 0; $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"}
+    else{Set-APIFailure; break}
     $Message = @{id=1; method = "worker.list"; params=@()} | ConvertTo-Json -Compress
-    $GetThreads = $Null
-    $GetThreads = Get-TCP -Server $Server -Port $port -Message $Message
+    $GetThreads = $Null; $GetThreads = Get-TCP -Server $Server -Port $port -Message $Message
     if($GetThreads)
     {
     $Threads = $GetThreads | ConvertFrom-Json
-    $Hash = $Threads.workers.algorithms.speed
-    if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Hash.Count -eq 1){[Double]$Hash/1000}else{[Double]$Hash[$i]/1000})}}
+    $Hash = $Null; $Hash = $Threads.workers.algorithms.speed
+    if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = $Hash | Set-Array $i $HS}};
     $ACC += $Summary.algorithms.accepted_shares
     $REJ += $Summary.algorithms.rejected_shares
-    $MinerACC = 0
-    $MinerREJ = 0
     $MinerACC += $Summary.algorithms.accepted_shares
     $MinerREJ += $Summary.algorithms.rejected_shares
     $UPTIME = $Summary.algorithms.uptime
     $ALGO = $Summary.algorithms.name
-    if($Plaforms -eq "linux"){$MinerStats = Get-NVIDIAStats}
-    if($MinerStats)
-    {
-    for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $NVIDIAStats.fans.$_}
-    for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $NVIDIAStats.temps.$_}
     }
-    }
-    else{Write-Host "API Threads Failed- Could Not Get Individual GPU Information" -Foreground Red}
-    $progressPreference = 'Continue'
-   }
-   'miniz'
+    else{Write-Host "API Threads Failed"; break}
+  }
+
+  'miniz'
+  {
+   $HS = "hs"
+   $Request = $Null; $Request = Invoke-Webrequest "http://$($server):$port" -UseBasicParsing -TimeoutSec 10
+   if($Request)
    {
-    $progressPreference = 'silentlyContinue'
-    $HS = "hs"
-    Write-Host "Miner $MinerType is miniz api"
-    Write-Host "Miner Port is $Port"
-    Write-Host "Miner Devices is $Devices"
-    $Request = $Null
-    $Request = Invoke-Webrequest "http://$($server):$port" -UseBasicParsing -TimeoutSec 10
-    if($Request)
-    {
-    $Data = $Request.Content -split " "
-    $Hash = $Data | Select-String "Sol/s" | Select-STring "data-label" | foreach {$_ -split "</td>" | Select -First 1} | foreach{$_ -split ">" | Select -Last 1}
-    $RAW = 0
+    $Data =$null; $Data = $Request.Content -split " "
+    $Hash = $Null; $Hash = $Data | Select-String "Sol/s" | Select-STring "data-label" | foreach {$_ -split "</td>" | Select -First 1} | foreach{$_ -split ">" | Select -Last 1}
     $RAW = $Hash | Select -Last 1
-    $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
-    Write-Host "Miner $Name was clocked at $([Double]$RAW/1000)" -foreground Yellow
+    Write-MinerData2;
     $KHS += [Double]$RAW/1000
     $Shares = $Data | Select-String "Shares" | Select -Last 1 | foreach{$_ -split "</td>" | Select -First 1} | Foreach{$_ -split ">" | Select -Last 1}
     $ACC += $Shares -split "/" | Select -first 1
     $REJ += $Shares -split "/" | Select -Last 1
-    $MinerACC = 0
-    $MinerREJ = 0
     $MinerACC = $Shares -split "/" | Select -first 1
     $MinerREJ = $Shares -split "/" | Select -Last 1
-    if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Hash.Count -eq 1){$Hash}else{$Hash[$i]})}}
-    if($Plaforms -eq "linux"){$MinerStats = Get-NVIDIAStats}
-    if($MinerStats)
-    {
-    for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $NVIDIAStats.fans.$_}
-    for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $NVIDIAStats.temps.$_}
-    }
-    if($Platforms -eq "windows"){$MinerFans = $NVIDIAFans; if($MinerFans){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MinerFans.Count -eq 1){$MinerFans}else{$MinerFans[$($GCount.$TypeS.$GPU)]})}}}
-    if($Platforms -eq "windows"){$MinerTemps = $NVIDIATemps; if($MinerTemps){for($i=0; $i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($MinerTemps.Count -eq 1){$MinerTemps}else{$MinerTemps[$i]})}}}
+    if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = $Hash | Set-Array $i $HS}};
     $ALGO = $MinerAlgo
     $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
-    }
-    else{Write-Host "$MinerAPI API Failed- Could Not Get Stats" -Foreground Red; $RAW = 0; $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"}
-    $progressPreference = 'Continue'
    }
-
-   'ewbf'
-      {
-       $progressPreference = 'silentlyContinue'
-       $HS = "hs"
-       Write-Host "Miner $MinerType is ewbf api"
-       Write-Host "Miner Port is $Port"
-       Write-Host "Miner Devices is $Devices"  
-       $Message = @{id = 1; method = "getstat"} | ConvertTo-Json -Compress
-       $Client = $Null
-       $Client = New-Object System.Net.Sockets.TcpClient $server, $port
-       if($Client)
-        { 
-         $Writer = New-Object System.IO.StreamWriter $Client.GetStream()
-         $Reader = New-Object System.IO.StreamReader $Client.GetStream()
-         $client.SendTimeout = 10000
-         $client.ReceiveTimeout = 10000
-         $Writer.AutoFlush = $true
-         $Writer.WriteLine($Message)
-         $Request = $Reader.ReadLine()
-         $Data = $Request | ConvertFrom-Json
-         $Data = $Data.result
-         $RAW = 0
-         $Data.speed_sps | foreach {$RAW += [Double]$_}
-         $Hash = $Data.speed_sps
-         $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
-         Write-Host "Miner $Name was clocked at $([Double]$RAW/1000)" -foreground Yellow
-         $Process = Get-Process | Where Name -clike "*$($MinerType)*"
-         Write-Host "Current Running instances: $($Process.Name)"
-         if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Data.speed_sps.Count -eq 1){$Data.speed_sps}else{$Data.speed_sps[$i]})}}
-         $Data.accepted_shares | Foreach {$MinerACC += $_}
-         $Data.rejected_shares | Foreach {$MinerREJ += $_}
-         $Data.accepted_shares | Foreach {$ACC += $_}
-         $Data.rejected_shares | Foreach {$REJ += $_}
-         $Data.speed_sps | foreach {$KHS += [Double]$_}
-         $UPTIME = ((Get-Date) - [DateTime]$Data.start_time[0]).seconds
-         for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($Data.temperature.Count -eq 1){$Data.temperature}else{$Data.temperature[$i]})}
-         $ALGO = $MinerAlgo
-         if($Plaforms -eq "linux"){$MinerStats = Get-NVIDIAStats}
-         if($MinerStats){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $NVIDIAStats.fans.$_}         }
-         elseif($Platforms -eq "windows"){$MinerFans = $NVIDIAFans; if($MinerFans){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MinerFans.Count -eq 1){$MinerFans}else{$MinerFans[$($GCount.$TypeS.$GPU)]})}}}
-        }
-        else{Write-Host "$MinerAPI API Failed- Could Not Get Stats" -Foreground Red; $RAW = 0; $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"}
-        $progressPreference = 'Continue'
-      }
-    'ccminer'
-      {
-       $progressPreference = 'silentlyContinue'
-       $HS = "khs"
-       Write-Host "Miner $MinerType is ccminer api"
-       Write-Host "Miner Port is $Port"
-       Write-Host "Miner Devices is $Devices"
-       $GetSummary = $Null
-       $GetSummary = Get-TCP -Server $Server -Port $port -Message "summary"
-       if($GetSummary)
-       {
-        $Multiplier = 1000
-        $GetKHS = $GetSummary -split ";" | ConvertFrom-StringData
-        $RAW = if ([Double]$GetKHS.KHS -ne 0 -or [Double]$GetKHS.ACC -ne 0) {[Double]$GetKHS.KHS * $Multiplier}
-        $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
-        $KHS += if ([Double]$GetKHS.KHS -ne 0 -or [Double]$GetKHS.ACC -ne 0) {[Double]$GetKHS.KHS}
-        Write-Host "Miner $Name was clocked at $([Double]$RAW/1000)" -foreground Yellow
-        $Process = Get-Process | Where Name -clike "*$($MinerType)*"
-        Write-Host "Current Running instances: $($Process.Name)"
-      }
-       else{Write-Host "API Summary Failed- Could Not Total Hashrate Or No Accepted Shares" -Foreground Red; $RAW = 0; $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"}
-       $GetThreads = $Null
-       $GetThreads = Get-TCP -Server $Server -Port $port -Message "threads"
-       if($GetThreads)
-        {
-         $Data = $GetThreads -split "\|"
-         $Hash = $Data -split ";" | Select-String "KHS" | foreach {$_ -replace ("KHS=","")}
-         if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Hash.Count -eq 1){$Hash}else{$Hash[$i]})}}
-         $Mfan = $Data -split ";" | Select-String "FAN" | foreach {$_ -replace ("FAN=","")}
-         if($MFan){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MFan.Count -eq 1){$MFan}else{$MFan[$i]})}}
-         elseif($Plaforms -eq "linux"){$MinerStats = Get-NVIDIAStats}
-         if($MinerStats){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $NVIDIAStats.fans.$_}         }
-         $MTemp = $Data -split ";" | Select-String "TEMP" | foreach {$_ -replace ("TEMP=","")}
-         if($MTemp){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($MTemp.Count -eq 1){$MTemp}else{$MTemp[$i]})}}
-         elseif($MinerStats){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $NVIDIAStats.temps.$_}}
-         $MinerACC = 0
-         $MinerREJ = 0
-         $MinerACC += $GetSummary -split ";" | Select-String "ACC=" | foreach{$_ -replace ("ACC=","")}
-         $MinerREJ += $GetSummary -split ";" | Select-String "REJ=" | foreach{$_ -replace ("REJ=","")}
-         $ACC += $GetSummary -split ";" | Select-String "ACC=" | foreach{$_ -replace ("ACC=","")}
-         $REJ += $GetSummary -split ";" | Select-String "REJ=" | foreach{$_ -replace ("REJ=","")}
-         $UPTIME = $GetSummary -split ";" | Select-String "UPTIME=" | foreach{$_ -replace ("UPTIME=","")}
-         $ALGO = $GetSummary -split ";" | Select-String "ALGO=" | foreach{$_ -replace ("ALGO=","")}
-        }
-        else{Write-Host "API Threads Failed- Could Not Get Individual GPU Information" -Foreground Red}
-        $progressPreference = 'Continue'
-      }
-    'bminer'
-    {
-      $progressPreference = 'silentlyContinue'
-      $HS = "khs"
-      Write-Host "Miner $MinerType is trex api"
-      Write-Host "Miner Port is $Port"  
-      Write-Host "Miner Devices is $Devices"
-      $Request = $Null
-      $Request = Get-HTTP -Port $Port -Message "/api/status"
-      if($Request)
-       {
-        $Data = $Request.Content | ConvertFrom-Json
-        $Raw = 0
-        for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $RAW += [Double]$Data.Miners.$GPU.solver.solution_rate}
-        $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
-        $Hash = $Data.Miners
-        Write-Host "Miner $Name was clocked at $([Double]$RAW/1000)" -foreground Yellow
-        $Process = Get-Process | Where Name -clike "*$($MinerType)*"
-        Write-Host "Current Running instances: $($Process.Name)"
-        if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Data.Miners.Count -eq 1){[Double]$Data.Miners.$GPU.solver.solution_rate / 1000}else{[Double]$Data.Miners.$GPU.solver.solution_rate / 1000})}}
-        $MinerACC = 0
-        $MinerREJ = 0
-        $Data.stratum.accepted_shares | Foreach {$MinerACC += $_}
-        $Data.stratum.rejected_shares | Foreach {$MinerREJ += $_}
-        $Data.stratum.accepted_shares | Foreach {$ACC += $_}
-        $Data.stratum.rejected_shares | Foreach {$REJ += $_}
-        for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $KHS += [Double]$Data.Miners.$GPU.solver.solution_rate/1000}
-        $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
-        if($Data.Miners){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($Data.$Miners.Count -eq 1){$Data.Miners.$GPU.device.temperature}else{$Data.Miners.$GPU.device.temperature})}}
-        if($Data.Miners){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) =  $(if($Data.$Miners.Count -eq 1){$Data.Miners.$GPU.device.fan_speed}else{$Data.Miners.$GPU.device.fan_speed})}}
-        $ALGO = $MinerAlgo
-       }
-       $progressPreference = 'Continue'
-    }
-    'trex'
-     {
-      $progressPreference = 'silentlyContinue'
-      $HS = "khs"
-      Write-Host "Miner $MinerType is trex api"
-      Write-Host "Miner Port is $Port"  
-      Write-Host "Miner Devices is $Devices"
-      $Request = $Null
-      $Request = Get-HTTP -Port $Port -Message "/summary"
-      if($Request)
-       {
-        $Data = $Request.Content | ConvertFrom-Json
-        $RAW = if([Double]$Data.hashrate_minute -ne 0 -or [Double]$Data.accepted_count -ne 0){[Double]$Data.hashrate_minute}
-        $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
-        Write-Host "Miner $Name was clocked at $([Double]$RAW/1000)" -foreground Yellow
-        $Process = Get-Process | Where Name -clike "*$($MinerType)*"
-        Write-Host "Current Running instances: $($Process.Name)"
-        $Hash = $Data.gpus
-        if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Data.gpus.hashrate_minute.Count -eq 1){[Double]$Data.gpus.hashrate_minute / 1000}else{[Double]$Data.gpus.hashrate_minute[$i] / 1000})}}
-        $MinerACC = 0
-        $MinerREJ = 0
-        $Data.accepted_count | Foreach {$MinerACC += $_}
-        $Data.rejected_count | Foreach {$MinerREJ += $_}
-        $Data.accepted_count | Foreach {$ACC += $_}
-        $Data.rejected_count | Foreach {$REJ += $_}
-        $KHS = if([Double]$Data.hashrate_minute -ne 0 -or [Double]$Data.accepted_count -ne 0){[Double]$Data.hashrate_minute/1000}
-        $UPTIME = $Data.uptime
-        if($Data.gpus){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($Data.gpus.temperature.Count -eq 1){$Data.gpus.temperature}else{$Data.gpus.temperature[$i]})}}
-        if($Data.gpus){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) =  $(if($Data.gpus.fan_speed.Count -eq 1){$Data.gpus.fan_speed}else{$Data.gpus.fan_speed[$i]})}}
-        $ALGO = $Data.Algorithm
-       }
-       else{Write-Host "$MinerAPI API Failed- Could Not Get Stats" -Foreground Red; $RAW = 0; $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"}
-       $progressPreference = 'Continue'
-      }
-    'dstm'
-      {
-        $progressPreference = 'silentlyContinue'
-        $HS = "hs"
-        Write-Host "Miner $MinerType is dstm api"
-        Write-Host "Miner Port is $Port"
-        Write-Host "Miner Devices is $Devices"
-        $GetSummary = $Null
-        $GetSummary = Get-TCP -Server $Server -Port $port -Message "summary"
-        if($GetSummary)
-         {
-        $Data = $GetSummary | ConvertFrom-Json
-        $Data = $Data.result
-        $RAW = 0
-        $Data.sol_ps | foreach {$RAW += [Double]$_}
-        $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
-        Write-Host "Miner $Name was clocked at $([Double]$RAW/1000)" -foreground Yellow
-        $Process = Get-Process | Where Name -clike "*$($MinerType)*"
-        Write-Host "Current Running instances: $($Process.Name)"
-        $Hash = $Data.sol_ps
-        if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Data.sol_ps.Count -eq 1){$Data.sol_ps}else{$Data.sol_ps[$i]})}}
-        $MinerACC = 0
-        $MinerREJ = 0
-        $Data.rejected_shares | Foreach {$MinerREJ += $_}
-        $Data.accepted_shares | Foreach {$MinerACC += $_}  
-        $Data.rejected_shares | Foreach {$REJ += $_}
-        $Data.accepted_shares | Foreach {$ACC += $_}
-        $Data.sol_ps | foreach {$KHS += [Double]$_}
-        for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($Data.temperature.Count -eq 1){$Data.temperature}else{$Data.temperature[$i]})}
-        $ALGO = $MinerAlgo
-        $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
-        if($Plaforms -eq "linux"){$MinerStats = Get-NVIDIAStats}
-        if($MinerStats){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $NVIDIAStats.fans.$_}}
-        elseif($Platforms -eq "windows"){$MinerFans = $NVIDIAFans; if($MinerFans){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MinerFans.Count -eq 1){$MinerFans}else{$MinerFans[$($GCount.$TypeS.$GPU)]})}}}
-        }
-         else{Write-Host "$MinerAPI API Failed- Could Not Get Stats" -Foreground Red; $RAW = 0; $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"}
-         $progressPreference = 'Continue'
-      }
-  'sgminer-gm'
-    {
-      $progressPreference = 'silentlyContinue'
-      $HS = "khs"
-      Write-Host "Miner $MinerType is sgminer api"
-      Write-Host "Miner Port is $Port"
-      Write-Host "Miner Devices is $Devices"  
-      $Message = @{command="summary+devs"; parameter=""} | ConvertTo-Json -Compress
-      $Request = $null
-      $Request = Get-TCP -Server $Server -Port $port -Message $Message
-      if($Request)
-      {
-      if($Platforms -eq "windows" -and $Minername -ne "teamredminer.exe"){$Request = $Request.Substring($Request.IndexOf("{"), $Request.LastIndexOf("}") - $Request.IndexOf("{") + 1) -replace " ", "_"}
-      $Data = $Request | ConvertFrom-Json
-      $summary = $Data.summary.summary
-      $threads = $Data.devs.devs
-      if($summary.'KHS 5s' -or $summary.'KHS_5s'){if($summary.'KHS 5s'){$Sum = $summary.'KHS 5s'}else{$Sum = $summary.'KHS_5s'}}
-      else{if($summary.'KHS 30s'){$Sum = $summary.'KHS 30s'}else{$Sum = $summary.'KHS_30s'}}
-      if($threads.'KHS 5s' -or $threads.'KHS_5s'){if($threads.'KHS 5s'){$thread = $threads.'KHS 5s'}else{$thread = $threads.'KHS_5s'}}
-      else{if($threads.'KHS 30s'){$thread = $threads.'KHS 30s'}else{$thread = $threads.'KHS_30s'}}
-      $RAW=0
-      $RAW += [Double]$Sum*1000
-      $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
-      Write-Host "Miner $Name was clocked at $([Double]$RAW/1000)" -foreground Yellow
-      $Process = Get-Process | Where Name -clike "*$($MinerType)*"
-      Write-Host "Current Running instances: $($Process.Name)"
-      $KHS += $Sum
-      if($thread){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($thread.Count -eq 1){$thread}else{$thread[$i]})}}
-      $MinerACC = 0
-      $MinerREJ = 0
-      $summary.Rejected | Foreach {$MinerREJ += $_}
-      $summary.Accepted | Foreach {$MinerACC += $_}    
-      $summary.Rejected | Foreach {$REJ += $_}
-      $summary.Accepted | Foreach {$ACC += $_}
-      $ALGO = $MinerALgo
-      $UPTIME = $summary.Elapsed
-      if($Platforms -eq "linux"){$MinerFans = Get-AMDFans}else{$MinerFans = $AMDFans}
-      if($Platforms -eq "linux"){$MinerTemps = Get-AMDTemps}else{$MinerTemps = $AMDTemps}
-      if($Platforms -eq "linux"){if($MinerFans){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MinerFans.Count -eq 1){$MinerFans}else{$MinerFans[$($GCount.$TypeS.$GPU)]})}}}
-      else{if($MinerFans){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MinerFans.Count -eq 1){$MinerFans}else{$MinerFans[$i]})}}}
-      if($Platforms -eq "linux"){if($MinerTemps){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($MinerTemps.Count -eq 1){$MinerTemps}else{$MinerTemps[$($GCount.$TypeS.$GPU)]})}}}
-      else{if($MinerTemps){for($i=0; $i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($MinerTemps.Count -eq 1){$MinerTemps}else{$MinerTemps[$i]})}}}
-        }
-     else{Write-Host "$MinerAPI API Failed- Could Not Get Stats" -Foreground Red; $RAW = 0; $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"}
-     $progressPreference = 'Continue'
-    }
-   'cpuminer'
-    {
-     $progressPreference = 'silentlyContinue'
-     Write-Host "Miner $MinerType is cpuminer api"
-     Write-Host "Miner Port is $Port"
-     Write-Host "Miner Devices is $Devices"
-     $GetCPUSUmmary = $Null
-     $GetCPUSummary = Get-TCP -Server $Server -Port $Port -Message "summary"
-     if($GetCPUSummary)
-     {
-     $CPUSUM = $GetCPUSummary -split ";" | Select-String "KHS=" | foreach {$_ -replace ("KHS=","")}
-     $CPURAW = [double]$CPUSUM*1000
-     $CPURAW | Set-Content ".\build\txt\$MinerType-hash.txt"
-     }
-     else{Write-Host "API Summary Failed- Could Not Total Hashrate" -Foreground Red; $CPURAW = 0; $CPURAW | Set-Content ".\build\txt\$MinerType-hash.txt"}
-     $GetCPUThreads = $Null
-     $GetCPUThreads = Get-TCP -Server $Server -Port $Port -Message "threads"
-     if($GetCPUThreads)
-     {
-     $Data = $GetCPUThreads -split "\|"
-     $kilo = $false
-     $KHash = $Data | Select-String "kH/s"
-     if($KHash){$Hash = $Data -split ";" | Select-String "kH/s"; $kilo = $true}
-     else{$Hash = $Data -split ";" | Select-String "H/s"; $kilo = $false}
-     $Hash = $Hash | foreach {$_ -split "=" | Select -Last 1 }
-     $J = $Hash | % {iex $_}
-     $CPUHash = @()
-     if($kilo -eq $true)
-     {
-      $CPUKHS = 0
-      if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $CPUHashrates.$($GCount.$TypeS.$GPU) = $(if($J.Count -eq 1){$J}else{$J[$i]})}}
-      $J |Foreach {$CPUKHS += $_}
-      $CPUHS = "khs"
-     }
-     else{
-      $CPUKHS = 0
-      if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $CPUHashrates.$($GCount.$TypeS.$GPU) = $(if($J.Count -eq 1){$J/1000}else{$J[$i]/1000})}}
-      $J |Foreach {$CPUKHS += $_}
-      $CPUHS = "hs"
-     }
-     $CPUHashrates | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {$CPUHash += "CPU=$($CPUHashRates.$_)"}
-     $CPUACC = $GetCPUSummary -split ";" | Select-String "ACC=" | foreach{$_ -replace ("ACC=","")}
-     $CPUREJ = $GetCPUSummary -split ";" | Select-String "REJ=" | foreach{$_ -replace ("REJ=","")}
-     $CPUUPTIME = $GetCPUSummary -split ";" | Select-String "UPTIME=" | foreach{$_ -replace ("UPTIME=","")}
-     $CPUALGO = $GetCPUSummary -split ";" | Select-String "ALGO=" | foreach{$_ -replace ("ALGO=","")}
-     $CPUTEMP = $GetCPUSummary -split ";" | Select-String "TEMP=" | foreach{$_ -replace ("TEMP=","")}
-     $CPUFAN = $GetCPUSummary -split ";" | Select-String "FAN=" | foreach{$_ -replace ("FAN=","")}
-     }
-     else{Write-Host "API Threads Failed- Could Not Get Individual GPU Information" -Foreground Red}
-     $progressPreference = 'Continue'
-    }
-   'lyclminer'
-    {
-      $progressPreference = 'silentlyContinue'          
-      $HS = "khs"
-      Write-Host "Miner $MinerType is lyclminer (logging) api"
-      Write-Host "Miner Devices is $Devices"
-      $HashArray =@()
-      $Hashed = @()
-      $Hash = @()
-      if(Test-Path $HashPath){$Hashes = Get-Content $HashPath}
-     if($Hashes)
-      {    
-      for($i=0; $i -lt $Devices.Count; $i++)
-      {
-        $GPU = $Devices[$i];
-        $Selected = $GPUHashrates.$($GCount.$TypeS.$GPU)
-        $Hashes = $Hashes | Select-String "Device #$($Selected)" | Select-String "/s" | Select -Last 1
-        if($Hashes -ne $Null)
-        {
-         $C = $Hashes -replace (" ","")
-         $D = $C -split "," | Select-String "/s"
-           if($D -like "*/s*")
-            {
-             if([regex]::match($D,"MH/s").success -eq $true){$CHash = "MH/s"}
-             else{$CHash = "KH/s"}
-             if([regex]::match($D,"MH/s").success -eq $true){$Hash += "MH/s"}
-             else{$Hashed += "KH/s"}
-            }
-           $E = $D -split "$CHash" | Select -First 1
-           $E | foreach{$HashArray += $_}
-          }
-          else{
-              $Hashed += "Kh/s"
-              $HashArray += 0.1
-              }
-           }
-          }
-         else{
-          for($i = 0; $i -lt $Devices.Count; $i++)
-          {
-            $Hashed += "Kh/s"
-            $HashArray += 0.1
-          }
-         }
-          $J = $HashArray | % {iex $_}
-          $K = @()
-          $TotalRaw = 0
-          for($i = 0; $i -lt $Hash.Count; $i++)
-          {
-           $SelectedHash = $Hashed | Select -skip $i | Select -First 1
-           $SelectedPattern = $J | Select -skip $i | Select -First 1
-           $SelectedPattern | foreach { if ($SelectedHash -eq "MH/s"){$K += $_*1000}else{$K += $_}}
-           $SelectedPattern | foreach { if ($SelectedHash -eq "MH/s"){$TotalRaw += ($_*1000000)}else{$TotalRaw += ($_*1000)}}
-          }        
-          for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($K.Count -eq 1){$K}else{$K[$i]})}
-          $KHS += [Double]$TotalRaw/1000
-          $ALGO = $MinerAlgo
-          $TotalRaw | Set-Content ".\build\txt\$MinerType-hash.txt"
-          Write-Host "Miner $Name was clocked at $([Double]$TotalRaw/1000)" -foreground Yellow
-          $Process = Get-Process | Where Name -clike "*$($MinerType)*"
-          Write-Host "Current Running instances: $($Process.Name)"
-          $AA = $A | Select-String "Accepted"  | Select -Last 1
-          $BB = $AA -Split "d" | Select-String "/"
-          $CC = $BB -replace (" ","")
-          $DD = $CC -split "\)" | Select-String "%"
-          $Shares = $DD -split "\(" | Select-String "/"
-          $MinerACC = 0
-          $MinerREJ = 0    
-          $ACC += $($Shares -Split "/" | Select -First 1)
-          $MinerACC += $($Shares -Split "/" | Select -First 1)
-          $GetRejected = $($Shares -Split "/" | Select -Last 1)
-          $REJ += ($GetRejected-$MinerACC)
-          $MinerREJ += ($GetRejected-$MinerACC)
-          $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
-          if($Platforms -eq "linux"){$MinerFans = Get-AMDFans}else{$MinerFans = $AMDFans}
-          if($Platforms -eq "linux"){$MinerTemps = Get-AMDTemps}else{$MinerTemps = $AMDTemps}
-          if($Platforms -eq "linux"){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MinerFans.Count -eq 1){$MinerFans}else{$MinerFans[$($GCount.$TypeS.$GPU)]})}}
-          else{for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MinerFans.Count -eq 1){$MinerFans}else{$MinerFans[$i]})}}
-          if($Platforms -eq "linux"){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($MinerTemps.Count -eq 1){$MinerTemps}else{$MinerTemps[$($GCount.$TypeS.$GPU)]})}}
-          else{for($i=0; $i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($MinerTemps.Count -eq 1){$MinerTemps}else{$MinerTemps[$i]})}}
-          $progressPreference = 'Continue'
-        }
-'xmrstak'
-   {
-    $progressPreference = 'silentlyContinue'
-    Write-Host "Miner $MinerType is xmrstak api"
-    Write-Host "Miner Devices is $Devices"
-    $HS = "hs"
-    $Message="/api.json"
-    $Request = $Null
-    $Request = Get-HTTP -Port $Port -Message $Message
-    if($Request)
-    {
-    $Data = $Request.Content | ConvertFrom-Json
-    $Hash = $Data.Hashrate.threads
-    $RAW = $Data.hashrate.total | Select -First 1
-    $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
-    Write-Host "Miner $Name was clocked at $([Double]$RAW/1000)" -foreground Yellow
-    $Process = Get-Process | Where Name -clike "*$($MinerType)*"
-    Write-Host "Current Running instances: $($Process.Name)"
-    if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Hash.Count -eq 1){[Double]$($Hash[0] | Select -first 1)}else{[Double]$($Hash[$i] | Select -First 1)})}}
-    $MinerACC = 0
-    $MinerREJ = 0
-    $MinerACC += $Data.results.shares_good
-    $MinerREJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good
-    $ACC += $Data.results.shares_good
-    $REJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good
-    $UPTIME = $Data.connection.uptime
-    $ALGO = $MinerAlgo
-    $KHS = [Double]$Data.hashrate.total[0]
-    if($Platforms -eq "linux"){$MinerFans = Get-AMDFans}else{$MinerFans = $AMDFans}
-    if($Platforms -eq "linux"){$MinerTemps = Get-AMDTemps}else{$MinerTemps = $AMDTemps}
-    if($Platforms -eq "linux"){if($MinerFans){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MinerFans.Count -eq 1){$MinerFans}else{$MinerFans[$($GCount.$TypeS.$GPU)]})}}}
-    else{if($MinerFans){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MinerFans.Count -eq 1){$MinerFans}else{$MinerFans[$i]})}}}
-    if($Platforms -eq "linux"){if($minerTemps){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($MinerTemps.Count -eq 1){$MinerTemps}else{$MinerTemps[$($GCount.$TypeS.$GPU)]})}}}
-    else{if($MinerTemps){for($i=0; $i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($MinerTemps.Count -eq 1){$MinerTemps}else{$MinerTemps[$i]})}}}
+   else{Set-APIFailure; break}
   }
-    else{Write-Host "$MinerAPI API Failed- Could Not Get Stats" -Foreground Red; $RAW = 0; $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"}
-    $progressPreference = 'Continue'
-   }
-   'xmrstak-opt'
-   {
-    Write-Host "Miner $MinerType is xmrstak api"
-    Write-Host "Miner Devices is $Devices"
-    $CPUHS = "hs"
-    $Message ="/api.json"
-    $Request = $Null
-    $Request = Get-HTTP -Port $Port -Message $Message
-    if($Request)
+
+  'ewbf'
+  {
+   $HS = "hs"
+   $Message = $null; $Message = @{id = 1; method = "getstat"} | ConvertTo-Json -Compress
+   $Request = $Null; $GetThreads = Get-TCP -Server $Server -Port $port -Message $Message
+   if($Request)
+    { 
+     $Data = $null; $Data = $Request | ConvertFrom-Json
+     $Data = $Data.result
+     $Data.speed_sps | foreach {$RAW += [Double]$_}
+     $Hash = $Null; $Hash = $Data.speed_sps
+     Write-MinerData2;
+     if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = $Hash | Set-Array $i $HS}};
+     $Data.accepted_shares | Foreach {$MinerACC += $_}
+     $Data.rejected_shares | Foreach {$MinerREJ += $_}
+     $Data.accepted_shares | Foreach {$ACC += $_}
+     $Data.rejected_shares | Foreach {$REJ += $_}
+     $Data.speed_sps | foreach {$KHS += [Double]$_}
+     $UPTIME = ((Get-Date) - [DateTime]$Data.start_time[0]).seconds
+    }
+    else{Set-APIFailure; break}
+  }
+
+ 'ccminer'
+  {
+   $HS = "khs"
+   $Request = $Null; $Request = Get-TCP -Server $Server -Port $port -Message "summary"
+   if($Request)
     {
+     $Multiplier = 1000
+     $GetKHS = $Request -split ";" | ConvertFrom-StringData
+     $RAW = if ([Double]$GetKHS.KHS -ne 0 -or [Double]$GetKHS.ACC -ne 0) {[Double]$GetKHS.KHS * $Multiplier}
+     Write-MinerData2;
+     $KHS += if ([Double]$GetKHS.KHS -ne 0 -or [Double]$GetKHS.ACC -ne 0) {[Double]$GetKHS.KHS}
+    }
+    else{Set-APIFailure; break}
+    $GetThreads = $Null; $GetThreads = Get-TCP -Server $Server -Port $port -Message "threads"
+    if($GetThreads)
+     {
+      $Data = $null; $Data = $GetThreads -split "\|"
+      $Hash = $Null; $Hash = $Data -split ";" | Select-String "KHS" | foreach {$_ -replace ("KHS=","")}
+      if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = $Hash | Set-Array $i}};
+      $MinerACC += $GetSummary -split ";" | Select-String "ACC=" | foreach{$_ -replace ("ACC=","")}
+      $MinerREJ += $GetSummary -split ";" | Select-String "REJ=" | foreach{$_ -replace ("REJ=","")}
+      $ACC += $GetSummary -split ";" | Select-String "ACC=" | foreach{$_ -replace ("ACC=","")}
+      $REJ += $GetSummary -split ";" | Select-String "REJ=" | foreach{$_ -replace ("REJ=","")}
+      $UPTIME = $GetSummary -split ";" | Select-String "UPTIME=" | foreach{$_ -replace ("UPTIME=","")}
+      $ALGO = $GetSummary -split ";" | Select-String "ALGO=" | foreach{$_ -replace ("ALGO=","")}
+     }
+     else{Write-Host "API Threads Failed"; break}
+  }
+
+  'bminer'
+  {
+   if($MinerAlgo -eq "daggerhashimoto"){$HS = "khs"}
+   elseif($MinerAlgo -eq "zhash"){$HS = "hs"}
+   $Request = $Null; $Request = Get-HTTP -Port $Port -Message "/api/status"
+   if($Request)
+    {
+     $Data = $Null; $Data = $Request.Content | ConvertFrom-Json
+     for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $RAW += [Double]$Data.Miners.$GPU.solver.solution_rate}
+     Write-MinerData2;
+     $Hash = $Null; $Hash = $Data.Miners
+     if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = $Hash | Set-Array $i $HS}};
+     $Data.stratum.accepted_shares | Foreach {$MinerACC += $_}
+     $Data.stratum.rejected_shares | Foreach {$MinerREJ += $_}
+     $Data.stratum.accepted_shares | Foreach {$ACC += $_}
+     $Data.stratum.rejected_shares | Foreach {$REJ += $_}
+     for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $KHS += [Double]$Data.Miners.$GPU.solver.solution_rate/1000}
+     $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
+     $ALGO = $MinerAlgo
+    }
+    else{Set-APIFailure; break}
+  }
+
+  'trex'
+  {
+   $HS = "khs"
+   $Request = $Null; $Request = Get-HTTP -Port $Port -Message "/summary"
+   if($Request)
+    {
+     $Data = $NUll; $Data = $Request.Content | ConvertFrom-Json
+     $RAW = if([Double]$Data.hashrate_minute -ne 0 -or [Double]$Data.accepted_count -ne 0){[Double]$Data.hashrate_minute}
+     Write-MinerData2;
+     $Hash = $Null; $Hash = $Data.gpus
+     if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = $Hash | Set-Array $i $HS}};
+     $Data.accepted_count | Foreach {$MinerACC += $_}
+     $Data.rejected_count | Foreach {$MinerREJ += $_}
+     $Data.accepted_count | Foreach {$ACC += $_}
+     $Data.rejected_count | Foreach {$REJ += $_}
+     $KHS = if([Double]$Data.hashrate_minute -ne 0 -or [Double]$Data.accepted_count -ne 0){[Double]$Data.hashrate_minute/1000}
+     $UPTIME = $Data.uptime
+     $ALGO = $Data.Algorithm
+    }
+    else{Set-APIFailure; break}
+  }
+  
+ 'dstm'
+ {
+  $HS = "hs"
+  $Request = $Null; $Request = $null; $Request = Get-TCP -Server $Server -Port $port -Message "summary"
+  if($Request)
+   {
+    $Data = $null; $Data = $GetSummary | ConvertFrom-Json
+    $Data = $Data.result
+    $Data.sol_ps | foreach {$RAW += [Double]$_}
+    Write-MinerData2;
+    $Hash = $Null; $Hash = $Data.sol_ps
+    if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = $Hash | Set-Array $i $HS}};
+    $Data.rejected_shares | Foreach {$MinerREJ += $_}
+    $Data.accepted_shares | Foreach {$MinerACC += $_}  
+    $Data.rejected_shares | Foreach {$REJ += $_}
+    $Data.accepted_shares | Foreach {$ACC += $_}
+    $Data.sol_ps | foreach {$KHS += [Double]$_}
+    $ALGO = $MinerAlgo
+    $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
+   }
+   else{Set-APIFailure; break}
+ }
+
+ 'sgminer-gm'
+ {
+  $HS = "khs"
+  $Message = $null; $Message = @{command="summary+devs"; parameter=""} | ConvertTo-Json -Compress
+  $Request = $null; $Request = Get-TCP -Server $Server -Port $port -Message $Message
+  if($Request)
+   {
+    if($Platforms -eq "windows" -and $Minername -ne "teamredminer.exe"){$Request = $Request.Substring($Request.IndexOf("{"), $Request.LastIndexOf("}") - $Request.IndexOf("{") + 1) -replace " ", "_"}
+    $Data = $Null; $Data = $Request | ConvertFrom-Json
+    $summary = $Data.summary.summary
+    $threads = $Data.devs.devs
+    $Hash = $Null; $Sum = $Null;
+    if($summary.'KHS 5s' -or $summary.'KHS_5s'){if($summary.'KHS 5s'){$Sum = $summary.'KHS 5s'}else{$Sum = $summary.'KHS_5s'}}
+    else{if($summary.'KHS 30s'){$Sum = $summary.'KHS 30s'}else{$Sum = $summary.'KHS_30s'}}
+    if($threads.'KHS 5s' -or $threads.'KHS_5s'){if($threads.'KHS 5s'){$thread = $threads.'KHS 5s'}else{$thread = $threads.'KHS_5s'}}
+    else{if($threads.'KHS 30s'){$Hash = $threads.'KHS 30s'}else{$thread = $threads.'KHS_30s'}}
+    $RAW += [Double]$Sum*1000
+    $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
+    Write-MinerData2;
+    $KHS += $Sum
+    if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = $Hash | Set-Array $i $HS}};
+    $summary.Rejected | Foreach {$MinerREJ += $_}
+    $summary.Accepted | Foreach {$MinerACC += $_}    
+    $summary.Rejected | Foreach {$REJ += $_}
+    $summary.Accepted | Foreach {$ACC += $_}
+    $ALGO = $MinerALgo
+    $UPTIME = $summary.Elapsed
+   }
+   else{Set-APIFailure; break}
+ }
+
+'cpuminer'
+ {
+  $GetCPUSUmmary = $Null; $GetCPUSummary = Get-TCP -Server $Server -Port $Port -Message "summary"
+  if($GetCPUSummary)
+   {
+    $CPUSUM = $GetCPUSummary -split ";" | Select-String "KHS=" | foreach {$_ -replace ("KHS=","")}
+    $CPURAW = [double]$CPUSUM*1000
+    $CPURAW | Set-Content ".\build\txt\$MinerType-hash.txt"
+   }
+  else{Write-Host "API Summary Failed- Could Not Total Hashrate" -Foreground Red; $CPURAW = 0; $CPURAW | Set-Content ".\build\txt\$MinerType-hash.txt"}
+  $GetCPUThreads = $Null
+  $GetCPUThreads = Get-TCP -Server $Server -Port $Port -Message "threads"
+  if($GetCPUThreads)
+   {
+    $Data = $GetCPUThreads -split "\|"
+    $kilo = $false
+    $KHash = $Data | Select-String "kH/s"
+    if($KHash){$Hash = $Data -split ";" | Select-String "kH/s"; $kilo = $true}
+    else{$Hash = $Data -split ";" | Select-String "H/s"; $kilo = $false}
+    $Hash = $Hash | foreach {$_ -split "=" | Select -Last 1 }
+    $J = $Hash | % {iex $_}
+    $CPUHash = @()
+    if($kilo -eq $true)
+    {
+     $CPUKHS = 0
+     if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $CPUHashrates.$($GCount.$TypeS.$GPU) = $(if($J.Count -eq 1){$J}else{$J[$i]})}}
+     $J |Foreach {$CPUKHS += $_}
+     $CPUHS = "khs"
+    }
+    else
+    {
+     $CPUKHS = 0
+     if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $CPUHashrates.$($GCount.$TypeS.$GPU) = $(if($J.Count -eq 1){$J/1000}else{$J[$i]/1000})}}
+     $J |Foreach {$CPUKHS += $_}
+     $CPUHS = "hs"
+    }
+    $CPUHashrates | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {$CPUHash += "CPU=$($CPUHashRates.$_)"}
+    $CPUACC = $GetCPUSummary -split ";" | Select-String "ACC=" | foreach{$_ -replace ("ACC=","")}
+    $CPUREJ = $GetCPUSummary -split ";" | Select-String "REJ=" | foreach{$_ -replace ("REJ=","")}
+    $CPUUPTIME = $GetCPUSummary -split ";" | Select-String "UPTIME=" | foreach{$_ -replace ("UPTIME=","")}
+    $CPUALGO = $GetCPUSummary -split ";" | Select-String "ALGO=" | foreach{$_ -replace ("ALGO=","")}
+    $CPUTEMP = $GetCPUSummary -split ";" | Select-String "TEMP=" | foreach{$_ -replace ("TEMP=","")}
+    $CPUFAN = $GetCPUSummary -split ";" | Select-String "FAN=" | foreach{$_ -replace ("FAN=","")}
+   }
+  else{Write-Host "API Threads Failed- Could Not Get Individual GPU Information" -Foreground Red}
+  }
+
+'xmrstak'
+{
+ $HS = "hs"
+ $Message = $Null; $Message="/api.json"
+ $Request = $Null; $Request = Get-HTTP -Port $Port -Message $Message
+ if($Request)
+  {
+   $Data = $Request.Content | ConvertFrom-Json
+   $Hash = $Data.Hashrate.threads
+   $RAW = $Data.hashrate.total | Select -First 1
+   Write-MinerData2;
+   if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = $Hash | Set-Array $i $HS}};
+   $MinerACC += $Data.results.shares_good
+   $MinerREJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good
+   $ACC += $Data.results.shares_good
+   $REJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good
+   $UPTIME = $Data.connection.uptime
+   $ALGO = $MinerAlgo
+   $KHS = [Double]$Data.hashrate.total[0]
+  }
+  else{Set-APIFailure; break}
+}
+
+ 'xmrstak-opt'
+ {
+  Write-Host "Miner $MinerType is xmrstak api"
+  Write-Host "Miner Devices is $Devices"
+  $CPUHS = "hs"
+  $Message ="/api.json"
+  $Request = $Null
+  $Request = Get-HTTP -Port $Port -Message $Message
+  if($Request)
+   {
     $Data = $Request.Content | ConvertFrom-Json
     $Hash = $Data.Hashrate.threads
     $CPURAW = [Double]$Data.hashrate.total[0]
@@ -830,46 +628,31 @@ switch($MinerAPI)
     $CPUALGO = $MinerAlgo
     }
     else{Write-Host "$MinerAPI API Failed- Could Not Get Stats" -Foreground Red; $CPURAW = 0; $CPURAW | Set-Content ".\build\txt\$MinerType-hash.txt"}
-    $progressPreference = 'Continue'
-   }
-'wildrig'
-  {
-    $progressPreference = 'silentlyContinue'
-    Write-Host "Miner $MinerType is wildrig api"
-    Write-Host "Miner Devices is $Devices"    
-    $HS = "khs"
-    $Message = '/api.json'
-    $Request = $Null
-    $Request = Get-HTTP -Port $Port -Message $Message
-    if($Request)
-    {
-    $Data = $Request.Content | ConvertFrom-Json
-    $RAW = $Data.hashrate.total[0]
-    $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
-    Write-Host "Miner $Name was clocked at $([Double]$RAW/1000)" -foreground Yellow
-    $Process = Get-Process | Where Name -clike "*$($MinerType)*"
-    Write-Host "Current Running instances: $($Process.Name)"
-    $Hash = $Data.hashrate.threads
-    if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Hash.Count -eq 1){[Double]$($Hash[0] | Select -first 1) / 1000}else{[Double]$($Hash[$i] | Select -First 1)})}}
-    $MinerACC = 0
-    $MinerREJ = 0
-    $MinerACC += $Data.results.shares_good
-    $MinerREJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good 
-    $ACC += $Data.results.shares_good
-    $REJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good
-    $UPTIME = $Data.connection.uptime
-    $ALGO = $MinerAlgo
-    $KHS = [Double]$Data.hashrate.total[0]/1000
-    if($Platforms -eq "linux"){$MinerFans = Get-AMDFans}else{$MinerFans = $AMDFans}
-    if($Platforms -eq "linux"){$MinerTemps = Get-AMDTemps}else{$MinerTemps = $AMDTemps}
-    if($Platforms -eq "linux"){if($MinerFans){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MinerFans.Count -eq 1){$MinerFans}else{$MinerFans[$($GCount.$TypeS.$GPU)]})}}}
-    else{if($MinerFans){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUFans.$($GCount.$TypeS.$GPU) = $(if($MinerFans.Count -eq 1){$MinerFans}else{$MinerFans[$i]})}}}
-    if($Platforms -eq "linux"){if($MInerTemps){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($MinerTemps.Count -eq 1){$MinerTemps}else{$MinerTemps[$($GCount.$TypeS.$GPU)]})}}}
-    else{if($MinerTemps){for($i=0; $i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUTemps.$($GCount.$TypeS.$GPU) = $(if($MinerTemps.Count -eq 1){$MinerTemps}else{$MinerTemps[$i]})}}}
-   }
-    else{Write-Host "$MinerAPI API Failed- Could Not Get Stats" -Foreground Red; $RAW = 0; $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"}
-    $progressPreference = 'Continue'
   }
+
+  'wildrig'
+  {
+   $HS = "khs"
+   $Message = $Null; $Message = '/api.json'
+   $Request = $Null; $Request = Get-HTTP -Port $Port -Message $Message
+   if($Request)
+    {
+     $Data = $Request.Content | ConvertFrom-Json
+     $RAW = $Data.hashrate.total[0]
+     Write-MinerData2;
+     $Hash = $Data.hashrate.threads
+     if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = $Hash | Set-Array $i $HS}};
+     $MinerACC += $Data.results.shares_good
+     $MinerREJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good 
+     $ACC += $Data.results.shares_good
+     $REJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good
+     $UPTIME = $Data.connection.uptime
+     $ALGO = $MinerAlgo
+     $KHS = [Double]$Data.hashrate.total[0]/1000
+   }
+   else{Set-APIFailure; break}
+  }
+
 }
 
 ##Check To See if High Rejections
@@ -886,6 +669,7 @@ if($BackgroundTimer.Elapsed.TotalSeconds -gt 60)
   }
   else{if(Test-Path ".\timeout\warnings\$($_.Name)_$($_.Algo)_rejection.txt"){Remove-Item ".\timeout\warnings\$($_.Name)_$($_.Algo)_rejection.txt" -Force}}
  }
+ 
 }
 
 if($CPUOnly -eq $true)
@@ -904,6 +688,7 @@ HSU=$CPUHS
 $Hive
 $Hive | Set-Content ".\build\bash\hivestats.sh"
 }
+
 else
 {
   if($DEVNVIDIA -eq $True){if($GCount.NVIDIA.PSObject.Properties.Value.Count -gt 0){for($i=0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++){$HashRates += 0; $Fans += 0; $Temps += 0}}}
@@ -956,25 +741,6 @@ Write-Host " UPTIME=$UPTIME" -ForegroundColor White
 if($CPUKHS -ne $null){Write-Host "CPU=$CPUSUM"}
 $Hive | Set-Content ".\build\bash\hivestats.sh"
 }
-
-
-function Start-MinerWatchdog {
-  param(
-  [Parameter(Mandatory=$false)]
-  [String]$PlatformMiners
-  )
-
-   if($PlatformMiners -eq "windows"){
-   $MinerFile =".\build\pid\miner_pid.txt"
-   if(Test-Path $MinerFile){$MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue}
-    if($MinerId -eq $null -or $MinerId.HasExited)
-     {
-       $ID = ".\build\pid\background_pid.txt"
-       $BackGroundID = Get-Process -id (Get-Content "$ID" -ErrorAction SilentlyContinue) -ErrorAction SilentlyContinue
-       $BackGroundID.CloseMainWindow() | Out-Null
-      }
-    }
-  }
 
 if($Platforms -eq "windows" -and $HiveOS -eq "Yes")
 {
