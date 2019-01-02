@@ -321,7 +321,7 @@ switch($MinerAPI)
      $MinerREJ = $Data.result[2] -split ";" | Select -skip 2 -first 1
      $ACC += $Data.result[2] -split ";" | Select -skip 1 -first 1
      $REJ += $Data.result[2] -split ";" | Select -skip 2 -first 1
-     $UPTIME = $Data.result[1] | Select -first 1 | foreach {[Double]$_*60}
+     $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
      $A = $Data.result[6] -split ";"
      $ALGO = $MinerAlgo
     }
@@ -354,7 +354,7 @@ switch($MinerAPI)
     $REJ += $Summary.algorithms.rejected_shares
     $MinerACC += $Summary.algorithms.accepted_shares
     $MinerREJ += $Summary.algorithms.rejected_shares
-    $UPTIME = $Summary.algorithms.uptime
+    $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
     $ALGO = $Summary.algorithms.name
     }
     else{Write-Host "API Threads Failed"; break}
@@ -429,7 +429,7 @@ switch($MinerAPI)
       $MinerREJ += $GetSummary -split ";" | Select-String "REJ=" | foreach{$_ -replace ("REJ=","")}
       $ACC += $GetSummary -split ";" | Select-String "ACC=" | foreach{$_ -replace ("ACC=","")}
       $REJ += $GetSummary -split ";" | Select-String "REJ=" | foreach{$_ -replace ("REJ=","")}
-      $UPTIME = $GetSummary -split ";" | Select-String "UPTIME=" | foreach{$_ -replace ("UPTIME=","")}
+      $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
       $ALGO = $GetSummary -split ";" | Select-String "ALGO=" | foreach{$_ -replace ("ALGO=","")}
      }
      else{Write-Host "API Threads Failed"; break}
@@ -531,7 +531,7 @@ switch($MinerAPI)
     $summary.Rejected | Foreach {$REJ += $_}
     $summary.Accepted | Foreach {$ACC += $_}
     $ALGO = $MinerALgo
-    $UPTIME = $summary.Elapsed
+    $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
    }
    else{Set-APIFailure; break}
  }
@@ -599,7 +599,7 @@ switch($MinerAPI)
    $MinerREJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good
    $ACC += $Data.results.shares_good
    $REJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good
-   $UPTIME = $Data.connection.uptime
+   $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
    $ALGO = $MinerAlgo
    $KHS = [Double]$Data.hashrate.total[0]
   }
@@ -651,7 +651,7 @@ switch($MinerAPI)
      $MinerREJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good 
      $ACC += $Data.results.shares_good
      $REJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good
-     $UPTIME = $Data.connection.uptime
+     $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
      $ALGO = $MinerAlgo
      $KHS = [Double]$Data.hashrate.total[0]/1000
    }
