@@ -1275,7 +1275,7 @@ Start-BackgroundCheck -Platforms $Platform
 }
 
 ## Load mini logo
-Get-Logo
+if($Platform -eq "linux"){Get-Logo}
 
 #Clear Logs If There Are 12
 if($Log -eq 12)
@@ -1409,6 +1409,7 @@ else
 {
   ##Miner Loop Windows:
   Clear-Host
+  Get-Logo
   Get-Date | Out-Host
   Get-MinerActive | Out-Host
   Get-MinerStatus | Out-Host

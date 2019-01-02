@@ -232,7 +232,7 @@ While($True)
 $RestartTimer.Restart()
 
 ## Reset All Stats, Rebuild Tables
-$HashRates = @(); $Fans = @(); $Temps = @(); $Power = @(); $RAW = 0; $KHS = 0; $REJ = 0; $ACC = 0;
+$ALGO = @(); $HashRates = @(); $Fans = @(); $Temps = @(); $Power = @(); $RAW = 0; $KHS = 0; $REJ = 0; $ACC = 0;
 $GPUHashRates | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | %{$GPUHashRates.$_ = 0};
 $CPUHashRates | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | %{$CPUHashRates.$_ = 0};
 $GPUFans | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | %{$GPUFans.$_ = 0};
@@ -311,7 +311,6 @@ if($AMDStats)
 
 ## Set Initial Output
 $HS = "khs"
-$ALGO = $Null
 $RAW = 0
 $MinerACC = 0
 $MinerREJ = 0
@@ -447,7 +446,7 @@ switch($MinerAPI)
       $MinerREJ += $GetSummary -split ";" | Select-String "REJ=" | foreach{$_ -replace ("REJ=","")}
       $ACC += $GetSummary -split ";" | Select-String "ACC=" | foreach{$_ -replace ("ACC=","")}
       $REJ += $GetSummary -split ";" | Select-String "REJ=" | foreach{$_ -replace ("REJ=","")}
-      $ALGO += $GetSummary -split ";" | Select-String "ALGO=" | foreach{$_ -replace ("ALGO=","")}
+      $ALGO += "$MinerAlgo"
       $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
      }
      else{Write-Host "API Threads Failed"; break}
