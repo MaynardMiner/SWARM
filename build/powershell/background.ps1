@@ -29,7 +29,23 @@ param(
 )
 
 ##Icon for windows
-if($Platforms -eq "windows"){Set-Location $WorkingDir; Invoke-Expression ".\build\powershell\icon.ps1 `"$WorkingDir\build\apps\comb.ico`""}
+if($Platforms -eq "windows")
+ {
+  Set-Location $WorkingDir; Invoke-Expression ".\build\powershell\icon.ps1 `"$WorkingDir\build\apps\comb.ico`""
+  $Host.UI.RawUI.BackgroundColor = ($bckgrnd = 'Black')
+  $Host.UI.RawUI.ForegroundColor = 'White'
+  $Host.PrivateData.ErrorForegroundColor = 'Red'
+  $Host.PrivateData.ErrorBackgroundColor = $bckgrnd
+  $Host.PrivateData.WarningForegroundColor = 'Magenta'
+  $Host.PrivateData.WarningBackgroundColor = $bckgrnd
+  $Host.PrivateData.DebugForegroundColor = 'Yellow'
+  $Host.PrivateData.DebugBackgroundColor = $bckgrnd
+  $Host.PrivateData.VerboseForegroundColor = 'Green'
+  $Host.PrivateData.VerboseBackgroundColor = $bckgrnd
+  $Host.PrivateData.ProgressForegroundColor = 'Cyan'
+  $Host.PrivateData.ProgressBackgroundColor = $bckgrnd
+  Clear-Host  
+ }
 
 ## Codebase for Further Functions
 . .\build\powershell\hashrates.ps1
@@ -741,6 +757,7 @@ Write-Host "$HashRates" -ForegroundColor Green -NoNewline
 Write-Host " KHS=$KHS" -ForegroundColor Yellow -NoNewline
 Write-Host " ACC=$ACC" -ForegroundColor DarkGreen -NoNewline
 Write-Host " REJ=$REJ" -ForegroundColor DarkRed -NoNewline
+Write-Host " ALGO=$ALGO" -ForegroundColor DarkGray -NoNewline
 Write-Host " $Fans" -ForegroundColor Cyan -NoNewline
 Write-Host " $Temps" -ForegroundColor Magenta -NoNewline
 if($Platforms -eq "windows"){Write-Host " $Power"  -ForegroundColor DarkCyan -NoNewline}
