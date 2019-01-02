@@ -97,7 +97,7 @@ function Set-NvidiaStats {
 
   elseif($Platforms -eq "windows")
   {
-    invoke-expression "TIMEOUT /T 1 .\build\apps\nvidia-smi.exe --query-gpu=power.draw,fan.speed,temperature.gpu --format=csv" | Tee-Object -Variable nvidiaout | Out-Null
+    invoke-expression ".\build\apps\nvidia-smi.exe --query-gpu=power.draw,fan.speed,temperature.gpu --format=csv" | Tee-Object -Variable nvidiaout | Out-Null
     $ninfo = $nvidiaout | ConvertFrom-Csv
     $NVIDIAFans = $ninfo.'fan.speed [%]' | foreach {$_ -replace ("\%","")}
     $NVIDIATemps = $ninfo.'temperature.gpu'
@@ -772,7 +772,8 @@ if($Platforms -eq "windows" -and $HiveOS -eq "Yes")
      }
     if($SwarmResponse -eq "stats")
      {
-      Write-Host "Hive Received Stats"
+      Write-Host "Hive Received Stats
+"
      }
     if($SwarmResponse -eq "exec")
      {
