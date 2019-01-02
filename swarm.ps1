@@ -1415,8 +1415,12 @@ else
   Get-VM | Out-Host
   if($SWARM_Mode -eq "Yes")
   {
+   if($SwitchTime)
+   {
    Write-Host "SWARM MODE ACTIVATED!" -ForegroundColor Green;
    Write-Host "SWARM Mode Start Time is $SwitchTime" -ForegroundColor Cyan;
+   }
+   else{Write-Host "SWARM is benchmarking miners" -ForegroundColor Yellow}
   }
   $BanMessage
 Do{

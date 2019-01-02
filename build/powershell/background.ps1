@@ -46,6 +46,7 @@ function Write-MinerData1 {
   Write-Host "Miner $MinerType is $MinerAPI api"
   Write-Host "Miner Port is $Port"
   Write-Host "Miner Devices is $Devices"
+  Write-Host "Miner is Mining $MinerAlgo"
 }
 
 function Write-MinerData2 {
@@ -294,6 +295,7 @@ if($AMDStats)
 
 ## Set Initial Output
 $HS = "khs"
+$ALGO = $Null
 $RAW = 0
 $MinerACC = 0
 $MinerREJ = 0
@@ -323,7 +325,7 @@ switch($MinerAPI)
      $REJ += $Data.result[2] -split ";" | Select -skip 2 -first 1
      $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
      $A = $Data.result[6] -split ";"
-     $ALGO = $MinerAlgo
+     $ALGO += "$MinerAlgo"
     }
     else{Set-APIFailure; break}
    }
@@ -355,7 +357,7 @@ switch($MinerAPI)
     $MinerACC += $Summary.algorithms.accepted_shares
     $MinerREJ += $Summary.algorithms.rejected_shares
     $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
-    $ALGO = $Summary.algorithms.name
+    $ALGO += "$($Summary.algorithms.name)"
     }
     else{Write-Host "API Threads Failed"; break}
   }
@@ -377,7 +379,7 @@ switch($MinerAPI)
     $MinerACC = $Shares -split "/" | Select -first 1
     $MinerREJ = $Shares -split "/" | Select -Last 1
     if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i $HS}};
-    $ALGO = $MinerAlgo
+    $ALGO += "$MinerAlgo"
     $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
    }
    else{Set-APIFailure; break}
@@ -429,8 +431,8 @@ switch($MinerAPI)
       $MinerREJ += $GetSummary -split ";" | Select-String "REJ=" | foreach{$_ -replace ("REJ=","")}
       $ACC += $GetSummary -split ";" | Select-String "ACC=" | foreach{$_ -replace ("ACC=","")}
       $REJ += $GetSummary -split ";" | Select-String "REJ=" | foreach{$_ -replace ("REJ=","")}
+      $ALGO += $GetSummary -split ";" | Select-String "ALGO=" | foreach{$_ -replace ("ALGO=","")}
       $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
-      $ALGO = $GetSummary -split ";" | Select-String "ALGO=" | foreach{$_ -replace ("ALGO=","")}
      }
      else{Write-Host "API Threads Failed"; break}
   }
@@ -455,7 +457,7 @@ switch($MinerAPI)
      $Data.stratum.rejected_shares | Foreach {$REJ += $_}
      for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $KHS += [Double]$Data.Miners.$GPU.solver.solution_rate/$HashFactor}
      $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
-     $ALGO = $MinerAlgo
+     $ALGO += "$MinerAlgo"
     }
     else{Set-APIFailure; break}
   }
@@ -469,15 +471,15 @@ switch($MinerAPI)
      $Data = $NUll; $Data = $Request.Content | ConvertFrom-Json
      $RAW = if([Double]$Data.hashrate_minute -ne 0 -or [Double]$Data.accepted_count -ne 0){[Double]$Data.hashrate_minute}
      Write-MinerData2;
-     $Hash = $Null; $Hash = $Data.gpus
+     $Hash = $Null; $Hash = $Data.gpus.hashrate_minute
      if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i $HS}};
      $Data.accepted_count | Foreach {$MinerACC += $_}
      $Data.rejected_count | Foreach {$MinerREJ += $_}
      $Data.accepted_count | Foreach {$ACC += $_}
      $Data.rejected_count | Foreach {$REJ += $_}
      $KHS = if([Double]$Data.hashrate_minute -ne 0 -or [Double]$Data.accepted_count -ne 0){[Double]$Data.hashrate_minute/1000}
-     $UPTIME = $Data.uptime
-     $ALGO = $Data.Algorithm
+     $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
+     $ALGO += "$($Data.Algorithm)"
     }
     else{Set-APIFailure; break}
   }
@@ -499,7 +501,7 @@ switch($MinerAPI)
     $Data.rejected_shares | Foreach {$REJ += $_}
     $Data.accepted_shares | Foreach {$ACC += $_}
     $Data.sol_ps | foreach {$KHS += [Double]$_}
-    $ALGO = $MinerAlgo
+    $ALGO += "$MinerAlgo"
     $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
    }
    else{Set-APIFailure; break}
@@ -530,7 +532,7 @@ switch($MinerAPI)
     $summary.Accepted | Foreach {$MinerACC += $_}    
     $summary.Rejected | Foreach {$REJ += $_}
     $summary.Accepted | Foreach {$ACC += $_}
-    $ALGO = $MinerALgo
+    $ALGO += "$MinerALgo"
     $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
    }
    else{Set-APIFailure; break}
@@ -600,7 +602,7 @@ switch($MinerAPI)
    $ACC += $Data.results.shares_good
    $REJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good
    $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
-   $ALGO = $MinerAlgo
+   $ALGO = "$MinerAlgo"
    $KHS = [Double]$Data.hashrate.total[0]
   }
   else{Set-APIFailure; break}
@@ -652,7 +654,7 @@ switch($MinerAPI)
      $ACC += $Data.results.shares_good
      $REJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good
      $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
-     $ALGO = $MinerAlgo
+     $ALGO = "$MinerAlgo"
      $KHS = [Double]$Data.hashrate.total[0]/1000
    }
    else{Set-APIFailure; break}
@@ -721,6 +723,7 @@ else
    }
 
 $KHS = '{0:f2}' -f $KHS
+$ALGO = $ALGO | Select -First 1
 
 $HIVE="
 $($HashRates -join "`n")

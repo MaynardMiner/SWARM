@@ -46,7 +46,7 @@ if($CoinAlgo -eq $null)
       Path = $Path
       Devices = $Devices
       DeviceCall = "trex"
-      Arguments = "-a $($Config.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) --api-bind-telnet 0.0.0.0:4070 --api-bind-http 0.0.0.0:4073 -u $($_.User3) -p $($_.Pass3)$($Diff) $($Config.$ConfigType.commands.$($_.Algorithm))"
+      Arguments = "-a $($Config.$ConfigType.naming.$($_.Algorithm)) --no-nvml -o stratum+tcp://$($_.Host):$($_.Port) --api-bind-telnet 0.0.0.0:4070 --api-bind-http 0.0.0.0:4073 -u $($_.User3) -p $($_.Pass3)$($Diff) $($Config.$ConfigType.commands.$($_.Algorithm))"
       HashRates = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)}
       Quote = if($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)){$($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)*($_.Price)}else{0}
       PowerX = [PSCustomObject]@{$($_.Algorithm) = if($Watts.$($_.Algorithm)."$($ConfigType)_Watts"){$Watts.$($_.Algorithm)."$($ConfigType)_Watts"}elseif($Watts.default."$($ConfigType)_Watts"){$Watts.default."$($ConfigType)_Watts"}else{0}}
