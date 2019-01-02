@@ -17,9 +17,10 @@ function get-AMDPlatform {
 if($Platforms -eq "windows")
 {
  $A = (clinfo) | Select-string "Platform Vendor"
- for($i = 0; $i -lt $A.count; $i++){$A[$i] = $A[$i] -replace "Platform Vendor","$i"; $A[$i] =  $A[$i] -replace ":","="}
- $A = $A | ConvertFrom-StringData
- $A.keys | %{if($A.$_ -eq "AMD Accelerated Parallel Processing" -or $A.$_ -eq "Advanced Micro Devices, Inc."){$B = $_}}
+ $PlatformA = @()
+ for($i =0; $i -lt $A.Count; $i++){ $PlatSel = $A | Select -Skip $i -First 1; $PlatSel = $PlatSel -replace "Platform Vendor","$i"; $PlatSel = $PlatSel -replace ":","="; $PlatformA += $PlatSel}
+ $PlatformA = $PlatformA | ConvertFrom-StringData
+ $PlatformA.keys | %{if($PlatformA.$_ -eq "AMD Accelerated Parallel Processing" -or $PlatformA.$_ -eq "Advanced Micro Devices, Inc."){$B = $_}}
  $B
 }
 }
