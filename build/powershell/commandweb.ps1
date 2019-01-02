@@ -14,9 +14,6 @@
   [string]$HiveMirror
  )
 
- . .\build\powershell\response.ps1
-
-
   Switch($Command.result.command)
   { 
 

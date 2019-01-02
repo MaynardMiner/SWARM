@@ -52,7 +52,8 @@ function Write-MinerData2 {
   $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
   Write-Host "Miner $Name was clocked at $([Double]$RAW)" -foreground Yellow
   if($Platforms -eq "linux"){$Process = Get-Process | Where Name -clike "*$($MinerType)*"}
-  Write-Host "Current Running instances: $($Process.Name)"
+  Write-Host "Current Running instances: $($Process.Name)
+"
 }
 function Set-Array{
   param(
@@ -96,7 +97,7 @@ function Set-NvidiaStats {
 
   elseif($Platforms -eq "windows")
   {
-    invoke-expression ".\build\apps\nvidia-smi.exe --query-gpu=power.draw,fan.speed,temperature.gpu --format=csv" | Tee-Object -Variable nvidiaout | Out-Null
+    invoke-expression "TIMEOUT /T 1 .\build\apps\nvidia-smi.exe --query-gpu=power.draw,fan.speed,temperature.gpu --format=csv" | Tee-Object -Variable nvidiaout | Out-Null
     $ninfo = $nvidiaout | ConvertFrom-Csv
     $NVIDIAFans = $ninfo.'fan.speed [%]' | foreach {$_ -replace ("\%","")}
     $NVIDIATemps = $ninfo.'temperature.gpu'
@@ -586,10 +587,10 @@ switch($MinerAPI)
  if($Request)
   {
    $Data = $Request.Content | ConvertFrom-Json
-   $Hash = $Data.Hashrate.threads
+   $Hash = $Data.Hashrate.threads | %{$_ | Select -First 1}
    $RAW = $Data.hashrate.total | Select -First 1
    Write-MinerData2;
-   if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = $Hash | Set-Array $i $HS}};
+   if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = $Hash[$i] | Select -First 1 | Set-Array $i $HS}};
    $MinerACC += $Data.results.shares_good
    $MinerREJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good
    $ACC += $Data.results.shares_good
@@ -743,98 +744,50 @@ $Hive | Set-Content ".\build\bash\hivestats.sh"
 }
 
 if($Platforms -eq "windows" -and $HiveOS -eq "Yes")
-{
-$mem = @($($ramfree),$($ramtotal-$ramfree))
-$HashRates = $HashRates | foreach {$_ -replace ("GPU=","")}
-$HashRates = $HashRates | foreach {$_ -replace ("$($_)","$($_)")}
-$Power = $Power | foreach {$_ -replace ("POWER=","")}
-$Power = $Power | foreach {$_ -replace ("$($_)","$($_)")}
-$Fans = $Fans | foreach {$_ -replace ("FAN=","")}
-$Fans = $Fans | foreach {$_ -replace ("$($_)","$($_)")}
-$Temps = $Temps | foreach {$_ -replace ("TEMP=","")}
-$Temps = $Temps | foreach {$_ -replace ("$($_)","$($_)")}
-$AR = @("$ACC","$REJ")
-$TOTALKHS = [math]::Round($KHS,2)
-
-$Stats = @{
-  method = "stats"
-  rig_id = $HiveID
-  jsonrpc = "2.0"
-  id= "0"
-  params = @{
-   rig_id = $HiveID
-   passwd = $HivePassword
-   miner = "custom"
-   meta = @{
-    custom = @{
-    coin = "RVN"
-    }
-   }
-   miner_stats = @{
-   hs = @($HashRates)
-   hs_units = $HS
-   uptime = $UPTIME
-   algo = $ALGO
-   ar = @($AR)
-   temp = @($Temps)
-   fan = @($Fans)
-    }
-   total_khs = $TOTALKHS
-   power = @($Power)
-   mem = @($mem)
-   cpuavg = $LoadAverages
-   df = "0"
-  }
-}
-
-try{$response = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body ($Stats | ConvertTo-Json -Depth 4 -Compress) -ContentType 'application/json'}
-catch{Write-Warning "Failed To Contact HiveOS.Farm"; $response = $null}
-
-$response | ConvertTo-Json | Set-Content ".\build\txt\response.txt"
-
-if($response)
  {
-  $SwarmResponse = Start-webcommand -command $response -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror
-  if($SwarmResponse -ne $null)
-   {
-      if($SwarmResponse -eq "config")
-      {
-        Write-Warning "Config Command Initiated- Restarting SWARM"
-        $MinerFile =".\build\pid\miner_pid.txt"
-         if(Test-Path $MinerFile){$MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue}
-         if($MinerId)
-          {
-           Stop-Process $MinerId
-           Start-Sleep -S 3
-          }
-          Start-Process ".\SWARM.bat"
-          Start-Sleep -S 3
-          $ID = ".\build\pid\background_pid.txt"
-          $BackGroundID = Get-Process -id (Get-Content "$ID" -ErrorAction SilentlyContinue) -ErrorAction SilentlyContinue
-          Stop-Process $BackGroundID | Out-Null
+  $Stats = Build-HiveResponse
+  try{$response = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body ($Stats | ConvertTo-Json -Depth 4 -Compress) -ContentType 'application/json'}
+  catch{Write-Warning "Failed To Contact HiveOS.Farm"; $response = $null}
+  $response | ConvertTo-Json | Set-Content ".\build\txt\response.txt"
+  if($response)
+  {
+   $SwarmResponse = Start-webcommand -command $response -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror
+   if($SwarmResponse -ne $null)
+    {
+    if($SwarmResponse -eq "config")
+     {
+      Write-Warning "Config Command Initiated- Restarting SWARM"
+      $MinerFile =".\build\pid\miner_pid.txt"
+      if(Test-Path $MinerFile){$MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue}
+      if($MinerId)
+       {
+        Stop-Process $MinerId
+        Start-Sleep -S 3
        }
-      if($SwarmResponse -eq "stats")
-      {
-       Write-Host "Hive Received Stats"
-      }
-      if($SwarmResponse -eq "exec")
-      {
-       Write-Host "Sent Command To Hive"
-      }
+      Start-Process ".\SWARM.bat"
+      Start-Sleep -S 3
+      $ID = ".\build\pid\background_pid.txt"
+      $BackGroundID = Get-Process -id (Get-Content "$ID" -ErrorAction SilentlyContinue) -ErrorAction SilentlyContinue
+       Stop-Process $BackGroundID | Out-Null
+     }
+    if($SwarmResponse -eq "stats")
+     {
+      Write-Host "Hive Received Stats"
+     }
+    if($SwarmResponse -eq "exec")
+     {
+      Write-Host "Sent Command To Hive"
      }
     }
   }
+}
 
 if($BackgroundTimer.Elapsed.TotalSeconds -gt 120){Clear-Content ".\build\bash\hivestats.sh"; $BackgroundTimer.Restart()}
 
 if($RestartTimer.Elapsed.TotalSeconds -le 10)
 {
- do{
-    Start-Sleep -S 1
-   }while($RestartTimer.Elapsed.TotalSeconds -le 10)
+ $GoToSleep = [math]::Round(10 - $RestartTimer.Elapsed.TotalSeconds)
+ if($GoToSleep -gt 0){Start-Sleep -S $GoToSleep}
 }
-#Start-Sleep -S 5
-#Start-MinerWatchdog -PlatformMiners $Platforms
-#Start-Sleep -S 5
-#{"method":"stats","jsonrpc":"2.0","id":0,"params":{"rig_id":"","passwd":"","miner":"custom","meta":{"custom":{"coin":"RVN"}},"miner_stats":{"hs":[0,0,0,0,0,0,0,0,0,0,0,0,0],"hs_units":"khs","temp":[56,58,54,0,0,0,59,0,0,57,44,0,0],"fan":[80,80,80,0,0,0,80,0,0,80,80,0,0],"uptime":"6\r,","ar":["0\r","0\r"],"algo":"tribus\r"},"total_khs":"0\r","temp":["0","62","63","61","49","47","46","64","54","45","64","54","51","44"],"fan":["0","80","80","80","80","80","80","80","80","80","80","80","80","80"],"power":["0","143","137","150","0","0","0","147","0","0","143","151","0","0"],"df":"196G","mem":[7681,1669],"cpuavg":[5.29,4.33,4.61]}}
+
 }
