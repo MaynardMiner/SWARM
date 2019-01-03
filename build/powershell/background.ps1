@@ -531,7 +531,7 @@ switch($MinerAPI)
   $Request = $null; $Request = Get-TCP -Server $Server -Port $port -Message $Message
   if($Request)
    {
-    if($Platforms -eq "windows" -and $Minername -ne "teamredminer.exe"){$Request = $Request.Substring($Request.IndexOf("{"), $Request.LastIndexOf("}") - $Request.IndexOf("{") + 1) -replace " ", "_"}
+    $Request = $Request.Substring($Request.IndexOf("{"), $Request.LastIndexOf("}") - $Request.IndexOf("{") + 1) -replace " ", "_"
     $Data = $Null; $Data = $Request | ConvertFrom-Json
     $summary = $Data.summary.summary
     $threads = $Data.devs.devs
@@ -665,7 +665,7 @@ switch($MinerAPI)
      $RAW = $Data.hashrate.total[0]
      Write-MinerData2;
      $Hash = $Data.hashrate.threads
-     if($Hash -ne "" -or $Hash -ne $null){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i $HS}};
+     if($Hash -ne "" -or $Hash -ne $null){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$(Get-Gpus) = $Hash[$GPU] | Select -First 1}};
      $MinerACC += $Data.results.shares_good
      $MinerREJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good 
      $ACC += $Data.results.shares_good
