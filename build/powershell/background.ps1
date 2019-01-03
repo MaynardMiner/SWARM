@@ -75,22 +75,22 @@ function Write-MinerData2 {
 function Set-Array{
   param(
   [Parameter(Position=0, Mandatory=$true)]
-  [Array]$ParseRates,
+  [Object]$ParseRates,
   [Parameter(Position=1, Mandatory=$true)]
   [int]$i,
   [Parameter(Position=2, Mandatory=$false)]
   [string]$factor
   )
-  $ParseRates = $ParseRates | % {iex $_}
+  $Parsed = $ParseRates | %{iex $_}
   switch($factor)
    {
     "hs"{$factor = 1}
     "khs"{$factor = 1000}
     default{$factor = 1}
    }
-  if($ParseRates.Count -eq 1){[Double]$Parsed = $ParseRates}
-  elseif($ParseRates.Count -gt 1){[Double]$Parsed = $ParseRates[$i]}
-  $Parsed/$factor
+  if($ParseRates.Count -eq 1){[Double]$Parse = $Parsed}
+  elseif($ParseRates.Count -gt 1){[Double]$Parse = $Parsed[$i]}
+  $Parse/$factor
   }
 
 function Set-APIFailure {
@@ -117,10 +117,11 @@ function Set-NvidiaStats {
   elseif($Platforms -eq "windows")
   {
     invoke-expression ".\build\apps\nvidia-smi.exe --query-gpu=power.draw,fan.speed,temperature.gpu --format=csv" | Tee-Object -Variable nvidiaout | Out-Null
-    $ninfo = $nvidiaout | ConvertFrom-Csv
+    if($nvidiaout){$ninfo = $nvidiaout | ConvertFrom-Csv
     $NVIDIAFans = $ninfo.'fan.speed [%]' | foreach {$_ -replace ("\%","")}
     $NVIDIATemps = $ninfo.'temperature.gpu'
     $NVIDIAPower = $ninfo.'power.draw [W]' | foreach {$_ -replace ("\[Not Supported\]","75")} | foreach {$_ -replace (" W","")}        
+    }
   }
 
  $NVIDIAStats = @{}
@@ -136,22 +137,22 @@ function Set-AMDStats {
 
 if($Platforms -eq "windows")
 {
-Invoke-Expression ".\build\apps\overdriveVII.exe -y -f -t" | Tee-Object -Variable amdout | Out-Null
-$amdinfo = $amdout | ConvertFrom-StringData
-$AMDStats = @{}
-$ainfo = @{}
-$ainfo.Add("Fans",@())
-$ainfo.Add("Temps",@())
-$ainfo.Add("Watts",@())
-$fancheck = 0
-$tempcheck = 0
-$wattcheck = 0
-$amdinfo.keys | foreach {if($_ -like "*Fan*"){$ainfo.Fans += $amdinfo.$_ ; $fancheck++}}
-$amdinfo.keys | foreach {if($_ -like "*Temp*"){$ainfo.Temps += $amdinfo.$_ ; $tempcheck++}}
-$amdinfo.keys | foreach {if($_ -like "*Watts*"){if($amdinfo.$_ -ne "0"){$ainfo.Watts += $amdinfo.$_}else{$ainfo.Watts += "75"}; $wattcheck++}}
-$AMDFans = $ainfo.Fans
-$AMDTemps = $ainfo.Temps
-$AMDPower = $ainfo.Watts
+Invoke-Expression ".\build\apps\odvii.exe f" | Tee-Object -Variable amdout | Out-Null
+ if($amdout)
+  {
+   $AMDStats = @{}
+   $amdinfo = $amdout | ConvertFrom-StringData
+   $ainfo = @{}
+   $ainfo.Add("Fans",@())
+   $ainfo.Add("Temps",@())
+   $ainfo.Add("Watts",@())
+   $amdinfo.keys | foreach {if($_ -like "*Fan*"){$ainfo.Fans += $amdinfo.$_}}
+   $amdinfo.keys | foreach {if($_ -like "*Temp*"){$ainfo.Temps += $amdinfo.$_}}
+   $amdinfo.keys | foreach {if($_ -like "*Watts*"){$ainfo.Watts += $amdinfo.$_}}
+   $AMDFans = $ainfo.Fans
+   $AMDTemps = $ainfo.Temps
+   $AMDPower = $ainfo.Watts
+  }
 }
 
 elseif($Platforms -eq "linux" -and $HiveOS -eq "Yes")
@@ -165,6 +166,7 @@ elseif($Platforms -eq "linux" -and $HiveOS -eq "Yes")
 
 elseif($Platforms -eq "linux" -and $HiveOS -eq "No")
 {
+  $AMDStats = @{}
   timeout -s9 10 rocm-smi -f | Tee-Object -Variable AMDFans | Out-Null
   $AMDFans = $AMDFans | Select-String "%" | foreach {$_ -split "\(" | Select -Skip 1 -first 1} | foreach {$_ -split "\)" | Select -first 1}
   timeout -s9 10 rocm-smi -t | Tee-Object -Variable AMDTemps | Out-Null
@@ -173,7 +175,7 @@ elseif($Platforms -eq "linux" -and $HiveOS -eq "No")
 
 $AMDStats.Add("Fans",$AMDFans)
 $AMDStats.Add("Temps",$AMDTemps)
-if($AMDPower){$AMDStats.Add("Power",$AMDPower)}
+$AMDStats.Add("Power",$AMDPower)
 
 $AMDStats
 
@@ -275,9 +277,9 @@ $MinerAPI = "$($_.API)"
 $HashPath = ".\logs\$($_.Type).log"
 
 ## Set Object For Type (So It doesn't need to be repeated)
-if($_.Type -like "*NVIDIA*"){$TypeS = "NVIDIA"}
-elseif($_.Type -like "*AMD*"){$TypeS = "AMD"}
-elseif($_.Type -like "*CPU*"){$TypeS = "CPU"}
+if($MinerType -like "*NVIDIA*"){$TypeS = "NVIDIA"}
+elseif($MinerType -like "*AMD*"){$TypeS = "AMD"}
+elseif($MinerType -like "*CPU*"){$TypeS = "CPU"}
 
 ## Determine Devices
 if($_.Type -ne "CPU")
@@ -292,18 +294,18 @@ elseif($_.Type -eq "CPU"){$Devices = Get-DeviceString -TypeCount $GCount.$TypeS.
 if($Platforms -eq "windows" -and $HiveOS -eq "Yes")
  {
    if($TypeS -eq "NVIDIA"){$StatPower = $NVIDIAStats.Power}
-   elseif($TypeS -eq "AMD"){$StatPower = $AMDStats.Power}
-   for($i=0;$i -lt $Devices.Count; $i++){$GPUPower.$(Get-GPUS) = Set-Array $StatPower $i}
+   if($TypeS -eq "AMD"){$StatPower = $AMDStats.Power}
+   if($StatPower -ne "" -or $StatPower -ne $null){for($i=0;$i -lt $Devices.Count; $i++){$GPUPower.$(Get-GPUS) = Set-Array $StatPower $i}}
  }
 
 
-## Not Fans & Temps
-if($NVIDIAStats)
+## Now Fans & Temps
+if($MinerType -Like "*NVIDIA*")
 {
   for($i=0;$i -lt $Devices.Count; $i++){$GPUFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans $i}
   for($i=0;$i -lt $Devices.Count; $i++){$GPUTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps $i}
 }
-if($AMDStats)
+if($MinerType -Like "*AMD*")
 {
   for($i=0;$i -lt $Devices.Count; $i++){$GPUFans.$(Get-GPUS) = Set-Array $AMDStats.Fans $i}
   for($i=0;$i -lt $Devices.Count; $i++){$GPUTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps $i}
@@ -333,7 +335,7 @@ switch($MinerAPI)
      Write-MinerData2;
      $KHS += $Data.result[2] -split ";" | Select -First 1 | %{[Double]$_};
      $Hash = $Null; $Hash = $Data.result[3] -split ";";
-     if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i $HS}};
+     if($Hash -ne "" -or $Hash -ne $null){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i $HS}};
      $MinerACC = $Data.result[2] -split ";" | Select -skip 1 -first 1
      $MinerREJ = $Data.result[2] -split ";" | Select -skip 2 -first 1
      $ACC += $Data.result[2] -split ";" | Select -skip 1 -first 1
@@ -366,7 +368,7 @@ switch($MinerAPI)
     {
     $Threads = $GetThreads | ConvertFrom-Json
     $Hash = $Null; $Hash = $Threads.workers.algorithms.speed
-    if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i $HS}};
+    if($Hash -ne "" -or $Hash -ne $null){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i $HS}};
     $ACC += $Summary.algorithms.accepted_shares
     $REJ += $Summary.algorithms.rejected_shares
     $MinerACC += $Summary.algorithms.accepted_shares
@@ -393,7 +395,7 @@ switch($MinerAPI)
     $REJ += $Shares -split "/" | Select -Last 1
     $MinerACC = $Shares -split "/" | Select -first 1
     $MinerREJ = $Shares -split "/" | Select -Last 1
-    if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i $HS}};
+    if($Hash -ne "" -or $Hash -ne $null){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i $HS}};
     $ALGO += "$MinerAlgo"
     $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
    }
@@ -441,7 +443,7 @@ switch($MinerAPI)
      {
       $Data = $null; $Data = $GetThreads -split "\|"
       $Hash = $Null; $Hash = $Data -split ";" | Select-String "KHS" | foreach {$_ -replace ("KHS=","")}
-      if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i}};
+      if($Hash -ne "" -or $Hash -ne $null){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i}};
       $MinerACC += $GetSummary -split ";" | Select-String "ACC=" | foreach{$_ -replace ("ACC=","")}
       $MinerREJ += $GetSummary -split ";" | Select-String "REJ=" | foreach{$_ -replace ("REJ=","")}
       $ACC += $GetSummary -split ";" | Select-String "ACC=" | foreach{$_ -replace ("ACC=","")}
@@ -465,7 +467,7 @@ switch($MinerAPI)
      $Hash = $Null; $Hash = $Data.Miners
      if($HS -eq "hs"){$HashFactor = 1}
      if($HS -eq "khs"){$Hashfactor = 1000}
-     if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$(Get-Gpus) = [Double]$Hash.$GPU.solver.solution_rate/$HashFactor}};
+     if($Hash -ne "" -or $Hash -ne $null){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$(Get-Gpus) = [Double]$Hash.$GPU.solver.solution_rate/$HashFactor}};
      $Data.stratum.accepted_shares | Foreach {$MinerACC += $_}
      $Data.stratum.rejected_shares | Foreach {$MinerREJ += $_}
      $Data.stratum.accepted_shares | Foreach {$ACC += $_}
@@ -487,7 +489,7 @@ switch($MinerAPI)
      $RAW = if([Double]$Data.hashrate_minute -ne 0 -or [Double]$Data.accepted_count -ne 0){[Double]$Data.hashrate_minute}
      Write-MinerData2;
      $Hash = $Null; $Hash = $Data.gpus.hashrate_minute
-     if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i $HS}};
+     if($Hash -ne "" -or $Hash -ne $null){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i $HS}};
      $Data.accepted_count | Foreach {$MinerACC += $_}
      $Data.rejected_count | Foreach {$MinerREJ += $_}
      $Data.accepted_count | Foreach {$ACC += $_}
@@ -510,7 +512,7 @@ switch($MinerAPI)
     $Data.sol_ps | foreach {$RAW += [Double]$_}
     Write-MinerData2;
     $Hash = $Null; $Hash = $Data.sol_ps
-    if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i $HS}};
+    if($Hash -ne "" -or $Hash -ne $null){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i $HS}};
     $Data.rejected_shares | Foreach {$MinerREJ += $_}
     $Data.accepted_shares | Foreach {$MinerACC += $_}  
     $Data.rejected_shares | Foreach {$REJ += $_}
@@ -536,13 +538,13 @@ switch($MinerAPI)
     $Hash = $Null; $Sum = $Null;
     if($summary.'KHS 5s' -or $summary.'KHS_5s'){if($summary.'KHS 5s'){$Sum = $summary.'KHS 5s'}else{$Sum = $summary.'KHS_5s'}}
     else{if($summary.'KHS 30s'){$Sum = $summary.'KHS 30s'}else{$Sum = $summary.'KHS_30s'}}
-    if($threads.'KHS 5s' -or $threads.'KHS_5s'){if($threads.'KHS 5s'){$thread = $threads.'KHS 5s'}else{$thread = $threads.'KHS_5s'}}
-    else{if($threads.'KHS 30s'){$Hash = $threads.'KHS 30s'}else{$thread = $threads.'KHS_30s'}}
+    if($threads.'KHS 5s' -or $threads.'KHS_5s'){if($threads.'KHS 5s'){$Hash = $threads.'KHS 5s'}else{$Hash = $threads.'KHS_5s'}}
+    else{if($threads.'KHS 30s'){$Hash = $threads.'KHS 30s'}else{$Hash = $threads.'KHS_30s'}}
     $RAW += [Double]$Sum*1000
     $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
     Write-MinerData2;
     $KHS += $Sum
-    if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i $HS}};
+    if($Hash -ne "" -or $Hash -ne $null){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i $HS}};
     $summary.Rejected | Foreach {$MinerREJ += $_}
     $summary.Accepted | Foreach {$MinerACC += $_}    
     $summary.Rejected | Foreach {$REJ += $_}
@@ -611,7 +613,7 @@ switch($MinerAPI)
    $Hash = $Data.Hashrate.threads | %{$_ | Select -First 1}
    $RAW = $Data.hashrate.total | Select -First 1
    Write-MinerData2;
-   if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$(Get-Gpus) = $Hash[$GPU] | Select -First 1}};
+   if($Hash -ne "" -or $Hash -ne $null){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$(Get-Gpus) = $Hash[$GPU] | Select -First 1}};
    $MinerACC += $Data.results.shares_good
    $MinerREJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good
    $ACC += $Data.results.shares_good
@@ -639,7 +641,7 @@ switch($MinerAPI)
     $CPUKHS = [Double]$Data.hashrate.total[0]
     $CPUSUM = [Double]$Data.hashrate.total[0]
     $CPURAW | Set-Content ".\build\txt\$MinerType-hash.txt"
-    if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $CPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Hash.Count -eq 1){[Double]$($Hash[0] | Select -first 1)}else{[Double]$($Hash[$i] | Select -First 1)})}}
+    if($Hash -ne "" -or $Hash -ne $null){for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $CPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Hash.Count -eq 1){[Double]$($Hash[0] | Select -first 1)}else{[Double]$($Hash[$i] | Select -First 1)})}}
     $MinerACC = 0
     $MinerREJ = 0
     $MinerACC += $Data.results.shares_good
@@ -663,7 +665,7 @@ switch($MinerAPI)
      $RAW = $Data.hashrate.total[0]
      Write-MinerData2;
      $Hash = $Data.hashrate.threads
-     if($Hash){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i $HS}};
+     if($Hash -ne "" -or $Hash -ne $null){for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i $HS}};
      $MinerACC += $Data.results.shares_good
      $MinerREJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good 
      $ACC += $Data.results.shares_good

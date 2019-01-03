@@ -64,7 +64,7 @@ function Set-Power {
   if($POWA -eq $true)
   {
     if($amdout){Clear-Variable amdout}
-    Invoke-Expression ".\build\apps\overdriveVII.exe -y" | Tee-Object -Variable amdout | OUt-Null
+    Invoke-Expression ".\build\apps\odvii.exe f" | Tee-Object -Variable amdout | OUt-Null
     $amdinfo = $amdout | ConvertFrom-StringData
     $APow = @()
     $amdinfo.keys | foreach {if($_ -like "*Watts*"){$APow += $amdinfo.$_}}
