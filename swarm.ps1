@@ -626,7 +626,10 @@ if($Platform -eq "windows")
     $hiveresponse.result.config
 
   }
-  else{Write-Host "failed to contact HiveOS"}
+  else
+   {
+    Write-Host "failed to contact HiveOS- Do you have an account? Did you use your farm hash?"
+   }
 
   ## Get Total GPU HashTable
   $GPU_Count = Get-GPUCount $GetBusData
