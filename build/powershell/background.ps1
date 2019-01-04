@@ -137,7 +137,7 @@ function Set-AMDStats {
 
 if($Platforms -eq "windows")
 {
-Invoke-Expression ".\build\apps\odvii.exe f" | Tee-Object -Variable amdout | Out-Null
+Invoke-Expression ".\build\apps\odvii.exe s" | Tee-Object -Variable amdout | Out-Null
  if($amdout)
   {
    $AMDStats = @{}
@@ -619,7 +619,7 @@ switch($MinerAPI)
    $ACC += $Data.results.shares_good
    $REJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good
    $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
-   $ALGO = "$MinerAlgo"
+   $ALGO += "$MinerAlgo"
    $KHS = [Double]$Data.hashrate.total[0]
   }
   else{Set-APIFailure; break}
@@ -671,7 +671,7 @@ switch($MinerAPI)
      $ACC += $Data.results.shares_good
      $REJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good
      $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
-     $ALGO = "$MinerAlgo"
+     $ALGO += "$MinerAlgo"
      $KHS = [Double]$Data.hashrate.total[0]/1000
    }
    else{Set-APIFailure; break}

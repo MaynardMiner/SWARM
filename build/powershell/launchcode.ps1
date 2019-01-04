@@ -212,7 +212,6 @@ if($Platforms -eq "windows")
     $script += ". `"$dir\build\powershell\launchcode.ps1`";"
     $script += "$dir\build\powershell\icon.ps1 `"$dir\build\apps\miner.ico`"" 
     $script += "`$host.ui.RawUI.WindowTitle = ""$($MinerCurrent.Name)"";"
-    $script += "`$Host.UI.RawUI.BackgroundColor = (`$bckgrnd = `'black`');"
     $MinerCurrent.Prestart | foreach{
     if($_ -notlike "export LD_LIBRARY_PATH=$dir\build\export")
      {
@@ -222,10 +221,10 @@ if($Platforms -eq "windows")
      }
     }
     if($MinerCurrent.DeviceCall -eq "ewbf"){$script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) --log 3 --logfile $Logs`'"}
-    $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) | Tee-ObjectNoColor -FilePath ""$Logs"" -erroraction SilentlyContinue`'"
+    $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) | Tee-Object -FilePath ""$Logs"" -erroraction SilentlyContinue`'"
     $script | out-file "$WorkingDirectory\swarm-start.ps1"
     Start-Sleep -S .5
-  
+
     $Job = Start-Job -ArgumentList $PID, $WorkingDirectory {
      param($ControllerProcessID, $WorkingDirectory)
      Set-Location $WorkingDirectory
