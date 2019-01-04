@@ -531,7 +531,13 @@ switch($MinerAPI)
   $Request = $null; $Request = Get-TCP -Server $Server -Port $port -Message $Message
   if($Request)
    {
-    $Data = $Null; $Data = $Request | ConvertFrom-Json
+    $Tryother = $false
+    try{$Data = $Null; $Data = $Request | ConvertFrom-Json}catch{$Tryother = $true}
+    if($Tryother -eq $true)
+     {
+      $Request = $Request.Substring($Request.IndexOf("{"), $Request.LastIndexOf("}") - $Request.IndexOf("{") + 1) -replace " ", "_"
+      $Data = $Null; $Data = $Request | ConvertFrom-Json
+     }
     $summary = $Data.summary.summary
     $threads = $Data.devs.devs
     $Hash = $Null; $Sum = $Null;
