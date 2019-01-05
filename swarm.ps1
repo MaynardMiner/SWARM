@@ -562,7 +562,7 @@ if($Platform -eq "windows")
   $TotalMemory | Set-Content ".\build\txt\ram.txt"
 
   ## GPU Bus Hash Table
-  $GetBusData = $GetBusData = Get-BusFunctionID | ConvertTo-Json -Compress
+  $GetBusData = Get-BusFunctionID | ConvertTo-Json -Compress
 
   ## Say Hello To Hive
   if($HiveOS -eq "Yes")

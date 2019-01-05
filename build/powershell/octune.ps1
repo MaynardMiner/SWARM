@@ -3,7 +3,7 @@ function Set-VegaOC{
   Param (
     [Parameter(Position=0)]
     [String]$Platform,
-    [Parameter(Position=0)]
+    [Parameter(Position=1)]
     [String]$OCAlgo
   )
 
@@ -13,13 +13,12 @@ function Set-VegaOC{
     $Reg = $Reg | %{$_ -split "\\" | Select -Last 1} | %{if($_ -like "*00*"){$_}}
     $RegNames= @{}
     $Reg | foreach{
-     $DriverDesc = $(Get-ItemProperty -Path ".\0000" -Name "DriverDesc").DriverDesc
-    if($Provider -like "*Vega*")
-     {
-      $RegNames.Add("$($_)",$((Get-ItemProperty -Path ".\0000" -Name "ProviderName").ProviderName))
-     }
+    $DriverDesc = $(Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\$($_)" -Name "DriverDesc").DriverDesc;
+    if($DriverDesc -like "*Vega*")
+     {$RegNames.Add("$($_)",$((Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\$($_)" -Name "ProviderName").ProviderName))};    
+    }
+    Set-Location $WorkingDir; 
     $RegNames
-   }
   }
     function HX4 {
       param(
@@ -53,42 +52,40 @@ function Set-VegaOC{
     $Voltage = @{}
     $Clock = @{}
 
-    $OCAlgo = "c11"
    $GetVegaOC = Get-Content ".\config\oc\vega-oc.json" | COnvertFrom-Json
-   if($GetVegaOC.$OCAlgo.Core.Voltage.P7 -ne "" -or $GetVegaOC.Default.Voltage.P7 -ne ""){$VegaP = $GetVegaOC.$OCAlgo;$VegaOC = $GetVegaOC.Default}
-   else{break}
+   if($GetVegaOC.$OCAlgo.Core.Voltage.P7 -or $GetVegaOC.Default.Voltage.P7){$VegaP = $GetVegaOC.$OCAlgo;$VegaOC = $GetVegaOC.Default}else{break}
 
    $VegaP.Core.Voltage | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | foreach{if($VegaP.Core.Voltage.$_ -ne ""){$VegaOC.Core.Voltage.$_ = $VegaP.Core.Voltage.$_}}
    $VegaP.Core.Clocks | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | foreach{if($VegaP.Core.Clocks.$_ -ne ""){$VegaOC.Clock.Clocks.$_ = $VegaP.Core.Clocks.$_}}
 
-   if($VegaP.Memory.Voltage.P4 -ne ""){$VegaOC.Memory.voltage.P4 = $VegaP.Memory.Voltage.P4}
-   if($VegaP.Memory.Clocks.P4 -ne ""){$VegaOC.Memory.Clocks.P4 = $VegaP.Memory.Clocks.P4}
+   if($VegaP.Memory.Voltage.P4){$VegaOC.Memory.voltage.P4 = $VegaP.Memory.Voltage.P4}
+   if($VegaP.Memory.Clocks.P4){$VegaOC.Memory.Clocks.P4 = $VegaP.Memory.Clocks.P4}
 
-   $Voltage.ADD("P0",(HX4 $VegaOC.Core.Voltage.P0)); $Clock.Add("P0",(HX6 $VegaOC.Core.Clock.P0))
-   $Voltage.ADD("P1",(HX4 $VegaOC.Core.Voltage.P1)); $Clock.Add("P1",(HX6 $VegaOC.Core.Clock.P1))
-   $Voltage.ADD("P2",(HX4 $VegaOC.Core.Voltage.P2)); $Clock.Add("P2",(HX6 $VegaOC.Core.Clock.P2))
-   $Voltage.ADD("P3",(HX4 $VegaOC.Core.Voltage.P3)); $Clock.Add("P3",(HX6 $VegaOC.Core.Clock.P3))
-   $Voltage.ADD("P4",(HX4 $VegaOC.Core.Voltage.P4)); $Clock.Add("P4",(HX6 $VegaOC.Core.Clock.P4))
-   $Voltage.ADD("P5",(HX4 $VegaOC.Core.Voltage.P5)); $Clock.Add("P5",(HX6 $VegaOC.Core.Clock.P5))
-   $Voltage.ADD("P6",(HX4 $VegaOC.Core.Voltage.P6)); $Clock.Add("P6",(HX6 $VegaOC.Core.Clock.P6))
-   $Voltage.ADD("P7",(HX4 $VegaOC.Core.Voltage.P7)); $Clock.Add("P7",(HX6 $VegaOC.Core.Clock.P7))
+   $Voltage.ADD("P0",(HX4 $VegaOC.Core.Voltage.P0)); $Clock.Add("P0",(HX6 $VegaOC.Core.Clocks.P0))
+   $Voltage.ADD("P1",(HX4 $VegaOC.Core.Voltage.P1)); $Clock.Add("P1",(HX6 $VegaOC.Core.Clocks.P1))
+   $Voltage.ADD("P2",(HX4 $VegaOC.Core.Voltage.P2)); $Clock.Add("P2",(HX6 $VegaOC.Core.Clocks.P2))
+   $Voltage.ADD("P3",(HX4 $VegaOC.Core.Voltage.P3)); $Clock.Add("P3",(HX6 $VegaOC.Core.Clocks.P3))
+   $Voltage.ADD("P4",(HX4 $VegaOC.Core.Voltage.P4)); $Clock.Add("P4",(HX6 $VegaOC.Core.Clocks.P4))
+   $Voltage.ADD("P5",(HX4 $VegaOC.Core.Voltage.P5)); $Clock.Add("P5",(HX6 $VegaOC.Core.Clocks.P5))
+   $Voltage.ADD("P6",(HX4 $VegaOC.Core.Voltage.P6)); $Clock.Add("P6",(HX6 $VegaOC.Core.Clocks.P6))
+   $Voltage.ADD("P7",(HX4 $VegaOC.Core.Voltage.P7)); $Clock.Add("P7",(HX6 $VegaOC.Core.Clocks.P7))
         $Core.Add("Voltage",$Voltage); $Core.Add("Clock",$Clock); $PP.Add("Core",$Core);
 
     $Mem = @{}
     $Voltage = @{}
     $Clock = @{}
-    $Voltage.Add("P4",(HX4 $VegaOC.Memory.Voltage.P4)); $Clock.Add("P4",(HX6 $VegaOC.Memory.Voltage.P4))
+    $Voltage.Add("P4",(HX4 $VegaOC.Memory.Voltage.P4)); $Clock.Add("P4",(HX6 $VegaOC.Memory.Clocks.P4))
         $Mem.Add("Voltage",$Voltage); $Mem.Add("Clock",$Clock); $PP.Add("Mem",$Mem);
 
     
-    if($VegaP.Power_Limit_Max -ne ""){$VegaOC.Power_Limit_Max = $VegaP.Power_Limit_Max}
-    if($VegaP.Current_Limit -ne ""){$VegaOC.Current_Limit = $VegaP.Current_Limit}
-    if($VegaP.Wattage_Limit -ne ""){$VegaOC.Wattage_Limit = $VegaP.Wattage_Limit}     
-    if($VegaP.Acoustic_Limit -ne ""){$VegaOC.Acoustic_Limit = $VegaP.Acoustic_Limit}     
-    if($VegaP.Target_Temp -ne ""){$VegaOC.Target_Temp = $VegaP.Target_Temp}     
-    if($VegaP.Max_Temp -ne ""){$VegaOC.Max_Temp = $VegaP.Max_Temp}     
-    if($VegaP.Min_Fan -ne ""){$VegaOC.Min_Fan = $VegaP.Min_Fan}     
-    if($VegaP.Max_Fan -ne ""){$VegaOC.Max_Fan = $VegaP.Max_Fan}     
+    if($VegaP.Power_Limit_Max){$VegaOC.Power_Limit_Max = $VegaP.Power_Limit_Max}
+    if($VegaP.Current_Limit){$VegaOC.Current_Limit = $VegaP.Current_Limit}
+    if($VegaP.Wattage_Limit){$VegaOC.Wattage_Limit = $VegaP.Wattage_Limit}     
+    if($VegaP.Acoustic_Limit){$VegaOC.Acoustic_Limit = $VegaP.Acoustic_Limit}     
+    if($VegaP.Target_Temp){$VegaOC.Target_Temp = $VegaP.Target_Temp}     
+    if($VegaP.Max_Temp){$VegaOC.Max_Temp = $VegaP.Max_Temp}     
+    if($VegaP.Min_Fan){$VegaOC.Min_Fan = $VegaP.Min_Fan}     
+    if($VegaP.Max_Fan){$VegaOC.Max_Fan = $VegaP.Max_Fan}     
 
 
     $PP.Add("Power_Limit_Max",(HX4 $VegaOC.Power_Limit_Max))
@@ -111,7 +108,6 @@ if($Platform -eq "windows")
 {
 $hexified = $Power_PLay.Split(',') | % { "0x$_"}
 $GetRegistry = (Get-RegDevices)
-
  $GetRegistry.Keys | foreach{
  $Regkey = Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\$($_)" -Name "PP_PhmSoftPowerPlayTable" -ErrorAction SilentlyContinue
  if($Regkey)
@@ -120,6 +116,13 @@ $GetRegistry = (Get-RegDevices)
   }
   else{New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\$($_)" -Name "PP_PhmSoftPowerPlayTable" -PropertyType "Binary" -Value ([byte[]]$hexified) | Out-Null }
   }
+  $MinerArray = Get-Content ".\build\txt\devicelist.txt" | COnvertFrom-Json
+  $AMD = $MinerArray.AMD
+  $AMD | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Foreach{
+   $Commands += "-ac$($_) GPU_P7=$($VegaOC.Core.Clocks.P7);$($VegaOC.Core.Voltage.P7) GPU_P6=$($VegaOC.Core.Clocks.P6);$($VegaOC.Core.Voltage.P6) GPU_P5=$($VegaOC.Core.Clocks.P5);$($VegaOC.Core.Voltage.P5) GPU_P4=$($VegaOC.Core.Clocks.P4);$($VegaOC.Core.Voltage.P4) GPU_P3=$($VegaOC.Core.Clocks.P3);$($VegaOC.Core.Voltage.P3) GPU_P2=$($VegaOC.Core.Clocks.P2);$($VegaOC.Core.Voltage.P2) GPU_P1=$($VegaOC.Core.Clocks.P1);$($VegaOC.Core.Voltage.P1) GPU_P0=$($VegaOC.Core.Clocks.P0);$($VegaOC.Core.Voltage.P0) MEM_P3=$($VegaOC.Memory.Clocks.P4);$($VegaOC.Memory.Voltage.P4) Fan_Min=$($VegaOC.Min_Fan) Fan_Max=$($VegaOC.Max_Fan) Fan_Target=$($VegaOC.Target_Temp) "
+   Start-Process ".\build\apps\OverdriveNtool.exe" -ArgumentList $Commands -NoNewWindow -Wait
+  }
+  $hexified | Set-Content ".\build\txt\reg.txt"
  }
 }
 
@@ -143,6 +146,12 @@ $OCMiners | foreach{
  if($_.Type -like "*NVIDIA*"){$nvidiaOC = $true}
  if($_.Type -like "*AMD*"){$AMDOC = $true}
 }
+
+if($AMDOC = $true)
+ {
+  $VegaMiner = $OCMiners | Where Type -like "*AMD*"
+  Set-VegaOC "windows" $VegaMiner.ALgo
+ }
 
 $ETHPill = $false
 
