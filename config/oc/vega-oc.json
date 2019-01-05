@@ -1,0 +1,2842 @@
+{
+    "Default":  {
+                    "Core":  {
+                                 "voltage":  {
+                                                 "P0":  "",
+                                                 "P1":  "",
+                                                 "P2":  "",
+                                                 "P3":  "",
+                                                 "P4":  "",
+                                                 "P5":  "",
+                                                 "P6":  "",
+                                                 "P7":  ""
+                                             },
+                                 "Clocks":  {
+                                                "P0":  "",
+                                                "P1":  "",
+                                                "P2":  "",
+                                                "P3":  "",
+                                                "P4":  "",
+                                                "P5":  "",
+                                                "P6":  "",
+                                                "P7":  ""
+                                            }
+                             },
+                    "Memory":  {
+                                   "voltage":  {
+                                                   "P4":  ""
+                                               },
+                                   "clocks":  {
+                                                  "P4":  ""
+                                              }
+                               },
+                    "Power_Limit_Max":  "",
+                    "Current_Limit":  "",
+                    "Wattage_Limit":  "",
+                    "Acoustic_Limit":  "",
+                    "Target_Temp":  "",
+                    "Max_Temp":  "",
+                    "Min_Fan":  "",
+                    "Max_Fan":  ""
+                },
+    "c11":  {
+                "Core":  {
+                             "voltage":  {
+                                             "P0":  "",
+                                             "P1":  "",
+                                             "P2":  "",
+                                             "P3":  "",
+                                             "P4":  "",
+                                             "P5":  "",
+                                             "P6":  "",
+                                             "P7":  ""
+                                         },
+                             "Clocks":  {
+                                            "P0":  "",
+                                            "P1":  "",
+                                            "P2":  "",
+                                            "P3":  "",
+                                            "P4":  "",
+                                            "P5":  "",
+                                            "P6":  "",
+                                            "P7":  ""
+                                        }
+                         },
+                "Memory":  {
+                               "voltage":  {
+                                               "P4":  ""
+                                           },
+                               "clocks":  {
+                                              "P4":  ""
+                                          }
+                           },
+                "Power_Limit_Max":  "",
+                "Current_Limit":  "",
+                "Wattage_Limit":  "",
+                "Acoustic_Limit":  "",
+                "Target_Temp":  "",
+                "Max_Temp":  "",
+                "Min_Fan":  "",
+                "Max_Fan":  ""
+            },
+    "hex":  {
+                "Core":  {
+                             "voltage":  {
+                                             "P0":  "",
+                                             "P1":  "",
+                                             "P2":  "",
+                                             "P3":  "",
+                                             "P4":  "",
+                                             "P5":  "",
+                                             "P6":  "",
+                                             "P7":  ""
+                                         },
+                             "Clocks":  {
+                                            "P0":  "",
+                                            "P1":  "",
+                                            "P2":  "",
+                                            "P3":  "",
+                                            "P4":  "",
+                                            "P5":  "",
+                                            "P6":  "",
+                                            "P7":  ""
+                                        }
+                         },
+                "Memory":  {
+                               "voltage":  {
+                                               "P4":  ""
+                                           },
+                               "clocks":  {
+                                              "P4":  ""
+                                          }
+                           },
+                "Power_Limit_Max":  "",
+                "Current_Limit":  "",
+                "Wattage_Limit":  "",
+                "Acoustic_Limit":  "",
+                "Target_Temp":  "",
+                "Max_Temp":  "",
+                "Min_Fan":  "",
+                "Max_Fan":  ""
+            },
+    "jackpot":  {
+                    "Core":  {
+                                 "voltage":  {
+                                                 "P0":  "",
+                                                 "P1":  "",
+                                                 "P2":  "",
+                                                 "P3":  "",
+                                                 "P4":  "",
+                                                 "P5":  "",
+                                                 "P6":  "",
+                                                 "P7":  ""
+                                             },
+                                 "Clocks":  {
+                                                "P0":  "",
+                                                "P1":  "",
+                                                "P2":  "",
+                                                "P3":  "",
+                                                "P4":  "",
+                                                "P5":  "",
+                                                "P6":  "",
+                                                "P7":  ""
+                                            }
+                             },
+                    "Memory":  {
+                                   "voltage":  {
+                                                   "P4":  ""
+                                               },
+                                   "clocks":  {
+                                                  "P4":  ""
+                                              }
+                               },
+                    "Power_Limit_Max":  "",
+                    "Current_Limit":  "",
+                    "Wattage_Limit":  "",
+                    "Acoustic_Limit":  "",
+                    "Target_Temp":  "",
+                    "Max_Temp":  "",
+                    "Min_Fan":  "",
+                    "Max_Fan":  ""
+                },
+    "myr-gr":  {
+                   "Core":  {
+                                "voltage":  {
+                                                "P0":  "",
+                                                "P1":  "",
+                                                "P2":  "",
+                                                "P3":  "",
+                                                "P4":  "",
+                                                "P5":  "",
+                                                "P6":  "",
+                                                "P7":  ""
+                                            },
+                                "Clocks":  {
+                                               "P0":  "",
+                                               "P1":  "",
+                                               "P2":  "",
+                                               "P3":  "",
+                                               "P4":  "",
+                                               "P5":  "",
+                                               "P6":  "",
+                                               "P7":  ""
+                                           }
+                            },
+                   "Memory":  {
+                                  "voltage":  {
+                                                  "P4":  ""
+                                              },
+                                  "clocks":  {
+                                                 "P4":  ""
+                                             }
+                              },
+                   "Power_Limit_Max":  "",
+                   "Current_Limit":  "",
+                   "Wattage_Limit":  "",
+                   "Acoustic_Limit":  "",
+                   "Target_Temp":  "",
+                   "Max_Temp":  "",
+                   "Min_Fan":  "",
+                   "Max_Fan":  ""
+               },
+    "renesis":  {
+                    "Core":  {
+                                 "voltage":  {
+                                                 "P0":  "",
+                                                 "P1":  "",
+                                                 "P2":  "",
+                                                 "P3":  "",
+                                                 "P4":  "",
+                                                 "P5":  "",
+                                                 "P6":  "",
+                                                 "P7":  ""
+                                             },
+                                 "Clocks":  {
+                                                "P0":  "",
+                                                "P1":  "",
+                                                "P2":  "",
+                                                "P3":  "",
+                                                "P4":  "",
+                                                "P5":  "",
+                                                "P6":  "",
+                                                "P7":  ""
+                                            }
+                             },
+                    "Memory":  {
+                                   "voltage":  {
+                                                   "P4":  ""
+                                               },
+                                   "clocks":  {
+                                                  "P4":  ""
+                                              }
+                               },
+                    "Power_Limit_Max":  "",
+                    "Current_Limit":  "",
+                    "Wattage_Limit":  "",
+                    "Acoustic_Limit":  "",
+                    "Target_Temp":  "",
+                    "Max_Temp":  "",
+                    "Min_Fan":  "",
+                    "Max_Fan":  ""
+                },
+    "cryptonightv7":  {
+                          "Core":  {
+                                       "voltage":  {
+                                                       "P0":  "",
+                                                       "P1":  "",
+                                                       "P2":  "",
+                                                       "P3":  "",
+                                                       "P4":  "",
+                                                       "P5":  "",
+                                                       "P6":  "",
+                                                       "P7":  ""
+                                                   },
+                                       "Clocks":  {
+                                                      "P0":  "",
+                                                      "P1":  "",
+                                                      "P2":  "",
+                                                      "P3":  "",
+                                                      "P4":  "",
+                                                      "P5":  "",
+                                                      "P6":  "",
+                                                      "P7":  ""
+                                                  }
+                                   },
+                          "Memory":  {
+                                         "voltage":  {
+                                                         "P4":  ""
+                                                     },
+                                         "clocks":  {
+                                                        "P4":  ""
+                                                    }
+                                     },
+                          "Power_Limit_Max":  "",
+                          "Current_Limit":  "",
+                          "Wattage_Limit":  "",
+                          "Acoustic_Limit":  "",
+                          "Target_Temp":  "",
+                          "Max_Temp":  "",
+                          "Min_Fan":  "",
+                          "Max_Fan":  ""
+                      },
+    "hodl":  {
+                 "Core":  {
+                              "voltage":  {
+                                              "P0":  "",
+                                              "P1":  "",
+                                              "P2":  "",
+                                              "P3":  "",
+                                              "P4":  "",
+                                              "P5":  "",
+                                              "P6":  "",
+                                              "P7":  ""
+                                          },
+                              "Clocks":  {
+                                             "P0":  "",
+                                             "P1":  "",
+                                             "P2":  "",
+                                             "P3":  "",
+                                             "P4":  "",
+                                             "P5":  "",
+                                             "P6":  "",
+                                             "P7":  ""
+                                         }
+                          },
+                 "Memory":  {
+                                "voltage":  {
+                                                "P4":  ""
+                                            },
+                                "clocks":  {
+                                               "P4":  ""
+                                           }
+                            },
+                 "Power_Limit_Max":  "",
+                 "Current_Limit":  "",
+                 "Wattage_Limit":  "",
+                 "Acoustic_Limit":  "",
+                 "Target_Temp":  "",
+                 "Max_Temp":  "",
+                 "Min_Fan":  "",
+                 "Max_Fan":  ""
+             },
+    "equihash144":  {
+                        "Core":  {
+                                     "voltage":  {
+                                                     "P0":  "",
+                                                     "P1":  "",
+                                                     "P2":  "",
+                                                     "P3":  "",
+                                                     "P4":  "",
+                                                     "P5":  "",
+                                                     "P6":  "",
+                                                     "P7":  ""
+                                                 },
+                                     "Clocks":  {
+                                                    "P0":  "",
+                                                    "P1":  "",
+                                                    "P2":  "",
+                                                    "P3":  "",
+                                                    "P4":  "",
+                                                    "P5":  "",
+                                                    "P6":  "",
+                                                    "P7":  ""
+                                                }
+                                 },
+                        "Memory":  {
+                                       "voltage":  {
+                                                       "P4":  ""
+                                                   },
+                                       "clocks":  {
+                                                      "P4":  ""
+                                                  }
+                                   },
+                        "Power_Limit_Max":  "",
+                        "Current_Limit":  "",
+                        "Wattage_Limit":  "",
+                        "Acoustic_Limit":  "",
+                        "Target_Temp":  "",
+                        "Max_Temp":  "",
+                        "Min_Fan":  "",
+                        "Max_Fan":  ""
+                    },
+    "skunk":  {
+                  "Core":  {
+                               "voltage":  {
+                                               "P0":  "",
+                                               "P1":  "",
+                                               "P2":  "",
+                                               "P3":  "",
+                                               "P4":  "",
+                                               "P5":  "",
+                                               "P6":  "",
+                                               "P7":  ""
+                                           },
+                               "Clocks":  {
+                                              "P0":  "",
+                                              "P1":  "",
+                                              "P2":  "",
+                                              "P3":  "",
+                                              "P4":  "",
+                                              "P5":  "",
+                                              "P6":  "",
+                                              "P7":  ""
+                                          }
+                           },
+                  "Memory":  {
+                                 "voltage":  {
+                                                 "P4":  ""
+                                             },
+                                 "clocks":  {
+                                                "P4":  ""
+                                            }
+                             },
+                  "Power_Limit_Max":  "",
+                  "Current_Limit":  "",
+                  "Wattage_Limit":  "",
+                  "Acoustic_Limit":  "",
+                  "Target_Temp":  "",
+                  "Max_Temp":  "",
+                  "Min_Fan":  "",
+                  "Max_Fan":  ""
+              },
+    "x11":  {
+                "Core":  {
+                             "voltage":  {
+                                             "P0":  "",
+                                             "P1":  "",
+                                             "P2":  "",
+                                             "P3":  "",
+                                             "P4":  "",
+                                             "P5":  "",
+                                             "P6":  "",
+                                             "P7":  ""
+                                         },
+                             "Clocks":  {
+                                            "P0":  "",
+                                            "P1":  "",
+                                            "P2":  "",
+                                            "P3":  "",
+                                            "P4":  "",
+                                            "P5":  "",
+                                            "P6":  "",
+                                            "P7":  ""
+                                        }
+                         },
+                "Memory":  {
+                               "voltage":  {
+                                               "P4":  ""
+                                           },
+                               "clocks":  {
+                                              "P4":  ""
+                                          }
+                           },
+                "Power_Limit_Max":  "",
+                "Current_Limit":  "",
+                "Wattage_Limit":  "",
+                "Acoustic_Limit":  "",
+                "Target_Temp":  "",
+                "Max_Temp":  "",
+                "Min_Fan":  "",
+                "Max_Fan":  ""
+            },
+    "xmr":  {
+                "Core":  {
+                             "voltage":  {
+                                             "P0":  "",
+                                             "P1":  "",
+                                             "P2":  "",
+                                             "P3":  "",
+                                             "P4":  "",
+                                             "P5":  "",
+                                             "P6":  "",
+                                             "P7":  ""
+                                         },
+                             "Clocks":  {
+                                            "P0":  "",
+                                            "P1":  "",
+                                            "P2":  "",
+                                            "P3":  "",
+                                            "P4":  "",
+                                            "P5":  "",
+                                            "P6":  "",
+                                            "P7":  ""
+                                        }
+                         },
+                "Memory":  {
+                               "voltage":  {
+                                               "P4":  ""
+                                           },
+                               "clocks":  {
+                                              "P4":  ""
+                                          }
+                           },
+                "Power_Limit_Max":  "",
+                "Current_Limit":  "",
+                "Wattage_Limit":  "",
+                "Acoustic_Limit":  "",
+                "Target_Temp":  "",
+                "Max_Temp":  "",
+                "Min_Fan":  "",
+                "Max_Fan":  ""
+            },
+    "lyra2z":  {
+                   "Core":  {
+                                "voltage":  {
+                                                "P0":  "",
+                                                "P1":  "",
+                                                "P2":  "",
+                                                "P3":  "",
+                                                "P4":  "",
+                                                "P5":  "",
+                                                "P6":  "",
+                                                "P7":  ""
+                                            },
+                                "Clocks":  {
+                                               "P0":  "",
+                                               "P1":  "",
+                                               "P2":  "",
+                                               "P3":  "",
+                                               "P4":  "",
+                                               "P5":  "",
+                                               "P6":  "",
+                                               "P7":  ""
+                                           }
+                            },
+                   "Memory":  {
+                                  "voltage":  {
+                                                  "P4":  ""
+                                              },
+                                  "clocks":  {
+                                                 "P4":  ""
+                                             }
+                              },
+                   "Power_Limit_Max":  "",
+                   "Current_Limit":  "",
+                   "Wattage_Limit":  "",
+                   "Acoustic_Limit":  "",
+                   "Target_Temp":  "",
+                   "Max_Temp":  "",
+                   "Min_Fan":  "",
+                   "Max_Fan":  ""
+               },
+    "yescrypt":  {
+                     "Core":  {
+                                  "voltage":  {
+                                                  "P0":  "",
+                                                  "P1":  "",
+                                                  "P2":  "",
+                                                  "P3":  "",
+                                                  "P4":  "",
+                                                  "P5":  "",
+                                                  "P6":  "",
+                                                  "P7":  ""
+                                              },
+                                  "Clocks":  {
+                                                 "P0":  "",
+                                                 "P1":  "",
+                                                 "P2":  "",
+                                                 "P3":  "",
+                                                 "P4":  "",
+                                                 "P5":  "",
+                                                 "P6":  "",
+                                                 "P7":  ""
+                                             }
+                              },
+                     "Memory":  {
+                                    "voltage":  {
+                                                    "P4":  ""
+                                                },
+                                    "clocks":  {
+                                                   "P4":  ""
+                                               }
+                                },
+                     "Power_Limit_Max":  "",
+                     "Current_Limit":  "",
+                     "Wattage_Limit":  "",
+                     "Acoustic_Limit":  "",
+                     "Target_Temp":  "",
+                     "Max_Temp":  "",
+                     "Min_Fan":  "",
+                     "Max_Fan":  ""
+                 },
+    "stellite":  {
+                     "Core":  {
+                                  "voltage":  {
+                                                  "P0":  "",
+                                                  "P1":  "",
+                                                  "P2":  "",
+                                                  "P3":  "",
+                                                  "P4":  "",
+                                                  "P5":  "",
+                                                  "P6":  "",
+                                                  "P7":  ""
+                                              },
+                                  "Clocks":  {
+                                                 "P0":  "",
+                                                 "P1":  "",
+                                                 "P2":  "",
+                                                 "P3":  "",
+                                                 "P4":  "",
+                                                 "P5":  "",
+                                                 "P6":  "",
+                                                 "P7":  ""
+                                             }
+                              },
+                     "Memory":  {
+                                    "voltage":  {
+                                                    "P4":  ""
+                                                },
+                                    "clocks":  {
+                                                   "P4":  ""
+                                               }
+                                },
+                     "Power_Limit_Max":  "",
+                     "Current_Limit":  "",
+                     "Wattage_Limit":  "",
+                     "Acoustic_Limit":  "",
+                     "Target_Temp":  "",
+                     "Max_Temp":  "",
+                     "Min_Fan":  "",
+                     "Max_Fan":  ""
+                 },
+    "tribus":  {
+                   "Core":  {
+                                "voltage":  {
+                                                "P0":  "",
+                                                "P1":  "",
+                                                "P2":  "",
+                                                "P3":  "",
+                                                "P4":  "",
+                                                "P5":  "",
+                                                "P6":  "",
+                                                "P7":  ""
+                                            },
+                                "Clocks":  {
+                                               "P0":  "",
+                                               "P1":  "",
+                                               "P2":  "",
+                                               "P3":  "",
+                                               "P4":  "",
+                                               "P5":  "",
+                                               "P6":  "",
+                                               "P7":  ""
+                                           }
+                            },
+                   "Memory":  {
+                                  "voltage":  {
+                                                  "P4":  ""
+                                              },
+                                  "clocks":  {
+                                                 "P4":  ""
+                                             }
+                              },
+                   "Power_Limit_Max":  "",
+                   "Current_Limit":  "",
+                   "Wattage_Limit":  "",
+                   "Acoustic_Limit":  "",
+                   "Target_Temp":  "",
+                   "Max_Temp":  "",
+                   "Min_Fan":  "",
+                   "Max_Fan":  ""
+               },
+    "lyra2v2":  {
+                    "Core":  {
+                                 "voltage":  {
+                                                 "P0":  "",
+                                                 "P1":  "",
+                                                 "P2":  "",
+                                                 "P3":  "",
+                                                 "P4":  "",
+                                                 "P5":  "",
+                                                 "P6":  "",
+                                                 "P7":  ""
+                                             },
+                                 "Clocks":  {
+                                                "P0":  "",
+                                                "P1":  "",
+                                                "P2":  "",
+                                                "P3":  "",
+                                                "P4":  "",
+                                                "P5":  "",
+                                                "P6":  "",
+                                                "P7":  ""
+                                            }
+                             },
+                    "Memory":  {
+                                   "voltage":  {
+                                                   "P4":  ""
+                                               },
+                                   "clocks":  {
+                                                  "P4":  ""
+                                              }
+                               },
+                    "Power_Limit_Max":  "",
+                    "Current_Limit":  "",
+                    "Wattage_Limit":  "",
+                    "Acoustic_Limit":  "",
+                    "Target_Temp":  "",
+                    "Max_Temp":  "",
+                    "Min_Fan":  "",
+                    "Max_Fan":  ""
+                },
+    "aergo":  {
+                  "Core":  {
+                               "voltage":  {
+                                               "P0":  "",
+                                               "P1":  "",
+                                               "P2":  "",
+                                               "P3":  "",
+                                               "P4":  "",
+                                               "P5":  "",
+                                               "P6":  "",
+                                               "P7":  ""
+                                           },
+                               "Clocks":  {
+                                              "P0":  "",
+                                              "P1":  "",
+                                              "P2":  "",
+                                              "P3":  "",
+                                              "P4":  "",
+                                              "P5":  "",
+                                              "P6":  "",
+                                              "P7":  ""
+                                          }
+                           },
+                  "Memory":  {
+                                 "voltage":  {
+                                                 "P4":  ""
+                                             },
+                                 "clocks":  {
+                                                "P4":  ""
+                                            }
+                             },
+                  "Power_Limit_Max":  "",
+                  "Current_Limit":  "",
+                  "Wattage_Limit":  "",
+                  "Acoustic_Limit":  "",
+                  "Target_Temp":  "",
+                  "Max_Temp":  "",
+                  "Min_Fan":  "",
+                  "Max_Fan":  ""
+              },
+    "lyra2re":  {
+                    "Core":  {
+                                 "voltage":  {
+                                                 "P0":  "",
+                                                 "P1":  "",
+                                                 "P2":  "",
+                                                 "P3":  "",
+                                                 "P4":  "",
+                                                 "P5":  "",
+                                                 "P6":  "",
+                                                 "P7":  ""
+                                             },
+                                 "Clocks":  {
+                                                "P0":  "",
+                                                "P1":  "",
+                                                "P2":  "",
+                                                "P3":  "",
+                                                "P4":  "",
+                                                "P5":  "",
+                                                "P6":  "",
+                                                "P7":  ""
+                                            }
+                             },
+                    "Memory":  {
+                                   "voltage":  {
+                                                   "P4":  ""
+                                               },
+                                   "clocks":  {
+                                                  "P4":  ""
+                                              }
+                               },
+                    "Power_Limit_Max":  "",
+                    "Current_Limit":  "",
+                    "Wattage_Limit":  "",
+                    "Acoustic_Limit":  "",
+                    "Target_Temp":  "",
+                    "Max_Temp":  "",
+                    "Min_Fan":  "",
+                    "Max_Fan":  ""
+                },
+    "x22i":  {
+                 "Core":  {
+                              "voltage":  {
+                                              "P0":  "",
+                                              "P1":  "",
+                                              "P2":  "",
+                                              "P3":  "",
+                                              "P4":  "",
+                                              "P5":  "",
+                                              "P6":  "",
+                                              "P7":  ""
+                                          },
+                              "Clocks":  {
+                                             "P0":  "",
+                                             "P1":  "",
+                                             "P2":  "",
+                                             "P3":  "",
+                                             "P4":  "",
+                                             "P5":  "",
+                                             "P6":  "",
+                                             "P7":  ""
+                                         }
+                          },
+                 "Memory":  {
+                                "voltage":  {
+                                                "P4":  ""
+                                            },
+                                "clocks":  {
+                                               "P4":  ""
+                                           }
+                            },
+                 "Power_Limit_Max":  "",
+                 "Current_Limit":  "",
+                 "Wattage_Limit":  "",
+                 "Acoustic_Limit":  "",
+                 "Target_Temp":  "",
+                 "Max_Temp":  "",
+                 "Min_Fan":  "",
+                 "Max_Fan":  ""
+             },
+    "phi":  {
+                "Core":  {
+                             "voltage":  {
+                                             "P0":  "",
+                                             "P1":  "",
+                                             "P2":  "",
+                                             "P3":  "",
+                                             "P4":  "",
+                                             "P5":  "",
+                                             "P6":  "",
+                                             "P7":  ""
+                                         },
+                             "Clocks":  {
+                                            "P0":  "",
+                                            "P1":  "",
+                                            "P2":  "",
+                                            "P3":  "",
+                                            "P4":  "",
+                                            "P5":  "",
+                                            "P6":  "",
+                                            "P7":  ""
+                                        }
+                         },
+                "Memory":  {
+                               "voltage":  {
+                                               "P4":  ""
+                                           },
+                               "clocks":  {
+                                              "P4":  ""
+                                          }
+                           },
+                "Power_Limit_Max":  "",
+                "Current_Limit":  "",
+                "Wattage_Limit":  "",
+                "Acoustic_Limit":  "",
+                "Target_Temp":  "",
+                "Max_Temp":  "",
+                "Min_Fan":  "",
+                "Max_Fan":  ""
+            },
+    "lyra2rev2":  {
+                      "Core":  {
+                                   "voltage":  {
+                                                   "P0":  "",
+                                                   "P1":  "",
+                                                   "P2":  "",
+                                                   "P3":  "",
+                                                   "P4":  "",
+                                                   "P5":  "",
+                                                   "P6":  "",
+                                                   "P7":  ""
+                                               },
+                                   "Clocks":  {
+                                                  "P0":  "",
+                                                  "P1":  "",
+                                                  "P2":  "",
+                                                  "P3":  "",
+                                                  "P4":  "",
+                                                  "P5":  "",
+                                                  "P6":  "",
+                                                  "P7":  ""
+                                              }
+                               },
+                      "Memory":  {
+                                     "voltage":  {
+                                                     "P4":  ""
+                                                 },
+                                     "clocks":  {
+                                                    "P4":  ""
+                                                }
+                                 },
+                      "Power_Limit_Max":  "",
+                      "Current_Limit":  "",
+                      "Wattage_Limit":  "",
+                      "Acoustic_Limit":  "",
+                      "Target_Temp":  "",
+                      "Max_Temp":  "",
+                      "Min_Fan":  "",
+                      "Max_Fan":  ""
+                  },
+    "hsr":  {
+                "Core":  {
+                             "voltage":  {
+                                             "P0":  "",
+                                             "P1":  "",
+                                             "P2":  "",
+                                             "P3":  "",
+                                             "P4":  "",
+                                             "P5":  "",
+                                             "P6":  "",
+                                             "P7":  ""
+                                         },
+                             "Clocks":  {
+                                            "P0":  "",
+                                            "P1":  "",
+                                            "P2":  "",
+                                            "P3":  "",
+                                            "P4":  "",
+                                            "P5":  "",
+                                            "P6":  "",
+                                            "P7":  ""
+                                        }
+                         },
+                "Memory":  {
+                               "voltage":  {
+                                               "P4":  ""
+                                           },
+                               "clocks":  {
+                                              "P4":  ""
+                                          }
+                           },
+                "Power_Limit_Max":  "",
+                "Current_Limit":  "",
+                "Wattage_Limit":  "",
+                "Acoustic_Limit":  "",
+                "Target_Temp":  "",
+                "Max_Temp":  "",
+                "Min_Fan":  "",
+                "Max_Fan":  ""
+            },
+    "skein":  {
+                  "Core":  {
+                               "voltage":  {
+                                               "P0":  "",
+                                               "P1":  "",
+                                               "P2":  "",
+                                               "P3":  "",
+                                               "P4":  "",
+                                               "P5":  "",
+                                               "P6":  "",
+                                               "P7":  ""
+                                           },
+                               "Clocks":  {
+                                              "P0":  "",
+                                              "P1":  "",
+                                              "P2":  "",
+                                              "P3":  "",
+                                              "P4":  "",
+                                              "P5":  "",
+                                              "P6":  "",
+                                              "P7":  ""
+                                          }
+                           },
+                  "Memory":  {
+                                 "voltage":  {
+                                                 "P4":  ""
+                                             },
+                                 "clocks":  {
+                                                "P4":  ""
+                                            }
+                             },
+                  "Power_Limit_Max":  "",
+                  "Current_Limit":  "",
+                  "Wattage_Limit":  "",
+                  "Acoustic_Limit":  "",
+                  "Target_Temp":  "",
+                  "Max_Temp":  "",
+                  "Min_Fan":  "",
+                  "Max_Fan":  ""
+              },
+    "ethash":  {
+                   "Core":  {
+                                "voltage":  {
+                                                "P0":  "",
+                                                "P1":  "",
+                                                "P2":  "",
+                                                "P3":  "",
+                                                "P4":  "",
+                                                "P5":  "",
+                                                "P6":  "",
+                                                "P7":  ""
+                                            },
+                                "Clocks":  {
+                                               "P0":  "",
+                                               "P1":  "",
+                                               "P2":  "",
+                                               "P3":  "",
+                                               "P4":  "",
+                                               "P5":  "",
+                                               "P6":  "",
+                                               "P7":  ""
+                                           }
+                            },
+                   "Memory":  {
+                                  "voltage":  {
+                                                  "P4":  ""
+                                              },
+                                  "clocks":  {
+                                                 "P4":  ""
+                                             }
+                              },
+                   "Power_Limit_Max":  "",
+                   "Current_Limit":  "",
+                   "Wattage_Limit":  "",
+                   "Acoustic_Limit":  "",
+                   "Target_Temp":  "",
+                   "Max_Temp":  "",
+                   "Min_Fan":  "",
+                   "Max_Fan":  ""
+               },
+    "phi2":  {
+                 "Core":  {
+                              "voltage":  {
+                                              "P0":  "",
+                                              "P1":  "",
+                                              "P2":  "",
+                                              "P3":  "",
+                                              "P4":  "",
+                                              "P5":  "",
+                                              "P6":  "",
+                                              "P7":  ""
+                                          },
+                              "Clocks":  {
+                                             "P0":  "",
+                                             "P1":  "",
+                                             "P2":  "",
+                                             "P3":  "",
+                                             "P4":  "",
+                                             "P5":  "",
+                                             "P6":  "",
+                                             "P7":  ""
+                                         }
+                          },
+                 "Memory":  {
+                                "voltage":  {
+                                                "P4":  ""
+                                            },
+                                "clocks":  {
+                                               "P4":  ""
+                                           }
+                            },
+                 "Power_Limit_Max":  "",
+                 "Current_Limit":  "",
+                 "Wattage_Limit":  "",
+                 "Acoustic_Limit":  "",
+                 "Target_Temp":  "",
+                 "Max_Temp":  "",
+                 "Min_Fan":  "",
+                 "Max_Fan":  ""
+             },
+    "xevan":  {
+                  "Core":  {
+                               "voltage":  {
+                                               "P0":  "",
+                                               "P1":  "",
+                                               "P2":  "",
+                                               "P3":  "",
+                                               "P4":  "",
+                                               "P5":  "",
+                                               "P6":  "",
+                                               "P7":  ""
+                                           },
+                               "Clocks":  {
+                                              "P0":  "",
+                                              "P1":  "",
+                                              "P2":  "",
+                                              "P3":  "",
+                                              "P4":  "",
+                                              "P5":  "",
+                                              "P6":  "",
+                                              "P7":  ""
+                                          }
+                           },
+                  "Memory":  {
+                                 "voltage":  {
+                                                 "P4":  ""
+                                             },
+                                 "clocks":  {
+                                                "P4":  ""
+                                            }
+                             },
+                  "Power_Limit_Max":  "",
+                  "Current_Limit":  "",
+                  "Wattage_Limit":  "",
+                  "Acoustic_Limit":  "",
+                  "Target_Temp":  "",
+                  "Max_Temp":  "",
+                  "Min_Fan":  "",
+                  "Max_Fan":  ""
+              },
+    "dedal":  {
+                  "Core":  {
+                               "voltage":  {
+                                               "P0":  "",
+                                               "P1":  "",
+                                               "P2":  "",
+                                               "P3":  "",
+                                               "P4":  "",
+                                               "P5":  "",
+                                               "P6":  "",
+                                               "P7":  ""
+                                           },
+                               "Clocks":  {
+                                              "P0":  "",
+                                              "P1":  "",
+                                              "P2":  "",
+                                              "P3":  "",
+                                              "P4":  "",
+                                              "P5":  "",
+                                              "P6":  "",
+                                              "P7":  ""
+                                          }
+                           },
+                  "Memory":  {
+                                 "voltage":  {
+                                                 "P4":  ""
+                                             },
+                                 "clocks":  {
+                                                "P4":  ""
+                                            }
+                             },
+                  "Power_Limit_Max":  "",
+                  "Current_Limit":  "",
+                  "Wattage_Limit":  "",
+                  "Acoustic_Limit":  "",
+                  "Target_Temp":  "",
+                  "Max_Temp":  "",
+                  "Min_Fan":  "",
+                  "Max_Fan":  ""
+              },
+    "neoscrypt":  {
+                      "Core":  {
+                                   "voltage":  {
+                                                   "P0":  "",
+                                                   "P1":  "",
+                                                   "P2":  "",
+                                                   "P3":  "",
+                                                   "P4":  "",
+                                                   "P5":  "",
+                                                   "P6":  "",
+                                                   "P7":  ""
+                                               },
+                                   "Clocks":  {
+                                                  "P0":  "",
+                                                  "P1":  "",
+                                                  "P2":  "",
+                                                  "P3":  "",
+                                                  "P4":  "",
+                                                  "P5":  "",
+                                                  "P6":  "",
+                                                  "P7":  ""
+                                              }
+                               },
+                      "Memory":  {
+                                     "voltage":  {
+                                                     "P4":  ""
+                                                 },
+                                     "clocks":  {
+                                                    "P4":  ""
+                                                }
+                                 },
+                      "Power_Limit_Max":  "",
+                      "Current_Limit":  "",
+                      "Wattage_Limit":  "",
+                      "Acoustic_Limit":  "",
+                      "Target_Temp":  "",
+                      "Max_Temp":  "",
+                      "Min_Fan":  "",
+                      "Max_Fan":  ""
+                  },
+    "equihash210":  {
+                        "Core":  {
+                                     "voltage":  {
+                                                     "P0":  "",
+                                                     "P1":  "",
+                                                     "P2":  "",
+                                                     "P3":  "",
+                                                     "P4":  "",
+                                                     "P5":  "",
+                                                     "P6":  "",
+                                                     "P7":  ""
+                                                 },
+                                     "Clocks":  {
+                                                    "P0":  "",
+                                                    "P1":  "",
+                                                    "P2":  "",
+                                                    "P3":  "",
+                                                    "P4":  "",
+                                                    "P5":  "",
+                                                    "P6":  "",
+                                                    "P7":  ""
+                                                }
+                                 },
+                        "Memory":  {
+                                       "voltage":  {
+                                                       "P4":  ""
+                                                   },
+                                       "clocks":  {
+                                                      "P4":  ""
+                                                  }
+                                   },
+                        "Power_Limit_Max":  "",
+                        "Current_Limit":  "",
+                        "Wattage_Limit":  "",
+                        "Acoustic_Limit":  "",
+                        "Target_Temp":  "",
+                        "Max_Temp":  "",
+                        "Min_Fan":  "",
+                        "Max_Fan":  ""
+                    },
+    "dagger":  {
+                   "Core":  {
+                                "voltage":  {
+                                                "P0":  "",
+                                                "P1":  "",
+                                                "P2":  "",
+                                                "P3":  "",
+                                                "P4":  "",
+                                                "P5":  "",
+                                                "P6":  "",
+                                                "P7":  ""
+                                            },
+                                "Clocks":  {
+                                               "P0":  "",
+                                               "P1":  "",
+                                               "P2":  "",
+                                               "P3":  "",
+                                               "P4":  "",
+                                               "P5":  "",
+                                               "P6":  "",
+                                               "P7":  ""
+                                           }
+                            },
+                   "Memory":  {
+                                  "voltage":  {
+                                                  "P4":  ""
+                                              },
+                                  "clocks":  {
+                                                 "P4":  ""
+                                             }
+                              },
+                   "Power_Limit_Max":  "",
+                   "Current_Limit":  "",
+                   "Wattage_Limit":  "",
+                   "Acoustic_Limit":  "",
+                   "Target_Temp":  "",
+                   "Max_Temp":  "",
+                   "Min_Fan":  "",
+                   "Max_Fan":  ""
+               },
+    "x16s":  {
+                 "Core":  {
+                              "voltage":  {
+                                              "P0":  "",
+                                              "P1":  "",
+                                              "P2":  "",
+                                              "P3":  "",
+                                              "P4":  "",
+                                              "P5":  "",
+                                              "P6":  "",
+                                              "P7":  ""
+                                          },
+                              "Clocks":  {
+                                             "P0":  "",
+                                             "P1":  "",
+                                             "P2":  "",
+                                             "P3":  "",
+                                             "P4":  "",
+                                             "P5":  "",
+                                             "P6":  "",
+                                             "P7":  ""
+                                         }
+                          },
+                 "Memory":  {
+                                "voltage":  {
+                                                "P4":  ""
+                                            },
+                                "clocks":  {
+                                               "P4":  ""
+                                           }
+                            },
+                 "Power_Limit_Max":  "",
+                 "Current_Limit":  "",
+                 "Wattage_Limit":  "",
+                 "Acoustic_Limit":  "",
+                 "Target_Temp":  "",
+                 "Max_Temp":  "",
+                 "Min_Fan":  "",
+                 "Max_Fan":  ""
+             },
+    "sha256t":  {
+                    "Core":  {
+                                 "voltage":  {
+                                                 "P0":  "",
+                                                 "P1":  "",
+                                                 "P2":  "",
+                                                 "P3":  "",
+                                                 "P4":  "",
+                                                 "P5":  "",
+                                                 "P6":  "",
+                                                 "P7":  ""
+                                             },
+                                 "Clocks":  {
+                                                "P0":  "",
+                                                "P1":  "",
+                                                "P2":  "",
+                                                "P3":  "",
+                                                "P4":  "",
+                                                "P5":  "",
+                                                "P6":  "",
+                                                "P7":  ""
+                                            }
+                             },
+                    "Memory":  {
+                                   "voltage":  {
+                                                   "P4":  ""
+                                               },
+                                   "clocks":  {
+                                                  "P4":  ""
+                                              }
+                               },
+                    "Power_Limit_Max":  "",
+                    "Current_Limit":  "",
+                    "Wattage_Limit":  "",
+                    "Acoustic_Limit":  "",
+                    "Target_Temp":  "",
+                    "Max_Temp":  "",
+                    "Min_Fan":  "",
+                    "Max_Fan":  ""
+                },
+    "equihash-btg":  {
+                         "Core":  {
+                                      "voltage":  {
+                                                      "P0":  "",
+                                                      "P1":  "",
+                                                      "P2":  "",
+                                                      "P3":  "",
+                                                      "P4":  "",
+                                                      "P5":  "",
+                                                      "P6":  "",
+                                                      "P7":  ""
+                                                  },
+                                      "Clocks":  {
+                                                     "P0":  "",
+                                                     "P1":  "",
+                                                     "P2":  "",
+                                                     "P3":  "",
+                                                     "P4":  "",
+                                                     "P5":  "",
+                                                     "P6":  "",
+                                                     "P7":  ""
+                                                 }
+                                  },
+                         "Memory":  {
+                                        "voltage":  {
+                                                        "P4":  ""
+                                                    },
+                                        "clocks":  {
+                                                       "P4":  ""
+                                                   }
+                                    },
+                         "Power_Limit_Max":  "",
+                         "Current_Limit":  "",
+                         "Wattage_Limit":  "",
+                         "Acoustic_Limit":  "",
+                         "Target_Temp":  "",
+                         "Max_Temp":  "",
+                         "Min_Fan":  "",
+                         "Max_Fan":  ""
+                     },
+    "sonoa":  {
+                  "Core":  {
+                               "voltage":  {
+                                               "P0":  "",
+                                               "P1":  "",
+                                               "P2":  "",
+                                               "P3":  "",
+                                               "P4":  "",
+                                               "P5":  "",
+                                               "P6":  "",
+                                               "P7":  ""
+                                           },
+                               "Clocks":  {
+                                              "P0":  "",
+                                              "P1":  "",
+                                              "P2":  "",
+                                              "P3":  "",
+                                              "P4":  "",
+                                              "P5":  "",
+                                              "P6":  "",
+                                              "P7":  ""
+                                          }
+                           },
+                  "Memory":  {
+                                 "voltage":  {
+                                                 "P4":  ""
+                                             },
+                                 "clocks":  {
+                                                "P4":  ""
+                                            }
+                             },
+                  "Power_Limit_Max":  "",
+                  "Current_Limit":  "",
+                  "Wattage_Limit":  "",
+                  "Acoustic_Limit":  "",
+                  "Target_Temp":  "",
+                  "Max_Temp":  "",
+                  "Min_Fan":  "",
+                  "Max_Fan":  ""
+              },
+    "equihash192":  {
+                        "Core":  {
+                                     "voltage":  {
+                                                     "P0":  "",
+                                                     "P1":  "",
+                                                     "P2":  "",
+                                                     "P3":  "",
+                                                     "P4":  "",
+                                                     "P5":  "",
+                                                     "P6":  "",
+                                                     "P7":  ""
+                                                 },
+                                     "Clocks":  {
+                                                    "P0":  "",
+                                                    "P1":  "",
+                                                    "P2":  "",
+                                                    "P3":  "",
+                                                    "P4":  "",
+                                                    "P5":  "",
+                                                    "P6":  "",
+                                                    "P7":  ""
+                                                }
+                                 },
+                        "Memory":  {
+                                       "voltage":  {
+                                                       "P4":  ""
+                                                   },
+                                       "clocks":  {
+                                                      "P4":  ""
+                                                  }
+                                   },
+                        "Power_Limit_Max":  "",
+                        "Current_Limit":  "",
+                        "Wattage_Limit":  "",
+                        "Acoustic_Limit":  "",
+                        "Target_Temp":  "",
+                        "Max_Temp":  "",
+                        "Min_Fan":  "",
+                        "Max_Fan":  ""
+                    },
+    "aeon":  {
+                 "Core":  {
+                              "voltage":  {
+                                              "P0":  "",
+                                              "P1":  "",
+                                              "P2":  "",
+                                              "P3":  "",
+                                              "P4":  "",
+                                              "P5":  "",
+                                              "P6":  "",
+                                              "P7":  ""
+                                          },
+                              "Clocks":  {
+                                             "P0":  "",
+                                             "P1":  "",
+                                             "P2":  "",
+                                             "P3":  "",
+                                             "P4":  "",
+                                             "P5":  "",
+                                             "P6":  "",
+                                             "P7":  ""
+                                         }
+                          },
+                 "Memory":  {
+                                "voltage":  {
+                                                "P4":  ""
+                                            },
+                                "clocks":  {
+                                               "P4":  ""
+                                           }
+                            },
+                 "Power_Limit_Max":  "",
+                 "Current_Limit":  "",
+                 "Wattage_Limit":  "",
+                 "Acoustic_Limit":  "",
+                 "Target_Temp":  "",
+                 "Max_Temp":  "",
+                 "Min_Fan":  "",
+                 "Max_Fan":  ""
+             },
+    "yescryptr16":  {
+                        "Core":  {
+                                     "voltage":  {
+                                                     "P0":  "",
+                                                     "P1":  "",
+                                                     "P2":  "",
+                                                     "P3":  "",
+                                                     "P4":  "",
+                                                     "P5":  "",
+                                                     "P6":  "",
+                                                     "P7":  ""
+                                                 },
+                                     "Clocks":  {
+                                                    "P0":  "",
+                                                    "P1":  "",
+                                                    "P2":  "",
+                                                    "P3":  "",
+                                                    "P4":  "",
+                                                    "P5":  "",
+                                                    "P6":  "",
+                                                    "P7":  ""
+                                                }
+                                 },
+                        "Memory":  {
+                                       "voltage":  {
+                                                       "P4":  ""
+                                                   },
+                                       "clocks":  {
+                                                      "P4":  ""
+                                                  }
+                                   },
+                        "Power_Limit_Max":  "",
+                        "Current_Limit":  "",
+                        "Wattage_Limit":  "",
+                        "Acoustic_Limit":  "",
+                        "Target_Temp":  "",
+                        "Max_Temp":  "",
+                        "Min_Fan":  "",
+                        "Max_Fan":  ""
+                    },
+    "hmq1725":  {
+                    "Core":  {
+                                 "voltage":  {
+                                                 "P0":  "",
+                                                 "P1":  "",
+                                                 "P2":  "",
+                                                 "P3":  "",
+                                                 "P4":  "",
+                                                 "P5":  "",
+                                                 "P6":  "",
+                                                 "P7":  ""
+                                             },
+                                 "Clocks":  {
+                                                "P0":  "",
+                                                "P1":  "",
+                                                "P2":  "",
+                                                "P3":  "",
+                                                "P4":  "",
+                                                "P5":  "",
+                                                "P6":  "",
+                                                "P7":  ""
+                                            }
+                             },
+                    "Memory":  {
+                                   "voltage":  {
+                                                   "P4":  ""
+                                               },
+                                   "clocks":  {
+                                                  "P4":  ""
+                                              }
+                               },
+                    "Power_Limit_Max":  "",
+                    "Current_Limit":  "",
+                    "Wattage_Limit":  "",
+                    "Acoustic_Limit":  "",
+                    "Target_Temp":  "",
+                    "Max_Temp":  "",
+                    "Min_Fan":  "",
+                    "Max_Fan":  ""
+                },
+    "nist5":  {
+                  "Core":  {
+                               "voltage":  {
+                                               "P0":  "",
+                                               "P1":  "",
+                                               "P2":  "",
+                                               "P3":  "",
+                                               "P4":  "",
+                                               "P5":  "",
+                                               "P6":  "",
+                                               "P7":  ""
+                                           },
+                               "Clocks":  {
+                                              "P0":  "",
+                                              "P1":  "",
+                                              "P2":  "",
+                                              "P3":  "",
+                                              "P4":  "",
+                                              "P5":  "",
+                                              "P6":  "",
+                                              "P7":  ""
+                                          }
+                           },
+                  "Memory":  {
+                                 "voltage":  {
+                                                 "P4":  ""
+                                             },
+                                 "clocks":  {
+                                                "P4":  ""
+                                            }
+                             },
+                  "Power_Limit_Max":  "",
+                  "Current_Limit":  "",
+                  "Wattage_Limit":  "",
+                  "Acoustic_Limit":  "",
+                  "Target_Temp":  "",
+                  "Max_Temp":  "",
+                  "Min_Fan":  "",
+                  "Max_Fan":  ""
+              },
+    "cryptonightmonero":  {
+                              "Core":  {
+                                           "voltage":  {
+                                                           "P0":  "",
+                                                           "P1":  "",
+                                                           "P2":  "",
+                                                           "P3":  "",
+                                                           "P4":  "",
+                                                           "P5":  "",
+                                                           "P6":  "",
+                                                           "P7":  ""
+                                                       },
+                                           "Clocks":  {
+                                                          "P0":  "",
+                                                          "P1":  "",
+                                                          "P2":  "",
+                                                          "P3":  "",
+                                                          "P4":  "",
+                                                          "P5":  "",
+                                                          "P6":  "",
+                                                          "P7":  ""
+                                                      }
+                                       },
+                              "Memory":  {
+                                             "voltage":  {
+                                                             "P4":  ""
+                                                         },
+                                             "clocks":  {
+                                                            "P4":  ""
+                                                        }
+                                         },
+                              "Power_Limit_Max":  "",
+                              "Current_Limit":  "",
+                              "Wattage_Limit":  "",
+                              "Acoustic_Limit":  "",
+                              "Target_Temp":  "",
+                              "Max_Temp":  "",
+                              "Min_Fan":  "",
+                              "Max_Fan":  ""
+                          },
+    "blake2s":  {
+                    "Core":  {
+                                 "voltage":  {
+                                                 "P0":  "",
+                                                 "P1":  "",
+                                                 "P2":  "",
+                                                 "P3":  "",
+                                                 "P4":  "",
+                                                 "P5":  "",
+                                                 "P6":  "",
+                                                 "P7":  ""
+                                             },
+                                 "Clocks":  {
+                                                "P0":  "",
+                                                "P1":  "",
+                                                "P2":  "",
+                                                "P3":  "",
+                                                "P4":  "",
+                                                "P5":  "",
+                                                "P6":  "",
+                                                "P7":  ""
+                                            }
+                             },
+                    "Memory":  {
+                                   "voltage":  {
+                                                   "P4":  ""
+                                               },
+                                   "clocks":  {
+                                                  "P4":  ""
+                                              }
+                               },
+                    "Power_Limit_Max":  "",
+                    "Current_Limit":  "",
+                    "Wattage_Limit":  "",
+                    "Acoustic_Limit":  "",
+                    "Target_Temp":  "",
+                    "Max_Temp":  "",
+                    "Min_Fan":  "",
+                    "Max_Fan":  ""
+                },
+    "bcd":  {
+                "Core":  {
+                             "voltage":  {
+                                             "P0":  "",
+                                             "P1":  "",
+                                             "P2":  "",
+                                             "P3":  "",
+                                             "P4":  "",
+                                             "P5":  "",
+                                             "P6":  "",
+                                             "P7":  ""
+                                         },
+                             "Clocks":  {
+                                            "P0":  "",
+                                            "P1":  "",
+                                            "P2":  "",
+                                            "P3":  "",
+                                            "P4":  "",
+                                            "P5":  "",
+                                            "P6":  "",
+                                            "P7":  ""
+                                        }
+                         },
+                "Memory":  {
+                               "voltage":  {
+                                               "P4":  ""
+                                           },
+                               "clocks":  {
+                                              "P4":  ""
+                                          }
+                           },
+                "Power_Limit_Max":  "",
+                "Current_Limit":  "",
+                "Wattage_Limit":  "",
+                "Acoustic_Limit":  "",
+                "Target_Temp":  "",
+                "Max_Temp":  "",
+                "Min_Fan":  "",
+                "Max_Fan":  ""
+            },
+    "lyra2vc0banhash":  {
+                            "Core":  {
+                                         "voltage":  {
+                                                         "P0":  "",
+                                                         "P1":  "",
+                                                         "P2":  "",
+                                                         "P3":  "",
+                                                         "P4":  "",
+                                                         "P5":  "",
+                                                         "P6":  "",
+                                                         "P7":  ""
+                                                     },
+                                         "Clocks":  {
+                                                        "P0":  "",
+                                                        "P1":  "",
+                                                        "P2":  "",
+                                                        "P3":  "",
+                                                        "P4":  "",
+                                                        "P5":  "",
+                                                        "P6":  "",
+                                                        "P7":  ""
+                                                    }
+                                     },
+                            "Memory":  {
+                                           "voltage":  {
+                                                           "P4":  ""
+                                                       },
+                                           "clocks":  {
+                                                          "P4":  ""
+                                                      }
+                                       },
+                            "Power_Limit_Max":  "",
+                            "Current_Limit":  "",
+                            "Wattage_Limit":  "",
+                            "Acoustic_Limit":  "",
+                            "Target_Temp":  "",
+                            "Max_Temp":  "",
+                            "Min_Fan":  "",
+                            "Max_Fan":  ""
+                        },
+    "timetravel":  {
+                       "Core":  {
+                                    "voltage":  {
+                                                    "P0":  "",
+                                                    "P1":  "",
+                                                    "P2":  "",
+                                                    "P3":  "",
+                                                    "P4":  "",
+                                                    "P5":  "",
+                                                    "P6":  "",
+                                                    "P7":  ""
+                                                },
+                                    "Clocks":  {
+                                                   "P0":  "",
+                                                   "P1":  "",
+                                                   "P2":  "",
+                                                   "P3":  "",
+                                                   "P4":  "",
+                                                   "P5":  "",
+                                                   "P6":  "",
+                                                   "P7":  ""
+                                               }
+                                },
+                       "Memory":  {
+                                      "voltage":  {
+                                                      "P4":  ""
+                                                  },
+                                      "clocks":  {
+                                                     "P4":  ""
+                                                 }
+                                  },
+                       "Power_Limit_Max":  "",
+                       "Current_Limit":  "",
+                       "Wattage_Limit":  "",
+                       "Acoustic_Limit":  "",
+                       "Target_Temp":  "",
+                       "Max_Temp":  "",
+                       "Min_Fan":  "",
+                       "Max_Fan":  ""
+                   },
+    "argon2d-dyn":  {
+                        "Core":  {
+                                     "voltage":  {
+                                                     "P0":  "",
+                                                     "P1":  "",
+                                                     "P2":  "",
+                                                     "P3":  "",
+                                                     "P4":  "",
+                                                     "P5":  "",
+                                                     "P6":  "",
+                                                     "P7":  ""
+                                                 },
+                                     "Clocks":  {
+                                                    "P0":  "",
+                                                    "P1":  "",
+                                                    "P2":  "",
+                                                    "P3":  "",
+                                                    "P4":  "",
+                                                    "P5":  "",
+                                                    "P6":  "",
+                                                    "P7":  ""
+                                                }
+                                 },
+                        "Memory":  {
+                                       "voltage":  {
+                                                       "P4":  ""
+                                                   },
+                                       "clocks":  {
+                                                      "P4":  ""
+                                                  }
+                                   },
+                        "Power_Limit_Max":  "",
+                        "Current_Limit":  "",
+                        "Wattage_Limit":  "",
+                        "Acoustic_Limit":  "",
+                        "Target_Temp":  "",
+                        "Max_Temp":  "",
+                        "Min_Fan":  "",
+                        "Max_Fan":  ""
+                    },
+    "yescryptr32":  {
+                        "Core":  {
+                                     "voltage":  {
+                                                     "P0":  "",
+                                                     "P1":  "",
+                                                     "P2":  "",
+                                                     "P3":  "",
+                                                     "P4":  "",
+                                                     "P5":  "",
+                                                     "P6":  "",
+                                                     "P7":  ""
+                                                 },
+                                     "Clocks":  {
+                                                    "P0":  "",
+                                                    "P1":  "",
+                                                    "P2":  "",
+                                                    "P3":  "",
+                                                    "P4":  "",
+                                                    "P5":  "",
+                                                    "P6":  "",
+                                                    "P7":  ""
+                                                }
+                                 },
+                        "Memory":  {
+                                       "voltage":  {
+                                                       "P4":  ""
+                                                   },
+                                       "clocks":  {
+                                                      "P4":  ""
+                                                  }
+                                   },
+                        "Power_Limit_Max":  "",
+                        "Current_Limit":  "",
+                        "Wattage_Limit":  "",
+                        "Acoustic_Limit":  "",
+                        "Target_Temp":  "",
+                        "Max_Temp":  "",
+                        "Min_Fan":  "",
+                        "Max_Fan":  ""
+                    },
+    "lbk3":  {
+                 "Core":  {
+                              "voltage":  {
+                                              "P0":  "",
+                                              "P1":  "",
+                                              "P2":  "",
+                                              "P3":  "",
+                                              "P4":  "",
+                                              "P5":  "",
+                                              "P6":  "",
+                                              "P7":  ""
+                                          },
+                              "Clocks":  {
+                                             "P0":  "",
+                                             "P1":  "",
+                                             "P2":  "",
+                                             "P3":  "",
+                                             "P4":  "",
+                                             "P5":  "",
+                                             "P6":  "",
+                                             "P7":  ""
+                                         }
+                          },
+                 "Memory":  {
+                                "voltage":  {
+                                                "P4":  ""
+                                            },
+                                "clocks":  {
+                                               "P4":  ""
+                                           }
+                            },
+                 "Power_Limit_Max":  "",
+                 "Current_Limit":  "",
+                 "Wattage_Limit":  "",
+                 "Acoustic_Limit":  "",
+                 "Target_Temp":  "",
+                 "Max_Temp":  "",
+                 "Min_Fan":  "",
+                 "Max_Fan":  ""
+             },
+    "cryptonightheavy":  {
+                             "Core":  {
+                                          "voltage":  {
+                                                          "P0":  "",
+                                                          "P1":  "",
+                                                          "P2":  "",
+                                                          "P3":  "",
+                                                          "P4":  "",
+                                                          "P5":  "",
+                                                          "P6":  "",
+                                                          "P7":  ""
+                                                      },
+                                          "Clocks":  {
+                                                         "P0":  "",
+                                                         "P1":  "",
+                                                         "P2":  "",
+                                                         "P3":  "",
+                                                         "P4":  "",
+                                                         "P5":  "",
+                                                         "P6":  "",
+                                                         "P7":  ""
+                                                     }
+                                      },
+                             "Memory":  {
+                                            "voltage":  {
+                                                            "P4":  ""
+                                                        },
+                                            "clocks":  {
+                                                           "P4":  ""
+                                                       }
+                                        },
+                             "Power_Limit_Max":  "",
+                             "Current_Limit":  "",
+                             "Wattage_Limit":  "",
+                             "Acoustic_Limit":  "",
+                             "Target_Temp":  "",
+                             "Max_Temp":  "",
+                             "Min_Fan":  "",
+                             "Max_Fan":  ""
+                         },
+    "allium":  {
+                   "Core":  {
+                                "voltage":  {
+                                                "P0":  "",
+                                                "P1":  "",
+                                                "P2":  "",
+                                                "P3":  "",
+                                                "P4":  "",
+                                                "P5":  "",
+                                                "P6":  "",
+                                                "P7":  ""
+                                            },
+                                "Clocks":  {
+                                               "P0":  "",
+                                               "P1":  "",
+                                               "P2":  "",
+                                               "P3":  "",
+                                               "P4":  "",
+                                               "P5":  "",
+                                               "P6":  "",
+                                               "P7":  ""
+                                           }
+                            },
+                   "Memory":  {
+                                  "voltage":  {
+                                                  "P4":  ""
+                                              },
+                                  "clocks":  {
+                                                 "P4":  ""
+                                             }
+                              },
+                   "Power_Limit_Max":  "",
+                   "Current_Limit":  "",
+                   "Wattage_Limit":  "",
+                   "Acoustic_Limit":  "",
+                   "Target_Temp":  "",
+                   "Max_Temp":  "",
+                   "Min_Fan":  "",
+                   "Max_Fan":  ""
+               },
+    "qubit":  {
+                  "Core":  {
+                               "voltage":  {
+                                               "P0":  "",
+                                               "P1":  "",
+                                               "P2":  "",
+                                               "P3":  "",
+                                               "P4":  "",
+                                               "P5":  "",
+                                               "P6":  "",
+                                               "P7":  ""
+                                           },
+                               "Clocks":  {
+                                              "P0":  "",
+                                              "P1":  "",
+                                              "P2":  "",
+                                              "P3":  "",
+                                              "P4":  "",
+                                              "P5":  "",
+                                              "P6":  "",
+                                              "P7":  ""
+                                          }
+                           },
+                  "Memory":  {
+                                 "voltage":  {
+                                                 "P4":  ""
+                                             },
+                                 "clocks":  {
+                                                "P4":  ""
+                                            }
+                             },
+                  "Power_Limit_Max":  "",
+                  "Current_Limit":  "",
+                  "Wattage_Limit":  "",
+                  "Acoustic_Limit":  "",
+                  "Target_Temp":  "",
+                  "Max_Temp":  "",
+                  "Min_Fan":  "",
+                  "Max_Fan":  ""
+              },
+    "equihash200":  {
+                        "Core":  {
+                                     "voltage":  {
+                                                     "P0":  "",
+                                                     "P1":  "",
+                                                     "P2":  "",
+                                                     "P3":  "",
+                                                     "P4":  "",
+                                                     "P5":  "",
+                                                     "P6":  "",
+                                                     "P7":  ""
+                                                 },
+                                     "Clocks":  {
+                                                    "P0":  "",
+                                                    "P1":  "",
+                                                    "P2":  "",
+                                                    "P3":  "",
+                                                    "P4":  "",
+                                                    "P5":  "",
+                                                    "P6":  "",
+                                                    "P7":  ""
+                                                }
+                                 },
+                        "Memory":  {
+                                       "voltage":  {
+                                                       "P4":  ""
+                                                   },
+                                       "clocks":  {
+                                                      "P4":  ""
+                                                  }
+                                   },
+                        "Power_Limit_Max":  "",
+                        "Current_Limit":  "",
+                        "Wattage_Limit":  "",
+                        "Acoustic_Limit":  "",
+                        "Target_Temp":  "",
+                        "Max_Temp":  "",
+                        "Min_Fan":  "",
+                        "Max_Fan":  ""
+                    },
+    "x18":  {
+                "Core":  {
+                             "voltage":  {
+                                             "P0":  "",
+                                             "P1":  "",
+                                             "P2":  "",
+                                             "P3":  "",
+                                             "P4":  "",
+                                             "P5":  "",
+                                             "P6":  "",
+                                             "P7":  ""
+                                         },
+                             "Clocks":  {
+                                            "P0":  "",
+                                            "P1":  "",
+                                            "P2":  "",
+                                            "P3":  "",
+                                            "P4":  "",
+                                            "P5":  "",
+                                            "P6":  "",
+                                            "P7":  ""
+                                        }
+                         },
+                "Memory":  {
+                               "voltage":  {
+                                               "P4":  ""
+                                           },
+                               "clocks":  {
+                                              "P4":  ""
+                                          }
+                           },
+                "Power_Limit_Max":  "",
+                "Current_Limit":  "",
+                "Wattage_Limit":  "",
+                "Acoustic_Limit":  "",
+                "Target_Temp":  "",
+                "Max_Temp":  "",
+                "Min_Fan":  "",
+                "Max_Fan":  ""
+            },
+    "keccak":  {
+                   "Core":  {
+                                "voltage":  {
+                                                "P0":  "",
+                                                "P1":  "",
+                                                "P2":  "",
+                                                "P3":  "",
+                                                "P4":  "",
+                                                "P5":  "",
+                                                "P6":  "",
+                                                "P7":  ""
+                                            },
+                                "Clocks":  {
+                                               "P0":  "",
+                                               "P1":  "",
+                                               "P2":  "",
+                                               "P3":  "",
+                                               "P4":  "",
+                                               "P5":  "",
+                                               "P6":  "",
+                                               "P7":  ""
+                                           }
+                            },
+                   "Memory":  {
+                                  "voltage":  {
+                                                  "P4":  ""
+                                              },
+                                  "clocks":  {
+                                                 "P4":  ""
+                                             }
+                              },
+                   "Power_Limit_Max":  "",
+                   "Current_Limit":  "",
+                   "Wattage_Limit":  "",
+                   "Acoustic_Limit":  "",
+                   "Target_Temp":  "",
+                   "Max_Temp":  "",
+                   "Min_Fan":  "",
+                   "Max_Fan":  ""
+               },
+    "geek":  {
+                 "Core":  {
+                              "voltage":  {
+                                              "P0":  "",
+                                              "P1":  "",
+                                              "P2":  "",
+                                              "P3":  "",
+                                              "P4":  "",
+                                              "P5":  "",
+                                              "P6":  "",
+                                              "P7":  ""
+                                          },
+                              "Clocks":  {
+                                             "P0":  "",
+                                             "P1":  "",
+                                             "P2":  "",
+                                             "P3":  "",
+                                             "P4":  "",
+                                             "P5":  "",
+                                             "P6":  "",
+                                             "P7":  ""
+                                         }
+                          },
+                 "Memory":  {
+                                "voltage":  {
+                                                "P4":  ""
+                                            },
+                                "clocks":  {
+                                               "P4":  ""
+                                           }
+                            },
+                 "Power_Limit_Max":  "",
+                 "Current_Limit":  "",
+                 "Wattage_Limit":  "",
+                 "Acoustic_Limit":  "",
+                 "Target_Temp":  "",
+                 "Max_Temp":  "",
+                 "Min_Fan":  "",
+                 "Max_Fan":  ""
+             },
+    "m7m":  {
+                "Core":  {
+                             "voltage":  {
+                                             "P0":  "",
+                                             "P1":  "",
+                                             "P2":  "",
+                                             "P3":  "",
+                                             "P4":  "",
+                                             "P5":  "",
+                                             "P6":  "",
+                                             "P7":  ""
+                                         },
+                             "Clocks":  {
+                                            "P0":  "",
+                                            "P1":  "",
+                                            "P2":  "",
+                                            "P3":  "",
+                                            "P4":  "",
+                                            "P5":  "",
+                                            "P6":  "",
+                                            "P7":  ""
+                                        }
+                         },
+                "Memory":  {
+                               "voltage":  {
+                                               "P4":  ""
+                                           },
+                               "clocks":  {
+                                              "P4":  ""
+                                          }
+                           },
+                "Power_Limit_Max":  "",
+                "Current_Limit":  "",
+                "Wattage_Limit":  "",
+                "Acoustic_Limit":  "",
+                "Target_Temp":  "",
+                "Max_Temp":  "",
+                "Min_Fan":  "",
+                "Max_Fan":  ""
+            },
+    "x21s":  {
+                 "Core":  {
+                              "voltage":  {
+                                              "P0":  "",
+                                              "P1":  "",
+                                              "P2":  "",
+                                              "P3":  "",
+                                              "P4":  "",
+                                              "P5":  "",
+                                              "P6":  "",
+                                              "P7":  ""
+                                          },
+                              "Clocks":  {
+                                             "P0":  "",
+                                             "P1":  "",
+                                             "P2":  "",
+                                             "P3":  "",
+                                             "P4":  "",
+                                             "P5":  "",
+                                             "P6":  "",
+                                             "P7":  ""
+                                         }
+                          },
+                 "Memory":  {
+                                "voltage":  {
+                                                "P4":  ""
+                                            },
+                                "clocks":  {
+                                               "P4":  ""
+                                           }
+                            },
+                 "Power_Limit_Max":  "",
+                 "Current_Limit":  "",
+                 "Wattage_Limit":  "",
+                 "Acoustic_Limit":  "",
+                 "Target_Temp":  "",
+                 "Max_Temp":  "",
+                 "Min_Fan":  "",
+                 "Max_Fan":  ""
+             },
+    "bitcore":  {
+                    "Core":  {
+                                 "voltage":  {
+                                                 "P0":  "",
+                                                 "P1":  "",
+                                                 "P2":  "",
+                                                 "P3":  "",
+                                                 "P4":  "",
+                                                 "P5":  "",
+                                                 "P6":  "",
+                                                 "P7":  ""
+                                             },
+                                 "Clocks":  {
+                                                "P0":  "",
+                                                "P1":  "",
+                                                "P2":  "",
+                                                "P3":  "",
+                                                "P4":  "",
+                                                "P5":  "",
+                                                "P6":  "",
+                                                "P7":  ""
+                                            }
+                             },
+                    "Memory":  {
+                                   "voltage":  {
+                                                   "P4":  ""
+                                               },
+                                   "clocks":  {
+                                                  "P4":  ""
+                                              }
+                               },
+                    "Power_Limit_Max":  "",
+                    "Current_Limit":  "",
+                    "Wattage_Limit":  "",
+                    "Acoustic_Limit":  "",
+                    "Target_Temp":  "",
+                    "Max_Temp":  "",
+                    "Min_Fan":  "",
+                    "Max_Fan":  ""
+                },
+    "blake":  {
+                  "Core":  {
+                               "voltage":  {
+                                               "P0":  "",
+                                               "P1":  "",
+                                               "P2":  "",
+                                               "P3":  "",
+                                               "P4":  "",
+                                               "P5":  "",
+                                               "P6":  "",
+                                               "P7":  ""
+                                           },
+                               "Clocks":  {
+                                              "P0":  "",
+                                              "P1":  "",
+                                              "P2":  "",
+                                              "P3":  "",
+                                              "P4":  "",
+                                              "P5":  "",
+                                              "P6":  "",
+                                              "P7":  ""
+                                          }
+                           },
+                  "Memory":  {
+                                 "voltage":  {
+                                                 "P4":  ""
+                                             },
+                                 "clocks":  {
+                                                "P4":  ""
+                                            }
+                             },
+                  "Power_Limit_Max":  "",
+                  "Current_Limit":  "",
+                  "Wattage_Limit":  "",
+                  "Acoustic_Limit":  "",
+                  "Target_Temp":  "",
+                  "Max_Temp":  "",
+                  "Min_Fan":  "",
+                  "Max_Fan":  ""
+              },
+    "exosis":  {
+                   "Core":  {
+                                "voltage":  {
+                                                "P0":  "",
+                                                "P1":  "",
+                                                "P2":  "",
+                                                "P3":  "",
+                                                "P4":  "",
+                                                "P5":  "",
+                                                "P6":  "",
+                                                "P7":  ""
+                                            },
+                                "Clocks":  {
+                                               "P0":  "",
+                                               "P1":  "",
+                                               "P2":  "",
+                                               "P3":  "",
+                                               "P4":  "",
+                                               "P5":  "",
+                                               "P6":  "",
+                                               "P7":  ""
+                                           }
+                            },
+                   "Memory":  {
+                                  "voltage":  {
+                                                  "P4":  ""
+                                              },
+                                  "clocks":  {
+                                                 "P4":  ""
+                                             }
+                              },
+                   "Power_Limit_Max":  "",
+                   "Current_Limit":  "",
+                   "Wattage_Limit":  "",
+                   "Acoustic_Limit":  "",
+                   "Target_Temp":  "",
+                   "Max_Temp":  "",
+                   "Min_Fan":  "",
+                   "Max_Fan":  ""
+               },
+    "cryptonightv8":  {
+                          "Core":  {
+                                       "voltage":  {
+                                                       "P0":  "",
+                                                       "P1":  "",
+                                                       "P2":  "",
+                                                       "P3":  "",
+                                                       "P4":  "",
+                                                       "P5":  "",
+                                                       "P6":  "",
+                                                       "P7":  ""
+                                                   },
+                                       "Clocks":  {
+                                                      "P0":  "",
+                                                      "P1":  "",
+                                                      "P2":  "",
+                                                      "P3":  "",
+                                                      "P4":  "",
+                                                      "P5":  "",
+                                                      "P6":  "",
+                                                      "P7":  ""
+                                                  }
+                                   },
+                          "Memory":  {
+                                         "voltage":  {
+                                                         "P4":  ""
+                                                     },
+                                         "clocks":  {
+                                                        "P4":  ""
+                                                    }
+                                     },
+                          "Power_Limit_Max":  "",
+                          "Current_Limit":  "",
+                          "Wattage_Limit":  "",
+                          "Acoustic_Limit":  "",
+                          "Target_Temp":  "",
+                          "Max_Temp":  "",
+                          "Min_Fan":  "",
+                          "Max_Fan":  ""
+                      },
+    "cryptonight":  {
+                        "Core":  {
+                                     "voltage":  {
+                                                     "P0":  "",
+                                                     "P1":  "",
+                                                     "P2":  "",
+                                                     "P3":  "",
+                                                     "P4":  "",
+                                                     "P5":  "",
+                                                     "P6":  "",
+                                                     "P7":  ""
+                                                 },
+                                     "Clocks":  {
+                                                    "P0":  "",
+                                                    "P1":  "",
+                                                    "P2":  "",
+                                                    "P3":  "",
+                                                    "P4":  "",
+                                                    "P5":  "",
+                                                    "P6":  "",
+                                                    "P7":  ""
+                                                }
+                                 },
+                        "Memory":  {
+                                       "voltage":  {
+                                                       "P4":  ""
+                                                   },
+                                       "clocks":  {
+                                                      "P4":  ""
+                                                  }
+                                   },
+                        "Power_Limit_Max":  "",
+                        "Current_Limit":  "",
+                        "Wattage_Limit":  "",
+                        "Acoustic_Limit":  "",
+                        "Target_Temp":  "",
+                        "Max_Temp":  "",
+                        "Min_Fan":  "",
+                        "Max_Fan":  ""
+                    },
+    "x16r":  {
+                 "Core":  {
+                              "voltage":  {
+                                              "P0":  "",
+                                              "P1":  "",
+                                              "P2":  "",
+                                              "P3":  "",
+                                              "P4":  "",
+                                              "P5":  "",
+                                              "P6":  "",
+                                              "P7":  ""
+                                          },
+                              "Clocks":  {
+                                             "P0":  "",
+                                             "P1":  "",
+                                             "P2":  "",
+                                             "P3":  "",
+                                             "P4":  "",
+                                             "P5":  "",
+                                             "P6":  "",
+                                             "P7":  ""
+                                         }
+                          },
+                 "Memory":  {
+                                "voltage":  {
+                                                "P4":  ""
+                                            },
+                                "clocks":  {
+                                               "P4":  ""
+                                           }
+                            },
+                 "Power_Limit_Max":  "",
+                 "Current_Limit":  "",
+                 "Wattage_Limit":  "",
+                 "Acoustic_Limit":  "",
+                 "Target_Temp":  "",
+                 "Max_Temp":  "",
+                 "Min_Fan":  "",
+                 "Max_Fan":  ""
+             },
+    "daggerhashimoto":  {
+                            "Core":  {
+                                         "voltage":  {
+                                                         "P0":  "",
+                                                         "P1":  "",
+                                                         "P2":  "",
+                                                         "P3":  "",
+                                                         "P4":  "",
+                                                         "P5":  "",
+                                                         "P6":  "",
+                                                         "P7":  ""
+                                                     },
+                                         "Clocks":  {
+                                                        "P0":  "",
+                                                        "P1":  "",
+                                                        "P2":  "",
+                                                        "P3":  "",
+                                                        "P4":  "",
+                                                        "P5":  "",
+                                                        "P6":  "",
+                                                        "P7":  ""
+                                                    }
+                                     },
+                            "Memory":  {
+                                           "voltage":  {
+                                                           "P4":  ""
+                                                       },
+                                           "clocks":  {
+                                                          "P4":  ""
+                                                      }
+                                       },
+                            "Power_Limit_Max":  "",
+                            "Current_Limit":  "",
+                            "Wattage_Limit":  "",
+                            "Acoustic_Limit":  "",
+                            "Target_Temp":  "",
+                            "Max_Temp":  "",
+                            "Min_Fan":  "",
+                            "Max_Fan":  ""
+                        },
+    "equihash96":  {
+                       "Core":  {
+                                    "voltage":  {
+                                                    "P0":  "",
+                                                    "P1":  "",
+                                                    "P2":  "",
+                                                    "P3":  "",
+                                                    "P4":  "",
+                                                    "P5":  "",
+                                                    "P6":  "",
+                                                    "P7":  ""
+                                                },
+                                    "Clocks":  {
+                                                   "P0":  "",
+                                                   "P1":  "",
+                                                   "P2":  "",
+                                                   "P3":  "",
+                                                   "P4":  "",
+                                                   "P5":  "",
+                                                   "P6":  "",
+                                                   "P7":  ""
+                                               }
+                                },
+                       "Memory":  {
+                                      "voltage":  {
+                                                      "P4":  ""
+                                                  },
+                                      "clocks":  {
+                                                     "P4":  ""
+                                                 }
+                                  },
+                       "Power_Limit_Max":  "",
+                       "Current_Limit":  "",
+                       "Wattage_Limit":  "",
+                       "Acoustic_Limit":  "",
+                       "Target_Temp":  "",
+                       "Max_Temp":  "",
+                       "Min_Fan":  "",
+                       "Max_Fan":  ""
+                   },
+    "polytimos":  {
+                      "Core":  {
+                                   "voltage":  {
+                                                   "P0":  "",
+                                                   "P1":  "",
+                                                   "P2":  "",
+                                                   "P3":  "",
+                                                   "P4":  "",
+                                                   "P5":  "",
+                                                   "P6":  "",
+                                                   "P7":  ""
+                                               },
+                                   "Clocks":  {
+                                                  "P0":  "",
+                                                  "P1":  "",
+                                                  "P2":  "",
+                                                  "P3":  "",
+                                                  "P4":  "",
+                                                  "P5":  "",
+                                                  "P6":  "",
+                                                  "P7":  ""
+                                              }
+                               },
+                      "Memory":  {
+                                     "voltage":  {
+                                                     "P4":  ""
+                                                 },
+                                     "clocks":  {
+                                                    "P4":  ""
+                                                }
+                                 },
+                      "Power_Limit_Max":  "",
+                      "Current_Limit":  "",
+                      "Wattage_Limit":  "",
+                      "Acoustic_Limit":  "",
+                      "Target_Temp":  "",
+                      "Max_Temp":  "",
+                      "Min_Fan":  "",
+                      "Max_Fan":  ""
+                  },
+    "yespower":  {
+                     "Core":  {
+                                  "voltage":  {
+                                                  "P0":  "",
+                                                  "P1":  "",
+                                                  "P2":  "",
+                                                  "P3":  "",
+                                                  "P4":  "",
+                                                  "P5":  "",
+                                                  "P6":  "",
+                                                  "P7":  ""
+                                              },
+                                  "Clocks":  {
+                                                 "P0":  "",
+                                                 "P1":  "",
+                                                 "P2":  "",
+                                                 "P3":  "",
+                                                 "P4":  "",
+                                                 "P5":  "",
+                                                 "P6":  "",
+                                                 "P7":  ""
+                                             }
+                              },
+                     "Memory":  {
+                                    "voltage":  {
+                                                    "P4":  ""
+                                                },
+                                    "clocks":  {
+                                                   "P4":  ""
+                                               }
+                                },
+                     "Power_Limit_Max":  "",
+                     "Current_Limit":  "",
+                     "Wattage_Limit":  "",
+                     "Acoustic_Limit":  "",
+                     "Target_Temp":  "",
+                     "Max_Temp":  "",
+                     "Min_Fan":  "",
+                     "Max_Fan":  ""
+                 },
+    "masari":  {
+                   "Core":  {
+                                "voltage":  {
+                                                "P0":  "",
+                                                "P1":  "",
+                                                "P2":  "",
+                                                "P3":  "",
+                                                "P4":  "",
+                                                "P5":  "",
+                                                "P6":  "",
+                                                "P7":  ""
+                                            },
+                                "Clocks":  {
+                                               "P0":  "",
+                                               "P1":  "",
+                                               "P2":  "",
+                                               "P3":  "",
+                                               "P4":  "",
+                                               "P5":  "",
+                                               "P6":  "",
+                                               "P7":  ""
+                                           }
+                            },
+                   "Memory":  {
+                                  "voltage":  {
+                                                  "P4":  ""
+                                              },
+                                  "clocks":  {
+                                                 "P4":  ""
+                                             }
+                              },
+                   "Power_Limit_Max":  "",
+                   "Current_Limit":  "",
+                   "Wattage_Limit":  "",
+                   "Acoustic_Limit":  "",
+                   "Target_Temp":  "",
+                   "Max_Temp":  "",
+                   "Min_Fan":  "",
+                   "Max_Fan":  ""
+               },
+    "x17":  {
+                "Core":  {
+                             "voltage":  {
+                                             "P0":  "",
+                                             "P1":  "",
+                                             "P2":  "",
+                                             "P3":  "",
+                                             "P4":  "",
+                                             "P5":  "",
+                                             "P6":  "",
+                                             "P7":  ""
+                                         },
+                             "Clocks":  {
+                                            "P0":  "",
+                                            "P1":  "",
+                                            "P2":  "",
+                                            "P3":  "",
+                                            "P4":  "",
+                                            "P5":  "",
+                                            "P6":  "",
+                                            "P7":  ""
+                                        }
+                         },
+                "Memory":  {
+                               "voltage":  {
+                                               "P4":  ""
+                                           },
+                               "clocks":  {
+                                              "P4":  ""
+                                          }
+                           },
+                "Power_Limit_Max":  "",
+                "Current_Limit":  "",
+                "Wattage_Limit":  "",
+                "Acoustic_Limit":  "",
+                "Target_Temp":  "",
+                "Max_Temp":  "",
+                "Min_Fan":  "",
+                "Max_Fan":  ""
+            },
+    "zhash":  {
+                  "Core":  {
+                               "voltage":  {
+                                               "P0":  "",
+                                               "P1":  "",
+                                               "P2":  "",
+                                               "P3":  "",
+                                               "P4":  "",
+                                               "P5":  "",
+                                               "P6":  "",
+                                               "P7":  ""
+                                           },
+                               "Clocks":  {
+                                              "P0":  "",
+                                              "P1":  "",
+                                              "P2":  "",
+                                              "P3":  "",
+                                              "P4":  "",
+                                              "P5":  "",
+                                              "P6":  "",
+                                              "P7":  ""
+                                          }
+                           },
+                  "Memory":  {
+                                 "voltage":  {
+                                                 "P4":  ""
+                                             },
+                                 "clocks":  {
+                                                "P4":  ""
+                                            }
+                             },
+                  "Power_Limit_Max":  "",
+                  "Current_Limit":  "",
+                  "Wattage_Limit":  "",
+                  "Acoustic_Limit":  "",
+                  "Target_Temp":  "",
+                  "Max_Temp":  "",
+                  "Min_Fan":  "",
+                  "Max_Fan":  ""
+              },
+    "keccakc":  {
+                    "Core":  {
+                                 "voltage":  {
+                                                 "P0":  "",
+                                                 "P1":  "",
+                                                 "P2":  "",
+                                                 "P3":  "",
+                                                 "P4":  "",
+                                                 "P5":  "",
+                                                 "P6":  "",
+                                                 "P7":  ""
+                                             },
+                                 "Clocks":  {
+                                                "P0":  "",
+                                                "P1":  "",
+                                                "P2":  "",
+                                                "P3":  "",
+                                                "P4":  "",
+                                                "P5":  "",
+                                                "P6":  "",
+                                                "P7":  ""
+                                            }
+                             },
+                    "Memory":  {
+                                   "voltage":  {
+                                                   "P4":  ""
+                                               },
+                                   "clocks":  {
+                                                  "P4":  ""
+                                              }
+                               },
+                    "Power_Limit_Max":  "",
+                    "Current_Limit":  "",
+                    "Wattage_Limit":  "",
+                    "Acoustic_Limit":  "",
+                    "Target_Temp":  "",
+                    "Max_Temp":  "",
+                    "Min_Fan":  "",
+                    "Max_Fan":  ""
+                }
+}
