@@ -53,8 +53,10 @@ function Set-VegaOC{
     $Clock = @{}
 
    $GetVegaOC = Get-Content ".\config\oc\vega-oc.json" | COnvertFrom-Json
-   if($GetVegaOC.$OCAlgo.Core.Voltage.P7 -or $GetVegaOC.Default.Voltage.P7){$VegaP = $GetVegaOC.$OCAlgo;$VegaOC = $GetVegaOC.Default}else{break}
+   if($GetVegaOC.$OCAlgo.Core.Voltage.P7 -or $GetVegaOC.Default.Voltage.P7){$Vega= $true; $VegaP = $GetVegaOC.$OCAlgo;$VegaOC = $GetVegaOC.Default}
 
+   if($Vega -eq $true)
+   {
    $VegaP.Core.Voltage | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | foreach{if($VegaP.Core.Voltage.$_ -ne ""){$VegaOC.Core.Voltage.$_ = $VegaP.Core.Voltage.$_}}
    $VegaP.Core.Clocks | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | foreach{if($VegaP.Core.Clocks.$_ -ne ""){$VegaOC.Clock.Clocks.$_ = $VegaP.Core.Clocks.$_}}
 
@@ -123,6 +125,7 @@ $GetRegistry = (Get-RegDevices)
    Start-Process ".\build\apps\OverdriveNtool.exe" -ArgumentList $Commands -NoNewWindow -Wait
   }
   $hexified | Set-Content ".\build\txt\reg.txt"
+  }
  }
 }
 
