@@ -139,6 +139,18 @@ param(
 
 ## Set Current Path
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+$PID | Set-Content ".\build\pid\miner_pid.txt"
+
+##filepath dir
+$dir = (Split-Path $script:MyInvocation.MyCommand.Path)
+$build = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build")
+$pwsh = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\powershell")
+$bash = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\linux")
+$windows = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\windows")
+$data = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\data")
+$txt = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\txt")
+$swarmstamp = "SWARMISBESTMINEREVER"
+$Platform | Set-Content ".\build\txt\os.txt"
 
 ## Change console icon and title
 if($Platform -eq "windows")
@@ -174,6 +186,118 @@ $ID = ".\build\pid\background_pid.txt"
 if(Test-Path $ID){$Agent = Get-Content $ID}
 if($Agent){$BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue}
 if($BackGroundID.name -eq "powershell"){Stop-Process $BackGroundID | Out-Null}
+}
+
+## API Server Start
+$APIServer = {
+param(
+    [Parameter(Position = 0, Mandatory = $true)]
+    [string]$WorkingDir
+   )
+   
+   begin{Set-Location $WorkingDir}
+   
+   process {
+   $listener = New-Object System.Net.HttpListener
+   $listener.Prefixes.Add('http://localhost:4099/') 
+   $listener.Start()
+   'Listening ...'
+   
+   
+   # Run until you send a GET request to /end
+   while ($true) {
+       $context = $listener.GetContext() 
+   
+       # Capture the details about the request
+       $request = $context.Request
+   
+       # Setup a place to deliver a response
+       $response = $context.Response
+      
+       # Break from loop if GET request sent to /end
+       if ($request.Url -match '/end') { 
+           break 
+       } else {
+   
+           # Split request URL to get command and options
+           $requestvars = ([String]$request.Url).split("/");
+           if($requestvars[3])
+           {
+           switch($requestvars[3])
+           {
+               "summary" 
+               {
+                if(Test-Path ".\build\txt\profittable.txt")
+                 {
+                  $result = Get-Content ".\build\txt\profittable.txt" | ConvertFrom-JSon;
+                  $message = $result | ConvertTo-Json -Depth 4 -Compress; 
+                  $response.ContentType = 'application/json';
+                 }
+                 else 
+                 {
+                  # If no matching subdirectory/route is found generate a 404 message
+                  $message = @("No Data") | ConvertTo-Json -Compress;
+                  $response.ContentType = 'application/json';
+                 }
+               }
+               "getstats"
+               {
+                if(Test-Path ".\build\bash\hivestats.sh")
+                 {
+                  $result = Get-Content ".\build\bash\hivestats.sh" | ConvertFrom-StringData
+                  $Stat = @()
+                  for($i=0; $i -lt $result.GPU.Count; $i++){$GPU = @{"GPU$i" = @{hashrate = $result.GPU[$i]; temperature = $result.TEMP[$i];fans = $result.FAN[$i];}}; $Stat += $GPU}
+                  $Stat += @{Algorithm = $result.ALGO}
+                  $Stat += @{Uptime = $result.UPTIME}
+                  $Stat += @{"Hash_Units" = $result.HSU}
+                  $Stat += @{Accepted = $result.ACC}
+                  $Stat += @{Rejected = $result.REJ}
+                  $message = $Stat | ConvertTo-Json -Depth 4 -Compress;
+                  $response.ContentType = 'application/json'; 
+                 }
+                 else 
+                 {
+                  # If no matching subdirectory/route is found generate a 404 message
+                  $message = @("No Data") | ConvertTo-Json -Compress;
+                  $response.ContentType = 'application/json';
+                 }
+               }
+           default
+           {
+                  # If no matching subdirectory/route is found generate a 404 message
+                  $message = @("No Data") | ConvertTo-Json -Compress;
+                  $response.ContentType = 'application/json';
+           }
+       }
+          # Convert the data to UTF8 bytes
+          [byte[]]$buffer = [System.Text.Encoding]::UTF8.GetBytes($message)
+          
+          # Set length of response
+          $response.ContentLength64 = $buffer.length
+          
+          # Write response out and close
+          $output = $response.OutputStream
+          $output.Write($buffer, 0, $buffer.length)
+          $output.Close()
+         }    
+        }
+       }
+     }
+   #Terminate the listener
+   end{$listener.Stop()} 
+}
+Start-Job $APIServer -Name "APIServer" -ArgumentList "$Dir" | OUt-Null
+Write-Host "Starting API Server" -ForegroundColor "Yellow"
+Start-Sleep -S 1
+if($((Get-Job -Name "APIServer").State) -eq "Running")
+ {
+  Write-Host "API Server Started" -ForegroundColor Green
+  Get-Job -Name "APIServer" | Receive-Job
+ }
+else
+{
+ Write-Warning "API Server Failed To Start"
+ Get-Job -Name "APIServer" | Receive-Job
 }
 
 ## Debug Mode
@@ -435,7 +559,6 @@ Write-Host "Sycronizing Time Through Nist" -ForegroundColor Yellow
 Get-Nist | Set-Date
 
 ##Start The Log
-$dir = (Split-Path $script:MyInvocation.MyCommand.Path)
 $dir | set-content ".\build\bash\dir.sh"
 start-log -Platforms $Platform -HiveOS $HiveOS
 
@@ -458,16 +581,6 @@ $ActiveMinerPrograms = @()
 $Naming = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
 $Priorities = Get-Content ".\config\pools\pool-priority.json" | ConvertFrom-Json
 $DonationMode = $false
-
-##filepath dir
-$build = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build")
-$pwsh = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\powershell")
-$bash = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\linux")
-$windows = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\windows")
-$data = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\data")
-$txt = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\txt")
-$swarmstamp = "SWARMISBESTMINEREVER"
-$Platform | Set-Content ".\build\txt\os.txt"
 
 ## Initiate Update Check
 start-update -Update $update -Dir $dir -Platforms $Platform
@@ -645,13 +758,13 @@ if($Type -like "*AMD*")
  Write-Host "AMD OpenCL Platform is $AMDPlatform"
 }
 
+
 #Timers
 $TimeoutTime = $Timeout*3600
 $TimeoutTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $TimeoutTimer.Start()
 $logtimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $logtimer.Start()
-if($Lite -Eq "Yes"){Start-Process ".\build\bash\apiserver.sh" -Wait}
 
 ##Load Previous Times & PID Data
 Get-DateFiles
@@ -661,7 +774,6 @@ try{if((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)){Start-Pro
 if($Proxy -eq "" -or $Proxy -eq ''){$PSDefaultParameterValues.Remove("*:Proxy")}
 else{$PSDefaultParameterValues["*:Proxy"] = $Proxy}
 ##RecordPID
-$PID | Set-Content ".\build\pid\miner_pid.txt"
 
 ##GPU-Count- Parse the hashtable between devices.
 if(Test-Path ".\build\txt\nvidiapower.txt"){Remove-Item ".\build\txt\nvidiapower.txt" -Force}
@@ -1268,14 +1380,12 @@ else{$MinerInterval = $Interval}
 
 
 ## This Starts restarts background agent, or sets API table for LITE mode.
-if($Lite -eq "Yes"){
 $UsePools = $false
 $ProfitTable | foreach{if($_.Profits -ne $null){$UsePools = $true}}
 if($UsePools -eq $false){$APITable = $ProfitTable | Sort-Object -Property Type,Profits -Descending}
 else{$APITable = $ProfitTable | Sort-Object -Property Type,Pool_Estimate}
 $APITable | ConvertTo-Json -Depth 4 | Set-Content ".\build\txt\profittable.txt"
-Start-BackgroundCheck -Platforms $Platform
-}
+if($Lite -eq "Yes"){Start-BackgroundCheck -Platforms $Platform}
 
 ## Load mini logo
 if($Platform -eq "linux"){Get-Logo}
