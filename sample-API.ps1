@@ -32,7 +32,7 @@ if($NVIDIAStats){$NVIDIAStats[0]}
 
 
 ##GetStats Method
-Write-Host "Method = http://localhost:4099/Summary : "
+Write-Host "Method = http://localhost:4099/GetStats : "
 try{$GetStatsRequest = Invoke-WebRequest "http://localhost:4099/GetStats" -UseBasicParsing -TimeoutSec 10}catch{Write-Warning "Failed To Contact GetStats"}
 
 if($GetStatsRequest)
