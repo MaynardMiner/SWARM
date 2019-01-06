@@ -535,8 +535,7 @@ switch($MinerAPI)
     try{$Data = $Null; $Data = $Request | ConvertFrom-Json}catch{$Tryother = $true}
     if($Tryother -eq $true)
      {
-      $Request = $Request.Substring($Request.IndexOf("{"), $Request.LastIndexOf("}") - $Request.IndexOf("{") + 1) -replace " ", "_"
-      try{$Data = $Null; $Data = $Request | ConvertFrom-Json}catch{Write-Host "Failed To parse GPU Array" -ForegroundColor Red}
+      try{$Request = $Request.Substring($Request.IndexOf("{"), $Request.LastIndexOf("}") - $Request.IndexOf("{") + 1) -replace " ", "_"}catch{Write-Host "Failed To parse GPU Array" -ForegroundColor Red}
      }
     $summary = $Data.summary.summary
     $threads = $Data.devs.devs
