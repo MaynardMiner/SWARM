@@ -1,3 +1,17 @@
+## This is a demonstration on how to use SWARM current API
+
+##Current Methods That Exist:
+$Mehtods = 
+"Current Methods:
+
+/Summary
+/GetStats
+"
+
+Write-Host $Mehtods
+
+##Summary Method
+Write-Host "Method = Summary: "
 try{$SummaryRequest = Invoke-WebRequest "http://localhost:4099/Summary" -UseBasicParsing -TimeoutSec 10}catch{Write-Warning "Failed To Contact Summary"}
 
 if($SummaryRequest)
@@ -14,6 +28,9 @@ if($SummaryRequest)
 if($AMDStats){$AMDStats | Select -First 1}
 if($NVIDIAStats){$NVIDIAStats | Select -First 1}
 
+
+##GetStats Method
+Write-Host "Method = GetStats: "
 try{$GetStatsRequest = Invoke-WebRequest "http://localhost:4099/GetStats" -UseBasicParsing -TimeoutSec 10}catch{Write-Warning "Failed To Contact GetStats"}
 
 if($GetStatsRequest)

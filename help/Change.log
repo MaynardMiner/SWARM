@@ -1361,9 +1361,11 @@ Major Changes:
 NOTE: FRESH INSTALL HIGHLY SUGGESTED!
 
 -API server now established:
-  http://localhost:4099/summary will get you swarm pricing data
-  http://localhost:4099/getstats will get you mining data
-  Much more is coming soon- Full API method to modify SWARM will exist
+  -http://localhost:4099/summary will get you swarm pricing data
+  -http://localhost:4099/getstats will get you mining data
+  -Much more is coming soon- Full API method to modify SWARM will exist
+  -Sample API for demonstration is included: Sample-API.ps1
+      note: As I update API, I will add how to use via Sample-API.ps1
 
 -Time Syncronization:
   For better SWARM_Mode optimization, all swarm apps will Sycronize
