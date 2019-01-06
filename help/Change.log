@@ -1352,3 +1352,87 @@ New Command (Windows)!
 -RTX series USB-controller fix. (Stats correct number of GPU's)
 
 This release is mainly a patch for users interested in SWARM_Mode.
+
+
+1.8.5
+
+Major Changes:
+
+NOTE: FRESH INSTALL HIGHLY SUGGESTED!
+
+-API server now established:
+  http://localhost/4099/summary will get you swarm pricing data
+  http://localhost/4099/getstats will get you mining data
+  Much more is coming soon- Full API method to modify SWARM will exist
+
+-Time Syncronization:
+  For better SWARM_Mode optimization, all swarm apps will Sycronize
+  their time with NIST servers at start.
+
+-Adminstrator
+  SWARM now runs in administrator mode. This allows the following:
+    -more GUI manipulation.
+    -Modify time settings.
+    -Launch miners with admin privelages (it helps amd side).
+    -modify registry entries for Vega Soft Powerplay Tables.
+    -in future: modify registry for gpu optimizations users may
+     not be aware of.
+    -in future: remotely update NVIDIA/AMD drivers with single command.
+    -``ps`` can not run applications as admin
+
+-Vega OC
+  Super expirmental, is 100% completed
+   -Soft Power Play table windows registries. However, this
+    only works during restart, but it helps during crashes/reboots.
+   -OverdriveN api application written to get Vega stats.
+   Ques gpu directly to attain its current status.
+       note: Vega drivers/api realy suck as far as data. It's
+       not my application if its inaccurate.
+   -ALL p-states OC settings for linux. Not just last ones.
+   -ALL AMD OC on windows does not work from HiveOS website.
+    Currently I have written OC for Vega's only- All of AMD
+    is next on my list.
+   -Fans are crappy API/power play table-wise. It's not my application, it's drivers.
+   -OC is possible by an application known as OverdriveNTool.
+    Please tip developer if you find it useful.
+    I plan to eventually create my own.
+
+-Agent rebuild
+  -Rebuilt agent to better gather api stats from miners.
+  -Rebuilt C++ software to better gather api stats from GPU drivers.
+  -Removed as much error generation as I could possibly find (when API fails).
+
+-New miners
+  -bminer added
+  -zhash & Phoenix Miner API are fixed (I believe).
+
+-Bus statistics fixed.
+  -Better GPU detection.
+  -Windows now automatically detects OpenCL Platform
+     note: This was working for me. Please let me know
+     if you have issues.
+  -Does not count GPU's that SWARM isn't using
+     note: This was working for me. Please let me know
+     if you have issues.
+  -Removed NVIDIA integrated motherboard cards from count.
+
+-Minimized
+   -All windows are either ran hidden/minimized except main
+    window.
+   -Windows will now set their own colors for visualization
+    optimizations.
+
+-Crash reporting
+   -If miner is restarted- SWARM detects this, and will
+    perform an crash report.
+   -Crash reports takes a "flashed image" of all debugging
+    data located txt folder, which accounts for 75% of SWARMs
+    internal statistics.
+   -This data is unchanged, which means you can review incidents,
+    what miners were running, etc., to determine failures.
+
+-Miners Updated
+
+-Lots, and lots, and LOTS of small fixes. Too many to detail.
+ 
+
