@@ -1,19 +1,20 @@
 ## This is a demonstration on how to use SWARM current API
 
 ##Current Methods That Exist:
-$Mehtods = 
+$Methods = 
 "Current Methods:
 
 /Summary
 /GetStats
 "
 
-Write-Host $Mehtods
+Write-Host $Methods
 
 ##Summary Method
-Write-Host "Method = Summary: "
+Write-Host "Method = http://localhost:4099/Summary : "
 try{$SummaryRequest = Invoke-WebRequest "http://localhost:4099/Summary" -UseBasicParsing -TimeoutSec 10}catch{Write-Warning "Failed To Contact Summary"}
 
+## Sort By GPU. This is showing Group 1 Only.
 if($SummaryRequest)
 {
  $SummaryRequest = $SummaryRequest.Content | ConvertFrom-JSon
@@ -25,12 +26,13 @@ if($SummaryRequest)
 ## Work as-is. You will have to do more advanced sorting due to negative figures. But
 ## The table is there to be sorted.
 
-if($AMDStats){$AMDStats | Select -First 1}
-if($NVIDIAStats){$NVIDIAStats | Select -First 1}
+##Show the first one, which should be most profitable (But see note above):
+if($AMDStats){$AMDStats[0]}
+if($NVIDIAStats){$NVIDIAStats[0]}
 
 
 ##GetStats Method
-Write-Host "Method = GetStats: "
+Write-Host "Method = http://localhost:4099/Summary : "
 try{$GetStatsRequest = Invoke-WebRequest "http://localhost:4099/GetStats" -UseBasicParsing -TimeoutSec 10}catch{Write-Warning "Failed To Contact GetStats"}
 
 if($GetStatsRequest)
