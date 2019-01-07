@@ -258,7 +258,15 @@ param(
                  {
                   $result = Get-Content ".\build\bash\hivestats.sh" | ConvertFrom-StringData
                   $Stat = @()
-                  for($i=0; $i -lt $result.GPU.Count; $i++){$GPU = @{"GPU$i" = @{hashrate = $result.GPU[$i]; temperature = $result.TEMP[$i];fans = $result.FAN[$i];}}; $Stat += $GPU}
+                  for($i=0; $i -lt $result.GPU.Count; $i++)
+                  {
+                   $GPU = @{"GPU$i" = @{
+                                        hashrate = $result.GPU | Select -skip $i -First 1; 
+                                        temperature = $result.TEMP | Select -skip $i -First 1;
+                                        fans = $result.FAN | Select -skip $i -First 1;}
+                                       }; 
+                  $Stat += $GPU
+                  }
                   $Stat += @{Algorithm = $result.ALGO}
                   $Stat += @{Uptime = $result.UPTIME}
                   $Stat += @{"Hash_Units" = $result.HSU}
