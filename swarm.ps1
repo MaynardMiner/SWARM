@@ -202,7 +202,12 @@ param(
     [string]$WorkingDir
    )
    
-   begin{Set-Location $WorkingDir}
+   begin{
+    netstat -nap | Select-String "LISTEN" | Select-String ":4099" | % {$a = $_ -split '\s\s*' ; $PortPID = $($a[6]) -split "/" | Select -First 1} 
+    if($PortPID){$PortProcess = Get-Process -ID $PortPID -ErrorAction SilentlyContinue}
+    if($PortProcess){Stop-process -ID $PortProcess.Id -ErrorAction SilentlyContinue}
+    Set-Location $WorkingDir
+    }
    
    process {
    $listener = New-Object System.Net.HttpListener
