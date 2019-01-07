@@ -10,71 +10,21 @@
       "export GPU_MAX_ALLOC_PERCENT=100"
     ],
     "commands": {
-      "phi": "",
-      "tribus": "",
-      "aergo": "",
-      "geek": "",
       "c11": "",
       "xevan": "",
-      "skunk": "",
-      "x16r": "",
-      "x16s": ""
+      "skunk": ""
     },
     "difficulty": {
-      "phi": "",
-      "tribus": "",
-      "aergo": "",
-      "geek": "",
       "c11": "",
       "xevan": "",
-      "skunk": "",
-      "x16r": "",
-      "x16s": ""
+      "skunk": ""
     },
     "naming": {
-      "phi": "phi",
-      "tribus": "tribus",
-      "aergo": "aergo",
-      "geek": "geek",
       "c11": "c11",
       "xevan": "xevan",
-      "skunk": "skunk",
-      "x16r": "x16r",
-      "x16s": "x16s"
+      "skunk": "skunk"
     },
     "oc": {
-      "phi": {
-        "dpm": "",
-        "v": "",
-        "core": "",
-        "mem": "",
-        "mdpm": "",
-        "fans": ""
-      },
-      "tribus": {
-        "dpm": "",
-        "v": "",
-        "core": "",
-        "mem": "",
-        "mdpm": "",
-        "fans": ""
-      },
-      "aergo": {
-        "dpm": "",
-        "v": "",
-        "core": "",
-        "mem": "",
-        "mdpm": "",
-        "fans": ""
-      },
-      "geek": {
-        "dpm": "",
-        "v": "",
-        "core": "",
-        "mem": "",
-        "mdpm": "",
-        "fans": ""
-      },
       "c11": {
         "dpm": "",
         "v": "",
@@ -92,22 +42,6 @@
         "fans": ""
       },
       "skunk": {
-        "dpm": "",
-        "v": "",
-        "core": "",
-        "mem": "",
-        "mdpm": "",
-        "fans": ""
-      },
-      "x16r": {
-        "dpm": "",
-        "v": "",
-        "core": "",
-        "mem": "",
-        "mdpm": "",
-        "fans": ""
-      },
-      "x16s": {
         "dpm": "",
         "v": "",
         "core": "",
