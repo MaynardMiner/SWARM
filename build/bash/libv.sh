@@ -9,5 +9,10 @@
 #GNU General Public License for more details.
 #You should have received a copy of the GNU General Public License
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
-PKG_MANAGER=$( command -v yum || command -v apt-get )
-$PKG_MANAGER install libuv1 -y
+PKG_MANAGER=$( command -v yum || command -v apt-get || command -v pacman)
+if [ $PKG_MANAGER == 'pacman' ]
+ then
+ $PKG_MANAGER -S libuv1 -y
+ else
+ $PKG_MANAGER install libuv1 -y
+fi
