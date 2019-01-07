@@ -160,8 +160,8 @@ elseif($Platforms -eq "linux" -and $HiveOS -eq "Yes")
   $AMDStats = @{}
   timeout -s9 5 gpu-stats | Tee-Object -Variable amdout | Out-Null
   if($amdout){$Stat = $amdout | ConvertFrom-Json}
-  $AMDFans = $Stat.temp
-  $AMDTemps = $Stat.fan
+  $AMDFans = $Stat.fan
+  $AMDTemps = $Stat.temp
 }
 
 elseif($Platforms -eq "linux" -and $HiveOS -eq "No")
