@@ -9,5 +9,5 @@
 #GNU General Public License for more details.
 #You should have received a copy of the GNU General Public License
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-apt-get install libc-ares2 -y
+PKG_MANAGER=$( command -v yum || command -v apt-get )
+$PKG_MANAGER install libc-ares2 -y

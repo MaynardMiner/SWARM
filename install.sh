@@ -1,9 +1,10 @@
 #!/bin/bash
 if ! [ -x "$(command -v pwsh)" ]; then
-sudo apt-get install p7zip-full
-curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-sudo curl -o /etc/apt/sources.list.d/microsoft.list https://packages.microsoft.com/config/ubuntu/16.04/prod.list
-sudo apt-get update
-sudo apt-get install -y powershell
+wget https://github.com/PowerShell/PowerShell/releases/download/v6.1.0/powershell-6.1.0-linux-x64.tar.gz -O /tmp/powershell.tar.gz
+sudo mkdir -p /opt/microsoft/powershell/6.1.0
+sudo tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/6.1.0
+sudo chmod +x /opt/microsoft/powershell/6.1.0/pwsh
+sudo ln -s /opt/microsoft/powershell/6.1.0/pwsh /usr/bin/pwsh
+sudo rm -rf /tmp/powershell.tar.gz
 fi
 sudo pwsh -command "./install.ps1"
