@@ -621,12 +621,13 @@ if($Platform -eq "linux")
    $HiveMirror = $config.HIVE_HOST_URL -replace "`"",""
    $HiveID = $config.RIG_ID
 
-    Start-Process ".\build\bash\screentitle.sh" -Wait
     ##No Longer Needed
     #Start-Process ".\build\bash\libc.sh" -wait
     #Start-Process ".\build\bash\libv.sh" -wait
   }
 
+  Start-Process ".\build\bash\screentitle.sh" -Wait
+  
   ## Kill Previous Screens
   start-killscript
 
