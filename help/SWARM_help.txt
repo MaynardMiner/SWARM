@@ -34,9 +34,6 @@ Argument          Options           Explanation
 -Platform      [linux,windows]      Defualt is linux. Specify this if you are using windows. This lets SWARM
                                     know to build itself for Windows operation.
 
--AMDPlatform   [0-3]		    For windows only. Needed to specifiy your opencl platform number. Linux
-				    version automatically detects.
-
 ***********************************************************************************************************
 ***********************************************************************************************************
 ***********************************************************************************************************
@@ -44,7 +41,6 @@ Argument          Options           Explanation
                 -Advanced Arguments-
 
 These arguments can be added for additional customization and options
-
 
 Argument            Options             Explanation
 
