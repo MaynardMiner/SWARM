@@ -600,7 +600,8 @@ start-update -Update $update -Dir $dir -Platforms $Platform
 ## Linux Initialize
 if($Platform -eq "linux")
  {
-
+  Start-Process ".\build\bash\libc.sh" -wait
+  Start-Process ".\build\bash\libv.sh" -wait
   ## HiveOS Only Items
   if($HiveOS -eq "Yes")
   {
