@@ -160,8 +160,8 @@ elseif($Platforms -eq "linux" -and $HiveOS -eq "Yes")
   $AMDStats = @{}
   timeout -s9 5 gpu-stats | Tee-Object -Variable amdout | Out-Null
   if($amdout){$Stat = $amdout | ConvertFrom-Json}
-  $AMDFans = $Stat.temp | Select -skip 1
-  $AMDTemps = $Stat.fan | Select -skip 1
+  $AMDFans = $Stat.temp
+  $AMDTemps = $Stat.fan
 }
 
 elseif($Platforms -eq "linux" -and $HiveOS -eq "No")
@@ -184,7 +184,6 @@ $AMDStats
 ##Get Active Miners And Devices
 $GetMiners = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-Json
 $GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
-$ramtotal = Get-Content ".\build\txt\ram.txt"
 
 ##Set Starting Date & Device Flags
 $DevNVIDIA = $false
@@ -247,6 +246,7 @@ if($Platforms -eq "windows")
   ## Rig Metrics
   if($HiveOS -eq "Yes")
   {
+  $ramtotal = Get-Content ".\build\txt\ram.txt"
   $cpu = $(Get-WmiObject Win32_PerfFormattedData_PerfOS_System).ProcessorQueueLength
   $LoadAverage = Set-Stat -Name "load-average" -Value $cpu
   $LoadAverages = @("$([Math]::Round($LoadAverage.Minute,2))","$([Math]::Round($LoadAverage.Minute_5,2))","$([Math]::Round($LoadAverage.Minute_10,2))")

@@ -6,12 +6,12 @@ function get-AMDPlatform {
 
  if($Platforms -eq "linux")
  {
-   $A = Invoke-Expression ".\build\apps\getplatforms > .\build\txt\platforms.txt"
-   $GetPlatforms = Get-Content ".\build\txt\platforms.txt"
+   $A = Invoke-Expression ".\build\apps\getplatforms" | Tee-Object -Variable clplatform
    Start-Sleep -S .5
-   $GPUPlatform = $GetPlatforms | Select-String "AMD Accelerated Parallel Processing"
+   $GPUPlatform = $clplatform | Select-String "AMD Accelerated Parallel Processing"
    $GPUPlatform = $GPUPlatform -replace (" ","")
-   $GPUPlatform = $GPUPlatform -split "AMD" | Select -First 1  
+   $GPUPlatform = $GPUPlatform -split "AMD" | Select -First 1
+   $GPUPlatform
  }
 
 if($Platforms -eq "windows")

@@ -139,7 +139,14 @@ param(
 
 ## Set Current Path
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
-$PID | Set-Content ".\build\pid\miner_pid.txt"
+$PID | Out-File ".\build\pid\miner_pid.txt"
+$FileClear = @()
+$FileClear += ".\build\bash\minerstats.sh"
+$FileClear += ".\build\bash\hivestats.sh"
+$FileClear += ".\build\bash\mineractive.sh"
+$FileClear += ".\build\bash\hivecpu.sh"
+$FileClear += ".\build\txt\profittable.txt"
+$FileClear | %{if(Test-Path $_){Clear-Content $_}}
 
 ##filepath dir
 $dir = (Split-Path $script:MyInvocation.MyCommand.Path)
