@@ -762,7 +762,7 @@ Write-Host "$HashRates" -ForegroundColor Green -NoNewline
 Write-Host " KHS=$KHS" -ForegroundColor Yellow -NoNewline
 Write-Host " ACC=$ACC" -ForegroundColor DarkGreen -NoNewline
 Write-Host " REJ=$REJ" -ForegroundColor DarkRed -NoNewline
-Write-Host " ALGO=$ALGO" -ForegroundColor DarkGray -NoNewline
+Write-Host " ALGO=$ALGO" -ForegroundColor Gray -NoNewline
 Write-Host " $Fans" -ForegroundColor Cyan -NoNewline
 Write-Host " $Temps" -ForegroundColor Magenta -NoNewline
 if($Platforms -eq "windows"){Write-Host " $Power"  -ForegroundColor DarkCyan -NoNewline}
