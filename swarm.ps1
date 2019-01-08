@@ -143,6 +143,7 @@ param(
 
 ## Set Current Path
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+if(-not (Test-Path ".\build\pid")){New-Item -Name "pid" -ItemType "Directory" -Path ".\build" | Out-Null}
 $PID | Out-File ".\build\pid\miner_pid.txt"
 $FileClear = @()
 $FileClear += ".\build\bash\minerstats.sh"
@@ -198,8 +199,6 @@ if(Test-Path $ID){$Agent = Get-Content $ID}
 if($Agent){$BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue}
 if($BackGroundID.name -eq "powershell"){Stop-Process $BackGroundID | Out-Null}
 }
-
-if(-not (Test-Path ".\build\pid")){New-Item -Name "pid" -ItemType "Directory" -Path ".\build" | Out-Null}
 
 if($API -eq "Yes")
 {
