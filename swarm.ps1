@@ -199,6 +199,8 @@ if($Agent){$BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue}
 if($BackGroundID.name -eq "powershell"){Stop-Process $BackGroundID | Out-Null}
 }
 
+if($API -eq "Yes")
+{
 ## API Server Start
 $APIServer = {
 param(
@@ -211,13 +213,12 @@ param(
     if($AID){Stop-Process $AID -ErrorAction SilentlyContinue}
     $PID | Set-Content ".\build\pid\api_pid.txt"
     $listener = New-Object System.Net.HttpListener
-    $listener.Prefixes.Add('http://localhost:4099/') 
-
-    $listener.Start()
     Write-Host "Listening ..."
    
    # Run until you send a GET request to /end
   try{
+      $listener.Prefixes.Add('http://localhost:4099/') 
+      $listener.Start()
    while ($listener.IsListening){
        $context = $listener.GetContext() 
    
@@ -320,6 +321,7 @@ else
 {
  Write-Warning "API Server Failed To Start"
  Get-Job -Name "APIServer" | Receive-Job
+}
 }
 
 ## Debug Mode
@@ -1009,7 +1011,7 @@ if($DLName.Count -lt 3)
    $Download = $true
    if(-not (Test-Path $ALgoMiner.Path))
     {
-     if(-not (Test-Path ".\timeout\download_block")){New-Item -Name "download_block" -Path ".\timeout" -ItemType "directory"}
+     if(-not (Test-Path ".\timeout\download_block")){New-Item -Name "download_block" -Path ".\timeout" -ItemType "directory" | OUt-Null}
      "$($Algominer.Name)" | Out-File ".\timeout\download_block\download_block.txt" -Append
     }
    }
@@ -1823,6 +1825,5 @@ if($Strike -eq $true)
 else{Start-ASIC}
 }
 
-Stop-Job -Name "APIServer"
 Stop-Transcript
 
