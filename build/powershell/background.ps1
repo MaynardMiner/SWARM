@@ -28,6 +28,9 @@ param(
 [Double]$RejPercent
 )
 
+$Platforms = "linux"
+$HiveOS = "Yes"
+
 ##Icon for windows
 if($Platforms -eq "windows")
  {
@@ -105,12 +108,16 @@ function Set-NvidiaStats {
   if($Platforms -eq "linux")
   {
   timeout -s9 10 ./build/apps/VII-smi | Tee-Object -Variable getstats | Out-Null
-  Start-Sleep -S .25
   if($getstats)
    {
-    $NVIDIATemps = $getstats | Select-String "temperature" | foreach{$_ -replace "GPU ",""} | foreach{$_ -replace " temperature",""} | ConvertFrom-StringData
-    $NVIDIAFans = $getstats | Select-String "fan speed" | foreach{$_ -replace "GPU ",""} | foreach{$_ -replace " fan speed",""} | ConvertFrom-StringData
-    $NVIDIAPower = $getstats | Select-String "power" | foreach{$_ -replace "GPU ",""} | foreach{$_ -replace " power",""} | ConvertFrom-StringData | Foreach{$_ -replace "failed to get","75"}
+    $nvidiai = $getstats | ConvertFrom-StringData
+    $ninfo = @{}
+    $ninfo.Add("Fans",@())
+    $ninfo.Add("Temps",@())
+    $ninfo.Add("Watts",@())
+    $nvidiai.keys | foreach {if($_ -like "*fan*"){$ninfo.Fans += $nvidiai.$_}}
+    $nvidiai.keys | foreach {if($_ -like "*temperature*"){$ninfo.Temps += $nvidiai.$_}}
+    $nvidiai.keys | foreach {if($_ -like "*power*"){if($nvidiai.$_ -eq "failed to get"){$ninfo.Watts += "75"}else{$ninfo.Watts += $nvidiai.$_}}}
    }
   }
 
