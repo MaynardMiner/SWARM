@@ -1366,6 +1366,13 @@ NOTE: FRESH INSTALL HIGHLY SUGGESTED!
   -Much more is coming soon- Full API method to modify SWARM will exist
   -Sample API for demonstration is included: Sample-API.ps1
       note: As I update API, I will add how to use via Sample-API.ps1
+  -Currently this is local, until I finish. I plan to make remote.
+
+-New Arguments:
+   -AMDPlatform was removed. Use CLPlatform instead, only if needed.
+    Swarm should detect.
+   -API: Default is yes, if you have issues, you can remove it its
+    by specifying -API No
 
 -Time Syncronization:
   For better SWARM_Mode optimization, all swarm apps will Sycronize
@@ -1381,23 +1388,6 @@ NOTE: FRESH INSTALL HIGHLY SUGGESTED!
      not be aware of.
     -in future: remotely update NVIDIA/AMD drivers with single command.
     -``ps`` can not run applications as admin
-
--Vega OC
-  Super expirmental, is 100% completed
-   -Soft Power Play table windows registries. However, this
-    only works during restart, but it helps during crashes/reboots.
-   -OverdriveN api application written to get Vega stats.
-   Ques gpu directly to attain its current status.
-       note: Vega drivers/api realy suck as far as data. It's
-       not my application if its inaccurate.
-   -ALL p-states OC settings for linux. Not just last ones.
-   -ALL AMD OC on windows does not work from HiveOS website.
-    Currently I have written OC for Vega's only- All of AMD
-    is next on my list.
-   -Fans are crappy API/power play table-wise. It's not my application, it's drivers.
-   -OC is possible by an application known as OverdriveNTool.
-    Please tip developer if you find it useful.
-    I plan to eventually create my own.
 
 -Agent rebuild
   -Rebuilt agent to better gather api stats from miners.
