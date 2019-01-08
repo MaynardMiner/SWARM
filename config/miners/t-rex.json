@@ -23,7 +23,9 @@
       "x22i": "",
       "x21s": "",
       "sonoa": "",
-      "dedal": ""
+      "dedal": "",
+      "x16rt": "",
+      "sha256q": ""
     },
     "difficulty": {
       "tribus": "",
@@ -45,7 +47,9 @@
       "x22i": "",
       "x21s": "",
       "sonoa": "",
-      "dedal": ""
+      "dedal": "",
+      "x16rt": "",
+      "sha256q": ""
     },
     "naming": {
       "tribus": "tribus",
@@ -67,7 +71,9 @@
       "x22i": "x22i",
       "x21s": "x21s",
       "sonoa": "sonoa",
-      "dedal": "dedal"
+      "dedal": "dedal",
+      "x16rt": "x16rt",
+      "sha256q": "sha256q"
     },
     "oc": {
       "tribus": {
@@ -166,6 +172,16 @@
         "Memory": ""
       },
       "dedal": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "x16rt": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "sha256q": {
         "Power": "",
         "Core": "",
         "Memory": ""
@@ -196,7 +212,9 @@
       "x22i": "",
       "x21s": "",
       "sonoa": "",
-      "dedal": ""
+      "dedal": "",
+      "x16rt": "",
+      "sha256q": ""
     },
     "difficulty": {
       "tribus": "",
@@ -218,7 +236,9 @@
       "x22i": "",
       "x21s": "",
       "sonoa": "",
-      "dedal": ""
+      "dedal": "",
+      "x16rt": "",
+      "sha256q": ""
     },
     "naming": {
       "tribus": "tribus",
@@ -240,7 +260,9 @@
       "x22i": "x22i",
       "x21s": "x21s",
       "sonoa": "sonoa",
-      "dedal": "dedal"
+      "dedal": "dedal",
+      "x16rt": "x16rt",
+      "sha256q": "sha256q"
     },
     "oc": {
       "tribus": {
@@ -342,9 +364,19 @@
         "Power": "",
         "Core": "",
         "Memory": ""
+      },
+      "x16rt": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "sha256q": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
       }
     }
-  },
+  },  
   "NVIDIA3": {
     "name": "NVIDIA3",
     "delay": "1",
@@ -369,7 +401,9 @@
       "x22i": "",
       "x21s": "",
       "sonoa": "",
-      "dedal": ""
+      "dedal": "",
+      "x16rt": "",
+      "sha256q": ""
     },
     "difficulty": {
       "tribus": "",
@@ -391,7 +425,9 @@
       "x22i": "",
       "x21s": "",
       "sonoa": "",
-      "dedal": ""
+      "dedal": "",
+      "x16rt": "",
+      "sha256q": ""
     },
     "naming": {
       "tribus": "tribus",
@@ -413,7 +449,9 @@
       "x22i": "x22i",
       "x21s": "x21s",
       "sonoa": "sonoa",
-      "dedal": "dedal"
+      "dedal": "dedal",
+      "x16rt": "x16rt",
+      "sha256q": "sha256q"
     },
     "oc": {
       "tribus": {
@@ -515,8 +553,18 @@
         "Power": "",
         "Core": "",
         "Memory": ""
+      },
+      "x16rt": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "sha256q": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
       }
     }
-  },
+  },  
   "name": "t-rex"
 }

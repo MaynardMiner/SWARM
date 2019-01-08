@@ -51,7 +51,6 @@
     "Proxy":  "",
     "AlgoBanCount":  3,
     "Rigname1":  "SWARM",
-    "AMDPlatform":  "",
     "API_Key":  "",
     "GPUDevices3":  "",
     "API_ID":  0,
@@ -76,5 +75,7 @@
     "Wallet1":  "",
     "PoolBans":  "Yes",
     "Update":  "Yes",
-    "Switch_Threshold": "0"
+    "Switch_Threshold": "0",
+    "API": "Yes",
+    "CLPlatform": ""
 }

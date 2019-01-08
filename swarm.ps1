@@ -133,7 +133,11 @@ param(
     [Parameter(Mandatory=$false)]
     [Double]$Switch_Threshold = 1,
     [Parameter(Mandatory=$false)]
-    [String]$SWARM_Mode = "No"
+    [String]$SWARM_Mode = "No",
+    [Parameter(Mandatory=$false)]
+    [String]$API = "Yes",
+    [Parameter(Mandatory=$false)]
+    [String]$CLPlatform = ""
 )
 
 
@@ -195,29 +199,27 @@ if($Agent){$BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue}
 if($BackGroundID.name -eq "powershell"){Stop-Process $BackGroundID | Out-Null}
 }
 
+if($API -eq "Yes")
+{
 ## API Server Start
 $APIServer = {
 param(
     [Parameter(Position = 0, Mandatory = $true)]
     [string]$WorkingDir
    )
-   
-   begin{
-    netstat -nap | Select-String "LISTEN" | Select-String ":4099" | % {$a = $_ -split '\s\s*' ; $PortPID = $($a[6]) -split "/" | Select -First 1} 
-    if($PortPID){$PortProcess = Get-Process -ID $PortPID -ErrorAction SilentlyContinue}
-    if($PortProcess){Stop-process -ID $PortProcess.Id -ErrorAction SilentlyContinue}
+
     Set-Location $WorkingDir
-    }
-   
-   process {
-   $listener = New-Object System.Net.HttpListener
-   $listener.Prefixes.Add('http://localhost:4099/') 
-   $listener.Start()
-   'Listening ...'
-   
+    if(test-Path ".\build\pid\api_pid.txt"){$AFID = Get-Content ".\build\pid\api_pid.txt"; $AID = Get-Process -ID $AFID -ErrorAction SilentlyContinue}
+    if($AID){Stop-Process $AID -ErrorAction SilentlyContinue}
+    $PID | Set-Content ".\build\pid\api_pid.txt"
+    $listener = New-Object System.Net.HttpListener
+    Write-Host "Listening ..."
    
    # Run until you send a GET request to /end
-   while ($true) {
+  try{
+      $listener.Prefixes.Add('http://localhost:4099/') 
+      $listener.Start()
+   while ($listener.IsListening){
        $context = $listener.GetContext() 
    
        # Capture the details about the request
@@ -302,22 +304,24 @@ param(
          }    
         }
        }
-     }
-   #Terminate the listener
-   end{$listener.Stop()} 
+      }Finally{$listener.Stop()}
 }
 Start-Job $APIServer -Name "APIServer" -ArgumentList "$Dir" | OUt-Null
 Write-Host "Starting API Server" -ForegroundColor "Yellow"
-Start-Sleep -S 1
 if($((Get-Job -Name "APIServer").State) -eq "Running")
  {
-  Write-Host "API Server Started" -ForegroundColor Green
+  Write-Host "API Server Started- This server will run even after close" -ForegroundColor Green
+  Write-Host "If you wish to close server:" -ForegroundColor Green
+  Start-Sleep -S 2
+  if(test-Path ".\build\pid\api_pid.txt"){$AFID = Get-Content ".\build\pid\api_pid.txt"}
+  Write-Host "Stop Powershell Process ID $($AFID)" -ForegroundColor Green
   Get-Job -Name "APIServer" | Receive-Job
  }
 else
 {
  Write-Warning "API Server Failed To Start"
  Get-Job -Name "APIServer" | Receive-Job
+}
 }
 
 ## Debug Mode
@@ -386,6 +390,8 @@ $CurrentParams.Add("Conserve",$Conserve)
 $CurrentParams.Add("SWARM_Mode",$SWARM_Mode)
 $CurrentParams.Add("Switch_Threshold",$Switch_Threshold)
 $CurrentParams.Add("Lite",$Lite)
+$CurrentParams.Add("API",$API)
+$CurrentParams.ADD("CLPlatform",$CLPlatform)
 
 ## Save to Config Folder
 $StartParams = $CurrentParams | ConvertTo-Json 
@@ -472,6 +478,8 @@ $Lite = $SWARMParams.Lite
 $Conserve = $SWARMParams.Conserve
 $Switch_Threshold = $SWARMParams.Switch_Threshold
 $SWARM_Mode = $SWARMParams.SWARM_Mode
+$CLPlatform = $SWARMParams.CLPlatform
+$API = $SWARMParams.API
 }
 
 ## Windows Start Up
@@ -776,8 +784,12 @@ if($Platform -eq "windows")
 ## Determine AMD platform
 if($Type -like "*AMD*")
 {
+ if($CLPlatform -ne ""){$AMDPlatform = $CLPlatform}
+ else
+ {
  [string]$AMDPlatform = get-AMDPlatform -Platforms $Platform
  Write-Host "AMD OpenCL Platform is $AMDPlatform"
+ }
 }
 
 
@@ -895,6 +907,8 @@ $Lite = $SWARMParams.Lite
 $Conserve = $SWARMParams.Conserve
 $Switch_Threshold = $SWARMParams.Switch_Threshold
 $SWARM_Mode = $SWARMParams.SWARM_Mode
+$API = $SWARMParams.API
+$CLPlatform = $SWARMParams.CLPlatform
 if($SWARMParams.Rigname1 -eq "Donate"){$Donating = $True}
 else{$Donating = $False}
 if($Donating -eq $True){$Test = Get-Date; $DonateTest = "Miner has donated on $Test"; $DonateTest | Set-Content ".\build\txt\donate.txt"}
@@ -997,7 +1011,7 @@ if($DLName.Count -lt 3)
    $Download = $true
    if(-not (Test-Path $ALgoMiner.Path))
     {
-     if(-not (Test-Path ".\timeout\download_block")){New-Item -Name "download_block" -Path ".\timeout" -ItemType "directory"}
+     if(-not (Test-Path ".\timeout\download_block")){New-Item -Name "download_block" -Path ".\timeout" -ItemType "directory" | OUt-Null}
      "$($Algominer.Name)" | Out-File ".\timeout\download_block\download_block.txt" -Append
     }
    }
@@ -1811,6 +1825,5 @@ if($Strike -eq $true)
 else{Start-ASIC}
 }
 
-#Stop the log
 Stop-Transcript
 

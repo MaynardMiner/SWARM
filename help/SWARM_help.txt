@@ -34,9 +34,6 @@ Argument          Options           Explanation
 -Platform      [linux,windows]      Defualt is linux. Specify this if you are using windows. This lets SWARM
                                     know to build itself for Windows operation.
 
--AMDPlatform   [0-3]		    For windows only. Needed to specifiy your opencl platform number. Linux
-				    version automatically detects.
-
 ***********************************************************************************************************
 ***********************************************************************************************************
 ***********************************************************************************************************
@@ -45,8 +42,12 @@ Argument          Options           Explanation
 
 These arguments can be added for additional customization and options
 
-
 Argument            Options             Explanation
+
+-API            [Yes or No]         This Option Enables or Disables SWARM API.
+
+-CLPlatform    [number]             This will forcefully set the AMD CLPlatform to use for mining.
+                                    Set this if SWARM fails to guess correct platform.
 
 -Farm_Hash     [address]            This is required for Windows. Specify Farm_Hash in order to use HiveOS
                                     website. Farm_Hash is attained by making a user account in HiveOS.
