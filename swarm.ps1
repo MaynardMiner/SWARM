@@ -199,7 +199,7 @@ if($Agent){$BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue}
 if($BackGroundID.name -eq "powershell"){Stop-Process $BackGroundID | Out-Null}
 }
 
-if(not (Test-Path ".\build\pid")){New-Item "pid" -ItemType "Directory" -Path ".\build" | Out-Null}
+if(-not (Test-Path ".\build\pid")){New-Item "pid" -ItemType "Directory" -Path ".\build" | Out-Null}
 
 if($API -eq "Yes")
 {
