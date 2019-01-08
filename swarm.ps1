@@ -162,6 +162,7 @@ $windows = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\wi
 $data = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\data")
 $txt = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\txt")
 $swarmstamp = "SWARMISBESTMINEREVER"
+if(-not (Test-Path ".\build\txt")){New-Item -Name "txt" -ItemType "Directory" -Path ".\build" | Out-Null}
 $Platform | Set-Content ".\build\txt\os.txt"
 
 ## Change console icon and title
