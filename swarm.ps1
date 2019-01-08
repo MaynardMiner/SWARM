@@ -201,23 +201,20 @@ param(
     [Parameter(Position = 0, Mandatory = $true)]
     [string]$WorkingDir
    )
-   
-   begin{
-    netstat -nap | Select-String "LISTEN" | Select-String ":4099" | % {$a = $_ -split '\s\s*' ; $PortPID = $($a[6]) -split "/" | Select -First 1} 
-    if($PortPID){$PortProcess = Get-Process -ID $PortPID -ErrorAction SilentlyContinue}
-    if($PortProcess){Stop-process -ID $PortProcess.Id -ErrorAction SilentlyContinue}
+
     Set-Location $WorkingDir
-    }
-   
-   process {
-   $listener = New-Object System.Net.HttpListener
-   $listener.Prefixes.Add('http://localhost:4099/') 
-   $listener.Start()
-   'Listening ...'
+    if(test-Path ".\build\pid\api_pid.txt"){$AFID = Get-Content ".\build\pid\api_pid.txt"; $AID = Get-Process -ID $AFID -ErrorAction SilentlyContinue}
+    if($AID){Stop-Process $AID -ErrorAction SilentlyContinue}
+    $PID | Set-Content ".\build\pid\api_pid.txt"
+    $listener = New-Object System.Net.HttpListener
+    $listener.Prefixes.Add('http://localhost:4099/') 
+    $listener.Start()
+    'Listening ...'
    
    
    # Run until you send a GET request to /end
-   while ($true) {
+try {
+     while ($listener.IsListening){
        $context = $listener.GetContext() 
    
        # Capture the details about the request
@@ -302,17 +299,18 @@ param(
          }    
         }
        }
-     }
-   #Terminate the listener
-   end{$listener.Stop()} 
+     }Finally{$listener.Stop()} 
 }
 Start-Job $APIServer -Name "APIServer" -ArgumentList "$Dir" | OUt-Null
 Write-Host "Starting API Server" -ForegroundColor "Yellow"
-Start-Sleep -S 1
 if($((Get-Job -Name "APIServer").State) -eq "Running")
  {
-  Write-Host "API Server Started" -ForegroundColor Green
   Get-Job -Name "APIServer" | Receive-Job
+  Write-Host "API Server Started- This server will run even after close" -ForegroundColor Green
+  Write-Host "If you wish to close server:" -ForegroundColor Green
+  Start-Sleep -S 1
+  if(test-Path ".\build\pid\api_pid.txt"){$AFID = Get-Content ".\build\pid\api_pid.txt"}
+  Write-Host "Stop Powershell Process ID $($AFID)" -ForegroundColor Green
  }
 else
 {

@@ -143,15 +143,25 @@ Invoke-Expression ".\build\apps\odvii.exe s" | Tee-Object -Variable amdout | Out
    $AMDStats = @{}
    $amdinfo = $amdout | ConvertFrom-StringData
    $ainfo = @{}
+   $aerrors = @{}
+   $aerrors.Add("Errors",@())
    $ainfo.Add("Fans",@())
    $ainfo.Add("Temps",@())
    $ainfo.Add("Watts",@())
    $amdinfo.keys | foreach {if($_ -like "*Fan*"){$ainfo.Fans += $amdinfo.$_}}
    $amdinfo.keys | foreach {if($_ -like "*Temp*"){$ainfo.Temps += $amdinfo.$_}}
    $amdinfo.keys | foreach {if($_ -like "*Watts*"){$ainfo.Watts += $amdinfo.$_}}
+   $amdinfo.keys | foreach {if($_ -like "*Errors*"){$aerrors.Errors += $amdinfo.$_}}
    $AMDFans = $ainfo.Fans
    $AMDTemps = $ainfo.Temps
    $AMDPower = $ainfo.Watts
+   if($aerrors.Errors)
+   {
+    Write-Host "Warning Errors Detected From Drivers:" -ForegroundColor Red
+    $aerrors.Errors | %{Write-host "$($_)" -ForegroundColor Red}
+    Write-Host "Drivers/Settings May Be Set Incorrectly/Not Compatible
+" -ForegroundColor Red
+   }
   }
 }
 
