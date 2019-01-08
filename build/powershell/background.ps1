@@ -118,6 +118,7 @@ function Set-NvidiaStats {
     $nvidiai.keys | foreach {if($_ -like "*fan*"){$ninfo.Fans += $nvidiai.$_}}
     $nvidiai.keys | foreach {if($_ -like "*temperature*"){$ninfo.Temps += $nvidiai.$_}}
     $nvidiai.keys | foreach {if($_ -like "*power*"){if($nvidiai.$_ -eq "failed to get"){$ninfo.Watts += "75"}else{$ninfo.Watts += $nvidiai.$_}}}
+    $nifo
    }
   }
 
@@ -128,15 +129,14 @@ function Set-NvidiaStats {
     $NVIDIAFans = $ninfo.'fan.speed [%]' | foreach {$_ -replace ("\%","")}
     $NVIDIATemps = $ninfo.'temperature.gpu'
     $NVIDIAPower = $ninfo.'power.draw [W]' | foreach {$_ -replace ("\[Not Supported\]","75")} | foreach {$_ -replace (" W","")}        
+    $NVIDIAStats = @{}
+    $NVIDIAStats.Add("Fans",$NVIDIAFans)
+    $NVIDIAStats.Add("Temps",$NVIDIATemps)
+    $NVIDIAStats.Add("Power",$NVIDIAPower)
+   
+    $NVIDIAStats   
     }
   }
-
- $NVIDIAStats = @{}
- $NVIDIAStats.Add("Fans",$NVIDIAFans)
- $NVIDIAStats.Add("Temps",$NVIDIATemps)
- $NVIDIAStats.Add("Power",$NVIDIAPower)
-
- $NVIDIAStats
 }
 
 ## AMD HWMON
