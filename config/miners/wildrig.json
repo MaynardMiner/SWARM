@@ -31,7 +31,10 @@
       "polytimos": "",
       "dedal": "",
       "exosis": "",
-      "lyra2v3": ""
+      "lyra2v3": "",
+      "mtp": "",
+      "sha256T":"",
+      "sha256q":"" 
     },
     "difficulty": {
       "bcd": "",
@@ -55,7 +58,10 @@
       "polytimos": "",
       "dedal": "",
       "exosis": "",
-      "lyra2v3": ""
+      "lyra2v3": "",
+      "mtp": "",
+      "sha256T":"",
+      "sha256q":""
     },
     "naming": {
       "bcd": "bcd",
@@ -79,7 +85,10 @@
       "polytimos": "polytimos",
       "dedal": "dedal",
       "exosis": "exosis",
-      "lyra2v3": "lyra2v3"
+      "lyra2v3": "lyra2v3",
+      "mtp": "mtp",
+      "sha256T":"sha256T",
+      "sha256q":"sha256q" 
     },
     "oc": {
       "bcd": {
@@ -251,6 +260,30 @@
         "dpm": ""
       },
       "lyra2v3": {
+        "core": "",
+        "v": "",
+        "mem": "",
+        "fans": "",
+        "mdpm": "",
+        "dpm": ""
+      },
+      "mtp": {
+        "core": "",
+        "v": "",
+        "mem": "",
+        "fans": "",
+        "mdpm": "",
+        "dpm": ""
+      },
+      "sha256t": {
+        "core": "",
+        "v": "",
+        "mem": "",
+        "fans": "",
+        "mdpm": "",
+        "dpm": ""
+      },
+      "shas56q": {
         "core": "",
         "v": "",
         "mem": "",

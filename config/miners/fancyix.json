@@ -13,19 +13,22 @@
       "x22i": "",
       "lyra2z": "",
       "phi2": "",
-      "allium": ""
+      "allium": "",
+      "lyra2rev3": ""
     },
     "difficulty": {
       "x22i": "",
       "lyra2z": "",
       "phi2": "",
-      "allium": ""
+      "allium": "",
+      "lyra2rev3": ""
     },
     "naming": {
       "x22i": "x22i",
       "lyra2z": "lyra2z",
       "phi2": "phi2",
-      "allium": "allium"
+      "allium": "allium",
+      "lyra2rev3": ""
     },
     "oc": {
       "x22i": {
@@ -53,6 +56,14 @@
         "fans": ""
       },
       "allium": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "lyra2rev3": {
         "dpm": "",
         "v": "",
         "core": "",

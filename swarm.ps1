@@ -133,7 +133,11 @@ param(
     [Parameter(Mandatory=$false)]
     [Double]$Switch_Threshold = 1,
     [Parameter(Mandatory=$false)]
-    [String]$SWARM_Mode = "No"
+    [String]$SWARM_Mode = "No",
+    [Parameter(Mandatory=$false)]
+    [String]$API = "Yes",
+    [Parameter(Mandatory=$false)]
+    [String]$CLPlatform = ""
 )
 
 
@@ -208,13 +212,13 @@ param(
     $PID | Set-Content ".\build\pid\api_pid.txt"
     $listener = New-Object System.Net.HttpListener
     $listener.Prefixes.Add('http://localhost:4099/') 
+
     $listener.Start()
-    'Listening ...'
-   
+    Write-Host "Listening ..."
    
    # Run until you send a GET request to /end
-try {
-     while ($listener.IsListening){
+  try{
+   while ($listener.IsListening){
        $context = $listener.GetContext() 
    
        # Capture the details about the request
@@ -299,18 +303,18 @@ try {
          }    
         }
        }
-     }Finally{$listener.Stop()} 
+      }Finally{$listener.Stop()}
 }
 Start-Job $APIServer -Name "APIServer" -ArgumentList "$Dir" | OUt-Null
 Write-Host "Starting API Server" -ForegroundColor "Yellow"
 if($((Get-Job -Name "APIServer").State) -eq "Running")
  {
-  Get-Job -Name "APIServer" | Receive-Job
   Write-Host "API Server Started- This server will run even after close" -ForegroundColor Green
   Write-Host "If you wish to close server:" -ForegroundColor Green
-  Start-Sleep -S 1
+  Start-Sleep -S 2
   if(test-Path ".\build\pid\api_pid.txt"){$AFID = Get-Content ".\build\pid\api_pid.txt"}
   Write-Host "Stop Powershell Process ID $($AFID)" -ForegroundColor Green
+  Get-Job -Name "APIServer" | Receive-Job
  }
 else
 {
@@ -384,6 +388,8 @@ $CurrentParams.Add("Conserve",$Conserve)
 $CurrentParams.Add("SWARM_Mode",$SWARM_Mode)
 $CurrentParams.Add("Switch_Threshold",$Switch_Threshold)
 $CurrentParams.Add("Lite",$Lite)
+$CurrentParams.Add("API",$API)
+$CurrentParams.ADD("CLPlatform",$CLPlatform)
 
 ## Save to Config Folder
 $StartParams = $CurrentParams | ConvertTo-Json 
@@ -470,6 +476,8 @@ $Lite = $SWARMParams.Lite
 $Conserve = $SWARMParams.Conserve
 $Switch_Threshold = $SWARMParams.Switch_Threshold
 $SWARM_Mode = $SWARMParams.SWARM_Mode
+$CLPlatform = $SWARMParams.CLPlatform
+$API = $SWARMParams.API
 }
 
 ## Windows Start Up
@@ -774,8 +782,12 @@ if($Platform -eq "windows")
 ## Determine AMD platform
 if($Type -like "*AMD*")
 {
+ if($CLPlatform -ne ""){$AMDPlatform = $CLPlatform}
+ else
+ {
  [string]$AMDPlatform = get-AMDPlatform -Platforms $Platform
  Write-Host "AMD OpenCL Platform is $AMDPlatform"
+ }
 }
 
 
@@ -893,6 +905,8 @@ $Lite = $SWARMParams.Lite
 $Conserve = $SWARMParams.Conserve
 $Switch_Threshold = $SWARMParams.Switch_Threshold
 $SWARM_Mode = $SWARMParams.SWARM_Mode
+$API = $SWARMParams.API
+$CLPlatform = $SWARMParams.CLPlatform
 if($SWARMParams.Rigname1 -eq "Donate"){$Donating = $True}
 else{$Donating = $False}
 if($Donating -eq $True){$Test = Get-Date; $DonateTest = "Miner has donated on $Test"; $DonateTest | Set-Content ".\build\txt\donate.txt"}
@@ -1809,6 +1823,6 @@ if($Strike -eq $true)
 else{Start-ASIC}
 }
 
-#Stop the log
+Stop-Job -Name "APIServer"
 Stop-Transcript
 
