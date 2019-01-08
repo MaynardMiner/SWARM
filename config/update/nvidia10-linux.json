@@ -6,7 +6,7 @@
     "path2": ".\\bin\\claymore-2\\ethdcrminer64",
     "path3": ".\\bin\\claymore-3\\ethdcrminer64",
     "minername": "ethdcrminer64",
-    "version": "11.9",
+    "version": "12.0",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/Claymore-Linux.tar.gz"
   },
   "phoenix": {
@@ -26,7 +26,7 @@
     "path2": ".\\bin\\cryptodredge-2\\CryptoDredge",
     "path3": ".\\bin\\cryptodredge-3\\CryptoDredge",
     "minername": "CryptoDredge",
-    "version": "0.14.0",
+    "version": "0.16.0",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/CryptoDredge-Linux-10.tar.gz"
   },
   "dstm": {
@@ -106,7 +106,7 @@
     "path2": ".\\bin\\trex-2\\t-rex",
     "path3": ".\\bin\\trex-3\\t-rex",
     "minername": "t-rex",
-    "version": "0.8.9",
+    "version": "0.9.1",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/t-rex-linux-10.tar.gz"
   },
   "zjazz": {
@@ -156,7 +156,7 @@
     "path2": ".\\bin\\miniz-2\\miniZ",
     "path3": ".\\bin\\miniz-3\\miniZ",
     "minername": "miniZ",
-    "version": "1.0h",
+    "version": "1.0i",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/miniz-linux.tar.gz"
   }
 }
