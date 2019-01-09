@@ -21,7 +21,7 @@ if($Poolname -eq $Name)
    {
     $Hashrefinery_Host = "$_.us.hashrefinery.com"
     $Hashrefinery_Port = $Hashrefinery_Request.$_.port
-    $Divisor = (1000000*$blockpool_Request.$_.mbtc_mh_factor)
+    $Divisor = (1000000*$Hashrefinery_Request.$_.mbtc_mh_factor)
     $Fees = $Hashrefinery_Request.$_.fees
     $Workers = $Hashrefinery_Request.$_.Workers
     $Estimate = if($Stat_Algo -eq "Day"){[Double]$Hashrefinery_Request.$_.estimate_last24h}else{[Double]$Hashrefinery_Request.$_.estimate_current}
