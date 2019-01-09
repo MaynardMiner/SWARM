@@ -57,10 +57,10 @@ if($Poolname -eq $Name)
      Protocol = "stratum+tcp"
      Host = $nicehash_Host
      Port = $nicehash_Port
-     User1 = "$Nicehash_Wallet1.$Rigname1"
-     User2 = "$Nicehash_Wallet2.$Rigname2"
-     User3 = "$Nicehash_Wallet3.$Rigname3"
-     CPUser = "$Nicehash_Wallet1.$Rigname1"
+     User1 = "$NH_Wallet1.$Rigname1"
+     User2 = "$NH_Wallet2.$Rigname2"
+     User3 = "$NH_Wallet3.$Rigname3"
+     CPUser = "$NH_Wallet1.$Rigname1"
      CPUPass = "x"
      Pass1 = "x"
      Pass2 = "x"
