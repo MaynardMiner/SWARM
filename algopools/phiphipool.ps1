@@ -32,8 +32,9 @@ if($Poolname -eq $Name)
     $Workers = $phiphipool_Request.$_.Workers
     $Estimate = if($Stat_Algo -eq "Day"){[Double]$phiphipool_Request.$_.estimate_last24h}else{[Double]$phiphipool_Request.$_.estimate_current}
     $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
- 
-    $Stat = Set-Stat -Name "$($Name)_$($phiphipool_Algorithm)_profit" -Value ([Double]($Estimate-$Cut)/$Divisor)
+
+    $SmallestValue = 1E-20
+    $Stat = Set-Stat -Name "$($Name)_$($phiphipool_Algorithm)_profit" -Value ([Math]::Max([Double]($Estimate-$Cut)/$Divisor,$SmallestValue))
     if($Stat_Algo -eq "Day"){$Stats = $Stat.Live}else{$Stats = $Stat.$Stat_Algo}
 
     [PSCustomObject]@{
@@ -59,6 +60,5 @@ if($Poolname -eq $Name)
      SSL = $false
     }
    }
-   else{$null}
   }
  }

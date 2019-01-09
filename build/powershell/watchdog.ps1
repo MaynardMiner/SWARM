@@ -12,7 +12,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
 function start-watchdog {
-$PID | Set-Content ".\build\pid\miner_pid.txt" -Force
 If($Platform -eq "linux")
 {
 Start-Process "screen" -ArgumentList "-S pidinfo -d -m"

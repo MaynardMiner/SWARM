@@ -16,21 +16,23 @@ if($Poolname -eq $Name)
    $Hashrefinery_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name |  Where-Object {$Hashrefinery_Request.$_.hashrate -gt 0} |  Where-Object {$Naming.$($Hashrefinery_Request.$_.name)} | ForEach-Object {
    
    $Hashrefinery_Algorithm = Get-Algorithm $Hashrefinery_Request.$_.name
+
    if($Algorithm -eq $hashrefinery_Algorithm)
    {
     $Hashrefinery_Host = "$_.us.hashrefinery.com"
     $Hashrefinery_Port = $Hashrefinery_Request.$_.port
+    $Divisor = (1000000*$Hashrefinery_Request.$_.mbtc_mh_factor)
     $Fees = $Hashrefinery_Request.$_.fees
     $Workers = $Hashrefinery_Request.$_.Workers
     $Estimate = if($Stat_Algo -eq "Day"){[Double]$Hashrefinery_Request.$_.estimate_last24h}else{[Double]$Hashrefinery_Request.$_.estimate_current}
     $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
 
-    $Stat = Set-Stat -Name "$($Name)_$($Hashrefinery_Algorithm)_profit" -Value ([Double]($Estimate-$Cut)/$Divisor)
+    $SmallestValue = 1E-20
+    $Stat = Set-Stat -Name "$($Name)_$($Hashrefinery_Algorithm)_profit" -Value ([Math]::Max([Double]($Estimate-$Cut)/$Divisor,$SmallestValue))
     if($Stat_Algo -eq "Day"){$Stats = $Stat.Live}else{$Stats = $Stat.$Stat_Algo}
         
     [PSCustomObject]@{            
      Priority = $Priorities.Pool_Priorities.$Name
-     Coin = "No"
      Symbol = $Hashrefinery_Algorithm
      Mining = $Hashrefinery_Algorithm
      Algorithm = $Hashrefinery_Algorithm
@@ -52,7 +54,6 @@ if($Poolname -eq $Name)
      SSL = $false
     }
    }
-   else{$null}
   }
  }
     

@@ -33,7 +33,8 @@ if($Poolname -eq $Name)
     $Estimate = if($Stat_Algo -eq "Day"){[Double]$blockpool_Request.$_.estimate_last24h}else{[Double]$blockpool_Request.$_.estimate_current}
     $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
 
-    $Stat = Set-Stat -Name "$($Name)_$($blockpool_Algorithm)_profit" -Value ([Double]($Estimate-$Cut)/$Divisor)
+    $SmallestValue = 1E-20
+    $Stat = Set-Stat -Name "$($Name)_$($blockpool_Algorithm)_profit" -Value ([Math]::Max([Double]($Estimate-$Cut)/$Divisor,$SmallestValue))
     if($Stat_Algo -eq "Day"){$Stats = $Stat.Live}else{$Stats = $Stat.$Stat_Algo}
         
     If($AltWallet1 -ne ''){$blockWallet1 = $AltWallet1}
@@ -71,6 +72,5 @@ if($Poolname -eq $Name)
      SSL = $false
    }
   }
-  else{$null}
  }
 }

@@ -22,17 +22,14 @@ function Get-Pools {
 
 if($PoolType -eq "Algo")
  {
-   $GetPools = if(Test-Path "algopools"){Get-ChildItemContent "algopools" | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru} |
-   Where {$PoolName.Count -eq 0 -or (Compare-Object $PoolName $_.Name -IncludeEqual -ExcludeDifferent | Measure).Count -gt 0} |
-   Where {$Algorithm.Count -eq 0 -or (Compare-Object $Algorithm $_.Symbol -IncludeEqual -ExcludeDifferent | Measure).Count -gt 0}}
+   $GetPools = if(Test-Path "algopools"){Get-ChildItemContent "algopools" | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru}}
    if($GetPools.Count -eq 0){"No Pools! Check Internet Connection."| Out-Host; start-sleep $Interval; continue}
    $GetPools
  }
 
 if($PoolType -eq "Coin")
  {
-  $GetPools = if(Test-Path "coinpools"){Get-ChildItemContent "coinpools" | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru} |
-  Where {$PoolName.Count -eq 0 -or (Compare-Object $PoolName $_.Name -IncludeEqual -ExcludeDifferent | Measure).Count -gt 0}}
+  $GetPools = if(Test-Path "coinpools"){Get-ChildItemContent "coinpools" | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru}}
   if($GetPools.Count -eq 0){"No Coin Pools!"| Out-Host}
   $GetPools
  }
