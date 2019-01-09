@@ -58,7 +58,7 @@
       $messagetype = "info"
       $data = "ps"
       $pscommand = $command.result.exec -split "ps ",""
-      Invoke-Expression "powershell.exe -executionpolicy bypass -command `"$pscommand`"" | Tee-Object ".\build\txt\getcommand.txt" | Out-Null
+      Start-Process "powershell" -ArgumentList "-executionpolicy bypass -command `"$pscommand`"" -Verb RunAs | Tee-Object ".\build\txt\getcommand.txt" | Out-Null
       $getpayload = Get-Content ".\build\txt\getcommand.txt"
       $line = @()
       $getpayload | foreach {$line += "$_`n"}
@@ -109,7 +109,7 @@
            $method = "message"
            $messagetype = "info"
            $data = "$($command.result.exec)"
-           start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command query""" -Wait -WindowStyle Minimized
+           start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command query""" -Wait -WindowStyle Minimized -Verb RunAs
            $getpayload = Get-Content ".\build\txt\version.txt"
            $line = @()
            $getpayload | foreach {$line += "$_`n"}
@@ -126,7 +126,7 @@
           $messagetype = "info"
           $data = "$($command.result.exec)"
           $arguments = $data -replace ("version ","")
-          start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command $arguments""" -WindowStyle Minimized
+          start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command $arguments""" -WindowStyle Minimized -Verb Runas
           $getpayload = Get-Content ".\build\txt\version.txt"
           $line = @()
           $getpayload | foreach {$line += "$_`n"}
@@ -149,7 +149,7 @@
         $messagetype = "info"
         $data = "$($command.result.exec)"
         $arguments = $data -replace ("get ","")
-        start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\get.ps1 $arguments""" -Wait -WindowStyle Minimized
+        start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\get.ps1 $arguments""" -Wait -WindowStyle Minimized -Verb Runas
         $getpayload = Get-Content ".\build\txt\get.txt"
         $line = @()
         $getpayload | foreach {$line += "$_`n"}
@@ -173,7 +173,7 @@
         $messagetype = "info"
         $data = "$($command.result.exec)"
         $arguments = $data -replace ("benchmark ","")
-        start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\benchmark.ps1 $arguments""" -Wait -WindowStyle Minimized
+        start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\benchmark.ps1 $arguments""" -Wait -WindowStyle Minimized -Verb Runas
         $getpayload = Get-Content ".\build\txt\get.txt"
         $line = @()
         $getpayload | foreach {$line += "$_`n"}
@@ -206,9 +206,7 @@
 
   "config"
   {
-
     $Command.result | ConvertTo-Json | Set-Content ".\build\txt\hiveconfig.txt"
-
     if($command.result.config)
     {
     $config = [string]$command.result.config | ConvertFrom-StringData
@@ -289,8 +287,8 @@
    $Params | convertto-Json | Out-File ".\config\parameters\newarguments.json"
     }
    $trigger = "config"
-
    }
+
   }
   $trigger
 

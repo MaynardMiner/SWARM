@@ -143,9 +143,43 @@ param(
 
 ## Set Current Path
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
-if(-not (Test-Path ".\build\pid")){New-Item -Name "pid" -ItemType "Directory" -Path ".\build" | Out-Null}
+
+## Load Codebase
+. .\build\powershell\killall.ps1;
+. .\build\powershell\startlog.ps1;
+. .\build\powershell\remoteupdate.ps1;
+. .\build\powershell\datafiles.ps1;
+. .\build\powershell\statcommand.ps1;
+. .\build\powershell\poolcommand.ps1;
+. .\build\powershell\minercommand.ps1;
+. .\build\powershell\launchcode.ps1;
+. .\build\powershell\datefiles.ps1;
+. .\build\powershell\watchdog.ps1;
+. .\build\powershell\miners.ps1;
+. .\build\powershell\download.ps1;
+. .\build\powershell\hashrates.ps1;
+. .\build\powershell\naming.ps1;
+. .\build\powershell\childitems.ps1;
+. .\build\powershell\powerup.ps1;
+. .\build\powershell\peekaboo.ps1;
+. .\build\powershell\checkbackground.ps1;
+. .\build\powershell\maker.ps1;
+. .\build\powershell\intensity.ps1;
+. .\build\powershell\poolbans.ps1;
+. .\build\powershell\cl.ps1;
+. .\build\powershell\newsort.ps1;
+. .\build\powershell\sorting.ps1;
+. .\build\powershell\screen.ps1;
+. .\build\powershell\commandweb.ps1;
+if($Type -like "*ASIC*"){. .\build\powershell\icserver.ps1; . .\build\powershell\poolmanager.ps1}
+if($Platform -eq "linux"){. .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
+if($Platform -eq "windows"){. .\build\powershell\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1;}
+
+##Load Previous Times & PID Data
+Get-DateFiles
 Start-Sleep -S 1
 $PID | Out-File ".\build\pid\miner_pid.txt"
+
 $FileClear = @()
 $FileClear += ".\build\bash\minerstats.sh"
 $FileClear += ".\build\bash\hivestats.sh"
@@ -557,37 +591,6 @@ $Type | foreach {
 ## create debug/command folder
 if(-not (Test-Path ".\build\txt")){New-Item -Path ".\build" -Name "txt" -ItemType "directory" | Out-Null}
 
-## Load Codebase
-. .\build\powershell\killall.ps1;
-. .\build\powershell\startlog.ps1;
-. .\build\powershell\remoteupdate.ps1;
-. .\build\powershell\datafiles.ps1;
-. .\build\powershell\statcommand.ps1;
-. .\build\powershell\poolcommand.ps1;
-. .\build\powershell\minercommand.ps1;
-. .\build\powershell\launchcode.ps1;
-. .\build\powershell\datefiles.ps1;
-. .\build\powershell\watchdog.ps1;
-. .\build\powershell\miners.ps1;
-. .\build\powershell\download.ps1;
-. .\build\powershell\hashrates.ps1;
-. .\build\powershell\naming.ps1;
-. .\build\powershell\childitems.ps1;
-. .\build\powershell\powerup.ps1;
-. .\build\powershell\peekaboo.ps1;
-. .\build\powershell\checkbackground.ps1;
-. .\build\powershell\maker.ps1;
-. .\build\powershell\intensity.ps1;
-. .\build\powershell\poolbans.ps1;
-. .\build\powershell\cl.ps1;
-. .\build\powershell\newsort.ps1;
-. .\build\powershell\sorting.ps1;
-. .\build\powershell\screen.ps1;
-. .\build\powershell\commandweb.ps1;
-if($Type -like "*ASIC*"){. .\build\powershell\icserver.ps1; . .\build\powershell\poolmanager.ps1}
-if($Platform -eq "linux"){. .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
-if($Platform -eq "windows"){. .\build\powershell\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1;}
-
 ## Time Sych For All SWARM Users
 Write-Host "Sycronizing Time Through Nist" -ForegroundColor Yellow
 Get-Nist | Set-Date
@@ -807,8 +810,6 @@ $TimeoutTimer.Start()
 $logtimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $logtimer.Start()
 
-##Load Previous Times & PID Data
-Get-DateFiles
 ##Remove Exclusion
 try{if((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)){Start-Process powershell -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath '$(Convert-Path .)'" -WindowStyle Minimized}}catch{}
 ##Proxy
