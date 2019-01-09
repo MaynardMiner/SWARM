@@ -1,5 +1,5 @@
 ##Miner Path Information
-if($nvidia.miniz.path3){$Path = "$($nvidia.miniz.path3)"}
+if($nvidia.miniz.path2){$Path = "$($nvidia.miniz.path2)"}
 else{$Path = "None"}
 if($nvidia.miniz.uri){$Uri = "$($nvidia.miniz.uri)"}
 else{$Uri = "None"}
@@ -8,14 +8,14 @@ else{$MinerName = "None"}
 if($Platform -eq "linux"){$Build = "Tar"}
 elseif($Platform -eq "windows"){$Build = "Zip"}
 
-$ConfigType = "NVIDIA3"
+$ConfigType = "NVIDIA2"
 
 ##Parse -GPUDevices
-if($NVIDIADevices3 -ne ''){$GPUDevices3 = $NVIDIADevices3}
-if($GPUDevices3 -ne '')
+if($NVIDIADevices2 -ne ''){$GPUDevices2 = $NVIDIADevices2}
+if($GPUDevices2 -ne '')
  {
-  $GPUEDevices3 = $GPUDevices3 -replace ',',' '
-  $Devices = $GPUEDevices3
+  $GPUEDevices2 = $GPUDevices2 -replace ',',' '
+  $Devices = $GPUEDevices2
  }
 
 ##Get Configuration File
@@ -42,15 +42,15 @@ if($CoinAlgo -eq $null)
   {
   if($Config.$ConfigType.difficulty.$($_.Algorithm)){$Diff=",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))"}
   [PSCustomObject]@{
-      Delay = $Config.$ConfigType.delay
-      Symbol = "$($_.Algorithm)"
+    Delay = $Config.$ConfigType.delay
+    Symbol = "$($_.Algorithm)"
       MinerName = $MinerName
       Prestart = $PreStart
       Type = $ConfigType
       Path = $Path
       Devices = $Devices
       DeviceCall = "miniz"
-      Arguments = "--telemetry 0.0.0.0:42002 --server $($_.Host) --port $($_.Port) --user $($_.User3) --pass $($_.Pass3)$($Diff) $($Config.$ConfigType.commands.$($_.Algorithm))"
+      Arguments = "--telemetry 0.0.0.0:43001 --server $($_.Host) --port $($_.Port) --user $($_.User2) --pass $($_.Pass2)$($Diff) $($Config.$ConfigType.commands.$($_.Algorithm))"
       HashRates = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)}
       Quote = if($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)){$($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)*($_.Price)}else{0}
       PowerX = [PSCustomObject]@{$($_.Algorithm) = if($Watts.$($_.Algorithm)."$($ConfigType)_Watts"){$Watts.$($_.Algorithm)."$($ConfigType)_Watts"}elseif($Watts.default."$($ConfigType)_Watts"){$Watts.default."$($ConfigType)_Watts"}else{0}}
@@ -60,7 +60,7 @@ if($CoinAlgo -eq $null)
       MinerPool = "$($_.Name)"
       FullName = "$($_.Mining)"
       API = "miniz"
-      Port = 42002
+      Port = 43001
       URI = $Uri
       BUILD = $Build
       Algo = "$($_.Algorithm)"

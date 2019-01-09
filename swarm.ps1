@@ -143,7 +143,43 @@ param(
 
 ## Set Current Path
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+
+## Load Codebase
+. .\build\powershell\killall.ps1;
+. .\build\powershell\startlog.ps1;
+. .\build\powershell\remoteupdate.ps1;
+. .\build\powershell\datafiles.ps1;
+. .\build\powershell\statcommand.ps1;
+. .\build\powershell\poolcommand.ps1;
+. .\build\powershell\minercommand.ps1;
+. .\build\powershell\launchcode.ps1;
+. .\build\powershell\datefiles.ps1;
+. .\build\powershell\watchdog.ps1;
+. .\build\powershell\miners.ps1;
+. .\build\powershell\download.ps1;
+. .\build\powershell\hashrates.ps1;
+. .\build\powershell\naming.ps1;
+. .\build\powershell\childitems.ps1;
+. .\build\powershell\powerup.ps1;
+. .\build\powershell\peekaboo.ps1;
+. .\build\powershell\checkbackground.ps1;
+. .\build\powershell\maker.ps1;
+. .\build\powershell\intensity.ps1;
+. .\build\powershell\poolbans.ps1;
+. .\build\powershell\cl.ps1;
+. .\build\powershell\newsort.ps1;
+. .\build\powershell\sorting.ps1;
+. .\build\powershell\screen.ps1;
+. .\build\powershell\commandweb.ps1;
+if($Type -like "*ASIC*"){. .\build\powershell\icserver.ps1; . .\build\powershell\poolmanager.ps1}
+if($Platform -eq "linux"){. .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
+if($Platform -eq "windows"){. .\build\powershell\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1;}
+
+##Load Previous Times & PID Data
+Get-DateFiles
+Start-Sleep -S 1
 $PID | Out-File ".\build\pid\miner_pid.txt"
+
 $FileClear = @()
 $FileClear += ".\build\bash\minerstats.sh"
 $FileClear += ".\build\bash\hivestats.sh"
@@ -154,6 +190,7 @@ $FileClear | %{if(Test-Path $_){Clear-Content $_}}
 
 ##filepath dir
 $dir = (Split-Path $script:MyInvocation.MyCommand.Path)
+$Workingdir = (Split-Path $script:MyInvocation.MyCommand.Path)
 $build = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build")
 $pwsh = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\powershell")
 $bash = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\linux")
@@ -161,6 +198,7 @@ $windows = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\wi
 $data = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\data")
 $txt = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\txt")
 $swarmstamp = "SWARMISBESTMINEREVER"
+if(-not (Test-Path ".\build\txt")){New-Item -Name "txt" -ItemType "Directory" -Path ".\build" | Out-Null}
 $Platform | Set-Content ".\build\txt\os.txt"
 
 ## Change console icon and title
@@ -201,6 +239,9 @@ if($BackGroundID.name -eq "powershell"){Stop-Process $BackGroundID | Out-Null}
 
 if($API -eq "Yes")
 {
+## Shutdown Previous API if stuck by running a command
+Write-Host "Checking to ensure API port is free" -ForegroundColor "Yellow"
+try{Invoke-RestMethod "http://localhost:4099/end" -UseBasicParsing -TimeoutSec 5}catch{}
 ## API Server Start
 $APIServer = {
 param(
@@ -314,7 +355,7 @@ if($((Get-Job -Name "APIServer").State) -eq "Running")
   Write-Host "If you wish to close server:" -ForegroundColor Green
   Start-Sleep -S 2
   if(test-Path ".\build\pid\api_pid.txt"){$AFID = Get-Content ".\build\pid\api_pid.txt"}
-  Write-Host "Stop Powershell Process ID $($AFID)" -ForegroundColor Green
+  Write-Host "Stop Powershell Process ID $($AFID) or run http://localhost:4099/end" -ForegroundColor Green
   Get-Job -Name "APIServer" | Receive-Job
  }
 else
@@ -324,7 +365,7 @@ else
 }
 }
 
-## Debug Mode
+## Debug Mode- Allow you to run with last known arguments.
 $Debug = $false
 
 ## Convert Arguments Into Hash Table
@@ -550,38 +591,6 @@ $Type | foreach {
 ## create debug/command folder
 if(-not (Test-Path ".\build\txt")){New-Item -Path ".\build" -Name "txt" -ItemType "directory" | Out-Null}
 
-## Load Codebase
-. .\build\powershell\killall.ps1;
-. .\build\powershell\startlog.ps1;
-. .\build\powershell\remoteupdate.ps1;
-. .\build\powershell\datafiles.ps1;
-. .\build\powershell\algorithm.ps1;
-. .\build\powershell\statcommand.ps1;
-. .\build\powershell\poolcommand.ps1;
-. .\build\powershell\minercommand.ps1;
-. .\build\powershell\launchcode.ps1;
-. .\build\powershell\datefiles.ps1;
-. .\build\powershell\watchdog.ps1;
-. .\build\powershell\miners.ps1;
-. .\build\powershell\download.ps1;
-. .\build\powershell\hashrates.ps1;
-. .\build\powershell\naming.ps1;
-. .\build\powershell\childitems.ps1;
-. .\build\powershell\powerup.ps1;
-. .\build\powershell\peekaboo.ps1;
-. .\build\powershell\checkbackground.ps1;
-. .\build\powershell\maker.ps1;
-. .\build\powershell\intensity.ps1;
-. .\build\powershell\poolbans.ps1;
-. .\build\powershell\cl.ps1;
-. .\build\powershell\newsort.ps1;
-. .\build\powershell\sorting.ps1;
-. .\build\powershell\screen.ps1;
-. .\build\powershell\commandweb.ps1;
-if($Type -like "*ASIC*"){. .\build\powershell\icserver.ps1; . .\build\powershell\poolmanager.ps1}
-if($Platform -eq "linux"){. .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
-if($Platform -eq "windows"){. .\build\powershell\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1;}
-
 ## Time Sych For All SWARM Users
 Write-Host "Sycronizing Time Through Nist" -ForegroundColor Yellow
 Get-Nist | Set-Date
@@ -794,14 +803,13 @@ if($Type -like "*AMD*")
 
 
 #Timers
-$TimeoutTime = $Timeout*3600
+if($Timeout -ne $null){$TimeoutTime = $Timeout*3600}
+else{$TimeoutTime = 10000000000}
 $TimeoutTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $TimeoutTimer.Start()
 $logtimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $logtimer.Start()
 
-##Load Previous Times & PID Data
-Get-DateFiles
 ##Remove Exclusion
 try{if((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)){Start-Process powershell -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath '$(Convert-Path .)'" -WindowStyle Minimized}}catch{}
 ##Proxy
@@ -953,7 +961,7 @@ $Currency | ForEach {$Rates | Add-Member $_ (Invoke-WebRequest "https://api.cryp
 if($TimeoutTimer.Elapsed.TotalSeconds -lt $TimeoutTime -or $Timeout -eq 0){$Stats = Get-Stats -Timeouts "No"}
 else
 {
- Get-Stats -Timeouts "Yes"
+ $Stats = Get-Stats -Timeouts "Yes"
  $TimeoutTimer.Restart()
  continue
 }

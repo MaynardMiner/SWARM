@@ -80,3 +80,30 @@ function Convert-DateString ([string]$Date, [string[]]$Format)
 
 		if ($Convertible) { $result }
 	}
+
+    function Get-AlgoList {
+        param(
+            [Parameter(Mandatory=$true)]
+            [Array]$Devices,
+            [Parameter(Mandatory=$false)]
+            [Array]$No_Algo
+             )
+    
+        Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+    
+        $AlgorithmList = @()
+        $GetAlgorithms = Get-Content ".\config\pools\pool-algos.json" -Force | ConvertFrom-Json
+        $PoolAlgorithms = @()
+        $GetAlgorithms | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+         $PoolAlgorithms += $_
+        }
+        
+        if($No_Algo -ne $null)
+         {
+         $GetNoAlgo = Compare-Object $No_Algo $PoolAlgorithms
+         $GetNoAlgo.InputObject | foreach{$AlgorithmList += $_}
+         }
+         else{$PoolAlgorithms | foreach { $AlgorithmList += $($_)} }
+             
+        $AlgorithmList
+    }    
