@@ -817,10 +817,8 @@ if($Platforms -eq "windows" -and $HiveOS -eq "Yes")
        }
       Start-Process ".\SWARM.bat"
       Start-Sleep -S 3
-      $ID = ".\build\pid\background_pid.txt"
-      $BackGroundID = Get-Process -id (Get-Content "$ID" -ErrorAction SilentlyContinue) -ErrorAction SilentlyContinue
-       Stop-Process $BackGroundID | Out-Null
-     }
+      Exit
+    }
     if($SwarmResponse -eq "stats")
      {
       Write-Host "Hive Received Stats
