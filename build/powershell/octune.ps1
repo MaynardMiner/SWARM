@@ -150,11 +150,11 @@ $OCMiners | foreach{
  if($_.Type -like "*AMD*"){$AMDOC = $true}
 }
 
-if($AMDOC = $true)
- {
-  $VegaMiner = $OCMiners | Where Type -like "*AMD*"
-  Set-VegaOC "windows" $VegaMiner.ALgo
- }
+#if($AMDOC = $true)
+ #{
+  #$VegaMiner = $OCMiners | Where Type -like "*AMD*"
+  #Set-VegaOC "windows" $VegaMiner.ALgo
+ #}
 
 $ETHPill = $false
 
