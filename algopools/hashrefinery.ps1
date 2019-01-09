@@ -26,7 +26,6 @@ if($Poolname -eq $Name)
     $Workers = $Hashrefinery_Request.$_.Workers
     $Estimate = if($Stat_Algo -eq "Day"){[Double]$Hashrefinery_Request.$_.estimate_last24h}else{[Double]$Hashrefinery_Request.$_.estimate_current}
     $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
-    Write-Host "$Name"
 
     $SmallestValue = 1E-20
     $Stat = Set-Stat -Name "$($Name)_$($Hashrefinery_Algorithm)_profit" -Value ([Math]::Max([Double]($Estimate-$Cut)/$Divisor,$SmallestValue))

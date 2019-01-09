@@ -25,7 +25,6 @@ if($Poolname -eq $Name)
     $Workers = $nlpool_Request.$_.Workers
     $Estimate = if($Stat_Algo -eq "Day"){[Double]$nlpool_Request.$_.estimate_last24h}else{[Double]$nlpool_Request.$_.estimate_current}
     $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
-    Write-Host "$Name"
 
     $SmallestValue = 1E-20
     $Stat = Set-Stat -Name "$($Name)_$($nlpoolAlgo_Algorithm)_profit" -Value ([Math]::Max([Double]($Estimate-$Cut)/$Divisor,$SmallestValue))

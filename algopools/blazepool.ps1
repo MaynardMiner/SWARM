@@ -27,7 +27,6 @@ if($Poolname -eq $Name)
     $Workers = $blazepool_Request.$_.Workers
     $Estimate = if($Stat_Algo -eq "Day"){[Double]$blazepool_Request.$_.estimate_last24h}else{[Double]$blazepool_Request.$_.estimate_current}
     $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
-    Write-Host "$Name"
 
     $SmallestValue = 1E-20
     $Stat = Set-Stat -Name "$($Name)_$($blazepool_Algorithm)_profit" -Value ([Math]::Max([Double]($Estimate-$Cut)/$Divisor,$SmallestValue))
