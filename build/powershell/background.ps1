@@ -84,6 +84,7 @@ function Set-Array{
   [Parameter(Position=2, Mandatory=$false)]
   [string]$factor
   )
+  try{
   $Parsed = $ParseRates | %{iex $_}
   switch($factor)
    {
@@ -94,6 +95,11 @@ function Set-Array{
   if($ParseRates.Count -eq 1){[Double]$Parse = $Parsed}
   elseif($ParseRates.Count -gt 1){[Double]$Parse = $Parsed[$i]}
   $Parse/$factor
+  }catch
+   {
+    $Parse = 0
+    $Parse
+   }
   }
 
 function Set-APIFailure {
@@ -111,14 +117,13 @@ function Set-NvidiaStats {
   if($getstats)
    {
     $nvidiai = $getstats | ConvertFrom-StringData
-    $ninfo = @{}
-    $ninfo.Add("Fans",@())
-    $ninfo.Add("Temps",@())
-    $ninfo.Add("Watts",@())
-    $nvidiai.keys | foreach {if($_ -like "*fan*"){$ninfo.Fans += $nvidiai.$_}}
-    $nvidiai.keys | foreach {if($_ -like "*temperature*"){$ninfo.Temps += $nvidiai.$_}}
-    $nvidiai.keys | foreach {if($_ -like "*power*"){if($nvidiai.$_ -eq "failed to get"){$ninfo.Watts += "75"}else{$ninfo.Watts += $nvidiai.$_}}}
-    $nifo
+    $nvinfo = @{}
+    $nvinfo.Add("Fans",@())
+    $nvinfo.Add("Temps",@())
+    $nvinfo.Add("Watts",@())
+    $nvidiai.keys | foreach {if($_ -like "*fan*"){$nvinfo.Fans += $nvidiai.$_}}
+    $nvidiai.keys | foreach {if($_ -like "*temperature*"){$nvinfo.Temps += $nvidiai.$_}}
+    $nvidiai.keys | foreach {if($_ -like "*power*"){if($nvidiai.$_ -eq "failed to get"){$nvinfo.Watts += "75"}else{$nvinfo.Watts += $nvidiai.$_}}}
    }
   }
 
@@ -133,10 +138,10 @@ function Set-NvidiaStats {
     $NVIDIAStats.Add("Fans",$NVIDIAFans)
     $NVIDIAStats.Add("Temps",$NVIDIATemps)
     $NVIDIAStats.Add("Power",$NVIDIAPower)
-   
-    $NVIDIAStats   
+    $nvinfo = $NVIDIAStats  
     }
   }
+  $nvinfo
 }
 
 ## AMD HWMON
@@ -319,13 +324,13 @@ if($Platforms -eq "windows" -and $HiveOS -eq "Yes")
 ## Now Fans & Temps
 if($MinerType -Like "*NVIDIA*")
 {
-  for($i=0;$i -lt $Devices.Count; $i++){$GPUFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans $i}
-  for($i=0;$i -lt $Devices.Count; $i++){$GPUTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps $i}
+  for($i=0;$i -lt $Devices.Count; $i++){try{$GPUFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans $i}catch{Write-Host "Failed To Parse GPU Array" -foregroundcolor red; break}}
+  for($i=0;$i -lt $Devices.Count; $i++){try{$GPUTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps $i}catch{Write-Host "Failed To Parse GPU Array" -foregroundcolor red; break}}
 }
 if($MinerType -Like "*AMD*")
 {
-  for($i=0;$i -lt $Devices.Count; $i++){$GPUFans.$(Get-GPUS) = Set-Array $AMDStats.Fans $i}
-  for($i=0;$i -lt $Devices.Count; $i++){$GPUTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps $i}
+  for($i=0;$i -lt $Devices.Count; $i++){try{$GPUFans.$(Get-GPUS) = Set-Array $AMDStats.Fans $i}catch{Write-Host "Failed To Parse GPU Array" -foregroundcolor red; break}}
+  for($i=0;$i -lt $Devices.Count; $i++){try{$GPUTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps $i}catch{Write-Host "Failed To Parse GPU Array" -foregroundcolor red}; break}
 }
 
 ## Set Initial Output

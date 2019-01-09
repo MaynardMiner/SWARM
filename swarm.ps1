@@ -144,6 +144,7 @@ param(
 ## Set Current Path
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 if(-not (Test-Path ".\build\pid")){New-Item -Name "pid" -ItemType "Directory" -Path ".\build" | Out-Null}
+Start-Sleep -S 1
 $PID | Out-File ".\build\pid\miner_pid.txt"
 $FileClear = @()
 $FileClear += ".\build\bash\minerstats.sh"
@@ -326,8 +327,8 @@ else
 }
 }
 
-## Debug Mode
-$Debug = $false
+## Debug Mode- Allow you to run with last known arguments.
+$Debug = $true
 
 ## Convert Arguments Into Hash Table
 if($Debug -ne $true)
@@ -557,7 +558,6 @@ if(-not (Test-Path ".\build\txt")){New-Item -Path ".\build" -Name "txt" -ItemTyp
 . .\build\powershell\startlog.ps1;
 . .\build\powershell\remoteupdate.ps1;
 . .\build\powershell\datafiles.ps1;
-. .\build\powershell\algorithm.ps1;
 . .\build\powershell\statcommand.ps1;
 . .\build\powershell\poolcommand.ps1;
 . .\build\powershell\minercommand.ps1;

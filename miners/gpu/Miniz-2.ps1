@@ -50,7 +50,7 @@ if($CoinAlgo -eq $null)
       Path = $Path
       Devices = $Devices
       DeviceCall = "miniz"
-      Arguments = "--telemetry 0.0.0.0:42001 --server $($_.Host) --port $($_.Port) --user $($_.User2) --pass $($_.Pass2)$($Diff) $($Config.$ConfigType.commands.$($_.Algorithm))"
+      Arguments = "--telemetry 0.0.0.0:43001 --server $($_.Host) --port $($_.Port) --user $($_.User2) --pass $($_.Pass2)$($Diff) $($Config.$ConfigType.commands.$($_.Algorithm))"
       HashRates = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)}
       Quote = if($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)){$($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)*($_.Price)}else{0}
       PowerX = [PSCustomObject]@{$($_.Algorithm) = if($Watts.$($_.Algorithm)."$($ConfigType)_Watts"){$Watts.$($_.Algorithm)."$($ConfigType)_Watts"}elseif($Watts.default."$($ConfigType)_Watts"){$Watts.default."$($ConfigType)_Watts"}else{0}}
@@ -60,7 +60,7 @@ if($CoinAlgo -eq $null)
       MinerPool = "$($_.Name)"
       FullName = "$($_.Mining)"
       API = "miniz"
-      Port = 42001
+      Port = 43001
       URI = $Uri
       BUILD = $Build
       Algo = "$($_.Algorithm)"

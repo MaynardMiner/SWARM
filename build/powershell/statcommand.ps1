@@ -65,7 +65,7 @@ function Set-Stat {
   if($name -eq "load-average"){$Path = "build\txt\$Name.txt"}
   else{$Path = "stats\$Name.txt"}
   $Date = $Date.ToUniversalTime()
-  $SmallestValue = 1E-20
+  $SmallestValue = 1E-30
 
   $Stat = [PSCustomObject]@{
       Live = $Value
@@ -252,3 +252,23 @@ function Invoke-SwarmMode {
     $StartValue = [math]::Round((([DateTime](get-date))-$ReadyValue).TotalSeconds)
     $StartValue
 }
+
+function ConvertFrom-Fees {
+    param(
+    [Parameter(Position=0,Mandatory=$true)]
+    [Double]$Fee,
+    [Parameter(Position=1,Mandatory=$true)]
+    [Double]$Workers,
+    [Parameter(Position=2,Mandatory=$true)]
+    [Double]$Estimate
+    )
+
+    if($Fee -eq 1){$Percent = 1}
+    elseif($Fee -gt 1){$Percent = $Fee - 1; $Percent = $Percent*10}
+    elseif($Fee -lt 1){$Percent = $Fee*10}
+    $FeeToDecimal = $Percent/100
+    $WorkerPercent = $Workers*$FeeToDecimal
+    $WorkerFee = $WorkerPercent/100
+    $PoolCut = $Estimate*$WorkerFee
+    return $PoolCut
+   }  
