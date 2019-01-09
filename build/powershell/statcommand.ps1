@@ -65,7 +65,7 @@ function Set-Stat {
   if($name -eq "load-average"){$Path = "build\txt\$Name.txt"}
   else{$Path = "stats\$Name.txt"}
   $Date = $Date.ToUniversalTime()
-  $SmallestValue = 1E-30
+  $SmallestValue = 1E-20
 
   $Stat = [PSCustomObject]@{
       Live = $Value

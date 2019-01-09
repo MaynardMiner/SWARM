@@ -28,7 +28,9 @@ if($Poolname -eq $Name)
    $Estimate = if($Stat_Algo -eq "Day"){[Double]$ahashpool_Request.$_.estimate_last24h}else{[Double]$ahashpool_Request.$_.estimate_current}
    $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
 
-   $Stat = Set-Stat -Name "$($Name)_$($ahashpool_Algorithm)_profit" -Value ([Double]($Estimate-$Cut)/$Divisor)
+   Write-Host "$Name"
+   $SmallestValue = 1E-20
+   $Stat = Set-Stat -Name "$($Name)_$($ahashpool_Algorithm)_profit" -Value ([Math]::Max([Double]($Estimate-$Cut)/$Divisor,$SmallestValue))
    if($Stat_Algo -eq "Day"){$Stats = $Stat.Live}else{$Stats = $Stat.$Stat_Algo}
 
    [PSCustomObject]@{
@@ -54,6 +56,5 @@ if($Poolname -eq $Name)
     SSL = $false
     }
    }
-  else{$null}
  }
 }

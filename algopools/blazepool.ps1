@@ -5,7 +5,7 @@ $blazepool_Request = [PSCustomObject]@{}
  
 if($Poolname -eq $Name)
  {
-  try {$blazepool_Request = Invoke-RestMethod "http://api.blazepool.com/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop} 
+  try{$blazepool_Request = Invoke-RestMethod "http://api.blazepool.com/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop} 
   catch{Write-Warning "SWARM contacted ($Name) for a failed API check.";return}
  
   if(($blazepool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1)
@@ -27,8 +27,10 @@ if($Poolname -eq $Name)
     $Workers = $blazepool_Request.$_.Workers
     $Estimate = if($Stat_Algo -eq "Day"){[Double]$blazepool_Request.$_.estimate_last24h}else{[Double]$blazepool_Request.$_.estimate_current}
     $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
- 
-    $Stat = Set-Stat -Name "$($Name)_$($blazepool_Algorithm)_profit" -Value ([Double]($Estimate-$Cut)/$Divisor)
+    Write-Host "$Name"
+
+    $SmallestValue = 1E-20
+    $Stat = Set-Stat -Name "$($Name)_$($blazepool_Algorithm)_profit" -Value ([Math]::Max([Double]($Estimate-$Cut)/$Divisor,$SmallestValue))
     if($Stat_Algo -eq "Day"){$Stats = $Stat.Live}else{$Stats = $Stat.$Stat_Algo}
     
     [PSCustomObject]@{
@@ -54,6 +56,5 @@ if($Poolname -eq $Name)
      SSL = $false
     }
    }
-  else{$null}
  }
 }

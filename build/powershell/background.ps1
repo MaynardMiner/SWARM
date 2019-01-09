@@ -28,9 +28,6 @@ param(
 [Double]$RejPercent
 )
 
-$Platforms = "linux"
-$HiveOS = "Yes"
-
 ##Icon for windows
 if($Platforms -eq "windows")
  {

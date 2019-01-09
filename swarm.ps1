@@ -156,6 +156,7 @@ $FileClear | %{if(Test-Path $_){Clear-Content $_}}
 
 ##filepath dir
 $dir = (Split-Path $script:MyInvocation.MyCommand.Path)
+$Workingdir = (Split-Path $script:MyInvocation.MyCommand.Path)
 $build = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build")
 $pwsh = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\powershell")
 $bash = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\linux")
@@ -204,6 +205,9 @@ if($BackGroundID.name -eq "powershell"){Stop-Process $BackGroundID | Out-Null}
 
 if($API -eq "Yes")
 {
+## Shutdown Previous API if stuck by running a command
+Write-Host "Checking to ensure API port is free" -ForegroundColor "Yellow"
+try{Invoke-RestMethod "http://localhost:4099/end" -UseBasicParsing -TimeoutSec 5}catch{}
 ## API Server Start
 $APIServer = {
 param(
@@ -317,7 +321,7 @@ if($((Get-Job -Name "APIServer").State) -eq "Running")
   Write-Host "If you wish to close server:" -ForegroundColor Green
   Start-Sleep -S 2
   if(test-Path ".\build\pid\api_pid.txt"){$AFID = Get-Content ".\build\pid\api_pid.txt"}
-  Write-Host "Stop Powershell Process ID $($AFID)" -ForegroundColor Green
+  Write-Host "Stop Powershell Process ID $($AFID) or run http://localhost:4099/end" -ForegroundColor Green
   Get-Job -Name "APIServer" | Receive-Job
  }
 else
@@ -328,7 +332,7 @@ else
 }
 
 ## Debug Mode- Allow you to run with last known arguments.
-$Debug = $true
+$Debug = $false
 
 ## Convert Arguments Into Hash Table
 if($Debug -ne $true)
@@ -796,7 +800,8 @@ if($Type -like "*AMD*")
 
 
 #Timers
-$TimeoutTime = $Timeout*3600
+if($Timeout -ne $null){$TimeoutTime = $Timeout*3600}
+else{$TimeoutTime = 10000000000}
 $TimeoutTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $TimeoutTimer.Start()
 $logtimer = New-Object -TypeName System.Diagnostics.Stopwatch
@@ -955,7 +960,7 @@ $Currency | ForEach {$Rates | Add-Member $_ (Invoke-WebRequest "https://api.cryp
 if($TimeoutTimer.Elapsed.TotalSeconds -lt $TimeoutTime -or $Timeout -eq 0){$Stats = Get-Stats -Timeouts "No"}
 else
 {
- Get-Stats -Timeouts "Yes"
+ $Stats = Get-Stats -Timeouts "Yes"
  $TimeoutTimer.Restart()
  continue
 }
