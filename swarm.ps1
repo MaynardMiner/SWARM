@@ -434,6 +434,7 @@ $StartingParams = $CurrentParams | ConvertTo-Json -Compress
 if((Test-Path ".\config\parameters\newarguments.json") -or $Debug -eq $true)
 {
 Write-Host "Detected New Arguments- Changing Parameters" -ForegroundColor Cyan
+Write-Host "These arguments can be found/modified in config < parameters < newarguments.json" -ForegroundColor Cyan
 if($Debug -eq $True){$NewParams = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json}
 else{$NewParams = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json}
 Start-Sleep -S 2

@@ -27,16 +27,9 @@ if($Poolname -eq $Name)
 
   if($Algorithm -eq $nicehash_Algorithm)
    {
-    if(-not $Nicehash_Wallet1){$NH_Wallet1 = $Wallet1; [Double]$Fee = 5;}
-    if(-not $Nicehash_Wallet2){$NH_Wallet2 = $Wallet2; [Double]$Fee = 5;}
-    if(-not $Nicehash_Wallet3){$NH_Wallet3 = $Wallet3; [Double]$Fee = 5;}
-    else
-    {
-     $NH_Wallet1 = $Nicehash_Wallet1
-     $NH_Wallet2 = $Nicehash_Wallet2
-     $NH_Wallet3 = $Nicehash_Wallet3
-     [Double]$Fee = $NiceHash_Fee
-    }
+    if(-not $Nicehash_Wallet1){$NH_Wallet1 = $Wallet1; [Double]$Fee = 5;}else{$NH_Wallet1 = $Nicehash_Wallet1; [Double]$Fee = $NiceHash_Fee}
+    if(-not $Nicehash_Wallet2){$NH_Wallet2 = $Wallet2; [Double]$Fee = 5;}else{$NH_Wallet2 = $Nicehash_Wallet2; [Double]$Fee = $NiceHash_Fee}
+    if(-not $Nicehash_Wallet3){$NH_Wallet3 = $Wallet3; [Double]$Fee = 5;}else{$NH_Wallet2 = $Nicehash_Wallet2; [Double]$Fee = $NiceHash_Fee}
 
     $nicehash_Host = "$($_.name).$Region.nicehash.com"
     $nicehash_excavator = "nhmp.$Region.nicehash.com"
