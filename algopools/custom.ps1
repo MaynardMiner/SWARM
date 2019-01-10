@@ -58,7 +58,7 @@ Algo = lyra2vc0ban
 Miner = cryptodredge
 ##
 ##Use your custom address here.
-##Use Do Do_Not_Use if you
+##Use Do_Not_Use if you
 ##You are not using NVIDIA2 or NVIDIA3.
 ##
 Wallet1 = RYoKsx2xkXw2x9dDwXxENWaqzraRX7vT1A1arQH2sbU953fRadkg9VG
@@ -66,7 +66,7 @@ Wallet2 = RYoKsx2xkXw2x9dDwXxENWaqzraRX7vT1A1arQH2sbU953fRadkg9VG
 Wallet3 = RYoKsx2xkXw2x9dDwXxENWaqzraRX7vT1A1arQH2sbU953fRadkg9VG
 ##
 ##This is your rig pass setting for pool.
-##Must be in ' '
+##
 Pass = ID=SWARM
 ##
 ##
