@@ -115,6 +115,10 @@ catch{Write-Warning "could not find pool algorithms file"; break}
 if($PoolFile -notmatch $Pool.Algo){$PoolFile | Add-Member "$($Pool.Algo)" "$($Pool.Algo)" -Force; $Changed = $true}
 if($Changed -eq $true){$PoolFile | Set-Content ".\config\miners\pool-algos.json"}
 
+## Next we add to algorithm list, so its used going forward:
+$Algorithm += $Pool.Algo
+
+## Now Pool Request
 try{$Custom_Request = Invoke-RestMethod "$($Pool.Pool_Url)" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop} 
 catch{Write-Warning "SWARM contacted ($Name) for a failed API."; return}
 
