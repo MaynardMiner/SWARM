@@ -16,9 +16,6 @@
 ## No .ps1's can have the same name, or you
 ## will generate errors.
 
-$Algorithm = "lyra2vc0ban"
-$Poolname = "BsoD"
-. .\build\powershell\statcommand.ps1
 
 ##Below is the Custom Config Script- Do not change.
 $Pool = {
