@@ -108,26 +108,51 @@ function Set-APIFailure {
 ## NVIDIA HWMON
 function Set-NvidiaStats {
 
-  if($Platforms -eq "linux")
-  {
-  timeout -s9 10 ./build/apps/VII-smi | Tee-Object -Variable getstats | Out-Null
-  if($getstats)
+Switch($Platforms)
+{
+"linux"
+ {
+   switch($HiveOS)
    {
-    $nvidiai = $getstats | ConvertFrom-StringData
-    $nvinfo = @{}
-    $nvinfo.Add("Fans",@())
-    $nvinfo.Add("Temps",@())
-    $nvinfo.Add("Watts",@())
-    $nvidiai.keys | foreach {if($_ -like "*fan*"){$nvinfo.Fans += $nvidiai.$_}}
-    $nvidiai.keys | foreach {if($_ -like "*temperature*"){$nvinfo.Temps += $nvidiai.$_}}
-    $nvidiai.keys | foreach {if($_ -like "*power*"){if($nvidiai.$_ -eq "failed to get"){$nvinfo.Watts += "75"}else{$nvinfo.Watts += $nvidiai.$_}}}
-   }
+    "No"
+    {
+     timeout -s9 10 ./build/apps/VII-smi | Tee-Object -Variable getstats | Out-Null
+     if($getstats)
+     {
+      $nvidiai = $getstats | ConvertFrom-StringData
+      $nvinfo = @{}
+      $nvinfo.Add("Fans",@())
+      $nvinfo.Add("Temps",@())
+      $nvinfo.Add("Watts",@())
+      $nvidiai.keys | foreach {if($_ -like "*fan*"){$nvinfo.Fans += $nvidiai.$_}}
+      $nvidiai.keys | foreach {if($_ -like "*temperature*"){$nvinfo.Temps += $nvidiai.$_}}
+      $nvidiai.keys | foreach {if($_ -like "*power*"){if($nvidiai.$_ -eq "failed to get"){$nvinfo.Watts += "75"}else{$nvinfo.Watts += $nvidiai.$_}}}
+     }
+    }
+    "Yes"
+     {
+      $HiveStats = "/run/hive/gpu-stats.json"
+      do{
+         for($i=0; $i -lt 20; $i++)
+         {
+          if(test-Path $HiveStats){try{$GetHiveStats = Get-Content $HiveStats | ConvertFrom-Json}catch{$GetHiveStats -eq $null}}
+          if($GetHiveStats -ne $null)
+           {
+            $nvinfo = @{}
+            $nvinfo.Add("Fans",$( $GetHiveStats.fan | %{if($_ -ne 0){$_}} ) )
+            $nvinfo.Add("Temps",$( $GetHiveStats.temp | %{if($_ -ne 0){$_}} ) )
+           }
+          Start-Sleep -S .5
+         }
+        }while($GetHiveStats.temp.count -lt 1 -and $GetHiveStats.fan.count -lt 1)
+      }
+    }
   }
 
-  elseif($Platforms -eq "windows")
+ "windows"
   {
     invoke-expression ".\build\apps\nvidia-smi.exe --query-gpu=power.draw,fan.speed,temperature.gpu --format=csv" | Tee-Object -Variable nvidiaout | Out-Null
-    if($nvidiaout){$ninfo = $nvidiaout | ConvertFrom-Csv
+    if($nvidiaout){$ninfo = $nvidiaout | ConvertFrom-Csv}
     $NVIDIAFans = $ninfo.'fan.speed [%]' | foreach {$_ -replace ("\%","")}
     $NVIDIATemps = $ninfo.'temperature.gpu'
     $NVIDIAPower = $ninfo.'power.draw [W]' | foreach {$_ -replace ("\[Not Supported\]","75")} | foreach {$_ -replace (" W","")}        
@@ -136,60 +161,76 @@ function Set-NvidiaStats {
     $NVIDIAStats.Add("Temps",$NVIDIATemps)
     $NVIDIAStats.Add("Power",$NVIDIAPower)
     $nvinfo = $NVIDIAStats  
-    }
   }
+}
   $nvinfo
 }
 
 ## AMD HWMON
 function Set-AMDStats {
 
-if($Platforms -eq "windows")
+switch($Platforms)
 {
-Invoke-Expression ".\build\apps\odvii.exe s" | Tee-Object -Variable amdout | Out-Null
- if($amdout)
-  {
-   $AMDStats = @{}
-   $amdinfo = $amdout | ConvertFrom-StringData
-   $ainfo = @{}
-   $aerrors = @{}
-   $aerrors.Add("Errors",@())
-   $ainfo.Add("Fans",@())
-   $ainfo.Add("Temps",@())
-   $ainfo.Add("Watts",@())
-   $amdinfo.keys | foreach {if($_ -like "*Fan*"){$ainfo.Fans += $amdinfo.$_}}
-   $amdinfo.keys | foreach {if($_ -like "*Temp*"){$ainfo.Temps += $amdinfo.$_}}
-   $amdinfo.keys | foreach {if($_ -like "*Watts*"){$ainfo.Watts += $amdinfo.$_}}
-   $amdinfo.keys | foreach {if($_ -like "*Errors*"){$aerrors.Errors += $amdinfo.$_}}
-   $AMDFans = $ainfo.Fans
-   $AMDTemps = $ainfo.Temps
-   $AMDPower = $ainfo.Watts
-   if($aerrors.Errors)
+ "windows"
+ {
+  Invoke-Expression ".\build\apps\odvii.exe s" | Tee-Object -Variable amdout | Out-Null
+  if($amdout)
    {
-    Write-Host "Warning Errors Detected From Drivers:" -ForegroundColor Red
-    $aerrors.Errors | %{Write-host "$($_)" -ForegroundColor Red}
-    Write-Host "Drivers/Settings May Be Set Incorrectly/Not Compatible
-" -ForegroundColor Red
+    $AMDStats = @{}
+    $amdinfo = $amdout | ConvertFrom-StringData
+    $ainfo = @{}
+    $aerrors = @{}
+    $aerrors.Add("Errors",@())
+    $ainfo.Add("Fans",@())
+    $ainfo.Add("Temps",@())
+    $ainfo.Add("Watts",@())
+    $amdinfo.keys | foreach {if($_ -like "*Fan*"){$ainfo.Fans += $amdinfo.$_}}
+    $amdinfo.keys | foreach {if($_ -like "*Temp*"){$ainfo.Temps += $amdinfo.$_}}
+    $amdinfo.keys | foreach {if($_ -like "*Watts*"){$ainfo.Watts += $amdinfo.$_}}
+    $amdinfo.keys | foreach {if($_ -like "*Errors*"){$aerrors.Errors += $amdinfo.$_}}
+    $AMDFans = $ainfo.Fans
+    $AMDTemps = $ainfo.Temps
+    $AMDPower = $ainfo.Watts
+    if($aerrors.Errors)
+     {
+      Write-Host "Warning Errors Detected From Drivers:" -ForegroundColor Red
+      $aerrors.Errors | %{Write-host "$($_)" -ForegroundColor Red}
+      Write-Host "Drivers/Settings May Be Set Incorrectly/Not Compatible
+      " -ForegroundColor Red
+     }
+    }
+  }
+
+ "linux"
+ {
+  switch($HiveOS)
+  {
+    "Yes"
+     {
+      $HiveStats = "/run/hive/gpu-stats.json"
+      do{
+         for($i=0; $i -lt 10; $i++)
+         {
+          if(test-Path $HiveStats){try{$GetHiveStats = Get-Content $HiveStats | ConvertFrom-Json}catch{$GetHiveStats -eq $null}}
+          if($GetHiveStats -ne $null)
+           {
+            $AMDFans = $( $GetHiveStat.fan | %{if($_ -ne 0){$_}} )
+            $AMDTemps = $( $GetHiveStat.temp | %{if($_ -ne 0){$_}} )
+           }
+          Start-Sleep -S .5
+         }
+        }while($GetHiveStats.temp.count -lt 1 -and $GetHiveStats.fan.count -lt 1)
+      }
+    "No"
+     {
+      $AMDStats = @{}
+      timeout -s9 10 rocm-smi -f | Tee-Object -Variable AMDFans | Out-Null
+      $AMDFans = $AMDFans | Select-String "%" | foreach {$_ -split "\(" | Select -Skip 1 -first 1} | foreach {$_ -split "\)" | Select -first 1}
+      timeout -s9 10 rocm-smi -t | Tee-Object -Variable AMDTemps | Out-Null
+      $AMDTemps = $AMDTemps | Select-String -CaseSensitive "Temperature" | foreach {$_ -split ":" | Select -skip 2 -First 1} | foreach {$_ -replace (" ","")} | foreach{$_ -replace ("c","")}
+     }
    }
   }
-}
-
-elseif($Platforms -eq "linux" -and $HiveOS -eq "Yes")
-{
-  $AMDStats = @{}
-  timeout -s9 5 gpu-stats | Tee-Object -Variable amdout | Out-Null
-  if($amdout){$Stat = $amdout | ConvertFrom-Json}
-  $AMDFans = $Stat.fan
-  $AMDTemps = $Stat.temp
-}
-
-elseif($Platforms -eq "linux" -and $HiveOS -eq "No")
-{
-  $AMDStats = @{}
-  timeout -s9 10 rocm-smi -f | Tee-Object -Variable AMDFans | Out-Null
-  $AMDFans = $AMDFans | Select-String "%" | foreach {$_ -split "\(" | Select -Skip 1 -first 1} | foreach {$_ -split "\)" | Select -first 1}
-  timeout -s9 10 rocm-smi -t | Tee-Object -Variable AMDTemps | Out-Null
-  $AMDTemps = $AMDTemps | Select-String -CaseSensitive "Temperature" | foreach {$_ -split ":" | Select -skip 2 -First 1} | foreach {$_ -replace (" ","")} | foreach{$_ -replace ("c","")}
 }
 
 $AMDStats.Add("Fans",$AMDFans)
@@ -201,16 +242,39 @@ $AMDStats
 }
 
 ##Get Active Miners And Devices
-$GetMiners = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-Json
 $GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
 
+##Timers
+$BackgroundTimer = New-Object -TypeName System.Diagnostics.Stopwatch
+$BackgroundTimer.Restart()
+$RestartTimer = New-Object -TypeName System.Diagnostics.Stopwatch
+
+While($True)
+{
+## Timer For When To Restart Loop
+$RestartTimer.Restart()
+
+##Bool for Current Miners
+$Switched = $false
+
+##Determine if Miner Switched
+$CheckForMiners = ".\build\txt\bestminers.txt"
+if(test-Path $CheckForMiners){$GetMiners = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-Json}
+else{Write-Host "Waiting For Miners"; Start-Sleep -S 5; continue}
+
+##Handle New Miners
+$GetMiners | ForEach {if(-not ($CurrentMiners | Where Path -eq $_.Path | Where Arguments -eq $_.Arguments )){$Switched = $true}}
+if($Switched -eq $True)
+{
+Write-Host "Miners Have Switched
+" -ForegroundColor Cyan
+$CurrentMiners = $GetMiners;
 ##Set Starting Date & Device Flags
 $DevNVIDIA = $false
 $DevAMD = $false
 $StartTime = Get-Date
-
 ## Determine Which GPU's to stat
-$GetMiners | Foreach {
+$CurrentMiners | Foreach {
 $NEW=0; 
 $NEW | Set-Content ".\build\txt\$($_.Type)-hash.txt";
 $Name = $($_.Name)
@@ -221,15 +285,13 @@ if($_.Type -like "*AMD*"){$DevAMD = $true; "AMD Detected"}
 ## Set-OC
 Write-Host "Starting Tuning"
 Start-OC -Platforms $Platforms -Dir $WorkingDir
-
 ## ADD Delay for OC and Miners To Start Up
 Start-Sleep -S 10
 
 ## Determine if CPU in only used
 $CPUOnly = $true
-$GetMiners | Foreach {if($_.Type -like "*NVIDIA*" -or $_.Type -like "*AMD*"){$CPUOnly = $false; "GPU" | Set-Content ".\build\txt\miner.txt"}}
+$CurrentMiners | Foreach {if($_.Type -like "*NVIDIA*" -or $_.Type -like "*AMD*"){$CPUOnly = $false; "GPU" | Set-Content ".\build\txt\miner.txt"}}
 if($CPUOnly -eq $true){"CPU" | Set-Content ".\build\txt\miner.txt"}
-
 ## Build Initial Hash Tables For Stats
 $GPUHashrates = [PSCustomObject]@{}
 $CPUHashrates = [PSCustomObject]@{}
@@ -239,17 +301,7 @@ $GPUPower = [PSCustomObject]@{}
 for($i=0; $i -lt $GCount.CPU.PSObject.Properties.Value.Count; $i++){$CPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.CPU.$i)" -Value 0;}
 if($DevAMD -eq $true){for($i=0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++){$GPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0; $GPUFans | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0; $GPUTemps | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0; $GPUPower | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0}}
 if($DevNVIDIA -eq $true){for($i=0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++){$GPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; $GPUFans | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; $GPUTemps | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; $GPUPower | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0}}
-
-##Timers
-$BackgroundTimer = New-Object -TypeName System.Diagnostics.Stopwatch
-$BackgroundTimer.Restart()
-$RestartTimer = New-Object -TypeName System.Diagnostics.Stopwatch
-
-While($True)
-{
-
-## Timer For When To Restart Loop
-$RestartTimer.Restart()
+}
 
 ## Reset All Stats, Rebuild Tables
 $ALGO = @(); $HashRates = @(); $Fans = @(); $Temps = @(); $Power = @(); $RAW = 0; $KHS = 0; $REJ = 0; $ACC = 0;
@@ -283,7 +335,7 @@ if($Platforms -eq "linux")
 }
 
 ## Start API Calls For Each Miner
-$GetMiners | Foreach {
+$CurrentMiners | Foreach {
 
 ## Miner Information
 $MinerAlgo = "$($_.Algo)"
@@ -321,13 +373,13 @@ if($Platforms -eq "windows" -and $HiveOS -eq "Yes")
 ## Now Fans & Temps
 if($MinerType -Like "*NVIDIA*")
 {
-  for($i=0;$i -lt $Devices.Count; $i++){try{$GPUFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans $i}catch{Write-Host "Failed To Parse GPU Array" -foregroundcolor red; break}}
-  for($i=0;$i -lt $Devices.Count; $i++){try{$GPUTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps $i}catch{Write-Host "Failed To Parse GPU Array" -foregroundcolor red; break}}
+  for($i=0;$i -lt $Devices.Count; $i++){try{$GPUFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans $i}catch{Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
+  for($i=0;$i -lt $Devices.Count; $i++){try{$GPUTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps $i}catch{Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}}
 }
 if($MinerType -Like "*AMD*")
 {
-  for($i=0;$i -lt $Devices.Count; $i++){try{$GPUFans.$(Get-GPUS) = Set-Array $AMDStats.Fans $i}catch{Write-Host "Failed To Parse GPU Array" -foregroundcolor red; break}}
-  for($i=0;$i -lt $Devices.Count; $i++){try{$GPUTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps $i}catch{Write-Host "Failed To Parse GPU Array" -foregroundcolor red}; break}
+  for($i=0;$i -lt $Devices.Count; $i++){try{$GPUFans.$(Get-GPUS) = Set-Array $AMDStats.Fans $i}catch{Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
+  for($i=0;$i -lt $Devices.Count; $i++){try{$GPUTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps $i}catch{Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red}; break}
 }
 
 ## Set Initial Output
@@ -788,7 +840,8 @@ Write-Host " ALGO=$ALGO" -ForegroundColor Gray -NoNewline
 Write-Host " $Fans" -ForegroundColor Cyan -NoNewline
 Write-Host " $Temps" -ForegroundColor Magenta -NoNewline
 if($Platforms -eq "windows"){Write-Host " $Power"  -ForegroundColor DarkCyan -NoNewline}
-Write-Host " UPTIME=$UPTIME" -ForegroundColor White
+Write-Host " UPTIME=$UPTIME
+" -ForegroundColor White
 
 if($CPUKHS -ne $null){Write-Host "CPU=$CPUSUM"}
 $Hive | Set-Content ".\build\bash\hivestats.sh"

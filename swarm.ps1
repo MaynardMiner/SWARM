@@ -180,14 +180,6 @@ Get-DateFiles
 Start-Sleep -S 1
 $PID | Out-File ".\build\pid\miner_pid.txt"
 
-$FileClear = @()
-$FileClear += ".\build\bash\minerstats.sh"
-$FileClear += ".\build\bash\hivestats.sh"
-$FileClear += ".\build\bash\mineractive.sh"
-$FileClear += ".\build\bash\hivecpu.sh"
-$FileClear += ".\build\txt\profittable.txt"
-$FileClear | %{if(Test-Path $_){Clear-Content $_}}
-
 ##filepath dir
 $dir = (Split-Path $script:MyInvocation.MyCommand.Path)
 $Workingdir = (Split-Path $script:MyInvocation.MyCommand.Path)
@@ -226,6 +218,15 @@ if([Double]$Boot -lt 600)
     Start-Sleep -S 3
   }
 }
+
+$FileClear = @()
+$FileClear += ".\build\bash\minerstats.sh"
+$FileClear += ".\build\bash\hivestats.sh"
+$FileClear += ".\build\bash\mineractive.sh"
+$FileClear += ".\build\bash\hivecpu.sh"
+$FileClear += ".\build\txt\profittable.txt"
+$FileClear += ".\build\txt\bestminers.txt"
+$FileClear | %{if(Test-Path $_){Remove-Item $_ -Force}}
 
 ## Close Previous Running Agent- Agent is left running to send stats online, even if SWARM crashes
 if($Platform -eq "windows")
@@ -349,20 +350,6 @@ param(
 }
 Start-Job $APIServer -Name "APIServer" -ArgumentList "$Dir" | OUt-Null
 Write-Host "Starting API Server" -ForegroundColor "Yellow"
-if($((Get-Job -Name "APIServer").State) -eq "Running")
- {
-  Write-Host "API Server Started- This server will run even after close" -ForegroundColor Green
-  Write-Host "If you wish to close server:" -ForegroundColor Green
-  Start-Sleep -S 2
-  if(test-Path ".\build\pid\api_pid.txt"){$AFID = Get-Content ".\build\pid\api_pid.txt"}
-  Write-Host "Stop Powershell Process ID $($AFID) or run http://localhost:4099/end" -ForegroundColor Green
-  Get-Job -Name "APIServer" | Receive-Job
- }
-else
-{
- Write-Warning "API Server Failed To Start"
- Get-Job -Name "APIServer" | Receive-Job
-}
 }
 
 ## Debug Mode- Allow you to run with last known arguments.
@@ -847,6 +834,24 @@ if($Type -like "*CPU*"){$cpu = get-minerfiles -Types "CPU" -Platforms $Platform}
 if($Type -like "*NVIDIA*"){$nvidia = get-minerfiles -Types "NVIDIA" -Platforms $Platform -Cudas $Cuda}
 if($Type -like "*AMD*"){$amd = get-minerfiles -Types "AMD" -Platforms $Platform}
 
+if($API -eq "Yes")
+{
+if($((Get-Job -Name "APIServer").State) -eq "Running")
+ {
+  Write-Host "API Server Started- This server will run even after close run http://localhost:4099/end to close" -ForegroundColor Green
+ }
+else
+{
+ Write-Warning "API Server Failed To Start"
+ Get-Job -Name "APIServer" | Receive-Job
+}
+}
+
+##Start New Agent
+Write-Host "Starting New Background Agent" -ForegroundColor Cyan
+if($Platform -eq "windows"){Start-Background -WorkingDir $pwsh -Dir $dir -Platforms $Platform -HiveID $HiveID -HiveMirror $HiveMirror -HiveOS $HiveOS -HivePassword $HivePassword -RejPercent $Rejections}
+elseif($Platform -eq "linux"){Start-Process ".\build\bash\background.sh" -ArgumentList "background $dir $Platform $HiveOS $Rejections" -Wait}
+
 While($true)
 {
 
@@ -1271,7 +1276,8 @@ $Y = [string]$CoinExchange
 $H = [string]$Currency
 $J = [string]'BTC'
 $BTCExchangeRate = Invoke-WebRequest "https://min-api.cryptocompare.com/data/pricemulti?fsyms=$Y&tsyms=$J" -UseBasicParsing | ConvertFrom-Json | Select-Object -ExpandProperty $Y | Select-Object -ExpandProperty $J
-Clear-Content ".\build\bash\minerstats.sh" -Force
+$MSFile = ".\build\bash\minerstats.sh"
+if(Test-Path $MSFIle){Clear-Content ".\build\bash\minerstats.sh" -Force}
 $type | foreach {if(Test-Path ".\build\txt\$($_)-hash.txt"){Clear-Content ".\build\txt\$($_)-hash.txt" -Force}}
 $GetStatusAlgoBans = ".\timeout\algo_block\algo_block.txt"
 $GetStatusPoolBans = ".\timeout\pool_block\pool_block.txt"
@@ -1306,7 +1312,6 @@ if($ConserveMessage){$ConserveMessage | foreach {$BanMessage += "$me[${mcolor}m$
 $BanMessage | Out-File ".\build\bash\minerstats.sh" -Append
 $BestActiveMiners | ConvertTo-Json | Out-File ".\build\txt\bestminers.txt"
 $Current_BestMiners = $BestActiveMiners | ConvertTo-Json -Compress
-$BackgroundDone = "No"
 $StatusLite = Get-StatusLite
 $StatusDate | Out-File ".\build\bash\minerstatslite.sh"
 $StatusLite | OUt-File ".\build\bash\minerstatslite.sh" -Append
@@ -1358,8 +1363,7 @@ if($_.BestMiner -eq $false)
      $_.InstanceName = "$($_.Type)-$($Instance)"
      $Current = $_ | ConvertTo-Json -Compress
      $PreviousPorts = $PreviousMinerPorts | ConvertTo-Json -Compress
-     $_.Xprocess = Start-LaunchCode -PP $PreviousPorts -Platforms $Platform -MinerRound $Current_BestMiners -NewMiner $Current -Background $BackgroundDone
-     $BackgroundDone = "Yes"
+     $_.Xprocess = Start-LaunchCode -PP $PreviousPorts -Platforms $Platform -MinerRound $Current_BestMiners -NewMiner $Current
      $_.Instance = ".\build\pid\$($_.Type)-$($Instance)"
      $PIDFile = "$($_.Name)_$($_.Coins)_$($_.InstanceName)_pid.txt"
      $Instance++
@@ -1423,13 +1427,12 @@ else{$MinerInterval = $Interval}
 }
 
 
-## This Starts restarts background agent, or sets API table for LITE mode.
+## This Set API table for LITE mode.
 $UsePools = $false
 $ProfitTable | foreach{if($_.Profits -ne $null){$UsePools = $true}}
 if($UsePools -eq $false){$APITable = $ProfitTable | Sort-Object -Property Type,Profits -Descending}
 else{$APITable = $ProfitTable | Sort-Object -Property Type,Pool_Estimate}
 $APITable | ConvertTo-Json -Depth 4 | Set-Content ".\build\txt\profittable.txt"
-if($Lite -eq "Yes"){Start-BackgroundCheck -Platforms $Platform}
 
 ## Load mini logo
 if($Platform -eq "linux"){Get-Logo}
