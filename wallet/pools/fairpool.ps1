@@ -21,9 +21,9 @@ $Getkeys | %{if($Wallets -match $_.Name)
   }
 
 $Getkeys | % {
-    if($_.Response)
+     if($_.Response.balance -gt 0)
      {
       Set-WStat -Name "$($Name)_$($_.Address)" -Symbol $_.symbol -address $_.address -balance $_.response.balance -unpaid $_.response.unpaid
-    }
+     }
    }
    
