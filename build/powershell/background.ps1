@@ -515,10 +515,10 @@ switch($MinerAPI)
       $Data = $null; $Data = $GetThreads -split "\|"
       $Hash = $Null; $Hash = $Data -split ";" | Select-String "KHS" | foreach {$_ -replace ("KHS=","")}
       try{for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i}}catch{Write-Host "Failed To parse GPU Array" -ForegroundColor Red};
-      $MinerACC += $GetSummary -split ";" | Select-String "ACC=" | foreach{$_ -replace ("ACC=","")}
-      $MinerREJ += $GetSummary -split ";" | Select-String "REJ=" | foreach{$_ -replace ("REJ=","")}
-      $ACC += $GetSummary -split ";" | Select-String "ACC=" | foreach{$_ -replace ("ACC=","")}
-      $REJ += $GetSummary -split ";" | Select-String "REJ=" | foreach{$_ -replace ("REJ=","")}
+      $MinerACC += $Request -split ";" | Select-String "ACC=" | foreach{$_ -replace ("ACC=","")}
+      $MinerREJ += $Request -split ";" | Select-String "REJ=" | foreach{$_ -replace ("REJ=","")}
+      $ACC += $Request -split ";" | Select-String "ACC=" | foreach{$_ -replace ("ACC=","")}
+      $REJ += $Request -split ";" | Select-String "REJ=" | foreach{$_ -replace ("REJ=","")}
       $ALGO += "$MinerAlgo"
       $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
      }

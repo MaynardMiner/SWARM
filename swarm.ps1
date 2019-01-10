@@ -624,10 +624,6 @@ if($Platform -eq "linux")
    $HiveWorker = $config.WORKER_NAME -replace "`"",""
    $HiveMirror = $config.HIVE_HOST_URL -replace "`"",""
    $HiveID = $config.RIG_ID
-
-    ##No Longer Needed
-    #Start-Process ".\build\bash\libc.sh" -wait
-    #Start-Process ".\build\bash\libv.sh" -wait
   }
 
   Start-Process ".\build\bash\screentitle.sh" -Wait
