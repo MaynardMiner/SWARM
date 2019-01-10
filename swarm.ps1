@@ -171,6 +171,7 @@ Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 . .\build\powershell\sorting.ps1;
 . .\build\powershell\screen.ps1;
 . .\build\powershell\commandweb.ps1;
+. .\build\powershell\response.ps1;
 if($Type -like "*ASIC*"){. .\build\powershell\icserver.ps1; . .\build\powershell\poolmanager.ps1}
 if($Platform -eq "linux"){. .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
 if($Platform -eq "windows"){. .\build\powershell\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1;}
@@ -618,9 +619,9 @@ if($Platform -eq "linux")
   ## HiveOS Only Items
   if($HiveOS -eq "Yes")
   {
-   Write-Host "Getting Data"
+   Write-Host "Getting Data" -ForegroundColor Yellow
    Get-Data -CmdDir $dir
-   $config = get-content /hive-config/rig.conf | ConvertFrom-StringData
+   $config = get-content "/hive-config/rig.conf" | ConvertFrom-StringData
    $HivePassword = $config.RIG_PASSWD -replace "`"",""
    $HiveWorker = $config.WORKER_NAME -replace "`"",""
    $HiveMirror = $config.HIVE_HOST_URL -replace "`"",""
