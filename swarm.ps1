@@ -1785,7 +1785,7 @@ if($Strike -eq $true)
      $NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt"
      $Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)"| foreach{try{$_.bad=0}catch{}}
      $HiveWarning = @{result = @{command = "timeout"}}
-     try{Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch{Write-Warning "Failed To Notify HiveOS"}
+     try{$SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch{Write-Warning "Failed To Notify HiveOS"}
      Start-Sleep -S 1
     }
     ##Strike Three: He's Outta Here
@@ -1804,7 +1804,7 @@ if($Strike -eq $true)
       $Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)"| foreach{try{$_.bad=0}catch{}}
       $Warnings."$($_.Name)_$($_.Algo)" | foreach{try{$_.bad=0}catch{}}
       $HiveWarning = @{result = @{command = "timeout"}}
-      try{Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch{Write-Warning "Failed To Notify HiveOS"} 
+      try{$SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch{Write-Warning "Failed To Notify HiveOS"} 
       Start-Sleep -S 1
      }
     ##Strike Four: Miner is Finished
@@ -1824,7 +1824,7 @@ if($Strike -eq $true)
      $Warnings."$($_.Name)_$($_.Algo)" | foreach{try{$_.bad=0}catch{}}
      $Warnings."$($_.Name)" | foreach{try{$_.bad=0}catch{}}
      $HiveWarning = @{result = @{command = "timeout"}}
-     try{Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch{Write-Warning "Failed To Notify HiveOS"}
+     try{$SendToHive= Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch{Write-Warning "Failed To Notify HiveOS"}
      Start-Sleep -S 1
      }
      }

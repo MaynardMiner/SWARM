@@ -401,12 +401,12 @@ switch($MinerAPI)
    $Request = $null; $Request = Get-TCP -Server $Server -Port $Port -Message $Message 
     if($Request)
     {
-     try{$Data = $Null; $Data = $Request | ConvertFrom-Json;}catch{Write-Host "Failed To parse GPU Array" -ForegroundColor Red}
+     try{$Data = $Null; $Data = $Request | ConvertFrom-Json;}catch{Write-Host "Failed To parse API" -ForegroundColor Red}
      $RAW += $Data.result[2] -split ";" | Select -First 1 | %{[Double]$_*1000};
      Write-MinerData2;
      $KHS += $Data.result[2] -split ";" | Select -First 1 | %{[Double]$_};
      $Hash = $Null; $Hash = $Data.result[3] -split ";";
-     try{for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i $HS}}catch{Write-Host "Failed To parse GPU Array" -ForegroundColor Red};
+     try{for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i $HS}}catch{Write-Host "Failed To parse GPU Threads" -ForegroundColor Red};
      $MinerACC = $Data.result[2] -split ";" | Select -skip 1 -first 1
      $MinerREJ = $Data.result[2] -split ";" | Select -skip 2 -first 1
      $ACC += $Data.result[2] -split ";" | Select -skip 1 -first 1
@@ -427,7 +427,7 @@ switch($MinerAPI)
    $Request = $null; $Request = Get-TCP -Server $Server -Port $port -Message $Message
    if($Request)
     {
-    try{$Data = $Null; $Data = $Request | ConvertFrom-Json;}catch{Write-Host "Failed To parse GPU Array" -ForegroundColor Red}
+    try{$Data = $Null; $Data = $Request | ConvertFrom-Json;}catch{Write-Host "Failed To parse API" -ForegroundColor Red}
     $RAW = $Summary.algorithms.speed
     Write-MinerData2;
     $KHS += [Double]$Summary.algorithms.speed/1000
@@ -439,7 +439,7 @@ switch($MinerAPI)
     {
     $Threads = $GetThreads | ConvertFrom-Json
     $Hash = $Null; $Hash = $Threads.workers.algorithms.speed
-    try{for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i $HS}}catch{Write-Host "Failed To parse GPU Array" -ForegroundColor Red};
+    try{for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i $HS}}catch{Write-Host "Failed To parse threads" -ForegroundColor Red};
     $ACC += $Summary.algorithms.accepted_shares
     $REJ += $Summary.algorithms.rejected_shares
     $MinerACC += $Summary.algorithms.accepted_shares
@@ -466,7 +466,7 @@ switch($MinerAPI)
     $REJ += $Shares -split "/" | Select -Last 1
     $MinerACC = $Shares -split "/" | Select -first 1
     $MinerREJ = $Shares -split "/" | Select -Last 1
-    try{for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i $HS}}catch{Write-Host "Failed To parse GPU Array" -ForegroundColor Red};
+    try{for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i $HS}}catch{Write-Host "Failed To parse Threads" -ForegroundColor Red};
     $ALGO += "$MinerAlgo"
     $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
    }
@@ -480,12 +480,12 @@ switch($MinerAPI)
    $Request = $Null; $Request = Get-TCP -Server $Server -Port $port -Message $Message
    if($Request)
     { 
-     try{$Data = $Null; $Data = $Request | ConvertFrom-Json;}catch{Write-Host "Failed To parse GPU Array" -ForegroundColor Red}
+     try{$Data = $Null; $Data = $Request | ConvertFrom-Json;}catch{Write-Host "Failed To parse API" -ForegroundColor Red}
      $Data = $Data.result
      $Data.speed_sps | foreach {$RAW += [Double]$_}
      $Hash = $Null; $Hash = $Data.speed_sps
      Write-MinerData2;
-     try{for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i $HS}}catch{Write-Host "Failed To parse GPU Array" -ForegroundColor Red};
+     try{for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i $HS}}catch{Write-Host "Failed To parse Threads" -ForegroundColor Red};
      $Data.accepted_shares | Foreach {$MinerACC += $_}
      $Data.rejected_shares | Foreach {$MinerREJ += $_}
      $Data.accepted_shares | Foreach {$ACC += $_}
@@ -514,11 +514,11 @@ switch($MinerAPI)
      {
       $Data = $null; $Data = $GetThreads -split "\|"
       $Hash = $Null; $Hash = $Data -split ";" | Select-String "KHS" | foreach {$_ -replace ("KHS=","")}
-      try{for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i}}catch{Write-Host "Failed To parse GPU Array" -ForegroundColor Red};
-      $MinerACC += $Request -split ";" | Select-String "ACC=" | foreach{$_ -replace ("ACC=","")}
-      $MinerREJ += $Request -split ";" | Select-String "REJ=" | foreach{$_ -replace ("REJ=","")}
-      $ACC += $Request -split ";" | Select-String "ACC=" | foreach{$_ -replace ("ACC=","")}
-      $REJ += $Request -split ";" | Select-String "REJ=" | foreach{$_ -replace ("REJ=","")}
+      try{for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i}}catch{Write-Host "Failed To parse Threads" -ForegroundColor Red};
+      try{$MinerACC += $Request -split ";" | Select-String "ACC=" | foreach{$_ -replace ("ACC=","")}}catch{}
+      try{$MinerREJ += $Request -split ";" | Select-String "REJ=" | foreach{$_ -replace ("REJ=","")}}catch{}
+      try{$ACC += $Request -split ";" | Select-String "ACC=" | foreach{$_ -replace ("ACC=","")}}catch{}
+      try{$REJ += $Request -split ";" | Select-String "REJ=" | foreach{$_ -replace ("REJ=","")}}catch{}
       $ALGO += "$MinerAlgo"
       $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
      }
@@ -532,13 +532,13 @@ switch($MinerAPI)
    $Request = $Null; $Request = Get-HTTP -Port $Port -Message "/api/status"
    if($Request)
     {
-     try{$Data = $Null; $Data = $Request.Content | ConvertFrom-Json;}catch{Write-Host "Failed To parse GPU Array" -ForegroundColor Red}
+     try{$Data = $Null; $Data = $Request.Content | ConvertFrom-Json;}catch{Write-Host "Failed To parse API" -ForegroundColor Red}
      for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $RAW += [Double]$Data.Miners.$GPU.solver.solution_rate}
      Write-MinerData2;
      $Hash = $Null; $Hash = $Data.Miners
      if($HS -eq "hs"){$HashFactor = 1}
      if($HS -eq "khs"){$Hashfactor = 1000}
-     try{for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$(Get-Gpus) = [Double]$Hash.$GPU.solver.solution_rate/$HashFactor}}catch{Write-Host "Failed To parse GPU Array" -ForegroundColor Red};
+     try{for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$(Get-Gpus) = [Double]$Hash.$GPU.solver.solution_rate/$HashFactor}}catch{Write-Host "Failed To parse Threads" -ForegroundColor Red};
      $Data.stratum.accepted_shares | Foreach {$MinerACC += $_}
      $Data.stratum.rejected_shares | Foreach {$MinerREJ += $_}
      $Data.stratum.accepted_shares | Foreach {$ACC += $_}
@@ -556,11 +556,11 @@ switch($MinerAPI)
    $Request = $Null; $Request = Get-HTTP -Port $Port -Message "/summary"
    if($Request)
     {
-     try{$Data = $Null; $Data = $Request.Content | ConvertFrom-Json;}catch{Write-Host "Failed To parse GPU Array" -ForegroundColor Red}
+     try{$Data = $Null; $Data = $Request.Content | ConvertFrom-Json;}catch{Write-Host "Failed To parse API" -ForegroundColor Red}
      $RAW = if([Double]$Data.hashrate_minute -ne 0 -or [Double]$Data.accepted_count -ne 0){[Double]$Data.hashrate_minute}
      Write-MinerData2;
      $Hash = $Null; $Hash = $Data.gpus.hashrate_minute
-     try{for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i $HS}}catch{Write-Host "Failed To parse GPU Array" -ForegroundColor Red};
+     try{for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i $HS}}catch{Write-Host "Failed To parse Threads" -ForegroundColor Red};
      $Data.accepted_count | Foreach {$MinerACC += $_}
      $Data.rejected_count | Foreach {$MinerREJ += $_}
      $Data.accepted_count | Foreach {$ACC += $_}
@@ -614,8 +614,8 @@ switch($MinerAPI)
     $summary = $Data.summary.summary
     $threads = $Data.devs.devs
     $Hash = $Null; $Sum = $Null;
-    if($summary."KHS_5s"){$Sum = $summary."KHS_5s"}else{$Sum = $summary.'KHS_30s'}
-    if($threads."KHS_5s"){$Hash = $threads."KHS_5s"}else{$Hash = $threads."KHS_30s"}
+    if($summary."KHS_5s"){$Sum = $summary."KHS_5s"}else{$Sum = $summary."KHS 30s"}
+    if($threads."KHS_5s"){$Hash = $threads."KHS_5s"}else{$Hash = $threads."KHS 30s"}
     $RAW += [Double]$Sum*1000
     $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
     Write-MinerData2;
@@ -681,23 +681,23 @@ switch($MinerAPI)
 'xmrstak'
 {
  $HS = "hs"
- Write-Host "Note: XMR-STAK API sucks. You can't match threads to GPU." -ForegroundColor Yellow
+ Write-Host "Note: XMR-STAK API sucks. You can't match threads to specific GPU." -ForegroundColor Yellow
  $Message = $Null; $Message="/api.json"
  $Request = $Null; $Request = Get-HTTP -Port $Port -Message $Message
  if($Request)
   {
-   try{$Data = $Null; $Data = $Request.Content | ConvertFrom-Json;}catch{Write-Host "Failed To parse GPU Array" -ForegroundColor Red}
-   $Hash = for($i=0; $i -lt $Data.hashrate.threads.count; $i++){$Data.Hashrate.threads[$i] | Select -First 1}
-   $RAW = $Data.hashrate.total | Select -First 1
+   try{$Data = $Null; $Data = $Request.Content | ConvertFrom-Json;}catch{Write-Host "Failed To parse threads" -ForegroundColor Red}
+   try{$Hash = for($i=0; $i -lt $Data.hashrate.threads.count; $i++){$Data.Hashrate.threads[$i] | Select -First 1}}catch{}
+   try{$RAW = $Data.hashrate.total | Select -First 1}catch{}
    Write-MinerData2;
-   try{for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$(Get-Gpus) = $Hash[$GPU] | Select -First 1}}catch{Write-Host "Failed To parse GPU Array" -ForegroundColor Red};
+   try{for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$(Get-Gpus) = $Hash[$GPU] | Select -First 1}}catch{Write-Host "Failed To parse threads" -ForegroundColor Red};
    $MinerACC += $Data.results.shares_good
    $MinerREJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good
    $ACC += $Data.results.shares_good
    $REJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good
    $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
    $ALGO += "$MinerAlgo"
-   $KHS = [Double]$Data.hashrate.total[0]
+   try{$KHS = [Double]$Data.hashrate.total[0]}catch{}
   }
   else{Set-APIFailure; break}
 }
@@ -713,7 +713,7 @@ switch($MinerAPI)
   $Request = Get-HTTP -Port $Port -Message $Message
   if($Request)
    {
-    try{$Data = $Null; $Data = $Request.Content | ConvertFrom-Json;}catch{Write-Host "Failed To parse GPU Array" -ForegroundColor Red}
+    try{$Data = $Null; $Data = $Request.Content | ConvertFrom-Json;}catch{Write-Host "Failed To parse API" -ForegroundColor Red}
     $Hash = $Data.Hashrate.threads
     $CPURAW = [Double]$Data.hashrate.total[0]
     $CPUKHS = [Double]$Data.hashrate.total[0]
@@ -739,8 +739,8 @@ switch($MinerAPI)
    $Request = $Null; $Request = Get-HTTP -Port $Port -Message $Message
    if($Request)
     {
-     try{$Data = $Null; $Data = $Request.Content | ConvertFrom-Json;}catch{Write-Host "Failed To parse GPU Array" -ForegroundColor Red}
-     $RAW = $Data.hashrate.total[0]
+     try{$Data = $Null; $Data = $Request.Content | ConvertFrom-Json;}catch{Write-Host "Failed To parse API" -ForegroundColor Red}
+     try{$RAW = $Data.hashrate.total[0]}catch{}
      Write-MinerData2;
      $Hash = $Data.hashrate.threads
      try{for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$(Get-Gpus) = $Hash[$GPU] | Select -First 1}}catch{Write-Host "Failed To parse GPU Array" -ForegroundColor Red}
@@ -750,7 +750,7 @@ switch($MinerAPI)
      $REJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good
      $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
      $ALGO += "$MinerAlgo"
-     $KHS = [Double]$Data.hashrate.total[0]/1000
+     try{$KHS = [Double]$Data.hashrate.total[0]/1000}catch{}
    }
    else{Set-APIFailure; break}
   }
