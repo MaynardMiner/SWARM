@@ -19,7 +19,8 @@
 
 ##Below is the Custom Config Script- Do not change.
 $Pool = {
-
+##
+##This is where you start editing:
 ##Your denoted name/nickname for the pool.
 ##
 Name = BsoD
