@@ -176,11 +176,6 @@ if($Type -like "*ASIC*"){. .\build\powershell\icserver.ps1; . .\build\powershell
 if($Platform -eq "linux"){. .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
 if($Platform -eq "windows"){. .\build\powershell\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1;}
 
-##Load Previous Times & PID Data
-Get-DateFiles
-Start-Sleep -S 1
-$PID | Out-File ".\build\pid\miner_pid.txt"
-
 ##filepath dir
 $dir = (Split-Path $script:MyInvocation.MyCommand.Path)
 $Workingdir = (Split-Path $script:MyInvocation.MyCommand.Path)
@@ -194,41 +189,7 @@ $swarmstamp = "SWARMISBESTMINEREVER"
 if(-not (Test-Path ".\build\txt")){New-Item -Name "txt" -ItemType "Directory" -Path ".\build" | Out-Null}
 $Platform | Set-Content ".\build\txt\os.txt"
 
-## Change console icon and title
-if($Platform -eq "windows")
-{
-$host.ui.RawUI.WindowTitle = "SWARM";
-Start-Process "powershell" -ArgumentList "-command .\build\powershell\icon.ps1 `".\build\apps\SWARM.ico`"" -NoNewWindow
-}
-
-## Get Child Items
-Get-ChildItem . -Recurse -Force | Out-Null
-
-## Crash Reporting
-if($Platform -eq "windows"){Get-CimInstance -ClassName win32_operatingsystem | select lastbootuptime | %{$Boot = [math]::Round(((Get-Date)-$_.LastBootUpTime).TotalSeconds)}}
-elseif($Platform -eq "linux"){$Boot = Get-Content "/proc/uptime" | %{$_ -split " " | Select -First 1}};
-if([Double]$Boot -lt 600)
- {
- if((Test-Path ".\build\txt") -and (Test-Path ".\logs"))
-  {
-    Write-Warning "SWARM was started in 600 seconds of last boot. Generating a crash report to logs directory";
-    $Report = "crash_report_$(Get-Date)";
-    $Report = $Report | %{$_ -replace ":","_"} | %{$_ -replace "\/","-"} | %{$_ -replace " ","_"};
-    New-Item -Path ".\logs" -Name $Report -ItemType "Directory" | Out-Null;
-    Get-ChildItem ".\build\txt" | Copy-Item -Destination ".\logs\$Report";
-    Start-Sleep -S 3
-  }
-}
-
-$FileClear = @()
-$FileClear += ".\build\bash\minerstats.sh"
-$FileClear += ".\build\bash\hivestats.sh"
-$FileClear += ".\build\bash\mineractive.sh"
-$FileClear += ".\build\bash\hivecpu.sh"
-$FileClear += ".\build\txt\profittable.txt"
-$FileClear += ".\build\txt\bestminers.txt"
-$FileClear | %{if(Test-Path $_){Remove-Item $_ -Force}}
-
+##Load Previous Times & PID Data
 ## Close Previous Running Agent- Agent is left running to send stats online, even if SWARM crashes
 if($Platform -eq "windows")
 {
@@ -239,6 +200,7 @@ if($Agent){$BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue}
 if($BackGroundID.name -eq "powershell"){Stop-Process $BackGroundID | Out-Null}
 }
 
+##Start API Server
 if($API -eq "Yes")
 {
 ## Shutdown Previous API if stuck by running a command
@@ -352,6 +314,47 @@ param(
 Start-Job $APIServer -Name "APIServer" -ArgumentList "$Dir" | OUt-Null
 Write-Host "Starting API Server" -ForegroundColor "Yellow"
 }
+
+##Start Date Collection
+Get-DateFiles
+Start-Sleep -S 1
+$PID | Out-File ".\build\pid\miner_pid.txt"
+
+## Change console icon and title
+if($Platform -eq "windows")
+{
+$host.ui.RawUI.WindowTitle = "SWARM";
+Start-Process "powershell" -ArgumentList "-command .\build\powershell\icon.ps1 `".\build\apps\SWARM.ico`"" -NoNewWindow
+}
+
+## Get Child Items
+Get-ChildItem . -Recurse -Force | Out-Null
+
+## Crash Reporting
+if($Platform -eq "windows"){Get-CimInstance -ClassName win32_operatingsystem | select lastbootuptime | %{$Boot = [math]::Round(((Get-Date)-$_.LastBootUpTime).TotalSeconds)}}
+elseif($Platform -eq "linux"){$Boot = Get-Content "/proc/uptime" | %{$_ -split " " | Select -First 1}};
+if([Double]$Boot -lt 600)
+ {
+ if((Test-Path ".\build\txt") -and (Test-Path ".\logs"))
+  {
+    Write-Warning "SWARM was started in 600 seconds of last boot. Generating a crash report to logs directory";
+    $Report = "crash_report_$(Get-Date)";
+    $Report = $Report | %{$_ -replace ":","_"} | %{$_ -replace "\/","-"} | %{$_ -replace " ","_"};
+    New-Item -Path ".\logs" -Name $Report -ItemType "Directory" | Out-Null;
+    Get-ChildItem ".\build\txt" | Copy-Item -Destination ".\logs\$Report";
+    Start-Sleep -S 3
+  }
+}
+
+##Clear Old Agent Stats
+$FileClear = @()
+$FileClear += ".\build\bash\minerstats.sh"
+$FileClear += ".\build\bash\hivestats.sh"
+$FileClear += ".\build\bash\mineractive.sh"
+$FileClear += ".\build\bash\hivecpu.sh"
+$FileClear += ".\build\txt\profittable.txt"
+$FileClear += ".\build\txt\bestminers.txt"
+$FileClear | %{if(Test-Path $_){Remove-Item $_ -Force}}
 
 ## Debug Mode- Allow you to run with last known arguments.
 $Debug = $false
