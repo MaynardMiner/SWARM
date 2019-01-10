@@ -116,7 +116,7 @@ if($PoolFile -notmatch $Pool.Algo){$PoolFile | Add-Member "$($Pool.Algo)" "$($Po
 if($Changed -eq $true){$PoolFile | Set-Content ".\config\miners\pool-algos.json"}
 
 ## Next we add to algorithm list, so its used going forward:
-$Algorithm += $Pool.Algo
+if($Algorithm -notmatch $Pool.Algo){$Algorithm += $Pool.Algo}
 
 ## Now Pool Request
 try{$Custom_Request = Invoke-RestMethod "$($Pool.Pool_Url)" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop} 
