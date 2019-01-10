@@ -583,8 +583,9 @@ Write-Host "Sycronizing Time Through Nist" -ForegroundColor Yellow
 Get-Nist | Set-Date
 
 ##Start The Log
-$dir | set-content ".\build\bash\dir.sh"
-start-log -Platforms $Platform -HiveOS $HiveOS
+$dir | set-content ".\build\bash\dir.sh";
+$Log = 1;
+start-log -Platforms $Platform -HiveOS $HiveOS -Number $Log;
 
 ##HiveOS Confirmation
 Write-Host "HiveOS = $HiveOS"
