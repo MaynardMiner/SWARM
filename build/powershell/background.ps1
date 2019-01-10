@@ -260,7 +260,7 @@ $Switched = $false
 ##Determine if Miner Switched
 $CheckForMiners = ".\build\txt\bestminers.txt"
 if(test-Path $CheckForMiners){$GetMiners = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-Json}
-else{Write-Host "Waiting For Miners"; Start-Sleep -S 5; continue}
+else{Write-Host "Waiting For Miners to start- Cannot recieve messages from HiveOS yet..."; Start-Sleep -S 5; continue}
 
 ##Handle New Miners
 $GetMiners | ForEach {if(-not ($CurrentMiners | Where Path -eq $_.Path | Where Arguments -eq $_.Arguments )){$Switched = $true}}
