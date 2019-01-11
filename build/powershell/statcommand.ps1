@@ -263,12 +263,8 @@ function ConvertFrom-Fees {
     [Double]$Estimate
     )
 
-    if($Fee -eq 1){$Percent = 1}
-    elseif($Fee -gt 1){$Percent = $Fee - 1; $Percent = $Percent*10}
-    elseif($Fee -lt 1){$Percent = $Fee*10}
-    $FeeToDecimal = $Percent/100
-    $WorkerPercent = $Workers*$FeeToDecimal
-    $WorkerFee = $WorkerPercent/100
-    $PoolCut = $Estimate*$WorkerFee
+    $FeeStat = $fee/100
+    $WorkerPercent = $Workers*$FeeStat
+    $WorkerFee = $Estimate*$WorkerPercent
     return $PoolCut
    }  

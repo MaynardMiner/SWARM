@@ -774,11 +774,14 @@ if($BackgroundTimer.Elapsed.TotalSeconds -gt 60)
  
 }
 
+$CPUKHS = '{0:f2}' -f $CPUKHS
+
+
 if($CPUOnly -eq $true)
 {
 $HIVE="
 $($CPUHash -join "`n")
-KHS=$({0:n2} -f $CPUKHS)
+KHS=$CPUKHS
 ACC=$CPUACC
 REJ=$CPUREJ
 ALGO=$CPUALGO
@@ -787,8 +790,15 @@ FAN=$CPUFAN
 UPTIME=$CPUUPTIME
 HSU=$CPUHS
 "
-$Hive
 $Hive | Set-Content ".\build\bash\hivestats.sh"
+Write-Host "$HashRates" -ForegroundColor Green -NoNewline
+Write-Host " KHS=$CPUKHS" -ForegroundColor Yellow -NoNewline
+Write-Host " ACC=$CPUACC" -ForegroundColor DarkGreen -NoNewline
+Write-Host " REJ=$CPUREJ" -ForegroundColor DarkRed -NoNewline
+Write-Host " ALGO=$CPUALGO" -ForegroundColor Gray -NoNewline
+Write-Host " FAN=$CPUFAN" -ForegroundColor Cyan -NoNewline
+Write-Host " UPTIME=$CPUUPTIME
+" -ForegroundColor White
 }
 
 else

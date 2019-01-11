@@ -584,7 +584,8 @@ if(-not (Test-Path ".\build\txt")){New-Item -Path ".\build" -Name "txt" -ItemTyp
 
 ## Time Sych For All SWARM Users
 Write-Host "Sycronizing Time Through Nist" -ForegroundColor Yellow
-Get-Nist | Set-Date
+$Sync = Get-Nist
+try{Set-Date $Sync -ErrorAction Stop}catch{Write-Host "Failed to syncronize time- Are you root/administrator?" -ForegroundColor red; Start-Sleep -S 5}
 
 ##Start The Log
 $dir | set-content ".\build\bash\dir.sh";
