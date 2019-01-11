@@ -1354,12 +1354,31 @@ New Command (Windows)!
 This release is mainly a patch for users interested in SWARM_Mode.
 
 
-1.8.5
+1.8.4
 
 Major Changes:
 
 NOTE: FRESH INSTALL HIGHLY SUGGESTED! Beta version from all
 the changes/additions.
+
+-Statics have been compeletly rebuilt. 
+  -Pool files were all modified,
+  -Most of every databasing function has been rewritten.
+  -Taking a new, completely my design approach to profit statistics.
+  -Taking workers, fees, and pool hashrates into accout- Beyond simple estimates.
+  -Entirely new profit equation.
+  -Returns seem to be more exact, especially when stat_algo day is used. (but live seems to be best).
+  -System is improved, but more changes to account for SWARM_Mode will be made.
+
+-Custom Yiimp Miner Pools
+  -You can now create your own mining pool files
+  -Instructions on how to create them included in sample file:
+    .\algopools\custom.ps1
+  -It's as easy as filling out a small 10 question form.
+  -Can be duplicated, but same pool duplication not advised.
+  -Rename custom.ps1 to bsod.ps1, and you should add a lyra2vc0ban coin
+  -Requires wallets for coins- No Auto-Exchange.
+  -Useful for testing profitibility of coins outside auto-exchange pools.
 
 -API server now established:
   -http://localhost:4099/summary will get you swarm pricing data
@@ -1374,6 +1393,8 @@ the changes/additions.
     Swarm should detect.
    -API: Default is yes, if you have issues, you can remove it its
     by specifying -API No
+   -Nicehash_Wallet(1,2,3) no longer needed, however, you can still specify.
+   -NiceHash_Fee set to default of 2% if using Nicehash_Wallet, 5% if not (per site).
 
 -Time Syncronization:
   For better SWARM_Mode optimization, all swarm apps will Sycronize
@@ -1389,15 +1410,30 @@ the changes/additions.
      not be aware of.
     -in future: remotely update NVIDIA/AMD drivers with single command.
     -``ps`` can not run applications as admin
+    -ensure security settings are good on your windows computer/network.
 
 -Agent rebuild
   -Rebuilt agent to better gather api stats from miners.
   -Rebuilt C++ software to better gather api stats from GPU drivers.
   -Removed as much error generation as I could possibly find (when API fails).
+  -background no longer closes, but still octunes when switch occurs. (within a few seconds).
+  -GPU stats are gathered from hive stats file, no gpu api is used.
+  -Rebuilt linux api gpu stat generation.
+  -Rebuilt windows api gpu stats generation.
+  -Rebuilt most of the api's for each miner.
+  -Focused on lowered mem use, and resource uses...However more things
+   are happening in background, so there should be no change.
+  -There is a table corruption in .\odvii.exe. This is an AMD driver bug.
+   I cannot fix, but it doesn't seem to cause issues. It just creates error logs
+   in windows event veiwer.
 
 -New miners
   -bminer added
   -zhash & Phoenix Miner API are fixed (I believe).
+  -warning: Miniz was giving me issues.
+  -warning: ccmineryescrypt, cryptodredge, fancyIX,
+            wildrig on certain algos may cause issues.
+  -warning: Some AMD gpu's may not run all AMD miners.
 
 -Bus statistics fixed.
   -Better GPU detection.
@@ -1422,9 +1458,13 @@ the changes/additions.
     data located txt folder, which accounts for 75% of SWARMs
     internal statistics.
    -This data is unchanged, which means you can review incidents,
-    what miners were running, etc., to determine failures.
+    what miners were running, etc., to determine failures. Or send
+    me the crash report, and let me figure it out.
 
 -Miners Updated
+
+-Gui fixes everywhere. Attempted to remove as many erroneous powershell
+ errors/warnings as possible.
 
 -Lots, and lots, and LOTS of small fixes. Too many to detail.
  
