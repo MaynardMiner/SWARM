@@ -41,6 +41,7 @@ $GetMiners = if(Test-Path $minerfilepath){Get-ChildItemContent $minerfilepath | 
  Where {$_.MinerName -ne "None"}}
 
 $ScreenedMiners = @()
+$Note = @()
 
 ## This Creates A New Array Of Miners, Screening Miners That Were Bad. As it does so, it notfies user.
 $GetMiners | foreach {
@@ -52,12 +53,14 @@ if(-not ($GetPoolBlocks | Where Algo -eq $_.Algo | Where Name -eq $_.Name | Wher
      {
       $ScreenedMiners += $_
      }
-     else{Write-Host  "Warning: Blocking $($_.Name) for $($_.Type)" -ForegroundColor Magenta}
-   }
-   else{Write-Host "Warning: Blocking $($_.Name) mining $($_.Algo) on all pools for $($_.Type)" -ForegroundColor Magenta}
- }
- else{Write-Host "Warning: Blocking $($_.Name) mining $($_.Algo) on $($_.MinerPool) for $($_.Type)" -ForegroundColor Magenta}
+     else{$Warning = "Warning: Blocking $($_.Name) for $($_.Type)"; if($Note -notcontains $Warning){$Note += $Warning}}
+    }
+   else{$Warning = "Warning: Blocking $($_.Name) mining $($_.Algo) on all pools for $($_.Type)"; if($Note -notcontains $Warning){$Note += $Warning}}
+  }
+ else{$Warning = "Warning: Blocking $($_.Name) mining $($_.Algo) on $($_.MinerPool) for $($_.Type)"; if($Note -notcontains $Warning){$Note += $Warning}}
 }
+
+ if($Note){$Note | %{Write-Host "$($_)" -ForegroundColor Magenta}}
 
 $ScreenedMiners
 }

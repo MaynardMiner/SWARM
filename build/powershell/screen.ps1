@@ -145,7 +145,7 @@ function Restart-Miner {
         $_.Activated++
         $_.InstanceName = "$($_.Type)-$($Instance)"
         $Current = $_ | ConvertTo-Json -Compress
-        $_.Xprocess = Start-LaunchCode -Platforms $Platform -MinerRound $Current_BestMiners -NewMiner $Current -Background $BackgroundDone
+        $_.Xprocess = Start-LaunchCode -PP $PreviousPorts -Platforms $Platform -MinerRound $Current_BestMiners -NewMiner $Current
         $_.Instance = ".\build\pid\$($_.Type)-$($Instance)"
         $PIDFile = "$($_.Name)_$($_.Coins)_$($_.InstanceName)_pid.txt"
         $Instance++

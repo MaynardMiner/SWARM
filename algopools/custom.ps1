@@ -21,9 +21,16 @@
 $Pool = {
 ##
 ##This is where you start editing:
-##Your denoted name/nickname for the pool.
+##Your denoted name/nickname for the pool. This
+##Can be any name of your choice. This Name must
+##Be added to -poolname arguments. You can use
+##Name like Bsod1 or Bsod2 or ryocoin, etc.
+##You must change custom.ps1 to this name
 ##
-Name = BsoD
+Name = bsod  
+##So I will change custom.ps1 to bsod.ps1
+##
+##
 ##
 ##Where to direct miner. Do not include stratum+tcp here
 ##
@@ -45,11 +52,22 @@ Pool_Url = http://api.bsod.pw/api/currencies
 ##
 Coin = RYO
 ##
+##
+##This is the divisor- Used to calcuate BTC estimate.
+##You may need to add zeros to get right.
+##Generally most estimates are mbtc/mh/day, which
+##is the below number.
+##If Miner is not shown on screen- It means the return
+##Is too high (above threshold of .02 btc).
+##
+mbtc_mh_factor = 1
+##
+##
 ##This is the algorithm of that coin.
 ##lower case characters only!
 ##This is miner specific! Consult miner!
 ##
-Algo = lyra2vc0ban
+Algo = Lyra2vc0ban
 ##
 ##This is miner you wish to use.
 ##miner name much match name of .json
@@ -61,9 +79,9 @@ Miner = cryptodredge
 ##Use Do_Not_Use if you
 ##You are not using NVIDIA2 or NVIDIA3.
 ##
-Wallet1 = RYoKsx2xkXw2x9dDwXxENWaqzraRX7vT1A1arQH2sbU953fRadkg9VG
-Wallet2 = RYoKsx2xkXw2x9dDwXxENWaqzraRX7vT1A1arQH2sbU953fRadkg9VG
-Wallet3 = RYoKsx2xkXw2x9dDwXxENWaqzraRX7vT1A1arQH2sbU953fRadkg9VG
+Wallet1 = 8MEMKyaTeSrY9Gnec3hRbbRYcM6RRb2QAN
+Wallet2 = 8MEMKyaTeSrY9Gnec3hRbbRYcM6RRb2QAN
+Wallet3 = 8MEMKyaTeSrY9Gnec3hRbbRYcM6RRb2QAN
 ##
 ##This is your rig pass setting for pool.
 ##
@@ -95,28 +113,25 @@ $Custom_Request = [PSCustomObject]@{}
 try{$MinerFile = Get-Content ".\config\miners\$($Pool.Miner).json" | ConvertFrom-Json -ErrorAction Stop}
 catch{Write-Warning "could not find miner for $name custom pool file"; break}
 $Changed = $false
+$NewALgo = $Pool.Algo
 $MinerFile | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
-$Algo = $Pool.Algo
-
 if($_ -ne "name")
 {
-    if($MinerFile.$_.commands -notmatch $Algo){$MinerFile.$_.commands| Add-Member $Algo "" -Force; $Changed = $true}
-    if($MinerFile.$_.difficulty -notmatch $Algo){$MinerFile.$_.difficulty | Add-Member $Algo "" -Force; $Changed = $true}
-    if($MinerFile.$_.naming -notmatch $Algo){$MinerFile.$_.naming | Add-Member $Algo "$Algo" -Force; $Changed = $true}
+    if($MinerFile.$_.commands -notcontains $NewAlgo){$MinerFile.$_.commands| Add-Member $NewAlgo "" -Force; $Changed = $true}
+    if($MinerFile.$_.difficulty -notcontains $NewAlgo){$MinerFile.$_.difficulty | Add-Member $NewAlgo "" -Force; $Changed = $true}
+    if($MinerFile.$_.naming -notcontains $NewAlgo){$MinerFile.$_.naming | Add-Member $NewAlgo "$NewAlgo" -Force; $Changed = $true}
 }
-
-if($Changed -eq $true){$MinerFile | Set-Content ".\config\miners\$($Pool.Miner).json"}
+if($Changed -eq $true){$MinerFile | ConvertTo-Json -Depth 3 | Set-Content ".\config\miners\$($Pool.Miner).json"}
 }
 
 ## Next we need to add algorithm to naming file:
 $Changed = $false
-try{$PoolFile = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json -ErrorAction Stop}
-catch{Write-Warning "could not find pool algorithms file"; break}
-if($PoolFile -notmatch $Pool.Algo){$PoolFile | Add-Member "$($Pool.Algo)" "$($Pool.Algo)" -Force; $Changed = $true}
-if($Changed -eq $true){$PoolFile | Set-Content ".\config\miners\pool-algos.json"}
+try{$PoolFile = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json -ErrorAction Stop}catch{Write-Warning "could not find pool algorithms file"; break}
+if($PoolFile -notcontains $Pool.Algo){$PoolFile | Add-Member "$($Pool.Algo)" "$($Pool.Algo)" -Force; $Changed = $true}
+if($Changed -eq $true){$PoolFile | ConvertTo-Json -Depth 3 | Set-Content ".\config\pools\pool-algos.json"}
 
 ## Next we add to algorithm list, so its used going forward:
-if($Algorithm -notmatch $Pool.Algo){$Algorithm += $Pool.Algo}
+if($Algorithm -notcontains $Pool.Algo){$Algorithm += $Pool.Algo}
 
 ## Now Pool Request
 try{$Custom_Request = Invoke-RestMethod "$($Pool.Pool_Url)" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop} 
@@ -136,13 +151,14 @@ if (($Custom_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore |
     $Custom_Host = "$($Pool.Miner_Url)"
     $Custom_Port = "$($Pool.Miner_Port)"
     $Fees = $Custom_Request.$Coin.fees
+    $Divisor = (1000000*$Pool.mbtc_mh_factor)
     $DayStat = "24h_btc"
     $Workers = $Custom_Request.$Coin.Workers
-    $Estimate = if($Stat_Algo -eq "Day"){[Double]$Custom_Request.$Coin.$DayStat*.001}else{[Double]$Custom_Request.$Coin.estimate*.001}
+    $Estimate = if($Stat_Algo -eq "Day"){[Double]$Custom_Request.$Coin.$DayStat * $Pool.Divisor}else{[Double]$Custom_Request.$Coin.estimate * $Pool.Divisor}
     $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
  
     $SmallestValue = 1E-20
-    $Stat = Set-Stat -Name "$($Name)_$($Custom_Algo)_profit" -Value ([Math]::Max([Double]($Estimate-$Cut),$SmallestValue))
+    $Stat = Set-Stat -Name "$($Name)_$($Custom_Algo)_profit" -Value ([Math]::Max([Double]($Estimate-$Cut)/$Divisor,$SmallestValue))
     if($Stat_Algo -eq "Day"){$Stats = $Stat.Live}else{$Stats = $Stat.$Stat_Algo}
 
     [PSCustomObject]@{

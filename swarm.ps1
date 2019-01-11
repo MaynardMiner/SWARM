@@ -356,8 +356,8 @@ $FileClear += ".\build\txt\profittable.txt"
 $FileClear += ".\build\txt\bestminers.txt"
 $FileClear | %{if(Test-Path $_){Remove-Item $_ -Force}}
 
-## Debug Mode- Allow you to run with last known arguments.
-$Debug = $false
+## Debug Mode- Allow you to run with last known arguments or arguments.json.
+$Debug = $true
 
 ## Convert Arguments Into Hash Table
 if($Debug -ne $true)
@@ -445,7 +445,6 @@ Start-Sleep -S 2
 ## Save to Config Folder
 $NewParams | Convertto-Json | Set-Content ".\config\parameters\arguments.json"
 $StartParams = $NewParams
-
 ## Duplicate Hashtable Compressed To Pass In Pipeline
 $StartingParams = $NewParams | ConvertTo-Json -Compress
 
@@ -792,7 +791,7 @@ if($Type -like "*AMD*")
 
 
 #Timers
-if($Timeout -ne $null){$TimeoutTime = $Timeout*3600}
+if($Timeout){$TimeoutTime = [Double]$Timeout*3600}
 else{$TimeoutTime = 10000000000}
 $TimeoutTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $TimeoutTimer.Start()
@@ -981,6 +980,10 @@ $AlgoPools_Comparison = @()
 $AllAlgoPools.Symbol | Select -Unique | ForEach {$AlgoPools += ($AllAlgoPools | Where Symbol -EQ $_ | Sort-Object Price -Descending | Select -First 3)}
 $AllAlgoPools.Symbol | Select -Unique | ForEach {$AlgoPools_Comparison += ($AllAlgoPools | Where Symbol -EQ $_ | Sort-Object StablePrice -Descending | Select -First 3)}
 
+##Get Algorithms again, in case custom changed it.
+$Algorithm = @()
+$Algorithm = Get-Algolist -Devices $Type -No_Algo $No_Algo
+
 ##Load Only Needed Algorithm Miners
 Write-Host "Checking Algo Miners"
 $AlgoMiners = Get-Miners -Platforms $Platform -Stats $Stats -Pools $AlgoPools
@@ -1010,6 +1013,7 @@ if($Lite -eq "No")
 ##This works by every time it fails to download, it writes miner name to the download block list. If it counts
 ##The name more than three times- It skips over miner. It also interactively rebuilds the AlgoMiners Array into
 ##A new array with the miner removed. I know, complicated, right?
+$DownloadNote = @()
 $Download = $false
 if($Lite -eq "No")
 {
@@ -1033,13 +1037,16 @@ if($DLName.Count -lt 3)
  else{$GetAlgoMiners += $AlgoMiner}
 }
  ## Let User They are having problems
- else{Write-Host "$($AlgoMiner.Name) download failed too many times- Blocking" -ForegroundColor Red}
+ else{$DLWarning = "$($AlgoMiner.Name) download failed too many times- Blocking"; if($DownloadNote -notcontains $DLWarning){$DownloadNote += $DLWarning}}
 }
  ## Original Array Becomes New Array. $NUlls out old data
  $Algominers = $GetAlgoMiners
  $GetAlgoMiners = $Null
  $DLTimeout  = $null
  $DlName = $Null
+ ## Print Warnings
+ if($DownloadNote){$DownloadNote | %{Write-Host "$($_)" -ForegroundColor Red}}
+ $DownloadNote = $null
 }
 
 ## Linux Bug- Restart Loop if miners were downloaded. If not, miners were skipped over
