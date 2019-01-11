@@ -18,7 +18,7 @@ if($Poolname -eq $Name)
   {
    "US"{$Region = "usa"}
    "ASIA"{$Region = "hk"}
-   "EUROPE"{$Region = "eq"}
+   "EUROPE"{$Region = "eu"}
   }
 
   $nicehash_Request.result | Select-Object -ExpandProperty simplemultialgo | Where paying -ne 0 | Where {$Naming.$($_.Name)} | ForEach-Object {
