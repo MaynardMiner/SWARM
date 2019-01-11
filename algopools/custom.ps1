@@ -54,13 +54,13 @@ Coin = RYO
 ##
 ##
 ##This is the divisor- Used to calcuate BTC estimate.
-##You may need to add zeros to get right.
+##You may need to add/remove zeros to get right.
 ##Generally most estimates are mbtc/mh/day, which
 ##is the below number.
 ##If Miner is not shown on screen- It means the return
 ##Is too high (above threshold of .02 btc).
 ##
-mbtc_mh_factor = 1
+mbtc_mh_factor = .000000001
 ##
 ##
 ##This is the algorithm of that coin.
@@ -151,14 +151,13 @@ if (($Custom_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore |
     $Custom_Host = "$($Pool.Miner_Url)"
     $Custom_Port = "$($Pool.Miner_Port)"
     $Fees = $Custom_Request.$Coin.fees
-    $Divisor = (1000000*$Pool.mbtc_mh_factor)
     $DayStat = "24h_btc"
     $Workers = $Custom_Request.$Coin.Workers
-    $Estimate = if($Stat_Algo -eq "Day"){[Double]$Custom_Request.$Coin.$DayStat * $Pool.Divisor}else{[Double]$Custom_Request.$Coin.estimate * $Pool.Divisor}
+    $Estimate = if($Stat_Algo -eq "Day"){[Double]$Custom_Request.$Coin.$DayStat * [Double]$Pool.mbtc_mh_factor}else{[Double]$Custom_Request.$Coin.estimate * [Double]$Pool.mbtc_mh_factor}
     $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
  
     $SmallestValue = 1E-20
-    $Stat = Set-Stat -Name "$($Name)_$($Custom_Algo)_profit" -Value ([Math]::Max([Double]($Estimate-$Cut)/$Divisor,$SmallestValue))
+    $Stat = Set-Stat -Name "$($Name)_$($Custom_Algo)_profit" -Value ([Math]::Max([Double]($Estimate-$Cut),$SmallestValue))
     if($Stat_Algo -eq "Day"){$Stats = $Stat.Live}else{$Stats = $Stat.$Stat_Algo}
 
     [PSCustomObject]@{
