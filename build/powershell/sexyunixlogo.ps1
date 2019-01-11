@@ -26,10 +26,10 @@ Write-Host "
                                                                       GitHub: https://Github.com/MaynardMiner/Swarm      
                                                                                                                     
                                                                                    SUDO APT-GET LAMBO 
-                                                                     .h+.               ...or                 .+h.             
-                                                                     +MMd+.           maybe a KIA?          .+dMM+ 
+                                                                     .h+.               ...or                  .+h.
+                                                                     +MMd+.           maybe a KIA?           .+dMM+
                                                                     +sNMMMMd+.    (They get good mpg).    .+dMMMMNs+
-               `"Agression Makes Up For Skill.`"                    .dMMMMMMMh+.                       .+hMMMMMMMMd.
+               `"Agression Makes Up For Skill.`"                      .dMMMMMMMh+.                       .+hMMMMMMMMd.
                     Caeser Vitus Aurelius                           .mMMMMMMMMMNy:.  -+:        :+-  .:yNMMMMMMMMMm.
                             VITO                                     -mMMMMMMMMMMMms-  omhdmmdhmo  -smMMMMMMMMMMMm- 
                    http://vitosminions.com/                           -mMMMMMMMMMMMMMd+mMMMMMMMMm+dMMMMMMMMMMMMMm-
