@@ -608,7 +608,7 @@ switch($MinerAPI)
      {
         try{
           $Request = $Request.Substring($Request.IndexOf("{"), $Request.LastIndexOf("}") - $Request.IndexOf("{") + 1) -replace " ", "_"
-          $Data = $Request | ConvertFrom-Json -ErrorAction -Stop
+          $Data = $Request | ConvertFrom-Json -ErrorAction Stop
           }catch{Write-Host "Failed To parse GPU Array" -ForegroundColor Red}
      }
     $summary = $Data.summary.summary
