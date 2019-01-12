@@ -25,7 +25,7 @@ $Pool = {
 ##Can be any name of your choice. This Name must
 ##Be added to -poolname arguments. You can use
 ##Name like Bsod1 or Bsod2 or ryocoin, etc.
-##You must change custom.ps1 to this name
+##You should change custom.ps1 to this name.
 ##
 Name = bsod  
 ##So I will change custom.ps1 to bsod.ps1
