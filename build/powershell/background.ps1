@@ -774,11 +774,9 @@ if($BackgroundTimer.Elapsed.TotalSeconds -gt 60)
  
 }
 
-$CPUKHS = '{0:f2}' -f $CPUKHS
-
-
 if($CPUOnly -eq $true)
 {
+$CPUKHS = '{0:f2}' -f $CPUKHS
 $HIVE="
 $($CPUHash -join "`n")
 KHS=$CPUKHS
@@ -853,7 +851,7 @@ if($Platforms -eq "windows"){Write-Host " $Power"  -ForegroundColor DarkCyan -No
 Write-Host " UPTIME=$UPTIME
 " -ForegroundColor White
 
-if($CPUKHS -ne $null){Write-Host "CPU=$CPUSUM"}
+if($CPUKHS -ne $null){$CPUKHS = '{0:f2}' -f $CPUKHS; Write-Host "CPU=$CPUSUM"}
 $Hive | Set-Content ".\build\bash\hivestats.sh"
 }
 
