@@ -688,7 +688,7 @@ switch($MinerAPI)
   {
    try{$Data = $Null; $Data = $Request.Content | ConvertFrom-Json -ErrorAction Stop;}catch{Write-Host "Failed To parse threads" -ForegroundColor Red}
    try{$Hash = for($i=0; $i -lt $Data.hashrate.threads.count; $i++){$Data.Hashrate.threads[$i] | Select -First 1}}catch{}
-   try{$RAW = $Data.hashrate.total | Select -First 1}catch{}
+   try{$Data.hashrate.total -split "," | %{if($_ -ne ""){$RAW = $_; break}}}catch{}
    Write-MinerData2;
    try{for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$(Get-Gpus) = $Hash[$GPU] | Select -First 1}}catch{Write-Host "Failed To parse threads" -ForegroundColor Red};
    $MinerACC += $Data.results.shares_good
@@ -715,9 +715,7 @@ switch($MinerAPI)
    {
     try{$Data = $Null; $Data = $Request.Content | ConvertFrom-Json -ErrorAction Stop;}catch{Write-Host "Failed To parse API" -ForegroundColor Red}
     $Hash = $Data.Hashrate.threads
-    $CPURAW = [Double]$Data.hashrate.total[0]
-    $CPUKHS = [Double]$Data.hashrate.total[0]
-    $CPUSUM = [Double]$Data.hashrate.total[0]
+    try{$Data.hashrate.total -split "," | %{if($_ -ne ""){$CPURAW = $_; $CPUKHS = $_; $CPUSUM = $_; break}}}catch{}
     $CPURAW | Set-Content ".\build\txt\$MinerType-hash.txt"
     for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $CPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Hash.Count -eq 1){[Double]$($Hash[0] | Select -first 1)}else{[Double]$($Hash[$i] | Select -First 1)})}
     $MinerACC = 0
