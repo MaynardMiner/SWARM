@@ -1478,3 +1478,7 @@ the changes/additions.
 -nicehash eq to eu
 -small 'tweaks' to profit calc.
 -cpu only stats table in agent.
+-overdrive api (new version) was not working
+ the program was corrupted. I reverted back to original.
+ this means no fans/stats for Vega on windows. :(
+-watt/day will only show if you have watt values.
