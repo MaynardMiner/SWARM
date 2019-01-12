@@ -1469,3 +1469,12 @@ the changes/additions.
 -Lots, and lots, and LOTS of small fixes. Too many to detail.
  
 
+1.8.5
+
+-WildRig Updated
+-CryptoDredge Updated
+   Note- CryptoDredge algos were removed. A fair amount.
+         I didn't code automatic removal on your old files.
+-nicehash eq to eu
+-small 'tweaks' to profit calc.
+-cpu only stats table in agent.

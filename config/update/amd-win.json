@@ -72,7 +72,7 @@
         "path2": ".\\bin\\wildrig-2\\wildrig.exe",
         "path3": ".\\bin\\wildrig-3\\wildrig.exe",
         "minername": "wildrig.exe",
-        "version": "0.15.1",
+        "version": "0.15.1.3",
         "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/wildrig-windows.zip" 
        },
 
