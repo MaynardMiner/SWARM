@@ -1482,3 +1482,4 @@ the changes/additions.
  the program was corrupted. I reverted back to original.
  this means no fans/stats for Vega on windows. :(
 -watt/day will only show if you have watt values.
+-attempted fix for better XMR-STAK stats.
