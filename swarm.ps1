@@ -1304,7 +1304,7 @@ else{$StatusPoolBans = $null}
 if(Test-Path $GetStatusMinerBans){$StatusMinerBans = Get-Content $GetStatusMinerBans | ConvertFrom-Json}
 else{$StatusMinerBans = $null}
 $StatusDate = Get-Date
-k$NoteToUsers = "Profitability for certain pools are currently uncertain, as a new trend is developing
+$NoteToUsers = "Profitability for certain pools are currently uncertain, as a new trend is developing
 among coin developers, known as coin fees. These fees deduct from total potential reward. You should
 consult with pool if the developer fees for coins are being removed from their estimates. Some pools are
 deducting them, others are not, causing an imbalance in profitibility. SWARM is unable to predict which pools
