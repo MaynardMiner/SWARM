@@ -1304,9 +1304,16 @@ else{$StatusPoolBans = $null}
 if(Test-Path $GetStatusMinerBans){$StatusMinerBans = Get-Content $GetStatusMinerBans | ConvertFrom-Json}
 else{$StatusMinerBans = $null}
 $StatusDate = Get-Date
+$NoteToUsers = "Profitability for certain pools are currently uncertain, as a new trend is developing
+among coin developers, known as coin fees. These fees deduct from total potential reward. You should
+consult with pool if the developer fees for coins are being removed from their estimates. Some pools are
+deducting them, others are not, causing an imbalance in profitibility. SWARM is unable to predict which pools
+currently is removing these fees, and which pools are not, as no pool are providing the fees in question.
+"
 $StatusDate | Out-File ".\build\bash\mineractive.sh"
 $StatusDate | Out-File ".\build\bash\minerstats.sh"
 Get-MinerStatus | Out-File ".\build\bash\minerstats.sh" -Append
+$NoteToUsers | Out-File ".\build\bash\minerstats.sh" -Append
 $mcolor = "93"
 $me = [char]27
 $MiningStatus = "$me[${mcolor}mCurrently Mining $($BestMiners_Combo.Algo) Algorithm${me}[0m"
