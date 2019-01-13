@@ -1483,3 +1483,5 @@ the changes/additions.
  this means no fans/stats for Vega on windows. :(
 -watt/day will only show if you have watt values.
 -attempted fix for better XMR-STAK stats.
+-Increased actual miner ban count to six- meaning 3 bad algo
+ runs, and it is banned.
