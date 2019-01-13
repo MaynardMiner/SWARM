@@ -68,5 +68,6 @@
   "yescrypt": "yescrypt",
   "yescryptr16": "yescryptr16",
   "yescryptr32": "yescryptr32",
-  "zhash": "zhash"
+  "zhash": "zhash",
+  "Lyra2vc0ban": "Lyra2vc0ban"
 }

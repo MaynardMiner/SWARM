@@ -33,7 +33,7 @@
       "exosis": "",
       "lyra2v3": "",
       "mtp": "",
-      "sha256T":"",
+      "sha256t":"",
       "sha256q":"" 
     },
     "difficulty": {
@@ -60,7 +60,7 @@
       "exosis": "",
       "lyra2v3": "",
       "mtp": "",
-      "sha256T":"",
+      "sha256t":"",
       "sha256q":""
     },
     "naming": {
@@ -87,7 +87,7 @@
       "exosis": "exosis",
       "lyra2v3": "lyra2v3",
       "mtp": "mtp",
-      "sha256T":"sha256T",
+      "sha256T":"sha256t",
       "sha256q":"sha256q" 
     },
     "oc": {
