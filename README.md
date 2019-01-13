@@ -271,6 +271,20 @@ Uselessguru
 Aaronsace
 ```
 
+SWARM uses the following programs to help with oc tuning:
+
+-nvidiainspector
+-wolfamdctrl/ohgodatool
+-overdriventool
+-OhGodAnETHlargementPill-r2
+
+All licenses and developer information are included. I am not responsible for
+these softwares, nor do I maintain them. They are downloaded from their
+known distrubution sources and/or are included in mining OS.
+
+You may see other apps inside apps folder- These are depreciated, and no longer
+in use.
+
 They were the pioneers to powershell scriptmining. Their scripts helped me to piece together a buggy but workable linux miner, which was the original purpose of SWARM, since none of them did so at the time. Since then it has grown to what it is today.
 
 

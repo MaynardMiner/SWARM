@@ -18,7 +18,7 @@ if($Poolname -eq $Name)
   {
    "US"{$Region = "usa"}
    "ASIA"{$Region = "hk"}
-   "EUROPE"{$Region = "eq"}
+   "EUROPE"{$Region = "eu"}
   }
 
   $nicehash_Request.result | Select-Object -ExpandProperty simplemultialgo | Where paying -ne 0 | Where {$Naming.$($_.Name)} | ForEach-Object {
@@ -27,16 +27,9 @@ if($Poolname -eq $Name)
 
   if($Algorithm -eq $nicehash_Algorithm)
    {
-    if(-not $Nicehash_Wallet1){$NH_Wallet1 = $Wallet1; [Double]$Fee = 5;}
-    if(-not $Nicehash_Wallet2){$NH_Wallet2 = $Wallet2; [Double]$Fee = 5;}
-    if(-not $Nicehash_Wallet3){$NH_Wallet3 = $Wallet3; [Double]$Fee = 5;}
-    else
-    {
-     $NH_Wallet1 = $Nicehash_Wallet1
-     $NH_Wallet2 = $Nicehash_Wallet2
-     $NH_Wallet3 = $Nicehash_Wallet3
-     [Double]$Fee = $NiceHash_Fee
-    }
+    if(-not $Nicehash_Wallet1){$NH_Wallet1 = $Wallet1; [Double]$Fee = 5;}else{$NH_Wallet1 = $Nicehash_Wallet1; [Double]$Fee = $NiceHash_Fee}
+    if(-not $Nicehash_Wallet2){$NH_Wallet2 = $Wallet2; [Double]$Fee = 5;}else{$NH_Wallet2 = $Nicehash_Wallet2; [Double]$Fee = $NiceHash_Fee}
+    if(-not $Nicehash_Wallet3){$NH_Wallet3 = $Wallet3; [Double]$Fee = 5;}else{$NH_Wallet2 = $Nicehash_Wallet2; [Double]$Fee = $NiceHash_Fee}
 
     $nicehash_Host = "$($_.name).$Region.nicehash.com"
     $nicehash_excavator = "nhmp.$Region.nicehash.com"
@@ -69,6 +62,5 @@ if($Poolname -eq $Name)
      SSL = $false
     }
    }
-   else{$null}
   }
  }

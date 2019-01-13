@@ -1,5 +1,9 @@
 
 function Get-MinerStatus {
+    $WattTable = $false
+    $ProfitTable | %{if($_.Power -gt 0){$WattTable = $True}}
+    if($WattTable)
+    {
     $ProfitTable | Sort-Object -Property Type,Profits -Descending | Format-Table -GroupBy Type (
     @{Label = "Miner"; Expression={$($_.Miner)}},
     @{Label = "Coin"; Expression={$($_.Name)}},
@@ -10,6 +14,18 @@ function Get-MinerStatus {
     @{Label = "$Currency/Day"; Expression={$($_.Profits) | ForEach {if($null -ne $_){($_ * $Rates.$Currency).ToString("N2")}else{"Bench"}}}; Align='center'},
     @{Label = "Pool"; Expression={$($_.MinerPool)}; Align='Right'}
         )
+    }
+    else{
+      $ProfitTable | Sort-Object -Property Type,Profits -Descending | Format-Table -GroupBy Type (
+        @{Label = "Miner"; Expression={$($_.Miner)}},
+        @{Label = "Coin"; Expression={$($_.Name)}},
+        @{Label = "Speed"; Expression={$($_.HashRates) | ForEach {if($null -ne $_){"$($_ | ConvertTo-Hash)/s"}else{"Bench"}}}; Align='center'},
+        @{Label = "BTC/Day"; Expression={$($_.Profits) | ForEach {if($null -ne $_){  $_.ToString("N5")}else{"Bench"}}}; Align='right'},
+        @{Label = "$Y/Day"; Expression={$($_.Profits) | ForEach {if($null -ne $_){  ($_ / $BTCExchangeRate).ToString("N5")}else{"Bench"}}}; Align='right'},
+        @{Label = "$Currency/Day"; Expression={$($_.Profits) | ForEach {if($null -ne $_){($_ * $Rates.$Currency).ToString("N2")}else{"Bench"}}}; Align='center'},
+        @{Label = "Pool"; Expression={$($_.MinerPool)}; Align='Right'}        
+      )
+    }
   }
 
   function Get-StatusLite {
@@ -145,7 +161,7 @@ function Restart-Miner {
         $_.Activated++
         $_.InstanceName = "$($_.Type)-$($Instance)"
         $Current = $_ | ConvertTo-Json -Compress
-        $_.Xprocess = Start-LaunchCode -Platforms $Platform -MinerRound $Current_BestMiners -NewMiner $Current -Background $BackgroundDone
+        $_.Xprocess = Start-LaunchCode -PP $PreviousPorts -Platforms $Platform -MinerRound $Current_BestMiners -NewMiner $Current
         $_.Instance = ".\build\pid\$($_.Type)-$($Instance)"
         $PIDFile = "$($_.Name)_$($_.Coins)_$($_.InstanceName)_pid.txt"
         $Instance++

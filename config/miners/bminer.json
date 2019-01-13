@@ -1,97 +1,96 @@
 {
-    "name": "dstm",
-    "NVIDIA1": {
-      "name": "NVIDIA1",
-      "delay": "1",
-      "prestart": [],
-      "commands": {
-        "zhash": "",
-        "daggerhashimoto": ""
-      },
-      "difficulty": {
-        "zhash": "",
-        "daggerhashimoto": ""
-      },
-      "naming": {
-        "zhash": "zhash",
-        "daggerhashimoto": "ethstratum"
-      },
-      "oc": {
-        "zhash": {
-          "Power": "",
-          "Core": "",
-          "Memory": ""
-        },
-        "daggerhashimoto": {
-         "Power": "",
-         "Core": "",
-         "Memory": "",
-         "ETHPill": "",
-         "PillDelay": ""
-        }
-      }
+  "name": "dstm",
+  "NVIDIA1": {
+    "name": "NVIDIA1",
+    "delay": "1",
+    "prestart": [],
+    "commands": {
+      "zhash": "",
+      "daggerhashimoto": ""
     },
-    "NVIDIA2": {
-      "name": "NVIDIA2",
-      "delay": "1",
-      "prestart": [],
-      "commands": {
-        "zhash": "",
-        "daggerhashimoto": ""
-      },
-      "difficulty": {
-        "zhash": "",
-        "daggerhashimoto": ""
-      },
-      "naming": {
-        "zhash": "zhash",
-        "daggerhashimoto": "ethstratum"
-      },
-      "oc": {
-        "zhash": {
-          "Power": "",
-          "Core": "",
-          "Memory": ""
-        },
-        "daggerhashimoto": {
-         "Power": "",
-         "Core": "",
-         "Memory": "",
-         "ETHPill": "",
-         "PillDelay": ""
-        }
-      }
+    "difficulty": {
+      "zhash": "",
+      "daggerhashimoto": ""
     },
-     "NVIDIA3": {
-      "name": "NVIDIA3",
-      "delay": "1",
-      "prestart": [],
-      "commands": {
-        "zhash": "",
-        "daggerhashimoto": ""
+    "naming": {
+      "zhash": "zhash",
+      "daggerhashimoto": "ethstratum"
+    },
+    "oc": {
+      "zhash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
       },
-      "difficulty": {
-        "zhash": "",
-        "daggerhashimoto": ""
-      },
-      "naming": {
-        "zhash": "zhash",
-        "daggerhashimoto": "ethstratum"
-      },
-      "oc": {
-        "zhash": {
-          "Power": "",
-          "Core": "",
-          "Memory": ""
-        },
-        "daggerhashimoto": {
-         "Power": "",
-         "Core": "",
-         "Memory": "",
-         "ETHPill": "",
-         "PillDelay": ""
-        }
+      "daggerhashimoto": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
       }
-     }
-   }
-  
+    }
+  },
+  "NVIDIA2": {
+    "name": "NVIDIA2",
+    "delay": "1",
+    "prestart": [],
+    "commands": {
+      "zhash": "",
+      "daggerhashimoto": ""
+    },
+    "difficulty": {
+      "zhash": "",
+      "daggerhashimoto": ""
+    },
+    "naming": {
+      "zhash": "zhash",
+      "daggerhashimoto": "ethstratum"
+    },
+    "oc": {
+      "zhash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "daggerhashimoto": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
+      }
+    }
+  },
+  "NVIDIA3": {
+    "name": "NVIDIA3",
+    "delay": "1",
+    "prestart": [],
+    "commands": {
+      "zhash": "",
+      "daggerhashimoto": ""
+    },
+    "difficulty": {
+      "zhash": "",
+      "daggerhashimoto": ""
+    },
+    "naming": {
+      "zhash": "zhash",
+      "daggerhashimoto": "ethstratum"
+    },
+    "oc": {
+      "zhash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "daggerhashimoto": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
+      }
+    }
+  }
+}

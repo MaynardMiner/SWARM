@@ -16,10 +16,11 @@ function start-log {
     [Parameter(Mandatory=$false)]
     [String]$Platforms,
     [Parameter(Mandatory=$false)]
-    [String]$HiveOS
+    [String]$HiveOS,
+    [Parameter(Mandatory=$false)]
+    [int]$Number
     )
 #Start the log
-$Log = 1
 if(-not (Test-Path "logs")){New-Item "logs" -ItemType "directory" | Out-Null; Start-Sleep -S 1}
 if(Test-Path ".\logs\*active*")
 {
@@ -32,7 +33,7 @@ if(Test-Path ".\logs\*active*")
   } 
  Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 }
-$Logs = Join-Path $dir "logs\miner$($Log)-active.log"
+$Logs = Join-Path $dir "logs\miner$($Number)-active.log"
 Start-Transcript $Logs
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 if($HiveOS -eq "Yes" -and $Platforms -eq "linux"){Start-Process "screen" -Argumentlist "-S miner -X log" -Wait}

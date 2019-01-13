@@ -5,123 +5,87 @@
     "delay": "1",
     "prestart": [],
     "commands": {
-      "lyra2v2": "",
-      "lyra2rev2": "",
       "lyra2z": "",
       "lyra2re": "",
-      "exosis": "",
       "x17": "",
       "bitcore": "",
       "allium": "",
       "neoscrypt": "",
-      "blake2s": "",
-      "skein": "",
       "cryptonightv7": "",
       "cryptonightv8": "",
       "cryptonightheavy": "",
       "aeon": "",
       "masari": "",
       "stellite": "",
-      "lbk3": "",
       "phi2": "",
       "c11": "",
-      "polytimos": "",
       "skunk": "",
       "bcd": "",
       "hmq1725": "",
       "x21s": "",
-      "lyra2vc0banhash": "",
       "lyra2v3": "",
       "x16rt": "",
       "lyra2zz": "",
-      "mtp": ""
+      "mtp": "",
+      "lyra2vc0ban": ""
     },
     "difficulty": {
-      "lyra2v2": "",
-      "lyra2rev2": "",
       "lyra2z": "",
       "lyra2re": "",
-      "exosis": "",
       "x17": "",
       "bitcore": "",
       "allium": "",
       "neoscrypt": "",
-      "blake2s": "",
-      "skein": "",
       "cryptonightv7": "",
       "cryptonightheavy": "",
       "cryptonightv8": "",
       "aeon": "",
       "masari": "",
       "stellite": "",
-      "lbk3": "",
       "phi2": "",
       "c11": "",
-      "polytimos": "",
       "skunk": "",
       "bcd": "",
       "hmq1725": "",
       "x21s": "",
-      "lyra2vc0banhash": "",
       "lyra2v3": "",
       "x16rt": "",
       "lyra2zz": "",
-      "mtp": ""
+      "mtp": "",
+      "lyra2vc0ban": ""
     },
     "naming": {
-      "lyra2v2": "lyra2v2",
-      "lyra2rev2": "lyra2v2",
       "lyra2z": "lyra2z",
       "lyra2re": "lyra2z",
-      "exosis": "exosis",
       "x17": "x17",
       "bitcore": "bitcore",
       "allium": "allium",
       "neoscrypt": "neoscrypt",
-      "blake2s": "blake2s",
-      "skein": "skein",
       "cryptonightv7": "cnv7",
       "cryptonightheavy": "cryptonightheavy",
       "cryptonightv8": "cnv8",
       "aeon": "aeon",
       "masari": "masari",
       "stellite": "stellite",
-      "lbk3": "lbk3",
       "phi2": "phi2",
       "c11": "c11",
-      "polytimos": "poly",
       "skunk": "skunk",
       "bcd": "bcd",
       "hmq1725": "hmq1725",
       "x21s": "x21s",
-      "lyra2vc0banhash": "lyra2vc0banhash",
       "lyra2v3": "Lyra2REv3",
       "x16rt": "x16rt",
       "lyra2zz": "lyra2zz",
-      "mtp": "mtp"
+      "mtp": "mtp",
+      "lyra2vc0ban": "lyra2vc0ban"
     },
     "oc": {
-      "lyra2v2": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
-      "lyra2rev2": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
       "lyra2z": {
         "Power": "",
         "Core": "",
         "Memory": ""
       },
       "lyra2re": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
-      "exosis": {
         "Power": "",
         "Core": "",
         "Memory": ""
@@ -142,16 +106,6 @@
         "Memory": ""
       },
       "neoscrypt": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
-      "blake2s": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
-      "skein": {
         "Power": "",
         "Core": "",
         "Memory": ""
@@ -186,22 +140,12 @@
         "Core": "",
         "Memory": ""
       },
-      "lbk3": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
       "phi2": {
         "Power": "",
         "Core": "",
         "Memory": ""
       },
       "c11": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
-      "polytimos": {
         "Power": "",
         "Core": "",
         "Memory": ""
@@ -226,11 +170,6 @@
         "Memory": "",
         "Core": ""
       },
-      "lyra2vc0banhash": {
-        "Power": "",
-        "Memory": "",
-        "Core": ""
-      },
       "lyra2v3": {
         "Power": "",
         "Memory": "",
@@ -249,6 +188,11 @@
       "mtp": {
         "Power": "",
         "Memory": "",
+        "Core": ""
+      },
+      "lyra2vc0ban": {
+        "Memory": "",
+        "Power": "",
         "Core": ""
       }
     }
@@ -258,123 +202,87 @@
     "delay": "1",
     "prestart": [],
     "commands": {
-      "lyra2v2": "",
-      "lyra2rev2": "",
       "lyra2z": "",
       "lyra2re": "",
-      "exosis": "",
       "x17": "",
       "bitcore": "",
       "allium": "",
       "neoscrypt": "",
-      "blake2s": "",
-      "skein": "",
       "cryptonightv7": "",
       "cryptonightv8": "",
       "cryptonightheavy": "",
       "aeon": "",
       "masari": "",
       "stellite": "",
-      "lbk3": "",
       "phi2": "",
       "c11": "",
-      "polytimos": "",
       "skunk": "",
       "bcd": "",
       "hmq1725": "",
       "x21s": "",
-      "lyra2vc0banhash": "",
       "lyra2v3": "",
       "x16rt": "",
       "lyra2zz": "",
-      "mtp": ""
+      "mtp": "",
+      "lyra2vc0ban": ""
     },
     "difficulty": {
-      "lyra2v2": "",
-      "lyra2rev2": "",
       "lyra2z": "",
       "lyra2re": "",
-      "exosis": "",
       "x17": "",
       "bitcore": "",
       "allium": "",
       "neoscrypt": "",
-      "blake2s": "",
-      "skein": "",
       "cryptonightv7": "",
       "cryptonightheavy": "",
       "cryptonightv8": "",
       "aeon": "",
       "masari": "",
       "stellite": "",
-      "lbk3": "",
       "phi2": "",
       "c11": "",
-      "polytimos": "",
       "skunk": "",
       "bcd": "",
       "hmq1725": "",
       "x21s": "",
-      "lyra2vc0banhash": "",
       "lyra2v3": "",
       "x16rt": "",
       "lyra2zz": "",
-      "mtp": ""
+      "mtp": "",
+      "lyra2vc0ban": ""
     },
     "naming": {
-      "lyra2v2": "lyra2v2",
-      "lyra2rev2": "lyra2v2",
       "lyra2z": "lyra2z",
       "lyra2re": "lyra2z",
-      "exosis": "exosis",
       "x17": "x17",
       "bitcore": "bitcore",
       "allium": "allium",
       "neoscrypt": "neoscrypt",
-      "blake2s": "blake2s",
-      "skein": "skein",
       "cryptonightv7": "cnv7",
       "cryptonightheavy": "cryptonightheavy",
       "cryptonightv8": "cnv8",
       "aeon": "aeon",
       "masari": "masari",
       "stellite": "stellite",
-      "lbk3": "lbk3",
       "phi2": "phi2",
       "c11": "c11",
-      "polytimos": "poly",
       "skunk": "skunk",
       "bcd": "bcd",
       "hmq1725": "hmq1725",
       "x21s": "x21s",
-      "lyra2vc0banhash": "lyra2vc0banhash",
       "lyra2v3": "Lyra2REv3",
       "x16rt": "x16rt",
       "lyra2zz": "lyra2zz",
-      "mtp": "mtp"
+      "mtp": "mtp",
+      "lyra2vc0ban": "lyra2vc0ban"
     },
     "oc": {
-      "lyra2v2": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
-      "lyra2rev2": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
       "lyra2z": {
         "Power": "",
         "Core": "",
         "Memory": ""
       },
       "lyra2re": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
-      "exosis": {
         "Power": "",
         "Core": "",
         "Memory": ""
@@ -395,16 +303,6 @@
         "Memory": ""
       },
       "neoscrypt": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
-      "blake2s": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
-      "skein": {
         "Power": "",
         "Core": "",
         "Memory": ""
@@ -439,22 +337,12 @@
         "Core": "",
         "Memory": ""
       },
-      "lbk3": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
       "phi2": {
         "Power": "",
         "Core": "",
         "Memory": ""
       },
       "c11": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
-      "polytimos": {
         "Power": "",
         "Core": "",
         "Memory": ""
@@ -479,11 +367,6 @@
         "Memory": "",
         "Core": ""
       },
-      "lyra2vc0banhash": {
-        "Power": "",
-        "Memory": "",
-        "Core": ""
-      },
       "lyra2v3": {
         "Power": "",
         "Memory": "",
@@ -503,131 +386,100 @@
         "Power": "",
         "Memory": "",
         "Core": ""
+      },
+      "lyra2vc0ban": {
+        "Memory": "",
+        "Power": "",
+        "Core": ""
       }
     }
-  },  
+  },
   "NVIDIA3": {
     "name": "NVIDIA3",
     "delay": "1",
     "prestart": [],
     "commands": {
-      "lyra2v2": "",
-      "lyra2rev2": "",
       "lyra2z": "",
       "lyra2re": "",
-      "exosis": "",
       "x17": "",
       "bitcore": "",
       "allium": "",
       "neoscrypt": "",
-      "blake2s": "",
-      "skein": "",
       "cryptonightv7": "",
       "cryptonightv8": "",
       "cryptonightheavy": "",
       "aeon": "",
       "masari": "",
       "stellite": "",
-      "lbk3": "",
       "phi2": "",
       "c11": "",
-      "polytimos": "",
       "skunk": "",
       "bcd": "",
       "hmq1725": "",
       "x21s": "",
-      "lyra2vc0banhash": "",
       "lyra2v3": "",
       "x16rt": "",
       "lyra2zz": "",
-      "mtp": ""
+      "mtp": "",
+      "lyra2vc0ban": ""
     },
     "difficulty": {
-      "lyra2v2": "",
-      "lyra2rev2": "",
       "lyra2z": "",
       "lyra2re": "",
-      "exosis": "",
       "x17": "",
       "bitcore": "",
       "allium": "",
       "neoscrypt": "",
-      "blake2s": "",
-      "skein": "",
       "cryptonightv7": "",
       "cryptonightheavy": "",
       "cryptonightv8": "",
       "aeon": "",
       "masari": "",
       "stellite": "",
-      "lbk3": "",
       "phi2": "",
       "c11": "",
-      "polytimos": "",
       "skunk": "",
       "bcd": "",
       "hmq1725": "",
       "x21s": "",
-      "lyra2vc0banhash": "",
       "lyra2v3": "",
       "x16rt": "",
       "lyra2zz": "",
-      "mtp": ""
+      "mtp": "",
+      "lyra2vc0ban": ""
     },
     "naming": {
-      "lyra2v2": "lyra2v2",
-      "lyra2rev2": "lyra2v2",
       "lyra2z": "lyra2z",
       "lyra2re": "lyra2z",
-      "exosis": "exosis",
       "x17": "x17",
       "bitcore": "bitcore",
       "allium": "allium",
       "neoscrypt": "neoscrypt",
-      "blake2s": "blake2s",
-      "skein": "skein",
       "cryptonightv7": "cnv7",
       "cryptonightheavy": "cryptonightheavy",
       "cryptonightv8": "cnv8",
       "aeon": "aeon",
       "masari": "masari",
       "stellite": "stellite",
-      "lbk3": "lbk3",
       "phi2": "phi2",
       "c11": "c11",
-      "polytimos": "poly",
       "skunk": "skunk",
       "bcd": "bcd",
       "hmq1725": "hmq1725",
       "x21s": "x21s",
-      "lyra2vc0banhash": "lyra2vc0banhash",
       "lyra2v3": "Lyra2REv3",
       "x16rt": "x16rt",
       "lyra2zz": "lyra2zz",
-      "mtp": "mtp"
+      "mtp": "mtp",
+      "lyra2vc0ban": "lyra2vc0ban"
     },
     "oc": {
-      "lyra2v2": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
-      "lyra2rev2": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
       "lyra2z": {
         "Power": "",
         "Core": "",
         "Memory": ""
       },
       "lyra2re": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
-      "exosis": {
         "Power": "",
         "Core": "",
         "Memory": ""
@@ -648,16 +500,6 @@
         "Memory": ""
       },
       "neoscrypt": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
-      "blake2s": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
-      "skein": {
         "Power": "",
         "Core": "",
         "Memory": ""
@@ -692,22 +534,12 @@
         "Core": "",
         "Memory": ""
       },
-      "lbk3": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
       "phi2": {
         "Power": "",
         "Core": "",
         "Memory": ""
       },
       "c11": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
-      "polytimos": {
         "Power": "",
         "Core": "",
         "Memory": ""
@@ -732,11 +564,6 @@
         "Memory": "",
         "Core": ""
       },
-      "lyra2vc0banhash": {
-        "Power": "",
-        "Memory": "",
-        "Core": ""
-      },
       "lyra2v3": {
         "Power": "",
         "Memory": "",
@@ -755,6 +582,11 @@
       "mtp": {
         "Power": "",
         "Memory": "",
+        "Core": ""
+      },
+      "lyra2vc0ban": {
+        "Memory": "",
+        "Power": "",
         "Core": ""
       }
     }

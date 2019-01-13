@@ -123,7 +123,7 @@ param(
     [Parameter(Mandatory=$false)]
     [Int]$AlgoBanCount = 3,
     [Parameter(Mandatory=$false)]
-    [Int]$MinerBanCount = 4,    
+    [Int]$MinerBanCount = 6,    
     [Parameter(Mandatory=$false)]
     [String]$Lite = "No",
     [Parameter(Mandatory=$false)]
@@ -171,22 +171,11 @@ Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 . .\build\powershell\sorting.ps1;
 . .\build\powershell\screen.ps1;
 . .\build\powershell\commandweb.ps1;
+. .\build\powershell\response.ps1;
+. .\build\powershell\api.ps1;
 if($Type -like "*ASIC*"){. .\build\powershell\icserver.ps1; . .\build\powershell\poolmanager.ps1}
 if($Platform -eq "linux"){. .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
 if($Platform -eq "windows"){. .\build\powershell\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1;}
-
-##Load Previous Times & PID Data
-Get-DateFiles
-Start-Sleep -S 1
-$PID | Out-File ".\build\pid\miner_pid.txt"
-
-$FileClear = @()
-$FileClear += ".\build\bash\minerstats.sh"
-$FileClear += ".\build\bash\hivestats.sh"
-$FileClear += ".\build\bash\mineractive.sh"
-$FileClear += ".\build\bash\hivecpu.sh"
-$FileClear += ".\build\txt\profittable.txt"
-$FileClear | %{if(Test-Path $_){Clear-Content $_}}
 
 ##filepath dir
 $dir = (Split-Path $script:MyInvocation.MyCommand.Path)
@@ -200,6 +189,25 @@ $txt = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\txt")
 $swarmstamp = "SWARMISBESTMINEREVER"
 if(-not (Test-Path ".\build\txt")){New-Item -Name "txt" -ItemType "Directory" -Path ".\build" | Out-Null}
 $Platform | Set-Content ".\build\txt\os.txt"
+
+##Load Previous Times & PID Data
+## Close Previous Running Agent- Agent is left running to send stats online, even if SWARM crashes
+if($Platform -eq "windows")
+{
+Write-Host "Stopping Previous Agent"
+$ID = ".\build\pid\background_pid.txt"
+if(Test-Path $ID){$Agent = Get-Content $ID}
+if($Agent){$BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue}
+if($BackGroundID.name -eq "powershell"){Stop-Process $BackGroundID | Out-Null}
+}
+
+##Start API Server
+Start-APIServer
+
+##Start Date Collection
+Get-DateFiles
+Start-Sleep -S 1
+$PID | Out-File ".\build\pid\miner_pid.txt"
 
 ## Change console icon and title
 if($Platform -eq "windows")
@@ -227,145 +235,17 @@ if([Double]$Boot -lt 600)
   }
 }
 
-## Close Previous Running Agent- Agent is left running to send stats online, even if SWARM crashes
-if($Platform -eq "windows")
-{
-Write-Host "Stopping Previous Agent"
-$ID = ".\build\pid\background_pid.txt"
-if(Test-Path $ID){$Agent = Get-Content $ID}
-if($Agent){$BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue}
-if($BackGroundID.name -eq "powershell"){Stop-Process $BackGroundID | Out-Null}
-}
+##Clear Old Agent Stats
+$FileClear = @()
+$FileClear += ".\build\bash\minerstats.sh"
+$FileClear += ".\build\bash\hivestats.sh"
+$FileClear += ".\build\bash\mineractive.sh"
+$FileClear += ".\build\bash\hivecpu.sh"
+$FileClear += ".\build\txt\profittable.txt"
+$FileClear += ".\build\txt\bestminers.txt"
+$FileClear | %{if(Test-Path $_){Remove-Item $_ -Force}}
 
-if($API -eq "Yes")
-{
-## Shutdown Previous API if stuck by running a command
-Write-Host "Checking to ensure API port is free" -ForegroundColor "Yellow"
-try{Invoke-RestMethod "http://localhost:4099/end" -UseBasicParsing -TimeoutSec 5}catch{}
-## API Server Start
-$APIServer = {
-param(
-    [Parameter(Position = 0, Mandatory = $true)]
-    [string]$WorkingDir
-   )
-
-    Set-Location $WorkingDir
-    if(test-Path ".\build\pid\api_pid.txt"){$AFID = Get-Content ".\build\pid\api_pid.txt"; $AID = Get-Process -ID $AFID -ErrorAction SilentlyContinue}
-    if($AID){Stop-Process $AID -ErrorAction SilentlyContinue}
-    $PID | Set-Content ".\build\pid\api_pid.txt"
-    $listener = New-Object System.Net.HttpListener
-    Write-Host "Listening ..."
-   
-   # Run until you send a GET request to /end
-  try{
-      $listener.Prefixes.Add('http://localhost:4099/') 
-      $listener.Start()
-   while ($listener.IsListening){
-       $context = $listener.GetContext() 
-   
-       # Capture the details about the request
-       $request = $context.Request
-   
-       # Setup a place to deliver a response
-       $response = $context.Response
-      
-       # Break from loop if GET request sent to /end
-       if ($request.Url -match '/end') { 
-           break 
-       } else {
-   
-           # Split request URL to get command and options
-           $requestvars = ([String]$request.Url).split("/");
-           if($requestvars[3])
-           {
-           switch($requestvars[3])
-           {
-               "summary" 
-               {
-                if(Test-Path ".\build\txt\profittable.txt")
-                 {
-                  $result = Get-Content ".\build\txt\profittable.txt" | ConvertFrom-JSon;
-                  $message = $result | ConvertTo-Json -Depth 4 -Compress; 
-                  $response.ContentType = 'application/json';
-                 }
-                 else 
-                 {
-                  # If no matching subdirectory/route is found generate a 404 message
-                  $message = @("No Data") | ConvertTo-Json -Compress;
-                  $response.ContentType = 'application/json';
-                 }
-               }
-               "getstats"
-               {
-                if(Test-Path ".\build\bash\hivestats.sh")
-                 {
-                  $result = Get-Content ".\build\bash\hivestats.sh" | ConvertFrom-StringData
-                  $Stat = @()
-                  for($i=0; $i -lt $result.GPU.Count; $i++)
-                  {
-                   $GPU = @{"GPU$i" = @{
-                                        hashrate = $result.GPU | Select -skip $i -First 1; 
-                                        temperature = $result.TEMP | Select -skip $i -First 1;
-                                        fans = $result.FAN | Select -skip $i -First 1;}
-                                       }; 
-                  $Stat += $GPU
-                  }
-                  $Stat += @{Algorithm = $result.ALGO}
-                  $Stat += @{Uptime = $result.UPTIME}
-                  $Stat += @{"Hash_Units" = $result.HSU}
-                  $Stat += @{Accepted = $result.ACC}
-                  $Stat += @{Rejected = $result.REJ}
-                  $message = $Stat | ConvertTo-Json -Depth 4 -Compress;
-                  $response.ContentType = 'application/json'; 
-                 }
-                 else 
-                 {
-                  # If no matching subdirectory/route is found generate a 404 message
-                  $message = @("No Data") | ConvertTo-Json -Compress;
-                  $response.ContentType = 'application/json';
-                 }
-               }
-           default
-           {
-                  # If no matching subdirectory/route is found generate a 404 message
-                  $message = @("No Data") | ConvertTo-Json -Compress;
-                  $response.ContentType = 'application/json';
-           }
-       }
-          # Convert the data to UTF8 bytes
-          [byte[]]$buffer = [System.Text.Encoding]::UTF8.GetBytes($message)
-          
-          # Set length of response
-          $response.ContentLength64 = $buffer.length
-          
-          # Write response out and close
-          $output = $response.OutputStream
-          $output.Write($buffer, 0, $buffer.length)
-          $output.Close()
-         }    
-        }
-       }
-      }Finally{$listener.Stop()}
-}
-Start-Job $APIServer -Name "APIServer" -ArgumentList "$Dir" | OUt-Null
-Write-Host "Starting API Server" -ForegroundColor "Yellow"
-if($((Get-Job -Name "APIServer").State) -eq "Running")
- {
-  Write-Host "API Server Started- This server will run even after close" -ForegroundColor Green
-  Write-Host "If you wish to close server:" -ForegroundColor Green
-  Start-Sleep -S 2
-  if(test-Path ".\build\pid\api_pid.txt"){$AFID = Get-Content ".\build\pid\api_pid.txt"}
-  Write-Host "Stop Powershell Process ID $($AFID) or run http://localhost:4099/end" -ForegroundColor Green
-  Get-Job -Name "APIServer" | Receive-Job
- }
-else
-{
- Write-Warning "API Server Failed To Start"
- Get-Job -Name "APIServer" | Receive-Job
-}
-}
-
-## Debug Mode- Allow you to run with last known arguments.
+## Debug Mode- Allow you to run with last known arguments or arguments.json.
 $Debug = $false
 
 ## Convert Arguments Into Hash Table
@@ -446,6 +326,7 @@ $StartingParams = $CurrentParams | ConvertTo-Json -Compress
 if((Test-Path ".\config\parameters\newarguments.json") -or $Debug -eq $true)
 {
 Write-Host "Detected New Arguments- Changing Parameters" -ForegroundColor Cyan
+Write-Host "These arguments can be found/modified in config < parameters < newarguments.json" -ForegroundColor Cyan
 if($Debug -eq $True){$NewParams = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json}
 else{$NewParams = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json}
 Start-Sleep -S 2
@@ -453,7 +334,6 @@ Start-Sleep -S 2
 ## Save to Config Folder
 $NewParams | Convertto-Json | Set-Content ".\config\parameters\arguments.json"
 $StartParams = $NewParams
-
 ## Duplicate Hashtable Compressed To Pass In Pipeline
 $StartingParams = $NewParams | ConvertTo-Json -Compress
 
@@ -593,11 +473,13 @@ if(-not (Test-Path ".\build\txt")){New-Item -Path ".\build" -Name "txt" -ItemTyp
 
 ## Time Sych For All SWARM Users
 Write-Host "Sycronizing Time Through Nist" -ForegroundColor Yellow
-Get-Nist | Set-Date
+$Sync = Get-Nist
+try{Set-Date $Sync -ErrorAction Stop}catch{Write-Host "Failed to syncronize time- Are you root/administrator?" -ForegroundColor red; Start-Sleep -S 5}
 
 ##Start The Log
-$dir | set-content ".\build\bash\dir.sh"
-start-log -Platforms $Platform -HiveOS $HiveOS
+$dir | set-content ".\build\bash\dir.sh";
+$Log = 1;
+start-log -Platforms $Platform -HiveOS $HiveOS -Number $Log;
 
 ##HiveOS Confirmation
 Write-Host "HiveOS = $HiveOS"
@@ -630,17 +512,13 @@ if($Platform -eq "linux")
   ## HiveOS Only Items
   if($HiveOS -eq "Yes")
   {
-   Write-Host "Getting Data"
+   Write-Host "Getting Data" -ForegroundColor Yellow
    Get-Data -CmdDir $dir
-   $config = get-content /hive-config/rig.conf | ConvertFrom-StringData
+   $config = get-content "/hive-config/rig.conf" | ConvertFrom-StringData
    $HivePassword = $config.RIG_PASSWD -replace "`"",""
    $HiveWorker = $config.WORKER_NAME -replace "`"",""
    $HiveMirror = $config.HIVE_HOST_URL -replace "`"",""
    $HiveID = $config.RIG_ID
-
-    ##No Longer Needed
-    #Start-Process ".\build\bash\libc.sh" -wait
-    #Start-Process ".\build\bash\libv.sh" -wait
   }
 
   Start-Process ".\build\bash\screentitle.sh" -Wait
@@ -803,7 +681,7 @@ if($Type -like "*AMD*")
 
 
 #Timers
-if($Timeout -ne $null){$TimeoutTime = $Timeout*3600}
+if($Timeout){$TimeoutTime = [Double]$Timeout*3600}
 else{$TimeoutTime = 10000000000}
 $TimeoutTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $TimeoutTimer.Start()
@@ -846,6 +724,24 @@ $Algorithm = Get-Algolist -Devices $Type -No_Algo $No_Algo
 if($Type -like "*CPU*"){$cpu = get-minerfiles -Types "CPU" -Platforms $Platform}
 if($Type -like "*NVIDIA*"){$nvidia = get-minerfiles -Types "NVIDIA" -Platforms $Platform -Cudas $Cuda}
 if($Type -like "*AMD*"){$amd = get-minerfiles -Types "AMD" -Platforms $Platform}
+
+if($API -eq "Yes")
+{
+if($((Get-Job -Name "APIServer").State) -eq "Running")
+ {
+  Write-Host "API Server Started- This server will run even after close run http://localhost:4099/end to close" -ForegroundColor Green
+ }
+else
+{
+ Write-Warning "API Server Failed To Start"
+ Get-Job -Name "APIServer" | Receive-Job
+}
+}
+
+##Start New Agent
+Write-Host "Starting New Background Agent" -ForegroundColor Cyan
+if($Platform -eq "windows"){Start-Background -WorkingDir $pwsh -Dir $dir -Platforms $Platform -HiveID $HiveID -HiveMirror $HiveMirror -HiveOS $HiveOS -HivePassword $HivePassword -RejPercent $Rejections}
+elseif($Platform -eq "linux"){Start-Process ".\build\bash\background.sh" -ArgumentList "background $dir $Platform $HiveOS $Rejections" -Wait}
 
 While($true)
 {
@@ -974,6 +870,10 @@ $AlgoPools_Comparison = @()
 $AllAlgoPools.Symbol | Select -Unique | ForEach {$AlgoPools += ($AllAlgoPools | Where Symbol -EQ $_ | Sort-Object Price -Descending | Select -First 3)}
 $AllAlgoPools.Symbol | Select -Unique | ForEach {$AlgoPools_Comparison += ($AllAlgoPools | Where Symbol -EQ $_ | Sort-Object StablePrice -Descending | Select -First 3)}
 
+##Get Algorithms again, in case custom changed it.
+$Algorithm = @()
+$Algorithm = Get-Algolist -Devices $Type -No_Algo $No_Algo
+
 ##Load Only Needed Algorithm Miners
 Write-Host "Checking Algo Miners"
 $AlgoMiners = Get-Miners -Platforms $Platform -Stats $Stats -Pools $AlgoPools
@@ -1003,6 +903,7 @@ if($Lite -eq "No")
 ##This works by every time it fails to download, it writes miner name to the download block list. If it counts
 ##The name more than three times- It skips over miner. It also interactively rebuilds the AlgoMiners Array into
 ##A new array with the miner removed. I know, complicated, right?
+$DownloadNote = @()
 $Download = $false
 if($Lite -eq "No")
 {
@@ -1026,13 +927,16 @@ if($DLName.Count -lt 3)
  else{$GetAlgoMiners += $AlgoMiner}
 }
  ## Let User They are having problems
- else{Write-Host "$($AlgoMiner.Name) download failed too many times- Blocking" -ForegroundColor Red}
+ else{$DLWarning = "$($AlgoMiner.Name) download failed too many times- Blocking"; if($DownloadNote -notcontains $DLWarning){$DownloadNote += $DLWarning}}
 }
  ## Original Array Becomes New Array. $NUlls out old data
  $Algominers = $GetAlgoMiners
  $GetAlgoMiners = $Null
  $DLTimeout  = $null
  $DlName = $Null
+ ## Print Warnings
+ if($DownloadNote){$DownloadNote | %{Write-Host "$($_)" -ForegroundColor Red}}
+ $DownloadNote = $null
 }
 
 ## Linux Bug- Restart Loop if miners were downloaded. If not, miners were skipped over
@@ -1271,7 +1175,8 @@ $Y = [string]$CoinExchange
 $H = [string]$Currency
 $J = [string]'BTC'
 $BTCExchangeRate = Invoke-WebRequest "https://min-api.cryptocompare.com/data/pricemulti?fsyms=$Y&tsyms=$J" -UseBasicParsing | ConvertFrom-Json | Select-Object -ExpandProperty $Y | Select-Object -ExpandProperty $J
-Clear-Content ".\build\bash\minerstats.sh" -Force
+$MSFile = ".\build\bash\minerstats.sh"
+if(Test-Path $MSFIle){Clear-Content ".\build\bash\minerstats.sh" -Force}
 $type | foreach {if(Test-Path ".\build\txt\$($_)-hash.txt"){Clear-Content ".\build\txt\$($_)-hash.txt" -Force}}
 $GetStatusAlgoBans = ".\timeout\algo_block\algo_block.txt"
 $GetStatusPoolBans = ".\timeout\pool_block\pool_block.txt"
@@ -1288,9 +1193,16 @@ else{$StatusPoolBans = $null}
 if(Test-Path $GetStatusMinerBans){$StatusMinerBans = Get-Content $GetStatusMinerBans | ConvertFrom-Json}
 else{$StatusMinerBans = $null}
 $StatusDate = Get-Date
+$NoteToUsers = "Profitability for certain pools are currently uncertain, as a new trend is developing
+among coin developers, known as coin developer fees. These fees deduct from total potential reward. 
+You should consult with pool if the developer fees for coins are being removed from their estimates. 
+Some pools are deducting them, others are not, causing an imbalance in profitibility. SWARM is unable to 
+predict which pools currently is removing these fees, and which pools are not, as no pool are providing the fees in question.
+"
 $StatusDate | Out-File ".\build\bash\mineractive.sh"
 $StatusDate | Out-File ".\build\bash\minerstats.sh"
 Get-MinerStatus | Out-File ".\build\bash\minerstats.sh" -Append
+$NoteToUsers | Out-File ".\build\bash\minerstats.sh" -Append
 $mcolor = "93"
 $me = [char]27
 $MiningStatus = "$me[${mcolor}mCurrently Mining $($BestMiners_Combo.Algo) Algorithm${me}[0m"
@@ -1306,7 +1218,6 @@ if($ConserveMessage){$ConserveMessage | foreach {$BanMessage += "$me[${mcolor}m$
 $BanMessage | Out-File ".\build\bash\minerstats.sh" -Append
 $BestActiveMiners | ConvertTo-Json | Out-File ".\build\txt\bestminers.txt"
 $Current_BestMiners = $BestActiveMiners | ConvertTo-Json -Compress
-$BackgroundDone = "No"
 $StatusLite = Get-StatusLite
 $StatusDate | Out-File ".\build\bash\minerstatslite.sh"
 $StatusLite | OUt-File ".\build\bash\minerstatslite.sh" -Append
@@ -1358,8 +1269,7 @@ if($_.BestMiner -eq $false)
      $_.InstanceName = "$($_.Type)-$($Instance)"
      $Current = $_ | ConvertTo-Json -Compress
      $PreviousPorts = $PreviousMinerPorts | ConvertTo-Json -Compress
-     $_.Xprocess = Start-LaunchCode -PP $PreviousPorts -Platforms $Platform -MinerRound $Current_BestMiners -NewMiner $Current -Background $BackgroundDone
-     $BackgroundDone = "Yes"
+     $_.Xprocess = Start-LaunchCode -PP $PreviousPorts -Platforms $Platform -MinerRound $Current_BestMiners -NewMiner $Current
      $_.Instance = ".\build\pid\$($_.Type)-$($Instance)"
      $PIDFile = "$($_.Name)_$($_.Coins)_$($_.InstanceName)_pid.txt"
      $Instance++
@@ -1423,13 +1333,12 @@ else{$MinerInterval = $Interval}
 }
 
 
-## This Starts restarts background agent, or sets API table for LITE mode.
+## This Set API table for LITE mode.
 $UsePools = $false
 $ProfitTable | foreach{if($_.Profits -ne $null){$UsePools = $true}}
 if($UsePools -eq $false){$APITable = $ProfitTable | Sort-Object -Property Type,Profits -Descending}
 else{$APITable = $ProfitTable | Sort-Object -Property Type,Pool_Estimate}
 $APITable | ConvertTo-Json -Depth 4 | Set-Content ".\build\txt\profittable.txt"
-if($Lite -eq "Yes"){Start-BackgroundCheck -Platforms $Platform}
 
 ## Load mini logo
 if($Platform -eq "linux"){Get-Logo}
@@ -1580,6 +1489,7 @@ else
    }
    else{Write-Host "SWARM is benchmarking miners" -ForegroundColor Yellow}
   }
+  Write-Host $NoteToUsers
   $BanMessage
 Do{
    Restart-Miner
@@ -1783,7 +1693,7 @@ if($Strike -eq $true)
      $NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt"
      $Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)"| foreach{try{$_.bad=0}catch{}}
      $HiveWarning = @{result = @{command = "timeout"}}
-     try{Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch{Write-Warning "Failed To Notify HiveOS"}
+     try{$SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch{Write-Warning "Failed To Notify HiveOS"}
      Start-Sleep -S 1
     }
     ##Strike Three: He's Outta Here
@@ -1802,7 +1712,7 @@ if($Strike -eq $true)
       $Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)"| foreach{try{$_.bad=0}catch{}}
       $Warnings."$($_.Name)_$($_.Algo)" | foreach{try{$_.bad=0}catch{}}
       $HiveWarning = @{result = @{command = "timeout"}}
-      try{Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch{Write-Warning "Failed To Notify HiveOS"} 
+      try{$SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch{Write-Warning "Failed To Notify HiveOS"} 
       Start-Sleep -S 1
      }
     ##Strike Four: Miner is Finished
@@ -1822,7 +1732,7 @@ if($Strike -eq $true)
      $Warnings."$($_.Name)_$($_.Algo)" | foreach{try{$_.bad=0}catch{}}
      $Warnings."$($_.Name)" | foreach{try{$_.bad=0}catch{}}
      $HiveWarning = @{result = @{command = "timeout"}}
-     try{Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch{Write-Warning "Failed To Notify HiveOS"}
+     try{$SendToHive= Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch{Write-Warning "Failed To Notify HiveOS"}
      Start-Sleep -S 1
      }
      }

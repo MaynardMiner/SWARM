@@ -17,8 +17,6 @@ function Start-LaunchCode {
     [Parameter(Mandatory=$true)]
     [String]$Platforms,
     [Parameter(Mandatory=$true)]
-    [String]$Background,
-    [Parameter(Mandatory=$true)]
     [String]$NewMiner,
     [Parameter(Mandatory=$true)]
     [String]$MinerRound,
@@ -149,7 +147,6 @@ if($Platforms -eq "windows")
 {
   if($MinerProcess -eq $null -or $MinerProcess.HasExited -eq $true)
   {
-    if($Background -eq "No"){Start-BackgroundCheck -Platforms $Platform}
     Start-Sleep -S $MinerCurrent.Delay
     $Logs = Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "logs\$($MinerCurrent.Type).log" 
     $WorkingDirectory = Split-Path $($MinerCurrent.Path)
@@ -238,7 +235,6 @@ if($PP.$($MinerCurrent.Type))
   $PTC = $netstats  | %{$1 = $_ -split " ";$1 = $1 | %{if($_){$_}};$1 | Select -skip 4 -First 1;}
   $PTC | %{killcx "$_" lo | Out-Null}
  }
-if($Background -eq "No"){Start-BackgroundCheck -Platforms $Platform}
 Start-Sleep -S $MinerCurrent.Delay
 Set-Location (Split-Path $($MinerCurrent.Path))
 Start-Process "chmod" -ArgumentList "+x $($MinerCurrent.InstanceName)" -Wait
