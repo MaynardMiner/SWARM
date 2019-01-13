@@ -11,6 +11,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 Set-Location (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))
-Get-Content ".\bash\minerstats.sh"
+if(Test-Path ".\bash\minerstats.sh"){Get-Content ".\bash\minerstats.sh"}
+else{Write-Host "No Stat history found"}
 
 exit
