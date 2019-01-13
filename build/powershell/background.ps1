@@ -214,6 +214,7 @@ switch($Platforms)
           if(test-Path $HiveStats){try{$GetHiveStats = Get-Content $HiveStats | ConvertFrom-Json -ErrorAction Stop}catch{$GetHiveStats -eq $null}}
           if($GetHiveStats -ne $null)
            {
+            $AMDStats = @{}
             $AMDFans = $( $GetHiveStat.fan | %{if($_ -ne 0){$_}} )
             $AMDTemps = $( $GetHiveStat.temp | %{if($_ -ne 0){$_}} )
            }
