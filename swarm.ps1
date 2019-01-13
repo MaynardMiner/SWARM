@@ -1310,7 +1310,6 @@ $ActiveMinerPrograms | Foreach {
   if(-not (Test-Path ".\stats\$($_.Name)_$($_.Algo)_hashrate.txt"))
   {
    $BenchmarkMode = $true;
-   Write-Host "SWARM is Benchmarking Miners." -Foreground Yellow;
   }
  }
 }
@@ -1318,6 +1317,7 @@ $ActiveMinerPrograms | Foreach {
 #Set Interval
 if($BenchmarkMode -eq $true)
  {
+ Write-Host "SWARM is Benchmarking Miners." -Foreground Yellow;
  Print-Benchmarking;
  $MinerInterval = $Benchmark;
  }
