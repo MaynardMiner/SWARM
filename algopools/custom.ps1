@@ -64,8 +64,8 @@ mbtc_mh_factor = .000000001
 ##
 ##
 ##This is the algorithm of that coin.
-##lower case characters only!
-##This is miner specific! Consult miner!
+##This is the pool name of the algorithm.
+##
 ##
 Algo = lyra2vc0ban
 ##
@@ -74,6 +74,20 @@ Algo = lyra2vc0ban
 ##Located in config < miners folder
 ##
 Miner = cryptodredge
+##
+##
+##This is to add any additional commands
+##When Mining.
+##
+Commands =
+##
+##
+##This is the miner name of the algorithm.
+##Sometimes miner name does not match pool
+##Algorithm
+##
+Miner_Algo = lyra2vc0ban
+##
 ##
 ##Use your custom address here.
 ##Use Do_Not_Use if you
@@ -117,9 +131,9 @@ $NewALgo = $Pool.Algo
 $MinerFile | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
 if($_ -ne "name")
 {
-    if($MinerFile.$_.commands -notcontains $NewAlgo){$MinerFile.$_.commands| Add-Member $NewAlgo "" -Force; $Changed = $true}
+    if($MinerFile.$_.commands -notcontains $NewAlgo){$MinerFile.$_.commands| Add-Member $NewAlgo "$($Pool.Commands)" -Force; $Changed = $true}
     if($MinerFile.$_.difficulty -notcontains $NewAlgo){$MinerFile.$_.difficulty | Add-Member $NewAlgo "" -Force; $Changed = $true}
-    if($MinerFile.$_.naming -notcontains $NewAlgo){$MinerFile.$_.naming | Add-Member $NewAlgo "$NewAlgo" -Force; $Changed = $true}
+    if($MinerFile.$_.naming -notcontains $NewAlgo){$MinerFile.$_.naming | Add-Member $NewAlgo "$($Pool.MinerAlgo)" -Force; $Changed = $true}
 }
 if($Changed -eq $true){$MinerFile | ConvertTo-Json -Depth 3 | Set-Content ".\config\miners\$($Pool.Miner).json"}
 }
