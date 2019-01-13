@@ -1,0 +1,27 @@
+{
+    "name": "lolminer",
+    "AMD1": {
+      "name": "AMD1",
+      "delay": "1",
+      "prestart": [],
+      "commands": {
+        "zhash": "--coin AUTO144_5"
+      },
+      "difficulty": {
+        "zhash": ""
+      },
+      "naming": {
+        "zhash": "zhash"
+      },
+      "oc": {
+        "zhash": {
+            "dpm": "",
+            "v": "",
+            "core": "",
+            "mem": "",
+            "mdpm": "",
+            "fans": ""
+            }
+      }
+    }
+}

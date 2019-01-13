@@ -28,8 +28,8 @@
     "path2": ".\\bin\\lolMiner-AMD-2\\lolMiner",
     "path3": ".\\bin\\lolMiner-AMD-3\\lolMiner",
     "minername": "lolMiner",
-    "version": "0.43",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/lolMiner-Linux.tar.gz"
+    "version": "0.7",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/lolminer-linux.tar.gz"
      },
 
   "avermore": {
