@@ -376,7 +376,7 @@
         "Memory": ""
       }
     }
-  },  
+  },
   "NVIDIA3": {
     "name": "NVIDIA3",
     "delay": "1",
@@ -565,6 +565,6 @@
         "Memory": ""
       }
     }
-  },  
+  },
   "name": "t-rex"
 }

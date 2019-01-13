@@ -67,7 +67,7 @@ mbtc_mh_factor = .000000001
 ##lower case characters only!
 ##This is miner specific! Consult miner!
 ##
-Algo = Lyra2vc0ban
+Algo = lyra2vc0ban
 ##
 ##This is miner you wish to use.
 ##miner name much match name of .json
