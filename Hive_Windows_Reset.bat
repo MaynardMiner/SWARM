@@ -1,0 +1,1 @@
+powershell -version 5.0 -noexit -executionpolicy bypass -windowstyle maximized -command ".\build\powershell\reset.ps1"
