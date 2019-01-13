@@ -62,6 +62,5 @@ if($Poolname -eq $Name)
      SSL = $false
     }
    }
-   else{$null}
   }
  }
