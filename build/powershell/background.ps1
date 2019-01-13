@@ -209,7 +209,7 @@ switch($Platforms)
      {
       $HiveStats = "/run/hive/gpu-stats.json"
       do{
-         for($i=0; $i -lt 10; $i++)
+         for($i=0; $i -lt 20; $i++)
          {
           if(test-Path $HiveStats){try{$GetHiveStats = Get-Content $HiveStats | ConvertFrom-Json -ErrorAction Stop}catch{$GetHiveStats -eq $null}}
           if($GetHiveStats -ne $null)
@@ -374,13 +374,57 @@ if($Platforms -eq "windows" -and $HiveOS -eq "Yes")
 ## Now Fans & Temps
 if($MinerType -Like "*NVIDIA*")
 {
-  for($i=0;$i -lt $Devices.Count; $i++){try{$GPUFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans $i}catch{Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
-  for($i=0;$i -lt $Devices.Count; $i++){try{$GPUTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps $i}catch{Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}}
+  switch($Platforms)
+  {
+  "Windows"
+   {
+    for($i=0;$i -lt $Devices.Count; $i++){try{$GPUFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans $i}catch{Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
+    for($i=0;$i -lt $Devices.Count; $i++){try{$GPUTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps $i}catch{Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}}
+   }
+  "linux"
+   {
+    switch($HiveOS)
+     {
+      "Yes"
+       {
+        for($i=0;$i -lt $Devices.Count; $i++){try{$GPUFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans (Get-GPUS)}catch{Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
+        for($i=0;$i -lt $Devices.Count; $i++){try{$GPUTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps (Get-GPUS)}catch{Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}}            
+       }
+      "No"
+       {
+        for($i=0;$i -lt $Devices.Count; $i++){try{$GPUFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans $i}catch{Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
+        for($i=0;$i -lt $Devices.Count; $i++){try{$GPUTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps $i}catch{Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}}                    
+       }
+     }
+   }
+  }
 }
 if($MinerType -Like "*AMD*")
 {
-  for($i=0;$i -lt $Devices.Count; $i++){try{$GPUFans.$(Get-GPUS) = Set-Array $AMDStats.Fans $i}catch{Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
-  for($i=0;$i -lt $Devices.Count; $i++){try{$GPUTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps $i}catch{Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red}; break}
+  Switch($Platforms)
+  {
+  "windows"
+   {
+    for($i=0;$i -lt $Devices.Count; $i++){try{$GPUFans.$(Get-GPUS) = Set-Array $AMDStats.Fans $i}catch{Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
+    for($i=0;$i -lt $Devices.Count; $i++){try{$GPUTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps $i}catch{Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red}; break}
+   }
+  "linux"
+   {
+    switch($HiveOS)
+    {
+     "Yes"
+      {
+        for($i=0;$i -lt $Devices.Count; $i++){try{$GPUFans.$(Get-GPUS) = Set-Array $AMDStats.Fans (Get-GPUs)}catch{Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
+        for($i=0;$i -lt $Devices.Count; $i++){try{$GPUTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps (Get-GPUs)}catch{Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red}; break}
+      }
+      "No"
+      {
+        for($i=0;$i -lt $Devices.Count; $i++){try{$GPUFans.$(Get-GPUS) = Set-Array $AMDStats.Fans $i}catch{Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
+        for($i=0;$i -lt $Devices.Count; $i++){try{$GPUTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps $i}catch{Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red}; break}
+      }
+     }
+   }
+  }
 }
 
 ## Set Initial Output
