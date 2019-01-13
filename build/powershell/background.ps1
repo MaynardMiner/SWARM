@@ -659,8 +659,11 @@ switch($MinerAPI)
     $summary = $Data.summary.summary
     $threads = $Data.devs.devs
     $Hash = $Null; $Sum = $Null;
-    if($summary."KHS_5s"){$Sum = $summary."KHS_5s"}else{$Sum = $summary."KHS 30s"}
-    if($threads."KHS_5s"){$Hash = $threads."KHS_5s"}else{$Hash = $threads."KHS 30s"}
+    if($summary.'KHS_5s' -gt 0){$Sum = $summary.'KHS_5s'; $sgkey = 'KHS_5s'}
+    elseif($summary.'KHS 5s' -gt 0){$Sum = $summary.'KHS 5s'; $sgkey = 'KHS 5s'}
+    elseif($summary.'KHS_30s' -gt 0){$Sum = $Summary.'KHS_30s'; $sgkey = 'KHS_30s'}
+    elseif($summary.'KHS 30s' -gt 0){$sum = $summary.'KHS 30s'; $sgkey = 'KHS 30s'}
+    $Hash = $threads.$sgkey
     $RAW += [Double]$Sum*1000
     $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
     Write-MinerData2;
