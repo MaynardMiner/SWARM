@@ -1485,3 +1485,4 @@ the changes/additions.
 -attempted fix for better XMR-STAK stats.
 -Increased actual miner ban count to six- meaning 3 bad algo
  runs, and it is banned.
+-fixed AMD temps/fans
