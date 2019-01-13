@@ -215,8 +215,8 @@ switch($Platforms)
           if($GetHiveStats -ne $null)
            {
             $AMDStats = @{}
-            $AMDFans = $( $GetHiveStat.fan | %{if($_ -ne 0){$_}} )
-            $AMDTemps = $( $GetHiveStat.temp | %{if($_ -ne 0){$_}} )
+            $AMDFans = $( $GetHiveStats.fan | %{if($_ -ne 0){$_}} )
+            $AMDTemps = $( $GetHiveStats.temp | %{if($_ -ne 0){$_}} )
            }
           Start-Sleep -S .5
          }
