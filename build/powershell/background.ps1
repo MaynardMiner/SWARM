@@ -640,6 +640,29 @@ switch($MinerAPI)
    else{Set-APIFailure; break}
  }
 
+ 'lolminer'
+  {
+   $HS = "hs"
+   $Message = "/summary"
+   $request = $null; $Request = Get-HTTP -Server $Server -Port $port -Message $Message
+   if($request)
+    {
+      try{$Data = $Null; $Data = $Request.Content | ConvertFrom-Json -ErrorAction Stop;}catch{Write-Host "Failed To parse API" -ForegroundColor Red}
+      $RAW = [Double]$Data.Session.Performance_Summary
+      Write-MinerData2;
+      $Hash = $Data.GPUs.Performance
+      try{for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i $HS}}catch{Write-Host "Failed To parse GPU Array" -ForegroundColor Red};
+      $MinerACC += [Double]$Data.Session.Accepted
+      $MinerREJ += [Double]$Data.Session.Submitted - [Double]$Data.Session.Accepted
+      $ACC += $Data.Session.Accepted
+      $REJ += [Double]$Data.Session.Submitted - [Double]$Data.Session.Accepted
+      $KHS += [Double]$Data.Session.Performance_Summary/1000
+      $ALGO += "$MinerAlgo"
+      $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)          
+    }
+    else{Set-APIFailure; break}
+  }
+
  'sgminer-gm'
  {
   $HS = "hs"

@@ -75,6 +75,7 @@ if($PwrType -like "*NVIDIA*")
  {
   if($Platform -eq "linux")
   {
+   $TypeS = "NVIDIA"
    if($MinerDevices){$Devices = Get-DeviceString -TypeDevices "$($MinerDevices)"}
    else{$Devices = Get-DeviceString -TypeCount $($PwrDevices.$TypeS.PSObject.Properties.Value.Count)}
    $TotalPower = 0

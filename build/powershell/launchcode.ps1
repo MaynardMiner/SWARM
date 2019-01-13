@@ -49,7 +49,7 @@ switch -WildCard ($MinerCurrent.Type)
         "claymore"{$MinerArguments = "-di $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
         "trex"{$MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
         "bminer"{$MinerArguments = "-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
-        "lolminer"{$MinerArguments = "-devices=$($MinerCurrent.Devices) -profile=miner -usercfg=$($MinerCurrent.jsonfile)"}
+        "lolminer"{$MinerArguments = "--devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
         "zjazz"{
           $GetDevices = $($MinerCurrent.Devices) -split ","
           $GetDevices | foreach {$LaunchDevices += "-d $($_) "}         
@@ -65,7 +65,6 @@ switch -WildCard ($MinerCurrent.Type)
       }
      else
       {
-       if($MinerCurrent.DeviceCall -eq "lolminer"){$MinerArguments = "-profile=miner -usercfg=$($MinerCurrent.jsonfile)"}
        if($MinerCurrent.DeviceCall -eq "excavator")
        {
         $MinerDirectory = Split-Path ($MinerCurrent.Path) -Parent
@@ -89,7 +88,7 @@ switch -WildCard ($MinerCurrent.Type)
         "xmrstak"{$MinerArguments = "$($MinerCurrent.Arguments)"}
         "sgminer-gm"{Write-Host "Miner Has Devices"; $MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
         "tdxminer"{$MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
-        "lolamd"{$MinerArguments = "-devices=$($MinerCurrent.Devices) -profile=miner -usercfg=$($MinerCurrent.jsonfile)"}
+        "lolminer"{$MinerArguments = "--devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
         "wildrig"{$MinerArguments = "$($MinerCurrent.Arguments)"}        
         "lyclminer"{
         $MinerArguments = ""
@@ -112,8 +111,7 @@ switch -WildCard ($MinerCurrent.Type)
       }
     else
      {
-      if($MinerCurrent.DeviceCall -eq "lolamd"){$MinerArguments = "-profile=miner -usercfg=$($MinerCurrent.jsonfile)"}
-      elseif($MinerCurrent.DeviceCall -eq "lyclminer"){
+      if($MinerCurrent.DeviceCall -eq "lyclminer"){
       $MinerArguments = ""
       Set-Location (Split-Path $($MinerCurrent.Path))
       $ConfFile = Get-Content ".\lyclMiner.conf" -Force
