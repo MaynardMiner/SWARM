@@ -71,7 +71,7 @@ $PreviousVersions | foreach {
         if(Test-Path "$OldTimeout\algo_block"){Get-ChildItem -Path "$($OldTimeout)\pool_block" -Include *.txt,*.conf -Recurse | Copy-Item -Destination ".\timeout\pool_block"}
         Get-ChildItem -Path "$($OldTimeout)\*" -Include *.txt | Copy-Item -Destination ".\timeout"
        }
-      $Jsons = @("miners","naming","oc","power")
+      $Jsons = @("miners","oc","power")
       $UpdateType = @("CPU","AMD1","NVIDIA1","NVIDIA2","NVIDIA3")
       $Jsons | foreach {
         $OldJson_Path = Join-Path $OldConfig "$($_)";
@@ -92,38 +92,46 @@ $PreviousVersions | foreach {
           $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
           if($_ -ne "name")
           {
-          $Data.$_.commands = $Data.$_.commands | Select -ExcludeProperty "blake2s","exosis","lbk3","Lyra2REv2","lyra2v2","polytimos","skein"
-          $Data.$_.difficulty = $Data.$_.difficulty | Select -ExcludeProperty "blake2s","exosis","lbk3","Lyra2REv2","lyra2v2","polytimos","skein"
-          $Data.$_.naming = $Data.$_.naming | Select -ExcludeProperty "blake2s","exosis","lbk3","Lyra2REv2","lyra2v2","polytimos","skein"
-          $Data.$_.oc = $Data.$_.oc | Select -ExcludeProperty "blake2s","exosis","lbk3","Lyra2REv2","lyra2v2","polytimos","skein"
+          $Data.$_.commands = $Data.$_.commands | Select -ExcludeProperty "blake2s","exosis","lbk3","Lyra2REv2","lyra2v2","polytimos","skein","lyra2vc0banhash"
+          $Data.$_.difficulty = $Data.$_.difficulty | Select -ExcludeProperty "blake2s","exosis","lbk3","Lyra2REv2","lyra2v2","polytimos","skein","lyra2vc0banhash"
+          $Data.$_.naming = $Data.$_.naming | Select -ExcludeProperty "blake2s","exosis","lbk3","Lyra2REv2","lyra2v2","polytimos","skein","lyra2vc0banhash"
+          $Data.$_.oc = $Data.$_.oc | Select -ExcludeProperty "blake2s","exosis","lbk3","Lyra2REv2","lyra2v2","polytimos","skein","lyra2vc0banhash"
+        
           $Data.$_.commands| Add-Member "hmq1725" "" -ErrorAction SilentlyContinue
           $Data.$_.difficulty | Add-Member "hmq1725" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "hmq1725" "hmq1725" -ErrorAction SilentlyContinue
           $Data.$_.oc | Add-Member "hmq1725" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
-          $Data.$_.commands| Add-Member "exosis" "" -ErrorAction SilentlyContinue
-          $Data.$_.difficulty | Add-Member "exosis" "" -ErrorAction SilentlyContinue
-          $Data.$_.naming | Add-Member "exosis" "exosis" -ErrorAction SilentlyContinue
-          $Data.$_.oc | Add-Member "exosis" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
+
           $Data.$_.commands| Add-Member "x21s" "" -ErrorAction SilentlyContinue
           $Data.$_.difficulty | Add-Member "x21s" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "x21s" "x21s" -ErrorAction SilentlyContinue
           $Data.$_.oc | Add-Member "x21s" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
+
           $Data.$_.commands| Add-Member "lyra2vc0ban" "" -ErrorAction SilentlyContinue
           $Data.$_.difficulty | Add-Member "lyra2vc0ban" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "lyra2vc0ban" "lyra2vc0ban" -ErrorAction SilentlyContinue
           $Data.$_.oc | Add-Member "lyra2vc0ban" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
+
           $Data.$_.commands| Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
           $Data.$_.difficulty | Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "lyra2v3" "Lyra2REv3" -ErrorAction SilentlyContinue
           $Data.$_.oc | Add-Member "lyra2v3" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
+
+          $Data.$_.commands| Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "lyra2v3" "lyra2rev3" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "lyra2v3" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue         
+
           $Data.$_.commands| Add-Member "mtp" "" -ErrorAction SilentlyContinue
           $Data.$_.difficulty | Add-Member "mtp" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "mtp" "mtp" -ErrorAction SilentlyContinue
           $Data.$_.oc | Add-Member "mtp" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
+
           $Data.$_.commands| Add-Member "x16rt" "" -ErrorAction SilentlyContinue
           $Data.$_.difficulty | Add-Member "x16rt" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "x16rt" "x16rt" -ErrorAction SilentlyContinue
           $Data.$_.oc | Add-Member "x16rt" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
+
           $Data.$_.commands| Add-Member "Lyra2zz" "" -ErrorAction SilentlyContinue
           $Data.$_.difficulty | Add-Member "Lyra2zz" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "Lyra2zz" "Lyra2zz" -ErrorAction SilentlyContinue
@@ -140,14 +148,17 @@ $PreviousVersions | foreach {
           $Data.$_.difficulty | Add-Member "dedal" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "dedal" "dedal" -ErrorAction SilentlyContinue
           $Data.$_.oc | Add-Member "dedal" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
+
           $Data.$_.commands| Add-Member "x21s" "" -ErrorAction SilentlyContinue
           $Data.$_.difficulty | Add-Member "x21s" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "x21s" "x21s" -ErrorAction SilentlyContinue
           $Data.$_.oc | Add-Member "x21s" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
+
           $Data.$_.commands| Add-Member "x16rt" "" -ErrorAction SilentlyContinue
           $Data.$_.difficulty | Add-Member "x16rt" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "x16rt" "x16rt" -ErrorAction SilentlyContinue
           $Data.$_.oc | Add-Member "x16rt" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
+
           $Data.$_.commands| Add-Member "sha256q" "" -ErrorAction SilentlyContinue
           $Data.$_.difficulty | Add-Member "sha256q" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "sha256q" "sha256q" -ErrorAction SilentlyContinue
@@ -164,38 +175,46 @@ $PreviousVersions | foreach {
           $Data.$_.difficulty | Add-Member "polytimos" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "polytimos" "polytimos" -ErrorAction SilentlyContinue
           $Data.$_.oc | Add-Member "polytimos" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue         
+
           $Data.$_.commands| Add-Member "dedal" "" -ErrorAction SilentlyContinue
           $Data.$_.difficulty | Add-Member "dedal" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "dedal" "dedal" -ErrorAction SilentlyContinue
           $Data.$_.oc | Add-Member "dedal" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue
+
           $Data.$_.commands| Add-Member "x18" "" -ErrorAction SilentlyContinue
           $Data.$_.difficulty | Add-Member "x18" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "x18" "x18" -ErrorAction SilentlyContinue
           $Data.$_.oc | Add-Member "x18" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue
+
           $Data.$_.commands| Add-Member "x21s" "" -ErrorAction SilentlyContinue
           $Data.$_.difficulty | Add-Member "x21s" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "x21s" "x21s" -ErrorAction SilentlyContinue
           $Data.$_.oc | Add-Member "x21s" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue
+
           $Data.$_.commands| Add-Member "exosis" "" -ErrorAction SilentlyContinue
           $Data.$_.difficulty | Add-Member "exosis" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "exosis" "exosis" -ErrorAction SilentlyContinue
           $Data.$_.oc | Add-Member "exosis" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue
+
           $Data.$_.commands| Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
           $Data.$_.difficulty | Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "lyra2v3" "lyra2v3" -ErrorAction SilentlyContinue
-          $Data.$_.oc | Add-Member "sha256q" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue          $Data.$_.commands| Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "lyra2v3" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue          
+
           $Data.$_.commands| Add-Member "sha256q" "" -ErrorAction SilentlyContinue
           $Data.$_.difficulty | Add-Member "sha256q" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "sha256q" "sha256q" -ErrorAction SilentlyContinue
-          $Data.$_.oc | Add-Member "sha256q" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue                    
+          $Data.$_.oc | Add-Member "sha256q" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue                    
+
           $Data.$_.commands| Add-Member "x16rt" "" -ErrorAction SilentlyContinue
           $Data.$_.difficulty | Add-Member "x16rt" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "x16rt" "x16rt" -ErrorAction SilentlyContinue
-          $Data.$_.oc | Add-Member "x16rt" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue                    
+          $Data.$_.oc | Add-Member "x16rt" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue                    
+
           $Data.$_.commands| Add-Member "mtp" "" -ErrorAction SilentlyContinue
           $Data.$_.difficulty | Add-Member "mtp" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "mtp" "mtp" -ErrorAction SilentlyContinue
-          $Data.$_.oc | Add-Member "mtp" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue                   
+          $Data.$_.oc | Add-Member "mtp" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue                   
             }
            }
           }
@@ -208,10 +227,16 @@ $PreviousVersions | foreach {
           $Data.$_.difficulty | Add-Member "lyra2z" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "lyra2z" "lyra2z" -ErrorAction SilentlyContinue
           $Data.$_.oc | Add-Member "lyra2z" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue         
-          $Data.$_.commands| Add-Member "lyra2z" "" -ErrorAction SilentlyContinue
+
+          $Data.$_.commands| Add-Member "lyra2rev3" "" -ErrorAction SilentlyContinue
           $Data.$_.difficulty | Add-Member "lyra2rev3" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "lyra2rev3" "lyra2rev3" -ErrorAction SilentlyContinue
           $Data.$_.oc | Add-Member "lyra2rev3" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue         
+
+          $Data.$_.commands| Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "lyra2v3" "lyra2rev3" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "lyra2v3" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue         
             }
            }
           }
