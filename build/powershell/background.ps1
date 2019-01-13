@@ -681,15 +681,16 @@ switch($MinerAPI)
 'xmrstak'
 {
  $HS = "hs"
- Write-Host "Note: XMR-STAK API sucks. You can't match threads to specific GPU." -ForegroundColor Yellow
  $Message = $Null; $Message="/api.json"
  $Request = $Null; $Request = Get-HTTP -Port $Port -Message $Message
  if($Request)
   {
-   try{$Data = $Null; $Data = $Request.Content | ConvertFrom-Json -ErrorAction Stop;}catch{Write-Host "Failed To parse threads" -ForegroundColor Red}
+   try{$Data = $Null; $Data = $Request.Content | ConvertFrom-Json -ErrorAction Stop;}catch{Write-Host "Failed To gather summary" -ForegroundColor Red}
+   $done = $false;
+   try{$Data.hashrate.total -split "," | %{if($_ -ne "" -and $done -eq $false){$RAW = $_; $done = $true}}}catch{Write-Host "Failed To gather summary"}
+   Write-Host "Note: XMR-STAK/XMRig API is not great. You can't match threads to specific GPU." -ForegroundColor Yellow
+   Write-MinerData2
    try{$Hash = for($i=0; $i -lt $Data.hashrate.threads.count; $i++){$Data.Hashrate.threads[$i] | Select -First 1}}catch{}
-   try{$Data.hashrate.total -split "," | %{if($_ -ne ""){$RAW = $_; break}}}catch{}
-   Write-MinerData2;
    try{for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $GPUHashrates.$(Get-Gpus) = $Hash[$GPU] | Select -First 1}}catch{Write-Host "Failed To parse threads" -ForegroundColor Red};
    $MinerACC += $Data.results.shares_good
    $MinerREJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good
