@@ -133,7 +133,7 @@ if($_ -ne "name")
 {
     if($MinerFile.$_.commands -notcontains $NewAlgo){$MinerFile.$_.commands| Add-Member $NewAlgo "$($Pool.Commands)" -Force; $Changed = $true}
     if($MinerFile.$_.difficulty -notcontains $NewAlgo){$MinerFile.$_.difficulty | Add-Member $NewAlgo "" -Force; $Changed = $true}
-    if($MinerFile.$_.naming -notcontains $NewAlgo){$MinerFile.$_.naming | Add-Member $NewAlgo "$($Pool.MinerAlgo)" -Force; $Changed = $true}
+    if($MinerFile.$_.naming -notcontains $NewAlgo){$MinerFile.$_.naming | Add-Member $NewAlgo "$($Pool.Miner_Algo)" -Force; $Changed = $true}
 }
 if($Changed -eq $true){$MinerFile | ConvertTo-Json -Depth 3 | Set-Content ".\config\miners\$($Pool.Miner).json"}
 }
