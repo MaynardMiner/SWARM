@@ -320,6 +320,9 @@ Get-BenchTable | Out-File ".\build\txt\get.txt"
         Copy-Item ".\config\parameters\newarguments.json" -Destination "$NewLocation\config\parameters" -Force
         New-Item -Name "pid" -Path "$NewLocation\build" -ItemType "Directory"
         Copy-Item ".\build\pid\background_pid.txt" -Destination "$NewLocation\build\pid" -Force
+        Write-Host "Adding SWARM to startup" -ForegroundColor Green
+        $StartUp="$Env:USERPROFILE\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"
+        New-Item -ItemType SymbolicLink -Path "$StartUp" -Name "SWARM.lnk" -Value "$NewLocation\SWARM.bat" 
         Set-Location $NewLocation
         Start-Process ".\SWARM.bat"
         Start-Sleep -S 2
