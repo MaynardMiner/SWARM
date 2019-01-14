@@ -245,6 +245,12 @@ $AMDStats
 ##Get Active Miners And Devices
 $GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
 
+##Set Device Flags
+$DevNVIDIA = $false
+$DevAMD = $false
+if($GCount -like "*NVIDIA*"){$DevNVIDIA = $true; Write-Host "NVIDIA Detected"};
+if($GCount -like "*AMD*"){$DevAMD = $true; Write-Host "AMD Detected"};
+
 ##Timers
 $BackgroundTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $BackgroundTimer.Restart()
@@ -261,33 +267,51 @@ $Switched = $false
 ##Determine if Miner Switched
 $CheckForMiners = ".\build\txt\bestminers.txt"
 if(test-Path $CheckForMiners){$GetMiners = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-Json -ErrorAction Stop}
-else{Write-Host "Waiting For Miners to start- Cannot recieve messages from HiveOS yet..."; Start-Sleep -S 5; continue}
+else{Write-Host "Waiting For Miners..."; Start-Sleep -S 5}
 
 ##Handle New Miners
-$GetMiners | ForEach {if(-not ($CurrentMiners | Where Path -eq $_.Path | Where Arguments -eq $_.Arguments )){$Switched = $true}}
-if($Switched -eq $True)
-{
-Write-Host "Miners Have Switched
+if($GetMiners)
+ {
+  $GetMiners | ForEach {if(-not ($CurrentMiners | Where Path -eq $_.Path | Where Arguments -eq $_.Arguments )){$Switched = $true}}
+  if($Switched -eq $True)
+   {
+    Write-Host "Miners Have Switched
 " -ForegroundColor Cyan
-$CurrentMiners = $GetMiners;
-##Set Starting Date & Device Flags
-$DevNVIDIA = $false
-$DevAMD = $false
+   $CurrentMiners = $GetMiners;
+   ##Set Starting Date & Device Flags
+   $StartTime = Get-Date
+   ## Determine Which GPU's to stat
+   $CurrentMiners | Foreach {
+   $NEW=0; 
+   $NEW | Set-Content ".\build\txt\$($_.Type)-hash.txt";
+   $Name = $($_.Name)
+   }
+  }
+ }
+else{
 $StartTime = Get-Date
-## Determine Which GPU's to stat
-$CurrentMiners | Foreach {
-$NEW=0; 
-$NEW | Set-Content ".\build\txt\$($_.Type)-hash.txt";
-$Name = $($_.Name)
-if($_.Type -like "*NVIDIA*"){$DevNVIDIA = $true; Write-Host "NVIDIA Detected"};
-if($_.Type -like "*AMD*"){$DevAMD = $true; "AMD Detected"}
+$NEW=0;
+if($DevNVIDIA -eq $true)
+ { 
+  $NEW | Set-Content ".\build\txt\NVIDIA1-hash.txt";
+  $NEW | Set-Content ".\build\txt\NVIDIA2-hash.txt";
+  $NEW | Set-Content ".\build\txt\NVIDIA2-hash.txt";
+ }
+if($DevAMD -eq $true)
+ {
+  $NEW | Set-Content ".\build\txt\AMD1-hash.txt";  
+ }
+ $NEW | Set-Content ".\build\txt\CPU-hash.txt";
 }
 
 ## Set-OC
+if($GetMiners)
+{
 Write-Host "Starting Tuning"
 Start-OC -Platforms $Platforms -Dir $WorkingDir
 ## ADD Delay for OC and Miners To Start Up
 Start-Sleep -S 10
+}
 
 ## Determine if CPU in only used
 $CPUOnly = $true
@@ -302,10 +326,10 @@ $GPUPower = [PSCustomObject]@{}
 for($i=0; $i -lt $GCount.CPU.PSObject.Properties.Value.Count; $i++){$CPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.CPU.$i)" -Value 0;}
 if($DevAMD -eq $true){for($i=0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++){$GPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0; $GPUFans | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0; $GPUTemps | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0; $GPUPower | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0}}
 if($DevNVIDIA -eq $true){for($i=0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++){$GPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; $GPUFans | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; $GPUTemps | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; $GPUPower | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0}}
-}
 
 ## Reset All Stats, Rebuild Tables
-$ALGO = @(); $HashRates = @(); $Fans = @(); $Temps = @(); $Power = @(); $RAW = 0; $KHS = 0; $REJ = 0; $ACC = 0;
+$ALGO = @(); $HashRates = @(); $Fans = @(); $Temps = @(); $Power = @(); 
+$CPUKHS = 0; $CPUACC = 0; $CPUREJ = 0; $RAW = 0; $KHS = 0; $REJ = 0; $ACC = 0;
 $GPUHashRates | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | %{$GPUHashRates.$_ = 0};
 $CPUHashRates | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | %{$CPUHashRates.$_ = 0};
 $GPUFans | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | %{$GPUFans.$_ = 0};
@@ -336,6 +360,8 @@ if($Platforms -eq "linux")
 }
 
 ## Start API Calls For Each Miner
+if($CurrentMiners)
+{
 $CurrentMiners | Foreach {
 
 ## Miner Information
@@ -842,6 +868,7 @@ if($BackgroundTimer.Elapsed.TotalSeconds -gt 60)
   else{if(Test-Path ".\timeout\warnings\$($_.Name)_$($_.Algo)_rejection.txt"){Remove-Item ".\timeout\warnings\$($_.Name)_$($_.Algo)_rejection.txt" -Force}}
  }
  
+ }
 }
 
 if($CPUOnly -eq $true)
@@ -868,7 +895,6 @@ Write-Host " FAN=$CPUFAN" -ForegroundColor Cyan -NoNewline
 Write-Host " UPTIME=$CPUUPTIME
 " -ForegroundColor White
 }
-
 else
 {
   if($DEVNVIDIA -eq $True){if($GCount.NVIDIA.PSObject.Properties.Value.Count -gt 0){for($i=0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++){$HashRates += 0; $Fans += 0; $Temps += 0}}}

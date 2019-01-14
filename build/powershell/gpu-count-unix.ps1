@@ -23,9 +23,9 @@ function Get-GPUCount {
     $nvidiacounted = $false
     $amdcounted = $false
     $DeviceList = @{}
-    $DeviceList.Add("AMD",@{})
-    $DeviceList.Add("NVIDIA",@{})
-    $DeviceList.Add("CPU",@{})
+    if($Type -like "*AMD"){$DeviceList.Add("AMD",@{})}
+    if($Type -like "*NVIDIA*"){$DeviceList.Add("NVIDIA",@{})}
+    if($Type -like "*CPU*"){$DeviceList.Add("CPU",@{})}
 
     lspci | Tee-Object ".\build\txt\gpucount.txt" | OUt-Null
     $GetBus = Get-Content ".\build\txt\gpucount.txt"

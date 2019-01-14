@@ -1504,3 +1504,12 @@ NOTE: Windows updated in order- 1.8.3 to 1.8.4, 1.8.4 to 1.8.5, etc.
 -Added lolminer for zhash (AMD).
 -Removed tpruvot- Depreciated.
 -Added more GUI notations.
+
+1.8.6
+
+Critical X16r patch for 1.8.5
+
+1.8.7
+
+-Windows version will start connection to HiveOS as soon as first
+ agent window starts.

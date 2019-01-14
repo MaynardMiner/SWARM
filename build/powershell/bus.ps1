@@ -87,9 +87,9 @@ function Get-GPUCount {
     $Bus = $BusData | ConvertFrom-Json
     $Bus = $Bus | Sort-Object PCIBusID
     $DeviceList = @{}
-    $DeviceList.Add("AMD",@{})
-    $DeviceList.Add("NVIDIA",@{})
-    $DeviceList.Add("CPU",@{})
+    if($Type -like "*AMD*"){$DeviceList.Add("AMD",@{})}
+    if($Type -like "*NVIDIA*"){$DeviceList.Add("NVIDIA",@{})}
+    if($Type -like "*CPU*"){$DeviceList.Add("CPU",@{})}
     $Counter = 0
     $NvidiaCounter = 0
     $AmdCounter = 0 
@@ -122,10 +122,7 @@ function Get-GPUCount {
        }
       }
      }
-    for($i=0; $i -lt $CPUThreads; $i++)
-    { 
-     $DeviceList.CPU.Add("$($i)",$i)
-    }     
+    if($Type -like "*CPU*"){for($i=0; $i -lt $CPUThreads; $i++){ $DeviceList.CPU.Add("$($i)",$i) }}
     $DeviceList | ConvertTo-Json | Set-Content ".\build\txt\devicelist.txt"
     $GPUCount = 0
     $GPUCount += $DeviceList.Nvidia.Count
