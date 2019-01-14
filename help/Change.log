@@ -1471,6 +1471,14 @@ the changes/additions.
 
 1.8.5
 
+NOTE: Windows user can run get update to remote update. This will
+be first working instance of it, and it deletes old version folder
+in original directory. You may want to make a backup of it first.
+
+NOTE: I am having a hard time with setting SWARM to startup in
+windows. Windows blocks the .bat file if added to startup. You have
+to add the new file path yourself. I am working on fix.
+
 -WildRig Updated
 -CryptoDredge Updated
    Note- CryptoDredge algos were removed. A fair amount.
@@ -1485,4 +1493,12 @@ the changes/additions.
 -attempted fix for better XMR-STAK stats.
 -Increased actual miner ban count to six- meaning 3 bad algo
  runs, and it is banned.
--fixed AMD temps/fans
+-fixed AMD temps/fans for HiveOS.
+-Small Gui fixes with commands.
+-Fixed Sgminer stats for good (I think).
+-Rolled back vega support for windows. Sorry. It still works, just
+ fans and temps won't stat.
+-Small tweaks to XMR-STAK/XMRIG api.
+-Added lolminer for zhash (AMD).
+-Removed tpruvot- Depreciated.
+-Added more GUI notations.
