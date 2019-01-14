@@ -1479,6 +1479,8 @@ NOTE: I am having a hard time with setting SWARM to startup in
 windows. Windows blocks the .bat file if added to startup. You have
 to add the new file path yourself. I am working on fix.
 
+NOTE: Windows updated in order- 1.8.3 to 1.8.4, 1.8.4 to 1.8.5, etc.
+
 -WildRig Updated
 -CryptoDredge Updated
    Note- CryptoDredge algos were removed. A fair amount.
