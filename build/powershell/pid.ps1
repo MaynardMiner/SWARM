@@ -39,7 +39,7 @@ While($true)
        {
          Write-Host "Closing SWARM" -foregroundcolor red
          Get-Date | Out-File ".\build\data\timetable.txt"
-         Clear-Content ".\build\bash\hivestats.sh"
+         Clear-Content ".\build\txt\hivestats.txt"
          Start-Process "screen" -ArgumentList "-S NVIDIA1 -X quit"
          Start-Process "screen" -ArgumentList "-S NVIDIA2 -X quit"
          Start-Process "screen" -ArgumentList "-S NVIDIA3 -X quit"
@@ -56,7 +56,7 @@ While($true)
      {
         Write-Host "Closing SWARM" -foregroundcolor red
         Get-Date | Out-File ".\build\data\timetable.txt"
-        Clear-Content ".\build\bash\hivestats.sh"
+        Clear-Content ".\build\txt\hivestats.txt"
         Start-Process "screen" -ArgumentList "-S NVIDIA1 -X quit"
         Start-Process "screen" -ArgumentList "-S NVIDIA2 -X quit"
         Start-Process "screen" -ArgumentList "-S NVIDIA3 -X quit"

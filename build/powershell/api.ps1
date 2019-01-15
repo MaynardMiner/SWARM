@@ -59,9 +59,9 @@ param(
                }
                "getstats"
                {
-                if(Test-Path ".\build\bash\hivestats.sh")
+                if(Test-Path ".\build\txt\hivestats.txt")
                  {
-                  $result = Get-Content ".\build\bash\hivestats.sh" | ConvertFrom-StringData
+                  $result = Get-Content ".\build\txt\hivestats.txt" | ConvertFrom-StringData
                   $Stat = @()
                   for($i=0; $i -lt $result.GPU.Count; $i++)
                   {

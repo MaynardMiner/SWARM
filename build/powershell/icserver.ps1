@@ -229,7 +229,7 @@ try {
             )
       }
       
-      Clear-Content ".\build\bash\minerstats.sh" -Force
+      Clear-Content ".\build\txt\minerstats.txt" -Force
       $type | foreach {if(Test-Path ".\build\txt\$($_)-hash.txt"){Clear-Content ".\build\txt\$($_)-hash.txt" -Force}}
       $GetStatusAlgoBans = ".\timeout\algo_block\algo_block.txt"
       $GetStatusPoolBans = ".\timeout\pool_block\pool_block.txt"
@@ -241,20 +241,20 @@ try {
       if(Test-Path $GetStatusMinerBans){$StatusMinerBans = Get-Content $GetStatusMinerBans | ConvertFrom-Json}
       else{$StatusMinerBans = $null}
       $StatusDate = Get-Date
-      $StatusDate | Out-File ".\build\bash\mineractive.sh"
-      $StatusDate | Out-File ".\build\bash\minerstats.sh"
-      Get-MinerStatus | Out-File ".\build\bash\minerstats.sh" -Append
+      $StatusDate | Out-File ".\build\txt\mineractive.txt"
+      $StatusDate | Out-File ".\build\txt\minerstats.txt"
+      Get-MinerStatus | Out-File ".\build\txt\minerstats.txt" -Append
       $mcolor = "93"
       $me = [char]27
       $MiningStatus = "$me[${mcolor}mCurrently Mining $($BestMiners_Combo.Algo) Algorithm${me}[0m"
-      $MiningStatus | Out-File ".\build\bash\minerstats.sh" -Append
+      $MiningStatus | Out-File ".\build\txt\minerstats.txt" -Append
       $BanMessage = @()
       $mcolor = "91"
       $me = [char]27
       if($StatusAlgoBans){$StatusAlgoBans | foreach {$BanMessage += "$me[${mcolor}m$($_.Name) mining $($_.Algo) is banned from all pools${me}[0m"}}
       if($StatusPoolBans){$StatusPoolBans | foreach {$BanMessage += "$me[${mcolor}m$($_.Name) mining $($_.Algo) is banned from $($_.MinerPool)${me}[0m"}}
       if($StatusMinerBans){$StatusMinerBans | foreach {$BanMessage += "$me[${mcolor}m$($_.Name) is banned${me}[0m"}}
-      $BanMessage | Out-File ".\build\bash\minerstats.sh" -Append
+      $BanMessage | Out-File ".\build\txt\minerstats.txt" -Append
 
     $ActiveMinerPrograms | ForEach {
         if($_.BestMiner -eq $false)
@@ -426,7 +426,7 @@ This is normal behavior.
 To see all miner benchmarks that have been performed use:
 get benchmarks
 command"
-$Message | Out-File ".\build\bash\minerstats.sh" -Append
+$Message | Out-File ".\build\txt\minerstats.txt" -Append
 }
 else{$MinerInterval = $Interval}
 
@@ -458,7 +458,7 @@ if($LogTimer.Elapsed.TotalSeconds -ge 3600)
  }
 
 ##Write Details Of Active Miner And Stats To File
-Get-MinerActive | Out-File ".\build\bash\mineractive.sh" -Append
+Get-MinerActive | Out-File ".\build\txt\mineractive.txt" -Append
 
 #if($Favor_Coins -eq "Yes")
  #{
@@ -466,8 +466,8 @@ Get-MinerActive | Out-File ".\build\bash\mineractive.sh" -Append
    #{
 #$Crazy = "Favor Coins Was Specified. Algorithms may be removed from this list so that highest value coin is at the top. See github wik FAQ section as to why."
 #$CrazyLink = "https://github.com/MaynardMiner/Swarm/wiki/FAQ >> Right Click 'Open URL In Browser"
-#$Crazy | Out-File ".\build\bash\minerstats.sh" -Append
-#$CrazyLink | Out-File ".\build\bash\minerstats.sh" -Append
+#$Crazy | Out-File ".\build\txt\minerstats.txt" -Append
+#$CrazyLink | Out-File ".\build\txt\minerstats.txt" -Append
    #}
   #}
 

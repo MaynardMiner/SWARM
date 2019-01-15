@@ -75,7 +75,7 @@
        $method = "message"
        $messagetype = "info"
        $data = "stats"
-       $getpayload = Get-Content ".\build\bash\minerstats.sh"
+       $getpayload = Get-Content ".\build\txt\minerstats.txt"
        $line = @()
        $getpayload | foreach {$line += "$_`n"}
        $payload = $line
@@ -90,7 +90,7 @@
        $method = "message"
        $messagetype = "info"
        $data = "active"
-       $getpayload = Get-Content ".\build\bash\mineractive.sh"
+       $getpayload = Get-Content ".\build\txt\mineractive.txt"
        $line = @()
        $getpayload | foreach {$line += "$_`n"}
        $payload = $line

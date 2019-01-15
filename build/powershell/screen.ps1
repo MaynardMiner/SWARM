@@ -114,7 +114,7 @@ To see all miner benchmarks that have been performed use:
 get benchmarks
 command"
 
-$Message | Out-File ".\build\bash\minerstats.sh" -Append     
+$Message | Out-File ".\build\txt\minerstats.txt" -Append     
 }
 
 

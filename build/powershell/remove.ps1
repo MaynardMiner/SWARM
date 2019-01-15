@@ -149,14 +149,14 @@ param(
    }
    "stats"
    {
-   if(Test-Path ".\build\bash\minerstats.sh"){$Get = Get-Content ".\build\bash\minerstats.sh"}
+   if(Test-Path ".\build\txt\minerstats.txt"){$Get = Get-Content ".\build\txt\minerstats.txt"}
    else{$Get = "No Stats History Found"}
    $Get | Out-File ".\build\txt\get.txt"
    $Get 
    }
    "active"
    {
-   if(Test-Path ".\build\bash\mineractive.sh"){$Get = Get-Content ".\build\bash\mineractive.sh"}
+   if(Test-Path ".\build\txt\mineractive.txt"){$Get = Get-Content ".\build\txt\mineractive.txt"}
    else{$Get = "No Miner History Found"}
    $Get | Out-File ".\build\txt\get.txt"
    $Get 

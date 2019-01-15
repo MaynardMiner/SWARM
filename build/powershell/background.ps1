@@ -880,7 +880,7 @@ FAN=$CPUFAN
 UPTIME=$CPUUPTIME
 HSU=$CPUHS
 "
-$Hive | Set-Content ".\build\bash\hivestats.sh"
+$Hive | Set-Content ".\build\txt\hivestats.txt"
 
 if($GetMiners -and $GETSWARM.HasExited -eq $false)
 {
@@ -951,7 +951,7 @@ Write-Host " UPTIME=$UPTIME
 }
 
 if($CPUKHS -ne $null){$CPUKHS = [Math]::Round($CPUKHS,3); Write-Host "CPU=$CPUKHS"}
-$Hive | Set-Content ".\build\bash\hivestats.sh"
+$Hive | Set-Content ".\build\txt\hivestats.txt"
 }
 
 if($Platforms -eq "windows" -and $HiveOS -eq "Yes")
@@ -991,7 +991,7 @@ if($Platforms -eq "windows" -and $HiveOS -eq "Yes")
   }
 }
 
-if($BackgroundTimer.Elapsed.TotalSeconds -gt 120){Clear-Content ".\build\bash\hivestats.sh"; $BackgroundTimer.Restart()}
+if($BackgroundTimer.Elapsed.TotalSeconds -gt 120){Clear-Content ".\build\txt\hivestats.txt"; $BackgroundTimer.Restart()}
 
 if($RestartTimer.Elapsed.TotalSeconds -le 10)
 {

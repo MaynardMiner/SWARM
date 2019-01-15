@@ -237,9 +237,9 @@ if([Double]$Boot -lt 600)
 
 ##Clear Old Agent Stats
 $FileClear = @()
-$FileClear += ".\build\bash\minerstats.sh"
-$FileClear += ".\build\bash\hivestats.sh"
-$FileClear += ".\build\bash\mineractive.sh"
+$FileClear += ".\build\txt\minerstats.txt"
+$FileClear += ".\build\txt\hivestats.txt"
+$FileClear += ".\build\txt\mineractive.txt"
 $FileClear += ".\build\bash\hivecpu.sh"
 $FileClear += ".\build\txt\profittable.txt"
 $FileClear += ".\build\txt\bestminers.txt"
@@ -477,7 +477,7 @@ $Sync = Get-Nist
 try{Set-Date $Sync -ErrorAction Stop}catch{Write-Host "Failed to syncronize time- Are you root/administrator?" -ForegroundColor red; Start-Sleep -S 5}
 
 ##Start The Log
-$dir | set-content ".\build\bash\dir.sh";
+$dir | set-content ".\build\txt\dir.txt";
 $Log = 1;
 start-log -Platforms $Platform -HiveOS $HiveOS -Number $Log;
 
@@ -538,18 +538,18 @@ if($Platform -eq "linux")
   ## Let User Know What Platform commands will work for- Will always be Group 1.
   $Type | Foreach {
    if($_ -eq "NVIDIA1"){
-   "NVIDIA1" | Out-File ".\build\bash\minertype.sh" -Force
+   "NVIDIA1" | Out-File ".\build\txt\minertype.txt" -Force
    Write-Host "Group 1 is NVIDIA- Commands and Stats will work for NVIDIA1" -foreground yellow
    Start-Sleep -S 3
    }
    if($_ -eq "AMD1"){
-   "AMD1" | Out-File ".\build\bash\minertype.sh" -Force
+   "AMD1" | Out-File ".\build\txt\minertype.txt" -Force
    Write-Host "Group 1 is AMD- Commands and Stats will work for AMD1" -foreground yellow
    Start-Sleep -S 3
    }
    if($_ -eq "CPU"){
    if($GPU_Count -eq 0){
-   "CPU" | Out-File ".\build\bash\minertype.sh" -Force
+   "CPU" | Out-File ".\build\txt\minertype.txt" -Force
    Write-Host "Group 1 is CPU- Commands and Stats will work for CPU" -foreground yellow
    Start-Sleep -S 3
      }
@@ -1183,8 +1183,8 @@ $Y = [string]$CoinExchange
 $H = [string]$Currency
 $J = [string]'BTC'
 $BTCExchangeRate = Invoke-WebRequest "https://min-api.cryptocompare.com/data/pricemulti?fsyms=$Y&tsyms=$J" -UseBasicParsing | ConvertFrom-Json | Select-Object -ExpandProperty $Y | Select-Object -ExpandProperty $J
-$MSFile = ".\build\bash\minerstats.sh"
-if(Test-Path $MSFIle){Clear-Content ".\build\bash\minerstats.sh" -Force}
+$MSFile = ".\build\txt\minerstats.txt"
+if(Test-Path $MSFIle){Clear-Content ".\build\txt\minerstats.txt" -Force}
 $type | foreach {if(Test-Path ".\build\txt\$($_)-hash.txt"){Clear-Content ".\build\txt\$($_)-hash.txt" -Force}}
 $GetStatusAlgoBans = ".\timeout\algo_block\algo_block.txt"
 $GetStatusPoolBans = ".\timeout\pool_block\pool_block.txt"
@@ -1207,14 +1207,14 @@ You should consult with pool if the developer fees for coins are being removed f
 Some pools are deducting them, others are not, causing an imbalance in profitibility. SWARM is unable to 
 predict which pools currently is removing these fees, and which pools are not, as no pool are providing the fees in question.
 "
-$StatusDate | Out-File ".\build\bash\mineractive.sh"
-$StatusDate | Out-File ".\build\bash\minerstats.sh"
-Get-MinerStatus | Out-File ".\build\bash\minerstats.sh" -Append
-$NoteToUsers | Out-File ".\build\bash\minerstats.sh" -Append
+$StatusDate | Out-File ".\build\txt\mineractive.txt"
+$StatusDate | Out-File ".\build\txt\minerstats.txt"
+Get-MinerStatus | Out-File ".\build\txt\minerstats.txt" -Append
+$NoteToUsers | Out-File ".\build\txt\minerstats.txt" -Append
 $mcolor = "93"
 $me = [char]27
 $MiningStatus = "$me[${mcolor}mCurrently Mining $($BestMiners_Combo.Algo) Algorithm${me}[0m"
-$MiningStatus | Out-File ".\build\bash\minerstats.sh" -Append
+$MiningStatus | Out-File ".\build\txt\minerstats.txt" -Append
 $BanMessage = @()
 $mcolor = "91"
 $me = [char]27
@@ -1223,7 +1223,7 @@ if($StatusPoolBans){$StatusPoolBans | foreach {$BanMessage += "$me[${mcolor}m$($
 if($StatusMinerBans){$StatusMinerBans | foreach {$BanMessage += "$me[${mcolor}m$($_.Name) is banned${me}[0m"}}
 if($GetDLBans){$GetDLBans | foreach {$BanMessage += "$me[${mcolor}m$($_) failed to download${me}[0m"}}
 if($ConserveMessage){$ConserveMessage | foreach {$BanMessage += "$me[${mcolor}m$($_)${me}[0m"}}
-$BanMessage | Out-File ".\build\bash\minerstats.sh" -Append
+$BanMessage | Out-File ".\build\txt\minerstats.txt" -Append
 $BestActiveMiners | ConvertTo-Json | Out-File ".\build\txt\bestminers.txt"
 $Current_BestMiners = $BestActiveMiners | ConvertTo-Json -Compress
 $StatusLite = Get-StatusLite
@@ -1376,7 +1376,7 @@ if($LogTimer.Elapsed.TotalSeconds -ge 3600)
  }
 
 ##Write Details Of Active Miner And Stats To File
-Get-MinerActive | Out-File ".\build\bash\mineractive.sh" -Append
+Get-MinerActive | Out-File ".\build\txt\mineractive.txt" -Append
 
 ##Remove Old Jobs From Memory
 Get-Job -State Completed | Remove-Job
