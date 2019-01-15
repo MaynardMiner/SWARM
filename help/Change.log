@@ -1521,3 +1521,4 @@ Critical X16r patch for 1.8.5
 -Fixed API stats so it is all in KHS (include making decimal for Sol/s).
 -Found Issue with multiple device groups not sending total hash to API- resolved.
 -Noticed some incorrect hash units being sent to HiveOS (khs was mhs, etc)- resolved.
+-SWARM will remotely notify you if there is no miners available (argument/pool/miners issues).
