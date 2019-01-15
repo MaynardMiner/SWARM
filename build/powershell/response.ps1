@@ -9,7 +9,7 @@ $Fans = $Fans | foreach {$_ -replace ("$($_)","$($_)")}
 $Temps = $Temps | foreach {$_ -replace ("TEMP=","")}
 $Temps = $Temps | foreach {$_ -replace ("$($_)","$($_)")}
 $AR = @("$ACC","$REJ")
-$TOTALKHS = [math]::Round($KHS,2)
+$TOTALKHS = $KHS/1000
 
 $Stats = @{
   method = "stats"
@@ -27,7 +27,7 @@ $Stats = @{
    }
    miner_stats = @{
    hs = @($HashRates)
-   hs_units = $HS
+   hs_units = "khs"
    uptime = $UPTIME
    algo = $ALGO
    ar = @($AR)
