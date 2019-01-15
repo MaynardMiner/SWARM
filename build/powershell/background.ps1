@@ -69,8 +69,7 @@ function Write-MinerData2 {
   $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
   Write-Host "Miner $Name was clocked at $([Double]$RAW)" -foreground Yellow
   if($Platforms -eq "linux"){$Process = Get-Process | Where Name -clike "*$($MinerType)*"}
-  Write-Host "Current Running instances: $($Process.Name)
-"
+  Write-Host "Current Running instances: $($Process.Name)"
 }
 function Set-Array{
   param(
@@ -267,7 +266,7 @@ $Switched = $false
 ##Determine if Miner Switched
 $CheckForMiners = ".\build\txt\bestminers.txt"
 if(test-Path $CheckForMiners){$GetMiners = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-Json -ErrorAction Stop}
-else{Write-Host "Waiting For Miners..."; Start-Sleep -S 5}
+else{Write-Host "No Miners Running..."}
 
 ##Handle New Miners
 if($GetMiners)
@@ -305,7 +304,7 @@ if($DevAMD -eq $true)
 }
 
 ## Set-OC
-if($GetMiners)
+if($Switched -eq $true)
 {
 Write-Host "Starting Tuning"
 Start-OC -Platforms $Platforms -Dir $WorkingDir
@@ -889,6 +888,7 @@ $Hive | Set-Content ".\build\bash\hivestats.sh"
 
 if($GetMiners)
 {
+Write-Host " "
 Write-Host "$HashRates" -ForegroundColor Green -NoNewline
 Write-Host " KHS=$CPUKHS" -ForegroundColor Yellow -NoNewline
 Write-Host " ACC=$CPUACC" -ForegroundColor DarkGreen -NoNewline
@@ -942,6 +942,7 @@ HSU=$HS
 
 if($GetMiners)
 {
+Write-Host " "
 Write-Host "$HashRates" -ForegroundColor Green -NoNewline
 Write-Host " KHS=$KHS" -ForegroundColor Yellow -NoNewline
 Write-Host " ACC=$ACC" -ForegroundColor DarkGreen -NoNewline

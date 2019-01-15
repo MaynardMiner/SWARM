@@ -1515,3 +1515,4 @@ Critical X16r patch for 1.8.5
  agent window starts.
 -Fixed commmand ``get benchmarks`` to show only benchmarks.
 -Made it so that if command fails- It will not display old commands (Windows).
+-Agent message spacing is cleaner
