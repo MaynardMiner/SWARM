@@ -290,6 +290,7 @@
    }
 
   }
+  if(Test-Path ".\build\txt\get.txt"){Clear-Content ".\build\txt\get.txt"}
   $trigger
 
  }

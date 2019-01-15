@@ -329,7 +329,7 @@ if($DevNVIDIA -eq $true){for($i=0; $i -lt $GCount.NVIDIA.PSObject.Properties.Val
 
 ## Reset All Stats, Rebuild Tables
 $ALGO = @(); $HashRates = @(); $Fans = @(); $Temps = @(); $Power = @(); 
-$CPUKHS = 0; $CPUACC = 0; $CPUREJ = 0; $RAW = 0; $KHS = 0; $REJ = 0; $ACC = 0;
+$CPUKHS = $null; $CPUACC = 0; $CPUREJ = 0; $RAW = 0; $KHS = 0; $REJ = 0; $ACC = 0;
 $GPUHashRates | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | %{$GPUHashRates.$_ = 0};
 $CPUHashRates | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | %{$CPUHashRates.$_ = 0};
 $GPUFans | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | %{$GPUFans.$_ = 0};
@@ -812,7 +812,7 @@ switch($MinerAPI)
   if($Request)
    {
     try{$Data = $Null; $Data = $Request.Content | ConvertFrom-Json -ErrorAction Stop;}catch{Write-Host "Failed To parse API" -ForegroundColor Red}
-    $Hash = $Data.Hashrate.threads
+    $Hash = $Data.Hashrate.Threads
     try{$Data.hashrate.total -split "," | %{if($_ -ne ""){$CPURAW = $_; $CPUKHS = $_; $CPUSUM = $_; break}}}catch{}
     $CPURAW | Set-Content ".\build\txt\$MinerType-hash.txt"
     for($i=0;$i -lt $Devices.Count; $i++){$GPU = $Devices[$i]; $CPUHashrates.$($GCount.$TypeS.$GPU) = $(if($Hash.Count -eq 1){[Double]$($Hash[0] | Select -first 1)}else{[Double]$($Hash[$i] | Select -First 1)})}
@@ -886,6 +886,9 @@ UPTIME=$CPUUPTIME
 HSU=$CPUHS
 "
 $Hive | Set-Content ".\build\bash\hivestats.sh"
+
+if($GetMiners)
+{
 Write-Host "$HashRates" -ForegroundColor Green -NoNewline
 Write-Host " KHS=$CPUKHS" -ForegroundColor Yellow -NoNewline
 Write-Host " ACC=$CPUACC" -ForegroundColor DarkGreen -NoNewline
@@ -894,6 +897,7 @@ Write-Host " ALGO=$CPUALGO" -ForegroundColor Gray -NoNewline
 Write-Host " FAN=$CPUFAN" -ForegroundColor Cyan -NoNewline
 Write-Host " UPTIME=$CPUUPTIME
 " -ForegroundColor White
+}
 }
 else
 {
@@ -936,6 +940,8 @@ UPTIME=$UPTIME
 HSU=$HS
 "
 
+if($GetMiners)
+{
 Write-Host "$HashRates" -ForegroundColor Green -NoNewline
 Write-Host " KHS=$KHS" -ForegroundColor Yellow -NoNewline
 Write-Host " ACC=$ACC" -ForegroundColor DarkGreen -NoNewline
@@ -946,6 +952,7 @@ Write-Host " $Temps" -ForegroundColor Magenta -NoNewline
 if($Platforms -eq "windows"){Write-Host " $Power"  -ForegroundColor DarkCyan -NoNewline}
 Write-Host " UPTIME=$UPTIME
 " -ForegroundColor White
+}
 
 if($CPUKHS -ne $null){$CPUKHS = '{0:f2}' -f $CPUKHS; Write-Host "CPU=$CPUSUM"}
 $Hive | Set-Content ".\build\bash\hivestats.sh"

@@ -220,6 +220,7 @@ benchmark
 $help
 $help | out-file ".\build\txt\get.txt"
     }
+
 "benchmarks"
 {
  . .\build\powershell\statcommand.ps1
@@ -229,23 +230,33 @@ $help | out-file ".\build\txt\get.txt"
 
  if(Test-path ".\stats")
  {
- switch($argument2)
-  {
-   "all"
+  if($argument2)
+   {
+    switch($argument2)
+    {
+    "all"
+     {
+      $StatNames = Get-ChildItem ".\stats" | Where Name -LIKE "*hashrate*"
+      $StatNames = $StatNames.Name -replace ".txt",""
+      $Stats = [PSCustomObject]@{}
+      if(Test-Path "stats"){Get-ChildItemContent "stats" | ForEach {$Stats | Add-Member $_.Name $_.Content}}
+     }
+     default
+     {
+      $Stats = [PSCustomObject]@{}
+      $StatNames = Get-ChildItem ".\stats" | Where Name -like "*$argument2*"
+      $StatNames = $StatNames.Name -replace ".txt",""
+      if(Test-Path "stats"){Get-ChildItemContent "stats" | ForEach {$Stats | Add-Member $_.Name $_.Content}}
+     }
+    } 
+   }
+   else
    {
     $StatNames = Get-ChildItem ".\stats" | Where Name -LIKE "*hashrate*"
     $StatNames = $StatNames.Name -replace ".txt",""
     $Stats = [PSCustomObject]@{}
     if(Test-Path "stats"){Get-ChildItemContent "stats" | ForEach {$Stats | Add-Member $_.Name $_.Content}}
    }
-   default
-   {
-    $Stats = [PSCustomObject]@{}
-    $StatNames = Get-ChildItem ".\stats" | Where Name -like "*$argument2*"
-    $StatNames = $StatNames.Name -replace ".txt",""
-    if(Test-Path "stats"){Get-ChildItemContent "stats" | ForEach {$Stats | Add-Member $_.Name $_.Content}}
-   }
-  }
  $BenchTable = @()
  $StatNames | Foreach {$BenchTable += [PSCustomObject]@{Miner = $_ -split "_" | Select -First 1; Algo = $_ -split "_" | Select -Skip 1 -First 1; HashRates = $Stats."$($_)".Day | ConvertTo-Hash}}
  function Get-BenchTable {

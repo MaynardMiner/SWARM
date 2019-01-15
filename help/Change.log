@@ -1513,3 +1513,5 @@ Critical X16r patch for 1.8.5
 
 -Windows version will start connection to HiveOS as soon as first
  agent window starts.
+-Fixed commmand ``get benchmarks`` to show only benchmarks.
+-Made it so that if command fails- It will not display old commands (Windows).
