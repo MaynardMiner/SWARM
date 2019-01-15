@@ -1304,26 +1304,23 @@ if($Restart -eq $false){Invoke-NoChange}
 
 ##Check For Miner that are benchmarking, sets flag to $true and notfies user.
 $BenchmarkMode = $false
-$ActiveMinerPrograms | Foreach {
- if($Miners | Where Path -eq $_.Path | Where Arguments -eq $_.Arguments)
- {
-  if(-not (Test-Path ".\stats\$($_.Name)_$($_.Algo)_hashrate.txt"))
-  {
-   $BenchmarkMode = $true;
-  }
- }
-}
+$SWARM_IT = $false
+$SwitchTime = $null
+$MinerInterval = $null
+$ModeCheck = 0
+$BestActiveMiners | Foreach {if(-not (Test-Path ".\stats\$($_.Name)_$($_.Algo)_hashrate.txt")){$BenchmarkMode = $true;}}
 
 #Set Interval
 if($BenchmarkMode -eq $true)
- {
+{
  Write-Host "SWARM is Benchmarking Miners." -Foreground Yellow;
- Print-Benchmarking;
- $MinerInterval = $Benchmark;
- }
+ Print-Benchmarking
+ $MinerInterval = $Benchmark
+}
 else{
  if($SWARM_Mode -eq "Yes")
   {
+   $SWARM_IT = $true
    Write-Host "SWARM MODE ACTIVATED!" -ForegroundColor Green;
    $SwitchTime = Get-Date
    Write-Host "SWARM Mode Start Time is $SwitchTime" -ForegroundColor Cyan;
@@ -1385,25 +1382,25 @@ if($Platform -eq "linux")
 Do{
   Set-Countdown
   Get-MinerHashRate
-  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($SWARM_IT){$ModeCheck = Invoke-SWARMMode $SwitchTime}
   if($ModeCheck -gt 0){break}
   Start-Sleep -s 5
-  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($SWARM_IT){$ModeCheck = Invoke-SWARMMode $SwitchTime}
   if($ModeCheck -gt 0){break}
   Start-Sleep -s 5
-  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($SWARM_IT){$ModeCheck = Invoke-SWARMMode $SwitchTime}
   if($ModeCheck -gt 0){break}
   Start-Sleep -s 5
   if($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval-20)){break}
   Set-Countdown
   Get-MinerHashRate
-  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($SWARM_IT){$ModeCheck = Invoke-SWARMMode $SwitchTime}
   if($ModeCheck -gt 0){break}
   Start-Sleep -s 5
-  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($SWARM_IT){$ModeCheck = Invoke-SWARMMode $SwitchTime}
   if($ModeCheck -gt 0){break}
   Start-Sleep -s 5
-  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($SWARM_IT){$ModeCheck = Invoke-SWARMMode $SwitchTime}
   if($ModeCheck -gt 0){break}
   Start-Sleep -s 5
   if($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval-20)){break}
@@ -1416,38 +1413,38 @@ Do{
 
   " -foreground Magenta
   Get-MinerHashRate
-  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($SWARM_IT){$ModeCheck = Invoke-SWARMMode $SwitchTime}
   if($ModeCheck -gt 0){break}
   Start-Sleep -s 5
-  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($SWARM_IT){$ModeCheck = Invoke-SWARMMode $SwitchTime}
   if($ModeCheck -gt 0){break}
   Start-Sleep -s 5
-  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($SWARM_IT){$ModeCheck = Invoke-SWARMMode $SwitchTime}
   if($ModeCheck -gt 0){break}
   Start-Sleep -s 5
   if($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval-20)){break}
   Set-Countdown
   Get-MinerHashRate
-  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($SWARM_IT){$ModeCheck = Invoke-SWARMMode $SwitchTime}
   if($ModeCheck -gt 0){break}
   Start-Sleep -s 5
-  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($SWARM_IT){$ModeCheck = Invoke-SWARMMode $SwitchTime}
   if($ModeCheck -gt 0){break}
   Start-Sleep -s 5
-  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($SWARM_IT){$ModeCheck = Invoke-SWARMMode $SwitchTime}
   if($ModeCheck -gt 0){break}
   Start-Sleep -s 5
   if($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval-20)){break}
   Set-Countdown
   Restart-Miner
   Get-MinerHashRate
-  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($SWARM_IT){$ModeCheck = Invoke-SWARMMode $SwitchTime}
   if($ModeCheck -gt 0){break}
   Start-Sleep -s 5
-  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($SWARM_IT){$ModeCheck = Invoke-SWARMMode $SwitchTime}
   if($ModeCheck -gt 0){break}
   Start-Sleep -s 5
-  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($SWARM_IT){$ModeCheck = Invoke-SWARMMode $SwitchTime}
   if($ModeCheck -gt 0){break}
   Start-Sleep -s 5
   if($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval-20)){break}
@@ -1459,10 +1456,10 @@ Do{
 
   " -foreground Magenta
   Get-MinerHashRate
-  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($SWARM_IT){$ModeCheck = Invoke-SWARMMode $SwitchTime}
   if($ModeCheck -gt 0){break}
   Start-Sleep -s 5
-  if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+  if($SWARM_IT){$ModeCheck = Invoke-SWARMMode $SwitchTime}
   if($ModeCheck -gt 0){break}
   Start-Sleep -s 5
   if($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval-20)){break}
@@ -1480,36 +1477,36 @@ else
   Get-MinerActive | Out-Host
   Get-MinerStatus | Out-Host
   Get-VM | Out-Host
-  if($SWARM_Mode -eq "Yes")
+  if($SWARM_IT)
   {
    if($SwitchTime)
    {
    Write-Host "SWARM MODE ACTIVATED!" -ForegroundColor Green;
    Write-Host "SWARM Mode Start Time is $SwitchTime" -ForegroundColor Cyan;
    }
-   else{Write-Host "SWARM is benchmarking miners" -ForegroundColor Yellow}
   }
+  if($BenchmarkMode -eq $true){Write-Host "Swarm Is Benchmarking Miners" -ForegroundColor Yellow}
   Write-Host $NoteToUsers
   $BanMessage
 Do{
    Restart-Miner
    if($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval-20)){break}
-   if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+   if($SWARM_IT){$ModeCheck = Invoke-SWARMMode $SwitchTime}
    if($ModeCheck -gt 0){break}
    Start-Sleep -s 5
-   if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+   if($SWARM_IT){$ModeCheck = Invoke-SWARMMode $SwitchTime}
    if($ModeCheck -gt 0){break}
    Start-Sleep -s 5
-   if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+   if($SWARM_IT){$ModeCheck = Invoke-SWARMMode $SwitchTime}
    if($ModeCheck -gt 0){break}
    Start-Sleep -s 5
-   if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+   if($SWARM_IT){$ModeCheck = Invoke-SWARMMode $SwitchTime}
    if($ModeCheck -gt 0){break}
    Start-Sleep -s 5
-   if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+   if($SWARM_IT){$ModeCheck = Invoke-SWARMMode $SwitchTime}
    if($ModeCheck -gt 0){break}
    Start-Sleep -s 5
-   if($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false){$ModeCheck = Invoke-SWARMMode $SwitchTime}
+   if($SWARM_IT){$ModeCheck = Invoke-SWARMMode $SwitchTime}
    if($ModeCheck -gt 0){break}
    Start-Sleep -s 5
  }While($MinerWatch.Elapsed.TotalSeconds -lt ($MinerInterval-20))

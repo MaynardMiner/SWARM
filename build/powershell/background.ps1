@@ -55,6 +55,10 @@ if($Platforms -eq "windows")
 . .\build\powershell\octune.ps1
 . .\build\powershell\statcommand.ps1
 
+## SWARM miner PID
+$CheckForSWARM = ".\build\pid\miner_pid.txt"
+if(test-Path $CheckForSWARM){$GetSWARMID = Get-Content $CheckForSWARM; $GETSWARM = Get-Process -ID $GetSWARMID -ErrorAction SilentlyContinue}
+
 ## Simplified functions (To Shorten)
 function Get-GPUs {$GPU = $Devices[$i]; $GCount.$TypeS.$GPU};
 
@@ -260,11 +264,12 @@ $Switched = $false
 
 ##Determine if Miner Switched
 $CheckForMiners = ".\build\txt\bestminers.txt"
-if(test-Path $CheckForMiners){$GetMiners = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-Json -ErrorAction Stop}
+if(test-Path $CheckForMiners){$GetMiners = Get-Content $CheckForMiners | ConvertFrom-Json -ErrorAction Stop}
 else{Write-Host "No Miners Running..."}
+if($GETSWARM.HasExited -eq $true){Write-Host "SWARM Has Exited..."}
 
 ##Handle New Miners
-if($GetMiners)
+if($GetMiners -and $GETSWARM.HasExited -eq $false)
  {
   $GetMiners | ForEach {if(-not ($CurrentMiners | Where Path -eq $_.Path | Where Arguments -eq $_.Arguments )){$Switched = $true}}
   if($Switched -eq $True)
@@ -354,7 +359,7 @@ if($Platforms -eq "linux")
 }
 
 ## Start API Calls For Each Miner
-if($CurrentMiners)
+if($CurrentMiners -and $GETSWARM.HasExited -eq $false)
 {
 $CurrentMiners | Foreach {
 ## Miner Information
@@ -863,7 +868,7 @@ if($BackgroundTimer.Elapsed.TotalSeconds -gt 60)
 
 if($CPUOnly -eq $true)
 {
-$CPUKHS = [Math]::Round($CPUKHS,2)
+$CPUKHS = [Math]::Round($CPUKHS,3)
 $HIVE="
 $($CPUHash -join "`n")
 KHS=$CPUKHS
@@ -877,7 +882,7 @@ HSU=$CPUHS
 "
 $Hive | Set-Content ".\build\bash\hivestats.sh"
 
-if($GetMiners)
+if($GetMiners -and $GETSWARM.HasExited -eq $false)
 {
 Write-Host " "
 Write-Host "$HashRates" -ForegroundColor Green -NoNewline
@@ -894,8 +899,8 @@ else
 {
   if($DEVNVIDIA -eq $True){if($GCount.NVIDIA.PSObject.Properties.Value.Count -gt 0){for($i=0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++){$HashRates += 0; $Fans += 0; $Temps += 0}}}
   if($DevAMD -eq $True){if($GCount.AMD.PSObject.Properties.Value.Count -gt 0){for($i=0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++){$HashRates += 0; $Fans += 0; $Temps += 0}}}
-  if($DEVNVIDIA -eq $True){for($i=0; $i -lt $GCount.NVIDIA.PSOBject.Properties.Value.Count; $i++){$HashRates[$($GCount.NVIDIA.$i)] = "GPU={0:f2}" -f $($GPUHashRates.$($GCount.NVIDIA.$i))}}
-  if($DevAMD -eq $True){for($i=0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++){$HashRates[$($GCount.AMD.$i)] = "GPU={0:f2}" -f $($GPUHashRates.$($GCount.AMD.$i))}}
+  if($DEVNVIDIA -eq $True){for($i=0; $i -lt $GCount.NVIDIA.PSOBject.Properties.Value.Count; $i++){$HashRates[$($GCount.NVIDIA.$i)] = "GPU={0:f3}" -f $($GPUHashRates.$($GCount.NVIDIA.$i))}}
+  if($DevAMD -eq $True){for($i=0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++){$HashRates[$($GCount.AMD.$i)] = "GPU={0:f3}" -f $($GPUHashRates.$($GCount.AMD.$i))}}
   if($DEVNVIDIA -eq $True){for($i=0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++){$Fans[$($GCount.NVIDIA.$i)] = "FAN=$($GPUFans.$($GCount.NVIDIA.$i))"}}
   if($DevAMD -eq $True){for($i=0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++){$Fans[$($GCount.AMD.$i)] = "FAN=$($GPUFans.$($GCount.AMD.$i))"}}
   if($DEVNVIDIA -eq $True){for($i=0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++){$Temps[$($GCount.NVIDIA.$i)] = "TEMP=$($GPUTemps.$($GCount.NVIDIA.$i))"}}
@@ -911,8 +916,7 @@ else
   {
    if($HashRates[$i] -eq 'GPU=0' -or $HashRates[$i] -eq 'GPU=' -or $HashRates[$i] -eq 'GPU=0.00')
     {
-     if($HS -eq "khs"){$HashRates[$i] = 'GPU=0.001'; $KHS += 0.001}
-     elseif($HS -eq "hs"){$HashRates[$i] = 'GPU=1'; $KHS += 1}
+     $HashRates[$i] = 'GPU=0.001'; $KHS += 0.001
     }
    }
 
@@ -931,7 +935,7 @@ UPTIME=$UPTIME
 HSU=khs
 "
 
-if($GetMiners)
+if($GetMiners -and $GETSWARM.HasExited -eq $false)
 {
 Write-Host " "
 Write-Host "$HashRates" -ForegroundColor Green -NoNewline
@@ -946,7 +950,7 @@ Write-Host " UPTIME=$UPTIME
 " -ForegroundColor White
 }
 
-if($CPUKHS -ne $null){$CPUKHS = [Math]::Round($CPUKHS,2); Write-Host "CPU=$CPUKHS"}
+if($CPUKHS -ne $null){$CPUKHS = [Math]::Round($CPUKHS,3); Write-Host "CPU=$CPUKHS"}
 $Hive | Set-Content ".\build\bash\hivestats.sh"
 }
 

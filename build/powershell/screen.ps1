@@ -97,7 +97,6 @@ Start-Sleep -s 5
 }
 
 function Print-Benchmarking{
-    $MinerInterval = $Benchmark
 $Message = 
 "
 
