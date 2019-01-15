@@ -59,6 +59,7 @@ if($Platforms -eq "windows")
 function Get-GPUs {$GPU = $Devices[$i]; $GCount.$TypeS.$GPU};
 
 function Write-MinerData1 {
+  Write-host " "
   Write-Host "Miner $MinerType is $MinerAPI api"
   Write-Host "Miner Port is $Port"
   Write-Host "Miner Devices is $Devices"
@@ -362,7 +363,6 @@ if($Platforms -eq "linux")
 if($CurrentMiners)
 {
 $CurrentMiners | Foreach {
-
 ## Miner Information
 $MinerAlgo = "$($_.Algo)"
 $MinerName = "$($_.MinerName)"
@@ -986,8 +986,7 @@ if($Platforms -eq "windows" -and $HiveOS -eq "Yes")
     }
     if($SwarmResponse -eq "stats")
      {
-      Write-Host "Hive Received Stats
-"
+      Write-Host "Hive Received Stats"
      }
     if($SwarmResponse -eq "exec")
      {
