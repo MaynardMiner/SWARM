@@ -991,7 +991,7 @@ $NewAlgoMiners = $null
 ## Print on screen user is screwed if the process failed.
 if($AlgoMiners.Count -eq 0)
  {
-  $HiveMessage = "No Miners Found! Check Arguments!"
+  $HiveMessage = "No Miners Found! Check Arguments/Net Connection"
   $HiveWarning = @{result = @{command = "timeout"}}
   if($HiveOS -eq "Yes"){try{$SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch{Write-Warning "Failed To Notify HiveOS"}}
   Write-Host $HiveMessage
