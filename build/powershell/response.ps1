@@ -9,7 +9,6 @@ $Fans = $Fans | foreach {$_ -replace ("$($_)","$($_)")}
 $Temps = $Temps | foreach {$_ -replace ("TEMP=","")}
 $Temps = $Temps | foreach {$_ -replace ("$($_)","$($_)")}
 $AR = @("$ACC","$REJ")
-$TOTALKHS = $KHS/1000
 
 $Stats = @{
   method = "stats"
@@ -22,19 +21,20 @@ $Stats = @{
    miner = "custom"
    meta = @{
     custom = @{
-    coin = "RVN"
+    coin = "BTC"
     }
    }
    miner_stats = @{
    hs = @($HashRates)
    hs_units = "khs"
-   uptime = $UPTIME
-   algo = $ALGO
-   ar = @($AR)
    temp = @($Temps)
    fan = @($Fans)
-    }
-   total_khs = $TOTALKHS
+   uptime = $UPTIME
+   ar = @($AR)
+   algo = $ALGO
+   bus_numbers = @($BusNumbers)
+   }
+   total_khs = $KHS
    power = @($Power)
    mem = @($mem)
    cpuavg = $LoadAverages
