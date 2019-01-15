@@ -68,7 +68,7 @@ function Write-MinerData1 {
 
 function Write-MinerData2 {
   $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
-  Write-Host "Miner $Name was clocked at $([Double]$RAW)" -foreground Yellow
+  Write-Host "Miner $Name was clocked at $($RAW | ConvertTo-Hash)/s" -foreground Yellow
   if($Platforms -eq "linux"){$Process = Get-Process | Where Name -clike "*$($MinerType)*"}
   Write-Host "Current Running instances: $($Process.Name)"
 }
@@ -917,7 +917,7 @@ else
    }
 
 $ALGO = $ALGO | Select -First 1
-$KHS = [Math]::Round($KHS,2)
+$KHS = [Math]::Round($KHS,3)
 
 $HIVE="
 $($HashRates -join "`n")
