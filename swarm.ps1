@@ -989,7 +989,15 @@ $AlgoMiners = $NewAlgoMiners
 $NewAlgoMiners = $null
 
 ## Print on screen user is screwed if the process failed.
-if($AlgoMiners.Count -eq 0){"No Miners! Check Arguments!" | Out-Host; start-sleep $Interval; continue}
+if($AlgoMiners.Count -eq 0)
+ {
+  $HiveMessage = "No Miners Found! Check Arguments!"
+  $HiveWarning = @{result = @{command = "timeout"}}
+  if($HiveOS -eq "Yes"){try{$SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch{Write-Warning "Failed To Notify HiveOS"}}
+  Write-Host $HiveMessage
+  start-sleep $Interval; 
+  continue
+ }
 
 ##This starts to refine each miner hashtable, applying watt calculations, and other factors to each miner. ##TODO
 start-minersorting -Command "Algo" -Stats $Stats -Pools $AlgoPools -Pools_Comparison $AlgoPools_Comparison -SortMiners $AlgoMiners -DBase $DecayBase -DExponent $DecayExponent -WattCalc $WattEx
@@ -1690,7 +1698,7 @@ if($Strike -eq $true)
      $NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt"
      $Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)"| foreach{try{$_.bad=0}catch{}}
      $HiveWarning = @{result = @{command = "timeout"}}
-     try{$SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch{Write-Warning "Failed To Notify HiveOS"}
+     if($HiveOS -eq "Yes"){try{$SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch{Write-Warning "Failed To Notify HiveOS"}}
      Start-Sleep -S 1
     }
     ##Strike Three: He's Outta Here
@@ -1709,7 +1717,7 @@ if($Strike -eq $true)
       $Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)"| foreach{try{$_.bad=0}catch{}}
       $Warnings."$($_.Name)_$($_.Algo)" | foreach{try{$_.bad=0}catch{}}
       $HiveWarning = @{result = @{command = "timeout"}}
-      try{$SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch{Write-Warning "Failed To Notify HiveOS"} 
+      if($HiveOS -eq "Yes"){try{$SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch{Write-Warning "Failed To Notify HiveOS"} }
       Start-Sleep -S 1
      }
     ##Strike Four: Miner is Finished
@@ -1729,7 +1737,7 @@ if($Strike -eq $true)
      $Warnings."$($_.Name)_$($_.Algo)" | foreach{try{$_.bad=0}catch{}}
      $Warnings."$($_.Name)" | foreach{try{$_.bad=0}catch{}}
      $HiveWarning = @{result = @{command = "timeout"}}
-     try{$SendToHive= Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch{Write-Warning "Failed To Notify HiveOS"}
+     if($HiveOS -eq "Yes"){try{$SendToHive= Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch{Write-Warning "Failed To Notify HiveOS"}}
      Start-Sleep -S 1
      }
      }
