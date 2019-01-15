@@ -512,6 +512,10 @@ if($Platform -eq "linux")
   ## HiveOS Only Items
   if($HiveOS -eq "Yes")
   {
+   ##Remove Download
+   $OldDownload = Join-Path "/hive/miners/custom/downloads" "SWARM.$version.tar.gz"
+   if(Test-Path $OldDownload){Remove-Item $OldDownload -Force}
+   ##Data and Hive Configs
    Write-Host "Getting Data" -ForegroundColor Yellow
    Get-Data -CmdDir $dir
    $config = get-content "/hive-config/rig.conf" | ConvertFrom-StringData
