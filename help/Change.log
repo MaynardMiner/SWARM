@@ -1537,4 +1537,6 @@ Critical X16r patch for 1.8.5
 
 -SWARM will not remove its tar.gz download for HiveOS.
 
--SWARM will now copy over last known miner logs into crash-reports
+-SWARM will now copy over last known miner logs into crash-reports.
+
+-SWARM will clean Trash folder for HiveOS (remove old miners/downloads).

@@ -518,6 +518,11 @@ if($Platform -eq "linux")
    ##Remove Download
    $OldDownload = Join-Path "/hive/miners/custom/downloads" "SWARM.$version.tar.gz"
    if(Test-Path $OldDownload){Remove-Item $OldDownload -Force}
+
+   ## Clear trash for usb stick
+   Write-Host "Clearing Trash Folder"
+   invoke-expression "rm -rf .local/share/Trash/files/*"
+
    ##Data and Hive Configs
    Write-Host "Getting Data" -ForegroundColor Yellow
    Get-Data -CmdDir $dir
