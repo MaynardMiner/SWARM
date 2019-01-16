@@ -1239,10 +1239,10 @@ $BanMessage | Out-File ".\build\txt\minerstats.txt" -Append
 $BestActiveMiners | ConvertTo-Json | Out-File ".\build\txt\bestminers.txt"
 $Current_BestMiners = $BestActiveMiners | ConvertTo-Json -Compress
 $StatusLite = Get-StatusLite
-$StatusDate | Out-File ".\build\bash\minerstatslite.sh"
-$StatusLite | OUt-File ".\build\bash\minerstatslite.sh" -Append
-$MiningStatus | Out-File ".\build\bash\minerstatslite.sh" -Append
-$BanMessage | Out-File ".\build\bash\minerstatslite.sh" -Append
+$StatusDate | Out-File ".\build\txt\minerstatslite.txt"
+$StatusLite | OUt-File ".\build\txt\minerstatslite.txt" -Append
+$MiningStatus | Out-File ".\build\txt\minerstatslite.txt" -Append
+$BanMessage | Out-File ".\build\txt\minerstatslite.txt" -Append
 
 ## Simple hash table for clearing ports. Used Later
 $PreviousMinerPorts = @{AMD1="";NVIDIA1="";NVIDIA2="";NVIDIA3="";CPU=""}
