@@ -3,13 +3,11 @@ if($API -eq "Yes")
 {
 ## Shutdown Previous API if stuck by running a command
 Write-Host "Checking to ensure API port is free" -ForegroundColor "Yellow"
-try{Invoke-RestMethod "http://localhost:4099/end" -UseBasicParsing -TimeoutSec 5}catch{}
+try{Invoke-RestMethod "http://localhost:$Port/end" -UseBasicParsing -TimeoutSec 5}catch{}
+
 ## API Server Start
 $APIServer = {
-param(
-    [Parameter(Position = 0, Mandatory = $true)]
-    [string]$WorkingDir
-   )
+ param($WorkingDir, $Port, $Remote, $APIPassword)
 
     Set-Location $WorkingDir
     if(test-Path ".\build\pid\api_pid.txt"){$AFID = Get-Content ".\build\pid\api_pid.txt"; $AID = Get-Process -ID $AFID -ErrorAction SilentlyContinue}
@@ -17,10 +15,19 @@ param(
     $PID | Set-Content ".\build\pid\api_pid.txt"
     $listener = New-Object System.Net.HttpListener
     Write-Host "Listening ..."
+    if($Remote -eq "yes")
+     {
+      if($APIPassword -ne "No")
+       {
+        [string]$Prefix = "http://+:$Port/$APIPassword/"
+       }
+      else{$Prefix = "http://+:$Port/"}
+     }
+    else{[string]$Prefix = "http://localhost:$Port/"}
    
    # Run until you send a GET request to /end
   try{
-      $listener.Prefixes.Add('http://localhost:4099/') 
+      $listener.Prefixes.Add($Prefix) 
       $listener.Start()
    while ($listener.IsListening){
        $context = $listener.GetContext() 
@@ -38,9 +45,12 @@ param(
    
            # Split request URL to get command and options
            $requestvars = ([String]$request.Url).split("/");
-           if($requestvars[3])
+           if($Remote -eq "Yes" -and $APIPassword -ne "No"){$GET = $requestvars[4]}
+           else{$GET = $requestvars[3]}
+
+           if($GET)
            {
-           switch($requestvars[3])
+           switch($GET)
            {
                "summary" 
                {
@@ -119,7 +129,7 @@ param(
        }
       }Finally{$listener.Stop()}
 }
-Start-Job $APIServer -Name "APIServer" -ArgumentList "$Dir" | OUt-Null
+Start-Job $APIServer -Name "APIServer" -ArgumentList $Dir, $Port, $Remote, $APIPassword | OUt-Null
 Write-Host "Starting API Server" -ForegroundColor "Yellow"
 }
 }

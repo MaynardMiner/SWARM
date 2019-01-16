@@ -137,7 +137,13 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$API = "Yes",
     [Parameter(Mandatory=$false)]
-    [String]$CLPlatform = ""
+    [String]$CLPlatform = "",
+    [Parameter(Mandatory=$false)]
+    [int]$Port = 4099,
+    [Parameter(Mandatory=$false)]
+    [String]$Remote = "No",
+    [Parameter(Mandatory=$false)]
+    [String]$APIPassword = "No"
 )
 
 
@@ -200,9 +206,6 @@ if(Test-Path $ID){$Agent = Get-Content $ID}
 if($Agent){$BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue}
 if($BackGroundID.name -eq "powershell"){Stop-Process $BackGroundID | Out-Null}
 }
-
-##Start API Server
-Start-APIServer
 
 ##Start Date Collection
 Get-DateFiles
@@ -316,6 +319,9 @@ $CurrentParams.Add("Switch_Threshold",$Switch_Threshold)
 $CurrentParams.Add("Lite",$Lite)
 $CurrentParams.Add("API",$API)
 $CurrentParams.ADD("CLPlatform",$CLPlatform)
+$CurrentParams.ADD("Port",$Port)
+$CurrentParams.ADD("Remote",$Remote)
+$CurrentParams.ADD("APIPassword",$APIPassword)
 
 ## Save to Config Folder
 $StartParams = $CurrentParams | ConvertTo-Json 
@@ -404,7 +410,13 @@ $Switch_Threshold = $SWARMParams.Switch_Threshold
 $SWARM_Mode = $SWARMParams.SWARM_Mode
 $CLPlatform = $SWARMParams.CLPlatform
 $API = $SWARMParams.API
+$Port = $SWARMParams.Port
+$Remote = $SWARMParams.Remote
+$APIPassword = $SWARMParams.APIPassword
 }
+
+##Start API Server
+Start-APIServer $Port
 
 ## Windows Start Up
 if($Platform -eq "windows")
@@ -741,7 +753,7 @@ if($API -eq "Yes")
 {
 if($((Get-Job -Name "APIServer").State) -eq "Running")
  {
-  Write-Host "API Server Started- This server will run even after close run http://localhost:4099/end to close" -ForegroundColor Green
+  Write-Host "API Server Started- Windows server will run even after close run http://localhost:$Port/end to close" -ForegroundColor Green
  }
 else
 {
@@ -825,6 +837,10 @@ $Switch_Threshold = $SWARMParams.Switch_Threshold
 $SWARM_Mode = $SWARMParams.SWARM_Mode
 $API = $SWARMParams.API
 $CLPlatform = $SWARMParams.CLPlatform
+$Port = $SWARMParams.Port
+$Remote = $SWARMParams.Remote
+$APIPassword = $SWARMParams.APIPassword
+
 if($SWARMParams.Rigname1 -eq "Donate"){$Donating = $True}
 else{$Donating = $False}
 if($Donating -eq $True){$Test = Get-Date; $DonateTest = "Miner has donated on $Test"; $DonateTest | Set-Content ".\build\txt\donate.txt"}

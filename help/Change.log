@@ -1544,3 +1544,11 @@ Critical X16r patch for 1.8.5
 -Much better organization of API/summary. Organized by type, then profits (or pool estimates if no benchmarks).
 
 -Lite Mode disables timeout system (so you can run, and it won't block miner stats).
+
+-Removed API-Sample.ps1, will add back when I am finished (Still changing it).
+
+-Added ``-Remote`` parameter, for making API remote.
+
+-Added ``-APIPassword`` parameter, to set a password endpoint on remote api.
+
+-Upadated Help_File with new arguments.
