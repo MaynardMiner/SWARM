@@ -77,5 +77,8 @@
     "Update":  "Yes",
     "Switch_Threshold": "0",
     "API": "Yes",
-    "CLPlatform": ""
+    "CLPlatform": "",
+    "Port": 4099,
+    "Remote": "No",
+    "APIPassword": ""
 }
