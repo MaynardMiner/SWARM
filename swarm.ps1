@@ -492,7 +492,7 @@ $Sync = Get-Nist
 try{Set-Date $Sync -ErrorAction Stop}catch{Write-Host "Failed to syncronize time- Are you root/administrator?" -ForegroundColor red; Start-Sleep -S 5}
 
 ##Start The Log
-$dir | set-content ".\build\txt\dir.txt";
+$dir | set-content ".\build\bash\dir.sh";
 $Log = 1;
 start-log -Platforms $Platform -HiveOS $HiveOS -Number $Log;
 

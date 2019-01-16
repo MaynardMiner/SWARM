@@ -20,7 +20,7 @@ $dir
 Start-Process ".\build\bash\libc.sh" -wait
 Start-Process ".\build\bash\libv.sh" -wait
 
-$dir | set-content ".\build\txt\dir.txt"
+$dir | set-content ".\build\bash\dir.sh"
 
     if(Test-Path ".\build\bash\stats")
     {
@@ -126,9 +126,9 @@ $dir | set-content ".\build\txt\dir.txt"
          Set-Location $Dir     
        }
 
-   if(Test-Path ".\build\txt\dir.txt")
+   if(Test-Path ".\build\bash\dir.sh")
     {
-       Copy-Item ".\build\txt\dir.txt" -Destination "/usr/bin" -force | Out-Null
+       Copy-Item ".\build\bash\dir.sh" -Destination "/usr/bin" -force | Out-Null
        Set-Location "/usr/bin"
        Start-Process "chmod" -ArgumentList "+x dir.sh"
        Set-Location "/"

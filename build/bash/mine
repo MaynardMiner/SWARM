@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-screen -r $(< $(< $mydir/dir.txt)/build/bash/minertype.sh)
+screen -r $(< $(< $mydir/dir.sh)/build/bash/minertype.sh)
 
