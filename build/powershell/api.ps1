@@ -46,7 +46,17 @@ param(
                {
                 if(Test-Path ".\build\txt\profittable.txt")
                  {
-                  $result = Get-Content ".\build\txt\profittable.txt" | ConvertFrom-JSon;
+                  $result = @()
+                  $getsummary = Get-Content ".\build\txt\profittable.txt" | ConvertFrom-JSon;
+                  $Types = $getsummary.type | Select -Unique
+                  $Types | foreach{
+                   $MinersOn = $false
+                   $Selected = $getsummary | Where Type -eq $_
+                   $Selected | foreach{if($_.Profits -ne $null){$MinersOn = $true}}
+                   if($MinersOn -eq $true){$Selected = $Selected | Sort-Object -Property Profits -Descending}
+                   else{$Selected = $Selected | Sort-Object -Property Pool_Estimate -Descending}                
+                   $result += @{"$($_)" = @($Selected)}
+                  }
                   $message = $result | ConvertTo-Json -Depth 4 -Compress; 
                   $response.ContentType = 'application/json';
                  }

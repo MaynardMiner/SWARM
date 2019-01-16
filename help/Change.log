@@ -1540,3 +1540,7 @@ Critical X16r patch for 1.8.5
 -SWARM will now copy over last known miner logs into crash-reports.
 
 -SWARM will clean Trash folder for HiveOS (remove old miners/downloads).
+
+-Much better organization of API/summary. Organized by type, then profits (or pool estimates if no benchmarks).
+
+-Lite Mode disables timeout system (so you can run, and it won't block miner stats).

@@ -1351,11 +1351,7 @@ else{$MinerInterval = $Interval}
 
 
 ## This Set API table for LITE mode.
-$UsePools = $false
-$ProfitTable | foreach{if($_.Profits -ne $null){$UsePools = $true}}
-if($UsePools -eq $false){$APITable = $ProfitTable | Sort-Object -Property Type,Profits -Descending}
-else{$APITable = $ProfitTable | Sort-Object -Property Type,Pool_Estimate}
-$APITable | ConvertTo-Json -Depth 4 | Set-Content ".\build\txt\profittable.txt"
+$ProfitTable | ConvertTo-Json -Depth 4 | Set-Content ".\build\txt\profittable.txt"
 
 ## Load mini logo
 if($Platform -eq "linux"){Get-Logo}
@@ -1667,7 +1663,9 @@ if($_.BestMiner -eq $true)
    if($Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" -ne $null){$Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)"| foreach{try{$_.bad=0}catch{}}}
   }
 		 
-
+## Strike-Out System. Will not work with Lite Mode
+if($LITE -eq "No")
+ {
 if($Strike -eq $true)
  {
   if($_.WasBenchmarked -eq $False)
@@ -1757,6 +1755,7 @@ if($Strike -eq $true)
    }
   }
  }
+}
 else{Start-ASIC}
 }
 
