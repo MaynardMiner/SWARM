@@ -13,5 +13,5 @@
 
 
 mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-pwsh -command "$(< $mydir/dir.sh)/build/powershell/active.ps1"
+pwsh -command "$(< $mydir/dir.txt)/build/powershell/active.ps1"
 

@@ -119,7 +119,7 @@ function Get-Data {
     {
        Copy-Item ".\build\txt\dir.txt" -Destination "/usr/bin" -force | Out-Null
        Set-Location "/usr/bin"
-       Start-Process "chmod" -ArgumentList "+x dir.sh"
+       Start-Process "chmod" -ArgumentList "+x dir.txt"
        Set-Location "/"
        Set-Location $CmdDir
        }
