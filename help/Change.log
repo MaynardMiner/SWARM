@@ -1524,3 +1524,4 @@ Critical X16r patch for 1.8.5
 -SWARM will remotely notify you if there is no miners available (argument/pool/miners issues).
 -Migrated More Output files to .\build\txt instead of bash folder. (Helps with debugging).
 -SWARM will not remove its tar.gz download for HiveOS.
+-SWARM will now copy over last known miner logs into crash-reports
