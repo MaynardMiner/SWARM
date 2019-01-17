@@ -123,7 +123,7 @@ param(
     [Parameter(Mandatory=$false)]
     [Int]$AlgoBanCount = 3,
     [Parameter(Mandatory=$false)]
-    [Int]$MinerBanCount = 12,    
+    [Int]$MinerBanCount = 6,    
     [Parameter(Mandatory=$false)]
     [String]$Lite = "No",
     [Parameter(Mandatory=$false)]
