@@ -528,9 +528,6 @@ if($Platform -eq "linux")
   ## HiveOS Only Items
   if($HiveOS -eq "Yes")
   {
-   ##Remove Download
-   $OldDownload = Join-Path "/hive/miners/custom/downloads" "SWARM.$version.tar.gz"
-   if(Test-Path $OldDownload){Remove-Item $OldDownload -Force}
 
    ## Clear trash for usb stick
    Write-Host "Clearing Trash Folder"
