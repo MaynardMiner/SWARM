@@ -5,13 +5,13 @@
     "delay": "1",
     "prestart": [],
     "commands": {
-      "equihash-btg": "--algo 144_5 --pers BgoldPoW",
-      "equihash192": "--algo 192_7 --pers auto",
-      "equihash144": "-algo 144_5 --pers auto",
-      "equihash96": "--algo 96_5 --pers auto",
-      "equihash210": "--algo 210_9 --pers auto",
-      "equihash200": "--algo 200_9 --pers auto",
-      "zhash": "--algo 144_5 --pers auto"
+      "equihash-btg": "--par=144,5 --pers BgoldPoW",
+      "equihash192": "--par=192,7 --pers auto",
+      "equihash144": "--par=144,5 --pers auto",
+      "equihash96": "--par=96,5 --pers auto",
+      "equihash210": "--par=210,9 --pers auto",
+      "equihash200": "--par=200,9 --pers auto",
+      "zhash": "--par=144,5 --pers auto"
     },
     "difficulty": {
       "equihash-btg": "",
@@ -74,13 +74,13 @@
     "delay": "1",
     "prestart": [],
     "commands": {
-      "equihash-btg": "--algo 144_5 --pers BgoldPoW",
-      "equihash192": "--algo 192_7 --pers auto",
-      "equihash144": "-algo 144_5 --pers auto",
-      "equihash96": "--algo 96_5 --pers auto",
-      "equihash210": "--algo 210_9 --pers auto",
-      "equihash200": "--algo 200_9 --pers auto",
-      "zhash": "--algo 144_5 --pers auto"
+      "equihash-btg": "--par=144,5 --pers BgoldPoW",
+      "equihash192": "--par=192,7 --pers auto",
+      "equihash144": "--par=144,5 --pers auto",
+      "equihash96": "--par=96,5 --pers auto",
+      "equihash210": "--par=210,9 --pers auto",
+      "equihash200": "--par=200,9 --pers auto",
+      "zhash": "--par=144,5 --pers auto"
     },
     "difficulty": {
       "equihash-btg": "",
@@ -143,13 +143,13 @@
     "delay": "1",
     "prestart": [],
     "commands": {
-      "equihash-btg": "--algo 144_5 --pers BgoldPoW",
-      "equihash192": "--algo 192_7 --pers auto",
-      "equihash144": "-algo 144_5 --pers auto",
-      "equihash96": "--algo 96_5 --pers auto",
-      "equihash210": "--algo 210_9 --pers auto",
-      "equihash200": "--algo 200_9 --pers auto",
-      "zhash": "--algo 144_5 --pers auto"
+      "equihash-btg": "--par=144,5 --pers BgoldPoW",
+      "equihash192": "--par=192,7 --pers auto",
+      "equihash144": "--par=144,5 --pers auto",
+      "equihash96": "--par=96,5 --pers auto",
+      "equihash210": "--par=210,9 --pers auto",
+      "equihash200": "--par=200,9 --pers auto",
+      "zhash": "--par=144,5 --pers auto"
     },
     "difficulty": {
       "equihash-btg": "",
