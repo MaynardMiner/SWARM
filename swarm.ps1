@@ -85,7 +85,7 @@ param(
     [Parameter(Mandatory=$false)]
     [Int]$Nicehash_Fee = "2",
     [Parameter(Mandatory=$false)]
-    [Int]$Benchmark = 180,
+    [Int]$Benchmark = 120,
     [Parameter(Mandatory=$false)]
     [array]$No_Algo = "",
     [Parameter(Mandatory=$false)]
