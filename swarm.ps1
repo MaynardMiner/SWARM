@@ -1553,7 +1553,8 @@ if($Platform -eq "linux" -or $Platform -eq "windows")
 if($WattOMeter -eq "Yes")
  {
   Print-WattOMeter
-  Get-Power -PwrType $Type -Platforms $Platform
+  if($Type -like "*NVIDIA*"){Get-Power -PwrType "NVIDIA" -Platforms $Platform}
+  if($Type -like "*AMD*"){Get-Power -PwrType "AMD" -Platforms $Platform}
   Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
  }
 }

@@ -6,30 +6,32 @@ function Get-Power {
     [string]$Platforms="none"
     )
 
-$Ncheck = $false
-$Acheck = $false
-
-$PwrType | foreach { 
   if($Platforms -eq "linux")
    {
-    if($PwrType -like "*NVIDIA*" -and $Ncheck -eq $false)
+    switch($PwrType)
     {
-     $Ncheck = $true
+    "NVIDIA"
+    {
      $CardPower = ".\build\txt\nvidiapower.txt"
      if(Test-Path $CardPower){Clear-Content $CardPower}
-     timeout -s9 30 ./build/apps/VII-smi | Tee-Object ".\build\txt\nvidiapower.txt" | Out-Null
+     timeout -s9 30 ./build/apps/VII-smi | Tee-Object -Variable statpower | Out-Null
+     if($statpower){$statpower | Set-Content ".\build\txt\nvidiapower.txt"}
+     else{Write-Host "Failed To Get NVIDIA Power Usage- Driver is too busy" -ForegroundColor Red}
     }
 
-    elseif($PwrType -like "*AMD*" -and $Acheck -eq $false)
-     {
-      $Acheck = $true
+    "AMD"
+    {
       $CardPower = ".\build\txt\amdpower.txt"
       if(Test-Path $CardPower){Clear-Content $CardPower}
-      Start-Process ".\build\bash\rocm.sh" -Wait
+      timeout -s9 30 rocm-smi -P | Tee-Object -Variable statpower | Out-Null
+      if($statpower){$statpower | Set-Content ".\build\txt\amdpower.txt"}
+      else{Write-Host "Failed To Get AMD Power Usage- Driver is too busy" -ForegroundColor Red} 
      }
+
     }
   }
 }
+
 
 function Set-Power {
     param(
