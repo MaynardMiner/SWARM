@@ -38,6 +38,7 @@ $PreviousVersions += "SWARM.1.8.2"
 $PreviousVersions += "SWARM.1.8.3"
 $PreviousVersions += "SWARM.1.8.4"
 $PreviousVersions += "SWARM.1.8.5"
+$PreviousVersions += "SWARM.1.8.6"
 
 
 Write-Host "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
