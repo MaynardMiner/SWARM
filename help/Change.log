@@ -1559,3 +1559,5 @@ Critical X16r patch for 1.8.5
 
 -KW/h cost can now be set hourly by power.json, for variable rates. If use in conjucntion
  with ``-Conserve Yes`` argument, you can effectively stop mining if values drop to negative.
+
+-Moved Custom pools to custompools directory. Swarm will check that folder now.
