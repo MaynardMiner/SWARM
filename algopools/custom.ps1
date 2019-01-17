@@ -149,11 +149,11 @@ if($Algorithm -notcontains $Pool.Algo){$Algorithm += $Pool.Algo}
 
 ## Now Pool Request
 try{$Custom_Request = Invoke-RestMethod "$($Pool.Pool_Url)" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop} 
-catch{Write-Warning "SWARM contacted ($Name) for a failed API."; return}
+catch{Write-Warning "SWARM contacted ($Name) but there was no response."; return}
 
 if (($Custom_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) 
 { 
-   Write-Warning "SWARM contacted ($Name) but ($Name) Pool API had issues. " 
+    Write-Warning "SWARM contacted ($Name) but ($Name) the response was empty." 
    return 
 }
 

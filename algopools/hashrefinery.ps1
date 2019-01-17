@@ -5,11 +5,11 @@ $Hashrefinery_Request = [PSCustomObject]@{}
 if($Poolname -eq $Name)
  {
   try{$Hashrefinery_Request = Invoke-RestMethod "http://pool.hashrefinery.com/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop} 
-  catch{Write-Warning "SWARM contacted ($Name) for a failed API."; return} 
+  catch{Write-Warning "SWARM contacted ($Name) but there was no response."; return}
 
   if(($Hashrefinery_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1)
    { 
-     Write-Warning "SWARM contacted ($Name) but ($Name) Pool API was unreadable." 
+    Write-Warning "SWARM contacted ($Name) but ($Name) the response was empty." 
      return 
    }  
    

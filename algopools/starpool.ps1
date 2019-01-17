@@ -5,11 +5,11 @@ $starpool_Request = [PSCustomObject]@{}
 if($Poolname -eq $Name)
  {
   try{$starpool_Request = Invoke-RestMethod "https://www.starpool.biz/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop} 
-  catch{Write-Warning "SWARM contacted ($Name) for a failed API check."; return}
+  catch{Write-Warning "SWARM contacted ($Name) but there was no response."; return}
  
   if(($starpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1)
    { 
-    Write-Warning "SWARM contacted ($Name) but ($Name) Pool API had issues." 
+    Write-Warning "SWARM contacted ($Name) but ($Name) the response was empty." 
     return 
    }  
   

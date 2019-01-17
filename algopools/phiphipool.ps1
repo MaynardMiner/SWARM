@@ -5,11 +5,11 @@ $phiphipool_Request = [PSCustomObject]@{}
 if($Poolname -eq $Name)
  {
   try{$phiphipool_Request = Invoke-RestMethod "https://www.phi-phi-pool.com/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop} 
-  catch{Write-Warning "SWARM Contacted ($Name) for a failed API check.";return}
+  catch{Write-Warning "SWARM contacted ($Name) but there was no response."; return}
  
   if(($phiphipool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) { 
-     Write-Warning "SWARM contacted ($Name) but ($Name) Pool API was unreadable." 
-     return 
+   Write-Warning "SWARM contacted ($Name) but ($Name) the response was empty." 
+   return 
   }
   
   switch($Location)

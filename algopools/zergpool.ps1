@@ -5,15 +5,11 @@ $Zergpool_Request = [PSCustomObject]@{}
 if($Poolname -eq $Name)
  {
   try{$Zergpool_Request = Invoke-RestMethod "http://api.zergpool.com:8080/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop} 
-  catch 
-  { 
-   Write-Warning "SWARM Contacted ($Name) for a failed API check. "
-   return 
-  }
+  catch{Write-Warning "SWARM contacted ($Name) but there was no response."; return}
   
   if(($Zergpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) 
    { 
-    Write-Warning "SWARM contacted ($Name) but ($Name) Pool was unreadable. " 
+    Write-Warning "SWARM contacted ($Name) but ($Name) the response was empty." 
     return
    } 
      
