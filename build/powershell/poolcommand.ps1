@@ -34,6 +34,11 @@ if($PoolType -eq "Coin")
   $GetPools
  }
 
+if($PoolType -eq "Custom")
+ {
+  $GetPools = if(Test-Path "custompools"){Get-ChildItemContent "custompools" | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru}}
+  $GetPools
+ }
 }
 
 function Sort-Pools {

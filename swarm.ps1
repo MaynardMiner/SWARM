@@ -893,12 +893,16 @@ else
 }
 
 ##Get Algorithm Pools, Select the best three of each algorithm.
-Write-Host "Checking Algo Pools" -Foregroundcolor yellow
-$AllAlgoPools = Get-Pools -PoolType "Algo" -Stats $Stats
 $AlgoPools = @()
 $AlgoPools_Comparison = @()
+Write-Host "Checking Algo Pools" -Foregroundcolor yellow
+$AllAlgoPools = Get-Pools -PoolType "Algo" -Stats $Stats
+Write-Host "Adding Custom Pools" -ForegroundColor Yellow
+$AllCustomPools = Get-Pools -PoolType "Custom" -Stats $Stats
 $AllAlgoPools.Symbol | Select -Unique | ForEach {$AlgoPools += ($AllAlgoPools | Where Symbol -EQ $_ | Sort-Object Price -Descending | Select -First 3)}
 $AllAlgoPools.Symbol | Select -Unique | ForEach {$AlgoPools_Comparison += ($AllAlgoPools | Where Symbol -EQ $_ | Sort-Object StablePrice -Descending | Select -First 3)}
+$AllCustomPools.Symbol | Select -Unique | ForEach {$AlgoPools += ($AllCustomPools | Where Symbol -EQ $_ | Sort-Object Price -Descending | Select -First 3)}
+$AllCustomPools.Symbol | Select -Unique | ForEach {$AlgoPools_Comparison += ($AllCustomPools | Where Symbol -EQ $_ | Sort-Object StablePrice -Descending | Select -First 3)}
 
 ##Get Algorithms again, in case custom changed it.
 $Algorithm = @()
