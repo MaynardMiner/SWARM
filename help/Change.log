@@ -1552,3 +1552,7 @@ Critical X16r patch for 1.8.5
 -Added ``-APIPassword`` parameter, to set a password endpoint on remote api.
 
 -Upadated Help_File with new arguments.
+
+-Increased miner ban to 12 count default (because of zergpool equihash).
+
+-Zergpool Added
