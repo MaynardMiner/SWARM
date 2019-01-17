@@ -858,6 +858,7 @@ $OC = Get-Content ".\config\oc\oc-settings.json" | ConvertFrom-Json
 ##Reset Coins
 $CoinAlgo = $null  
 ##Get Watt Configuration
+$WattHour = $(Get-Date | Select hour).Hour
 $Watts = get-content ".\config\power\power.json" | ConvertFrom-Json
 
 ##Check Time Parameters
@@ -871,7 +872,7 @@ Write-Host "SWARM Is Building The Database. Auto-Coin Switching: $Auto_Coin" -fo
 $Rates = Invoke-RestMethod "https://api.coinbase.com/v2/exchange-rates?currency=BTC" -UseBasicParsing | Select-Object -ExpandProperty data | Select-Object -ExpandProperty rates
 $Currency | Where-Object {$Rates.$_} | ForEach-Object {$Rates | Add-Member $_ ([Double]$Rates.$_) -Force}
 $WattCurr = (1/$Rates.$Currency)
-$WattEx = [Double](($WattCurr*$Watts.KWh.KWh))
+$WattEx = [Double](($WattCurr*$Watts.KWh.$WattHour))
 }
 catch {
 Write-Host -Level Warn "Coinbase Unreachable. "
