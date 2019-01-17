@@ -335,10 +335,15 @@ $StartingParams = $CurrentParams | ConvertTo-Json -Compress
 ## Check For Remote Arugments Change Arguments To Remote Arguments
 if((Test-Path ".\config\parameters\newarguments.json") -or $Debug -eq $true)
 {
+$Defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json
 Write-Host "Detected New Arguments- Changing Parameters" -ForegroundColor Cyan
 Write-Host "These arguments can be found/modified in config < parameters < newarguments.json" -ForegroundColor Cyan
 if($Debug -eq $True){$NewParams = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json}
 else{$NewParams = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json}
+## Bug Fix: Adding New Defaults to flight sheet:
+$Defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json
+$Defaults | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | %{if($NewParams -notmatch $_){$NewParams | Add-Member "$($_)" $Defaults.$_}}
+
 Start-Sleep -S 2
 
 ## Save to Config Folder
