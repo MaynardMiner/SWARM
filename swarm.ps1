@@ -234,7 +234,8 @@ if([Double]$Boot -lt 600)
     $Report = $Report | %{$_ -replace ":","_"} | %{$_ -replace "\/","-"} | %{$_ -replace " ","_"};
     New-Item -Path ".\logs" -Name $Report -ItemType "Directory" | Out-Null;
     Get-ChildItem ".\build\txt" | Copy-Item -Destination ".\logs\$Report";
-    $Type | Foreach %{$TypeLog = ".\logs\$($_).log"; if(Test-Path $TypeLog){Copy-Item -Path $TypeLog -Destination ".\logs\$Report" | Out-Null}}
+    $TypeLogs = @("NVIDIA1","AMD1","NVIDIA2","NVIDIA3","CPU","ASIC")
+    $TypeLogs | %{$TypeLog = ".\logs\$($_).log"; if(Test-Path $TypeLog){Copy-Item -Path $TypeLog -Destination ".\logs\$Report" | Out-Null}}
     $ActiveLog = Get-ChildItem "logs"; $ActiveLog = $ActiveLog.Name | Select-String "active"
     if($ActiveLog){if(test-path ".\logs\$ActiveLog"){Copy-Item -Path ".\logs\$ActiveLog" -Destination ".\logs\$Report" | Out-Null}}
     Start-Sleep -S 3
