@@ -422,7 +422,7 @@ $APIPassword = $SWARMParams.APIPassword
 }
 
 ##Start API Server
-Start-APIServer $Port
+Start-APIServer
 
 ## Windows Start Up
 if($Platform -eq "windows")
