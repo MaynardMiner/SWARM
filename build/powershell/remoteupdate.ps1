@@ -219,6 +219,36 @@ $PreviousVersions | foreach {
             }
            }
           }
+          if($ChangeFile -eq "ewbf.json")
+          {
+            $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+            if($_ -ne "name")
+            {    
+            $Data.$_.commands."equihash-btg" = "--algo 144_5 --pers BgoldPoW"
+            $Data.$_.commands."equihash192" = "--algo 192_7 --pers auto"
+            $Data.$_.commands."equihash144" = "--algo 144_5 --pers auto"
+            $Data.$_.commands."equihash96" = "--algo 96_5 --pers auto"
+            $Data.$_.commands."equihash210" = "--algo 210_9 --pers auto"
+            $Data.$_.commands."equihash200" = "--algo 200_9 --pers auto"
+            $Data.$_.commands."zhash" = "--algo 144_5 --pers auto"
+            }
+           }
+          }
+          if($ChangeFile -eq "miniz.json")
+          {
+           $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+           if($_ -ne "name")
+           {    
+            $Data.$_.commands."equihash-btg" = "--par=144,5 --pers BgoldPoW"
+            $Data.$_.commands."equihash192" = "--par=192,7 --pers auto"
+            $Data.$_.commands."equihash144" = "--par=144,5 --pers auto"
+            $Data.$_.commands."equihash96" = "--par=96,5 --pers auto"
+            $Data.$_.commands."equihash210" = "--par=210,9 --pers auto"
+            $Data.$_.commands."equihash200" = "--par=200,9 --pers auto"
+            $Data.$_.commands."zhash" = "--par=144,5 --pers auto"       
+            }
+           }
+          }
           if($ChangeFile -eq "fancyix.json")
           {
           $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
