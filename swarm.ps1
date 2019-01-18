@@ -621,6 +621,9 @@ if($Platform -eq "windows")
   ## GPU Bus Hash Table
   $GetBusData = Get-BusFunctionID | ConvertTo-Json -Compress
 
+  ## Get Total GPU HashTable
+  $GPU_Count = Get-GPUCount $GetBusData
+
   ## Say Hello To Hive
   if($HiveOS -eq "Yes")
   {
@@ -688,8 +691,6 @@ if($Platform -eq "windows")
     Write-Host "failed to contact HiveOS- Do you have an account? Did you use your farm hash?"
    }
 
-  ## Get Total GPU HashTable
-  $GPU_Count = Get-GPUCount $GetBusData
   ## Aaaaannnnd...Que that sexy logo. Go Time.
   Get-SexyWinLogo
   }
