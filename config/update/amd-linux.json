@@ -1,4 +1,5 @@
 {
+  "name": "amd-linux",
   "claymore": {
       "name": "claymore_amd",
       "type": "amd",
