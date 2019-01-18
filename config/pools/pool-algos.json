@@ -74,5 +74,9 @@
   "yescryptr16": "yescryptr16",
   "yescryptr32": "yescryptr32",
   "zhash": "zhash",
+  "astralhash": "astralhash",
+  "jeonghash": "jeonghash",
+  "padihash": "padihash",
+  "pawelhash": "pawelhash",
   "lyra2vc0ban": "lyra2vc0ban"
 }

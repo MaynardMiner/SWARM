@@ -25,7 +25,11 @@
       "sonoa": "",
       "dedal": "",
       "x16rt": "",
-      "sha256q": ""
+      "sha256q": "",
+      "astralhash": "",
+      "jeonghash": "",
+      "padihash": "",
+      "pawelhash": ""
     },
     "difficulty": {
       "tribus": "",
@@ -49,7 +53,11 @@
       "sonoa": "",
       "dedal": "",
       "x16rt": "",
-      "sha256q": ""
+      "sha256q": "",
+      "astralhash": "",
+      "jeonghash": "",
+      "padihash": "",
+      "pawelhash": ""
     },
     "naming": {
       "tribus": "tribus",
@@ -73,7 +81,11 @@
       "sonoa": "sonoa",
       "dedal": "dedal",
       "x16rt": "x16rt",
-      "sha256q": "sha256q"
+      "sha256q": "sha256q",
+      "astralhash": "astralhash",
+      "jeonghash": "jeonghash",
+      "padihash": "padihash",
+      "pawelhash": "pawelhash"
     },
     "oc": {
       "tribus": {
@@ -182,6 +194,26 @@
         "Memory": ""
       },
       "sha256q": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "astralhash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "jeonghash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "padihash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "pawelhash": {
         "Power": "",
         "Core": "",
         "Memory": ""
@@ -214,7 +246,11 @@
       "sonoa": "",
       "dedal": "",
       "x16rt": "",
-      "sha256q": ""
+      "sha256q": "",
+      "astralhash": "",
+      "jeonghash": "",
+      "padihash": "",
+      "pawelhash": ""
     },
     "difficulty": {
       "tribus": "",
@@ -238,7 +274,11 @@
       "sonoa": "",
       "dedal": "",
       "x16rt": "",
-      "sha256q": ""
+      "sha256q": "",
+      "astralhash": "",
+      "jeonghash": "",
+      "padihash": "",
+      "pawelhash": ""
     },
     "naming": {
       "tribus": "tribus",
@@ -262,7 +302,11 @@
       "sonoa": "sonoa",
       "dedal": "dedal",
       "x16rt": "x16rt",
-      "sha256q": "sha256q"
+      "sha256q": "sha256q",
+      "astralhash": "astralhash",
+      "jeonghash": "jeonghash",
+      "padihash": "padihash",
+      "pawelhash": "pawelhash"
     },
     "oc": {
       "tribus": {
@@ -371,6 +415,26 @@
         "Memory": ""
       },
       "sha256q": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "astralhash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "jeonghash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "padihash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "pawelhash": {
         "Power": "",
         "Core": "",
         "Memory": ""
@@ -403,7 +467,11 @@
       "sonoa": "",
       "dedal": "",
       "x16rt": "",
-      "sha256q": ""
+      "sha256q": "",
+      "astralhash": "",
+      "jeonghash": "",
+      "padihash": "",
+      "pawelhash": ""
     },
     "difficulty": {
       "tribus": "",
@@ -427,7 +495,11 @@
       "sonoa": "",
       "dedal": "",
       "x16rt": "",
-      "sha256q": ""
+      "sha256q": "",
+      "astralhash": "",
+      "jeonghash": "",
+      "padihash": "",
+      "pawelhash": ""
     },
     "naming": {
       "tribus": "tribus",
@@ -451,7 +523,11 @@
       "sonoa": "sonoa",
       "dedal": "dedal",
       "x16rt": "x16rt",
-      "sha256q": "sha256q"
+      "sha256q": "sha256q",
+      "astralhash": "astralhash",
+      "jeonghash": "jeonghash",
+      "padihash": "padihash",
+      "pawelhash": "pawelhash"
     },
     "oc": {
       "tribus": {
@@ -560,6 +636,26 @@
         "Memory": ""
       },
       "sha256q": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "astralhash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "jeonghash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "padihash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "pawelhash": {
         "Power": "",
         "Core": "",
         "Memory": ""
