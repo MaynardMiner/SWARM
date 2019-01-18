@@ -423,6 +423,7 @@ $APIPassword = $SWARMParams.APIPassword
 
 ##Start API Server
 Start-APIServer
+if($Platform -eq "Windows"){Start-Process "powershell" -ArgumentList "-ExecutionPolicy Bypass -WindowStyle hidden -Command `".\build\powershell\apiwatchdog.ps1 $Dir $Port`""}
 
 ## Windows Start Up
 if($Platform -eq "windows")
@@ -1786,4 +1787,4 @@ else{Start-ASIC}
 }
 
 Stop-Transcript
-
+Exit
