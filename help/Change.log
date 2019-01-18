@@ -1561,3 +1561,20 @@ Critical X16r patch for 1.8.5
  with ``-Conserve Yes`` argument, you can effectively stop mining if values drop to negative.
 
 -Moved Custom pools to custompools directory. Swarm will check that folder now.
+
+1.8.9
+
+-API now runs through background screen.
+-API with windows closes 1 second after background screen exit.
+-New default configs (if new are developed) will automatically be added to windows flight sheet.
+-Fixed CryptoDredge Download.
+-Fixed SWARM re-download on reboot.
+-Rolled back deletion of tar.gz from hive downloads folder.
+-Windows NVIDIA should now oc with default all GPU's (not just per card)
+ If you have only 1 value set.
+-API summary table loads faster.
+
+-Rebuilt version command from scratch. It should work decent now.
+-version update command should work for regular *nix users, but
+ it will not restart SWARM (Working on restart commands).
+-version command is new, and is beta- report if issues.

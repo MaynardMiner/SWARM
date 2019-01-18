@@ -1092,6 +1092,10 @@ Write-Host "Most Ideal Choice Is $($BestMiners_Selected) on $($BestPool_Selected
  }
 }
 
+
+  ## This Set API table for LITE mode.
+  $ProfitTable | ConvertTo-Json -Depth 4 | Set-Content ".\build\txt\profittable.txt"
+
 ##Clear Old Logs
 if(-not $ActiveMinerPrograms){$Type | foreach{if(Test-Path ".\logs\$($_).log"){remove-item ".\logs\$($_).log" -Force}}}
 
@@ -1196,7 +1200,6 @@ $Type | foreach{
       }
      }
     }
-
 
 ## This section pulls relavant statics that users require, and then outputs them to screen or file, to be pulled on command.
 if($ConserveMessage){$ConserveMessage | %{Write-Host "$_" -ForegroundColor Red}}
@@ -1357,10 +1360,6 @@ else{
   }
 else{$MinerInterval = $Interval}
 }
-
-
-## This Set API table for LITE mode.
-$ProfitTable | ConvertTo-Json -Depth 4 | Set-Content ".\build\txt\profittable.txt"
 
 ## Load mini logo
 if($Platform -eq "linux"){Get-Logo}
