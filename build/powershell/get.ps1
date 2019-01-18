@@ -315,12 +315,12 @@ Get-BenchTable | Out-File ".\build\txt\get.txt"
      try{Invoke-WebRequest $URI -OutFile $FileName -UseBasicParsing -ErrorAction Stop}catch{$Failed = $true; $Get += "Failed To Contact Github For Download! Must Do So Manually"}
      if($Failed -eq $false)
      {
-     Start-Process "7z" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -Wait -WindowStyle Minimized
+      Start-Process "7z" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -Wait -WindowStyle Minimized
       $Get += "Config Command Initiated- Restarting SWARM"
       Write-Host "Config Command Initiated- Restarting SWARM"
       $MinerFile =".\build\pid\miner_pid.txt"
       if(Test-Path $MinerFile){$MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue}
-      if($MinerId)
+       if($MinerId)
        {
         Stop-Process $MinerId -Force
         Start-Sleep -S 5
@@ -331,7 +331,6 @@ Get-BenchTable | Out-File ".\build\txt\get.txt"
         Copy-Item ".\config\parameters\newarguments.json" -Destination "$NewLocation\config\parameters" -Force
         New-Item -Name "pid" -Path "$NewLocation\build" -ItemType "Directory"
         Copy-Item ".\build\pid\background_pid.txt" -Destination "$NewLocation\build\pid" -Force
-        Start-Sleep -S 3
         Set-Location $NewLocation
         Start-Process ".\SWARM.bat"
         Set-Location $dir
@@ -492,6 +491,4 @@ if($get -ne $null)
 {
 $Get
 $Get | Out-File ".\build\txt\get.txt"
-Start-Sleep -S .5
 }
-Exit

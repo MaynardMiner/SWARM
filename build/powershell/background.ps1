@@ -1014,6 +1014,11 @@ if($Platforms -eq "windows" -and $HiveOS -eq "Yes")
      {
       Write-Host "Sent Command To Hive"
      }
+    if($SwarmResponse -eq "update")
+     {
+      Write-Host "Update Completed- Exiting"
+      Exit
+     }
     }
   }
 }

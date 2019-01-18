@@ -158,11 +158,8 @@
         $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
         $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
         Write-Host $method $messagetype $data
-        $trigger = "exec"
-        if($data -eq "get update")
-        {
-         exit
-        }
+        if($Data = "get update"){$Trigger = "update"}
+        else{$Trigger = "exec"}
        }
       "benchmark"
       {
