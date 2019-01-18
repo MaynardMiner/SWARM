@@ -196,6 +196,11 @@ $swarmstamp = "SWARMISBESTMINEREVER"
 if(-not (Test-Path ".\build\txt")){New-Item -Name "txt" -ItemType "Directory" -Path ".\build" | Out-Null}
 $Platform | Set-Content ".\build\txt\os.txt"
 
+## Initiate Update Check
+if($Platform -eq "Windows"){$GetUpdates = "Yes"}
+else($GetUpdates -eq $Update)
+start-update -Update $Getupdate -Dir $dir -Platforms $Platform
+
 ##Load Previous Times & PID Data
 ## Close Previous Running Agent- Agent is left running to send stats online, even if SWARM crashes
 if($Platform -eq "windows")
@@ -518,9 +523,6 @@ $ActiveMinerPrograms = @()
 $Naming = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
 $Priorities = Get-Content ".\config\pools\pool-priority.json" | ConvertFrom-Json
 $DonationMode = $false
-
-## Initiate Update Check
-start-update -Update $update -Dir $dir -Platforms $Platform
 
 ## Linux Initialize
 if($Platform -eq "linux")

@@ -26,7 +26,7 @@ $StartUpdate = $True
 if($Platforms -eq "linux" -and $Update -eq "No"){$StartUpdate = $false}
 
 if($StartUpdate -eq $true)
- {
+{
 $PreviousVersions = @()
 $PreviousVersions += "SWARM.1.7.6"
 $PreviousVersions += "SWARM.1.7.7"
@@ -40,6 +40,7 @@ $PreviousVersions += "SWARM.1.8.4"
 $PreviousVersions += "SWARM.1.8.5"
 $PreviousVersions += "SWARM.1.8.6"
 $PreviousVersions += "SWARM.1.8.7"
+$PreviousVersions += "SWARM.1.8.8"
 
 Write-Host "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
 Write-Host "Check $Location For any Previous Versions"
