@@ -161,10 +161,7 @@
         $trigger = "exec"
         if($data -eq "get update")
         {
-          Write-Host $method $messagetype $data
-          $ID = ".\build\pid\background_pid.txt"
-          $BackGroundID = Get-Process -id (Get-Content "$ID" -ErrorAction SilentlyContinue) -ErrorAction SilentlyContinue
-          Stop-Process $BackGroundID | Out-Null
+         exit
         }
        }
       "benchmark"

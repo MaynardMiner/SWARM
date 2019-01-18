@@ -52,7 +52,7 @@ $PreviousVersions | foreach {
      Write-Host "Detected Previous Version"
      Write-Host "Previous Version is $($PreviousPath)"
      Write-Host "Gathering Old Version Config And HashRates- Then Deleting"
-     Start-Sleep -S 5
+     Start-Sleep -S 10
      $OldBackup = Join-Path $PreviousPath "backup"
      $OldTime = Join-Path $PreviousPath "build\data"
      $OldConfig = Join-Path $PreviousPath "config"
