@@ -37,7 +37,6 @@ switch($Types)
          {
           if($Cudas -eq "10"){$update = Get-Content ".\config\update\nvidia10-linux.json" | ConvertFrom-Json}
           if($Cudas -eq "9.2"){$update = Get-Content ".\config\update\nvidia9.2-linux.json" | ConvertFrom-Json}
-          elseif($Cudas -eq "9.1"){$update = Get-Content ".\config\update\nvidia9.1-linux.json" | ConvertFrom-Json}
          }
          elseif($Platforms -eq "windows"){$update = Get-Content ".\config\update\nvidia-win.json" | ConvertFrom-Json}
      }
@@ -49,7 +48,7 @@ switch($Types)
      }
 }
 
-$update | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {$miner_update | Add-Member $update.$_.Name $update.$_}
+$update | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach{if($_ -ne "name"){$miner_update | Add-Member $update.$_.Name $update.$_}}
 
 $miner_update
 

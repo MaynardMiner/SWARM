@@ -25,7 +25,15 @@ param(
 [Parameter(Mandatory=$false)]
 [String]$HiveOS,
 [Parameter(Mandatory=$false)]
-[Double]$RejPercent
+[Double]$RejPercent,
+[Parameter(Mandatory=$false)]
+[string]$Remote,
+[Parameter(Mandatory=$false)]
+[string]$API,
+[Parameter(Mandatory=$false)]
+[Int]$Port,
+[Parameter(Mandatory=$false)]
+[string]$APIPassword
 )
 
 ##Icon for windows
@@ -54,6 +62,25 @@ if($Platforms -eq "windows")
 . .\build\powershell\hiveoc.ps1
 . .\build\powershell\octune.ps1
 . .\build\powershell\statcommand.ps1
+. .\build\powershell\api.ps1
+
+##Start API Server
+Write-Host "API Port is $Port"
+Start-APIServer
+if($Platforms -eq "Windows"){Start-Process "powershell" -ArgumentList "-ExecutionPolicy Bypass -WindowStyle hidden -Command `".\build\powershell\apiwatchdog.ps1 $Port`"" -WorkingDirectory $WorkingDir}
+
+if($API -eq "Yes")
+{
+if($((Get-Job -Name "APIServer").State) -eq "Running")
+ {
+  Write-Host "API Server Started- you can run http://localhost:$Port/end to close" -ForegroundColor Green
+ }
+else
+{
+ Write-Warning "API Server Failed To Start"
+ Get-Job -Name "APIServer" | Receive-Job
+}
+}
 
 ## SWARM miner PID
 $CheckForSWARM = ".\build\pid\miner_pid.txt"

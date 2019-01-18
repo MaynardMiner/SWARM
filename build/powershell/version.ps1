@@ -30,15 +30,16 @@ param(
 Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))
 $Message = @()
 
-if($Command -eq "!"){$Message += "No Command Given. Try version query";}
+if($Command -eq "!"){$Message += "No Command Given. Try version query"; Write-Host $($Message | Select -last 1)}
 else{$CommandQuery = $Command -replace("!","")}
 
 if($CommandQuery)
  {
   $Message += "Command is $CommandQuery"
+  Write-Host $($Message | Select -last 1)
   $GetCuda = ".\build\txt\cuda.txt"
   if(test-path $GetCuda){$CudaVersion = Get-Content $GetCuda}
-  else{$Message += "Warning: Unable to detect cuda version."}
+  else{$Message += "Warning: Unable to detect cuda version."; Write-Host $($Message | Select -last 1)}
   Switch($Platform)
   {
    "windows"
@@ -55,18 +56,18 @@ if($CommandQuery)
      {
       $updatecheck = ".\config\update\nvidia9.2-linux.json"
       if(Test-Path $updatecheck){$miner_update_nvidia = Get-Content $updatecheck | ConvertFrom-Json}
-      else{$Message += "Warning: Cuda 9.2 update file not found"}
+      else{$Message += "Warning: Cuda 9.2 update file not found"; Write-Host $($Message | Select -last 1)}
      }
     "10"
      {
       $updatecheck = ".\config\update\nvidia10-linux.json"
       if(Test-Path $updatecheck){$miner_update_nvidia = Get-Content $updatecheck | ConvertFrom-Json}
-      else{$Message += "Warning: Cuda 10 update file not found"}
+      else{$Message += "Warning: Cuda 10 update file not found"; Write-Host $($Message | Select -last 1)}
      }
     }
     $miner_update_amd = Get-Content ".\config\update\amd-linux.json" | ConvertFrom-Json
     $miner_update_cpu = Get-Content ".\config\update\cpu-linux.json" | ConvertFrom-Json  
-  }
+   }
   }
 
 $MinerSearch = @()
@@ -79,6 +80,7 @@ $MinerSearch += $miner_update_cpu
    "Update"
     {
      $Message += "Executing Command: $CommandQuery"
+     Write-Host $($Message | Select -last 1)
      $Failed = $false
      $Found = $false
 
@@ -90,11 +92,11 @@ $MinerSearch += $miner_update_cpu
        $Found = $true
        $UpdateFile = $MinerType.Name
        if($EXE){$MinerType.$_.minername = $EXE}
-       else{$Message += "No exe supplied. Please run again."; $failed = $true}
+       else{$Message += "No exe supplied. Please run again."; Write-Host $($Message | Select -last 1); $failed = $true}
        if($Version){$MinerType.$_.version = $Version}
-       else{$Message += "No version supplied. Please run again."; $failed = $true}
+       else{$Message += "No version supplied. Please run again."; Write-Host $($Message | Select -last 1); $failed = $true}
        if($Uri){$MinerType.$_.uri = $Uri}
-       else{$Message += "No Uri Supplied. Please run again."; $failed = $true}
+       else{$Message += "No Uri Supplied. Please run again."; Write-Host $($Message | Select -last 1); $failed = $true}
       }
      }
     } 
@@ -102,6 +104,7 @@ $MinerSearch += $miner_update_cpu
     if($Found -eq $true -and $Failed -eq $false)
     {
      $Message += "Stopping Miner & Waiting 5 Seconds"
+     Write-Host $($Message | Select -last 1)
      switch ($Platform)
       {
        "windows"
@@ -116,47 +119,50 @@ $MinerSearch += $miner_update_cpu
          Start-Sleep -S 5
         }
       }
-     $Updated = $MinerType | Where Name -eq $UpdateFile
+     $Updated = $MinerSearch | Where Name -eq $UpdateFile
      if(Test-Path $Updated.$Name.path1){Remove-Item (Split-Path $Updated.$Name.path1) -Recurse -Force}
      if(Test-Path $Updated.$Name.path2){Remove-Item (Split-Path $Updated.$Name.path2) -Recurse -Force}
      if(Test-Path $Updated.$Name.path3){Remove-Item (Split-Path $Updated.$Name.path3) -Recurse -Force}
-     $Updated | Set-Content ".\config\update\$UpdateFile.json"
+     $Updated | ConvertTo-Json -Depth 3 | Set-Content ".\config\update\$UpdateFile.json"
      $message += "Miner New executable is $EXE"
+     Write-Host $($Message | Select -last 1)
      $message += "Miner New version is $Version"
+     Write-Host $($Message | Select -last 1)
      $message += "Miner New uri is $URI"
+     Write-Host $($Message | Select -last 1)
      $message += "Miner Was Updated"
+     Write-Host $($Message | Select -last 1)
      if($Platform -ne "windows")
      {
      if(-not (test-path "/hive/miners/custom"))
       {
-       $Message += "Restarting Swarm in miner screen"
-       Write-Host $Message
-       $SWARM= Get-Content "swarm" -replace "screen -S miner -m "
-       Start-Sleep -S 5
-       screen -S miner -d -m $SWARM
+       $Message += "SWARM can be restarted"
+       Write-Host $($Message | Select -last 1)
       }
      else
       {
        $Message += "Restarting Swarm"
+       Write-Host $($Message | Select -last 1)
        miner start
       }
      }
     }
-   else{$message += "Miner update process failed. Exiting"}
+   else{$message += "Miner update process failed. Exiting"; Write-Host $($Message | Select -last 1)}
   }
 
- "query"
-  {
-   $MinerTables = @()
-    $MinerSearch | %{
+  "query"
+    {
+     $MinerTables = @()
+     $MinerSearch | %{
      $MinerTable = $_
      $MinerTable = $MinerTable.PSObject.Properties.Name | %{if($_ -ne "name"){$MinerTable.$_}}
-     $MinerTable |  Sort-Object -Property Type,Name | Format-Table (@{Label = "Name"; Expression={$($_.Name)}},@{Label = "Type"; Expression={$($_.Type)}},@{Label = "Executable"; Expression={$($_.MinerName)}},@{Label = "Version"; Expression={$($_.Version)}}) | Out-Host
+     $MinerTables += $MinerTable |  Sort-Object -Property Type,Name | Format-Table (@{Label = "Name"; Expression={$($_.Name)}},@{Label = "Type"; Expression={$($_.Type)}},@{Label = "Executable"; Expression={$($_.MinerName)}},@{Label = "Version"; Expression={$($_.Version)}})
     }
    }
   }
  }
  
+ if($CudaVersion){$Message += "Cuda Version is $CudaVersion"; Write-Host $($Message | Select -last 1)}
  $Message | Out-File ".\build\txt\version.txt"
- Write-Host "$Message"
+ if($MinerTables){$MinerTables | Out-Host; $MinerTables | Out-File ".\build\txt\version.txt" -Append}
 

@@ -322,8 +322,8 @@ Get-BenchTable | Out-File ".\build\txt\get.txt"
       if(Test-Path $MinerFile){$MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue}
       if($MinerId)
        {
-        Stop-Process $MinerId
-        Start-Sleep -S 3
+        Stop-Process $MinerId -Force
+        Start-Sleep -S 5
         $Get += "Attempting to start new SWARM verison at $NewLocation\SWARM.bat"
         Write-Host "Attempting to start new SWARM verison at $NewLocation\SWARM.bat"
         $Get += "Downloaded and extracted SWARM successfully"
@@ -331,12 +331,9 @@ Get-BenchTable | Out-File ".\build\txt\get.txt"
         Copy-Item ".\config\parameters\newarguments.json" -Destination "$NewLocation\config\parameters" -Force
         New-Item -Name "pid" -Path "$NewLocation\build" -ItemType "Directory"
         Copy-Item ".\build\pid\background_pid.txt" -Destination "$NewLocation\build\pid" -Force
-        Write-Host "Adding SWARM to startup" -ForegroundColor Green
-        $StartUp="$Env:USERPROFILE\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"
-        New-Item -ItemType SymbolicLink -Path "$StartUp" -Name "SWARM.lnk" -Value "$NewLocation\SWARM.bat" 
+        Start-Sleep -S 3
         Set-Location $NewLocation
         Start-Process ".\SWARM.bat"
-        Start-Sleep -S 2
         Set-Location $dir
        }
      }
@@ -497,4 +494,4 @@ $Get
 $Get | Out-File ".\build\txt\get.txt"
 Start-Sleep -S .5
 }
-Exit-PSSession
+Exit

@@ -2,8 +2,6 @@ function start-APIServer {
 if($API -eq "Yes")
 {
 ## Shutdown Previous API if stuck by running a command
-Write-Host "Checking to ensure API port is free" -ForegroundColor "Yellow"
-try{Invoke-RestMethod "http://localhost:$Port/end" -UseBasicParsing -TimeoutSec 5}catch{}
 
 ## API Server Start
 $APIServer = {
@@ -129,7 +127,7 @@ $APIServer = {
        }
       }Finally{$listener.Stop()}
 }
-Start-Job $APIServer -Name "APIServer" -ArgumentList $Dir, $Port, $Remote, $APIPassword | OUt-Null
+Start-Job $APIServer -Name "APIServer" -ArgumentList $WorkingDir, $Port, $Remote, $APIPassword | OUt-Null
 Write-Host "Starting API Server" -ForegroundColor "Yellow"
 }
 }

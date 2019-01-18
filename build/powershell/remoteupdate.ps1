@@ -26,7 +26,7 @@ $StartUpdate = $True
 if($Platforms -eq "linux" -and $Update -eq "No"){$StartUpdate = $false}
 
 if($StartUpdate -eq $true)
- {
+{
 $PreviousVersions = @()
 $PreviousVersions += "SWARM.1.7.6"
 $PreviousVersions += "SWARM.1.7.7"
@@ -40,6 +40,7 @@ $PreviousVersions += "SWARM.1.8.4"
 $PreviousVersions += "SWARM.1.8.5"
 $PreviousVersions += "SWARM.1.8.6"
 $PreviousVersions += "SWARM.1.8.7"
+$PreviousVersions += "SWARM.1.8.8"
 
 Write-Host "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
 Write-Host "Check $Location For any Previous Versions"
@@ -51,7 +52,7 @@ $PreviousVersions | foreach {
      Write-Host "Detected Previous Version"
      Write-Host "Previous Version is $($PreviousPath)"
      Write-Host "Gathering Old Version Config And HashRates- Then Deleting"
-     Start-Sleep -S 5
+     Start-Sleep -S 10
      $OldBackup = Join-Path $PreviousPath "backup"
      $OldTime = Join-Path $PreviousPath "build\data"
      $OldConfig = Join-Path $PreviousPath "config"
@@ -239,11 +240,13 @@ $PreviousVersions | foreach {
           {
            $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
            if($_ -ne "name")
-           {    
+           {
+            $Data.$_.commands = $Data.$_.commands | Select -ExcludeProperty "equihash192","equihash196"
+            $Data.$_.difficulty = $Data.$_.difficulty | Select -ExcludeProperty "equihash192","equihash196"
+            $Data.$_.naming = $Data.$_.naming | Select -ExcludeProperty "equihash192","equihash196"
+            $Data.$_.oc = $Data.$_.oc | Select -ExcludeProperty "equihash192","equihash196"
             $Data.$_.commands."equihash-btg" = "--par=144,5 --pers BgoldPoW"
-            $Data.$_.commands."equihash192" = "--par=192,7 --pers auto"
             $Data.$_.commands."equihash144" = "--par=144,5 --pers auto"
-            $Data.$_.commands."equihash96" = "--par=96,5 --pers auto"
             $Data.$_.commands."equihash210" = "--par=210,9 --pers auto"
             $Data.$_.commands."equihash200" = "--par=200,9 --pers auto"
             $Data.$_.commands."zhash" = "--par=144,5 --pers auto"       
