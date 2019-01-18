@@ -41,6 +41,7 @@ $PreviousVersions += "SWARM.1.8.5"
 $PreviousVersions += "SWARM.1.8.6"
 $PreviousVersions += "SWARM.1.8.7"
 $PreviousVersions += "SWARM.1.8.8"
+$PreviousVersions += "SWARM.1.8.9"
 
 Write-Host "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
 Write-Host "Check $Location For any Previous Versions"
@@ -165,7 +166,27 @@ $PreviousVersions | foreach {
           $Data.$_.commands| Add-Member "sha256q" "" -ErrorAction SilentlyContinue
           $Data.$_.difficulty | Add-Member "sha256q" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "sha256q" "sha256q" -ErrorAction SilentlyContinue
-          $Data.$_.oc | Add-Member "sha256q" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue                    
+          $Data.$_.oc | Add-Member "sha256q" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
+          
+          $Data.$_.commands| Add-Member "astralhash" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "astralhash" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "astralhash" "astralhash" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "astralhash" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
+
+          $Data.$_.commands| Add-Member "padihash" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "padihash" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "padihash" "padihash" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "padihash" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
+
+          $Data.$_.commands| Add-Member "jeonghash" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "jeonghash" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "jeonghash" "jeonghash" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "jeonghash" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
+
+          $Data.$_.commands| Add-Member "pawelhash" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "pawelhash" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "pawelhash" "pawelhash" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "pawelhash" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
            }
           }
          }
