@@ -240,11 +240,13 @@ $PreviousVersions | foreach {
           {
            $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
            if($_ -ne "name")
-           {    
+           {
+            $Data.$_.commands = $Data.$_.commands | Select -ExcludeProperty "equihash192","equihash196"
+            $Data.$_.difficulty = $Data.$_.difficulty | Select -ExcludeProperty "equihash192","equihash196"
+            $Data.$_.naming = $Data.$_.naming | Select -ExcludeProperty "equihash192","equihash196"
+            $Data.$_.oc = $Data.$_.oc | Select -ExcludeProperty "equihash192","equihash196"
             $Data.$_.commands."equihash-btg" = "--par=144,5 --pers BgoldPoW"
-            $Data.$_.commands."equihash192" = "--par=192,7 --pers auto"
             $Data.$_.commands."equihash144" = "--par=144,5 --pers auto"
-            $Data.$_.commands."equihash96" = "--par=96,5 --pers auto"
             $Data.$_.commands."equihash210" = "--par=210,9 --pers auto"
             $Data.$_.commands."equihash200" = "--par=200,9 --pers auto"
             $Data.$_.commands."zhash" = "--par=144,5 --pers auto"       
