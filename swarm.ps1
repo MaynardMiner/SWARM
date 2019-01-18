@@ -198,7 +198,7 @@ $Platform | Set-Content ".\build\txt\os.txt"
 
 ## Initiate Update Check
 if($Platform -eq "Windows"){$GetUpdates = "Yes"}
-else($GetUpdates -eq $Update)
+else{$GetUpdates = $Update}
 start-update -Update $Getupdates -Dir $dir -Platforms $Platform
 
 ##Load Previous Times & PID Data
