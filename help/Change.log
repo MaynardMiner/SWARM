@@ -1578,3 +1578,8 @@ Critical X16r patch for 1.8.5
 -version update command should work for regular *nix users, but
  it will not restart SWARM (Working on restart commands).
 -version command is new, and is beta- report if issues.
+
+
+1.9.0
+
+-Added new algos on zergpool (trex).
