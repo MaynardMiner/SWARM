@@ -15,11 +15,20 @@ function Start-Background {
       [Parameter(Mandatory=$false)]
       [String]$HiveMirror,
       [Parameter(Mandatory=$false)]
-      [String]$RejPercent
+      [String]$RejPercent,
+      [Parameter(Mandatory=$false)]
+      [String]$Remote,   
+      [Parameter(Mandatory=$false)]
+      [String]$API,
+      [Parameter(Mandatory=$false)]
+      [String]$APIPassword,
+      [Parameter(Mandatory=$false)]
+      [int]$Port
+
       )
   
       $BackgroundTimer = New-Object -TypeName System.Diagnostics.Stopwatch
-      $command = Start-Process "powershell" -WorkingDirectory $WorkingDir -ArgumentList "-executionpolicy bypass -command `"&{`$host.ui.RawUI.WindowTitle = `'Background Agent`'; &.\Background.ps1 -WorkingDir `'$dir`' -Platforms `'$Platforms`' -HiveID `'$HiveID`' -HiveOS `'$HiveOS`' -HiveMirror $HiveMirror -HivePassword `'$HivePassword`' -RejPercent $RejPercent}`"" -WindowStyle Minimized -PassThru -Verb Runas
+      $command = Start-Process "powershell" -WorkingDirectory $WorkingDir -ArgumentList "-executionpolicy bypass -command `"&{`$host.ui.RawUI.WindowTitle = `'Background Agent`'; &.\Background.ps1 -WorkingDir `'$dir`' -Platforms `'$Platforms`' -HiveID `'$HiveID`' -HiveOS `'$HiveOS`' -HiveMirror $HiveMirror -HivePassword `'$HivePassword`' -Remote `'$Remote`' -Port `'$Port`' -APIPassword `'$APIPassword`' -API `'$API`' -RejPercent `'$RejPercent`'}`"" -WindowStyle Minimized -PassThru -Verb Runas
       $command.ID | Set-Content ".\build\pid\background_pid.txt"
       $BackgroundTimer.Restart()
       do

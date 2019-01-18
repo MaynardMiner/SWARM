@@ -421,10 +421,6 @@ $Remote = $SWARMParams.Remote
 $APIPassword = $SWARMParams.APIPassword
 }
 
-##Start API Server
-Start-APIServer
-if($Platform -eq "Windows"){Start-Process "powershell" -ArgumentList "-ExecutionPolicy Bypass -WindowStyle hidden -Command `".\build\powershell\apiwatchdog.ps1 $Dir $Port`""}
-
 ## Windows Start Up
 if($Platform -eq "windows")
 { 
@@ -754,23 +750,10 @@ if($Type -like "*CPU*"){$cpu = get-minerfiles -Types "CPU" -Platforms $Platform}
 if($Type -like "*NVIDIA*"){$nvidia = get-minerfiles -Types "NVIDIA" -Platforms $Platform -Cudas $Cuda}
 if($Type -like "*AMD*"){$amd = get-minerfiles -Types "AMD" -Platforms $Platform}
 
-if($API -eq "Yes")
-{
-if($((Get-Job -Name "APIServer").State) -eq "Running")
- {
-  Write-Host "API Server Started- Windows server will run even after close run http://localhost:$Port/end to close" -ForegroundColor Green
- }
-else
-{
- Write-Warning "API Server Failed To Start"
- Get-Job -Name "APIServer" | Receive-Job
-}
-}
-
 ##Start New Agent
 Write-Host "Starting New Background Agent" -ForegroundColor Cyan
-if($Platform -eq "windows"){Start-Background -WorkingDir $pwsh -Dir $dir -Platforms $Platform -HiveID $HiveID -HiveMirror $HiveMirror -HiveOS $HiveOS -HivePassword $HivePassword -RejPercent $Rejections}
-elseif($Platform -eq "linux"){Start-Process ".\build\bash\background.sh" -ArgumentList "background $dir $Platform $HiveOS $Rejections" -Wait}
+if($Platform -eq "windows"){Start-Background -WorkingDir $pwsh -Dir $dir -Platforms $Platform -HiveID $HiveID -HiveMirror $HiveMirror -HiveOS $HiveOS -HivePassword $HivePassword -RejPercent $Rejections -Remote $Remote -Port $Port -APIPassword $APIPassword -API $API}
+elseif($Platform -eq "linux"){Start-Process ".\build\bash\background.sh" -ArgumentList "background $dir $Platform $HiveOS $Rejections $Remote $Port $APIPassword $API" -Wait}
 
 While($true)
 {
