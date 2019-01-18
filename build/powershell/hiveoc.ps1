@@ -22,7 +22,7 @@ $key = $_
     $NVOCFAN = $NVOCFan -split " "
     if($NVOCFAN.Count -eq 1)
      {
-      for(i=0; $i -lt $OCCount.NVIDIA.PSObject.Properties.Value.Count; $i++)
+      for($i=0; $i -lt $OCCount.NVIDIA.PSObject.Properties.Value.Count; $i++)
       {
        $OCArgs += "-setFanSpeed:$($OCCount.NVIDIA.$i),$($NVOCFan) "
        $ocmessage += "Setting GPU $($OCCount.NVIDIA.$i) Fan Speed To $($NVOCFan)`%"
@@ -42,7 +42,7 @@ $key = $_
     $NVOCMem = $NVOCMem -split " "
     if($NVOCMem.Count -eq 1)
     {
-     for(i=0; $i -lt $OCCount.NVIDIA.PSObject.Properties.Value.Count; $i++)
+     for($i=0; $i -lt $OCCount.NVIDIA.PSObject.Properties.Value.Count; $i++)
      {
       $OCArgs += "-setMemoryClockOffset:$($OCCount.NVIDIA.$i),0,$($NVOCMem) "
       $ocmessage += "Setting GPU $($OCCount.NVIDIA.$i) Memory Offset To $($NVOCMem)"
@@ -62,7 +62,7 @@ $key = $_
     $NVOCCore = $NVOCCore -split " "
     if($NVOCMem.Count -eq 1)
     {
-     for(i=0; $i -lt $OCCount.NVIDIA.PSObject.Properties.Value.Count; $i++)
+     for($i=0; $i -lt $OCCount.NVIDIA.PSObject.Properties.Value.Count; $i++)
      {
       $OCArgs += "-setBaseClockOffset:$($OCCount.NVIDIA.$i),0,$($NVOCCore) "
       $ocmessage += "Setting GPU $($OCCount.NVIDIA.$i) Clock Offset To $($NVOCCore)"
@@ -82,7 +82,7 @@ $key = $_
     $NVOCPL = $NVOCPL -split " "
     if($NVOCMem.Count -eq 1)
     {
-     for(i=0; $i -lt $OCCount.NVIDIA.PSObject.Properties.Value.Count; $i++)
+     for($i=0; $i -lt $OCCount.NVIDIA.PSObject.Properties.Value.Count; $i++)
      {
       $OCArgs += "-setPowerTarget:$($OCCount.NVIDIA.$i),$($NVOCPL) "
       $ocmessage += "Setting GPU $($OCCount.NVIDIA.$i) Power Limit To $($NVOCPL)"
