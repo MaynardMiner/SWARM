@@ -32,6 +32,10 @@ $Message = @()
 
 if($Command -eq "!"){$Message += "No Command Given. Try version query"; Write-Host $($Message | Select -last 1)}
 else{$CommandQuery = $Command -replace("!","")}
+$Name = $Name -replace "!",""
+$EXE = $EXE -replace "!",""
+$Version = $Version -replace "!",""
+$Uri = $Uri -replace "!",""
 
 if($CommandQuery)
  {
@@ -92,16 +96,16 @@ $MinerSearch += $miner_update_cpu
        $Found = $true
        $UpdateFile = $MinerType.Name
        if($EXE){$MinerType.$_.minername = $EXE}
-       else{$Message += "No exe supplied. Please run again."; Write-Host $($Message | Select -last 1)}
+       else{$Message += "No exe supplied. Please run again."; Write-Host $($Message | Select -last 1); $Failed = $true}
        if($Version){$MinerType.$_.version = $Version}
-       else{$Message += "No version supplied. Please run again."; Write-Host $($Message | Select -last 1)}
+       else{$Message += "No version supplied. Please run again."; Write-Host $($Message | Select -last 1); $Failed = $true}
        if($Uri){$MinerType.$_.uri = $Uri}
-       else{$Message += "No Uri Supplied. Please run again."; Write-Host $($Message | Select -last 1)}
+       else{$Message += "No Uri Supplied. Please run again."; Write-Host $($Message | Select -last 1); $Failed = $true}
       }
      }
     } 
     
-    if($Found -eq $true)
+    if($Found -eq $true -and $Failed -eq $false)
     {
      $Message += "Stopping Miner & Waiting 5 Seconds"
      Write-Host $($Message | Select -last 1)
