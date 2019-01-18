@@ -92,16 +92,16 @@ $MinerSearch += $miner_update_cpu
        $Found = $true
        $UpdateFile = $MinerType.Name
        if($EXE){$MinerType.$_.minername = $EXE}
-       else{$Message += "No exe supplied. Please run again."; Write-Host $($Message | Select -last 1); $failed = $true}
+       else{$Message += "No exe supplied. Please run again."; Write-Host $($Message | Select -last 1)}
        if($Version){$MinerType.$_.version = $Version}
-       else{$Message += "No version supplied. Please run again."; Write-Host $($Message | Select -last 1); $failed = $true}
+       else{$Message += "No version supplied. Please run again."; Write-Host $($Message | Select -last 1)}
        if($Uri){$MinerType.$_.uri = $Uri}
-       else{$Message += "No Uri Supplied. Please run again."; Write-Host $($Message | Select -last 1); $failed = $true}
+       else{$Message += "No Uri Supplied. Please run again."; Write-Host $($Message | Select -last 1)}
       }
      }
     } 
     
-    if($Found -eq $true -and $Failed -eq $false)
+    if($Found -eq $true)
     {
      $Message += "Stopping Miner & Waiting 5 Seconds"
      Write-Host $($Message | Select -last 1)
@@ -163,6 +163,6 @@ $MinerSearch += $miner_update_cpu
  }
  
  if($CudaVersion){$Message += "Cuda Version is $CudaVersion"; Write-Host $($Message | Select -last 1)}
- $Message | Out-File ".\build\txt\version.txt"
+ $Message | Set-Content ".\build\txt\version.txt"
  if($MinerTables){$MinerTables | Out-Host; $MinerTables | Out-File ".\build\txt\version.txt" -Append}
 
