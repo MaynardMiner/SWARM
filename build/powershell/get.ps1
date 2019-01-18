@@ -494,4 +494,4 @@ $Get
 $Get | Out-File ".\build\txt\get.txt"
 Start-Sleep -S .5
 }
-Exit-PSSession
+Exit
