@@ -37,6 +37,15 @@ $EXE = $EXE -replace "!",""
 $Version = $Version -replace "!",""
 $Uri = $Uri -replace "!",""
 
+$Message += "Selected Miner Is $Name"
+Write-Host $($Message | Select -last 1)
+$Message += "Selected Executable Is $EXE"
+Write-Host $($Message | Select -last 1)
+$Message += "Selected Version Is $Version"
+Write-Host $($Message | Select -last 1)
+$Uri += "Selected Uri is $URI"
+Write-Host $($Message | Select -last 1)
+
 if($CommandQuery)
  {
   $Message += "Command is $CommandQuery"
