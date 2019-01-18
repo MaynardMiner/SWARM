@@ -199,7 +199,7 @@ $Platform | Set-Content ".\build\txt\os.txt"
 ## Initiate Update Check
 if($Platform -eq "Windows"){$GetUpdates = "Yes"}
 else($GetUpdates -eq $Update)
-start-update -Update $Getupdate -Dir $dir -Platforms $Platform
+start-update -Update $Getupdates -Dir $dir -Platforms $Platform
 
 ##Load Previous Times & PID Data
 ## Close Previous Running Agent- Agent is left running to send stats online, even if SWARM crashes
