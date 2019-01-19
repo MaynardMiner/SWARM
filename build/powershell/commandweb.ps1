@@ -207,18 +207,19 @@
              Copy-Item ".\config\parameters\newarguments.json" -Destination "$NewLocation\config\parameters" -Force
              New-Item -Name "pid" -Path "$NewLocation\build" -ItemType "Directory"
              Copy-Item ".\build\pid\background_pid.txt" -Destination "$NewLocation\build\pid" -Force
-             Set-Location $NewLocation
-             Start-Process ".\SWARM.bat"
-             Set-Location $WorkingDir
-             $line | Set-Content ".\build\txt\get.txt"
+             Start-Process "$NewLocation\SWARM.bat"
+             $payload = $line
              $Trigger = "update"
             }
           }     
         }
-        else{start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\get.ps1 $arguments""" -Wait -WindowStyle Minimized -Verb Runas; $Trigger = "exec"}
-        $getpayload = Get-Content ".\build\txt\get.txt"
-        $getpayload | foreach {$line += "$_`n"}
-        $payload = $line
+        else
+        {
+         start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\get.ps1 $arguments""" -Wait -WindowStyle Minimized -Verb Runas; $Trigger = "exec"
+         $getpayload = Get-Content ".\build\txt\get.txt"
+         $getpayload | foreach {$line += "$_`n"}
+         $payload = $line
+        }
         $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id -Payload $payload
         $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
         $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'

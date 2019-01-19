@@ -54,6 +54,7 @@ $PreviousVersions | foreach {
      Write-Host "Previous Version is $($PreviousPath)"
      Write-Host "Gathering Old Version Config And HashRates- Then Deleting"
      Start-Sleep -S 10
+     if($Platforms -eq "windows"){Start-Sleep -S 10}
      $OldBackup = Join-Path $PreviousPath "backup"
      $OldTime = Join-Path $PreviousPath "build\data"
      $OldConfig = Join-Path $PreviousPath "config"
