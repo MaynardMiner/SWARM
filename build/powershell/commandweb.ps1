@@ -142,6 +142,38 @@
           Stop-Process $BackGroundID | Out-Null
          }
         }
+       }
+      "clear_profits"
+      {
+        $method = "message"
+        $messagetype = "info"
+        $data = "clear_profits"
+        start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\clear_profits.ps1""" -WindowStyle Minimized -Verb Runas -Wait
+        $getpayload = Get-Content ".\build\txt\get.txt"
+        $line = @()
+        $getpayload | foreach {$line += "$_`n"}
+        $payload = $line 
+        $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id -Payload $payload
+        $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+        $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+        Write-Host $method $messagetype $data
+        $trigger = "exec"
+      }
+      "clear_watts"
+      {
+        $method = "message"
+        $messagetype = "info"
+        $data = "clear_watts"
+        start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\clear_watts.ps1""" -WindowStyle Minimized -Verb Runas -Wait
+        $getpayload = Get-Content ".\build\txt\get.txt"
+        $line = @()
+        $getpayload | foreach {$line += "$_`n"}
+        $payload = $line 
+        $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id -Payload $payload
+        $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+        $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+        Write-Host $method $messagetype $data
+        $trigger = "exec"
       }
       "get"
        {
