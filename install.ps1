@@ -151,6 +151,15 @@ $dir | set-content ".\build\bash\dir.sh"
              Start-Process "chmod" -ArgumentList "+x clear_profits"
              Set-Location "/"
          Set-Location $Dir     
+             }
+
+             if(Test-Path ".\build\bash\clear_watts")
+             {
+               Copy-Item ".\build\bash\clear_watts" -Destination "/usr/bin" -force | Out-Null
+               Set-Location "/usr/bin"
+               Start-Process "chmod" -ArgumentList "+x clear_watts"
+               Set-Location "/"
+               Set-Location $CmdDir
              }  
 
           if(Test-Path ".\build\bash\get-lambo")
