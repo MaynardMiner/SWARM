@@ -44,8 +44,8 @@ if($CoinAlgo -eq $null)
     if($_.Worker){$Worker = "-eworker $($_.Worker) "}
     else{$Worker = "-epsw $($_.Pass1)$($Diff) "}
   [PSCustomObject]@{
-    Delay = $Config.$ConfigType.delay
-    Symbol = "$($_.Algorithm)"
+  Delay = $Config.$ConfigType.delay
+  Symbol = "$($_.Algorithm)"
   MinerName = $MinerName
   Prestart = $PreStart
   Type = $ConfigType

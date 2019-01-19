@@ -42,7 +42,7 @@ if($CoinAlgo -eq $null)
   {
     if($Config.$ConfigType.difficulty.$($_.Algorithm)){$Diff=",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))"}else{$Diff=""}
     if($_.Worker){$Worker = "-eworker $($_.Worker) "}
-    else{$Worker = "-epsw $($_.Pass1)$($Diff) "}
+    else{$Worker = "-epsw $($_.Pass3)$($Diff) "}
   [PSCustomObject]@{
     Delay = $Config.$ConfigType.delay
     Symbol = "$($_.Algorithm)"

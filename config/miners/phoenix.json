@@ -5,18 +5,28 @@
     "delay": "1",
     "prestart": [],
     "commands": {
+      "ethash": "",
       "daggerhashimoto": "-esm 3 -estale 0",
       "dagger": "-esm 2"
     },
     "difficulty": {
+      "ethash": "",
       "daggerhashimoto": "",
       "dagger": ""
     },
     "naming": {
+      "ethash": "ethash",
       "daggerhashimoto": "daggerhashimoto",
       "dagger": "dagger"
     },
     "oc": {
+      "ethash": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
+      },
       "daggerhashimoto": {
         "Power": "",
         "Core": "",
@@ -38,10 +48,12 @@
     "delay": "1",
     "prestart": [],
     "commands": {
+      "ethash": "",
       "daggerhashimoto": "-esm 3 -estale 0",
       "dagger": "-esm 2"
     },
     "difficulty": {
+      "ethash": "",
       "daggerhashimoto": "",
       "dagger": ""
     },
@@ -51,6 +63,13 @@
       "dagger": "dagger"
     },
     "oc": {
+      "ethash": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
+      },
       "daggerhashimoto": {
         "Power": "",
         "Core": "",
@@ -72,18 +91,28 @@
     "delay": "1",
     "prestart": [],
     "commands": {
+      "ethash": "",
       "daggerhashimoto": "-esm 3 -estale 0",
       "dagger": "-esm 2"
     },
     "difficulty": {
+      "ethash": "",
       "daggerhashimoto": "",
       "dagger": ""
     },
     "naming": {
+      "ethash": "ethash",
       "daggerhashimoto": "daggerhashimoto",
       "dagger": "dagger"
     },
     "oc": {
+      "ethash": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
+      },
       "daggerhashimoto": {
         "Power": "",
         "Core": "",
