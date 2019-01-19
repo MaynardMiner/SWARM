@@ -173,41 +173,44 @@
           }
           $versionnumber = "$version3.$version2.$version1"    
           $Failed = $false
-          $line += "Operating System Is Windows: Updating via 'get' is possible"
+          $line += "Operating System Is Windows: Updating via 'get' is possible`n"
           $versionlink = "https://github.com/MaynardMiner/SWARM/releases/download/v$VersionNumber/SWARM.$VersionNumber.zip"
-          $line += "Detected New Version Should Be $VersionNumber"
+          $line += "Detected New Version Should Be $VersionNumber`n"
           Write-Host "Detected New Version Should Be $VersionNumber"
-          $line += "Attempting To Download New Version at $Versionlink"
+          $line += "Attempting To Download New Version at $Versionlink`n"
           Write-Host "Attempting To Download New Version at $Versionlink"
           $Location = Split-Path $WorkingDir
-          $line += "Main Directory is $Location"
+          $line += "Main Directory is $Location`n"
           Write-Host "Main Directory is $Location"
           $NewLocation = Join-Path (Split-Path $WorkingDir) "SWARM.$VersionNumber"
           $FileName = join-path ".\x64" "SWARM.$VersionNumber.zip"
           $DLFileName = Join-Path "$WorkingDir" "x64\SWARM.$VersionNumber.zip"
           $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$versionNumber/SWARM.$VersionNumber.zip"
           try{Invoke-WebRequest $URI -OutFile $FileName -UseBasicParsing -ErrorAction Stop}catch{$Failed = $true; $line += "Failed To Contact Github For Download! Must Do So Manually"}
+          Start-Sleep -S 5
           if($Failed -eq $false)
           {
            Start-Process "7z" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -Wait -WindowStyle Minimized
-           $line += "Config Command Initiated- Restarting SWARM"
+           Start-Sleep -S 3
+           $line += "Config Command Initiated- Restarting SWARM`n"
            Write-Host "Config Command Initiated- Restarting SWARM"
            $MinerFile =".\build\pid\miner_pid.txt"
            if(Test-Path $MinerFile){$MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue}
             if($MinerId)
             {
              Stop-Process $MinerId -Force
-             $line += "Stopping Old Miner"
+             $line += "Stopping Old Miner`n"
              Write-Host "Stopping Old Miner"
              Start-Sleep -S 5
-             $Line += "Attempting to start new SWARM verison at $NewLocation\SWARM.bat"
              Write-Host "Attempting to start new SWARM verison at $NewLocation\SWARM.bat"
-             $line += "Downloaded and extracted SWARM successfully"
+             $line += "Downloaded and extracted SWARM successfully`n"
              Copy-Item ".\SWARM.bat" -Destination $NewLocation -Force
              Copy-Item ".\config\parameters\newarguments.json" -Destination "$NewLocation\config\parameters" -Force
              New-Item -Name "pid" -Path "$NewLocation\build" -ItemType "Directory"
              Copy-Item ".\build\pid\background_pid.txt" -Destination "$NewLocation\build\pid" -Force
-             Start-Process "$NewLocation\SWARM.bat"
+             Set-Location $NewLocation
+             Start-Process "SWARM.bat"
+             Set-Location $WorkingDir
              $payload = $line
              $Trigger = "update"
             }

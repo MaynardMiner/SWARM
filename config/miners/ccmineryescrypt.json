@@ -4,9 +4,9 @@
     "delay": "1",
     "prestart": [],
     "commands": {
-      "yescrypt": "",
-      "yescryptr16": "",
-      "yescryptr32": ""
+      "yescrypt": "-i 12.5",
+      "yescryptr16": "-i 12.5",
+      "yescryptr32": "-i 12.5"
     },
     "difficulty": {
       "yescrypt": "",
