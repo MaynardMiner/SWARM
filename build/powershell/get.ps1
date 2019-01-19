@@ -323,6 +323,8 @@ Get-BenchTable | Out-File ".\build\txt\get.txt"
        if($MinerId)
        {
         Stop-Process $MinerId -Force
+        $Get += "Stopping Old Miner"
+        Write-Host "Stopping Old Miner"
         Start-Sleep -S 5
         $Get += "Attempting to start new SWARM verison at $NewLocation\SWARM.bat"
         Write-Host "Attempting to start new SWARM verison at $NewLocation\SWARM.bat"
@@ -334,6 +336,8 @@ Get-BenchTable | Out-File ".\build\txt\get.txt"
         Set-Location $NewLocation
         Start-Process ".\SWARM.bat"
         Set-Location $dir
+        $Get | Set-Content ".\build\txt\get.txt"
+        exit
        }
      }
      else{$Get += "Did not perform update."}
@@ -490,5 +494,5 @@ to see a list of availble items.
 if($get -ne $null)
 {
 $Get
-$Get | Out-File ".\build\txt\get.txt"
+$Get | Set-Content ".\build\txt\get.txt"
 }
