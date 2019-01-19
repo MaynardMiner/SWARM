@@ -54,7 +54,15 @@ $PreviousVersions | foreach {
      Write-Host "Previous Version is $($PreviousPath)"
      Write-Host "Gathering Old Version Config And HashRates- Then Deleting"
      Start-Sleep -S 10
+     $ID = ".\build\pid\background_pid.txt"
      if($Platforms -eq "windows"){Start-Sleep -S 10}
+     if($Platforms -eq "windows")
+     {
+     Write-Host "Stopping Previous Agent"
+     if(Test-Path $ID){$Agent = Get-Content $ID}
+     if($Agent){$BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue}
+     if($BackGroundID.name -eq "powershell"){Stop-Process $BackGroundID | Out-Null}
+     }
      $OldBackup = Join-Path $PreviousPath "backup"
      $OldTime = Join-Path $PreviousPath "build\data"
      $OldConfig = Join-Path $PreviousPath "config"
