@@ -44,6 +44,10 @@ These arguments can be added for additional customization and options
 
 Argument            Options             Explanation
 
+-Startup        [Yes or No]         Default is Yes. Currently Windows Version only. SWARM will attempt to add
+                                    itself to windows startup, allowing you to remote reboot through remote 
+                                    commands.
+
 -API            [Yes or No]         This Option Enables or Disables SWARM API. Default is Yes
 
 -Remote         [Yes or No]         This Option Enables Remote API. Default is No.

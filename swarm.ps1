@@ -143,7 +143,9 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$Remote = "No",
     [Parameter(Mandatory=$false)]
-    [String]$APIPassword = "No"
+    [String]$APIPassword = "No",
+    [Parameter(Mandatory=$false)]
+    [String]$Startup = "Yes"
 )
 
 
@@ -328,6 +330,7 @@ $CurrentParams.ADD("CLPlatform",$CLPlatform)
 $CurrentParams.ADD("Port",$Port)
 $CurrentParams.ADD("Remote",$Remote)
 $CurrentParams.ADD("APIPassword",$APIPassword)
+$CurrentParams.ADD("Startup",$Startup)
 
 ## Save to Config Folder
 $StartParams = $CurrentParams | ConvertTo-Json 
@@ -424,6 +427,7 @@ $API = $SWARMParams.API
 $Port = $SWARMParams.Port
 $Remote = $SWARMParams.Remote
 $APIPassword = $SWARMParams.APIPassword
+$Startup = $SWARMParams.Startup
 }
 
 ## Windows Start Up
@@ -589,6 +593,18 @@ Get-SexyUnixLogo
 ##Windows Initialize
 if($Platform -eq "windows")
  {
+  ## Add Swarm to Startup
+  if($Startup -eq "Yes")
+  {
+  $CurrentUser = $env:UserName
+  $Startup_Path = "C:\Users\$CurrentUser\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"
+  Write-Host "Attempting to add current SWARM.bat to startup" -ForegroundColor Magenta
+  Write-Host "Startup FilePath: $Startup_Path"
+  $bat = "powershell -ExecutionPolicy Bypass -command `"Set-Location $dir; Start-Process `"SWARM.bat`"`""
+  $Bat_Startup = Join-Path $Startup_Path "SWARM.bat"
+  $bat | Set-Content $Bat_Startup
+  }
+
   ## Windows Bug- Set Cudas to match PCI Bus Order
   [Environment]::SetEnvironmentVariable("CUDA_DEVICE_ORDER", "PCI_BUS_ID", "User")
 
@@ -830,6 +846,7 @@ $CLPlatform = $SWARMParams.CLPlatform
 $Port = $SWARMParams.Port
 $Remote = $SWARMParams.Remote
 $APIPassword = $SWARMParams.APIPassword
+$Startup = $SWARMParams.Startup
 
 if($SWARMParams.Rigname1 -eq "Donate"){$Donating = $True}
 else{$Donating = $False}

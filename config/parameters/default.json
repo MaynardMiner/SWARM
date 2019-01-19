@@ -80,5 +80,6 @@
     "CLPlatform": "",
     "Port": 4099,
     "Remote": "No",
-    "APIPassword": ""
+    "APIPassword": "",
+    "Startup": "Yes"
 }
