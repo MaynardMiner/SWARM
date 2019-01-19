@@ -17,5 +17,5 @@ $Get += "Moving Default Watt File Content To Current Power.Json file"
 if(Test-Path ".\build\data\reset.json"){$Defaults = Get-Content ".\build\data\reset.json"}
 if(Test-Path ".\config\power\power.json"){$Defaults | Set-Content ".\config\power\power.json"}
 Write-Host "Cleared All Profit Stats" -Foreground Green
-$Get += "Cleared All Profit Stats"
+$Get += "Cleared All Watt Stats"
 $Get | Set-Content ".\build\txt\get.txt"

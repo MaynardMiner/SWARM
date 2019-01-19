@@ -260,6 +260,23 @@
         $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
         Write-Host $method $messagetype $data
        }
+       "miner"
+       {
+        switch($secondword)
+        {
+         "restart"
+         {
+         $method = "message"
+         $messagetype = "success"
+         $data = "Miner Restarted"
+         $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id
+         $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+         $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+         Write-Host $method $messagetype $data
+         $trigger = "config"
+         }
+        }
+       } 
       "benchmark"
       {
         $method = "message"
