@@ -145,7 +145,11 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$APIPassword = "No",
     [Parameter(Mandatory=$false)]
-    [String]$Startup = "Yes"
+    [String]$Startup = "Yes",
+    [Parameter(Mandatory=$false)]
+    [String]$ETH,
+    [Parameter(Mandatory=$false)]
+    [String]$Worker
 )
 
 
@@ -331,6 +335,8 @@ $CurrentParams.ADD("Port",$Port)
 $CurrentParams.ADD("Remote",$Remote)
 $CurrentParams.ADD("APIPassword",$APIPassword)
 $CurrentParams.ADD("Startup",$Startup)
+$CurrentParams.ADD("ETH",$ETH)
+$CurrentParams.ADD("Worker",$Worker)
 
 ## Save to Config Folder
 $StartParams = $CurrentParams | ConvertTo-Json 
@@ -428,6 +434,8 @@ $Port = $SWARMParams.Port
 $Remote = $SWARMParams.Remote
 $APIPassword = $SWARMParams.APIPassword
 $Startup = $SWARMParams.Startup
+$ETH = $SWARMParams.ETH
+$Worker = $SWARMParams.Worker
 }
 
 ## Windows Start Up
@@ -847,6 +855,7 @@ $Port = $SWARMParams.Port
 $Remote = $SWARMParams.Remote
 $APIPassword = $SWARMParams.APIPassword
 $Startup = $SWARMParams.Startup
+$Worker = $SWARMParams.Worker
 
 if($SWARMParams.Rigname1 -eq "Donate"){$Donating = $True}
 else{$Donating = $False}
