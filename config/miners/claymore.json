@@ -5,7 +5,7 @@
     "delay": "1",
     "prestart": [],
     "commands": {
-      "ethash": "-esm 2",
+      "ethash": "",
       "daggerhashimoto": "-esm 3 -estale 0",
       "dagger": "-esm 2"
     },
@@ -48,7 +48,7 @@
     "delay": "1",
     "prestart": [],
     "commands": {
-      "ethash": "-esm 2",
+      "ethash": "",
       "daggerhashimoto": "-esm 3 -estale 0",
       "dagger": "-esm 2"
     },
@@ -91,7 +91,7 @@
     "delay": "1",
     "prestart": [],
     "commands": {
-      "ethash": "-esm 2",
+      "ethash": "",
       "daggerhashimoto": "-esm 3 -estale 0",
       "dagger": "-esm 2"
     },

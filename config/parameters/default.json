@@ -81,5 +81,7 @@
     "Port": 4099,
     "Remote": "No",
     "APIPassword": "",
-    "Startup": "Yes"
+    "Startup": "Yes",
+    "ETH": "",
+    "Worker": ""
 }
