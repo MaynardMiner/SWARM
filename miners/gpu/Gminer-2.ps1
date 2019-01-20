@@ -59,7 +59,7 @@ if($CoinAlgo -eq $null)
       ocmem = if($Config.$ConfigType.oc.$($_.Algorithm).memory){$Config.$ConfigType.oc.$($_.Algorithm).memory}else{$OC."default_$($ConfigType)".memory}
       MinerPool = "$($_.Name)"
       FullName = "$($_.Mining)"
-      API = "EWBF"
+      API = "gminer"
       Port = 42001
       URI = $Uri
       BUILD = $Build

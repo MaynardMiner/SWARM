@@ -569,9 +569,32 @@ switch($MinerAPI)
    else{Set-APIFailure; break}
   }
 
+  'gminer'
+  {
+   $HS = "hs"
+   $Request = $null; $Request = Get-HTTP -Server $server -Port $Port -Message "/stat" -Timeout 5
+   if($Request)
+   {
+    try{$Data = $null; $Data = $Request.Content | ConvertFrom-Json -ErrorAction Stop}Catch{Write-Host "Failed To parse API" -ForegroundColor Red}
+    $Data.devices.speed | %{$RAW += [Double]$_}
+    $Hash = $Null; $Hash = $Data.devices.speed
+    Write-MinerData2;
+    try{for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $i)/1000}}catch{Write-Host "Failed To parse Threads" -ForegroundColor Red};
+    $Data.devices.accepted_shares | Select -First 1 | Foreach {$MinerACC += $_}
+    $Data.devices.rejected_shares | Select -First 1 | Foreach {$MinerREJ += $_}
+    $Data.devices.accepted_shares | Select -First 1 | Foreach {$ACC += $_}
+    $Data.devices.rejected_shares | Select -First 1 | Foreach {$REJ += $_}
+    $Data.devices.speed | foreach {$KHS += [Double]$_}
+    $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
+    $ALGO += "$MinerAlgo"
+   }
+   else{Set-APIFailure; break}
+  }
+  
   'ewbf'
   {
    $HS = "hs"
+   Write-MinerData1
    $Message = $null; $Message = @{id = 1; method = "getstat"} | ConvertTo-Json -Compress
    $Request = $Null; $Request = Get-TCP -Server $Server -Port $port -Message $Message
    if($Request)
@@ -588,6 +611,7 @@ switch($MinerAPI)
      $Data.rejected_shares | Foreach {$REJ += $_}
      $Data.speed_sps | foreach {$KHS += [Double]$_}
      $UPTIME = ((Get-Date) - [DateTime]$Data.start_time[0]).seconds
+     $ALGO += "$MinerAlgo"
     }
     else{Set-APIFailure; break}
   }
