@@ -1,3 +1,7 @@
+For full detailed information on how to use SWARM, see the WIKI at:
+
+https://github.com/MaynardMiner/SWARM/wiki
+
 Arguments & Explanations:
 
                    -Simple Arguments-
