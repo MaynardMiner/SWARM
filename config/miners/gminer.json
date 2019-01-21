@@ -76,7 +76,7 @@
     "commands": {
       "equihash-btg": "--algo 144_5 --pers BgoldPoW",
       "equihash192": "--algo 192_7 --pers auto",
-      "equihash144": "-algo 144_5 --pers auto",
+      "equihash144": "--algo 144_5 --pers auto",
       "equihash96": "--algo 96_5 --pers auto",
       "equihash210": "--algo 210_9 --pers auto",
       "equihash200": "--algo 200_9 --pers auto",
@@ -145,7 +145,7 @@
     "commands": {
       "equihash-btg": "--algo 144_5 --pers BgoldPoW",
       "equihash192": "--algo 192_7 --pers auto",
-      "equihash144": "-algo 144_5 --pers auto",
+      "equihash144": "--algo 144_5 --pers auto",
       "equihash96": "--algo 96_5 --pers auto",
       "equihash210": "--algo 210_9 --pers auto",
       "equihash200": "--algo 200_9 --pers auto",
