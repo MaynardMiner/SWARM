@@ -258,6 +258,7 @@ $PreviousVersions | foreach {
             }
            }
           }
+
           if($ChangeFile -eq "ewbf.json")
           {
             $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
@@ -270,6 +271,42 @@ $PreviousVersions | foreach {
             $Data.$_.commands."equihash210" = "--algo 210_9 --pers auto"
             $Data.$_.commands."equihash200" = "--algo 200_9 --pers auto"
             $Data.$_.commands."zhash" = "--algo 144_5 --pers auto"
+            }
+           }
+          }
+          if($ChangeFile -eq "claymore.json")
+          {
+            $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+            if($_ -ne "name")
+            {    
+            $Data.$_.commands."ethash" = ""
+            }
+           }
+          }
+          if($ChangeFile -eq "claymore_amd.json")
+          {
+            $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+            if($_ -ne "name")
+            {    
+            $Data.$_.commands."ethash" = ""
+            }
+           }
+          }
+          if($ChangeFile -eq "phoenix.json")
+          {
+            $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+            if($_ -ne "name")
+            {    
+            $Data.$_.commands."ethash" = ""
+            }
+           }
+          }
+          if($ChangeFile -eq "phoenix_amd.json")
+          {
+            $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+            if($_ -ne "name")
+            {    
+            $Data.$_.commands."ethash" = ""
             }
            }
           }
