@@ -1593,3 +1593,7 @@ Critical X16r patch for 1.8.5
 -miner restart now works in windows.
 -``get wallets`` displays altwallets.
 -zergpool added to wallet list.
+-New arguments
+   ``-Eth`` Eth wallet address
+   ``-Worker`` Used where worker is needed (Whalesburg pool).
+   ``-Startup`` Default "yes". Adds SWARM to windows startup.
