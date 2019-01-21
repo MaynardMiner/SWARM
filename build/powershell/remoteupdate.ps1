@@ -274,6 +274,15 @@ $PreviousVersions | foreach {
             }
            }
           }
+          if($ChangeFile -eq "zjazz.json")
+          {
+            $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+            if($_ -ne "name")
+            {    
+            $Data.$_.naming."cuckoo" = "bitcash"
+            }
+           }
+          }
           if($ChangeFile -eq "claymore.json")
           {
             $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
