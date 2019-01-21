@@ -262,8 +262,7 @@ Do{
   Start-Sleep -S 1
   Write-Host "Getting Process ID for $($MinerCurrent.MinerName)"           
   $MinerProcess = Get-Process -Name "$($MinerCurrent.InstanceName)" -ErrorAction SilentlyContinue
-  if($MinerCurrent.DeviceCall -eq "bminer"){$MinerProcess = $MinerProcess | Select -First 1}
-  if($MinerCurrent.DeviceCall -eq "gminer"){$MinerProcess = $MinerProcess | Select -First 1}
+  $MinerProcess = $MinerProcess | Select -First 1
  }until($MinerProcess -ne $null -or ($MinerTimer.Elapsed.TotalSeconds) -ge 10)  
 if($MinerProcess -ne $null)
 {
