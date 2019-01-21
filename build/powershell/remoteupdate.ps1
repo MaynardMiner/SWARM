@@ -152,6 +152,13 @@ $PreviousVersions | foreach {
             }  
            }
          }
+         if($ChangeFile -eq "lolminer")
+         {
+          $Data.$_.commands| Add-Member "equihash192" "--coin AUTO192_7" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "equihash192" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "equihash192" "equihash192" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "equihash192" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue         
+         }
          if($ChangeFile -eq "t-rex.json")
           {
           $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
@@ -252,6 +259,21 @@ $PreviousVersions | foreach {
            }
           }
           if($ChangeFile -eq "ewbf.json")
+          {
+            $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+            if($_ -ne "name")
+            {    
+            $Data.$_.commands."equihash-btg" = "--algo 144_5 --pers BgoldPoW"
+            $Data.$_.commands."equihash192" = "--algo 192_7 --pers auto"
+            $Data.$_.commands."equihash144" = "--algo 144_5 --pers auto"
+            $Data.$_.commands."equihash96" = "--algo 96_5 --pers auto"
+            $Data.$_.commands."equihash210" = "--algo 210_9 --pers auto"
+            $Data.$_.commands."equihash200" = "--algo 200_9 --pers auto"
+            $Data.$_.commands."zhash" = "--algo 144_5 --pers auto"
+            }
+           }
+          }
+          if($ChangeFile -eq "gminer.json")
           {
             $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
             if($_ -ne "name")
