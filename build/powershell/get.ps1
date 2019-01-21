@@ -204,7 +204,7 @@ to see all available SWARM commands, go to:
 
 https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
 
-current windows commands:
+current working windows commands:
 
 get help
 get benchmarks
@@ -212,10 +212,15 @@ get oc
 get active
 get stats
 get screen
+get update
+get wallets
 reboot
 version
-benchmark 
-
+benchmark [algorithm | miner | timeout | all] [name (if miner or algorithm used)]
+miner restart
+ps [powershell command]
+clear_profits
+clear_watts
 "
 $help
 $help | out-file ".\build\txt\get.txt"
