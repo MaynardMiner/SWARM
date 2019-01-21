@@ -8,7 +8,7 @@ $AltWallets = ("AltWallet1","AltWallet2","AltWallet3")
 $AltPool = $true
 $Getkeys | %{if($AltWallets -eq $_.Name){$AltPool = $true}}
 if($AltPool = $true){$Wallets = $AltWallets}else{$Wallets = ("Wallet1","Wallet2","Wallet3")}
-$PoolQuery = "https://zpool.ca/api/wallet?address="
+$PoolQuery = "https://zergpool.com/api/wallet?address="
 
 $Getkeys | %{if($Wallets -match $_.Name)
   {
