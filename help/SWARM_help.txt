@@ -1,3 +1,7 @@
+For full detailed information on how to use SWARM, see the WIKI at:
+
+https://github.com/MaynardMiner/SWARM/wiki
+
 Arguments & Explanations:
 
                    -Simple Arguments-
@@ -43,6 +47,14 @@ Argument          Options           Explanation
 These arguments can be added for additional customization and options
 
 Argument            Options             Explanation
+
+-ETH           [Etherium Address]   Etherium Address. Needed for Whalesburg Pool.
+
+-Worker        [WorkerName]         Worker name from Whalesburg pool.
+
+-Startup        [Yes or No]         Default is Yes. Currently Windows Version only. SWARM will attempt to add
+                                    itself to windows startup, allowing you to remote reboot through remote 
+                                    commands.
 
 -API            [Yes or No]         This Option Enables or Disables SWARM API. Default is Yes
 

@@ -129,7 +129,7 @@ Run Commands via HiveOS     x    | x(with ps)|
 
 **Pools**
 ```
-nicehash
+nicehash (-Nicehash_Wallet(1,2,3) and -Nicehash_Password arguments optional)
 blockmasters
 fairpool
 nlpool
@@ -139,13 +139,22 @@ blazepool
 hashrefinery
 phiphipool
 zpool
+whalesburg (requires -ETH and -Worker Arguments)
+zergpool
+
 ```
 
 **Miners**
 ```
 Avermore (AMD)
 Bubalisk (CPU)
+ehssand (NVIDIA)
 miniz (NVIDIA)
+gminer (NVIDIA)
+bminer (NVIDIA)
+dstm (NVIDIA)
+xmr-stak (AMD)
+xmrig (AMD)
 ccminer-yescrypt (NVIDIA)
 CryptoDredge (NVIDIA)
 Tpruvot (NVIDIA)

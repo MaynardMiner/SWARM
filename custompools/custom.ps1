@@ -16,6 +16,7 @@
 ## No .ps1's can have the same name, or you
 ## will generate errors.
 
+$FileName = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 
 ##Below is the Custom Config Script- Do not change.
 $Pool = {
@@ -25,7 +26,7 @@ $Pool = {
 ##Can be any name of your choice. This Name must
 ##Be added to -poolname arguments. You can use
 ##Name like Bsod1 or Bsod2 or ryocoin, etc.
-##You should change custom.ps1 to this name.
+##You MUST change custom.ps1 to this name.
 ##
 Name = bsod  
 ##So I will change custom.ps1 to bsod.ps1
@@ -118,7 +119,7 @@ Pass = ID=SWARM
 $Pool = $Pool | ConvertFrom-StringData
 
 $Name = $Pool.Name 
-if($Poolname -eq $Name)
+if($Poolname -eq $Name -and $FileName -eq $Name)
 {
 $Custom_Request = [PSCustomObject]@{} 
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls" 

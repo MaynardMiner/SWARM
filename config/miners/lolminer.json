@@ -5,13 +5,16 @@
       "delay": "1",
       "prestart": [],
       "commands": {
-        "zhash": "--coin AUTO144_5"
+        "zhash": "--coin AUTO144_5",
+        "equihash192": "--coin AUTO192_7"
       },
       "difficulty": {
-        "zhash": ""
+        "zhash": "",
+        "equihash192": ""
       },
       "naming": {
-        "zhash": "zhash"
+        "zhash": "zhash",
+        "equihash192": "equihash192"
       },
       "oc": {
         "zhash": {
@@ -21,6 +24,14 @@
             "mem": "",
             "mdpm": "",
             "fans": ""
+            },
+            "equihash192": {
+              "dpm": "",
+              "v": "",
+              "core": "",
+              "mem": "",
+              "mdpm": "",
+              "fans": ""
             }
       }
     }

@@ -5,7 +5,7 @@ $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty Ba
 
 $Getkeys = if(Test-Path ".\wallet\keys"){Get-ChildItemContent ".\wallet\keys" | % {$_.Content | Add-Member @{Name = $_.Content.Wallet} -PassThru}}
 $AltWallets = ("AltWallet1","AltWallet2","AltWallet3")
-$AltPool = $false
+$AltPool = $true
 $Getkeys | %{if($AltWallets -eq $_.Name){$AltPool = $true}}
 if($AltPool = $true){$Wallets = $AltWallets}else{$Wallets = ("Wallet1","Wallet2","Wallet3")}
 $PoolQuery = "http://blockmasters.co/api/wallet?address="
