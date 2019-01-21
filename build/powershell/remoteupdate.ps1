@@ -152,7 +152,7 @@ $PreviousVersions | foreach {
             }  
            }
          }
-         if($ChangeFile -eq "lolminer")
+         if($ChangeFile -eq "lolminer.json")
          {
           $Data.$_.commands| Add-Member "equihash192" "--coin AUTO192_7" -ErrorAction SilentlyContinue
           $Data.$_.difficulty | Add-Member "equihash192" "" -ErrorAction SilentlyContinue
