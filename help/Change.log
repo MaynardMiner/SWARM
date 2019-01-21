@@ -1591,3 +1591,5 @@ Critical X16r patch for 1.8.5
 -clear_watts command added- resets power.json.
 -clear_profits now works in windows.
 -miner restart now works in windows.
+-``get wallets`` displays altwallets.
+-zergpool added to wallet list.
