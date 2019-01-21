@@ -1582,11 +1582,12 @@ Critical X16r patch for 1.8.5
 
 1.9.0
 
+-Windows by default will add itself to startup. (``-Startup No`` to disable).
 -Added new algos on zergpool (trex).
 -Fixed Version command issues on linux side.
 -Slowed the update process down on Windows side: It appears to resolve issues.
 -Added -i 12.5 to ccminer yescrypt algorithms.
--Updated gminer links. Moved gminer back into production. API is not working, though- Will fix.
+-Updated gminer links. Moved gminer back into production.
 -Whalesburg Pool added (please let me know how your returns factor in comparison to nicehash).
 -clear_watts command added- resets power.json.
 -clear_profits now works in windows.
@@ -1597,8 +1598,8 @@ Critical X16r patch for 1.8.5
    ``-Eth`` Eth wallet address
    ``-Worker`` Used where worker is needed (Whalesburg pool).
    ``-Startup`` Default "yes". Adds SWARM to windows startup.
--Select only single Process ID for miners that run multiple processes.
+-Select only single Process ID for miners that run multiple processes. (linux)
 -gminer API fixed.
 -configs for equihash miners (- instead of --) fixed.
 -new miner esshand/ccminer for windows/linux
--added algorithms to lolminer
+-added algorithms to lolminer.
