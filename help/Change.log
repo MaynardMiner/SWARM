@@ -1597,3 +1597,8 @@ Critical X16r patch for 1.8.5
    ``-Eth`` Eth wallet address
    ``-Worker`` Used where worker is needed (Whalesburg pool).
    ``-Startup`` Default "yes". Adds SWARM to windows startup.
+-Select only single Process ID for miners that run multiple processes.
+-gminer API fixed.
+-configs for equihash miners (- instead of --) fixed.
+-new miner esshand/ccminer for windows/linux
+-added algorithms to lolminer
