@@ -142,6 +142,15 @@ function Get-Data {
              Set-Location $CmdDir
              }  
 
+          if(Test-Path ".\build\bash\clear_watts")
+           {
+             Copy-Item ".\build\bash\clear_watts" -Destination "/usr/bin" -force | Out-Null
+             Set-Location "/usr/bin"
+             Start-Process "chmod" -ArgumentList "+x clear_watts"
+             Set-Location "/"
+             Set-Location $CmdDir
+           }  
+
           if(Test-Path ".\build\bash\get-lambo")
            {
               Copy-Item ".\build\bash\get-lambo" -Destination "/usr/bin" -force | Out-Null

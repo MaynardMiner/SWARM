@@ -142,6 +142,38 @@
           Stop-Process $BackGroundID | Out-Null
          }
         }
+       }
+      "clear_profits"
+      {
+        $method = "message"
+        $messagetype = "info"
+        $data = "clear_profits"
+        start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\clear_profits.ps1""" -WindowStyle Minimized -Verb Runas -Wait
+        $getpayload = Get-Content ".\build\txt\get.txt"
+        $line = @()
+        $getpayload | foreach {$line += "$_`n"}
+        $payload = $line 
+        $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id -Payload $payload
+        $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+        $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+        Write-Host $method $messagetype $data
+        $trigger = "exec"
+      }
+      "clear_watts"
+      {
+        $method = "message"
+        $messagetype = "info"
+        $data = "clear_watts"
+        start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\clear_watts.ps1""" -WindowStyle Minimized -Verb Runas -Wait
+        $getpayload = Get-Content ".\build\txt\get.txt"
+        $line = @()
+        $getpayload | foreach {$line += "$_`n"}
+        $payload = $line 
+        $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id -Payload $payload
+        $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+        $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+        Write-Host $method $messagetype $data
+        $trigger = "exec"
       }
       "get"
        {
@@ -149,21 +181,102 @@
         $messagetype = "info"
         $data = "$($command.result.exec)"
         $arguments = $data -replace ("get ","")
-        start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\get.ps1 $arguments""" -Wait -WindowStyle Minimized -Verb Runas
-        $getpayload = Get-Content ".\build\txt\get.txt"
         $line = @()
-        $getpayload | foreach {$line += "$_`n"}
-        $payload = $line
+        if($data -eq "get update")
+        {    
+         $version = Get-Content ".\build\txt\version.txt"
+         $versionnumber = $version -replace "SWARM.",""
+         $version1 = $versionnumber[4]
+         $version1 = $version1 | % {iex $_}
+         $version1 = $version1+1
+         $version2 = $versionnumber[2]
+         $version3 = $versionnumber[0]
+         if($version1 -eq 10)
+          {
+           $version1 = 0; 
+           $version2 = $version2 | % {iex $_}
+           $version2 = $version2+1
+          }
+         if($version2 -eq 10)
+          {
+           $version2 = 0; 
+           $version3 = $version3 | % {iex $_}
+           $version3 = $version3+1
+          }
+          $versionnumber = "$version3.$version2.$version1"    
+          $Failed = $false
+          $line += "Operating System Is Windows: Updating via 'get' is possible`n"
+          $versionlink = "https://github.com/MaynardMiner/SWARM/releases/download/v$VersionNumber/SWARM.$VersionNumber.zip"
+          $line += "Detected New Version Should Be $VersionNumber`n"
+          Write-Host "Detected New Version Should Be $VersionNumber"
+          $line += "Attempting To Download New Version at $Versionlink`n"
+          Write-Host "Attempting To Download New Version at $Versionlink"
+          $Location = Split-Path $WorkingDir
+          $line += "Main Directory is $Location`n"
+          Write-Host "Main Directory is $Location"
+          $NewLocation = Join-Path (Split-Path $WorkingDir) "SWARM.$VersionNumber"
+          $FileName = join-path ".\x64" "SWARM.$VersionNumber.zip"
+          $DLFileName = Join-Path "$WorkingDir" "x64\SWARM.$VersionNumber.zip"
+          $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$versionNumber/SWARM.$VersionNumber.zip"
+          try{Invoke-WebRequest $URI -OutFile $FileName -UseBasicParsing -ErrorAction Stop}catch{$Failed = $true; $line += "Failed To Contact Github For Download! Must Do So Manually"}
+          Start-Sleep -S 5
+          if($Failed -eq $false)
+          {
+           Start-Process "7z" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -Wait -WindowStyle Minimized
+           Start-Sleep -S 3
+           $line += "Config Command Initiated- Restarting SWARM`n"
+           Write-Host "Config Command Initiated- Restarting SWARM"
+           $MinerFile =".\build\pid\miner_pid.txt"
+           if(Test-Path $MinerFile){$MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue}
+            if($MinerId)
+            {
+             Stop-Process $MinerId -Force
+             $line += "Stopping Old Miner`n"
+             Write-Host "Stopping Old Miner"
+             Start-Sleep -S 5
+             Write-Host "Attempting to start new SWARM verison at $NewLocation\SWARM.bat"
+             $line += "Downloaded and extracted SWARM successfully`n"
+             Copy-Item ".\SWARM.bat" -Destination $NewLocation -Force
+             Copy-Item ".\config\parameters\newarguments.json" -Destination "$NewLocation\config\parameters" -Force
+             New-Item -Name "pid" -Path "$NewLocation\build" -ItemType "Directory"
+             Copy-Item ".\build\pid\background_pid.txt" -Destination "$NewLocation\build\pid" -Force
+             Set-Location $NewLocation
+             Start-Process "SWARM.bat"
+             Set-Location $WorkingDir
+             $payload = $line
+             $Trigger = "update"
+            }
+          }     
+        }
+        else
+        {
+         start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\get.ps1 $arguments""" -Wait -WindowStyle Minimized -Verb Runas; $Trigger = "exec"
+         $getpayload = Get-Content ".\build\txt\get.txt"
+         $getpayload | foreach {$line += "$_`n"}
+         $payload = $line
+        }
         $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id -Payload $payload
         $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
         $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
         Write-Host $method $messagetype $data
-        $trigger = "exec"
-        if($data -eq "get update")
-        {
-         exit
-        }
        }
+       "miner"
+       {
+        switch($secondword)
+        {
+         "restart"
+         {
+         $method = "message"
+         $messagetype = "success"
+         $data = "Miner Restarted"
+         $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id
+         $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+         $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+         Write-Host $method $messagetype $data
+         $trigger = "config"
+         }
+        }
+       } 
       "benchmark"
       {
         $method = "message"

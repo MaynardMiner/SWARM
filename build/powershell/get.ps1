@@ -204,7 +204,7 @@ to see all available SWARM commands, go to:
 
 https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
 
-current windows commands:
+current working windows commands:
 
 get help
 get benchmarks
@@ -212,10 +212,15 @@ get oc
 get active
 get stats
 get screen
+get update (windows only)
+get wallets
 reboot
 version
-benchmark 
-
+benchmark [algorithm | miner | timeout | all] [name (if miner or algorithm used)]
+miner restart
+ps [powershell command]
+clear_profits
+clear_watts
 "
 $help
 $help | out-file ".\build\txt\get.txt"
@@ -270,76 +275,6 @@ $Get = Get-BenchTable
 Get-BenchTable | Out-File ".\build\txt\get.txt"
 }
  else{$Get = "No Stats Found"}
-}
-
-"update"
-{
-    $os = Get-Content ".\build\txt\os.txt"
-    $version = Get-Content ".\build\txt\version.txt"
-    $versionnumber = $version -replace "SWARM.",""
-    $version1 = $versionnumber[4]
-    $version1 = $version1 | % {iex $_}
-    $version1 = $version1+1
-    $version2 = $versionnumber[2]
-    $version3 = $versionnumber[0]
-    if($version1 -eq 10)
-     {
-      $version1 = 0; 
-      $version2 = $version2 | % {iex $_}
-      $version2 = $version2+1
-     }
-     if($version2 -eq 10)
-     {
-      $version2 = 0; 
-      $version3 = $version3 | % {iex $_}
-      $version3 = $version3+1
-     }
-     $versionnumber = "$version3.$version2.$version1"
-    
-    if($os -eq "windows")
-    {
-     $Failed = $false
-     $Get += "Operating System Is Windows: Updating via 'get' is possible"
-     $versionlink = "https://github.com/MaynardMiner/SWARM/releases/download/v$VersionNumber/SWARM.$VersionNumber.zip"
-     $Get += "Detected New Version Should Be $VersionNumber"
-     Write-Host "Detected New Version Should Be $VersionNumber"
-     $Get += "Attempting To Download New Version at $Versionlink"
-     Write-Host "Attempting To Download New Version at $Versionlink"
-     $Location = Split-Path $dir
-     Write-Host "Main Directory is $Location"
-     $NewLocation = Join-Path (Split-Path $dir) "SWARM.$VersionNumber"
-     $FileName = join-path ".\x64" "SWARM.$VersionNumber.zip"
-     $DLFileName = Join-Path "$Dir" "x64\SWARM.$VersionNumber.zip"
-     $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$versionNumber/SWARM.$VersionNumber.zip"
-     [System.Net.ServicePointManager]::SecurityProtocol = ("Tls12","Tls11","Tls")
-     try{Invoke-WebRequest $URI -OutFile $FileName -UseBasicParsing -ErrorAction Stop}catch{$Failed = $true; $Get += "Failed To Contact Github For Download! Must Do So Manually"}
-     if($Failed -eq $false)
-     {
-     Start-Process "7z" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -Wait -WindowStyle Minimized
-      $Get += "Config Command Initiated- Restarting SWARM"
-      Write-Host "Config Command Initiated- Restarting SWARM"
-      $MinerFile =".\build\pid\miner_pid.txt"
-      if(Test-Path $MinerFile){$MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue}
-      if($MinerId)
-       {
-        Stop-Process $MinerId -Force
-        Start-Sleep -S 5
-        $Get += "Attempting to start new SWARM verison at $NewLocation\SWARM.bat"
-        Write-Host "Attempting to start new SWARM verison at $NewLocation\SWARM.bat"
-        $Get += "Downloaded and extracted SWARM successfully"
-        Copy-Item ".\SWARM.bat" -Destination $NewLocation -Force
-        Copy-Item ".\config\parameters\newarguments.json" -Destination "$NewLocation\config\parameters" -Force
-        New-Item -Name "pid" -Path "$NewLocation\build" -ItemType "Directory"
-        Copy-Item ".\build\pid\background_pid.txt" -Destination "$NewLocation\build\pid" -Force
-        Start-Sleep -S 3
-        Set-Location $NewLocation
-        Start-Process ".\SWARM.bat"
-        Set-Location $dir
-       }
-     }
-     else{$Get += "Did not perform update."}
-    }
-   else{$Get += Get-Content ".\build\txt\version.txt"}
 }
 
 "wallets"
@@ -491,7 +426,5 @@ to see a list of availble items.
 if($get -ne $null)
 {
 $Get
-$Get | Out-File ".\build\txt\get.txt"
-Start-Sleep -S .5
+$Get | Set-Content ".\build\txt\get.txt"
 }
-Exit

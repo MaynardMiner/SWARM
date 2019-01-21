@@ -1,0 +1,67 @@
+{
+    "NVIDIA1": {
+      "name": "NVIDIA1",
+      "delay": "1",
+      "prestart": [],
+      "commands": {
+        "argon2d-dyn": ""
+      },
+      "difficulty": {
+        "argon2d-dyn": ""
+      },
+      "naming": {
+        "argon2d-dyn": "argon2d"
+      },
+      "oc": {
+        "argon2d-dyn": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        }
+      }
+    },
+    "NVIDIA2": {
+      "name": "NVIDIA2",
+      "delay": "1",
+      "prestart": [],
+      "commands": {
+        "argon2d-dyn": ""
+      },
+      "difficulty": {
+        "argon2d-dyn": ""
+      },
+      "naming": {
+        "argon2d-dyn": "argon2d"
+      },
+      "oc": {
+        "argon2d-dyn": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        }
+      }
+    },
+    "NVIDIA3": {
+      "name": "NVIDIA3",
+      "delay": "1",
+      "prestart": [],
+      "commands": {
+        "argon2d-dyn": ""
+      },
+      "difficulty": {
+        "argon2d-dyn": ""
+      },
+      "naming": {
+        "argon2d-dyn": "argon2d"
+      },
+      "oc": {
+        "argon2d-dyn": {
+          "Power": "",
+          "Core": "",
+          "Memory": ""
+        }
+      }
+    },
+    "name": "ehssand"
+  }
+  
