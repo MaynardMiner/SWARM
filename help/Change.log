@@ -1603,3 +1603,4 @@ Critical X16r patch for 1.8.5
 -configs for equihash miners (- instead of --) fixed.
 -new miner esshand/ccminer for windows/linux
 -added algorithms to lolminer.
+-wallet table now is shown as decimal instead of scientific notations.
