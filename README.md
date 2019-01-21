@@ -129,7 +129,7 @@ Run Commands via HiveOS     x    | x(with ps)|
 
 **Pools**
 ```
-nicehash
+nicehash (-Nicehash_Wallet(1,2,3) and -Nicehash_Password arguments optional)
 blockmasters
 fairpool
 nlpool
@@ -139,7 +139,7 @@ blazepool
 hashrefinery
 phiphipool
 zpool
-whalesburg
+whalesburg (requires -ETH and -Worker Arguments)
 zergpool
 
 ```
