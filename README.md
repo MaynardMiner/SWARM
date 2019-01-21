@@ -139,13 +139,22 @@ blazepool
 hashrefinery
 phiphipool
 zpool
+whalesburg
+zergpool
+
 ```
 
 **Miners**
 ```
 Avermore (AMD)
 Bubalisk (CPU)
+ehssand (NVIDIA)
 miniz (NVIDIA)
+gminer (NVIDIA)
+bminer (NVIDIA)
+dstm (NVIDIA)
+xmr-stak (AMD)
+xmrig (AMD)
 ccminer-yescrypt (NVIDIA)
 CryptoDredge (NVIDIA)
 Tpruvot (NVIDIA)
