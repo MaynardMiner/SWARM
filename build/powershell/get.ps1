@@ -212,7 +212,7 @@ get oc
 get active
 get stats
 get screen
-get update
+get update (windows only)
 get wallets
 reboot
 version
