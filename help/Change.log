@@ -1608,7 +1608,8 @@ Critical X16r patch for 1.8.5
 1.9.1
 
 Note: cuckoo will not work for lower-end cards.
-Note: Suggested AMD drivers for Windows: 18.6.1
+Note: Suggested AMD drivers for Windows: 18.6.1.
+Note: It is highly advised for linux users to 410.93 drivers.
 
 -zjazz bitcash added.
 -argon2d miner for AMD added.
