@@ -1604,3 +1604,13 @@ Critical X16r patch for 1.8.5
 -new miner esshand/ccminer for windows/linux
 -added algorithms to lolminer.
 -wallet table now is shown as decimal instead of scientific notations.
+
+1.9.1
+
+Note: cuckoo will not work for lower-end cards.
+Note: Suggested AMD drivers for Windows: 18.6.1
+
+-zjazz bitcash added.
+-argon2d miner for AMD added.
+-xmrig updated
+-new api command: /getbest
