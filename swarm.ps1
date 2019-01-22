@@ -1184,6 +1184,9 @@ $BestMiners_Combo | ForEach {
    NPool = $_.NPool
    NUser = $_.NUser
    CommandFile = $_.CommandFile
+   Profit = 0
+   Power = 0
+   Fiat_Day = 0
    }
   }
  }
@@ -1197,6 +1200,13 @@ $BestActiveMiners = @()
 $ActiveMinerPrograms | foreach {
 if($BestMiners_Combo | Where Path -EQ $_.Path | Where Arguments -EQ $_.Arguments){$_.BestMiner = $true; $BestActiveMiners += $_}
 else{$_.BestMiner = $false}
+}
+
+$BestActiveMiners | Foreach {
+ $SelectedMiner = $BestMiners_Combo | Where Path -EQ $_.Path | Where Arguments -EQ $_.Arguments
+ $_.Profit = if($SelectedMiner.Profit){$SelectedMiner.Profit -as [decimal]}else{"bench"}
+ $_.Power = $([Decimal]$($SelectedMiner.Power*24)/1000*$WattEX)
+ $_.Fiat_Day = if($SelectedMiner.Profit){($SelectedMiner.Profit * $Rates.$Currency).ToString("N2")}else{"bench"}
 }
 
 ##Stop Linux Miners That Are Negaitve (Print Message)

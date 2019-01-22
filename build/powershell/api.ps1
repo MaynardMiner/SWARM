@@ -37,19 +37,17 @@ $APIServer = {
        $response = $context.Response
       
        # Break from loop if GET request sent to /end
-       if ($request.Url -match '/end') { 
-           break 
-       } else {
-   
+       if ($request.Url -match '/end') {break} 
+       else 
+        {
            # Split request URL to get command and options
            $requestvars = ([String]$request.Url).split("/");
            if($Remote -eq "Yes" -and $APIPassword -ne "No"){$GET = $requestvars[4]}
            else{$GET = $requestvars[3]}
-
-           if($GET)
-           {
-           switch($GET)
-           {
+      if($GET)
+       {
+        switch($GET)
+         {
                "summary" 
                {
                 if(Test-Path ".\build\txt\profittable.txt")
@@ -105,10 +103,37 @@ $APIServer = {
                   $response.ContentType = 'application/json';
                  }
                }
+               "getbest"
+               {
+                if(Test-Path ".\build\txt\bestminers.txt")
+                 {
+                    $result = @()
+                    $getbest = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-Json
+                    $Types = $getbest.type | Select -Unique
+                    $Types | foreach{
+                     $MinersOn = $false
+                     $Selected = $getbest | Where Type -eq $_
+                     $Selected | foreach{if($_.Profits -ne $null){$MinersOn = $true}}
+                     if($MinersOn -eq $true){$Selected = $Selected | Sort-Object -Property Profits -Descending}
+                     else{$Selected = $Selected | Sort-Object -Property Pool_Estimate -Descending}                
+                     $result += @{"$($_)" = @($Selected)}
+                    }
+                    $message = $result | ConvertTo-Json -Depth 4 -Compress; 
+                    $response.ContentType = 'application/json';
+                 }
+                else 
+                 {
+                  # If no matching subdirectory/route is found generate a 404 message
+                  $message = @("No Data") | ConvertTo-Json -Compress;
+                  $response.ContentType = 'application/json';
+                 }   
+                }
            default
            {
                   # If no matching subdirectory/route is found generate a 404 message
                   $message = @("No Data") | ConvertTo-Json -Compress;
+                  $response.ContentType = 'application/json';
+                  $message = $result | ConvertTo-Json -Depth 4 -Compress; 
                   $response.ContentType = 'application/json';
            }
        }
@@ -122,7 +147,7 @@ $APIServer = {
           $output = $response.OutputStream
           $output.Write($buffer, 0, $buffer.length)
           $output.Close()
-         }    
+         }
         }
        }
       }Finally{$listener.Stop()}
