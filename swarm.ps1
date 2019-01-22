@@ -571,7 +571,7 @@ if($Platform -eq "linux")
   start-watchdog
 
   ## Get Total GPU Count
-  $GPU_Count = Get-GPUCount -DeviceType $Type -Platforms $Platform -CPUThreads $CPUThreads
+  $GPU_Count = Get-GPUCount
 
   ## Let User Know What Platform commands will work for- Will always be Group 1.
   $Type | Foreach {

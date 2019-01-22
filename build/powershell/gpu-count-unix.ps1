@@ -11,27 +11,17 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 function Get-GPUCount {
-    param (
-    [Parameter(Mandatory=$false)]
-    [String]$Platforms,
-    [Parameter(Mandatory=$true)]
-    [Array]$DeviceType,
-    [Parameter(Mandatory=$false)]
-    [Int]$CPUThreads
-    )
 
     $nvidiacounted = $false
     $amdcounted = $false
     $DeviceList = @{}
-    if($Type -like "*AMD"){$DeviceList.Add("AMD",@{})}
+    if($Type -like "*AMD*"){$DeviceList.Add("AMD",@{})}
     if($Type -like "*NVIDIA*"){$DeviceList.Add("NVIDIA",@{})}
     if($Type -like "*CPU*"){$DeviceList.Add("CPU",@{})}
 
     lspci | Tee-Object ".\build\txt\gpucount.txt" | OUt-Null
     $GetBus = Get-Content ".\build\txt\gpucount.txt"
     $GetBus = $GetBus | Select-String "VGA","3D"
-    $AMDCards = $GetBus | Select-String "VGA","3D" | Select-String "Advanced Micro Devices","RS880","Stoney"
-    $NVIDIACards = $GetBus | Select-String "VGA","3D controller" | Select-String "NVIDIA"
     $AMDCount = 0
     $NVIDIACount = 0
     $CardCount = 0
