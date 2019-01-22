@@ -11,6 +11,17 @@
       "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/Claymore-Linux.tar.gz" 
      },
 
+     "ehssand_amd": {
+      "name": "ehssand_amd",
+      "type": "amd",
+      "path1": ".\\bin\\ehssand_amd-1\\sgminer",
+      "path2": ".\\bin\\ehssand_amd-2\\sgminer",
+      "path3": ".\\bin\\ehssand_amd-3\\sgminer",
+      "minername": "sgminer.exe",
+      "version": "1",
+      "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/ehssand-linux.tar.gz"
+    },
+
    "phoenix_amd": {
         "name": "phoenix_amd",
         "type": "amd",

@@ -19,7 +19,7 @@
     "path3": ".\\bin\\ehssand_amd-3\\sgminer.exe",
     "minername": "sgminer.exe",
     "version": "12.0",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/Claymore-Windows.zip"
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/ehssand-windows.zip"
   },
 
   "phoenix_amd": {
