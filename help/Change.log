@@ -1617,3 +1617,5 @@ Note: It is highly advised for linux users to 410.93 drivers.
 -new api command: /getbest
 -found/fixed typo for default claymore_amd file for Ethash.
  affected fresh install or users that did not remote update.
+-was getting stability issues from a claymore/phoenix miner export. 
+ Removed it.
