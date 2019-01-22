@@ -1614,3 +1614,5 @@ Note: Suggested AMD drivers for Windows: 18.6.1
 -argon2d miner for AMD added.
 -xmrig updated
 -new api command: /getbest
+-found/fixed typo for default claymore_amd file for Ethash.
+ affected fresh install or users that did not remote update.
