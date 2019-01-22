@@ -18,7 +18,7 @@
     "path2": ".\\bin\\ehssand_amd-2\\sgminer.exe",
     "path3": ".\\bin\\ehssand_amd-3\\sgminer.exe",
     "minername": "sgminer.exe",
-    "version": "12.0",
+    "version": "1",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/ehssand-windows.zip"
   },
 
