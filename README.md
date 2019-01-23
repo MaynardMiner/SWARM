@@ -14,17 +14,29 @@ https://github.com/MaynardMiner/SWARM/wiki
 
 **What is SWARM?**
 
- SWARM is an collection scripts written in both powershell and bash, and is a profit switching mining system that will work within any OS. (The miners that SWARM uses may vary) SWARM, is written to be used as an all purpose/all platform mining system that can be implemented/managed on a large scale basis. It was developed for larger mining administrators, who are generally unable to interact with every mining unit/rig directly. SWARM deviates from conventional in-depth GUI interfaces, or a centralized monitoring system/screen which are a burden to mining administrators. SWARM introduces a new method of interface which is meant to assist larger mining systems, by displaying information per user command. Because SWARM's interface is command based as opposed to GUI- Users are able to create scripts of their own to micro-manage their farms/workers. This also allows minimal OS requirements to run, and therefor lends to its versatility to operate in many different environments.
+**Concept**
 
- SWARM has an api layer, which is produced when ``-LITE Yes`` is specified. This ``LITE`` mode allows for the data of SWARM to be displayed in API format through HTTP. This allows both users and developers to create their own mining administration/launch script for miners, and simply use SWARM to gather data and formulate calculations on which miner/pool/algo combination is most profitable. The linux side the commands SWARM use can be used in any bash script, after they have been installed. The Widows side allow commands to be ran through HiveOS's interface, and has a feature in which you are able to run powershell or cmd commands remotely through HiveOS's website through the use of ``ps``.
+SWARM is an collection scripts written in both powershell and bash, and is a profit switching mining system that will work within any OS with very few/little changes. (The miners that SWARM uses may vary) SWARM, is written to be used as an all purpose/all platform mining system that can be implemented/managed on a large scale basis. It was developed for larger mining administrators, who are generally unable to interact with every mining unit/rig directly. SWARM deviates from conventional in-depth GUI interfaces, or a centralized monitoring system/screen which are a burden to mining administrators. SWARM introduces a new method of interface which is meant to assist larger mining systems, by displaying information per user command. Because SWARM's interface is command based as opposed to GUI- Users are able to create scripts of their own to micro-manage their farms/workers. This also allows minimal OS requirements to run, and therefor lends to its versatility to operate in many different environments.
 
- To focus solely on SWARM's project mission: SWARM was written to integrate fully with HiveOS as of version 1.4.5. The developer of SWARM recognizes the attempt to make an OS/website as sophisticated as the years of development and effort placed into HiveOS would be pointless. Therefor, knowing that SWARM was capable of operating within HiveOS- SWARM was introduced to HiveOS as an available custom miner, and can be integrated rather easily.
+**API**
 
- SWARM is very customizable. At the base layer- It is easy to setup by simply inputting some basic user configuration at launch, and SWARM will handle the rest. However, beyond the base layer, SWARM offers a sophisticated oc tuning system, along with the ability to customize environment varibles, miner arguments, pool difficulty, and even a system for factoring power cost/calculation into profit analysis.
+SWARM has an api-only layer, which is produced when ``-LITE Yes`` is specified. This ``LITE`` mode allows for the data of SWARM to be displayed in API format through HTTP. This allows both users and developers to create their own mining administration/launch script for miners, and simply use SWARM to gather data and formulate calculations on which miner/pool/algo combination is most profitable. The linux side the commands SWARM use can be used in any bash script, after they have been installed. The Widows side allow commands to be ran through HiveOS's interface, and has a feature in which you are able to run powershell or cmd commands remotely through HiveOS's website through the use of ``ps``.
 
- SWARM was designed to make SWARM bigger than itself. All commands can be executed via bash scripts/shell commands on the linux side, and we are slowly implementing the same features to the window's side. With the ``Lite`` mode, SWARM can be easily incorporated into any current miningOS available, and users can customize/create their own launch process, independent of SWARM.
+**HiveOS Integration (Windows or Linux)**
 
- I am a sole developer, and this is a large project. I prioritize workload by requests and activity, if you would like me to develop/improve a particular version Just notify me. Currently, the most popular, most used, and most user supported feature of SWARM is utilizing it as a custom miner in HiveOS.
+To focus solely on SWARM's project mission: SWARM was written to integrate fully with HiveOS as of version 1.4.5. The developer of SWARM recognizes the attempt to make an OS/website as sophisticated as the years of development and effort placed into HiveOS would be pointless. Therefor, knowing that SWARM was capable of operating within HiveOS- SWARM was introduced to HiveOS as an available custom miner, and can be integrated rather easily.
+
+**Highly Sophisticated Customizations**
+
+SWARM is very customizable. At the base layer- It is easy to setup by simply inputting some basic user configuration at launch, and SWARM will handle the rest. However, beyond the base layer, SWARM offers a sophisticated oc tuning system, along with the ability to customize environment varibles, miner arguments, pool difficulty, and even a system for factoring power cost/calculation into profit analysis.
+
+**Bash or Powershell Scripting**
+
+SWARM was designed to make SWARM bigger than itself. All commands can be executed via bash scripts/shell commands on the linux side, and we are slowly implementing the same features to the window's side. With the ``Lite`` mode, SWARM can be easily incorporated into any current miningOS available, and users can customize/create their own launch process, independent of SWARM. With the remote ``ps`` command, SWARM allows you through HiveOS interface send remote powershell/cmd.exe commands to rig.
+
+**Development**
+
+I am a sole developer, and this is a large project. I prioritize workload by requests and activity, if you would like me to develop/improve a particular version Just notify me. Currently, the most popular, most used, and most user supported feature of SWARM is utilizing it as a custom miner in HiveOS.
 
  **How Does SWARM work?**
 
@@ -148,7 +160,7 @@ zergpool
 ```
 Avermore (AMD)
 Bubalisk (CPU)
-ehssand (NVIDIA)
+ehssand (NVIDIA/AMD)
 miniz (NVIDIA)
 gminer (NVIDIA)
 bminer (NVIDIA)
@@ -209,6 +221,8 @@ Step 7: (Optional) Confirm SWARM has restarted- At this point when background ag
         through HiveOS and your flight sheet.
 
 **Simple Install Instructions (HIVEOS):**
+
+NOTE: HiveOS currently uses Cuda 9.2 as default. It is highly suggested to use Cuda 10 drivers, along with ``-Cuda 10`` argument added to SWARM, this will unlock all miners!
 
 SWARM is simple to install in linux environment, IF a user is familiar with linux operating systems. There are plenty of users to help/support you, if you should decide to learn how to operate/use SWARM. However, it does take the commitment of learning how to use/manage linux.
 
