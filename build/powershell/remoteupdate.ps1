@@ -43,6 +43,7 @@ $PreviousVersions += "SWARM.1.8.7"
 $PreviousVersions += "SWARM.1.8.8"
 $PreviousVersions += "SWARM.1.8.9"
 $PreviousVersions += "SWARM.1.9.0"
+$PreviousVersions += "SWARM.1.9.1"
 
 Write-Host "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
 Write-Host "Check $Location For any Previous Versions"
@@ -255,11 +256,42 @@ $PreviousVersions | foreach {
           $Data.$_.commands| Add-Member "mtp" "" -ErrorAction SilentlyContinue
           $Data.$_.difficulty | Add-Member "mtp" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "mtp" "mtp" -ErrorAction SilentlyContinue
-          $Data.$_.oc | Add-Member "mtp" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue                   
+          $Data.$_.oc | Add-Member "mtp" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue
+          
+          $Data.$_.commands| Add-Member "astralhash" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "astralhash" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "astralhash" "astralhash" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "astralhash" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue
+
+          $Data.$_.commands| Add-Member "padihash" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "padihash" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "padihash" "glt-padihash" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "padihash" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue
+
+          $Data.$_.commands| Add-Member "jeonghash" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "jeonghash" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "jeonghash" "glt-jeonghash" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "jeonghash" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue
+
+          $Data.$_.commands| Add-Member "pawelhash" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "pawelhash" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "pawelhash" "glt-pawelhash" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "pawelhash" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue
             }
            }
           }
-
+          if($ChangeFile -eq "bminer.json")
+          {
+            $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+            if($_ -ne "name")
+            {      
+            $Data.$_.commands| Add-Member "equihash144" "-pers auto" -ErrorAction SilentlyContinue
+            $Data.$_.difficulty | Add-Member "equihash144" "" -ErrorAction SilentlyContinue
+            $Data.$_.naming | Add-Member "equihash144" "equihash1445" -ErrorAction SilentlyContinue
+            $Data.$_.oc | Add-Member "equihash144" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue  
+            }
+           }
+          }
           if($ChangeFile -eq "ewbf.json")
           {
             $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
