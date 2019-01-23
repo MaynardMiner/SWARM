@@ -66,8 +66,8 @@ if($Platforms -eq "windows")
 
 ##Start API Server
 Write-Host "API Port is $Port"
-Start-APIServer
 if($Platforms -eq "Windows"){Start-Process "powershell" -ArgumentList "-ExecutionPolicy Bypass -WindowStyle hidden -Command `".\build\powershell\apiwatchdog.ps1 $Port`"" -WorkingDirectory $WorkingDir}
+Start-APIServer
 
 if($API -eq "Yes")
 {
