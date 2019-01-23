@@ -1,9 +1,9 @@
 ##Miner Path Information
-if($cpu.xmrstak.path1){$Path = "$($cpu.xmrstak.path1)"}
+if($cpu."stak-cpu".path1){$Path = "$($cpu."stak-cpu".path1)"}
 else{$Path = "None"}
-if($cpu.xmrstak.uri){$Uri = "$($cpu.xmrstak.uri)"}
+if($cpu."stak-cpu".uri){$Uri = "$($cpu."stak-cpu".uri)"}
 else{$Uri = "None"}
-if($cpu.xmrstak.minername){$MinerName = "$($cpu.xmrstak.minername)"}
+if($cpu."stak-cpu".minername){$MinerName = "$($cpu."stak-cpu".minername)"}
 else{$MinerName = "None"}
 if($Platform -eq "linux"){$Build = "Tar"}
 elseif($Platform -eq "windows"){$Build = "Zip"}

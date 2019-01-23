@@ -43,7 +43,7 @@ $Message += "Selected Executable Is $EXE"
 Write-Host $($Message | Select -last 1)
 $Message += "Selected Version Is $Version"
 Write-Host $($Message | Select -last 1)
-$Uri += "Selected Uri is $URI"
+$Message += "Selected Uri is $URI"
 Write-Host $($Message | Select -last 1)
 
 if($CommandQuery)
@@ -108,7 +108,8 @@ $MinerSearch += $miner_update_cpu
        else{$Message += "No exe supplied. Please run again."; Write-Host $($Message | Select -last 1); $Failed = $true}
        if($Version){$MinerType.$_.version = $Version}
        else{$Message += "No version supplied. Please run again."; Write-Host $($Message | Select -last 1); $Failed = $true}
-       if($Uri){$MinerType.$_.uri = $Uri}
+       if($URI -eq "source"){$MinerType.$_.uri = $($MinerType.$_.uri); $URIMessage = $($MinerType.$_.uri)}
+       elseif($URI){$MinerType.$_.uri = $URI; $URIMessage = $($MinerType.$_.uri)}
        else{$Message += "No Uri Supplied. Please run again."; Write-Host $($Message | Select -last 1); $Failed = $true}
       }
      }
@@ -141,7 +142,7 @@ $MinerSearch += $miner_update_cpu
      Write-Host $($Message | Select -last 1)
      $message += "Miner New version is $Version"
      Write-Host $($Message | Select -last 1)
-     $message += "Miner New uri is $URI"
+     $message += "Miner New uri is $URIMessage"
      Write-Host $($Message | Select -last 1)
      $message += "Miner Was Updated"
      Write-Host $($Message | Select -last 1)
