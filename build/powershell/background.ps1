@@ -622,7 +622,8 @@ switch($MinerAPI)
    $Request = $Null; $Request = Get-TCP -Server $Server -Port $port -Message "summary"
    if($Request)
     {
-     $Multiplier = 1000
+     if($MinerName -ne "zjazz_cuda.exe" -or $MinerName -ne "zjazz_cuda"){$Multiplier = 1000}
+     else{$Multiplier = 2000000}
      try{$GetKHS = $Request -split ";" | ConvertFrom-StringData -ErrorAction Stop}catch{Write-Warning "Failed To Get Summary"}
      $RAW = if ([Double]$GetKHS.KHS -ne 0 -or [Double]$GetKHS.ACC -ne 0) {[Double]$GetKHS.KHS * $Multiplier}
      Write-MinerData2;
