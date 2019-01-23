@@ -6,18 +6,26 @@
     "prestart": [],
     "commands": {
       "zhash": "",
-      "daggerhashimoto": ""
+      "daggerhashimoto": "",
+      "equihash144": "-pers auto"
     },
     "difficulty": {
       "zhash": "",
-      "daggerhashimoto": ""
+      "daggerhashimoto": "",
+      "equihash144": ""
     },
     "naming": {
       "zhash": "zhash",
-      "daggerhashimoto": "ethstratum"
+      "daggerhashimoto": "ethstratum",
+      "equihash144": "equihash1445"
     },
     "oc": {
       "zhash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "equihash144": {
         "Power": "",
         "Core": "",
         "Memory": ""

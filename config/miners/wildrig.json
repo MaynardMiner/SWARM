@@ -35,7 +35,11 @@
       "mtp": "",
       "sha256T": "",
       "sha256q": "",
-      "x16rt": ""
+      "x16rt": "",
+      "astralhash": "",
+      "jeonghash": "",
+      "padihash": "",
+      "pawelhash": ""
     },
     "difficulty": {
       "bcd": "",
@@ -63,7 +67,11 @@
       "mtp": "",
       "sha256T": "",
       "sha256q": "",
-      "x16rt": ""
+      "x16rt": "",
+      "astralhash": "",
+      "jeonghash": "",
+      "padihash": "",
+      "pawelhash": ""
     },
     "naming": {
       "bcd": "bcd",
@@ -91,7 +99,11 @@
       "mtp": "mtp",
       "sha256T": "sha256T",
       "sha256q": "sha256q",
-      "x16rt": "x16rt"
+      "x16rt": "x16rt",
+      "astralhash": "glt-astralhash",
+      "jeonghash": "glt-jeonghash",
+      "padihash": "glt-padihash",
+      "pawelhash": "glt-pawelhash"
     },
     "oc": {
       "bcd": {
@@ -303,6 +315,38 @@
         "mem": ""
       },
       "x16rt": {
+        "dpm": "",
+        "v": "",
+        "mdpm": "",
+        "fans": "",
+        "core": "",
+        "mem": ""
+      },
+      "astralhash": {
+        "dpm": "",
+        "v": "",
+        "mdpm": "",
+        "fans": "",
+        "core": "",
+        "mem": ""
+      },
+      "jeonghash": {
+        "dpm": "",
+        "v": "",
+        "mdpm": "",
+        "fans": "",
+        "core": "",
+        "mem": ""
+      },
+      "padihash": {
+        "dpm": "",
+        "v": "",
+        "mdpm": "",
+        "fans": "",
+        "core": "",
+        "mem": ""
+      },
+      "pawelhash": {
         "dpm": "",
         "v": "",
         "mdpm": "",

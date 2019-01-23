@@ -10,6 +10,16 @@
     "version": "10a",
     "uri": "https://github.com/nemosminer/ccminerKlausTyescrypt/releases/download/v10/ccminerKlausTyescryptv10.7z"
   },
+  "bminer": {
+    "name": "bminer",
+    "type": "nvidia",
+    "path1": ".\\bin\\bminer-1\\bminer.exe",
+    "path2": ".\\bin\\bminer-2\\bminer.exe",
+    "path3": ".\\bin\\bminer-3\\bminer.exe",
+    "minername": "bminer",
+    "version": "13.0",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/bminer-windows.zip"
+  },
   "ehssand": {
     "name": "ehssand",
     "type": "nvidia",
