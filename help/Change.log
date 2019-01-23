@@ -1623,6 +1623,7 @@ Note: It is highly advised for linux users to 410.93 drivers.
  1.9.2
 
  -Zjazz multiplier fixed for pool vs. miner. You may want to rebenchmark it.
+ -Note: Solution was discussed on handling MTP. Will have something next release.
 
 -``version update`` command can be ran with 'source' rather than
    uri, allowing users to update miners from swarm repository.
