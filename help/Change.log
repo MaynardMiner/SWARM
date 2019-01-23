@@ -1619,3 +1619,16 @@ Note: It is highly advised for linux users to 410.93 drivers.
  affected fresh install or users that did not remote update.
 -was getting stability issues from a claymore/phoenix miner export. 
  Removed it.
+
+ 1.9.2
+
+-``version update`` command can be ran with 'source' rather than
+   uri, allowing users to update miners from swarm repository.
+   example: 
+   ``version update gminer miner 1.21 source``
+
+-gminer 1.21
+-Ehssand for AMD.
+-added glt token algos to wildrig.
+-bminer 13.0 updated & added to windows.
+-added 1445 back to bminer.
