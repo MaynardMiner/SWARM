@@ -623,7 +623,7 @@ switch($MinerAPI)
    if($Request)
     {
      Write-Host "MinerName is $MinerName"
-     if($MinerName -eq "zjazz_cuda.exe" -or $MinerName -eq "zjazz_cuda"){if($MinerAlgo -eq "cuckoo"){$Multiplier = 2000000}}
+     if($MinerName -eq "zjazz_cuda.exe" -or $MinerName -eq "zjazz_cuda"){if($MinerAlgo -eq "cuckoo"){$Multiplier = 2000000}else{$Multiplier = 1000}}
      else{$Multiplier = 1000}
      Write-Host "Multiplier is $Multiplier"
      try{$GetKHS = $Request -split ";" | ConvertFrom-StringData -ErrorAction Stop}catch{Write-Warning "Failed To Get Summary"}
