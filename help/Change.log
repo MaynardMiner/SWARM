@@ -1641,3 +1641,4 @@ Note: It is highly advised for linux users to 410.93 drivers.
 
 -Noticed small bug in version command. Works as intented,
  but windows version posted to hiveOS too soon before was finished.
+-Fixed powershell bug -ne was failing for zjazz stats.
