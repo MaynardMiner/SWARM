@@ -126,7 +126,7 @@
           $messagetype = "info"
           $data = "$($command.result.exec)"
           $arguments = $data -replace ("version ","")
-          start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command $arguments""" -WindowStyle Minimized -Verb Runas
+          start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command $arguments""" -WindowStyle Minimized -Verb Runas -Wait
           $getpayload = Get-Content ".\build\txt\version.txt"
           $line = @()
           $getpayload | foreach {$line += "$_`n"}

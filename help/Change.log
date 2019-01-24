@@ -1636,3 +1636,8 @@ Note: It is highly advised for linux users to 410.93 drivers.
 -bminer 13.0 updated & added to windows.
 -added 1445 back to bminer.
 -API watchdog start first, then server.
+
+1.9.2
+
+-Noticed small bug in version command. Works as intented,
+ but windows version posted to hiveOS too soon before was finished.

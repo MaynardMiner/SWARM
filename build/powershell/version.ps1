@@ -178,5 +178,5 @@ $MinerSearch += $miner_update_cpu
  
  if($CudaVersion){$Message += "Cuda Version is $CudaVersion"; Write-Host $($Message | Select -last 1)}
  $Message | Set-Content ".\build\txt\version.txt"
- if($MinerTables){$MinerTables | Out-Host; $MinerTables | Out-File ".\build\txt\version.txt" -Append}
+ if($MinerTables){$MinerTables | Out-Host; $MinerTables | Set-Content ".\build\txt\version.txt" -Append}
 
