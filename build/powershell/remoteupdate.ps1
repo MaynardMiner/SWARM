@@ -44,6 +44,7 @@ $PreviousVersions += "SWARM.1.8.8"
 $PreviousVersions += "SWARM.1.8.9"
 $PreviousVersions += "SWARM.1.9.0"
 $PreviousVersions += "SWARM.1.9.1"
+$PreviousVersions += "SWARM.1.9.2"
 
 Write-Host "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
 Write-Host "Check $Location For any Previous Versions"
@@ -260,7 +261,7 @@ $PreviousVersions | foreach {
           
           $Data.$_.commands| Add-Member "astralhash" "" -ErrorAction SilentlyContinue
           $Data.$_.difficulty | Add-Member "astralhash" "" -ErrorAction SilentlyContinue
-          $Data.$_.naming | Add-Member "astralhash" "glt-astralhash" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "astralhash" "glt-astralhash" -ErrorAction SilentlyContinue -Force
           $Data.$_.oc | Add-Member "astralhash" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue
 
           $Data.$_.commands| Add-Member "padihash" "" -ErrorAction SilentlyContinue

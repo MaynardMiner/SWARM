@@ -1654,6 +1654,8 @@ Note: Huge change in miner files. Windows users: z-enemy stats may not transfer 
       Miner filenames were changed to enforce simplistic Uniformity- It had to be done
       eventually.
 
+Note: Update to fix glt-astralhash for wildrig will work.
+
 -Noticed small bug in version command. Works as intented,
  but windows version posted to hiveOS too soon before was finished.
 -Fixed powershell bug -ne was failing for zjazz stats.
@@ -1663,6 +1665,7 @@ Note: Huge change in miner files. Windows users: z-enemy stats may not transfer 
 -Added ``-No_Algo1`` argument. See help file for use.
 -Added ``-No_Algo2`` argument. See help file for use.
 -Added ``-No_Algo3`` argument. See help file for use.
+-gminer 1.22
 
 Note: First time users may notice profit calculations are
 different compared to other available mining applications.
