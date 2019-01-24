@@ -87,7 +87,11 @@ param(
     [Parameter(Mandatory=$false)]
     [Int]$Benchmark = 190,
     [Parameter(Mandatory=$false)]
-    [array]$No_Algo = "",
+    [array]$No_Algo1 = "",
+    [Parameter(Mandatory=$false)]
+    [array]$No_Algo2 = "",    
+    [Parameter(Mandatory=$false)]
+    [array]$No_Algo3 = "",
     [Parameter(Mandatory=$false)]
     [String]$Favor_Coins = "Yes",
     [Parameter(Mandatory=$false)]
@@ -151,7 +155,7 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$Worker,
     [Parameter(Mandatory=$false)]
-    [String]$No_Miner
+    [array]$No_Miner
 )
 
 
@@ -309,7 +313,9 @@ $CurrentParams.Add("CoinExchange",$CoinExchange)
 $CurrentParams.Add("Auto_Coin",$Auto_Coin)
 $CurrentParams.Add("Nicehash_Fee",$Nicehash_Fee)
 $CurrentParams.Add("Benchmark",$Benchmark)
-$CurrentParams.Add("No_Algo",$No_Algo)
+$CurrentParams.Add("No_Algo1",$No_Algo1)
+$CurrentParams.Add("No_Algo2",$No_Algo2)
+$CurrentParams.Add("No_Algo3",$No_Algo3)
 $CurrentParams.Add("Favor_Coins",$Favor_Coins)
 $CurrentParams.Add("Threshold",$Threshold)
 $CurrentParams.Add("Platform",$Platform)
@@ -410,7 +416,9 @@ $CoinExchange = $SWARMParams.CoinExchange
 $Auto_Coin = $SWARMParams.Auto_Coin
 $Nicehash_Fee = $SWARMParams.Nicehash_Fee
 $Benchmark = $SWARMParams.Benchmark
-$No_Algo = $SWARMParams.No_Algo
+$No_Algo1 = $SWARMParams.No_Algo1
+$No_Algo2 = $SWARMParams.No_Algo2
+$No_Algo3 = $SWARMParams.No_Algo3
 $Favor_Coins = $SWARMParams.Favor_Coins
 $Threshold = $SWARMParams.Threshold
 $Platform = $SWARMParams.platform
@@ -521,7 +529,10 @@ $Log = 1;
 start-log -Platforms $Platform -HiveOS $HiveOS -Number $Log;
 
 ##HiveOS Confirmation
-Write-Host "HiveOS = $HiveOS"
+Write-Host "HiveOS = $HiveOS
+"
+if($Platform -eq "windows" -and $Type -like "*AMD*" -and $HiveOS -eq "Yes"){Write-Host "Note: AMD Overclocking Through Hive Is Not Supported Yet
+" -ForegroundColor Yellow}
 
 #Startings Settings (Non User Arguments):
 $BenchmarkMode = "No"
@@ -832,7 +843,9 @@ $CoinExchange = $SWARMParams.CoinExchange
 $Auto_Coin = $SWARMParams.Auto_Coin
 $Nicehash_Fee = $SWARMParams.Nicehash_Fee
 $Benchmark = $SWARMParams.Benchmark
-$No_Algo = $SWARMParams.No_Algo
+$No_Algo1 = $SWARMParams.No_Algo1
+$No_Algo2 = $SWARMParams.No_Algo2
+$No_Algo3 = $SWARMParams.No_Algo3
 $Favor_Coins = $SWARMParams.Favor_Coins
 $Threshold = $SWARMParams.Threshold
 $Platform = $SWARMParams.platform

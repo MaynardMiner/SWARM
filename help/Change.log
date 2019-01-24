@@ -1637,8 +1637,38 @@ Note: It is highly advised for linux users to 410.93 drivers.
 -added 1445 back to bminer.
 -API watchdog start first, then server.
 
+
 1.9.2
+
+Note: With new -No_Algo1,-No_Algo2,-No_Algo3 arguments
+      you will be able to divide rig, allowing smaller
+      number of gpus to mine algos like mtp and cuckoo.
+      This allows larger rigs to still be able to mine
+      algorithms.
+
+Example: ``-Type NVIDIA1,NVIDIA2 -GPUDevices1 0,1 -GPUDevices2 2,3,4,5,6,7,8 -No_Algo2 mtp,cuckoo``
+          The above example: GPU 0 & 1 will factor mtp and cuckoo, Remaining GPUS will not.
+
+Note: Huge change in miner files. Windows users: z-enemy stats may not transfer over.
+      Linux users- No miner stats may transfer over on update.
+      Miner filenames were changed to enforce simplistic Uniformity- It had to be done
+      eventually.
 
 -Noticed small bug in version command. Works as intented,
  but windows version posted to hiveOS too soon before was finished.
 -Fixed powershell bug -ne was failing for zjazz stats.
+-Added ``-No_Miner`` argument. See help file for use.
+-Uniformity of all miner names.
+-``No_Algo`` argument has been removed.
+-Added ``-No_Algo1`` argument. See help file for use.
+-Added ``-No_Algo2`` argument. See help file for use.
+-Added ``-No_Algo3`` argument. See help file for use.
+
+Note: First time users may notice profit calculations are
+different compared to other available mining applications.
+This is intentional- My method of calculation is different,
+and has been discussed at length and supported by userbase.
+
+Note: ``-SWARM_Mode Yes`` allows all SWARM users to switch at same
+time. All rigs/users will be syncronized. This does not
+apply to pool or choice of miner- Just switching times.

@@ -11,15 +11,16 @@ Arguments & Explanations:
 Argument          Options           Explanation
                                                             
 -Poolname       [fairpool,          Current Pools SWARM can mine from. Omit or add as desire. can
-                nicehash,           only use these pools currently.  
-                phiphipool,
-                hashrefinery,  
+                nicehash,           only use these pools currently. Note: Whalesburg pool requires
+                phiphipool,         -ETH and -Worker arguments. (See below). Note: Nicehash has
+                hashrefinery,       optional additional arguments (See below).
                 blazepool,
                 ahashpool,
 		starpool,
 		blockmasters,
-                Nlpool
-                zpool]
+                nlpool,
+                zpool,
+                Whalesburg]
 
 -Wallet1      [Wallet Address]      Address of your wallet. By default SWARM assumes it to be BTC.
                                     See Advanced arguments to change that.
@@ -47,6 +48,15 @@ Argument          Options           Explanation
 These arguments can be added for additional customization and options
 
 Argument            Options             Explanation
+
+-No_Algo1   [algorithm,algorithm,etc.]  Removes use from specified device group.
+-No_Algo2                               NVIDIA1 and AMD1 would be -No_Algo1
+-No_Algo3                               NVIDIA2 would be -No_Algo2
+                                        NVIDIA3 would be -No_Algo3
+
+-No_miner     [name,name,etc.]      Swarm excludes miner matching the name of the .ps1 file.
+                                    location of active .ps1 files is in ".\miners\gpu".
+                                    Example: -No_miner cryptodredge-1,cryptodredge-2,cryptodredge-3
 
 -ETH           [Etherium Address]   Etherium Address. Needed for Whalesburg Pool.
 

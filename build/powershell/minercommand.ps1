@@ -36,15 +36,24 @@ else{$minerfilepath = "miners\asic"}
 ## Start Running miner scripts, Create an array of Miner Hash Tables
 $GetMiners = if(Test-Path $minerfilepath){Get-ChildItemContent $minerfilepath | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru} |
  Where {$Type.Count -eq 0 -or (Compare-Object $Type $_.Type -IncludeEqual -ExcludeDifferent | Measure).Count -gt 0} |
+ Where {$No_Miner -notcontains $_.Name} |
  Where {$_.Path -ne "None"} |
  Where {$_.Uri -ne "None"} |
  Where {$_.MinerName -ne "None"}}
+
+$NoAlgoMiners = @()
+$GetMiners | Where TYPE -eq "NVIDIA1" | %{if($No_Algo1 -notcontains $_.Algo){$NoAlgoMiners += $_}}
+$GetMiners | Where TYPE -eq "NVIDIA2"  | %{if($No_Algo2 -notcontains $_.Algo){$NoAlgoMiners += $_}}
+$GetMiners | Where TYPE -eq "NVIDIA3"  | %{if($No_Algo3 -notcontains $_.Algo){$NoAlgoMiners += $_}}
+$GetMiners | Where TYPE -eq "AMD1"  | %{if($No_Algo1 -notcontains $_.Algo){$NoAlgoMiners += $_}}
+$GetMiners | Where TYPE -eq "AMD2"  | %{if($No_Algo2 -notcontains $_.Algo){$NoAlgoMiners += $_}}
+$GetMiners | Where TYPE -eq "AMD3"  | %{if($No_Algo3 -notcontains $_.Algo){$NoAlgoMiners += $_}}
 
 $ScreenedMiners = @()
 $Note = @()
 
 ## This Creates A New Array Of Miners, Screening Miners That Were Bad. As it does so, it notfies user.
-$GetMiners | foreach {
+$NoAlgoMiners | foreach {
 if(-not ($GetPoolBlocks | Where Algo -eq $_.Algo | Where Name -eq $_.Name | Where Type -eq $_.Type | Where MinerPool -eq $_.Minerpool))
  {
   if(-not ($GetAlgoBlocks | Where Algo -eq $_.Algo | Where Name -eq $_.Name | Where Type -eq $_.Type))

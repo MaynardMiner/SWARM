@@ -68,7 +68,13 @@
     "Rejections":  75,
     "AltWallet3":  "",
     "Nicehash_Fee":  "",
-    "No_Algo":  [
+    "No_Algo1":  [
+                    ""
+                ],
+    "No_Algo2":  [
+                    ""
+                ],
+    "No_Algo3":  [
                     ""
                 ],
     "MinerBanCount":  4,

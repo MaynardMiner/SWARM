@@ -94,14 +94,6 @@ function Convert-DateString ([string]$Date, [string[]]$Format)
         $AlgorithmList = @()
         $GetAlgorithms = Get-Content ".\config\pools\pool-algos.json" -Force | ConvertFrom-Json
         $PoolAlgorithms = @()
-        $GetAlgorithms | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {$PoolAlgorithms += $_}
-        
-        if($No_Algo -ne $null)
-         {
-         $GetNoAlgo = Compare-Object $No_Algo $PoolAlgorithms
-         $GetNoAlgo.InputObject | foreach{$AlgorithmList += $_}
-         }
-         else{$PoolAlgorithms | foreach { $AlgorithmList += $($_)} }
-             
-        $AlgorithmList
+        $GetAlgorithms | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {$PoolAlgorithms += $_}             
+        $PoolAlgorithms
     }    
