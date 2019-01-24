@@ -7,7 +7,7 @@
                      "ahashpool"
                  ],
     "Rigname2":  "SWARM",
-    "SWARM_Mode": "No",
+    "SWARM_Mode":  "No",
     "Cuda":  "10",
     "Passwordcurrency3":  [
                               "BTC"
@@ -75,14 +75,16 @@
     "Wallet1":  "",
     "PoolBans":  "Yes",
     "Update":  "Yes",
-    "Switch_Threshold": "0",
-    "API": "Yes",
-    "CLPlatform": "",
-    "Port": 4099,
-    "Remote": "No",
-    "APIPassword": "",
-    "Startup": "Yes",
-    "ETH": "",
-    "Worker": "",
-    "No_Miner": ""
+    "Switch_Threshold":  "0",
+    "API":  "Yes",
+    "CLPlatform":  "",
+    "Port":  4099,
+    "Remote":  "No",
+    "APIPassword":  "",
+    "Startup":  "Yes",
+    "ETH":  "",
+    "Worker":  "",
+    "No_Miner":  [
+                     ""
+                 ]
 }
