@@ -40,8 +40,8 @@
     "version": "0.6.2",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/zm-Linux.tar.gz"
   },
-  "enemy": {
-    "name": "enemy",
+  "z-enemy": {
+    "name": "z-enemy",
     "type": "nvidia",
     "path1": ".\\bin\\enemy-1\\z-enemy",
     "path2": ".\\bin\\enemy-2\\z-enemy",

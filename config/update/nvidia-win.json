@@ -70,8 +70,8 @@
                  "version":  "0.6.1",
                  "uri":  "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/dstm-windows.zip"
              },
-    "enemy":  {
-                  "name":  "enemy",
+    "z-enemy":  {
+                  "name":  "z-enemy",
                   "type":  "nvidia",
                   "path1":  ".\\bin\\enemy-1\\z-enemy.exe",
                   "path2":  ".\\bin\\enemy-2\\z-enemy.exe",

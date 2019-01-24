@@ -83,5 +83,6 @@
     "APIPassword": "",
     "Startup": "Yes",
     "ETH": "",
-    "Worker": ""
+    "Worker": "",
+    "No_Miner": ""
 }

@@ -149,7 +149,9 @@ param(
     [Parameter(Mandatory=$false)]
     [String]$ETH,
     [Parameter(Mandatory=$false)]
-    [String]$Worker
+    [String]$Worker,
+    [Parameter(Mandatory=$false)]
+    [String]$No_Miner
 )
 
 
@@ -337,6 +339,7 @@ $CurrentParams.ADD("APIPassword",$APIPassword)
 $CurrentParams.ADD("Startup",$Startup)
 $CurrentParams.ADD("ETH",$ETH)
 $CurrentParams.ADD("Worker",$Worker)
+$CurrentParams.ADD("No_Miner",$No_Miner)
 
 ## Save to Config Folder
 $StartParams = $CurrentParams | ConvertTo-Json 
@@ -436,6 +439,7 @@ $APIPassword = $SWARMParams.APIPassword
 $Startup = $SWARMParams.Startup
 $ETH = $SWARMParams.ETH
 $Worker = $SWARMParams.Worker
+$No_Miner = $SWARMParams.No_Miner
 }
 
 ## Windows Start Up
