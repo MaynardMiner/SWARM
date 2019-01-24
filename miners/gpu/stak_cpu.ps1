@@ -1,9 +1,9 @@
 ##Miner Path Information
-if($cpu."stak-cpu".path1){$Path = "$($cpu."stak-cpu".path1)"}
+if($cpu.stak_cpu.path1){$Path = "$($cpu.stak_cpu.path1)"}
 else{$Path = "None"}
-if($cpu."stak-cpu".uri){$Uri = "$($cpu."stak-cpu".uri)"}
+if($cpu.stak_cpu.uri){$Uri = "$($cpu.stak_cpu.uri)"}
 else{$Uri = "None"}
-if($cpu."stak-cpu".minername){$MinerName = "$($cpu."stak-cpu".minername)"}
+if($cpu.stak_cpu.minername){$MinerName = "$($cpu.stak_cpu.minername)"}
 else{$MinerName = "None"}
 if($Platform -eq "linux"){$Build = "Tar"}
 elseif($Platform -eq "windows"){$Build = "Zip"}
@@ -13,7 +13,7 @@ $ConfigType = "CPU"
 #Max threads must be specified- XMR-STAK has no -t option
 
 ##Get Configuration File
-$GetConfig = "$dir\config\miners\stak-cpu.json"
+$GetConfig = "$dir\config\miners\stak_cpu.json"
 try{$Config = Get-Content $GetConfig | ConvertFrom-Json}
 catch{Write-Warning "Warning: No config found at $GetConfig"}
 
