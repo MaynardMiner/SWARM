@@ -1638,7 +1638,7 @@ Note: It is highly advised for linux users to 410.93 drivers.
 -API watchdog start first, then server.
 
 
-1.9.2
+1.9.3
 
 Note: With new -No_Algo1,-No_Algo2,-No_Algo3 arguments
       you will be able to divide rig, allowing smaller
@@ -1666,6 +1666,7 @@ Note: Update to fix glt-astralhash for wildrig will work.
 -Added ``-No_Algo2`` argument. See help file for use.
 -Added ``-No_Algo3`` argument. See help file for use.
 -gminer 1.22
+-xmrig removed from rotation, as XMR-STAK now has dual threads
 
 Note: First time users may notice profit calculations are
 different compared to other available mining applications.
