@@ -622,10 +622,12 @@ switch($MinerAPI)
    $Request = $Null; $Request = Get-TCP -Server $Server -Port $port -Message "summary"
    if($Request)
     {
-     if($MinerName -ne "zjazz_cuda.exe" -or $MinerName -ne "zjazz_cuda"){$Multiplier = 1000}
-     else{$Multiplier = 2000000}
+     Write-Host "MinerName is $MinerName"
+     if($MinerName -eq "zjazz_cuda.exe" -or $MinerName -eq "zjazz_cuda"){if($MinerAlgo -eq "cuckoo"){$Multiplier = 2000000}}
+     else{$Multiplier = 1000}
+     Write-Host "Multiplier is $Multiplier"
      try{$GetKHS = $Request -split ";" | ConvertFrom-StringData -ErrorAction Stop}catch{Write-Warning "Failed To Get Summary"}
-     $RAW = if ([Double]$GetKHS.KHS -ne 0 -or [Double]$GetKHS.ACC -ne 0) {[Double]$GetKHS.KHS * $Multiplier}
+     $RAW = if ([Double]$GetKHS.KHS -ne 0 -or [Double]$GetKHS.ACC -ne 0){[Double]$GetKHS.KHS * $Multiplier}
      Write-MinerData2;
      $KHS += if ([Double]$GetKHS.KHS -ne 0 -or [Double]$GetKHS.ACC -ne 0) {[Double]$GetKHS.KHS}
     }
