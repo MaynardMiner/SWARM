@@ -1,11 +1,11 @@
 {
     "name":  "nvidia-win",
-    "ccmineryescrypt":  {
-                            "name":  "ccmineryescrypt",
+    "cc-yescrypt":  {
+                            "name":  "cc-yescrypt",
                             "type":  "nvidia",
-                            "path1":  ".\\bin\\ccmineryescrypt-1\\ccminer.exe",
-                            "path2":  ".\\bin\\ccmineryescrypt-2\\ccminer.exe",
-                            "path3":  ".\\bin\\ccmineryescrypt-3\\ccminer.exe",
+                            "path1":  ".\\bin\\cc-yescrypt-1\\ccminer.exe",
+                            "path2":  ".\\bin\\cc-yescrypt-2\\ccminer.exe",
+                            "path3":  ".\\bin\\cc-yescrypt-3\\ccminer.exe",
                             "minername":  "ccminer.exe",
                             "version":  "10a",
                             "uri":  "https://github.com/nemosminer/ccminerKlausTyescrypt/releases/download/v10/ccminerKlausTyescryptv10.7z"

@@ -490,6 +490,32 @@ Write-MinerData1
 switch($MinerAPI)
 {
 
+  'energiminer'
+   {
+    $Request = $null; try{$Request = Get-Content ".\logs\$MinerType.log" -ErrorAction Stop}catch{}
+    if($Request)
+     {
+      $Data = $Request | Select-String "Mh/s" | Select -Last 1
+      $Data = $Data -split " "
+      $MHS = 0
+      $MHS = $Data | Select-String -Pattern "Mh/s" -AllMatches -Context 1,0 | %{$_.Context.PreContext[0]}
+      $MHS = $MHS -replace '\x1b\[[0-9;]*m',''
+      $RAW = [Double]$MHS*1000000
+      Write-MinerData2;
+      $KHS += [Double]$MHS*1000
+      $Hash = $null; $Hash = $Data | Select-String -Pattern "GPU/" -AllMatches -Context 0,1
+      $Hash = $Hash -replace '\x1b\[[0-9;]*m','' | %{$_ -split ' ' | Select -skip 3 -first 1}
+      try{for($i=0;$i -lt $Devices.Count; $i++){$GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $i)}}catch{Write-Host "Failed To parse GPU Threads" -ForegroundColor Red};
+      $MinerACC = $($Request | Select-String "Accepted").count
+      $MinerREJ = $($Request | Select-String "Rejected").count
+      $ACC += $MinerACC
+      $REJ += $MinerREJ
+      $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
+      $ALGO += "$MinerAlgo"
+     }
+     else{Set-APIFailure; break}
+   }
+
   'claymore'
   {
    if($MinerName = "PhoenixMiner"){$Message = @{id = 1; jsonrpc = "2.0"; method = "miner_getstat2"} | ConvertTo-Json -Compress}
@@ -508,7 +534,6 @@ switch($MinerAPI)
      $ACC += $Data.result[2] -split ";" | Select -skip 1 -first 1
      $REJ += $Data.result[2] -split ";" | Select -skip 2 -first 1
      $UPTIME = [math]::Round(((Get-Date)-$StartTime).TotalSeconds)
-     $A = $Data.result[6] -split ";"
      $ALGO += "$MinerAlgo"
     }
     else{Set-APIFailure; break}

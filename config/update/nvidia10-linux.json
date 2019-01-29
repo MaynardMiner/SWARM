@@ -70,15 +70,25 @@
     "version": "0.6",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/ewbf-linux.tar.gz"
   },
-  "ccmineryescrypt": {
-    "name": "ccmineryescrypt",
+  "cc-yescrypt": {
+    "name": "cc-yescrypt",
     "type": "nvidia",
-    "path1": ".\\bin\\ccmineryescrypt-1\\ccminer",
-    "path2": ".\\bin\\ccmineryescrypt-2\\ccminer",
-    "path3": ".\\bin\\ccmineryescrypt-3\\ccminer",
+    "path1": ".\\bin\\cc-yescrypt-1\\ccminer",
+    "path2": ".\\bin\\cc-yescrypt-2\\ccminer",
+    "path3": ".\\bin\\cc-yescrypt-3\\ccminer",
     "minername": "ccminer",
     "version": "10a",
     "uri": "https://github.com/MaynardMiner/ccminerKlausTyescrypt/releases/download/v.10a/ccmineryescrypt-linux-10.tar.gz"
+  },
+  "energiminer": {
+    "name": "energiminer",
+    "type": "nvidia",
+    "path1": ".\\bin\\energiminer-1\\energiminer",
+    "path2": ".\\bin\\energiminer-2\\energiminer",
+    "path3": ".\\bin\\energiminer-3\\energiminer",
+    "minername": "energiminer",
+    "version": "2.2.1",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/energiminer-linux.tar.gz"
   },
   "ehssand": {
     "name": "ehssand",
