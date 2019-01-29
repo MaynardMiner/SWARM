@@ -1,9 +1,9 @@
 ##Miner Path Information
-if($nvidia.ccmineryescrypt.path3){$Path = "$($nvidia.ccmineryescrypt.path3)"}
+if($nvidia.'cc-yescrypt'.path3){$Path = "$($nvidia.'cc-yescrypt'.path3)"}
 else{$Path = "None"}
-if($nvidia.ccmineryescrypt.uri){$Uri = "$($nvidia.ccmineryescrypt.uri)"}
+if($nvidia.'cc-yescrypt'.uri){$Uri = "$($nvidia.'cc-yescrypt'.uri)"}
 else{$Uri = "None"}
-if($nvidia.ccmineryescrypt.minername){$MinerName = "$($nvidia.ccmineryescrypt.minername)"}
+if($nvidia.'cc-yescrypt'.minername){$MinerName = "$($nvidia.'cc-yescrypt'.minername)"}
 else{$MinerName = "None"}
 if($Platform -eq "linux"){$Build = "Tar"}
 elseif($Platform -eq "windows"){$Build = "Zip"}
@@ -14,7 +14,7 @@ $ConfigType = "NVIDIA3"
 if($NVIDIADevices3 -ne ''){$Devices = $NVIDIADevices3}
 
 ##Get Configuration File
-$GetConfig = "$dir\config\miners\ccmineryescrypt.json"
+$GetConfig = "$dir\config\miners\cc-yescrypt.json"
 try{$Config = Get-Content $GetConfig | ConvertFrom-Json}
 catch{Write-Warning "Warning: No config found at $GetConfig"}
 

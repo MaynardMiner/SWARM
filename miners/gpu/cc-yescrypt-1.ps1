@@ -1,9 +1,9 @@
 ##Miner Path Information
-if($nvidia.ccmineryescrypt.path1 -and $cuda -eq "10"){$Path = "$($nvidia.ccmineryescrypt.path1)"}
+if($nvidia.'cc-yescrypt'.path1 -and $cuda -eq "10"){$Path = "$($nvidia.'cc-yescrypt'.path1)"}
 else{$Path = "None"}
-if($nvidia.ccmineryescrypt.uri -and $cuda -eq "10"){$Uri = "$($nvidia.ccmineryescrypt.uri)"}
+if($nvidia.'cc-yescrypt'.uri -and $cuda -eq "10"){$Uri = "$($nvidia.'cc-yescrypt'.uri)"}
 else{$Uri = "None"}
-if($nvidia.ccmineryescrypt.minername -and $cuda -eq "10"){$MinerName = "$($nvidia.ccmineryescrypt.minername)"}
+if($nvidia.'cc-yescrypt'.minername -and $cuda -eq "10"){$MinerName = "$($nvidia.'cc-yescrypt'.minername)"}
 else{$MinerName = "None"}
 if($Platform -eq "linux"){$Build = "Tar"}
 elseif($Platform -eq "windows"){$Build = "Zip"}
@@ -14,7 +14,7 @@ $ConfigType = "NVIDIA1"
 if($NVIDIADevices1 -ne ''){$Devices = $NVIDIADevices1}
 
 ##Get Configuration File
-$GetConfig = "$dir\config\miners\ccmineryescrypt.json"
+$GetConfig = "$dir\config\miners\cc-yescrypt.json"
 try{$Config = Get-Content $GetConfig | ConvertFrom-Json}
 catch{Write-Warning "Warning: No config found at $GetConfig"}
 
