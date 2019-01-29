@@ -10,6 +10,16 @@
                             "version":  "10a",
                             "uri":  "https://github.com/nemosminer/ccminerKlausTyescrypt/releases/download/v10/ccminerKlausTyescryptv10.7z"
                         },
+                        "energiminer": {
+                            "name": "energiminer",
+                            "type": "amd",
+                            "path1": ".\\bin\\energiminer-1\\energiminer.exe",
+                            "path2": ".\\bin\\energiminer-2\\energiminer.exe",
+                            "path3": ".\\bin\\energiminer-3\\energiminer.exe",
+                            "minername": "energiminer.exe",
+                            "version": "2.2.1",
+                            "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/energiminer-windows.zip"
+                          },
     "bminer":  {
                    "name":  "bminer",
                    "type":  "nvidia",
