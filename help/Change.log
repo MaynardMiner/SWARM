@@ -1676,3 +1676,9 @@ and has been discussed at length and supported by userbase.
 Note: ``-SWARM_Mode Yes`` allows all SWARM users to switch at same
 time. All rigs/users will be syncronized. This does not
 apply to pool or choice of miner- Just switching times.
+
+1.9.4
+
+-Added energiminer for linux
+-Found typo for ehssand amd minername
+-updated bminer
