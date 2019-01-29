@@ -11,13 +11,24 @@
       "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/Claymore-Linux.tar.gz" 
      },
 
+     "energi_amd": {
+      "name": "energi_amd",
+      "type": "amd",
+      "path1": ".\\bin\\energi_amd-1\\energiminer",
+      "path2": ".\\bin\\energi_amd-2\\energiminer",
+      "path3": ".\\bin\\energi_amd-3\\energiminer",
+      "minername": "energiminer",
+      "version": "2.2.1",
+      "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/energiminer-linux.tar.gz"
+    },
+
      "ehssand_amd": {
       "name": "ehssand_amd",
       "type": "amd",
       "path1": ".\\bin\\ehssand_amd-1\\sgminer",
       "path2": ".\\bin\\ehssand_amd-2\\sgminer",
       "path3": ".\\bin\\ehssand_amd-3\\sgminer",
-      "minername": "sgminer.exe",
+      "minername": "sgminer",
       "version": "1",
       "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/ehssand-linux.tar.gz"
     },
