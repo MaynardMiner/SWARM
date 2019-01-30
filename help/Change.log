@@ -1682,3 +1682,10 @@ apply to pool or choice of miner- Just switching times.
 -Added energiminer for linux
 -Found typo for ehssand amd minername
 -updated bminer
+-rewrote entire ADL for windows AMD, stats will match correct GPU.
+ fan % will match. temp will work correctly. Vega works. (woot)
+-Code staging for ADL oc and autofan
+-Fixed xmr-stak stats to display summary hashrate faster.
+-Added energiminer for windows
+-``ps`` command will now wait until process finishes, and should work correctly.
+-Miner Logging for background miners is a little better in windows
