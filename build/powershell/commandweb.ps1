@@ -52,6 +52,23 @@
     $secondword = $command.result.exec -split " " | Select -Skip 1 -First 1
     Switch ($firstword)
     {
+     "nvidia-smi"
+      {
+        $method = "message"
+        $messagetype = "info"
+        $data = "stats"
+        invoke-expression ".\build\apps\nvidia-smi.exe" | Tee-Object ".\build\txt\getcommand.txt" | Out-Null
+        $getpayload = Get-Content ".\build\txt\getcommand.txt"
+        $line = @()
+        $getpayload | foreach {$line += "$_`n"}
+        $payload = $line
+        $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id -Payload $payload
+        $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+        $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+        Write-Host $method $messagetype $data
+        $trigger = "exec"
+        if(Test-Path ".\build\txt\getcommand.txt"){Clear-Content ".\build\txt\getcommand.txt"}  
+      }
      "ps"
      {
       $method = "message"
