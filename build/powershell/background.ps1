@@ -457,7 +457,7 @@ if($MinerType -Like "*AMD*")
   "windows"
    {
     for($i=0;$i -lt $Devices.Count; $i++){try{$GPUFans.$(Get-GPUS) = Set-Array $AMDStats.Fans $i}catch{Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
-    for($i=0;$i -lt $Devices.Count; $i++){try{$GPUTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps $i}catch{Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red}; break}
+    for($i=0;$i -lt $Devices.Count; $i++){try{$GPUTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps $i}catch{Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
    }
   "linux"
    {
@@ -859,7 +859,7 @@ switch($MinerAPI)
   {
    try{$Data = $Null; $Data = $Request.Content | ConvertFrom-Json -ErrorAction Stop;}catch{Write-Host "Failed To gather summary" -ForegroundColor Red}
    $done = $false;
-   try{$Data.hashrate.total -split "," | %{if($_ -ne "" -and $done -eq $false){$RAW = $_; $done = $true}}}catch{Write-Host "Failed To gather summary"}
+   $Data.hashrate.threads | %{$Thread = $_;if($Thread -ne $Null){$Thread | %{$RAW += $_}}}
    Write-Host "Note: XMR-STAK/XMRig API is not great. You can't match threads to specific GPU." -ForegroundColor Yellow
    Write-MinerData2
    try{$Hash = for($i=0; $i -lt $Data.hashrate.threads.count; $i++){$Data.Hashrate.threads[$i] | Select -First 1}}catch{}
