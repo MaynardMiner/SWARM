@@ -1,9 +1,9 @@
 ##Miner Path Information
-if($nvidia.energi_amd.path1){$Path = "$($nvidia.energi_amd.path1)"}
+if($AMD.energi_amd.path1){$Path = "$($AMD.energi_amd.path1)"}
 else{$Path = "None"}
-if($nvidia.energi_amd.uri){$Uri = "$($nvidia.energi_amd.uri)"}
+if($AMD.energi_amd.uri){$Uri = "$($AMD.energi_amd.uri)"}
 else{$Uri = "None"}
-if($nvidia.energi_amd.minername){$MinerName = "$($nvidia.energi_amd.minername)"}
+if($AMD.energi_amd.minername){$MinerName = "$($AMD.energi_amd.minername)"}
 else{$MinerName = "None"}
 if($Platform -eq "linux"){$Build = "Tar"}
 elseif($Platform -eq "windows"){$Build = "Zip"}
