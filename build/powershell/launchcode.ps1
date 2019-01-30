@@ -164,7 +164,7 @@ if($Platforms -eq "windows")
      }
     }
     if($MinerCurrent.DeviceCall -eq "ewbf"){$script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) --log 3 --logfile $Logs`'"}
-    $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) | Tee-Object -FilePath ""$Logs"" -erroraction SilentlyContinue`'"
+    $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) 2>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FIlePath ""$Logs"" -Append; Write-Host `$_}`'"
     $script | out-file "$WorkingDirectory\swarm-start.ps1"
     Start-Sleep -S .5
 

@@ -623,7 +623,7 @@ if($Platform -eq "windows")
   $Startup_Path = "C:\Users\$CurrentUser\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"
   Write-Host "Attempting to add current SWARM.bat to startup" -ForegroundColor Magenta
   Write-Host "Startup FilePath: $Startup_Path"
-  $bat = "powershell -ExecutionPolicy Bypass -command `"Set-Location $dir; Start-Process `"SWARM.bat`"`""
+  $bat = "CMD /r powershell -ExecutionPolicy Bypass -command `"Set-Location $dir; Start-Process `"SWARM.bat`"`""
   $Bat_Startup = Join-Path $Startup_Path "SWARM.bat"
   $bat | Set-Content $Bat_Startup
   }
