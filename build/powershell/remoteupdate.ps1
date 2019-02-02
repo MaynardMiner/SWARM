@@ -290,6 +290,11 @@ $PreviousVersions | foreach {
             $Data.$_.difficulty | Add-Member "equihash144" "" -ErrorAction SilentlyContinue
             $Data.$_.naming | Add-Member "equihash144" "equihash1445" -ErrorAction SilentlyContinue
             $Data.$_.oc | Add-Member "equihash144" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue  
+
+            $Data.$_.commands| Add-Member "beam" "" -ErrorAction SilentlyContinue
+            $Data.$_.difficulty | Add-Member "beam" "" -ErrorAction SilentlyContinue
+            $Data.$_.naming | Add-Member "beam" "beam" -ErrorAction SilentlyContinue
+            $Data.$_.oc | Add-Member "beam" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue  
             }
            }
           }
