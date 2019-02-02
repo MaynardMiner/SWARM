@@ -32,14 +32,9 @@
       "dedal": "",
       "exosis": "",
       "lyra2v3": "",
-      "mtp": "",
       "sha256T": "",
       "sha256q": "",
-      "x16rt": "",
-      "astralhash": "",
-      "jeonghash": "",
-      "padihash": "",
-      "pawelhash": ""
+      "x16rt": ""
     },
     "difficulty": {
       "bcd": "",
@@ -64,14 +59,9 @@
       "dedal": "",
       "exosis": "",
       "lyra2v3": "",
-      "mtp": "",
       "sha256T": "",
       "sha256q": "",
-      "x16rt": "",
-      "astralhash": "",
-      "jeonghash": "",
-      "padihash": "",
-      "pawelhash": ""
+      "x16rt": ""
     },
     "naming": {
       "bcd": "bcd",
@@ -96,14 +86,9 @@
       "dedal": "dedal",
       "exosis": "exosis",
       "lyra2v3": "lyra2v3",
-      "mtp": "mtp",
       "sha256T": "sha256T",
       "sha256q": "sha256q",
-      "x16rt": "x16rt",
-      "astralhash": "glt-astralhash",
-      "jeonghash": "glt-jeonghash",
-      "padihash": "glt-padihash",
-      "pawelhash": "glt-pawelhash"
+      "x16rt": "x16rt"
     },
     "oc": {
       "bcd": {
