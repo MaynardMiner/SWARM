@@ -34,7 +34,12 @@
       "lyra2v3": "",
       "sha256T": "",
       "sha256q": "",
-      "x16rt": ""
+      "x16rt": "",
+      "astralhash": "",
+      "jeonghash": "",
+      "padihash": "",
+      "pawelhash": ""
+
     },
     "difficulty": {
       "bcd": "",
@@ -61,7 +66,11 @@
       "lyra2v3": "",
       "sha256T": "",
       "sha256q": "",
-      "x16rt": ""
+      "x16rt": "",
+      "astralhash": "",
+      "jeonghash": "",
+      "padihash": "",
+      "pawelhash": ""
     },
     "naming": {
       "bcd": "bcd",
@@ -88,7 +97,11 @@
       "lyra2v3": "lyra2v3",
       "sha256T": "sha256T",
       "sha256q": "sha256q",
-      "x16rt": "x16rt"
+      "x16rt": "x16rt",
+      "astralhash": "glt-astralhash",
+      "jeonghash": "glt-jeonghash",
+      "padihash": "glt-padihash",
+      "pawelhash": "glt-pawelhash"
     },
     "oc": {
       "bcd": {
