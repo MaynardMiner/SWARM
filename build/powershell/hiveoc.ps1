@@ -137,13 +137,15 @@ function Start-AMDOC {
   $AMDOCMem = $AMDOCMem -split " "
   $AMDOCCore = $AMDOC.CORE_CLOCK -replace "`"",""
   $AMDOCCore = $AMDOCCore -split " "
-  $AMDOCV = $AMDOC.CORE_VDDC -replace "`"",""
-  $AMDOCV = $AMDOCV -split " "
-  $AMDOCV = $AMDOC.CORE_VDDC -replace "`"",""
-  $AMDOCV = $AMDOCV -split " "
+  $AMDOCCV = $AMDOC.CORE_STATE -replace "`"",""
+  $AMDOCCV = $AMDOCCV -split " "
+  $AMDOCCV = $AMDOC.CORE_STATE -replace "`"",""
+  $AMDOCCV = $AMDOCCV -split " "
   $AMDOCMV = $AMDOC.MEM_STATE -replace "`"",""
   $AMDOCMV = $AMDOCMV -split " "
-
+  $AMDOCV = $AMDOC.CORE_VDDC -replace "`"",""
+  $AMDOCV = $AMDOCV -split " "
+  
   for($i=0; $i -lt $AMDCount; $i++)
    {
     $Select = $OCCount.AMD.PSOBject.Properties.Name
@@ -202,14 +204,27 @@ function Start-AMDOC {
       {
       if($AMDOCMem.Count -eq 1)
        {
-        $OCArgs += "GPU_P7=$AMDOCCore;$AMDOCV "
-        $ocmessage += "Setting GPU $($OCCount.AMD.$i) Clock Offset To $($AMDOCCore), Voltage to $AMDOCV"
+        $OCArgs += "GPU_P7=$AMDOCCore;$AMDOCCV "
+        $ocmessage += "Setting GPU $($OCCount.AMD.$i) Clock Offset To $($AMDOCCore), Voltage to $AMDOCCV"
        }
       else
        {
-        $OCArgs += "GPU_P7=$($AMDOCCore[$Select]);$($AMDOCV[$Select]) "
-        $ocmessage += "Setting GPU $($OCCount.AMD.$i) Clock Offset To $($AMDOCCore[$i]), Voltage to $($AMDOCV[$i])"
+        $OCArgs += "GPU_P7=$($AMDOCCore[$Select]);$($AMDOCCV[$Select]) "
+        $ocmessage += "Setting GPU $($OCCount.AMD.$i) Clock Offset To $($AMDOCCore[$i]), Voltage to $($AMDOCCV[$i])"
        }
+      }
+      "CORE_STATE"
+      {
+        if($AMDOCV.Count -eq 1)
+        {
+         $OCArgs += "Mem_TimingLevel=$AMDOCV "
+         $ocmessage += "Setting GPU $($OCCount.AMD.$i) Memory Timing Level to $AMDOCV"
+        }
+        else
+        {
+          $OCArgs += "Mem_TimingLevel=$($AMDOCV[$Select]) "
+          $ocmessage += "Setting GPU $($OCCount.AMD.$i) Memory Timing Level to $AMDOCV" 
+        }
       }
     }
   }
