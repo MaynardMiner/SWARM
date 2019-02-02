@@ -7,17 +7,20 @@
     "commands": {
       "zhash": "",
       "daggerhashimoto": "",
-      "equihash144": "-pers auto"
+      "equihash144": "-pers auto",
+      "beam": ""
     },
     "difficulty": {
       "zhash": "",
       "daggerhashimoto": "",
-      "equihash144": ""
+      "equihash144": "",
+      "beam": ""
     },
     "naming": {
       "zhash": "zhash",
       "daggerhashimoto": "ethstratum",
-      "equihash144": "equihash1445"
+      "equihash144": "equihash1445",
+      "beam": "beam"
     },
     "oc": {
       "zhash": {
@@ -31,6 +34,13 @@
         "Memory": ""
       },
       "daggerhashimoto": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
+      },
+      "beam": {
         "Power": "",
         "Core": "",
         "Memory": "",
@@ -46,17 +56,20 @@
     "commands": {
       "zhash": "",
       "daggerhashimoto": "",
-      "equihash144": "-pers auto"
+      "equihash144": "-pers auto",
+      "beam": ""
     },
     "difficulty": {
       "zhash": "",
       "daggerhashimoto": "",
-      "equihash144": ""
+      "equihash144": "",
+      "beam": ""
     },
     "naming": {
       "zhash": "zhash",
       "daggerhashimoto": "ethstratum",
-      "equihash144": "equihash1445"
+      "equihash144": "equihash1445",
+      "beam": "beam"
     },
     "oc": {
       "zhash": {
@@ -75,6 +88,13 @@
         "Memory": "",
         "ETHPill": "",
         "PillDelay": ""
+      },
+      "beam": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
       }
     }
   },
@@ -85,17 +105,20 @@
     "commands": {
       "zhash": "",
       "daggerhashimoto": "",
-      "equihash144": "-pers auto"
+      "equihash144": "-pers auto",
+      "beam": ""
     },
     "difficulty": {
       "zhash": "",
       "daggerhashimoto": "",
-      "equihash144": ""
+      "equihash144": "",
+      "beam": ""
     },
     "naming": {
       "zhash": "zhash",
       "daggerhashimoto": "ethstratum",
-      "equihash144": "equihash1445"
+      "equihash144": "equihash1445",
+      "beam": "beam"
     },
     "oc": {
       "zhash": {
@@ -109,6 +132,13 @@
         "Memory": ""
       },
       "daggerhashimoto": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
+      },
+      "beam": {
         "Power": "",
         "Core": "",
         "Memory": "",
