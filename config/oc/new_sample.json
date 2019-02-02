@@ -108,3 +108,27 @@ oc-settings are applied during the start of "logdata" screen. The only way to se
   "Core": "125 125 125 100 100 100 125 100 100 125 125 100 100", 
   "Memory": "1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000" } 
 
+
+amd works almost the same- Only a few exceptions:
+
+-mpdm does not specify the state in Windows- It is the voltage:
+
+   mdpm of 950 will specify a mem voltage of 950 in Windows
+
+-You muse specify Voltage and mdpm in windows!
+
+For Windows- Voltages will be applied to the last state, aggressive undervolting is ignored. 
+
+HiveOS will aggressively undervolt by default.
+
+SUPER IMPORTANT!!!
+
+Miners in SWARM for AMD are not like ethash and cryptonight. You will experience constant failures
+and crashing if you attempt to undervolt a lot. It is highly reccommended to start at default settings,
+and then adjust your oc accordingly.
+
+SWARM will gather card model, and if it returns a p3 memory state- It will choose that state in windows. All
+other cards will choose p2 memory state.
+
+
+

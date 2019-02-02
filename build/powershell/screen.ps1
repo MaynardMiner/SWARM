@@ -155,9 +155,6 @@ function Restart-Miner {
      {
        if($TimeDeviation -ne 0)
        {
-        ## First attempt to close Previous Miner Just To Be Safe:
-        if($Platform -eq "windows"){$_.XProcess.CloseMainWindow() | Out-Null}
-        if($Platform -eq "linux"){Start-Process ".\build\bash\killall.sh" -ArgumentList "$($_.Type)" -Wait}
         $Restart = $true
         $BackgroundDone = "Yes"
         $_.Activated++

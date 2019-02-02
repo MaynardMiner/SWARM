@@ -13,10 +13,9 @@
   [Parameter(Mandatory=$false)]
   [string]$HiveMirror
  )
-
+ 
   Switch($Command.result.command)
   { 
-
    "timeout"
    {
     $method = "message"
@@ -27,10 +26,10 @@
     $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
     $trigger = "exec"
    }
-
+  
   
   "OK"{$trigger = "stats"}
-
+  
   "reboot"
   {
    $method = "message"
@@ -43,9 +42,9 @@
    $trigger = "reboot"
    Restart-Computer
   }
-
+  
   ##upgrade
-
+  
   "exec"
    {
     $firstword = $command.result.exec -split " " | Select -First 1
@@ -313,14 +312,15 @@
       }
      }
    }
-
+  
   "nvidia_oc"
   {
       $method = "message"
       $messagetype = "success"
       $data = "Nvidia settings applied"
-      $Command.result.nvidia_oc | Start-NVIDIAOC
-      $getpayload = Get-Content ".\build\txt\ocmessage.txt"
+      $NewOC = $Command.result.nvidia_oc | Convertto-Json -Compress
+      $NewOC | Start-NVIDIAOC
+      $getpayload = Get-Content ".\build\txt\ocnvidia.txt"
       $line = @()
       $getpayload | foreach {$line += "$_`n"}
       $payload = $line
@@ -330,7 +330,25 @@
       Write-Host $method $messagetype $data
       $trigger = "exec"
   }
-
+  
+  "amd_oc"
+  {
+      $method = "message"
+      $messagetype = "success"
+      $data = "AMD settings applied"
+      $NewOC = $Command.result.amd_oc | Convertto-Json -Compress
+      $NewOC | Start-AMDOC
+      $getpayload = Get-Content ".\build\txt\ocamd.txt"
+      $line = @()
+      $getpayload | foreach {$line += "$_`n"}
+      $payload = $line
+      $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id -Payload $payload
+      $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+      $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+      Write-Host $method $messagetype $data
+      $trigger = "exec"
+  }
+  
   "config"
   {
     $Command.result | ConvertTo-Json | Set-Content ".\build\txt\hiveconfig.txt"
@@ -366,7 +384,7 @@
      }
     $NewHiveKeys | ConvertTo-Json | Set-Content ".\build\txt\hivekeys.txt"        
     }
-
+  
     if($Command.result.wallet)
     {
     $method = "message"
@@ -384,12 +402,12 @@
     $arguments = $arguments | % {$_.trimstart("-")}
     $arguments | foreach {$argument = $_ -split " " | Select -first 1; $argparam = $_ -split " " | Select -last 1; $argjson.Add($argument,$argparam);}
     $argjson = $argjson | ConvertTo-Json | ConvertFrom-Json
-
+  
     $Defaults= Get-Content ".\config\parameters\default.json" | ConvertFrom-Json   
     $Params = @{}
-
+  
     $Defaults |Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | %{$Params.Add("$($_)","$($Defaults.$_)")}
-
+  
     $argjson | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name |  foreach{
     if($Params.$_ -ne $argjson.$_)
      {
@@ -409,7 +427,7 @@
        }
       }
      }
-
+  
    $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id
    $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
    $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
@@ -418,9 +436,8 @@
     }
    $trigger = "config"
    }
-
+  
   }
   if(Test-Path ".\build\txt\get.txt"){Clear-Content ".\build\txt\get.txt"}
   $trigger
-
- }
+  }

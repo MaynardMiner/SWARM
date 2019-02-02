@@ -1041,7 +1041,24 @@ if($Platforms -eq "windows" -and $HiveOS -eq "Yes")
   $response | ConvertTo-Json | Set-Content ".\build\txt\response.txt"
   if($response)
   {
-   $SwarmResponse = Start-webcommand -command $response -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror
+    if($response.result.command -eq "batch")
+    {
+      $batch = $response.result.commands
+      for($b = 0; $b -lt $batch.count; $b++)
+      {
+       $do_command = $batch[$b]
+       $do_command = $do_command -replace "@{",""
+       $do_command = $do_command -replace "}", ""
+       $do_command = $do_command -split ";"
+       $do_command = $do_command -replace "amd_oc=",""
+       $do_command = $do_command -replace "nvidia_oc=",""
+       $parsed_batch = $do_command
+       $new_command = $do_command | ConvertFrom-StringData
+       $batch_command = [PSCustomObject]@{"result" = @{command = $new_command.Command; id = $new_command.id; $new_command.command = $parsed_batch}}
+       $SwarmResponse = Start-webcommand -command $batch_command -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror
+      }
+     }
+   else{$SwarmResponse = Start-webcommand -command $response -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}
    if($SwarmResponse -ne $null)
     {
     if($SwarmResponse -eq "config")

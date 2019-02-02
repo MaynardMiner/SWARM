@@ -2,13 +2,14 @@
 function Start-NVIDIAOC {
 param (
 [Parameter(Position=0, Mandatory=$true, ValueFromPipeline=$true)]
-[object]$InputObject
+[string]$InputObject
 )
 
 $script = @()
 $script += "`$host.ui.RawUI.WindowTitle = `'OC-Start`';"
 $OcArgs = @()
-$HiveNVOC = $InputObject | ConvertFrom-StringData
+$Decompress = $NewOC | ConvertFrom-Json
+$HiveNVOC = $Decompress | ConvertFrom-StringData
 $ocmessage = @()
 $OCCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-JSon
 
@@ -102,13 +103,128 @@ $key = $_
 $script += "Invoke-Expression `'.\nvidiaInspector.exe $OCArgs`'"
 Set-Location ".\build\apps"
 $script | Out-File "nvoc-start.ps1"
-$Command = start-process "powershell.exe" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\nvoc-start.ps1""" -PassThru -WindowStyle Minimized
+$Command = start-process "powershell.exe" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\nvoc-start.ps1""" -PassThru -WindowStyle Minimized -Wait
 Set-Location $WorkingDir
 Start-Sleep -s 1
-$ocmessage | Set-Content ".\build\txt\ocmessage.txt"
+$ocmessage | Set-Content ".\build\txt\ocnvidia.txt"
 Start-Sleep -S 1
 $ocmessage
 }
+
+
+function Start-AMDOC {
+  param (
+  [Parameter(Position=0, Mandatory=$true, ValueFromPipeline=$true)]
+  [string]$InputObject
+  )
+  
+  $Decompress = $NewOC | ConvertFrom-Json
+  $AMDOC = $Decompress | ConvertFrom-StringData
+  $OCCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-JSon
+  $ocmessage = @()
+  $script = @()
+  $script += "`$host.ui.RawUI.WindowTitle = `'OC-Start`';"
+
+  ##Get BrandName
+  Invoke-Expression ".\build\apps\odvii.exe s" | Tee-Object -Variable Model | OUt-Null
+  $Model = $Model | ConvertFrom-StringData
+  $Model = $Model.keys | %{if($_ -like "*Model*"){$Model.$_}}
+  $AMDCount = $OCCount.AMD.PSObject.Properties.Name.Count
+
+  $AMDOCFan = $AMDOC.FAN -replace "`"",""
+  $AMDOCFAN = $AMDOCFan -split " "
+  $AMDOCMem = $AMDOC.MEM_CLOCK -replace "`"",""
+  $AMDOCMem = $AMDOCMem -split " "
+  $AMDOCCore = $AMDOC.CORE_CLOCK -replace "`"",""
+  $AMDOCCore = $AMDOCCore -split " "
+  $AMDOCV = $AMDOC.CORE_VDDC -replace "`"",""
+  $AMDOCV = $AMDOCV -split " "
+  $AMDOCV = $AMDOC.CORE_VDDC -replace "`"",""
+  $AMDOCV = $AMDOCV -split " "
+  $AMDOCMV = $AMDOC.MEM_STATE -replace "`"",""
+  $AMDOCMV = $AMDOCMV -split " "
+
+  for($i=0; $i -lt $AMDCount; $i++)
+   {
+    $Select = $OCCount.AMD.PSOBject.Properties.Name
+    $Select = $Select | Sort-Object
+    $Select = $Select[$i]
+    $OcArgs = @()
+    $OcArgs = "-ac$($OCCount.AMD.$i) "
+
+    $AMDOC.Keys | %{
+     $key = $_
+     Switch($key)
+     {
+      "FAN"
+      {
+       if($AMDOCFAN.Count -eq 1)
+        {
+         $OCArgs += "Fan_P0=80;$($AMDOCFan) Fan_P1=80;$($AMDOCFan) Fan_P2=80;$($AMDOCFan) Fan_P3=80;$($AMDOCFan) Fan_P4=80;$($AMDOCFan) "
+         $ocmessage += "Setting GPU $($OCCount.AMD.$i) Fan Speed To $($AMDOCFan)`%"
+        }
+       else
+        {
+         $OCArgs += "Fan_P0=80;$($AMDOCFan[$Select]) Fan_P1=80;$($AMDOCFan[$Select]) Fan_P2=80;$($AMDOCFan[$Select]) Fan_P3=80;$($AMDOCFan[$Select]) Fan_P4=80;$($AMDOCFan[$Select]) "
+         $ocmessage += "Setting GPU $($OCCount.AMD.$i) Fan Speed To $($AMDOCFan[$i])`%"
+        }
+      }
+      "MEM_CLOCK"
+      {
+       if($AMDOCMem.Count -eq 1)
+       {
+        if($Model[$i] -like "*Vega*")
+         {
+          $OCArgs += "Mem_P3=$AMDOCMem;$AMDOCMV "
+          $ocmessage += "Setting GPU $($OCCount.AMD.$i) Memory Offset To $($AMDOCMem), Voltage To $AMDOCMV"
+         }
+        else
+         {
+          $OCArgs += "Mem_P2=$AMDOCMem;$AMDOCMV "
+          $ocmessage += "Setting GPU $($OCCount.AMD.$i) Memory Offset To $($AMDOCMem), Voltage To $AMDOCMV"
+         }
+       }
+      else
+       {
+        if($Model[$i] -like "*Vega*")
+         {
+          $OCArgs += "Mem_P3=$($AMDOCMem[$Select]);$($AMDOCMV[$Select]) "
+          $ocmessage += "Setting GPU $($OCCount.AMD.$i) Memory Offset To $($AMDOCMem[$i]), Voltage To $($AMDOCMV[$i])"
+         }
+        else
+         {
+          $OCArgs += "Mem_P2=$($AMDOCMem[$Select]);$($AMDOCMV[$Select]) "
+          $ocmessage += "Setting GPU $($OCCount.AMD.$i) Memory Offset To $($AMDOCMem[$i]), Voltage To $($AMDOCMV[$i])"
+         }
+       }
+      }
+      "CORE_CLOCK"
+      {
+      if($AMDOCMem.Count -eq 1)
+       {
+        $OCArgs += "GPU_P7=$AMDOCCore;$AMDOCV "
+        $ocmessage += "Setting GPU $($OCCount.AMD.$i) Clock Offset To $($AMDOCCore), Voltage to $AMDOCV"
+       }
+      else
+       {
+        $OCArgs += "GPU_P7=$($AMDOCCore[$Select]);$($AMDOCV[$Select]) "
+        $ocmessage += "Setting GPU $($OCCount.AMD.$i) Clock Offset To $($AMDOCCore[$i]), Voltage to $($AMDOCV[$i])"
+       }
+      }
+    }
+  }
+   
+   $Script += "Start-Process `".\OverdriveNTool.exe`" -ArgumentList `"$OCArgs`" -Wait"
+ }
+   Set-Location ".\build\apps"
+   $Script | OUt-File "AMDOC-start.ps1"
+   $Command = start-process "powershell.exe" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\AMDOC-start.ps1""" -PassThru -WindowStyle Minimized -Wait
+   Start-Sleep -S 1
+   $ocmessage
+   Set-Location $WorkingDir
+   $ocmessage | Set-Content ".\build\txt\ocamd.txt"
+   Start-Sleep -s 1
+}  
 
 function start-fans {
   $FanFile = Get-Content ".\config\oc\oc-settings.json" | ConvertFrom-Json

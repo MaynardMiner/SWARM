@@ -715,9 +715,15 @@ if($Platform -eq "windows")
     if($Action -eq "nvidia_oc")
      {
       $WorkingDir = $dir
-      $hiveresponse.result.nvidia_oc | Start-NVIDIAOC 
+      $NewOC = $hiveresponse.result.nvidia_oc | ConvertTo-Json -Compress
+      $NewOC | Start-NVIDIAOC 
      }
-    
+     if($Action -eq "amd_oc")
+     {
+      $WorkingDir = $dir
+      $NewOC = $hiveresponse.result.amd_oc | ConvertTo-Json -Compress
+      $NewOC | Start-AMDOC 
+     }
     }
 
     ## Print Data to output, so it can be recorded in transcript
