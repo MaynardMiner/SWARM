@@ -397,20 +397,45 @@ $PreviousVersions | foreach {
           $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
           if($_ -ne "name")
            {
-          $Data.$_.commands| Add-Member "lyra2z" "" -ErrorAction SilentlyContinue
-          $Data.$_.difficulty | Add-Member "lyra2z" "" -ErrorAction SilentlyContinue
-          $Data.$_.naming | Add-Member "lyra2z" "lyra2z" -ErrorAction SilentlyContinue
-          $Data.$_.oc | Add-Member "lyra2z" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue         
+            $Data.$_.commands| Add-Member "x22i" "-w 256 -I 22" -ErrorAction SilentlyContinue -Force
+            $Data.$_.difficulty | Add-Member "x22i" "" -ErrorAction SilentlyContinue -Force
+            $Data.$_.naming | Add-Member "x22i" "x22i" -ErrorAction SilentlyContinue -Force
+            $Data.$_.oc | Add-Member "x22i" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue
 
-          $Data.$_.commands| Add-Member "lyra2rev3" "" -ErrorAction SilentlyContinue
+            $Data.$_.commands| Add-Member "lyra2z" "-w 256 -I 22" -ErrorAction SilentlyContinue -Force
+            $Data.$_.difficulty | Add-Member "lyra2z" "" -ErrorAction SilentlyContinue
+            $Data.$_.naming | Add-Member "lyra2z" "lyra2z" -ErrorAction SilentlyContinue
+            $Data.$_.oc | Add-Member "lyra2z" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue         
+
+            $Data.$_.commands| Add-Member "phi2" "-w 256 -I 22" -ErrorAction SilentlyContinue -Force
+            $Data.$_.difficulty | Add-Member "phi2" "" -ErrorAction SilentlyContinue
+            $Data.$_.naming | Add-Member "phi2" "phi2" -ErrorAction SilentlyContinue
+            $Data.$_.oc | Add-Member "phi2" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue         
+
+            $Data.$_.commands| Add-Member "allium" "-w 256 -I 22" -ErrorAction SilentlyContinue -Force
+            $Data.$_.difficulty | Add-Member "allium" "" -ErrorAction SilentlyContinue
+            $Data.$_.naming | Add-Member "allium" "allium" -ErrorAction SilentlyContinue
+            $Data.$_.oc | Add-Member "allium" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue         
+        
+          $Data.$_.commands| Add-Member "lyra2rev3" "-w 256 -I 24" -ErrorAction SilentlyContinue -Force
           $Data.$_.difficulty | Add-Member "lyra2rev3" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "lyra2rev3" "lyra2rev3" -ErrorAction SilentlyContinue
           $Data.$_.oc | Add-Member "lyra2rev3" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue         
 
-          $Data.$_.commands| Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
+          $Data.$_.commands| Add-Member "lyra2v3" "-I 24 -w 256" -ErrorAction SilentlyContinue -Force
           $Data.$_.difficulty | Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "lyra2v3" "lyra2rev3" -ErrorAction SilentlyContinue
           $Data.$_.oc | Add-Member "lyra2v3" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue         
+
+          $Data.$_.commands| Add-Member "argon2d" "-w 64 -g 2" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "argon2d" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "argon2d" "argon2d" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "argon2d" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue         
+
+          $Data.$_.commands| Add-Member "mtp" "-w 256 -I 20" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "mtp" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "mtp" "mtp" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "mtp" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue         
             }
            }
           }

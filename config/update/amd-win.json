@@ -106,7 +106,7 @@
     "path2": ".\\bin\\wildrig-2\\wildrig.exe",
     "path3": ".\\bin\\wildrig-3\\wildrig.exe",
     "minername": "wildrig.exe",
-    "version": "0.15.1.3",
+    "version": "0.15.2.2",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/wildrig-windows.zip"
   },
 
@@ -117,7 +117,7 @@
     "path2": ".\\bin\\fancyix-2\\sgminer.exe",
     "path3": ".\\bin\\fancyix-3\\sgminer.exe",
     "minername": "sgminer.exe",
-    "version": "beta5h",
+    "version": "beta5i",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/sgminer-fancyIX.zip"
   },
 

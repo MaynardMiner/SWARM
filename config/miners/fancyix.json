@@ -10,12 +10,14 @@
       "export GPU_MAX_ALLOC_PERCENT=100"
     ],
     "commands": {
-      "x22i": "",
-      "lyra2z": "",
-      "phi2": "",
-      "allium": "",
-      "lyra2rev3": "",
-      "lyra2v3": ""
+      "x22i": "-w 256 -I 22",
+      "lyra2z": "-w 256 -I 22",
+      "phi2": "-w 256 -I 22",
+      "allium": "-w 256 -I 22",
+      "lyra2rev3": "-w 256 -I 24",
+      "lyra2v3": "-I 24 -w 256",
+      "argon2d": "-w 64 -g 2",
+      "mtp": "-w 256 -I 20"
     },
     "difficulty": {
       "x22i": "",
@@ -23,7 +25,9 @@
       "phi2": "",
       "allium": "",
       "lyra2rev3": "",
-      "lyra2v3": ""
+      "lyra2v3": "",
+      "argon2d": "",
+      "mtp": ""
     },
     "naming": {
       "x22i": "x22i",
@@ -31,7 +35,9 @@
       "phi2": "phi2",
       "allium": "allium",
       "lyra2rev3": "lyra2rev3",
-      "lyra2v3": "lyra2rev3"
+      "lyra2v3": "lyra2rev3",
+      "argon2d": "argon2d",
+      "mtp": "mtp"
     },
     "oc": {
       "x22i": {
@@ -74,7 +80,15 @@
         "mdpm": "",
         "fans": ""
       },
-      "lyra2v3": {
+      "mtp": {
+        "dpm": "",
+        "v": "",
+        "mdpm": "",
+        "fans": "",
+        "core": "",
+        "mem": ""
+      },
+      "argon2d": {
         "dpm": "",
         "v": "",
         "mdpm": "",
