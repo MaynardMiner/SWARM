@@ -278,6 +278,12 @@ $PreviousVersions | foreach {
           $Data.$_.difficulty | Add-Member "pawelhash" "" -ErrorAction SilentlyContinue
           $Data.$_.naming | Add-Member "pawelhash" "glt-pawelhash" -ErrorAction SilentlyContinue
           $Data.$_.oc | Add-Member "pawelhash" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue
+
+          ## Temp remove these algos
+          $Data.$_.commands = $Data.$_.commands | Select -ExcludeProperty "astralhash","padihash","jeonghash","pawelhash","mtp"
+          $Data.$_.difficulty = $Data.$_.difficulty | Select -ExcludeProperty "astralhash","padihash","jeonghash","pawelhash","mtp"
+          $Data.$_.naming = $Data.$_.naming | Select -ExcludeProperty "astralhash","padihash","jeonghash","pawelhash","mtp"
+          $Data.$_.oc = $Data.$_.oc | Select -ExcludeProperty "astralhash","padihash","jeonghash","pawelhash","mtp"
             }
            }
           }
