@@ -1683,9 +1683,13 @@ apply to pool or choice of miner- Just switching times.
 -Found typo for ehssand amd minername
 -updated bminer
 -rewrote entire ADL for windows AMD, stats will match correct GPU.
- fan % will match. temp will work correctly. Vega works. (woot)
+ fan % will match. temp will work correctly. Vega works.
+ note about vega/amd cards: reported fan speeds are based on maximum
+ rpm, which is gathered from ADL/vbios. Some manufacturers have incorrect
+ fan speed, resulting in incorrect fan %. If you wish fixed- Report to manufacturer.
 -Code staging for ADL oc and autofan
 -Fixed xmr-stak stats to display summary hashrate faster.
 -Added energiminer for windows
 -``ps`` command will now wait until process finishes, and should work correctly.
 -Miner Logging for background miners is a little better in windows
+-Windows users can run ``nvidia-smi`` remotely.

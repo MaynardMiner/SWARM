@@ -56,7 +56,7 @@
       {
         $method = "message"
         $messagetype = "info"
-        $data = "stats"
+        $data = "nvidia-smi"
         invoke-expression ".\build\apps\nvidia-smi.exe" | Tee-Object ".\build\txt\getcommand.txt" | Out-Null
         $getpayload = Get-Content ".\build\txt\getcommand.txt"
         $line = @()
