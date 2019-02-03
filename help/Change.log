@@ -1679,9 +1679,7 @@ apply to pool or choice of miner- Just switching times.
 
 1.9.4
 
--Added energiminer for linux
 -Found typo for ehssand amd minername
--updated bminer
 -rewrote entire ADL for windows AMD, stats will match correct GPU.
  fan % will match. temp will work correctly. Vega works.
  note about vega/amd cards: reported fan speeds are based on maximum
@@ -1693,3 +1691,28 @@ apply to pool or choice of miner- Just switching times.
 -``ps`` command will now wait until process finishes, and should work correctly.
 -Miner Logging for background miners is a little better in windows
 -Windows users can run ``nvidia-smi`` remotely.
+
+-HiveOS OC for AMD in windows.
+   -Read config\oc\new_sample.json on how it works.
+   -It is not the same as linux OC.
+   -Drivers MUST be at least 19.1.1
+   -Advised to install 18.6.1 driver,
+    then update (without clean install / install over)
+    if this is not done- some miners may fail.
+    to 19.1.1
+
+-Windows will now generate a swarm-start.bat file in
+ each miner folder in .\bin
+    -This allows you to test miners with
+     swarm settings.
+
+-teamredminer update.
+-progpowminer added.
+-ttminer added.
+-wildrig updated.
+-Crytpodredge updated.
+-bminer updated. (note: beam not working)
+-gminer updated.
+-trex updated.
+-cc-mtp added.
+-fixed cc-yescrypt naming.
