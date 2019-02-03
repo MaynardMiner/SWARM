@@ -12,10 +12,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
 function start-watchdog {
-If($Platform -eq "linux")
-{
-Start-Process "screen" -ArgumentList "-S pidinfo -d -m"
-Start-Sleep -S 1
-Start-Process ".\build\bash\pidinfo.sh" -ArgumentList "pidinfo miner"
-}
+    If ($Platform -eq "linux") {
+        Start-Process "screen" -ArgumentList "-S pidinfo -d -m"
+        Start-Sleep -S 1
+        Start-Process ".\build\bash\pidinfo.sh" -ArgumentList "pidinfo miner"
+    }
 }
