@@ -13,87 +13,86 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 function Get-Nvidia {
     param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [String]$Coin
     )
 
     $Coins = Get-Content ".\config\naming\get-nvidia.json" | ConvertFrom-Json
 
-    $Coin = (Get-Culture).TextInfo.ToTitleCase(($Coin -replace "_"," ")) -replace " "
+    $Coin = (Get-Culture).TextInfo.ToTitleCase(($Coin -replace "_", " ")) -replace " "
 
-    if($Coins.$Coin){$Coins.$Coin}
-    else{$Coin}
+    if ($Coins.$Coin) {$Coins.$Coin}
+    else {$Coin}
 }
 
 function Get-CPU {
     param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [String]$Coin
     )
 
     $Coins = Get-Content ".\config\naming\get-cpu.json" | ConvertFrom-Json
 
-    $Coin = (Get-Culture).TextInfo.ToTitleCase(($Coin -replace "_"," ")) -replace " "
+    $Coin = (Get-Culture).TextInfo.ToTitleCase(($Coin -replace "_", " ")) -replace " "
 
-    if($Coins.$Coin){$Coins.$Coin}
-    else{$Coin}
+    if ($Coins.$Coin) {$Coins.$Coin}
+    else {$Coin}
 }
 
 function Get-AMD {
     param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [String]$Coin
     )
 
     $Coins = Get-Content ".\config\naming\get-amd.json" | ConvertFrom-Json
 
-    $Coin = (Get-Culture).TextInfo.ToTitleCase(($Coin -replace "_"," ")) -replace " "
+    $Coin = (Get-Culture).TextInfo.ToTitleCase(($Coin -replace "_", " ")) -replace " "
 
-    if($Coins.$Coin){$Coins.$Coin}
-    else{$Coin}
+    if ($Coins.$Coin) {$Coins.$Coin}
+    else {$Coin}
 }
 
 function Get-Algorithm {
     param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [String]$Algorithm
     )
 
     $Algorithms = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
 
-    $Algorithm = (Get-Culture).TextInfo.ToTitleCase(($Algorithm -replace "_"," ")) -replace " "
+    $Algorithm = (Get-Culture).TextInfo.ToTitleCase(($Algorithm -replace "_", " ")) -replace " "
 
-    if($Algorithms.$Algorithm){$Algorithms.$Algorithm}
-    else{$Algorithm}
+    if ($Algorithms.$Algorithm) {$Algorithms.$Algorithm}
+    else {$Algorithm}
 }
 
-function Convert-DateString ([string]$Date, [string[]]$Format)
-	{
-	  $result = New-Object DateTime
+function Convert-DateString ([string]$Date, [string[]]$Format) {
+    $result = New-Object DateTime
 
-	 $Convertible = [DateTime]::TryParseExact(
-		$Date,
-		$Format,
-		[System.Globalization.CultureInfo]::InvariantCulture,
-		[System.Globalization.DateTimeStyles]::None,
-		[ref]$result)
+    $Convertible = [DateTime]::TryParseExact(
+        $Date,
+        $Format,
+        [System.Globalization.CultureInfo]::InvariantCulture,
+        [System.Globalization.DateTimeStyles]::None,
+        [ref]$result)
 
-		if ($Convertible) { $result }
-	}
+    if ($Convertible) { $result }
+}
 
-    function Get-AlgoList {
-        param(
-            [Parameter(Mandatory=$true)]
-            [Array]$Devices,
-            [Parameter(Mandatory=$false)]
-            [Array]$No_Algo
-             )
+function Get-AlgoList {
+    param(
+        [Parameter(Mandatory = $true)]
+        [Array]$Devices,
+        [Parameter(Mandatory = $false)]
+        [Array]$No_Algo
+    )
     
-        Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+    Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
     
-        $AlgorithmList = @()
-        $GetAlgorithms = Get-Content ".\config\pools\pool-algos.json" -Force | ConvertFrom-Json
-        $PoolAlgorithms = @()
-        $GetAlgorithms | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {$PoolAlgorithms += $_}             
-        $PoolAlgorithms
-    }    
+    $AlgorithmList = @()
+    $GetAlgorithms = Get-Content ".\config\pools\pool-algos.json" -Force | ConvertFrom-Json
+    $PoolAlgorithms = @()
+    $GetAlgorithms | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {$PoolAlgorithms += $_}             
+    $PoolAlgorithms
+}    
