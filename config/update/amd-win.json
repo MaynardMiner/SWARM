@@ -130,6 +130,16 @@
     "minername": "xmrig-amd.exe",
     "version": "2.9.4",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/xmrig-amd-windows.zip"
+  },
+  "progminer_amd": {
+    "name": "progminer_amd",
+    "type": "amd",
+    "path1": ".\\bin\\progminer_amd-1\\progpowminer-amd.exe",
+    "path2": ".\\bin\\progminer_amd-2\\progpowminer-amd.exe",
+    "path3": ".\\bin\\progminer_amd-3\\progpowminer-amd.exe",
+    "minername": "progpowminer-amd.exe",
+    "version": "1.12",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/progminer-windows.zip"
   }
 }
   

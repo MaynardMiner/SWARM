@@ -1,4 +1,5 @@
 {
+    "name": "progminer_amd",
     "AMD1": {
       "name": "AMD1",
       "delay": "1",
@@ -6,28 +7,26 @@
         "export GPU_MAX_HEAP_SIZE=100",
         "export GPU_USE_SYNC_OBJECTS=1",
         "export GPU_SINGLE_ALLOC_PERCENT=100",
-        "export GPU_MAX_ALLOC_PERCENT=100"
-      ],
+        "export GPU_MAX_ALLOC_PERCENT=100"],
       "commands": {
-        "nrghash": ""
+        "progpow": ""
       },
       "difficulty": {
-        "nrghash": ""
+        "progpow": ""
       },
       "naming": {
-        "nrghash": "nrghash"
+        "progpow": "progpow"
       },
       "oc": {
-        "nrghash": {
-          "dpm": "",
-          "v": "",
-          "core": "",
-          "mem": "",
-          "mdpm": "",
-          "fans": ""
+        "progpow": {
+            "dpm": "",
+            "v": "",
+            "core": "",
+            "mem": "",
+            "mdpm": "",
+            "fans": ""
         }
       }
-    },
-    "name": "energi_amd"
+    }
   }
   

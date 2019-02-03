@@ -44,8 +44,8 @@ if($CoinAlgo -eq $null)
       Type = $ConfigType
       Path = $Path
       Devices = $Devices
-      DeviceCall = "ccminer"
-      Arguments = "-a $($Config.$ConfigType.naming.$($_.Algorithm)) --nvidia -o stratum+tcp://$($_.Host):$($_.Port) --api-bind 0.0.0.0:2068 -u $($_.User1) -p $($_.Pass1) $($Config.$ConfigType.commands.$($_.Algorithm))"
+      DeviceCall = "claymore"
+      Arguments = "-a $($Config.$ConfigType.naming.$($_.Algorithm)) --nvidia -o stratum+tcp://$($_.Host):$($_.Port) -b localhost:2068 -u $($_.User1) -p $($_.Pass1) $($Config.$ConfigType.commands.$($_.Algorithm))"
       HashRates = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)}
       Quote = if($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)){$($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)*($_.Price)}else{0}
       PowerX = [PSCustomObject]@{$($_.Algorithm) = if($Watts.$($_.Algorithm)."$($ConfigType)_Watts"){$Watts.$($_.Algorithm)."$($ConfigType)_Watts"}elseif($Watts.default."$($ConfigType)_Watts"){$Watts.default."$($ConfigType)_Watts"}else{0}}
@@ -55,7 +55,7 @@ if($CoinAlgo -eq $null)
       MinerPool = "$($_.Name)"
       FullName = "$($_.Mining)"
       Port = 2068
-      API = "ccminer"
+      API = "claymore"
       URI = $Uri
       BUILD = $Build
       Algo = "$($_.Algorithm)"

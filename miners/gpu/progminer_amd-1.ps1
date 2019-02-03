@@ -1,25 +1,17 @@
 ##Miner Path Information
-if($AMD.energi_amd.path1){$Path = "$($AMD.energi_amd.path1)"}
+if($amd.progminer_amd.path1){$Path = "$($amd.progminer_amd.path1)"}
 else{$Path = "None"}
-if($AMD.energi_amd.uri){$Uri = "$($AMD.energi_amd.uri)"}
+if($amd.progminer_amd.uri){$Uri = "$($amd.progminer_amd.uri)"}
 else{$Uri = "None"}
-if($AMD.energi_amd.minername){$MinerName = "$($AMD.energi_amd.minername)"}
+if($amd.progminer_amd.minername){$MinerName = "$($amd.progminer_amd.minername)"}
 else{$MinerName = "None"}
 if($Platform -eq "linux"){$Build = "Tar"}
 elseif($Platform -eq "windows"){$Build = "Zip"}
 
 $ConfigType = "AMD1"
 
-##Parse -GPUDevices
-if($AMDDevices1 -ne ''){$GPUDevices1 = $AMDDevices1}
-if($GPUDevices1 -ne '')
- {
-  $GPUEDevices1 = $GPUDevices1 -replace ',',' '
-  $Devices = $GPUEDevices1
- }
-  
 ##Get Configuration File
-$GetConfig = "$dir\config\miners\energi_amd.json"
+$GetConfig = "$dir\config\miners\progminer_amd.json"
 try{$Config = Get-Content $GetConfig | ConvertFrom-Json}
 catch{Write-Warning "Warning: No config found at $GetConfig"}
 
@@ -31,7 +23,7 @@ $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
 $Prestart = @()
 $PreStart += "export LD_LIBRARY_PATH=$ExportDir"
 $Config.$ConfigType.prestart | foreach {$Prestart += "$($_)"}
-        
+
 ##Build Miner Settings
 if($CoinAlgo -eq $null)
 {
@@ -40,35 +32,34 @@ if($CoinAlgo -eq $null)
   $AlgoPools | Where Symbol -eq $MinerAlgo | foreach {
   if($Algorithm -eq "$($_.Algorithm)")
   {
-    if($Config.$ConfigType.difficulty.$($_.Algorithm)){$Diff=",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))"}else{$Diff=""}
+  
   [PSCustomObject]@{
   Delay = $Config.$ConfigType.delay
-  Platform = $Platform
   Symbol = "$($_.Algorithm)"
   MinerName = $MinerName
   Prestart = $PreStart
   Type = $ConfigType
   Path = $Path
   Devices = $Devices
-  DeviceCall = "energiminer"
-  Arguments = "-G stratum://$($_.User1).$($_.Pass1)@$($_.Algorithm).mine.zergpool.com:$($_.Port)"
+  DeviceCall = "progminer_amd"
+  Arguments = "-G -P stratum+tcp://$($_.User1)@$($_.Host):$($_.Port) --api-port -2335 --opencl-platform $AMDPlatform"
   HashRates = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)}
   Quote = if($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)){$($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)*($_.Price)}else{0}
   PowerX = [PSCustomObject]@{$($_.Algorithm) = if($Watts.$($_.Algorithm)."$($ConfigType)_Watts"){$Watts.$($_.Algorithm)."$($ConfigType)_Watts"}elseif($Watts.default."$($ConfigType)_Watts"){$Watts.default."$($ConfigType)_Watts"}else{0}}
   ocpower = if($Config.$ConfigType.oc.$($_.Algorithm).power){$Config.$ConfigType.oc.$($_.Algorithm).power}else{$OC."default_$($ConfigType)".Power}
   occore = if($Config.$ConfigType.oc.$($_.Algorithm).core){$Config.$ConfigType.oc.$($_.Algorithm).core}else{$OC."default_$($ConfigType)".core}
   ocmem = if($Config.$ConfigType.oc.$($_.Algorithm).memory){$Config.$ConfigType.oc.$($_.Algorithm).memory}else{$OC."default_$($ConfigType)".memory}
-  MinerPool = "$($_.Name)"
+  ethpill = $Config.$ConfigType.oc.$($_.Algorithm).ethpill
+  pilldelay = $Config.$ConfigType.oc.$($_.Algorithm).pilldelay
   FullName = "$($_.Mining)"
-  Port = 0
-  API = "energiminer"
-  Wrap = $false
+  API = "claymore"
+  Port = 2335
+  MinerPool = "$($_.Name)"
   URI = $Uri
   BUILD = $Build
   Algo = "$($_.Algorithm)"
-  NewAlgo = ''
+      }
     }
-   }
   }
  }
 }

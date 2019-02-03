@@ -163,6 +163,14 @@ if($Platforms -eq "windows")
       $script += "$setx"
      }
     }
+    if(-not (Test-Path "$WorkingDirectory\swarm-start.bat"))
+    {
+    $minerbat = @()
+    $minerbat += "CMD /r powershell -ExecutionPolicy Bypass -command `".\swarm-start.ps1`""
+    $minerbat += "cmd.exe"
+    $miner_bat = Join-Path $WorkingDirectory "swarm-start.bat"
+    $minerbat | Set-Content $miner_bat
+    }
     if($MinerCurrent.DeviceCall -eq "ewbf"){$script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) --log 3 --logfile $Logs`'"}
     $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) 2>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FIlePath ""$Logs"" -Append; Write-Host `$_}`'"
     $script | out-file "$WorkingDirectory\swarm-start.ps1"

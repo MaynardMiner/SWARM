@@ -1,4 +1,5 @@
 Notes On OC-Configuration: Leave "Cards": "" To not use OC tuning
+   Scroll to bottom for HiveOS and Windows AMD instructions.
 
 For Cards: Enter as shown below in "Cards" example P-Model Cards Must Be Specified As Such: P106-100 P106-090 P104-100 P102-100 If you require more p-model cards- Contact Developer.
 
@@ -109,17 +110,27 @@ oc-settings are applied during the start of "logdata" screen. The only way to se
   "Memory": "1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000" } 
 
 
-amd works almost the same- Only a few exceptions:
+FOR WINDOWS:
 
--mpdm does not specify the state in Windows- It is the voltage:
+-"dpm" "mpdm" does not specify the p-states in Windows- It is the voltage:
 
-   mdpm of 950 will specify a mem voltage of 950 in Windows
+   "mdpm" of 950 will specify a mem voltage of 950 in Windows
+   "dpm" of 900 will specify a core voltage of 900 in Windows.
+            You muse specify dpm and mdpm in windows!
 
--You muse specify Voltage and mdpm in windows!
+-For windows: Setting V is setting power target. The scheme to do so is as followed:
+     
+     -0 means negative
+     -1 means positive
+     -number proceeding 0 or 1 is the setting.
 
-For Windows- Voltages will be applied to the last state, aggressive undervolting is ignored. 
+     Example
+     V: 022 means you are setting a power target of -22%
+     V: 122 means you are setting a power target of +22%
+                 You Must use 0 or 1!
 
-HiveOS will aggressively undervolt by default.
+For Windows- Voltages will be applied to the last state, aggressive undervolting is ignored- Power Targets Can.
+Linux version will aggressively undervolt by default.
 
 SUPER IMPORTANT!!!
 
@@ -131,4 +142,7 @@ SWARM will gather card model, and if it returns a p3 memory state- It will choos
 other cards will choose p2 memory state.
 
 
+FOR LINUX:
 
+Works as HiveOS intended. All parameters will OC accordingly.
+     SWARM does not support Vega OC yet for HiveOS!

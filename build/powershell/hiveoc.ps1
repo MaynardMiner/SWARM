@@ -105,9 +105,9 @@ Set-Location ".\build\apps"
 $script | Out-File "nvoc-start.ps1"
 $Command = start-process "powershell.exe" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\nvoc-start.ps1""" -PassThru -WindowStyle Minimized -Wait
 Set-Location $WorkingDir
-Start-Sleep -s 1
+Start-Sleep -s .5
 $ocmessage | Set-Content ".\build\txt\ocnvidia.txt"
-Start-Sleep -S 1
+Start-Sleep -S .5
 $ocmessage
 }
 
@@ -234,11 +234,11 @@ function Start-AMDOC {
    Set-Location ".\build\apps"
    $Script | OUt-File "AMDOC-start.ps1"
    $Command = start-process "powershell.exe" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\AMDOC-start.ps1""" -PassThru -WindowStyle Minimized -Wait
-   Start-Sleep -S 1
+   Start-Sleep -S .5
    $ocmessage
    Set-Location $WorkingDir
    $ocmessage | Set-Content ".\build\txt\ocamd.txt"
-   Start-Sleep -s 1
+   Start-Sleep -s .5
 }  
 
 function start-fans {
