@@ -529,11 +529,7 @@ $Log = 1;
 start-log -Platforms $Platform -HiveOS $HiveOS -Number $Log;
 
 ##HiveOS Confirmation
-Write-Host "HiveOS = $HiveOS
-"
-if($Platform -eq "windows" -and $Type -like "*AMD*" -and $HiveOS -eq "Yes"){Write-Host "Note: AMD Overclocking Through Hive Is Not Supported Yet
-" -ForegroundColor Yellow}
-
+Write-Host "HiveOS = $HiveOS"
 #Startings Settings (Non User Arguments):
 $BenchmarkMode = "No"
 $Instance = 1
@@ -617,16 +613,29 @@ Get-SexyUnixLogo
 if($Platform -eq "windows")
  {
   ## Add Swarm to Startup
-  if($Startup -eq "Yes")
+  if($Startup)
   {
-  $CurrentUser = $env:UserName
-  $Startup_Path = "C:\Users\$CurrentUser\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"
-  Write-Host "Attempting to add current SWARM.bat to startup" -ForegroundColor Magenta
-  Write-Host "Startup FilePath: $Startup_Path"
-  $bat = "CMD /r powershell -ExecutionPolicy Bypass -command `"Set-Location $dir; Start-Process `"SWARM.bat`"`""
-  $Bat_Startup = Join-Path $Startup_Path "SWARM.bat"
-  $bat | Set-Content $Bat_Startup
-  }
+   $CurrentUser = $env:UserName
+   $Startup_Path = "C:\Users\$CurrentUser\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"
+   $Bat_Startup = Join-Path $Startup_Path "SWARM.bat"
+   switch($Startup)
+    {
+     "Yes"
+     {
+      Write-Host "Attempting to add current SWARM.bat to startup" -ForegroundColor Magenta
+      Write-Host "If you do not wish SWARM to start on startup, use -Startup No argument"
+      Write-Host "Startup FilePath: $Startup_Path"
+      $bat = "CMD /r powershell -ExecutionPolicy Bypass -command `"Set-Location $dir; Start-Process `"SWARM.bat`"`""
+      $Bat_Startup = Join-Path $Startup_Path "SWARM.bat"
+      $bat | Set-Content $Bat_Startup
+     }
+     "No"
+     {
+      Write-Host "Startup No Was Specified. Removing From Startup" -ForegroundColor Magenta
+      if(Test-Path $Bat_Startup){Remove-Item $Bat_Startup -Force}
+     }    
+    }
+   }
 
   ## Windows Bug- Set Cudas to match PCI Bus Order
   [Environment]::SetEnvironmentVariable("CUDA_DEVICE_ORDER", "PCI_BUS_ID", "User")
@@ -665,6 +674,14 @@ if($Platform -eq "windows")
   ## Say Hello To Hive
   if($HiveOS -eq "Yes")
   {
+   ##Note For AMD Users:
+    if($Type -like "*AMD*")
+    {
+     Write-Host "
+AMD USERS: PLEASE READ .\config\oc\new_sample.json FOR INSTRUCTIONS ON OVERCLOCKING IN HIVE OS!
+" -ForegroundColor Cyan
+     Start-Sleep -S 1
+    }
    ## Initiate Contact
    $hiveresponse = Start-Peekaboo -HiveID $HiveID -HiveMirror $HiveMirror -HiveWorker $HiveWoker -HivePassword $HivePassword -Version $Version -GPUData $GetBusData; 
    if($hiveresponse.result)

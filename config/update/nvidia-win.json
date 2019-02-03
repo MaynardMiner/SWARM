@@ -159,5 +159,15 @@
                   "minername":  "zjazz_cuda.exe",
                   "version":  "1.2",
                   "uri":  "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/zjazz-windows.zip"
-              }
+              },
+              "ttminer":  {
+                "name":  "ttminer",
+                "type":  "nvidia",
+                "path1":  ".\\bin\\ttminer-1\\TT-Miner.exe",
+                "path2":  ".\\bin\\ttminer-2\\TT-Miner.exe",
+                "path3":  ".\\bin\\ttminer-3\\TT-Miner.exe",
+                "minername":  "TT-Miner.exe",
+                "version":  "2.1.7",
+                "uri":  "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/ttminer-windows.zip"
+            }
 }

@@ -519,7 +519,7 @@ switch($MinerAPI)
   'claymore'
   {
    if($MinerName = "PhoenixMiner"){$Message = @{id = 1; jsonrpc = "2.0"; method = "miner_getstat2"} | ConvertTo-Json -Compress}
-   else{$Message = @{id = 1; jsonrpc = "2.0"; method = "miner_getstat2"} | ConvertTo-Json -Compress}
+   else{$Message = @{id = 1; jsonrpc = "2.0"; method = "miner_getstat1"} | ConvertTo-Json -Compress}
    $Request = $null; $Request = Get-TCP -Server $Server -Port $Port -Message $Message 
     if($Request)
     {
