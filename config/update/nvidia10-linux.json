@@ -189,5 +189,15 @@
     "minername": "miniZ",
     "version": "1.0i",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/miniz-linux.tar.gz"
+  },
+  "progminer": {
+    "name": "progminer",
+    "type": "amd",
+    "path1": ".\\bin\\progminer-1\\progminer",
+    "path2": ".\\bin\\progminer-2\\progminer",
+    "path3": ".\\bin\\progminer-3\\progminer",
+    "minername": "progminer",
+    "version": "1.12",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/progminer-windows.zip"
   }
 }

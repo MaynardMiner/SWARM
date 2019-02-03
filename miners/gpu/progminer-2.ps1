@@ -1,17 +1,27 @@
 ##Miner Path Information
-if($amd.progminer_amd.path1){$Path = "$($amd.progminer_amd.path1)"}
+if($NVIDIA.progminer.path2){$Path = "$($NVIDIA.progminer.path2)"}
 else{$Path = "None"}
-if($amd.progminer_amd.uri){$Uri = "$($amd.progminer_amd.uri)"}
+if($NVIDIA.progminer.uri){$Uri = "$($NVIDIA.progminer.uri)"}
 else{$Uri = "None"}
-if($amd.progminer_amd.minername){$MinerName = "$($amd.progminer_amd.minername)"}
+if($NVIDIA.progminer.minername){$MinerName = "$($NVIDIA.progminer.minername)"}
 else{$MinerName = "None"}
 if($Platform -eq "linux"){$Build = "Tar"}
 elseif($Platform -eq "windows"){$Build = "Zip"}
 
-$ConfigType = "AMD1"
+$ConfigType = "NVIDIA2"
+
+##Parse -GPUDevices
+if($NVIDIADevices2 -ne ''){
+    $ClayDevices2  = $NVIDIADevices2 -split ","
+    $ClayDevices2  = Switch($ClayDevices2){"10"{"a"};"11"{"b"};"12"{"c"};"13"{"d"};"14"{"e"};"15"{"f"};"16"{"g"};"17"{"h"};"18"{"i"};"19"{"j"};"20"{"k"};default{"$_"};}
+    $ClayDevices2  = $ClayDevices2 | foreach {$_ -replace ("$($_)",",$($_)")}
+    $ClayDevices2  = $ClayDevices2 -join ""
+    $ClayDevices2  = $ClayDevices2.TrimStart(" ",",")  
+    $ClayDevices2 = $ClayDevices2 -replace(",","")
+    $Devices = $ClayDevices2}    
 
 ##Get Configuration File
-$GetConfig = "$dir\config\miners\progminer_amd.json"
+$GetConfig = "$dir\config\miners\progminer.json"
 try{$Config = Get-Content $GetConfig | ConvertFrom-Json}
 catch{Write-Warning "Warning: No config found at $GetConfig"}
 
@@ -41,20 +51,19 @@ if($CoinAlgo -eq $null)
   Type = $ConfigType
   Path = $Path
   Devices = $Devices
-  DeviceCall = "progminer_amd"
-  Arguments = "-G -P stratum+tcp://$($_.User1)@$($_.Host):$($_.Port) --api-port -2335 --opencl-platform $AMDPlatform $($Config.$ConfigType.commands.$($_.Algorithm))"
+  DeviceCall = "progminer"
+  Arguments = "-U -P stratum+tcp://$($_.User2)@$($_.Host):$($_.Port) --api-port -2445 $($Config.$ConfigType.commands.$($_.Algorithm))"
   HashRates = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)}
   Quote = if($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)){$($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)*($_.Price)}else{0}
   PowerX = [PSCustomObject]@{$($_.Algorithm) = if($Watts.$($_.Algorithm)."$($ConfigType)_Watts"){$Watts.$($_.Algorithm)."$($ConfigType)_Watts"}elseif($Watts.default."$($ConfigType)_Watts"){$Watts.default."$($ConfigType)_Watts"}else{0}}
-  ocdpm = if($Config.$ConfigType.oc.$($_.Algorithm).dpm){$Config.$ConfigType.oc.$($_.Algorithm).dpm}else{$OC."default_$($ConfigType)".dpm}
-  ocv = if($Config.$ConfigType.oc.$($_.Algorithm).v){$Config.$ConfigType.oc.$($_.Algorithm).v}else{$OC."default_$($ConfigType)".v}
+  ocpower = if($Config.$ConfigType.oc.$($_.Algorithm).power){$Config.$ConfigType.oc.$($_.Algorithm).power}else{$OC."default_$($ConfigType)".Power}
   occore = if($Config.$ConfigType.oc.$($_.Algorithm).core){$Config.$ConfigType.oc.$($_.Algorithm).core}else{$OC."default_$($ConfigType)".core}
-  ocmem = if($Config.$ConfigType.oc.$($_.Algorithm).mem){$Config.$ConfigType.oc.$($_.Algorithm).mem}else{$OC."default_$($ConfigType)".memory}
-  ocmdpm = if($Config.$ConfigType.oc.$($_.Algorithm).mdpm){$Config.$ConfigType.oc.$($_.Algorithm).mdpm}else{$OC."default_$($ConfigType)".mdpm}
-  ocfans = if($Config.$ConfigType.oc.$($_.Algorithm).fans){$Config.$ConfigType.oc.$($_.Algorithm).fans}else{$OC."default_$($ConfigType)".fans}
+  ocmem = if($Config.$ConfigType.oc.$($_.Algorithm).memory){$Config.$ConfigType.oc.$($_.Algorithm).memory}else{$OC."default_$($ConfigType)".memory}
+  ethpill = $Config.$ConfigType.oc.$($_.Algorithm).ethpill
+  pilldelay = $Config.$ConfigType.oc.$($_.Algorithm).pilldelay
   FullName = "$($_.Mining)"
   API = "claymore"
-  Port = 2335
+  Port = 2445
   MinerPool = "$($_.Name)"
   URI = $Uri
   BUILD = $Build
