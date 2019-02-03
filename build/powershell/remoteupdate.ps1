@@ -148,10 +148,20 @@ $PreviousVersions | foreach {
           $Data.$_.naming | Add-Member "x16rt" "x16rt" -ErrorAction SilentlyContinue
           $Data.$_.oc | Add-Member "x16rt" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
 
-          $Data.$_.commands| Add-Member "Lyra2zz" "" -ErrorAction SilentlyContinue
-          $Data.$_.difficulty | Add-Member "Lyra2zz" "" -ErrorAction SilentlyContinue
-          $Data.$_.naming | Add-Member "Lyra2zz" "Lyra2zz" -ErrorAction SilentlyContinue
-          $Data.$_.oc | Add-Member "Lyra2zz" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
+          $Data.$_.commands| Add-Member "lyra2zz" "" -ErrorAction SilentlyContinue -Force
+          $Data.$_.difficulty | Add-Member "lyra2zz" "" -ErrorAction SilentlyContinue -Force
+          $Data.$_.naming | Add-Member "lyra2zz" "lyra2zz" -ErrorAction SilentlyContinue -Force
+          $Data.$_.oc | Add-Member "lyra2zz" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue -Force
+
+          $Data.$_.commands| Add-Member "cnfastv2" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "cnfastv2" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "cnfastv2" "cnfastv2" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "cnfastv2" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
+
+          $Data.$_.commands| Add-Member "cnsuperfast" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "cnsuperfast" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "cnsuperfast" "cnsuperfast" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "cnsuperfast" @{Power=""; Core=""; Memory=""} -ErrorAction SilentlyContinue
             }  
            }
          }
