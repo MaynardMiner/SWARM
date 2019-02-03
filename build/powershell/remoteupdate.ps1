@@ -172,6 +172,18 @@ $PreviousVersions | foreach {
           $Data.$_.naming | Add-Member "equihash192" "equihash192" -ErrorAction SilentlyContinue
           $Data.$_.oc | Add-Member "equihash192" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue         
          }
+         if($ChangeFile -eq "lolminer.json")
+         {
+          $Data.$_.commands| Add-Member "lyra2rev3" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "lyra2rev3" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "lyra2rev3" "lyra2rev3" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "lyra2rev3" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue         
+
+          $Data.$_.commands| Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
+          $Data.$_.difficulty | Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
+          $Data.$_.naming | Add-Member "lyra2v3" "lyra2v3" -ErrorAction SilentlyContinue
+          $Data.$_.oc | Add-Member "lyra2v3" @{dpm=""; v=""; core=""; mem=""; mdpm=""; fans=""} -ErrorAction SilentlyContinue
+         }
          if($ChangeFile -eq "t-rex.json")
           {
           $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {

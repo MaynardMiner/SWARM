@@ -13,19 +13,25 @@
       "phi2": "",
       "lyra2z": "",
       "cryptonightv8": "",
-      "lyra2re": ""
+      "lyra2re": "",
+      "lyra2rev3": "",
+      "lyra2v3": ""
     },
     "difficulty": {
       "phi2": "",
       "lyra2z": "",
       "cryptonightv8": "",
-      "lyra2re": ""
+      "lyra2re": "",
+      "lyra2rev3": "",
+      "lyra2v3": ""
     },
     "naming": {
       "phi2": "phi2",
       "lyra2z": "lyra2z",
       "cryptonightv8": "cnv8",
-      "lyra2re": "lyra2z"
+      "lyra2re": "lyra2z",
+      "lyra2rev3": "lyra2rev3",
+      "lyra2v3": "lyra2rev3"
     },
     "oc": {
       "phi2": {
@@ -53,6 +59,22 @@
         "fans": ""
       },
       "lyra2re": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "lyra2rev3": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "lyra2v3": {
         "dpm": "",
         "v": "",
         "core": "",
