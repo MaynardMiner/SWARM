@@ -10,12 +10,12 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>    
-    function Get-DateFiles {
-        param (
-        [Parameter(Mandatory=$false)]
+function Get-DateFiles {
+    param (
+        [Parameter(Mandatory = $false)]
         [String]$CmdDir
-        )
+    )
     
-    if(Test-Path ".\build\pid"){Remove-Item ".\build\pid\*" -Force | Out-Null}
-    else{New-Item -Path ".\build" -Name "pid" -ItemType "Directory" | Out-Null}   
+    if (Test-Path ".\build\pid") {Remove-Item ".\build\pid\*" -Force | Out-Null}
+    else {New-Item -Path ".\build" -Name "pid" -ItemType "Directory" | Out-Null}   
 }

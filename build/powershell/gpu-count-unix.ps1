@@ -15,51 +15,47 @@ function Get-GPUCount {
     $nvidiacounted = $false
     $amdcounted = $false
     $DeviceList = @{}
-    if($Type -like "*AMD*"){$DeviceList.Add("AMD",@{})}
-    if($Type -like "*NVIDIA*"){$DeviceList.Add("NVIDIA",@{})}
-    if($Type -like "*CPU*"){$DeviceList.Add("CPU",@{})}
+    if ($Type -like "*AMD*") {$DeviceList.Add("AMD", @{})
+    }
+    if ($Type -like "*NVIDIA*") {$DeviceList.Add("NVIDIA", @{})
+    }
+    if ($Type -like "*CPU*") {$DeviceList.Add("CPU", @{})
+    }
 
     lspci | Tee-Object ".\build\txt\gpucount.txt" | OUt-Null
     $GetBus = Get-Content ".\build\txt\gpucount.txt"
-    $GetBus = $GetBus | Select-String "VGA","3D"
+    $GetBus = $GetBus | Select-String "VGA", "3D"
     $AMDCount = 0
     $NVIDIACount = 0
     $CardCount = 0
 
 
-  $GetBus | Foreach {
-  if($_ -like "*Advanced Micro Devices*" -or $_ -like "*RS880*" -or $_ -like "*Stoney*" -or $_ -like "*NVIDIA*" -and $_ -notlike "*nForce*")
-   {
-   if($_ -like "*Advanced Micro Devices*" -or $_ -like "*RS880*" -or $_ -like "*Stoney*")
-    {
-     if($Type -like "*AMD*")
-      {
-       $DeviceList.AMD.Add("$AMDCount","$CardCount")
-       $AMDCount++
-       $CardCount++
-      }
+    $GetBus | Foreach {
+        if ($_ -like "*Advanced Micro Devices*" -or $_ -like "*RS880*" -or $_ -like "*Stoney*" -or $_ -like "*NVIDIA*" -and $_ -notlike "*nForce*") {
+            if ($_ -like "*Advanced Micro Devices*" -or $_ -like "*RS880*" -or $_ -like "*Stoney*") {
+                if ($Type -like "*AMD*") {
+                    $DeviceList.AMD.Add("$AMDCount", "$CardCount")
+                    $AMDCount++
+                    $CardCount++
+                }
+            }
+            if ($_ -like "*NVIDIA*") {
+                if ($Type -like "*NVIDIA*") {
+                    $DeviceList.NVIDIA.Add("$NVIDIACount", "$CardCount")
+                    $NVIDIACount++
+                    $CardCount++
+                }
+            }
+        }
     }
-   if($_ -like "*NVIDIA*")
-   {
-    if($Type -like "*NVIDIA*")
-     {
-    $DeviceList.NVIDIA.Add("$NVIDIACount","$CardCount")
-    $NVIDIACount++
-    $CardCount++
-     }
-   }
- }
-}
 
     $DeviceType | Foreach {
-     if($_ -like "*CPU*")
-     {
-      Write-Host "Getting CPU Count"
-      for($i=0; $i -lt $CPUThreads; $i++)
-      { 
-       $DeviceList.CPU.Add("$($i)",$i)
-      }     
-     }
+        if ($_ -like "*CPU*") {
+            Write-Host "Getting CPU Count"
+            for ($i = 0; $i -lt $CPUThreads; $i++) { 
+                $DeviceList.CPU.Add("$($i)", $i)
+            }     
+        }
     }
 
     $DeviceList | ConvertTo-Json | Set-Content ".\build\txt\devicelist.txt"
@@ -68,5 +64,5 @@ function Get-GPUCount {
     $GPUCount += $DeviceList.AMD.Count
     $GPUCount
     
-   }
+}
 

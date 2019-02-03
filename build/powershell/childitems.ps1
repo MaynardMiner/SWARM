@@ -13,20 +13,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 function Get-ChildItemContent {
     param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [String]$Path
     )
 
     $ChildItems = Get-ChildItem $Path | ForEach-Object {
         $Name = $_.BaseName
         $Content = @()
-        if($_.Extension -eq ".ps1")
-        {
-           $Content = &$_.FullName
+        if ($_.Extension -eq ".ps1") {
+            $Content = &$_.FullName
         }
-        else
-        {
-           $Content = $_ | Get-Content | ConvertFrom-Json
+        else {
+            $Content = $_ | Get-Content | ConvertFrom-Json
 
         }
         $Content | ForEach-Object {
@@ -38,17 +36,14 @@ function Get-ChildItemContent {
         $Item = $_
         $ItemKeys = $Item.Content.PSObject.Properties.Name.Clone()
         $ItemKeys | ForEach-Object {
-            if($Item.Content.$_ -is [String])
-            {
+            if ($Item.Content.$_ -is [String]) {
                 $Item.Content.$_ = Invoke-Expression "`"$($Item.Content.$_)`""
             }
-            elseif($Item.Content.$_ -is [PSCustomObject])
-            {
+            elseif ($Item.Content.$_ -is [PSCustomObject]) {
                 $Property = $Item.Content.$_
                 $PropertyKeys = $Property.PSObject.Properties.Name
                 $PropertyKeys | ForEach-Object {
-                    if($Property.$_ -is [String])
-                    {
+                    if ($Property.$_ -is [String]) {
                         $Property.$_ = Invoke-Expression "`"$($Property.$_)`""
                     }
                 }
@@ -61,35 +56,32 @@ function Get-ChildItemContent {
 
 function Get-Combination {
     param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [Array]$Value,
-        [Parameter(Mandatory=$false)]
+        [Parameter(Mandatory = $false)]
         [Int]$SizeMax = $Value.Count,
-        [Parameter(Mandatory=$false)]
+        [Parameter(Mandatory = $false)]
         [Int]$SizeMin = 1
     )
 
     $Combination = [PSCustomObject]@{}
 
-    for($i = 0; $i -lt $Value.Count; $i++)
-    {
+    for ($i = 0; $i -lt $Value.Count; $i++) {
         $Combination | Add-Member @{[Math]::Pow(2, $i) = $Value[$i]}
     }
 
     $Combination_Keys = $Combination | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name
 
-    for($i = $SizeMin; $i -le $SizeMax; $i++)
-    {
-        $x = [Math]::Pow(2, $i)-1
+    for ($i = $SizeMin; $i -le $SizeMax; $i++) {
+        $x = [Math]::Pow(2, $i) - 1
 
-        while($x -le [Math]::Pow(2, $Value.Count)-1)
-        {
+        while ($x -le [Math]::Pow(2, $Value.Count) - 1) {
             [PSCustomObject]@{Combination = $Combination_Keys | Where-Object {$_ -band $x} | ForEach-Object {$Combination.$_}}
-            $smallest = ($x -band -$x)
+            $smallest = ($x -band - $x)
             $ripple = $x + $smallest
-            $new_smallest = ($ripple -band -$ripple)
-            $ones = (($new_smallest/$smallest) -shr 1) - 1
+            $new_smallest = ($ripple -band - $ripple)
+            $ones = (($new_smallest / $smallest) -shr 1) - 1
             $x = $ripple -bor $ones
         }
-   }
+    }
 }    

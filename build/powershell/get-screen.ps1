@@ -12,15 +12,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
 param(
-        [Parameter(Mandatory=$false)]
-        [String]$Type,
-        [Parameter(Mandatory=$false)]
-        [String]$platform
-     )
+    [Parameter(Mandatory = $false)]
+    [String]$Type,
+    [Parameter(Mandatory = $false)]
+    [String]$platform
+)
 
-     Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))
-     if(Test-Path ".\logs\$($Type).log"){$Log = Get-Content ".\logs\$($Type).log"}
-     if($Type -eq "miner"){if(Test-Path ".\logs\*active*"){$Log = Get-Content ".\logs\*active.log*"}}
-     $Log | Select -Last 300
-     if($Platform -eq "windows"){$Log | Out-File ".\build\txt\logcom.txt"}
+Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))
+if (Test-Path ".\logs\$($Type).log") {$Log = Get-Content ".\logs\$($Type).log"}
+if ($Type -eq "miner") {if (Test-Path ".\logs\*active*") {$Log = Get-Content ".\logs\*active.log*"}}
+$Log | Select -Last 300
+if ($Platform -eq "windows") {$Log | Out-File ".\build\txt\logcom.txt"}
      
