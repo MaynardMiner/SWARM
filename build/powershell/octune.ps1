@@ -188,8 +188,10 @@ function Start-OC {
         }
         if ($Platforms -eq "windows") {
             if ($_.PillDelay) {$PillSleep = $_.PillDelay}
+            else {$PillSleep = 1}
             $PillTimer = New-Object -TypeName System.Diagnostics.Stopwatch
-            $command = Start-Process "powershell" -WorkingDirectory $WorkingDir -ArgumentList "-executionpolicy bypass -windowstyle minimized -command `"&{`$host.ui.RawUI.WindowTitle = `'OhGodAnETHlargementPill`'; Start-Sleep $PillSleep; Invoke-Expression `".\build\apps\OhGodAnETHlargementPill-r2.exe $PillDevices`"`'}`"" -WindowStyle Minimized -PassThru -Verb Runas
+            $PL = Join-Path $WorkingDir ".\build\apps"
+            $command = Start-Process "powershell" -ArgumentList "-executionpolicy bypass -windowstyle minimized -noexit -command `"&{`$host.ui.RawUI.WindowTitle = `'ETH-Pill`'; Set-Location $PL; Start-Sleep $PillSleep; Invoke-Expression `'.\OhGodAnETHlargementPill-r2.exe $PillDevices`'}`"" -WindowStyle Minimized -PassThru -Verb Runas
             $command.ID | Set-Content ".\build\pid\pill_pid.txt"
             $PillTimer.Restart()
             do {

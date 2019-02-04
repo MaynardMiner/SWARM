@@ -195,6 +195,7 @@ function Start-AMDOC {
         }
    
         $Script += "Start-Process `".\OverdriveNTool.exe`" -ArgumentList `"$OCArgs`" -WindowStyle Minimized -Wait"
+        
     }
     Set-Location ".\build\apps"
     $Script | OUt-File "AMDOC-start.ps1"
