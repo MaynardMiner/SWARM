@@ -39,7 +39,8 @@ if ($Poolname -eq $Name) {
             if ($AltPassword2 -ne '') {$zpass2 = $AltPassword2}
             else {$zpass2 = $Passwordcurrency2}
             if ($AltPassword3 -ne '') {$zpass3 = $AltPassword3}
-            else {$zpass3 = $Passwordcurrency3}    
+            else {$zpass3 = $Passwordcurrency3}
+            if($SWARM_MODE -eq "Yes"){$SWARMPass = ",m=party.SWARMParty"}
             [PSCustomObject]@{
                 Priority      = $Priorities.Pool_Priorities.$Name
                 Symbol        = $Zergpool_Algorithm
@@ -55,10 +56,10 @@ if ($Poolname -eq $Name) {
                 User2         = $zWallet2
                 User3         = $zWallet3
                 CPUser        = $zWallet1
-                CPUPass       = "c=$zpass1,ID=$Rigname1"
-                Pass1         = "c=$zpass1,ID=$Rigname1"
-                Pass2         = "c=$zpass2,ID=$Rigname2"
-                Pass3         = "c=$zpass3,ID=$Rigname3"
+                CPUPass       = "c=$zpass1,ID=$Rigname1$SWARMPass"
+                Pass1         = "c=$zpass1,ID=$Rigname1$SWARMPass"
+                Pass2         = "c=$zpass2,ID=$Rigname2$SWARMPass"
+                Pass3         = "c=$zpass3,ID=$Rigname3$SWARMPass"
                 Location      = $Location
                 SSL           = $false
             }
