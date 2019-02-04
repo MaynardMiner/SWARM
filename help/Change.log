@@ -1679,6 +1679,12 @@ apply to pool or choice of miner- Just switching times.
 
 1.9.4
 
+Note: It is reccommended to run ``clear_profits`` before update.
+
+-Algo/Pool specific prohibition.
+   -users can turn "off" algorithms on certain pools.
+   -to turn "off", add the pool name to "config\pools\pool-algos.json"
+   -instructions are inside the .json itself.
 -Found typo for ehssand amd minername
 -rewrote entire ADL for windows AMD, stats will match correct GPU.
  fan % will match. temp will work correctly. Vega works.
@@ -1692,6 +1698,7 @@ apply to pool or choice of miner- Just switching times.
 -Miner Logging for background miners is a little better in windows
 -Windows users can run ``nvidia-smi`` remotely.
 -Small tweaks to profit table.
+-Moved ports on all nebutech miners to help with benchmarking.
 
 -HiveOS OC for AMD in windows.
    -Read config\oc\new_sample.json on how it works.
