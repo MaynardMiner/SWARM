@@ -181,14 +181,19 @@ function Start-AMDOC {
                         $ocmessage += "Setting GPU $($OCCount.AMD.$i) Clock Offset To $($AMDOCCore[$i]), Voltage to $($AMDOCCV[$i])"
                     }
                 }
-                "CORE_STATE" {
+                "CORE_VDDC" {
+                    if ($AMDOCV.Count -eq 1) {$Volt = "$AMDOCV"}
+                    else {$Volt = "$AMDOCV[$Select]"}
+                    $Value = $Volt.Substring(1)
+                    if ($Volt[0] -eq "1") {$Mod = ""}
+                    if ($Volt[0] -eq "2") {$Mod = "-"}
                     if ($AMDOCV.Count -eq 1) {
-                        $OCArgs += "Mem_TimingLevel=$AMDOCV "
-                        $ocmessage += "Setting GPU $($OCCount.AMD.$i) Memory Timing Level to $AMDOCV"
+                    $OCArgs += "Power_Target=$Mod$Value "
+                    $ocmessage += "Setting GPU $($OCCount.AMD.$i) Power Target to $Mod$Value"
                     }
                     else {
-                        $OCArgs += "Mem_TimingLevel=$($AMDOCV[$Select]) "
-                        $ocmessage += "Setting GPU $($OCCount.AMD.$i) Memory Timing Level to $AMDOCV" 
+                        $OCArgs += "Power_Target=$Mod$Value "
+                        $ocmessage += "Setting GPU $($OCCount.AMD.$i) Power Target to $Mod$Value"
                     }
                 }
             }
