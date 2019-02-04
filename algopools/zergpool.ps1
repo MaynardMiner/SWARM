@@ -40,7 +40,6 @@ if ($Poolname -eq $Name) {
             else {$zpass2 = $Passwordcurrency2}
             if ($AltPassword3 -ne '') {$zpass3 = $AltPassword3}
             else {$zpass3 = $Passwordcurrency3}
-            if($SWARM_MODE -eq "Yes"){$SWARMPass = ",m=party.SWARMParty"}
             [PSCustomObject]@{
                 Priority      = $Priorities.Pool_Priorities.$Name
                 Symbol        = $Zergpool_Algorithm

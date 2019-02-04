@@ -120,14 +120,14 @@ FOR WINDOWS:
 
 -For windows: Setting V is setting power target. The scheme to do so is as followed:
      
-     -0 means negative
+     -2 means negative
      -1 means positive
-     -number proceeding 0 or 1 is the setting.
+     -number proceeding 1 or 2 is the setting.
 
      Example
-     V: 022 means you are setting a power target of -22%
+     V: 222 means you are setting a power target of -22%
      V: 122 means you are setting a power target of +22%
-                 You Must use 0 or 1!
+                 You Must use 1 or 2!
 
 For Windows- Voltages will be applied to the last state, aggressive undervolting is ignored- Power Targets Can.
 Linux version will aggressively undervolt by default.
