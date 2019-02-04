@@ -168,7 +168,7 @@ if ($Poolname -eq $Name -and $FileName -eq $Name) {
         $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
  
         $SmallestValue = 1E-20
-        $Stat = Set-Stat -Name "$($Name)_$($Custom_Algo)_profit" -Value ([Math]::Max([Double]($Estimate - $Cut), $SmallestValue))
+        $Stat = Set-Stat -Name "$($Name)_$($Custom_Algo)_profit" -Value ([Double]$Estimate/$Divisor *(1-($Pool.$_.fees/100)))
         if ($Stat_Algo -eq "Day") {$Stats = $Stat.Live}else {$Stats = $Stat.$Stat_Algo}
 
         [PSCustomObject]@{

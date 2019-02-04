@@ -23,10 +23,10 @@ if ($Poolname -eq $Name) {
             $Divisor = (1000000 * $ahashpool_Request.$_.mbtc_mh_factor)
             $Workers = $ahashpool_Request.$_.Workers
             $Estimate = if ($Stat_Algo -eq "Day") {[Double]$ahashpool_Request.$_.estimate_last24h}else {[Double]$ahashpool_Request.$_.estimate_current}
-            $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
+            #$Cut = ConvertFrom-Fees $Fees $Workers $Estimate
 
             $SmallestValue = 1E-20
-            $Stat = Set-Stat -Name "$($Name)_$($ahashpool_Algorithm)_profit" -Value ([Math]::Max([Double]($Estimate - $Cut) / $Divisor, $SmallestValue))
+            $Stat = Set-Stat -Name "$($Name)_$($ahashpool_Algorithm)_profit" -Value ([Double]$Estimate/$Divisor *(1-($ahashpool_Request.$_.fees/100)))
             if ($Stat_Algo -eq "Day") {$Stats = $Stat.Live}else {$Stats = $Stat.$Stat_Algo}
 
             [PSCustomObject]@{

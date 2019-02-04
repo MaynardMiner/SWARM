@@ -79,7 +79,7 @@ function Start-Poolbans {
                     $NewParams.Passwordcurrency1 = @("BTC")
                     $NewParams.Passwordcurrency2 = @("BTC")
                     $NewParams.Passwordcurrency3 = @("BTC")
-                    $NewParams.PoolName = @("nlpool", "nicehash")
+                    $NewParams.PoolName = @("nlpool", "zergpool")
                     Get-Date | Set-Content ".\build\data\system.txt" -Force
                     Start-Sleep -s 1
                     Write-Host  "Entering Donation Mode" -foregroundColor "darkred"

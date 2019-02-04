@@ -22,10 +22,10 @@ if ($Poolname -eq $Name) {
             $Fees = $Zergpool_Request.$_.fees
             $Workers = $Zergpool_Request.$_.Workers
             $Estimate = if ($Stat_Algo -eq "Day") {[Double]$Zergpool_Request.$_.estimate_last24h}else {[Double]$Zergpool_Request.$_.estimate_current}
-            $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
+            #$Cut = ConvertFrom-Fees $Fees $Workers $Estimate
 
             $SmallestValue = 1E-20
-            $Stat = Set-Stat -Name "$($Name)_$($Zergpool_Algorithm)_profit" -Value ([Math]::Max([Double]($Estimate - $Cut) / $Divisor, $SmallestValue))
+            $Stat = Set-Stat -Name "$($Name)_$($Zergpool_Algorithm)_profit" -Value ([Double]$Estimate/$Divisor *(1-($Zergpool_Request.$_.fees/100)))
             if ($Stat_Algo -eq "Day") {$Stats = $Stat.Live}else {$Stats = $Stat.$Stat_Algo}   
          
             If ($AltWallet1 -ne '') {$zWallet1 = $AltWallet1}

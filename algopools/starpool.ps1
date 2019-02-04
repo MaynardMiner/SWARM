@@ -22,10 +22,10 @@ if ($Poolname -eq $Name) {
             $Fees = $starpool_Request.$_.fees
             $Workers = $starpool_Request.$_.Workers
             $Estimate = if ($Stat_Algo -eq "Day") {[Double]$starpool_Request.$_.estimate_last24h}else {[Double]$starpool_Request.$_.estimate_current}
-            $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
+            #$Cut = ConvertFrom-Fees $Fees $Workers $Estimate
 
             $SmallestValue = 1E-20
-            Set-Stat -Name "$($Name)_$($starpool_Algorithm)_profit" -Value ([Math]::Max([Double]($Estimate - $Cut) / $Divisor, $SmallestValue))
+            Set-Stat -Name "$($Name)_$($starpool_Algorithm)_profit" -Value ([Double]$Estimate/$Divisor *(1-($starpool_Request.$_.fees/100)))
             if ($Stat_Algo -eq "Day") {$Stats = $Stat.Live}else {$Stats = $Stat.$Stat_Algo}   
 
             if ($AltWallet1 -ne '') {if ($AltPassword1 -eq "DASH" -or $AltPassword1 -eq "LTC" -or $AltPassword1 -eq "CANN" -or $AltPassword1 -eq "DGB") {$SWallet1 = $AltWallet1}}
