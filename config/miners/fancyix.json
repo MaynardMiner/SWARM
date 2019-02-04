@@ -1,100 +1,100 @@
-{
-  "name": "fancyIX",
+ {
+  "name":"fancyIX", 
   "AMD1": {
-    "name": "AMD1",
-    "delay": "1",
-    "prestart": [
-      "export GPU_MAX_HEAP_SIZE=100",
-      "export GPU_USE_SYNC_OBJECTS=1",
-      "export GPU_SINGLE_ALLOC_PERCENT=100",
+    "name":"AMD1", 
+    "delay":"1", 
+    "prestart":[
+      "export GPU_MAX_HEAP_SIZE=100", 
+      "export GPU_USE_SYNC_OBJECTS=1", 
+      "export GPU_SINGLE_ALLOC_PERCENT=100", 
       "export GPU_MAX_ALLOC_PERCENT=100"
-    ],
+    ], 
     "commands": {
-      "x22i": "-w 256 -I 22",
-      "lyra2z": "-w 256 -I 22",
-      "phi2": "-w 256 -I 22",
-      "allium": "-w 256 -I 22",
-      "lyra2rev3": "-w 256 -I 24",
-      "lyra2v3": "-I 24 -w 256",
-      "argon2d": "-w 64 -g 2",
-      "mtp": "-w 256 -I 20"
-    },
+      "x22i":"-w 256 -I 22", 
+      "lyra2z":"-w 256 -I 22", 
+      "phi2":"-w 256 -I 22", 
+      "allium":"-w 256 -I 22", 
+      "lyra2rev3":"-w 256 -I 24", 
+      "lyra2v3":"-I 24 -w 256", 
+      "argon2d":"-w 64 -g 2", 
+      "mtp":"-w 256 -I 20"
+    }, 
     "difficulty": {
-      "x22i": "",
-      "lyra2z": "",
-      "phi2": "",
-      "allium": "",
-      "lyra2rev3": "",
-      "lyra2v3": "",
-      "argon2d": "",
-      "mtp": ""
-    },
+      "x22i":"", 
+      "lyra2z":"", 
+      "phi2":"", 
+      "allium":"", 
+      "lyra2rev3":"", 
+      "lyra2v3":"", 
+      "argon2d":"", 
+      "mtp":""
+    }, 
     "naming": {
-      "x22i": "x22i",
-      "lyra2z": "lyra2z",
-      "phi2": "phi2",
-      "allium": "allium",
-      "lyra2rev3": "lyra2rev3",
-      "lyra2v3": "lyra2rev3",
-      "argon2d": "argon2d",
-      "mtp": "mtp"
-    },
+      "x22i":"x22i", 
+      "lyra2z":"lyra2z", 
+      "phi2":"phi2", 
+      "allium":"allium", 
+      "lyra2rev3":"lyra2rev3", 
+      "lyra2v3":"lyra2rev3", 
+      "argon2d":"argon2d", 
+      "mtp":"mtp"
+    }, 
     "oc": {
       "x22i": {
-        "dpm": "",
-        "v": "",
-        "core": "",
-        "mem": "",
-        "mdpm": "",
-        "fans": ""
-      },
+        "dpm":"", 
+        "v":"", 
+        "core":"", 
+        "mem":"", 
+        "mdpm":"", 
+        "fans":""
+      }, 
       "lyra2z": {
-        "dpm": "",
-        "v": "",
-        "core": "",
-        "mem": "",
-        "mdpm": "",
-        "fans": ""
-      },
+        "dpm":"", 
+        "v":"", 
+        "core":"", 
+        "mem":"", 
+        "mdpm":"", 
+        "fans":""
+      }, 
       "phi2": {
-        "dpm": "",
-        "v": "",
-        "core": "",
-        "mem": "",
-        "mdpm": "",
-        "fans": ""
-      },
+        "dpm":"", 
+        "v":"", 
+        "core":"", 
+        "mem":"", 
+        "mdpm":"", 
+        "fans":""
+      }, 
       "allium": {
-        "dpm": "",
-        "v": "",
-        "core": "",
-        "mem": "",
-        "mdpm": "",
-        "fans": ""
-      },
+        "dpm":"", 
+        "v":"", 
+        "core":"", 
+        "mem":"", 
+        "mdpm":"", 
+        "fans":""
+      }, 
       "lyra2rev3": {
-        "dpm": "",
-        "v": "",
-        "core": "",
-        "mem": "",
-        "mdpm": "",
-        "fans": ""
-      },
+        "dpm":"", 
+        "v":"", 
+        "core":"", 
+        "mem":"", 
+        "mdpm":"", 
+        "fans":""
+      }, 
       "mtp": {
-        "dpm": "",
-        "v": "",
-        "mdpm": "",
-        "fans": "",
-        "core": "",
-        "mem": ""
-      },
+        "dpm":"", 
+        "v":"", 
+        "mdpm":"", 
+        "fans":"", 
+        "core":"", 
+        "mem":""
+      }, 
       "argon2d": {
-        "dpm": "",
-        "v": "",
-        "mdpm": "",
-        "fans": "",
-        "core": "",
-        "mem": ""
+        "dpm":"", 
+        "v":"", 
+        "mdpm":"", 
+        "fans":"", 
+        "core":"", 
+        "mem":""
       }
     }
   }

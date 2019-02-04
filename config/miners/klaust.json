@@ -1,113 +1,113 @@
-{
-  "name": "klaust",
+ {
+  "name":"klaust", 
   "NVIDIA1": {
-    "name": "NVIDIA1",
-    "delay": "1",
-    "prestart": [],
+    "name":"NVIDIA1", 
+    "delay":"1", 
+    "prestart":[], 
     "commands": {
-      "jackpot": "",
-      "groestl": "",
-      "skein": ""
-    },
+      "jackpot":"", 
+      "groestl":"", 
+      "skein":""
+    }, 
     "difficulty": {
-      "jackpot": "",
-      "groestl": "",
-      "skein": ""
-    },
+      "jackpot":"", 
+      "groestl":"", 
+      "skein":""
+    }, 
     "naming": {
-      "jackpot": "jackpot",
-      "groestl": "groestl",
-      "skein": "skein"
-    },
+      "jackpot":"jackpot", 
+      "groestl":"groestl", 
+      "skein":"skein"
+    }, 
     "oc": {
       "jackpot": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "groestl": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "skein": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
       }
     }
-  },
+  }, 
   "NVIDIA2": {
-    "name": "NVIDIA2",
-    "delay": "1",
-    "prestart": [],
+    "name":"NVIDIA2", 
+    "delay":"1", 
+    "prestart":[], 
     "commands": {
-      "jackpot": "",
-      "groestl": "",
-      "skein": ""
-    },
+      "jackpot":"", 
+      "groestl":"", 
+      "skein":""
+    }, 
     "difficulty": {
-      "jackpot": "",
-      "groestl": "",
-      "skein": ""
-    },
+      "jackpot":"", 
+      "groestl":"", 
+      "skein":""
+    }, 
     "naming": {
-      "jackpot": "jackpot",
-      "groestl": "groestl",
-      "skein": "skein"
-    },
+      "jackpot":"jackpot", 
+      "groestl":"groestl", 
+      "skein":"skein"
+    }, 
     "oc": {
       "jackpot": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "groestl": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "skein": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
       }
     }
-  },
+  }, 
   "NVIDIA3": {
-    "name": "NVIDIA3",
-    "delay": "1",
-    "prestart": [],
+    "name":"NVIDIA3", 
+    "delay":"1", 
+    "prestart":[], 
     "commands": {
-      "jackpot": "",
-      "groestl": "",
-      "skein": ""
-    },
+      "jackpot":"", 
+      "groestl":"", 
+      "skein":""
+    }, 
     "difficulty": {
-      "jackpot": "",
-      "groestl": "",
-      "skein": ""
-    },
+      "jackpot":"", 
+      "groestl":"", 
+      "skein":""
+    }, 
     "naming": {
-      "jackpot": "jackpot",
-      "groestl": "groestl",
-      "skein": "skein"
-    },
+      "jackpot":"jackpot", 
+      "groestl":"groestl", 
+      "skein":"skein"
+    }, 
     "oc": {
       "jackpot": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "groestl": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "skein": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
       }
     }
   }

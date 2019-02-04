@@ -1,149 +1,149 @@
-{
-  "name": "dstm",
+ {
+  "name":"dstm", 
   "NVIDIA1": {
-    "name": "NVIDIA1",
-    "delay": "1",
-    "prestart": [],
+    "name":"NVIDIA1", 
+    "delay":"1", 
+    "prestart":[], 
     "commands": {
-      "zhash": "",
-      "daggerhashimoto": "",
-      "equihash144": "-pers auto",
-      "beam": ""
-    },
+      "zhash":"", 
+      "daggerhashimoto":"", 
+      "equihash144":"-pers auto", 
+      "beam":""
+    }, 
     "difficulty": {
-      "zhash": "",
-      "daggerhashimoto": "",
-      "equihash144": "",
-      "beam": ""
-    },
+      "zhash":"", 
+      "daggerhashimoto":"", 
+      "equihash144":"", 
+      "beam":""
+    }, 
     "naming": {
-      "zhash": "zhash",
-      "daggerhashimoto": "ethstratum",
-      "equihash144": "equihash1445",
-      "beam": "beam"
-    },
+      "zhash":"zhash", 
+      "daggerhashimoto":"ethstratum", 
+      "equihash144":"equihash1445", 
+      "beam":"beam"
+    }, 
     "oc": {
       "zhash": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "equihash144": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "daggerhashimoto": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "ETHPill": "",
-        "PillDelay": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":"", 
+        "ETHPill":"", 
+        "PillDelay":""
+      }, 
       "beam": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "ETHPill": "",
-        "PillDelay": ""
+        "Power":"", 
+        "Core":"", 
+        "Memory":"", 
+        "ETHPill":"", 
+        "PillDelay":""
       }
     }
-  },
+  }, 
   "NVIDIA2": {
-    "name": "NVIDIA2",
-    "delay": "1",
-    "prestart": [],
+    "name":"NVIDIA2", 
+    "delay":"1", 
+    "prestart":[], 
     "commands": {
-      "zhash": "",
-      "daggerhashimoto": "",
-      "equihash144": "-pers auto",
-      "beam": ""
-    },
+      "zhash":"", 
+      "daggerhashimoto":"", 
+      "equihash144":"-pers auto", 
+      "beam":""
+    }, 
     "difficulty": {
-      "zhash": "",
-      "daggerhashimoto": "",
-      "equihash144": "",
-      "beam": ""
-    },
+      "zhash":"", 
+      "daggerhashimoto":"", 
+      "equihash144":"", 
+      "beam":""
+    }, 
     "naming": {
-      "zhash": "zhash",
-      "daggerhashimoto": "ethstratum",
-      "equihash144": "equihash1445",
-      "beam": "beam"
-    },
+      "zhash":"zhash", 
+      "daggerhashimoto":"ethstratum", 
+      "equihash144":"equihash1445", 
+      "beam":"beam"
+    }, 
     "oc": {
       "zhash": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "equihash144": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "daggerhashimoto": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "ETHPill": "",
-        "PillDelay": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":"", 
+        "ETHPill":"", 
+        "PillDelay":""
+      }, 
       "beam": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "ETHPill": "",
-        "PillDelay": ""
+        "Power":"", 
+        "Core":"", 
+        "Memory":"", 
+        "ETHPill":"", 
+        "PillDelay":""
       }
     }
-  },
+  }, 
   "NVIDIA3": {
-    "name": "NVIDIA3",
-    "delay": "1",
-    "prestart": [],
+    "name":"NVIDIA3", 
+    "delay":"1", 
+    "prestart":[], 
     "commands": {
-      "zhash": "",
-      "daggerhashimoto": "",
-      "equihash144": "-pers auto",
-      "beam": ""
-    },
+      "zhash":"", 
+      "daggerhashimoto":"", 
+      "equihash144":"-pers auto", 
+      "beam":""
+    }, 
     "difficulty": {
-      "zhash": "",
-      "daggerhashimoto": "",
-      "equihash144": "",
-      "beam": ""
-    },
+      "zhash":"", 
+      "daggerhashimoto":"", 
+      "equihash144":"", 
+      "beam":""
+    }, 
     "naming": {
-      "zhash": "zhash",
-      "daggerhashimoto": "ethstratum",
-      "equihash144": "equihash1445",
-      "beam": "beam"
-    },
+      "zhash":"zhash", 
+      "daggerhashimoto":"ethstratum", 
+      "equihash144":"equihash1445", 
+      "beam":"beam"
+    }, 
     "oc": {
       "zhash": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "equihash144": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "daggerhashimoto": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "ETHPill": "",
-        "PillDelay": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":"", 
+        "ETHPill":"", 
+        "PillDelay":""
+      }, 
       "beam": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "ETHPill": "",
-        "PillDelay": ""
+        "Power":"", 
+        "Core":"", 
+        "Memory":"", 
+        "ETHPill":"", 
+        "PillDelay":""
       }
     }
   }
