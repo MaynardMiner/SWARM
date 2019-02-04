@@ -371,6 +371,16 @@ function start-update {
                                         $Data.$_.commands."equihash210" = "--algo 210_9 --pers auto"
                                         $Data.$_.commands."equihash200" = "--algo 200_9 --pers auto"
                                         $Data.$_.commands."zhash" = "--algo 144_5 --pers auto"
+
+                                        $Data.$_.commands| Add-Member "grimcuckaroo29" "--algo grin29 --pers auto" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "grimcuckaroo29" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "grimcuckaroo29" "grimcuckaroo29" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "grimcuckaroo29" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue
+
+                                        $Data.$_.commands| Add-Member "beam" "--algo 150_5 --pers auto" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "beam" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "beam" "beam" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "beam" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue
                                     }
                                 }
                             }
