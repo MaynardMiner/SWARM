@@ -1706,6 +1706,10 @@ apply to pool or choice of miner- Just switching times.
     -This allows you to test miners with
      swarm settings.
 
+-SWARM_MODE "Yes" will now set zergpool party mode!
+  -Sycronized switching with party.
+
+-Cleaned up code base- A lot.
 -teamredminer update.
 -progpowminer added.
 -ttminer added.
