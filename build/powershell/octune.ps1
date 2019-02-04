@@ -457,7 +457,7 @@ function Start-OC {
         Set-Location $Dir
     }
     
-    if ($AMDOC -eq $true -and $Platforms -eq "windows") {
+    if ($DoAMDOC -eq $true -and $Platforms -eq "windows") {
         Write-Host "Starting OC" 
         Set-Location ".\build\apps"
         $Ascript | Out-File "AMD-oc-start.ps1"

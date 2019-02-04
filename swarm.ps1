@@ -221,6 +221,10 @@ if ($Platform -eq "windows") {
     if (Test-Path $ID) {$Agent = Get-Content $ID}
     if ($Agent) {$BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue}
     if ($BackGroundID.name -eq "powershell") {Stop-Process $BackGroundID | Out-Null}
+    $ID = ".\build\pid\pill_pid.txt"
+    if (Test-Path $ID) {$Agent = Get-Content $ID}
+    if ($Agent) {$BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue}
+    if ($BackGroundID.name -eq "powershell") {Stop-Process $BackGroundID | Out-Null}
 }
 
 ##Start Date Collection
