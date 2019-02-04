@@ -1691,6 +1691,7 @@ apply to pool or choice of miner- Just switching times.
 -``ps`` command will now wait until process finishes, and should work correctly.
 -Miner Logging for background miners is a little better in windows
 -Windows users can run ``nvidia-smi`` remotely.
+-Small tweaks to profit table.
 
 -HiveOS OC for AMD in windows.
    -Read config\oc\new_sample.json on how it works.
@@ -1705,10 +1706,7 @@ apply to pool or choice of miner- Just switching times.
  each miner folder in .\bin
     -This allows you to test miners with
      swarm settings.
-
--SWARM_MODE "Yes" will now set zergpool party mode!
-  -Sycronized switching with party.
-
+     
 -Cleaned up code base- A lot.
 -teamredminer update.
 -progpowminer added.
