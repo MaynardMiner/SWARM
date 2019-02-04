@@ -167,7 +167,7 @@
     "path2":".\\bin\\gminer-2\\miner", 
     "path3":".\\bin\\gminer-3\\miner", 
     "minername":"miner", 
-    "version":"1.21", 
+    "version":"1.30", 
     "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/gminer-linux.tar.gz"
 }, 
   "bminer": {
