@@ -13,9 +13,9 @@ if ($Poolname -eq $Name) {
      
     $Zergpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name |  Where-Object {$Zergpool_Request.$_.hashrate -gt 0} |  Where-Object {$Naming.$($Zergpool_Request.$_.name)} | ForEach-Object {
     
-        $Zergpool_Algorithm = Get-Algorithm $Zergpool_Request.$_.name
+        $Zergpool_Algorithm = $Zergpool_Request.$_.name
   
-        if ($Algorithm -eq $Zergpool_Algorithm) {
+        if ($Algorithm -contains $Zergpool_Algorithm -and $Bad_pools.$Zergpool_Algorithm -notcontains $Name) {
             $Zergpool_Port = $Zergpool_Request.$_.port
             $Zergpool_Host = "$($Zergpool_Algorithm).mine.zergpool.com"
             $Divisor = (1000000 * $Zergpool_Request.$_.mbtc_mh_factor)

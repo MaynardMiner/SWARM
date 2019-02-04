@@ -19,9 +19,9 @@ if ($Poolname -eq $Name) {
   
     $phiphipool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name |  Where-Object {$phiphipool_Request.$_.hashrate -gt 0} |  Where-Object {$Naming.$($phiphipool_Request.$_.name)} | ForEach-Object {
 
-        $phiphipool_Algorithm = Get-Algorithm $phiphipool_Request.$_.name
+        $phiphipool_Algorithm = $phiphipool_Request.$_.name
 
-        if ($Algorithm -eq $phiphipool_Algorithm) {
+        if ($Algorithm -contains $phiphipool_Algorithm -and $Bad_pools.$phiphipool_Algorithm -notcontains $Name) {
             $phiphipool_Port = $phiphipool_Request.$_.port
             $phiphipool_Host = "$($Region).phi-phi-pool.com"
             $Divisor = (1000000 * $phiphipool_Request.$_.mbtc_mh_factor)

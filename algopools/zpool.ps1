@@ -19,9 +19,9 @@ if ($Poolname -eq $Name) {
   
     $Zpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name |  Where-Object {$Zpool_Request.$_.hashrate -gt 0} |  Where-Object {$Naming.$($Zpool_Request.$_.name)} | ForEach-Object {
     
-        $Zpool_Algorithm = Get-Algorithm $Zpool_Request.$_.name
+        $Zpool_Algorithm = $Zpool_Request.$_.name
   
-        if ($Algorithm -eq $Zpool_Algorithm) {
+        if ($Algorithm -contains $Zpool_Algorithm -and $Bad_pools.$Zpool_Algorithm -notcontains $Name) {
             $Zpool_Port = $Zpool_Request.$_.port
             $Zpool_Host = "$($ZPool_Algorithm).$($region).mine.zpool.ca"
             $Divisor = (1000000 * $Zpool_Request.$_.mbtc_mh_factor)

@@ -18,9 +18,9 @@ if ($Poolname -eq $Name) {
   
     $blockpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name |  Where-Object {$blockpool_Request.$_.hashrate -gt 0} |  Where-Object {$Naming.$($blockpool_Request.$_.name)} | ForEach-Object {
 
-        $blockpool_Algorithm = Get-Algorithm $blockpool_Request.$_.name
+        $blockpool_Algorithm = $blockpool_Request.$_.name
 
-        if ($Algorithm -eq $blockpool_Algorithm) {
+        if ($Algorithm -contains $blockpool_Algorithm -and $Bad_pools.$blockpool_Algorithm -notcontains $Name) {
             $blockpool_Host = "$($Region)blockmasters.co"
             $blockpool_Port = $blockpool_Request.$_.port
             $Divisor = (1000000 * $blockpool_Request.$_.mbtc_mh_factor)

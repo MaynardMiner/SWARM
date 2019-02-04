@@ -13,9 +13,9 @@ if ($Poolname -eq $Name) {
    
     $Hashrefinery_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name |  Where-Object {$Hashrefinery_Request.$_.hashrate -gt 0} |  Where-Object {$Naming.$($Hashrefinery_Request.$_.name)} | ForEach-Object {
    
-        $Hashrefinery_Algorithm = Get-Algorithm $Hashrefinery_Request.$_.name
+        $Hashrefinery_Algorithm = $Hashrefinery_Request.$_.name
 
-        if ($Algorithm -eq $hashrefinery_Algorithm) {
+        if ($Algorithm -contains $Hashrefinery_Algorithm -and $Bad_pools.$Hashrefinery_Algorithm -notcontains $Name) {
             $Hashrefinery_Host = "$_.us.hashrefinery.com"
             $Hashrefinery_Port = $Hashrefinery_Request.$_.port
             $Divisor = (1000000 * $Hashrefinery_Request.$_.mbtc_mh_factor)

@@ -20,9 +20,9 @@ if ($Poolname -eq $Name) {
 
     $nicehash_Request.result | Select-Object -ExpandProperty simplemultialgo | Where paying -ne 0 | Where {$Naming.$($_.Name)} | ForEach-Object {
     
-        $nicehash_Algorithm = Get-Algorithm $_.name
+        $nicehash_Algorithm = $_.name
 
-        if ($Algorithm -eq $nicehash_Algorithm) {
+        if ($Algorithm -contains $nicehash_Algorithm -and $Bad_pools.$nicehash_Algorithm -notcontains $Name) {
             if (-not $Nicehash_Wallet1) {$NH_Wallet1 = $Wallet1; [Double]$Fee = 5; }else {$NH_Wallet1 = $Nicehash_Wallet1; [Double]$Fee = $NiceHash_Fee}
             if (-not $Nicehash_Wallet2) {$NH_Wallet2 = $Wallet2; [Double]$Fee = 5; }else {$NH_Wallet2 = $Nicehash_Wallet2; [Double]$Fee = $NiceHash_Fee}
             if (-not $Nicehash_Wallet3) {$NH_Wallet3 = $Wallet3; [Double]$Fee = 5; }else {$NH_Wallet2 = $Nicehash_Wallet2; [Double]$Fee = $NiceHash_Fee}

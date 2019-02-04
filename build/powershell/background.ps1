@@ -93,6 +93,16 @@ function Write-MinerData1 {
     Write-Host "Miner is Mining $MinerAlgo"
 }
 
+function Check-Null {
+    [Parameter(Position = 0, Mandatory = $true)]
+    [Object]$Item,
+    [Parameter(Position = 1, Mandatory = $true)]
+    [int]$Value
+
+    if ($Item[$i]) {$Item[$i]}
+    else {0}
+}
+
 function Write-MinerData2 {
     $RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
     Write-Host "Miner $Name was clocked at $($RAW | ConvertTo-Hash)/s" -foreground Yellow
@@ -111,7 +121,7 @@ function Set-Array {
     try {
         $Parsed = $ParseRates | % {iex $_}
         if ($ParseRates.Count -eq 1) {[Double]$Parse = $Parsed}
-        elseif ($ParseRates.Count -gt 1) {[Double]$Parse = $Parsed[$i]}
+        elseif ($ParseRates.Count -gt 1) {[Double]$Parse = Check-Null $Parsed $i}
         $Parse
     }
     catch {

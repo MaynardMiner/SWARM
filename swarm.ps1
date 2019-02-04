@@ -794,7 +794,8 @@ if (Test-Path "stats") {Get-ChildItemContent "stats" | ForEach {$Stat = Set-Stat
 $Algorithm = @()
 $Warnings = @()
 $NeedsToBeBench = $false
-$Algorithm = Get-Algolist -Devices $Type -No_Algo $No_Algo
+$Algorithm = Get-Algolist
+$Bad_Pools = Get-BadPools
 
 #Get Miner Config Files
 if ($Type -like "*CPU*") {$cpu = get-minerfiles -Types "CPU" -Platforms $Platform}
@@ -1263,16 +1264,9 @@ While ($true) {
         if (Test-Path $GetStatusMinerBans) {$StatusMinerBans = Get-Content $GetStatusMinerBans | ConvertFrom-Json}
         else {$StatusMinerBans = $null}
         $StatusDate = Get-Date
-        $NoteToUsers = "Profitability for certain pools are currently uncertain, as a new trend is developing
-among coin developers, known as coin developer fees. These fees deduct from total potential reward. 
-You should consult with pool if the developer fees for coins are being removed from their estimates. 
-Some pools are deducting them, others are not, causing an imbalance in profitibility. SWARM is unable to 
-predict which pools currently is removing these fees, and which pools are not, as no pool are providing the fees in question.
-"
         $StatusDate | Out-File ".\build\txt\mineractive.txt"
         $StatusDate | Out-File ".\build\txt\minerstats.txt"
         Get-MinerStatus | Out-File ".\build\txt\minerstats.txt" -Append
-        $NoteToUsers | Out-File ".\build\txt\minerstats.txt" -Append
         $mcolor = "93"
         $me = [char]27
         $MiningStatus = "$me[${mcolor}mCurrently Mining $($BestMiners_Combo.Algo) Algorithm${me}[0m"
@@ -1528,7 +1522,6 @@ predict which pools currently is removing these fees, and which pools are not, a
                 }
             }
             if ($BenchmarkMode -eq $true) {Write-Host "Swarm Is Benchmarking Miners" -ForegroundColor Yellow}
-            Write-Host $NoteToUsers
             $BanMessage
             Do {
                 Restart-Miner

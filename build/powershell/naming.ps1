@@ -81,18 +81,13 @@ function Convert-DateString ([string]$Date, [string[]]$Format) {
 }
 
 function Get-AlgoList {
-    param(
-        [Parameter(Mandatory = $true)]
-        [Array]$Devices,
-        [Parameter(Mandatory = $false)]
-        [Array]$No_Algo
-    )
-    
-    Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
-    
-    $AlgorithmList = @()
-    $GetAlgorithms = Get-Content ".\config\pools\pool-algos.json" -Force | ConvertFrom-Json
-    $PoolAlgorithms = @()
-    $GetAlgorithms | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {$PoolAlgorithms += $_}             
-    $PoolAlgorithms
-}    
+    $GetAlgorithms = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
+    $GetAlgorithms.PSObject.Properties.Name
+}
+
+function Get-BadPools {
+$Badpools = @()
+$GetAlgorithms = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
+$GetAlgorithms.PSObject.Properties.Name | %{$Badpools +=  [PSCustomObject]@{"$_" = $GetAlgorithms.$_}}
+$Badpools
+}

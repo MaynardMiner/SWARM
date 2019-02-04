@@ -19,9 +19,9 @@ if ($Poolname -eq $Name) {
   
     $fairpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | Where-Object {$fairpool_Request.$_.hashrate -gt 0} | Where-Object {$Naming.$($fairpool_Request.$_.name)} | ForEach-Object {
  
-        $fairpool_Algorithm = Get-Algorithm $fairpool_Request.$_.name
+        $fairpool_Algorithm = $fairpool_Request.$_.name
 
-        if ($Algorithm -eq $fairpool_Algorithm) {
+        if ($Algorithm -contains $fairpool_Algorithm -and $Bad_pools.$fairpool_Algorithm -notcontains $Name) {
             $fairpool_Host = "$region.fairpool.pro"
             $fairpool_Port = $fairpool_Request.$_.port
             $Divisor = (1000000 * $fairpool_Request.$_.mbtc_mh_factor)
