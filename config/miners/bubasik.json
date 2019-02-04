@@ -1,26 +1,26 @@
-{
+ {
   "CPU": {
-    "name": "CPU",
-    "delay": "1",
-    "prestart": [],
+    "name":"CPU", 
+    "delay":"1", 
+    "prestart":[], 
     "commands": {
-      "yespower": "",
-      "argon2d-dyn": "",
-      "lyra2z": "",
-      "hodl": ""
-    },
+      "yespower":"", 
+      "argon2d-dyn":"", 
+      "lyra2z":"", 
+      "hodl":""
+    }, 
     "difficulty": {
-      "yespower": "",
-      "argon2d-dyn": "",
-      "lyra2z": "",
-      "hodl": ""
-    },
+      "yespower":"", 
+      "argon2d-dyn":"", 
+      "lyra2z":"", 
+      "hodl":""
+    }, 
     "naming": {
-      "yespower": "yespower",
-      "argon2d-dyn": "argon2d-dyn",
-      "lyra2z": "lyra2z",
-      "hodl": "hodl"
+      "yespower":"yespower", 
+      "argon2d-dyn":"argon2d-dyn", 
+      "lyra2z":"lyra2z", 
+      "hodl":"hodl"
     }
-  },
-  "name": "bubasik"
+  }, 
+  "name":"bubasik"
 }

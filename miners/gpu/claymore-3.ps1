@@ -11,14 +11,15 @@ elseif($Platform -eq "windows"){$Build = "Zip"}
 $ConfigType = "NVIDIA3"
 
 ##Parse -GPUDevices
-if($NVIDIADevices3 -ne ''){
-$ClayDevices3  = $NVIDIADevices3 -split ","
-$ClayDevices3  = Switch($ClayDevices3){"10"{"a"};"11"{"b"};"12"{"c"};"13"{"d"};"14"{"e"};"15"{"f"};"16"{"g"};"17"{"h"};"18"{"i"};"19"{"j"};"20"{"k"};default{"$_"};}
-$ClayDevices3  = $ClayDevices3 | foreach {$_ -replace ("$($_)",",$($_)")}
-$ClayDevices3  = $ClayDevices3 -join ""
-$ClayDevices3  = $ClayDevices3.TrimStart(" ",",")  
-$ClayDevices3 = $ClayDevices3 -replace(",","")
-$Devices = $ClayDevices3}
+if ($NVIDIADevices3 -ne '') {
+    $ClayDevices3 = $NVIDIADevices3 -split ","
+    $ClayDevices3 = Switch ($ClayDevices3) {"10" {"a"}; "11" {"b"}; "12" {"c"}; "13" {"d"}; "14" {"e"}; "15" {"f"}; "16" {"g"}; "17" {"h"}; "18" {"i"}; "19" {"j"}; "20" {"k"}; default {"$_"}; }
+    $ClayDevices3 = $ClayDevices3 | foreach {$_ -replace ("$($_)", ",$($_)")}
+    $ClayDevices3 = $ClayDevices3 -join ""
+    $ClayDevices3 = $ClayDevices3.TrimStart(" ", ",")  
+    $ClayDevices3 = $ClayDevices3 -replace (",", "")
+    $Devices = $ClayDevices3
+}
 
 ##Get Configuration File
 $GetConfig = "$dir\config\miners\claymore.json"

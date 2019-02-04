@@ -1,84 +1,432 @@
 {
-  "aergo": "aergo",
-  "aeon": "aeon",
-  "argon2d-dyn": "argon2d-dyn",
-  "allium": "allium",
-  "bcd": "bcd",
-  "bitcore": "bitcore",
-  "blake": "blake",
-  "blake2s": "blake2s",
-  "c11": "c11",
-  "cryptonight": "cryptonight",
-  "cryptonightheavy": "cryptonightheavy",
-  "cryptonightmonero": "cryptonight",
-  "cryptonightv7": "cryptonightv7",
-  "cryptonightv8": "cryptonightv8",
-  "cuckoo": "cuckoo",
-  "dagger": "dagger",
-  "daggerhashimoto": "daggerhashimoto",
-  "dedal": "dedal",
-  "equihash96": "equihash96",
-  "equihash144": "equihash144",
-  "equihash192": "equihash192",
-  "equihash200": "equihash200",
-  "equihash210": "equihash210",
-  "equihash-btg": "equihash-btg",
-  "ethash": "ethash",
-  "exosis": "exosis",
-  "geek": "geek",
-  "hex": "hex",
-  "hmq1725": "hmq1725",
-  "hodl": "hodl",
-  "hsr": "hsr",
-  "jackpot": "jackpot",
-  "keccak": "keccak",
-  "keccakc": "keccakc",
-  "lbk3": "lbk3",
-  "lyra2re": "lyra2re",
-  "lyra2rev2": "lyra2rev2",
-  "lyra2v2": "lyra2v2",
-  "lyra2rev3": "lyra2rev3",
-  "lyra2v3": "lyra2v3",
-  "lyra2z": "lyra2z",
-  "lyra2zz": "lyra2zz",
-  "m7m": "m7m",
-  "masari": "masari",
-  "mtp": "mtp",
-  "myr-gr": "myr-gr",
-  "neoscrypt": "neoscrypt",
-  "nist5": "nist5",
-  "nrghash": "nrghash",
-  "phi": "phi",
-  "phi2": "phi2",
-  "polytimos": "polytimos",
-  "qubit": "qubit",
-  "renesis": "renesis",
-  "sha256t": "sha256t",
-  "sha256q": "sha256q",
-  "skein": "skein",
-  "skunk": "skunk",
-  "sonoa": "sonoa",
-  "stellite": "stellite",
-  "timetravel": "timetravel",
-  "tribus": "tribus",
-  "x11": "x11",
-  "x16r": "x16r",
-  "x16rt": "x16rt",
-  "x16s": "x16s",
-  "x17": "x17",
-  "x18": "x18",
-  "x21s": "x21s",
-  "x22i": "x22i",
-  "xevan": "xevan",
-  "xmr": "xmr",
-  "yespower": "yespower",
-  "yescrypt": "yescrypt",
-  "yescryptr16": "yescryptr16",
-  "yescryptr32": "yescryptr32",
-  "zhash": "zhash",
-  "astralhash": "astralhash",
-  "jeonghash": "jeonghash",
-  "padihash": "padihash",
-  "pawelhash": "pawelhash",
-  "lyra2vc0ban": "lyra2vc0ban"
+  "aergo": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "aeon": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "argon2d-dyn": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "allium": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "bcd": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "beam": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "bitcore": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "blake": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "blake2s": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "c11": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "cryptonight": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "cryptonightheavy": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "cryptonightmonero": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "cryptonightv7": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "cryptonightv8": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "cuckoo": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "cnfastv2": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "cnsuperfast ": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "dagger": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "daggerhashimoto": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "dedal": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "equihash96": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "equihash144": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "equihash192": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "equihash200": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "equihash210": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "equihash-btg": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "ethash": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "exosis": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "geek": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "hex": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "hmq1725": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "hodl": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "hsr": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "jackpot": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "keccak": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "keccakc": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "lbk3": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "lyra2re": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "lyra2rev2": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "lyra2v2": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "lyra2rev3": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "lyra2v3": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "lyra2z": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "lyra2zz": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "m7m": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "masari": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "mtp": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "myr-gr": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "neoscrypt": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "nist5": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "nrghash": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "phi": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "phi2": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "polytimos": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "progpow": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "qubit": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "renesis": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "sha256t": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "sha256q": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "skein": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "skunk": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "sonoa": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "stellite": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "timetravel": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "tribus": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "x11": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "x16r": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "x16rt": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "x16s": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "x17": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "x18": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "x21s": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "x22i": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "xevan": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "xmr": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "yespower": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "yescrypt": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "yescryptr16": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "yescryptr32": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "zhash": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "astralhash": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "jeonghash": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "padihash": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "pawelhash": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "lyra2vc0ban": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ]
 }

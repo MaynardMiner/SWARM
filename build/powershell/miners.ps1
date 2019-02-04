@@ -12,44 +12,39 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
 function Get-minerfiles {
- param(
-    [Parameter(Mandatory=$false)]
-    [string]$Types,
-    [Parameter(Mandatory=$false)]
-    [string]$Platforms,
-    [Parameter(Mandatory=$false)]
-    [string]$Cudas
- )
+    param(
+        [Parameter(Mandatory = $false)]
+        [string]$Types,
+        [Parameter(Mandatory = $false)]
+        [string]$Platforms,
+        [Parameter(Mandatory = $false)]
+        [string]$Cudas
+    )
  
-$miner_update = [PSCustomObject]@{}
+    $miner_update = [PSCustomObject]@{}
 
-switch($Types)
-{
-    "CPU"
-     {
-        if($Platforms -eq "linux"){$update = Get-Content ".\config\update\cpu-linux.json" | ConvertFrom-Json}
-        elseif($Platforms -eq "windows"){$update = Get-Content ".\config\update\cpu-win.json" | ConvertFrom-Json}
-     }
+    switch ($Types) {
+        "CPU" {
+            if ($Platforms -eq "linux") {$update = Get-Content ".\config\update\cpu-linux.json" | ConvertFrom-Json}
+            elseif ($Platforms -eq "windows") {$update = Get-Content ".\config\update\cpu-win.json" | ConvertFrom-Json}
+        }
 
-    "NVIDIA"
-     {
-        if($Platforms -eq "linux")
-         {
-          if($Cudas -eq "10"){$update = Get-Content ".\config\update\nvidia10-linux.json" | ConvertFrom-Json}
-          if($Cudas -eq "9.2"){$update = Get-Content ".\config\update\nvidia9.2-linux.json" | ConvertFrom-Json}
-         }
-         elseif($Platforms -eq "windows"){$update = Get-Content ".\config\update\nvidia-win.json" | ConvertFrom-Json}
-     }
+        "NVIDIA" {
+            if ($Platforms -eq "linux") {
+                if ($Cudas -eq "10") {$update = Get-Content ".\config\update\nvidia10-linux.json" | ConvertFrom-Json}
+                if ($Cudas -eq "9.2") {$update = Get-Content ".\config\update\nvidia9.2-linux.json" | ConvertFrom-Json}
+            }
+            elseif ($Platforms -eq "windows") {$update = Get-Content ".\config\update\nvidia-win.json" | ConvertFrom-Json}
+        }
 
-    "AMD"
-     {
-        if($Platforms -eq "linux"){$update = Get-Content ".\config\update\amd-linux.json" | ConvertFrom-Json}
-        elseif($Platforms -eq "windows"){$update = Get-Content ".\config\update\amd-win.json" | ConvertFrom-Json}
-     }
-}
+        "AMD" {
+            if ($Platforms -eq "linux") {$update = Get-Content ".\config\update\amd-linux.json" | ConvertFrom-Json}
+            elseif ($Platforms -eq "windows") {$update = Get-Content ".\config\update\amd-win.json" | ConvertFrom-Json}
+        }
+    }
 
-$update | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach{if($_ -ne "name"){$miner_update | Add-Member $update.$_.Name $update.$_}}
+    $update | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {if ($_ -ne "name") {$miner_update | Add-Member $update.$_.Name $update.$_}}
 
-$miner_update
+    $miner_update
 
 }

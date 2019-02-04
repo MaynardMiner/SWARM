@@ -1,161 +1,161 @@
-{
-  "name": "miniz",
+ {
+  "name":"miniz", 
   "NVIDIA1": {
-    "name": "NVIDIA1",
-    "delay": "1",
-    "prestart": [],
+    "name":"NVIDIA1", 
+    "delay":"1", 
+    "prestart":[], 
     "commands": {
-      "equihash-btg": "--par=144,5 --pers BgoldPoW",
-      "equihash144": "--par=144,5 --pers auto",
-      "equihash210": "--par=210,9 --pers auto",
-      "equihash200": "--par=200,9 --pers auto",
-      "zhash": "--par=144,5 --pers auto"
-    },
+      "equihash-btg":"--par=144,5 --pers BgoldPoW", 
+      "equihash144":"--par=144,5 --pers auto", 
+      "equihash210":"--par=210,9 --pers auto", 
+      "equihash200":"--par=200,9 --pers auto", 
+      "zhash":"--par=144,5 --pers auto"
+    }, 
     "difficulty": {
-      "equihash-btg": "",
-      "equihash144": "",
-      "equihash210": "",
-      "equihash200": "",
-      "zhash": ""
-    },
+      "equihash-btg":"", 
+      "equihash144":"", 
+      "equihash210":"", 
+      "equihash200":"", 
+      "zhash":""
+    }, 
     "naming": {
-      "equihash-btg": "equihash-btg",
-      "equihash144": "equihash144",
-      "equihash210": "equihash210",
-      "equihash200": "equihash200",
-      "zhash": "zhash"
-    },
+      "equihash-btg":"equihash-btg", 
+      "equihash144":"equihash144", 
+      "equihash210":"equihash210", 
+      "equihash200":"equihash200", 
+      "zhash":"zhash"
+    }, 
     "oc": {
       "equihash-btg": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "equihash144": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "equihash210": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "equihash200": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "zhash": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
       }
     }
-  },
+  }, 
   "NVIDIA2": {
-    "name": "NVIDIA2",
-    "delay": "1",
-    "prestart": [],
+    "name":"NVIDIA2", 
+    "delay":"1", 
+    "prestart":[], 
     "commands": {
-      "equihash-btg": "--par=144,5 --pers BgoldPoW",
-      "equihash144": "--par=144,5 --pers auto",
-      "equihash210": "--par=210,9 --pers auto",
-      "equihash200": "--par=200,9 --pers auto",
-      "zhash": "--par=144,5 --pers auto"
-    },
+      "equihash-btg":"--par=144,5 --pers BgoldPoW", 
+      "equihash144":"--par=144,5 --pers auto", 
+      "equihash210":"--par=210,9 --pers auto", 
+      "equihash200":"--par=200,9 --pers auto", 
+      "zhash":"--par=144,5 --pers auto"
+    }, 
     "difficulty": {
-      "equihash-btg": "",
-      "equihash144": "",
-      "equihash210": "",
-      "equihash200": "",
-      "zhash": ""
-    },
+      "equihash-btg":"", 
+      "equihash144":"", 
+      "equihash210":"", 
+      "equihash200":"", 
+      "zhash":""
+    }, 
     "naming": {
-      "equihash-btg": "equihash-btg",
-      "equihash144": "equihash144",
-      "equihash210": "equihash210",
-      "equihash200": "equihash200",
-      "zhash": "zhash"
-    },
+      "equihash-btg":"equihash-btg", 
+      "equihash144":"equihash144", 
+      "equihash210":"equihash210", 
+      "equihash200":"equihash200", 
+      "zhash":"zhash"
+    }, 
     "oc": {
       "equihash-btg": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "equihash144": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "equihash210": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "equihash200": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "zhash": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
       }
     }
-  },
+  }, 
   "NVIDIA3": {
-    "name": "NVIDIA3",
-    "delay": "1",
-    "prestart": [],
+    "name":"NVIDIA3", 
+    "delay":"1", 
+    "prestart":[], 
     "commands": {
-      "equihash-btg": "--par=144,5 --pers BgoldPoW",
-      "equihash144": "--par=144,5 --pers auto",
-      "equihash210": "--par=210,9 --pers auto",
-      "equihash200": "--par=200,9 --pers auto",
-      "zhash": "--par=144,5 --pers auto"
-    },
+      "equihash-btg":"--par=144,5 --pers BgoldPoW", 
+      "equihash144":"--par=144,5 --pers auto", 
+      "equihash210":"--par=210,9 --pers auto", 
+      "equihash200":"--par=200,9 --pers auto", 
+      "zhash":"--par=144,5 --pers auto"
+    }, 
     "difficulty": {
-      "equihash-btg": "",
-      "equihash144": "",
-      "equihash210": "",
-      "equihash200": "",
-      "zhash": ""
-    },
+      "equihash-btg":"", 
+      "equihash144":"", 
+      "equihash210":"", 
+      "equihash200":"", 
+      "zhash":""
+    }, 
     "naming": {
-      "equihash-btg": "equihash-btg",
-      "equihash144": "equihash144",
-      "equihash210": "equihash210",
-      "equihash200": "equihash200",
-      "zhash": "zhash"
-    },
+      "equihash-btg":"equihash-btg", 
+      "equihash144":"equihash144", 
+      "equihash210":"equihash210", 
+      "equihash200":"equihash200", 
+      "zhash":"zhash"
+    }, 
     "oc": {
       "equihash-btg": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "equihash144": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "equihash210": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "equihash200": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "zhash": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
       }
     }
   }

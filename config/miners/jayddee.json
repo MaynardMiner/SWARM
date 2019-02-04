@@ -1,32 +1,32 @@
-{
-  "name": "jayddee",
+ {
+  "name":"jayddee", 
   "CPU": {
-    "name": "CPU",
-    "delay": "1",
-    "prestart": [],
+    "name":"CPU", 
+    "delay":"1", 
+    "prestart":[], 
     "commands": {
-      "yescrypt": "",
-      "yescryptr16": "",
-      "lyra2z": "",
-      "lyra2re": "",
-      "m7m": "",
-      "cryptonightv7": ""
-    },
+      "yescrypt":"", 
+      "yescryptr16":"", 
+      "lyra2z":"", 
+      "lyra2re":"", 
+      "m7m":"", 
+      "cryptonightv7":""
+    }, 
     "difficulty": {
-      "yescrypt": "",
-      "yescryptr16": "",
-      "lyra2z": "",
-      "lyra2re": "",
-      "m7m": "",
-      "cryptonightv7": ""
-    },
+      "yescrypt":"", 
+      "yescryptr16":"", 
+      "lyra2z":"", 
+      "lyra2re":"", 
+      "m7m":"", 
+      "cryptonightv7":""
+    }, 
     "naming": {
-      "yescrypt": "yescrypt",
-      "yescryptr16": "yescryptr16",
-      "lyra2z": "lyra2z",
-      "lyra2re": "lyra2z",
-      "m7m": "m7m",
-      "cryptonightv7": "cryptonightv7"
+      "yescrypt":"yescrypt", 
+      "yescryptr16":"yescryptr16", 
+      "lyra2z":"lyra2z", 
+      "lyra2re":"lyra2z", 
+      "m7m":"m7m", 
+      "cryptonightv7":"cryptonightv7"
     }
   }
 }

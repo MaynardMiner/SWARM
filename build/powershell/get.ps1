@@ -1,17 +1,17 @@
 param(
-        [Parameter(Position=0,Mandatory=$false)]
-        [String]$argument1,
-        [Parameter(Position=1, Mandatory=$false)]
-        [String]$argument2,
-        [Parameter(Position=2,Mandatory=$false)]
-        [String]$argument3,
-        [Parameter(Position=3, Mandatory=$false)]
-        [String]$argument4,
-        [Parameter(Position=4,Mandatory=$false)]
-        [String]$argument5,
-        [Parameter(Position=5, Mandatory=$false)]
-        [String]$argument6
-     )
+    [Parameter(Position = 0, Mandatory = $false)]
+    [String]$argument1,
+    [Parameter(Position = 1, Mandatory = $false)]
+    [String]$argument2,
+    [Parameter(Position = 2, Mandatory = $false)]
+    [String]$argument3,
+    [Parameter(Position = 3, Mandatory = $false)]
+    [String]$argument4,
+    [Parameter(Position = 4, Mandatory = $false)]
+    [String]$argument5,
+    [Parameter(Position = 5, Mandatory = $false)]
+    [String]$argument6
+)
 
 Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))
 $dir = Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))
@@ -26,12 +26,10 @@ $Get = @()
 . .\build\powershell\response.ps1
 . .\build\powershell\hiveoc.ps1
 
- Switch($argument1)
-  {
-   "help"
-    {
-     $help = 
-"Swarm Remote Command Guide: get
+Switch ($argument1) {
+    "help" {
+        $help = 
+        "Swarm Remote Command Guide: get
 Swarm remote commands are a safe way to get miner information via ssh. It works by aquiring various 
 configuration files, logs, data, stats, and transforming them into a viewable manner.
 
@@ -222,209 +220,177 @@ ps [powershell command]
 clear_profits
 clear_watts
 "
-$help
-$help | out-file ".\build\txt\get.txt"
+        $help
+        $help | out-file ".\build\txt\get.txt"
     }
 
-"benchmarks"
-{
- . .\build\powershell\statcommand.ps1
- . .\build\powershell\childitems.ps1
- . .\build\powershell\hashrates.ps1
- . .\build\powershell\wallettable.ps1
+    "benchmarks" {
+        . .\build\powershell\statcommand.ps1
+        . .\build\powershell\childitems.ps1
+        . .\build\powershell\hashrates.ps1
+        . .\build\powershell\wallettable.ps1
 
- if(Test-path ".\stats")
- {
-  if($argument2)
-   {
-    switch($argument2)
-    {
-    "all"
-     {
-      $StatNames = Get-ChildItem ".\stats" | Where Name -LIKE "*hashrate*"
-      $StatNames = $StatNames.Name -replace ".txt",""
-      $Stats = [PSCustomObject]@{}
-      if(Test-Path "stats"){Get-ChildItemContent "stats" | ForEach {$Stats | Add-Member $_.Name $_.Content}}
-     }
-     default
-     {
-      $Stats = [PSCustomObject]@{}
-      $StatNames = Get-ChildItem ".\stats" | Where Name -like "*$argument2*"
-      $StatNames = $StatNames.Name -replace ".txt",""
-      if(Test-Path "stats"){Get-ChildItemContent "stats" | ForEach {$Stats | Add-Member $_.Name $_.Content}}
-     }
-    } 
-   }
-   else
-   {
-    $StatNames = Get-ChildItem ".\stats" | Where Name -LIKE "*hashrate*"
-    $StatNames = $StatNames.Name -replace ".txt",""
-    $Stats = [PSCustomObject]@{}
-    if(Test-Path "stats"){Get-ChildItemContent "stats" | ForEach {$Stats | Add-Member $_.Name $_.Content}}
-   }
- $BenchTable = @()
- $StatNames | Foreach {$BenchTable += [PSCustomObject]@{Miner = $_ -split "_" | Select -First 1; Algo = $_ -split "_" | Select -Skip 1 -First 1; HashRates = $Stats."$($_)".Day | ConvertTo-Hash}}
- function Get-BenchTable {
-  $BenchTable | Sort-Object -Property Algo -Descending | Format-Table (
-  @{Label = "Miner"; Expression={$($_.Miner)}},
-  @{Label = "Algorithm"; Expression={$($_.Algo)}},
-  @{Label = "Speed"; Expression={$($_.HashRates)}}    
-)
- }
-$Get = Get-BenchTable
-Get-BenchTable | Out-File ".\build\txt\get.txt"
-}
- else{$Get = "No Stats Found"}
-}
-
-"wallets"
-{
-. .\build\powershell\statcommand.ps1
-. .\build\powershell\childitems.ps1
-. .\build\powershell\hashrates.ps1
-. .\build\powershell\wallettable.ps1   
-$Get = Get-WalletTable
-}
-"stats"
-{
-if($argument2 -eq "lite")
- {
-  if(Test-Path ".\build\txt\minerstatslite.txt"){$Get = Get-Content ".\build\txt\minerstatslite.txt"}
-  else{$Get = "No Stats History Found"}
- }
-else
- {
-if(Test-Path ".\build\txt\minerstats.txt"){$Get = Get-Content ".\build\txt\minerstats.txt"}
-else{$Get = "No Stats History Found"}
- }
-}
-"active"
-{
-if(Test-Path ".\build\txt\mineractive.txt"){$Get = Get-Content ".\build\txt\mineractive.txt"}
-else{$Get = "No Miner History Found"}
-}
-"parameters"
-{
-if(Test-Path ".\config\parameters\arguments.json")
- {
-  $SwarmParameters =@()
-  $MinerArgs = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
-  $MinerArgs | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Foreach{$SwarmParameters += "$($_): $($MinerArgs.$_)"}
- }
- else{$SwarmParameters += "No Parameters For SWARM found"}
- $Get = $SwarmParameters
-}
-"screen"
-{
- if(Test-Path ".\logs\$($argument2).log"){$Get = Get-Content ".\logs\$($argument2).log"}
- if($argument2 -eq "miner"){if(Test-Path ".\logs\*active*"){$Get = Get-Content ".\logs\*active.log*"}}
- $Get = $Get | Select -Last 300
-}
-"oc"
-{
- if(Test-Path ".\build\txt\oc-settings.txt"){$Get = Get-Content ".\build\txt\oc-settings.txt"}
- else{$Get = "No oc settings found"}
-}
-"miners"
-{
- $GetJsons = Get-ChildItem ".\config\miners"
- $ConvertJsons = [PSCustomObject]@{}
- $GetJsons | foreach{$Getfile = Get-Content $_ | ConvertFrom-Json; $ConvertJsons | Add-Member $Getfile.Name $(Get-Content $_ | ConvertFrom-Json)}
-if($argument2)
- {
- $Get += "Current $Argument2 Miner List:"
- $Get += " "   
- $ConvertJsons.PSObject.Properties.Name | Where {$ConvertJsons.$_.$Argument2} | foreach{$Get += "$($_)"}
- $Selected = $ConvertJsons.PSObject.Properties.Name | Where {$_ -eq $Argument3} | %{$ConvertJsons.$_}
- if($Selected)
- {
-    $Cuda = Get-Content ".\build\txt\cuda.txt"
-    $Platform = Get-Content ".\build\txt\os.txt"
-     if($argument2 -like "*NVIDIA*")
-      {
-       $Number = $argument2 -Replace "NVIDIA",""
-       if($Platform -eq "linux")
-       {
-        switch($Cuda)
-        {
-         "9.2"{$UpdateJson = Get-Content ".\config\update\nvidia9.2-linux.json" | ConvertFrom-Json}
-         "10"{$UpdateJson = Get-Content ".\config\update\nvidia10-linux.json" | ConvertFrom-Json}
+        if (Test-path ".\stats") {
+            if ($argument2) {
+                switch ($argument2) {
+                    "all" {
+                        $StatNames = Get-ChildItem ".\stats" | Where Name -LIKE "*hashrate*"
+                        $StatNames = $StatNames.Name -replace ".txt", ""
+                        $Stats = [PSCustomObject]@{}
+                        if (Test-Path "stats") {Get-ChildItemContent "stats" | ForEach {$Stats | Add-Member $_.Name $_.Content}}
+                    }
+                    default {
+                        $Stats = [PSCustomObject]@{}
+                        $StatNames = Get-ChildItem ".\stats" | Where Name -like "*$argument2*"
+                        $StatNames = $StatNames.Name -replace ".txt", ""
+                        if (Test-Path "stats") {Get-ChildItemContent "stats" | ForEach {$Stats | Add-Member $_.Name $_.Content}}
+                    }
+                } 
+            }
+            else {
+                $StatNames = Get-ChildItem ".\stats" | Where Name -LIKE "*hashrate*"
+                $StatNames = $StatNames.Name -replace ".txt", ""
+                $Stats = [PSCustomObject]@{}
+                if (Test-Path "stats") {Get-ChildItemContent "stats" | ForEach {$Stats | Add-Member $_.Name $_.Content}}
+            }
+            $BenchTable = @()
+            $StatNames | Foreach {$BenchTable += [PSCustomObject]@{Miner = $_ -split "_" | Select -First 1; Algo = $_ -split "_" | Select -Skip 1 -First 1; HashRates = $Stats."$($_)".Day | ConvertTo-Hash}}
+            function Get-BenchTable {
+                $BenchTable | Sort-Object -Property Algo -Descending | Format-Table (
+                    @{Label = "Miner"; Expression = {$($_.Miner)}},
+                    @{Label = "Algorithm"; Expression = {$($_.Algo)}},
+                    @{Label = "Speed"; Expression = {$($_.HashRates)}}    
+                )
+            }
+            $Get = Get-BenchTable
+            Get-BenchTable | Out-File ".\build\txt\get.txt"
         }
-       }
-       else{$UpdateJson = Get-Content ".\config\update\nvidia-win.json" | ConvertFrom-JSon}
-      }
-     if($argument2 -like "*AMD*")
-     {
-      $Number = $argument2 -Replace "AMD",""
-      switch($Platform)
-      {
-        "linux"{$UpdateJson = Get-Content ".\config\update\amd-linux.json" | ConvertFrom-Json}
-        "windows"{$UpdateJson = Get-Content ".\config\update\amd-windows.json" | ConvertFrom-Json}
-      }
-     }
-     if($argument3 -like "*CPU*")
-      {
-        $Number = 1
-        switch($Platform)
-        {  
-        "linux"{$UpdateJson = Get-Content ".\config\update\cpu-linux.json" | ConvertFrom-Json}
-        "windows"{$UpdateJson = Get-Content ".\config\update\cpu-windows.json" | ConvertFrom-Json}
-        }
-      }
-    $getpath = "path$($Number)"
-    $Get += " "
-    $Get += "Miner Update Information:"
-    $Get += " "
-    $Get += "Miner Name: $($UpdateJson.$Argument3.name)"
-    $Get += "Miner Path: $($UpdateJson.$Argument3.$getpath)"
-    $Get += "Miner executable $($UpdateJson.$Argument3.minername)"
-    $Get += "Miner version $($UpdateJson.$Argument3.version)"
-    $Get += "Miner URI $($UpdateJson.$Argument3.uri)"
-    $Get += " "
-    $Get += "User Seletected $Argument3"
-    if($Argument4)
-     {
-      if($argument5)
-      {
-        $Get += " "
-        $Get += "Getting: $Argument1 $Argument2 $Argument3 $Argument4 $Argument5"
-        $Get += " "
-        $Get += if($selected.$argument2.$argument4.$argument5){$selected.$argument2.$argument4.$argument5}else{"none"}
-      }
-      elseif($argument6)
-      {
-          $Get += " "
-          $Get += "Getting: $Argument1 $Argument2 $Argument3 $Argument4 $Argument5 $Argument6"
-          $Get += " "
-          $Get += if($selected.$argument2.$argument4.$argument5.$Arguement6){$selected.$argument2.$argument4.$argument5.$Arguement6}else{"none"}
-      }
-     else
-      {
-          $Get += " "
-          $Get += "Getting: $Argument1 $Argument2 $Argument3 $Argument4"
-          $Get += " "
-          $Get += if($selected.$argument2.$argument4){$selected.$argument2.$argument4}else{"none"}
-      }
-     }  
+        else {$Get = "No Stats Found"}
     }
-   }
-   else{$Get += "No Platforms Selected: Please choose a platform NVIDIA1,NVIDIA2,NVIDIA3,AMD1,CPU"}
-  }
 
-default
-{
- $Get =
-"item not found or specified. use:
+    "wallets" {
+        . .\build\powershell\statcommand.ps1
+        . .\build\powershell\childitems.ps1
+        . .\build\powershell\hashrates.ps1
+        . .\build\powershell\wallettable.ps1   
+        $Get = Get-WalletTable
+    }
+    "stats" {
+        if ($argument2 -eq "lite") {
+            if (Test-Path ".\build\txt\minerstatslite.txt") {$Get = Get-Content ".\build\txt\minerstatslite.txt"}
+            else {$Get = "No Stats History Found"}
+        }
+        else {
+            if (Test-Path ".\build\txt\minerstats.txt") {$Get = Get-Content ".\build\txt\minerstats.txt"}
+            else {$Get = "No Stats History Found"}
+        }
+    }
+    "active" {
+        if (Test-Path ".\build\txt\mineractive.txt") {$Get = Get-Content ".\build\txt\mineractive.txt"}
+        else {$Get = "No Miner History Found"}
+    }
+    "parameters" {
+        if (Test-Path ".\config\parameters\arguments.json") {
+            $SwarmParameters = @()
+            $MinerArgs = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
+            $MinerArgs | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Foreach {$SwarmParameters += "$($_): $($MinerArgs.$_)"}
+        }
+        else {$SwarmParameters += "No Parameters For SWARM found"}
+        $Get = $SwarmParameters
+    }
+    "screen" {
+        if (Test-Path ".\logs\$($argument2).log") {$Get = Get-Content ".\logs\$($argument2).log"}
+        if ($argument2 -eq "miner") {if (Test-Path ".\logs\*active*") {$Get = Get-Content ".\logs\*active.log*"}}
+        $Get = $Get | Select -Last 300
+    }
+    "oc" {
+        if (Test-Path ".\build\txt\oc-settings.txt") {$Get = Get-Content ".\build\txt\oc-settings.txt"}
+        else {$Get = "No oc settings found"}
+    }
+    "miners" {
+        $GetJsons = Get-ChildItem ".\config\miners"
+        $ConvertJsons = [PSCustomObject]@{}
+        $GetJsons | foreach {$Getfile = Get-Content $_ | ConvertFrom-Json; $ConvertJsons | Add-Member $Getfile.Name $(Get-Content $_ | ConvertFrom-Json)}
+        if ($argument2) {
+            $Get += "Current $Argument2 Miner List:"
+            $Get += " "   
+            $ConvertJsons.PSObject.Properties.Name | Where {$ConvertJsons.$_.$Argument2} | foreach {$Get += "$($_)"}
+            $Selected = $ConvertJsons.PSObject.Properties.Name | Where {$_ -eq $Argument3} | % {$ConvertJsons.$_}
+            if ($Selected) {
+                $Cuda = Get-Content ".\build\txt\cuda.txt"
+                $Platform = Get-Content ".\build\txt\os.txt"
+                if ($argument2 -like "*NVIDIA*") {
+                    $Number = $argument2 -Replace "NVIDIA", ""
+                    if ($Platform -eq "linux") {
+                        switch ($Cuda) {
+                            "9.2" {$UpdateJson = Get-Content ".\config\update\nvidia9.2-linux.json" | ConvertFrom-Json}
+                            "10" {$UpdateJson = Get-Content ".\config\update\nvidia10-linux.json" | ConvertFrom-Json}
+                        }
+                    }
+                    else {$UpdateJson = Get-Content ".\config\update\nvidia-win.json" | ConvertFrom-JSon}
+                }
+                if ($argument2 -like "*AMD*") {
+                    $Number = $argument2 -Replace "AMD", ""
+                    switch ($Platform) {
+                        "linux" {$UpdateJson = Get-Content ".\config\update\amd-linux.json" | ConvertFrom-Json}
+                        "windows" {$UpdateJson = Get-Content ".\config\update\amd-windows.json" | ConvertFrom-Json}
+                    }
+                }
+                if ($argument3 -like "*CPU*") {
+                    $Number = 1
+                    switch ($Platform) {  
+                        "linux" {$UpdateJson = Get-Content ".\config\update\cpu-linux.json" | ConvertFrom-Json}
+                        "windows" {$UpdateJson = Get-Content ".\config\update\cpu-windows.json" | ConvertFrom-Json}
+                    }
+                }
+                $getpath = "path$($Number)"
+                $Get += " "
+                $Get += "Miner Update Information:"
+                $Get += " "
+                $Get += "Miner Name: $($UpdateJson.$Argument3.name)"
+                $Get += "Miner Path: $($UpdateJson.$Argument3.$getpath)"
+                $Get += "Miner executable $($UpdateJson.$Argument3.minername)"
+                $Get += "Miner version $($UpdateJson.$Argument3.version)"
+                $Get += "Miner URI $($UpdateJson.$Argument3.uri)"
+                $Get += " "
+                $Get += "User Seletected $Argument3"
+                if ($Argument4) {
+                    if ($argument5) {
+                        $Get += " "
+                        $Get += "Getting: $Argument1 $Argument2 $Argument3 $Argument4 $Argument5"
+                        $Get += " "
+                        $Get += if ($selected.$argument2.$argument4.$argument5) {$selected.$argument2.$argument4.$argument5}else {"none"}
+                    }
+                    elseif ($argument6) {
+                        $Get += " "
+                        $Get += "Getting: $Argument1 $Argument2 $Argument3 $Argument4 $Argument5 $Argument6"
+                        $Get += " "
+                        $Get += if ($selected.$argument2.$argument4.$argument5.$Arguement6) {$selected.$argument2.$argument4.$argument5.$Arguement6}else {"none"}
+                    }
+                    else {
+                        $Get += " "
+                        $Get += "Getting: $Argument1 $Argument2 $Argument3 $Argument4"
+                        $Get += " "
+                        $Get += if ($selected.$argument2.$argument4) {$selected.$argument2.$argument4}else {"none"}
+                    }
+                }  
+            }
+        }
+        else {$Get += "No Platforms Selected: Please choose a platform NVIDIA1,NVIDIA2,NVIDIA3,AMD1,CPU"}
+    }
+
+    default {
+        $Get =
+        "item not found or specified. use:
 
 get help
 
 to see a list of availble items.
 "
-}
+    }
 }
 
-if($get -ne $null)
-{
-$Get
-$Get | Set-Content ".\build\txt\get.txt"
+if ($get -ne $null) {
+    $Get
+    $Get | Set-Content ".\build\txt\get.txt"
 }

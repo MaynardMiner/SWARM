@@ -1,666 +1,666 @@
-{
+ {
   "NVIDIA1": {
-    "name": "NVIDIA1",
-    "delay": "1",
-    "prestart": [],
+    "name":"NVIDIA1", 
+    "delay":"1", 
+    "prestart":[], 
     "commands": {
-      "tribus": "",
-      "phi": "",
-      "c11": "",
-      "hsr": "",
-      "x17": "",
-      "renesis": "",
-      "balloon": "",
-      "bitcore": "",
-      "polytimos": "",
-      "skunk": "",
-      "x16r": "",
-      "x16s": "",
-      "hmq1725": "",
-      "bcd": "",
-      "sha256t": "",
-      "timetravel": "",
-      "x22i": "",
-      "x21s": "",
-      "sonoa": "",
-      "dedal": "",
-      "x16rt": "",
-      "sha256q": "",
-      "astralhash": "",
-      "jeonghash": "",
-      "padihash": "",
-      "pawelhash": ""
-    },
+      "tribus":"", 
+      "phi":"", 
+      "c11":"", 
+      "hsr":"", 
+      "x17":"", 
+      "renesis":"", 
+      "balloon":"", 
+      "bitcore":"", 
+      "polytimos":"", 
+      "skunk":"", 
+      "x16r":"", 
+      "x16s":"", 
+      "hmq1725":"", 
+      "bcd":"", 
+      "sha256t":"", 
+      "timetravel":"", 
+      "x22i":"", 
+      "x21s":"", 
+      "sonoa":"", 
+      "dedal":"", 
+      "x16rt":"", 
+      "sha256q":"", 
+      "astralhash":"", 
+      "jeonghash":"", 
+      "padihash":"", 
+      "pawelhash":""
+    }, 
     "difficulty": {
-      "tribus": "",
-      "phi": "",
-      "c11": "",
-      "hsr": "",
-      "x17": "",
-      "renesis": "",
-      "balloon": "",
-      "bitcore": "",
-      "polytimos": "",
-      "skunk": "",
-      "x16r": "",
-      "x16s": "",
-      "hmq1725": "",
-      "bcd": "",
-      "sha256t": "",
-      "timetravel": "",
-      "x22i": "",
-      "x21s": "",
-      "sonoa": "",
-      "dedal": "",
-      "x16rt": "",
-      "sha256q": "",
-      "astralhash": "",
-      "jeonghash": "",
-      "padihash": "",
-      "pawelhash": ""
-    },
+      "tribus":"", 
+      "phi":"", 
+      "c11":"", 
+      "hsr":"", 
+      "x17":"", 
+      "renesis":"", 
+      "balloon":"", 
+      "bitcore":"", 
+      "polytimos":"", 
+      "skunk":"", 
+      "x16r":"", 
+      "x16s":"", 
+      "hmq1725":"", 
+      "bcd":"", 
+      "sha256t":"", 
+      "timetravel":"", 
+      "x22i":"", 
+      "x21s":"", 
+      "sonoa":"", 
+      "dedal":"", 
+      "x16rt":"", 
+      "sha256q":"", 
+      "astralhash":"", 
+      "jeonghash":"", 
+      "padihash":"", 
+      "pawelhash":""
+    }, 
     "naming": {
-      "tribus": "tribus",
-      "phi": "phi",
-      "c11": "c11",
-      "hsr": "hsr",
-      "x17": "x17",
-      "renesis": "renesis",
-      "balloon": "balloon",
-      "bitcore": "bitcore",
-      "polytimos": "polytimos",
-      "skunk": "skunk",
-      "x16r": "x16r",
-      "x16s": "x16s",
-      "hmq1725": "hmq1725",
-      "bcd": "bcd",
-      "sha256t": "sha256t",
-      "timetravel": "timetravel",
-      "x22i": "x22i",
-      "x21s": "x21s",
-      "sonoa": "sonoa",
-      "dedal": "dedal",
-      "x16rt": "x16rt",
-      "sha256q": "sha256q",
-      "astralhash": "astralhash",
-      "jeonghash": "jeonghash",
-      "padihash": "padihash",
-      "pawelhash": "pawelhash"
-    },
+      "tribus":"tribus", 
+      "phi":"phi", 
+      "c11":"c11", 
+      "hsr":"hsr", 
+      "x17":"x17", 
+      "renesis":"renesis", 
+      "balloon":"balloon", 
+      "bitcore":"bitcore", 
+      "polytimos":"polytimos", 
+      "skunk":"skunk", 
+      "x16r":"x16r", 
+      "x16s":"x16s", 
+      "hmq1725":"hmq1725", 
+      "bcd":"bcd", 
+      "sha256t":"sha256t", 
+      "timetravel":"timetravel", 
+      "x22i":"x22i", 
+      "x21s":"x21s", 
+      "sonoa":"sonoa", 
+      "dedal":"dedal", 
+      "x16rt":"x16rt", 
+      "sha256q":"sha256q", 
+      "astralhash":"astralhash", 
+      "jeonghash":"jeonghash", 
+      "padihash":"padihash", 
+      "pawelhash":"pawelhash"
+    }, 
     "oc": {
       "tribus": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "phi": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "c11": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "hsr": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "x17": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "renesis": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "balloon": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "bitcore": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "polytimos": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "skunk": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "x16r": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "x16s": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "hmq1725": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "bcd": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "sha256t": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "sonoa": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "timetravel": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "x22i": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "x21s": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "dedal": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "x16rt": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "sha256q": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "astralhash": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "jeonghash": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "padihash": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "pawelhash": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
       }
     }
-  },
+  }, 
   "NVIDIA2": {
-    "name": "NVIDIA2",
-    "delay": "1",
-    "prestart": [],
+    "name":"NVIDIA2", 
+    "delay":"1", 
+    "prestart":[], 
     "commands": {
-      "tribus": "",
-      "phi": "",
-      "c11": "",
-      "hsr": "",
-      "x17": "",
-      "renesis": "",
-      "balloon": "",
-      "bitcore": "",
-      "polytimos": "",
-      "skunk": "",
-      "x16r": "",
-      "x16s": "",
-      "hmq1725": "",
-      "bcd": "",
-      "sha256t": "",
-      "timetravel": "",
-      "x22i": "",
-      "x21s": "",
-      "sonoa": "",
-      "dedal": "",
-      "x16rt": "",
-      "sha256q": "",
-      "astralhash": "",
-      "jeonghash": "",
-      "padihash": "",
-      "pawelhash": ""
-    },
+      "tribus":"", 
+      "phi":"", 
+      "c11":"", 
+      "hsr":"", 
+      "x17":"", 
+      "renesis":"", 
+      "balloon":"", 
+      "bitcore":"", 
+      "polytimos":"", 
+      "skunk":"", 
+      "x16r":"", 
+      "x16s":"", 
+      "hmq1725":"", 
+      "bcd":"", 
+      "sha256t":"", 
+      "timetravel":"", 
+      "x22i":"", 
+      "x21s":"", 
+      "sonoa":"", 
+      "dedal":"", 
+      "x16rt":"", 
+      "sha256q":"", 
+      "astralhash":"", 
+      "jeonghash":"", 
+      "padihash":"", 
+      "pawelhash":""
+    }, 
     "difficulty": {
-      "tribus": "",
-      "phi": "",
-      "c11": "",
-      "hsr": "",
-      "x17": "",
-      "renesis": "",
-      "balloon": "",
-      "bitcore": "",
-      "polytimos": "",
-      "skunk": "",
-      "x16r": "",
-      "x16s": "",
-      "hmq1725": "",
-      "bcd": "",
-      "sha256t": "",
-      "timetravel": "",
-      "x22i": "",
-      "x21s": "",
-      "sonoa": "",
-      "dedal": "",
-      "x16rt": "",
-      "sha256q": "",
-      "astralhash": "",
-      "jeonghash": "",
-      "padihash": "",
-      "pawelhash": ""
-    },
+      "tribus":"", 
+      "phi":"", 
+      "c11":"", 
+      "hsr":"", 
+      "x17":"", 
+      "renesis":"", 
+      "balloon":"", 
+      "bitcore":"", 
+      "polytimos":"", 
+      "skunk":"", 
+      "x16r":"", 
+      "x16s":"", 
+      "hmq1725":"", 
+      "bcd":"", 
+      "sha256t":"", 
+      "timetravel":"", 
+      "x22i":"", 
+      "x21s":"", 
+      "sonoa":"", 
+      "dedal":"", 
+      "x16rt":"", 
+      "sha256q":"", 
+      "astralhash":"", 
+      "jeonghash":"", 
+      "padihash":"", 
+      "pawelhash":""
+    }, 
     "naming": {
-      "tribus": "tribus",
-      "phi": "phi",
-      "c11": "c11",
-      "hsr": "hsr",
-      "x17": "x17",
-      "renesis": "renesis",
-      "balloon": "balloon",
-      "bitcore": "bitcore",
-      "polytimos": "polytimos",
-      "skunk": "skunk",
-      "x16r": "x16r",
-      "x16s": "x16s",
-      "hmq1725": "hmq1725",
-      "bcd": "bcd",
-      "sha256t": "sha256t",
-      "timetravel": "timetravel",
-      "x22i": "x22i",
-      "x21s": "x21s",
-      "sonoa": "sonoa",
-      "dedal": "dedal",
-      "x16rt": "x16rt",
-      "sha256q": "sha256q",
-      "astralhash": "astralhash",
-      "jeonghash": "jeonghash",
-      "padihash": "padihash",
-      "pawelhash": "pawelhash"
-    },
+      "tribus":"tribus", 
+      "phi":"phi", 
+      "c11":"c11", 
+      "hsr":"hsr", 
+      "x17":"x17", 
+      "renesis":"renesis", 
+      "balloon":"balloon", 
+      "bitcore":"bitcore", 
+      "polytimos":"polytimos", 
+      "skunk":"skunk", 
+      "x16r":"x16r", 
+      "x16s":"x16s", 
+      "hmq1725":"hmq1725", 
+      "bcd":"bcd", 
+      "sha256t":"sha256t", 
+      "timetravel":"timetravel", 
+      "x22i":"x22i", 
+      "x21s":"x21s", 
+      "sonoa":"sonoa", 
+      "dedal":"dedal", 
+      "x16rt":"x16rt", 
+      "sha256q":"sha256q", 
+      "astralhash":"astralhash", 
+      "jeonghash":"jeonghash", 
+      "padihash":"padihash", 
+      "pawelhash":"pawelhash"
+    }, 
     "oc": {
       "tribus": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "phi": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "c11": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "hsr": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "x17": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "renesis": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "balloon": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "bitcore": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "polytimos": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "skunk": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "x16r": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "x16s": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "hmq1725": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "bcd": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "sha256t": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "sonoa": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "timetravel": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "x22i": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "x21s": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "dedal": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "x16rt": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "sha256q": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "astralhash": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "jeonghash": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "padihash": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "pawelhash": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
       }
     }
-  },
+  }, 
   "NVIDIA3": {
-    "name": "NVIDIA3",
-    "delay": "1",
-    "prestart": [],
+    "name":"NVIDIA3", 
+    "delay":"1", 
+    "prestart":[], 
     "commands": {
-      "tribus": "",
-      "phi": "",
-      "c11": "",
-      "hsr": "",
-      "x17": "",
-      "renesis": "",
-      "balloon": "",
-      "bitcore": "",
-      "polytimos": "",
-      "skunk": "",
-      "x16r": "",
-      "x16s": "",
-      "hmq1725": "",
-      "bcd": "",
-      "sha256t": "",
-      "timetravel": "",
-      "x22i": "",
-      "x21s": "",
-      "sonoa": "",
-      "dedal": "",
-      "x16rt": "",
-      "sha256q": "",
-      "astralhash": "",
-      "jeonghash": "",
-      "padihash": "",
-      "pawelhash": ""
-    },
+      "tribus":"", 
+      "phi":"", 
+      "c11":"", 
+      "hsr":"", 
+      "x17":"", 
+      "renesis":"", 
+      "balloon":"", 
+      "bitcore":"", 
+      "polytimos":"", 
+      "skunk":"", 
+      "x16r":"", 
+      "x16s":"", 
+      "hmq1725":"", 
+      "bcd":"", 
+      "sha256t":"", 
+      "timetravel":"", 
+      "x22i":"", 
+      "x21s":"", 
+      "sonoa":"", 
+      "dedal":"", 
+      "x16rt":"", 
+      "sha256q":"", 
+      "astralhash":"", 
+      "jeonghash":"", 
+      "padihash":"", 
+      "pawelhash":""
+    }, 
     "difficulty": {
-      "tribus": "",
-      "phi": "",
-      "c11": "",
-      "hsr": "",
-      "x17": "",
-      "renesis": "",
-      "balloon": "",
-      "bitcore": "",
-      "polytimos": "",
-      "skunk": "",
-      "x16r": "",
-      "x16s": "",
-      "hmq1725": "",
-      "bcd": "",
-      "sha256t": "",
-      "timetravel": "",
-      "x22i": "",
-      "x21s": "",
-      "sonoa": "",
-      "dedal": "",
-      "x16rt": "",
-      "sha256q": "",
-      "astralhash": "",
-      "jeonghash": "",
-      "padihash": "",
-      "pawelhash": ""
-    },
+      "tribus":"", 
+      "phi":"", 
+      "c11":"", 
+      "hsr":"", 
+      "x17":"", 
+      "renesis":"", 
+      "balloon":"", 
+      "bitcore":"", 
+      "polytimos":"", 
+      "skunk":"", 
+      "x16r":"", 
+      "x16s":"", 
+      "hmq1725":"", 
+      "bcd":"", 
+      "sha256t":"", 
+      "timetravel":"", 
+      "x22i":"", 
+      "x21s":"", 
+      "sonoa":"", 
+      "dedal":"", 
+      "x16rt":"", 
+      "sha256q":"", 
+      "astralhash":"", 
+      "jeonghash":"", 
+      "padihash":"", 
+      "pawelhash":""
+    }, 
     "naming": {
-      "tribus": "tribus",
-      "phi": "phi",
-      "c11": "c11",
-      "hsr": "hsr",
-      "x17": "x17",
-      "renesis": "renesis",
-      "balloon": "balloon",
-      "bitcore": "bitcore",
-      "polytimos": "polytimos",
-      "skunk": "skunk",
-      "x16r": "x16r",
-      "x16s": "x16s",
-      "hmq1725": "hmq1725",
-      "bcd": "bcd",
-      "sha256t": "sha256t",
-      "timetravel": "timetravel",
-      "x22i": "x22i",
-      "x21s": "x21s",
-      "sonoa": "sonoa",
-      "dedal": "dedal",
-      "x16rt": "x16rt",
-      "sha256q": "sha256q",
-      "astralhash": "astralhash",
-      "jeonghash": "jeonghash",
-      "padihash": "padihash",
-      "pawelhash": "pawelhash"
-    },
+      "tribus":"tribus", 
+      "phi":"phi", 
+      "c11":"c11", 
+      "hsr":"hsr", 
+      "x17":"x17", 
+      "renesis":"renesis", 
+      "balloon":"balloon", 
+      "bitcore":"bitcore", 
+      "polytimos":"polytimos", 
+      "skunk":"skunk", 
+      "x16r":"x16r", 
+      "x16s":"x16s", 
+      "hmq1725":"hmq1725", 
+      "bcd":"bcd", 
+      "sha256t":"sha256t", 
+      "timetravel":"timetravel", 
+      "x22i":"x22i", 
+      "x21s":"x21s", 
+      "sonoa":"sonoa", 
+      "dedal":"dedal", 
+      "x16rt":"x16rt", 
+      "sha256q":"sha256q", 
+      "astralhash":"astralhash", 
+      "jeonghash":"jeonghash", 
+      "padihash":"padihash", 
+      "pawelhash":"pawelhash"
+    }, 
     "oc": {
       "tribus": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "phi": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "c11": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "hsr": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "x17": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "renesis": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "balloon": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "bitcore": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "polytimos": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "skunk": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "x16r": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "x16s": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "hmq1725": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "bcd": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "sha256t": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "sonoa": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "timetravel": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "x22i": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "x21s": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "dedal": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "x16rt": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "sha256q": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "astralhash": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "jeonghash": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "padihash": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      }, 
       "pawelhash": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
       }
     }
-  },
-  "name": "t-rex"
+  }, 
+  "name":"t-rex"
 }

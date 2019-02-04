@@ -5,99 +5,90 @@ function Start-Linux {
     $MinerTimer = New-Object -TypeName System.Diagnostics.Stopwatch
     $Export = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\export")
     
-  switch -WildCard ($Miner.Type)
-     {
-      "*NVIDIA*"
-       {
-        if($Miner.Devices -ne $null)
-         {
-          switch($Miner.DeviceCall)
-          {
-           "ccminer"{$MinerArguments = "-d $($Miner.Devices) $($Miner.Arguments)"}
-           "ewbf"{$MinerArguments = "--cuda_devices $($Miner.Devices) $($Miner.Arguments)"}
-           "dstm"{$MinerArguments = "--dev $($Miner.Devices) $($Miner.Arguments)"}
-           "claymore"{$MinerArguments = "-di $($Miner.Devices) $($Miner.Arguments)"}
-           "trex"{$MinerArguments = "-d $($Miner.Devices) $($Miner.Arguments)"}
-           "bminer"{$MinerArguments = "-devices $($Miner.Devices) $($Miner.Arguments)"}
-           "lolminer"{$MinerArguments = "-devices=$($Miner.Devices) -profile=miner -usercfg=$($Miner.jsonfile)"}
-          }
-         }
-        else
-         {
-          if($Miner.DeviceCall -eq "lolminer"){$MinerArguments = "-profile=miner -usercfg=$($Miner.jsonfile)"}
-          else{$MinerArguments = "$($Miner.Arguments)"}
-         }
+    switch -WildCard ($Miner.Type) {
+        "*NVIDIA*" {
+            if ($Miner.Devices -ne $null) {
+                switch ($Miner.DeviceCall) {
+                    "ccminer" {$MinerArguments = "-d $($Miner.Devices) $($Miner.Arguments)"}
+                    "ewbf" {$MinerArguments = "--cuda_devices $($Miner.Devices) $($Miner.Arguments)"}
+                    "dstm" {$MinerArguments = "--dev $($Miner.Devices) $($Miner.Arguments)"}
+                    "claymore" {$MinerArguments = "-di $($Miner.Devices) $($Miner.Arguments)"}
+                    "trex" {$MinerArguments = "-d $($Miner.Devices) $($Miner.Arguments)"}
+                    "bminer" {$MinerArguments = "-devices $($Miner.Devices) $($Miner.Arguments)"}
+                    "lolminer" {$MinerArguments = "-devices=$($Miner.Devices) -profile=miner -usercfg=$($Miner.jsonfile)"}
+                    "progminer"{$MinerArguments = "--opencl-devices $($Miner.Devices) $($Miner.Arguments)"}
+                }
+            }
+            else {
+                if ($Miner.DeviceCall -eq "lolminer") {$MinerArguments = "-profile=miner -usercfg=$($Miner.jsonfile)"}
+                else {$MinerArguments = "$($Miner.Arguments)"}
+            }
         }
 
-      "*AMD*"
-        {
-         Write-Host "Miner IS AMD"
-        if($Miner.Devices -ne $null)
-         {   
-          switch($Miner.DeviceCall)
-          {
-           "claymore"{$MinerArguments = "-di $($Miner.Devices) $($Miner.Arguments)"}
-           "sgminer-gm"{Write-Host "Miner Has Devices"; $MinerArguments = "-d $($Miner.Devices) $($Miner.Arguments)"}
-           "tdxminer"{$MinerArguments = "-d $($Miner.Devices) $($Miner.Arguments)"}
-           "lolamd"{$MinerArguments = "-devices=$($Miner.Devices) -profile=miner -usercfg=$($Miner.jsonfile)"}           
-           "lyclminer"{
-            $MinerArguments = ""
-            Set-Location (Split-Path $($Miner.Path))
-            $ConfFile = Get-Content ".\lyclMiner.conf" -Force
-            $Connection = $Miner.Connection
-            $Username = $Miner.Username
-            $Password = $Miner.Password
-            $NewLines = $ConfFile | ForEach {
-            if($_ -like "*<Connection Url =*"){$_ = "<Connection Url = `"stratum+tcp://$Connection`""}
-            if($_ -like "*Username =*"){$_ = "            Username = `"$Username`"    "}
-            if($_ -like "*Password =*" ){$_ = "            Password = `"$Password`">    "}
-            if($_ -notlike "*<Connection Url*" -or $_ -notlike "*Username*" -or $_ -notlike "*Password*"){$_}
+        "*AMD*" {
+            Write-Host "Miner IS AMD"
+            if ($Miner.Devices -ne $null) {   
+                switch ($Miner.DeviceCall) {
+                    "claymore" {$MinerArguments = "-di $($Miner.Devices) $($Miner.Arguments)"}
+                    "sgminer-gm" {Write-Host "Miner Has Devices"; $MinerArguments = "-d $($Miner.Devices) $($Miner.Arguments)"}
+                    "tdxminer" {$MinerArguments = "-d $($Miner.Devices) $($Miner.Arguments)"}
+                    "lolamd" {$MinerArguments = "-devices=$($Miner.Devices) -profile=miner -usercfg=$($Miner.jsonfile)"}           
+                    "lyclminer" {
+                        $MinerArguments = ""
+                        Set-Location (Split-Path $($Miner.Path))
+                        $ConfFile = Get-Content ".\lyclMiner.conf" -Force
+                        $Connection = $Miner.Connection
+                        $Username = $Miner.Username
+                        $Password = $Miner.Password
+                        $NewLines = $ConfFile | ForEach {
+                            if ($_ -like "*<Connection Url =*") {$_ = "<Connection Url = `"stratum+tcp://$Connection`""}
+                            if ($_ -like "*Username =*") {$_ = "            Username = `"$Username`"    "}
+                            if ($_ -like "*Password =*" ) {$_ = "            Password = `"$Password`">    "}
+                            if ($_ -notlike "*<Connection Url*" -or $_ -notlike "*Username*" -or $_ -notlike "*Password*") {$_}
+                        }
+                        Clear-Content ".\lyclMiner.conf" -force
+                        $NewLines | Set-Content ".\lyclMiner.conf"
+                        Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+                    }           
+                }
             }
-            Clear-Content ".\lyclMiner.conf" -force
-            $NewLines | Set-Content ".\lyclMiner.conf"
-            Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
-            }           
-           }
-          }
-        else
-        {
-         if($Miner.DeviceCall -eq "lolamd"){$MinerArguments = "-profile=miner -usercfg=$($Miner.jsonfile)"}
-         elseif($Miner.DeviceCall -eq "lyclminer"){
-         $MinerArguments = ""
-         Set-Location (Split-Path $($Miner.Path))
-         $ConfFile = Get-Content ".\lyclMiner.conf" -Force
-         $Connection = $Miner.Connection
-         $Username = $Miner.Username
-         $Password = $Miner.Password
-         $NewLines = $ConfFile | ForEach {
-         if($_ -like "*<Connection Url =*"){$_ = "<Connection Url = `"stratum+tcp://$Connection`""}
-         if($_ -like "*Username =*"){$_ = "            Username = `"$Username`"    "}
-         if($_ -like "*Password =*" ){$_ = "            Password = `"$Password`">    "}
-         if($_ -notlike "*<Connection Url*" -or $_ -notlike "*Username*" -or $_ -notlike "*Password*"){$_}
-         }
-         Clear-Content ".\lyclMiner.conf" -force
-         $NewLines | Set-Content ".\lyclMiner.conf"
-         Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
-         }
-         else{$MinerArguments = "$($Miner.Arguments)"}
-        }
-      }  
+            else {
+                if ($Miner.DeviceCall -eq "lolamd") {$MinerArguments = "-profile=miner -usercfg=$($Miner.jsonfile)"}
+                elseif ($Miner.DeviceCall -eq "lyclminer") {
+                    $MinerArguments = ""
+                    Set-Location (Split-Path $($Miner.Path))
+                    $ConfFile = Get-Content ".\lyclMiner.conf" -Force
+                    $Connection = $Miner.Connection
+                    $Username = $Miner.Username
+                    $Password = $Miner.Password
+                    $NewLines = $ConfFile | ForEach {
+                        if ($_ -like "*<Connection Url =*") {$_ = "<Connection Url = `"stratum+tcp://$Connection`""}
+                        if ($_ -like "*Username =*") {$_ = "            Username = `"$Username`"    "}
+                        if ($_ -like "*Password =*" ) {$_ = "            Password = `"$Password`">    "}
+                        if ($_ -notlike "*<Connection Url*" -or $_ -notlike "*Username*" -or $_ -notlike "*Password*") {$_}
+                    }
+                    Clear-Content ".\lyclMiner.conf" -force
+                    $NewLines | Set-Content ".\lyclMiner.conf"
+                    Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+                }
+                else {$MinerArguments = "$($Miner.Arguments)"}
+            }
+        }  
       
-     "*CPU*"
-       {
-        if($Miner.Devices -eq ''){$MinerArguments = "$($Miner.Arguments)"}
-        elseif($Miner.DeviceCall -eq "cpuminer-opt"){$MinerArguments = "-t $($Miner.Devices) $($Miner.Arguments)"}
-        elseif($Miner.DeviceCall -eq "cryptozeny"){$MinerArguments = "-t $($Miner.Devices) $($Miner.Arguments)"}
-       }
-     }
-$Miner.Type
-Write-Host "Miner Arguments are $MinerArguments"
-Set-Location (Split-Path $($Miner.Path))
-Rename-Item "$($Miner.Path)" -NewName "$($Miner.InstanceName)" -Force
-Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
-$MinerConfig = "./$($Miner.InstanceName) $MinerArguments"
-$MinerConfig | Set-Content ".\build\bash\config.sh" -Force
-Write-Host "
+        "*CPU*" {
+            if ($Miner.Devices -eq '') {$MinerArguments = "$($Miner.Arguments)"}
+            elseif ($Miner.DeviceCall -eq "cpuminer-opt") {$MinerArguments = "-t $($Miner.Devices) $($Miner.Arguments)"}
+            elseif ($Miner.DeviceCall -eq "cryptozeny") {$MinerArguments = "-t $($Miner.Devices) $($Miner.Arguments)"}
+        }
+    }
+    $Miner.Type
+    Write-Host "Miner Arguments are $MinerArguments"
+    Set-Location (Split-Path $($Miner.Path))
+    Rename-Item "$($Miner.Path)" -NewName "$($Miner.InstanceName)" -Force
+    Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+    $MinerConfig = "./$($Miner.InstanceName) $MinerArguments"
+    $MinerConfig | Set-Content ".\build\bash\config.sh" -Force
+    Write-Host "
         
         
         
@@ -119,26 +110,25 @@ Clearing Screen $($Miner.Type) & Tracking
     $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
     $Logs = Join-Path $Dir "logs"
     $Export = Join-Path $Dir "build\export"
-    if($Miner.Type -like "*NVIDIA*"){Start-Process ".\build\bash\startupnvidia.sh" -ArgumentList "$MinerDir $($Miner.Type) $Dir/build/bash $Logs $Export" -Wait}
-    if($Miner.Type -like "*AMD*"){Start-Process ".\build\bash\startupamd.sh" -ArgumentList "$MinerDir $($Miner.Type) $Dir/build/bash $Logs $Export" -Wait}
-    if($Miner.Type -like "*CPU*"){Start-Process ".\build\bash\startupcpu.sh" -ArgumentList "$MinerDir $($Miner.Type) $Dir/build/bash $Logs" -Wait}
+    if ($Miner.Type -like "*NVIDIA*") {Start-Process ".\build\bash\startupnvidia.sh" -ArgumentList "$MinerDir $($Miner.Type) $Dir/build/bash $Logs $Export" -Wait}
+    if ($Miner.Type -like "*AMD*") {Start-Process ".\build\bash\startupamd.sh" -ArgumentList "$MinerDir $($Miner.Type) $Dir/build/bash $Logs $Export" -Wait}
+    if ($Miner.Type -like "*CPU*") {Start-Process ".\build\bash\startupcpu.sh" -ArgumentList "$MinerDir $($Miner.Type) $Dir/build/bash $Logs" -Wait}
     Write-Host "$MinerDir $($Miner.Type) $Dir/build/bash $Logs $Export"
     $MinerTimer.Restart()
     $MinerProcessId = $null
-    Do{
-       Start-Sleep -S 1
-       Write-Host "Getting Process ID for $($Miner.MinerName)"           
-       $MinerProcessId = Get-Process -Name "$($Miner.InstanceName)" -ErrorAction SilentlyContinue
-      }until($MinerProcessId -ne $null -or ($MinerTimer.Elapsed.TotalSeconds) -ge 10)  
-    if($MinerProcessId -ne $null)
-     {
+    Do {
+        Start-Sleep -S 1
+        Write-Host "Getting Process ID for $($Miner.MinerName)"           
+        $MinerProcessId = Get-Process -Name "$($Miner.InstanceName)" -ErrorAction SilentlyContinue
+    }until($MinerProcessId -ne $null -or ($MinerTimer.Elapsed.TotalSeconds) -ge 10)  
+    if ($MinerProcessId -ne $null) {
         $MinerProcessId.Id | Set-Content ".\build\pid\$($Miner.Name)_$($Miner.Coins)_$($Miner.InstanceName)_pid.txt" -Force
         Get-Date | Set-Content ".\build\pid\$($Miner.Name)_$($Miner.Coins)_$($Miner.InstanceName)_date.txt" -Force
         Start-Sleep -S 1
-     }
+    }
     $MinerTimer.Stop()
     Rename-Item "$MinerDir\$($Miner.InstanceName)" -NewName "$($Miner.MinerName)" -Force
     Start-Sleep -S .25
     Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
     $MinerProcess.Id
- }
+}

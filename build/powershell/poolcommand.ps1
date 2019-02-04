@@ -12,43 +12,43 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
 function Get-Pools {
-  param (
-    [Parameter(Mandatory=$true)]
-    [String]$PoolType,
-    [Parameter(Mandatory=$true)]
-    [Array]$Stats
-  )
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$PoolType,
+        [Parameter(Mandatory = $true)]
+        [Array]$Stats
+    )
   
 
-if($PoolType -eq "Algo")
- {
-   $GetPools = if(Test-Path "algopools"){Get-ChildItemContent "algopools" | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru}}
-   if($GetPools.Count -eq 0){"No Pools! Check Internet Connection."| Out-Host; start-sleep $Interval; continue}
-   $GetPools
- }
+    if ($PoolType -eq "Algo") {
+        $GetPools = if (Test-Path "algopools") {Get-ChildItemContent "algopools" | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru}
+        }
+        if ($GetPools.Count -eq 0) {"No Pools! Check Internet Connection."| Out-Host; start-sleep $Interval; continue}
+        $GetPools
+    }
 
-if($PoolType -eq "Coin")
- {
-  $GetPools = if(Test-Path "coinpools"){Get-ChildItemContent "coinpools" | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru}}
-  if($GetPools.Count -eq 0){"No Coin Pools!"| Out-Host}
-  $GetPools
- }
+    if ($PoolType -eq "Coin") {
+        $GetPools = if (Test-Path "coinpools") {Get-ChildItemContent "coinpools" | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru}
+        }
+        if ($GetPools.Count -eq 0) {"No Coin Pools!"| Out-Host}
+        $GetPools
+    }
 
-if($PoolType -eq "Custom")
- {
-  $GetPools = if(Test-Path "custompools"){Get-ChildItemContent "custompools" | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru}}
-  $GetPools
- }
+    if ($PoolType -eq "Custom") {
+        $GetPools = if (Test-Path "custompools") {Get-ChildItemContent "custompools" | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru}
+        }
+        $GetPools
+    }
 }
 
 function Sort-Pools {
-  Param(
-    [Parameter(Position=0, Mandatory=$true, ValueFromPipeline=$true)]
-    [object]$Pools
-  )
+    Param(
+        [Parameter(Position = 0, Mandatory = $true, ValueFromPipeline = $true)]
+        [object]$Pools
+    )
 
-$PoolPriority1 = @()
-$PoolPriority2 = @()
-$PoolPriority3 = @()
+    $PoolPriority1 = @()
+    $PoolPriority2 = @()
+    $PoolPriority3 = @()
 
 }

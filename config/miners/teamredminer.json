@@ -1,64 +1,86 @@
-{
-  "name": "teamredminer",
+ {
+  "name":"teamredminer", 
   "AMD1": {
-    "name": "AMD1",
-    "delay": "1",
-    "prestart": [
-      "export GPU_MAX_HEAP_SIZE=100",
-      "export GPU_USE_SYNC_OBJECTS=1",
-      "export GPU_SINGLE_ALLOC_PERCENT=100",
+    "name":"AMD1", 
+    "delay":"1", 
+    "prestart":[
+      "export GPU_MAX_HEAP_SIZE=100", 
+      "export GPU_USE_SYNC_OBJECTS=1", 
+      "export GPU_SINGLE_ALLOC_PERCENT=100", 
       "export GPU_MAX_ALLOC_PERCENT=100"
-    ],
+    ], 
     "commands": {
-      "phi2": "",
-      "lyra2z": "",
-      "cryptonightv8": "",
-      "lyra2re": ""
-    },
+      "phi2":"", 
+      "lyra2z":"", 
+      "cryptonightv8":"", 
+      "lyra2re":"", 
+      "lyra2rev3":"", 
+      "lyra2v3":""
+    }, 
     "difficulty": {
-      "phi2": "",
-      "lyra2z": "",
-      "cryptonightv8": "",
-      "lyra2re": ""
-    },
+      "phi2":"", 
+      "lyra2z":"", 
+      "cryptonightv8":"", 
+      "lyra2re":"", 
+      "lyra2rev3":"", 
+      "lyra2v3":""
+    }, 
     "naming": {
-      "phi2": "phi2",
-      "lyra2z": "lyra2z",
-      "cryptonightv8": "cnv8",
-      "lyra2re": "lyra2z"
-    },
+      "phi2":"phi2", 
+      "lyra2z":"lyra2z", 
+      "cryptonightv8":"cnv8", 
+      "lyra2re":"lyra2z", 
+      "lyra2rev3":"lyra2rev3", 
+      "lyra2v3":"lyra2rev3"
+    }, 
     "oc": {
       "phi2": {
-        "dpm": "",
-        "v": "",
-        "core": "",
-        "mem": "",
-        "mdpm": "",
-        "fans": ""
-      },
+        "dpm":"", 
+        "v":"", 
+        "core":"", 
+        "mem":"", 
+        "mdpm":"", 
+        "fans":""
+      }, 
       "lyra2z": {
-        "dpm": "",
-        "v": "",
-        "core": "",
-        "mem": "",
-        "mdpm": "",
-        "fans": ""
-      },
+        "dpm":"", 
+        "v":"", 
+        "core":"", 
+        "mem":"", 
+        "mdpm":"", 
+        "fans":""
+      }, 
       "cryptonightv8": {
-        "dpm": "",
-        "v": "",
-        "core": "",
-        "mem": "",
-        "mdpm": "",
-        "fans": ""
-      },
+        "dpm":"", 
+        "v":"", 
+        "core":"", 
+        "mem":"", 
+        "mdpm":"", 
+        "fans":""
+      }, 
       "lyra2re": {
-        "dpm": "",
-        "v": "",
-        "core": "",
-        "mem": "",
-        "mdpm": "",
-        "fans": ""
+        "dpm":"", 
+        "v":"", 
+        "core":"", 
+        "mem":"", 
+        "mdpm":"", 
+        "fans":""
+      }, 
+      "lyra2rev3": {
+        "dpm":"", 
+        "v":"", 
+        "core":"", 
+        "mem":"", 
+        "mdpm":"", 
+        "fans":""
+      }, 
+      "lyra2v3": {
+        "dpm":"", 
+        "v":"", 
+        "core":"", 
+        "mem":"", 
+        "mdpm":"", 
+        "fans":""
       }
     }
   }

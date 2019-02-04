@@ -11,14 +11,14 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
-    param(
-        [Parameter(Position=0,Mandatory=$true)]
-        [String]$Miner,
-        [Parameter(Position=1,Mandatory=$true)]
-        [String]$Algorithm,
-        [Parameter(Position=2,Mandatory=$true)]
-        [String]$Watts
-        )
+param(
+    [Parameter(Position = 0, Mandatory = $true)]
+    [String]$Miner,
+    [Parameter(Position = 1, Mandatory = $true)]
+    [String]$Algorithm,
+    [Parameter(Position = 2, Mandatory = $true)]
+    [String]$Watts
+)
 
 Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))
 . .\build\powershell\statcommand.ps1
