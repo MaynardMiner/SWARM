@@ -140,60 +140,68 @@ function Start-AMDOC {
             $key = $_
             Switch ($key) {
                 "FAN" {
-                    if ($AMDOCFAN.Count -eq 1) {
-                        $OCArgs += "Fan_P0=80;$($AMDOCFan) Fan_P1=80;$($AMDOCFan) Fan_P2=80;$($AMDOCFan) Fan_P3=80;$($AMDOCFan) Fan_P4=80;$($AMDOCFan) "
-                        $ocmessage += "Setting GPU $($OCCount.AMD.$i) Fan Speed To $($AMDOCFan)`%"
-                    }
-                    else {
-                        $OCArgs += "Fan_P0=80;$($AMDOCFan[$Select]) Fan_P1=80;$($AMDOCFan[$Select]) Fan_P2=80;$($AMDOCFan[$Select]) Fan_P3=80;$($AMDOCFan[$Select]) Fan_P4=80;$($AMDOCFan[$Select]) "
-                        $ocmessage += "Setting GPU $($OCCount.AMD.$i) Fan Speed To $($AMDOCFan[$i])`%"
+                    if ($AMDOCFan) {
+                        if ($AMDOCFAN.Count -eq 1 -and $AMDOCFAN -ne "") {
+                            $OCArgs += "Fan_P0=80;$($AMDOCFan) Fan_P1=80;$($AMDOCFan) Fan_P2=80;$($AMDOCFan) Fan_P3=80;$($AMDOCFan) Fan_P4=80;$($AMDOCFan) "
+                            $ocmessage += "Setting GPU $($OCCount.AMD.$i) Fan Speed To $($AMDOCFan)`%"
+                        }
+                        else {
+                            $OCArgs += "Fan_P0=80;$($AMDOCFan[$Select]) Fan_P1=80;$($AMDOCFan[$Select]) Fan_P2=80;$($AMDOCFan[$Select]) Fan_P3=80;$($AMDOCFan[$Select]) Fan_P4=80;$($AMDOCFan[$Select]) "
+                            $ocmessage += "Setting GPU $($OCCount.AMD.$i) Fan Speed To $($AMDOCFan[$i])`%"
+                        }
                     }
                 }
                 "MEM_CLOCK" {
-                    if ($AMDOCMem.Count -eq 1) {
-                        if ($Model[$i] -like "*Vega*") {
-                            $OCArgs += "Mem_P3=$AMDOCMem;$AMDOCMV "
-                            $ocmessage += "Setting GPU $($OCCount.AMD.$i) Memory Offset To $($AMDOCMem), Voltage To $AMDOCMV"
+                    if ($AMDOCMem -and $AMDOCMV) {
+                        if ($AMDOCMem.Count -eq 1) {
+                            if ($Model[$i] -like "*Vega*") {
+                                $OCArgs += "Mem_P3=$AMDOCMem;$AMDOCMV "
+                                $ocmessage += "Setting GPU $($OCCount.AMD.$i) Memory Offset To $($AMDOCMem), Voltage To $AMDOCMV"
+                            }
+                            else {
+                                $OCArgs += "Mem_P2=$AMDOCMem;$AMDOCMV "
+                                $ocmessage += "Setting GPU $($OCCount.AMD.$i) Memory Offset To $($AMDOCMem), Voltage To $AMDOCMV"
+                            }
                         }
                         else {
-                            $OCArgs += "Mem_P2=$AMDOCMem;$AMDOCMV "
-                            $ocmessage += "Setting GPU $($OCCount.AMD.$i) Memory Offset To $($AMDOCMem), Voltage To $AMDOCMV"
-                        }
-                    }
-                    else {
-                        if ($Model[$i] -like "*Vega*") {
-                            $OCArgs += "Mem_P3=$($AMDOCMem[$Select]);$($AMDOCMV[$Select]) "
-                            $ocmessage += "Setting GPU $($OCCount.AMD.$i) Memory Offset To $($AMDOCMem[$i]), Voltage To $($AMDOCMV[$i])"
-                        }
-                        else {
-                            $OCArgs += "Mem_P2=$($AMDOCMem[$Select]);$($AMDOCMV[$Select]) "
-                            $ocmessage += "Setting GPU $($OCCount.AMD.$i) Memory Offset To $($AMDOCMem[$i]), Voltage To $($AMDOCMV[$i])"
+                            if ($Model[$i] -like "*Vega*") {
+                                $OCArgs += "Mem_P3=$($AMDOCMem[$Select]);$($AMDOCMV[$Select]) "
+                                $ocmessage += "Setting GPU $($OCCount.AMD.$i) Memory Offset To $($AMDOCMem[$i]), Voltage To $($AMDOCMV[$i])"
+                            }
+                            else {
+                                $OCArgs += "Mem_P2=$($AMDOCMem[$Select]);$($AMDOCMV[$Select]) "
+                                $ocmessage += "Setting GPU $($OCCount.AMD.$i) Memory Offset To $($AMDOCMem[$i]), Voltage To $($AMDOCMV[$i])"
+                            }
                         }
                     }
                 }
                 "CORE_CLOCK" {
-                    if ($AMDOCMem.Count -eq 1) {
-                        $OCArgs += "GPU_P7=$AMDOCCore;$AMDOCCV "
-                        $ocmessage += "Setting GPU $($OCCount.AMD.$i) Clock Offset To $($AMDOCCore), Voltage to $AMDOCCV"
-                    }
-                    else {
-                        $OCArgs += "GPU_P7=$($AMDOCCore[$Select]);$($AMDOCCV[$Select]) "
-                        $ocmessage += "Setting GPU $($OCCount.AMD.$i) Clock Offset To $($AMDOCCore[$i]), Voltage to $($AMDOCCV[$i])"
+                    if ($AMDOCCore -and $AMDOCCV) {
+                        if ($AMDOCCore.Count -eq 1) {
+                            $OCArgs += "GPU_P7=$AMDOCCore;$AMDOCCV "
+                            $ocmessage += "Setting GPU $($OCCount.AMD.$i) Clock Offset To $($AMDOCCore), Voltage to $AMDOCCV"
+                        }
+                        else {
+                            $OCArgs += "GPU_P7=$($AMDOCCore[$Select]);$($AMDOCCV[$Select]) "
+                            $ocmessage += "Setting GPU $($OCCount.AMD.$i) Clock Offset To $($AMDOCCore[$i]), Voltage to $($AMDOCCV[$i])"
+                        }
                     }
                 }
                 "CORE_VDDC" {
-                    if ($AMDOCV.Count -eq 1) {$Volt = "$AMDOCV"}
-                    else {$Volt = "$AMDOCV[$Select]"}
-                    $Value = $Volt.Substring(1)
-                    if ($Volt[0] -eq "1") {$Mod = ""}
-                    if ($Volt[0] -eq "2") {$Mod = "-"}
-                    if ($AMDOCV.Count -eq 1) {
-                    $OCArgs += "Power_Target=$Mod$Value "
-                    $ocmessage += "Setting GPU $($OCCount.AMD.$i) Power Target to $Mod$Value"
-                    }
-                    else {
-                        $OCArgs += "Power_Target=$Mod$Value "
-                        $ocmessage += "Setting GPU $($OCCount.AMD.$i) Power Target to $Mod$Value"
+                    if ($AMDOCV.Count -eq 1 -and $AMDOCV -ne "") {$Volt = "$AMDOCV"}
+                    elseif ($AMDOCV -ne "") {$Volt = "$AMDOCV[$Select]"}
+                    if ($Volt) {
+                        $Value = $Volt.Substring(1)
+                        if ($Volt[0] -eq "1") {$Mod = ""}
+                        if ($Volt[0] -eq "2") {$Mod = "-"}
+                        if ($AMDOCV.Count -eq 1) {
+                            $OCArgs += "Power_Target=$Mod$Value "
+                            $ocmessage += "Setting GPU $($OCCount.AMD.$i) Power Target to $Mod$Value"
+                        }
+                        else {
+                            $OCArgs += "Power_Target=$Mod$Value "
+                            $ocmessage += "Setting GPU $($OCCount.AMD.$i) Power Target to $Mod$Value"
+                        }
                     }
                 }
             }
