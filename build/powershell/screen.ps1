@@ -51,7 +51,7 @@ If miner is not your primary miner (AMD1 or NVIDIA1), type 'screen -r [Type]'
 https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration) >> Right Click 'Open URL In Browser'
 " -foreground Darkred
 }
-if($Platform -eq "windows")
+elseif($Platform -eq "windows")
 {
  Write-Host "SWARM attempted to catch screen output, and is stored in 'logs' folder.
  SWARM has also created a executable called 'swarm-start.bat' located in the 'bin'
@@ -82,7 +82,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management >> Right Click 'Ope
 
 " -foreground Magenta
 }
-if($Platform -eq "windows")
+elseif($Platform -eq "windows")
 {
 Write-Host "There is now a new window where miner is working. The output may be different from
 
