@@ -56,6 +56,13 @@ $dir | set-content ".\build\bash\dir.sh"
       Set-Location $Dir     
      }
 
+     if(Test-Path ".\build\export\libstdc++.so.6")
+     {
+      Start-Process ln -ArgumentList "-s $dir/build/export/libstdc++.so.6.0.25 $dir/build/export/libstdc++.so.6" -Wait
+      Set-Location "/"
+      Set-Location $Dir     
+     }
+
      if(Test-Path ".\build\export\libhwloc.so.5.5.0")
      {
       Start-Process ln -ArgumentList "-s $dir/build/export/libhwloc.so.5.5.0 $dir/build/export/libhwloc.so.5" -Wait

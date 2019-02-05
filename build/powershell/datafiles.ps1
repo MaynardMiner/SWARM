@@ -48,6 +48,13 @@ function Get-Data {
         Set-Location $CmdDir     
     }
 
+    if(Test-Path ".\build\export\libstdc++.so.6")
+    {
+     Start-Process ln -ArgumentList "-s $dir/build/export/libstdc++.so.6.0.25 $dir/build/export/libstdc++.so.6" -Wait
+     Set-Location "/"
+     Set-Location $Dir     
+    }
+
     if (Test-Path ".\build\bash\get-oc") {
         Copy-Item ".\build\bash\get-oc" -Destination "/usr/bin" -force | Out-Null
         Set-Location "/usr/bin"
