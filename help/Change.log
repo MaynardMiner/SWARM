@@ -1727,7 +1727,6 @@ apply to pool or choice of miner- Just switching times.
 1.9.5
 
 -Added cc-mtp windows
--Added zjazz_amd windows
 -Power Target set for HiveOS oc setting 
   1[value]  for positive (125 is +25 power target)
   2[value]  for negative (225 is -25 power target)

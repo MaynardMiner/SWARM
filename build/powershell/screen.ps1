@@ -49,7 +49,7 @@ Write-Host "Type `'mine`' in another terminal to see background miner, and its r
 You may also view logs with in the "logs" directory, or 'get-screen [Type]'
 If miner is not your primary miner (AMD1 or NVIDIA1), type 'screen -r [Type]'
 https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration) >> Right Click 'Open URL In Browser'
-" -foreground Darkred
+" -ForegroundColor Darkred
 }
 elseif($Platform -eq "windows")
 {
@@ -71,7 +71,7 @@ Write-Host "
                        _L  |_((_|___L_|
                       (/\)(____(_______)      
 Waiting 20 Seconds For Miners To Load & Restarting Background Tracking
-" -Foregrount Magenta
+" -ForegroundColor Magenta
 if($Platform -eq "linux")
 {
 Write-Host "Type 'mine' in another terminal to see miner working- This is NOT a remote command!
@@ -80,7 +80,7 @@ Type 'get-screen [MinerType]' to see last 100 lines of log- This IS a remote com
 
 https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management >> Right Click 'Open URL In Browser'  
 
-" -foreground Magenta
+" -ForegroundColor Magenta
 }
 elseif($Platform -eq "windows")
 {
