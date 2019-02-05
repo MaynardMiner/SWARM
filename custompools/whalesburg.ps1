@@ -14,7 +14,7 @@ if ($Poolname -eq $Name) {
     try {$ETHExchangeRate = Invoke-WebRequest "https://min-api.cryptocompare.com/data/pricemulti?fsyms=ETH&tsyms=BTC" -UseBasicParsing | ConvertFrom-Json | Select-Object -ExpandProperty "ETH" | Select-Object -ExpandProperty "BTC"}
     catch {Write-Warning "SWARM failed to get ETH Pricing for $Name"; return}
 
-    $Whalesburg_Algorithm = "Ethash"
+    $Whalesburg_Algorithm = "ethash"
   
     if ($Algorithm -eq $Whalesburg_Algorithm) {
         $Whalesburg_Port = 7777

@@ -95,7 +95,7 @@
     "path2":".\\bin\\xmrstak-2\\xmr-stak.exe", 
     "path3":".\\bin\\xmrstak-3\\xmr-stak.exe", 
     "minername":"xmr-stak.exe", 
-    "version":"2.7.1", 
+    "version":"2.8.0", 
     "uri":"https://github.com/fireice-uk/xmr-stak/releases/download/2.7.1/xmr-stak-win64-2.7.1.zip"
 }, 
 
@@ -117,7 +117,7 @@
     "path2":".\\bin\\fancyix-2\\sgminer.exe", 
     "path3":".\\bin\\fancyix-3\\sgminer.exe", 
     "minername":"sgminer.exe", 
-    "version":"beta5i", 
+    "version":"beta5ip1", 
     "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/sgminer-fancyIX.zip"
 }, 
 
