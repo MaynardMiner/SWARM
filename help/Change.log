@@ -1725,3 +1725,16 @@ Note: It is reccommended to run ``clear_profits`` before update.
 -trex updated.
 -cc-mtp added.
 -fixed cc-yescrypt naming.
+
+1.9.5
+
+-Added cc-mtp windows
+-Added zjazz_amd windows
+-Power Target set for HiveOS oc setting 
+  1[value]  for positive (125 is +25 power target)
+  2[value]  for negative (225 is -25 power target)
+        works with vegas. Requires 19.1.1 drivers.
+        install 18.6.1, upgrade to 19.1.1 (not clean install)
+
+-Upgraded gminer
+-Added lyra2rev3 support

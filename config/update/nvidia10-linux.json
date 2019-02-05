@@ -161,15 +161,15 @@
     "uri": "https://github.com/nicehash/excavator/releases/download/v1.5.13a/excavator_1.5.13a-cuda10_amd64.deb"
   },
   "gminer": {
-    "name": "gminer",
-    "type": "nvidia",
-    "path1": ".\\bin\\gminer-1\\miner",
-    "path2": ".\\bin\\gminer-2\\miner",
-    "path3": ".\\bin\\gminer-3\\miner",
-    "minername": "miner",
-    "version": "1.21",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/gminer-linux.tar.gz"
-  },
+    "name":"gminer", 
+    "type":"nvidia", 
+    "path1":".\\bin\\gminer-1\\miner", 
+    "path2":".\\bin\\gminer-2\\miner", 
+    "path3":".\\bin\\gminer-3\\miner", 
+    "minername":"miner", 
+    "version":"1.30", 
+    "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/gminer-linux.tar.gz"
+}, 
   "bminer": {
     "name": "bminer",
     "type": "nvidia",

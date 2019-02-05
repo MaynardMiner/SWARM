@@ -24,6 +24,7 @@
       "hmq1725": "",
       "x21s": "",
       "lyra2v3": "",
+      "lyra2rev3": "",
       "x16rt": "",
       "lyra2zz": "",
       "mtp": "",
@@ -51,6 +52,7 @@
       "hmq1725": "",
       "x21s": "",
       "lyra2v3": "",
+      "lyra2rev3": "",
       "x16rt": "",
       "lyra2zz": "",
       "mtp": "",
@@ -78,6 +80,7 @@
       "hmq1725": "hmq1725",
       "x21s": "x21s",
       "lyra2v3": "Lyra2REv3",
+      "lyra2rev3": "Lyra2REv3",
       "x16rt": "x16rt",
       "lyra2zz": "lyra2zz",
       "mtp": "mtp",
@@ -177,6 +180,11 @@
         "Core": ""
       },
       "lyra2v3": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
+      "lyra2rev3": {
         "Power": "",
         "Memory": "",
         "Core": ""
@@ -237,6 +245,7 @@
       "hmq1725": "",
       "x21s": "",
       "lyra2v3": "",
+      "lyra2rev3": "",
       "x16rt": "",
       "lyra2zz": "",
       "mtp": "",
@@ -264,6 +273,7 @@
       "hmq1725": "",
       "x21s": "",
       "lyra2v3": "",
+      "lyra2rev3": "",
       "x16rt": "",
       "lyra2zz": "",
       "mtp": "",
@@ -291,6 +301,7 @@
       "hmq1725": "hmq1725",
       "x21s": "x21s",
       "lyra2v3": "Lyra2REv3",
+      "lyra2rev3": "Lyra2REv3",
       "x16rt": "x16rt",
       "lyra2zz": "lyra2zz",
       "mtp": "mtp",
@@ -390,6 +401,11 @@
         "Core": ""
       },
       "lyra2v3": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
+      "lyra2rev3": {
         "Power": "",
         "Memory": "",
         "Core": ""
@@ -450,6 +466,7 @@
       "hmq1725": "",
       "x21s": "",
       "lyra2v3": "",
+      "lyra2rev3": "",
       "x16rt": "",
       "lyra2zz": "",
       "mtp": "",
@@ -477,6 +494,7 @@
       "hmq1725": "",
       "x21s": "",
       "lyra2v3": "",
+      "lyra2rev3": "",
       "x16rt": "",
       "lyra2zz": "",
       "mtp": "",
@@ -504,6 +522,7 @@
       "hmq1725": "hmq1725",
       "x21s": "x21s",
       "lyra2v3": "Lyra2REv3",
+      "lyra2rev3": "Lyra2REv3",
       "x16rt": "x16rt",
       "lyra2zz": "lyra2zz",
       "mtp": "mtp",
@@ -603,6 +622,11 @@
         "Core": ""
       },
       "lyra2v3": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
+      "lyra2rev3": {
         "Power": "",
         "Memory": "",
         "Core": ""
