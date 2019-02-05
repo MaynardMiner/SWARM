@@ -54,12 +54,22 @@
     "Add Pools Here",
     "Seperate Each With Comma Like This"
   ],
+  "cryptonightgpu": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
   "cryptonightheavy": [
     "No Pools Blocked",
     "Add Pools Here",
     "Seperate Each With Comma Like This"
   ],
   "cryptonightmonero": [
+    "No Pools Blocked",
+    "Add Pools Here",
+    "Seperate Each With Comma Like This"
+  ],
+  "cryptonightsuperfast": [
     "No Pools Blocked",
     "Add Pools Here",
     "Seperate Each With Comma Like This"
