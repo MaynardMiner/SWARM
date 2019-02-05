@@ -41,15 +41,24 @@ function Invoke-MinerWarning{
 ##Notify User Of Failures
 Write-Host "
        
-       
-       
 There are miners that have failed! Check Your Settings And Arguments!
-Type `'mine`' in another terminal to see background miner, and its reason for failure.
+" -ForegroundColor DarkRed
+if($Platform -eq "linux")
+{
+Write-Host "Type `'mine`' in another terminal to see background miner, and its reason for failure.
+You may also view logs with in the "logs" directory, or 'get-screen [Type]'
 If miner is not your primary miner (AMD1 or NVIDIA1), type 'screen -r [Type]'
 https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration) >> Right Click 'Open URL In Browser'
-
-
 " -foreground Darkred
+}
+if($Platform -eq "windows")
+{
+ Write-Host "SWARM attempted to catch screen output, and is stored in 'logs' folder.
+ SWARM has also created a executable called 'swarm-start.bat' located in the 'bin'
+ directory and folder of the miner. 'swarm-start.bat' starts miner with last known settings, 
+ and window stays open, so you may view issue.
+" -ForegroundColor DarkRed
+}
 Start-Sleep -s 20
 }
 
@@ -62,14 +71,26 @@ Write-Host "
                        _L  |_((_|___L_|
                       (/\)(____(_______)      
 Waiting 20 Seconds For Miners To Load & Restarting Background Tracking
-
-Type 'mine' in another terminal to see miner working- This is NOT a remote command!
+" -Foregrount Magenta
+if($Platform -eq "linux")
+{
+Write-Host "Type 'mine' in another terminal to see miner working- This is NOT a remote command!
 
 Type 'get-screen [MinerType]' to see last 100 lines of log- This IS a remote command!
 
 https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management >> Right Click 'Open URL In Browser'  
 
 " -foreground Magenta
+}
+if($Platform -eq "windows")
+{
+Write-Host "There is now a new window where miner is working. The output may be different from
+
+using without SWARM, as SWARM is logging miner data. Agent window will show SWARM real time
+
+tracking of algorithms and GPU information. It can be used to observe issues, if any.
+" -foreground Magenta
+}
 Start-Sleep -s 20
 }
 

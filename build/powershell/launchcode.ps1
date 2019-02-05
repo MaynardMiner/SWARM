@@ -130,6 +130,12 @@ function Start-LaunchCode {
         }
     }
 
+    switch($MinerCurrent.name)
+    {
+     "gminer"{Write-Host "WARNING: SOME ALGOS MAY REQUIRE 6GB VRAM TO WORK" -ForegroundColor Green}
+     "bminer"{Write-Host "WARNING: SOME ALGOS MAY REQUIRE 6GB VRAM TO WORK" -ForegroundColor Green}
+    }
+
     if ($Platforms -eq "windows") {
         if ($MinerProcess -eq $null -or $MinerProcess.HasExited -eq $true) {
             Start-Sleep -S $MinerCurrent.Delay
