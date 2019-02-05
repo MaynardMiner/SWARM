@@ -1,9 +1,9 @@
 ##Miner Path Information
-if ($amd.zjazz.path1) {$Path = "$($amd.zjazz.path1)"}
+if ($amd.zjazz_amd.path1) {$Path = "$($amd.zjazz_amd.path1)"}
 else {$Path = "None"}
-if ($amd.zjazz.uri) {$Uri = "$($amd.zjazz.uri)"}
+if ($amd.zjazz_amd.uri) {$Uri = "$($amd.zjazz_amd.uri)"}
 else {$Uri = "None"}
-if ($amd.zjazz.minername) {$MinerName = "$($amd.zjazz.minername)"}
+if ($amd.zjazz_amd.minername) {$MinerName = "$($amd.zjazz_amd.minername)"}
 else {$MinerName = "None"}
 if ($Platform -eq "linux") {$Build = "Tar"}
 elseif ($Platform -eq "windows") {$Build = "Zip"}
