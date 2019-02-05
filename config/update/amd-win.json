@@ -117,7 +117,7 @@
     "path2":".\\bin\\fancyix-2\\sgminer.exe", 
     "path3":".\\bin\\fancyix-3\\sgminer.exe", 
     "minername":"sgminer.exe", 
-    "version":"beta5i", 
+    "version":"beta5ip1", 
     "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/sgminer-fancyIX.zip"
 }, 
 
