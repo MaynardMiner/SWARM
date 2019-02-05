@@ -10,6 +10,16 @@
                             "version":"10a", 
                             "uri":"https://github.com/nemosminer/ccminerKlausTyescrypt/releases/download/v10/ccminerKlausTyescryptv10.7z"
 }, 
+"cc-mtp": {
+    "name":"cc-mtp", 
+    "type":"nvidia", 
+    "path1":".\\bin\\cc-mtp-1\\ccminer.exe", 
+    "path2":".\\bin\\cc-mtp-2\\ccminer.exe", 
+    "path3":".\\bin\\cc-mtp-3\\ccminer.exe", 
+    "minername":"ccminer.exe", 
+    "version":"1.1.10.2", 
+    "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/cc-mtp-windows.zip"
+}, 
                         "energiminer": {
                             "name":"energiminer", 
                             "type":"amd", 
@@ -47,7 +57,7 @@
                    "path2":".\\bin\\gminer-2\\miner.exe", 
                    "path3":".\\bin\\gminer-3\\miner.exe", 
                    "minername":"miner", 
-                   "version":"1.22", 
+                   "version":"1.30", 
                    "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/gminer-windows.zip"
 }, 
     "claymore": {

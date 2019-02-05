@@ -32,6 +32,7 @@
       "dedal":"", 
       "exosis":"", 
       "lyra2v3":"", 
+      "lyra2rev3":"", 
       "sha256T":"", 
       "sha256q":"", 
       "x16rt":"", 
@@ -64,6 +65,7 @@
       "dedal":"", 
       "exosis":"", 
       "lyra2v3":"", 
+      "lyra2rev3":"",
       "sha256T":"", 
       "sha256q":"", 
       "x16rt":"", 
@@ -94,7 +96,8 @@
       "polytimos":"polytimos", 
       "dedal":"dedal", 
       "exosis":"exosis", 
-      "lyra2v3":"lyra2v3", 
+      "lyra2v3":"lyra2v3",
+      "lyra2rev3":"lyra2v3", 
       "sha256T":"sha256T", 
       "sha256q":"sha256q", 
       "x16rt":"x16rt", 
@@ -273,6 +276,14 @@
         "dpm":""
       }, 
       "lyra2v3": {
+        "core":"", 
+        "v":"", 
+        "mem":"", 
+        "fans":"", 
+        "mdpm":"", 
+        "dpm":""
+      }, 
+      "lyra2rev3": {
         "core":"", 
         "v":"", 
         "mem":"", 

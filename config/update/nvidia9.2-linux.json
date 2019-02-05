@@ -137,7 +137,7 @@
     "path2":".\\bin\\gminer-2\\miner", 
     "path3":".\\bin\\gminer-3\\miner", 
     "minername":"miner", 
-    "version":"1.21", 
+    "version":"1.30", 
     "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/gminer-linux.tar.gz"
 }, 
   "bminer": {
@@ -149,15 +149,5 @@
     "minername":"bminer", 
     "version":"14.1.0", 
     "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/bminer-linux.tar.gz"
-}, 
-  "progminer": {
-    "name":"progminer", 
-    "type":"amd", 
-    "path1":".\\bin\\progminer-1\\progminer", 
-    "path2":".\\bin\\progminer-2\\progminer", 
-    "path3":".\\bin\\progminer-3\\progminer", 
-    "minername":"progminer", 
-    "version":"1.12", 
-    "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/progminer-linux.tar.gz"
 }
 }

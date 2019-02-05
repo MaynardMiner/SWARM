@@ -1351,7 +1351,7 @@ While ($true) {
         $MinerWatch.Restart()
         if ($Restart -eq $true -and $NoMiners -eq $true) {Invoke-MinerWarning}
         if ($Platform -eq "linux" -and $Restart -eq $true -and $NoMiners -eq $false) {Invoke-MinerSuccess1}
-        if ($Platform -eq "windows" -and $Restart -eq $true -and $NoMiners -eq $false) {Invoke-MinerSuccess2}
+        if ($Platform -eq "windows" -and $Restart -eq $true -and $NoMiners -eq $false) {Invoke-MinerSuccess1}
         if ($Restart -eq $false) {Invoke-NoChange}
 
 

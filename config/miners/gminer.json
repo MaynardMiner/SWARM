@@ -5,6 +5,8 @@
     "delay":"1", 
     "prestart":[], 
     "commands": {
+      "beam": "--algo 150_5 --pers auto",
+      "grincuckaroo29": "--algo grin29 --pers auto",
       "equihash-btg":"--algo 144_5 --pers BgoldPoW", 
       "equihash192":"--algo 192_7 --pers auto", 
       "equihash144":"--algo 144_5 --pers auto", 
@@ -14,6 +16,8 @@
       "zhash":"--algo 144_5 --pers auto"
     }, 
     "difficulty": {
+      "beam":"",
+      "grincuckaroo29":"",
       "equihash-btg":"", 
       "equihash192":"", 
       "equihash144":"", 
@@ -23,6 +27,8 @@
       "zhash":""
     }, 
     "naming": {
+      "beam":"beam",
+      "grincuckaroo29":"grincuckaroo29",
       "equihash-btg":"equihash-btg", 
       "equihash192":"equihash192", 
       "equihash144":"equihash144", 
@@ -63,6 +69,16 @@
         "Memory":""
       }, 
       "zhash": {
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      },
+      "beam": {
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      },
+      "grincukaroo29": {
         "Power":"", 
         "Core":"", 
         "Memory":""
@@ -74,6 +90,8 @@
     "delay":"1", 
     "prestart":[], 
     "commands": {
+      "beam": "--algo 150_5 --pers auto",
+      "grincuckaroo29": "--algo grin29 --pers auto",
       "equihash-btg":"--algo 144_5 --pers BgoldPoW", 
       "equihash192":"--algo 192_7 --pers auto", 
       "equihash144":"--algo 144_5 --pers auto", 
@@ -83,6 +101,8 @@
       "zhash":"--algo 144_5 --pers auto"
     }, 
     "difficulty": {
+      "beam":"",
+      "grincuckaroo29":"",
       "equihash-btg":"", 
       "equihash192":"", 
       "equihash144":"", 
@@ -92,6 +112,8 @@
       "zhash":""
     }, 
     "naming": {
+      "beam":"beam",
+      "grincuckaroo29":"grincuckaroo29",
       "equihash-btg":"equihash-btg", 
       "equihash192":"equihash192", 
       "equihash144":"equihash144", 
@@ -132,17 +154,29 @@
         "Memory":""
       }, 
       "zhash": {
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      },
+      "beam": {
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      },
+      "grincukaroo29": {
         "Power":"", 
         "Core":"", 
         "Memory":""
       }
     }
   }, 
-  "NVIDIA3": {
+    "NVIDIA3": {
     "name":"NVIDIA3", 
     "delay":"1", 
     "prestart":[], 
     "commands": {
+      "beam": "--algo 150_5 --pers auto",
+      "grincuckaroo29": "--algo grin29 --pers auto",
       "equihash-btg":"--algo 144_5 --pers BgoldPoW", 
       "equihash192":"--algo 192_7 --pers auto", 
       "equihash144":"--algo 144_5 --pers auto", 
@@ -152,6 +186,8 @@
       "zhash":"--algo 144_5 --pers auto"
     }, 
     "difficulty": {
+      "beam":"",
+      "grincuckaroo29":"",
       "equihash-btg":"", 
       "equihash192":"", 
       "equihash144":"", 
@@ -161,6 +197,8 @@
       "zhash":""
     }, 
     "naming": {
+      "beam":"beam",
+      "grincuckaroo29":"grincuckaroo29",
       "equihash-btg":"equihash-btg", 
       "equihash192":"equihash192", 
       "equihash144":"equihash144", 
@@ -204,7 +242,17 @@
         "Power":"", 
         "Core":"", 
         "Memory":""
+      },
+      "beam": {
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
+      },
+      "grincukaroo29": {
+        "Power":"", 
+        "Core":"", 
+        "Memory":""
       }
     }
   }
-}
+ }

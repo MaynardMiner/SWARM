@@ -13,19 +13,25 @@
       "cryptonight":"", 
       "cryptonightv7":"", 
       "cryptonightv8":"", 
-      "cryptonightheavy":""
+      "cryptonightheavy":"",
+      "cryptonightgpu": "",
+      "cryptonightsuperfast": ""
     }, 
     "difficulty": {
       "cryptonight":"", 
       "cryptonightv7":"", 
       "cryptonightv8":"", 
-      "cryptonightheavy":""
+      "cryptonightheavy":"",
+      "cryptonightgpu": "",
+      "cryptonightsuperfast": ""
     }, 
     "naming": {
       "cryptonight":"cryptonight", 
       "cryptonightv7":"cryptonight_v7", 
       "cryptonightv8":"cryptonight_v8", 
-      "cryptonightheavy":"cryptonight_heavy"
+      "cryptonightheavy":"cryptonight_heavy",
+      "cryptonightgpu": "cryptonight_gpu",
+      "cryptonight_superfast": "cryptonight_superfast"
     }, 
     "oc": {
       "cryptonight": {
@@ -53,6 +59,22 @@
         "fans":""
       }, 
       "cryptonightheavy": {
+        "dpm":"", 
+        "v":"", 
+        "core":"", 
+        "mem":"", 
+        "mdpm":"", 
+        "fans":""
+      },
+      "cryptonightgpu": {
+        "dpm":"", 
+        "v":"", 
+        "core":"", 
+        "mem":"", 
+        "mdpm":"", 
+        "fans":""
+      },
+      "cryptonightsuperfast": {
         "dpm":"", 
         "v":"", 
         "core":"", 
