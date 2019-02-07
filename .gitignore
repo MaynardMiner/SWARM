@@ -20,3 +20,10 @@ build/bash/config.sh
 build/bash/startup.sh
 config/parameters/arguments.json
 SWARM.conf
+config/parameters/arguments.json
+build/bash/startup.sh
+build/export/libcudart.so.10.0
+build/export/libcudart.so.9.2
+build/export/libnvrtc.so.10.0
+build/export/libnvrtc.so.9.2
+build/export/libstdc++.so.6
