@@ -49,6 +49,20 @@ $dir | set-content ".\build\bash\dir.sh"
          Set-Location $Dir     
     }
 
+    if(Test-Path ".\build\export\libcudart.so.9.2.148")
+    {
+     Start-Process ln -ArgumentList "-s $dir/build/export/libcudart.so.9.2.148 $dir/build/export/libcudart.so.9.2" -Wait
+     Set-Location "/"
+     Set-Location $Dir     
+    }
+
+    if(Test-Path ".\build\export\libcudart.so.10.0.130")
+    {
+     Start-Process ln -ArgumentList "-s $dir/build/export/libcudart.so.10.0.130 $dir/build/export/libcudart.so.10.0" -Wait
+     Set-Location "/"
+     Set-Location $Dir     
+    }
+
     if(Test-Path ".\build\export\libmicrohttpd.so.10.34.0")
      {
       Start-Process ln -ArgumentList "-s $dir/build/export/libmicrohttpd.so.10.34.0 $dir/build/export/libmicrohttpd.so.10" -Wait
@@ -66,6 +80,21 @@ $dir | set-content ".\build\bash\dir.sh"
      if(Test-Path ".\build\export\libhwloc.so.5.5.0")
      {
       Start-Process ln -ArgumentList "-s $dir/build/export/libhwloc.so.5.5.0 $dir/build/export/libhwloc.so.5" -Wait
+      Set-Location "/"
+      Set-Location $Dir     
+     }
+
+
+     if(Test-Path ".\build\export\libnvrtc.so.9.2.148")
+     {
+      Start-Process ln -ArgumentList "-s $dir/build/export/libnvrtc.so.9.2.148 $dir/build/export/libnvrtc.so.9.2" -Wait
+      Set-Location "/"
+      Set-Location $Dir     
+     }
+
+     if(Test-Path ".\build\export\libnvrtc.so.10.0.130")
+     {
+      Start-Process ln -ArgumentList "-s $dir/build/export/libnvrtc.so.10.0.130 $dir/build/export/libnvrtc.so.10.0" -Wait
       Set-Location "/"
       Set-Location $Dir     
      }
