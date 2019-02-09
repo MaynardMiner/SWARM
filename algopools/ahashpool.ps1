@@ -14,7 +14,7 @@ if ($Poolname -eq $Name) {
   
     $ahashpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name |  Where-Object {$ahashpool_Request.$_.hashrate -gt 0} |  Where-Object {$Naming.$($ahashpool_Request.$_.name)} | ForEach-Object {
  
-        $ahashpool_Algorithm = $ahashpool_Request.$_.name
+        $ahashpool_Algorithm = $ahashpool_Request.$_.name.ToLower()
 
         if ($Algorithm -contains $ahashpool_Algorithm -and $Bad_pools.$ahashpool_Algorithm -notcontains $Name) {
             $ahashpool_Host = "$_.mine.ahashpool.com"

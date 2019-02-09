@@ -12,7 +12,8 @@ if ($Poolname -eq $Name) {
     }
 
     $nlpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | Where-Object {$nlpool_Request.$_.hashrate -gt 0} | Where-Object {$Naming.$($nlpool_Request.$_.name)} | Where-Object {$nlpool_Request.$_.name -NE "sha256"} | Where-Object {$($nlpool_Request.$_.estimate_current) -ne "0.00000000"} | ForEach-Object {
-        $nlpoolAlgo_Algorithm = $nlpool_Request.$_.name
+        
+        $nlpoolAlgo_Algorithm = $nlpool_Request.$_.name.ToLower()
 
         if ($Algorithm -contains $nlpoolAlgo_Algorithm -and $Bad_pools.$nlpoolAlgo_Algorithm -notcontains $Name) {
             $nlpoolAlgo_Host = "mine.nlpool.nl"
