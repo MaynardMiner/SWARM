@@ -361,6 +361,7 @@ if ((Test-Path ".\config\parameters\newarguments.json") -or $Debug -eq $true) {
     Write-Host "These arguments can be found/modified in config < parameters < newarguments.json" -ForegroundColor Cyan
     if ($Debug -eq $True) {$NewParams = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json}
     else {$NewParams = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json}
+
     ## Bug Fix: Adding New Defaults to flight sheet:
     $Defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json
     $Defaults | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | % {if ($NewParams -notmatch $_) {$NewParams | Add-Member "$($_)" $Defaults.$_}}
@@ -720,7 +721,7 @@ AMD USERS: PLEASE READ .\config\oc\new_sample.json FOR INSTRUCTIONS ON OVERCLOCK
                     $HiveMirror = $NewHiveKeys.HiveMirror
                 }
 
-                ##If Hive Sent OC (Currently Only NVIDIA) Start SWARM OC
+                ##If Hive Sent OC Start SWARM OC
                 if ($Action -eq "nvidia_oc") {
                     $WorkingDir = $dir
                     $NewOC = $hiveresponse.result.nvidia_oc | ConvertTo-Json -Compress
@@ -1392,6 +1393,7 @@ While ($true) {
         #Start Another Log If An Hour Has Passed
         if ($LogTimer.Elapsed.TotalSeconds -ge 3600) {
             Stop-Transcript
+            Start-Sleep -S 3
             if (Test-Path ".\logs\*active*") {
                 Set-Location ".\logs"
                 $OldActiveFile = Get-ChildItem "*active*"
