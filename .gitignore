@@ -18,5 +18,7 @@ wallet/wallets/
 build/bash/dir.sh
 build/bash/config.sh
 build/bash/startup.sh
-config/parameters/arguments.json
 SWARM.conf
+arguments.json
+config/parameters/arguments.json
+SWARM.bat
