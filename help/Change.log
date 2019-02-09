@@ -1783,3 +1783,16 @@ Includes changes from test/beta release:
 -trex updated.
 -cc-mtp added.
 -fixed cc-yescrypt naming.
+
+1.9.6
+
+-Fixed pool case sensitivity enforcement
+-Fixed weird screen issues as a result
+   of stopping hiveOS transcript. (miner log)
+
+-added delay in transcript, so it doesn't generate issues
+ in rollover.
+
+-added new test source for a progpow miner. Can not test
+ on zergpool.
+
