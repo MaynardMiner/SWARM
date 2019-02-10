@@ -308,6 +308,11 @@ function start-update {
                                         $Data.$_.naming | Add-Member "pawelhash" "glt-pawelhash" -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "pawelhash" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue
 
+                                        $Data.$_.commands| Add-Member "bmw512" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "bmw512" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "bmw512" "bmw512" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "bmw512" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue
+
                                         ## Temp remove these algos
                                         $Data.$_.commands = $Data.$_.commands | Select -ExcludeProperty "mtp"
                                         $Data.$_.difficulty = $Data.$_.difficulty | Select -ExcludeProperty "mtp"
