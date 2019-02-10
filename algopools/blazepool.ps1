@@ -14,7 +14,7 @@ if ($Poolname -eq $Name) {
   
     $blazepool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name |  Where-Object {$blazepool_Request.$_.hashrate -gt 0} |  Where-Object {$Naming.$($blazepool_Request.$_.name)} | ForEach-Object {
 
-        $blazepool_Algorithm = $blazepool_Request.$_.name
+        $blazepool_Algorithm = $blazepool_Request.$_.name.ToLower()
 
         if ($Algorithm -contains $blazepool_Algorithm -and $Bad_pools.$blazepool_Algorithm -notcontains $Name) {
             $blazepool_Host = "$_.mine.blazepool.com"

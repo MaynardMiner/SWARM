@@ -19,7 +19,7 @@ if ($Poolname -eq $Name) {
   
     $phiphipool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name |  Where-Object {$phiphipool_Request.$_.hashrate -gt 0} |  Where-Object {$Naming.$($phiphipool_Request.$_.name)} | ForEach-Object {
 
-        $phiphipool_Algorithm = $phiphipool_Request.$_.name
+        $phiphipool_Algorithm = $phiphipool_Request.$_.name.ToLower()
 
         if ($Algorithm -contains $phiphipool_Algorithm -and $Bad_pools.$phiphipool_Algorithm -notcontains $Name) {
             $phiphipool_Port = $phiphipool_Request.$_.port

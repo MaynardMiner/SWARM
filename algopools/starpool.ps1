@@ -13,7 +13,7 @@ if ($Poolname -eq $Name) {
   
     $starpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | Where-Object {$starpool_Request.$_.hashrate -gt 0} | Where-Object {$Naming.$($starpool_Request.$_.name)} | ForEach-Object {
 
-        $starpool_Algorithm = $starpool_Request.$_.name
+        $starpool_Algorithm = $starpool_Request.$_.name.ToLower()
 
         if ($Algorithm -contains $starpool_Algorithm -and $Bad_pools.$starpool_Algorithm -notcontains $Name) {
             $starpool_Host = "$_.starpool.biz"

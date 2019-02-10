@@ -19,7 +19,7 @@ if ($Poolname -eq $Name) {
   
     $Zpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name |  Where-Object {$Zpool_Request.$_.hashrate -gt 0} |  Where-Object {$Naming.$($Zpool_Request.$_.name)} | ForEach-Object {
     
-        $Zpool_Algorithm = $Zpool_Request.$_.name
+        $Zpool_Algorithm = $Zpool_Request.$_.name.ToLower()
   
         if ($Algorithm -contains $Zpool_Algorithm -and $Bad_pools.$Zpool_Algorithm -notcontains $Name) {
             $Zpool_Port = $Zpool_Request.$_.port

@@ -13,7 +13,7 @@ if ($Poolname -eq $Name) {
    
     $Hashrefinery_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name |  Where-Object {$Hashrefinery_Request.$_.hashrate -gt 0} |  Where-Object {$Naming.$($Hashrefinery_Request.$_.name)} | ForEach-Object {
    
-        $Hashrefinery_Algorithm = $Hashrefinery_Request.$_.name
+        $Hashrefinery_Algorithm = $Hashrefinery_Request.$_.name.ToLower()
 
         if ($Algorithm -contains $Hashrefinery_Algorithm -and $Bad_pools.$Hashrefinery_Algorithm -notcontains $Name) {
             $Hashrefinery_Host = "$_.us.hashrefinery.com"
