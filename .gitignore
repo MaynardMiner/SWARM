@@ -21,4 +21,11 @@ build/bash/startup.sh
 SWARM.conf
 arguments.json
 config/parameters/arguments.json
-SWARM.bat
+SWARM.conf
+config/parameters/arguments.json
+build/bash/startup.sh
+build/export/libcudart.so.10.0
+build/export/libcudart.so.9.2
+build/export/libnvrtc.so.10.0
+build/export/libnvrtc.so.9.2
+build/export/libstdc++.so.6
