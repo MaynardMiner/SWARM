@@ -40,6 +40,20 @@ function Get-Data {
         Set-Location "/"
         Set-Location $CmdDir     
     }
+    
+     if (-not (Test-Path ".\build\export\libcudart.so.10.0")) {
+        $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
+        Start-Process ln -ArgumentList "-s $dir/build/export/libcudart.so.10.0.130 $dir/build/export/libcudart.so.10.0" -Wait
+        Set-Location "/"
+        Set-Location $CmdDir     
+    }
+    
+     if (-not (Test-Path ".\build\export\libcudart.so.9.2")) {
+        $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
+        Start-Process ln -ArgumentList "-s $dir/build/export/libcudart.so.9.2.148 $dir/build/export/libcudart.so.9.2" -Wait
+        Set-Location "/"
+        Set-Location $CmdDir     
+    }
 
     if (-not (Test-Path ".\build\export\libhwloc.so.5")) {
         $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
@@ -47,14 +61,6 @@ function Get-Data {
         Set-Location "/"
         Set-Location $CmdDir     
     }
- 
-    if(-not (Test-Path ".\build\export\libmicrohttpd.so.10"))
-     {
-      Start-Process ln -ArgumentList "-s $CmdDir/build/export/libmicrohttpd.so.10.34.0 $CmdDir/build/export/libmicrohttpd.so.10" -Wait
-      Set-Location "/"
-      Set-Location $CmdDir     
-     }
-
      if(-not (Test-Path ".\build\export\libstdc++.so.6"))
      {
       Start-Process ln -ArgumentList "-s $CmdDir/build/export/libstdc++.so.6.0.25 $CmdDir/build/export/libstdc++.so.6" -Wait
