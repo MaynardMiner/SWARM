@@ -103,10 +103,10 @@ function start-update {
                             if ($ChangeFile -eq "cryptodredge.json") {
                                 $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                     if ($_ -ne "name") {
-                                        $Data.$_.commands = $Data.$_.commands | Select -ExcludeProperty "blake2s", "exosis", "lbk3", "Lyra2REv2", "lyra2v2", "polytimos", "skein", "lyra2vc0banhash"
-                                        $Data.$_.difficulty = $Data.$_.difficulty | Select -ExcludeProperty "blake2s", "exosis", "lbk3", "Lyra2REv2", "lyra2v2", "polytimos", "skein", "lyra2vc0banhash"
-                                        $Data.$_.naming = $Data.$_.naming | Select -ExcludeProperty "blake2s", "exosis", "lbk3", "Lyra2REv2", "lyra2v2", "polytimos", "skein", "lyra2vc0banhash"
-                                        $Data.$_.oc = $Data.$_.oc | Select -ExcludeProperty "blake2s", "exosis", "lbk3", "Lyra2REv2", "lyra2v2", "polytimos", "skein", "lyra2vc0banhash"
+                                        $Data.$_.commands = $Data.$_.commands | Select -ExcludeProperty "blake2s", "exosis", "lbk3", "Lyra2REv2", "lyra2v2", "polytimos", "skein", "lyra2vc0banhash", "masari", "stellite"
+                                        $Data.$_.difficulty = $Data.$_.difficulty | Select -ExcludeProperty "blake2s", "exosis", "lbk3", "Lyra2REv2", "lyra2v2", "polytimos", "skein", "lyra2vc0banhash", "masari", "stellite"
+                                        $Data.$_.naming = $Data.$_.naming | Select -ExcludeProperty "blake2s", "exosis", "lbk3", "Lyra2REv2", "lyra2v2", "polytimos", "skein", "lyra2vc0banhash", "masari", "stellite"
+                                        $Data.$_.oc = $Data.$_.oc | Select -ExcludeProperty "blake2s", "exosis", "lbk3", "Lyra2REv2", "lyra2v2", "polytimos", "skein", "lyra2vc0banhash", "masari", "stellite"
         
                                         $Data.$_.commands| Add-Member "hmq1725" "" -ErrorAction SilentlyContinue
                                         $Data.$_.difficulty | Add-Member "hmq1725" "" -ErrorAction SilentlyContinue

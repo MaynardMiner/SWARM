@@ -15,8 +15,6 @@
       "cryptonightv8": "",
       "cryptonightheavy": "",
       "aeon": "",
-      "masari": "",
-      "stellite": "",
       "phi2": "",
       "c11": "",
       "skunk": "",
@@ -43,8 +41,6 @@
       "cryptonightheavy": "",
       "cryptonightv8": "",
       "aeon": "",
-      "masari": "",
-      "stellite": "",
       "phi2": "",
       "c11": "",
       "skunk": "",
@@ -71,8 +67,6 @@
       "cryptonightheavy": "cryptonightheavy",
       "cryptonightv8": "cnv8",
       "aeon": "aeon",
-      "masari": "masari",
-      "stellite": "stellite",
       "phi2": "phi2",
       "c11": "c11",
       "skunk": "skunk",
@@ -135,16 +129,6 @@
         "Memory": ""
       },
       "aeon": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
-      "masari": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
-      "stellite": {
         "Power": "",
         "Core": "",
         "Memory": ""

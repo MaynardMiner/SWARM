@@ -1,447 +1,346 @@
 {
-  "aergo": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "aeon": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "argon2d-dyn": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "allium": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "bcd": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "beam": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "bitcore": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "blake": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "blake2s": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "c11": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "cryptonight": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "cryptonightgpu": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "cryptonightheavy": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "cryptonightmonero": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "cryptonightsuperfast": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "cryptonightv7": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "cryptonightv8": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "cuckoo": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "cnfastv2": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "cnsuperfast ": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "dagger": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "daggerhashimoto": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "dedal": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "equihash96": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "equihash144": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "equihash192": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "equihash200": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "equihash210": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "equihash-btg": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "ethash": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "exosis": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "geek": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "grincuckaroo29": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "hex": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "hmq1725": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "hodl": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "hsr": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "jackpot": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "keccak": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "keccakc": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "lbk3": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "lyra2re": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "lyra2rev2": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "lyra2v2": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "lyra2rev3": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "lyra2v3": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "lyra2z": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "lyra2zz": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "m7m": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "masari": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "mtp": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "myr-gr": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "neoscrypt": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "nist5": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "nrghash": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "phi": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "phi2": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "polytimos": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "progpow": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "qubit": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "renesis": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "sha256t": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "sha256q": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "skein": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "skunk": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "sonoa": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "stellite": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "timetravel": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "tribus": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "x11": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "x16r": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "x16rt": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "x16s": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "x17": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "x18": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "x21s": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "x22i": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "xevan": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "xmr": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "yespower": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "yescrypt": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "yescryptr16": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "yescryptr32": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "zhash": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "astralhash": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "jeonghash": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "padihash": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "pawelhash": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ],
-  "lyra2vc0ban": [
-    "No Pools Blocked",
-    "Add Pools Here",
-    "Seperate Each With Comma Like This"
-  ]
+  "aergo":{
+    "hiveos_name": "aergo",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "aeon":{
+    "hiveos_name": "cryptonight-lite",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "argon2d-dyn":{
+    "hiveos_name": "argon2d-dyn",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "allium":{
+    "hiveos_name": "allium",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "bcd":{
+    "hiveos_name": "bcd",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "beam":{
+    "hiveos_name": "equihash 150/5",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "bitcore":{
+    "hiveos_name": "bitcore",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "blake":{
+    "hiveos_name": "blake",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "blake2s":{
+    "hiveos_name": "blake2s",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "c11":{
+    "hiveos_name": "c11",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "cryptonight":{
+    "hiveos_name": "cryptonight",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "cryptonightgpu":{
+    "hiveos_name": "cryptonight-gpu",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "cryptonightheavy":{
+    "hiveos_name": "cryptonight-heavy",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "cryptonightmonero":{
+    "hiveos_name": "cryptonight",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "cryptonightsuperfast":{
+    "hiveos_name": "cryptonight-superfast",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "cryptonightv7":{
+    "hiveos_name": "cryptonight-v7",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "cryptonightv8":{
+    "hiveos_name": "cryptonight-v8",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "cuckoo":{
+    "hiveos_name": "cuckoo",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "cnfastv2":{
+    "hiveos_name": "cryptonight-fast-v8",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "cnsuperfast ":{
+    "hiveos_name": "cryptonight-sfast",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "dagger":{
+    "hiveos_name": "ethash",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "daggerhashimoto":{
+    "hiveos_name": "ethash",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "dedal": {
+    "hiveos_name": "dedal",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "equihash96":{
+    "hiveos_name": "equihash 96/5",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "equihash144":{
+    "hiveos_name": "equihash 144/5",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "equihash192":{
+    "hiveos_name": "equihash 192/7",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "equihash200":{
+    "hiveos_name": "equihash 210/9",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "equihash210":{
+    "hiveos_name": "equihash 210/9",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "equihash-btg":{
+    "hiveos_name": "equihash 144/5",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "ethash":{
+    "hiveos_name": "ethash",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "exosis":{
+    "hiveos_name": "exosis",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "geek":{
+    "hiveos_name": "geek",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "grincuckaroo29":{
+    "hiveos_name": "cuckoo",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "hex":{
+    "hiveos_name": "hex",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "hmq1725":{
+    "hiveos_name": "hmq1725",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "hodl":{
+    "hiveos_name": "hodl",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "hsr":{
+    "hiveos_name": "hsr",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "jackpot":{
+    "hiveos_name": "jackpot",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "keccak":{
+    "hiveos_name": "keccak",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "keccakc":{
+    "hiveos_name": "cuckoo",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "lbk3":{
+    "hiveos_name": "lbk3",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "lyra2re":{
+    "hiveos_name": "lyra2z",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "lyra2rev2":{
+    "hiveos_name": "lyra2rev2",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "lyra2v2":{
+    "hiveos_name": "lyra2rev2",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "lyra2rev3":{
+    "hiveos_name": "lyra2v3",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "lyra2v3":{
+    "hiveos_name": "lyra2v3",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "lyra2z":{
+    "hiveos_name": "lyra2z",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "lyra2zz":{
+    "hiveos_name": "lyra2zz",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "m7m":{
+    "hiveos_name": "m7m",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "mtp":{
+    "hiveos_name": "mtp",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "myr-gr":{
+    "hiveos_name": "myr-gr",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "neoscrypt":{
+    "hiveos_name": "neoscrypt",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "nist5":{
+    "hiveos_name": "nist5",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "nrghash":{
+    "hiveos_name": "energihash",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "phi":{
+    "hiveos_name": "phi",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "phi2":{
+    "hiveos_name": "phi2",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "polytimos":{
+    "hiveos_name": "polytimos",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "progpow":{
+    "hiveos_name": "progpow",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "qubit":{
+    "hiveos_name": "qubit",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "renesis":{
+    "hiveos_name": "renesis",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "sha256t":{
+    "hiveos_name": "sha256t",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "sha256q":{
+    "hiveos_name": "sha256q",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "skein":{
+    "hiveos_name": "skein",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "skunk":{
+    "hiveos_name": "skunk",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "sonoa":{
+    "hiveos_name": "sonoa",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "timetravel":{
+    "hiveos_name": "timetravel",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "tribus":{
+    "hiveos_name": "tribus",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "x11":{
+    "hiveos_name": "x11",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "x16r":{
+    "hiveos_name": "x16r",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "x16rt":{
+    "hiveos_name": "x16rt",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "x16s":{
+    "hiveos_name": "x16s",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "x17":{
+    "hiveos_name": "x17",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "x18":{
+    "hiveos_name": "x18",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "x21s":{
+    "hiveos_name": "x21s",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "x22i":{
+    "hiveos_name": "x22i",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "xevan":{
+    "hiveos_name": "xevan",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "yespower":{
+    "hiveos_name": "yespower",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "yescrypt":{
+    "hiveos_name": "yescrypt",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "yescryptr16":{
+    "hiveos_name": "yescryptr16",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "yescryptr32":{
+    "hiveos_name": "yescryptr32",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "zhash":{
+    "hiveos_name": "equihash 144/5",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "astralhash":{
+    "hiveos_name": "astralhash",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "jeonghash":{
+    "hiveos_name": "jeonghash",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "padihash":{
+    "hiveos_name": "padihash",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "pawelhash":{
+    "hiveos_name": "pawelhash",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "lyra2vc0ban":{
+    "hiveos_name": "lyra2vc0ban",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  }
 }
