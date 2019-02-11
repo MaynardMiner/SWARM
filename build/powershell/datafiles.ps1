@@ -47,7 +47,7 @@ function Get-Data {
      Set-Location "/"
      Set-Location $CmdDir     
     }
-
+ 
     if(-not (Test-Path ".\build\export\libmicrohttpd.so.10"))
      {
       Start-Process ln -ArgumentList "-s $CmdDir/build/export/libmicrohttpd.so.10.34.0 $CmdDir/build/export/libmicrohttpd.so.10" -Wait

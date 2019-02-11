@@ -1388,7 +1388,7 @@ While ($true) {
         if ($Log -eq 12) {
             Remove-Item ".\logs\*miner*" -Force
             $Log = 0
-        }
+        } 
 
         #Start Another Log If An Hour Has Passed
         if ($LogTimer.Elapsed.TotalSeconds -ge 3600) {

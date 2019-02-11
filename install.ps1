@@ -98,7 +98,7 @@ $dir | set-content ".\build\bash\dir.sh"
       Set-Location "/"
       Set-Location $Dir     
      }
-
+ 
     if(Test-Path ".\build\bash\get-oc")
     {
          Copy-Item ".\build\bash\get-oc" -Destination "/usr/bin" -force | Out-Null
