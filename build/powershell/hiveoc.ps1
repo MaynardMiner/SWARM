@@ -109,9 +109,20 @@ function Start-AMDOC {
     $script += "`$host.ui.RawUI.WindowTitle = `'OC-Start`';"
 
     ##Get BrandName
-    Invoke-Expression ".\build\apps\odvii.exe s" | Tee-Object -Variable Model | OUt-Null
-    $Model = $Model | ConvertFrom-StringData
-    $Model = $Model.keys | % {if ($_ -like "*Model*") {$Model.$_}}
+    Invoke-Expression ".\build\apps\odvii.exe s" | Tee-Object -Variable stats | OUt-Null
+    $stats = $stats | ConvertFrom-StringData
+    $Model = $stats.keys | % {if ($_ -like "*Model*") {$stats.$_}}
+    $Default_Core_Clock = @{}
+    $Default_Core_Voltage = @{}
+    $Default_Mem_Clock = @{}
+    $Default_Mem_Voltage = @{}
+    $stats.keys | % {if ($_ -like "*Core Clock*") {$Default_Core_Clock.Add($_, $stats.$_)}}
+    $stats.keys | % {if ($_ -like "*Core Voltage*") {$Default_Core_Voltage.Add($_, $stats.$_)}}
+    $stats.keys | % {if ($_ -like "*Mem Clock*") {$Default_Mem_Clock.Add($_, $stats.$_)}}
+    $stats.keys | % {if ($_ -like "*Mem Voltage*") {$Default_Mem_Voltage.Add($_, $stats.$_)}}
+
+
+
     $AMDCount = $OCCount.AMD.PSObject.Properties.Name.Count
 
     $AMDOCFan = $AMDOC.FAN -replace "`"", ""
@@ -120,14 +131,13 @@ function Start-AMDOC {
     $AMDOCMem = $AMDOCMem -split " "
     $AMDOCCore = $AMDOC.CORE_CLOCK -replace "`"", ""
     $AMDOCCore = $AMDOCCore -split " "
-    $AMDOCCV = $AMDOC.CORE_STATE -replace "`"", ""
-    $AMDOCCV = $AMDOCCV -split " "
-    $AMDOCCV = $AMDOC.CORE_STATE -replace "`"", ""
+    $AMDOCCV = $AMDOC.CORE_VDDC -replace "`"", ""
     $AMDOCCV = $AMDOCCV -split " "
     $AMDOCMV = $AMDOC.MEM_STATE -replace "`"", ""
     $AMDOCMV = $AMDOCMV -split " "
     $AMDOCV = $AMDOC.CORE_VDDC -replace "`"", ""
     $AMDOCV = $AMDOCV -split " "
+    $AMDAgg = $AMDOC.AGGRESSIVE
   
     for ($i = 0; $i -lt $AMDCount; $i++) {
         $Select = $OCCount.AMD.PSOBject.Properties.Name
@@ -152,58 +162,69 @@ function Start-AMDOC {
                     }
                 }
                 "MEM_CLOCK" {
-                    if ($AMDOCMem -and $AMDOCMV) {
-                        if ($AMDOCMem.Count -eq 1) {
-                            if ($Model[$i] -like "*Vega*") {
-                                $OCArgs += "Mem_P3=$AMDOCMem;$AMDOCMV "
-                                $ocmessage += "Setting GPU $($OCCount.AMD.$i) Memory Offset To $($AMDOCMem), Voltage To $AMDOCMV"
-                            }
-                            else {
-                                $OCArgs += "Mem_P2=$AMDOCMem;$AMDOCMV "
-                                $ocmessage += "Setting GPU $($OCCount.AMD.$i) Memory Offset To $($AMDOCMem), Voltage To $AMDOCMV"
-                            }
-                        }
-                        else {
-                            if ($Model[$i] -like "*Vega*") {
-                                $OCArgs += "Mem_P3=$($AMDOCMem[$Select]);$($AMDOCMV[$Select]) "
-                                $ocmessage += "Setting GPU $($OCCount.AMD.$i) Memory Offset To $($AMDOCMem[$i]), Voltage To $($AMDOCMV[$i])"
-                            }
-                            else {
-                                $OCArgs += "Mem_P2=$($AMDOCMem[$Select]);$($AMDOCMV[$Select]) "
-                                $ocmessage += "Setting GPU $($OCCount.AMD.$i) Memory Offset To $($AMDOCMem[$i]), Voltage To $($AMDOCMV[$i])"
-                            }
-                        }
+                    if ($AMDOCMV.Count -eq 1 -and $AMDOCMem.Count -eq 1) {
+                        if ($Model[$Select] -like "*Vega*") {$PStates = 4}else {$PStates = 3}
+                        $DefaultMemClock = $Default_Mem_Clock."Gpu $Select P$($PStates-1) Mem Clock"
+                        $DefaultMemVolt = $Default_Mem_Voltage."Gpu $Select P$($PStates-1) Mem Voltage"
+                        if ($AMDOCMem) {$MemClock = $AMDOCMem}else {$MemClock = $DefaultMemClock}
+                        if ($AMDOCMV) {$MemVolt = $Default_Mem_Voltage."Gpu $Select P$AMDOCMV Mem Voltage"}else {$MemVolt = $DefaultMemVolt}
+                        $OCArgs += "Mem_P$($PStates-1)=$MemClock;$MemVolt "
+                        $ocmessage += "Setting GPU $($OCCount.AMD.$i) P$($PStates-1) Memory To $($MemClock), Voltage To $MemVolt"
+                    }
+                    else {
+                        if ($Model[$Select] -like "*Vega*") {$PStates = 4}else {$PStates = 3}
+                        $DefaultMemClock = $Default_Mem_Clock."Gpu $Select P$($PStates-1) Mem Clock"
+                        $DefaultMemVolt = $Default_Mem_Voltage."Gpu $Select P$($PStates-1) Mem Voltage"
+                        if ($AMDOCMem[$Select]) {$MemClock = $AMDOCMem[$Select]}else {$MemClock = $DefaultMemClock}
+                        if ($AMDOCMV[$Select]) { $MemVolt = $Default_Mem_Voltage."Gpu $Select P$($AMDOCMV[$Select]) Mem Voltage" }else {$MemVolt = $DefaultMemVolt}
+                        $OCArgs += "Mem_P$($PStates-1)=$MemClock;$MemVolt "
+                        $ocmessage += "Setting GPU $($OCCount.AMD.$i) P$($PStates-1) Memory To $MemClock, Voltage To $MemVolt"
                     }
                 }
                 "CORE_CLOCK" {
-                    if ($AMDOCCore -and $AMDOCCV) {
-                        if ($AMDOCCore.Count -eq 1) {
-                            $OCArgs += "GPU_P7=$AMDOCCore;$AMDOCCV "
-                            $ocmessage += "Setting GPU $($OCCount.AMD.$i) Clock Offset To $($AMDOCCore), Voltage to $AMDOCCV"
+                    $PStates = 8
+                    if ($AMDOCCV.Count -eq 1 -and $AMDOCCore.Count -eq 1) {
+                        if ($AMDAgg -eq 1) {
+                            for ($j = 1; $j -lt $PStates; $j++) {
+                                $DefaultCoreClock = $Default_Core_Clock."Gpu $Select P$j Core Clock"
+                                $DefaultCoreVolt = $Default_Core_Voltage."Gpu $Select P$j Core Voltage"
+                                if ($AMDOCCore) {$CoreClock = $AMDOCCore} else {$CoreClock = $DefaultCoreClock}
+                                if ($AMDOCCV) {$CoreVolt = $AMDOCCV} else {$CoreVolt = $DefaultCoreVolt}
+                                $OCArgs += "GPU_P$j=$CoreClock;$CoreVolt "
+                                $ocmessage += "Setting GPU $($OCCount.AMD.$i) P$J Core Clock To $($CoreClock), Voltage to $CoreVolt"
+                            }
                         }
                         else {
-                            $OCArgs += "GPU_P7=$($AMDOCCore[$Select]);$($AMDOCCV[$Select]) "
-                            $ocmessage += "Setting GPU $($OCCount.AMD.$i) Clock Offset To $($AMDOCCore[$i]), Voltage to $($AMDOCCV[$i])"
+                            $DefaultCoreClock = $Default_Core_Clock."Gpu $Select P$($PStates-1) Core Clock"
+                            $DefaultCoreVolt = $Default_Core_Voltage."Gpu $Select P$($PStates-1) Core Voltage"
+                            if ($AMDOCCore) {$CoreClock = $AMDOCCore}else {$CoreClock = $DefaultCoreClock}
+                            if ($AMDOCCV) {$CoreVolt = $AMDOCCV}else {$CoreVolt = $DefaultCoreVolt}
+                            $OCArgs += "GPU_P$($PStates-1)=$CoreClock;$CoreVolt "
+                            $ocmessage += "Setting GPU $($OCCount.AMD.$i) P$($PStates-1) Clock To $($CoreClock), Voltage To $CoreVolt"                     
                         }
                     }
-                }
-                "CORE_VDDC" {
-                    if ($AMDOCV.Count -eq 1 -and $AMDOCV -ne "") {$Volt = "$AMDOCV"}
-                    elseif ($AMDOCV -ne "") {$Volt = "$AMDOCV[$Select]"}
-                    if ($Volt) {
-                        $Value = $Volt.Substring(1)
-                        if ($Volt[0] -eq "1") {$Mod = ""}
-                        if ($Volt[0] -eq "2") {$Mod = "-"}
-                        if ($AMDOCV.Count -eq 1) {
-                            $OCArgs += "Power_Target=$Mod$Value "
-                            $ocmessage += "Setting GPU $($OCCount.AMD.$i) Power Target to $Mod$Value"
+                    else {
+                        if ($AMDAgg -eq 1) {
+                            for ($j = 1; $j -lt $PStates; $j++) {
+                                
+                                $DefaultCoreClock = $Default_Core_Clock."Gpu $Select P$j Core Clock"
+                                $DefaultCoreVolt = $Default_Core_Voltage."Gpu $Select P$j Core Voltage"
+                                if ($AMDOCCore[$Select]) {$CoreClock = $AMDOCCore[$Select]} else {$CoreClock = $DefaultCoreClock}
+                                if ($AMDOCCV[$Select]) {$CoreVolt = $AMDOCCV[$Select]} else {$CoreVolt = $DefaultCoreVolt}
+                                $OCArgs += "GPU_P$j=$CoreClock;$CoreVolt "
+                                $ocmessage += "Setting GPU $($OCCount.AMD.$i) P$J Core Clock To $($CoreClock), Voltage to $CoreVolt"
+                            }
                         }
                         else {
-                            $OCArgs += "Power_Target=$Mod$Value "
-                            $ocmessage += "Setting GPU $($OCCount.AMD.$i) Power Target to $Mod$Value"
-                        }
+                            $DefaultCoreClock = $Default_Core_Clock."Gpu $Select P$($PStates-1) Core Clock"
+                            $DefaultCoreVolt = $Default_Core_Voltage."Gpu $Select P$($PStates-1) Core Voltage"
+                            if ($AMDOCCore[$Select]) {$CoreClock = $AMDOCCore[$Select]}else {$CoreClock = $DefaultCoreClock}
+                            if ($AMDOCCV[$Select]) {$CoreVolt = $AMDOCCV[$Select]}else {$CoreVolt = $DefaultCoreVolt}
+                            $OCArgs += "GPU_P$($PStates-1)=$CoreClock;$CoreVolt "
+                            $ocmessage += "Setting GPU $($OCCount.AMD.$i) P$($PStates-1) Core Clock To $($CoreClock), Voltage To $CoreVolt"                     
+                        }          
                     }
-                }
+                }        
             }
         }
    
