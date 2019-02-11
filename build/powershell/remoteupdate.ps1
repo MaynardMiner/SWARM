@@ -45,6 +45,8 @@ function start-update {
         $PreviousVersions += "SWARM.1.9.1"
         $PreviousVersions += "SWARM.1.9.2"
         $PreviousVersions += "SWARM.1.9.3"
+        $PreviousVersions += "SWARM.1.9.4"
+        $PreviousVersions += "SWARM.1.9.5"
 
         Write-Host "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
         Write-Host "Check $Location For any Previous Versions"
@@ -141,10 +143,10 @@ function start-update {
                                         $Data.$_.naming | Add-Member "x16rt" "x16rt" -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "x16rt" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue
 
-                                        $Data.$_.commands| Add-Member "lyra2zz" "" -ErrorAction SilentlyContinue -Force
-                                        $Data.$_.difficulty | Add-Member "lyra2zz" "" -ErrorAction SilentlyContinue -Force
-                                        $Data.$_.naming | Add-Member "lyra2zz" "lyra2zz" -ErrorAction SilentlyContinue -Force
-                                        $Data.$_.oc | Add-Member "lyra2zz" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.commands| Add-Member "lyra2zz" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "lyra2zz" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "lyra2zz" "lyra2zz" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "lyra2zz" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue
 
                                         $Data.$_.commands| Add-Member "cnfastv2" "" -ErrorAction SilentlyContinue
                                         $Data.$_.difficulty | Add-Member "cnfastv2" "" -ErrorAction SilentlyContinue
@@ -290,7 +292,7 @@ function start-update {
           
                                         $Data.$_.commands| Add-Member "astralhash" "" -ErrorAction SilentlyContinue
                                         $Data.$_.difficulty | Add-Member "astralhash" "" -ErrorAction SilentlyContinue
-                                        $Data.$_.naming | Add-Member "astralhash" "glt-astralhash" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.naming | Add-Member "astralhash" "glt-astralhash" -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "astralhash" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue
 
                                         $Data.$_.commands| Add-Member "padihash" "" -ErrorAction SilentlyContinue
@@ -427,32 +429,32 @@ function start-update {
                             if ($ChangeFile -eq "fancyix.json") {
                                 $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                     if ($_ -ne "name") {
-                                        $Data.$_.commands| Add-Member "x22i" "-w 256 -I 22" -ErrorAction SilentlyContinue -Force
-                                        $Data.$_.difficulty | Add-Member "x22i" "" -ErrorAction SilentlyContinue -Force
-                                        $Data.$_.naming | Add-Member "x22i" "x22i" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.commands| Add-Member "x22i" "-w 256 -I 22" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "x22i" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "x22i" "x22i" -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "x22i" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue
 
-                                        $Data.$_.commands| Add-Member "lyra2z" "-w 256 -I 22" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.commands| Add-Member "lyra2z" "-w 256 -I 22" -ErrorAction SilentlyContinue
                                         $Data.$_.difficulty | Add-Member "lyra2z" "" -ErrorAction SilentlyContinue
                                         $Data.$_.naming | Add-Member "lyra2z" "lyra2z" -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "lyra2z" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue         
 
-                                        $Data.$_.commands| Add-Member "phi2" "-w 256 -I 22" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.commands| Add-Member "phi2" "-w 256 -I 22" -ErrorAction SilentlyContinue
                                         $Data.$_.difficulty | Add-Member "phi2" "" -ErrorAction SilentlyContinue
                                         $Data.$_.naming | Add-Member "phi2" "phi2" -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "phi2" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue         
 
-                                        $Data.$_.commands| Add-Member "allium" "-w 256 -I 22" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.commands| Add-Member "allium" "-w 256 -I 22" -ErrorAction SilentlyContinue
                                         $Data.$_.difficulty | Add-Member "allium" "" -ErrorAction SilentlyContinue
                                         $Data.$_.naming | Add-Member "allium" "allium" -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "allium" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue         
         
-                                        $Data.$_.commands| Add-Member "lyra2rev3" "-w 256 -I 24" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.commands| Add-Member "lyra2rev3" "-w 256 -I 24" -ErrorAction SilentlyContinue
                                         $Data.$_.difficulty | Add-Member "lyra2rev3" "" -ErrorAction SilentlyContinue
                                         $Data.$_.naming | Add-Member "lyra2rev3" "lyra2rev3" -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "lyra2rev3" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue         
 
-                                        $Data.$_.commands| Add-Member "lyra2v3" "-I 24 -w 256" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.commands| Add-Member "lyra2v3" "-I 24 -w 256" -ErrorAction SilentlyContinue
                                         $Data.$_.difficulty | Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
                                         $Data.$_.naming | Add-Member "lyra2v3" "lyra2rev3" -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "lyra2v3" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue         
