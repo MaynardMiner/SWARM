@@ -110,39 +110,3 @@ oc-settings are applied during the start of "logdata" screen. The only way to se
   "Memory": "1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000" } 
 
 
-FOR WINDOWS:
-
--"dpm" "mpdm" does not specify the p-states in Windows- It is the voltage:
-
-   "mdpm" of 950 will specify a mem voltage of 950 in Windows
-   "dpm" of 900 will specify a core voltage of 900 in Windows.
-            You muse specify dpm and mdpm in windows!
-
--For windows: Setting V is setting power target. The scheme to do so is as followed:
-     
-     -2 means negative
-     -1 means positive
-     -number proceeding 1 or 2 is the setting.
-
-     Example
-     V: 222 means you are setting a power target of -22%
-     V: 122 means you are setting a power target of +22%
-                 You Must use 1 or 2!
-
-For Windows- Voltages will be applied to the last state, aggressive undervolting is ignored- Power Targets Can.
-Linux version will aggressively undervolt by default.
-
-SUPER IMPORTANT!!!
-
-Miners in SWARM for AMD are not like ethash and cryptonight. You will experience constant failures
-and crashing if you attempt to undervolt a lot. It is highly reccommended to start at default settings,
-and then adjust your oc accordingly.
-
-SWARM will gather card model, and if it returns a p3 memory state- It will choose that state in windows. All
-other cards will choose p2 memory state.
-
-
-FOR LINUX:
-
-Works as HiveOS intended. All parameters will OC accordingly.
-     SWARM does not support Vega OC yet for HiveOS!
