@@ -37,7 +37,7 @@ get_amd_cards_fan(){
 				cpkhs=(`echo "$mystats" | grep 'GPU=' | sed -e 's/.*=//' | tr -d '\r'`)
 				cpfan=(`echo "$mystats" | grep 'FAN=' | sed -e 's/.*=//' | tr -d '\r'`)
 				cptemp=(`echo "$mystats" | grep 'TEMP=' | sed -e 's/.*=//' | tr -d '\r'`)
-				algo=`echo "$mystats" | grep -m1 'ALGO=' | sed -e 's/.*=//' | tr -d '\r'`
+				algo=`echo "$mystats" | grep -m1 'HIVEALGO=' | sed -e 's/.*=//' | tr -d '\r'`
 				local ac=`echo "$mystats" | grep -m1 'ACC=' | sed -e 's/.*=//' | tr -d '\r'`
 				local rj=`echo "$mystats" | grep -m1 'REJ=' | sed -e 's/.*=//' | tr -d '\r'`
 				uptime=`echo "$mystats" | grep -m1 'UPTIME=' | sed -e 's/.*=//' | tr -d '\r'`

@@ -67,6 +67,10 @@ if ($Platforms -eq "windows") {
 . .\build\powershell\statcommand.ps1
 . .\build\powershell\api.ps1
 
+##Get hive naming conventions:
+$GetHiveNames = ".\config\pools\pool-algos.json"
+$HiveNames = if(Test-Path $GetHiveNames){Get-Content $GetHiveNames | ConvertFrom-Json}
+
 ##Start API Server
 Write-Host "API Port is $Port"
 if ($Platforms -eq "Windows") {Start-Process "powershell" -ArgumentList "-ExecutionPolicy Bypass -WindowStyle hidden -Command `".\build\powershell\apiwatchdog.ps1 $Port`"" -WorkingDirectory $WorkingDir}
@@ -329,7 +333,7 @@ While ($True) {
     if ($DevNVIDIA -eq $true) {for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {$GPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; $GPUFans | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; $GPUTemps | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; $GPUPower | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0}}
 
     ## Reset All Stats, Rebuild Tables
-    $ALGO = @(); $HashRates = @(); $Fans = @(); $Temps = @(); $Power = @(); 
+    $ALGO = @(); $HiveALgo = @(); $HashRates = @(); $Fans = @(); $Temps = @(); $Power = @(); 
     $CPUKHS = $null; $CPUACC = 0; $CPUREJ = 0; $RAW = 0; $KHS = 0; $REJ = 0; $ACC = 0;
     $GPUHashRates | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | % {$GPUHashRates.$_ = 0};
     $CPUHashRates | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | % {$CPUHashRates.$_ = 0};
@@ -369,6 +373,7 @@ While ($True) {
             $MinerType = "$($_.Type)"
             $MinerAPI = "$($_.API)"
             $HashPath = ".\logs\$($_.Type).log"
+            $HiveAlgo += "$HiveNames.$($_.Algo).hiveos_name"
 
             ## Set Object For Type (So It doesn't need to be repeated)
             if ($MinerType -like "*NVIDIA*") {$TypeS = "NVIDIA"}
@@ -926,6 +931,7 @@ KHS=$KHS
 ACC=$ACC
 REJ=$REJ
 ALGO=$ALGO
+HIVEALGO=$HiveAlgo
 $($Fans -join "`n")
 $($Temps -join "`n")
 UPTIME=$UPTIME
