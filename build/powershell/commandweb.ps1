@@ -266,6 +266,28 @@ function Start-Webcommand {
                             Write-Host $method $messagetype $data
                             $trigger = "config"
                         }
+                        "stop" {
+                            $method = "message"
+                            $messagetype = "success"
+                            $data = "Miner stopped"
+                            $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id
+                            $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+                            $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+                            Write-Host $method $messagetype $data
+                            $GetMiner = Get-Content ".\build\pid\miner_pid.txt"
+                            if($GetMiner){$MinerProcess = Get-PRocess -ID $GetMiner -ErrorAction SilentlyContinue; if($MinerProcess){Stop-Process $MinerProcess}}
+                            $trigger = "exec"
+                        }
+                        "start" {
+                            $method = "message"
+                            $messagetype = "success"
+                            $data = "Miner started"
+                            $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id
+                            $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+                            $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+                            Write-Host $method $messagetype $data
+                            $trigger = "config"
+                        }
                     }
                 } 
                 "benchmark" {
