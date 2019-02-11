@@ -41,7 +41,6 @@
       "padihash":"", 
       "pawelhash":"",
       "bmw512": ""
-
     }, 
     "difficulty": {
       "bcd":"", 
@@ -366,7 +365,7 @@
         "core":"", 
         "mem":""
       },
-      "bmw513": {
+      "bmw512": {
         "dpm":"", 
         "v":"", 
         "mdpm":"", 

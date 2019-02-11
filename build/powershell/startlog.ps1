@@ -35,4 +35,5 @@ function start-log {
     $Logs = Join-Path $dir "logs\miner$($Number)-active.log"
     Start-Transcript $Logs
     Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+    if ($HiveOS -eq "Yes" -and $Platforms -eq "linux") {Start-Process "screen" -Argumentlist "-S miner -X log" -Wait}
 }

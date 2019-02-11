@@ -1784,15 +1784,23 @@ Includes changes from test/beta release:
 -cc-mtp added.
 -fixed cc-yescrypt naming.
 
+
 1.9.6
 
--Fixed pool case sensitivity enforcement
--Fixed weird screen issues as a result
-   of stopping hiveOS transcript. (miner log)
+Windows AMD users:
+   Install 18.6.1 Drivers
+   Install 19.1.1 Drivers (Do not select "clean install")
+   This will ensure OpenCL for some miners are correct.
 
--added delay in transcript, so it doesn't generate issues
- in rollover.
-
--added new test source for a progpow miner. Can not test
- on zergpool.
-
+-Full ADL oc for AMD should match HiveOS
+    -Core State is ignored- It doesn't matter in Windows.
+-ADL records default clock/voltage settings for cards in Windows.
+-Fixed Fan speed for Vegas- Should now display correct % in Windows. 
+    -(thank tede of OverdriveNtool for sharing his source with me).
+-Updated Phoenix Miner
+-Updated bminer
+-Updated wildrig
+-Compiled BCI ProgPow miner, manually fixed linux stratum issues. Should work for zergpool in future.
+-Attempting another logging sequence for miners in Windows.
+-miner stop added in windows
+-miner start added in windows.

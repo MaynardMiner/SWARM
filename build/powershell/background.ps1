@@ -387,7 +387,7 @@ While ($True) {
             if ($Platforms -eq "windows" -and $HiveOS -eq "Yes") {
                 if ($TypeS -eq "NVIDIA") {$StatPower = $NVIDIAStats.Power}
                 if ($TypeS -eq "AMD") {$StatPower = $AMDStats.Power}
-                if ($StatPower -ne "" -or $StatPower -ne $null) {for ($i = 0; $i -lt $Devices.Count; $i++) {$GPUPower.$(Get-GPUS) = Set-Array $StatPower $i}}
+                if ($StatPower -ne "" -or $StatPower -ne $null){for ($i = 0; $i -lt $Devices.Count; $i++) {$GPUPower.$(Get-GPUS) = Set-Array $StatPower $Devices[$i]}}
             }
 
 
@@ -395,18 +395,18 @@ While ($True) {
             if ($MinerType -Like "*NVIDIA*") {
                 switch ($Platforms) {
                     "Windows" {
-                        for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans $i}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
-                        for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps $i}catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}}
+                        for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans $Devices[$i]}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
+                        for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps $Devices[$i]}catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}}
                     }
                     "linux" {
                         switch ($HiveOS) {
                             "Yes" {
-                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans (Get-GPUS)}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
-                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps (Get-GPUS)}catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}}            
+                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans (Get-GPUs)}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
+                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps (Get-GPUs)}catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}}            
                             }
                             "No" {
-                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans $i}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
-                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps $i}catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}}                    
+                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans $Devices[$i]}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
+                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps $Devices[$i]}catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}}                    
                             }
                         }
                     }
@@ -415,8 +415,8 @@ While ($True) {
             if ($MinerType -Like "*AMD*") {
                 Switch ($Platforms) {
                     "windows" {
-                        for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUFans.$(Get-GPUS) = Set-Array $AMDStats.Fans $i}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
-                        for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps $i}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
+                        for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUFans.$(Get-GPUS) = Set-Array $AMDStats.Fans $Devices[$i]}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
+                        for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps $Devices[$i]}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
                     }
                     "linux" {
                         switch ($HiveOS) {
@@ -425,8 +425,8 @@ While ($True) {
                                 for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps (Get-GPUs)}catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red}; break}
                             }
                             "No" {
-                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUFans.$(Get-GPUS) = Set-Array $AMDStats.Fans $i}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
-                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps $i}catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red}; break}
+                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUFans.$(Get-GPUS) = Set-Array $AMDStats.Fans $Devices[$i]}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
+                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps $Devices[$i]}catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red}; break}
                             }
                         }
                     }
@@ -497,7 +497,6 @@ While ($True) {
                 'excavator' {
                     $HS = "khs"
                     $RAW = 0
-                    Write-MinerData1
                     $Message = $null; $Message = @{id = 1; method = "algorithm.list"; params = @()} | ConvertTo-Json -Compress
                     $Request = $null; $Request = Get-TCP -Server $Server -Port $port -Message $Message
                     if ($Request) {
@@ -566,7 +565,6 @@ While ($True) {
   
                 'ewbf' {
                     $HS = "hs"
-                    Write-MinerData1
                     $Message = $null; $Message = @{id = 1; method = "getstat"} | ConvertTo-Json -Compress
                     $Request = $Null; $Request = Get-TCP -Server $Server -Port $port -Message $Message
                     if ($Request) { 

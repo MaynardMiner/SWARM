@@ -1,37 +1,37 @@
  {
-"name":"cpu-linux", 
-"bubasik": {
-"name":"bubasik", 
-"type":"cpu", 
-"path1":".\\bin\\bubasik\\cpuminer", 
-"minername":"cpuminer", 
-"version":"3.8.8.3", 
-"uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v8.0/cpuminer-bubasik.tar.gz"
+  "name":"cpu-linux", 
+    "bubasik": {
+      "name":"bubasik", 
+      "type":"cpu", 
+      "path1":".\\bin\\bubasik\\cpuminer", 
+      "minername":"cpuminer", 
+      "version":"3.8.8.3", 
+      "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v8.0/cpuminer-bubasik.tar.gz"
 }, 
 
-"cryptozeny": {
-"name":"cryptozeny", 
-"type":"cpu", 
-"path1":".\\bin\\cryptozeny\\cpuminer", 
-"minername":"cpuminer", 
-"version":"1.0", 
-"uri":"https://github.com/cryptozeny/cpuminer-kawaii.git"
+    "cryptozeny": {
+      "name":"cryptozeny", 
+      "type":"cpu", 
+      "path1":".\\bin\\cryptozeny\\cpuminer", 
+      "minername":"cpuminer", 
+      "version":"1.0", 
+      "uri":"https://github.com/cryptozeny/cpuminer-kawaii.git"
 }, 
 
-"jayddee": {
-"name":"jayddee", 
-"type":"cpu", 
-"path1":".\\bin\\JayDDee\\cpuminer", 
-"minername":"cpuminer", 
-"version":"3.8.8.1", 
-"uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v8.0/cpuminer-jayddee.tar.gz"
+    "jayddee": {
+      "name":"jayddee", 
+      "type":"cpu", 
+      "path1":".\\bin\\JayDDee\\cpuminer", 
+      "minername":"cpuminer", 
+      "version":"3.8.8.1", 
+      "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v8.0/cpuminer-jayddee.tar.gz"
 }, 
-"stak_cpu": {
-"name":"stak_cpu", 
-"type":"cpu", 
-"path1":".\\bin\\stak-cpu-1\\xmr-stak", 
-"minername":"xmr-stak", 
-"version":"2.6.0", 
-"uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/fireice-linux.tar.gz" 
+  "stak_cpu": {
+      "name":"stak_cpu", 
+      "type":"cpu", 
+      "path1":".\\bin\\stak-cpu-1\\xmr-stak", 
+      "minername":"xmr-stak", 
+      "version":"2.6.0", 
+      "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/fireice-linux.tar.gz" 
 }
 }

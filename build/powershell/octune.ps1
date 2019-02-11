@@ -361,6 +361,18 @@ function Start-OC {
                     }
                 }
                 if ($Platforms -eq "windows") {
+                    Invoke-Expression ".\build\apps\odvii.exe s" | Tee-Object -Variable stats | OUt-Null
+                    $stats = $stats | ConvertFrom-StringData
+                    $Model = $stats.keys | % {if ($_ -like "*Model*") {$stats.$_}}
+                    $Default_Core_Clock = @{}
+                    $Default_Core_Voltage = @{}
+                    $Default_Mem_Clock = @{}
+                    $Default_Mem_Voltage = @{}
+                    $stats.keys | % {if ($_ -like "*Core Clock*") {$Default_Core_Clock.Add($_, $stats.$_)}}
+                    $stats.keys | % {if ($_ -like "*Core Voltage*") {$Default_Core_Voltage.Add($_, $stats.$_)}}
+                    $stats.keys | % {if ($_ -like "*Mem Clock*") {$Default_Mem_Clock.Add($_, $stats.$_)}}
+                    $stats.keys | % {if ($_ -like "*Mem Voltage*") {$Default_Mem_Voltage.Add($_, $stats.$_)}}
+                                    
                     $Ascript += "`$host.ui.RawUI.WindowTitle = `'OC-Start`';"
                     Invoke-Expression ".\build\apps\odvii.exe s" | Tee-Object -Variable Model | OUt-Null
                     $Model = $Model | ConvertFrom-StringData
@@ -372,61 +384,33 @@ function Start-OC {
                         $Select = $GCount.AMD.PSOBject.Properties.Name
                         $Select = $Select | Sort-Object
                         $Select = $Select[$i]
-                        if ($MemClock -and $MemState) {
+                        if ($MemClock -or $MDPM) {
                             $DOAmdOC = $true
-                            if ($MemClock.Count -eq 1) {
-                                if ($Model[$i] -like "*Vega*") {
-                                    $OCArgs += "Mem_P3=$MemClock;$MemState "
-                                    $AScreenMem = "$($_.Type) MEM is $($_.ocmem) "
-                                    $AScreenMDPM = "$($_.Type) MDPM is $($_.ocmdpm) "
-                                }
-                                else {
-                                    $OCArgs += "Mem_P2=$MemClock;$MemState "
-                                    $AScreenMem = "$($_.Type) MEM is $($_.ocmem) "
-                                    $AScreenMDPM = "$($_.Type) MDPM is $($_.ocmdpm) "
-                                }
-                            }
-                            else {
-                                if ($Model[$i] -like "*Vega*") {
-                                    $OCArgs += "Mem_P3=$($MemClock[$Select]);$($MemState[$Select]) "
-                                    $AScreenMem = "$($_.Type) MDPM is $($_.ocmdpm) "
-                                    $AScreenMDPM = "$($_.Type) MEM is $($_.ocmem) "
-                                }
-                                else {
-                                    $OCArgs += "Mem_P2=$($MemClock[$Select]);$($MemState[$Select]) "
-                                    $AScreenMem = "$($_.Type) MDPM is $($_.ocmdpm) "
-                                    $AScreenMDPM = "$($_.Type) MEM is $($_.ocmem) "
-                                }
-                            }                       
+                            if ($Model[$Select] -like "*Vega*") {$PStates = 4}else {$PStates = 3}
+                            if($MemClock.Count -eq 1){$Memory_Clock = $MemClock}else{$Memory_Clock = $MemClock[$Select]}
+                            if($MDPM.Count -eq 1){$Mem_State = $MDPM}else{$Mem_State = $MDPM[$Select]}
+                            $DefaultMemClock = $Default_Mem_Clock."Gpu $Select P$($PStates-1) Mem Clock"
+                            $DefaultMemVolt = $Default_Mem_Voltage."Gpu $Select P$($PStates-1) Mem Voltage"
+                            if ($Memory_Clock) {$Mem = $Memory_Clock}else {$Mem = $DefaultMemClock}
+                            if ($Mem_State) { $MV = $Default_Mem_Voltage."Gpu $Select P$($Mem_State) Mem Voltage" }else {$MV = $DefaultMemVolt}
+                            $OCArgs += "Mem_P$($PStates-1)=$($Mem);$MV "
+                            $AScreenMem = "$($_.Type) MEM is $($_.ocmem) "
+                            $AScreenMDPM = "$($_.Type) MDPM is $($_.ocmdpm) "
                         }
-                        if ($CoreClock -or $CoreState) {
+                        if ($CoreClock -or $Voltage) {
                             $DOAmdOC = $true
-                            if ($CoreClock.Count -eq 1) {
-                                $OCArgs += "GPU_P7=$CoreClock;$CoreState "
-                                $AScreenCore = "$($_.Type) CORE is $($_.occore) "
-                                $AScreenDPM = "$($_.Type) DPM is $($_.ocdpm) "
+                            $PStates = 8
+                            for ($j = 1; $j -lt $PStates; $j++) {
+                            if($CoreClock.Count -eq 1){$Core_Clock = $CoreClock}else{$Core_Clock = $CoreClock[$Select]}
+                            if($Voltage.Count -eq 1){$Core_Volt = $Voltage}else{$Core_Volt = $Voltage[$Select]}
+                            $DefaultCoreClock = $Default_Core_Clock."Gpu $Select P$j Core Clock"
+                            $DefaultCoreVolt = $Default_Core_Voltage."Gpu $Select P$j Core Voltage"
+                            if ($Core_Clock) {$CClock = $Core_Clock}else {$CClock = $DefaultCoreClock}
+                            if ($Core_Volt) {$CVolt = $Core_Volt}else {$CVolt = $DefaultCoreVolt}
+                            $OCArgs += "GPU_P$j=$CClock;$CVolt "
                             }
-                            else {
-                                $OCArgs += "GPU_P7=$($CoreClock[$Select]);$($CoreState[$Select]) "
-                                $AScreenCore = "$($_.Type) CORE is $($_.occore) "
-                                $AScreenDPM = "$($_.Type) DPM is $($_.ocdpm) "
-                            }
-                        }
-                        if ($Voltage) {
-                            $DOAmdOC = $true
-                            if ($Voltage.Count -eq 1) {$Volt = "$Voltage"}
-                            else {$Volt = $Voltage[$Select]}
-                            $Value = $Volt.Substring(1)
-                            if ($Volt[0] -eq "1") {$Mod = ""}
-                            if ($Volt[0] -eq "2") {$Mod = "-"}
-                            if ($Voltage.Count -eq 1) {
-                                $OCArgs = "Power_Target=$Mod$Value "
-                                $AScreenPower = "$($_.Type) V is $($_.ocv) "
-                            }
-                            else {
-                                $OCArgs += "Power_Target=$Mod$Value "
-                                $AScreenPower = "$($_.Type) V is $($_.ocv) "
-                            }
+                            $AScreenCore = "$($_.Type) CORE is $($_.occore) "
+                            $AScreenDPM = "$($_.Type) Core Voltage is $($_.ocdpm) "
                         }
                         if ($Fans) {
                             $DOAmdOC = $true

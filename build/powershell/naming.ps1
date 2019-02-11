@@ -53,6 +53,20 @@ function Get-AMD {
     else {$Coin}
 }
 
+function Get-Algorithm {
+    param(
+        [Parameter(Mandatory = $true)]
+        [String]$Algorithm
+    )
+
+    $Algorithms = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
+
+    $Algorithm = (Get-Culture).TextInfo.ToTitleCase(($Algorithm -replace "_", " ")) -replace " "
+
+    if ($Algorithms.$Algorithm) {$Algorithms.$Algorithm}
+    else {$Algorithm}
+}
+
 function Convert-DateString ([string]$Date, [string[]]$Format) {
     $result = New-Object DateTime
 

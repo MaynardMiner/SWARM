@@ -45,6 +45,8 @@ function start-update {
         $PreviousVersions += "SWARM.1.9.1"
         $PreviousVersions += "SWARM.1.9.2"
         $PreviousVersions += "SWARM.1.9.3"
+        $PreviousVersions += "SWARM.1.9.4"
+        $PreviousVersions += "SWARM.1.9.5"
 
         Write-Host "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
         Write-Host "Check $Location For any Previous Versions"
@@ -306,13 +308,18 @@ function start-update {
                                         $Data.$_.commands| Add-Member "pawelhash" "" -ErrorAction SilentlyContinue
                                         $Data.$_.difficulty | Add-Member "pawelhash" "" -ErrorAction SilentlyContinue
                                         $Data.$_.naming | Add-Member "pawelhash" "glt-pawelhash" -ErrorAction SilentlyContinue
-                                        $Data.$_.oc | Add-Member "pwelhash" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "pawelhash" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue
 
                                         $Data.$_.commands| Add-Member "bmw512" "" -ErrorAction SilentlyContinue
                                         $Data.$_.difficulty | Add-Member "bmw512" "" -ErrorAction SilentlyContinue
                                         $Data.$_.naming | Add-Member "bmw512" "bmw512" -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "bmw512" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue
 
+                                        ## Temp remove these algos
+                                        $Data.$_.commands = $Data.$_.commands | Select -ExcludeProperty "mtp"
+                                        $Data.$_.difficulty = $Data.$_.difficulty | Select -ExcludeProperty "mtp"
+                                        $Data.$_.naming = $Data.$_.naming | Select -ExcludeProperty "mtp"
+                                        $Data.$_.oc = $Data.$_.oc | Select -ExcludeProperty "mtp"
                                     }
                                 }
                             }
@@ -496,7 +503,7 @@ function start-update {
                     $Data | ConvertTo-Json -Depth 3 | Set-Content $NameJson;
                     Write-Host "Wrote To $NameJson"
                 }
-                Remove-Item $PreviousPath -recurse
+                Remove-Item $PreviousPath -recurse -force
             }
         }
     }
