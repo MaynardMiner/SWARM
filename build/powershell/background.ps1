@@ -67,10 +67,6 @@ if ($Platforms -eq "windows") {
 . .\build\powershell\statcommand.ps1
 . .\build\powershell\api.ps1
 
-##Get hive naming conventions:
-$GetHiveNames = ".\config\pools\pool-algos.json"
-$HiveNames = if(Test-Path $GetHiveNames){Get-Content $GetHiveNames | ConvertFrom-Json}
-
 ##Start API Server
 Write-Host "API Port is $Port"
 if ($Platforms -eq "Windows") {Start-Process "powershell" -ArgumentList "-ExecutionPolicy Bypass -WindowStyle hidden -Command `".\build\powershell\apiwatchdog.ps1 $Port`"" -WorkingDirectory $WorkingDir}
@@ -266,6 +262,10 @@ $BackgroundTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $BackgroundTimer.Restart()
 $RestartTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 
+##Get hive naming conventions:
+$GetHiveNames = ".\config\pools\pool-algos.json"
+$HiveNames = if(Test-Path $GetHiveNames){Get-Content $GetHiveNames | ConvertFrom-Json}
+
 While ($True) {
     ## Timer For When To Restart Loop
     $RestartTimer.Restart()
@@ -373,7 +373,7 @@ While ($True) {
             $MinerType = "$($_.Type)"
             $MinerAPI = "$($_.API)"
             $HashPath = ".\logs\$($_.Type).log"
-            $HiveAlgo += "$HiveNames.$($_.Algo).hiveos_name"
+            $HiveAlgo += $HiveNames.$($_.Algo).hiveos_name
 
             ## Set Object For Type (So It doesn't need to be repeated)
             if ($MinerType -like "*NVIDIA*") {$TypeS = "NVIDIA"}
@@ -793,8 +793,10 @@ While ($True) {
                     $Request = $Null; $Request = Get-HTTP -Port $Port -Message $Message
                     if ($Request) {
                         try {$Data = $Null; $Data = $Request.Content | ConvertFrom-Json -ErrorAction Stop; }catch {Write-Host "Failed To gather summary" -ForegroundColor Red}
-                        $done = $false;
-                        $Data.hashrate.threads | % {$Thread = $_; if ($Thread -ne $Null) {$Thread | % {$RAW += $_}}}
+                        $HashRate_Total = [Double]$Data.hashrate.total[0]
+                        if (-not $HashRate_Total) {$HashRate_Total = [Double]$Data.hashrate.total[1]} #fix
+                        if (-not $HashRate_Total) {$HashRate_Total = [Double]$Data.hashrate.total[2]} #fix
+                        $RAW = $HashRate_Total
                         Write-Host "Note: XMR-STAK/XMRig API is not great. You can't match threads to specific GPU." -ForegroundColor Yellow
                         Write-MinerData2
                         try {$Hash = for ($i = 0; $i -lt $Data.hashrate.threads.count; $i++) {$Data.Hashrate.threads[$i] | Select -First 1}}catch {}
@@ -923,6 +925,7 @@ HSU=$CPUHS
         }
 
         $ALGO = $ALGO | Select -First 1
+        $HiveAlgo = $HiveAlgo | Select -First 1
         $KHS = [Math]::Round($KHS, 3)
 
         $HIVE = "
