@@ -77,6 +77,17 @@
 "uri":"https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.6/lolMiner_v06_Win64.zip"
 }, 
 
+"lolminerv7": {
+"name":"lolminerv7", 
+"type":"amd", 
+"path1":".\\bin\\lolMinerv7-AMD-1\\lolMiner", 
+"path2":".\\bin\\lolMinerv7-AMD-2\\lolMiner", 
+"path3":".\\bin\\lolminerv7-AMD-3\\lolMiner", 
+"minername":"lolMiner", 
+"version":"0.7", 
+"uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/lolminerv7-windows.zip"
+}, 
+
 "teamredminer": {
 "name":"teamredminer", 
 "type":"amd", 

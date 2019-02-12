@@ -34,6 +34,20 @@ function Get-Data {
         Set-Location $CmdDir     
     }
 
+    if (-not (Test-Path ".\build\export\libcudart.so.10.0")) {
+        $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
+        Start-Process ln -ArgumentList "-s $dir/build/export/libcudart.so.10.0.130 $dir/build/export/libcudart.so.10.0" -Wait
+        Set-Location "/"
+        Set-Location $CmdDir     
+    }
+    
+     if (-not (Test-Path ".\build\export\libcudart.so.9.2")) {
+        $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
+        Start-Process ln -ArgumentList "-s $dir/build/export/libcudart.so.9.2.148 $dir/build/export/libcudart.so.9.2" -Wait
+        Set-Location "/"
+        Set-Location $CmdDir     
+    }
+
     if (-not (Test-Path ".\build\export\libmicrohttpd.so.10")) {
         $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
         Start-Process ln -ArgumentList "-s $dir/build/export/libmicrohttpd.so.10.34.0 $dir/build/export/libmicrohttpd.so.10" -Wait
@@ -67,14 +81,6 @@ function Get-Data {
       Set-Location "/"
       Set-Location $CmdDir     
      }
-
-     if(-not (Test-Path ".\build\export\libhwloc.so.5"))
-     {
-      Start-Process ln -ArgumentList "-s $CmdDir/build/export/libhwloc.so.5.5.0 $CmdDir/build/export/libhwloc.so.5" -Wait
-      Set-Location "/"
-      Set-Location $CmdDir     
-     }
-
 
      if(-not (Test-Path ".\build\export\libnvrtc.so.9.2"))
      {

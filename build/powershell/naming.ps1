@@ -88,6 +88,6 @@ function Get-AlgoList {
 function Get-BadPools {
 $Badpools = @()
 $GetAlgorithms = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
-$GetAlgorithms.PSObject.Properties.Name | %{$Badpools +=  [PSCustomObject]@{"$_" = $GetAlgorithms.$_}}
+$GetAlgorithms.PSObject.Properties.Name | %{$Badpools +=  [PSCustomObject]@{"$_" = $GetAlgorithms.$_.pools_to_exclude}}
 $Badpools
 }

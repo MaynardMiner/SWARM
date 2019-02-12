@@ -31,7 +31,7 @@ $Stats = @{
    fan = @($Fans)
    uptime = $UPTIME
    ar = @($AR)
-   algo = $ALGO
+   algo = $HIVEALGO
    bus_numbers = @($BusNumbers)
    }
    total_khs = $KHS
