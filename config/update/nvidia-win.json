@@ -37,7 +37,7 @@
                    "path2":".\\bin\\bminer-2\\bminer.exe", 
                    "path3":".\\bin\\bminer-3\\bminer.exe", 
                    "minername":"bminer", 
-                   "version":"14.1.0", 
+                   "version":"14.3.0", 
                    "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/bminer-windows.zip"
 }, 
     "ehssand": {
@@ -57,7 +57,7 @@
                    "path2":".\\bin\\gminer-2\\miner.exe", 
                    "path3":".\\bin\\gminer-3\\miner.exe", 
                    "minername":"miner", 
-                   "version":"1.30", 
+                   "version":"1.31", 
                    "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/gminer-windows.zip"
 }, 
     "claymore": {
