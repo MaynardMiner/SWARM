@@ -5,6 +5,6 @@ screen -S NVIDIA2 -X stuff $"export LD_LIBRARY_PATH=/hive/miners/custom/SWARM/bu
 sleep .1
 screen -S NVIDIA2 -X stuff $"cd\n"
 sleep .1
-screen -S NVIDIA2 -X stuff $"cd /hive/miners/custom/SWARM/bin/cryptodredge-2\n"
+screen -S NVIDIA2 -X stuff $"cd /hive/miners/custom/SWARM/bin/trex-2\n"
 sleep .1
 screen -S NVIDIA2 -X stuff $"$(< /hive/miners/custom/SWARM/build/bash/config.sh)\n"
