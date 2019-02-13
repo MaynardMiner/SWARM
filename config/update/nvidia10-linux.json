@@ -170,6 +170,16 @@
     "version":"1.31", 
     "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/gminer-linux.tar.gz"
 }, 
+"grin-miner": {
+  "name":"grin-miner", 
+  "type":"nvidia", 
+  "path1":".\\bin\\grin-miner-1\\grin-miner", 
+  "path2":".\\bin\\grin-miner-2\\grin-miner", 
+  "path3":".\\bin\\grin-miner-3\\grin-miner", 
+  "minername":"grin-miner", 
+  "version":"1.00", 
+  "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/grin-miner-linux.tar.gz"
+}, 
   "bminer": {
     "name": "bminer",
     "type": "nvidia",

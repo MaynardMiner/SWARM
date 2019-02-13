@@ -19,7 +19,18 @@
 "minername":"energiminer", 
 "version":"2.2.1", 
 "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/energiminer-linux.tar.gz"
-}, 
+},
+"grin-amd": {
+    "name":"grin-amd", 
+    "type":"nvidia", 
+    "path1":".\\bin\\grin-amd-1\\grin-miner", 
+    "path2":".\\bin\\grin-amd-2\\grin-miner", 
+    "path3":".\\bin\\grin-amd-3\\grin-miner", 
+    "minername":"grin-miner", 
+    "version":"1.00", 
+    "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/grin-miner-linux.tar.gz"
+  }, 
+  
 "ehssand_amd": {
 "name":"ehssand_amd", 
 "type":"amd", 

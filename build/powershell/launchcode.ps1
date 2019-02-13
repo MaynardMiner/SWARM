@@ -32,6 +32,7 @@ function Start-LaunchCode {
     $PIDMiners = "$($MinerCurrent.Type)"
     if (Test-Path ".\build\pid\*$PIDMiners*") {Remove-Item ".\build\pid\*$PIDMiners*"}
     if (Test-Path ".\build\*$($MinerCurrent.Type)*-hash.txt") {Clear-Content ".\build\*$($MinerCurrent.Type)*-hash.txt"}
+    $Logs = Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "logs\$($MinerCurrent.Type).log" 
 
     switch -WildCard ($MinerCurrent.Type) {
         "*NVIDIA*" {
@@ -47,6 +48,7 @@ function Start-LaunchCode {
                     "trex" {$MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "bminer" {$MinerArguments = "-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "lolminer" {$MinerArguments = "--devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
+                    "grin-miner" {set-minerconfig $NewMiner $Logs}
                     "zjazz" {
                         $GetDevices = $($MinerCurrent.Devices) -split ","
                         $GetDevices | foreach {$LaunchDevices += "-d $($_) "}         
@@ -60,15 +62,18 @@ function Start-LaunchCode {
                 }
             }
             else {
-                if ($MinerCurrent.DeviceCall -eq "excavator") {
-                    $MinerDirectory = Split-Path ($MinerCurrent.Path) -Parent
-                    $CommandFilePath = Join-Path $dir "$($MinerDirectory)\command.json"
-                    $MinerArguments = "-c command.json -p $($MinerCurrent.Port)"
-                    $NHDevices = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
-                    $NiceDevices = Get-DeviceString -TypeCount $NHDevices.NVIDIA.Count
-                    set-nicehash $($MinerCurrent.NPool) 3200 $($MinerCurrent.NUser) $($MinerCurrent.Algo) $($MinerCurrent.CommandFile) "$NiceDevices"
+                switch ($MinerCurrent.DeviceCall) {
+                    "excavator" {
+                        $MinerDirectory = Split-Path ($MinerCurrent.Path) -Parent
+                        $CommandFilePath = Join-Path $dir "$($MinerDirectory)\command.json"
+                        $MinerArguments = "-c command.json -p $($MinerCurrent.Port)"
+                        $NHDevices = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
+                        $NiceDevices = Get-DeviceString -TypeCount $NHDevices.NVIDIA.Count
+                        set-nicehash $($MinerCurrent.NPool) 3200 $($MinerCurrent.NUser) $($MinerCurrent.Algo) $($MinerCurrent.CommandFile) "$NiceDevices"
+                    }
+                    "grin-miner" {set-minerconfig $NewMiner $Logs}
+                    default {$MinerArguments = "$($MinerCurrent.Arguments)"}
                 }
-                else {$MinerArguments = "$($MinerCurrent.Arguments)"}
             }
         }
 
@@ -80,7 +85,8 @@ function Start-LaunchCode {
                     "sgminer-gm" {Write-Host "Miner Has Devices"; $MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "tdxminer" {$MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "lolminer" {$MinerArguments = "--devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
-                    "wildrig" {$MinerArguments = "$($MinerCurrent.Arguments)"}        
+                    "wildrig" {$MinerArguments = "$($MinerCurrent.Arguments)"}
+                    "grin-miner" {set-minerconfig $NewMiner $Logs}
                     "lyclminer" {
                         $MinerArguments = ""
                         Set-Location (Split-Path $($MinerCurrent.Path))
@@ -101,24 +107,27 @@ function Start-LaunchCode {
                 }
             }
             else {
-                if ($MinerCurrent.DeviceCall -eq "lyclminer") {
-                    $MinerArguments = ""
-                    Set-Location (Split-Path $($MinerCurrent.Path))
-                    $ConfFile = Get-Content ".\lyclMiner.conf" -Force
-                    $Connection = $MinerCurrent.Connection
-                    $Username = $MinerCurrent.Username
-                    $Password = $MinerCurrent.Password
-                    $NewLines = $ConfFile | ForEach {
-                        if ($_ -like "*<Connection Url =*") {$_ = "<Connection Url = `"stratum+tcp://$Connection`""}
-                        if ($_ -like "*Username =*") {$_ = "            Username = `"$Username`"    "}
-                        if ($_ -like "*Password =*" ) {$_ = "            Password = `"$Password`">    "}
-                        if ($_ -notlike "*<Connection Url*" -or $_ -notlike "*Username*" -or $_ -notlike "*Password*") {$_}
+                switch ($MinerCurrent.DeviceCall) {
+                    "lyclminer" {
+                        $MinerArguments = ""
+                        Set-Location (Split-Path $($MinerCurrent.Path))
+                        $ConfFile = Get-Content ".\lyclMiner.conf" -Force
+                        $Connection = $MinerCurrent.Connection
+                        $Username = $MinerCurrent.Username
+                        $Password = $MinerCurrent.Password
+                        $NewLines = $ConfFile | ForEach {
+                            if ($_ -like "*<Connection Url =*") {$_ = "<Connection Url = `"stratum+tcp://$Connection`""}
+                            if ($_ -like "*Username =*") {$_ = "            Username = `"$Username`"    "}
+                            if ($_ -like "*Password =*" ) {$_ = "            Password = `"$Password`">    "}
+                            if ($_ -notlike "*<Connection Url*" -or $_ -notlike "*Username*" -or $_ -notlike "*Password*") {$_}
+                        }
+                        Clear-Content ".\lyclMiner.conf" -force
+                        $NewLines | Set-Content ".\lyclMiner.conf"
+                        Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
                     }
-                    Clear-Content ".\lyclMiner.conf" -force
-                    $NewLines | Set-Content ".\lyclMiner.conf"
-                    Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+                    "grin-miner" {set-minerconfig $NewMiner $Logs}
+                    default {$MinerArguments = "$($MinerCurrent.Arguments)"}
                 }
-                else {$MinerArguments = "$($MinerCurrent.Arguments)"}
             }
         }  
       
@@ -130,16 +139,14 @@ function Start-LaunchCode {
         }
     }
 
-    switch($MinerCurrent.name)
-    {
-     "gminer"{Write-Host "WARNING: SOME ALGOS MAY REQUIRE 6GB VRAM TO WORK" -ForegroundColor Green}
-     "bminer"{Write-Host "WARNING: SOME ALGOS MAY REQUIRE 6GB VRAM TO WORK" -ForegroundColor Green}
+    switch ($MinerCurrent.name) {
+        "gminer" {Write-Host "WARNING: SOME ALGOS MAY REQUIRE 6GB VRAM TO WORK" -ForegroundColor Green}
+        "bminer" {Write-Host "WARNING: SOME ALGOS MAY REQUIRE 6GB VRAM TO WORK" -ForegroundColor Green}
     }
 
     if ($Platforms -eq "windows") {
         if ($MinerProcess -eq $null -or $MinerProcess.HasExited -eq $true) {
             Start-Sleep -S $MinerCurrent.Delay
-            $Logs = Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "logs\$($MinerCurrent.Type).log" 
             $WorkingDirectory = Split-Path $($MinerCurrent.Path)
             if (Test-Path $Logs) {Clear-Content $Logs -ErrorAction SilentlyContinue}
             $script = @()
@@ -189,7 +196,6 @@ function Start-LaunchCode {
     } 
 
     elseif ($Platforms -eq "linux") {
-        $Logs = Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "logs\$($MinerCurrent.Type).log" 
         if (Test-Path $Logs) {Clear-Content $Logs}
         Set-Location (Split-Path $($MinerCurrent.Path))
         Rename-Item "$($MinerCurrent.Path)" -NewName "$($MinerCurrent.InstanceName)" -Force

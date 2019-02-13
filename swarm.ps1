@@ -191,6 +191,7 @@ Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 . .\build\powershell\commandweb.ps1;
 . .\build\powershell\response.ps1;
 . .\build\powershell\api.ps1;
+. .\build\powershell\config_file.ps1;
 if ($Type -like "*ASIC*") {. .\build\powershell\icserver.ps1; . .\build\powershell\poolmanager.ps1}
 if ($Platform -eq "linux") {. .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
 if ($Platform -eq "windows") {. .\build\powershell\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1; }
@@ -1188,8 +1189,8 @@ While ($true) {
                     ocfans         = $_.ocfans
                     ethpill        = $_.ethpill
                     pilldelay      = $_.pilldelay
-                    NPool          = $_.NPool
-                    NUser          = $_.NUser
+                    Host           = $_.Host
+                    User           = $_.User
                     CommandFile    = $_.CommandFile
                     Profit         = 0
                     Power          = 0

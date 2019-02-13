@@ -567,6 +567,35 @@ While ($True) {
                     }
                     else {Set-APIFailure; break}
                 }
+
+                'grin-miner'
+                {
+                 $HS = "hs"
+                 try{$Request = Get-Content ".\logs\$MinerType.log" -ErrorAction SilentlyContinue}catch{Write-Host "Failed to Read Miner Log"}
+                  if($Request)
+                  {
+                    $Hash = @()
+                    $Devices | %{
+                        $DeviceData = $Null
+                        $DeviceData = $Request | Select-String "Device $($_)" | %{$_ | Select-String "Graphs per second: "} | Select -Last 1
+                        $DeviceData = $DeviceData -split "Graphs per second: " | Select -Last 1 | %{$_ -split " - Total" | Select -First 1}
+                        if($DeviceData){$Hash += $DeviceData; $RAW += [Double]$DeviceData}else{$Hash += 0; $RAW += 0}
+                    }
+                    Write-MinerData2;
+                    try {for ($i = 0; $i -lt $Devices.Count; $i++) {$GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $i)}}catch {Write-Host "Failed To parse GPU Threads" -ForegroundColor Red};
+                    $Accepted = $null
+                    $Rejected = $null
+                    $Accepted = $($Request | Select-String "Share Accepted!!").count
+                    $Rejected = $($Request | Select-String "Failed to submit a solution").count
+                    $ACC += $Accepted
+                    $REJ += $Rejected
+                    $MinerACC += $Accepted
+                    $MinerREJ += $Rejected
+                    $UPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
+                    $ALGO += "$MinerAlgo"
+                  }
+                  else {Set-APIFailure; break}
+                }
   
                 'ewbf' {
                     $HS = "hs"
