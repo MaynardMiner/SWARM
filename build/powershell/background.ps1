@@ -836,7 +836,7 @@ While ($True) {
                         $REJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good
                         $UPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
                         $ALGO += "$MinerAlgo"
-                        try {$KHS += [Double]$Data.hashrate.total[0]}catch {}
+                        try {$KHS += [Double]$Data.hashrate.total[0]/1000}catch {}
                     }
                     else {Set-APIFailure; break}
                 }
