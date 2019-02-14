@@ -1,27 +1,29 @@
 {
-  "name": "lolminerv7",
-  "AMD1": {
-    "name": "AMD1",
-    "delay": "1",
-    "prestart": [],
-    "commands": {
-      "beam": "--coin BEAM --tls 0"
-    },
-    "difficulty": {
-      "beam": ""
-    },
-    "naming": {
-      "beam": "beam"
-    },
-    "oc": {
-      "beam": {
-        "dpm": "",
-        "v": "",
-        "core": "",
-        "mem": "",
-        "mdpm": "",
-        "fans": ""
-      }
-    }
-  }
+    "name":  "lolminerv7",
+    "AMD1":  {
+                 "name":  "AMD1",
+                 "delay":  "1",
+                 "prestart":  [
+
+                              ],
+                 "commands":  {
+                                  "beam":  "--coin BEAM --tls 0"
+                              },
+                 "difficulty":  {
+                                    "beam":  ""
+                                },
+                 "naming":  {
+                                "beam":  "beam"
+                            },
+                 "oc":  {
+                            "beam":  {
+                                         "dpm":  "",
+                                         "v":  "",
+                                         "core":  "",
+                                         "mem":  "",
+                                         "mdpm":  "",
+                                         "fans":  ""
+                                     }
+                        }
+             }
 }

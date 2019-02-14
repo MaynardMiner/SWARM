@@ -1,67 +1,72 @@
- {
-    "NVIDIA1": {
-      "name":"NVIDIA1", 
-      "delay":"1", 
-      "prestart":["echo THIS MINER REQUIRES 6GB OF RAM MINIMUM"], 
-      "commands": {
-        "mtp":""
-      }, 
-      "difficulty": {
-        "mtp":""
-      }, 
-      "naming": {
-        "mtp":"mtp"
-      }, 
-      "oc": {
-        "mtp": {
-          "Power":"", 
-          "Core":"", 
-          "Memory":""
-        }
-      }
-    }, 
-    "NVIDIA2": {
-      "name":"NVIDIA2", 
-      "delay":"1", 
-      "prestart":[], 
-      "commands": {
-        "mtp":""
-      }, 
-      "difficulty": {
-        "mtp":""
-      }, 
-      "naming": {
-        "mtp":"mtp"
-      }, 
-      "oc": {
-        "mtp": {
-          "Power":"", 
-          "Core":"", 
-          "Memory":""
-        }
-      }
-    }, 
-    "NVIDIA3": {
-      "name":"NVIDIA3", 
-      "delay":"1", 
-      "prestart":[], 
-      "commands": {
-        "mtp":""
-      }, 
-      "difficulty": {
-        "mtp":""
-      }, 
-      "naming": {
-        "mtp":"mtp"
-      }, 
-      "oc": {
-        "mtp": {
-          "Power":"", 
-          "Core":"", 
-          "Memory":""
-        }
-      }
-    }, 
-    "name":"cc-mtp"
-  }
-  
+{
+    "NVIDIA1":  {
+                    "name":  "NVIDIA1",
+                    "delay":  "1",
+                    "prestart":  [
+                                     "echo THIS MINER REQUIRES 6GB OF RAM MINIMUM"
+                                 ],
+                    "commands":  {
+                                     "mtp":  ""
+                                 },
+                    "difficulty":  {
+                                       "mtp":  ""
+                                   },
+                    "naming":  {
+                                   "mtp":  "mtp"
+                               },
+                    "oc":  {
+                               "mtp":  {
+                                           "Power":  "",
+                                           "Core":  "",
+                                           "Memory":  ""
+                                       }
+                           }
+                },
+    "NVIDIA2":  {
+                    "name":  "NVIDIA2",
+                    "delay":  "1",
+                    "prestart":  [
+
+                                 ],
+                    "commands":  {
+                                     "mtp":  ""
+                                 },
+                    "difficulty":  {
+                                       "mtp":  ""
+                                   },
+                    "naming":  {
+                                   "mtp":  "mtp"
+                               },
+                    "oc":  {
+                               "mtp":  {
+                                           "Power":  "",
+                                           "Core":  "",
+                                           "Memory":  ""
+                                       }
+                           }
+                },
+    "NVIDIA3":  {
+                    "name":  "NVIDIA3",
+                    "delay":  "1",
+                    "prestart":  [
+
+                                 ],
+                    "commands":  {
+                                     "mtp":  ""
+                                 },
+                    "difficulty":  {
+                                       "mtp":  ""
+                                   },
+                    "naming":  {
+                                   "mtp":  "mtp"
+                               },
+                    "oc":  {
+                               "mtp":  {
+                                           "Power":  "",
+                                           "Core":  "",
+                                           "Memory":  ""
+                                       }
+                           }
+                },
+    "name":  "cc-mtp"
+}

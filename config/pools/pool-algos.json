@@ -71,6 +71,14 @@
     "hiveos_name": "cuckoo",
     "pools_to_exclude": ["add pools here","comma seperated"]
   },
+  "cuckaroo29":{
+    "hiveos_name": "cuckoo",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "cuckatoo31":{
+    "hiveos_name": "cuckoo",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
   "cnfastv2":{
     "hiveos_name": "cryptonight-fast-v8",
     "pools_to_exclude": ["add pools here","comma seperated"]
@@ -128,6 +136,10 @@
     "pools_to_exclude": ["add pools here","comma seperated"]
   },
   "grincuckaroo29":{
+    "hiveos_name": "cuckoo",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
+  "grincuckatoo31":{
     "hiveos_name": "cuckoo",
     "pools_to_exclude": ["add pools here","comma seperated"]
   },

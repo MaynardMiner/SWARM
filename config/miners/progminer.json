@@ -1,72 +1,78 @@
- {
-    "name":"progminer", 
-    "NVIDIA1": {
-      "name":"NVIDIA1", 
-      "delay":"1", 
-      "prestart":[], 
-      "commands": {
-        "progpow":""
-      }, 
-      "difficulty": {
-        "progpow":""
-      }, 
-      "naming": {
-        "progpow":"progpow"
-      }, 
-      "oc": {
-        "progpow": {
-            "Power":"", 
-            "Core":"", 
-            "Memory":"", 
-            "ETHPill":"", 
-            "PillDelay":""
-        }
-      }
-    }, 
-    "NVIDIA2": {
-        "name":"NVIDIA2", 
-        "delay":"1", 
-        "prestart":[], 
-        "commands": {
-          "progpow":""
-        }, 
-        "difficulty": {
-          "progpow":""
-        }, 
-        "naming": {
-          "progpow":"progpow"
-        }, 
-        "oc": {
-          "progpow": {
-            "Power":"", 
-            "Core":"", 
-            "Memory":"", 
-            "ETHPill":"", 
-            "PillDelay":""
-            }
-        }
-      }, 
-      "NVIDIA3": {
-        "name":"NVIDIA3", 
-        "delay":"1", 
-        "prestart":[], 
-        "commands": {
-          "progpow":""
-        }, 
-        "difficulty": {
-          "progpow":""
-        }, 
-        "naming": {
-          "progpow":"progpow"
-        }, 
-        "oc": {
-          "progpow": {
-            "Power":"", 
-            "Core":"", 
-            "Memory":"", 
-            "ETHPill":"", 
-            "PillDelay":""
-            }
-        }
-      }
-  }
+{
+    "name":  "progminer",
+    "NVIDIA1":  {
+                    "name":  "NVIDIA1",
+                    "delay":  "1",
+                    "prestart":  [
+
+                                 ],
+                    "commands":  {
+                                     "progpow":  ""
+                                 },
+                    "difficulty":  {
+                                       "progpow":  ""
+                                   },
+                    "naming":  {
+                                   "progpow":  "progpow"
+                               },
+                    "oc":  {
+                               "progpow":  {
+                                               "Power":  "",
+                                               "Core":  "",
+                                               "Memory":  "",
+                                               "ETHPill":  "",
+                                               "PillDelay":  ""
+                                           }
+                           }
+                },
+    "NVIDIA2":  {
+                    "name":  "NVIDIA2",
+                    "delay":  "1",
+                    "prestart":  [
+
+                                 ],
+                    "commands":  {
+                                     "progpow":  ""
+                                 },
+                    "difficulty":  {
+                                       "progpow":  ""
+                                   },
+                    "naming":  {
+                                   "progpow":  "progpow"
+                               },
+                    "oc":  {
+                               "progpow":  {
+                                               "Power":  "",
+                                               "Core":  "",
+                                               "Memory":  "",
+                                               "ETHPill":  "",
+                                               "PillDelay":  ""
+                                           }
+                           }
+                },
+    "NVIDIA3":  {
+                    "name":  "NVIDIA3",
+                    "delay":  "1",
+                    "prestart":  [
+
+                                 ],
+                    "commands":  {
+                                     "progpow":  ""
+                                 },
+                    "difficulty":  {
+                                       "progpow":  ""
+                                   },
+                    "naming":  {
+                                   "progpow":  "progpow"
+                               },
+                    "oc":  {
+                               "progpow":  {
+                                               "Power":  "",
+                                               "Core":  "",
+                                               "Memory":  "",
+                                               "ETHPill":  "",
+                                               "PillDelay":  ""
+                                           }
+                           }
+                }
+}
