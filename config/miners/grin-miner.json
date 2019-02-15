@@ -7,20 +7,29 @@
 
                                  ],
                     "commands":  {
-                                     "grincuckaroo29":  ""
+                                     "grincuckaroo29":  "",
+                                     "grincuckatoo31": ""
                                  },
                     "difficulty":  {
-                                       "grincuckaroo29":  ""
+                                       "grincuckaroo29":  "",
+                                       "grincuckatoo31":  ""
                                    },
                     "naming":  {
-                                   "grincuckaroo29":  "grincuckaroo29"
+                                   "grincuckaroo29":  "grincuckaroo29",
+                                   "grincuckatoo31":  "grincuckatoo31"
                                },
                     "oc":  {
                                "grincuckaroo29":  {
                                                       "Power":  "",
                                                       "Core":  "",
                                                       "Memory":  ""
+                                                  },
+                               "grincuckatoo31":  {
+                                                      "Power":  "",
+                                                      "Core":  "",
+                                                      "Memory":  ""
                                                   }
+
                            }
                 },
     "NVIDIA2":  {
@@ -30,20 +39,29 @@
 
                                  ],
                     "commands":  {
-                                     "grincuckaroo29":  ""
+                                     "grincuckaroo29":  "",
+                                     "grincuckatoo31": ""
                                  },
                     "difficulty":  {
-                                       "grincuckaroo29":  ""
+                                       "grincuckaroo29":  "",
+                                       "grincuckatoo31":  ""
                                    },
                     "naming":  {
-                                   "grincuckaroo29":  "grincuckaroo29"
+                                   "grincuckaroo29":  "grincuckaroo29",
+                                   "grincuckatoo31":  "grincuckatoo31"
                                },
                     "oc":  {
                                "grincuckaroo29":  {
                                                       "Power":  "",
                                                       "Core":  "",
                                                       "Memory":  ""
+                                                  },
+                               "grincuckatoo31":  {
+                                                      "Power":  "",
+                                                      "Core":  "",
+                                                      "Memory":  ""
                                                   }
+
                            }
                 },
     "NVIDIA3":  {
@@ -53,20 +71,29 @@
 
                                  ],
                     "commands":  {
-                                     "grincuckaroo29":  ""
+                                     "grincuckaroo29":  "",
+                                     "grincuckatoo31": ""
                                  },
                     "difficulty":  {
-                                       "grincuckaroo29":  ""
+                                       "grincuckaroo29":  "",
+                                       "grincuckatoo31":  ""
                                    },
                     "naming":  {
-                                   "grincuckaroo29":  "grincuckaroo29"
+                                   "grincuckaroo29":  "grincuckaroo29",
+                                   "grincuckatoo31":  "grincuckatoo31"
                                },
                     "oc":  {
                                "grincuckaroo29":  {
                                                       "Power":  "",
                                                       "Core":  "",
                                                       "Memory":  ""
+                                                  },
+                               "grincuckatoo31":  {
+                                                      "Power":  "",
+                                                      "Core":  "",
+                                                      "Memory":  ""
                                                   }
+
                            }
                 }
 }
