@@ -127,7 +127,7 @@
     "path2": ".\\bin\\tpruvot-2\\ccminer",
     "path3": ".\\bin\\tpruvot-3\\ccminer",
     "minername": "ccminer",
-    "version": "2.3",
+    "version": "2.3.1",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/tpruvot-linux-10.tar.gz"
   },
   "trex": {

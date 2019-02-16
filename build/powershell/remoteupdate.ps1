@@ -382,6 +382,31 @@ function start-update {
                                     }
                                 }
                             }
+                            if ($ChangeFile -eq "tpruvot.json") {
+                                $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                    if ($_ -ne "name") {    
+                                        $Data.$_.commands| Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "lyra2v3" "lyra2v3" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "lyra2v3" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue
+
+                                        $Data.$_.commands| Add-Member "lyra2rev3" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "lyra2rev3" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "lyra2rev3" "lyra2v3" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "lyra2rev3" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue
+
+                                        $Data.$_.commands| Add-Member "exosis" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "exosis" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "exosis" "exosis" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "exosis" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue
+
+                                        $Data.$_.commands| Add-Member "sha256q" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "sha256q" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "sha256q" "sha256q" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "sha256q" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue
+                                    }
+                                }
+                            }
                             if ($ChangeFile -eq "phoenix_amd.json") {
                                 $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                     if ($_ -ne "name") {    
@@ -405,6 +430,11 @@ function start-update {
                                         $Data.$_.difficulty | Add-Member "grimcuckaroo29" "" -ErrorAction SilentlyContinue
                                         $Data.$_.naming | Add-Member "grimcuckaroo29" "grimcuckaroo29" -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "grimcuckaroo29" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue
+
+                                        $Data.$_.commands| Add-Member "grimcuckatoo31" "--algo grin31 --pers auto" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "grimcuckatoo31" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "grimcuckatoo31" "grimcuckatoo31" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "grimcuckatoo31" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue
 
                                         $Data.$_.commands| Add-Member "beam" "--algo 150_5 --pers auto" -ErrorAction SilentlyContinue
                                         $Data.$_.difficulty | Add-Member "beam" "" -ErrorAction SilentlyContinue
