@@ -155,7 +155,9 @@ param(
     [Parameter(Mandatory = $false)]
     [String]$Worker,
     [Parameter(Mandatory = $false)]
-    [array]$No_Miner
+    [array]$No_Miner,
+    [Parameter(Mandatory = $false)]
+    [string]$Cuckatoo31
 )
 
 
@@ -345,6 +347,7 @@ if ($Debug -ne $true) {
     $CurrentParams.ADD("ETH", $ETH)
     $CurrentParams.ADD("Worker", $Worker)
     $CurrentParams.ADD("No_Miner", $No_Miner)
+    $CurrentParams.ADD("Cuckatoo31", $Cuckatoo31)
 
     ## Save to Config Folder
     $StartParams = $CurrentParams | ConvertTo-Json 
@@ -447,6 +450,7 @@ if ((Test-Path ".\config\parameters\newarguments.json") -or $Debug -eq $true) {
     $ETH = $SWARMParams.ETH
     $Worker = $SWARMParams.Worker
     $No_Miner = $SWARMParams.No_Miner
+    $Cuckatoo31 = $SWARMParams.Cuckatoo31
 }
 
 ## Windows Start Up
@@ -884,6 +888,8 @@ While ($true) {
     $APIPassword = $SWARMParams.APIPassword
     $Startup = $SWARMParams.Startup
     $Worker = $SWARMParams.Worker
+    $No_Miner = $SWARMParams.Worker        
+    $Cuckatoo31 = $SWARMParams.Cuckatoo31
 
     if ($SWARMParams.Rigname1 -eq "Donate") {$Donating = $True}
     else {$Donating = $False}

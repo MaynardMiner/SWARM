@@ -223,13 +223,7 @@ function Start-LaunchCode {
         }until($FileChecked -eq $true -or $FileTimer.Elapsed.TotalSeconds -gt 9)
         $FileTimer.Stop()
         if ($FileChecked -eq $false) {Write-Warning "Failed To Write Miner Details To File"}
-        if ($PP.$($MinerCurrent.Type)) {
-            netstat -anp | Tee-Object -Variable netstats | Out-Null
-            $netstats = $netstats | Select-String "TIME_WAIT"
-            $netstats = $netstats | Select-String "$(:$PP.$($MinerCurrent.Type))"
-            $PTC = $netstats  | % {$1 = $_ -split " "; $1 = $1 | % {if ($_) {$_}}; $1 | Select -skip 4 -First 1; }
-            $PTC | % {killcx "$_" lo | Out-Null}
-        }
+        Start-Process "killcx.sh" -ArgumentList $MinerCurrent.Port -Wait
         Start-Sleep -S $MinerCurrent.Delay
         Set-Location (Split-Path $($MinerCurrent.Path))
         Start-Process "chmod" -ArgumentList "+x $($MinerCurrent.InstanceName)" -Wait
