@@ -22,7 +22,7 @@ SWARM.conf
 arguments.json
 config/parameters/arguments.json
 SWARM.conf
-config/parameters/arguments.json
+config/parameters/newarguments.json
 build/bash/startup.sh
 build/export/libcudart.so.10.0
 build/export/libcudart.so.9.2
