@@ -147,7 +147,7 @@
     "path2":".\\bin\\bminer-2\\bminer", 
     "path3":".\\bin\\bminer-3\\bminer", 
     "minername":"bminer", 
-    "version":"14.3.0", 
+    "version":"14.3.1", 
     "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/bminer-linux.tar.gz"
 }
 }
