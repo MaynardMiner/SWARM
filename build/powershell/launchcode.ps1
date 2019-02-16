@@ -229,7 +229,7 @@ function Start-LaunchCode {
         }until($FileChecked -eq $true -or $FileTimer.Elapsed.TotalSeconds -gt 9)
         $FileTimer.Stop()
         if ($FileChecked -eq $false) {Write-Warning "Failed To Write Miner Details To File"}
-        Start-Process "killcx.sh" -ArgumentList $MinerCurrent.Port -Wait
+        Start-Process "killcx.sh" -ArgumentList $MinerCurrent.Port
         Start-Sleep -S $MinerCurrent.Delay
         Set-Location (Split-Path $($MinerCurrent.Path))
         Start-Process "chmod" -ArgumentList "+x $($MinerCurrent.InstanceName)" -Wait
