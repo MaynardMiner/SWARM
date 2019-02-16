@@ -144,7 +144,7 @@ Argument            Options             Explanation
                                     as a stat, and continues to be recorded with every switch.
                                     This may not be stable in larger rigs.                         
 
--Threshold     [.1 - 100000]	    Expressed in BTC/day. Default is .01. If the total daily profits of a
+-Threshold     [.1 - 100000]	    Expressed in BTC/day. Default is .02. If the total daily profits of a
 				    particular algo/coin exceed the -Threshold argument, it will be removed
 				    from database calculation. This is to prevent mining on a particular
 		                    coin/algorithm in which the pool is having issues with. It only needs

@@ -27,7 +27,7 @@ Write-Host "
                                                                      .h+.                                      .+h.             
                                                                      +MMd+.                                  .+dMM+          WINDOWS USERS:
                                                                     +sNMMMMd+.                            .+dMMMMNs+         Do NOT use software to
-               `"Agression Makes Up For Skill.`"                      .dMMMMMMMh+.                       .+hMMMMMMMMd.         connect to Hive that is
+               `"Aggression Makes Up For Skill.`"                      .dMMMMMMMh+.                       .+hMMMMMMMMd.         connect to Hive that is
                     Caeser Vitus Aurelius                           .mMMMMMMMMMNy:.  -+:        :+-  .:yNMMMMMMMMMm.         not open sourced!
                             VITO                                     -mMMMMMMMMMMMms-  omhdmmdhmo  -smMMMMMMMMMMMm-          YOU CAN BE VERY EASILY
                    http://vitosminions.com/                           -mMMMMMMMMMMMMMd+mMMMMMMMMm+dMMMMMMMMMMMMMm-           HACKED! ONLY USE TRUSTED
@@ -48,7 +48,7 @@ Write-Host "
                                                                                             |                       -MaynardVII    
 
 					                                    Hybrid Auto-Profit Switching Miner
-						       BTC DONATION ADRRESS TO SUPPORT DEVELOPMENT: 1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i
+						       BTC DONATION ADDRESS TO SUPPORT DEVELOPMENT: 1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i
 				  	             This Software Is Open-Source. However, 1.40% Dev Fee Was Written In This Code
 							   Dev Fee is NOT 1.40% of all Mining. 1.40% of 86400 seconds (24 hours)
 					                   It Can Take Awhile To Load At First Time Start-Up. Please Be Patient!
