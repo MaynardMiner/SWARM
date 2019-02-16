@@ -337,6 +337,17 @@ function start-update {
                                         $Data.$_.difficulty | Add-Member "beam" "" -ErrorAction SilentlyContinue
                                         $Data.$_.naming | Add-Member "beam" "beam" -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "beam" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue  
+
+                                        $Data.$_.commands| Add-Member "grincuckaroo29" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "grincuckaroo29" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "grincuckaroo29" "cuckaroo29" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "grincuckaroo29" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue  
+
+                                        $Data.$_.commands| Add-Member "grincuckatoo31" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "grincuckatoo31" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "grincuckatoo31" "cuckatoo31" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "grincuckatoo31" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue  
+
                                     }
                                 }
                             }
