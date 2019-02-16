@@ -80,6 +80,51 @@ function set-minerconfig {
                         }
                     }
                 }
+             "grincuckatoo31"
+             {
+                $NDevices = Get-Content ".\build\txt\gpucount.txt"
+                $NDevices = $NDevices | Select-String "VGA", "3D"
+                $NDevices = $NDevices | Where {$_ -like "*NVIDIA*" -and $_ -notlike "*nForce*"}
+                $MinerDevices | % {
+                 $Current = $NDevices | Select -skip $($_) -First 1
+                  if($Current -Like "*GTX*")
+                  {
+                    $ConfigFile += "[[mining.miner_plugin_config]]"
+                    $ConfigFile += "plugin_name = `"cuckatoo_mean_cuda_gtx_31`""
+                    $ConfigFile += "[mining.miner_plugin_config.parameters]"
+                    $ConfigFile += "device = $($_)"
+                    $ConfigFile += "expand = 3"
+                    $ConfigFile += "cpuload = 1"
+                    $ConfigFile += "ntrims = 176"
+                    $ConfigFile += "genablocks = 4096"
+                    $ConfigFile += "genatpb = 128"
+                    $ConfigFile += "genbtpb = 128"
+                    $ConfigFile += "trimtpb = 512"
+                    $ConfigFile += "tailtpb = 1024"
+                    $ConfigFile += "recoverblocks = 1024"
+                    $ConfigFile += "recovertpb = 1024"
+                    $ConfigFile += ""
+                  }
+                  if($Current -Like "*RTX*")
+                  {
+                    $ConfigFile += "[[mining.miner_plugin_config]]"
+                    $ConfigFile += "plugin_name = `"cuckatoo_mean_cuda_rtx_31`""
+                    $ConfigFile += "[mining.miner_plugin_config.parameters]"
+                    $ConfigFile += "device = $($_)"
+                    $ConfigFile += "expand = 3"
+                    $ConfigFile += "cpuload = 1"
+                    $ConfigFile += "ntrims = 176"
+                    $ConfigFile += "genablocks = 4096"
+                    $ConfigFile += "genatpb = 128"
+                    $ConfigFile += "genbtpb = 128"
+                    $ConfigFile += "trimtpb = 512"
+                    $ConfigFile += "tailtpb = 1024"
+                    $ConfigFile += "recoverblocks = 1024"
+                    $ConfigFile += "recovertpb = 1024"
+                    $ConfigFile += ""
+                  }
+                }
+              }
             }
         }
 
