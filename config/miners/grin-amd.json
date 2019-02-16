@@ -1,29 +1,27 @@
 {
-    "name":  "grin-amd",
-    "AMD1":  {
-                 "name":  "AMD1",
-                 "delay":  "1",
-                 "prestart":  [
-
-                              ],
-                 "commands":  {
-                                  "grincuckaroo29":  ""
-                              },
-                 "difficulty":  {
-                                    "grincuckaroo29":  ""
-                                },
-                 "naming":  {
-                                "grincuckaroo29":  "grincuckaroo29"
-                            },
-                 "oc":  {
-                            "grincuckaroo29":  {
-                                                   "dpm":  "",
-                                                   "v":  "",
-                                                   "core":  "",
-                                                   "mem":  "",
-                                                   "mdpm":  "",
-                                                   "fans":  ""
-                                               }
-                        }
-             }
+    "name":"grin-amd", 
+    "AMD1": {
+      "name":"AMD1", 
+      "delay":"1", 
+      "prestart":[], 
+      "commands": {
+        "grincuckaroo29": ""
+      }, 
+      "difficulty": {
+        "grincuckaroo29": ""
+      }, 
+      "naming": {
+        "grincuckaroo29": "grincuckaroo29"
+      },
+      "oc": {
+        "grincuckaroo29": {
+          "dpm":"", 
+          "v":"", 
+          "core":"", 
+          "mem":"", 
+          "mdpm":"", 
+          "fans":""
+          }
+      }
+    }
 }
