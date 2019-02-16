@@ -1,28 +1,26 @@
 {
-    "name":  "stak_cpu",
-    "CPU":  {
-                "name":  "CPU",
-                "delay":  "1",
-                "prestart":  [
-
-                             ],
-                "commands":  {
-                                 "cryptonight":  "",
-                                 "cryptonightv7":  "",
-                                 "cryptonightv8":  "",
-                                 "cryptonightheavy":  ""
-                             },
-                "difficulty":  {
-                                   "cryptonight":  "",
-                                   "cryptonightv7":  "",
-                                   "cryptonightv8":  "",
-                                   "cryptonightheavy":  ""
-                               },
-                "naming":  {
-                               "cryptonight":  "cryptonight",
-                               "cryptonightv7":  "cryptonight_v7",
-                               "cryptonightv8":  "cryptonight_v8",
-                               "cryptonightheavy":  "cryptonight_heavy"
-                           }
-            }
+  "name": "stak_cpu",
+  "CPU": {
+    "name": "CPU",
+    "delay": "1",
+    "prestart": [],
+    "commands": {
+      "cryptonight": "",
+      "cryptonightv7": "",
+      "cryptonightv8": "",
+      "cryptonightheavy": ""
+    },
+    "difficulty": {
+      "cryptonight": "",
+      "cryptonightv7": "",
+      "cryptonightv8": "",
+      "cryptonightheavy": ""
+    },
+    "naming": {
+      "cryptonight": "cryptonight",
+      "cryptonightv7": "cryptonight_v7",
+      "cryptonightv8": "cryptonight_v8",
+      "cryptonightheavy": "cryptonight_heavy"
+    }
+  }
 }

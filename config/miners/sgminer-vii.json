@@ -1,54 +1,54 @@
 {
-    "name":  "sgminer-vii",
-    "AMD1":  {
-                 "name":  "AMD1",
-                 "delay":  "1",
-                 "prestart":  [
-                                  "export GPU_MAX_HEAP_SIZE=100",
-                                  "export GPU_USE_SYNC_OBJECTS=1",
-                                  "export GPU_SINGLE_ALLOC_PERCENT=100",
-                                  "export GPU_MAX_ALLOC_PERCENT=100"
-                              ],
-                 "commands":  {
-                                  "c11":  "",
-                                  "xevan":  "",
-                                  "skunk":  ""
-                              },
-                 "difficulty":  {
-                                    "c11":  "",
-                                    "xevan":  "",
-                                    "skunk":  ""
-                                },
-                 "naming":  {
-                                "c11":  "c11",
-                                "xevan":  "xevan",
-                                "skunk":  "skunk"
-                            },
-                 "oc":  {
-                            "c11":  {
-                                        "dpm":  "",
-                                        "v":  "",
-                                        "core":  "",
-                                        "mem":  "",
-                                        "mdpm":  "",
-                                        "fans":  ""
-                                    },
-                            "xevan":  {
-                                          "dpm":  "",
-                                          "v":  "",
-                                          "core":  "",
-                                          "mem":  "",
-                                          "mdpm":  "",
-                                          "fans":  ""
-                                      },
-                            "skunk":  {
-                                          "dpm":  "",
-                                          "v":  "",
-                                          "core":  "",
-                                          "mem":  "",
-                                          "mdpm":  "",
-                                          "fans":  ""
-                                      }
-                        }
-             }
+  "name": "sgminer-vii",
+  "AMD1": {
+    "name": "AMD1",
+    "delay": "1",
+    "prestart": [
+      "export GPU_MAX_HEAP_SIZE=100",
+      "export GPU_USE_SYNC_OBJECTS=1",
+      "export GPU_SINGLE_ALLOC_PERCENT=100",
+      "export GPU_MAX_ALLOC_PERCENT=100"
+    ],
+    "commands": {
+      "c11": "",
+      "xevan": "",
+      "skunk": ""
+    },
+    "difficulty": {
+      "c11": "",
+      "xevan": "",
+      "skunk": ""
+    },
+    "naming": {
+      "c11": "c11",
+      "xevan": "xevan",
+      "skunk": "skunk"
+    },
+    "oc": {
+      "c11": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "xevan": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "skunk": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      }
+    }
+  }
 }

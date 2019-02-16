@@ -1,216 +1,210 @@
 {
-    "name":  "bminer",
-    "NVIDIA1":  {
-                    "name":  "NVIDIA1",
-                    "delay":  "1",
-                    "prestart":  [
-
-                                 ],
-                    "commands":  {
-                                     "zhash":  "",
-                                     "daggerhashimoto":  "",
-                                     "equihash144":  "-pers auto",
-                                     "beam":  "",
-                                     "grincuckaroo29":  "-pers auto",
-                                     "grincuckatoo31":  "-pers auto"
-                                 },
-                    "difficulty":  {
-                                       "zhash":  "",
-                                       "daggerhashimoto":  "",
-                                       "equihash144":  "",
-                                       "beam":  "",
-                                       "grincuckaroo29":  "",
-                                       "grincuckatoo31":  ""
-                                   },
-                    "naming":  {
-                                   "zhash":  "zhash",
-                                   "daggerhashimoto":  "ethstratum",
-                                   "equihash144":  "equihash1445",
-                                   "beam":  "beam",
-                                   "grincuckaroo29":  "cuckaroo29",
-                                   "grincuckatoo31":  "cuckatoo31"
-                               },
-                    "oc":  {
-                               "zhash":  {
-                                             "Power":  "",
-                                             "Core":  "",
-                                             "Memory":  ""
-                                         },
-                               "equihash144":  {
-                                                   "Power":  "",
-                                                   "Core":  "",
-                                                   "Memory":  ""
-                                               },
-                               "daggerhashimoto":  {
-                                                       "Power":  "",
-                                                       "Core":  "",
-                                                       "Memory":  "",
-                                                       "ETHPill":  "",
-                                                       "PillDelay":  ""
-                                                   },
-                               "beam":  {
-                                            "Power":  "",
-                                            "Core":  "",
-                                            "Memory":  "",
-                                            "ETHPill":  "",
-                                            "PillDelay":  ""
-                                        },
-                               "grincuckaroo29":  {
-                                                      "Power":  "",
-                                                      "Core":  "",
-                                                      "Memory":  "",
-                                                      "ETHPill":  "",
-                                                      "PillDelay":  ""
-                                                  },
-                               "grincuckatoo31":  {
-                                                      "Power":  "",
-                                                      "Core":  "",
-                                                      "Memory":  "",
-                                                      "ETHPill":  "",
-                                                      "PillDelay":  ""
-                                                  }
-                           }
-                },
-    "NVIDIA2":  {
-                    "name":  "NVIDIA2",
-                    "delay":  "1",
-                    "prestart":  [
-
-                                 ],
-                    "commands":  {
-                                     "zhash":  "",
-                                     "daggerhashimoto":  "",
-                                     "equihash144":  "-pers auto",
-                                     "beam":  "",
-                                     "grincuckaroo29":  "-pers auto",
-                                     "grincuckatoo31":  "-pers auto"
-                                 },
-                    "difficulty":  {
-                                       "zhash":  "",
-                                       "daggerhashimoto":  "",
-                                       "equihash144":  "",
-                                       "beam":  "",
-                                       "grincuckaroo29":  "",
-                                       "grincuckatoo31":  ""
-                                   },
-                    "naming":  {
-                                   "zhash":  "zhash",
-                                   "daggerhashimoto":  "ethstratum",
-                                   "equihash144":  "equihash1445",
-                                   "beam":  "beam",
-                                   "cuckaroo29":  "grincuckaroo29",
-                                   "cuckatoo31":  "grincuckatoo31"
-                               },
-                    "oc":  {
-                               "zhash":  {
-                                             "Power":  "",
-                                             "Core":  "",
-                                             "Memory":  ""
-                                         },
-                               "equihash144":  {
-                                                   "Power":  "",
-                                                   "Core":  "",
-                                                   "Memory":  ""
-                                               },
-                               "daggerhashimoto":  {
-                                                       "Power":  "",
-                                                       "Core":  "",
-                                                       "Memory":  "",
-                                                       "ETHPill":  "",
-                                                       "PillDelay":  ""
-                                                   },
-                               "beam":  {
-                                            "Power":  "",
-                                            "Core":  "",
-                                            "Memory":  "",
-                                            "ETHPill":  "",
-                                            "PillDelay":  ""
-                                        },
-                               "grincuckaroo29":  {
-                                                      "Power":  "",
-                                                      "Core":  "",
-                                                      "Memory":  "",
-                                                      "ETHPill":  "",
-                                                      "PillDelay":  ""
-                                                  },
-                               "grincuckatoo31":  {
-                                                      "Power":  "",
-                                                      "Core":  "",
-                                                      "Memory":  "",
-                                                      "ETHPill":  "",
-                                                      "PillDelay":  ""
-                                                  }
-                           }
-                },
-    "NVIDIA3":  {
-                    "name":  "NVIDIA3",
-                    "delay":  "1",
-                    "prestart":  [
-
-                                 ],
-                    "commands":  {
-                                     "zhash":  "",
-                                     "daggerhashimoto":  "",
-                                     "equihash144":  "-pers auto",
-                                     "beam":  "",
-                                     "grincuckaroo29":  "-pers auto",
-                                     "grincuckatoo31":  "-pers auto"
-                                 },
-                    "difficulty":  {
-                                       "zhash":  "",
-                                       "daggerhashimoto":  "",
-                                       "equihash144":  "",
-                                       "beam":  "",
-                                       "grincuckaroo29":  "",
-                                       "grincuckatoo31":  ""
-                                   },
-                    "naming":  {
-                                   "zhash":  "zhash",
-                                   "daggerhashimoto":  "ethstratum",
-                                   "equihash144":  "equihash1445",
-                                   "beam":  "beam",
-                                   "cuckaroo29":  "grincuckaroo29",
-                                   "cuckatoo31":  "grincuckatoo31"
-                               },
-                    "oc":  {
-                               "zhash":  {
-                                             "Power":  "",
-                                             "Core":  "",
-                                             "Memory":  ""
-                                         },
-                               "equihash144":  {
-                                                   "Power":  "",
-                                                   "Core":  "",
-                                                   "Memory":  ""
-                                               },
-                               "daggerhashimoto":  {
-                                                       "Power":  "",
-                                                       "Core":  "",
-                                                       "Memory":  "",
-                                                       "ETHPill":  "",
-                                                       "PillDelay":  ""
-                                                   },
-                               "beam":  {
-                                            "Power":  "",
-                                            "Core":  "",
-                                            "Memory":  "",
-                                            "ETHPill":  "",
-                                            "PillDelay":  ""
-                                        },
-                               "grincuckaroo29":  {
-                                                      "Power":  "",
-                                                      "Core":  "",
-                                                      "Memory":  "",
-                                                      "ETHPill":  "",
-                                                      "PillDelay":  ""
-                                                  },
-                               "grincuckatoo31":  {
-                                                      "Power":  "",
-                                                      "Core":  "",
-                                                      "Memory":  "",
-                                                      "ETHPill":  "",
-                                                      "PillDelay":  ""
-                                                  }
-                           }
-                }
+  "name": "bminer",
+  "NVIDIA1": {
+    "name": "NVIDIA1",
+    "delay": "1",
+    "prestart": [],
+    "commands": {
+      "zhash": "",
+      "daggerhashimoto": "",
+      "equihash144": "-pers auto",
+      "beam": "",
+      "grincuckaroo29": "-pers auto",
+      "grincuckatoo31": "-pers auto"
+    },
+    "difficulty": {
+      "zhash": "",
+      "daggerhashimoto": "",
+      "equihash144": "",
+      "beam": "",
+      "grincuckaroo29": "",
+      "grincuckatoo31": ""
+    },
+    "naming": {
+      "zhash": "zhash",
+      "daggerhashimoto": "ethstratum",
+      "equihash144": "equihash1445",
+      "beam": "beam",
+      "grincuckaroo29": "cuckaroo29",
+      "grincuckatoo31": "cuckatoo31"
+    },
+    "oc": {
+      "zhash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "equihash144": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "daggerhashimoto": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
+      },
+      "beam": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
+      },
+      "grincuckaroo29": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
+      },
+      "grincuckatoo31": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
+      }
+    }
+  },
+  "NVIDIA2": {
+    "name": "NVIDIA2",
+    "delay": "1",
+    "prestart": [],
+    "commands": {
+      "zhash": "",
+      "daggerhashimoto": "",
+      "equihash144": "-pers auto",
+      "beam": "",
+      "grincuckaroo29": "-pers auto",
+      "grincuckatoo31": "-pers auto"
+    },
+    "difficulty": {
+      "zhash": "",
+      "daggerhashimoto": "",
+      "equihash144": "",
+      "beam": "",
+      "grincuckaroo29": "",
+      "grincuckatoo31": ""
+    },
+    "naming": {
+      "zhash": "zhash",
+      "daggerhashimoto": "ethstratum",
+      "equihash144": "equihash1445",
+      "beam": "beam",
+      "cuckaroo29": "grincuckaroo29",
+      "cuckatoo31": "grincuckatoo31"
+    },
+    "oc": {
+      "zhash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "equihash144": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "daggerhashimoto": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
+      },
+      "beam": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
+      },
+      "grincuckaroo29": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
+      },
+      "grincuckatoo31": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
+      }
+    }
+  },
+  "NVIDIA3": {
+    "name": "NVIDIA3",
+    "delay": "1",
+    "prestart": [],
+    "commands": {
+      "zhash": "",
+      "daggerhashimoto": "",
+      "equihash144": "-pers auto",
+      "beam": "",
+      "grincuckaroo29": "-pers auto",
+      "grincuckatoo31": "-pers auto"
+    },
+    "difficulty": {
+      "zhash": "",
+      "daggerhashimoto": "",
+      "equihash144": "",
+      "beam": "",
+      "grincuckaroo29": "",
+      "grincuckatoo31": ""
+    },
+    "naming": {
+      "zhash": "zhash",
+      "daggerhashimoto": "ethstratum",
+      "equihash144": "equihash1445",
+      "beam": "beam",
+      "cuckaroo29": "grincuckaroo29",
+      "cuckatoo31": "grincuckatoo31"
+    },
+    "oc": {
+      "zhash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "equihash144": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "daggerhashimoto": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
+      },
+      "beam": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
+      },
+      "grincuckaroo29": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
+      },
+      "grincuckatoo31": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
+      }
+    }
+  }
 }

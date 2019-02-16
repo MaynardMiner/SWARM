@@ -1,144 +1,138 @@
 {
-    "name":  "ttminer",
-    "NVIDIA1":  {
-                    "name":  "NVIDIA1",
-                    "delay":  "1",
-                    "prestart":  [
-
-                                 ],
-                    "commands":  {
-                                     "progpow":  "",
-                                     "ubqhash":  "",
-                                     "mtp":  "",
-                                     "ethash-fix":  ""
-                                 },
-                    "difficulty":  {
-                                       "progpow":  "",
-                                       "ubqhash":  "",
-                                       "mtp":  "",
-                                       "ethash-fix":  ""
-                                   },
-                    "naming":  {
-                                   "progpow":  "progpow",
-                                   "ubqhash":  "ubqhash",
-                                   "mtp":  "mtp",
-                                   "ethash-fix":  "ethash-fix"
-                               },
-                    "oc":  {
-                               "progpow":  {
-                                               "Power":  "",
-                                               "Core":  "",
-                                               "Memory":  ""
-                                           },
-                               "ubqhash":  {
-                                               "Power":  "",
-                                               "Core":  "",
-                                               "Memory":  ""
-                                           },
-                               "mtp":  {
-                                           "Power":  "",
-                                           "Core":  "",
-                                           "Memory":  ""
-                                       },
-                               "ethash-fix":  {
-                                           "Power":  "",
-                                           "Core":  "",
-                                           "Memory":  ""
-                                          }
-                           }
-                },
-    "NVIDIA2":  {
-                    "name":  "NVIDIA2",
-                    "delay":  "1",
-                    "prestart":  [
-
-                                 ],
-                    "commands":  {
-                                     "progpow":  "",
-                                     "ubqhash":  "",
-                                     "mtp":  "",
-                                     "ethash-fix":  ""
-                                 },
-                    "difficulty":  {
-                                       "progpow":  "",
-                                       "ubqhash":  "",
-                                       "mtp":  "",
-                                       "ethash-fix":  ""
-                                   },
-                    "naming":  {
-                                   "progpow":  "progpow",
-                                   "ubqhash":  "ubqhash",
-                                   "mtp":  "mtp",
-                                   "ethash-fix":  "ethash-fix"
-                               },
-                    "oc":  {
-                               "progpow":  {
-                                               "Power":  "",
-                                               "Core":  "",
-                                               "Memory":  ""
-                                           },
-                               "ubqhash":  {
-                                               "Power":  "",
-                                               "Core":  "",
-                                               "Memory":  ""
-                                           },
-                               "mtp":  {
-                                           "Power":  "",
-                                           "Core":  "",
-                                           "Memory":  ""
-                                       },
-                               "ethash-fix":  {
-                                           "Power":  "",
-                                           "Core":  "",
-                                           "Memory":  ""
-                                          }
-                           }
-                },
-    "NVIDIA3":  {
-                    "name":  "NVIDIA3",
-                    "delay":  "1",
-                    "prestart":  [
-
-                                 ],
-                    "commands":  {
-                                     "progpow":  "",
-                                     "ubqhash":  "",
-                                     "mtp":  "",
-                                     "ethash-fix":  ""
-                                 },
-                    "difficulty":  {
-                                       "progpow":  "",
-                                       "ubqhash":  "",
-                                       "mtp":  "",
-                                       "ethash-fix":  ""
-                                   },
-                    "naming":  {
-                                   "progpow":  "progpow",
-                                   "ubqhash":  "ubqhash",
-                                   "mtp":  "mtp",
-                                   "ethash-fix":  "ethash-fix"
-                               },
-                    "oc":  {
-                               "progpow":  {
-                                               "Power":  "",
-                                               "Core":  "",
-                                               "Memory":  ""
-                                           },
-                               "ubqhash":  {
-                                               "Power":  "",
-                                               "Core":  "",
-                                               "Memory":  ""
-                                           },
-                               "mtp":  {
-                                           "Power":  "",
-                                           "Core":  "",
-                                           "Memory":  ""
-                                       },
-                               "ethash-fix":  {
-                                           "Power":  "",
-                                           "Core":  "",
-                                           "Memory":  ""
-                                          }
-                           }
-                }
+  "name": "ttminer",
+  "NVIDIA1": {
+    "name": "NVIDIA1",
+    "delay": "1",
+    "prestart": [],
+    "commands": {
+      "progpow": "",
+      "ubqhash": "",
+      "mtp": "",
+      "ethash-fix": ""
+    },
+    "difficulty": {
+      "progpow": "",
+      "ubqhash": "",
+      "mtp": "",
+      "ethash-fix": ""
+    },
+    "naming": {
+      "progpow": "progpow",
+      "ubqhash": "ubqhash",
+      "mtp": "mtp",
+      "ethash-fix": "ethash-fix"
+    },
+    "oc": {
+      "progpow": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "ubqhash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "mtp": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "ethash-fix": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  },
+  "NVIDIA2": {
+    "name": "NVIDIA2",
+    "delay": "1",
+    "prestart": [],
+    "commands": {
+      "progpow": "",
+      "ubqhash": "",
+      "mtp": "",
+      "ethash-fix": ""
+    },
+    "difficulty": {
+      "progpow": "",
+      "ubqhash": "",
+      "mtp": "",
+      "ethash-fix": ""
+    },
+    "naming": {
+      "progpow": "progpow",
+      "ubqhash": "ubqhash",
+      "mtp": "mtp",
+      "ethash-fix": "ethash-fix"
+    },
+    "oc": {
+      "progpow": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "ubqhash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "mtp": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "ethash-fix": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  },
+  "NVIDIA3": {
+    "name": "NVIDIA3",
+    "delay": "1",
+    "prestart": [],
+    "commands": {
+      "progpow": "",
+      "ubqhash": "",
+      "mtp": "",
+      "ethash-fix": ""
+    },
+    "difficulty": {
+      "progpow": "",
+      "ubqhash": "",
+      "mtp": "",
+      "ethash-fix": ""
+    },
+    "naming": {
+      "progpow": "progpow",
+      "ubqhash": "ubqhash",
+      "mtp": "mtp",
+      "ethash-fix": "ethash-fix"
+    },
+    "oc": {
+      "progpow": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "ubqhash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "mtp": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "ethash-fix": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  }
 }

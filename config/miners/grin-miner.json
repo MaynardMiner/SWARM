@@ -1,99 +1,90 @@
- {
-    "name":"grin-miner", 
-    "NVIDIA1": {
-                    "name":"NVIDIA1", 
-                    "delay":"1", 
-                    "prestart":[
-
-                                 ], 
-                    "commands": {
-                                     "grincuckaroo29":"", 
-                                     "grincuckatoo31":""
-                                 }, 
-                    "difficulty": {
-                                       "grincuckaroo29":"", 
-                                       "grincuckatoo31":""
-                                   }, 
-                    "naming": {
-                                   "grincuckaroo29":"grincuckaroo29", 
-                                   "grincuckatoo31":"grincuckatoo31"
-                               }, 
-                    "oc": {
-                               "grincuckaroo29": {
-                                                      "Power":"", 
-                                                      "Core":"", 
-                                                      "Memory":""
-                                                  }, 
-                               "grincuckatoo31": {
-                                                      "Power":"", 
-                                                      "Core":"", 
-                                                      "Memory":""
-                                                  }
-
-                           }
-                }, 
-    "NVIDIA2": {
-                    "name":"NVIDIA2", 
-                    "delay":"1", 
-                    "prestart":[
-
-                                 ], 
-                    "commands": {
-                                     "grincuckaroo29":"", 
-                                     "grincuckatoo31":""
-                                 }, 
-                    "difficulty": {
-                                       "grincuckaroo29":"", 
-                                       "grincuckatoo31":""
-                                   }, 
-                    "naming": {
-                                   "grincuckaroo29":"grincuckaroo29", 
-                                   "grincuckatoo31":"grincuckatoo31"
-                               }, 
-                    "oc": {
-                               "grincuckaroo29": {
-                                                      "Power":"", 
-                                                      "Core":"", 
-                                                      "Memory":""
-                                                  }, 
-                               "grincuckatoo31": {
-                                                      "Power":"", 
-                                                      "Core":"", 
-                                                      "Memory":""
-                                                  }
-
-                           }
-                }, 
-    "NVIDIA3": {
-                    "name":"NVIDIA3", 
-                    "delay":"1", 
-                    "prestart":[
-
-                                 ], 
-                    "commands": {
-                                     "grincuckaroo29":"", 
-                                     "grincuckatoo31":""
-                                 }, 
-                    "difficulty": {
-                                       "grincuckaroo29":"", 
-                                       "grincuckatoo31":""
-                                   }, 
-                    "naming": {
-                                   "grincuckaroo29":"grincuckaroo29", 
-                                   "grincuckatoo31":"grincuckatoo31"
-                               }, 
-                    "oc": {
-                               "grincuckaroo29": {
-                                                      "Power":"", 
-                                                      "Core":"", 
-                                                      "Memory":""
-                                                  }, 
-                               "grincuckatoo31": {
-                                                      "Power":"", 
-                                                      "Core":"", 
-                                                      "Memory":""
-                                                  }
-
-                           }
-                }
+{
+  "name": "grin-miner",
+  "NVIDIA1": {
+    "name": "NVIDIA1",
+    "delay": "1",
+    "prestart": [],
+    "commands": {
+      "grincuckaroo29": "",
+      "grincuckatoo31": ""
+    },
+    "difficulty": {
+      "grincuckaroo29": "",
+      "grincuckatoo31": ""
+    },
+    "naming": {
+      "grincuckaroo29": "grincuckaroo29",
+      "grincuckatoo31": "grincuckatoo31"
+    },
+    "oc": {
+      "grincuckaroo29": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "grincuckatoo31": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  },
+  "NVIDIA2": {
+    "name": "NVIDIA2",
+    "delay": "1",
+    "prestart": [],
+    "commands": {
+      "grincuckaroo29": "",
+      "grincuckatoo31": ""
+    },
+    "difficulty": {
+      "grincuckaroo29": "",
+      "grincuckatoo31": ""
+    },
+    "naming": {
+      "grincuckaroo29": "grincuckaroo29",
+      "grincuckatoo31": "grincuckatoo31"
+    },
+    "oc": {
+      "grincuckaroo29": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "grincuckatoo31": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  },
+  "NVIDIA3": {
+    "name": "NVIDIA3",
+    "delay": "1",
+    "prestart": [],
+    "commands": {
+      "grincuckaroo29": "",
+      "grincuckatoo31": ""
+    },
+    "difficulty": {
+      "grincuckaroo29": "",
+      "grincuckatoo31": ""
+    },
+    "naming": {
+      "grincuckaroo29": "grincuckaroo29",
+      "grincuckatoo31": "grincuckatoo31"
+    },
+    "oc": {
+      "grincuckaroo29": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "grincuckatoo31": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  }
 }

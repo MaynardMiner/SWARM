@@ -1,43 +1,43 @@
 {
-    "name":  "xmrig",
-    "AMD1":  {
-                 "name":  "AMD1",
-                 "delay":  "1",
-                 "prestart":  [
-                                  "export GPU_MAX_HEAP_SIZE=100",
-                                  "export GPU_USE_SYNC_OBJECTS=1",
-                                  "export GPU_SINGLE_ALLOC_PERCENT=100",
-                                  "export GPU_MAX_ALLOC_PERCENT=100"
-                              ],
-                 "commands":  {
-                                  "cryptonightv8":  "",
-                                  "cryptonightheavy":  ""
-                              },
-                 "difficulty":  {
-                                    "cryptonightv8":  "",
-                                    "cryptonightheavy":  ""
-                                },
-                 "naming":  {
-                                "cryptonightv8":  "cryptonight",
-                                "cryptonightheavy":  "cryptonight-heavy"
-                            },
-                 "oc":  {
-                            "cryptonightv8":  {
-                                                  "dpm":  "",
-                                                  "v":  "",
-                                                  "core":  "",
-                                                  "mem":  "",
-                                                  "mdpm":  "",
-                                                  "fans":  ""
-                                              },
-                            "cryptonightheavy":  {
-                                                     "dpm":  "",
-                                                     "v":  "",
-                                                     "core":  "",
-                                                     "mem":  "",
-                                                     "mdpm":  "",
-                                                     "fans":  ""
-                                                 }
-                        }
-             }
+  "name": "xmrig",
+  "AMD1": {
+    "name": "AMD1",
+    "delay": "1",
+    "prestart": [
+      "export GPU_MAX_HEAP_SIZE=100",
+      "export GPU_USE_SYNC_OBJECTS=1",
+      "export GPU_SINGLE_ALLOC_PERCENT=100",
+      "export GPU_MAX_ALLOC_PERCENT=100"
+    ],
+    "commands": {
+      "cryptonightv8": "",
+      "cryptonightheavy": ""
+    },
+    "difficulty": {
+      "cryptonightv8": "",
+      "cryptonightheavy": ""
+    },
+    "naming": {
+      "cryptonightv8": "cryptonight",
+      "cryptonightheavy": "cryptonight-heavy"
+    },
+    "oc": {
+      "cryptonightv8": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "cryptonightheavy": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      }
+    }
+  }
 }

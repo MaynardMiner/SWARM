@@ -1,381 +1,370 @@
 {
-    "name":  "wildrig",
-    "AMD1":  {
-                 "name":  "AMD1",
-                 "delay":  "1",
-                 "prestart":  [
-                                  "export GPU_MAX_HEAP_SIZE=100",
-                                  "export GPU_USE_SYNC_OBJECTS=1",
-                                  "export GPU_SINGLE_ALLOC_PERCENT=100",
-                                  "export GPU_MAX_ALLOC_PERCENT=100"
-                              ],
-                 "commands":  {
-                                  "bcd":  "",
-                                  "c11":  "",
-                                  "geek":  "",
-                                  "hmq1725":  "",
-                                  "hex":  "",
-                                  "phi":  "",
-                                  "renesis":  "",
-                                  "skunk":  "",
-                                  "sonoa":  "",
-                                  "timetravel":  "",
-                                  "tribus":  "",
-                                  "x16s":  "",
-                                  "x16r":  "",
-                                  "x17":  "",
-                                  "x18":  "",
-                                  "bitcore":  "",
-                                  "x22i":  "",
-                                  "x21s":  "",
-                                  "polytimos":  "",
-                                  "dedal":  "",
-                                  "exosis":  "",
-                                  "lyra2v3":  "",
-                                  "lyra2rev3":  "",
-                                  "sha256T":  "",
-                                  "sha256q":  "",
-                                  "x16rt":  "",
-                                  "astralhash":  "",
-                                  "jeonghash":  "",
-                                  "padihash":  "",
-                                  "pawelhash":  "",
-                                  "mtp":  "",
-                                  "bmw512":  ""
-                              },
-                 "difficulty":  {
-                                    "bcd":  "",
-                                    "c11":  "",
-                                    "geek":  "",
-                                    "hmq1725":  "",
-                                    "hex":  "",
-                                    "phi":  "",
-                                    "renesis":  "",
-                                    "skunk":  "",
-                                    "sonoa":  "",
-                                    "timetravel":  "",
-                                    "tribus":  "",
-                                    "x16s":  "",
-                                    "x16r":  "",
-                                    "x17":  "",
-                                    "x18":  "",
-                                    "bitcore":  "",
-                                    "x22i":  "",
-                                    "x21s":  "",
-                                    "polytimos":  "",
-                                    "dedal":  "",
-                                    "exosis":  "",
-                                    "lyra2v3":  "",
-                                    "lyra2rev3":  "",
-                                    "sha256T":  "",
-                                    "sha256q":  "",
-                                    "x16rt":  "",
-                                    "astralhash":  "",
-                                    "jeonghash":  "",
-                                    "padihash":  "",
-                                    "pawelhash":  "",
-                                    "mtp":  "",
-                                    "bmw512":  ""
-                                },
-                 "naming":  {
-                                "bcd":  "bcd",
-                                "c11":  "c11",
-                                "geek":  "geek",
-                                "hmq1725":  "hmq1725",
-                                "hex":  "hex",
-                                "phi":  "phi",
-                                "renesis":  "renesis",
-                                "skunk":  "skunkhash",
-                                "sonoa":  "sonoa",
-                                "timetravel":  "timetravel",
-                                "tribus":  "tribus",
-                                "x16s":  "x16s",
-                                "x16r":  "x16r",
-                                "x17":  "x17",
-                                "x18":  "x18",
-                                "bitcore":  "bitcore",
-                                "x22i":  "x22i",
-                                "x21s":  "x21s",
-                                "polytimos":  "polytimos",
-                                "dedal":  "dedal",
-                                "exosis":  "exosis",
-                                "lyra2v3":  "lyra2v3",
-                                "lyra2rev3":  "lyra2v3",
-                                "sha256T":  "sha256T",
-                                "sha256q":  "sha256q",
-                                "x16rt":  "x16rt",
-                                "astralhash":  "glt-astralhash",
-                                "jeonghash":  "glt-jeonghash",
-                                "padihash":  "glt-padihash",
-                                "pawelhash":  "glt-pawelhash",
-                                "mtp":  "mtp",
-                                "bmw512":  "bmw512"
-                            },
-                 "oc":  {
-                            "bcd":  {
-                                        "dpm":  "",
-                                        "v":  "",
-                                        "core":  "",
-                                        "mem":  "",
-                                        "mdpm":  "",
-                                        "fans":  ""
-                                    },
-                            "c11":  {
-                                        "dpm":  "",
-                                        "v":  "",
-                                        "core":  "",
-                                        "mem":  "",
-                                        "mdpm":  "",
-                                        "fans":  ""
-                                    },
-                            "geek":  {
-                                         "dpm":  "",
-                                         "v":  "",
-                                         "core":  "",
-                                         "mem":  "",
-                                         "mdpm":  "",
-                                         "fans":  ""
-                                     },
-                            "hmq1725":  {
-                                            "dpm":  "",
-                                            "v":  "",
-                                            "core":  "",
-                                            "mem":  "",
-                                            "mdpm":  "",
-                                            "fans":  ""
-                                        },
-                            "hex":  {
-                                        "dpm":  "",
-                                        "v":  "",
-                                        "core":  "",
-                                        "mem":  "",
-                                        "mdpm":  "",
-                                        "fans":  ""
-                                    },
-                            "phi":  {
-                                        "dpm":  "",
-                                        "v":  "",
-                                        "core":  "",
-                                        "mem":  "",
-                                        "mdpm":  "",
-                                        "fans":  ""
-                                    },
-                            "renesis":  {
-                                            "dpm":  "",
-                                            "v":  "",
-                                            "core":  "",
-                                            "mem":  "",
-                                            "mdpm":  "",
-                                            "fans":  ""
-                                        },
-                            "skunk":  {
-                                          "dpm":  "",
-                                          "v":  "",
-                                          "core":  "",
-                                          "mem":  "",
-                                          "mdpm":  "",
-                                          "fans":  ""
-                                      },
-                            "sonoa":  {
-                                          "dpm":  "",
-                                          "v":  "",
-                                          "core":  "",
-                                          "mem":  "",
-                                          "mdpm":  "",
-                                          "fans":  ""
-                                      },
-                            "timetravel":  {
-                                               "dpm":  "",
-                                               "v":  "",
-                                               "core":  "",
-                                               "mem":  "",
-                                               "mdpm":  "",
-                                               "fans":  ""
-                                           },
-                            "tribus":  {
-                                           "dpm":  "",
-                                           "v":  "",
-                                           "core":  "",
-                                           "mem":  "",
-                                           "mdpm":  "",
-                                           "fans":  ""
-                                       },
-                            "x16s":  {
-                                         "dpm":  "",
-                                         "v":  "",
-                                         "core":  "",
-                                         "mem":  "",
-                                         "mdpm":  "",
-                                         "fans":  ""
-                                     },
-                            "x16r":  {
-                                         "dpm":  "",
-                                         "v":  "",
-                                         "core":  "",
-                                         "mem":  "",
-                                         "mdpm":  "",
-                                         "fans":  ""
-                                     },
-                            "x17":  {
-                                        "dpm":  "",
-                                        "v":  "",
-                                        "core":  "",
-                                        "mem":  "",
-                                        "mdpm":  "",
-                                        "fans":  ""
-                                    },
-                            "x18":  {
-                                        "dpm":  "",
-                                        "v":  "",
-                                        "core":  "",
-                                        "mem":  "",
-                                        "mdpm":  "",
-                                        "fans":  ""
-                                    },
-                            "bitcore":  {
-                                            "dpm":  "",
-                                            "v":  "",
-                                            "core":  "",
-                                            "mem":  "",
-                                            "mdpm":  "",
-                                            "fans":  ""
-                                        },
-                            "x22i":  {
-                                         "dpm":  "",
-                                         "v":  "",
-                                         "core":  "",
-                                         "mem":  "",
-                                         "mdpm":  "",
-                                         "fans":  ""
-                                     },
-                            "x21s":  {
-                                         "dpm":  "",
-                                         "v":  "",
-                                         "core":  "",
-                                         "mem":  "",
-                                         "mdpm":  "",
-                                         "fans":  ""
-                                     },
-                            "polytimos":  {
-                                              "dpm":  "",
-                                              "v":  "",
-                                              "core":  "",
-                                              "mem":  "",
-                                              "mdpm":  "",
-                                              "fans":  ""
-                                          },
-                            "dedal":  {
-                                          "dpm":  "",
-                                          "v":  "",
-                                          "core":  "",
-                                          "mem":  "",
-                                          "mdpm":  "",
-                                          "fans":  ""
-                                      },
-                            "exosis":  {
-                                           "core":  "",
-                                           "v":  "",
-                                           "mem":  "",
-                                           "fans":  "",
-                                           "mdpm":  "",
-                                           "dpm":  ""
-                                       },
-                            "lyra2v3":  {
-                                            "core":  "",
-                                            "v":  "",
-                                            "mem":  "",
-                                            "fans":  "",
-                                            "mdpm":  "",
-                                            "dpm":  ""
-                                        },
-                            "lyra2rev3":  {
-                                              "core":  "",
-                                              "v":  "",
-                                              "mem":  "",
-                                              "fans":  "",
-                                              "mdpm":  "",
-                                              "dpm":  ""
-                                          },
-                            "mtp":  {
-                                        "core":  "",
-                                        "v":  "",
-                                        "mem":  "",
-                                        "fans":  "",
-                                        "mdpm":  "",
-                                        "dpm":  ""
-                                    },
-                            "sha256t":  {
-                                            "core":  "",
-                                            "v":  "",
-                                            "mem":  "",
-                                            "fans":  "",
-                                            "mdpm":  "",
-                                            "dpm":  ""
-                                        },
-                            "shas56q":  {
-                                            "core":  "",
-                                            "v":  "",
-                                            "mem":  "",
-                                            "fans":  "",
-                                            "mdpm":  "",
-                                            "dpm":  ""
-                                        },
-                            "sha256q":  {
-                                            "dpm":  "",
-                                            "v":  "",
-                                            "mdpm":  "",
-                                            "fans":  "",
-                                            "core":  "",
-                                            "mem":  ""
-                                        },
-                            "x16rt":  {
-                                          "dpm":  "",
-                                          "v":  "",
-                                          "mdpm":  "",
-                                          "fans":  "",
-                                          "core":  "",
-                                          "mem":  ""
-                                      },
-                            "astralhash":  {
-                                               "dpm":  "",
-                                               "v":  "",
-                                               "mdpm":  "",
-                                               "fans":  "",
-                                               "core":  "",
-                                               "mem":  ""
-                                           },
-                            "jeonghash":  {
-                                              "dpm":  "",
-                                              "v":  "",
-                                              "mdpm":  "",
-                                              "fans":  "",
-                                              "core":  "",
-                                              "mem":  ""
-                                          },
-                            "padihash":  {
-                                             "dpm":  "",
-                                             "v":  "",
-                                             "mdpm":  "",
-                                             "fans":  "",
-                                             "core":  "",
-                                             "mem":  ""
-                                         },
-                            "pawelhash":  {
-                                              "dpm":  "",
-                                              "v":  "",
-                                              "mdpm":  "",
-                                              "fans":  "",
-                                              "core":  "",
-                                              "mem":  ""
-                                          },
-                            "bmw512":  {
-                                           "fans":  "",
-                                           "v":  "",
-                                           "dpm":  "",
-                                           "mem":  "",
-                                           "mdpm":  "",
-                                           "core":  ""
-                                       }
-                        }
-             }
+  "name": "wildrig",
+  "AMD1": {
+    "name": "AMD1",
+    "delay": "1",
+    "prestart": [
+      "export GPU_MAX_HEAP_SIZE=100",
+      "export GPU_USE_SYNC_OBJECTS=1",
+      "export GPU_SINGLE_ALLOC_PERCENT=100",
+      "export GPU_MAX_ALLOC_PERCENT=100"
+    ],
+    "commands": {
+      "bcd": "",
+      "c11": "",
+      "geek": "",
+      "hmq1725": "",
+      "hex": "",
+      "phi": "",
+      "renesis": "",
+      "skunk": "",
+      "sonoa": "",
+      "timetravel": "",
+      "tribus": "",
+      "x16s": "",
+      "x16r": "",
+      "x17": "",
+      "x18": "",
+      "bitcore": "",
+      "x22i": "",
+      "x21s": "",
+      "polytimos": "",
+      "dedal": "",
+      "exosis": "",
+      "lyra2v3": "",
+      "lyra2rev3": "",
+      "sha256T": "",
+      "sha256q": "",
+      "x16rt": "",
+      "astralhash": "",
+      "jeonghash": "",
+      "padihash": "",
+      "pawelhash": "",
+      "bmw512": ""
+    },
+    "difficulty": {
+      "bcd": "",
+      "c11": "",
+      "geek": "",
+      "hmq1725": "",
+      "hex": "",
+      "phi": "",
+      "renesis": "",
+      "skunk": "",
+      "sonoa": "",
+      "timetravel": "",
+      "tribus": "",
+      "x16s": "",
+      "x16r": "",
+      "x17": "",
+      "x18": "",
+      "bitcore": "",
+      "x22i": "",
+      "x21s": "",
+      "polytimos": "",
+      "dedal": "",
+      "exosis": "",
+      "lyra2v3": "",
+      "lyra2rev3": "",
+      "sha256T": "",
+      "sha256q": "",
+      "x16rt": "",
+      "astralhash": "",
+      "jeonghash": "",
+      "padihash": "",
+      "pawelhash": "",
+      "bmw512": ""
+    },
+    "naming": {
+      "bcd": "bcd",
+      "c11": "c11",
+      "geek": "geek",
+      "hmq1725": "hmq1725",
+      "hex": "hex",
+      "phi": "phi",
+      "renesis": "renesis",
+      "skunk": "skunkhash",
+      "sonoa": "sonoa",
+      "timetravel": "timetravel",
+      "tribus": "tribus",
+      "x16s": "x16s",
+      "x16r": "x16r",
+      "x17": "x17",
+      "x18": "x18",
+      "bitcore": "bitcore",
+      "x22i": "x22i",
+      "x21s": "x21s",
+      "polytimos": "polytimos",
+      "dedal": "dedal",
+      "exosis": "exosis",
+      "lyra2v3": "lyra2v3",
+      "lyra2rev3": "lyra2v3",
+      "sha256T": "sha256T",
+      "sha256q": "sha256q",
+      "x16rt": "x16rt",
+      "astralhash": "glt-astralhash",
+      "jeonghash": "glt-jeonghash",
+      "padihash": "glt-padihash",
+      "pawelhash": "glt-pawelhash",
+      "bmw512": "bmw512"
+    },
+    "oc": {
+      "bcd": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "c11": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "geek": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "hmq1725": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "hex": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "phi": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "renesis": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "skunk": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "sonoa": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "timetravel": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "tribus": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "x16s": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "x16r": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "x17": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "x18": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "bitcore": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "x22i": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "x21s": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "polytimos": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "dedal": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "exosis": {
+        "core": "",
+        "v": "",
+        "mem": "",
+        "fans": "",
+        "mdpm": "",
+        "dpm": ""
+      },
+      "lyra2v3": {
+        "core": "",
+        "v": "",
+        "mem": "",
+        "fans": "",
+        "mdpm": "",
+        "dpm": ""
+      },
+      "lyra2rev3": {
+        "core": "",
+        "v": "",
+        "mem": "",
+        "fans": "",
+        "mdpm": "",
+        "dpm": ""
+      },
+      "sha256t": {
+        "core": "",
+        "v": "",
+        "mem": "",
+        "fans": "",
+        "mdpm": "",
+        "dpm": ""
+      },
+      "shas56q": {
+        "core": "",
+        "v": "",
+        "mem": "",
+        "fans": "",
+        "mdpm": "",
+        "dpm": ""
+      },
+      "sha256q": {
+        "dpm": "",
+        "v": "",
+        "mdpm": "",
+        "fans": "",
+        "core": "",
+        "mem": ""
+      },
+      "x16rt": {
+        "dpm": "",
+        "v": "",
+        "mdpm": "",
+        "fans": "",
+        "core": "",
+        "mem": ""
+      },
+      "astralhash": {
+        "dpm": "",
+        "v": "",
+        "mdpm": "",
+        "fans": "",
+        "core": "",
+        "mem": ""
+      },
+      "jeonghash": {
+        "dpm": "",
+        "v": "",
+        "mdpm": "",
+        "fans": "",
+        "core": "",
+        "mem": ""
+      },
+      "padihash": {
+        "dpm": "",
+        "v": "",
+        "mdpm": "",
+        "fans": "",
+        "core": "",
+        "mem": ""
+      },
+      "pawelhash": {
+        "dpm": "",
+        "v": "",
+        "mdpm": "",
+        "fans": "",
+        "core": "",
+        "mem": ""
+      },
+      "bmw512": {
+        "fans": "",
+        "v": "",
+        "dpm": "",
+        "mem": "",
+        "mdpm": "",
+        "core": ""
+      }
+    }
+  }
 }
