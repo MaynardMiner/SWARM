@@ -26,7 +26,7 @@
       "equihash144": "equihash1445",
       "beam": "beam",
       "grincuckaroo29": "cuckaroo29",
-      "grincuckatoo31": "cuckatoo31"
+      "grincuckatoo31": "cuckaroo29"
     },
     "oc": {
       "zhash": {
@@ -94,8 +94,8 @@
       "daggerhashimoto": "ethstratum",
       "equihash144": "equihash1445",
       "beam": "beam",
-      "cuckaroo29": "grincuckaroo29",
-      "cuckatoo31": "grincuckatoo31"
+      "grincuckaroo29": "cuckaroo29",
+      "grincuckatoo31": "cuckaroo29"
     },
     "oc": {
       "zhash": {
@@ -163,8 +163,8 @@
       "daggerhashimoto": "ethstratum",
       "equihash144": "equihash1445",
       "beam": "beam",
-      "cuckaroo29": "grincuckaroo29",
-      "cuckatoo31": "grincuckatoo31"
+      "grincuckaroo29": "cuckaroo29",
+      "grincuckatoo31": "cuckaroo29"
     },
     "oc": {
       "zhash": {
