@@ -36,7 +36,6 @@ if ($CoinAlgo -eq $null) {
             Switch($_.Name)
             {
               "nicehash"{$Pass3 = ""}
-              "whalesburg"{$Pass3 = ".$($_.Worker)"}
                default{$Pass3 = ".$($($_.Pass3) -replace ",","%2C")"}
             }
         if ($Algorithm -eq "$($_.Algorithm)") {

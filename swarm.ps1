@@ -692,14 +692,14 @@ AMD USERS: PLEASE READ .\config\oc\new_sample.json FOR INSTRUCTIONS ON OVERCLOCK
                 $Action = $_
                 if ($Action -eq "config") {
                     $config = [string]$hiveresponse.result.config | ConvertFrom-StringData
-                    $worker = $config.WORKER_NAME -replace "`"", ""
+                    $HiveWorker = $config.WORKER_NAME -replace "`"", ""
                     $Pass = $config.RIG_PASSWD -replace "`"", ""
                     $mirror = $config.HIVE_HOST_URL -replace "`"", ""
-                    $WorkerID = $config.RIG_ID
+                    $HiveWorkerID = $config.RIG_ID
                     $NewHiveKeys = @{}
-                    $NewHiveKeys.Add("HiveWorker", "$worker")
+                    $NewHiveKeys.Add("HiveWorker", "$Hiveworker")
                     $NewHiveKeys.Add("HivePassword", "$Pass")
-                    $NewHiveKeys.Add("HiveID", "$WorkerID")
+                    $NewHiveKeys.Add("HiveID", "$HiveWorkerID")
                     $NewHiveKeys.Add("HiveMirror", "$mirror")
                     if (Test-Path ".\build\txt\hivekeys.txt") {$OldHiveKeys = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json}
                     ## If password was changed- Let Hive know message was recieved
