@@ -31,7 +31,8 @@
       "mtp": "",
       "lyra2vc0ban": "",
       "cnfastv2": "",
-      "cnsuperfast": ""
+      "cnsuperfast": "",
+      "beam": ""
     },
     "difficulty": {
       "lyra2z": "",
@@ -60,7 +61,8 @@
       "mtp": "",
       "lyra2vc0ban": "",
       "cnfastv2": "",
-      "cnsuperfast": ""
+      "cnsuperfast": "",
+      "beam": ""
     },
     "naming": {
       "lyra2z": "lyra2z",
@@ -89,7 +91,8 @@
       "mtp": "mtp",
       "lyra2vc0ban": "lyra2vc0ban",
       "cnfastv2": "cnfastv2",
-      "cnsuperfast": "cnsuperfast"
+      "cnsuperfast": "cnsuperfast",
+      "beam": "aeternity"
     },
     "oc": {
       "lyra2z": {
@@ -223,6 +226,11 @@
         "Core": ""
       },
       "cnsuperfast": {
+        "Memory": "",
+        "Power": "",
+        "Core": ""
+      },
+      "beam": {
         "Memory": "",
         "Power": "",
         "Core": ""
@@ -260,7 +268,8 @@
       "mtp": "",
       "lyra2vc0ban": "",
       "cnfastv2": "",
-      "cnsuperfast": ""
+      "cnsuperfast": "",
+      "beam": ""
     },
     "difficulty": {
       "lyra2z": "",
@@ -289,7 +298,8 @@
       "mtp": "",
       "lyra2vc0ban": "",
       "cnfastv2": "",
-      "cnsuperfast": ""
+      "cnsuperfast": "",
+      "beam": ""
     },
     "naming": {
       "lyra2z": "lyra2z",
@@ -318,7 +328,8 @@
       "mtp": "mtp",
       "lyra2vc0ban": "lyra2vc0ban",
       "cnfastv2": "cnfastv2",
-      "cnsuperfast": "cnsuperfast"
+      "cnsuperfast": "cnsuperfast",
+      "beam": "aeternity"
     },
     "oc": {
       "lyra2z": {
@@ -455,10 +466,14 @@
         "Memory": "",
         "Power": "",
         "Core": ""
+      },
+      "beam": {
+        "Memory": "",
+        "Power": "",
+        "Core": ""
       }
     }
-  },
-  "NVIDIA3": {
+  },  "NVIDIA3": {
     "name": "NVIDIA3",
     "delay": "1",
     "prestart": [],
@@ -489,7 +504,8 @@
       "mtp": "",
       "lyra2vc0ban": "",
       "cnfastv2": "",
-      "cnsuperfast": ""
+      "cnsuperfast": "",
+      "beam": ""
     },
     "difficulty": {
       "lyra2z": "",
@@ -518,7 +534,8 @@
       "mtp": "",
       "lyra2vc0ban": "",
       "cnfastv2": "",
-      "cnsuperfast": ""
+      "cnsuperfast": "",
+      "beam": ""
     },
     "naming": {
       "lyra2z": "lyra2z",
@@ -547,7 +564,8 @@
       "mtp": "mtp",
       "lyra2vc0ban": "lyra2vc0ban",
       "cnfastv2": "cnfastv2",
-      "cnsuperfast": "cnsuperfast"
+      "cnsuperfast": "cnsuperfast",
+      "beam": "aeternity"
     },
     "oc": {
       "lyra2z": {
@@ -681,6 +699,11 @@
         "Core": ""
       },
       "cnsuperfast": {
+        "Memory": "",
+        "Power": "",
+        "Core": ""
+      },
+      "beam": {
         "Memory": "",
         "Power": "",
         "Core": ""

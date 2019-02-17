@@ -164,6 +164,11 @@ function start-update {
                                         $Data.$_.difficulty | Add-Member "cnsuperfast" "" -ErrorAction SilentlyContinue
                                         $Data.$_.naming | Add-Member "cnsuperfast" "cnsuperfast" -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "cnsuperfast" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue
+
+                                        $Data.$_.commands| Add-Member "beam" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "beam" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "beam" "aeternity" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "beam" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue
                                     }  
                                 }
                             }
