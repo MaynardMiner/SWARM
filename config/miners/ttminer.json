@@ -5,24 +5,54 @@
     "delay": "1",
     "prestart": [],
     "commands": {
-      "progpow": "",
-      "ubqhash": "",
-      "mtp": "",
-      "ethash-fix": ""
+      "progpow": "-A PROGPOW",
+      "ubqhash": "-A UBQHASH",
+      "mtp": "-A MTP",
+      "myr-gr": "-A MYRGR",
+      "lyra2v3": "-A LYRA2V3",
+      "lyra2rev3": "-A LYRA2V3",
+      "dagger": "-A ETHASH",
+      "daggerhashimoto": "-A ETHASH",
+      "ethash": "-A ETHASH"
     },
     "difficulty": {
       "progpow": "",
       "ubqhash": "",
       "mtp": "",
-      "ethash-fix": ""
+      "myr-gr": "",
+      "lyra2v3": "",
+      "lyra2rev3": "",
+      "dagger": "",
+      "daggerhashimoto": "",
+      "ethash": ""
     },
     "naming": {
       "progpow": "progpow",
       "ubqhash": "ubqhash",
       "mtp": "mtp",
-      "ethash-fix": "ethash-fix"
+      "myr-gr": "myr-gr",
+      "lyra2v3": "lyra2v3",
+      "lyra2rev3": "lyra2v3",
+      "dagger": "dagger",
+      "daggerhashimoto": "ethstratum",
+      "ethash": "ethash"
     },
     "oc": {
+      "myr-gr": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
+      "lyra2v3": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
+      "lyra2rev3": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
       "progpow": {
         "Power": "",
         "Core": "",
@@ -38,10 +68,26 @@
         "Core": "",
         "Memory": ""
       },
-      "ethash-fix": {
+      "dagger": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
+      },
+      "daggerhashimoto": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
+      },
+      "ethash": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
       }
     }
   },
@@ -50,24 +96,54 @@
     "delay": "1",
     "prestart": [],
     "commands": {
-      "progpow": "",
-      "ubqhash": "",
-      "mtp": "",
-      "ethash-fix": ""
+      "progpow": "-A PROGPOW",
+      "ubqhash": "-A UBQHASH",
+      "mtp": "-A MTP",
+      "myr-gr": "-A MYRGR",
+      "lyra2v3": "-A LYRA2V3",
+      "lyra2rev3": "-A LYRA2V3",
+      "dagger": "-A ETHASH",
+      "daggerhashimoto": "-A ETHASH",
+      "ethash": "-A ETHASH"
     },
     "difficulty": {
       "progpow": "",
       "ubqhash": "",
       "mtp": "",
-      "ethash-fix": ""
+      "myr-gr": "",
+      "lyra2v3": "",
+      "lyra2rev3": "",
+      "dagger": "",
+      "daggerhashimoto": "",
+      "ethash": ""
     },
     "naming": {
       "progpow": "progpow",
       "ubqhash": "ubqhash",
       "mtp": "mtp",
-      "ethash-fix": "ethash-fix"
+      "myr-gr": "myr-gr",
+      "lyra2v3": "lyra2v3",
+      "lyra2rev3": "lyra2v3",
+      "dagger": "dagger",
+      "daggerhashimoto": "daggerhashimoto",
+      "ethash": "ethash"
     },
     "oc": {
+      "myr-gr": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
+      "lyra2v3": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
+      "lyra2rev3": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
       "progpow": {
         "Power": "",
         "Core": "",
@@ -83,10 +159,26 @@
         "Core": "",
         "Memory": ""
       },
-      "ethash-fix": {
+      "dagger": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
+      },
+      "daggerhashimoto": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
+      },
+      "ethash": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
       }
     }
   },
@@ -95,24 +187,54 @@
     "delay": "1",
     "prestart": [],
     "commands": {
-      "progpow": "",
-      "ubqhash": "",
-      "mtp": "",
-      "ethash-fix": ""
+      "progpow": "-A PROGPOW",
+      "ubqhash": "-A UBQHASH",
+      "mtp": "-A MTP",
+      "myr-gr": "-A MYRGR",
+      "lyra2v3": "-A LYRA2V3",
+      "lyra2rev3": "-A LYRA2V3",
+      "dagger": "-A ETHASH",
+      "daggerhashimoto": "-A ETHASH",
+      "ethash": "-A ETHASH"
     },
     "difficulty": {
       "progpow": "",
       "ubqhash": "",
       "mtp": "",
-      "ethash-fix": ""
+      "myr-gr": "",
+      "lyra2v3": "",
+      "lyra2rev3": "",
+      "dagger": "",
+      "daggerhashimoto": "",
+      "ethash": ""
     },
     "naming": {
       "progpow": "progpow",
       "ubqhash": "ubqhash",
       "mtp": "mtp",
-      "ethash-fix": "ethash-fix"
+      "myr-gr": "myr-gr",
+      "lyra2v3": "lyra2v3",
+      "lyra2rev3": "lyra2v3",
+      "dagger": "dagger",
+      "daggerhashimoto": "daggerhashimoto",
+      "ethash": "ethash"
     },
     "oc": {
+      "myr-gr": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
+      "lyra2v3": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
+      "lyra2rev3": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
       "progpow": {
         "Power": "",
         "Core": "",
@@ -128,10 +250,26 @@
         "Core": "",
         "Memory": ""
       },
-      "ethash-fix": {
+      "dagger": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
+      },
+      "daggerhashimoto": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
+      },
+      "ethash": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
       }
     }
   }
