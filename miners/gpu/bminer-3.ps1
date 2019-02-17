@@ -36,9 +36,10 @@ if ($CoinAlgo -eq $null) {
             Switch($_.Name)
             {
               "nicehash"{$Pass3 = ""}
+              "whalesburg"{$Pass3 = ".$($_.Worker)"}
                default{$Pass3 = ".$($($_.Pass3) -replace ",","%2C")"}
             }
-            if ($Algorithm -eq "$($_.Algorithm)") {
+        if ($Algorithm -eq "$($_.Algorithm)") {
                 if ($Config.$ConfigType.difficulty.$($_.Algorithm) -and $($_.Name) -ne "nicehash") {$Diff = "%2Cd=$($Config.$ConfigType.difficulty.$($_.Algorithm))"}else {$Diff = ""}
                 [PSCustomObject]@{
                     Delay      = $Config.$ConfigType.delay
