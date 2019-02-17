@@ -25,6 +25,7 @@
       "sonoa": "",
       "dedal": "",
       "x16rt": "",
+      "veil": "",
       "sha256q": "",
       "astralhash": "",
       "jeonghash": "",
@@ -53,6 +54,7 @@
       "sonoa": "",
       "dedal": "",
       "x16rt": "",
+      "veil": "",
       "sha256q": "",
       "astralhash": "",
       "jeonghash": "",
@@ -81,6 +83,7 @@
       "sonoa": "sonoa",
       "dedal": "dedal",
       "x16rt": "x16rt",
+      "veil": "x16rt",
       "sha256q": "sha256q",
       "astralhash": "astralhash",
       "jeonghash": "jeonghash",
@@ -189,6 +192,11 @@
         "Memory": ""
       },
       "x16rt": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "veil": {
         "Power": "",
         "Core": "",
         "Memory": ""
@@ -246,6 +254,7 @@
       "sonoa": "",
       "dedal": "",
       "x16rt": "",
+      "veil": "",
       "sha256q": "",
       "astralhash": "",
       "jeonghash": "",
@@ -274,6 +283,7 @@
       "sonoa": "",
       "dedal": "",
       "x16rt": "",
+      "veil": "",
       "sha256q": "",
       "astralhash": "",
       "jeonghash": "",
@@ -302,6 +312,7 @@
       "sonoa": "sonoa",
       "dedal": "dedal",
       "x16rt": "x16rt",
+      "veil": "x16rt",
       "sha256q": "sha256q",
       "astralhash": "astralhash",
       "jeonghash": "jeonghash",
@@ -410,6 +421,11 @@
         "Memory": ""
       },
       "x16rt": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "veil": {
         "Power": "",
         "Core": "",
         "Memory": ""
@@ -467,6 +483,7 @@
       "sonoa": "",
       "dedal": "",
       "x16rt": "",
+      "veil": "",
       "sha256q": "",
       "astralhash": "",
       "jeonghash": "",
@@ -495,6 +512,7 @@
       "sonoa": "",
       "dedal": "",
       "x16rt": "",
+      "veil": "",
       "sha256q": "",
       "astralhash": "",
       "jeonghash": "",
@@ -523,6 +541,7 @@
       "sonoa": "sonoa",
       "dedal": "dedal",
       "x16rt": "x16rt",
+      "veil": "x16rt",
       "sha256q": "sha256q",
       "astralhash": "astralhash",
       "jeonghash": "jeonghash",
@@ -631,6 +650,11 @@
         "Memory": ""
       },
       "x16rt": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "veil": {
         "Power": "",
         "Core": "",
         "Memory": ""

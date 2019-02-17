@@ -279,6 +279,10 @@
     "hiveos_name": "tribus",
     "pools_to_exclude": ["add pools here","comma seperated"]
   },
+  "veil":{
+    "hiveos_name": "x16rt",
+    "pools_to_exclude": ["add pools here","comma seperated"]
+  },
   "x11":{
     "hiveos_name": "x11",
     "pools_to_exclude": ["add pools here","comma seperated"]

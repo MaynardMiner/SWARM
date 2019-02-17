@@ -26,6 +26,7 @@
       "lyra2v3": "",
       "lyra2rev3": "",
       "x16rt": "",
+      "veil": "",
       "lyra2zz": "",
       "mtp": "",
       "lyra2vc0ban": "",
@@ -54,6 +55,7 @@
       "lyra2v3": "",
       "lyra2rev3": "",
       "x16rt": "",
+      "veil": "",
       "lyra2zz": "",
       "mtp": "",
       "lyra2vc0ban": "",
@@ -82,6 +84,7 @@
       "lyra2v3": "Lyra2REv3",
       "lyra2rev3": "Lyra2REv3",
       "x16rt": "x16rt",
+      "veil": "x16rt",
       "lyra2zz": "lyra2zz",
       "mtp": "mtp",
       "lyra2vc0ban": "lyra2vc0ban",
@@ -190,6 +193,11 @@
         "Core": ""
       },
       "x16rt": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
+      "veil": {
         "Power": "",
         "Memory": "",
         "Core": ""
@@ -247,6 +255,7 @@
       "lyra2v3": "",
       "lyra2rev3": "",
       "x16rt": "",
+      "veil": "",
       "lyra2zz": "",
       "mtp": "",
       "lyra2vc0ban": "",
@@ -275,6 +284,7 @@
       "lyra2v3": "",
       "lyra2rev3": "",
       "x16rt": "",
+      "veil": "",
       "lyra2zz": "",
       "mtp": "",
       "lyra2vc0ban": "",
@@ -303,6 +313,7 @@
       "lyra2v3": "Lyra2REv3",
       "lyra2rev3": "Lyra2REv3",
       "x16rt": "x16rt",
+      "veil": "x16rt",
       "lyra2zz": "lyra2zz",
       "mtp": "mtp",
       "lyra2vc0ban": "lyra2vc0ban",
@@ -411,6 +422,11 @@
         "Core": ""
       },
       "x16rt": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
+      "veil": {
         "Power": "",
         "Memory": "",
         "Core": ""
@@ -468,6 +484,7 @@
       "lyra2v3": "",
       "lyra2rev3": "",
       "x16rt": "",
+      "veil": "",
       "lyra2zz": "",
       "mtp": "",
       "lyra2vc0ban": "",
@@ -496,6 +513,7 @@
       "lyra2v3": "",
       "lyra2rev3": "",
       "x16rt": "",
+      "veil": "",
       "lyra2zz": "",
       "mtp": "",
       "lyra2vc0ban": "",
@@ -524,6 +542,7 @@
       "lyra2v3": "Lyra2REv3",
       "lyra2rev3": "Lyra2REv3",
       "x16rt": "x16rt",
+      "veil": "x16rt",
       "lyra2zz": "lyra2zz",
       "mtp": "mtp",
       "lyra2vc0ban": "lyra2vc0ban",
@@ -632,6 +651,11 @@
         "Core": ""
       },
       "x16rt": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
+      "veil": {
         "Power": "",
         "Memory": "",
         "Core": ""

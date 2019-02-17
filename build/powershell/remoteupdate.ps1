@@ -145,6 +145,11 @@ function start-update {
                                         $Data.$_.naming | Add-Member "x16rt" "x16rt" -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "x16rt" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue
 
+                                        $Data.$_.commands| Add-Member "veil" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "veil" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "veil" "x16rt" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "veil" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue
+
                                         $Data.$_.commands| Add-Member "lyra2zz" "" -ErrorAction SilentlyContinue
                                         $Data.$_.difficulty | Add-Member "lyra2zz" "" -ErrorAction SilentlyContinue
                                         $Data.$_.naming | Add-Member "lyra2zz" "lyra2zz" -ErrorAction SilentlyContinue
@@ -196,6 +201,11 @@ function start-update {
                                         $Data.$_.difficulty | Add-Member "x16rt" "" -ErrorAction SilentlyContinue
                                         $Data.$_.naming | Add-Member "x16rt" "x16rt" -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "x16rt" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue
+
+                                        $Data.$_.commands| Add-Member "veil" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "veil" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "veil" "x16rt" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "veil" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue
 
                                         $Data.$_.commands| Add-Member "sha256q" "" -ErrorAction SilentlyContinue
                                         $Data.$_.difficulty | Add-Member "sha256q" "" -ErrorAction SilentlyContinue
@@ -286,6 +296,11 @@ function start-update {
                                         $Data.$_.difficulty | Add-Member "x16rt" "" -ErrorAction SilentlyContinue
                                         $Data.$_.naming | Add-Member "x16rt" "x16rt" -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "x16rt" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue                    
+
+                                        $Data.$_.commands| Add-Member "veil" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "veil" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "veil" "x16rt" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "veil" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue
 
                                         $Data.$_.commands| Add-Member "mtp" "" -ErrorAction SilentlyContinue
                                         $Data.$_.difficulty | Add-Member "mtp" "" -ErrorAction SilentlyContinue
