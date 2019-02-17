@@ -87,6 +87,7 @@ function Start-LaunchCode {
                     "lolminer" {$MinerArguments = "--devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "wildrig" {$MinerArguments = "$($MinerCurrent.Arguments)"}
                     "grin-miner" {set-minerconfig $NewMiner $Logs}
+                    "gminer" {$MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "lyclminer" {
                         $MinerArguments = ""
                         Set-Location (Split-Path $($MinerCurrent.Path))
