@@ -7,6 +7,7 @@
     "commands": {
       "zhash": "",
       "daggerhashimoto": "",
+      "ethash": "",
       "equihash144": "-pers auto",
       "beam": "",
       "grincuckaroo29": "-pers auto",
@@ -15,6 +16,7 @@
     "difficulty": {
       "zhash": "",
       "daggerhashimoto": "",
+      "ethash": "",
       "equihash144": "",
       "beam": "",
       "grincuckaroo29": "",
@@ -22,6 +24,7 @@
     },
     "naming": {
       "zhash": "zhash",
+      "ethash": "ethproxy+ssl",
       "daggerhashimoto": "ethstratum",
       "equihash144": "equihash1445",
       "beam": "beam",
@@ -40,6 +43,13 @@
         "Memory": ""
       },
       "daggerhashimoto": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
+      },
+      "ethash": {
         "Power": "",
         "Core": "",
         "Memory": "",
@@ -76,6 +86,7 @@
     "commands": {
       "zhash": "",
       "daggerhashimoto": "",
+      "ethash": "",
       "equihash144": "-pers auto",
       "beam": "",
       "grincuckaroo29": "-pers auto",
@@ -84,6 +95,7 @@
     "difficulty": {
       "zhash": "",
       "daggerhashimoto": "",
+      "ethash": "",
       "equihash144": "",
       "beam": "",
       "grincuckaroo29": "",
@@ -91,6 +103,7 @@
     },
     "naming": {
       "zhash": "zhash",
+      "ethash": "ethproxy+ssl",
       "daggerhashimoto": "ethstratum",
       "equihash144": "equihash1445",
       "beam": "beam",
@@ -109,6 +122,13 @@
         "Memory": ""
       },
       "daggerhashimoto": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
+      },
+      "ethash": {
         "Power": "",
         "Core": "",
         "Memory": "",
@@ -145,6 +165,7 @@
     "commands": {
       "zhash": "",
       "daggerhashimoto": "",
+      "ethash": "",
       "equihash144": "-pers auto",
       "beam": "",
       "grincuckaroo29": "-pers auto",
@@ -153,6 +174,7 @@
     "difficulty": {
       "zhash": "",
       "daggerhashimoto": "",
+      "ethash": "",
       "equihash144": "",
       "beam": "",
       "grincuckaroo29": "",
@@ -160,6 +182,7 @@
     },
     "naming": {
       "zhash": "zhash",
+      "ethash": "ethproxy+ssl",
       "daggerhashimoto": "ethstratum",
       "equihash144": "equihash1445",
       "beam": "beam",
@@ -178,6 +201,13 @@
         "Memory": ""
       },
       "daggerhashimoto": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "ETHPill": "",
+        "PillDelay": ""
+      },
+      "ethash": {
         "Power": "",
         "Core": "",
         "Memory": "",

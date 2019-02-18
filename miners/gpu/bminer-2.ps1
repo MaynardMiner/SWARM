@@ -34,11 +34,11 @@ if ($CoinAlgo -eq $null) {
         $MinerAlgo = $_
         $AlgoPools | Where Symbol -eq $MinerAlgo | foreach {
             if ($Algorithm -eq "$($_.Algorithm)") {
-                Switch($_.Name)
-                {
-                  "nicehash"{$Pass2 = ""}
-                   default{$Pass2 = ".$($($_.Pass2) -replace ",","%2C")"}
+                Switch ($_.Name) {
+                    "nicehash" {$Pass2 = ""}
+                    default {$Pass2 = ".$($($_.Pass2) -replace ",","%2C")"}
                 }
+                if ($_.Worker) {$Pass2 = ".$($_.Worker)"}
                 if ($Config.$ConfigType.difficulty.$($_.Algorithm)) {$Diff = "%2Cd=$($Config.$ConfigType.difficulty.$($_.Algorithm))"}else {$Diff = ""}
                 [PSCustomObject]@{
                     Delay      = $Config.$ConfigType.delay

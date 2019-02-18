@@ -33,12 +33,12 @@ if ($CoinAlgo -eq $null) {
     $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
         $MinerAlgo = $_
         $AlgoPools | Where Symbol -eq $MinerAlgo | foreach {
-            Switch($_.Name)
-            {
-              "nicehash"{$Pass3 = ""}
-               default{$Pass3 = ".$($($_.Pass3) -replace ",","%2C")"}
+            Switch ($_.Name) {
+                "nicehash" {$Pass2 = ""}
+                default {$Pass2 = ".$($($_.Pass2) -replace ",","%2C")"}
             }
-        if ($Algorithm -eq "$($_.Algorithm)") {
+            if ($_.Worker) {$Pass3 = ".$($_.Worker)"}
+            if ($Algorithm -eq "$($_.Algorithm)") {
                 if ($Config.$ConfigType.difficulty.$($_.Algorithm) -and $($_.Name) -ne "nicehash") {$Diff = "%2Cd=$($Config.$ConfigType.difficulty.$($_.Algorithm))"}else {$Diff = ""}
                 [PSCustomObject]@{
                     Delay      = $Config.$ConfigType.delay

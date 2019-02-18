@@ -32,6 +32,7 @@ if ($CoinAlgo -eq $null) {
     $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
         $MinerAlgo = $_
         $AlgoPools | Where Symbol -eq $MinerAlgo | foreach {
+            if($_.Worker) {$Worker = "-worker $($_.Worker) "}
             if ($Algorithm -eq "$($_.Algorithm)") {
                 [PSCustomObject]@{
                     Delay      = $Config.$ConfigType.delay
@@ -42,7 +43,7 @@ if ($CoinAlgo -eq $null) {
                     Path       = $Path
                     Devices    = $Devices
                     DeviceCall = "claymore"
-                    Arguments  = "-a $($Config.$ConfigType.naming.$($_.Algorithm)) --nvidia -o $($_.Protocol)://$($_.Host):$($_.Port) -b localhost:2070 -u $($_.User3) -p $($_.Pass3) $($Config.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "-a $($Config.$ConfigType.naming.$($_.Algorithm)) --nvidia -o $($_.Protocol)://$($_.Host):$($_.Port) $worker-b localhost:2070 -u $($_.User3) -p $($_.Pass3) $($Config.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)}
                     Quote      = if ($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)) {$($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) * ($_.Price)}else {0}
                     PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") {$Watts.$($_.Algorithm)."$($ConfigType)_Watts"}elseif ($Watts.default."$($ConfigType)_Watts") {$Watts.default."$($ConfigType)_Watts"}else {0}}
