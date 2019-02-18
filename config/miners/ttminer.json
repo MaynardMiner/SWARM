@@ -9,7 +9,6 @@
       "ubqhash": "",
       "mtp": "",
       "daggerhashimoto": "",
-      "ethash": "",
       "myr-gr": ""
     },
     "difficulty": {
@@ -17,7 +16,6 @@
       "ubqhash": "",
       "mtp": "",
       "daggerhashimoto": "",
-      "ethash": "",
       "myr-gr": ""
     },
     "naming": {
@@ -25,7 +23,6 @@
       "ubqhash": "UBQHASH-100",
       "mtp": "MTP-100",
       "daggerhashimoto": "ETHASH-100",
-      "ethash": "ETHASH-100",
       "myr-gr": "MYRGR-100"
     },
     "oc": {
@@ -50,11 +47,6 @@
         "Memory": ""
       },
       "myr-gr": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
-      "ethash": {
         "Power": "",
         "Core": "",
         "Memory": ""
@@ -70,7 +62,6 @@
       "ubqhash": "",
       "mtp": "",
       "daggerhashimoto": "",
-      "ethash": "",
       "myr-gr": ""
     },
     "difficulty": {
@@ -78,7 +69,6 @@
       "ubqhash": "",
       "mtp": "",
       "daggerhashimoto": "",
-      "ethash": "",
       "myr-gr": ""
     },
     "naming": {
@@ -86,7 +76,6 @@
       "ubqhash": "UBQHASH-100",
       "mtp": "MTP-100",
       "daggerhashimoto": "ETHASH-100",
-      "ethash": "ETHASH-100",
       "myr-gr": "MYRGR-100"
     },
     "oc": {
@@ -111,11 +100,6 @@
         "Memory": ""
       },
       "myr-gr": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
-      "ethash": {
         "Power": "",
         "Core": "",
         "Memory": ""
@@ -131,7 +115,6 @@
       "ubqhash": "",
       "mtp": "",
       "daggerhashimoto": "",
-      "ethash": "",
       "myr-gr": ""
     },
     "difficulty": {
@@ -139,7 +122,6 @@
       "ubqhash": "",
       "mtp": "",
       "daggerhashimoto": "",
-      "ethash": "",
       "myr-gr": ""
     },
     "naming": {
@@ -147,7 +129,6 @@
       "ubqhash": "UBQHASH-100",
       "mtp": "MTP-100",
       "daggerhashimoto": "ETHASH-100",
-      "ethash": "ETHASH-100",
       "myr-gr": "MYRGR-100"
     },
     "oc": {
@@ -172,11 +153,6 @@
         "Memory": ""
       },
       "myr-gr": {
-        "Power": "",
-        "Core": "",
-        "Memory": ""
-      },
-      "ethash": {
         "Power": "",
         "Core": "",
         "Memory": ""
