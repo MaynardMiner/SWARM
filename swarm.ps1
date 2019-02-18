@@ -599,7 +599,7 @@ if ($Platform -eq "linux") {
     start-killscript
 
     ## Set Cuda for commands
-    $cuda | Out-file ".\build\txt\cuda.txt" -Force
+    $cuda | Set-Content ".\build\txt\cuda.txt"
 
     ## Start SWARM watchdog (for automatic shutdown)
     start-watchdog
@@ -660,6 +660,7 @@ if ($Platform -eq "windows") {
 
     ##Set Cuda For Commands
     $Cuda = "10"
+    $Cuda | Set-Content ".\build\txt\cuda.txt"
 
     ##Fan Start For Users not using HiveOS
     Start-Fans
