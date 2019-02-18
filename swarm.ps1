@@ -200,6 +200,7 @@ if ($Platform -eq "windows") {. .\build\powershell\hiveoc.ps1; . .\build\powersh
 
 ##filepath dir
 $dir = (Split-Path $script:MyInvocation.MyCommand.Path)
+$env:Path += ";$dir\build\cmd"
 $Workingdir = (Split-Path $script:MyInvocation.MyCommand.Path)
 $build = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build")
 $pwsh = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\powershell")
@@ -219,6 +220,15 @@ start-update -Update $Getupdates -Dir $dir -Platforms $Platform
 ##Load Previous Times & PID Data
 ## Close Previous Running Agent- Agent is left running to send stats online, even if SWARM crashes
 if ($Platform -eq "windows") {
+    $dir | Set-Content ".\build\cmd\dir.txt"
+    $oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
+    if($newpath -notlike "*;$dir\build\cmd*")
+     {
+      Write-Host "Setting Path Variable For Commands: May require reboot to use." -ForegroundColor Yellow
+      $newpath = "$oldpath;$dir\build\cmd"
+      Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH -Value $newPath
+     }
+    $newpath = "$oldpath;$dir\build\cmd"
     Write-Host "Stopping Previous Agent"
     $ID = ".\build\pid\background_pid.txt"
     if (Test-Path $ID) {$Agent = Get-Content $ID}

@@ -1869,3 +1869,7 @@ them...And I let whatever doesn't work timeout.
 -added launch scripting for grin-miner.toml.
 
 -xmr-stak was compiled with reduce developer fee.
+
+-commands like ``stats`` ``benchmark`` ``active`` and other common
+ commands can now be ran through windows locally- may require restart
+ after PATH variable is set. Open cmd.exe and then run the command.
