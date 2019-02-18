@@ -103,6 +103,27 @@ function Write-MinerData2 {
     if ($Platforms -eq "linux") {$Process = Get-Process | Where Name -clike "*$($MinerType)*"}
     Write-Host "Current Running instances: $($Process.Name)"
 }
+#function Set-Array {
+  #  param(
+  #      [Parameter(Position = 0, Mandatory = $true)]
+  #      [Object]$ParseRates,
+  #      [Parameter(Position = 1, Mandatory = $true)]
+  #      [int]$i,
+  #      [Parameter(Position = 2, Mandatory = $false)]
+  #      [string]$factor
+ #   )
+ #   try {
+ #       $Parsed = $ParseRates | % {iex $_}
+#        if ($ParseRates.Count -eq 1) {[Double]$Parse = $Parsed}
+#        elseif ($ParseRates.Count -gt 1) {[Double]$Parse = if($Parsed[$i]){$Parsed[$i]}else{0}}
+#        $Parse
+#    }
+#    catch {
+#        $Parse = 0
+#        $Parse
+#    }
+#}
+
 function Set-Array {
     param(
         [Parameter(Position = 0, Mandatory = $true)]
@@ -112,16 +133,10 @@ function Set-Array {
         [Parameter(Position = 2, Mandatory = $false)]
         [string]$factor
     )
-    try {
         $Parsed = $ParseRates | % {iex $_}
-        if ($ParseRates.Count -eq 1) {[Double]$Parse = $Parsed}
-        elseif ($ParseRates.Count -gt 1) {[Double]$Parse = if($Parsed[$i]){$Parsed[$i]}else{0}}
+        $Parse = $Parsed | Select -Skip $i -First 1
+        if($null -eq $Parse){$Parse = 0}
         $Parse
-    }
-    catch {
-        $Parse = 0
-        $Parse
-    }
 }
 
 function Set-APIFailure {
