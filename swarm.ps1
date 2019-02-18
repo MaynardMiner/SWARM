@@ -222,9 +222,11 @@ start-update -Update $Getupdates -Dir $dir -Platforms $Platform
 if ($Platform -eq "windows") {
     $dir | Set-Content ".\build\cmd\dir.txt"
     $oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
-    if($newpath -notlike "*;$dir\build\cmd*")
+    if($oldpath -notlike "*;$dir\build\cmd*")
      {
-      Write-Host "Setting Path Variable For Commands: May require reboot to use." -ForegroundColor Yellow
+      Write-Host "
+Setting Path Variable For Commands: May require reboot to use.
+" -ForegroundColor Yellow
       $newpath = "$oldpath;$dir\build\cmd"
       Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH -Value $newPath
      }
