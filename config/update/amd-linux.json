@@ -68,7 +68,7 @@
 "path2":".\\bin\\lolMiner-AMD-2\\lolMiner", 
 "path3":".\\bin\\lolMiner-AMD-3\\lolMiner", 
 "minername":"lolMiner", 
-"version":"0.7", 
+"version":"0.6", 
 "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/lolminer-linux.tar.gz"
 }, 
 "lolminerv7": {

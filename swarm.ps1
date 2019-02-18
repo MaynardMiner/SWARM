@@ -157,7 +157,7 @@ param(
     [Parameter(Mandatory = $false)]
     [array]$No_Miner,
     [Parameter(Mandatory = $false)]
-    [string]$Cuckatoo31
+    [string]$HiveAPIkey
 )
 
 
@@ -348,7 +348,7 @@ if ($Debug -ne $true) {
     $CurrentParams.ADD("ETH", $ETH)
     $CurrentParams.ADD("Worker", $Worker)
     $CurrentParams.ADD("No_Miner", $No_Miner)
-    $CurrentParams.ADD("Cuckatoo31", $Cuckatoo31)
+    $CurrentParams.ADD("HiveAPIkey", $HiveAPIkey)
 
     ## Save to Config Folder
     $StartParams = $CurrentParams | ConvertTo-Json 
@@ -451,7 +451,7 @@ if ((Test-Path ".\config\parameters\newarguments.json") -or $Debug -eq $true) {
     $ETH = $SWARMParams.ETH
     $Worker = $SWARMParams.Worker
     $No_Miner = $SWARMParams.No_Miner
-    $Cuckatoo31 = $SWARMParams.Cuckatoo31
+    $HiveAPIkey = $SWARMParams.HiveAPIkey
 }
 
 ## Windows Start Up
@@ -578,6 +578,7 @@ if ($Platform -eq "linux") {
         $HiveWorker = $config.WORKER_NAME -replace "`"", ""
         $HiveMirror = $config.HIVE_HOST_URL -replace "`"", ""
         $HiveID = $config.RIG_ID
+        $FarmID = $config.FARM_ID
     }
 
     Start-Process ".\build\bash\screentitle.sh" -Wait
@@ -695,12 +696,14 @@ AMD USERS: PLEASE READ .\config\oc\new_sample.json FOR INSTRUCTIONS ON OVERCLOCK
                     $HiveWorker = $config.WORKER_NAME -replace "`"", ""
                     $Pass = $config.RIG_PASSWD -replace "`"", ""
                     $mirror = $config.HIVE_HOST_URL -replace "`"", ""
-                    $HiveWorkerID = $config.RIG_ID
+                    $farmID = $config.FARM_ID
+                    $WorkerID = $config.RIG_ID
                     $NewHiveKeys = @{}
                     $NewHiveKeys.Add("HiveWorker", "$Hiveworker")
                     $NewHiveKeys.Add("HivePassword", "$Pass")
                     $NewHiveKeys.Add("HiveID", "$HiveWorkerID")
                     $NewHiveKeys.Add("HiveMirror", "$mirror")
+                    $NewHiveKeys.Add("FarmID", "$farmID")
                     if (Test-Path ".\build\txt\hivekeys.txt") {$OldHiveKeys = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json}
                     ## If password was changed- Let Hive know message was recieved
                     if ($OldHiveKeys) {
@@ -721,6 +724,7 @@ AMD USERS: PLEASE READ .\config\oc\new_sample.json FOR INSTRUCTIONS ON OVERCLOCK
                     ## Set Arguments/New Parameters
                     $NewHiveKeys | ConvertTo-Json | Set-Content ".\build\txt\hivekeys.txt"
                     $HiveID = $NewHiveKeys.HiveID
+                    $farmID = $NewHiveKeys.FarmID
                     $HivePassword = $NewHiveKeys.HivePassword
                     $HiveWorker = $NewHiveKeys.HiveWorker
                     $HiveMirror = $NewHiveKeys.HiveMirror
@@ -890,7 +894,7 @@ While ($true) {
     $Startup = $SWARMParams.Startup
     $Worker = $SWARMParams.Worker
     $No_Miner = $SWARMParams.Worker        
-    $Cuckatoo31 = $SWARMParams.Cuckatoo31
+    $HiveAPIkey = $SWARMParams.HiveAPIkey
 
     if ($SWARMParams.Rigname1 -eq "Donate") {$Donating = $True}
     else {$Donating = $False}
