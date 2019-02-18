@@ -9,21 +9,24 @@
       "ubqhash": "",
       "mtp": "",
       "daggerhashimoto": "",
-      "myr-gr": ""
+      "myr-gr": "",
+      "ethash": ""
     },
     "difficulty": {
       "progpow": "",
       "ubqhash": "",
       "mtp": "",
       "daggerhashimoto": "",
-      "myr-gr": ""
+      "myr-gr": "",
+      "ethash": ""
     },
     "naming": {
       "progpow": "PROGPOW-100",
       "ubqhash": "UBQHASH-100",
       "mtp": "MTP-100",
       "daggerhashimoto": "ETHASH-100",
-      "myr-gr": "MYRGR-100"
+      "myr-gr": "MYRGR-100",
+      "ethash": "ETHASH-100"
     },
     "oc": {
       "progpow": {
@@ -47,6 +50,11 @@
         "Memory": ""
       },
       "myr-gr": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "ethash": {
         "Power": "",
         "Core": "",
         "Memory": ""
@@ -62,21 +70,24 @@
       "ubqhash": "",
       "mtp": "",
       "daggerhashimoto": "",
-      "myr-gr": ""
+      "myr-gr": "",
+      "ethash": ""
     },
     "difficulty": {
       "progpow": "",
       "ubqhash": "",
       "mtp": "",
       "daggerhashimoto": "",
-      "myr-gr": ""
+      "myr-gr": "",
+      "ethash": ""
     },
     "naming": {
       "progpow": "PROGPOW-100",
       "ubqhash": "UBQHASH-100",
       "mtp": "MTP-100",
       "daggerhashimoto": "ETHASH-100",
-      "myr-gr": "MYRGR-100"
+      "myr-gr": "MYRGR-100",
+      "ethash": "ETHASH-100"
     },
     "oc": {
       "progpow": {
@@ -100,6 +111,11 @@
         "Memory": ""
       },
       "myr-gr": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "ethash": {
         "Power": "",
         "Core": "",
         "Memory": ""
@@ -115,21 +131,24 @@
       "ubqhash": "",
       "mtp": "",
       "daggerhashimoto": "",
-      "myr-gr": ""
+      "myr-gr": "",
+      "ethash": ""
     },
     "difficulty": {
       "progpow": "",
       "ubqhash": "",
       "mtp": "",
       "daggerhashimoto": "",
-      "myr-gr": ""
+      "myr-gr": "",
+      "ethash": ""
     },
     "naming": {
       "progpow": "PROGPOW-100",
       "ubqhash": "UBQHASH-100",
       "mtp": "MTP-100",
       "daggerhashimoto": "ETHASH-100",
-      "myr-gr": "MYRGR-100"
+      "myr-gr": "MYRGR-100",
+      "ethash": "ETHASH-100"
     },
     "oc": {
       "progpow": {
@@ -153,6 +172,11 @@
         "Memory": ""
       },
       "myr-gr": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "ethash": {
         "Power": "",
         "Core": "",
         "Memory": ""
