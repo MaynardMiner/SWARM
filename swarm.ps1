@@ -697,11 +697,11 @@ AMD USERS: PLEASE READ .\config\oc\new_sample.json FOR INSTRUCTIONS ON OVERCLOCK
                     $Pass = $config.RIG_PASSWD -replace "`"", ""
                     $mirror = $config.HIVE_HOST_URL -replace "`"", ""
                     $farmID = $config.FARM_ID
-                    $WorkerID = $config.RIG_ID
+                    $HiveID = $config.RIG_ID
                     $NewHiveKeys = @{}
                     $NewHiveKeys.Add("HiveWorker", "$Hiveworker")
                     $NewHiveKeys.Add("HivePassword", "$Pass")
-                    $NewHiveKeys.Add("HiveID", "$HiveWorkerID")
+                    $NewHiveKeys.Add("HiveID", "$HiveID")
                     $NewHiveKeys.Add("HiveMirror", "$mirror")
                     $NewHiveKeys.Add("FarmID", "$farmID")
                     if (Test-Path ".\build\txt\hivekeys.txt") {$OldHiveKeys = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json}
