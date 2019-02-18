@@ -906,7 +906,7 @@ While ($true) {
     $APIPassword = $SWARMParams.APIPassword
     $Startup = $SWARMParams.Startup
     $Worker = $SWARMParams.Worker
-    $No_Miner = $SWARMParams.Worker        
+    $No_Miner = $SWARMParams.No_Miner        
     $HiveAPIkey = $SWARMParams.HiveAPIkey
 
     if ($SWARMParams.Rigname1 -eq "Donate") {$Donating = $True}
