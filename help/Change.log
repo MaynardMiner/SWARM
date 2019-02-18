@@ -1854,6 +1854,8 @@ testing miners, and I frankly give up. I will just add as I see
 them...And I let whatever doesn't work timeout.
 
 Bminer works fine in linux. Windows version I kept version the same.
+Windows users may get algorithms that fail immediately from this-
+SWARM will ban them, as usual.
 
 -grin-miner added for AMD in linux
 -gminer added for amd, doesn't work (no opencl detection).
