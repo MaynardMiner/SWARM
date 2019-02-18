@@ -169,7 +169,7 @@ function Start-LaunchCode {
                 $miner_bat = Join-Path $WorkingDirectory "swarm-start.bat"
                 $minerbat | Set-Content $miner_bat
             }
-            $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FIlePath ""$Logs"" -Append; `$_ | Out-Host}`'"
+            $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FIlePath ""$Logs"" -Append; `$_ | Out-Host}`'"
             $script | out-file "$WorkingDirectory\swarm-start.ps1"
             Start-Sleep -S .5
 
