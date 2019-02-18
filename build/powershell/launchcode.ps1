@@ -154,7 +154,7 @@ function Start-LaunchCode {
             $script += "`$OutputEncoding = [System.Text.Encoding]::ASCII"
             $script += ". `"$dir\build\powershell\output.ps1`";"
             $script += "$dir\build\powershell\icon.ps1 `"$dir\build\apps\miner.ico`"" 
-            $script += "`$host.ui.RawUI.WindowTitle = ""$($MinerCurrent.Name)"";"
+            $script += "`$host.ui.RawUI.WindowTitle = ""$($MinerCurrent.Name) - $($MinerCurrent.Algo)"";"
             $MinerCurrent.Prestart | foreach {
                 if ($_ -notlike "export LD_LIBRARY_PATH=$dir\build\export") {
                     $setx = $_ -replace "export ", "setx "
