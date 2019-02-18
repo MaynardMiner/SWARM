@@ -1,209 +1,137 @@
- {
-  "name":"tpruvot", 
+{
+  "name": "tpruvot",
   "NVIDIA1": {
-    "name":"NVIDIA1", 
-    "delay":"1", 
-    "prestart":[], 
+    "name": "NVIDIA1",
+    "delay": "1",
+    "prestart": [],
     "commands": {
-      "qubit":"", 
-      "keccak":"", 
-      "blakecoin":"", 
-      "keccakc":"", 
-      "x12":"", 
-      "sib":"", 
-      "myr-gr":""
-    }, 
+      "lyra2v3": "",
+      "lyra2rev3": "",
+      "sha256q": "",
+      "exosis": ""
+    },
     "difficulty": {
-      "qubit":"", 
-      "keccak":"", 
-      "blakecoin":"", 
-      "keccakc":"", 
-      "x12":"", 
-      "sib":"", 
-      "myr-gr":""
-    }, 
+      "lyra2v3": "",
+      "lyra2rev3": "",
+      "sha256q": "",
+      "exosis": ""
+    },
     "naming": {
-      "qubit":"qubit", 
-      "keccak":"keccak", 
-      "blakecoin":"blakecoin", 
-      "keccakc":"keccakc", 
-      "x12":"x12", 
-      "sib":"sib", 
-      "myr-gr":"myr-gr"
-    }, 
+      "lyra2v3": "lyra2v3",
+      "lyra2rev3": "lyra2v3",
+      "sha256q": "sha256q",
+      "exosis": "exosis"
+    },
     "oc": {
-      "qubit": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
-      "keccak": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
-      "blakecoin": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
-      "keccakc": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
-      "x12": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
-      "sib": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
-      "myr-gr": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
+      "lyra2v3": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
+      "lyra2rev3": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
+      "sha256q": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
+      "exosis": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
       }
     }
-  }, 
+  },
   "NVIDIA2": {
-    "name":"NVIDIA2", 
-    "delay":"1", 
-    "prestart":[], 
+    "name": "NVIDIA2",
+    "delay": "1",
+    "prestart": [],
     "commands": {
-      "qubit":"", 
-      "keccak":"", 
-      "blakecoin":"", 
-      "keccakc":"", 
-      "x12":"", 
-      "sib":"", 
-      "myr-gr":""
-    }, 
+      "lyra2v3": "",
+      "lyra2rev3": "",
+      "sha256q": "",
+      "exosis": ""
+    },
     "difficulty": {
-      "qubit":"", 
-      "keccak":"", 
-      "blakecoin":"", 
-      "keccakc":"", 
-      "x12":"", 
-      "sib":"", 
-      "myr-gr":""
-    }, 
+      "lyra2v3": "",
+      "lyra2rev3": "",
+      "sha256q": "",
+      "exosis": ""
+    },
     "naming": {
-      "qubit":"qubit", 
-      "keccak":"keccak", 
-      "blakecoin":"blakecoin", 
-      "keccakc":"keccakc", 
-      "x12":"x12", 
-      "sib":"sib", 
-      "myr-gr":"myr-gr"
-    }, 
+      "lyra2v3": "lyra2v3",
+      "lyra2rev3": "lyra2v3",
+      "sha256q": "sha256q",
+      "exosis": "exosis"
+    },
     "oc": {
-      "qubit": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
-      "keccak": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
-      "blakecoin": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
-      "keccakc": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
-      "x12": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
-      "sib": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
-      "myr-gr": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
+      "lyra2v3": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
+      "lyra2rev3": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
+      "sha256q": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
+      "exosis": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
       }
     }
-  }, 
+  },
   "NVIDIA3": {
-    "name":"NVIDIA3", 
-    "delay":"1", 
-    "prestart":[], 
+    "name": "NVIDIA3",
+    "delay": "1",
+    "prestart": [],
     "commands": {
-      "qubit":"", 
-      "keccak":"", 
-      "blakecoin":"", 
-      "keccakc":"", 
-      "x12":"", 
-      "sib":"", 
-      "myr-gr":""
-    }, 
+      "lyra2v3": "",
+      "lyra2rev3": "",
+      "sha256q": "",
+      "exosis": ""
+    },
     "difficulty": {
-      "qubit":"", 
-      "keccak":"", 
-      "blakecoin":"", 
-      "keccakc":"", 
-      "x12":"", 
-      "sib":"", 
-      "myr-gr":""
-    }, 
+      "lyra2v3": "",
+      "lyra2rev3": "",
+      "sha256q": "",
+      "exosis": ""
+    },
     "naming": {
-      "qubit":"qubit", 
-      "keccak":"keccak", 
-      "blakecoin":"blakecoin", 
-      "keccakc":"keccakc", 
-      "x12":"x12", 
-      "sib":"sib", 
-      "myr-gr":"myr-gr"
-    }, 
+      "lyra2v3": "lyra2v3",
+      "lyra2rev3": "lyra2v3",
+      "sha256q": "sha256q",
+      "exosis": "exosis"
+    },
     "oc": {
-      "qubit": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
-      "keccak": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
-      "blakecoin": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
-      "keccakc": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
-      "x12": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
-      "sib": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
-      "myr-gr": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
+      "lyra2v3": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
+      "lyra2rev3": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
+      "sha256q": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
+      "exosis": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
       }
     }
   }

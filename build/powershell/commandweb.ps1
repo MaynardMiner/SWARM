@@ -347,14 +347,14 @@ function Start-Webcommand {
             $Command.result | ConvertTo-Json | Set-Content ".\build\txt\hiveconfig.txt"
             if ($command.result.config) {
                 $config = [string]$command.result.config | ConvertFrom-StringData
-                $worker = $config.WORKER_NAME -replace "`"", ""
+                $hiveworker = $config.WORKER_NAME -replace "`"", ""
                 $Pass = $config.RIG_PASSWD -replace "`"", ""
                 $mirror = $config.HIVE_HOST_URL -replace "`"", ""
-                $WorkerID = $config.RIG_ID
+                $hiveWorkerID = $config.RIG_ID
                 $NewHiveKeys = @{}
-                $NewHiveKeys.Add("HiveWorker", "$worker")
+                $NewHiveKeys.Add("HiveWorker", "$hiveworker")
                 $NewHiveKeys.Add("HivePassword", "$Pass")
-                $NewHiveKeys.Add("HiveID", "$WorkerID")
+                $NewHiveKeys.Add("HiveID", "$hiveWorkerID")
                 $NewHiveKeys.Add("HiveMirror", "$mirror")
                 if (Test-Path ".\build\txt\hivekeys.txt") {$OldHiveKeys = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json}
                 if ($OldHiveKeys) {

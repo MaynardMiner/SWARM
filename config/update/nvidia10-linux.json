@@ -27,7 +27,7 @@
     "path2": ".\\bin\\cryptodredge-2\\CryptoDredge",
     "path3": ".\\bin\\cryptodredge-3\\CryptoDredge",
     "minername": "CryptoDredge",
-    "version": "0.16.2",
+    "version": "0.17.0",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/CryptoDredge-Linux-10.tar.gz"
   },
   "cc-mtp": {
@@ -127,7 +127,7 @@
     "path2": ".\\bin\\tpruvot-2\\ccminer",
     "path3": ".\\bin\\tpruvot-3\\ccminer",
     "minername": "ccminer",
-    "version": "2.3",
+    "version": "2.3.1",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/tpruvot-linux-10.tar.gz"
   },
   "trex": {
@@ -170,6 +170,16 @@
     "version":"1.31", 
     "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/gminer-linux.tar.gz"
 }, 
+"grin-miner": {
+  "name":"grin-miner", 
+  "type":"nvidia", 
+  "path1":".\\bin\\grin-miner-1\\grin-miner", 
+  "path2":".\\bin\\grin-miner-2\\grin-miner", 
+  "path3":".\\bin\\grin-miner-3\\grin-miner", 
+  "minername":"grin-miner", 
+  "version":"1.00", 
+  "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/grin-miner-linux.tar.gz"
+}, 
   "bminer": {
     "name": "bminer",
     "type": "nvidia",
@@ -177,7 +187,7 @@
     "path2": ".\\bin\\bminer-2\\bminer",
     "path3": ".\\bin\\bminer-3\\bminer",
     "minername": "bminer",
-    "version": "14.3.0",
+    "version": "15.0.0",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/bminer-linux.tar.gz"
   },
   "miniz": {

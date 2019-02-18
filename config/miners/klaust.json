@@ -1,113 +1,89 @@
- {
-  "name":"klaust", 
+{
+  "name": "klaust",
   "NVIDIA1": {
-    "name":"NVIDIA1", 
-    "delay":"1", 
-    "prestart":[], 
+    "name": "NVIDIA1",
+    "delay": "1",
+    "prestart": [],
     "commands": {
-      "jackpot":"", 
-      "groestl":"", 
-      "skein":""
-    }, 
+      "lyra2v3": "",
+      "lyra2rev3": ""
+    },
     "difficulty": {
-      "jackpot":"", 
-      "groestl":"", 
-      "skein":""
-    }, 
+      "lyra2v3": "",
+      "lyra2rev3": ""
+    },
     "naming": {
-      "jackpot":"jackpot", 
-      "groestl":"groestl", 
-      "skein":"skein"
-    }, 
+      "lyra2v3": "Lyra2REv3",
+      "lyra2rev3": "Lyra2REv3"
+    },
     "oc": {
-      "jackpot": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
-      "groestl": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
-      "skein": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
+      "lyra2v3": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
+      "lyra2rev3": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
       }
     }
-  }, 
+  },
   "NVIDIA2": {
-    "name":"NVIDIA2", 
-    "delay":"1", 
-    "prestart":[], 
+    "name": "NVIDIA2",
+    "delay": "1",
+    "prestart": [],
     "commands": {
-      "jackpot":"", 
-      "groestl":"", 
-      "skein":""
-    }, 
+      "lyra2v3": "",
+      "lyra2rev3": ""
+    },
     "difficulty": {
-      "jackpot":"", 
-      "groestl":"", 
-      "skein":""
-    }, 
+      "lyra2v3": "",
+      "lyra2rev3": ""
+    },
     "naming": {
-      "jackpot":"jackpot", 
-      "groestl":"groestl", 
-      "skein":"skein"
-    }, 
+      "lyra2v3": "Lyra2REv3",
+      "lyra2rev3": "Lyra2REv3"
+    },
     "oc": {
-      "jackpot": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
-      "groestl": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
-      "skein": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
+      "lyra2v3": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
+      "lyra2rev3": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
       }
     }
-  }, 
+  },
   "NVIDIA3": {
-    "name":"NVIDIA3", 
-    "delay":"1", 
-    "prestart":[], 
+    "name": "NVIDIA3",
+    "delay": "1",
+    "prestart": [],
     "commands": {
-      "jackpot":"", 
-      "groestl":"", 
-      "skein":""
-    }, 
+      "lyra2v3": "",
+      "lyra2rev3": ""
+    },
     "difficulty": {
-      "jackpot":"", 
-      "groestl":"", 
-      "skein":""
-    }, 
+      "lyra2v3": "",
+      "lyra2rev3": ""
+    },
     "naming": {
-      "jackpot":"jackpot", 
-      "groestl":"groestl", 
-      "skein":"skein"
-    }, 
+      "lyra2v3": "Lyra2REv3",
+      "lyra2rev3": "Lyra2REv3"
+    },
     "oc": {
-      "jackpot": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
-      "groestl": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
-      "skein": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
+      "lyra2v3": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
+      },
+      "lyra2rev3": {
+        "Power": "",
+        "Memory": "",
+        "Core": ""
       }
     }
   }

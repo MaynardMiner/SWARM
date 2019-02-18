@@ -103,6 +103,27 @@ function Write-MinerData2 {
     if ($Platforms -eq "linux") {$Process = Get-Process | Where Name -clike "*$($MinerType)*"}
     Write-Host "Current Running instances: $($Process.Name)"
 }
+#function Set-Array {
+  #  param(
+  #      [Parameter(Position = 0, Mandatory = $true)]
+  #      [Object]$ParseRates,
+  #      [Parameter(Position = 1, Mandatory = $true)]
+  #      [int]$i,
+  #      [Parameter(Position = 2, Mandatory = $false)]
+  #      [string]$factor
+ #   )
+ #   try {
+ #       $Parsed = $ParseRates | % {iex $_}
+#        if ($ParseRates.Count -eq 1) {[Double]$Parse = $Parsed}
+#        elseif ($ParseRates.Count -gt 1) {[Double]$Parse = if($Parsed[$i]){$Parsed[$i]}else{0}}
+#        $Parse
+#    }
+#    catch {
+#        $Parse = 0
+#        $Parse
+#    }
+#}
+
 function Set-Array {
     param(
         [Parameter(Position = 0, Mandatory = $true)]
@@ -112,16 +133,10 @@ function Set-Array {
         [Parameter(Position = 2, Mandatory = $false)]
         [string]$factor
     )
-    try {
         $Parsed = $ParseRates | % {iex $_}
-        if ($ParseRates.Count -eq 1) {[Double]$Parse = $Parsed}
-        elseif ($ParseRates.Count -gt 1) {[Double]$Parse = if($Parsed[$i]){$Parsed[$i]}else{0}}
+        $Parse = $Parsed | Select -Skip $i -First 1
+        if($null -eq $Parse){$Parse = 0}
         $Parse
-    }
-    catch {
-        $Parse = 0
-        $Parse
-    }
 }
 
 function Set-APIFailure {
@@ -567,6 +582,35 @@ While ($True) {
                     }
                     else {Set-APIFailure; break}
                 }
+
+                'grin-miner'
+                {
+                 $HS = "hs"
+                 try{$Request = Get-Content ".\logs\$MinerType.log" -ErrorAction SilentlyContinue}catch{Write-Host "Failed to Read Miner Log"}
+                  if($Request)
+                  {
+                    $Hash = @()
+                    $Devices | %{
+                        $DeviceData = $Null
+                        $DeviceData = $Request | Select-String "Device $($_)" | %{$_ | Select-String "Graphs per second: "} | Select -Last 1
+                        $DeviceData = $DeviceData -split "Graphs per second: " | Select -Last 1 | %{$_ -split " - Total" | Select -First 1}
+                        if($DeviceData){$Hash += $DeviceData; $RAW += [Double]$DeviceData}else{$Hash += 0; $RAW += 0}
+                    }
+                    Write-MinerData2;
+                    try {for ($i = 0; $i -lt $Devices.Count; $i++) {$GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $i)}}catch {Write-Host "Failed To parse GPU Threads" -ForegroundColor Red};
+                    $Accepted = $null
+                    $Rejected = $null
+                    $Accepted = $($Request | Select-String "Share Accepted!!").count
+                    $Rejected = $($Request | Select-String "Failed to submit a solution").count
+                    $ACC += $Accepted
+                    $REJ += $Rejected
+                    $MinerACC += $Accepted
+                    $MinerREJ += $Rejected
+                    $UPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
+                    $ALGO += "$MinerAlgo"
+                  }
+                  else {Set-APIFailure; break}
+                }
   
                 'ewbf' {
                     $HS = "hs"
@@ -807,7 +851,7 @@ While ($True) {
                         $REJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good
                         $UPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
                         $ALGO += "$MinerAlgo"
-                        try {$KHS += [Double]$Data.hashrate.total[0]/1000}catch {}
+                        try {$KHS += [Double]$HashRate_Total/1000}catch {}
                     }
                     else {Set-APIFailure; break}
                 }

@@ -1,38 +1,38 @@
- {
-    "name":"lolminer", 
-    "AMD1": {
-      "name":"AMD1", 
-      "delay":"1", 
-      "prestart":[], 
-      "commands": {
-        "zhash":"--coin AUTO144_5", 
-        "equihash192":"--coin AUTO192_7"
-      }, 
-      "difficulty": {
-        "zhash":"", 
-        "equihash192":""
-      }, 
-      "naming": {
-        "zhash":"zhash", 
-        "equihash192":"equihash192"
-      }, 
-      "oc": {
-        "zhash": {
-            "dpm":"", 
-            "v":"", 
-            "core":"", 
-            "mem":"", 
-            "mdpm":"", 
-            "fans":""
-            }, 
-            "equihash192": {
-              "dpm":"", 
-              "v":"", 
-              "core":"", 
-              "mem":"", 
-              "mdpm":"", 
-              "fans":""
-            }
+{
+  "name": "lolminer",
+  "AMD1": {
+    "name": "AMD1",
+    "delay": "1",
+    "prestart": [],
+    "commands": {
+      "zhash": "--coin AUTO144_5",
+      "equihash192": "--coin AUTO192_7"
+    },
+    "difficulty": {
+      "zhash": "",
+      "equihash192": ""
+    },
+    "naming": {
+      "zhash": "zhash",
+      "equihash192": "equihash192"
+    },
+    "oc": {
+      "zhash": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "equihash192": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
       }
     }
+  }
 }

@@ -110,3 +110,28 @@ oc-settings are applied during the start of "logdata" screen. The only way to se
   "Memory": "1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000" } 
 
 
+amd process is the same:
+
+
+"Cards": "RX580 RX580 RX580 Vega Vega"
+
+"default_AMD1":  {
+  "dpm":  "5 5 5 5 5",
+  "v":  "950 950 950 1100 1100",
+  "core":  "1100 1100 1100 950",
+  "memory":  "1099 1099 1099 915 915",
+  "mdpm":  "2 2 2 3 3",
+  "fans":  "60 60 60 80 80"
+}
+
+dpm: Core P-State
+v: Core voltage (aggressively set for all p-states)
+core: Core Clock
+memory: Memory Clock
+mdpm: Memory State
+fans: Fan speed
+
+-Windows: dpm isn't needed.
+-Windows: mdpm will set memory P-Voltage for all states = to default state selected.
+
+

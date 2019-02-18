@@ -310,7 +310,7 @@ clear_watts
     "miners" {
         $GetJsons = Get-ChildItem ".\config\miners"
         $ConvertJsons = [PSCustomObject]@{}
-        $GetJsons | foreach {$Getfile = Get-Content $_ | ConvertFrom-Json; $ConvertJsons | Add-Member $Getfile.Name $(Get-Content $_ | ConvertFrom-Json)}
+        $GetJsons | foreach {$Getfile = Get-Content ".\config\miners\$($_)" | ConvertFrom-Json; $ConvertJsons | Add-Member $Getfile.Name $Getfile -Force}
         if ($argument2) {
             $Get += "Current $Argument2 Miner List:"
             $Get += " "   
@@ -336,7 +336,7 @@ clear_watts
                         "windows" {$UpdateJson = Get-Content ".\config\update\amd-windows.json" | ConvertFrom-Json}
                     }
                 }
-                if ($argument3 -like "*CPU*") {
+                if ($argument2 -like "*CPU*") {
                     $Number = 1
                     switch ($Platform) {  
                         "linux" {$UpdateJson = Get-Content ".\config\update\cpu-linux.json" | ConvertFrom-Json}

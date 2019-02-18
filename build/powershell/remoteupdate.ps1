@@ -48,6 +48,8 @@ function start-update {
         $PreviousVersions += "SWARM.1.9.4"
         $PreviousVersions += "SWARM.1.9.5"
         $PreviousVersions += "SWARM.1.9.6"
+        $PreviousVersions += "SWARM.1.9.7"
+        $PreviousVersions += "SWARM.1.9.8"
 
         Write-Host "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
         Write-Host "Check $Location For any Previous Versions"
@@ -144,6 +146,11 @@ function start-update {
                                         $Data.$_.naming | Add-Member "x16rt" "x16rt" -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "x16rt" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue
 
+                                        $Data.$_.commands| Add-Member "veil" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "veil" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "veil" "x16rt" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "veil" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue
+
                                         $Data.$_.commands| Add-Member "lyra2zz" "" -ErrorAction SilentlyContinue
                                         $Data.$_.difficulty | Add-Member "lyra2zz" "" -ErrorAction SilentlyContinue
                                         $Data.$_.naming | Add-Member "lyra2zz" "lyra2zz" -ErrorAction SilentlyContinue
@@ -158,6 +165,11 @@ function start-update {
                                         $Data.$_.difficulty | Add-Member "cnsuperfast" "" -ErrorAction SilentlyContinue
                                         $Data.$_.naming | Add-Member "cnsuperfast" "cnsuperfast" -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "cnsuperfast" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue
+
+                                        $Data.$_.commands| Add-Member "beam" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "beam" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "beam" "aeternity" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "beam" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue
                                     }  
                                 }
                             }
@@ -195,6 +207,11 @@ function start-update {
                                         $Data.$_.difficulty | Add-Member "x16rt" "" -ErrorAction SilentlyContinue
                                         $Data.$_.naming | Add-Member "x16rt" "x16rt" -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "x16rt" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue
+
+                                        $Data.$_.commands| Add-Member "veil" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "veil" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "veil" "x16rt" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "veil" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue
 
                                         $Data.$_.commands| Add-Member "sha256q" "" -ErrorAction SilentlyContinue
                                         $Data.$_.difficulty | Add-Member "sha256q" "" -ErrorAction SilentlyContinue
@@ -286,6 +303,11 @@ function start-update {
                                         $Data.$_.naming | Add-Member "x16rt" "x16rt" -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "x16rt" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue                    
 
+                                        $Data.$_.commands| Add-Member "veil" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "veil" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "veil" "x16rt" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "veil" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue
+
                                         $Data.$_.commands| Add-Member "mtp" "" -ErrorAction SilentlyContinue
                                         $Data.$_.difficulty | Add-Member "mtp" "" -ErrorAction SilentlyContinue
                                         $Data.$_.naming | Add-Member "mtp" "mtp" -ErrorAction SilentlyContinue
@@ -336,6 +358,17 @@ function start-update {
                                         $Data.$_.difficulty | Add-Member "beam" "" -ErrorAction SilentlyContinue
                                         $Data.$_.naming | Add-Member "beam" "beam" -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "beam" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue  
+
+                                        $Data.$_.commands| Add-Member "grincuckaroo29" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "grincuckaroo29" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "grincuckaroo29" "cuckaroo29" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "grincuckaroo29" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue  
+
+                                        $Data.$_.commands| Add-Member "grincuckatoo31" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "grincuckatoo31" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "grincuckatoo31" "cuckatoo31" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "grincuckatoo31" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue  
+
                                     }
                                 }
                             }
@@ -381,6 +414,31 @@ function start-update {
                                     }
                                 }
                             }
+                            if ($ChangeFile -eq "tpruvot.json") {
+                                $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                    if ($_ -ne "name") {    
+                                        $Data.$_.commands| Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "lyra2v3" "lyra2v3" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "lyra2v3" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue
+
+                                        $Data.$_.commands| Add-Member "lyra2rev3" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "lyra2rev3" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "lyra2rev3" "lyra2v3" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "lyra2rev3" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue
+
+                                        $Data.$_.commands| Add-Member "exosis" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "exosis" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "exosis" "exosis" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "exosis" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue
+
+                                        $Data.$_.commands| Add-Member "sha256q" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "sha256q" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "sha256q" "sha256q" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "sha256q" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue
+                                    }
+                                }
+                            }
                             if ($ChangeFile -eq "phoenix_amd.json") {
                                 $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                     if ($_ -ne "name") {    
@@ -404,6 +462,11 @@ function start-update {
                                         $Data.$_.difficulty | Add-Member "grimcuckaroo29" "" -ErrorAction SilentlyContinue
                                         $Data.$_.naming | Add-Member "grimcuckaroo29" "grimcuckaroo29" -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "grimcuckaroo29" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue
+
+                                        $Data.$_.commands| Add-Member "grimcuckatoo31" "--algo grin31 --pers auto" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "grimcuckatoo31" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "grimcuckatoo31" "grimcuckatoo31" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "grimcuckatoo31" @{Power = ""; Core = ""; Memory = ""} -ErrorAction SilentlyContinue
 
                                         $Data.$_.commands| Add-Member "beam" "--algo 150_5 --pers auto" -ErrorAction SilentlyContinue
                                         $Data.$_.difficulty | Add-Member "beam" "" -ErrorAction SilentlyContinue

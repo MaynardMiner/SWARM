@@ -29,7 +29,7 @@ Write-Host "
                                                                      .h+.                                      .+h.
                                                                      +MMd+.                                  .+dMM+
                                                                     +sNMMMMd+.                            .+dMMMMNs+
-               `"Agression Makes Up For Skill.`"                      .dMMMMMMMh+.                       .+hMMMMMMMMd.
+               `"Aggression Makes Up For Skill.`"                      .dMMMMMMMh+.                       .+hMMMMMMMMd.
                     Caeser Vitus Aurelius                           .mMMMMMMMMMNy:.  -+:        :+-  .:yNMMMMMMMMMm.
                             VITO                                     -mMMMMMMMMMMMms-  omhdmmdhmo  -smMMMMMMMMMMMm- 
                    http://vitosminions.com/                           -mMMMMMMMMMMMMMd+mMMMMMMMMm+dMMMMMMMMMMMMMm-
@@ -50,7 +50,7 @@ Write-Host "
                                                                                             |                       -MaynardVII    
 
 					                                    Hybrid Auto-Profit Switching Miner
-						       BTC DONATION ADRRESS TO SUPPORT DEVELOPMENT: 1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i
+						       BTC DONATION ADDRESS TO SUPPORT DEVELOPMENT: 1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i
 				  	             This Software Is Open-Source. However, 1.40% Dev Fee Was Written In This Code
 							   Dev Fee is NOT 1.40% of all Mining. 1.40% of 86400 seconds (24 hours)
 					                   It Can Take Awhile To Load At First Time Start-Up. Please Be Patient!

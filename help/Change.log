@@ -1835,3 +1835,45 @@ Windows AMD users:
       of algorithms.
 -Code staging for wallet swapping (not done yet).
 
+1.9.8
+
+test release
+
+1.9.9
+
+HUGE NOTE:
+
+There are soooo many developers botching cuckoo algorithms.
+I am adding whatever they state they add, support whatever
+they support. If it doesn't work- consult developers. They
+are prone to lots of glitches and issues. See memory requirements
+for each miner.
+
+I can provide limited support on their uses. I have spent days
+testing miners, and I frankly give up. I will just add as I see
+them...And I let whatever doesn't work timeout.
+
+Bminer works fine in linux. Windows version I kept version the same.
+Windows users may get algorithms that fail immediately from this-
+SWARM will ban them, as usual.
+
+-grin-miner added for AMD in linux
+-gminer added for amd, doesn't work (no opencl detection).
+-cd miner updated, beam added, doesn't work.
+-many, many miners were updated and tested.
+-x16rt and miners on nlpool is experimental.
+-added veil support for nlpool.
+-added cuckoo31 support for bminer.
+    note: This will work with 8gb nvidia cards, highly reccommend.
+    note: This will not work with windows.
+
+-added killcx script to help with bad miners that won'table
+ free ports. killcx is now depency for linux.
+
+-added launch scripting for grin-miner.toml.
+
+-xmr-stak was compiled with reduce developer fee.
+
+-commands like ``stats`` ``benchmark`` ``active`` and other common
+ commands can now be ran through windows locally- may require restart
+ after PATH variable is set. Open cmd.exe and then run the command.

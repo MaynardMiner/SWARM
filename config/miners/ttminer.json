@@ -1,114 +1,186 @@
- {
-"name":"ttminer", 
-"NVIDIA1": {
-  "name":"NVIDIA1", 
-  "delay":"1", 
-  "prestart":[], 
-  "commands": {
-    "progpow":"", 
-    "ubqhash":"", 
-    "mtp":""
-  }, 
-  "difficulty": {
-    "progpow":"", 
-    "ubqhash":"", 
-    "mtp":""
-  }, 
-  "naming": {
-    "progpow":"progpow", 
-    "ubqhash":"ubqhash", 
-    "mtp":"mtp"
-  }, 
-  "oc": {
-    "progpow": {
-      "Power":"", 
-      "Core":"", 
-      "Memory":""
-    }, 
-    "ubqhash": {
-      "Power":"", 
-      "Core":"", 
-      "Memory":""
-    }, 
-    "mtp": {
-      "Power":"", 
-      "Core":"", 
-      "Memory":""
+{
+  "name": "ttminer",
+  "NVIDIA1": {
+    "name": "NVIDIA1",
+    "delay": "1",
+    "prestart": [],
+    "commands": {
+      "progpow": "",
+      "ubqhash": "",
+      "mtp": "",
+      "daggerhashimoto": "",
+      "myr-gr": "",
+      "ethash": ""
+    },
+    "difficulty": {
+      "progpow": "",
+      "ubqhash": "",
+      "mtp": "",
+      "daggerhashimoto": "",
+      "myr-gr": "",
+      "ethash": ""
+    },
+    "naming": {
+      "progpow": "PROGPOW-100",
+      "ubqhash": "UBQHASH-100",
+      "mtp": "MTP-100",
+      "daggerhashimoto": "ETHASH-100",
+      "myr-gr": "MYRGR-100",
+      "ethash": "ETHASH-100"
+    },
+    "oc": {
+      "progpow": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "ubqhash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "mtp": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "daggerhashimoto": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "myr-gr": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "ethash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  },
+  "NVIDIA2": {
+    "name": "NVIDIA2",
+    "delay": "1",
+    "prestart": [],
+    "commands": {
+      "progpow": "",
+      "ubqhash": "",
+      "mtp": "",
+      "daggerhashimoto": "",
+      "myr-gr": "",
+      "ethash": ""
+    },
+    "difficulty": {
+      "progpow": "",
+      "ubqhash": "",
+      "mtp": "",
+      "daggerhashimoto": "",
+      "myr-gr": "",
+      "ethash": ""
+    },
+    "naming": {
+      "progpow": "PROGPOW-100",
+      "ubqhash": "UBQHASH-100",
+      "mtp": "MTP-100",
+      "daggerhashimoto": "ETHASH-100",
+      "myr-gr": "MYRGR-100",
+      "ethash": "ETHASH-100"
+    },
+    "oc": {
+      "progpow": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "ubqhash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "mtp": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "daggerhashimoto": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "myr-gr": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "ethash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
+    }
+  },
+  "NVIDIA3": {
+    "name": "NVIDIA3",
+    "delay": "1",
+    "prestart": [],
+    "commands": {
+      "progpow": "",
+      "ubqhash": "",
+      "mtp": "",
+      "daggerhashimoto": "",
+      "myr-gr": "",
+      "ethash": ""
+    },
+    "difficulty": {
+      "progpow": "",
+      "ubqhash": "",
+      "mtp": "",
+      "daggerhashimoto": "",
+      "myr-gr": "",
+      "ethash": ""
+    },
+    "naming": {
+      "progpow": "PROGPOW-100",
+      "ubqhash": "UBQHASH-100",
+      "mtp": "MTP-100",
+      "daggerhashimoto": "ETHASH-100",
+      "myr-gr": "MYRGR-100",
+      "ethash": "ETHASH-100"
+    },
+    "oc": {
+      "progpow": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "ubqhash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "mtp": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "daggerhashimoto": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "myr-gr": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
+      "ethash": {
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      }
     }
   }
-}, 
-"NVIDIA2": {
-  "name":"NVIDIA2", 
-  "delay":"1", 
-  "prestart":[], 
-  "commands": {
-    "progpow":"", 
-    "ubqhash":"", 
-    "mtp":""
-  }, 
-  "difficulty": {
-    "progpow":"", 
-    "ubqhash":"", 
-    "mtp":""
-  }, 
-  "naming": {
-    "progpow":"progpow", 
-    "ubqhash":"ubqhash", 
-    "mtp":"mtp"
-  }, 
-  "oc": {
-    "progpow": {
-      "Power":"", 
-      "Core":"", 
-      "Memory":""
-    }, 
-    "ubqhash": {
-      "Power":"", 
-      "Core":"", 
-      "Memory":""
-    }, 
-    "mtp": {
-      "Power":"", 
-      "Core":"", 
-      "Memory":""
-    }
-  }
-}, 
-"NVIDIA3": {
-  "name":"NVIDIA3", 
-  "delay":"1", 
-  "prestart":[], 
-  "commands": {
-    "progpow":"", 
-    "ubqhash":"", 
-    "mtp":""
-  }, 
-  "difficulty": {
-    "progpow":"", 
-    "ubqhash":"", 
-    "mtp":""
-  }, 
-  "naming": {
-    "progpow":"progpow", 
-    "ubqhash":"ubqhash", 
-    "mtp":"mtp"
-  }, 
-  "oc": {
-    "progpow": {
-      "Power":"", 
-      "Core":"", 
-      "Memory":""
-    }, 
-    "ubqhash": {
-      "Power":"", 
-      "Core":"", 
-      "Memory":""
-    }, 
-    "mtp": {
-      "Power":"", 
-      "Core":"", 
-      "Memory":""
-    }
-  }
- }
 }

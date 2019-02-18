@@ -2,477 +2,101 @@
 ###       NVIDIA INSPECTOR - CHANGELOG      ###
 ###############################################
 
-Version 1.9.7.3
+NVIDIA Inspector - Version 1.9.7.8 (.NET Framework 2 or above)
 
-- updated setting constants until driver R343
-- updated custom settings
-- override reported default value for aa gamma correction and shader cache
-- fixed donation link
-- show memory vendor shortname after memory type
-- you can now add "-silent" param after the nip file for silent profile import
-- creating startup tasks will add 30sec task delay
-- creating seperated startup tasks for each perf level
-- fixed default values for non P0 state oc controls
-- fixed MDPS apps drag & drop from non elevated desktop
-- fixed ROP calculation for Maxwell 2 cards 
+- added "dpiAware" flag to support win8+ dpi scaling
+- avoid interupting status requests on optimus cards
+- show power usage in watts on main page if supported and nvml is available
+- added encoder usage to monitoring if supported and nvml is available
+- added decoder usage to monitoring if supported and nvml is available
+- added power limit status to monitoring
+- added thermal limit status to monitoring 
+- added reliability voltage limit status to monitoring 
+- added sli sync boost limit to monitoring
+- added CLI param "setVoltagePoints"
+- added CLI param "dumpVoltagePoints"  
+- changed CLI param "lockVoltagePoint" to also use uV instead of mV
+- fixed calling CLI made voltage points reset  
+- added max boost clock estimation for pascal with voltage point support
 
 
-Version 1.9.7.2 BETA
 
-===================================================================
-- inspector now always requires admin rights since nvidia decided 
-  to accept all overclocking actions just in an elevated process 
-  enviroment for drivers R325 and above. :(
-===================================================================
+NVIDIA Inspector - Version 1.9.7.7 (.NET Framework 2 or above)
 
-- changed MDPS startup to make use of TaskScheduler instead of shortcut 
-- changed "Create Startup Shortcut" feature for clock startup to make use 
-  of TaskScheduler too ( rightclick "Create Clocks Shortcut" )
-  (you have to remove your old startup shortcuts manually)
+- fixed GDDR5X detection
+- fixed voltage reading for pascal
+- disabled max boost clock detection for pascal (quick fix for 3rd party curve reset on inspector start)
+- readded button and jumplist entry for profile inspector if exists
+- added CLI param "-lockVoltagePoint"
 
-- added lod bias adjustment for OpenGL
-- added FERMI_SETREDUCECOLORTHRESHOLDSENABLE as "Antialiasing fix" 
-  to avoid black edges in some games while using MSAA (R320.14+)
-- added OverrideDefault property to CustomSettingNames structure
-- added total card power level (normalized) to sensor monitoring (R314+)
-- changed MDPS to run always in legacy mode but with enabled "add by gpu process" feature
 
+NVIDIA Profile Inspector - Version 2.1.3.0 (.NET Framework 4 or above)
 
-Version 1.9.7.1
+- added 'export current profile including predefined settings' to menu
+- fixed empty profile export if no setting is set but only application(s)
+- fixed crash if nvd3dumx file is not present (WDDM2.1 driver)
+- updated setting constants to R367
+- added setting decryptor for encrypted 3dvision settings
+- improved import error handling
+- show nvidia icon for predefined profiles in modified profile list
+- added CLI param "-silent"
+- added CLI param "-silentImport"
+- added some 3d vision settings to CSN file (by DarkStarSword) 
+- added OpenGL version override to CSN file
+- added FastSync to CSN file
+- added FrameRateLimiterV2 values to CSN file
 
-- fixed overclocking panel was expanded by default
-- fixed divide by zero bug for some mobile kepler cards
 
-Version 1.9.7.0 BETA
 
-- added support for overvoltage (GK110)
-- added support for temperature target (GK110)
-- enabled and improved estimated max boost for GK110
-- added CLI parameter "-setIlumination" for logo brightness control (GTX 690, TITAN; SLIBRIDGE)
-- added CLI parameters for overvoltage and temperature target
-- improved high dpi layout for driver settings
+NVIDIA Inspector - Version 1.9.7.6 (.NET Framework 2 or above)
 
-Version 1.9.6.9
+- fixed image upload
 
-- updated setting constants and names xml for driver R313
-- removed dirty workaround for delete profile driver bug, is fixed since R310
-- fixed low resolution gui glitch for bitvalue editor
-- improved hex input parsing
+NVIDIA Profile Inspector - Version 2.1.2.0 (.NET Framework 4 or above)
 
-Version 1.9.6.8 HOTFIX
+- nvidiaProfileInspector is now open source and licensed under MIT license.
+  (https://github.com/Orbmu2k/nvidiaProfileInspector)
 
-- possible bugfix for low resolution GUI glitch in setting profiles
+- there are also continues builds available outside of the update cycle of nvidiaInspector
+  (https://ci.appveyor.com/project/Orbmu2k/nvidiaprofileinspector/build/artifacts)
 
+- added option to include predefined settings to the exported nip file
+- fixed when all string fields got persisted on apply changes even if no changes was made to them
+- fixed when the import removes the predefined settings of a profile if they are not included in the nip file
+- fixed clicking the refresh button may crash the application for some users
 
-Version 1.9.6.7
+-------------------------------------------------
 
-- improved max boost detection for kepler cards
-- added CLI parameter "-skipMaxBoostTest" to disable max boost detection
-- added CLI parameter "-disableScan" for profile settings
-- added new profile helper while dragndrop exe file and no profile is found (take care you not just took the launcher)
-- removed (DX9) postfix for LOD bias setting, its supported for DX10+ too since driver r310 
+NVIDIA Inspector - Version 1.9.7.5 (.NET Framework 2 or above)
 
+- removed obsoltete profile settings jump list entry
+- fixed cuda lib error 
 
-Version 1.9.6.6 
+NVIDIA Profile Inspector - Version 2.1.1.1 (.NET Framework 4 or above)
 
-- clock domains reworked, fixed some 304.xx issues on kepler
-- switched shader to gpu clock for monitoring default selection
-- updated some setting constants for 302.xx drivers
+- reverted back to default font
+- fixed layout problems (hopefully)
 
 
-Version 1.9.6.5 
+-------------------------------------------------
 
-- fixed wrong bandwidth calculation for GDDR3
-- added invalid bios detection
-- added some vendorids
-- finally fixed trilinear optimization setting 1 = off / 0 = on
-- changed prerenderlimit setting for 0 (is now app controlled since 300.xx)
-- minor changes in default value handling
-- updated some settings constants for 300.xx drivers
-- added CLI param "-restartDisplayDriver" (Vista/Win7 only)
+NVIDIA Inspector - Version 1.9.7.4 (.NET Framework 2 or above)
 
+- replaced old ROP calculation with new API call, this should fix ROP count for Maxwell 2 cards with reduced L2 Cache
+- increased unlocked UI clock limit for non boost states to fix error with memory clocks beyond 4000MHz
+- improved max boost clock estimation for maxwell
+- completely removed settings profile editor from main application, it is now deployed as standalone application
 
-Version 1.9.6.4 
+NVIDIA Profile Inspector - Version 2.1.1.0 (.NET Framework 4 or above)
 
-- added memory bandwidth calculation to memory buswidth display
-- fixed baseclock range out of bounds in some cases
-- workaround for strange vcore offset on negative base clock offset
-- replaced mem usage display by pci-e interface info on main gui
-- added max boost clock estimation
+- completely reworked settings engine backend
+- removed update detection / autoupdate
+- updated to latest available settings api R352
+- added stereo setting name detection from driver lib (thx to DarkStarSword)
+- default custom setting names are now embedded to the exe file, and can be extracted with command line switch "-createCSN"
+- added some GSYNC settings to CSN
+- profile export now exports only customized settings without the nvidia predefined settings
+- profile import now resets the profile to current driver defaults before import
+- changed framerate limiter value selection to predicted fps instead of the raw api value
+- you can drag'n drop nip files or application shortcuts now
 
-
-Version 1.9.6.3 
-
-- added "+" sign for offset values
-- added small startup delay for MDPS tray start
-- fixed restoreAllPStates to work for offsets as well
-- added adaptive vsync flag to custom settings (for 300+ drivers)
-- added FXAA to custom settings (for 300+ drivers)
-
-
-Version 1.9.6.2 (Beta)
-
-- fixed highest voltage offset step was not selectable
-- added new functions for voltage and clock reading
-
-
-Version 1.9.6.1 (Beta)
-
-- fixed home profile button do not work as expected on 300.xx drivers
-- added current bus usage to monitoring
-- added current power consumption level to monitoring and main gui (kepler only)
-- fixed current voltage reading for kepler
-- added support for base/boost clock reading (kepler)
-- added support for base clock offset (kepler)
-- added support for memory clock offset (kepler)
-- added support for voltage offset (kepler)
-- added support for power target (kepler)
-- added CLI params for base, memory, voltage offsets and power target
-- fixed MDPS for kepler (no need anyway)
-
-
-Version 1.9.5.11: (Hotfix)
-
-- fixed: using clock shortcuts forces P0 
-  [reboot or use -forcePState:0,16 to fix it]
-
-
-Version 1.9.5.10:
-
-- fixed starting profile settings maximized not work
-- added some values and temperature limits to frame rate limter
-- updates some setting constants
-- added jumplist tasks on win7 for profile editor, sensor monitoring and MDPS
-- added CLI option "-forcePState" (use P16 to disable)
-  [notice that MDPS limits will always win, e.g. you can force P0 and if MDPS gives P0 free P0 will be hold)
-
-
-Version 1.9.5.9: (Hotfix)
-
-- fixed function 'ChangeWindowMessageFilter' not available on XP
-- fixed frame rate limiter is already included since 280.26+ drivers
-
-
-Version 1.9.5.8:
-
-- improved profile combo handling to fix searching while dropdown is open will not change selected profile
-- added image upload feature to driver profile settings toolbar
-- holding STRG while launch Monitoring from mainapp will start Monitoring standalone
-  [you can close inspector in this case without closing monitoring but they wont share sensor readings anymore]
-- for profile settings you can drop a shortcut to the game EXE now and it will open the assigned profile
-
-
-### HAPPY NEW YEAR! ###
-
-
-Version 1.9.5.7: (Hotfix)
-
-- fixed screenshot is not correctly aligned if taskbar is not on bottom
-- fixed custom profiles will listed twice after nip file import
-- fixed new monitoring backcolor was not applied without stored settings
-- fixed frame rate limiter value for 59 fps
-- added sensor monitoring shortcut to MDPS tray
-- added icons to MDPS tray shortcuts
-
-
-Version 1.9.5.6:
-
-- added shortcuts for driver profiles and inspector main app to the MDPS tray menu
-- removed startup option from MDPS tray menu
-- fixed running MDPS shortcut with forceLegacy flag has been restored without this flag
-- fixed voltage mapping on cards with only two pstates
-- updated some setting constants
-- changed application icon
-- fixed already existing groupname from CSN will not create the same group twice anymore
-- changed default backcolor of monitoring to black 
-- gpus should now always be sorted by slot position
-- added import/export all profiles using nvidias own text formated files
-- added hard workaround where a driver bug causes inspector to freeze while delete special profiles
-- added absolute path option using filetype selection to add applications with the whole path
-- trying to determine the colliding profile name if an existing application can not be added
-- added MinRequiredDriverVersion flag to CSN
-- added preliminary frame rate limiter support to CSN for 290.53+ drivers
-
-Hint:
-  due to an driver issue (280+) MDPS might not detect gpu processes sometimes, for the time being 
-  you can use the "-forceLegacy" param to enter legacy process detection mode for MDPS
-
-
-### MERRY XMAS! ###
-
-
-Version 1.9.5.5:
-
-- fixed: running MDPS wont be recovered when using webupdater 
-  (this fix applies with the next webupdate first)
-- fixed: modified profiles were not updated on create/delete profile and reset value
-- added rescan of modified profiles after importing profiles
-- reset profile now works on user created profiles too
-- decreased monitoring border width
-- further improved scan speed for modified profiles
-- massive scan speed improvement for unknown settings
-- removed scan progress dialogs
-- automatic scan for unknown settings and modified profiles on startup
-- changed the "scan for unknown settings" button behavior to just toggle the display of unknown settings
-  (unknown values will still be listed in value selection even if unknown settings display is not activated)
-- possible fix: application crash on profile settings start occured on a few systems
-
-- HOTFIX: some modified profiles were not found
-
-
-Version 1.9.5.4:
-
-- added quick selection for modified profiles (dropdown on home button)
-- added scan progress dialog for user initiated scans
-- improved scan speed for modified profiles
-- improved storing speed for profile settings 
-- reduced flickering of profile settings list
-- several small fixes
-
-
-Version 1.9.5.3:
-
-- fixed: p0/p8 capable cards were not detected from MDPS in some cases
-- fixed: max values were not resetted on "reset all monitors"
-- added "home" button to profile settings to get back to global profile fast
-- added "hide to tray" command to monitoring menu
-- added legacy process detection mode to MDPS to extend compatibility to older drivers and Win XP
-  ("add from gpu process" will be disabled in this case) 
-- improved general stability for MDPS
-
-
-Version 1.9.5.2:
-
-- fixed: closing mainform did not handle closing logic (settings, log) of monitoring form 
-- fixed: temp folder detection fails on systems with empty temp paths
-- fixed: out of range error if nvapi reports incorrect usage
-- possible fix: csc.exe crashes on windows shutdown and prevents from storing MDPS settings
-- added: mdps now supports cards with p0 and p8 only
-- added: monitoring colors customizeable via config file
-- small fixes and improvements
-
-
-Version 1.9.5.0:
-
-Highlights:
-
-- added Multi Display Power Saver feature (rightclick "Show Overclocking"" button)
-- added Monitoring Graphs feature (new button below image upload or rightclick "Show Overclocking"" button)
-- added Create/Update/Remove Startup Shortcut feature (rightclick "Create Clocks Shortcut" button)
-
-Changes:
-
-- already assigned unknown settings from a profile will be shown now even without a settingscan
-- request elevation for profile settings only if not already running elevated main app
-- allow single instance of profile settings window only
-- added detection of missing CSN file which offers the user a oneclick repair (webupdate)
-- automaticly removing Zone.Identifier from ADS after first run
-- added known subvendor name to card selection
-- added global mutex "Access_NV_I2C" around some critical nvapi functions to avoid collision with 3rd party apps
-- added small symbol to context enabled buttons
-- added CLI option "-multiDisplayPowerSaver"
-- added CLI option "-showMonitoring"
-- moved data logging feature to monitoring
-- screenshot function captures glass now
-- changed imagehoster to techpowerup.org
-- prevent app from starting within a temp folder 
-- several minor fixes and improvements
-
-
-Version 1.9.4.4:
-
-- voltage tweak workaround for crap evga gtx580 sc bios 
-- added CLI option "-showOnlyCSN"
-- added CLI option "-setPStateLimit"
-
-Version 1.9.4.3:
-
-- fixed: reset value does not work in some cases 
-- fixed: short hex inputs were not recognized correctly
-- gpu info refresh on window activate
-- updated some setting constants
-- added 3rd method for driver detection
-- skip shader count detection on non unified shader architectures
-- always request elevation for profile settings to reduce confusion why (elevated) settings may missed in the past
-- other minor improvements
-
-
-
-Version 1.9.4.2:
-
-- added fallback driver detection if no display handle is available
-- fixed when the last manually typed value get not applied to profile
-- fixed -skipUpdateCheck was ignored in -showSettingsOnly mode
-- added some settings API updates
-
-
-Version 1.9.4.1:
-
-- fixed error while importing profiles from paths wich contains blanks. 
-- possible fix for TaskbarList3 error 
-- added update check to "showSettingsOnly" mode
-
-
-
-Version 1.9.4:
-
-- added nv driver version to settings title
-- improved app version in settings title
-- displaying inherited global settings in game profiles on driver version 260+ (black gear icon)
-- added "export current profile" feature
-- added "export userdefined profiles" feature 
-- added "import userdefined profiles" feature 
-  (feel free to permanently assign *.nip files to open/import with nvidia inspector using windows own "open with" wizzard)
-- added "quick bit value tester" feature to bit value editor
-- some minor fixes
-
-
-Version 1.9.3.2:
-
-- Final Hotfix: removed displaying of inherited global settings on latest driver releases API, 
-          to avoid corrupted profiles when applying custom settings.
-
-
-Version 1.9.3:
-
-# Main:
-
-- added "-restoreAllPStates" and "-setHigherPStates" commandline args
-  [take care to set voltage to default by yourself before restoring pstates on drivers older than 258+]
-
-- "-enableSettingScan" commandline argument changed to "-requestElevation"
-  [elevated features like "SettingScan" will be enabled if process is running reqired privileges]
-
-- fixed inavlid index error for "create shortcut" feature on cards without voltage support
-
-
-# Profile Settings:
-
-- "show customized setting names only" option will not be saved anymore. 
-  [you can edit CSN file by yourself if you want to change its default state]
-
-- removed german CSN file from being shipped 
-  [community should handle custom CSN deployment by itself]
-
-- added toolbar with searchable profiles list 
-- added application list; 
-- added "create new profile" feature
-- added "add / remove application" feature
-- moved "reset value" to settings list (visible to the right for modified values only)
-- changed setting store state checkboxes into images 
-- changed resizing behavior for settings list
-- scanned values keep visible even if "show customized setting names only" is activated
-- removed custom compatibility bits from CSN file
-- added AA behavior flags with some values to CSN file
-- fixed some stereo setting ids for 260+ driver
-
-
-Version 1.9.2:
-
-Highlights:
-
-#MAIN:
-
-- added automatic check for new version and embedded quick updater
-
-- added function to apply the current selected p-state clocks to all higher p-states (right click the "apply clocks" button)
-  [you can use this for voltage stability check on clocks of unchangeable p-state volatges, e.g. for further bios mods]
-
-- added function to restore all p-states to its bios defaults on 258+ drivers (right click the "apply clocks" button)
-
-- added live data logging to csv file (right click nvidia logo)
-  [dont open the file with excel while still logging, excel flags this file readonly!] 
-
-#SETTINGS:
-
-- added general bit value editor for unknown settings (right click the setting item)
-  [available after setting scan in advanced setting mode] 
-
-- added "CUSTOM SETTING NAMES" (CSN) feature via localized xml file for overide nvidia driver api setting names to user defined ones
-  you can also add every setting id you like, even new or unknown ones, put them in new groups, make descriptions, and so on...
-
-  A template of all settings can be downloaded here: http://download.orbmu2k.de/files/CustomSettingNames_template.zip 
-
-
-Changes:
-
-- added "showSettingsOnly" parameter to load driver settings dialog without complete inspector tool
-- added small hint link to create desktop shortcut for advanced settings mode (it just calls -enableSettingScan and -showSettingsOnly) 
-- changed to full length profile names of scanned values
-- changed the default group for some ("other") nvidia cpl settings to "common"
-- unknown profile values will be sorted by value now
-- added short delay to voltage changes to avoid crashes
-- added donation button
-- try to get focus back to last focused setting item after refresh
-- sorting custom groups by first apperence in CSN file
-- added english CSN file with all common nvidia cpl settings and nhancer like AA modes
-- added german CSN file (thanks to 3dc community)
-
-
-WARNING ############################################################################################
- 
-Using the embedded updater will overwrite all shipped files. 
-If you have modified the CSN files for yourself, make sure to have backups of them before updating!
-
-####################################################################################################
-
-
-
-Version 1.9.1:
-
-- starting THIS english changelog :)
-- added WHQL detection to driver version display
-- removed the (almost wrong) memory clock display on non-dedicated gpus
-- improved safety while clock/voltage change (increasing shaderclock will apply voltage before clockchange, decrease will apply voltage after) 
-- profile settings scanner got its own thread to avoid hanging app while scanning
-- fixed bug where two instances running when elevation was requested
-- added default value display for overclocking sections on driver version 258+ 
-- added some anisotrophic filter level values to the profile setings editor
-- skip loading voltage table if voltage control is not available ( may fix kernel panic on some cards )
-
-
-
-Version 1.9.0:
-
-- "Apply Defaults" also applies default voltage now with drivers 258+
-- added simple driver profile setings editor for the new settings API on 256+ drivers and above
-- other small improvements and fixes
-
-
-Version 1.8.7:
-
-- bugfix for determination of shadercount on some older cards
-- bugfix for missing displayhandle while using physx support card 
-- bugfix for fan control range
-- the app is now minimizeable in overclocking mode
-- added a warning message before entering oc mode 
-  (you can start with parameter "-disableWarning" to skip this message) 
-
-
-Version 1.8.0:
-
-- added new method for the determination of shadercount on fermi cards and above
-- added "Create Clocks Shortcut" feature
-- added commandline feature
-
-
-Version 1.7.1:
-
-- bugfix for high dpi users, where overclocking section was cropped
-- added feature "Unlock Max" to avoid recommend clock limits 
-- bugfix: "SetFan" button was visible while uploading screenshot
-- reduced text flickering while updating live stats
-- added p-state mapping to the performance level selection box
-
-
-Update 1.7.0:
-
-- added simple fan control
-
-
-Update 1.6.3:
-
-- added the new nvidia driver embedded Voltage Control for the new fermi cards (and above?)
-- added voltage and p-state display
-- added the long time unsupported "tachreading" function to show fan rpm on fermi cards
-- bugfix for GT215 shadercount

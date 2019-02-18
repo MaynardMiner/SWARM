@@ -1,65 +1,65 @@
- {
-  "name":"dstm", 
+{
+  "name": "dstm",
   "NVIDIA1": {
-    "name":"NVIDIA1", 
-    "delay":"1", 
-    "prestart":[], 
+    "name": "NVIDIA1",
+    "delay": "1",
+    "prestart": [],
     "commands": {
-      "equihash":""
-    }, 
+      "equihash": ""
+    },
     "difficulty": {
-      "equihash":""
-    }, 
+      "equihash": ""
+    },
     "naming": {
-      "equihash":"equihash"
-    }, 
+      "equihash": "equihash"
+    },
     "oc": {
       "equihash": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
+        "Power": "",
+        "Core": "",
+        "Memory": ""
       }
     }
-  }, 
+  },
   "NVIDIA2": {
-    "name":"NVIDIA2", 
-    "delay":"1", 
-    "prestart":[], 
+    "name": "NVIDIA2",
+    "delay": "1",
+    "prestart": [],
     "commands": {
-      "equihash":""
-    }, 
+      "equihash": ""
+    },
     "difficulty": {
-      "equihash":""
-    }, 
+      "equihash": ""
+    },
     "naming": {
-      "equihash":"equihash"
-    }, 
+      "equihash": "equihash"
+    },
     "oc": {
       "equihash": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
+        "Power": "",
+        "Core": "",
+        "Memory": ""
       }
     }
-  }, 
+  },
   "NVIDIA3": {
-    "name":"NVIDIA3", 
-    "delay":"1", 
-    "prestart":[], 
+    "name": "NVIDIA3",
+    "delay": "1",
+    "prestart": [],
     "commands": {
-      "equihash":""
-    }, 
+      "equihash": ""
+    },
     "difficulty": {
-      "equihash":""
-    }, 
+      "equihash": ""
+    },
     "naming": {
-      "equihash":"equihash"
-    }, 
+      "equihash": "equihash"
+    },
     "oc": {
       "equihash": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
+        "Power": "",
+        "Core": "",
+        "Memory": ""
       }
     }
   }

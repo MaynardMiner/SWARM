@@ -40,8 +40,8 @@ if ($CoinAlgo -eq $null) {
         $AlgoPools | Where Symbol -eq $MinerAlgo | foreach {
             if ($Algorithm -eq "$($_.Algorithm)") {
                 if ($Config.$ConfigType.difficulty.$($_.Algorithm)) {$Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))"}else {$Diff = ""}
-                if ($_.Worker) {$Worker = "-eworker $($_.Worker) "}
-                else {$Worker = "-epsw $($_.Pass3)$($Diff) "}
+                if ($_.Worker) {$MinerWorker = "-eworker $($_.Worker) "}
+                else {$MinerWorker = "-epsw $($_.Pass3)$($Diff) "}
                 [PSCustomObject]@{
                     Delay      = $Config.$ConfigType.delay
                     Symbol     = "$($_.Algorithm)"
@@ -51,7 +51,7 @@ if ($CoinAlgo -eq $null) {
                     Path       = $Path
                     Devices    = $Devices
                     DeviceCall = "claymore"
-                    Arguments  = "-platform 2 -mport 7333 -mode 1 -allcoins 1 -allpools 1 -epool $($_.Protocol)://$($_.Host):$($_.Port) -ewal $($_.User3) $Worker-wd 0 -dbg -1 -eres 1 $($Config.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "-platform 2 -mport 7333 -mode 1 -allcoins 1 -allpools 1 -epool $($_.Protocol)://$($_.Host):$($_.Port) -ewal $($_.User3) $MinerWorker-wd 0 -dbg -1 -eres 1 $($Config.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)}
                     Quote      = if ($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)) {$($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) * ($_.Price)}else {0}
                     PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") {$Watts.$($_.Algorithm)."$($ConfigType)_Watts"}elseif ($Watts.default."$($ConfigType)_Watts") {$Watts.default."$($ConfigType)_Watts"}else {0}}

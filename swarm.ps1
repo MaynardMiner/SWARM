@@ -155,7 +155,9 @@ param(
     [Parameter(Mandatory = $false)]
     [String]$Worker,
     [Parameter(Mandatory = $false)]
-    [array]$No_Miner
+    [array]$No_Miner,
+    [Parameter(Mandatory = $false)]
+    [string]$HiveAPIkey
 )
 
 
@@ -191,12 +193,14 @@ Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 . .\build\powershell\commandweb.ps1;
 . .\build\powershell\response.ps1;
 . .\build\powershell\api.ps1;
+. .\build\powershell\config_file.ps1;
 if ($Type -like "*ASIC*") {. .\build\powershell\icserver.ps1; . .\build\powershell\poolmanager.ps1}
 if ($Platform -eq "linux") {. .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
 if ($Platform -eq "windows") {. .\build\powershell\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1; }
 
 ##filepath dir
 $dir = (Split-Path $script:MyInvocation.MyCommand.Path)
+$env:Path += ";$dir\build\cmd"
 $Workingdir = (Split-Path $script:MyInvocation.MyCommand.Path)
 $build = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build")
 $pwsh = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\powershell")
@@ -216,6 +220,17 @@ start-update -Update $Getupdates -Dir $dir -Platforms $Platform
 ##Load Previous Times & PID Data
 ## Close Previous Running Agent- Agent is left running to send stats online, even if SWARM crashes
 if ($Platform -eq "windows") {
+    $dir | Set-Content ".\build\cmd\dir.txt"
+    $oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
+    if($oldpath -notlike "*;$dir\build\cmd*")
+     {
+      Write-Host "
+Setting Path Variable For Commands: May require reboot to use.
+" -ForegroundColor Yellow
+      $newpath = "$oldpath;$dir\build\cmd"
+      Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH -Value $newPath
+     }
+    $newpath = "$oldpath;$dir\build\cmd"
     Write-Host "Stopping Previous Agent"
     $ID = ".\build\pid\background_pid.txt"
     if (Test-Path $ID) {$Agent = Get-Content $ID}
@@ -345,6 +360,7 @@ if ($Debug -ne $true) {
     $CurrentParams.ADD("ETH", $ETH)
     $CurrentParams.ADD("Worker", $Worker)
     $CurrentParams.ADD("No_Miner", $No_Miner)
+    $CurrentParams.ADD("HiveAPIkey", $HiveAPIkey)
 
     ## Save to Config Folder
     $StartParams = $CurrentParams | ConvertTo-Json 
@@ -447,6 +463,7 @@ if ((Test-Path ".\config\parameters\newarguments.json") -or $Debug -eq $true) {
     $ETH = $SWARMParams.ETH
     $Worker = $SWARMParams.Worker
     $No_Miner = $SWARMParams.No_Miner
+    $HiveAPIkey = $SWARMParams.HiveAPIkey
 }
 
 ## Windows Start Up
@@ -573,6 +590,7 @@ if ($Platform -eq "linux") {
         $HiveWorker = $config.WORKER_NAME -replace "`"", ""
         $HiveMirror = $config.HIVE_HOST_URL -replace "`"", ""
         $HiveID = $config.RIG_ID
+        $FarmID = $config.FARM_ID
     }
 
     Start-Process ".\build\bash\screentitle.sh" -Wait
@@ -581,7 +599,7 @@ if ($Platform -eq "linux") {
     start-killscript
 
     ## Set Cuda for commands
-    $cuda | Out-file ".\build\txt\cuda.txt" -Force
+    $cuda | Set-Content ".\build\txt\cuda.txt"
 
     ## Start SWARM watchdog (for automatic shutdown)
     start-watchdog
@@ -642,6 +660,7 @@ if ($Platform -eq "windows") {
 
     ##Set Cuda For Commands
     $Cuda = "10"
+    $Cuda | Set-Content ".\build\txt\cuda.txt"
 
     ##Fan Start For Users not using HiveOS
     Start-Fans
@@ -687,15 +706,17 @@ AMD USERS: PLEASE READ .\config\oc\new_sample.json FOR INSTRUCTIONS ON OVERCLOCK
                 $Action = $_
                 if ($Action -eq "config") {
                     $config = [string]$hiveresponse.result.config | ConvertFrom-StringData
-                    $worker = $config.WORKER_NAME -replace "`"", ""
+                    $HiveWorker = $config.WORKER_NAME -replace "`"", ""
                     $Pass = $config.RIG_PASSWD -replace "`"", ""
                     $mirror = $config.HIVE_HOST_URL -replace "`"", ""
-                    $WorkerID = $config.RIG_ID
+                    $farmID = $config.FARM_ID
+                    $HiveID = $config.RIG_ID
                     $NewHiveKeys = @{}
-                    $NewHiveKeys.Add("HiveWorker", "$worker")
+                    $NewHiveKeys.Add("HiveWorker", "$Hiveworker")
                     $NewHiveKeys.Add("HivePassword", "$Pass")
-                    $NewHiveKeys.Add("HiveID", "$WorkerID")
+                    $NewHiveKeys.Add("HiveID", "$HiveID")
                     $NewHiveKeys.Add("HiveMirror", "$mirror")
+                    $NewHiveKeys.Add("FarmID", "$farmID")
                     if (Test-Path ".\build\txt\hivekeys.txt") {$OldHiveKeys = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json}
                     ## If password was changed- Let Hive know message was recieved
                     if ($OldHiveKeys) {
@@ -716,6 +737,7 @@ AMD USERS: PLEASE READ .\config\oc\new_sample.json FOR INSTRUCTIONS ON OVERCLOCK
                     ## Set Arguments/New Parameters
                     $NewHiveKeys | ConvertTo-Json | Set-Content ".\build\txt\hivekeys.txt"
                     $HiveID = $NewHiveKeys.HiveID
+                    $farmID = $NewHiveKeys.FarmID
                     $HivePassword = $NewHiveKeys.HivePassword
                     $HiveWorker = $NewHiveKeys.HiveWorker
                     $HiveMirror = $NewHiveKeys.HiveMirror
@@ -884,6 +906,8 @@ While ($true) {
     $APIPassword = $SWARMParams.APIPassword
     $Startup = $SWARMParams.Startup
     $Worker = $SWARMParams.Worker
+    $No_Miner = $SWARMParams.Worker        
+    $HiveAPIkey = $SWARMParams.HiveAPIkey
 
     if ($SWARMParams.Rigname1 -eq "Donate") {$Donating = $True}
     else {$Donating = $False}
@@ -1188,8 +1212,8 @@ While ($true) {
                     ocfans         = $_.ocfans
                     ethpill        = $_.ethpill
                     pilldelay      = $_.pilldelay
-                    NPool          = $_.NPool
-                    NUser          = $_.NUser
+                    Host           = $_.Host
+                    User           = $_.User
                     CommandFile    = $_.CommandFile
                     Profit         = 0
                     Power          = 0

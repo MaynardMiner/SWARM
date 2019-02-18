@@ -17,7 +17,7 @@
     "path2":".\\bin\\cryptodredge-2\\CryptoDredge", 
     "path3":".\\bin\\cryptodredge-3\\CryptoDredge", 
     "minername":"CryptoDredge", 
-    "version":"0.16.2", 
+    "version":"0.17.0", 
     "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/CryptoDredge-Linux-9-2.tar.gz"
 }, 
   "cc-mtp": {
@@ -107,7 +107,7 @@
     "path2":".\\bin\\tpruvot-2\\ccminer", 
     "path3":".\\bin\\tpruvot-3\\ccminer", 
     "minername":"ccminer", 
-    "version":"2.3", 
+    "version":"2.3.1", 
     "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/tpruvot-Linux-9-2.tar.gz"
 }, 
   "trex": {
@@ -147,7 +147,7 @@
     "path2":".\\bin\\bminer-2\\bminer", 
     "path3":".\\bin\\bminer-3\\bminer", 
     "minername":"bminer", 
-    "version":"14.3.0", 
+    "version":"15.0.0", 
     "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/bminer-linux.tar.gz"
 }
 }

@@ -1,257 +1,257 @@
- {
-  "name":"z-enemy", 
+{
+  "name": "z-enemy",
   "NVIDIA1": {
-    "name":"NVIDIA1", 
-    "delay":"1", 
-    "prestart":[], 
+    "name": "NVIDIA1",
+    "delay": "1",
+    "prestart": [],
     "commands": {
-      "aergo":"", 
-      "hex":"", 
-      "timetravel":"", 
-      "xevan":"", 
-      "sonoa":"", 
-      "x16r":"", 
-      "x16s":"", 
-      "bitcore":"", 
-      "tribus":""
-    }, 
+      "aergo": "",
+      "hex": "",
+      "timetravel": "",
+      "xevan": "",
+      "sonoa": "",
+      "x16r": "",
+      "x16s": "",
+      "bitcore": "",
+      "tribus": ""
+    },
     "difficulty": {
-      "aergo":"", 
-      "hex":"", 
-      "timetravel":"", 
-      "xevan":"", 
-      "sonoa":"", 
-      "x16r":"", 
-      "x16s":"", 
-      "bitcore":"", 
-      "tribus":""
-    }, 
+      "aergo": "",
+      "hex": "",
+      "timetravel": "",
+      "xevan": "",
+      "sonoa": "",
+      "x16r": "",
+      "x16s": "",
+      "bitcore": "",
+      "tribus": ""
+    },
     "naming": {
-      "aergo":"aeriumx", 
-      "hex":"hex", 
-      "timetravel":"timetravel", 
-      "xevan":"xevan", 
-      "sonoa":"sonoa", 
-      "x16r":"x16r", 
-      "x16s":"x16s", 
-      "bitcore":"bitcore", 
-      "tribus":"tribus"
-    }, 
+      "aergo": "aeriumx",
+      "hex": "hex",
+      "timetravel": "timetravel",
+      "xevan": "xevan",
+      "sonoa": "sonoa",
+      "x16r": "x16r",
+      "x16s": "x16s",
+      "bitcore": "bitcore",
+      "tribus": "tribus"
+    },
     "oc": {
       "aergo": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
       "hex": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
       "timetravel": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
       "xevan": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
       "sonoa": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
       "x16r": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
       "x16s": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
       "bitcore": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
       "tribus": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
+        "Power": "",
+        "Core": "",
+        "Memory": ""
       }
     }
-  }, 
+  },
   "NVIDIA2": {
-    "name":"NVIDIA2", 
-    "delay":"1", 
-    "prestart":[], 
+    "name": "NVIDIA2",
+    "delay": "1",
+    "prestart": [],
     "commands": {
-      "aergo":"", 
-      "hex":"", 
-      "timetravel":"", 
-      "xevan":"", 
-      "sonoa":"", 
-      "x16r":"", 
-      "x16s":"", 
-      "bitcore":"", 
-      "tribus":""
-    }, 
+      "aergo": "",
+      "hex": "",
+      "timetravel": "",
+      "xevan": "",
+      "sonoa": "",
+      "x16r": "",
+      "x16s": "",
+      "bitcore": "",
+      "tribus": ""
+    },
     "difficulty": {
-      "aergo":"", 
-      "hex":"", 
-      "timetravel":"", 
-      "xevan":"", 
-      "sonoa":"", 
-      "x16r":"", 
-      "x16s":"", 
-      "bitcore":"", 
-      "tribus":""
-    }, 
+      "aergo": "",
+      "hex": "",
+      "timetravel": "",
+      "xevan": "",
+      "sonoa": "",
+      "x16r": "",
+      "x16s": "",
+      "bitcore": "",
+      "tribus": ""
+    },
     "naming": {
-      "aergo":"aeriumx", 
-      "hex":"hex", 
-      "timetravel":"timetravel", 
-      "xevan":"xevan", 
-      "sonoa":"sonoa", 
-      "x16r":"x16r", 
-      "x16s":"x16s", 
-      "bitcore":"bitcore", 
-      "tribus":"tribus"
-    }, 
+      "aergo": "aeriumx",
+      "hex": "hex",
+      "timetravel": "timetravel",
+      "xevan": "xevan",
+      "sonoa": "sonoa",
+      "x16r": "x16r",
+      "x16s": "x16s",
+      "bitcore": "bitcore",
+      "tribus": "tribus"
+    },
     "oc": {
       "aergo": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
       "hex": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
       "timetravel": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
       "xevan": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
       "sonoa": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
       "x16r": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
       "x16s": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
       "bitcore": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
       "tribus": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
+        "Power": "",
+        "Core": "",
+        "Memory": ""
       }
     }
-  }, 
+  },
   "NVIDIA3": {
-    "name":"NVIDIA3", 
-    "delay":"1", 
-    "prestart":[], 
+    "name": "NVIDIA3",
+    "delay": "1",
+    "prestart": [],
     "commands": {
-      "aergo":"", 
-      "hex":"", 
-      "timetravel":"", 
-      "xevan":"", 
-      "sonoa":"", 
-      "x16r":"", 
-      "x16s":"", 
-      "bitcore":"", 
-      "tribus":""
-    }, 
+      "aergo": "",
+      "hex": "",
+      "timetravel": "",
+      "xevan": "",
+      "sonoa": "",
+      "x16r": "",
+      "x16s": "",
+      "bitcore": "",
+      "tribus": ""
+    },
     "difficulty": {
-      "aergo":"", 
-      "hex":"", 
-      "timetravel":"", 
-      "xevan":"", 
-      "sonoa":"", 
-      "x16r":"", 
-      "x16s":"", 
-      "bitcore":"", 
-      "tribus":""
-    }, 
+      "aergo": "",
+      "hex": "",
+      "timetravel": "",
+      "xevan": "",
+      "sonoa": "",
+      "x16r": "",
+      "x16s": "",
+      "bitcore": "",
+      "tribus": ""
+    },
     "naming": {
-      "aergo":"aeriumx", 
-      "hex":"hex", 
-      "timetravel":"timetravel", 
-      "xevan":"xevan", 
-      "sonoa":"sonoa", 
-      "x16r":"x16r", 
-      "x16s":"x16s", 
-      "bitcore":"bitcore", 
-      "tribus":"tribus"
-    }, 
+      "aergo": "aeriumx",
+      "hex": "hex",
+      "timetravel": "timetravel",
+      "xevan": "xevan",
+      "sonoa": "sonoa",
+      "x16r": "x16r",
+      "x16s": "x16s",
+      "bitcore": "bitcore",
+      "tribus": "tribus"
+    },
     "oc": {
       "aergo": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
       "hex": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
       "timetravel": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
       "xevan": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
       "sonoa": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
       "x16r": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
       "x16s": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
       "bitcore": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
-      }, 
+        "Power": "",
+        "Core": "",
+        "Memory": ""
+      },
       "tribus": {
-        "Power":"", 
-        "Core":"", 
-        "Memory":""
+        "Power": "",
+        "Core": "",
+        "Memory": ""
       }
     }
   }

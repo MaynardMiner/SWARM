@@ -34,6 +34,11 @@ if ($CoinAlgo -eq $null) {
         $MinerAlgo = $_
         $AlgoPools | Where Symbol -eq $MinerAlgo | foreach {
             if ($Algorithm -eq "$($_.Algorithm)") {
+                Switch($_.Name)
+                {
+                  "nicehash"{$Pass1 = ""}
+                   default{$Pass1 = ".$($($_.Pass1) -replace ",","%2C")"}
+                }
                 if ($Config.$ConfigType.difficulty.$($_.Algorithm)) {$Diff = "%2Cd=$($Config.$ConfigType.difficulty.$($_.Algorithm))"}else {$Diff = ""}
                 [PSCustomObject]@{
                     Delay      = $Config.$ConfigType.delay
@@ -44,7 +49,7 @@ if ($CoinAlgo -eq $null) {
                     Path       = $Path
                     Devices    = $Devices
                     DeviceCall = "bminer"
-                    Arguments  = "-uri $($Config.$ConfigType.naming.$($_.Algorithm))://$($_.User1).$($($_.Pass1) -replace ",","%2C")$Diff@$($_.Host):$($_.Port) -api 127.0.0.1:44000"
+                    Arguments  = "-uri $($Config.$ConfigType.naming.$($_.Algorithm))://$($_.User1)$Pass1$Diff@$($_.Host):$($_.Port) -api 127.0.0.1:44000"
                     HashRates  = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)}
                     Quote      = if ($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)) {$($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) * ($_.Price)}else {0}
                     PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") {$Watts.$($_.Algorithm)."$($ConfigType)_Watts"}elseif ($Watts.default."$($ConfigType)_Watts") {$Watts.default."$($ConfigType)_Watts"}else {0}}
