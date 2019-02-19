@@ -36,7 +36,7 @@ function Start-LaunchCode {
 
     switch -WildCard ($MinerCurrent.Type) {
         "*NVIDIA*" {
-            if ($MinerCurrent.Devices -ne $null) {
+            if ($MinerCurrent.Devices) {
                 switch ($MinerCurrent.DeviceCall) {
                     "ccminer" {$MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "ewbf" {$MinerArguments = "--cuda_devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
@@ -78,7 +78,7 @@ function Start-LaunchCode {
         }
 
         "*AMD*" {
-            if ($MinerCurrent.Devices -ne $null) {   
+            if ($MinerCurrent.Devices) {   
                 switch ($MinerCurrent.DeviceCall) {
                     "claymore" {$MinerArguments = "-di $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "xmrstak" {$MinerArguments = "$($MinerCurrent.Arguments)"}
