@@ -53,11 +53,11 @@ param(
     [Parameter(Mandatory = $false)]
     [Array]$Type = ("NVIDIA1"), #AMD/NVIDIA/CPU
     [Parameter(Mandatory = $false)]
-    [String]$GPUDevices1, ##Group 1 all miners
+    [array]$GPUDevices1, ##Group 1 all miners
     [Parameter(Mandatory = $false)] 
-    [String]$GPUDevices2, ##Group 2 all miners
+    [array]$GPUDevices2, ##Group 2 all miners
     [Parameter(Mandatory = $false)]
-    [String]$GPUDevices3, ##Group 3 all miners
+    [array]$GPUDevices3, ##Group 3 all miners
     [Parameter(Mandatory = $false)]
     [Array]$PoolName = ("nlpool", "blockmasters", "ahashpool"), 
     [Parameter(Mandatory = $false)]
@@ -804,11 +804,14 @@ else {$Device_Count = $GPU_Count}
 Write-Host "Device Count = $Device_Count" -foregroundcolor green
 Start-Sleep -S 2
 if ($GPUCount -ne $null) {$LogGPUS = $GPUCount.Substring(0, $GPUCount.Length - 1)}
-if ($CPUCount -ne $null) {$LogCPUS = $CPUCount.Substring(0, $CPUCount.Length - 1)}
-$NVIDIADevices1 = $GPUDevices1
-$NVIDIADevices2 = $GPUDevices2
-$NVIDIADevices3 = $GPUDevices3
-$AMDDevices1 = $GPUDevices1
+if ($GPUDevices1){$GPUDevices1 | % {$NVIDIADevices1 += "$($_),"}}
+if ($GPUDevices2){$GPUDevices2 | % {$NVIDIADevices2 += "$($_),"}}
+if ($GPUDevices3){$GPUDevices3 | % {$NVIDIADevices3 += "$($_),"}}
+if ($GPUDevices1){$GPUDevices1 | % {$AMDDevices1 += "$($_),"}}
+if ($NVIDIADevices1){$NVIDIADevices1 = $NVIDIADevices1.Substring(0,$NVIDIADevices1.Length-1)}
+if ($NVIDIADevices2){$NVIDIADevices2 = $NVIDIADevices2.Substring(0,$NVIDIADevices2.Length-1)}
+if ($NVIDIADevices3){$NVIDIADevices3 = $NVIDIADevices3.Substring(0,$NVIDIADevices3.Length-1)}
+if ($AMDDevices1){$AMDDevices1 = $AMDDevices1.Substring(0,$AMDDevices1.Length-1)}
 
 ##Reset-Old Stats And Their Time
 if (Test-Path "stats") {Get-ChildItemContent "stats" | ForEach {$Stat = Set-Stat $_.Name $_.Content.Week}}
@@ -908,6 +911,7 @@ While ($true) {
     $Worker = $SWARMParams.Worker
     $No_Miner = $SWARMParams.No_Miner        
     $HiveAPIkey = $SWARMParams.HiveAPIkey
+
 
     if ($SWARMParams.Rigname1 -eq "Donate") {$Donating = $True}
     else {$Donating = $False}

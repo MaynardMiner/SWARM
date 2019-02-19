@@ -1877,3 +1877,15 @@ SWARM will ban them, as usual.
 -commands like ``stats`` ``benchmark`` ``active`` and other common
  commands can now be ran through windows locally- may require restart
  after PATH variable is set. Open cmd.exe and then run the command.
+
+
+ 2.0.0
+
+ Important
+
+ ``GPUDevices`` arguments have changed. For simplicty-
+ Removed the need to add ' ' for devices
+      i.e. ``-GPUDevices1 1,2,3,4,5``  okay
+      i.e. ``-GPUDevices1 '1,2,3,4,5'`` depreciated
+ -Removed beam from cryptodredge.
+ -removed ethash (not nicehash) from bminer.
