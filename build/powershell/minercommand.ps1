@@ -71,3 +71,65 @@ function Get-Miners {
 
     $ScreenedMiners
 }
+
+
+function Get-MinerTimeout {
+    param(
+        [Parameter(Mandatory = $true, Position = 0)]
+        [string]$minerjson
+    )
+
+    $miner = $minerjson | ConvertFrom-Json
+    $reason = "error"
+
+    if ($Miner.hashrate -eq 0 -or $null -eq $Miner.hashrate) {
+        if ($null -eq $miner.xprocess) {$reason = "no start"}
+        else {
+        $MinerProc = Get-Process -Id $miner.xprocess.id -ErrorAction SilentlyContinue
+        if ($null -eq $MinerProc) {$reason = "crashed"}
+        else {$reason = "no hash"}
+        }
+    }
+    $RejectCheck = Join-Path ".\timeout\warnings" "$($miner.Name)_$($miner.Algo)_rejection.txt"
+    if (Test-Path $RejectCheck) {$reason = "rejections"}
+
+    return $reason
+}
+
+function Get-minerfiles {
+    param(
+        [Parameter(Mandatory = $false)]
+        [string]$Types,
+        [Parameter(Mandatory = $false)]
+        [string]$Platforms,
+        [Parameter(Mandatory = $false)]
+        [string]$Cudas
+    )
+ 
+    $miner_update = [PSCustomObject]@{}
+
+    switch ($Types) {
+        "CPU" {
+            if ($Platforms -eq "linux") {$update = Get-Content ".\config\update\cpu-linux.json" | ConvertFrom-Json}
+            elseif ($Platforms -eq "windows") {$update = Get-Content ".\config\update\cpu-win.json" | ConvertFrom-Json}
+        }
+
+        "NVIDIA" {
+            if ($Platforms -eq "linux") {
+                if ($Cudas -eq "10") {$update = Get-Content ".\config\update\nvidia10-linux.json" | ConvertFrom-Json}
+                if ($Cudas -eq "9.2") {$update = Get-Content ".\config\update\nvidia9.2-linux.json" | ConvertFrom-Json}
+            }
+            elseif ($Platforms -eq "windows") {$update = Get-Content ".\config\update\nvidia-win.json" | ConvertFrom-Json}
+        }
+
+        "AMD" {
+            if ($Platforms -eq "linux") {$update = Get-Content ".\config\update\amd-linux.json" | ConvertFrom-Json}
+            elseif ($Platforms -eq "windows") {$update = Get-Content ".\config\update\amd-win.json" | ConvertFrom-Json}
+        }
+    }
+
+    $update | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {if ($_ -ne "name") {$miner_update | Add-Member $update.$_.Name $update.$_}}
+
+    $miner_update
+
+}

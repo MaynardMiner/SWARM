@@ -120,9 +120,15 @@ if ($CommandQuery) {
                     }
                 }
                 $Updated = $MinerSearch | Where Name -eq $UpdateFile
-                if (Test-Path $Updated.$Name.path1) {Remove-Item (Split-Path $Updated.$Name.path1) -Recurse -Force}
-                if (Test-Path $Updated.$Name.path2) {Remove-Item (Split-Path $Updated.$Name.path2) -Recurse -Force}
-                if (Test-Path $Updated.$Name.path3) {Remove-Item (Split-Path $Updated.$Name.path3) -Recurse -Force}
+                $First = Split-Path $Updated.$Name.path1                
+                $Second = Split-Path $Updated.$Name.path2
+                $Third = Split-Path $Updated.$Name.path3
+                Write-Host "removing $First";
+                if (Test-Path $First) {Remove-Item $First -Recurse -Force}
+                Write-Host "removing $Second";
+                if (Test-Path $Second) {Remove-Item $Second -Recurse -Force}
+                Write-Host "removing $Third";
+                if (Test-Path $Third) {Remove-Item $Third -Recurse -Force}
                 $Updated | ConvertTo-Json -Depth 3 | Set-Content ".\config\update\$UpdateFile.json"
                 $message += "Miner New executable is $EXE"
                 Write-Host $($Message | Select -last 1)

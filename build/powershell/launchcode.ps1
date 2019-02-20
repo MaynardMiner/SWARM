@@ -268,7 +268,6 @@ function Start-LaunchCode {
             Start-Sleep -S 1
         }
         $MinerTimer.Stop()
-        Rename-Item "$MinerDir\$($MinerCurrent.InstanceName)" -NewName "$($MinerCurrent.MinerName)" -Force
         Start-Sleep -S .25
         Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
         $MinerProcess

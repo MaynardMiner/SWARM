@@ -1889,3 +1889,19 @@ SWARM will ban them, as usual.
       i.e. ``-GPUDevices1 '1,2,3,4,5'`` depreciated
  -Removed beam from cryptodredge.
  -removed ethash (not nicehash) from bminer.
+
+ 2.0.1
+
+ -Found small typo in nicehash pool file
+   regarding nicehash_wallet3 - fixed.
+
+ -Found typo in Claymore-3 - fixed.
+
+ -Hive message on bans should display reason.
+
+ -Gminer updated
+
+ -Grin-miner send to project folder.
+
+ 
+ 
