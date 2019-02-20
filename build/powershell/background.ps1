@@ -908,7 +908,7 @@ While ($True) {
             if ($BackgroundTimer.Elapsed.TotalSeconds -gt 60) {
                 $Shares = [Double]$MinerACC + [double]$MinerREJ
                 $RJPercent = $MinerREJ / $Shares * 100
-                if ($RJPercent -gt $RejPercent -and [double]$MinerACC -gt 0) {
+                if ($RJPercent -gt $RejPercent -and $Shares -gt 0) {
                     Write-Host "Warning: Miner is reaching Rejection Limit- $($RJPercent.ToString("N2")) Percent Out of $Shares Shares" -foreground yellow
                     if (-not (Test-Path ".\timeout")) {New-Item "timeout" -ItemType Directory | Out-Null}
                     if (-not (Test-Path ".\timeout\warnings")) {New-Item ".\timeout\warnings" -ItemType Directory | Out-Null}
