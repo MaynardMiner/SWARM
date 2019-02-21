@@ -1901,7 +1901,20 @@ SWARM will ban them, as usual.
 
  -Gminer updated
 
- -Grin-miner send to project folder.
+ -Grin-miner send to project folder for NVIDIA1.
+
+ -Fixed grin-miner for AMD.
+
+ -New Feature: Added miners_to_exclude to pool-algos.json
+    -you will be able to ban miners from specific algos.
+    -This allows you to continue mining algorithm, but
+     with different miner (if available).
+    
+ -Fixed error with grin-miner involving algo switching
+     -Arguments parameter in miner file was needed to
+      initiate a switch.
+
+
 
  
  
