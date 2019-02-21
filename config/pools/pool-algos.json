@@ -209,7 +209,7 @@
   },
   "mtp":{
     "hiveos_name": "mtp",
-    "pools_to_exclude": ["add pools here","comma seperated"]
+    "pools_to_exclude": ["nicehash"]
   },
   "myr-gr":{
     "hiveos_name": "myr-gr",
