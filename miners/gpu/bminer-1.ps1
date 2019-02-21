@@ -33,7 +33,7 @@ if ($CoinAlgo -eq $null) {
     $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
         $MinerAlgo = $_
         $AlgoPools | Where Symbol -eq $MinerAlgo | foreach {
-            if ($Algorithm -eq "$($_.Algorithm)") {
+            if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
                 Switch ($_.Name) {
                     "nicehash" {$Pass1 = ""}
                     default {$Pass1 = ".$($($_.Pass1) -replace ",","%2C")"}

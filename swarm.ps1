@@ -821,6 +821,7 @@ $Warnings = @()
 $NeedsToBeBench = $false
 $Algorithm = Get-Algolist
 $Bad_Pools = Get-BadPools
+$Bad_Miners = Get-BadMiners
 
 #Get Miner Config Files
 if ($Type -like "*CPU*") {$cpu = get-minerfiles -Types "CPU" -Platforms $Platform}

@@ -38,7 +38,7 @@ if ($CoinAlgo -eq $null) {
                 default {$Pass2 = ".$($($_.Pass2) -replace ",","%2C")"}
             }
             if ($_.Worker) {$Pass3 = ".$($_.Worker)"}
-            if ($Algorithm -eq "$($_.Algorithm)") {
+            if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
                 if ($Config.$ConfigType.difficulty.$($_.Algorithm) -and $($_.Name) -ne "nicehash") {$Diff = "%2Cd=$($Config.$ConfigType.difficulty.$($_.Algorithm))"}else {$Diff = ""}
                 [PSCustomObject]@{
                     Delay      = $Config.$ConfigType.delay

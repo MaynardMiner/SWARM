@@ -33,7 +33,7 @@ if ($CoinAlgo -eq $null) {
         $MinerAlgo = $_
         $AlgoPools | Where Symbol -eq $MinerAlgo | foreach {
             if($_.Worker) {$Worker = "-worker $($_.Worker) "}
-            if ($Algorithm -eq "$($_.Algorithm)") {
+            if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
                 [PSCustomObject]@{
                     Delay      = $Config.$ConfigType.delay
                     Symbol     = "$($_.Algorithm)"

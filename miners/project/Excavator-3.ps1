@@ -32,7 +32,7 @@ if ($CoinAlgo -eq $null) {
     $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
         $MinerAlgo = $_
         $AlgoPools | Where Name -EQ "nicehash" | Where Symbol -eq $MinerAlgo | foreach {
-            if ($Algorithm -eq "$($_.Algorithm)") {
+            if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
                 if ($Config.$ConfigType.difficulty.$($_.Algorithm)) {$Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))"}
                 [PSCustomObject]@{
                     Delay       = $Config.$ConfigType.delay
