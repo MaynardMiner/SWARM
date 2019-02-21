@@ -161,25 +161,25 @@
     "uri": "https://github.com/nicehash/excavator/releases/download/v1.5.13a/excavator_1.5.13a-cuda10_amd64.deb"
   },
   "gminer": {
-    "name":"gminer", 
-    "type":"nvidia", 
-    "path1":".\\bin\\gminer-1\\miner", 
-    "path2":".\\bin\\gminer-2\\miner", 
-    "path3":".\\bin\\gminer-3\\miner", 
-    "minername":"miner", 
-    "version":"1.31", 
-    "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/gminer-linux.tar.gz"
-}, 
-"grin-miner": {
-  "name":"grin-miner", 
-  "type":"nvidia", 
-  "path1":".\\bin\\grin-miner-1\\grin-miner", 
-  "path2":".\\bin\\grin-miner-2\\grin-miner", 
-  "path3":".\\bin\\grin-miner-3\\grin-miner", 
-  "minername":"grin-miner", 
-  "version":"1.00", 
-  "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/grin-miner-linux.tar.gz"
-}, 
+    "name": "gminer",
+    "type": "nvidia",
+    "path1": ".\\bin\\gminer-1\\miner",
+    "path2": ".\\bin\\gminer-2\\miner",
+    "path3": ".\\bin\\gminer-3\\miner",
+    "minername": "miner",
+    "version": "1.33",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/gminer-linux.tar.gz"
+  },
+  "grin-miner": {
+    "name": "grin-miner",
+    "type": "nvidia",
+    "path1": ".\\bin\\grin-miner-1\\grin-miner",
+    "path2": ".\\bin\\grin-miner-2\\grin-miner",
+    "path3": ".\\bin\\grin-miner-3\\grin-miner",
+    "minername": "grin-miner",
+    "version": "1.00",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/grin-miner-linux.tar.gz"
+  },
   "bminer": {
     "name": "bminer",
     "type": "nvidia",

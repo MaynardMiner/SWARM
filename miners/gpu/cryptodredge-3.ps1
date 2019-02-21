@@ -11,7 +11,7 @@ elseif ($Platform -eq "windows") {$Build = "Zip"}
 $ConfigType = "NVIDIA3"
 
 ##Parse -GPUDevices
-if ($NVIDIADevices2 -ne '') {$Devices = $NVIDIADevices2}
+if ($NVIDIADevices3 -ne '') {$Devices = $NVIDIADevices3}
 
 ##Get Configuration File
 $GetConfig = "$dir\config\miners\cryptodredge.json"
