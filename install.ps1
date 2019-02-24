@@ -19,6 +19,7 @@ $dir
 ##Check for libc
 Start-Process ".\build\bash\libc.sh" -wait
 Start-Process ".\build\bash\libv.sh" -wait
+Start-Process ".\build\bash\libcurl3.sh" -Wait
 
 $dir | set-content ".\build\bash\dir.sh"
 
