@@ -573,12 +573,12 @@ $DonationMode = $false
 
 ## Linux Initialize
 if ($Platform -eq "linux") {
-    Start-Process ".\build\bash\libc.sh" -wait
-    Start-Process ".\build\bash\libv.sh" -wait
     ## HiveOS Only Items
     if ($HiveOS -eq "Yes") {
 
         ## Clear trash for usb stick
+        Start-Process ".\build\bash\libc.sh" -wait
+        Start-Process ".\build\bash\libv.sh" -wait    
         Write-Host "Clearing Trash Folder"
         invoke-expression "rm -rf .local/share/Trash/files/*"
 

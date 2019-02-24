@@ -8,3 +8,4 @@ sudo ln -s /opt/microsoft/powershell/6.1.0/pwsh /usr/bin/pwsh
 sudo rm -rf /tmp/powershell.tar.gz
 fi
 sudo pwsh -command "./install.ps1"
+sudo chmod 777 -R $HOME/.local/share/powershell

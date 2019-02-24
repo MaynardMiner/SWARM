@@ -11,10 +11,10 @@
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 while true; do
-  for con in `netstat -anp | grep TIME_WAIT | grep $1 | awk '{print $5}'`; do
+  for con in `netstat -anp 2>/dev/null | grep TIME_WAIT | grep $1 | awk '{print $5}'`; do
     killcx $con lo >/dev/null 2>&1
   done
-  netstat -anp | grep TIME_WAIT | grep $1 >/dev/null 2>&1 &&
+  netstat -anp 2>/dev/null | grep TIME_WAIT | grep $1 > /dev/null &&
     continue ||
     break
 done
