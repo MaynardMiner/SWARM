@@ -1889,3 +1889,27 @@ SWARM will ban them, as usual.
       i.e. ``-GPUDevices1 '1,2,3,4,5'`` depreciated
  -Removed beam from cryptodredge.
  -removed ethash (not nicehash) from bminer.
+
+2.0.1
+
+Changes for generic *nix packages:
+
+-chmod .local/share/powershell folder after
+ installer is ran, to prevent future access
+ denied errors if not ran in root.
+
+-libcurl3 added to installer, for 18.04
+ distributions.
+
+-fixed small typo in device group 3
+
+-moved some installer processes for hive
+ into if ($HiveOS -eq "yes), to prevent error
+ output on generic version.
+
+-created -sudo argument, so you can enter password
+ in arguments, and will be able to use SWARM without
+ root, but will activate -sudo for extra items that 
+ require it (like oc). This means you don't have to
+ run SWARM in root, and use sudo for everything. (commands,
+ opening files, etc.)
