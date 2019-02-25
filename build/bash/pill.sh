@@ -10,6 +10,6 @@
 #You should have received a copy of the GNU General Public License
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 sleep $1
-screen -S pill -d -m
+sudo screen -S pill -d -m
 sleep .5
-screen -S pill -X stuff $"$(< build/bash/pillconfig.sh)\n"
+sudo screen -S pill -X stuff $"$(< build/bash/pillconfig.sh)\n"

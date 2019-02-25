@@ -10,4 +10,4 @@
 #You should have received a copy of the GNU General Public License
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-screen -S miner -X title "SWARM MINER BY MAYNARDVII https://github.com/MaynardMiner/SWARM"
+sudo screen -S miner -X title "SWARM MINER BY MAYNARDVII https://github.com/MaynardMiner/SWARM"
