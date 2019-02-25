@@ -1890,31 +1890,26 @@ SWARM will ban them, as usual.
  -Removed beam from cryptodredge.
  -removed ethash (not nicehash) from bminer.
 
- 2.0.1
+2.0.1
 
- -Found small typo in nicehash pool file
-   regarding nicehash_wallet3 - fixed.
+Changes for generic *nix packages:
 
- -Found typo in Claymore-3 - fixed.
+-chmod .local/share/powershell folder after
+ installer is ran, to prevent future access
+ denied errors if not ran in root.
 
- -Hive message on bans should display reason.
+-libcurl3 added to installer, for 18.04
+ distributions.
 
- -Gminer updated
+-fixed small typo in device group 3
 
- -Grin-miner send to project folder for NVIDIA.
+-moved some installer processes for hive
+ into if ($HiveOS -eq "yes), to prevent error
+ output on generic version.
 
- -Fixed grin-miner for AMD.
-
- -New Feature: Added miners_to_exclude to pool-algos.json
-    -you will be able to ban miners from specific algos.
-    -This allows you to continue mining algorithm, but
-     with different miner (if available).
-    
- -Fixed error with grin-miner involving algo switching
-     -Arguments parameter in miner file was needed to
-      initiate a switch.
-
-
-
- 
- 
+-created -sudo argument, so you can enter password
+ in arguments, and will be able to use SWARM without
+ root, but will activate -sudo for extra items that 
+ require it (like oc). This means you don't have to
+ run SWARM in root, and use sudo for everything. (commands,
+ opening files, etc.)
