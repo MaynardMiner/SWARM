@@ -228,9 +228,11 @@ function Start-OC {
             $Core = $_.occore -split ' '
             $Mem = $_.ocmem -split ' '
             $Power = $_.ocpower -split ' '
+            $Fan = $_.ocfans -split ' '
             $Core = $Core -split ","
             $Mem = $Mem -split ","
             $Power = $Power -split ","
+            $Fan = $_.ocfans -split ","
             $NScreenMiners = "$($_.MinerName) "
     
             if ($Card) {
@@ -252,7 +254,17 @@ function Start-OC {
                     }
                     $NScreenCore += "$($_.Type) Core is $($_.occore) "
                 }
-    
+
+                if ($Fan) {
+                    $DONVIDIAOC = $true
+                    for ($i = 0; $i -lt $OCDevices.Count; $i++) {
+                        $GPU = $OCDevices[$i]
+                        if ($Platforms -eq "linux") {$NVIDIAFAN += " -a [gpu:$($GCount.NVIDIA.$GPU)]/GPUFanControlState=1 -a [gpu:$($GCount.NVIDIA.$GPU)]/GPUTargetFanSpeed=$($Fan[$i])"}
+                        if ($Platforms -eq "windows") {$NVIDIAOCArgs += "-setFanSpeed:$($GCount.NVIDIA.$GPU),$($Fan[$i]) "}
+                    }
+                    $NScreenFan += "$($_.Type) Fan is $($_.ocfans) "
+                }
+
     
                 if ($Mem) {
                     $DONVIDIAOC = $true
@@ -387,8 +399,8 @@ function Start-OC {
                         if ($MemClock -or $MDPM) {
                             $DOAmdOC = $true
                             if ($Model[$Select] -like "*Vega*") {$PStates = 4}else {$PStates = 3}
-                            if($MemClock.Count -eq 1){$Memory_Clock = $MemClock}else{$Memory_Clock = $MemClock[$Select]}
-                            if($MDPM.Count -eq 1){$Mem_State = $MDPM}else{$Mem_State = $MDPM[$Select]}
+                            if ($MemClock.Count -eq 1) {$Memory_Clock = $MemClock}else {$Memory_Clock = $MemClock[$Select]}
+                            if ($MDPM.Count -eq 1) {$Mem_State = $MDPM}else {$Mem_State = $MDPM[$Select]}
                             $DefaultMemClock = $Default_Mem_Clock."Gpu $Select P$($PStates-1) Mem Clock"
                             $DefaultMemVolt = $Default_Mem_Voltage."Gpu $Select P$($PStates-1) Mem Voltage"
                             if ($Memory_Clock) {$Mem = $Memory_Clock}else {$Mem = $DefaultMemClock}
@@ -401,13 +413,13 @@ function Start-OC {
                             $DOAmdOC = $true
                             $PStates = 8
                             for ($j = 1; $j -lt $PStates; $j++) {
-                            if($CoreClock.Count -eq 1){$Core_Clock = $CoreClock}else{$Core_Clock = $CoreClock[$Select]}
-                            if($Voltage.Count -eq 1){$Core_Volt = $Voltage}else{$Core_Volt = $Voltage[$Select]}
-                            $DefaultCoreClock = $Default_Core_Clock."Gpu $Select P$j Core Clock"
-                            $DefaultCoreVolt = $Default_Core_Voltage."Gpu $Select P$j Core Voltage"
-                            if ($Core_Clock) {$CClock = $Core_Clock}else {$CClock = $DefaultCoreClock}
-                            if ($Core_Volt) {$CVolt = $Core_Volt}else {$CVolt = $DefaultCoreVolt}
-                            $OCArgs += "GPU_P$j=$CClock;$CVolt "
+                                if ($CoreClock.Count -eq 1) {$Core_Clock = $CoreClock}else {$Core_Clock = $CoreClock[$Select]}
+                                if ($Voltage.Count -eq 1) {$Core_Volt = $Voltage}else {$Core_Volt = $Voltage[$Select]}
+                                $DefaultCoreClock = $Default_Core_Clock."Gpu $Select P$j Core Clock"
+                                $DefaultCoreVolt = $Default_Core_Voltage."Gpu $Select P$j Core Voltage"
+                                if ($Core_Clock) {$CClock = $Core_Clock}else {$CClock = $DefaultCoreClock}
+                                if ($Core_Volt) {$CVolt = $Core_Volt}else {$CVolt = $DefaultCoreVolt}
+                                $OCArgs += "GPU_P$j=$CClock;$CVolt "
                             }
                             $AScreenCore = "$($_.Type) CORE is $($_.occore) "
                             $AScreenDPM = "$($_.Type) Core Voltage is $($_.ocdpm) "
@@ -462,6 +474,7 @@ function Start-OC {
     if ($DoNVIDIAOC -eq $true -and $Platforms -eq "linux") {
         if ($Core) {$NScript[1] = "$($NScript[1])$NVIDIACORE"}
         if ($Mem) {$NScript[1] = "$($NScript[1])$NVIDIAMEM"}
+        if ($Fan) {$NScript[1] = "$($NScript[1])$NVIDIAFAN"}
         Start-Process "./build/bash/killall.sh" -ArgumentList "OC_NVIDIA" -Wait
         Start-Process "screen" -ArgumentList "-S OC_NVIDIA -d -m"
         Start-Sleep -S .25
@@ -481,6 +494,7 @@ function Start-OC {
         $OCMessage += "Power: $NScreenPower"
         $OCMessage += "Core Settings: $NScreenCore"
         $OCMessage += "Memory Settings: $NScreenMem"
+        $OCMessage += "Fan Settings: $NScreenFan"
     }
     if ($DoAMDOC -eq $true) {
         $OCMessage += "Current AMD OC Profile-"
