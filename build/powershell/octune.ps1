@@ -232,10 +232,16 @@ function Start-OC {
             $Core = $Core -split ","
             $Mem = $Mem -split ","
             $Power = $Power -split ","
-            $Fan = $_.ocfans -split ","
+            $Fan = $Fan -split ","
             $NScreenMiners = "$($_.MinerName) "
-    
+
             if ($Card) {
+
+                for ($i = 0; $i -lt $OCDevices.Count; $i++) {
+                    $GPU = $OCDevices[$i]
+                    if ($Platforms -eq "linux") {$NScript += "nvidia-smi -i $($GCount.NVIDIA.$GPU) -pm ENABLED";}
+                }
+                
                 if ($Core) {
                     $DONVIDIAOC = $true
                     for ($i = 0; $i -lt $OCDevices.Count; $i++) {
@@ -259,7 +265,7 @@ function Start-OC {
                     $DONVIDIAOC = $true
                     for ($i = 0; $i -lt $OCDevices.Count; $i++) {
                         $GPU = $OCDevices[$i]
-                        if ($Platforms -eq "linux") {$NVIDIAFAN += " -a [gpu:$($GCount.NVIDIA.$GPU)]/GPUFanControlState=1 -a [gpu:$($GCount.NVIDIA.$GPU)]/GPUTargetFanSpeed=$($Fan[$i])"}
+                        if ($Platforms -eq "linux") {$NVIDIAFAN += " -a [gpu:$($GCount.NVIDIA.$GPU)]/GPUFanControlState=1 -a [fan:$($GCount.NVIDIA.$GPU)]/GPUTargetFanSpeed=$($Fan[$i])"}
                         if ($Platforms -eq "windows") {$NVIDIAOCArgs += "-setFanSpeed:$($GCount.NVIDIA.$GPU),$($Fan[$i]) "}
                     }
                     $NScreenFan += "$($_.Type) Fan is $($_.ocfans) "
@@ -289,7 +295,7 @@ function Start-OC {
                     $DONVIDIAOC = $true
                     for ($i = 0; $i -lt $OCDevices.Count; $i++) {
                         $GPU = $OCDevices[$i]
-                        if ($Platforms -eq "linux") {$NScript += "nvidia-smi -i $($GCount.NVIDIA.$GPU) -pl $($Power[$i])"; $NScript += "sleep .1"}
+                        if ($Platforms -eq "linux") {$NScript += "nvidia-smi -i $($GCount.NVIDIA.$GPU) -pl $($Power[$i])";}
                         elseif ($Platforms -eq "windows") {$NVIDIAOCArgs += "-setPowerTarget:$($GCount.NVIDIA.$GPU),$($Power[$i]) "}
                     }
                     $NScreenPower += "$($_.Type) Power is $($_.ocpower) "
@@ -327,7 +333,6 @@ function Start-OC {
                             if ($MemState[$GPU]) {$MEMArgs += " --mem-state $($MemState[$i])"}
                             $WolfArgs = "wolfamdctrl -i $($GCount.AMD.$GPU)$MEMArgs"
                             $AScript += "$WolfArgs"
-                            $AScript += "sleep .1"
                         }
                         $AScreenMem += "$($_.Type) MEM is $($_.ocmem) "
                         $AScreenMDPM += "$($_.Type) MDPM is $($_.ocmdpm) "
@@ -341,7 +346,6 @@ function Start-OC {
                             if ($CoreState[$GPU]) {$CoreArgs += " --core-state $($CoreState[$i])"}
                             $WolfArgs = "wolfamdctrl -i $($GCount.AMD.$GPU)$CoreArgs"
                             $AScript += $WolfArgs
-                            $AScript += "sleep .1"
                         }
                         $AScreenCore += "$($_.Type) CORE is $($_.occore) "
                         $AScreenDPM += "$($_.Type) DPM is $($_.ocdpm) "
@@ -353,7 +357,6 @@ function Start-OC {
                             $GPU = $OCDevices[$i]
                             for ($ia = 0; $ia -lt 16; $ia++) {
                                 if ($Voltage[$GPU]) {$VoltArgs += "wolfamdctrl -i $($GCount.AMD.$GPU) --vddc-table-set $($Voltage[$GPU]) --volt-state $ia"}
-                                $VoltArgs += "sleep .1"
                             }
                         }
                         $AScript += $VoltArgs
@@ -367,7 +370,6 @@ function Start-OC {
                             if ($Fans[$GPU]) {$Fanargs += " --set-fanspeed $($Fans[$i])"}
                             $WolfArgs = "wolfamdctrl -i $($GCount.AMD.$GPU)$FanArgs"
                             $AScript += $WolfArgs
-                            $AScript += "sleep .1"
                         }
                         $AScreenFans += "$($_.Type) Fans is $($_.ocfans) "
                     }

@@ -16,6 +16,8 @@ param(
     [Array]$Name
 )
 
+. .\build\powershell\killall.ps1;
+
 While ($true) {
     $Name | foreach {
         if ($_ -eq "miner") {$Title = "SWARM"}
@@ -35,15 +37,7 @@ While ($true) {
                     Write-Host "Closing SWARM" -foregroundcolor red
                     Get-Date | Out-File ".\build\data\timetable.txt"
                     Clear-Content ".\build\txt\hivestats.txt"
-                    Start-Process "screen" -ArgumentList "-S NVIDIA1 -X quit"
-                    Start-Process "screen" -ArgumentList "-S NVIDIA2 -X quit"
-                    Start-Process "screen" -ArgumentList "-S NVIDIA3 -X quit"
-                    Start-Process "screen" -ArgumentList "-S AMD1 -X quit"
-                    Start-Process "screen" -ArgumentList "-S AMD2 -X quit"
-                    Start-Process "screen" -ArgumentList "-S AMD3 -X quit"
-                    Start-Process "screen" -ArgumentList "-S CPU -X quit"
-                    Start-Process "screen" -ArgumentList "-S background -X quit"
-                    Start-Process "screen" -ArgumentList "-S pidinfo -X quit"
+                    start-killscript
                 }
             }
         }
@@ -51,15 +45,7 @@ While ($true) {
             Write-Host "Closing SWARM" -foregroundcolor red
             Get-Date | Out-File ".\build\data\timetable.txt"
             Clear-Content ".\build\txt\hivestats.txt"
-            Start-Process "screen" -ArgumentList "-S NVIDIA1 -X quit"
-            Start-Process "screen" -ArgumentList "-S NVIDIA2 -X quit"
-            Start-Process "screen" -ArgumentList "-S NVIDIA3 -X quit"
-            Start-Process "screen" -ArgumentList "-S AMD1 -X quit"
-            Start-Process "screen" -ArgumentList "-S AMD2 -X quit"
-            Start-Process "screen" -ArgumentList "-S AMD3 -X quit"
-            Start-Process "screen" -ArgumentList "-S CPU -X quit"
-            Start-Process "screen" -ArgumentList "-S background -X quit"        
-            Start-Process "screen" -ArgumentList "-S pidinfo -X quit"
+            start-killscript
         }
     }
     Start-Sleep -S 3.75
