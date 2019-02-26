@@ -26,7 +26,7 @@
         "Memory": "",
         "ETHPill": "",
         "PillDelay": "",
-        "Fan": ""
+        "Fans": ""
       },
       "daggerhashimoto": {
         "Power": "",
@@ -34,7 +34,7 @@
         "Memory": "",
         "ETHPill": "",
         "PillDelay": "",
-        "Fan": ""
+        "Fans": ""
       },
       "dagger": {
         "Power": "",
@@ -42,7 +42,7 @@
         "Memory": "",
         "ETHPill": "",
         "PillDelay": "",
-        "Fan": ""
+        "Fans": ""
       }
     }
   },
@@ -72,7 +72,7 @@
         "Memory": "",
         "ETHPill": "",
         "PillDelay": "",
-        "Fan": ""
+        "Fans": ""
       },
       "daggerhashimoto": {
         "Power": "",
@@ -80,7 +80,7 @@
         "Memory": "",
         "ETHPill": "",
         "PillDelay": "",
-        "Fan": ""
+        "Fans": ""
       },
       "dagger": {
         "Power": "",
@@ -88,7 +88,7 @@
         "Memory": "",
         "ETHPill": "",
         "PillDelay": "",
-        "Fan": ""
+        "Fans": ""
       }
     }
   },
@@ -118,7 +118,7 @@
         "Memory": "",
         "ETHPill": "",
         "PillDelay": "",
-        "Fan": ""
+        "Fans": ""
       },
       "daggerhashimoto": {
         "Power": "",
@@ -126,7 +126,7 @@
         "Memory": "",
         "ETHPill": "",
         "PillDelay": "",
-        "Fan": ""
+        "Fans": ""
       },
       "dagger": {
         "Power": "",
@@ -134,7 +134,7 @@
         "Memory": "",
         "ETHPill": "",
         "PillDelay": "",
-        "Fan": ""
+        "Fans": ""
       }
     }
   }

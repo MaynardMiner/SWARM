@@ -21,13 +21,13 @@
         "Power": "",
         "Memory": "",
         "Core": "",
-        "Fan": ""
+        "Fans": ""
       },
       "lyra2rev3": {
         "Power": "",
         "Memory": "",
         "Core": "",
-        "Fan": ""
+        "Fans": ""
       }
     }
   },
@@ -52,13 +52,13 @@
         "Power": "",
         "Memory": "",
         "Core": "",
-        "Fan": ""
+        "Fans": ""
       },
       "lyra2rev3": {
         "Power": "",
         "Memory": "",
         "Core": "",
-        "Fan": ""
+        "Fans": ""
       }
     }
   },
@@ -83,13 +83,13 @@
         "Power": "",
         "Memory": "",
         "Core": "",
-        "Fan": ""
+        "Fans": ""
       },
       "lyra2rev3": {
         "Power": "",
         "Memory": "",
         "Core": "",
-        "Fan": ""
+        "Fans": ""
       }
     }
   }

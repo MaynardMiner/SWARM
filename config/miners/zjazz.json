@@ -24,19 +24,19 @@
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       },
       "bitcash": {
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       },
       "x22i": {
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       }
     }
   },
@@ -64,19 +64,19 @@
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       },
       "bitcash": {
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       },
       "x22i": {
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       }
     }
   },
@@ -104,19 +104,19 @@
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       },
       "bitcash": {
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       },
       "x22i": {
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       }
     }
   }

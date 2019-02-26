@@ -89,7 +89,7 @@ function start-update {
                     if (Test-Path "$OldTimeout\algo_block") {Get-ChildItem -Path "$($OldTimeout)\pool_block" -Include *.txt, *.conf -Recurse | Copy-Item -Destination ".\timeout\pool_block"}
                     Get-ChildItem -Path "$($OldTimeout)\*" -Include *.txt | Copy-Item -Destination ".\timeout"
                 }
-                $Jsons = @("miners", "oc", "power")
+                $Jsons = @("miners", "oc", "power", "pools")
                 $UpdateType = @("CPU", "AMD1", "NVIDIA1", "NVIDIA2", "NVIDIA3")
                 $Jsons | foreach {
                     $OldJson_Path = Join-Path $OldConfig "$($_)";
@@ -539,6 +539,21 @@ function start-update {
                             if ($Data.AMD1.oc) {
                                 $Data.AMD1.oc | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Foreach {
                                     $Data.AMD1.oc.$_ | Add-Member "fans" "" -ErrorAction SilentlyContinue
+                                }
+                            }
+                            if ($Data.NVIDIA1.oc) {
+                                $Data.NVIDIA1.oc | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Foreach {
+                                    $Data.NVIDIA1.oc.$_ | Add-Member "fans" "" -ErrorAction SilentlyContinue
+                                }
+                            }
+                            if ($Data.NVIDIA2.oc) {
+                                $Data.NVIDIA2.oc | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Foreach {
+                                    $Data.NVIDIA2.oc.$_ | Add-Member "fans" "" -ErrorAction SilentlyContinue
+                                }
+                            }
+                            if ($Data.NVIDIA3.oc) {
+                                $Data.NVIDIA3.oc | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Foreach {
+                                    $Data.NVIDIA3.oc.$_ | Add-Member "fans" "" -ErrorAction SilentlyContinue
                                 }
                             }
                             if ($Data.default_AMD1) {

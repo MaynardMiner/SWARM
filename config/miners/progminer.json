@@ -20,7 +20,7 @@
         "Memory": "",
         "ETHPill": "",
         "PillDelay": "",
-        "Fan": ""
+        "Fans": ""
       }
     }
   },
@@ -44,7 +44,7 @@
         "Memory": "",
         "ETHPill": "",
         "PillDelay": "",
-        "Fan": ""
+        "Fans": ""
       }
     }
   },
@@ -68,7 +68,7 @@
         "Memory": "",
         "ETHPill": "",
         "PillDelay": "",
-        "Fan": ""
+        "Fans": ""
       }
     }
   }

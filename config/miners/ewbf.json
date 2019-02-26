@@ -36,43 +36,43 @@
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       },
       "equihash192": {
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       },
       "equihash144": {
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       },
       "equihash96": {
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       },
       "equihash210": {
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       },
       "equihash200": {
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       },
       "zhash": {
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       }
     }
   },
@@ -112,43 +112,43 @@
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       },
       "equihash192": {
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       },
       "equihash144": {
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       },
       "equihash96": {
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       },
       "equihash210": {
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       },
       "equihash200": {
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       },
       "zhash": {
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       }
     }
   },
@@ -188,43 +188,43 @@
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       },
       "equihash192": {
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       },
       "equihash144": {
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       },
       "equihash96": {
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       },
       "equihash210": {
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       },
       "equihash200": {
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       },
       "zhash": {
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       }
     }
   }

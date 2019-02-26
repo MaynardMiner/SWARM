@@ -4,19 +4,19 @@
                             "Power":  "",
                             "Core":  "",
                             "Memory":  "",
-                            "Fan":  ""
+                            "Fans":  ""
                         },
     "default_NVIDIA2":  {
                             "Power":  "",
                             "Core":  "",
                             "Memory":  "",
-                            "Fan":  ""
+                            "Fans":  ""
                         },
     "default_NVIDIA3":  {
                             "Power":  "",
                             "Core":  "",
                             "Memory":  "",
-                            "Fan":  ""
+                            "Fans":  ""
                         },
     "default_AMD1":  {
                          "dpm":  "",

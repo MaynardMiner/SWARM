@@ -17,7 +17,7 @@
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       }
     }
   },
@@ -39,7 +39,7 @@
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       }
     }
   },
@@ -61,7 +61,7 @@
         "Power": "",
         "Core": "",
         "Memory": "",
-        "Fan": ""
+        "Fans": ""
       }
     }
   },
