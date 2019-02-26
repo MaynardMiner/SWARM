@@ -16,7 +16,8 @@
       "argon2d-dyn": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       }
     }
   },
@@ -37,7 +38,8 @@
       "argon2d-dyn": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       }
     }
   },
@@ -58,7 +60,8 @@
       "argon2d-dyn": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       }
     }
   },

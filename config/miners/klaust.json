@@ -20,12 +20,14 @@
       "lyra2v3": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fan": ""
       },
       "lyra2rev3": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fan": ""
       }
     }
   },
@@ -49,12 +51,14 @@
       "lyra2v3": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fan": ""
       },
       "lyra2rev3": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fan": ""
       }
     }
   },
@@ -78,12 +82,14 @@
       "lyra2v3": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fan": ""
       },
       "lyra2rev3": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fan": ""
       }
     }
   }

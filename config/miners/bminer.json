@@ -32,40 +32,46 @@
       "zhash": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "equihash144": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "daggerhashimoto": {
         "Power": "",
         "Core": "",
         "Memory": "",
         "ETHPill": "",
-        "PillDelay": ""
+        "PillDelay": "",
+        "Fan": ""
       },
       "beam": {
         "Power": "",
         "Core": "",
         "Memory": "",
         "ETHPill": "",
-        "PillDelay": ""
+        "PillDelay": "",
+        "Fan": ""
       },
       "grincuckaroo29": {
         "Power": "",
         "Core": "",
         "Memory": "",
         "ETHPill": "",
-        "PillDelay": ""
+        "PillDelay": "",
+        "Fan": ""
       },
       "grincuckatoo31": {
         "Power": "",
         "Core": "",
         "Memory": "",
         "ETHPill": "",
-        "PillDelay": ""
+        "PillDelay": "",
+        "Fan": ""
       }
     }
   },
@@ -101,40 +107,46 @@
       "zhash": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "equihash144": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "daggerhashimoto": {
         "Power": "",
         "Core": "",
         "Memory": "",
         "ETHPill": "",
-        "PillDelay": ""
+        "PillDelay": "",
+        "Fan": ""
       },
       "beam": {
         "Power": "",
         "Core": "",
         "Memory": "",
         "ETHPill": "",
-        "PillDelay": ""
+        "PillDelay": "",
+        "Fan": ""
       },
       "grincuckaroo29": {
         "Power": "",
         "Core": "",
         "Memory": "",
         "ETHPill": "",
-        "PillDelay": ""
+        "PillDelay": "",
+        "Fan": ""
       },
       "grincuckatoo31": {
         "Power": "",
         "Core": "",
         "Memory": "",
         "ETHPill": "",
-        "PillDelay": ""
+        "PillDelay": "",
+        "Fan": ""
       }
     }
   },
@@ -170,40 +182,46 @@
       "zhash": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "equihash144": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "daggerhashimoto": {
         "Power": "",
         "Core": "",
         "Memory": "",
         "ETHPill": "",
-        "PillDelay": ""
+        "PillDelay": "",
+        "Fan": ""
       },
       "beam": {
         "Power": "",
         "Core": "",
         "Memory": "",
         "ETHPill": "",
-        "PillDelay": ""
+        "PillDelay": "",
+        "Fan": ""
       },
       "grincuckaroo29": {
         "Power": "",
         "Core": "",
         "Memory": "",
         "ETHPill": "",
-        "PillDelay": ""
+        "PillDelay": "",
+        "Fan": ""
       },
       "grincuckatoo31": {
         "Power": "",
         "Core": "",
         "Memory": "",
         "ETHPill": "",
-        "PillDelay": ""
+        "PillDelay": "",
+        "Fan": ""
       }
     }
   }

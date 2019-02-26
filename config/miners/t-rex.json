@@ -94,137 +94,164 @@
       "tribus": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "phi": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "c11": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "hsr": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "x17": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "renesis": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "balloon": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "bitcore": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "polytimos": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "skunk": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "x16r": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "x16s": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "hmq1725": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "bcd": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "sha256t": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "sonoa": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "timetravel": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "x22i": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "x21s": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "dedal": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "x16rt": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "veil": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "sha256q": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "astralhash": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "jeonghash": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "padihash": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "pawelhash": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       }
     }
   },
@@ -323,137 +350,164 @@
       "tribus": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "phi": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "c11": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "hsr": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "x17": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "renesis": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "balloon": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "bitcore": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "polytimos": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "skunk": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "x16r": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "x16s": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "hmq1725": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "bcd": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "sha256t": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "sonoa": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "timetravel": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "x22i": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "x21s": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "dedal": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "x16rt": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "veil": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "sha256q": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "astralhash": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "jeonghash": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "padihash": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "pawelhash": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       }
     }
   },
@@ -552,137 +606,164 @@
       "tribus": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "phi": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "c11": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "hsr": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "x17": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "renesis": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "balloon": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "bitcore": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "polytimos": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "skunk": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "x16r": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "x16s": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "hmq1725": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "bcd": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "sha256t": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "sonoa": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "timetravel": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "x22i": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "x21s": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "dedal": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "x16rt": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "veil": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "sha256q": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "astralhash": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "jeonghash": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "padihash": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       },
       "pawelhash": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fan": ""
       }
     }
   },

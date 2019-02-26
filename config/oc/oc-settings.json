@@ -1,20 +1,22 @@
 {
     "Cards":  "",
-    "windows fan start":  "",
     "default_NVIDIA1":  {
                             "Power":  "",
                             "Core":  "",
-                            "Memory":  ""
+                            "Memory":  "",
+                            "Fan":  ""
                         },
     "default_NVIDIA2":  {
                             "Power":  "",
                             "Core":  "",
-                            "Memory":  ""
+                            "Memory":  "",
+                            "Fan":  ""
                         },
     "default_NVIDIA3":  {
                             "Power":  "",
                             "Core":  "",
-                            "Memory":  ""
+                            "Memory":  "",
+                            "Fan":  ""
                         },
     "default_AMD1":  {
                          "dpm":  "",
