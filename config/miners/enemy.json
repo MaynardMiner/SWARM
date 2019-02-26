@@ -41,47 +41,56 @@
       "aergo": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "hex": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "timetravel": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "xevan": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "sonoa": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "x16r": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "x16s": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "bitcore": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "tribus": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       }
     }
   },
@@ -126,47 +135,56 @@
       "aergo": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "hex": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "timetravel": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "xevan": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "sonoa": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "x16r": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "x16s": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "bitcore": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "tribus": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       }
     }
   },
@@ -211,47 +229,56 @@
       "aergo": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "hex": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "timetravel": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "xevan": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "sonoa": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "x16r": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "x16s": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "bitcore": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "tribus": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       }
     }
   }

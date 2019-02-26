@@ -25,21 +25,24 @@
         "Core": "",
         "Memory": "",
         "ETHPill": "",
-        "PillDelay": ""
+        "PillDelay": "",
+        "Fans": ""
       },
       "daggerhashimoto": {
         "Power": "",
         "Core": "",
         "Memory": "",
         "ETHPill": "",
-        "PillDelay": ""
+        "PillDelay": "",
+        "Fans": ""
       },
       "dagger": {
         "Power": "",
         "Core": "",
         "Memory": "",
         "ETHPill": "",
-        "PillDelay": ""
+        "PillDelay": "",
+        "Fans": ""
       }
     }
   },
@@ -68,21 +71,24 @@
         "Core": "",
         "Memory": "",
         "ETHPill": "",
-        "PillDelay": ""
+        "PillDelay": "",
+        "Fans": ""
       },
       "daggerhashimoto": {
         "Power": "",
         "Core": "",
         "Memory": "",
         "ETHPill": "",
-        "PillDelay": ""
+        "PillDelay": "",
+        "Fans": ""
       },
       "dagger": {
         "Power": "",
         "Core": "",
         "Memory": "",
         "ETHPill": "",
-        "PillDelay": ""
+        "PillDelay": "",
+        "Fans": ""
       }
     }
   },
@@ -111,21 +117,24 @@
         "Core": "",
         "Memory": "",
         "ETHPill": "",
-        "PillDelay": ""
+        "PillDelay": "",
+        "Fans": ""
       },
       "daggerhashimoto": {
         "Power": "",
         "Core": "",
         "Memory": "",
         "ETHPill": "",
-        "PillDelay": ""
+        "PillDelay": "",
+        "Fans": ""
       },
       "dagger": {
         "Power": "",
         "Core": "",
         "Memory": "",
         "ETHPill": "",
-        "PillDelay": ""
+        "PillDelay": "",
+        "Fans": ""
       }
     }
   }

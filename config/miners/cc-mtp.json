@@ -18,7 +18,8 @@
       "mtp": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       }
     }
   },
@@ -39,7 +40,8 @@
       "mtp": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       }
     }
   },
@@ -60,7 +62,8 @@
       "mtp": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       }
     }
   },

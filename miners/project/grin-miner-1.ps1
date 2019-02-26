@@ -1,20 +1,20 @@
 ##Miner Path Information
-if ($nvidia.zjazz.path2) {$Path = "$($nvidia.zjazz.path2)"}
+if ($nvidia.'grin-miner'.path1 -and $cuda -eq "10") {$Path = "$($nvidia.'grin-miner'.path1)"}
 else {$Path = "None"}
-if ($nvidia.zjazz.uri) {$Uri = "$($nvidia.zjazz.uri)"}
+if ($nvidia.'grin-miner'.uri -and $cuda -eq "10") {$Uri = "$($nvidia.'grin-miner'.uri)"}
 else {$Uri = "None"}
-if ($nvidia.zjazz.minername) {$MinerName = "$($nvidia.zjazz.minername)"}
+if ($nvidia.'grin-miner'.minername -and $cuda -eq "10") {$MinerName = "$($nvidia.'grin-miner'.minername)"}
 else {$MinerName = "None"}
 if ($Platform -eq "linux") {$Build = "Tar"}
 elseif ($Platform -eq "windows") {$Build = "Zip"}
 
-$ConfigType = "NVIDIA2"
+$ConfigType = "NVIDIA1"
 
 ##Parse -GPUDevices
-if ($NVIDIADevices2 -ne '') {$Devices = $NVIDIADevices2}
+if ($NVIDIADevices1 -ne '') {$Devices = $NVIDIADevices1}
 
 ##Get Configuration File
-$GetConfig = "$dir\config\miners\zjazz.json"
+$GetConfig = "$dir\config\miners\grin-miner.json"
 try {$Config = Get-Content $GetConfig | ConvertFrom-Json}
 catch {Write-Warning "Warning: No config found at $GetConfig"}
 
@@ -33,8 +33,7 @@ if ($CoinAlgo -eq $null) {
     $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
         $MinerAlgo = $_
         $AlgoPools | Where Symbol -eq $MinerAlgo | foreach {
-            if ($Algorithm -eq "$($_.Algorithm)") {
-                if ($Config.$ConfigType.difficulty.$($_.Algorithm)) {$Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))"}else {$Diff = ""}
+            if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
                 [PSCustomObject]@{
                     Delay      = $Config.$ConfigType.delay
                     Symbol     = "$($_.Algorithm)"
@@ -43,18 +42,21 @@ if ($CoinAlgo -eq $null) {
                     Type       = $ConfigType
                     Path       = $Path
                     Devices    = $Devices
-                    DeviceCall = "zjazz"
-                    Arguments  = "-a $($Config.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -b 0.0.0.0:4069 --hashrate-per-gpu -u $($_.User2) -p $($_.Pass2)$($Diff) $($Config.$ConfigType.commands.$($_.Algorithm))"
+                    DeviceCall = "grin-miner"
+                    Host       = "$($_.Host):$($_.Port)"
+                    User       = "$($_.User1)"
+                    Arguments  = "$($_.Host):$($_.Port) $($_.User1) $($_.Algorithm)"
                     HashRates  = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)}
                     Quote      = if ($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)) {$($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) * ($_.Price)}else {0}
                     PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") {$Watts.$($_.Algorithm)."$($ConfigType)_Watts"}elseif ($Watts.default."$($ConfigType)_Watts") {$Watts.default."$($ConfigType)_Watts"}else {0}}
                     ocpower    = if ($Config.$ConfigType.oc.$($_.Algorithm).power) {$Config.$ConfigType.oc.$($_.Algorithm).power}else {$OC."default_$($ConfigType)".Power}
                     occore     = if ($Config.$ConfigType.oc.$($_.Algorithm).core) {$Config.$ConfigType.oc.$($_.Algorithm).core}else {$OC."default_$($ConfigType)".core}
                     ocmem      = if ($Config.$ConfigType.oc.$($_.Algorithm).memory) {$Config.$ConfigType.oc.$($_.Algorithm).memory}else {$OC."default_$($ConfigType)".memory}
+                    ocfans     = if ($Config.$ConfigType.oc.$($_.Algorithm).fans) {$Config.$ConfigType.oc.$($_.Algorithm).fans}else {$OC."default_$($ConfigType)".fans}
                     MinerPool  = "$($_.Name)"
                     FullName   = "$($_.Mining)"
-                    Port       = 4069
-                    API        = "Ccminer"
+                    Port       = 4068
+                    API        = "grin-miner"
                     Wrap       = $false
                     URI        = $Uri
                     BUILD      = $Build

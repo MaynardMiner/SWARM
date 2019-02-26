@@ -175,7 +175,6 @@ Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 . .\build\powershell\launchcode.ps1;
 . .\build\powershell\datefiles.ps1;
 . .\build\powershell\watchdog.ps1;
-. .\build\powershell\miners.ps1;
 . .\build\powershell\download.ps1;
 . .\build\powershell\hashrates.ps1;
 . .\build\powershell\naming.ps1;
@@ -822,6 +821,7 @@ $Warnings = @()
 $NeedsToBeBench = $false
 $Algorithm = Get-Algolist
 $Bad_Pools = Get-BadPools
+$Bad_Miners = Get-BadMiners
 
 #Get Miner Config Files
 if ($Type -like "*CPU*") {$cpu = get-minerfiles -Types "CPU" -Platforms $Platform}
@@ -981,7 +981,7 @@ While ($true) {
         Write-Host "Checking Algo Miners"
         $AlgoMiners = Get-Miners -Platforms $Platform -Stats $Stats -Pools $AlgoPools
 
-        ##Re-Name Instance In Case Of Crashes. This is for linux.
+        ##Re-Name Instance. This is for linux.
         if ($Lite -eq "No") {
             $AlgoMiners | ForEach {
                 $AlgoMiner = $_
@@ -1723,7 +1723,9 @@ While ($true) {
                             }
                             ##Strike Two
                             if ($MinerPoolBan -eq $true) {
-                                $HiveMessage = "Banning $($_.Name) Mining $($_.Algo) From $($_.MinerPool)"
+                                $minerjson = $_ | ConvertTo-Json -Compress
+                                $reason = Get-MinerTimeout $minerjson
+                                $HiveMessage = "Ban: $($_.Name)/$($_.Algo) From $($_.MinerPool)- $reason "
                                 Write-Host "Strike Two: Benchmarking Has Failed - $HiveMessage
 " -ForegroundColor DarkRed
                                 $NewPoolBlock = @()
@@ -1739,7 +1741,9 @@ While ($true) {
                             }
                             ##Strike Three: He's Outta Here
                             if ($MinerAlgoBan -eq $true) {
-                                $HiveMessage = "$($_.Algo) is now banned on $($_.Name)"
+                                $minerjson = $_ | ConvertTo-Json -Compress
+                                $reason = Get-MinerTimeout $minerjson
+                                $HiveMessage = "Ban: $($_.Name)/$($_.Algo) from all pools- $reason "
                                 Write-Host "Strike three: $HiveMessage
 " -ForegroundColor DarkRed
                                 $NewAlgoBlock = @()

@@ -47,57 +47,68 @@
       "equihash": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "pascal": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "decred": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "blake2s": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "daggerhashimoto": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "lyra2rev2": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "keccak": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "neoscrypt": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "lyra2z": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "x16r": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "lyra2re": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       }
     }
   },
@@ -148,57 +159,68 @@
       "equihash": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "pascal": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "decred": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "blake2s": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "daggerhashimoto": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "lyra2rev2": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "keccak": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "neoscrypt": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "lyra2z": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "x16r": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "lyra2re": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       }
     }
   },
@@ -249,57 +271,68 @@
       "equihash": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "pascal": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "decred": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "blake2s": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "daggerhashimoto": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "lyra2rev2": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "keccak": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "neoscrypt": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "lyra2z": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "x16r": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "lyra2re": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       }
     }
   }

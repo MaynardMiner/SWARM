@@ -22,17 +22,20 @@
       "yescrypt": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "yescryptr16": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "yescryptr32": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       }
     }
   },
@@ -59,17 +62,20 @@
       "yescrypt": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "yescryptr16": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "yescryptr32": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       }
     }
   },
@@ -96,17 +102,20 @@
       "yescrypt": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "yescryptr16": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "yescryptr32": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       }
     }
   },

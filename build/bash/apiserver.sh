@@ -10,6 +10,6 @@
 #You should have received a copy of the GNU General Public License
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-screen -S API -d -m
+sudo screen -S API -d -m
 sleep -S 1
-screen -S API -X stuff $"pwsh -command ./build/powershell/api.ps1"
+sudo screen -S API -X stuff $"pwsh -command ./build/powershell/api.ps1"

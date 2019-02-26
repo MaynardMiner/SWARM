@@ -26,22 +26,26 @@
       "lyra2v3": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "lyra2rev3": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "sha256q": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "exosis": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       }
     }
   },
@@ -71,22 +75,26 @@
       "lyra2v3": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "lyra2rev3": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "sha256q": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "exosis": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       }
     }
   },
@@ -116,22 +124,26 @@
       "lyra2v3": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "lyra2rev3": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "sha256q": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "exosis": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       }
     }
   }

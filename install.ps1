@@ -32,6 +32,15 @@ $dir | set-content ".\build\bash\dir.sh"
          Set-Location $Dir     
     }
 
+    if(Test-Path ".\build\bash\miner")
+    {
+         Copy-Item ".\build\bash\miner" -Destination "/usr/bin" -force | Out-Null
+         Set-Location "/usr/bin"
+         Start-Process "chmod" -ArgumentList "+x miner"
+         Set-Location "/"
+         Set-Location $Dir     
+    }
+
     if(Test-Path ".\build\bash\get")
     {
          Copy-Item ".\build\bash\get" -Destination "/usr/bin" -force | Out-Null

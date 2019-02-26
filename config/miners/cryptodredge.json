@@ -95,137 +95,164 @@
       "lyra2z": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "lyra2re": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "bitcore": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "x17": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "allium": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "neoscrypt": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "cryptonightv7": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "cryptonightv8": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "cryptonightheavy": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "aeon": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "masari": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "stellite": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "phi2": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "c11": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "skunk": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "bcd": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "hmq1725": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "x21s": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "lyra2v3": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "lyra2rev3": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "x16rt": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "veil": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "lyra2zz": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "mtp": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "lyra2vc0ban": {
         "Memory": "",
         "Power": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "cnfastv2": {
         "Memory": "",
         "Power": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "cnsuperfast": {
         "Memory": "",
         "Power": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       }
     }
   },
@@ -324,140 +351,168 @@
       "lyra2z": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "lyra2re": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "bitcore": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "x17": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "allium": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "neoscrypt": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "cryptonightv7": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "cryptonightv8": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "cryptonightheavy": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "aeon": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "masari": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "stellite": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "phi2": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "c11": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "skunk": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "bcd": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "hmq1725": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "x21s": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "lyra2v3": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "lyra2rev3": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "x16rt": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "veil": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "lyra2zz": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "mtp": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "lyra2vc0ban": {
         "Memory": "",
         "Power": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "cnfastv2": {
         "Memory": "",
         "Power": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "cnsuperfast": {
         "Memory": "",
         "Power": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       }
     }
-  },  "NVIDIA3": {
+  },
+  "NVIDIA3": {
     "name": "NVIDIA3",
     "delay": "1",
     "prestart": [],
@@ -552,137 +607,164 @@
       "lyra2z": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "lyra2re": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "bitcore": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "x17": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "allium": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "neoscrypt": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "cryptonightv7": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "cryptonightv8": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "cryptonightheavy": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "aeon": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "masari": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "stellite": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "phi2": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "c11": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "skunk": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "bcd": {
         "Power": "",
         "Core": "",
-        "Memory": ""
+        "Memory": "",
+        "Fans": ""
       },
       "hmq1725": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "x21s": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "lyra2v3": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "lyra2rev3": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "x16rt": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "veil": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "lyra2zz": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "mtp": {
         "Power": "",
         "Memory": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "lyra2vc0ban": {
         "Memory": "",
         "Power": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "cnfastv2": {
         "Memory": "",
         "Power": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       },
       "cnsuperfast": {
         "Memory": "",
         "Power": "",
-        "Core": ""
+        "Core": "",
+        "Fans": ""
       }
     }
   }

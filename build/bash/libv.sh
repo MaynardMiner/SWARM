@@ -12,7 +12,7 @@
 PKG_MANAGER=$( command -v yum || command -v apt-get || command -v pacman)
 if [ $PKG_MANAGER == 'pacman' ]
  then
- $PKG_MANAGER -S libuv1 -y
+ sudo $PKG_MANAGER -S libuv1 -y
  else
- $PKG_MANAGER install libuv1 -y
+ sudo $PKG_MANAGER install libuv1 -y
 fi
