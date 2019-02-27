@@ -111,7 +111,7 @@ param(
     [Parameter(Mandatory = $false)]
     [string]$Update = "No",
     [Parameter(Mandatory = $false)]
-    [string]$Cuda = "9.2",
+    [string]$Cuda = "10",
     [Parameter(Mandatory = $false)]
     [string]$Power = "Yes",
     [Parameter(Mandatory = $false)]
