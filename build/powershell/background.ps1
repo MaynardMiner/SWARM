@@ -168,7 +168,7 @@ function Set-NvidiaStats {
                     $HiveStats = "/run/hive/gpu-stats.json"
                     do {
                         for ($i = 0; $i -lt 20; $i++) {
-                            if (test-Path $HiveStats) {try {$GetHiveStats = Get-Content $HiveStats | ConvertFrom-Json -ErrorAction Stop}catch {$GetHiveStats -eq $null}}
+                            if (test-Path $HiveStats) {try {$GetHiveStats = Get-Content $HiveStats | ConvertFrom-Json -ErrorAction Stop}catch {$GetHiveStats = $null}}
                             if ($GetHiveStats -ne $null) {
                                 $nvinfo = @{}
                                 $nvinfo.Add("Fans", $( $GetHiveStats.fan | % {if ($_ -ne 0) {$_}} ) )
@@ -234,7 +234,7 @@ function Set-AMDStats {
                     $HiveStats = "/run/hive/gpu-stats.json"
                     do {
                         for ($i = 0; $i -lt 20; $i++) {
-                            if (test-Path $HiveStats) {try {$GetHiveStats = Get-Content $HiveStats | ConvertFrom-Json -ErrorAction Stop}catch {$GetHiveStats -eq $null}}
+                            if (test-Path $HiveStats) {try {$GetHiveStats = Get-Content $HiveStats | ConvertFrom-Json -ErrorAction Stop}catch {$GetHiveStats = $null}}
                             if ($GetHiveStats -ne $null) {
                                 $AMDStats = @{}
                                 $AMDFans = $( $GetHiveStats.fan | % {if ($_ -ne 0) {$_}} )
@@ -397,7 +397,7 @@ While ($True) {
 
             ## Determine Devices
             if ($_.Type -ne "CPU") {
-                if ($_.Devices -eq $null) {$Devices = Get-DeviceString -TypeCount $GCount.$TypeS.PSObject.Properties.Value.Count}
+                if ($_.Devices -eq "" -or $_.Devices -eq $null) {$Devices = Get-DeviceString -TypeCount $GCount.$TypeS.PSObject.Properties.Value.Count}
                 else {$Devices = Get-DeviceString -TypeDevices $_.Devices}
             }
             elseif ($_.Type -eq "CPU") {$Devices = Get-DeviceString -TypeCount $GCount.$TypeS.PSObject.Properties.Value.Count}
@@ -442,11 +442,11 @@ While ($True) {
                         switch ($HiveOS) {
                             "Yes" {
                                 for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUFans.$(Get-GPUS) = Set-Array $AMDStats.Fans (Get-GPUs)}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
-                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps (Get-GPUs)}catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red}; break}
+                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps (Get-GPUs)}catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}}
                             }
                             "No" {
                                 for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUFans.$(Get-GPUS) = Set-Array $AMDStats.Fans $Devices[$i]}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
-                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps $Devices[$i]}catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red}; break}
+                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps $Devices[$i]}catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}}
                             }
                         }
                     }
