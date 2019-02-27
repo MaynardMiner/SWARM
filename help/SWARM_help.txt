@@ -154,16 +154,16 @@ Argument            Options             Explanation
                                     is HiveOS. HiveOS version operates slightly different that *nix version. This
 				    will tell Windows version whether or not to use HiveOS website for stats.
 
--Cuda           [9.2,10]            Default is 9.2. Specifies Unix version which miners to use. HiveOS currently
-                                    is 9.2 by default. Therefor default is 9.2. If user intends to use 9.2 miners,
-                                    argument is not neccesary. Default is 10 for Windows, and only 10 can be used.
+-Cuda           [9.2,10]            Default is 10. Specifies Unix version which miners to use.
+			            Default is 10 for Windows, and only 10 can be used.
 
 -Update          [Yes or No]        Allows HiveOS remote update, which will transfer Default set to "No". Old
                                     miner files/settings from previous version, then remove it for you. Pay
                                     attention to releases and notes- Changes/additions to internal miner files
                                     or settings (and previous version bug fixes) may get transferred in if you
                                     attempt to perform remote update! Default changes based on miner version
-                                    updates, and whether or not it is safe to transfer files.
+                                    updates, and whether or not it is safe to transfer files. This does not
+				    work in Windows- Windows users run get update command.
 
 -Stat_Algo         [Live,		This will allow you to factor period average smoothing. 
         	    Minute_5,		By default everything is live pricing. This will allow you to
