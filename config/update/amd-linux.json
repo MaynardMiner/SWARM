@@ -157,7 +157,7 @@
     "path2": ".\\bin\\fancyix-2\\sgminer",
     "path3": ".\\bin\\fancyix-3\\sgminer",
     "minername": "sgminer",
-    "version": "beta5ip1",
+    "version": "beta5ip3",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/fancyIX-linux.tar.gz"
   },
   "xmrig": {

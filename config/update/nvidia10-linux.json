@@ -107,7 +107,7 @@
     "path2": ".\\bin\\klaust-2\\ccminer",
     "path3": ".\\bin\\klaust-3\\ccminer",
     "minername": "ccminer",
-    "version": "8.23",
+    "version": "8.24",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/klaust-linux-10.tar.gz"
   },
   "lolminer": {
@@ -167,7 +167,7 @@
     "path2": ".\\bin\\gminer-2\\miner",
     "path3": ".\\bin\\gminer-3\\miner",
     "minername": "miner",
-    "version": "1.33",
+    "version": "1.34",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/gminer-linux.tar.gz"
   },
   "grin-miner": {
@@ -187,7 +187,7 @@
     "path2": ".\\bin\\bminer-2\\bminer",
     "path3": ".\\bin\\bminer-3\\bminer",
     "minername": "bminer",
-    "version": "15.0.0",
+    "version": "15.0.2",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/bminer-linux.tar.gz"
   },
   "miniz": {
@@ -197,7 +197,7 @@
     "path2": ".\\bin\\miniz-2\\miniZ",
     "path3": ".\\bin\\miniz-3\\miniZ",
     "minername": "miniZ",
-    "version": "1.0i",
+    "version": "1.0k",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/miniz-linux.tar.gz"
   },
   "progminer": {
