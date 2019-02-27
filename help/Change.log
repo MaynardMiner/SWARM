@@ -1892,6 +1892,10 @@ SWARM will ban them, as usual.
 
 2.0.1
 
+Important: Default -Cuda is on -Cuda 10 in 
+linux! If you want to use 9.2, use -Cuda 9.2,
+about 1/4 of the miners will not be loaded.
+
 Changes for generic *nix packages:
 
 -SWARM for the sake of confusion now
@@ -1906,6 +1910,11 @@ Changes for generic *nix packages:
 -libcurl3 added to installer, for 18.04
  distributions.
 
+-added persistance mode ENABLE to NVIDIA oc.
+ (for generic *nix)
+
+Other Changes:
+
 -fixed small typo in device group 3
 
 -moved some installer processes for hive
@@ -1914,7 +1923,34 @@ Changes for generic *nix packages:
 
 -add fans to NVIDIA oc.
 
--added persistance mode ENABLE to NVIDIA oc.
- (for generic *nix)
-
 -axed zjazz
+
+-Attempted fix of AMD fans/temps in HiveOS.
+
+-Note: energiminer stats are gathered through
+ logs, as it has no API. It can take up to
+ two minutes before it gathers individual
+ gpu hashrates. This cannot be controlled.
+ Contact developer to make API.
+
+-``get stats`` and ``get stats lite`` 
+   can now be shortened!
+   example: ``get stats 10``: Shows you top 10
+   example: ``get stats lite 10``: Shows you top 10
+   in shortened version for cell-phones.
+
+-phoenix miner arguments updated.
+
+-enable serialization build of dag. This may solve
+ those having issues with ethash miners at startup.
+
+-updated bminer
+-updated gminer
+-updated fancyIX
+-updated lolminer- merged versions
+-updated klausT
+
+-removed libcrypto.so.1: This may cause
+ compatibility issues in Ubuntu 18.04 (bleeding edge).
+ I am working on fix, but it was causing errors to
+ some miners in 16.04 versions.
