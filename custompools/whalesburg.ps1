@@ -17,7 +17,7 @@ if ($Poolname -eq $Name) {
     $Whalesburg_Algorithm = "ethash"
   
     if ($Algorithm -eq $Whalesburg_Algorithm) {
-        $Whalesburg_Port = 8082
+        $Whalesburg_Port = 7777
         $Whalesburg_Host = "eu1.whalesburg.com"
         ## add fee to compare to nicehash (Still trying to understand PPS+)
         $Prorate = 2
