@@ -1,16 +1,16 @@
 param(
     [Parameter(Position = 0, Mandatory = $false)]
-    [String]$argument1,
+    [String]$argument1 = $null,
     [Parameter(Position = 1, Mandatory = $false)]
-    [String]$argument2,
+    [String]$argument2 = $null,
     [Parameter(Position = 2, Mandatory = $false)]
-    [String]$argument3,
+    [String]$argument3 = $null,
     [Parameter(Position = 3, Mandatory = $false)]
-    [String]$argument4,
+    [String]$argument4 = $Null,
     [Parameter(Position = 4, Mandatory = $false)]
-    [String]$argument5,
+    [String]$argument5 = $null,
     [Parameter(Position = 5, Mandatory = $false)]
-    [String]$argument6
+    [String]$argument6 = $null
 )
 
 Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))
@@ -276,13 +276,34 @@ clear_watts
         $Get = Get-WalletTable
     }
     "stats" {
-        if ($argument2 -eq "lite") {
-            if (Test-Path ".\build\txt\minerstatslite.txt") {$Get = Get-Content ".\build\txt\minerstatslite.txt"}
-            else {$Get = "No Stats History Found"}
+        if ($Argument2 -eq "lite") {
+            if ($Argument3) {
+                $Total = [int]$Argument3 + 1
+                if (Test-Path ".\build\txt\minerstatslite.txt") {
+                    $Get = Get-Content ".\build\txt\minerstatslite.txt"
+                    $Get = $Get | % {$Number = 0; if ($_ -ne "") {$Number = $_.SubString(0, 2); $Number = $Number -replace " ", ""; try {$Number = [int]$Number}catch {$Number = 0}}; if ($Number -lt $Total) {$_}}
+                }
+                else {$Get = "No Stats History Found"}    
+            }
+            else {
+                if (Test-Path ".\build\txt\minerstatslite.txt") {$Get = Get-Content ".\build\txt\minerstatslite.txt"}
+                else {$Get = "No Stats History Found"}
+            }
         }
         else {
-            if (Test-Path ".\build\txt\minerstats.txt") {$Get = Get-Content ".\build\txt\minerstats.txt"}
-            else {$Get = "No Stats History Found"}
+            if ($Argument2) {
+                $Total = [int]$Argument2 + 1
+                if (Test-Path ".\build\txt\minerstats.txt") {
+                    $Get = Get-Content ".\build\txt\minerstats.txt"
+                    $Get = $Get | % {$Number = 0; if ($_ -ne "") {$Number = $_.SubString(0, 2); $Number = $Number -replace " ", ""; try {$Number = [int]$Number}catch {$Number = 0}}; if ($Number -lt $Total) {$_}}
+                }
+                else {$Get = "No Stats History Found"}    
+
+            }
+            else {
+                if (Test-Path ".\build\txt\minerstats.txt") {$Get = Get-Content ".\build\txt\minerstats.txt"}
+                else {$Get = "No Stats History Found"}
+            }
         }
     }
     "active" {

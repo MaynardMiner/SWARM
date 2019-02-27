@@ -5,9 +5,9 @@
     "delay": "1",
     "prestart": [],
     "commands": {
-      "ethash": "",
-      "daggerhashimoto": "-esm 3 -estale 0",
-      "dagger": "-esm 2"
+      "ethash": "-proto 2 -rate 1",
+      "daggerhashimoto": "-proto 4 -stales 0",
+      "dagger": "-proto 2"
     },
     "difficulty": {
       "ethash": "",
