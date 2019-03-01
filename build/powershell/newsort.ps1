@@ -10,8 +10,8 @@ function Get-BestMiners {
         $OldTypeMiners = @()
         $MinerCombo = @()
 
-        $TypeMiners = $Miners | Where Type -EQ $SelType
-        $BestActiveMiners | ForEach {$Miners | Where Path -EQ $_.Path | Where Arguments -EQ $_.Arguments | Where Type -EQ $SelType | ForEach {$OldMiners += $_}}
+        $TypeMiners = $AlgoMiners | Where Type -EQ $SelType
+        $BestActiveMiners | ForEach {$AlgoMiners | Where Path -EQ $_.Path | Where Arguments -EQ $_.Arguments | Where Type -EQ $SelType | ForEach {$OldMiners += $_}}
         if ($OldMiners) {
             $OldTypeMiners += $OldMiners | Where Profit -gt 0 | Sort-Object @{Expression = "Profit"; Descending = $true} | Select -First 1
             $OldTypeMiners += $OldMiners | Where Profit -lt 0 | Sort-Object @{Expression = "Profit"; Descending = $false} | Select -First 1

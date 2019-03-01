@@ -26,7 +26,7 @@ if ($Poolname -eq $Name) {
 
             $SmallestValue = 1E-20
             $Stat = Set-Stat -Name "$($Name)_$($nlpoolAlgo_Algorithm)_profit" -Value ([Double]$Estimate/$Divisor *(1-($nlpool_Request.$_.fees/100)))
-            if ($Stat_Algo -eq "Day") {$Stats = $Stat.Live}else {$Stats = $Stat.$Stat_Algo}
+            if ($Stat_Algo -eq "Day") {$CStat = $Stat.Live}else {$CStat = $Stat.$Stat_Algo}
         
             If ($AltWallet1 -ne '') {$nWallet1 = $AltWallet1}
             else {$nWallet1 = $Wallet1}
@@ -45,7 +45,7 @@ if ($Poolname -eq $Name) {
                 Symbol        = $nlpoolAlgo_Algorithm
                 Mining        = $nlpoolAlgo_Algorithm
                 Algorithm     = $nlpoolAlgo_Algorithm
-                Price         = $Stats
+                Price         = $CStat
                 StablePrice   = $Stat.Week
                 MarginOfError = $Stat.Fluctuation
                 Protocol      = "stratum+tcp"

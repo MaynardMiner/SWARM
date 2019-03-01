@@ -198,7 +198,6 @@ function Start-LaunchCode {
 
     elseif ($Platforms -eq "linux") {
         if (Test-Path $Logs) {Clear-Content $Logs}
-        Set-Location (Split-Path $($MinerCurrent.Path))
         Rename-Item "$($MinerCurrent.Path)" -NewName "$($MinerCurrent.InstanceName)" -Force
         Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
         $MinerConfig = "./$($MinerCurrent.InstanceName) $MinerArguments 2>&1 | tee $Logs"
@@ -238,9 +237,9 @@ function Start-LaunchCode {
         Start-Sleep -S .25
         Write-Host "Starting $($MinerCurrent.Name) Mining $($MinerCurrent.Coins) on $($MinerCurrent.Type)" -ForegroundColor Cyan
         Start-Sleep -S .25
-        $MinerDir = $(Split-Path $($MinerCurrent.Path))
         $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
         $Export = Join-Path $Dir "build\export"
+        $MinerDir = Join-Path $Dir $(Split-Path $($MinerCurrent.Path))
 
         $Startup = @()
         $Startup += "`#`!/usr/bin/env bash"

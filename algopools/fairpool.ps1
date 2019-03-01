@@ -32,14 +32,14 @@ if ($Poolname -eq $Name) {
 
             $SmallestValue = 1E-20
             $Stat = Set-Stat -Name "$($Name)_$($fairpool_Algorithm)_profit" -Value ([Double]$Estimate/$Divisor *(1-($fairpool_Request.$_.fees/100)))
-            if ($Stat_Algo -eq "Day") {$Stats = $Stat.Live}else {$Stats = $Stat.$Stat_Algo}
+            if ($Stat_Algo -eq "Day") {$CStat = $Stat.Live}else {$CStat = $Stat.$Stat_Algo}
    
             [PSCustomObject]@{
                 Priority      = $Priorities.Pool_Priorities.$Name
                 Symbol        = $fairpool_Algorithm
                 Mining        = $fairpool_Algorithm
                 Algorithm     = $fairpool_Algorithm
-                Price         = $Stats
+                Price         = $CStat
                 StablePrice   = $Stat.Week
                 MarginOfError = $Stat.Fluctuation
                 Protocol      = "stratum+tcp"

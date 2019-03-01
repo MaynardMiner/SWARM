@@ -12,64 +12,85 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 function Get-Miners {
     param (
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $true)]
         [string]$Platforms,        
-        [Parameter(Mandatory = $false)]
-        [string]$MinerType,
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $true)]
+        [Array]$MinerType,
+        [Parameter(Mandatory = $true)]
         [Array]$Stats,
-        [Parameter(Mandatory = $false)]
-        [Array]$Pools
+        [Parameter(Mandatory = $true)]
+        [System.Collections.ArrayList]$Pools
     )
 
     ## Reset Arrays In Case Of Weirdness
     $GetPoolBlocks = $null
     $GetAlgoBlocks = $null
+    $GetMinerBlocks = $null
+    [System.Collections.ArrayList]$Miners = @()
 
     ## Pool Bans From File && Specify miner folder based on platform
     if (Test-Path ".\timeout\pool_block\pool_block.txt") {$GetPoolBlocks = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json}
     if (Test-Path ".\timeout\algo_block\algo_block.txt") {$GetAlgoBlocks = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json}
     if (Test-Path ".\timeout\miner_block\miner_block.txt") {$GetMinerBlocks = Get-Content ".\timeout\miner_block\miner_block.txt" | ConvertFrom-Json}
-    if ($Type -notlike "*ASIC*") {$minerfilepath = "miners\gpu"}
+    if ($MinerType -notlike "*ASIC*") {$minerfilepath = "miners\gpu"}
     else {$minerfilepath = "miners\asic"}
 
     ## Start Running miner scripts, Create an array of Miner Hash Tables
     $GetMiners = if (Test-Path $minerfilepath) {Get-ChildItemContent $minerfilepath | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru} |
-            Where {$Type.Count -eq 0 -or (Compare-Object $Type $_.Type -IncludeEqual -ExcludeDifferent | Measure).Count -gt 0} |
+            Where {$MinerType.Count -eq 0 -or (Compare-Object $MinerType $_.Type -IncludeEqual -ExcludeDifferent | Measure).Count -gt 0} |
             Where {$No_Miner -notcontains $_.Name} |
             Where {$_.Path -ne "None"} |
             Where {$_.Uri -ne "None"} |
             Where {$_.MinerName -ne "None"}
     }
 
-    $NoAlgoMiners = @()
-    $GetMiners | Where TYPE -eq "NVIDIA1" | % {if ($No_Algo1 -notcontains $_.Algo) {$NoAlgoMiners += $_}}
-    $GetMiners | Where TYPE -eq "NVIDIA2"  | % {if ($No_Algo2 -notcontains $_.Algo) {$NoAlgoMiners += $_}}
-    $GetMiners | Where TYPE -eq "NVIDIA3"  | % {if ($No_Algo3 -notcontains $_.Algo) {$NoAlgoMiners += $_}}
-    $GetMiners | Where TYPE -eq "AMD1"  | % {if ($No_Algo1 -notcontains $_.Algo) {$NoAlgoMiners += $_}}
-    $GetMiners | Where TYPE -eq "AMD2"  | % {if ($No_Algo2 -notcontains $_.Algo) {$NoAlgoMiners += $_}}
-    $GetMiners | Where TYPE -eq "AMD3"  | % {if ($No_Algo3 -notcontains $_.Algo) {$NoAlgoMiners += $_}}
 
-    $ScreenedMiners = @()
+    $GetMiners | %{$Miners.Add($_)} | Out-Null;
+    $GetMiners = $null
+    $NVIDIA1EX = $Miners | Where TYPE -eq "NVIDIA1" | % {if ($No_Algo1 -contains $_.Algo){$_}}
+    $NVIDIA2EX = $Miners | Where TYPE -eq "NVIDIA2" | % {if ($No_Algo2 -contains $_.Algo){$_}}
+    $NVIDIA3EX = $Miners | Where TYPE -eq "NVIDIA3" | % {if ($No_Algo3 -contains $_.Algo){$_}}
+    $AMD1EX = $Miners | Where TYPE -eq "AMD1" | % {if ($No_Algo1 -contains $_.Algo){$_}}
+    $AMD2EX = $Miners | Where TYPE -eq "AMD2" | % {if ($No_Algo2 -contains $_.Algo){$_}}
+    $AMD3EX = $Miners | Where TYPE -eq "AMD3" | % {if ($No_Algo3 -contains $_.Algo){$_}}
+
+    $NVIDIA1EX | %{$Miners.Remove($_)} | Out-Null;
+    $NVIDIA2EX | %{$Miners.Remove($_)} | Out-Null;
+    $NVIDIA3EX | %{$Miners.Remove($_)} | Out-Null;
+    $AMD1EX | %{$Miners.Remove($_)} | Out-Null;
+    $AMD2EX | %{$Miners.Remove($_)} | Out-Null;
+    $AMD3EX | %{$Miners.Remove($_)} | Out-Null;
+
     $Note = @()
+    $ScreenedMiners = @()
 
     ## This Creates A New Array Of Miners, Screening Miners That Were Bad. As it does so, it notfies user.
-    $NoAlgoMiners | foreach {
-        if (-not ($GetPoolBlocks | Where Algo -eq $_.Algo | Where Name -eq $_.Name | Where Type -eq $_.Type | Where MinerPool -eq $_.Minerpool)) {
-            if (-not ($GetAlgoBlocks | Where Algo -eq $_.Algo | Where Name -eq $_.Name | Where Type -eq $_.Type)) {
-                if (-not ($GetMinerBlocks | Where Name -eq $_.Name | Where Type -eq $_.Type)) {
-                    $ScreenedMiners += $_
-                }
-                else {$Warning = "Warning: Blocking $($_.Name) for $($_.Type)"; if ($Note -notcontains $Warning) {$Note += $Warning}}
-            }
-            else {$Warning = "Warning: Blocking $($_.Name) mining $($_.Algo) on all pools for $($_.Type)"; if ($Note -notcontains $Warning) {$Note += $Warning}}
+    $Miners | foreach {
+        
+        $TPoolBlocks = $GetPoolBlocks | Where Algo -eq $_.Algo | Where Name -eq $_.Name | Where Type -eq $_.Type | Where MinerPool -eq $_.Minerpool
+        $TAlgoBlocks = $GetAlgoBlocks | Where Algo -eq $_.Algo | Where Name -eq $_.Name | Where Type -eq $_.Type
+        $TMinerBlocks = $GetMinerBlocks | Where Name -eq $_.Name | Where Type -eq $_.Type
+
+        if ($TPoolBlocks) {
+            $Warning = "Warning: Blocking $($_.Name) mining $($_.Algo) on $($_.MinerPool) for $($_.Type)"; 
+            if ($Note -notcontains $Warning) {$Note += $Warning}
+            $ScreenedMiners += $_
+         }
+        elseif ($TAlgoBlocks) {
+            $Warning = "Warning: Blocking $($_.Name) mining $($_.Algo) on all pools for $($_.Type)"; 
+            if ($Note -notcontains $Warning) {$Note += $Warning}
+            $ScreenedMiners += $_
         }
-        else {$Warning = "Warning: Blocking $($_.Name) mining $($_.Algo) on $($_.MinerPool) for $($_.Type)"; if ($Note -notcontains $Warning) {$Note += $Warning}}
+        elseif($TMinerBlocks) {
+            $Warning = "Warning: Blocking $($_.Name) for $($_.Type)"; 
+            if ($Note -notcontains $Warning) {$Note += $Warning}
+            $ScreenedMiners += $_
+        }
     }
-
+    
+    $ScreenedMiners | %{$Miners.Remove($_)} | Out-Null;
     if ($Note) {$Note | % {Write-Host "$($_)" -ForegroundColor Magenta}}
-
-    $ScreenedMiners
+    $Miners
 }
 
 
@@ -132,4 +153,113 @@ function Get-minerfiles {
 
     $miner_update
 
+}
+
+function start-minersorting {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$Command,
+        [Parameter(Mandatory = $true)]
+        [array]$Stats,
+        [Parameter(Mandatory = $true)]
+        [array]$Pools,
+        [Parameter(Mandatory = $true)]
+        [array]$SortMiners,
+        [Parameter(Mandatory = $true)]
+        [decimal]$WattCalc
+    )
+
+    $SortMiners | foreach {
+        $Miner = $_
+
+        $Miner_HashRates = [PSCustomObject]@{}
+        $Miner_Pools = [PSCustomObject]@{}
+        $Miner_Profits = [PSCustomObject]@{}
+        $Miner_PowerX = [PSCustomObject]@{}
+        $Miner_Pool_Estimate = [PSCustomObject]@{}
+     
+        $Miner_Types = $Miner.Type | Select -Unique
+        $Miner_Indexes = $Miner.Index | Select -Unique
+     
+        $Miner.HashRates | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | ForEach {
+            if ($Miner.PowerX.$_ -ne $null) {
+                $Day = 24;
+                $Kilo = 1000;
+                $WattCalc1 = (([Decimal]$Miner.PowerX.$_) * $Day)
+                $WattCalc2 = [Decimal]$WattCalc1 / $Kilo;
+                $WattCalc3 = [Decimal]$WattCalc2 * $WattCalc;
+            }
+            else {$WattCalc3 = 0}
+            $Pool = $Pools | Where Symbol -EQ $_ | Where Name -EQ $($Miner.MinerPool)
+            $Miner_HashRates | Add-Member $_ ([Double]$Miner.HashRates.$_)
+            $Miner_PowerX | Add-Member $_ ([Double]$Miner.PowerX.$_)
+            $Miner_Pools | Add-Member $_ ([PSCustomObject]$Pool.Name)
+            $Miner_Profits | Add-Member $_ ([Decimal](($Miner.HashRates.$_ * $Pool.Price) - $WattCalc3))
+            $Miner_Pool_Estimate | Add-Member $_ ([Decimal]($Pool.Price))
+        }
+            
+        $Miner_Power = [Double]($Miner_PowerX.PSObject.Properties.Value | Measure -Sum).Sum
+        $Miner_Profit = [Double]($Miner_Profits.PSObject.Properties.Value | Measure -Sum).Sum
+        $Miner_Pool_Estimate = [Double]($Miner_Pool_Estimate.PSObject.Properties.Value | Measure -Sum).sum
+
+        if ($Command -eq "Algo") {
+            $Miner.HashRates | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | ForEach {
+                if ((-not [String]$Miner.HashRates.$_) -or (-not [String]$Miner.PowerX.$_) -and $Miner.Type -ne "ASIC") {
+                    $Miner_HashRates.$_ = $null
+                    $Miner_PowerX.$_ = $null
+                    $Miner_Profits.$_ = $null
+                    $Miner_Profit = $null
+                    $Miner_Power = $null
+                }
+            }
+        } 
+                                 
+        $Miner.HashRates = $Miner_HashRates
+        $Miner.PowerX = $Miner_PowerX
+        $Miner | Add-Member Pools $Miner_Pools
+        $Miner | Add-Member Profits $Miner_Profits
+        $Miner | Add-Member Profit $Miner_Profit
+        $Miner | Add-Member Power $Miner_Power
+        $Miner | Add-Member Pool_Estimate $Miner_Pool_Estimate     
+    }
+}
+
+function Start-MinerReduction {
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [array]$Stats,
+        [Parameter(Mandatory = $true)]
+        [array]$Pools,
+        [Parameter(Mandatory = $true)]
+        [array]$SortMiners,
+        [Parameter(Mandatory = $true)]
+        [decimal]$WattCalc,
+        [Parameter(Mandatory = $true)]
+        [array]$Type
+    )
+
+$CutMiners = @()
+$Type | Foreach {
+    $GetType = $_;
+    $SortMiners.Symbol | Select -Unique | foreach {
+        $zero = $SortMiners | Where Type -eq $GetType | Where Symbol -eq $_ | Where [Double]Quote -EQ 0; 
+        $nonzero = $SortMiners | Where Type -eq $GetType | Where Symbol -eq $_ | Where [Double]Quote -NE 0;
+
+        if ($zero) {
+            $MinerToCut = @()
+            $MinersToCut += $nonzero
+            $MinersToCut += $zero | Sort-Object @{Expression = "Quote"; Descending = $true}
+            $MinersToCut = $zero | Select-Object -Skip 1;
+            $MinersToCut | %{$CutMiners += $_};
+        }
+        else {
+            $MinersToCut = $nonzero | Sort-Object @{Expression = "Quote"; Descending = $true};
+            $MinersToCut = $nonzero | Select-Object -Skip 1;
+            $MinersToCut | %{$CutMiners += $_};
+        }
+    }
+  }
+
+  $CutMiners
 }

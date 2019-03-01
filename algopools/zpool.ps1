@@ -32,7 +32,7 @@ if ($Poolname -eq $Name) {
 
             $SmallestValue = 1E-20
             $Stat = Set-Stat -Name "$($Name)_$($Zpool_Algorithm)_profit" -Value ([Math]::Max([Double]($Estimate - $Cut) / $Divisor, $SmallestValue))
-            if ($Stat_Algo -eq "Day") {$Stats = $Stat.Live}else {$Stats = $Stat.$Stat_Algo}   
+            if ($Stat_Algo -eq "Day") {$CStat = $Stat.Live}else {$CStat = $Stat.$Stat_Algo}
          
             If ($AltWallet1 -ne '') {$zWallet1 = $AltWallet1}
             else {$zwallet1 = $Wallet1}
@@ -51,7 +51,7 @@ if ($Poolname -eq $Name) {
                 Symbol        = $Zpool_Algorithm
                 Mining        = $Zpool_Algorithm
                 Algorithm     = $Zpool_Algorithm
-                Price         = $Stats
+                Price         = $CStat
                 StablePrice   = $Stat.Week
                 MarginOfError = $Stat.Fluctuation
                 Protocol      = "stratum+tcp"

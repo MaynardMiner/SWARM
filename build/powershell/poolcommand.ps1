@@ -15,30 +15,19 @@ function Get-Pools {
     param (
         [Parameter(Mandatory = $true)]
         [String]$PoolType,
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $false)]
         [Array]$Stats
     )
+
+    Switch($PoolType)
+    {
+     "Algo"{$GetPools = if (Test-Path "algopools") {Get-ChildItemContent "algopools" | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru}}}
+     "Coin"{$GetPools = if (Test-Path "coinpools") {Get-ChildItemContent "coinpools" | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru}}}
+     "Custom"{$GetPools = if (Test-Path "coinpools") {Get-ChildItemContent "coinpools" | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru}}}
+    }
+    
+    $GetPools
   
-
-    if ($PoolType -eq "Algo") {
-        $GetPools = if (Test-Path "algopools") {Get-ChildItemContent "algopools" | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru}
-        }
-        if ($GetPools.Count -eq 0) {"No Pools! Check Internet Connection."| Out-Host; start-sleep $Interval; continue}
-        $GetPools
-    }
-
-    if ($PoolType -eq "Coin") {
-        $GetPools = if (Test-Path "coinpools") {Get-ChildItemContent "coinpools" | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru}
-        }
-        if ($GetPools.Count -eq 0) {"No Coin Pools!"| Out-Host}
-        $GetPools
-    }
-
-    if ($PoolType -eq "Custom") {
-        $GetPools = if (Test-Path "custompools") {Get-ChildItemContent "custompools" | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru}
-        }
-        $GetPools
-    }
 }
 
 function Sort-Pools {

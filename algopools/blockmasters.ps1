@@ -31,7 +31,7 @@ if ($Poolname -eq $Name) {
 
             $SmallestValue = 1E-20
             $Stat = Set-Stat -Name "$($Name)_$($blockpool_Algorithm)_profit" -Value ([Math]::Max([Double]($Estimate - $Cut) / $Divisor, $SmallestValue))
-            if ($Stat_Algo -eq "Day") {$Stats = $Stat.Live}else {$Stats = $Stat.$Stat_Algo}
+            if ($Stat_Algo -eq "Day") {$CStat = $Stat.Live}else {$CStat = $Stat.$Stat_Algo}
         
             If ($AltWallet1 -ne '') {$blockWallet1 = $AltWallet1}
             else {$blockWallet1 = $Wallet1}
@@ -50,7 +50,7 @@ if ($Poolname -eq $Name) {
                 Symbol        = $blockpool_Algorithm
                 Mining        = $blockpool_Algorithm
                 Algorithm     = $blockpool_Algorithm
-                Price         = $Stats
+                Price         = $CStat
                 StablePrice   = $Stat.Week
                 MarginOfError = $Stat.Fluctuation
                 Protocol      = "stratum+tcp"

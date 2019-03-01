@@ -26,14 +26,14 @@ if ($Poolname -eq $Name) {
 
             $SmallestValue = 1E-20
             $Stat = Set-Stat -Name "$($Name)_$($Hashrefinery_Algorithm)_profit" -Value ([Double]$Estimate/$Divisor *(1-($Hashrefinery_Request.$_.fees/100)))
-            if ($Stat_Algo -eq "Day") {$Stats = $Stat.Live}else {$Stats = $Stat.$Stat_Algo}
+            if ($Stat_Algo -eq "Day") {$CStat = $Stat.Live}else {$CStat = $Stat.$Stat_Algo}
         
             [PSCustomObject]@{            
                 Priority      = $Priorities.Pool_Priorities.$Name
                 Symbol        = $Hashrefinery_Algorithm
                 Mining        = $Hashrefinery_Algorithm
                 Algorithm     = $Hashrefinery_Algorithm
-                Price         = $Stats
+                Price         = $CStat
                 StablePrice   = $Stat.Week
                 MarginOfError = $Stat.Fluctuation
                 Protocol      = "stratum+tcp"
