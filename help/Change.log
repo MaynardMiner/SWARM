@@ -1954,3 +1954,31 @@ Other Changes:
  compatibility issues in Ubuntu 18.04 (bleeding edge).
  I am working on fix, but it was causing errors to
  some miners in 16.04 versions.
+
+ 2.0.2
+
+ -Fixed Stats table output to not miss algorithms
+   (was glitching in linux faulty match operator)
+
+ -Changed Databasing from standard Arrays, to
+  resizable arrays- Seems to help in Linux.
+
+ -Compressed miner pulling functions to one
+  .ps1 file.
+
+ -Database now works by adding everything
+  then eliminating miners via resizable
+  Arrays.
+
+ -Improper $stats use in minerpool files-
+  changed to prevent possible glitches.
+
+-Aded miners to exclude back to pool-algos.json
+   -if you update, update will write-over new file.
+    can't be prevented.
+
+ -Coded Staging for intelligent versioning, so SWARM
+  will detect previous versions, and only apply updates
+  for that version, not for all prior. This will prevent
+  potential losses of data.
+
