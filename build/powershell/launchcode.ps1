@@ -146,9 +146,10 @@ function Start-LaunchCode {
     }
 
     if ($Platforms -eq "windows") {
+        $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
         if ($MinerProcess -eq $null -or $MinerProcess.HasExited -eq $true) {
             Start-Sleep -S $MinerCurrent.Delay
-            $WorkingDirectory = Split-Path $($MinerCurrent.Path)
+            $WorkingDirectory = Join-Path $Dir $(Split-Path $($MinerCurrent.Path))
             if (Test-Path $Logs) {Clear-Content $Logs -ErrorAction SilentlyContinue}
             $script = @()
             $script += "`$OutputEncoding = [System.Text.Encoding]::ASCII"
