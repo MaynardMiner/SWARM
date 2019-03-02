@@ -267,8 +267,11 @@ HiveOS API 2.0 beta is not finished- The moment it is (it has been discussed wit
 **CONTACT**
 
 Communication channels For SWARM- 
+
 Discord: https://discord.gg/5YXE6cu
+
 Telegram: @Swarm_Mining
+
 Reddit: https://www.reddit.com/r/SWARM_Miner
 
 **DONATE TO SUPPORT!**
