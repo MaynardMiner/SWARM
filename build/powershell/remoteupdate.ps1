@@ -27,10 +27,6 @@ function start-update {
 
     if ($StartUpdate -eq $true) {
         $PreviousVersions = @()
-        $PreviousVersions += "SWARM.1.7.6"
-        $PreviousVersions += "SWARM.1.7.7"
-        $PreviousVersions += "SWARM.1.7.8"
-        $PreviousVersions += "SWARM.1.7.9"
         $PreviousVersions += "SWARM.1.8.0"
         $PreviousVersions += "SWARM.1.8.1"
         $PreviousVersions += "SWARM.1.8.2"
@@ -52,6 +48,7 @@ function start-update {
         $PreviousVersions += "SWARM.1.9.8"
         $PreviousVersions += "SWARM.1.9.9"
         $PreviousVersions += "SWARM.2.0.0"
+        $PreviousVersions += "SWARM.2.0.1"
 
         Write-Host "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
         Write-Host "Check $Location For any Previous Versions"
@@ -421,6 +418,14 @@ function start-update {
                                     }
                                 }
                             }
+                            
+                            ##1.0.2
+                            if($ChangeFile -eq "pool-algos.json")
+                             {
+                               $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Foreach {
+                                 $Data.$_ | Add-Member "miners_to_exclude" @("add miners here","comma seperate") -ErrorAction SilentlyContinue
+                               }
+                             }
                             if ($Data.NVIDIA1.oc) {
                                 $Data.NVIDIA1.oc | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Foreach {
                                     $Data.NVIDIA1.oc.$_ | Add-Member "fans" "" -ErrorAction SilentlyContinue

@@ -1973,9 +1973,7 @@ Other Changes:
  -Improper $stats use in minerpool files-
   changed to prevent possible glitches.
 
--Aded miners to exclude back to pool-algos.json
-   -if you update, update will write-over new file.
-    can't be prevented.
+ -Aded miners to exclude back to pool-algos.json
 
  -Coded Staging for intelligent versioning, so SWARM
   will detect previous versions, and only apply updates
