@@ -574,7 +574,8 @@
   "mtp": {
     "hiveos_name": "mtp",
     "pools_to_exclude": [
-      "nicehash"
+      "add pools here",
+      "comma seperated"
     ],
     "miners_to_exclude": [
       "add miners here",
