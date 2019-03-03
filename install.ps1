@@ -32,6 +32,15 @@ $dir | set-content ".\build\bash\dir.sh"
          Set-Location $Dir     
     }
 
+    if(Test-Path ".\build\apps\wolfamdctrl")
+    {
+      Start-Process ln -ArgumentList "-s $dir/build/apps/wolfamdctrl /usr/bin/wolfamdctrl" -Wait
+      Set-Location "/usr/bin"
+      Start-Process "chmod" -ArgumentList "+x wolfamdctrl"
+      Set-Location "/"
+      Set-Location $Dir
+    }
+
     if(Test-Path ".\build\bash\miner")
     {
          Copy-Item ".\build\bash\miner" -Destination "/usr/bin" -force | Out-Null
