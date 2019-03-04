@@ -318,9 +318,7 @@ function Start-OC {
             $MemState = $MDPM -split ","
             $Voltage = $V -split ","
             $Fans = $Fan -split ","
-
-            $Voltage = $v -split ","
-            $NScreenMiners = "$($_.MinerName) "
+            $AScreenMiners = "$($_.MinerName) "
     
             if ($Card) {
                 if ($Platforms -eq "linux") {
