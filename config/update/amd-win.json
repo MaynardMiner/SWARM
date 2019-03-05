@@ -77,6 +77,17 @@
 "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/lolminer-windows.zip"
 }, 
 
+"lolminerv7": {
+    "name": "lolminerv7",
+    "type": "amd",
+    "path1": ".\\bin\\lolMinerv7-AMD-1\\lolMiner.exe",
+    "path2": ".\\bin\\lolMinerv7-AMD-2\\lolMiner.exe",
+    "path3": ".\\bin\\lolMinerv7-AMD-3\\lolMiner.exe",
+    "minername": "lolMiner.exe",
+    "version": "0.7",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/lolminerv7-windows.zip"
+  },
+
 "teamredminer": {
 "name":"teamredminer", 
 "type":"amd", 
