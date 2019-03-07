@@ -2026,3 +2026,7 @@ Note: Am aware that XMRig and XMRstak have Updates
 
 -Some more removal of powershell errors in windows
  agent between miner switches (still trying to find them all).
+
+-SWARM will detect if there is C:\ , if not it assumes it is working
+ on a linux OS, if so, then it will assume it is working on
+ windows OS
