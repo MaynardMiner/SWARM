@@ -81,20 +81,17 @@ function Convert-DateString ([string]$Date, [string[]]$Format) {
 }
 
 function Get-AlgoList {
-    $GetAlgorithms = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
-    $GetAlgorithms.PSObject.Properties.Name
+    $Pool_Json.PSObject.Properties.Name
 }
 
 function Get-BadPools {
 $Badpools = @()
-$GetAlgorithms = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
-$GetAlgorithms.PSObject.Properties.Name | %{$Badpools +=  [PSCustomObject]@{"$_" = $GetAlgorithms.$_.pools_to_exclude}}
+$Pool_Json.PSObject.Properties.Name | %{$Badpools +=  [PSCustomObject]@{"$_" = $Pool_Json.$_.pools_to_exclude}}
 $Badpools
 }
 
 function Get-BadMiners {
     $Badpools = @()
-    $GetAlgorithms = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
-    $GetAlgorithms.PSObject.Properties.Name | %{$Badpools +=  [PSCustomObject]@{"$_" = $GetAlgorithms.$_.miners_to_exclude}}
+    $Pool_Json.PSObject.Properties.Name | %{$Badpools +=  [PSCustomObject]@{"$_" = $Pool_Json.$_.miners_to_exclude}}
     $Badpools
-    }
+}

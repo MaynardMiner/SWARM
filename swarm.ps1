@@ -157,12 +157,21 @@ param(
     [Parameter(Mandatory = $false)]
     [array]$No_Miner,
     [Parameter(Mandatory = $false)]
-    [string]$HiveAPIkey
+    [string]$HiveAPIkey,
+    [Parameter(Mandatory = $false)]
+    [array]$Algorithm,
+    [Parameter(Mandatory = $false)]
+    [array]$Coin
 )
 
 
 ## Set Current Path
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+
+if(Test-Path "C:\"){$Platform = "windows"}
+else{$Platform = "linux"}
+
+Write-Host "OS = $Platform"
 
 ## Load Codebase
 . .\build\powershell\killall.ps1;
@@ -359,6 +368,8 @@ if ($Debug -ne $true) {
     $CurrentParams.ADD("Worker", $Worker)
     $CurrentParams.ADD("No_Miner", $No_Miner)
     $CurrentParams.ADD("HiveAPIkey", $HiveAPIkey)
+    $CurrentParams.ADD("Algorithm", $Algorithm)
+    $CurrentParams.ADD("Coin", $Coin)
 
     ## Save to Config Folder
     $StartParams = $CurrentParams | ConvertTo-Json 
@@ -462,6 +473,8 @@ if ((Test-Path ".\config\parameters\newarguments.json") -or $Debug -eq $true) {
     $Worker = $SWARMParams.Worker
     $No_Miner = $SWARMParams.No_Miner
     $HiveAPIkey = $SWARMParams.HiveAPIkey
+    $SWARMAlgorithm = $SWARMParams.Algorithm
+    $Coin = $SWARMParams.Coin
 }
 
 ## Windows Start Up
@@ -568,6 +581,7 @@ $ActiveMinerPrograms = @()
 $Naming = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
 $Priorities = Get-Content ".\config\pools\pool-priority.json" | ConvertFrom-Json
 $DonationMode = $false
+$Warnings = @()
 
 ## Linux Initialize
 if ($Platform -eq "linux") {
@@ -813,14 +827,6 @@ if ($AMDDevices1){$AMDDevices1 = $AMDDevices1.Substring(0,$AMDDevices1.Length-1)
 
 ##Reset-Old Stats And Their Time
 if (Test-Path "stats") {Get-ChildItemContent "stats" | ForEach {$Stat = Set-Stat $_.Name $_.Content.Week}}
- 
-#Get-Algorithms
-$Algorithm = @()
-$Warnings = @()
-$NeedsToBeBench = $false
-$Algorithm = Get-Algolist
-$Bad_Pools = Get-BadPools
-$Bad_Miners = Get-BadMiners
 
 #Get Miner Config Files
 if ($Type -like "*CPU*") {$cpu = get-minerfiles -Types "CPU" -Platforms $Platform}
@@ -910,11 +916,29 @@ While ($true) {
     $Worker = $SWARMParams.Worker
     $No_Miner = $SWARMParams.No_Miner        
     $HiveAPIkey = $SWARMParams.HiveAPIkey
+    $SWARMAlgorithm = $SWARMParams.Algorithm
+    $Coin = $SWARMParams.Coin
 
+    #Get-Algorithms
+    $Algorithm = @()
+    $Pool_Json = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-jSon
+    if($Coin){$Passwordcurrency1 = $Coin; $Passwordcurrency2 = $Coin; $Passwordcurrency3 = $Coin}
+    if($SWARMAlgorithm){$SWARMALgorithm | %{$Algorithm += $_}}
+    else{$Algorithm = $Pool_Json.PSObject.Properties.Name}
+    $Bad_Pools = Get-BadPools
+    $Bad_Miners = Get-BadMiners    
 
     if ($SWARMParams.Rigname1 -eq "Donate") {$Donating = $True}
     else {$Donating = $False}
-    if ($Donating -eq $True) {$Test = Get-Date; $DonateTest = "Miner has donated on $Test"; $DonateTest | Set-Content ".\build\txt\donate.txt"}
+    if ($Donating -eq $True) 
+     {
+      $Passwordcurrency1 = "BTC"; 
+      $Passwordcurrency2 = "BTC"; 
+      $Passwordcurrency3 = "BTC"
+      $DonateTime = Get-Date; 
+      $DonateText = "Miner has donated on $DonateTime"; 
+      $DonateText | Set-Content ".\build\txt\donate.txt"
+     }
 
     if ($Type -notlike "*ASIC*") {
         ## Main Loop Begins

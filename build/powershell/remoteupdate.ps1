@@ -49,6 +49,7 @@ function start-update {
         $PreviousVersions += "SWARM.1.9.9"
         $PreviousVersions += "SWARM.2.0.0"
         $PreviousVersions += "SWARM.2.0.1"
+        $PreviousVersions += "SWARM.2.0.2"
 
         Write-Host "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
         Write-Host "Check $Location For any Previous Versions"
@@ -419,6 +420,22 @@ function start-update {
                                         $Data.$_.difficulty | Add-Member "beam" "" -ErrorAction SilentlyContinue
                                         $Data.$_.naming | Add-Member "beam" "beam" -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "beam" @{power = ""; core = ""; memory = ""; fans=""} -ErrorAction SilentlyContinue
+                                    }
+                                }
+                            }
+                            if ($ChangeFile -eq "ttminer.json") {
+                                $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                    if ($_ -ne "name") {
+                                        ##2.0.3
+                                        $Data.$_.commands| Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "lyra2v3" "Lyra2Rev3-100" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "lyra2v3" @{power = ""; core = ""; memory = ""; fans=""} -ErrorAction SilentlyContinue
+                                        ##2.0.3
+                                        $Data.$_.commands| Add-Member "Lyra2rev3" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "Lyra2rev3" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "Lyra2rev3" "Lyra2Rev3-100" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "Lyra2rev3" @{power = ""; core = ""; memory = ""; fans=""} -ErrorAction SilentlyContinue
                                     }
                                 }
                             }
