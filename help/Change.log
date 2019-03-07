@@ -2030,3 +2030,7 @@ Note: Am aware that XMRig and XMRstak have Updates
 -SWARM will detect if there is C:\ , if not it assumes it is working
  on a linux OS, if so, then it will assume it is working on
  windows OS
+
+-SWARM will now notify you if you accidentally place a file or folder 
+ in a directory it shouldn't be in, instead of outputting powershell
+ errors.

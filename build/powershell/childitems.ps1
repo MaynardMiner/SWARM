@@ -19,13 +19,13 @@ function Get-ChildItemContent {
 
     $ChildItems = Get-ChildItem $Path | ForEach-Object {
         $Name = $_.BaseName
+        $FullName = $_.FullName
         $Content = @()
         if ($_.Extension -eq ".ps1") {
             $Content = &$_.FullName
         }
         else {
-            $Content = $_ | Get-Content | ConvertFrom-Json
-
+            try{$Content = $_ | Get-Content | ConvertFrom-Json}catch{Write-Host "Warning: Could Not Identify $FullName- Remove to stop this error" -ForegroundColor Red}
         }
         $Content | ForEach-Object {
             [PSCustomObject]@{Name = $Name; Content = $_}
