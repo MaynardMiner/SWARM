@@ -2012,9 +2012,9 @@ Note: Am aware that XMRig and XMRstak have Updates
 -Updated CPU miner algos:
     -Note: Binarium miners are incaple of making a
     generic version for linux. They must be built directly
-    on PC. Cannot add.
+    on PC. Cannot add in linux.
 
--improved bminer compatiblity in bleeding edge/Ubuntu 18.04
+-improved bminer compatiblity in bleeding edge/Ubuntu 18.04 - libcurl
 
 -Added AMD oc tool to install.ps1 for generic *nix versions.
 
