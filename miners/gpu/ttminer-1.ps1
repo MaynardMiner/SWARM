@@ -1,7 +1,7 @@
 ##Miner Path Information
-if ($nvidia.ttminer.path1) {$Path = "$($nvidia.ttminer.path1)"}
+if ($nvidia.ttminer.path1 -and $Platform -eq "windows") {$Path = "$($nvidia.ttminer.path1)"}
 else {$Path = "None"}
-if ($nvidia.ttminer.uri) {$Uri = "$($nvidia.ttminer.uri)"}
+if ($nvidia.ttminer.uri -and $Platform -eq "windows") {$Uri = "$($nvidia.ttminer.uri)"}
 else {$Uri = "None"}
 if ($nvidia.ttminer.minername) {$MinerName = "$($nvidia.ttminer.minername)"}
 else {$MinerName = "None"}

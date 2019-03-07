@@ -2034,3 +2034,10 @@ Note: Am aware that XMRig and XMRstak have Updates
 -SWARM will now notify you if you accidentally place a file or folder 
  in a directory it shouldn't be in, instead of outputting powershell
  errors.
+
+-Fixed issue in which some miners where skipped over on initial benchmarks
+ from new database system.
+
+-get active shows name of miner instead of speed- It was redundant,
+ however, you can now tell which miner is which if they have the same
+ exe name.
