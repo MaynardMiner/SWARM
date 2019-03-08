@@ -133,9 +133,11 @@ function Set-Array {
         [Parameter(Position = 2, Mandatory = $false)]
         [string]$factor
     )
+        try{
         $Parsed = $ParseRates | % {iex $_}
         $Parse = $Parsed | Select -Skip $i -First 1
         if($null -eq $Parse){$Parse = 0}
+        }catch{$Parse = 0}
         $Parse
 }
 
