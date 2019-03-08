@@ -200,9 +200,10 @@ function Start-LaunchCode {
     elseif ($Platforms -eq "linux") {
         if (Test-Path $Logs) {Clear-Content $Logs}
         Rename-Item "$($MinerCurrent.Path)" -NewName "$($MinerCurrent.InstanceName)" -Force
+        Start-Sleep -S 1
         Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
         $MinerConfig = "./$($MinerCurrent.InstanceName) $MinerArguments 2>&1 | tee $Logs"
-        $MinerConfig | Set-Content ".\build\bash\config.sh" -Force  
+        $MinerConfig | Set-Content ".\build\bash\config.sh" -Force
         Write-Host "
          ______________
        /.----------..-'
