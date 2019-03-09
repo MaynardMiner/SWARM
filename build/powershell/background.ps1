@@ -500,12 +500,12 @@ While ($True) {
                         try {$Data = $Null; $Data = $Request | ConvertFrom-Json -ErrorAction STop; }catch {Write-Host "Failed To parse API" -ForegroundColor Red}
                         if($Data){$Summary = $Data.result[2]; $Threads = $Data.result[3];}
                         if ($Minername -eq "TT-Miner.exe" -or $MinerName -eq "TT-Miner") {$RAW += $Summary -split ";" | Select -First 1 | % {[Double]$_}}
-                        else {$RAW += $Summmary -split ";" | Select -First 1 | % {[Double]$_ * 1000}; }
+                        else {$RAW += $Summary -split ";" | Select -First 1 | % {[Double]$_*1000}}
                         Write-MinerData2;
                         if ($Minername -eq "TT-Miner.exe" -or $MinerName -eq "TT-Miner") {$KHS += $Summary -split ";" | Select -First 1 | % {[Double]$_ / 1000}}
-                        else {$KHS += $Summary -split ";" | Select -First 1 | % {[Double]$_}; }
+                        else {$KHS += $Summary -split ";" | Select -First 1 | % {[Double]$_}}
                         if ($Minername -eq "TT-Miner.exe" -or $MinerName -eq "TT-Miner") {$Hash = $Null; $Hash = $Threads -split ";" | % {[double]$_ / 1000}}
-                        else {$Hash = $Null; $Hash = $Threads -split ";"; }
+                        else {$Hash = $Null; $Hash = $Threads -split ";"}
                         try {for ($i = 0; $i -lt $Devices.Count; $i++) {$GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $i)}}catch {Write-Host "Failed To parse GPU Threads" -ForegroundColor Red};
                         $MinerACC = $Summary -split ";" | Select -skip 1 -first 1
                         $MinerREJ = $Summary -split ";" | Select -skip 2 -first 1
