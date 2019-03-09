@@ -23,7 +23,7 @@ if ($GPUDevices2 -ne '') {
 ##to matching platforms.
 if ($NVIDIADevices2) {
     $GPUDevices2 = $NVIDIADevices2
-    $GPUEDevices2 = $GPUDevices2 -replace ',', ' ';
+    $GPUEDevices2 = $GPUDevices2 -split ","
     $GPUEDevices2 | % {$ArgDevices += "$($GCount.NVIDIA.$_) " }
     $ArgDevices = $ArgDevices.Substring(0,$ArgDevices.Length-1)
 }
