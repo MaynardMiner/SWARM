@@ -15,7 +15,8 @@
       "cryptonightv8": "",
       "cryptonightheavy": "",
       "cryptonightgpu": "",
-      "cryptonightsuperfast": ""
+      "cryptonightsuperfast": "",
+      "cryptonightr": ""
     },
     "difficulty": {
       "cryptonight": "",
@@ -23,7 +24,9 @@
       "cryptonightv8": "",
       "cryptonightheavy": "",
       "cryptonightgpu": "",
-      "cryptonightsuperfast": ""
+      "cryptonightsuperfast": "",
+      "cryptonightr": "",
+      "cryptonight_v8_reversewaltz": ""
     },
     "naming": {
       "cryptonight": "cryptonight",
@@ -32,7 +35,9 @@
       "cryptonightheavy": "cryptonight_heavy",
       "cryptonightgpu": "cryptonight_gpu",
       "cryptonight_superfast": "cryptonight_superfast",
-      "cryptonightsuperfast": "cryptonight_superfast"
+      "cryptonightsuperfast": "cryptonight_superfast",
+      "cryptonightr": "cryptonight_r",
+      "cryptonight_v8_reversewaltz": "cryptonight_v8_reversewaltz"
     },
     "oc": {
       "cryptonight": {
@@ -76,6 +81,22 @@
         "fans": ""
       },
       "cryptonightsuperfast": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "cryptonight_r": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "cryptonight_v8_reversewaltz": {
         "dpm": "",
         "v": "",
         "core": "",

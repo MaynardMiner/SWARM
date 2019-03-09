@@ -11,15 +11,18 @@
     ],
     "commands": {
       "cryptonightv8": "",
-      "cryptonightheavy": ""
+      "cryptonightheavy": "",
+      "cryptonightr": ""
     },
     "difficulty": {
       "cryptonightv8": "",
-      "cryptonightheavy": ""
+      "cryptonightheavy": "",
+      "cryptonightr": ""
     },
     "naming": {
       "cryptonightv8": "cryptonight",
-      "cryptonightheavy": "cryptonight-heavy"
+      "cryptonightheavy": "cryptonight-heavy",
+      "cryptonightr": "cn/r"
     },
     "oc": {
       "cryptonightv8": {
@@ -31,6 +34,14 @@
         "fans": ""
       },
       "cryptonightheavy": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "cryptonightr": {
         "dpm": "",
         "v": "",
         "core": "",
