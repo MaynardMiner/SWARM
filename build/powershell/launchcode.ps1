@@ -46,6 +46,7 @@ function Start-LaunchCode {
                     "dstm" {$MinerArguments = "--dev $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "claymore" {$MinerArguments = "-di $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "trex" {$MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
+                    "ttminer" {$MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "bminer" {$MinerArguments = "-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "lolminer" {$MinerArguments = "--devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                     "grin-miner" {set-minerconfig $NewMiner $Logs}

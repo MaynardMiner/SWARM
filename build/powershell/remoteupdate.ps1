@@ -426,15 +426,15 @@ function start-update {
                             if ($ChangeFile -eq "ttminer.json") {
                                 $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                     if ($_ -ne "name") {
-                                        ##2.0.3
+                                        ##2.0.4
                                         $Data.$_.commands| Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
                                         $Data.$_.difficulty | Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
-                                        $Data.$_.naming | Add-Member "lyra2v3" "Lyra2Rev3-100" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "lyra2v3" "LYRA2V3-100" -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "lyra2v3" @{power = ""; core = ""; memory = ""; fans=""} -ErrorAction SilentlyContinue
-                                        ##2.0.3
+                                        ##2.0.4
                                         $Data.$_.commands| Add-Member "Lyra2rev3" "" -ErrorAction SilentlyContinue
                                         $Data.$_.difficulty | Add-Member "Lyra2rev3" "" -ErrorAction SilentlyContinue
-                                        $Data.$_.naming | Add-Member "Lyra2rev3" "Lyra2Rev3-100" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "Lyra2rev3" "LYRA2V3-100" -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "Lyra2rev3" @{power = ""; core = ""; memory = ""; fans=""} -ErrorAction SilentlyContinue
                                     }
                                 }

@@ -2041,3 +2041,15 @@ Note: Am aware that XMRig and XMRstak have Updates
 -get active shows name of miner instead of speed- It was redundant,
  however, you can now tell which miner is which if they have the same
  exe name.
+
+###############################################################################
+###############################################################################
+
+ 2.0.4
+
+ -TTminer -di to -d for devices.
+ -TTminer lyra2v3 fix
+ -Removed more window background agent powershell errors (turned into warnings)
+ -Slowed launchcode for miner down, to improve performance for slower hard drives.
+ -Fixed more hiveOS algo naming.
+ 

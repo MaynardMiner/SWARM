@@ -31,8 +31,8 @@
       "daggerhashimoto": "ETHASH-100",
       "myr-gr": "MYRGR-100",
       "ethash": "ETHASH-100",
-      "lyra2v3": "Lyra2Rev3-100",
-      "lyra2rev3": "Lyra2Rev3-100"
+      "lyra2v3": "LYRA2V3-100",
+      "lyra2rev3": "LYRA2V3-100"
     },
     "oc": {
       "progpow": {
@@ -116,8 +116,8 @@
       "daggerhashimoto": "ETHASH-100",
       "myr-gr": "MYRGR-100",
       "ethash": "ETHASH-100",
-      "lyra2v3": "Lyra2Rev3-100",
-      "lyra2rev3": "Lyra2Rev3-100"
+      "lyra2v3": "LYRA2V3-100",
+      "lyra2rev3": "LYRA2V3-100"
     },
     "oc": {
       "progpow": {
@@ -201,8 +201,8 @@
       "daggerhashimoto": "ETHASH-100",
       "myr-gr": "MYRGR-100",
       "ethash": "ETHASH-100",
-      "lyra2v3": "Lyra2Rev3-100",
-      "lyra2rev3": "Lyra2Rev3-100"
+      "lyra2v3": "LYRA2V3-100",
+      "lyra2rev3": "LYRA2V3-100"
     },
     "oc": {
       "progpow": {
