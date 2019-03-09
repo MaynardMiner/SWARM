@@ -33,6 +33,17 @@
 "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/ehssand-windows.zip"
 }, 
 
+"gminer": {
+  "name":"gminer", 
+  "type":"amd", 
+  "path1":".\\bin\\gminer_amd-1\\miner.exe", 
+  "path2":".\\bin\\gminer_amd-2\\miner.exe", 
+  "path3":".\\bin\\gminer_amd-3\\miner.exe", 
+  "minername":"miner", 
+  "version":"1.35", 
+  "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/gminer-windows.zip"
+  },
+
 "phoenix_amd": {
 "name":"phoenix_amd", 
 "type":"amd", 

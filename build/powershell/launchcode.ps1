@@ -42,7 +42,7 @@ function Start-LaunchCode {
                     "ewbf" {$MinerArguments = "--cuda_devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "miniz" {$MinerArguments = "--cuda-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "energiminer" {$MinerArguments = "--cuda-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
-                    "gminer" {$MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
+                    "gminer" {$MinerArguments = "-d $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)"}
                     "dstm" {$MinerArguments = "--dev $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "claymore" {$MinerArguments = "-di $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "trex" {$MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
@@ -73,6 +73,7 @@ function Start-LaunchCode {
                         set-nicehash $($MinerCurrent.NPool) 3200 $($MinerCurrent.NUser) $($MinerCurrent.Algo) $($MinerCurrent.CommandFile) "$NiceDevices"
                     }
                     "grin-miner" {set-minerconfig $NewMiner $Logs}
+                    "gminer" {$MinerArguments = "-d $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)"}
                     default {$MinerArguments = "$($MinerCurrent.Arguments)"}
                 }
             }
@@ -88,7 +89,7 @@ function Start-LaunchCode {
                     "lolminer" {$MinerArguments = "--devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "wildrig" {$MinerArguments = "$($MinerCurrent.Arguments)"}
                     "grin-miner" {set-minerconfig $NewMiner $Logs}
-                    "gminer" {$MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
+                    "gminer" {$MinerArguments = "-d $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)"}
                     "lyclminer" {
                         $MinerArguments = ""
                         Set-Location (Split-Path $($MinerCurrent.Path))
@@ -128,6 +129,7 @@ function Start-LaunchCode {
                         Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
                     }
                     "grin-miner" {set-minerconfig $NewMiner $Logs}
+                    "gminer" {$MinerArguments = "-d $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)"}
                     default {$MinerArguments = "$($MinerCurrent.Arguments)"}
                 }
             }
@@ -141,9 +143,9 @@ function Start-LaunchCode {
         }
     }
 
-    switch ($MinerCurrent.name) {
-        "gminer" {Write-Host "WARNING: SOME ALGOS MAY REQUIRE 6GB VRAM TO WORK" -ForegroundColor Green}
-        "bminer" {Write-Host "WARNING: SOME ALGOS MAY REQUIRE 6GB VRAM TO WORK" -ForegroundColor Green}
+    switch ($MinerCurrent.DeviceCall) {
+        "gminer" {Write-Host "SOME ALGOS MAY REQUIRE 6GB+ VRAM TO WORK" -ForegroundColor Green}
+        "bminer" {Write-Host "SOME ALGOS MAY REQUIRE 6GB+ VRAM TO WORK" -ForegroundColor Green}
     }
 
     if ($Platforms -eq "windows") {

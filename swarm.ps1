@@ -292,7 +292,7 @@ $FileClear += ".\build\txt\bestminers.txt"
 $FileClear | % {if (Test-Path $_) {Remove-Item $_ -Force}}
 
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
-$Debug = $false
+$Debug = $true
 
 ## Convert Arguments Into Hash Table
 if ($Debug -ne $true) {
@@ -824,6 +824,7 @@ if ($NVIDIADevices1){$NVIDIADevices1 = $NVIDIADevices1.Substring(0,$NVIDIADevice
 if ($NVIDIADevices2){$NVIDIADevices2 = $NVIDIADevices2.Substring(0,$NVIDIADevices2.Length-1)}
 if ($NVIDIADevices3){$NVIDIADevices3 = $NVIDIADevices3.Substring(0,$NVIDIADevices3.Length-1)}
 if ($AMDDevices1){$AMDDevices1 = $AMDDevices1.Substring(0,$AMDDevices1.Length-1)}
+$GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
 
 ##Reset-Old Stats And Their Time
 if (Test-Path "stats") {Get-ChildItemContent "stats" | ForEach {$Stat = Set-Stat $_.Name $_.Content.Week}}
@@ -1200,6 +1201,7 @@ While ($true) {
                     Name           = $_.Name
                     Type           = $_.Type
                     Devices        = $_.Devices
+                    ArgDevices     = $_.ArgDevices
                     DeviceCall     = $_.DeviceCall
                     MinerName      = $_.MinerName
                     Path           = $_.Path
