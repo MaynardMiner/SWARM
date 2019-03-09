@@ -1,4 +1,15 @@
-
+<#
+SWARM is open-source software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+SWARM is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#>
 
 function Start-Webcommand {
     Param(
@@ -37,7 +48,14 @@ function Start-Webcommand {
             $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
             Write-Host $method $messagetype $data
             $trigger = "reboot"
-            Restart-Computer
+            $MinerFile = ".\build\pid\miner_pid.txt"
+            if (Test-Path $MinerFile) {$MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue}
+            if ($MinerId) {
+                Stop-Process $MinerId
+                Start-Sleep -S 3
+            }
+            Start-Process "powershell" -ArgumentList "-executionpolicy bypass -windowstyle maximized -command `".\build\powershell\reboot.ps1`""
+            exit
         }
   
         ##upgrade
