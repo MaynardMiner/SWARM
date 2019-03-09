@@ -2052,4 +2052,14 @@ Note: Am aware that XMRig and XMRstak have Updates
  -Removed more window background agent powershell errors (turned into warnings)
  -Slowed launchcode for miner down, to improve performance for slower hard drives.
  -Fixed more hiveOS algo naming.
- 
+ -Gminer_Amd is now working.
+    -added in project folder- to use, move to gpu folder.
+    -may crash hybrid rigs / doesn't work.
+-updated gminer
+-updated xmr-stak: added new algos. Reduced insane fee.
+-updated xmrig: added new algos.
+-Windows: reboot now closes SWARM first, then reboots.
+    -displays message on screen.
+-Added reboot.ps1
+-Cleaned up Claymore/ethminer style API for windows agent errors.
+-
