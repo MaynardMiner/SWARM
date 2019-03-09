@@ -10,20 +10,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
-function Get-PerSecond {
-    param(
-        [Parameter(Position = 0, Mandatory = $false)]
-        [array]$GetPerSecond,
-        [Parameter(Position = 0, Mandatory = $false)]
-        [int]$Period
-    )
-
-    $GetPerSecond | Foreach {
-        if ($_.Profit) {
-            $Estimated = $($_.Profit)
-            $Estimated = $Estimated / 86400
-            $Estimated = $Estimated * $Inverval
-        }
- 
-    }
-}
+Write-Host "Closing SWARM and rebooting in 5 seconds"
+Start-Sleep -S 1
+Restart-Computer
