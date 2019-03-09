@@ -20,7 +20,7 @@ SWARM is an collection scripts written in both powershell and bash, and is a pro
 
 **API**
 
-SWARM has an api-only layer, which is produced when ``-LITE Yes`` is specified. This ``LITE`` mode allows for the data of SWARM to be displayed in API format through HTTP. This allows both users and developers to create their own mining administration/launch script for miners, and simply use SWARM to gather data and formulate calculations on which miner/pool/algo combination is most profitable. The linux side the commands SWARM use can be used in any bash script, after they have been installed. The Widows side allow commands to be ran through HiveOS's interface, and has a feature in which you are able to run powershell or cmd commands remotely through HiveOS's website through the use of ``ps``. SWARM also has a runtime API which can be accessed to gather stats, and can be setup to be accessed remotely.
+SWARM has an api-only layer, which is produced when ``-LITE Yes`` is specified. This ``LITE`` mode allows for the data of SWARM to be displayed in json format through HTTP. This allows both users and developers to create their own mining administration/launch script for miners, and simply use SWARM to gather data and formulate calculations on which miner/pool/algo combination is most profitable. The linux side the commands SWARM use can be used in any bash script, after they have been installed. The Widows side allow commands to be ran through HiveOS's interface, and has a feature in which you are able to run powershell or cmd commands remotely through HiveOS's website through the use of ``ps``. SWARM also has a runtime API which can be accessed to gather stats, and can be setup to be accessed remotely.
 
 **HiveOS Integration (Windows or Linux)**
 

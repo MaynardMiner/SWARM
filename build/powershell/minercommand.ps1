@@ -243,19 +243,20 @@ $CutMiners = @()
 $Type | Foreach {
     $GetType = $_;
     $SortMiners.Symbol | Select -Unique | foreach {
-        $zero = $SortMiners | Where Type -eq $GetType | Where Symbol -eq $_ | Where [Double]Quote -EQ 0; 
-        $nonzero = $SortMiners | Where Type -eq $GetType | Where Symbol -eq $_ | Where [Double]Quote -NE 0;
+        $zero = $SortMiners | Where Type -eq $GetType | Where Symbol -eq $_ | Where Quote -EQ 0; 
+        $nonzero = $SortMiners | Where Type -eq $GetType | Where Symbol -eq $_ | Where Quote -NE 0;
 
         if ($zero) {
-            $MinerToCut = @()
-            $MinersToCut += $nonzero
-            $MinersToCut += $zero | Sort-Object @{Expression = "Quote"; Descending = $true}
-            $MinersToCut = $zero | Select-Object -Skip 1;
+            $MinersToCut = @()
+            $MinersToCut += $zero
+            $MinersToCut += $nonzero | Sort-Object @{Expression = "Quote"; Descending = $true}
+            $MinersToCut = $MinersToCut | Select-Object -Skip 1;
             $MinersToCut | %{$CutMiners += $_};
         }
         else {
+            $MinersToCut = @()
             $MinersToCut = $nonzero | Sort-Object @{Expression = "Quote"; Descending = $true};
-            $MinersToCut = $nonzero | Select-Object -Skip 1;
+            $MinersToCut = $MinersToCut | Select-Object -Skip 1;
             $MinersToCut | %{$CutMiners += $_};
         }
     }

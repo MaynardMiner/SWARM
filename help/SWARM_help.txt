@@ -16,7 +16,6 @@ Argument          Options           Explanation
                 hashrefinery,       optional additional arguments (See below).
                 blazepool,
                 ahashpool,
-		starpool,
 		blockmasters,
                 nlpool,
                 zpool,
@@ -36,9 +35,6 @@ Argument          Options           Explanation
                AMD1,
 	       ASIC]
 
--Platform      [linux,windows]      Defualt is linux. Specify this if you are using windows. This lets SWARM
-                                    know to build itself for Windows operation.
-
 ***********************************************************************************************************
 ***********************************************************************************************************
 ***********************************************************************************************************
@@ -48,6 +44,23 @@ Argument          Options           Explanation
 These arguments can be added for additional customization and options
 
 Argument            Options             Explanation
+
+-Platform      [linux,windows]      Defualt is linux. Specify this if you are using windows. This lets SWARM
+                                    know to build itself for Windows operation. SWARM will attempt to detects
+                                    if there is a C:\, if not, then it assumes SWARM is operating in linux.
+                                    Otherwise, it will assume it is operating in windows. This parameter is
+                                    optional.
+
+-Algorithm   [algorithm,algorithm,etc.] When this is specified, SWARM will not use
+                                        Algorithms from pool-algos.json, and defer
+                                        to these algorithms instead. Can be used
+                                        to select only 1 or 2 algorithms for testing.
+
+-Coin        [Pool Symbol Of Coin]      When this is specified, SWARM will convert
+                                        c= in pool string to this symbol, allowing
+                                        you to mine a single coin. Must be used in
+                                        conjuction with Algorithm parameter, only
+                                        one coin can be selected.
 
 -No_Algo1   [algorithm,algorithm,etc.]  Removes use from specified device group.
 -No_Algo2                               NVIDIA1 and AMD1 would be -No_Algo1

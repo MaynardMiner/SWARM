@@ -1980,3 +1980,64 @@ Other Changes:
   for that version, not for all prior. This will prevent
   potential losses of data.
 
+2.0.3
+
+Warning: Fan speed will not work in HiveOS for RTX cards in
+Windows. I am working on a fix.
+
+-New Optional Arguments
+   -Algorithm
+    Algorithm lets you select algorithms of your choice.
+   -Coin
+    Coin will mine a specific coin
+    Example: -Poolname nlplool,blockmasters,zergpool -Algorithm x16r -Coin RVN
+
+-With new arguments- SWARM will automatically select
+ best miner for combination (after benchmarking).
+ Note: SWARM does not auto-detect if coin is on Pool yet.
+       That feature is coming soon.
+
+-Updated Bminer
+-Updated ttminer- Added lyra2rev3
+-Updated lolminer:
+   created 2 versions for linux --asm kernel
+
+Note: Am aware that XMRig and XMRstak have Updates
+      skipped over until I see what Nicehash does
+      regarding fork. They boast no improvements other
+      than adding algorithms.
+
+-Fixed bugs with AMD oc in Linux.
+-Fixed lolminer crashes with new version update.
+-Updated CPU miner algos:
+    -Note: Binarium miners are incaple of making a
+    generic version for linux. They must be built directly
+    on PC. Cannot add in linux.
+
+-improved bminer compatiblity in bleeding edge/Ubuntu 18.04 - libcurl
+
+-Added AMD oc tool to install.ps1 for generic *nix versions.
+
+-Updated cuckoo names, since HiveOS updated.
+   -Note: Did not add to remote update.
+          Either use new pool-algos.json,
+          or leave as-is.
+          Will add to update in future version.
+
+-Some more removal of powershell errors in windows
+ agent between miner switches (still trying to find them all).
+
+-SWARM will detect if there is C:\ , if not it assumes it is working
+ on a linux OS, if so, then it will assume it is working on
+ windows OS
+
+-SWARM will now notify you if you accidentally place a file or folder 
+ in a directory it shouldn't be in, instead of outputting powershell
+ errors.
+
+-Fixed issue in which some miners where skipped over on initial benchmarks
+ from new database system.
+
+-get active shows name of miner instead of speed- It was redundant,
+ however, you can now tell which miner is which if they have the same
+ exe name.

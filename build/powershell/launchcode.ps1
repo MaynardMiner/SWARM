@@ -270,6 +270,9 @@ function Start-LaunchCode {
         }
         $MinerTimer.Stop()
         Start-Sleep -S .25
+        Set-Location $MinerDir
+        $MinerEXE = Split-Path $($MinerCurrent.Path) -Leaf
+        Rename-Item "$($MinerCurrent.InstanceName)" -NewName "$MinerEXE" -Force
         Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
         $MinerProcess
     }

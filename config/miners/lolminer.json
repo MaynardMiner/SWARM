@@ -6,18 +6,15 @@
     "prestart": [],
     "commands": {
       "zhash": "--coin AUTO144_5 --tls 0",
-      "equihash192": "--coin AUTO192_7 --tls 0",
-      "beam": "--coin BEAM --tls 0"
+      "equihash192": "--coin AUTO192_7 --tls 0"
     },
     "difficulty": {
       "zhash": "",
-      "equihash192": "",
-      "beam": ""
+      "equihash192": ""
     },
     "naming": {
       "zhash": "zhash",
-      "equihash192": "equihash192",
-      "beam": "beam"
+      "equihash192": "equihash192"
     },
     "oc": {
       "zhash": {
@@ -29,14 +26,6 @@
         "fans": ""
       },
       "equihash192": {
-        "dpm": "",
-        "v": "",
-        "core": "",
-        "mem": "",
-        "mdpm": "",
-        "fans": ""
-      },
-      "beam": {
         "dpm": "",
         "v": "",
         "core": "",

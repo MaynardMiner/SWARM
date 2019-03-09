@@ -10,7 +10,9 @@
       "mtp": "",
       "daggerhashimoto": "",
       "myr-gr": "",
-      "ethash": ""
+      "ethash": "",
+      "lyra2v3": "",
+      "lyra2rev3": ""
     },
     "difficulty": {
       "progpow": "",
@@ -18,7 +20,9 @@
       "mtp": "",
       "daggerhashimoto": "",
       "myr-gr": "",
-      "ethash": ""
+      "ethash": "",
+      "lyra2v3": "",
+      "lyra2rev3": ""
     },
     "naming": {
       "progpow": "PROGPOW-100",
@@ -26,7 +30,9 @@
       "mtp": "MTP-100",
       "daggerhashimoto": "ETHASH-100",
       "myr-gr": "MYRGR-100",
-      "ethash": "ETHASH-100"
+      "ethash": "ETHASH-100",
+      "lyra2v3": "Lyra2Rev3-100",
+      "lyra2rev3": "Lyra2Rev3-100"
     },
     "oc": {
       "progpow": {
@@ -60,6 +66,18 @@
         "Fans": ""
       },
       "ethash": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "Fans": ""
+      },
+      "lyra2v3": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "Fans": ""
+      },
+      "lyra2rev3": {
         "Power": "",
         "Core": "",
         "Memory": "",
@@ -77,7 +95,9 @@
       "mtp": "",
       "daggerhashimoto": "",
       "myr-gr": "",
-      "ethash": ""
+      "ethash": "",
+      "lyra2v3": "",
+      "lyra2rev3": ""
     },
     "difficulty": {
       "progpow": "",
@@ -85,7 +105,9 @@
       "mtp": "",
       "daggerhashimoto": "",
       "myr-gr": "",
-      "ethash": ""
+      "ethash": "",
+      "lyra2v3": "",
+      "lyra2rev3": ""
     },
     "naming": {
       "progpow": "PROGPOW-100",
@@ -93,7 +115,9 @@
       "mtp": "MTP-100",
       "daggerhashimoto": "ETHASH-100",
       "myr-gr": "MYRGR-100",
-      "ethash": "ETHASH-100"
+      "ethash": "ETHASH-100",
+      "lyra2v3": "Lyra2Rev3-100",
+      "lyra2rev3": "Lyra2Rev3-100"
     },
     "oc": {
       "progpow": {
@@ -127,6 +151,18 @@
         "Fans": ""
       },
       "ethash": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "Fans": ""
+      },
+      "lyra2v3": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "Fans": ""
+      },
+      "lyra2rev3": {
         "Power": "",
         "Core": "",
         "Memory": "",
@@ -144,7 +180,9 @@
       "mtp": "",
       "daggerhashimoto": "",
       "myr-gr": "",
-      "ethash": ""
+      "ethash": "",
+      "lyra2v3": "",
+      "lyra2rev3": ""
     },
     "difficulty": {
       "progpow": "",
@@ -152,7 +190,9 @@
       "mtp": "",
       "daggerhashimoto": "",
       "myr-gr": "",
-      "ethash": ""
+      "ethash": "",
+      "lyra2v3": "",
+      "lyra2rev3": ""
     },
     "naming": {
       "progpow": "PROGPOW-100",
@@ -160,7 +200,9 @@
       "mtp": "MTP-100",
       "daggerhashimoto": "ETHASH-100",
       "myr-gr": "MYRGR-100",
-      "ethash": "ETHASH-100"
+      "ethash": "ETHASH-100",
+      "lyra2v3": "Lyra2Rev3-100",
+      "lyra2rev3": "Lyra2Rev3-100"
     },
     "oc": {
       "progpow": {
@@ -194,6 +236,18 @@
         "Fans": ""
       },
       "ethash": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "Fans": ""
+      },
+      "lyra2v3": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "Fans": ""
+      },
+      "lyra2rev3": {
         "Power": "",
         "Core": "",
         "Memory": "",

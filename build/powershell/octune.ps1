@@ -304,7 +304,7 @@ function Start-OC {
         }
     
         if ($_.Type -like "*AMD*") {
-            if ($_.Devices -eq $null) {$OCDevices = Get-DeviceString -TypeCount $GCount.NVIDIA.PSObject.Properties.Value.Count}
+            if ($_.Devices -eq $null) {$OCDevices = Get-DeviceString -TypeCount $GCount.AMD.PSObject.Properties.Value.Count }
             else {$OCDevices = Get-DeviceString -TypeDevices $_.Devices}
             $Core = $_.occore -split ' '
             $Mem = $_.ocmem -split ' '
@@ -318,9 +318,7 @@ function Start-OC {
             $MemState = $MDPM -split ","
             $Voltage = $V -split ","
             $Fans = $Fan -split ","
-
-            $Voltage = $v -split ","
-            $NScreenMiners = "$($_.MinerName) "
+            $AScreenMiners = "$($_.MinerName) "
     
             if ($Card) {
                 if ($Platforms -eq "linux") {

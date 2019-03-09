@@ -9,27 +9,21 @@
     "Rigname2":  "SWARM",
     "SWARM_Mode":  "No",
     "Cuda":  "10",
-    "Passwordcurrency3":  [
-                              "BTC"
-                          ],
+    "Passwordcurrency3": "BTC",
     "Currency":  [
                      "USD"
                  ],
     "Nicehash_Wallet2":  "",
     "AltWallet1":  "",
     "Stat_Coin":  "Live",
-    "Passwordcurrency2":  [
-                              "BTC"
-                          ],
+    "Passwordcurrency2": "BTC",
     "WattOMeter":  "Yes",
     "Rigname3":  "SWARM",
     "AltPassword2":  "",
     "Location":  "US",
     "Lite":  "No",
     "Threshold":  0.02,
-    "AltPassword3":  [
-                         "BTC"
-                     ],
+    "AltPassword3": "",
     "CPUOnly":  "No",
     "Wallet":  "Yes",
     "StatsInterval":  1,
@@ -39,9 +33,7 @@
     "GPUDevices2":  [],
     "CoinExchange":  "LTC",
     "Interval":  300,
-    "Passwordcurrency1":  [
-                              "BTC"
-                          ],
+    "Passwordcurrency1": "BTC",
     "CPUThreads":  1,
     "Nicehash_Wallet1":  "",
     "Timeout":  24,
@@ -92,5 +84,9 @@
     "Worker":  "",
     "No_Miner":  [
                      ""
-                 ]
+                 ],
+    "Algorithm":  [
+                    ""
+                ],
+    "Coin": ""
 }

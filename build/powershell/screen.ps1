@@ -152,7 +152,7 @@ function Get-MinerActive {
     $ActiveMinerPrograms | Sort-Object -Descending Status,
     {if($null -eq $_.XProcess){[DateTime]0}else{$_.XProcess.StartTime}
     } | Select -First (1+6+6) | Format-Table -Wrap -GroupBy Status (
-    @{Label = "Speed"; Expression={$_.HashRate | ForEach {"$($_ | ConvertTo-Hash)/s"}}; Align='right'},
+    @{Label = "Name"; Expression={"$($_.Name)"}},
     @{Label = "Active"; Expression={"{0:dd} Days {0:hh} Hours {0:mm} Minutes" -f $(if($null -eq $_.XProcess){$_.Active}else{if($_.XProcess.HasExited){($_.Active)}else{($_.Active+((Get-Date)-$_.XProcess.StartTime))}})}},
     @{Label = "Launched"; Expression={Switch($_.Activated){0 {"Never"} 1 {"Once"} Default {"$_ Times"}}}},
     @{Label = "Command"; Expression={"$($_.MinerName) $($_.Devices) $($_.Arguments)"}}

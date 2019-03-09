@@ -1,42 +1,40 @@
 ##Miner Path Information
-if ($nvidia.bminer.path2) {$Path = "$($nvidia.bminer.path2)"}
+if ($amd.lolminerv7.path1) {$Path = "$($amd.lolminerv7.path1)"}
 else {$Path = "None"}
-if ($nvidia.bminer.uri) {$Uri = "$($nvidia.bminer.uri)"}
+if ($amd.lolminerv7.uri) {$Uri = "$($amd.lolminerv7.uri)"}
 else {$Uri = "None"}
-if ($nvidia.bminer.MinerName) {$MinerName = "$($nvidia.bminer.MinerName)"}
+if ($amd.lolminerv7.minername) {$MinerName = "$($amd.lolminerv7.minername)"}
 else {$MinerName = "None"}
 if ($Platform -eq "linux") {$Build = "Tar"}
 elseif ($Platform -eq "windows") {$Build = "Zip"}
 
-$ConfigType = "NVIDIA2"
+$ConfigType = "AMD1"
 
 ##Parse -GPUDevices
-if ($NVIDIADevices2 -ne '') {$Devices = $NVIDIADevices2}
+if ($AMDDevices1 -ne '') {$Devices = $AMDDevices1}
 
 ##Get Configuration File
-$GetConfig = "$dir\config\miners\bminer.json"
+$GetConfig = "$dir\config\miners\lolminerv7.json"
 try {$Config = Get-Content $GetConfig | ConvertFrom-Json}
 catch {Write-Warning "Warning: No config found at $GetConfig"}
 
-##Export would be /path/to/[SWARMVERSION]/build/export##
+##Export would be /path/to/[SWARMVERSION]/build/export && Bleeding Edge Check##
 $ExportDir = Join-Path $dir "build\export"
 
 ##Prestart actions before miner launch
+$BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
+$Prestart = @()
+if (Test-Path $BE) {$Prestart += "export LD_PRELOAD=libcurl-compat.so.3.0.0"}
 $PreStart += "export LD_LIBRARY_PATH=$ExportDir"
 $Config.$ConfigType.prestart | foreach {$Prestart += "$($_)"}
 
-##Build Miner Settings
 if ($CoinAlgo -eq $null) {
     $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
         $MinerAlgo = $_
         $AlgoPools | Where Symbol -eq $MinerAlgo | foreach {
             if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
-                Switch ($_.Name) {
-                    "nicehash" {$Pass2 = ""}
-                    default {$Pass2 = ".$($($_.Pass2) -replace ",","%2C")"}
-                }
-                if ($_.Worker) {$Pass2 = ".$($_.Worker)"}
-                if ($Config.$ConfigType.difficulty.$($_.Algorithm)) {$Diff = "%2Cd=$($Config.$ConfigType.difficulty.$($_.Algorithm))"}else {$Diff = ""}
+                if ($Config.$ConfigType.difficulty.$($_.Algorithm)) {$Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))"}else {$Diff = ""}
+                if($Platform -eq "linux"){$extra = "--asm 1 "}
                 [PSCustomObject]@{
                     Delay      = $Config.$ConfigType.delay
                     Symbol     = "$($_.Algorithm)"
@@ -45,24 +43,24 @@ if ($CoinAlgo -eq $null) {
                     Type       = $ConfigType
                     Path       = $Path
                     Devices    = $Devices
-                    DeviceCall = "bminer"
-                    Arguments  = "-uri $($Config.$ConfigType.naming.$($_.Algorithm))://$($_.User2)$Pass2$Diff@$($_.Host):$($_.Port) -api 127.0.0.1:44001"
+                    DeviceCall = "lolminer"
+                    Arguments  = "--pool $($_.Host) --port $($_.Port) --user $($_.User1) --pass $($_.Pass1)$($Diff) --apiport 3020 --logs 0 --devices AMD $extra$($Config.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)}
                     Quote      = if ($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)) {$($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) * ($_.Price)}else {0}
                     PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") {$Watts.$($_.Algorithm)."$($ConfigType)_Watts"}elseif ($Watts.default."$($ConfigType)_Watts") {$Watts.default."$($ConfigType)_Watts"}else {0}}
-                    ocpower    = if ($Config.$ConfigType.oc.$($_.Algorithm).power) {$Config.$ConfigType.oc.$($_.Algorithm).power}else {$OC."default_$($ConfigType)".Power}
+                    ocdpm      = if ($Config.$ConfigType.oc.$($_.Algorithm).dpm) {$Config.$ConfigType.oc.$($_.Algorithm).dpm}else {$OC."default_$($ConfigType)".dpm}
+                    ocv        = if ($Config.$ConfigType.oc.$($_.Algorithm).v) {$Config.$ConfigType.oc.$($_.Algorithm).v}else {$OC."default_$($ConfigType)".v}
                     occore     = if ($Config.$ConfigType.oc.$($_.Algorithm).core) {$Config.$ConfigType.oc.$($_.Algorithm).core}else {$OC."default_$($ConfigType)".core}
-                    ocmem      = if ($Config.$ConfigType.oc.$($_.Algorithm).memory) {$Config.$ConfigType.oc.$($_.Algorithm).memory}else {$OC."default_$($ConfigType)".memory}
+                    ocmem      = if ($Config.$ConfigType.oc.$($_.Algorithm).mem) {$Config.$ConfigType.oc.$($_.Algorithm).mem}else {$OC."default_$($ConfigType)".memory}
+                    ocmdpm     = if ($Config.$ConfigType.oc.$($_.Algorithm).mdpm) {$Config.$ConfigType.oc.$($_.Algorithm).mdpm}else {$OC."default_$($ConfigType)".mdpm}
                     ocfans     = if ($Config.$ConfigType.oc.$($_.Algorithm).fans) {$Config.$ConfigType.oc.$($_.Algorithm).fans}else {$OC."default_$($ConfigType)".fans}
                     MinerPool  = "$($_.Name)"
                     FullName   = "$($_.Mining)"
-                    Port       = 44001
-                    API        = "bminer"
-                    Wrap       = $false
+                    Port       = 3020
+                    API        = "lolminer"
                     URI        = $Uri
                     BUILD      = $Build
                     Algo       = "$($_.Algorithm)"
-                    NewAlgo    = ''
                 }
             }
         }

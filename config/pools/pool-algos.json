@@ -32,6 +32,17 @@
       "comma seperate"
     ]
   },
+  "argon2d4096": {
+    "hiveos_name": "argon2d-uis",
+    "pools_to_exclude": [
+      "add pools here",
+      "comma seperated"
+    ],
+    "miners_to_exclude": [
+      "add miners here",
+      "comma seperate"
+    ]
+  },
   "allium": {
     "hiveos_name": "allium",
     "pools_to_exclude": [
@@ -198,7 +209,7 @@
     ]
   },
   "cuckaroo29": {
-    "hiveos_name": "cuckoo",
+    "hiveos_name": "cuckaroo29",
     "pools_to_exclude": [
       "add pools here",
       "comma seperated"
@@ -209,7 +220,7 @@
     ]
   },
   "cuckatoo31": {
-    "hiveos_name": "cuckoo",
+    "hiveos_name": "cuckatoo31",
     "pools_to_exclude": [
       "add pools here",
       "comma seperated"
@@ -574,7 +585,8 @@
   "mtp": {
     "hiveos_name": "mtp",
     "pools_to_exclude": [
-      "nicehash"
+      "add pools here",
+      "comma seperated"
     ],
     "miners_to_exclude": [
       "add miners here",
@@ -890,6 +902,17 @@
     ]
   },
   "yescrypt": {
+    "hiveos_name": "yescrypt",
+    "pools_to_exclude": [
+      "add pools here",
+      "comma seperated"
+    ],
+    "miners_to_exclude": [
+      "add miners here",
+      "comma seperate"
+    ]
+  },
+  "yescryptr8": {
     "hiveos_name": "yescrypt",
     "pools_to_exclude": [
       "add pools here",
