@@ -2062,4 +2062,4 @@ Note: Am aware that XMRig and XMRstak have Updates
     -displays message on screen.
 -Added reboot.ps1
 -Cleaned up Claymore/ethminer style API for windows agent errors.
--
+-Removed -pers auto args on grin algo launches- Did not add to remote update.
