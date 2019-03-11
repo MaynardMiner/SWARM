@@ -2047,6 +2047,9 @@ Note: Am aware that XMRig and XMRstak have Updates
 
  2.0.4
 
+ NOTE: AMD Users- Gminer_amd is in project folder. To acivate, move to gpu folder.
+  ``mv /hive/miners/custom/SWARM.2.0.4/miners/project/gminer_amd.ps1 /hive/miners/custom/SWARM.2.0.4/miners/gpu``
+
  -TTminer -di to -d for devices.
  -TTminer lyra2v3 fix
  -Removed more window background agent powershell errors (turned into warnings)
@@ -2055,7 +2058,7 @@ Note: Am aware that XMRig and XMRstak have Updates
  -Fixed more hiveOS algo naming.
  -Gminer_Amd is now working.
     -added in project folder- to use, move to gpu folder.
-    -may crash hybrid rigs / doesn't work.
+    -may crash hybrid rigs / doesn't work for rigs with AMD & NVIDIA.
 -updated gminer
 -updated xmr-stak: added new algos.
 -updated xmrig: added new algos.

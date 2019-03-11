@@ -12,7 +12,7 @@
   },
   "gminer_amd": {
     "name": "gminer_amd",
-    "type": "nvidia",
+    "type": "amd",
     "path1": ".\\bin\\gminer_amd-1\\miner",
     "path2": ".\\bin\\gminer_amd-2\\miner",
     "path3": ".\\bin\\gminer_amd-3\\miner",
@@ -59,16 +59,6 @@
     "minername": "PhoenixMiner",
     "version": "4.1c",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/phoenix-linux.tar.gz"
-  },
-  "gminer_amd": {
-    "name": "gminer_amd",
-    "type": "amd",
-    "path1": ".\\bin\\gminer_amd-1\\miner",
-    "path2": ".\\bin\\gminer_amd-2\\miner",
-    "path3": ".\\bin\\gminer_amd-3\\miner",
-    "minername": "miner",
-    "version": "1.31",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/gminer-amd-linux.tar.gz"
   },
   "lolminer": {
     "name": "lolminer",
