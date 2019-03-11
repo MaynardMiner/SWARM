@@ -240,6 +240,16 @@ function start-update {
                                     }
                                 }
                             }
+                            if ($ChangeFile -eq "xmrig.json") {
+                                $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                    if ($_ -ne "name") {
+                                        $Data.$_.commands| Add-Member "cryptonightr" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "cryptonightr" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "cryptonightr" "cn/r" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "cryptonightr" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue         
+                                    }
+                                }
+                            }
                             if ($ChangeFile -eq "wildrig.json") {
                                 $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                     if ($_ -ne "name") {
