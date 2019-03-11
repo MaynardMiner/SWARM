@@ -2050,6 +2050,10 @@ Note: Am aware that XMRig and XMRstak have Updates
  NOTE: AMD Users- Gminer_amd is in project folder. To acivate, move to gpu folder.
   ``mv /hive/miners/custom/SWARM.2.0.4/miners/project/gminer_amd.ps1 /hive/miners/custom/SWARM.2.0.4/miners/gpu``
 
+ New Feature!
+   SWARM will now create startup.sh inside .\bin\[minername] dir, which allows a test run of
+   last known settings.
+
  -TTminer -di to -d for devices.
  -TTminer lyra2v3 fix
  -Removed more window background agent powershell errors (turned into warnings)
