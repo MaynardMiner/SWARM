@@ -5,8 +5,8 @@
     "delay": "1",
     "prestart": [],
     "commands": {
-      "zhash": "--coin AUTO144_5 --tls 0",
-      "equihash192": "--coin AUTO192_7 --tls 0"
+      "zhash": "--coin AUTO144_5",
+      "equihash192": "--coin AUTO192_7"
     },
     "difficulty": {
       "zhash": "",

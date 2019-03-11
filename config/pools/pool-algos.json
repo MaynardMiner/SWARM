@@ -131,6 +131,17 @@
       "comma seperate"
     ]
   },
+  "cryptonightr": {
+    "hiveos_name": "cryptonight/r",
+    "pools_to_exclude": [
+      "add pools here",
+      "comma seperated"
+    ],
+    "miners_to_exclude": [
+      "add miners here",
+      "comma seperate"
+    ]
+  },
   "cryptonightgpu": {
     "hiveos_name": "cryptonight-gpu",
     "pools_to_exclude": [
