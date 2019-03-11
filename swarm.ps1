@@ -994,15 +994,6 @@ While ($true) {
         Write-Host "Adding Custom Pools" -ForegroundColor Yellow;
         $AllCustomPools = Get-Pools -PoolType "Custom" -Stats $Stats
 
-        if ($AllAlgoPools.Count -eq 0 -and $AllCustomPools.Count -eq 0) {
-            $HiveMessage = "No Pools Found! Check Arguments/Net Connection"
-            $HiveWarning = @{result = @{command = "timeout"}}
-            if ($HiveOS -eq "Yes") {try {$SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch {Write-Warning "Failed To Notify HiveOS"}}
-            Write-Host $HiveMessage
-            start-sleep $Interval; 
-            continue
-        }
-
         ## Select the best 3 of each algorithm
         $Top_3_Algo = $AllAlgoPools.Symbol | Select-Object -Unique | ForEach-Object {$AllAlgoPools | Where Symbol -EQ $_ | Sort-Object Price -Descending | Select -First 3};
         $Top_3_Custom = $AllCustomPools.Symbol | Select-Object -Unique | ForEach-Object {$AllCustomPools | Where Symbol -EQ $_ | Sort-Object Price -Descending | Select -First 3};
@@ -1012,6 +1003,15 @@ While ($true) {
         if($Top_3_Custom){$Top_3_Custom | ForEach-Object {$AlgoPools.Add($_)} | Out-Null;}
         $Top_3_Algo = $Null;
         $Top_3_Custom = $Null;
+
+        if($AlgoPools.Count -eq 0) {
+          $HiveMessage = "No Pools Found! Check Arguments/Net Connection"
+          $HiveWarning = @{result = @{command = "timeout"}}
+          if ($HiveOS -eq "Yes") {try {$SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch {Write-Warning "Failed To Notify HiveOS"}}
+          Write-Host $HiveMessage
+          start-sleep $Interval; 
+          continue  
+        }
 
         ##Get Algorithms again, in case custom changed it.
         $Algorithm = Get-Algolist -Devices $Type -No_Algo $No_Algo;
