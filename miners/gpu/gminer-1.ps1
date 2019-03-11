@@ -11,11 +11,23 @@ elseif ($Platform -eq "windows") {$Build = "Zip"}
 $ConfigType = "NVIDIA1"
 
 ##Parse -GPUDevices
-if ($NVIDIADevices1 -ne '') {$GPUDevices1 = $NVIDIADevices1}
+if ($NVIDIADevices1) {$GPUDevices1 = $NVIDIADevices1}
 if ($GPUDevices1 -ne '') {
     $GPUEDevices1 = $GPUDevices1 -replace ',', ' '
     $Devices = $GPUEDevices1
 }
+
+##gminer apparently doesn't know how to tell the difference between
+##cuda and amd devices, like every other miner that exists. So now I 
+##have to spend an hour and parse devices
+##to matching platforms.
+if ($NVIDIADevices1) {
+    $GPUDevices1 = $NVIDIADevices1
+    $GPUEDevices1 = $GPUDevices1 -split ","
+    $GPUEDevices1 | % {$ArgDevices += "$($GCount.NVIDIA.$_) " }
+    $ArgDevices = $ArgDevices.Substring(0,$ArgDevices.Length-1)
+}
+else {$GCount.NVIDIA.PSObject.Properties.Name | % { $ArgDevices += "$($GCount.NVIDIA.$_) "}; $ArgDevices = $ArgDevices.Substring(0,$ArgDevices.Length-1)}
 
 ##Get Configuration File
 $GetConfig = "$dir\config\miners\gminer.json"
@@ -46,6 +58,7 @@ if ($CoinAlgo -eq $null) {
                     Type       = $ConfigType
                     Path       = $Path
                     Devices    = $Devices
+                    ArgDevices = $ArgDevices
                     DeviceCall = "gminer"
                     Arguments  = "--api 42000 --server $($_.Host) --port $($_.Port) --user $($_.User1) --pass $($_.Pass1)$Diff $($Config.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)}

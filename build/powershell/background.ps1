@@ -133,9 +133,11 @@ function Set-Array {
         [Parameter(Position = 2, Mandatory = $false)]
         [string]$factor
     )
+        try{
         $Parsed = $ParseRates | % {iex $_}
         $Parse = $Parsed | Select -Skip $i -First 1
         if($null -eq $Parse){$Parse = 0}
+        }catch{$Parse = 0}
         $Parse
 }
 
@@ -496,35 +498,21 @@ While ($True) {
                     $Request = $null; $Request = Get-TCP -Server $Server -Port $Port -Message $Message 
                     if ($Request) {
                         try {$Data = $Null; $Data = $Request | ConvertFrom-Json -ErrorAction STop; }catch {Write-Host "Failed To parse API" -ForegroundColor Red}
-                        if($Data.result[2])
-                        {
-                         if ($Minername -eq "TT-Miner.exe" -or $MinerName -eq "TT-Miner") {$RAW += $Data.result[2] -split ";" | Select -First 1 | % {[Double]$_}}
-                         else {$RAW += $Data.result[2] -split ";" | Select -First 1 | % {[Double]$_ * 1000}; }
-                        }
-                        else{$RAW += 0;}
+                        if($Data){$Summary = $Data.result[2]; $Threads = $Data.result[3];}
+                        if ($Minername -eq "TT-Miner.exe" -or $MinerName -eq "TT-Miner") {$RAW += $Summary -split ";" | Select -First 1 | % {[Double]$_}}
+                        else {$RAW += $Summary -split ";" | Select -First 1 | % {[Double]$_*1000}}
                         Write-MinerData2;
-                        if($Data.result[2])
-                         {
-                          if ($Minername -eq "TT-Miner.exe" -or $MinerName -eq "TT-Miner") {$KHS += $Data.result[2] -split ";" | Select -First 1 | % {[Double]$_ / 1000}}
-                          else {$KHS += $Data.result[2] -split ";" | Select -First 1 | % {[Double]$_}; }
-                         }
-                        else{$KHS += 0}
-                        if($Data.Result[3])
-                         {
-                          if ($Minername -eq "TT-Miner.exe" -or $MinerName -eq "TT-Miner") {$Hash = $Null; $Hash = $Data.result[3] -split ";" | % {[double]$_ / 1000}}
-                          else {$Hash = $Null; $Hash = $Data.result[3] -split ";"; }
-                          try {for ($i = 0; $i -lt $Devices.Count; $i++) {$GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $i)}}catch {Write-Host "Failed To parse GPU Threads" -ForegroundColor Red};
-                         }
-                        if($Data.result[2])
-                        {
-                         $MinerACC = $Data.result[2] -split ";" | Select -skip 1 -first 1
-                         $MinerREJ = $Data.result[2] -split ";" | Select -skip 2 -first 1
-                         $ACC += $Data.result[2] -split ";" | Select -skip 1 -first 1
-                         $REJ += $Data.result[2] -split ";" | Select -skip 2 -first 1
-                        }
-                        else{$MinerACC = 0; $ACC += 0; $MinerREJ = 0; $REJ += 0}
-                         $UPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
-                         $ALGO += "$MinerAlgo"
+                        if ($Minername -eq "TT-Miner.exe" -or $MinerName -eq "TT-Miner") {$KHS += $Summary -split ";" | Select -First 1 | % {[Double]$_ / 1000}}
+                        else {$KHS += $Summary -split ";" | Select -First 1 | % {[Double]$_}}
+                        if ($Minername -eq "TT-Miner.exe" -or $MinerName -eq "TT-Miner") {$Hash = $Null; $Hash = $Threads -split ";" | % {[double]$_ / 1000}}
+                        else {$Hash = $Null; $Hash = $Threads -split ";"}
+                        try {for ($i = 0; $i -lt $Devices.Count; $i++) {$GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $i)}}catch {Write-Host "Failed To parse GPU Threads" -ForegroundColor Red};
+                        $MinerACC = $Summary -split ";" | Select -skip 1 -first 1
+                        $MinerREJ = $Summary -split ";" | Select -skip 2 -first 1
+                        $ACC += $Summary -split ";" | Select -skip 1 -first 1
+                        $REJ += $Summary -split ";" | Select -skip 2 -first 1
+                        $UPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
+                        $ALGO += "$MinerAlgo"
                     }
                     else {Set-APIFailure; break}
                 }

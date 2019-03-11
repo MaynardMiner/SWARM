@@ -42,10 +42,11 @@ function Start-LaunchCode {
                     "ewbf" {$MinerArguments = "--cuda_devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "miniz" {$MinerArguments = "--cuda-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "energiminer" {$MinerArguments = "--cuda-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
-                    "gminer" {$MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
+                    "gminer" {$MinerArguments = "-d $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)"}
                     "dstm" {$MinerArguments = "--dev $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "claymore" {$MinerArguments = "-di $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "trex" {$MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
+                    "ttminer" {$MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "bminer" {$MinerArguments = "-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "lolminer" {$MinerArguments = "--devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                     "grin-miner" {set-minerconfig $NewMiner $Logs}
@@ -72,6 +73,7 @@ function Start-LaunchCode {
                         set-nicehash $($MinerCurrent.NPool) 3200 $($MinerCurrent.NUser) $($MinerCurrent.Algo) $($MinerCurrent.CommandFile) "$NiceDevices"
                     }
                     "grin-miner" {set-minerconfig $NewMiner $Logs}
+                    "gminer" {$MinerArguments = "-d $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)"}
                     default {$MinerArguments = "$($MinerCurrent.Arguments)"}
                 }
             }
@@ -87,7 +89,7 @@ function Start-LaunchCode {
                     "lolminer" {$MinerArguments = "--devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "wildrig" {$MinerArguments = "$($MinerCurrent.Arguments)"}
                     "grin-miner" {set-minerconfig $NewMiner $Logs}
-                    "gminer" {$MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
+                    "gminer" {$MinerArguments = "-d $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)"}
                     "lyclminer" {
                         $MinerArguments = ""
                         Set-Location (Split-Path $($MinerCurrent.Path))
@@ -127,6 +129,7 @@ function Start-LaunchCode {
                         Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
                     }
                     "grin-miner" {set-minerconfig $NewMiner $Logs}
+                    "gminer" {$MinerArguments = "-d $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)"}
                     default {$MinerArguments = "$($MinerCurrent.Arguments)"}
                 }
             }
@@ -140,9 +143,9 @@ function Start-LaunchCode {
         }
     }
 
-    switch ($MinerCurrent.name) {
-        "gminer" {Write-Host "WARNING: SOME ALGOS MAY REQUIRE 6GB VRAM TO WORK" -ForegroundColor Green}
-        "bminer" {Write-Host "WARNING: SOME ALGOS MAY REQUIRE 6GB VRAM TO WORK" -ForegroundColor Green}
+    switch ($MinerCurrent.DeviceCall) {
+        "gminer" {Write-Host "SOME ALGOS MAY REQUIRE 6GB+ VRAM TO WORK" -ForegroundColor Green}
+        "bminer" {Write-Host "SOME ALGOS MAY REQUIRE 6GB+ VRAM TO WORK" -ForegroundColor Green}
     }
 
     if ($Platforms -eq "windows") {
@@ -200,9 +203,11 @@ function Start-LaunchCode {
     elseif ($Platforms -eq "linux") {
         if (Test-Path $Logs) {Clear-Content $Logs}
         Rename-Item "$($MinerCurrent.Path)" -NewName "$($MinerCurrent.InstanceName)" -Force
+        Start-Sleep -S 1
         Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
         $MinerConfig = "./$($MinerCurrent.InstanceName) $MinerArguments 2>&1 | tee $Logs"
-        $MinerConfig | Set-Content ".\build\bash\config.sh" -Force  
+        $TestConfig = "./$(Split-Path $MinerCurrent.Path -Leaf) $MinerArguments 2>&1 | tee $Logs"
+        $MinerConfig | Set-Content ".\build\bash\config.sh" -Force
         Write-Host "
          ______________
        /.----------..-'
@@ -241,19 +246,29 @@ function Start-LaunchCode {
         $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
         $Export = Join-Path $Dir "build\export"
         $MinerDir = Join-Path $Dir $(Split-Path $($MinerCurrent.Path))
+        $MinerDir = $(Resolve-Path $MinerDir).Path
 
-        $Startup = @()
-        $Startup += "`#`!/usr/bin/env bash"
-        $Startup += "screen -S $($MinerCurrent.Type) -d -m", "sleep .1"
-        if ($MinerCurrent.Prestart) {$MinerCurrent.Prestart | foreach {$Startup += "screen -S $($MinerCurrent.Type) -X stuff $`"$($_)\n`"", "sleep .1"}}
-        $Startup += "screen -S $($MinerCurrent.Type) -X stuff $`"cd\n`"", "sleep .1"
-        $Startup += "screen -S $($MinerCurrent.Type) -X stuff $`"cd $MinerDir\n`"", "sleep .1"
-        $Startup += "screen -S $($MinerCurrent.Type) -X stuff $`"`$(< $Dir/build/bash/config.sh)\n`""
-
-        $Startup | Set-Content ".\build\bash\startup.sh"
+        $Script = @()
+        $TestScript = @()
+        $Script += "`#`!/usr/bin/env bash"
+        $TestScript += "`#`!/usr/bin/env bash"
+        $Script += "screen -S $($MinerCurrent.Type) -d -m", "sleep .1"
+        if ($MinerCurrent.Prestart) {$MinerCurrent.Prestart | foreach {$Script += "screen -S $($MinerCurrent.Type) -X stuff $`"$($_)\n`"", "sleep .1"; $TestScript += "$($_)", "sleep .1"}}
+        $Script += "screen -S $($MinerCurrent.Type) -X stuff $`"cd\n`"", "sleep .1"
+        $Script += "screen -S $($MinerCurrent.Type) -X stuff $`"cd $MinerDir\n`"", "sleep .1"
+        $Script += "screen -S $($MinerCurrent.Type) -X stuff $`"`$(< $Dir/build/bash/config.sh)\n`""
+        $TestScript += $TestConfig
+        $Script | Set-Content ".\build\bash\startup.sh"
+        $TestScript | Set-Content "$MinerDir\startup.sh"
+    
         Start-Sleep -S 1
         Start-Process "chmod" -ArgumentList "+x build/bash/startup.sh" -Wait
+        Start-Process "chmod" -ArgumentList "+x $MinerDir/startup.sh" -Wait
         Start-Process ".\build\bash\startup.sh" -Wait
+        Set-Location $MinerDir
+        $MinerEXE = Split-Path $($MinerCurrent.Path) -Leaf
+        Rename-Item "$($MinerCurrent.InstanceName)" -NewName "$MinerEXE" -Force
+        Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 
         $MinerTimer.Restart()
         Do {
@@ -268,11 +283,6 @@ function Start-LaunchCode {
             Start-Sleep -S 1
         }
         $MinerTimer.Stop()
-        Start-Sleep -S .25
-        Set-Location $MinerDir
-        $MinerEXE = Split-Path $($MinerCurrent.Path) -Leaf
-        Rename-Item "$($MinerCurrent.InstanceName)" -NewName "$MinerEXE" -Force
-        Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
         $MinerProcess
     }
 }

@@ -1,3 +1,15 @@
+<#
+SWARM is open-source software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+SWARM is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#>
 function Start-Poolbans {
     param(
         [Parameter(Position = 0, Mandatory = $false)]
@@ -22,7 +34,8 @@ function Start-Poolbans {
     $BanCheck1 = Get-Content ".\build\data\conversion.conf" -Force
     #if($BanCheck1 -ne $Check1){Stop-Process -Id $PID}
     $BanPass1 = "$($BanCheck1)" #| ConvertTo-SecureString -key $Dkey | ForEach-Object {[Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($_))}
-    $BanCheck2 = Get-Content ".\build\data\verification.conf" -Force
+    $GetBanCheck2 = Get-Content ".\build\data\verification.conf" -Force
+    $BanCheck2 = $([Double]$GetBanCheck2[0]-5+([Double]$GetBanCheck2[1]*2))
     #if($BanCheck2 -ne $Check2){Stop-Process -Id $PID}
     $BanPass2 = "$($BanCheck2)" #| ConvertTo-SecureString -key $Dkey | ForEach-Object {[Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($_))}
     $BanCheck3 = Get-Content ".\build\data\conversion2.conf" -Force

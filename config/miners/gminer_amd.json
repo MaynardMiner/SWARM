@@ -1,5 +1,5 @@
 {
-  "name": "gminer",
+  "name": "gminer_amd",
   "AMD1": {
     "name": "AMD1",
     "delay": "1",
@@ -10,16 +10,27 @@
       "export GPU_MAX_ALLOC_PERCENT=100"
     ],
     "commands": {
-      "beam": "--algo 150_5 --pers auto"
+      "beam": "--algo 150_5 --pers auto",
+      "grincuckaroo29": "--algo grin29"
     },
     "difficulty": {
-      "beam": ""
+      "beam": "",
+      "grincuckaroo29": ""
     },
     "naming": {
-      "beam": "beam"
+      "beam": "beam",
+      "grincuckaroo29": "grincuckaroo29"
     },
     "oc": {
       "beam": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "grincuckaroo29": {
         "dpm": "",
         "v": "",
         "core": "",

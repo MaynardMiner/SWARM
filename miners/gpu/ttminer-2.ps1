@@ -42,7 +42,7 @@ if ($CoinAlgo -eq $null) {
                     Type       = $ConfigType
                     Path       = $Path
                     Devices    = $Devices
-                    DeviceCall = "claymore"
+                    DeviceCall = "ttminer"
                     Arguments  = "-a $($Config.$ConfigType.naming.$($_.Algorithm)) --nvidia -o $($_.Protocol)://$($_.Host):$($_.Port) $worker-b localhost:2069 -u $($_.User2) -p $($_.Pass2) $($Config.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)}
                     Quote      = if ($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)) {$($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) * ($_.Price)}else {0}

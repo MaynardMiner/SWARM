@@ -31,7 +31,7 @@
       "type":"cpu", 
       "path1":".\\bin\\stak-cpu-1\\xmr-stak", 
       "minername":"xmr-stak", 
-      "version":"2.6.0", 
+      "version":"2.10.0", 
       "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/fireice-linux.tar.gz" 
 }
 }
