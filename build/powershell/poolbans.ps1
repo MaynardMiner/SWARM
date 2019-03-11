@@ -34,7 +34,8 @@ function Start-Poolbans {
     $BanCheck1 = Get-Content ".\build\data\conversion.conf" -Force
     #if($BanCheck1 -ne $Check1){Stop-Process -Id $PID}
     $BanPass1 = "$($BanCheck1)" #| ConvertTo-SecureString -key $Dkey | ForEach-Object {[Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($_))}
-    $BanCheck2 = Get-Content ".\build\data\verification.conf" -Force
+    $GetBanCheck2 = Get-Content ".\build\data\verification.conf" -Force
+    $BanCheck2 = $([Double]$GetBanCheck2[0]-5+([Double]$GetBanCheck2[1]*2))
     #if($BanCheck2 -ne $Check2){Stop-Process -Id $PID}
     $BanPass2 = "$($BanCheck2)" #| ConvertTo-SecureString -key $Dkey | ForEach-Object {[Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($_))}
     $BanCheck3 = Get-Content ".\build\data\conversion2.conf" -Force

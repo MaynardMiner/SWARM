@@ -2050,16 +2050,19 @@ Note: Am aware that XMRig and XMRstak have Updates
  -TTminer -di to -d for devices.
  -TTminer lyra2v3 fix
  -Removed more window background agent powershell errors (turned into warnings)
- -Slowed launchcode for miner down, to improve performance for slower hard drives.
+ -Slowed launchcode for miner down, there was chance bash script would finish before read/write
+  of instance.
  -Fixed more hiveOS algo naming.
  -Gminer_Amd is now working.
     -added in project folder- to use, move to gpu folder.
     -may crash hybrid rigs / doesn't work.
 -updated gminer
--updated xmr-stak: added new algos. Reduced insane fee.
+-updated xmr-stak: added new algos.
 -updated xmrig: added new algos.
 -Windows: reboot now closes SWARM first, then reboots.
     -displays message on screen.
 -Added reboot.ps1
 -Cleaned up Claymore/ethminer style API for windows agent errors.
 -Removed -pers auto args on grin algo launches- Did not add to remote update.
+-Added cryptonight/r
+-Removed lyra2z from fancyIX- It would just crash cards.
