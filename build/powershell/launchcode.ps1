@@ -265,10 +265,6 @@ function Start-LaunchCode {
         Start-Process "chmod" -ArgumentList "+x build/bash/startup.sh" -Wait
         Start-Process "chmod" -ArgumentList "+x $MinerDir/startup.sh" -Wait
         Start-Process ".\build\bash\startup.sh" -Wait
-        Set-Location $MinerDir
-        $MinerEXE = Split-Path $($MinerCurrent.Path) -Leaf
-        Rename-Item "$($MinerCurrent.InstanceName)" -NewName "$MinerEXE" -Force
-        Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 
         $MinerTimer.Restart()
         Do {
@@ -283,6 +279,10 @@ function Start-LaunchCode {
             Start-Sleep -S 1
         }
         $MinerTimer.Stop()
+        Set-Location $MinerDir
+        $MinerEXE = Split-Path $($MinerCurrent.Path) -Leaf
+        Rename-Item "$($MinerCurrent.InstanceName)" -NewName "$MinerEXE" -Force
+        Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
         $MinerProcess
     }
 }
