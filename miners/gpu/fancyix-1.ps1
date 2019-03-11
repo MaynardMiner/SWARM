@@ -11,7 +11,7 @@ elseif ($Platform -eq "windows") {$Build = "Zip"}
 $ConfigType = "AMD1"
 
 ##Parse -GPUDevices
-if ($AMDDevices1 -ne '') {$Devices = $AMDDevices1}
+if ($AMDDevices1 -ne "none") {$Devices = $AMDDevices1}
 
 ##Get Configuration File
 $GetConfig = "$dir\config\miners\fancyix.json"

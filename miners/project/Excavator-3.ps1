@@ -12,7 +12,7 @@ $ConfigType = "NVIDIA3"
 $CommandFile = Join-Path (Split-Path $Path) "command.json"
 
 ##Parse -GPUDevices
-if ($NVIDIADevices2 -ne '') {$Devices = $NVIDIADevices2}
+if ($NVIDIADevices2 -ne "none") {$Devices = $NVIDIADevices2}
 
 ##Get Configuration File
 $GetConfig = "$dir\config\miners\excavator.json"

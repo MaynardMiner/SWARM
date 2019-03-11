@@ -11,7 +11,7 @@ elseif ($Platform -eq "windows") {$Build = "Zip"}
 $ConfigType = "NVIDIA1"
 
 ##Parse -GPUDevices
-if ($NVIDIADevices1 -ne '') {$Devices = $NVIDIADevices1}
+if ($NVIDIADevices1 -ne "none") {$Devices = $NVIDIADevices1}
 
 ##Get Configuration File
 $GetConfig = "$dir\config\miners\bminer.json"

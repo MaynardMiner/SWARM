@@ -11,7 +11,7 @@ elseif ($Platform -eq "windows") {$Build = "Zip"}
 $ConfigType = "NVIDIA3"
 
 ##Parse -GPUDevices
-if ($NVIDIADevices3 -ne '') {$GPUDevices3 = $NVIDIADevices3}
+if ($NVIDIADevices3 -ne "none") {$GPUDevices3 = $NVIDIADevices3}
 if ($GPUDevices3 -ne '') {
     $GPUEDevices3 = $GPUDevices3 -replace ',', ' '
     $Devices = $GPUEDevices3
