@@ -18,7 +18,7 @@
     "path3":".\\bin\\cryptodredge-3\\CryptoDredge", 
     "minername":"CryptoDredge", 
     "version":"0.17.0", 
-    "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/CryptoDredge-Linux-9-2.tar.gz"
+    "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/CryptoDredge-linux-9-2.tar.gz"
 }, 
   "cc-mtp": {
     "name":"cc-mtp", 
