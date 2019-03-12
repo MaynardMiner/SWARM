@@ -9,7 +9,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#>
+#> 
 
 function Start-Webcommand {
     Param(
@@ -233,7 +233,7 @@ function Start-Webcommand {
                         $FileName = join-path ".\x64" "SWARM.$VersionNumber.zip"
                         $DLFileName = Join-Path "$WorkingDir" "x64\SWARM.$VersionNumber.zip"
                         $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$versionNumber/SWARM.$VersionNumber.zip"
-                        try {Invoke-WebRequest $URI -OutFile $FileName -UseBasicParsing -ErrorAction Stop}catch {$Failed = $true; $line += "Failed To Contact Github For Download! Must Do So Manually"}
+                        try { Invoke-WebRequest $URI -OutFile $FileName -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }catch {$Failed = $true; $line += "Failed To Contact Github For Download! Must Do So Manually"}
                         Start-Sleep -S 5
                         if ($Failed -eq $false) {
                             Start-Process "7z" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -Wait -WindowStyle Minimized

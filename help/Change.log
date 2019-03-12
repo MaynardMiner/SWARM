@@ -2100,6 +2100,11 @@ Note: ``start-stop-daemon`` is now dependency of SWARM for
 -Windows: Removes old PATH settings for SWARM, so there isn't
           issue with updates, or moving folder.
           -environment.ps1 added
+          -can now run ``get update`` locally through cmd.exe
+           and through HiveOS.
+             (must be running cmd.exe as administrator)
+          -new ``get update`` will happen upon updating to
+           next version- Will not work updating to this release.
 
  -New Features!
     ``benchmark help`` added
