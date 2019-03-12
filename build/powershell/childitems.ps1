@@ -51,7 +51,8 @@ function Get-ChildItemContent {
         }
     }
 
-    $ChildItems
+    [System.Collections.ArrayList]$AllContent = $ChildItems | %{$_};
+    $AllContent
 }
 
 function Get-Combination {
