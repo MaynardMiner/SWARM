@@ -180,7 +180,7 @@ function Start-OC {
         $OCMiners | foreach {
             if ($_.Type -like "*NVIDIA*") {
                 if ($_.ETHPill -eq "Yes") {
-                    if ($_.Devices -eq $null) {$OCPillDevices = Get-DeviceString -TypeCount $GCount.NVIDIA.PSObject.Properties.Value.Count}
+                    if ($_.Devices -eq "none") {$OCPillDevices = Get-DeviceString -TypeCount $GCount.NVIDIA.PSObject.Properties.Value.Count}
                     else {$OCPillDevices = Get-DeviceString -TypeDevices $_.Devices}
                     $OCPillDevices | foreach {$PillDevices += "$($_),"}
                 }
@@ -234,7 +234,7 @@ function Start-OC {
     $OCMiners | foreach {
         ##NVIDIA
         if ($_.Type -like "*NVIDIA*") {
-            if ($_.Devices -eq $null) {$OCDevices = Get-DeviceString -TypeCount $GCount.NVIDIA.PSObject.Properties.Value.Count}
+            if ($_.Devices -eq "none") {$OCDevices = Get-DeviceString -TypeCount $GCount.NVIDIA.PSObject.Properties.Value.Count}
             else {$OCDevices = Get-DeviceString -TypeDevices $_.Devices}
             $Core = $_.occore -split ' '
             $Mem = $_.ocmem -split ' '
@@ -315,7 +315,7 @@ function Start-OC {
         }
     
         if ($_.Type -like "*AMD*") {
-            if ($_.Devices -eq $null) {$OCDevices = Get-DeviceString -TypeCount $GCount.AMD.PSObject.Properties.Value.Count }
+            if ($_.Devices -eq "none") {$OCDevices = Get-DeviceString -TypeCount $GCount.AMD.PSObject.Properties.Value.Count }
             else {$OCDevices = Get-DeviceString -TypeDevices $_.Devices}
             $Core = $_.occore -split ' '
             $Mem = $_.ocmem -split ' '

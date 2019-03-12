@@ -12,6 +12,7 @@ $ConfigType = "NVIDIA1"
 
 ##Parse -GPUDevices
 if ($NVIDIADevices1 -ne "none") {$Devices = $NVIDIADevices1}
+else {$Devices = "none"}
 
 ##Get Configuration File
 $GetConfig = "$dir\config\miners\cryptodredge.json"

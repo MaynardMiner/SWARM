@@ -20,6 +20,7 @@ if ($NVIDIADevices2 -ne "none") {
     $ClayDevices2 = $ClayDevices2 -replace (",", "")
     $Devices = $ClayDevices2
 }    
+else {$Devices = "none"}
 
 ##Get Configuration File
 $GetConfig = "$dir\config\miners\progminer.json"

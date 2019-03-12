@@ -20,6 +20,7 @@ if ($NVIDIADevices3 -ne "none") {
     $ClayDevices3 = $ClayDevices3 -replace (",", "")
     $Devices = $ClayDevices3
 }
+else {$Devices = "none"}
 
 ##Get Configuration File
 $GetConfig = "$dir\config\miners\claymore.json"

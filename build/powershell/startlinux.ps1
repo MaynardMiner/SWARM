@@ -19,7 +19,7 @@ function Start-Linux {
     
     switch -WildCard ($Miner.Type) {
         "*NVIDIA*" {
-            if ($Miner.Devices -ne $null) {
+            if ($Miner.Devices -ne "none") {
                 switch ($Miner.DeviceCall) {
                     "ccminer" {$MinerArguments = "-d $($Miner.Devices) $($Miner.Arguments)"}
                     "ewbf" {$MinerArguments = "--cuda_devices $($Miner.Devices) $($Miner.Arguments)"}
@@ -39,7 +39,7 @@ function Start-Linux {
 
         "*AMD*" {
             Write-Host "Miner IS AMD"
-            if ($Miner.Devices -ne $null) {   
+            if ($Miner.Devices -ne "none") {   
                 switch ($Miner.DeviceCall) {
                     "claymore" {$MinerArguments = "-di $($Miner.Devices) $($Miner.Arguments)"}
                     "sgminer-gm" {Write-Host "Miner Has Devices"; $MinerArguments = "-d $($Miner.Devices) $($Miner.Arguments)"}

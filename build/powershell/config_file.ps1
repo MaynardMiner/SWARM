@@ -20,7 +20,7 @@ function set-minerconfig {
       
     $ConfigMiner = $InputMiner | ConvertFrom-JSon
     $ConfigPathDir = Split-Path $ConfigMiner.Path
-    if ($null -ne $ConfigMiner.Devices) {$MinerDevices = Get-DeviceString -TypeDevices $ConfigMiner.Devices}
+    if ($ConfigMiner.Devices -ne "none") {$MinerDevices = Get-DeviceString -TypeDevices $ConfigMiner.Devices}
     else {
         $GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
         if($ConfigMiner.Type -like "*NVIDIA*"){$TypeS = "NVIDIA"}

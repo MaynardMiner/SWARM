@@ -19,6 +19,7 @@ if ($AMDDevices1 -ne "none") {
     $ClayDevices1 = $ClayDevices1 -replace (",", "")
     $Devices = $ClayDevices1
 }
+else {$Devices = "none"}
 
 ##Get Configuration File
 $GetConfig = "$dir\config\miners\phoenix_amd.json"

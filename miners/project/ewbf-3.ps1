@@ -11,11 +11,12 @@ elseif ($Platform -eq "windows") {$Build = "Zip"}
 $ConfigType = "NVIDIA3"
 
 ##Parse -GPUDevices
-if ($NVIDIADevices3 -ne "none") {$GPUDevices3 = $NVIDIADevices3}
-if ($GPUDevices3 -ne '') {
-    $GPUEDevices3 = $GPUDevices3 -replace ',', ' '
-    $Devices = $GPUEDevices3
+if ($NVIDIADevices3 -ne "none") {
+    $GPUDevices3 = $NVIDIADevices3
+    $GPUDevices3 = $GPUDevices3 -replace ',', ' '
+    $Devices = $GPUDevices3
 }
+else {$Devices = "none"}
 
 ##Get Configuration File
 $GetConfig = "$dir\config\miners\ewbf.json"

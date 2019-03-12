@@ -18,7 +18,9 @@ $ClayDevices2  = $ClayDevices2 | foreach {$_ -replace ("$($_)",",$($_)")}
 $ClayDevices2  = $ClayDevices2 -join ""
 $ClayDevices2  = $ClayDevices2.TrimStart(" ",",")  
 $ClayDevices2 = $ClayDevices2 -replace(",","")
-$Devices = $ClayDevices2}
+$Devices = $ClayDevices2
+}
+else {$Devices = "none"}
 
 ##Get Configuration File
 $GetConfig = "$dir\config\miners\claymore.json"

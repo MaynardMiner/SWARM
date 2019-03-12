@@ -11,17 +11,18 @@ elseif ($Platform -eq "windows") {$Build = "Zip"}
 $ConfigType = "NVIDIA3"
 
 ##Parse -GPUDevices
-if ($NVIDIADevices3) {$GPUDevices3 = $NVIDIADevices3}
-if ($GPUDevices3 -ne '') {
-    $GPUEDevices3 = $GPUDevices3 -replace ',', ' '
-    $Devices = $GPUEDevices3
+if ($NVIDIADevices3 -ne "none") {
+    $GPUDevices3 = $NVIDIADevices3
+    $GPUDevices3 = $GPUDevices3 -replace ',', ' '
+    $Devices = $GPUDevices3
 }
+else {$Devices = "none"}
 
 ##gminer apparently doesn't know how to tell the difference between
 ##cuda and amd devices, like every other miner that exists. So now I 
 ##have to spend an hour and parse devices
 ##to matching platforms.
-if ($NVIDIADevices3) {
+if ($NVIDIADevices3 -ne "none") {
     $GPUDevices3 = $NVIDIADevices3
     $GPUEDevices3 = $GPUDevices3 -split ","
     $GPUEDevices3 | % {$ArgDevices += "$($GCount.NVIDIA.$_) " }

@@ -12,6 +12,7 @@ $ConfigType = "NVIDIA3"
 
 ##Parse -GPUDevices
 if ($NVIDIADevices3 -ne "none") {$Devices = $NVIDIADevices3}
+else {$Devices = "none"}
 
 ##Get Configuration File
 $GetConfig = "$dir\config\miners\z-enemy.json"
