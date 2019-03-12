@@ -412,63 +412,64 @@ clear_watts
         }
         else {$Get += "No Platforms Selected: Please choose a platform NVIDIA1,NVIDIA2,NVIDIA3,AMD1,CPU"}
     }
-    "update"
-    {
-       $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
-       if($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator) -ne $false)
-       {
-        $version = Get-Content ".\build\txt\version.txt"
-        $versionnumber = $version -replace "SWARM.", ""
-        $version1 = $versionnumber[4]
-        $version1 = $version1 | % {iex $_}
-        $version1 = $version1 + 1
-        $version2 = $versionnumber[2]
-        $version3 = $versionnumber[0]
-        if ($version1 -eq 10) {
-            $version1 = 0; 
-            $version2 = $version2 | % {iex $_}
-            $version2 = $version2 + 1
+    "update" {
+        if (Test-Path "C:\") {
+            $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+            if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator) -ne $false) {
+                $version = Get-Content ".\build\txt\version.txt"
+                $versionnumber = $version -replace "SWARM.", ""
+                $version1 = $versionnumber[4]
+                $version1 = $version1 | % {iex $_}
+                $version1 = $version1 + 1
+                $version2 = $versionnumber[2]
+                $version3 = $versionnumber[0]
+                if ($version1 -eq 10) {
+                    $version1 = 0; 
+                    $version2 = $version2 | % {iex $_}
+                    $version2 = $version2 + 1
+                }
+                if ($version2 -eq 10) {
+                    $version2 = 0; 
+                    $version3 = $version3 | % {iex $_}
+                    $version3 = $version3 + 1
+                }
+                $versionnumber = "$version3.$version2.$version1"    
+                $Failed = $false
+                Write-Host "Operating System Is Windows: Updating via 'get' is possible`n"
+                $versionlink = "https://github.com/MaynardMiner/SWARM/releases/download/v$VersionNumber/SWARM.$VersionNumber.zip"
+                Write-Host "Detected New Version Should Be $VersionNumber`n"
+                Write-Host "Attempting To Download New Version at $Versionlink`n"
+                $Location = Split-Path $Dir
+                Write-Host "Main Directory is $Location`n"
+                $NewLocation = Join-Path (Split-Path $Dir) "SWARM.$VersionNumber"
+                $FileName = join-path ".\x64" "SWARM.$VersionNumber.zip"
+                $DLFileName = Join-Path "$Dir" "x64\SWARM.$VersionNumber.zip"
+                $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$versionNumber/SWARM.$VersionNumber.zip"
+                try { Invoke-WebRequest $URI -OutFile $FileName -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }catch {$Failed = $true; Write-Host "Failed To Contact Github For Download! Must Do So Manually"}
+                Start-Sleep -S 5
+                if ($Failed -eq $false) {
+                    Start-Process "7z" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -Wait -WindowStyle Minimized
+                    Start-Sleep -S 3
+                    Write-Host "Config Command Initiated- Restarting SWARM`n"
+                    $MinerFile = ".\build\pid\miner_pid.txt"
+                    if (Test-Path $MinerFile) {$MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue}
+                    Stop-Process $MinerId -Force
+                    Write-Host "Stopping Old Miner`n"
+                    Start-Sleep -S 5
+                    Write-Host "Attempting to start new SWARM verison at $NewLocation\SWARM.bat"
+                    Write-Host "Downloaded and extracted SWARM successfully`n"
+                    Copy-Item ".\SWARM.bat" -Destination $NewLocation -Force
+                    Copy-Item ".\config\parameters\newarguments.json" -Destination "$NewLocation\config\parameters" -Force
+                    New-Item -Name "pid" -Path "$NewLocation\build" -ItemType "Directory"
+                    Copy-Item ".\build\pid\background_pid.txt" -Destination "$NewLocation\build\pid" -Force
+                    Set-Location $NewLocation
+                    Start-Process "SWARM.bat"
+                    Set-Location $Dir
+                }
+            }
+            else {$Get += "Cannot update. Are you administrator?"}
         }
-        if ($version2 -eq 10) {
-            $version2 = 0; 
-            $version3 = $version3 | % {iex $_}
-            $version3 = $version3 + 1
-        }
-        $versionnumber = "$version3.$version2.$version1"    
-        $Failed = $false
-        Write-Host "Operating System Is Windows: Updating via 'get' is possible`n"
-        $versionlink = "https://github.com/MaynardMiner/SWARM/releases/download/v$VersionNumber/SWARM.$VersionNumber.zip"
-        Write-Host "Detected New Version Should Be $VersionNumber`n"
-        Write-Host "Attempting To Download New Version at $Versionlink`n"
-        $Location = Split-Path $Dir
-        Write-Host "Main Directory is $Location`n"
-        $NewLocation = Join-Path (Split-Path $Dir) "SWARM.$VersionNumber"
-        $FileName = join-path ".\x64" "SWARM.$VersionNumber.zip"
-        $DLFileName = Join-Path "$Dir" "x64\SWARM.$VersionNumber.zip"
-        $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$versionNumber/SWARM.$VersionNumber.zip"
-        try { Invoke-WebRequest $URI -OutFile $FileName -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }catch {$Failed = $true; Write-Host "Failed To Contact Github For Download! Must Do So Manually"}
-        Start-Sleep -S 5
-        if ($Failed -eq $false) {
-            Start-Process "7z" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -Wait -WindowStyle Minimized
-            Start-Sleep -S 3
-            Write-Host "Config Command Initiated- Restarting SWARM`n"
-            $MinerFile = ".\build\pid\miner_pid.txt"
-            if (Test-Path $MinerFile) {$MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue}
-            Stop-Process $MinerId -Force
-            Write-Host "Stopping Old Miner`n"
-            Start-Sleep -S 5
-            Write-Host "Attempting to start new SWARM verison at $NewLocation\SWARM.bat"
-            Write-Host "Downloaded and extracted SWARM successfully`n"
-            Copy-Item ".\SWARM.bat" -Destination $NewLocation -Force
-            Copy-Item ".\config\parameters\newarguments.json" -Destination "$NewLocation\config\parameters" -Force
-            New-Item -Name "pid" -Path "$NewLocation\build" -ItemType "Directory"
-            Copy-Item ".\build\pid\background_pid.txt" -Destination "$NewLocation\build\pid" -Force
-            Set-Location $NewLocation
-            Start-Process "SWARM.bat"
-            Set-Location $Dir
-        }
-      }
-      else{$Get += "Cannot update. Are you administrator?"}
+        else {$Get += "get update can only run in windows currently..."}
     }
 
     default {
