@@ -201,13 +201,43 @@ function Start-LaunchCode {
     } 
 
     elseif ($Platforms -eq "linux") {
+
+        ##Specified Dir Again For debugging / Testing - No Harm
+        $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
+        $MinerDir = Join-Path $Dir $(Split-Path $($MinerCurrent.Path))
+        $MinerDir = $(Resolve-Path $MinerDir).Path
+        $MinerEXE = Join-Path $Dir $MinerCurrent.Path
+        $MinerEXE = $(Resolve-Path $MinerExe).Path
+        $StartDate = Get-Date
+
+        ##PID Tracking Path & Date
+        $PIDPath = Join-Path $Dir "build\pid\$($MinerCurrent.Name)_$($MinerCurrent.Type)_$($MinerCurrent.Coins)_pid.txt"
+        $PIDInfoPath = Join-Path $Dir "build\pid\$($MinerCurrent.Name)_$($MinerCurrent.Type)_$($MinerCurrent.Coins)_info.txt"
+        $PIDInfo = @{miner_exec = "$MinerEXE"; start_date = "$StartDate"; pid_path = "$PIDPath"}
+        $PIDInfo | ConvertTo-Json | Set-Content $PIDInfoPath
+
+        ##Clear Old Logs
         if (Test-Path $Logs) {Clear-Content $Logs}
-        Rename-Item "$($MinerCurrent.Path)" -NewName "$($MinerCurrent.InstanceName)" -Force
-        Start-Sleep -S 1
-        Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
-        $MinerConfig = "./$($MinerCurrent.InstanceName) $MinerArguments 2>&1 | tee $Logs"
-        $TestConfig = "./$(Split-Path $MinerCurrent.Path -Leaf) $MinerArguments 2>&1 | tee $Logs"
-        $MinerConfig | Set-Content ".\build\bash\config.sh" -Force
+
+        ##Clear Old PID information
+        if (Test-Path $PIDPath) {Remove-Item $PIDPath -Force}
+        if (Test-Path $PIDInfo) {Remove-Item $PIDInfo -Force}
+
+        ##Get Full Path Of Miner Executable and its dir
+        
+        ##Add Logging To Arguments
+        $MinerArgs = "$MinerArguments 2>&1 | tee $Logs"
+
+        ##Build Daemon
+        $Daemon = "start-stop-daemon --start --make-pidfile --pidfile $PIDPath --exec $MinerEXE -- $MinerArgs"
+
+        ##Test config -- Allows users to test miner settings written in miner dir
+        $TestConfigPath = Join-Path $MinerDir "config.sh"
+
+        ##Actual Config - config.sh has already +x chmod from git.
+        $Daemon | Set-Content ".\build\bash\config.sh" -Force
+
+        ##Classic Logo For Linux
         Write-Host "
          ______________
        /.----------..-'
@@ -224,7 +254,10 @@ function Start-LaunchCode {
        ' '. _ .' ' ' '. _ .' '      /     \
         ``._ _ _,'   ``._ _ _,'       ``._____\        
 "
+        ##Terminate Previous Miner Screens Of That Type.
         Start-Process ".\build\bash\killall.sh" -ArgumentList "$($MinerCurrent.Type)" -Wait
+
+        ##Ensure bestminers.txt has been written (for slower storage drives)
         $FileTimer = New-Object -TypeName System.Diagnostics.Stopwatch
         $FileTimer.Restart()
         $FileChecked = $false
@@ -235,54 +268,81 @@ function Start-LaunchCode {
         }until($FileChecked -eq $true -or $FileTimer.Elapsed.TotalSeconds -gt 9)
         $FileTimer.Stop()
         if ($FileChecked -eq $false) {Write-Warning "Failed To Write Miner Details To File"}
-        Start-Process ".\build\bash\killcx.sh" -ArgumentList $MinerCurrent.Port
-        Start-Sleep -S $MinerCurrent.Delay
-        Set-Location (Split-Path $($MinerCurrent.Path))
-        Start-Process "chmod" -ArgumentList "+x $($MinerCurrent.InstanceName)" -Wait
-        Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
-        Start-Sleep -S .25
-        Write-Host "Starting $($MinerCurrent.Name) Mining $($MinerCurrent.Coins) on $($MinerCurrent.Type)" -ForegroundColor Cyan
-        Start-Sleep -S .25
-        $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
-        $Export = Join-Path $Dir "build\export"
-        $MinerDir = Join-Path $Dir $(Split-Path $($MinerCurrent.Path))
-        $MinerDir = $(Resolve-Path $MinerDir).Path
 
+        ##Bash Script to free Port
+        Start-Process ".\build\bash\killcx.sh" -ArgumentList $MinerCurrent.Port
+
+        ##User generated Delay (Optional)
+        Start-Sleep -S $MinerCurrent.Delay
+
+        ##Notification To User That Miner Is Attempting To start
+        Write-Host "Starting $($MinerCurrent.Name) Mining $($MinerCurrent.Coins) on $($MinerCurrent.Type)" -ForegroundColor Cyan
+
+        ##FilePaths
+        $Export = Join-Path $Dir "build\export"
+
+        ##Build Two Bash Scripts: First script is to start miner while SWARM is running
+        ##Second Script is to build a "test script" written in bin folder for users to
+        ##to test. The reason this is done, is because build\bash\config.sh already has
+        ##exectuble permissions, so SWARM does not need to be ran in root. The other file
+        ##is made when miner is launched, and is chmod +x on the spot. Users not running in
+        ##root may not be able to do this, but at least SWARM will still work for them.
         $Script = @()
         $TestScript = @()
         $Script += "`#`!/usr/bin/env bash"
         $TestScript += "`#`!/usr/bin/env bash"
+
+        ##Make A New Screen
         $Script += "screen -S $($MinerCurrent.Type) -d -m", "sleep .1"
-        if ($MinerCurrent.Prestart) {$MinerCurrent.Prestart | foreach {$Script += "screen -S $($MinerCurrent.Type) -X stuff $`"$($_)\n`"", "sleep .1"; $TestScript += "$($_)", "sleep .1"}}
+
+        ##Add All exports / miner Pre-starts
+        ##I added a sleep .1 to each, because it is one script writing to
+        ##screen, and not being initiated through current terminal.
+        if ($MinerCurrent.Prestart) {
+            $MinerCurrent.Prestart | foreach {
+                $Script += "screen -S $($MinerCurrent.Type) -X stuff $`"$($_)\n`"", "sleep .1"; 
+                $TestScript += "$($_)", "sleep .1"
+            }
+        }
+
+        ##Navigate to the miner dir, so if you wanted to fiddle with miner if it crashed
+        ##You are already in dir.
         $Script += "screen -S $($MinerCurrent.Type) -X stuff $`"cd\n`"", "sleep .1"
         $Script += "screen -S $($MinerCurrent.Type) -X stuff $`"cd $MinerDir\n`"", "sleep .1"
+
+        ##This launches the previous generated configs.
         $Script += "screen -S $($MinerCurrent.Type) -X stuff $`"`$(< $Dir/build/bash/config.sh)\n`""
-        $TestScript += $TestConfig
+        $TestScript += $Daemon
+
+        ##Write Both Scripts
         $Script | Set-Content ".\build\bash\startup.sh"
         $TestScript | Set-Content "$MinerDir\startup.sh"
     
-        Start-Sleep -S 1
+        ## 2 Second Delay After Read/Write Of Config Files. For Slower Drives.
+        Start-Sleep -S 2
+
+        ##chmod again, to be safe.
         Start-Process "chmod" -ArgumentList "+x build/bash/startup.sh" -Wait
         Start-Process "chmod" -ArgumentList "+x $MinerDir/startup.sh" -Wait
+
+        ##Launch The Config
         Start-Process ".\build\bash\startup.sh" -Wait
 
+        ##Miner Should have started, PID will be written to specified file.
+        ##For up to 10 seconds, we want to check for the specified PID, and
+        ##Confirm the miner is running
         $MinerTimer.Restart()
         Do {
+            #Sleep for 1 every second
             Start-Sleep -S 1
-            Write-Host "Getting Process ID for $($MinerCurrent.MinerName)"           
-            $MinerProcess = Get-Process -Name "$($MinerCurrent.InstanceName)" -ErrorAction SilentlyContinue
-            $MinerProcess = $MinerProcess | Select -First 1
-        }until($MinerProcess -ne $null -or ($MinerTimer.Elapsed.TotalSeconds) -ge 10)  
-        if ($MinerProcess -ne $null) {
-            $MinerProcess.Id | Set-Content ".\build\pid\$($MinerCurrent.Name)_$($MinerCurrent.Coins)_$($MinerCurrent.InstanceName)_pid.txt"
-            Get-Date | Set-Content ".\build\pid\$($MinerCurrent.Name)_$($MinerCurrent.Coins)_$($MinerCurrent.InstanceName)_date.txt"
-            Start-Sleep -S 1
-        }
+            #Write We Are getting ID
+            Write-Host "Getting Process ID for $($MinerCurrent.MinerName)"
+            if(Test-Path $PIDPath) {$MinerPID = Get-Content $PIDPath | Select -First 1}
+            ##Powershell Get Process Instance
+            if($MinerPID){$MinerProcess = Get-Process -ID $MinerPid -ErrorAction SilentlyContinue}
+           }until($MinerProcess -ne $null -or ($MinerTimer.Elapsed.TotalSeconds) -ge 10)  
+        ##Stop Timer
         $MinerTimer.Stop()
-        Set-Location $MinerDir
-        $MinerEXE = Split-Path $($MinerCurrent.Path) -Leaf
-        Rename-Item "$($MinerCurrent.InstanceName)" -NewName "$MinerEXE" -Force
-        Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
         $MinerProcess
     }
 }

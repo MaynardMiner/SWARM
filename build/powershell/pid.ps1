@@ -37,6 +37,14 @@ While ($true) {
                     Write-Host "Closing SWARM" -foregroundcolor red
                     Get-Date | Out-File ".\build\data\timetable.txt"
                     Clear-Content ".\build\txt\hivestats.txt"
+                    $Miners = Get-ChildItem ".\build\pid.txt"
+                    $Miners.Name | % {
+                     if($_ -like "*info*")
+                      {
+                        $Info = Get-Content ".\build\pid\$($_)" | ConvertFrom-Json
+                        Start-Process "start-stop-daemon" -ArgumentList "--stop --name $($Info.miner_exec) --pidfile $($Info.pid_path) --retry 5" -Wait
+                      }
+                    }
                     start-killscript
                 }
             }
@@ -45,6 +53,14 @@ While ($true) {
             Write-Host "Closing SWARM" -foregroundcolor red
             Get-Date | Out-File ".\build\data\timetable.txt"
             Clear-Content ".\build\txt\hivestats.txt"
+            $Miners = Get-ChildItem ".\build\pid.txt"
+            $Miners.Name | % {
+             if($_ -like "*info*")
+              {
+                $Info = Get-Content ".\build\pid\$($_)" | ConvertFrom-Json
+                Start-Process "start-stop-daemon" -ArgumentList "--stop --name $($Info.miner_exec) --pidfile $($Info.pid_path) --retry 5" -Wait
+              }
+            }
             start-killscript
         }
     }

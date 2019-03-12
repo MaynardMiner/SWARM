@@ -1020,23 +1020,6 @@ While ($true) {
         ##Load Only Needed Algorithm Miners
         [System.Collections.ArrayList]$AlgoMiners = Get-Miners -Platforms $Platform -MinerType $Type -Stats $Stats -Pools $AlgoPools;
 
-        ##Re-Name Instance. This is for linux.
-        if ($Lite -eq "No") {
-            $AlgoMiners | ForEach {
-                $AlgoMiner = $_                            
-                if (-not (Test-Path $AlgoMiner.path)) {
-                    if (Test-Path (Split-Path $Algominer.Path)) {
-                        Set-Location (Split-Path $AlgoMiner.Path)
-                        if (Test-Path "*$($_.Type)*") {
-                            $OldInstance = Get-ChildItem "*$($AlgoMiner.Type)-*"
-                            Rename-Item $OldInstance -NewName "$($AlgoMiner.MinerName)" -force
-                        }
-                        Set-Location $Dir
-                    }
-                }
-            }
-        }
-
         ##Download Miners, If Miner fails three times- A ban is created against miner, and it should stop downloading.
         ##This works by every time it fails to download, it writes miner name to the download block list. If it counts
         ##The name more than three times- It skips over miner. It also interactively rebuilds the AlgoMiners Array into
@@ -1278,12 +1261,13 @@ While ($true) {
                             if ($_.XProcess = $null) {$_.Status = "Failed"}
                             else {
                                 $_.Status = "Idle"
-                                $PIDDate = ".\build\pid\$($_.Name)_$($_.Coins)_$($_.InstanceName)_date.txt"
-                                if (Test-path $PIDDate) {
-                                    $PIDDateFile = Get-Content $PIDDate | Out-String
-                                    $PIDTime = [DateTime]$PIDDateFile
+                                $MinerInfo = ".\build\pid\$($_.Name)_$($_.Type)_$($_.Coins)_info.txt"
+                                if (Test-path $MinerInfo) {
+                                    $MI = Get-Content $MinerInfo | ConvertFrom-Json
+                                    $PIDTime = [DateTime]$MI.start_date
                                     $_.Active += (Get-Date) - $PIDTime
-                                    Start-Process ".\build\bash\killall.sh" -ArgumentList "$($TypeSel)" -Wait
+                                    Write-Host "Stopping Miner: $($_.Name) on $($_Type) screen" -ForegroundColor Yellow
+                                    Start-Process "start-stop-daemon" -ArgumentList "--stop --name $($MI.miner_exec) --pidfile $($MI.pid_path) --retry 5" -Wait
                                 }
                             }
                         }
@@ -1361,11 +1345,19 @@ While ($true) {
                     else {
                         $PreviousMinerPorts.$($_.Type) = "($_.Port)"
                         $_.Status = "Idle"
-                        $PIDDate = ".\build\pid\$($_.Name)_$($_.Coins)_$($_.InstanceName)_date.txt"
+                        $PIDDate = ".\build\pid\$($_.Name)_$($_.Type)_$($_.Coins)_date.txt"
                         if (Test-path $PIDDate) {
-                            $PIDDateFile = Get-Content $PIDDate | Out-String
-                            $PIDTime = [DateTime]$PIDDateFile
-                            $_.Active += (Get-Date) - $PIDTime
+                            else {
+                                $_.Status = "Idle"
+                                $MinerInfo = ".\build\pid\$($_.Name)_$($_.Type)_$($_.Coins)_info.txt"
+                                if (Test-path $MinerInfo) {
+                                    $MI = Get-Content $MinerInfo | ConvertFrom-Json
+                                    $PIDTime = [DateTime]$MI.start_date
+                                    $_.Active += (Get-Date) - $PIDTime
+                                    Write-Host "Stopping Miner: $($_.Name) on $($_Type) screen" -ForegroundColor Yellow
+                                    Start-Process "start-stop-daemon" -ArgumentList "--stop --name $($MI.miner_exec) --pidfile $($MI.pid_path) --retry 5" -Wait
+                                }
+                            }                        
                         }
                     }
                 }
@@ -1378,8 +1370,6 @@ While ($true) {
                     $Current = $_ | ConvertTo-Json -Compress
                     $PreviousPorts = $PreviousMinerPorts | ConvertTo-Json -Compress
                     $_.Xprocess = Start-LaunchCode -PP $PreviousPorts -Platforms $Platform -MinerRound $Current_BestMiners -NewMiner $Current
-                    $_.Instance = ".\build\pid\$($_.Type)-$($Instance)"
-                    $PIDFile = "$($_.Name)_$($_.Coins)_$($_.InstanceName)_pid.txt"
                     $Instance++
                 }
                 if ($Restart -eq $true) {
