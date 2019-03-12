@@ -409,15 +409,19 @@ function Start-OC {
                         $Select = $Select[$i]
                         if ($MemClock -or $MDPM) {
                             $DOAmdOC = $true
-                            if ($Model[$Select] -like "*Vega*") {$PStates = 4}else {$PStates = 3}
+                            $MPStates = 3
+                            if ($Model[$Select] -like "*Vega*") {$MPStates = 4}
                             if ($MemClock.Count -eq 1) {$Memory_Clock = $MemClock}else {$Memory_Clock = $MemClock[$Select]}
                             if ($MDPM.Count -eq 1) {$Mem_State = $MDPM}else {$Mem_State = $MDPM[$Select]}
                             $DefaultMemClock = $Default_Mem_Clock."Gpu $Select P$($PStates-1) Mem Clock"
                             $DefaultMemVolt = $Default_Mem_Voltage."Gpu $Select P$($PStates-1) Mem Voltage"
                             if ($Memory_Clock) {$Mem = $Memory_Clock}else {$Mem = $DefaultMemClock}
-                            if ($Mem_State) { $MV = $Default_Mem_Voltage."Gpu $Select P$($Mem_State) Mem Voltage" }else {$MV = $DefaultMemVolt}
-                            $OCArgs += "Mem_P$($PStates-1)=$($Mem);$MV "
-                            $AScreenMem = "$($_.Type) MEM is $($_.ocmem) "
+                            if($Mem -like '*;*') {
+                                $OCArgs += "Mem_P$($MPStates-1)=$($Mem) "
+                            } else {
+                                if ($Mem_State) { $MV = $Default_Mem_Voltage."Gpu $Select P$($Mem_State) Mem Voltage" }else {$MV = $DefaultMemVolt}
+                                $OCArgs += "Mem_P$($MPStates-1)=$($Mem);$MV "
+                            }
                             $AScreenMDPM = "$($_.Type) MDPM is $($_.ocmdpm) "
                         }
                         if ($CoreClock -or $Voltage) {
@@ -437,14 +441,36 @@ function Start-OC {
                         }
                         if ($Fans) {
                             $DOAmdOC = $true
+                            $FansMap = (55,60,65,68,70)
                             if ($Fans.Count -eq 1) {
-                                $OCArgs += "Fan_P0=80;$($Fans) Fan_P1=80;$($Fans) Fan_P2=80;$($Fans) Fan_P3=80;$($Fans) Fan_P4=80;$($Fans) "
-                                $AScreenFans = "$($_.Type) Fans is $($_.ocfans) "
+                                if($Fans[0] -like '*;*') {
+                                    $_Fans = $Fans[0] -split ';'
+                                    for($j = 0; $j -lt 5; $j++) {
+                                        if($j -lt $_Fans.Count) {
+                                            $OCArgs += "Fan_P$($j)=$($FansMap[$j]);$($_Fans[$j]) "
+                                        } else {
+                                            $OCArgs += "Fan_P$($j)=$($FansMap[$j]);$($_Fans[$_Fans.Count-1]) "
+                                        }
+                                    }
+                                } else {
+                                    $OCArgs += "Fan_P0=$($FansMap[0]);$($Fans) Fan_P1=$($FansMap[1]);$($Fans) Fan_P2=$($FansMap[2]);$($Fans) Fan_P3=$($FansMap[3]);$($Fans) Fan_P4=$($FansMap[4]);$($Fans) "
+                                }
                             }
                             else {
-                                $OCArgs += "Fan_P0=80;$($Fans[$Select]) Fan_P1=80;$($Fans[$Select]) Fan_P2=80;$($Fans[$Select]) Fan_P3=80;$($Fans[$Select]) Fan_P4=80;$($Fans[$Select]) "
-                                $AScreenFans = "$($_.Type) Fans is $($_.ocfans) "
+                                if($Fans[$Select] -like '*;*') {
+                                    $_Fans = $Fans[$Select] -split ';'
+                                    for($j = 0; $j -lt 5; $j++) {
+                                        if($j -lt $_Fans.Count) {
+                                            $OCArgs += "Fan_P$($j)=$($FansMap[$j]);$($_Fans[$j]) "
+                                        } else {
+                                            $OCArgs += "Fan_P$($j)=$($FansMap[$j]);$($_Fans[$_Fans.Count-1]) "
+                                        }
+                                    }
+                                } else {
+                                    $OCArgs += "Fan_P0=$($FansMap[0]);$($Fans[$Select]) Fan_P1=$($FansMap[1]);$($Fans[$Select]) Fan_P2=$($FansMap[2]);$($Fans[$Select]) Fan_P3=$($FansMap[3]);$($Fans[$Select]) Fan_P4=$($FansMap[4]);$($Fans[$Select]) "
+                                }
                             }
+                            $AScreenFans = "$($_.Type) Fans is $($_.ocfans) "
                         }
                         $AScript += "Start-Process `".\OverdriveNTool.exe`" -ArgumentList `"$OCArgs`" -WindowStyle Minimized -Wait"
                     }
