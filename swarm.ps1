@@ -816,14 +816,14 @@ else {$Device_Count = $GPU_Count}
 Write-Host "Device Count = $Device_Count" -foregroundcolor green
 Start-Sleep -S 2
 if ($GPUCount -ne $null) {$LogGPUS = $GPUCount.Substring(0, $GPUCount.Length - 1)}
-if ($GPUDevices1){$GPUDevices1 | % {$NVIDIADevices1 += "$($_),"}}
-if ($GPUDevices2){$GPUDevices2 | % {$NVIDIADevices2 += "$($_),"}}
-if ($GPUDevices3){$GPUDevices3 | % {$NVIDIADevices3 += "$($_),"}}
-if ($GPUDevices1){$GPUDevices1 | % {$AMDDevices1 += "$($_),"}}
-if ($NVIDIADevices1){$NVIDIADevices1 = $NVIDIADevices1.Substring(0,$NVIDIADevices1.Length-1)}
-if ($NVIDIADevices2){$NVIDIADevices2 = $NVIDIADevices2.Substring(0,$NVIDIADevices2.Length-1)}
-if ($NVIDIADevices3){$NVIDIADevices3 = $NVIDIADevices3.Substring(0,$NVIDIADevices3.Length-1)}
-if ($AMDDevices1){$AMDDevices1 = $AMDDevices1.Substring(0,$AMDDevices1.Length-1)}
+if ($GPUDevices1){$GPUDevices1 | % {$NVIDIADevices1 += "$($_),"}} else {$NVIDIADevices1 = "none"}
+if ($GPUDevices2){$GPUDevices2 | % {$NVIDIADevices2 += "$($_),"}} else {$NVIDIADevices2 = "none"}
+if ($GPUDevices3){$GPUDevices3 | % {$NVIDIADevices3 += "$($_),"}} else {$NVIDIADevices3 = "none"}
+if ($GPUDevices1){$GPUDevices1 | % {$AMDDevices1 += "$($_),"}} else {$AMDDevices1 = "none"}
+if ($NVIDIADevices1 -ne "none"){$NVIDIADevices1 = $NVIDIADevices1.Substring(0,$NVIDIADevices1.Length-1)}
+if ($NVIDIADevices2 -ne "none"){$NVIDIADevices2 = $NVIDIADevices2.Substring(0,$NVIDIADevices2.Length-1)}
+if ($NVIDIADevices3 -ne "none"){$NVIDIADevices3 = $NVIDIADevices3.Substring(0,$NVIDIADevices3.Length-1)}
+if ($AMDDevices1 -ne "none"){$AMDDevices1 = $AMDDevices1.Substring(0,$AMDDevices1.Length-1)}
 $GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
 
 ##Reset-Old Stats And Their Time
