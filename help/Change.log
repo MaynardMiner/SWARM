@@ -2125,3 +2125,5 @@ Note: ``start-stop-daemon`` is now dependency of SWARM for
      on linux- I am working on fix.
 
  -progminer recompiled, attempted to fix NVIDIA issue.
+ -bminer updated
+ -wildrig updated, added rainforest algorithm
