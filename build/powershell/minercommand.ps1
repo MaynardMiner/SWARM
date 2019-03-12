@@ -19,14 +19,13 @@ function Get-Miners {
         [Parameter(Mandatory = $true)]
         [Array]$Stats,
         [Parameter(Mandatory = $true)]
-        [System.Collections.ArrayList]$Pools
+        [Array]$Pools
     )
 
     ## Reset Arrays In Case Of Weirdness
     $GetPoolBlocks = $null
     $GetAlgoBlocks = $null
     $GetMinerBlocks = $null
-    [System.Collections.ArrayList]$Miners = @()
 
     ## Pool Bans From File && Specify miner folder based on platform
     if (Test-Path ".\timeout\pool_block\pool_block.txt") {$GetPoolBlocks = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json}
@@ -36,7 +35,7 @@ function Get-Miners {
     else {$minerfilepath = "miners\asic"}
 
     ## Start Running miner scripts, Create an array of Miner Hash Tables
-    $GetMiners = if (Test-Path $minerfilepath) {Get-ChildItemContent $minerfilepath | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru} |
+    [System.Collections.ArrayList]$GetMiners = if (Test-Path $minerfilepath) {Get-ChildItemContent $minerfilepath | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru} |
             Where {$MinerType.Count -eq 0 -or (Compare-Object $MinerType $_.Type -IncludeEqual -ExcludeDifferent | Measure).Count -gt 0} |
             Where {$No_Miner -notcontains $_.Name} |
             Where {$_.Path -ne "None"} |
@@ -44,28 +43,25 @@ function Get-Miners {
             Where {$_.MinerName -ne "None"}
     }
 
+    $NVIDIA1EX = $GetMiners | Where TYPE -eq "NVIDIA1" | % {if ($No_Algo1 -contains $_.Algo){$_}}
+    $NVIDIA2EX = $GetMiners | Where TYPE -eq "NVIDIA2" | % {if ($No_Algo2 -contains $_.Algo){$_}}
+    $NVIDIA3EX = $GetMiners | Where TYPE -eq "NVIDIA3" | % {if ($No_Algo3 -contains $_.Algo){$_}}
+    $AMD1EX = $GetMiners | Where TYPE -eq "AMD1" | % {if ($No_Algo1 -contains $_.Algo){$_}}
+    $AMD2EX = $GetMiners | Where TYPE -eq "AMD2" | % {if ($No_Algo2 -contains $_.Algo){$_}}
+    $AMD3EX = $GetMiners | Where TYPE -eq "AMD3" | % {if ($No_Algo3 -contains $_.Algo){$_}}
 
-    $GetMiners | %{$Miners.Add($_)} | Out-Null;
-    $GetMiners = $null
-    $NVIDIA1EX = $Miners | Where TYPE -eq "NVIDIA1" | % {if ($No_Algo1 -contains $_.Algo){$_}}
-    $NVIDIA2EX = $Miners | Where TYPE -eq "NVIDIA2" | % {if ($No_Algo2 -contains $_.Algo){$_}}
-    $NVIDIA3EX = $Miners | Where TYPE -eq "NVIDIA3" | % {if ($No_Algo3 -contains $_.Algo){$_}}
-    $AMD1EX = $Miners | Where TYPE -eq "AMD1" | % {if ($No_Algo1 -contains $_.Algo){$_}}
-    $AMD2EX = $Miners | Where TYPE -eq "AMD2" | % {if ($No_Algo2 -contains $_.Algo){$_}}
-    $AMD3EX = $Miners | Where TYPE -eq "AMD3" | % {if ($No_Algo3 -contains $_.Algo){$_}}
-
-    $NVIDIA1EX | %{$Miners.Remove($_)} | Out-Null;
-    $NVIDIA2EX | %{$Miners.Remove($_)} | Out-Null;
-    $NVIDIA3EX | %{$Miners.Remove($_)} | Out-Null;
-    $AMD1EX | %{$Miners.Remove($_)} | Out-Null;
-    $AMD2EX | %{$Miners.Remove($_)} | Out-Null;
-    $AMD3EX | %{$Miners.Remove($_)} | Out-Null;
+    $NVIDIA1EX | %{$GetMiners.Remove($_)} | Out-Null;
+    $NVIDIA2EX | %{$GetMiners.Remove($_)} | Out-Null;
+    $NVIDIA3EX | %{$GetMiners.Remove($_)} | Out-Null;
+    $AMD1EX | %{$GetMiners.Remove($_)} | Out-Null;
+    $AMD2EX | %{$GetMiners.Remove($_)} | Out-Null;
+    $AMD3EX | %{$GetMiners.Remove($_)} | Out-Null;
 
     $Note = @()
     $ScreenedMiners = @()
 
     ## This Creates A New Array Of Miners, Screening Miners That Were Bad. As it does so, it notfies user.
-    $Miners | foreach {
+    $GetMiners | foreach {
         
         $TPoolBlocks = $GetPoolBlocks | Where Algo -eq $_.Algo | Where Name -eq $_.Name | Where Type -eq $_.Type | Where MinerPool -eq $_.Minerpool
         $TAlgoBlocks = $GetAlgoBlocks | Where Algo -eq $_.Algo | Where Name -eq $_.Name | Where Type -eq $_.Type
@@ -88,9 +84,9 @@ function Get-Miners {
         }
     }
     
-    $ScreenedMiners | %{$Miners.Remove($_)} | Out-Null;
+    $ScreenedMiners | %{$GetMiners.Remove($_)} | Out-Null;
     if ($Note) {$Note | % {Write-Host "$($_)" -ForegroundColor Magenta}}
-    $Miners
+    $GetMiners
 }
 
 
@@ -247,17 +243,17 @@ $Type | Foreach {
         $nonzero = $SortMiners | Where Type -eq $GetType | Where Symbol -eq $_ | Where Quote -NE 0;
 
         if ($zero) {
-            $MinersToCut = @()
-            $MinersToCut += $zero
-            $MinersToCut += $nonzero | Sort-Object @{Expression = "Quote"; Descending = $true}
-            $MinersToCut = $MinersToCut | Select-Object -Skip 1;
-            $MinersToCut | %{$CutMiners += $_};
+            $GetMinersToCut = @()
+            $GetMinersToCut += $zero
+            $GetMinersToCut += $nonzero | Sort-Object @{Expression = "Quote"; Descending = $true}
+            $GetMinersToCut = $GetMinersToCut | Select-Object -Skip 1;
+            $GetMinersToCut | %{$CutMiners += $_};
         }
         else {
-            $MinersToCut = @()
-            $MinersToCut = $nonzero | Sort-Object @{Expression = "Quote"; Descending = $true};
-            $MinersToCut = $MinersToCut | Select-Object -Skip 1;
-            $MinersToCut | %{$CutMiners += $_};
+            $GetMinersToCut = @()
+            $GetMinersToCut = $nonzero | Sort-Object @{Expression = "Quote"; Descending = $true};
+            $GetMinersToCut = $GetMinersToCut | Select-Object -Skip 1;
+            $GetMinersToCut | %{$CutMiners += $_};
         }
     }
   }

@@ -985,8 +985,6 @@ While ($true) {
             continue
         }
 
-        ## Load a resizable array
-        [System.Collections.ArrayList]$AlgoPools = @();
         ##Get Algorithm Pools
         Write-Host "Checking Algo Pools" -Foregroundcolor yellow;
         $AllAlgoPools = Get-Pools -PoolType "Algo" -Stats $Stats
@@ -999,7 +997,7 @@ While ($true) {
         $Top_3_Custom = $AllCustomPools.Symbol | Select-Object -Unique | ForEach-Object {$AllCustomPools | Where Symbol -EQ $_ | Sort-Object Price -Descending | Select -First 3};
 
         ## Combine Stats From Algo and Custom
-        if($Top_3_Algo){$Top_3_Algo | ForEach-Object {$AlgoPools.Add($_)} | Out-Null;}
+        [System.Collections.ArrayList]$AlgoPools = if($Top_3_Algo){$Top_3_Algo | ForEach-Object {$_}}
         if($Top_3_Custom){$Top_3_Custom | ForEach-Object {$AlgoPools.Add($_)} | Out-Null;}
         $Top_3_Algo = $Null;
         $Top_3_Custom = $Null;
@@ -1019,6 +1017,15 @@ While ($true) {
         Write-Host "Checking Algo Miners"
         ##Load Only Needed Algorithm Miners
         [System.Collections.ArrayList]$AlgoMiners = Get-Miners -Platforms $Platform -MinerType $Type -Stats $Stats -Pools $AlgoPools;
+
+        if($ALgoMiners.Count -eq 0) {
+            $HiveMessage = "No Miners Found! Check Arguments / Configuration"
+            $HiveWarning = @{result = @{command = "timeout"}}
+            if ($HiveOS -eq "Yes") {try {$SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch {Write-Warning "Failed To Notify HiveOS"}}
+            Write-Host $HiveMessage
+            start-sleep $Interval; 
+            continue    
+        }
 
         ##Download Miners, If Miner fails three times- A ban is created against miner, and it should stop downloading.
         ##This works by every time it fails to download, it writes miner name to the download block list. If it counts

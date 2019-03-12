@@ -2073,3 +2073,27 @@ Note: Am aware that XMRig and XMRstak have Updates
 -Removed -pers auto args on grin algo launches- Did not add to remote update.
 -Added cryptonight/r
 -Removed lyra2z from fancyIX- It would just crash cards.
+
+2.0.5
+
+Note: ``start-stop-daemon`` is now dependency of SWARM for
+    linux.
+
+-Linux: Launchcode reconfigured.
+ -uses natively designed ``start-stop-daemon`` to create
+  an artificial handle that SWARM can track.
+ -PID files are generated to build\pid
+ -Info regarding path information and dates are generated
+  to build\pid
+ -This should eliminate startup errors for good, in regards
+  issue with "file cannot be found!" instance errors.
+ -Swarm will now launch exectuable directly, will not rename.
+ -Swarm continues to make startup test script in .\bin folder.
+
+ -cnr added to teamredminer on update.
+ 
+ -Get-ChildItemContent now converts items into an array of non-fixed
+  size from start, in hopes to resolve conversion issues.
+
+ -moved ehssand_amd to project folder. FancyIX is faster, and ehssand
+  is very buggy (no further developement).
