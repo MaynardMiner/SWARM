@@ -2097,6 +2097,10 @@ Note: ``start-stop-daemon`` is now dependency of SWARM for
  -This may help with miners that zobmie on startup for some
   users (usually that is GPU compatibility issues).
 
+-Windows: Removes old PATH settings for SWARM, so there isn't
+          issue with updates, or moving folder.
+          -environment.ps1 added
+
  -New Features!
     ``benchmark help`` added
     -can now do benchmark miner [minername] [algo]

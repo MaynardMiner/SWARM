@@ -203,7 +203,7 @@ Write-Host "OS = $Platform"
 . .\build\powershell\config_file.ps1;
 if ($Type -like "*ASIC*") {. .\build\powershell\icserver.ps1; . .\build\powershell\poolmanager.ps1}
 if ($Platform -eq "linux") {. .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
-if ($Platform -eq "windows") {. .\build\powershell\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1; }
+if ($Platform -eq "windows") {. .\build\powershell\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1; . .\build\powershell\environment.ps1;}
 
 ##filepath dir
 $dir = (Split-Path $script:MyInvocation.MyCommand.Path)
@@ -219,6 +219,11 @@ $swarmstamp = "SWARMISBESTMINEREVER"
 if (-not (Test-Path ".\build\txt")) {New-Item -Name "txt" -ItemType "Directory" -Path ".\build" | Out-Null}
 $Platform | Set-Content ".\build\txt\os.txt"
 
+## Version
+$Version = Get-Content ".\h-manifest.conf" | ConvertFrom-StringData
+$Version.CUSTOM_NAME | Set-Content ".\build\txt\version.txt"
+$Version = $Version.CUSTOM_VERSION
+
 ## Initiate Update Check
 if ($Platform -eq "Windows") {$GetUpdates = "Yes"}
 else {$GetUpdates = $Update}
@@ -228,14 +233,21 @@ start-update -Update $Getupdates -Dir $dir -Platforms $Platform
 ## Close Previous Running Agent- Agent is left running to send stats online, even if SWARM crashes
 if ($Platform -eq "windows") {
     $dir | Set-Content ".\build\cmd\dir.txt"
+
+    ##Get current path envrionments
     $oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
+
+    ##First remove old Paths, in case this is an update / new dir
+    $oldpathlist = "$oldpath" -split ";"
+    $oldpathlist | %{if($_ -like "*SWARM*" -and $_ -notlike "*$dir\build\cmd*" ){Set-NewPath "remove" "$($_)"}}
+
     if($oldpath -notlike "*;$dir\build\cmd*")
      {
       Write-Host "
 Setting Path Variable For Commands: May require reboot to use.
 " -ForegroundColor Yellow
-      $newpath = "$oldpath;$dir\build\cmd"
-      Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH -Value $newPath
+      $newpath = "$dir\build\cmd"
+      Set-NewPath "add" $newpath
      }
     $newpath = "$oldpath;$dir\build\cmd"
     Write-Host "Stopping Previous Agent"
@@ -531,12 +543,6 @@ if (-Not (Test-Path ".\wallet\keys")) {new-item -Path ".\wallet" -Name "keys" -I
 
 ## Save Array To File
 $Wallets | % { $_ | ConvertTo-Json | Set-Content ".\wallet\keys\$($_.Wallet).txt"}
-
-## Version
-if (-Not (Test-Path ".\build\txt")) {New-Item -Name "txt" -Path ".\build" -ItemType "directory" | Out-Null}
-$Version = Get-Content ".\h-manifest.conf" | ConvertFrom-StringData
-$Version.CUSTOM_NAME | Set-Content ".\build\txt\version.txt"
-$Version = $Version.CUSTOM_VERSION
 
 ## lower case (Linux file path)
 if ($Platform -eq "Windows") {$Platform = "windows"}
