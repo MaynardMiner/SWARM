@@ -2077,7 +2077,12 @@ Note: Am aware that XMRig and XMRstak have Updates
 2.0.5
 
 Note: ``start-stop-daemon`` is now dependency of SWARM for
-    linux.
+    linux. It comes with HiveOS & Ubuntu, may not with
+    other OS's.
+
+ The entire linux launch sequence is written- I advise
+ to be prepared to rollback if issues, and save your
+ backup and config folder remotely to not lose data.
 
 -Linux: Launchcode reconfigured.
  -uses natively designed ``start-stop-daemon`` to create
@@ -2089,6 +2094,12 @@ Note: ``start-stop-daemon`` is now dependency of SWARM for
   issue with "file cannot be found!" instance errors.
  -Swarm will now launch exectuable directly, will not rename.
  -Swarm continues to make startup test script in .\bin folder.
+ -This may help with miners that zobmie on startup for some
+  users (usually that is GPU compatibility issues).
+
+ -New Features!
+    ``benchmark help`` added
+    -can now do benchmark miner [minername] [algo]
 
  -cnr added to teamredminer on update.
  
@@ -2097,3 +2108,10 @@ Note: ``start-stop-daemon`` is now dependency of SWARM for
 
  -moved ehssand_amd to project folder. FancyIX is faster, and ehssand
   is very buggy (no further developement).
+
+ -devices are now parsed literally to avoid issues between OS's.
+    -This should finally resolve issues with OC starting.
+    -This does NOT resolve issue with AMD and integrated cards
+     on linux- I am working on fix.
+
+ -progminer recompiled, attempted to fix NVIDIA issue.
