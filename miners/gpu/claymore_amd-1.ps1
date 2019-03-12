@@ -11,7 +11,7 @@ elseif ($Platform -eq "windows") {$Build = "Zip"}
 $ConfigType = "AMD1"
 
 ##Parse -GPUDevices
-if ($AMDDevices1 -ne '') {
+if ($AMDDevices1 -ne "none") {
     $ClayDevices1 = $AMDDevices1 -split ","
     $ClayDevices1 = Switch ($ClayDevices1) {"10" {"a"}; "11" {"b"}; "12" {"c"}; "13" {"d"}; "14" {"e"}; "15" {"f"}; "16" {"g"}; "17" {"h"}; "18" {"i"}; "19" {"j"}; "20" {"k"}; default {"$_"}; }
     $ClayDevices1 = $ClayDevices1 | foreach {$_ -replace ("$($_)", ",$($_)")}
@@ -20,6 +20,7 @@ if ($AMDDevices1 -ne '') {
     $ClayDevices1 = $ClayDevices1 -replace (",", "")
     $Devices = $ClayDevices1
 }
+else {$Devices = "none"}
 
 ##Get Configuration File
 $GetConfig = "$dir\config\miners\claymore_amd.json"

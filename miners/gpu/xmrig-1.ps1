@@ -38,7 +38,7 @@ if ($CoinAlgo -eq $null) {
                     Prestart   = $PreStart
                     Type       = $ConfigType
                     Path       = $Path
-                    Devices    = $Devices
+                    Devices    = "none"
                     DeviceCall = "xmrstak"
                     Arguments  = "-a $($Config.$ConfigType.naming.$($_.Algorithm)) --api-port=60049 -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.User1) -p$($_.Pass1)$($Diff) --donate-level 1 --nicehash --opencl-platform=$AMDPlatform $($Config.$ConfigType.commands.$($_.Algorithm))"    
                     HashRates  = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)}

@@ -80,7 +80,7 @@ function Set-Power {
     if ($PwrType -like "*NVIDIA*") {
         if ($Platform -eq "linux") {
             $TypeS = "NVIDIA"
-            if ($MinerDevices) {$Devices = Get-DeviceString -TypeDevices "$($MinerDevices)"}
+            if ($MinerDevices -ne "none") {$Devices = Get-DeviceString -TypeDevices "$($MinerDevices)"}
             else {$Devices = Get-DeviceString -TypeCount $($PwrDevices.$TypeS.PSObject.Properties.Value.Count)}
             $TotalPower = 0
             $NVIDIAStats = @{}
@@ -94,7 +94,7 @@ function Set-Power {
         else {
             $GPUPower = [PSCustomObject]@{}
             $TypeS = "NVIDIA"
-            if ($MinerDevices) {$Devices = Get-DeviceString -TypeDevices "$($MinerDevices)"}
+            if ($MinerDevices -ne "none") {$Devices = Get-DeviceString -TypeDevices "$($MinerDevices)"}
             else {$Devices = Get-DeviceString -TypeCount $($PwrDevices.$TypeS.PSObject.Properties.Value.Count)}
             for ($i = 0; $i -lt $PwrDevices.NVIDIA.PSObject.Properties.Value.Count; $i++) {$GPUPower | Add-Member -MemberType NoteProperty -Name "$($PwrDevices.NVIDIA.$i)" -Value 0}
             $PowerArray = @()
@@ -112,7 +112,7 @@ function Set-Power {
     if ($PwrType -like "*AMD*") {
         $GPUPower = [PSCustomObject]@{}
         $TypeS = "AMD"
-        if ($MinerDevices) {$Devices = Get-DeviceString -TypeDevices $MinerDevices}
+        if ($MinerDevices -ne "none") {$Devices = Get-DeviceString -TypeDevices $MinerDevices}
         else {$Devices = Get-DeviceString -TypeCount $($PwrDevices.$TypeS.PSObject.Properties.Value.Count)}
         for ($i = 0; $i -lt $PwrDevices.AMD.PSObject.Properties.Value.Count; $i++) {$GPUPower | Add-Member -MemberType NoteProperty -Name "$($PwrDevices.AMD.$i)" -Value 0}
         $PowerArray = @()

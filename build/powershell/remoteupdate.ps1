@@ -27,9 +27,6 @@ function start-update {
 
     if ($StartUpdate -eq $true) {
         $PreviousVersions = @()
-        $PreviousVersions += "SWARM.1.8.0"
-        $PreviousVersions += "SWARM.1.9.0"
-        $PreviousVersions += "SWARM.1.9.1"
         $PreviousVersions += "SWARM.1.9.2"
         $PreviousVersions += "SWARM.1.9.3"
         $PreviousVersions += "SWARM.1.9.4"
@@ -42,6 +39,7 @@ function start-update {
         $PreviousVersions += "SWARM.2.0.1"
         $PreviousVersions += "SWARM.2.0.2"
         $PreviousVersions += "SWARM.2.0.3"
+        $PreviousVersions += "SWARM.2.0.4"
 
         Write-Host "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
         Write-Host "Check $Location For any Previous Versions"
@@ -253,52 +251,13 @@ function start-update {
                             if ($ChangeFile -eq "wildrig.json") {
                                 $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                     if ($_ -ne "name") {
+                                        ##2.0.5
+                                        $Data.$_.commands| Add-Member "rainforest" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "rainforest" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "rainforest" "rainforest" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "rainforest" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue
 
-                                        $Data.$_.commands| Add-Member "exosis" "" -ErrorAction SilentlyContinue
-                                        $Data.$_.difficulty | Add-Member "exosis" "" -ErrorAction SilentlyContinue
-                                        $Data.$_.naming | Add-Member "exosis" "exosis" -ErrorAction SilentlyContinue
-                                        $Data.$_.oc | Add-Member "exosis" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue
 
-                                        $Data.$_.commands| Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
-                                        $Data.$_.difficulty | Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
-                                        $Data.$_.naming | Add-Member "lyra2v3" "lyra2v3" -ErrorAction SilentlyContinue
-                                        $Data.$_.oc | Add-Member "lyra2v3" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue          
-
-                                        $Data.$_.commands| Add-Member "lyra2rev3" "" -ErrorAction SilentlyContinue
-                                        $Data.$_.difficulty | Add-Member "lyra2rev3" "" -ErrorAction SilentlyContinue
-                                        $Data.$_.naming | Add-Member "lyra2rev3" "lyra2v3" -ErrorAction SilentlyContinue
-                                        $Data.$_.oc | Add-Member "lyra2rev3" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue          
-
-                                        $Data.$_.commands| Add-Member "sha256q" "" -ErrorAction SilentlyContinue
-                                        $Data.$_.difficulty | Add-Member "sha256q" "" -ErrorAction SilentlyContinue
-                                        $Data.$_.naming | Add-Member "sha256q" "sha256q" -ErrorAction SilentlyContinue
-                                        $Data.$_.oc | Add-Member "sha256q" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue                    
-
-                                        $Data.$_.commands| Add-Member "x16rt" "" -ErrorAction SilentlyContinue
-                                        $Data.$_.difficulty | Add-Member "x16rt" "" -ErrorAction SilentlyContinue
-                                        $Data.$_.naming | Add-Member "x16rt" "x16rt" -ErrorAction SilentlyContinue
-                                        $Data.$_.oc | Add-Member "x16rt" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue                    
-
-                                        $Data.$_.commands| Add-Member "veil" "" -ErrorAction SilentlyContinue
-                                        $Data.$_.difficulty | Add-Member "veil" "" -ErrorAction SilentlyContinue
-                                        $Data.$_.naming | Add-Member "veil" "x16rt" -ErrorAction SilentlyContinue
-                                        $Data.$_.oc | Add-Member "veil" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue
-
-                                        $Data.$_.commands| Add-Member "mtp" "" -ErrorAction SilentlyContinue
-                                        $Data.$_.difficulty | Add-Member "mtp" "" -ErrorAction SilentlyContinue
-                                        $Data.$_.naming | Add-Member "mtp" "mtp" -ErrorAction SilentlyContinue
-                                        $Data.$_.oc | Add-Member "mtp" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue
-          
-                                        $Data.$_.commands| Add-Member "bmw512" "" -ErrorAction SilentlyContinue
-                                        $Data.$_.difficulty | Add-Member "bmw512" "" -ErrorAction SilentlyContinue
-                                        $Data.$_.naming | Add-Member "bmw512" "bmw512" -ErrorAction SilentlyContinue
-                                        $Data.$_.oc | Add-Member "bmw512" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue
-
-                                        ## Temp remove these algos
-                                        $Data.$_.commands = $Data.$_.commands | Select -ExcludeProperty "mtp"
-                                        $Data.$_.difficulty = $Data.$_.difficulty | Select -ExcludeProperty "mtp"
-                                        $Data.$_.naming = $Data.$_.naming | Select -ExcludeProperty "mtp"
-                                        $Data.$_.oc = $Data.$_.oc | Select -ExcludeProperty "mtp"
                                     }
                                 }
                             }
@@ -469,13 +428,29 @@ function start-update {
                                     }
                                 }
                             }
-                            
+
+                            if ($ChangeFile -eq "teamredminer.json") {
+                                $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                    if ($_ -ne "name") {
+                                        ##2.0.5
+                                        $Data.$_.commands| Add-Member "cryptonightr" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "cryptonightr" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "cryptonightr" "cnr" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "cryptonightr" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue
+                                    }
+                                }
+                            }
+
                             ##2.0.2
                             if($ChangeFile -eq "pool-algos.json")
                              {
-                               $Data | Add-Member "cryptonightr" @{"hiveos_name" = "cryptonight/r"; "pools_to_exclude" = @("add pools here","comma seperated"); "miners_to_exclude" = @("add miners here","comma seperated")}
+                               ##2.0.4
+                               $Data | Add-Member "cryptonightr" @{"hiveos_name" = "cryptonight/r"; "pools_to_exclude" = @("add pools here","comma seperated"); "miners_to_exclude" = @("add miners here","comma seperated")} -ErrorAction SilentlyContinue
+                               ##2.0.5
+                               $Data | Add-Member "rainforest" @{"hiveos_name" = "rainforest"; "pools_to_exclude" = @("add pools here","comma seperated"); "miners_to_exclude" = @("add miners here","comma seperated")} -ErrorAction SilentlyContinue
+                               ##2.0.3
                                $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Foreach {
-                                 $Data.$_ | Add-Member "miners_to_exclude" @("add miners here","comma seperated") -ErrorAction SilentlyContinue
+                               $Data.$_ | Add-Member "miners_to_exclude" @("add miners here","comma seperated") -ErrorAction SilentlyContinue
                                }
                              }
                             if ($Data.NVIDIA1.oc) {

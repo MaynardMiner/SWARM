@@ -36,7 +36,7 @@ function Start-LaunchCode {
 
     switch -WildCard ($MinerCurrent.Type) {
         "*NVIDIA*" {
-            if ($MinerCurrent.Devices) {
+            if ($MinerCurrent.Devices -ne "none") {
                 switch ($MinerCurrent.DeviceCall) {
                     "ccminer" {$MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "ewbf" {$MinerArguments = "--cuda_devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
@@ -80,7 +80,7 @@ function Start-LaunchCode {
         }
 
         "*AMD*" {
-            if ($MinerCurrent.Devices) {   
+            if ($MinerCurrent.Devices -ne "none") {   
                 switch ($MinerCurrent.DeviceCall) {
                     "claymore" {$MinerArguments = "-di $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "xmrstak" {$MinerArguments = "$($MinerCurrent.Arguments)"}
@@ -213,7 +213,7 @@ function Start-LaunchCode {
         ##PID Tracking Path & Date
         $PIDPath = Join-Path $Dir "build\pid\$($MinerCurrent.Name)_$($MinerCurrent.Type)_$($MinerCurrent.Coins)_pid.txt"
         $PIDInfoPath = Join-Path $Dir "build\pid\$($MinerCurrent.Name)_$($MinerCurrent.Type)_$($MinerCurrent.Coins)_info.txt"
-        $PIDInfo = @{miner_exec = "$MinerEXE"; start_date = "$StartDate"; pid_path = "$PIDPath"}
+        $PIDInfo = @{miner_exec = "$MinerEXE"; start_date = "$StartDate"; pid_path = "$PIDPath";}
         $PIDInfo | ConvertTo-Json | Set-Content $PIDInfoPath
 
         ##Clear Old Logs
@@ -229,7 +229,7 @@ function Start-LaunchCode {
         $MinerArgs = "$MinerArguments 2>&1 | tee $Logs"
 
         ##Build Daemon
-        $Daemon = "start-stop-daemon --start --make-pidfile --pidfile $PIDPath --exec $MinerEXE -- $MinerArgs"
+        $Daemon = "start-stop-daemon --start --make-pidfile --chdir $MinerDir --pidfile $PIDPath --exec $MinerEXE -- $MinerArgs"
 
         ##Test config -- Allows users to test miner settings written in miner dir
         $TestConfigPath = Join-Path $MinerDir "config.sh"

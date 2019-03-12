@@ -13,7 +13,8 @@ $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 $ConfigType = "AMD1"
 
 ##Parse -GPUDevices
-if ($AMDDevices1 -ne '') {$Devices = $AMDDevices1}
+if ($AMDDevices1 -ne "none") {$Devices = $AMDDevices1}
+else {$Devices = "none"}
 
 ##Get Configuration File
 $GetConfig = "$dir\config\miners\avermore.json"

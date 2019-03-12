@@ -11,7 +11,7 @@ elseif ($Platform -eq "windows") {$Build = "Zip"}
 $ConfigType = "NVIDIA2"
 
 ##Parse -GPUDevices
-if ($NVIDIADevices2 -ne '') {
+if ($NVIDIADevices2 -ne "none") {
     $ClayDevices2 = $NVIDIADevices2 -split ","
     $ClayDevices2 = Switch ($ClayDevices2) {"10" {"a"}; "11" {"b"}; "12" {"c"}; "13" {"d"}; "14" {"e"}; "15" {"f"}; "16" {"g"}; "17" {"h"}; "18" {"i"}; "19" {"j"}; "20" {"k"}; default {"$_"}; }
     $ClayDevices2 = $ClayDevices2 | foreach {$_ -replace ("$($_)", ",$($_)")}
@@ -20,6 +20,7 @@ if ($NVIDIADevices2 -ne '') {
     $ClayDevices2 = $ClayDevices2 -replace (",", "")
     $Devices = $ClayDevices2
 }    
+else {$Devices = "none"}
 
 ##Get Configuration File
 $GetConfig = "$dir\config\miners\progminer.json"

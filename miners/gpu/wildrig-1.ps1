@@ -38,7 +38,7 @@ if ($CoinAlgo -eq $null) {
                     Prestart   = $PreStart
                     Type       = $ConfigType
                     Path       = $Path
-                    Devices    = $Devices
+                    Devices    = "none"
                     DeviceCall = "wildrig"
                     Arguments  = "--opencl-platform=$AMDPlatform --api-port 60050 --algo $($Config.$ConfigType.naming.$($_.Algorithm)) --url stratum+tcp://$($_.Host):$($_.Port) --user $($_.User1) --pass $($_.Pass1)$($Diff) $($Config.$ConfigType.commands.$($Config.$ConfigType.naming.$($_.Algorithm)))"
                     HashRates  = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)}

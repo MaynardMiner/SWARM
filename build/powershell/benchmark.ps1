@@ -17,13 +17,38 @@ param(
     [parameter(Position = 1, Mandatory = $false)]
     [String]$Name,
     [parameter(Position = 2, Mandatory = $false)]
-    [String]$Platform
+    [String]$Arg1
 )
 Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))
 Write-Host "Checking For $command Benchmarks"
 $Get = @()
 
 Switch ($command) {
+    "help" {
+    $Get += 
+"benchmark help guide
+
+benchmark miner [minername]
+    -This will benchmark miner of given name. [minername] must match name
+     on 'get stats' screen.
+    -By Extension This will lift all bans on miner
+
+benchmark algorithm [algoname]
+    -This will benchmark algorithm of given name. [algoname] must match name
+     on 'get stats' screen.
+
+benchmark miner [minername] [algoname]
+    -This will benchmark on the algorithm of given name on the miner of the
+     given name. Both must match names on 'get stats' screen.
+     -By Extension This will lift all bans on miner
+
+benchmark timeout
+    -This will remove all bans.
+
+benchmark all
+    -This will benchmark everything. CANNOT BE UNDONE!
+"
+    }
     "timeout" {
         if (Test-Path ".\timeout") {Remove-Item ".\timeout" -Recurse -Force}
         $Get += "Removed All Timeouts and Bans"
@@ -57,8 +82,17 @@ Switch ($command) {
     }
     "miner" {
         if ($Name -ne $null) {
-            if (Test-Path ".\stats\*$Name*") {Remove-Item ".\stats\*$Name*" -Force}
-            if (Test-Path ".\backup\*_hashrate.txt*") {Remove-Item ".\stats\*$Name*" -Force}
+            if($Arg1 -ne $null){
+                if (Test-Path ".\stats\$($Name)_$($Arg1)_hashrate.txt") {Remove-Item ".\stats\$($Name)_$($Arg1)_hashrate.txt" -Force}
+                if (Test-Path ".\backup\$($Name)_$($Arg1)_hashrate.txt") {Remove-Item ".\backup\$($Name)_$($Arg1)_hashrate.txt" -Force}
+                $Get += "Removed all $Name bans."
+                $Get += "Removed all $Name $Arg1 stats."
+             }
+            else {
+              if (Test-Path ".\stats\*$Name*") {Remove-Item ".\stats\*$Name*" -Force}
+              if (Test-Path ".\backup\*$Name*") {Remove-Item ".\backup\*$Name*" -Force}
+              $Get += "Removed all $Name stats and bans."
+            }
             if (Test-Path ".\timeout\pool_block\pool_block.txt") {
                 $NewPoolBlock = @()
                 $GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json
@@ -87,7 +121,6 @@ Switch ($command) {
                 if ($NewPoolBlock) {$NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block\algo_block.txt"}
                 else {Clear-Content ".\timeout\download_block\download_block.txt"}
             }
-            $Get += "Removed all $Name stats and bans."
         }
     }
     "algorithm" {

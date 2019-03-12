@@ -399,7 +399,7 @@ While ($True) {
 
             ## Determine Devices
             if ($_.Type -ne "CPU") {
-                if ($_.Devices -eq "" -or $_.Devices -eq $null) {$Devices = Get-DeviceString -TypeCount $GCount.$TypeS.PSObject.Properties.Value.Count}
+                if ($_.Devices -eq "none") {$Devices = Get-DeviceString -TypeCount $GCount.$TypeS.PSObject.Properties.Value.Count}
                 else {$Devices = Get-DeviceString -TypeDevices $_.Devices}
             }
             elseif ($_.Type -eq "CPU") {$Devices = Get-DeviceString -TypeCount $GCount.$TypeS.PSObject.Properties.Value.Count}

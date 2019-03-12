@@ -187,7 +187,7 @@
     "path2": ".\\bin\\bminer-2\\bminer",
     "path3": ".\\bin\\bminer-3\\bminer",
     "minername": "bminer",
-    "version": "15.2.0",
+    "version": "15.3.0",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/bminer-linux.tar.gz"
   },
   "miniz": {
@@ -202,12 +202,12 @@
   },
   "progminer": {
     "name": "progminer",
-    "type": "amd",
+    "type": "nvidia",
     "path1": ".\\bin\\progminer-1\\progminer",
     "path2": ".\\bin\\progminer-2\\progminer",
     "path3": ".\\bin\\progminer-3\\progminer",
     "minername": "progminer",
-    "version": "0.16.0",
+    "version": "0.17.0",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/progminer-linux-10.tar.gz"
   }
 }

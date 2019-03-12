@@ -147,7 +147,7 @@
     "path2": ".\\bin\\wildrig-2\\wildrig-multi",
     "path3": ".\\bin\\wildrig-3\\wildrig-multi",
     "minername": "wildrig-multi",
-    "version": "0.15.3.8",
+    "version": "0.15.4",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/wildrig-linux.tar.gz"
   },
   "fancyix": {
@@ -177,7 +177,7 @@
     "path2": ".\\bin\\progminer_amd-2\\progminer",
     "path3": ".\\bin\\progminer_amd-3\\progminer",
     "minername": "progminer",
-    "version": "0.16.0",
+    "version": "0.17.0",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/progminer-linux-10.tar.gz"
   }
 }

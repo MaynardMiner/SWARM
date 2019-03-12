@@ -11,7 +11,8 @@ elseif ($Platform -eq "windows") {$Build = "Zip"}
 $ConfigType = "NVIDIA3"
 
 ##Parse -GPUDevices
-if ($NVIDIADevices3 -ne '') {$Devices = $NVIDIADevices3}
+if ($NVIDIADevices3 -ne "none") {$Devices = $NVIDIADevices3}
+else {$Devices = "none"}
 
 ##Get Configuration File
 $GetConfig = "$dir\config\miners\cc-yescrypt.json"
