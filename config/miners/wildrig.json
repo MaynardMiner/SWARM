@@ -41,7 +41,8 @@
       "jeonghash": "",
       "padihash": "",
       "pawelhash": "",
-      "bmw512": ""
+      "bmw512": "",
+      "rainforest": ""
     },
     "difficulty": {
       "bcd": "",
@@ -75,7 +76,8 @@
       "jeonghash": "",
       "padihash": "",
       "pawelhash": "",
-      "bmw512": ""
+      "bmw512": "",
+      "rainforest": ""
     },
     "naming": {
       "bcd": "bcd",
@@ -109,7 +111,8 @@
       "jeonghash": "glt-jeonghash",
       "padihash": "glt-padihash",
       "pawelhash": "glt-pawelhash",
-      "bmw512": "bmw512"
+      "bmw512": "bmw512",
+      "rainforest": ""
     },
     "oc": {
       "bcd": {
@@ -369,6 +372,14 @@
         "mem": ""
       },
       "bmw512": {
+        "fans": "",
+        "v": "",
+        "dpm": "",
+        "mem": "",
+        "mdpm": "",
+        "core": ""
+      },
+      "rainforest": {
         "fans": "",
         "v": "",
         "dpm": "",

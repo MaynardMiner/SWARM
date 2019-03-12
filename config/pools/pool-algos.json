@@ -703,6 +703,17 @@
       "comma seperate"
     ]
   },
+  "rainforest": {
+    "hiveos_name": "rainforest",
+    "pools_to_exclude": [
+      "add pools here",
+      "comma seperated"
+    ],
+    "miners_to_exclude": [
+      "add miners here",
+      "comma seperate"
+    ]
+  },
   "renesis": {
     "hiveos_name": "renesis",
     "pools_to_exclude": [
