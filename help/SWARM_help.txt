@@ -101,10 +101,10 @@ Argument            Options             Explanation
                                     profit/day. Only currencies on cryptocompare will work. Default
                                     is USD
 
--CoinExchange      [Any]            Coin Symbol Of Your Wallet (Will only work for coins on cryptocompare).
-                                    This will calculate the coin of your choice profit/day. Good if you 
-                                    are mining a coin other than BTC. If not, leave BTC or LTC to see 
-                                    hash exchange rates. Default is LTC
+-CoinExchange      [Any]            Coin Symbol Of An Optional AltWallet (Will only work for coins on 
+                                    cryptocompare). This will calculate the coin of your choice profit/day
+                                    and display on stats screens. Good if you are exchanging into a coin 
+                                    other than BTC.
 
 -Interval         [1-1000]          Expression is in seconds. Time before miner begins checking pools for 
                                     pricing. Ideal target goal should be miner windows close/open every 

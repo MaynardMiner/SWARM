@@ -2109,6 +2109,7 @@ Note: ``start-stop-daemon`` is now dependency of SWARM for
  -New Features!
     ``benchmark help`` added
     -can now do benchmark miner [minername] [algo]
+    ``-CoinExchange`` is now an optional parameter.
 
  -cnr added to teamredminer on update.
  

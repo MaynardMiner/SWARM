@@ -31,7 +31,7 @@
     "Wallet2":  "",
     "HiveOS":  "Yes",
     "GPUDevices2":  [],
-    "CoinExchange":  "LTC",
+    "CoinExchange":  "",
     "Interval":  300,
     "Passwordcurrency1": "BTC",
     "CPUThreads":  1,

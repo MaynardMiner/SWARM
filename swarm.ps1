@@ -79,7 +79,7 @@ param(
     [Parameter(Mandatory = $false)]
     [String]$Proxy = "", #i.e http://192.0.0.1:8080 
     [Parameter(Mandatory = $false)]
-    [String]$CoinExchange = "LTC",
+    [String]$CoinExchange,
     [Parameter(Mandatory = $false)]
     [string]$Auto_Coin = "No",
     [Parameter(Mandatory = $false)]
@@ -1291,10 +1291,13 @@ While ($true) {
 
         ## This section pulls relavant statics that users require, and then outputs them to screen or file, to be pulled on command.
         if ($ConserveMessage) {$ConserveMessage | % {Write-Host "$_" -ForegroundColor Red}}
+        if($CoinExchange)
+        {
         $Y = [string]$CoinExchange
         $H = [string]$Currency
         $J = [string]'BTC'
         $BTCExchangeRate = Invoke-WebRequest "https://min-api.cryptocompare.com/data/pricemulti?fsyms=$Y&tsyms=$J" -UseBasicParsing | ConvertFrom-Json | Select-Object -ExpandProperty $Y | Select-Object -ExpandProperty $J
+        }
         $MSFile = ".\build\txt\minerstats.txt"
         if (Test-Path $MSFIle) {Clear-Content ".\build\txt\minerstats.txt" -Force}
         $type | foreach {if (Test-Path ".\build\txt\$($_)-hash.txt") {Clear-Content ".\build\txt\$($_)-hash.txt" -Force}}
