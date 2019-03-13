@@ -51,7 +51,8 @@ function Get-ChildItemContent {
         }
     }
 
-    [System.Collections.ArrayList]$AllContent = $ChildItems | %{$_};
+    $AllContent = New-Object System.Collections.ArrayList
+    $ChildItems | %{$AllContent.Add($_) | Out-Null}
     $AllContent
 }
 

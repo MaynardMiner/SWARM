@@ -1003,8 +1003,9 @@ While ($true) {
         $Top_3_Custom = $AllCustomPools.Symbol | Select-Object -Unique | ForEach-Object {$AllCustomPools | Where Symbol -EQ $_ | Sort-Object Price -Descending | Select -First 3};
 
         ## Combine Stats From Algo and Custom
-        [System.Collections.ArrayList]$AlgoPools = if($Top_3_Algo){$Top_3_Algo | ForEach-Object {$_}}
-        if($Top_3_Custom){$Top_3_Custom | ForEach-Object {$AlgoPools.Add($_)} | Out-Null;}
+        $AlgoPools = New-Object System.Collections.ArrayList
+        if($Top_3_Algo){$Top_3_Algo | ForEach-Object {$AlgoPools.Add($_) | Out-Null}}
+        if($Top_3_Custom){$Top_3_Custom | ForEach-Object {$AlgoPools.Add($_) | Out-Null}}
         $Top_3_Algo = $Null;
         $Top_3_Custom = $Null;
 
@@ -1022,7 +1023,9 @@ While ($true) {
 
         Write-Host "Checking Algo Miners"
         ##Load Only Needed Algorithm Miners
-        [System.Collections.ArrayList]$AlgoMiners = Get-Miners -Platforms $Platform -MinerType $Type -Stats $Stats -Pools $AlgoPools;
+        $AlgoMiners = New-Object System.Collections.ArrayList
+        $SearchMiners = Get-Miners -Platforms $Platform -MinerType $Type -Stats $Stats -Pools $AlgoPools;
+        $SearchMiners | %{$AlgoMiners.Add($_) | Out-Null}
 
         if($ALgoMiners.Count -eq 0) {
             $HiveMessage = "No Miners Found! Check Arguments / Configuration"
