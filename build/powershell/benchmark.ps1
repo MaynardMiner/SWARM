@@ -15,11 +15,12 @@ param(
     [parameter(Position = 0, Mandatory = $true)]
     [String]$command,
     [parameter(Position = 1, Mandatory = $false)]
-    [String]$Name,
+    [String]$Name = $Null,
     [parameter(Position = 2, Mandatory = $false)]
-    [String]$Arg1
+    [String]$Arg1 = $Null
 )
 Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))
+
 Write-Host "Checking For $command Benchmarks"
 $Get = @()
 
@@ -81,8 +82,8 @@ benchmark all
         $Get += "Removed All Benchmarks and Bans"
     }
     "miner" {
-        if ($Name -ne $null) {
-            if($Arg1 -ne $null){
+        if ($Name -ne $Null) {
+            if($Arg1){
                 if (Test-Path ".\stats\$($Name)_$($Arg1)_hashrate.txt") {Remove-Item ".\stats\$($Name)_$($Arg1)_hashrate.txt" -Force}
                 if (Test-Path ".\backup\$($Name)_$($Arg1)_hashrate.txt") {Remove-Item ".\backup\$($Name)_$($Arg1)_hashrate.txt" -Force}
                 $Get += "Removed all $Name bans."
@@ -124,7 +125,7 @@ benchmark all
         }
     }
     "algorithm" {
-        if ($Name -ne $null) {
+        if ($Name -ne "" -or $Name -ne $Null) {
             if (Test-Path ".\stats\*$($Name)_hashrate.txt*") {Remove-Item ".\stats\*$($Name)_hashrate.txt*" -Force}
             if (Test-Path ".\stats\*$($Name)_power.txt*") {Remove-Item ".\stats\*$($Name)_power.txt*" -Force}
             if (Test-Path ".\backup\*$($Name)_hashrate.txt*") {Remove-Item ".\backup\*$($Name)_hashrate.txt*" -Force}
