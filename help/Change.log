@@ -2139,3 +2139,6 @@ Note: ``start-stop-daemon`` is now dependency of SWARM for
         attempt to log.
         -May improve miner screen output in windows for
          some miners.
+
+ -Found and fixed typo in new benchmark command for
+  ``miner``.
