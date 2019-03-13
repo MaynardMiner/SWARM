@@ -96,10 +96,10 @@ function start-update {
                             if ($ChangeFile -eq "cryptodredge.json") {
                                 $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                     if ($_ -ne "name") {
-                                        $Data.$_.commands = $Data.$_.commands | Select -ExcludeProperty "blake2s", "exosis", "lbk3", "Lyra2REv2", "lyra2v2", "polytimos", "skein", "lyra2vc0banhash", "masari", "stellite, beam"
-                                        $Data.$_.difficulty = $Data.$_.difficulty | Select -ExcludeProperty "blake2s", "exosis", "lbk3", "Lyra2REv2", "lyra2v2", "polytimos", "skein", "lyra2vc0banhash", "masari", "stellite, beam"
-                                        $Data.$_.naming = $Data.$_.naming | Select -ExcludeProperty "blake2s", "exosis", "lbk3", "Lyra2REv2", "lyra2v2", "polytimos", "skein", "lyra2vc0banhash", "masari", "stellite, beam"
-                                        $Data.$_.oc = $Data.$_.oc | Select -ExcludeProperty "blake2s", "exosis", "lbk3", "Lyra2REv2", "lyra2v2", "polytimos", "skein", "lyra2vc0banhash", "masari", "stellite, beam"
+                                        $Data.$_.commands = $Data.$_.commands | Select -ExcludeProperty "blake2s", "exosis", "lbk3", "Lyra2REv2", "lyra2v2", "polytimos", "skein", "lyra2vc0banhash", "masari", "stellite, beam" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty = $Data.$_.difficulty | Select -ExcludeProperty "blake2s", "exosis", "lbk3", "Lyra2REv2", "lyra2v2", "polytimos", "skein", "lyra2vc0banhash", "masari", "stellite, beam" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming = $Data.$_.naming | Select -ExcludeProperty "blake2s", "exosis", "lbk3", "Lyra2REv2", "lyra2v2", "polytimos", "skein", "lyra2vc0banhash", "masari", "stellite, beam" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc = $Data.$_.oc | Select -ExcludeProperty "blake2s", "exosis", "lbk3", "Lyra2REv2", "lyra2v2", "polytimos", "skein", "lyra2vc0banhash", "masari", "stellite, beam" -ErrorAction SilentlyContinue
         
                                         $Data.$_.commands| Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
                                         $Data.$_.difficulty | Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
@@ -146,10 +146,10 @@ function start-update {
                             if ($ChangeFile -eq "lolminer.json") {
 
                                 ##2.0.3
-                                $Data.$_.commands = $Data.$_.commands | Select -ExcludeProperty "beam"
-                                $Data.$_.difficulty = $Data.$_.difficulty | Select -ExcludeProperty "beam"
-                                $Data.$_.naming = $Data.$_.naming | Select -ExcludeProperty "beam"
-                                $Data.$_.oc = $Data.$_.oc | Select -ExcludeProperty "beam"
+                                $Data.$_.commands = $Data.$_.commands | Select -ExcludeProperty "beam" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty = $Data.$_.difficulty | Select -ExcludeProperty "beam" -ErrorAction SilentlyContinue
+                                $Data.$_.naming = $Data.$_.naming | Select -ExcludeProperty "beam" -ErrorAction SilentlyContinue
+                                $Data.$_.oc = $Data.$_.oc | Select -ExcludeProperty "beam" -ErrorAction SilentlyContinue
 
                                 ##2.0.4
                                 $Data.$_.commands| Add-Member "zhash" "--coin AUTO144_5" -ErrorAction SilentlyContinue -Force

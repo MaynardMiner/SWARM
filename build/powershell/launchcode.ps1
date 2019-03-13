@@ -160,8 +160,8 @@ function Start-LaunchCode {
             #dir
             $WorkingDirectory = Join-Path $Dir $(Split-Path $($MinerCurrent.Path))
 
-            ##Clear logs
-            if (Test-Path $MinerCurrent.Log) {Clear-Content $MinerCurrent.Log -ErrorAction SilentlyContinue}
+            ##Remove Old Logs
+            if (Test-Path $MinerCurrent.Log) {Remove-Item $MinerCurrent.Log -Force}
 
             ##Make Test.bat for users
             if (-not (Test-Path "$WorkingDirectory\swarm-start.bat")) {
@@ -233,9 +233,6 @@ function Start-LaunchCode {
         $PIDInfo = @{miner_exec = "$MinerEXE"; start_date = "$StartDate"; pid_path = "$PIDPath"; }
         $PIDInfo | ConvertTo-Json | Set-Content $PIDInfoPath
 
-        ##Clear Old Logs
-        if (Test-Path $MinerCurrent.Log) {Clear-Content $MinerCurrent.Log}
-
         ##Clear Old PID information
         if (Test-Path $PIDPath) {Remove-Item $PIDPath -Force}
         if (Test-Path $PIDInfo) {Remove-Item $PIDInfo -Force}
@@ -274,6 +271,9 @@ function Start-LaunchCode {
 "
         ##Terminate Previous Miner Screens Of That Type.
         Start-Process ".\build\bash\killall.sh" -ArgumentList "$($MinerCurrent.Type)" -Wait
+
+        ##Remove Old Logs
+        if (Test-Path $Logs) {Remove-Item $Logs -Force}
 
         ##Ensure bestminers.txt has been written (for slower storage drives)
         $FileTimer = New-Object -TypeName System.Diagnostics.Stopwatch
