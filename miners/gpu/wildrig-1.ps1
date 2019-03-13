@@ -10,6 +10,9 @@ elseif ($Platform -eq "windows") {$Build = "Zip"}
 
 $ConfigType = "AMD1"
 
+##Log Directory
+$Log = Join-Path $dir "logs\$ConfigType.log"
+
 ##Get Configuration File
 $GetConfig = "$dir\config\miners\wildrig.json"
 try {$Config = Get-Content $GetConfig | ConvertFrom-Json}
@@ -57,7 +60,8 @@ if ($CoinAlgo -eq $null) {
                     URI        = $Uri
                     BUILD      = $Build
                     Algo       = "$($_.Algorithm)"
-                }
+                    Log        = $Log
+                }            
             }
         }
     }

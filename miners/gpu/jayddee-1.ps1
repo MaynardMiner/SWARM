@@ -10,6 +10,9 @@ elseif ($Platform -eq "windows") {$Build = "Zip"}
 
 $ConfigType = "CPU"
 
+##Log Directory
+$Log = Join-Path $dir "logs\$ConfigType.log"
+
 ##Parse -CPUDevices
 if ($CPUThreads -ne '') {$Devices = $CPUThreads}
 
@@ -55,7 +58,8 @@ if ($CoinAlgo -eq $null) {
                     BUILD      = $Build
                     PoolType   = "AlgoPools"
                     Algo       = "$($_.Algorithm)"
-                }
+                    Log        = $Log 
+                }            
             }
         }     
     }

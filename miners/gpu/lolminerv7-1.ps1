@@ -10,6 +10,9 @@ elseif ($Platform -eq "windows") {$Build = "Zip"}
 
 $ConfigType = "AMD1"
 
+##Log Directory
+$Log = Join-Path $dir "logs\$ConfigType.log"
+
 ##Parse -GPUDevices
 if ($AMDDevices1 -ne "none") {$Devices = $AMDDevices1}
 else {$Devices = "none"}
@@ -35,7 +38,7 @@ if ($CoinAlgo -eq $null) {
         $AlgoPools | Where Symbol -eq $MinerAlgo | foreach {
             if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
                 if ($Config.$ConfigType.difficulty.$($_.Algorithm)) {$Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))"}else {$Diff = ""}
-                if($Platform -eq "linux"){$extra = "--asm 1 "}
+                if ($Platform -eq "linux") {$extra = "--asm 1 "}
                 [PSCustomObject]@{
                     Delay      = $Config.$ConfigType.delay
                     Symbol     = "$($_.Algorithm)"
@@ -62,7 +65,8 @@ if ($CoinAlgo -eq $null) {
                     URI        = $Uri
                     BUILD      = $Build
                     Algo       = "$($_.Algorithm)"
-                }
+                    Log        = $Log 
+                }            
             }
         }
     }

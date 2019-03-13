@@ -11,13 +11,13 @@ if ($Poolname -eq $Name) {
         return
     }
 
-    try {$ETHExchangeRate = Invoke-WebRequest "https://min-api.cryptocompare.com/data/pricemulti?fsyms=ETH&tsyms=BTC" -UseBasicParsing | ConvertFrom-Json | Select-Object -ExpandProperty "ETH" | Select-Object -ExpandProperty "BTC"}
+    try {$ETHExchangeRate = Invoke-WebRequest "https://min-api.cryptocompare.com/data/pricemulti?fsyms=ETH&tsyms=BTC" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop | ConvertFrom-Json | Select-Object -ExpandProperty "ETH" | Select-Object -ExpandProperty "BTC"}
     catch {Write-Warning "SWARM failed to get ETH Pricing for $Name"; return}
 
     $Whalesburg_Algorithm = "ethash"
   
-    if ($Algorithm -eq $Whalesburg_Algorithm) {
-        $Whalesburg_Port = 7777
+    if ($Algorithm -contains $Whalesburg_Algorithm -and $Bad_pools.$Whalesburg_Algorithm -notcontains $Name) {
+        $Whalesburg_Port = "7777"
         $Whalesburg_Host = "eu1.whalesburg.com"
         ## add fee to compare to nicehash (Still trying to understand PPS+)
         $Prorate = 2

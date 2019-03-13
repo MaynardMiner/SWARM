@@ -158,7 +158,7 @@ if ($Poolname -eq $Name -and $FileName -eq $Name) {
     $Custom_Algo = $Pool.Algo
     $Coin = $Pool.Coin
 
-    if ($Algorithm -eq $Custom_Algo) {
+    if ($Algorithm -contains $Custom_Algo -and $Bad_pools.$Custom_Algo -notcontains $Name) {
         $Custom_Host = "$($Pool.Miner_Url)"
         $Custom_Port = "$($Pool.Miner_Port)"
         $Fees = $Custom_Request.$Coin.fees

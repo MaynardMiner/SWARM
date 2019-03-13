@@ -1003,8 +1003,9 @@ While ($true) {
         $Top_3_Custom = $AllCustomPools.Symbol | Select-Object -Unique | ForEach-Object {$AllCustomPools | Where Symbol -EQ $_ | Sort-Object Price -Descending | Select -First 3};
 
         ## Combine Stats From Algo and Custom
-        [System.Collections.ArrayList]$AlgoPools = if($Top_3_Algo){$Top_3_Algo | ForEach-Object {$_}}
-        if($Top_3_Custom){$Top_3_Custom | ForEach-Object {$AlgoPools.Add($_)} | Out-Null;}
+        $AlgoPools = New-Object System.Collections.ArrayList
+        if($Top_3_Algo){$Top_3_Algo | ForEach-Object {$AlgoPools.Add($_) | Out-Null}}
+        if($Top_3_Custom){$Top_3_Custom | ForEach-Object {$AlgoPools.Add($_) | Out-Null}}
         $Top_3_Algo = $Null;
         $Top_3_Custom = $Null;
 
@@ -1022,7 +1023,9 @@ While ($true) {
 
         Write-Host "Checking Algo Miners"
         ##Load Only Needed Algorithm Miners
-        [System.Collections.ArrayList]$AlgoMiners = Get-Miners -Platforms $Platform -MinerType $Type -Stats $Stats -Pools $AlgoPools;
+        $AlgoMiners = New-Object System.Collections.ArrayList
+        $SearchMiners = Get-Miners -Platforms $Platform -MinerType $Type -Stats $Stats -Pools $AlgoPools;
+        $SearchMiners | %{$AlgoMiners.Add($_) | Out-Null}
 
         if($ALgoMiners.Count -eq 0) {
             $HiveMessage = "No Miners Found! Check Arguments / Configuration"
@@ -1241,6 +1244,8 @@ While ($true) {
                     Profit         = 0
                     Power          = 0
                     Fiat_Day       = 0
+                    Log            = $_.Log
+                    Strike         = $false
                 }
             }
         }
@@ -1350,7 +1355,7 @@ While ($true) {
             if ($_.BestMiner -eq $false) {
                 if ($Platform -eq "windows") {
                     if ($_.XProcess -eq $null) {$_.Status = "Failed"}
-                    elseif ($_.XProcess.HasExited -eq $false) {
+                    elseif ($_.XProcess.HasExited -eq $false -or $_.Strike -eq $true) {
                         $_.Active += (Get-Date) - $_.XProcess.StartTime
                         $_.XProcess.CloseMainWindow() | Out-Null
                         $_.Status = "Idle"
@@ -1358,7 +1363,7 @@ While ($true) {
                 }
                 elseif ($Platform -eq "linux") {
                     if ($_.XProcess = $null) {$_.Status = "Failed"}
-                    else {
+                    elseif ($_.XProcess.HasExited -eq $false -or $_.Strike -eq $true) {
                         $PreviousMinerPorts.$($_.Type) = "($_.Port)"
                         $_.Status = "Idle"
                         $PIDDate = ".\build\pid\$($_.Name)_$($_.Type)_$($_.Coins)_date.txt"
@@ -1378,7 +1383,7 @@ While ($true) {
                     }
                 }
             }
-            elseif ($null -eq $_.XProcess -or $_.XProcess.HasExited -and $Lite -eq "No") {
+            elseif ($null -eq $_.XProcess -or $_.XProcess.HasExited -or $_.Strike -eq $true -and $Lite -eq "No") {
                 if ($TimeDeviation -ne 0) {
                     $Restart = $true
                     $_.Activated++
@@ -1622,12 +1627,12 @@ While ($true) {
             $MinerPoolBan = $false
             $MinerAlgoBan = $false
             $MinerBan = $false
-            $Strike = $false
+            $_.Strike = $false
             if ($_.BestMiner -eq $true) {
                 if ($null -eq $_.XProcess -or $_.XProcess.HasExited) {
                     $_.Status = "Failed"
                     $_.WasBenchMarked = $False
-                    $Strike = $true
+                    $_.Strike = $true
                     Write-Host "Cannot Benchmark- Miner is not running" -ForegroundColor Red
                 }
                 else { 
@@ -1649,7 +1654,7 @@ While ($true) {
                                     if (-not (Test-Path "backup")) {New-Item "backup" -ItemType "directory" | Out-Null}
                                     Write-Host "$($_.Name) $($_.Coins) Starting Bench"
                                     if ($null -eq $Miner_HashRates -or $Miner_HashRates -eq 0) {
-                                        $Strike = $true
+                                        $_.Strike = $true
                                         Write-Host "Stat Attempt Yielded 0" -Foregroundcolor Red
                                         Start-Sleep -S .25
                                         $GPUPower = 0
@@ -1683,7 +1688,7 @@ While ($true) {
                                         $StatCheck = "$($GetLiveStat.Live)"
                                         $ScreenCheck = "$($StatCheck | ConvertTo-Hash)"
                                         if ($ScreenCheck -eq "0.00 PH" -or $null -eq $StatCheck) {
-                                            $Strike = $true
+                                            $_.Strike = $true
                                             $_.WasBenchmarked = $False
                                             Write-Host "Stat Failed Write To File" -Foregroundcolor Red
                                         }
@@ -1698,7 +1703,7 @@ While ($true) {
                                             Get-Intensity $_.Type $_.Coins $_.Path
                                             Write-Host "Stat Written
 " -foregroundcolor green
-                                            $Strike = $false
+                                            $_.Strike = $false
                                         } 
                                     }
                                 }
@@ -1708,13 +1713,13 @@ While ($true) {
                             if (Test-Path $RejectCheck) {
                                 Write-Host "Rejections Are Too High" -ForegroundColor DarkRed
                                 $_.WasBenchmarked = $false
-                                $Strike = $true
+                                $_.Strike = $true
                             }
                         }
                     }
                 }
 
-                if ($Strike -ne $true) {
+                if ($_.Strike -ne $true) {
                     if ($Warnings."$($_.Name)" -ne $null) {$Warnings."$($_.Name)" | foreach {try {$_.bad = 0}catch {}}}
                     if ($Warnings."$($_.Name)_$($_.Algo)" -ne $null) {$Warnings."$($_.Name)_$($_.Algo)" | foreach {try {$_.bad = 0}catch {}}}
                     if ($Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" -ne $null) {$Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)"| foreach {try {$_.bad = 0}catch {}}}
@@ -1722,7 +1727,7 @@ While ($true) {
 		 
                 ## Strike-Out System. Will not work with Lite Mode
                 if ($LITE -eq "No") {
-                    if ($Strike -eq $true) {
+                    if ($_.Strike -eq $true) {
                         if ($_.WasBenchmarked -eq $False) {
                             if (-not (Test-Path ".\timeout")) {New-Item "timeout" -ItemType "directory" | Out-Null}
                             if (-not (Test-Path ".\timeout\pool_block")) {New-Item -Path ".\timeout" -Name "pool_block" -ItemType "directory" | Out-Null}

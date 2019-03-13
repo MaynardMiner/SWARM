@@ -9,6 +9,9 @@ if ($Platform -eq "linux") {$Build = "Dpkg"}
 elseif ($Platform -eq "windows") {$Build = "Zip"}
 
 $ConfigType = "NVIDIA2"
+
+##Log Directory
+$Log = Join-Path $dir "logs\$ConfigType.log"
 $CommandFile = Join-Path (Split-Path $Path) "command.json"
 
 ##Parse -GPUDevices

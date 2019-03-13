@@ -32,7 +32,7 @@ function Start-Webcommand {
             $data = $swarm_message
             $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword
             $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-            $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+            $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 10 -Method POST -Body $DoResponse -ContentType 'application/json'
             $trigger = "exec"
         }
   
@@ -45,7 +45,7 @@ function Start-Webcommand {
             $data = "Rebooting"
             $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id
             $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-            $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+            $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 10 -Method POST -Body $DoResponse -ContentType 'application/json'
             Write-Host $method $messagetype $data
             $trigger = "reboot"
             $MinerFile = ".\build\pid\miner_pid.txt"

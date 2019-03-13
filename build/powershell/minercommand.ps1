@@ -35,13 +35,16 @@ function Get-Miners {
     else {$minerfilepath = "miners\asic"}
 
     ## Start Running miner scripts, Create an array of Miner Hash Tables
-    [System.Collections.ArrayList]$GetMiners = if (Test-Path $minerfilepath) {Get-ChildItemContent $minerfilepath | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru} |
+    $GetMiners = New-Object System.Collections.ArrayList
+    $ChildMiners = if (Test-Path $minerfilepath) {Get-ChildItemContent $minerfilepath | ForEach {$_.Content | Add-Member @{Name = $_.Name} -PassThru} |
             Where {$MinerType.Count -eq 0 -or (Compare-Object $MinerType $_.Type -IncludeEqual -ExcludeDifferent | Measure).Count -gt 0} |
             Where {$No_Miner -notcontains $_.Name} |
             Where {$_.Path -ne "None"} |
             Where {$_.Uri -ne "None"} |
             Where {$_.MinerName -ne "None"}
     }
+
+    $ChildMiners | %{$GetMiners.Add($_) | Out-Null}
 
     $NVIDIA1EX = $GetMiners | Where TYPE -eq "NVIDIA1" | % {if ($No_Algo1 -contains $_.Algo){$_}}
     $NVIDIA2EX = $GetMiners | Where TYPE -eq "NVIDIA2" | % {if ($No_Algo2 -contains $_.Algo){$_}}

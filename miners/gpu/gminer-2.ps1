@@ -10,6 +10,9 @@ elseif ($Platform -eq "windows") {$Build = "Zip"}
 
 $ConfigType = "NVIDIA2"
 
+##Log Directory
+$Log = Join-Path $dir "logs\$ConfigType.log"
+
 ##Parse -GPUDevices
 if ($NVIDIADevices2 -ne "none") {
     $GPUDevices2 = $NVIDIADevices2
@@ -26,9 +29,9 @@ if ($NVIDIADevices2 -ne "none") {
     $GPUDevices2 = $NVIDIADevices2
     $GPUEDevices2 = $GPUDevices2 -split ","
     $GPUEDevices2 | % {$ArgDevices += "$($GCount.NVIDIA.$_) " }
-    $ArgDevices = $ArgDevices.Substring(0,$ArgDevices.Length-1)
+    $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1)
 }
-else {$GCount.NVIDIA.PSObject.Properties.Name | % { $ArgDevices += "$($GCount.NVIDIA.$_) "}; $ArgDevices = $ArgDevices.Substring(0,$ArgDevices.Length-1)}
+else {$GCount.NVIDIA.PSObject.Properties.Name | % { $ArgDevices += "$($GCount.NVIDIA.$_) "}; $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1)}
 
 ##Get Configuration File
 $GetConfig = "$dir\config\miners\gminer.json"
@@ -61,7 +64,7 @@ if ($CoinAlgo -eq $null) {
                     Devices    = $Devices
                     ArgDevices = $ArgDevices
                     DeviceCall = "gminer"
-                    Arguments  = "--api 42001 --server $($_.Host) --port $($_.Port) --user $($_.User2) --pass $($_.Pass2)$Diff $($Config.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "--api 42001 --server $($_.Host) --port $($_.Port) --user $($_.User2) --logfile `'$Log`' --pass $($_.Pass2)$Diff $($Config.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)}
                     Quote      = if ($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)) {$($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) * ($_.Price)}else {0}
                     PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") {$Watts.$($_.Algorithm)."$($ConfigType)_Watts"}elseif ($Watts.default."$($ConfigType)_Watts") {$Watts.default."$($ConfigType)_Watts"}else {0}}
@@ -76,7 +79,8 @@ if ($CoinAlgo -eq $null) {
                     URI        = $Uri
                     BUILD      = $Build
                     Algo       = "$($_.Algorithm)"
-                }
+                    Log        = "miner_generated" 
+                }            
             }
         }
     }

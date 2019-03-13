@@ -10,6 +10,12 @@ elseif ($Platform -eq "windows") {$Build = "Zip"}
 
 $ConfigType = "NVIDIA3"
 
+##Log Directory
+$Log = Join-Path $dir "logs\$ConfigType.log"
+
+##Log Directory
+$Log = Join-Path $dir "logs\$ConfigType.log"
+
 ##Parse -GPUDevices
 if ($NVIDIADevices3 -ne "none") {$Devices = $NVIDIADevices3}
 else {$Devices = "none"}
@@ -47,7 +53,7 @@ if ($CoinAlgo -eq $null) {
                     Path       = $Path
                     Devices    = $Devices
                     DeviceCall = "bminer"
-                    Arguments  = "-uri $($Config.$ConfigType.naming.$($_.Algorithm))://$($_.User3)$Pass3$Diff@$($_.Host):$($_.Port) -api 127.0.0.1:44002"
+                    Arguments  = "-uri $($Config.$ConfigType.naming.$($_.Algorithm))://$($_.User3)$Pass3$Diff@$($_.Host):$($_.Port) -logfile `'$Log`' -api 127.0.0.1:44002"
                     HashRates  = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)}
                     Quote      = if ($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)) {$($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) * ($_.Price)}else {0}
                     PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") {$Watts.$($_.Algorithm)."$($ConfigType)_Watts"}elseif ($Watts.default."$($ConfigType)_Watts") {$Watts.default."$($ConfigType)_Watts"}else {0}}
@@ -63,7 +69,7 @@ if ($CoinAlgo -eq $null) {
                     URI        = $Uri
                     BUILD      = $Build
                     Algo       = "$($_.Algorithm)"
-                    NewAlgo    = ''
+                    Log        = "miner_generated"
                 }
             }
         }
