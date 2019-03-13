@@ -2130,9 +2130,15 @@ Note: ``start-stop-daemon`` is now dependency of SWARM for
 
  2.0.6
 
+ -This is a beta hot-fix version in attempt to fix the following issues:
+
+         https://github.com/MaynardMiner/SWARM/issues/31
+         https://github.com/MaynardMiner/SWARM/issues/27
+         https://github.com/MaynardMiner/SWARM/issues/28
+
+        
  -Log settings are now parsed at miner.ps1/miner phase
        -Hoping this will resolve anti-hacking issues:
-         https://github.com/MaynardMiner/SWARM/issues/31
        -Miners that have a logging command will defer
         to logging.
        -Miners that have no logging feature- SWARM will
@@ -2142,3 +2148,15 @@ Note: ``start-stop-daemon`` is now dependency of SWARM for
 
  -Found and fixed typo in new benchmark command for
   ``miner``.
+
+ -Discovered / applied more proper way to implement
+  system.collections.arraylists
+
+ -added balloon to pool-algos.json (somehow was missed).
+   -note: no exchange stats from pool. Won't load in
+    profit switching.
+
+ -implemented changes I maded a few versions back to
+  algopools to custompool files (I missed doing so).
+
+ -found typo when loading custompools. It is now fixed.
