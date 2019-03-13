@@ -189,7 +189,7 @@ function Start-LaunchCode {
                     $script += "$setx"
                 }
             }
-            $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $MinerArgs"
+            $script += "Invoke-Expression "".\$($MinerCurrent.MinerName) $MinerArgs"""
             $script | out-file "$WorkingDirectory\swarm-start.ps1"
             Start-Sleep -S .5
 
