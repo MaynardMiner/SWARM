@@ -65,6 +65,17 @@
       "comma seperate"
     ]
   },
+  "balloon": {
+    "hiveos_name": "bcd",
+    "pools_to_exclude": [
+      "add pools here",
+      "comma seperated"
+    ],
+    "miners_to_exclude": [
+      "add miners here",
+      "comma seperate"
+    ]
+  },
   "beam": {
     "hiveos_name": "equihash 150/5",
     "pools_to_exclude": [

@@ -148,12 +148,35 @@ function Start-LaunchCode {
         "bminer" {Write-Host "SOME ALGOS MAY REQUIRE 6GB+ VRAM TO WORK" -ForegroundColor Green}
     }
 
+    
+
     if ($Platforms -eq "windows") {
         $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
         if ($MinerProcess -eq $null -or $MinerProcess.HasExited -eq $true) {
+
+            ##User specified delay
             Start-Sleep -S $MinerCurrent.Delay
+            
+            #dir
             $WorkingDirectory = Join-Path $Dir $(Split-Path $($MinerCurrent.Path))
-            if (Test-Path $Logs) {Clear-Content $Logs -ErrorAction SilentlyContinue}
+
+            ##Clear logs
+            if (Test-Path $MinerCurrent.Log) {Clear-Content $MinerCurrent.Log -ErrorAction SilentlyContinue}
+
+            ##Make Test.bat for users
+            if (-not (Test-Path "$WorkingDirectory\swarm-start.bat")) {
+                $minerbat = @()
+                $minerbat += "CMD /r powershell -ExecutionPolicy Bypass -command `".\swarm-start.ps1`""
+                $minerbat += "cmd.exe"
+                $miner_bat = Join-Path $WorkingDirectory "swarm-start.bat"
+                $minerbat | Set-Content $miner_bat
+            }
+
+            ##Determine if Miner needs logging
+            if ($MinerCurrent.Log -ne "miner_generated") {$MinerArgs = "$($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FIlePath ""$($MinerCurrent.Log)"" -Append; `$Output | Out-Host}`'"}
+            else {$MinerArgs = $MinerArguments}
+
+            ##Build Start Script
             $script = @()
             $script += "`$OutputEncoding = [System.Text.Encoding]::ASCII"
             $script += ". `"$dir\build\powershell\output.ps1`";"
@@ -166,17 +189,11 @@ function Start-LaunchCode {
                     $script += "$setx"
                 }
             }
-            if (-not (Test-Path "$WorkingDirectory\swarm-start.bat")) {
-                $minerbat = @()
-                $minerbat += "CMD /r powershell -ExecutionPolicy Bypass -command `".\swarm-start.ps1`""
-                $minerbat += "cmd.exe"
-                $miner_bat = Join-Path $WorkingDirectory "swarm-start.bat"
-                $minerbat | Set-Content $miner_bat
-            }
-            $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FIlePath ""$Logs"" -Append; `$Output | Out-Host}`'"
+            $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $MinerArgs"
             $script | out-file "$WorkingDirectory\swarm-start.ps1"
             Start-Sleep -S .5
 
+            ##Start Miner Job
             $Job = Start-Job -ArgumentList $PID, $WorkingDirectory {
                 param($ControllerProcessID, $WorkingDirectory)
                 Set-Location $WorkingDirectory
@@ -213,11 +230,11 @@ function Start-LaunchCode {
         ##PID Tracking Path & Date
         $PIDPath = Join-Path $Dir "build\pid\$($MinerCurrent.Name)_$($MinerCurrent.Type)_$($MinerCurrent.Coins)_pid.txt"
         $PIDInfoPath = Join-Path $Dir "build\pid\$($MinerCurrent.Name)_$($MinerCurrent.Type)_$($MinerCurrent.Coins)_info.txt"
-        $PIDInfo = @{miner_exec = "$MinerEXE"; start_date = "$StartDate"; pid_path = "$PIDPath";}
+        $PIDInfo = @{miner_exec = "$MinerEXE"; start_date = "$StartDate"; pid_path = "$PIDPath"; }
         $PIDInfo | ConvertTo-Json | Set-Content $PIDInfoPath
 
         ##Clear Old Logs
-        if (Test-Path $Logs) {Clear-Content $Logs}
+        if (Test-Path $MinerCurrent.Log) {Clear-Content $MinerCurrent.Log}
 
         ##Clear Old PID information
         if (Test-Path $PIDPath) {Remove-Item $PIDPath -Force}
@@ -225,8 +242,9 @@ function Start-LaunchCode {
 
         ##Get Full Path Of Miner Executable and its dir
         
-        ##Add Logging To Arguments
-        $MinerArgs = "$MinerArguments 2>&1 | tee $Logs"
+        ##Add Logging To Arguments if needed
+        if ($MinerCurrent.Log -ne "miner_generated") {$MinerArgs = "$MinerArguments 2>&1 | tee `'$($MinerCurrent.Log)`'"}
+        else {$MinerArgs = "$MinerArguments"}
 
         ##Build Daemon
         $Daemon = "start-stop-daemon --start --make-pidfile --chdir $MinerDir --pidfile $PIDPath --exec $MinerEXE -- $MinerArgs"
@@ -337,10 +355,10 @@ function Start-LaunchCode {
             Start-Sleep -S 1
             #Write We Are getting ID
             Write-Host "Getting Process ID for $($MinerCurrent.MinerName)"
-            if(Test-Path $PIDPath) {$MinerPID = Get-Content $PIDPath | Select -First 1}
+            if (Test-Path $PIDPath) {$MinerPID = Get-Content $PIDPath | Select -First 1}
             ##Powershell Get Process Instance
-            if($MinerPID){$MinerProcess = Get-Process -ID $MinerPid -ErrorAction SilentlyContinue}
-           }until($MinerProcess -ne $null -or ($MinerTimer.Elapsed.TotalSeconds) -ge 10)  
+            if ($MinerPID) {$MinerProcess = Get-Process -ID $MinerPid -ErrorAction SilentlyContinue}
+        }until($MinerProcess -ne $null -or ($MinerTimer.Elapsed.TotalSeconds) -ge 10)  
         ##Stop Timer
         $MinerTimer.Stop()
         $MinerProcess

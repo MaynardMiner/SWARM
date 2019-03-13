@@ -10,6 +10,9 @@ elseif ($Platform -eq "windows") {$Build = "Zip"}
 
 $ConfigType = "AMD1"
 
+##Log Directory
+$Log = Join-Path $dir "logs\$ConfigType.log"
+
 ##Get Configuration File
 $GetConfig = "$dir\config\miners\wildrig.json"
 try {$Config = Get-Content $GetConfig | ConvertFrom-Json}
@@ -40,7 +43,7 @@ if ($CoinAlgo -eq $null) {
                     Path       = $Path
                     Devices    = "none"
                     DeviceCall = "wildrig"
-                    Arguments  = "--opencl-platform=$AMDPlatform --api-port 60050 --algo $($Config.$ConfigType.naming.$($_.Algorithm)) --url stratum+tcp://$($_.Host):$($_.Port) --user $($_.User1) --pass $($_.Pass1)$($Diff) $($Config.$ConfigType.commands.$($Config.$ConfigType.naming.$($_.Algorithm)))"
+                    Arguments  = "--opencl-platform=$AMDPlatform --api-port 60050 --algo $($Config.$ConfigType.naming.$($_.Algorithm)) --url stratum+tcp://$($_.Host):$($_.Port) --user $($_.User1) --pass $($_.Pass1)$($Diff) -l `'$Log`' $($Config.$ConfigType.commands.$($Config.$ConfigType.naming.$($_.Algorithm)))"
                     HashRates  = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)}
                     Quote      = if ($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)) {$($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) * ($_.Price)}else {0}
                     PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") {$Watts.$($_.Algorithm)."$($ConfigType)_Watts"}elseif ($Watts.default."$($ConfigType)_Watts") {$Watts.default."$($ConfigType)_Watts"}else {0}}
@@ -57,7 +60,8 @@ if ($CoinAlgo -eq $null) {
                     URI        = $Uri
                     BUILD      = $Build
                     Algo       = "$($_.Algorithm)"
-                }
+                    Log        = "miner_generated"
+                }            
             }
         }
     }

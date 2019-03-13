@@ -448,6 +448,8 @@ function start-update {
                                $Data | Add-Member "cryptonightr" @{"hiveos_name" = "cryptonight/r"; "pools_to_exclude" = @("add pools here","comma seperated"); "miners_to_exclude" = @("add miners here","comma seperated")} -ErrorAction SilentlyContinue
                                ##2.0.5
                                $Data | Add-Member "rainforest" @{"hiveos_name" = "rainforest"; "pools_to_exclude" = @("add pools here","comma seperated"); "miners_to_exclude" = @("add miners here","comma seperated")} -ErrorAction SilentlyContinue
+                               ##2.0.6
+                               $Data | Add-Member "balloon" @{"hiveos_name" = "balloon"; "pools_to_exclude" = @("add pools here","comma seperated"); "miners_to_exclude" = @("add miners here","comma seperated")} -ErrorAction SilentlyContinue
                                ##2.0.3
                                $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Foreach {
                                $Data.$_ | Add-Member "miners_to_exclude" @("add miners here","comma seperated") -ErrorAction SilentlyContinue

@@ -1241,6 +1241,7 @@ While ($true) {
                     Profit         = 0
                     Power          = 0
                     Fiat_Day       = 0
+                    Log            = $_.Log
                 }
             }
         }

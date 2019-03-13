@@ -10,6 +10,9 @@ elseif ($Platform -eq "windows") {$Build = "Zip"}
 
 $ConfigType = "NVIDIA3"
 
+##Log Directory
+$Log = Join-Path $dir "logs\$ConfigType.log"
+
 ##Parse -GPUDevices
 if ($NVIDIADevices3 -ne "none") {
     $GPUDevices3 = $NVIDIADevices3
@@ -65,7 +68,7 @@ if ($CoinAlgo -eq $null) {
                     URI        = $Uri
                     BUILD      = $Build
                     Algo       = "$($_.Algorithm)"
-                    NewAlgo    = ''
+                    Log        = $Log 
                 }
             }
         }

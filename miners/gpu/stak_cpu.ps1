@@ -10,6 +10,9 @@ elseif ($Platform -eq "windows") {$Build = "Zip"}
 
 $ConfigType = "CPU"
 
+##Log Directory
+$Log = Join-Path $dir "logs\$ConfigType.log"
+
 #Max threads must be specified- XMR-STAK has no -t option
 
 ##Get Configuration File
@@ -53,7 +56,8 @@ if ($CoinAlgo -eq $null) {
                     URI        = $Uri
                     BUILD      = $Build
                     Algo       = "$($_.Algorithm)"
-                }
+                    Log        = $Log 
+                }            
             }
         }
     }
