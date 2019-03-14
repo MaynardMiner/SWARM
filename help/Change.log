@@ -2160,3 +2160,23 @@ Note: ``start-stop-daemon`` is now dependency of SWARM for
   algopools to custompool files (I missed doing so).
 
  -found typo when loading custompools. It is now fixed.
+
+ 2.0.7
+
+ New Feature!
+   Windows: ``get update`` now allows a link to be used.
+     example: ``get update https://github.com/MaynardMiner/SWARM/releases/download/v2.0.7/SWARM.2.0.7.zip``
+
+ -Found typo from beta 2.0.6 in bminer-1.ps1
+   overwrote "-" from -api
+ -wildrig updated
+ -bminer updated
+ -ttminer updated
+ -xmrig updated
+ -xmrig-nvidia added
+ -xmr-stak updated
+ -teamredminer updated
+ -phoenix miner updated
+
+ -Applied proposed fix https://github.com/MaynardMiner/SWARM/issues/34 
+ 

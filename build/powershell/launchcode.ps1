@@ -49,6 +49,7 @@ function Start-LaunchCode {
                     "ttminer" {$MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "bminer" {$MinerArguments = "-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "lolminer" {$MinerArguments = "--devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
+                    "xmrstak" {$MinerArguments = "--cuda-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                     "grin-miner" {set-minerconfig $NewMiner $Logs}
                     "zjazz" {
                         $GetDevices = $($MinerCurrent.Devices) -split ","
@@ -172,16 +173,17 @@ function Start-LaunchCode {
                 $minerbat | Set-Content $miner_bat
             }
 
-            ##Determine if Miner needs logging
-            if ($MinerCurrent.Log -ne "miner_generated") {$MinerArgs = "$($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FIlePath ""$($MinerCurrent.Log)"" -Append; `$Output | Out-Host}`'"}
-            else {$MinerArgs = $MinerArguments}
-
             ##Build Start Script
             $script = @()
             $script += "`$OutputEncoding = [System.Text.Encoding]::ASCII"
             $script += ". `"$dir\build\powershell\output.ps1`";"
             $script += "$dir\build\powershell\icon.ps1 `"$dir\build\apps\miner.ico`"" 
-            $script += "`$host.ui.RawUI.WindowTitle = ""$($MinerCurrent.Name) - $($MinerCurrent.Algo)"";"
+            $script += "`$host.ui.RawUI.WindowTitle = `'$($MinerCurrent.Name) - $($MinerCurrent.Algo)`';"
+
+            ##Determine if Miner needs logging
+            if($MinerCurrent.Log -ne "miner_generated"){$script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FIlePath ""$Logs"" -Append; `$Output | Out-Host}`'"}
+            else{$script += "Invoke-Expression "".\$($MinerCurrent.MinerName) $MinerArguments"""}
+
             $MinerCurrent.Prestart | foreach {
                 if ($_ -notlike "export LD_LIBRARY_PATH=$dir\build\export") {
                     $setx = $_ -replace "export ", "setx "

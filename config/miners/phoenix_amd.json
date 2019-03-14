@@ -12,17 +12,20 @@
     "commands": {
       "ethash": "-proto 2 -rate 1",
       "daggerhashimoto": "-proto 4 -stales 0",
-      "dagger": "-proto 2"
+      "dagger": "-proto 2",
+      "progpow": "-coin bci -proto 4"
     },
     "difficulty": {
       "ethash": "",
       "daggerhashimoto": "",
-      "dagger": ""
+      "dagger": "",
+      "progpow": ""
     },
     "naming": {
       "ethash": "ethash",
       "daggerhashimoto": "daggerhashimoto",
-      "dagger": "dagger"
+      "dagger": "dagger",
+      "progpow": ""
     },
     "oc": {
       "ethash": {
@@ -42,6 +45,14 @@
         "fans": ""
       },
       "dagger": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "progpow": {
         "dpm": "",
         "v": "",
         "core": "",

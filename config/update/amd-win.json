@@ -51,7 +51,7 @@
 "path2":".\\bin\\phoenix-amd-2\\PhoenixMiner.exe", 
 "path3":".\\bin\\phoenix-amd-3\\PhoenixMiner.exe", 
 "minername":"PhoenixMiner.exe", 
-"version":"4.1c", 
+"version":"4.2a", 
 "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/phoenix-miner-windows.zip"
 }, 
 
@@ -106,7 +106,7 @@
 "path2":".\\bin\\tdxminer-2\\teamredminer.exe", 
 "path3":".\\bin\\tdxminer-3\\teamredminer.exe", 
 "minername":"teamredminer.exe", 
-"version":"0.4.0", 
+"version":"0.4.1", 
 "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/teamredminer-windows.zip"
 }, 
 
@@ -117,8 +117,8 @@
 "path2":".\\bin\\xmrstak-2\\xmr-stak.exe", 
 "path3":".\\bin\\xmrstak-3\\xmr-stak.exe", 
 "minername":"xmr-stak.exe", 
-"version":"2.10.0", 
-"uri":"https://github.com/fireice-uk/xmr-stak/releases/download/2.7.1/xmr-stak-win64-2.7.1.zip"
+"version":"2.10.1", 
+"uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/fireice-linux.tar.gz"
 }, 
 
 "wildrig": {
@@ -128,7 +128,7 @@
 "path2":".\\bin\\wildrig-2\\wildrig.exe", 
 "path3":".\\bin\\wildrig-3\\wildrig.exe", 
 "minername":"wildrig.exe", 
-"version":"0.15.4", 
+"version":"0.15.4.6", 
 "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/wildrig-windows.zip"
 }, 
 
@@ -141,7 +141,7 @@
 "minername":"sgminer.exe", 
 "version":"beta5ip3", 
 "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/sgminer-fancyIX.zip"
-}, 
+},
 
 "xmrig": {
 "name":"xmrig", 
