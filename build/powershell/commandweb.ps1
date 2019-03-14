@@ -200,7 +200,10 @@ function Start-Webcommand {
                     $data = "$($command.result.exec)"
                     $arguments = $data -replace ("get ", "")
                     $line = @()
-                    if ($data -eq "get update") {    
+                    if ($data -eq "get update") {
+                        $Arg = $arguments -split " "
+                        $Arg1 = $Arg | select -First 1
+                        $Arg2 = $Arg | Select -skip 1 -First 1
                         $version = Get-Content ".\build\txt\version.txt"
                         $versionnumber = $version -replace "SWARM.", ""
                         $version1 = $versionnumber[4]
@@ -221,19 +224,41 @@ function Start-Webcommand {
                         $versionnumber = "$version3.$version2.$version1"    
                         $Failed = $false
                         $line += "Operating System Is Windows: Updating via 'get' is possible`n"
-                        $versionlink = "https://github.com/MaynardMiner/SWARM/releases/download/v$VersionNumber/SWARM.$VersionNumber.zip"
-                        $line += "Detected New Version Should Be $VersionNumber`n"
-                        Write-Host "Detected New Version Should Be $VersionNumber"
-                        $line += "Attempting To Download New Version at $Versionlink`n"
-                        Write-Host "Attempting To Download New Version at $Versionlink"
+                        if ($Arg2) {
+                            $EndLink = split-path $arg2 -Leaf
+                            if ($EndLink -match "SWARM.") {
+                                $URI = $Arg2
+                            }
+                            else {
+                                $Failed = $true
+                                $line += "Detected link supplied did not end with SWARM"
+                                Write-Host "Detected link supplied did not end with SWARM" -ForegroundColor Red
+                                $URI = $null
+                            }
+                        }
+                        else {
+                            $line += "Detected New Version Should Be $VersionNumber`n"
+                            Write-Host "Detected New Version Should Be $VersionNumber"    
+                            $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$VersionNumber/SWARM.$VersionNumber.zip"
+                        }
                         $Location = Split-Path $WorkingDir
                         $line += "Main Directory is $Location`n"
                         Write-Host "Main Directory is $Location"
                         $NewLocation = Join-Path (Split-Path $WorkingDir) "SWARM.$VersionNumber"
                         $FileName = join-path ".\x64" "SWARM.$VersionNumber.zip"
                         $DLFileName = Join-Path "$WorkingDir" "x64\SWARM.$VersionNumber.zip"
-                        $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$versionNumber/SWARM.$VersionNumber.zip"
-                        try { Invoke-WebRequest $URI -OutFile $FileName -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }catch {$Failed = $true; $line += "Failed To Contact Github For Download! Must Do So Manually"}
+                        if ($URI) {
+                            $line += "Attempting To Download New Version at $URI`n"
+                            Write-Host "Attempting To Download New Version at $URI"
+                            try { 
+                                Invoke-WebRequest $URI -OutFile $FileName -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop 
+                            }
+                            catch {
+                                $Failed = $true; 
+                                $line += "Failed To Contact Github For Download! Must Try Again, Or Do So Manually."
+                                Write-Host "Failed To Contact Github For Download! Must Try Again, Or Do So Manually." -ForegroundColor Red
+                            }
+                        }
                         Start-Sleep -S 5
                         if ($Failed -eq $false) {
                             Start-Process "7z" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -Wait -WindowStyle Minimized
@@ -293,7 +318,7 @@ function Start-Webcommand {
                             $SendResponse = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
                             Write-Host $method $messagetype $data
                             $GetMiner = Get-Content ".\build\pid\miner_pid.txt"
-                            if($GetMiner){$MinerProcess = Get-PRocess -ID $GetMiner -ErrorAction SilentlyContinue; if($MinerProcess){Stop-Process $MinerProcess}}
+                            if ($GetMiner) {$MinerProcess = Get-PRocess -ID $GetMiner -ErrorAction SilentlyContinue; if ($MinerProcess) {Stop-Process $MinerProcess}}
                             $trigger = "exec"
                         }
                         "start" {
