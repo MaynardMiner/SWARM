@@ -219,5 +219,15 @@
     "minername": "xmrig-nvidia",
     "version": "2.14.0",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/xmrig-nvidia-windows.zip"
+},
+"xmrig_nv": {
+  "name": "xmrig_nv",
+  "type": "nvidia",
+  "path1": ".\\bin\\xmrig_nv-1\\xmrig-nvidia",
+  "path2": ".\\bin\\xmrig_nv-2\\xmrig-nvidia",
+  "path3": ".\\bin\\xmrig_nv-3\\xmrig-nvidia",
+  "minername": "xmrig-nvidia",
+  "version": "2.14.0",
+  "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/xmrig-nvidia-linux.tar.gz"
 }
 }

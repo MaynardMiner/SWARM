@@ -2177,6 +2177,7 @@ Note: ``start-stop-daemon`` is now dependency of SWARM for
  -xmr-stak updated
  -teamredminer updated
  -phoenix miner updated
+ -built another version of ProgPOW for testing
 
  -Applied proposed fix https://github.com/MaynardMiner/SWARM/issues/34 
  
