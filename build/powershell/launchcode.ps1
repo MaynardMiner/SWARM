@@ -179,11 +179,6 @@ function Start-LaunchCode {
             $script += ". `"$dir\build\powershell\output.ps1`";"
             $script += "$dir\build\powershell\icon.ps1 `"$dir\build\apps\miner.ico`"" 
             $script += "`$host.ui.RawUI.WindowTitle = `'$($MinerCurrent.Name) - $($MinerCurrent.Algo)`';"
-
-            ##Determine if Miner needs logging
-            if($MinerCurrent.Log -ne "miner_generated"){$script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FIlePath ""$Logs"" -Append; `$Output | Out-Host}`'"}
-            else{$script += "Invoke-Expression "".\$($MinerCurrent.MinerName) $MinerArguments"""}
-
             $MinerCurrent.Prestart | foreach {
                 if ($_ -notlike "export LD_LIBRARY_PATH=$dir\build\export") {
                     $setx = $_ -replace "export ", "setx "
@@ -191,7 +186,9 @@ function Start-LaunchCode {
                     $script += "$setx"
                 }
             }
-            $script += "Invoke-Expression "".\$($MinerCurrent.MinerName) $MinerArgs"""
+            ##Determine if Miner needs logging
+            if($MinerCurrent.Log -ne "miner_generated"){$script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FIlePath ""$Logs"" -Append; `$Output | Out-Host}`'"}
+            else{$script += "Invoke-Expression "".\$($MinerCurrent.MinerName) $MinerArguments"""}            
             $script | out-file "$WorkingDirectory\swarm-start.ps1"
             Start-Sleep -S .5
 

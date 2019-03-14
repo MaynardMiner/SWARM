@@ -7,8 +7,7 @@
     "commands": {
       "ethash": "-proto 2 -rate 1",
       "daggerhashimoto": "-proto 4 -stales 0",
-      "dagger": "-proto 2",
-      "progpow": "-coin bci -proto 4"
+      "dagger": "-proto 2"
     },
     "difficulty": {
       "ethash": "",
@@ -18,8 +17,7 @@
     "naming": {
       "ethash": "ethash",
       "daggerhashimoto": "daggerhashimoto",
-      "dagger": "dagger",
-      "progpow": ""
+      "dagger": "dagger"
     },
     "oc": {
       "ethash": {
@@ -63,8 +61,7 @@
     "commands": {
       "ethash": "-proto 2 -rate 1",
       "daggerhashimoto": "-proto 4 -stales 0",
-      "dagger": "-proto 2",
-      "progpow": "-coin bci -proto 4"
+      "dagger": "-proto 2"
     },
     "difficulty": {
       "ethash": "",
@@ -74,8 +71,7 @@
     "naming": {
       "ethash": "ethash",
       "daggerhashimoto": "daggerhashimoto",
-      "dagger": "dagger",
-      "progpow": ""
+      "dagger": "dagger"
     },
     "oc": {
       "ethash": {
@@ -119,8 +115,7 @@
     "commands": {
       "ethash": "-proto 2 -rate 1",
       "daggerhashimoto": "-proto 4 -stales 0",
-      "dagger": "-proto 2",
-      "progpow": "-coin bci -proto 4"
+      "dagger": "-proto 2"
     },
     "difficulty": {
       "ethash": "",
@@ -130,8 +125,7 @@
     "naming": {
       "ethash": "ethash",
       "daggerhashimoto": "daggerhashimoto",
-      "dagger": "dagger",
-      "progpow": ""
+      "dagger": "dagger"
     },
     "oc": {
       "ethash": {
