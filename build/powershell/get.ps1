@@ -200,16 +200,27 @@ wallets
    
     OPTIONS: none
 
-update
- Windows version will perform a remote update. HiveOS version
- will list SWARM's current version.
-      
+update 
+ will perform a remote update. Currently works only for windows.
+ Linux coming soon.
+
     USES:
    
-    get wallet
+    get update [URI]
      
-    OPTIONS: none
-   
+    OPTIONS:
+
+    URI
+    user specified link for .zip update. Use this if you are not
+    updating to the next immediate version. This technically
+    does not have to be from SWARM repository, however:
+        1.) Must end with SWARM.number.of.version.zip
+        2.) Link cannot contain spaces
+        3.) Must be using a SWARM.number.of.version file
+
+
+
+
 
 to see all available SWARM commands, go to:
 
@@ -436,10 +447,23 @@ clear_watts
                 $versionnumber = "$version3.$version2.$version1"    
                 $Failed = $false
                 Write-Host "Operating System Is Windows: Updating via 'get' is possible`n"
-                $versionlink = "https://github.com/MaynardMiner/SWARM/releases/download/v$VersionNumber/SWARM.$VersionNumber.zip"
-                Write-Host "Detected New Version Should Be $VersionNumber`n"
-                Write-Host "Attempting To Download New Version at $Versionlink`n"
-                $Location = Split-Path $Dir
+                if ($argument2) {
+                    $EndLink = split-path $argument2 -Leaf
+                    if ($EndLink -match "SWARM.") {
+                        $URI = $argument2
+                    }
+                    else {
+                        $Failed = $true
+                        $line += "Detected link supplied did not end with SWARM"
+                        Write-Host "Detected link supplied did not end with SWARM" -ForegroundColor Red
+                        $URI = $null
+                    }
+                }
+                else {
+                    $line += "Detected New Version Should Be $VersionNumber`n"
+                    Write-Host "Detected New Version Should Be $VersionNumber"    
+                    $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$VersionNumber/SWARM.$VersionNumber.zip"
+                }
                 Write-Host "Main Directory is $Location`n"
                 $NewLocation = Join-Path (Split-Path $Dir) "SWARM.$VersionNumber"
                 $FileName = join-path ".\x64" "SWARM.$VersionNumber.zip"
