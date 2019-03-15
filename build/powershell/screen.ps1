@@ -72,7 +72,10 @@ function Get-StatusLite {
     $screen = @()
     $Type | % {
         $screen += 
-"Group: $($_)
+"
+########################
+    Group: $($_)
+########################
 "
         $Table = $ProfitTable | Where TYPE -eq $_ | Sort-Object -Property Profits -Descending
         $global:index = 0
@@ -86,7 +89,12 @@ $Screen +=
         Pool: $($_.MinerPool)
 "
             $global:index += 1
-        } 
+        }
+        $screen +="
+########################
+########################
+
+" 
     }
  $screen
 }
