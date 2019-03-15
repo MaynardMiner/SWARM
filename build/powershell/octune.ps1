@@ -422,6 +422,7 @@ function Start-OC {
                                 if ($Mem_State) { $MV = $Default_Mem_Voltage."Gpu $Select P$($Mem_State) Mem Voltage" }else {$MV = $DefaultMemVolt}
                                 $OCArgs += "Mem_P$($MPStates-1)=$($Mem);$MV "
                             }
+                            $AScreenMem = "$($_.Type) MEM is $($_.ocmem) "
                             $AScreenMDPM = "$($_.Type) MDPM is $($_.ocmdpm) "
                         }
                         if ($CoreClock -or $Voltage) {
@@ -437,7 +438,7 @@ function Start-OC {
                                 $OCArgs += "GPU_P$j=$CClock;$CVolt "
                             }
                             $AScreenCore = "$($_.Type) CORE is $($_.occore) "
-                            $AScreenDPM = "$($_.Type) Core Voltage is $($_.ocdpm) "
+                            $AScreenDPM = "$($_.Type) Core Voltage is $($_.ocv) "
                         }
                         if ($Fans) {
                             $DOAmdOC = $true
