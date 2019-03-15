@@ -824,6 +824,17 @@
       "comma seperate"
     ]
   },
+  "verushash": {
+    "hiveos_name": "verushash",
+    "pools_to_exclude": [
+      "add pools here",
+      "comma seperated"
+    ],
+    "miners_to_exclude": [
+      "add miners here",
+      "comma seperate"
+    ]
+  },
   "x11": {
     "hiveos_name": "x11",
     "pools_to_exclude": [
