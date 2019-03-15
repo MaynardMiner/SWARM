@@ -85,7 +85,7 @@ $Screen +=
 "Postion: $global:index
         Miner: $($_.Miner)
         Speed: $($_.HashRates | ForEach {if ($null -ne $_) {"$($_ | ConvertTo-Hash)/s"}else {"Bench"}})
-        Profit: $($_.Profits | ForEach {if ($null -ne $_) {($_ * $Rates.$Currency).ToString("N2")}else {"Bench"}}) $Currency/Day
+        Profit: $($_.Profits | ForEach {if ($null -ne $_) {"$(($_ * $Rates.$Currency).ToString("N2")) $Currency/Day"}else {"Bench"}}) 
         Pool: $($_.MinerPool)
 "
             $global:index += 1
