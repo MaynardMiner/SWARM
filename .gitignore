@@ -32,4 +32,5 @@ build/export/libnvrtc.so.10.0
 build/export/libnvrtc.so.9.2
 build/export/libstdc++.so.6
 build/cmd/dir.txt
+config/power/power.json
  
