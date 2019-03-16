@@ -15,13 +15,9 @@ $Log = Join-Path $dir "logs\$ConfigType.log"
 
 ##Parse -GPUDevices
 if ($NVIDIADevices3 -ne "none") {
-    $ClayDevices3 = $NVIDIADevices3 -split ","
-    $ClayDevices3 = Switch ($ClayDevices3) {"10" {"a"}; "11" {"b"}; "12" {"c"}; "13" {"d"}; "14" {"e"}; "15" {"f"}; "16" {"g"}; "17" {"h"}; "18" {"i"}; "19" {"j"}; "20" {"k"}; default {"$_"}; }
-    $ClayDevices3 = $ClayDevices3 | foreach {$_ -replace ("$($_)", ",$($_)")}
-    $ClayDevices3 = $ClayDevices3 -join ""
-    $ClayDevices3 = $ClayDevices3.TrimStart(" ", ",")  
-    $ClayDevices3 = $ClayDevices3 -replace (",", "")
-    $Devices = $ClayDevices3
+    $GPUDevices3 = $NVIDIADevices3
+    $GPUDevices3 = $GPUDevices3 -replace ',', ' '
+    $Devices = $GPUDevices3
 }
 else {$Devices = "none"}
     
