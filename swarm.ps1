@@ -79,97 +79,95 @@ param(
     [Parameter(Mandatory = $false)]
     [String]$Proxy = "", #i.e http://192.0.0.1:8080 
     [Parameter(Mandatory = $false)]
-    [String]$CoinExchange,
+    [String]$CoinExchange, #additional altcoin to display on stats screen
     [Parameter(Mandatory = $false)]
-    [string]$Auto_Coin = "No",
+    [string]$Auto_Coin = "No", #auto_coin switching
     [Parameter(Mandatory = $false)]
-    [Int]$Nicehash_Fee = "2",
+    [Int]$Nicehash_Fee = "2", #Pro-Rate Fee for nicehash service
     [Parameter(Mandatory = $false)]
-    [Int]$Benchmark = 190,
+    [Int]$Benchmark = 190, #Time For Benchmarking
     [Parameter(Mandatory = $false)]
-    [array]$No_Algo1 = "",
+    [array]$No_Algo1 = "", #Prohibit Algorithm for NVIDIA1 / AMD1
     [Parameter(Mandatory = $false)]
-    [array]$No_Algo2 = "",    
+    [array]$No_Algo2 = "", #Prohibit Algorithm for NVIDIA2
     [Parameter(Mandatory = $false)]
-    [array]$No_Algo3 = "",
+    [array]$No_Algo3 = "", #Prohibit Algorithm for NVIDIA3
     [Parameter(Mandatory = $false)]
-    [String]$Favor_Coins = "Yes",
+    [String]$Favor_Coins = "Yes", #If Auto-Coin Switching, Favor Coins Over Algorithms
     [Parameter(Mandatory = $false)]
-    [double]$Threshold = 0.02,
+    [double]$Threshold = 0.02, #Bitcoin threshold- If Above, SWARM assumes stat is bs
     [Parameter(Mandatory = $false)]
-    [string]$Platform = "linux",
+    [string]$Platform, #OS, used on if platform detection fails
     [Parameter(Mandatory = $false)]
-    [int]$CPUThreads = 1,
+    [int]$CPUThreads = 1, ## number of cpu threads used
     [Parameter(Mandatory = $false)]
-    [string]$Stat_Coin = "Live",
+    [string]$Stat_Coin = "Live", #Timeframe used for coin stats
     [Parameter(Mandatory = $false)]
-    [string]$Stat_Algo = "Live",
+    [string]$Stat_Algo = "Live", #Timeframe used for algo stats
     [Parameter(Mandatory = $false)]
-    [string]$CPUOnly = "No",
+    [string]$CPUOnly = "No", #Let SWARM know you are only using CPU (send different stats to HiveOS)
     [Parameter(Mandatory = $false)]
-    [string]$HiveOS = "Yes",
+    [string]$HiveOS = "Yes", ##If using HiveOS features
     [Parameter(Mandatory = $false)]
-    [string]$Update = "No",
+    [string]$Update = "No", ##If you wish Remote Updating
     [Parameter(Mandatory = $false)]
-    [string]$Cuda = "10",
+    [string]$Cuda = "10", ##Cuda version you wish to use
     [Parameter(Mandatory = $false)]
-    [string]$Power = "Yes",
+    [string]$WattOMeter = "No", ##Used built in Watt Calcs
     [Parameter(Mandatory = $false)]
-    [string]$WattOMeter = "No",
+    [string]$Farm_Hash, ##HiveOS farm hash
     [Parameter(Mandatory = $false)]
-    [string]$Farm_Hash,
+    [Double]$Rejections = 75, ##Reject Percetange Allowed
     [Parameter(Mandatory = $false)]
-    [Double]$Rejections = 75,
+    [string]$PoolBans = "Yes", ##Whether Or Not To Use Pool Ban System
     [Parameter(Mandatory = $false)]
-    [string]$PoolBans = "Yes",
+    [Int]$PoolBanCount = 2, ##Number of bad benchmarks for Pool Bans
     [Parameter(Mandatory = $false)]
-    [Int]$PoolBanCount = 2,
+    [Int]$AlgoBanCount = 3, ##Number of bad benchmarks for entire Algo Bans
     [Parameter(Mandatory = $false)]
-    [Int]$AlgoBanCount = 3,
+    [Int]$MinerBanCount = 6, ##Number of bad benchmarks for entire miner bans
     [Parameter(Mandatory = $false)]
-    [Int]$MinerBanCount = 6,    
+    [String]$Lite = "No", ##API only mode
     [Parameter(Mandatory = $false)]
-    [String]$Lite = "No",
+    [String]$CLPlatform, ##Specified AMD OpenCL platform
     [Parameter(Mandatory = $false)]
-    [String]$AMDPlatform,
+    [String]$Conserve = "No", ##Conserve if profit is all negative (don't mine)
     [Parameter(Mandatory = $false)]
-    [String]$Conserve = "No",
+    [Double]$Switch_Threshold = 1, ## % before miner chooses to switch (added to incoming prices)
     [Parameter(Mandatory = $false)]
-    [Double]$Switch_Threshold = 1,
+    [String]$SWARM_Mode = "No", ## Sycronized Switching - based on clock time not interval
     [Parameter(Mandatory = $false)]
-    [String]$SWARM_Mode = "No",
+    [String]$API = "Yes", ## API features
     [Parameter(Mandatory = $false)]
-    [String]$API = "Yes",
+    [int]$Port = 4099, ## API Port
     [Parameter(Mandatory = $false)]
-    [String]$CLPlatform = "",
+    [String]$Remote = "No", ## Remote API
     [Parameter(Mandatory = $false)]
-    [int]$Port = 4099,
+    [String]$APIPassword = "No", ## Password for Remote API
     [Parameter(Mandatory = $false)]
-    [String]$Remote = "No",
+    [String]$Startup = "Yes", ##Add SWARM to windows startup
     [Parameter(Mandatory = $false)]
-    [String]$APIPassword = "No",
+    [String]$ETH, ##ETH Wallet address
     [Parameter(Mandatory = $false)]
-    [String]$Startup = "Yes",
+    [String]$Worker, ##Worker Name (whalesburg pool)
     [Parameter(Mandatory = $false)]
-    [String]$ETH,
+    [array]$No_Miner, ##Prohibit miner
     [Parameter(Mandatory = $false)]
-    [String]$Worker,
+    [string]$HiveAPIkey, ##Hive API key
     [Parameter(Mandatory = $false)]
-    [array]$No_Miner,
+    [array]$Algorithm, ##If Used- Only these algorithms will be used
     [Parameter(Mandatory = $false)]
-    [string]$HiveAPIkey,
-    [Parameter(Mandatory = $false)]
-    [array]$Algorithm,
-    [Parameter(Mandatory = $false)]
-    [array]$Coin
+    [array]$Coin ##If Used - Only these coins will be used
 )
-
 
 ## Set Current Path
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 
+if($Platform -eq $null)
+{
 if(Test-Path "C:\"){$Platform = "windows"}
 else{$Platform = "linux"}
+}
 
 Write-Host "OS = $Platform"
 
