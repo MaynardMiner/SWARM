@@ -42,6 +42,7 @@ function start-update {
         $PreviousVersions += "SWARM.2.0.4"
         $PreviousVersions += "SWARM.2.0.5"
         $PreviousVersions += "SWARM.2.0.6"
+        $PreviousVersions += "SWARM.2.0.7"
 
         Write-Host "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
         Write-Host "Check $Location For any Previous Versions"
@@ -452,6 +453,8 @@ function start-update {
                                $Data | Add-Member "rainforest" @{"hiveos_name" = "rainforest"; "pools_to_exclude" = @("add pools here","comma seperated"); "miners_to_exclude" = @("add miners here","comma seperated")} -ErrorAction SilentlyContinue
                                ##2.0.6
                                $Data | Add-Member "balloon" @{"hiveos_name" = "balloon"; "pools_to_exclude" = @("add pools here","comma seperated"); "miners_to_exclude" = @("add miners here","comma seperated")} -ErrorAction SilentlyContinue
+                               ##2.0.8 
+                               $Data | Add-Member "verushash" @{"hiveos_name" = "verushash"; "pools_to_exclude" = @("add pools here","comma seperated"); "miners_to_exclude" = @("add miners here","comma seperated")} -ErrorAction SilentlyContinue
                                ##2.0.3
                                $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Foreach {
                                $Data.$_ | Add-Member "miners_to_exclude" @("add miners here","comma seperated") -ErrorAction SilentlyContinue
