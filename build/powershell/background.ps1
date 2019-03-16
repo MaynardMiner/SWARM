@@ -966,7 +966,7 @@ HSU=$CPUHS
             if ($DevAMD -eq $True) {for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {$Power[$($GCount.AMD.$i)] = "POWER=$($GPUPower.$($GCount.AMD.$i))"}}
         }  
         for ($i = 0; $i -lt $HashRates.count; $i++) {
-            if ($HashRates[$i] -eq 'GPU=0' -or $HashRates[$i] -eq 'GPU=' -or $HashRates[$i] -eq 'GPU=0.00') {
+            if ($HashRates[$i] -eq 'GPU=0' -or $HashRates[$i] -eq 'GPU=' -or $HashRates[$i] -eq 'GPU=0.0000') {
                 $HashRates[$i] = 'GPU=0.0001'; $KHS += 0.0001
             }
         }
