@@ -79,99 +79,97 @@ param(
     [Parameter(Mandatory = $false)]
     [String]$Proxy = "", #i.e http://192.0.0.1:8080 
     [Parameter(Mandatory = $false)]
-    [String]$CoinExchange,
+    [String]$CoinExchange, #additional altcoin to display on stats screen
     [Parameter(Mandatory = $false)]
-    [string]$Auto_Coin = "No",
+    [string]$Auto_Coin = "No", #auto_coin switching
     [Parameter(Mandatory = $false)]
-    [Int]$Nicehash_Fee = "2",
+    [Int]$Nicehash_Fee = "2", #Pro-Rate Fee for nicehash service
     [Parameter(Mandatory = $false)]
-    [Int]$Benchmark = 190,
+    [Int]$Benchmark = 190, #Time For Benchmarking
     [Parameter(Mandatory = $false)]
-    [array]$No_Algo1 = "",
+    [array]$No_Algo1 = "", #Prohibit Algorithm for NVIDIA1 / AMD1
     [Parameter(Mandatory = $false)]
-    [array]$No_Algo2 = "",    
+    [array]$No_Algo2 = "", #Prohibit Algorithm for NVIDIA2
     [Parameter(Mandatory = $false)]
-    [array]$No_Algo3 = "",
+    [array]$No_Algo3 = "", #Prohibit Algorithm for NVIDIA3
     [Parameter(Mandatory = $false)]
-    [String]$Favor_Coins = "Yes",
+    [String]$Favor_Coins = "Yes", #If Auto-Coin Switching, Favor Coins Over Algorithms
     [Parameter(Mandatory = $false)]
-    [double]$Threshold = 0.02,
+    [double]$Threshold = 0.02, #Bitcoin threshold- If Above, SWARM assumes stat is bs
     [Parameter(Mandatory = $false)]
-    [string]$Platform = "linux",
+    [string]$Platform, #OS, used on if platform detection fails
     [Parameter(Mandatory = $false)]
-    [int]$CPUThreads = 1,
+    [int]$CPUThreads = 1, ## number of cpu threads used
     [Parameter(Mandatory = $false)]
-    [string]$Stat_Coin = "Live",
+    [string]$Stat_Coin = "Live", #Timeframe used for coin stats
     [Parameter(Mandatory = $false)]
-    [string]$Stat_Algo = "Live",
+    [string]$Stat_Algo = "Live", #Timeframe used for algo stats
     [Parameter(Mandatory = $false)]
-    [string]$CPUOnly = "No",
+    [string]$CPUOnly = "No", #Let SWARM know you are only using CPU (send different stats to HiveOS)
     [Parameter(Mandatory = $false)]
-    [string]$HiveOS = "Yes",
+    [string]$HiveOS = "Yes", ##If using HiveOS features
     [Parameter(Mandatory = $false)]
-    [string]$Update = "No",
+    [string]$Update = "No", ##If you wish Remote Updating
     [Parameter(Mandatory = $false)]
-    [string]$Cuda = "10",
+    [string]$Cuda = "10", ##Cuda version you wish to use
     [Parameter(Mandatory = $false)]
-    [string]$Power = "Yes",
+    [string]$WattOMeter = "No", ##Used built in Watt Calcs
     [Parameter(Mandatory = $false)]
-    [string]$WattOMeter = "No",
+    [string]$Farm_Hash, ##HiveOS farm hash
     [Parameter(Mandatory = $false)]
-    [string]$Farm_Hash,
+    [Double]$Rejections = 75, ##Reject Percetange Allowed
     [Parameter(Mandatory = $false)]
-    [Double]$Rejections = 75,
+    [string]$PoolBans = "Yes", ##Whether Or Not To Use Pool Ban System
     [Parameter(Mandatory = $false)]
-    [string]$PoolBans = "Yes",
+    [Int]$PoolBanCount = 2, ##Number of bad benchmarks for Pool Bans
     [Parameter(Mandatory = $false)]
-    [Int]$PoolBanCount = 2,
+    [Int]$AlgoBanCount = 3, ##Number of bad benchmarks for entire Algo Bans
     [Parameter(Mandatory = $false)]
-    [Int]$AlgoBanCount = 3,
+    [Int]$MinerBanCount = 6, ##Number of bad benchmarks for entire miner bans
     [Parameter(Mandatory = $false)]
-    [Int]$MinerBanCount = 6,    
+    [String]$Lite = "No", ##API only mode
     [Parameter(Mandatory = $false)]
-    [String]$Lite = "No",
+    [String]$CLPlatform, ##Specified AMD OpenCL platform
     [Parameter(Mandatory = $false)]
-    [String]$AMDPlatform,
+    [String]$Conserve = "No", ##Conserve if profit is all negative (don't mine)
     [Parameter(Mandatory = $false)]
-    [String]$Conserve = "No",
+    [Double]$Switch_Threshold = 1, ## % before miner chooses to switch (added to incoming prices)
     [Parameter(Mandatory = $false)]
-    [Double]$Switch_Threshold = 1,
+    [String]$SWARM_Mode = "No", ## Sycronized Switching - based on clock time not interval
     [Parameter(Mandatory = $false)]
-    [String]$SWARM_Mode = "No",
+    [String]$API = "Yes", ## API features
     [Parameter(Mandatory = $false)]
-    [String]$API = "Yes",
+    [int]$Port = 4099, ## API Port
     [Parameter(Mandatory = $false)]
-    [String]$CLPlatform = "",
+    [String]$Remote = "No", ## Remote API
     [Parameter(Mandatory = $false)]
-    [int]$Port = 4099,
+    [String]$APIPassword = "No", ## Password for Remote API
     [Parameter(Mandatory = $false)]
-    [String]$Remote = "No",
+    [String]$Startup = "Yes", ##Add SWARM to windows startup
     [Parameter(Mandatory = $false)]
-    [String]$APIPassword = "No",
+    [String]$ETH, ##ETH Wallet address
     [Parameter(Mandatory = $false)]
-    [String]$Startup = "Yes",
+    [String]$Worker, ##Worker Name (whalesburg pool)
     [Parameter(Mandatory = $false)]
-    [String]$ETH,
+    [array]$No_Miner, ##Prohibit miner
     [Parameter(Mandatory = $false)]
-    [String]$Worker,
+    [string]$HiveAPIkey, ##Hive API key
     [Parameter(Mandatory = $false)]
-    [array]$No_Miner,
+    [array]$Algorithm, ##If Used- Only these algorithms will be used
     [Parameter(Mandatory = $false)]
-    [string]$HiveAPIkey,
-    [Parameter(Mandatory = $false)]
-    [array]$Algorithm,
-    [Parameter(Mandatory = $false)]
-    [array]$Coin
+    [array]$Coin ##If Used - Only these coins will be used
 )
-
 
 ## Set Current Path
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 
-if(Test-Path "C:\"){$Platform = "windows"}
-else{$Platform = "linux"}
+if (-not $Platform) {
+    Write-Host "Detecting Platform..." -ForegroundColor Cyan
+    if (Test-Path "C:\") {$Platform = "windows"}
+    else {$Platform = "linux"}
+}
 
-Write-Host "OS = $Platform"
+Write-Host "OS = $Platform" -ForegroundColor Green
 
 ## Load Codebase
 . .\build\powershell\killall.ps1;
@@ -203,7 +201,7 @@ Write-Host "OS = $Platform"
 . .\build\powershell\config_file.ps1;
 if ($Type -like "*ASIC*") {. .\build\powershell\icserver.ps1; . .\build\powershell\poolmanager.ps1}
 if ($Platform -eq "linux") {. .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
-if ($Platform -eq "windows") {. .\build\powershell\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1; . .\build\powershell\environment.ps1;}
+if ($Platform -eq "windows") {. .\build\powershell\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1; . .\build\powershell\environment.ps1; }
 
 ##filepath dir
 $dir = (Split-Path $script:MyInvocation.MyCommand.Path)
@@ -239,16 +237,15 @@ if ($Platform -eq "windows") {
 
     ##First remove old Paths, in case this is an update / new dir
     $oldpathlist = "$oldpath" -split ";"
-    $oldpathlist | %{if($_ -like "*SWARM*" -and $_ -notlike "*$dir\build\cmd*" ){Set-NewPath "remove" "$($_)"}}
+    $oldpathlist | % {if ($_ -like "*SWARM*" -and $_ -notlike "*$dir\build\cmd*" ) {Set-NewPath "remove" "$($_)"}}
 
-    if($oldpath -notlike "*;$dir\build\cmd*")
-     {
-      Write-Host "
+    if ($oldpath -notlike "*;$dir\build\cmd*") {
+        Write-Host "
 Setting Path Variable For Commands: May require reboot to use.
 " -ForegroundColor Yellow
-      $newpath = "$dir\build\cmd"
-      Set-NewPath "add" $newpath
-     }
+        $newpath = "$dir\build\cmd"
+        Set-NewPath "add" $newpath
+    }
     $newpath = "$oldpath;$dir\build\cmd"
     Write-Host "Stopping Previous Agent"
     $ID = ".\build\pid\background_pid.txt"
@@ -822,14 +819,14 @@ else {$Device_Count = $GPU_Count}
 Write-Host "Device Count = $Device_Count" -foregroundcolor green
 Start-Sleep -S 2
 if ($GPUCount -ne $null) {$LogGPUS = $GPUCount.Substring(0, $GPUCount.Length - 1)}
-if ($GPUDevices1){$GPUDevices1 | % {$NVIDIADevices1 += "$($_),"}} else {$NVIDIADevices1 = "none"}
-if ($GPUDevices2){$GPUDevices2 | % {$NVIDIADevices2 += "$($_),"}} else {$NVIDIADevices2 = "none"}
-if ($GPUDevices3){$GPUDevices3 | % {$NVIDIADevices3 += "$($_),"}} else {$NVIDIADevices3 = "none"}
-if ($GPUDevices1){$GPUDevices1 | % {$AMDDevices1 += "$($_),"}} else {$AMDDevices1 = "none"}
-if ($NVIDIADevices1 -ne "none"){$NVIDIADevices1 = $NVIDIADevices1.Substring(0,$NVIDIADevices1.Length-1)}
-if ($NVIDIADevices2 -ne "none"){$NVIDIADevices2 = $NVIDIADevices2.Substring(0,$NVIDIADevices2.Length-1)}
-if ($NVIDIADevices3 -ne "none"){$NVIDIADevices3 = $NVIDIADevices3.Substring(0,$NVIDIADevices3.Length-1)}
-if ($AMDDevices1 -ne "none"){$AMDDevices1 = $AMDDevices1.Substring(0,$AMDDevices1.Length-1)}
+if ($GPUDevices1) {$GPUDevices1 | % {$NVIDIADevices1 += "$($_),"}} else {$NVIDIADevices1 = "none"}
+if ($GPUDevices2) {$GPUDevices2 | % {$NVIDIADevices2 += "$($_),"}} else {$NVIDIADevices2 = "none"}
+if ($GPUDevices3) {$GPUDevices3 | % {$NVIDIADevices3 += "$($_),"}} else {$NVIDIADevices3 = "none"}
+if ($GPUDevices1) {$GPUDevices1 | % {$AMDDevices1 += "$($_),"}} else {$AMDDevices1 = "none"}
+if ($NVIDIADevices1 -ne "none") {$NVIDIADevices1 = $NVIDIADevices1.Substring(0, $NVIDIADevices1.Length - 1)}
+if ($NVIDIADevices2 -ne "none") {$NVIDIADevices2 = $NVIDIADevices2.Substring(0, $NVIDIADevices2.Length - 1)}
+if ($NVIDIADevices3 -ne "none") {$NVIDIADevices3 = $NVIDIADevices3.Substring(0, $NVIDIADevices3.Length - 1)}
+if ($AMDDevices1 -ne "none") {$AMDDevices1 = $AMDDevices1.Substring(0, $AMDDevices1.Length - 1)}
 $GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
 
 ##Reset-Old Stats And Their Time
@@ -929,23 +926,22 @@ While ($true) {
     #Get-Algorithms
     $Algorithm = @()
     $Pool_Json = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-jSon
-    if($Coin){$Passwordcurrency1 = $Coin; $Passwordcurrency2 = $Coin; $Passwordcurrency3 = $Coin}
-    if($SWARMAlgorithm){$SWARMALgorithm | %{$Algorithm += $_}}
-    else{$Algorithm = $Pool_Json.PSObject.Properties.Name}
+    if ($Coin) {$Passwordcurrency1 = $Coin; $Passwordcurrency2 = $Coin; $Passwordcurrency3 = $Coin}
+    if ($SWARMAlgorithm) {$SWARMALgorithm | % {$Algorithm += $_}}
+    else {$Algorithm = $Pool_Json.PSObject.Properties.Name}
     $Bad_Pools = Get-BadPools
     $Bad_Miners = Get-BadMiners    
 
     if ($SWARMParams.Rigname1 -eq "Donate") {$Donating = $True}
     else {$Donating = $False}
-    if ($Donating -eq $True) 
-     {
-      $Passwordcurrency1 = "BTC"; 
-      $Passwordcurrency2 = "BTC"; 
-      $Passwordcurrency3 = "BTC"
-      $DonateTime = Get-Date; 
-      $DonateText = "Miner has donated on $DonateTime"; 
-      $DonateText | Set-Content ".\build\txt\donate.txt"
-     }
+    if ($Donating -eq $True) {
+        $Passwordcurrency1 = "BTC"; 
+        $Passwordcurrency2 = "BTC"; 
+        $Passwordcurrency3 = "BTC"
+        $DonateTime = Get-Date; 
+        $DonateText = "Miner has donated on $DonateTime"; 
+        $DonateText | Set-Content ".\build\txt\donate.txt"
+    }
 
     if ($Type -notlike "*ASIC*") {
         ## Main Loop Begins
@@ -1004,18 +1000,18 @@ While ($true) {
 
         ## Combine Stats From Algo and Custom
         $AlgoPools = New-Object System.Collections.ArrayList
-        if($Top_3_Algo){$Top_3_Algo | ForEach-Object {$AlgoPools.Add($_) | Out-Null}}
-        if($Top_3_Custom){$Top_3_Custom | ForEach-Object {$AlgoPools.Add($_) | Out-Null}}
+        if ($Top_3_Algo) {$Top_3_Algo | ForEach-Object {$AlgoPools.Add($_) | Out-Null}}
+        if ($Top_3_Custom) {$Top_3_Custom | ForEach-Object {$AlgoPools.Add($_) | Out-Null}}
         $Top_3_Algo = $Null;
         $Top_3_Custom = $Null;
 
-        if($AlgoPools.Count -eq 0) {
-          $HiveMessage = "No Pools Found! Check Arguments/Net Connection"
-          $HiveWarning = @{result = @{command = "timeout"}}
-          if ($HiveOS -eq "Yes") {try {$SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch {Write-Warning "Failed To Notify HiveOS"}}
-          Write-Host $HiveMessage
-          start-sleep $Interval; 
-          continue  
+        if ($AlgoPools.Count -eq 0) {
+            $HiveMessage = "No Pools Found! Check Arguments/Net Connection"
+            $HiveWarning = @{result = @{command = "timeout"}}
+            if ($HiveOS -eq "Yes") {try {$SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch {Write-Warning "Failed To Notify HiveOS"}}
+            Write-Host $HiveMessage
+            start-sleep $Interval; 
+            continue  
         }
 
         ##Get Algorithms again, in case custom changed it.
@@ -1025,9 +1021,9 @@ While ($true) {
         ##Load Only Needed Algorithm Miners
         $AlgoMiners = New-Object System.Collections.ArrayList
         $SearchMiners = Get-Miners -Platforms $Platform -MinerType $Type -Stats $Stats -Pools $AlgoPools;
-        $SearchMiners | %{$AlgoMiners.Add($_) | Out-Null}
+        $SearchMiners | % {$AlgoMiners.Add($_) | Out-Null}
 
-        if($ALgoMiners.Count -eq 0) {
+        if ($ALgoMiners.Count -eq 0) {
             $HiveMessage = "No Miners Found! Check Arguments / Configuration"
             $HiveWarning = @{result = @{command = "timeout"}}
             if ($HiveOS -eq "Yes") {try {$SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch {Write-Warning "Failed To Notify HiveOS"}}
@@ -1067,7 +1063,7 @@ While ($true) {
                 }
             }
 
-            $BadAlgoMiners | %{$AlgoMiners.Remove($_)} | Out-Null;
+            $BadAlgoMiners | % {$AlgoMiners.Remove($_)} | Out-Null;
             $BadAlgoMiners = $Null
             $DLTimeout = $null
             $DlName = $Null
@@ -1097,7 +1093,7 @@ While ($true) {
         ## To fail.
         $CutMiners = Start-MinerReduction -Stats $Stats -Pools $AlgoPools -SortMiners $AlgoMiners -WattCalc $WattEx -Type $Type
         ##Remove The Extra Miners
-        $CutMiners | %{$AlgoMiners.Remove($_)} | Out-Null;
+        $CutMiners | % {$AlgoMiners.Remove($_)} | Out-Null;
         $CutMiners = $Null
 
         ## Print on screen user is screwed if the process failed.
@@ -1115,15 +1111,15 @@ While ($true) {
 
         ##Now that we have narrowed down to our best miners - we adjust them for switching threshold.
         $BestActiveMiners | % { $AlgoMiners | Where Path -EQ $_.path | Where Arguments -EQ $_.Arguments | % {
-            if ($_.Profit -ne $NULL) {
-                if ($Switch_Threshold) {
-                    Write-Host "Switching_Threshold changes $($_.Name) $($_.Algo) base factored price from $(($_.Profit * $Rates.$Currency).ToString("N2"))" -NoNewline; 
-                    if ($_.Profit -GT 0) {$_.Profit = [Double]$_.Profit * (1 + ($Switch_Threshold / 100))}
-                    else {$_.Profit = [Double]$_.Profit * (1 + ($Switch_Threshold / -100))};  
-                    Write-Host " to $(($_.Profit * $Rates.$Currency).ToString("N2"))"
+                if ($_.Profit -ne $NULL) {
+                    if ($Switch_Threshold) {
+                        Write-Host "Switching_Threshold changes $($_.Name) $($_.Algo) base factored price from $(($_.Profit * $Rates.$Currency).ToString("N2"))" -NoNewline; 
+                        if ($_.Profit -GT 0) {$_.Profit = [Double]$_.Profit * (1 + ($Switch_Threshold / 100))}
+                        else {$_.Profit = [Double]$_.Profit * (1 + ($Switch_Threshold / -100))};  
+                        Write-Host " to $(($_.Profit * $Rates.$Currency).ToString("N2"))"
+                    }
                 }
             }
-          }
         }
 
 
@@ -1131,7 +1127,7 @@ While ($true) {
         ##First we rule out miners that are above threshold
         $BadAlgoMiners = @()
         if ($Threshold -ne 0) {$AlgoMiners | Foreach {if ($_.Profit -gt $Threshold) {$BadAlgoMiners += $_}}}
-        $BadAlgoMiners | %{$AlgoMiners.Remove($_)}
+        $BadAlgoMiners | % {$AlgoMiners.Remove($_)}
         $BadAlgoMiners = $Null
 
         ##Now we need to eliminate all algominers except best ones
@@ -1296,12 +1292,11 @@ While ($true) {
 
         ## This section pulls relavant statics that users require, and then outputs them to screen or file, to be pulled on command.
         if ($ConserveMessage) {$ConserveMessage | % {Write-Host "$_" -ForegroundColor Red}}
-        if($CoinExchange)
-        {
-        $Y = [string]$CoinExchange
-        $H = [string]$Currency
-        $J = [string]'BTC'
-        $BTCExchangeRate = Invoke-WebRequest "https://min-api.cryptocompare.com/data/pricemulti?fsyms=$Y&tsyms=$J" -UseBasicParsing | ConvertFrom-Json | Select-Object -ExpandProperty $Y | Select-Object -ExpandProperty $J
+        if ($CoinExchange) {
+            $Y = [string]$CoinExchange
+            $H = [string]$Currency
+            $J = [string]'BTC'
+            $BTCExchangeRate = Invoke-WebRequest "https://min-api.cryptocompare.com/data/pricemulti?fsyms=$Y&tsyms=$J" -UseBasicParsing | ConvertFrom-Json | Select-Object -ExpandProperty $Y | Select-Object -ExpandProperty $J
         }
         $MSFile = ".\build\txt\minerstats.txt"
         if (Test-Path $MSFIle) {Clear-Content ".\build\txt\minerstats.txt" -Force}
@@ -1352,37 +1347,38 @@ While ($true) {
         ## Records miner run times, and closes them. Starts New Miner instances and records
         ## there tracing information.
         $ActiveMinerPrograms | ForEach {
+           
+            ##Miners Not Set To Run
             if ($_.BestMiner -eq $false) {
-                if ($Platform -eq "windows") {
-                    if ($_.XProcess -eq $null) {$_.Status = "Failed"}
-                    elseif ($_.XProcess.HasExited -eq $false) {
-                        $_.Active += (Get-Date) - $_.XProcess.StartTime
-                        $_.XProcess.CloseMainWindow() | Out-Null
-                        $_.Status = "Idle"
-                    }
-                }
-                elseif ($Platform -eq "linux") {
-                    if ($_.XProcess = $null) {$_.Status = "Failed"}
-                    elseif ($_.XProcess.HasExited -eq $false) {
-                        $PreviousMinerPorts.$($_.Type) = "($_.Port)"
-                        $_.Status = "Idle"
-                        $PIDDate = ".\build\pid\$($_.Name)_$($_.Type)_$($_.Coins)_date.txt"
-                        if (Test-path $PIDDate) {
-                            else {
-                                $_.Status = "Idle"
-                                $MinerInfo = ".\build\pid\$($_.Name)_$($_.Type)_$($_.Coins)_info.txt"
-                                if (Test-path $MinerInfo) {
-                                    $MI = Get-Content $MinerInfo | ConvertFrom-Json
-                                    $PIDTime = [DateTime]$MI.start_date
-                                    $_.Active += (Get-Date) - $PIDTime
-                                    Write-Host "Stopping Miner: $($_.Name) on $($_Type) screen" -ForegroundColor Yellow
-                                    Start-Process "start-stop-daemon" -ArgumentList "--stop --name $($MI.miner_exec) --pidfile $($MI.pid_path) --retry 5" -Wait
-                                }
-                            }                        
+
+                if($Platform -eq "windows"){
+                        if ($_.XProcess -eq $Null) {$_.Status = "Failed"}
+                        elseif ($_.XProcess.HasExited -eq $false) {
+                            $_.Active += (Get-Date) - $_.XProcess.StartTime
+                            $_.XProcess.CloseMainWindow() | Out-Null
+                            $_.Status = "Idle"
                         }
                     }
+
+                elseif($Platform -eq "linux"){
+                        if ($_.XProcess -eq $Null) {$_.Status = "Failed"}
+                        elseif ($_.XProcess.HasExited -eq $false) {
+                            $PreviousMinerPorts.$($_.Type) = "($_.Port)"
+                            $_.Status = "Idle"
+                            $MinerInfo = ".\build\pid\$($_.Name)_$($_.Type)_$($_.Coins)_info.txt"
+                            if (Test-path $MinerInfo) {
+                                $MI = Get-Content $MinerInfo | ConvertFrom-Json
+                                $PIDTime = [DateTime]$MI.start_date
+                                $Exec = Split-Path $MI.miner_exec -Leaf
+                                $_.Active += (Get-Date) - $PIDTime
+                                Start-Process "start-stop-daemon" -ArgumentList "--stop --name $Exec --pidfile $($MI.pid_path) --retry 5" -Wait
+                            }
+                        }
+                    }
+                    
                 }
-            }
+
+            ##Miners That Should Be Running
             elseif ($null -eq $_.XProcess -or $_.XProcess.HasExited -and $Lite -eq "No") {
                 if ($TimeDeviation -ne 0) {
                     $Restart = $true

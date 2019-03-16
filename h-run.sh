@@ -8,6 +8,14 @@ cd `dirname $0`
 
 . h-manifest.conf
 
+SWARMDIR=${PWD##*/}
+SWARMCONF="$PWD/$SWARMDIR.conf"
+
+if [ ! -f $SWARMCONF ]
+then
+    touch $SWARMCONF
+fi
+
 #echo $CUSTOM_MINER
 #echo $CUSTOM_LOG_BASENAME
 #echo $CUSTOM_CONFIG_FILENAME

@@ -2181,3 +2181,45 @@ Note: ``start-stop-daemon`` is now dependency of SWARM for
 
  -Applied proposed fix https://github.com/MaynardMiner/SWARM/issues/34 
  
+ 2.0.8
+
+ NOTE: I have set SWARM up for git. You do not have to
+ technically update with new link. Here is quick steps
+ if you wish to set up git:
+
+     1.) run the following command:
+         ``git clone https://github.com/maynardminer/SWARM.git /hive/miners/custom/SWARM``
+     2.) Leave link empty in flight sheet
+     3.) Set miner as SWARM   (important: No .name.of.version)
+
+  If you wish to update miner going forward, direct from developement:
+
+     ``cd /hive/miners/custom/SWARM && git pull``
+
+  If you wish ever wish to update from beta test branch developement:
+
+     ``cd /hive/miners/custom/SWARM && git checkout beta_testing``
+
+   **Note: Releases are released for a reason. Use with caution**
+
+  Commands are same for windows, but git must be installed.
+  These commands will work remotely. SWARM will transfer
+  old SWARM.Name.Of.Version folders if ``-update Yes`` is
+  specified, or if using in windows (automatically).
+
+ -I believe I fixed all miners, and logging, so they will
+  no longer cause issue with anti-hacking / tee
+ -added verushash algorithm / cc-verus
+ -4th decimal for stats (for Sol/s)
+ -``get stats lite`` much cleaner on cell phones.
+    Good alternative for ``get stats`` on the go.
+ -fixed nicehash wallets in ``get wallets``
+ -miner typo fixes.
+ -added ProgPOW devices (for NVIDIA2 and NVIDIA3)
+ -attempted new compile again- Still works for me
+  on both RTX and GTX cards. Compiled with Cuda 10.1
+  this time.
+ -added cuda-10.1 libs to export folder. It seems
+  cuda 10.0 and 10.1 are interchangable. no need for
+  ``-Cuda 10.1``
+ -improved miner displays in windows, where possible.

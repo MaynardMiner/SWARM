@@ -42,7 +42,8 @@ While ($true) {
                      if($_ -like "*info*")
                       {
                         $Info = Get-Content ".\build\pid\$($_)" | ConvertFrom-Json
-                        Start-Process "start-stop-daemon" -ArgumentList "--stop --name $($Info.miner_exec) --pidfile $($Info.pid_path) --retry 5" -Wait
+                        $Exec = Split-Path $Info.miner_exec -Leaf
+                        Start-Process "start-stop-daemon" -ArgumentList "--stop --name $Exec --pidfile $($Info.pid_path) --retry 5" -Wait
                       }
                     }
                     start-killscript
@@ -58,7 +59,8 @@ While ($true) {
              if($_ -like "*info*")
               {
                 $Info = Get-Content ".\build\pid\$($_)" | ConvertFrom-Json
-                Start-Process "start-stop-daemon" -ArgumentList "--stop --name $($Info.miner_exec) --pidfile $($Info.pid_path) --retry 5" -Wait
+                $Exec = Split-Path $Info.miner_exec -Leaf
+                Start-Process "start-stop-daemon" -ArgumentList "--stop --name $Exec --pidfile $($Info.pid_path) --retry 5" -Wait
               }
             }
             start-killscript

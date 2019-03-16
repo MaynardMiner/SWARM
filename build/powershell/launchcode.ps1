@@ -50,6 +50,7 @@ function Start-LaunchCode {
                     "bminer" {$MinerArguments = "-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "lolminer" {$MinerArguments = "--devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                     "xmrstak" {$MinerArguments = "--cuda-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
+                    "progminer" {$MinerArguments = "--cuda-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                     "grin-miner" {set-minerconfig $NewMiner $Logs}
                     "zjazz" {
                         $GetDevices = $($MinerCurrent.Devices) -split ","
@@ -91,6 +92,7 @@ function Start-LaunchCode {
                     "wildrig" {$MinerArguments = "$($MinerCurrent.Arguments)"}
                     "grin-miner" {set-minerconfig $NewMiner $Logs}
                     "gminer" {$MinerArguments = "-d $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)"}
+                    "progminer" {$MinerArguments = "--opencl-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)"}
                     "lyclminer" {
                         $MinerArguments = ""
                         Set-Location (Split-Path $($MinerCurrent.Path))

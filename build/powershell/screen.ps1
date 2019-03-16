@@ -69,16 +69,38 @@ function Get-MinerStatus {
 }
 
 function Get-StatusLite {
+    $screen = @()
     $Type | % {
-        $Table = $ProfitTable | Where TYPE -eq $_;
-        $global:index = 0
-        $Table | Sort-Object -Property Profits -Descending | Format-Table -GroupBy Type (
-            @{Label = "Miner"; Expression = {"$global:index $($_.Miner)"; $global:index += 1}},
-            @{Label = "Speed"; Expression = {$($_.HashRates) | ForEach {if ($null -ne $_) {"$($_ | ConvertTo-Hash)/s"}else {"Bench"}}}; Align = 'center'},
-            @{Label = "$Currency/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {($_ * $Rates.$Currency).ToString("N2")}else {"Bench"}}}; Align = 'center'},
-            @{Label = "Pool"; Expression = {$($_.MinerPool)}; Align = 'Right'}
-        )
+        $screen += 
+        "
+########################
+    Group: $($_)
+########################
+"
+        $Table = $ProfitTable | Where TYPE -eq $_ | Sort-Object -Property Profits -Descending
+        $global:index = 1
+
+        $Table | % { 
+
+            if ($global:index -eq 1) {$Screen += "# 1 Miner:"}
+            else {$Screen += "Postion $global:index: "}
+
+            $Screen += 
+            "       Miner: $($_.Miner)
+        Speed: $($_.HashRates | ForEach {if ($null -ne $_) {"$($_ | ConvertTo-Hash)/s"}else {"Benchmarking"}})
+        Profit: $($_.Profits | ForEach {if ($null -ne $_) {"$(($_ * $Rates.$Currency).ToString("N2")) $Currency/Day"}else {"Bench"}}) 
+        Pool: $($_.MinerPool)
+"
+        
+            $global:index += 1
+        }
+        $screen += "
+########################
+########################
+
+" 
     }
+    $screen
 }
 
 function Invoke-MinerWarning {
