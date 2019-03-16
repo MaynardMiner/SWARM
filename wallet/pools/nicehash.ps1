@@ -4,9 +4,7 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName
 $Getkeys = if (Test-Path ".\wallet\keys") {Get-ChildItemContent ".\wallet\keys" | % {$_.Content | Add-Member @{Name = $_.Content.Wallet} -PassThru}
 }
-$AltWallets = ("AltWallet1", "AltWallet2", "AltWallet3")
-$AltPool = $false
-if ($AltPool = $true) {$Wallets = $AltWallets}else {$Wallets = ("Wallet1", "Wallet2", "Wallet3")}
+$Wallets = ("Nicehash_Wallet1", "Nicehash_Wallet1", "Nicehash_Wallet3")
 $PoolQuery = "https://api.nicehash.com/api?method=stats.provider&addr="
 
 $Getkeys | % {if ($Wallets -match $_.Name) {

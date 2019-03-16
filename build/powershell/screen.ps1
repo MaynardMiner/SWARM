@@ -72,31 +72,35 @@ function Get-StatusLite {
     $screen = @()
     $Type | % {
         $screen += 
-"
+        "
 ########################
     Group: $($_)
 ########################
 "
         $Table = $ProfitTable | Where TYPE -eq $_ | Sort-Object -Property Profits -Descending
-        $global:index = 0
+        $global:index = 1
+
         $Table | % { 
 
-$Screen += 
-"Postion: $global:index
-        Miner: $($_.Miner)
-        Speed: $($_.HashRates | ForEach {if ($null -ne $_) {"$($_ | ConvertTo-Hash)/s"}else {"Bench"}})
+            if ($global:index -eq 1) {$Screen += "# 1 Miner:"}
+            else {$Screen += "Postion $global:index: "}
+
+            $Screen += 
+            "       Miner: $($_.Miner)
+        Speed: $($_.HashRates | ForEach {if ($null -ne $_) {"$($_ | ConvertTo-Hash)/s"}else {"Benchmarking"}})
         Profit: $($_.Profits | ForEach {if ($null -ne $_) {"$(($_ * $Rates.$Currency).ToString("N2")) $Currency/Day"}else {"Bench"}}) 
         Pool: $($_.MinerPool)
 "
+        
             $global:index += 1
         }
-        $screen +="
+        $screen += "
 ########################
 ########################
 
 " 
     }
- $screen
+    $screen
 }
 
 function Invoke-MinerWarning {
