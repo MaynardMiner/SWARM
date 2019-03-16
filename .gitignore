@@ -21,8 +21,9 @@ build/bash/startup.sh
 SWARM.conf
 arguments.json
 config/parameters/arguments.json
-SWARM.conf
 config/parameters/newarguments.json
+config/power/power.json
+SWARM.conf
 build/bash/startup.sh
 build/export/libcudart.so.10.1
 build/export/libcudart.so.10.0
@@ -32,5 +33,4 @@ build/export/libnvrtc.so.10.0
 build/export/libnvrtc.so.9.2
 build/export/libstdc++.so.6
 build/cmd/dir.txt
-config/power/power.json
  
