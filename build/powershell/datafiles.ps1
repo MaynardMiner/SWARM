@@ -34,6 +34,20 @@ function Get-Data {
         Set-Location $CmdDir     
     }
 
+    if (-not (Test-Path ".\build\export\libnvrtc-builtins.so.10.1")) {
+        $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
+        Start-Process ln -ArgumentList "-s $dir/build/export/libnvrtc-builtins.so.10.1.105 $dir/build/export/libnvrtc-builtins.so.10.1" -Wait
+        Set-Location "/"
+        Set-Location $CmdDir     
+    }
+
+    if (-not (Test-Path ".\build\export\libnvrtc-builtins.so")) {
+        $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
+        Start-Process ln -ArgumentList "-s $dir/build/export/libnvrtc-builtins.so.10.1 $dir/build/export/libnvrtc-builtins.so" -Wait
+        Set-Location "/"
+        Set-Location $CmdDir     
+    }
+
         if (-not (Test-Path ".\build\export\libcudart.so.10.1")) {
         $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
         Start-Process ln -ArgumentList "-s $dir/build/export/libcudart.so.10.1.105 $dir/build/export/libcudart.so.10.1" -Wait
