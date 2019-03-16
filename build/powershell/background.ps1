@@ -924,7 +924,7 @@ While ($True) {
     }
 
     if ($CPUOnly -eq $true) {
-        $CPUKHS = [Math]::Round($CPUKHS, 3)
+        $CPUKHS = [Math]::Round($CPUKHS, 4)
         $HIVE = "
 $($CPUHash -join "`n")
 KHS=$CPUKHS
@@ -953,8 +953,8 @@ HSU=$CPUHS
     else {
         if ($DEVNVIDIA -eq $True) {if ($GCount.NVIDIA.PSObject.Properties.Value.Count -gt 0) {for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {$HashRates += 0; $Fans += 0; $Temps += 0}}}
         if ($DevAMD -eq $True) {if ($GCount.AMD.PSObject.Properties.Value.Count -gt 0) {for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {$HashRates += 0; $Fans += 0; $Temps += 0}}}
-        if ($DEVNVIDIA -eq $True) {for ($i = 0; $i -lt $GCount.NVIDIA.PSOBject.Properties.Value.Count; $i++) {$HashRates[$($GCount.NVIDIA.$i)] = "GPU={0:f3}" -f $($GPUHashRates.$($GCount.NVIDIA.$i))}}
-        if ($DevAMD -eq $True) {for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {$HashRates[$($GCount.AMD.$i)] = "GPU={0:f3}" -f $($GPUHashRates.$($GCount.AMD.$i))}}
+        if ($DEVNVIDIA -eq $True) {for ($i = 0; $i -lt $GCount.NVIDIA.PSOBject.Properties.Value.Count; $i++) {$HashRates[$($GCount.NVIDIA.$i)] = "GPU={0:f4}" -f $($GPUHashRates.$($GCount.NVIDIA.$i))}}
+        if ($DevAMD -eq $True) {for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {$HashRates[$($GCount.AMD.$i)] = "GPU={0:f4}" -f $($GPUHashRates.$($GCount.AMD.$i))}}
         if ($DEVNVIDIA -eq $True) {for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {$Fans[$($GCount.NVIDIA.$i)] = "FAN=$($GPUFans.$($GCount.NVIDIA.$i))"}}
         if ($DevAMD -eq $True) {for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {$Fans[$($GCount.AMD.$i)] = "FAN=$($GPUFans.$($GCount.AMD.$i))"}}
         if ($DEVNVIDIA -eq $True) {for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {$Temps[$($GCount.NVIDIA.$i)] = "TEMP=$($GPUTemps.$($GCount.NVIDIA.$i))"}}
@@ -967,13 +967,13 @@ HSU=$CPUHS
         }  
         for ($i = 0; $i -lt $HashRates.count; $i++) {
             if ($HashRates[$i] -eq 'GPU=0' -or $HashRates[$i] -eq 'GPU=' -or $HashRates[$i] -eq 'GPU=0.00') {
-                $HashRates[$i] = 'GPU=0.001'; $KHS += 0.001
+                $HashRates[$i] = 'GPU=0.0001'; $KHS += 0.0001
             }
         }
 
         $ALGO = $ALGO | Select -First 1
         $HiveAlgo = $HiveAlgo | Select -First 1
-        $KHS = [Math]::Round($KHS, 3)
+        $KHS = [Math]::Round($KHS, 4)
 
         $HIVE = "
 $($HashRates -join "`n")
@@ -1002,7 +1002,7 @@ HSU=khs
 " -ForegroundColor White
         }
 
-        if ($CPUKHS -ne $null) {$CPUKHS = [Math]::Round($CPUKHS, 3); Write-Host "CPU=$CPUKHS"}
+        if ($CPUKHS -ne $null) {$CPUKHS = [Math]::Round($CPUKHS, 4); Write-Host "CPU=$CPUKHS"}
         $Hive | Set-Content ".\build\txt\hivestats.txt"
     }
 
