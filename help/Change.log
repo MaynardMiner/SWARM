@@ -2223,3 +2223,16 @@ Note: ``start-stop-daemon`` is now dependency of SWARM for
   cuda 10.0 and 10.1 are interchangable. no need for
   ``-Cuda 10.1``
  -improved miner displays in windows, where possible.
+
+ 2.0.9
+
+ -Removed Some Params no longer used.
+ -Upated xmrig-nvidia link on linux.
+ -updated phoenix miner 4.2b
+ -updated teamredminer
+ -gminer updated in windows (missed)
+ -wildrig updated
+ -Made small fixes in profit calcs.
+  Should improve stat accuracy slightly.
+ -Oldest updated that can be performed
+  is 2.0.3.

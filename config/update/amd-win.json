@@ -40,7 +40,7 @@
   "path2":".\\bin\\gminer_amd-2\\miner.exe", 
   "path3":".\\bin\\gminer_amd-3\\miner.exe", 
   "minername":"miner", 
-  "version":"1.35", 
+  "version":"1.36",
   "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/gminer-windows.zip"
   },
 
