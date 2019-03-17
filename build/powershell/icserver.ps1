@@ -47,7 +47,6 @@ function Start-ASIC {
         ##Parameters (if changed through command)
         $GetSWARMParams = Get-Content ".\config\parameters\arguments.json"
         $SWARMParams = $GetSWARMParams | ConvertFrom-Json
-        $Wallet = $SWARMParams.Wallet
         $Wallet1 = $SWARMParams.Wallet1
         $Wallet2 = $SWARMParams.Wallet2
         $Wallet3 = $SWARMParams.Wallet3

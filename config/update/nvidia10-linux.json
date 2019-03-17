@@ -218,16 +218,16 @@
     "path3": ".\\bin\\xmrig_nv-3\\xmrig-nvidia",
     "minername": "xmrig-nvidia",
     "version": "2.14.0",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/xmrig-nvidia-windows.zip"
-},
-"cc-verus": {
-  "name": "cc-verus",
-  "type": "nvidia",
-  "path1": ".\\bin\\cc-verus-1\\ccminer",
-  "path2": ".\\bin\\cc-verus-2\\ccminer",
-  "path3": ".\\bin\\cc-verus-3\\ccminer",
-  "minername": "ccminer",
-  "version": "6.1",
-  "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/cc-verus-linux.tar.gz"
-}
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/xmrig-nvidia-linux.tar.gz"
+  },
+  "cc-verus": {
+    "name": "cc-verus",
+    "type": "nvidia",
+    "path1": ".\\bin\\cc-verus-1\\ccminer",
+    "path2": ".\\bin\\cc-verus-2\\ccminer",
+    "path3": ".\\bin\\cc-verus-3\\ccminer",
+    "minername": "ccminer",
+    "version": "6.1",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/cc-verus-linux.tar.gz"
+  }
 }

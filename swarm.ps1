@@ -13,8 +13,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 param(
     [Parameter(Mandatory = $false)]
-    [String]$Wallet = "Yes", ##Miner Can Load Pools
-    [Parameter(Mandatory = $false)]
     [String]$Wallet1, ##Group 1 Wallet
     [Parameter(Mandatory = $false)]
     [String]$Wallet2, ##Group 2 Wallet
@@ -306,7 +304,6 @@ $Debug = $false
 ## Convert Arguments Into Hash Table
 if ($Debug -ne $true) {
     $CurrentParams = @{}
-    $CurrentParams.Add("Wallet", $Wallet)
     $CurrentParams.Add("Wallet1", $Wallet1)
     $CurrentParams.Add("Wallet2", $Wallet2)
     $CurrentParams.Add("Wallet3", $Wallet3)
@@ -411,7 +408,6 @@ if ((Test-Path ".\config\parameters\newarguments.json") -or $Debug -eq $true) {
     ## Pull From File This is linux Powershell Bug / Weird Parsing. This Corrects it.
     $GetSWARMParams = Get-Content ".\config\parameters\arguments.json"
     $SWARMParams = $GetSWARMParams | ConvertFrom-Json
-    $Wallet = $SWARMParams.Wallet
     $Wallet1 = $SWARMParams.Wallet1
     $Wallet2 = $SWARMParams.Wallet2
     $Wallet3 = $SWARMParams.Wallet3
@@ -850,7 +846,6 @@ While ($true) {
     ##Parameters (change again interactively if needed)
     $GetSWARMParams = Get-Content ".\config\parameters\arguments.json"
     $SWARMParams = $GetSWARMParams | ConvertFrom-Json
-    $Wallet = $SWARMParams.Wallet
     $Wallet1 = $SWARMParams.Wallet1
     $Wallet2 = $SWARMParams.Wallet2
     $Wallet3 = $SWARMParams.Wallet3
