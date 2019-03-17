@@ -40,7 +40,7 @@
   "path2":".\\bin\\gminer_amd-2\\miner.exe", 
   "path3":".\\bin\\gminer_amd-3\\miner.exe", 
   "minername":"miner", 
-  "version":"1.35", 
+  "version":"1.36",
   "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/gminer-windows.zip"
   },
 
@@ -51,7 +51,7 @@
 "path2":".\\bin\\phoenix-amd-2\\PhoenixMiner.exe", 
 "path3":".\\bin\\phoenix-amd-3\\PhoenixMiner.exe", 
 "minername":"PhoenixMiner.exe", 
-"version":"4.2a", 
+"version":"4.2b", 
 "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/phoenix-miner-windows.zip"
 }, 
 
@@ -106,7 +106,7 @@
 "path2":".\\bin\\tdxminer-2\\teamredminer.exe", 
 "path3":".\\bin\\tdxminer-3\\teamredminer.exe", 
 "minername":"teamredminer.exe", 
-"version":"0.4.1", 
+"version":"0.4.2", 
 "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/teamredminer-windows.zip"
 }, 
 

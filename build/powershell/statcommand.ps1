@@ -261,4 +261,21 @@ function ConvertFrom-Fees {
     $WorkerPercent = $Workers * $FeeStat
     $WorkerFee = $Estimate * $WorkerPercent
     return $PoolCut
-}  
+} 
+
+
+function ConvertFrom-PoolHash {
+    param(
+        [Parameter(Position = 0, Mandatory = $true)]
+        [Double]$HashRates,
+        [Parameter(Position = 1, Mandatory = $true)]
+        [Double]$Shares,
+        [Parameter(Position = 2, Mandatory = $true)]
+        [Double]$Estimate
+    )
+
+    $TotalShares = $Shares / $HashRates
+    $TotalShares = [Math]::Round($TotalShares,3)
+    [Double]$Calc = $Estimate * $TotalShares
+    $Calc
+}
