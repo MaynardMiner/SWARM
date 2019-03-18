@@ -26,7 +26,7 @@ function Get-MinerStatus {
                     @{Label = "BTC/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {  $_.ToString("N5")}else {"Bench"}}}; Align = 'right'},
                     @{Label = "$Y/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {  ($_ / $BTCExchangeRate).ToString("N5")}else {"Bench"}}}; Align = 'right'},
                     @{Label = "$Currency/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {($_ * $Rates.$Currency).ToString("N2")}else {"Bench"}}}; Align = 'center'},
-                    @{Label = "Pool"; Expression = {$($_.MinerPool)}; Align = 'Right'}
+                    @{Label = "Pool"; Expression = {$($_.MinerPool)}; Align = 'left'}
                 )
             }
             else {
@@ -37,7 +37,7 @@ function Get-MinerStatus {
                     @{Label = "Watt/Day"; Expression = {$($_.Power) | ForEach {if ($null -ne $_) {($_ * $Rates.$Currency).ToString("N2")}else {"Bench"}}}; Align = 'center'},
                     @{Label = "BTC/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {  $_.ToString("N5")}else {"Bench"}}}; Align = 'right'},
                     @{Label = "$Currency/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {($_ * $Rates.$Currency).ToString("N2")}else {"Bench"}}}; Align = 'center'},
-                    @{Label = "Pool"; Expression = {$($_.MinerPool)}; Align = 'Right'}
+                    @{Label = "Pool"; Expression = {$($_.MinerPool)}; Align = 'left'}
                 )
             }
         }
@@ -50,7 +50,7 @@ function Get-MinerStatus {
                     @{Label = "BTC/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {  $_.ToString("N5")}else {"Bench"}}}; Align = 'right'},
                     @{Label = "$Y/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {  ($_ / $BTCExchangeRate).ToString("N5")}else {"Bench"}}}; Align = 'right'},
                     @{Label = "$Currency/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {($_ * $Rates.$Currency).ToString("N2")}else {"Bench"}}}; Align = 'center'},
-                    @{Label = "Pool"; Expression = {$($_.MinerPool)}; Align = 'Right'}        
+                    @{Label = "Pool"; Expression = {$($_.MinerPool)}; Align = 'left'}        
                 )
             }
             else {
@@ -60,7 +60,7 @@ function Get-MinerStatus {
                     @{Label = "Speed"; Expression = {$($_.HashRates) | ForEach {if ($null -ne $_) {"$($_ | ConvertTo-Hash)/s"}else {"Bench"}}}; Align = 'center'},
                     @{Label = "BTC/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {  $_.ToString("N5")}else {"Bench"}}}; Align = 'right'},
                     @{Label = "$Currency/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {($_ * $Rates.$Currency).ToString("N2")}else {"Bench"}}}; Align = 'center'},
-                    @{Label = "Pool"; Expression = {$($_.MinerPool)}; Align = 'Right'}        
+                    @{Label = "Pool"; Expression = {$($_.MinerPool)}; Align = 'left'}        
                 )
             }
 
