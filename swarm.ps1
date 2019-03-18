@@ -217,7 +217,7 @@ $Platform | Set-Content ".\build\txt\os.txt"
 
 ## Version
 $Version = Get-Content ".\h-manifest.conf" | ConvertFrom-StringData
-$Version.CUSTOM_NAME | Set-Content ".\build\txt\version.txt"
+$Version.CUSTOM_VERSION | Set-Content ".\build\txt\version.txt"
 $Version = $Version.CUSTOM_VERSION
 
 ## Initiate Update Check
