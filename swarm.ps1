@@ -722,12 +722,20 @@ AMD USERS: PLEASE READ .\config\oc\new_sample.json FOR INSTRUCTIONS ON OVERCLOCK
                     $mirror = $config.HIVE_HOST_URL -replace "`"", ""
                     $farmID = $config.FARM_ID
                     $HiveID = $config.RIG_ID
+                    $wd_enabled = $config.WD_ENABLED
+                    $wd_miner = $config.WD_MINER
+                    $wd_reboot = $config.WD_REBOOT
+                    $wd_minhashes = $config.WD_MINHASHES -replace "`'","" | ConvertFrom-Json
                     $NewHiveKeys = @{}
                     $NewHiveKeys.Add("HiveWorker", "$Hiveworker")
                     $NewHiveKeys.Add("HivePassword", "$Pass")
                     $NewHiveKeys.Add("HiveID", "$HiveID")
                     $NewHiveKeys.Add("HiveMirror", "$mirror")
                     $NewHiveKeys.Add("FarmID", "$farmID")
+                    $NewHiveKeys.Add("Wd_Enabled", "$wd_enabled")
+                    $NewHiveKeys.Add("wd_miner", "$wd_miner")
+                    $NewHiveKeys.Add("wd_reboot", "$wd_reboot")
+                    $NewHiveKeys.Add("wd_minhashes", "$wd_minhashes")
                     if (Test-Path ".\build\txt\hivekeys.txt") {$OldHiveKeys = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json}
                     ## If password was changed- Let Hive know message was recieved
                     if ($OldHiveKeys) {

@@ -104,16 +104,16 @@ function Write-MinerData2 {
     Write-Host "Current Running instances: $($Process.Name)"
 }
 #function Set-Array {
-  #  param(
-  #      [Parameter(Position = 0, Mandatory = $true)]
-  #      [Object]$ParseRates,
-  #      [Parameter(Position = 1, Mandatory = $true)]
-  #      [int]$i,
-  #      [Parameter(Position = 2, Mandatory = $false)]
-  #      [string]$factor
- #   )
- #   try {
- #       $Parsed = $ParseRates | % {iex $_}
+#  param(
+#      [Parameter(Position = 0, Mandatory = $true)]
+#      [Object]$ParseRates,
+#      [Parameter(Position = 1, Mandatory = $true)]
+#      [int]$i,
+#      [Parameter(Position = 2, Mandatory = $false)]
+#      [string]$factor
+#   )
+#   try {
+#       $Parsed = $ParseRates | % {iex $_}
 #        if ($ParseRates.Count -eq 1) {[Double]$Parse = $Parsed}
 #        elseif ($ParseRates.Count -gt 1) {[Double]$Parse = if($Parsed[$i]){$Parsed[$i]}else{0}}
 #        $Parse
@@ -133,12 +133,13 @@ function Set-Array {
         [Parameter(Position = 2, Mandatory = $false)]
         [string]$factor
     )
-        try{
+    try {
         $Parsed = $ParseRates | % {iex $_}
         $Parse = $Parsed | Select -Skip $i -First 1
-        if($null -eq $Parse){$Parse = 0}
-        }catch{$Parse = 0}
-        $Parse
+        if ($null -eq $Parse) {$Parse = 0}
+    }
+    catch {$Parse = 0}
+    $Parse
 }
 
 function Set-APIFailure {
@@ -274,14 +275,21 @@ $DevAMD = $false
 if ($GCount -like "*NVIDIA*") {$DevNVIDIA = $true; Write-Host "NVIDIA Detected"};
 if ($GCount -like "*AMD*") {$DevAMD = $true; Write-Host "AMD Detected"};
 
+##Hive Config
+#if (Test-Path ".\build\txt\hivekeys.txt") {$config = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json}
+
 ##Timers
 $BackgroundTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $BackgroundTimer.Restart()
 $RestartTimer = New-Object -TypeName System.Diagnostics.Stopwatch
+#$wd_miner_timer = New-Object -TypeName System.Diagnostics.Stopwatch
+#$wd_reboot_timer = New-Object -TypeName System.Diagnostics.Stopwatch
+#$wd_miner_seconds = [Double]$config.wd_miner * 60
+#$wd_reboot_seconds = [Double]$config.wd_reboot * 60
 
 ##Get hive naming conventions:
 $GetHiveNames = ".\config\pools\pool-algos.json"
-$HiveNames = if(Test-Path $GetHiveNames){Get-Content $GetHiveNames | ConvertFrom-Json}
+$HiveNames = if (Test-Path $GetHiveNames) {Get-Content $GetHiveNames | ConvertFrom-Json}
 
 While ($True) {
     ## Timer For When To Restart Loop
@@ -409,7 +417,7 @@ While ($True) {
             if ($Platforms -eq "windows" -and $HiveOS -eq "Yes") {
                 if ($TypeS -eq "NVIDIA") {$StatPower = $NVIDIAStats.Power}
                 if ($TypeS -eq "AMD") {$StatPower = $AMDStats.Power}
-                if ($StatPower -ne "" -or $StatPower -ne $null){for ($i = 0; $i -lt $Devices.Count; $i++) {$GPUPower.$(Get-GPUS) = Set-Array $StatPower $Devices[$i]}}
+                if ($StatPower -ne "" -or $StatPower -ne $null) {for ($i = 0; $i -lt $Devices.Count; $i++) {$GPUPower.$(Get-GPUS) = Set-Array $StatPower $Devices[$i]}}
             }
 
 
@@ -498,9 +506,9 @@ While ($True) {
                     $Request = $null; $Request = Get-TCP -Server $Server -Port $Port -Message $Message 
                     if ($Request) {
                         try {$Data = $Null; $Data = $Request | ConvertFrom-Json -ErrorAction STop; }catch {Write-Host "Failed To parse API" -ForegroundColor Red}
-                        if($Data){$Summary = $Data.result[2]; $Threads = $Data.result[3];}
+                        if ($Data) {$Summary = $Data.result[2]; $Threads = $Data.result[3]; }
                         if ($Minername -eq "TT-Miner.exe" -or $MinerName -eq "TT-Miner") {$RAW += $Summary -split ";" | Select -First 1 | % {[Double]$_}}
-                        else {$RAW += $Summary -split ";" | Select -First 1 | % {[Double]$_*1000}}
+                        else {$RAW += $Summary -split ";" | Select -First 1 | % {[Double]$_ * 1000}}
                         Write-MinerData2;
                         if ($Minername -eq "TT-Miner.exe" -or $MinerName -eq "TT-Miner") {$KHS += $Summary -split ";" | Select -First 1 | % {[Double]$_ / 1000}}
                         else {$KHS += $Summary -split ";" | Select -First 1 | % {[Double]$_}}
@@ -586,33 +594,31 @@ While ($True) {
                     else {Set-APIFailure; break}
                 }
 
-                'grin-miner'
-                {
-                 $HS = "hs"
-                 try{$Request = Get-Content ".\logs\$MinerType.log" -ErrorAction SilentlyContinue}catch{Write-Host "Failed to Read Miner Log"}
-                  if($Request)
-                  {
-                    $Hash = @()
-                    $Devices | %{
-                        $DeviceData = $Null
-                        $DeviceData = $Request | Select-String "Device $($_)" | %{$_ | Select-String "Graphs per second: "} | Select -Last 1
-                        $DeviceData = $DeviceData -split "Graphs per second: " | Select -Last 1 | %{$_ -split " - Total" | Select -First 1}
-                        if($DeviceData){$Hash += $DeviceData; $RAW += [Double]$DeviceData}else{$Hash += 0; $RAW += 0}
+                'grin-miner' {
+                    $HS = "hs"
+                    try {$Request = Get-Content ".\logs\$MinerType.log" -ErrorAction SilentlyContinue}catch {Write-Host "Failed to Read Miner Log"}
+                    if ($Request) {
+                        $Hash = @()
+                        $Devices | % {
+                            $DeviceData = $Null
+                            $DeviceData = $Request | Select-String "Device $($_)" | % {$_ | Select-String "Graphs per second: "} | Select -Last 1
+                            $DeviceData = $DeviceData -split "Graphs per second: " | Select -Last 1 | % {$_ -split " - Total" | Select -First 1}
+                            if ($DeviceData) {$Hash += $DeviceData; $RAW += [Double]$DeviceData}else {$Hash += 0; $RAW += 0}
+                        }
+                        Write-MinerData2;
+                        try {for ($i = 0; $i -lt $Devices.Count; $i++) {$GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $i)}}catch {Write-Host "Failed To parse GPU Threads" -ForegroundColor Red};
+                        $Accepted = $null
+                        $Rejected = $null
+                        $Accepted = $($Request | Select-String "Share Accepted!!").count
+                        $Rejected = $($Request | Select-String "Failed to submit a solution").count
+                        $ACC += $Accepted
+                        $REJ += $Rejected
+                        $MinerACC += $Accepted
+                        $MinerREJ += $Rejected
+                        $UPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
+                        $ALGO += "$MinerAlgo"
                     }
-                    Write-MinerData2;
-                    try {for ($i = 0; $i -lt $Devices.Count; $i++) {$GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $i)}}catch {Write-Host "Failed To parse GPU Threads" -ForegroundColor Red};
-                    $Accepted = $null
-                    $Rejected = $null
-                    $Accepted = $($Request | Select-String "Share Accepted!!").count
-                    $Rejected = $($Request | Select-String "Failed to submit a solution").count
-                    $ACC += $Accepted
-                    $REJ += $Rejected
-                    $MinerACC += $Accepted
-                    $MinerREJ += $Rejected
-                    $UPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
-                    $ALGO += "$MinerAlgo"
-                  }
-                  else {Set-APIFailure; break}
+                    else {Set-APIFailure; break}
                 }
   
                 'ewbf' {
@@ -642,13 +648,12 @@ While ($True) {
                     $Request = $Null; $Request = Get-TCP -Server $Server -Port $port -Message "summary"
                     if ($Request) {
                         Write-Host "MinerName is $MinerName"
-                        switch($MinerName)
-                        {
-                         "zjazz_cuda.exe" {if ($MinerAlgo -eq "cuckoo") {$Multiplier = 2000000}else {$Multiplier = 1000}}
-                         "zjazz_cuda" {if ($MinerAlgo -eq "cuckoo") {$Multiplier = 2000000}else {$Multiplier = 1000}}
-                         "zjazz_amd.exe" {if ($MinerAlgo -eq "cuckoo") {$Multiplier = 2000000}else {$Multiplier = 1000}}
-                         "zjazz_amd"{if ($MinerAlgo -eq "cuckoo") {$Multiplier = 2000000}else {$Multiplier = 1000}}
-                         default{$Multiplier = 1000}
+                        switch ($MinerName) {
+                            "zjazz_cuda.exe" {if ($MinerAlgo -eq "cuckoo") {$Multiplier = 2000000}else {$Multiplier = 1000}}
+                            "zjazz_cuda" {if ($MinerAlgo -eq "cuckoo") {$Multiplier = 2000000}else {$Multiplier = 1000}}
+                            "zjazz_amd.exe" {if ($MinerAlgo -eq "cuckoo") {$Multiplier = 2000000}else {$Multiplier = 1000}}
+                            "zjazz_amd" {if ($MinerAlgo -eq "cuckoo") {$Multiplier = 2000000}else {$Multiplier = 1000}}
+                            default {$Multiplier = 1000}
                         }
                         Write-Host "Multiplier is $Multiplier"
                         try {$GetKHS = $Request -split ";" | ConvertFrom-StringData -ErrorAction Stop}catch {Write-Warning "Failed To Get Summary"}
@@ -854,7 +859,7 @@ While ($True) {
                         $REJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good
                         $UPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
                         $ALGO += "$MinerAlgo"
-                        try {$KHS += [Double]$HashRate_Total/1000}catch {}
+                        try {$KHS += [Double]$HashRate_Total / 1000}catch {}
                     }
                     else {Set-APIFailure; break}
                 }
@@ -1056,6 +1061,24 @@ HSU=khs
     }
 
     if ($BackgroundTimer.Elapsed.TotalSeconds -gt 120) {Clear-Content ".\build\txt\hivestats.txt"; $BackgroundTimer.Restart()}
+
+    ##Watchdog
+   # if ($config.Wd_Enabled -ne $null) {
+    #    if ($config.Wd_Enabled -ne 0) {
+     #       if ($KHS -eq 0) {
+      #          if ($wd_miner_timer.isRunning) {
+       #             $wd_miner_seconds = [Double]$config.wd_miner * 60
+        #            $wd_reboot_seconds = [Double]$config.wd_reboot * 60                
+         #           if ($wd_miner_timer.Elapsed.TotalSeconds -gt $wd_miner_seconds) {
+          #
+        #         }
+        #            if ($wd_miner_timer.Elapsed.TotalSeconds -gt $wd_miner_seconds) {
+        #       
+        #            }
+        #        }
+        #    } 
+       # }
+   # }
 
     if ($RestartTimer.Elapsed.TotalSeconds -le 10) {
         $GoToSleep = [math]::Round(10 - $RestartTimer.Elapsed.TotalSeconds)
