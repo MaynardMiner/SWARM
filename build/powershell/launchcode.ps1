@@ -164,7 +164,8 @@ function Start-LaunchCode {
             $WorkingDirectory = Join-Path $Dir $(Split-Path $($MinerCurrent.Path))
 
             ##Remove Old Logs
-            if (Test-Path $MinerCurrent.Log) {Remove-Item $MinerCurrent.Log -Force}
+            $MinerLogs = Get-ChildItem "logs" | Where Name -like "*$MinerCurrent.Type*"
+            $MinerLogs | % {$Current_Log = Join-Path ".\logs" $_.Name; Remove-Item $Current_Log -Force}
 
             ##Make Test.bat for users
             if (-not (Test-Path "$WorkingDirectory\swarm-start.bat")) {

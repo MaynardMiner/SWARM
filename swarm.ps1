@@ -1447,13 +1447,14 @@ While ($true) {
 
         #Clear Logs If There Are 12
         if ($Log -eq 12) {
+            Stop-Transcript -ErrorAction SilentlyContinue
             Remove-Item ".\logs\*miner*" -Force
             $Log = 0
         } 
 
         #Start Another Log If An Hour Has Passed
         if ($LogTimer.Elapsed.TotalSeconds -ge 3600) {
-            Stop-Transcript
+            Stop-Transcript -ErrorAction SilentlyContinue
             Start-Sleep -S 3
             if (Test-Path ".\logs\*active*") {
                 Set-Location ".\logs"
