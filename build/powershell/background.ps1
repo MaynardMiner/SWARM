@@ -73,14 +73,8 @@ if ($Platforms -eq "Windows") {Start-Process "powershell" -ArgumentList "-Execut
 Start-APIServer
 
 if ($API -eq "Yes") {
-    if ($((Get-Job -Name "APIServer").State) -eq "Running") {
         Write-Host "API Server Started- you can run http://localhost:$Port/end to close" -ForegroundColor Green
     }
-    else {
-        Write-Warning "API Server Failed To Start"
-        Get-Job -Name "APIServer" | Receive-Job
-    }
-}
 
 ## SWARM miner PID
 $CheckForSWARM = ".\build\pid\miner_pid.txt"

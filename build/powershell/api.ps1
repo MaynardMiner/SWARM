@@ -13,9 +13,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 function start-APIServer {
     if ($API -eq "Yes") {
-        ## Shutdown Previous API if stuck by running a command
 
-        ## API Server Start
+        $Runspace = [runspacefactory]::CreateRunspace()
+        $Runspace.Open()
+
         $APIServer = {
             param($WorkingDir, $Port, $Remote, $APIPassword)
 
@@ -152,7 +153,16 @@ function start-APIServer {
             }
             Finally {$listener.Stop()}
         }
-        Start-Job $APIServer -Name "APIServer" -ArgumentList $WorkingDir, $Port, $Remote, $APIPassword | OUt-Null
+
+        $Posh_Api = [powershell]::Create()
+        $Posh_Api.Runspace = $Runspace
+        $Posh_Api.AddScript($APIServer)  | Out-Null
+        $Posh_Api.AddArgument($WorkingDir)  | Out-Null
+        $Posh_Api.AddArgument($Port)  | Out-Null
+        $Posh_Api.AddArgument($Remote)  | Out-Null
+        $Posh_Api.AddArgument($APIPassword)  | Out-Null
+        $Posh_Api.BeginInvoke() | Out-Null
+        #Start-Job $APIServer -Name "APIServer" -ArgumentList $WorkingDir, $Port, $Remote, $APIPassword | OUt-Null
         Write-Host "Starting API Server" -ForegroundColor "Yellow"
     }
 }
