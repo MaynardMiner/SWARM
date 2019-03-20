@@ -144,6 +144,8 @@ function start-APIServer {
                             $output = $response.OutputStream
                             $output.Write($buffer, 0, $buffer.length)
                             $output.Close()
+                            Remove-Variable "response" -Force
+                            Remove-Variable "message" -Force
                         }
                     }
                 }
