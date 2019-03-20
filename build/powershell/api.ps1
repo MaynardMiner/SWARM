@@ -11,7 +11,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
-function start-APIServer {
+function Get-APIServer {
     if ($API -eq "Yes") {
 
         $Runspace = [runspacefactory]::CreateRunspace()
@@ -35,10 +35,9 @@ function start-APIServer {
             else {[string]$Prefix = "http://localhost:$Port/"}
    
             # Run until you send a GET request to /end
-            try {
-                $listener.Prefixes.Add($Prefix) 
-                $listener.Start()
-                while ($listener.IsListening) {
+            $listener.Prefixes.Add($Prefix) 
+            $listener.Start()
+            while ($listener.IsListening) {
                     $context = $listener.GetContext() 
    
                     # Capture the details about the request
@@ -151,8 +150,6 @@ function start-APIServer {
                     }
                 }
             }
-            Finally {$listener.Stop()}
-        }
 
         $Posh_Api = [powershell]::Create()
         $Posh_Api.Runspace = $Runspace
@@ -161,7 +158,7 @@ function start-APIServer {
         $Posh_Api.AddArgument($Port)  | Out-Null
         $Posh_Api.AddArgument($Remote)  | Out-Null
         $Posh_Api.AddArgument($APIPassword)  | Out-Null
-        $Posh_Api.BeginInvoke() | Out-Null
+        $Posh_Api
         #Start-Job $APIServer -Name "APIServer" -ArgumentList $WorkingDir, $Port, $Remote, $APIPassword | OUt-Null
         Write-Host "Starting API Server" -ForegroundColor "Yellow"
     }
