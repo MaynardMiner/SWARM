@@ -58,10 +58,8 @@ if ($Platforms -eq "windows") {
 . .\build\api\miners\grin-miner.ps1; . .\build\api\miners\include.ps1;      . .\build\api\miners\lolminer.ps1;
 . .\build\api\miners\miniz.ps1;      . .\build\api\miners\sgminer.ps1;      . .\build\api\miners\trex.ps1;
 . .\build\api\miners\wildrig.ps1;    . .\build\api\miners\xmrstak-opt.ps1;  . .\build\api\miners\xmrstak.ps1;
-. .\build\powershell\hashrates.ps1   . .\build\powershell\commandweb.ps1    . .\build\powershell\response.ps1
-. .\build\powershell\hiveoc.ps1      . .\build\powershell\octune.ps1        . .\build\powershell\statcommand.ps1
-. .\build\powershell\api.ps1
-
+. .\build\powershell\hashrates.ps1;  . .\build\powershell\commandweb.ps1;   . .\build\powershell\response.ps1;
+. .\build\powershell\hiveoc.ps1;     . .\build\powershell\octune.ps1;       . .\build\powershell\statcommand.ps1;
 
 ##Start API Server
 Write-Host "API Port is $Port";      

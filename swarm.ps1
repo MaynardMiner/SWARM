@@ -170,33 +170,16 @@ if (-not $Platform) {
 Write-Host "OS = $Platform" -ForegroundColor Green
 
 ## Load Codebase
-. .\build\powershell\killall.ps1;
-. .\build\powershell\startlog.ps1;
-. .\build\powershell\remoteupdate.ps1;
-. .\build\powershell\datafiles.ps1;
-. .\build\powershell\statcommand.ps1;
-. .\build\powershell\poolcommand.ps1;
-. .\build\powershell\minercommand.ps1;
-. .\build\powershell\launchcode.ps1;
-. .\build\powershell\datefiles.ps1;
-. .\build\powershell\watchdog.ps1;
-. .\build\powershell\download.ps1;
-. .\build\powershell\hashrates.ps1;
-. .\build\powershell\naming.ps1;
-. .\build\powershell\childitems.ps1;
-. .\build\powershell\powerup.ps1;
-. .\build\powershell\peekaboo.ps1;
-. .\build\powershell\checkbackground.ps1;
-. .\build\powershell\maker.ps1;
-. .\build\powershell\intensity.ps1;
-. .\build\powershell\poolbans.ps1;
-. .\build\powershell\cl.ps1;
-. .\build\powershell\newsort.ps1;
-. .\build\powershell\screen.ps1;
-. .\build\powershell\commandweb.ps1;
-. .\build\powershell\response.ps1;
-. .\build\powershell\api.ps1;
-. .\build\powershell\config_file.ps1;
+. .\build\powershell\killall.ps1;      . .\build\powershell\startlog.ps1;        . .\build\powershell\remoteupdate.ps1;
+. .\build\powershell\datafiles.ps1;    . .\build\powershell\statcommand.ps1;     . .\build\powershell\poolcommand.ps1;
+. .\build\powershell\minercommand.ps1; . .\build\powershell\launchcode.ps1;      . .\build\powershell\datefiles.ps1;
+. .\build\powershell\watchdog.ps1;     . .\build\powershell\download.ps1;        . .\build\powershell\hashrates.ps1;
+. .\build\powershell\naming.ps1;       . .\build\powershell\childitems.ps1;      . .\build\powershell\powerup.ps1;
+. .\build\powershell\peekaboo.ps1;     . .\build\powershell\checkbackground.ps1; . .\build\powershell\maker.ps1;
+. .\build\powershell\intensity.ps1;    . .\build\powershell\poolbans.ps1;        . .\build\powershell\cl.ps1;
+. .\build\powershell\newsort.ps1;      . .\build\powershell\screen.ps1;          . .\build\powershell\commandweb.ps1;
+. .\build\powershell\response.ps1;     . .\build\api\html\api.ps1;               . .\build\powershell\config_file.ps1;
+
 if ($Type -like "*ASIC*") {. .\build\powershell\icserver.ps1; . .\build\powershell\poolmanager.ps1}
 if ($Platform -eq "linux") {. .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
 if ($Platform -eq "windows") {. .\build\powershell\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1; . .\build\powershell\environment.ps1; }
@@ -304,78 +287,42 @@ $Debug = $false
 ## Convert Arguments Into Hash Table
 if ($Debug -ne $true) {
     $CurrentParams = @{}
-    $CurrentParams.Add("Wallet1", $Wallet1)
-    $CurrentParams.Add("Wallet2", $Wallet2)
-    $CurrentParams.Add("Wallet3", $Wallet3)
-    $CurrentParams.Add("Nicehash_Wallet1", $Nicehash_Wallet1)
-    $CurrentParams.Add("Nicehash_Wallet2", $Nicehash_Wallet2)
-    $CurrentParams.Add("Nicehash_Wallet3", $Nicehash_Wallet3)
-    $CurrentParams.Add("AltWallet1", $AltWallet1)
-    $CurrentParams.Add("AltWallet2", $AltWallet2)
-    $CurrentParams.Add("AltWallet3", $AltWallet3)
-    $CurrentParams.Add("Passwordcurrency1", $Passwordcurrency1)
-    $CurrentParams.Add("Passwordcurrency2", $Passwordcurrency2)
-    $CurrentParams.Add("Passwordcurrency3", $Passwordcurrency3)
-    $CurrentParams.Add("AltPassword1", $AltPassword1)
-    $CurrentParams.Add("AltPassword2", $AltPassword2)
-    $CurrentParams.Add("AltPassword3", $AltPassword3)
-    $CurrentParams.Add("Rigname1", $RigName1)
-    $CurrentParams.Add("Rigname2", $RigName2)
-    $CurrentParams.Add("Rigname3", $RigName3)
-    $CurrentParams.Add("API_ID", $API_ID)
-    $CurrentParams.Add("API_Key", $API_Key)
-    $CurrentParams.Add("Timeout", $Timeout)
-    $CurrentParams.Add("Interval", $Interval)
-    $CurrentParams.Add("StatsInterval", $StatsInterval)
-    $CurrentParams.Add("Location", $Location)
-    $CurrentParams.Add("Type", $Type)
-    $CurrentParams.Add("GPUDevices1", $GPUDevices1)
-    $CurrentParams.Add("GPUDevices2", $GPUDevices2)
-    $CurrentParams.Add("GPUDevices3", $GPUDevices3)
-    $CurrentParams.Add("Poolname", $PoolName)
-    $CurrentParams.Add("Currency", $Currency)
-    $CurrentParams.Add("Donate", $Donate)
-    $CurrentParams.Add("Proxy", $Proxy)
-    $CurrentParams.Add("CoinExchange", $CoinExchange)
-    $CurrentParams.Add("Auto_Coin", $Auto_Coin)
-    $CurrentParams.Add("Nicehash_Fee", $Nicehash_Fee)
-    $CurrentParams.Add("Benchmark", $Benchmark)
-    $CurrentParams.Add("No_Algo1", $No_Algo1)
-    $CurrentParams.Add("No_Algo2", $No_Algo2)
-    $CurrentParams.Add("No_Algo3", $No_Algo3)
-    $CurrentParams.Add("Favor_Coins", $Favor_Coins)
-    $CurrentParams.Add("Threshold", $Threshold)
-    $CurrentParams.Add("Platform", $Platform)
-    $CurrentParams.Add("CPUThreads", $CPUThreads)
-    $CurrentParams.Add("Stat_Coin", $Stat_Coin)
-    $CurrentParams.Add("Stat_Algo", $Stat_Algo)
-    $CurrentParams.Add("CPUOnly", $CPUOnly)
-    $CurrentParams.Add("HiveOS", $HiveOS)
-    $CurrentParams.Add("Update", $Update)
-    $CurrentParams.Add("Cuda", $Cuda)
-    $CurrentParams.Add("WattOMeter", $WattOMeter)
-    $CurrentParams.Add("Farm_Hash", $Farm_Hash)
-    $CurrentParams.Add("Rejections", $Rejections)
-    $CurrentParams.Add("PoolBans", $PoolBans)
-    $CurrentParams.Add("PoolBanCount", $PoolBanCount)
-    $CurrentParams.Add("AlgoBanCount", $AlgoBanCount)
-    $CurrentParams.Add("MinerBanCount", $MinerBanCount)
-    $CurrentParams.Add("Conserve", $Conserve)
-    $CurrentParams.Add("SWARM_Mode", $SWARM_Mode)
-    $CurrentParams.Add("Switch_Threshold", $Switch_Threshold)
-    $CurrentParams.Add("Lite", $Lite)
-    $CurrentParams.Add("API", $API)
-    $CurrentParams.ADD("CLPlatform", $CLPlatform)
-    $CurrentParams.ADD("Port", $Port)
-    $CurrentParams.ADD("Remote", $Remote)
-    $CurrentParams.ADD("APIPassword", $APIPassword)
-    $CurrentParams.ADD("Startup", $Startup)
-    $CurrentParams.ADD("ETH", $ETH)
-    $CurrentParams.ADD("Worker", $Worker)
-    $CurrentParams.ADD("No_Miner", $No_Miner)
-    $CurrentParams.ADD("HiveAPIkey", $HiveAPIkey)
-    $CurrentParams.ADD("Algorithm", $Algorithm)
-    $CurrentParams.ADD("Coin", $Coin)
+    $CurrentParams.Add("Wallet1", $Wallet1);                     $CurrentParams.Add("Wallet2", $Wallet2);
+    $CurrentParams.Add("Wallet3", $Wallet3);                     $CurrentParams.Add("Nicehash_Wallet1", $Nicehash_Wallet1);
+    $CurrentParams.Add("Nicehash_Wallet2", $Nicehash_Wallet2);    $CurrentParams.Add("Nicehash_Wallet3", $Nicehash_Wallet3);
+    $CurrentParams.Add("AltWallet1", $AltWallet1);               $CurrentParams.Add("AltWallet2", $AltWallet2);
+    $CurrentParams.Add("AltWallet3", $AltWallet3);               $CurrentParams.Add("Passwordcurrency1", $Passwordcurrency1);
+    $CurrentParams.Add("Passwordcurrency2", $Passwordcurrency2); $CurrentParams.Add("Passwordcurrency3", $Passwordcurrency3);
+    $CurrentParams.Add("AltPassword1", $AltPassword1);           $CurrentParams.Add("AltPassword2", $AltPassword2);
+    $CurrentParams.Add("AltPassword3", $AltPassword3);           $CurrentParams.Add("Rigname1", $RigName1);
+    $CurrentParams.Add("Rigname2", $RigName2);                   $CurrentParams.Add("Rigname3", $RigName3);
+    $CurrentParams.Add("API_ID", $API_ID);                       $CurrentParams.Add("API_Key", $API_Key);
+    $CurrentParams.Add("Timeout", $Timeout);                     $CurrentParams.Add("Interval", $Interval);
+    $CurrentParams.Add("StatsInterval", $StatsInterval);         $CurrentParams.Add("Location", $Location);
+    $CurrentParams.Add("Type", $Type);                           $CurrentParams.Add("GPUDevices1", $GPUDevices1);
+    $CurrentParams.Add("GPUDevices2", $GPUDevices2);             $CurrentParams.Add("GPUDevices3", $GPUDevices3);
+    $CurrentParams.Add("Poolname", $PoolName);                   $CurrentParams.Add("Currency", $Currency);
+    $CurrentParams.Add("Donate", $Donate);                       $CurrentParams.Add("Proxy", $Proxy);
+    $CurrentParams.Add("CoinExchange", $CoinExchange);           $CurrentParams.Add("Auto_Coin", $Auto_Coin);
+    $CurrentParams.Add("Nicehash_Fee", $Nicehash_Fee);           $CurrentParams.Add("Benchmark", $Benchmark);
+    $CurrentParams.Add("No_Algo1", $No_Algo1);                   $CurrentParams.Add("No_Algo2", $No_Algo2);
+    $CurrentParams.Add("No_Algo3", $No_Algo3);                   $CurrentParams.Add("Favor_Coins", $Favor_Coins);
+    $CurrentParams.Add("Threshold", $Threshold);                 $CurrentParams.Add("Platform", $Platform);
+    $CurrentParams.Add("CPUThreads", $CPUThreads);               $CurrentParams.Add("Stat_Coin", $Stat_Coin);
+    $CurrentParams.Add("Stat_Algo", $Stat_Algo);                 $CurrentParams.Add("CPUOnly", $CPUOnly);
+    $CurrentParams.Add("HiveOS", $HiveOS);                       $CurrentParams.Add("Update", $Update);
+    $CurrentParams.Add("Cuda", $Cuda);                           $CurrentParams.Add("WattOMeter", $WattOMeter);
+    $CurrentParams.Add("Farm_Hash", $Farm_Hash);                 $CurrentParams.Add("Rejections", $Rejections);
+    $CurrentParams.Add("PoolBans", $PoolBans);                   $CurrentParams.Add("PoolBanCount", $PoolBanCount);
+    $CurrentParams.Add("AlgoBanCount", $AlgoBanCount);           $CurrentParams.Add("MinerBanCount", $MinerBanCount);
+    $CurrentParams.Add("Conserve", $Conserve);                   $CurrentParams.Add("SWARM_Mode", $SWARM_Mode);
+    $CurrentParams.Add("Switch_Threshold", $Switch_Threshold);   $CurrentParams.Add("Lite", $Lite);
+    $CurrentParams.Add("API", $API);                             $CurrentParams.ADD("CLPlatform", $CLPlatform);
+    $CurrentParams.ADD("Port", $Port);                           $CurrentParams.ADD("Remote", $Remote);
+    $CurrentParams.ADD("APIPassword", $APIPassword);             $CurrentParams.ADD("Startup", $Startup);
+    $CurrentParams.ADD("ETH", $ETH);                             $CurrentParams.ADD("Worker", $Worker);
+    $CurrentParams.ADD("No_Miner", $No_Miner);                   $CurrentParams.ADD("HiveAPIkey", $HiveAPIkey);
+    $CurrentParams.ADD("Algorithm", $Algorithm);                 $CurrentParams.ADD("Coin", $Coin);
 
     ## Save to Config Folder
     $StartParams = $CurrentParams | ConvertTo-Json 
@@ -408,78 +355,43 @@ if ((Test-Path ".\config\parameters\newarguments.json") -or $Debug -eq $true) {
     ## Pull From File This is linux Powershell Bug / Weird Parsing. This Corrects it.
     $GetSWARMParams = Get-Content ".\config\parameters\arguments.json"
     $SWARMParams = $GetSWARMParams | ConvertFrom-Json
-    $Wallet1 = $SWARMParams.Wallet1
-    $Wallet2 = $SWARMParams.Wallet2
-    $Wallet3 = $SWARMParams.Wallet3
-    $CPUWallet = $SWARMParams.CPUWallet
-    $Nicehash_Wallet1 = $SWARMParams.Nicehash_Wallet1
-    $Nicehash_Wallet2 = $SWARMParams.Nicehash_Wallet2
-    $Nicehash_Wallet3 = $SWARMParams.Nicehash_Wallet3
-    $AltWallet1 = $SWARMParams.AltWallet1
-    $AltWallet2 = $SWARMParams.AltWallet2
-    $AltWallet3 = $SWARMParams.AltWallet3
-    $RigName1 = $SWARMParams.RigName1
-    $RigName2 = $SWARMParams.RigName2
-    $RigName3 = $SWARMParams.RigName3
-    $API_ID = $SWARMParams.API_ID
-    $API_Key = $SWARMParams.API_Key
-    $Timeout = $SWARMParams.Timeout
-    $Interval = $SWARMParams.Interval
-    $StatsInterval = $SWARMParams.StatsInterval
-    $Location = $SWARMParams.Location
-    $Type = $SWARMParams.Type
-    $GPUDevices1 = $SWARMParams.GPUDevices1 -replace "`'", ""
-    $GPUDevices2 = $SWARMParams.GPUDevices2 -replace "`'", ""
-    $GPUDevices3 = $SWARMParams.GPUDevices3 -replace "`'", ""
-    $PoolName = $SWARMParams.PoolName
-    $Currency = $SWARMParams.Currency
-    $Passwordcurrency1 = $SWARMParams.Passwordcurrency1
-    $Passwordcurrency2 = $SWARMParams.Passwordcurrency1
-    $Passwordcurrency3 = $SWARMParams.Passwordcurrency3
-    $AltPassword1 = $SWARMParams.AltPassword1
-    $AltPassword2 = $SWARMParams.AltPassword2
-    $AltPassword3 = $SWARMParams.AltPassword3
-    $Donate = $SWARMParams.Donate
-    $Proxy = $SWARMParams.Proxy -replace "`'", ""
-    $CoinExchange = $SWARMParams.CoinExchange
-    $Auto_Coin = $SWARMParams.Auto_Coin
-    $Nicehash_Fee = $SWARMParams.Nicehash_Fee
-    $Benchmark = $SWARMParams.Benchmark
-    $No_Algo1 = $SWARMParams.No_Algo1
-    $No_Algo2 = $SWARMParams.No_Algo2
-    $No_Algo3 = $SWARMParams.No_Algo3
-    $Favor_Coins = $SWARMParams.Favor_Coins
-    $Threshold = $SWARMParams.Threshold
-    $Platform = $SWARMParams.platform
-    $CPUThreads = $SWARMParams.CPUThreads
-    $Stat_Coin = $SWARMParams.Stat_Coin
-    $Stat_Algo = $SWARMParams.Stat_Algo
-    $CPUOnly = $SWARMParams.CPUOnly
-    $HiveOS = $SWARMParams.HiveOS
-    $Update = $SWARMParams.Update
-    $Cuda = $SWARMParams.Cuda
-    $WattOMeter = $SWARMParams.WattOMeter
-    $Farm_Hash = $SWARMParams.Farm_Hash
-    $Rejections = $SWARMParams.Rejections
-    $PoolBans = $SWARMParams.PoolBans
-    $PoolBanCount = $SWARMParams.PoolBanCount
-    $AlgoBanCount = $SWARMParams.AlgoBanCount
-    $Lite = $SWARMParams.Lite
-    $Conserve = $SWARMParams.Conserve
-    $Switch_Threshold = $SWARMParams.Switch_Threshold
-    $SWARM_Mode = $SWARMParams.SWARM_Mode
-    $CLPlatform = $SWARMParams.CLPlatform
-    $API = $SWARMParams.API
-    $Port = $SWARMParams.Port
-    $Remote = $SWARMParams.Remote
-    $APIPassword = $SWARMParams.APIPassword
-    $Startup = $SWARMParams.Startup
-    $ETH = $SWARMParams.ETH
-    $Worker = $SWARMParams.Worker
-    $No_Miner = $SWARMParams.No_Miner
-    $HiveAPIkey = $SWARMParams.HiveAPIkey
-    $SWARMAlgorithm = $SWARMParams.Algorithm
-    $Coin = $SWARMParams.Coin
+
+    $Wallet1 = $SWARMParams.Wallet1;                            $Wallet2 = $SWARMParams.Wallet2;
+    $Wallet3 = $SWARMParams.Wallet3;                            $CPUWallet = $SWARMParams.CPUWallet;
+    $Nicehash_Wallet1 = $SWARMParams.Nicehash_Wallet1;          $Nicehash_Wallet2 = $SWARMParams.Nicehash_Wallet2;
+    $Nicehash_Wallet3 = $SWARMParams.Nicehash_Wallet3;          $AltWallet1 = $SWARMParams.AltWallet1;
+    $AltWallet2 = $SWARMParams.AltWallet2;                      $AltWallet3 = $SWARMParams.AltWallet3;
+    $RigName1 = $SWARMParams.RigName1;                          $RigName2 = $SWARMParams.RigName2;
+    $RigName3 = $SWARMParams.RigName3;                          $API_ID = $SWARMParams.API_ID;
+    $API_Key = $SWARMParams.API_Key;                            $Timeout = $SWARMParams.Timeout;
+    $Interval = $SWARMParams.Interval;                          $StatsInterval = $SWARMParams.StatsInterval;
+    $Location = $SWARMParams.Location;                          $Type = $SWARMParams.Type;
+    $GPUDevices1 = $SWARMParams.GPUDevices1 -replace "`'", "";  $GPUDevices2 = $SWARMParams.GPUDevices2 -replace "`'", "";
+    $GPUDevices3 = $SWARMParams.GPUDevices3 -replace "`'", "";  $PoolName = $SWARMParams.PoolName;
+    $Currency = $SWARMParams.Currency;                          $Passwordcurrency1 = $SWARMParams.Passwordcurrency1;
+    $Passwordcurrency2 = $SWARMParams.Passwordcurrency1;        $Passwordcurrency3 = $SWARMParams.Passwordcurrency3;
+    $AltPassword1 = $SWARMParams.AltPassword1;                  $AltPassword2 = $SWARMParams.AltPassword2;
+    $AltPassword3 = $SWARMParams.AltPassword3;                  $Donate = $SWARMParams.Donate;
+    $Proxy = $SWARMParams.Proxy -replace "`'", "";              $CoinExchange = $SWARMParams.CoinExchange;
+    $Auto_Coin = $SWARMParams.Auto_Coin;                        $Nicehash_Fee = $SWARMParams.Nicehash_Fee;
+    $Benchmark = $SWARMParams.Benchmark;                        $No_Algo1 = $SWARMParams.No_Algo1;
+    $No_Algo2 = $SWARMParams.No_Algo2;                          $No_Algo3 = $SWARMParams.No_Algo3;
+    $Favor_Coins = $SWARMParams.Favor_Coins;                    $Threshold = $SWARMParams.Threshold;
+    $Platform = $SWARMParams.platform;                          $CPUThreads = $SWARMParams.CPUThreads;
+    $Stat_Coin = $SWARMParams.Stat_Coin;                        $Stat_Algo = $SWARMParams.Stat_Algo;
+    $CPUOnly = $SWARMParams.CPUOnly;                            $HiveOS = $SWARMParams.HiveOS;
+    $Update = $SWARMParams.Update;                              $Cuda = $SWARMParams.Cuda;
+    $WattOMeter = $SWARMParams.WattOMeter;                      $Farm_Hash = $SWARMParams.Farm_Hash;
+    $Rejections = $SWARMParams.Rejections;                      $PoolBans = $SWARMParams.PoolBans; 
+    $PoolBanCount = $SWARMParams.PoolBanCount;                  $AlgoBanCount = $SWARMParams.AlgoBanCount;
+    $Lite = $SWARMParams.Lite;                                  $Conserve = $SWARMParams.Conserve;
+    $Switch_Threshold = $SWARMParams.Switch_Threshold;          $SWARM_Mode = $SWARMParams.SWARM_Mode;
+    $CLPlatform = $SWARMParams.CLPlatform;                      $API = $SWARMParams.API;
+    $Port = $SWARMParams.Port;                                  $Remote = $SWARMParams.Remote;
+    $APIPassword = $SWARMParams.APIPassword;                    $Startup = $SWARMParams.Startup;
+    $ETH = $SWARMParams.ETH;                                    $Worker = $SWARMParams.Worker;
+    $No_Miner = $SWARMParams.No_Miner;                          $HiveAPIkey = $SWARMParams.HiveAPIkey;
+    $SWARMAlgorithm = $SWARMParams.Algorithm;                   $Coin = $SWARMParams.Coin;
 }
 
 ## Windows Start Up
@@ -854,77 +766,43 @@ While ($true) {
     ##Parameters (change again interactively if needed)
     $GetSWARMParams = Get-Content ".\config\parameters\arguments.json"
     $SWARMParams = $GetSWARMParams | ConvertFrom-Json
-    $Wallet1 = $SWARMParams.Wallet1
-    $Wallet2 = $SWARMParams.Wallet2
-    $Wallet3 = $SWARMParams.Wallet3
-    $CPUWallet = $SWARMParams.CPUWallet
-    $Nicehash_Wallet1 = $SWARMParams.Nicehash_Wallet1
-    $Nicehash_Wallet2 = $SWARMParams.Nicehash_Wallet2
-    $Nicehash_Wallet3 = $SWARMParams.Nicehash_Wallet3
-    $AltWallet1 = $SWARMParams.AltWallet1
-    $AltWallet2 = $SWARMParams.AltWallet2
-    $AltWallet3 = $SWARMParams.AltWallet3
-    $RigName1 = $SWARMParams.RigName1
-    $RigName2 = $SWARMParams.RigName2
-    $RigName3 = $SWARMParams.RigName3
-    $API_ID = $SWARMParams.API_ID
-    $API_Key = $SWARMParams.API_Key
-    $Timeout = $SWARMParams.Timeout
-    $Interval = $SWARMParams.Interval
-    $StatsInterval = $SWARMParams.StatsInterval
-    $Location = $SWARMParams.Location
-    $Type = $SWARMParams.Type
-    $GPUDevices1 = $SWARMParams.GPUDevices1 -replace "`'", ""
-    $GPUDevices2 = $SWARMParams.GPUDevices2 -replace "`'", ""
-    $GPUDevices3 = $SWARMParams.GPUDevices3 -replace "`'", ""
-    $PoolName = $SWARMParams.PoolName
-    $Currency = $SWARMParams.Currency
-    $Passwordcurrency1 = $SWARMParams.Passwordcurrency1
-    $Passwordcurrency2 = $SWARMParams.Passwordcurrency1
-    $Passwordcurrency3 = $SWARMParams.Passwordcurrency3
-    $AltPassword1 = $SWARMParams.AltPassword1
-    $AltPassword2 = $SWARMParams.AltPassword2
-    $AltPassword3 = $SWARMParams.AltPassword3
-    $Donate = $SWARMParams.Donate
-    $Proxy = $SWARMParams.Proxy -replace "`'", ""
-    $CoinExchange = $SWARMParams.CoinExchange
-    $Auto_Coin = $SWARMParams.Auto_Coin
-    $Nicehash_Fee = $SWARMParams.Nicehash_Fee
-    $Benchmark = $SWARMParams.Benchmark
-    $No_Algo1 = $SWARMParams.No_Algo1
-    $No_Algo2 = $SWARMParams.No_Algo2
-    $No_Algo3 = $SWARMParams.No_Algo3
-    $Favor_Coins = $SWARMParams.Favor_Coins
-    $Threshold = $SWARMParams.Threshold
-    $Platform = $SWARMParams.platform
-    $CPUThreads = $SWARMParams.CPUThreads
-    $Stat_Coin = $SWARMParams.Stat_Coin
-    $Stat_Algo = $SWARMParams.Stat_Algo
-    $CPUOnly = $SWARMParams.CPUOnly
-    $HiveOS = $SWARMParams.HiveOS
-    $Update = $SWARMParams.Update
-    $Cuda = $SWARMParams.Cuda
-    $WattOMeter = $SWARMParams.WattOMeter
-    $Farm_Hash = $SWARMParams.Farm_Hash
-    $Rejections = $SWARMParams.Rejections
-    $PoolBans = $SWARMParams.PoolBans
-    $PoolBanCount = $SWARMParams.PoolBanCount
-    $AlgoBanCount = $SWARMParams.AlgoBanCount
-    $Lite = $SWARMParams.Lite
-    $Conserve = $SWARMParams.Conserve
-    $Switch_Threshold = $SWARMParams.Switch_Threshold
-    $SWARM_Mode = $SWARMParams.SWARM_Mode
-    $API = $SWARMParams.API
-    $CLPlatform = $SWARMParams.CLPlatform
-    $Port = $SWARMParams.Port
-    $Remote = $SWARMParams.Remote
-    $APIPassword = $SWARMParams.APIPassword
-    $Startup = $SWARMParams.Startup
-    $Worker = $SWARMParams.Worker
-    $No_Miner = $SWARMParams.No_Miner        
-    $HiveAPIkey = $SWARMParams.HiveAPIkey
-    $SWARMAlgorithm = $SWARMParams.Algorithm
-    $Coin = $SWARMParams.Coin
+
+    $Wallet1 = $SWARMParams.Wallet1;                            $Wallet2 = $SWARMParams.Wallet2;
+    $Wallet3 = $SWARMParams.Wallet3;                            $CPUWallet = $SWARMParams.CPUWallet;
+    $Nicehash_Wallet1 = $SWARMParams.Nicehash_Wallet1;          $Nicehash_Wallet2 = $SWARMParams.Nicehash_Wallet2;
+    $Nicehash_Wallet3 = $SWARMParams.Nicehash_Wallet3;          $AltWallet1 = $SWARMParams.AltWallet1;
+    $AltWallet2 = $SWARMParams.AltWallet2;                      $AltWallet3 = $SWARMParams.AltWallet3;
+    $RigName1 = $SWARMParams.RigName1;                          $RigName2 = $SWARMParams.RigName2;
+    $RigName3 = $SWARMParams.RigName3;                          $API_ID = $SWARMParams.API_ID;
+    $API_Key = $SWARMParams.API_Key;                            $Timeout = $SWARMParams.Timeout;
+    $Interval = $SWARMParams.Interval;                          $StatsInterval = $SWARMParams.StatsInterval;
+    $Location = $SWARMParams.Location;                          $Type = $SWARMParams.Type;
+    $GPUDevices1 = $SWARMParams.GPUDevices1 -replace "`'", "";  $GPUDevices2 = $SWARMParams.GPUDevices2 -replace "`'", "";
+    $GPUDevices3 = $SWARMParams.GPUDevices3 -replace "`'", "";  $PoolName = $SWARMParams.PoolName;
+    $Currency = $SWARMParams.Currency;                          $Passwordcurrency1 = $SWARMParams.Passwordcurrency1;
+    $Passwordcurrency2 = $SWARMParams.Passwordcurrency1;        $Passwordcurrency3 = $SWARMParams.Passwordcurrency3;
+    $AltPassword1 = $SWARMParams.AltPassword1;                  $AltPassword2 = $SWARMParams.AltPassword2;
+    $AltPassword3 = $SWARMParams.AltPassword3;                  $Donate = $SWARMParams.Donate;
+    $Proxy = $SWARMParams.Proxy -replace "`'", "";              $CoinExchange = $SWARMParams.CoinExchange;
+    $Auto_Coin = $SWARMParams.Auto_Coin;                        $Nicehash_Fee = $SWARMParams.Nicehash_Fee;
+    $Benchmark = $SWARMParams.Benchmark;                        $No_Algo1 = $SWARMParams.No_Algo1;
+    $No_Algo2 = $SWARMParams.No_Algo2;                          $No_Algo3 = $SWARMParams.No_Algo3;
+    $Favor_Coins = $SWARMParams.Favor_Coins;                    $Threshold = $SWARMParams.Threshold;
+    $Platform = $SWARMParams.platform;                          $CPUThreads = $SWARMParams.CPUThreads;
+    $Stat_Coin = $SWARMParams.Stat_Coin;                        $Stat_Algo = $SWARMParams.Stat_Algo;
+    $CPUOnly = $SWARMParams.CPUOnly;                            $HiveOS = $SWARMParams.HiveOS;
+    $Update = $SWARMParams.Update;                              $Cuda = $SWARMParams.Cuda;
+    $WattOMeter = $SWARMParams.WattOMeter;                      $Farm_Hash = $SWARMParams.Farm_Hash;
+    $Rejections = $SWARMParams.Rejections;                      $PoolBans = $SWARMParams.PoolBans; 
+    $PoolBanCount = $SWARMParams.PoolBanCount;                  $AlgoBanCount = $SWARMParams.AlgoBanCount;
+    $Lite = $SWARMParams.Lite;                                  $Conserve = $SWARMParams.Conserve;
+    $Switch_Threshold = $SWARMParams.Switch_Threshold;          $SWARM_Mode = $SWARMParams.SWARM_Mode;
+    $CLPlatform = $SWARMParams.CLPlatform;                      $API = $SWARMParams.API;
+    $Port = $SWARMParams.Port;                                  $Remote = $SWARMParams.Remote;
+    $APIPassword = $SWARMParams.APIPassword;                    $Startup = $SWARMParams.Startup;
+    $ETH = $SWARMParams.ETH;                                    $Worker = $SWARMParams.Worker;
+    $No_Miner = $SWARMParams.No_Miner;                          $HiveAPIkey = $SWARMParams.HiveAPIkey;
+    $SWARMAlgorithm = $SWARMParams.Algorithm;                   $Coin = $SWARMParams.Coin;
 
     #Get-Algorithms
     $Algorithm = @()
