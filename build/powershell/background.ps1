@@ -402,6 +402,8 @@ HSU=khs
         $Hive | Set-Content ".\build\txt\hivestats.txt"
     }
 
+
+    ## The below is for interfacing with HiveOS.
     if ($Platforms -eq "windows" -and $HiveOS -eq "Yes") {
         $Stats = Build-HiveResponse
         try {$response = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body ($Stats | ConvertTo-Json -Depth 4 -Compress) -ContentType 'application/json'}
