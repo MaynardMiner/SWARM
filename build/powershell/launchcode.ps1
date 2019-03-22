@@ -165,7 +165,8 @@ function Start-LaunchCode {
 
             ##Remove Old Logs
             $MinerLogs = Get-ChildItem "logs" | Where Name -like "*$($MinerCurrent.Type)*"
-            $MinerLogs | % {$Current_Log = Join-Path ".\logs" $_.Name; Remove-Item $Current_Log -Force}
+            $MinerLogs | % {Remove-Item ".\logs\$($_)" -Force}
+            Start-Sleep -S 1
 
             ##Make Test.bat for users
             if (-not (Test-Path "$WorkingDirectory\swarm-start.bat")) {
@@ -275,7 +276,9 @@ function Start-LaunchCode {
         Start-Process ".\build\bash\killall.sh" -ArgumentList "$($MinerCurrent.Type)" -Wait
 
         ##Remove Old Logs
-        if (Test-Path $Logs) {Remove-Item $Logs -Force}
+        $MinerLogs = Get-ChildItem "logs" | Where Name -like "*$($MinerCurrent.Type)*"
+        $MinerLogs | % {Remove-Item ".\logs\$($_)" -Force}
+        Start-Sleep -S 1
 
         ##Ensure bestminers.txt has been written (for slower storage drives)
         $FileTimer = New-Object -TypeName System.Diagnostics.Stopwatch
