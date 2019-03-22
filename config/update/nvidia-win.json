@@ -147,7 +147,7 @@
         "path2": ".\\bin\\phoenix-2\\PhoenixMiner.exe",
         "path3": ".\\bin\\phoenix-3\\PhoenixMiner.exe",
         "minername": "PhoenixMiner",
-        "version": "4.2a",
+        "version": "4.2c",
         "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/phoenix-miner-windows.zip"
     },
     "tpruvot": {
