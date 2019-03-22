@@ -30,8 +30,7 @@ if ($Poolname -eq $Name) {
             $Estimate = if ($Stat_Algo -eq "Day") {[Double]$Zpool_Request.$_.estimate_last24h}else {[Double]$Zpool_Request.$_.estimate_current}
             $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
 
-            $SmallestValue = 1E-20
-            $Stat = Set-Stat -Name "$($Name)_$($Zpool_Algorithm)_profit" -Value ([Math]::Max([Double]($Estimate - $Cut) / $Divisor, $SmallestValue))
+            $Stat = Set-Stat -Name "$($Name)_$($Zpool_Algorithm)_profit" -Value ([Double]$Cut/$Divisor)
             if ($Stat_Algo -eq "Day") {$CStat = $Stat.Live}else {$CStat = $Stat.$Stat_Algo}
          
             If ($AltWallet1 -ne '') {$zWallet1 = $AltWallet1}

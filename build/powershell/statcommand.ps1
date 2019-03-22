@@ -250,17 +250,18 @@ function Invoke-SwarmMode {
 function ConvertFrom-Fees {
     param(
         [Parameter(Position = 0, Mandatory = $true)]
-        [Double]$Fee,
+        [Double]$Fees,
         [Parameter(Position = 1, Mandatory = $true)]
         [Double]$Workers,
         [Parameter(Position = 2, Mandatory = $true)]
         [Double]$Estimate
     )
 
-    $FeeStat = $fee / 100
-    $WorkerPercent = $Workers * $FeeStat
-    $WorkerFee = $Estimate * $WorkerPercent
-    return $PoolCut
+    [Double]$FeeStat = $fees / 100
+    [Double]$WorkerPercent = $Workers * $FeeStat
+    [Double]$PoolCut = $WorkerPercent + $Fees
+    $WorkerFee = $Estimate*(1-($PoolCut/100))
+    return $WorkerFee
 } 
 
 

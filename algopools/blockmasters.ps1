@@ -24,15 +24,12 @@ if ($Poolname -eq $Name) {
             $blockpool_Host = "$($Region)blockmasters.co"
             $blockpool_Port = $blockpool_Request.$_.port
             $Divisor = (1000000 * $blockpool_Request.$_.mbtc_mh_factor)
-            $Fees = $blockpool_Request.$_.fees
             $Workers = $blockpool_Request.$_.Workers
-            $Estimate = if ($Stat_Algo -eq "Day") {[Double]$blockpool_Request.$_.estimate_last24h}else {[Double]$blockpool_Request.$_.estimate_current}
-            $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
+            $Estimate = if ($Stat_Algo -eq "Day") {[Double]$blockpool_Request.$_.estimate_last24h*(1-(22.5/100))}else{[Double]$blockpool_Request.$_.estimate_current*(1-(22.5/100))}
 
-            $SmallestValue = 1E-20
-            $Stat = Set-Stat -Name "$($Name)_$($blockpool_Algorithm)_profit" -Value ([Math]::Max([Double]($Estimate - $Cut) / $Divisor, $SmallestValue))
+            $Stat = Set-Stat -Name "$($Name)_$($blockpool_Algorithm)_profit" -Value ([Double]$Estimate/$Divisor)
             if ($Stat_Algo -eq "Day") {$CStat = $Stat.Live}else {$CStat = $Stat.$Stat_Algo}
-        
+
             If ($AltWallet1 -ne '') {$blockWallet1 = $AltWallet1}
             else {$blockWallet1 = $Wallet1}
             if ($AltWallet2 -ne '') {$blockWallet2 = $AltWallet2}
