@@ -28,7 +28,6 @@ if ($Poolname -eq $Name) {
             $Fees = $phiphipool_Request.$_.fees
             $Workers = $phiphipool_Request.$_.Workers
             $Estimate = if ($Stat_Algo -eq "Day") {[Double]$phiphipool_Request.$_.estimate_last24h}else {[Double]$phiphipool_Request.$_.estimate_current}
-            #$Cut = ConvertFrom-Fees $Fees $Workers $Estimate
 
             $SmallestValue = 1E-20
             $Stat = Set-Stat -Name "$($Name)_$($phiphipool_Algorithm)_profit" -Value ([Double]$Estimate/$Divisor *(1-($phiphipool_Request.$_.fees/100)))

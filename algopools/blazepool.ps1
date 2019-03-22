@@ -23,7 +23,6 @@ if ($Poolname -eq $Name) {
             $Fees = $blazepool_Request.$_.fees
             $Workers = $blazepool_Request.$_.Workers
             $Estimate = if ($Stat_Algo -eq "Day") {[Double]$blazepool_Request.$_.estimate_last24h}else {[Double]$blazepool_Request.$_.estimate_current}
-            #$Cut = ConvertFrom-Fees $Fees $Workers $Estimate
 
             $Stat = Set-Stat -Name "$($Name)_$($blazepool_Algorithm)_profit" -Value ([Double]$Estimate/$Divisor *(1-($blazepool_Request.$_.fees/100)))
             if ($Stat_Algo -eq "Day") {$CStat = $Stat.Live}else {$CStat = $Stat.$Stat_Algo}

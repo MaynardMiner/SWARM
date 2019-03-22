@@ -1,3 +1,14 @@
+## Note on whalesburg.
+## This pool is supposed to be a profit switching pool.
+## I have never seen it switch.
+## SWARM does not perform the switching, the pool does.
+## Also,
+
+## Miners are really weird with this pool. Some miners work
+## Some do not. Some work in linux fine, other work in windows
+## fine. I don't know the difference this pool causes in comparision
+## to nicehash, but it seems to cause weird bugs in miners.
+
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $Whalesburg_Request = [PSCustomObject]@{} 
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls" 
