@@ -1059,9 +1059,6 @@ While ($true) {
         ## This Set API table for LITE mode.
         $ProfitTable | ConvertTo-Json -Depth 4 | Set-Content ".\build\txt\profittable.txt"
 
-        ##Clear Old Logs
-        if (-not $ActiveMinerPrograms) {$Type | foreach {if (Test-Path ".\logs\$($_).log") {remove-item ".\logs\$($_).log" -Force}}}
-
         ##Add new miners to Active Miner Array, if they were not there already.
         ##This also does a little weird parsing for CPU only mining,
         ##And some parsing for logs.
