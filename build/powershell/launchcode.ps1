@@ -165,7 +165,7 @@ function Start-LaunchCode {
 
             ##Remove Old Logs
             $MinerLogs = Get-ChildItem "logs" | Where Name -like "*$($MinerCurrent.Type)*"
-            $MinerLogs | % {Remove-Item ".\logs\$($_)" -Force}
+            $MinerLogs | % {if(Test-Path ".\logs\$($_)"){Remove-Item ".\logs\$($_)" -Force}}
             Start-Sleep -S 1
 
             ##Make Test.bat for users
@@ -277,7 +277,7 @@ function Start-LaunchCode {
 
         ##Remove Old Logs
         $MinerLogs = Get-ChildItem "logs" | Where Name -like "*$($MinerCurrent.Type)*"
-        $MinerLogs | % {Remove-Item ".\logs\$($_)" -Force}
+        $MinerLogs | % {if(Test-Path "$($_)"){Remove-Item "$($_)" -Force}}
         Start-Sleep -S 1
 
         ##Ensure bestminers.txt has been written (for slower storage drives)
