@@ -13,7 +13,6 @@ function Write-MinerData2 {
     $global:BRAW | Set-Content ".\build\txt\$MinerType-hash.txt"
     Write-Host "Miner $Name was clocked at $($global:BRAW | ConvertTo-Hash)/s" -foreground Yellow
     if ($Platforms -eq "linux") {$Process = Get-Process | Where Name -clike "*$($MinerType)*"}
-    Write-Host "Current Running instances: $($Process.Name)"
 }
 
 function Set-Array {
