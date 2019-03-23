@@ -147,7 +147,7 @@
         "path2": ".\\bin\\phoenix-2\\PhoenixMiner.exe",
         "path3": ".\\bin\\phoenix-3\\PhoenixMiner.exe",
         "minername": "PhoenixMiner",
-        "version": "4.2a",
+        "version": "4.2c",
         "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/phoenix-miner-windows.zip"
     },
     "tpruvot": {
@@ -187,7 +187,7 @@
         "path2": ".\\bin\\ttminer-2\\TT-Miner.exe",
         "path3": ".\\bin\\ttminer-3\\TT-Miner.exe",
         "minername": "TT-Miner.exe",
-        "version": "2.1.17",
+        "version": "2.1.19",
         "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/ttminer-windows.zip"
     },
     "xmrig_nv": {

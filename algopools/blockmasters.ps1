@@ -25,7 +25,17 @@ if ($Poolname -eq $Name) {
             $blockpool_Port = $blockpool_Request.$_.port
             $Divisor = (1000000 * $blockpool_Request.$_.mbtc_mh_factor)
             $Workers = $blockpool_Request.$_.Workers
-            $Estimate = if ($Stat_Algo -eq "Day") {[Double]$blockpool_Request.$_.estimate_last24h*(1-(22.5/100))}else{[Double]$blockpool_Request.$_.estimate_current*(1-(22.5/100))}
+
+            ## I am adding a 22.5% fee to blockmasters.
+            ## This is deliberate. The Pools stats are always
+            ## Heavily inflated. Even with a 22.5% fee applied,
+            ## They still manage to be on top of list.
+
+            ## Think about that- 22.5% fee. Still on top of list...
+
+            $Fee = 22.5
+
+            $Estimate = if ($Stat_Algo -eq "Day") {[Double]$blockpool_Request.$_.estimate_last24h*(1-($Fee/100))}else{[Double]$blockpool_Request.$_.estimate_current*(1-($Fee/100))}
 
             $Stat = Set-Stat -Name "$($Name)_$($blockpool_Algorithm)_profit" -Value ([Double]$Estimate/$Divisor)
             if ($Stat_Algo -eq "Day") {$CStat = $Stat.Live}else {$CStat = $Stat.$Stat_Algo}

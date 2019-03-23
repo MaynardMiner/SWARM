@@ -22,7 +22,6 @@ if ($Poolname -eq $Name) {
             $Fees = $Hashrefinery_Request.$_.fees
             $Workers = $Hashrefinery_Request.$_.Workers
             $Estimate = if ($Stat_Algo -eq "Day") {[Double]$Hashrefinery_Request.$_.estimate_last24h}else {[Double]$Hashrefinery_Request.$_.estimate_current}
-            #$Cut = ConvertFrom-Fees $Fees $Workers $Estimate
 
             $Stat = Set-Stat -Name "$($Name)_$($Hashrefinery_Algorithm)_profit" -Value ([Double]$Estimate/$Divisor *(1-($Hashrefinery_Request.$_.fees/100)))
             if ($Stat_Algo -eq "Day") {$CStat = $Stat.Live}else {$CStat = $Stat.$Stat_Algo}

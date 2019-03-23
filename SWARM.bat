@@ -2,7 +2,7 @@
 
 REM ************QUICK ARGUMENTS CHEAT SHEET**************************************************
 REM Rigname: Name of your rig
-REM Currency: Preferred Fiat Current
+REM Currency: Preferred Fiat Currency
 REM CoinExchange: AltCoin Coin Pricing (Besides BTC).
 REM Location: EUROPE ASIA US (Choose one).
 REM Poolname: Remove Pools As You See Fit. Add Custom Pools If You Like.

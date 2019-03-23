@@ -28,6 +28,8 @@ if ($Poolname -eq $Name) {
             $Fees = $Zpool_Request.$_.fees
             $Workers = $Zpool_Request.$_.Workers
             $Estimate = if ($Stat_Algo -eq "Day") {[Double]$Zpool_Request.$_.estimate_last24h}else {[Double]$Zpool_Request.$_.estimate_current}
+
+            ## ZPool fees are calculated differently, due to pool fee structure.
             $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
 
             $Stat = Set-Stat -Name "$($Name)_$($Zpool_Algorithm)_profit" -Value ([Double]$Cut/$Divisor)

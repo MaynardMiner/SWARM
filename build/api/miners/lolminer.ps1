@@ -17,5 +17,19 @@ function Get-StatsLolminer {
         $global:BALGO += "$MinerAlgo"
         $global:BUPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)          
     }
-    else {Set-APIFailure; break}
-}
+    elseif(Test-Path ".\logs\$MinerType.log")
+    {
+     Write-Host "Miner API failed- Attempting to get hashrate through logs." -ForegroundColor Yellow
+     Write-Host "Will only pull total hashrate in this manner." -ForegroundColor Yellow
+     $MinerLog = Get-Content ".\logs\$MinerType.log" | Select-String "Average Speed " | Select -Last 1
+     $Speed = $MinerLog -split "Total: " | Select -Last 1
+     $Speed = $Speed -split "sol/s" | Select -First 1
+     if($Speed)
+     {
+      $global:BRAW += [Double]$Speed 
+      $global:BKHS += [Double]$Speed / 1000
+      Write-MinerData2;
+     }
+    }
+  else{Set-APIFailure; break}
+  }
