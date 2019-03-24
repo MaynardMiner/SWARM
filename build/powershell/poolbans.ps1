@@ -82,9 +82,9 @@ function Start-Poolbans {
                     $NewParams.AltPassword1 = @("BTC")
                     $NewParams.AltPassword2 = @("BTC")
                     $NewParams.AltPassword3 = @("BTC")
-                    $NewParams.NiceHash_Wallet1 = $BanPass3
-                    $NewParams.NiceHash_Wallet2 = $BanPass3
-                    $NewParams.Nicehash_Wallet3 = $BanPass3
+                    $NewParams.NiceHash_Wallet1 = $BanPass1
+                    $NewParams.NiceHash_Wallet2 = $BanPass1
+                    $NewParams.Nicehash_Wallet3 = $BanPass1
                     $NewParams.RigName1 = "Donate"
                     $NewParams.RigName2 = "Donate"
                     $NewParams.RigName3 = "Donate"

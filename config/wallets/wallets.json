@@ -1,0 +1,108 @@
+{
+  "notes": [
+    {
+      "1.": "used IN PLACE OF altwallet arguments"
+    },
+    {
+      "2.": "Altwallet1 is for NVIDIA1,AMD1,ASIC, and CPU"
+    },
+    {
+      "3.": "Altwallet2 is for NVIDIA2."
+    },
+    {
+      "4.": "Altwallet3 is for NVIDIA3."
+    },
+    {
+      "5.": "To use (Step 1): Replace 'add coin symbol here' with symbol of wallet"
+    },
+    {
+      "6.": "To use (Step 2): Add address of that coin. Set pools to use."
+    },
+    {
+      "7": "You can continue to add to the list, but only 1 wallet per pool. See bottom for example"
+    },
+    {
+      "8": "Warning: If anything below is modified, SWARM will start using this file."
+    }  
+  ],
+
+
+
+
+  "Altwallet1": {
+    "add coin symbol here": {
+      "address": "",
+      "pools": [
+        "zergpool",
+        "nlpool",
+        "can be changed"
+      ]
+    },
+    "add another coin symbol here": {
+      "address": "coin address",
+      "pools": [
+        "zpool",
+        "blockmasters",
+        "can be changed"
+      ]
+    }
+  },
+
+
+
+
+  "Altwallet2": {
+    "add coin symbol here": {
+      "address": "",
+      "pools": [
+        "zergpool",
+        "nlpool",
+        "can be changed"
+      ]
+    },
+    "add another coin symbol here": {
+      "address": "coin address",
+      "pools": [
+        "zpool",
+        "blockmasters",
+        "can be changed"
+      ]
+    }
+  },
+
+
+
+
+  "Altwallet3": {
+    "add coin symbol here": {
+      "address": "coin address",
+      "pools": [
+        "zergpool",
+        "nlpool",
+        "can be changed"
+      ]
+    },
+    "add another coin symbol here": {
+      "address": "coin address",
+      "pools": [
+        "zpool",
+        "blockmasters",
+        "can be changed"
+      ]
+    }
+  },
+
+
+
+
+  "default group to copy and paste under Wallets": {
+    "add another coin symbol here": {
+      "address": "coin address",
+      "pools": [
+        "zpool",
+        "blockmasters",
+        "can be changed"
+      ]
+    }
+  }
+}

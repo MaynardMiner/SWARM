@@ -37,14 +37,14 @@ if ($Poolname -eq $Name) {
                 Protocol      = "stratum+tcp"
                 Host          = $Hashrefinery_Host
                 Port          = $Hashrefinery_Port
-                User1         = $Wallet1
-                User2         = $Wallet2
-                User3         = $Wallet3
-                CPUser        = $Wallet1
-                CPUPass       = "c=$Passwordcurrency1,ID=$Rigname1"
-                Pass1         = "c=$Passwordcurrency1,ID=$Rigname1"
-                Pass2         = "c=$Passwordcurrency2,ID=$Rigname2"
-                Pass3         = "c=$Passwordcurrency3,ID=$Rigname3"
+                User1         = $global:Wallets.Wallet1.BTC.address
+                User2         = $global:Wallets.Wallet2.BTC.address
+                User3         = $global:Wallets.Wallet3.BTC.address
+                CPUser        = $global:Wallets.Wallet1.BTC.address
+                CPUPass       = "c=$($global:Wallets.Wallet1.keys),ID=$Rigname1"
+                Pass1         = "c=$($global:Wallets.Wallet1.keys),ID=$Rigname1"
+                Pass2         = "c=$($global:Wallets.Wallet2.keys),ID=$Rigname2"
+                Pass3         = "c=$($global:Wallets.Wallet3.keys),ID=$Rigname3"
                 Location      = $Location
                 SSL           = $false
             }
