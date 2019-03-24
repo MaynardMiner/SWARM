@@ -12,6 +12,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 function Get-WalletTable {
 
+    if(Test-Path ".\wallet\values\*"){Remove-Item ".\wallet\values\*" -Force}
+
     $WalletKeys = [PSCustomObject]@{}
     Get-ChildItemContent ".\wallet\keys" | ForEach {$WalletKeys | Add-Member $_.Name $_.Content}
 
