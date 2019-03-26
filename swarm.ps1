@@ -1111,16 +1111,19 @@ While ($true) {
                         if ($_.BestMiner -eq $false) {
                             if ($_.XProcess = $null) {$_.Status = "Failed"}
                             else {
-                                $_.Status = "Idle"
+                                $PreviousMinerPorts.$($_.Type) = "($_.Port)"
                                 $MinerInfo = ".\build\pid\$($_.Name)_$($_.Type)_$($_.Coins)_info.txt"
                                 if (Test-path $MinerInfo) {
+                                    $_.Status = "Idle"
                                     $MI = Get-Content $MinerInfo | ConvertFrom-Json
                                     $PIDTime = [DateTime]$MI.start_date
+                                    $Exec = Split-Path $MI.miner_exec -Leaf
                                     $_.Active += (Get-Date) - $PIDTime
-                                    Write-Host "Stopping Miner: $($_.Name) on $($_Type) screen" -ForegroundColor Yellow
-                                    Start-Process "start-stop-daemon" -ArgumentList "--stop --name $($MI.miner_exec) --pidfile $($MI.pid_path) --retry 5" -Wait
+                                    Start-Process "start-stop-daemon" -ArgumentList "--stop --name $Exec --pidfile $($MI.pid_path) --retry 5" -Wait
+                                    ##Terminate Previous Miner Screens Of That Type.
+                                    Start-Process ".\build\bash\killall.sh" -ArgumentList "$($MinerCurrent.Type)" -Wait
                                 }
-                            }
+                            }                       
                         }
                     }
                 }
@@ -1198,14 +1201,12 @@ While ($true) {
                     }
 
                 elseif($Platform -eq "linux"){
-                        $GetProcess = Get-Process -Id $_.XProcess.Id -ErrorAction SilentlyContinue
                         if ($_.XProcess -eq $Null) {$_.Status = "Failed"}
-                        elseif ($GetProcess) {
-                            Write-Host "Closing $($_.Name) on $($_.Type)"
+                        else {
                             $PreviousMinerPorts.$($_.Type) = "($_.Port)"
-                            $_.Status = "Idle"
                             $MinerInfo = ".\build\pid\$($_.Name)_$($_.Type)_$($_.Coins)_info.txt"
                             if (Test-path $MinerInfo) {
+                                $_.Status = "Idle"
                                 $MI = Get-Content $MinerInfo | ConvertFrom-Json
                                 $PIDTime = [DateTime]$MI.start_date
                                 $Exec = Split-Path $MI.miner_exec -Leaf
