@@ -1156,7 +1156,6 @@ While ($true) {
         if (Test-Path $GetStatusMinerBans) {$StatusMinerBans = Get-Content $GetStatusMinerBans | ConvertFrom-Json}
         else {$StatusMinerBans = $null}
         $StatusDate = Get-Date
-        $StatusDate | Out-File ".\build\txt\mineractive.txt"
         $StatusDate | Out-File ".\build\txt\minerstats.txt"
         Get-MinerStatus | Out-File ".\build\txt\minerstats.txt" -Append
         $mcolor = "93"
@@ -1309,6 +1308,7 @@ While ($true) {
         }
 
         ##Write Details Of Active Miner And Stats To File
+        $StatusDate | Out-File ".\build\txt\mineractive.txt"
         Get-MinerActive | Out-File ".\build\txt\mineractive.txt" -Append
 
         ##Remove Old Jobs From Memory
