@@ -1109,7 +1109,7 @@ While ($true) {
                 if ($Platform -eq "linux") {
                     $ActiveMinerPrograms | ForEach {
                         if ($_.BestMiner -eq $false) {
-                            if ($_.XProcess = $null) {$_.Status = "Failed"}
+                            if ($_.XProcess -eq $null) {$_.Status = "Failed"}
                             else {
                                 $PreviousMinerPorts.$($_.Type) = "($_.Port)"
                                 $MinerInfo = ".\build\pid\$($_.Name)_$($_.Type)_$($_.Coins)_info.txt"
@@ -1214,7 +1214,6 @@ While ($true) {
                             }
                         }
                     }
-                    
                 }
 
             ##Miners That Should Be Running
