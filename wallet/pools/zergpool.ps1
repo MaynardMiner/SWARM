@@ -43,7 +43,6 @@ $WalletKeys.AltWallet3.PSObject.Properties.Name | ForEach-Object {
         }
     }
     elseif ($WalletKeys.Wallet3.BTC.Pools -contains $Name) {
-        Write-Host "True"
         $WalletKeys.Wallet3.BTC.pools | % {
             if ($Query.Name -notcontains "$($Name)_$($WalletKeys.Wallet3.BTC.address)") {
                 $Query += [PSCustomObject]@{Name = "$($Name)_$($WalletKeys.Wallet3.BTC.address)"; Symbol = "BTC"; Address = $WalletKeys.Wallet3.BTC.address; Response = ""}

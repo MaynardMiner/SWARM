@@ -37,7 +37,16 @@ function Get-WalletTable {
     }
 
     $Format = @()
-    $Format += $WalletTable
+    $Format += ""
+    $WalletTable | %{
+     $Format += "Address: $($_.Address)"
+     $Format += "Pool: $($_.Pool)"
+     $Format += "Ticker: $($_.Ticker)"
+     $Format += "Unpaid: $($_.Unpaid)"
+     $Format += "Balance: $($_.Balance)"
+     $Format += "Last Checked: $($_."Last Checked")"
+     $Format += ""
+    }
 
     $Sym | %{
      $Grouping = $WalletTable | Where Ticker -eq $_

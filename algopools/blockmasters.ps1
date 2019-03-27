@@ -26,14 +26,14 @@ if ($Poolname -eq $Name) {
             $Divisor = (1000000 * $blockpool_Request.$_.mbtc_mh_factor)
             $Workers = $blockpool_Request.$_.Workers
 
-            ## I am adding a 22.5% fee to blockmasters.
+            ## I am adding a 30.0% fee to blockmasters.
             ## This is deliberate. The Pools stats are always
-            ## Heavily inflated. Even with a 22.5% fee applied,
+            ## Heavily inflated. Even with a 30.0% fee applied,
             ## They still manage to be on top of list.
 
-            ## Think about that- 22.5% fee. Still on top of list...
+            ## Think about that- 30.0% fee. Still on top of list...
 
-            $Fee = 22.5
+            $Fee = 30.0
 
             $Estimate = if ($Stat_Algo -eq "Day") {[Double]$blockpool_Request.$_.estimate_last24h * (1 - ($Fee / 100))}else {[Double]$blockpool_Request.$_.estimate_current * (1 - ($Fee / 100))}
 

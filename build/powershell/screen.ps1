@@ -237,16 +237,13 @@ function Restart-Miner {
         if ($_.XProcess -eq $null -or $_.XProcess.HasExited -and $Lite -eq "No") {
             if ($TimeDeviation -ne 0) {
                 $Restart = $true
-                $BackgroundDone = "Yes"
                 $_.Activated++
                 $_.InstanceName = "$($_.Type)-$($Instance)"
                 $Current = $_ | ConvertTo-Json -Compress
+                $PreviousPorts = $PreviousMinerPorts | ConvertTo-Json -Compress
                 $_.Xprocess = Start-LaunchCode -PP $PreviousPorts -Platforms $Platform -MinerRound $Current_BestMiners -NewMiner $Current
-                $_.Instance = ".\build\pid\$($_.Type)-$($Instance)"
-                $PIDFile = "$($_.Name)_$($_.Coins)_$($_.InstanceName)_pid.txt"
                 $Instance++
             }
-      
             if ($Restart -eq $true) {
                 if ($null -eq $_.XProcess -or $_.XProcess.HasExited) {
                     $_.Status = "Failed"
