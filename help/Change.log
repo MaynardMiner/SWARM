@@ -2254,3 +2254,27 @@ New ttminer #55
 New Phoenix Miner #53
 
 Beta Test Version- 2.1.1 will be final.
+
+2.1.1 (Official Release)
+
+Items / Enhancements / Issues:
+
+ Allow specifying more levels for fans speed #26 
+ Add config\wallets\wallets.json #43 
+    -This allows you to be more specific regarding
+     the use of your wallets.
+    -This was heavily self-tested by myself, but I
+     always am concerned about larger changes such at this.
+     If you use, please keep an eye on wallet address and
+     ensure there is no issues.
+  -``get active`` shows active miners that aren't active #66 
+  -z-enemy / t-rex port overlap NVIDIA3 #65
+  -``get wallets`` command was redone, much cleaner output.
+
+   config\wallets\wallets.json has instructions inside the
+   .json on how to use. NOTE: -AltWallet and -AltPassword
+   arguments are MEANT to overwrite this config, so you can
+   force bind wallets remotely. If you use this config, don'table
+   use -AltWallet arguments.
+
+

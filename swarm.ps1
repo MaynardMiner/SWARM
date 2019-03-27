@@ -179,6 +179,7 @@ Write-Host "OS = $Platform" -ForegroundColor Green
 . .\build\powershell\intensity.ps1;    . .\build\powershell\poolbans.ps1;        . .\build\powershell\cl.ps1;
 . .\build\powershell\newsort.ps1;      . .\build\powershell\screen.ps1;          . .\build\powershell\commandweb.ps1;
 . .\build\powershell\response.ps1;     . .\build\api\html\api.ps1;               . .\build\powershell\config_file.ps1;
+. .\build\powershell\altwallet.ps1;
 
 if ($Type -like "*ASIC*") {. .\build\powershell\icserver.ps1; . .\build\powershell\poolmanager.ps1}
 if ($Platform -eq "linux") {. .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
@@ -403,51 +404,6 @@ if ($Platform -eq "windows") {
     if ($HiveKeys) {$HiveID = $HiveKeys.HiveID; $HivePassword = $HiveKeys.HivePassword; $HiveWorker = $HiveKeys.HiveWorker; $HiveMirror = $HiveKeys.HiveMirror; }
     else {$HiveID = $null; $HivePassword = $null; $HiveWorker = $null; $HiveMirror = "https://api.hiveos.farm"}
 }
-
-## Wallet Information
-
-$Wallets = @()
-$Walletlist = @{}
-if (Test-Path ".\wallet\keys") {$Oldkeys = Get-ChildItem ".\wallet\keys"}
-if ($Oldkeys) {Remove-Item ".\wallet\keys\*" -Force}
-
-##Build Hash Table
-if ($AltWallet1) {$Walletlist.Add("AltWallet1", $AltWallet1)};
-if ($AltWallet2) {$Walletlist.Add("AltWallet2", $AltWallet2)};
-if ($AltWallet3) {$Walletlist.Add("AltWallet3", $AltWallet3)};
-if ($Wallet1) {$Walletlist.Add("Wallet1", $Wallet1)};
-if ($Wallet2) {$Walletlist.Add("Wallet2", $Wallet2)};
-if ($Wallet3) {$Walletlist.Add("Wallet3", $Wallet3)};
-if ($NiceHash_Wallet1) {$Walletlist.Add("NiceHash_Wallet1", $NiceHash_Wallet1)};
-if ($NiceHash_Wallet2) {$Walletlist.Add("NiceHash_Wallet2", $NiceHash_Wallet2)};
-if ($NiceHash_Wallet3) {$Walletlist.Add("NiceHash_Wallet3", $NiceHash_Wallet3)};
-if (-Not (Test-Path ".\wallet\wallets")) {new-item -Path ".\wallet" -Name "wallets" -ItemType "directory" | Out-Null}
-##Record To File
-$WalletList | ConvertTO-Json | Set-Content ".\wallet\wallets\wallets.txt"
-
-## Build Array with non-duplicate wallets, to prevent excessive calls to pool
-if ($Wallet1) {$Wallets += [PSCustomObject]@{Wallet = "Wallet1"; address = $Wallet1; Symbol = $PasswordCurrency1; Response = ""; Unsold = ""; Current = ""}
-}
-if ($Wallet2 -and $Wallet2 -ne $Wallet1) {$Wallets += [PSCustomObject]@{Wallet = "Wallet2"; address = $Wallet2; Symbol = $PasswordCurrency2; Response = ""; Unsold = ""; Current = ""}
-}
-if ($Wallet3 -and $Wallet3 -ne $Wallet2 -and $Wallet3 -ne $Wallet1) {$Wallets += [PSCustomObject]@{Wallet = "Wallet3"; address = $Wallet3; Symbol = $PasswordCurrency3; Response = ""; Unsold = ""; Current = ""}
-}
-if ($AltWallet1) {$Wallets += [PSCustomObject]@{Wallet = "AltWallet1"; address = $AltWallet1; Symbol = $AltPassword1; Response = ""; Unsold = ""; Current = ""}
-}
-if ($AltWallet2 -and $AltWallet2 -ne $ALtWallet1) {$Wallets += [PSCustomObject]@{Wallet = "AltWallet2"; address = $AltWallet2; Symbol = $AltPassword2; Response = ""; Unsold = ""; Current = ""}
-}
-if ($AltWallet3 -and $AltWallet3 -ne $AltWallet2 -and $AltWallet3 -ne $AltWallet1) {$Wallets += [PSCustomObject]@{Wallet = "AltWallet3"; address = $AltWallet3; Symbol = $AltPassword3; Response = ""; Unsold = ""; Current = ""}
-}
-if ($Nicehash_Wallet1) {$Wallets += [PSCustomObject]@{Wallet = "Nicehash_Wallet1"; address = $Nicehash_Wallet1; Symbol = "NHBTC"; Response = ""; Unsold = ""; Current = ""}
-}
-if ($Nicehash_Wallet2 -and $Nicehash_Wallet2 -ne $Nicehash_Wallet1) {$Wallets += [PSCustomObject]@{Wallet = "Nicehash_Wallet2"; address = $Nicehash_Wallet2; Symbol = "NHBTC"; Response = ""; Unsold = ""; Current = ""}
-}
-if ($Nicehash_Wallet3 -and $Nicehash_Wallet3 -ne $Nicehash_Wallet2 -and $Nicehash_Wallet3 -ne $Nicehash_Wallet1) {$Wallets += [PSCustomObject]@{Wallet = "Nicehash_Wallet3"; address = $Nicehash_Wallet3; Symbol = "NHBTC"; Response = ""; Unsold = ""; Current = ""}
-}
-if (-Not (Test-Path ".\wallet\keys")) {new-item -Path ".\wallet" -Name "keys" -ItemType "directory" | Out-Null}
-
-## Save Array To File
-$Wallets | % { $_ | ConvertTo-Json | Set-Content ".\wallet\keys\$($_.Wallet).txt"}
 
 ## lower case (Linux file path)
 if ($Platform -eq "Windows") {$Platform = "windows"}
@@ -803,6 +759,9 @@ While ($true) {
     $ETH = $SWARMParams.ETH;                                    $Worker = $SWARMParams.Worker;
     $No_Miner = $SWARMParams.No_Miner;                          $HiveAPIkey = $SWARMParams.HiveAPIkey;
     $SWARMAlgorithm = $SWARMParams.Algorithm;                   $Coin = $SWARMParams.Coin;
+    
+    ##Get Wallets
+    Get-Wallets
 
     #Get-Algorithms
     $Algorithm = @()
@@ -1131,12 +1090,12 @@ While ($true) {
         #Determine Which Miner Should Be Active
         $BestActiveMiners = @()
         $ActiveMinerPrograms | foreach {
-            if ($BestMiners_Combo | Where Path -EQ $_.Path | Where Arguments -EQ $_.Arguments) {$_.BestMiner = $true; $BestActiveMiners += $_}
+            if ($BestMiners_Combo | Where Type -EQ $_.Type | Where Path -EQ $_.Path | Where Arguments -EQ $_.Arguments) {$_.BestMiner = $true; $BestActiveMiners += $_}
             else {$_.BestMiner = $false}
         }
 
         $BestActiveMiners | Foreach {
-            $SelectedMiner = $BestMiners_Combo | Where Path -EQ $_.Path | Where Arguments -EQ $_.Arguments
+            $SelectedMiner = $BestMiners_Combo | Where Type -EQ $_.Type | Where Path -EQ $_.Path | Where Arguments -EQ $_.Arguments
             $_.Profit = if ($SelectedMiner.Profit) {$SelectedMiner.Profit -as [decimal]}else {"bench"}
             $_.Power = $([Decimal]$($SelectedMiner.Power * 24) / 1000 * $WattEX)
             $_.Fiat_Day = if ($SelectedMiner.Profit) {($SelectedMiner.Profit * $Rates.$Currency).ToString("N2")}else {"bench"}
@@ -1150,18 +1109,21 @@ While ($true) {
                 if ($Platform -eq "linux") {
                     $ActiveMinerPrograms | ForEach {
                         if ($_.BestMiner -eq $false) {
-                            if ($_.XProcess = $null) {$_.Status = "Failed"}
+                            if ($_.XProcess -eq $null) {$_.Status = "Failed"}
                             else {
-                                $_.Status = "Idle"
-                                $MinerInfo = ".\build\pid\$($_.Name)_$($_.Type)_$($_.Coins)_info.txt"
+                                $MinerInfo = ".\build\pid\$($_.InstanceName)_info.txt"
                                 if (Test-path $MinerInfo) {
+                                    $_.Status = "Idle"
+                                    $PreviousMinerPorts.$($_.Type) = "($_.Port)"    
                                     $MI = Get-Content $MinerInfo | ConvertFrom-Json
                                     $PIDTime = [DateTime]$MI.start_date
+                                    $Exec = Split-Path $MI.miner_exec -Leaf
                                     $_.Active += (Get-Date) - $PIDTime
-                                    Write-Host "Stopping Miner: $($_.Name) on $($_Type) screen" -ForegroundColor Yellow
-                                    Start-Process "start-stop-daemon" -ArgumentList "--stop --name $($MI.miner_exec) --pidfile $($MI.pid_path) --retry 5" -Wait
+                                    Start-Process "start-stop-daemon" -ArgumentList "--stop --name $Exec --pidfile $($MI.pid_path) --retry 5" -Wait
+                                    ##Terminate Previous Miner Screens Of That Type.
+                                    Start-Process ".\build\bash\killall.sh" -ArgumentList "$($_.Type)" -Wait
                                 }
-                            }
+                            }                       
                         }
                     }
                 }
@@ -1194,7 +1156,6 @@ While ($true) {
         if (Test-Path $GetStatusMinerBans) {$StatusMinerBans = Get-Content $GetStatusMinerBans | ConvertFrom-Json}
         else {$StatusMinerBans = $null}
         $StatusDate = Get-Date
-        $StatusDate | Out-File ".\build\txt\mineractive.txt"
         $StatusDate | Out-File ".\build\txt\minerstats.txt"
         Get-MinerStatus | Out-File ".\build\txt\minerstats.txt" -Append
         $mcolor = "93"
@@ -1224,7 +1185,7 @@ While ($true) {
 
         ## Records miner run times, and closes them. Starts New Miner instances and records
         ## there tracing information.
-        $ActiveMinerPrograms | ForEach {
+        $ActiveMinerPrograms | ForEach-Object {
            
             ##Miners Not Set To Run
             if ($_.BestMiner -eq $false) {
@@ -1238,13 +1199,13 @@ While ($true) {
                         }
                     }
 
-                elseif($Platform -eq "linux"){
+                if($Platform -eq "linux"){
                         if ($_.XProcess -eq $Null) {$_.Status = "Failed"}
-                        elseif ($_.XProcess.HasExited -eq $false) {
-                            $PreviousMinerPorts.$($_.Type) = "($_.Port)"
-                            $_.Status = "Idle"
-                            $MinerInfo = ".\build\pid\$($_.Name)_$($_.Type)_$($_.Coins)_info.txt"
+                        else {
+                            $MinerInfo = ".\build\pid\$($_.InstanceName)_info.txt"
                             if (Test-path $MinerInfo) {
+                                $PreviousMinerPorts.$($_.Type) = "($_.Port)"
+                                $_.Status = "Idle"
                                 $MI = Get-Content $MinerInfo | ConvertFrom-Json
                                 $PIDTime = [DateTime]$MI.start_date
                                 $Exec = Split-Path $MI.miner_exec -Leaf
@@ -1253,11 +1214,13 @@ While ($true) {
                             }
                         }
                     }
-                    
                 }
-
-            ##Miners That Should Be Running
-            elseif ($null -eq $_.XProcess -or $_.XProcess.HasExited -and $Lite -eq "No") {
+        }
+        
+        ##Miners That Should Be Running
+        ##Start them if neccessary
+        $BestActiveMiners | ForEach-Object {
+         if ($null -eq $_.XProcess -or $_.XProcess.HasExited -and $Lite -eq "No") {
                 if ($TimeDeviation -ne 0) {
                     $Restart = $true
                     $_.Activated++
@@ -1347,6 +1310,7 @@ While ($true) {
         }
 
         ##Write Details Of Active Miner And Stats To File
+        $StatusDate | Out-File ".\build\txt\mineractive.txt"
         Get-MinerActive | Out-File ".\build\txt\mineractive.txt" -Append
 
         ##Remove Old Jobs From Memory

@@ -26,32 +26,53 @@ if ($Poolname -eq $Name) {
             $Divisor = (1000000 * $blockpool_Request.$_.mbtc_mh_factor)
             $Workers = $blockpool_Request.$_.Workers
 
-            ## I am adding a 22.5% fee to blockmasters.
+            ## I am adding a 30.0% fee to blockmasters.
             ## This is deliberate. The Pools stats are always
-            ## Heavily inflated. Even with a 22.5% fee applied,
+            ## Heavily inflated. Even with a 30.0% fee applied,
             ## They still manage to be on top of list.
 
-            ## Think about that- 22.5% fee. Still on top of list...
+            ## Think about that- 30.0% fee. Still on top of list...
 
-            $Fee = 22.5
+            $Fee = 30.0
 
-            $Estimate = if ($Stat_Algo -eq "Day") {[Double]$blockpool_Request.$_.estimate_last24h*(1-($Fee/100))}else{[Double]$blockpool_Request.$_.estimate_current*(1-($Fee/100))}
+            $Estimate = if ($Stat_Algo -eq "Day") {[Double]$blockpool_Request.$_.estimate_last24h * (1 - ($Fee / 100))}else {[Double]$blockpool_Request.$_.estimate_current * (1 - ($Fee / 100))}
 
-            $Stat = Set-Stat -Name "$($Name)_$($blockpool_Algorithm)_profit" -Value ([Double]$Estimate/$Divisor)
+            $Stat = Set-Stat -Name "$($Name)_$($blockpool_Algorithm)_profit" -Value ([Double]$Estimate / $Divisor)
             if ($Stat_Algo -eq "Day") {$CStat = $Stat.Live}else {$CStat = $Stat.$Stat_Algo}
 
-            If ($AltWallet1 -ne '') {$blockWallet1 = $AltWallet1}
-            else {$blockWallet1 = $Wallet1}
-            if ($AltWallet2 -ne '') {$blockWallet2 = $AltWallet2}
-            else {$blockWallet2 = $Wallet2}
-            if ($AltWallet3 -ne '') {$blockWallet3 = $AltWallet3}
-            else {$blockWallet3 = $Wallet3}
-            if ($AltPassword1 -ne '') {$blockpass1 = $Altpassword1}
-            else {$blockpass1 = $Passwordcurrency1}
-            if ($AltPassword2 -ne '') {$blockpass2 = $AltPassword2}
-            else {$blockpass2 = $Passwordcurrency2}
-            if ($AltPassword3 -ne '') {$blockpass3 = $AltPassword3}
-            else {$blockpass3 = $Passwordcurrency3}
+            $Pass1 = "$($global:Wallets.Wallet1.Keys)";
+            $User1 = "$($global:Wallets.Wallet1.BTC.address)";
+            $Pass2 = "$($global:Wallets.Wallet2.Keys)";
+            $User2 = "$($global:Wallets.Wallet2.BTC.address)";
+            $Pass3 = "$($global:Wallets.Wallet3.Keys)";
+            $User3 = "$($global:Wallets.Wallet3.BTC.address)";
+
+            $Pass1 = $global:Wallets.Wallet1.Keys
+            $User1 = $global:Wallets.Wallet1.BTC.address
+            $Pass2 = $global:Wallets.Wallet2.Keys
+            $User2 = $global:Wallets.Wallet2.BTC.address
+            $Pass3 = $global:Wallets.Wallet3.Keys
+            $User3 = $global:Wallets.Wallet3.BTC.address
+
+            $global:Wallets.AltWallet1.Keys | ForEach-Object {
+                if ($global:Wallets.AltWallet1.$_.Pools -contains $Name) {
+                    $Pass1 = $_;
+                    $User1 = $global:Wallets.AltWallet1.$_.address;
+                }
+            }
+            $global:Wallets.AltWallet2.Keys | ForEach-Object {
+                if ($global:Wallets.AltWallet2.$_.Pools -contains $Name) {
+                    $Pass2 = $_;
+                    $User2 = $global:Wallets.AltWallet2.$_.address;
+                }
+            }
+            $global:Wallets.AltWallet3.Keys | ForEach-Object {
+                if ($global:Wallets.AltWallet3.$_.Pools -contains $Name) {
+                    $Pass3 = $_;
+                    $User3 = $global:Wallets.AltWallet3.$_.address;
+                }
+            }
+            
             [PSCustomObject]@{            
                 Priority      = $Priorities.Pool_Priorities.$Name
                 Symbol        = $blockpool_Algorithm
@@ -63,14 +84,14 @@ if ($Poolname -eq $Name) {
                 Protocol      = "stratum+tcp"
                 Host          = $blockpool_Host
                 Port          = $blockpool_Port
-                User1         = $blockwallet1
-                User2         = $blockwallet2
-                User3         = $blockwallet3
-                CPUser        = $blockwallet1
-                CPUPass       = "c=$blockpass1,ID=$Rigname1"
-                Pass1         = "c=$blockpass1,ID=$Rigname1"
-                Pass2         = "c=$blockpass2,ID=$Rigname2"
-                Pass3         = "c=$blockpass3,ID=$Rigname3"
+                User1         = $User1
+                User2         = $User2
+                User3         = $User3
+                CPUser        = $User1
+                CPUPass       = "c=$Pass1,ID=$Rigname1"
+                Pass1         = "c=$Pass1,ID=$Rigname1"
+                Pass2         = "c=$Pass2,ID=$Rigname2"
+                Pass3         = "c=$Pass3,ID=$Rigname3"
                 Location      = $Location
                 SSL           = $false
             }

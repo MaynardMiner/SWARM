@@ -23,6 +23,7 @@ arguments.json
 config/parameters/arguments.json
 config/parameters/newarguments.json
 config/power/power.json
+config/wallets/wallets.json
 SWARM.conf
 build/bash/startup.sh
 build/export/libcudart.so.10.1
