@@ -133,5 +133,32 @@ fans: Fan speed
 
 -Windows: dpm isn't needed.
 -Windows: mdpm will set memory P-Voltage for all states = to default state selected.
+-Windows: you can set the memory voltage together with memory frequency by separating them with ; . For example 2000;775 2000;775 2000;775 2000;775 2000;775 2000;775
+-Windows: for drivers 19+ you can set the Fan level for each Fan State separated by ;. The temperatures for the states are preset to a resonable default which is:
+     P0: 55C P1: 60C P2: 65C P3:68C P4:70C
 
+    So when P0 temperature is reached 55C the fan speed will be set to the first value, when 60C to the second value and so on. You can set one value for all GPUs or distinct values for each GPU.
+    Full example which is working okay for RX580:
+
+    "default_AMD1": {
+      "dpm": "",
+      "v": "825 825 825 825 825 825",
+      "core": "1150 1150 1150 1150 1150 1150",
+      "memory": "2000;775 2000;775 2000;775 2000;775 2000;775 2000;775",
+      "mdpm": "",
+      "fans": "20;30;50;65;80",
+      "target_temps": "60 60 60 60 60 60"
+    }
+
+    or with different fan speeds per GPU
+
+    "default_AMD1": {
+      "dpm": "",
+      "v": "825 825 825 825 825 825",
+      "core": "1150 1150 1150 1150 1150 1150",
+      "memory": "2000;775 2000;775 2000;775 2000;775 2000;775 2000;775",
+      "mdpm": "",
+      "fans": "20;30;50;65;80 20;30;50;65;80 20;30;50;65;80 20;30;50;65;80 20;30;50;65;80 20;30;50;65;80",
+      "target_temps": "60 60 60 60 60 60"
+    }
 
