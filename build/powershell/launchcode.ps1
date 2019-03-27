@@ -231,8 +231,8 @@ function Start-LaunchCode {
         $StartDate = Get-Date
 
         ##PID Tracking Path & Date
-        $PIDPath = Join-Path $Dir "build\pid\$($MinerCurrent.Name)_$($MinerCurrent.Type)_$($MinerCurrent.Coins)_pid.txt"
-        $PIDInfoPath = Join-Path $Dir "build\pid\$($MinerCurrent.Name)_$($MinerCurrent.Type)_$($MinerCurrent.Coins)_info.txt"
+        $PIDPath = Join-Path $Dir "build\pid\$($MinerCurrent.InstanceName)_pid.txt"
+        $PIDInfoPath = Join-Path $Dir "build\pid\$($MinerCurrent.InstanceName)_info.txt"
         $PIDInfo = @{miner_exec = "$MinerEXE"; start_date = "$StartDate"; pid_path = "$PIDPath"; }
         $PIDInfo | ConvertTo-Json | Set-Content $PIDInfoPath
 

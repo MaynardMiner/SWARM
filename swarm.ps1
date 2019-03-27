@@ -1111,17 +1111,17 @@ While ($true) {
                         if ($_.BestMiner -eq $false) {
                             if ($_.XProcess -eq $null) {$_.Status = "Failed"}
                             else {
-                                $PreviousMinerPorts.$($_.Type) = "($_.Port)"
-                                $MinerInfo = ".\build\pid\$($_.Name)_$($_.Type)_$($_.Coins)_info.txt"
+                                $MinerInfo = ".\build\pid\$($_.InstanceName)_info.txt"
                                 if (Test-path $MinerInfo) {
                                     $_.Status = "Idle"
+                                    $PreviousMinerPorts.$($_.Type) = "($_.Port)"    
                                     $MI = Get-Content $MinerInfo | ConvertFrom-Json
                                     $PIDTime = [DateTime]$MI.start_date
                                     $Exec = Split-Path $MI.miner_exec -Leaf
                                     $_.Active += (Get-Date) - $PIDTime
                                     Start-Process "start-stop-daemon" -ArgumentList "--stop --name $Exec --pidfile $($MI.pid_path) --retry 5" -Wait
                                     ##Terminate Previous Miner Screens Of That Type.
-                                    Start-Process ".\build\bash\killall.sh" -ArgumentList "$($MinerCurrent.Type)" -Wait
+                                    Start-Process ".\build\bash\killall.sh" -ArgumentList "$($_.Type)" -Wait
                                 }
                             }                       
                         }
@@ -1185,7 +1185,7 @@ While ($true) {
 
         ## Records miner run times, and closes them. Starts New Miner instances and records
         ## there tracing information.
-        $ActiveMinerPrograms | ForEach {
+        $ActiveMinerPrograms | ForEach-Object {
            
             ##Miners Not Set To Run
             if ($_.BestMiner -eq $false) {
@@ -1199,12 +1199,12 @@ While ($true) {
                         }
                     }
 
-                elseif($Platform -eq "linux"){
+                if($Platform -eq "linux"){
                         if ($_.XProcess -eq $Null) {$_.Status = "Failed"}
                         else {
-                            $PreviousMinerPorts.$($_.Type) = "($_.Port)"
-                            $MinerInfo = ".\build\pid\$($_.Name)_$($_.Type)_$($_.Coins)_info.txt"
+                            $MinerInfo = ".\build\pid\$($_.InstanceName)_info.txt"
                             if (Test-path $MinerInfo) {
+                                $PreviousMinerPorts.$($_.Type) = "($_.Port)"
                                 $_.Status = "Idle"
                                 $MI = Get-Content $MinerInfo | ConvertFrom-Json
                                 $PIDTime = [DateTime]$MI.start_date
@@ -1215,9 +1215,12 @@ While ($true) {
                         }
                     }
                 }
-
-            ##Miners That Should Be Running
-            elseif ($null -eq $_.XProcess -or $_.XProcess.HasExited -and $Lite -eq "No") {
+        }
+        
+        ##Miners That Should Be Running
+        ##Start them if neccessary
+        $BestActiveMiners | ForEach-Object {
+         if ($null -eq $_.XProcess -or $_.XProcess.HasExited -and $Lite -eq "No") {
                 if ($TimeDeviation -ne 0) {
                     $Restart = $true
                     $_.Activated++
