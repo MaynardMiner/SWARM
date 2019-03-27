@@ -1,7 +1,5 @@
 param(
     [Parameter(Mandatory=$false)]
-    [String]$Wallet = "Yes",
-    [Parameter(Mandatory=$false)]
     [String]$Wallet1 = '',
     [Parameter(Mandatory=$false)]
     [String]$Wallet2 = '',
@@ -185,7 +183,6 @@ if($DonationClear -ne "")
  $NicehashDonate = "3JfBiUZZV17DTjAFCnZb97UpBgtLPLLDop"
  $UserDonate = "MaynardVII"
  $WorkerDonate = "Rig1"
- $WalletSwitch = $Wallet
  $WalletSwitch1 = $Wallet1
  $WalletSwitch2 = $Wallet2
  $WalletSwitch3 = $Wallet3
@@ -310,7 +307,6 @@ if($LastRan -ne "")
    $CurrentlyDonated = [math]::Round(((Get-Date)-$Donated).TotalSeconds)
    if($CurrentlyDonated -ge [int]$FinalDonation)
     {
-        $Wallet = $InfoPass1
         $Wallet1 = $InfoPass1
         $Wallet2 = $InfoPass1
         $Wallet3 = $InfoPass1
@@ -353,7 +349,6 @@ if($LastRan -ne "")
      $LastTimerCheck = [math]::Round(((Get-Date)-$LastRanDonate).TotalSeconds)
      if(((Get-Date)-$TimerCheck).TotalSeconds -ge $Interval)
       {
-        $Wallet = $WalletSwitch
         $Wallet1 = $WalletSwitch1
         $Wallet2 = $WalletSwitch2
 	    $Wallet3 = $WalletSwitch3

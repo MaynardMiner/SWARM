@@ -1,2 +1,18 @@
 #!/bin/bash
-sudo screen -S miner -m pwsh -command "&.\swarm.ps1 -HiveOS No -RigName1 MKVITO1 -Currency USD -Location US -PoolName ahashpool,blazepool,blockmasters,fairpool,hashrefinery,nicehash,nlpool,phiphipool,zergpool,zpool -Type NVIDIA1 -Wallet1 1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i -Donate .1 -WattOMeter No -Cuda 10 -Nicehash_Wallet1 3JfBiUZZV17DTjAFCnZb97UpBgtLPLLDop"
+
+## ************QUICK ARGUMENTS CHEAT SHEET**************************************************
+## Rigname: Name of your rig
+## Currency: Preferred Fiat Currency
+## CoinExchange: AltCoin Coin Pricing (Besides BTC).
+## Location: EUROPE ASIA US (Choose one).
+## Poolname: Remove Pools As You See Fit. Add Custom Pools If You Like.
+## Type: NVIDIA1 or AMD1 or AMD1,NVIDIA2 or NVIDIA1,NVIDIA2,NVIDIA3 (maximum of three)
+## Wallet1: Your BTC Wallet. Add -Wallet2 or -Wallet3 if using -Type NVIDIA2 or NVIDIA3
+## Donate: Donation in percent
+## WattOMeter: Use Watt Calculations (Default is 0.10 / kwh). Can be modified. See Wiki
+
+## ************NOTE***********************
+## If you do not intend to use HiveOS, add -HiveOS No
+## FOR ALL ARGUMENTS: SEE help folder. Explanation on how to use -Type NVIDIA1,NVIDIA2,NVIDIA3 is provided.
+
+sudo screen -S miner -m pwsh -command "&.\swarm.ps1 -HiveOS No -RigName1 MKVITO1 -Currency USD -CoinExchange LTC -Location US -PoolName ahashpool,blazepool,blockmasters,fairpool,hashrefinery,nicehash,nlpool,phiphipool,zergpool,zpool -Type NVIDIA1 -Wallet1 1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i -Donate .5 -WattOMeter No"

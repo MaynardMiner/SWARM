@@ -12,88 +12,55 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 function Get-WalletTable {
 
+    if(Test-Path ".\wallet\values\*"){Remove-Item ".\wallet\values\*" -Force}
+
+    $WalletKeys = [PSCustomObject]@{}
+    Get-ChildItemContent ".\wallet\keys" | ForEach {$WalletKeys | Add-Member $_.Name $_.Content}
+
+    if(Test-path ".\wallet\pools"){Get-ChildItemContent ".\wallet\pools"}
+
     $WalletTable = @()
-    if (Test-Path ".\wallet\pools") {Get-ChildItemContent ".\wallet\pools"}
     if (-not $GetWStats) {$GetWStats = get-wstats}
-    if (-not $Wallet1) {if (Test-Path ".\wallet\wallets\wallets.txt") {$Walletlist = Get-Content ".\wallet\wallets\wallets.txt" | ConvertFrom-Json}}
 
-    $WalletList | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | % {
-        $SelectedName = $_
-        $Selected = $Walletlist.$_
-        $GetWStats.PSObject.Properties.Name | % {
-            if ($GetWStats.$_.address -eq $Selected) {
-                $WalletTable += [PSCustomObject]@{
-                    Wallet         = $SelectedName
-                    Address        = $Selected
-                    Pool           = $GetWStats.$_.Pool
-                    Ticker         = $GetWStats.$_.Symbol
-                    Unpaid         = $GetWStats.$_.Unpaid
-                    Balance        = $GetWStats.$_.Balance
-                    "Last Checked" = $GetWStats.$_.Date
-                }
-            }
+    $Sym = @()
+
+    $GetWStats | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | % {
+        $WalletTable += [PSCustomObject]@{
+            Address        = $GetWStats.$_.Address
+            Pool           = $GetWStats.$_.Pool
+            Ticker         = $GetWStats.$_.Symbol
+            Unpaid         = $GetWStats.$_.Unpaid -as [decimal]
+            Balance        = $GetWStats.$_.Balance -as [decimal]
+            "Last Checked" = $GetWStats.$_.Date
         }
+        if($Sym -notcontains $GetWStats.$_.Symbol){$Sym += $GetWStats.$_.Symbol}
     }
 
-    $SortTable = @()
-
-    $WalletList | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | % { 
-        $Sort = $WalletTable | Where Wallet -eq $_
-        $SortTable += [PSCustomObject]@{$_ = $Sort}
+    $Format = @()
+    $Format += ""
+    $WalletTable | %{
+     $Format += "Address: $($_.Address)"
+     $Format += "Pool: $($_.Pool)"
+     $Format += "Ticker: $($_.Ticker)"
+     $Format += "Unpaid: $($_.Unpaid)"
+     $Format += "Balance: $($_.Balance)"
+     $Format += "Last Checked: $($_."Last Checked")"
+     $Format += ""
     }
 
-    $Wallet_Table = @()
+    $Sym | %{
+     $Grouping = $WalletTable | Where Ticker -eq $_
+     $Total_Unpaid = 0
+     $Total_Balace = 0
+     $Grouping.Unpaid | %{$Total_Unpaid += $_ }
+     $Grouping.Balance | %{$Total_Balance += $_ }
 
-    $WalletList | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | % {
-        $Pools = @()
-        $Sel = $_
-        $SortTable.$Sel | Foreach {
-            if ($_.Pool) {
-                $Pools += [PSCustomObject]@{
-                    Pool         = $_.Pool
-                    Unpaid       = $_.Unpaid
-                    Balance      = $_.Balance
-                    Last_Checked = $_."Last Checked"
-                }
-            }
-        }
-        $Total_Unpaid = $($Pools.Unpaid | Measure-Object -Sum).Sum
-        $Total_Balance = $($Pools.Balance | Measure-Object -Sum).Sum
-        $Total_Estimated = [double]$Total_Unpaid + [Double]$Total_Balance
-        $Last_Checked = $Pools.Last_Checked | Sort-Object | Select -First 1
-        $Ticker = $SortTable.$Sel.Ticker | Select -First 1
-        $Wallet_Table += [PSCustomObject]@{
-            Wallet                = $Sel
-            Ticker                = $Ticker
-            Pool_Wallets          = $Pools
-            Total_Unpaid          = $Total_Unpaid
-            Total_Balance         = $Total_Balance
-            Total_Estimated       = $Total_Estimated
-            Last_Successful_Check = $Last_Checked
-        }
+     $Format += ""
+     $Format += "Total $($_) Unpaid = $Total_Unpaid"
+     $Format += "Total $($_) Balance = $Total_Balance"
+     $Format += ""
     }
 
-    $Formatted_Table = @()
+    $Format
 
-    $Wallet_Table | foreach {
-        $Formatted_Table += "Wallet = $($_.Wallet)"
-        $Formatted_Table += "Ticker = $($_.Ticker)"
-        $Formatted_Table += "Pools:"
-        $_.Pool_Wallets | foreach {
-            $Formatted_Table += "     Pool = $($_.Pool)"
-            $Formatted_Table += "         Unpaid = $($_.Unpaid -as [Decimal])"
-            $Formatted_Table += "         Balance = $($_.Balance -as [Decimal])"
-            $Formatted_Table += "         Last Checked = $($_.Last_Checked)"
-        }
-        $Formatted_Table += " "
-        $Formatted_Table += "Total Unpaid = $($_.Total_Unpaid -as [Decimal])"
-        $Formatted_Table += "Total Balance = $($_.Total_Balance -as [Decimal])"
-        $Formatted_Table += "Total Estimated = $($_.Total_Estimated -as [Decimal])"
-        $Formatted_Table += "Last Successful Check = $($_.Last_Successful_Check)"
-        $Formatted_Table += " "
-        $Formatted_Table += " "
-        $Formatted_Table += " "
-    }
-
-    $Formatted_Table
 }

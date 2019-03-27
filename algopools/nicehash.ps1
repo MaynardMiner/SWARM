@@ -23,6 +23,12 @@ if ($Poolname -eq $Name) {
         $nicehash_Algorithm = $_.name.ToLower()
 
         if ($Algorithm -contains $nicehash_Algorithm -and $Bad_pools.$nicehash_Algorithm -notcontains $Name) {
+
+            ## Nicehash 'Gets' you with the fees. If you read the fine print,
+            ## If you do not use a nicehash wallet- Your total fee will end up
+            ## becoming 5%. If you use a nicehash wallet, the fee is variable,
+            ## but usually around 2%.
+            
             if (-not $Nicehash_Wallet1) {$NH_Wallet1 = $Wallet1; [Double]$Fee = 5; }else {$NH_Wallet1 = $Nicehash_Wallet1; [Double]$Fee = $NiceHash_Fee}
             if (-not $Nicehash_Wallet2) {$NH_Wallet2 = $Wallet2; [Double]$Fee = 5; }else {$NH_Wallet2 = $Nicehash_Wallet2; [Double]$Fee = $NiceHash_Fee}
             if (-not $Nicehash_Wallet3) {$NH_Wallet3 = $Wallet3; [Double]$Fee = 5; }else {$NH_Wallet3 = $Nicehash_Wallet3; [Double]$Fee = $NiceHash_Fee}
@@ -31,6 +37,10 @@ if ($Poolname -eq $Name) {
             $nicehash_excavator = "nhmp.$Region.nicehash.com"
             $nicehash_Port = $_.port
             $Divisor = 1000000000
+
+            ## Nicehash is pretty straightforward being PPS. In
+            ## My experience, whatever they state is return- Is
+            ## usually pretty close to actual.
 
             $Stat = Set-Stat -Name "$($Name)_$($Nicehash_Algorithm)_profit" -Value ([Double]$_.paying / $Divisor * (1 - ($Fee / 100)))
      

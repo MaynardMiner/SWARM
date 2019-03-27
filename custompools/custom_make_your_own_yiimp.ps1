@@ -16,6 +16,12 @@
 ## No .ps1's can have the same name, or you
 ## will generate errors.
 
+## This File will add to profit switching table.
+## Only the item cannot be auto-exchanged.
+
+## Be careful yiimp pool stats. Follow them first
+## before doing the extra work to add a miner.
+
 $FileName = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 
 ##Below is the Custom Config Script- Do not change.

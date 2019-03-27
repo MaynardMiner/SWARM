@@ -12,15 +12,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 function Build-HiveResponse {
 $mem = @($($ramfree),$($ramtotal-$ramfree))
-$HashRates = $HashRates | foreach {$_ -replace ("GPU=","")}
-$HashRates = $HashRates | foreach {$_ -replace ("$($_)","$($_)")}
-$Power = $Power | foreach {$_ -replace ("POWER=","")}
-$Power = $Power | foreach {$_ -replace ("$($_)","$($_)")}
-$Fans = $Fans | foreach {$_ -replace ("FAN=","")}
-$Fans = $Fans | foreach {$_ -replace ("$($_)","$($_)")}
-$Temps = $Temps | foreach {$_ -replace ("TEMP=","")}
-$Temps = $Temps | foreach {$_ -replace ("$($_)","$($_)")}
-$AR = @("$ACC","$REJ")
+$global:BHashRates = $global:BHashRates | foreach {$_ -replace ("GPU=","")}
+$global:BHashRates = $global:BHashRates | foreach {$_ -replace ("$($_)","$($_)")}
+$global:BPower = $global:BPower | foreach {$_ -replace ("POWER=","")}
+$global:BPower = $global:BPower | foreach {$_ -replace ("$($_)","$($_)")}
+$global:BFans = $global:BFans | foreach {$_ -replace ("FAN=","")}
+$global:BFans = $global:BFans | foreach {$_ -replace ("$($_)","$($_)")}
+$global:BTemps = $global:BTemps | foreach {$_ -replace ("TEMP=","")}
+$global:BTemps = $global:BTemps | foreach {$_ -replace ("$($_)","$($_)")}
+$AR = @("$global:BACC","$global:BREJ")
 
 $Stats = @{
   method = "stats"
@@ -37,17 +37,17 @@ $Stats = @{
     }
    }
    miner_stats = @{
-   hs = @($HashRates)
+   hs = @($global:BHashRates)
    hs_units = "khs"
-   temp = @($Temps)
-   fan = @($Fans)
-   uptime = $UPTIME
+   temp = @($global:BTemps)
+   fan = @($global:BFans)
+   uptime = $global:BUPTIME
    ar = @($AR)
-   algo = $HIVEALGO
+   algo = $global:BHIVEALGO
    bus_numbers = @($BusNumbers)
    }
-   total_khs = $KHS
-   power = @($Power)
+   total_khs = $global:BKHS
+   power = @($global:BPower)
    mem = @($mem)
    cpuavg = $LoadAverages
    df = "0"

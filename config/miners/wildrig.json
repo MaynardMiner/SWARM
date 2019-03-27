@@ -3,12 +3,7 @@
   "AMD1": {
     "name": "AMD1",
     "delay": "1",
-    "prestart": [
-      "export GPU_MAX_HEAP_SIZE=100",
-      "export GPU_USE_SYNC_OBJECTS=1",
-      "export GPU_SINGLE_ALLOC_PERCENT=100",
-      "export GPU_MAX_ALLOC_PERCENT=100"
-    ],
+    "prestart": [],
     "commands": {
       "bcd": "",
       "c11": "",
@@ -112,7 +107,7 @@
       "padihash": "glt-padihash",
       "pawelhash": "glt-pawelhash",
       "bmw512": "bmw512",
-      "rainforest": ""
+      "rainforest": "rainforest"
     },
     "oc": {
       "bcd": {

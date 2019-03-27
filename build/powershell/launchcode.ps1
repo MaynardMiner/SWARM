@@ -164,7 +164,9 @@ function Start-LaunchCode {
             $WorkingDirectory = Join-Path $Dir $(Split-Path $($MinerCurrent.Path))
 
             ##Remove Old Logs
-            if (Test-Path $MinerCurrent.Log) {Remove-Item $MinerCurrent.Log -Force}
+            $MinerLogs = Get-ChildItem "logs" | Where Name -like "*$($MinerCurrent.Type)*"
+            $MinerLogs | % {if(Test-Path ".\logs\$($_)"){Remove-Item ".\logs\$($_)" -Force}}
+            Start-Sleep -S 1
 
             ##Make Test.bat for users
             if (-not (Test-Path "$WorkingDirectory\swarm-start.bat")) {
@@ -229,8 +231,8 @@ function Start-LaunchCode {
         $StartDate = Get-Date
 
         ##PID Tracking Path & Date
-        $PIDPath = Join-Path $Dir "build\pid\$($MinerCurrent.Name)_$($MinerCurrent.Type)_$($MinerCurrent.Coins)_pid.txt"
-        $PIDInfoPath = Join-Path $Dir "build\pid\$($MinerCurrent.Name)_$($MinerCurrent.Type)_$($MinerCurrent.Coins)_info.txt"
+        $PIDPath = Join-Path $Dir "build\pid\$($MinerCurrent.InstanceName)_pid.txt"
+        $PIDInfoPath = Join-Path $Dir "build\pid\$($MinerCurrent.InstanceName)_info.txt"
         $PIDInfo = @{miner_exec = "$MinerEXE"; start_date = "$StartDate"; pid_path = "$PIDPath"; }
         $PIDInfo | ConvertTo-Json | Set-Content $PIDInfoPath
 
@@ -274,7 +276,9 @@ function Start-LaunchCode {
         Start-Process ".\build\bash\killall.sh" -ArgumentList "$($MinerCurrent.Type)" -Wait
 
         ##Remove Old Logs
-        if (Test-Path $Logs) {Remove-Item $Logs -Force}
+        $MinerLogs = Get-ChildItem "logs" | Where Name -like "*$($MinerCurrent.Type)*"
+        $MinerLogs | % {if(Test-Path "$($_)"){Remove-Item "$($_)" -Force}}
+        Start-Sleep -S 1
 
         ##Ensure bestminers.txt has been written (for slower storage drives)
         $FileTimer = New-Object -TypeName System.Diagnostics.Stopwatch

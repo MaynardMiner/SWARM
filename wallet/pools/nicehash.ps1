@@ -2,21 +2,40 @@
 . .\build\powershell\statcommand.ps1
 
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName
-$Getkeys = if (Test-Path ".\wallet\keys") {Get-ChildItemContent ".\wallet\keys" | % {$_.Content | Add-Member @{Name = $_.Content.Wallet} -PassThru}
-}
-$Wallets = ("Nicehash_Wallet1", "Nicehash_Wallet1", "Nicehash_Wallet3")
 $PoolQuery = "https://api.nicehash.com/api?method=stats.provider&addr="
 
-$Getkeys | % {if ($Wallets -match $_.Name) {
-        try {
-            $Response = Invoke-RestMethod "$PoolQuery$($_.address)" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop
+$Query = @()
+if ($WalletKeys.Nicehash_Wallet1.BTC.Pools -contains $Name) {
+    $WalletKeys.Nicehash_Wallet1.BTC.pools | % {
+        if ($Query.Name -notcontains "$($Name)_$($WalletKeys.Nicehash_Wallet1.BTC.address)") {
+            $Query += [PSCustomObject]@{Name = "$($Name)_$($WalletKeys.Nicehash_Wallet1.BTC.address)"; Symbol = "BTC"; Address = $WalletKeys.Nicehash_Wallet1.BTC.address; Response = ""}
         }
-        Catch {Write-Warning "failed to contact $Name For Wallet Info"; $Response = $Null}
-        $_.Response = $Response
     }
 }
-  
-$Getkeys | % {
+
+if ($WalletKeys.Nicehash_Wallet2.BTC.Pools -contains $Name) {
+    $WalletKeys.Nicehash_Wallet2.BTC.pools | % {
+        if ($Query.Name -notcontains "$($Name)_$($WalletKeys.Nicehash_Wallet2.BTC.address)") {
+            $Query += [PSCustomObject]@{Name = "$($Name)_$($WalletKeys.Nicehash_Wallet2.BTC.address)"; Symbol = "BTC"; Address = $WalletKeys.Nicehash_Wallet2.BTC.address; Response = ""}
+        }
+    }
+}
+
+if ($WalletKeys.Nicehash_Wallet3.BTC.Pools -contains $Name) {
+    $WalletKeys.Nicehash_Wallet3.BTC.pools | % {
+        if ($Query.Name -notcontains "$($Name)_$($WalletKeys.Nicehash_Wallet3.BTC.address)") {
+            $Query += [PSCustomObject]@{Name = "$($Name)_$($WalletKeys.Nicehash_Wallet3.BTC.address)"; Symbol = "BTC"; Address = $WalletKeys.Nicehash_Wallet3.BTC.address; Response = ""}
+        }
+    }
+}
+
+$Query | % {
+    try {$Response = Invoke-RestMethod "$PoolQuery$($_.address)" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop}
+    Catch {Write-Warning "failed to contact $Name For $($_.Address) Info"; $Response = $Null}
+    $_.Response = $Response
+}
+
+$Query| % {
     if ($_.Response.result) {
         $unpaid = 0
         $nhbalance = 0
@@ -24,4 +43,4 @@ $Getkeys | % {
         Set-WStat -Name "$($Name)_$($_.Address)" -Symbol $_.symbol -address $_.address -balance $nhbalance -unpaid $unpaid
     }
 }
-  
+

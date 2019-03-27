@@ -28,7 +28,6 @@ if ($Poolname -eq $Name) {
             $Fees = $phiphipool_Request.$_.fees
             $Workers = $phiphipool_Request.$_.Workers
             $Estimate = if ($Stat_Algo -eq "Day") {[Double]$phiphipool_Request.$_.estimate_last24h}else {[Double]$phiphipool_Request.$_.estimate_current}
-            #$Cut = ConvertFrom-Fees $Fees $Workers $Estimate
 
             $SmallestValue = 1E-20
             $Stat = Set-Stat -Name "$($Name)_$($phiphipool_Algorithm)_profit" -Value ([Double]$Estimate/$Divisor *(1-($phiphipool_Request.$_.fees/100)))
@@ -45,14 +44,14 @@ if ($Poolname -eq $Name) {
                 Protocol      = "stratum+tcp"
                 Host          = $phiphipool_Host
                 Port          = $phiphipool_Port
-                User1         = $Wallet1
-                User2         = $Wallet2
-                User3         = $Wallet3
-                CPUser        = $CPUWallet
-                CPUPass       = "c=$CPUcurrency,ID=$Rigname1"
-                Pass1         = "c=$Passwordcurrency1,ID=$Rigname1"
-                Pass2         = "c=$Passwordcurrency2,ID=$Rigname2"
-                Pass3         = "c=$Passwordcurrency3,ID=$Rigname3"
+                User1         = $global:Wallets.Wallet1.BTC.address
+                User2         = $global:Wallets.Wallet2.BTC.address
+                User3         = $global:Wallets.Wallet3.BTC.address
+                CPUser        = $global:Wallets.Wallet1.BTC.address
+                CPUPass       = "c=$($global:Wallets.Wallet1.keys),ID=$Rigname1"
+                Pass1         = "c=$($global:Wallets.Wallet1.keys),ID=$Rigname1"
+                Pass2         = "c=$($global:Wallets.Wallet2.keys),ID=$Rigname2"
+                Pass3         = "c=$($global:Wallets.Wallet3.keys),ID=$Rigname3"
                 Location      = $Location
                 SSL           = $false
             }

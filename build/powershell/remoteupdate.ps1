@@ -44,6 +44,8 @@ function start-update {
         $PreviousVersions += "SWARM.2.0.6"
         $PreviousVersions += "SWARM.2.0.7"
         $PreviousVersions += "SWARM.2.0.8"
+        $PreviousVersions += "SWARM.2.0.9"
+        $PreviousVersions += "SWARM.2.1.0"
 
         Write-Host "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
         Write-Host "Check $Location For any Previous Versions"
@@ -131,7 +133,7 @@ function start-update {
                                         ##2.0.5
                                         $Data.$_.commands| Add-Member "rainforest" "" -ErrorAction SilentlyContinue
                                         $Data.$_.difficulty | Add-Member "rainforest" "" -ErrorAction SilentlyContinue
-                                        $Data.$_.naming | Add-Member "rainforest" "rainforest" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "rainforest" "rainforest" -Force -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "rainforest" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue
 
 

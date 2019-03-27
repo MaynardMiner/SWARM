@@ -28,24 +28,39 @@ if ($Poolname -eq $Name) {
             $Fees = $Zpool_Request.$_.fees
             $Workers = $Zpool_Request.$_.Workers
             $Estimate = if ($Stat_Algo -eq "Day") {[Double]$Zpool_Request.$_.estimate_last24h}else {[Double]$Zpool_Request.$_.estimate_current}
+
+            ## ZPool fees are calculated differently, due to pool fee structure.
             $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
 
-            $SmallestValue = 1E-20
-            $Stat = Set-Stat -Name "$($Name)_$($Zpool_Algorithm)_profit" -Value ([Math]::Max([Double]($Estimate - $Cut) / $Divisor, $SmallestValue))
+            $Stat = Set-Stat -Name "$($Name)_$($Zpool_Algorithm)_profit" -Value ([Double]$Cut/$Divisor)
             if ($Stat_Algo -eq "Day") {$CStat = $Stat.Live}else {$CStat = $Stat.$Stat_Algo}
          
-            If ($AltWallet1 -ne '') {$zWallet1 = $AltWallet1}
-            else {$zwallet1 = $Wallet1}
-            if ($AltWallet2 -ne '') {$zWallet2 = $AltWallet2}
-            else {$zwallet2 = $Wallet2}
-            if ($AltWallet3 -ne '') {$zWallet3 = $AltWallet3}
-            else {$zwallet3 = $Wallet3}
-            if ($AltPassword1 -ne '') {$zpass1 = $Altpassword1}
-            else {$zpass1 = $Passwordcurrency1}
-            if ($AltPassword2 -ne '') {$zpass2 = $AltPassword2}
-            else {$zpass2 = $Passwordcurrency2}
-            if ($AltPassword3 -ne '') {$zpass3 = $AltPassword3}
-            else {$zpass3 = $Passwordcurrency3}    
+            $Pass1 = $global:Wallets.Wallet1.Keys
+            $User1 = $global:Wallets.Wallet1.BTC.address
+            $Pass2 = $global:Wallets.Wallet2.Keys
+            $User2 = $global:Wallets.Wallet2.BTC.address
+            $Pass3 = $global:Wallets.Wallet3.Keys
+            $User3 = $global:Wallets.Wallet3.BTC.address
+
+            $global:Wallets.AltWallet1.Keys | ForEach-Object {
+                if ($global:Wallets.AltWallet1.$_.Pools -contains $Name) {
+                    $Pass1 = $_;
+                    $User1 = $global:Wallets.AltWallet1.$_.address;
+                }
+            }
+            $global:Wallets.AltWallet2.Keys | ForEach-Object {
+                if ($global:Wallets.AltWallet2.$_.Pools -contains $Name) {
+                    $Pass2 = $_;
+                    $User2 = $global:Wallets.AltWallet2.$_.address;
+                }
+            }
+            $global:Wallets.AltWallet3.Keys | ForEach-Object {
+                if ($global:Wallets.AltWallet3.$_.Pools -contains $Name) {
+                    $Pass3 = $_;
+                    $User3 = $global:Wallets.AltWallet3.$_.address;
+                }
+            }
+
             [PSCustomObject]@{
                 Priority      = $Priorities.Pool_Priorities.$Name
                 Symbol        = $Zpool_Algorithm
@@ -57,14 +72,14 @@ if ($Poolname -eq $Name) {
                 Protocol      = "stratum+tcp"
                 Host          = $Zpool_Host
                 Port          = $Zpool_Port
-                User1         = $zWallet1
-                User2         = $zWallet2
-                User3         = $zWallet3
-                CPUser        = $zWallet1
-                CPUPass       = "c=$zpass1,ID=$Rigname1"
-                Pass1         = "c=$zpass1,ID=$Rigname1"
-                Pass2         = "c=$zpass2,ID=$Rigname2"
-                Pass3         = "c=$zpass3,ID=$Rigname3"
+                User1         = $User1
+                User2         = $User2
+                User3         = $User3
+                CPUser        = $User1
+                CPUPass       = "c=$Pass1,ID=$Rigname1"
+                Pass1         = "c=$Pass1,ID=$Rigname1"
+                Pass2         = "c=$Pass2,ID=$Rigname2"
+                Pass3         = "c=$Pass3,ID=$Rigname3"
                 Location      = $Location
                 SSL           = $false
             }
