@@ -2278,3 +2278,51 @@ Items / Enhancements / Issues:
    use -AltWallet arguments.
 
 
+2.1.2
+
+``-AUTO_COIN`` is back and highly improved!!
+    -features a more streamlined design.
+    -faster calculations that before.
+    -better analysis between coins vs. algorithms.
+    -no possibility of GUI stat issues.
+    -pre-tested by users.
+    -Note: Coins by design in Yiimp source code
+     are calculated asyncrounously between algorithm
+     profits. Stats will never match algorithm pricing,
+     but a more accurate / live figure is generated.
+    -Currently only zergpool.
+    -Plans to add fairpool coming very soon (after feedback
+     of bug / issue correction).
+
+-Shares 
+  -SWARM now tracks user share count on certain pools.
+  -zergpool will only work if -Auto_Coin yes is on.
+  -I am still working on all pools.
+
+New Commands:
+
+ ``-get charts``
+   will display a bar graphic chart on miners, in 
+   relation to each other.
+   -not implemented but coming soon: Can be sorted
+    by user input.
+
+API overhaul:
+
+   -API can now run 80% of commands through it.
+   -If a command has an argument, it is parsed with an '&'
+   -examples:
+      http://localhost:4099/get&stats
+      http://localhost:4099/version&query
+
+miners fixed on commands (I'm not sure if all working, I was
+still testing while coding -Auto_Coin, report if a command gives
+you an issue.
+
+-Various small fixes were performed, too numerous to account for each one.
+-Most of them were small fixes found while going through miner files, and
+ had little to no real affect to the performance of SWARM.
+
+-build\api created, plan to use this for all api uses, via with other programs,
+ or with SWARM itself.
+

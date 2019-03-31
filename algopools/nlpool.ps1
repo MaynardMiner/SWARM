@@ -65,10 +65,10 @@ if ($Poolname -eq $Name) {
                 User2         = $User2
                 User3         = $User3
                 CPUser        = $User1
-                CPUPass       = "c=$Pass1,ID=$Rigname1"
-                Pass1         = "c=$Pass1,ID=$Rigname1"
-                Pass2         = "c=$Pass2,ID=$Rigname2"
-                Pass3         = "c=$Pass3,ID=$Rigname3"
+                CPUPass       = "c=$Pass1,id=$Rigname1"
+                Pass1         = "c=$Pass1,id=$Rigname1"
+                Pass2         = "c=$Pass2,id=$Rigname2"
+                Pass3         = "c=$Pass3,id=$Rigname3"
                 Location      = $Location
                 SSL           = $false
             }

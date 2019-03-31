@@ -84,7 +84,7 @@ function start-update {
                     if (Test-Path "$OldTimeout\algo_block") {Get-ChildItem -Path "$($OldTimeout)\pool_block" -Include *.txt, *.conf -Recurse | Copy-Item -Destination ".\timeout\pool_block"}
                     Get-ChildItem -Path "$($OldTimeout)\*" -Include *.txt | Copy-Item -Destination ".\timeout"
                 }
-                $Jsons = @("miners", "oc", "power", "pools")
+                $Jsons = @("miners", "oc", "power", "pools", "asic", "wallets")
                 $UpdateType = @("CPU", "AMD1", "NVIDIA1", "NVIDIA2", "NVIDIA3")
                 $Jsons | foreach {
                     $OldJson_Path = Join-Path $OldConfig "$($_)";

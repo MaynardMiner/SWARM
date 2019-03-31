@@ -305,7 +305,6 @@ clear_watts
                 $Total = [int]$Argument3 + 1
                 if (Test-Path ".\build\txt\minerstatslite.txt") {
                     $Get = Get-Content ".\build\txt\minerstatslite.txt"
-                    $Get = $Get | % {$Number = 0; if ($_ -ne "") {$Number = $_.SubString(0, 2); $Number = $Number -replace " ", ""; try {$Number = [int]$Number}catch {$Number = 0}}; if ($Number -lt $Total) {$_}}
                 }
                 else {$Get = "No Stats History Found"}    
             }
@@ -330,6 +329,7 @@ clear_watts
             }
         }
     }
+    "charts"{if (Test-Path ".\build\txt\charts.txt") {$Get = Get-Content ".\build\txt\charts.txt"}}
     "active" {
         if (Test-Path ".\build\txt\mineractive.txt") {$Get = Get-Content ".\build\txt\mineractive.txt"}
         else {$Get = "No Miner History Found"}

@@ -37,7 +37,7 @@ $Query | % {
 }
 
 $Query | % {
-    if ($_.Response.unpaid -gt 0) {
-        Set-WStat -Name $_.Name -Symbol $_.symbol -address $_.address -balance $_.response.balance -unpaid $_.response.unpaid
+    if ($_.Response.unsold -gt 0) {
+        Set-WStat -Name $_.Name -Symbol $_.response.currency -address $_.address -balance $_.response.balance -unpaid $_.response.unsold
     }
 }

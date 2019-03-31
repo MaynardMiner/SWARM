@@ -10,6 +10,91 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
+
+
+function Get-Charts {
+$Status = @()
+$Status += ""
+$Power = "|"
+$Power_Levels = @{}
+$WattTable = $false
+$ProfitTable | % {if ($_.Power -gt 0) {$WattTable = $True}}
+
+$Type | % {
+    $Table = $ProfitTable | Where TYPE -eq $_;
+    $global:index = $Table.Count
+    
+    $Table | % {$Power_Levels.Add("$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)",@{})}
+    ##Profit Levels
+    $Level = $null
+    $Table | Sort-Object -Property Profits | ForEach-Object {if($Null -ne $_.Profits){$Profit = ($_.Profits * $Rates.$Currency).ToString("N2"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level+$Power; $Power_Levels.$MinerName.Add("Profit","$Level $Profit $Currency/Day");}}
+    $Level = $null
+    $Table | Sort-Object -Property Profits | ForEach-Object {if($Null -ne $_.Profits){$Profit = ($_.Profits / $BTCExchangeRate).ToString("N5"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level+$Power; $Power_Levels.$MinerName.Add("Alt_Profit","$Level $Profit $Y/Day");}}
+    $Level = $null
+    $Table | Sort-Object -Property Profits | ForEach-Object {if($Null -ne $_.Profits){$Profit = ($_.Profits).ToString("N5"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level+$Power; $Power_Levels.$MinerName.Add("BTC_Profit","$Level $Profit BTC/Day");}}
+    $Level = $null
+    $Table | Sort-Object -Property HashRates | ForEach-Object {if($Null -ne $_.HashRates){$HashRate = "$($_.HashRates | ConvertTo-Hash)/s"; $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level+$Power; $Power_Levels.$MinerName.Add("Hashrate","$Level $Hashrate");}}
+    $Level = $null
+    $Table | Sort-Object -Property Shares | ForEach-Object {if($Null -ne $_.Shares){if($_.Shares -eq "N/A"){$_.Shares = 0}else{$_.Shares = [Double]$_.Shares}; $Shares = "$($_.Shares)"; $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; if($_.Shares -ne 0){$Level = $Level+$Power}else{$Level = "|"}; $Power_Levels.$MinerName.Add("Shares","$Level $Shares %");}}
+    if($WattTable -eq $true)
+    {
+     $Level = $null
+     $Table | Sort-Object -Property HashRates | ForEach-Object {if($Null -ne $_.Power){$Pwatts = ($_.Power * $Rates.$Currency).ToString("N2"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level+$Power; $Power_Levels.$MinerName.Add("Watts","$Level $PWatts $Currency/Day");}}
+    }
+}
+
+$Type | % {
+    $Table = $ProfitTable | Where TYPE -eq $_;
+    $Border_Lt = @()
+    $Status += "GROUP $($_)"
+    $Status += ""
+    
+    $Table | %{
+    $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"
+    $Border_Lt += $($Power_Levels.$MinerName.BTC_Profit | Measure -Character).Characters  
+    }
+    $Border = $($Border_Lt | measure -Maximum).Maximum + 15
+    $Table | Sort-Object -Property Profits -Descending | %{
+    $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"
+    $me = [char]27;
+    $white = "37";
+    $blue = "34";
+    $yellow = "33";
+    $green = "32";
+    $cyan = "36";
+    $red = "31";
+    $gray = "30";
+    $HLevel = "Hashrate:"
+    $HStat = if($Null -ne $_.Hashrates){"$me[${red};1m$($Power_Levels.$MinerName.Hashrate)${me}[0m"}else{"$me[${red};1mBenchmarking${me}[0m"}
+    $CLevel = "$Currency Profit:"
+    $CStat = if($Null -ne $_.Profits){"$me[${green};1m$($Power_Levels.$MinerName.Profit)${me}[0m"}else{"$me[${green};1mBenchmarking${me}[0m"}
+    $BLevel = "BTC Profit:"
+    $BStat = if($Null -ne $_.shares){"$me[${yellow};1m$($Power_Levels.$MinerName.BTC_Profit)${me}[0m"}else{"$me[${cyan};1mBenchmarking${me}[0m"}
+    $ALevel = "$CoinExchange Profit:"
+    $AStat = if($Null -ne $_.Profits){"$me[${cyan};1m$($Power_Levels.$MinerName.ALT_Profit)${me}[0m"}else{"$me[${yellow};1mBenchmarking${me}[0m"}
+    $SLevel = "Shares:"
+    $SStat = if($Null -ne $_.Profits){"$me[${blue};1m$($Power_Levels.$MinerName.Shares)${me}[0m"}else{"$me[${blue};1mBenchmarking${me}[0m"}
+    $Table_Item = @();
+    $TableName = "$me[${white};1mName: $($_.Miner)${me}[0m"; 
+    $TableSymbol = "$me[${white};1mCoin: $($_.Name)${me}[0m"; 
+    $TablePool = "$me[${white};1mPool: $($_.MinerPool)${me}[0m"; 
+    $Table_Item += "$($TableName.PadRight(40," ")) $($TableSymbol.PadRight(40," ")) $TablePool"
+    $Table_Item += "".PadLeft($Border,"*")
+    $Table_Item += "$me[${white};1m$($HLevel.PadRight(14))${me}[0m $HStat"
+    $Table_Item += "$me[${white};1m$($CLevel.PadRight(14))${me}[0m $CStat"
+    $Table_Item += "$me[${white};1m$($SLevel.PadRight(14))${me}[0m $SStat"
+    $Table_Item += "$me[${white};1m$($BLevel.PadRight(14))${me}[0m $BStat"
+    $Table_Item += "$me[${white};1m$($ALevel.PadRight(14))${me}[0m $AStat"
+    $Table_Item += "".PadLeft($Border,"*")
+    $Status += $Table_Item
+    }
+    $Status += ""
+    $Status += ""
+   }
+   $Status
+} 
+
+
 function Get-MinerStatus {
     $WattTable = $false
     $ProfitTable | % {if ($_.Power -gt 0) {$WattTable = $True}}
@@ -26,7 +111,8 @@ function Get-MinerStatus {
                     @{Label = "BTC/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {  $_.ToString("N5")}else {"Bench"}}}; Align = 'right'},
                     @{Label = "$Y/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {  ($_ / $BTCExchangeRate).ToString("N5")}else {"Bench"}}}; Align = 'right'},
                     @{Label = "$Currency/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {($_ * $Rates.$Currency).ToString("N2")}else {"Bench"}}}; Align = 'center'},
-                    @{Label = "Pool"; Expression = {$($_.MinerPool)}; Align = 'left'}
+                    @{Label = "Pool"; Expression = {$($_.MinerPool)}; Align = 'center'},
+                    @{Label = "Shares"; Expression = {$($_.Shares)}; Align = 'left'}
                 )
             }
             else {
@@ -37,7 +123,8 @@ function Get-MinerStatus {
                     @{Label = "Watt/Day"; Expression = {$($_.Power) | ForEach {if ($null -ne $_) {($_ * $Rates.$Currency).ToString("N2")}else {"Bench"}}}; Align = 'center'},
                     @{Label = "BTC/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {  $_.ToString("N5")}else {"Bench"}}}; Align = 'right'},
                     @{Label = "$Currency/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {($_ * $Rates.$Currency).ToString("N2")}else {"Bench"}}}; Align = 'center'},
-                    @{Label = "Pool"; Expression = {$($_.MinerPool)}; Align = 'left'}
+                    @{Label = "Pool"; Expression = {$($_.MinerPool)}; Align = 'center'},
+                    @{Label = "Shares"; Expression = {$($_.Shares)}; Align = 'left'}
                 )
             }
         }
@@ -50,7 +137,8 @@ function Get-MinerStatus {
                     @{Label = "BTC/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {  $_.ToString("N5")}else {"Bench"}}}; Align = 'right'},
                     @{Label = "$Y/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {  ($_ / $BTCExchangeRate).ToString("N5")}else {"Bench"}}}; Align = 'right'},
                     @{Label = "$Currency/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {($_ * $Rates.$Currency).ToString("N2")}else {"Bench"}}}; Align = 'center'},
-                    @{Label = "Pool"; Expression = {$($_.MinerPool)}; Align = 'left'}        
+                    @{Label = "Pool"; Expression = {$($_.MinerPool)}; Align = 'center'},
+                    @{Label = "Shares"; Expression = {$($_.Shares)}; Align = 'left'}        
                 )
             }
             else {
@@ -60,7 +148,8 @@ function Get-MinerStatus {
                     @{Label = "Speed"; Expression = {$($_.HashRates) | ForEach {if ($null -ne $_) {"$($_ | ConvertTo-Hash)/s"}else {"Bench"}}}; Align = 'center'},
                     @{Label = "BTC/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {  $_.ToString("N5")}else {"Bench"}}}; Align = 'right'},
                     @{Label = "$Currency/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {($_ * $Rates.$Currency).ToString("N2")}else {"Bench"}}}; Align = 'center'},
-                    @{Label = "Pool"; Expression = {$($_.MinerPool)}; Align = 'left'}        
+                    @{Label = "Pool"; Expression = {$($_.MinerPool)}; Align = 'center'},
+                    @{Label = "Shares"; Expression = {$($_.Shares)}; Align = 'left'}      
                 )
             }
 
@@ -78,21 +167,22 @@ function Get-StatusLite {
 ########################
 "
         $Table = $ProfitTable | Where TYPE -eq $_ | Sort-Object -Property Profits -Descending
-        $global:index = 1
+        $statindex = 1
 
         $Table | % { 
 
-            if ($global:index -eq 1) {$Screen += "# 1 Miner:"}
-            else {$Screen += "Postion $global:index: "}
+            if ($statindex -eq 1) {$Screen += "# 1 Miner:"}
+            else {$Screen += "Postion $($statindex): "}
 
             $Screen += 
-            "       Miner: $($_.Miner)
+            "        Miner: $($_.Miner)
         Speed: $($_.HashRates | ForEach {if ($null -ne $_) {"$($_ | ConvertTo-Hash)/s"}else {"Benchmarking"}})
         Profit: $($_.Profits | ForEach {if ($null -ne $_) {"$(($_ * $Rates.$Currency).ToString("N2")) $Currency/Day"}else {"Bench"}}) 
         Pool: $($_.MinerPool)
+        Shares: $($_.Shares)
 "
         
-            $global:index += 1
+            $statindex++
         }
         $screen += "
 ########################
@@ -123,7 +213,7 @@ https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration) >> Ri
  and window stays open, so you may view issue.
 " -ForegroundColor DarkRed
     }
-    Start-Sleep -s 20
+    Start-Sleep -s 10
 }
 
 function Invoke-MinerSuccess1 {
@@ -134,7 +224,7 @@ function Invoke-MinerSuccess1 {
                         Y   /\\~~//_  |
                        _L  |_((_|___L_|
                       (/\)(____(_______)      
-Waiting 20 Seconds For Miners To Load & Restarting Background Tracking
+Waiting 15 Seconds For Miners To Load & Restarting Background Tracking
 " -ForegroundColor Magenta
     if ($Platform -eq "linux") {
         Write-Host "Type 'mine' in another terminal to see miner working- This is NOT a remote command!
@@ -153,7 +243,7 @@ using without SWARM, as SWARM is logging miner data. Agent window will show SWAR
 tracking of algorithms and GPU information. It can be used to observe issues, if any.
 " -foreground Magenta
     }
-    Start-Sleep -s 20
+    Start-Sleep -s 15
 }
 
 function Invoke-MinerSuccess2 {
@@ -165,7 +255,7 @@ function Invoke-MinerSuccess2 {
                       _L  |_((_|___L_|
                      (/\)(____(_______)      
 Waiting 20 Seconds For Miners To Load & Restarting Background Tracking"
-    Start-Sleep -s 20
+    Start-Sleep -s 15
 }
 
 function Invoke-NoChange {

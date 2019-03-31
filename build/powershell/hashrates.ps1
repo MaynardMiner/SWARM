@@ -127,7 +127,7 @@ function Get-HashRate {
 filter ConvertTo-Hash {
     $Hash = $_
     switch ([math]::truncate([math]::log($Hash, [Math]::Pow(1000, 1)))) {
-        0 {"{0:n2}  H" -f ($Hash / [Math]::Pow(1000, 0))}
+        0 {"{0:n2} H" -f ($Hash / [Math]::Pow(1000, 0))}
         1 {"{0:n2} KH" -f ($Hash / [Math]::Pow(1000, 1))}
         2 {"{0:n2} MH" -f ($Hash / [Math]::Pow(1000, 2))}
         3 {"{0:n2} GH" -f ($Hash / [Math]::Pow(1000, 3))}
@@ -139,11 +139,11 @@ filter ConvertTo-Hash {
 filter ConvertTo-LogHash {
     $Hash = $_
     switch ([math]::truncate([math]::log($Hash, [Math]::Pow(1000, 1)))) {
-        0 {"{0:n2}  `nhs" -f ($Hash / [Math]::Pow(1000, 0))}
+        0 {"{0:n2} `nhs" -f ($Hash / [Math]::Pow(1000, 0))}
         1 {"{0:n2} `nkhs" -f ($Hash / [Math]::Pow(1000, 1))}
         2 {"{0:n2} `nmhs" -f ($Hash / [Math]::Pow(1000, 2))}
         3 {"{0:n2} `nghs" -f ($Hash / [Math]::Pow(1000, 3))}
         4 {"{0:n2} `nths" -f ($Hash / [Math]::Pow(1000, 4))}
-        Default {"{0:n2} `n PH" -f ($Hash / [Math]::Pow(1000, 5))}
+        Default {"{0:n2} `nphs" -f ($Hash / [Math]::Pow(1000, 5))}
     }
 }

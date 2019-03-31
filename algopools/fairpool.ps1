@@ -22,7 +22,7 @@ if ($Poolname -eq $Name) {
         $fairpool_Algorithm = $fairpool_Request.$_.name.ToLower()
 
         if ($Algorithm -contains $fairpool_Algorithm -and $Bad_pools.$fairpool_Algorithm -notcontains $Name) {
-            $fairpool_Host = "$region.fairpool.pro"
+            $fairpool_Host = "$region"
             $fairpool_Port = $fairpool_Request.$_.port
             $Divisor = (1000000 * $fairpool_Request.$_.mbtc_mh_factor)
             $Fees = $fairpool_Request.$_.fees
@@ -47,10 +47,10 @@ if ($Poolname -eq $Name) {
                 User2         = $global:Wallets.Wallet2.BTC.address
                 User3         = $global:Wallets.Wallet3.BTC.address
                 CPUser        = $global:Wallets.Wallet1.BTC.address
-                CPUPass       = "c=$($global:Wallets.Wallet1.keys),ID=$Rigname1"
-                Pass1         = "c=$($global:Wallets.Wallet1.keys),ID=$Rigname1"
-                Pass2         = "c=$($global:Wallets.Wallet2.keys),ID=$Rigname2"
-                Pass3         = "c=$($global:Wallets.Wallet3.keys),ID=$Rigname3"
+                CPUPass       = "c=$($global:Wallets.Wallet1.keys),id=$Rigname1"
+                Pass1         = "c=$($global:Wallets.Wallet1.keys),id=$Rigname1"
+                Pass2         = "c=$($global:Wallets.Wallet2.keys),id=$Rigname2"
+                Pass3         = "c=$($global:Wallets.Wallet3.keys),id=$Rigname3"
                 Location      = $Location
                 SSL           = $false
             }

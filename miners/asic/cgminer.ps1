@@ -8,7 +8,7 @@ if($CoinAlgo -eq $null)
 {
   $Algorithm | ForEach-Object {
   $MinerAlgo = $_
-  $AlgoPools | Where Symbol -eq $MinerAlgo | foreach {
+  $Pools | Where Algorithm -eq $MinerAlgo | foreach {
   if($MinerAlgo -eq "$($_.Algorithm)")
   {
     $NewPass = $($_.Pass1) -split "," | Select -First 1

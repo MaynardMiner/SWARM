@@ -42,10 +42,10 @@ if ($Poolname -eq $Name) {
                 User2         = $global:Wallets.Wallet2.BTC.address
                 User3         = $global:Wallets.Wallet3.BTC.address
                 CPUser        = $global:Wallets.Wallet1.BTC.address
-                CPUPass       = "c=$($global:Wallets.Wallet1.keys),ID=$Rigname1"
-                Pass1         = "c=$($global:Wallets.Wallet1.keys),ID=$Rigname1"
-                Pass2         = "c=$($global:Wallets.Wallet2.keys),ID=$Rigname2"
-                Pass3         = "c=$($global:Wallets.Wallet3.keys),ID=$Rigname3"
+                CPUPass       = "c=$($global:Wallets.Wallet1.keys),id=$Rigname1"
+                Pass1         = "c=$($global:Wallets.Wallet1.keys),id=$Rigname1"
+                Pass2         = "c=$($global:Wallets.Wallet2.keys),id=$Rigname2"
+                Pass3         = "c=$($global:Wallets.Wallet3.keys),id=$Rigname3"
                 Location      = $Location
                 SSL           = $false
             }

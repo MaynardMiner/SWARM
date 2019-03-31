@@ -11,47 +11,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
-function Get-Nvidia {
-    param(
-        [Parameter(Mandatory = $true)]
-        [String]$Coin
-    )
-
-    $Coins = Get-Content ".\config\naming\get-nvidia.json" | ConvertFrom-Json
-
-    $Coin = (Get-Culture).TextInfo.ToTitleCase(($Coin -replace "_", " ")) -replace " "
-
-    if ($Coins.$Coin) {$Coins.$Coin}
-    else {$Coin}
-}
-
-function Get-CPU {
-    param(
-        [Parameter(Mandatory = $true)]
-        [String]$Coin
-    )
-
-    $Coins = Get-Content ".\config\naming\get-cpu.json" | ConvertFrom-Json
-
-    $Coin = (Get-Culture).TextInfo.ToTitleCase(($Coin -replace "_", " ")) -replace " "
-
-    if ($Coins.$Coin) {$Coins.$Coin}
-    else {$Coin}
-}
-
-function Get-AMD {
-    param(
-        [Parameter(Mandatory = $true)]
-        [String]$Coin
-    )
-
-    $Coins = Get-Content ".\config\naming\get-amd.json" | ConvertFrom-Json
-
-    $Coin = (Get-Culture).TextInfo.ToTitleCase(($Coin -replace "_", " ")) -replace " "
-
-    if ($Coins.$Coin) {$Coins.$Coin}
-    else {$Coin}
-}
 
 function Get-Algorithm {
     param(
