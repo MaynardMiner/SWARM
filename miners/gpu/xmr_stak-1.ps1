@@ -30,6 +30,8 @@ $Config.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 
 if ($Coins -eq $true) { $Pools = $CoinPools }else { $Pools = $AlgoPools }
 
+if($Coins -eq $true){$Pools = $CoinPools}else{$Pools = $AlgoPools}
+
 ##Build Miner Settings
 $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
     $MinerAlgo = $_
