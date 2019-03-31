@@ -157,11 +157,7 @@ function Get-minerfiles {
 function start-minersorting {
     param (
         [Parameter(Mandatory = $true)]
-        [string]$Command,
-        [Parameter(Mandatory = $true)]
         [array]$Stats,
-        [Parameter(Mandatory = $true)]
-        [array]$Pools,
         [Parameter(Mandatory = $true)]
         [array]$SortMiners,
         [Parameter(Mandatory = $true)]
@@ -172,13 +168,11 @@ function start-minersorting {
         $Miner = $_
 
         $Miner_HashRates = [PSCustomObject]@{}
-        $Miner_Pools = [PSCustomObject]@{}
         $Miner_Profits = [PSCustomObject]@{}
         $Miner_PowerX = [PSCustomObject]@{}
         $Miner_Pool_Estimate = [PSCustomObject]@{}
      
         $Miner_Types = $Miner.Type | Select -Unique
-        $Miner_Indexes = $Miner.Index | Select -Unique
      
         $Miner.HashRates | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | ForEach {
             if ($Miner.PowerX.$_ -ne $null) {
@@ -189,37 +183,30 @@ function start-minersorting {
                 $WattCalc3 = [Decimal]$WattCalc2 * $WattCalc;
             }
             else {$WattCalc3 = 0}
-            $Pool = $Pools | Where Symbol -EQ $_ | Where Name -EQ $($Miner.MinerPool)
             $Miner_HashRates | Add-Member $_ ([Double]$Miner.HashRates.$_)
             $Miner_PowerX | Add-Member $_ ([Double]$Miner.PowerX.$_)
-            $Miner_Pools | Add-Member $_ ([PSCustomObject]$Pool.Name)
-            $Miner_Profits | Add-Member $_ ([Decimal](($Miner.HashRates.$_ * $Pool.Price) - $WattCalc3))
-            $Miner_Pool_Estimate | Add-Member $_ ([Decimal]($Pool.Price))
+            $Miner_Profits | Add-Member $_ ([Decimal]($Miner.Quote - $WattCalc3))
+            $Miner_Pool_Estimate | Add-Member $_ ([Decimal]($Miner.Quote))
         }
             
         $Miner_Power = [Double]($Miner_PowerX.PSObject.Properties.Value | Measure -Sum).Sum
         $Miner_Profit = [Double]($Miner_Profits.PSObject.Properties.Value | Measure -Sum).Sum
         $Miner_Pool_Estimate = [Double]($Miner_Pool_Estimate.PSObject.Properties.Value | Measure -Sum).sum
 
-        if ($Command -eq "Algo") {
             $Miner.HashRates | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | ForEach {
                 if ((-not [String]$Miner.HashRates.$_) -or (-not [String]$Miner.PowerX.$_) -and $Miner.Type -ne "ASIC") {
                     $Miner_HashRates.$_ = $null
                     $Miner_PowerX.$_ = $null
-                    $Miner_Profits.$_ = $null
                     $Miner_Profit = $null
                     $Miner_Power = $null
                 }
             }
-        } 
-                                 
+
         $Miner.HashRates = $Miner_HashRates
         $Miner.PowerX = $Miner_PowerX
-        $Miner | Add-Member Pools $Miner_Pools
-        $Miner | Add-Member Profits $Miner_Profits
         $Miner | Add-Member Profit $Miner_Profit
         $Miner | Add-Member Power $Miner_Power
-        $Miner | Add-Member Pool_Estimate $Miner_Pool_Estimate     
+        $Miner | Add-Member Pool_Estimate $Miner_Pool_Estimate   
     }
 }
 
@@ -228,8 +215,6 @@ function Start-MinerReduction {
     param (
         [Parameter(Mandatory = $true)]
         [array]$Stats,
-        [Parameter(Mandatory = $true)]
-        [array]$Pools,
         [Parameter(Mandatory = $true)]
         [array]$SortMiners,
         [Parameter(Mandatory = $true)]

@@ -31,6 +31,8 @@ $Prestart = @()
 $PreStart += "export LD_LIBRARY_PATH=$ExportDir"
 $Config.$ConfigType.prestart | foreach {$Prestart += "$($_)"}
 
+if($Coins -eq $true){$Pools = $CoinPools}else{$Pools = $AlgoPools}
+
 ##Build Miner Settings
 if ($CoinAlgo -eq $null) {
     $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {

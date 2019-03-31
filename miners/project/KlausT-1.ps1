@@ -32,6 +32,8 @@ if (Test-Path $BE) {$Prestart += "export LD_PRELOAD=libcurl-compat.so.3.0.0"}
 $PreStart += "export LD_LIBRARY_PATH=$ExportDir"
 $Config.$ConfigType.prestart | foreach {$Prestart += "$($_)"}
 
+if($Coins -eq $true){$Pools = $CoinPools}else{$Pools = $AlgoPools}
+
 ##Build Miner Settings
 if ($CoinAlgo -eq $null) {
     $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
@@ -41,7 +43,7 @@ if ($CoinAlgo -eq $null) {
                 if ($Config.$ConfigType.difficulty.$($_.Algorithm)) {$Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))"}else {$Diff = ""}
                 [PSCustomObject]@{
                     Delay      = $Config.$ConfigType.delay
-                    Symbol     = "$($_.Algorithm)"
+                    Symbol     = "$($_.Symbol)"
                     MinerName  = $MinerName
                     Prestart   = $PreStart
                     Type       = $ConfigType

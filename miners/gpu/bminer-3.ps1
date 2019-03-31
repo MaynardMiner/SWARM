@@ -32,11 +32,13 @@ $ExportDir = Join-Path $dir "build\export"
 $PreStart += "export LD_LIBRARY_PATH=$ExportDir"
 $Config.$ConfigType.prestart | foreach {$Prestart += "$($_)"}
 
+if($Coins -eq $true){$Pools = $CoinPools}else{$Pools = $AlgoPools}
+
 ##Build Miner Settings
 if ($CoinAlgo -eq $null) {
     $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
         $MinerAlgo = $_
-        $AlgoPools | Where Symbol -eq $MinerAlgo | foreach {
+        $Pools | Where Algorithm -eq $MinerAlgo | foreach {
             Switch ($_.Name) {
                 "nicehash" {$Pass2 = ""}
                 default {$Pass2 = ".$($($_.Pass2) -replace ",","%2C")"}
@@ -46,7 +48,7 @@ if ($CoinAlgo -eq $null) {
                 if ($Config.$ConfigType.difficulty.$($_.Algorithm) -and $($_.Name) -ne "nicehash") {$Diff = "%2Cd=$($Config.$ConfigType.difficulty.$($_.Algorithm))"}else {$Diff = ""}
                 [PSCustomObject]@{
                     Delay      = $Config.$ConfigType.delay
-                    Symbol     = "$($_.Algorithm)"
+                    Symbol     = "$($_.Symbol)"
                     MinerName  = $MinerName
                     Prestart   = $PreStart
                     Type       = $ConfigType

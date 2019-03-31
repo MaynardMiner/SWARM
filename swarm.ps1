@@ -828,6 +828,7 @@ While ($true) {
         }
 
         ##Get Algorithm Pools
+        $Coins = $false
         Write-Host "Checking Algo Pools" -Foregroundcolor yellow;
         $AllAlgoPools = Get-Pools -PoolType "Algo" -Stats $Stats
         ##Get Custom Pools
@@ -845,18 +846,27 @@ While ($true) {
         $Top_3_Algo = $Null;
         $Top_3_Custom = $Null;
 
-        if ($AlgoPools.Count -eq 0) {
-            $HiveMessage = "No Pools Found! Check Arguments/Net Connection"
-            $HiveWarning = @{result = @{command = "timeout"}}
-            if ($HiveOS -eq "Yes") {try {$SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch {Write-Warning "Failed To Notify HiveOS"}}
-            Write-Host $HiveMessage
-            start-sleep $Interval; 
-            continue  
-        }
-
         ##Get Algorithms again, in case custom changed it.
         $Algorithm = Get-Algolist -Devices $Type -No_Algo $No_Algo;
 
+        ##Optional: Load Coin Database
+        if($Auto_Coin -eq "Yes")
+         {
+          Write-Host "Adding Coin Pools"
+          $AllCoinPools = Get-Pools -PoolType "Coin" -Stats $Stats
+          ## Combine Stats From Algo and Custom
+          $CoinPools = New-Object System.Collections.ArrayList
+          ## Select the best 3 of each algorithm
+          if ($AllCoinPools) {$AllCoinPools | ForEach-Object {$CoinPools.Add($_) | Out-Null}}
+          $CoinPoolNames = $CoinPools.Name | Select -Unique
+          if ($CoinPoolNames) {$CoinPoolNames | % {$CoinName = $_; $RemovePools = $AlgoPools | Where Name -eq $CoinName; $RemovePools | %{ $AlgoPools.Remove($_) | Out-Null}} }
+          $MinerPools = New-Object System.Collections.ArrayList
+          if ($AlgoPools) {$AlgoPools | ForEach-Object {$MinerPools.Add($_) | Out-Null}}
+          if ($CoinPools) {$CoinPools | ForEach-Object {$MinerPools.Add($_) | Out-Null}}
+         }        
+
+         if($AlgoPools.Count -gt 0)
+         {
         Write-Host "Checking Algo Miners"
         ##Load Only Needed Algorithm Miners
         $AlgoMiners = New-Object System.Collections.ArrayList
@@ -911,13 +921,77 @@ While ($true) {
             if ($DownloadNote) {$DownloadNote | % {Write-Host "$($_)" -ForegroundColor Red}}
             $DownloadNote = $null
         }
+    
 
         ## Linux Bug- Restart Loop if miners were downloaded. If not, miners were skipped over
         if ($Download -eq $true) {continue}
+    }
+
+    if($CoinPools.Count -gt 0)
+     {
+        Write-Host "Checking Coin Miners"
+        ##Load Only Needed Coin Miners
+        $Coins = $true
+        $CoinMiners = New-Object System.Collections.ArrayList
+        $SearchMiners = Get-Miners -Platforms $Platform -MinerType $Type -Stats $Stats -Pools $CoinPools;
+        $SearchMiners | % {$CoinMiners.Add($_) | Out-Null}
+        $DownloadNote = @()
+        $Download = $false
+        $BadCoinMiners = @()
+
+        if ($Lite -eq "No") {
+            $CoinMiners | ForEach {
+                $CoinMiner = $_
+                if (Test-Path ".\timeout\download_block\download_block.txt") {$DLTimeout = Get-Content ".\timeout\download_block\download_block.txt"}
+                $DLName = $DLTimeout | Select-String "$($CoinMiner.Name)"
+                if ((Test-Path $CoinMiner.Path) -eq $false) {
+                    if ($DLName.Count -lt 3) {
+                        Expand-WebRequest -URI $CoinMiner.URI -BuildPath $CoinMiner.BUILD -Path (Split-Path $CoinMiner.Path) -MineName (Split-Path $CoinMiner.Path -Leaf) -MineType $CoinMiner.Type
+                        $Download = $true
+                        if (-not (Test-Path $CoinMiner.Path)) {
+                            if (-not (Test-Path ".\timeout\download_block")) {New-Item -Name "download_block" -Path ".\timeout" -ItemType "directory" | OUt-Null}
+                            "$($CoinMiner.Name)" | Out-File ".\timeout\download_block\download_block.txt" -Append
+                        }
+                    }
+                    else {
+                        $DLWarning = "$($CoinMiner.Name) download failed too many times- Blocking"; 
+                        if ($DownloadNote -notcontains $DLWarning) {$DownloadNote += $DLWarning}
+                        $BadCoinMiners += $_
+                    }       
+
+                }
+            }
+
+            $BadCoinMiners | % {$CoinMiners.Remove($_)} | Out-Null;
+            $BadCoinMiners = $Null
+            $DLTimeout = $null
+            $DlName = $Null
+            ## Print Warnings
+            if ($DownloadNote) {$DownloadNote | % {Write-Host "$($_)" -ForegroundColor Red}}
+            $DownloadNote = $null
+         }
+        }
+
+        $Miners = New-Object System.Collections.ArrayList
+        if($AlgoMiners){$AlgoMiners | %{$Miners.Add($_) | Out-Null}}
+        if($CoinMiners){$CoinMiners | %{$Miners.Add($_) | Out-Null}}
+        $AlgoMiners = $null
+        $CoinMiners = $null
+        $AlgoPools = $null
+        $CoinPools = $null
+
+        if ($Miners.Count -eq 0) {
+            $HiveMessage = "No Pools Found! Check Arguments/Net Connection"
+            $HiveWarning = @{result = @{command = "timeout"}}
+            if ($HiveOS -eq "Yes") {try {$SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch {Write-Warning "Failed To Notify HiveOS"}}
+            Write-Host $HiveMessage
+            start-sleep $Interval; 
+            continue  
+        }
 
         ## All miners had pool quote printed for their respective algorithm. This adjusts them with the Threshold increase.
         ## This is done here, so it distributes it to all miners of that particular algorithm, not the just active miner.
-        $BestActiveMiners | % {$AlgoMiners | Where Algo -EQ $_.Algo | Where Type -EQ $_.Type | % {
+        $BestActiveMiners | % {$Miners | Where Algo -EQ $_.Algo | Where Type -EQ $_.Type | % {
                 if ($_.Quote -NE $Null) {
                     if ($Switch_Threshold) {
                         $_.Quote = [Double]$_.Quote * (1 + ($Switch_Threshold / 100)); 
@@ -931,13 +1005,12 @@ While ($true) {
         ## Miner array, favoring miners that need to benchmarked first, then miners that had the highest quote. It
         ## Is done this way, as sorting via [double] would occasionally glitch. This is more if/else, and less likely
         ## To fail.
-        $CutMiners = Start-MinerReduction -Stats $Stats -Pools $AlgoPools -SortMiners $AlgoMiners -WattCalc $WattEx -Type $Type
+        $CutMiners = Start-MinerReduction -Stats $Stats -SortMiners $Miners -WattCalc $WattEx -Type $Type
         ##Remove The Extra Miners
-        $CutMiners | % {$AlgoMiners.Remove($_)} | Out-Null;
-        $CutMiners = $Null
+        $CutMiners | % {$Miners.Remove($_)} | Out-Null;
 
         ## Print on screen user is screwed if the process failed.
-        if ($AlgoMiners.Count -eq 0) {
+        if ($Miners.Count -eq 0) {
             $HiveMessage = "No Miners Found! Check Arguments/Net Connection"
             $HiveWarning = @{result = @{command = "timeout"}}
             if ($HiveOS -eq "Yes") {try {$SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch {Write-Warning "Failed To Notify HiveOS"}}
@@ -947,10 +1020,10 @@ While ($true) {
         }
 
         ##This starts to refine each miner hashtable, applying watt calculations, and other factors to each miner. ##TODO
-        start-minersorting -Command "Algo" -Stats $Stats -Pools $AlgoPools -SortMiners $AlgoMiners -WattCalc $WattEx
+        start-minersorting -Stats $Stats -SortMiners $Miners -WattCalc $WattEx
 
         ##Now that we have narrowed down to our best miners - we adjust them for switching threshold.
-        $BestActiveMiners | % { $AlgoMiners | Where Path -EQ $_.path | Where Arguments -EQ $_.Arguments | % {
+        $BestActiveMiners | % { $Miners | Where Path -EQ $_.path | Where Arguments -EQ $_.Arguments | % {
                 if ($_.Profit -ne $NULL) {
                     if ($Switch_Threshold) {
                         Write-Host "Switching_Threshold changes $($_.Name) $($_.Algo) base factored price from $(($_.Profit * $Rates.$Currency).ToString("N2"))" -NoNewline; 
@@ -965,14 +1038,13 @@ While ($true) {
 
         ##Okay so now we have all the new applied values to each profit, and adjustments. Now we need to find best miners to use.
         ##First we rule out miners that are above threshold
-        $BadAlgoMiners = @()
-        if ($Threshold -ne 0) {$AlgoMiners | Foreach {if ($_.Profit -gt $Threshold) {$BadAlgoMiners += $_}}}
-        $BadAlgoMiners | % {$AlgoMiners.Remove($_)}
-        $BadAlgoMiners = $Null
+        $BadMiners = @()
+        if ($Threshold -ne 0) {$Miners | Foreach {if ($_.Profit -gt $Threshold) {$BadMiners += $_}}}
+        $BadMiners | % {$Miners.Remove($_)}
+        $BadMiners = $Null
 
         ##Now we need to eliminate all algominers except best ones
-        $BestAlgoMiners_Combo = Get-BestMiners
-        $AlgoPools = $null
+        $Miners_Combo = Get-BestMiners
 
         ##Final Array Build- If user specified to shut miner off if there were negative figures:
         ##Array is rebuilt to remove miner that had negative profit, but it needs to NOT remove
@@ -982,12 +1054,12 @@ While ($true) {
             $Type | Foreach {
                 $SelType = $_
                 $ConserveArray = @()
-                $ConserveArray += $BestAlgoMiners_Combo | Where Type -EQ $SelType | Where Profit -EQ $NULL
-                $ConserveArray += $BestAlgoMiners_Combo | Where Type -EQ $SelType | Where Profit -GT 0
+                $ConserveArray += $Miners_Combo | Where Type -EQ $SelType | Where Profit -EQ $NULL
+                $ConserveArray += $Miners_Combo | Where Type -EQ $SelType | Where Profit -GT 0
             }
             $BestMiners_Combo += $ConserveArray
         }
-        else {$BestMiners_Combo = $BestAlgoMiners_Combo}
+        else {$BestMiners_Combo = $Miners_Combo}
         $ConserveArray = $null
 
         ##Write On Screen Best Choice  
@@ -997,23 +1069,37 @@ While ($true) {
 
         ##Build Simple Stats Table For Screen/Command
         $ProfitTable = @()
-        $AlgoMiners | foreach {
+        $Miners | foreach {
+            $Miner = $_
+            if($Algorithm -contains $Miner.Symbol){$ScreenName = $Miner.Symbol}
+            else
+             {
+              switch($Miner.Symbol)
+              {
+               "GLT-PADIHASH"{$ScreenName = "GLT:PADIHASH"}
+               "GLT-JEONGHASH"{$ScreenName = "GLT:JEONGHASH"}
+               "GLT-ASTRALHASH"{$ScreenName = "GLT:ASTRALHASH"}
+               "GLT-PAWELHASH"{$ScreenName = "GLT:PAWELHASH"}
+               "GLT-SKUNK"{$ScreenName = "GLT:SKUNK"}
+               default{$ScreenName = "$($Miner.Symbol):$($Miner.Algo)"}
+              }
+             }
             $ProfitTable += [PSCustomObject]@{
-                Power         = [Decimal]$($_.Power * 24) / 1000 * $WattEX
-                Pool_Estimate = $_.Pool_Estimate
-                Type          = $_.Type
-                Miner         = $_.Name
-                Name          = $($_.Symbol)
-                Arguments     = $($_.Arguments)
-                HashRates     = $_.HashRates.$($_.Symbol)
-                Profits       = $_.Profit
-                Algo          = $_.Algo
-                Fullname      = $_.FullName
-                MinerPool     = $_.MinerPool
+                Power         = [Decimal]$($Miner.Power * 24) / 1000 * $WattEX
+                Pool_Estimate = $Miner.Pool_Estimate
+                Type          = $Miner.Type
+                Miner         = $Miner.Name
+                Name          = $ScreenName
+                Arguments     = $($Miner.Arguments)
+                HashRates     = $Miner.HashRates.$($Miner.Algo)
+                Profits       = $Miner.Profit
+                Algo          = $Miner.Algo
+                Fullname      = $Miner.FullName
+                MinerPool     = $Miner.MinerPool
             }
         }
 
-        $AlgoMiners = $Null
+        $Miners = $Null
 
         ## This Set API table for LITE mode.
         $ProfitTable | ConvertTo-Json -Depth 4 | Set-Content ".\build\txt\profittable.txt"
@@ -1022,7 +1108,7 @@ While ($true) {
         ##This also does a little weird parsing for CPU only mining,
         ##And some parsing for logs.
         $BestMiners_Combo | ForEach {
-            if (-not ($ActiveMinerPrograms | Where Path -eq $_.Path | Where Arguments -eq $_.Arguments )) {
+            if (-not ($ActiveMinerPrograms | Where Path -eq $_.Path | Where Type -eq $_.Type | Where Arguments -eq $_.Arguments )) {
                 if ($_.Type -eq "CPU") {$LogType = $LogCPUS}
                 if ($_.Type -like "*NVIDIA*" -or $_.Type -like "*AMD*") {
                     if ($_.Devices -eq $null) {$LogType = $LogGPUS}
