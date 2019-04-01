@@ -22,6 +22,11 @@ if ($Poolname -eq $Name) {
         $Best = $zergpool_Request.PSObject.Properties.Value | Where Algo -eq $Selected | Where noautotrade -eq "0" | Where estimate -ne "0.00000" | Sort-Object Price -Descending | Select -First 1
         if ($Best -ne $null) {$Zergpool_Sorted | Add-Member $Best.sym $Best}
     }
+    $ASIC_ALGO | foreach {
+        $Selected = if ($Bad_pools.$_ -notcontains $Name) {$_}
+        $Best = $zergpool_Request.PSObject.Properties.Value | Where Algo -eq $Selected | Where noautotrade -eq "0" | Where estimate -ne "0.00000" | Sort-Object Price -Descending | Select -First 1
+        if ($Best -ne $null) {$Zergpool_Sorted | Add-Member $Best.sym $Best -Force}
+    }
 
     $Zergpool_Sorted | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | foreach {
 

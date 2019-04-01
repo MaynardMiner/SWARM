@@ -157,7 +157,9 @@ param(
     [Parameter(Mandatory = $false)]
     [array]$Coin, ##If Used - Only these coins will be used
     [Parameter(Mandatory = $false)]
-    [string]$ASIC ##If Used - Only these coins will be used
+    [string]$ASIC_IP, ##IP Address for ASIC, if null, localhost is used
+    [Parameter(Mandatory = $false)]
+    [array]$ASIC_ALGO ##Use if you are using with other Device types. Selects only these algos for asic
 )
 
 ## Set Current Path
@@ -181,7 +183,7 @@ Write-Host "OS = $Platform" -ForegroundColor Green
 . .\build\powershell\intensity.ps1;    . .\build\powershell\poolbans.ps1;        . .\build\powershell\cl.ps1;
 . .\build\powershell\newsort.ps1;      . .\build\powershell\screen.ps1;          . .\build\powershell\commandweb.ps1;
 . .\build\powershell\response.ps1;     . .\build\api\html\api.ps1;               . .\build\powershell\config_file.ps1;
-. .\build\powershell\altwallet.ps1;    . .\build\api\pools\include.ps1;
+. .\build\powershell\altwallet.ps1;    . .\build\api\pools\include.ps1;          . .\build\api\miners\include.ps1;
 
 if ($Platform -eq "linux") {. .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
 if ($Platform -eq "windows") {. .\build\powershell\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1; . .\build\powershell\environment.ps1; }
@@ -325,7 +327,8 @@ if ($Debug -ne $true) {
     $CurrentParams.ADD("ETH", $ETH); $CurrentParams.ADD("Worker", $Worker);
     $CurrentParams.ADD("No_Miner", $No_Miner); $CurrentParams.ADD("HiveAPIkey", $HiveAPIkey);
     $CurrentParams.ADD("Algorithm", $Algorithm); $CurrentParams.ADD("Coin", $Coin);
-    $CurrentParams.ADD("ASIC", $ASIC);
+    $CurrentParams.ADD("ASIC_IP", $ASIC_IP);
+    $CurrentParams.ADD("ASIC_ALGO", $ASIC_ALGO);
 
     ## Save to Config Folder
     $StartParams = $CurrentParams | ConvertTo-Json 
@@ -395,7 +398,7 @@ if ((Test-Path ".\config\parameters\newarguments.json") -or $Debug -eq $true) {
     $ETH = $SWARMParams.ETH;                                   $Worker = $SWARMParams.Worker;
     $No_Miner = $SWARMParams.No_Miner;                         $HiveAPIkey = $SWARMParams.HiveAPIkey;
     $SWARMAlgorithm = $SWARMParams.Algorithm;                  $Coin = $SWARMParams.Coin;
-    $ASIC = $SWARMParams.ASIC;
+    $ASIC_IP = $SWARMParams.ASIC_IP;                           $ASIC_ALGO = $SWARMParams.ASIC_ALGO;
 }
 
 ## Windows Start Up
@@ -514,7 +517,7 @@ if ($Platform -eq "linux") {
         }
         if ($_ -eq "ASIC") {
           if ($GPU_Count -eq 0) {
-            "CPU" | Out-File ".\build\txt\minertype.txt" -Force
+            "ASIC" | Out-File ".\build\txt\minertype.txt" -Force
             Write-Host "Group 1 is ASIC- Commands and Stats will work for ASIC" -foreground yellow
           }
         }
@@ -773,7 +776,7 @@ While ($true) {
     $ETH = $SWARMParams.ETH;                                   $Worker = $SWARMParams.Worker;
     $No_Miner = $SWARMParams.No_Miner;                         $HiveAPIkey = $SWARMParams.HiveAPIkey;
     $SWARMAlgorithm = $SWARMParams.Algorithm;                  $Coin = $SWARMParams.Coin;
-    $ASIC = $SWARMParams.ASIC;
+    $ASIC_IP = $SWARMParams.ASIC_IP;                           $ASIC_ALGO = $SWARMParams.ASIC_ALGO;
 
     ##Get Wallets
     Get-Wallets
@@ -784,8 +787,21 @@ While ($true) {
     if ($Coin) { $Passwordcurrency1 = $Coin; $Passwordcurrency2 = $Coin; $Passwordcurrency3 = $Coin }
     if ($SWARMAlgorithm) { $SWARMALgorithm | ForEach-Object { $Algorithm += $_ } }
     else { $Algorithm = $Pool_Json.PSObject.Properties.Name }
+    if($Type -notlike "*NVIDIA*")
+     {
+      if($Type -notlike "*AMD*")
+       {
+        if($Type -notlike "*CPU*")
+         {
+          $Algorithm -eq $null
+         }
+       }
+     }
+
     $Bad_Pools = Get-BadPools
     $Bad_Miners = Get-BadMiners
+    
+    if($ASIC_IP -eq ""){$ASIC_IP = "localhost"}
 
     if ($SWARMParams.Rigname1 -eq "Donate") { $Donating = $True }
     else { $Donating = $False }
@@ -798,111 +814,99 @@ While ($true) {
         $DonateText | Set-Content ".\build\txt\donate.txt"
     }
 
-        ## Main Loop Begins
-        ## SWARM begins with pulling files that might have been changed from previous loop.
+    ## Main Loop Begins
+    ## SWARM begins with pulling files that might have been changed from previous loop.
 
-        ##Save Watt Calcs
-        if ($Watts) { $Watts | ConvertTo-Json | Out-File ".\config\power\power.json" }
-        ##OC-Settings
-        $OC = Get-Content ".\config\oc\oc-settings.json" | ConvertFrom-Json
+    ##Save Watt Calcs
+    if ($Watts) { $Watts | ConvertTo-Json | Out-File ".\config\power\power.json" }
+    ##OC-Settings
+    $OC = Get-Content ".\config\oc\oc-settings.json" | ConvertFrom-Json
 
-        ##Get Watt Configuration
-        $WattHour = $(Get-Date | Select-Object hour).Hour
-        $Watts = Get-Content ".\config\power\power.json" | ConvertFrom-Json
+    ##Get Watt Configuration
+    $WattHour = $(Get-Date | Select-Object hour).Hour
+    $Watts = Get-Content ".\config\power\power.json" | ConvertFrom-Json
 
-        ##Check Time Parameters
-        $MinerWatch = New-Object -TypeName System.Diagnostics.Stopwatch
-        $DecayExponent = [int](((Get-Date) - $DecayStart).TotalSeconds / $DecayPeriod)
+    ##Check Time Parameters
+    $MinerWatch = New-Object -TypeName System.Diagnostics.Stopwatch
+    $DecayExponent = [int](((Get-Date) - $DecayStart).TotalSeconds / $DecayPeriod)
  
-        ##Get Price Data
-        try {
-            $R = [string]$Currency
-            Write-Host "SWARM Is Building The Database. Auto-Coin Switching: $Auto_Coin" -foreground "yellow"
-            $Rates = Invoke-RestMethod "https://api.coinbase.com/v2/exchange-rates?currency=BTC" -UseBasicParsing | Select-Object -ExpandProperty data | Select-Object -ExpandProperty rates
-            $Currency | Where-Object { $Rates.$_ } | ForEach-Object { $Rates | Add-Member $_ ([Double]$Rates.$_) -Force }
-            $WattCurr = (1 / $Rates.$Currency)
-            $WattEx = [Double](($WattCurr * $Watts.KWh.$WattHour))
-        }
-        catch {
-            Write-Host -Level Warn "Coinbase Unreachable. "
-            Write-Host -ForegroundColor Yellow "Last Refresh: $(Get-Date)"
-            Write-Host "Trying To Contact Cryptonator.." -foregroundcolor "Yellow"
-            $Rates = [PSCustomObject]@{ }
-            $Currency | ForEach-Object { $Rates | Add-Member $_ (Invoke-WebRequest "https://api.cryptonator.com/api/ticker/btc-$_" -UseBasicParsing | ConvertFrom-Json).ticker.price }
-        }
+    ##Get Price Data
+    try {
+        Write-Host "SWARM Is Building The Database. Auto-Coin Switching: $Auto_Coin" -foreground "yellow"
+        $Rates = Invoke-RestMethod "https://api.coinbase.com/v2/exchange-rates?currency=BTC" -UseBasicParsing | Select-Object -ExpandProperty data | Select-Object -ExpandProperty rates
+        $Currency | Where-Object { $Rates.$_ } | ForEach-Object { $Rates | Add-Member $_ ([Double]$Rates.$_) -Force }
+        $WattCurr = (1 / $Rates.$Currency)
+        $WattEx = [Double](($WattCurr * $Watts.KWh.$WattHour))
+    }
+    catch {
+        Write-Host -Level Warn "Coinbase Unreachable. "
+        Write-Host -ForegroundColor Yellow "Last Refresh: $(Get-Date)"
+        Write-Host "Trying To Contact Cryptonator.." -foregroundcolor "Yellow"
+        $Rates = [PSCustomObject]@{ }
+        $Currency | ForEach-Object { $Rates | Add-Member $_ (Invoke-WebRequest "https://api.cryptonator.com/api/ticker/btc-$_" -UseBasicParsing | ConvertFrom-Json).ticker.price }
+    }
 
 
-        ##Load File Stats, Begin Clearing Bans And Bad Stats Per Timout Setting. Restart Loop if Done
-        if ($TimeoutTimer.Elapsed.TotalSeconds -lt $TimeoutTime -or $Timeout -eq 0) { $Stats = Get-Stats -Timeouts "No" }
-        else {
-            $Stats = Get-Stats -Timeouts "Yes"
-            $TimeoutTimer.Restart()
-            continue
-        }
+    ##Load File Stats, Begin Clearing Bans And Bad Stats Per Timout Setting. Restart Loop if Done
+    if ($TimeoutTimer.Elapsed.TotalSeconds -lt $TimeoutTime -or $Timeout -eq 0) { $Stats = Get-Stats -Timeouts "No" }
+    else {
+        $Stats = Get-Stats -Timeouts "Yes"
+        $TimeoutTimer.Restart()
+        continue
+    }
 
-        ##Get Algorithm Pools
-        $Coins = $false
-        Write-Host "Checking Algo Pools." -Foregroundcolor yellow;
-        $AllAlgoPools = Get-Pools -PoolType "Algo" -Stats $Stats
-        ##Get Custom Pools
-        Write-Host "Adding Custom Pools. ." -ForegroundColor Yellow;
-        $AllCustomPools = Get-Pools -PoolType "Custom" -Stats $Stats
+    ##Get Algorithm Pools
+    $Coins = $false
+    Write-Host "Checking Algo Pools." -Foregroundcolor yellow;
+    $AllAlgoPools = Get-Pools -PoolType "Algo" -Stats $Stats
+    ##Get Custom Pools
+    Write-Host "Adding Custom Pools. ." -ForegroundColor Yellow;
+    $AllCustomPools = Get-Pools -PoolType "Custom" -Stats $Stats
 
-        ## Select the best 3 of each algorithm
-        $Top_3_Algo = $AllAlgoPools.Symbol | Select-Object -Unique | ForEach-Object { $AllAlgoPools | Where-Object Symbol -EQ $_ | Sort-Object Price -Descending | Select-Object -First 3 };
-        $Top_3_Custom = $AllCustomPools.Symbol | Select-Object -Unique | ForEach-Object { $AllCustomPools | Where-Object Symbol -EQ $_ | Sort-Object Price -Descending | Select-Object -First 3 };
+    ## Select the best 3 of each algorithm
+    $Top_3_Algo = $AllAlgoPools.Symbol | Select-Object -Unique | ForEach-Object { $AllAlgoPools | Where-Object Symbol -EQ $_ | Sort-Object Price -Descending | Select-Object -First 3 };
+    $Top_3_Custom = $AllCustomPools.Symbol | Select-Object -Unique | ForEach-Object { $AllCustomPools | Where-Object Symbol -EQ $_ | Sort-Object Price -Descending | Select-Object -First 3 };
 
-        ## Combine Stats From Algo and Custom
-        $AlgoPools = New-Object System.Collections.ArrayList
-        if ($Top_3_Algo) { $Top_3_Algo | ForEach-Object { $AlgoPools.Add($_) | Out-Null } }
-        if ($Top_3_Custom) { $Top_3_Custom | ForEach-Object { $AlgoPools.Add($_) | Out-Null } }
-        $Top_3_Algo = $Null;
-        $Top_3_Custom = $Null;
+    ## Combine Stats From Algo and Custom
+    $AlgoPools = New-Object System.Collections.ArrayList
+    if ($Top_3_Algo) { $Top_3_Algo | ForEach-Object { $AlgoPools.Add($_) | Out-Null } }
+    if ($Top_3_Custom) { $Top_3_Custom | ForEach-Object { $AlgoPools.Add($_) | Out-Null } }
+    $Top_3_Algo = $Null;
+    $Top_3_Custom = $Null;
 
-        if ($AlgoPools.Count -eq 0) {
-            $HiveMessage = "No Pools Found! Check Arguments/Net Connection"
-            $HiveWarning = @{result = @{command = "timeout" } }
-            if ($HiveOS -eq "Yes") { try { $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror }catch { Write-Warning "Failed To Notify HiveOS" } }
-            Write-Host $HiveMessage
-            Start-Sleep $Interval; 
-            continue  
-        }
+    ##Get Algorithms again, in case custom changed it.
+    $Algorithm = @()
+    if ($Coin) { $Passwordcurrency1 = $Coin; $Passwordcurrency2 = $Coin; $Passwordcurrency3 = $Coin }
+    if ($SWARMAlgorithm) { $SWARMALgorithm | ForEach-Object { $Algorithm += $_ } }
+    else { $Algorithm = $Pool_Json.PSObject.Properties.Name }
+    if($Type -notlike "*NVIDIA*")
+     {
+      if($Type -notlike "*AMD*")
+       {
+        if($Type -notlike "*CPU*")
+         {
+          $Algorithm -eq $null
+         }
+       }
+     }
 
-        ##Get Algorithms again, in case custom changed it.
-        $Algorithm = Get-Algolist -Devices $Type -No_Algo $No_Algo;
+    ##Optional: Load Coin Database
+    if ($Auto_Coin -eq "Yes") {
+        Write-Host "Adding Coin Pools. . ." -ForegroundColor Yellow
+        $AllCoinPools = Get-Pools -PoolType "Coin" -Stats $Stats
+        $CoinPools = New-Object System.Collections.ArrayList
+        if ($AllCoinPools) { $AllCoinPools | ForEach-Object { $CoinPools.Add($_) | Out-Null } }
+        $CoinPoolNames = $CoinPools.Name | Select-Object -Unique
+        if ($CoinPoolNames) { $CoinPoolNames | ForEach-Object { $CoinName = $_; $RemovePools = $AlgoPools | Where-Object Name -eq $CoinName; $RemovePools | ForEach-Object { $AlgoPools.Remove($_) | Out-Null } } }
+    }
 
-        ##Optional: Load Coin Database
-        if ($Auto_Coin -eq "Yes") {
-            Write-Host "Adding Coin Pools. . ." -ForegroundColor Yellow
-            $AllCoinPools = Get-Pools -PoolType "Coin" -Stats $Stats
-            ## Combine Stats From Algo and Custom
-            $CoinPools = New-Object System.Collections.ArrayList
-            ## Select the best 3 of each algorithm
-            if ($AllCoinPools) { $AllCoinPools | ForEach-Object { $CoinPools.Add($_) | Out-Null } }
-            $CoinPoolNames = $CoinPools.Name | Select-Object -Unique
-            if ($CoinPoolNames) { $CoinPoolNames | ForEach-Object { $CoinName = $_; $RemovePools = $AlgoPools | Where-Object Name -eq $CoinName; $RemovePools | ForEach-Object { $AlgoPools.Remove($_) | Out-Null } } }
-            $MinerPools = New-Object System.Collections.ArrayList
-            if ($AlgoPools) { $AlgoPools | ForEach-Object { $MinerPools.Add($_) | Out-Null } }
-            if ($CoinPools) { $CoinPools | ForEach-Object { $MinerPools.Add($_) | Out-Null } }
-        }        
-
-        if($AlgoPools.Count -gt 0)
-        {
+    if($AlgoPools.Count -gt 0) {
        Write-Host "Checking Algo Miners. . . ." -ForegroundColor Yellow
        ##Load Only Needed Algorithm Miners
        $AlgoMiners = New-Object System.Collections.ArrayList
        $SearchMiners = Get-Miners -Platforms $Platform -MinerType $Type -Stats $Stats -Pools $AlgoPools;
        $SearchMiners | % {$AlgoMiners.Add($_) | Out-Null}
-
-       if ($ALgoMiners.Count -eq 0) {
-           $HiveMessage = "No Miners Found! Check Arguments / Configuration"
-           $HiveWarning = @{result = @{command = "timeout"}}
-           if ($HiveOS -eq "Yes") {try {$SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch {Write-Warning "Failed To Notify HiveOS"}}
-           Write-Host $HiveMessage
-           start-sleep $Interval; 
-           continue    
-       }
-
+       
        ##Download Miners, If Miner fails three times- A ban is created against miner, and it should stop downloading.
        ##This works by every time it fails to download, it writes miner name to the download block list. If it counts
        ##The name more than three times- It skips over miner. It also interactively rebuilds the AlgoMiners Array into
@@ -914,25 +918,26 @@ While ($true) {
        if ($Lite -eq "No") {
            $AlgoMiners | ForEach {
                $AlgoMiner = $_
-               if (Test-Path ".\timeout\download_block\download_block.txt") {$DLTimeout = Get-Content ".\timeout\download_block\download_block.txt"}
-               $DLName = $DLTimeout | Select-String "$($AlgoMiner.Name)"
-               if ((Test-Path $AlgoMiner.Path) -eq $false) {
-                   if ($DLName.Count -lt 3) {
-                       Expand-WebRequest -URI $AlgoMiner.URI -BuildPath $AlgoMiner.BUILD -Path (Split-Path $AlgoMiner.Path) -MineName (Split-Path $AlgoMiner.Path -Leaf) -MineType $AlgoMiner.Type
-                       $Download = $true
-                       if (-not (Test-Path $ALgoMiner.Path)) {
-                           if (-not (Test-Path ".\timeout\download_block")) {New-Item -Name "download_block" -Path ".\timeout" -ItemType "directory" | OUt-Null}
-                           "$($Algominer.Name)" | Out-File ".\timeout\download_block\download_block.txt" -Append
-                       }
-                   }
-                   else {
-                       $DLWarning = "$($AlgoMiner.Name) download failed too many times- Blocking"; 
-                       if ($DownloadNote -notcontains $DLWarning) {$DownloadNote += $DLWarning}
-                       $BadAlgoMiners += $_
-                   }       
-
-               }
-           }
+               if($AlgoMiner.Type -ne "ASIC") {
+                    if (Test-Path ".\timeout\download_block\download_block.txt") {$DLTimeout = Get-Content ".\timeout\download_block\download_block.txt"}
+                    $DLName = $DLTimeout | Select-String "$($AlgoMiner.Name)"
+                        if ((Test-Path $AlgoMiner.Path) -eq $false) {
+                            if ($DLName.Count -lt 3) {
+                            Expand-WebRequest -URI $AlgoMiner.URI -BuildPath $AlgoMiner.BUILD -Path (Split-Path $AlgoMiner.Path) -MineName (Split-Path $AlgoMiner.Path -Leaf) -MineType $AlgoMiner.Type
+                            $Download = $true
+                                if (-not (Test-Path $ALgoMiner.Path)) {
+                                    if (-not (Test-Path ".\timeout\download_block")) {New-Item -Name "download_block" -Path ".\timeout" -ItemType "directory" | OUt-Null}
+                                    "$($Algominer.Name)" | Out-File ".\timeout\download_block\download_block.txt" -Append
+                                }
+                            }
+                            else {
+                                $DLWarning = "$($AlgoMiner.Name) download failed too many times- Blocking"; 
+                                if ($DownloadNote -notcontains $DLWarning) {$DownloadNote += $DLWarning}
+                                $BadAlgoMiners += $_
+                            }
+                        }
+                    }       
+                }
 
            $BadAlgoMiners | % {$AlgoMiners.Remove($_)} | Out-Null;
            $BadAlgoMiners = $Null
@@ -941,103 +946,108 @@ While ($true) {
            ## Print Warnings
            if ($DownloadNote) {$DownloadNote | % {Write-Host "$($_)" -ForegroundColor Red}}
            $DownloadNote = $null
-       }
+        } 
    
 
-       ## Linux Bug- Restart Loop if miners were downloaded. If not, miners were skipped over
-       if ($Download -eq $true) {continue}
-   }
+        ## Linux Bug- Restart Loop if miners were downloaded. If not, miners were skipped over
+        if ($Download -eq $true) {continue}
+    }
 
-   if($CoinPools.Count -gt 0)
-    {
-       Write-Host "Checking Coin Miners. . . . ." -ForegroundColor Yellow
-       ##Load Only Needed Coin Miners
-       $Coins = $true
-       $CoinMiners = New-Object System.Collections.ArrayList
-       $SearchMiners = Get-Miners -Platforms $Platform -MinerType $Type -Stats $Stats -Pools $CoinPools;
-       $SearchMiners | % {$CoinMiners.Add($_) | Out-Null}
-       $DownloadNote = @()
-       $Download = $false
-       $BadCoinMiners = @()
+    if($CoinPools.Count -gt 0) {
+        $Coins = $true
+        Write-Host "Checking Coin Miners. . . . ." -ForegroundColor Yellow
+        ##Load Only Needed Coin Miners
+        $CoinMiners = New-Object System.Collections.ArrayList
+        $SearchMiners = Get-Miners -Platforms $Platform -MinerType $Type -Stats $Stats -Pools $CoinPools;
+        $SearchMiners | % {$CoinMiners.Add($_) | Out-Null}
+        $DownloadNote = @()
+        $Download = $false
+        $BadCoinMiners = @()
 
-       if ($Lite -eq "No") {
-           $CoinMiners | ForEach {
-               $CoinMiner = $_
-               if (Test-Path ".\timeout\download_block\download_block.txt") {$DLTimeout = Get-Content ".\timeout\download_block\download_block.txt"}
-               $DLName = $DLTimeout | Select-String "$($CoinMiner.Name)"
-               if ((Test-Path $CoinMiner.Path) -eq $false) {
-                   if ($DLName.Count -lt 3) {
-                       Expand-WebRequest -URI $CoinMiner.URI -BuildPath $CoinMiner.BUILD -Path (Split-Path $CoinMiner.Path) -MineName (Split-Path $CoinMiner.Path -Leaf) -MineType $CoinMiner.Type
-                       $Download = $true
-                       if (-not (Test-Path $CoinMiner.Path)) {
-                           if (-not (Test-Path ".\timeout\download_block")) {New-Item -Name "download_block" -Path ".\timeout" -ItemType "directory" | OUt-Null}
-                           "$($CoinMiner.Name)" | Out-File ".\timeout\download_block\download_block.txt" -Append
-                       }
-                   }
-                   else {
-                       $DLWarning = "$($CoinMiner.Name) download failed too many times- Blocking"; 
-                       if ($DownloadNote -notcontains $DLWarning) {$DownloadNote += $DLWarning}
-                       $BadCoinMiners += $_
-                   }       
-
-               }
-           }
-
-           $BadCoinMiners | % {$CoinMiners.Remove($_)} | Out-Null;
-           $BadCoinMiners = $Null
-           $DLTimeout = $null
-           $DlName = $Null
-           ## Print Warnings
-           if ($DownloadNote) {$DownloadNote | % {Write-Host "$($_)" -ForegroundColor Red}}
-           $DownloadNote = $null
-        }
-       }
-
-       $Miners = New-Object System.Collections.ArrayList
-       if($AlgoMiners){$AlgoMiners | %{$Miners.Add($_) | Out-Null}}
-       if($CoinMiners){$CoinMiners | %{$Miners.Add($_) | Out-Null}}
-       $AlgoMiners = $null
-       $CoinMiners = $null
-       $AlgoPools = $null
-       $CoinPools = $null
-
-       if ($Miners.Count -eq 0) {
-           $HiveMessage = "No Pools Found! Check Arguments/Net Connection"
-           $HiveWarning = @{result = @{command = "timeout"}}
-           if ($HiveOS -eq "Yes") {try {$SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch {Write-Warning "Failed To Notify HiveOS"}}
-           Write-Host $HiveMessage
-           start-sleep $Interval; 
-           continue  
-       }
-        ## All miners had pool quote printed for their respective algorithm. This adjusts them with the Threshold increase.
-        ## This is done here, so it distributes it to all miners of that particular algorithm, not the just active miner.
-        $BestActiveMiners | ForEach-Object { $Miners | Where-Object Algo -EQ $_.Algo | Where-Object Type -EQ $_.Type | ForEach-Object {
-                if ($_.Quote -NE $Null) {
-                    if ($Switch_Threshold) {
-                        $_.Quote = [Double]$_.Quote * (1 + ($Switch_Threshold / 100)); 
+        if ($Lite -eq "No") {
+            $CoinMiners | ForEach {
+                $CoinMiner = $_
+                if($CoinMiner.Type -ne "ASIC") {
+                    if (Test-Path ".\timeout\download_block\download_block.txt") {$DLTimeout = Get-Content ".\timeout\download_block\download_block.txt"}
+                    $DLName = $DLTimeout | Select-String "$($CoinMiner.Name)"
+                        if ((Test-Path $CoinMiner.Path) -eq $false) {
+                            if ($DLName.Count -lt 3) {
+                                Expand-WebRequest -URI $CoinMiner.URI -BuildPath $CoinMiner.BUILD -Path (Split-Path $CoinMiner.Path) -MineName (Split-Path $CoinMiner.Path -Leaf) -MineType $CoinMiner.Type
+                                $Download = $true
+                                if (-not (Test-Path $CoinMiner.Path)) {
+                                    if (-not (Test-Path ".\timeout\download_block")) {New-Item -Name "download_block" -Path ".\timeout" -ItemType "directory" | OUt-Null}
+                                    "$($CoinMiner.Name)" | Out-File ".\timeout\download_block\download_block.txt" -Append
+                                }
+                            }
+                        else {
+                            $DLWarning = "$($CoinMiner.Name) download failed too many times- Blocking"; 
+                            if ($DownloadNote -notcontains $DLWarning) {$DownloadNote += $DLWarning}
+                            $BadCoinMiners += $_
+                        }
                     }
+                }       
+            }
+
+            $BadCoinMiners | % {$CoinMiners.Remove($_)} | Out-Null;
+            $BadCoinMiners = $Null
+            $DLTimeout = $null
+            $DlName = $Null
+            ## Print Warnings
+            if ($DownloadNote) {$DownloadNote | % {Write-Host "$($_)" -ForegroundColor Red}}
+            $DownloadNote = $null
+        } 
+
+
+        ## Linux Bug- Restart Loop if miners were downloaded. If not, miners were skipped over
+        if ($Download -eq $true) {continue}
+    }
+
+    $Miners = New-Object System.Collections.ArrayList
+    if($AlgoMiners){$AlgoMiners | %{$Miners.Add($_) | Out-Null}}
+    if($CoinMiners){$CoinMiners | %{$Miners.Add($_) | Out-Null}}
+    $AlgoMiners = $null
+    $CoinMiners = $null
+    $AlgoPools = $null
+    $CoinPools = $null
+
+    if ($Miners.Count -eq 0) {
+        $HiveMessage = "No Miners Found! Check Arguments/Net Connection"
+        $HiveWarning = @{result = @{command = "timeout"}}
+        if ($HiveOS -eq "Yes") {try {$SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch {Write-Warning "Failed To Notify HiveOS"}}
+        Write-Host $HiveMessage
+        start-sleep $Interval; 
+        continue  
+    }
+
+    ## All miners had pool quote printed for their respective algorithm. This adjusts them with the Threshold increase.
+    ## This is done here, so it distributes it to all miners of that particular algorithm, not the just active miner.
+    $BestActiveMiners | ForEach-Object { $Miners | Where-Object Algo -EQ $_.Algo | Where-Object Type -EQ $_.Type | ForEach-Object {
+        if ($_.Quote -NE $Null) {
+            if ($Switch_Threshold) {
+                $_.Quote = [Double]$_.Quote * (1 + ($Switch_Threshold / 100)); 
                 }
             }
         }
+    }
 
-        ## Sort Miners- There are currently up to three for each algorithm. This process sorts them down to best 1.
-        ## If Miner has no hashrate- The quote returned was zero, so it needs to be benchmarked. This rebuilds a new
-        ## Miner array, favoring miners that need to benchmarked first, then miners that had the highest quote. It
-        ## Is done this way, as sorting via [double] would occasionally glitch. This is more if/else, and less likely
-        ## To fail.
-        $CutMiners = Start-MinerReduction -Stats $Stats -SortMiners $Miners -WattCalc $WattEx -Type $Type
-        ##Remove The Extra Miners
-        $CutMiners | ForEach-Object { $Miners.Remove($_) } | Out-Null;
+    ## Sort Miners- There are currently up to three for each algorithm. This process sorts them down to best 1.
+    ## If Miner has no hashrate- The quote returned was zero, so it needs to be benchmarked. This rebuilds a new
+    ## Miner array, favoring miners that need to benchmarked first, then miners that had the highest quote. It
+    ## Is done this way, as sorting via [double] would occasionally glitch. This is more if/else, and less likely
+    ## To fail.
+    $CutMiners = Start-MinerReduction -Stats $Stats -SortMiners $Miners -WattCalc $WattEx -Type $Type
+    ##Remove The Extra Miners
+    $CutMiners | ForEach-Object { $Miners.Remove($_) } | Out-Null;
 
-        ## Print on screen user is screwed if the process failed.
-        if ($Miners.Count -eq 0) {
-            $HiveMessage = "No Miners Found! Check Arguments/Net Connection"
-            $HiveWarning = @{result = @{command = "timeout" } }
-            if ($HiveOS -eq "Yes") { try { $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror }catch { Write-Warning "Failed To Notify HiveOS" } }
-            Write-Host $HiveMessage -ForegroundColor Red
-            Start-Sleep $Interval; 
-            continue
-        }
+    ## Print on screen user is screwed if the process failed.
+    if ($Miners.Count -eq 0) {
+        $HiveMessage = "No Miners Found! Check Arguments/Net Connection"
+        $HiveWarning = @{result = @{command = "timeout" } }
+        if ($HiveOS -eq "Yes") {try { $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror } catch { Write-Warning "Failed To Notify HiveOS" } }
+        Write-Host $HiveMessage -ForegroundColor Red
+        Start-Sleep $Interval; 
+        continue
+    }
 
         ##This starts to refine each miner hashtable, applying watt calculations, and other factors to each miner. ##TODO
         start-minersorting -Stats $Stats -SortMiners $Miners -WattCalc $WattEx
@@ -1148,6 +1158,7 @@ While ($true) {
                     Fiat_Day       = 0
                     Log            = $_.Log
                     Strike         = $false
+                    Server         = $_.Server
                 }
             }
         }
@@ -1172,31 +1183,33 @@ While ($true) {
         }
         
         $BestActiveMiners | ConvertTo-Json | Out-File ".\build\txt\bestminers.txt"
-        $Current_BestMiners = $BestActiveMiners | ConvertTo-Json -Compress        
+        $Current_BestMiners = $BestActiveMiners | ConvertTo-Json -Compress
 
         ##Stop Linux Miners That Are Negaitve (Print Message)
         $Type | ForEach-Object {
-            $TypeSel = $_
-            if (-not $BestMiners_Combo | Where-Object Type -eq $TypeSel) {    
-                $ConseverMessage += "Stopping $($_) due to conserve mode being specified"
-                if ($Platform -eq "linux") {
-                    $ActiveMinerPrograms | ForEach-Object {
-                        if ($_.BestMiner -eq $false) {
-                            if ($_.XProcess -eq $null) { $_.Status = "Failed" }
-                            else {
-                                $MinerInfo = ".\build\pid\$($_.InstanceName)_info.txt"
-                                if (Test-Path $MinerInfo) {
-                                    $_.Status = "Idle"
-                                    $PreviousMinerPorts.$($_.Type) = "($_.Port)"    
-                                    $MI = Get-Content $MinerInfo | ConvertFrom-Json
-                                    $PIDTime = [DateTime]$MI.start_date
-                                    $Exec = Split-Path $MI.miner_exec -Leaf
-                                    $_.Active += (Get-Date) - $PIDTime
-                                    Start-Process "start-stop-daemon" -ArgumentList "--stop --name $Exec --pidfile $($MI.pid_path) --retry 5" -Wait
-                                    ##Terminate Previous Miner Screens Of That Type.
-                                    Start-Process ".\build\bash\killall.sh" -ArgumentList "$($_.Type)" -Wait
-                                }
-                            }                       
+            if($_.Type -ne "ASIC") {
+                $TypeSel = $_
+                if (-not $BestMiners_Combo | Where-Object Type -eq $TypeSel) {    
+                    $ConseverMessage += "Stopping $($_) due to conserve mode being specified"
+                    if ($Platform -eq "linux") {
+                        $ActiveMinerPrograms | ForEach-Object {
+                            if ($_.BestMiner -eq $false) {
+                                if ($_.XProcess -eq $null) { $_.Status = "Failed" }
+                                else {
+                                    $MinerInfo = ".\build\pid\$($_.InstanceName)_info.txt"
+                                    if (Test-Path $MinerInfo) {
+                                        $_.Status = "Idle"
+                                        $PreviousMinerPorts.$($_.Type) = "($_.Port)"    
+                                        $MI = Get-Content $MinerInfo | ConvertFrom-Json
+                                        $PIDTime = [DateTime]$MI.start_date
+                                        $Exec = Split-Path $MI.miner_exec -Leaf
+                                        $_.Active += (Get-Date) - $PIDTime
+                                        Start-Process "start-stop-daemon" -ArgumentList "--stop --name $Exec --pidfile $($MI.pid_path) --retry 5" -Wait
+                                        ##Terminate Previous Miner Screens Of That Type.
+                                        Start-Process ".\build\bash\killall.sh" -ArgumentList "$($_.Type)" -Wait
+                                    }
+                                }                       
+                            }
                         }
                     }
                 }
@@ -1213,28 +1226,45 @@ While ($true) {
            
             ##Miners Not Set To Run
             if ($_.BestMiner -eq $false) {
-
                 if ($Platform -eq "windows") {
-                    if ($_.XProcess -eq $Null) { $_.Status = "Failed" }
-                    elseif ($_.XProcess.HasExited -eq $false) {
-                        $_.Active += (Get-Date) - $_.XProcess.StartTime
-                        $_.XProcess.CloseMainWindow() | Out-Null
-                        $_.Status = "Idle"
+                    if($_.Type -ne "ASIC") {
+                        if ($_.XProcess -eq $Null) { $_.Status = "Failed" }
+                        elseif ($_.XProcess.HasExited -eq $false) {
+                            $_.Active += (Get-Date) - $_.XProcess.StartTime
+                            $_.XProcess.CloseMainWindow() | Out-Null
+                            $_.Status = "Idle"
+                        }
+                    }
+                    else {
+                        if ($_.XProcess -eq $Null) { $_.Status = "Failed"}
+                        else {
+                        $_.Active += (Get-Date) - $_.XProcess
+                        $_.Staus = "Idle"
+                        }
                     }
                 }
 
                 if ($Platform -eq "linux") {
-                    if ($_.XProcess -eq $Null) { $_.Status = "Failed" }
+                    if($_.Type -ne "ASIC") {
+                        if ($_.XProcess -eq $Null) { $_.Status = "Failed" }
+                        else {
+                            $MinerInfo = ".\build\pid\$($_.InstanceName)_info.txt"
+                            if (Test-Path $MinerInfo) {
+                                $PreviousMinerPorts.$($_.Type) = "($_.Port)"
+                                $_.Status = "Idle"
+                                $MI = Get-Content $MinerInfo | ConvertFrom-Json
+                                $PIDTime = [DateTime]$MI.start_date
+                                $Exec = Split-Path $MI.miner_exec -Leaf
+                                $_.Active += (Get-Date) - $PIDTime
+                                Start-Process "start-stop-daemon" -ArgumentList "--stop --name $Exec --pidfile $($MI.pid_path) --retry 5" -Wait
+                            }
+                        }
+                    }
                     else {
-                        $MinerInfo = ".\build\pid\$($_.InstanceName)_info.txt"
-                        if (Test-Path $MinerInfo) {
-                            $PreviousMinerPorts.$($_.Type) = "($_.Port)"
-                            $_.Status = "Idle"
-                            $MI = Get-Content $MinerInfo | ConvertFrom-Json
-                            $PIDTime = [DateTime]$MI.start_date
-                            $Exec = Split-Path $MI.miner_exec -Leaf
-                            $_.Active += (Get-Date) - $PIDTime
-                            Start-Process "start-stop-daemon" -ArgumentList "--stop --name $Exec --pidfile $($MI.pid_path) --retry 5" -Wait
+                        if ($_.XProcess -eq $Null) { $_.Status = "Failed"}
+                        else {
+                            $_.Active += (Get-Date) - $_.XProcess
+                            $_.Staus = "Idle"
                         }
                     }
                 }
@@ -1244,27 +1274,46 @@ While ($true) {
         ##Miners That Should Be Running
         ##Start them if neccessary
         $BestActiveMiners | ForEach-Object {
-            if ($null -eq $_.XProcess -or $_.XProcess.HasExited -and $Lite -eq "No") {
-                if ($TimeDeviation -ne 0) {
-                    $Restart = $true
-                    $_.Activated++
-                    $_.InstanceName = "$($_.Type)-$($Instance)"
-                    $Current = $_ | ConvertTo-Json -Compress
-                    $PreviousPorts = $PreviousMinerPorts | ConvertTo-Json -Compress
-                    $_.Xprocess = Start-LaunchCode -PP $PreviousPorts -Platforms $Platform -MinerRound $Current_BestMiners -NewMiner $Current
-                    $Instance++
+            if($_.Type -ne "ASIC") {
+                if ($null -eq $_.XProcess -or $_.XProcess.HasExited -and $Lite -eq "No") {
+                    if ($TimeDeviation -ne 0) {
+                        $Restart = $true
+                        $_.Activated++
+                        $_.InstanceName = "$($_.Type)-$($Instance)"
+                        $Current = $_ | ConvertTo-Json -Compress
+                        $PreviousPorts = $PreviousMinerPorts | ConvertTo-Json -Compress
+                        $_.Xprocess = Start-LaunchCode -PP $PreviousPorts -Platforms $Platform -NewMiner $Current
+                        $Instance++
+                    }
+                    if ($Restart -eq $true) {
+                        if ($_.XProcess -eq $null -or $_.Xprocess.HasExited -eq $true) {
+                            $_.Status = "Failed"
+                            $NoMiners = $true
+                            Write-Host "$($_.MinerName) Failed To Launch" -ForegroundColor Darkred
+                        }
+                        else {
+                            $_.Status = "Running"
+                            Write-Host "Process Id is $($_.XProcess.ID)"
+                            Write-Host "$($_.MinerName) Is Running!" -ForegroundColor Green
+                        }
+                    }
                 }
+            }
+            else {
+                $Restart = $true
+                $_.Activated++
+                $Current = $_ | ConvertTo-Json -Compress
+                $_.Xprocess = Start-LaunchCode -Platforms $Platform -NewMiner $Current -IP $ASIC_IP
                 if ($Restart -eq $true) {
-                    if ($_.XProcess -eq $null -or $_.Xprocess.HasExited -eq $true) {
+                    if ($_.XProcess -eq $null) {
                         $_.Status = "Failed"
                         $NoMiners = $true
-                        Write-Host "$($_.MinerName) Failed To Launch" -ForegroundColor Darkred
+                        Write-Host "$($_.MinerName) Failed To Switch" -ForegroundColor Darkred
                     }
                     else {
                         $_.Status = "Running"
-                        Write-Host "Process Id is $($_.XProcess.ID)"
-                        Write-Host "$($_.MinerName) Is Running!" -ForegroundColor Green
-                    } 
+                        Write-Host "$($_.MinerName) Has Switched to $($_.MinerPool)!" -ForegroundColor Green
+                    }
                 }
             }
         }
@@ -1302,7 +1351,7 @@ While ($true) {
                 $MinerInterval = 10000000;
             }
             else { $MinerInterval = $Interval }
-        }        
+        }
 
         ##Get Shares
         $global:Share_Table = @{}
@@ -1586,17 +1635,20 @@ While ($true) {
             $MinerBan = $false
             $Strike = $false
             if ($_.BestMiner -eq $true) {
-                if ($null -eq $_.XProcess -or $_.XProcess.HasExited) {
-                    $_.Status = "Failed"
-                    $_.WasBenchMarked = $False
-                    $Strike = $true
-                    Write-Host "Cannot Benchmark- Miner is not running" -ForegroundColor Red
+                if($_.Type -ne "ASIC") {
+                    if ($null -eq $_.XProcess -or $_.XProcess.HasExited) {
+                        $_.Status = "Failed"
+                        $_.WasBenchMarked = $False
+                        $Strike = $true
+                        Write-Host "Cannot Benchmark- Miner is not running" -ForegroundColor Red
+                    }
                 }
                 else { 
                     if ($TimeDeviation -ne 0) {
                         $_.HashRate = 0
                         $_.WasBenchmarked = $False
-                        $WasActive = [math]::Round(((Get-Date) - $_.XProcess.StartTime).TotalSeconds)
+                        if($_.Type -ne "ASIC"){$WasActive = [math]::Round(((Get-Date) - $_.XProcess.StartTime).TotalSeconds)}
+                        else{$WasActive = [math]::Round(((Get-Date) - $_.XProcess).TotalSeconds)}
                         if ($WasActive -ge $StatsInterval) {
                             Write-Host "$($_.Name) $($_.Coins) Was Active for $WasActive Seconds"
                             Write-Host "Attempting to record hashrate for $($_.Name) $($_.Coins)" -foregroundcolor "Cyan"

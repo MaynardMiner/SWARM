@@ -10,8 +10,14 @@ function Write-MinerData1 {
 }
 
 function Write-MinerData2 {
-    $global:BRAW | Set-Content ".\build\txt\$MinerType-hash.txt"
-    Write-Host "Miner $Name was clocked at $($global:BRAW | ConvertTo-Hash)/s" -foreground Yellow
+    if($MinerType -ne "ASIC") {
+        $global:BRAW | Set-Content ".\build\txt\$MinerType-hash.txt"
+        Write-Host "Miner $Name was clocked at $($global:BRAW | ConvertTo-Hash)/s" -foreground Yellow
+    }
+    else {
+        $global:ARAW | Set-Content ".\build\txt\$MinerType-hash.txt"
+        Write-Host "Miner $Name was clocked at $($global:ARAW | ConvertTo-Hash)/s" -foreground Yellow
+    }
     if ($Platforms -eq "linux") {$Process = Get-Process | Where Name -clike "*$($MinerType)*"}
 }
 
@@ -158,4 +164,43 @@ function Set-AMDStats {
 
 function Get-OhNo{
  Write-Host "Failed To Collect Miner Data" -ForegroundColor Red
+}
+
+function Remove-ASICPools {
+    param (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [string]$IP,
+        [Parameter(Mandatory = $true, Position = 1)]
+        [string]$Port,
+        [Parameter(Mandatory = $true, Position = 2)]
+        [string]$Name
+    )
+
+    $ASIC_Pools = @{ }
+    $Timeout = 5
+
+    Switch ($Name) {
+        "cgminer" {
+            $ASICM = "cgminer"
+            Write-Host "Clearing all previous cgminer pools." -ForegroundColor "Yellow"
+            $ASIC_Pools.Add($ASICM, @{ })
+            ##First we need to discover all pools
+            $Commands = @{command = "pools"; parameter = 0 } | ConvertTo-Json -Compress
+            $response = $Null
+            $response = Get-TCP -Server "localhost" -Port $Port -Message $Commands -Timeout $timeout
+            if ($response) {
+                $PoolList = $response | ConvertFrom-Json
+                $PoolList = $PoolList.POOLS
+                $PoolList | ForEach-Object { $ASIC_Pools.$ASICM.Add("Pool_$($_.Pool)", $_.Pool) }
+                $ASIC_Pools.$ASICM.keys | ForEach-Object {
+                    $PoolNo = $($ASIC_Pools.$ASICM.$_)
+                    $Commands = @{command = "removepool"; parameter = "$PoolNo" } | ConvertTo-Json -Compress; 
+                    $response = $Null; 
+                    $response = Get-TCP -Server "localhost" -Port $Port -Message $Commands -Timeout $timeout 
+                    $response
+                }  
+            }
+            else { Write-Warning "Failed To Gather cgminer Pool List!" }
+        }
+    }
 }

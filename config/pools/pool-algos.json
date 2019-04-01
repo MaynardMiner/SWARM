@@ -307,6 +307,17 @@
       "comma seperate"
     ]
   },
+  "equihash": {
+    "hiveos_name": "equihash",
+    "pools_to_exclude": [
+      "add pools here",
+      "comma seperated"
+    ],
+    "miners_to_exclude": [
+      "add miners here",
+      "comma seperate"
+    ]
+  },
   "equihash96": {
     "hiveos_name": "equihash 96/5",
     "pools_to_exclude": [
@@ -406,6 +417,17 @@
       "comma seperate"
     ]
   },
+  "groestl": {
+    "hiveos_name": "groestl",
+    "pools_to_exclude": [
+      "add pools here",
+      "comma seperated"
+    ],
+    "miners_to_exclude": [
+      "add miners here",
+      "comma seperate"
+    ]
+  },
   "grincuckaroo29": {
     "hiveos_name": "cuckaroo29",
     "pools_to_exclude": [
@@ -495,7 +517,7 @@
     ]
   },
   "keccakc": {
-    "hiveos_name": "cuckoo",
+    "hiveos_name": "keccakc",
     "pools_to_exclude": [
       "add pools here",
       "comma seperated"
@@ -507,6 +529,17 @@
   },
   "lbk3": {
     "hiveos_name": "lbk3",
+    "pools_to_exclude": [
+      "add pools here",
+      "comma seperated"
+    ],
+    "miners_to_exclude": [
+      "add miners here",
+      "comma seperate"
+    ]
+  },
+  "lbry": {
+    "hiveos_name": "lbry",
     "pools_to_exclude": [
       "add pools here",
       "comma seperated"
@@ -736,6 +769,39 @@
       "comma seperate"
     ]
   },
+  "sib": {
+    "hiveos_name": "sib",
+    "pools_to_exclude": [
+      "add pools here",
+      "comma seperated"
+    ],
+    "miners_to_exclude": [
+      "add miners here",
+      "comma seperate"
+    ]
+  },
+  "scrypt": {
+    "hiveos_name": "scrypt",
+    "pools_to_exclude": [
+      "add pools here",
+      "comma seperated"
+    ],
+    "miners_to_exclude": [
+      "add miners here",
+      "comma seperate"
+    ]
+  },
+  "sha256": {
+    "hiveos_name": "sha256",
+    "pools_to_exclude": [
+      "add pools here",
+      "comma seperated"
+    ],
+    "miners_to_exclude": [
+      "add miners here",
+      "comma seperate"
+    ]
+  },
   "sha256t": {
     "hiveos_name": "sha256t",
     "pools_to_exclude": [
@@ -837,6 +903,28 @@
   },
   "x11": {
     "hiveos_name": "x11",
+    "pools_to_exclude": [
+      "add pools here",
+      "comma seperated"
+    ],
+    "miners_to_exclude": [
+      "add miners here",
+      "comma seperate"
+    ]
+  },
+  "x11evo": {
+    "hiveos_name": "x11evo",
+    "pools_to_exclude": [
+      "add pools here",
+      "comma seperated"
+    ],
+    "miners_to_exclude": [
+      "add miners here",
+      "comma seperate"
+    ]
+  },
+  "x13": {
+    "hiveos_name": "x13",
     "pools_to_exclude": [
       "add pools here",
       "comma seperated"

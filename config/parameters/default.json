@@ -88,5 +88,7 @@
     "Algorithm":  [
                     ""
                 ],
-    "Coin": ""
+    "Coin": "",
+    "ASIC_IP": "",
+    "ASIC_ALGO": ""
 }

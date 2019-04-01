@@ -49,8 +49,7 @@ $PreStart += "export LD_LIBRARY_PATH=$ExportDir"
 $Config.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 
 if ($Coins -eq $true) { $Pools = $CoinPools }else { $Pools = $AlgoPools }
-
-if($Coins -eq $true){$Pools = $CoinPools}else{$Pools = $AlgoPools}
+$Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName
 
 ##Build Miner Settings
 $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
@@ -82,6 +81,7 @@ $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Obje
                 Port       = 42002
                 Wallet     = "$($_.$User)"
                 URI        = $Uri
+                Server    = "localhost"
                 BUILD      = $Build
                 Algo       = "$($_.Algorithm)"
                 Log        = "miner_generated" 

@@ -36,6 +36,7 @@ $PreStart += "export LD_LIBRARY_PATH=$ExportDir"
 $Config.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 
 if ($Coins -eq $true) { $Pools = $CoinPools }else { $Pools = $AlgoPools }
+$Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName
 
 ##Build Miner Settings
 $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
@@ -52,7 +53,7 @@ $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Obje
                 Path       = $Path
                 Devices    = $Devices
                 DeviceCall = "sgminer-gm"
-                Arguments  = "--gpu-platform $AMDPlatform --api-listen --api-port 4028 -k $($Config.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.User1) -p $($_.Pass1)$($Diff) -T $($Config.$ConfigType.commands.$($_.Algorithm))"
+                Arguments  = "--gpu-platform $AMDPlatform --api-listen --api-port 4008 -k $($Config.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.User1) -p $($_.Pass1)$($Diff) -T $($Config.$ConfigType.commands.$($_.Algorithm))"
                 HashRates  = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) }
                 Quote      = if ($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)) { $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) * ($_.Price) }else { 0 }
                 PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
@@ -64,10 +65,11 @@ $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Obje
                 ocfans     = if ($Config.$ConfigType.oc.$($_.Algorithm).fans) { $Config.$ConfigType.oc.$($_.Algorithm).fans }else { $OC."default_$($ConfigType)".fans }
                 MinerPool  = "$($_.Name)"
                 FullName   = "$($_.Mining)"
-                Port       = 4028
+                Port       = 4008
                 API        = "sgminer-gm"
                 Wallet     = "$($_.$User)"
                 URI        = $Uri
+                Server    = "localhost"
                 BUILD      = $Build
                 Algo       = "$($_.Algorithm)"
                 Log        = $Log 

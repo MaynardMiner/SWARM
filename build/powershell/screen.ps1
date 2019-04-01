@@ -13,143 +13,142 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 function Get-Charts {
-$Status = @()
-$Status += ""
-$Power = "|"
-$Power_Levels = @{}
-$WattTable = $false
-$ProfitTable | % {if ($_.Power -gt 0) {$WattTable = $True}}
+    $Status = @()
+    $Status += ""
+    $Power = "|"
+    $Power_Levels = @{ }
+    $WattTable = $false
+    $ProfitTable | ForEach-Object { if ($_.Power -gt 0) { $WattTable = $True } }
 
-$Type | % {
-    $Table = $ProfitTable | Where TYPE -eq $_;
-    $global:index = $Table.Count
+    $Type | ForEach-Object {
+        $Table = $ProfitTable | Where-Object TYPE -eq $_;
+        $global:index = $Table.Count
     
-    $Table | % {$Power_Levels.Add("$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)",@{})}
-    ##Profit Levels
-    $Level = $null
-    $Table | Sort-Object -Property Profits | ForEach-Object {if($Null -ne $_.Profits){$Profit = ($_.Profits * $Rates.$Currency).ToString("N2"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level+$Power; $Power_Levels.$MinerName.Add("Profit","$Level $Profit $Currency/Day");}}
-    $Level = $null
-    $Table | Sort-Object -Property Profits | ForEach-Object {if($Null -ne $_.Profits){$Profit = ($_.Profits / $BTCExchangeRate).ToString("N5"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level+$Power; $Power_Levels.$MinerName.Add("Alt_Profit","$Level $Profit $Y/Day");}}
-    $Level = $null
-    $Table | Sort-Object -Property Profits | ForEach-Object {if($Null -ne $_.Profits){$Profit = ($_.Profits).ToString("N5"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level+$Power; $Power_Levels.$MinerName.Add("BTC_Profit","$Level $Profit BTC/Day");}}
-    $Level = $null
-    $Table | Sort-Object -Property HashRates | ForEach-Object {if($Null -ne $_.HashRates){$HashRate = "$($_.HashRates | ConvertTo-Hash)/s"; $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level+$Power; $Power_Levels.$MinerName.Add("Hashrate","$Level $Hashrate");}}
-    $Level = $null
-    $Table | Sort-Object -Property Shares | ForEach-Object {if($Null -ne $_.Shares){if($_.Shares -eq "N/A"){$_.Shares = 0}else{$_.Shares = [Double]$_.Shares}; $Shares = "$($_.Shares)"; $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; if($_.Shares -ne 0){$Level = $Level+$Power}else{$Level = "|"}; $Power_Levels.$MinerName.Add("Shares","$Level $Shares %");}}
-    if($WattTable -eq $true)
-    {
-     $Level = $null
-     $Table | Sort-Object -Property HashRates | ForEach-Object {if($Null -ne $_.Power){$Pwatts = ($_.Power * $Rates.$Currency).ToString("N2"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level+$Power; $Power_Levels.$MinerName.Add("Watts","$Level $PWatts $Currency/Day");}}
+        $Table | ForEach-Object { $Power_Levels.Add("$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)", @{ }) }
+        ##Profit Levels
+        $Level = $null
+        $Table | Sort-Object -Property Profits | ForEach-Object { if ($Null -ne $_.Profits) { $Profit = ($_.Profits * $Rates.$Currency).ToString("N2"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("Profit", "$Level $Profit $Currency/Day"); } }
+        $Level = $null
+        $Table | Sort-Object -Property Profits | ForEach-Object { if ($Null -ne $_.Profits) { $Profit = ($_.Profits / $BTCExchangeRate).ToString("N5"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("Alt_Profit", "$Level $Profit $Y/Day"); } }
+        $Level = $null
+        $Table | Sort-Object -Property Profits | ForEach-Object { if ($Null -ne $_.Profits) { $Profit = ($_.Profits).ToString("N5"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("BTC_Profit", "$Level $Profit BTC/Day"); } }
+        $Level = $null
+        $Table | Sort-Object -Property HashRates | ForEach-Object { if ($Null -ne $_.HashRates) { $HashRate = "$($_.HashRates | ConvertTo-Hash)/s"; $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("Hashrate", "$Level $Hashrate"); } }
+        $Level = $null
+        $Table | Sort-Object -Property Shares | ForEach-Object { if ($Null -ne $_.Shares) { if ($_.Shares -eq "N/A") { $_.Shares = 0 }else { $_.Shares = [Double]$_.Shares }; $Shares = "$($_.Shares)"; $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; if ($_.Shares -ne 0) { $Level = $Level + $Power }else { $Level = "|" }; $Power_Levels.$MinerName.Add("Shares", "$Level $Shares %"); } }
+        if ($WattTable -eq $true) {
+            $Level = $null
+            $Table | Sort-Object -Property HashRates | ForEach-Object { if ($Null -ne $_.Power) { $Pwatts = ($_.Power * $Rates.$Currency).ToString("N2"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("Watts", "$Level $PWatts $Currency/Day"); } }
+        }
     }
-}
 
-$Type | % {
-    $Table = $ProfitTable | Where TYPE -eq $_;
-    $Border_Lt = @()
-    $Status += "GROUP $($_)"
-    $Status += ""
+    $Type | ForEach-Object {
+        $Table = $ProfitTable | Where-Object TYPE -eq $_;
+        $Border_Lt = @()
+        $Status += "GROUP $($_)"
+        $Status += ""
     
-    $Table | %{
-    $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"
-    $Border_Lt += $($Power_Levels.$MinerName.BTC_Profit | Measure -Character).Characters  
+        $Table | ForEach-Object {
+            $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"
+            $Border_Lt += $($Power_Levels.$MinerName.BTC_Profit | Measure-Object -Character).Characters  
+        }
+        $Border = $($Border_Lt | Measure-Object -Maximum).Maximum + 15
+        $Table | Sort-Object -Property Profits -Descending | ForEach-Object {
+            $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"
+            $me = [char]27;
+            $white = "37";
+            $blue = "34";
+            $yellow = "33";
+            $green = "32";
+            $cyan = "36";
+            $red = "31";
+            $gray = "30";
+            $HLevel = "Hashrate:"
+            $HStat = if ($Null -ne $_.Hashrates) { "$me[${red};1m$($Power_Levels.$MinerName.Hashrate)${me}[0m" }else { "$me[${red};1mBenchmarking${me}[0m" }
+            $CLevel = "$Currency Profit:"
+            $CStat = if ($Null -ne $_.Profits) { "$me[${green};1m$($Power_Levels.$MinerName.Profit)${me}[0m" }else { "$me[${green};1mBenchmarking${me}[0m" }
+            $BLevel = "BTC Profit:"
+            $BStat = if ($Null -ne $_.shares) { "$me[${yellow};1m$($Power_Levels.$MinerName.BTC_Profit)${me}[0m" }else { "$me[${cyan};1mBenchmarking${me}[0m" }
+            $ALevel = "$CoinExchange Profit:"
+            $AStat = if ($Null -ne $_.Profits) { "$me[${cyan};1m$($Power_Levels.$MinerName.ALT_Profit)${me}[0m" }else { "$me[${yellow};1mBenchmarking${me}[0m" }
+            $SLevel = "Shares:"
+            $SStat = if ($Null -ne $_.Profits) { "$me[${blue};1m$($Power_Levels.$MinerName.Shares)${me}[0m" }else { "$me[${blue};1mBenchmarking${me}[0m" }
+            $Table_Item = @();
+            $TableName = "$me[${white};1mName: $($_.Miner)${me}[0m"; 
+            $TableSymbol = "$me[${white};1mCoin: $($_.Name)${me}[0m"; 
+            $TablePool = "$me[${white};1mPool: $($_.MinerPool)${me}[0m"; 
+            $Table_Item += "$($TableName.PadRight(40," ")) $($TableSymbol.PadRight(40," ")) $TablePool"
+            $Table_Item += "".PadLeft($Border, "*")
+            $Table_Item += "$me[${white};1m$($HLevel.PadRight(14))${me}[0m $HStat"
+            $Table_Item += "$me[${white};1m$($CLevel.PadRight(14))${me}[0m $CStat"
+            $Table_Item += "$me[${white};1m$($SLevel.PadRight(14))${me}[0m $SStat"
+            $Table_Item += "$me[${white};1m$($BLevel.PadRight(14))${me}[0m $BStat"
+            $Table_Item += "$me[${white};1m$($ALevel.PadRight(14))${me}[0m $AStat"
+            $Table_Item += "".PadLeft($Border, "*")
+            $Status += $Table_Item
+        }
+        $Status += ""
+        $Status += ""
     }
-    $Border = $($Border_Lt | measure -Maximum).Maximum + 15
-    $Table | Sort-Object -Property Profits -Descending | %{
-    $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"
-    $me = [char]27;
-    $white = "37";
-    $blue = "34";
-    $yellow = "33";
-    $green = "32";
-    $cyan = "36";
-    $red = "31";
-    $gray = "30";
-    $HLevel = "Hashrate:"
-    $HStat = if($Null -ne $_.Hashrates){"$me[${red};1m$($Power_Levels.$MinerName.Hashrate)${me}[0m"}else{"$me[${red};1mBenchmarking${me}[0m"}
-    $CLevel = "$Currency Profit:"
-    $CStat = if($Null -ne $_.Profits){"$me[${green};1m$($Power_Levels.$MinerName.Profit)${me}[0m"}else{"$me[${green};1mBenchmarking${me}[0m"}
-    $BLevel = "BTC Profit:"
-    $BStat = if($Null -ne $_.shares){"$me[${yellow};1m$($Power_Levels.$MinerName.BTC_Profit)${me}[0m"}else{"$me[${cyan};1mBenchmarking${me}[0m"}
-    $ALevel = "$CoinExchange Profit:"
-    $AStat = if($Null -ne $_.Profits){"$me[${cyan};1m$($Power_Levels.$MinerName.ALT_Profit)${me}[0m"}else{"$me[${yellow};1mBenchmarking${me}[0m"}
-    $SLevel = "Shares:"
-    $SStat = if($Null -ne $_.Profits){"$me[${blue};1m$($Power_Levels.$MinerName.Shares)${me}[0m"}else{"$me[${blue};1mBenchmarking${me}[0m"}
-    $Table_Item = @();
-    $TableName = "$me[${white};1mName: $($_.Miner)${me}[0m"; 
-    $TableSymbol = "$me[${white};1mCoin: $($_.Name)${me}[0m"; 
-    $TablePool = "$me[${white};1mPool: $($_.MinerPool)${me}[0m"; 
-    $Table_Item += "$($TableName.PadRight(40," ")) $($TableSymbol.PadRight(40," ")) $TablePool"
-    $Table_Item += "".PadLeft($Border,"*")
-    $Table_Item += "$me[${white};1m$($HLevel.PadRight(14))${me}[0m $HStat"
-    $Table_Item += "$me[${white};1m$($CLevel.PadRight(14))${me}[0m $CStat"
-    $Table_Item += "$me[${white};1m$($SLevel.PadRight(14))${me}[0m $SStat"
-    $Table_Item += "$me[${white};1m$($BLevel.PadRight(14))${me}[0m $BStat"
-    $Table_Item += "$me[${white};1m$($ALevel.PadRight(14))${me}[0m $AStat"
-    $Table_Item += "".PadLeft($Border,"*")
-    $Status += $Table_Item
-    }
-    $Status += ""
-    $Status += ""
-   }
-   $Status
+    $Status
 } 
 
 
 function Get-MinerStatus {
     $WattTable = $false
-    $ProfitTable | % {if ($_.Power -gt 0) {$WattTable = $True}}
-    $Type | % {
-        $Table = $ProfitTable | Where TYPE -eq $_;
+    $ProfitTable | ForEach-Object { if ($_.Power -gt 0) { $WattTable = $True } }
+    $Type | ForEach-Object {
+        $Table = $ProfitTable | Where-Object TYPE -eq $_;
         $global:index = 0
         if ($WattTable) {
             if ($CoinExchange) {
                 $Table | Sort-Object -Property Profits -Descending | Format-Table -GroupBy Type (
-                    @{Label = "Miner"; Expression = {"$global:index $($_.Miner)"; $global:index += 1}; },
-                    @{Label = "Coin"; Expression = {$($_.Name)}},
-                    @{Label = "Speed"; Expression = {$($_.HashRates) | ForEach {if ($null -ne $_) {"$($_ | ConvertTo-Hash)/s"}else {"Bench"}}}; Align = 'center'},
-                    @{Label = "Watt/Day"; Expression = {$($_.Power) | ForEach {if ($null -ne $_) {($_ * $Rates.$Currency).ToString("N2")}else {"Bench"}}}; Align = 'center'},
-                    @{Label = "BTC/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {  $_.ToString("N5")}else {"Bench"}}}; Align = 'right'},
-                    @{Label = "$Y/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {  ($_ / $BTCExchangeRate).ToString("N5")}else {"Bench"}}}; Align = 'right'},
-                    @{Label = "$Currency/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {($_ * $Rates.$Currency).ToString("N2")}else {"Bench"}}}; Align = 'center'},
-                    @{Label = "Pool"; Expression = {$($_.MinerPool)}; Align = 'center'},
-                    @{Label = "Shares"; Expression = {$($_.Shares)}; Align = 'left'}
+                    @{Label = "Miner"; Expression = { "$global:index $($_.Miner)"; $global:index += 1 }; },
+                    @{Label = "Coin"; Expression = { $($_.Name) } },
+                    @{Label = "Speed"; Expression = { $($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$($_ | ConvertTo-Hash)/s" }else { "Bench" } } }; Align = 'center' },
+                    @{Label = "Watt/Day"; Expression = { $($_.Power) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.$Currency).ToString("N2") }else { "Bench" } } }; Align = 'center' },
+                    @{Label = "BTC/Day"; Expression = { $($_.Profits) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } } }; Align = 'right' },
+                    @{Label = "$Y/Day"; Expression = { $($_.Profits) | ForEach-Object { if ($null -ne $_) { ($_ / $BTCExchangeRate).ToString("N5") }else { "Bench" } } }; Align = 'right' },
+                    @{Label = "$Currency/Day"; Expression = { $($_.Profits) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.$Currency).ToString("N2") }else { "Bench" } } }; Align = 'center' },
+                    @{Label = "Pool"; Expression = { $($_.MinerPool) }; Align = 'center' },
+                    @{Label = "Shares"; Expression = { $($_.Shares) }; Align = 'left' }
                 )
             }
             else {
                 $Table | Sort-Object -Property Profits -Descending | Format-Table -GroupBy Type (
-                    @{Label = "Miner"; Expression = {"$global:index $($_.Miner)"; $global:index += 1}; },
-                    @{Label = "Coin"; Expression = {$($_.Name)}},
-                    @{Label = "Speed"; Expression = {$($_.HashRates) | ForEach {if ($null -ne $_) {"$($_ | ConvertTo-Hash)/s"}else {"Bench"}}}; Align = 'center'},
-                    @{Label = "Watt/Day"; Expression = {$($_.Power) | ForEach {if ($null -ne $_) {($_ * $Rates.$Currency).ToString("N2")}else {"Bench"}}}; Align = 'center'},
-                    @{Label = "BTC/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {  $_.ToString("N5")}else {"Bench"}}}; Align = 'right'},
-                    @{Label = "$Currency/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {($_ * $Rates.$Currency).ToString("N2")}else {"Bench"}}}; Align = 'center'},
-                    @{Label = "Pool"; Expression = {$($_.MinerPool)}; Align = 'center'},
-                    @{Label = "Shares"; Expression = {$($_.Shares)}; Align = 'left'}
+                    @{Label = "Miner"; Expression = { "$global:index $($_.Miner)"; $global:index += 1 }; },
+                    @{Label = "Coin"; Expression = { $($_.Name) } },
+                    @{Label = "Speed"; Expression = { $($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$($_ | ConvertTo-Hash)/s" }else { "Bench" } } }; Align = 'center' },
+                    @{Label = "Watt/Day"; Expression = { $($_.Power) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.$Currency).ToString("N2") }else { "Bench" } } }; Align = 'center' },
+                    @{Label = "BTC/Day"; Expression = { $($_.Profits) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } } }; Align = 'right' },
+                    @{Label = "$Currency/Day"; Expression = { $($_.Profits) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.$Currency).ToString("N2") }else { "Bench" } } }; Align = 'center' },
+                    @{Label = "Pool"; Expression = { $($_.MinerPool) }; Align = 'center' },
+                    @{Label = "Shares"; Expression = { $($_.Shares) }; Align = 'left' }
                 )
             }
         }
         else {
             if ($CoinExchange) {
                 $Table | Sort-Object -Property Profits -Descending | Format-Table -GroupBy Type (
-                    @{Label = "Miner"; Expression = {"$global:index $($_.Miner)"; $global:index += 1}; },
-                    @{Label = "Coin"; Expression = {$($_.Name)}},
-                    @{Label = "Speed"; Expression = {$($_.HashRates) | ForEach {if ($null -ne $_) {"$($_ | ConvertTo-Hash)/s"}else {"Bench"}}}; Align = 'center'},
-                    @{Label = "BTC/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {  $_.ToString("N5")}else {"Bench"}}}; Align = 'right'},
-                    @{Label = "$Y/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {  ($_ / $BTCExchangeRate).ToString("N5")}else {"Bench"}}}; Align = 'right'},
-                    @{Label = "$Currency/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {($_ * $Rates.$Currency).ToString("N2")}else {"Bench"}}}; Align = 'center'},
-                    @{Label = "Pool"; Expression = {$($_.MinerPool)}; Align = 'center'},
-                    @{Label = "Shares"; Expression = {$($_.Shares)}; Align = 'left'}        
+                    @{Label = "Miner"; Expression = { "$global:index $($_.Miner)"; $global:index += 1 }; },
+                    @{Label = "Coin"; Expression = { $($_.Name) } },
+                    @{Label = "Speed"; Expression = { $($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$($_ | ConvertTo-Hash)/s" }else { "Bench" } } }; Align = 'center' },
+                    @{Label = "BTC/Day"; Expression = { $($_.Profits) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } } }; Align = 'right' },
+                    @{Label = "$Y/Day"; Expression = { $($_.Profits) | ForEach-Object { if ($null -ne $_) { ($_ / $BTCExchangeRate).ToString("N5") }else { "Bench" } } }; Align = 'right' },
+                    @{Label = "$Currency/Day"; Expression = { $($_.Profits) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.$Currency).ToString("N2") }else { "Bench" } } }; Align = 'center' },
+                    @{Label = "Pool"; Expression = { $($_.MinerPool) }; Align = 'center' },
+                    @{Label = "Shares"; Expression = { $($_.Shares) }; Align = 'left' }        
                 )
             }
             else {
                 $Table | Sort-Object -Property Profits -Descending | Format-Table -GroupBy Type (
-                    @{Label = "Miner"; Expression = {"$global:index $($_.Miner)"; $global:index += 1}; },
-                    @{Label = "Coin"; Expression = {$($_.Name)}},
-                    @{Label = "Speed"; Expression = {$($_.HashRates) | ForEach {if ($null -ne $_) {"$($_ | ConvertTo-Hash)/s"}else {"Bench"}}}; Align = 'center'},
-                    @{Label = "BTC/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {  $_.ToString("N5")}else {"Bench"}}}; Align = 'right'},
-                    @{Label = "$Currency/Day"; Expression = {$($_.Profits) | ForEach {if ($null -ne $_) {($_ * $Rates.$Currency).ToString("N2")}else {"Bench"}}}; Align = 'center'},
-                    @{Label = "Pool"; Expression = {$($_.MinerPool)}; Align = 'center'},
-                    @{Label = "Shares"; Expression = {$($_.Shares)}; Align = 'left'}      
+                    @{Label = "Miner"; Expression = { "$global:index $($_.Miner)"; $global:index += 1 }; },
+                    @{Label = "Coin"; Expression = { $($_.Name) } },
+                    @{Label = "Speed"; Expression = { $($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$($_ | ConvertTo-Hash)/s" }else { "Bench" } } }; Align = 'center' },
+                    @{Label = "BTC/Day"; Expression = { $($_.Profits) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } } }; Align = 'right' },
+                    @{Label = "$Currency/Day"; Expression = { $($_.Profits) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.$Currency).ToString("N2") }else { "Bench" } } }; Align = 'center' },
+                    @{Label = "Pool"; Expression = { $($_.MinerPool) }; Align = 'center' },
+                    @{Label = "Shares"; Expression = { $($_.Shares) }; Align = 'left' }      
                 )
             }
 
@@ -159,25 +158,25 @@ function Get-MinerStatus {
 
 function Get-StatusLite {
     $screen = @()
-    $Type | % {
+    $Type | ForEach-Object {
         $screen += 
         "
 ########################
     Group: $($_)
 ########################
 "
-        $Table = $ProfitTable | Where TYPE -eq $_ | Sort-Object -Property Profits -Descending
+        $Table = $ProfitTable | Where-Object TYPE -eq $_ | Sort-Object -Property Profits -Descending
         $statindex = 1
 
-        $Table | % { 
+        $Table | ForEach-Object { 
 
-            if ($statindex -eq 1) {$Screen += "# 1 Miner:"}
-            else {$Screen += "Postion $($statindex): "}
+            if ($statindex -eq 1) { $Screen += "# 1 Miner:" }
+            else { $Screen += "Postion $($statindex): " }
 
             $Screen += 
             "        Miner: $($_.Miner)
-        Speed: $($_.HashRates | ForEach {if ($null -ne $_) {"$($_ | ConvertTo-Hash)/s"}else {"Benchmarking"}})
-        Profit: $($_.Profits | ForEach {if ($null -ne $_) {"$(($_ * $Rates.$Currency).ToString("N2")) $Currency/Day"}else {"Bench"}}) 
+        Speed: $($_.HashRates | ForEach-Object {if ($null -ne $_) {"$($_ | ConvertTo-Hash)/s"}else {"Benchmarking"}})
+        Profit: $($_.Profits | ForEach-Object {if ($null -ne $_) {"$(($_ * $Rates.$Currency).ToString("N2")) $Currency/Day"}else {"Bench"}}) 
         Pool: $($_.MinerPool)
         Shares: $($_.Shares)
 "
@@ -294,12 +293,12 @@ command"
 function Get-MinerActive {
 
     $ActiveMinerPrograms | Sort-Object -Descending Status,
-    {if ($null -eq $_.XProcess) {[DateTime]0}else {$_.XProcess.StartTime}
-    } | Select -First (1 + 6 + 6) | Format-Table -Wrap -GroupBy Status (
-        @{Label = "Name"; Expression = {"$($_.Name)"}},
-        @{Label = "Active"; Expression = {"{0:dd} Days {0:hh} Hours {0:mm} Minutes" -f $(if ($null -eq $_.XProcess) {$_.Active}else {if ($_.XProcess.HasExited) {($_.Active)}else {($_.Active + ((Get-Date) - $_.XProcess.StartTime))}})}},
-        @{Label = "Launched"; Expression = {Switch ($_.Activated) {0 {"Never"} 1 {"Once"} Default {"$_ Times"}}}},
-        @{Label = "Command"; Expression = {"$($_.MinerName) $($_.Devices) $($_.Arguments)"}}
+    { if ($null -eq $_.XProcess) { [DateTime]0 }else { $_.XProcess.StartTime }
+    } | Select-Object -First (1 + 6 + 6) | Format-Table -Wrap -GroupBy Status (
+        @{Label = "Name"; Expression = { "$($_.Name)" } },
+        @{Label = "Active"; Expression = { "{0:dd} Days {0:hh} Hours {0:mm} Minutes" -f $(if ($null -eq $_.XProcess) { $_.Active }else { if ($_.XProcess.HasExited) { ($_.Active) }else { ($_.Active + ((Get-Date) - $_.XProcess.StartTime)) } }) } },
+        @{Label = "Launched"; Expression = { Switch ($_.Activated) { 0 { "Never" } 1 { "Once" } Default { "$_ Times" } } } },
+        @{Label = "Command"; Expression = { "$($_.MinerName) $($_.Devices) $($_.Arguments)" } }
     )
 }
 
@@ -322,8 +321,9 @@ function Get-Logo {
 }
 
 function Restart-Miner {
-    $BestActiveMiners | Foreach {
+    $BestActiveMiners | ForEach-Object {
         $Restart = $false
+        if($_.Type -ne "ASIC") {
         if ($_.XProcess -eq $null -or $_.XProcess.HasExited -and $Lite -eq "No") {
             if ($TimeDeviation -ne 0) {
                 $Restart = $true
@@ -331,7 +331,7 @@ function Restart-Miner {
                 $_.InstanceName = "$($_.Type)-$($Instance)"
                 $Current = $_ | ConvertTo-Json -Compress
                 $PreviousPorts = $PreviousMinerPorts | ConvertTo-Json -Compress
-                $_.Xprocess = Start-LaunchCode -PP $PreviousPorts -Platforms $Platform -MinerRound $Current_BestMiners -NewMiner $Current
+                $_.Xprocess = Start-LaunchCode -PP $PreviousPorts -Platforms $Platform -NewMiner $Current
                 $Instance++
             }
             if ($Restart -eq $true) {
@@ -359,11 +359,13 @@ function Restart-Miner {
             }
         }
     }
+  }
 }
 
 function Get-MinerHashRate {
-    $BestActiveMiners | Foreach {
-        if ($null -eq $_.Xprocess -or $_.XProcess.HasExited) {$_.Status = "Failed"}
+    $BestActiveMiners | ForEach-Object {
+        if ($_.Type -notlike "ASIC") { if ($null -eq $_.Xprocess -or $_.XProcess.HasExited) { $_.Status = "Failed" } }
+        else { if ($null -eq $_.Xprocess) { $_.Status = "Failed" } }
         $Miner_HashRates = Get-HashRate -Type $_.Type
         $GetDayStat = Get-Stat "$($_.Name)_$($_.Algo)_HashRate"
         $DayStat = "$($GetDayStat.Day)"
@@ -371,8 +373,8 @@ function Get-MinerHashRate {
         $ScreenHash = "$($Miner_HashRates | ConvertTo-Hash)"
         Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
         Write-Host " $($_.Type) is currently" -foreground green -nonewline
-        if ($_.Status -eq "Running") {$MinerStatus = Write-Host " Running: " -ForegroundColor green -nonewline}
-        if ($_.Status -eq "Failed") {$MinerStatus = Write-Host " Not Running: " -ForegroundColor darkred -nonewline} 
+        if ($_.Status -eq "Running") { $MinerStatus = Write-Host " Running: " -ForegroundColor green -nonewline }
+        if ($_.Status -eq "Failed") { $MinerStatus = Write-Host " Not Running: " -ForegroundColor darkred -nonewline } 
         $MinerStatus
         Write-Host "$($_.Name) current hashrate for $($_.Coins) is" -nonewline
         Write-Host " $ScreenHash/s" -foreground green
@@ -384,21 +386,27 @@ function Get-MinerHashRate {
 }
 
 function Set-Countdown {
-    if ($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false) {$CountDown = Invoke-SWARMMode $SwitchTime; $CountDown = $Countdown * -1}
-    else {$Countdown = ([math]::Round(($MinerInterval - 20) - $MinerWatch.Elapsed.TotalSeconds))}
-    if ($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false) {$CountMessage = "SWARM Mode Starts: $($Countdown) seconds"}
-    else {$CountMessage = "Time Left Until Database Starts: $($Countdown) seconds"}
+    if ($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false) { $CountDown = Invoke-SWARMMode $SwitchTime; $CountDown = $Countdown * -1 }
+    else { $Countdown = ([math]::Round(($MinerInterval - 20) - $MinerWatch.Elapsed.TotalSeconds)) }
+    if ($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false) { $CountMessage = "SWARM Mode Starts: $($Countdown) seconds" }
+    else { $CountMessage = "Time Left Until Database Starts: $($Countdown) seconds" }
     Write-Host "$CountMessage 
 "-foreground DarkMagenta
 }
 
 function Restart-Database {
     $Restart = "No"
-    $BestActiveMiners | foreach {
-        if ($null -eq $_.XProcess -or $_.XProcess.HasExited) {
-            $_.Status = "Failed"
-            $Restart = "Yes"
+    $BestActiveMiners | ForEach-Object {
+        if ($_.Type -ne "ASIC") {
+            if ($null -eq $_.XProcess -or $_.XProcess.HasExited) {
+                $_.Status = "Failed"
+                $Restart = "Yes"
+            }
         }
+        elseif ($null -eq $_.Xprocess) {
+                $_.Status = "Failed"
+                $Restart = "Yes"
+            }
         else {
             $Miner_HashRates = Get-HashRate -Type $_.Type
             $ScreenHash = "$($Miner_HashRates | ConvertTo-Hash)"
@@ -414,10 +422,10 @@ function Restart-Database {
 }
 
 function Get-VM {
-    ps powershell* | Select *memory* | ft -auto `
-    @{Name = 'Virtual Memory Size (MB)'; Expression = {($_.VirtualMemorySize64) / 1MB}; Align = 'center'}, `
-    @{Name = 'Private Memory Size (MB)'; Expression = {(  $_.PrivateMemorySize64) / 1MB}; Align = 'center'},
-    @{Name = 'Memory Used This Session (MB)'; Expression = {([System.gc]::gettotalmemory("forcefullcollection") / 1MB)}; Align = 'center'}
+    ps powershell* | Select-Object *memory* | Format-Table -auto `
+    @{Name = 'Virtual Memory Size (MB)'; Expression = { ($_.VirtualMemorySize64) / 1MB }; Align = 'center' }, `
+    @{Name = 'Private Memory Size (MB)'; Expression = { (  $_.PrivateMemorySize64) / 1MB }; Align = 'center' },
+    @{Name = 'Memory Used This Session (MB)'; Expression = { ([System.gc]::gettotalmemory("forcefullcollection") / 1MB) }; Align = 'center' }
 }
 
 function Print-WattOMeter {
