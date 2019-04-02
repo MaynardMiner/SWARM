@@ -217,7 +217,7 @@
     "path2": ".\\bin\\xmrig_nv-2\\xmrig-nvidia",
     "path3": ".\\bin\\xmrig_nv-3\\xmrig-nvidia",
     "minername": "xmrig-nvidia",
-    "version": "2.14.0",
+    "version": "2.14.1",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/xmrig-nvidia-linux.tar.gz"
   },
   "cc-verus": {

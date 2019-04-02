@@ -150,7 +150,7 @@
 "path2":".\\bin\\xmrig-amd-2\\xmrig-amd.exe", 
 "path3":".\\bin\\xmrig-amd-3\\xmrig-amd.exe", 
 "minername":"xmrig-amd.exe", 
-"version":"2.14.0", 
+"version":"2.14.1", 
 "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/xmrig-amd-windows.zip"
 }, 
 "progminer_amd": {
