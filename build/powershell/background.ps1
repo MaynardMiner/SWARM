@@ -220,7 +220,7 @@ While ($True) {
             $MinerAPI = "$($_.API)"
             $Server = "$($_.Server)"
             $HashPath = ".\logs\$($_.Type).log"
-            $global:BHiveAlgo += $HiveNames.$($_.Algo).hiveos_name
+            if($MinerType -ne "ASIC"){$global:BHiveAlgo += $HiveNames.$($_.Algo).hiveos_name}
             $global:AHiveAlgo += $HiveNames.$($_.Algo).hiveos_name
 
             ## Set Object For Type (So It doesn't need to be repeated)

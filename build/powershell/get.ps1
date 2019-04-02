@@ -248,6 +248,32 @@ clear_watts
         $help | out-file ".\build\txt\get.txt"
     }
 
+    "asic" {
+        if(Test-Path ".\build\txt\bestminers.txt") {$BestMiners = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-Json}
+        else{$Get += "No miners running"}
+        $ASIC = $BestMiners | Where Type -eq "ASIC"
+        if($ASIC) {
+            . .\build\powershell\hashrates.ps1
+            $Get += "Miner Name: $($ASIC.MinerName)"
+            $Get += "Miner Currently Mining: $($ASIC.Symbol)"
+            $command = @{command = "pools"; parameter = "0"} | ConvertTo-Json -Compress
+            $request = Get-TCP -Port $ASIC.Port -Server $ASIC.Server -Message $Command -Timeout 5
+            if($request) {
+                $response = $request | ConvertFrom-Json
+                $PoolDetails = $response.POOLS | Where Pool -eq 1
+                if($PoolDetails) {
+                   $PoolDetails | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | %{
+                       $Get += "Active Pool $($_) = $($PoolDetails.$_)"
+                   }
+                }
+                else{$Get += "contacted $($ASIC.MinerName), but no active pool was found"}
+            }
+            else{$Get += "Failed to contact miner on $($ASIC.Server) ($ASIC.Port) to get details"}
+        }
+        else{$Get += "No ASIC miners running"}
+    }
+
+
     "benchmarks" {
         . .\build\powershell\statcommand.ps1
         . .\build\powershell\childitems.ps1

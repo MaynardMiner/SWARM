@@ -797,7 +797,7 @@ While ($true) {
          }
        }
      }
-
+     
     $Bad_Pools = Get-BadPools
     $Bad_Miners = Get-BadMiners
     
@@ -1226,63 +1226,50 @@ While ($true) {
            
             ##Miners Not Set To Run
             if ($_.BestMiner -eq $false) {
+                
                 if ($Platform -eq "windows") {
-                    if($_.Type -ne "ASIC") {
                         if ($_.XProcess -eq $Null) { $_.Status = "Failed" }
                         elseif ($_.XProcess.HasExited -eq $false) {
                             $_.Active += (Get-Date) - $_.XProcess.StartTime
-                            $_.XProcess.CloseMainWindow() | Out-Null
+                            if($_.Type -ne "ASIC"){$_.XProcess.CloseMainWindow() | Out-Null}
+                            else{$_.Xprocess.HasExited = $true; $_.XProcess.StartTime = $null}
                             $_.Status = "Idle"
                         }
                     }
-                    else {
-                        if ($_.XProcess -eq $Null) { $_.Status = "Failed"}
-                        else {
-                        $_.Active += (Get-Date) - $_.XProcess
-                        $_.Staus = "Idle"
-                        }
-                    }
-                }
 
                 if ($Platform -eq "linux") {
-                    if($_.Type -ne "ASIC") {
                         if ($_.XProcess -eq $Null) { $_.Status = "Failed" }
                         else {
+                            if($_.Type -ne "ASIC") {
                             $MinerInfo = ".\build\pid\$($_.InstanceName)_info.txt"
                             if (Test-Path $MinerInfo) {
-                                $PreviousMinerPorts.$($_.Type) = "($_.Port)"
                                 $_.Status = "Idle"
-                                $MI = Get-Content $MinerInfo | ConvertFrom-Json
-                                $PIDTime = [DateTime]$MI.start_date
-                                $Exec = Split-Path $MI.miner_exec -Leaf
-                                $_.Active += (Get-Date) - $PIDTime
-                                Start-Process "start-stop-daemon" -ArgumentList "--stop --name $Exec --pidfile $($MI.pid_path) --retry 5" -Wait
+                                $PreviousMinerPorts.$($_.Type) = "($_.Port)"
+                                    $MI = Get-Content $MinerInfo | ConvertFrom-Json
+                                    $PIDTime = [DateTime]$MI.start_date
+                                    $Exec = Split-Path $MI.miner_exec -Leaf
+                                    $_.Active += (Get-Date) - $PIDTime
+                                    Start-Process "start-stop-daemon" -ArgumentList "--stop --name $Exec --pidfile $($MI.pid_path) --retry 5" -Wait
+                                }
                             }
-                        }
-                    }
-                    else {
-                        if ($_.XProcess -eq $Null) { $_.Status = "Failed"}
-                        else {
-                            $_.Active += (Get-Date) - $_.XProcess
-                            $_.Staus = "Idle"
+                            else{$_.Xprocess.HasExited = $true; $_.XProcess.StartTime = $null; $_.Status = "Idle"}
                         }
                     }
                 }
             }
-        }
         
         ##Miners That Should Be Running
         ##Start them if neccessary
         $BestActiveMiners | ForEach-Object {
-            if($_.Type -ne "ASIC") {
                 if ($null -eq $_.XProcess -or $_.XProcess.HasExited -and $Lite -eq "No") {
                     if ($TimeDeviation -ne 0) {
                         $Restart = $true
                         $_.Activated++
                         $_.InstanceName = "$($_.Type)-$($Instance)"
                         $Current = $_ | ConvertTo-Json -Compress
-                        $PreviousPorts = $PreviousMinerPorts | ConvertTo-Json -Compress
-                        $_.Xprocess = Start-LaunchCode -PP $PreviousPorts -Platforms $Platform -NewMiner $Current
+                        if($_.Type -ne "ASIC"){$PreviousPorts = $PreviousMinerPorts | ConvertTo-Json -Compress}
+                        if($_.Type -ne "ASIC"){$_.Xprocess = Start-LaunchCode -PP $PreviousPorts -Platforms $Platform -NewMiner $Current}
+                        else{$_.Xprocess = Start-LaunchCode -Platforms $Platform -NewMiner $Current -IP $ASIC_IP}
                         $Instance++
                     }
                     if ($Restart -eq $true) {
@@ -1293,30 +1280,12 @@ While ($true) {
                         }
                         else {
                             $_.Status = "Running"
-                            Write-Host "Process Id is $($_.XProcess.ID)"
+                            if($_.Type -ne "ASIC"){Write-Host "Process Id is $($_.XProcess.ID)"}
                             Write-Host "$($_.MinerName) Is Running!" -ForegroundColor Green
                         }
                     }
                 }
             }
-            else {
-                $Restart = $true
-                $_.Activated++
-                $Current = $_ | ConvertTo-Json -Compress
-                $_.Xprocess = Start-LaunchCode -Platforms $Platform -NewMiner $Current -IP $ASIC_IP
-                if ($Restart -eq $true) {
-                    if ($_.XProcess -eq $null) {
-                        $_.Status = "Failed"
-                        $NoMiners = $true
-                        Write-Host "$($_.MinerName) Failed To Switch" -ForegroundColor Darkred
-                    }
-                    else {
-                        $_.Status = "Running"
-                        Write-Host "$($_.MinerName) Has Switched to $($_.MinerPool)!" -ForegroundColor Green
-                    }
-                }
-            }
-        }
 
 
         ##Outputs the correct notification of miner launches.
@@ -1635,20 +1604,17 @@ While ($true) {
             $MinerBan = $false
             $Strike = $false
             if ($_.BestMiner -eq $true) {
-                if($_.Type -ne "ASIC") {
-                    if ($null -eq $_.XProcess -or $_.XProcess.HasExited) {
-                        $_.Status = "Failed"
-                        $_.WasBenchMarked = $False
-                        $Strike = $true
-                        Write-Host "Cannot Benchmark- Miner is not running" -ForegroundColor Red
-                    }
+                if ($null -eq $_.XProcess -or $_.XProcess.HasExited) {
+                    $_.Status = "Failed"
+                    $_.WasBenchMarked = $False
+                    $Strike = $true
+                    Write-Host "Cannot Benchmark- Miner is not running" -ForegroundColor Red
                 }
                 else { 
                     if ($TimeDeviation -ne 0) {
                         $_.HashRate = 0
                         $_.WasBenchmarked = $False
-                        if($_.Type -ne "ASIC"){$WasActive = [math]::Round(((Get-Date) - $_.XProcess.StartTime).TotalSeconds)}
-                        else{$WasActive = [math]::Round(((Get-Date) - $_.XProcess).TotalSeconds)}
+                        $WasActive = [math]::Round(((Get-Date) - $_.XProcess.StartTime).TotalSeconds)
                         if ($WasActive -ge $StatsInterval) {
                             Write-Host "$($_.Name) $($_.Coins) Was Active for $WasActive Seconds"
                             Write-Host "Attempting to record hashrate for $($_.Name) $($_.Coins)" -foregroundcolor "Cyan"

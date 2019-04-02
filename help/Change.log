@@ -2281,41 +2281,40 @@ Items / Enhancements / Issues:
 2.1.2
 
 ``-AUTO_COIN`` is back and highly improved!!
-    -features a more streamlined design.
-    -faster calculations that before.
-    -better analysis between coins vs. algorithms.
-    -no possibility of GUI stat issues.
-    -pre-tested by users.
-    -Note: Coins by design in Yiimp source code
-     are calculated asyncrounously between algorithm
-     profits. Stats will never match algorithm pricing,
-     but a more accurate / live figure is generated.
-    -Currently only zergpool.
-    -Plans to add fairpool coming very soon (after feedback
-     of bug / issue correction).
+  * features a more streamlined design.
+  * faster calculations that before.
+  * better analysis between coins vs. algorithms.
+  * no possibility of GUI stat issues.
+  * pre-tested by users.
+  * Note: Coins by design in Yiimp source code
+    are calculated asyncrounously between algorithm
+    profits. Stats will never match algorithm pricing,
+    but a more accurate / live figure is generated.
+  * Currently only zergpool.
+  * Plans to add fairpool coming very soon (after feedback
+    of bug / issue correction).
 
 -Shares 
-  -SWARM now tracks user share count on certain pools.
-  -zergpool will only work if -Auto_Coin yes is on.
-  -I am still working on all pools.
+  * SWARM now tracks user share count on certain pools.
+  * zergpool will only work if -Auto_Coin yes is on.
+  * I am still working on all pools.
 
 New Commands:
 
  ``-get charts``
-   will display a bar graphic chart on miners, in 
-   relation to each other.
-   -not implemented but coming soon: Can be sorted
-    by user input.
+   * will display a bar graphic chart on miners, in 
+     relation to each other.
+   * not implemented but coming soon: Can be sorted
+     by user input.
 
 API overhaul:
+  * API can now run 80% of commands through it.
+  * If a command has an argument, it is parsed with an '&'
+  * examples:
+    * http://localhost:4099/get&stats
+    * http://localhost:4099/version&query
 
-   -API can now run 80% of commands through it.
-   -If a command has an argument, it is parsed with an '&'
-   -examples:
-      http://localhost:4099/get&stats
-      http://localhost:4099/version&query
-
-miners fixed on commands (I'm not sure if all working, I was
+minor fixes on commands (I'm not sure if all working, I was
 still testing while coding -Auto_Coin, report if a command gives
 you an issue.
 
@@ -2325,4 +2324,35 @@ you an issue.
 
 -build\api created, plan to use this for all api uses, via with other programs,
  or with SWARM itself.
+
+-ASIC is working! (remote version verified)
+   * tested only remote version.
+   * two new arguments are added for ``-Type ASIC``
+     * ``-ASIC_IP`` is the IP of the ASIC. If installing
+       directly on ASIC, this argument is not needed.
+     * ``-ASIC_ALGO`` algorithms to be use for asic
+          comma seperated if more than 1
+     * new command for ASIC support:
+       * ``get asic``
+       * This will allow you to get details of
+         the asic, and return in a readable format.
+    * I will generate wiki after initial user testing.
+    * Should work with other device types (if using remotely).
+    * DOES NOT work with HiveOS. I will not create support for HiveOS- 
+      If you wish support, use HiveOS image, and then run SWARM with it.
+
+-New COMMAND:
+  * ``get charts``: Since so much data is being displayed in stats
+      screen, I have attempted to make a better visualization of the
+      stats, using simple comparative bar charting.
+
+-I tried to push out release and over 10k changes to codebase asap,
+ core features are working 100%, some sub-features may have been broken
+ due to new changes. If you see any issues- please report, and I will fix
+ asap.
+
+``-CoinExchange`` is now calculated pre-power figures, so before watt
+   calculations are added in. So you can use -CoinExchange BTC to get
+   calculations before watt applied, and then the normal BTC /day will
+   be after.
 

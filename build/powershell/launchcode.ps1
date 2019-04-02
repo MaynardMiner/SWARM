@@ -381,7 +381,7 @@ function Start-LaunchCode {
         Write-Host "Switching To New Pool"
         $Commands = "switchpool|1"
         $response = Get-TCP -Server $IP -Port $MinerCurrent.Port -Timeout 5 -Message $Commands
-        if($response){$MinerProcess = Get-Date}
+        if($response){$MinerProcess = @{StartTime = (Get-Date); HasExited = $false}}
         $MinerProcess
     }
 }
