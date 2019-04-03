@@ -137,7 +137,7 @@
     "path2": ".\\bin\\xmrstak-2\\xmr-stak",
     "path3": ".\\bin\\xmrstak-3\\xmr-stak",
     "minername": "xmr-stak",
-    "version": "2.10.1",
+    "version": "2.10.4",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/fireice-linux.tar.gz"
   },
   "wildrig": {
