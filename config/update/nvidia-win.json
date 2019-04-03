@@ -47,7 +47,7 @@
         "path2": ".\\bin\\bminer-2\\bminer.exe",
         "path3": ".\\bin\\bminer-3\\bminer.exe",
         "minername": "bminer",
-        "version": "15.3.1",
+        "version": "15.4.0",
         "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/bminer-windows.zip"
     },
     "ehssand": {
@@ -148,7 +148,7 @@
         "path3": ".\\bin\\phoenix-3\\PhoenixMiner.exe",
         "minername": "PhoenixMiner",
         "version": "4.2c",
-        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/phoenix-miner-windows.zip"
+        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/phoenix-miner-windows.zip"
     },
     "tpruvot": {
         "name": "tpruvot",
