@@ -921,9 +921,11 @@ While ($true) {
                if($AlgoMiner.Type -ne "ASIC") {
                     if (Test-Path ".\timeout\download_block\download_block.txt") {$DLTimeout = Get-Content ".\timeout\download_block\download_block.txt"}
                     $DLName = $DLTimeout | Select-String "$($AlgoMiner.Name)"
-                        if ((Test-Path $AlgoMiner.Path) -eq $false) {
+                        if (-not (Test-Path $AlgoMiner.Path)) {
+                            Write-Host "Miner Not Found- Downloading" -ForegroundColor Yellow
                             if ($DLName.Count -lt 3) {
                             Expand-WebRequest -URI $AlgoMiner.URI -BuildPath $AlgoMiner.BUILD -Path (Split-Path $AlgoMiner.Path) -MineName (Split-Path $AlgoMiner.Path -Leaf) -MineType $AlgoMiner.Type
+                            Start-Sleep -S 1
                             $Download = $true
                                 if (-not (Test-Path $ALgoMiner.Path)) {
                                     if (-not (Test-Path ".\timeout\download_block")) {New-Item -Name "download_block" -Path ".\timeout" -ItemType "directory" | OUt-Null}
@@ -970,7 +972,8 @@ While ($true) {
                 if($CoinMiner.Type -ne "ASIC") {
                     if (Test-Path ".\timeout\download_block\download_block.txt") {$DLTimeout = Get-Content ".\timeout\download_block\download_block.txt"}
                     $DLName = $DLTimeout | Select-String "$($CoinMiner.Name)"
-                        if ((Test-Path $CoinMiner.Path) -eq $false) {
+                        if (-not (Test-Path $CoinMiner.Path)) {
+                            Write-Host "Miner Not Found- Downloading" -ForegroundColor Yellow
                             if ($DLName.Count -lt 3) {
                                 Expand-WebRequest -URI $CoinMiner.URI -BuildPath $CoinMiner.BUILD -Path (Split-Path $CoinMiner.Path) -MineName (Split-Path $CoinMiner.Path -Leaf) -MineType $CoinMiner.Type
                                 $Download = $true
@@ -1414,7 +1417,6 @@ While ($true) {
         $StatusLite | Out-File ".\build\txt\minerstatslite.txt" -Append
         $MiningStatus | Out-File ".\build\txt\minerstatslite.txt" -Append
         $BanMessage | Out-File ".\build\txt\minerstatslite.txt" -Append
-        $ProfitTable = $null
 
         ## Load mini logo
         if ($Platform -eq "linux") { Get-Logo }
@@ -1553,6 +1555,7 @@ While ($true) {
             Get-Date | Out-Host
             Get-MinerActive | Out-Host
             Get-MinerStatus | Out-Host
+            $ProfitTable = $null
             Get-VM | Out-Host
             if ($SWARM_IT) {
                 if ($SwitchTime) {

@@ -2358,6 +2358,9 @@ API overhaul:
    calculations before watt applied, and then the normal BTC /day will
    be after.
 
+-Linux version will now set core speed for all AMD P-States, not just
+ the p-state for Mdpm (minor bugfix).
+
   Github Other fixes / Enhancements references:
   * Update XMR-Stak #83
   * OC - Added details for memory voltage and fan speed setting on Windows #75

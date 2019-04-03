@@ -18,7 +18,7 @@ function Get-Charts {
     $Power = "|"
     $Power_Levels = @{ }
     $WattTable = $false
-    $ProfitTable | ForEach-Object { if ($_.Power -gt 0) { $WattTable = $True } }
+    $ProfitTable | ForEach-Object { if ($_.Power -ne 0) { $WattTable = $True } }
 
     $Type | ForEach-Object {
         $Table = $ProfitTable | Where-Object TYPE -eq $_;
@@ -29,17 +29,15 @@ function Get-Charts {
         $Level = $null
         $Table | Sort-Object -Property Profits | ForEach-Object { if ($Null -ne $_.Profits) { $Profit = ($_.Profits * $Rates.$Currency).ToString("N2"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("Profit", "$Level $Profit $Currency/Day"); } }
         $Level = $null
-        $Table | Sort-Object -Property Profits | ForEach-Object { if ($Null -ne $_.Pool_Estimate) { $Profit = ($_.Pool_Estimate / $BTCExchangeRate).ToString("N5"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("Alt_Profit", "$Level $Profit $Y/Day"); } }
+        if($CoinExchange){$Table | Sort-Object -Property Pool_Estimate | ForEach-Object { if ($_.Pool_Estimate -gt 0) { $Profit = ($_.Pool_Estimate / $BTCExchangeRate).ToString("N5"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("Alt_Profit", "$Level $Profit $Y/Day"); } }}
         $Level = $null
         $Table | Sort-Object -Property Profits | ForEach-Object { if ($Null -ne $_.Profits) { $Profit = ($_.Profits).ToString("N5"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("BTC_Profit", "$Level $Profit BTC/Day"); } }
         $Level = $null
         $Table | Sort-Object -Property HashRates | ForEach-Object { if ($Null -ne $_.HashRates) { $HashRate = "$($_.HashRates | ConvertTo-Hash)/s"; $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("Hashrate", "$Level $Hashrate"); } }
         $Level = $null
         $Table | Sort-Object -Property Shares | ForEach-Object { if ($Null -ne $_.Shares) { if ($_.Shares -eq "N/A") { $_.Shares = 0 }else { $_.Shares = [Double]$_.Shares }; $Shares = "$($_.Shares)"; $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; if ($_.Shares -ne 0) { $Level = $Level + $Power }else { $Level = "|" }; $Power_Levels.$MinerName.Add("Shares", "$Level $Shares %"); } }
-        if ($WattTable -eq $true) {
-            $Level = $null
-            $Table | Sort-Object -Property HashRates | ForEach-Object { if ($Null -ne $_.Power) { $Pwatts = ($_.Power * $Rates.$Currency).ToString("N2"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("Watts", "$Level $PWatts $Currency/Day"); } }
-        }
+        $Level = $null
+        if ($WattTable -eq $true) { $Table | Sort-Object -Property Power | ForEach-Object { if ($_.Power -ne 0) { $Pwatts = ($_.Power * $Rates.$Currency).ToString("N2"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("Watts", "$Level $PWatts $Currency/Day"); } }}
     }
 
     $Type | ForEach-Object {
@@ -62,17 +60,23 @@ function Get-Charts {
             $green = "32";
             $cyan = "36";
             $red = "31";
-            $gray = "30";
+            $magenta = "35";
             $HLevel = "Hashrate:"
             $HStat = if ($Null -ne $_.Hashrates) { "$me[${red};1m$($Power_Levels.$MinerName.Hashrate)${me}[0m" }else { "$me[${red};1mBenchmarking${me}[0m" }
             $CLevel = "$Currency Profit:"
             $CStat = if ($Null -ne $_.Profits) { "$me[${green};1m$($Power_Levels.$MinerName.Profit)${me}[0m" }else { "$me[${green};1mBenchmarking${me}[0m" }
             $BLevel = "BTC Profit:"
-            $BStat = if ($Null -ne $_.shares) { "$me[${yellow};1m$($Power_Levels.$MinerName.BTC_Profit)${me}[0m" }else { "$me[${cyan};1mBenchmarking${me}[0m" }
-            $ALevel = "$CoinExchange Profit:"
-            $AStat = if ($Null -ne $_.Profits) { "$me[${cyan};1m$($Power_Levels.$MinerName.ALT_Profit)${me}[0m" }else { "$me[${yellow};1mBenchmarking${me}[0m" }
+            $BStat = if ($Null -ne $_.Profits) { "$me[${yellow};1m$($Power_Levels.$MinerName.BTC_Profit)${me}[0m" }else { "$me[${yellow};1mBenchmarking${me}[0m" }
+            if($CoinExchange) {
+                $ALevel = "$CoinExchange Profit:"
+                $AStat = if ($_.Pool_Estimate -gt 0) { "$me[${cyan};1m$($Power_Levels.$MinerName.ALT_Profit)${me}[0m" }else { "$me[${cyan};1mBenchmarking${me}[0m" }
+                }
             $SLevel = "Shares:"
-            $SStat = if ($Null -ne $_.Profits) { "$me[${blue};1m$($Power_Levels.$MinerName.Shares)${me}[0m" }else { "$me[${blue};1mBenchmarking${me}[0m" }
+            $SStat = if ($Null -ne $_.Shares) { "$me[${blue};1m$($Power_Levels.$MinerName.Shares)${me}[0m" }else { "$me[${blue};1mBenchmarking${me}[0m" }
+            if($WattTable -eq $true) {
+            $Wlevel = "Watts:"
+            $WStat = if ($_.Power -ne 0) { "$me[${magenta};1m$($Power_Levels.$MinerName.Watts)${me}[0m" }else { "$me[${magenta};1mBenchmarking${me}[0m" }
+            }
             $Table_Item = @();
             $TableName = "$me[${white};1mName: $($_.Miner)${me}[0m"; 
             $TableSymbol = "$me[${white};1mCoin: $($_.Name)${me}[0m"; 
@@ -83,7 +87,12 @@ function Get-Charts {
             $Table_Item += "$me[${white};1m$($CLevel.PadRight(14))${me}[0m $CStat"
             $Table_Item += "$me[${white};1m$($SLevel.PadRight(14))${me}[0m $SStat"
             $Table_Item += "$me[${white};1m$($BLevel.PadRight(14))${me}[0m $BStat"
+            if($CoinExchange) {
             $Table_Item += "$me[${white};1m$($ALevel.PadRight(14))${me}[0m $AStat"
+            }
+            if($WattTable -eq $true) {
+                $Table_Item += "$me[${white};1m$($WLevel.PadRight(14))${me}[0m $WStat"
+            }
             $Table_Item += "".PadLeft($Border, "*")
             $Status += $Table_Item
         }
