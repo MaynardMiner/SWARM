@@ -2283,7 +2283,8 @@ Items / Enhancements / Issues:
 ``-AUTO_COIN`` is back and highly improved!!
   * features a more streamlined design.
   * faster calculations that before.
-  * better analysis between coins vs. algorithms.
+  * better analysis between coins vs. algorithms. 
+    (However, still asyncrounous in design)
   * no possibility of GUI stat issues.
   * pre-tested by users.
   * Note: Coins by design in Yiimp source code
@@ -2297,7 +2298,8 @@ Items / Enhancements / Issues:
 -Shares 
   * SWARM now tracks user share count on certain pools.
   * zergpool will only work if -Auto_Coin yes is on.
-  * I am still working on all pools.
+  * I am still working on all pools. Not all pools are
+    supported.
 
 New Commands:
 
@@ -2314,9 +2316,9 @@ API overhaul:
     * http://localhost:4099/get&stats
     * http://localhost:4099/version&query
 
-minor fixes on commands (I'm not sure if all working, I was
-still testing while coding -Auto_Coin, report if a command gives
-you an issue.
+  * minor fixes on commands (I'm not sure if all working, I was
+    still testing while coding -Auto_Coin, report if a command give
+    you an issue.
 
 -Various small fixes were performed, too numerous to account for each one.
 -Most of them were small fixes found while going through miner files, and
@@ -2356,3 +2358,15 @@ you an issue.
    calculations before watt applied, and then the normal BTC /day will
    be after.
 
+  Github Other fixes / Enhancements references:
+  * Update XMR-Stak #83
+  * OC - Added details for memory voltage and fan speed setting on Windows #75
+  * Update Wildrig-Multi #80 
+  * ASIC restoration #62
+  * Feature Request: New Argument for True Crypto Stats #77
+  * Update TeamRedMiner #84 
+  * Update TT-Miner #81
+  * Update Bminer #85 
+  * Glitch where -Algorithm and -Coin switches back. #79
+  * Restore Auto-Coin switching. #78
+  * update xmrig #82 
