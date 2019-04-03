@@ -184,7 +184,6 @@ function Start-LaunchCode {
                 $script += ". `"$dir\build\powershell\output.ps1`";"
                 $script += "$dir\build\powershell\icon.ps1 `"$dir\build\apps\miner.ico`"" 
                 $script += "`$host.ui.RawUI.WindowTitle = `'$($MinerCurrent.Name) - $($MinerCurrent.Algo)`';"
-                if($MinerCurrent.Type -like "*AMD*"){$Script += "setx GPU_FORCE_64BIT_PTR 1"}
                 $MinerCurrent.Prestart | ForEach-Object {
                     if ($_ -notlike "export LD_LIBRARY_PATH=$dir\build\export") {
                         $setx = $_ -replace "export ", "setx "
