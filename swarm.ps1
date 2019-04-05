@@ -457,6 +457,8 @@ $Priorities = Get-Content ".\config\pools\pool-priority.json" | ConvertFrom-Json
 $DonationMode = $false
 $Warnings = @()
 
+[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
+
 ## Linux Initialize
 if ($Platform -eq "linux") {
     ## HiveOS Only Items
