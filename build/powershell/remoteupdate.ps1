@@ -145,53 +145,6 @@ function start-update {
                                 }
                             }
 
-                            if ($ChangeFile -eq "stak_cpu.json") {
-                                $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
-                                    ##2.1.3
-                                    if ($_ -ne "name") {
-                                        $Data.$_.commands| Add-Member "cryptonight" "" -ErrorAction SilentlyContinue -Force
-                                        $Data.$_.difficulty | Add-Member "cryptonight" "" -ErrorAction SilentlyContinue -Force
-                                        $Data.$_.naming | Add-Member "cryptonight" "cryptonight" -ErrorAction SilentlyContinue -Force
-
-                                        $Data.$_.commands| Add-Member "cryptonightv7" "" -ErrorAction SilentlyContinue -Force
-                                        $Data.$_.difficulty | Add-Member "cryptonightv7" "" -ErrorAction SilentlyContinue -Force
-                                        $Data.$_.naming | Add-Member "cryptonightv7" "cryptonight_v7" -ErrorAction SilentlyContinue -Force
-
-                                        $Data.$_.commands| Add-Member "cryptonightv8" "" -ErrorAction SilentlyContinue -Force
-                                        $Data.$_.difficulty | Add-Member "cryptonightv8" "" -ErrorAction SilentlyContinue -Force
-                                        $Data.$_.naming | Add-Member "cryptonightv8" "cryptonight_v8" -ErrorAction SilentlyContinue -Force
-
-                                        $Data.$_.commands| Add-Member "cryptonightheavy" "" -ErrorAction SilentlyContinue -Force
-                                        $Data.$_.difficulty | Add-Member "cryptonightheavy" "" -ErrorAction SilentlyContinue -Force
-                                        $Data.$_.naming | Add-Member "cryptonightheavy" "cryptonight_heavy" -ErrorAction SilentlyContinue -Force
-
-                                        $Data.$_.commands| Add-Member "cryptonightgpu" "" -ErrorAction SilentlyContinue -Force
-                                        $Data.$_.difficulty | Add-Member "cryptonightgpu" "" -ErrorAction SilentlyContinue -Force
-                                        $Data.$_.naming | Add-Member "cryptonightgpu" "cryptonight_gpu" -ErrorAction SilentlyContinue -Force
-
-                                        $Data.$_.commands| Add-Member "cryptonightgpu" "" -ErrorAction SilentlyContinue -Force
-                                        $Data.$_.difficulty | Add-Member "cryptonightgpu" "" -ErrorAction SilentlyContinue -Force
-                                        $Data.$_.naming | Add-Member "cryptonightgpu" "cryptonight_gpu" -ErrorAction SilentlyContinue -Force
-
-                                        $Data.$_.commands| Add-Member "cryptonight_superfast" "" -ErrorAction SilentlyContinue -Force
-                                        $Data.$_.difficulty | Add-Member "cryptonight_superfast" "" -ErrorAction SilentlyContinue -Force
-                                        $Data.$_.naming | Add-Member "cryptonight_superfast" "cryptonight_superfast" -ErrorAction SilentlyContinue -Force
-
-                                        $Data.$_.commands| Add-Member "cryptonightsuperfast" "" -ErrorAction SilentlyContinue -Force
-                                        $Data.$_.difficulty | Add-Member "cryptonightsuperfast" "" -ErrorAction SilentlyContinue -Force
-                                        $Data.$_.naming | Add-Member "cryptonightsuperfast" "cryptonightsuperfast" -ErrorAction SilentlyContinue -Force
-
-                                        $Data.$_.commands| Add-Member "cryptonightr" "" -ErrorAction SilentlyContinue -Force
-                                        $Data.$_.difficulty | Add-Member "cryptonightr" "" -ErrorAction SilentlyContinue -Force
-                                        $Data.$_.naming | Add-Member "cryptonightr" "cryptonight_r" -ErrorAction SilentlyContinue -Force
-
-                                        $Data.$_.commands| Add-Member "cryptonight_v8_reversewaltz" "" -ErrorAction SilentlyContinue -Force
-                                        $Data.$_.difficulty | Add-Member "cryptonight_v8_reversewaltz" "" -ErrorAction SilentlyContinue -Force
-                                        $Data.$_.naming | Add-Member "cryptonight_v8_reversewaltz" "cryptonight_v8_reversewaltz" -ErrorAction SilentlyContinue -Force
-                                    }
-                                }
-                            }
-
                             if ($ChangeFile -eq "xmr-stak.json") {
                                 $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                     ##2.0.7

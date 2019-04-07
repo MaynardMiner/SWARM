@@ -1,0 +1,23 @@
+{
+    "name": "xmrig_cpu",
+    "CPU": {
+        "name": "CPU",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "cryptonightv8": "",
+            "cryptonightheavy": "",
+            "cryptonightr": ""
+        },
+        "difficulty": {
+            "cryptonightv8": "",
+            "cryptonightheavy": "",
+            "cryptonightr": ""
+        },
+        "naming": {
+            "cryptonightv8": "cryptonight",
+            "cryptonightheavy": "cryptonight-heavy",
+            "cryptonightr": "cn/r"
+        }
+    }
+}
