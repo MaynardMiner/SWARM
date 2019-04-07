@@ -12,7 +12,7 @@ $NVIDIATypes | ForEach-Object {
     if ($Platform -eq "linux") { $Build = "Tar" }
     elseif ($Platform -eq "windows") { $Build = "Zip" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "trex-$Num"; $Port = "5000$Num"; $Port2 = "6000$Num"
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "trex-$Num"; $Port = "5000$Num"; $Port2 = "8000$Num"
 
     Switch ($Num) {
         1 { $Get_Devices = $NVIDIADevices1 }
