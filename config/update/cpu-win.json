@@ -1,19 +1,18 @@
  {
-  "name":"cpu-win", 
-    "jayddee": {
-      "name":"jayddee", 
-      "type":"cpu", 
-      "path1":".\\bin\\jayddee-1\\cpuminer-sse2.exe", 
-      "minername":"cpuminer-sse2.exe", 
-      "version":"3.8.8.1", 
-      "uri":"https://github.com/JayDDee/cpuminer-opt/files/1996977/cpuminer-opt-3.8.8.1-windows.zip"
-}, 
     "bubasik": {
       "name":"bubasik", 
       "type":"cpu", 
       "path1":".\\bin\\bubasik\\cpuminer-sse2.exe", 
       "minername":"cpuminer-sse2.exe", 
-      "version":"3.8.8.3", 
+      "version":"3.8.8.4", 
       "uri":"https://github.com/bubasik/cpuminer-opt-yespower/releases/download/v3.8.8.3/cpuminer-opt-cryply-yespower-ver2.zip"
+},
+"stak_cpu": {
+  "name": "stak_cpu",
+  "type": "cpu",
+  "CPU": ".\\bin\\stak-cpu-1\\xmr-stak.exe",
+  "minername": "xmr-stak.exe",
+  "version": "2.10.4",
+  "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/xmr-stak-windows.zip"
 }
 }

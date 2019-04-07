@@ -118,6 +118,33 @@ function start-update {
                                 }
                             }
 
+                            if ($ChangeFile -eq "bubasik.json") {
+                                $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                    ##2.1.3
+                                    if ($_ -ne "name") {
+                                        $Data.$_.commands| Add-Member "yespowerr16" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "yespowerr16" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "yespowerr16" "yespowerr16" -ErrorAction SilentlyContinue
+
+                                        $Data.$_.commands| Add-Member "yespowerr16" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "yespowerr16" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "yespowerr16" "yespowerr16" -ErrorAction SilentlyContinue
+
+                                        $Data.$_.commands| Add-Member "yescryptr8" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "yescryptr8" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "yescryptr8" "yescryptr8" -ErrorAction SilentlyContinue
+
+                                        $Data.$_.commands| Add-Member "yescryptr32" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "yescryptr32" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "yescryptr32" "yescryptr32" -ErrorAction SilentlyContinue
+
+                                        $Data.$_.commands| Add-Member "argon2d-dyn" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "argon2d-dyn" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "argon2d-dyn" "argon2d500" -ErrorAction SilentlyContinue
+                                    }
+                                }
+                            }
+
                             if ($ChangeFile -eq "xmr-stak.json") {
                                 $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                     ##2.0.7
