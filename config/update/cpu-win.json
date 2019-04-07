@@ -1,18 +1,18 @@
- {
-    "bubasik": {
-      "name":"bubasik", 
-      "type":"cpu", 
-      "path1":".\\bin\\bubasik\\cpuminer-sse2.exe", 
-      "minername":"cpuminer-sse2.exe", 
-      "version":"3.8.8.4", 
-      "uri":"https://github.com/bubasik/cpuminer-opt-yespower/releases/download/3.8.8.4/Cpuminer-opt-yespower-ytn-ver3.zip"
-},
-"stak_cpu": {
-  "name": "stak_cpu",
-  "type": "cpu",
-  "CPU": ".\\bin\\stak-cpu-1\\xmr-stak.exe",
-  "minername": "xmr-stak.exe",
-  "version": "2.10.4",
-  "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/xmr-stak-windows.zip"
-}
+{
+  "bubasik": {
+    "name": "bubasik",
+    "type": "cpu",
+    "path1": ".\\bin\\bubasik\\cpuminer-sse2.exe",
+    "minername": "cpuminer-sse2.exe",
+    "version": "3.8.8.4",
+    "uri": "https://github.com/bubasik/cpuminer-opt-yespower/releases/download/3.8.8.4/Cpuminer-opt-yespower-ytn-ver3.zip"
+  },
+  "xmrig": {
+    "name": "xmrig",
+    "type": "cpu",
+    "CPU": ".\\bin\\xmrig-cpu-1\\xmrig.exe",
+    "minername": "xmrig.exe",
+    "version": "2.14.1",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v8.0/xmrig-windows.zip"
+  }
 }

@@ -1,9 +1,9 @@
 ##Miner Path Information
-if ($cpu.stak_cpu.path1) { $Path = "$($cpu.stak_cpu.path1)" }
+if ($cpu.xmrig_cpu.path1) { $Path = "$($cpu.xmrig_cpu.path1)" }
 else { $Path = "None" }
-if ($cpu.stak_cpu.uri) { $Uri = "$($cpu.stak_cpu.uri)" }
+if ($cpu.xmrig_cpu.uri) { $Uri = "$($cpu.xmrig_cpu.uri)" }
 else { $Uri = "None" }
-if ($cpu.stak_cpu.minername) { $MinerName = "$($cpu.stak_cpu.minername)" }
+if ($cpu.xmrig_cpu.minername) { $MinerName = "$($cpu.xmrig_cpu.minername)" }
 else { $MinerName = "None" }
 if ($Platform -eq "linux") { $Build = "Tar" }
 elseif ($Platform -eq "windows") { $Build = "Zip" }
@@ -17,7 +17,7 @@ $Log = Join-Path $dir "logs\$ConfigType.log"
 #Max threads must be specified- XMR-STAK has no -t option
 
 ##Get Configuration File
-$GetConfig = "$dir\config\miners\stak_cpu.json"
+$GetConfig = "$dir\config\miners\xmrig_cpu.json"
 try { $Config = Get-Content $GetConfig | ConvertFrom-Json }
 catch { Write-Warning "Warning: No config found at $GetConfig" }
 
@@ -48,7 +48,7 @@ $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Obje
                 Path       = $Path
                 Devices    = $Devices
                 DeviceCall = "xmrstak-opt"
-                Arguments  = "--currency $($Config.$ConfigType.naming.$($_.Algorithm)) -i 60045 --url stratum+tcp://$($_.Host):$($_.Port) --user $($_.User1) --pass $($_.Pass1)$($Diff) --rigid SWARM --noAMD --noNVIDIA --use-nicehash $($Config.$ConfigType.commands.$($_.Algorithm))"
+                Arguments  = "-a $($Config.$ConfigType.naming.$($_.Algorithm)) --api-port=60049 -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.User1) -p$($_.Pass1)$($Diff) --donate-level 1 --nicehash $($Config.$ConfigType.commands.$($_.Algorithm))"
                 HashRates  = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) }
                 Quote      = if ($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)) { $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) * ($_.Price) }else { 0 }
                 PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }

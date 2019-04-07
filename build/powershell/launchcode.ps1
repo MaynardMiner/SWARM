@@ -142,8 +142,7 @@ function Start-LaunchCode {
             "*CPU*" {
                 if ($MinerCurrent.Devices -eq '') { $MinerArguments = "$($MinerCurrent.Arguments)" }
                 elseif ($MinerCurrent.DeviceCall -eq "cpuminer-opt") { $MinerArguments = "-t $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
-                elseif ($MinerCurrent.DeviceCall -eq "cryptozeny") { $MinerArguments = "-t $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
-                elseif ($MinerCurrent.DeviceCall -eq "xmrstak-opt") { $MinerArguments = "$($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
+                elseif ($MinerCurrent.DeviceCall -eq "xmrstak-opt") { $MinerArguments = "-t $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
             }
         }
 
