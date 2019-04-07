@@ -286,7 +286,7 @@ $FileClear += ".\build\txt\bestminers.txt"
 $FileClear | ForEach-Object { if (Test-Path $_) { Remove-Item $_ -Force } }
 
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
-$Debug = $false
+$Debug = $true
 
 ## Convert Arguments Into Hash Table
 if ($Debug -ne $true) {
@@ -718,6 +718,9 @@ if ($NVIDIADevices2 -ne "none") { $NVIDIADevices2 = $NVIDIADevices2.Substring(0,
 if ($NVIDIADevices3 -ne "none") { $NVIDIADevices3 = $NVIDIADevices3.Substring(0, $NVIDIADevices3.Length - 1) }
 if ($AMDDevices1 -ne "none") { $AMDDevices1 = $AMDDevices1.Substring(0, $AMDDevices1.Length - 1) }
 $GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
+$NVIDIATypes = @(); if($Type -like "*NVIDIA*"){$Type | Where {$_ -like "*NVIDIA*"} | %{$NVIDIATypes += $_}}
+$CPUTypes = @(); if($Type -like "*CPU*"){$Type | Where {$_ -like "*CPU*"} | %{$CPUTypes += $_}}
+$AMDTypes = @(); if($Type -like "*AMD*"){$Type | Where {$_ -like "*AMD*"} | %{$AMDTypes += $_}}
 }
 
 ##Reset-Old Stats And Their Time

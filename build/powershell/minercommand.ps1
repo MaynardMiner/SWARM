@@ -55,7 +55,8 @@ function Get-Miners {
         }
 
         $GPUminers | ForEach-Object { $GetMiners.Add($_) | Out-Null }
-
+        $GPUMiners | ForEach-Object {$_.Name = $_.MName}
+        
         $NVIDIA1EX = $GetMiners | Where-Object TYPE -eq "NVIDIA1" | ForEach-Object { if ($No_Algo1 -contains $_.Algo) { $_ } }
         $NVIDIA2EX = $GetMiners | Where-Object TYPE -eq "NVIDIA2" | ForEach-Object { if ($No_Algo2 -contains $_.Algo) { $_ } }
         $NVIDIA3EX = $GetMiners | Where-Object TYPE -eq "NVIDIA3" | ForEach-Object { if ($No_Algo3 -contains $_.Algo) { $_ } }
