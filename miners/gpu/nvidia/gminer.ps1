@@ -23,18 +23,12 @@ $NVIDIATypes | ForEach-Object {
     ##Log Directory
     $Log = Join-Path $dir "logs\$ConfigType.log"
 
-    ##Parse -GPUDevices
-    if ($Get_Devices -ne "none") {
-        $GPUDevices1 = $Get_Devices
-        $GPUDevices1 = $GPUDevices1 -replace ',', ' '
-        $Devices = $GPUDevices1
-    }
-    else { $Devices = "none" }
-
     ##gminer apparently doesn't know how to tell the difference between
     ##cuda and amd devices, like every other miner that exists. So now I 
     ##have to spend an hour and parse devices
     ##to matching platforms.
+    $ArgDevices = $Null;
+    
     if ($Get_Devices -ne "none") {
         $GPUDevices1 = $Get_Devices
         $GPUEDevices1 = $GPUDevices1 -split ","
