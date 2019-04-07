@@ -5,7 +5,7 @@
       "path1":".\\bin\\bubasik\\cpuminer-sse2.exe", 
       "minername":"cpuminer-sse2.exe", 
       "version":"3.8.8.4", 
-      "uri":"https://github.com/bubasik/cpuminer-opt-yespower/releases/download/v3.8.8.3/cpuminer-opt-cryply-yespower-ver2.zip"
+      "uri":"https://github.com/bubasik/cpuminer-opt-yespower/releases/download/3.8.8.4/Cpuminer-opt-yespower-ytn-ver3.zip"
 },
 "stak_cpu": {
   "name": "stak_cpu",
