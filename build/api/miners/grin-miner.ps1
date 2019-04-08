@@ -1,16 +1,16 @@
 function Get-StatsGrinMiner {
     $global:HS = "hs"
-    try {$Request = Get-Content ".\logs\$MinerType.log" -ErrorAction SilentlyContinue}catch {Write-Host "Failed to Read Miner Log"}
+    try { $Request = Get-Content ".\logs\$MinerType.log" -ErrorAction SilentlyContinue }catch { Write-Host "Failed to Read Miner Log" }
     if ($Request) {
         $Hash = @()
-        $Devices | % {
+        $Devices | ForEach-Object {
             $DeviceData = $Null
-            $DeviceData = $Request | Select-String "Device $($_)" | % {$_ | Select-String "Graphs per second: "} | Select -Last 1
-            $DeviceData = $DeviceData -split "Graphs per second: " | Select -Last 1 | % {$_ -split " - Total" | Select -First 1}
-            if ($DeviceData) {$Hash += $DeviceData; $global:BRAW += [Double]$DeviceData}else {$Hash += 0; $global:BRAW += 0}
+            $DeviceData = $Request | Select-String "Device $($_)" | ForEach-Object { $_ | Select-String "Graphs per second: " } | Select-Object -Last 1
+            $DeviceData = $DeviceData -split "Graphs per second: " | Select-Object -Last 1 | ForEach-Object { $_ -split " - Total" | Select-Object -First 1 }
+            if ($DeviceData) { $Hash += $DeviceData; $global:BRAW += [Double]$DeviceData }else { $Hash += 0; $global:BRAW += 0 }
         }
         Write-MinerData2;
-        try {for ($i = 0; $i -lt $Devices.Count; $i++) {$global:GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $i)}}catch {Write-Host "Failed To parse GPU Threads" -ForegroundColor Red};
+        try { for ($i = 0; $i -lt $Devices.Count; $i++) { $global:GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $i) } }catch { Write-Host "Failed To parse GPU Threads" -ForegroundColor Red };
         $global:BACCepted = $null
         $global:BREJected = $null
         $global:BACCepted = $($Request | Select-String "Share Accepted!!").count
@@ -20,7 +20,8 @@ function Get-StatsGrinMiner {
         $global:BMinerACC += $global:BACCepted
         $global:BMinerREJ += $global:BREJected
         $global:BUPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
-        $global:BALGO.Add($MinerType,$MinerAlgo)
+        if ($MinerType -eq "NVIDIA1" -or $MinerType -eq "AMD1") { $global:BALGO.Add("Main", $global:BHiveAlgo) }
+        else { $global:BALGO.Add($MinerType, $global:BHiveAlgo) }
     }
-    else {Set-APIFailure; break}
+    else { Set-APIFailure; break }
 }

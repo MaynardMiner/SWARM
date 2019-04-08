@@ -180,7 +180,7 @@ While ($True) {
     }
 
     ## Reset All Stats, Rebuild Tables
-    $global:BALGO = @{}; $global:BHiveAlgo = @(); $global:BHashRates = @(); $Group1 = $null
+    $global:BALGO = @{}; $global:TALGO = @{}; $global:BHashRates = @(); $Group1 = $null
     $global:BFans = @(); $global:BTemps = @(); $global:BPower = @(); $Default_Group = $null
     $global:BCPUKHS = $null; $global:BCPUACC = 0; $global:BCPUREJ = 0; $global:BCPURAW = 0; 
     $global:BRAW = 0; $global:BKHS = 0; $global:BREJ = 0; 
@@ -220,8 +220,8 @@ While ($True) {
             $MinerAPI = "$($_.API)"
             $Server = "$($_.Server)"
             $HashPath = ".\logs\$($_.Type).log"
-            if($MinerType -ne "ASIC"){$global:BHiveAlgo += $HiveNames.$($_.Algo).hiveos_name}
-            $global:AHiveAlgo += $HiveNames.$($_.Algo).hiveos_name
+            if($MinerType -ne "ASIC"){$global:BHiveAlgo = $HiveNames.$($_.Algo).hiveos_name}
+            else{$global:BHiveAlgo = $MinerAlgo}
 
             ## Set Object For Type (So It doesn't need to be repeated)
             if ($MinerType -like "*NVIDIA*") {$TypeS = "NVIDIA"}
@@ -351,6 +351,14 @@ While ($True) {
         }
     }
 
+
+    if($global:BALGO.Main){$CurAlgo = $global:BALGO.Main}
+    else{$FirstMiner = $global:BALGO.keys | Select -First 1; if($FirstMiner){$CurAlgo = $global:BALGO.$FirstMiner}}
+    if($global:TALGO.Main){$CurTAlgo = $global:TALGO.Main}
+    else{$FirstMiner = $global:TALGO.keys | Select -First 1; if($FirstMiner){$CurTAlgo = $global:TALGO.$FirstMiner}}
+    if($CurAlgo){Write-Host "
+HiveOS Name For Algo is $CurAlgo" -ForegroundColor Magenta}
+
     if ($CPUOnly -eq $true) {
         $global:BCPUKHS = [Math]::Round($global:BCPUKHS, 4)
         $HIVE = "
@@ -358,7 +366,8 @@ $($CPUHash -join "`n")
 KHS=$global:BCPUKHS
 ACC=$global:BCPUACC
 REJ=$global:BCPUREJ
-ALGO=$global:BCPUALGO
+ALGO=$CurTAlgo
+HIVEALGO=$CurAlgo
 TEMP=$CPUTEMP
 FAN=$CPUFAN
 UPTIME=$global:BCPUUPTIME
@@ -372,7 +381,7 @@ HSU=$global:BCPUHS
             Write-Host " KHS=$global:BCPUKHS" -ForegroundColor Yellow -NoNewline
             Write-Host " ACC=$global:BCPUACC" -ForegroundColor DarkGreen -NoNewline
             Write-Host " REJ=$global:BCPUREJ" -ForegroundColor DarkRed -NoNewline
-            Write-Host " ALGO=$global:BCPUALGO" -ForegroundColor Gray -NoNewline
+            Write-Host " ALGO=$CurTAlgo" -ForegroundColor Gray -NoNewline
             Write-Host " FAN=$CPUFAN" -ForegroundColor Cyan -NoNewline
             Write-Host " UPTIME=$global:BCPUUPTIME
 " -ForegroundColor White
@@ -399,9 +408,6 @@ HSU=$global:BCPUHS
             }
         }
 
-        $global:BALGO.keys | %{if($_ -like "*1*"){$Group1 = $_}}
-        if($Group1){$CurAlgo = $global:BALGO.$Group1}
-        else{$Default_Group = $global:BALGO.keys | Select -First 1; $CurAlgo = $global:BALGO.$Default_Group}
         $global:BKHS = [Math]::Round($global:BKHS, 4)
 
         $HIVE = "
@@ -409,8 +415,8 @@ $($global:BHashRates -join "`n")
 KHS=$global:BKHS
 ACC=$global:BACC
 REJ=$global:BREJ
-ALGO=$CurAlgo
-HIVEALGO=$global:BHiveAlgo
+ALGO=$CurTAlgo
+HIVEALGO=$CurAlgo
 $($global:BFans -join "`n")
 $($global:BTemps -join "`n")
 UPTIME=$global:BUPTIME
@@ -423,7 +429,7 @@ HSU=khs
             Write-Host " KHS=$global:BKHS" -ForegroundColor Yellow -NoNewline
             Write-Host " ACC=$global:BACC" -ForegroundColor DarkGreen -NoNewline
             Write-Host " REJ=$global:BREJ" -ForegroundColor DarkRed -NoNewline
-            Write-Host " ALGO=$CurAlgo" -ForegroundColor Gray -NoNewline
+            Write-Host " ALGO=$CurTAlgo" -ForegroundColor Gray -NoNewline
             Write-Host " $global:BFans" -ForegroundColor Cyan -NoNewline
             Write-Host " $global:BTemps" -ForegroundColor Magenta -NoNewline
             if ($Platforms -eq "windows") {Write-Host " $global:BPower"  -ForegroundColor DarkCyan -NoNewline}
