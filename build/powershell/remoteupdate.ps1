@@ -102,6 +102,11 @@ function start-update {
                             Write-Host "Pulled $OldJson"
                             $Data = $JsonData | ConvertFrom-Json;
 
+                            if ($ChangeFile -eq "pool-algos.json") {
+                              $Data | Add-Member "yespowerr16" @{"hiveos_name" = "yespowerr16"; "pools_to_exclude" = @("add pools here","comma seperated"); "miners_to_exclude" = @("add miners here","comma seperate")} -ErrorAction SilentlyContinue
+                              $Data | Add-Member "yespowerr8" @{"hiveos_name" = "yespowerr8"; "pools_to_exclude" = @("add pools here","comma seperated"); "miners_to_exclude" = @("add miners here","comma seperate")} -ErrorAction SilentlyContinue
+                            }
+
                             if ($ChangeFile -eq "cryptodredge.json") {
                                 $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                     ##2.1.3
