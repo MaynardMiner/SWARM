@@ -58,6 +58,7 @@ function Get-WalletTable {
      $Format += ""
      $Format += "Total $($_) Unpaid = $Total_Unpaid"
      $Format += "Total $($_) Balance = $Total_Balance"
+     $Format += "Total Current $($_) Profit = $([Decimal]$Total_Unpaid + [Decimal]$Total_Balance)"
      $Format += ""
     }
 

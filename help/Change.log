@@ -2278,3 +2278,118 @@ Items / Enhancements / Issues:
    use -AltWallet arguments.
 
 
+2.1.2
+
+``-AUTO_COIN`` is back and highly improved!!
+  * features a more streamlined design.
+  * faster calculations that before.
+  * better analysis between coins vs. algorithms. 
+    (However, still asyncrounous in design)
+  * no possibility of GUI stat issues.
+  * pre-tested by users.
+  * Note: Coins by design in Yiimp source code
+    are calculated asyncrounously between algorithm
+    profits. Stats will never match algorithm pricing,
+    but a more accurate / live figure is generated.
+  * Currently only zergpool.
+  * Plans to add fairpool coming very soon (after feedback
+    of bug / issue correction).
+
+-Shares 
+  * SWARM now tracks user share count on certain pools.
+  * zergpool will only work if -Auto_Coin yes is on.
+  * I am still working on all pools. Not all pools are
+    supported.
+
+New Commands:
+
+ ``-get charts``
+   * will display a bar graphic chart on miners, in 
+     relation to each other.
+   * not implemented but coming soon: Can be sorted
+     by user input.
+
+API overhaul:
+  * API can now run 80% of commands through it.
+  * If a command has an argument, it is parsed with an '&'
+  * examples:
+    * http://localhost:4099/get&stats
+    * http://localhost:4099/version&query
+
+  * minor fixes on commands (I'm not sure if all working, I was
+    still testing while coding -Auto_Coin, report if a command give
+    you an issue.
+
+-Various small fixes were performed, too numerous to account for each one.
+-Most of them were small fixes found while going through miner files, and
+ had little to no real affect to the performance of SWARM.
+
+-build\api created, plan to use this for all api uses, via with other programs,
+ or with SWARM itself.
+
+-ASIC is working! (remote version verified)
+   * tested only remote version.
+   * two new arguments are added for ``-Type ASIC``
+     * ``-ASIC_IP`` is the IP of the ASIC. If installing
+       directly on ASIC, this argument is not needed.
+     * ``-ASIC_ALGO`` algorithms to be use for asic
+          comma seperated if more than 1
+     * new command for ASIC support:
+       * ``get asic``
+       * This will allow you to get details of
+         the asic, and return in a readable format.
+    * I will generate wiki after initial user testing.
+    * Should work with other device types (if using remotely).
+    * DOES NOT work with HiveOS. I will not create support for HiveOS- 
+      If you wish support, use HiveOS image, and then run SWARM with it.
+
+-New COMMAND:
+  * ``get charts``: Since so much data is being displayed in stats
+      screen, I have attempted to make a better visualization of the
+      stats, using simple comparative bar charting.
+
+-I tried to push out release and over 10k changes to codebase asap,
+ core features are working 100%, some sub-features may have been broken
+ due to new changes. If you see any issues- please report, and I will fix
+ asap.
+
+``-CoinExchange`` is now calculated pre-power figures, so before watt
+   calculations are added in. So you can use -CoinExchange BTC to get
+   calculations before watt applied, and then the normal BTC /day will
+   be after.
+
+-Linux version will now set core speed for all AMD P-States, not just
+ the p-state for Mdpm (minor bugfix).
+
+  Github Other fixes / Enhancements references:
+  * Update XMR-Stak #83
+  * OC - Added details for memory voltage and fan speed setting on Windows #75
+  * Update Wildrig-Multi #80 
+  * ASIC restoration #62
+  * Feature Request: New Argument for True Crypto Stats #77
+  * Update TeamRedMiner #84 
+  * Update TT-Miner #81
+  * Update Bminer #85 
+  * Glitch where -Algorithm and -Coin switches back. #79
+  * Restore Auto-Coin switching. #78
+  * update xmrig #82 
+
+
+  2.1.3
+
+  Here are the relevant issues fixes / Enhancements:
+
+  CryptoDredge 0.18 #88
+  update cpuminer-bubasik #92 
+  miniz --cuda-devices doesn't work in linux #98
+  update miniz #93
+  update gminer #94 
+  reorganize miners directory #97 
+  ASIC API Issues #99
+  update wiki with new wallet config #71 
+  windows: Connection to HiveOS. #87
+  Add Total BTC Profit in get wallets command #96
+  Reduce miner.ps1 files #95 
+
+  -Windows will now detect AMD drivers.
+  -Windows will now detect AES support.

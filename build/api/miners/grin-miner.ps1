@@ -20,7 +20,7 @@ function Get-StatsGrinMiner {
         $global:BMinerACC += $global:BACCepted
         $global:BMinerREJ += $global:BREJected
         $global:BUPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
-        $global:BALGO += "$MinerAlgo"
+        $global:BALGO.Add($MinerType,$MinerAlgo)
     }
     else {Set-APIFailure; break}
 }

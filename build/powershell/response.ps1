@@ -43,7 +43,7 @@ $Stats = @{
    fan = @($global:BFans)
    uptime = $global:BUPTIME
    ar = @($AR)
-   algo = $global:BHIVEALGO
+   algo = $CurAlgo
    bus_numbers = @($BusNumbers)
    }
    total_khs = $global:BKHS

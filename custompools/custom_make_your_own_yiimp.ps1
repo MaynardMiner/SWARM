@@ -106,7 +106,7 @@ $Pool = {
     ##
     ##This is your rig pass setting for pool.
     ##
-    Pass = ID=SWARM
+    Pass = id=SWARM
     ##
     ##
 }

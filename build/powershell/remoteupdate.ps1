@@ -46,6 +46,8 @@ function start-update {
         $PreviousVersions += "SWARM.2.0.8"
         $PreviousVersions += "SWARM.2.0.9"
         $PreviousVersions += "SWARM.2.1.0"
+        $PreviousVersions += "SWARM.2.1.1"
+        $PreviousVersions += "SWARM.2.1.2"
 
         Write-Host "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
         Write-Host "Check $Location For any Previous Versions"
@@ -84,7 +86,7 @@ function start-update {
                     if (Test-Path "$OldTimeout\algo_block") {Get-ChildItem -Path "$($OldTimeout)\pool_block" -Include *.txt, *.conf -Recurse | Copy-Item -Destination ".\timeout\pool_block"}
                     Get-ChildItem -Path "$($OldTimeout)\*" -Include *.txt | Copy-Item -Destination ".\timeout"
                 }
-                $Jsons = @("miners", "oc", "power", "pools")
+                $Jsons = @("miners", "oc", "power", "pools", "asic", "wallets")
                 $UpdateType = @("CPU", "AMD1", "NVIDIA1", "NVIDIA2", "NVIDIA3")
                 $Jsons | foreach {
                     $OldJson_Path = Join-Path $OldConfig "$($_)";
@@ -99,6 +101,50 @@ function start-update {
                             $JsonData = Get-Content $OldJson;
                             Write-Host "Pulled $OldJson"
                             $Data = $JsonData | ConvertFrom-Json;
+
+                            if ($ChangeFile -eq "cryptodredge.json") {
+                                $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                    ##2.1.3
+                                    if ($_ -ne "name") {
+                                        $Data.$_.commands| Add-Member "argon2d-dyn" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "argon2d-dyn" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "argon2d-dyn" "argon2d" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "argon2d-dyn" @{Power = ""; Core = ""; Memory = ""; Fans = ""} -ErrorAction SilentlyContinue
+
+                                        $Data.$_.commands| Add-Member "grincuckaroo29" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "grincuckaroo29" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "grincuckaroo29" "cuckaroo29" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "grincuckaroo29" @{Power = ""; Core = ""; Memory = ""; Fans = ""} -ErrorAction SilentlyContinue
+                                    }
+                                }
+                            }
+
+                            if ($ChangeFile -eq "bubasik.json") {
+                                $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                    ##2.1.3
+                                    if ($_ -ne "name") {
+                                        $Data.$_.commands| Add-Member "yespowerr16" "" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.difficulty | Add-Member "yespowerr16" "" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.naming | Add-Member "yespowerr16" "yespowerr16" -ErrorAction SilentlyContinue -Force
+
+                                        $Data.$_.commands| Add-Member "yespowerr16" "" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.difficulty | Add-Member "yespowerr16" "" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.naming | Add-Member "yespowerr16" "yespowerr16" -ErrorAction SilentlyContinue -Force
+
+                                        $Data.$_.commands| Add-Member "yescryptr8" "" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.difficulty | Add-Member "yescryptr8" "" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.naming | Add-Member "yescryptr8" "yescryptr8" -ErrorAction SilentlyContinue -Force
+
+                                        $Data.$_.commands| Add-Member "yescryptr32" "" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.difficulty | Add-Member "yescryptr32" "" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.naming | Add-Member "yescryptr32" "yescryptr32" -ErrorAction SilentlyContinue -Force
+
+                                        $Data.$_.commands| Add-Member "argon2d-dyn" "" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.difficulty | Add-Member "argon2d-dyn" "" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.naming | Add-Member "argon2d-dyn" "argon2d500" -ErrorAction SilentlyContinue -Force
+                                    }
+                                }
+                            }
 
                             if ($ChangeFile -eq "xmr-stak.json") {
                                 $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
@@ -151,57 +197,6 @@ function start-update {
                                 }
                             }
 
-                            if ($ChangeFile -eq "ttminer.json") {
-                                $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
-                                    if ($_ -ne "name") {
-                                        ##2.0.4
-                                        $Data.$_.commands| Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
-                                        $Data.$_.difficulty | Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
-                                        $Data.$_.naming | Add-Member "lyra2v3" "LYRA2V3-100" -ErrorAction SilentlyContinue
-                                        $Data.$_.oc | Add-Member "lyra2v3" @{power = ""; core = ""; memory = ""; fans = ""} -ErrorAction SilentlyContinue
-                                        ##2.0.4
-                                        $Data.$_.commands| Add-Member "Lyra2rev3" "" -ErrorAction SilentlyContinue
-                                        $Data.$_.difficulty | Add-Member "Lyra2rev3" "" -ErrorAction SilentlyContinue
-                                        $Data.$_.naming | Add-Member "Lyra2rev3" "LYRA2V3-100" -ErrorAction SilentlyContinue
-                                        $Data.$_.oc | Add-Member "Lyra2rev3" @{power = ""; core = ""; memory = ""; fans = ""} -ErrorAction SilentlyContinue
-                                    }
-                                }
-                            }
-
-                            if ($ChangeFile -eq "fancyix.json") {
-                                $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
-                                    if ($_ -ne "name") {
-                                        
-                                        ##2.0.4
-                                        $Data.$_.commands = $Data.$_.commands | Select -ExcludeProperty "lyra2z"
-                                        $Data.$_.difficulty = $Data.$_.difficulty | Select -ExcludeProperty "lyra2z"
-                                        $Data.$_.naming = $Data.$_.naming | Select -ExcludeProperty "lyra2z"
-                                        $Data.$_.oc = $Data.$_.oc | Select -ExcludeProperty "lyra2z"
-
-                                        $Data.$_.commands| Add-Member "lyra2rev3" "-w 256 -I 24" -ErrorAction SilentlyContinue
-                                        $Data.$_.difficulty | Add-Member "lyra2rev3" "" -ErrorAction SilentlyContinue
-                                        $Data.$_.naming | Add-Member "lyra2rev3" "lyra2rev3" -ErrorAction SilentlyContinue
-                                        $Data.$_.oc | Add-Member "lyra2rev3" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue         
-
-                                        $Data.$_.commands| Add-Member "lyra2v3" "-I 24 -w 256" -ErrorAction SilentlyContinue
-                                        $Data.$_.difficulty | Add-Member "lyra2v3" "" -ErrorAction SilentlyContinue
-                                        $Data.$_.naming | Add-Member "lyra2v3" "lyra2rev3" -ErrorAction SilentlyContinue
-                                        $Data.$_.oc | Add-Member "lyra2v3" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue         
-
-                                        ##2.0.4
-                                        $Data.$_.commands| Add-Member "argon2d-dyn" "-w 64 -g 2" -ErrorAction SilentlyContinue -Force
-                                        $Data.$_.difficulty | Add-Member "argon2d-dyn" "" -ErrorAction SilentlyContinue -Force
-                                        $Data.$_.naming | Add-Member "argon2d-dyn" "argon2d" -ErrorAction SilentlyContinue -Force
-                                        $Data.$_.oc | Add-Member "argon2d-dyn" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue         
-
-                                        $Data.$_.commands| Add-Member "mtp" "-w 256 -I 20" -ErrorAction SilentlyContinue
-                                        $Data.$_.difficulty | Add-Member "mtp" "" -ErrorAction SilentlyContinue
-                                        $Data.$_.naming | Add-Member "mtp" "mtp" -ErrorAction SilentlyContinue
-                                        $Data.$_.oc | Add-Member "mtp" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue         
-                                    }
-                                }
-                            }
-
                             if ($ChangeFile -eq "teamredminer.json") {
                                 $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                     if ($_ -ne "name") {
@@ -211,21 +206,6 @@ function start-update {
                                         $Data.$_.naming | Add-Member "cryptonightr" "cnr" -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "cryptonightr" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue
                                     }
-                                }
-                            }
-
-                            if ($ChangeFile -eq "pool-algos.json") {
-                                ##2.0.4
-                                $Data | Add-Member "cryptonightr" @{"hiveos_name" = "cryptonight/r"; "pools_to_exclude" = @("add pools here", "comma seperated"); "miners_to_exclude" = @("add miners here", "comma seperated")} -ErrorAction SilentlyContinue
-                                ##2.0.5
-                                $Data | Add-Member "rainforest" @{"hiveos_name" = "rainforest"; "pools_to_exclude" = @("add pools here", "comma seperated"); "miners_to_exclude" = @("add miners here", "comma seperated")} -ErrorAction SilentlyContinue
-                                ##2.0.6
-                                $Data | Add-Member "balloon" @{"hiveos_name" = "balloon"; "pools_to_exclude" = @("add pools here", "comma seperated"); "miners_to_exclude" = @("add miners here", "comma seperated")} -ErrorAction SilentlyContinue
-                                ##2.0.8 
-                                $Data | Add-Member "verushash" @{"hiveos_name" = "verushash"; "pools_to_exclude" = @("add pools here", "comma seperated"); "miners_to_exclude" = @("add miners here", "comma seperated")} -ErrorAction SilentlyContinue
-                                ##2.0.3
-                                $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Foreach {
-                                    $Data.$_ | Add-Member "miners_to_exclude" @("add miners here", "comma seperated") -ErrorAction SilentlyContinue
                                 }
                             }
 

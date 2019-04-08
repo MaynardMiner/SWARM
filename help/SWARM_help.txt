@@ -35,6 +35,12 @@ Argument          Options           Explanation
                AMD1,
 	       ASIC]
 
+-ASIC_ALGO [algorithm1,algorithm2]  Algorithms you wish ASIC to mine. This list will be seperate from
+                                    other devices, and therefor ~should~ be able to work on other rigs.
+
+-ASIC_IP   [192.168.0.4]            IP address of your ASIC rig, if SWARM is operating remotely. However,
+                                    "localhost" is enabled by default if not used.
+
 ***********************************************************************************************************
 ***********************************************************************************************************
 ***********************************************************************************************************
@@ -44,6 +50,9 @@ Argument          Options           Explanation
 These arguments can be added for additional customization and options
 
 Argument            Options             Explanation
+
+-Auto_Coin      [Yes,No]            Turns on Auto_Coin switching for pools that are capable of it.
+                                    Default is "No".
 
 -Platform      [linux,windows]      Defualt is linux. Specify this if you are using windows. This lets SWARM
                                     know to build itself for Windows operation. SWARM will attempt to detects
@@ -88,7 +97,8 @@ Argument            Options             Explanation
                                     instead of usual http://ipaddress:port/
 
 -CLPlatform    [number]             This will forcefully set the AMD CLPlatform to use for mining.
-                                    Set this if SWARM fails to guess correct platform.
+                                    Set this if SWARM fails to guess correct platform. However,
+                                    SWARM ~should~ auto-detect correct platform.
 
 -Farm_Hash     [address]            This is required for Windows. Specify Farm_Hash in order to use HiveOS
                                     website. Farm_Hash is attained by making a user account in HiveOS.
@@ -104,7 +114,7 @@ Argument            Options             Explanation
 -CoinExchange      [Any]            Coin Symbol Of An Optional AltWallet (Will only work for coins on 
                                     cryptocompare). This will calculate the coin of your choice profit/day
                                     and display on stats screens. Good if you are exchanging into a coin 
-                                    other than BTC.
+                                    other than BTC. This figure does not include power consumption calculations.
 
 -Interval         [1-1000]          Expression is in seconds. Time before miner begins checking pools for 
                                     pricing. Ideal target goal should be miner windows close/open every 

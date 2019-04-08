@@ -14,7 +14,7 @@ function Get-StatsLolminer {
         $global:BACC += $Data.Session.Accepted
         $global:BREJ += [Double]$Data.Session.Submitted - [Double]$Data.Session.Accepted
         $global:BKHS += [Double]$Data.Session.Performance_Summary / 1000
-        $global:BALGO += "$MinerAlgo"
+        $global:BALGO.Add($MinerType,$MinerAlgo)
         $global:BUPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)          
     }
     elseif(Test-Path ".\logs\$MinerType.log")

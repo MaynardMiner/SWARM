@@ -57,9 +57,10 @@ if ($Platforms -eq "windows") {
 . .\build\api\miners\ewbf.ps1;       . .\build\api\miners\excavator.ps1;    . .\build\api\miners\gminer.ps1;
 . .\build\api\miners\grin-miner.ps1; . .\build\api\miners\include.ps1;      . .\build\api\miners\lolminer.ps1;
 . .\build\api\miners\miniz.ps1;      . .\build\api\miners\sgminer.ps1;      . .\build\api\miners\trex.ps1;
-. .\build\api\miners\wildrig.ps1;    . .\build\api\miners\xmrstak-opt.ps1;  . .\build\api\miners\xmrstak.ps1;
+. .\build\api\miners\wildrig.ps1;    . .\build\api\miners\xmrig-opt.ps1;  . .\build\api\miners\xmrstak.ps1;
 . .\build\powershell\hashrates.ps1;  . .\build\powershell\commandweb.ps1;   . .\build\powershell\response.ps1;
 . .\build\powershell\hiveoc.ps1;     . .\build\powershell\octune.ps1;       . .\build\powershell\statcommand.ps1;
+. .\build\api\miners\cgminer.ps1;
 
 ##Start API Server
 Write-Host "API Port is $Port";      
@@ -131,6 +132,7 @@ While ($True) {
             $NEW | Set-Content ".\build\txt\AMD1-hash.txt";  
         }
         $NEW | Set-Content ".\build\txt\CPU-hash.txt";
+        $NEW | Set-Content ".\build\txt\ASIC-hash.txt"
     }
 
     ## Set-OC
@@ -143,11 +145,13 @@ While ($True) {
 
     ## Determine if CPU in only used. Clear All Tables
     $CPUOnly = $true
-    $CurrentMiners | Foreach {if ($_.Type -like "*NVIDIA*" -or $_.Type -like "*AMD*") {$CPUOnly = $false; "GPU" | Set-Content ".\build\txt\miner.txt"}}
+    $CurrentMiners | Foreach {if ($_.Type -like "*NVIDIA*" -or $_.Type -like "*AMD*" -or $_.Type -like "*ASIC*") {$CPUOnly = $false; "GPU" | Set-Content ".\build\txt\miner.txt"}}
     if ($CPUOnly -eq $true) {"CPU" | Set-Content ".\build\txt\miner.txt"}
+    $CurrentMiners | Foreach {if ($_.Type -like "*ASIC*"){$DoASIC = $true}}
     ## Build Initial Hash Tables For Stats
     $global:GPUHashrates = [PSCustomObject]@{}
     $global:CPUHashrates = [PSCustomObject]@{}
+    $global:ASICHashrates = [PSCustomObject]@{}
     $global:GPUsFans = [PSCustomObject]@{}
     $global:GPUsTemps = [PSCustomObject]@{}
     $global:GPUsPower = [PSCustomObject]@{}
@@ -162,7 +166,7 @@ While ($True) {
             $global:GPUsPower | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0
         }
     }
-    if ($DevNVIDIA -eq $true) {  
+    if ($DevNVIDIA -eq $true) {
         for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {
             $global:GPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; 
             $global:GPUsFans | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; 
@@ -171,12 +175,18 @@ While ($True) {
         }
     }
 
+    if ($DoAsic -eq $true) {
+        $global:ASICHashrates | Add-Member -MemberType NoteProperty -Name "0" -Value 0;
+    }
+
     ## Reset All Stats, Rebuild Tables
-    $global:BALGO = @(); $global:BHiveAlgo = @(); $global:BHashRates = @(); 
-    $global:BFans = @(); $global:BTemps = @(); $global:BPower = @(); 
-    $global:BCPUKHS = $null; $global:BCPUACC = 0; $global:BCPUREJ = 0; 
+    $global:BALGO = @{}; $global:BHiveAlgo = @(); $global:BHashRates = @(); $Group1 = $null
+    $global:BFans = @(); $global:BTemps = @(); $global:BPower = @(); $Default_Group = $null
+    $global:BCPUKHS = $null; $global:BCPUACC = 0; $global:BCPUREJ = 0; $global:BCPURAW = 0; 
     $global:BRAW = 0; $global:BKHS = 0; $global:BREJ = 0; 
     $global:BACC = 0;
+    $global:AAlgo = $null; $global:AKHS = $null;
+    $global:AACC = 0; $global:AREJ = 0; $global:ARAW = 0;
 
     ## Windows-To-Hive Stats
     if ($Platforms -eq "windows") {
@@ -205,17 +215,19 @@ While ($True) {
             $MinerAlgo = "$($_.Algo)"
             $MinerName = "$($_.MinerName)"
             $Name = "$($_.Name)"
-            $Server = "localhost"
             $Port = $($_.Port)
             $MinerType = "$($_.Type)"
             $MinerAPI = "$($_.API)"
+            $Server = "$($_.Server)"
             $HashPath = ".\logs\$($_.Type).log"
-            $global:BHiveAlgo += $HiveNames.$($_.Algo).hiveos_name
+            if($MinerType -ne "ASIC"){$global:BHiveAlgo += $HiveNames.$($_.Algo).hiveos_name}
+            $global:AHiveAlgo += $HiveNames.$($_.Algo).hiveos_name
 
             ## Set Object For Type (So It doesn't need to be repeated)
             if ($MinerType -like "*NVIDIA*") {$TypeS = "NVIDIA"}
             elseif ($MinerType -like "*AMD*") {$TypeS = "AMD"}
             elseif ($MinerType -like "*CPU*") {$TypeS = "CPU"}
+            elseif ($MinerType -like "*ASIC*") {$TypeS = "ASIC"}
 
             ## Determine Devices
             if ($_.Type -ne "CPU") {
@@ -280,6 +292,14 @@ While ($True) {
             $global:BRAW = 0
             $global:BMinerACC = 0
             $global:BMinerREJ = 0
+            $global:AHS = "khs"
+            $global:ARAW = 0
+            $global:AMinerACC = 0
+            $global:AMinerREJ = 0
+            $global:BCPUHS = "khs"
+            $global:BCPURAW = 0
+            $global:BCPUMinerACC = 0
+            $global:BCPUMinerREJ = 0
             Write-MinerData1
 
             ## Start Calling Miners
@@ -299,13 +319,15 @@ While ($True) {
                 'sgminer-gm' { try{Get-StatsSgminer}catch{Get-OhNo} }
                 'cpuminer' { try{Get-StatsCpuminer}catch{Get-OhNo} }
                 'xmrstak' { try{Get-StatsXmrstak}catch{Get-OhNo} }
-                'xmrstak-opt' { try{Get-StatsXmrstakOPT}catch{Get-OhNo} }
+                'xmrig-opt' { try{Get-Statsxmrigopt}catch{Get-OhNo} }
                 'wildrig' { try{Get-StatsWildRig}catch{Get-OhNo} }
+                'cgminer' { try{Get-StatsCgminer}catch{Get-OhNo} }
             }
 
             ##Check To See if High Rejections
             if ($BackgroundTimer.Elapsed.TotalSeconds -gt 60) {
                 $Shares = [Double]$global:BMinerACC + [double]$global:BMinerREJ
+                if($DoASIC -eq $true){$AShares = [Double]$global:AMinerACC + [Double]$global:BMinerREJ}
                 $RJPercent = $global:BMinerREJ / $Shares * 100
                 if ($RJPercent -gt $REJPercent -and $Shares -gt 0) {
                     Write-Host "Warning: Miner is reaching Rejection Limit- $($RJPercent.ToString("N2")) Percent Out of $Shares Shares" -foreground yellow
@@ -314,6 +336,16 @@ While ($True) {
                     "Bad Shares" | Out-File ".\timeout\warnings\$($_.Name)_$($_.Algo)_rejection.txt"
                 }
                 else {if (Test-Path ".\timeout\warnings\$($_.Name)_$($_.Algo)_rejection.txt") {Remove-Item ".\timeout\warnings\$($_.Name)_$($_.Algo)_rejection.txt" -Force}}
+                if($DoASIC -eq $true) {
+                $ARJPercet = $global:AMinerREJ / $AShares
+                if ($ARJPercet -gt $REJPercent -and $Shares -gt 0) {
+                    Write-Host "Warning: Miner is reaching Rejection Limit- $($ARJPercent.ToString("N2")) Percent Out of $Shares Shares" -foreground yellow
+                    if (-not (Test-Path ".\timeout")) {New-Item "timeout" -ItemType Directory | Out-Null}
+                    if (-not (Test-Path ".\timeout\warnings")) {New-Item ".\timeout\warnings" -ItemType Directory | Out-Null}
+                    "Bad Shares" | Out-File ".\timeout\warnings\$($_.Name)_$($_.Algo)_rejection.txt"
+                }
+                }
+
             }
  
         }
@@ -360,15 +392,16 @@ HSU=$global:BCPUHS
             if ($DevAMD -eq $True) {if ($GCount.AMD.PSObject.Properties.Value.Count -gt 0) {for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {$global:BPower += 0}}}
             if ($DEVNVIDIA -eq $True) {for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {$global:BPower[$($GCount.NVIDIA.$i)] = "POWER=$($global:GPUsPower.$($GCount.NVIDIA.$i))"}}
             if ($DevAMD -eq $True) {for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {$global:BPower[$($GCount.AMD.$i)] = "POWER=$($global:GPUsPower.$($GCount.AMD.$i))"}}
-        }  
+        }
         for ($i = 0; $i -lt $global:BHashRates.count; $i++) {
             if ($global:BHashRates[$i] -eq 'GPU=0' -or $global:BHashRates[$i] -eq 'GPU=' -or $global:BHashRates[$i] -eq 'GPU=0.0000') {
                 $global:BHashRates[$i] = 'GPU=0.000'; $global:BKHS += 0.000
             }
         }
 
-        $global:BALGO = $global:BALGO | Select -First 1
-        $global:BHiveAlgo = $global:BHiveAlgo | Select -First 1
+        $global:BALGO.keys | %{if($_ -like "*1*"){$Group1 = $_}}
+        if($Group1){$CurAlgo = $global:BALGO.$Group1}
+        else{$Default_Group = $global:BALGO.keys | Select -First 1; $CurAlgo = $global:BALGO.$Default_Group}
         $global:BKHS = [Math]::Round($global:BKHS, 4)
 
         $HIVE = "
@@ -376,7 +409,7 @@ $($global:BHashRates -join "`n")
 KHS=$global:BKHS
 ACC=$global:BACC
 REJ=$global:BREJ
-ALGO=$global:BALGO
+ALGO=$CurAlgo
 HIVEALGO=$global:BHiveAlgo
 $($global:BFans -join "`n")
 $($global:BTemps -join "`n")
@@ -390,7 +423,7 @@ HSU=khs
             Write-Host " KHS=$global:BKHS" -ForegroundColor Yellow -NoNewline
             Write-Host " ACC=$global:BACC" -ForegroundColor DarkGreen -NoNewline
             Write-Host " REJ=$global:BREJ" -ForegroundColor DarkRed -NoNewline
-            Write-Host " ALGO=$global:BALGO" -ForegroundColor Gray -NoNewline
+            Write-Host " ALGO=$CurAlgo" -ForegroundColor Gray -NoNewline
             Write-Host " $global:BFans" -ForegroundColor Cyan -NoNewline
             Write-Host " $global:BTemps" -ForegroundColor Magenta -NoNewline
             if ($Platforms -eq "windows") {Write-Host " $global:BPower"  -ForegroundColor DarkCyan -NoNewline}
@@ -399,6 +432,7 @@ HSU=khs
         }
 
         if ($global:BCPUKHS -ne $null) {$global:BCPUKHS = [Math]::Round($global:BCPUKHS, 4); Write-Host "CPU=$global:BCPUKHS"}
+        if ($global:AKHS -ne $null) {$global:AKHS = [Math]::Round($global:AKHS, 4); Write-Host "ASIC=$global:AKHS"}
         $Hive | Set-Content ".\build\txt\hivestats.txt"
     }
 

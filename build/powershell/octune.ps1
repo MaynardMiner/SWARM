@@ -346,15 +346,18 @@ function Start-OC {
                         $AScreenMem += "$($_.Type) MEM is $($_.ocmem) "
                         $AScreenMDPM += "$($_.Type) MDPM is $($_.ocmdpm) "
                     }
-                    if ($CoreClock -or $CoreState) {
+                    if ($CoreClock) {
                         $DOAmdOC = $true
                         for ($i = 0; $i -lt $OCDevices.Count; $i++) {
                             $GPU = $OCDevices[$i]
+                            $PStates = 8
+                            for ($j = 1; $j -lt $PStates; $j++) {
                             $CoreArgs = $null
                             if ($CoreClock[$GPU]) {$CoreArgs += " --core-clock $($CoreClock[$i])"}
-                            if ($CoreState[$GPU]) {$CoreArgs += " --core-state $($CoreState[$i])"}
+                            $CoreArgs += " --core-state $j"
                             $WolfArgs = "wolfamdctrl -i $($GCount.AMD.$GPU)$CoreArgs"
                             $AScript += $WolfArgs
+                            }
                         }
                         $AScreenCore += "$($_.Type) CORE is $($_.occore) "
                         $AScreenDPM += "$($_.Type) DPM is $($_.ocdpm) "

@@ -5,15 +5,24 @@
     "prestart": [],
     "commands": {
       "yespower": "",
-      "hodl": ""
+      "hodl": "",
+      "yespowerr16": "",
+      "yescryptr8": "",
+      "yescryptr32": ""
     },
     "difficulty": {
       "yespower": "",
-      "hodl": ""
+      "hodl": "",
+      "yespowerr16": "",
+      "yescryptr8": "",
+      "yescryptr32": ""
     },
     "naming": {
       "yespower": "yespower",
-      "hodl": "hodl"
+      "hodl": "hodl",
+      "yespowerr16": "yespowerr16",
+      "yescryptr8": "yescryptr8",
+      "yescryptr32": "yescryptr32"
     }
   },
   "name": "bubasik"

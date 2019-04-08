@@ -20,7 +20,7 @@ function Get-APIServer {
         $APIServer = {
             param($WorkingDir, $Port, $Remote, $APIPassword)
 
-            Set-Location $WorkingDir
+            Set-Location $WorkingDir            
             if (test-Path ".\build\pid\api_pid.txt") {$AFID = Get-Content ".\build\pid\api_pid.txt"; $AID = Get-Process -ID $AFID -ErrorAction SilentlyContinue}
             if ($AID) {Stop-Process $AID -ErrorAction SilentlyContinue}
             $PID | Set-Content ".\build\pid\api_pid.txt"
@@ -47,14 +47,18 @@ function Get-APIServer {
                     $response = $context.Response
       
                     # Break from loop if GET request sent to /end
-                    if ($request.Url -match '/end') {break} 
+                    if ($request.Url -match '/end') {break}
                     else {
                         # Split request URL to get command and options
-                        $requestvars = ([String]$request.Url).split("/");
+                        $requestvars = [String]$request.Url -split "/"
                         if ($Remote -eq "Yes" -and $APIPassword -ne "No") {$GET = $requestvars[4]}
-                        else {$GET = $requestvars[3]}
-                        if ($GET) {
-                            switch ($GET) {
+                        elseif($Remote -eq "Yes" -and $APIPassword -eq "No") {$GET = $requestvars[3]}
+                        else{$GET = $requestvars[3]}
+                        $requestcom = $GET -split "`&" | Select -First 1
+                        $requestargs = $GET -replace "$requestcom",""
+                        $requestargs = $requestargs -replace "`&"," "
+                        if ($requestcom) {
+                            switch ($requestcom) {
                                 "summary" {
                                     if (Test-Path ".\build\txt\profittable.txt") {
                                         $result = @()
@@ -126,6 +130,41 @@ function Get-APIServer {
                                         $response.ContentType = 'application/json';
                                     }   
                                 }
+                                "get" {
+                                    $result = @()
+                                    Invoke-Expression ".\build\powershell\get.ps1$requestargs" | Tee-Object -Variable getbest |  Out-Null;
+                                    $getbest | foreach {$result += "$_`n"};
+                                    $message = $result | ConvertTo-Json;
+                                    $response.ContentType = 'application/json';
+                                }
+                                "version" {
+                                    $result = @()
+                                    Invoke-Expression ".\build\powershell\version.ps1$requestargs" | Tee-Object -Variable getbest |  Out-Null;
+                                    $getbest | foreach {$result += "$_`n"};
+                                    $message = $result | ConvertTo-Json;
+                                    $response.ContentType = 'application/json';
+                                }
+                                "clear_profits" {
+                                    $result = @()
+                                    Invoke-Expression ".\build\powershell\clear_profits.ps1$requestargs" | Tee-Object -Variable getbest |  Out-Null;
+                                    $getbest | foreach {$result += "$_`n"};
+                                    $message = $result | ConvertTo-Json;
+                                    $response.ContentType = 'application/json';
+                                }
+                                "clear_watts" {
+                                    $result = @()
+                                    Invoke-Expression ".\build\powershell\clear_watts.ps1$requestargs" | Tee-Object -Variable getbest |  Out-Null;
+                                    $getbest | foreach {$result += "$_`n"};
+                                    $message = $result | ConvertTo-Json;
+                                    $response.ContentType = 'application/json';
+                                }
+                                "benchmark" {
+                                    $result = @()
+                                    Invoke-Expression ".\build\powershell\benchmark.ps1$requestargs" | Tee-Object -Variable getbest |  Out-Null;
+                                    $getbest | foreach {$result += "$_`n"};
+                                    $message = $result | ConvertTo-Json;
+                                    $response.ContentType = 'application/json';
+                                }
                                 default {
                                     # If no matching subdirectory/route is found generate a 404 message
                                     $message = @("No Data") | ConvertTo-Json -Compress;
@@ -144,8 +183,12 @@ function Get-APIServer {
                             $output = $response.OutputStream
                             $output.Write($buffer, 0, $buffer.length)
                             $output.Close()
-                            Remove-Variable "response" -Force
-                            Remove-Variable "message" -Force
+                            $response = $null
+                            $message = $null
+                            $getbest = $null
+                            $GET = $null
+                            $requestvars = $null
+                            $requestcom = $null
                         }
                     }
                 }

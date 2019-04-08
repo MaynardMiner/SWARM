@@ -14,7 +14,7 @@ function Get-StatsBminer {
         $Data.stratum.rejected_shares | Foreach {$global:BREJ += $_}
         for ($i = 0; $i -lt $Devices.Count; $i++) {$GPU = $Devices[$i]; $global:BKHS += [Double]$Data.Miners.$GPU.solver.solution_rate / 1000}
         $global:BUPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
-        $global:BALGO += "$MinerAlgo"
+        $global:BALGO.Add($MinerType,$MinerAlgo)
     }
     else {Set-APIFailure; break}
 }

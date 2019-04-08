@@ -111,19 +111,16 @@ function Get-GPUCount {
     $TotalGPUS = $Bus.PCIBusID.Count
     $BusCount = 0
     $Bus | Foreach {$BusCount++}
-    for ($i = 0; $i -lt $BusCount; $i++) {
-
-        $B = $Bus[$i]
-     
-        if ($Type -like "*NVIDIA*") {
-            if ($B.PnPID -match $nvidia) {
+    $Bus | Sort-Object PCIBusID | Foreach {
+        if($Type -like "*NVIDIA*") {
+            if ($_.PnPID -match $nvidia) {
                 $DeviceList.Nvidia.Add("$NvidiaCounter", "$Counter")
                 $Counter++
                 $NvidiaCounter++
             }
-        } 
-        if ($Type -like "*AMD*") {  
-            if ($B.PnPID -match $amd) {
+        }
+        if ($Type -like "*AMD*") {
+            if ($_.PnPID -match $amd) {
                 $DeviceList.AMD.Add("$AmdCounter", "$Counter")
                 $Counter++
                 $AmdCounter++
