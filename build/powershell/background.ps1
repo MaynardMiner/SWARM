@@ -357,7 +357,7 @@ While ($True) {
     if($global:TALGO.Main){$CurTAlgo = $global:TALGO.Main}
     else{$FirstMiner = $global:TALGO.keys | Select -First 1; $CurTAlgo = $global:TALGO.$FirstMiner}
     Write-Host "
-Hive Name For Algo is $CurAlgo" -ForegroundColor Magenta
+HiveOS Name For Algo is $CurAlgo" -ForegroundColor Magenta
 
     if ($CPUOnly -eq $true) {
         $global:BCPUKHS = [Math]::Round($global:BCPUKHS, 4)
