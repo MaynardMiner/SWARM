@@ -353,9 +353,9 @@ While ($True) {
 
 
     if($global:BALGO.Main){$CurAlgo = $global:BALGO.Main}
-    else{$FirstMiner = $global:BALGO.keys | Select -First 1; $CurAlgo = $global:BALGO.$FirstMiner}
+    else{$FirstMiner = $global:BALGO.keys | Select -First 1; if($FirstMiner){$CurAlgo = $global:BALGO.$FirstMiner}}
     if($global:TALGO.Main){$CurTAlgo = $global:TALGO.Main}
-    else{$FirstMiner = $global:TALGO.keys | Select -First 1; $CurTAlgo = $global:TALGO.$FirstMiner}
+    else{$FirstMiner = $global:TALGO.keys | Select -First 1; if($FirstMiner){$CurTAlgo = $global:TALGO.$FirstMiner}}
     Write-Host "
 HiveOS Name For Algo is $CurAlgo" -ForegroundColor Magenta
 
