@@ -110,8 +110,8 @@
 "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/teamredminer-windows.zip"
 }, 
 
-"xmrstak": {
-"name":"xmrstak", 
+"xmr-stak": {
+"name":"xmr-stak", 
 "type":"amd", 
 "AMD1":".\\bin\\xmrstak-1\\xmr-stak.exe", 
 "AMD2":".\\bin\\xmrstak-2\\xmr-stak.exe", 

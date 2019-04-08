@@ -3,16 +3,16 @@ $AMDTypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
 
     ##Miner Path Information
-    if ($amd.wildrig.$ConfigType) { $Path = "$($amd.wildrig.$ConfigType)" }
+    if ($amd."xmr-stak".$ConfigType) { $Path = "$($amd."xmr-stak".$ConfigType)" }
     else { $Path = "None" }
-    if ($amd.wildrig.uri) { $Uri = "$($amd.wildrig.uri)" }
+    if ($amd.xmrstak.uri) { $Uri = "$($amd.xmrstak.uri)" }
     else { $Uri = "None" }
-    if ($amd.wildrig.minername) { $MinerName = "$($amd.wildrig.minername)" }
+    if ($amd.xmrstak.minername) { $MinerName = "$($amd.xmrstak.minername)" }
     else { $MinerName = "None" }
     if ($Platform -eq "linux") { $Build = "Tar" }
     elseif ($Platform -eq "windows") { $Build = "Zip" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "wildrig-$Num"; $Port = "2900$Num"
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "xmr-stak-$Num"; $Port = "3000$Num"
 
     Switch ($Num) {
         1 { $Get_Devices = $AMDDevices1 }
@@ -21,12 +21,8 @@ $AMDTypes | ForEach-Object {
     ##Log Directory
     $Log = Join-Path $dir "logs\$ConfigType.log"
 
-    ##Parse -GPUDevices
-    if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
-    else { $Devices = "none" }    
-
     ##Get Configuration File
-    $GetConfig = "$dir\config\miners\wildrig.json"
+    $GetConfig = "$dir\config\miners\xmr-stak.json"
     try { $Config = Get-Content $GetConfig | ConvertFrom-Json }
     catch { Write-Warning "Warning: No config found at $GetConfig" }
 
@@ -56,8 +52,8 @@ $AMDTypes | ForEach-Object {
                     Type       = $ConfigType
                     Path       = $Path
                     Devices    = "none"
-                    DeviceCall = "wildrig"
-                    Arguments  = "--opencl-platform=$AMDPlatform --api-port $Port --algo $($Config.$ConfigType.naming.$($_.Algorithm)) --url stratum+tcp://$($_.Host):$($_.Port) --user $($_.$User) --pass $($_.$Pass)$($Diff) $($Config.$ConfigType.commands.$($Config.$ConfigType.naming.$($_.Algorithm)))"
+                    DeviceCall = "xmrstak"
+                    Arguments  = "--currency $($Config.$ConfigType.naming.$($_.Algorithm)) -i $Port --url stratum+tcp://$($_.Host):$($_.Port) --user $($_.$User) --pass $($_.$Pass)$($Diff) --rigid SWARM --noCPU --noNVIDIA --use-nicehash $($Config.$ConfigType.commands.$($_.Algorithm))"    
                     HashRates  = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) }
                     Quote      = if ($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)) { $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) * ($_.Price) }else { 0 }
                     PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
@@ -67,16 +63,17 @@ $AMDTypes | ForEach-Object {
                     ocmem      = if ($Config.$ConfigType.oc.$($_.Algorithm).mem) { $Config.$ConfigType.oc.$($_.Algorithm).mem }else { $OC."default_$($ConfigType)".memory }
                     ocmdpm     = if ($Config.$ConfigType.oc.$($_.Algorithm).mdpm) { $Config.$ConfigType.oc.$($_.Algorithm).mdpm }else { $OC."default_$($ConfigType)".mdpm }
                     ocfans     = if ($Config.$ConfigType.oc.$($_.Algorithm).fans) { $Config.$ConfigType.oc.$($_.Algorithm).fans }else { $OC."default_$($ConfigType)".fans }
-                    MinerPool  = "$($_.Name)"
                     FullName   = "$($_.Mining)"
+                    MinerPool  = "$($_.Name)"
                     Port       = $Port
-                    API        = "wildrig"
+                    API        = "xmrstak"
+                    Wrap       = $false
                     Wallet     = "$($_.$User)"
                     URI        = $Uri
                     Server     = "localhost"
                     BUILD      = $Build
                     Algo       = "$($_.Algorithm)"
-                    Log        = $Log
+                    Log        = $Log 
                 }            
             }
         }

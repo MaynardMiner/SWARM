@@ -286,7 +286,7 @@ $FileClear += ".\build\txt\bestminers.txt"
 $FileClear | ForEach-Object { if (Test-Path $_) { Remove-Item $_ -Force } }
 
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
-$Debug = $true
+$Debug = $false
 
 ## Convert Arguments Into Hash Table
 if ($Debug -ne $true) {
@@ -1277,7 +1277,7 @@ While ($true) {
                         $Current = $_ | ConvertTo-Json -Compress
                         if($_.Type -ne "ASIC"){$PreviousPorts = $PreviousMinerPorts | ConvertTo-Json -Compress}
                         if($_.Type -ne "ASIC"){$_.Xprocess = Start-LaunchCode -PP $PreviousPorts -Platforms $Platform -NewMiner $Current}
-                        else{$_.Xprocess = Start-LaunchCode -Platforms $Platform -NewMiner $Current -IP $ASIC_IP}
+                        else{$_.Xprocess = Start-LaunchCode -Platforms $Platform -NewMiner $Current -AIP $ASIC_IP}
                         $Instance++
                     }
                     if ($Restart -eq $true) {

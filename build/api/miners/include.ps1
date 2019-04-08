@@ -169,7 +169,7 @@ function Get-OhNo{
 function Remove-ASICPools {
     param (
         [Parameter(Mandatory = $true, Position = 0)]
-        [string]$IP,
+        [string]$AIP,
         [Parameter(Mandatory = $true, Position = 1)]
         [string]$Port,
         [Parameter(Mandatory = $true, Position = 2)]
@@ -187,8 +187,10 @@ function Remove-ASICPools {
             ##First we need to discover all pools
             $Commands = @{command = "pools"; parameter = 0 } | ConvertTo-Json -Compress
             $response = $Null
-            $response = Get-TCP -Server "localhost" -Port $Port -Message $Commands -Timeout $timeout
+            $response = Get-TCP -Server $AIP -Port $Port -Message $Commands -Timeout $timeout
             if ($response) {
+                ##Windows screws up last character
+                if($response[-1] -notmatch "}"){$response =$Response.Substring(0,$Response.Length-1)}
                 $PoolList = $response | ConvertFrom-Json
                 $PoolList = $PoolList.POOLS
                 $PoolList | ForEach-Object { $ASIC_Pools.$ASICM.Add("Pool_$($_.Pool)", $_.Pool) }
@@ -196,9 +198,9 @@ function Remove-ASICPools {
                     $PoolNo = $($ASIC_Pools.$ASICM.$_)
                     $Commands = @{command = "removepool"; parameter = "$PoolNo" } | ConvertTo-Json -Compress; 
                     $response = $Null; 
-                    $response = Get-TCP -Server "localhost" -Port $Port -Message $Commands -Timeout $timeout 
+                    $response = Get-TCP -Server $AIP -Port $Port -Message $Commands -Timeout $timeout 
                     $response
-                }  
+                }
             }
             else { Write-Warning "Failed To Gather cgminer Pool List!" }
         }

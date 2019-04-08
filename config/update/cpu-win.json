@@ -1,14 +1,15 @@
 {
+ "name": "cpu-win",
   "bubasik": {
     "name": "bubasik",
     "type": "cpu",
-    "path1": ".\\bin\\bubasik\\cpuminer-sse2.exe",
+    "CPU": ".\\bin\\bubasik\\cpuminer-sse2.exe",
     "minername": "cpuminer-sse2.exe",
     "version": "3.8.8.4",
     "uri": "https://github.com/bubasik/cpuminer-opt-yespower/releases/download/3.8.8.4/Cpuminer-opt-yespower-ytn-ver3.zip"
   },
-  "xmrig": {
-    "name": "xmrig",
+  "xmrig_cpu": {
+    "name": "xmrig_cpu",
     "type": "cpu",
     "CPU": ".\\bin\\xmrig-cpu-1\\xmrig.exe",
     "minername": "xmrig.exe",

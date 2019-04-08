@@ -130,8 +130,8 @@
     "version": "0.4.3",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/teamredminer-linux.tar.gz"
   },
-  "xmrstak": {
-    "name": "xmrstak",
+  "xmr-stak": {
+    "name": "xmr-stak",
     "type": "amd",
     "AMD1": ".\\bin\\xmrstak-1\\xmr-stak",
     "AMD2": ".\\bin\\xmrstak-2\\xmr-stak",
