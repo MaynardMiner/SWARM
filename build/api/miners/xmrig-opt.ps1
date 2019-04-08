@@ -10,7 +10,7 @@ function Get-Statsxmrigopt {
         if (-not $HashRate_Total) {$HashRate_Total = [Double]$Data.hashrate.total[1]} #fix
         if (-not $HashRate_Total) {$HashRate_Total = [Double]$Data.hashrate.total[2]} #fix
         $global:BCPURAW = $HashRate_Total
-        $global:BCPURAW | Set-Content ".\build\txt\$MinerType-hash.txt"
+        Write-MinerData2
         Write-Host "Note: XMR-STAK/XMRig API is not great. You can't match threads to specific CPU." -ForegroundColor Yellow
         try {$Hash = for ($i = 0; $i -lt $Data.hashrate.threads.count; $i++) {$Data.Hashrate.threads[$i] | Select -First 1}}catch {}
         try {for ($i = 0; $i -lt $Devices.Count; $i++) {$GPU = $Devices[$i]; $global:CPUHashrates.$GPU = ($Hash[$GPU] | Select -First 1) / 1000}}catch {Write-Host "Failed To parse threads" -ForegroundColor Red};

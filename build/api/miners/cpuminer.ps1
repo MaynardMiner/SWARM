@@ -3,7 +3,7 @@ function Get-StatsCpuminer {
     if ($GetCPUSummary) {
         $CPUSUM = $GetCPUSummary -split ";" | Select-String "KHS=" | foreach {$_ -replace ("KHS=", "")}
         $global:BCPURAW = [double]$CPUSUM * 1000
-        $global:BCPURAW | Set-Content ".\build\txt\$MinerType-hash.txt"
+        Write-MinerData2
     }
     else {Write-Host "API Summary Failed- Could Not Total Hashrate" -Foreground Red; $global:BCPURAW = 0; $global:BCPURAW | Set-Content ".\build\txt\$MinerType-hash.txt"}
     $GetCPUThreads = $Null

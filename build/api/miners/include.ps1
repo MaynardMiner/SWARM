@@ -10,13 +10,17 @@ function Write-MinerData1 {
 }
 
 function Write-MinerData2 {
-    if($MinerType -ne "ASIC") {
-        $global:BRAW | Set-Content ".\build\txt\$MinerType-hash.txt"
-        Write-Host "Miner $Name was clocked at $($global:BRAW | ConvertTo-Hash)/s" -foreground Yellow
-    }
-    else {
+    if($MinerType -eq "CPU") {
+        $global:BCPURAW | Set-Content ".\build\txt\$MinerType-hash.txt"
+        Write-Host "Miner $Name was clocked at $($global:BCPURAW | ConvertTo-Hash)/s" -foreground Yellow
+    }    
+    elseif($MinerType -eq "ASIC") {
         $global:ARAW | Set-Content ".\build\txt\$MinerType-hash.txt"
         Write-Host "Miner $Name was clocked at $($global:ARAW | ConvertTo-Hash)/s" -foreground Yellow
+    }
+    else {
+        $global:BRAW | Set-Content ".\build\txt\$MinerType-hash.txt"
+        Write-Host "Miner $Name was clocked at $($global:BRAW | ConvertTo-Hash)/s" -foreground Yellow
     }
     if ($Platforms -eq "linux") {$Process = Get-Process | Where Name -clike "*$($MinerType)*"}
 }
