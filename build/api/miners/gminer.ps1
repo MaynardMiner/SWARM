@@ -13,8 +13,8 @@ if ($Request) {
     $Data.devices.rejected_shares | Select -First 1 | Foreach {$global:BREJ += $_}
     $Data.devices.speed | foreach {$global:BKHS += [Double]$_ / 1000}
     $global:BUPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
-    $global:BALGO += "$MinerAlgo"
-}
+    $global:BALGO.Add($MinerType,$MinerAlgo)
+  }
 elseif(Test-Path ".\logs\$MinerType.log")
   {
    Write-Host "Miner API failed- Attempting to get hashrate through logs." -ForegroundColor Yellow

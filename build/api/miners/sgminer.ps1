@@ -29,7 +29,7 @@ function Get-StatsSgminer {
         $summary.Accepted | Foreach {$global:BMinerACC += $_}    
         $summary.Rejected | Foreach {$global:BREJ += $_}
         $summary.Accepted | Foreach {$global:BACC += $_}
-        $global:BALGO += "$MinerALgo"
+        $global:BALGO.Add($MinerType,$MinerAlgo)
         $global:BUPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
     }
     else {Set-APIFailure; break}

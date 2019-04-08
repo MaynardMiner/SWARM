@@ -180,8 +180,8 @@ While ($True) {
     }
 
     ## Reset All Stats, Rebuild Tables
-    $global:BALGO = @(); $global:BHiveAlgo = @(); $global:BHashRates = @(); 
-    $global:BFans = @(); $global:BTemps = @(); $global:BPower = @(); 
+    $global:BALGO = @{}; $global:BHiveAlgo = @(); $global:BHashRates = @(); $Group1 = $null
+    $global:BFans = @(); $global:BTemps = @(); $global:BPower = @(); $Default_Group = $null
     $global:BCPUKHS = $null; $global:BCPUACC = 0; $global:BCPUREJ = 0; $global:BCPURAW = 0; 
     $global:BRAW = 0; $global:BKHS = 0; $global:BREJ = 0; 
     $global:BACC = 0;
@@ -399,8 +399,9 @@ HSU=$global:BCPUHS
             }
         }
 
-        $global:BALGO = $global:BALGO | Select -First 1
-        $global:BHiveAlgo = $global:BHiveAlgo | Select -First 1
+        $global:BALGO.keys | %{if($_ -like "*1*"){$Group1 = $_}}
+        if($Group1){$CurAlgo = $global:BALGO.$Group1}
+        else{$Default_Group = $global:BALGO.keys | Select -First 1; $CurAlgo = $global:BALGO.$Default_Group}
         $global:BKHS = [Math]::Round($global:BKHS, 4)
 
         $HIVE = "
@@ -408,7 +409,7 @@ $($global:BHashRates -join "`n")
 KHS=$global:BKHS
 ACC=$global:BACC
 REJ=$global:BREJ
-ALGO=$global:BALGO
+ALGO=$CurAlgo
 HIVEALGO=$global:BHiveAlgo
 $($global:BFans -join "`n")
 $($global:BTemps -join "`n")
@@ -422,7 +423,7 @@ HSU=khs
             Write-Host " KHS=$global:BKHS" -ForegroundColor Yellow -NoNewline
             Write-Host " ACC=$global:BACC" -ForegroundColor DarkGreen -NoNewline
             Write-Host " REJ=$global:BREJ" -ForegroundColor DarkRed -NoNewline
-            Write-Host " ALGO=$global:BALGO" -ForegroundColor Gray -NoNewline
+            Write-Host " ALGO=$CurAlgo" -ForegroundColor Gray -NoNewline
             Write-Host " $global:BFans" -ForegroundColor Cyan -NoNewline
             Write-Host " $global:BTemps" -ForegroundColor Magenta -NoNewline
             if ($Platforms -eq "windows") {Write-Host " $global:BPower"  -ForegroundColor DarkCyan -NoNewline}

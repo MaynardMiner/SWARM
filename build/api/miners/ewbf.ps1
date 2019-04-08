@@ -15,7 +15,7 @@ function Get-StatsEWBF {
         $Data.rejected_shares | Foreach {$global:BREJ += $_}
         $Data.speed_sps | foreach {$global:BKHS += [Double]$_}
         $global:BUPTIME = ((Get-Date) - [DateTime]$Data.start_time[0]).seconds
-        $global:BALGO += "$MinerAlgo"
+        $global:BALGO.Add($MinerType,$MinerAlgo)
     }
     else {Set-APIFailure; break}
 }

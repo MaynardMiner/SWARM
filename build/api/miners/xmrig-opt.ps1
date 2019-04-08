@@ -17,7 +17,7 @@ function Get-Statsxmrigopt {
         $global:BCPUACC += $Data.results.shares_good
         $global:BCPUREJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good
         $global:BCPUUPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
-        $global:BCPUALGO += "$MinerAlgo"
+        $global:BALGO.Add($MinerType,$MinerAlgo)
         try {$global:BCPUKHS += [Double]$HashRate_Total / 1000}catch {}
     }
     else {Write-Host "$MinerAPI API Failed- Could Not Get Stats" -Foreground Red; $global:BCPURAW = 0; $global:BCPURAW | Set-Content ".\build\txt\$MinerType-hash.txt"}

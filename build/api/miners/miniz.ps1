@@ -13,7 +13,7 @@ function Get-StatsMiniz {
         $global:BMinerACC = $Shares -split "/" | Select -first 1
         $global:BMinerREJ = $Shares -split "/" | Select -Last 1
         try {for ($i = 0; $i -lt $Devices.Count; $i++) {$global:GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $i) / 1000}}catch {Write-Host "Failed To parse Threads" -ForegroundColor Red};
-        $global:BALGO += "$MinerAlgo"
+        $global:BALGO.Add($MinerType,$MinerAlgo)
         $global:BUPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
     }
     else {Set-APIFailure; break}

@@ -17,7 +17,7 @@ function Get-StatsEnergiminer {
         $global:BACC += $MinerACC
         $global:BREJ += $MinerREJ
         $global:BUPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
-        $global:BALGO += "$MinerAlgo"
+        $global:BALGO.Add($MinerType,$MinerAlgo)
     }
     else {Set-APIFailure; break}
 }

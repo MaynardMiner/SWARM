@@ -31,7 +31,7 @@ function Get-StatsCpuminer {
         $global:BCPUACC = $GetCPUSummary -split ";" | Select-String "ACC=" | foreach {$_ -replace ("ACC=", "")}
         $global:BCPUREJ = $GetCPUSummary -split ";" | Select-String "REJ=" | foreach {$_ -replace ("REJ=", "")}
         $global:BCPUUPTIME = $GetCPUSummary -split ";" | Select-String "UPTIME=" | foreach {$_ -replace ("UPTIME=", "")}
-        $global:BCPUALGO = $GetCPUSummary -split ";" | Select-String "ALGO=" | foreach {$_ -replace ("ALGO=", "")}
+        $global:BALGO.Add($MinerType,$MinerAlgo)
         $CPUTEMP = $GetCPUSummary -split ";" | Select-String "TEMP=" | foreach {$_ -replace ("TEMP=", "")}
         $CPUFAN = $GetCPUSummary -split ";" | Select-String "FAN=" | foreach {$_ -replace ("FAN=", "")}
     }
