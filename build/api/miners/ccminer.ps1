@@ -26,7 +26,7 @@ function Get-StatsCcminer {
         try {$global:BMinerREJ += $Request -split ";" | Select-String "REJ=" | foreach {$_ -replace ("REJ=", "")}}catch {}
         try {$global:BACC += $Request -split ";" | Select-String "ACC=" | foreach {$_ -replace ("ACC=", "")}}catch {}
         try {$global:BREJ += $Request -split ";" | Select-String "REJ=" | foreach {$_ -replace ("REJ=", "")}}catch {}
-        $global:BALGO += "$MinerAlgo"
+        $global:BALGO.Add($MinerType,$MinerAlgo)
         $global:BUPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
     }
     else {Write-Host "API Threads Failed"; break}

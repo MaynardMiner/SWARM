@@ -13,7 +13,7 @@ function Get-StatsTrex {
         $Data.rejected_count | Foreach {$global:BREJ += $_}
         $global:BKHS += if ([Double]$Data.hashrate_minute -ne 0 -or [Double]$Data.accepted_count -ne 0) {[Double]$Data.hashrate_minute / 1000}
         $global:BUPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
-        $global:BALGO += "$($Data.Algorithm)"
+        $global:BALGO.Add($MinerType,$MinerAlgo)
     }
     else {Set-APIFailure; break}
 }

@@ -13,7 +13,7 @@ function Get-StatsWildrig {
         $global:BACC += $Data.results.shares_good
         $global:BREJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good
         $global:BUPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
-        $global:BALGO += "$MinerAlgo"
+        $global:BALGO.Add($MinerType,$MinerAlgo)
         try {$global:BKHS += [Double]$Data.hashrate.total[0] / 1000}catch {}
     }
     else {Set-APIFailure; break}

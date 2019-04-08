@@ -262,6 +262,7 @@ clear_watts
                 $response = $request | ConvertFrom-Json
                 $PoolDetails = $response.POOLS | Where Pool -eq 1
                 if($PoolDetails) {
+                    if($PoolDetails[-1] -notmatch "}"){$PoolDetails =$PoolDetails.Substring(0,$PoolDetails.Length-1)}
                    $PoolDetails | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | %{
                        $Get += "Active Pool $($_) = $($PoolDetails.$_)"
                    }

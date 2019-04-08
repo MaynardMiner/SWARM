@@ -47,6 +47,7 @@ function start-update {
         $PreviousVersions += "SWARM.2.0.9"
         $PreviousVersions += "SWARM.2.1.0"
         $PreviousVersions += "SWARM.2.1.1"
+        $PreviousVersions += "SWARM.2.1.2"
 
         Write-Host "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
         Write-Host "Check $Location For any Previous Versions"
@@ -114,6 +115,33 @@ function start-update {
                                         $Data.$_.difficulty | Add-Member "grincuckaroo29" "" -ErrorAction SilentlyContinue
                                         $Data.$_.naming | Add-Member "grincuckaroo29" "cuckaroo29" -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "grincuckaroo29" @{Power = ""; Core = ""; Memory = ""; Fans = ""} -ErrorAction SilentlyContinue
+                                    }
+                                }
+                            }
+
+                            if ($ChangeFile -eq "bubasik.json") {
+                                $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                    ##2.1.3
+                                    if ($_ -ne "name") {
+                                        $Data.$_.commands| Add-Member "yespowerr16" "" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.difficulty | Add-Member "yespowerr16" "" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.naming | Add-Member "yespowerr16" "yespowerr16" -ErrorAction SilentlyContinue -Force
+
+                                        $Data.$_.commands| Add-Member "yespowerr16" "" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.difficulty | Add-Member "yespowerr16" "" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.naming | Add-Member "yespowerr16" "yespowerr16" -ErrorAction SilentlyContinue -Force
+
+                                        $Data.$_.commands| Add-Member "yescryptr8" "" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.difficulty | Add-Member "yescryptr8" "" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.naming | Add-Member "yescryptr8" "yescryptr8" -ErrorAction SilentlyContinue -Force
+
+                                        $Data.$_.commands| Add-Member "yescryptr32" "" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.difficulty | Add-Member "yescryptr32" "" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.naming | Add-Member "yescryptr32" "yescryptr32" -ErrorAction SilentlyContinue -Force
+
+                                        $Data.$_.commands| Add-Member "argon2d-dyn" "" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.difficulty | Add-Member "argon2d-dyn" "" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.naming | Add-Member "argon2d-dyn" "argon2d500" -ErrorAction SilentlyContinue -Force
                                     }
                                 }
                             }

@@ -13,7 +13,7 @@ if ($Request) {
     $Data.rejected_shares | Foreach {$global:BREJ += $_}
     $Data.accepted_shares | Foreach {$global:BACC += $_}
     $Data.sol_ps | foreach {$global:BKHS += [Double]$_}
-    $global:BALGO += "$MinerAlgo"
+    $global:BALGO.Add($MinerType,$MinerAlgo)
     $global:BUPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
 }
 else {Set-APIFailure; break}

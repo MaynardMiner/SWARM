@@ -21,7 +21,7 @@ function Get-StatsExcavator {
         $global:BMinerACC += $Summary.algorithms.accepted_shares
         $global:BMinerREJ += $Summary.algorithms.rejected_shares
         $global:BUPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
-        $global:BALGO += "$($Summary.algorithms.name)"
+        $global:BALGO.Add($MinerType,$MinerAlgo)
     }
     else {Write-Host "API Threads Failed"; break}
 }

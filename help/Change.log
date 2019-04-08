@@ -2373,3 +2373,23 @@ API overhaul:
   * Glitch where -Algorithm and -Coin switches back. #79
   * Restore Auto-Coin switching. #78
   * update xmrig #82 
+
+
+  2.1.3
+
+  Here are the relevant issues fixes / Enhancements:
+
+  CryptoDredge 0.18 #88
+  update cpuminer-bubasik #92 
+  miniz --cuda-devices doesn't work in linux #98
+  update miniz #93
+  update gminer #94 
+  reorganize miners directory #97 
+  ASIC API Issues #99
+  update wiki with new wallet config #71 
+  windows: Connection to HiveOS. #87
+  Add Total BTC Profit in get wallets command #96
+  Reduce miner.ps1 files #95 
+
+  -Windows will now detect AMD drivers.
+  -Windows will now detect AES support.

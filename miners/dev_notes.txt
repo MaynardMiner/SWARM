@@ -1,0 +1,12 @@
+Note on miners:
+
+-AMD cannot be broken up into groups. There are miners that are unable to specify devices to do so.
+
+-NVIDIA can have up to three device groups: -Type NVIDIA1,NVIDIA2,NVIDIA3 in case you have different
+ model gpus. Be sure to use the corresponding -GPUDevices1 -GPUDevices2 -GPUDevices3 and -Wallet1
+ -Wallet2 -Wallet3 arguments, or they will fail.
+
+-Stak_Cpu cannot specify threads, if you use it, it will use ALL cpu threads. This may cause computer
+ to lock up.
+
+-

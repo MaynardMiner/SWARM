@@ -28,12 +28,15 @@ function Get-Miners {
     $GetMinerBlocks = $null
     $GPUMiners = $false
     $ASICMiners = $false
+    $NVB = $false
+    $AMDB = $false
+    $CPUB = $false
 
     $MinerType | ForEach-Object {
         if ($_ -like "*ASIC*") { $ASICMiners = $true }
-        if ($_ -like "*NVIDIA*") { $GPUMiners = $true }
-        if ($_ -like "*AMD*") { $GPUMiners = $true }
-        if ($_ -like "*CPU*") { $GPUMiners = $true }
+        if ($_ -like "*NVIDIA*") { $NVB = $true; $GPUMiners = $true }
+        if ($_ -like "*AMD*") { $AMDB = $true; $GPUMiners = $true }
+        if ($_ -like "*CPU*") { $CPUB = $true; $GPUMiners = $true }
     }
 
 
@@ -44,18 +47,43 @@ function Get-Miners {
 
     ## Start Running miner scripts, Create an array of Miner Hash Tables
     $GetMiners = New-Object System.Collections.ArrayList
+
     if ($GPUMiners -eq $true) {
-        $minerfilepath = ".\miners\gpu"    
-        $GPUminers = if (Test-Path $minerfilepath) { Get-ChildItemContent $minerfilepath | ForEach-Object { $_.Content | Add-Member @{Name = $_.Name } -PassThru } |
-            Where-Object { $Type.Count -eq 0 -or (Compare-Object $Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
-            Where-Object { $No_Miner -notcontains $_.Name } |
-            Where-Object { $_.Path -ne "None" } |
-            Where-Object { $_.Uri -ne "None" } |
-            Where-Object { $_.MinerName -ne "None" }
+        if ($NVB -eq $true) {
+            $minerfilepath = ".\miners\gpu\nvidia"    
+            $NVIDIAMiners = if (Test-Path $minerfilepath) { Get-ChildItemContent $minerfilepath | ForEach-Object { $_.Content | Add-Member @{Name = $_.Name } -PassThru } |
+                Where-Object { $Type.Count -eq 0 -or (Compare-Object $Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
+                Where-Object { $No_Miner -notcontains $_.Name } |
+                Where-Object { $_.Path -ne "None" } |
+                Where-Object { $_.Uri -ne "None" } |
+                Where-Object { $_.MinerName -ne "None" }
+            }
+        }
+        if ($AMDB -eq $true) {
+            $minerfilepath = ".\miners\gpu\amd"    
+            $AMDMiners = if (Test-Path $minerfilepath) { Get-ChildItemContent $minerfilepath | ForEach-Object { $_.Content | Add-Member @{Name = $_.Name } -PassThru } |
+                Where-Object { $Type.Count -eq 0 -or (Compare-Object $Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
+                Where-Object { $No_Miner -notcontains $_.Name } |
+                Where-Object { $_.Path -ne "None" } |
+                Where-Object { $_.Uri -ne "None" } |
+                Where-Object { $_.MinerName -ne "None" }
+            }
+        }
+        if ($CPUB -eq $true) {
+            $minerfilepath = ".\miners\cpu"
+            $CPUMiners = if (Test-Path $minerfilepath) { Get-ChildItemContent $minerfilepath | ForEach-Object { $_.Content | Add-Member @{Name = $_.Name } -PassThru } |
+                Where-Object { $Type.Count -eq 0 -or (Compare-Object $Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
+                Where-Object { $No_Miner -notcontains $_.Name } |
+                Where-Object { $_.Path -ne "None" } |
+                Where-Object { $_.Uri -ne "None" } |
+                Where-Object { $_.MinerName -ne "None" }
+            }
         }
 
-        $GPUminers | ForEach-Object { $GetMiners.Add($_) | Out-Null }
-
+        if ($NVIDIAMiners) { $NVIDIAminers | ForEach-Object { $_.Name = $_.MName; $GetMiners.Add($_) | Out-Null } }
+        if ($AMDMiners) { $AMDMiners | ForEach-Object { $_.Name = $_.MName; $GetMiners.Add($_) | Out-Null } }
+        if ($CPUMiners) { $CPUMiners | ForEach-Object { $_.Name = $_.MName; $GetMiners.Add($_) | Out-Null } }
+        
         $NVIDIA1EX = $GetMiners | Where-Object TYPE -eq "NVIDIA1" | ForEach-Object { if ($No_Algo1 -contains $_.Algo) { $_ } }
         $NVIDIA2EX = $GetMiners | Where-Object TYPE -eq "NVIDIA2" | ForEach-Object { if ($No_Algo2 -contains $_.Algo) { $_ } }
         $NVIDIA3EX = $GetMiners | Where-Object TYPE -eq "NVIDIA3" | ForEach-Object { if ($No_Algo3 -contains $_.Algo) { $_ } }
@@ -73,7 +101,7 @@ function Get-Miners {
     if ($ASICMiners -eq $True) {
         $minerfilepath = ".\miners\asic"    
         $ASICMiners = if (Test-Path $minerfilepath) { Get-ChildItemContent $minerfilepath | ForEach-Object { $_.Content | Add-Member @{Name = $_.Name } -PassThru } |
-            Where-Object { $Type.Count -eq 0 -or (Compare-Object $CurType $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
+            Where-Object { $Type.Count -eq 0 -or (Compare-Object $Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
             Where-Object { $No_Miner -notcontains $_.Name } |
             Where-Object { $_.Path -ne "None" } |
             Where-Object { $_.Uri -ne "None" } |

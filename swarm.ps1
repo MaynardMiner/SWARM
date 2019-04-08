@@ -718,6 +718,9 @@ if ($NVIDIADevices2 -ne "none") { $NVIDIADevices2 = $NVIDIADevices2.Substring(0,
 if ($NVIDIADevices3 -ne "none") { $NVIDIADevices3 = $NVIDIADevices3.Substring(0, $NVIDIADevices3.Length - 1) }
 if ($AMDDevices1 -ne "none") { $AMDDevices1 = $AMDDevices1.Substring(0, $AMDDevices1.Length - 1) }
 $GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
+$NVIDIATypes = @(); if($Type -like "*NVIDIA*"){$Type | Where {$_ -like "*NVIDIA*"} | %{$NVIDIATypes += $_}}
+$CPUTypes = @(); if($Type -like "*CPU*"){$Type | Where {$_ -like "*CPU*"} | %{$CPUTypes += $_}}
+$AMDTypes = @(); if($Type -like "*AMD*"){$Type | Where {$_ -like "*AMD*"} | %{$AMDTypes += $_}}
 }
 
 ##Reset-Old Stats And Their Time
@@ -1274,7 +1277,7 @@ While ($true) {
                         $Current = $_ | ConvertTo-Json -Compress
                         if($_.Type -ne "ASIC"){$PreviousPorts = $PreviousMinerPorts | ConvertTo-Json -Compress}
                         if($_.Type -ne "ASIC"){$_.Xprocess = Start-LaunchCode -PP $PreviousPorts -Platforms $Platform -NewMiner $Current}
-                        else{$_.Xprocess = Start-LaunchCode -Platforms $Platform -NewMiner $Current -IP $ASIC_IP}
+                        else{$_.Xprocess = Start-LaunchCode -Platforms $Platform -NewMiner $Current -AIP $ASIC_IP}
                         $Instance++
                     }
                     if ($Restart -eq $true) {
@@ -1426,7 +1429,7 @@ While ($true) {
         #Clear Logs If There Are 12
         if ($Log -eq 12) {
             Stop-Transcript -ErrorAction SilentlyContinue
-            Remove-Item ".\logs\*miner*" -Force
+            Remove-Item ".\logs\*miner*" -Force -ErrorAction SilentlyContinue
             $Log = 0
         } 
 
@@ -1558,7 +1561,7 @@ While ($true) {
             Get-MinerActive | Out-Host
             Get-MinerStatus | Out-Host
             $ProfitTable = $null
-            Get-VM | Out-Host
+            #Get-VM | Out-Host
             if ($SWARM_IT) {
                 if ($SwitchTime) {
                     Write-Host "SWARM MODE ACTIVATED!" -ForegroundColor Green;

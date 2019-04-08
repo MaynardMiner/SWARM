@@ -21,7 +21,7 @@ function Start-LaunchCode {
         [Parameter(Mandatory = $false)]
         [String]$PP,
         [Parameter(Mandatory = $false)]
-        [String]$IP
+        [String]$AIP
     ) 
 
     $MinerCurrent = $NewMiner | ConvertFrom-Json
@@ -41,7 +41,7 @@ function Start-LaunchCode {
                     switch ($MinerCurrent.DeviceCall) {
                         "ccminer" { $MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "ewbf" { $MinerArguments = "--cuda_devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
-                        "miniz" { $MinerArguments = "--cuda-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
+                        "miniz" { $MinerArguments = "-cd $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "energiminer" { $MinerArguments = "--cuda-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "gminer" { $MinerArguments = "-d $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)" }
                         "dstm" { $MinerArguments = "--dev $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
@@ -142,8 +142,7 @@ function Start-LaunchCode {
             "*CPU*" {
                 if ($MinerCurrent.Devices -eq '') { $MinerArguments = "$($MinerCurrent.Arguments)" }
                 elseif ($MinerCurrent.DeviceCall -eq "cpuminer-opt") { $MinerArguments = "-t $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
-                elseif ($MinerCurrent.DeviceCall -eq "cryptozeny") { $MinerArguments = "-t $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
-                elseif ($MinerCurrent.DeviceCall -eq "xmrstak-opt") { $MinerArguments = "$($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
+                elseif ($MinerCurrent.DeviceCall -eq "xmrig-opt") { $MinerArguments = "-t $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
             }
         }
 
@@ -165,8 +164,7 @@ function Start-LaunchCode {
                 $WorkingDirectory = Join-Path $Dir $(Split-Path $($MinerCurrent.Path))
 
                 ##Remove Old Logs
-                $MinerLogs = Get-ChildItem "logs" | Where-Object Name -like "*$($MinerCurrent.Type)*"
-                $MinerLogs | ForEach-Object { if (Test-Path ".\logs\$($_)") { Remove-Item ".\logs\$($_)" -Force } }
+                Remove-Item ".\logs\*$($MinerCurrent.Type)*" -Force -ErrorAction SilentlyContinue
                 Start-Sleep -S 1
 
                 ##Make Test.bat for users
@@ -371,16 +369,16 @@ function Start-LaunchCode {
         }
     }
     else {
-        $clear = Remove-ASICPools $IP $MinerCurrent.Port $MinerCurrent.API
+        $clear = Remove-ASICPools $AIP $MinerCurrent.Port $MinerCurrent.API
         Start-Sleep -S 1
         $Commands = "addpool|$($MinerCurrent.Arguments)"
         Write-Host "Adding New Pool"
-        $response = Get-TCP -Server $IP -Port $MinerCurrent.Port -Timeout 5 -Message $Commands
+        $response = Get-TCP -Server $AIP -Port $MinerCurrent.Port -Timeout 5 -Message $Commands
         Start-Sleep -S 1
         $response = $null
         Write-Host "Switching To New Pool"
         $Commands = "switchpool|1"
-        $response = Get-TCP -Server $IP -Port $MinerCurrent.Port -Timeout 5 -Message $Commands
+        $response = Get-TCP -Server $AIP -Port $MinerCurrent.Port -Timeout 5 -Message $Commands
         if($response){$MinerProcess = @{StartTime = (Get-Date); HasExited = $false}}
         $MinerProcess
     }

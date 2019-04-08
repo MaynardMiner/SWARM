@@ -20,7 +20,7 @@ function Get-StatsEthminer {
         $global:BACC += $Summary -split ";" | Select -skip 1 -first 1
         $global:BREJ += $Summary -split ";" | Select -skip 2 -first 1
         $global:BUPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
-        $global:BALGO += "$MinerAlgo"
+        $global:BALGO.Add($MinerType,$MinerAlgo)
     }
     else {Set-APIFailure; break}
 

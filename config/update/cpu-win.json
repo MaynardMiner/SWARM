@@ -1,19 +1,19 @@
- {
-  "name":"cpu-win", 
-    "jayddee": {
-      "name":"jayddee", 
-      "type":"cpu", 
-      "path1":".\\bin\\jayddee-1\\cpuminer-sse2.exe", 
-      "minername":"cpuminer-sse2.exe", 
-      "version":"3.8.8.1", 
-      "uri":"https://github.com/JayDDee/cpuminer-opt/files/1996977/cpuminer-opt-3.8.8.1-windows.zip"
-}, 
-    "bubasik": {
-      "name":"bubasik", 
-      "type":"cpu", 
-      "path1":".\\bin\\bubasik\\cpuminer-sse2.exe", 
-      "minername":"cpuminer-sse2.exe", 
-      "version":"3.8.8.3", 
-      "uri":"https://github.com/bubasik/cpuminer-opt-yespower/releases/download/v3.8.8.3/cpuminer-opt-cryply-yespower-ver2.zip"
-}
+{
+ "name": "cpu-win",
+  "bubasik": {
+    "name": "bubasik",
+    "type": "cpu",
+    "CPU": ".\\bin\\bubasik\\cpuminer-sse2.exe",
+    "minername": "cpuminer-sse2.exe",
+    "version": "3.8.8.4",
+    "uri": "https://github.com/bubasik/cpuminer-opt-yespower/releases/download/3.8.8.4/Cpuminer-opt-yespower-ytn-ver3.zip"
+  },
+  "xmrig_cpu": {
+    "name": "xmrig_cpu",
+    "type": "cpu",
+    "CPU": ".\\bin\\xmrig-cpu-1\\xmrig.exe",
+    "minername": "xmrig.exe",
+    "version": "2.14.1",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v8.0/xmrig-windows.zip"
+  }
 }
