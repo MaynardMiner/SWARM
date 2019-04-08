@@ -61,7 +61,7 @@ $NVIDIATypes | ForEach-Object {
                     Path       = $Path
                     Devices    = $Devices
                     DeviceCall = "ccminer"
-                    Arguments  = "-a $($Config.$ConfigType.naming.$($_.Algorithm)) --no-nvml -o stratum+tcp://$($_.Host):$($_.Port) -b 0.0.0.0:$Port -u $($_.$User) -p $($_.$Pass)$($Diff) $($Config.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "-a $($Config.$ConfigType.naming.$($_.Algorithm)) --no-nvml --log=`'$Log`' -o stratum+tcp://$($_.Host):$($_.Port) -b 0.0.0.0:$Port -u $($_.$User) -p $($_.$Pass)$($Diff) $($Config.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) }
                     Quote      = if ($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)) { $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) * ($_.Price) }else { 0 }
                     PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
@@ -79,7 +79,7 @@ $NVIDIATypes | ForEach-Object {
                     Server     = "localhost"
                     BUILD      = $Build
                     Algo       = "$($_.Algorithm)"
-                    Log        = $Log 
+                    Log        = "miner_generated"
                 }
             }
         }

@@ -164,8 +164,7 @@ function Start-LaunchCode {
                 $WorkingDirectory = Join-Path $Dir $(Split-Path $($MinerCurrent.Path))
 
                 ##Remove Old Logs
-                $MinerLogs = Get-ChildItem "logs" | Where-Object Name -like "*$($MinerCurrent.Type)*"
-                $MinerLogs | ForEach-Object { if (Test-Path ".\logs\$($_)") { Remove-Item ".\logs\$($_)" -Force } }
+                Remove-Item ".\logs\*$($MinerCurrent.Type)*" -Force -ErrorAction SilentlyContinue
                 Start-Sleep -S 1
 
                 ##Make Test.bat for users

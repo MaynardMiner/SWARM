@@ -1429,7 +1429,7 @@ While ($true) {
         #Clear Logs If There Are 12
         if ($Log -eq 12) {
             Stop-Transcript -ErrorAction SilentlyContinue
-            Remove-Item ".\logs\*miner*" -Force
+            Remove-Item ".\logs\*miner*" -Force -ErrorAction SilentlyContinue
             $Log = 0
         } 
 
