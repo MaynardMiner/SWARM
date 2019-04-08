@@ -20,6 +20,9 @@ $NVIDIATypes | ForEach-Object {
         3 { $Get_Devices = $NVIDIADevices3 }
     }
 
+    ##Log Directory
+    $Log = Join-Path $dir "logs\$ConfigType.log"
+
     ##Parse -GPUDevices
     if ($Get_Devices -ne "none") {
         $ClayDevices1 = $Get_Devices -split ","
