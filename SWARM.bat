@@ -7,6 +7,9 @@ REM CoinExchange: AltCoin Coin Pricing (Besides BTC).
 REM Location: EUROPE ASIA US (Choose one).
 REM Poolname: Remove Pools As You See Fit. Add Custom Pools If You Like.
 REM Type: NVIDIA1 or AMD1 or AMD1,NVIDIA2 or NVIDIA1,NVIDIA2,NVIDIA3 (maximum of three)
+REM Type: CPU can be added, but -CPUThreads must be used (see help on arguments)
+REM Type: ASIC can be used, compatible with cgminer & bfgminer (most asics)
+REM Type: -ASIC_IP and -ASIC_ALGO must be used with -Type ASIC (see help on arguments)
 REM Wallet1: Your BTC Wallet. Add -Wallet2 or -Wallet3 if using -Type NVIDIA2 or NVIDIA3
 REM Donate: Donation in percent
 REM WattOMeter: Use Watt Calculations (Default is 0.10 / kwh). Can be modified. See Wiki
