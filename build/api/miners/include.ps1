@@ -169,7 +169,7 @@ function Get-OhNo{
 function Remove-ASICPools {
     param (
         [Parameter(Mandatory = $true, Position = 0)]
-        [string]$IP,
+        [string]$AIP,
         [Parameter(Mandatory = $true, Position = 1)]
         [string]$Port,
         [Parameter(Mandatory = $true, Position = 2)]
@@ -187,7 +187,7 @@ function Remove-ASICPools {
             ##First we need to discover all pools
             $Commands = @{command = "pools"; parameter = 0 } | ConvertTo-Json -Compress
             $response = $Null
-            $response = Get-TCP -Server "localhost" -Port $Port -Message $Commands -Timeout $timeout
+            $response = Get-TCP -Server $AIP -Port $Port -Message $Commands -Timeout $timeout
             if ($response) {
                 $PoolList = $response | ConvertFrom-Json
                 $PoolList = $PoolList.POOLS
@@ -196,7 +196,7 @@ function Remove-ASICPools {
                     $PoolNo = $($ASIC_Pools.$ASICM.$_)
                     $Commands = @{command = "removepool"; parameter = "$PoolNo" } | ConvertTo-Json -Compress; 
                     $response = $Null; 
-                    $response = Get-TCP -Server "localhost" -Port $Port -Message $Commands -Timeout $timeout 
+                    $response = Get-TCP -Server $AIP -Port $Port -Message $Commands -Timeout $timeout 
                     $response
                 }  
             }

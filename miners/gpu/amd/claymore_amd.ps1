@@ -1,5 +1,9 @@
+$AMDTypes | ForEach-Object {
+    
+    $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
+
 ##Miner Path Information
-if ($amd.claymore_amd.path1) { $Path = "$($amd.claymore_amd.path1)" }
+if ($amd.claymore_amd.$ConfigType) { $Path = "$($amd.claymore_amd.$ConfigType)" }
 else { $Path = "None" }
 if ($amd.claymore_amd.uri) { $Uri = "$($amd.claymore_amd.uri)" }
 else { $Uri = "None" }
@@ -8,15 +12,18 @@ else { $MinerName = "None" }
 if ($Platform -eq "linux") { $Build = "Tar" }
 elseif ($Platform -eq "windows") { $Build = "Zip" }
 
-$ConfigType = "AMD1"
-$User = "User1"
+$User = "User$Num"; $Pass = "Pass$Num"; $Name = "claymore-$Num"; $Port = "2000$Num"
+
+Switch ($Num) {
+    1 { $Get_Devices = $AMDDevices1 }
+}
 
 ##Log Directory
 $Log = Join-Path $dir "logs\$ConfigType.log"
 
 ##Parse -GPUDevices
-if ($AMDDevices1 -ne "none") {
-    $ClayDevices1 = $AMDDevices1 -split ","
+if ($Get_Devices -ne "none") {
+    $ClayDevices1 = $Get_Devices -split ","
     $ClayDevices1 = Switch ($ClayDevices1) { "10" { "a" }; "11" { "b" }; "12" { "c" }; "13" { "d" }; "14" { "e" }; "15" { "f" }; "16" { "g" }; "17" { "h" }; "18" { "i" }; "19" { "j" }; "20" { "k" }; default { "$_" }; }
     $ClayDevices1 = $ClayDevices1 | ForEach-Object { $_ -replace ("$($_)", ",$($_)") }
     $ClayDevices1 = $ClayDevices1 -join ""
@@ -41,7 +48,6 @@ $PreStart += "export LD_LIBRARY_PATH=$ExportDir"
 $Config.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 
 if ($Coins -eq $true) { $Pools = $CoinPools }else { $Pools = $AlgoPools }
-$Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName
 
 ##Build Miner Settings
 $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
@@ -50,8 +56,9 @@ $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Obje
         if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
             if ($Config.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
             if ($_.Worker) { $MinerWorker = "-eworker $($_.Worker) " }
-            else { $MinerWorker = "-epsw $($_.Pass1)$($Diff) " }
+            else { $MinerWorker = "-epsw $($_.$User)$($Diff) " }
             [PSCustomObject]@{
+                MName      = $Name
                 Delay      = $Config.$ConfigType.delay
                 Symbol     = "$($_.Symbol)"
                 MinerName  = $MinerName
@@ -60,7 +67,7 @@ $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Obje
                 Path       = $Path
                 Devices    = $Devices
                 DeviceCall = "claymore"
-                Arguments  = "-platform 1 -mport 4333 -mode 1 -allcoins 1 -allpools 1 -epool $($_.Protocol)://$($_.Host):$($_.Port) -logfile `'$Log`' -ewal $($_.User1) $MinerWorker-wd 0 -gser 2 -dbg -1 -eres 1 $($Config.$ConfigType.commands.$($_.Algorithm))"
+                Arguments  = "-platform 1 -mport $Port -mode 1 -allcoins 1 -allpools 1 -epool $($_.Protocol)://$($_.Host):$($_.Port) -logfile `'$Log`' -ewal $($_.$User) $MinerWorker-wd 0 -gser 2 -dbg -1 -eres 1 $($Config.$ConfigType.commands.$($_.Algorithm))"
                 HashRates  = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) }
                 Quote      = if ($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)) { $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) * ($_.Price) }else { 0 }
                 PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
@@ -72,7 +79,7 @@ $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Obje
                 ocfans     = if ($Config.$ConfigType.oc.$($_.Algorithm).fans) { $Config.$ConfigType.oc.$($_.Algorithm).fans }else { $OC."default_$($ConfigType)".fans }
                 FullName   = "$($_.Mining)"
                 API        = "claymore"
-                Port       = 4333
+                Port       = $Port
                 MinerPool  = "$($_.Name)"
                 Wrap       = $false
                 Wallet     = "$($_.$User)"

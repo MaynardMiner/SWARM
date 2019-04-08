@@ -1,5 +1,9 @@
+$AMDTypes | ForEach-Object {
+    
+    $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
+
 ##Miner Path Information
-if ($AMD.energi_amd.path1) { $Path = "$($AMD.energi_amd.path1)" }
+if ($AMD.energi_amd.$ConfigType) { $Path = "$($AMD.energi_amd.$ConfigType)" }
 else { $Path = "None" }
 if ($AMD.energi_amd.uri) { $Uri = "$($AMD.energi_amd.uri)" }
 else { $Uri = "None" }

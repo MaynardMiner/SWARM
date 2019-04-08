@@ -101,7 +101,7 @@ function Get-Miners {
     if ($ASICMiners -eq $True) {
         $minerfilepath = ".\miners\asic"    
         $ASICMiners = if (Test-Path $minerfilepath) { Get-ChildItemContent $minerfilepath | ForEach-Object { $_.Content | Add-Member @{Name = $_.Name } -PassThru } |
-            Where-Object { $Type.Count -eq 0 -or (Compare-Object $CurType $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
+            Where-Object { $Type.Count -eq 0 -or (Compare-Object $Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
             Where-Object { $No_Miner -notcontains $_.Name } |
             Where-Object { $_.Path -ne "None" } |
             Where-Object { $_.Uri -ne "None" } |

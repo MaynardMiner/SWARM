@@ -21,7 +21,7 @@ function Start-LaunchCode {
         [Parameter(Mandatory = $false)]
         [String]$PP,
         [Parameter(Mandatory = $false)]
-        [String]$IP
+        [String]$AIP
     ) 
 
     $MinerCurrent = $NewMiner | ConvertFrom-Json
@@ -142,7 +142,7 @@ function Start-LaunchCode {
             "*CPU*" {
                 if ($MinerCurrent.Devices -eq '') { $MinerArguments = "$($MinerCurrent.Arguments)" }
                 elseif ($MinerCurrent.DeviceCall -eq "cpuminer-opt") { $MinerArguments = "-t $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
-                elseif ($MinerCurrent.DeviceCall -eq "xmrstak-opt") { $MinerArguments = "-t $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
+                elseif ($MinerCurrent.DeviceCall -eq "xmrig-opt") { $MinerArguments = "-t $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
             }
         }
 
@@ -370,16 +370,16 @@ function Start-LaunchCode {
         }
     }
     else {
-        $clear = Remove-ASICPools $IP $MinerCurrent.Port $MinerCurrent.API
+        $clear = Remove-ASICPools $AIP $MinerCurrent.Port $MinerCurrent.API
         Start-Sleep -S 1
         $Commands = "addpool|$($MinerCurrent.Arguments)"
         Write-Host "Adding New Pool"
-        $response = Get-TCP -Server $IP -Port $MinerCurrent.Port -Timeout 5 -Message $Commands
+        $response = Get-TCP -Server $AIP -Port $MinerCurrent.Port -Timeout 5 -Message $Commands
         Start-Sleep -S 1
         $response = $null
         Write-Host "Switching To New Pool"
         $Commands = "switchpool|1"
-        $response = Get-TCP -Server $IP -Port $MinerCurrent.Port -Timeout 5 -Message $Commands
+        $response = Get-TCP -Server $AIP -Port $MinerCurrent.Port -Timeout 5 -Message $Commands
         if($response){$MinerProcess = @{StartTime = (Get-Date); HasExited = $false}}
         $MinerProcess
     }
