@@ -1561,7 +1561,7 @@ While ($true) {
             Get-MinerActive | Out-Host
             Get-MinerStatus | Out-Host
             $ProfitTable = $null
-            Get-VM | Out-Host
+            #Get-VM | Out-Host
             if ($SWARM_IT) {
                 if ($SwitchTime) {
                     Write-Host "SWARM MODE ACTIVATED!" -ForegroundColor Green;
