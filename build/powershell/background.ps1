@@ -153,8 +153,8 @@ While ($True) {
 
     ## Build Initial Hash Tables For Stats
     $global:GPUHashrates = [PSCustomObject]@{};  $global:CPUHashrates = [PSCustomObject]@{}
-    $global:ASICHashrates = [PSCustomObject]@{}; $global:GPUsFans = [PSCustomObject]@{}
-    $global:GPUsTemps = [PSCustomObject]@{};     $global:GPUsPower = [PSCustomObject]@{}
+    $global:ASICHashrates = [PSCustomObject]@{}; $GPUFans = [PSCustomObject]@{}
+    $GPUTemps = [PSCustomObject]@{};             $GPUPower = [PSCustomObject]@{}
 
     for ($i = 0; $i -lt $GCount.CPU.PSObject.Properties.Value.Count; $i++) {
         $global:CPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.CPU.$i)" -Value 0; 
@@ -163,18 +163,18 @@ While ($True) {
     if ($DevAMD -eq $true) {
         for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {
             $global:GPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0; 
-            $global:GPUsFans | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0; 
-            $global:GPUsTemps | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0; 
-            $global:GPUsPower | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0
+            $GPUFans | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0; 
+            $GPUTemps | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0; 
+            $GPUPower | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0
         }
     }
 
     if ($DevNVIDIA -eq $true) {
         for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {
             $global:GPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; 
-            $global:GPUsFans | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; 
-            $global:GPUsTemps | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; 
-            $global:GPUsPower | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0
+            $GPUsFans | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; 
+            $GPUsTemps | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; 
+            $GPUsPower | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0
         }
     }
 
@@ -183,8 +183,8 @@ While ($True) {
     }
 
     ## Reset All Stats, Rebuild Tables
-    $global:BALGO = @{}; $global:TALGO = @{}; $global:BHashRates = @(); $Group1 = $null
-    $global:BFans = @(); $global:BTemps = @(); $global:BPower = @(); $Default_Group = $null
+    $global:BALGO = @{}; $global:TALGO = @{}; $BHashRates = @(); $Group1 = $null
+    $BFans = @(); $BTemps = @(); $BPower = @(); $Default_Group = $null
     $global:BCPUKHS = $null; $global:BCPUACC = 0; $global:BCPUREJ = 0; $global:BCPURAW = 0; 
     $global:BRAW = 0; $global:BKHS = 0; $global:BREJ = 0; 
     $global:BACC = 0;
@@ -291,18 +291,11 @@ While ($True) {
             }
 
             ## Set Initial Output
-            $global:BHS = "khs"
-            $global:BRAW = 0
-            $global:BMinerACC = 0
-            $global:BMinerREJ = 0
-            $global:AHS = "khs"
-            $global:ARAW = 0
-            $global:AMinerACC = 0
-            $global:AMinerREJ = 0
-            $global:BCPUHS = "khs"
-            $global:BCPURAW = 0
-            $global:BCPUMinerACC = 0
-            $global:BCPUMinerREJ = 0
+            $global:BHS = "khs";     $global:BRAW = 0;         $global:BMinerACC = 0
+            $global:BMinerREJ = 0;   $global:AHS = "khs";      $global:ARAW = 0
+            $global:AMinerACC = 0;   $global:AMinerREJ = 0;    $global:BCPUHS = "khs";
+            $global:BCPURAW = 0;     $global:BCPUMinerACC = 0; $global:BCPUMinerREJ = 0
+            
             Write-MinerData1
 
             ## Start Calling Miners
@@ -381,7 +374,7 @@ HSU=$global:BCPUHS
 
         if ($GetMiners -and $GETSWARM.HasExited -eq $false) {
             Write-Host " "
-            Write-Host "$global:BHashRates" -ForegroundColor Green -NoNewline
+            Write-Host "$BHashRates" -ForegroundColor Green -NoNewline
             Write-Host " KHS=$global:BCPUKHS" -ForegroundColor Yellow -NoNewline
             Write-Host " ACC=$global:BCPUACC" -ForegroundColor DarkGreen -NoNewline
             Write-Host " REJ=$global:BCPUREJ" -ForegroundColor DarkRed -NoNewline
@@ -392,59 +385,59 @@ HSU=$global:BCPUHS
         }
     }
     else {
-        if ($DEVNVIDIA -eq $True) {if ($GCount.NVIDIA.PSObject.Properties.Value.Count -gt 0) {for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {$global:BHashRates += 0; $global:BFans += 0; $global:BTemps += 0}}}
-        if ($DevAMD -eq $True) {if ($GCount.AMD.PSObject.Properties.Value.Count -gt 0) {for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {$global:BHashRates += 0; $global:BFans += 0; $global:BTemps += 0}}}
+        if ($DEVNVIDIA -eq $True) {if ($GCount.NVIDIA.PSObject.Properties.Value.Count -gt 0) {for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {$BHashRates += 0; $BFans += 0; $BTemps += 0}}}
+        if ($DevAMD -eq $True) {if ($GCount.AMD.PSObject.Properties.Value.Count -gt 0) {for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {$BHashRates += 0; $BFans += 0; $gBTemps += 0}}}
         if ($DEVNVIDIA -eq $True) {
           for ($i = 0; $i -lt $GCount.NVIDIA.PSOBject.Properties.Value.Count; $i++) {
-            $global:BHashRates[$($GCount.NVIDIA.$i)] = "GPU={0:f4}" -f $($global:GPUHashrates.$($GCount.NVIDIA.$i))
-            $global:BFans[$($GCount.NVIDIA.$i)] = "FAN=$($global:GPUsFans.$($GCount.NVIDIA.$i))"
-            $global:BTemps[$($GCount.NVIDIA.$i)] = "TEMP=$($global:GPUsTemps.$($GCount.NVIDIA.$i))"
+            $BHashRates[$($GCount.NVIDIA.$i)] = "GPU={0:f4}" -f $($global:GPUHashrates.$($GCount.NVIDIA.$i))
+            $BFans[$($GCount.NVIDIA.$i)] = "FAN=$($GPUFans.$($GCount.NVIDIA.$i))"
+            $BTemps[$($GCount.NVIDIA.$i)] = "TEMP=$($GPUTemps.$($GCount.NVIDIA.$i))"
           }
         }
         if ($DevAMD -eq $True) {
             for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {
-                $global:BHashRates[$($GCount.AMD.$i)] = "GPU={0:f4}" -f $($global:GPUHashrates.$($GCount.AMD.$i))
-                $global:BFans[$($GCount.AMD.$i)] = "FAN=$($global:GPUsFans.$($GCount.AMD.$i))"
-                $global:BTemps[$($GCount.AMD.$i)] = "TEMP=$($global:GPUsTemps.$($GCount.AMD.$i))"
+                $BHashRates[$($GCount.AMD.$i)] = "GPU={0:f4}" -f $($global:GPUHashrates.$($GCount.AMD.$i))
+                $BFans[$($GCount.AMD.$i)] = "FAN=$($GPUFans.$($GCount.AMD.$i))"
+                $BTemps[$($GCount.AMD.$i)] = "TEMP=$($GPUTemps.$($GCount.AMD.$i))"
             }
         }
         if ($Platforms -eq "windows" -and $HiveOS -eq "Yes") {
-            if ($DEVNVIDIA -eq $True) {if ($GCount.NVIDIA.PSObject.Properties.Value.Count -gt 0) {for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {$global:BPower += 0}}}
-            if ($DevAMD -eq $True) {if ($GCount.AMD.PSObject.Properties.Value.Count -gt 0) {for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {$global:BPower += 0}}}
-            if ($DEVNVIDIA -eq $True) {for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {$global:BPower[$($GCount.NVIDIA.$i)] = "POWER=$($global:GPUsPower.$($GCount.NVIDIA.$i))"}}
-            if ($DevAMD -eq $True) {for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {$global:BPower[$($GCount.AMD.$i)] = "POWER=$($global:GPUsPower.$($GCount.AMD.$i))"}}
+            if ($DEVNVIDIA -eq $True) {if ($GCount.NVIDIA.PSObject.Properties.Value.Count -gt 0) {for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {$BPower += 0}}}
+            if ($DevAMD -eq $True) {if ($GCount.AMD.PSObject.Properties.Value.Count -gt 0) {for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {$BPower += 0}}}
+            if ($DEVNVIDIA -eq $True) {for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {$global:BPower[$($GCount.NVIDIA.$i)] = "POWER=$($GPUPower.$($GCount.NVIDIA.$i))"}}
+            if ($DevAMD -eq $True) {for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {$global:BPower[$($GCount.AMD.$i)] = "POWER=$($GPUPower.$($GCount.AMD.$i))"}}
         }
-        for ($i = 0; $i -lt $global:BHashRates.count; $i++) {
-            if ($global:BHashRates[$i] -eq 'GPU=0' -or $global:BHashRates[$i] -eq 'GPU=' -or $global:BHashRates[$i] -eq 'GPU=0.0000') {
-                $global:BHashRates[$i] = 'GPU=0.000'; $global:BKHS += 0.000
+        for ($i = 0; $i -lt $BHashRates.count; $i++) {
+            if ($BHashRates[$i] -eq 'GPU=0' -or $BHashRates[$i] -eq 'GPU=' -or $BHashRates[$i] -eq 'GPU=0.0000') {
+                $BHashRates[$i] = 'GPU=0.000'; $global:BKHS += 0.000
             }
         }
 
         $global:BKHS = [Math]::Round($global:BKHS, 4)
 
 $HIVE = "
-$($global:BHashRates -join "`n")
+$($BHashRates -join "`n")
 KHS=$global:BKHS
 ACC=$global:BACC
 REJ=$global:BREJ
 ALGO=$CurTAlgo
 HIVEALGO=$CurAlgo
-$($global:BFans -join "`n")
-$($global:BTemps -join "`n")
+$($BFans -join "`n")
+$($BTemps -join "`n")
 UPTIME=$global:BUPTIME
 HSU=khs
 "
 
         if ($GetMiners -and $GETSWARM.HasExited -eq $false) {
             Write-Host " "
-            Write-Host "$global:BHashRates" -ForegroundColor Green -NoNewline
+            Write-Host "$BHashRates" -ForegroundColor Green -NoNewline
             Write-Host " KHS=$global:BKHS" -ForegroundColor Yellow -NoNewline
             Write-Host " ACC=$global:BACC" -ForegroundColor DarkGreen -NoNewline
             Write-Host " REJ=$global:BREJ" -ForegroundColor DarkRed -NoNewline
             Write-Host " ALGO=$CurTAlgo" -ForegroundColor Gray -NoNewline
-            Write-Host " $global:BFans" -ForegroundColor Cyan -NoNewline
-            Write-Host " $global:BTemps" -ForegroundColor Magenta -NoNewline
-            if ($Platforms -eq "windows") {Write-Host " $global:BPower"  -ForegroundColor DarkCyan -NoNewline}
+            Write-Host " $BFans" -ForegroundColor Cyan -NoNewline
+            Write-Host " $BTemps" -ForegroundColor Magenta -NoNewline
+            if ($Platforms -eq "windows") {Write-Host " $BPower"  -ForegroundColor DarkCyan -NoNewline}
             Write-Host " UPTIME=$global:BUPTIME
 " -ForegroundColor White
         }
