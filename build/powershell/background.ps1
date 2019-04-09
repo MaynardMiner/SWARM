@@ -227,6 +227,7 @@ While ($True) {
             else{$global:BHiveAlgo = $MinerAlgo}
 
             ## Set Object For Type (So It doesn't need to be repeated)
+            $TypeS = $null
             if ($MinerType -like "*NVIDIA*") {$TypeS = "NVIDIA"}
             elseif ($MinerType -like "*AMD*") {$TypeS = "AMD"}
             elseif ($MinerType -like "*CPU*") {$TypeS = "CPU"}
@@ -244,46 +245,46 @@ While ($True) {
             if ($Platforms -eq "windows" -and $HiveOS -eq "Yes") {
                 if ($TypeS -eq "NVIDIA") {$StatPower = $NVIDIAStats.Power}
                 if ($TypeS -eq "AMD") {$StatPower = $AMDStats.Power}
-                if ($StatPower -ne "" -or $StatPower -ne $null) {for ($i = 0; $i -lt $Devices.Count; $i++) {$global:GPUsPower.$(Get-GPUS) = Set-Array $StatPower $Devices[$i]}}
+                if ($StatPower -ne "" -or $StatPower -ne $null) {for ($i = 0; $i -lt $Devices.Count; $i++) {$GPUPower.$(Get-GPUS) = Set-Array $StatPower $Devices[$i]}}
             }
 
 
             ## Now Fans & Temps
-            if ($MinerType -Like "*NVIDIA*") {
+            if ($TypeS -eq "NVIDIA") {
                 switch ($Platforms) {
                     "Windows" {
-                        for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUsFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans $Devices[$i]}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
-                        for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUsTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps $Devices[$i]}catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}}
+                        for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans $Devices[$i]}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
+                        for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps $Devices[$i]}catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}}
                     }
                     "linux" {
                         switch ($HiveOS) {
                             "Yes" {
-                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUsFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans (Get-GPUs)}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
-                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUsTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps (Get-GPUs)}catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}}            
+                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans (Get-GPUs)}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
+                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps (Get-GPUs)}catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}}            
                             }
                             "No" {
-                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUsFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans $Devices[$i]}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
-                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUsTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps $Devices[$i]}catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}}                    
+                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans $Devices[$i]}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
+                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps $Devices[$i]}catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}}                    
                             }
                         }
                     }
                 }
             }
-            if ($MinerType -Like "*AMD*") {
+            if ($TypeS -eq "AMD") {
                 Switch ($Platforms) {
                     "windows" {
-                        for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUsFans.$(Get-GPUS) = Set-Array $AMDStats.Fans $Devices[$i]}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
-                        for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUsTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps $Devices[$i]}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
+                        for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUFans.$(Get-GPUS) = Set-Array $AMDStats.Fans $Devices[$i]}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
+                        for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps $Devices[$i]}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
                     }
                     "linux" {
                         switch ($HiveOS) {
                             "Yes" {
-                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUsFans.$(Get-GPUS) = Set-Array $AMDStats.Fans (Get-GPUs)}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
-                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUsTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps (Get-GPUs)}catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}}
+                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUFans.$(Get-GPUS) = Set-Array $AMDStats.Fans (Get-GPUs)}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
+                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps (Get-GPUs)}catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}}
                             }
                             "No" {
-                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUsFans.$(Get-GPUS) = Set-Array $AMDStats.Fans $Devices[$i]}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
-                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUsTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps $Devices[$i]}catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}}
+                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUFans.$(Get-GPUS) = Set-Array $AMDStats.Fans $Devices[$i]}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
+                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$GPUTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps $Devices[$i]}catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}}
                             }
                         }
                     }
