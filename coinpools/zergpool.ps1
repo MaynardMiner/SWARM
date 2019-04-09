@@ -1,10 +1,10 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
-$zergpool_Request = [PSCustomObject]@{}
-$Zergpool_Sorted = [PSCustomObject]@{}
+$zergpool_Request = [PSCustomObject]@{ }
+$Zergpool_Sorted = [PSCustomObject]@{ }
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls" 
 
 if ($Poolname -eq $Name) {
-    try {$zergpool_Request = Invoke-RestMethod "http://zergpool.com:8080/api/currencies" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop}
+    try { $zergpool_Request = Invoke-RestMethod "http://zergpool.com:8080/api/currencies" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }
     catch {
         Write-Warning "SWARM contacted ($Name) for a failed API check. (Coins)"; 
         return
@@ -15,20 +15,20 @@ if ($Poolname -eq $Name) {
         return
     }
    
-    $zergpool_Request.PSObject.Properties.Name | foreach { $zergpool_Request.$_ | Add-Member "sym" $_ }
+    $zergpool_Request.PSObject.Properties.Name | ForEach-Object { $zergpool_Request.$_ | Add-Member "sym" $_ }
 
-    $Algorithm | foreach {
-        $Selected = if ($Bad_pools.$_ -notcontains $Name) {$_}
-        $Best = $zergpool_Request.PSObject.Properties.Value | Where Algo -eq $Selected | Where noautotrade -eq "0" | Where estimate -ne "0.00000" | Sort-Object Price -Descending | Select -First 1
-        if ($Best -ne $null) {$Zergpool_Sorted | Add-Member $Best.sym $Best}
+    $Algorithm | ForEach-Object {
+        $Selected = if ($Bad_pools.$_ -notcontains $Name) { $_ }
+        $Best = $zergpool_Request.PSObject.Properties.Value | Where-Object Algo -eq $Selected | Where-Object noautotrade -eq "0" | Where-Object estimate -ne "0.00000" | Sort-Object Price -Descending | Select-Object -First 1
+        if ($Best -ne $null) { $Zergpool_Sorted | Add-Member $Best.sym $Best }
     }
-    $ASIC_ALGO | foreach {
-        $Selected = if ($Bad_pools.$_ -notcontains $Name) {$_}
-        $Best = $zergpool_Request.PSObject.Properties.Value | Where Algo -eq $Selected | Where noautotrade -eq "0" | Where estimate -ne "0.00000" | Sort-Object Price -Descending | Select -First 1
-        if ($Best -ne $null) {$Zergpool_Sorted | Add-Member $Best.sym $Best -Force}
+    $ASIC_ALGO | ForEach-Object {
+        $Selected = if ($Bad_pools.$_ -notcontains $Name) { $_ }
+        $Best = $zergpool_Request.PSObject.Properties.Value | Where-Object Algo -eq $Selected | Where-Object noautotrade -eq "0" | Where-Object estimate -ne "0.00000" | Sort-Object Price -Descending | Select-Object -First 1
+        if ($Best -ne $null) { $Zergpool_Sorted | Add-Member $Best.sym $Best -Force }
     }
 
-    $Zergpool_Sorted | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | foreach {
+    $Zergpool_Sorted | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | ForEach-Object {
 
         $Zergpool_Algorithm = $Zergpool_Request.$_.algo.ToLower()
         $Zergpool_Symbol = $Zergpool_Sorted.$_.sym.ToUpper()
@@ -48,22 +48,40 @@ if ($Poolname -eq $Name) {
         $Pass3 = $global:Wallets.Wallet3.Keys
         $User3 = $global:Wallets.Wallet3.BTC.address
 
-        $global:Wallets.AltWallet1.Keys | ForEach-Object {
-            if ($global:Wallets.AltWallet1.$_.Pools -contains $Name) {
-                $Pass1 = $_;
-                $User1 = $global:Wallets.AltWallet1.$_.address;
+        if ($global:All_AltWallets -contains $Zergpool_Symbol) {
+            $Pass1 = $Zergpool_Symbol
+            $User1 = $global:All_AltWallets.$Zergpool_Symbol
+            $Pass2 = $Zergpool_Symbol
+            $User2 = $global:All_AltWallets.$Zergpool_Symbol
+            $Pass3 = $Zergpool_Symbol
+            $User3 = $global:All_AltWallets.$Zergpool_Symbol
+        }
+        else {
+            $global:Wallets.AltWallet1.Keys | ForEach-Object {
+                if ($global:Wallets.AltWallet1.$_.Pools -contains $Name) {
+                    $Pass1 = $_;
+                    $User1 = $global:Wallets.AltWallet1.$_.address;
                 }
             }
-        $global:Wallets.AltWallet2.Keys | ForEach-Object {
-            if ($global:Wallets.AltWallet2.$_.Pools -contains $Name) {
-                $Pass2 = $_;
-                $User2 = $global:Wallets.AltWallet2.$_.address;
+            $global:Wallets.AltWallet2.Keys | ForEach-Object {
+                if ($global:Wallets.AltWallet2.$_.Pools -contains $Name) {
+                    $Pass2 = $_;
+                    $User2 = $global:Wallets.AltWallet2.$_.address;
+                }
+                if ($global:All_AltWallets -contains $Zergpool_Symbol) {
+                    $Pass1 = $Zergpool_Symbol
+                    $User1 = $global:All_AltWallets.$Zergpool_Symbol
+                }
             }
-        }
-        $global:Wallets.AltWallet3.Keys | ForEach-Object {
-            if ($global:Wallets.AltWallet3.$_.Pools -contains $Name) {
-                $Pass3 = $_;
-                $User3 = $global:Wallets.AltWallet3.$_.address;
+            $global:Wallets.AltWallet3.Keys | ForEach-Object {
+                if ($global:Wallets.AltWallet3.$_.Pools -contains $Name) {
+                    $Pass3 = $_;
+                    $User3 = $global:Wallets.AltWallet3.$_.address;
+                }
+                if ($global:All_AltWallets -contains $Zergpool_Symbol) {
+                    $Pass1 = $Zergpool_Symbol
+                    $User1 = $global:All_AltWallets.$Zergpool_Symbol
+                }
             }
         }
 
