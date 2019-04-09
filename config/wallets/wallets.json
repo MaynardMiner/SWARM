@@ -99,8 +99,8 @@
   },
 
   "All_AltWallets": {
-    "RVN": "RKirUe978mBoa2MRWqeMGqDzVAKTafKh8H",
-    "add another coin symbol here": "Add Address Here"
+    "add coin symbol here": "Add Its Address Here",
+    "add another coin symbol here": "Add Its Address Here"
   }
   
 }
