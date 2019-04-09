@@ -31,10 +31,11 @@ function Get-StatsCpuminer {
         $global:BCPUACC = $GetCPUSummary -split ";" | Select-String "ACC=" | ForEach-Object { $_ -replace ("ACC=", "") }
         $global:BCPUREJ = $GetCPUSummary -split ";" | Select-String "REJ=" | ForEach-Object { $_ -replace ("REJ=", "") }
         $global:BCPUUPTIME = $GetCPUSummary -split ";" | Select-String "UPTIME=" | ForEach-Object { $_ -replace ("UPTIME=", "") }
-        if ($MinerType -eq "NVIDIA1" -or $MinerType -eq "AMD1") { $global:BALGO.Add("Main", $global:BHiveAlgo) }
-        else { $global:BALGO.Add($MinerType, $global:BHiveAlgo) }
-        if ($MinerType -eq "NVIDIA1" -or $MinerType -eq "AMD1") { $global:TALGO.Add("Main", $MinerAlgo) }
-        else { $global:TALGO.Add($MinerType, $MinerAlgo) }
+        switch ($MinerType) {
+            "NVIDIA1" { $global:BALGO.Add("Main", $global:BHiveAlgo); $global:TALGO.Add("Main", $MinerAlgo) }
+            "AMD1" { $global:BALGO.Add("Main", $global:BHiveAlgo); $global:TALGO.Add("Main", $MinerAlgo) }
+            default { $global:BALGO.Add($MinerType, $global:BHiveAlgo); $global:TALGO.Add($MinerType, $MinerAlgo) }
+        }
         $CPUTEMP = $GetCPUSummary -split ";" | Select-String "TEMP=" | ForEach-Object { $_ -replace ("TEMP=", "") }
         $CPUFAN = $GetCPUSummary -split ";" | Select-String "FAN=" | ForEach-Object { $_ -replace ("FAN=", "") }
     }

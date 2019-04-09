@@ -20,9 +20,11 @@ function Get-StatsEthminer {
         $global:BACC += $Summary -split ";" | Select-Object -skip 1 -first 1
         $global:BREJ += $Summary -split ";" | Select-Object -skip 2 -first 1
         $global:BUPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
-        if ($MinerType -eq "NVIDIA1" -or $MinerType -eq "AMD1") { $global:BALGO.Add("Main", $global:BHiveAlgo) }
-        else { $global:BALGO.Add($MinerType, $global:BHiveAlgo) }
-        if ($MinerType -eq "NVIDIA1" -or $MinerType -eq "AMD1") { $global:TALGO.Add("Main", $MinerAlgo) }
+        switch ($MinerType) {
+            "NVIDIA1" { $global:BALGO.Add("Main", $global:BHiveAlgo); $global:TALGO.Add("Main", $MinerAlgo) }
+            "AMD1" { $global:BALGO.Add("Main", $global:BHiveAlgo); $global:TALGO.Add("Main", $MinerAlgo) }
+            default { $global:BALGO.Add($MinerType, $global:BHiveAlgo); $global:TALGO.Add($MinerType, $MinerAlgo) }
+        }
         else { $global:TALGO.Add($MinerType, $MinerAlgo) }
     }
     else { Set-APIFailure; break }

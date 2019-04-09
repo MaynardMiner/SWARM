@@ -13,10 +13,11 @@ function Get-StatsGminer {
         $Data.devices.rejected_shares | Select-Object -First 1 | ForEach-Object { $global:BREJ += $_ }
         $Data.devices.speed | ForEach-Object { $global:BKHS += [Double]$_ / 1000 }
         $global:BUPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
-        if ($MinerType -eq "NVIDIA1" -or $MinerType -eq "AMD1") { $global:BALGO.Add("Main", $global:BHiveAlgo) }
-        else { $global:BALGO.Add($MinerType, $global:BHiveAlgo) }
-        if ($MinerType -eq "NVIDIA1" -or $MinerType -eq "AMD1") { $global:TALGO.Add("Main", $MinerAlgo) }
-        else { $global:TALGO.Add($MinerType, $MinerAlgo) }
+        switch ($MinerType) {
+            "NVIDIA1" { $global:BALGO.Add("Main", $global:BHiveAlgo); $global:TALGO.Add("Main", $MinerAlgo) }
+            "AMD1" { $global:BALGO.Add("Main", $global:BHiveAlgo); $global:TALGO.Add("Main", $MinerAlgo) }
+            default { $global:BALGO.Add($MinerType, $global:BHiveAlgo); $global:TALGO.Add($MinerType, $MinerAlgo) }
+        }
     }
     elseif (Test-Path ".\logs\$MinerType.log") {
         Write-Host "Miner API failed- Attempting to get hashrate through logs." -ForegroundColor Yellow

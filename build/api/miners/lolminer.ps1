@@ -14,10 +14,11 @@ function Get-StatsLolminer {
         $global:BACC += $Data.Session.Accepted
         $global:BREJ += [Double]$Data.Session.Submitted - [Double]$Data.Session.Accepted
         $global:BKHS += [Double]$Data.Session.Performance_Summary / 1000
-        if ($MinerType -eq "NVIDIA1" -or $MinerType -eq "AMD1") { $global:BALGO.Add("Main", $global:BHiveAlgo) }
-        else { $global:BALGO.Add($MinerType, $global:BHiveAlgo) }
-        if ($MinerType -eq "NVIDIA1" -or $MinerType -eq "AMD1") { $global:TALGO.Add("Main", $MinerAlgo) }
-        else { $global:TALGO.Add($MinerType, $MinerAlgo) }
+        switch ($MinerType) {
+            "NVIDIA1" { $global:BALGO.Add("Main", $global:BHiveAlgo); $global:TALGO.Add("Main", $MinerAlgo) }
+            "AMD1" { $global:BALGO.Add("Main", $global:BHiveAlgo); $global:TALGO.Add("Main", $MinerAlgo) }
+            default { $global:BALGO.Add($MinerType, $global:BHiveAlgo); $global:TALGO.Add($MinerType, $MinerAlgo) }
+        }
         $global:BUPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)          
     }
     elseif (Test-Path ".\logs\$MinerType.log") {

@@ -13,9 +13,11 @@ function Get-StatsDSTM {
         $Data.rejected_shares | ForEach-Object { $global:BREJ += $_ }
         $Data.accepted_shares | ForEach-Object { $global:BACC += $_ }
         $Data.sol_ps | ForEach-Object { $global:BKHS += [Double]$_ }
-        if ($MinerType -eq "NVIDIA1" -or $MinerType -eq "AMD1") { $global:BALGO.Add("Main", $global:BHiveAlgo) }
-        else { $global:BALGO.Add($MinerType, $global:BHiveAlgo) }
-        if ($MinerType -eq "NVIDIA1" -or $MinerType -eq "AMD1") { $global:TALGO.Add("Main", $MinerAlgo) }
+        switch ($MinerType) {
+            "NVIDIA1" { $global:BALGO.Add("Main", $global:BHiveAlgo); $global:TALGO.Add("Main", $MinerAlgo) }
+            "AMD1" { $global:BALGO.Add("Main", $global:BHiveAlgo); $global:TALGO.Add("Main", $MinerAlgo) }
+            default { $global:BALGO.Add($MinerType, $global:BHiveAlgo); $global:TALGO.Add($MinerType, $MinerAlgo) }
+        }
         else { $global:TALGO.Add($MinerType, $MinerAlgo) }
         $global:BUPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
     }

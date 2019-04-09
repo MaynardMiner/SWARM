@@ -21,10 +21,11 @@ function Get-StatsExcavator {
         $global:BMinerACC += $Summary.algorithms.accepted_shares
         $global:BMinerREJ += $Summary.algorithms.rejected_shares
         $global:BUPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
-        if ($MinerType -eq "NVIDIA1" -or $MinerType -eq "AMD1") { $global:BALGO.Add("Main", $global:BHiveAlgo) }
-        else { $global:BALGO.Add($MinerType, $global:BHiveAlgo) }
-        if ($MinerType -eq "NVIDIA1" -or $MinerType -eq "AMD1") { $global:TALGO.Add("Main", $MinerAlgo) }
-        else { $global:TALGO.Add($MinerType, $MinerAlgo) }
+        switch ($MinerType) {
+            "NVIDIA1" { $global:BALGO.Add("Main", $global:BHiveAlgo); $global:TALGO.Add("Main", $MinerAlgo) }
+            "AMD1" { $global:BALGO.Add("Main", $global:BHiveAlgo); $global:TALGO.Add("Main", $MinerAlgo) }
+            default { $global:BALGO.Add($MinerType, $global:BHiveAlgo); $global:TALGO.Add($MinerType, $MinerAlgo) }
+        }
     }
     else { Write-Host "API Threads Failed"; break }
 }

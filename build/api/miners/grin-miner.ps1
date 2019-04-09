@@ -20,8 +20,11 @@ function Get-StatsGrinMiner {
         $global:BMinerACC += $global:BACCepted
         $global:BMinerREJ += $global:BREJected
         $global:BUPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
-        if ($MinerType -eq "NVIDIA1" -or $MinerType -eq "AMD1") { $global:BALGO.Add("Main", $global:BHiveAlgo) }
-        else { $global:BALGO.Add($MinerType, $global:BHiveAlgo) }
+        switch ($MinerType) {
+            "NVIDIA1" { $global:BALGO.Add("Main", $global:BHiveAlgo); $global:TALGO.Add("Main", $MinerAlgo) }
+            "AMD1" { $global:BALGO.Add("Main", $global:BHiveAlgo); $global:TALGO.Add("Main", $MinerAlgo) }
+            default { $global:BALGO.Add($MinerType, $global:BHiveAlgo); $global:TALGO.Add($MinerType, $MinerAlgo) }
+        }
     }
     else { Set-APIFailure; break }
 }

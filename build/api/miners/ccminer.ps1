@@ -26,10 +26,11 @@ function Get-StatsCcminer {
         try { $global:BMinerREJ += $Request -split ";" | Select-String "REJ=" | ForEach-Object { $_ -replace ("REJ=", "") } }catch { }
         try { $global:BACC += $Request -split ";" | Select-String "ACC=" | ForEach-Object { $_ -replace ("ACC=", "") } }catch { }
         try { $global:BREJ += $Request -split ";" | Select-String "REJ=" | ForEach-Object { $_ -replace ("REJ=", "") } }catch { }
-        if ($MinerType -eq "NVIDIA1" -or $MinerType -eq "AMD1") { $global:BALGO.Add("Main", $global:BHiveAlgo) }
-        else { $global:BALGO.Add($MinerType, $global:BHiveAlgo) }
-        if ($MinerType -eq "NVIDIA1" -or $MinerType -eq "AMD1") { $global:TALGO.Add("Main", $MinerAlgo) }
-        else { $global:TALGO.Add($MinerType, $MinerAlgo) }
+        switch ($MinerType) {
+            "NVIDIA1" { $global:BALGO.Add("Main", $global:BHiveAlgo); $global:TALGO.Add("Main", $MinerAlgo) }
+            "AMD1" { $global:BALGO.Add("Main", $global:BHiveAlgo); $global:TALGO.Add("Main", $MinerAlgo) }
+            default { $global:BALGO.Add($MinerType, $global:BHiveAlgo); $global:TALGO.Add($MinerType, $MinerAlgo) }
+        }
         $global:BUPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
     }
     else { Write-Host "API Threads Failed"; break }
