@@ -1,0 +1,45 @@
+{
+    "CPU": {
+      "name": "CPU",
+      "delay": "1",
+      "prestart": [],
+      "commands": {
+        "yescryptr8": "",
+        "yescrypt": "",
+        "yescryptr16": "",
+        "yescryptr24": "",
+        "yescryptr32": "",
+        "yespower": "",
+        "yespowerr8": "",
+        "yespowerr16": "",
+        "yespowerr24": "",
+        "yespowerr32": ""
+      },
+      "difficulty": {
+        "yescryptr8": "",
+        "yescrypt": "",
+        "yescryptr16": "",
+        "yescryptr24": "",
+        "yescryptr32": "",
+        "yespower": "",
+        "yespowerr8": "",
+        "yespowerr16": "",
+        "yespowerr24": "",
+        "yespowerr32": ""
+      },
+      "naming": {
+        "yescryptr8": "yescryptr8",
+        "yescrypt": "yescrypt",
+        "yescryptr16": "yescryptr16",
+        "yescryptr24": "yescryptr24",
+        "yescryptr32": "yescryptr32",
+        "yespower": "yespower",
+        "yespowerr8": "yespowerr8",
+        "yespowerr16": "yespowerr16",
+        "yespowerr24": "yespowerr24",
+        "yespowerr32": "yespowerr32"
+      }
+    },
+    "name": "bubasik"
+  }
+  
