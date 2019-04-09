@@ -24,7 +24,7 @@ $NVIDIATypes | ForEach-Object {
     $Log = Join-Path $dir "logs\$ConfigType.log"
 
     ##Parse -GPUDevices
-    if ($NVIDIADevices1 -ne "none") { $Devices = $NVIDIADevices1 }
+    if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
     else { $Devices = "none" }
 
     ##Get Configuration File
