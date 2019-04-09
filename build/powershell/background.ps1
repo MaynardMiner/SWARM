@@ -59,7 +59,7 @@ if ($Platforms -eq "windows") {
 . .\build\api\miners\ewbf.ps1;       . .\build\api\miners\excavator.ps1;    . .\build\api\miners\gminer.ps1;
 . .\build\api\miners\grin-miner.ps1; . .\build\api\miners\include.ps1;      . .\build\api\miners\lolminer.ps1;
 . .\build\api\miners\miniz.ps1;      . .\build\api\miners\sgminer.ps1;      . .\build\api\miners\trex.ps1;
-. .\build\api\miners\wildrig.ps1;    . .\build\api\miners\xmrig-opt.ps1;  . .\build\api\miners\xmrstak.ps1;
+. .\build\api\miners\wildrig.ps1;    . .\build\api\miners\xmrig-opt.ps1;    . .\build\api\miners\xmrstak.ps1;
 . .\build\powershell\hashrates.ps1;  . .\build\powershell\commandweb.ps1;   . .\build\powershell\response.ps1;
 . .\build\powershell\hiveoc.ps1;     . .\build\powershell\octune.ps1;       . .\build\powershell\statcommand.ps1;
 . .\build\api\miners\cgminer.ps1;
@@ -150,16 +150,16 @@ While ($True) {
     $CurrentMiners | Foreach {if ($_.Type -like "*NVIDIA*" -or $_.Type -like "*AMD*" -or $_.Type -like "*ASIC*") {$CPUOnly = $false; "GPU" | Set-Content ".\build\txt\miner.txt"}}
     if ($CPUOnly -eq $true) {"CPU" | Set-Content ".\build\txt\miner.txt"}
     $CurrentMiners | Foreach {if ($_.Type -like "*ASIC*"){$DoASIC = $true}}
+
     ## Build Initial Hash Tables For Stats
-    $global:GPUHashrates = [PSCustomObject]@{}
-    $global:CPUHashrates = [PSCustomObject]@{}
-    $global:ASICHashrates = [PSCustomObject]@{}
-    $global:GPUsFans = [PSCustomObject]@{}
-    $global:GPUsTemps = [PSCustomObject]@{}
-    $global:GPUsPower = [PSCustomObject]@{}
+    $global:GPUHashrates = [PSCustomObject]@{};  $global:CPUHashrates = [PSCustomObject]@{}
+    $global:ASICHashrates = [PSCustomObject]@{}; $global:GPUsFans = [PSCustomObject]@{}
+    $global:GPUsTemps = [PSCustomObject]@{};     $global:GPUsPower = [PSCustomObject]@{}
+
     for ($i = 0; $i -lt $GCount.CPU.PSObject.Properties.Value.Count; $i++) {
         $global:CPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.CPU.$i)" -Value 0; 
     }
+
     if ($DevAMD -eq $true) {
         for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {
             $global:GPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0; 
@@ -168,6 +168,7 @@ While ($True) {
             $global:GPUsPower | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0
         }
     }
+
     if ($DevNVIDIA -eq $true) {
         for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {
             $global:GPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; 
@@ -363,7 +364,8 @@ HiveOS Name For Algo is $CurAlgo" -ForegroundColor Magenta}
 
     if ($CPUOnly -eq $true) {
         $global:BCPUKHS = [Math]::Round($global:BCPUKHS, 4)
-        $HIVE = "
+
+$HIVE = "
 $($CPUHash -join "`n")
 KHS=$global:BCPUKHS
 ACC=$global:BCPUACC
@@ -392,12 +394,20 @@ HSU=$global:BCPUHS
     else {
         if ($DEVNVIDIA -eq $True) {if ($GCount.NVIDIA.PSObject.Properties.Value.Count -gt 0) {for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {$global:BHashRates += 0; $global:BFans += 0; $global:BTemps += 0}}}
         if ($DevAMD -eq $True) {if ($GCount.AMD.PSObject.Properties.Value.Count -gt 0) {for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {$global:BHashRates += 0; $global:BFans += 0; $global:BTemps += 0}}}
-        if ($DEVNVIDIA -eq $True) {for ($i = 0; $i -lt $GCount.NVIDIA.PSOBject.Properties.Value.Count; $i++) {$global:BHashRates[$($GCount.NVIDIA.$i)] = "GPU={0:f4}" -f $($global:GPUHashrates.$($GCount.NVIDIA.$i))}}
-        if ($DevAMD -eq $True) {for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {$global:BHashRates[$($GCount.AMD.$i)] = "GPU={0:f4}" -f $($global:GPUHashrates.$($GCount.AMD.$i))}}
-        if ($DEVNVIDIA -eq $True) {for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {$global:BFans[$($GCount.NVIDIA.$i)] = "FAN=$($global:GPUsFans.$($GCount.NVIDIA.$i))"}}
-        if ($DevAMD -eq $True) {for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {$global:BFans[$($GCount.AMD.$i)] = "FAN=$($global:GPUsFans.$($GCount.AMD.$i))"}}
-        if ($DEVNVIDIA -eq $True) {for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {$global:BTemps[$($GCount.NVIDIA.$i)] = "TEMP=$($global:GPUsTemps.$($GCount.NVIDIA.$i))"}}
-        if ($DevAMD -eq $True) {for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {$global:BTemps[$($GCount.AMD.$i)] = "TEMP=$($global:GPUsTemps.$($GCount.AMD.$i))"}}
+        if ($DEVNVIDIA -eq $True) {
+          for ($i = 0; $i -lt $GCount.NVIDIA.PSOBject.Properties.Value.Count; $i++) {
+            $global:BHashRates[$($GCount.NVIDIA.$i)] = "GPU={0:f4}" -f $($global:GPUHashrates.$($GCount.NVIDIA.$i))
+            $global:BFans[$($GCount.NVIDIA.$i)] = "FAN=$($global:GPUsFans.$($GCount.NVIDIA.$i))"
+            $global:BTemps[$($GCount.NVIDIA.$i)] = "TEMP=$($global:GPUsTemps.$($GCount.NVIDIA.$i))"
+          }
+        }
+        if ($DevAMD -eq $True) {
+            for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {
+                $global:BHashRates[$($GCount.AMD.$i)] = "GPU={0:f4}" -f $($global:GPUHashrates.$($GCount.AMD.$i))
+                $global:BFans[$($GCount.AMD.$i)] = "FAN=$($global:GPUsFans.$($GCount.AMD.$i))"
+                $global:BTemps[$($GCount.AMD.$i)] = "TEMP=$($global:GPUsTemps.$($GCount.AMD.$i))"
+            }
+        }
         if ($Platforms -eq "windows" -and $HiveOS -eq "Yes") {
             if ($DEVNVIDIA -eq $True) {if ($GCount.NVIDIA.PSObject.Properties.Value.Count -gt 0) {for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {$global:BPower += 0}}}
             if ($DevAMD -eq $True) {if ($GCount.AMD.PSObject.Properties.Value.Count -gt 0) {for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {$global:BPower += 0}}}
@@ -412,7 +422,7 @@ HSU=$global:BCPUHS
 
         $global:BKHS = [Math]::Round($global:BKHS, 4)
 
-        $HIVE = "
+$HIVE = "
 $($global:BHashRates -join "`n")
 KHS=$global:BKHS
 ACC=$global:BACC
