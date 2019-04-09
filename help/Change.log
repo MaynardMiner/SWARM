@@ -2393,3 +2393,19 @@ API overhaul:
 
   -Windows will now detect AMD drivers.
   -Windows will now detect AES support.
+
+  2.1.4
+
+  -Fixed small typos in Phoenix miner.
+  -Fixed small typos in XMrig miner files.
+  -Background screen should stat only group 1 algos (AMD1,NVIDIA1)
+   or stat CPU if only CPU.
+  -Invoked security protocols for ``get update`` command.
+  -Invoked tls security protocols for background agent.
+  -Added yespower8 and yespowerr32 algos to pool files
+   (will load a yespower8 algo miner soon).
+  
+  As of 2.1.3, miner files were heavily changed so that
+  there is only 1 .ps1 file for each miner. This invovled
+  changing a lot. If you see any further bugs, please report.
+

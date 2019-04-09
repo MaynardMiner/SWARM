@@ -1033,6 +1033,28 @@
       "comma seperate"
     ]
   },
+  "yespowerr8": {
+    "hiveos_name": "yespowerr8",
+    "pools_to_exclude": [
+      "add pools here",
+      "comma seperated"
+    ],
+    "miners_to_exclude": [
+      "add miners here",
+      "comma seperate"
+    ]
+  },
+  "yespowerr16": {
+    "hiveos_name": "yespowerr16",
+    "pools_to_exclude": [
+      "add pools here",
+      "comma seperated"
+    ],
+    "miners_to_exclude": [
+      "add miners here",
+      "comma seperate"
+    ]
+  },
   "yescrypt": {
     "hiveos_name": "yescrypt",
     "pools_to_exclude": [

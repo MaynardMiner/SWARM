@@ -48,6 +48,7 @@ function start-update {
         $PreviousVersions += "SWARM.2.1.0"
         $PreviousVersions += "SWARM.2.1.1"
         $PreviousVersions += "SWARM.2.1.2"
+        $PreviousVersions += "SWARM.2.1.3"
 
         Write-Host "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
         Write-Host "Check $Location For any Previous Versions"
@@ -101,6 +102,11 @@ function start-update {
                             $JsonData = Get-Content $OldJson;
                             Write-Host "Pulled $OldJson"
                             $Data = $JsonData | ConvertFrom-Json;
+
+                            if ($ChangeFile -eq "pool-algos.json") {
+                              $Data | Add-Member "yespowerr16" @{"hiveos_name" = "yespowerr16"; "pools_to_exclude" = @("add pools here","comma seperated"); "miners_to_exclude" = @("add miners here","comma seperate")} -ErrorAction SilentlyContinue
+                              $Data | Add-Member "yespowerr8" @{"hiveos_name" = "yespowerr8"; "pools_to_exclude" = @("add pools here","comma seperated"); "miners_to_exclude" = @("add miners here","comma seperate")} -ErrorAction SilentlyContinue
+                            }
 
                             if ($ChangeFile -eq "cryptodredge.json") {
                                 $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
