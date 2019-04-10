@@ -12,15 +12,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 function Build-HiveResponse {
 $mem = @($($ramfree),$($ramtotal-$ramfree))
-$CHashRates = $BHashRates | foreach {$_ -replace ("GPU=","")}
-$CHashRates = $CHashRates | foreach {$_ -replace ("$($_)","$($_)")}
-$CPower = $BPower | foreach {$_ -replace ("POWER=","")}
-$CPower = $CPower | foreach {$_ -replace ("$($_)","$($_)")}
-$CFans = $BFans | foreach {$_ -replace ("FAN=","")}
-$CFans = $CFans | foreach {$_ -replace ("$($_)","$($_)")}
-$CTemps = $BTemps | foreach {$_ -replace ("TEMP=","")}
-$CTemps = $CTemps | foreach {$_ -replace ("$($_)","$($_)")}
-$AR = @("$global:BACC","$global:BREJ")
+$global:GPUHashTable = $global:GPUHashTable | foreach {$_ -replace ("GPUKHS=","")}
+$global:GPUPowerTable = $global:GPUPowerTable| foreach {$_ -replace ("GPUWATTS=","")}
+$global:GPUFanTable = $global:GPUFanTable| foreach {$_ -replace ("GPUFAN=","")}
+$global:GPUTempTable = $global:GPUTempTable| foreach {$_ -replace ("GPUTEMP=","")}
+$AR = @("$global:ALLACC","$global:ALLREJ")
 
 $Stats = @{
   method = "stats"
@@ -37,20 +33,21 @@ $Stats = @{
     }
    }
    miner_stats = @{
-   hs = @($CHashRates)
+   hs = @($global:GPUHashTable)
    hs_units = "khs"
-   temp = @($CTemps)
-   fan = @($CFans)
-   uptime = $global:BUPTIME
+   temp = @($global:GPUTempTable)
+   fan = @($global:GPUFanTable)
+   uptime = $global:UPTIME
    ar = @($AR)
-   algo = $CurAlgo
-   bus_numbers = @($BusNumbers)
+   algo = $StatAlgo
    }
    total_khs = $global:BKHS
-   power = @($CPower)
+   temp = @($global:GPUTempTable)
+   fan = @($global:GPUFanTable)
+   power = @($global:GPUPowerTable)
+   df = "$diskspace"
    mem = @($mem)
    cpuavg = $LoadAverages
-   df = "0"
   }
 }
 $Stats
