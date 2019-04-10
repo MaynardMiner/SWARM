@@ -476,9 +476,9 @@ $($global:GPUTempTable -join "`n")
 $($global:GPUPowerTable -join "`n")
 $($global:CPUHashTable -join "`n")
 $($global:ASICHashTable -join "`n")
-GPU_TOTAL_KHS = $global:GPUKHS
-CPU_TOTAL_KHS = $global:CPUKHS
-ASIC_TOTAL_KHS = $global:ASICKHS
+GPU_TOTAL_KHS=$global:GPUKHS
+CPU_TOTAL_KHS=$global:CPUKHS
+ASIC_TOTAL_KHS=$global:ASICKHS
 ACC=$global:ALLACC
 REJ=$global:ALLREJ
 ALGO=$SwarmAlgo
@@ -495,7 +495,7 @@ HSU=KHS
         if($DoASIC){Write-Host "$global:ASICHashTable" -ForegroundColor Green}
         if($DoAMD -or $DoNVIDIA){Write-Host "$global:GPUFanTable" -ForegroundColor Yellow}
         if($DoAMD -or $DoNVIDIA){Write-Host "$global:GPUTempTable" -ForegroundColor Cyan}
-        if($DoAMD -or $DoNVIDIA){Write-Host "$global:GPUPowerTable"  -ForegroundColor DarkCyan}
+        if($DoAMD -or $DoNVIDIA){Write-Host "$global:GPUPowerTable"  -ForegroundColor Magenta}
         if($DoAMD -or $DoNVIDIA){Write-Host "GPU_TOTAL_KHS=$global:GPUKHS" -ForegroundColor Yellow}
         if($DoCPU){Write-Host "CPU_TOTAL_KHS=$global:CPUKHS" -ForegroundColor Yellow}
         if($DoASIC){Write-Host "ASIC_TOTAL_KHS=$global:ASICKHS" -ForegroundColor Yellow}
