@@ -26,6 +26,7 @@ else { $Devices = $Get_Devices }
 ##cuda and amd devices, like every other miner that exists. So now I 
 ##have to spend an hour and parse devices
 ##to matching platforms.
+$ArgDevices = $Null
 if ($AMDDevices1 -ne "none") {
     $GPUDevices1 = $AMDDevices1
     $GPUEDevices1 = $GPUDevices1 -split ","

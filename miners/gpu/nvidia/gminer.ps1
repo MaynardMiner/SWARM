@@ -36,10 +36,11 @@ $NVIDIATypes | ForEach-Object {
     ##have to spend an hour and parse devices
     ##to matching platforms.
     
+    $ArgDevices = $Null
     if ($Get_Devices -ne "none") {
-        $GPUDevices1 = $Get_Devices
-        $GPUEDevices1 = $GPUDevices1 -split ","
-        $GPUEDevices1 | ForEach-Object { $ArgDevices += "$($GCount.NVIDIA.$_) " }
+        $GPUEDevices = $Get_Devices
+        $GPUEDevices = $GPUEDevices -split ","
+        $GPUEDevices | ForEach-Object { $ArgDevices += "$($GCount.NVIDIA.$_) " }
         $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1)
     }
     else { $GCount.NVIDIA.PSObject.Properties.Name | ForEach-Object { $ArgDevices += "$($GCount.NVIDIA.$_) " }; $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1) }
