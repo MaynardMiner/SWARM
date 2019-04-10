@@ -49,12 +49,12 @@ function Get-GPUCount {
         }
     }
 
-    $DeviceType | Foreach {
+    $Type | Foreach {
         if ($_ -like "*CPU*") {
             Write-Host "Getting CPU Count"
             for ($i = 0; $i -lt $CPUThreads; $i++) { 
                 $DeviceList.CPU.Add("$($i)", $i)
-            }     
+            }
         }
     }
 

@@ -4,23 +4,6 @@ cd `dirname $0`
 
 . /hive/miners/custom/$CUSTOM_MINER/h-manifest.conf
 
-get_nvidia_cards_temp(){
-	echo $(jq -c "[.temp$nvidia_indexes_array]" <<< $gpu_stats)
-}
-
-get_nvidia_cards_fan(){
-	echo $(jq -c "[.fan$nvidia_indexes_array]" <<< $gpu_stats)
-}
-
-get_amd_cards_temp(){
-	echo $(jq -c "[.temp$amd_indexes_array]" <<< $gpu_stats)
-}
-
-get_amd_cards_fan(){
-	echo $(jq -c "[.fan$amd_indexes_array]" <<< $gpu_stats)
-}
-
-
 	local mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 	local mystats=$(< $mydir/build/txt/hivestats.txt)
 	local myminer=$(< $mydir"/build/txt/miner.txt")
