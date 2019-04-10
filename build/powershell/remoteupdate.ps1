@@ -152,6 +152,11 @@ function start-update {
                                 }
                             }
 
+                            if ($ChangeFile -eq "wallets.json") {
+                                $Data | Add-Member "All_AltWallets" @{"add coin symbol here" = "Add Its Address Here";"add another coin symbol here"="Add Its Address Here"} -ErrorAction SilentlyContinue
+                            }
+                            
+
                             if ($ChangeFile -eq "xmr-stak.json") {
                                 $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                     ##2.0.7
