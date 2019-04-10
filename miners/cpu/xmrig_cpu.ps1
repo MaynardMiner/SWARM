@@ -42,6 +42,8 @@ $CPUTypes | ForEach-Object {
         $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
             if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
                 if ($Config.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
+                if($Platform -eq "windows"){$APISet = "--http-enabled --http-port=10002"}
+                else{$APISet = "--api-port=10002"}
                 [PSCustomObject]@{
                     MName      = $Name
                     Delay      = $Config.$ConfigType.delay
@@ -52,7 +54,7 @@ $CPUTypes | ForEach-Object {
                     Path       = $Path
                     Devices    = $Devices
                     DeviceCall = "xmrig-opt"
-                    Arguments  = "-a $($Config.$ConfigType.naming.$($_.Algorithm)) --api-port=10002 -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.User1) -p $($_.Pass1)$($Diff) --donate-level=1 --nicehash $($Config.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "-a $($Config.$ConfigType.naming.$($_.Algorithm)) $APISet -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.User1) -p $($_.Pass1)$($Diff) --donate-level=1 --nicehash $($Config.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) }
                     Quote      = if ($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)) { $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) * ($_.Price) }else { 0 }
                     PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
