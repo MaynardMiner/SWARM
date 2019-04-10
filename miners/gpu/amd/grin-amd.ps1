@@ -23,7 +23,7 @@ $AMDTypes | ForEach-Object {
 
     ##Parse -GPUDevices
     if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
-    else { $Devices = "none" }
+    else { $Devices = $Get_Devices }
 
     ##Get Configuration File
     $GetConfig = "$dir\config\miners\grin-amd.json"
