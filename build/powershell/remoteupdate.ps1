@@ -126,6 +126,10 @@ function start-update {
                                 }
                             }
 
+                            if($ChangeFile -eq "pool-algos.json") {
+                                    $Data.veil.hiveos_name = "veil"
+                            }
+
                             if ($ChangeFile -eq "bubasik.json") {
                                 $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                     ##2.1.3
