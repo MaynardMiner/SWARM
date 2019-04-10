@@ -85,14 +85,30 @@ function Get-APIServer {
                                     if (Test-Path ".\build\txt\hivestats.txt") {
                                         $result = Get-Content ".\build\txt\hivestats.txt" | ConvertFrom-StringData
                                         $Stat = @()
-                                        for ($i = 0; $i -lt $result.GPU.Count; $i++) {
+                                        for ($i = 0; $i -lt $result.GPUKHS.Count; $i++) {
                                             $GPU = @{"GPU$i" = @{
-                                                    hashrate    = $result.GPU | Select -skip $i -First 1; 
-                                                    temperature = $result.TEMP | Select -skip $i -First 1;
-                                                    fans        = $result.FAN | Select -skip $i -First 1;
+                                                    hashrate    = $result.GPUKHS | Select -skip $i -First 1; 
+                                                    temperature = $result.GPUTEMP | Select -skip $i -First 1;
+                                                    fans        = $result.GPUFAN | Select -skip $i -First 1;
                                                 }
                                             }; 
                                             $Stat += $GPU
+                                        }
+                                        for ($i = 0; $i -lt $result.CPUKHS.Count; $i++) {
+                                            $CPU = @{"CPU$i" = @{
+                                                    hashrate    = $result.CPUKHS | Select -skip $i -First 1; 
+                                                    temperature = $result.CPUTEMP | Select -skip $i -First 1;
+                                                    fans        = $result.CPUFAN | Select -skip $i -First 1;
+                                                }
+                                            };
+                                            $Stat += $CPU
+                                        }
+                                        for ($i = 0; $i -lt $result.ASICKHS.Count; $i++) {
+                                            $ASIC = @{"ASIC" = @{
+                                                    hashrate    = $result.ASICKHS | Select -skip $i -First 1; 
+                                                }
+                                            };
+                                            $Stat += $ASIC
                                         }
                                         $Stat += @{Algorithm = $result.ALGO}
                                         $Stat += @{Uptime = $result.UPTIME}

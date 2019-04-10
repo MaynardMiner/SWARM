@@ -41,7 +41,7 @@ $Stats = @{
    ar = @($AR)
    algo = $StatAlgo
    }
-   total_khs = $global:BKHS
+   total_khs = $global:GPUKHS
    temp = @($global:GPUTempTable)
    fan = @($global:GPUFanTable)
    power = @($global:GPUPowerTable)

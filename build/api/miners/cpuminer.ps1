@@ -18,8 +18,8 @@ function Get-StatsCpuminer {
         $CPUHash = @()
         if ($kilo -eq $true) {
             if ($Hash) { 
-                for ($i = 0; $i -lt $Devices.Count; $i++) { 
-                    $GPU = $Devices[$i]; $global:CPUHashrates.$($GCount.$TypeS.$GPU) = $(if ($J.Count -eq 1) { $J }else { $J[$i] })
+                for ($i = 0; $i -lt $Devices.Count; $i++) {
+                    $global:CPUHashrates.$(Get-Gpus) = (Set-Array $Hash $i)
                 }
             }
             $J | ForEach-Object { $global:CPUKHS += $_ }
@@ -27,7 +27,7 @@ function Get-StatsCpuminer {
         else {
             if ($Hash) { 
                 for ($i = 0; $i -lt $Devices.Count; $i++) { 
-                    $GPU = $Devices[$i]; $global:CPUHashrates.$($GCount.$TypeS.$GPU) = $(if ($J.Count -eq 1) { $J / 1000 }else { $J[$i] / 1000 }) 
+                    $global:CPUHashrates.$(Get-Gpus) = (Set-Array $([Double]$Hash /1000) $i)
                 } 
             }
             $J | ForEach-Object { $global:CPUKHS += $_ }

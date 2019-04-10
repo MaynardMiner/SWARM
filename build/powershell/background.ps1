@@ -85,6 +85,7 @@ $RestartTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 ##Get hive naming conventions:
 $GetHiveNames = ".\config\pools\pool-algos.json"
 $HiveNames = if (Test-Path $GetHiveNames) {Get-Content $GetHiveNames | ConvertFrom-Json}
+$Waiting = $True;
 
 While ($True) {
 
@@ -98,12 +99,13 @@ While ($True) {
     $CheckForMiners = ".\build\txt\bestminers.txt"
     if (test-Path $CheckForMiners) {$GetMiners = Get-Content $CheckForMiners | ConvertFrom-Json -ErrorAction Stop}
     else {Write-Host "No Miners Running..."}
-    if ($GETSWARM.HasExited -eq $true) {Write-Host "SWARM Has Exited..."}
+    if ($GETSWARM.HasExited -eq $true) {Write-Host "SWARM Has Exited...";}
 
     ##Handle New Miners
     if ($GetMiners -and $GETSWARM.HasExited -eq $false) {
         $GetMiners | ForEach {if (-not ($CurrentMiners | Where Path -eq $_.Path | Where Arguments -eq $_.Arguments )) {$Switched = $true}}
         if ($Switched -eq $True) {
+            $Waiting = $false
             Write-Host "Miners Have Switched
 " -ForegroundColor Cyan
             $CurrentMiners = $GetMiners;
@@ -118,16 +120,13 @@ While ($True) {
         }
     }
     else {
+        $Waiting = $True
         $StartTime = Get-Date
         $NEW = 0;
-        if ($DevNVIDIA -eq $true) { 
-            $NEW | Set-Content ".\build\txt\NVIDIA1-hash.txt";
-            $NEW | Set-Content ".\build\txt\NVIDIA2-hash.txt";
-            $NEW | Set-Content ".\build\txt\NVIDIA2-hash.txt";
-        }
-        if ($DevAMD -eq $true) {
-            $NEW | Set-Content ".\build\txt\AMD1-hash.txt";  
-        }
+        $NEW | Set-Content ".\build\txt\NVIDIA1-hash.txt";
+        $NEW | Set-Content ".\build\txt\NVIDIA2-hash.txt";
+        $NEW | Set-Content ".\build\txt\NVIDIA2-hash.txt";
+        $NEW | Set-Content ".\build\txt\AMD1-hash.txt";  
         $NEW | Set-Content ".\build\txt\CPU-hash.txt";
         $NEW | Set-Content ".\build\txt\ASIC-hash.txt"
     }
@@ -204,7 +203,7 @@ While ($True) {
     
     if ($DOCPU) {
         for ($i = 0; $i -lt $GCount.CPU.PSObject.Properties.Value.Count; $i++) {
-        $global:CPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.CPU.$i)" -Value 0; 
+            $global:CPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.CPU.$i)" -Value 0; 
         }
     }
     if ($DoASIC) {$global:ASICHashRates | Add-Member -MemberType NoteProperty -Name "0" -Value 0; }
@@ -277,7 +276,13 @@ While ($True) {
             ## Get Power Stats
             if ($global:TypeS -eq "NVIDIA") {$StatPower = $NVIDIAStats.Watts}
             if ($global:TypeS -eq "AMD") {$StatPower = $AMDStats.Watts}
-            if ($StatPower -ne "" -or $StatPower -ne $null) {for ($i = 0; $i -lt $Devices.Count; $i++) {$global:GPUPower.$(Get-GPUS) = Set-Array $StatPower $Devices[$i]}}
+            if($global:TypeS -eq "NVIDIA" -or $global:TypeS -eq "AMD") {
+                if ($StatPower -ne "" -or $StatPower -ne $null) {
+                    for ($i = 0; $i -lt $Devices.Count; $i++) {
+                        $global:GPUPower.$(Get-GPUS) = Set-Array $StatPower $Devices[$i]
+                    }
+                }
+            }
 
 
             ## Now Fans & Temps
@@ -361,8 +366,8 @@ While ($True) {
             }
 
             ## Set Global Miner-Specific Variables.
-            $global:RAW = 0;
-            $global:MinerACC = 0;         $global:MinerREJ = 0;
+            $global:RAW = 0;    $global:MinerREJ = 0;
+                    $global:MinerACC = 0;
 
             ##Write Miner Information
             Write-MinerData1
@@ -430,6 +435,9 @@ HiveOS Name For Algo is $StatAlgo" -ForegroundColor Magenta}
             $global:CPUHashTable += 0;
         }
     }
+    if ($DoASIC) {
+            $global:ASICHashTable += 0;
+    }
 
     if ($DoNVIDIA) {
         for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {
@@ -449,16 +457,12 @@ HiveOS Name For Algo is $StatAlgo" -ForegroundColor Magenta}
     }
 
     if ($DoCPU) {
-        for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {
-            $global:CPUHashTable[$($GCount.AMD.$i)] = "CPUKHS={0:f4}" -f $($global:CPUHashrates.$($GCount.CPU.$i))
+        for ($i = 0; $i -lt $GCount.CPU.PSObject.Properties.Value.Count; $i++) {
+            $global:CPUHashTable[$($GCount.CPU.$i)] = "CPUKHS={0:f4}" -f $($global:CPUHashrates.$($GCount.CPU.$i))
         }
     }
 
-    if ($DoASIC) {
-        for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {
-            $global:ASICHashTable[0] = "ASICKHS={0:f4}" -f $($global:ASICHashrates[0])
-        }
-    }
+    if ($DoASIC) { $global:ASICHashTable[0] = "ASICKHS={0:f4}" -f $($global:ASICHashrates."0") }
 
     if($DoAMD -or $DoNVIDIA){$global:GPUKHS = [Math]::Round($global:GPUKHS, 4)}
     if($DoCPU){$global:CPUKHS = [Math]::Round($global:CPUKHS, 4)}
@@ -488,13 +492,14 @@ HSU=KHS
         Write-Host " "
         if($DoAMD -or $DoNVIDIA){Write-Host "$global:GPUHashTable" -ForegroundColor Green}
         if($DoCPU){Write-Host "$global:CPUHashTable" -ForegroundColor Green}
-        if($DoASIC){Write-Host "$global:GPUFanTable" -ForegroundColor Green}
+        if($DoASIC){Write-Host "$global:ASICHashTable" -ForegroundColor Green}
+        if($DoAMD -or $DoNVIDIA){Write-Host "$global:GPUFanTable" -ForegroundColor Yellow}
         if($DoAMD -or $DoNVIDIA){Write-Host "$global:GPUTempTable" -ForegroundColor Cyan}
         if($DoAMD -or $DoNVIDIA){Write-Host "$global:GPUPowerTable"  -ForegroundColor DarkCyan}
-        if($DoAMD -or $DoNVIDIA){Write-Host "GPU_TOTAL_KHS=$global:GPUKHS" -ForegroundColor Yellow -NoNewline}
-        if($DoCPU){Write-Host " CPU_TOTAL_KHS=$global:CPUKHS" -ForegroundColor Yellow -NoNewline}
-        if($DoASIC){Write-Host " ASIC_TOTAL_KHS=$global:CPUKHS" -ForegroundColor Yellow}
-        Write-Host " ACC=$global:ALLACC" -ForegroundColor DarkGreen -NoNewline
+        if($DoAMD -or $DoNVIDIA){Write-Host "GPU_TOTAL_KHS=$global:GPUKHS" -ForegroundColor Yellow}
+        if($DoCPU){Write-Host "CPU_TOTAL_KHS=$global:CPUKHS" -ForegroundColor Yellow}
+        if($DoASIC){Write-Host "ASIC_TOTAL_KHS=$global:ASICKHS" -ForegroundColor Yellow}
+        Write-Host "ACC=$global:ALLACC" -ForegroundColor DarkGreen -NoNewline
         Write-Host " REJ=$global:ALLREJ" -ForegroundColor DarkRed -NoNewline
         Write-Host " ALGO=$SwarmAlgo" -ForegroundColor Gray -NoNewline
         Write-Host " UPTIME=$global:UPTIME
