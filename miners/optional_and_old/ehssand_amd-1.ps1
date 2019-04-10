@@ -18,7 +18,7 @@ $Log = Join-Path $dir "logs\$ConfigType.log"
 
 ##Parse -GPUDevices
 if ($AMDDevices1 -ne "none") { $Devices = $AMDDevices1 }
-else { $Devices = "none" }
+else { $Devices = $Get_Devices }
 
 ##Get Configuration File
 $GetConfig = "$dir\config\miners\ehssand_amd.json"
