@@ -1,5 +1,5 @@
 ## Simplified functions (To Shorten)
-function Get-GPUs {$GPU = $Devices[$i]; $GCount.$TypeS.$GPU};
+function Get-GPUs {$GPU = $Devices[$i]; $GCount.$($global:TypeS).$GPU};
 
 function Write-MinerData1 {
     Write-host " "
@@ -10,18 +10,8 @@ function Write-MinerData1 {
 }
 
 function Write-MinerData2 {
-    if($MinerType -eq "CPU") {
-        $global:BCPURAW | Set-Content ".\build\txt\$MinerType-hash.txt"
-        Write-Host "Miner $Name was clocked at $($global:BCPURAW | ConvertTo-Hash)/s" -foreground Yellow
-    }    
-    elseif($MinerType -eq "ASIC") {
-        $global:ARAW | Set-Content ".\build\txt\$MinerType-hash.txt"
-        Write-Host "Miner $Name was clocked at $($global:ARAW | ConvertTo-Hash)/s" -foreground Yellow
-    }
-    else {
-        $global:BRAW | Set-Content ".\build\txt\$MinerType-hash.txt"
-        Write-Host "Miner $Name was clocked at $($global:BRAW | ConvertTo-Hash)/s" -foreground Yellow
-    }
+        $global:RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
+        Write-Host "Miner $Name was clocked at $($global:RAW | ConvertTo-Hash)/s" -foreground Yellow
 }
 
 function Set-Array {
@@ -44,7 +34,7 @@ function Set-Array {
 
 function Set-APIFailure {
     Write-Host "API Summary Failed- Could Not Total Hashrate Or No Accepted Shares" -Foreground Red; 
-    $global:BRAW | Set-Content ".\build\txt\$MinerType-hash.txt";
+    $global:RAW | Set-Content ".\build\txt\$MinerType-hash.txt";
 }
 
 ## NVIDIA HWMON
@@ -75,6 +65,7 @@ function Set-NvidiaStats {
                                 $nvinfo = @{}
                                 $nvinfo.Add("Fans", $( $GetHiveStats.fan | % {if ($_ -ne 0) {$_}} ) )
                                 $nvinfo.Add("Temps", $( $GetHiveStats.temp | % {if ($_ -ne 0) {$_}} ) )
+                                $nvinfo.Add("Watts", $( $GetHiveStats.power | % {if ($_ -ne 0) {$_}} ) )
                             }
                             Start-Sleep -S .5
                         }
@@ -92,7 +83,7 @@ function Set-NvidiaStats {
             $NVIDIAStats = @{}
             $NVIDIAStats.Add("Fans", $NVIDIAFans)
             $NVIDIAStats.Add("Temps", $NVIDIATemps)
-            $NVIDIAStats.Add("Power", $NVIDIAPower)
+            $NVIDIAStats.Add("Watts", $NVIDIAPower)
             $nvinfo = $NVIDIAStats  
         }
     }
@@ -120,7 +111,7 @@ function Set-AMDStats {
                 $amdinfo.keys | foreach {if ($_ -like "*Errors*") {$aerrors.Errors += $amdinfo.$_}}
                 $AMDFans = $ainfo.Fans
                 $AMDTemps = $ainfo.Temps
-                $AMDPower = $ainfo.Watts
+                $AMDWatts = $ainfo.Watts
                 if ($aerrors.Errors) {
                     Write-Host "Warning Errors Detected From Drivers:" -ForegroundColor Red
                     $aerrors.Errors | % {Write-host "$($_)" -ForegroundColor Red}
@@ -159,7 +150,7 @@ function Set-AMDStats {
 
     $AMDStats.Add("Fans", $AMDFans)
     $AMDStats.Add("Temps", $AMDTemps)
-    $AMDStats.Add("Power", $AMDPower)
+    $AMDStats.Add("Watts", $AMDWatts)
 
     $AMDStats
 

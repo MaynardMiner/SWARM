@@ -1,32 +1,38 @@
 function Get-StatsEthminer {
-    if ($MinerName -eq "PhoenixMiner" -or $MinerName -eq "Phoenixminer.exe") { $Message = @{id = 1; jsonrpc = "2.0"; method = "miner_getstat2" } | ConvertTo-Json -Compress
+
+    if ($MinerName -eq "PhoenixMiner" -or $MinerName -eq "Phoenixminer.exe") { 
+        $Message = @{id = 1; jsonrpc = "2.0"; method = "miner_getstat2" } | ConvertTo-Json -Compress
+    } else {
+        $Message = @{id = 1; jsonrpc = "2.0"; method = "miner_getstat1" } | ConvertTo-Json -Compress
     }
-    else { $Message = @{id = 1; jsonrpc = "2.0"; method = "miner_getstat1" } | ConvertTo-Json -Compress
+
+    if($MinerName -eq "TT-Miner.exe" -or $MinerName -eq "TT-Miner") {
+        $Multiplier = 1000
+    } else {
+        $Multiplier = 1
     }
-    $Request = $null; $Request = Get-TCP -Server $Server -Port $Port -Message $Message 
+
+    $Request = Get-TCP -Server $Server -Port $Port -Message $Message
     if ($Request) {
-        try { $Data = $Null; $Data = $Request | ConvertFrom-Json -ErrorAction STop; }catch { Write-Host "Failed To parse API" -ForegroundColor Red }
+        try { $Data = $Request | ConvertFrom-Json -ErrorAction STop; }
+        catch { Write-Host "Failed To parse API" -ForegroundColor Red; Break }
         if ($Data) { $Summary = $Data.result[2]; $Threads = $Data.result[3]; }
-        if ($Minername -eq "TT-Miner.exe" -or $MinerName -eq "TT-Miner") { $global:BRAW += $Summary -split ";" | Select-Object -First 1 | ForEach-Object { [Double]$_ } }
-        else { $global:BRAW += $Summary -split ";" | Select-Object -First 1 | ForEach-Object { [Double]$_ * 1000 } }
+        $global:RAW += $Summary -split ";" | Select-Object -First 1 | ForEach-Object { [Double]$_ * $Multiplier} 
         Write-MinerData2;
-        if ($Minername -eq "TT-Miner.exe" -or $MinerName -eq "TT-Miner") { $global:BKHS += $Summary -split ";" | Select-Object -First 1 | ForEach-Object { [Double]$_ / 1000 } }
-        else { $global:BKHS += $Summary -split ";" | Select-Object -First 1 | ForEach-Object { [Double]$_ } }
-        if ($Minername -eq "TT-Miner.exe" -or $MinerName -eq "TT-Miner") { $Hash = $Null; $Hash = $Threads -split ";" | ForEach-Object { [double]$_ / 1000 } }
-        else { $Hash = $Null; $Hash = $Threads -split ";" }
-        try { for ($i = 0; $i -lt $Devices.Count; $i++) { $global:GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $i) } }catch { Write-Host "Failed To parse GPU Threads" -ForegroundColor Red };
+        $global:GPUKHS += $Summary -split ";" | Select-Object -First 1 | ForEach-Object { [Double]$_ / $Multiplier } 
+        $Hash = $Threads -split ";" | ForEach-Object { [double]$_ / $Multiplier }
+        
+        try { 
+            for ($i = 0; $i -lt $Devices.Count; $i++) { 
+                $global:GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $i) 
+            } 
+        }catch { Write-Host "Failed To parse GPU Threads" -ForegroundColor Red };
+
         $global:MinerACC = $Summary -split ";" | Select-Object -skip 1 -first 1
         $global:MinerREJ = $Summary -split ";" | Select-Object -skip 2 -first 1
-        $global:BACC += $Summary -split ";" | Select-Object -skip 1 -first 1
-        $global:BREJ += $Summary -split ";" | Select-Object -skip 2 -first 1
-        $global:BUPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
-        switch ($MinerType) {
-            "NVIDIA1" { $global:BALGO.Add("Main", $global:BHiveAlgo); $global:TALGO.Add("Main", $MinerAlgo) }
-            "AMD1" { $global:BALGO.Add("Main", $global:BHiveAlgo); $global:TALGO.Add("Main", $MinerAlgo) }
-            default { $global:BALGO.Add($MinerType, $global:BHiveAlgo); $global:TALGO.Add($MinerType, $MinerAlgo) }
-        }
-        else { $global:TALGO.Add($MinerType, $MinerAlgo) }
-    }
-    else { Set-APIFailure; break }
+        $global:ALLACC += $global:MinerACC
+        $global:ALLREJ += $global:MinerREJ
 
+    }
+    else { Set-APIFailure }
 }
