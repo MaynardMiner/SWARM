@@ -6,21 +6,15 @@ function Get-StatsEthminer {
         $Message = @{id = 1; jsonrpc = "2.0"; method = "miner_getstat1" } | ConvertTo-Json -Compress
     }
 
-    if($MinerName -eq "TT-Miner.exe" -or $MinerName -eq "TT-Miner") {
-        $Multiplier = 1000
-    } else {
-        $Multiplier = 1
-    }
-
     $Request = Get-TCP -Server $Server -Port $Port -Message $Message
     if ($Request) {
-        try { $Data = $Request | ConvertFrom-Json -ErrorAction STop; }
+        try { $Data = $Request | ConvertFrom-Json -ErrorAction Stop; }
         catch { Write-Host "Failed To parse API" -ForegroundColor Red; Break }
         if ($Data) { $Summary = $Data.result[2]; $Threads = $Data.result[3]; }
-        $global:RAW += $Summary -split ";" | Select-Object -First 1 | ForEach-Object { [Double]$_ * $Multiplier} 
+        $global:RAW += $Summary -split ";" | Select-Object -First 1 | ForEach-Object { [Double]$_ } 
         Write-MinerData2;
-        $global:GPUKHS += $Summary -split ";" | Select-Object -First 1 | ForEach-Object { [Double]$_ / $Multiplier } 
-        $Hash = $Threads -split ";" | ForEach-Object { [double]$_ / $Multiplier }
+        $global:GPUKHS += $Summary -split ";" | Select-Object -First 1 | ForEach-Object { [Double]$_ / 1000 } 
+        $Hash = $Threads -split ";" | ForEach-Object { [Double]$_ / 1000 }
         
         try { 
             for ($i = 0; $i -lt $Devices.Count; $i++) { 
