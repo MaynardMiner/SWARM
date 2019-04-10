@@ -56,9 +56,8 @@ function Get-WalletTable {
      $Grouping.Balance | %{$Total_Balance += $_ }
 
      $Format += ""
-     $Format += "Total $($_) Unpaid = $Total_Unpaid"
      $Format += "Total $($_) Balance = $Total_Balance"
-     $Format += "Total Current $($_) Profit = $([Decimal]$Total_Unpaid + [Decimal]$Total_Balance)"
+     $Format += "Total $($_) Unpaid = $Total_Unpaid (Reflects Current Total Potential Earnings)"
      $Format += ""
     }
 
