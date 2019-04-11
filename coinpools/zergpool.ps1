@@ -48,13 +48,17 @@ if ($Poolname -eq $Name) {
         $Pass3 = $global:Wallets.Wallet3.Keys
         $User3 = $global:Wallets.Wallet3.BTC.address
 
-        if ($global:All_AltWallets -contains $Zergpool_Symbol) {
-            $Pass1 = $Zergpool_Symbol
-            $User1 = $global:All_AltWallets.$Zergpool_Symbol
-            $Pass2 = $Zergpool_Symbol
-            $User2 = $global:All_AltWallets.$Zergpool_Symbol
-            $Pass3 = $Zergpool_Symbol
-            $User3 = $global:All_AltWallets.$Zergpool_Symbol
+        if ($global:All_AltWallets) {
+            $global:All_AltWallets | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+                if ($_ -eq $Zergpool_Symbol) {
+                    $Pass1 = $Zergpool_Symbol
+                    $User1 = $global:All_AltWallets.$_
+                    $Pass2 = $Zergpool_Symbol
+                    $User2 = $global:All_AltWallets.$_
+                    $Pass3 = $Zergpool_Symbol
+                    $User3 = $global:All_AltWallets.$_
+                }
+            }
         }
         else {
             $global:Wallets.AltWallet1.Keys | ForEach-Object {

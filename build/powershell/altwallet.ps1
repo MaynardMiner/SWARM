@@ -17,7 +17,7 @@ function Get-AltWallets {
     ##Get Wallet Config
     $Wallet_Json = Get-Content ".\config\wallets\wallets.json" | ConvertFrom-Json
     
-    $Global:All_AltWallets = $Wallet_Json.All_AltWallets
+    if($AltWallet1){$Global:All_AltWallets = $Wallet_Json.All_AltWallets}
 
     ##Sort Only Wallet Info
     $Wallet_Json = $Wallet_Json | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | % {if ($_ -like "*AltWallet*") {@{"$($_)" = $Wallet_Json.$_}}}
