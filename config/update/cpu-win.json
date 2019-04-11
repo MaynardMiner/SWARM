@@ -15,5 +15,13 @@
     "minername": "xmrig.exe",
     "version": "2.14.1",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v8.0/xmrig-windows.zip"
+  },
+  "sugarchain": {
+    "name": "sugarchain",
+    "type": "cpu",
+    "CPU": ".\\bin\\sugarchain-1\\cpuminer.exe",
+    "minername": "cpuminer.exe",
+    "version": "3.8.8.1.4rc1",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v8.0/sugarchain-windows.zip"
   }
 }

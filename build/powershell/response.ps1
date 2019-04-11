@@ -12,15 +12,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 function Build-HiveResponse {
 $mem = @($($ramfree),$($ramtotal-$ramfree))
-$global:BHashRates = $global:BHashRates | foreach {$_ -replace ("GPU=","")}
-$global:BHashRates = $global:BHashRates | foreach {$_ -replace ("$($_)","$($_)")}
-$global:BPower = $global:BPower | foreach {$_ -replace ("POWER=","")}
-$global:BPower = $global:BPower | foreach {$_ -replace ("$($_)","$($_)")}
-$global:BFans = $global:BFans | foreach {$_ -replace ("FAN=","")}
-$global:BFans = $global:BFans | foreach {$_ -replace ("$($_)","$($_)")}
-$global:BTemps = $global:BTemps | foreach {$_ -replace ("TEMP=","")}
-$global:BTemps = $global:BTemps | foreach {$_ -replace ("$($_)","$($_)")}
-$AR = @("$global:BACC","$global:BREJ")
+$global:GPUHashTable = $global:GPUHashTable | foreach {$_ -replace ("GPUKHS=","")}
+$global:GPUPowerTable = $global:GPUPowerTable| foreach {$_ -replace ("GPUWATTS=","")}
+$global:GPUFanTable = $global:GPUFanTable| foreach {$_ -replace ("GPUFAN=","")}
+$global:GPUTempTable = $global:GPUTempTable| foreach {$_ -replace ("GPUTEMP=","")}
+$AR = @("$global:ALLACC","$global:ALLREJ")
 
 $Stats = @{
   method = "stats"
@@ -37,20 +33,21 @@ $Stats = @{
     }
    }
    miner_stats = @{
-   hs = @($global:BHashRates)
+   hs = @($global:GPUHashTable)
    hs_units = "khs"
-   temp = @($global:BTemps)
-   fan = @($global:BFans)
-   uptime = $global:BUPTIME
+   temp = @($global:GPUTempTable)
+   fan = @($global:GPUFanTable)
+   uptime = $global:UPTIME
    ar = @($AR)
-   algo = $CurAlgo
-   bus_numbers = @($BusNumbers)
+   algo = $StatAlgo
    }
-   total_khs = $global:BKHS
-   power = @($global:BPower)
+   total_khs = $global:GPUKHS
+   temp = @($global:GPUTempTable)
+   fan = @($global:GPUFanTable)
+   power = @($global:GPUPowerTable)
+   df = "$diskspace"
    mem = @($mem)
    cpuavg = $LoadAverages
-   df = "0"
   }
 }
 $Stats

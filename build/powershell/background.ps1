@@ -36,6 +36,8 @@ param(
     [string]$APIPassword
 )
 
+[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
+
 Write-Host "Platform is $Platforms"; Write-Host "HiveOS ID is $HiveID"; Write-Host "HiveOS = $HiveOS"
 
 ##Icon for windows
@@ -57,7 +59,7 @@ if ($Platforms -eq "windows") {
 . .\build\api\miners\ewbf.ps1;       . .\build\api\miners\excavator.ps1;    . .\build\api\miners\gminer.ps1;
 . .\build\api\miners\grin-miner.ps1; . .\build\api\miners\include.ps1;      . .\build\api\miners\lolminer.ps1;
 . .\build\api\miners\miniz.ps1;      . .\build\api\miners\sgminer.ps1;      . .\build\api\miners\trex.ps1;
-. .\build\api\miners\wildrig.ps1;    . .\build\api\miners\xmrig-opt.ps1;  . .\build\api\miners\xmrstak.ps1;
+. .\build\api\miners\wildrig.ps1;    . .\build\api\miners\xmrig-opt.ps1;    . .\build\api\miners\xmrstak.ps1;
 . .\build\powershell\hashrates.ps1;  . .\build\powershell\commandweb.ps1;   . .\build\powershell\response.ps1;
 . .\build\powershell\hiveoc.ps1;     . .\build\powershell\octune.ps1;       . .\build\powershell\statcommand.ps1;
 . .\build\api\miners\cgminer.ps1;
@@ -75,12 +77,6 @@ if (test-Path $CheckForSWARM) {$GetSWARMID = Get-Content $CheckForSWARM; $GETSWA
 ##Get Active Miners And Devices
 $GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
 
-##Set Device Flags
-$DevNVIDIA = $false
-$DevAMD = $false
-if ($GCount -like "*NVIDIA*") {$DevNVIDIA = $true; Write-Host "NVIDIA Detected"};
-if ($GCount -like "*AMD*") {$DevAMD = $true; Write-Host "AMD Detected"};
-
 ##Timers
 $BackgroundTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $BackgroundTimer.Restart()
@@ -89,8 +85,10 @@ $RestartTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 ##Get hive naming conventions:
 $GetHiveNames = ".\config\pools\pool-algos.json"
 $HiveNames = if (Test-Path $GetHiveNames) {Get-Content $GetHiveNames | ConvertFrom-Json}
+$Waiting = $True;
 
 While ($True) {
+
     ## Timer For When To Restart Loop
     $RestartTimer.Restart()
 
@@ -101,12 +99,13 @@ While ($True) {
     $CheckForMiners = ".\build\txt\bestminers.txt"
     if (test-Path $CheckForMiners) {$GetMiners = Get-Content $CheckForMiners | ConvertFrom-Json -ErrorAction Stop}
     else {Write-Host "No Miners Running..."}
-    if ($GETSWARM.HasExited -eq $true) {Write-Host "SWARM Has Exited..."}
+    if ($GETSWARM.HasExited -eq $true) {Write-Host "SWARM Has Exited...";}
 
     ##Handle New Miners
     if ($GetMiners -and $GETSWARM.HasExited -eq $false) {
         $GetMiners | ForEach {if (-not ($CurrentMiners | Where Path -eq $_.Path | Where Arguments -eq $_.Arguments )) {$Switched = $true}}
         if ($Switched -eq $True) {
+            $Waiting = $false
             Write-Host "Miners Have Switched
 " -ForegroundColor Cyan
             $CurrentMiners = $GetMiners;
@@ -121,16 +120,13 @@ While ($True) {
         }
     }
     else {
+        $Waiting = $True
         $StartTime = Get-Date
         $NEW = 0;
-        if ($DevNVIDIA -eq $true) { 
-            $NEW | Set-Content ".\build\txt\NVIDIA1-hash.txt";
-            $NEW | Set-Content ".\build\txt\NVIDIA2-hash.txt";
-            $NEW | Set-Content ".\build\txt\NVIDIA2-hash.txt";
-        }
-        if ($DevAMD -eq $true) {
-            $NEW | Set-Content ".\build\txt\AMD1-hash.txt";  
-        }
+        $NEW | Set-Content ".\build\txt\NVIDIA1-hash.txt";
+        $NEW | Set-Content ".\build\txt\NVIDIA2-hash.txt";
+        $NEW | Set-Content ".\build\txt\NVIDIA2-hash.txt";
+        $NEW | Set-Content ".\build\txt\AMD1-hash.txt";  
         $NEW | Set-Content ".\build\txt\CPU-hash.txt";
         $NEW | Set-Content ".\build\txt\ASIC-hash.txt"
     }
@@ -143,170 +139,244 @@ While ($True) {
         Start-Sleep -S 10
     }
 
-    ## Determine if CPU in only used. Clear All Tables
-    $CPUOnly = $true
-    $CurrentMiners | Foreach {if ($_.Type -like "*NVIDIA*" -or $_.Type -like "*AMD*" -or $_.Type -like "*ASIC*") {$CPUOnly = $false; "GPU" | Set-Content ".\build\txt\miner.txt"}}
-    if ($CPUOnly -eq $true) {"CPU" | Set-Content ".\build\txt\miner.txt"}
-    $CurrentMiners | Foreach {if ($_.Type -like "*ASIC*"){$DoASIC = $true}}
-    ## Build Initial Hash Tables For Stats
-    $global:GPUHashrates = [PSCustomObject]@{}
-    $global:CPUHashrates = [PSCustomObject]@{}
-    $global:ASICHashrates = [PSCustomObject]@{}
-    $global:GPUsFans = [PSCustomObject]@{}
-    $global:GPUsTemps = [PSCustomObject]@{}
-    $global:GPUsPower = [PSCustomObject]@{}
-    for ($i = 0; $i -lt $GCount.CPU.PSObject.Properties.Value.Count; $i++) {
-        $global:CPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.CPU.$i)" -Value 0; 
-    }
-    if ($DevAMD -eq $true) {
-        for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {
-            $global:GPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0; 
-            $global:GPUsFans | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0; 
-            $global:GPUsTemps | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0; 
-            $global:GPUsPower | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0
+    ## Determine if CPU in only used. Set Flags for what to do.
+    $CPUOnly = $true; $DoCPU = $false; $DoAMD = $false; $DoNVIDIA = $false; $DoASIC = $false
+    $CurrentMiners | Foreach {
+        if ($_.Type -like "*NVIDIA*" -or $_.Type -like "*AMD*" -or $_.Type -like "*ASIC*") {
+            $CPUOnly = $false; "GPU" | Set-Content ".\build\txt\miner.txt"
+        }
+        if($_.Type -like "*NVIDIA*") {
+            $DoNVIDIA = $true
+        }
+        if($_.Type -like "*AMD*") {
+            $DoAMD = $true
+        }
+        if($_.Type -eq "CPU") {
+            $DoCPU = $true
+        }
+        if($_.Type -eq "ASIC") {
+            $DoASIC = $true
         }
     }
-    if ($DevNVIDIA -eq $true) {
-        for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {
-            $global:GPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; 
-            $global:GPUsFans | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; 
-            $global:GPUsTemps | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; 
-            $global:GPUsPower | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0
+    
+    ## Build All Initial Global Value
+    $global:AllKHS = 0; $global:AllACC = 0;     $global:ALLREJ = 0; $global:SWARM_ALGO = @{}; $global:HIVE_ALGO = @{};
+    $Group1 = $null;    $Default_Group = $null; $Hive = $null;      $global:UPTIME = 0;
+
+    if($DoAMD -or $DoNVIDIA) {
+    $global:GPUHashrates = [PSCustomObject]@{}; $global:GPUHashTable = @();             
+    $global:GPUFans = [PSCustomObject]@{};      $global:GPUTemps = [PSCustomObject]@{}; 
+    $global:GPUPower = [PSCustomObject]@{};     $global:GPUFanTable = @();              
+    $global:GPUTempTable = @();                 $global:GPUPowerTable = @();                
+    $global:GPUKHS = 0;
+    }
+    
+    if($DoCPU) {
+    $global:CPUHashrates = [PSCustomObject]@{}; $global:CPUHashTable = @(); 
+    $global:CPUKHS = 0;
+    }
+
+    if($DoASIC) {
+    $global:ASICHashrates = [PSCustomObject]@{}; $global:ASICHashTable = @(); 
+    $global:ASICKHS = 0;
+    }
+
+    ##Start Adding Zeros
+    if ($DoAMD -or $DoNVIDIA) {
+        if($DoAMD) {
+            for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {
+                $global:GPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0; 
+                $global:GPUFans | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0; 
+                $global:GPUTemps | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0; 
+                $global:GPUPower | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0
+            }
+        }
+        if($DoNVIDIA) {
+            for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {
+                $global:GPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; 
+                $global:GPUFans | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; 
+                $global:GPUTemps | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; 
+                $global:GPUPower | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0    
+            }
         }
     }
-
-    if ($DoAsic -eq $true) {
-        $global:ASICHashrates | Add-Member -MemberType NoteProperty -Name "0" -Value 0;
+    
+    if ($DOCPU) {
+        for ($i = 0; $i -lt $GCount.CPU.PSObject.Properties.Value.Count; $i++) {
+            $global:CPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.CPU.$i)" -Value 0; 
+        }
     }
-
-    ## Reset All Stats, Rebuild Tables
-    $global:BALGO = @{}; $global:TALGO = @{}; $global:BHashRates = @(); $Group1 = $null
-    $global:BFans = @(); $global:BTemps = @(); $global:BPower = @(); $Default_Group = $null
-    $global:BCPUKHS = $null; $global:BCPUACC = 0; $global:BCPUREJ = 0; $global:BCPURAW = 0; 
-    $global:BRAW = 0; $global:BKHS = 0; $global:BREJ = 0; 
-    $global:BACC = 0;
-    $global:AAlgo = $null; $global:AKHS = $null;
-    $global:AACC = 0; $global:AREJ = 0; $global:ARAW = 0;
+    if ($DoASIC) {$global:ASICHashRates | Add-Member -MemberType NoteProperty -Name "0" -Value 0; }
 
     ## Windows-To-Hive Stats
     if ($Platforms -eq "windows") {
+
         ## Rig Metrics
         if ($HiveOS -eq "Yes") {
-            $ramtotal = Get-Content ".\build\txt\ram.txt"
+            $diskSpace = Get-WmiObject Win32_LogicalDisk -Filter "DeviceID='C:'" | Select-Object Freespace
+            $diskSpace = $diskSpace.Freespace / [math]::pow( 1024, 3 )
+            $diskSpace = [math]::Round($diskSpace)
+            $diskSpace = "$($diskSpace)G"
+            $ramtotal = Get-Content ".\build\txt\ram.txt" | Select -First 1
             $cpu = $(Get-WmiObject Win32_PerfFormattedData_PerfOS_System).ProcessorQueueLength
             $LoadAverage = Set-Stat -Name "load-average" -Value $cpu
             $LoadAverages = @("$([Math]::Round($LoadAverage.Minute,2))", "$([Math]::Round($LoadAverage.Minute_5,2))", "$([Math]::Round($LoadAverage.Minute_10,2))")
             $ramfree = $(Get-Counter '\Memory\Available MBytes').CounterSamples.CookedValue
         }
-        if ($DevNVIDIA -eq $true) {$NVIDIAStats = Set-NvidiaStats}
-        if ($DevAMD -eq $true) {$AMDStats = Set-AMDStats}
     }
 
-    ## Linux-To-Hive Stats
-    if ($Platforms -eq "linux") {
-        if ($DevNVIDIA -eq $true) {$NVIDIAStats = Set-NvidiaStats}
-        if ($DevAMD -eq $true) {$AMDStats = Set-AMDStats}
-    }
+    ##NVIDIA GPU Stats
+    if ($DoNVIDIA -eq $true) {$NVIDIAStats = Set-NvidiaStats}
+
+    ##AMD GPU Stats
+    if ($DoAMD -eq $true) {$AMDStats = Set-AMDStats}
 
     ## Start API Calls For Each Miner
     if ($CurrentMiners -and $GETSWARM.HasExited -eq $false) {
+
         $CurrentMiners | Foreach {
-            ## Miner Information
-            $MinerAlgo = "$($_.Algo)"
-            $MinerName = "$($_.MinerName)"
-            $Name = "$($_.Name)"
-            $Port = $($_.Port)
-            $MinerType = "$($_.Type)"
-            $MinerAPI = "$($_.API)"
-            $Server = "$($_.Server)"
-            $HashPath = ".\logs\$($_.Type).log"
-            if($MinerType -ne "ASIC"){$global:BHiveAlgo = $HiveNames.$($_.Algo).hiveos_name}
-            else{$global:BHiveAlgo = $MinerAlgo}
 
-            ## Set Object For Type (So It doesn't need to be repeated)
-            if ($MinerType -like "*NVIDIA*") {$TypeS = "NVIDIA"}
-            elseif ($MinerType -like "*AMD*") {$TypeS = "AMD"}
-            elseif ($MinerType -like "*CPU*") {$TypeS = "CPU"}
-            elseif ($MinerType -like "*ASIC*") {$TypeS = "ASIC"}
+            ## Static Miner Information
+            $MinerAlgo = "$($_.Algo)";   $MinerName = "$($_.MinerName)";        $Name = "$($_.Name)";
+            $Port = $($_.Port);          $MinerType = "$($_.Type)";             $MinerAPI = "$($_.API)";
+            $Server = "$($_.Server)";    $HashPath = ".\logs\$($_.Type).log";   $global:TypeS = "none"
+            $global:Devices = 0;         $MinerDevices = $_.Devices
 
+            ##Algorithm Parsing For Stats
+            if($MinerType -ne "ASIC"){$HiveAlgo = $HiveNames.$MinerAlgo.hiveos_name}
+            else{$HiveAlgo = $MinerAlgo}
+
+            ## Determine API Type
+            if ($MinerType -like "*NVIDIA*") {$global:TypeS = "NVIDIA"}
+            elseif ($MinerType -like "*AMD*") {$global:TypeS = "AMD"}
+            elseif ($MinerType -like "*CPU*") {$global:TypeS = "CPU"}
+            elseif ($MinerType -like "*ASIC*") {$global:TypeS = "ASIC"}
+
+            ##Build Algo Table
+            switch ($MinerType) {
+                "NVIDIA1" { $global:HIVE_ALGO.Add("Main", $HiveAlgo); $global:SWARM_ALGO.Add("Main", $MinerAlgo) }
+                "AMD1"  { $global:HIVE_ALGO.Add("Main", $HiveAlgo); $global:SWARM_ALGO.Add("Main", $MinerAlgo) }
+                default  { $global:HIVE_ALGO.Add($MinerType, $HiveAlgo); $global:SWARM_ALGO.Add($MinerType, $MinerAlgo) }
+            }         
+            
             ## Determine Devices
-            if ($_.Type -ne "CPU") {
-                if ($_.Devices -eq "none") {$Devices = Get-DeviceString -TypeCount $GCount.$TypeS.PSObject.Properties.Value.Count}
-                else {$Devices = Get-DeviceString -TypeDevices $_.Devices}
+            Switch($global:TypeS){
+                "NVIDIA" {
+                    if($MinerDevices -eq "none"){$global:Devices = Get-DeviceString -TypeCount $GCount.NVIDIA.PSObject.Properties.Value.Count}
+                    else {$global:Devices = Get-DeviceString -TypeDevices $MinerDevices}
+                }
+                "AMD" {
+                    if($MinerDevices -eq "none"){$global:Devices = Get-DeviceString -TypeCount $GCount.AMD.PSObject.Properties.Value.Count}
+                    else {$global:Devices = Get-DeviceString -TypeDevices $MinerDevices}
+                }
+                "ASIC"{$global:Devices = $null}
+                "CPU"{$global:Devices = Get-DeviceString -TypeCount $GCount.CPU.PSObject.Properties.Value.Count}
             }
-            elseif ($_.Type -eq "CPU") {$Devices = Get-DeviceString -TypeCount $GCount.$TypeS.PSObject.Properties.Value.Count}
 
-
-            ## First Power For Windows
-            if ($Platforms -eq "windows" -and $HiveOS -eq "Yes") {
-                if ($TypeS -eq "NVIDIA") {$StatPower = $NVIDIAStats.Power}
-                if ($TypeS -eq "AMD") {$StatPower = $AMDStats.Power}
-                if ($StatPower -ne "" -or $StatPower -ne $null) {for ($i = 0; $i -lt $Devices.Count; $i++) {$global:GPUsPower.$(Get-GPUS) = Set-Array $StatPower $Devices[$i]}}
+            ## Get Power Stats
+            if ($global:TypeS -eq "NVIDIA") {$StatPower = $NVIDIAStats.Watts}
+            if ($global:TypeS -eq "AMD") {$StatPower = $AMDStats.Watts}
+            if($global:TypeS -eq "NVIDIA" -or $global:TypeS -eq "AMD") {
+                if ($StatPower -ne "" -or $StatPower -ne $null) {
+                    for ($i = 0; $i -lt $Devices.Count; $i++) {
+                        $global:GPUPower.$(Get-GPUS) = Set-Array $StatPower $Devices[$i]
+                    }
+                }
             }
 
 
             ## Now Fans & Temps
-            if ($MinerType -Like "*NVIDIA*") {
-                switch ($Platforms) {
-                    "Windows" {
-                        for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUsFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans $Devices[$i]}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
-                        for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUsTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps $Devices[$i]}catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}}
-                    }
-                    "linux" {
-                        switch ($HiveOS) {
-                            "Yes" {
-                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUsFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans (Get-GPUs)}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
-                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUsTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps (Get-GPUs)}catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}}            
+            Switch($global:TypeS) {
+                "NVIDIA" {
+                    switch ($Platforms) {
+                        "Windows" {
+                            for ($i = 0; $i -lt $Devices.Count; $i++) {
+                                try {$global:GPUFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans $Devices[$i]}
+                                catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}
                             }
-                            "No" {
-                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUsFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans $Devices[$i]}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
-                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUsTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps $Devices[$i]}catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}}                    
+                            for ($i = 0; $i -lt $Devices.Count; $i++) {
+                                try {$global:GPUTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps $Devices[$i]}
+                                catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}
+                            }
+                        }
+                        "linux" {
+                            switch ($HiveOS) {
+                                "Yes" {
+                                    for ($i = 0; $i -lt $Devices.Count; $i++) {
+                                        try {$global:GPUFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans (Get-GPUs)}
+                                        catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}
+                                    }
+                                    for ($i = 0; $i -lt $Devices.Count; $i++) {
+                                        try {$global:GPUTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps (Get-GPUs)}
+                                        catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}
+                                    }            
+                                }
+                                "No" {
+                                    for ($i = 0; $i -lt $Devices.Count; $i++) {
+                                        try {$global:GPUFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans $Devices[$i]}
+                                        catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}
+                                    }
+                                    for ($i = 0; $i -lt $Devices.Count; $i++) {
+                                        try {$global:GPUTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps $Devices[$i]}
+                                        catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}
+                                    }                    
+                                }
                             }
                         }
                     }
                 }
-            }
-            if ($MinerType -Like "*AMD*") {
-                Switch ($Platforms) {
-                    "windows" {
-                        for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUsFans.$(Get-GPUS) = Set-Array $AMDStats.Fans $Devices[$i]}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
-                        for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUsTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps $Devices[$i]}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
-                    }
-                    "linux" {
-                        switch ($HiveOS) {
-                            "Yes" {
-                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUsFans.$(Get-GPUS) = Set-Array $AMDStats.Fans (Get-GPUs)}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
-                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUsTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps (Get-GPUs)}catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}}
+                "AMD" {
+                    Switch ($Platforms) {
+                        "windows" {
+                            for ($i = 0; $i -lt $Devices.Count; $i++) {
+                                try {$global:GPUFans.$(Get-GPUS) = Set-Array $AMDStats.Fans $Devices[$i]}
+                                catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}
                             }
-                            "No" {
-                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUsFans.$(Get-GPUS) = Set-Array $AMDStats.Fans $Devices[$i]}catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}}
-                                for ($i = 0; $i -lt $Devices.Count; $i++) {try {$global:GPUsTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps $Devices[$i]}catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}}
+                            for ($i = 0; $i -lt $Devices.Count; $i++) {
+                                try {$global:GPUTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps $Devices[$i]}
+                                catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}
+                            }
+                        }
+                        "linux" {
+                            switch ($HiveOS) {
+                                "Yes" {
+                                    for ($i = 0; $i -lt $Devices.Count; $i++) {
+                                        try {$global:GPUFans.$(Get-GPUS) = Set-Array $AMDStats.Fans (Get-GPUs)}
+                                        catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}
+                                    }
+                                    for ($i = 0; $i -lt $Devices.Count; $i++) {
+                                        try {$global:GPUTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps (Get-GPUs)}
+                                        catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}
+                                    }
+                                }
+                                "No" {
+                                    for ($i = 0; $i -lt $Devices.Count; $i++) {
+                                        try {$global:GPUFans.$(Get-GPUS) = Set-Array $AMDStats.Fans $Devices[$i]}
+                                        catch {Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break}
+                                    }
+                                    for ($i = 0; $i -lt $Devices.Count; $i++) {
+                                        try {$global:GPUTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps $Devices[$i]}
+                                        catch {Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break}
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
 
-            ## Set Initial Output
-            $global:BHS = "khs"
-            $global:BRAW = 0
-            $global:BMinerACC = 0
-            $global:BMinerREJ = 0
-            $global:AHS = "khs"
-            $global:ARAW = 0
-            $global:AMinerACC = 0
-            $global:AMinerREJ = 0
-            $global:BCPUHS = "khs"
-            $global:BCPURAW = 0
-            $global:BCPUMinerACC = 0
-            $global:BCPUMinerREJ = 0
+            ## Set Global Miner-Specific Variables.
+            $global:RAW = 0;    $global:MinerREJ = 0;
+                    $global:MinerACC = 0;
+
+            ##Write Miner Information
             Write-MinerData1
 
-            ## Start Calling Miners
+            ## Start Calling Miner API
             switch ($MinerAPI) {
                 'energiminer' { try{Get-StatsEnergiminer}catch{Get-OhNo} }
                 'claymore' { try{Get-StatsEthminer}catch{Get-OhNo} }
-                'excavator' { try{Get-StatsExcavtor}catch{Get-OhNo} }
+                'excavator' { try{Get-StatsExcavator}catch{Get-OhNo} }
                 'miniz' { try{Get-StatsMiniz}catch{Get-OhNo} }
                 'gminer' { try{Get-StatsGminer}catch{Get-OhNo} }
                 'grin-miner' { try{Get-StatsGrinMiner}catch{Get-OhNo} }
@@ -326,9 +396,8 @@ While ($True) {
 
             ##Check To See if High Rejections
             if ($BackgroundTimer.Elapsed.TotalSeconds -gt 60) {
-                $Shares = [Double]$global:BMinerACC + [double]$global:BMinerREJ
-                if($DoASIC -eq $true){$AShares = [Double]$global:AMinerACC + [Double]$global:BMinerREJ}
-                $RJPercent = $global:BMinerREJ / $Shares * 100
+                $Shares = [Double]$global:MinerACC + [double]$global:MinerREJ
+                $RJPercent = $global:MinerREJ / $Shares * 100
                 if ($RJPercent -gt $REJPercent -and $Shares -gt 0) {
                     Write-Host "Warning: Miner is reaching Rejection Limit- $($RJPercent.ToString("N2")) Percent Out of $Shares Shares" -foreground yellow
                     if (-not (Test-Path ".\timeout")) {New-Item "timeout" -ItemType Directory | Out-Null}
@@ -336,113 +405,107 @@ While ($True) {
                     "Bad Shares" | Out-File ".\timeout\warnings\$($_.Name)_$($_.Algo)_rejection.txt"
                 }
                 else {if (Test-Path ".\timeout\warnings\$($_.Name)_$($_.Algo)_rejection.txt") {Remove-Item ".\timeout\warnings\$($_.Name)_$($_.Algo)_rejection.txt" -Force}}
-                if($DoASIC -eq $true) {
-                $ARJPercet = $global:AMinerREJ / $AShares
-                if ($ARJPercet -gt $REJPercent -and $Shares -gt 0) {
-                    Write-Host "Warning: Miner is reaching Rejection Limit- $($ARJPercent.ToString("N2")) Percent Out of $Shares Shares" -foreground yellow
-                    if (-not (Test-Path ".\timeout")) {New-Item "timeout" -ItemType Directory | Out-Null}
-                    if (-not (Test-Path ".\timeout\warnings")) {New-Item ".\timeout\warnings" -ItemType Directory | Out-Null}
-                    "Bad Shares" | Out-File ".\timeout\warnings\$($_.Name)_$($_.Algo)_rejection.txt"
-                }
-                }
-
-            }
- 
-        }
-    }
-
-
-    if($global:BALGO.Main){$CurAlgo = $global:BALGO.Main}
-    else{$FirstMiner = $global:BALGO.keys | Select -First 1; if($FirstMiner){$CurAlgo = $global:BALGO.$FirstMiner}}
-    if($global:TALGO.Main){$CurTAlgo = $global:TALGO.Main}
-    else{$FirstMiner = $global:TALGO.keys | Select -First 1; if($FirstMiner){$CurTAlgo = $global:TALGO.$FirstMiner}}
-    if($CurAlgo){Write-Host "
-HiveOS Name For Algo is $CurAlgo" -ForegroundColor Magenta}
-
-    if ($CPUOnly -eq $true) {
-        $global:BCPUKHS = [Math]::Round($global:BCPUKHS, 4)
-        $HIVE = "
-$($CPUHash -join "`n")
-KHS=$global:BCPUKHS
-ACC=$global:BCPUACC
-REJ=$global:BCPUREJ
-ALGO=$CurTAlgo
-HIVEALGO=$CurAlgo
-TEMP=$CPUTEMP
-FAN=$CPUFAN
-UPTIME=$global:BCPUUPTIME
-HSU=$global:BCPUHS
-"
-        $Hive | Set-Content ".\build\txt\hivestats.txt"
-
-        if ($GetMiners -and $GETSWARM.HasExited -eq $false) {
-            Write-Host " "
-            Write-Host "$global:BHashRates" -ForegroundColor Green -NoNewline
-            Write-Host " KHS=$global:BCPUKHS" -ForegroundColor Yellow -NoNewline
-            Write-Host " ACC=$global:BCPUACC" -ForegroundColor DarkGreen -NoNewline
-            Write-Host " REJ=$global:BCPUREJ" -ForegroundColor DarkRed -NoNewline
-            Write-Host " ALGO=$CurTAlgo" -ForegroundColor Gray -NoNewline
-            Write-Host " FAN=$CPUFAN" -ForegroundColor Cyan -NoNewline
-            Write-Host " UPTIME=$global:BCPUUPTIME
-" -ForegroundColor White
-        }
-    }
-    else {
-        if ($DEVNVIDIA -eq $True) {if ($GCount.NVIDIA.PSObject.Properties.Value.Count -gt 0) {for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {$global:BHashRates += 0; $global:BFans += 0; $global:BTemps += 0}}}
-        if ($DevAMD -eq $True) {if ($GCount.AMD.PSObject.Properties.Value.Count -gt 0) {for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {$global:BHashRates += 0; $global:BFans += 0; $global:BTemps += 0}}}
-        if ($DEVNVIDIA -eq $True) {for ($i = 0; $i -lt $GCount.NVIDIA.PSOBject.Properties.Value.Count; $i++) {$global:BHashRates[$($GCount.NVIDIA.$i)] = "GPU={0:f4}" -f $($global:GPUHashrates.$($GCount.NVIDIA.$i))}}
-        if ($DevAMD -eq $True) {for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {$global:BHashRates[$($GCount.AMD.$i)] = "GPU={0:f4}" -f $($global:GPUHashrates.$($GCount.AMD.$i))}}
-        if ($DEVNVIDIA -eq $True) {for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {$global:BFans[$($GCount.NVIDIA.$i)] = "FAN=$($global:GPUsFans.$($GCount.NVIDIA.$i))"}}
-        if ($DevAMD -eq $True) {for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {$global:BFans[$($GCount.AMD.$i)] = "FAN=$($global:GPUsFans.$($GCount.AMD.$i))"}}
-        if ($DEVNVIDIA -eq $True) {for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {$global:BTemps[$($GCount.NVIDIA.$i)] = "TEMP=$($global:GPUsTemps.$($GCount.NVIDIA.$i))"}}
-        if ($DevAMD -eq $True) {for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {$global:BTemps[$($GCount.AMD.$i)] = "TEMP=$($global:GPUsTemps.$($GCount.AMD.$i))"}}
-        if ($Platforms -eq "windows" -and $HiveOS -eq "Yes") {
-            if ($DEVNVIDIA -eq $True) {if ($GCount.NVIDIA.PSObject.Properties.Value.Count -gt 0) {for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {$global:BPower += 0}}}
-            if ($DevAMD -eq $True) {if ($GCount.AMD.PSObject.Properties.Value.Count -gt 0) {for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {$global:BPower += 0}}}
-            if ($DEVNVIDIA -eq $True) {for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {$global:BPower[$($GCount.NVIDIA.$i)] = "POWER=$($global:GPUsPower.$($GCount.NVIDIA.$i))"}}
-            if ($DevAMD -eq $True) {for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {$global:BPower[$($GCount.AMD.$i)] = "POWER=$($global:GPUsPower.$($GCount.AMD.$i))"}}
-        }
-        for ($i = 0; $i -lt $global:BHashRates.count; $i++) {
-            if ($global:BHashRates[$i] -eq 'GPU=0' -or $global:BHashRates[$i] -eq 'GPU=' -or $global:BHashRates[$i] -eq 'GPU=0.0000') {
-                $global:BHashRates[$i] = 'GPU=0.000'; $global:BKHS += 0.000
             }
         }
-
-        $global:BKHS = [Math]::Round($global:BKHS, 4)
-
-        $HIVE = "
-$($global:BHashRates -join "`n")
-KHS=$global:BKHS
-ACC=$global:BACC
-REJ=$global:BREJ
-ALGO=$CurTAlgo
-HIVEALGO=$CurAlgo
-$($global:BFans -join "`n")
-$($global:BTemps -join "`n")
-UPTIME=$global:BUPTIME
-HSU=khs
-"
-
-        if ($GetMiners -and $GETSWARM.HasExited -eq $false) {
-            Write-Host " "
-            Write-Host "$global:BHashRates" -ForegroundColor Green -NoNewline
-            Write-Host " KHS=$global:BKHS" -ForegroundColor Yellow -NoNewline
-            Write-Host " ACC=$global:BACC" -ForegroundColor DarkGreen -NoNewline
-            Write-Host " REJ=$global:BREJ" -ForegroundColor DarkRed -NoNewline
-            Write-Host " ALGO=$CurTAlgo" -ForegroundColor Gray -NoNewline
-            Write-Host " $global:BFans" -ForegroundColor Cyan -NoNewline
-            Write-Host " $global:BTemps" -ForegroundColor Magenta -NoNewline
-            if ($Platforms -eq "windows") {Write-Host " $global:BPower"  -ForegroundColor DarkCyan -NoNewline}
-            Write-Host " UPTIME=$global:BUPTIME
-" -ForegroundColor White
-        }
-
-        if ($global:BCPUKHS -ne $null) {$global:BCPUKHS = [Math]::Round($global:BCPUKHS, 4); Write-Host "CPU=$global:BCPUKHS"}
-        if ($global:AKHS -ne $null) {$global:AKHS = [Math]::Round($global:AKHS, 4); Write-Host "ASIC=$global:AKHS"}
-        $Hive | Set-Content ".\build\txt\hivestats.txt"
     }
 
 
+    ##Select Algo For Online Stats
+    if($global:HIVE_ALGO.Main){$StatAlgo = $global:HIVE_ALGO.Main}
+    else{$FirstMiner = $global:HIVE_ALGO.keys | Select -First 1; if($FirstMiner){$StatAlgo = $global:HIVE_ALGO.$FirstMiner}}
+
+    if($global:SWARM_ALGO.Main){$SwarmAlgo = $global:SWARM_ALGO.Main}
+    else{$FirstMiner = $global:SWARM_ALGO.keys | Select -First 1; if($FirstMiner){$SwarmAlgo = $global:SWARM_ALGO.$FirstMiner}}
+    if($StatAlgo){Write-Host "
+HiveOS Name For Algo is $StatAlgo" -ForegroundColor Magenta}
+
+    ##Now To Format All Stats For Online Table And Screen
+    if ($DoNVIDIA) {
+        for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {
+            $global:GPUHashTable += 0; $global:GPUFanTable += 0; $global:GPUTempTable += 0; $global:GPUPowerTable += 0;
+        }
+    }
+    if ($DoAMD) {
+        for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {
+            $global:GPUHashTable += 0; $global:GPUFanTable += 0; $global:GPUTempTable += 0; $global:GPUPowerTable += 0;
+        }
+    }
+    if ($DoCPU) {
+        for ($i = 0; $i -lt $GCount.CPU.PSObject.Properties.Value.Count; $i++) {
+            $global:CPUHashTable += 0;
+        }
+    }
+    if ($DoASIC) {
+            $global:ASICHashTable += 0;
+    }
+
+    if ($DoNVIDIA) {
+        for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {
+            $global:GPUHashTable[$($GCount.NVIDIA.$i)] = "GPUKHS={0:f4}" -f $($global:GPUHashrates.$($GCount.NVIDIA.$i))
+            $global:GPUFanTable[$($GCount.NVIDIA.$i)] = "GPUFAN=$($global:GPUFans.$($GCount.NVIDIA.$i))"
+            $global:GPUTempTable[$($GCount.NVIDIA.$i)] = "GPUTEMP=$($global:GPUTemps.$($GCount.NVIDIA.$i))"
+            $global:GPUPowerTable[$($GCount.NVIDIA.$i)] = "GPUWATTS=$($global:GPUPower.$($GCount.NVIDIA.$i))"
+        }
+    }
+    if ($DoAMD) {
+        for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {
+            $global:GPUHashTable[$($GCount.AMD.$i)] = "GPUKHS={0:f4}" -f $($global:GPUHashrates.$($GCount.AMD.$i))
+            $global:GPUFanTable[$($GCount.AMD.$i)] = "GPUFAN=$($global:GPUFans.$($GCount.AMD.$i))"
+            $global:GPUTempTable[$($GCount.AMD.$i)] = "GPUTEMP=$($global:GPUTemps.$($GCount.AMD.$i))"
+            $global:GPUPowerTable[$($GCount.AMD.$i)] = "GPUWATTS=$($global:GPUPower.$($GCount.AMD.$i))"
+        }
+    }
+
+    if ($DoCPU) {
+        for ($i = 0; $i -lt $GCount.CPU.PSObject.Properties.Value.Count; $i++) {
+            $global:CPUHashTable[$($GCount.CPU.$i)] = "CPUKHS={0:f4}" -f $($global:CPUHashrates.$($GCount.CPU.$i))
+        }
+    }
+
+    if ($DoASIC) { $global:ASICHashTable[0] = "ASICKHS={0:f4}" -f $($global:ASICHashrates."0") }
+
+    if($DoAMD -or $DoNVIDIA){$global:GPUKHS = [Math]::Round($global:GPUKHS, 4)}
+    if($DoCPU){$global:CPUKHS = [Math]::Round($global:CPUKHS, 4)}
+    if($DoASIC){$global:ASICKHS = [Math]::Round($global:ASICKHS, 4)}
+    $global:UPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
+
+$HIVE = "
+$($global:GPUHashTable -join "`n")
+$($global:GPUFanTable -join "`n")
+$($global:GPUTempTable -join "`n")
+$($global:GPUPowerTable -join "`n")
+$($global:CPUHashTable -join "`n")
+$($global:ASICHashTable -join "`n")
+GPU_TOTAL_KHS=$global:GPUKHS
+CPU_TOTAL_KHS=$global:CPUKHS
+ASIC_TOTAL_KHS=$global:ASICKHS
+ACC=$global:ALLACC
+REJ=$global:ALLREJ
+ALGO=$SwarmAlgo
+HIVEALGO=$StatAlgo
+UPTIME=$global:UPTIME
+HSU=KHS
+"
+    $Hive | Set-Content ".\build\txt\hivestats.txt"
+
+    if ($GetMiners -and $GETSWARM.HasExited -eq $false) {
+        Write-Host " "
+        if($DoAMD -or $DoNVIDIA){Write-Host "$global:GPUHashTable" -ForegroundColor Green}
+        if($DoCPU){Write-Host "$global:CPUHashTable" -ForegroundColor Green}
+        if($DoASIC){Write-Host "$global:ASICHashTable" -ForegroundColor Green}
+        if($DoAMD -or $DoNVIDIA){Write-Host "$global:GPUFanTable" -ForegroundColor Yellow}
+        if($DoAMD -or $DoNVIDIA){Write-Host "$global:GPUTempTable" -ForegroundColor Cyan}
+        if($DoAMD -or $DoNVIDIA){Write-Host "$global:GPUPowerTable"  -ForegroundColor Magenta}
+        if($DoAMD -or $DoNVIDIA){Write-Host "GPU_TOTAL_KHS=$global:GPUKHS" -ForegroundColor Yellow}
+        if($DoCPU){Write-Host "CPU_TOTAL_KHS=$global:CPUKHS" -ForegroundColor Yellow}
+        if($DoASIC){Write-Host "ASIC_TOTAL_KHS=$global:ASICKHS" -ForegroundColor Yellow}
+        Write-Host "ACC=$global:ALLACC" -ForegroundColor DarkGreen -NoNewline
+        Write-Host " REJ=$global:ALLREJ" -ForegroundColor DarkRed -NoNewline
+        Write-Host " ALGO=$SwarmAlgo" -ForegroundColor Gray -NoNewline
+        Write-Host " UPTIME=$global:UPTIME
+" -ForegroundColor White
+    }
+        
     ## The below is for interfacing with HiveOS.
     if ($Platforms -eq "windows" -and $HiveOS -eq "Yes") {
         $Stats = Build-HiveResponse
@@ -499,5 +562,4 @@ HSU=khs
         $GoToSleep = [math]::Round(10 - $RestartTimer.Elapsed.TotalSeconds)
         if ($GoToSleep -gt 0) {Start-Sleep -S $GoToSleep}
     }
-
 }

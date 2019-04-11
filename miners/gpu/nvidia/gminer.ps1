@@ -23,16 +23,24 @@ $NVIDIATypes | ForEach-Object {
     ##Log Directory
     $Log = Join-Path $dir "logs\$ConfigType.log"
 
+    ##Parse -GPUDevices
+    if ($Get_Devices -ne "none") {
+        $GPUDevices1 = $Get_Devices
+        $GPUDevices1 = $GPUDevices1 -replace ',', ' '
+        $Devices = $GPUDevices1
+    }
+    else { $Devices = $Get_Devices }    
+
     ##gminer apparently doesn't know how to tell the difference between
     ##cuda and amd devices, like every other miner that exists. So now I 
     ##have to spend an hour and parse devices
     ##to matching platforms.
-    $ArgDevices = $Null;
     
+    $ArgDevices = $Null
     if ($Get_Devices -ne "none") {
-        $GPUDevices1 = $Get_Devices
-        $GPUEDevices1 = $GPUDevices1 -split ","
-        $GPUEDevices1 | ForEach-Object { $ArgDevices += "$($GCount.NVIDIA.$_) " }
+        $GPUEDevices = $Get_Devices
+        $GPUEDevices = $GPUEDevices -split ","
+        $GPUEDevices | ForEach-Object { $ArgDevices += "$($GCount.NVIDIA.$_) " }
         $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1)
     }
     else { $GCount.NVIDIA.PSObject.Properties.Name | ForEach-Object { $ArgDevices += "$($GCount.NVIDIA.$_) " }; $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1) }
@@ -67,8 +75,8 @@ $NVIDIATypes | ForEach-Object {
                     Prestart   = $PreStart
                     Type       = $ConfigType
                     Path       = $Path
-                    Devices    = $Devices
                     ArgDevices = $ArgDevices
+                    Devices    = $Devices
                     DeviceCall = "gminer"
                     Arguments  = "--api $Port --server $($_.Host) --port $($_.Port) --user $($_.$User) --logfile `'$Log`' --pass $($_.$Pass)$Diff $($Config.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) }

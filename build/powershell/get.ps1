@@ -26,6 +26,8 @@ param(
     [String]$argument6 = $null
 )
 
+[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
+
 Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))
 $dir = Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))
 

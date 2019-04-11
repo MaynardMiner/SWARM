@@ -880,7 +880,7 @@
     ]
   },
   "veil": {
-    "hiveos_name": "x16rt",
+    "hiveos_name": "veil",
     "pools_to_exclude": [
       "add pools here",
       "comma seperated"
@@ -1024,6 +1024,28 @@
   },
   "yespower": {
     "hiveos_name": "yespower",
+    "pools_to_exclude": [
+      "add pools here",
+      "comma seperated"
+    ],
+    "miners_to_exclude": [
+      "add miners here",
+      "comma seperate"
+    ]
+  },
+  "yespowerr8": {
+    "hiveos_name": "yespowerr8",
+    "pools_to_exclude": [
+      "add pools here",
+      "comma seperated"
+    ],
+    "miners_to_exclude": [
+      "add miners here",
+      "comma seperate"
+    ]
+  },
+  "yespowerr16": {
+    "hiveos_name": "yespowerr16",
     "pools_to_exclude": [
       "add pools here",
       "comma seperated"

@@ -24,8 +24,8 @@ $NVIDIATypes | ForEach-Object {
     $Log = Join-Path $dir "logs\$ConfigType.log"
 
     ##Parse -GPUDevices
-    if ($NVIDIADevices1 -ne "none") { $Devices = $NVIDIADevices1 }
-    else { $Devices = "none" }
+    if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
+    else { $Devices = $Get_Devices }
 
     ##Get Configuration File
     $GetConfig = "$dir\config\miners\xmrig_nv.json"

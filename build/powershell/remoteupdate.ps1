@@ -48,6 +48,8 @@ function start-update {
         $PreviousVersions += "SWARM.2.1.0"
         $PreviousVersions += "SWARM.2.1.1"
         $PreviousVersions += "SWARM.2.1.2"
+        $PreviousVersions += "SWARM.2.1.3"
+        $PreviousVersions += "SWARM.2.1.4"
 
         Write-Host "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
         Write-Host "Check $Location For any Previous Versions"
@@ -102,6 +104,11 @@ function start-update {
                             Write-Host "Pulled $OldJson"
                             $Data = $JsonData | ConvertFrom-Json;
 
+                            if ($ChangeFile -eq "pool-algos.json") {
+                              $Data | Add-Member "yespowerr16" @{"hiveos_name" = "yespowerr16"; "pools_to_exclude" = @("add pools here","comma seperated"); "miners_to_exclude" = @("add miners here","comma seperate")} -ErrorAction SilentlyContinue
+                              $Data | Add-Member "yespowerr8" @{"hiveos_name" = "yespowerr8"; "pools_to_exclude" = @("add pools here","comma seperated"); "miners_to_exclude" = @("add miners here","comma seperate")} -ErrorAction SilentlyContinue
+                            }
+
                             if ($ChangeFile -eq "cryptodredge.json") {
                                 $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                     ##2.1.3
@@ -117,6 +124,10 @@ function start-update {
                                         $Data.$_.oc | Add-Member "grincuckaroo29" @{Power = ""; Core = ""; Memory = ""; Fans = ""} -ErrorAction SilentlyContinue
                                     }
                                 }
+                            }
+
+                            if($ChangeFile -eq "pool-algos.json") {
+                                    $Data.veil.hiveos_name = "veil"
                             }
 
                             if ($ChangeFile -eq "bubasik.json") {
@@ -145,6 +156,11 @@ function start-update {
                                     }
                                 }
                             }
+
+                            if ($ChangeFile -eq "wallets.json") {
+                                $Data | Add-Member "All_AltWallets" @{"add coin symbol here" = "Add Its Address Here";"add another coin symbol here"="Add Its Address Here"} -ErrorAction SilentlyContinue
+                            }
+                            
 
                             if ($ChangeFile -eq "xmr-stak.json") {
                                 $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {

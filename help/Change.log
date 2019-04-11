@@ -2393,3 +2393,67 @@ API overhaul:
 
   -Windows will now detect AMD drivers.
   -Windows will now detect AES support.
+
+  2.1.4
+
+  -Fixed small typos in Phoenix miner.
+  -Fixed small typos in XMrig miner files.
+  -Background screen should stat only group 1 algos (AMD1,NVIDIA1)
+   or stat CPU if only CPU.
+  -Invoked security protocols for ``get update`` command.
+  -Invoked tls security protocols for background agent.
+  -Added yespower8 and yespowerr32 algos to pool files
+   (will load a yespower8 algo miner soon).
+  
+  As of 2.1.3, miner files were heavily changed so that
+  there is only 1 .ps1 file for each miner. This invovled
+  changing a lot. If you see any further bugs, please report.
+
+  2.1.5
+
+  This release continues to fix little issues reported with
+  api and hashrates. It is reccommended to update to it.
+  
+  -Entire background agent was redone:
+    -API now lists ASIC hashrates.
+    -CPU now lists individual threads (if miner supports it).
+    -API now lists CPU hashrates.
+  
+  -New Miner:
+     -cpuminer-sugarchain: Created by Cryptozenny
+     -It is reccommended on slower CPU's to increase
+      benchmark times.
+  
+  -Fixed Gminer API issues.
+  -Fixed Gminer miner.ps1 and device launch.
+  -Moved xmrig_nv to optional folder- Too many
+   users report crashes from compiling issues.
+  -Updated bubaik cpu miner
+  -Fixed ethminer API.
+  -Replaced x16rt to veil for HiveOS.
+
+  New Windows HiveOS information!
+   -SWARM now sends C: size and free space.
+   -Slighly improved RAM measurements.
+   -Windows version now includes everything on
+    HiveOS accept watchdog and autofan. (working on it).
+   -Shows correct CPU AES support.
+
+  -Added some more libs for export to support miners.
+
+  -``get wallets`` command: Some pools balances
+    show differently. I removed totaling of unpaid
+    and paid combination, as it was inaccurate.
+
+  -New Feature!
+    -wallets.json config now has AllAltWallets.
+     For auto-coin, Miner will intuitively switch to address of same
+     coin if it is most profitable to mine if AllAltWallets
+     is listed with the rest of the config.
+
+  -Minor fixes of .ps1 files.
+
+  NOTE: I have not completed the AMD miners in the optional folder.
+  The will not work as of now- It is the next immediate thing I plan
+  To Do.
+

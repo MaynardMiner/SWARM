@@ -62,6 +62,10 @@ function Start-Peekaboo {
     $AES = $AES | Select-String "Supports AES extensions"
     if($AES){$HasAES = 1}else{$HasAES = 0}
     $disk = $(Get-WMIObject win32_diskdrive).model
+    $diskSpace = Get-WmiObject Win32_LogicalDisk -Filter "DeviceID='C:'" | Select-Object Size
+    $diskSpace = $diskSpace.Size / [math]::pow( 1024, 3 )
+    $diskSpace = [math]::Round($diskSpace)
+    $diskSpace = "$($diskSpace)GB"
     $url = $HiveMirror
     $swarmversion = Get-Content ".\h-manifest.conf" | ConvertFrom-StringData
     $swarmversion = $swarmversion.CUSTOM_VERSION
@@ -112,7 +116,7 @@ function Start-Peekaboo {
                 aes    = "$HasAES"
                 cpu_id = "$cpuid"
             }
-            disk_model       = "$disk"
+            disk_model       = "$disk $diskspace"
         }
     }
       

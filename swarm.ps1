@@ -1118,9 +1118,9 @@ While ($true) {
                 $ActiveMinerPrograms += [PSCustomObject]@{
                     Delay          = $_.Delay
                     Name           = $_.Name
-                    Type           = $_.Type
-                    Devices        = $_.Devices
+                    Type           = $_.Type                    
                     ArgDevices     = $_.ArgDevices
+                    Devices        = $_.Devices
                     DeviceCall     = $_.DeviceCall
                     MinerName      = $_.MinerName
                     Path           = $_.Path

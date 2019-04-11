@@ -23,11 +23,17 @@
     },
     {
       "8": "Warning: If anything below is modified, SWARM will start using this file."
-    }  
+    },
+    {
+      "9": "(Optional) You can add all wallets in AllAltWallets section-"
+    },
+    {
+      "10": "SWARM will scan if auto-coin is on and AllAltWallets sectoin if filled."
+    },
+    {
+      "11": "If a coin matched the address symbol, and most profitable, it will mine to that wallet"
+    }
   ],
-
-
-
 
   "Altwallet1": {
     "add coin symbol here": {
@@ -92,25 +98,9 @@
     }
   },
 
-
-
-
-  "default group to copy and paste under Wallets": {
-    
-    
-    "add another coin symbol here": {
-      "address": "coin address",
-      "pools": [
-        "zpool",
-        "blockmasters",
-        "can be changed"
-      ]
-    }
-    
-    
+  "All_AltWallets": {
+    "add coin symbol here": "Add Its Address Here",
+    "add another coin symbol here": "Add Its Address Here"
   }
-  
-  
-  
   
 }

@@ -27,7 +27,7 @@ $AMDTypes | ForEach-Object {
         $GPUDevices1 = $GPUDevices1 -replace ',', ' '
         $Devices = $GPUDevices1
     }
-    else { $Devices = "none" }
+    else { $Devices = $Get_Devices }
 
     ##Get Configuration File
     $GetConfig = "$dir\config\miners\progminer_amd.json"

@@ -31,7 +31,7 @@ if ($Get_Devices -ne "none") {
     $ClayDevices1 = $ClayDevices1 -replace (",", "")
     $Devices = $ClayDevices1
 }
-else { $Devices = "none" }
+else { $Devices = $Get_Devices }
 
 ##Get Configuration File
 $GetConfig = "$dir\config\miners\claymore_amd.json"
