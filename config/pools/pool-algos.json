@@ -880,7 +880,7 @@
     ]
   },
   "veil": {
-    "hiveos_name": "x16rt",
+    "hiveos_name": "veil",
     "pools_to_exclude": [
       "add pools here",
       "comma seperated"
