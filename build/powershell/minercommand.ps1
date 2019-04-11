@@ -53,7 +53,7 @@ function Get-Miners {
             $minerfilepath = ".\miners\gpu\nvidia"    
             $NVIDIAMiners = if (Test-Path $minerfilepath) { Get-ChildItemContent $minerfilepath | ForEach-Object { $_.Content | Add-Member @{Name = $_.Name } -PassThru } |
                 Where-Object { $Type.Count -eq 0 -or (Compare-Object $Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
-                Where-Object { $No_Miner -notcontains $_.Name } |
+                Where-Object { $No_Miner -notcontains $_.MName } |
                 Where-Object { $_.Path -ne "None" } |
                 Where-Object { $_.Uri -ne "None" } |
                 Where-Object { $_.MinerName -ne "None" }
@@ -63,7 +63,7 @@ function Get-Miners {
             $minerfilepath = ".\miners\gpu\amd"    
             $AMDMiners = if (Test-Path $minerfilepath) { Get-ChildItemContent $minerfilepath | ForEach-Object { $_.Content | Add-Member @{Name = $_.Name } -PassThru } |
                 Where-Object { $Type.Count -eq 0 -or (Compare-Object $Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
-                Where-Object { $No_Miner -notcontains $_.Name } |
+                Where-Object { $No_Miner -notcontains $_.MName } |
                 Where-Object { $_.Path -ne "None" } |
                 Where-Object { $_.Uri -ne "None" } |
                 Where-Object { $_.MinerName -ne "None" }
@@ -73,7 +73,7 @@ function Get-Miners {
             $minerfilepath = ".\miners\cpu"
             $CPUMiners = if (Test-Path $minerfilepath) { Get-ChildItemContent $minerfilepath | ForEach-Object { $_.Content | Add-Member @{Name = $_.Name } -PassThru } |
                 Where-Object { $Type.Count -eq 0 -or (Compare-Object $Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
-                Where-Object { $No_Miner -notcontains $_.Name } |
+                Where-Object { $No_Miner -notcontains $_.MName } |
                 Where-Object { $_.Path -ne "None" } |
                 Where-Object { $_.Uri -ne "None" } |
                 Where-Object { $_.MinerName -ne "None" }
@@ -102,7 +102,7 @@ function Get-Miners {
         $minerfilepath = ".\miners\asic"    
         $ASICMiners = if (Test-Path $minerfilepath) { Get-ChildItemContent $minerfilepath | ForEach-Object { $_.Content | Add-Member @{Name = $_.Name } -PassThru } |
             Where-Object { $Type.Count -eq 0 -or (Compare-Object $Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
-            Where-Object { $No_Miner -notcontains $_.Name } |
+            Where-Object { $No_Miner -notcontains $_.MName } |
             Where-Object { $_.Path -ne "None" } |
             Where-Object { $_.Uri -ne "None" } |
             Where-Object { $_.MinerName -ne "None" }
