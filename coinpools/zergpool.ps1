@@ -60,7 +60,7 @@ if ($Poolname -eq $Name) {
                 }
             }
         }
-        else {
+        elseif ($global:Wallets) {
             $global:Wallets.AltWallet1.Keys | ForEach-Object {
                 if ($global:Wallets.AltWallet1.$_.Pools -contains $Name) {
                     $Pass1 = $_;
@@ -89,27 +89,27 @@ if ($Poolname -eq $Name) {
             }
         }
 
-        [PSCustomObject]@{
-            Priority      = $Priorities.Pool_Priorities.$Name
-            Symbol        = $Zergpool_Symbol
-            Mining        = $Zergpool_Algorithm
-            Algorithm     = $zergpool_Algorithm
-            Price         = $Stat.$Stat_Coin
-            StablePrice   = $Stat.Week
-            MarginOfError = $Stat.Fluctuation
-            Protocol      = "stratum+tcp"
-            Host          = $zergpool_Host
-            Port          = $zergpool_Port
-            User1         = $User1
-            User2         = $User2
-            User3         = $User3
-            CPUser        = $User1
-            CPUPass       = "c=$Pass1,mc=$Zergpool_Symbol,id=$Rigname1"
-            Pass1         = "c=$Pass1,mc=$Zergpool_Symbol,id=$Rigname1"
-            Pass2         = "c=$Pass2,mc=$Zergpool_Symbol,id=$Rigname2"
-            Pass3         = "c=$Pass3,mc=$Zergpool_Symbol,id=$Rigname3"
-            Location      = $Location
-            SSL           = $false
-        } 
-    }
+    [PSCustomObject]@{
+        Priority      = $Priorities.Pool_Priorities.$Name
+        Symbol        = $Zergpool_Symbol
+        Mining        = $Zergpool_Algorithm
+        Algorithm     = $zergpool_Algorithm
+        Price         = $Stat.$Stat_Coin
+        StablePrice   = $Stat.Week
+        MarginOfError = $Stat.Fluctuation
+        Protocol      = "stratum+tcp"
+        Host          = $zergpool_Host
+        Port          = $zergpool_Port
+        User1         = $User1
+        User2         = $User2
+        User3         = $User3
+        CPUser        = $User1
+        CPUPass       = "c=$Pass1,mc=$Zergpool_Symbol,id=$Rigname1"
+        Pass1         = "c=$Pass1,mc=$Zergpool_Symbol,id=$Rigname1"
+        Pass2         = "c=$Pass2,mc=$Zergpool_Symbol,id=$Rigname2"
+        Pass3         = "c=$Pass3,mc=$Zergpool_Symbol,id=$Rigname3"
+        Location      = $Location
+        SSL           = $false
+    } 
+}
 }
