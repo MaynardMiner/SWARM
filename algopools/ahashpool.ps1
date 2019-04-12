@@ -39,9 +39,10 @@ if ($Poolname -eq $Name) {
                     Protocol      = "stratum+tcp"
                     Host          = $ahashpool_Host
                     Port          = $ahashpool_Port
-                    User1         = $global:Wallets.Wallet1.BTC.address
-                    User2         = $global:Wallets.Wallet2.BTC.address
-                    User3         = $global:Wallets.Wallet3.BTC.address
+                    User1         = $global:Wallets.Wallet1.$PasswordCurrency1.address
+                    User2         = $global:Wallets.Wallet2.$PasswordCurrency2.address
+                    User3         = $global:Wallets.Wallet3.$PasswordCurrency3.address
+                    CPUser        = $global:Wallets.Wallet1.$PasswordCurrency1.address                    
                     Pass1         = "c=$($global:Wallets.Wallet1.keys),id=$Rigname1"
                     Pass2         = "c=$($global:Wallets.Wallet2.keys),id=$Rigname2"
                     Pass3         = "c=$($global:Wallets.Wallet3.keys),id=$Rigname3"

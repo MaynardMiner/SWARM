@@ -2457,3 +2457,14 @@ API overhaul:
   The will not work as of now- It is the next immediate thing I plan
   To Do.
 
+
+  2.1.6
+
+  -Fixed All_Altwallets in Wallet.Json. Should be working now.
+  -Made it so that ``-Coin`` argument disables ``-Auto_Coin``.
+  -Made it so that ``-Coin`` argument disables ``-Altwallet``  related arguments.
+  -Fixed ``-No_Miner`` so that it uses naming conventions from
+   stats screen (for each devices group), rather than name of
+   .ps1 file.
+  -Wallet tables doesn't stat automatically stat ``-Wallet1`` as
+   BTC, in case ``-Coin`` parameter is used.

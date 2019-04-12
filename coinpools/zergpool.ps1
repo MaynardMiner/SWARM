@@ -42,12 +42,37 @@ if ($Poolname -eq $Name) {
         $Stat = Set-Stat -Name "$($Name)_$($Zergpool_Symbol)_coin_profit" -Value ([Double]$zergpool_Estimate / $Divisor * (1 - ($zergpool_fees / 100)))
 
         $Pass1 = $global:Wallets.Wallet1.Keys
-        $User1 = $global:Wallets.Wallet1.BTC.address
+        $User1 = $global:Wallets.Wallet1.$Passwordcurrency1.address
         $Pass2 = $global:Wallets.Wallet2.Keys
-        $User2 = $global:Wallets.Wallet2.BTC.address
+        $User2 = $global:Wallets.Wallet2.$Passwordcurrency2.address
         $Pass3 = $global:Wallets.Wallet3.Keys
-        $User3 = $global:Wallets.Wallet3.BTC.address
+        $User3 = $global:Wallets.Wallet3.$Passwordcurrency3.address
 
+        if ($global:Wallets.AltWallet1.keys) {
+            $global:Wallets.AltWallet1.Keys | ForEach-Object {
+                if ($global:Wallets.AltWallet1.$_.Pools -contains $Name) {
+                    $Pass1 = $_;
+                    $User1 = $global:Wallets.AltWallet1.$_.address;
+                }
+            }
+        }
+        if ($global:Wallets.AltWallet2.keys) {
+            $global:Wallets.AltWallet2.Keys | ForEach-Object {
+                if ($global:Wallets.AltWallet2.$_.Pools -contains $Name) {
+                    $Pass2 = $_;
+                    $User2 = $global:Wallets.AltWallet2.$_.address;
+                }
+            }
+        }
+        if ($global:Wallets.AltWallet3.keys) {
+            $global:Wallets.AltWallet3.Keys | ForEach-Object {
+                if ($global:Wallets.AltWallet3.$_.Pools -contains $Name) {
+                    $Pass3 = $_;
+                    $User3 = $global:Wallets.AltWallet3.$_.address;
+                }
+            }
+        }
+                
         if ($global:All_AltWallets) {
             $global:All_AltWallets | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                 if ($_ -eq $Zergpool_Symbol) {
@@ -57,26 +82,6 @@ if ($Poolname -eq $Name) {
                     $User2 = $global:All_AltWallets.$_
                     $Pass3 = $Zergpool_Symbol
                     $User3 = $global:All_AltWallets.$_
-                }
-            }
-        }
-        elseif ($global:Wallets) {
-            $global:Wallets.AltWallet1.Keys | ForEach-Object {
-                if ($global:Wallets.AltWallet1.$_.Pools -contains $Name) {
-                    $Pass1 = $_;
-                    $User1 = $global:Wallets.AltWallet1.$_.address;
-                }
-            }
-            $global:Wallets.AltWallet2.Keys | ForEach-Object {
-                if ($global:Wallets.AltWallet2.$_.Pools -contains $Name) {
-                    $Pass2 = $_;
-                    $User2 = $global:Wallets.AltWallet2.$_.address;
-                }
-            }
-            $global:Wallets.AltWallet3.Keys | ForEach-Object {
-                if ($global:Wallets.AltWallet3.$_.Pools -contains $Name) {
-                    $Pass3 = $_;
-                    $User3 = $global:Wallets.AltWallet3.$_.address;
                 }
             }
         }

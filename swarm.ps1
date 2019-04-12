@@ -744,6 +744,7 @@ While ($true) {
     ##Parameters (change again interactively if needed)
     $GetSWARMParams = Get-Content ".\config\parameters\arguments.json"
     $SWARMParams = $GetSWARMParams | ConvertFrom-Json
+    $global:All_AltWallets = $null
 
     $Wallet1 = $SWARMParams.Wallet1;                           $Wallet2 = $SWARMParams.Wallet2;
     $Wallet3 = $SWARMParams.Wallet3;                           $CPUWallet = $SWARMParams.CPUWallet;
@@ -780,9 +781,30 @@ While ($true) {
     $APIPassword = $SWARMParams.APIPassword;                   $Startup = $SWARMParams.Startup;
     $ETH = $SWARMParams.ETH;                                   $Worker = $SWARMParams.Worker;
     $No_Miner = $SWARMParams.No_Miner;                         $HiveAPIkey = $SWARMParams.HiveAPIkey;
-    $SWARMAlgorithm = $SWARMParams.Algorithm;                  $Coin = $SWARMParams.Coin;
+    $SWARMAlgorithm = $SWARMParams.Algorithm;                  $Coin = $SWARMParams.Coin
     $ASIC_IP = $SWARMParams.ASIC_IP;                           $ASIC_ALGO = $SWARMParams.ASIC_ALGO;
 
+    if ($SWARMParams.Rigname1 -eq "Donate") { $Donating = $True }
+    else { $Donating = $False }
+    if ($Donating -eq $True) {
+        $Passwordcurrency1 = "BTC";
+        $Passwordcurrency2 = "BTC";
+        $Passwordcurrency3 = "BTC";
+        ##Switch alt Password in case it was changed, to prevent errors.
+        $AltPassword1 = "BTC";
+        $AltPassword2 = "BTC";
+        $AltPassword3 = "BTC";
+        $Coin = "BTC";
+        $DonateTime = Get-Date; 
+        $DonateText = "Miner has donated on $DonateTime"; 
+        $DonateText | Set-Content ".\build\txt\donate.txt"
+    }
+    elseif($Coin) {
+        $Passwordcurrency1 = $Coin
+        $Passwordcurrency2 = $Coin
+        $Passwordcurrency3 = $Coin
+    }
+    
     ##Get Wallets
     Get-Wallets
 
@@ -812,12 +834,21 @@ While ($true) {
     else { $Donating = $False }
     if ($Donating -eq $True) {
         $Passwordcurrency1 = "BTC"; 
-        $Passwordcurrency2 = "BTC"; 
-        $Passwordcurrency3 = "BTC"
+        $Passwordcurrency2 = "BTC";
+        $Passwordcurrency3 = "BTC";
+        ##Switch alt Password in case it was changed, to prevent errors.
+        $AltPassword1 = "BTC";
+        $AltPassword2 = "BTC";
+        $AltPassword3 = "BTC";
         $DonateTime = Get-Date; 
         $DonateText = "Miner has donated on $DonateTime"; 
         $DonateText | Set-Content ".\build\txt\donate.txt"
     }
+
+    ##Change Password to $Coin parameter in case it is used.
+    ##Auto coin should be disabled.
+    ##It should only work when donation isn't active.
+    if ($Coin) { $Auto_Coin = "No" }
 
     ## Main Loop Begins
     ## SWARM begins with pulling files that might have been changed from previous loop.
@@ -881,7 +912,6 @@ While ($true) {
 
     ##Get Algorithms again, in case custom changed it.
     $Algorithm = @()
-    if ($Coin) { $Passwordcurrency1 = $Coin; $Passwordcurrency2 = $Coin; $Passwordcurrency3 = $Coin }
     if ($SWARMAlgorithm) { $SWARMALgorithm | ForEach-Object { $Algorithm += $_ } }
     else { $Algorithm = $Pool_Json.PSObject.Properties.Name }
     if($Type -notlike "*NVIDIA*")

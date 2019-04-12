@@ -26,31 +26,37 @@ if ($Poolname -eq $Name) {
                 if ($Stat_Algo -eq "Day") { $CStat = $Stat.Live }else { $CStat = $Stat.$Stat_Algo }
         
                 $Pass1 = $global:Wallets.Wallet1.Keys
-                $User1 = $global:Wallets.Wallet1.BTC.address
+                $User1 = $global:Wallets.Wallet1.$Passwordcurrency1.address
                 $Pass2 = $global:Wallets.Wallet2.Keys
-                $User2 = $global:Wallets.Wallet2.BTC.address
+                $User2 = $global:Wallets.Wallet2.$Passwordcurrency2.address
                 $Pass3 = $global:Wallets.Wallet3.Keys
-                $User3 = $global:Wallets.Wallet3.BTC.address
+                $User3 = $global:Wallets.Wallet3.$Passwordcurrency3.address
 
-                $global:Wallets.AltWallet1.Keys | ForEach-Object {
-                    if ($global:Wallets.AltWallet1.$_.Pools -contains $Name) {
-                        $Pass1 = $_;
-                        $User1 = $global:Wallets.AltWallet1.$_.address;
+                if ($global:Wallets.AltWallet1.keys) {
+                    $global:Wallets.AltWallet1.Keys | ForEach-Object {
+                        if ($global:Wallets.AltWallet1.$_.Pools -contains $Name) {
+                            $Pass1 = $_;
+                            $User1 = $global:Wallets.AltWallet1.$_.address;
+                        }
                     }
                 }
-                $global:Wallets.AltWallet2.Keys | ForEach-Object {
-                    if ($global:Wallets.AltWallet2.$_.Pools -contains $Name) {
-                        $Pass2 = $_;
-                        $User2 = $global:Wallets.AltWallet2.$_.address;
+                if ($global:Wallets.AltWallet2.keys) {
+                    $global:Wallets.AltWallet2.Keys | ForEach-Object {
+                        if ($global:Wallets.AltWallet2.$_.Pools -contains $Name) {
+                            $Pass2 = $_;
+                            $User2 = $global:Wallets.AltWallet2.$_.address;
+                        }
                     }
                 }
-                $global:Wallets.AltWallet3.Keys | ForEach-Object {
-                    if ($global:Wallets.AltWallet3.$_.Pools -contains $Name) {
-                        $Pass3 = $_;
-                        $User3 = $global:Wallets.AltWallet3.$_.address;
+                if ($global:Wallets.AltWallet3.keys) {
+                    $global:Wallets.AltWallet3.Keys | ForEach-Object {
+                        if ($global:Wallets.AltWallet3.$_.Pools -contains $Name) {
+                            $Pass3 = $_;
+                            $User3 = $global:Wallets.AltWallet3.$_.address;
+                        }
                     }
                 }
-            
+                            
                 [PSCustomObject]@{
                     Priority      = $Priorities.Pool_Priorities.$Name
                     Symbol        = $nlpoolAlgo_Algorithm
