@@ -25,8 +25,13 @@ if ($Poolname -eq $Name) {
             if ($Bad_pools.$Zpool_Algorithm -notcontains $Name) {
                 $Zpool_Port = $Zpool_Request.$_.port
                 $Zpool_Host = "$($ZPool_Algorithm).$($region).mine.zpool.ca"
+
                 $Divisor = (1000000 * $Zpool_Request.$_.mbtc_mh_factor)
+                $Global:DivisorTable.zpool.Add($Zpool_Algorithm,$Zpool_Request.$_.mbtc_mh_factor)
+
                 $Fees = $Zpool_Request.$_.fees
+                $Global:FeeTable.zpool.Add($Zpool_Algorithm,$Zpool_Request.$_.fees)
+                
                 $Workers = $Zpool_Request.$_.Workers
                 $Estimate = if ($Stat_Algo -eq "Day") { [Double]$Zpool_Request.$_.estimate_last24h }else { [Double]$Zpool_Request.$_.estimate_current }
 

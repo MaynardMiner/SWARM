@@ -891,6 +891,18 @@ While ($true) {
         continue
     }
 
+    ##To Get Fees For Pools (For Currencies), A table is made, so the pool doesn't have to be called multiple times.
+    $global:FeeTable = @{}
+    $global:FeeTable.Add("zpool",@{})
+    $global:FeeTable.Add("zergpool",@{})
+    $global:FeeTable.Add("fairpool",@{})
+    
+    ##Same for attaining mbtc_mh factor
+    $global:divisortable = @{}
+    $global:divisortable.Add("zpool",@{})
+    $global:divisortable.Add("zergpool",@{})
+    $global:divisortable.Add("fairpool",@{})
+
     ##Get Algorithm Pools
     $Coins = $false
     Write-Host "Checking Algo Pools." -Foregroundcolor yellow;

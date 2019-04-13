@@ -19,9 +19,13 @@ if ($Poolname -eq $Name) {
             if ($Bad_pools.$Zergpool_Algorithm -notcontains $Name) {
                 $Zergpool_Port = $Zergpool_Request.$_.port
                 $Zergpool_Host = "$($Zergpool_Algorithm).mine.zergpool.com"
+
                 $Divisor = (1000000 * $Zergpool_Request.$_.mbtc_mh_factor)
+                $Global:DivisorTable.zergpool.Add($Zergpool_Algorithm,$Zergpool_Request.$_.mbtc_mh_factor)
+
                 $Fees = $Zergpool_Request.$_.fees
-                $Workers = $Zergpool_Request.$_.Workers
+                $Global:FeeTable.zergpool.Add($Zergpool_Algorithm,$Zergpool_Request.$_.fees)
+
                 $Estimate = if ($Stat_Algo -eq "Day") { [Double]$Zergpool_Request.$_.estimate_last24h }else { [Double]$Zergpool_Request.$_.estimate_current }
 
                 $Stat = Set-Stat -Name "$($Name)_$($Zergpool_Algorithm)_profit" -Value ([Double]$Estimate / $Divisor * (1 - ($Zergpool_Request.$_.fees / 100)))
