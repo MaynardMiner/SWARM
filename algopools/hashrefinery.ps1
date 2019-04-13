@@ -29,7 +29,7 @@ if ($Poolname -eq $Name) {
         
                 [PSCustomObject]@{            
                     Priority      = $Priorities.Pool_Priorities.$Name
-                    Symbol        = $Hashrefinery_Algorithm
+                    Symbol        = "$Hashrefinery_Algorithm-Algo"
                     Mining        = $Hashrefinery_Algorithm
                     Algorithm     = $Hashrefinery_Algorithm
                     Price         = $CStat

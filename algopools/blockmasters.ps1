@@ -73,7 +73,7 @@ if ($Poolname -eq $Name) {
                             
                 [PSCustomObject]@{            
                     Priority      = $Priorities.Pool_Priorities.$Name
-                    Symbol        = $blockpool_Algorithm
+                    Symbol        = "$blockpool_Algorithm-Algo"
                     Mining        = $blockpool_Algorithm
                     Algorithm     = $blockpool_Algorithm
                     Price         = $CStat

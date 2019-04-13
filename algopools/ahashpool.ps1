@@ -30,7 +30,7 @@ if ($Poolname -eq $Name) {
 
                 [PSCustomObject]@{
                     Priority      = $Priorities.Pool_Priorities.$Name
-                    Symbol        = $ahashpool_Algorithm
+                    Symbol        = "$ahashpool_Algorithm-Algo"
                     Mining        = $ahashpool_Algorithm
                     Algorithm     = $ahashpool_Algorithm
                     Price         = $CStat

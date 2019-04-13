@@ -286,7 +286,7 @@ $FileClear += ".\build\txt\bestminers.txt"
 $FileClear | ForEach-Object { if (Test-Path $_) { Remove-Item $_ -Force } }
 
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
-$Debug = $false
+$Debug = $true
 
 ## Convert Arguments Into Hash Table
 if ($Debug -ne $true) {
@@ -1085,9 +1085,14 @@ While ($true) {
     ## Miner array, favoring miners that need to benchmarked first, then miners that had the highest quote. It
     ## Is done this way, as sorting via [double] would occasionally glitch. This is more if/else, and less likely
     ## To fail.
+    ##First reduce all miners to best one for each symbol
     $CutMiners = Start-MinerReduction -Stats $Stats -SortMiners $Miners -WattCalc $WattEx -Type $Type
     ##Remove The Extra Miners
     $CutMiners | ForEach-Object { $Miners.Remove($_) } | Out-Null;
+
+    ##We need to remove the denotation of coin or algo
+
+    $Miners | ForEach-Object { $_.Symbol = $_.Symbol -replace "-Algo",""; $_.Symbol = $_.Symbol -replace "-Coin",""}
 
     ## Print on screen user is screwed if the process failed.
     if ($Miners.Count -eq 0) {
@@ -1394,7 +1399,7 @@ While ($true) {
                 }
             }
             $Shares = $global:Share_Table.$($Miner.Type).$($Miner.MinerPool).$ScreenName.Percent
-            if ($Shares -ne $null) { $CoinShare = $Shares }else { $CoinShare = "N/A" }
+            if ( $Shares -ne $null ) { $CoinShare = $Shares }else { $CoinShare = "N/A" }
             $ProfitTable += [PSCustomObject]@{
                 Power         = [Decimal]$($Miner.Power * 24) / 1000 * $WattEX
                 Pool_Estimate = $Miner.Pool_Estimate

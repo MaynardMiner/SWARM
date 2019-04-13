@@ -94,7 +94,7 @@ if ($Poolname -eq $Name) {
             Divisor       = $Divisor
             Fees          = $zergpool_Fees
             Priority      = $Priorities.Pool_Priorities.$Name
-            Symbol        = $Zergpool_Symbol
+            Symbol        = "$Zergpool_Symbol-Coin"
             Mining        = $Zergpool_Algorithm
             Algorithm     = $zergpool_Algorithm
             Price         = $Stat.$Stat_Coin

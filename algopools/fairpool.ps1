@@ -35,7 +35,7 @@ if ($Poolname -eq $Name) {
    
                 [PSCustomObject]@{
                     Priority      = $Priorities.Pool_Priorities.$Name
-                    Symbol        = $fairpool_Algorithm
+                    Symbol        = "$fairpool_Algorithm-Algo"
                     Mining        = $fairpool_Algorithm
                     Algorithm     = $fairpool_Algorithm
                     Price         = $CStat

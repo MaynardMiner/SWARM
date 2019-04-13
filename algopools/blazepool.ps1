@@ -30,7 +30,7 @@ if ($Poolname -eq $Name) {
     
                 [PSCustomObject]@{
                     Priority      = $Priorities.Pool_Priorities.$Name
-                    Symbol        = $blazepool_Algorithm
+                    Symbol        = "$blazepool_Algorithm-Algo"
                     Mining        = $blazepool_Algorithm
                     Algorithm     = $blazepool_Algorithm
                     Price         = $CStat

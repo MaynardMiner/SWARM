@@ -66,7 +66,7 @@ if ($Poolname -eq $Name) {
 
                 [PSCustomObject]@{
                     Priority      = $Priorities.Pool_Priorities.$Name
-                    Symbol        = $Zergpool_Algorithm
+                    Symbol        = "$Zergpool_Algorithm-Algo"
                     Mining        = $Zergpool_Algorithm
                     Algorithm     = $Zergpool_Algorithm
                     Price         = $CStat
