@@ -43,7 +43,9 @@ $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Obje
         if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
             if ($Config.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
             [PSCustomObject]@{
-                Delay      = $Config.$ConfigType.delay
+                Coin       = $Coins
+                    Delay      = $Config.$ConfigType.delay
+
                 Symbol     = "$($_.Symbol)"
                 MinerName  = $MinerName
                 Prestart   = $PreStart

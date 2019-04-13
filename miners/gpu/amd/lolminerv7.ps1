@@ -51,7 +51,9 @@ $AMDTypes | ForEach-Object {
                 if ($Platform -eq "linux") { $extra = "--asm 1 " }
                 [PSCustomObject]@{
                     MName      = $Name
+                    Coin       = $Coins
                     Delay      = $Config.$ConfigType.delay
+
                     Symbol     = "$($_.Symbol)"
                     MinerName  = $MinerName
                     Prestart   = $PreStart

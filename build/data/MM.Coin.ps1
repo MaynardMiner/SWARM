@@ -657,7 +657,7 @@ $MinerTimer.Restart()
   }
  $MinerTimer.Stop()
  Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
- Write-Host "Starting $($_.Name) Mining $($_.Coins) on $($_.Type)" -ForegroundColor Blue
+ Write-Host "Starting $($_.Name) Mining $($_.Symbol) on $($_.Type)" -ForegroundColor Blue
 }
   
 
@@ -678,7 +678,7 @@ if($_.Type -like "*CPU*")
     }
    $MinerTimer.Stop()
    Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
-   Write-Host "Starting $($_.MinerName) Mining $($_.Coins) on $($_.Type)" -ForegroundColor Blue
+   Write-Host "Starting $($_.MinerName) Mining $($_.Symbol) on $($_.Type)" -ForegroundColor Blue
  }
   if($_.XProcess -eq $null)
    {
@@ -802,7 +802,7 @@ $MinerTimer.Restart()
              }
             $MinerTimer.Stop()
             Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
-            Write-Host "Starting $($_.Name) Mining $($_.Coins) on $($_.Type)" -ForegroundColor Blue
+            Write-Host "Starting $($_.Name) Mining $($_.Symbol) on $($_.Type)" -ForegroundColor Blue
            }
              
            
@@ -823,7 +823,7 @@ $MinerTimer.Restart()
                }
               $MinerTimer.Stop()
               Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
-              Write-Host "Starting $($_.MinerName) Mining $($_.Coins) on $($_.Type)" -ForegroundColor Blue
+              Write-Host "Starting $($_.MinerName) Mining $($_.Symbol) on $($_.Type)" -ForegroundColor Blue
             }
           }
          }
@@ -837,7 +837,7 @@ $MinerTimer.Restart()
         $Miner_HashRates = Get-HashRate $_.API $_.Port
         $ScreenHash = "$($Miner_HashRates | ConvertTo-Hash)"
         $LogHash = "$($Miner_HashRates | ConvertTo-LogHash)"
-        Write-Host "[$(Get-Date)]: $($_.Type) is currently $($_.Status): $($_.Name) current hashrate for $($_.Coins) is $ScreenHash"
+        Write-Host "[$(Get-Date)]: $($_.Type) is currently $($_.Status): $($_.Name) current hashrate for $($_.Symbol) is $ScreenHash"
         $LogHash | Out-File ".\Miner.log"
 
           }
@@ -906,21 +906,21 @@ $MinerTimer.Restart()
             $WasActive = [math]::Round(((Get-Date)-$_.XProcess.StartTime).TotalSeconds)
          if($WasActive -ge $StatsInterval)
           {
-	  Write-Host "$($_.Name) $($_.Coins) Was Active for $WasActive Seconds"
-	  Write-Host "Attempting to record hashrate for $($_.Name) $($_.Coins)" -foregroundcolor "blue"
+	  Write-Host "$($_.Name) $($_.Symbol) Was Active for $WasActive Seconds"
+	  Write-Host "Attempting to record hashrate for $($_.Name) $($_.Symbol)" -foregroundcolor "blue"
           for($i=0; $i -lt 4; $i++)
             {
               if($_.WasBenchmarked -eq $False)
                {
-                Write-Host "$($_.Name) $($_.Coins) Starting Bench"
-		        $HashRateFilePath = Join-Path ".\Stats" "$($_.Name)_$($_.Coins)_HashRate.txt"
-                 $NewHashrateFilePath = Join-Path ".\Backup" "$($_.Name)_$($_.Coins)_HashRate.txt"
-                if(-not (Test-Path (Join-Path ".\Backup" "$($_.Name)_$($_.Coins)_HashRate.txt")))
+                Write-Host "$($_.Name) $($_.Symbol) Starting Bench"
+		        $HashRateFilePath = Join-Path ".\Stats" "$($_.Name)_$($_.Symbol)_HashRate.txt"
+                 $NewHashrateFilePath = Join-Path ".\Backup" "$($_.Name)_$($_.Symbol)_HashRate.txt"
+                if(-not (Test-Path (Join-Path ".\Backup" "$($_.Name)_$($_.Symbol)_HashRate.txt")))
                  {
-                  $Stat = Set-Stat -Name "$($_.Name)_$($_.Coins)_HashRate" -Value $Miner_HashRates
+                  $Stat = Set-Stat -Name "$($_.Name)_$($_.Symbol)_HashRate" -Value $Miner_HashRates
                   Start-Sleep -s 1
 		              Write-Host "Stat Written"
-                  if(Test-Path (Join-Path ".\Stats" "$($_.Name)_$($_.Coins)_HashRate.txt"))
+                  if(Test-Path (Join-Path ".\Stats" "$($_.Name)_$($_.Symbol)_HashRate.txt"))
                   {
                    if (-not (Test-Path ".\Backup")) {New-Item "Backup" -ItemType "directory" | Out-Null}
                    Start-Sleep -s 1
@@ -929,7 +929,7 @@ $MinerTimer.Restart()
                    $_.Hashrate_Gathered = $True
                    $_.Crashed = 0
                    $_.WasBenchmarked = $True
-                   Write-Host "$($_.Name) $($_.Coins) Was Benchmarked And Backed Up"
+                   Write-Host "$($_.Name) $($_.Symbol) Was Benchmarked And Backed Up"
                    $_.Timeout = 0
                   }
 		  else
@@ -940,13 +940,13 @@ $MinerTimer.Restart()
                   }
                 else
                  {
-                 $Stat = Set-Stat -Name "$($_.Name)_$($_.Coins)_HashRate" -Value $Miner_HashRates
+                 $Stat = Set-Stat -Name "$($_.Name)_$($_.Symbol)_HashRate" -Value $Miner_HashRates
 				         Write-Host "Stat Written"
                  Start-Sleep -s 1
 		             $_.New = $False
                  $_.Crashed = 0
                  $_.Hashrate_Gathered = $True
-		  if(Test-Path (Join-Path ".\Stats\" "$($_.Name)_$($_.Coins)_HashRate.txt"))
+		  if(Test-Path (Join-Path ".\Stats\" "$($_.Name)_$($_.Symbol)_HashRate.txt"))
 		   {
                     $LastWrite = [datetime](Get-ItemProperty -Path $HashrateFilePath -Name LastWriteTime).LastWriteTime
                     $LastWriteTime = [math]::Round(((Get-Date)-$LastWrite).TotalSeconds)
@@ -954,7 +954,7 @@ $MinerTimer.Restart()
                     if($LastWriteTime -le 5)
                      {
                        $_.WasBenchmarked = $True
-                       Write-Host "$($_.Name) $($_.Coins) Was Benchmarked."
+                       Write-Host "$($_.Name) $($_.Symbol) Was Benchmarked."
                        $_.Timeout = 0
                      }
                     else
@@ -976,15 +976,15 @@ $MinerTimer.Restart()
           {
 	      if($StatsInterval -lt 2)
 	       {
-           if(-not (Test-Path (Join-Path ".\Backup" "$($_.Name)_$($_.Coins)_HashRate.txt")))
+           if(-not (Test-Path (Join-Path ".\Backup" "$($_.Name)_$($_.Symbol)_HashRate.txt")))
             {
-	        $TimeoutFile = Join-Path ".\Backup" "$($_.Name)_$($_.Coins)_TIMEOUT.txt"
-            $Stat = Set-Stat -Name "$($_.Name)_$($_.Coins)_HashRate" -Value 0
+	        $TimeoutFile = Join-Path ".\Backup" "$($_.Name)_$($_.Symbol)_TIMEOUT.txt"
+            $Stat = Set-Stat -Name "$($_.Name)_$($_.Symbol)_HashRate" -Value 0
             Start-Sleep -s 1
             if (-not (Test-Path ".\Backup")) {New-Item "Backup" -ItemType "directory" | Out-Null}
             Start-Sleep -s 1
-            if((Test-Path $TimeoutFile) -eq $false){New-Item -Path ".\Backup" -Name "$($_.Name)_$($_.Coins)_TIMEOUT.txt"  | Out-Null}
-            Write-Host "$($_.Name) $($_.Coins) Hashrate Check Timed Out- It Was Noted In Backup Folder" -foregroundcolor "darkred"
+            if((Test-Path $TimeoutFile) -eq $false){New-Item -Path ".\Backup" -Name "$($_.Name)_$($_.Symbol)_TIMEOUT.txt"  | Out-Null}
+            Write-Host "$($_.Name) $($_.Symbol) Hashrate Check Timed Out- It Was Noted In Backup Folder" -foregroundcolor "darkred"
             $_.WasBenchmarked = $True
             $_.New = $False
             $_.Hashrate_Gathered = $True
@@ -993,16 +993,16 @@ $MinerTimer.Restart()
             }
           else
            {
-            $TimeoutFile = Join-Path ".\Backup" "$($_.Name)_$($_.Coins)_TIMEOUT.txt"
-            $Stat = Set-Stat -Name "$($_.Name)_$($_.Coins)_HashRate" -Value 0
+            $TimeoutFile = Join-Path ".\Backup" "$($_.Name)_$($_.Symbol)_TIMEOUT.txt"
+            $Stat = Set-Stat -Name "$($_.Name)_$($_.Symbol)_HashRate" -Value 0
             Start-Sleep -s 1
-            if((Test-Path $TimeoutFile) -eq $false){New-Item -Path ".\Backup" -Name "$($_.Name)_$($_.Coins)_TIMEOUT.txt"  | Out-Null}
+            if((Test-Path $TimeoutFile) -eq $false){New-Item -Path ".\Backup" -Name "$($_.Name)_$($_.Symbol)_TIMEOUT.txt"  | Out-Null}
             $_.WasBenchmarked = $True
             $_.New = $False
             $_.Hashrate_Gathered = $True
             $_.Crashed = 0
             $_.Timeout = 0
-            Write-Host "$($_.Name) $($_.Coins) Miner Benchmarking Timed Out. Setting Hashrate to 0" -foregroundcolor "darkred"
+            Write-Host "$($_.Name) $($_.Symbol) Miner Benchmarking Timed Out. Setting Hashrate to 0" -foregroundcolor "darkred"
 
            }
          }

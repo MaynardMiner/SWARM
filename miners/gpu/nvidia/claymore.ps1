@@ -57,7 +57,9 @@ $NVIDIATypes | ForEach-Object {
                 else { $MinerWorker = "-epsw $($_.$Pass)$($Diff) " }
                 [PSCustomObject]@{
                     MName      = $Name
+                    Coin       = $Coins
                     Delay      = $Config.$ConfigType.delay
+
                     Symbol     = "$($_.Symbol)"
                     MinerName  = $MinerName
                     Prestart   = $PreStart

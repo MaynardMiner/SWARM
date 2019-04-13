@@ -473,11 +473,11 @@ command"
                 Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
                 Write-Host " $($_.Type) is currently Running: " -ForegroundColor green -nonewline
                 $MinerStatus
-                Write-Host "$($_.Name) current hashrate for $($_.Coins) is" -nonewline
+                Write-Host "$($_.Name) current hashrate for $($_.Symbol) is" -nonewline
                 Write-Host " $ScreenHash/s" -foreground green
                 Write-Host "$($_.Type) is currently mining on $($_.MinerPool)" -foregroundcolor Cyan
                 Start-Sleep -S 2
-                Write-Host "$($_.Type) previous hashrates for $($_.Coins) is" -nonewline
+                Write-Host "$($_.Type) previous hashrates for $($_.Symbol) is" -nonewline
                 Write-Host " $MinerPrevious/s" -foreground yellow
             }
         }
@@ -586,14 +586,14 @@ command"
                     $_.HashRate = $Miner_HashRates
                     $WasActive = [math]::Round(((Get-Date) - $_.StartDate).TotalSeconds)
                     if ($WasActive -ge $StatsInterval) {
-                        Write-Host "$($_.Name) $($_.Coins) Was Active for $WasActive Seconds"
-                        Write-Host "Attempting to record hashrate for $($_.Name) $($_.Coins)" -foregroundcolor "Cyan"
+                        Write-Host "$($_.Name) $($_.Symbol) Was Active for $WasActive Seconds"
+                        Write-Host "Attempting to record hashrate for $($_.Name) $($_.Symbol)" -foregroundcolor "Cyan"
                         for ($i = 0; $i -lt 4; $i++) {
                             if ($_.WasBenchmarked -eq $False) {
                                 $HashRateFilePath = Join-Path ".\stats" "$($_.Name)_$($_.Algo)_hashrate.txt"
                                 $NewHashrateFilePath = Join-Path ".\backup" "$($_.Name)_$($_.Algo)_hashrate.txt"
                                 if (-not (Test-Path "backup")) {New-Item "backup" -ItemType "directory" | Out-Null}
-                                Write-Host "$($_.Name) $($_.Coins) Starting Bench"
+                                Write-Host "$($_.Name) $($_.Symbol) Starting Bench"
                                 if ($null -eq $Miner_HashRates -or $Miner_HashRates -eq 0) {
                                     $Strike = $true
                                     Write-Host "Stat Attempt Yielded 0" -Foregroundcolor Red
@@ -611,10 +611,10 @@ command"
                                         Write-Host "Stat Failed Write To File" -Foregroundcolor Red
                                     }
                                     else {
-                                        Write-Host "Recorded Hashrate For $($_.Name) $($_.Coins) Is $($ScreenCheck)" -foregroundcolor "magenta"
+                                        Write-Host "Recorded Hashrate For $($_.Name) $($_.Symbol) Is $($ScreenCheck)" -foregroundcolor "magenta"
                                         if (-not (Test-Path $NewHashrateFilePath)) {
                                             Copy-Item $HashrateFilePath -Destination $NewHashrateFilePath -force
-                                            Write-Host "$($_.Name) $($_.Coins) Was Benchmarked And Backed Up" -foregroundcolor yellow
+                                            Write-Host "$($_.Name) $($_.Symbol) Was Benchmarked And Backed Up" -foregroundcolor yellow
                                         }
                                         $_.WasBenchmarked = $True
                                         Write-Host "Stat Written" -foregroundcolor green
@@ -643,7 +643,7 @@ command"
                         Start-Sleep -S .25
                         $TimeoutFile = Join-Path ".\timeout\warnings" "$($_.Name)_$($_.Algo)_TIMEOUT.txt"
                         $HashRateFilePath = Join-Path ".\stats" "$($_.Name)_$($_.Algo)_hashrate.txt"
-                        if (-not (Test-Path $TimeoutFile)) {"$($_.Name) $($_.Coins) Hashrate Check Timed Out" | Set-Content ".\timeout\warnings\$($_.Name)_$($_.Algo)_TIMEOUT.txt" -Force}
+                        if (-not (Test-Path $TimeoutFile)) {"$($_.Name) $($_.Symbol) Hashrate Check Timed Out" | Set-Content ".\timeout\warnings\$($_.Name)_$($_.Algo)_TIMEOUT.txt" -Force}
                         if ($Warnings."$($_.Name)" -eq $null) {$Warnings += [PSCustomObject]@{"$($_.Name)" = [PSCustomObject]@{bad = 0}}
                         }
                         if ($Warnings."$($_.Name)_$($_.Algo)" -eq $null) {$Warnings += [PSCustomObject]@{"$($_.Name)_$($_.Algo)" = [PSCustomObject]@{bad = 0}}

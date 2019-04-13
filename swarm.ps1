@@ -1169,7 +1169,8 @@ While ($true) {
                     Arguments      = $_.Arguments
                     API            = $_.API
                     Port           = $_.Port
-                    Coins          = $_.Symbol
+                    Symbol         = $_.Symbol
+                    Coin           = $_.Coin
                     Active         = [TimeSpan]0
                     Activated      = 0
                     Status         = "Idle"
@@ -1381,7 +1382,7 @@ While ($true) {
         $ProfitTable = @()
         $Miners | ForEach-Object {
             $Miner = $_
-            if ($Algorithm -contains $Miner.Symbol) { $ScreenName = $Miner.Symbol }
+            if ($Miner.Coin -eq $false) { $ScreenName = $Miner.Symbol }
             else {
                 switch ($Miner.Symbol) {
                     "GLT-PADIHASH" { $ScreenName = "GLT:PADIHASH" }
@@ -1666,8 +1667,8 @@ While ($true) {
                         $_.WasBenchmarked = $False
                         $WasActive = [math]::Round(((Get-Date) - $_.XProcess.StartTime).TotalSeconds)
                         if ($WasActive -ge $StatsInterval) {
-                            Write-Host "$($_.Name) $($_.Coins) Was Active for $WasActive Seconds"
-                            Write-Host "Attempting to record hashrate for $($_.Name) $($_.Coins)" -foregroundcolor "Cyan"
+                            Write-Host "$($_.Name) $($_.Symbol) Was Active for $WasActive Seconds"
+                            Write-Host "Attempting to record hashrate for $($_.Name) $($_.Symbol)" -foregroundcolor "Cyan"
                             for ($i = 0; $i -lt 4; $i++) {
                                 $Miner_HashRates = Get-HashRate -Type $_.Type
                                 $_.HashRate = $Miner_HashRates
@@ -1677,7 +1678,7 @@ While ($true) {
                                     $NewHashrateFilePath = Join-Path ".\backup" "$($_.Name)_$($_.Algo)_hashrate.txt"
                                     $NewPowerFilePath = Join-Path ".\backup" "$($_.Name)_$($_.Algo)_power.txt"
                                     if (-not (Test-Path "backup")) { New-Item "backup" -ItemType "directory" | Out-Null }
-                                    Write-Host "$($_.Name) $($_.Coins) Starting Bench"
+                                    Write-Host "$($_.Name) $($_.Symbol) Starting Bench"
                                     if ($null -eq $Miner_HashRates -or $Miner_HashRates -eq 0) {
                                         $Strike = $true
                                         Write-Host "Stat Attempt Yielded 0" -Foregroundcolor Red
@@ -1718,14 +1719,14 @@ While ($true) {
                                             Write-Host "Stat Failed Write To File" -Foregroundcolor Red
                                         }
                                         else {
-                                            Write-Host "Recorded Hashrate For $($_.Name) $($_.Coins) Is $($ScreenCheck)" -foregroundcolor "magenta"
-                                            if ($WattOmeter -eq "Yes") { Write-Host "Watt-O-Meter scored $($_.Name) $($_.Coins) at $($GPUPower) Watts" -ForegroundColor magenta }
+                                            Write-Host "Recorded Hashrate For $($_.Name) $($_.Symbol) Is $($ScreenCheck)" -foregroundcolor "magenta"
+                                            if ($WattOmeter -eq "Yes") { Write-Host "Watt-O-Meter scored $($_.Name) $($_.Symbol) at $($GPUPower) Watts" -ForegroundColor magenta }
                                             if (-not (Test-Path $NewHashrateFilePath)) {
                                                 Copy-Item $HashrateFilePath -Destination $NewHashrateFilePath -force
-                                                Write-Host "$($_.Name) $($_.Coins) Was Benchmarked And Backed Up" -foregroundcolor yellow
+                                                Write-Host "$($_.Name) $($_.Symbol) Was Benchmarked And Backed Up" -foregroundcolor yellow
                                             }
                                             $_.WasBenchmarked = $True
-                                            Get-Intensity $_.Type $_.Coins $_.Path
+                                            Get-Intensity $_.Type $_.Symbol $_.Path
                                             Write-Host "Stat Written
 " -foregroundcolor green
                                             $Strike = $false
@@ -1762,7 +1763,7 @@ While ($true) {
                             Start-Sleep -S .25
                             $TimeoutFile = Join-Path ".\timeout\warnings" "$($_.Name)_$($_.Algo)_TIMEOUT.txt"
                             $HashRateFilePath = Join-Path ".\stats" "$($_.Name)_$($_.Algo)_hashrate.txt"
-                            if (-not (Test-Path $TimeoutFile)) { "$($_.Name) $($_.Coins) Hashrate Check Timed Out" | Set-Content ".\timeout\warnings\$($_.Name)_$($_.Algo)_TIMEOUT.txt" -Force }
+                            if (-not (Test-Path $TimeoutFile)) { "$($_.Name) $($_.Symbol) Hashrate Check Timed Out" | Set-Content ".\timeout\warnings\$($_.Name)_$($_.Algo)_TIMEOUT.txt" -Force }
                             if ($Warnings."$($_.Name)" -eq $null) { $Warnings += [PSCustomObject]@{"$($_.Name)" = [PSCustomObject]@{bad = 0 } }
                             }
                             if ($Warnings."$($_.Name)_$($_.Algo)" -eq $null) { $Warnings += [PSCustomObject]@{"$($_.Name)_$($_.Algo)" = [PSCustomObject]@{bad = 0 } }

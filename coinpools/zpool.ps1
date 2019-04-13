@@ -96,9 +96,6 @@ if ($Poolname -eq $Name) {
         }
 
         [PSCustomObject]@{
-            Estimate      = $zpool_Estimate
-            Divisor       = $Divisor
-            Fees          = $zpool_Fees
             Priority      = $Priorities.Pool_Priorities.$Name
             Symbol        = $zpool_Symbol
             Mining        = $zpool_Algorithm

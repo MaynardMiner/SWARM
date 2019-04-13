@@ -383,10 +383,10 @@ function Get-MinerHashRate {
         if ($_.Status -eq "Running") { $MinerStatus = Write-Host " Running: " -ForegroundColor green -nonewline }
         if ($_.Status -eq "Failed") { $MinerStatus = Write-Host " Not Running: " -ForegroundColor darkred -nonewline } 
         $MinerStatus
-        Write-Host "$($_.Name) current hashrate for $($_.Coins) is" -nonewline
+        Write-Host "$($_.Name) current hashrate for $($_.Symbol) is" -nonewline
         Write-Host " $ScreenHash/s" -foreground green
         Write-Host "$($_.Type) is currently mining on $($_.MinerPool)" -foregroundcolor Cyan
-        Write-Host "$($_.Type) previous hashrates for $($_.Coins) is" -nonewline
+        Write-Host "$($_.Type) previous hashrates for $($_.Symbol) is" -nonewline
         Write-Host " $MinerPrevious/s
  " -foreground yellow
     }
