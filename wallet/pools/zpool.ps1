@@ -7,45 +7,45 @@ $PoolQuery = "https://zpool.ca/api/wallet?address="
 $Query = @()
 
 $WalletKeys.AltWallet1.PSObject.Properties.Name | ForEach-Object {
-    if ($WalletKeys.AltWallet1.$_.Pools -contains $Name) {
+    if ($WalletKeys.AltWallet1.$_.address -ne "" -and $WalletKeys.AltWallet1.$_.Pools -contains $Name) {
         if ($Query.Name -notcontains "$($Name)_$($WalletKeys.AltWallet1.$_.address)") {
-            $Query += [PSCustomObject]@{Name = "$($Name)_$($WalletKeys.AltWallet1.$_.address)"; Symbol = $_; Address = $WalletKeys.AltWallet1.$_.address; Response = ""}
+            $Query += [PSCustomObject]@{Name = "$($Name)_$($WalletKeys.AltWallet1.$_.address)"; Symbol = $_; Address = $WalletKeys.AltWallet1.$_.address; Response = "" }
         }
     }
-    elseif ($WalletKeys.Wallet1.BTC.Pools -contains $Name) {
-        $WalletKeys.Wallet1.BTC.pools | % {
+    elseif ($WalletKeys.Wallet1.BTC.address -ne "" -and $WalletKeys.Wallet1.BTC.Pools -contains $Name) {
+        $WalletKeys.Wallet1.BTC.pools | ForEach-Object {
             if ($Query.Name -notcontains "$($Name)_$($WalletKeys.Wallet1.BTC.address)") {
-                $Query += [PSCustomObject]@{Name = "$($Name)_$($WalletKeys.Wallet1.BTC.address)"; Symbol = "BTC"; Address = $WalletKeys.Wallet1.BTC.address; Response = ""}
+                $Query += [PSCustomObject]@{Name = "$($Name)_$($WalletKeys.Wallet1.BTC.address)"; Symbol = "BTC"; Address = $WalletKeys.Wallet1.BTC.address; Response = "" }
             }
         }
     }    
 }
 
 $WalletKeys.AltWallet2.PSObject.Properties.Name | ForEach-Object {
-    if ($WalletKeys.AltWallet2.$_.Pools -contains $Name) {
+    if ($WalletKeys.AltWallet2.$_.address -ne "" -and $WalletKeys.AltWallet2.$_.Pools -contains $Name) {
         if ($Query.Name -notcontains "$($Name)_$($WalletKeys.AltWallet2.$_.address)") {
-            $Query += [PSCustomObject]@{Name = "$($Name)_$($WalletKeys.AltWallet2.$_.address)"; Symbol = $_; Address = $WalletKeys.AltWallet2.$_.address; Response = ""}
+            $Query += [PSCustomObject]@{Name = "$($Name)_$($WalletKeys.AltWallet2.$_.address)"; Symbol = $_; Address = $WalletKeys.AltWallet2.$_.address; Response = "" }
         }
     }
-    elseif ($WalletKeys.Wallet2.BTC.Pools -contains $Name) {
-        $WalletKeys.Wallet2.BTC.pools | % {
+    elseif ($WalletKeys.Wallet2.BTC.address -ne "" -and $WalletKeys.Wallet2.BTC.Pools -contains $Name) {
+        $WalletKeys.Wallet2.BTC.pools | ForEach-Object {
             if ($Query.Name -notcontains "$($Name)_$($WalletKeys.Wallet2.BTC.address)") {
-                $Query += [PSCustomObject]@{Name = "$($Name)_$($WalletKeys.Wallet2.BTC.address)"; Symbol = "BTC"; Address = $WalletKeys.Wallet2.BTC.address; Response = ""}
+                $Query += [PSCustomObject]@{Name = "$($Name)_$($WalletKeys.Wallet2.BTC.address)"; Symbol = "BTC"; Address = $WalletKeys.Wallet2.BTC.address; Response = "" }
             }
         }
     }    
 }
 
 $WalletKeys.AltWallet3.PSObject.Properties.Name | ForEach-Object {
-    if ($WalletKeys.AltWallet3.$_.Pools -contains $Name) {
+    if ($WalletKeys.AltWallet3.$_.address -ne "" -and $WalletKeys.AltWallet3.$_.Pools -contains $Name) {
         if ($Query.Name -notcontains "$($Name)_$($WalletKeys.AltWallet3.$_.address)") {
-            $Query += [PSCustomObject]@{Name = "$($Name)_$($WalletKeys.AltWallet3.$_.address)"; Symbol = $_; Address = $WalletKeys.AltWallet3.$_.address; Response = ""}
+            $Query += [PSCustomObject]@{Name = "$($Name)_$($WalletKeys.AltWallet3.$_.address)"; Symbol = $_; Address = $WalletKeys.AltWallet3.$_.address; Response = "" }
         }
     }
-    elseif ($WalletKeys.Wallet3.BTC.Pools -contains $Name) {
-        $WalletKeys.Wallet3.BTC.pools | % {
+    elseif ($WalletKeys.Wallet3.BTC.address -ne "" -and $WalletKeys.Wallet3.BTC.Pools -contains $Name) {
+        $WalletKeys.Wallet3.BTC.pools | ForEach-Object {
             if ($Query.Name -notcontains "$($Name)_$($WalletKeys.Wallet3.BTC.address)") {
-                $Query += [PSCustomObject]@{Name = "$($Name)_$($WalletKeys.Wallet3.BTC.address)"; Symbol = "BTC"; Address = $WalletKeys.Wallet3.BTC.address; Response = ""}
+                $Query += [PSCustomObject]@{Name = "$($Name)_$($WalletKeys.Wallet3.BTC.address)"; Symbol = "BTC"; Address = $WalletKeys.Wallet3.BTC.address; Response = "" }
             }
         }
     }    
