@@ -286,7 +286,7 @@ $FileClear += ".\build\txt\bestminers.txt"
 $FileClear | ForEach-Object { if (Test-Path $_) { Remove-Item $_ -Force } }
 
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
-$Debug = $true
+$Debug = $false
 
 ## Convert Arguments Into Hash Table
 if ($Debug -ne $true) {
@@ -1398,8 +1398,8 @@ While ($true) {
                     default { $ScreenName = "$($Miner.Symbol):$($Miner.Algo)".ToUpper() }
                 }
             }
-            $Shares = $global:Share_Table.$($Miner.Type).$($Miner.MinerPool).$ScreenName.Percent
-            if ( $Shares -ne $null ) { $CoinShare = $Shares }else { $CoinShare = "N/A" }
+            $Shares = $global:Share_Table.$($Miner.Type).$($Miner.MinerPool).$ScreenName.Percent -as [decimal]
+            if ( $Shares -ne $null ) { $CoinShare = $Shares }else { $CoinShare = 0 }
             $ProfitTable += [PSCustomObject]@{
                 Power         = [Decimal]$($Miner.Power * 24) / 1000 * $WattEX
                 Pool_Estimate = $Miner.Pool_Estimate
