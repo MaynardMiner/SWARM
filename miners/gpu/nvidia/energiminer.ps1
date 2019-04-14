@@ -55,6 +55,7 @@ $NVIDIATypes | ForEach-Object {
                 if ($Config.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
                 [PSCustomObject]@{
                     MName      = $Name
+                    Coin       = $Coins
                     Delay      = $Config.$ConfigType.delay
                     Platform   = $Platform
                     Symbol     = "$($_.Symbol)"

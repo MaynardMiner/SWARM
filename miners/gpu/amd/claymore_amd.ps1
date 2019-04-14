@@ -59,6 +59,7 @@ $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Obje
             else { $MinerWorker = "-epsw $($_.$Pass)$($Diff) " }
             [PSCustomObject]@{
                 MName      = $Name
+                Coin       = $Coins
                 Delay      = $Config.$ConfigType.delay
                 Symbol     = "$($_.Symbol)"
                 MinerName  = $MinerName

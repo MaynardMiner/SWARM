@@ -51,6 +51,7 @@ $NVIDIATypes | ForEach-Object {
                 if ($Config.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
                 [PSCustomObject]@{
                     MName      = $Name
+                    Coin       = $Coins
                     Delay      = $Config.$ConfigType.delay
                     Symbol     = "$($_.Symbol)"
                     MinerName  = $MinerName

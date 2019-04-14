@@ -1,25 +1,23 @@
-$NVIDIATypes | ForEach-Object {
+$AMDTypes | ForEach-Object {
     
-    $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
+    $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
 
     ##Miner Path Information
-    if ($nvidia.miniz.$ConfigType) { $Path = "$($nvidia.miniz.$ConfigType)" }
+    if ($AMD.gminer.$ConfigType) { $Path = "$($AMD.gminer.$ConfigType)" }
     else { $Path = "None" }
-    if ($nvidia.miniz.uri) { $Uri = "$($nvidia.miniz.uri)" }
+    if ($AMD.gminer.uri) { $Uri = "$($AMD.gminer.uri)" }
     else { $Uri = "None" }
-    if ($nvidia.miniz.minername) { $MinerName = "$($nvidia.miniz.minername)" }
+    if ($AMD.gminer.minername) { $MinerName = "$($AMD.gminer.minername)" }
     else { $MinerName = "None" }
     if ($Platform -eq "linux") { $Build = "Tar" }
     elseif ($Platform -eq "windows") { $Build = "Zip" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "miniz-$Num"; $Port = "6000$Num";
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "gminer_amd-$Num"; $Port = "3300$Num"
 
     Switch ($Num) {
-        1 { $Get_Devices = $NVIDIADevices1 }
-        2 { $Get_Devices = $NVIDIADevices2 }
-        3 { $Get_Devices = $NVIDIADevices3 }
+        1 { $Get_Devices = $AMDDevices1 }
     }
-
+    
     ##Log Directory
     $Log = Join-Path $dir "logs\$ConfigType.log"
 
@@ -31,8 +29,21 @@ $NVIDIATypes | ForEach-Object {
     }
     else { $Devices = $Get_Devices }
 
+    ##gminer apparently doesn't know how to tell the difference between
+    ##cuda and amd devices, like every other miner that exists. So now I 
+    ##have to spend an hour and parse devices
+    ##to matching platforms.
+    $ArgDevices = $Null
+    if ($Get_Devices -ne "none") {
+        $GPUDevices1 = $Get_Devices
+        $GPUEDevices1 = $GPUDevices1 -split ","
+        $GPUEDevices1 | ForEach-Object { $ArgDevices += "$($GCount.AMD.$_) " }
+        $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1)
+    }
+    else { $GCount.AMD.PSObject.Properties.Name | ForEach-Object { $ArgDevices += "$($GCount.AMD.$_) " }; $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1) }
+
     ##Get Configuration File
-    $GetConfig = "$dir\config\miners\miniz.json"
+    $GetConfig = "$dir\config\miners\gminer_amd.json"
     try { $Config = Get-Content $GetConfig | ConvertFrom-Json }
     catch { Write-Warning "Warning: No config found at $GetConfig" }
 
@@ -63,8 +74,9 @@ $NVIDIATypes | ForEach-Object {
                     Type       = $ConfigType
                     Path       = $Path
                     Devices    = $Devices
-                    DeviceCall = "miniz"
-                    Arguments  = "--telemetry 0.0.0.0:$Port --server $($_.Host) --port $($_.Port) --user $($_.$User) --pass $($_.$Pass)$($Diff) --logfile=`'$log`' $($Config.$ConfigType.commands.$($_.Algorithm))"
+                    ArgDevices = $ArgDevices
+                    DeviceCall = "gminer"
+                    Arguments  = "--api $Port --server $($_.Host) --port $($_.Port) --user $($_.$User) --logfile `'$Log`' --pass $($_.$Pass)$Diff $($Config.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) }
                     Quote      = if ($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)) { $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) * ($_.Price) }else { 0 }
                     PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
@@ -74,14 +86,14 @@ $NVIDIATypes | ForEach-Object {
                     ocfans     = if ($Config.$ConfigType.oc.$($_.Algorithm).fans) { $Config.$ConfigType.oc.$($_.Algorithm).fans }else { $OC."default_$($ConfigType)".fans }
                     MinerPool  = "$($_.Name)"
                     FullName   = "$($_.Mining)"
-                    API        = "miniz"
+                    API        = "gminer"
                     Port       = $Port
                     Wallet     = "$($_.$User)"
                     URI        = $Uri
                     Server     = "localhost"
                     BUILD      = $Build
                     Algo       = "$($_.Algorithm)"
-                    Log        = "miner_generated"
+                    Log        = "miner_generated" 
                 }            
             }
         }

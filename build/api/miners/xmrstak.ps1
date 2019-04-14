@@ -14,12 +14,14 @@ function Get-StatsXmrstak {
             $Hash = for ($i = 0; $i -lt $Data.hashrate.threads.count; $i++) { 
                 $Data.Hashrate.threads[$i] | Select-Object -First 1 
             } 
-        }catch { }
+        }
+        catch { }
         try { 
             for ($i = 0; $i -lt $Devices.Count; $i++) { 
                 $GPU = $Devices[$i]; $global:GPUHashrates.$(Get-Gpus) = ($Hash[$GPU] | Select-Object -First 1) / 1000 
             } 
-        }catch { Write-Host "Failed To parse threads" -ForegroundColor Red };
+        }
+        catch { Write-Host "Failed To parse threads" -ForegroundColor Red };
         $global:MinerACC += $Data.results.shares_good
         $global:MinerREJ += [Double]$Data.results.shares_total - [Double]$Data.results.shares_good
         $global:ALLACC += $global:MinerACC

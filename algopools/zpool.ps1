@@ -25,8 +25,13 @@ if ($Poolname -eq $Name) {
             if ($Bad_pools.$Zpool_Algorithm -notcontains $Name) {
                 $Zpool_Port = $Zpool_Request.$_.port
                 $Zpool_Host = "$($ZPool_Algorithm).$($region).mine.zpool.ca"
+
                 $Divisor = (1000000 * $Zpool_Request.$_.mbtc_mh_factor)
+                $Global:DivisorTable.zpool.Add($Zpool_Algorithm,$Zpool_Request.$_.mbtc_mh_factor)
+
                 $Fees = $Zpool_Request.$_.fees
+                $Global:FeeTable.zpool.Add($Zpool_Algorithm,$Zpool_Request.$_.fees)
+                
                 $Workers = $Zpool_Request.$_.Workers
                 $Estimate = if ($Stat_Algo -eq "Day") { [Double]$Zpool_Request.$_.estimate_last24h }else { [Double]$Zpool_Request.$_.estimate_current }
 
@@ -37,34 +42,40 @@ if ($Poolname -eq $Name) {
                 if ($Stat_Algo -eq "Day") { $CStat = $Stat.Live }else { $CStat = $Stat.$Stat_Algo }
          
                 $Pass1 = $global:Wallets.Wallet1.Keys
-                $User1 = $global:Wallets.Wallet1.BTC.address
+                $User1 = $global:Wallets.Wallet1.$Passwordcurrency1.address
                 $Pass2 = $global:Wallets.Wallet2.Keys
-                $User2 = $global:Wallets.Wallet2.BTC.address
+                $User2 = $global:Wallets.Wallet2.$Passwordcurrency2.address
                 $Pass3 = $global:Wallets.Wallet3.Keys
-                $User3 = $global:Wallets.Wallet3.BTC.address
+                $User3 = $global:Wallets.Wallet3.$Passwordcurrency3.address
 
-                $global:Wallets.AltWallet1.Keys | ForEach-Object {
-                    if ($global:Wallets.AltWallet1.$_.Pools -contains $Name) {
-                        $Pass1 = $_;
-                        $User1 = $global:Wallets.AltWallet1.$_.address;
+                if ($global:Wallets.AltWallet1.keys) {
+                    $global:Wallets.AltWallet1.Keys | ForEach-Object {
+                        if ($global:Wallets.AltWallet1.$_.Pools -contains $Name) {
+                            $Pass1 = $_;
+                            $User1 = $global:Wallets.AltWallet1.$_.address;
+                        }
                     }
                 }
-                $global:Wallets.AltWallet2.Keys | ForEach-Object {
-                    if ($global:Wallets.AltWallet2.$_.Pools -contains $Name) {
-                        $Pass2 = $_;
-                        $User2 = $global:Wallets.AltWallet2.$_.address;
+                if ($global:Wallets.AltWallet2.keys) {
+                    $global:Wallets.AltWallet2.Keys | ForEach-Object {
+                        if ($global:Wallets.AltWallet2.$_.Pools -contains $Name) {
+                            $Pass2 = $_;
+                            $User2 = $global:Wallets.AltWallet2.$_.address;
+                        }
                     }
                 }
-                $global:Wallets.AltWallet3.Keys | ForEach-Object {
-                    if ($global:Wallets.AltWallet3.$_.Pools -contains $Name) {
-                        $Pass3 = $_;
-                        $User3 = $global:Wallets.AltWallet3.$_.address;
+                if ($global:Wallets.AltWallet3.keys) {
+                    $global:Wallets.AltWallet3.Keys | ForEach-Object {
+                        if ($global:Wallets.AltWallet3.$_.Pools -contains $Name) {
+                            $Pass3 = $_;
+                            $User3 = $global:Wallets.AltWallet3.$_.address;
+                        }
                     }
                 }
-
+                
                 [PSCustomObject]@{
                     Priority      = $Priorities.Pool_Priorities.$Name
-                    Symbol        = $Zpool_Algorithm
+                    Symbol        = "$Zpool_Algorithm-Algo"
                     Mining        = $Zpool_Algorithm
                     Algorithm     = $Zpool_Algorithm
                     Price         = $CStat

@@ -54,6 +54,7 @@ $NVIDIATypes | ForEach-Object {
             if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
                 [PSCustomObject]@{
                     MName      = $Name
+                    Coin       = $Coins
                     Delay      = $Config.$ConfigType.delay
                     Symbol     = "$($_.Symbol)"
                     MinerName  = $MinerName

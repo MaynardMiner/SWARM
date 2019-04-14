@@ -50,6 +50,7 @@ function start-update {
         $PreviousVersions += "SWARM.2.1.2"
         $PreviousVersions += "SWARM.2.1.3"
         $PreviousVersions += "SWARM.2.1.4"
+        $PreviousVersions += "SWARM.2.1.5"
 
         Write-Host "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
         Write-Host "Check $Location For any Previous Versions"
@@ -122,6 +123,55 @@ function start-update {
                                         $Data.$_.difficulty | Add-Member "grincuckaroo29" "" -ErrorAction SilentlyContinue
                                         $Data.$_.naming | Add-Member "grincuckaroo29" "cuckaroo29" -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "grincuckaroo29" @{Power = ""; Core = ""; Memory = ""; Fans = ""} -ErrorAction SilentlyContinue
+                                    }
+                                }
+                            }
+
+                            if ($ChangeFile -eq "gminer_amd.json") {
+                                $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                    ##2.1.3
+                                    if ($_ -ne "name") {
+
+                                        $Data.$_.commands| Add-Member "beam" "--algo 150_5 --pers auto" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "beam" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "beam" "beam" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "beam"  @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue
+
+                                        $Data.$_.commands| Add-Member "grincuckaroo29" "--algo grin29" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "grincuckaroo29" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "grincuckaroo29" "grincuckaroo29" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "grincuckaroo29"  @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue
+
+                                        $Data.$_.commands| Add-Member "equihash-btg" "--algo 144_5 --pers BgoldPoW" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "equihash-btg" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "equihash-btg" "equihash-btg" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "equihash-btg"  @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue
+
+                                        $Data.$_.commands| Add-Member "equihash192" "--algo 192_7 --pers auto" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "equihash192" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "equihash192" "equihash192" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "equihash192"  @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue
+
+                                        $Data.$_.commands| Add-Member "equihash144" "--algo 144_5 --pers auto" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "equihash144" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "equihash144" "equihash144" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "equihash144"  @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue
+
+                                        $Data.$_.commands| Add-Member "equihash210" "--algo 210_9 --pers auto" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "equihash210" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "equihash210" "equihash210" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "equihash210"  @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue
+
+                                        $Data.$_.commands| Add-Member "equihash200" "--algo 200_9 --pers auto" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "equihash200" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "equihash200" "equihash200" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "equihash200"  @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue
+
+                                        $Data.$_.commands| Add-Member "zhash" "--algo 144_5 --pers auto" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "zhash" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "zhash" "zhash" -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "zhash"  @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue
+
                                     }
                                 }
                             }

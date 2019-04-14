@@ -15,7 +15,7 @@ function Get-WalletTable {
     if(Test-Path ".\wallet\values\*"){Remove-Item ".\wallet\values\*" -Force}
 
     $WalletKeys = [PSCustomObject]@{}
-    Get-ChildItemContent ".\wallet\keys" | ForEach {$WalletKeys | Add-Member $_.Name $_.Content}
+    Get-ChildItemContent ".\wallet\keys" | ForEach {$WalletKeys | Add-Member $_.Name $_.Content} 
 
     if(Test-path ".\wallet\pools"){Get-ChildItemContent ".\wallet\pools"}
 

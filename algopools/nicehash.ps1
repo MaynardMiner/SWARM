@@ -49,7 +49,7 @@ if ($Poolname -eq $Name) {
                     Priority    = $Priorities.Pool_Priorities.$Name
                     Coin        = "No"
                     Excavator   = $nicehash_excavator
-                    Symbol      = $nicehash_Algorithm
+                    Symbol      = "$nicehash_Algorithm-Algo"
                     Mining      = $nicehash_Algorithm
                     Algorithm   = $nicehash_Algorithm
                     Price       = $Stat.$Stat_Algo

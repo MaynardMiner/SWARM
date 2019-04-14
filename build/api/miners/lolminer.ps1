@@ -12,7 +12,8 @@ function Get-StatsLolminer {
             for ($i = 0; $i -lt $Devices.Count; $i++) { 
                 $global:GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $i) / 1000 
             } 
-        }catch { Write-Host "Failed To parse GPU Array" -ForegroundColor Red };
+        }
+        catch { Write-Host "Failed To parse GPU Array" -ForegroundColor Red };
         $global:MinerACC += [Double]$Data.Session.Accepted
         $global:MinerREJ += [Double]$Data.Session.Submitted - [Double]$Data.Session.Accepted
         $global:ALLACC += $global:MinerACC

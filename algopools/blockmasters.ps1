@@ -27,15 +27,6 @@ if ($Poolname -eq $Name) {
                 $Divisor = (1000000 * $blockpool_Request.$_.mbtc_mh_factor)
                 $Workers = $blockpool_Request.$_.Workers
 
-                ## I am adding a 30.0% fee to blockmasters.
-                ## This is deliberate. The Pools stats are always
-                ## Heavily inflated. Even with a 30.0% fee applied,
-                ## They still manage to be on top of list.
-
-                ## Think about that- 30.0% fee. Still on top of list...
-
-                $Fee = 30.0
-
                 $Estimate = if ($Stat_Algo -eq "Day") { [Double]$blockpool_Request.$_.estimate_last24h * (1 - ($Fee / 100)) }else { [Double]$blockpool_Request.$_.estimate_current * (1 - ($Fee / 100)) }
 
                 $Stat = Set-Stat -Name "$($Name)_$($blockpool_Algorithm)_profit" -Value ([Double]$Estimate / $Divisor)
@@ -55,28 +46,34 @@ if ($Poolname -eq $Name) {
                 $Pass3 = $global:Wallets.Wallet3.Keys
                 $User3 = $global:Wallets.Wallet3.BTC.address
 
-                $global:Wallets.AltWallet1.Keys | ForEach-Object {
-                    if ($global:Wallets.AltWallet1.$_.Pools -contains $Name) {
-                        $Pass1 = $_;
-                        $User1 = $global:Wallets.AltWallet1.$_.address;
+                if ($global:Wallets.AltWallet1.keys) {
+                    $global:Wallets.AltWallet1.Keys | ForEach-Object {
+                        if ($global:Wallets.AltWallet1.$_.Pools -contains $Name) {
+                            $Pass1 = $_;
+                            $User1 = $global:Wallets.AltWallet1.$_.address;
+                        }
                     }
                 }
-                $global:Wallets.AltWallet2.Keys | ForEach-Object {
-                    if ($global:Wallets.AltWallet2.$_.Pools -contains $Name) {
-                        $Pass2 = $_;
-                        $User2 = $global:Wallets.AltWallet2.$_.address;
+                if ($global:Wallets.AltWallet2.keys) {
+                    $global:Wallets.AltWallet2.Keys | ForEach-Object {
+                        if ($global:Wallets.AltWallet2.$_.Pools -contains $Name) {
+                            $Pass2 = $_;
+                            $User2 = $global:Wallets.AltWallet2.$_.address;
+                        }
                     }
                 }
-                $global:Wallets.AltWallet3.Keys | ForEach-Object {
-                    if ($global:Wallets.AltWallet3.$_.Pools -contains $Name) {
-                        $Pass3 = $_;
-                        $User3 = $global:Wallets.AltWallet3.$_.address;
+                if ($global:Wallets.AltWallet3.keys) {
+                    $global:Wallets.AltWallet3.Keys | ForEach-Object {
+                        if ($global:Wallets.AltWallet3.$_.Pools -contains $Name) {
+                            $Pass3 = $_;
+                            $User3 = $global:Wallets.AltWallet3.$_.address;
+                        }
                     }
                 }
-            
+                            
                 [PSCustomObject]@{            
                     Priority      = $Priorities.Pool_Priorities.$Name
-                    Symbol        = $blockpool_Algorithm
+                    Symbol        = "$blockpool_Algorithm-Algo"
                     Mining        = $blockpool_Algorithm
                     Algorithm     = $blockpool_Algorithm
                     Price         = $CStat

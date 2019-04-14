@@ -744,6 +744,7 @@ While ($true) {
     ##Parameters (change again interactively if needed)
     $GetSWARMParams = Get-Content ".\config\parameters\arguments.json"
     $SWARMParams = $GetSWARMParams | ConvertFrom-Json
+    $global:All_AltWallets = $null
 
     $Wallet1 = $SWARMParams.Wallet1;                           $Wallet2 = $SWARMParams.Wallet2;
     $Wallet3 = $SWARMParams.Wallet3;                           $CPUWallet = $SWARMParams.CPUWallet;
@@ -780,9 +781,30 @@ While ($true) {
     $APIPassword = $SWARMParams.APIPassword;                   $Startup = $SWARMParams.Startup;
     $ETH = $SWARMParams.ETH;                                   $Worker = $SWARMParams.Worker;
     $No_Miner = $SWARMParams.No_Miner;                         $HiveAPIkey = $SWARMParams.HiveAPIkey;
-    $SWARMAlgorithm = $SWARMParams.Algorithm;                  $Coin = $SWARMParams.Coin;
+    $SWARMAlgorithm = $SWARMParams.Algorithm;                  $Coin = $SWARMParams.Coin
     $ASIC_IP = $SWARMParams.ASIC_IP;                           $ASIC_ALGO = $SWARMParams.ASIC_ALGO;
 
+    if ($SWARMParams.Rigname1 -eq "Donate") { $Donating = $True }
+    else { $Donating = $False }
+    if ($Donating -eq $True) {
+        $Passwordcurrency1 = "BTC";
+        $Passwordcurrency2 = "BTC";
+        $Passwordcurrency3 = "BTC";
+        ##Switch alt Password in case it was changed, to prevent errors.
+        $AltPassword1 = "BTC";
+        $AltPassword2 = "BTC";
+        $AltPassword3 = "BTC";
+        $Coin = "BTC";
+        $DonateTime = Get-Date; 
+        $DonateText = "Miner has donated on $DonateTime"; 
+        $DonateText | Set-Content ".\build\txt\donate.txt"
+    }
+    elseif($Coin) {
+        $Passwordcurrency1 = $Coin
+        $Passwordcurrency2 = $Coin
+        $Passwordcurrency3 = $Coin
+    }
+    
     ##Get Wallets
     Get-Wallets
 
@@ -812,12 +834,21 @@ While ($true) {
     else { $Donating = $False }
     if ($Donating -eq $True) {
         $Passwordcurrency1 = "BTC"; 
-        $Passwordcurrency2 = "BTC"; 
-        $Passwordcurrency3 = "BTC"
+        $Passwordcurrency2 = "BTC";
+        $Passwordcurrency3 = "BTC";
+        ##Switch alt Password in case it was changed, to prevent errors.
+        $AltPassword1 = "BTC";
+        $AltPassword2 = "BTC";
+        $AltPassword3 = "BTC";
         $DonateTime = Get-Date; 
         $DonateText = "Miner has donated on $DonateTime"; 
         $DonateText | Set-Content ".\build\txt\donate.txt"
     }
+
+    ##Change Password to $Coin parameter in case it is used.
+    ##Auto coin should be disabled.
+    ##It should only work when donation isn't active.
+    if ($Coin) { $Auto_Coin = "No" }
 
     ## Main Loop Begins
     ## SWARM begins with pulling files that might have been changed from previous loop.
@@ -860,6 +891,18 @@ While ($true) {
         continue
     }
 
+    ##To Get Fees For Pools (For Currencies), A table is made, so the pool doesn't have to be called multiple times.
+    $global:FeeTable = @{}
+    $global:FeeTable.Add("zpool",@{})
+    $global:FeeTable.Add("zergpool",@{})
+    $global:FeeTable.Add("fairpool",@{})
+    
+    ##Same for attaining mbtc_mh factor
+    $global:divisortable = @{}
+    $global:divisortable.Add("zpool",@{})
+    $global:divisortable.Add("zergpool",@{})
+    $global:divisortable.Add("fairpool",@{})
+
     ##Get Algorithm Pools
     $Coins = $false
     Write-Host "Checking Algo Pools." -Foregroundcolor yellow;
@@ -881,7 +924,6 @@ While ($true) {
 
     ##Get Algorithms again, in case custom changed it.
     $Algorithm = @()
-    if ($Coin) { $Passwordcurrency1 = $Coin; $Passwordcurrency2 = $Coin; $Passwordcurrency3 = $Coin }
     if ($SWARMAlgorithm) { $SWARMALgorithm | ForEach-Object { $Algorithm += $_ } }
     else { $Algorithm = $Pool_Json.PSObject.Properties.Name }
     if($Type -notlike "*NVIDIA*")
@@ -1043,9 +1085,14 @@ While ($true) {
     ## Miner array, favoring miners that need to benchmarked first, then miners that had the highest quote. It
     ## Is done this way, as sorting via [double] would occasionally glitch. This is more if/else, and less likely
     ## To fail.
+    ##First reduce all miners to best one for each symbol
     $CutMiners = Start-MinerReduction -Stats $Stats -SortMiners $Miners -WattCalc $WattEx -Type $Type
     ##Remove The Extra Miners
     $CutMiners | ForEach-Object { $Miners.Remove($_) } | Out-Null;
+
+    ##We need to remove the denotation of coin or algo
+
+    $Miners | ForEach-Object { $_.Symbol = $_.Symbol -replace "-Algo",""; $_.Symbol = $_.Symbol -replace "-Coin",""}
 
     ## Print on screen user is screwed if the process failed.
     if ($Miners.Count -eq 0) {
@@ -1127,7 +1174,8 @@ While ($true) {
                     Arguments      = $_.Arguments
                     API            = $_.API
                     Port           = $_.Port
-                    Coins          = $_.Symbol
+                    Symbol         = $_.Symbol
+                    Coin           = $_.Coin
                     Active         = [TimeSpan]0
                     Activated      = 0
                     Status         = "Idle"
@@ -1339,7 +1387,7 @@ While ($true) {
         $ProfitTable = @()
         $Miners | ForEach-Object {
             $Miner = $_
-            if ($Algorithm -contains $Miner.Symbol) { $ScreenName = $Miner.Symbol }
+            if ($Miner.Coin -eq $false) { $ScreenName = $Miner.Symbol }
             else {
                 switch ($Miner.Symbol) {
                     "GLT-PADIHASH" { $ScreenName = "GLT:PADIHASH" }
@@ -1350,8 +1398,8 @@ While ($true) {
                     default { $ScreenName = "$($Miner.Symbol):$($Miner.Algo)".ToUpper() }
                 }
             }
-            $Shares = $global:Share_Table.$($Miner.Type).$($Miner.MinerPool).$ScreenName.Percent
-            if ($Shares -ne $null) { $CoinShare = $Shares }else { $CoinShare = "N/A" }
+            $Shares = $global:Share_Table.$($Miner.Type).$($Miner.MinerPool).$ScreenName.Percent -as [decimal]
+            if ( $Shares -ne $null ) { $CoinShare = $Shares }else { $CoinShare = 0 }
             $ProfitTable += [PSCustomObject]@{
                 Power         = [Decimal]$($Miner.Power * 24) / 1000 * $WattEX
                 Pool_Estimate = $Miner.Pool_Estimate
@@ -1624,8 +1672,8 @@ While ($true) {
                         $_.WasBenchmarked = $False
                         $WasActive = [math]::Round(((Get-Date) - $_.XProcess.StartTime).TotalSeconds)
                         if ($WasActive -ge $StatsInterval) {
-                            Write-Host "$($_.Name) $($_.Coins) Was Active for $WasActive Seconds"
-                            Write-Host "Attempting to record hashrate for $($_.Name) $($_.Coins)" -foregroundcolor "Cyan"
+                            Write-Host "$($_.Name) $($_.Symbol) Was Active for $WasActive Seconds"
+                            Write-Host "Attempting to record hashrate for $($_.Name) $($_.Symbol)" -foregroundcolor "Cyan"
                             for ($i = 0; $i -lt 4; $i++) {
                                 $Miner_HashRates = Get-HashRate -Type $_.Type
                                 $_.HashRate = $Miner_HashRates
@@ -1635,7 +1683,7 @@ While ($true) {
                                     $NewHashrateFilePath = Join-Path ".\backup" "$($_.Name)_$($_.Algo)_hashrate.txt"
                                     $NewPowerFilePath = Join-Path ".\backup" "$($_.Name)_$($_.Algo)_power.txt"
                                     if (-not (Test-Path "backup")) { New-Item "backup" -ItemType "directory" | Out-Null }
-                                    Write-Host "$($_.Name) $($_.Coins) Starting Bench"
+                                    Write-Host "$($_.Name) $($_.Symbol) Starting Bench"
                                     if ($null -eq $Miner_HashRates -or $Miner_HashRates -eq 0) {
                                         $Strike = $true
                                         Write-Host "Stat Attempt Yielded 0" -Foregroundcolor Red
@@ -1676,14 +1724,14 @@ While ($true) {
                                             Write-Host "Stat Failed Write To File" -Foregroundcolor Red
                                         }
                                         else {
-                                            Write-Host "Recorded Hashrate For $($_.Name) $($_.Coins) Is $($ScreenCheck)" -foregroundcolor "magenta"
-                                            if ($WattOmeter -eq "Yes") { Write-Host "Watt-O-Meter scored $($_.Name) $($_.Coins) at $($GPUPower) Watts" -ForegroundColor magenta }
+                                            Write-Host "Recorded Hashrate For $($_.Name) $($_.Symbol) Is $($ScreenCheck)" -foregroundcolor "magenta"
+                                            if ($WattOmeter -eq "Yes") { Write-Host "Watt-O-Meter scored $($_.Name) $($_.Symbol) at $($GPUPower) Watts" -ForegroundColor magenta }
                                             if (-not (Test-Path $NewHashrateFilePath)) {
                                                 Copy-Item $HashrateFilePath -Destination $NewHashrateFilePath -force
-                                                Write-Host "$($_.Name) $($_.Coins) Was Benchmarked And Backed Up" -foregroundcolor yellow
+                                                Write-Host "$($_.Name) $($_.Symbol) Was Benchmarked And Backed Up" -foregroundcolor yellow
                                             }
                                             $_.WasBenchmarked = $True
-                                            Get-Intensity $_.Type $_.Coins $_.Path
+                                            Get-Intensity $_.Type $_.Symbol $_.Path
                                             Write-Host "Stat Written
 " -foregroundcolor green
                                             $Strike = $false
@@ -1720,7 +1768,7 @@ While ($true) {
                             Start-Sleep -S .25
                             $TimeoutFile = Join-Path ".\timeout\warnings" "$($_.Name)_$($_.Algo)_TIMEOUT.txt"
                             $HashRateFilePath = Join-Path ".\stats" "$($_.Name)_$($_.Algo)_hashrate.txt"
-                            if (-not (Test-Path $TimeoutFile)) { "$($_.Name) $($_.Coins) Hashrate Check Timed Out" | Set-Content ".\timeout\warnings\$($_.Name)_$($_.Algo)_TIMEOUT.txt" -Force }
+                            if (-not (Test-Path $TimeoutFile)) { "$($_.Name) $($_.Symbol) Hashrate Check Timed Out" | Set-Content ".\timeout\warnings\$($_.Name)_$($_.Algo)_TIMEOUT.txt" -Force }
                             if ($Warnings."$($_.Name)" -eq $null) { $Warnings += [PSCustomObject]@{"$($_.Name)" = [PSCustomObject]@{bad = 0 } }
                             }
                             if ($Warnings."$($_.Name)_$($_.Algo)" -eq $null) { $Warnings += [PSCustomObject]@{"$($_.Name)_$($_.Algo)" = [PSCustomObject]@{bad = 0 } }

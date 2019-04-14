@@ -16,7 +16,8 @@ $ASIC_ALGO | ForEach-Object {
         if ($ASIC_ALGO -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
             $Pass = $_.Pass1 -replace ",","`\,"
             [PSCustomObject]@{
-                Delay      = $Config.$ConfigType.delay
+                Coin       = $Coins
+                Delay      = $Config.$ConfigType.Delay
                 Platform   = $Platform
                 Symbol     = "$($_.Symbol)"
                 MinerName  = $MinerName

@@ -17,7 +17,7 @@ function Get-AltWallets {
     ##Get Wallet Config
     $Wallet_Json = Get-Content ".\config\wallets\wallets.json" | ConvertFrom-Json
     
-    if($AltWallet1){$Global:All_AltWallets = $Wallet_Json.All_AltWallets}
+    if(-not $AltWallet1){$Global:All_AltWallets = $Wallet_Json.All_AltWallets}
 
     ##Sort Only Wallet Info
     $Wallet_Json = $Wallet_Json | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | % {if ($_ -like "*AltWallet*") {@{"$($_)" = $Wallet_Json.$_}}}
@@ -65,18 +65,24 @@ else{$PoolName | %{$NewWallet1 += $_}}
 if($Nicehash_Wallet3){$PoolName | %{if($_ -ne "nicehash"){$NewWallet3 += $_}}}
 else{$PoolName | %{$NewWallet3 += $_}}
 
+$C = $true
+if($Coin){$C = $false}
+if($C -eq $false){Write-Host "Coin Parameter Specified, disabling All alternative wallets." -ForegroundColor Yellow}
 
-if($AltWallet1){$global:Wallets | Add-Member "AltWallet1" @{$AltPassword1 = @{address = $AltWallet1; Pools = $NewWallet1}}}
-elseif($AltWallet_Config.AltWallet1){$global:Wallets | Add-Member "AltWallet1" $AltWallet_Config.AltWallet1}
-if($Wallet1){$global:Wallets | Add-Member "Wallet1" @{$Passwordcurrency1 = @{address = $Wallet1; Pools = $NewWallet1}}}
+if($AltWallet1 -and $C -eq $true){$global:Wallets | Add-Member "AltWallet1" @{$AltPassword1 = @{address = $AltWallet1; Pools = $NewWallet1}}}
+elseif($AltWallet_Config.AltWallet1 -and $C -eq $true){$global:Wallets | Add-Member "AltWallet1" $AltWallet_Config.AltWallet1}
+if($Wallet1 -and $C -eq $true){$global:Wallets | Add-Member "Wallet1" @{$Passwordcurrency1 = @{address = $Wallet1; Pools = $NewWallet1}}}
+else{$global:Wallets | Add-Member "Wallet1" @{$Passwordcurrency1 = @{address = $Wallet1; Pools = $NewWallet1}}}
 
-if($AltWallet2){$global:Wallets | Add-Member "AltWallet2" @{$AltPassword2 = @{address = $AltWallet2; Pools = $NewWallet2}}}
-elseif($AltWallet_Config.AltWallet2){$global:Wallets | Add-Member "AltWallet2" $AltWallet_Config.AltWallet2}
-if($Wallet2){$global:Wallets | Add-Member "Wallet2" @{$Passwordcurrency2 = @{address = $Wallet2; Pools = $NewWallet2}}}
+if($AltWallet2 -and $C -eq $true ){$global:Wallets | Add-Member "AltWallet2" @{$AltPassword2 = @{address = $AltWallet2; Pools = $NewWallet2}}}
+elseif($AltWallet_Config.AltWallet2 -and $C -eq $True ){$global:Wallets | Add-Member "AltWallet2" $AltWallet_Config.AltWallet2}
+if($Wallet2 -and $C -eq $true){$global:Wallets | Add-Member "Wallet2" @{$Passwordcurrency2 = @{address = $Wallet2; Pools = $NewWallet2}}}
+else{$global:Wallets | Add-Member "Wallet2" @{$Passwordcurrency2 = @{address = $Wallet2; Pools = $NewWallet2}}}
 
-if($AltWallet3){$global:Wallets | Add-Member "AltWallet3" @{$AltPassword3 = @{address = $AltWallet3; Pools = $NewWallet3}}}
-elseif($AltWallet_Config.AltWallet3){$global:Wallets | Add-Member "AltWallet3" $AltWallet_Config.AltWallet3}
-if($Wallet3){$global:Wallets | Add-Member "Wallet3" @{$Passwordcurrency3 = @{address = $Wallet3; Pools = $NewWallet3}}}
+if($AltWallet3 -and $C ){$global:Wallets | Add-Member "AltWallet3" @{$AltPassword3 = @{address = $AltWallet3; Pools = $NewWallet3}}}
+elseif($AltWallet_Config.AltWallet3 -and $C ){$global:Wallets | Add-Member "AltWallet3" $AltWallet_Config.AltWallet3}
+if($Wallet3 -and $C -eq $true){$global:Wallets | Add-Member "Wallet3" @{$Passwordcurrency3 = @{address = $Wallet3; Pools = $NewWallet3}}}
+else{$global:Wallets | Add-Member "Wallet3" @{$Passwordcurrency3 = @{address = $Wallet3; Pools = $NewWallet3}}}
 
 if($Nicehash_Wallet1){$global:Wallets | Add-Member "Nicehash_Wallet1" @{"BTC" = @{address = $Nicehash_Wallet1; Pools = "nicehash"}}}
 if($Nicehash_Wallet2){$global:Wallets | Add-Member "Nicehash_Wallet2" @{"BTC" = @{address = $Nicehash_Wallet2; Pools = "nicehash"}}}

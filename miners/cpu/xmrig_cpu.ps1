@@ -46,6 +46,7 @@ $CPUTypes | ForEach-Object {
                 else{$APISet = "--api-port=10002"}
                 [PSCustomObject]@{
                     MName      = $Name
+                    Coin       = $Coins
                     Delay      = $Config.$ConfigType.delay
                     Symbol     = "$($_.Symbol)"
                     MinerName  = $MinerName

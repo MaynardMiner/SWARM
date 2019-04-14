@@ -27,7 +27,7 @@ function Get-StatsCpuminer {
         else {
             if ($Hash) { 
                 for ($i = 0; $i -lt $Devices.Count; $i++) { 
-                    $global:CPUHashrates.$(Get-Gpus) = (Set-Array $([Double]$Hash /1000) $i)
+                    $global:CPUHashrates.$(Get-Gpus) = (Set-Array $([Double]$Hash / 1000) $i)
                 } 
             }
             $J | ForEach-Object { $global:CPUKHS += $_ }

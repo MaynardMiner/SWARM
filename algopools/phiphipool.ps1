@@ -36,7 +36,7 @@ if ($Poolname -eq $Name) {
 
                 [PSCustomObject]@{
                     Priority      = $Priorities.Pool_Priorities.$Name
-                    Symbol        = $phiphipool_Algorithm
+                    Symbol        = "$phiphipool_Algorithm-Algo"
                     Mining        = $phiphipool_Algorithm
                     Algorithm     = $phiphipool_Algorithm
                     Price         = $CStat
@@ -45,10 +45,10 @@ if ($Poolname -eq $Name) {
                     Protocol      = "stratum+tcp"
                     Host          = $phiphipool_Host
                     Port          = $phiphipool_Port
-                    User1         = $global:Wallets.Wallet1.BTC.address
-                    User2         = $global:Wallets.Wallet2.BTC.address
-                    User3         = $global:Wallets.Wallet3.BTC.address
-                    CPUser        = $global:Wallets.Wallet1.BTC.address
+                    User1         = $global:Wallets.Wallet1.$PasswordCurrency1.address
+                    User2         = $global:Wallets.Wallet2.$PasswordCurrency2.address
+                    User3         = $global:Wallets.Wallet3.$PasswordCurrency3.address
+                    CPUser        = $global:Wallets.Wallet1.$PasswordCurrency1.address                    
                     CPUPass       = "c=$($global:Wallets.Wallet1.keys),id=$Rigname1"
                     Pass1         = "c=$($global:Wallets.Wallet1.keys),id=$Rigname1"
                     Pass2         = "c=$($global:Wallets.Wallet2.keys),id=$Rigname2"
