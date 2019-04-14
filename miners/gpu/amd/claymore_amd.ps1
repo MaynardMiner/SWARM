@@ -60,8 +60,7 @@ $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Obje
             [PSCustomObject]@{
                 MName      = $Name
                 Coin       = $Coins
-                    Delay      = $Config.$ConfigType.delay
-
+                Delay      = $Config.$ConfigType.delay
                 Symbol     = "$($_.Symbol)"
                 MinerName  = $MinerName
                 Prestart   = $PreStart
