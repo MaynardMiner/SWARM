@@ -2468,3 +2468,24 @@ API overhaul:
    .ps1 file.
   -Wallet tables doesn't stat automatically stat ``-Wallet1`` as
    BTC, in case ``-Coin`` parameter is used.
+  -Refreshed Wallets API, should be working.
+     (Note, will only display if you have unsold coins / actively mining).
+  -Added blazepool coin shares.
+  -Minor tweaks to API codebase / cleaning.
+  -Noticed small error in HiveOS stats: ccminers were showing mhs
+   when they should be showing khs: Fixed.
+   not by .ps1 file name now.
+  -All_Altwallets are fixed.
+  -Changed shares % to stat at N3 (3rd decimal place).
+  -Gminer updated
+     -Gminer runs better than lolminer for AMD.
+     -Moved Gminer into AMD rotation.
+     -Suggest to look into optimizing for equihash mining.
+  -Fixed bug involving coins not being selected with the same name
+   as algo (only if a pool with algo option was present).
+
+  New Features!
+
+  -zpool can now auto_coin switch.
+  
+  
