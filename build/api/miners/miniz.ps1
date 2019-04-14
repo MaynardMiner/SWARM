@@ -11,7 +11,8 @@ function Get-StatsMiniz {
             for ($i = 0; $i -lt $Devices.Count; $i++) { 
                 $global:GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $i) / 1000 
             } 
-        }catch { Write-Host "Failed To parse Threads" -ForegroundColor Red };
+        }
+        catch { Write-Host "Failed To parse Threads" -ForegroundColor Red };
         $global:MinerACC += $Shares -split "/" | Select-Object -first 1
         $global:MinerREJ += $Shares -split "/" | Select-Object -Last 1
         $global:ALLACC += $global:MinerACC

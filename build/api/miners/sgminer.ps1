@@ -9,7 +9,7 @@ function Get-StatsSgminer {
                 $Request = $Request.Substring($Request.IndexOf("{"), $Request.LastIndexOf("}") - $Request.IndexOf("{") + 1) -replace " ", "_"
                 $Data = $Request | ConvertFrom-Json -ErrorAction Stop
             }
-            catch { Write-Host "Failed To parse GPU Array" -ForegroundColor Red; break}
+            catch { Write-Host "Failed To parse GPU Array" -ForegroundColor Red; break }
         }
         $summary = $Data.summary.summary
         $threads = $Data.devs.devs
@@ -26,7 +26,8 @@ function Get-StatsSgminer {
             for ($i = 0; $i -lt $Devices.Count; $i++) { 
                 $global:GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i 
             } 
-        }catch { Write-Host "Failed To parse GPU Array" -ForegroundColor Red };
+        }
+        catch { Write-Host "Failed To parse GPU Array" -ForegroundColor Red };
         $summary.Rejected | ForEach-Object { $global:MinerREJ += $_ }
         $summary.Accepted | ForEach-Object { $global:MinerACC += $_ }    
         $global:ALLACC += $global:MinerACC

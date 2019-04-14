@@ -20,7 +20,8 @@ function Get-StatsExcavator {
             for ($i = 0; $i -lt $Devices.Count; $i++) { 
                 $global:GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $i) / 1000 
             } 
-        }catch { Write-Host "Failed To parse threads" -ForegroundColor Red }
+        }
+        catch { Write-Host "Failed To parse threads" -ForegroundColor Red }
         $global:MinerACC = $Summary.algorithms.accepted_shares
         $global:MinerREJ = $Summary.algorithms.rejected_shares
         $global:ALLACC += $global:MinerACC

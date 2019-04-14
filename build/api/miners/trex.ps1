@@ -12,7 +12,8 @@ function Get-StatsTrex {
             for ($i = 0; $i -lt $Devices.Count; $i++) { 
                 $global:GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $i) / 1000 
             } 
-        }catch { Write-Host "Failed To parse Threads" -ForegroundColor Red };
+        }
+        catch { Write-Host "Failed To parse Threads" -ForegroundColor Red };
         $Data.accepted_count | ForEach-Object { $global:MinerACC += $_ }
         $Data.rejected_count | ForEach-Object { $global:MinerREJ += $_ }
         $global:ALLACC += $global:MinerACC
