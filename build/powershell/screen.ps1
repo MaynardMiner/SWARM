@@ -351,6 +351,7 @@ function Restart-Miner {
                 }
                 else {
                     $_.Status = "Running"
+                    Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
                     Write-Host "$($_.MinerName) Is Running!" -ForegroundColor Green
                 }
                 Write-Host "

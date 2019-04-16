@@ -1389,6 +1389,7 @@ While ($true) {
                         else {
                             $_.Status = "Running"
                             if($_.Type -ne "ASIC"){ Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline; Write-Host "Process Id is $($_.XProcess.ID)"}
+                            Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
                             Write-Host "$($_.MinerName) Is Running!" -ForegroundColor Green
                         }
                     }
