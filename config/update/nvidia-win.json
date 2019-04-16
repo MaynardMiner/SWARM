@@ -18,7 +18,7 @@
         "NVIDIA3": ".\\bin\\nbminer-3\\nbminer.exe",
         "minername": "nbminer.exe",
         "version": "22.3",
-        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/nbminer-linux.tar.gz"
+        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/nbminer-windows.zip"
       },    
     "cc-mtp": {
         "name": "cc-mtp",

@@ -552,6 +552,41 @@ if ($Platform -eq "windows") {
         }
     }
 
+    ##Create a CMD.exe shortcut for SWARM on desktop
+    $CurrentUser = $env:UserName
+    $Desk_Term = "C:\Users\$CurrentUser\desktop\SWARM-TERMINAL.bat"
+    if(-Not (Test-Path $Desk_Term)) {
+        Write-Host "
+        
+Making a terminal on desktop. This can be used for commands.
+
+" -ForegroundColor Yellow
+        $Term_Script = @()
+        $Term_Script += "`@`Echo Off"
+        $Term_Script += "ECHO You can run terminal commands here."
+        $Term_Script += "ECHO Commands such as:"
+        $Term_Script += "echo.       "
+        $Term_Script += "echo.       "
+        $Term_Script += "ECHO       get stats"
+        $Term_Script += "ECHO       get active"
+        $Term_Script += "ECHO       get help"
+        $Term_Script += "ECHO       benchmark timeout"
+        $Term_Script += "ECHO       version query"
+        $Term_Script += "echo.       "
+        $Term_Script += "echo.       "
+        $Term_Script += "echo.       "
+        $Term_Script += "ECHO For full command list, see: https://github.com/MaynardMiner/SWARM/wiki"
+        $Term_Script += "echo.       "
+        $Term_Script += "echo.       "
+        $Term_Script += "echo.       "
+        $Term_Script += "ECHO Starting CMD.exe"
+        $Term_Script += "echo.       "
+        $Term_Script += "echo.       "
+        $Term_Script += "echo.       "
+        $Term_Script += "cmd.exe"
+        $Term_Script | Set-Content $Desk_Term
+    }
+
     ## Windows Bug- Set Cudas to match PCI Bus Order
     if($Type -like "*NVIDIA*"){[Environment]::SetEnvironmentVariable("CUDA_DEVICE_ORDER", "PCI_BUS_ID", "User")}
 
@@ -1472,7 +1507,7 @@ While ($true) {
         $BanMessage | Out-File ".\build\txt\minerstatslite.txt" -Append
 
         ## Load mini logo
-        if ($Platform -eq "linux") { Get-Logo }
+        Get-Logo
 
         #Clear Logs If There Are 12
         if ($Log -eq 12) {
@@ -1510,8 +1545,6 @@ While ($true) {
         [GC]::WaitForPendingFinalizers()
         [GC]::Collect()
 
-        ##Miner Loop Linux
-        if ($Platform -eq "linux") {
             Do {
                 Set-Countdown
                 Get-MinerHashRate
@@ -1541,7 +1574,7 @@ While ($true) {
                 Restart-Miner
                 Write-Host "
 
-      Type 'stats' in another terminal to view miner statistics- This IS a remote command!
+      Type 'get stats' in a new terminal to view miner statistics- This IS a remote command!
       https://github.com/MaynardMiner/Swarm/wiki/HiveOS-management >> Right Click 'Open URL In Browser'
 
   " -foreground Magenta
@@ -1584,7 +1617,7 @@ While ($true) {
                 Set-Countdown
                 Write-Host "
 
-      Type 'active' in another terminal to view active/previous miners- this IS a remote command!
+      Type 'get active' in a new terminal to view active/previous miners- this IS a remote command!
       https://github.com/MaynardMiner/Swarm/wiki/HiveOS-management >> Right Click 'Open URL In Browser'
 
   " -foreground Magenta
@@ -1600,48 +1633,6 @@ While ($true) {
                 if ($RestartData -eq "Yes") { break }
 
             }While ($MinerWatch.Elapsed.TotalSeconds -lt ($MinerInterval - 20))
-        }
-        else {
-            ##Miner Loop Windows:
-            Clear-Host
-            Get-Logo
-            Get-Date | Out-Host
-            Get-MinerActive | Out-Host
-            Get-MinerStatus | Out-Host
-            $ProfitTable = $null
-            #Get-VM | Out-Host
-            if ($SWARM_IT) {
-                if ($SwitchTime) {
-                    Write-Host "SWARM MODE ACTIVATED!" -ForegroundColor Green;
-                    Write-Host "SWARM Mode Start Time is $SwitchTime" -ForegroundColor Cyan;
-                }
-            }
-            if ($BenchmarkMode -eq $true) { Write-Host "Swarm Is Benchmarking Miners" -ForegroundColor Yellow }
-            $BanMessage
-            Do {
-                Restart-Miner
-                if ($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval - 20)) { break }
-                if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
-                if ($ModeCheck -gt 0) { break }
-                Start-Sleep -s 5
-                if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
-                if ($ModeCheck -gt 0) { break }
-                Start-Sleep -s 5
-                if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
-                if ($ModeCheck -gt 0) { break }
-                Start-Sleep -s 5
-                if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
-                if ($ModeCheck -gt 0) { break }
-                Start-Sleep -s 5
-                if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
-                if ($ModeCheck -gt 0) { break }
-                Start-Sleep -s 5
-                if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
-                if ($ModeCheck -gt 0) { break }
-                Start-Sleep -s 5
-            }While ($MinerWatch.Elapsed.TotalSeconds -lt ($MinerInterval - 20))
-        }
-
 
         ## Start WattOMeter function
         if ($Platform -eq "linux" -or $Platform -eq "windows") {

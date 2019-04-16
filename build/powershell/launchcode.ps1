@@ -163,6 +163,24 @@ function Start-LaunchCode {
                 #dir
                 $WorkingDirectory = Join-Path $Dir $(Split-Path $($MinerCurrent.Path))
 
+                            ##Classic Logo For Windows
+                            Write-Host "
+            ______________
+          /.----------..-'
+   -.     ||           \\
+   .----'-||-.          \\
+   |o _   || |           \\
+   | [_]  || |_...-----.._\\
+   | [_]  ||.'            ``-._ _
+   | [_]  '.O)_...-----....._ ``.\
+   / [_]o .' _ _'''''''''_ _ `. ``.       __
+   |______/.'  _  ``.---.'  _  ``.\  ``._./  \Cl
+   |'''''/, .' _ '. . , .' _ '. .``. .o'|   \ear
+   ``---..|; : (_) : ;-; : (_) : ;-'``--.|    \ing windows for $($MinerCurrent.Type) & Tracking
+          ' '. _ .' ' ' '. _ .' '      /     \
+           ``._ _ _,'   ``._ _ _,'       ``._____\        
+   "
+
                 ##Remove Old Logs
                 Remove-Item ".\logs\*$($MinerCurrent.Type)*" -Force -ErrorAction SilentlyContinue
                 Start-Sleep -S 1
@@ -190,7 +208,7 @@ function Start-LaunchCode {
                     }
                 }
                 ##Determine if Miner needs logging
-                if ($MinerCurrent.Log -ne "miner_generated") { $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FIlePath ""$Logs"" -Append; `$Output | Out-Host}`'" }
+                if ($MinerCurrent.Log -ne "miner_generated") { $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output += `$_ -replace `"\\[\d+(;\d+)?m`"; if(`$Output -cmatch `"`\r`\n`"){`$OutPut | Out-File -FIlePath ""$Logs"" -Append; `$Output | Out-Host; `$Output = `$null}}`'" }
                 else { $script += "Invoke-Expression "".\$($MinerCurrent.MinerName) $MinerArguments""" }            
                 $script | Out-File "$WorkingDirectory\swarm-start.ps1"
                 Start-Sleep -S .5
