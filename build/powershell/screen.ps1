@@ -239,7 +239,7 @@ Waiting 15 Seconds For Miners To Load & Restarting Background Tracking
 
 Type 'get-screen [MinerType]' to see last 100 lines of log- This IS a remote command!
 
-https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management >> Right Click 'Open URL In Browser'  
+https://github.com/MaynardMiner/SWARM/wiki/Commands-&-Suggested-Apps For More Info'  
 
 " -ForegroundColor Magenta
     }
