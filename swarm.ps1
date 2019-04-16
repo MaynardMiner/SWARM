@@ -1575,7 +1575,8 @@ While ($true) {
                 Write-Host "
 
       Type 'get stats' in a new terminal to view miner statistics- This IS a remote command!
-      https://github.com/MaynardMiner/Swarm/wiki/HiveOS-management >> Right Click 'Open URL In Browser'
+            Windows Users: Open cmd.exe or SWARM TERMINAL on desktop and enter command
+            https://github.com/MaynardMiner/Swarm/wiki/HiveOS-management for more info.
 
   " -foreground Magenta
                 Get-MinerHashRate
@@ -1617,9 +1618,10 @@ While ($true) {
                 Set-Countdown
                 Write-Host "
 
-      Type 'get active' in a new terminal to view active/previous miners- this IS a remote command!
-      https://github.com/MaynardMiner/Swarm/wiki/HiveOS-management >> Right Click 'Open URL In Browser'
-
+      Type 'get active' in a new terminal to view all active miner details- This IS a remote command!
+              Windows Users: Open cmd.exe or SWARM TERMINAL on desktop and enter command
+              https://github.com/MaynardMiner/Swarm/wiki/HiveOS-management for more info.
+          
   " -foreground Magenta
                 Get-MinerHashRate
                 if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
