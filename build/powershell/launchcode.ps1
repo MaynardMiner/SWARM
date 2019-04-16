@@ -208,7 +208,16 @@ function Start-LaunchCode {
                     }
                 }
                 ##Determine if Miner needs logging
-                if ($MinerCurrent.Log -ne "miner_generated") { $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output += `$_ -replace `"\\[\d+(;\d+)?m`"; if(`$Output -cmatch `"`\r`\n`"){`$OutPut | Out-File -FIlePath ""$Logs"" -Append; `$Output | Out-Host; `$Output = `$null}}`'" }
+                if ($MinerCurrent.Log -ne "miner_generated") { 
+                    Switch($MinerCurrent.API) {
+                        "lolminer"{
+                            $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FIlePath ""$Logs"" -Append; `$Output | Out-Host;}`'" 
+                        }
+                        default { 
+                            $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output += `$_ -replace `"\\[\d+(;\d+)?m`"; if(`$Output -cmatch `"`\n`"){`$OutPut | Out-File -FIlePath ""$Logs"" -Append; `$Output | Out-Host; `$Output = `$null}}`'" 
+                        }
+                 }
+                }
                 else { $script += "Invoke-Expression "".\$($MinerCurrent.MinerName) $MinerArguments""" }            
                 $script | Out-File "$WorkingDirectory\swarm-start.ps1"
                 Start-Sleep -S .5
