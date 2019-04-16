@@ -298,7 +298,7 @@ function Start-LaunchCode {
             Start-Sleep -S $MinerCurrent.Delay
 
             ##Notification To User That Miner Is Attempting To start
-            Write-Host "Starting $($MinerCurrent.Name) Mining $($MinerCurrent.Coins) on $($MinerCurrent.Type)" -ForegroundColor Cyan
+            Write-Host "Starting $($MinerCurrent.Name) Mining $($MinerCurrent.Symbol) on $($MinerCurrent.Type)" -ForegroundColor Cyan
 
             ##FilePaths
             $Export = Join-Path $Dir "build\export"
