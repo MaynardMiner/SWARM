@@ -3,12 +3,16 @@ $NVIDIATypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
-    if ($nvidia.bminer.$ConfigType) { $Path = "$($nvidia.bminer.$ConfigType)" } else { $Path = "None" }
-    if ($nvidia.bminer.uri) { $Uri = "$($nvidia.bminer.uri)" } else { $Uri = "None" }
-    if ($nvidia.bminer.MinerName) { $MinerName = "$($nvidia.bminer.MinerName)" } else { $MinerName = "None" }
-    if ($Platform -eq "linux") { $Build = "Tar" } elseif ($Platform -eq "windows") { $Build = "Zip" }
+    if ($nvidia.enemy.$ConfigType) { $Path = "$($nvidia.enemy.$ConfigType)" }
+    else { $Path = "None" }
+    if ($nvidia.enemy.uri) { $Uri = "$($nvidia.enemy.uri)" }
+    else { $Uri = "None" }
+    if ($nvidia.enemy.MinerName) { $MinerName = "$($nvidia.enemy.MinerName)" }
+    else { $MinerName = "None" }
+    if ($Platform -eq "linux") { $Build = "Tar" }
+    elseif ($Platform -eq "windows") { $Build = "Zip" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "bminer-$Num"; $Port = "4000$Num"
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "enemy-$Num"; $Port = "5300$Num";
 
     Switch ($Num) {
         1 { $Get_Devices = $NVIDIADevices1 }
@@ -24,7 +28,7 @@ $NVIDIATypes | ForEach-Object {
     else { $Devices = $Get_Devices }
 
     ##Get Configuration File
-    $GetConfig = "$dir\config\miners\bminer.json"
+    $GetConfig = "$dir\config\miners\enemy.json"
     try { $Config = Get-Content $GetConfig | ConvertFrom-Json }
     catch { Write-Warning "Warning: No config found at $GetConfig" }
 
@@ -32,6 +36,9 @@ $NVIDIATypes | ForEach-Object {
     $ExportDir = Join-Path $dir "build\export"
 
     ##Prestart actions before miner launch
+    $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
+    $Prestart = @()
+    if (Test-Path $BE) { $Prestart += "export LD_PRELOAD=libcurl-compat.so.3.0.0" }
     $PreStart += "export LD_LIBRARY_PATH=$ExportDir"
     $Config.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 
@@ -42,12 +49,7 @@ $NVIDIATypes | ForEach-Object {
         $MinerAlgo = $_
         $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
             if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
-                Switch ($_.Name) {
-                    "nicehash" { $Pass = "" }
-                    default { $Pass = ".$($($_.$Pass) -replace ",","%2C")" }
-                }
-                if ($_.Worker) { $Pass1 = ".$($_.Worker)" }
-                if ($Config.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = "%2Cd=$($Config.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
+                if ($Config.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
                 [PSCustomObject]@{
                     MName      = $Name
                     Coin       = $Coins
@@ -58,8 +60,8 @@ $NVIDIATypes | ForEach-Object {
                     Type       = $ConfigType
                     Path       = $Path
                     Devices    = $Devices
-                    DeviceCall = "bminer"
-                    Arguments  = "-uri $($Config.$ConfigType.naming.$($_.Algorithm))://$($_.$User)$Pass$Diff@$($_.Host):$($_.Port) -logfile `'$Log`' -api 127.0.0.1:$Port"
+                    DeviceCall = "ccminer"
+                    Arguments  = "-a $($Config.$ConfigType.naming.$($_.Algorithm)) --log=`'$Log`' -o stratum+tcp://$($_.Host):$($_.Port) -b 0.0.0.0:$Port -u $($_.$User) -p $($_.$Pass)$($Diff) $($Config.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) }
                     Quote      = if ($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)) { $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) * ($_.Price) }else { 0 }
                     PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
@@ -67,12 +69,10 @@ $NVIDIATypes | ForEach-Object {
                     occore     = if ($Config.$ConfigType.oc.$($_.Algorithm).core) { $Config.$ConfigType.oc.$($_.Algorithm).core }else { $OC."default_$($ConfigType)".core }
                     ocmem      = if ($Config.$ConfigType.oc.$($_.Algorithm).memory) { $Config.$ConfigType.oc.$($_.Algorithm).memory }else { $OC."default_$($ConfigType)".memory }
                     ocfans     = if ($Config.$ConfigType.oc.$($_.Algorithm).fans) { $Config.$ConfigType.oc.$($_.Algorithm).fans }else { $OC."default_$($ConfigType)".fans }
-                    ethpill    = $Config.$ConfigType.oc.$($_.Algorithm).ethpill
-                    pilldelay  = $Config.$ConfigType.oc.$($_.Algorithm).pilldelay
                     MinerPool  = "$($_.Name)"
                     FullName   = "$($_.Mining)"
                     Port       = $Port
-                    API        = "bminer"
+                    API        = "Ccminer"
                     Wrap       = $false
                     Wallet     = "$($_.$User)"
                     URI        = $Uri

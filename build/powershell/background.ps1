@@ -63,7 +63,7 @@ if ($Platforms -eq "windows") {
 . .\build\api\miners\wildrig.ps1;    . .\build\api\miners\xmrig-opt.ps1;    . .\build\api\miners\xmrstak.ps1;
 . .\build\powershell\hashrates.ps1;  . .\build\powershell\commandweb.ps1;   . .\build\powershell\response.ps1;
 . .\build\powershell\hiveoc.ps1;     . .\build\powershell\octune.ps1;       . .\build\powershell\statcommand.ps1;
-. .\build\api\miners\cgminer.ps1;
+. .\build\api\miners\cgminer.ps1;    . .\build\api\miners\nbminer.ps1;
 
 ##Start API Server
 Write-Host "API Port is $Port";      
@@ -393,6 +393,7 @@ While ($True) {
                 'xmrig-opt' { try { Get-Statsxmrigopt }catch { Get-OhNo } }
                 'wildrig' { try { Get-StatsWildRig }catch { Get-OhNo } }
                 'cgminer' { try { Get-StatsCgminer }catch { Get-OhNo } }
+                'nebutech' { try { Get-StatsNebutech }catch { Get-OhNo } }
             }
 
             ##Check To See if High Rejections

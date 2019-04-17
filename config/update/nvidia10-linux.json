@@ -10,6 +10,16 @@
     "version": "12.0",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/Claymore-Linux.tar.gz"
   },
+  "nbminer": {
+    "name": "nbminer",
+    "type": "nvidia",
+    "NVIDIA1": ".\\bin\\nbminer-1\\nbminer",
+    "NVIDIA2": ".\\bin\\nbminer-2\\nbminer",
+    "NVIDIA3": ".\\bin\\nbminer-3\\nbminer",
+    "minername": "nbminer",
+    "version": "22.3",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/nbminer-linux.tar.gz"
+  },
   "phoenix": {
     "name": "phoenix",
     "type": "nvidia",
@@ -50,8 +60,8 @@
     "version": "0.6.2",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/zm-Linux.tar.gz"
   },
-  "z-enemy": {
-    "name": "z-enemy",
+  "enemy": {
+    "name": "enemy",
     "type": "nvidia",
     "NVIDIA1": ".\\bin\\enemy-1\\z-enemy",
     "NVIDIA2": ".\\bin\\enemy-2\\z-enemy",

@@ -69,6 +69,8 @@
         "Power": "",
         "Core": "",
         "Memory": "",
+        "ETHPill": "",
+        "PillDelay": "",
         "Fans": ""
       },
       "lyra2v3": {
@@ -142,6 +144,8 @@
         "Power": "",
         "Core": "",
         "Memory": "",
+        "ETHPill": "",
+        "PillDelay": "",
         "Fans": ""
       },
       "myr-gr": {
@@ -227,6 +231,8 @@
         "Power": "",
         "Core": "",
         "Memory": "",
+        "ETHPill": "",
+        "PillDelay": "",
         "Fans": ""
       },
       "myr-gr": {

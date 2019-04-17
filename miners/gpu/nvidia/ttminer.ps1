@@ -69,6 +69,8 @@ $NVIDIATypes | ForEach-Object {
                     occore     = if ($Config.$ConfigType.oc.$($_.Algorithm).core) { $Config.$ConfigType.oc.$($_.Algorithm).core }else { $OC."default_$($ConfigType)".core }
                     ocmem      = if ($Config.$ConfigType.oc.$($_.Algorithm).memory) { $Config.$ConfigType.oc.$($_.Algorithm).memory }else { $OC."default_$($ConfigType)".memory }
                     ocfans     = if ($Config.$ConfigType.oc.$($_.Algorithm).fans) { $Config.$ConfigType.oc.$($_.Algorithm).fans }else { $OC."default_$($ConfigType)".fans }
+                    ethpill    = $Config.$ConfigType.oc.$($_.Algorithm).ethpill
+                    pilldelay  = $Config.$ConfigType.oc.$($_.Algorithm).pilldelay
                     MinerPool  = "$($_.Name)"
                     FullName   = "$($_.Mining)"
                     Port       = $Port

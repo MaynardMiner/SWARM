@@ -256,9 +256,10 @@ function start-update {
                                 $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                     if ($_ -ne "name") {
                                         ##2.0.1 
-                                        $Data.$_.commands."ethash" = "-proto 2 -rate 1"
-                                        $Data.$_.commands."daggerhashimoto" = "-proto 4 -stales 0"
-                                        $Data.$_.commands."dagger" = "-proto 2"
+                                        $Data.$_.commands| Add-Member "progpow" "-coin bci -proto 1" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "progpow" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.naming | Add-Member "progpow" "progpow" -Force -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "progpow" @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue
                                     }
                                 }
                             }

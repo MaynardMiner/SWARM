@@ -10,6 +10,16 @@
         "version": "10a",
         "uri": "https://github.com/nemosminer/ccminerKlausTyescrypt/releases/download/v10/ccminerKlausTyescryptv10.7z"
     },
+    "nbminer": {
+        "name": "nbminer",
+        "type": "nvidia",
+        "NVIDIA1": ".\\bin\\nbminer-1\\nbminer.exe",
+        "NVIDIA2": ".\\bin\\nbminer-2\\nbminer.exe",
+        "NVIDIA3": ".\\bin\\nbminer-3\\nbminer.exe",
+        "minername": "nbminer.exe",
+        "version": "22.3",
+        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/nbminer-windows.zip"
+      },    
     "cc-mtp": {
         "name": "cc-mtp",
         "type": "nvidia",
@@ -100,8 +110,8 @@
         "version": "0.6.1",
         "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/dstm-windows.zip"
     },
-    "z-enemy": {
-        "name": "z-enemy",
+    "enemy": {
+        "name": "enemy",
         "type": "nvidia",
         "NVIDIA1": ".\\bin\\enemy-1\\z-enemy.exe",
         "NVIDIA2": ".\\bin\\enemy-2\\z-enemy.exe",

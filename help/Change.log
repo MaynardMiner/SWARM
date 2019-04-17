@@ -2488,4 +2488,34 @@ API overhaul:
 
   -zpool can now auto_coin switch.
   
+  2.1.7
+
+  #106 fixed gminer and grinminer AMD oc
+
+  -Fixed z-enemy miner numbering for device groups.
+  -Added progpow to Phoenix Miner for AMD.
   
+  New Miner
+  * Nebutech Miner added!
+
+  New Features!
+  * Time stamps on output / logging.
+  * Windows Side formatting has Now
+    been changed to match linux formatting
+    on main screen.
+  * SWARM will now generate a batch to
+    open CMD / basic instructions on
+    desktop in windows (for commands).
+
+  -Performed some code staging for
+   oc & web control (not implemented yet).
+
+  -AMD optional_and_old miners were updated
+   to new .ps1 format (some may not work in
+   general). I did not test, as I don't
+   support them.
+
+  -miner screens in windows output was fixed
+   further, for miners that do not support logging.
+   (Windows)
+

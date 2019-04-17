@@ -552,6 +552,41 @@ if ($Platform -eq "windows") {
         }
     }
 
+    ##Create a CMD.exe shortcut for SWARM on desktop
+    $CurrentUser = $env:UserName
+    $Desk_Term = "C:\Users\$CurrentUser\desktop\SWARM-TERMINAL.bat"
+    if(-Not (Test-Path $Desk_Term)) {
+        Write-Host "
+        
+Making a terminal on desktop. This can be used for commands.
+
+" -ForegroundColor Yellow
+        $Term_Script = @()
+        $Term_Script += "`@`Echo Off"
+        $Term_Script += "ECHO You can run terminal commands here."
+        $Term_Script += "ECHO Commands such as:"
+        $Term_Script += "echo.       "
+        $Term_Script += "echo.       "
+        $Term_Script += "ECHO       get stats"
+        $Term_Script += "ECHO       get active"
+        $Term_Script += "ECHO       get help"
+        $Term_Script += "ECHO       benchmark timeout"
+        $Term_Script += "ECHO       version query"
+        $Term_Script += "echo.       "
+        $Term_Script += "echo.       "
+        $Term_Script += "echo.       "
+        $Term_Script += "ECHO For full command list, see: https://github.com/MaynardMiner/SWARM/wiki"
+        $Term_Script += "echo.       "
+        $Term_Script += "echo.       "
+        $Term_Script += "echo.       "
+        $Term_Script += "ECHO Starting CMD.exe"
+        $Term_Script += "echo.       "
+        $Term_Script += "echo.       "
+        $Term_Script += "echo.       "
+        $Term_Script += "cmd.exe"
+        $Term_Script | Set-Content $Desk_Term
+    }
+
     ## Windows Bug- Set Cudas to match PCI Bus Order
     if($Type -like "*NVIDIA*"){[Environment]::SetEnvironmentVariable("CUDA_DEVICE_ORDER", "PCI_BUS_ID", "User")}
 
@@ -868,6 +903,7 @@ While ($true) {
  
     ##Get Price Data
     try {
+        Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
         Write-Host "SWARM Is Building The Database. Auto-Coin Switching: $Auto_Coin" -foreground "yellow"
         $Rates = Invoke-RestMethod "https://api.coinbase.com/v2/exchange-rates?currency=BTC" -UseBasicParsing | Select-Object -ExpandProperty data | Select-Object -ExpandProperty rates
         $Currency | Where-Object { $Rates.$_ } | ForEach-Object { $Rates | Add-Member $_ ([Double]$Rates.$_) -Force }
@@ -875,8 +911,9 @@ While ($true) {
         $WattEx = [Double](($WattCurr * $Watts.KWh.$WattHour))
     }
     catch {
+        Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
         Write-Host -Level Warn "Coinbase Unreachable. "
-        Write-Host -ForegroundColor Yellow "Last Refresh: $(Get-Date)"
+        Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
         Write-Host "Trying To Contact Cryptonator.." -foregroundcolor "Yellow"
         $Rates = [PSCustomObject]@{ }
         $Currency | ForEach-Object { $Rates | Add-Member $_ (Invoke-WebRequest "https://api.cryptonator.com/api/ticker/btc-$_" -UseBasicParsing | ConvertFrom-Json).ticker.price }
@@ -905,9 +942,11 @@ While ($true) {
 
     ##Get Algorithm Pools
     $Coins = $false
+    Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
     Write-Host "Checking Algo Pools." -Foregroundcolor yellow;
     $AllAlgoPools = Get-Pools -PoolType "Algo" -Stats $Stats
     ##Get Custom Pools
+    Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
     Write-Host "Adding Custom Pools. ." -ForegroundColor Yellow;
     $AllCustomPools = Get-Pools -PoolType "Custom" -Stats $Stats
 
@@ -939,6 +978,7 @@ While ($true) {
 
     ##Optional: Load Coin Database
     if ($Auto_Coin -eq "Yes") {
+        Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
         Write-Host "Adding Coin Pools. . ." -ForegroundColor Yellow
         $AllCoinPools = Get-Pools -PoolType "Coin" -Stats $Stats
         $CoinPools = New-Object System.Collections.ArrayList
@@ -948,6 +988,7 @@ While ($true) {
     }
 
     if($AlgoPools.Count -gt 0) {
+       Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
        Write-Host "Checking Algo Miners. . . ." -ForegroundColor Yellow
        ##Load Only Needed Algorithm Miners
        $AlgoMiners = New-Object System.Collections.ArrayList
@@ -1004,6 +1045,7 @@ While ($true) {
 
     if($CoinPools.Count -gt 0) {
         $Coins = $true
+        Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
         Write-Host "Checking Coin Miners. . . . ." -ForegroundColor Yellow
         ##Load Only Needed Coin Miners
         $CoinMiners = New-Object System.Collections.ArrayList
@@ -1020,6 +1062,7 @@ While ($true) {
                     if (Test-Path ".\timeout\download_block\download_block.txt") {$DLTimeout = Get-Content ".\timeout\download_block\download_block.txt"}
                     $DLName = $DLTimeout | Select-String "$($CoinMiner.Name)"
                         if (-not (Test-Path $CoinMiner.Path)) {
+                            Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
                             Write-Host "Miner Not Found- Downloading" -ForegroundColor Yellow
                             if ($DLName.Count -lt 3) {
                                 Expand-WebRequest -URI $CoinMiner.URI -BuildPath $CoinMiner.BUILD -Path (Split-Path $CoinMiner.Path) -MineName (Split-Path $CoinMiner.Path -Leaf) -MineType $CoinMiner.Type
@@ -1043,7 +1086,11 @@ While ($true) {
             $DLTimeout = $null
             $DlName = $Null
             ## Print Warnings
-            if ($DownloadNote) {$DownloadNote | % {Write-Host "$($_)" -ForegroundColor Red}}
+            if ($DownloadNote) {
+                $DownloadNote | % {        
+                Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
+                Write-Host "$($_)" -ForegroundColor Red}
+                }
             $DownloadNote = $null
         } 
 
@@ -1064,6 +1111,7 @@ While ($true) {
         $HiveMessage = "No Miners Found! Check Arguments/Net Connection"
         $HiveWarning = @{result = @{command = "timeout"}}
         if ($HiveOS -eq "Yes") {try {$SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror}catch {Write-Warning "Failed To Notify HiveOS"}}
+        Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
         Write-Host $HiveMessage
         start-sleep $Interval; 
         continue  
@@ -1099,6 +1147,7 @@ While ($true) {
         $HiveMessage = "No Miners Found! Check Arguments/Net Connection"
         $HiveWarning = @{result = @{command = "timeout" } }
         if ($HiveOS -eq "Yes") {try { $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror } catch { Write-Warning "Failed To Notify HiveOS" } }
+        Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
         Write-Host $HiveMessage -ForegroundColor Red
         Start-Sleep $Interval; 
         continue
@@ -1111,6 +1160,7 @@ While ($true) {
         $BestActiveMiners | ForEach-Object { $Miners | Where-Object Path -EQ $_.path | Where-Object Arguments -EQ $_.Arguments | ForEach-Object {
                 if ($_.Profit -ne $NULL) {
                     if ($Switch_Threshold) {
+                        Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
                         Write-Host "Switching_Threshold changes $($_.Name) $($_.Algo) base factored price from $(($_.Profit * $Rates.$Currency).ToString("N2"))" -NoNewline -ForegroundColor Cyan; 
                         if ($_.Profit -GT 0) { $_.Profit = [Double]$_.Profit * (1 + ($Switch_Threshold / 100)) }
                         else { $_.Profit = [Double]$_.Profit * (1 + ($Switch_Threshold / -100)) };  
@@ -1149,7 +1199,8 @@ While ($true) {
 
         ##Write On Screen Best Choice  
         $BestMiners_Selected = $BestMiners_Combo.Symbol
-        $BestPool_Selected = $BestMiners_Combo.MinerPool 
+        $BestPool_Selected = $BestMiners_Combo.MinerPool
+        Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
         Write-Host "Most Ideal Choice Is $($BestMiners_Selected) on $($BestPool_Selected)" -foregroundcolor green          
 
         ##Add new miners to Active Miner Array, if they were not there already.
@@ -1332,11 +1383,13 @@ While ($true) {
                         if ($_.XProcess -eq $null -or $_.Xprocess.HasExited -eq $true) {
                             $_.Status = "Failed"
                             $NoMiners = $true
+                            Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
                             Write-Host "$($_.MinerName) Failed To Launch" -ForegroundColor Darkred
                         }
                         else {
                             $_.Status = "Running"
-                            if($_.Type -ne "ASIC"){Write-Host "Process Id is $($_.XProcess.ID)"}
+                            if($_.Type -ne "ASIC"){ Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline; Write-Host "Process Id is $($_.XProcess.ID)"}
+                            Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
                             Write-Host "$($_.MinerName) Is Running!" -ForegroundColor Green
                         }
                     }
@@ -1363,6 +1416,7 @@ While ($true) {
         
         #Set Interval
         if ($BenchmarkMode -eq $true) {
+            Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
             Write-Host "SWARM is Benchmarking Miners." -Foreground Yellow;
             Print-Benchmarking
             $MinerInterval = $Benchmark
@@ -1370,8 +1424,10 @@ While ($true) {
         else {
             if ($SWARM_Mode -eq "Yes") {
                 $SWARM_IT = $true
+                Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
                 Write-Host "SWARM MODE ACTIVATED!" -ForegroundColor Green;
                 $SwitchTime = Get-Date
+                Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
                 Write-Host "SWARM Mode Start Time is $SwitchTime" -ForegroundColor Cyan;
                 $MinerInterval = 10000000;
             }
@@ -1380,6 +1436,7 @@ While ($true) {
 
         ##Get Shares
         $global:Share_Table = @{}
+        Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
         Write-Host "Getting Coin Tracking From Pool" -foregroundColor Cyan
         Get-CoinShares
 
@@ -1472,7 +1529,7 @@ While ($true) {
         $BanMessage | Out-File ".\build\txt\minerstatslite.txt" -Append
 
         ## Load mini logo
-        if ($Platform -eq "linux") { Get-Logo }
+        Get-Logo
 
         #Clear Logs If There Are 12
         if ($Log -eq 12) {
@@ -1510,8 +1567,6 @@ While ($true) {
         [GC]::WaitForPendingFinalizers()
         [GC]::Collect()
 
-        ##Miner Loop Linux
-        if ($Platform -eq "linux") {
             Do {
                 Set-Countdown
                 Get-MinerHashRate
@@ -1541,8 +1596,9 @@ While ($true) {
                 Restart-Miner
                 Write-Host "
 
-      Type 'stats' in another terminal to view miner statistics- This IS a remote command!
-      https://github.com/MaynardMiner/Swarm/wiki/HiveOS-management >> Right Click 'Open URL In Browser'
+      Type 'get stats' in a new terminal to view miner statistics- This IS a remote command!
+            Windows Users: Open cmd.exe or SWARM TERMINAL on desktop and enter command
+        https://github.com/MaynardMiner/SWARM/wiki/Commands-&-Suggested-Apps for more info.
 
   " -foreground Magenta
                 Get-MinerHashRate
@@ -1584,9 +1640,10 @@ While ($true) {
                 Set-Countdown
                 Write-Host "
 
-      Type 'active' in another terminal to view active/previous miners- this IS a remote command!
-      https://github.com/MaynardMiner/Swarm/wiki/HiveOS-management >> Right Click 'Open URL In Browser'
-
+      Type 'get active' in a new terminal to view all active miner details- This IS a remote command!
+              Windows Users: Open cmd.exe or SWARM TERMINAL on desktop and enter command
+           https://github.com/MaynardMiner/SWARM/wiki/Commands-&-Suggested-Apps for more info.
+          
   " -foreground Magenta
                 Get-MinerHashRate
                 if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
@@ -1600,48 +1657,6 @@ While ($true) {
                 if ($RestartData -eq "Yes") { break }
 
             }While ($MinerWatch.Elapsed.TotalSeconds -lt ($MinerInterval - 20))
-        }
-        else {
-            ##Miner Loop Windows:
-            Clear-Host
-            Get-Logo
-            Get-Date | Out-Host
-            Get-MinerActive | Out-Host
-            Get-MinerStatus | Out-Host
-            $ProfitTable = $null
-            #Get-VM | Out-Host
-            if ($SWARM_IT) {
-                if ($SwitchTime) {
-                    Write-Host "SWARM MODE ACTIVATED!" -ForegroundColor Green;
-                    Write-Host "SWARM Mode Start Time is $SwitchTime" -ForegroundColor Cyan;
-                }
-            }
-            if ($BenchmarkMode -eq $true) { Write-Host "Swarm Is Benchmarking Miners" -ForegroundColor Yellow }
-            $BanMessage
-            Do {
-                Restart-Miner
-                if ($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval - 20)) { break }
-                if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
-                if ($ModeCheck -gt 0) { break }
-                Start-Sleep -s 5
-                if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
-                if ($ModeCheck -gt 0) { break }
-                Start-Sleep -s 5
-                if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
-                if ($ModeCheck -gt 0) { break }
-                Start-Sleep -s 5
-                if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
-                if ($ModeCheck -gt 0) { break }
-                Start-Sleep -s 5
-                if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
-                if ($ModeCheck -gt 0) { break }
-                Start-Sleep -s 5
-                if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
-                if ($ModeCheck -gt 0) { break }
-                Start-Sleep -s 5
-            }While ($MinerWatch.Elapsed.TotalSeconds -lt ($MinerInterval - 20))
-        }
-
 
         ## Start WattOMeter function
         if ($Platform -eq "linux" -or $Platform -eq "windows") {
@@ -1672,7 +1687,9 @@ While ($true) {
                         $_.WasBenchmarked = $False
                         $WasActive = [math]::Round(((Get-Date) - $_.XProcess.StartTime).TotalSeconds)
                         if ($WasActive -ge $StatsInterval) {
+                            Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
                             Write-Host "$($_.Name) $($_.Symbol) Was Active for $WasActive Seconds"
+                            Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
                             Write-Host "Attempting to record hashrate for $($_.Name) $($_.Symbol)" -foregroundcolor "Cyan"
                             for ($i = 0; $i -lt 4; $i++) {
                                 $Miner_HashRates = Get-HashRate -Type $_.Type
@@ -1683,9 +1700,11 @@ While ($true) {
                                     $NewHashrateFilePath = Join-Path ".\backup" "$($_.Name)_$($_.Algo)_hashrate.txt"
                                     $NewPowerFilePath = Join-Path ".\backup" "$($_.Name)_$($_.Algo)_power.txt"
                                     if (-not (Test-Path "backup")) { New-Item "backup" -ItemType "directory" | Out-Null }
+                                    Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
                                     Write-Host "$($_.Name) $($_.Symbol) Starting Bench"
                                     if ($null -eq $Miner_HashRates -or $Miner_HashRates -eq 0) {
                                         $Strike = $true
+                                        Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
                                         Write-Host "Stat Attempt Yielded 0" -Foregroundcolor Red
                                         Start-Sleep -S .25
                                         $GPUPower = 0
@@ -1701,7 +1720,7 @@ While ($true) {
                                         }
                                     }
                                     else {
-                                        if ($WattOMeter -eq "yes" -and $_.Type -ne "CPU") { try { $GPUPower = Set-Power -MinerDevices $($_.Devices) -Command "stat" -PwrType $($_.Type) }catch { Write-Host "WattOMeter Failed" $GPUPower = 0 } }
+                                        if ($WattOMeter -eq "yes" -and $_.Type -ne "CPU") { try { $GPUPower = Set-Power -MinerDevices $($_.Devices) -Command "stat" -PwrType $($_.Type) }catch { Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline; Write-Host "WattOMeter Failed" $GPUPower = 0 } }
                                         else { $GPUPower = 1 }
                                         if ($WattOMeter -eq "yes" -and $_.Type -ne "CPU") {
                                             if ($Watts.$($_.Algo)) {
@@ -1721,17 +1740,21 @@ While ($true) {
                                         if ($ScreenCheck -eq "0.00 PH" -or $null -eq $StatCheck) {
                                             $Strike = $true
                                             $_.WasBenchmarked = $False
+                                            Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
                                             Write-Host "Stat Failed Write To File" -Foregroundcolor Red
                                         }
                                         else {
+                                            Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
                                             Write-Host "Recorded Hashrate For $($_.Name) $($_.Symbol) Is $($ScreenCheck)" -foregroundcolor "magenta"
-                                            if ($WattOmeter -eq "Yes") { Write-Host "Watt-O-Meter scored $($_.Name) $($_.Symbol) at $($GPUPower) Watts" -ForegroundColor magenta }
+                                            if ($WattOmeter -eq "Yes") { Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline; Write-Host "Watt-O-Meter scored $($_.Name) $($_.Symbol) at $($GPUPower) Watts" -ForegroundColor magenta }
                                             if (-not (Test-Path $NewHashrateFilePath)) {
                                                 Copy-Item $HashrateFilePath -Destination $NewHashrateFilePath -force
+                                                Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
                                                 Write-Host "$($_.Name) $($_.Symbol) Was Benchmarked And Backed Up" -foregroundcolor yellow
                                             }
                                             $_.WasBenchmarked = $True
                                             Get-Intensity $_.Type $_.Symbol $_.Path
+                                            Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
                                             Write-Host "Stat Written
 " -foregroundcolor green
                                             $Strike = $false
@@ -1783,6 +1806,7 @@ While ($true) {
                             if ($Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)".bad -ge $PoolBanCount) { $MinerPoolBan = $true }
                             ##Strike One
                             if ($MinerPoolBan -eq $false -and $MinerAlgoBan -eq $false -and $MinerBan -eq $false) {
+                                Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
                                 Write-Host "First Strike: There was issue with benchmarking.
 " -ForegroundColor DarkRed;
                             }
@@ -1791,6 +1815,7 @@ While ($true) {
                                 $minerjson = $_ | ConvertTo-Json -Compress
                                 $reason = Get-MinerTimeout $minerjson
                                 $HiveMessage = "Ban: $($_.Name)/$($_.Algo) From $($_.MinerPool)- $reason "
+                                Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
                                 Write-Host "Strike Two: Benchmarking Has Failed - $HiveMessage
 " -ForegroundColor DarkRed
                                 $NewPoolBlock = @()
@@ -1801,7 +1826,7 @@ While ($true) {
                                 $NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt"
                                 $Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" | ForEach-Object { try { $_.bad = 0 }catch { } }
                                 $HiveWarning = @{result = @{command = "timeout" } }
-                                if ($HiveOS -eq "Yes") { try { $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror }catch { Write-Warning "Failed To Notify HiveOS" } }
+                                if ($HiveOS -eq "Yes") { try { $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror }catch { Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline; Write-Warning "Failed To Notify HiveOS" } }
                                 Start-Sleep -S 1
                             }
                             ##Strike Three: He's Outta Here
@@ -1809,6 +1834,7 @@ While ($true) {
                                 $minerjson = $_ | ConvertTo-Json -Compress
                                 $reason = Get-MinerTimeout $minerjson
                                 $HiveMessage = "Ban: $($_.Name)/$($_.Algo) from all pools- $reason "
+                                Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
                                 Write-Host "Strike three: $HiveMessage
 " -ForegroundColor DarkRed
                                 $NewAlgoBlock = @()
@@ -1821,12 +1847,13 @@ While ($true) {
                                 $Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" | ForEach-Object { try { $_.bad = 0 }catch { } }
                                 $Warnings."$($_.Name)_$($_.Algo)" | ForEach-Object { try { $_.bad = 0 }catch { } }
                                 $HiveWarning = @{result = @{command = "timeout" } }
-                                if ($HiveOS -eq "Yes") { try { $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror }catch { Write-Warning "Failed To Notify HiveOS" } }
+                                if ($HiveOS -eq "Yes") { try { $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror }catch { Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline;  Write-Warning "Failed To Notify HiveOS" } }
                                 Start-Sleep -S 1
                             }
                             ##Strike Four: Miner is Finished
                             if ($MinerBan -eq $true) {
                                 $HiveMessage = "$($_.Name) sucks, shutting it down."
+                                Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
                                 Write-Host "$HiveMessage
 " -ForegroundColor DarkRed
                                 $NewMinerBlock = @()
@@ -1840,7 +1867,7 @@ While ($true) {
                                 $Warnings."$($_.Name)_$($_.Algo)" | ForEach-Object { try { $_.bad = 0 }catch { } }
                                 $Warnings."$($_.Name)" | ForEach-Object { try { $_.bad = 0 }catch { } }
                                 $HiveWarning = @{result = @{command = "timeout" } }
-                                if ($HiveOS -eq "Yes") { try { $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror }catch { Write-Warning "Failed To Notify HiveOS" } }
+                                if ($HiveOS -eq "Yes") { try { $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror }catch {  Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline; Write-Warning "Failed To Notify HiveOS" } }
                                 Start-Sleep -S 1
                             }
                         }

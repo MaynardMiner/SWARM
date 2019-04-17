@@ -5,9 +5,9 @@ $AMDTypes | ForEach-Object {
     ##Miner Path Information
     if ($amd."xmr-stak".$ConfigType) { $Path = "$($amd."xmr-stak".$ConfigType)" }
     else { $Path = "None" }
-    if ($amd.xmrstak.uri) { $Uri = "$($amd.xmrstak.uri)" }
+    if ($amd."xmr-stak".uri) { $Uri = "$($amd."xmr-stak".uri)" }
     else { $Uri = "None" }
-    if ($amd.xmrstak.minername) { $MinerName = "$($amd.xmrstak.minername)" }
+    if ($amd."xmr-stak".minername) { $MinerName = "$($amd."xmr-stak".minername)" }
     else { $MinerName = "None" }
     if ($Platform -eq "linux") { $Build = "Tar" }
     elseif ($Platform -eq "windows") { $Build = "Zip" }
