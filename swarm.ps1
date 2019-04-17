@@ -1754,6 +1754,7 @@ While ($true) {
                                             }
                                             $_.WasBenchmarked = $True
                                             Get-Intensity $_.Type $_.Symbol $_.Path
+                                            Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
                                             Write-Host "Stat Written
 " -foregroundcolor green
                                             $Strike = $false

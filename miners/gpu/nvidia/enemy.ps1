@@ -3,16 +3,16 @@ $NVIDIATypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
-    if ($nvidia.'z-enemy'.$ConfigType) { $Path = "$($nvidia.'z-enemy'.$ConfigType)" }
+    if ($nvidia.enemy.$ConfigType) { $Path = "$($nvidia.enemy.$ConfigType)" }
     else { $Path = "None" }
-    if ($nvidia.'z-enemy'.uri) { $Uri = "$($nvidia.'z-enemy'.uri)" }
+    if ($nvidia.enemy.uri) { $Uri = "$($nvidia.enemy.uri)" }
     else { $Uri = "None" }
-    if ($nvidia.'z-enemy'.MinerName) { $MinerName = "$($nvidia.'z-enemy'.MinerName)" }
+    if ($nvidia.enemy.MinerName) { $MinerName = "$($nvidia.enemy.MinerName)" }
     else { $MinerName = "None" }
     if ($Platform -eq "linux") { $Build = "Tar" }
     elseif ($Platform -eq "windows") { $Build = "Zip" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "z-enemy-$Num"; $Port = "5300$Num";
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "enemy-$Num"; $Port = "5300$Num";
 
     Switch ($Num) {
         1 { $Get_Devices = $NVIDIADevices1 }
@@ -28,7 +28,7 @@ $NVIDIATypes | ForEach-Object {
     else { $Devices = $Get_Devices }
 
     ##Get Configuration File
-    $GetConfig = "$dir\config\miners\z-enemy.json"
+    $GetConfig = "$dir\config\miners\enemy.json"
     try { $Config = Get-Content $GetConfig | ConvertFrom-Json }
     catch { Write-Warning "Warning: No config found at $GetConfig" }
 
@@ -61,7 +61,7 @@ $NVIDIATypes | ForEach-Object {
                     Path       = $Path
                     Devices    = $Devices
                     DeviceCall = "ccminer"
-                    Arguments  = "-a $($Config.$ConfigType.naming.$($_.Algorithm)) --no-nvml --log=`'$Log`' -o stratum+tcp://$($_.Host):$($_.Port) -b 0.0.0.0:$Port -u $($_.$User) -p $($_.$Pass)$($Diff) $($Config.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "-a $($Config.$ConfigType.naming.$($_.Algorithm)) --log=`'$Log`' -o stratum+tcp://$($_.Host):$($_.Port) -b 0.0.0.0:$Port -u $($_.$User) -p $($_.$Pass)$($Diff) $($Config.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) }
                     Quote      = if ($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)) { $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) * ($_.Price) }else { 0 }
                     PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
