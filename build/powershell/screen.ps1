@@ -373,7 +373,8 @@ function Restart-Miner {
 
 function Get-MinerHashRate {
     $BestActiveMiners | ForEach-Object {
-        if($DailyProfit.$($_.Type) -ne "bench"){$ScreenProfit = ($DailyProfit.$($_.Type).Day* $Rates.$Currency).ToString("N2")} else{ $ScreenProfit = "0.00" }
+        if($_.Profit_Day -ne "bench"){ $ScreenProfit = "$(($DailyProfit.$($_.Type).Day* $Rates.$Currency).ToString("N2")) $Currency/Day" } else{ $ScreenProfit = "Benchmarking" }
+        if($_.Fiat_Day -ne "bench"){ $CurrentProfit = "$($_.Fiat_Day) $Currency/Day" } else { $CurrentProfit = "Benchmarking" }
         if ($null -eq $_.Xprocess -or $_.XProcess.HasExited) { $_.Status = "Failed" }
         $Miner_HashRates = Get-HashRate -Type $_.Type
         $GetDayStat = Get-Stat "$($_.Name)_$($_.Algo)_HashRate"
@@ -393,9 +394,9 @@ function Get-MinerHashRate {
         Write-Host "$($_.Type) previous hashrates for $($_.Symbol) is" -nonewline
         Write-Host " $MinerPrevious/s" -foreground yellow
         Write-Host "[$(Get-Date)]: " -foreground yellow -nonewline
-        Write-Host "Current Profit Rating: $($_.Fiat_Day) $Currency/Day"
+        Write-Host "Current Profit Rating: $CurrentProfit"
         Write-Host "[$(Get-Date)]: " -foreground yellow -nonewline
-        Write-Host "Current Daily Profit: $ScreenProfit $Currency/Day
+        Write-Host "Current Daily Profit: $ScreenProfit
 "
     }
 }

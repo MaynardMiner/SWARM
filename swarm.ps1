@@ -1271,6 +1271,7 @@ While ($true) {
                     Profit         = 0
                     Power          = 0
                     Fiat_Day       = 0
+                    Profit_Day     = 0
                     Log            = $_.Log
                     Strike         = $false
                     Server         = $_.Server
@@ -1298,7 +1299,7 @@ While ($true) {
             $_.Profit = if ($SelectedMiner.Profit) { $SelectedMiner.Profit -as [decimal] }else { "bench" }
             $_.Power = $([Decimal]$($SelectedMiner.Power * 24) / 1000 * $WattEX)
             $_.Fiat_Day = if ($SelectedMiner.Profit) { ($SelectedMiner.Profit * $Rates.$Currency).ToString("N2") }else { "bench" }
-            if($_.Profit -ne "bench") { $DailyProfit.$($_.Type) = Set-Stat -Name "daily_$($_.Type)_profit" -Value ([double]$($SelectedMiner.Pool_Estimate)) }else{$DailyProfit.$($_.Type) = "bench"}
+            if($_.Profit -ne "bench") { $_.Profit_Day = Set-Stat -Name "daily_$($_.Type)_profit" -Value ([double]$($SelectedMiner.Pool_Estimate)) }else{$_.Profit_Day = "bench"}
         }
         
         $BestActiveMiners | ConvertTo-Json | Out-File ".\build\txt\bestminers.txt"
@@ -1520,9 +1521,9 @@ While ($true) {
         Get-MinerStatus | Out-File ".\build\txt\minerstats.txt" -Append
         Get-Charts | Out-File ".\build\txt\charts.txt" -Append
         $ProfitMessage = $null
-        $Type | % {
-            if($DailyProfit.$($_) -ne "bench"){$ScreenProfit = ($DailyProfit.$($_).Day* $Rates.$Currency).ToString("N2")} else{ $ScreenProfit = "0.00" }
-            $ProfitMessage = "Current Daily Profit For $($_): $ScreenProfit $Currency/Day"
+        $BestActiveMiners | % {
+            if($_.Profit_Day -ne "bench"){$ScreenProfit = "$(($_.Profit_Day * $Rates.$Currency).ToString("N2")) $Currency/Day"} else{ $ScreenProfit = "Benchmarking" }
+            $ProfitMessage = "Current Daily Profit For $($_.Type): $ScreenProfit"
             $ProfitMessage | Out-File ".\build\txt\minerstats.txt" -Append
             $ProfitMessage | Out-File ".\build\txt\charts.txt" -Append
         }
