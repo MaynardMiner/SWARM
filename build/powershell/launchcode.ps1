@@ -163,8 +163,8 @@ function Start-LaunchCode {
                 #dir
                 $WorkingDirectory = Join-Path $Dir $(Split-Path $($MinerCurrent.Path))
 
-                            ##Classic Logo For Windows
-                            Write-Host "
+                ##Classic Logo For Windows
+                Write-Host "
             ______________
           /.----------..-'
    -.     ||           \\
@@ -208,9 +208,9 @@ function Start-LaunchCode {
                     }
                 }
                 ##Determine if Miner needs logging
-                if ($MinerCurrent.Log -ne "miner_generated") { 
-                    Switch($MinerCurrent.API) {
-                        "lolminer"{
+                if ($MinerCurrent.Log -ne "miner_generated") {
+                    Switch ($MinerCurrent.API) {
+                        "lolminer" {
                             $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FIlePath ""$Logs"" -Append; `$Output | Out-Host;}`'" 
                         }
                         "ccminer" {
@@ -228,7 +228,7 @@ function Start-LaunchCode {
                         default { 
                             $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output += `$_ -replace `"\\[\d+(;\d+)?m`"; if(`$Output -cmatch `"`\n`"){`$OutPut | Out-File -FIlePath ""$Logs"" -Append; `$Output | Out-Host; `$Output = `$null}}`'" 
                         }
-                 }
+                    }
                 }
                 else { $script += "Invoke-Expression "".\$($MinerCurrent.MinerName) $MinerArguments""" }            
                 $script | Out-File "$WorkingDirectory\swarm-start.ps1"
@@ -418,7 +418,8 @@ function Start-LaunchCode {
         Write-Host "Switching To New Pool"
         $Commands = "switchpool|1"
         $response = Get-TCP -Server $AIP -Port $MinerCurrent.Port -Timeout 5 -Message $Commands
-        if($response){$MinerProcess = @{StartTime = (Get-Date); HasExited = $false}}
+        if ($response) { $MinerProcess = @{StartTime = (Get-Date); HasExited = $false }
+        }
         $MinerProcess
     }
 }

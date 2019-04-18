@@ -819,6 +819,11 @@ While ($true) {
     $SWARMAlgorithm = $SWARMParams.Algorithm;                  $Coin = $SWARMParams.Coin
     $ASIC_IP = $SWARMParams.ASIC_IP;                           $ASIC_ALGO = $SWARMParams.ASIC_ALGO;
 
+    
+    ## Make it so that if Farm_Hash Is Not Specified, HiveOS functions are removed.
+    ## In case user forgets to change -HiveOS to "No"
+    if(-not $Farm_Hash){$HiveOS = "No"}
+
     if ($SWARMParams.Rigname1 -eq "Donate") { $Donating = $True }
     else { $Donating = $False }
     if ($Donating -eq $True) {

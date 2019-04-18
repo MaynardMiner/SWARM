@@ -1,7 +1,7 @@
 Param (
   [Parameter(Mandatory = $true)]
   [int]$n,
-  [Parameter(Mandatory = $true, Position=0)]
+  [Parameter(Mandatory = $false, Position=0)]
   [string]$Command,
   [Parameter(Mandatory = $false, Position=1)]
   [string]$Arg1,
@@ -26,6 +26,8 @@ Param (
   [Parameter(Mandatory = $false)]
   [switch]$OnChange
 )
+
+if(-not $n){$n = 5}
 
 While($True) {
   $OutPut = $null

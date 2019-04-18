@@ -32,6 +32,15 @@ $dir | set-content ".\build\bash\dir.sh"
          Set-Location $Dir     
     }
 
+    if(Test-Path ".\build\bash\view")
+    {
+         Copy-Item ".\build\bash\view" -Destination "/usr/bin" -force | Out-Null
+         Set-Location "/usr/bin"
+         Start-Process "chmod" -ArgumentList "+x view"
+         Set-Location "/"
+         Set-Location $Dir     
+    }
+
     if(Test-Path ".\build\apps\wolfamdctrl")
     {
       Start-Process ln -ArgumentList "-s $dir/build/apps/wolfamdctrl /usr/bin/wolfamdctrl" -Wait
