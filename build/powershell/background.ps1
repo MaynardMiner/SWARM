@@ -62,7 +62,7 @@ if ($Platforms -eq "windows") {
 . .\build\api\miners\miniz.ps1;      . .\build\api\miners\sgminer.ps1;      . .\build\api\miners\trex.ps1;
 . .\build\api\miners\wildrig.ps1;    . .\build\api\miners\xmrig-opt.ps1;    . .\build\api\miners\xmrstak.ps1;
 . .\build\powershell\hashrates.ps1;  . .\build\powershell\commandweb.ps1;   . .\build\powershell\response.ps1;
-. .\build\powershell\hiveoc.ps1;     . .\build\powershell\octune.ps1;       . .\build\powershell\statcommand.ps1;
+. .\build\powershell\hiveoc.ps1;     . .\build\powershell\statcommand.ps1;
 . .\build\api\miners\cgminer.ps1;    . .\build\api\miners\nbminer.ps1;
 
 ##Start API Server
@@ -134,8 +134,7 @@ While ($True) {
 
     ## Set-OC
     if ($Switched -eq $true) {
-        Write-Host "Starting Tuning"
-        Start-OC -Platforms $Platforms -Dir $WorkingDir
+        Write-Host "Miners Have Switched"
         ## ADD Delay for OC and Miners To Start Up
         Start-Sleep -S 10
     }

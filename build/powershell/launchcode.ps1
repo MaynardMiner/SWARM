@@ -156,9 +156,6 @@ function Start-LaunchCode {
         if ($Platforms -eq "windows") {
             $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
             if ($MinerProcess -eq $null -or $MinerProcess.HasExited -eq $true) {
-
-                ##User specified delay
-                Start-Sleep -S $MinerCurrent.Delay
             
                 #dir
                 $WorkingDirectory = Join-Path $Dir $(Split-Path $($MinerCurrent.Path))
@@ -332,9 +329,6 @@ function Start-LaunchCode {
 
             ##Bash Script to free Port
             Start-Process ".\build\bash\killcx.sh" -ArgumentList $MinerCurrent.Port
-
-            ##User generated Delay (Optional)
-            Start-Sleep -S $MinerCurrent.Delay
 
             ##Notification To User That Miner Is Attempting To start
             Write-Host "Starting $($MinerCurrent.Name) Mining $($MinerCurrent.Symbol) on $($MinerCurrent.Type)" -ForegroundColor Cyan

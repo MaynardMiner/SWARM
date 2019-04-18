@@ -187,6 +187,7 @@ Write-Host "OS = $Platform" -ForegroundColor Green
 . .\build\powershell\newsort.ps1;      . .\build\powershell\screen.ps1;          . .\build\powershell\commandweb.ps1;
 . .\build\powershell\response.ps1;     . .\build\api\html\api.ps1;               . .\build\powershell\config_file.ps1;
 . .\build\powershell\altwallet.ps1;    . .\build\api\pools\include.ps1;          . .\build\api\miners\include.ps1;
+. .\build\powershell\octune.ps1;
 
 if ($Platform -eq "linux") {. .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1}
 if ($Platform -eq "windows") {. .\build\powershell\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1; . .\build\powershell\environment.ps1; }
@@ -1338,6 +1339,7 @@ While ($true) {
 
         ## Simple hash table for clearing ports. Used Later
         $PreviousMinerPorts = @{AMD1 = ""; NVIDIA1 = ""; NVIDIA2 = ""; NVIDIA3 = ""; CPU = "" }
+        $ClearedOC = $false
 
 
         ## Records miner run times, and closes them. Starts New Miner instances and records
@@ -1382,11 +1384,20 @@ While ($true) {
         ##Start them if neccessary
         $BestActiveMiners | ForEach-Object {
                 if ($null -eq $_.XProcess -or $_.XProcess.HasExited -and $Lite -eq "No") {
+                    Start-Sleep -S $_.Delay
+                    ##First Do OC
+                    if($ClearedOC -eq $False) {
+                        $OCFile = ".\build\txt\oc-settings.txt"
+                        if(Test-Path $OCFile){Clear-Content $OcFile -Force; "Current OC Settings:" | Set-Content $OCFile}
+                        $ClearedOC = $true
+                    }
+                    $Current = $_ | ConvertTo-Json -Compress
+                    Start-OC -Platforms $Platform -NewMiner $Current -Dir $dir -Website $Website
+
                     if ($TimeDeviation -ne 0) {
                         $Restart = $true
                         $_.Activated++
                         $_.InstanceName = "$($_.Type)-$($Instance)"
-                        $Current = $_ | ConvertTo-Json -Compress
                         if($_.Type -ne "ASIC"){$PreviousPorts = $PreviousMinerPorts | ConvertTo-Json -Compress}
                         if($_.Type -ne "ASIC"){$_.Xprocess = Start-LaunchCode -PP $PreviousPorts -Platforms $Platform -NewMiner $Current}
                         else{$_.Xprocess = Start-LaunchCode -Platforms $Platform -NewMiner $Current -AIP $ASIC_IP}
