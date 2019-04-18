@@ -140,7 +140,7 @@ function Get-Miners {
     }
     
     $ScreenedMiners | ForEach-Object { $GetMiners.Remove($_) } | Out-Null;
-    if ($Note) { $Note | ForEach-Object { Write-Host "$($_)" -ForegroundColor Magenta } }
+    if ($Note) { $Note | ForEach-Object { Write-Host "[$(Get-Date)]: " -foreground yellow -nonewline; Write-Host "$($_)" -ForegroundColor Magenta } }
     $GetMiners
 }
 

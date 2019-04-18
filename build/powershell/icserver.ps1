@@ -470,7 +470,7 @@ command"
                 $DayStat = "$($GetDayStat.Day)"
                 $MinerPrevious = "$($DayStat | ConvertTo-Hash)"
                 $ScreenHash = "$($Miner_HashRates | ConvertTo-Hash)"
-                Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
+                Write-Host "[$(Get-Date)]: " -foreground yellow -nonewline
                 Write-Host " $($_.Type) is currently Running: " -ForegroundColor green -nonewline
                 $MinerStatus
                 Write-Host "$($_.Name) current hashrate for $($_.Symbol) is" -nonewline

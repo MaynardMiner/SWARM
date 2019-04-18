@@ -351,7 +351,7 @@ function Restart-Miner {
                 }
                 else {
                     $_.Status = "Running"
-                    Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
+                    Write-Host "[$(Get-Date)]: " -foreground yellow -nonewline
                     Write-Host "$($_.MinerName) Is Running!" -ForegroundColor Green
                 }
                 Write-Host "
@@ -379,19 +379,21 @@ function Get-MinerHashRate {
         $DayStat = "$($GetDayStat.Day)"
         $MinerPrevious = "$($DayStat | ConvertTo-Hash)"
         $ScreenHash = "$($Miner_HashRates | ConvertTo-Hash)"
-        Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
+        Write-Host "[$(Get-Date)]: " -foreground yellow -nonewline
         Write-Host "$($_.Type) is currently" -foreground green -nonewline
         if ($_.Status -eq "Running") { $MinerStatus = Write-Host " Running: " -ForegroundColor green -nonewline }
         if ($_.Status -eq "Failed") { $MinerStatus = Write-Host " Not Running: " -ForegroundColor darkred -nonewline } 
         $MinerStatus
         Write-Host "$($_.Name) current hashrate for $($_.Symbol) is" -nonewline
         Write-Host " $ScreenHash/s" -foreground green
-        Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
+        Write-Host "[$(Get-Date)]: " -foreground yellow -nonewline
         Write-Host "$($_.Type) is currently mining on $($_.MinerPool)" -foregroundcolor Cyan
-        Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
+        Write-Host "[$(Get-Date)]: " -foreground yellow -nonewline
         Write-Host "$($_.Type) previous hashrates for $($_.Symbol) is" -nonewline
-        Write-Host " $MinerPrevious/s
- " -foreground yellow
+        Write-Host " $MinerPrevious/s" -foreground yellow
+        Write-Host "[$(Get-Date)]: " -foreground yellow -nonewline
+        Write-Host "Current Profit Rating: $($_.Fiat_Day) $Currency/Day
+"
     }
 }
 
@@ -400,7 +402,7 @@ function Set-Countdown {
     else { $Countdown = ([math]::Round(($MinerInterval - 20) - $MinerWatch.Elapsed.TotalSeconds)) }
     if ($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false) { $CountMessage = "SWARM Mode Starts: $($Countdown) seconds" }
     else { $CountMessage = "Time Left Until Database Starts: $($Countdown) seconds" }
-    Write-Host "[$(Get-Date)]:" -foreground yellow -nonewline
+    Write-Host "[$(Get-Date)]: " -foreground yellow -nonewline
     Write-Host "$CountMessage 
 "-foreground DarkMagenta
 }
