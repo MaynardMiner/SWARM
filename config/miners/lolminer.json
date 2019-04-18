@@ -16,6 +16,10 @@
       "zhash": "zhash",
       "equihash192": "equihash192"
     },
+    "fee": {
+      "zhash": 1,
+      "equihash192": 1
+    },
     "oc": {
       "zhash": {
         "dpm": "",

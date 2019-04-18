@@ -21,6 +21,12 @@
             "cryptonightv7": "cn/1",
             "cryptonightheavy": "cn-heavy",
             "cryptonightr": "cn/r"
+        },
+        "fee": {
+            "cryptonightv8": 1,
+            "cryptonightv7": 1,
+            "cryptonightheavy": 1,
+            "cryptonightr": 1
         }
     }
 }

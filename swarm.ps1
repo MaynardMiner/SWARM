@@ -165,6 +165,9 @@ param(
 ## Set Current Path
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 
+## Date Bug
+$global:cultureENUS = New-Object System.Globalization.CultureInfo("en-US")
+
 if (-not $Platform) {
     Write-Host "Detecting Platform..." -ForegroundColor Cyan
     if (Test-Path "C:\") { $Platform = "windows" }
@@ -1286,12 +1289,16 @@ While ($true) {
             else { $_.BestMiner = $false }
         }
 
+        ## Daily Profit Table
+        $DailyProfit = @{}; $Type | %{ $DailyProfit.Add("$($_)", $null) }
+
         ##Modify BestMiners for API
         $BestActiveMiners | ForEach-Object {
             $SelectedMiner = $BestMiners_Combo | Where-Object Type -EQ $_.Type | Where-Object Path -EQ $_.Path | Where-Object Arguments -EQ $_.Arguments
             $_.Profit = if ($SelectedMiner.Profit) { $SelectedMiner.Profit -as [decimal] }else { "bench" }
             $_.Power = $([Decimal]$($SelectedMiner.Power * 24) / 1000 * $WattEX)
             $_.Fiat_Day = if ($SelectedMiner.Profit) { ($SelectedMiner.Profit * $Rates.$Currency).ToString("N2") }else { "bench" }
+            if($_.Profit -ne "bench") { $DailyProfit.$($_.Type) = Set-Stat -Name "daily_$($_.Type)_profit" -Value ([double]$($SelectedMiner.Pool_Estimate)) }else{$DailyProfit.$($_.Type) = "bench"}
         }
         
         $BestActiveMiners | ConvertTo-Json | Out-File ".\build\txt\bestminers.txt"
@@ -1512,6 +1519,13 @@ While ($true) {
         $StatusDate | Out-File ".\build\txt\charts.txt"
         Get-MinerStatus | Out-File ".\build\txt\minerstats.txt" -Append
         Get-Charts | Out-File ".\build\txt\charts.txt" -Append
+        $ProfitMessage = $null
+        $Type | % {
+            if($DailyProfit.$($_) -ne "bench"){$ScreenProfit = ($DailyProfit.$($_).Day* $Rates.$Currency).ToString("N2")} else{ $ScreenProfit = "0.00" }
+            $ProfitMessage = "Current Daily Profit For $($_): $ScreenProfit $Currency/Day"
+            $ProfitMessage | Out-File ".\build\txt\minerstats.txt" -Append
+            $ProfitMessage | Out-File ".\build\txt\charts.txt" -Append
+        }
         $mcolor = "93"
         $me = [char]27
         $MiningStatus = "$me[${mcolor}mCurrently Mining $($BestMiners_Combo.Algo) Algorithm${me}[0m"

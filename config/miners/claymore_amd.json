@@ -24,6 +24,11 @@
       "daggerhashimoto": "daggerhashimoto",
       "dagger": "dagger"
     },
+    "fee": {
+      "ethash": 1,
+      "daggerhashimoto": 1,
+      "dagger": 1
+    },
     "oc": {
       "ethash": {
         "dpm": "",

@@ -21,6 +21,12 @@
       "yescryptr16": "yescryptr16",
       "yescryptr32": "yescryptr32"
     },
+    "fee": {
+      "yescrypt": 0,
+      "yescryptr8": 0,
+      "yescryptr16": 0,
+      "yescryptr32": 0
+    },
     "oc": {
       "yescrypt": {
         "Power": "",
@@ -70,6 +76,12 @@
       "yescryptr16": "yescryptr16",
       "yescryptr32": "yescryptr32"
     },
+    "fee": {
+      "yescrypt": 0,
+      "yescryptr8": 0,
+      "yescryptr16": 0,
+      "yescryptr32": 0
+    },
     "oc": {
       "yescrypt": {
         "Power": "",
@@ -118,6 +130,12 @@
       "yescryptr8": "yescryptr8",
       "yescryptr16": "yescryptr16",
       "yescryptr32": "yescryptr32"
+    },
+    "fee": {
+      "yescrypt": 0,
+      "yescryptr8": 0,
+      "yescryptr16": 0,
+      "yescryptr32": 0
     },
     "oc": {
       "yescrypt": {

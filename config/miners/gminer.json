@@ -40,6 +40,18 @@
       "zhash": "zhash",
       "grincuckatoo31": "grincuckatoo31"
     },
+    "fee": {
+      "beam": 2,
+      "grincuckaroo29": 2,
+      "equihash-btg": 2,
+      "equihash192": 2,
+      "equihash144": 2,
+      "equihash96": 2,
+      "equihash210": 2,
+      "equihash200": 2,
+      "zhash": 2,
+      "grincuckatoo31": 2
+    },
     "oc": {
       "equihash-btg": {
         "Power": "",
@@ -143,6 +155,18 @@
       "zhash": "zhash",
       "grincuckatoo31": "grincuckatoo31"
     },
+    "fee": {
+      "beam": 2,
+      "grincuckaroo29": 2,
+      "equihash-btg": 2,
+      "equihash192": 2,
+      "equihash144": 2,
+      "equihash96": 2,
+      "equihash210": 2,
+      "equihash200": 2,
+      "zhash": 2,
+      "grincuckatoo31": 2
+    },
     "oc": {
       "equihash-btg": {
         "Power": "",
@@ -245,6 +269,18 @@
       "equihash200": "equihash200",
       "zhash": "zhash",
       "grincuckatoo31": "grincuckatoo31"
+    },
+    "fee": {
+      "beam": 2,
+      "grincuckaroo29": 2,
+      "equihash-btg": 2,
+      "equihash192": 2,
+      "equihash144": 2,
+      "equihash96": 2,
+      "equihash210": 2,
+      "equihash200": 2,
+      "zhash": 2,
+      "grincuckatoo31": 2
     },
     "oc": {
       "equihash-btg": {

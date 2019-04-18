@@ -17,6 +17,9 @@
     "naming": {
       "nrghash": "nrghash"
     },
+    "fee": {
+      "nrghash": 0
+    },
     "oc": {
       "nrghash": {
         "dpm": "",

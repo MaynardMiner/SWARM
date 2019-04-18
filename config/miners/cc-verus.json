@@ -14,6 +14,9 @@
       "naming": {
         "verushash": "verus"
       },
+      "fee": {
+        "verushash": 0
+      },  
       "oc": {
         "verushash": {
           "Power": "",
@@ -36,6 +39,9 @@
       "naming": {
         "verushash": "verus"
       },
+      "fee": {
+        "verushash": 0
+      },  
       "oc": {
         "verushash": {
           "Power": "",
@@ -58,6 +64,9 @@
       "naming": {
         "verushash": "verus"
       },
+      "fee": {
+        "verushash": 0
+      },  
       "oc": {
         "verushash": {
           "Power": "",

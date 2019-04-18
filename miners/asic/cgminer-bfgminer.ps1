@@ -14,10 +14,11 @@ $ASIC_ALGO | ForEach-Object {
     $MinerAlgo = $_
     $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
         if ($ASIC_ALGO -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
-            $Pass = $_.Pass1 -replace ",","`\,"
+            $Pass = $_.Pass1 -replace ",", "`\,"
             [PSCustomObject]@{
                 Coin       = $Coins
-                Delay      = $Config.$ConfigType.Delay
+                Delay      = $Config.$ConfigType.delay
+                Fees       = $Config.$ConfigType.fee.$($_.Algorithm)
                 Platform   = $Platform
                 Symbol     = "$($_.Symbol)"
                 MinerName  = $MinerName

@@ -13,6 +13,9 @@
     "naming": {
       "beam": "beam"
     },
+    "fee": {
+      "beam": 1
+    },
     "oc": {
       "beam": {
         "dpm": "",

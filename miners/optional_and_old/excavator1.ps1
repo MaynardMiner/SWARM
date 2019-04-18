@@ -52,6 +52,7 @@ $NVIDIATypes | ForEach-Object {
                 [PSCustomObject]@{
                     MName       = $Name
                     Delay       = $Config.$ConfigType.delay
+                    Fees        = $Config.$ConfigType.fee.$($_.Algorithm)
                     Symbol      = "$($_.Algorithm)"
                     MinerName   = $MinerName
                     Prestart    = $PreStart

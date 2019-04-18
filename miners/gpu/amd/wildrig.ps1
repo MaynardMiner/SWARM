@@ -51,6 +51,7 @@ $AMDTypes | ForEach-Object {
                     MName      = $Name
                     Coin       = $Coins
                     Delay      = $Config.$ConfigType.delay
+                    Fees       = $Config.$ConfigType.fee.$($_.Algorithm)
                     Symbol     = "$($_.Symbol)"
                     MinerName  = $MinerName
                     Prestart   = $PreStart
@@ -58,7 +59,7 @@ $AMDTypes | ForEach-Object {
                     Path       = $Path
                     Devices    = "none"
                     DeviceCall = "wildrig"
-                    Arguments  = "--opencl-platform=$AMDPlatform --api-port $Port --algo $($Config.$ConfigType.naming.$($_.Algorithm)) --url stratum+tcp://$($_.Host):$($_.Port) --user $($_.$User) --pass $($_.$Pass)$($Diff) $($Config.$ConfigType.commands.$($Config.$ConfigType.naming.$($_.Algorithm)))"
+                    Arguments  = "--opencl-platform=$AMDPlatform --api-port $Port --algo $($Config.$ConfigType.naming.$($_.Algorithm)) --url stratum+tcp://$($_.Host):$($_.Port) --donate-level 1 --user $($_.$User) --pass $($_.$Pass)$($Diff) $($Config.$ConfigType.commands.$($Config.$ConfigType.naming.$($_.Algorithm)))"
                     HashRates  = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) }
                     Quote      = if ($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)) { $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) * ($_.Price) }else { 0 }
                     PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }

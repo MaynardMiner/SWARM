@@ -24,6 +24,11 @@
       "xevan": "xevan",
       "skunk": "skunk"
     },
+    "fee": {
+      "c11": 0,
+      "xevan": 0,
+      "skunk": 0
+    },
     "oc": {
       "c11": {
         "dpm": "",

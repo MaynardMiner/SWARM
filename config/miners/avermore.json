@@ -29,6 +29,13 @@
       "x16s": "x16s",
       "equihash": "equihash"
     },
+    "fee": {
+      "myr-gr": 0,
+      "groestl": 0,
+      "x16r": 0,
+      "x16s": 0,
+      "equihash": 0
+    },
     "oc": {
       "myr-gr": {
         "dpm": "",

@@ -46,13 +46,12 @@ $NVIDIATypes | ForEach-Object {
     ##Build Miner Settings
     $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
         $MinerAlgo = $_
-        switch($MinerAlgo)
-        {
-         "daggerhashimoto"{$Stratum = "ethnh+tcp://"; $A = "ethash"}
-         "grincuckaroo29" {$Stratum = "stratum+tcp://"; $A = "cuckaroo"}
-         "grincuckatoo31" {$Stratum = "stratum+tcp://"; $A = "cuckatoo"}
-         "ethash" {$Stratum = "stratum+ssl://"; $A = "ethash"}
-         default {$Stratum = "stratum+tcp://" }
+        switch ($MinerAlgo) {
+            "daggerhashimoto" { $Stratum = "ethnh+tcp://"; $A = "ethash" }
+            "grincuckaroo29" { $Stratum = "stratum+tcp://"; $A = "cuckaroo" }
+            "grincuckatoo31" { $Stratum = "stratum+tcp://"; $A = "cuckatoo" }
+            "ethash" { $Stratum = "stratum+ssl://"; $A = "ethash" }
+            default { $Stratum = "stratum+tcp://" }
         }
         $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
             if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
@@ -61,6 +60,7 @@ $NVIDIATypes | ForEach-Object {
                     MName      = $Name
                     Coin       = $Coins
                     Delay      = $Config.$ConfigType.delay
+                    Fees       = $Config.$ConfigType.fee.$($_.Algorithm)
                     Symbol     = "$($_.Symbol)"
                     MinerName  = $MinerName
                     Prestart   = $PreStart

@@ -42,12 +42,13 @@ $CPUTypes | ForEach-Object {
         $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
             if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
                 if ($Config.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
-                if($Platform -eq "windows"){$APISet = "--http-enabled --http-port=10002"}
-                else{$APISet = "--api-port=10002"}
+                if ($Platform -eq "windows") { $APISet = "--http-enabled --http-port=10002" }
+                else { $APISet = "--api-port=10002" }
                 [PSCustomObject]@{
                     MName      = $Name
                     Coin       = $Coins
                     Delay      = $Config.$ConfigType.delay
+                    Fees       = $Config.$ConfigType.fee.$($_.Algorithm)
                     Symbol     = "$($_.Symbol)"
                     MinerName  = $MinerName
                     Prestart   = $PreStart

@@ -37,6 +37,17 @@
       "bitcore": "bitcore",
       "tribus": "tribus"
     },
+    "fee": {
+      "aergo": 1,
+      "hex": 1,
+      "timetravel": 1,
+      "xevan": 1,
+      "sonoa": 1,
+      "x16r": 1,
+      "x16s": 1,
+      "bitcore": 1,
+      "tribus": 1
+    },
     "oc": {
       "aergo": {
         "Power": "",
@@ -131,6 +142,17 @@
       "bitcore": "bitcore",
       "tribus": "tribus"
     },
+    "fee": {
+      "aergo": 1,
+      "hex": 1,
+      "timetravel": 1,
+      "xevan": 1,
+      "sonoa": 1,
+      "x16r": 1,
+      "x16s": 1,
+      "bitcore": 1,
+      "tribus": 1
+    },
     "oc": {
       "aergo": {
         "Power": "",
@@ -224,6 +246,17 @@
       "x16s": "x16s",
       "bitcore": "bitcore",
       "tribus": "tribus"
+    },
+    "fee": {
+      "aergo": 1,
+      "hex": 1,
+      "timetravel": 1,
+      "xevan": 1,
+      "sonoa": 1,
+      "x16r": 1,
+      "x16s": 1,
+      "bitcore": 1,
+      "tribus": 1
     },
     "oc": {
       "aergo": {

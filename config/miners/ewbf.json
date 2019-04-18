@@ -31,6 +31,15 @@
       "equihash200": "equihash200",
       "zhash": "zhash"
     },
+    "fee": {
+      "equihash-btg": 2,
+      "equihash192": 2,
+      "equihash144": 2,
+      "equihash96": 2,
+      "equihash210": 2,
+      "equihash200": 2,
+      "zhash": 2
+    },
     "oc": {
       "equihash-btg": {
         "Power": "",
@@ -107,6 +116,15 @@
       "equihash200": "equihash200",
       "zhash": "zhash"
     },
+    "fee": {
+      "equihash-btg": 2,
+      "equihash192": 2,
+      "equihash144": 2,
+      "equihash96": 2,
+      "equihash210": 2,
+      "equihash200": 2,
+      "zhash": 2
+    },
     "oc": {
       "equihash-btg": {
         "Power": "",
@@ -182,6 +200,15 @@
       "equihash210": "equihash210",
       "equihash200": "equihash200",
       "zhash": "zhash"
+    },
+    "fee": {
+      "equihash-btg": 2,
+      "equihash192": 2,
+      "equihash144": 2,
+      "equihash96": 2,
+      "equihash210": 2,
+      "equihash200": 2,
+      "zhash": 2
     },
     "oc": {
       "equihash-btg": {

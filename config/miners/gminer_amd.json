@@ -39,6 +39,16 @@
       "equihash200": "equihash200",
       "zhash": "zhash"
     },
+    "fee": {
+      "beam": 2,
+      "grincuckaroo29": 2,
+      "equihash-btg": 2,
+      "equihash192": 2,
+      "equihash144": 2,
+      "equihash210": 2,
+      "equihash200": 2,
+      "zhash": 2
+    },
     "oc": {
       "beam": {
         "dpm": "",

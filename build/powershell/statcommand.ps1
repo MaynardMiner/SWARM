@@ -25,6 +25,12 @@ function get-NIST {
     $GetNIST
 }
 
+function Get-NewDate {
+    $myDate = (Get-Date).toString("MM/dd/yyyy HH:mm:ss", $global:cultureENUS)
+    $myDate
+}
+
+
 function get-stats {
     param(
         [Parameter(Mandatory = $true)]
@@ -243,7 +249,7 @@ function Invoke-SwarmMode {
     if ($DateDay -gt 31) {$DateDay = 1; $DateMonth = [Int]$SwarmMode_Start.Month; $DateMonth = [int]$DateMonth + 1}else {$DateMonth = [Int]$SwarmMode_Start.Month; $DateMonth = [int]$DateMonth}
     if ($DateMonth -gt 12) {$DateMonth = 1; $DateYear = [Int]$SwarmMode_Start.Year; $DateYear = [int]$DateYear + 1}else {$DateYear = [Int]$SwarmMode_Start.Year; $DateYear = [int]$DateYear}
     $ReadyValue = (Get-Date -Year $DateYear -Month $DateMonth -Day $DateDay -Hour $DateHour -Minute $DateMinute -Second 0 -Millisecond 0)
-    $StartValue = [math]::Round((([DateTime](get-date)) - $ReadyValue).TotalSeconds)
+    $StartValue = [math]::Round((([DateTime](Get-Date)) - $ReadyValue).TotalSeconds)
     $StartValue
 }
 

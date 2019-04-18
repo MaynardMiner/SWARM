@@ -36,6 +36,16 @@
       "cryptonightr": "cryptonight_r",
       "cryptonight_v8_reversewaltz": "cryptonight_v8_reversewaltz"
     },
+    "fee": {
+      "cryptonightv7": 1,
+      "cryptonightv8": 1,
+      "cryptonightheavy": 1,
+      "cryptonightgpu": 1,
+      "cryptonight_superfast": 1,
+      "cryptonightsuperfast": 1,
+      "cryptonightr": 1,
+      "cryptonight_v8_reversewaltz": 1
+    },
     "oc": {
       "cryptonightv7": {
         "dpm": "",

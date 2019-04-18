@@ -237,7 +237,7 @@ function start-minersorting {
             $Miner_HashRates | Add-Member $_ ([Double]$Miner.HashRates.$_)
             $Miner_PowerX | Add-Member $_ ([Double]$Miner.PowerX.$_)
             $Miner_Profits | Add-Member $_ ([Decimal]($Miner.Quote - $WattCalc3))
-            $Miner_Pool_Estimate | Add-Member $_ ([Decimal]($Miner.Quote))
+            $Miner_Pool_Estimate | Add-Member $_ ([Decimal]($Miner.Quote) * (1 - ($Miner.fees / 100)))
         }
             
         $Miner_Power = [Double]($Miner_PowerX.PSObject.Properties.Value | Measure-Object -Sum).Sum

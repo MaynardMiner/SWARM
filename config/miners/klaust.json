@@ -16,6 +16,10 @@
       "lyra2v3": "Lyra2REv3",
       "lyra2rev3": "Lyra2REv3"
     },
+    "fee": {
+      "lyra2v3": 0,
+      "lyra2rev3": 0
+    },
     "oc": {
       "lyra2v3": {
         "Power": "",
@@ -47,6 +51,10 @@
       "lyra2v3": "Lyra2REv3",
       "lyra2rev3": "Lyra2REv3"
     },
+    "fee": {
+      "lyra2v3": 0,
+      "lyra2rev3": 0
+    },
     "oc": {
       "lyra2v3": {
         "Power": "",
@@ -77,6 +85,10 @@
     "naming": {
       "lyra2v3": "Lyra2REv3",
       "lyra2rev3": "Lyra2REv3"
+    },
+    "fee": {
+      "lyra2v3": 0,
+      "lyra2rev3": 0
     },
     "oc": {
       "lyra2v3": {

@@ -19,6 +19,11 @@
         "grincuckaroo29": "daggerhashimoto",
         "grincuckatoo31": "grincuckatoo31"
       },
+      "fee": {
+        "daggerhashimoto": 0.65,
+        "grincuckaroo29": 2,
+        "grincuckatoo31": 2
+      },
       "oc": {
         "daggerhashimoto": {
           "Power": "",
@@ -67,6 +72,11 @@
         "grincuckaroo29": "grincuckaroo29",
         "grincuckatoo31": "grincuckatoo31"
       },
+      "fee": {
+        "daggerhashimoto": 0.65,
+        "grincuckaroo29": 2,
+        "grincuckatoo31": 2
+      },
       "oc": {
         "daggerhashimoto": {
           "Power": "",
@@ -112,6 +122,11 @@
         "daggerhashimoto": "daggerhashimoto",
         "grincuckaroo29": "grincuckaroo29",
         "grincuckatoo31": "grincuckatoo31"
+      },
+      "fee": {
+        "daggerhashimoto": 0.65,
+        "grincuckaroo29": 2,
+        "grincuckatoo31": 2
       },
       "oc": {
         "daggerhashimoto": {

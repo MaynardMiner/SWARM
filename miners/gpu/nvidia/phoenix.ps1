@@ -63,6 +63,8 @@ $NVIDIATypes | ForEach-Object {
                     MName      = $MName
                     Coin       = $Coins
                     Delay      = $Config.$ConfigType.delay
+                Fees        = $Config.$ConfigType.fee.$($_.Algorithm)
+
                     Symbol     = "$($_.Symbol)"
                     MinerName  = $MinerName
                     Prestart   = $PreStart

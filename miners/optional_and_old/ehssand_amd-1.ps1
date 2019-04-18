@@ -46,8 +46,8 @@ $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Obje
             if ($Config.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
             [PSCustomObject]@{
                 Coin       = $Coins
-                    Delay      = $Config.$ConfigType.delay
-
+                Delay      = $Config.$ConfigType.delay
+                Fees       = $Config.$ConfigType.fee.$($_.Algorithm)
                 Symbol     = "$($_.Symbol)"
                 MinerName  = $MinerName
                 Prestart   = $PreStart
@@ -71,7 +71,7 @@ $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Obje
                 API        = "sgminer-gm"
                 Wallet     = "$($_.$User)"
                 URI        = $Uri
-                Server    = "localhost"
+                Server     = "localhost"
                 BUILD      = $Build
                 Algo       = "$($_.Algorithm)"
                 Log        = $Log 

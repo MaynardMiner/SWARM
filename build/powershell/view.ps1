@@ -1,5 +1,5 @@
 Param (
-  [Parameter(Mandatory = $true)]
+  [Parameter(Mandatory = $false)]
   [int]$n,
   [Parameter(Mandatory = $false, Position=0)]
   [string]$Command,
