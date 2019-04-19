@@ -132,13 +132,6 @@ While ($True) {
         $NEW | Set-Content ".\build\txt\ASIC-hash.txt"
     }
 
-    ## Set-OC
-    if ($Switched -eq $true) {
-        Write-Host "Miners Have Switched"
-        ## ADD Delay for OC and Miners To Start Up
-        Start-Sleep -S 10
-    }
-
     ## Determine if CPU in only used. Set Flags for what to do.
     $CPUOnly = $true; $DoCPU = $false; $DoAMD = $false; $DoNVIDIA = $false; $DoASIC = $false
     $CurrentMiners | ForEach-Object {

@@ -1339,7 +1339,7 @@ While ($true) {
 
         ## Simple hash table for clearing ports. Used Later
         $PreviousMinerPorts = @{AMD1 = ""; NVIDIA1 = ""; NVIDIA2 = ""; NVIDIA3 = ""; CPU = "" }
-        $ClearedOC = $false
+        $ClearedOC = $false; $ClearedHash = $false
 
 
         ## Records miner run times, and closes them. Starts New Miner instances and records
@@ -1390,6 +1390,10 @@ While ($true) {
                         $OCFile = ".\build\txt\oc-settings.txt"
                         if(Test-Path $OCFile){Clear-Content $OcFile -Force; "Current OC Settings:" | Set-Content $OCFile}
                         $ClearedOC = $true
+                    }
+                    if($ClearedHash -eq $False) {
+                        $type | ForEach-Object { if (Test-Path ".\build\txt\$($_)-hash.txt") { Clear-Content ".\build\txt\$($_)-hash.txt" -Force } }
+                        $ClearedHash = $true
                     }
                     $Current = $_ | ConvertTo-Json -Compress
                     Start-OC -Platforms $Platform -NewMiner $Current -Dir $dir -Website $Website
@@ -1511,7 +1515,6 @@ While ($true) {
         }
         $MSFile = ".\build\txt\minerstats.txt"
         if (Test-Path $MSFIle) { Clear-Content ".\build\txt\minerstats.txt" -Force }
-        $type | ForEach-Object { if (Test-Path ".\build\txt\$($_)-hash.txt") { Clear-Content ".\build\txt\$($_)-hash.txt" -Force } }
         $GetStatusAlgoBans = ".\timeout\algo_block\algo_block.txt"
         $GetStatusPoolBans = ".\timeout\pool_block\pool_block.txt"
         $GetStatusMinerBans = ".\timeout\miner_block\miner_block.txt"
