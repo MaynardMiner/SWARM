@@ -84,6 +84,8 @@ function Set-Stat {
         Week                  = $Value
         Week_Fluctuation      = 1 / 2
         Updated               = $Date
+        Average               = $Value
+        Count                 = 1
     }
 
     if (Test-Path $Path) {$Stat = Get-Content $Path | ConvertFrom-Json}
@@ -103,6 +105,8 @@ function Set-Stat {
         Week                  = [Double]$Stat.Week
         Week_Fluctuation      = [Double]$Stat.Week_Fluctuation
         Updated               = [DateTime]$Stat.Updated
+        Average               = [Double]$Stat.Average
+        Count                 = [Double]$Stat.Count
     }
   
     $Span_Minute = [Math]::Min(($Date - $Stat.Updated).TotalMinutes, 1)
@@ -111,6 +115,10 @@ function Set-Stat {
     $Span_Hour = [Math]::Min(($Date - $Stat.Updated).TotalHours, 1)
     $Span_Day = [Math]::Min(($Date - $Stat.Updated).TotalDays, 1)
     $Span_Week = [Math]::Min((($Date - $Stat.Updated).TotalDays / 7), 1)
+    if($Value -gt 0){
+        $Stat.Count++
+        $Stat.Average = [Math]::Max($Stat.Average * ($Stat.Count-1)/$Stat.Count + $Value / $Stat.Count, $SmallestValue)
+    }
 
     $Stat = [PSCustomObject]@{
         Live                  = $Value
@@ -133,6 +141,8 @@ function Set-Stat {
         Week_Fluctuation      = ((1 - $Span_Week) * $Stat.Week_Fluctuation) +
         ($Span_Week * ([Math]::Abs($Value - $Stat.Week) / [Math]::Max([Math]::Abs($Stat.Week), $SmallestValue)))
         Updated               = $Date
+        Average               = $Stat.Average
+        Count                 = $Stat.Count
     }
 
     if (-not (Test-Path "stats")) {New-Item "stats" -ItemType "directory"}
@@ -151,6 +161,8 @@ function Set-Stat {
         Week                  = [Decimal]$Stat.Week
         Week_Fluctuation      = [Double]$Stat.Week_Fluctuation
         Updated               = [DateTime]$Stat.Updated
+        Average               = [decimal]$Stat.Average
+        Count                 = [Double]$Stat.Count
     } | ConvertTo-Json | Set-Content $Path 
 
     $Stat

@@ -775,6 +775,8 @@ Write-Host "Starting New Background Agent" -ForegroundColor Cyan
 if ($Platform -eq "windows") { Start-Background -WorkingDir $pwsh -Dir $dir -Platforms $Platform -HiveID $HiveID -HiveMirror $HiveMirror -HiveOS $HiveOS -HivePassword $HivePassword -RejPercent $Rejections -Remote $Remote -Port $Port -APIPassword $APIPassword -API $API }
 elseif ($Platform -eq "linux") { Start-Process ".\build\bash\background.sh" -ArgumentList "background $dir $Platform $HiveOS $Rejections $Remote $Port $APIPassword $API" -Wait }
 
+if(Test-Path "Stats"){Get-ChildItemContent "Stats" | ForEach {$Stat = Set-Stat $_.Name $_.Content.Week}}
+
 While ($true) {
 
     ##Manage Pool Bans
@@ -1300,7 +1302,7 @@ While ($true) {
             $_.Profit = if ($SelectedMiner.Profit) { $SelectedMiner.Profit -as [decimal] }else { "bench" }
             $_.Power = $([Decimal]$($SelectedMiner.Power * 24) / 1000 * $WattEX)
             $_.Fiat_Day = if ($SelectedMiner.Profit) { ($SelectedMiner.Profit * $Rates.$Currency).ToString("N2") }else { "bench" }
-            if($_.Profit -ne "bench") { $_.Profit_Day = $(Set-Stat -Name "daily_$($_.Type)_profit" -Value ([double]$($SelectedMiner.Pool_Estimate))).Day }else{$_.Profit_Day = "bench"}
+            if($_.Profit -ne "bench") { $_.Profit_Day = $(Set-Stat -Name "daily_$($_.Type)_profit" -Value ([double]$($SelectedMiner.Pool_Estimate))).Average }else{$_.Profit_Day = "bench"}
         }
         
         $BestActiveMiners | ConvertTo-Json | Out-File ".\build\txt\bestminers.txt"
