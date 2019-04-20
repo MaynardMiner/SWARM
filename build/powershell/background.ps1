@@ -33,7 +33,9 @@ param(
     [Parameter(Mandatory = $false)]
     [Int]$Port,
     [Parameter(Mandatory = $false)]
-    [string]$APIPassword
+    [string]$APIPassword,
+    [Parameter(Mandatory = $false)]
+    [double]$Interval
 )
 
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
@@ -85,6 +87,7 @@ $RestartTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 
 ##Get hive naming conventions:
 $GetHiveNames = ".\config\pools\pool-algos.json"
+$Interval = 60
 $HiveNames = if (Test-Path $GetHiveNames) { Get-Content $GetHiveNames | ConvertFrom-Json }
 $Waiting = $True;
 
@@ -213,7 +216,7 @@ While ($True) {
             $ramtotal = Get-Content ".\build\txt\ram.txt" | Select-Object -First 1
             $cpu = $(Get-WmiObject Win32_PerfFormattedData_PerfOS_System).ProcessorQueueLength
             $LoadAverage = Set-Stat -Name "load-average" -Value $cpu
-            $LoadAverages = @("$([Math]::Round($LoadAverage.Minute,2))", "$([Math]::Round($LoadAverage.Minute_5,2))", "$([Math]::Round($LoadAverage.Minute_10,2))")
+            $LoadAverages = @("$([Math]::Round($LoadAverage.Minute,2))", "$([Math]::Round($LoadAverage.Minute_5,2))", "$([Math]::Round($LoadAverage.Minute_15,2))")
             $ramfree = $(Get-Counter '\Memory\Available MBytes').CounterSamples.CookedValue
         }
     }

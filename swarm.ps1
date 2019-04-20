@@ -290,7 +290,7 @@ $FileClear += ".\build\txt\bestminers.txt"
 $FileClear | ForEach-Object { if (Test-Path $_) { Remove-Item $_ -Force } }
 
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
-$Debug = $false
+$Debug = $true
 
 ## Convert Arguments Into Hash Table
 if ($Debug -ne $true) {
@@ -762,9 +762,6 @@ $CPUTypes = @(); if($Type -like "*CPU*"){$Type | Where {$_ -like "*CPU*"} | %{$C
 $AMDTypes = @(); if($Type -like "*AMD*"){$Type | Where {$_ -like "*AMD*"} | %{$AMDTypes += $_}}
 }
 
-##Reset-Old Stats And Their Time
-if (Test-Path "stats") { Get-ChildItemContent "stats" | ForEach-Object { $Stat = Set-Stat $_.Name $_.Content.Week } }
-
 #Get Miner Config Files
 if ($Type -like "*CPU*") { $cpu = get-minerfiles -Types "CPU" -Platforms $Platform }
 if ($Type -like "*NVIDIA*") { $nvidia = get-minerfiles -Types "NVIDIA" -Platforms $Platform -Cudas $Cuda }
@@ -775,7 +772,6 @@ Write-Host "Starting New Background Agent" -ForegroundColor Cyan
 if ($Platform -eq "windows") { Start-Background -WorkingDir $pwsh -Dir $dir -Platforms $Platform -HiveID $HiveID -HiveMirror $HiveMirror -HiveOS $HiveOS -HivePassword $HivePassword -RejPercent $Rejections -Remote $Remote -Port $Port -APIPassword $APIPassword -API $API }
 elseif ($Platform -eq "linux") { Start-Process ".\build\bash\background.sh" -ArgumentList "background $dir $Platform $HiveOS $Rejections $Remote $Port $APIPassword $API" -Wait }
 
-if(Test-Path "Stats"){Get-ChildItemContent "Stats" | ForEach {$Stat = Set-Stat $_.Name $_.Content.Week}}
 
 While ($true) {
 
@@ -932,12 +928,7 @@ While ($true) {
 
 
     ##Load File Stats, Begin Clearing Bans And Bad Stats Per Timout Setting. Restart Loop if Done
-    if ($TimeoutTimer.Elapsed.TotalSeconds -lt $TimeoutTime -or $Timeout -eq 0) { $Stats = Get-Stats -Timeouts "No" }
-    else {
-        $Stats = Get-Stats -Timeouts "Yes"
-        $TimeoutTimer.Restart()
-        continue
-    }
+    if ($TimeoutTimer.Elapsed.TotalSeconds -gt $TimeoutTime -and $Timeout -ne 0) { Write-Host "Clearing Timeouts" -ForegroundColor Magenta; Remove-Item ".\timeout" -Recurse -Force }
 
     ##To Get Fees For Pools (For Currencies), A table is made, so the pool doesn't have to be called multiple times.
     $global:FeeTable = @{}
@@ -955,11 +946,11 @@ While ($true) {
     $Coins = $false
     Write-Host "[$(Get-Date)]: " -foreground yellow -nonewline
     Write-Host "Checking Algo Pools." -Foregroundcolor yellow;
-    $AllAlgoPools = Get-Pools -PoolType "Algo" -Stats $Stats
+    $AllAlgoPools = Get-Pools -PoolType "Algo"
     ##Get Custom Pools
     Write-Host "[$(Get-Date)]: " -foreground yellow -nonewline
     Write-Host "Adding Custom Pools. ." -ForegroundColor Yellow;
-    $AllCustomPools = Get-Pools -PoolType "Custom" -Stats $Stats
+    $AllCustomPools = Get-Pools -PoolType "Custom"
 
     ## Select the best 3 of each algorithm
     $Top_3_Algo = $AllAlgoPools.Symbol | Select-Object -Unique | ForEach-Object { $AllAlgoPools | Where-Object Symbol -EQ $_ | Sort-Object Price -Descending | Select-Object -First 3 };
@@ -991,7 +982,7 @@ While ($true) {
     if ($Auto_Coin -eq "Yes") {
         Write-Host "[$(Get-Date)]: " -foreground yellow -nonewline
         Write-Host "Adding Coin Pools. . ." -ForegroundColor Yellow
-        $AllCoinPools = Get-Pools -PoolType "Coin" -Stats $Stats
+        $AllCoinPools = Get-Pools -PoolType "Coin"
         $CoinPools = New-Object System.Collections.ArrayList
         if ($AllCoinPools) { $AllCoinPools | ForEach-Object { $CoinPools.Add($_) | Out-Null } }
         $CoinPoolNames = $CoinPools.Name | Select-Object -Unique
@@ -1003,7 +994,7 @@ While ($true) {
        Write-Host "Checking Algo Miners. . . ." -ForegroundColor Yellow
        ##Load Only Needed Algorithm Miners
        $AlgoMiners = New-Object System.Collections.ArrayList
-       $SearchMiners = Get-Miners -Platforms $Platform -MinerType $Type -Stats $Stats -Pools $AlgoPools;
+       $SearchMiners = Get-Miners -Platforms $Platform -MinerType $Type -Pools $AlgoPools;
        $SearchMiners | % {$AlgoMiners.Add($_) | Out-Null}
        
        ##Download Miners, If Miner fails three times- A ban is created against miner, and it should stop downloading.
@@ -1060,7 +1051,7 @@ While ($true) {
         Write-Host "Checking Coin Miners. . . . ." -ForegroundColor Yellow
         ##Load Only Needed Coin Miners
         $CoinMiners = New-Object System.Collections.ArrayList
-        $SearchMiners = Get-Miners -Platforms $Platform -MinerType $Type -Stats $Stats -Pools $CoinPools;
+        $SearchMiners = Get-Miners -Platforms $Platform -MinerType $Type -Pools $CoinPools;
         $SearchMiners | % {$CoinMiners.Add($_) | Out-Null}
         $DownloadNote = @()
         $Download = $false
@@ -1145,7 +1136,7 @@ While ($true) {
     ## Is done this way, as sorting via [double] would occasionally glitch. This is more if/else, and less likely
     ## To fail.
     ##First reduce all miners to best one for each symbol
-    $CutMiners = Start-MinerReduction -Stats $Stats -SortMiners $Miners -WattCalc $WattEx -Type $Type
+    $CutMiners = Start-MinerReduction -SortMiners $Miners -WattCalc $WattEx -Type $Type
     ##Remove The Extra Miners
     $CutMiners | ForEach-Object { $Miners.Remove($_) } | Out-Null;
 
@@ -1165,7 +1156,7 @@ While ($true) {
     }
 
         ##This starts to refine each miner hashtable, applying watt calculations, and other factors to each miner. ##TODO
-        start-minersorting -Stats $Stats -SortMiners $Miners -WattCalc $WattEx
+        start-minersorting -SortMiners $Miners -WattCalc $WattEx
 
         ##Now that we have narrowed down to our best miners - we adjust them for switching threshold.
         $BestActiveMiners | ForEach-Object { $Miners | Where-Object Path -EQ $_.path | Where-Object Arguments -EQ $_.Arguments | ForEach-Object {
@@ -1302,7 +1293,7 @@ While ($true) {
             $_.Profit = if ($SelectedMiner.Profit) { $SelectedMiner.Profit -as [decimal] }else { "bench" }
             $_.Power = $([Decimal]$($SelectedMiner.Power * 24) / 1000 * $WattEX)
             $_.Fiat_Day = if ($SelectedMiner.Profit) { ($SelectedMiner.Profit * $Rates.$Currency).ToString("N2") }else { "bench" }
-            if($_.Profit -ne "bench") { $_.Profit_Day = $(Set-Stat -Name "daily_$($_.Type)_profit" -Value ([double]$($SelectedMiner.Pool_Estimate))).Average }else{$_.Profit_Day = "bench"}
+            if($_.Profit -ne "bench") { $_.Profit_Day = $(Set-Stat -Name "daily_$($_.Type)_profit" -Value ([double]$($SelectedMiner.Pool_Estimate))).Day }else{$_.Profit_Day = "bench"}
         }
         
         $BestActiveMiners | ConvertTo-Json | Out-File ".\build\txt\bestminers.txt"

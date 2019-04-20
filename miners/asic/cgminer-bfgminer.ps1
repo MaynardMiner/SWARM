@@ -12,6 +12,7 @@ $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty Ba
 
 $ASIC_ALGO | ForEach-Object {
     $MinerAlgo = $_
+    $Stat = Get-Stat -Name "$($Name)_$($MinerAlgo)_hashrate"
     $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
         if ($ASIC_ALGO -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
             $Pass = $_.Pass1 -replace ",", "`\,"
@@ -28,8 +29,8 @@ $ASIC_ALGO | ForEach-Object {
                 DeviceCall = "cgminer"
                 Wallet     = "$($_.$User)"
                 Arguments  = "stratum+tcp://$($_.Host):$($_.Port),$($_.$User),$Pass"
-                HashRates  = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) }
-                Quote      = if ($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)) { $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) * ($_.Price) }else { 0 }
+                HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
+                Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
                 PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
                 MinerPool  = "$($_.Name)"
                 FullName   = "$($_.Mining)"

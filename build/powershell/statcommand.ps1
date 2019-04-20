@@ -54,6 +54,8 @@ function get-stats {
 
 }
 
+
+
 function Set-Stat {
     param(
         [Parameter(Mandatory = $true)]
@@ -64,108 +66,76 @@ function Set-Stat {
         [DateTime]$Date = (Get-Date)
     )
 
-    if ($name -eq "load-average") {$Path = "build\txt\$Name.txt"}
+    function Get-Alpha($X) { (2 / ($X + 1) ) }
+    function Get-Theta($Y){ $Stat.Values | Select -Last $Y | Measure-Object -Sum}
+
+    $Max_Periods = 288
+    if ($name -eq "load-average") {$Max_Periods = 90; $Path = "build\txt\$Name.txt"}
     else {$Path = "stats\$Name.txt"}
-    $Date = $Date.ToUniversalTime()
     $SmallestValue = 1E-20
 
     $Stat = [PSCustomObject]@{
-        Live                  = $Value
-        Minute                = $Value
-        Minute_Fluctuation    = 1 / 2
-        Minute_5              = $Value
-        Minute_5_Fluctuation  = 1 / 2
-        Minute_10             = $Value
-        Minute_10_Fluctuation = 1 / 2
-        Hour                  = $Value
-        Hour_Fluctuation      = 1 / 2
-        Day                   = $Value
-        Day_Fluctuation       = 1 / 2
-        Week                  = $Value
-        Week_Fluctuation      = 1 / 2
-        Updated               = $Date
-        Average               = $Value
-        Count                 = 1
+        Live                    = $Value
+        Minute                  = $Value
+        Minute_5                = $Value
+        Minute_15               = $Value
+        Hour                    = $Value
+        Hour_4                  = $Value
+        Day                     = $Value
+        Custom                  = $Value
+        Values                  = @()
     }
 
     if (Test-Path $Path) {$Stat = Get-Content $Path | ConvertFrom-Json}
 
     $Stat = [PSCustomObject]@{
-        Live                  = [Double]$Stat.Live
-        Minute                = [Double]$Stat.Minute
-        Minute_Fluctuation    = [Double]$Stat.Minute_Fluctuation
-        Minute_5              = [Double]$Stat.Minute_5
-        Minute_5_Fluctuation  = [Double]$Stat.Minute_5_Fluctuation
-        Minute_10             = [Double]$Stat.Minute_10
-        Minute_10_Fluctuation = [Double]$Stat.Minute_10_Fluctuation
-        Hour                  = [Double]$Stat.Hour
-        Hour_Fluctuation      = [Double]$Stat.Hour_Fluctuation
-        Day                   = [Double]$Stat.Day
-        Day_Fluctuation       = [Double]$Stat.Day_Fluctuation
-        Week                  = [Double]$Stat.Week
-        Week_Fluctuation      = [Double]$Stat.Week_Fluctuation
-        Updated               = [DateTime]$Stat.Updated
-        Average               = [Double]$Stat.Average
-        Count                 = [Double]$Stat.Count
-    }
-  
-    $Span_Minute = [Math]::Min(($Date - $Stat.Updated).TotalMinutes, 1)
-    $Span_Minute_5 = [Math]::Min((($Date - $Stat.Updated).TotalMinutes / 5), 1)
-    $Span_Minute_10 = [Math]::Min((($Date - $Stat.Updated).TotalMinutes / 10), 1)
-    $Span_Hour = [Math]::Min(($Date - $Stat.Updated).TotalHours, 1)
-    $Span_Day = [Math]::Min(($Date - $Stat.Updated).TotalDays, 1)
-    $Span_Week = [Math]::Min((($Date - $Stat.Updated).TotalDays / 7), 1)
-    if($Value -gt 0){
-        $Stat.Count++
-        $Stat.Average = [Math]::Max($Stat.Average * ($Stat.Count-1)/$Stat.Count + $Value / $Stat.Count, $SmallestValue)
+        Live                    = [Double]$Value
+        Minute                  = [Double]$Stat.Minute
+        Minute_5                = [Double]$Stat.Minute_5
+        Minute_15               = [Double]$Stat.Minute_15
+        Hour                    = [Double]$Stat.Hour
+        Hour_4                  = [Double]$Stat.Hour_4
+        Day                     = [Double]$Stat.Day
+        Custom                  = [Double]$Stat.Custom
+        Values                  = $Stat.Values
     }
 
-    $Stat = [PSCustomObject]@{
-        Live                  = $Value
-        Minute                = ((1 - $Span_Minute) * $Stat.Minute) + ($Span_Minute * $Value)
-        Minute_Fluctuation    = ((1 - $Span_Minute) * $Stat.Minute_Fluctuation) +
-        ($Span_Minute * ([Math]::Abs($Value - $Stat.Minute) / [Math]::Max([Math]::Abs($Stat.Minute), $SmallestValue)))
-        Minute_5              = ((1 - $Span_Minute_5) * $Stat.Minute_5) + ($Span_Minute_5 * $Value)
-        Minute_5_Fluctuation  = ((1 - $Span_Minute_5) * $Stat.Minute_5_Fluctuation) +
-        ($Span_Minute_5 * ([Math]::Abs($Value - $Stat.Minute_5) / [Math]::Max([Math]::Abs($Stat.Minute_5), $SmallestValue)))
-        Minute_10             = ((1 - $Span_Minute_10) * $Stat.Minute_10) + ($Span_Minute_10 * $Value)
-        Minute_10_Fluctuation = ((1 - $Span_Minute_10) * $Stat.Minute_10_Fluctuation) +
-        ($Span_Minute_10 * ([Math]::Abs($Value - $Stat.Minute_10) / [Math]::Max([Math]::Abs($Stat.Minute_10), $SmallestValue)))
-        Hour                  = ((1 - $Span_Hour) * $Stat.Hour) + ($Span_Hour * $Value)
-        Hour_Fluctuation      = ((1 - $Span_Hour) * $Stat.Hour_Fluctuation) +
-        ($Span_Hour * ([Math]::Abs($Value - $Stat.Hour) / [Math]::Max([Math]::Abs($Stat.Hour), $SmallestValue)))
-        Day                   = ((1 - $Span_Day) * $Stat.Day) + ($Span_Day * $Value)
-        Day_Fluctuation       = ((1 - $Span_Day) * $Stat.Day_Fluctuation) +
-        ($Span_Day * ([Math]::Abs($Value - $Stat.Day) / [Math]::Max([Math]::Abs($Stat.Day), $SmallestValue)))
-        Week                  = ((1 - $Span_Week) * $Stat.Week) + ($Span_Week * $Value)
-        Week_Fluctuation      = ((1 - $Span_Week) * $Stat.Week_Fluctuation) +
-        ($Span_Week * ([Math]::Abs($Value - $Stat.Week) / [Math]::Max([Math]::Abs($Stat.Week), $SmallestValue)))
-        Updated               = $Date
-        Average               = $Stat.Average
-        Count                 = $Stat.Count
-    }
+        $Stat.Values += [decimal]$Value
+        if($Stat.Values.Count -gt $Max_Periods){$Stat.Values = $Stat.Values | Select -Skip 1}
+
+        $Calcs = @{
+            Minute = [Math]::Max([Math]::Round(60 / $Interval),1)
+            Minute_5 = [Math]::Max([Math]::Round(300 / $Interval),1)
+            Minute_15 = [Math]::Max([Math]::Round(900 / $Interval),1)
+            Hour = [Math]::Max([Math]::Round(3600 / $Interval),1)
+            Hour_4 = [Math]::Max([Math]::Round(14400 / $Interval),1)
+            Day = [Math]::Max([Math]::Round(86400 / $Interval),1)
+            Custom = [Math]::Max([Math]::Round($Custom / $Interval),1)
+        }
+        
+        $Calcs.keys | foreach {
+          $Theta = (Get-Theta($Calcs.$_))
+          $Alpha = [Double](Get-Alpha($Theta.Count))
+          $Zeta =  [Double]$Theta.Sum/$Theta.Count
+          $Stat.$_ = [Math]::Max( ( $Zeta * $Alpha + $($Stat.$_) * (1 - $Alpha) ) , $SmallestValue )
+        }
 
     if (-not (Test-Path "stats")) {New-Item "stats" -ItemType "directory"}
-    [PSCustomObject]@{
-        Live                  = [Decimal]$Stat.Live
-        Minute                = [Decimal]$Stat.Minute
-        Minute_Fluctuation    = [Double]$Stat.Minute_Fluctuation
-        Minute_5              = [Decimal]$Stat.Minute_5
-        Minute_5_Fluctuation  = [Double]$Stat.Minute_5_Fluctuation
-        Minute_10             = [Decimal]$Stat.Minute_10
-        Minute_10_Fluctuation = [Double]$Stat.Minute_10_Fluctuation
-        Hour                  = [Decimal]$Stat.Hour
-        Hour_Fluctuation      = [Double]$Stat.Hour_Fluctuation
-        Day                   = [Decimal]$Stat.Day
-        Day_Fluctuation       = [Double]$Stat.Day_Fluctuation
-        Week                  = [Decimal]$Stat.Week
-        Week_Fluctuation      = [Double]$Stat.Week_Fluctuation
-        Updated               = [DateTime]$Stat.Updated
-        Average               = [decimal]$Stat.Average
-        Count                 = [Double]$Stat.Count
-    } | ConvertTo-Json | Set-Content $Path 
+
+    $Stat = [PSCustomObject]@{
+        Live                    = [Decimal]$Value
+        Minute                  = [Decimal]$Stat.Minute
+        Minute_5                = [Decimal]$Stat.Minute_5
+        Minute_15               = [Decimal]$Stat.Minute_15
+        Hour                    = [Decimal]$Stat.Hour
+        Hour_4                  = [Decimal]$Stat.Hour_4
+        Day                     = [Decimal]$Stat.Day
+        Custom                  = [Decimal]$Stat.Custom
+        Values                  = $Stat.Values
+    } | ConvertTo-Json | Set-Content $Path
 
     $Stat
+
 }
 
 function Get-Stat {

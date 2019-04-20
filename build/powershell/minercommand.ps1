@@ -17,8 +17,6 @@ function Get-Miners {
         [Parameter(Mandatory = $true)]
         [Array]$MinerType,
         [Parameter(Mandatory = $true)]
-        [Array]$Stats,
-        [Parameter(Mandatory = $true)]
         [Array]$Pools
     )
 
@@ -208,8 +206,6 @@ function Get-minerfiles {
 function start-minersorting {
     param (
         [Parameter(Mandatory = $true)]
-        [array]$Stats,
-        [Parameter(Mandatory = $true)]
         [array]$SortMiners,
         [Parameter(Mandatory = $true)]
         [decimal]$WattCalc
@@ -264,8 +260,6 @@ function start-minersorting {
 function Start-MinerReduction {
 
     param (
-        [Parameter(Mandatory = $true)]
-        [array]$Stats,
         [Parameter(Mandatory = $true)]
         [array]$SortMiners,
         [Parameter(Mandatory = $true)]
