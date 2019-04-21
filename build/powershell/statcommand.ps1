@@ -74,7 +74,6 @@ function Set-Stat {
 
     if (Test-Path $Path) { 
         $Stat = Get-Content $Path | ConvertFrom-Json 
-
         $Stat = [PSCustomObject]@{
             Live      = [Double]$Value
             Minute    = [Double]$Stat.Minute
@@ -113,7 +112,7 @@ function Set-Stat {
 
     if (-not (Test-Path "stats")) { New-Item "stats" -ItemType "directory" }
 
-    $Stat.Values = $Stat.Values | ForEach-Object { [Decimal]$_ }
+    $Stat.Values = @( $Stat.Values | % { [Decimal]$_ } )
 
     [PSCustomObject]@{
         Live      = [Decimal]$Value

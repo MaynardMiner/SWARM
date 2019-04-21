@@ -159,7 +159,11 @@ param(
     [Parameter(Mandatory = $false)]
     [string]$ASIC_IP, ##IP Address for ASIC, if null, localhost is used
     [Parameter(Mandatory = $false)]
-    [array]$ASIC_ALGO ##Use if you are using with other Device types. Selects only these algos for asic
+    [array]$ASIC_ALGO, ##Use if you are using with other Device types. Selects only these algos for asic
+    [Parameter(Mandatory = $false)]
+    [String]$Stat_All = "No", ##Use if you are using with other Device types. Selects only these algos for asic
+    [Parameter(Mandatory = $false)]
+    [Int]$Custom_Periods = 1 ##Use if you are using with other Device types. Selects only these algos for asic
 )
 
 ## Set Current Path
@@ -333,6 +337,8 @@ if ($Debug -ne $true) {
     $CurrentParams.ADD("Algorithm", $Algorithm); $CurrentParams.ADD("Coin", $Coin);
     $CurrentParams.ADD("ASIC_IP", $ASIC_IP);
     $CurrentParams.ADD("ASIC_ALGO", $ASIC_ALGO);
+    $CurrentParams.ADD("Stat_All", $Stat_All);
+    $CurrentParams.ADD("Custom_Periods", $Custom_Periods);
 
     ## Save to Config Folder
     $StartParams = $CurrentParams | ConvertTo-Json 
@@ -403,6 +409,7 @@ if ((Test-Path ".\config\parameters\newarguments.json") -or $Debug -eq $true) {
     $No_Miner = $SWARMParams.No_Miner;                         $HiveAPIkey = $SWARMParams.HiveAPIkey;
     $SWARMAlgorithm = $SWARMParams.Algorithm;                  $Coin = $SWARMParams.Coin;
     $ASIC_IP = $SWARMParams.ASIC_IP;                           $ASIC_ALGO = $SWARMParams.ASIC_ALGO;
+    $Stat_All = $SWARMParams.Stat_All;                         $Custom_Periods = $SWARMParams.Custom_Periods;
 }
 
 ## Add Calc Here So They Don't Have To Be Constructed Over And Over
@@ -413,7 +420,7 @@ $global:Calcs = @{
     Hour      = [Math]::Max([Math]::Round(3600 / $Interval), 1)
     Hour_4    = [Math]::Max([Math]::Round(14400 / $Interval), 1)
     Day       = [Math]::Max([Math]::Round(86400 / $Interval), 1)
-    Custom    = [Math]::Max([Math]::Round($Custom / $Interval), 1)
+    Custom    = [Math]::Max([Math]::Round($Custom_Periods), 1)
 }
 
 ## Windows Start Up
@@ -831,8 +838,8 @@ While ($true) {
     $No_Miner = $SWARMParams.No_Miner;                         $HiveAPIkey = $SWARMParams.HiveAPIkey;
     $SWARMAlgorithm = $SWARMParams.Algorithm;                  $Coin = $SWARMParams.Coin
     $ASIC_IP = $SWARMParams.ASIC_IP;                           $ASIC_ALGO = $SWARMParams.ASIC_ALGO;
+    $Stat_All = $SWARMParams.Stat_All;                         $Custom_Periods = $SWARMParams.Custom_Periods;
 
-    
     ## Make it so that if Farm_Hash Is Not Specified, HiveOS functions are removed.
     ## In case user forgets to change -HiveOS to "No"
     if(-not $Farm_Hash){$HiveOS = "No"}
