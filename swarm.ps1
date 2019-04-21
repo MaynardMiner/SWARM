@@ -290,7 +290,7 @@ $FileClear += ".\build\txt\bestminers.txt"
 $FileClear | ForEach-Object { if (Test-Path $_) { Remove-Item $_ -Force } }
 
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
-$Debug = $true
+$Debug = $false
 
 ## Convert Arguments Into Hash Table
 if ($Debug -ne $true) {
