@@ -8,10 +8,6 @@ cd `dirname $0`
 	local mystats=$(< $mydir/build/txt/hivestats.txt)
 	local myminer=$(< $mydir"/build/txt/miner.txt")
 	local mindex=$2 #empty or 2, 3, 4, ...
-	local Ntemp=$(get_nvidia_cards_temp)	# cards temp
-	local Nfan=$(get_nvidia_cards_fan)	# cards fan
-	local Atemp=$(get_amd_cards_temp)	# cards temp
-	local Afan=$(get_amd_cards_fan)	# cards fan
 	khs=0
 	stats=
 	case $myminer in
