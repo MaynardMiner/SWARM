@@ -28,17 +28,21 @@ if ($Poolname -eq $Name) {
                 $Divisor = (1000000 * $fairpool_Request.$_.mbtc_mh_factor)
                 $Fees = $fairpool_Request.$_.fees
                 $Workers = $fairpool_Request.$_.Workers
-                $Estimate = if ($Stat_Algo -eq "Day") { [Double]$fairpool_Request.$_.estimate_last24h }else { [Double]$fairpool_Request.$_.estimate_current }
+                $StatPath = ".\stats\($Name)_$($fairpool_Algorithm)_profit.txt"
 
-                $Stat = Set-Stat -Name "$($Name)_$($fairpool_Algorithm)_profit" -Value ([Double]$Estimate / $Divisor * (1 - ($fairpool_Request.$_.fees / 100)))
-                if ($Stat_Algo -eq "Day") { $CStat = $Stat.Live }else { $CStat = $Stat.$Stat_Algo }
+                if (-not (Test-Path $StatPath)) {
+                    $Stat = Set-Stat -Name "$($Name)_$($fairpool_Algorithm)_profit" -Value ( [Double]$fairpool_Request.$_.estimate_last24h / $Divisor * (1 - ($fairpool_Request.$_.fees / 100)))
+                } 
+                else {
+                    $Stat = Set-Stat -Name "$($Name)_$($fairpool_Algorithm)_profit" -Value ( [Double]$fairpool_Request.$_.estimate_current / $Divisor * (1 - ($fairpool_Request.$_.fees / 100)))
+                }
    
                 [PSCustomObject]@{
                     Priority      = $Priorities.Pool_Priorities.$Name
                     Symbol        = "$fairpool_Algorithm-Algo"
                     Mining        = $fairpool_Algorithm
                     Algorithm     = $fairpool_Algorithm
-                    Price         = $CStat
+                    Price         = $Stat.$Stat_Algo
                     Protocol      = "stratum+tcp"
                     Host          = $fairpool_Host
                     Port          = $fairpool_Port

@@ -22,17 +22,21 @@ if ($Poolname -eq $Name) {
                 $Divisor = (1000000 * $Hashrefinery_Request.$_.mbtc_mh_factor)
                 $Fees = $Hashrefinery_Request.$_.fees
                 $Workers = $Hashrefinery_Request.$_.Workers
-                $Estimate = if ($Stat_Algo -eq "Day") { [Double]$Hashrefinery_Request.$_.estimate_last24h }else { [Double]$Hashrefinery_Request.$_.estimate_current }
+                $StatPath = ".\stats\($Name)_$($Hashrefinery_Algorithm)_profit.txt"
 
-                $Stat = Set-Stat -Name "$($Name)_$($Hashrefinery_Algorithm)_profit" -Value ([Double]$Estimate / $Divisor * (1 - ($Hashrefinery_Request.$_.fees / 100)))
-                if ($Stat_Algo -eq "Day") { $CStat = $Stat.Live }else { $CStat = $Stat.$Stat_Algo }
+                if (-not (Test-Path $StatPath)) {
+                    $Stat = Set-Stat -Name "$($Name)_$($Hashrefinery_Algorithm)_profit" -Value ( [Double]$Hashrefinery_Request.$_.estimate_last24h / $Divisor * (1 - ($Hashrefinery_Request.$_.fees / 100)))
+                } 
+                else {
+                    $Stat = Set-Stat -Name "$($Name)_$($Hashrefinery_Algorithm)_profit" -Value ( [Double]$Hashrefinery_Request.$_.estimate_current / $Divisor * (1 - ($Hashrefinery_Request.$_.fees / 100)))
+                }
         
                 [PSCustomObject]@{            
                     Priority      = $Priorities.Pool_Priorities.$Name
                     Symbol        = "$Hashrefinery_Algorithm-Algo"
                     Mining        = $Hashrefinery_Algorithm
                     Algorithm     = $Hashrefinery_Algorithm
-                    Price         = $CStat
+                    Price         = $Stat.$Stat_Algo
                     Protocol      = "stratum+tcp"
                     Host          = $Hashrefinery_Host
                     Port          = $Hashrefinery_Port

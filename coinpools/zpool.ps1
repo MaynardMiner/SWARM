@@ -114,8 +114,6 @@ if ($Poolname -eq $Name) {
             Mining        = $zpool_Algorithm
             Algorithm     = $zpool_Algorithm
             Price         = $Stat.$Stat_Coin
-            StablePrice   = $Stat.Week
-            MarginOfError = $Stat.Fluctuation
             Protocol      = "stratum+tcp"
             Host          = $zpool_Host
             Port          = $zpool_Port

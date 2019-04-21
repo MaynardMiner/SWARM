@@ -112,8 +112,6 @@ if ($Poolname -eq $Name) {
             Mining        = $Zergpool_Algorithm
             Algorithm     = $zergpool_Algorithm
             Price         = $Stat.$Stat_Coin
-            StablePrice   = $Stat.Week
-            MarginOfError = $Stat.Fluctuation
             Protocol      = "stratum+tcp"
             Host          = $zergpool_Host
             Port          = $zergpool_Port
