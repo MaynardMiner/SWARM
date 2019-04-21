@@ -13,8 +13,8 @@ function Get-StatsSrbminer {
                 }
             }
             catch { Write-Host "Failed To parse Threads" -ForegroundColor Red };
-            $global:MinerACC = $Data.shares.accepted; $global:GPUACC += $Data.shares.accepted 
-            $global:MinerREJ = $Data.shares.rejected; $global:GPUREJ += $Data.shares.accepted
+            $global:MinerACC = $Data.shares.accepted; $global:ALLACC += $Data.shares.accepted 
+            $global:MinerREJ = $Data.shares.rejected; $global:ALLREG += $Data.shares.accepted
             $Data.devices.hashrate | ForEach-Object { $global:GPUKHS += [Double]$_ / 1000 }
         }
     }
