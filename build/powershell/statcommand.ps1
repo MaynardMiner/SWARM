@@ -72,47 +72,40 @@ function Set-Stat {
     else { $Path = "stats\$Name.txt" }
     $SmallestValue = 1E-20
 
-    $Stat = [PSCustomObject]@{
-        Live      = $Value
-        Minute    = $Value
-        Minute_5  = $Value
-        Minute_15 = $Value
-        Hour      = $Value
-        Hour_4    = $Value
-        Day       = $Value
-        Custom    = $Value
-        Values    = @()
-    }
+    if (Test-Path $Path) { 
+        $Stat = Get-Content $Path | ConvertFrom-Json 
 
-    if (Test-Path $Path) { $Stat = Get-Content $Path | ConvertFrom-Json }
-
-    $Stat = [PSCustomObject]@{
-        Live      = [Double]$Value
-        Minute    = [Double]$Stat.Minute
-        Minute_5  = [Double]$Stat.Minute_5
-        Minute_15 = [Double]$Stat.Minute_15
-        Hour      = [Double]$Stat.Hour
-        Hour_4    = [Double]$Stat.Hour_4
-        Day       = [Double]$Stat.Day
-        Custom    = [Double]$Stat.Custom
-        Values    = $Stat.Values
+        $Stat = [PSCustomObject]@{
+            Live      = [Double]$Value
+            Minute    = [Double]$Stat.Minute
+            Minute_5  = [Double]$Stat.Minute_5
+            Minute_15 = [Double]$Stat.Minute_15
+            Hour      = [Double]$Stat.Hour
+            Hour_4    = [Double]$Stat.Hour_4
+            Day       = [Double]$Stat.Day
+            Custom    = [Double]$Stat.Custom
+            Values    = $Stat.Values
+        }
+    } 
+    else {
+        $Stat = [PSCustomObject]@{
+            Live      = $Value
+            Minute    = $Value
+            Minute_5  = $Value
+            Minute_15 = $Value
+            Hour      = $Value
+            Hour_4    = $Value
+            Day       = $Value
+            Custom    = $Value
+            Values    = @()
+        }
     }
 
     $Stat.Values += [decimal]$Value
     if ($Stat.Values.Count -gt $Max_Periods) { $Stat.Values = $Stat.Values | Select -Skip 1 }
-
-    $Calcs = @{
-        Minute    = [Math]::Max([Math]::Round(60 / $Interval), 1)
-        Minute_5  = [Math]::Max([Math]::Round(300 / $Interval), 1)
-        Minute_15 = [Math]::Max([Math]::Round(900 / $Interval), 1)
-        Hour      = [Math]::Max([Math]::Round(3600 / $Interval), 1)
-        Hour_4    = [Math]::Max([Math]::Round(14400 / $Interval), 1)
-        Day       = [Math]::Max([Math]::Round(86400 / $Interval), 1)
-        Custom    = [Math]::Max([Math]::Round($Custom / $Interval), 1)
-    }
         
-    $Calcs.keys | foreach {
-        $Theta = (Get-Theta($Calcs.$_))
+    $global:Calcs.keys | foreach {
+        $Theta = (Get-Theta($global:Calcs.$_))
         $Alpha = [Double](Get-Alpha($Theta.Count))
         $Zeta = [Double]$Theta.Sum / $Theta.Count
         $Stat.$_ = [Math]::Max( ( $Zeta * $Alpha + $($Stat.$_) * (1 - $Alpha) ) , $SmallestValue )

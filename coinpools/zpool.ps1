@@ -1,6 +1,8 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $zpool_Request = [PSCustomObject]@{ }
 $zpool_Sorted = [PSCustomObject]@{ }
+$zpool_UnSorted = [PSCustomObject]@{ }
+
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls" 
 
 if ($Poolname -eq $Name) {
@@ -22,16 +24,27 @@ if ($Poolname -eq $Name) {
     }
    
     $zpool_Request.PSObject.Properties.Name | ForEach-Object { $zpool_Request.$_ | Add-Member "sym" $_ }
+    $ZpoolAlgos = @()
+    $ZpoolAlgos += $Algorithm
+    $ZpoolAlgos += $ASIC_ALGO
 
-    $Algorithm | ForEach-Object {
+    $ZpoolAlgos | ForEach-Object {
         $Selected = if ($Bad_pools.$_ -notcontains $Name) { $_ }
-        $Best = $zpool_Request.PSObject.Properties.Value | Where-Object Algo -eq $Selected | Where-Object Algo -in $global:FeeTable.zpool.keys | Where-Object Algo -in $global:divisortable.zpool.Keys | Where-Object estimate -ne "0.00000" | Where-Object hashrate -ne 0 | Sort-Object Price -Descending | Select-Object -First 1
-        if ($Best -ne $null) { $zpool_Sorted | Add-Member $Best.sym $Best }
-    }
-    $ASIC_ALGO | ForEach-Object {
-        $Selected = if ($Bad_pools.$_ -notcontains $Name) { $_ }
-        $Best = $zpool_Request.PSObject.Properties.Value | Where-Object Algo -eq $Selected | Where-Object Algo -in $global:FeeTable.zpool.keys | Where-Object Algo -in $global:divisortable.zpool.Keys | Where-Object estimate -ne "0.00000" | Where-Object hashrate -ne 0 | Sort-Object Price -Descending | Select-Object -First 1
-        if ($Best -ne $null) { $zpool_Sorted | Add-Member $Best.sym $Best -Force }
+        $Sorted = $Zpool_Request.PSObject.Properties.Value | Where-Object Algo -eq $Selected | Where-Object Algo -in $global:FeeTable.zergpool.keys | Where-Object Algo -in $global:divisortable.zergpool.Keys | Where-Object noautotrade -eq "0" | Where-Object estimate -ne "0.00000" | Where-Object hashrate -ne 0 | Sort-Object Price -Descending
+        if($Stat_All -eq "Yes") {
+            $NotBest = $Sorted | Select-Object -Skip 1
+            if ($NotBest -ne $null) { $NotBest | ForEach-Object { $Zpool_UnSorted | Add-Member $_.sym $_ -Force } }
+            $Zpool_UnSorted | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | ForEach-Object {
+                $Zpool_Algorithm = $Zpool_UnSorted.$_.algo.ToLower()
+                $Zpool_Symbol = $Zpool_UnSorted.$_.sym.ToUpper()
+                $Zpool_Fees = [Double]$global:FeeTable.zergpool.$Zpool_Algorithm
+                $Zpool_Estimate = [Double]$Zpool_UnSorted.$_.estimate * 0.001
+                $Divisor = (1000000 * [Double]$global:DivisorTable.zergpool.$Zpool_Algorithm)    
+                try{ $Stat = Set-Stat -Name "$($Name)_$($Zpool_Symbol)_coin_profit" -Value ([double]$Zpool_Estimate / $Divisor * (1 - ($Zpool_fees / 100))) }catch{ Write-Warning "Failed To Calculate Stat For $Zpool_Symbol" }
+            }
+        }
+        $Best = $Sorted | Select-Object -First 1
+        if ($Best -ne $null) { $Zpool_Sorted | Add-Member $Best.sym $Best -Force }
     }
 
     $zpool_Sorted | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | ForEach-Object {

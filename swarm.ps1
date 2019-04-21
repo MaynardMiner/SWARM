@@ -405,6 +405,17 @@ if ((Test-Path ".\config\parameters\newarguments.json") -or $Debug -eq $true) {
     $ASIC_IP = $SWARMParams.ASIC_IP;                           $ASIC_ALGO = $SWARMParams.ASIC_ALGO;
 }
 
+## Add Calc Here So They Don't Have To Be Constructed Over And Over
+$global:Calcs = @{
+    Minute    = [Math]::Max([Math]::Round(60 / $Interval), 1)
+    Minute_5  = [Math]::Max([Math]::Round(300 / $Interval), 1)
+    Minute_15 = [Math]::Max([Math]::Round(900 / $Interval), 1)
+    Hour      = [Math]::Max([Math]::Round(3600 / $Interval), 1)
+    Hour_4    = [Math]::Max([Math]::Round(14400 / $Interval), 1)
+    Day       = [Math]::Max([Math]::Round(86400 / $Interval), 1)
+    Custom    = [Math]::Max([Math]::Round($Custom / $Interval), 1)
+}
+
 ## Windows Start Up
 if ($Platform -eq "windows") { 
     ## Pull Saved Worker Info (If recorded From Remote Command)
