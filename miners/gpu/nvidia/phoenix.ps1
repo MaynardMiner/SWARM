@@ -49,7 +49,6 @@ $NVIDIATypes | ForEach-Object {
     $Config.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 
     if ($Coins -eq $true) { $Pools = $CoinPools }else { $Pools = $AlgoPools }
-    $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName
 
     ##Build Miner Settings
     $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
