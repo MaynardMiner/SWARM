@@ -38,17 +38,17 @@ function get-stats {
     )
 
     if ($Timeouts -eq "No") { 
-        $GetStats = [PSCustomObject]@{}
-        if (Test-Path "stats") {Get-ChildItemContent "stats" | ForEach {$GetStats | Add-Member $_.Name $_.Content}}
+        $GetStats = [PSCustomObject]@{ }
+        if (Test-Path "stats") { Get-ChildItemContent "stats" | ForEach { $GetStats | Add-Member $_.Name $_.Content } }
         $GetStats
     }
 
     if ($Timeouts -eq "Yes") {
-        $GetStats = [PSCustomObject]@{}
-        if (Test-Path ".\timeout") {Remove-Item ".\timeout" -Force -Recurse}
+        $GetStats = [PSCustomObject]@{ }
+        if (Test-Path ".\timeout") { Remove-Item ".\timeout" -Force -Recurse }
         Write-Host "Cleared all bans" -ForegroundColor Green
         Start-Sleep -S 3
-        if (Test-Path "stats") {Get-ChildItemContent "stats" | ForEach {$GetStats | Add-Member $_.Name $_.Content}}
+        if (Test-Path "stats") { Get-ChildItemContent "stats" | ForEach { $GetStats | Add-Member $_.Name $_.Content } }
         $GetStats
     }
 
@@ -65,71 +65,73 @@ function Set-Stat {
     )
 
     function Get-Alpha($X) { (2 / ($X + 1) ) }
-    function Get-Theta($Y){ $Stat.Values | Select -Last $Y | Measure-Object -Sum}
+    function Get-Theta($Y) { $Stat.Values | Select -Last $Y | Measure-Object -Sum }
 
     $Max_Periods = 288
-    if ($name -eq "load-average") {$Max_Periods = 90; $Path = "build\txt\$Name.txt"}
-    else {$Path = "stats\$Name.txt"}
+    if ($name -eq "load-average") { $Max_Periods = 90; $Path = "build\txt\$Name.txt" }
+    else { $Path = "stats\$Name.txt" }
     $SmallestValue = 1E-20
 
     $Stat = [PSCustomObject]@{
-        Live                    = $Value
-        Minute                  = $Value
-        Minute_5                = $Value
-        Minute_15               = $Value
-        Hour                    = $Value
-        Hour_4                  = $Value
-        Day                     = $Value
-        Custom                  = $Value
-        Values                  = @()
+        Live      = $Value
+        Minute    = $Value
+        Minute_5  = $Value
+        Minute_15 = $Value
+        Hour      = $Value
+        Hour_4    = $Value
+        Day       = $Value
+        Custom    = $Value
+        Values    = @()
     }
 
-    if (Test-Path $Path) {$Stat = Get-Content $Path | ConvertFrom-Json}
+    if (Test-Path $Path) { $Stat = Get-Content $Path | ConvertFrom-Json }
 
     $Stat = [PSCustomObject]@{
-        Live                    = [Double]$Value
-        Minute                  = [Double]$Stat.Minute
-        Minute_5                = [Double]$Stat.Minute_5
-        Minute_15               = [Double]$Stat.Minute_15
-        Hour                    = [Double]$Stat.Hour
-        Hour_4                  = [Double]$Stat.Hour_4
-        Day                     = [Double]$Stat.Day
-        Custom                  = [Double]$Stat.Custom
-        Values                  = $Stat.Values
+        Live      = [Double]$Value
+        Minute    = [Double]$Stat.Minute
+        Minute_5  = [Double]$Stat.Minute_5
+        Minute_15 = [Double]$Stat.Minute_15
+        Hour      = [Double]$Stat.Hour
+        Hour_4    = [Double]$Stat.Hour_4
+        Day       = [Double]$Stat.Day
+        Custom    = [Double]$Stat.Custom
+        Values    = $Stat.Values
     }
 
-        $Stat.Values += [decimal]$Value
-        if($Stat.Values.Count -gt $Max_Periods){$Stat.Values = $Stat.Values | Select -Skip 1}
+    $Stat.Values += [decimal]$Value
+    if ($Stat.Values.Count -gt $Max_Periods) { $Stat.Values = $Stat.Values | Select -Skip 1 }
 
-        $Calcs = @{
-            Minute = [Math]::Max([Math]::Round(60 / $Interval),1)
-            Minute_5 = [Math]::Max([Math]::Round(300 / $Interval),1)
-            Minute_15 = [Math]::Max([Math]::Round(900 / $Interval),1)
-            Hour = [Math]::Max([Math]::Round(3600 / $Interval),1)
-            Hour_4 = [Math]::Max([Math]::Round(14400 / $Interval),1)
-            Day = [Math]::Max([Math]::Round(86400 / $Interval),1)
-            Custom = [Math]::Max([Math]::Round($Custom / $Interval),1)
-        }
+    $Calcs = @{
+        Minute    = [Math]::Max([Math]::Round(60 / $Interval), 1)
+        Minute_5  = [Math]::Max([Math]::Round(300 / $Interval), 1)
+        Minute_15 = [Math]::Max([Math]::Round(900 / $Interval), 1)
+        Hour      = [Math]::Max([Math]::Round(3600 / $Interval), 1)
+        Hour_4    = [Math]::Max([Math]::Round(14400 / $Interval), 1)
+        Day       = [Math]::Max([Math]::Round(86400 / $Interval), 1)
+        Custom    = [Math]::Max([Math]::Round($Custom / $Interval), 1)
+    }
         
-        $Calcs.keys | foreach {
-          $Theta = (Get-Theta($Calcs.$_))
-          $Alpha = [Double](Get-Alpha($Theta.Count))
-          $Zeta =  [Double]$Theta.Sum/$Theta.Count
-          $Stat.$_ = [Math]::Max( ( $Zeta * $Alpha + $($Stat.$_) * (1 - $Alpha) ) , $SmallestValue )
-        }
+    $Calcs.keys | foreach {
+        $Theta = (Get-Theta($Calcs.$_))
+        $Alpha = [Double](Get-Alpha($Theta.Count))
+        $Zeta = [Double]$Theta.Sum / $Theta.Count
+        $Stat.$_ = [Math]::Max( ( $Zeta * $Alpha + $($Stat.$_) * (1 - $Alpha) ) , $SmallestValue )
+    }
 
-    if (-not (Test-Path "stats")) {New-Item "stats" -ItemType "directory"}
+    if (-not (Test-Path "stats")) { New-Item "stats" -ItemType "directory" }
+
+    $Stat.Values = $Stat.Values | ForEach-Object { [Decimal]$_ }
 
     [PSCustomObject]@{
-        Live                    = [Decimal]$Value
-        Minute                  = [Decimal]$Stat.Minute
-        Minute_5                = [Decimal]$Stat.Minute_5
-        Minute_15               = [Decimal]$Stat.Minute_15
-        Hour                    = [Decimal]$Stat.Hour
-        Hour_4                  = [Decimal]$Stat.Hour_4
-        Day                     = [Decimal]$Stat.Day
-        Custom                  = [Decimal]$Stat.Custom
-        Values                  = $Stat.Values
+        Live      = [Decimal]$Value
+        Minute    = [Decimal]$Stat.Minute
+        Minute_5  = [Decimal]$Stat.Minute_5
+        Minute_15 = [Decimal]$Stat.Minute_15
+        Hour      = [Decimal]$Stat.Hour
+        Hour_4    = [Decimal]$Stat.Hour_4
+        Day       = [Decimal]$Stat.Day
+        Custom    = [Decimal]$Stat.Custom
+        Values    = $Stat.Values
     } | ConvertTo-Json | Set-Content $Path
 
     $Stat
@@ -142,9 +144,9 @@ function Get-Stat {
         [String]$Name
     )
 
-    if (-not (Test-Path "stats")) {New-Item "stats" -ItemType "directory"}
-    if ($name -eq "load-average") {Get-ChildItem "build\txt" | Where-Object Extension -NE ".ps1" | Where-Object BaseName -EQ $Name | Get-Content | ConvertFrom-Json}
-    else {Get-ChildItem "stats" | Where-Object Extension -NE ".ps1" | Where-Object BaseName -EQ $Name | Get-Content | ConvertFrom-Json}
+    if (-not (Test-Path "stats")) { New-Item "stats" -ItemType "directory" }
+    if ($name -eq "load-average") { Get-ChildItem "build\txt" | Where-Object Extension -NE ".ps1" | Where-Object BaseName -EQ $Name | Get-Content | ConvertFrom-Json }
+    else { Get-ChildItem "stats" | Where-Object Extension -NE ".ps1" | Where-Object BaseName -EQ $Name | Get-Content | ConvertFrom-Json }
 }
 
 function Remove-Stat {
@@ -179,7 +181,7 @@ function Set-WStat {
     $Date = $Date.ToUniversalTime()
     $Pool = $Name -split "_" | Select -First 1
 
-    if (Test-Path $Path) {$WStat = Get-Content $Path | ConvertFrom-Json}
+    if (Test-Path $Path) { $WStat = Get-Content $Path | ConvertFrom-Json }
     if ($WStat) {
         $WStat.address = $address;
         $WStat.symbol = $symbol;
@@ -198,15 +200,15 @@ function Set-WStat {
             Date    = $Date
         }
     }
-    if (-not (Test-Path ".\wallet\values")) {New-Item -Name "values" -Path ".\wallet" -ItemType "directory" | Out-Null}
+    if (-not (Test-Path ".\wallet\values")) { New-Item -Name "values" -Path ".\wallet" -ItemType "directory" | Out-Null }
 
     $WStat | ConvertTo-Json | Set-Content $Path 
 
 }
 
 function get-wstats {
-    $GetWStats = [PSCustomObject]@{}
-    if (Test-Path ".\wallet\values") {Get-ChildItemContent ".\wallet\values" | ForEach {$GetWStats | Add-Member $_.Name $_.Content}}
+    $GetWStats = [PSCustomObject]@{ }
+    if (Test-Path ".\wallet\values") { Get-ChildItemContent ".\wallet\values" | ForEach { $GetWStats | Add-Member $_.Name $_.Content } }
     $GetWStats
 }
 
@@ -224,10 +226,10 @@ function Invoke-SwarmMode {
 
     $DateMinute = [Int]$SwarmMode_Start.Minute + $ModeDeviation
     $DateMinute = ([math]::Floor(($DateMinute / $ModeDeviation)) * $ModeDeviation)
-    if ($DateMinute -gt 59) {$DateMinute = 0; $DateHour = [Int]$SwarmMode_Start.Hour; $DateHour = [int]$DateHour + 1}else {$DateHour = [Int]$SwarmMode_Start.Hour; $DateHour = [int]$DateHour}
-    if ($DateHour -gt 23) {$DateHour = 0; $DateDay = [Int]$SwarmMode_Start.Day; $DateDay = [int]$DateDay + 1}else {$DateDay = [Int]$SwarmMode_Start.Day; $DateDay = [int]$DateDay}
-    if ($DateDay -gt 31) {$DateDay = 1; $DateMonth = [Int]$SwarmMode_Start.Month; $DateMonth = [int]$DateMonth + 1}else {$DateMonth = [Int]$SwarmMode_Start.Month; $DateMonth = [int]$DateMonth}
-    if ($DateMonth -gt 12) {$DateMonth = 1; $DateYear = [Int]$SwarmMode_Start.Year; $DateYear = [int]$DateYear + 1}else {$DateYear = [Int]$SwarmMode_Start.Year; $DateYear = [int]$DateYear}
+    if ($DateMinute -gt 59) { $DateMinute = 0; $DateHour = [Int]$SwarmMode_Start.Hour; $DateHour = [int]$DateHour + 1 }else { $DateHour = [Int]$SwarmMode_Start.Hour; $DateHour = [int]$DateHour }
+    if ($DateHour -gt 23) { $DateHour = 0; $DateDay = [Int]$SwarmMode_Start.Day; $DateDay = [int]$DateDay + 1 }else { $DateDay = [Int]$SwarmMode_Start.Day; $DateDay = [int]$DateDay }
+    if ($DateDay -gt 31) { $DateDay = 1; $DateMonth = [Int]$SwarmMode_Start.Month; $DateMonth = [int]$DateMonth + 1 }else { $DateMonth = [Int]$SwarmMode_Start.Month; $DateMonth = [int]$DateMonth }
+    if ($DateMonth -gt 12) { $DateMonth = 1; $DateYear = [Int]$SwarmMode_Start.Year; $DateYear = [int]$DateYear + 1 }else { $DateYear = [Int]$SwarmMode_Start.Year; $DateYear = [int]$DateYear }
     $ReadyValue = (Get-Date -Year $DateYear -Month $DateMonth -Day $DateDay -Hour $DateHour -Minute $DateMinute -Second 0 -Millisecond 0)
     $StartValue = [math]::Round((([DateTime](Get-Date)) - $ReadyValue).TotalSeconds)
     $StartValue
@@ -246,7 +248,7 @@ function ConvertFrom-Fees {
     [Double]$FeeStat = $fees / 100
     [Double]$WorkerPercent = $Workers * $FeeStat
     [Double]$PoolCut = $WorkerPercent + $Fees
-    $WorkerFee = $Estimate*(1-($PoolCut/100))
+    $WorkerFee = $Estimate * (1 - ($PoolCut / 100))
     return $WorkerFee
 } 
 
@@ -262,7 +264,7 @@ function ConvertFrom-PoolHash {
     )
 
     $TotalShares = $Shares / $HashRates
-    $TotalShares = [Math]::Round($TotalShares,3)
+    $TotalShares = [Math]::Round($TotalShares, 3)
     [Double]$Calc = $Estimate * $TotalShares
     $Calc
 }
