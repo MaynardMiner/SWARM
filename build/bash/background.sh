@@ -12,5 +12,5 @@
 
 sudo screen -S background -d -m
 sleep 1
-sudo screen -S $1 -X stuff $"pwsh -command ./build/powershell/background.ps1 -WorkingDir $2 -Platforms $3 -HiveOS $4 -RejPercent $5 -Remote $6 -Port $7 -APIPassword $8 -API $9 -Interval $10\n"
+sudo screen -S $1 -X stuff $"pwsh -command ./build/powershell/background.ps1 -WorkingDir $2 -Platforms $3 -HiveOS $4 -RejPercent $5 -Remote $6 -Port $7 -APIPassword $8 -API $9\n"
 
