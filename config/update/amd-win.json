@@ -84,20 +84,9 @@
 "AMD2":".\\bin\\lolMiner-AMD-2\\lolMiner.exe", 
 "AMD3":".\\bin\\lolMiner-AMD-3\\lolMiner.exe", 
 "minername":"lolMiner.exe", 
-"version":"0.7", 
+"version":"0.8", 
 "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/lolminer-windows.zip"
 }, 
-
-"lolminerv7": {
-    "name": "lolminerv7",
-    "type": "amd",
-    "AMD1": ".\\bin\\lolMinerv7-AMD-1\\lolMiner.exe",
-    "AMD2": ".\\bin\\lolMinerv7-AMD-2\\lolMiner.exe",
-    "AMD3": ".\\bin\\lolMinerv7-AMD-3\\lolMiner.exe",
-    "minername": "lolMiner.exe",
-    "version": "0.7",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/lolminerv7-windows.zip"
-  },
 
 "teamredminer": {
 "name":"teamredminer", 
@@ -106,7 +95,7 @@
 "AMD2":".\\bin\\tdxminer-2\\teamredminer.exe", 
 "AMD3":".\\bin\\tdxminer-3\\teamredminer.exe", 
 "minername":"teamredminer.exe", 
-"version":"0.4.3", 
+"version":"0.4.4", 
 "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/teamredminer-windows.zip"
 }, 
 
@@ -128,7 +117,7 @@
 "AMD2":".\\bin\\wildrig-2\\wildrig.exe", 
 "AMD3":".\\bin\\wildrig-3\\wildrig.exe", 
 "minername":"wildrig.exe", 
-"version":"0.15.4.15", 
+"version":"0.15.5", 
 "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/wildrig-windows.zip"
 }, 
 

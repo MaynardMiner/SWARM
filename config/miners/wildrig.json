@@ -37,7 +37,8 @@
       "padihash": "",
       "pawelhash": "",
       "bmw512": "",
-      "rainforest": ""
+      "rainforest": "",
+      "honeycomb": ""
     },
     "difficulty": {
       "bcd": "",
@@ -72,7 +73,8 @@
       "padihash": "",
       "pawelhash": "",
       "bmw512": "",
-      "rainforest": ""
+      "rainforest": "",
+      "honeycomb": ""
     },
     "naming": {
       "bcd": "bcd",
@@ -107,7 +109,8 @@
       "padihash": "glt-padihash",
       "pawelhash": "glt-pawelhash",
       "bmw512": "bmw512",
-      "rainforest": "rainforest"
+      "rainforest": "rainforest",
+      "honeycomb": "honeycomb"
     },
     "fee": {
       "bcd": 1,
@@ -142,7 +145,8 @@
       "padihash": 1,
       "pawelhash": 1,
       "bmw512": 1,
-      "rainforest": 1
+      "rainforest": 1,
+      "honeycomb": 1
     },
     "oc": {
       "bcd": {
@@ -410,6 +414,14 @@
         "core": ""
       },
       "rainforest": {
+        "fans": "",
+        "v": "",
+        "dpm": "",
+        "mem": "",
+        "mdpm": "",
+        "core": ""
+      },
+      "honeycomb": {
         "fans": "",
         "v": "",
         "dpm": "",

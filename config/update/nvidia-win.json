@@ -57,7 +57,7 @@
         "NVIDIA2": ".\\bin\\bminer-2\\bminer.exe",
         "NVIDIA3": ".\\bin\\bminer-3\\bminer.exe",
         "minername": "bminer",
-        "version": "15.4.0",
+        "version": "15.5.0",
         "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/bminer-windows.zip"
     },
     "ehssand": {
@@ -197,7 +197,7 @@
         "NVIDIA2": ".\\bin\\ttminer-2\\TT-Miner.exe",
         "NVIDIA3": ".\\bin\\ttminer-3\\TT-Miner.exe",
         "minername": "TT-Miner.exe",
-        "version": "2.2.1",
+        "version": "2.2.2",
         "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/ttminer-windows.zip"
     },
     "xmrig_nv": {
