@@ -12,7 +12,7 @@ $NVIDIATypes | ForEach-Object {
     if ($Platform -eq "linux") { $Build = "Tar" }
     elseif ($Platform -eq "windows") { $Build = "Zip" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $MName = "phoenix-$Num"; $Port = "4700$Num"
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "phoenix-$Num"; $Port = "4700$Num"
 
     Switch ($Num) {
         1 { $Get_Devices = $NVIDIADevices1 }
@@ -55,12 +55,12 @@ $NVIDIATypes | ForEach-Object {
         $MinerAlgo = $_
         $Stat = Get-Stat -Name "$($Name)_$($MinerAlgo)_hashrate"
         $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
-            if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $MName) {
+            if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
                 if ($Config.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
                 if ($_.Worker) { $MinerWorker = "-worker $($_.Worker) " }
                 else { $MinerWorker = "-pass $($_.$Pass)$($Diff) " }
                 [PSCustomObject]@{
-                    MName      = $MName
+                    MName      = $Name
                     Coin       = $Coins
                     Delay      = $Config.$ConfigType.delay
                     Fees       = $Config.$ConfigType.fee.$($_.Algorithm)
