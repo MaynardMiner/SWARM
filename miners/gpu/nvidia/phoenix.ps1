@@ -73,8 +73,8 @@ $NVIDIATypes | ForEach-Object {
                     Devices    = $Devices
                     DeviceCall = "claymore"
                     Arguments  = "-platform 2 -mport $Port -mode 1 -allcoins 1 -allpools 1 -pool $($_.Protocol)://$($_.Host):$($_.Port) -wal $($_.$User) $MinerWorker-wd 0 -logfile `'$(Split-Path $Log -Leaf)`' -logdir `'$(Split-Path $Log)`' -gser 2 -dbg -1 -eres 1 $($Config.$ConfigType.commands.$($_.Algorithm))"
-                    HashRates  = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($MName)_$($_.Algorithm)_hashrate".Day) }
-                    Quote      = if ($($Stats."$($MName)_$($_.Algorithm)_hashrate".Day)) { $($Stats."$($MName)_$($_.Algorithm)_hashrate".Day) * ($_.Price) }else { 0 }
+                    HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
+                    Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
                     PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
                     ocpower    = if ($Config.$ConfigType.oc.$($_.Algorithm).power) { $Config.$ConfigType.oc.$($_.Algorithm).power }else { $OC."default_$($ConfigType)".Power }
                     occore     = if ($Config.$ConfigType.oc.$($_.Algorithm).core) { $Config.$ConfigType.oc.$($_.Algorithm).core }else { $OC."default_$($ConfigType)".core }
