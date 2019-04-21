@@ -64,6 +64,16 @@ function Set-Stat {
         [DateTime]$Date = (Get-Date)
     )
 
+    $Calcs = @{
+        Minute    = [Math]::Max([Math]::Round(60 / $Interval), 1)
+        Minute_5  = [Math]::Max([Math]::Round(300 / $Interval), 1)
+        Minute_15 = [Math]::Max([Math]::Round(900 / $Interval), 1)
+        Hour      = [Math]::Max([Math]::Round(3600 / $Interval), 1)
+        Hour_4    = [Math]::Max([Math]::Round(14400 / $Interval), 1)
+        Day       = [Math]::Max([Math]::Round(86400 / $Interval), 1)
+        Custom    = [Math]::Max([Math]::Round($Custom_Periods), 1)
+    }
+
     function Get-Alpha($X) { (2 / ($X + 1) ) }
     function Get-Theta($Y) { $Stat.Values | Select -Last $Y | Measure-Object -Sum }
 
@@ -103,8 +113,8 @@ function Set-Stat {
     $Stat.Values += [decimal]$Value
     if ($Stat.Values.Count -gt $Max_Periods) { $Stat.Values = $Stat.Values | Select -Skip 1 }
         
-    $global:Calcs.keys | foreach {
-        $Theta = (Get-Theta($global:Calcs.$_))
+    $Calcs.keys | foreach {
+        $Theta = (Get-Theta($Calcs.$_))
         $Alpha = [Double](Get-Alpha($Theta.Count))
         $Zeta = [Double]$Theta.Sum / $Theta.Count
         $Stat.$_ = [Math]::Max( ( $Zeta * $Alpha + $($Stat.$_) * (1 - $Alpha) ) , $SmallestValue )
