@@ -1300,7 +1300,7 @@ While ($true) {
             $_.Profit = if ($SelectedMiner.Profit) { $SelectedMiner.Profit -as [decimal] }else { "bench" }
             $_.Power = $([Decimal]$($SelectedMiner.Power * 24) / 1000 * $WattEX)
             $_.Fiat_Day = if ($SelectedMiner.Profit) { ($SelectedMiner.Profit * $Rates.$Currency).ToString("N2") }else { "bench" }
-            if($_.Profit -ne "bench") { $_.Profit_Day = $(Set-Stat -Name "daily_$($_.Type)_profit" -Value ([double]$($SelectedMiner.Pool_Estimate))).Day }else{$_.Profit_Day = "bench"}
+            if($SelectedMiner.Profit_Unbiased) { $_.Profit_Day = $(Set-Stat -Name "daily_$($_.Type)_profit" -Value ([double]$($SelectedMiner.Profit_Unbiased))).Day }else{$_.Profit_Day = "bench"}
         }
         
         $BestActiveMiners | ConvertTo-Json | Out-File ".\build\txt\bestminers.txt"
