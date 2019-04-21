@@ -77,8 +77,6 @@ if ($Poolname -eq $Name) {
                     Mining        = $blockpool_Algorithm
                     Algorithm     = $blockpool_Algorithm
                     Price         = $CStat
-                    StablePrice   = $Stat.Week
-                    MarginOfError = $Stat.Fluctuation
                     Protocol      = "stratum+tcp"
                     Host          = $blockpool_Host
                     Port          = $blockpool_Port

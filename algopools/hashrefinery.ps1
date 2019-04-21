@@ -33,8 +33,6 @@ if ($Poolname -eq $Name) {
                     Mining        = $Hashrefinery_Algorithm
                     Algorithm     = $Hashrefinery_Algorithm
                     Price         = $CStat
-                    StablePrice   = $Stat.Week
-                    MarginOfError = $Stat.Fluctuation
                     Protocol      = "stratum+tcp"
                     Host          = $Hashrefinery_Host
                     Port          = $Hashrefinery_Port

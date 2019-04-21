@@ -34,8 +34,6 @@ if ($Poolname -eq $Name) {
                     Mining        = $ahashpool_Algorithm
                     Algorithm     = $ahashpool_Algorithm
                     Price         = $CStat
-                    StablePrice   = $Stat.Week
-                    MarginOfError = $Stat.Fluctuation
                     Protocol      = "stratum+tcp"
                     Host          = $ahashpool_Host
                     Port          = $ahashpool_Port

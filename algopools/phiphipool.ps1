@@ -40,8 +40,6 @@ if ($Poolname -eq $Name) {
                     Mining        = $phiphipool_Algorithm
                     Algorithm     = $phiphipool_Algorithm
                     Price         = $CStat
-                    StablePrice   = $Stat.Week
-                    MarginOfError = $Stat.Fluctuation
                     Protocol      = "stratum+tcp"
                     Host          = $phiphipool_Host
                     Port          = $phiphipool_Port

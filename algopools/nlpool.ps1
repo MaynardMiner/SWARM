@@ -63,8 +63,6 @@ if ($Poolname -eq $Name) {
                     Mining        = $nlpoolAlgo_Algorithm
                     Algorithm     = $nlpoolAlgo_Algorithm
                     Price         = $CStat
-                    StablePrice   = $Stat.Week
-                    MarginOfError = $Stat.Fluctuation
                     Protocol      = "stratum+tcp"
                     Host          = $nlpoolAlgo_Host
                     Port          = $nlpoolAlgo_Port

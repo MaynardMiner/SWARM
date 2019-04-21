@@ -54,8 +54,6 @@ function get-stats {
 
 }
 
-
-
 function Set-Stat {
     param(
         [Parameter(Mandatory = $true)]
@@ -122,7 +120,7 @@ function Set-Stat {
 
     if (-not (Test-Path "stats")) {New-Item "stats" -ItemType "directory"}
 
-    $Stat = [PSCustomObject]@{
+    [PSCustomObject]@{
         Live                    = [Decimal]$Value
         Minute                  = [Decimal]$Stat.Minute
         Minute_5                = [Decimal]$Stat.Minute_5

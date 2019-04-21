@@ -39,8 +39,6 @@ if ($Poolname -eq $Name) {
                     Mining        = $fairpool_Algorithm
                     Algorithm     = $fairpool_Algorithm
                     Price         = $CStat
-                    StablePrice   = $Stat.Week
-                    MarginOfError = $Stat.Fluctuation
                     Protocol      = "stratum+tcp"
                     Host          = $fairpool_Host
                     Port          = $fairpool_Port

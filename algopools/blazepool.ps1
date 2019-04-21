@@ -34,8 +34,6 @@ if ($Poolname -eq $Name) {
                     Mining        = $blazepool_Algorithm
                     Algorithm     = $blazepool_Algorithm
                     Price         = $CStat
-                    StablePrice   = $Stat.Week
-                    MarginOfError = $Stat.Fluctuation
                     Protocol      = "stratum+tcp"
                     Host          = $blazepool_Host
                     Port          = $blazepool_Port
