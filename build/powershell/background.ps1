@@ -64,7 +64,7 @@ if ($Platforms -eq "windows") {
 . .\build\api\miners\miniz.ps1;      . .\build\api\miners\sgminer.ps1;      . .\build\api\miners\trex.ps1;
 . .\build\api\miners\wildrig.ps1;    . .\build\api\miners\xmrig-opt.ps1;    . .\build\api\miners\xmrstak.ps1;
 . .\build\powershell\hashrates.ps1;  . .\build\powershell\commandweb.ps1;   . .\build\powershell\response.ps1;
-. .\build\powershell\hiveoc.ps1;     . .\build\powershell\statcommand.ps1;
+. .\build\powershell\hiveoc.ps1;     . .\build\powershell\statcommand.ps1;  . .\build\api\miners\srbminer.ps1;
 . .\build\api\miners\cgminer.ps1;    . .\build\api\miners\nbminer.ps1;
 
 ##Start API Server
@@ -389,6 +389,7 @@ While ($True) {
                 'wildrig' { try { Get-StatsWildRig }catch { Get-OhNo } }
                 'cgminer' { try { Get-StatsCgminer }catch { Get-OhNo } }
                 'nebutech' { try { Get-StatsNebutech }catch { Get-OhNo } }
+                'srbminer' { try { Get-StatsSrbminer }catch { Get-OhNo } }
             }
 
             ##Check To See if High Rejections
