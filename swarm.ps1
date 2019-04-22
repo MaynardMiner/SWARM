@@ -756,7 +756,13 @@ Write-Host "Device Count = $Device_Count" -foregroundcolor green
 Start-Sleep -S 2
 if ($GPUCount -ne $null) { $LogGPUS = $GPUCount.Substring(0, $GPUCount.Length - 1) }
 
-if ([string]$GPUDevices1) { $NVIDIADevices1 = [String]$GPUDevices1 -replace " ",","; $AMDDevices1 = [String]$GPUDevices1 -replace " ","," } else { $NVIDIADevices1 = "none" }
+if ([string]$GPUDevices1) { 
+    $NVIDIADevices1 = [String]$GPUDevices1 -replace " ",","; 
+    $AMDDevices1 = [String]$GPUDevices1 -replace " ","," 
+} else { 
+    $NVIDIADevices1 = "none"; 
+    $AMDDevices1 = "none" 
+}
 if ([string]$GPUDevices2) { $NVIDIADevices2 = [String]$GPUDevices1 -replace " ","," } else { $NVIDIADevices2 = "none" }
 if ([string]$GPUDevices3) { $NVIDIADevices3 = [String]$GPUDevices1 -replace " ","," } else { $NVIDIADevices3 = "none" }
 
