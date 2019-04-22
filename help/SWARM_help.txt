@@ -60,6 +60,15 @@ Argument            Options             Explanation
                                     Otherwise, it will assume it is operating in windows. This parameter is
                                     optional.
 
+-Stat_All        [Yes,No]           Default is No. When enabled to Yes, it will pull / save ALL coin stats. 
+                                    However, this is a huge expenditure of CPU and system resources to do. Not
+                                    reccommend on 2 threaded CPUs.
+
+-Custom_Periods    [number]         Default is 1. This will allow the user to specify the number of periods 
+                                    that SWARM should gather its data from, with "periods" defined as each 
+                                    pull from pool. Default is 1 (to reduce use). If used, Stat_Algo and /or
+                                    Stat_Coin should be set to "custom"
+
 -Algorithm   [algorithm,algorithm,etc.] When this is specified, SWARM will not use
                                         Algorithms from pool-algos.json, and defer
                                         to these algorithms instead. Can be used
@@ -190,10 +199,20 @@ Argument            Options             Explanation
 
 -Stat_Algo         [Live,		This will allow you to factor period average smoothing. 
         	    Minute_5,		By default everything is live pricing. This will allow you to
-		    Minute_10,		smooth out stat fluctuations if you so desired into the period 
-		    Hour,		specified. Essentially it will allow you choose whether or not 
-		    Day]		you want to base switching on price averages, or live...And if 
-					you choose price averages, what average to base it on.
+		    Minute_15,		smooth out stat fluctuations if you so desired into the period 
+                    Hour                specified. Essentially it will allow you choose whether or not 
+		    Hour4,              you want to base switching on price averages, or live...And if
+		    Day                 you choose price averages, what average to base it on. Default
+                    Custom              is live. If using -Custom_Periods, this must be set to Custom.
+
+-Stat_Coin         [Live,		This will allow you to factor period average smoothing. 
+        	    Minute_5,		By default everything is live pricing. This will allow you to
+		    Minute_15,		smooth out stat fluctuations if you so desired into the period 
+                    Hour                specified. Essentially it will allow you choose whether or not 
+		    Hour4,              you want to base switching on price averages, or live...And if
+		    Day                 you choose price averages, what average to base it on. Default
+                    Custom              is live. If using -Custom_Periods, this must be set to Custom.
+					
 
 -CPUOnly	   [Yes or No]		For CPU only miners- This lets HiveOS know whether or not to
 					stat CPU. Note: Some CPU miners will only send stats on

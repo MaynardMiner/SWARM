@@ -2519,3 +2519,54 @@ API overhaul:
    further, for miners that do not support logging.
    (Windows)
 
+  2.1.8
+
+  NOTE: Remote Updates has been disabled! You will not be able to
+  remote update, and version must be cleanly installed. Transferring
+  old statistics and miners will cause major errors.
+
+  HUGE UPDATE
+
+  -Statistics system is now greatly improved, and was completely
+  rewritten. Here are the bullet points:
+  * Statistics for time frames are now based on exponential
+    weighted moving averages.
+  * ``-Stat_All`` argument has been added which when enabled to
+      Yes, it will pull / save ALL coin stats. However, this is
+      a huge expenditure of CPU and system resources to do. Not
+      reccommend on 2 threaded CPU's. Default is No
+  * ``-Custom_Periods`` argument has been added. This will allow the
+      user to specify the number of periods that SWARM should gather
+      its data from, with "periods" defined as each pull from pool.
+      Default is 1 (to reduce use).
+  * Stat files will store values from every pull from pool.
+  * Stats are pulled on demand, and only when needed to reduce RAM use.
+  * Default is still Live stats.
+
+  Note: This new statistics system does increase load times slighty.
+  It is a little more stressful on USB sticks as well. If you are 
+  using USB, you may consider increasing -Interval, and limiting
+  Number of ``-Type`` you use. This system is much better, but does
+  increase resource use.
+
+  -Overclocking system was reworked- It now runs sycnrously to miner
+   launch. It will close miner, start OC, and then open miner when finished.
+   * OC values are displayed on main screen when this occurs.
+  
+  -Screen will now display average profit / day
+  -Screen will now display current profit / day
+
+  -``view`` command has been created. This allows a command to be run
+     that will refresh every ``-n`` seconds. ``-OnChange`` flag will
+     make it so that it will only update screen if output has changed.
+     * example: ``view get stats -n 60 -OnChange``
+       This will run the command ``get stats`` every 60 seconds,
+       and if the output is different- Will update the console screen.
+
+  New Miner!
+  SRBMiner
+
+  -bminer Updated
+  -ttminer updated
+  -wildrig Updated
+  -teamredminer updated
