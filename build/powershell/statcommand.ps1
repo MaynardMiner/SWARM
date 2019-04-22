@@ -81,7 +81,14 @@ function Set-Stat {
     }
 
     function Get-Alpha($X) { (2 / ($X + 1) ) }
-    function Get-Theta($Y) { $Stat.Values | Select -Last $Y | Measure-Object -Sum }
+    function Get-Theta { 
+        param (
+            [Parameter(Mandatory=$true)]
+            [Int]$Calcs,
+            [Parameter(Mandatory=$true)]
+            [Array]$Values
+        )
+        $Values | Select -Last $Calcs | Measure-Object -Sum }
 
     $Max_Periods = 288
     $Hash_Max = 15
@@ -89,7 +96,7 @@ function Set-Stat {
     else { $Path = "stats\$Name.txt" }
     $SmallestValue = 1E-20
 
-    if (Test-Path $Path -and $HashRate) { 
+    if ((Test-Path $Path) -and $HashRate) {
         $Stat = Get-Content $Path | ConvertFrom-Json 
         $Stat = [PSCustomObject]@{
             Live      = [Double]$Value
@@ -150,13 +157,15 @@ function Set-Stat {
 
     $Stat.Values += [decimal]$Value
     if($HashRate){
-        $Stat.Hashrate += [decimal]$Hashrate
+        $Stat.Hash_Val += [decimal]$Hashrate
         if ($Stat.Hash_Val.Count -gt $HashRate) { $Stat.Hash_Val = $Stat.Hash_Val | Select -Skip 1 }
     }
     if ($Stat.Values.Count -gt $Max_Periods) { $Stat.Values = $Stat.Values | Select -Skip 1 }
         
     $Calcs.keys | foreach {
-        $Theta = (Get-Theta($Calcs.$_))
+        if($_ -eq "Hashrate"){$T = $Stat.Hash_Val}
+        else{$T = $Stat.Values}
+        $Theta = (Get-Theta -Calcs $Calcs.$_ -Values $T)
         $Alpha = [Double](Get-Alpha($Theta.Count))
         $Zeta = [Double]$Theta.Sum / $Theta.Count
         $Stat.$_ = [Math]::Max( ( $Zeta * $Alpha + $($Stat.$_) * (1 - $Alpha) ) , $SmallestValue )
@@ -165,7 +174,7 @@ function Set-Stat {
     if (-not (Test-Path "stats")) { New-Item "stats" -ItemType "directory" }
 
     $Stat.Values = @( $Stat.Values | % { [Decimal]$_ } )
-    $Stat.Hash_Val = @( $Stat.Hash_Val | % { [Decimal]$_ } )
+    if($Stat.Hash_Val){$Stat.Hash_Val = @( $Stat.Hash_Val | % { [Decimal]$_ } )}
 
     if($HashRate) {
         [PSCustomObject]@{
