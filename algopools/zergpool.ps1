@@ -34,7 +34,7 @@ if ($Poolname -eq $Name) {
                 }
 
                 if(-not $global:Pool_Hashrates.$Zergpool_Algorithm){$global:Pool_Hashrates.Add("$Zergpool_Algorithm",@{})}
-                $global:Pool_Hashrates.$Zergpool_Algorithm.Add("$Name","$($Stat.HashRate)")
+                $global:Pool_Hashrates.$Zergpool_Algorithm.Add("$Name",@{HashRate = "$($Stat.HashRate)"; Percent = ""})
 
                     $Pass1 = $global:Wallets.Wallet1.Keys
                     $User1 = $global:Wallets.Wallet1.$Passwordcurrency1.address

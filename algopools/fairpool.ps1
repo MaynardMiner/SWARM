@@ -39,7 +39,7 @@ if ($Poolname -eq $Name) {
                 }
 
                 if(-not $global:Pool_Hashrates.$fairpool_Algorithm){$global:Pool_Hashrates.Add("$fairpool_Algorithm",@{})}
-                $global:Pool_Hashrates.$fairpool_Algorithm.Add("$Name","$($Stat.HashRate)")
+                $global:Pool_Hashrates.$fairpool_Algorithm.Add("$Name",@{HashRate = "$($Stat.HashRate)"; Percent = ""})
    
                 [PSCustomObject]@{
                     Priority      = $Priorities.Pool_Priorities.$Name
