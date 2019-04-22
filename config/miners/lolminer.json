@@ -3,18 +3,34 @@
   "AMD1": {
     "name": "AMD1",
     "delay": "1",
-    "prestart": [],
+    "prestart": [
+      "export GPU_MAX_HEAP_SIZE=100",
+      "export GPU_USE_SYNC_OBJECTS=1",
+      "export GPU_SINGLE_ALLOC_PERCENT=100",
+      "export GPU_MAX_ALLOC_PERCENT=100"
+    ],
     "commands": {
       "zhash": "--coin AUTO144_5",
-      "equihash192": "--coin AUTO192_7"
+      "equihash192": "--coin AUTO192_7",
+      "beam": "--coin BEAM --tls 0",
+      "grincuckatoo31": "--coin GRIN-AT31"
     },
     "difficulty": {
       "zhash": "",
-      "equihash192": ""
+      "equihash192": "",
+      "beam": "",
+      "grincuckatoo31": ""
     },
     "naming": {
       "zhash": "zhash",
-      "equihash192": "equihash192"
+      "equihash192": "equihash192",
+      "beam": "beam",
+      "grincuckatoo31": "grincuckatoo31"
+    },
+    "fee": {
+      "zhash": 1,
+      "equihash192": 1,
+      "beam": 1
     },
     "oc": {
       "zhash": {
@@ -26,6 +42,22 @@
         "fans": ""
       },
       "equihash192": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "beam": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "mem": "",
+        "mdpm": "",
+        "fans": ""
+      },
+      "grincuckatoo31": {
         "dpm": "",
         "v": "",
         "core": "",

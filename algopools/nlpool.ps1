@@ -20,10 +20,14 @@ if ($Poolname -eq $Name) {
                 $nlpoolAlgo_Host = "mine.nlpool.nl"
                 $nlpoolAlgo_Port = $nlpool_Request.$_.port
                 $Divisor = (1000000 * $nlpool_Request.$_.mbtc_mh_factor)
-                $Estimate = if ($Stat_Algo -eq "Day") { [Double]$nlpool_Request.$_.estimate_last24h }else { [Double]$nlpool_Request.$_.estimate_current }
+                $StatPath = ".\stats\($Name)_$($nlpoolAlgo_Algorithm)_profit.txt"
 
-                $Stat = Set-Stat -Name "$($Name)_$($nlpoolAlgo_Algorithm)_profit" -Value ([Double]$Estimate / $Divisor * (1 - ($nlpool_Request.$_.fees / 100)))
-                if ($Stat_Algo -eq "Day") { $CStat = $Stat.Live }else { $CStat = $Stat.$Stat_Algo }
+                if (-not (Test-Path $StatPath)) {
+                    $Stat = Set-Stat -Name "$($Name)_$($nlpoolAlgo_Algorithm)_profit" -Value ( [Double]$nlpool_Request.$_.estimate_last24h / $Divisor * (1 - ($nlpool_Request.$_.fees / 100)))
+                } 
+                else {
+                    $Stat = Set-Stat -Name "$($Name)_$($nlpoolAlgo_Algorithm)_profit" -Value ( [Double]$nlpool_Request.$_.estimate_current / $Divisor * (1 - ($nlpool_Request.$_.fees / 100)))
+                }
         
                 $Pass1 = $global:Wallets.Wallet1.Keys
                 $User1 = $global:Wallets.Wallet1.$Passwordcurrency1.address
@@ -62,9 +66,7 @@ if ($Poolname -eq $Name) {
                     Symbol        = "$nlpoolAlgo_Algorithm-Algo"
                     Mining        = $nlpoolAlgo_Algorithm
                     Algorithm     = $nlpoolAlgo_Algorithm
-                    Price         = $CStat
-                    StablePrice   = $Stat.Week
-                    MarginOfError = $Stat.Fluctuation
+                    Price         = $Stat.$Stat_Algo
                     Protocol      = "stratum+tcp"
                     Host          = $nlpoolAlgo_Host
                     Port          = $nlpoolAlgo_Port

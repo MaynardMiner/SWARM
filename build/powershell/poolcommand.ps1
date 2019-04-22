@@ -14,9 +14,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 function Get-Pools {
     param (
         [Parameter(Mandatory = $true)]
-        [String]$PoolType,
-        [Parameter(Mandatory = $false)]
-        [Array]$Stats
+        [String]$PoolType
     )
 
     Switch($PoolType)

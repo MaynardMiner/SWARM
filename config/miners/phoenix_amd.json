@@ -27,6 +27,12 @@
       "dagger": "dagger",
       "progpow": "progpow"
     },
+    "fee": {
+      "ethash": 0.65,
+      "daggerhashimoto": 0.65,
+      "dagger": 0.65,
+      "progpow": 0.65
+    },
     "oc": {
       "ethash": {
         "dpm": "",

@@ -1,72 +1,80 @@
 {
-    "NVIDIA1": {
-      "name": "NVIDIA1",
-      "delay": "1",
-      "prestart": [
-        "echo THIS MINER REQUIRES 6GB OF RAM MINIMUM"
-      ],
-      "commands": {
-        "verushash": ""
-      },
-      "difficulty": {
-        "verushash": ""
-      },
-      "naming": {
-        "verushash": "verus"
-      },
-      "oc": {
-        "verushash": {
-          "Power": "",
-          "Core": "",
-          "Memory": "",
-          "Fans": ""
-        }
-      }
+  "NVIDIA1": {
+    "name": "NVIDIA1",
+    "delay": "1",
+    "prestart": [
+      "echo THIS MINER REQUIRES 6GB OF RAM MINIMUM"
+    ],
+    "commands": {
+      "verushash": ""
     },
-    "NVIDIA2": {
-      "name": "NVIDIA2",
-      "delay": "1",
-      "prestart": [],
-      "commands": {
-        "verushash": ""
-      },
-      "difficulty": {
-        "verushash": ""
-      },
-      "naming": {
-        "verushash": "verus"
-      },
-      "oc": {
-        "verushash": {
-          "Power": "",
-          "Core": "",
-          "Memory": "",
-          "Fans": ""
-        }
-      }
+    "difficulty": {
+      "verushash": ""
     },
-    "NVIDIA3": {
-      "name": "NVIDIA3",
-      "delay": "1",
-      "prestart": [],
-      "commands": {
-        "verushash": ""
-      },
-      "difficulty": {
-        "verushash": ""
-      },
-      "naming": {
-        "verushash": "verus"
-      },
-      "oc": {
-        "verushash": {
-          "Power": "",
-          "Core": "",
-          "Memory": "",
-          "Fans": ""
-        }
-      }
+    "naming": {
+      "verushash": "verus"
     },
-    "name": "cc-verus"
-  }
-  
+    "fee": {
+      "verushash": 0
+    },
+    "oc": {
+      "verushash": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "Fans": ""
+      }
+    }
+  },
+  "NVIDIA2": {
+    "name": "NVIDIA2",
+    "delay": "1",
+    "prestart": [],
+    "commands": {
+      "verushash": ""
+    },
+    "difficulty": {
+      "verushash": ""
+    },
+    "naming": {
+      "verushash": "verus"
+    },
+    "fee": {
+      "verushash": 0
+    },
+    "oc": {
+      "verushash": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "Fans": ""
+      }
+    }
+  },
+  "NVIDIA3": {
+    "name": "NVIDIA3",
+    "delay": "1",
+    "prestart": [],
+    "commands": {
+      "verushash": ""
+    },
+    "difficulty": {
+      "verushash": ""
+    },
+    "naming": {
+      "verushash": "verus"
+    },
+    "fee": {
+      "verushash": 0
+    },
+    "oc": {
+      "verushash": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "Fans": ""
+      }
+    }
+  },
+  "name": "cc-verus"
+}

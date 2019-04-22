@@ -90,5 +90,7 @@
                 ],
     "Coin": "",
     "ASIC_IP": "",
-    "ASIC_ALGO": ""
+    "ASIC_ALGO": "",
+    "Stat_All": "No",
+    "Custom_Periods": 1
 }

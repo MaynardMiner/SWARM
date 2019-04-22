@@ -1,4 +1,4 @@
-{ 
+{
   "name": "phoenix",
   "NVIDIA1": {
     "name": "NVIDIA1",
@@ -18,6 +18,11 @@
       "ethash": "ethash",
       "daggerhashimoto": "daggerhashimoto",
       "dagger": "dagger"
+    },
+    "fee": {
+      "ethash": 0.65,
+      "daggerhashimoto": 0.65,
+      "dagger": 0.65
     },
     "oc": {
       "ethash": {
@@ -73,6 +78,11 @@
       "daggerhashimoto": "daggerhashimoto",
       "dagger": "dagger"
     },
+    "fee": {
+      "ethash": 0.65,
+      "daggerhashimoto": 0.65,
+      "dagger": 0.65
+    },
     "oc": {
       "ethash": {
         "Power": "",
@@ -126,6 +136,11 @@
       "ethash": "ethash",
       "daggerhashimoto": "daggerhashimoto",
       "dagger": "dagger"
+    },
+    "fee": {
+      "ethash": 0.65,
+      "daggerhashimoto": 0.65,
+      "dagger": 0.65
     },
     "oc": {
       "ethash": {

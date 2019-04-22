@@ -53,7 +53,6 @@ if ($Poolname -eq $Name) {
                     Mining      = $nicehash_Algorithm
                     Algorithm   = $nicehash_Algorithm
                     Price       = $Stat.$Stat_Algo
-                    StablePrice = $Stat.Week
                     Protocol    = "stratum+tcp"
                     Host        = $nicehash_Host
                     Port        = $nicehash_Port

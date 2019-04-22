@@ -39,6 +39,7 @@ $CPUTypes | ForEach-Object {
 
     $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
         $MinerAlgo = $_
+        $Stat = Get-Stat -Name "$($Name)_$($MinerAlgo)_hashrate"
         $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
             if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
                 if ($Config.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
@@ -46,7 +47,7 @@ $CPUTypes | ForEach-Object {
                     MName      = $Name
                     Coin       = $Coins
                     Delay      = $Config.$ConfigType.delay
-
+                    Fees       = $Config.$ConfigType.fee.$($_.Algorithm)
                     Symbol     = "$($($_.Algorithm))"
                     MinerName  = $MinerName
                     Prestart   = $PreStart
@@ -55,8 +56,8 @@ $CPUTypes | ForEach-Object {
                     Devices    = $Devices
                     DeviceCall = "cpuminer-opt"
                     Arguments  = "-a $($Config.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -b 0.0.0.0:10001 -u $($_.User1) -p $($_.Pass1)$($Diff) $($Config.$ConfigType.commands.$($_.Algorithm))"
-                    HashRates  = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) }
-                    Quote      = if ($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)) { $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) * ($_.Price) }else { 0 }
+                    HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
+                    Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
                     PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
                     MinerPool  = "$($_.Name)"
                     FullName   = "$($_.Mining)"

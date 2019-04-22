@@ -16,6 +16,10 @@
       "grincuckaroo29": "grincuckaroo29",
       "grincuckatoo31": "grincuckatoo31"
     },
+    "fee": {
+      "grincuckaroo29": 0,
+      "grincuckatoo31": 0
+    },
     "oc": {
       "grincuckaroo29": {
         "Power": "",
@@ -47,6 +51,10 @@
       "grincuckaroo29": "grincuckaroo29",
       "grincuckatoo31": "grincuckatoo31"
     },
+    "fee": {
+      "grincuckaroo29": 0,
+      "grincuckatoo31": 0
+    },
     "oc": {
       "grincuckaroo29": {
         "Power": "",
@@ -77,6 +85,10 @@
     "naming": {
       "grincuckaroo29": "grincuckaroo29",
       "grincuckatoo31": "grincuckatoo31"
+    },
+    "fee": {
+      "grincuckaroo29": 0,
+      "grincuckatoo31": 0
     },
     "oc": {
       "grincuckaroo29": {

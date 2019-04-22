@@ -28,6 +28,14 @@
       "grincuckaroo29": "cuckaroo29",
       "grincuckatoo31": "cuckatoo31"
     },
+    "fee": {
+      "zhash": 2,
+      "daggerhashimoto": 0.65,
+      "equihash144": 2,
+      "beam": 2,
+      "grincuckaroo29": 1,
+      "grincuckatoo31": 1
+    },
     "oc": {
       "zhash": {
         "Power": "",
@@ -103,6 +111,14 @@
       "grincuckaroo29": "cuckaroo29",
       "grincuckatoo31": "cuckatoo31"
     },
+    "fee": {
+      "zhash": 2,
+      "daggerhashimoto": 0.65,
+      "equihash144": 2,
+      "beam": 2,
+      "grincuckaroo29": 1,
+      "grincuckatoo31": 1
+    },
     "oc": {
       "zhash": {
         "Power": "",
@@ -177,6 +193,14 @@
       "beam": "beam",
       "grincuckaroo29": "cuckaroo29",
       "grincuckatoo31": "cuckatoo31"
+    },
+    "fee": {
+      "zhash": 2,
+      "daggerhashimoto": 0.65,
+      "equihash144": 2,
+      "beam": 2,
+      "grincuckaroo29": 1,
+      "grincuckatoo31": 1
     },
     "oc": {
       "zhash": {

@@ -16,7 +16,7 @@
       "lyra2re": "",
       "lyra2rev3": "",
       "lyra2v3": "",
-      "cryptonightr" : ""
+      "cryptonightr": ""
     },
     "difficulty": {
       "phi2": "",
@@ -25,7 +25,7 @@
       "lyra2re": "",
       "lyra2rev3": "",
       "lyra2v3": "",
-      "cryptonightr" : ""
+      "cryptonightr": ""
     },
     "naming": {
       "phi2": "phi2",
@@ -34,7 +34,16 @@
       "lyra2re": "lyra2z",
       "lyra2rev3": "lyra2rev3",
       "lyra2v3": "lyra2rev3",
-      "cryptonightr" : "cnr"
+      "cryptonightr": "cnr"
+    },
+    "fee": {
+      "phi2": 3,
+      "lyra2z": 3,
+      "cryptonightv8": 2.5,
+      "lyra2re": 3,
+      "lyra2rev3": 2.5,
+      "lyra2v3": 2.5,
+      "cryptonightr": 2.5
     },
     "oc": {
       "phi2": {

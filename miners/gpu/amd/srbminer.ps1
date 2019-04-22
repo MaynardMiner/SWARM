@@ -3,16 +3,16 @@ $AMDTypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
 
     ##Miner Path Information
-    if ($amd.lolminerv7.$ConfigType) { $Path = "$($amd.lolminerv7.$ConfigType)" }
+    if ($amd.srbminer.$ConfigType) { $Path = "$($amd.srbminer.$ConfigType)" }
     else { $Path = "None" }
-    if ($amd.lolminerv7.uri) { $Uri = "$($amd.lolminerv7.uri)" }
+    if ($amd.srbminer.uri) { $Uri = "$($amd.srbminer.uri)" }
     else { $Uri = "None" }
-    if ($amd.lolminerv7.minername) { $MinerName = "$($amd.lolminerv7.minername)" }
+    if ($amd.srbminer.minername) { $MinerName = "$($amd.srbminer.minername)" }
     else { $MinerName = "None" }
     if ($Platform -eq "linux") { $Build = "Tar" }
     elseif ($Platform -eq "windows") { $Build = "Zip" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "lolminerv7-$Num"; $Port = "2500$Num"
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "srbminer-$Num"; $Port = "3300$Num"
 
     Switch ($Num) {
         1 { $Get_Devices = $AMDDevices1 }
@@ -22,21 +22,20 @@ $AMDTypes | ForEach-Object {
     $Log = Join-Path $dir "logs\$ConfigType.log"
 
     ##Parse -GPUDevices
-    if ($AMDDevices1 -ne "none") { $Devices = $AMDDevices1 }
+    if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
     else { $Devices = $Get_Devices }
 
     ##Get Configuration File
-    $GetConfig = "$dir\config\miners\lolminerv7.json"
+    $GetConfig = "$dir\config\miners\srbminer.json"
     try { $Config = Get-Content $GetConfig | ConvertFrom-Json }
     catch { Write-Warning "Warning: No config found at $GetConfig" }
 
-    ##Export would be /path/to/[SWARMVERSION]/build/export && Bleeding Edge Check##
+    ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = Join-Path $dir "build\export"
 
     ##Prestart actions before miner launch
     $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
     $Prestart = @()
-    if (Test-Path $BE) { $Prestart += "export LD_PRELOAD=libcurl-compat.so.3.0.0" }
     $PreStart += "export LD_LIBRARY_PATH=$ExportDir"
     $Config.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 
@@ -45,24 +44,25 @@ $AMDTypes | ForEach-Object {
     ##Build Miner Settings
     $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
         $MinerAlgo = $_
+        $Stat = Get-Stat -Name "$($Name)_$($MinerAlgo)_hashrate"
         $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
             if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
                 if ($Config.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
-                if ($Platform -eq "linux") { $extra = "--asm 1 " }
                 [PSCustomObject]@{
                     MName      = $Name
                     Coin       = $Coins
                     Delay      = $Config.$ConfigType.delay
+                    Fees       = $Config.$ConfigType.fee.$($_.Algorithm)
                     Symbol     = "$($_.Symbol)"
                     MinerName  = $MinerName
                     Prestart   = $PreStart
                     Type       = $ConfigType
                     Path       = $Path
                     Devices    = $Devices
-                    DeviceCall = "lolminer"
-                    Arguments  = "--pool $($_.Host) --port $($_.Port) --user $($_.$User) --pass $($_.$Pass)$($Diff) --apiport $Port --logs 0 --devices AMD $extra$($Config.$ConfigType.commands.$($_.Algorithm))"
-                    HashRates  = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) }
-                    Quote      = if ($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)) { $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) * ($_.Price) }else { 0 }
+                    DeviceCall = "srbminer"
+                    Arguments  = "--adldisable --ccryptonighttype $($Config.$ConfigType.naming.$($_.Algorithm)) -cgpuid $Devices --cnicehash true --cpool $($_.Host):$($_.Port) --cwallet $($_.$User) --cpassword $($_.$Pass) --apienable --logfile `'$Log`' --apiport $Port $($Config.$ConfigType.commands.$($_.Algorithm))"
+                    HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
+                    Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
                     PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
                     ocdpm      = if ($Config.$ConfigType.oc.$($_.Algorithm).dpm) { $Config.$ConfigType.oc.$($_.Algorithm).dpm }else { $OC."default_$($ConfigType)".dpm }
                     ocv        = if ($Config.$ConfigType.oc.$($_.Algorithm).v) { $Config.$ConfigType.oc.$($_.Algorithm).v }else { $OC."default_$($ConfigType)".v }
@@ -72,15 +72,15 @@ $AMDTypes | ForEach-Object {
                     ocfans     = if ($Config.$ConfigType.oc.$($_.Algorithm).fans) { $Config.$ConfigType.oc.$($_.Algorithm).fans }else { $OC."default_$($ConfigType)".fans }
                     MinerPool  = "$($_.Name)"
                     FullName   = "$($_.Mining)"
-                    Port       = $Port
-                    API        = "lolminer"
+                    Port       = $Port 
+                    API        = "srbminer"
                     Wallet     = "$($_.$User)"
                     URI        = $Uri
                     Server     = "localhost"
                     BUILD      = $Build
                     Algo       = "$($_.Algorithm)"
-                    Log        = $Log 
-                }            
+                    Log        = "miner_generated"
+                }
             }
         }
     }

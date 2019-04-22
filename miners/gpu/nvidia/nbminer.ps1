@@ -46,13 +46,13 @@ $NVIDIATypes | ForEach-Object {
     ##Build Miner Settings
     $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
         $MinerAlgo = $_
-        switch($MinerAlgo)
-        {
-         "daggerhashimoto"{$Stratum = "ethnh+tcp://"; $A = "ethash"}
-         "grincuckaroo29" {$Stratum = "stratum+tcp://"; $A = "cuckaroo"}
-         "grincuckatoo31" {$Stratum = "stratum+tcp://"; $A = "cuckatoo"}
-         "ethash" {$Stratum = "stratum+ssl://"; $A = "ethash"}
-         default {$Stratum = "stratum+tcp://" }
+        $Stat = Get-Stat -Name "$($Name)_$($MinerAlgo)_hashrate"
+        switch ($MinerAlgo) {
+            "daggerhashimoto" { $Stratum = "ethnh+tcp://"; $A = "ethash" }
+            "grincuckaroo29" { $Stratum = "stratum+tcp://"; $A = "cuckaroo" }
+            "grincuckatoo31" { $Stratum = "stratum+tcp://"; $A = "cuckatoo" }
+            "ethash" { $Stratum = "stratum+ssl://"; $A = "ethash" }
+            default { $Stratum = "stratum+tcp://" }
         }
         $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
             if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
@@ -61,6 +61,7 @@ $NVIDIATypes | ForEach-Object {
                     MName      = $Name
                     Coin       = $Coins
                     Delay      = $Config.$ConfigType.delay
+                    Fees       = $Config.$ConfigType.fee.$($_.Algorithm)
                     Symbol     = "$($_.Symbol)"
                     MinerName  = $MinerName
                     Prestart   = $PreStart
@@ -69,8 +70,8 @@ $NVIDIATypes | ForEach-Object {
                     Devices    = $Devices
                     DeviceCall = "ccminer"
                     Arguments  = "-a $A --api 0.0.0.0:$Port --url $Stratum$($_.Host):$($_.Port) --user $($_.$User) $($Config.$ConfigType.commands.$($_.Algorithm))"
-                    HashRates  = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) }
-                    Quote      = if ($($Stats."$($Name)_$($_.Algorithm)_hashrate".Day)) { $($Stats."$($Name)_$($_.Algorithm)_hashrate".Day) * ($_.Price) }else { 0 }
+                    HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
+                    Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
                     PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
                     ocpower    = if ($Config.$ConfigType.oc.$($_.Algorithm).power) { $Config.$ConfigType.oc.$($_.Algorithm).power }else { $OC."default_$($ConfigType)".Power }
                     occore     = if ($Config.$ConfigType.oc.$($_.Algorithm).core) { $Config.$ConfigType.oc.$($_.Algorithm).core }else { $OC."default_$($ConfigType)".core }

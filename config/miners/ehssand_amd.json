@@ -18,6 +18,9 @@
     "naming": {
       "argon2d-dyn": "argon2d"
     },
+    "fee": {
+      "argon2d-dyn": 0
+    },
     "oc": {
       "argon2d-dyn": {
         "dpm": "",

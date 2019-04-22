@@ -18,6 +18,9 @@
     "naming": {
       "hex": "hex"
     },
+    "fee": {
+      "hex": 0
+    },
     "oc": {
       "hex": {
         "dpm": "",

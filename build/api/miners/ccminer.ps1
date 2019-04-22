@@ -27,8 +27,6 @@ function Get-StatsCcminer {
         catch { Write-Host "Failed To parse Threads" -ForegroundColor Red };
         try { $global:MinerACC += $Request -split ";" | Select-String "ACC=" | ForEach-Object { $_ -replace ("ACC=", "") } }catch { }
         try { $global:MinerREJ += $Request -split ";" | Select-String "REJ=" | ForEach-Object { $_ -replace ("REJ=", "") } }catch { }
-        try { $global:BACC += $Request -split ";" | Select-String "ACC=" | ForEach-Object { $_ -replace ("ACC=", "") } }catch { }
-        try { $global:BREJ += $Request -split ";" | Select-String "REJ=" | ForEach-Object { $_ -replace ("REJ=", "") } }catch { }
         $global:ALLACC += $global:MinerACC
         $global:ALLREJ += $global:MinerREJ
     }

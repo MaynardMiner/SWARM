@@ -156,15 +156,12 @@ function Start-LaunchCode {
         if ($Platforms -eq "windows") {
             $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
             if ($MinerProcess -eq $null -or $MinerProcess.HasExited -eq $true) {
-
-                ##User specified delay
-                Start-Sleep -S $MinerCurrent.Delay
             
                 #dir
                 $WorkingDirectory = Join-Path $Dir $(Split-Path $($MinerCurrent.Path))
 
-                            ##Classic Logo For Windows
-                            Write-Host "
+                ##Classic Logo For Windows
+                Write-Host "
             ______________
           /.----------..-'
    -.     ||           \\
@@ -208,15 +205,15 @@ function Start-LaunchCode {
                     }
                 }
                 ##Determine if Miner needs logging
-                if ($MinerCurrent.Log -ne "miner_generated") { 
-                    Switch($MinerCurrent.API) {
-                        "lolminer"{
+                if ($MinerCurrent.Log -ne "miner_generated") {
+                    Switch ($MinerCurrent.API) {
+                        "lolminer" {
                             $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FIlePath ""$Logs"" -Append; `$Output | Out-Host;}`'" 
                         }
                         "ccminer" {
                             $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FIlePath ""$Logs"" -Append; `$Output | Out-Host;}`'" 
                         }
-                        "ethminer" {
+                        "claymore" {
                             $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FIlePath ""$Logs"" -Append; `$Output | Out-Host;}`'" 
                         }
                         "xmrstak" {
@@ -228,7 +225,7 @@ function Start-LaunchCode {
                         default { 
                             $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output += `$_ -replace `"\\[\d+(;\d+)?m`"; if(`$Output -cmatch `"`\n`"){`$OutPut | Out-File -FIlePath ""$Logs"" -Append; `$Output | Out-Host; `$Output = `$null}}`'" 
                         }
-                 }
+                    }
                 }
                 else { $script += "Invoke-Expression "".\$($MinerCurrent.MinerName) $MinerArguments""" }            
                 $script | Out-File "$WorkingDirectory\swarm-start.ps1"
@@ -333,9 +330,6 @@ function Start-LaunchCode {
             ##Bash Script to free Port
             Start-Process ".\build\bash\killcx.sh" -ArgumentList $MinerCurrent.Port
 
-            ##User generated Delay (Optional)
-            Start-Sleep -S $MinerCurrent.Delay
-
             ##Notification To User That Miner Is Attempting To start
             Write-Host "Starting $($MinerCurrent.Name) Mining $($MinerCurrent.Symbol) on $($MinerCurrent.Type)" -ForegroundColor Cyan
 
@@ -418,7 +412,8 @@ function Start-LaunchCode {
         Write-Host "Switching To New Pool"
         $Commands = "switchpool|1"
         $response = Get-TCP -Server $AIP -Port $MinerCurrent.Port -Timeout 5 -Message $Commands
-        if($response){$MinerProcess = @{StartTime = (Get-Date); HasExited = $false}}
+        if ($response) { $MinerProcess = @{StartTime = (Get-Date); HasExited = $false }
+        }
         $MinerProcess
     }
 }

@@ -13,8 +13,8 @@ function Get-StatsGminer {
                 }
             }
             catch { Write-Host "Failed To parse Threads" -ForegroundColor Red };
-            $Data.devices.accepted_shares | Select-Object -First 1 | ForEach-Object { $global:MinerACC = $_; $global:GPUACC += $_ }
-            $Data.devices.rejected_shares | Select-Object -First 1 | ForEach-Object { $global:MinerREJ = $_; $global:GPUREJ += $_ }
+            $Data.devices.accepted_shares | Select-Object -First 1 | ForEach-Object { $global:MinerACC = $_; $global:ALLACC += $_ }
+            $Data.devices.rejected_shares | Select-Object -First 1 | ForEach-Object { $global:MinerREJ = $_; $global:ALLREJ += $_ }
             $Data.devices.speed | ForEach-Object { $global:GPUKHS += [Double]$_ / 1000 }
         }
     }

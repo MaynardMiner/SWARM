@@ -13,6 +13,9 @@
     "naming": {
       "equihash": "equihash"
     },
+    "fee": {
+      "equihash": 2
+    },
     "oc": {
       "equihash": {
         "Power": "",
@@ -35,6 +38,9 @@
     "naming": {
       "equihash": "equihash"
     },
+    "fee": {
+      "equihash": 2
+    },
     "oc": {
       "equihash": {
         "Power": "",
@@ -56,6 +62,9 @@
     },
     "naming": {
       "equihash": "equihash"
+    },
+    "fee": {
+      "equihash": 2
     },
     "oc": {
       "equihash": {

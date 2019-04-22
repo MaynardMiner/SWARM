@@ -23,19 +23,21 @@ if ($Poolname -eq $Name) {
                 $Fees = $ahashpool_Request.$_.fees
                 $Divisor = (1000000 * $ahashpool_Request.$_.mbtc_mh_factor)
                 $Workers = $ahashpool_Request.$_.Workers
-                $Estimate = if ($Stat_Algo -eq "Day") { [Double]$ahashpool_Request.$_.estimate_last24h }else { [Double]$ahashpool_Request.$_.estimate_current }
+                $StatPath = ".\stats\($Name)_$($ahashpool_Algorithm)_profit.txt"
 
-                $Stat = Set-Stat -Name "$($Name)_$($ahashpool_Algorithm)_profit" -Value ([Double]$Estimate / $Divisor * (1 - ($ahashpool_Request.$_.fees / 100)))
-                if ($Stat_Algo -eq "Day") { $CStat = $Stat.Live }else { $CStat = $Stat.$Stat_Algo }
+                if (-not (Test-Path $StatPath)) {
+                    $Stat = Set-Stat -Name "$($Name)_$($ahashpool_Algorithm)_profit" -Value ( [Double]$ahashpool_Request.$_.estimate_last24h / $Divisor * (1 - ($ahashpool_Request.$_.fees / 100)))
+                } 
+                else {
+                    $Stat = Set-Stat -Name "$($Name)_$($ahashpool_Algorithm)_profit" -Value ( [Double]$ahashpool_Request.$_.estimate_current / $Divisor * (1 - ($ahashpool_Request.$_.fees / 100)))
+                }
 
                 [PSCustomObject]@{
                     Priority      = $Priorities.Pool_Priorities.$Name
                     Symbol        = "$ahashpool_Algorithm-Algo"
                     Mining        = $ahashpool_Algorithm
                     Algorithm     = $ahashpool_Algorithm
-                    Price         = $CStat
-                    StablePrice   = $Stat.Week
-                    MarginOfError = $Stat.Fluctuation
+                    Price         = $Stat.$Stat_Algo
                     Protocol      = "stratum+tcp"
                     Host          = $ahashpool_Host
                     Port          = $ahashpool_Port

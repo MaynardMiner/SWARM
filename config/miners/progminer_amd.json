@@ -18,6 +18,9 @@
     "naming": {
       "progpow": "progpow"
     },
+    "fee": {
+      "progpow": 0
+    },
     "oc": {
       "progpow": {
         "dpm": "",

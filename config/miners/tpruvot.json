@@ -120,6 +120,12 @@
       "sha256q": "sha256q",
       "exosis": "exosis"
     },
+    "fee": {
+      "lyra2v3": 0,
+      "lyra2rev3": 0,
+      "sha256q": 0,
+      "exosis": 0
+    },
     "oc": {
       "lyra2v3": {
         "Power": "",

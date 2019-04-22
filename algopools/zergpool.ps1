@@ -26,10 +26,14 @@ if ($Poolname -eq $Name) {
                 $Fees = $Zergpool_Request.$_.fees
                 $Global:FeeTable.zergpool.Add($Zergpool_Algorithm,$Zergpool_Request.$_.fees)
 
-                $Estimate = if ($Stat_Algo -eq "Day") { [Double]$Zergpool_Request.$_.estimate_last24h }else { [Double]$Zergpool_Request.$_.estimate_current }
+                $StatPath = ".\stats\($Name)_$($Zergpool_Algorithm)_profit.txt"
 
-                $Stat = Set-Stat -Name "$($Name)_$($Zergpool_Algorithm)_profit" -Value ([Double]$Estimate / $Divisor * (1 - ($Zergpool_Request.$_.fees / 100)))
-                if ($Stat_Algo -eq "Day") { $CStat = $Stat.Live }else { $CStat = $Stat.$Stat_Algo }
+                if (-not (Test-Path $StatPath)) {
+                    $Stat = Set-Stat -Name "$($Name)_$($Zergpool_Algorithm)_profit" -Value ( [Double]$Zergpool_Request.$_.estimate_last24h / $Divisor * (1 - ($Zergpool_Request.$_.fees / 100)))
+                } 
+                else {
+                    $Stat = Set-Stat -Name "$($Name)_$($Zergpool_Algorithm)_profit" -Value ( [Double]$Zergpool_Request.$_.estimate_current / $Divisor * (1 - ($Zergpool_Request.$_.fees / 100)))
+                }
             
 
                     $Pass1 = $global:Wallets.Wallet1.Keys
@@ -69,9 +73,7 @@ if ($Poolname -eq $Name) {
                     Symbol        = "$Zergpool_Algorithm-Algo"
                     Mining        = $Zergpool_Algorithm
                     Algorithm     = $Zergpool_Algorithm
-                    Price         = $CStat
-                    StablePrice   = $Stat.Week
-                    MarginOfError = $Stat.Fluctuation
+                    Price         = $Stat.$Stat_Algo
                     Protocol      = "stratum+tcp"
                     Host          = $Zergpool_Host
                     Port          = $Zergpool_Port

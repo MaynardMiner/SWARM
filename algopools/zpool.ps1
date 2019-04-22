@@ -33,13 +33,15 @@ if ($Poolname -eq $Name) {
                 $Global:FeeTable.zpool.Add($Zpool_Algorithm,$Zpool_Request.$_.fees)
                 
                 $Workers = $Zpool_Request.$_.Workers
-                $Estimate = if ($Stat_Algo -eq "Day") { [Double]$Zpool_Request.$_.estimate_last24h }else { [Double]$Zpool_Request.$_.estimate_current }
+
+                $StatPath = ".\stats\($Name)_$($Zpool_Algorithm)_profit.txt"
+
+                $Estimate = if (-not (Test-Path $StatPath)) { [Double]$Zpool_Request.$_.estimate_last24h } else { [Double]$Zpool_Request.$_.estimate_current }
 
                 ## ZPool fees are calculated differently, due to pool fee structure.
                 $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
 
                 $Stat = Set-Stat -Name "$($Name)_$($Zpool_Algorithm)_profit" -Value ([Double]$Cut / $Divisor)
-                if ($Stat_Algo -eq "Day") { $CStat = $Stat.Live }else { $CStat = $Stat.$Stat_Algo }
          
                 $Pass1 = $global:Wallets.Wallet1.Keys
                 $User1 = $global:Wallets.Wallet1.$Passwordcurrency1.address
@@ -78,9 +80,7 @@ if ($Poolname -eq $Name) {
                     Symbol        = "$Zpool_Algorithm-Algo"
                     Mining        = $Zpool_Algorithm
                     Algorithm     = $Zpool_Algorithm
-                    Price         = $CStat
-                    StablePrice   = $Stat.Week
-                    MarginOfError = $Stat.Fluctuation
+                    Price         = $Stat.Stat_Algo
                     Protocol      = "stratum+tcp"
                     Host          = $Zpool_Host
                     Port          = $Zpool_Port

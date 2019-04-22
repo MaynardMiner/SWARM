@@ -67,18 +67,8 @@
     "AMD2": ".\\bin\\lolMiner-AMD-2\\lolMiner",
     "AMD3": ".\\bin\\lolMiner-AMD-3\\lolMiner",
     "minername": "lolMiner",
-    "version": "0.6",
+    "version": "0.8",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/lolminer-linux.tar.gz"
-  },
-  "lolminerv7": {
-    "name": "lolminerv7",
-    "type": "amd",
-    "AMD1": ".\\bin\\lolMinerv7-AMD-1\\lolMiner",
-    "AMD2": ".\\bin\\lolMinerv7-AMD-2\\lolMiner",
-    "AMD3": ".\\bin\\lolMinerv7-AMD-3\\lolMiner",
-    "minername": "lolMiner",
-    "version": "0.7.1",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/lolminerv7-linux.tar.gz"
   },
   "avermore": {
     "name": "avermore",
@@ -127,7 +117,7 @@
     "AMD2": ".\\bin\\tdxminer-2\\teamredminer",
     "AMD3": ".\\bin\\tdxminer-3\\teamredminer",
     "minername": "teamredminer",
-    "version": "0.4.3",
+    "version": "0.4.4",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/teamredminer-linux.tar.gz"
   },
   "xmr-stak": {
@@ -147,7 +137,7 @@
     "AMD2": ".\\bin\\wildrig-2\\wildrig-multi",
     "AMD3": ".\\bin\\wildrig-3\\wildrig-multi",
     "minername": "wildrig-multi",
-    "version": "0.15.4.15",
+    "version": "0.15.5",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/wildrig-linux.tar.gz"
   },
   "fancyix": {

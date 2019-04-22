@@ -36,6 +36,15 @@
       "argon2d-dyn": "argon2d",
       "mtp": "mtp"
     },
+    "fee": {
+      "x22i": 0,
+      "phi2": 0,
+      "allium": 0,
+      "lyra2rev3": 0,
+      "lyra2v3": 0,
+      "argon2d-dyn": 0,
+      "mtp": 0
+    },
     "oc": {
       "x22i": {
         "dpm": "",

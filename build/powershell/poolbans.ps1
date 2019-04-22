@@ -52,7 +52,7 @@ function Start-Poolbans {
     $StartBans = $false
 
     if ($LastRan -eq "" -or $LastRan -eq $null) {
-        Get-Date | Out-File ".\build\data\timetable.txt"
+        Get-NewDate | Out-File ".\build\data\timetable.txt"
         $Newparams = $CurrentParams
     }
     else {
@@ -60,12 +60,12 @@ function Start-Poolbans {
         $LastRanBans = [math]::Round(((Get-Date) - $RanBans).TotalSeconds)
         if ($LastRanBans -ge 86400) {
             Clear-Content ".\build\data\timetable.txt" 
-            Get-Date | Set-Content ".\build\data\timetable.txt"
+            Get-NewDate | Set-Content ".\build\data\timetable.txt"
             $Newparams = $CurrentParams
         }
         else {
             if ($PoolBanCheck -eq "" -or $PoolBanCheck -eq $null) {
-                Get-Date | Set-Content ".\build\data\system.txt"
+                Get-NewDate | Set-Content ".\build\data\system.txt"
                 $Newparams = $CurrentParams
             }
             else {
@@ -93,7 +93,7 @@ function Start-Poolbans {
                     $NewParams.Passwordcurrency2 = @("BTC")
                     $NewParams.Passwordcurrency3 = @("BTC")
                     $NewParams.PoolName = @("nlpool", "zergpool")
-                    Get-Date | Set-Content ".\build\data\system.txt" -Force
+                    Get-NewDate | Set-Content ".\build\data\system.txt" -Force
                     Start-Sleep -s 1
                     Write-Host  "Entering Donation Mode" -foregroundColor "darkred"
                 }

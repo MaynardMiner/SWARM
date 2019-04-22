@@ -12,7 +12,7 @@ $NVIDIATypes | ForEach-Object {
     if ($Platform -eq "linux") { $Build = "Tar" }
     elseif ($Platform -eq "windows") { $Build = "Zip" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $MName = "phoenix-$Num"; $Port = "4700$Num"
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "phoenix-$Num"; $Port = "4700$Num"
 
     Switch ($Num) {
         1 { $Get_Devices = $NVIDIADevices1 }
@@ -49,20 +49,21 @@ $NVIDIATypes | ForEach-Object {
     $Config.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 
     if ($Coins -eq $true) { $Pools = $CoinPools }else { $Pools = $AlgoPools }
-    $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName
 
     ##Build Miner Settings
     $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
         $MinerAlgo = $_
+        $Stat = Get-Stat -Name "$($Name)_$($MinerAlgo)_hashrate"
         $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
-            if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $MName) {
+            if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
                 if ($Config.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
                 if ($_.Worker) { $MinerWorker = "-worker $($_.Worker) " }
                 else { $MinerWorker = "-pass $($_.$Pass)$($Diff) " }
                 [PSCustomObject]@{
-                    MName      = $MName
+                    MName      = $Name
                     Coin       = $Coins
                     Delay      = $Config.$ConfigType.delay
+                    Fees       = $Config.$ConfigType.fee.$($_.Algorithm)
                     Symbol     = "$($_.Symbol)"
                     MinerName  = $MinerName
                     Prestart   = $PreStart
@@ -71,8 +72,8 @@ $NVIDIATypes | ForEach-Object {
                     Devices    = $Devices
                     DeviceCall = "claymore"
                     Arguments  = "-platform 2 -mport $Port -mode 1 -allcoins 1 -allpools 1 -pool $($_.Protocol)://$($_.Host):$($_.Port) -wal $($_.$User) $MinerWorker-wd 0 -logfile `'$(Split-Path $Log -Leaf)`' -logdir `'$(Split-Path $Log)`' -gser 2 -dbg -1 -eres 1 $($Config.$ConfigType.commands.$($_.Algorithm))"
-                    HashRates  = [PSCustomObject]@{$($_.Algorithm) = $($Stats."$($MName)_$($_.Algorithm)_hashrate".Day) }
-                    Quote      = if ($($Stats."$($MName)_$($_.Algorithm)_hashrate".Day)) { $($Stats."$($MName)_$($_.Algorithm)_hashrate".Day) * ($_.Price) }else { 0 }
+                    HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
+                    Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
                     PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
                     ocpower    = if ($Config.$ConfigType.oc.$($_.Algorithm).power) { $Config.$ConfigType.oc.$($_.Algorithm).power }else { $OC."default_$($ConfigType)".Power }
                     occore     = if ($Config.$ConfigType.oc.$($_.Algorithm).core) { $Config.$ConfigType.oc.$($_.Algorithm).core }else { $OC."default_$($ConfigType)".core }

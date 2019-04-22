@@ -23,19 +23,21 @@ if ($Poolname -eq $Name) {
                 $Divisor = (1000000 * $blazepool_Request.$_.mbtc_mh_factor)
                 $Fees = $blazepool_Request.$_.fees
                 $Workers = $blazepool_Request.$_.Workers
-                $Estimate = if ($Stat_Algo -eq "Day") { [Double]$blazepool_Request.$_.estimate_last24h }else { [Double]$blazepool_Request.$_.estimate_current }
+                $StatPath = ".\stats\($Name)_$($blazepool_Algorithm)_profit.txt"
 
-                $Stat = Set-Stat -Name "$($Name)_$($blazepool_Algorithm)_profit" -Value ([Double]$Estimate / $Divisor * (1 - ($blazepool_Request.$_.fees / 100)))
-                if ($Stat_Algo -eq "Day") { $CStat = $Stat.Live }else { $CStat = $Stat.$Stat_Algo }
+                if (-not (Test-Path $StatPath)) {
+                    $Stat = Set-Stat -Name "$($Name)_$($blazepool_Algorithm)_profit" -Value ( [Double]$blazepool_Request.$_.estimate_last24h / $Divisor * (1 - ($blazepool_Request.$_.fees / 100)))
+                } 
+                else {
+                    $Stat = Set-Stat -Name "$($Name)_$($blazepool_Algorithm)_profit" -Value ( [Double]$blazepool_Request.$_.estimate_current / $Divisor * (1 - ($blazepool_Request.$_.fees / 100)))
+                }
     
                 [PSCustomObject]@{
                     Priority      = $Priorities.Pool_Priorities.$Name
                     Symbol        = "$blazepool_Algorithm-Algo"
                     Mining        = $blazepool_Algorithm
                     Algorithm     = $blazepool_Algorithm
-                    Price         = $CStat
-                    StablePrice   = $Stat.Week
-                    MarginOfError = $Stat.Fluctuation
+                    Price         = $Stat.$Stat_Algo
                     Protocol      = "stratum+tcp"
                     Host          = $blazepool_Host
                     Port          = $blazepool_Port
