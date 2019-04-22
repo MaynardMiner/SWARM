@@ -24,13 +24,17 @@ if ($Poolname -eq $Name) {
                 $Divisor = (1000000 * $ahashpool_Request.$_.mbtc_mh_factor)
                 $Workers = $ahashpool_Request.$_.Workers
                 $StatPath = ".\stats\($Name)_$($ahashpool_Algorithm)_profit.txt"
+                $Hashrate = $ahashpool_Request.$_.hashrate
 
                 if (-not (Test-Path $StatPath)) {
-                    $Stat = Set-Stat -Name "$($Name)_$($ahashpool_Algorithm)_profit" -Value ( [Double]$ahashpool_Request.$_.estimate_last24h / $Divisor * (1 - ($ahashpool_Request.$_.fees / 100)))
+                    $Stat = Set-Stat -Name "$($Name)_$($ahashpool_Algorithm)_profit" -HashRate $HashRate -Value ( [Double]$ahashpool_Request.$_.estimate_last24h / $Divisor * (1 - ($ahashpool_Request.$_.fees / 100)))
                 } 
                 else {
-                    $Stat = Set-Stat -Name "$($Name)_$($ahashpool_Algorithm)_profit" -Value ( [Double]$ahashpool_Request.$_.estimate_current / $Divisor * (1 - ($ahashpool_Request.$_.fees / 100)))
+                    $Stat = Set-Stat -Name "$($Name)_$($ahashpool_Algorithm)_profit" -HashRate $HashRate -Value ( [Double]$ahashpool_Request.$_.estimate_current / $Divisor * (1 - ($ahashpool_Request.$_.fees / 100)))
                 }
+
+                if(-not $global:Pool_Hashrates.$ahashpool_Algorithm){$global:Pool_Hashrates.Add("$ahashpool_Algorithm",@{})}
+                $global:Pool_Hashrates.$ahashpool_Algorithm.Add("$Name","$($Stat.HashRate)")
 
                 [PSCustomObject]@{
                     Priority      = $Priorities.Pool_Priorities.$Name

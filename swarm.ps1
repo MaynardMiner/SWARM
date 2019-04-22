@@ -467,6 +467,7 @@ $Naming = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
 $Priorities = Get-Content ".\config\pools\pool-priority.json" | ConvertFrom-Json
 $DonationMode = $false
 $Warnings = @()
+$global:Pool_Hashrates = @{}
 
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
 

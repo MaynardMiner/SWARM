@@ -21,13 +21,17 @@ if ($Poolname -eq $Name) {
                 $nlpoolAlgo_Port = $nlpool_Request.$_.port
                 $Divisor = (1000000 * $nlpool_Request.$_.mbtc_mh_factor)
                 $StatPath = ".\stats\($Name)_$($nlpoolAlgo_Algorithm)_profit.txt"
+                $Hashrate = $nlpool_Request.$_.hashrate
 
                 if (-not (Test-Path $StatPath)) {
-                    $Stat = Set-Stat -Name "$($Name)_$($nlpoolAlgo_Algorithm)_profit" -Value ( [Double]$nlpool_Request.$_.estimate_last24h / $Divisor * (1 - ($nlpool_Request.$_.fees / 100)))
+                    $Stat = Set-Stat -Name "$($Name)_$($nlpoolAlgo_Algorithm)_profit" -Hashrate $Hashrate -Value ( [Double]$nlpool_Request.$_.estimate_last24h / $Divisor * (1 - ($nlpool_Request.$_.fees / 100)))
                 } 
                 else {
-                    $Stat = Set-Stat -Name "$($Name)_$($nlpoolAlgo_Algorithm)_profit" -Value ( [Double]$nlpool_Request.$_.estimate_current / $Divisor * (1 - ($nlpool_Request.$_.fees / 100)))
+                    $Stat = Set-Stat -Name "$($Name)_$($nlpoolAlgo_Algorithm)_profit" -Hashrate $HashRates -Value ( [Double]$nlpool_Request.$_.estimate_current / $Divisor * (1 - ($nlpool_Request.$_.fees / 100)))
                 }
+
+                if(-not $global:Pool_Hashrates.$nlpoolAlgo_Algorithm){$global:Pool_Hashrates.Add("$nlpoolAlgo_Algorithm",@{})}
+                $global:Pool_Hashrates.$nlpoolAlgo_Algorithm.Add("$Name","$($Stat.HashRate)")
         
                 $Pass1 = $global:Wallets.Wallet1.Keys
                 $User1 = $global:Wallets.Wallet1.$Passwordcurrency1.address

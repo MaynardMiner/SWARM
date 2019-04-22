@@ -29,13 +29,17 @@ if ($Poolname -eq $Name) {
                 $Fees = $fairpool_Request.$_.fees
                 $Workers = $fairpool_Request.$_.Workers
                 $StatPath = ".\stats\($Name)_$($fairpool_Algorithm)_profit.txt"
+                $Hashrate = $blockpool_Request.$_.hashrate
 
                 if (-not (Test-Path $StatPath)) {
-                    $Stat = Set-Stat -Name "$($Name)_$($fairpool_Algorithm)_profit" -Value ( [Double]$fairpool_Request.$_.estimate_last24h / $Divisor * (1 - ($fairpool_Request.$_.fees / 100)))
+                    $Stat = Set-Stat -Name "$($Name)_$($fairpool_Algorithm)_profit" -Hashrate $Hashrate -Value ( [Double]$fairpool_Request.$_.estimate_last24h / $Divisor * (1 - ($fairpool_Request.$_.fees / 100)))
                 } 
                 else {
-                    $Stat = Set-Stat -Name "$($Name)_$($fairpool_Algorithm)_profit" -Value ( [Double]$fairpool_Request.$_.estimate_current / $Divisor * (1 - ($fairpool_Request.$_.fees / 100)))
+                    $Stat = Set-Stat -Name "$($Name)_$($fairpool_Algorithm)_profit" -Hashrate $Hashrate -Value ( [Double]$fairpool_Request.$_.estimate_current / $Divisor * (1 - ($fairpool_Request.$_.fees / 100)))
                 }
+
+                if(-not $global:Pool_Hashrates.$fairpool_Algorithm){$global:Pool_Hashrates.Add("$fairpool_Algorithm",@{})}
+                $global:Pool_Hashrates.$fairpool_Algorithm.Add("$Name","$($Stat.HashRate)")
    
                 [PSCustomObject]@{
                     Priority      = $Priorities.Pool_Priorities.$Name
