@@ -755,14 +755,11 @@ else { $Device_Count = $GPU_Count }
 Write-Host "Device Count = $Device_Count" -foregroundcolor green
 Start-Sleep -S 2
 if ($GPUCount -ne $null) { $LogGPUS = $GPUCount.Substring(0, $GPUCount.Length - 1) }
-if ($GPUDevices1 -or $GPUDevices1 -eq 0) { $GPUDevices1 | ForEach-Object { $NVIDIADevices1 += "$($_)," } } else { $NVIDIADevices1 = "none" }
-if ($GPUDevices2 -or $GPUDevices2 -eq 0) { $GPUDevices2 | ForEach-Object { $NVIDIADevices2 += "$($_)," } } else { $NVIDIADevices2 = "none" }
-if ($GPUDevices3 -or $GPUDevices3 -eq 0) { $GPUDevices3 | ForEach-Object { $NVIDIADevices3 += "$($_)," } } else { $NVIDIADevices3 = "none" }
-if ($GPUDevices1 -or $GPUDevices1 -eq 0) { $GPUDevices1 | ForEach-Object { $AMDDevices1 += "$($_)," } } else { $AMDDevices1 = "none" }
-if ($NVIDIADevices1 -ne "none") { $NVIDIADevices1 = $NVIDIADevices1.Substring(0, $NVIDIADevices1.Length - 1) }
-if ($NVIDIADevices2 -ne "none") { $NVIDIADevices2 = $NVIDIADevices2.Substring(0, $NVIDIADevices2.Length - 1) }
-if ($NVIDIADevices3 -ne "none") { $NVIDIADevices3 = $NVIDIADevices3.Substring(0, $NVIDIADevices3.Length - 1) }
-if ($AMDDevices1 -ne "none") { $AMDDevices1 = $AMDDevices1.Substring(0, $AMDDevices1.Length - 1) }
+
+if ([string]$GPUDevices1) { $NVIDIADevices1 = [String]$GPUDevices1 -replace " ",","; $AMDDevices1 = [String]$GPUDevices1 -replace " ","," } else { $NVIDIADevices1 = "none" }
+if ([string]$GPUDevices2) { $NVIDIADevices2 = [String]$GPUDevices1 -replace " ","," } else { $NVIDIADevices2 = "none" }
+if ([string]$GPUDevices3) { $NVIDIADevices3 = [String]$GPUDevices1 -replace " ","," } else { $NVIDIADevices3 = "none" }
+
 $GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
 $NVIDIATypes = @(); if($Type -like "*NVIDIA*"){$Type | Where {$_ -like "*NVIDIA*"} | %{$NVIDIATypes += $_}}
 $CPUTypes = @(); if($Type -like "*CPU*"){$Type | Where {$_ -like "*CPU*"} | %{$CPUTypes += $_}}
