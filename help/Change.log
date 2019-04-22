@@ -2552,6 +2552,10 @@ API overhaul:
   -Overclocking system was reworked- It now runs sycnrously to miner
    launch. It will close miner, start OC, and then open miner when finished.
    * OC values are displayed on main screen when this occurs.
+
+  -Added "fees" to miner files. SWARM now factors fees into calculations.
+
+  -Switch culture for time data to ENUS to avoid weird time errors.
   
   -Screen will now display average profit / day
   -Screen will now display current profit / day
