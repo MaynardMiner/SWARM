@@ -768,8 +768,8 @@ if ([string]$GPUDevices1) {
     $NVIDIADevices1 = "none"; 
     $AMDDevices1 = "none" 
 }
-if ([string]$GPUDevices2) { $NVIDIADevices2 = [String]$GPUDevices1 -replace " ","," } else { $NVIDIADevices2 = "none" }
-if ([string]$GPUDevices3) { $NVIDIADevices3 = [String]$GPUDevices1 -replace " ","," } else { $NVIDIADevices3 = "none" }
+if ([string]$GPUDevices2) { $NVIDIADevices2 = [String]$GPUDevices2 -replace " ","," } else { $NVIDIADevices2 = "none" }
+if ([string]$GPUDevices3) { $NVIDIADevices3 = [String]$GPUDevices3 -replace " ","," } else { $NVIDIADevices3 = "none" }
 
 $GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
 $NVIDIATypes = @(); if($Type -like "*NVIDIA*"){$Type | Where {$_ -like "*NVIDIA*"} | %{$NVIDIATypes += $_}}
