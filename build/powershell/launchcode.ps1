@@ -199,7 +199,7 @@ function Start-LaunchCode {
                 $script += "`$host.ui.RawUI.WindowTitle = `'$($MinerCurrent.Name) - $($MinerCurrent.Algo)`';"
                 $MinerCurrent.Prestart | ForEach-Object {
                     if ($_ -notlike "export LD_LIBRARY_PATH=$dir\build\export") {
-                        $setx = $_ -replace "export ", "setx "
+                        $setx = $_ -replace "export ", "set "
                         $setx = $setx -replace "=", " "
                         $script += "$setx"
                     }
