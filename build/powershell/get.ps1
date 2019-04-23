@@ -66,185 +66,183 @@ miners
  can be used to view background miner information.
 
     USES:
-
-    get miners [platform] [name] [param] [sub-param1] [sub-param2]
+        get miners [platform] [name] [param] [sub-param1] [sub-param2]
 
     OPTIONS:
+        
+        platform
+        [NVIDIA1] [NVIDIA2] [NVIDIA3] [AMD1] [CPU] [all]
 
-    platform
-    [NVIDIA1] [NVIDIA2] [NVIDIA3] [AMD1] [CPU] [all]
+        name
+        name of miner, as per the names of .json in config/miners
+        if you are unsure of miner name, running-
 
-    name:
-    name of miner, as per the names of .json in config/miners
-    if you are unsure of miner name, running-
-
-    get miners [platform]
+            get miners [platform]
     
-    to see all miners for that platform
+        to see all miners for that platform
 
-    param:
-    [prestart] [commands] [difficulty] [naming]   [oc]
+    params
+        [prestart] [commands] [difficulty] [naming]   [oc]
 
-    sub-param1   [algo]     [algo]      [algo]   [algo]
+        sub-param1   [algo]     [algo]      [algo]   [algo]
 
-    sub-param2                                   [power]
-                                                 [core]
-                                                 [mem]
-                                                 [dpm]
-                                                  [v]
-                                                 [mdpm]
+        sub-param2                                   [power]
+                                                     [core]
+                                                     [mem]
+                                                     [dpm]
+                                                      [v]
+                                                     [mdpm]
 
-   example uses of sub-params:
+        example uses of params:
 
-   get miners NVIDIA1 enemy naming 
-   (Will list all naming items)
+            get miners NVIDIA1 enemy naming 
+            (Will list all naming items)
 
-   get miners NVIDIA1 enemy oc hex core 
-   (Will list core for hex algorithm)
+            get miners NVIDIA1 enemy oc hex core 
+            (Will list oc core setting for hex algorithm)
+
 
 screen
- can be used to remotely view SWARM's transcripts. Great way to
- view miner remotely. Returns last 300 lines in log.
+    can be used to remotely view SWARM's transcripts. Great way to
+    view miner remotely. Returns last 300 lines in log.
 
     USES:
 
-    get screen [platform]
+        get screen [platform]
 
     OPTIONS:
 
-    platform:
-    [miner] [NVIDIA1] [NVIDIA2] [NVIDIA3] [CPU] [AMD1]
+        platform:
+        [miner] [NVIDIA1] [NVIDIA2] [NVIDIA3] [CPU] [AMD1]
+
 
 version
- used to view current version of miner.
+    used to view current version of miner.
 
     USES:
 
-    get version [name]
+        get version [name]
 
     OPTIONS:
  
-    name:
-    name of miner, as per the names of .json in config/miners
-    if you are unsure of miner name, choose 'all' to identify.
+        name
+            name of miner, as per the names of .json in config/miners
+            if you are unsure of miner name, choose 'all' to identify.
+
 
 benchmarks
- used to view current a benchmark.
+    used to view current a benchmark.
 
     USES:
 
-    get benchmark [name] [algo]
+        get benchmark [name] [algo]
 
     OPTIONS:
 
-    name:
-    name of miner, as per the names of .json in config/miners.
+        name
+            name of miner, as per the names of .json in config/miners.
 
-    algo:
-    the algorithm stat you wish to view.
+        algo
+            the algorithm stat you wish to view.
+
 
 stats
- Used to view SWARM stats screen. This will display current
- critical mining information and statistics.
+    Used to view SWARM stats screen. This will display current
+    critical mining information and statistics.
 
     USES:
 
-    get stats
+        get stats
+
 
 active
- Used to view current and historical launched miners, and
- display critical information regarding their arguments
- and time running.
+    Used to view current and historical launched miners, and
+    display critical information regarding their arguments
+    and time running.
 
     USES:
 
-    get active
+        get active
+
 
 power
- Used to view power benchmarks/table. This allows you to view
- either WattOMeter stats, or config/power settings depending
- on use.
+    Used to view power benchmarks/table. This allows you to view
+    either WattOMeter stats, or config/power settings depending
+    on use.
 
     USES:
 
-    get power [platform] [type] [algo]
+        get power [platform] [type] [algo]
 
     OPTIONS:
 
-    platform:
-    [NVIDIA1] [NVIDIA2] [NVIDIA3] [AMD1] [CPU]
+        platform
+        [NVIDIA1] [NVIDIA2] [NVIDIA3] [AMD1] [CPU]
 
-    type:
-    [wattometer] [stat]
+        type
+        [wattometer] [stat]
 
-    algo:
-    all avaiable algorithms in SWARM
+        algo
+        all avaiable algorithms in SWARM
+
 
 paramters
- Used to view SWARM's current parameters/arguments/settings
+    Used to view SWARM's current parameters/arguments/settings
 
     USES:
 
-    get parameters [name]
+        get parameters [name]
 
     OPTIONS:
 
-    name:
-    name of parameter you wish to view. If you are unsure,
-    specify 'all'
+        name
+            name of parameter you wish to view. If you are unsure,
+            specify 'all'
+
 
 wallets
- print balance sheet of your current wallet balances
+    print balance sheet of your current wallet balances
    
     USES:
    
-    get wallet
+        get wallet
    
     OPTIONS: none
 
+
 update 
- will perform a remote update. Currently works only for windows.
- Linux coming soon.
+    will perform a remote update. Currently works only for windows.
+    Linux coming soon.
 
     USES:
    
-    get update [URI]
+        get update [URI]
      
     OPTIONS:
 
-    URI
-    user specified link for .zip update. Use this if you are not
-    updating to the next immediate version. This technically
-    does not have to be from SWARM repository, however:
-        1.) Must end with SWARM.number.of.version.zip
-        2.) Link cannot contain spaces
-        3.) Must be using a SWARM.number.of.version file
+        URI
+            user specified link for .zip update. Use this if you are not
+            updating to the next immediate version. This technically
+            does not have to be from SWARM repository, however:
+            1.) Must end with SWARM.number.of.version.zip
+            2.) Link cannot contain spaces
+            3.) Must be using a SWARM.number.of.version file
 
+asic
+    Will que ASIC connect to swarm to get further information
+    regarding what it is mining.
 
+    USES:
+        get asic
+    
+    OPTIONS:
 
+        none
 
 
 to see all available SWARM commands, go to:
 
 https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
-
-current working windows commands:
-
-get help
-get benchmarks
-get oc
-get active
-get stats
-get screen
-get update (windows only)
-get wallets
-reboot
-version
-benchmark [algorithm | miner | timeout | all] [name (if miner or algorithm used)]
-miner restart
-ps [powershell command]
-clear_profits
-clear_watts
 "
         $help
         $help | out-file ".\build\txt\get.txt"
@@ -384,7 +382,7 @@ clear_watts
     "miners" {
         $GetJsons = Get-ChildItem ".\config\miners"
         $ConvertJsons = [PSCustomObject]@{}
-        $GetJsons | foreach {$Getfile = Get-Content ".\config\miners\$($_)" | ConvertFrom-Json; $ConvertJsons | Add-Member $Getfile.Name $Getfile -Force}
+        $GetJsons.Name | foreach {$Getfile = Get-Content ".\config\miners\$($_)" | ConvertFrom-Json; $ConvertJsons | Add-Member $Getfile.Name $Getfile -Force}
         if ($argument2) {
             $Get += "Current $Argument2 Miner List:"
             $Get += " "   

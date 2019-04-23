@@ -337,17 +337,19 @@ function Restart-Miner {
     $BestActiveMiners | ForEach-Object {
         $Restart = $false
         if ($_.XProcess -eq $null -or $_.XProcess.HasExited -and $Lite -eq "No") {
-            if ($TimeDeviation -ne 0) {
-                $Restart = $true
-                $_.Activated++
+                
                 $_.InstanceName = "$($_.Type)-$($Instance)"
-                $Current = $_ | ConvertTo-Json -Compress
-                if($_.Type -ne "ASIC"){$PreviousPorts = $PreviousMinerPorts | ConvertTo-Json -Compress}
-                if($_.Type -ne "ASIC"){$_.Xprocess = Start-LaunchCode -PP $PreviousPorts -Platforms $Platform -NewMiner $Current}
-                else{$_.Xprocess = Start-LaunchCode -Platforms $Platform -NewMiner $Current -AIP $ASIC_IP}
+                $_.Activated++
                 $Instance++
-            }
-            if ($Restart -eq $true) {
+                $Current = $_ | ConvertTo-Json -Compress
+
+                if($_.Type -ne "ASIC") { 
+                    $PreviousPorts = $PreviousMinerPorts | ConvertTo-Json -Compress
+                    $_.Xprocess = Start-LaunchCode -PP $PreviousPorts -Platforms $Platform -NewMiner $Current
+                } else {
+                    $_.Xprocess = Start-LaunchCode -Platforms $Platform -NewMiner $Current -AIP $ASIC_IP
+                }
+
                 if ($null -eq $_.XProcess -or $_.XProcess.HasExited) {
                     $_.Status = "Failed"
                     $NoMiners = $true
@@ -372,8 +374,7 @@ function Restart-Miner {
                 Start-Sleep -s 20
             }
         }
-     }
-  }
+    }
 
 function Get-MinerHashRate {
     $BestActiveMiners | ForEach-Object {

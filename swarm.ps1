@@ -1253,7 +1253,6 @@ While ($true) {
                     Symbol         = $_.Symbol
                     Coin           = $_.Coin
                     Active         = [TimeSpan]0
-                    Activated      = 0
                     Status         = "Idle"
                     HashRate       = 0
                     Benchmarked    = 0
@@ -1262,7 +1261,6 @@ While ($true) {
                     MinerPool      = $_.MinerPool
                     Algo           = $_.Algo
                     FullName       = $_.FullName
-                    Instance       = $null
                     InstanceName   = $null
                     Username       = $_.Username
                     Connection     = $_.Connection
@@ -1270,7 +1268,6 @@ While ($true) {
                     BestMiner      = $false
                     JsonFile       = $_.Config
                     LogGPUS        = $LogType
-                    FirstBad       = $null
                     Prestart       = $_.Prestart
                     ocpl           = $_.ocpl
                     ocdpm          = $_.ocdpm
@@ -1290,8 +1287,8 @@ While ($true) {
                     Fiat_Day       = 0
                     Profit_Day     = 0
                     Log            = $_.Log
-                    Strike         = $false
                     Server         = $_.Server
+                    Activated      = 0
                 }
             }
         }
@@ -1399,46 +1396,52 @@ While ($true) {
         ##Miners That Should Be Running
         ##Start them if neccessary
         $BestActiveMiners | ForEach-Object {
-                if ($null -eq $_.XProcess -or $_.XProcess.HasExited -and $Lite -eq "No") {
-                    Start-Sleep -S $_.Delay
-                    ##First Do OC
-                    if($ClearedOC -eq $False) {
-                        $OCFile = ".\build\txt\oc-settings.txt"
-                        if(Test-Path $OCFile){Clear-Content $OcFile -Force; "Current OC Settings:" | Set-Content $OCFile}
-                        $ClearedOC = $true
-                    }
-                    if($ClearedHash -eq $False) {
-                        $type | ForEach-Object { if (Test-Path ".\build\txt\$($_)-hash.txt") { Clear-Content ".\build\txt\$($_)-hash.txt" -Force } }
-                        $ClearedHash = $true
-                    }
-                    $Current = $_ | ConvertTo-Json -Compress
-                    Start-OC -Platforms $Platform -NewMiner $Current -Dir $dir -Website $Website
+            if ($null -eq $_.XProcess -or $_.XProcess.HasExited -and $Lite -eq "No") {
 
-                    if ($TimeDeviation -ne 0) {
-                        $Restart = $true
-                        $_.Activated++
-                        $_.InstanceName = "$($_.Type)-$($Instance)"
-                        if($_.Type -ne "ASIC"){$PreviousPorts = $PreviousMinerPorts | ConvertTo-Json -Compress}
-                        if($_.Type -ne "ASIC"){$_.Xprocess = Start-LaunchCode -PP $PreviousPorts -Platforms $Platform -NewMiner $Current}
-                        else{$_.Xprocess = Start-LaunchCode -Platforms $Platform -NewMiner $Current -AIP $ASIC_IP}
-                        $Instance++
-                    }
-                    if ($Restart -eq $true) {
-                        if ($_.XProcess -eq $null -or $_.Xprocess.HasExited -eq $true) {
-                            $_.Status = "Failed"
-                            $NoMiners = $true
-                            Write-Host "[$(Get-Date)]: " -foreground yellow -nonewline
-                            Write-Host "$($_.MinerName) Failed To Launch" -ForegroundColor Darkred
-                        }
-                        else {
-                            $_.Status = "Running"
-                            if($_.Type -ne "ASIC"){ Write-Host "[$(Get-Date)]: " -foreground yellow -nonewline; Write-Host "Process Id is $($_.XProcess.ID)"}
-                            Write-Host "[$(Get-Date)]: " -foreground yellow -nonewline
-                            Write-Host "$($_.MinerName) Is Running!" -ForegroundColor Green
-                        }
-                    }
+                $Restart = $true
+                Start-Sleep -S $_.Delay
+                $_.InstanceName = "$($_.Type)-$($Instance)"
+                $_.Activated++
+                $Instance++
+                $Current = $_ | ConvertTo-Json -Compress
+
+                ##First Do OC
+                if($ClearedOC -eq $False) {
+                    $OCFile = ".\build\txt\oc-settings.txt"
+                    if(Test-Path $OCFile){Clear-Content $OcFile -Force; "Current OC Settings:" | Set-Content $OCFile}
+                    $ClearedOC = $true
+                }
+                Start-OC -Platforms $Platform -NewMiner $Current -Dir $dir -Website $Website
+
+                ##Launch Miners
+                Write-Host "Starting $($_.InstanceName)"
+                if($_.Type -ne "ASIC") {
+                    $PreviousPorts = $PreviousMinerPorts | ConvertTo-Json -Compress
+                    $_.Xprocess = Start-LaunchCode -PP $PreviousPorts -Platforms $Platform -NewMiner $Current
+                } else {
+                    $_.Xprocess = Start-LaunchCode -Platforms $Platform -NewMiner $Current -AIP $ASIC_IP
+                }
+
+                ##Confirm They are Running
+                if ($_.XProcess -eq $null -or $_.Xprocess.HasExited -eq $true) {
+                    $_.Status = "Failed"
+                    $NoMiners = $true
+                    Write-Host "[$(Get-Date)]: " -foreground yellow -nonewline
+                    Write-Host "$($_.MinerName) Failed To Launch" -ForegroundColor Darkred
+                } else {
+                    $_.Status = "Running"
+                    if($_.Type -ne "ASIC"){ Write-Host "[$(Get-Date)]: " -foreground yellow -nonewline; Write-Host "Process Id is $($_.XProcess.ID)"}
+                    Write-Host "[$(Get-Date)]: " -foreground yellow -nonewline
+                    Write-Host "$($_.MinerName) Is Running!" -ForegroundColor Green
+                }
+
+                ## Reset Hash Counter
+                if($ClearedHash -eq $False) {
+                    $type | ForEach-Object { if (Test-Path ".\build\txt\$($_)-hash.txt") { Clear-Content ".\build\txt\$($_)-hash.txt" -Force } }
+                    $ClearedHash = $true
                 }
             }
+        }
 
 
         ##Outputs the correct notification of miner launches.
@@ -1732,8 +1735,7 @@ While ($true) {
                     $Strike = $true
                     Write-Host "Cannot Benchmark- Miner is not running" -ForegroundColor Red
                 }
-                else { 
-                    if ($TimeDeviation -ne 0) {
+                else {
                         $_.HashRate = 0
                         $_.WasBenchmarked = $False
                         $WasActive = [math]::Round(((Get-Date) - $_.XProcess.StartTime).TotalSeconds)
@@ -1822,7 +1824,6 @@ While ($true) {
                             }
                         }
                     }
-                }
 
                 if ($Strike -ne $true) {
                     if ($Warnings."$($_.Name)" -ne $null) { $Warnings."$($_.Name)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
