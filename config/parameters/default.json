@@ -92,5 +92,6 @@
     "ASIC_IP": "",
     "ASIC_ALGO": "",
     "Stat_All": "No",
-    "Custom_Periods": 1
+    "Custom_Periods": 1,
+    "Volume": "No"
 }
