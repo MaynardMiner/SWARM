@@ -159,11 +159,13 @@ param(
     [Parameter(Mandatory = $false)]
     [string]$ASIC_IP, ##IP Address for ASIC, if null, localhost is used
     [Parameter(Mandatory = $false)]
-    [array]$ASIC_ALGO, ##Use if you are using with other Device types. Selects only these algos for asic
+    [array]$ASIC_ALGO, 
     [Parameter(Mandatory = $false)]
-    [String]$Stat_All = "No", ##Use if you are using with other Device types. Selects only these algos for asic
+    [String]$Stat_All = "No", 
     [Parameter(Mandatory = $false)]
-    [Int]$Custom_Periods = 1 ##Use if you are using with other Device types. Selects only these algos for asic
+    [Int]$Custom_Periods = 1,
+    [Parameter(Mandatory = $false)]
+    [String]$Volume = "Yes" 
 )
 
 ## Set Current Path
@@ -294,7 +296,7 @@ $FileClear += ".\build\txt\bestminers.txt"
 $FileClear | ForEach-Object { if (Test-Path $_) { Remove-Item $_ -Force } }
 
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
-$Debug = $false
+$Debug = $true
 
 ## Convert Arguments Into Hash Table
 if ($Debug -ne $true) {
@@ -339,6 +341,7 @@ if ($Debug -ne $true) {
     $CurrentParams.ADD("ASIC_ALGO", $ASIC_ALGO);
     $CurrentParams.ADD("Stat_All", $Stat_All);
     $CurrentParams.ADD("Custom_Periods", $Custom_Periods);
+    $CurrentParams.ADD("Volume", $Volume);
 
     ## Save to Config Folder
     $StartParams = $CurrentParams | ConvertTo-Json 
@@ -410,6 +413,7 @@ if ((Test-Path ".\config\parameters\newarguments.json") -or $Debug -eq $true) {
     $SWARMAlgorithm = $SWARMParams.Algorithm;                  $Coin = $SWARMParams.Coin;
     $ASIC_IP = $SWARMParams.ASIC_IP;                           $ASIC_ALGO = $SWARMParams.ASIC_ALGO;
     $Stat_All = $SWARMParams.Stat_All;                         $Custom_Periods = $SWARMParams.Custom_Periods;
+    $Volume = $SWARMParms.Volume;
 }
 
 ## Windows Start Up
@@ -832,6 +836,7 @@ While ($true) {
     $SWARMAlgorithm = $SWARMParams.Algorithm;                  $Coin = $SWARMParams.Coin
     $ASIC_IP = $SWARMParams.ASIC_IP;                           $ASIC_ALGO = $SWARMParams.ASIC_ALGO;
     $Stat_All = $SWARMParams.Stat_All;                         $Custom_Periods = $SWARMParams.Custom_Periods;
+    $Volume = $SWARMParams.Volume
 
     ## Make it so that if Farm_Hash Is Not Specified, HiveOS functions are removed.
     ## In case user forgets to change -HiveOS to "No"
@@ -1130,7 +1135,10 @@ While ($true) {
         continue  
     }
 
-    ## If Volatility is specified, gather pool vol.
+    ## If Volume is specified, gather pool vol.
+     if($Volume -eq "Yes") {
+        Get-Volume
+     }
 
 
     ## All miners had pool quote printed for their respective algorithm. This adjusts them with the Threshold increase.
@@ -1505,6 +1513,7 @@ While ($true) {
                 Shares        = $CoinShare
                 Fullname      = $Miner.FullName
                 MinerPool     = $Miner.MinerPool
+                Volume     = $Miner.Volume
             }
         }
 

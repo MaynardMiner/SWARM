@@ -158,7 +158,7 @@ function Set-Stat {
     $Stat.Values += [decimal]$Value
     if($HashRate){
         $Stat.Hash_Val += [decimal]$Hashrate
-        if ($Stat.Hash_Val.Count -gt $HashRate) { $Stat.Hash_Val = $Stat.Hash_Val | Select -Skip 1 }
+        if ($Stat.Hash_Val.Count -gt $Hash_Max) { $Stat.Hash_Val = $Stat.Hash_Val | Select -Skip 1 }
     }
     if ($Stat.Values.Count -gt $Max_Periods) { $Stat.Values = $Stat.Values | Select -Skip 1 }
         

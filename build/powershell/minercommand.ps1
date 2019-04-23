@@ -219,9 +219,11 @@ function start-minersorting {
         $Miner_Unbias = [PSCustomObject]@{ }
         $Miner_PowerX = [PSCustomObject]@{ }
         $Miner_Pool_Estimates = [PSCustomObject]@{ }
+        $Miner_Vol = [PSCustomObject]@{ }
      
         $Miner_Types = $Miner.Type | Select-Object -Unique
-     
+        $MinerPool = $Miner.MinerPool | Select-Object -Unique
+
         $Miner.HashRates | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
             if ($Miner.PowerX.$_ -ne $null) {
                 $Day = 24;
@@ -231,17 +233,24 @@ function start-minersorting {
                 $WattCalc3 = [Decimal]$WattCalc2 * $WattCalc;
             }
             else { $WattCalc3 = 0 }
+            if ($global:Pool_Hashrates.$_.$MinerPool.Percent -gt 0) {
+                if($global:Pool_Hashrates.$_.$MinerPool.Percent -eq 1){$Hash_Percent = 1}
+                else{$Hash_Percent = (1 - $global:Pool_Hashrates.$_.$MinerPool.Percent)}
+            }
+            else {$Hash_Percent = 1}
             $Miner_HashRates | Add-Member $_ ([Double]$Miner.HashRates.$_)
             $Miner_PowerX | Add-Member $_ ([Double]$Miner.PowerX.$_)
-            $Miner_Profits | Add-Member $_ ([Decimal]($Miner.Quote - $WattCalc3) * (1 - ($Miner.fees / 100)))
+            $Miner_Profits | Add-Member $_  (([Decimal]($Miner.Quote) * (1 - ($Miner.fees / 100))) * $Hash_Percent)
             $Miner_Unbias | Add-Member $_  ([Decimal]($Miner.Quote - $WattCalc3) * (1 - ($Miner.fees / 100)))
             $Miner_Pool_Estimates | Add-Member $_ ([Decimal]($Miner.Quote) * (1 - ($Miner.fees / 100)))
+            $Miner_Vol | Add-Member $_ $( if($global:Pool_Hashrates.$_.$MinerPool.Percent -ne 1){[Double]$global:Pool_Hashrates.$_.$MinerPool.Percent * 100} else { 0 } )
         }
             
         $Miner_Power = [Double]($Miner_PowerX.PSObject.Properties.Value | Measure-Object -Sum).Sum
         $Miner_Profit = [Double]($Miner_Profits.PSObject.Properties.Value | Measure-Object -Sum).Sum
         $Miner_Unbiased = [Double]($Miner_Unbias.PSObject.Properties.Value | Measure-Object -Sum).Sum
         $Miner_Pool_Estimate = [Double]($Miner_Pool_Estimates.PSObject.Properties.Value | Measure-Object -Sum).sum
+        $Miner_Volume = [Double]($Miner_Vol.PSObject.Properties.Value | Measure-Object -Sum).sum
 
         $Miner.HashRates | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
             if ((-not [String]$Miner.HashRates.$_) -or (-not [String]$Miner.PowerX.$_)) {
@@ -251,6 +260,7 @@ function start-minersorting {
                 $Miner_Unbiased = $null
                 $Miner_Power = $null
                 $Miner_Pool_Estimate = $null
+                $Miner_Volume = $null
             }
         }
 
@@ -259,7 +269,8 @@ function start-minersorting {
         $Miner | Add-Member Profit $Miner_Profit
         $Miner | Add-Member Profit_Unbiased $Miner_Unbiased
         $Miner | Add-Member Power $Miner_Power
-        $Miner | Add-Member Pool_Estimate $Miner_Pool_Estimate   
+        $Miner | Add-Member Pool_Estimate $Miner_Pool_Estimate
+        $Miner | Add-Member Volume $Miner_Volume
     }
 }
 
