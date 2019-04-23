@@ -296,7 +296,7 @@ $FileClear += ".\build\txt\bestminers.txt"
 $FileClear | ForEach-Object { if (Test-Path $_) { Remove-Item $_ -Force } }
 
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
-$Debug = $true
+$Debug = $false
 
 ## Convert Arguments Into Hash Table
 if ($Debug -ne $true) {
@@ -471,6 +471,7 @@ $Naming = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
 $Priorities = Get-Content ".\config\pools\pool-priority.json" | ConvertFrom-Json
 $DonationMode = $false
 $Warnings = @()
+$global:Pool_Hashrates = @{}
 
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
 
@@ -790,7 +791,6 @@ elseif ($Platform -eq "linux") { Start-Process ".\build\bash\background.sh" -Arg
 While ($true) {
 
     ##Manage Pool Bans
-    $global:Pool_Hashrates = @{}
     Start-PoolBans $StartingParams $swarmstamp
 
     ##Parameters (change again interactively if needed)
@@ -1179,6 +1179,7 @@ While ($true) {
 
         ##This starts to refine each miner hashtable, applying watt calculations, and other factors to each miner. ##TODO
         start-minersorting -SortMiners $Miners -WattCalc $WattEx
+        $global:Pool_Hashrates = @{}
 
         ##Now that we have narrowed down to our best miners - we adjust them for switching threshold.
         $BestActiveMiners | ForEach-Object { $Miners | Where-Object Path -EQ $_.path | Where-Object Arguments -EQ $_.Arguments | ForEach-Object {
