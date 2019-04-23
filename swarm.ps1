@@ -467,7 +467,6 @@ $Naming = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
 $Priorities = Get-Content ".\config\pools\pool-priority.json" | ConvertFrom-Json
 $DonationMode = $false
 $Warnings = @()
-$global:Pool_Hashrates = @{}
 
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
 
@@ -787,6 +786,7 @@ elseif ($Platform -eq "linux") { Start-Process ".\build\bash\background.sh" -Arg
 While ($true) {
 
     ##Manage Pool Bans
+    $global:Pool_Hashrates = @{}
     Start-PoolBans $StartingParams $swarmstamp
 
     ##Parameters (change again interactively if needed)
@@ -1129,6 +1129,9 @@ While ($true) {
         start-sleep $Interval; 
         continue  
     }
+
+    ## If Volatility is specified, gather pool vol.
+
 
     ## All miners had pool quote printed for their respective algorithm. This adjusts them with the Threshold increase.
     ## This is done here, so it distributes it to all miners of that particular algorithm, not the just active miner.
