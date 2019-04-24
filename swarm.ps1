@@ -796,10 +796,12 @@ if ($Platform -eq "windows") { Start-Background -WorkingDir $pwsh -Dir $dir -Pla
 elseif ($Platform -eq "linux") { Start-Process ".\build\bash\background.sh" -ArgumentList "background $dir $Platform $HiveOS $Rejections $Remote $Port $APIPassword $API" -Wait }
 
 if ($Error.Count -gt 0) {
-    $Timestamp = (Get-Date)
-    $Message = "[$TimeStamp]: Startup Generated The Following Warnings/Errors-"
-    $Message | Out-File $global:logname -Append
-    $Error | Out-File $global:logname -Append
+    $TimeStamp = (Get-Date)
+    $errormesage = "[$TimeStamp]: Startup Generated The Following Warnings/Errors-"
+    $errormesage | Add-Content $global:logname
+    $Message = @()
+    $error | foreach { $Message += "$($_.InvocationInfo.InvocationName)`: $($_.Exception.Message)"; $Message += $_.InvocationINfo.PositionMessage; $Message += $_.InvocationInfo.Line; $Message += $_.InvocationINfo.Scriptname; $MEssage += "" }
+    $Message | Add-Content $global:logname
     $error.clear()
 }
 
@@ -1906,10 +1908,12 @@ While ($true) {
             }
         }
     }until($Error.Count -gt 0)
-    $Timestamp = (Get-Date)
-    $Message = "[$TimeStamp]: Last Loop Generated The Following Warnings/Errors-"
-    $Message | Out-File $global:logname -Append
-    $Error | Out-File $global:logname -Append
+    $TimeStamp = (Get-Date)
+    $errormesage = "[$TimeStamp]: Last Loop Generated The Following Warnings/Errors-"
+    $errormesage | Add-Content $global:logname
+    $Message = @()
+    $error | foreach { $Message += "$($_.InvocationInfo.InvocationName)`: $($_.Exception.Message)"; $Message += $_.InvocationINfo.PositionMessage; $Message += $_.InvocationInfo.Line; $Message += $_.InvocationINfo.Scriptname; $MEssage += "" }
+    $Message | Add-Content $global:logname
     $error.clear()
     continue;
 }
