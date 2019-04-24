@@ -1,36 +1,41 @@
-$CPUTypes | ForEach-Object {
+$AMDTypes | ForEach-Object {
     
-    $ConfigType = $_;
+    $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
+    $CName = "ehssand-amd"
 
-    ##Miner Path Information
-    if ($cpu.xmrig_cpu.$ConfigType) { $Path = "$($cpu.xmrig_cpu.$ConfigType)" }
+    if ($amd.$CName.$ConfigType) { $Path = "$($amd.$CName.$ConfigType)" }
     else { $Path = "None" }
-    if ($cpu.xmrig_cpu.uri) { $Uri = "$($cpu.xmrig_cpu.uri)" }
+    if ($amd.$CName.uri) { $Uri = "$($amd.$CName.uri)" }
     else { $Uri = "None" }
-    if ($cpu.xmrig_cpu.minername) { $MinerName = "$($cpu.xmrig_cpu.minername)" }
+    if ($amd.$CName.minername) { $MinerName = "$($amd.$CName.minername)" }
     else { $MinerName = "None" }
     if ($Platform -eq "linux") { $Build = "Tar" }
     elseif ($Platform -eq "windows") { $Build = "Zip" }
 
-    $Name = "xmrig_cpu";
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "3400$Num"
 
+    Switch ($Num) {
+        1 { $Get_Devices = $AMDDevices1 }
+    }
     ##Log Directory
     $Log = Join-Path $dir "logs\$ConfigType.log"
 
-    ##Parse -CPUThreads
-    if ($CPUThreads -ne '') { $Devices = $CPUThreads }
+    ##Parse -GPUDevices
+    if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
+    else { $Devices = $Get_Devices }
 
     ##Get Configuration File
-    $GetConfig = "$dir\config\miners\xmrig_cpu.json"
+    $GetConfig = "$dir\config\miners\$CName.json"
     try { $Config = Get-Content $GetConfig | ConvertFrom-Json }
     catch { Write-Log "Warning: No config found at $GetConfig" }
 
-    ##Export would be /path/to/[SWARMVERSION]/build/export##
+    ##Export would be /path/to/[SWARMVERSION]/build/export && Bleeding Edge Check##
     $ExportDir = Join-Path $dir "build\export"
 
     ##Prestart actions before miner launch
     $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
     $Prestart = @()
+    if (Test-Path $BE) { $Prestart += "export LD_PRELOAD=libcurl-compat.so.3.0.0" }
     $PreStart += "export LD_LIBRARY_PATH=$ExportDir"
     $Config.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 
@@ -43,8 +48,6 @@ $CPUTypes | ForEach-Object {
         $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
             if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
                 if ($Config.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
-                if ($Platform -eq "windows") { $APISet = "--http-enabled --http-port=10002" }
-                else { $APISet = "--api-port=10002" }
                 [PSCustomObject]@{
                     MName      = $Name
                     Coin       = $Coins
@@ -56,15 +59,21 @@ $CPUTypes | ForEach-Object {
                     Type       = $ConfigType
                     Path       = $Path
                     Devices    = $Devices
-                    DeviceCall = "xmrig-opt"
-                    Arguments  = "-a $($Config.$ConfigType.naming.$($_.Algorithm)) $APISet -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.User1) -p $($_.Pass1)$($Diff) --donate-level=1 --nicehash $($Config.$ConfigType.commands.$($_.Algorithm))"
+                    DeviceCall = "sgminer-gm"
+                    Arguments  = "--gpu-platform $AMDPlatform --api-listen --api-port $Port -k $($Config.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.$User) -p $($_.$Pass)$($Diff) -T $($Config.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
                     Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
                     PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
+                    ocdpm      = if ($Config.$ConfigType.oc.$($_.Algorithm).dpm) { $Config.$ConfigType.oc.$($_.Algorithm).dpm }else { $OC."default_$($ConfigType)".dpm }
+                    ocv        = if ($Config.$ConfigType.oc.$($_.Algorithm).v) { $Config.$ConfigType.oc.$($_.Algorithm).v }else { $OC."default_$($ConfigType)".v }
+                    occore     = if ($Config.$ConfigType.oc.$($_.Algorithm).core) { $Config.$ConfigType.oc.$($_.Algorithm).core }else { $OC."default_$($ConfigType)".core }
+                    ocmem      = if ($Config.$ConfigType.oc.$($_.Algorithm).mem) { $Config.$ConfigType.oc.$($_.Algorithm).mem }else { $OC."default_$($ConfigType)".memory }
+                    ocmdpm     = if ($Config.$ConfigType.oc.$($_.Algorithm).mdpm) { $Config.$ConfigType.oc.$($_.Algorithm).mdpm }else { $OC."default_$($ConfigType)".mdpm }
+                    ocfans     = if ($Config.$ConfigType.oc.$($_.Algorithm).fans) { $Config.$ConfigType.oc.$($_.Algorithm).fans }else { $OC."default_$($ConfigType)".fans }
                     MinerPool  = "$($_.Name)"
                     FullName   = "$($_.Mining)"
-                    Port       = 10002
-                    API        = "xmrig-opt"
+                    Port       = $Port
+                    API        = "sgminer-gm"
                     Wallet     = "$($_.$User)"
                     URI        = $Uri
                     Server     = "localhost"

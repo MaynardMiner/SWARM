@@ -37,10 +37,12 @@ if ($Poolname -eq $Name) {
             $zpool_UnSorted | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | ForEach-Object {
                 $zpool_Algorithm = $zpool_UnSorted.$_.algo.ToLower()
                 $zpool_Symbol = $zpool_UnSorted.$_.sym.ToUpper()
-                $zpool_Fees = [Double]$global:FeeTable.zpool.$zpool_Algorithm
-                $zpool_Estimate = [Double]$zpool_UnSorted.$_.estimate * 0.001
-                $Divisor = (1000000 * [Double]$global:DivisorTable.zpool.$zpool_Algorithm)    
-                try{ $Stat = Set-Stat -Name "$($Name)_$($zpool_Symbol)_coin_profit" -Value ([double]$zpool_Estimate / $Divisor * (1 - ($zpool_fees / 100))) }catch{ Write-Log "Failed To Calculate Stat For $zpool_Symbol" }
+                $Fees = [Double]$global:FeeTable.zpool.$zpool_Algorithm
+                $Estimate = [Double]$zpool_UnSorted.$_.estimate * 0.001
+                $Divisor = (1000000 * [Double]$global:DivisorTable.zpool.$zpool_Algorithm)
+                $Workers = [Double]$zpool_UnSorted.$_.Workers * 0.001
+                $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
+                try{ $Stat = Set-Stat -Name "$($Name)_$($zpool_Symbol)_coin_profit" -Value ([Double]$Cut / $Divisor) }catch{ Write-Log "Failed To Calculate Stat For $zpool_Symbol" }
             }
         }
         $Best = $Sorted | Select-Object -First 1

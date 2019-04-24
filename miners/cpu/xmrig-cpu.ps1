@@ -1,36 +1,28 @@
-$AMDTypes | ForEach-Object {
+$CPUTypes | ForEach-Object {
     
-    $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
+    $ConfigType = $_;
+    $CName = "xmrig-cpu"
 
     ##Miner Path Information
-    if ($AMD.energi_amd.$ConfigType) { $Path = "$($AMD.energi_amd.$ConfigType)" }
+    if ($cpu.$CName.$ConfigType) { $Path = "$($cpu.$CName.$ConfigType)" }
     else { $Path = "None" }
-    if ($AMD.energi_amd.uri) { $Uri = "$($AMD.energi_amd.uri)" }
+    if ($cpu.$CName.uri) { $Uri = "$($cpu.$CName.uri)" }
     else { $Uri = "None" }
-    if ($AMD.energi_amd.minername) { $MinerName = "$($AMD.energi_amd.minername)" }
+    if ($cpu.$CName.minername) { $MinerName = "$($cpu.$CName.minername)" }
     else { $MinerName = "None" }
     if ($Platform -eq "linux") { $Build = "Tar" }
     elseif ($Platform -eq "windows") { $Build = "Zip" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "energi_amd-$Num"; $Port = "2100$Num"
+    $Name = "$CName";
 
-    Switch ($Num) {
-        1 { $Get_Devices = $AMDDevices1 }
-    }
-    
     ##Log Directory
     $Log = Join-Path $dir "logs\$ConfigType.log"
 
-    ##Parse -GPUDevices
-    if ($Get_Devices -ne "none") {
-        $GPUDevices1 = $Get_Devices
-        $GPUDevices1 = $GPUDevices1 -replace ',', ' '
-        $Devices = $GPUDevices1
-    }
-    else { $Devices = $Get_Devices }
-  
+    ##Parse -CPUThreads
+    if ($CPUThreads -ne '') { $Devices = $CPUThreads }
+
     ##Get Configuration File
-    $GetConfig = "$dir\config\miners\energi_amd.json"
+    $GetConfig = "$dir\config\miners\$CName.json"
     try { $Config = Get-Content $GetConfig | ConvertFrom-Json }
     catch { Write-Log "Warning: No config found at $GetConfig" }
 
@@ -44,7 +36,7 @@ $AMDTypes | ForEach-Object {
     $Config.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 
     if ($Coins -eq $true) { $Pools = $CoinPools }else { $Pools = $AlgoPools }
-        
+
     ##Build Miner Settings
     $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
         $MinerAlgo = $_
@@ -52,38 +44,35 @@ $AMDTypes | ForEach-Object {
         $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
             if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
                 if ($Config.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
+                if ($Platform -eq "windows") { $APISet = "--http-enabled --http-port=10002" }
+                else { $APISet = "--api-port=10002" }
                 [PSCustomObject]@{
                     MName      = $Name
                     Coin       = $Coins
                     Delay      = $Config.$ConfigType.delay
-                    Fees        = $Config.$ConfigType.fee.$($_.Algorithm)
-                    Platform   = $Platform
+                    Fees       = $Config.$ConfigType.fee.$($_.Algorithm)
                     Symbol     = "$($_.Symbol)"
                     MinerName  = $MinerName
                     Prestart   = $PreStart
                     Type       = $ConfigType
                     Path       = $Path
                     Devices    = $Devices
-                    DeviceCall = "energiminer"
-                    Arguments  = "--opencl-platform $AMDPlatform -G stratum://$($_.$User).$($_.$Pass)@$($_.Algorithm).mine.zergpool.com:$($_.Port)"
+                    DeviceCall = "xmrig-opt"
+                    Arguments  = "-a $($Config.$ConfigType.naming.$($_.Algorithm)) $APISet -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.User1) -p $($_.Pass1)$($Diff) --donate-level=1 --nicehash $($Config.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
                     Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
                     PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
-                    ocpower    = if ($Config.$ConfigType.oc.$($_.Algorithm).power) { $Config.$ConfigType.oc.$($_.Algorithm).power }else { $OC."default_$($ConfigType)".Power }
-                    occore     = if ($Config.$ConfigType.oc.$($_.Algorithm).core) { $Config.$ConfigType.oc.$($_.Algorithm).core }else { $OC."default_$($ConfigType)".core }
-                    ocmem      = if ($Config.$ConfigType.oc.$($_.Algorithm).memory) { $Config.$ConfigType.oc.$($_.Algorithm).memory }else { $OC."default_$($ConfigType)".memory }
                     MinerPool  = "$($_.Name)"
                     FullName   = "$($_.Mining)"
-                    Port       = 0
-                    API        = "energiminer"
-                    Wrap       = $false
+                    Port       = 10002
+                    API        = "xmrig-opt"
                     Wallet     = "$($_.$User)"
                     URI        = $Uri
                     Server     = "localhost"
                     BUILD      = $Build
                     Algo       = "$($_.Algorithm)"
                     Log        = $Log 
-                }
+                }            
             }
         }
     }

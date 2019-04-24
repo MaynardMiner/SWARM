@@ -41,7 +41,7 @@ if ($Poolname -eq $Name) {
                 $Stat = Set-Stat -HashRate $HashRate -Name "$($Name)_$($Zpool_Algorithm)_profit" -Value ([Double]$Cut / $Divisor)
 
                 if(-not $global:Pool_Hashrates.$Zpool_Algorithm){$global:Pool_Hashrates.Add("$Zpool_Algorithm",@{})}
-                $global:Pool_Hashrates.$Zpool_Algorithm.Add("$Name",@{HashRate = "$($Stat.HashRate)"; Percent = ""})
+                if(-not $global:Pool_Hashrates.$Zpool_Algorithm.$Name){$global:Pool_Hashrates.$Zpool_Algorithm.Add("$Name",@{HashRate = "$($Stat.HashRate)"; Percent = ""})}
          
                 $Pass1 = $global:Wallets.Wallet1.Keys
                 $User1 = $global:Wallets.Wallet1.$Passwordcurrency1.address

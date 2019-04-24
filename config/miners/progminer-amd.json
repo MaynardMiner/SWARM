@@ -1,4 +1,5 @@
 {
+  "name": "progminer-amd",
   "AMD1": {
     "name": "AMD1",
     "delay": "1",
@@ -9,19 +10,19 @@
       "export GPU_MAX_ALLOC_PERCENT=100"
     ],
     "commands": {
-      "nrghash": ""
+      "progpow": ""
     },
     "difficulty": {
-      "nrghash": ""
+      "progpow": ""
     },
     "naming": {
-      "nrghash": "nrghash"
+      "progpow": "progpow"
     },
     "fee": {
-      "nrghash": 0
+      "progpow": 0
     },
     "oc": {
-      "nrghash": {
+      "progpow": {
         "dpm": "",
         "v": "",
         "core": "",
@@ -30,6 +31,5 @@
         "fans": ""
       }
     }
-  },
-  "name": "energi_amd"
+  }
 }

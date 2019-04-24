@@ -1,34 +1,50 @@
-$NVIDIATypes | ForEach-Object {
+$AMDTypes | ForEach-Object {
     
-    $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
+    $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
+    $CName = "gminer-amd"
 
     ##Miner Path Information
-    if ($NVIDIA.xmrig_nv.$ConfigType) { $Path = "$($NVIDIA.xmrig_nv.$ConfigType)" }
+    if ($AMD.$CName.$ConfigType) { $Path = "$($AMD.$CName.$ConfigType)" }
     else { $Path = "None" }
-    if ($NVIDIA.xmrig_nv.uri) { $Uri = "$($NVIDIA.xmrig_nv.uri)" }
+    if ($AMD.$CName.uri) { $Uri = "$($AMD.$CName.uri)" }
     else { $Uri = "None" }
-    if ($NVIDIA.xmrig_nv.minername) { $MinerName = "$($NVIDIA.xmrig_nv.minername)" }
+    if ($AMD.$CName.minername) { $MinerName = "$($AMD.$CName.minername)" }
     else { $MinerName = "None" }
     if ($Platform -eq "linux") { $Build = "Tar" }
     elseif ($Platform -eq "windows") { $Build = "Zip" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "xmrig_nv-$Num"; $Port = "5200$Num";
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "3300$Num"
 
     Switch ($Num) {
-        1 { $Get_Devices = $NVIDIADevices1 }
-        2 { $Get_Devices = $NVIDIADevices2 }
-        3 { $Get_Devices = $NVIDIADevices3 }
+        1 { $Get_Devices = $AMDDevices1 }
     }
-
+    
     ##Log Directory
     $Log = Join-Path $dir "logs\$ConfigType.log"
 
     ##Parse -GPUDevices
-    if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
+    if ($Get_Devices -ne "none") {
+        $GPUDevices1 = $Get_Devices
+        $GPUDevices1 = $GPUDevices1 -replace ',', ' '
+        $Devices = $GPUDevices1
+    }
     else { $Devices = $Get_Devices }
 
+    ##gminer apparently doesn't know how to tell the difference between
+    ##cuda and amd devices, like every other miner that exists. So now I 
+    ##have to spend an hour and parse devices
+    ##to matching platforms.
+    $ArgDevices = $Null
+    if ($Get_Devices -ne "none") {
+        $GPUDevices1 = $Get_Devices
+        $GPUEDevices1 = $GPUDevices1 -split ","
+        $GPUEDevices1 | ForEach-Object { $ArgDevices += "$($GCount.AMD.$_) " }
+        $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1)
+    }
+    else { $GCount.AMD.PSObject.Properties.Name | ForEach-Object { $ArgDevices += "$($GCount.AMD.$_) " }; $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1) }
+
     ##Get Configuration File
-    $GetConfig = "$dir\config\miners\xmrig_nv.json"
+    $GetConfig = "$dir\config\miners\$CName.json"
     try { $Config = Get-Content $GetConfig | ConvertFrom-Json }
     catch { Write-Log "Warning: No config found at $GetConfig" }
 
@@ -49,7 +65,7 @@ $NVIDIATypes | ForEach-Object {
         $Stat = Get-Stat -Name "$($Name)_$($MinerAlgo)_hashrate"
         $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
             if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
-                if ($Config.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
+                if ($Config.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))" }
                 [PSCustomObject]@{
                     MName      = $Name
                     Coin       = $Coins
@@ -61,26 +77,28 @@ $NVIDIATypes | ForEach-Object {
                     Type       = $ConfigType
                     Path       = $Path
                     Devices    = $Devices
-                    DeviceCall = "xmrstak"
-                    Arguments  = "-a $($Config.$ConfigType.naming.$($_.Algorithm)) --api-port=$Port -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.$User) -p $($_.$Pass)$($Diff) --donate-level 1 --nicehash $($Config.$ConfigType.commands.$($_.Algorithm))"    
+                    ArgDevices = $ArgDevices
+                    DeviceCall = "gminer"
+                    Arguments  = "--api $Port --server $($_.Host) --port $($_.Port) --user $($_.$User) --logfile `'$Log`' --pass $($_.$Pass)$Diff $($Config.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
                     Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
                     PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
-                    ocpower    = if ($Config.$ConfigType.oc.$($_.Algorithm).power) { $Config.$ConfigType.oc.$($_.Algorithm).power }else { $OC."default_$($ConfigType)".Power }
+                    ocdpm      = if ($Config.$ConfigType.oc.$($_.Algorithm).dpm) { $Config.$ConfigType.oc.$($_.Algorithm).dpm }else { $OC."default_$($ConfigType)".dpm }
+                    ocv        = if ($Config.$ConfigType.oc.$($_.Algorithm).v) { $Config.$ConfigType.oc.$($_.Algorithm).v }else { $OC."default_$($ConfigType)".v }
                     occore     = if ($Config.$ConfigType.oc.$($_.Algorithm).core) { $Config.$ConfigType.oc.$($_.Algorithm).core }else { $OC."default_$($ConfigType)".core }
-                    ocmem      = if ($Config.$ConfigType.oc.$($_.Algorithm).memory) { $Config.$ConfigType.oc.$($_.Algorithm).memory }else { $OC."default_$($ConfigType)".memory }
+                    ocmem      = if ($Config.$ConfigType.oc.$($_.Algorithm).mem) { $Config.$ConfigType.oc.$($_.Algorithm).mem }else { $OC."default_$($ConfigType)".memory }
+                    ocmdpm     = if ($Config.$ConfigType.oc.$($_.Algorithm).mdpm) { $Config.$ConfigType.oc.$($_.Algorithm).mdpm }else { $OC."default_$($ConfigType)".mdpm }
                     ocfans     = if ($Config.$ConfigType.oc.$($_.Algorithm).fans) { $Config.$ConfigType.oc.$($_.Algorithm).fans }else { $OC."default_$($ConfigType)".fans }
-                    FullName   = "$($_.Mining)"
                     MinerPool  = "$($_.Name)"
+                    FullName   = "$($_.Mining)"
+                    API        = "gminer"
                     Port       = $Port
-                    API        = "xmrstak"
-                    Wrap       = $false
                     Wallet     = "$($_.$User)"
                     URI        = $Uri
                     Server     = "localhost"
                     BUILD      = $Build
                     Algo       = "$($_.Algorithm)"
-                    Log        = $Log 
+                    Log        = "miner_generated" 
                 }            
             }
         }

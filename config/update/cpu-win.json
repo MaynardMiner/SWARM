@@ -8,8 +8,8 @@
     "version": "3.8.8.4",
     "uri": "https://github.com/bubasik/cpuminer-opt-yespower/releases/download/3.8.8.4/Cpuminer-opt-yespower-ytn-ver3.zip"
   },
-  "xmrig_cpu": {
-    "name": "xmrig_cpu",
+  "xmrig-cpu": {
+    "name": "xmrig-cpu",
     "type": "cpu",
     "CPU": ".\\bin\\xmrig-cpu-1\\xmrig.exe",
     "minername": "xmrig.exe",

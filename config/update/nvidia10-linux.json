@@ -60,12 +60,12 @@
     "version": "0.6.2",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/zm-Linux.tar.gz"
   },
-  "enemy": {
-    "name": "enemy",
+  "z-enemy": {
+    "name": "z-enemy",
     "type": "nvidia",
-    "NVIDIA1": ".\\bin\\enemy-1\\z-enemy",
-    "NVIDIA2": ".\\bin\\enemy-2\\z-enemy",
-    "NVIDIA3": ".\\bin\\enemy-3\\z-enemy",
+    "NVIDIA1": ".\\bin\\z-enemy-1\\z-enemy",
+    "NVIDIA2": ".\\bin\\z-enemy-2\\z-enemy",
+    "NVIDIA3": ".\\bin\\z-enemy-3\\z-enemy",
     "minername": "z-enemy",
     "version": "1.28",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/z-enemy-linux-10.tar.gz"
@@ -220,12 +220,12 @@
     "version": "0.17.0",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/progminer-linux-10.tar.gz"
   },
-  "xmrig_nv": {
-    "name": "xmrig_nv",
+  "xmrig-nv": {
+    "name": "xmrig-nv",
     "type": "nvidia",
-    "NVIDIA1": ".\\bin\\xmrig_nv-1\\xmrig-nvidia",
-    "NVIDIA2": ".\\bin\\xmrig_nv-2\\xmrig-nvidia",
-    "NVIDIA3": ".\\bin\\xmrig_nv-3\\xmrig-nvidia",
+    "NVIDIA1": ".\\bin\\xmrig-nv-1\\xmrig-nvidia",
+    "NVIDIA2": ".\\bin\\xmrig-nv-2\\xmrig-nvidia",
+    "NVIDIA3": ".\\bin\\xmrig-nv-3\\xmrig-nvidia",
     "minername": "xmrig-nvidia",
     "version": "2.14.1",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/xmrig-nvidia-linux.tar.gz"

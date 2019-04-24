@@ -1,5 +1,4 @@
 {
-  "name": "ehssand_amd",
   "AMD1": {
     "name": "AMD1",
     "delay": "1",
@@ -10,19 +9,19 @@
       "export GPU_MAX_ALLOC_PERCENT=100"
     ],
     "commands": {
-      "argon2d-dyn": "-g 2"
+      "nrghash": ""
     },
     "difficulty": {
-      "argon2d-dyn": ""
+      "nrghash": ""
     },
     "naming": {
-      "argon2d-dyn": "argon2d"
+      "nrghash": "nrghash"
     },
     "fee": {
-      "argon2d-dyn": 0
+      "nrghash": 0
     },
     "oc": {
-      "argon2d-dyn": {
+      "nrghash": {
         "dpm": "",
         "v": "",
         "core": "",
@@ -31,5 +30,6 @@
         "fans": ""
       }
     }
-  }
+  },
+  "name": "energi-amd"
 }

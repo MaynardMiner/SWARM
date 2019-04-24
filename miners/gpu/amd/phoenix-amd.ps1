@@ -1,49 +1,41 @@
 $AMDTypes | ForEach-Object {
     
     $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
+    $Cname = "phoenix-amd"
 
     ##Miner Path Information
-    if ($AMD.gminer.$ConfigType) { $Path = "$($AMD.gminer.$ConfigType)" }
+    if ($amd.$Cname.$ConfigType) { $Path = "$($amd.$Cname.$ConfigType)" }
     else { $Path = "None" }
-    if ($AMD.gminer.uri) { $Uri = "$($AMD.gminer.uri)" }
+    if ($amd.$Cname.uri) { $Uri = "$($amd.$Cname.uri)" }
     else { $Uri = "None" }
-    if ($AMD.gminer.minername) { $MinerName = "$($AMD.gminer.minername)" }
+    if ($amd.$Cname.minername) { $MinerName = "$($amd.$Cname.minername)" }
     else { $MinerName = "None" }
     if ($Platform -eq "linux") { $Build = "Tar" }
     elseif ($Platform -eq "windows") { $Build = "Zip" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "gminer_amd-$Num"; $Port = "3300$Num"
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$Cname-$Num"; $Port = "2600$Num"
 
     Switch ($Num) {
         1 { $Get_Devices = $AMDDevices1 }
     }
-    
+
     ##Log Directory
     $Log = Join-Path $dir "logs\$ConfigType.log"
 
     ##Parse -GPUDevices
     if ($Get_Devices -ne "none") {
-        $GPUDevices1 = $Get_Devices
-        $GPUDevices1 = $GPUDevices1 -replace ',', ' '
-        $Devices = $GPUDevices1
+        $ClayDevices1 = $Get_Devices -split ","
+        $ClayDevices1 = Switch ($ClayDevices1) { "10" { "a" }; "11" { "b" }; "12" { "c" }; "13" { "d" }; "14" { "e" }; "15" { "f" }; "16" { "g" }; "17" { "h" }; "18" { "i" }; "19" { "j" }; "20" { "k" }; default { "$_" }; }
+        $ClayDevices1 = $ClayDevices1 | ForEach-Object { $_ -replace ("$($_)", ",$($_)") }
+        $ClayDevices1 = $ClayDevices1 -join ""
+        $ClayDevices1 = $ClayDevices1.TrimStart(" ", ",")  
+        $ClayDevices1 = $ClayDevices1 -replace (",", "")
+        $Devices = $ClayDevices1
     }
     else { $Devices = $Get_Devices }
 
-    ##gminer apparently doesn't know how to tell the difference between
-    ##cuda and amd devices, like every other miner that exists. So now I 
-    ##have to spend an hour and parse devices
-    ##to matching platforms.
-    $ArgDevices = $Null
-    if ($Get_Devices -ne "none") {
-        $GPUDevices1 = $Get_Devices
-        $GPUEDevices1 = $GPUDevices1 -split ","
-        $GPUEDevices1 | ForEach-Object { $ArgDevices += "$($GCount.AMD.$_) " }
-        $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1)
-    }
-    else { $GCount.AMD.PSObject.Properties.Name | ForEach-Object { $ArgDevices += "$($GCount.AMD.$_) " }; $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1) }
-
     ##Get Configuration File
-    $GetConfig = "$dir\config\miners\gminer_amd.json"
+    $GetConfig = "$dir\config\miners\$Cname.json"
     try { $Config = Get-Content $GetConfig | ConvertFrom-Json }
     catch { Write-Log "Warning: No config found at $GetConfig" }
 
@@ -51,7 +43,6 @@ $AMDTypes | ForEach-Object {
     $ExportDir = Join-Path $dir "build\export"
 
     ##Prestart actions before miner launch
-    $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
     $Prestart = @()
     $PreStart += "export LD_LIBRARY_PATH=$ExportDir"
     $Config.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
@@ -64,7 +55,9 @@ $AMDTypes | ForEach-Object {
         $Stat = Get-Stat -Name "$($Name)_$($MinerAlgo)_hashrate"
         $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
             if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
-                if ($Config.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))" }
+                if ($Config.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
+                if ($_.Worker) { $MinerWorker = "-eworker $($_.Worker) " }
+                else { $MinerWorker = "-epsw $($_.$Pass)$($Diff) " }
                 [PSCustomObject]@{
                     MName      = $Name
                     Coin       = $Coins
@@ -76,9 +69,8 @@ $AMDTypes | ForEach-Object {
                     Type       = $ConfigType
                     Path       = $Path
                     Devices    = $Devices
-                    ArgDevices = $ArgDevices
-                    DeviceCall = "gminer"
-                    Arguments  = "--api $Port --server $($_.Host) --port $($_.Port) --user $($_.$User) --logfile `'$Log`' --pass $($_.$Pass)$Diff $($Config.$ConfigType.commands.$($_.Algorithm))"
+                    DeviceCall = "claymore"
+                    Arguments  = "-platform 1 -mport $Port -mode 1 -allcoins 1 -allpools 1 -epool $($_.Protocol)://$($_.Host):$($_.Port) -ewal $($_.$User) $MinerWorker-wd 0 -logfile `'$(Split-Path $Log -Leaf)`' -logdir `'$(Split-Path $Log)`' -gser 2 -dbg -1 -eres 2 $($Config.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
                     Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
                     PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
@@ -88,16 +80,17 @@ $AMDTypes | ForEach-Object {
                     ocmem      = if ($Config.$ConfigType.oc.$($_.Algorithm).mem) { $Config.$ConfigType.oc.$($_.Algorithm).mem }else { $OC."default_$($ConfigType)".memory }
                     ocmdpm     = if ($Config.$ConfigType.oc.$($_.Algorithm).mdpm) { $Config.$ConfigType.oc.$($_.Algorithm).mdpm }else { $OC."default_$($ConfigType)".mdpm }
                     ocfans     = if ($Config.$ConfigType.oc.$($_.Algorithm).fans) { $Config.$ConfigType.oc.$($_.Algorithm).fans }else { $OC."default_$($ConfigType)".fans }
-                    MinerPool  = "$($_.Name)"
                     FullName   = "$($_.Mining)"
-                    API        = "gminer"
+                    API        = "claymore"
                     Port       = $Port
+                    MinerPool  = "$($_.Name)"
+                    Wrap       = $false
                     Wallet     = "$($_.$User)"
                     URI        = $Uri
                     Server     = "localhost"
                     BUILD      = $Build
                     Algo       = "$($_.Algorithm)"
-                    Log        = "miner_generated" 
+                    Log        = "miner_generated"
                 }            
             }
         }

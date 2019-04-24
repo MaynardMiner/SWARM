@@ -110,12 +110,12 @@
         "version": "0.6.1",
         "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/dstm-windows.zip"
     },
-    "enemy": {
-        "name": "enemy",
+    "z-enemy": {
+        "name": "z-enemy",
         "type": "nvidia",
-        "NVIDIA1": ".\\bin\\enemy-1\\z-enemy.exe",
-        "NVIDIA2": ".\\bin\\enemy-2\\z-enemy.exe",
-        "NVIDIA3": ".\\bin\\enemy-3\\z-enemy.exe",
+        "NVIDIA1": ".\\bin\\z-enemy-1\\z-enemy.exe",
+        "NVIDIA2": ".\\bin\\z-enemy-2\\z-enemy.exe",
+        "NVIDIA3": ".\\bin\\z-enemy-3\\z-enemy.exe",
         "minername": "z-enemy.exe",
         "version": "1.28",
         "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/z-enemy-windows10.zip"
@@ -200,12 +200,12 @@
         "version": "2.2.2",
         "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/ttminer-windows.zip"
     },
-    "xmrig_nv": {
-        "name": "xmrig_nv",
+    "xmrig-nv": {
+        "name": "xmrig-nv",
         "type": "nvidia",
-        "NVIDIA1": ".\\bin\\xmrig_nv-1\\xmrig-nvidia.exe",
-        "NVIDIA2": ".\\bin\\xmrig_nv-2\\xmrig-nvidia.exe",
-        "NVIDIA3": ".\\bin\\xmrig_nv-3\\xmrig-nvidia.exe",
+        "NVIDIA1": ".\\bin\\xmrig-nv-1\\xmrig-nvidia.exe",
+        "NVIDIA2": ".\\bin\\xmrig-nv-2\\xmrig-nvidia.exe",
+        "NVIDIA3": ".\\bin\\xmrig-nv-3\\xmrig-nvidia.exe",
         "minername": "xmrig-nvidia.exe",
         "version": "2.14.1",
         "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/xmrig-nvidia-windows.zip"

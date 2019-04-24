@@ -36,7 +36,7 @@ if ($Poolname -eq $Name) {
                 }
 
                 if(-not $global:Pool_Hashrates.$blockpool_Algorithm){$global:Pool_Hashrates.Add("$blockpool_Algorithm",@{})}
-                $global:Pool_Hashrates.$blockpool_Algorithm.Add("$Name",@{HashRate = "$($Stat.HashRate)"; Percent = ""})
+                if(-not $global:Pool_Hashrates.$blockpool_Algorithm.$Name){$global:Pool_Hashrates.$blockpool_Algorithm.Add("$Name",@{HashRate = "$($Stat.HashRate)"; Percent = ""})}
 
                 $Pass1 = $global:Wallets.Wallet1.Keys
                 $User1 = $global:Wallets.Wallet1.$Passwordcurrency1.address

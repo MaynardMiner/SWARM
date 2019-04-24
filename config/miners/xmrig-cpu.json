@@ -1,5 +1,5 @@
 {
-  "name": "xmrig_cpu",
+  "name": "xmrig-cpu",
   "CPU": {
     "name": "CPU",
     "delay": "1",

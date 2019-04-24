@@ -1,18 +1,19 @@
 $AMDTypes | ForEach-Object {
     
     $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
+    $CName = "grin-amd"
 
     ##Miner Path Information
-    if ($AMD.'grin-amd'.$ConfigType) { $Path = "$($AMD.'grin-amd'.$ConfigType)" }
+    if ($AMD.$CName.$ConfigType) { $Path = "$($AMD.$CName.$ConfigType)" }
     else { $Path = "None" }
-    if ($AMD.'grin-amd'.uri) { $Uri = "$($AMD.'grin-amd'.uri)" }
+    if ($AMD.$CName.uri) { $Uri = "$($AMD.$CName.uri)" }
     else { $Uri = "None" }
-    if ($AMD.'grin-amd'.minername) { $MinerName = "$($AMD.'grin-amd'.minername)" }
+    if ($AMD.$CName.minername) { $MinerName = "$($AMD.$CName.minername)" }
     else { $MinerName = "None" }
     if ($Platform -eq "linux") { $Build = "Tar" }
     elseif ($Platform -eq "windows") { $Build = "Zip" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "grin-amd-$Num"; $Port = "2300$Num"
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "2300$Num"
 
     Switch ($Num) {
         1 { $Get_Devices = $AMDDevices1 }
@@ -26,7 +27,7 @@ $AMDTypes | ForEach-Object {
     else { $Devices = $Get_Devices }
 
     ##Get Configuration File
-    $GetConfig = "$dir\config\miners\grin-amd.json"
+    $GetConfig = "$dir\config\miners\$CName.json"
     try { $Config = Get-Content $GetConfig | ConvertFrom-Json }
     catch { Write-Log "Warning: No config found at $GetConfig" }
 

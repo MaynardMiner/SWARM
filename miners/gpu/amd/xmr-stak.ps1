@@ -1,18 +1,19 @@
 $AMDTypes | ForEach-Object {
     
     $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
+    $CName = "xmr-stak"
 
     ##Miner Path Information
-    if ($amd."xmr-stak".$ConfigType) { $Path = "$($amd."xmr-stak".$ConfigType)" }
+    if ($amd.$CName.$ConfigType) { $Path = "$($amd.$CName.$ConfigType)" }
     else { $Path = "None" }
-    if ($amd."xmr-stak".uri) { $Uri = "$($amd."xmr-stak".uri)" }
+    if ($amd.$CName.uri) { $Uri = "$($amd.$CName.uri)" }
     else { $Uri = "None" }
-    if ($amd."xmr-stak".minername) { $MinerName = "$($amd."xmr-stak".minername)" }
+    if ($amd.$CName.minername) { $MinerName = "$($amd.$CName.minername)" }
     else { $MinerName = "None" }
     if ($Platform -eq "linux") { $Build = "Tar" }
     elseif ($Platform -eq "windows") { $Build = "Zip" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "xmr-stak-$Num"; $Port = "3000$Num"
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "3000$Num"
 
     Switch ($Num) {
         1 { $Get_Devices = $AMDDevices1 }
@@ -22,7 +23,7 @@ $AMDTypes | ForEach-Object {
     $Log = Join-Path $dir "logs\$ConfigType.log"
 
     ##Get Configuration File
-    $GetConfig = "$dir\config\miners\xmr-stak.json"
+    $GetConfig = "$dir\config\miners\$CName.json"
     try { $Config = Get-Content $GetConfig | ConvertFrom-Json }
     catch { Write-Log "Warning: No config found at $GetConfig" }
 

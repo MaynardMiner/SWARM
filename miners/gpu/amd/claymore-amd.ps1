@@ -1,18 +1,19 @@
 $AMDTypes | ForEach-Object {
     
     $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
+    $CName = "claymore-amd"
 
 ##Miner Path Information
-if ($amd.claymore_amd.$ConfigType) { $Path = "$($amd.claymore_amd.$ConfigType)" }
+if ($amd.$CName.$ConfigType) { $Path = "$($amd.$CName.$ConfigType)" }
 else { $Path = "None" }
-if ($amd.claymore_amd.uri) { $Uri = "$($amd.claymore_amd.uri)" }
+if ($amd.$CName.uri) { $Uri = "$($amd.$CName.uri)" }
 else { $Uri = "None" }
-if ($amd.claymore_amd.minername) { $MinerName = "$($amd.claymore_amd.minername)" }
+if ($amd.$CName.minername) { $MinerName = "$($amd.$CName.minername)" }
 else { $MinerName = "None" }
 if ($Platform -eq "linux") { $Build = "Tar" }
 elseif ($Platform -eq "windows") { $Build = "Zip" }
 
-$User = "User$Num"; $Pass = "Pass$Num"; $Name = "claymore_amd-$Num"; $Port = "2000$Num"
+$User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "2000$Num"
 
 Switch ($Num) {
     1 { $Get_Devices = $AMDDevices1 }
@@ -34,7 +35,7 @@ if ($Get_Devices -ne "none") {
 else { $Devices = $Get_Devices }
 
 ##Get Configuration File
-$GetConfig = "$dir\config\miners\claymore_amd.json"
+$GetConfig = "$dir\config\miners\$CName.json"
 try { $Config = Get-Content $GetConfig | ConvertFrom-Json }
 catch { Write-Log "Warning: No config found at $GetConfig" }
 

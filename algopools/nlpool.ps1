@@ -31,7 +31,7 @@ if ($Poolname -eq $Name) {
                 }
 
                 if(-not $global:Pool_Hashrates.$nlpoolAlgo_Algorithm){$global:Pool_Hashrates.Add("$nlpoolAlgo_Algorithm",@{})}
-                $global:Pool_Hashrates.$nlpoolAlgo_Algorithm.Add("$Name",@{HashRate = "$($Stat.HashRate)"; Percent = ""})
+                if(-not $global:Pool_Hashrates.$nlpoolAlgo_Algorithm.$Name){$global:Pool_Hashrates.$nlpoolAlgo_Algorithm.Add("$Name",@{HashRate = "$($Stat.HashRate)"; Percent = ""})}
         
                 $Pass1 = $global:Wallets.Wallet1.Keys
                 $User1 = $global:Wallets.Wallet1.$Passwordcurrency1.address
