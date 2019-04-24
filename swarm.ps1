@@ -804,7 +804,7 @@ if ($Error.Count -gt 0) {
 }
 
 While ($true) {
-    get-content '.bal'
+
     do {
         ##Manage Pool Bans
         Start-PoolBans $StartingParams $swarmstamp
