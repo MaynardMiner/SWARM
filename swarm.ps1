@@ -214,6 +214,7 @@ Write-log "OS = $Platform" -ForegroundColor Green
 . .\build\powershell\newsort.ps1; . .\build\powershell\screen.ps1; . .\build\powershell\commandweb.ps1;
 . .\build\powershell\response.ps1; . .\build\api\html\api.ps1; . .\build\powershell\config_file.ps1;
 . .\build\powershell\altwallet.ps1; . .\build\api\pools\include.ps1; . .\build\api\miners\include.ps1;
+. .\build\powershell\get.ps1;
 
 if ($Platform -eq "linux") { . .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1 }
 if ($Platform -eq "windows") { . .\build\powershell\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1; . .\build\powershell\environment.ps1; }
@@ -302,7 +303,7 @@ $FileClear += ".\build\txt\bestminers.txt"
 $FileClear | ForEach-Object { if (Test-Path $_) { Remove-Item $_ -Force } }
 
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
-$Debug = $false
+$Debug = $true
 
 ## Convert Arguments Into Hash Table
 if ($Debug -ne $true) {
@@ -965,6 +966,7 @@ While ($true) {
         }
 
         ##To Get Fees For Pools (For Currencies), A table is made, so the pool doesn't have to be called multiple times.
+        $Coins = $false
         $global:FeeTable = @{ }
         $global:FeeTable.Add("zpool", @{ })
         $global:FeeTable.Add("zergpool", @{ })
@@ -976,8 +978,11 @@ While ($true) {
         $global:divisortable.Add("zergpool", @{ })
         $global:divisortable.Add("fairpool", @{ })
 
+        Invoke-Expression ".\build\powershell\get.ps1 benchmarks all -asjson" | Tee-Object -Variable Miner_HashTable | Out-Null
+        if($Miner_HashTable -and $Miner_HashTable -ne "No Stats Found"){$Miner_HashTable = $Miner_HashTable | ConvertFrom-Json}
+
+
         ##Get Algorithm Pools
-        $Coins = $false
         write-Log "Checking Algo Pools." -Foregroundcolor yellow;
         $AllAlgoPools = Get-Pools -PoolType "Algo"
         ##Get Custom Pools

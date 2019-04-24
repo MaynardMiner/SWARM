@@ -23,7 +23,9 @@ param(
     [Parameter(Position = 4, Mandatory = $false)]
     [String]$argument5 = $null,
     [Parameter(Position = 5, Mandatory = $false)]
-    [String]$argument6 = $null
+    [String]$argument6 = $null,
+    [Parameter(Mandatory = $false)]
+    [switch]$asjson
 )
 
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
@@ -305,7 +307,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 if (Test-Path "stats") {Get-ChildItemContent "stats" | ForEach {$Stats | Add-Member $_.Name $_.Content}}
             }
             $BenchTable = @()
-            $StatNames | Foreach {$BenchTable += [PSCustomObject]@{Miner = $_ -split "_" | Select -First 1; Algo = $_ -split "_" | Select -Skip 1 -First 1; HashRates = $Stats."$($_)".Day | ConvertTo-Hash}}
+            $StatNames | Foreach {$BenchTable += [PSCustomObject]@{Miner = $_ -split "_" | Select -First 1; Algo = $_ -split "_" | Select -Skip 1 -First 1; HashRates = $Stats."$($_)".Day | ConvertTo-Hash; Raw = $Stats."$($_)".Day}}
             function Get-BenchTable {
                 $BenchTable | Sort-Object -Property Algo -Descending | Format-Table (
                     @{Label = "Miner"; Expression = {$($_.Miner)}},
@@ -313,7 +315,10 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                     @{Label = "Speed"; Expression = {$($_.HashRates)}}    
                 )
             }
-            $Get = Get-BenchTable
+            if($asjson) {
+                $Get = $BenchTable | ConvertTo-Json
+            }
+            else{$Get = Get-BenchTable}
             Get-BenchTable | Out-File ".\build\txt\get.txt"
         }
         else {$Get = "No Stats Found"}
