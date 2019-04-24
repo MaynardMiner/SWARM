@@ -956,7 +956,13 @@ While ($true) {
 
 
         ##Load File Stats, Begin Clearing Bans And Bad Stats Per Timout Setting. Restart Loop if Done
-        if ($TimeoutTimer.Elapsed.TotalSeconds -gt $TimeoutTime -and $Timeout -ne 0) { write-Log "Clearing Timeouts" -ForegroundColor Magenta; if (Test-Path ".\timeout") { Remove-Item ".\timeout" -Recurse -Force } }
+        if ($TimeoutTimer.Elapsed.TotalSeconds -gt $TimeoutTime -and $Timeout -ne 0) { 
+            write-Log "Clearing Timeouts" -ForegroundColor Magenta; 
+            if (Test-Path ".\timeout") { 
+                Remove-Item ".\timeout" -Recurse -Force
+            }
+            $TimeoutTimer.Restart()  
+        }
 
         ##To Get Fees For Pools (For Currencies), A table is made, so the pool doesn't have to be called multiple times.
         $global:FeeTable = @{ }
