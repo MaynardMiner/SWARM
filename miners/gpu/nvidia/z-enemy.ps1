@@ -4,11 +4,11 @@ $NVIDIATypes | ForEach-Object {
     $Cname = "z-enemy"
 
     ##Miner Path Information
-    if ($nvidia.$Cname.$ConfigType) { $Path = "$($nvidia.$Cname.$ConfigType)" }
+    if ($nvidia.$Cname.$ConfigType -and $Platform -eq "linux") { $Path = "$($nvidia.$Cname.$ConfigType)" }
     else { $Path = "None" }
-    if ($nvidia.$Cname.uri) { $Uri = "$($nvidia.$Cname.uri)" }
+    if ($nvidia.$Cname.uri -and $Platform -eq "linux") { $Uri = "$($nvidia.$Cname.uri)" }
     else { $Uri = "None" }
-    if ($nvidia.$Cname.MinerName) { $MinerName = "$($nvidia.$Cname.MinerName)" }
+    if ($nvidia.$Cname.MinerName -and $Platform -eq "linux") { $MinerName = "$($nvidia.$Cname.MinerName)" }
     else { $MinerName = "None" }
     if ($Platform -eq "linux") { $Build = "Tar" }
     elseif ($Platform -eq "windows") { $Build = "Zip" }
