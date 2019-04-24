@@ -194,7 +194,6 @@ function Start-LaunchCode {
                 ##Build Start Script
                 $script = @()
                 $script += "`$OutputEncoding = [System.Text.Encoding]::ASCII"
-                $script += ". `"$dir\build\powershell\output.ps1`";"
                 $script += "$dir\build\powershell\icon.ps1 `"$dir\build\apps\miner.ico`"" 
                 $script += "`$host.ui.RawUI.WindowTitle = `'$($MinerCurrent.Name) - $($MinerCurrent.Algo)`';"
                 $MinerCurrent.Prestart | ForEach-Object {
