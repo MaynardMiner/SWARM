@@ -37,11 +37,11 @@ function Expand-WebRequest {
     if ($BuildPath -eq "Linux") {
         if (-not (Test-Path $Filename)) {
             Start-Process "apt-get" "-y install git automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev make g++" -Wait
-            Write-Host "Cloning Miner" -BackgroundColor "Red" -ForegroundColor "White"
+            Write-Log "Cloning Miner" -BackgroundColor "Red" -ForegroundColor "White"
             Set-Location ".\bin"
             Start-Process -FilePath "git" -ArgumentList "clone $Uri $New_Path" -Wait
             Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
-            Write-Host "Building Miner" -BackgroundColor "Red" -ForegroundColor "White"
+            Write-Log "Building Miner" -BackgroundColor "Red" -ForegroundColor "White"
             Set-Location $Filename
             Start-Process -Filepath "chmod" -ArgumentList "+x ./configure.sh" -Wait
             Start-Process -Filepath "bash" -ArgumentList "autogen.sh" -Wait
@@ -49,30 +49,30 @@ function Expand-WebRequest {
             Start-Process -FilePath "bash" -ArgumentList "build.sh" -Wait
             Start-Sleep -S 10
             Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
-            Write-Host "Miner Completed!" -BackgroundColor "Red" -ForegroundColor "White"
+            Write-Log "Miner Completed!" -BackgroundColor "Red" -ForegroundColor "White"
         }
     }
 
     if ($BuildPath -eq "Dpkg") {
         if (Test-Path "/usr/bin/$MineName") {
-            Write-Host "Detected Excavator Installation" -ForegroundColor Green
+            Write-Log "Detected Excavator Installation" -ForegroundColor Green
             if (Test-Path $Path) {Remove-Item $Path -Recurse}
             New-Item $Path -ItemType "directory"
             Copy-Item "/usr/bin/$MineName" -Destination $Path
         }
         else {
             $DownloadFileURI = Split-Path "$Uri" -Leaf
-            Write-Host "Did Not Detect Excavator Installion Attempting install" -ForegroundColor yellow
+            Write-Log "Did Not Detect Excavator Installion Attempting install" -ForegroundColor yellow
             Start-Process -Filepath "wget" -ArgumentList "$Uri -O x64/$DownloadFileURI" -Wait
             Start-Process "dpkg" -ArgumentList "-i x64/$DownloadFileURI" -Wait
             Start-Process "apt-get" -ArgumentList "install -y -f" -Wait
             if (Test-Path $Path) {Remove-Item $Path -Recurse}
             New-Item $Path -ItemType "directory"
             if (Test-Path "/usr/bin/$MineName") {
-                Write-Host "Excavator Was Installed!" -ForegroundColor Green
+                Write-Log "Excavator Was Installed!" -ForegroundColor Green
                 Copy-Item "/usr/bin/$MineName" -Destination $Path
             }
-            else {Write-Host "Excavator Installation Failed- Install Manually" -ForegroundColor Red}
+            else {Write-Log "Excavator Installation Failed- Install Manually" -ForegroundColor Red}
         }
     }
 
@@ -80,7 +80,7 @@ function Expand-WebRequest {
         if (-not $Path) {$Path = Join-Path ".\x64" ([IO.FileInfo](Split-Path $Uri -Leaf)).BaseName}
         $FileName = Join-Path "x64" (Split-Path $Uri -Leaf)
         if (Test-Path $FileName) {Remove-Item $FileName}
-        Write-Host "Invoke-WebRequest $Uri -Outfile $FileName -UseBasicParsing"
+        Write-Log "Invoke-WebRequest $Uri -Outfile $FileName -UseBasicParsing"
         Invoke-WebRequest $Uri -OutFile $FileName -UseBasicParsing
         if (".msi", ".exe" -contains ([IO.FileInfo](Split-Path $Uri -Leaf)).Extension) {Start-Process $FileName "-qb" -Wait}
         else {
@@ -88,7 +88,7 @@ function Expand-WebRequest {
             $Path_New = (Join-Path (Split-Path $Path) (Split-Path $Path -Leaf))
 
             if (Test-Path $Path_Old) {Remove-Item $Path_Old -Recurse}
-            Write-Host "7z x `"$dir\$FileName`" -o`"$dir\$Path_Old`" -y"
+            Write-Log "7z x `"$dir\$FileName`" -o`"$dir\$Path_Old`" -y"
             Start-Process "7z" "x `"$dir\$FileName`" -o`"$dir\$Path_Old`" -y -spe" -Wait -WindowStyle Minimized -verb Runas
             if (Test-Path $Path_New) {Remove-Item $Path_New -Recurse}
        
@@ -106,13 +106,13 @@ function Expand-WebRequest {
         $TargzPath = Join-Path ".\x64" "$($DownloadFileName)"
         $NewTargzPath = Join-Path ".\bin" "$($DownloadFileName)"
         
-        Write-Host "Download Directory is $TargzPath"
-        Write-Host "Miner Exec is $NewTargzPath"
-        Write-Host "Miner Path is $Path"
+        Write-Log "Download Directory is $TargzPath"
+        Write-Log "Miner Exec is $NewTargzPath"
+        Write-Log "Miner Path is $Path"
     
         if (Test-Path $TargzPath) {Remove-Item $TargzPath -Recurse -Force}
         
-        Write-Host "Downloading .tar.gz File." -ForegroundColor Green
+        Write-Log "Downloading .tar.gz File." -ForegroundColor Green
         
         Start-Process -Filepath "wget" -ArgumentList "$Uri -O x64/$DownloadFileURI" -Wait
         if (Test-Path $NewTargzPath) {Remove-Item $NewTargzPath -recurse}

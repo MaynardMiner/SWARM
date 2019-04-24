@@ -25,7 +25,7 @@ function Get-Power {
                 if (Test-Path $CardPower) {Clear-Content $CardPower}
                 timeout -s9 30 ./build/apps/VII-smi | Tee-Object -Variable statpower | Out-Null
                 if ($statpower) {$statpower | Set-Content ".\build\txt\nvidiapower.txt"}
-                else {Write-Host "Failed To Get NVIDIA Power Usage- Driver is too busy" -ForegroundColor Red}
+                else {Write-Log "Failed To Get NVIDIA Power Usage- Driver is too busy" -ForegroundColor Red}
             }
 
             "AMD" {
@@ -33,7 +33,7 @@ function Get-Power {
                 if (Test-Path $CardPower) {Clear-Content $CardPower}
                 timeout -s9 30 rocm-smi -P | Tee-Object -Variable statpower | Out-Null
                 if ($statpower) {$statpower | Set-Content ".\build\txt\amdpower.txt"}
-                else {Write-Host "Failed To Get AMD Power Usage- Driver is too busy" -ForegroundColor Red} 
+                else {Write-Log "Failed To Get AMD Power Usage- Driver is too busy" -ForegroundColor Red} 
             }
 
         }

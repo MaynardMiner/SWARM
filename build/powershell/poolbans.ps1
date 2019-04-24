@@ -95,7 +95,7 @@ function Start-Poolbans {
                     $NewParams.PoolName = @("nlpool", "zergpool")
                     Get-NewDate | Set-Content ".\build\data\system.txt" -Force
                     Start-Sleep -s 1
-                    Write-Host  "Entering Donation Mode" -foregroundColor "darkred"
+                    Write-Log  "Entering Donation Mode" -foregroundColor "darkred"
                 }
                 else {$NewParams = $CurrentParams}
             }

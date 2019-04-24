@@ -207,19 +207,23 @@ function Get-StatusLite {
 
 function Invoke-MinerWarning {
     ##Notify User Of Failures
-    Write-Host "
+    Write-Log "
        
 There are miners that have failed! Check Your Settings And Arguments!
 " -ForegroundColor DarkRed
     if ($Platform -eq "linux") {
-        Write-Host "Type `'mine`' in another terminal to see background miner, and its reason for failure.
+        Write-Log "
+
+Type `'mine`' in another terminal to see background miner, and its reason for failure.
 You may also view logs with in the "logs" directory, or 'get-screen [Type]'
 If miner is not your primary miner (AMD1 or NVIDIA1), type 'screen -r [Type]'
 https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration) >> Right Click 'Open URL In Browser'
 " -ForegroundColor Darkred
     }
     elseif ($Platform -eq "windows") {
-        Write-Host "SWARM attempted to catch screen output, and is stored in 'logs' folder.
+        Write-Log "
+ 
+ SWARM attempted to catch screen output, and is stored in 'logs' folder.
  SWARM has also created a executable called 'swarm-start.bat' located in the 'bin'
  directory and folder of the miner. 'swarm-start.bat' starts miner with last known settings, 
  and window stays open, so you may view issue.
@@ -229,7 +233,7 @@ https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration) >> Ri
 }
 
 function Invoke-MinerSuccess1 {
-    Write-Host "         
+    Write-Log "         
         
                          //\\  _______
                         //  \\//~//.--|
@@ -239,7 +243,9 @@ function Invoke-MinerSuccess1 {
 Waiting 15 Seconds For Miners To Load & Restarting Background Tracking
 " -ForegroundColor Magenta
     if ($Platform -eq "linux") {
-        Write-Host "Type 'mine' in another terminal to see miner working- This is NOT a remote command!
+        Write-Log "
+
+Type 'mine' in another terminal to see miner working- This is NOT a remote command!
 
 Type 'get-screen [MinerType]' to see last 100 lines of log- This IS a remote command!
 
@@ -248,7 +254,9 @@ https://github.com/MaynardMiner/SWARM/wiki/Commands-&-Suggested-Apps For More In
 " -ForegroundColor Magenta
     }
     elseif ($Platform -eq "windows") {
-        Write-Host "There is now a new window where miner is working. The output may be different from
+        Write-Log "
+
+There is now a new window where miner is working. The output may be different from
 
 using without SWARM, as SWARM is logging miner data. Agent window will show SWARM real time
 
@@ -259,7 +267,7 @@ tracking of algorithms and GPU information. It can be used to observe issues, if
 }
 
 function Invoke-MinerSuccess2 {
-    Write-Host "         
+    Write-Log "         
          
                         //\\  _______
                        //  \\//~//.--|
@@ -271,7 +279,7 @@ Waiting 20 Seconds For Miners To Load & Restarting Background Tracking"
 }
 
 function Invoke-NoChange {
-    Write-Host "
+    Write-Log "
         
         
 Most Profitable Miners Are Running
@@ -316,7 +324,7 @@ function Get-MinerActive {
 }
 
 function Get-Logo {
-    Write-Host '
+    Write-Log '
                                                                         (                    (      *     
                                                                          )\ ) (  (      (     )\ ) (  `    
                                                                          (()/( )\))(     )\   (()/( )\))(   
@@ -325,12 +333,12 @@ function Get-Logo {
                                                                          / __|\ \((_)/ (_)_\(_) _ \|  \/  | 
                                                                          \__ \ \ \/\/ / / _ \ |   /| |\/| | 
                                                                          |___/  \_/\_/ /_/ \_\|_|_\|_|  |_| 
-                                                                                                                                                  ' -foregroundcolor "DarkRed"
-    Write-Host "                                                                                  sudo apt-get lambo" -foregroundcolor "Yellow"
-    Write-Host ""
-    Write-Host ""
-    Write-Host ""
-    Write-Host ""
+                                                                                                          ' -foregroundcolor "DarkRed"
+  Write-Log '                                                           sudo apt-get lambo
+                                                                                 
+                                                                                 
+                                                                                 
+                                                                                 ' -foregroundcolor "Yellow"
 }
 
 function Restart-Miner {
@@ -353,14 +361,13 @@ function Restart-Miner {
                 if ($null -eq $_.XProcess -or $_.XProcess.HasExited) {
                     $_.Status = "Failed"
                     $NoMiners = $true
-                    Write-Host "$($_.MinerName) Failed To Launch" -ForegroundColor Darkred
+                    Write-Log "$($_.MinerName) Failed To Launch" -ForegroundColor Darkred
                 }
                 else {
                     $_.Status = "Running"
-                    Write-Host "[$(Get-Date)]: " -foreground yellow -nonewline
-                    Write-Host "$($_.MinerName) Is Running!" -ForegroundColor Green
+                    Write-Log "$($_.MinerName) Is Running!" -ForegroundColor Green
                 }
-                Write-Host "
+                Write-Log "
            
                  //\\  _______
                 //  \\//~//.--|
@@ -386,22 +393,16 @@ function Get-MinerHashRate {
         $DayStat = "$($GetDayStat.Day)"
         $MinerPrevious = "$($DayStat | ConvertTo-Hash)"
         $ScreenHash = "$($Miner_HashRates | ConvertTo-Hash)"
-        Write-Host "[$(Get-Date)]: " -foreground yellow -nonewline
-        Write-Host "$($_.Type) is currently" -foreground green -nonewline
-        if ($_.Status -eq "Running") { $MinerStatus = Write-Host " Running: " -ForegroundColor green -nonewline }
-        if ($_.Status -eq "Failed") { $MinerStatus = Write-Host " Not Running: " -ForegroundColor darkred -nonewline } 
-        $MinerStatus
-        Write-Host "$($_.Name) current hashrate for $($_.Symbol) is" -nonewline
-        Write-Host " $ScreenHash/s" -foreground green
-        Write-Host "[$(Get-Date)]: " -foreground yellow -nonewline
-        Write-Host "$($_.Type) is currently mining on $($_.MinerPool)" -foregroundcolor Cyan
-        Write-Host "[$(Get-Date)]: " -foreground yellow -nonewline
-        Write-Host "$($_.Type) previous hashrates for $($_.Symbol) is" -nonewline
-        Write-Host " $MinerPrevious/s" -foreground yellow
-        Write-Host "[$(Get-Date)]: " -foreground yellow -nonewline
-        Write-Host "Current Profit Rating: $CurrentProfit"
-        Write-Host "[$(Get-Date)]: " -foreground yellow -nonewline
-        Write-Host "Current Daily Profit: $ScreenProfit
+        Write-Log "$($_.Type) is currently" -foreground Green -NoNewLine -Start
+        if ($_.Status -eq "Running") { Write-Log " Running: " -ForegroundColor green -nonewline }
+        if ($_.Status -eq "Failed") { Write-Log " Not Running: " -ForegroundColor darkred -nonewline } 
+        Write-Log "$($_.Name) current hashrate for $($_.Symbol) is" -nonewline
+        Write-Log " $ScreenHash/s" -foreground green -End
+        Write-Log "$($_.Type) is currently mining on $($_.MinerPool)" -foregroundcolor Cyan
+        Write-Log "$($_.Type) previous hashrates for $($_.Symbol) is" -NoNewLine -Start
+        Write-Log " $MinerPrevious/s" -foreground yellow -End
+        Write-Log "Current Profit Rating: $CurrentProfit"
+        Write-Log "Current Daily Profit: $ScreenProfit
 "
     }
 }
@@ -411,8 +412,7 @@ function Set-Countdown {
     else { $Countdown = ([math]::Round(($MinerInterval - 20) - $MinerWatch.Elapsed.TotalSeconds)) }
     if ($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false) { $CountMessage = "SWARM Mode Starts: $($Countdown) seconds" }
     else { $CountMessage = "Time Left Until Database Starts: $($Countdown) seconds" }
-    Write-Host "[$(Get-Date)]: " -foreground yellow -nonewline
-    Write-Host "$CountMessage 
+    Write-Log "$CountMessage 
 "-foreground DarkMagenta
 }
 
@@ -445,7 +445,7 @@ function Get-VM {
 }
 
 function Print-WattOMeter {
-    Write-Host "
+    Write-Log "
 
   Starting Watt-O-Meter
        __________

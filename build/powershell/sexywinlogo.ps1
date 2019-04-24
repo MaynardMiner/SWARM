@@ -11,7 +11,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 function Get-SexyWinLogo {
-Write-Host "
+Write-Log "
                                                                                      BEWARE OF THE
                                                                       ███████╗██╗    ██╗ █████╗ ██████╗ ███╗   ███╗
                                                                       ██╔════╝██║    ██║██╔══██╗██╔══██╗████╗ ████║
@@ -52,5 +52,5 @@ Write-Host "
 				  	             This Software Is Open-Source. However, 1.40% Dev Fee Was Written In This Code
 							   Dev Fee is NOT 1.40% of all Mining. 1.40% of 86400 seconds (24 hours)
 					                   It Can Take Awhile To Load At First Time Start-Up. Please Be Patient!
-" -foregroundColor "yellow"
+" -foregroundColor Yellow
 }

@@ -28,7 +28,7 @@ $AMDTypes | ForEach-Object {
     ##Get Configuration File
     $GetConfig = "$dir\config\miners\lolminer.json"
     try { $Config = Get-Content $GetConfig | ConvertFrom-Json }
-    catch { Write-Warning "Warning: No config found at $GetConfig" }
+    catch { Write-Log "Warning: No config found at $GetConfig" }
 
     ##Export would be /path/to/[SWARMVERSION]/build/export && Bleeding Edge Check##
     $ExportDir = Join-Path $dir "build\export"

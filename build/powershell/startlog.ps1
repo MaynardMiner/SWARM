@@ -32,7 +32,67 @@ function start-log {
         } 
         Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
     }
-    $Logs = Join-Path $dir "logs\miner$($Number)-active.log"
-    Start-Transcript $Logs
+    $global:logname = Join-Path $dir "logs\miner$($Number)-active.log"
     Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+}
+
+function write-log {
+    param (
+        [Parameter(Mandatory=$false, Position=0)]
+        [string]$In,
+        [Parameter(Mandatory=$false)]
+        [string]$ForeGroundColor,
+        [Parameter(Mandatory=$false)]
+        [string]$ForeGround,
+        [Parameter(Mandatory=$false)]
+        [switch]$NoNewLine,
+        [Parameter(Mandatory=$false)]
+        [switch]$Start,
+        [Parameter(Mandatory=$false)]
+        [switch]$End
+    )
+    
+    $Date = (Get-Date)
+    $File = $global:logname
+
+    if($ForeGround){$Color = $ForeGround}
+    if($ForeGroundColor){$Color = $ForeGroundColor}
+
+    if($NoNewLine) {
+        if($Start){Add-Content -Path $File -Value "[$Date]`: " -NoNewline}
+        Add-Content -Path $file -Value "$In" -NoNewline
+    } 
+    else {
+        if($End){Add-Content -Path $file -Value "$In"}
+        else{Add-Content -Path $file -Value "[$Date]`: $In"}
+    }
+
+
+    if($NoNewLine) {
+        if($ForeGroundColor -or $ForeGround) {
+            if($Start){Write-Host "[$Date]`: " -NoNewline}
+            Write-Host $In -ForeGroundColor $Color -NoNewline
+        } 
+        else {
+            if($Start){Write-Host "[$Date]`: " -NoNewline}
+            Write-Host $In -NoNewline
+        }
+    }
+    else {
+        if($ForeGroundColor -or $ForeGround) {
+            if($End){Write-Host "$In" -ForeGroundColor $Color}
+            else{
+            Write-Host "[$Date]`: " -NoNewline
+            Write-Host "$In" -ForegroundColor $Color
+            }
+        }
+        else {
+            if($End){Write-Host "$In"}
+            else{
+            Write-Host "[$Date]`: " -NoNewline
+            Write-Host "$In"
+            }
+        }
+    }
+
 }

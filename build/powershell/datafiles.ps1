@@ -220,7 +220,7 @@ function Get-Data {
         Start-Process "chmod" -ArgumentList "+x get-lambo"
         Set-Location "/"
         Set-Location $CmdDir
-    }      
+    }
    
     Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
     

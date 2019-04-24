@@ -57,7 +57,7 @@ function Start-Peekaboo {
     $cpuname = $cpud.name
     $cpucores = $cpud.NumberOfCores
     $cpuid = $cpud.DeviceID
-    Write-Host "Running Coreinfo For AES detection" -ForegroundColor Yellow
+    Write-Log "Running Coreinfo For AES detection" -ForegroundColor Yellow
     Invoke-Expression ".\build\apps\Coreinfo.exe" | Tee-Object -Variable AES | Out-Null
     $AES = $AES | Select-String "Supports AES extensions"
     if($AES){$HasAES = 1}else{$HasAES = 0}
@@ -120,10 +120,10 @@ function Start-Peekaboo {
         }
     }
       
-    Write-Host "Saying Hello To Hive"
+    Write-Log "Saying Hello To Hive"
     $GetHello = $Hello | ConvertTo-Json -Depth 3 -Compress
     $GetHello | Set-Content ".\build\txt\hello.txt"
-    Write-Host "$GetHello" -ForegroundColor Green
+    Write-Log "$GetHello" -ForegroundColor Green
 
     try {
         $response = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body ($Hello | ConvertTo-Json -Depth 3 -Compress) -ContentType 'application/json'

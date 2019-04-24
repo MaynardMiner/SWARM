@@ -8,12 +8,12 @@ $zpool_UnSorted = [PSCustomObject]@{ }
 if ($Poolname -eq $Name) {
     try { $zpool_Request = Invoke-RestMethod "http://zpool.ca/api/currencies" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }
     catch {
-        Write-Warning "SWARM contacted ($Name) for a failed API check. (Coins)"; 
+        Write-Log "SWARM contacted ($Name) for a failed API check. (Coins)"; 
         return
     }
 
     if (($zpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) { 
-        Write-Warning "SWARM contacted ($Name) but ($Name) the response was empty." 
+        Write-Log "SWARM contacted ($Name) but ($Name) the response was empty." 
         return
     }
 
@@ -40,7 +40,7 @@ if ($Poolname -eq $Name) {
                 $Zpool_Fees = [Double]$global:FeeTable.zergpool.$Zpool_Algorithm
                 $Zpool_Estimate = [Double]$Zpool_UnSorted.$_.estimate * 0.001
                 $Divisor = (1000000 * [Double]$global:DivisorTable.zergpool.$Zpool_Algorithm)    
-                try{ $Stat = Set-Stat -Name "$($Name)_$($Zpool_Symbol)_coin_profit" -Value ([double]$Zpool_Estimate / $Divisor * (1 - ($Zpool_fees / 100))) }catch{ Write-Warning "Failed To Calculate Stat For $Zpool_Symbol" }
+                try{ $Stat = Set-Stat -Name "$($Name)_$($Zpool_Symbol)_coin_profit" -Value ([double]$Zpool_Estimate / $Divisor * (1 - ($Zpool_fees / 100))) }catch{ Write-Log "Failed To Calculate Stat For $Zpool_Symbol" }
             }
         }
         $Best = $Sorted | Select-Object -First 1

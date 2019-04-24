@@ -87,7 +87,7 @@ function Start-LaunchCode {
                     switch ($MinerCurrent.DeviceCall) {
                         "claymore" { $MinerArguments = "-di $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "xmrstak" { $MinerArguments = "$($MinerCurrent.Arguments)" }
-                        "sgminer-gm" { Write-Host "Miner Has Devices"; $MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
+                        "sgminer-gm" { Write-Log "Miner Has Devices"; $MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "tdxminer" { $MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "lolminer" { $MinerArguments = "--devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "wildrig" { $MinerArguments = "$($MinerCurrent.Arguments)" }
@@ -147,8 +147,8 @@ function Start-LaunchCode {
         }
 
         switch ($MinerCurrent.DeviceCall) {
-            "gminer" { Write-Host "SOME ALGOS MAY REQUIRE 6GB+ VRAM TO WORK" -ForegroundColor Green }
-            "bminer" { Write-Host "SOME ALGOS MAY REQUIRE 6GB+ VRAM TO WORK" -ForegroundColor Green }
+            "gminer" { Write-Log "SOME ALGOS MAY REQUIRE 6GB+ VRAM TO WORK" -ForegroundColor Green }
+            "bminer" { Write-Log "SOME ALGOS MAY REQUIRE 6GB+ VRAM TO WORK" -ForegroundColor Green }
         }
 
     
@@ -161,7 +161,7 @@ function Start-LaunchCode {
                 $WorkingDirectory = Join-Path $Dir $(Split-Path $($MinerCurrent.Path))
 
                 ##Classic Logo For Windows
-                Write-Host "
+                Write-Log "
             ______________
           /.----------..-'
    -.     ||           \\
@@ -291,7 +291,7 @@ function Start-LaunchCode {
             $Daemon | Set-Content ".\build\bash\config.sh" -Force
 
             ##Classic Logo For Linux
-            Write-Host "
+            Write-Log "
          ______________
        /.----------..-'
 -.     ||           \\
@@ -331,7 +331,7 @@ function Start-LaunchCode {
             Start-Process ".\build\bash\killcx.sh" -ArgumentList $MinerCurrent.Port
 
             ##Notification To User That Miner Is Attempting To start
-            Write-Host "Starting $($MinerCurrent.Name) Mining $($MinerCurrent.Symbol) on $($MinerCurrent.Type)" -ForegroundColor Cyan
+            Write-Log "Starting $($MinerCurrent.Name) Mining $($MinerCurrent.Symbol) on $($MinerCurrent.Type)" -ForegroundColor Cyan
 
             ##FilePaths
             $Export = Join-Path $Dir "build\export"
@@ -391,7 +391,7 @@ function Start-LaunchCode {
                 #Sleep for 1 every second
                 Start-Sleep -S 1
                 #Write We Are getting ID
-                Write-Host "Getting Process ID for $($MinerCurrent.MinerName)"
+                Write-Log "Getting Process ID for $($MinerCurrent.MinerName)"
                 if (Test-Path $PIDPath) { $MinerPID = Get-Content $PIDPath | Select-Object -First 1 }
                 ##Powershell Get Process Instance
                 if ($MinerPID) { $MinerProcess = Get-Process -ID $MinerPid -ErrorAction SilentlyContinue }
@@ -405,11 +405,11 @@ function Start-LaunchCode {
         $clear = Remove-ASICPools $AIP $MinerCurrent.Port $MinerCurrent.API
         Start-Sleep -S 1
         $Commands = "addpool|$($MinerCurrent.Arguments)"
-        Write-Host "Adding New Pool"
+        Write-Log "Adding New Pool"
         $response = Get-TCP -Server $AIP -Port $MinerCurrent.Port -Timeout 5 -Message $Commands
         Start-Sleep -S 1
         $response = $null
-        Write-Host "Switching To New Pool"
+        Write-Log "Switching To New Pool"
         $Commands = "switchpool|1"
         $response = Get-TCP -Server $AIP -Port $MinerCurrent.Port -Timeout 5 -Message $Commands
         if ($response) { $MinerProcess = @{StartTime = (Get-Date); HasExited = $false }

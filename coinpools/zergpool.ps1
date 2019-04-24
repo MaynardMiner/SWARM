@@ -8,12 +8,12 @@ $Zergpool_UnSorted = [PSCustomObject]@{ }
 if ($Poolname -eq $Name) {
     try { $zergpool_Request = Invoke-RestMethod "http://zergpool.com:8080/api/currencies" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }
     catch {
-        Write-Warning "SWARM contacted ($Name) for a failed API check. (Coins)"; 
+        Write-Log "SWARM contacted ($Name) for a failed API check. (Coins)"; 
         return
     }
 
     if (($Zergpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) { 
-        Write-Warning "SWARM contacted ($Name) but ($Name) the response was empty." 
+        Write-Log "SWARM contacted ($Name) but ($Name) the response was empty." 
         return
     }
    
@@ -34,7 +34,7 @@ if ($Poolname -eq $Name) {
                 $zergpool_Fees = [Double]$global:FeeTable.zergpool.$Zergpool_Algorithm
                 $zergpool_Estimate = [Double]$Zergpool_UnSorted.$_.estimate * 0.001
                 $Divisor = (1000000 * [Double]$global:DivisorTable.zergpool.$Zergpool_Algorithm)    
-                try{ $Stat = Set-Stat -Name "$($Name)_$($Zergpool_Symbol)_coin_profit" -Value ([double]$zergpool_Estimate / $Divisor * (1 - ($zergpool_fees / 100))) }catch{ Write-Warning "Failed To Calculate Stat For $Zergpool_Symbol" }
+                try{ $Stat = Set-Stat -Name "$($Name)_$($Zergpool_Symbol)_coin_profit" -Value ([double]$zergpool_Estimate / $Divisor * (1 - ($zergpool_fees / 100))) }catch{ Write-Log "Failed To Calculate Stat For $Zergpool_Symbol" }
             }
         }
         $Best = $Sorted | Select-Object -First 1
@@ -56,7 +56,7 @@ if ($Poolname -eq $Name) {
 
         $Divisor = (1000000 * [Double]$global:DivisorTable.zergpool.$Zergpool_Algorithm)
         
-        try{ $Stat = Set-Stat -Name "$($Name)_$($Zergpool_Symbol)_coin_profit" -Value ([double]$zergpool_Estimate / $Divisor * (1 - ($zergpool_fees / 100))) }catch{ Write-Warning "Failed To Calculate Stat For $Zergpool_Symbol" }
+        try{ $Stat = Set-Stat -Name "$($Name)_$($Zergpool_Symbol)_coin_profit" -Value ([double]$zergpool_Estimate / $Divisor * (1 - ($zergpool_fees / 100))) }catch{ Write-Log "Failed To Calculate Stat For $Zergpool_Symbol" }
 
         $Pass1 = $global:Wallets.Wallet1.Keys
         $User1 = $global:Wallets.Wallet1.$Passwordcurrency1.address

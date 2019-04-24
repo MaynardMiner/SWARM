@@ -31,7 +31,7 @@ $NVIDIATypes | ForEach-Object {
     ##Get Configuration File
     $GetConfig = "$dir\config\miners\excavator.json"
     try { $Config = Get-Content $GetConfig | ConvertFrom-Json }
-    catch { Write-Warning "Warning: No config found at $GetConfig" }
+    catch { Write-Log "Warning: No config found at $GetConfig" }
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = Join-Path $dir "build\export"

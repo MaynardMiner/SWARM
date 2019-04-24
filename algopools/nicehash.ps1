@@ -5,10 +5,10 @@ $nicehash_Request = [PSCustomObject]@{ }
  
 if ($Poolname -eq $Name) {
     try { $nicehash_Request = Invoke-RestMethod "https://api.nicehash.com/api?method=simplemultialgo.info" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
-    catch { Write-Warning "SWARM contacted ($Name) but there was no response."; return }
+    catch { Write-Log "SWARM contacted ($Name) but there was no response."; return }
  
     if (($nicehash_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) { 
-        Write-Warning "SWARM contacted ($Name) but ($Name) the response was empty." 
+        Write-Log "SWARM contacted ($Name) but ($Name) the response was empty." 
         return 
     } 
   

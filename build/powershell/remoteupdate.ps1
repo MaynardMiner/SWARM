@@ -29,20 +29,20 @@ function start-update {
         #$PreviousVersions = @()
         $PreviousVersions += "SWARM.2.1.8"
 
-        Write-Host "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
-        Write-Host "Check $Location For any Previous Versions"
+        Write-Log "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
+        Write-Log "Check $Location For any Previous Versions"
 
         $PreviousVersions | foreach {
             $PreviousPath = Join-Path "$Location" "$_"
             if (Test-Path $PreviousPath) {
-                Write-Host "Detected Previous Version"
-                Write-Host "Previous Version is $($PreviousPath)"
-                Write-Host "Gathering Old Version Config And HashRates- Then Deleting"
+                Write-Log "Detected Previous Version"
+                Write-Log "Previous Version is $($PreviousPath)"
+                Write-Log "Gathering Old Version Config And HashRates- Then Deleting"
                 Start-Sleep -S 10
                 $ID = ".\build\pid\background_pid.txt"
                 if ($Platforms -eq "windows") {Start-Sleep -S 10}
                 if ($Platforms -eq "windows") {
-                    Write-Host "Stopping Previous Agent"
+                    Write-Log "Stopping Previous Agent"
                     if (Test-Path $ID) {$Agent = Get-Content $ID}
                     if ($Agent) {$BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue}
                     if ($BackGroundID.name -eq "powershell") {Stop-Process $BackGroundID | Out-Null}
@@ -80,7 +80,7 @@ function start-update {
                         $NewJson = Join-Path $NewJson_Path "$ChangeFile";
                         if ($ChangeFile -ne "new_sample.json" -and $ChangeFile -ne "sgminer-kl.json" -and $ChangeFile -ne "vega-oc.json") {
                             $JsonData = Get-Content $OldJson;
-                            Write-Host "Pulled $OldJson"
+                            Write-Log "Pulled $OldJson"
                             $Data = $JsonData | ConvertFrom-Json;
 
                             #if ($ChangeFile -eq "pool-algos.json") {
@@ -123,7 +123,7 @@ function start-update {
                             #}                            
 
                             $Data | ConvertTo-Json -Depth 3 | Set-Content $NewJson;
-                            Write-Host "Wrote To $NewJson"
+                            Write-Log "Wrote To $NewJson"
                         }
                     }
                 }
@@ -135,11 +135,11 @@ function start-update {
                     $NewName = $ChangeFile -Replace ".json", "";
                     $NameJson = Join-Path ".\config\miners" "$ChangeFile";
                     $JsonData = Get-Content $NameJson;
-                    Write-Host "Pulled $NameJson"
+                    Write-Log "Pulled $NameJson"
                     $Data = $JsonData | ConvertFrom-Json;
                     $Data | Add-Member "name" "$NewName" -ErrorAction SilentlyContinue
                     $Data | ConvertTo-Json -Depth 3 | Set-Content $NameJson;
-                    Write-Host "Wrote To $NameJson"
+                    Write-Log "Wrote To $NameJson"
                 }
                 Remove-Item $PreviousPath -recurse -force
             }

@@ -22,7 +22,8 @@ function Get-GPUCount {
     if ($Type -like "*CPU*") {$DeviceList.Add("CPU", @{})
     }
 
-    lspci | Tee-Object ".\build\txt\gpucount.txt" | OUt-Null
+    Invoke-Expression "lspci" | Tee-Object -Variable lspci | Out-null
+    $lspci | Set-Content ".\build\txt\gpucount.txt"
     $GetBus = Get-Content ".\build\txt\gpucount.txt"
     $GetBus = $GetBus | Select-String "VGA", "3D"
     $AMDCount = 0
@@ -51,7 +52,7 @@ function Get-GPUCount {
 
     $Type | Foreach {
         if ($_ -like "*CPU*") {
-            Write-Host "Getting CPU Count"
+            Write-Log "Getting CPU Count"
             for ($i = 0; $i -lt $CPUThreads; $i++) { 
                 $DeviceList.CPU.Add("$($i)", $i)
             }

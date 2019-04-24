@@ -45,7 +45,7 @@ function Start-Background {
     $BackgroundTimer.Restart()
     do {
         Start-Sleep -S 1
-        Write-Host "Getting Process ID for Background Agent"
+        write-log "Getting Process ID for Background Agent"
         $ProcessId = if (Test-Path ".\build\pid\background_pid.txt") {Get-Content ".\build\pid\background_pid.txt"}
         if ($ProcessID -ne $null) {$Process = Get-Process $ProcessId -ErrorAction SilentlyContinue}
     }until($ProcessId -ne $null -or ($BackgroundTimer.Elapsed.TotalSeconds) -ge 10)  

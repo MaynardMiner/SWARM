@@ -160,7 +160,7 @@ function Start-OC {
         if ($Miner.Type -like "*AMD*") {$AMDOC = $true}
     }
     
-    if($nvidiaOC -or $AMDOC) { Write-Host "[$(Get-Date)]: " -foreground Yellow -nonewline; Write-Host "Setting $($Miner.Type) Overclocking" -ForegroundColor Cyan }
+    if($nvidiaOC -or $AMDOC) { write-log "Setting $($Miner.Type) Overclocking" -ForegroundColor Cyan }
     
     ##Check For Pill
     $Miner | foreach {if ($Miner.ethpill) {$ETHPill = $true}}
@@ -183,8 +183,7 @@ function Start-OC {
     ##Start New Pill
     if ($ETHPill -eq $true) {
 
-        Write-Host "[$(Get-Date)]: " -foreground Yellow -nonewline
-        Write-Host "Activating ETHPill" -ForegroundColor Cyan
+        write-log "Activating ETHPill" -ForegroundColor Cyan
 
         ##Devices
         if ($Miner.Devices -eq "none") {$OCPillDevices = Get-DeviceString -TypeCount $GCount.NVIDIA.PSObject.Properties.Value.Count}
@@ -539,8 +538,7 @@ function Start-OC {
     }
 
     $OCMessage | % {
-      Write-Host "[$(Get-Date)]: " -foreground Yellow -nonewline
-      Write-Host "$($_)" -ForegroundColor Cyan
+      write-log "$($_)" -ForegroundColor Cyan
     }
 
     $OCMessage | Add-Content -Path ".\build\txt\oc-settings.txt"

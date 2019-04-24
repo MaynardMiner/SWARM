@@ -5,10 +5,10 @@ $fairpool_Request = [PSCustomObject]@{ }
  
 if ($Poolname -eq $Name) {
     try { $fairpool_Request = Invoke-RestMethod "https://fairpool.pro/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
-    catch { Write-Warning "SWARM contacted ($Name) but there was no response."; return }
+    catch { Write-Log "SWARM contacted ($Name) but there was no response."; return }
  
     if (($fairpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) { 
-        Write-Warning "SWARM contacted ($Name) but ($Name) the response was empty." 
+        Write-Log "SWARM contacted ($Name) but ($Name) the response was empty." 
         return 
     }
 
