@@ -69,6 +69,7 @@ function start-update {
                 }
                 $Jsons = @("miners", "oc", "power", "pools", "asic", "wallets")
                 $UpdateType = @("CPU", "AMD1", "NVIDIA1", "NVIDIA2", "NVIDIA3")
+                $Exclude = @("claymore_amd.json","ehssand_amd.json","gminer_amd.json","phoenix_amd.json","progminer_amd.json","stak_cpu.json","xmrig_cpu.json","enemy.json","xmrig_nv.json")
                 $Jsons | foreach {
                     $OldJson_Path = Join-Path $OldConfig "$($_)";
                     $NewJson_Path = Join-Path ".\config" "$($_)";
@@ -78,7 +79,7 @@ function start-update {
                         $ChangeFile = $_
                         $OldJson = Join-Path $OldJson_Path "$ChangeFile";
                         $NewJson = Join-Path $NewJson_Path "$ChangeFile";
-                        if ($ChangeFile -ne "new_sample.json" -and $ChangeFile -ne "sgminer-kl.json" -and $ChangeFile -ne "vega-oc.json") {
+                        if ($ChangeFile -notin $Exclude) {
                             $JsonData = Get-Content $OldJson;
                             Write-Log "Pulled $OldJson"
                             $Data = $JsonData | ConvertFrom-Json;
