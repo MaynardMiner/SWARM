@@ -3,97 +3,100 @@ $AMDTypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
     $CName = "claymore-amd"
 
-##Miner Path Information
-if ($amd.$CName.$ConfigType) { $Path = "$($amd.$CName.$ConfigType)" }
-else { $Path = "None" }
-if ($amd.$CName.uri) { $Uri = "$($amd.$CName.uri)" }
-else { $Uri = "None" }
-if ($amd.$CName.minername) { $MinerName = "$($amd.$CName.minername)" }
-else { $MinerName = "None" }
-if ($Platform -eq "linux") { $Build = "Tar" }
-elseif ($Platform -eq "windows") { $Build = "Zip" }
+    ##Miner Path Information
+    if ($amd.$CName.$ConfigType) { $Path = "$($amd.$CName.$ConfigType)" }
+    else { $Path = "None" }
+    if ($amd.$CName.uri) { $Uri = "$($amd.$CName.uri)" }
+    else { $Uri = "None" }
+    if ($amd.$CName.minername) { $MinerName = "$($amd.$CName.minername)" }
+    else { $MinerName = "None" }
+    if ($Platform -eq "linux") { $Build = "Tar" }
+    elseif ($Platform -eq "windows") { $Build = "Zip" }
 
-$User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "2000$Num"
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "2000$Num"
 
-Switch ($Num) {
-    1 { $Get_Devices = $AMDDevices1 }
-}
+    Switch ($Num) {
+        1 { $Get_Devices = $AMDDevices1 }
+    }
 
-##Log Directory
-$Log = Join-Path $dir "logs\$ConfigType.log"
+    ##Log Directory
+    $Log = Join-Path $dir "logs\$ConfigType.log"
 
-##Parse -GPUDevices
-if ($Get_Devices -ne "none") {
-    $ClayDevices1 = $Get_Devices -split ","
-    $ClayDevices1 = Switch ($ClayDevices1) { "10" { "a" }; "11" { "b" }; "12" { "c" }; "13" { "d" }; "14" { "e" }; "15" { "f" }; "16" { "g" }; "17" { "h" }; "18" { "i" }; "19" { "j" }; "20" { "k" }; default { "$_" }; }
-    $ClayDevices1 = $ClayDevices1 | ForEach-Object { $_ -replace ("$($_)", ",$($_)") }
-    $ClayDevices1 = $ClayDevices1 -join ""
-    $ClayDevices1 = $ClayDevices1.TrimStart(" ", ",")  
-    $ClayDevices1 = $ClayDevices1 -replace (",", "")
-    $Devices = $ClayDevices1
-}
-else { $Devices = $Get_Devices }
+    ##Parse -GPUDevices
+    if ($Get_Devices -ne "none") {
+        $ClayDevices1 = $Get_Devices -split ","
+        $ClayDevices1 = Switch ($ClayDevices1) { "10" { "a" }; "11" { "b" }; "12" { "c" }; "13" { "d" }; "14" { "e" }; "15" { "f" }; "16" { "g" }; "17" { "h" }; "18" { "i" }; "19" { "j" }; "20" { "k" }; default { "$_" }; }
+        $ClayDevices1 = $ClayDevices1 | ForEach-Object { $_ -replace ("$($_)", ",$($_)") }
+        $ClayDevices1 = $ClayDevices1 -join ""
+        $ClayDevices1 = $ClayDevices1.TrimStart(" ", ",")  
+        $ClayDevices1 = $ClayDevices1 -replace (",", "")
+        $Devices = $ClayDevices1
+    }
+    else { $Devices = $Get_Devices }
 
-##Get Configuration File
-$GetConfig = "$dir\config\miners\$CName.json"
-try { $Config = Get-Content $GetConfig | ConvertFrom-Json }
-catch { Write-Log "Warning: No config found at $GetConfig" }
+    ##Get Configuration File
+    $GetConfig = "$dir\config\miners\$CName.json"
+    try { $Config = Get-Content $GetConfig | ConvertFrom-Json }
+    catch { Write-Log "Warning: No config found at $GetConfig" }
 
-##Export would be /path/to/[SWARMVERSION]/build/export##
-$ExportDir = Join-Path $dir "build\export"
+    ##Export would be /path/to/[SWARMVERSION]/build/export##
+    $ExportDir = Join-Path $dir "build\export"
 
-##Prestart actions before miner launch
-$BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
-$Prestart = @()
-$PreStart += "export LD_LIBRARY_PATH=$ExportDir"
-$Config.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
+    ##Prestart actions before miner launch
+    $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
+    $Prestart = @()
+    $PreStart += "export LD_LIBRARY_PATH=$ExportDir"
+    $Config.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 
-if ($Coins -eq $true) { $Pools = $CoinPools }else { $Pools = $AlgoPools }
+    if ($Coins -eq $true) { $Pools = $CoinPools }else { $Pools = $AlgoPools }
 
-##Build Miner Settings
-$Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
-    $MinerAlgo = $_
-    $Stat = Get-Stat -Name "$($Name)_$($MinerAlgo)_hashrate"
-    $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
-        if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
-            if ($Config.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
-            if ($_.Worker) { $MinerWorker = "-eworker $($_.Worker) " }
-            else { $MinerWorker = "-epsw $($_.$Pass)$($Diff) " }
-            [PSCustomObject]@{
-                MName      = $Name
-                Coin       = $Coins
-                Delay      = $Config.$ConfigType.delay
-                Fees        = $Config.$ConfigType.fee.$($_.Algorithm)
-                Symbol     = "$($_.Symbol)"
-                MinerName  = $MinerName
-                Prestart   = $PreStart
-                Type       = $ConfigType
-                Path       = $Path
-                Devices    = $Devices
-                DeviceCall = "claymore"
-                Arguments  = "-platform 1 -mport $Port -mode 1 -allcoins 1 -allpools 1 -epool $($_.Protocol)://$($_.Host):$($_.Port) -logfile `'$Log`' -ewal $($_.$User) $MinerWorker-wd 0 -gser 2 -dbg -1 -eres 1 $($Config.$ConfigType.commands.$($_.Algorithm))"
-                HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
-                Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
-                PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
-                ocdpm      = if ($Config.$ConfigType.oc.$($_.Algorithm).dpm) { $Config.$ConfigType.oc.$($_.Algorithm).dpm }else { $OC."default_$($ConfigType)".dpm }
-                ocv        = if ($Config.$ConfigType.oc.$($_.Algorithm).v) { $Config.$ConfigType.oc.$($_.Algorithm).v }else { $OC."default_$($ConfigType)".v }
-                occore     = if ($Config.$ConfigType.oc.$($_.Algorithm).core) { $Config.$ConfigType.oc.$($_.Algorithm).core }else { $OC."default_$($ConfigType)".core }
-                ocmem      = if ($Config.$ConfigType.oc.$($_.Algorithm).mem) { $Config.$ConfigType.oc.$($_.Algorithm).mem }else { $OC."default_$($ConfigType)".memory }
-                ocmdpm     = if ($Config.$ConfigType.oc.$($_.Algorithm).mdpm) { $Config.$ConfigType.oc.$($_.Algorithm).mdpm }else { $OC."default_$($ConfigType)".mdpm }
-                ocfans     = if ($Config.$ConfigType.oc.$($_.Algorithm).fans) { $Config.$ConfigType.oc.$($_.Algorithm).fans }else { $OC."default_$($ConfigType)".fans }
-                FullName   = "$($_.Mining)"
-                API        = "claymore"
-                Port       = $Port
-                MinerPool  = "$($_.Name)"
-                Wrap       = $false
-                Wallet     = "$($_.$User)"
-                URI        = $Uri
-                Server    = "localhost"
-                BUILD      = $Build
-                Algo       = "$($_.Algorithm)"
-                Log        = "miner_generated" 
-            }            
+    ##Build Miner Settings
+    $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+        $MinerAlgo = $_
+        $Stat = Get-Stat -Name "$($Name)_$($MinerAlgo)_hashrate"
+        $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
+        if ($Check.RAW -ne "Bad") {
+            $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
+                if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
+                    if ($Config.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
+                    if ($_.Worker) { $MinerWorker = "-eworker $($_.Worker) " }
+                    else { $MinerWorker = "-epsw $($_.$Pass)$($Diff) " }
+                    [PSCustomObject]@{
+                        MName      = $Name
+                        Coin       = $Coins
+                        Delay      = $Config.$ConfigType.delay
+                        Fees       = $Config.$ConfigType.fee.$($_.Algorithm)
+                        Symbol     = "$($_.Symbol)"
+                        MinerName  = $MinerName
+                        Prestart   = $PreStart
+                        Type       = $ConfigType
+                        Path       = $Path
+                        Devices    = $Devices
+                        DeviceCall = "claymore"
+                        Arguments  = "-platform 1 -mport $Port -mode 1 -allcoins 1 -allpools 1 -epool $($_.Protocol)://$($_.Host):$($_.Port) -logfile `'$Log`' -ewal $($_.$User) $MinerWorker-wd 0 -gser 2 -dbg -1 -eres 1 $($Config.$ConfigType.commands.$($_.Algorithm))"
+                        HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
+                        Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
+                        PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
+                        ocdpm      = if ($Config.$ConfigType.oc.$($_.Algorithm).dpm) { $Config.$ConfigType.oc.$($_.Algorithm).dpm }else { $OC."default_$($ConfigType)".dpm }
+                        ocv        = if ($Config.$ConfigType.oc.$($_.Algorithm).v) { $Config.$ConfigType.oc.$($_.Algorithm).v }else { $OC."default_$($ConfigType)".v }
+                        occore     = if ($Config.$ConfigType.oc.$($_.Algorithm).core) { $Config.$ConfigType.oc.$($_.Algorithm).core }else { $OC."default_$($ConfigType)".core }
+                        ocmem      = if ($Config.$ConfigType.oc.$($_.Algorithm).mem) { $Config.$ConfigType.oc.$($_.Algorithm).mem }else { $OC."default_$($ConfigType)".memory }
+                        ocmdpm     = if ($Config.$ConfigType.oc.$($_.Algorithm).mdpm) { $Config.$ConfigType.oc.$($_.Algorithm).mdpm }else { $OC."default_$($ConfigType)".mdpm }
+                        ocfans     = if ($Config.$ConfigType.oc.$($_.Algorithm).fans) { $Config.$ConfigType.oc.$($_.Algorithm).fans }else { $OC."default_$($ConfigType)".fans }
+                        FullName   = "$($_.Mining)"
+                        API        = "claymore"
+                        Port       = $Port
+                        MinerPool  = "$($_.Name)"
+                        Wrap       = $false
+                        Wallet     = "$($_.$User)"
+                        URI        = $Uri
+                        Server     = "localhost"
+                        BUILD      = $Build
+                        Algo       = "$($_.Algorithm)"
+                        Log        = "miner_generated" 
+                    }            
+                }
+            }
         }
     }
-}
 }

@@ -47,41 +47,44 @@ $NVIDIATypes | ForEach-Object {
     $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
         $MinerAlgo = $_
         $Stat = Get-Stat -Name "$($Name)_$($MinerAlgo)_hashrate"
-        $AlgoPools | Where-Object Name -EQ "nicehash" | Where-Object Symbol -eq $MinerAlgo | ForEach-Object {
-            if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
-                if ($Config.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))" }
-                [PSCustomObject]@{
-                    MName       = $Name
-                    Delay       = $Config.$ConfigType.delay
-                    Fees        = $Config.$ConfigType.fee.$($_.Algorithm)
-                    Symbol      = "$($_.Algorithm)"
-                    MinerName   = $MinerName
-                    Prestart    = $PreStart
-                    Type        = $ConfigType
-                    Path        = $Path
-                    Devices     = $Devices
-                    NPool       = $($_.Excavator)
-                    NUser       = $($_.$User)
-                    NCommand    = if ($Config.$ConfigType.commands.$($_.Algorithm)) { $Config.$ConfigType.commands.$($_.Algorithm) | ConvertTo-Json -Compress }else { "" }
-                    Commandfile = $CommandFile
-                    DeviceCall  = "excavator"
-                    Arguments   = "-a $($Config.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -b 0.0.0.0:$Port -u $($_.$User) -p $($_.$Pass)$($Diff) $($Config.$ConfigType.commands.$($_.Algorithm))"
-                    HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
-                    Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
-                    PowerX      = [PSCustomObject]@{ $($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
-                    ocpower     = if ($Config.$ConfigType.oc.$($_.Algorithm).power) { $Config.$ConfigType.oc.$($_.Algorithm).power }else { $OC."default_$($ConfigType)".Power }
-                    occore      = if ($Config.$ConfigType.oc.$($_.Algorithm).core) { $Config.$ConfigType.oc.$($_.Algorithm).core }else { $OC."default_$($ConfigType)".core }
-                    ocmem       = if ($Config.$ConfigType.oc.$($_.Algorithm).memory) { $Config.$ConfigType.oc.$($_.Algorithm).memory }else { $OC."default_$($ConfigType)".memory }
-                    ocfans      = if ($Config.$ConfigType.oc.$($_.Algorithm).fans) { $Config.$ConfigType.oc.$($_.Algorithm).fans }else { $OC."default_$($ConfigType)".fans }
-                    MinerPool   = "$($_.Name)"
-                    FullName    = "$($_.Mining)"
-                    Port        = $Port
-                    API         = "excavator"
-                    Wrap        = $false
-                    URI         = $Uri
-                    BUILD       = $Build
-                    Algo        = "$($_.Algorithm)"
-                    NewAlgo     = ''
+        $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
+        if ($Check.RAW -ne "Bad") {
+            $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
+                if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
+                    if ($Config.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))" }
+                    [PSCustomObject]@{
+                        MName       = $Name
+                        Delay       = $Config.$ConfigType.delay
+                        Fees        = $Config.$ConfigType.fee.$($_.Algorithm)
+                        Symbol      = "$($_.Algorithm)"
+                        MinerName   = $MinerName
+                        Prestart    = $PreStart
+                        Type        = $ConfigType
+                        Path        = $Path
+                        Devices     = $Devices
+                        NPool       = $($_.Excavator)
+                        NUser       = $($_.$User)
+                        NCommand    = if ($Config.$ConfigType.commands.$($_.Algorithm)) { $Config.$ConfigType.commands.$($_.Algorithm) | ConvertTo-Json -Compress }else { "" }
+                        Commandfile = $CommandFile
+                        DeviceCall  = "excavator"
+                        Arguments   = "-a $($Config.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -b 0.0.0.0:$Port -u $($_.$User) -p $($_.$Pass)$($Diff) $($Config.$ConfigType.commands.$($_.Algorithm))"
+                        HashRates   = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
+                        Quote       = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
+                        PowerX      = [PSCustomObject]@{ $($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
+                        ocpower     = if ($Config.$ConfigType.oc.$($_.Algorithm).power) { $Config.$ConfigType.oc.$($_.Algorithm).power }else { $OC."default_$($ConfigType)".Power }
+                        occore      = if ($Config.$ConfigType.oc.$($_.Algorithm).core) { $Config.$ConfigType.oc.$($_.Algorithm).core }else { $OC."default_$($ConfigType)".core }
+                        ocmem       = if ($Config.$ConfigType.oc.$($_.Algorithm).memory) { $Config.$ConfigType.oc.$($_.Algorithm).memory }else { $OC."default_$($ConfigType)".memory }
+                        ocfans      = if ($Config.$ConfigType.oc.$($_.Algorithm).fans) { $Config.$ConfigType.oc.$($_.Algorithm).fans }else { $OC."default_$($ConfigType)".fans }
+                        MinerPool   = "$($_.Name)"
+                        FullName    = "$($_.Mining)"
+                        Port        = $Port
+                        API         = "excavator"
+                        Wrap        = $false
+                        URI         = $Uri
+                        BUILD       = $Build
+                        Algo        = "$($_.Algorithm)"
+                        NewAlgo     = ''
+                    }
                 }
             }
         }

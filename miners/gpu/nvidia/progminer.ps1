@@ -51,41 +51,44 @@ $NVIDIATypes | ForEach-Object {
     $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
         $MinerAlgo = $_
         $Stat = Get-Stat -Name "$($Name)_$($MinerAlgo)_hashrate"
-        $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
-            if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
-                [PSCustomObject]@{
-                    MName      = $Name
-                    Coin       = $Coins
-                    Delay      = $Config.$ConfigType.delay
-                    Fees       = $Config.$ConfigType.fee.$($_.Algorithm)
-                    Symbol     = "$($_.Symbol)"
-                    MinerName  = $MinerName
-                    Prestart   = $PreStart
-                    Type       = $ConfigType
-                    Path       = $Path
-                    Devices    = $Devices
-                    DeviceCall = "progminer"
-                    Arguments  = "-U -P stratum+tcp://$($_.$User)@$($_.Host):$($_.Port) --api-port -$Port $($Config.$ConfigType.commands.$($_.Algorithm))"
-                    HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
-                    Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
-                    PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
-                    ocpower    = if ($Config.$ConfigType.oc.$($_.Algorithm).power) { $Config.$ConfigType.oc.$($_.Algorithm).power }else { $OC."default_$($ConfigType)".Power }
-                    occore     = if ($Config.$ConfigType.oc.$($_.Algorithm).core) { $Config.$ConfigType.oc.$($_.Algorithm).core }else { $OC."default_$($ConfigType)".core }
-                    ocmem      = if ($Config.$ConfigType.oc.$($_.Algorithm).memory) { $Config.$ConfigType.oc.$($_.Algorithm).memory }else { $OC."default_$($ConfigType)".memory }
-                    ocfans     = if ($Config.$ConfigType.oc.$($_.Algorithm).fans) { $Config.$ConfigType.oc.$($_.Algorithm).fans }else { $OC."default_$($ConfigType)".fans }
-                    ethpill    = $Config.$ConfigType.oc.$($_.Algorithm).ethpill
-                    pilldelay  = $Config.$ConfigType.oc.$($_.Algorithm).pilldelay
-                    FullName   = "$($_.Mining)"
-                    API        = "claymore"
-                    Port       = $Port
-                    MinerPool  = "$($_.Name)"
-                    Wallet     = "$($_.$User)"
-                    URI        = $Uri
-                    Server     = "localhost"
-                    BUILD      = $Build
-                    Algo       = "$($_.Algorithm)"
-                    Log        = $Log 
-                }            
+        $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
+        if ($Check.RAW -ne "Bad") {
+            $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
+                if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
+                    [PSCustomObject]@{
+                        MName      = $Name
+                        Coin       = $Coins
+                        Delay      = $Config.$ConfigType.delay
+                        Fees       = $Config.$ConfigType.fee.$($_.Algorithm)
+                        Symbol     = "$($_.Symbol)"
+                        MinerName  = $MinerName
+                        Prestart   = $PreStart
+                        Type       = $ConfigType
+                        Path       = $Path
+                        Devices    = $Devices
+                        DeviceCall = "progminer"
+                        Arguments  = "-U -P stratum+tcp://$($_.$User)@$($_.Host):$($_.Port) --api-port -$Port $($Config.$ConfigType.commands.$($_.Algorithm))"
+                        HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
+                        Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
+                        PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
+                        ocpower    = if ($Config.$ConfigType.oc.$($_.Algorithm).power) { $Config.$ConfigType.oc.$($_.Algorithm).power }else { $OC."default_$($ConfigType)".Power }
+                        occore     = if ($Config.$ConfigType.oc.$($_.Algorithm).core) { $Config.$ConfigType.oc.$($_.Algorithm).core }else { $OC."default_$($ConfigType)".core }
+                        ocmem      = if ($Config.$ConfigType.oc.$($_.Algorithm).memory) { $Config.$ConfigType.oc.$($_.Algorithm).memory }else { $OC."default_$($ConfigType)".memory }
+                        ocfans     = if ($Config.$ConfigType.oc.$($_.Algorithm).fans) { $Config.$ConfigType.oc.$($_.Algorithm).fans }else { $OC."default_$($ConfigType)".fans }
+                        ethpill    = $Config.$ConfigType.oc.$($_.Algorithm).ethpill
+                        pilldelay  = $Config.$ConfigType.oc.$($_.Algorithm).pilldelay
+                        FullName   = "$($_.Mining)"
+                        API        = "claymore"
+                        Port       = $Port
+                        MinerPool  = "$($_.Name)"
+                        Wallet     = "$($_.$User)"
+                        URI        = $Uri
+                        Server     = "localhost"
+                        BUILD      = $Build
+                        Algo       = "$($_.Algorithm)"
+                        Log        = $Log 
+                    }            
+                }
             }
         }
     }

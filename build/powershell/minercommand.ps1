@@ -310,3 +310,52 @@ function Start-MinerReduction {
 
     $CutMiners
 }
+
+function Get-MinerHashTable {
+        Invoke-Expression ".\build\powershell\get.ps1 benchmarks all -asjson" | Tee-Object -Variable Miner_HashTable | Out-Null
+        if($Miner_HashTable -and $Miner_HashTable -ne "No Stats Found"){
+            $Miner_HashTable = $Miner_HashTable | ConvertFrom-Json
+        }else{$Miner_HashTable = $null}
+
+        if($Miner_HashTable) {
+            $TypeTable = @{};
+            if($Type -like "*NVIDIA*") {
+                $Search = Get-ChildItem ".\miners\gpu\nvidia"
+                $Search.Basename | %{
+                $TypeTable.Add("$($_)-1","NVIDIA1")
+                $TypeTable.ADD("$($_)-2","NVIDIA2")
+                $TypeTable.ADD("$($_)-3","NVIDIA3")
+                }
+            }
+
+            if($Type -like "*AMD*") {
+                $Search = Get-ChildItem ".\miners\gpu\amd"
+                $Search.Basename | %{
+                $TypeTable.Add("$($_)-1","AMD1")
+                }
+            }
+
+            if($Type -like "*CPU*") {
+                $Search = Get-ChildItem ".\miners\cpu"
+                $Search.Basename | %{
+                $TypeTable.Add("$($_)","CPU")
+                }
+            }
+
+            if($Type -eq "ASIC") {$TypeTable.Add("cgminer","ASIC")}
+
+            $Miner_HashTable | %{$_ | Add-Member "Type" $TypeTable.$($_.Miner)}
+            $NotBest = @()
+            $Miner_HashTable.Algo | %{
+                $A = $_
+                $Type | %{
+                    $T = $_
+                    $Sel = $Miner_HashTable | Where Algo -eq $A | Where Type -EQ $T
+                    $NotBest += $Sel | Sort-Object RAW -Descending | Select-Object -Skip 1
+                }
+            }
+
+            $Miner_HashTable | % {$Sel = $NotBest | Where Miner -eq $_.Miner | Where Algo -eq $_.Algo | Where Type -eq $_.Type; if($Sel){$_.Raw = "Bad"}}
+        }
+        $Miner_HashTable
+}

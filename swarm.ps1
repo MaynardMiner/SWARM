@@ -214,7 +214,6 @@ Write-log "OS = $Platform" -ForegroundColor Green
 . .\build\powershell\newsort.ps1; . .\build\powershell\screen.ps1; . .\build\powershell\commandweb.ps1;
 . .\build\powershell\response.ps1; . .\build\api\html\api.ps1; . .\build\powershell\config_file.ps1;
 . .\build\powershell\altwallet.ps1; . .\build\api\pools\include.ps1; . .\build\api\miners\include.ps1;
-. .\build\powershell\get.ps1;
 
 if ($Platform -eq "linux") { . .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1 }
 if ($Platform -eq "windows") { . .\build\powershell\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1; . .\build\powershell\environment.ps1; }
@@ -977,10 +976,9 @@ While ($true) {
         $global:divisortable.Add("zpool", @{ })
         $global:divisortable.Add("zergpool", @{ })
         $global:divisortable.Add("fairpool", @{ })
-
-        Invoke-Expression ".\build\powershell\get.ps1 benchmarks all -asjson" | Tee-Object -Variable Miner_HashTable | Out-Null
-        if($Miner_HashTable -and $Miner_HashTable -ne "No Stats Found"){$Miner_HashTable = $Miner_HashTable | ConvertFrom-Json}
-
+        
+        ##Get HashTable For Pre-Sorting
+        $global:Miner_HashTable = Get-MinerHashTable
 
         ##Get Algorithm Pools
         write-Log "Checking Algo Pools." -Foregroundcolor yellow;

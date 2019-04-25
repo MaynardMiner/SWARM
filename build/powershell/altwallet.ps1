@@ -67,7 +67,7 @@ else{$PoolName | %{$NewWallet3 += $_}}
 
 $C = $true
 if($Coin){$C = $false}
-if($C -eq $false){Write-Host "Coin Parameter Specified, disabling All alternative wallets." -ForegroundColor Yellow}
+if($C -eq $false){write-log "Coin Parameter Specified, disabling All alternative wallets." -ForegroundColor Yellow}
 
 if($AltWallet1 -and $C -eq $true){$global:Wallets | Add-Member "AltWallet1" @{$AltPassword1 = @{address = $AltWallet1; Pools = $NewWallet1}}}
 elseif($AltWallet_Config.AltWallet1 -and $C -eq $true){$global:Wallets | Add-Member "AltWallet1" $AltWallet_Config.AltWallet1}
