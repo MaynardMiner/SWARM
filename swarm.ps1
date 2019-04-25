@@ -1473,6 +1473,7 @@ While ($true) {
             write-Log "SWARM is Benchmarking Miners." -Foreground Yellow;
             Print-Benchmarking
             $MinerInterval = $Benchmark
+            $MinerStatInt = 1
         }
         else {
             if ($SWARM_Mode -eq "Yes") {
@@ -1481,8 +1482,9 @@ While ($true) {
                 $SwitchTime = Get-Date
                 write-Log "SWARM Mode Start Time is $SwitchTime" -ForegroundColor Cyan;
                 $MinerInterval = 10000000;
+                $MinerStatInt = $StatsInterval
             }
-            else { $MinerInterval = $Interval }
+            else { $MinerInterval = $Interval; $MinerStatInt = $StatsInterval }
         }
 
         ##Get Shares
@@ -1741,7 +1743,7 @@ While ($true) {
                     $_.HashRate = 0
                     $_.WasBenchmarked = $False
                     $WasActive = [math]::Round(((Get-Date) - $_.XProcess.StartTime).TotalSeconds)
-                    if ($WasActive -ge $StatsInterval) {
+                    if ($WasActive -ge $MinerStatInt) {
                         write-Log "$($_.Name) $($_.Symbol) Was Active for $WasActive Seconds"
                         write-Log "Attempting to record hashrate for $($_.Name) $($_.Symbol)" -foregroundcolor "Cyan"
                         for ($i = 0; $i -lt 4; $i++) {
