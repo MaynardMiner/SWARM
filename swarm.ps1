@@ -978,6 +978,7 @@ While ($true) {
         $global:divisortable.Add("fairpool", @{ })
         
         ##Get HashTable For Pre-Sorting
+        Write-Log "Loading Miner Hashrates" -ForegroundColor Yellow
         $global:Miner_HashTable = Get-MinerHashTable
 
         ##Get Algorithm Pools

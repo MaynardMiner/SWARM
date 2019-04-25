@@ -28,12 +28,43 @@ if ($Poolname -eq $Name) {
     $zpoolAlgos += $Algorithm
     $zpoolAlgos += $ASIC_ALGO
 
-    $zpoolAlgos | ForEach-Object {
-        $Selected = if ($Bad_pools.$_ -notcontains $Name) { $_ }
-        $Sorted = $zpool_Request.PSObject.Properties.Value | Where-Object Algo -eq $Selected | Where-Object Algo -in $global:FeeTable.zpool.keys | Where-Object Algo -in $global:divisortable.zpool.Keys | Where-Object estimate -ne "0.00000" | Where-Object hashrate -ne 0 | Sort-Object Price -Descending
-        if($Stat_All -eq "Yes") {
-            $NotBest = $Sorted | Select-Object -Skip 1
+    $Algos = $zpoolAlgos | ForEach-Object{if($Bad_pools.$_ -notcontains $Name){$_}}
+    $zpool_Request.PSObject.Properties.Value | %{$_.Estimate = [Decimal]$_.Estimate}
+
+    $Algos | ForEach-Object {
+    
+        $Selected = $_
+
+        $Best = $zpool_Request.PSObject.Properties.Value          | 
+            Where-Object Algo -eq $Selected                       | 
+            Where-Object Algo -in $global:FeeTable.zpool.keys     | 
+            Where-Object Algo -in $global:divisortable.zpool.Keys | 
+            Where-Object estimate -gt 0                           | 
+            Where-Object hashrate -ne 0                           | 
+            Sort-Object Price -Descending                         |
+            Select-Object -First 1
+
+        if ($Best -ne $null) { $zpool_Sorted | Add-Member $Best.sym $Best -Force }
+    }
+
+
+
+    if($Stat_All -eq "Yes") {
+
+        $Algos | ForEach-Object {
+
+            $NotBest = $zpool_Request.PSObject.Properties.Value       | 
+                Where-Object Algo -eq $Selected                       | 
+                Where-Object Algo -in $global:FeeTable.zpool.keys     | 
+                Where-Object Algo -in $global:divisortable.zpool.Keys | 
+                Where-Object estimate -gt 0                           | 
+                Where-Object hashrate -ne 0                           | 
+                Sort-Object Price -Descending                         |
+                Select-Object -Skip 1
+
             if ($NotBest -ne $null) { $NotBest | ForEach-Object { $zpool_UnSorted | Add-Member $_.sym $_ -Force } }
+
+
             $zpool_UnSorted | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | ForEach-Object {
                 $zpool_Algorithm = $zpool_UnSorted.$_.algo.ToLower()
                 $zpool_Symbol = $zpool_UnSorted.$_.sym.ToUpper()
@@ -45,8 +76,6 @@ if ($Poolname -eq $Name) {
                 try{ $Stat = Set-Stat -Name "$($Name)_$($zpool_Symbol)_coin_profit" -Value ([Double]$Cut / $Divisor) }catch{ Write-Log "Failed To Calculate Stat For $zpool_Symbol" }
             }
         }
-        $Best = $Sorted | Select-Object -First 1
-        if ($Best -ne $null) { $zpool_Sorted | Add-Member $Best.sym $Best -Force }
     }
 
     $zpool_Sorted | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | ForEach-Object {

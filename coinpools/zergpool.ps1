@@ -22,12 +22,43 @@ if ($Poolname -eq $Name) {
     $ZergAlgos += $Algorithm
     $ZergAlgos += $ASIC_ALGO
 
-    $ZergAlgos | ForEach-Object {
-        $Selected = if ($Bad_pools.$_ -notcontains $Name) { $_ }
-        $Sorted = $zergpool_Request.PSObject.Properties.Value | Where-Object Algo -eq $Selected | Where-Object Algo -in $global:FeeTable.zergpool.keys | Where-Object Algo -in $global:divisortable.zergpool.Keys | Where-Object noautotrade -eq "0" | Where-Object estimate -ne "0.00000" | Where-Object hashrate -ne 0 | Sort-Object Price -Descending
-        if($Stat_All -eq "Yes") {
-            $NotBest = $Sorted | Select-Object -Skip 1
+    $Algos= $ZergAlgos | ForEach-Object{if($Bad_pools.$_ -notcontains $Name){$_}}
+    $zergpool_Request.PSObject.Properties.Value | %{$_.Estimate = [Decimal]$_.Estimate}
+
+    $Algos | ForEach-Object {
+
+        $Selected = $_
+
+        $Best = $zergpool_Request.PSObject.Properties.Value          | 
+            Where-Object Algo -eq $Selected                          | 
+            Where-Object Algo -in $global:FeeTable.zergpool.keys     | 
+            Where-Object Algo -in $global:divisortable.zergpool.Keys | 
+            Where-Object noautotrade -eq "0"                         | 
+            Where-Object estimate -gt 0                              | 
+            Where-Object hashrate -ne 0                              | 
+            Sort-Object Price -Descending                            |
+            Select -First 1
+
+        if ($Best -ne $null) { $Zergpool_Sorted | Add-Member $Best.sym $Best -Force }
+    }
+
+    if($Stat_All -eq "Yes") {
+        $Algos | ForEach-Object {
+
+            $Selected = $_
+
+            $NotBest = $zergpool_Request.PSObject.Properties.Value   | 
+            Where-Object Algo -eq $Selected                          | 
+            Where-Object Algo -in $global:FeeTable.zergpool.keys     | 
+            Where-Object Algo -in $global:divisortable.zergpool.Keys | 
+            Where-Object noautotrade -eq "0"                         | 
+            Where-Object estimate -gt 0                              | 
+            Where-Object hashrate -ne 0                              | 
+            Sort-Object Price -Descending                            |
+            Select -First 1
+
             if ($NotBest -ne $null) { $NotBest | ForEach-Object { $Zergpool_UnSorted | Add-Member $_.sym $_ -Force } }
+
             $Zergpool_UnSorted | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | ForEach-Object {
                 $Zergpool_Algorithm = $Zergpool_UnSorted.$_.algo.ToLower()
                 $Zergpool_Symbol = $Zergpool_UnSorted.$_.sym.ToUpper()
@@ -37,9 +68,6 @@ if ($Poolname -eq $Name) {
                 try{ $Stat = Set-Stat -Name "$($Name)_$($Zergpool_Symbol)_coin_profit" -Value ([double]$zergpool_Estimate / $Divisor * (1 - ($zergpool_fees / 100))) }catch{ Write-Log "Failed To Calculate Stat For $Zergpool_Symbol" }
             }
         }
-        $Best = $Sorted | Select-Object -First 1
-        if ($Best -ne $null) { $Zergpool_Sorted | Add-Member $Best.sym $Best -Force }
-
     }
 
     $Zergpool_Sorted | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | ForEach-Object {

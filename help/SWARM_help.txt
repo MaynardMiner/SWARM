@@ -198,20 +198,20 @@ Argument            Options             Explanation
 				    work in Windows- Windows users run get update command.
 
 -Stat_Algo         [Live,		This will allow you to factor period average smoothing. 
-        	    Minute_5,		By default everything is live pricing. This will allow you to
+        	    Minute_5,		By default everything is day pricing. This will allow you to
 		    Minute_15,		smooth out stat fluctuations if you so desired into the period 
                     Hour                specified. Essentially it will allow you choose whether or not 
 		    Hour4,              you want to base switching on price averages, or live...And if
 		    Day                 you choose price averages, what average to base it on. Default
-                    Custom              is live. If using -Custom_Periods, this must be set to Custom.
+                    Custom              is day. If using -Custom_Periods, this must be set to Custom.
 
 -Stat_Coin         [Live,		This will allow you to factor period average smoothing. 
-        	    Minute_5,		By default everything is live pricing. This will allow you to
+        	    Minute_5,		By default everything is day pricing. This will allow you to
 		    Minute_15,		smooth out stat fluctuations if you so desired into the period 
                     Hour                specified. Essentially it will allow you choose whether or not 
 		    Hour4,              you want to base switching on price averages, or live...And if
 		    Day                 you choose price averages, what average to base it on. Default
-                    Custom              is live. If using -Custom_Periods, this must be set to Custom.
+                    Custom              is day. If using -Custom_Periods, this must be set to Custom.
 					
 
 -CPUOnly	   [Yes or No]		For CPU only miners- This lets HiveOS know whether or not to

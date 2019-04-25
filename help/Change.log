@@ -2574,3 +2574,50 @@ API overhaul:
   -ttminer updated
   -wildrig Updated
   -teamredminer updated
+
+    2.1.8
+
+  Bug Fixes:
+    -Resored zpool Auto_Coin
+    -Fixed timeout looping issue
+
+  Default Changes:
+    -All miner files that has "_" in its name was changed to "-"
+    -This resovles 'get-benchmark' issues.
+    -The miner.json in config folder will not be tranferred on update.
+        -You may have to fill out that file.
+    -Stat_Algo and -Stat_Coin defaults are now "Day"
+
+  New Features!
+
+   -Miners are "Pre-sorted"
+        -Instead of pulling all the miner files, and creating a miner
+         combination for every coin / algo, miners hashrates are compared
+         first. This means only the miners that have the highest hashrates
+         will be added to the initial database, reducing load times.
+        -This new method reduces the time it takes to load miners / database
+                 On Pentium 2 thread CPU:
+                 -With one algo pool - ~20 seconds
+                 -With one coin pool - ~1 minute
+                 -With two coin pools - ~2 minutes
+                 -With two coin pools and -Stat_All "Yes": ~3 minutes.
+                 -All pool combos and -Stat_All "Yes": ~4-5 minutes.
+        -This makes -Stat_All Yes on lower end CPU's feasable.
+        -Stat_All Yes means EVERY coin statistic is stored (that are gpu mineable)
+         when pool is qued for data, not just the ones that are most profitable.
+         This allows for better historical data for ``-Stat_Algo``
+        -SWARM always only uses a single CPU thread.
+
+   -SWARM log is greatly improved.
+      -transcript method was removed.
+      -SWARM now logs screen output in the same manner it was displayed.
+      -SWARM will store verbose warning/error output that was created
+       at the end of each loop, and and startup.
+      -get screen miner output is much cleaner.
+
+    -Cleaned up some more older miner files.
+    -Some old .ps1 files were removed.
+    -Cleaned some of the codebase (Spring Cleaning)
+    
+    Note: There is further I can do to reduce load times for
+    Database sorting, I am working on it.
