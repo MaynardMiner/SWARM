@@ -99,9 +99,9 @@ param(
     [Parameter(Mandatory = $false)]
     [int]$CPUThreads = 1, ## number of cpu threads used
     [Parameter(Mandatory = $false)]
-    [string]$Stat_Coin = "Live", #Timeframe used for coin stats
+    [string]$Stat_Coin = "Day", #Timeframe used for coin stats
     [Parameter(Mandatory = $false)]
-    [string]$Stat_Algo = "Live", #Timeframe used for algo stats
+    [string]$Stat_Algo = "Day", #Timeframe used for algo stats
     [Parameter(Mandatory = $false)]
     [string]$CPUOnly = "No", #Let SWARM know you are only using CPU (send different stats to HiveOS)
     [Parameter(Mandatory = $false)]
@@ -302,7 +302,7 @@ $FileClear += ".\build\txt\bestminers.txt"
 $FileClear | ForEach-Object { if (Test-Path $_) { Remove-Item $_ -Force } }
 
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
-$Debug = $true
+$Debug = $false
 
 ## Convert Arguments Into Hash Table
 if ($Debug -ne $true) {
@@ -978,6 +978,7 @@ While ($true) {
         $global:divisortable.Add("fairpool", @{ })
         
         ##Get HashTable For Pre-Sorting
+        Write-Log "Loading Miner Hashrates" -ForegroundColor Yellow
         $global:Miner_HashTable = Get-MinerHashTable
 
         ##Get Algorithm Pools
