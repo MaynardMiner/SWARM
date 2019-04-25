@@ -1048,7 +1048,7 @@ While ($true) {
                         if (-not (Test-Path $AlgoMiner.Path)) {
                             write-Log "Miner Not Found- Downloading" -ForegroundColor Yellow
                             if ($DLName.Count -lt 3) {
-                                Expand-WebRequest -URI $AlgoMiner.URI -BuildPath $AlgoMiner.BUILD -Path (Split-Path $AlgoMiner.Path) -MineName (Split-Path $AlgoMiner.Path -Leaf) -MineType $AlgoMiner.Type
+                                Expand-WebRequest $AlgoMiner.URI $ALgoMiner.Path
                                 Start-Sleep -S 1
                                 $Download = $true
                                 if (-not (Test-Path $ALgoMiner.Path)) {
@@ -1072,11 +1072,11 @@ While ($true) {
                 ## Print Warnings
                 if ($DownloadNote) { $DownloadNote | % { write-Log "$($_)" -ForegroundColor Red } }
                 $DownloadNote = $null
-            } 
+            }
    
 
             ## Linux Bug- Restart Loop if miners were downloaded. If not, miners were skipped over
-            if ($Download -eq $true) { continue }
+            if ($Download -eq $true -and $CoinPools.Count -eq 0) { continue }
         }
 
         if ($CoinPools.Count -gt 0) {
@@ -1099,7 +1099,7 @@ While ($true) {
                         if (-not (Test-Path $CoinMiner.Path)) {
                             write-Log "Miner Not Found- Downloading" -ForegroundColor Yellow
                             if ($DLName.Count -lt 3) {
-                                Expand-WebRequest -URI $CoinMiner.URI -BuildPath $CoinMiner.BUILD -Path (Split-Path $CoinMiner.Path) -MineName (Split-Path $CoinMiner.Path -Leaf) -MineType $CoinMiner.Type
+                                Expand-WebRequest $CoinMiner.URI $CoinMiner.Path
                                 $Download = $true
                                 if (-not (Test-Path $CoinMiner.Path)) {
                                     if (-not (Test-Path ".\timeout\download_block")) { New-Item -Name "download_block" -Path ".\timeout" -ItemType "directory" | OUt-Null }
@@ -1154,18 +1154,6 @@ While ($true) {
             Get-Volume
         }
 
-
-        ## All miners had pool quote printed for their respective algorithm. This adjusts them with the Threshold increase.
-        ## This is done here, so it distributes it to all miners of that particular algorithm, not the just active miner.
-        $BestActiveMiners | ForEach-Object { $Miners | Where-Object Algo -EQ $_.Algo | Where-Object Type -EQ $_.Type | ForEach-Object {
-                if ($_.Quote -NE $Null) {
-                    if ($Switch_Threshold) {
-                        $_.Quote = [Double]$_.Quote * (1 + ($Switch_Threshold / 100)); 
-                    }
-                }
-            }
-        }
-
         ## Sort Miners- There are currently up to three for each algorithm. This process sorts them down to best 1.
         ## If Miner has no hashrate- The quote returned was zero, so it needs to be benchmarked. This rebuilds a new
         ## Miner array, favoring miners that need to benchmarked first, then miners that had the highest quote. It
@@ -1195,17 +1183,22 @@ While ($true) {
         $global:Pool_Hashrates = @{ }
 
         ##Now that we have narrowed down to our best miners - we adjust them for switching threshold.
-        $BestActiveMiners | ForEach-Object { $Miners | Where-Object Path -EQ $_.path | Where-Object Arguments -EQ $_.Arguments | ForEach-Object {
-                if ($_.Profit -ne $NULL) {
+        $BestActiveMiners | ForEach-Object {
+                $Sel = $_
+                $SWMiner = $Miners | Where-Object Path -EQ $Sel.path | Where-Object Arguments -EQ $Sel.Arguments | Where-Object Type -EQ $Sel.Type 
+                if ($SWMiner -and $SWMiner.Profit -ne $NULL) {
                     if ($Switch_Threshold) {
-                        write-Log "Switching_Threshold changes $($_.Name) $($_.Algo) base factored price from $(($_.Profit * $Rates.$Currency).ToString("N2"))" -ForegroundColor Cyan -NoNewLine -Start; 
-                        if ($_.Profit -GT 0) { $_.Profit = [Double]$_.Profit * (1 + ($Switch_Threshold / 100)) }
-                        else { $_.Profit = [Double]$_.Profit * (1 + ($Switch_Threshold / -100)) };  
-                        write-Log " to $(($_.Profit * $Rates.$Currency).ToString("N2"))" -ForegroundColor Cyan -End
+                        write-Log "Switching_Threshold changes $($SWMiner.Name) $($SWMiner.Algo) base factored price from $(($SWMiner.Profit * $Rates.$Currency).ToString("N2"))" -ForegroundColor Cyan -NoNewLine -Start; 
+                        if ($SWMiner.Profit -GT 0) {
+                            $($Miners | Where Path -eq $SWMiner.path | Where Arguments -eq $SWMiner.Arguments | Where Type -eq $SWMINer.Type).Profit = [Decimal]$SWMiner.Profit * (1 + ($Switch_Threshold / 100)) 
+                        }
+                        else {
+                            $($Miners | Where Path -eq $SWMiner.path | Where Arguments -eq $SWMiner.Arguments | Where Type -eq $SWMINer.Type).Profit = [Decimal]$_.Profit * (1 + ($Switch_Threshold / -100))
+                        }  
+                        write-Log " to $(($SWMiner.Profit * $Rates.$Currency).ToString("N2"))" -ForegroundColor Cyan -End
                     }
                 }
             }
-        }
 
         ##Okay so now we have all the new applied values to each profit, and adjustments. Now we need to find best miners to use.
         ##First we rule out miners that are above threshold
@@ -1322,7 +1315,7 @@ While ($true) {
             $SelectedMiner = $BestMiners_Combo | Where-Object Type -EQ $_.Type | Where-Object Path -EQ $_.Path | Where-Object Arguments -EQ $_.Arguments
             $_.Profit = if ($SelectedMiner.Profit) { $SelectedMiner.Profit -as [decimal] }else { "bench" }
             $_.Power = $([Decimal]$($SelectedMiner.Power * 24) / 1000 * $WattEX)
-            $_.Fiat_Day = if ($SelectedMiner.Profit) { ($SelectedMiner.Profit * $Rates.$Currency).ToString("N2") }else { "bench" }
+            $_.Fiat_Day = if ($SelectedMiner.Pool_Estimate) { ($SelectedMiner.Pool_Estimate * $Rates.$Currency).ToString("N2") }else { "bench" }
             if ($SelectedMiner.Profit_Unbiased) { $_.Profit_Day = $(Set-Stat -Name "daily_$($_.Type)_profit" -Value ([double]$($SelectedMiner.Profit_Unbiased))).Day }else { $_.Profit_Day = "bench" }
         }
         
