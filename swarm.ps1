@@ -856,6 +856,9 @@ While ($true) {
         $Stat_All = $SWARMParams.Stat_All; $Custom_Periods = $SWARMParams.Custom_Periods;
         $Volume = $SWARMParams.Volume
 
+        ## Check to see if wallet is present:
+        if(-not $Wallet1){write-Log "missing wallet1 argument, exiting in 5 seconds" -ForeGroundColor Red, Start-Sleep -S 5; exit}
+
         ## Make it so that if Farm_Hash Is Not Specified, HiveOS functions are removed.
         ## In case user forgets to change -HiveOS to "No"
         if (-not $Farm_Hash) { $HiveOS = "No" }
