@@ -234,11 +234,12 @@ function start-minersorting {
             }
             else { $WattCalc3 = 0 }
             if ($global:Pool_Hashrates.$_.$MinerPool.Percent -gt 0) {$Hash_Percent = $global:Pool_Hashrates.$_.$MinerPool.Percent * 100}
+            else{$Hash_Percent = 0}
             $Miner_HashRates | Add-Member $_ ([Double]$Miner.HashRates.$_)
             $Miner_PowerX | Add-Member $_ ([Double]$Miner.PowerX.$_)
-            $Miner_Profits | Add-Member $_  (([Decimal]($Miner.Quote) * (1 - ($Miner.fees / 100))) * (1 - $Hash_Percent/100))
-            $Miner_Unbias | Add-Member $_  ([Decimal]($Miner.Quote - $WattCalc3) * (1 - ($Miner.fees / 100)))
-            $Miner_Pool_Estimates | Add-Member $_ ([Decimal]($Miner.Quote) * (1 - ($Miner.fees / 100)))
+            $Miner_Profits | Add-Member $_  ([Double](($Miner.Quote * ((1 - $Hash_Percent/100) + (1 - ($Miner.fees / 100)))) - $WattCalc3))
+            $Miner_Unbias | Add-Member $_  ([Double](($Miner.Quote * (1 - ($Miner.fees / 100))) - $WattCalc3))
+            $Miner_Pool_Estimates | Add-Member $_ ([double]($Miner.Quote) * (1 - ($Miner.fees / 100)))
             $Miner_Vol | Add-Member $_ $( if($global:Pool_Hashrates.$_.$MinerPool.Percent -gt 0){[Double]$global:Pool_Hashrates.$_.$MinerPool.Percent * 100} else { 0 } )
         }
             
