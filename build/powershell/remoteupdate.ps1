@@ -26,7 +26,7 @@ function start-update {
     if ($Platforms -eq "linux" -and $Update -eq "No") {$StartUpdate = $false}
 
     if ($StartUpdate -eq $true) {
-        #$PreviousVersions = @()
+        $PreviousVersions = @()
         $PreviousVersions += "SWARM.2.1.8"
         $PreviousVersions += "SWARM.2.1.9"
 
