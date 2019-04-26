@@ -9,8 +9,6 @@ $NVIDIATypes | ForEach-Object {
     else { $Uri = "None" }
     if ($nvidia.'cc-mtp'.minername) { $MinerName = "$($nvidia.'cc-mtp'.minername)" }
     else { $MinerName = "None" }
-    if ($Platform -eq "linux") { $Build = "Tar" }
-    elseif ($Platform -eq "windows") { $Build = "Zip" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "cc-mtp-$Num"; $Port = "5400$Num";
 
@@ -81,8 +79,7 @@ $NVIDIATypes | ForEach-Object {
                         Wallet     = "$($_.$User)"
                         URI        = $Uri
                         Server     = "localhost"
-                        BUILD      = $Build
-                        Algo       = "$($_.Algorithm)"
+                        Algo       = "$($_.Algorithm)"                         
                         Log        = $Log 
                     }
                 }

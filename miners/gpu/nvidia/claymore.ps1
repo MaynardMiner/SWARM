@@ -6,7 +6,6 @@ $NVIDIATypes | ForEach-Object {
     if ($nvidia.claymore.$ConfigType) { $Path = "$($nvidia.claymore.$ConfigType)" } else { $Path = "None" }
     if ($nvidia.claymore.uri) { $Uri = "$($nvidia.claymore.uri)" } else { $Uri = "None" }
     if ($nvidia.claymore.minername) { $MinerName = "$($nvidia.claymore.minername)" } else { $MinerName = "None" }
-    if ($Platform -eq "linux") { $Build = "Tar" } elseif ($Platform -eq "windows") { $Build = "Zip" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "claymore-$Num"; $Port = "4200$Num"
 
@@ -87,9 +86,8 @@ $NVIDIATypes | ForEach-Object {
                         Wallet     = "$($_.$User)"
                         URI        = $Uri
                         Server     = "localhost"
-                        BUILD      = $Build
                         Algo       = "$($_.Algorithm)"
-                        Log        = "miner_generated" 
+                        Log        = "miner_generated"                                      
                     }            
                 }
             }

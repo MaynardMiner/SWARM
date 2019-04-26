@@ -10,8 +10,6 @@ $CPUTypes | ForEach-Object {
     else { $Uri = "None" }
     if ($cpu.$CName.minername) { $MinerName = "$($cpu.$CName.minername)" }
     else { $MinerName = "None" }
-    if ($Platform -eq "linux") { $Build = "Tar" }
-    elseif ($Platform -eq "windows") { $Build = "Zip" }
 
     $Name = "$CName";
 
@@ -70,8 +68,7 @@ $CPUTypes | ForEach-Object {
                         API        = "xmrig-opt"
                         Wallet     = "$($_.$User)"
                         URI        = $Uri
-                        Server     = "localhost"
-                        BUILD      = $Build
+                        Server     = "localhost"                        
                         Algo       = "$($_.Algorithm)"
                         Log        = $Log 
                     }            

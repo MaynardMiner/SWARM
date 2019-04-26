@@ -9,8 +9,6 @@ $AMDTypes | ForEach-Object {
     else { $Uri = "None" }
     if ($amd.srbminer.minername) { $MinerName = "$($amd.srbminer.minername)" }
     else { $MinerName = "None" }
-    if ($Platform -eq "linux") { $Build = "Tar" }
-    elseif ($Platform -eq "windows") { $Build = "Zip" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "srbminer-$Num"; $Port = "3300$Num"
 
@@ -79,8 +77,7 @@ $AMDTypes | ForEach-Object {
                         Wallet     = "$($_.$User)"
                         URI        = $Uri
                         Server     = "localhost"
-                        BUILD      = $Build
-                        Algo       = "$($_.Algorithm)"
+                        Algo       = "$($_.Algorithm)"                         
                         Log        = "miner_generated"
                     }
                 }

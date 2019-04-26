@@ -23,7 +23,7 @@ $ASIC_ALGO | ForEach-Object {
                 Platform   = $Platform
                 Symbol     = "$($_.Symbol)"
                 MinerName  = $MinerName
-                Type       = $ConfigType 
+                Type       = $ConfigType
                 Path       = $Path
                 Devices    = $Devices
                 DeviceCall = "cgminer"
@@ -36,7 +36,6 @@ $ASIC_ALGO | ForEach-Object {
                 FullName   = "$($_.Mining)"
                 Port       = 4028
                 API        = "cgminer"
-                Wrap       = $false
                 URI        = $Uri
                 Server     = $ASIC_IP
                 BUILD      = $Build

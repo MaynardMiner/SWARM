@@ -55,18 +55,19 @@ if ($Poolname -eq $Name) {
             Where-Object estimate -gt 0 | 
             Where-Object hashrate -ne 0 | 
             Sort-Object Price -Descending |
-            Select -First 1
+            Select-Object -skip 1
 
             if ($NotBest -ne $null) { $NotBest | ForEach-Object { $Zergpool_UnSorted | Add-Member $_.sym $_ -Force } }
 
-            $Zergpool_UnSorted | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | ForEach-Object {
-                $Zergpool_Algorithm = $Zergpool_UnSorted.$_.algo.ToLower()
-                $Zergpool_Symbol = $Zergpool_UnSorted.$_.sym.ToUpper()
-                $zergpool_Fees = [Double]$global:FeeTable.zergpool.$Zergpool_Algorithm
-                $zergpool_Estimate = [Double]$Zergpool_UnSorted.$_.estimate * 0.001
-                $Divisor = (1000000 * [Double]$global:DivisorTable.zergpool.$Zergpool_Algorithm)    
-                try { $Stat = Set-Stat -Name "$($Name)_$($Zergpool_Symbol)_coin_profit" -Value ([double]$zergpool_Estimate / $Divisor * (1 - ($zergpool_fees / 100))) }catch { Write-Log "Failed To Calculate Stat For $Zergpool_Symbol" }
-            }
+        }
+
+        $Zergpool_UnSorted | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | ForEach-Object {
+            $Zergpool_Algorithm = $Zergpool_UnSorted.$_.algo.ToLower()
+            $Zergpool_Symbol = $Zergpool_UnSorted.$_.sym.ToUpper()
+            $zergpool_Fees = [Double]$global:FeeTable.zergpool.$Zergpool_Algorithm
+            $zergpool_Estimate = [Double]$Zergpool_UnSorted.$_.estimate * 0.001
+            $Divisor = (1000000 * [Double]$global:DivisorTable.zergpool.$Zergpool_Algorithm)    
+            try { $Stat = Set-Stat -Name "$($Name)_$($Zergpool_Symbol)_coin_profit" -Value ([double]$zergpool_Estimate / $Divisor * (1 - ($zergpool_fees / 100))) }catch { Write-Log "Failed To Calculate Stat For $Zergpool_Symbol" }
         }
     }
 

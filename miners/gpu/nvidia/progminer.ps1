@@ -9,8 +9,6 @@ $NVIDIATypes | ForEach-Object {
     else { $Uri = "None" }
     if ($NVIDIA.progminer.minername) { $MinerName = "$($NVIDIA.progminer.minername)" }
     else { $MinerName = "None" }
-    if ($Platform -eq "linux") { $Build = "Tar" }
-    elseif ($Platform -eq "windows") { $Build = "Zip" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "progminer-$Num"; $Port = "4800$Num"
 
@@ -84,8 +82,7 @@ $NVIDIATypes | ForEach-Object {
                         Wallet     = "$($_.$User)"
                         URI        = $Uri
                         Server     = "localhost"
-                        BUILD      = $Build
-                        Algo       = "$($_.Algorithm)"
+                        Algo       = "$($_.Algorithm)"                         
                         Log        = $Log 
                     }            
                 }

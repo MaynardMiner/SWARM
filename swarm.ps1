@@ -1199,6 +1199,8 @@ While ($true) {
                     }
                 }
             }
+        
+        $SWMiner = $Null
 
         ##Okay so now we have all the new applied values to each profit, and adjustments. Now we need to find best miners to use.
         ##First we rule out miners that are above threshold
@@ -1306,9 +1308,6 @@ While ($true) {
             if ($BestMiners_Combo | Where-Object Type -EQ $_.Type | Where-Object Path -EQ $_.Path | Where-Object Arguments -EQ $_.Arguments) { $_.BestMiner = $true; $BestActiveMiners += $_ }
             else { $_.BestMiner = $false }
         }
-
-        ## Daily Profit Table
-        $DailyProfit = @{ }; $Type | % { $DailyProfit.Add("$($_)", $null) }
 
         ##Modify BestMiners for API
         $BestActiveMiners | ForEach-Object {

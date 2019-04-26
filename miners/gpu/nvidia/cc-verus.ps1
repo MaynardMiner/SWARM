@@ -6,7 +6,6 @@ $NVIDIATypes | ForEach-Object {
     if ($nvidia."cc-verus".$ConfigType) { $Path = "$($nvidia."cc-verus".$ConfigType)" } else { $Path = "None" }
     if ($nvidia."cc-verus".uri) { $Uri = "$($nvidia."cc-verus".uri)" } else { $Uri = "None" }
     if ($nvidia."cc-verus".minername) { $MinerName = "$($nvidia."cc-verus".minername)" } else { $MinerName = "None" }
-    if ($Platform -eq "linux") { $Build = "Tar" } elseif ($Platform -eq "windows") { $Build = "Zip" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "cc-verus-$Num"; $Port = "4100$Num"
 
@@ -73,12 +72,10 @@ $NVIDIATypes | ForEach-Object {
                         FullName   = "$($_.Mining)"
                         Port       = $Port
                         API        = "Ccminer"
-                        Wrap       = $false
                         Wallet     = "$($_.$User)"
                         URI        = $Uri
                         Server     = "localhost"
-                        BUILD      = $Build
-                        Algo       = "$($_.Algorithm)"
+                        Algo       = "$($_.Algorithm)"                         
                         Log        = $Log 
                     }
                 }

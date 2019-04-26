@@ -10,8 +10,6 @@ $NVIDIATypes | ForEach-Object {
     else { $Uri = "None" }
     if ($nvidia.$Cname.MinerName -and $Platform -eq "linux") { $MinerName = "$($nvidia.$Cname.MinerName)" }
     else { $MinerName = "None" }
-    if ($Platform -eq "linux") { $Build = "Tar" }
-    elseif ($Platform -eq "windows") { $Build = "Zip" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$Cname-$Num"; $Port = "5300$Num";
 
@@ -78,12 +76,10 @@ $NVIDIATypes | ForEach-Object {
                         FullName   = "$($_.Mining)"
                         Port       = $Port
                         API        = "Ccminer"
-                        Wrap       = $false
                         Wallet     = "$($_.$User)"
                         URI        = $Uri
                         Server     = "localhost"
-                        BUILD      = $Build
-                        Algo       = "$($_.Algorithm)"
+                        Algo       = "$($_.Algorithm)"                         
                         Log        = "miner_generated"
                     }
                 }

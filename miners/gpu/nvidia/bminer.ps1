@@ -6,7 +6,6 @@ $NVIDIATypes | ForEach-Object {
     if ($nvidia.bminer.$ConfigType) { $Path = "$($nvidia.bminer.$ConfigType)" } else { $Path = "None" }
     if ($nvidia.bminer.uri) { $Uri = "$($nvidia.bminer.uri)" } else { $Uri = "None" }
     if ($nvidia.bminer.MinerName) { $MinerName = "$($nvidia.bminer.MinerName)" } else { $MinerName = "None" }
-    if ($Platform -eq "linux") { $Build = "Tar" } elseif ($Platform -eq "windows") { $Build = "Zip" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "bminer-$Num"; $Port = "4000$Num"
 
@@ -77,11 +76,9 @@ $NVIDIATypes | ForEach-Object {
                         FullName   = "$($_.Mining)"
                         Port       = $Port
                         API        = "bminer"
-                        Wrap       = $false
                         Wallet     = "$($_.$User)"
                         URI        = $Uri
-                        Server     = "localhost"
-                        BUILD      = $Build
+                        Server     = "localhost"                        
                         Algo       = "$($_.Algorithm)"
                         Log        = "miner_generated"
                     }

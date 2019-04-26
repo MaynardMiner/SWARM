@@ -10,8 +10,6 @@ $AMDTypes | ForEach-Object {
     else { $Uri = "None" }
     if ($amd.$Cname.minername) { $MinerName = "$($amd.$Cname.minername)" }
     else { $MinerName = "None" }
-    if ($Platform -eq "linux") { $Build = "Tar" }
-    elseif ($Platform -eq "windows") { $Build = "Zip" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$Cname-$Num"; $Port = "2600$Num"
 
@@ -86,12 +84,10 @@ $AMDTypes | ForEach-Object {
                         API        = "claymore"
                         Port       = $Port
                         MinerPool  = "$($_.Name)"
-                        Wrap       = $false
                         Wallet     = "$($_.$User)"
                         URI        = $Uri
                         Server     = "localhost"
-                        BUILD      = $Build
-                        Algo       = "$($_.Algorithm)"
+                        Algo       = "$($_.Algorithm)"                         
                         Log        = "miner_generated"
                     }            
                 }

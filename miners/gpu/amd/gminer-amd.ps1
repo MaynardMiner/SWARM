@@ -10,8 +10,6 @@ $AMDTypes | ForEach-Object {
     else { $Uri = "None" }
     if ($AMD.$CName.minername) { $MinerName = "$($AMD.$CName.minername)" }
     else { $MinerName = "None" }
-    if ($Platform -eq "linux") { $Build = "Tar" }
-    elseif ($Platform -eq "windows") { $Build = "Zip" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "3300$Num"
 
@@ -98,9 +96,8 @@ $AMDTypes | ForEach-Object {
                         Wallet     = "$($_.$User)"
                         URI        = $Uri
                         Server     = "localhost"
-                        BUILD      = $Build
                         Algo       = "$($_.Algorithm)"
-                        Log        = "miner_generated" 
+                        Log        = "miner_generated"                                      
                     }            
                 }
             }
