@@ -9,8 +9,6 @@ $NVIDIATypes | ForEach-Object {
     else { $Uri = "None" }
     if ($nvidia.energiminer.minername) { $MinerName = "$($nvidia.energiminer.minername)" }
     else { $MinerName = "None" }
-    if ($Platform -eq "linux") { $Build = "Tar" }
-    elseif ($Platform -eq "windows") { $Build = "Zip" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "energiminer-$Num"; $Port = "4500$Num"
 
@@ -81,12 +79,10 @@ $NVIDIATypes | ForEach-Object {
                         FullName   = "$($_.Mining)"
                         Port       = 0
                         API        = "energiminer"
-                        Wrap       = $false
                         Wallet     = "$($_.$User)"
                         URI        = $Uri
                         Server     = "localhost"
-                        BUILD      = $Build
-                        Algo       = "$($_.Algorithm)"
+                        Algo       = "$($_.Algorithm)"                         
                         Log        = $Log 
                     }
                 }

@@ -9,8 +9,6 @@ $NVIDIATypes | ForEach-Object {
     else { $Uri = "None" }
     if ($nvidia.trex.minername) { $MinerName = "$($nvidia.trex.minername)" }
     else { $MinerName = "None" }
-    if ($Platform -eq "linux") { $Build = "Tar" }
-    elseif ($Platform -eq "windows") { $Build = "Zip" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "trex-$Num"; $Port = "5000$Num"; $Port2 = "8000$Num"
 
@@ -80,10 +78,9 @@ $NVIDIATypes | ForEach-Object {
                         Wallet     = "$($_.$User)"
                         URI        = $Uri
                         Server     = "localhost"
-                        BUILD      = $Build
                         Algo       = "$($_.Algorithm)"
-                        Log        = "miner_generated" 
-                    }            
+                        Log        = "miner_generated"                                     
+                     }            
                 }
             }
         }

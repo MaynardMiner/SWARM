@@ -9,8 +9,6 @@ $NVIDIATypes | ForEach-Object {
     else { $Uri = "None" }
     if ($nvidia.dstm.minername) { $MinerName = "$($nvidia.dstm.minername)" }
     else { $MinerName = "None" }
-    if ($Platform -eq "linux") { $Build = "Tar" }
-    elseif ($Platform -eq "windows") { $Build = "Zip" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "dstm-$Num"; $Port = "5600$Num";
 
@@ -83,8 +81,7 @@ $NVIDIATypes | ForEach-Object {
                         Wallet     = "$($_.$User)"
                         URI        = $Uri
                         Server     = "localhost"
-                        BUILD      = $Build
-                        Algo       = "$($_.Algorithm)"
+                        Algo       = "$($_.Algorithm)"                         
                         Log        = $Log 
                     }            
                 }

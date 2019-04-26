@@ -54,6 +54,17 @@ function get-stats {
 
 }
 
+function Get-Alpha($X) { (2 / ($X + 1) ) }
+
+function Get-Theta { 
+    param (
+        [Parameter(Mandatory=$true)]
+        [Int]$Calcs,
+        [Parameter(Mandatory=$true)]
+        [Array]$Values
+    )
+    $Values | Select -Last $Calcs | Measure-Object -Sum }
+
 function Set-Stat {
     param(
         [Parameter(Mandatory = $true)]
@@ -79,16 +90,6 @@ function Set-Stat {
     if($HashRate) {
         $Calcs.Add("Hashrate",[Math]::Max([Math]::Round(3600 / $Interval), 1))
     }
-
-    function Get-Alpha($X) { (2 / ($X + 1) ) }
-    function Get-Theta { 
-        param (
-            [Parameter(Mandatory=$true)]
-            [Int]$Calcs,
-            [Parameter(Mandatory=$true)]
-            [Array]$Values
-        )
-        $Values | Select -Last $Calcs | Measure-Object -Sum }
 
     $Max_Periods = 288
     $Hash_Max = 15
@@ -155,13 +156,20 @@ function Set-Stat {
         }
     }
 
-    $Stat.Values += [decimal]$Value
+    $DoStat = $true
+    if($Stat.Values.Count -gt 2){
+    $Previous = $Stat.Values | Select -Last 3
+    $Previous | % {$Increase = $Value - $_; $PInc = ($Increase/$_)*100; if($PInc -gt 70 -or $PInc -lt -69){$DoStat = $False}}
+    }
+
+    if($DoStat -eq $true) {$Stat.Values += [decimal]$Value}
+    if ($Stat.Values.Count -gt $Max_Periods) { $Stat.Values = $Stat.Values | Select -Skip 1 }
+
     if($HashRate){
         $Stat.Hash_Val += [decimal]$Hashrate
         if ($Stat.Hash_Val.Count -gt $Hash_Max) { $Stat.Hash_Val = $Stat.Hash_Val | Select -Skip 1 }
     }
-    if ($Stat.Values.Count -gt $Max_Periods) { $Stat.Values = $Stat.Values | Select -Skip 1 }
-        
+
     $Calcs.keys | foreach {
         if($_ -eq "Hashrate"){$T = $Stat.Hash_Val}
         else{$T = $Stat.Values}

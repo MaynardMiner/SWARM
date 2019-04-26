@@ -137,7 +137,7 @@
     "AMD2": ".\\bin\\wildrig-2\\wildrig-multi",
     "AMD3": ".\\bin\\wildrig-3\\wildrig-multi",
     "minername": "wildrig-multi",
-    "version": "0.15.5",
+    "version": "0.15.6",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/wildrig-linux.tar.gz"
   },
   "fancyix": {

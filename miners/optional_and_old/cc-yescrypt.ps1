@@ -9,8 +9,6 @@ $NVIDIATypes | ForEach-Object {
     else { $Uri = "None" }
     if ($nvidia.'cc-yescrypt'.minername -and $cuda -eq "10") { $MinerName = "$($nvidia.'cc-yescrypt'.minername)" }
     else { $MinerName = "None" }
-    if ($Platform -eq "linux") { $Build = "Tar" }
-    elseif ($Platform -eq "windows") { $Build = "Zip" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "cc-yescrypt-$Num"; $Port = "5500$Num";
 
@@ -77,12 +75,10 @@ $NVIDIATypes | ForEach-Object {
                         FullName   = "$($_.Mining)"
                         Port       = $Port
                         API        = "Ccminer"
-                        Wrap       = $false
                         Wallet     = "$($_.$User)"
                         URI        = $Uri
                         Server     = "localhost"
-                        BUILD      = $Build
-                        Algo       = "$($_.Algorithm)"
+                        Algo       = "$($_.Algorithm)"                         
                         Log        = $Log 
                     }
                 }

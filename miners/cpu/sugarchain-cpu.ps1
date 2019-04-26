@@ -9,8 +9,6 @@ $CPUTypes | ForEach-Object {
     else { $Uri = "None" }
     if ($cpu.sugarchain.minername) { $MinerName = "$($cpu.sugarchain.minername)" }
     else { $MinerName = "None" }
-    if ($Platform -eq "linux") { $Build = "Tar" }
-    elseif ($Platform -eq "windows") { $Build = "Zip" }
 
     $Name = "sugarchain";
 
@@ -68,8 +66,6 @@ $CPUTypes | ForEach-Object {
                         Wallet     = "$($_.$User)"
                         URI        = $Uri
                         Server     = "localhost"
-                        BUILD      = $Build
-                        PoolType   = "AlgoPools"
                         Algo       = "$($_.Algorithm)"
                         Log        = $Log 
                     }            

@@ -47,8 +47,6 @@ if ($Poolname -eq $Name) {
         if ($Best -ne $null) { $zpool_Sorted | Add-Member $Best.sym $Best -Force }
     }
 
-
-
     if ($Stat_All -eq "Yes") {
 
         $Algos | ForEach-Object {
@@ -64,17 +62,17 @@ if ($Poolname -eq $Name) {
 
             if ($NotBest -ne $null) { $NotBest | ForEach-Object { $zpool_UnSorted | Add-Member $_.sym $_ -Force } }
 
+        }
 
-            $zpool_UnSorted | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | ForEach-Object {
-                $zpool_Algorithm = $zpool_UnSorted.$_.algo.ToLower()
-                $zpool_Symbol = $zpool_UnSorted.$_.sym.ToUpper()
-                $Fees = [Double]$global:FeeTable.zpool.$zpool_Algorithm
-                $Estimate = [Double]$zpool_UnSorted.$_.estimate * 0.001
-                $Divisor = (1000000 * [Double]$global:DivisorTable.zpool.$zpool_Algorithm)
-                $Workers = [Double]$zpool_UnSorted.$_.Workers * 0.001
-                $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
-                try { $Stat = Set-Stat -Name "$($Name)_$($zpool_Symbol)_coin_profit" -Value ([Double]$Cut / $Divisor) }catch { Write-Log "Failed To Calculate Stat For $zpool_Symbol" }
-            }
+        $zpool_UnSorted | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | ForEach-Object {
+            $zpool_Algorithm = $zpool_UnSorted.$_.algo.ToLower()
+            $zpool_Symbol = $zpool_UnSorted.$_.sym.ToUpper()
+            $Fees = [Double]$global:FeeTable.zpool.$zpool_Algorithm
+            $Estimate = [Double]$zpool_UnSorted.$_.estimate * 0.001
+            $Divisor = (1000000 * [Double]$global:DivisorTable.zpool.$zpool_Algorithm)
+            $Workers = [Double]$zpool_UnSorted.$_.Workers * 0.001
+            $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
+            try { $Stat = Set-Stat -Name "$($Name)_$($zpool_Symbol)_coin_profit" -Value ([Double]$Cut / $Divisor) }catch { Write-Log "Failed To Calculate Stat For $zpool_Symbol" }
         }
     }
 

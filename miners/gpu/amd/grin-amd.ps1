@@ -10,8 +10,6 @@ $AMDTypes | ForEach-Object {
     else { $Uri = "None" }
     if ($AMD.$CName.minername) { $MinerName = "$($AMD.$CName.minername)" }
     else { $MinerName = "None" }
-    if ($Platform -eq "linux") { $Build = "Tar" }
-    elseif ($Platform -eq "windows") { $Build = "Zip" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "2300$Num"
 
@@ -80,12 +78,10 @@ $AMDTypes | ForEach-Object {
                         FullName   = "$($_.Mining)"
                         Port       = 0
                         API        = "grin-miner"
-                        Wrap       = $false
                         Wallet     = "$($_.$User)"
                         URI        = $Uri
                         Server     = "localhost"
-                        BUILD      = $Build
-                        Algo       = "$($_.Algorithm)"
+                        Algo       = "$($_.Algorithm)"                         
                         Log        = $Log 
                     }
                 }
