@@ -16,7 +16,12 @@ if ($Poolname -eq $Name) {
         default { $Region = "eu." }
     }
   
-    $blockpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | Where-Object { $blockpool_Request.$_.hashrate -gt 0 } | Where-Object { $Naming.$($blockpool_Request.$_.name) } | ForEach-Object {
+    $blockpool_Request | 
+    Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
+    Select-Object -ExpandProperty Name | 
+    Where-Object { $blockpool_Request.$_.hashrate -gt 0 } | 
+    Where-Object { $Naming.$($blockpool_Request.$_.name) } | 
+    ForEach-Object {
 
         $blockpool_Algorithm = $blockpool_Request.$_.name.ToLower()
 
@@ -35,8 +40,10 @@ if ($Poolname -eq $Name) {
                     $Stat = Set-Stat -Name "$($Name)_$($blockpool_Algorithm)_profit" -HashRate $HashRate -Value ( [Double]$blockpool_Request.$_.estimate_current / $Divisor * (1 - ($blockpool_Request.$_.fees / 100)))
                 }
 
-                if(-not $global:Pool_Hashrates.$blockpool_Algorithm){$global:Pool_Hashrates.Add("$blockpool_Algorithm",@{})}
-                if(-not $global:Pool_Hashrates.$blockpool_Algorithm.$Name){$global:Pool_Hashrates.$blockpool_Algorithm.Add("$Name",@{HashRate = "$($Stat.HashRate)"; Percent = ""})}
+                if (-not $global:Pool_Hashrates.$blockpool_Algorithm) { $global:Pool_Hashrates.Add("$blockpool_Algorithm", @{ })
+                }
+                if (-not $global:Pool_Hashrates.$blockpool_Algorithm.$Name) { $global:Pool_Hashrates.$blockpool_Algorithm.Add("$Name", @{HashRate = "$($Stat.HashRate)"; Percent = "" })
+                }
 
                 $Pass1 = $global:Wallets.Wallet1.Keys
                 $User1 = $global:Wallets.Wallet1.$Passwordcurrency1.address
@@ -45,50 +52,50 @@ if ($Poolname -eq $Name) {
                 $Pass3 = $global:Wallets.Wallet3.Keys
                 $User3 = $global:Wallets.Wallet3.$Passwordcurrency3.address
             
-            if ($global:Wallets.AltWallet1.keys) {
-                $global:Wallets.AltWallet1.Keys | ForEach-Object {
-                    if ($global:Wallets.AltWallet1.$_.Pools -contains $Name) {
-                        $Pass1 = $_;
-                        $User1 = $global:Wallets.AltWallet1.$_.address;
+                if ($global:Wallets.AltWallet1.keys) {
+                    $global:Wallets.AltWallet1.Keys | ForEach-Object {
+                        if ($global:Wallets.AltWallet1.$_.Pools -contains $Name) {
+                            $Pass1 = $_;
+                            $User1 = $global:Wallets.AltWallet1.$_.address;
+                        }
                     }
                 }
-            }
-            if ($global:Wallets.AltWallet2.keys) {
-                $global:Wallets.AltWallet2.Keys | ForEach-Object {
-                    if ($global:Wallets.AltWallet2.$_.Pools -contains $Name) {
-                        $Pass2 = $_;
-                        $User2 = $global:Wallets.AltWallet2.$_.address;
+                if ($global:Wallets.AltWallet2.keys) {
+                    $global:Wallets.AltWallet2.Keys | ForEach-Object {
+                        if ($global:Wallets.AltWallet2.$_.Pools -contains $Name) {
+                            $Pass2 = $_;
+                            $User2 = $global:Wallets.AltWallet2.$_.address;
+                        }
                     }
                 }
-            }
-            if ($global:Wallets.AltWallet3.keys) {
-                $global:Wallets.AltWallet3.Keys | ForEach-Object {
-                    if ($global:Wallets.AltWallet3.$_.Pools -contains $Name) {
-                        $Pass3 = $_;
-                        $User3 = $global:Wallets.AltWallet3.$_.address;
+                if ($global:Wallets.AltWallet3.keys) {
+                    $global:Wallets.AltWallet3.Keys | ForEach-Object {
+                        if ($global:Wallets.AltWallet3.$_.Pools -contains $Name) {
+                            $Pass3 = $_;
+                            $User3 = $global:Wallets.AltWallet3.$_.address;
+                        }
                     }
                 }
-            }
                         
                 [PSCustomObject]@{            
-                    Priority      = $Priorities.Pool_Priorities.$Name
-                    Symbol        = "$blockpool_Algorithm-Algo"
-                    Mining        = $blockpool_Algorithm
-                    Algorithm     = $blockpool_Algorithm
-                    Price         = $Stat.$Stat_Algo
-                    Protocol      = "stratum+tcp"
-                    Host          = $blockpool_Host
-                    Port          = $blockpool_Port
-                    User1         = $User1
-                    User2         = $User2
-                    User3         = $User3
-                    CPUser        = $User1
-                    CPUPass       = "c=$Pass1,id=$Rigname1"
-                    Pass1         = "c=$Pass1,id=$Rigname1"
-                    Pass2         = "c=$Pass2,id=$Rigname2"
-                    Pass3         = "c=$Pass3,id=$Rigname3"
-                    Location      = $Location
-                    SSL           = $false
+                    Priority  = $Priorities.Pool_Priorities.$Name
+                    Symbol    = "$blockpool_Algorithm-Algo"
+                    Mining    = $blockpool_Algorithm
+                    Algorithm = $blockpool_Algorithm
+                    Price     = $Stat.$Stat_Algo
+                    Protocol  = "stratum+tcp"
+                    Host      = $blockpool_Host
+                    Port      = $blockpool_Port
+                    User1     = $User1
+                    User2     = $User2
+                    User3     = $User3
+                    CPUser    = $User1
+                    CPUPass   = "c=$Pass1,id=$Rigname1"
+                    Pass1     = "c=$Pass1,id=$Rigname1"
+                    Pass2     = "c=$Pass2,id=$Rigname2"
+                    Pass3     = "c=$Pass3,id=$Rigname3"
+                    Location  = $Location
+                    SSL       = $false
                 }
             }
         }

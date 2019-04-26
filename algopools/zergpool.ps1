@@ -11,7 +11,12 @@ if ($Poolname -eq $Name) {
         return
     } 
      
-    $Zergpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | Where-Object { $Zergpool_Request.$_.hashrate -gt 0 } | Where-Object { $Naming.$($Zergpool_Request.$_.name) } | ForEach-Object {
+    $Zergpool_Request | 
+    Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
+    Select-Object -ExpandProperty Name | 
+    Where-Object { $Zergpool_Request.$_.hashrate -gt 0 } | 
+    Where-Object { $Naming.$($Zergpool_Request.$_.name) } | 
+    ForEach-Object {
     
         $Zergpool_Algorithm = $Zergpool_Request.$_.name.ToLower()
   
@@ -20,9 +25,9 @@ if ($Poolname -eq $Name) {
                 $Zergpool_Port = $Zergpool_Request.$_.port
                 $Zergpool_Host = "$($Zergpool_Algorithm).mine.zergpool.com"
                 $Divisor = (1000000 * $Zergpool_Request.$_.mbtc_mh_factor)
-                $Global:DivisorTable.zergpool.Add($Zergpool_Algorithm,$Zergpool_Request.$_.mbtc_mh_factor)
+                $Global:DivisorTable.zergpool.Add($Zergpool_Algorithm, $Zergpool_Request.$_.mbtc_mh_factor)
                 $Fees = $Zergpool_Request.$_.fees
-                $Global:FeeTable.zergpool.Add($Zergpool_Algorithm,$Zergpool_Request.$_.fees)
+                $Global:FeeTable.zergpool.Add($Zergpool_Algorithm, $Zergpool_Request.$_.fees)
                 $StatPath = ".\stats\($Name)_$($Zergpool_Algorithm)_profit.txt"
                 $Hashrate = $Zergpool_Request.$_.hashrate
 
@@ -33,15 +38,17 @@ if ($Poolname -eq $Name) {
                     $Stat = Set-Stat -Name "$($Name)_$($Zergpool_Algorithm)_profit" -HashRate $HashRate -Value ( [Double]$Zergpool_Request.$_.estimate_current / $Divisor * (1 - ($Zergpool_Request.$_.fees / 100)))
                 }
 
-                if(-not $global:Pool_Hashrates.$Zergpool_Algorithm){$global:Pool_Hashrates.Add("$Zergpool_Algorithm",@{})}
-                if(-not $global:Pool_Hashrates.$Zergpool_Algorithm.$Name){$global:Pool_Hashrates.$Zergpool_Algorithm.Add("$Name",@{HashRate = "$($Stat.HashRate)"; Percent = ""})}
+                if (-not $global:Pool_Hashrates.$Zergpool_Algorithm) { $global:Pool_Hashrates.Add("$Zergpool_Algorithm", @{ })
+                }
+                if (-not $global:Pool_Hashrates.$Zergpool_Algorithm.$Name) { $global:Pool_Hashrates.$Zergpool_Algorithm.Add("$Name", @{HashRate = "$($Stat.HashRate)"; Percent = "" })
+                }
 
-                    $Pass1 = $global:Wallets.Wallet1.Keys
-                    $User1 = $global:Wallets.Wallet1.$Passwordcurrency1.address
-                    $Pass2 = $global:Wallets.Wallet2.Keys
-                    $User2 = $global:Wallets.Wallet2.$Passwordcurrency2.address
-                    $Pass3 = $global:Wallets.Wallet3.Keys
-                    $User3 = $global:Wallets.Wallet3.$Passwordcurrency3.address
+                $Pass1 = $global:Wallets.Wallet1.Keys
+                $User1 = $global:Wallets.Wallet1.$Passwordcurrency1.address
+                $Pass2 = $global:Wallets.Wallet2.Keys
+                $User2 = $global:Wallets.Wallet2.$Passwordcurrency2.address
+                $Pass3 = $global:Wallets.Wallet3.Keys
+                $User3 = $global:Wallets.Wallet3.$Passwordcurrency3.address
                 
                 if ($global:Wallets.AltWallet1.keys) {
                     $global:Wallets.AltWallet1.Keys | ForEach-Object {
@@ -69,24 +76,24 @@ if ($Poolname -eq $Name) {
                 }
 
                 [PSCustomObject]@{
-                    Priority      = $Priorities.Pool_Priorities.$Name
-                    Symbol        = "$Zergpool_Algorithm-Algo"
-                    Mining        = $Zergpool_Algorithm
-                    Algorithm     = $Zergpool_Algorithm
-                    Price         = $Stat.$Stat_Algo
-                    Protocol      = "stratum+tcp"
-                    Host          = $Zergpool_Host
-                    Port          = $Zergpool_Port
-                    User1         = $User1
-                    User2         = $User2
-                    User3         = $User3
-                    CPUser        = $User1
-                    CPUPass       = "c=$Pass1,id=$Rigname1"
-                    Pass1         = "c=$Pass1,id=$Rigname1"
-                    Pass2         = "c=$Pass2,id=$Rigname2"
-                    Pass3         = "c=$Pass3,id=$Rigname3"
-                    Location      = $Location
-                    SSL           = $false
+                    Priority  = $Priorities.Pool_Priorities.$Name
+                    Symbol    = "$Zergpool_Algorithm-Algo"
+                    Mining    = $Zergpool_Algorithm
+                    Algorithm = $Zergpool_Algorithm
+                    Price     = $Stat.$Stat_Algo
+                    Protocol  = "stratum+tcp"
+                    Host      = $Zergpool_Host
+                    Port      = $Zergpool_Port
+                    User1     = $User1
+                    User2     = $User2
+                    User3     = $User3
+                    CPUser    = $User1
+                    CPUPass   = "c=$Pass1,id=$Rigname1"
+                    Pass1     = "c=$Pass1,id=$Rigname1"
+                    Pass2     = "c=$Pass2,id=$Rigname2"
+                    Pass3     = "c=$Pass3,id=$Rigname3"
+                    Location  = $Location
+                    SSL       = $false
                 }
             }
         }
