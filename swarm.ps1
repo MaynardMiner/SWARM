@@ -214,7 +214,6 @@ Write-log "OS = $Platform" -ForegroundColor Green
 . .\build\powershell\newsort.ps1; . .\build\powershell\screen.ps1; . .\build\powershell\commandweb.ps1;
 . .\build\powershell\response.ps1; . .\build\api\html\api.ps1; . .\build\powershell\config_file.ps1;
 . .\build\powershell\altwallet.ps1; . .\build\api\pools\include.ps1; . .\build\api\miners\include.ps1;
-
 if ($Platform -eq "linux") { . .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1 }
 if ($Platform -eq "windows") { . .\build\powershell\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1; . .\build\powershell\environment.ps1; }
 
@@ -1593,7 +1592,6 @@ While ($true) {
 
         #Start Another Log If An Hour Has Passed
         if ($LogTimer.Elapsed.TotalSeconds -ge 3600) {
-            Stop-Transcript -ErrorAction SilentlyContinue
             Start-Sleep -S 3
             if (Test-Path ".\logs\*active*") {
                 Set-Location ".\logs"
