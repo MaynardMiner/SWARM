@@ -35,4 +35,4 @@ sudo ln -s /opt/microsoft/powershell/6.1.0/pwsh /usr/bin/pwsh
 sudo rm -rf /tmp/powershell.tar.gz
 fi
 
-pwsh -command "&.\swarm.ps1 $(< /hive/miners/custom/$CUSTOM_NAME/$CUSTOM_NAME.conf)" $@ && . color
+pwsh -command "&.\swarm.ps1 $(< /hive/miners/custom/$CUSTOM_NAME/$CUSTOM_NAME.conf)" $@
