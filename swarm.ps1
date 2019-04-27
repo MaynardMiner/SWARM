@@ -81,6 +81,8 @@ param(
     [Parameter(Mandatory = $false)]
     [string]$Auto_Coin = "No", #auto_coin switching
     [Parameter(Mandatory = $false)]
+    [string]$Auto_Algo = "Yes", #auto_algo switching
+    [Parameter(Mandatory = $false)]
     [Int]$Nicehash_Fee = "2", #Pro-Rate Fee for nicehash service
     [Parameter(Mandatory = $false)]
     [Int]$Benchmark = 190, #Time For Benchmarking
@@ -167,6 +169,10 @@ param(
     [Parameter(Mandatory = $false)]
     [String]$Volume = "No"  ## If set to yes- Will penalize pools that have lower hashrates that others.
 )
+
+## Debug Mode- Allow you to run with last known arguments or arguments.json.
+$Debug = $false
+if($Debug -eq $True -and (Test-Path "C:\")){Set-ExecutionPolicy Bypass -Scope Process}
 
 ## Set Current Path
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
@@ -300,9 +306,6 @@ $FileClear += ".\build\txt\profittable.txt"
 $FileClear += ".\build\txt\bestminers.txt"
 $FileClear | ForEach-Object { if (Test-Path $_) { Remove-Item $_ -Force } }
 
-## Debug Mode- Allow you to run with last known arguments or arguments.json.
-$Debug = $false
-
 ## Convert Arguments Into Hash Table
 if ($Debug -ne $true) {
     $CurrentParams = @{ }
@@ -347,6 +350,7 @@ if ($Debug -ne $true) {
     $CurrentParams.ADD("Stat_All", $Stat_All);
     $CurrentParams.ADD("Custom_Periods", $Custom_Periods);
     $CurrentParams.ADD("Volume", $Volume);
+    $CurrentParams.ADD("Auto_Algo", $Auto_Algo);
 
     ## Save to Config Folder
     $StartParams = $CurrentParams | ConvertTo-Json 
@@ -418,7 +422,7 @@ if ((Test-Path ".\config\parameters\newarguments.json") -or $Debug -eq $true) {
     $SWARMAlgorithm = $SWARMParams.Algorithm; $Coin = $SWARMParams.Coin;
     $ASIC_IP = $SWARMParams.ASIC_IP; $ASIC_ALGO = $SWARMParams.ASIC_ALGO;
     $Stat_All = $SWARMParams.Stat_All; $Custom_Periods = $SWARMParams.Custom_Periods;
-    $Volume = $SWARMParms.Volume;
+    $Volume = $SWARMParms.Volume; $Auto_ALgo = $SWARMParams.Auto_Algo;
 }
 
 ## Windows Start Up
@@ -853,10 +857,10 @@ While ($true) {
         $SWARMAlgorithm = $SWARMParams.Algorithm; $Coin = $SWARMParams.Coin
         $ASIC_IP = $SWARMParams.ASIC_IP; $ASIC_ALGO = $SWARMParams.ASIC_ALGO;
         $Stat_All = $SWARMParams.Stat_All; $Custom_Periods = $SWARMParams.Custom_Periods;
-        $Volume = $SWARMParams.Volume
+        $Volume = $SWARMParams.Volume; $Auto_Algo = $SWARMParams.Auto_Algo;
 
         ## Check to see if wallet is present:
-        if(-not $Wallet1){write-Log "missing wallet1 argument, exiting in 5 seconds" -ForeGroundColor Red, Start-Sleep -S 5; exit}
+        if (-not $Wallet1) { write-Log "missing wallet1 argument, exiting in 5 seconds" -ForeGroundColor Red, Start-Sleep -S 5; exit }
 
         ## Make it so that if Farm_Hash Is Not Specified, HiveOS functions are removed.
         ## In case user forgets to change -HiveOS to "No"
@@ -872,12 +876,13 @@ While ($true) {
             $AltPassword1 = "BTC";
             $AltPassword2 = "BTC";
             $AltPassword3 = "BTC";
-            $Coin = "BTC";
             $DonateTime = Get-Date; 
             $DonateText = "Miner has donated on $DonateTime"; 
             $DonateText | Set-Content ".\build\txt\donate.txt"
+            if($SWARMAlgorithm.Count -gt 0 -and $SWARMAlgorithm -ne ""){$SWARMAlgorithm = $Null}
+            if($Coin -gt 0){$Coin = $Null}
         }
-        elseif ($Coin.Count -eq 1) {
+        elseif ($Coin.Count -eq 1 -and $Coin -ne "") {
             $Passwordcurrency1 = $Coin
             $Passwordcurrency2 = $Coin
             $Passwordcurrency3 = $Coin
@@ -889,9 +894,9 @@ While ($true) {
         #Get-Algorithms
         $Algorithm = @()
         $Pool_Json = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
-        if ($Coin) { $Passwordcurrency1 = $Coin; $Passwordcurrency2 = $Coin; $Passwordcurrency3 = $Coin }
+        if ($Coin.Count -eq 1 -and $Coin -ne "") { $Passwordcurrency1 = $Coin; $Passwordcurrency2 = $Coin; $Passwordcurrency3 = $Coin }
         if ($SWARMAlgorithm) { $SWARMALgorithm | ForEach-Object { $Algorithm += $_ } }
-        else { $Algorithm = $Pool_Json.PSObject.Properties.Name }
+        elseif($Auto_Algo -eq "Yes") { $Algorithm = $Pool_Json.PSObject.Properties.Name }
         if ($Type -notlike "*NVIDIA*") {
             if ($Type -notlike "*AMD*") {
                 if ($Type -notlike "*CPU*") {
@@ -918,12 +923,14 @@ While ($true) {
             $DonateTime = Get-Date; 
             $DonateText = "Miner has donated on $DonateTime"; 
             $DonateText | Set-Content ".\build\txt\donate.txt"
+            if($SWARMAlgorithm -gt 0){$SWARMAlgorithm = $Null}
+            if($Coin -gt 0){$Coin = $Null}
         }
 
         ##Change Password to $Coin parameter in case it is used.
         ##Auto coin should be disabled.
         ##It should only work when donation isn't active.
-        if ($Coin) { $Auto_Coin = "No" }
+        if ($Coin.Count -eq 1 -and $Coin -ne "") { $Auto_Coin = "No" }
 
         ## Main Loop Begins
         ## SWARM begins with pulling files that might have been changed from previous loop.
@@ -950,7 +957,7 @@ While ($true) {
             $WattEx = [Double](($WattCurr * $Watts.KWh.$WattHour))
         }
         catch {
-            write-Log -Level Warn "Coinbase Unreachable. "
+            write-Log "WARNING: Coinbase Unreachable. " -ForeGroundColor Yellow
             write-Log "Trying To Contact Cryptonator.." -foregroundcolor "Yellow"
             $Rates = [PSCustomObject]@{ }
             $Currency | ForEach-Object { $Rates | Add-Member $_ (Invoke-WebRequest "https://api.cryptonator.com/api/ticker/btc-$_" -UseBasicParsing | ConvertFrom-Json).ticker.price }
@@ -983,32 +990,37 @@ While ($true) {
         Write-Log "Loading Miner Hashrates" -ForegroundColor Yellow
         $global:Miner_HashTable = Get-MinerHashTable
 
+        $SingleMode = $false
+        if($Coin.Count -eq 1 -and $Coin -ne "" -and $SWARMAlgorithm.Count -eq 1 -and $SWARM_Mode -ne ""){$SingleMode = $true}
+
         ##Get Algorithm Pools
-        write-Log "Checking Algo Pools." -Foregroundcolor yellow;
-        $AllAlgoPools = Get-Pools -PoolType "Algo"
-        ##Get Custom Pools
-        write-Log "Adding Custom Pools. ." -ForegroundColor Yellow;
-        $AllCustomPools = Get-Pools -PoolType "Custom"
+            write-Log "Checking Algo Pools." -Foregroundcolor yellow;
+            $AllAlgoPools = Get-Pools -PoolType "Algo"
+            ##Get Custom Pools
+            write-Log "Adding Custom Pools. ." -ForegroundColor Yellow;
+            $AllCustomPools = Get-Pools -PoolType "Custom"
 
-        ## Select the best 3 of each algorithm
-        $Top_3_Algo = $AllAlgoPools.Symbol | Select-Object -Unique | ForEach-Object { $AllAlgoPools | Where-Object Symbol -EQ $_ | Sort-Object Price -Descending | Select-Object -First 3 };
-        $Top_3_Custom = $AllCustomPools.Symbol | Select-Object -Unique | ForEach-Object { $AllCustomPools | Where-Object Symbol -EQ $_ | Sort-Object Price -Descending | Select-Object -First 3 };
+            if ($Auto_Algo -eq "Yes" -or $SingleMode -eq $True) {
+            ## Select the best 3 of each algorithm
+            $Top_3_Algo = $AllAlgoPools.Symbol | Select-Object -Unique | ForEach-Object { $AllAlgoPools | Where-Object Symbol -EQ $_ | Sort-Object Price -Descending | Select-Object -First 3 };
+            $Top_3_Custom = $AllCustomPools.Symbol | Select-Object -Unique | ForEach-Object { $AllCustomPools | Where-Object Symbol -EQ $_ | Sort-Object Price -Descending | Select-Object -First 3 };
 
-        ## Combine Stats From Algo and Custom
-        $AlgoPools = New-Object System.Collections.ArrayList
-        if ($Top_3_Algo) { $Top_3_Algo | ForEach-Object { $AlgoPools.Add($_) | Out-Null } }
-        if ($Top_3_Custom) { $Top_3_Custom | ForEach-Object { $AlgoPools.Add($_) | Out-Null } }
-        $Top_3_Algo = $Null;
-        $Top_3_Custom = $Null;
+            ## Combine Stats From Algo and Custom
+            $AlgoPools = New-Object System.Collections.ArrayList
+            if ($Top_3_Algo) { $Top_3_Algo | ForEach-Object { $AlgoPools.Add($_) | Out-Null } }
+            if ($Top_3_Custom) { $Top_3_Custom | ForEach-Object { $AlgoPools.Add($_) | Out-Null } }
+            $Top_3_Algo = $Null;
+            $Top_3_Custom = $Null;
 
-        ##Get Algorithms again, in case custom changed it.
-        $Algorithm = @()
-        if ($SWARMAlgorithm) { $SWARMALgorithm | ForEach-Object { $Algorithm += $_ } }
-        else { $Algorithm = $Pool_Json.PSObject.Properties.Name }
-        if ($Type -notlike "*NVIDIA*") {
-            if ($Type -notlike "*AMD*") {
-                if ($Type -notlike "*CPU*") {
-                    $Algorithm -eq $null
+            ##Get Algorithms again, in case custom changed it.
+            $Algorithm = @()
+            if ($SWARMAlgorithm) { $SWARMALgorithm | ForEach-Object { $Algorithm += $_ } }
+            else { $Algorithm = $Pool_Json.PSObject.Properties.Name }
+            if ($Type -notlike "*NVIDIA*") {
+                if ($Type -notlike "*AMD*") {
+                    if ($Type -notlike "*CPU*") {
+                        $Algorithm -eq $null
+                    }
                 }
             }
         }
@@ -1183,21 +1195,21 @@ While ($true) {
 
         ##Now that we have narrowed down to our best miners - we adjust them for switching threshold.
         $BestActiveMiners | ForEach-Object {
-                $Sel = $_
-                $SWMiner = $Miners | Where-Object Path -EQ $Sel.path | Where-Object Arguments -EQ $Sel.Arguments | Where-Object Type -EQ $Sel.Type 
-                if ($SWMiner -and $SWMiner.Profit -ne $NULL) {
-                    if ($Switch_Threshold) {
-                        write-Log "Switching_Threshold changes $($SWMiner.Name) $($SWMiner.Algo) base factored price from $(($SWMiner.Profit * $Rates.$Currency).ToString("N2"))" -ForegroundColor Cyan -NoNewLine -Start; 
-                        if ($SWMiner.Profit -GT 0) {
-                            $($Miners | Where Path -eq $SWMiner.path | Where Arguments -eq $SWMiner.Arguments | Where Type -eq $SWMINer.Type).Profit = [Decimal]$SWMiner.Profit * (1 + ($Switch_Threshold / 100)) 
-                        }
-                        else {
-                            $($Miners | Where Path -eq $SWMiner.path | Where Arguments -eq $SWMiner.Arguments | Where Type -eq $SWMINer.Type).Profit = [Decimal]$_.Profit * (1 + ($Switch_Threshold / -100))
-                        }  
-                        write-Log " to $(($SWMiner.Profit * $Rates.$Currency).ToString("N2"))" -ForegroundColor Cyan -End
+            $Sel = $_
+            $SWMiner = $Miners | Where-Object Path -EQ $Sel.path | Where-Object Arguments -EQ $Sel.Arguments | Where-Object Type -EQ $Sel.Type 
+            if ($SWMiner -and $SWMiner.Profit -ne $NULL) {
+                if ($Switch_Threshold) {
+                    write-Log "Switching_Threshold changes $($SWMiner.Name) $($SWMiner.Algo) base factored price from $(($SWMiner.Profit * $Rates.$Currency).ToString("N2"))" -ForegroundColor Cyan -NoNewLine -Start; 
+                    if ($SWMiner.Profit -GT 0) {
+                        $($Miners | Where Path -eq $SWMiner.path | Where Arguments -eq $SWMiner.Arguments | Where Type -eq $SWMINer.Type).Profit = [Decimal]$SWMiner.Profit * (1 + ($Switch_Threshold / 100)) 
                     }
+                    else {
+                        $($Miners | Where Path -eq $SWMiner.path | Where Arguments -eq $SWMiner.Arguments | Where Type -eq $SWMINer.Type).Profit = [Decimal]$_.Profit * (1 + ($Switch_Threshold / -100))
+                    }  
+                    write-Log " to $(($SWMiner.Profit * $Rates.$Currency).ToString("N2"))" -ForegroundColor Cyan -End
                 }
             }
+        }
         
         $SWMiner = $Null
 

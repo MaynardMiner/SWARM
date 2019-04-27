@@ -27,11 +27,11 @@ if ($Poolname -eq $Name) {
 
     ##Add Active Coins for calcs
     $Active = $zergpool_Request.PSObject.Properties.Value | Where-Object sym -in $global:ActiveSymbol
-    if ($Active) { $Zergpool_Sorted | Add-Member $Active.sym $Active -Force }
+    if ($Active) { $Active | ForEach-Object { $Zergpool_Sorted | Add-Member $_.sym $_ -Force }}
 
-    if($Coin.Count -gt 1) {
+    if($Coin.Count -gt 1 -and $Coin -ne "") {
       $CoinsOnly = $zergpool_Request.PSObject.Properties.Value | Where-Object sym -in $Coin
-      if($CoinsOnly){ $Zergpool_Sorted | Add-Member $CoinsOnly.sym $CoinsOnly -Force }
+      if($CoinsOnly){ $CoinsOnly | ForEach-Object { $Zergpool_Sorted | Add-Member $_.sym $_ -Force }}
     }
 
     if($Coin.Count -eq 0) {

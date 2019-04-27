@@ -30,7 +30,9 @@
     "Farm_Hash":  "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     "Wallet2":  "",
     "HiveOS":  "Yes",
-    "GPUDevices2":  [],
+    "GPUDevices2": [
+                    ""
+                   ],
     "CoinExchange":  "",
     "Interval":  300,
     "Passwordcurrency1": "BTC",
@@ -44,7 +46,9 @@
     "AlgoBanCount":  3,
     "Rigname1":  "SWARM",
     "API_Key":  "",
-    "GPUDevices3":  [],
+    "GPUDevices3":  [
+                     ""
+                    ],
     "API_ID":  0,
     "Stat_Algo":  "Live",
     "Nicehash_Wallet3":  "",
@@ -56,7 +60,9 @@
                  "NVIDIA1"
              ],
     "Conserve":  "No",
-    "GPUDevices1":  [],
+    "GPUDevices1":   [
+                      ""
+                     ],
     "Rejections":  75,
     "AltWallet3":  "",
     "Nicehash_Fee":  "",
@@ -88,10 +94,15 @@
     "Algorithm":  [
                     ""
                 ],
-    "Coin": "",
+    "Coin":  [
+              ""
+             ],
     "ASIC_IP": "",
-    "ASIC_ALGO": "",
+    "ASIC_ALGO":  [
+                    ""
+                  ],
     "Stat_All": "No",
     "Custom_Periods": 1,
-    "Volume": "No"
+    "Volume": "No",
+    "Auto_Algo": "Yes"
 }

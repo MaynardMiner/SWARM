@@ -35,7 +35,7 @@ if ($Poolname -eq $Name) {
     $Active = $zpool_Request.PSObject.Properties.Value | Where-Object sym -in $global:ActiveSymbol
     if ($Active) { $zpool_Request | Add-Member $Active.sym $Active -Force }
 
-    if ($Coin.Count -gt 1) {
+    if ($Coin.Count -gt 1 -and $Coin -ne "") {
         $CoinsOnly = $zpool_Request.PSObject.Properties.Value | Where-Object sym -in $Coin
         if ($CoinsOnly) { $zpool_Request | Add-Member $CoinsOnly.sym $CoinsOnly -Force }
     }

@@ -11,7 +11,7 @@ if ($Poolname -eq $Name) {
         return
     }
 
-    $nlpool_Request.PSObject.Properties.Value | % { $_.estimate_current = [Decimal]$_.Estimate }
+    $nlpool_Request.PSObject.Properties.Value | % { $_.estimate_current = [Decimal]$_.estimate_current }
 
     $nlpool_Request | 
     Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
