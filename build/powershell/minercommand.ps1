@@ -243,7 +243,7 @@ function start-minersorting {
             $Miner_HashRates | Add-Member $_ ([Double]$Miner.HashRates.$_)
             $Miner_PowerX | Add-Member $_ ([Double]$Miner.PowerX.$_)
             $Miner_Profits | Add-Member $_  ([Double]($Miner_Modified + $WattCalc3))  ##Used to calculate BTC/Day and sort miners
-            $Miner_Unbias | Add-Member $_  ([Double]($Miner_Realistic + $WattCalc3))  ##Uset to calculate Daily profit/day moving averages
+            $Miner_Unbias | Add-Member $_  ([Double]($Miner_Modified + $WattCalc3))  ##Uset to calculate Daily profit/day moving averages
             $Miner_Pool_Estimates | Add-Member $_ ([Double]($Miner.Quote)) ##RAW calculation for Live Value (Used On screen)
             $Miner_Vol | Add-Member $_ $( if($global:Pool_Hashrates.$_.$MinerPool.Percent -gt 0){[Double]$global:Pool_Hashrates.$_.$MinerPool.Percent * 100} else { 0 } )
         }
