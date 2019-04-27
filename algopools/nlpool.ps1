@@ -11,13 +11,15 @@ if ($Poolname -eq $Name) {
         return
     }
 
+    $nlpool_Request.PSObject.Properties.Value | % { $_.Estimate = [Decimal]$_.Estimate }
+
     $nlpool_Request | 
     Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
     Select-Object -ExpandProperty Name | 
     Where-Object { $nlpool_Request.$_.hashrate -gt 0 } | 
     Where-Object { $Naming.$($nlpool_Request.$_.name) } | 
     Where-Object { $nlpool_Request.$_.name -NE "sha256" } | 
-    Where-Object { $($nlpool_Request.$_.estimate_current) -ne "0.00000000" } | 
+    Where-Object { $($nlpool_Request.$_.estimate_current) -gt 0 } | 
     ForEach-Object {
         
         $nlpoolAlgo_Algorithm = $nlpool_Request.$_.name.ToLower()

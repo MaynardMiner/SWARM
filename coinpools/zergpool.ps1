@@ -25,12 +25,13 @@ if ($Poolname -eq $Name) {
     $Algos = $ZergAlgos | ForEach-Object { if ($Bad_pools.$_ -notcontains $Name) { $_ } }
     $zergpool_Request.PSObject.Properties.Value | % { $_.Estimate = [Decimal]$_.Estimate }
 
+    ##Add Active Coins for calcs
+    $Active = $zergpool_Request.PSObject.Properties.Value | Where-Object sym -in $global:ActiveSymbol
+    if ($Active) { $Zergpool_Sorted | Add-Member $Active.sym $Active -Force }
+
     $Algos | ForEach-Object {
 
         $Selected = $_
-
-        ##Add Active Coins for calcs
-        $Active = $zergpool_Request.PSObject.Properties.Value | Where-Object sym -in $global:ActiveSymbol
 
         $Best = $zergpool_Request.PSObject.Properties.Value | 
         Where-Object Algo -eq $Selected | 
@@ -42,7 +43,6 @@ if ($Poolname -eq $Name) {
         Sort-Object Price -Descending |
         Select -First 1
 
-        if ($Active -ne $null) { $Zergpool_Sorted | Add-Member $Active.sym $Active -Force }
         if ($Best -ne $null) { $Zergpool_Sorted | Add-Member $Best.sym $Best -Force }
     }
 
