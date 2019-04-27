@@ -877,7 +877,7 @@ While ($true) {
             $DonateText = "Miner has donated on $DonateTime"; 
             $DonateText | Set-Content ".\build\txt\donate.txt"
         }
-        elseif ($Coin) {
+        elseif ($Coin.Count -eq 1) {
             $Passwordcurrency1 = $Coin
             $Passwordcurrency2 = $Coin
             $Passwordcurrency3 = $Coin

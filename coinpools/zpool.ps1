@@ -29,22 +29,33 @@ if ($Poolname -eq $Name) {
     $zpoolAlgos += $ASIC_ALGO
 
     $Algos = $zpoolAlgos | ForEach-Object { if ($Bad_pools.$_ -notcontains $Name) { $_ } }
-    $zpool_Request.PSObject.Properties.Value | % { $_.Estimate = [Decimal]$_.Estimate }
+    $zergpool_Request.PSObject.Properties.Value | % { $_.Estimate = [Decimal]$_.Estimate }
 
-    $Algos | ForEach-Object {
+    ##Add Active Coins for calcs
+    $Active = $zpool_Request.PSObject.Properties.Value | Where-Object sym -in $global:ActiveSymbol
+    if ($Active) { $zpool_Request | Add-Member $Active.sym $Active -Force }
+
+    if ($Coin.Count -gt 1) {
+        $CoinsOnly = $zpool_Request.PSObject.Properties.Value | Where-Object sym -in $Coin
+        if ($CoinsOnly) { $zpool_Request | Add-Member $CoinsOnly.sym $CoinsOnly -Force }
+    }
+
+    if ($Coin.Count -eq 0) {
+        $Algos | ForEach-Object {
     
-        $Selected = $_
+            $Selected = $_
 
-        $Best = $zpool_Request.PSObject.Properties.Value | 
-        Where-Object Algo -eq $Selected | 
-        Where-Object Algo -in $global:FeeTable.zpool.keys | 
-        Where-Object Algo -in $global:divisortable.zpool.Keys | 
-        Where-Object estimate -gt 0 | 
-        Where-Object hashrate -ne 0 | 
-        Sort-Object Price -Descending |
-        Select-Object -First 1
+            $Best = $zpool_Request.PSObject.Properties.Value | 
+            Where-Object Algo -eq $Selected | 
+            Where-Object Algo -in $global:FeeTable.zpool.keys | 
+            Where-Object Algo -in $global:divisortable.zpool.Keys | 
+            Where-Object estimate -gt 0 | 
+            Where-Object hashrate -ne 0 | 
+            Sort-Object Price -Descending |
+            Select-Object -First 1
 
-        if ($Best -ne $null) { $zpool_Sorted | Add-Member $Best.sym $Best -Force }
+            if ($Best -ne $null) { $zpool_Sorted | Add-Member $Best.sym $Best -Force }
+        }
     }
 
     if ($Stat_All -eq "Yes") {

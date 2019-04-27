@@ -10,9 +10,9 @@ if ($Poolname -eq $Name) {
     if (($ahashpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) { 
         Write-Log "SWARM contacted ($Name) but ($Name) the response was empty." 
         return 
-    } 
+    }
   
-    $ahashpool_Request | 
+    $ahashpool_Request |
     Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
     Select-Object -ExpandProperty Name | 
     Where-Object { $ahashpool_Request.$_.hashrate -gt 0 } | 
