@@ -167,7 +167,9 @@ param(
     [Parameter(Mandatory = $false)]
     [Int]$Custom_Periods = 1, ## Number of periods to factor moving averages (if not using timeframe)
     [Parameter(Mandatory = $false)]
-    [String]$Volume = "No"  ## If set to yes- Will penalize pools that have lower hashrates that others.
+    [String]$Volume = "No",  ## If set to yes- Will penalize pools that have lower hashrates that others.
+    [Parameter(Mandatory = $false)]
+    [array]$BanPool  ## If set to yes- Will penalize pools that have lower hashrates that others.
 )
 
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
@@ -860,7 +862,7 @@ While ($true) {
         $Volume = $SWARMParams.Volume; $Auto_Algo = $SWARMParams.Auto_Algo;
 
         ## Check to see if wallet is present:
-        if (-not $Wallet1) { write-Log "missing wallet1 argument, exiting in 5 seconds" -ForeGroundColor Red, Start-Sleep -S 5; exit }
+        if (-not $Wallet1) { write-Log "missing wallet1 argument, exiting in 5 seconds" -ForeGroundColor Red; Start-Sleep -S 5; exit }
 
         ## Make it so that if Farm_Hash Is Not Specified, HiveOS functions are removed.
         ## In case user forgets to change -HiveOS to "No"
@@ -987,6 +989,14 @@ While ($true) {
         $global:divisortable.Add("fairpool", @{ })
         
         ##Get HashTable For Pre-Sorting
+        ##Before We Do, We Need To Clear Any HashRates Related To -No_Miner
+        if($No_Miner.Count -gt 0 -and $No_Miner -ne "") {
+            $No_Miner | ForEach-Object {
+                $BadStat = ".\stats\*$($_)*"
+                Remove-Item $BadStat -Force -ErrorAction SilentlyContinue | OUt-Null
+            }
+        }
+
         Write-Log "Loading Miner Hashrates" -ForegroundColor Yellow
         $global:Miner_HashTable = Get-MinerHashTable
 
