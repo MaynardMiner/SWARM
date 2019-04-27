@@ -21,13 +21,13 @@ if ($Poolname -eq $Name) {
     $nicehash_Request.result | 
     Select-Object -ExpandProperty simplemultialgo | 
     Where-Object paying -ne 0 | 
-    Where-Object { $Naming.$($_.Name) } | 
+    Where-Object { $global:Exclusions.$($_.name) } |
     ForEach-Object {
     
         $nicehash_Algorithm = $_.name.ToLower()
 
         if ($Algorithm -contains $nicehash_Algorithm -or $ASIC_ALGO -contains $nicehash_Algorithm) {
-            if ($Bad_pools.$nicehash_Algorithm -notcontains $Name) {
+            if ($Name -notin $global:Exclusions.$nicehash_Algorithm.exclusions -and $nicehash_Algorithm -notin $Global:banhammer) {
 
                 ## Nicehash 'Gets' you with the fees. If you read the fine print,
                 ## If you do not use a nicehash wallet- Your total fee will end up

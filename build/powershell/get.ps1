@@ -251,29 +251,29 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
     }
 
     "asic" {
-        if(Test-Path ".\build\txt\bestminers.txt") {$BestMiners = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-Json}
-        else{$Get += "No miners running"}
+        if (Test-Path ".\build\txt\bestminers.txt") { $BestMiners = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-Json }
+        else { $Get += "No miners running" }
         $ASIC = $BestMiners | Where Type -eq "ASIC"
-        if($ASIC) {
+        if ($ASIC) {
             . .\build\powershell\hashrates.ps1
             $Get += "Miner Name: $($ASIC.MinerName)"
             $Get += "Miner Currently Mining: $($ASIC.Symbol)"
-            $command = @{command = "pools"; parameter = "0"} | ConvertTo-Json -Compress
+            $command = @{command = "pools"; parameter = "0" } | ConvertTo-Json -Compress
             $request = Get-TCP -Port $ASIC.Port -Server $ASIC.Server -Message $Command -Timeout 5
-            if($request) {
+            if ($request) {
                 $response = $request | ConvertFrom-Json
                 $PoolDetails = $response.POOLS | Where Pool -eq 1
-                if($PoolDetails) {
-                    if($PoolDetails[-1] -notmatch "}"){$PoolDetails =$PoolDetails.Substring(0,$PoolDetails.Length-1)}
-                   $PoolDetails | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | %{
-                       $Get += "Active Pool $($_) = $($PoolDetails.$_)"
-                   }
+                if ($PoolDetails) {
+                    if ($PoolDetails[-1] -notmatch "}") { $PoolDetails = $PoolDetails.Substring(0, $PoolDetails.Length - 1) }
+                    $PoolDetails | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | % {
+                        $Get += "Active Pool $($_) = $($PoolDetails.$_)"
+                    }
                 }
-                else{$Get += "contacted $($ASIC.MinerName), but no active pool was found"}
+                else { $Get += "contacted $($ASIC.MinerName), but no active pool was found" }
             }
-            else{$Get += "Failed to contact miner on $($ASIC.Server) ($ASIC.Port) to get details"}
+            else { $Get += "Failed to contact miner on $($ASIC.Server) ($ASIC.Port) to get details" }
         }
-        else{$Get += "No ASIC miners running"}
+        else { $Get += "No ASIC miners running" }
     }
 
 
@@ -289,39 +289,46 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                     "all" {
                         $StatNames = Get-ChildItem ".\stats" | Where Name -LIKE "*hashrate*"
                         $StatNames = $StatNames.Name -replace ".txt", ""
-                        $Stats = [PSCustomObject]@{}
-                        if (Test-Path "stats") {Get-ChildItemContent "stats" | ForEach {$Stats | Add-Member $_.Name $_.Content}}
+                        $Stats = [PSCustomObject]@{ }
+                        if (Test-Path "stats") { Get-ChildItemContent "stats" | ForEach { $Stats | Add-Member $_.Name $_.Content } }
                     }
                     default {
-                        $Stats = [PSCustomObject]@{}
+                        $Stats = [PSCustomObject]@{ }
                         $StatNames = Get-ChildItem ".\stats" | Where Name -like "*$argument2*"
                         $StatNames = $StatNames.Name -replace ".txt", ""
-                        if (Test-Path "stats") {Get-ChildItemContent "stats" | ForEach {$Stats | Add-Member $_.Name $_.Content}}
+                        if (Test-Path "stats") { Get-ChildItemContent "stats" | ForEach { $Stats | Add-Member $_.Name $_.Content } }
                     }
                 } 
             }
             else {
                 $StatNames = Get-ChildItem ".\stats" | Where Name -LIKE "*hashrate*"
                 $StatNames = $StatNames.Name -replace ".txt", ""
-                $Stats = [PSCustomObject]@{}
-                if (Test-Path "stats") {Get-ChildItemContent "stats" | ForEach {$Stats | Add-Member $_.Name $_.Content}}
+                $Stats = [PSCustomObject]@{ }
+                if (Test-Path "stats") { Get-ChildItemContent "stats" | ForEach { $Stats | Add-Member $_.Name $_.Content } }
             }
             $BenchTable = @()
-            $StatNames | Foreach {$BenchTable += [PSCustomObject]@{Miner = $_ -split "_" | Select -First 1; Algo = $_ -split "_" | Select -Skip 1 -First 1; HashRates = $Stats."$($_)".Day | ConvertTo-Hash; Raw = $Stats."$($_)".Day}}
+            $StatNames | Foreach {
+                $BenchTable += [PSCustomObject]@{
+                    Miner     = $_ -split "_" | Select -First 1; 
+                    Algo      = $_ -split "_" | Select -Skip 1 -First 1; 
+                    HashRates = $Stats."$($_)".Day | ConvertTo-Hash; 
+                    Raw       = $Stats."$($_)".Day
+                }
+            }
             function Get-BenchTable {
                 $BenchTable | Sort-Object -Property Algo -Descending | Format-Table (
-                    @{Label = "Miner"; Expression = {$($_.Miner)}},
-                    @{Label = "Algorithm"; Expression = {$($_.Algo)}},
-                    @{Label = "Speed"; Expression = {$($_.HashRates)}}    
+                    @{Label = "Miner"; Expression = { $($_.Miner) } },
+                    @{Label = "Algorithm"; Expression = { $($_.Algo) } },
+                    @{Label = "Speed"; Expression = { $($_.HashRates) } }    
                 )
             }
-            if($asjson) {
+            if ($asjson) {
                 $Get = $BenchTable | ConvertTo-Json
             }
-            else{$Get = Get-BenchTable}
+            else { $Get = Get-BenchTable }
             Get-BenchTable | Out-File ".\build\txt\get.txt"
         }
-        else {$Get = "No Stats Found"}
+        else { $Get = "No Stats Found" }
     }
 
     "wallets" {
@@ -338,11 +345,11 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 if (Test-Path ".\build\txt\minerstatslite.txt") {
                     $Get = Get-Content ".\build\txt\minerstatslite.txt"
                 }
-                else {$Get = "No Stats History Found"}    
+                else { $Get = "No Stats History Found" }    
             }
             else {
-                if (Test-Path ".\build\txt\minerstatslite.txt") {$Get = Get-Content ".\build\txt\minerstatslite.txt"}
-                else {$Get = "No Stats History Found"}
+                if (Test-Path ".\build\txt\minerstatslite.txt") { $Get = Get-Content ".\build\txt\minerstatslite.txt" }
+                else { $Get = "No Stats History Found" }
             }
         }
         else {
@@ -350,49 +357,49 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 $Total = [int]$Argument2 + 1
                 if (Test-Path ".\build\txt\minerstats.txt") {
                     $Get = Get-Content ".\build\txt\minerstats.txt"
-                    $Get = $Get | % {$Number = 0; if ($_ -ne "") {$Number = $_.SubString(0, 2); $Number = $Number -replace " ", ""; try {$Number = [int]$Number}catch {$Number = 0}}; if ($Number -lt $Total) {$_}}
+                    $Get = $Get | % { $Number = 0; if ($_ -ne "") { $Number = $_.SubString(0, 2); $Number = $Number -replace " ", ""; try { $Number = [int]$Number }catch { $Number = 0 } }; if ($Number -lt $Total) { $_ } }
                 }
-                else {$Get = "No Stats History Found"}    
+                else { $Get = "No Stats History Found" }    
 
             }
             else {
-                if (Test-Path ".\build\txt\minerstats.txt") {$Get = Get-Content ".\build\txt\minerstats.txt"}
-                else {$Get = "No Stats History Found"}
+                if (Test-Path ".\build\txt\minerstats.txt") { $Get = Get-Content ".\build\txt\minerstats.txt" }
+                else { $Get = "No Stats History Found" }
             }
         }
     }
-    "charts"{if (Test-Path ".\build\txt\charts.txt") {$Get = Get-Content ".\build\txt\charts.txt"}}
+    "charts" { if (Test-Path ".\build\txt\charts.txt") { $Get = Get-Content ".\build\txt\charts.txt" } }
     "active" {
-        if (Test-Path ".\build\txt\mineractive.txt") {$Get = Get-Content ".\build\txt\mineractive.txt"}
-        else {$Get = "No Miner History Found"}
+        if (Test-Path ".\build\txt\mineractive.txt") { $Get = Get-Content ".\build\txt\mineractive.txt" }
+        else { $Get = "No Miner History Found" }
     }
     "parameters" {
         if (Test-Path ".\config\parameters\arguments.json") {
             $SwarmParameters = @()
             $MinerArgs = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
-            $MinerArgs | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Foreach {$SwarmParameters += "$($_): $($MinerArgs.$_)"}
+            $MinerArgs | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Foreach { $SwarmParameters += "$($_): $($MinerArgs.$_)" }
         }
-        else {$SwarmParameters += "No Parameters For SWARM found"}
+        else { $SwarmParameters += "No Parameters For SWARM found" }
         $Get = $SwarmParameters
     }
     "screen" {
-        if (Test-Path ".\logs\$($argument2).log") {$Get = Get-Content ".\logs\$($argument2).log"}
-        if ($argument2 -eq "miner") {if (Test-Path ".\logs\*active*") {$Get = Get-Content ".\logs\*active.log*"}}
+        if (Test-Path ".\logs\$($argument2).log") { $Get = Get-Content ".\logs\$($argument2).log" }
+        if ($argument2 -eq "miner") { if (Test-Path ".\logs\*active*") { $Get = Get-Content ".\logs\*active.log*" } }
         $Get = $Get | Select -Last 300
     }
     "oc" {
-        if (Test-Path ".\build\txt\oc-settings.txt") {$Get = Get-Content ".\build\txt\oc-settings.txt"}
-        else {$Get = "No oc settings found"}
+        if (Test-Path ".\build\txt\oc-settings.txt") { $Get = Get-Content ".\build\txt\oc-settings.txt" }
+        else { $Get = "No oc settings found" }
     }
     "miners" {
         $GetJsons = Get-ChildItem ".\config\miners"
-        $ConvertJsons = [PSCustomObject]@{}
-        $GetJsons.Name | foreach {$Getfile = Get-Content ".\config\miners\$($_)" | ConvertFrom-Json; $ConvertJsons | Add-Member $Getfile.Name $Getfile -Force}
+        $ConvertJsons = [PSCustomObject]@{ }
+        $GetJsons.Name | foreach { $Getfile = Get-Content ".\config\miners\$($_)" | ConvertFrom-Json; $ConvertJsons | Add-Member $Getfile.Name $Getfile -Force }
         if ($argument2) {
             $Get += "Current $Argument2 Miner List:"
             $Get += " "   
-            $ConvertJsons.PSObject.Properties.Name | Where {$ConvertJsons.$_.$Argument2} | foreach {$Get += "$($_)"}
-            $Selected = $ConvertJsons.PSObject.Properties.Name | Where {$_ -eq $Argument3} | % {$ConvertJsons.$_}
+            $ConvertJsons.PSObject.Properties.Name | Where { $ConvertJsons.$_.$Argument2 } | foreach { $Get += "$($_)" }
+            $Selected = $ConvertJsons.PSObject.Properties.Name | Where { $_ -eq $Argument3 } | % { $ConvertJsons.$_ }
             if ($Selected) {
                 $Cuda = Get-Content ".\build\txt\cuda.txt"
                 $Platform = Get-Content ".\build\txt\os.txt"
@@ -400,24 +407,24 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                     $Number = $argument2 -Replace "NVIDIA", ""
                     if ($Platform -eq "linux") {
                         switch ($Cuda) {
-                            "9.2" {$UpdateJson = Get-Content ".\config\update\nvidia9.2-linux.json" | ConvertFrom-Json}
-                            "10" {$UpdateJson = Get-Content ".\config\update\nvidia10-linux.json" | ConvertFrom-Json}
+                            "9.2" { $UpdateJson = Get-Content ".\config\update\nvidia9.2-linux.json" | ConvertFrom-Json }
+                            "10" { $UpdateJson = Get-Content ".\config\update\nvidia10-linux.json" | ConvertFrom-Json }
                         }
                     }
-                    else {$UpdateJson = Get-Content ".\config\update\nvidia-win.json" | ConvertFrom-JSon}
+                    else { $UpdateJson = Get-Content ".\config\update\nvidia-win.json" | ConvertFrom-JSon }
                 }
                 if ($argument2 -like "*AMD*") {
                     $Number = $argument2 -Replace "AMD", ""
                     switch ($Platform) {
-                        "linux" {$UpdateJson = Get-Content ".\config\update\amd-linux.json" | ConvertFrom-Json}
-                        "windows" {$UpdateJson = Get-Content ".\config\update\amd-windows.json" | ConvertFrom-Json}
+                        "linux" { $UpdateJson = Get-Content ".\config\update\amd-linux.json" | ConvertFrom-Json }
+                        "windows" { $UpdateJson = Get-Content ".\config\update\amd-windows.json" | ConvertFrom-Json }
                     }
                 }
                 if ($argument2 -like "*CPU*") {
                     $Number = 1
                     switch ($Platform) {  
-                        "linux" {$UpdateJson = Get-Content ".\config\update\cpu-linux.json" | ConvertFrom-Json}
-                        "windows" {$UpdateJson = Get-Content ".\config\update\cpu-windows.json" | ConvertFrom-Json}
+                        "linux" { $UpdateJson = Get-Content ".\config\update\cpu-linux.json" | ConvertFrom-Json }
+                        "windows" { $UpdateJson = Get-Content ".\config\update\cpu-windows.json" | ConvertFrom-Json }
                     }
                 }
                 $getpath = "path$($Number)"
@@ -436,24 +443,24 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                         $Get += " "
                         $Get += "Getting: $Argument1 $Argument2 $Argument3 $Argument4 $Argument5"
                         $Get += " "
-                        $Get += if ($selected.$argument2.$argument4.$argument5) {$selected.$argument2.$argument4.$argument5}else {"none"}
+                        $Get += if ($selected.$argument2.$argument4.$argument5) { $selected.$argument2.$argument4.$argument5 }else { "none" }
                     }
                     elseif ($argument6) {
                         $Get += " "
                         $Get += "Getting: $Argument1 $Argument2 $Argument3 $Argument4 $Argument5 $Argument6"
                         $Get += " "
-                        $Get += if ($selected.$argument2.$argument4.$argument5.$Arguement6) {$selected.$argument2.$argument4.$argument5.$Arguement6}else {"none"}
+                        $Get += if ($selected.$argument2.$argument4.$argument5.$Arguement6) { $selected.$argument2.$argument4.$argument5.$Arguement6 }else { "none" }
                     }
                     else {
                         $Get += " "
                         $Get += "Getting: $Argument1 $Argument2 $Argument3 $Argument4"
                         $Get += " "
-                        $Get += if ($selected.$argument2.$argument4) {$selected.$argument2.$argument4}else {"none"}
+                        $Get += if ($selected.$argument2.$argument4) { $selected.$argument2.$argument4 }else { "none" }
                     }
                 }  
             }
         }
-        else {$Get += "No Platforms Selected: Please choose a platform NVIDIA1,NVIDIA2,NVIDIA3,AMD1,CPU"}
+        else { $Get += "No Platforms Selected: Please choose a platform NVIDIA1,NVIDIA2,NVIDIA3,AMD1,CPU" }
     }
     "update" {
         if (Test-Path "C:\") {
@@ -462,18 +469,18 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 $version = Get-Content ".\build\txt\version.txt"
                 $versionnumber = $version -replace "SWARM.", ""
                 $version1 = $versionnumber[4]
-                $version1 = $version1 | % {iex $_}
+                $version1 = $version1 | % { iex $_ }
                 $version1 = $version1 + 1
                 $version2 = $versionnumber[2]
                 $version3 = $versionnumber[0]
                 if ($version1 -eq 10) {
                     $version1 = 0; 
-                    $version2 = $version2 | % {iex $_}
+                    $version2 = $version2 | % { iex $_ }
                     $version2 = $version2 + 1
                 }
                 if ($version2 -eq 10) {
                     $version2 = 0; 
-                    $version3 = $version3 | % {iex $_}
+                    $version3 = $version3 | % { iex $_ }
                     $version3 = $version3 + 1
                 }
                 $versionnumber = "$version3.$version2.$version1"    
@@ -501,14 +508,14 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 $FileName = join-path ".\x64" "SWARM.$VersionNumber.zip"
                 $DLFileName = Join-Path "$Dir" "x64\SWARM.$VersionNumber.zip"
                 $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$versionNumber/SWARM.$VersionNumber.zip"
-                try { Invoke-WebRequest $URI -OutFile $FileName -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }catch {$Failed = $true; Write-Host "Failed To Contact Github For Download! Must Do So Manually"}
+                try { Invoke-WebRequest $URI -OutFile $FileName -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }catch { $Failed = $true; Write-Host "Failed To Contact Github For Download! Must Do So Manually" }
                 Start-Sleep -S 5
                 if ($Failed -eq $false) {
                     Start-Process "7z" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -Wait -WindowStyle Minimized
                     Start-Sleep -S 3
                     Write-Host "Config Command Initiated- Restarting SWARM`n"
                     $MinerFile = ".\build\pid\miner_pid.txt"
-                    if (Test-Path $MinerFile) {$MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue}
+                    if (Test-Path $MinerFile) { $MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue }
                     Stop-Process $MinerId -Force
                     Write-Host "Stopping Old Miner`n"
                     Start-Sleep -S 5
@@ -523,9 +530,9 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                     Set-Location $Dir
                 }
             }
-            else {$Get += "Cannot update. Are you administrator?"}
+            else { $Get += "Cannot update. Are you administrator?" }
         }
-        else {$Get += "get update can only run in windows currently..."}
+        else { $Get += "get update can only run in windows currently..." }
     }
 
     default {

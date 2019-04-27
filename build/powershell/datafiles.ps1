@@ -26,10 +26,18 @@ function Get-Data {
         Set-Location $CmdDir     
     }
 
-    if (Test-Path ".\build\bash\view") {
-        Copy-Item ".\build\bash\view" -Destination "/usr/bin" -force | Out-Null
+    if (Test-Path ".\build\bash\nview") {
+        Copy-Item ".\build\bash\nview" -Destination "/usr/bin" -force | Out-Null
         Set-Location "/usr/bin"
-        Start-Process "chmod" -ArgumentList "+x view"
+        Start-Process "chmod" -ArgumentList "+x nview"
+        Set-Location "/"
+        Set-Location $CmdDir
+    }
+
+    if (Test-Path ".\build\bash\bans") {
+        Copy-Item ".\build\bash\bans" -Destination "/usr/bin" -force | Out-Null
+        Set-Location "/usr/bin"
+        Start-Process "chmod" -ArgumentList "+x bans"
         Set-Location "/"
         Set-Location $CmdDir
     }

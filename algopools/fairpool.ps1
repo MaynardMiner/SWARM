@@ -21,13 +21,13 @@ if ($Poolname -eq $Name) {
     Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
     Select-Object -ExpandProperty Name | 
     Where-Object { $fairpool_Request.$_.hashrate -gt 0 } | 
-    Where-Object { $Naming.$($fairpool_Request.$_.name) } | 
+    Where-Object { $global:Exclusions.$($fairpool_Request.$_.name) } |
     ForEach-Object {
  
         $fairpool_Algorithm = $fairpool_Request.$_.name.ToLower()
 
         if ($Algorithm -contains $fairpool_Algorithm -or $ASIC_ALGO -contains $fairpool_Algorithm) {
-            if ($Bad_pools.$fairpool_Algorithm -notcontains $Name) {
+            if ($Name -notin $global:Exclusions.$fairpool_Algorithm.exclusions -and $fairpool_Algorithm -notin $Global:banhammer) {
                 $fairpool_Host = "$region"
                 $fairpool_Port = $fairpool_Request.$_.port
                 $Divisor = (1000000 * $fairpool_Request.$_.mbtc_mh_factor)

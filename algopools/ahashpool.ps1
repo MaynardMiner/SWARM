@@ -16,13 +16,13 @@ if ($Poolname -eq $Name) {
     Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
     Select-Object -ExpandProperty Name | 
     Where-Object { $ahashpool_Request.$_.hashrate -gt 0 } | 
-    Where-Object { $Naming.$($ahashpool_Request.$_.name) } | 
+    Where-Object { $global:Exclusions.$($ahashpool_Request.$_.name) } |
     ForEach-Object {
  
         $ahashpool_Algorithm = $ahashpool_Request.$_.name.ToLower()
 
         if ($Algorithm -contains $ahashpool_Algorithm -or $ASIC_ALGO -contains $ahashpool_Algorithm) {
-            if ($Bad_pools.$ahashpool_Algorithm -notcontains $Name) {
+            if ($Name -notin $global:Exclusions.$ahashpool_Algorithm.exclusions -and $ahashpool_Algorithm -notin $Global:banhammer) {
                 $ahashpool_Host = "$_.mine.ahashpool.com"
                 $ahashpool_Port = $ahashpool_Request.$_.port
                 $Fees = $ahashpool_Request.$_.fees

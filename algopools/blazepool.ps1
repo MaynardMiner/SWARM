@@ -16,13 +16,13 @@ if ($Poolname -eq $Name) {
     Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
     Select-Object -ExpandProperty Name | 
     Where-Object { $blazepool_Request.$_.hashrate -gt 0 } | 
-    Where-Object { $Naming.$($blazepool_Request.$_.name) } | 
+    Where-Object { $global:Exclusions.$($blazepool_Request.$_.name) } |
     ForEach-Object {
 
         $blazepool_Algorithm = $blazepool_Request.$_.name.ToLower()
 
         if ($Algorithm -contains $blazepool_Algorithm -or $ASIC_ALGO -contains $blazepool_Algorithm) {
-            if ($Bad_pools.$blazepool_Algorithm -notcontains $Name) {
+            if ($Name -notin $global:Exclusions.$blazepool_Algorithm.exclusions -and $blazepool_Algorithm -notin $Global:banhammer) {
                 $blazepool_Host = "$_.mine.blazepool.com"
                 $blazepool_Port = $blazepool_Request.$_.port
                 $Divisor = (1000000 * $blazepool_Request.$_.mbtc_mh_factor)

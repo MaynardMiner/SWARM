@@ -15,13 +15,13 @@ if ($Poolname -eq $Name) {
     Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
     Select-Object -ExpandProperty Name | 
     Where-Object { $Hashrefinery_Request.$_.hashrate -gt 0 } | 
-    Where-Object { $Naming.$($Hashrefinery_Request.$_.name) } | 
+    Where-Object { $global:Exclusions.$($Hashrefinery_Request.$_.name) } |
     ForEach-Object {
    
         $Hashrefinery_Algorithm = $Hashrefinery_Request.$_.name.ToLower()
 
         if ($Algorithm -contains $Hashrefinery_Algorithm -or $ASIC_ALGO -contains $Hashrefinery_Algorithm) {
-            if ($Bad_pools.$Hashrefinery_Algorithm -notcontains $Name) {
+            if ($Name -notin $global:Exclusions.$Hashrefinery_Algorithm.exclusions -and $Hashrefinery_Algorithm -notin $Global:banhammer) {
                 $Hashrefinery_Host = "$_.us.hashrefinery.com"
                 $Hashrefinery_Port = $Hashrefinery_Request.$_.port
                 $Divisor = (1000000 * $Hashrefinery_Request.$_.mbtc_mh_factor)

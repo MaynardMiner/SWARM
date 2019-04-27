@@ -104,5 +104,8 @@
     "Stat_All": "No",
     "Custom_Periods": 1,
     "Volume": "No",
-    "Auto_Algo": "Yes"
+    "Auto_Algo": "Yes",
+    "Bans": [
+             ""
+            ]
 }

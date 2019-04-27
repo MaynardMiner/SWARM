@@ -48,7 +48,8 @@ if ($Poolname -eq $Name) {
             $Best = $zpool_Request.PSObject.Properties.Value | 
             Where-Object Algo -eq $Selected | 
             Where-Object Algo -in $global:FeeTable.zpool.keys | 
-            Where-Object Algo -in $global:divisortable.zpool.Keys | 
+            Where-Object Algo -in $global:divisortable.zpool.Keys |
+            Where-Object {$global:Exclusions.$($_.Algo)} |
             Where-Object estimate -gt 0 | 
             Where-Object hashrate -ne 0 | 
             Sort-Object Price -Descending |
@@ -66,6 +67,7 @@ if ($Poolname -eq $Name) {
             Where-Object Algo -eq $Selected | 
             Where-Object Algo -in $global:FeeTable.zpool.keys | 
             Where-Object Algo -in $global:divisortable.zpool.Keys | 
+            Where-Object {$global:Exclusions.$($_.Algo)} |
             Where-Object estimate -gt 0 | 
             Where-Object hashrate -ne 0 | 
             Sort-Object Price -Descending |

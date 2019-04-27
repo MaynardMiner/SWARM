@@ -42,7 +42,8 @@ if ($Poolname -eq $Name) {
             $Best = $zergpool_Request.PSObject.Properties.Value | 
             Where-Object Algo -eq $Selected | 
             Where-Object Algo -in $global:FeeTable.zergpool.keys | 
-            Where-Object Algo -in $global:divisortable.zergpool.Keys | 
+            Where-Object Algo -in $global:divisortable.zergpool.Keys |
+            Where-Object {$global:Exclusions.$($_.Algo)} |
             Where-Object noautotrade -eq "0" | 
             Where-Object estimate -gt 0 | 
             Where-Object hashrate -ne 0 | 
@@ -62,6 +63,7 @@ if ($Poolname -eq $Name) {
             Where-Object Algo -eq $Selected |
             Where-Object Algo -in $global:FeeTable.zergpool.keys |
             Where-Object Algo -in $global:divisortable.zergpool.Keys |
+            Where-Object {$global:Exclusions.$($_.Algo)} |
             Where-Object noautotrade -eq "0" |
             Where-Object estimate -gt 0 |
             Where-Object hashrate -ne 0 |

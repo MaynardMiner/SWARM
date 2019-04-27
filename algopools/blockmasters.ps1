@@ -20,13 +20,13 @@ if ($Poolname -eq $Name) {
     Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
     Select-Object -ExpandProperty Name | 
     Where-Object { $blockpool_Request.$_.hashrate -gt 0 } | 
-    Where-Object { $Naming.$($blockpool_Request.$_.name) } | 
+    Where-Object { $global:Exclusions.$($blockpool_Request.$_.name) } |
     ForEach-Object {
 
         $blockpool_Algorithm = $blockpool_Request.$_.name.ToLower()
 
         if ($Algorithm -contains $blockpool_Algorithm -or $ASIC_ALGO -contains $blockpool_Algorithm) {
-            if ($Bad_pools.$blockpool_Algorithm -notcontains $Name) {
+            if ($Name -notin $global:Exclusions.$blockpool_Algorithm.exclusions -and $blockpool_Algorithm -notin $Global:banhammer) {
                 $blockpool_Host = "$($Region)blockmasters.co"
                 $blockpool_Port = $blockpool_Request.$_.port
                 $Divisor = (1000000 * $blockpool_Request.$_.mbtc_mh_factor)

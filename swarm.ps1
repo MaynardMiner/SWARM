@@ -87,12 +87,6 @@ param(
     [Parameter(Mandatory = $false)]
     [Int]$Benchmark = 190, #Time For Benchmarking
     [Parameter(Mandatory = $false)]
-    [array]$No_Algo1 = "", #Prohibit Algorithm for NVIDIA1 / AMD1
-    [Parameter(Mandatory = $false)]
-    [array]$No_Algo2 = "", #Prohibit Algorithm for NVIDIA2
-    [Parameter(Mandatory = $false)]
-    [array]$No_Algo3 = "", #Prohibit Algorithm for NVIDIA3
-    [Parameter(Mandatory = $false)]
     [String]$Favor_Coins = "Yes", #If Auto-Coin Switching, Favor Coins Over Algorithms
     [Parameter(Mandatory = $false)]
     [double]$Threshold = 0.02, #Bitcoin threshold- If Above, SWARM assumes stat is bs
@@ -151,8 +145,6 @@ param(
     [Parameter(Mandatory = $false)]
     [String]$Worker, ##Worker Name (whalesburg pool)
     [Parameter(Mandatory = $false)]
-    [array]$No_Miner, ##Prohibit miner
-    [Parameter(Mandatory = $false)]
     [string]$HiveAPIkey, ##Hive API key
     [Parameter(Mandatory = $false)]
     [array]$Algorithm, ##If Used- Only these algorithms will be used
@@ -169,15 +161,20 @@ param(
     [Parameter(Mandatory = $false)]
     [String]$Volume = "No",  ## If set to yes- Will penalize pools that have lower hashrates that others.
     [Parameter(Mandatory = $false)]
-    [array]$BanPool  ## If set to yes- Will penalize pools that have lower hashrates that others.
+    [array]$Bans  ## Add user created bans.
 )
-
-## Debug Mode- Allow you to run with last known arguments or arguments.json.
-$Debug = $false
-if($Debug -eq $True -and (Test-Path "C:\")){Set-ExecutionPolicy Bypass -Scope Process}
 
 ## Set Current Path
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+
+## Debug Mode- Allow you to run with last known arguments or arguments.json.
+$Debug = $True
+if($Debug -eq $True)
+ {
+  Start-Transcript ".\logs\debug.log"
+  if((Test-Path "C:\")) {Set-ExecutionPolicy Bypass -Scope Process}
+ }
+
 
 ##filepath dir
 $dir = (Split-Path $script:MyInvocation.MyCommand.Path)
@@ -353,6 +350,7 @@ if ($Debug -ne $true) {
     $CurrentParams.ADD("Custom_Periods", $Custom_Periods);
     $CurrentParams.ADD("Volume", $Volume);
     $CurrentParams.ADD("Auto_Algo", $Auto_Algo);
+    $CurrentParams.ADD("Bans", $Bans);
 
     ## Save to Config Folder
     $StartParams = $CurrentParams | ConvertTo-Json 
@@ -425,6 +423,7 @@ if ((Test-Path ".\config\parameters\newarguments.json") -or $Debug -eq $true) {
     $ASIC_IP = $SWARMParams.ASIC_IP; $ASIC_ALGO = $SWARMParams.ASIC_ALGO;
     $Stat_All = $SWARMParams.Stat_All; $Custom_Periods = $SWARMParams.Custom_Periods;
     $Volume = $SWARMParms.Volume; $Auto_ALgo = $SWARMParams.Auto_Algo;
+    $Bans = $SWARMParams.Bans;
 }
 
 ## Windows Start Up
@@ -476,7 +475,6 @@ $UserDonate = "MaynardVII"
 $WorkerDonate = "Rig1"
 $PoolNumber = 1
 $ActiveMinerPrograms = @()
-$Naming = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
 $Priorities = Get-Content ".\config\pools\pool-priority.json" | ConvertFrom-Json
 $DonationMode = $false
 $Warnings = @()
@@ -860,6 +858,7 @@ While ($true) {
         $ASIC_IP = $SWARMParams.ASIC_IP; $ASIC_ALGO = $SWARMParams.ASIC_ALGO;
         $Stat_All = $SWARMParams.Stat_All; $Custom_Periods = $SWARMParams.Custom_Periods;
         $Volume = $SWARMParams.Volume; $Auto_Algo = $SWARMParams.Auto_Algo;
+        $Bans = $SWARMParams.Bans;
 
         ## Check to see if wallet is present:
         if (-not $Wallet1) { write-Log "missing wallet1 argument, exiting in 5 seconds" -ForeGroundColor Red; Start-Sleep -S 5; exit }
@@ -893,12 +892,16 @@ While ($true) {
         ##Get Wallets
         Get-Wallets
 
-        #Get-Algorithms
+        #Get Algorithms and Bans
         $Algorithm = @()
-        $Pool_Json = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
+        $global:BanHammer = @()
+        $global:Exclusions = $null
+        $Get_User_Bans = . .\build\powershell\bans.ps1 "add" $Bans "process"
+
+        ##Add Algorithms
         if ($Coin.Count -eq 1 -and $Coin -ne "") { $Passwordcurrency1 = $Coin; $Passwordcurrency2 = $Coin; $Passwordcurrency3 = $Coin }
         if ($SWARMAlgorithm) { $SWARMALgorithm | ForEach-Object { $Algorithm += $_ } }
-        elseif($Auto_Algo -eq "Yes") { $Algorithm = $Pool_Json.PSObject.Properties.Name }
+        elseif($Auto_Algo -eq "Yes") { $Algorithm = $global:Exclusions.PSObject.Properties.Name }
         if ($Type -notlike "*NVIDIA*") {
             if ($Type -notlike "*AMD*") {
                 if ($Type -notlike "*CPU*") {
@@ -906,10 +909,7 @@ While ($true) {
                 }
             }
         }
-     
-        $Bad_Pools = Get-BadPools
-        $Bad_Miners = Get-BadMiners
-    
+         
         if ($ASIC_IP -eq "") { $ASIC_IP = "localhost" }
 
         if ($SWARMParams.Rigname1 -eq "Donate") { $Donating = $True }
@@ -990,9 +990,9 @@ While ($true) {
         
         ##Get HashTable For Pre-Sorting
         ##Before We Do, We Need To Clear Any HashRates Related To -No_Miner
-        if($No_Miner.Count -gt 0 -and $No_Miner -ne "") {
-            $No_Miner | ForEach-Object {
-                $BadStat = ".\stats\*$($_)*"
+        if($global:BanHammer -gt 0 -and $global:BanHammer -ne "") {
+            $global:BanHammer | ForEach-Object {
+                $BadStat = ".\stats\*$($_)**hashrate*"
                 Remove-Item $BadStat -Force -ErrorAction SilentlyContinue | OUt-Null
             }
         }
@@ -1025,7 +1025,7 @@ While ($true) {
             ##Get Algorithms again, in case custom changed it.
             $Algorithm = @()
             if ($SWARMAlgorithm) { $SWARMALgorithm | ForEach-Object { $Algorithm += $_ } }
-            else { $Algorithm = $Pool_Json.PSObject.Properties.Name }
+            else { $Algorithm = $global:Exclusions.PSObject.Properties.Name }
             if ($Type -notlike "*NVIDIA*") {
                 if ($Type -notlike "*AMD*") {
                     if ($Type -notlike "*CPU*") {

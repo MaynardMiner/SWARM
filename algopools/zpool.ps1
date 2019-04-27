@@ -21,13 +21,13 @@ if ($Poolname -eq $Name) {
     Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
     Select-Object -ExpandProperty Name | 
     Where-Object { $Zpool_Request.$_.hashrate -gt 0 } | 
-    Where-Object { $Naming.$($Zpool_Request.$_.name) } | 
+    Where-Object { $global:Exclusions.$($Zpool_Request.$_.name) } |
     ForEach-Object {
     
         $Zpool_Algorithm = $Zpool_Request.$_.name.ToLower()
   
         if ($Algorithm -contains $Zpool_Algorithm -or $ASIC_ALGO -contains $Zpool_Algorithm) {
-            if ($Bad_pools.$Zpool_Algorithm -notcontains $Name) {
+            if ($Name -notin $global:Exclusions.$Zpool_Algorithm.exclusions -and $Zpool_Algorithm -notin $Global:banhammer) {
                 $Zpool_Port = $Zpool_Request.$_.port
                 $Zpool_Host = "$($ZPool_Algorithm).$($region).mine.zpool.ca"
                 $Divisor = (1000000 * $Zpool_Request.$_.mbtc_mh_factor)

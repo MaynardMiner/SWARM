@@ -444,6 +444,7 @@ function Start-Webcommand {
                     if ($Params.$_ -ne $argjson.$_) {
                         switch ($_) {
                             default {$Params.$_ = $argjson.$_}
+                            "Bans" {$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $Params.$_ = $NewParamArray}
                             "Coin" {$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $Params.$_ = $NewParamArray}
                             "Algorithm" {$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $Params.$_ = $NewParamArray}
                             "GPUDevices3" {$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $Params.$_ = $NewParamArray}

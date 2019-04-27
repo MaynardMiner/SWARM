@@ -47,12 +47,15 @@ $NVIDIATypes | ForEach-Object {
 
     ##Build Miner Settings
     $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+
         $MinerAlgo = $_
-        $Stat = Get-Stat -Name "$($Name)_$($MinerAlgo)_hashrate"
-        $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
-        if ($Check.RAW -ne "Bad") {
-            $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
-                if ($Algorithm -eq "$($_.Algorithm)" -and $Bad_Miners.$($_.Algorithm) -notcontains $Name) {
+
+        if ($MinerAlgo -in $Algorithm -and $Name -notin $global:Exclusions.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
+            $Stat = Get-Stat -Name "$($Name)_$($MinerAlgo)_hashrate"
+            $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
+        
+            if ($Check.RAW -ne "Bad") {
+                $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                     if ($Config.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))" }
                     [PSCustomObject]@{
                         MName      = $Name
