@@ -29,6 +29,9 @@ if ($Poolname -eq $Name) {
 
         $Selected = $_
 
+        ##Add Active Coins for calcs
+        $Active = $zergpool_Request.PSObject.Properties.Value | Where-Object sym -in $global:ActiveSymbol
+
         $Best = $zergpool_Request.PSObject.Properties.Value | 
         Where-Object Algo -eq $Selected | 
         Where-Object Algo -in $global:FeeTable.zergpool.keys | 
@@ -39,6 +42,7 @@ if ($Poolname -eq $Name) {
         Sort-Object Price -Descending |
         Select -First 1
 
+        if ($Active -ne $null) { $Zergpool_Sorted | Add-Member $Active.sym $Active -Force }
         if ($Best -ne $null) { $Zergpool_Sorted | Add-Member $Best.sym $Best -Force }
     }
 
@@ -47,13 +51,13 @@ if ($Poolname -eq $Name) {
 
             $Selected = $_
 
-            $NotBest = $zergpool_Request.PSObject.Properties.Value | 
-            Where-Object Algo -eq $Selected | 
-            Where-Object Algo -in $global:FeeTable.zergpool.keys | 
-            Where-Object Algo -in $global:divisortable.zergpool.Keys | 
-            Where-Object noautotrade -eq "0" | 
-            Where-Object estimate -gt 0 | 
-            Where-Object hashrate -ne 0 | 
+            $NotBest = $zergpool_Request.PSObject.Properties.Value |
+            Where-Object Algo -eq $Selected |
+            Where-Object Algo -in $global:FeeTable.zergpool.keys |
+            Where-Object Algo -in $global:divisortable.zergpool.Keys |
+            Where-Object noautotrade -eq "0" |
+            Where-Object estimate -gt 0 |
+            Where-Object hashrate -ne 0 |
             Sort-Object Price -Descending |
             Select-Object -skip 1
 

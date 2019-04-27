@@ -401,8 +401,8 @@ function Get-MinerHashRate {
         Write-Log "$($_.Type) is currently mining on $($_.MinerPool)" -foregroundcolor Cyan
         Write-Log "$($_.Type) previous hashrates for $($_.Symbol) is" -NoNewLine -Start
         Write-Log " $MinerPrevious/s" -foreground yellow -End
-        Write-Log "Current Profit Rating: $CurrentProfit"
-        Write-Log "Current Daily Profit: $ScreenProfit
+        Write-Log "Current Profit Rating: $CurrentProfit.   (This is live value with no modifiers)"
+        Write-Log "Current Daily Profit: $ScreenProfit.     (This is daily average with watt calculations)
 "
     }
 }

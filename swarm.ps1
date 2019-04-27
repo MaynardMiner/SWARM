@@ -301,7 +301,7 @@ $FileClear += ".\build\txt\bestminers.txt"
 $FileClear | ForEach-Object { if (Test-Path $_) { Remove-Item $_ -Force } }
 
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
-$Debug = $false
+$Debug = $true
 
 ## Convert Arguments Into Hash Table
 if ($Debug -ne $true) {
@@ -1313,7 +1313,7 @@ While ($true) {
             $SelectedMiner = $BestMiners_Combo | Where-Object Type -EQ $_.Type | Where-Object Path -EQ $_.Path | Where-Object Arguments -EQ $_.Arguments
             $_.Profit = if ($SelectedMiner.Profit) { $SelectedMiner.Profit -as [decimal] }else { "bench" }
             $_.Power = $([Decimal]$($SelectedMiner.Power * 24) / 1000 * $WattEX)
-            $_.Fiat_Day = if ($SelectedMiner.Pool_Estimate) { ($SelectedMiner.Pool_Estimate * $Rates.$Currency).ToString("N2") }else { "bench" }
+            $_.Fiat_Day = if ($SelectedMiner.Pool_Estimate) { ( ($SelectedMiner.Pool_Estimate * $Rates.$Currency) -as [decimal] ).ToString("N2") }else { "bench" }
             if ($SelectedMiner.Profit_Unbiased) { $_.Profit_Day = $(Set-Stat -Name "daily_$($_.Type)_profit" -Value ([double]$($SelectedMiner.Profit_Unbiased))).Day }else { $_.Profit_Day = "bench" }
         }
         
@@ -1719,8 +1719,11 @@ While ($true) {
             }
         }
 
-        ##Benchmarking/Timeout.    
+        ##Benchmarking/Timeout.
+        $global:ActiveSymbol = @()
+
         $BestActiveMiners | ForEach-Object {
+            $global:ActiveSymbol += $($_.Symbol)
             $MinerPoolBan = $false
             $MinerAlgoBan = $false
             $MinerBan = $false

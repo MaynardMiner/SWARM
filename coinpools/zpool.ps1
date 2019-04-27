@@ -61,7 +61,6 @@ if ($Poolname -eq $Name) {
             Select-Object -Skip 1
 
             if ($NotBest -ne $null) { $NotBest | ForEach-Object { $zpool_UnSorted | Add-Member $_.sym $_ -Force } }
-
         }
 
         $zpool_UnSorted | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | ForEach-Object {

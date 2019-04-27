@@ -228,18 +228,24 @@ function start-minersorting {
             if ($Miner.PowerX.$_ -ne $null) {
                 $Day = 24;
                 $Kilo = 1000;
-                $WattCalc1 = (([Decimal]$Miner.PowerX.$_) * $Day)
-                $WattCalc2 = [Decimal]$WattCalc1 / $Kilo;
-                $WattCalc3 = [Decimal]$WattCalc2 * $WattCalc;
+                $WattCalc1 = (([Double]$Miner.PowerX.$_) * $Day)
+                $WattCalc2 = [Double]$WattCalc1 / $Kilo;
+                $WattCalc3 = [Double](($WattCalc2 * $WattCalc) * -1)
             }
             else { $WattCalc3 = 0 }
+            
             if ($global:Pool_Hashrates.$_.$MinerPool.Percent -gt 0) {$Hash_Percent = $global:Pool_Hashrates.$_.$MinerPool.Percent * 100}
             else{$Hash_Percent = 0}
+
+            $Miner_Volume = ([Double]($Miner.Quote * (1 - ($Hash_Percent / 100))))
+            $Miner_Modified = ([Double]($Miner_Volume * (1 - ($Miner.Fees / 100))))
+            $Miner_Realistic = ([Double]($Miner.Quote * (1 - ($Miner.Fees / 100))))
+
             $Miner_HashRates | Add-Member $_ ([Double]$Miner.HashRates.$_)
             $Miner_PowerX | Add-Member $_ ([Double]$Miner.PowerX.$_)
-            $Miner_Profits | Add-Member $_  ([Double](($Miner.Quote * ((1 - $Hash_Percent/100) + (1 - ($Miner.fees / 100)))) - $WattCalc3))
-            $Miner_Unbias | Add-Member $_  ([Double](($Miner.Quote * (1 - ($Miner.fees / 100))) - $WattCalc3))
-            $Miner_Pool_Estimates | Add-Member $_ ([double]($Miner.Quote) * (1 - ($Miner.fees / 100)))
+            $Miner_Profits | Add-Member $_  ([Double]($Miner_Modified + $WattCalc3))
+            $Miner_Unbias | Add-Member $_  ([Double]($Miner_Realistic + $WattCalc3))
+            $Miner_Pool_Estimates | Add-Member $_ ([Double]($Miner_Realistic))
             $Miner_Vol | Add-Member $_ $( if($global:Pool_Hashrates.$_.$MinerPool.Percent -gt 0){[Double]$global:Pool_Hashrates.$_.$MinerPool.Percent * 100} else { 0 } )
         }
             

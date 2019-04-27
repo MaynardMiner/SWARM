@@ -156,13 +156,7 @@ function Set-Stat {
         }
     }
 
-    $DoStat = $true
-    if($Stat.Values.Count -gt 2){
-    $Previous = $Stat.Values | Select -Last 3
-    $Previous | % {$Increase = $Value - $_; $PInc = ($Increase/$_)*100; if($PInc -gt 70 -or $PInc -lt -69){$DoStat = $False}}
-    }
-
-    if($DoStat -eq $true) {$Stat.Values += [decimal]$Value}
+    $Stat.Values += [decimal]$Value
     if ($Stat.Values.Count -gt $Max_Periods) { $Stat.Values = $Stat.Values | Select -Skip 1 }
 
     if($HashRate){
