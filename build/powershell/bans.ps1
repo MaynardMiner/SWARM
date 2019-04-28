@@ -49,10 +49,20 @@ switch ($Action) {
                     $Value = $_ -split "`:" | Select -Last 1
                     switch ($Launch) {
                         "command" {
-                            if ($Value -notin $PoolJson.$Item.exclusions) {
-                                $PoolJson.$Item.exclusions += $Value
-                                $PoolChange = $true
-                                $Screen += "Adding $Value in $Item exclusions in pool-algos.json"
+                            if($Item -in $PoolJson.keys) {
+                                if ($Value -notin $PoolJson.$Item.exclusions) {
+                                    $PoolJson.$Item.exclusions += $Value
+                                    $PoolChange = $true
+                                    $Screen += "Adding $Value in $Item exclusions in pool-algos.json"
+                                }
+                            }
+                            else{
+                                $PoolJson | Add-Member $Item @{exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
+                                if ($Value -notin $PoolJson.$Item.exclusions) {
+                                    $PoolJson.$Item.exclusions += $Value
+                                    $PoolChange = $true
+                                    $Screen += "Adding $Value in $Item exclusions in pool-algos.json"
+                                }
                             }
                         }
                         "process" {
