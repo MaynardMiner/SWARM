@@ -37,12 +37,15 @@ $CPUTypes | ForEach-Object {
 
     ##Build Miner Settings
     $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+
         $MinerAlgo = $_
-        $Stat = Get-Stat -Name "$($Name)_$($MinerAlgo)_hashrate"
-        $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
+
+        if ($MinerAlgo -in $Algorithm -and $Name -notin $global:Exclusions.$MinerAlgo.exclusions -and $ConfigType -notin $global:Exclusions.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
+            $Stat = Get-Stat -Name "$($Name)_$($MinerAlgo)_hashrate"
+            $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
+        
         if ($Check.RAW -ne "Bad") {
             $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
-                if ($_.Algorithm -in $Algorithm -and $Name -notin $global:Exclusions.$($_.Algorithm).exclusions -and $Name -notin $global:banhammer) {
                     if ($Config.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
                     if ($Platform -eq "windows") { $APISet = "--http-enabled --http-port=10002" }
                     else { $APISet = "--api-port=10002" }
