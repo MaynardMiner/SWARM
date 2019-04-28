@@ -27,6 +27,8 @@ Param (
   [switch]$OnChange
 )
 
+Clear-Host
+if((Test-Path "C:\")){$Platform = "windows"}
 if(-not $n){$n = 5}
 
 While($True) {
@@ -34,14 +36,14 @@ While($True) {
   Invoke-Expression "$Command $Arg1 $Arg2 $Arg3 $Arg4 $Arg5 $Arg6 $Arg7 $Arg8 $Arg9 $Arg10" | Tee-Object -Variable Output | Out-Null;
   if($OnChange.IsPresent) {
     if([string]$Previous -ne [string]$OutPut) {
-      Clear-Host   
+      Clear-Host
       Write-Host "Refreshing Screen Every $N seconds"  
       $Output; 
       $Previous = $OutPut
     }
   }
   else {
-    Clear-Host   
+    Clear-Host
     Write-Host "Refreshing Screen Every $N seconds"
     $OutPut
   }
