@@ -32,24 +32,21 @@ if ($Poolname -eq $Name) {
                 $Zpool_Port = $Zpool_Request.$_.port
                 $Zpool_Host = "$($ZPool_Algorithm).$($region).mine.zpool.ca$X"
                 $Divisor = (1000000 * $Zpool_Request.$_.mbtc_mh_factor)
-                $Global:DivisorTable.zpool.Add($Zpool_Algorithm, $Zpool_Request.$_.mbtc_mh_factor)
                 $Fees = $Zpool_Request.$_.fees
-                $Global:FeeTable.zpool.Add($Zpool_Algorithm, $Zpool_Request.$_.fees)
                 $Workers = $Zpool_Request.$_.Workers
-                $StatPath = ".\stats\($Name)_$($Zpool_Algorithm)_profit.txt"
                 $Hashrate = $Zpool_Request.$_.hashrate
 
+                $Global:DivisorTable.zpool.Add($Zpool_Algorithm, $Divisor)
+                $Global:FeeTable.zpool.Add($Zpool_Algorithm, $Fees)
+
+                $StatPath = ".\stats\($Name)_$($Zpool_Algorithm)_profit.txt"
                 $Estimate = if (-not (Test-Path $StatPath)) { [Double]$Zpool_Request.$_.estimate_last24h } else { [Double]$Zpool_Request.$_.estimate_current }
 
-                ## ZPool fees are calculated differently, due to pool fee structure.
                 $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
+                $Stat = Set-Stat -Name "$($Name)_$($Zpool_Algorithm)_profit" -HashRate $HashRate -Value ([Double]$Cut / $Divisor)
 
-                $Stat = Set-Stat -HashRate $HashRate -Name "$($Name)_$($Zpool_Algorithm)_profit" -Value ([Double]$Cut / $Divisor)
-
-                if (-not $global:Pool_Hashrates.$Zpool_Algorithm) { $global:Pool_Hashrates.Add("$Zpool_Algorithm", @{ })
-                }
-                if (-not $global:Pool_Hashrates.$Zpool_Algorithm.$Name) { $global:Pool_Hashrates.$Zpool_Algorithm.Add("$Name", @{HashRate = "$($Stat.HashRate)"; Percent = "" })
-                }
+                if (-not $global:Pool_Hashrates.$Zpool_Algorithm) { $global:Pool_Hashrates.Add("$Zpool_Algorithm", @{ }) }
+                if (-not $global:Pool_Hashrates.$Zpool_Algorithm.$Name) { $global:Pool_Hashrates.$Zpool_Algorithm.Add("$Name", @{HashRate = "$($Stat.HashRate)"; Percent = "" }) }
          
                 $Pass1 = $global:Wallets.Wallet1.Keys
                 $User1 = $global:Wallets.Wallet1.$Passwordcurrency1.address
@@ -88,7 +85,7 @@ if ($Poolname -eq $Name) {
                     Symbol    = "$Zpool_Algorithm-Algo"
                     Mining    = $Zpool_Algorithm
                     Algorithm = $Zpool_Algorithm
-                    Price     = $Stat.Stat_Algo
+                    Price     = $Stat.$Stat_Algo
                     Protocol  = "stratum+tcp"
                     Host      = $Zpool_Host
                     Port      = $Zpool_Port

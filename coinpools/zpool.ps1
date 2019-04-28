@@ -34,16 +34,16 @@ if ($Poolname -eq $Name) {
 
     ##Add Active Coins for calcs
     $Active = $zpool_Request.PSObject.Properties.Value | Where-Object sym -in $global:ActiveSymbol
-    if ($Active) { $zpool_Request | Add-Member $Active.sym $Active -Force }
+    if ($Active) { $Active | ForEach-Object { $zpool_Sorted | Add-Member $_.sym $_ -Force } }
 
     if ($Coin.Count -gt 1 -and $Coin -ne "") {
         $CoinsOnly = $zpool_Request.PSObject.Properties.Value | Where-Object sym -in $Coin
-        if ($CoinsOnly) { $zpool_Request | Add-Member $CoinsOnly.sym $CoinsOnly -Force }
+        if ($CoinsOnly) { $zpool_Sorted | Add-Member $CoinsOnly.sym $CoinsOnly -Force }
     }
 
     if ($Coin.Count -eq 0) {
         $Algos | ForEach-Object {
-    
+
             $Selected = $_
 
             $Best = $zpool_Request.PSObject.Properties.Value | 
@@ -56,29 +56,31 @@ if ($Poolname -eq $Name) {
             Where-Object estimate -gt 0 | 
             Where-Object hashrate -ne 0 | 
             Sort-Object Price -Descending |
-            Select-Object -First 1
+            Select -First 1
 
             if ($Best -ne $null) { $zpool_Sorted | Add-Member $Best.sym $Best -Force }
         }
     }
 
     if ($Stat_All -eq "Yes") {
-
         $Algos | ForEach-Object {
 
-            $NotBest = $zpool_Request.PSObject.Properties.Value | 
-            Where-Object Algo -eq $Selected | 
-            Where-Object Algo -in $global:FeeTable.zpool.keys | 
-            Where-Object Algo -in $global:divisortable.zpool.Keys | 
+            $Selected = $_
+
+            $NotBest = $zpool_Request.PSObject.Properties.Value |
+            Where-Object Algo -eq $Selected |
+            Where-Object Algo -in $global:FeeTable.zpool.keys |
+            Where-Object Algo -in $global:divisortable.zpool.Keys |
             Where-Object { $global:Exclusions.$($_.Algo) } |
             Where-Object $Name -notin $global:Exclusions.$($_.sym) |
             Where-Object Sym -notin $global:BanHammer |
-            Where-Object estimate -gt 0 | 
-            Where-Object hashrate -ne 0 | 
+            Where-Object estimate -gt 0 |
+            Where-Object hashrate -ne 0 |
             Sort-Object Price -Descending |
-            Select-Object -Skip 1
+            Select-Object -skip 1
 
             if ($NotBest -ne $null) { $NotBest | ForEach-Object { $zpool_UnSorted | Add-Member $_.sym $_ -Force } }
+
         }
 
         $zpool_UnSorted | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | ForEach-Object {
@@ -88,7 +90,7 @@ if ($Poolname -eq $Name) {
                 $Fees = [Double]$global:FeeTable.zpool.$zpool_Algorithm
                 $Estimate = [Double]$zpool_UnSorted.$_.estimate * 0.001
                 $Divisor = (1000000 * [Double]$global:DivisorTable.zpool.$zpool_Algorithm)
-                $Workers = [Double]$zpool_UnSorted.$_.Workers * 0.001
+                $Workers = [Double]$zpool_UnSorted.$_.Workers
                 $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
                 try { $Stat = Set-Stat -Name "$($Name)_$($zpool_Symbol)_coin_profit" -Value ([Double]$Cut / $Divisor) }catch { Write-Log "Failed To Calculate Stat For $zpool_Symbol" }
             }
@@ -102,9 +104,9 @@ if ($Poolname -eq $Name) {
             $zpool_Port = $zpool_Sorted.$_.port
             $Zpool_Host = "$($ZPool_Algorithm).$($region).mine.zpool.ca$X"
             $Fees = [Double]$global:FeeTable.zpool.$zpool_Algorithm
-            $Workers = $zpool_Sorted.$_.Workers
             $Estimate = [Double]$zpool_Sorted.$_.estimate * 0.001
             $Divisor = (1000000 * [Double]$global:DivisorTable.zpool.$zpool_Algorithm)
+            $Workers = $zpool_Sorted.$_.Workers
 
             $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
 

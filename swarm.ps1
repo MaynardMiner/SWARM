@@ -1026,19 +1026,36 @@ While ($true) {
             if ($Top_3_Custom) { $Top_3_Custom | ForEach-Object { $AlgoPools.Add($_) | Out-Null } }
             $Top_3_Algo = $Null;
             $Top_3_Custom = $Null;
+            }
 
-            ##Get Algorithms again, in case custom changed it.
-            $Algorithm = @()
-            if ($SWARMAlgorithm) { $SWARMALgorithm | ForEach-Object { $Algorithm += $_ } }
-            else { $Algorithm = $global:Exclusions.PSObject.Properties.Name }
-            if ($Type -notlike "*NVIDIA*") {
-                if ($Type -notlike "*AMD*") {
-                    if ($Type -notlike "*CPU*") {
-                        $Algorithm -eq $null
-                    }
+        ##Get Algorithms again, in case custom changed it.
+        if ($Coin.Count -eq 1 -and $Coin -ne "") { $Passwordcurrency1 = $Coin; $Passwordcurrency2 = $Coin; $Passwordcurrency3 = $Coin }
+        if ($SWARMAlgorithm) { $SWARMALgorithm | ForEach-Object { $Algorithm += $_ } }
+        elseif($Auto_Algo -eq "Yes") { $Algorithm = $global:Exclusions.PSObject.Properties.Name }
+        if ($Type -notlike "*NVIDIA*") {
+            if ($Type -notlike "*AMD*") {
+                if ($Type -notlike "*CPU*") {
+                    $Algorithm -eq $null
                 }
             }
         }
+        if ($SWARMParams.Rigname1 -eq "Donate") { $Donating = $True }
+        else { $Donating = $False }
+        if ($Donating -eq $True) {
+            $Passwordcurrency1 = "BTC"; 
+            $Passwordcurrency2 = "BTC";
+            $Passwordcurrency3 = "BTC";
+            ##Switch alt Password in case it was changed, to prevent errors.
+            $AltPassword1 = "BTC";
+            $AltPassword2 = "BTC";
+            $AltPassword3 = "BTC";
+            $DonateTime = Get-Date; 
+            $DonateText = "Miner has donated on $DonateTime"; 
+            $DonateText | Set-Content ".\build\txt\donate.txt"
+            if($SWARMAlgorithm -gt 0){$SWARMAlgorithm = $Null}
+            if($Coin -gt 0){$Coin = $Null}
+        }
+
 
         ##Optional: Load Coin Database
         if ($Auto_Coin -eq "Yes") {
@@ -1048,6 +1065,7 @@ While ($true) {
             if ($AllCoinPools) { $AllCoinPools | ForEach-Object { $CoinPools.Add($_) | Out-Null } }
             $CoinPoolNames = $CoinPools.Name | Select-Object -Unique
             if ($CoinPoolNames) { $CoinPoolNames | ForEach-Object { $CoinName = $_; $RemovePools = $AlgoPools | Where-Object Name -eq $CoinName; $RemovePools | ForEach-Object { $AlgoPools.Remove($_) | Out-Null } } }
+            $RemovePools = $null
         }
 
         if ($AlgoPools.Count -gt 0) {
