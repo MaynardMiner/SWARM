@@ -3,6 +3,10 @@ $zergpool_Request = [PSCustomObject]@{ }
 $Zergpool_Sorted = [PSCustomObject]@{ }
 $Zergpool_UnSorted = [PSCustomObject]@{ }
 
+$DoAutoCoin = $false
+if($Coin.Count -eq 0){$DoAutoCoin = $true}
+$Coin | %{ if($_ -eq ""){$DoAutoCoin = $true}}
+
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
 if ($XNSub -eq "Yes") { $X = "#xnsub" } 
 
@@ -35,7 +39,7 @@ if ($Poolname -eq $Name) {
         if ($CoinsOnly) { $CoinsOnly | ForEach-Object { $Zergpool_Sorted | Add-Member $_.sym $_ -Force } }
     }
 
-    if ($Coin.Count -eq 0) {
+    if ($DoAutoCoin) {
         $Algos | ForEach-Object {
 
             $Selected = $_
@@ -45,7 +49,7 @@ if ($Poolname -eq $Name) {
             Where-Object Algo -in $global:FeeTable.zergpool.keys | 
             Where-Object Algo -in $global:divisortable.zergpool.Keys |
             Where-Object { $global:Exclusions.$($_.Algo) } |
-            Where-Object {$Name -notin $global:Exclusions.$($_.sym).exclusions} |
+            Where-Object { $Name -notin $global:Exclusions.$($_.sym).exclusions }  |
             Where-Object Sym -notin $global:BanHammer |
             Where-Object noautotrade -eq "0" | 
             Where-Object estimate -gt 0 | 
@@ -67,7 +71,7 @@ if ($Poolname -eq $Name) {
             Where-Object Algo -in $global:FeeTable.zergpool.keys |
             Where-Object Algo -in $global:divisortable.zergpool.Keys |
             Where-Object { $global:Exclusions.$($_.Algo) } |
-            Where-Object $Name -notin $global:Exclusions.$($_.sym).exclusions |
+            Where-Object { $Name -notin $global:Exclusions.$($_.sym).exclusions }  |
             Where-Object Sym -notin $global:BanHammer |
             Where-Object noautotrade -eq "0" |
             Where-Object estimate -gt 0 |

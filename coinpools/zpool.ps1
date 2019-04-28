@@ -3,6 +3,10 @@ $zpool_Request = [PSCustomObject]@{ }
 $zpool_Sorted = [PSCustomObject]@{ }
 $zpool_UnSorted = [PSCustomObject]@{ }
 
+$DoAutoCoin = $false
+if($Coin.Count -eq 0){ $DoAutoCoin = $true }
+$Coin | %{ if($_ -eq ""){ $DoAutoCoin = $true} }
+
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
 if ($XNSub -eq "Yes") { $X = "#xnsub" } 
 
@@ -41,7 +45,7 @@ if ($Poolname -eq $Name) {
         if ($CoinsOnly) { $zpool_Sorted | Add-Member $CoinsOnly.sym $CoinsOnly -Force }
     }
 
-    if ($Coin.Count -eq 0) {
+    if ($DoAutoCoin) {
         $Algos | ForEach-Object {
 
             $Selected = $_
@@ -51,7 +55,7 @@ if ($Poolname -eq $Name) {
             Where-Object Algo -in $global:FeeTable.zpool.keys | 
             Where-Object Algo -in $global:divisortable.zpool.Keys |
             Where-Object { $global:Exclusions.$($_.Algo) } |
-            Where-Object $Name -notin $global:Exclusions.$($_.sym).exclusions |
+            Where-Object { $Name -notin $global:Exclusions.$($_.sym).exclusions } |
             Where-Object Sym -notin $global:BanHammer |
             Where-Object estimate -gt 0 | 
             Where-Object hashrate -ne 0 | 
@@ -72,7 +76,7 @@ if ($Poolname -eq $Name) {
             Where-Object Algo -in $global:FeeTable.zpool.keys |
             Where-Object Algo -in $global:divisortable.zpool.Keys |
             Where-Object { $global:Exclusions.$($_.Algo) } |
-            Where-Object {$Name -notin $global:Exclusions.$($_.sym).exclusions} |
+            Where-Object { $Name -notin $global:Exclusions.$($_.sym).exclusions } |
             Where-Object Sym -notin $global:BanHammer |
             Where-Object estimate -gt 0 |
             Where-Object hashrate -ne 0 |
