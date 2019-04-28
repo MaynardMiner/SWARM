@@ -168,7 +168,7 @@ param(
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
-$Debug = $True
+$Debug = $false
 if($Debug -eq $True)
  {
   Start-Transcript ".\logs\debug.log"
