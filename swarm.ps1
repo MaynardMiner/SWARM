@@ -809,10 +809,13 @@ if ($Error.Count -gt 0) {
     $Message | Add-Content $global:logname
     $error.clear()
 }
+    
+Add-ASIC_ALGO
 
 While ($true) {
 
-    do {
+    do {    
+
         ##Manage Pool Bans
         Start-PoolBans $StartingParams $swarmstamp
 

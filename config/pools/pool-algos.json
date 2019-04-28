@@ -570,7 +570,8 @@
     "hiveos_name": "veil",
     "exclusions": [
       "add pool or miner here",
-      "comma seperated"
+      "comma seperated",
+      "nlpool"
     ]
   },
   "verushash": {
