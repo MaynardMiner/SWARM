@@ -29,7 +29,7 @@ if ($Poolname -eq $Name) {
     $zpoolAlgos += $ASIC_ALGO
 
     $Algos = $zpoolAlgos | ForEach-Object { if ($Bad_pools.$_ -notcontains $Name) { $_ } }
-    $zergpool_Request.PSObject.Properties.Value | % { $_.Estimate = [Decimal]$_.Estimate }
+    $zpool_Request.PSObject.Properties.Value | % { $_.Estimate = [Decimal]$_.Estimate }
 
     ##Add Active Coins for calcs
     $Active = $zpool_Request.PSObject.Properties.Value | Where-Object sym -in $global:ActiveSymbol
