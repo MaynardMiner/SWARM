@@ -51,6 +51,9 @@ These arguments can be added for additional customization and options
 
 Argument            Options             Explanation
 
+-Xnsub          [Yes,No]            Default is "No". Will add #xnsub for ASIC to signify Extranonce.Subscribe
+                                    method. Not all cgminer / ASICS / Pools may support this.
+
 -Auto_Coin      [Yes,No]            Turns on Auto_Coin switching for pools that are capable of it.
                                     Default is "No".
 
@@ -78,16 +81,31 @@ Argument            Options             Explanation
                                         c= in pool string to this symbol, allowing
                                         you to mine a single coin. Must be used in
                                         conjuction with Algorithm parameter, only
-                                        one coin can be selected.
+                                        one coin can be selected. 
+                                        EXPIREMENTAL:
+                                        Multiple coins can be used, comma seperating items.
+                                        -Auto_Coin must be "yes", will use only those coins.
+                                        This hasn't been fully tested. If -Auto_Algo is "Yes"
+                                        will add algorithm switching port on yiimp algo pools.
+                                        if -Auto_Algo is "No", should mine only coins.
 
--No_Algo1   [algorithm,algorithm,etc.]  Removes use from specified device group.
--No_Algo2                               NVIDIA1 and AMD1 would be -No_Algo1
--No_Algo3                               NVIDIA2 would be -No_Algo2
-                                        NVIDIA3 would be -No_Algo3
+-Bans          [algo                Bans allows a user to specify bans on certain items in SWARM.
+               algo:miner           Using [algo] only, SWARM will block all instances of that algo.
+               algo:Type            Using [algo]:[Type], SWARM will block algorithm from that device type.
+               algo:pool]           Using [algo]:[Pool], SWARM will block algorithm from that pool.
+                                    Using [algo]:[Miner], SWARM will block algorithm from that specific miner.
+                                    Using [COIN]:[Pool], SWARM will block that particular coin from pool.
+                                    [COIN] is only relevant for -Auto_Coin "yes".
+                                    If you wish to use multiple bans, comma seperate each item.
+                                    example:
 
--No_miner     [name,name,etc.]      Swarm excludes miner matching the name of the .ps1 file.
-                                    location of active .ps1 files is in ".\miners\gpu".
-                                    Example: -No_miner cryptodredge-1,cryptodredge-2,cryptodredge-3
+                           -Bans sonoa:z-enemy-1,veil:nlpool,RVN:zergpool,grincuckaroo29:NVIDIA2,grincuckatoo31
+
+                                    Will ban sonoa from z-enemy-1
+                                    WIll ban veil on nlpool
+                                    WIll ban RVN from zergpool calcs for x16r in auto-coin
+                                    Will ban grincuckaroo29 on NVIDIA2 (all miners in that device group)
+                                    Will ban grincuckatoo31 entirely.
 
 -ETH           [Etherium Address]   Etherium Address. Needed for Whalesburg Pool.
 
