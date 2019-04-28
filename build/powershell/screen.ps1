@@ -207,12 +207,13 @@ function Get-StatusLite {
 
 function Invoke-MinerWarning {
     ##Notify User Of Failures
-    Write-Log "
-       
+Write-Log "
+   
 There are miners that have failed! Check Your Settings And Arguments!
 " -ForegroundColor DarkRed
+
     if ($Platform -eq "linux") {
-        Write-Log "
+Write-Log "
 
 Type `'mine`' in another terminal to see background miner, and its reason for failure.
 You may also view logs with in the "logs" directory, or 'get-screen [Type]'
@@ -221,11 +222,11 @@ https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration) >> Ri
 " -ForegroundColor Darkred
     }
     elseif ($Platform -eq "windows") {
-        Write-Log "
+Write-Log "
  
- SWARM attempted to catch screen output, and is stored in 'logs' folder.
- SWARM has also created a executable called 'swarm-start.bat' located in the 'bin'
- directory and folder of the miner. 'swarm-start.bat' starts miner with last known settings, 
+ SWARM attempted to catch screen output, and is stored in `'logs`' folder.
+ SWARM has also created a executable called `'swarm-start.bat`' located in the `'bin`'
+ directory and folder of the miner. `'swarm-start.bat`' starts miner with last known settings, 
  and window stays open, so you may view issue.
 " -ForegroundColor DarkRed
     }
@@ -245,11 +246,11 @@ Waiting 15 Seconds For Miners To Load & Restarting Background Tracking
     if ($Platform -eq "linux") {
         Write-Log "
 
-Type 'mine' in another terminal to see miner working- This is NOT a remote command!
+Type `'mine`' in another terminal to see miner working- This is NOT a remote command!
 
-Type 'get-screen [MinerType]' to see last 100 lines of log- This IS a remote command!
+Type `'get-screen [MinerType]`' to see last 100 lines of log- This IS a remote command!
 
-https://github.com/MaynardMiner/SWARM/wiki/Commands-&-Suggested-Apps For More Info'  
+https://github.com/MaynardMiner/SWARM/wiki/Commands-&-Suggested-Apps For More Info
 
 " -ForegroundColor Magenta
     }
