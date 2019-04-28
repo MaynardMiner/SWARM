@@ -45,6 +45,8 @@ if ($Poolname -eq $Name) {
             Where-Object Algo -in $global:FeeTable.zergpool.keys | 
             Where-Object Algo -in $global:divisortable.zergpool.Keys |
             Where-Object { $global:Exclusions.$($_.Algo) } |
+            Where-Object $Name -notin $global:Exclusions.$($_.sym) |
+            Where-Object Sym -notin $global:BanHammer |
             Where-Object noautotrade -eq "0" | 
             Where-Object estimate -gt 0 | 
             Where-Object hashrate -ne 0 | 
@@ -65,6 +67,8 @@ if ($Poolname -eq $Name) {
             Where-Object Algo -in $global:FeeTable.zergpool.keys |
             Where-Object Algo -in $global:divisortable.zergpool.Keys |
             Where-Object { $global:Exclusions.$($_.Algo) } |
+            Where-Object $Name -notin $global:Exclusions.$($_.sym) |
+            Where-Object Sym -notin $global:BanHammer |
             Where-Object noautotrade -eq "0" |
             Where-Object estimate -gt 0 |
             Where-Object hashrate -ne 0 |
@@ -76,7 +80,6 @@ if ($Poolname -eq $Name) {
         }
 
         $Zergpool_UnSorted | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | ForEach-Object {
-            if ($Name -notin $global:Exclusions.$Zergpool_Symbol.exclusions -and $Zergpool_Symbol -notin $Global:banhammer) {
                 $Zergpool_Algorithm = $Zergpool_UnSorted.$_.algo.ToLower()
                 $Zergpool_Symbol = $Zergpool_UnSorted.$_.sym.ToUpper()
                 $zergpool_Fees = [Double]$global:FeeTable.zergpool.$Zergpool_Algorithm
@@ -172,4 +175,3 @@ if ($Poolname -eq $Name) {
             } 
         }
     }
-}
