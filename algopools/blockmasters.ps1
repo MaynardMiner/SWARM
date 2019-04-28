@@ -1,6 +1,7 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $blockpool_Request = [PSCustomObject]@{ } 
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
+if($XNSub -eq "Yes"){$X = "#xnsub"}
  
 if ($Poolname -eq $Name) {
     try { $blockpool_Request = Invoke-RestMethod "http://blockmasters.co/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
@@ -27,7 +28,7 @@ if ($Poolname -eq $Name) {
 
         if ($Algorithm -contains $blockpool_Algorithm -or $ASIC_ALGO -contains $blockpool_Algorithm) {
             if ($Name -notin $global:Exclusions.$blockpool_Algorithm.exclusions -and $blockpool_Algorithm -notin $Global:banhammer) {
-                $blockpool_Host = "$($Region)blockmasters.co"
+                $blockpool_Host = "$($Region)blockmasters.co$X"
                 $blockpool_Port = $blockpool_Request.$_.port
                 $Divisor = (1000000 * $blockpool_Request.$_.mbtc_mh_factor)
                 $StatPath = ".\stats\($Name)_$($blockpool_Algorithm)_profit.txt"

@@ -3,7 +3,8 @@ $zpool_Request = [PSCustomObject]@{ }
 $zpool_Sorted = [PSCustomObject]@{ }
 $zpool_UnSorted = [PSCustomObject]@{ }
 
-[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls" 
+[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
+if($XNSub -eq "Yes"){$X = "#xnsub"} 
 
 if ($Poolname -eq $Name) {
     try { $zpool_Request = Invoke-RestMethod "https://zpool.ca/api/currencies" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }
@@ -94,7 +95,7 @@ if ($Poolname -eq $Name) {
         $zpool_Symbol = $zpool_Sorted.$_.sym.ToUpper()
         $zpool_Coin = $zpool_Sorted.$_.Name.Tolower()
         $zpool_Port = $zpool_Sorted.$_.port
-        $Zpool_Host = "$($ZPool_Algorithm).$($region).mine.zpool.ca"
+        $Zpool_Host = "$($ZPool_Algorithm).$($region).mine.zpool.ca$X"
         $Fees = [Double]$global:FeeTable.zpool.$zpool_Algorithm
         $Workers = $zpool_Sorted.$_.Workers
         $Estimate = [Double]$zpool_Sorted.$_.estimate * 0.001

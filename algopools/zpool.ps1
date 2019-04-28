@@ -1,6 +1,7 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $Zpool_Request = [PSCustomObject]@{ } 
-[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls" 
+[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
+if($XNSub -eq "Yes"){$X = "#xnsub"} 
  
 if ($Poolname -eq $Name) {
     try { $Zpool_Request = Invoke-RestMethod "http://www.zpool.ca/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
@@ -29,7 +30,7 @@ if ($Poolname -eq $Name) {
         if ($Algorithm -contains $Zpool_Algorithm -or $ASIC_ALGO -contains $Zpool_Algorithm) {
             if ($Name -notin $global:Exclusions.$Zpool_Algorithm.exclusions -and $Zpool_Algorithm -notin $Global:banhammer) {
                 $Zpool_Port = $Zpool_Request.$_.port
-                $Zpool_Host = "$($ZPool_Algorithm).$($region).mine.zpool.ca"
+                $Zpool_Host = "$($ZPool_Algorithm).$($region).mine.zpool.ca$X"
                 $Divisor = (1000000 * $Zpool_Request.$_.mbtc_mh_factor)
                 $Global:DivisorTable.zpool.Add($Zpool_Algorithm, $Zpool_Request.$_.mbtc_mh_factor)
                 $Fees = $Zpool_Request.$_.fees

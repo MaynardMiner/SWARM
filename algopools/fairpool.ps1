@@ -2,6 +2,7 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $fairpool_Request = [PSCustomObject]@{ } 
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
+if($XNSub -eq "Yes"){$X = "#xnsub"}
  
 if ($Poolname -eq $Name) {
     try { $fairpool_Request = Invoke-RestMethod "https://fairpool.pro/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
@@ -28,7 +29,7 @@ if ($Poolname -eq $Name) {
 
         if ($Algorithm -contains $fairpool_Algorithm -or $ASIC_ALGO -contains $fairpool_Algorithm) {
             if ($Name -notin $global:Exclusions.$fairpool_Algorithm.exclusions -and $fairpool_Algorithm -notin $Global:banhammer) {
-                $fairpool_Host = "$region"
+                $fairpool_Host = "$region$X"
                 $fairpool_Port = $fairpool_Request.$_.port
                 $Divisor = (1000000 * $fairpool_Request.$_.mbtc_mh_factor)
                 $Fees = $fairpool_Request.$_.fees

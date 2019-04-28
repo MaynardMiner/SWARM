@@ -1,6 +1,7 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName
 $nlpool_Request = [PSCustomObject]@{ }
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
+if($XNSub -eq "Yes"){$X = "#xnsub"}
 
 if ($Poolname -eq $Name) {
     try { $nlpool_Request = Invoke-RestMethod "https://nlpool.nl/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }
@@ -26,7 +27,7 @@ if ($Poolname -eq $Name) {
 
         if ($Algorithm -contains $nlpoolAlgo_Algorithm -or $ASIC_ALGO -contains $nlpoolAlgo_Algorithm) {
             if ($Name -notin $global:Exclusions.$nlpoolAlgo_Algorithm.exclusions -and $nlpoolAlgo_Algorithm -notin $Global:banhammer) {
-                $nlpoolAlgo_Host = "mine.nlpool.nl"
+                $nlpoolAlgo_Host = "mine.nlpool.nl$X"
                 $nlpoolAlgo_Port = $nlpool_Request.$_.port
                 $Divisor = (1000000 * $nlpool_Request.$_.mbtc_mh_factor)
                 $StatPath = ".\stats\($Name)_$($nlpoolAlgo_Algorithm)_profit.txt"

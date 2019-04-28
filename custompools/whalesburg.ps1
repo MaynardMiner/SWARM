@@ -11,7 +11,8 @@
 
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $Whalesburg_Request = [PSCustomObject]@{} 
-[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls" 
+[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
+if($XNSub -eq "Yes"){$X = "#xnsub"} 
  
 if ($Poolname -eq $Name) {
     try {$Whalesburg_Request = Invoke-RestMethod "https://payouts.whalesburg.com/profitabilities/share_price" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop} 

@@ -1,6 +1,7 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $Hashrefinery_Request = [PSCustomObject]@{ } 
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
+if($XNSub -eq "Yes"){$X = "#xnsub"}
  
 if ($Poolname -eq $Name) {
     try { $Hashrefinery_Request = Invoke-RestMethod "http://pool.hashrefinery.com/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
@@ -22,7 +23,7 @@ if ($Poolname -eq $Name) {
 
         if ($Algorithm -contains $Hashrefinery_Algorithm -or $ASIC_ALGO -contains $Hashrefinery_Algorithm) {
             if ($Name -notin $global:Exclusions.$Hashrefinery_Algorithm.exclusions -and $Hashrefinery_Algorithm -notin $Global:banhammer) {
-                $Hashrefinery_Host = "$_.us.hashrefinery.com"
+                $Hashrefinery_Host = "$_.us.hashrefinery.com$X"
                 $Hashrefinery_Port = $Hashrefinery_Request.$_.port
                 $Divisor = (1000000 * $Hashrefinery_Request.$_.mbtc_mh_factor)
                 $Fees = $Hashrefinery_Request.$_.fees

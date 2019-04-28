@@ -3,7 +3,8 @@ $zergpool_Request = [PSCustomObject]@{ }
 $Zergpool_Sorted = [PSCustomObject]@{ }
 $Zergpool_UnSorted = [PSCustomObject]@{ }
 
-[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls" 
+[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
+if($XNSub -eq "Yes"){$X = "#xnsub"} 
 
 if ($Poolname -eq $Name) {
     try { $zergpool_Request = Invoke-RestMethod "http://zergpool.com:8080/api/currencies" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }
@@ -90,7 +91,7 @@ if ($Poolname -eq $Name) {
         $Zergpool_Symbol = $Zergpool_Sorted.$_.sym.ToUpper()
         $zergpool_Coin = $Zergpool_Sorted.$_.Name.Tolower()
         $zergpool_Port = $Zergpool_Sorted.$_.port
-        $zergpool_Host = "$($Zergpool_Sorted.$_.algo).mine.zergpool.com"
+        $zergpool_Host = "$($Zergpool_Sorted.$_.algo).mine.zergpool.com$X"
 
         $zergpool_Fees = [Double]$global:FeeTable.zergpool.$Zergpool_Algorithm
 

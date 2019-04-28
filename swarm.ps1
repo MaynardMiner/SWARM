@@ -161,14 +161,16 @@ param(
     [Parameter(Mandatory = $false)]
     [String]$Volume = "No",  ## If set to yes- Will penalize pools that have lower hashrates that others.
     [Parameter(Mandatory = $false)]
-    [array]$Bans  ## Add user created bans.
+    [array]$Bans,  ## Add user created bans.
+    [Parameter(Mandatory = $false)]
+    [String]$Xnsub  ## Add user created bans.
 )
 
 ## Set Current Path
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
-$Debug = $True
+$Debug = $False
 if($Debug -eq $True)
  {
   Start-Transcript ".\logs\debug.log"
@@ -350,7 +352,7 @@ if ($Debug -ne $true) {
     $CurrentParams.ADD("Custom_Periods", $Custom_Periods);
     $CurrentParams.ADD("Volume", $Volume);
     $CurrentParams.ADD("Auto_Algo", $Auto_Algo);
-    $CurrentParams.ADD("Bans", $Bans);
+    $CurrentParams.ADD("Bans", $Bans); $CurrentParams.ADD("xnsub", $xnsub);
 
     ## Save to Config Folder
     $StartParams = $CurrentParams | ConvertTo-Json 
@@ -423,7 +425,7 @@ if ((Test-Path ".\config\parameters\newarguments.json") -or $Debug -eq $true) {
     $ASIC_IP = $SWARMParams.ASIC_IP; $ASIC_ALGO = $SWARMParams.ASIC_ALGO;
     $Stat_All = $SWARMParams.Stat_All; $Custom_Periods = $SWARMParams.Custom_Periods;
     $Volume = $SWARMParms.Volume; $Auto_ALgo = $SWARMParams.Auto_Algo;
-    $Bans = $SWARMParams.Bans;
+    $Bans = $SWARMParams.Bans; $Xnsub = $SWARMParams.xnsub
 }
 
 ## Windows Start Up
@@ -858,7 +860,7 @@ While ($true) {
         $ASIC_IP = $SWARMParams.ASIC_IP; $ASIC_ALGO = $SWARMParams.ASIC_ALGO;
         $Stat_All = $SWARMParams.Stat_All; $Custom_Periods = $SWARMParams.Custom_Periods;
         $Volume = $SWARMParams.Volume; $Auto_Algo = $SWARMParams.Auto_Algo;
-        $Bans = $SWARMParams.Bans;
+        $Bans = $SWARMParams.Bans; $Xnsub = $SWARMParams.xnsub
 
         ## Check to see if wallet is present:
         if (-not $Wallet1) { write-Log "missing wallet1 argument, exiting in 5 seconds" -ForeGroundColor Red; Start-Sleep -S 5; exit }

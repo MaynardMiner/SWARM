@@ -2,7 +2,8 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $ahashpool_Request = [PSCustomObject]@{ } 
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
- 
+if($XNSub -eq "Yes"){$X = "#xnsub"}
+
 if ($Poolname -eq $Name) {
     try { $ahashpool_Request = Invoke-RestMethod "https://www.ahashpool.com/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
     catch { Write-Log "SWARM contacted ($Name) but there was no response."; return }
@@ -23,7 +24,7 @@ if ($Poolname -eq $Name) {
 
         if ($Algorithm -contains $ahashpool_Algorithm -or $ASIC_ALGO -contains $ahashpool_Algorithm) {
             if ($Name -notin $global:Exclusions.$ahashpool_Algorithm.exclusions -and $ahashpool_Algorithm -notin $Global:banhammer) {
-                $ahashpool_Host = "$_.mine.ahashpool.com"
+                $ahashpool_Host = "$_.mine.ahashpool.com$X"
                 $ahashpool_Port = $ahashpool_Request.$_.port
                 $Fees = $ahashpool_Request.$_.fees
                 $Divisor = (1000000 * $ahashpool_Request.$_.mbtc_mh_factor)
