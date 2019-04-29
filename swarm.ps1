@@ -1225,14 +1225,14 @@ While ($true) {
         $BestActiveMiners | ForEach-Object {
             $Sel = $_
             $SWMiner = $Miners | Where-Object Path -EQ $Sel.path | Where-Object Arguments -EQ $Sel.Arguments | Where-Object Type -EQ $Sel.Type 
-            if ($SWMiner -and $SWMiner.Profit -ne $NULL) {
+            if ($SWMiner -and $SWMiner.Profit -ne $NULL -and $SWMiner.Profit -ne "bench") {
                 if ($Switch_Threshold) {
                     write-Log "Switching_Threshold changes $($SWMiner.Name) $($SWMiner.Algo) base factored price from $(($SWMiner.Profit * $Rates.$Currency).ToString("N2"))" -ForegroundColor Cyan -NoNewLine -Start; 
                     if ($SWMiner.Profit -GT 0) {
                         $($Miners | Where Path -eq $SWMiner.path | Where Arguments -eq $SWMiner.Arguments | Where Type -eq $SWMINer.Type).Profit = [Decimal]$SWMiner.Profit * (1 + ($Switch_Threshold / 100)) 
                     }
-                    elseif($SWMiner.Profit -ne "bench") {
-                        $($Miners | Where Path -eq $SWMiner.path | Where Arguments -eq $SWMiner.Arguments | Where Type -eq $SWMINer.Type).Profit = [Decimal]$_.Profit * (1 + ($Switch_Threshold / -100))
+                    else {
+                        $($Miners | Where Path -eq $SWMiner.path | Where Arguments -eq $SWMiner.Arguments | Where Type -eq $SWMINer.Type).Profit = [Decimal]$SWMiner.Profit * (1 + ($Switch_Threshold / -100))
                     }  
                     write-Log " to $(($SWMiner.Profit * $Rates.$Currency).ToString("N2"))" -ForegroundColor Cyan -End
                 }
