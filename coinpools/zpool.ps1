@@ -42,7 +42,7 @@ if ($Poolname -eq $Name) {
 
     if ($Coin.Count -gt 1 -and $Coin -ne "") {
         $CoinsOnly = $zpool_Request.PSObject.Properties.Value | Where-Object sym -in $Coin
-        if ($CoinsOnly) { $zpool_Sorted | Add-Member $CoinsOnly.sym $CoinsOnly -Force }
+        if ($CoinsOnly) { $CoinsOnly | ForEach-Object { $zpool_Sorted | Add-Member $_.sym $_ -Force } }
     }
 
     if ($DoAutoCoin) {
