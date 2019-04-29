@@ -1236,7 +1236,7 @@ While ($true) {
                     if ($SWMiner.Profit -GT 0) {
                         $($Miners | Where Path -eq $SWMiner.path | Where Arguments -eq $SWMiner.Arguments | Where Type -eq $SWMINer.Type).Profit = [Decimal]$SWMiner.Profit * (1 + ($Switch_Threshold / 100)) 
                     }
-                    else {
+                    elseif($SWMiner.Profit -ne "bench") {
                         $($Miners | Where Path -eq $SWMiner.path | Where Arguments -eq $SWMiner.Arguments | Where Type -eq $SWMINer.Type).Profit = [Decimal]$_.Profit * (1 + ($Switch_Threshold / -100))
                     }  
                     write-Log " to $(($SWMiner.Profit * $Rates.$Currency).ToString("N2"))" -ForegroundColor Cyan -End
