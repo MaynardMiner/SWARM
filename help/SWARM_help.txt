@@ -16,6 +16,7 @@ Argument          Options           Explanation
                 hashrefinery,       optional additional arguments (See below).
                 blazepool,
                 ahashpool,
+		zergpool,
 		blockmasters,
                 nlpool,
                 zpool,
