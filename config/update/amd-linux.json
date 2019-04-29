@@ -113,12 +113,12 @@
   "teamredminer": {
     "name": "teamredminer",
     "type": "amd",
-    "AMD1": ".\\bin\\tdxminer-1\\teamredminer",
-    "AMD2": ".\\bin\\tdxminer-2\\teamredminer",
-    "AMD3": ".\\bin\\tdxminer-3\\teamredminer",
+    "AMD1": ".\\bin\\teamredminer-1\\teamredminer",
+    "AMD2": ".\\bin\\teamredminer-2\\teamredminer",
+    "AMD3": ".\\bin\\teamredminer-3\\teamredminer",
     "minername": "teamredminer",
     "version": "0.4.4",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/teamredminer-linux.tar.gz"
+    "uri": "https://github.com/todxx/teamredminer/releases/download/v0.4.5/teamredminer-v0.4.5-linux.tgz"
   },
   "xmr-stak": {
     "name": "xmr-stak",
