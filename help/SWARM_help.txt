@@ -57,6 +57,9 @@ Argument            Options             Explanation
 
 -Auto_Coin      [Yes,No]            Turns on Auto_Coin switching for pools that are capable of it.
                                     Default is "No".
+				    
+-Auto_Algo     [Yes,No]		    Default is "Yes". Should always be set to "Yes", except when using the -Coin
+				    Parameter with multiple coins. See -Coin for more information.
 
 -Platform      [linux,windows]      Defualt is linux. Specify this if you are using windows. This lets SWARM
                                     know to build itself for Windows operation. SWARM will attempt to detects
