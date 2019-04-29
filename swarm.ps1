@@ -732,10 +732,10 @@ AMD USERS: PLEASE READ .\config\oc\new_sample.json FOR INSTRUCTIONS ON OVERCLOCK
         else {
             write-Log "failed to contact HiveOS- Do you have an account? Did you use your farm hash?"
         }
-
-        ## Aaaaannnnd...Que that sexy logo. Go Time.
-        Get-SexyWinLogo
     }
+            ## Aaaaannnnd...Que that sexy logo. Go Time.
+            Get-SexyWinLogo
+
 }
 
 ## Determine AMD platform
