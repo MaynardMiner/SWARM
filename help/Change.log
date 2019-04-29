@@ -2696,3 +2696,54 @@ API overhaul:
        which the current coin you are mining may not be added to the database next pull.
        This means the Switching_Threshold will not be applied to it.
        I am working on a solution, but this one will take time.
+
+
+   2.2.1
+
+  Note: Windows users. It is advised to rocket launch arguments after update. This
+  is because parameters have changed!
+
+  -Stats were removed of potential compounding of figures due to modifiers, should
+   be closer to realistic when -Volume "yes" is used.
+
+  -No_Miner was removed
+  -All No_Algo arguments was removed.
+
+  ``-Xnsub [Yes/No] now added for extranonce.subscribe method. Default is no.``
+
+  ``-Bans`` argument now added! Allows user to specify in depth
+    prohibitions from algorithms from anywhere to pools to specific
+    devices. See help.txt for usage.
+
+    ``Bans`` command added. Allow users to permenantly adjust config\pool
+      .json to add bans to miners. Can be ran remotely. It works exactly 
+      like ``-Bans`` argument, only that the changes are permanent until removed
+      unles ``-Bans`` argument, which is temporary to instance of current running
+      SWARM.
+
+      ``bans add c11:zergpool,sonoa:z-enemy1,grincuckatoo31:NVIDIA2,RVN:zpool``
+      ``bans remove c11:zergpool,sonoa:z-enemy1,grincuckatoo31:NVIDIA2,RVN:zpool``
+
+  ``-Coin`` argument can accept multiple coins! Can be used to mine a finite
+     set of coins of your choosing. Note: This is expiremental. Please report
+     issues.
+
+    ``-Coin RVN,VEIL,GIN,XZC -Algorithm x16r,VEIL,x16rt,mtp -Auto_Coin Yes -Auto_Algo No``
+                Will mine only those coins on pools that support coinpools.
+
+    ``-Coin RVN,VEIL,GIN,XZC -Algorithm x16r,VEIL,x16rt,mtp -Auto_Coin Yes -Auto_Algo Yes``
+              Will mine those coins on coinpools, and will mine algorithms on algo pools
+
+     Again, this is expirimental, please let me know if you try and have issues.
+
+  -Issues with zpool coin and algo files were fixed.
+  -Switching_Threshold should now add previously mined coins to database.
+  -Colors was removed at the end of launch in h-run.sh, it is depreciated.
+  -.git information will no longer be added to release- It was causing extraction issues.
+  -Updated parameter parsing on windows side to prevent potenial issues.
+  -ASIC_ALGO should add to pool-algos.json, so you can ban coins remotely.
+  -``view`` command has changed to ``nview`` to prevent conflict with ``mc``
+  -Attempted fix of -GPUDevices argumetns when 0 is specified. It appears to work for me.
+  -Miner fixes to ``Write-Log`` function users pointed out.
+  -bans.json added, for global bans. Will only be created when used.
+  -Cleaned up some API methods.
