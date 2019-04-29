@@ -58,12 +58,13 @@ function Get-Alpha($X) { (2 / ($X + 1) ) }
 
 function Get-Theta { 
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [Int]$Calcs,
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [Array]$Values
     )
-    $Values | Select -Last $Calcs | Measure-Object -Sum }
+    $Values | Select -Last $Calcs | Measure-Object -Sum 
+}
 
 function Set-Stat {
     param(
@@ -87,8 +88,8 @@ function Set-Stat {
         Custom    = [Math]::Max([Math]::Round($Custom_Periods), 1)
     }
 
-    if($HashRate) {
-        $Calcs.Add("Hashrate",[Math]::Max([Math]::Round(3600 / $Interval), 1))
+    if ($HashRate) {
+        $Calcs.Add("Hashrate", [Math]::Max([Math]::Round(3600 / $Interval), 1))
     }
 
     $Max_Periods = 288
@@ -127,7 +128,7 @@ function Set-Stat {
             Values    = $Stat.Values
         }
     }
-    elseif($HashRate) {
+    elseif ($HashRate) {
         $Stat = [PSCustomObject]@{
             Live      = $Value
             Minute    = $Value
@@ -142,7 +143,7 @@ function Set-Stat {
             Values    = @()
         }
     }
-    else{
+    else {
         $Stat = [PSCustomObject]@{
             Live      = $Value
             Minute    = $Value
@@ -159,14 +160,14 @@ function Set-Stat {
     $Stat.Values += [decimal]$Value
     if ($Stat.Values.Count -gt $Max_Periods) { $Stat.Values = $Stat.Values | Select -Skip 1 }
 
-    if($HashRate){
+    if ($HashRate) {
         $Stat.Hash_Val += [decimal]$Hashrate
         if ($Stat.Hash_Val.Count -gt $Hash_Max) { $Stat.Hash_Val = $Stat.Hash_Val | Select -Skip 1 }
     }
 
     $Calcs.keys | foreach {
-        if($_ -eq "Hashrate"){$T = $Stat.Hash_Val}
-        else{$T = $Stat.Values}
+        if ($_ -eq "Hashrate") { $T = $Stat.Hash_Val }
+        else { $T = $Stat.Values }
         $Theta = (Get-Theta -Calcs $Calcs.$_ -Values $T)
         $Alpha = [Double](Get-Alpha($Theta.Count))
         $Zeta = [Double]$Theta.Sum / $Theta.Count
@@ -176,9 +177,9 @@ function Set-Stat {
     if (-not (Test-Path "stats")) { New-Item "stats" -ItemType "directory" }
 
     $Stat.Values = @( $Stat.Values | % { [Decimal]$_ } )
-    if($Stat.Hash_Val){$Stat.Hash_Val = @( $Stat.Hash_Val | % { [Decimal]$_ } )}
+    if ($Stat.Hash_Val) { $Stat.Hash_Val = @( $Stat.Hash_Val | % { [Decimal]$_ } ) }
 
-    if($HashRate) {
+    if ($HashRate) {
         [PSCustomObject]@{
             Live      = [Decimal]$Value
             Minute    = [Decimal]$Stat.Minute
@@ -340,4 +341,22 @@ function ConvertFrom-PoolHash {
     $TotalShares = [Math]::Round($TotalShares, 3)
     [Double]$Calc = $Estimate * $TotalShares
     $Calc
+}
+
+function Remove-BanHashrates {
+    if ($global:BanHammer -gt 0 -and $global:BanHammer -ne "") {
+        if (test-path ".\stats") { $A = Get-ChildItem "stats" | Where BaseName -Like "*hashrate*" }
+        $global:BanHammer | ForEach-Object {
+            $Sel = $_.ToLower()
+            $A.BaseName | ForEach-Object {
+                $Parse = $_ -split "`_"
+                if($Parse[0] -eq $Sel){
+                    Remove-Item ".\stats\$($_).txt" -Force
+                }
+                elseif($Parse[1] -eq $Sel) {
+                    Remove-Item ".\stats\$($_).txt" -Force
+                }
+            }
+        }
+    }
 }

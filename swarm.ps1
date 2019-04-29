@@ -995,12 +995,7 @@ While ($true) {
         
         ##Get HashTable For Pre-Sorting
         ##Before We Do, We Need To Clear Any HashRates Related To -No_Miner
-        if($global:BanHammer -gt 0 -and $global:BanHammer -ne "") {
-            $global:BanHammer | ForEach-Object {
-                $BadStat = ".\stats\*$($_)**hashrate*"
-                Remove-Item $BadStat -Force -ErrorAction SilentlyContinue | OUt-Null
-            }
-        }
+        Remove-BanHashrates
 
         Write-Log "Loading Miner Hashrates" -ForegroundColor Yellow
         $global:Miner_HashTable = Get-MinerHashTable
