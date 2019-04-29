@@ -17,8 +17,8 @@
     "AMD2": ".\\bin\\gminer-amd-2\\miner",
     "AMD3": ".\\bin\\gminer-amd-3\\miner",
     "minername": "miner",
-    "version": "1.38",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/gminer-linux.tar.gz"
+    "version": "1.39",
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.39/gminer_1_39_linux64.tar.xz"
   },
   "energi-amd": {
     "name": "energi-amd",

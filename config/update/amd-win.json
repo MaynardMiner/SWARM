@@ -41,7 +41,7 @@
   "AMD3":".\\bin\\gminer-amd-3\\miner.exe", 
   "minername":"miner", 
   "version":"1.38",
-  "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/gminer-windows.zip"
+  "uri":"https://github.com/develsoftware/GMinerRelease/releases/download/1.39/gminer_1_39_windows64.zip"
   },
 
 "phoenix-amd": {
