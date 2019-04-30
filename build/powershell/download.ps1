@@ -31,10 +31,12 @@ function Expand-WebRequest {
     if ("7z" -in $FileType) { $Extraction = "zip" }
     if ("zip" -in $FileType) { $Extraction = "zip" }
     if ("tar" -in $FileType) { $Extraction = "tar" }
+    if ("tgz" -in $FileType) { $Extraction = "tar" }
 
     if($Extraction -eq "tar") {
         if("gz" -in $FileType) { $Tar = "gz"}
         if("xz" -in $FileType) { $Tar = "xz"}
+        if("tgz" -in $FileType) { $Tar = "gz"}
     }
 
     ##Delete any old download attempts - Start Fresh
@@ -63,7 +65,6 @@ function Expand-WebRequest {
             switch($Tar) {
              "gz"{Start-Process "tar" -ArgumentList "-xzvf x64/$Zip -C x64/$temp" -Wait}
              "xz"{Start-Process "tar" -ArgumentList "-xvJf x64/$Zip -C x64/$temp" -Wait}
-             "tgz"{Start-Process "tar" -ArgumentList "-xzvf x64/$Zip -C x64/$temp" -Wait}
             }
 
             $Stuff = Get-ChildItem ".\x64\$Temp"
