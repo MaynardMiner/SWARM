@@ -53,7 +53,7 @@ function Expand-WebRequest {
             Write-Log "Download URI is $URI"
             Write-Log "Miner Exec is $Name"
             Write-Log "Miner Dir is $MoveThere"
-            Start-Process -Filepath "wget" -ArgumentList "$Uri -O x64/$Zip" -Wait
+            Invoke-WebRequest $Uri -OutFile "$X64_zip" -UseBasicParsing
 
             if (Test-Path "$X64_zip") { Write-Log "Download Succeeded!" -ForegroundColor Green }
             else { Write-Log "Download Failed!" -ForegroundColor DarkRed; break }
