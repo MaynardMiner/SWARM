@@ -659,83 +659,93 @@ AMD USERS: PLEASE READ .\config\oc\new_sample.json FOR INSTRUCTIONS ON OVERCLOCK
 " -ForegroundColor Cyan
             Start-Sleep -S 1
         }
-        ## Initiate Contact
-        $hiveresponse = Start-Peekaboo -HiveID $HiveID -HiveMirror $HiveMirror -HiveWorker $HiveWoker -HivePassword $HivePassword -Version $Version -GPUData $GetBusData; 
-        if ($hiveresponse.result) {
-            ## If Hive Responds with config: Set new config interactively
-            $hiveresponse.result | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
-                $Action = $_
-                if ($Action -eq "config") {
-                    $config = [string]$hiveresponse.result.config | ConvertFrom-StringData
-                    $HiveWorker = $config.WORKER_NAME -replace "`"", ""
-                    $Pass = $config.RIG_PASSWD -replace "`"", ""
-                    $mirror = $config.HIVE_HOST_URL -replace "`"", ""
-                    $farmID = $config.FARM_ID
-                    $HiveID = $config.RIG_ID
-                    $wd_enabled = $config.WD_ENABLED
-                    $wd_miner = $config.WD_MINER
-                    $wd_reboot = $config.WD_REBOOT
-                    $wd_minhashes = $config.WD_MINHASHES -replace "`'", "" | ConvertFrom-Json
-                    $NewHiveKeys = @{ }
-                    $NewHiveKeys.Add("HiveWorker", "$Hiveworker")
-                    $NewHiveKeys.Add("HivePassword", "$Pass")
-                    $NewHiveKeys.Add("HiveID", "$HiveID")
-                    $NewHiveKeys.Add("HiveMirror", "$mirror")
-                    $NewHiveKeys.Add("FarmID", "$farmID")
-                    $NewHiveKeys.Add("Wd_Enabled", "$wd_enabled")
-                    $NewHiveKeys.Add("wd_miner", "$wd_miner")
-                    $NewHiveKeys.Add("wd_reboot", "$wd_reboot")
-                    $NewHiveKeys.Add("wd_minhashes", "$wd_minhashes")
-                    if (Test-Path ".\build\txt\hivekeys.txt") { $OldHiveKeys = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json }
-                    ## If password was changed- Let Hive know message was recieved
-                    if ($OldHiveKeys) {
-                        if ("$($NewHiveKeys.HivePassword)" -ne "$($OldHiveKeys.HivePassword)") {
-                            $method = "message"
-                            $messagetype = "warning"
-                            $data = "Password change received, wait for next message..."
-                            $DoResponse = Add-HiveResponse -Method $method -MessageType $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id
-                            $DoResponse = $DoResponse | ConvertTo-Json -Depth 1 -Compress
-                            $SendResponse = Invoke-RestMethod "$mirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
-                            $SendResponse
-                            $DoResponse = @{method = "password_change_received"; params = @{rig_id = $HiveID; passwd = $HivePassword }; jsonrpc = "2.0"; id = "0" }
-                            $DoResponse = $DoResponse | ConvertTo-Json -Depth 1 -Compress
-                            $Send2Response = Invoke-RestMethod "$mirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
-                        }
-                    }
+            ## Initiate Contact
+            $hiveresponse = Start-Peekaboo -HiveID $HiveID -HiveMirror $HiveMirror -HiveWorker $HiveWoker -HivePassword $HivePassword -Version $Version -GPUData $GetBusData; 
 
-                    ## Set Arguments/New Parameters
-                    $NewHiveKeys | ConvertTo-Json | Set-Content ".\build\txt\hivekeys.txt"
-                    $HiveID = $NewHiveKeys.HiveID
-                    $farmID = $NewHiveKeys.FarmID
-                    $HivePassword = $NewHiveKeys.HivePassword
-                    $HiveWorker = $NewHiveKeys.HiveWorker
-                    $HiveMirror = $NewHiveKeys.HiveMirror
-                }
-
-                ##If Hive Sent OC Start SWARM OC
-                if ($Action -eq "nvidia_oc") {
-                    $WorkingDir = $dir
-                    $NewOC = $hiveresponse.result.nvidia_oc | ConvertTo-Json -Compress
-                    $NewOC | Start-NVIDIAOC 
-                }
-                if ($Action -eq "amd_oc") {
-                    $WorkingDir = $dir
-                    $NewOC = $hiveresponse.result.amd_oc | ConvertTo-Json -Compress
-                    $NewOC | Start-AMDOC 
-                }
+            if ($hiveresponse.result) {
+                $RigConf = $hiveresponse
+            }
+            elseif(Test-Path ".\build\txt\get-hello.txt") {
+                Write-Log "WARNGING: Failed To Contact HiveOS. Using Last Known Configuration"
+                Start-Sleep -S 2
+                $RigConf = Get-Content ".\build\txt\get-hello.txt" | ConvertFrom-Json
             }
 
-            ## Print Data to output, so it can be recorded in transcript
-            $hiveresponse.result.config
+            if($RigConf) {
+                $RigConf.result | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+                    $Action = $_
 
+                    Switch($Action) {
+                        "config" {
+                            $config = [string]$RigConf.result.config | ConvertFrom-StringData
+                            $HiveWorker = $config.WORKER_NAME -replace "`"", ""
+                            $Pass = $config.RIG_PASSWD -replace "`"", ""
+                            $mirror = $config.HIVE_HOST_URL -replace "`"", ""
+                            $farmID = $config.FARM_ID
+                            $HiveID = $config.RIG_ID
+                            $wd_enabled = $config.WD_ENABLED
+                            $wd_miner = $config.WD_MINER
+                            $wd_reboot = $config.WD_REBOOT
+                            $wd_minhashes = $config.WD_MINHASHES -replace "`'", "" | ConvertFrom-Json
+                            $NewHiveKeys = @{ }
+                            $NewHiveKeys.Add("HiveWorker", "$Hiveworker")
+                            $NewHiveKeys.Add("HivePassword", "$Pass")
+                            $NewHiveKeys.Add("HiveID", "$HiveID")
+                            $NewHiveKeys.Add("HiveMirror", "$mirror")
+                            $NewHiveKeys.Add("FarmID", "$farmID")
+                            $NewHiveKeys.Add("Wd_Enabled", "$wd_enabled")
+                            $NewHiveKeys.Add("wd_miner", "$wd_miner")   
+                            $NewHiveKeys.Add("wd_reboot", "$wd_reboot")
+                            $NewHiveKeys.Add("wd_minhashes", "$wd_minhashes")
+                            if (Test-Path ".\build\txt\hivekeys.txt") { $OldHiveKeys = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json }
+                            ## If password was changed- Let Hive know message was recieved
+                            if ($OldHiveKeys) {
+                                if ("$($NewHiveKeys.HivePassword)" -ne "$($OldHiveKeys.HivePassword)") {
+                                    $method = "message"
+                                    $messagetype = "warning"
+                                    $data = "Password change received, wait for next message..."
+                                    $DoResponse = Add-HiveResponse -Method $method -MessageType $messagetype -Data $data -HiveID $HiveID -HivePassword $HivePassword -CommandID $command.result.id
+                                    $DoResponse = $DoResponse | ConvertTo-Json -Depth 1 -Compress
+                                    $SendResponse = Invoke-RestMethod "$mirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+                                    $SendResponse
+                                    $DoResponse = @{method = "password_change_received"; params = @{rig_id = $HiveID; passwd = $HivePassword }; jsonrpc = "2.0"; id = "0" }
+                                    $DoResponse = $DoResponse | ConvertTo-Json -Depth 1 -Compress
+                                    $Send2Response = Invoke-RestMethod "$mirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+                                }
+                            }
+
+                            ## Set Arguments/New Parameters
+                            $NewHiveKeys | ConvertTo-Json | Set-Content ".\build\txt\hivekeys.txt"
+                            $HiveID = $NewHiveKeys.HiveID
+                            $farmID = $NewHiveKeys.FarmID
+                            $HivePassword = $NewHiveKeys.HivePassword
+                            $HiveWorker = $NewHiveKeys.HiveWorker
+                            $HiveMirror = $NewHiveKeys.HiveMirror
+                        }
+
+                        ##If Hive Sent OC Start SWARM OC
+                        "nvidia_oc" {
+                            $WorkingDir = $dir
+                            $NewOC = $RigConf.result.nvidia_oc | ConvertTo-Json -Compress
+                            $NewOC | Start-NVIDIAOC 
+                        }
+                        "amd_oc" {
+                            $WorkingDir = $dir
+                            $NewOC = $RigConf.result.amd_oc | ConvertTo-Json -Compress
+                            $NewOC | Start-AMDOC 
+                        }
+                    }
+                }
+            ## Print Data to output, so it can be recorded in transcript
+            $RigConf.result.config
         }
         else {
-            write-Log "failed to contact HiveOS- Do you have an account? Did you use your farm hash?"
+            write-Log "No HiveOS Rig.conf- Do you have an account? Did you use your farm hash?"
+            Start-Sleep -S 2
         }
     }
-            ## Aaaaannnnd...Que that sexy logo. Go Time.
-            Get-SexyWinLogo
-
+    ## Aaaaannnnd...Que that sexy logo. Go Time.
+    Get-SexyWinLogo
 }
 
 ## Determine AMD platform
