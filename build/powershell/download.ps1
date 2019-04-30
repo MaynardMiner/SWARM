@@ -41,7 +41,7 @@ function Expand-WebRequest {
     if (Test-Path $X64_zip) { Remove-Item $X64_zip -Recurse -Force }
     if (Test-Path $X64_extract) { Remove-Item $X64_extract -Recurse -Force }
     if (Test-Path ".\bin\$BinPath") { Remove-Item ".\bin\$BinPath" -Recurse -Force }
-    if (Test-Path ".\x64\$temp") { Remove-Item ".x64\$temp" -Recurse -Force }
+    if (Test-Path ".\x64\$temp") { Remove-Item ".\x64\$temp" -Recurse -Force }
 
     ##Make Dirs if not there
     if (-not (Test-Path ".\bin")) { New-Item "bin" -ItemType "directory" | Out-Null; Start-Sleep -S 1 }
