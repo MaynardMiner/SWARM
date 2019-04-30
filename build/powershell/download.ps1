@@ -31,12 +31,19 @@ function Expand-WebRequest {
     if ("7z" -in $FileType) { $Extraction = "zip" }
     if ("zip" -in $FileType) { $Extraction = "zip" }
     if ("tar" -in $FileType) { $Extraction = "tar" }
+    if ("tgz" -in $FileType) { $Extraction = "tar" }
+
+    if($Extraction -eq "tar") {
+        if("gz" -in $FileType) { $Tar = "gz"}
+        if("xz" -in $FileType) { $Tar = "xz"}
+        if("tgz" -in $FileType) { $Tar = "gz"}
+    }
 
     ##Delete any old download attempts - Start Fresh
     if (Test-Path $X64_zip) { Remove-Item $X64_zip -Recurse -Force }
     if (Test-Path $X64_extract) { Remove-Item $X64_extract -Recurse -Force }
     if (Test-Path ".\bin\$BinPath") { Remove-Item ".\bin\$BinPath" -Recurse -Force }
-    if (Test-Path ".\x64\$temp") { Remove-Item ".x64\$temp" -Recurse -Force }
+    if (Test-Path ".\x64\$temp") { Remove-Item ".\x64\$temp" -Recurse -Force }
 
     ##Make Dirs if not there
     if (-not (Test-Path ".\bin")) { New-Item "bin" -ItemType "directory" | Out-Null; Start-Sleep -S 1 }
@@ -55,7 +62,10 @@ function Expand-WebRequest {
 
             Write-Log "Extracting to temporary folder" -ForegroundColor Yellow
             New-Item -Path ".\x64\$temp" -ItemType "Directory" -Force | Out-Null; Start-Sleep -S 1
-            Start-Process "tar" -ArgumentList "-xzvf x64/$Zip -C x64/$temp" -Wait
+            switch($Tar) {
+             "gz"{Start-Process "tar" -ArgumentList "-xzvf x64/$Zip -C x64/$temp" -Wait}
+             "xz"{Start-Process "tar" -ArgumentList "-xvJf x64/$Zip -C x64/$temp" -Wait}
+            }
 
             $Stuff = Get-ChildItem ".\x64\$Temp"
             if ($Stuff) { Write-Log "Extraction Succeeded!" -ForegroundColor Green }
