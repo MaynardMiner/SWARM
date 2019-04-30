@@ -53,7 +53,7 @@ function Expand-WebRequest {
             Write-Log "Download URI is $URI"
             Write-Log "Miner Exec is $Name"
             Write-Log "Miner Dir is $MoveThere"
-            Invoke-WebRequest $Uri -OutFile "$X64_zip" -UseBasicParsing
+            Start-Process -Filepath "wget" -ArgumentList "$Uri -O x64/$Zip" -Wait
 
             if (Test-Path "$X64_zip") { Write-Log "Download Succeeded!" -ForegroundColor Green }
             else { Write-Log "Download Failed!" -ForegroundColor DarkRed; break }
@@ -63,6 +63,7 @@ function Expand-WebRequest {
             switch($Tar) {
              "gz"{Start-Process "tar" -ArgumentList "-xzvf x64/$Zip -C x64/$temp" -Wait}
              "xz"{Start-Process "tar" -ArgumentList "-xvJf x64/$Zip -C x64/$temp" -Wait}
+             "tgz"{Start-Process "tar" -ArgumentList "-xzvf x64/$Zip -C x64/$temp" -Wait}
             }
 
             $Stuff = Get-ChildItem ".\x64\$Temp"
