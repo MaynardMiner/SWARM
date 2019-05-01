@@ -2779,4 +2779,4 @@ API overhaul:
   -Latest Vega Image now supported for HiveOS!
   -Fixed .tgz extraction issue with teamredminer.
    * Swarm will now handle .tgz files.
-
+  -Fixed linux watchdog (close all screen on exit).
