@@ -132,6 +132,7 @@ function Set-AMDStats {
                                 $AMDStats = @{ }
                                 $AMDFans = $( $GetHiveStats.fan | ForEach-Object { if ($_ -ne 0) { $_ } } )
                                 $AMDTemps = $( $GetHiveStats.temp | ForEach-Object { if ($_ -ne 0) { $_ } } )
+                                $AMDWatts = $( $GetHiveStats.power | ForEach-Object { if ($_ -ne 0) { $_ } } )
                             }
                             Start-Sleep -S .5
                         }
@@ -143,6 +144,7 @@ function Set-AMDStats {
                     $AMDFans = $AMDFans | Select-String "%" | ForEach-Object { $_ -split "\(" | Select-Object -Skip 1 -first 1 } | ForEach-Object { $_ -split "\)" | Select-Object -first 1 }
                     timeout.exe -s9 10 rocm-smi -t | Tee-Object -Variable AMDTemps | Out-Null
                     $AMDTemps = $AMDTemps | Select-String -CaseSensitive "Temperature" | ForEach-Object { $_ -split ":" | Select-Object -skip 2 -First 1 } | ForEach-Object { $_ -replace (" ", "") } | ForEach-Object { $_ -replace ("c", "") }
+                    timeout -s9 30 rocm-smi -P | Tee-Object -Variable AMDWatts | Out-Null
                 }
             }
         }
