@@ -140,11 +140,11 @@ function Set-AMDStats {
                 }
                 "No" {
                     $AMDStats = @{ }
-                    timeout.exe -s9 10 rocm-smi -f | Tee-Object -Variable AMDFans | Out-Null
+                    timeout -s9 10 rocm-smi -f | Tee-Object -Variable AMDFans | Out-Null
                     $AMDFans = $AMDFans | Select-String "%" | ForEach-Object { $_ -split "\(" | Select-Object -Skip 1 -first 1 } | ForEach-Object { $_ -split "\)" | Select-Object -first 1 }
-                    timeout.exe -s9 10 rocm-smi -t | Tee-Object -Variable AMDTemps | Out-Null
+                    timeout -s9 10 rocm-smi -t | Tee-Object -Variable AMDTemps | Out-Null
                     $AMDTemps = $AMDTemps | Select-String -CaseSensitive "Temperature" | ForEach-Object { $_ -split ":" | Select-Object -skip 2 -First 1 } | ForEach-Object { $_ -replace (" ", "") } | ForEach-Object { $_ -replace ("c", "") }
-                    timeout -s9 30 rocm-smi -P | Tee-Object -Variable AMDWatts | Out-Null
+                    timeout -s9 10 rocm-smi -P | Tee-Object -Variable AMDWatts | Out-Null
                 }
             }
         }
