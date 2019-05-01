@@ -2767,3 +2767,16 @@ API overhaul:
   Note: Update will not transfer pool-algos.json this release
         This means you must add bans again, if done through
         command.
+
+  2.2.3
+
+  Note: This is a mainly a patch for the below issues:
+
+  -Fixed WattOMeter for Linux/AMD (both HiveOS and generic *nix)
+  -Added GPUWatts to background screen for linux / fixed
+  -Added "mining" to ``get stats lite``
+  -Latest Bleeding Edge now supported for HiveOS!
+  -Latest Vega Image now supported for HiveOS!
+  -Fixed .tgz extraction issue with teamredminer.
+   * Swarm will now handle .tgz files.
+

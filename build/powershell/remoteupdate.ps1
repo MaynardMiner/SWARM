@@ -31,9 +31,14 @@ function start-update {
         $PreviousVersions += "SWARM.2.1.9"
         $PreviousVersions += "SWARM.2.2.0"
         $PreviousVersions += "SWARM.2.2.1"
+        $PreviousVersions += "SWARM.2.2.2"
 
         Write-Log "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
         Write-Log "Check $Location For any Previous Versions"
+
+        $CurrentVersion = (Get-Content ".\h-manifest.conf" | ConvertFrom-StringData).CUSTOM_VERSION
+        $CurrentVersion = "$($CurrentVersion[0])$($CurrentVersion[2])$($CurrentVersion[4])"
+        $CurrentVersion = [Int]$CurrentVersion
 
         $PreviousVersions | foreach {
             $PreviousPath = Join-Path "$Location" "$_"
@@ -72,7 +77,9 @@ function start-update {
                 }
                 $Jsons = @("miners", "oc", "power", "pools", "asic", "wallets")
                 $UpdateType = @("CPU", "AMD1", "NVIDIA1", "NVIDIA2", "NVIDIA3")
-                $Exclude = @("claymore_amd.json","pool-algos.json","ehssand_amd.json","gminer_amd.json","phoenix_amd.json","progminer_amd.json","stak_cpu.json","xmrig_cpu.json","enemy.json","xmrig_nv.json")
+                $Exclude = @("claymore_amd.json","ehssand_amd.json","gminer_amd.json","phoenix_amd.json","progminer_amd.json","stak_cpu.json","xmrig_cpu.json","enemy.json","xmrig_nv.json")
+                if($CurrentVersion -lt 222){$Exclude += "pool-algo.json"}
+                
                 $Jsons | foreach {
                     $OldJson_Path = Join-Path $OldConfig "$($_)";
                     $NewJson_Path = Join-Path ".\config" "$($_)";

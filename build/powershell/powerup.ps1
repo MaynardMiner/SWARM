@@ -13,13 +13,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 function Set-Power {
     param(
-        [Parameter(Position =0, Mandatory = $false)]
+        [Parameter(Position=0, Mandatory=$true)]
         [String]$PwrType
     )
+
+    $Platforms = $Platform
     
-    Switch($PwrType) {
-        "AMD" {$Power = (Set-AMDStats).watts }
-        "NVIDIA" {$Power = (Set-NvidiaStats).watts }
+    switch -Wildcard ($PwrType) {
+        "*AMD*" { $Power = (Set-AMDStats).watts }
+        "*NVIDIA*" { $Power = (Set-NvidiaStats).watts }
     }
 
     $($Power | Measure-Object -Sum).Sum
