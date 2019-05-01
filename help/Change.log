@@ -2780,3 +2780,5 @@ API overhaul:
   -Fixed .tgz extraction issue with teamredminer.
    * Swarm will now handle .tgz files.
   -Fixed linux watchdog (close all screen on exit).
+
+  -gminer updated
