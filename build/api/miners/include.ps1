@@ -136,7 +136,7 @@ function Set-AMDStats {
                             }
                             Start-Sleep -S .5
                         }
-                    }while ($GetHiveStats.temp.count -lt 1 -and $GetHiveStats.fan.count -lt 1)
+                    }while ($GetHiveStats.temp.count -lt 1 -and $GetHiveStats.fan.count -lt 1 -and $GetHiveStats.power.count -lt 1)
                 }
                 "No" {
                     $AMDStats = @{ }
@@ -144,7 +144,6 @@ function Set-AMDStats {
                     $AMDFans = $AMDFans | Select-String "%" | ForEach-Object { $_ -split "\(" | Select-Object -Skip 1 -first 1 } | ForEach-Object { $_ -split "\)" | Select-Object -first 1 }
                     timeout -s9 10 rocm-smi -t | Tee-Object -Variable AMDTemps | Out-Null
                     $AMDTemps = $AMDTemps | Select-String -CaseSensitive "Temperature" | ForEach-Object { $_ -split ":" | Select-Object -skip 2 -First 1 } | ForEach-Object { $_ -replace (" ", "") } | ForEach-Object { $_ -replace ("c", "") }
-                    timeout -s9 10 rocm-smi -P | Tee-Object -Variable AMDWatts | Out-Null
                 }
             }
         }
