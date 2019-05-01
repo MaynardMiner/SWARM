@@ -488,11 +488,11 @@ $global:Pool_Hashrates = @{ }
 ## Linux Initialize
 if ($Platform -eq "linux") {
 
+    ## Start SWARM watchdog (for automatic shutdown)
+    start-watchdog
+
     ## HiveOS Only Items
     if ($HiveOS -eq "Yes") {
-
-        ## Start SWARM watchdog (for automatic shutdown)
-        start-watchdog
 
         ## Kill Previous Screens
         start-killscript
