@@ -188,6 +188,7 @@ function Get-StatusLite {
 
             $Screen += 
             "        Miner: $($_.Miner)
+        Mining: $($_.Name)
         Speed: $($_.HashRates | ForEach-Object {if ($null -ne $_) {"$($_ | ConvertTo-Hash)/s"}else {"Benchmarking"}})
         Profit: $($_.Profits | ForEach-Object {if ($null -ne $_) {"$(($_ * $Rates.$Currency).ToString("N2")) $Currency/Day"}else {"Bench"}}) 
         Pool: $($_.MinerPool)
