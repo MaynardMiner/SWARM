@@ -127,8 +127,8 @@
     "NVIDIA2":".\\bin\\gminer-2\\miner", 
     "NVIDIA3":".\\bin\\gminer-3\\miner", 
     "minername":"miner", 
-    "version":"1.37", 
-    "uri":"https://github.com/develsoftware/GMinerRelease/releases/download/1.39/gminer_1_39_linux64.tar.xz"
+    "version":"1.40", 
+    "uri":"https://github.com/develsoftware/GMinerBetaRelease/releases/download/1.40/gminer_1_40_linux64.tar.xz"
 }, 
   "bminer": {
     "name":"bminer", 
