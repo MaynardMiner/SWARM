@@ -27,7 +27,7 @@ param(
     [Parameter(Mandatory = $false)]
     [switch]$asjson
 )
-
+[cultureinfo]::CurrentCulture = 'en-US'
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
 
 Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))

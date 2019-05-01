@@ -19,7 +19,7 @@ function Get-APIServer {
 
         $APIServer = {
             param($WorkingDir, $Port, $Remote, $APIPassword)
-
+            [cultureinfo]::CurrentCulture = 'en-US'
             Set-Location $WorkingDir            
             if (Test-Path ".\build\pid\api_pid.txt") { $AFID = Get-Content ".\build\pid\api_pid.txt"; $AID = Get-Process -ID $AFID -ErrorAction SilentlyContinue }
             if ($AID) { Stop-Process $AID -ErrorAction SilentlyContinue }

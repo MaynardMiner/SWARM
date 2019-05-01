@@ -24,6 +24,7 @@ param(
         [Parameter(Position=5, Mandatory=$false)]
         [String]$argument6
      )
+     [cultureinfo]::CurrentCulture = 'en-US'
 
      Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))
 

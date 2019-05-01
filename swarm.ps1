@@ -177,6 +177,7 @@ if($Debug -eq $True)
   if((Test-Path "C:\")) {Set-ExecutionPolicy Bypass -Scope Process}
  }
 
+ [cultureinfo]::CurrentCulture = 'en-US'
 
 ##filepath dir
 $dir = (Split-Path $script:MyInvocation.MyCommand.Path)

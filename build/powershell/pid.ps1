@@ -14,6 +14,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))
 
 . .\build\powershell\killall.ps1;
+[cultureinfo]::CurrentCulture = 'en-US'
 
 While ($true) {
        $Title = "SWARM"

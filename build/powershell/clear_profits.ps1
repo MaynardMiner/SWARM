@@ -10,6 +10,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
+[cultureinfo]::CurrentCulture = 'en-US'
+=
 $Get = @()
 Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))
 Write-Host "Gathering All Profit Stats"
