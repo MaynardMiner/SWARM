@@ -144,6 +144,8 @@ function Set-AMDStats {
                     $AMDFans = $AMDFans | Select-String "%" | ForEach-Object { $_ -split "\(" | Select-Object -Skip 1 -first 1 } | ForEach-Object { $_ -split "\)" | Select-Object -first 1 }
                     timeout -s9 10 rocm-smi -t | Tee-Object -Variable AMDTemps | Out-Null
                     $AMDTemps = $AMDTemps | Select-String -CaseSensitive "Temperature" | ForEach-Object { $_ -split ":" | Select-Object -skip 2 -First 1 } | ForEach-Object { $_ -replace (" ", "") } | ForEach-Object { $_ -replace ("c", "") }
+                    timeout -s9 10 rocm-smi -P | Tee-Object -Variable AMDWatts | Out-Null
+                    $AMDWatts = $AMDWatts | Select-String -CaseSensitive "W" | foreach {$_ -split (":", "") | Select -skip 2 -first 1} | foreach {$_ -replace ("W", "")}
                 }
             }
         }

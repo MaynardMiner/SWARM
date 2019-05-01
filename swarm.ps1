@@ -221,6 +221,7 @@ Write-log "OS = $Platform" -ForegroundColor Green
 . .\build\powershell\newsort.ps1; . .\build\powershell\screen.ps1; . .\build\powershell\commandweb.ps1;
 . .\build\powershell\response.ps1; . .\build\api\html\api.ps1; . .\build\powershell\config_file.ps1;
 . .\build\powershell\altwallet.ps1; . .\build\api\pools\include.ps1; . .\build\api\miners\include.ps1;
+. .\build\api\miners\include.ps1;
 if ($Platform -eq "linux") { . .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1 }
 if ($Platform -eq "windows") { . .\build\powershell\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1; . .\build\powershell\environment.ps1; }
 
@@ -1760,13 +1761,8 @@ While ($true) {
         }While ($MinerWatch.Elapsed.TotalSeconds -lt ($MinerInterval - 20))
 
         ## Start WattOMeter function
-        if ($Platform -eq "linux" -or $Platform -eq "windows") {
-            if ($WattOMeter -eq "Yes") {
-                Print-WattOMeter
-                if ($Type -like "*NVIDIA*") { Get-Power -PwrType "NVIDIA" -Platforms $Platform }
-                if ($Type -like "*AMD*") { Get-Power -PwrType "AMD" -Platforms $Platform }
-                Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
-            }
+        if ($WattOMeter -eq "Yes") {
+            Print-WattOMeter
         }
 
         ##Benchmarking/Timeout.
@@ -1819,7 +1815,7 @@ While ($true) {
                                     }
                                 }
                                 else {
-                                    if ($WattOMeter -eq "yes" -and $_.Type -ne "CPU") { try { $GPUPower = Set-Power -MinerDevices $($_.Devices) -Command "stat" -PwrType $($_.Type) }catch { write-Log "WattOMeter Failed"; $GPUPower = 0 } }
+                                    if ($WattOMeter -eq "yes" -and $_.Type -ne "CPU") { try { $GPUPower = Set-Power $($_.Type) }catch { write-Log "WattOMeter Failed"; $GPUPower = 0 } }
                                     else { $GPUPower = 1 }
                                     if ($WattOMeter -eq "yes" -and $_.Type -ne "CPU") {
                                         if ($Watts.$($_.Algo)) {
