@@ -641,9 +641,7 @@ Making a terminal on desktop. This can be used for commands.
     }
 
     ## Fetch Ram Size, Write It To File (For Commands)
-    $TotalMemory = (systeminfo | Select-String 'Total Physical Memory:').ToString().Split(':')[1].Trim()
-    $TotalMemory = $TotalMemory -replace (",", "")
-    $TotalMemory = $TotalMemory -replace ("MB", "")
+    $TotalMemory = [math]::Round((Get-CimInstance -ClassName CIM_ComputerSystem).TotalPhysicalMemory / 1GB, 2) 
     $TotalMemory | Set-Content ".\build\txt\ram.txt"
 
     ## GPU Bus Hash Table
