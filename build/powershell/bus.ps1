@@ -54,8 +54,9 @@ Function Resolve-PCIBusInfo {
     
 Function Get-BusFunctionID {
     #gwmi -query "SELECT * FROM Win32_PnPEntity"
-    $Devices = Get-CimInstance -namespace root\cimv2 -class Win32_PnPEntity | Where PNPClass -Eq "Display"
-
+    $Services = @("nvlddmkm","amdkmdap","igfx","BasicDisplay")
+    Get-CimInstance -namespace root\cimv2 -class Win32_PnPEntity | where Service -in $Services
+    
     for ($i = 0; $i -lt $Devices.Count; $i++) {
         $deviceId = $Devices[$i].PNPDeviceID
         $locationInfo = (get-itemproperty -path "HKLM:\SYSTEM\CurrentControlSet\Enum\$deviceID" -name locationinformation).locationINformation
