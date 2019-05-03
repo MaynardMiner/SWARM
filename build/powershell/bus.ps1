@@ -55,11 +55,11 @@ Function Resolve-PCIBusInfo {
 Function Get-BusFunctionID {
     #gwmi -query "SELECT * FROM Win32_PnPEntity"
     $Services = @("nvlddmkm","amdkmdap","igfx","BasicDisplay")
-    $Devices = Get-CimInstance -namespace root\cimv2 -class Win32_PnPEntity | where Service -in $Services
+    $Devices = Get-CimInstance -namespace root\cimv2 -class Win32_PnPEntity | where Service -in $Services | Where DeviceID -like "*PCI*"
     
     for ($i = 0; $i -lt $Devices.Count; $i++) {
         $deviceId = $Devices[$i].PNPDeviceID
-        $locationInfo = (get-itemproperty -path "HKLM:\SYSTEM\CurrentControlSet\Enum\$deviceID" -name locationinformation).locationINformation
+        $locationInfo = (get-itemproperty -path "HKLM:\SYSTEM\CurrentControlSet\Enum\$deviceID" -name locationinformation -ErrorAction Stop).locationINformation
         $businfo = Resolve-PCIBusInfo -locationInfo $locationinfo
         $subvendorlist = Get-Content ".\build\data\vendor.json" | ConvertFrom-Json
         $getsubvendor = $Devices[$i].PNPDeviceID -split "&REV_" | Select -first 1
