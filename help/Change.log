@@ -2790,14 +2790,16 @@ API overhaul:
   * https://github.com/PowerShell/PowerShell/releases
   * https://dotnet.microsoft.com/download/dotnet-framework/net472
 
-  NEW FEATURES
+  NEW FEATURES!
 
   -SWARM now works in Windows 7/8 (Expiremental)
-
+   * If you use- Please let me know if there are
+     issues with miners.
 
   -Updated WMI to v2
   -Fixed Windows cpuminer screen output
   -Fixed Directory Parsing with spaces (Windows)
   -Enforced En-US Culture for Math & Time
-  
+  -``benchmark timeout`` will now clear download blocks
   -MiniZ updated
+  -Bminer updated
