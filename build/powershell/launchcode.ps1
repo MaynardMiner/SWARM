@@ -194,7 +194,7 @@ function Start-LaunchCode {
                 ##Build Start Script
                 $script = @()
                 $script += "`$OutputEncoding = [System.Text.Encoding]::ASCII"
-                $script += "Start-Process `"powershell`" -ArgumentList `"-command `"`"Set-Location ```'C:\Users\Lake City Dave\Documents\GitHub\SWARM```'; & ```'$dir\build\powershell\icon.ps1```' ```'$dir\build\apps\miner.ico```'`"`"`" -NoNewWindow"
+                $script += "Start-Process `"powershell`" -ArgumentList `"-command `"`"Set-Location ```'$dir```'; & ```'$dir\build\powershell\icon.ps1```' ```'$dir\build\apps\miner.ico```'`"`"`" -NoNewWindow"
                 $script += "`$host.ui.RawUI.WindowTitle = `'$($MinerCurrent.Name) - $($MinerCurrent.Algo)`';"
                 $MinerCurrent.Prestart | ForEach-Object {
                     if ($_ -notlike "export LD_LIBRARY_PATH=$dir\build\export") {
