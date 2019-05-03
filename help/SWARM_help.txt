@@ -65,16 +65,16 @@ Argument            Options             Explanation
                                     know to build itself for Windows operation. SWARM will attempt to detects
                                     if there is a C:\, if not, then it assumes SWARM is operating in linux.
                                     Otherwise, it will assume it is operating in windows. This parameter is
-                                    optional.
+                                    optional, only used to force an OS.
 
 -Stat_All        [Yes,No]           Default is No. When enabled to Yes, it will pull / save ALL coin stats. 
-                                    However, this is a huge expenditure of CPU and system resources to do. Not
-                                    reccommend on 2 threaded CPUs.
+                                    However, this is a huge expenditure of CPU and system resources to do.
+				    Not reccommended to run if Using -Type CPU with all threads used for mining.
 
 -Custom_Periods    [number]         Default is 1. This will allow the user to specify the number of periods 
                                     that SWARM should gather its data from, with "periods" defined as each 
-                                    pull from pool. Default is 1 (to reduce use). If used, Stat_Algo and /or
-                                    Stat_Coin should be set to "custom"
+                                    pull from pool. Default is 1 (to reduce use). If used, -Stat_Algo and /or
+                                    -Stat_Coin should be set to "custom"
 
 -Algorithm   [algorithm,algorithm,etc.] When this is specified, SWARM will not use
                                         Algorithms from pool-algos.json, and defer
@@ -88,10 +88,11 @@ Argument            Options             Explanation
                                         one coin can be selected. 
                                         EXPIREMENTAL:
                                         Multiple coins can be used, comma seperating items.
-                                        -Auto_Coin must be "yes", will use only those coins.
-                                        This hasn't been fully tested. If -Auto_Algo is "Yes"
+                                        -Auto_Coin must be "Yes".
+                                        If -Auto_Algo is "Yes"
                                         will add algorithm switching port on yiimp algo pools.
                                         if -Auto_Algo is "No", should mine only coins.
+					Only Coin pools can be used.
 
 -Bans          [algo                Bans allows a user to specify bans on certain items in SWARM.
                algo:miner           Using [algo] only, SWARM will block all instances of that algo.
@@ -145,7 +146,7 @@ Argument            Options             Explanation
 -CoinExchange      [Any]            Coin Symbol Of An Optional AltWallet (Will only work for coins on 
                                     cryptocompare). This will calculate the coin of your choice profit/day
                                     and display on stats screens. Good if you are exchanging into a coin 
-                                    other than BTC. This figure does not include power consumption calculations.
+                                    other than BTC. This figure does not include modifiers.
 
 -Interval         [1-1000]          Expression is in seconds. Time before miner begins checking pools for 
                                     pricing. Ideal target goal should be miner windows close/open every 
@@ -202,14 +203,11 @@ Argument            Options             Explanation
 				    particular algo/coin exceed the -Threshold argument, it will be removed
 				    from database calculation. This is to prevent mining on a particular
 		                    coin/algorithm in which the pool is having issues with. It only needs
-				    to be specified if you wish it to be different than .1 btc/day
+				    to be specified if you wish it to be different than .02 btc/day
 
 -HiveOS         [YES or No]         Default is "Yes". Specifies Unix version whether or not operating system
                                     is HiveOS. HiveOS version operates slightly different that *nix version. This
 				    will tell Windows version whether or not to use HiveOS website for stats.
-
--Cuda           [9.2,10]            Default is 10. Specifies Unix version which miners to use.
-			            Default is 10 for Windows, and only 10 can be used.
 
 -Update          [Yes or No]        Allows HiveOS remote update, which will transfer Default set to "No". Old
                                     miner files/settings from previous version, then remove it for you. Pay
@@ -223,7 +221,7 @@ Argument            Options             Explanation
         	    Minute_5,		By default everything is day pricing. This will allow you to
 		    Minute_15,		smooth out stat fluctuations if you so desired into the period 
                     Hour                specified. Essentially it will allow you choose whether or not 
-		    Hour4,              you want to base switching on price averages, or live...And if
+		    Hour_4,              you want to base switching on price averages, or live...And if
 		    Day                 you choose price averages, what average to base it on. Default
                     Custom              is day. If using -Custom_Periods, this must be set to Custom.
 
@@ -243,8 +241,7 @@ Argument            Options             Explanation
 					from logs to benchmark fast.
 
 -CPUThreads	 [# of CPU threads]	By default HiveOS SWARM uses 1 thread. This option let
-					you limit the number of threads you wish to use if you are cpu
-					mining.
+					you add more threads to mine with.
 
 -GPUDevices1     ['0,1,2,3,4' etc.]     GPU's used in device group one, as identified by driver.
                                         GPUDevices1 will mine from Wallet1, PasswordCurrency1,
@@ -374,7 +371,7 @@ be used. nlpool in example accepts RVN as exchange.
 
 Example:
 
--Type NVIDIA1 -GPUDevices1 '0,1,2,3,4,5' -Wallet1 1ERWEDAe234wehdshWe -PasswordCurrency1 BTC
+-Type NVIDIA1 -GPUDevices1 0,1,2,3,4,5 -Wallet1 1ERWEDAe234weadfafasdfhdshWe -PasswordCurrency1 BTC
 
 for Type
 if (Type = NVIDIA2)
@@ -384,7 +381,7 @@ if (Type = NVIDIA2)
 
 If you are using -Type NVIDIA1,NVIDIA2 Example:
 
--Type NVIDIA1,NVIDIA2 -GPUDevices1 '0,1,2' -Wallet1 1ERWEDAe234wehdshWe -PasswordCurrency1 BTC -GPUDevices2 '3,4,5' -Wallet2 1aeEdrREglIT45EIWWheee -PasswordCurrency2 BTC
+-Type NVIDIA1,NVIDIA2 -GPUDevices1 0,1,2 -Wallet1 1ERWEDAe234wehzvasdfddshWe -PasswordCurrency1 BTC -GPUDevices2 3,4,5 -Wallet2 1aeEdrREglIT45EIWWheee -PasswordCurrency2 BTC
 
 -Wallet3 = Same as above (group 2)
 -PasswordCurrency3 = Same as above (group 2)
