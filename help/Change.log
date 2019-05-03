@@ -2782,3 +2782,22 @@ API overhaul:
   -Fixed linux watchdog (close all screen on exit).
 
   -gminer updated
+
+
+  2.2.4
+
+  Windows USERS: SWARM now requires latest .NET and Powershell:
+  * https://github.com/PowerShell/PowerShell/releases
+  * https://dotnet.microsoft.com/download/dotnet-framework/net472
+
+  NEW FEATURES
+
+  -SWARM now works in Windows 7/8 (Expiremental)
+
+
+  -Updated WMI to v2
+  -Fixed Windows cpuminer screen output
+  -Fixed Directory Parsing with spaces (Windows)
+  -Enforced En-US Culture for Math & Time
+  
+  -MiniZ updated

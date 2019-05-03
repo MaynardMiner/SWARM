@@ -207,7 +207,7 @@
     "NVIDIA2": ".\\bin\\miniz-2\\miniZ",
     "NVIDIA3": ".\\bin\\miniz-3\\miniZ",
     "minername": "miniZ",
-    "version": "1.3n",
+    "version": "1.3n4",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/miniz-linux.tar.gz"
   },
   "progminer": {
