@@ -219,7 +219,7 @@ While ($True) {
             $cpu = $(Get-CimInstance Win32_PerfFormattedData_PerfOS_System).ProcessorQueueLength
             $LoadAverage = Set-Stat -Name "load-average" -Value $cpu
             $LoadAverages = @("$([Math]::Round($LoadAverage.Minute,2))", "$([Math]::Round($LoadAverage.Minute_5,2))", "$([Math]::Round($LoadAverage.Minute_15,2))")
-            $ramfree = [math]::Round((Get-Ciminstance Win32_OperatingSystem | Select FreePhysicalMemory).FreePhysicalMemory/1mb,2)
+            $ramfree = [math]::Round((Get-Ciminstance Win32_OperatingSystem | Select FreePhysicalMemory).FreePhysicalMemory/1kb,2)
         }
     }
 
