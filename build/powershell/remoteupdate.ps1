@@ -32,6 +32,7 @@ function start-update {
         $PreviousVersions += "SWARM.2.2.0"
         $PreviousVersions += "SWARM.2.2.1"
         $PreviousVersions += "SWARM.2.2.2"
+        $PreviousVersions += "SWARM.2.2.3"
 
         Write-Log "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
         Write-Log "Check $Location For any Previous Versions"
