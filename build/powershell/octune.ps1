@@ -149,7 +149,10 @@ function Start-OC {
     )
 
     $Miner = $NewMiner | ConvertFrom-Json
-    $GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
+    Switch($Platforms) {
+        "linux"{$GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json}
+        "windows"{$GCount = Get-Content ".\build\txt\oclist.txt" | ConvertFrom-Json}
+    }
     $OCSettings = Get-Content ".\config\oc\oc-settings.json" | ConvertFrom-Json
     
     $nvidiaOC = $false; $DoNVIDIAOC = $false; $DoAMDOC = $false

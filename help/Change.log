@@ -2790,11 +2790,15 @@ API overhaul:
   * https://github.com/PowerShell/PowerShell/releases
   * https://dotnet.microsoft.com/download/dotnet-framework/net472
 
+  SWARM should support latest NVIDIA Drivers, and Adrenaline Drivers
+
   NEW FEATURES!
 
   -SWARM now works in Windows 7/8 (Expiremental)
    * If you use- Please let me know if there are
      issues with miners.
+
+  -SWARM will handle oc for AMD, even with onboard cards.
 
   -Updated WMI to v2
   -Fixed Windows cpuminer screen output

@@ -22,7 +22,7 @@ function Start-NVIDIAOC {
     $Decompress = $NewOC | ConvertFrom-Json
     $HiveNVOC = $Decompress | ConvertFrom-StringData
     $ocmessage = @()
-    $OCCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-JSon
+    $OCCount = Get-Content ".\build\txt\oclist.txt" | ConvertFrom-JSon
 
     $HiveNVOC.Keys | % {
         $key = $_
@@ -114,7 +114,7 @@ function Start-AMDOC {
   
     $Decompress = $NewOC | ConvertFrom-Json
     $AMDOC = $Decompress | ConvertFrom-StringData
-    $OCCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-JSon
+    $OCCount = Get-Content ".\build\txt\oclist.txt" | ConvertFrom-JSon
     $ocmessage = @()
     $script = @()
     $script += "`$host.ui.RawUI.WindowTitle = `'OC-Start`';"
