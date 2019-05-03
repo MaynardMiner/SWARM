@@ -210,12 +210,12 @@ While ($True) {
 
         ## Rig Metrics
         if ($HiveOS -eq "Yes") {
-            $diskSpace = Get-WmiObject Win32_LogicalDisk -Filter "DeviceID='C:'" | Select-Object Freespace
+            $diskSpace = Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'" | Select-Object Freespace
             $diskSpace = $diskSpace.Freespace / [math]::pow( 1024, 3 )
             $diskSpace = [math]::Round($diskSpace)
             $diskSpace = "$($diskSpace)G"
             $ramtotal = Get-Content ".\build\txt\ram.txt" | Select-Object -First 1
-            $cpu = $(Get-WmiObject Win32_PerfFormattedData_PerfOS_System).ProcessorQueueLength
+            $cpu = $(Get-CimInstance Win32_PerfFormattedData_PerfOS_System).ProcessorQueueLength
             $LoadAverage = Set-Stat -Name "load-average" -Value $cpu
             $LoadAverages = @("$([Math]::Round($LoadAverage.Minute,2))", "$([Math]::Round($LoadAverage.Minute_5,2))", "$([Math]::Round($LoadAverage.Minute_15,2))")
             $ramfree = $(Get-Counter '\Memory\Available MBytes').CounterSamples.CookedValue

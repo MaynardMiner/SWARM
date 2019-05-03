@@ -45,15 +45,15 @@ function Start-Peekaboo {
     $BootTime = $((Get-CimInstance -ClassName win32_operatingsystem | select lastbootuptime).lastbootuptime)
     $Uptime = (New-TimeSpan -Start (Get-Date "01/01/1970") -End ($BootTime.ToUniversalTime())).TotalSeconds
     $UpTime = [Math]::Round($Uptime)
-    $Ip = $(get-WmiObject Win32_NetworkAdapterConfiguration| Where {$_.Ipaddress.length -gt 1}).ipaddress[0]
+    $Ip = $(Get-CimInstance Win32_NetworkAdapterConfiguration| Where {$_.Ipaddress.length -gt 1}).ipaddress[0]
     $GPUS = @()
     if ($AMDData) {for ($i = 0; $i -lt $AMDData.name.Count; $i++) {$GPUS += @{busid = ($AMDData[$i].PCIBusID).ToLower(); name = $AMDData[$i].Name; brand = $AMDData[$i].brand; subvendor = $AMDData[$i].subvendor ; mem = $AMDData[$i].ram; mem_type = "unknown"; vbios = "unknown"}}
     }
     if ($GetGPU) {for ($i = 0; $i -lt $GetGPU.name.count; $i++) {$GPUS += @{busid = "$($GetGPU[$i]."pci.bus_id" -split ":",2 | Select -Last 1)".ToLower(); name = $GetGPU[$i].name; brand = "nvidia"; subvendor = $NVIDIAData[$i].subvendor ; mem = $GetGPU[$i]."memory.total [MiB]"; vbios = "$($GetGPU[$i].vbios_version)".ToLower(); plim_min = $GetGPU[$i]."power.min_limit [W]"; plim_def = $GetGPU[$i]."power.default_limit [W]"; plim_max = $GetGPU[$i]."power.max_limit [W]"; }}
     }
     $manu = $(Get-CimInstance Win32_BaseBoard | Select-Object Manufacturer).Manufacturer
-    $prod = $(Get-WmiObject Win32_BaseBoard | Select-Object Product).Product
-    $cpud = Get-WmiObject -Class Win32_processor | Select Name, DeviceID, NumberOfCores
+    $prod = $(Get-CimInstance Win32_BaseBoard | Select-Object Product).Product
+    $cpud = Get-CimInstance -Class Win32_processor | Select Name, DeviceID, NumberOfCores
     $cpuname = $cpud.name
     $cpucores = $cpud.NumberOfCores
     $cpuid = $cpud.DeviceID
@@ -61,8 +61,8 @@ function Start-Peekaboo {
     Invoke-Expression ".\build\apps\Coreinfo.exe" | Tee-Object -Variable AES | Out-Null
     $AES = $AES | Select-String "Supports AES extensions"
     if($AES){$HasAES = 1}else{$HasAES = 0}
-    $disk = $(Get-WMIObject win32_diskdrive).model
-    $diskSpace = Get-WmiObject Win32_LogicalDisk -Filter "DeviceID='C:'" | Select-Object Size
+    $disk = $(Get-CimInstance win32_diskdrive).model
+    $diskSpace = Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'" | Select-Object Size
     $diskSpace = $diskSpace.Size / [math]::pow( 1024, 3 )
     $diskSpace = [math]::Round($diskSpace)
     $diskSpace = "$($diskSpace)GB"

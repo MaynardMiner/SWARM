@@ -54,7 +54,7 @@ Function Resolve-PCIBusInfo {
     
 Function Get-BusFunctionID { 
     #gwmi -query "SELECT * FROM Win32_PnPEntity"
-    $Devices = get-wmiobject -namespace root\cimv2 -class Win32_PnPEntity
+    $Devices = Get-CimInstance -namespace root\cimv2 -class Win32_PnPEntity
 
     for ($i = 0; $i -lt $Devices.length; $i++) { 
 
@@ -73,7 +73,7 @@ Function Get-BusFunctionID {
         else {$subvendor = "amd"}
         if ($Devices[$i].PNPDeviceID -match "PCI\\VEN_10DE*") {$brand = "nvidia"}else {$brand = "amd"}
         $GPURAM = $Devices[$i].AdapterRam
-        $GPURAM = (Get-WmiObject Win32_VideoController | where PNPDeviceID -eq $Devices[$i].PNPDeviceID).AdapterRam
+        $GPURAM = (Get-CimInstance Win32_VideoController | where PNPDeviceID -eq $Devices[$i].PNPDeviceID).AdapterRam
         $GPURAM = "{0:f0}" -f $($GPURAM / 1000000)
         $GPURAM = "$($GPURAM)M"
 
