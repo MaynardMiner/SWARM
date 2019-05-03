@@ -197,8 +197,8 @@
     "NVIDIA2": ".\\bin\\bminer-2\\bminer",
     "NVIDIA3": ".\\bin\\bminer-3\\bminer",
     "minername": "bminer",
-    "version": "15.5.1",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/bminer-linux.tar.gz"
+    "version": "15.5.2",
+    "uri": "https://www.bminercontent.com/releases/bminer-v15.5.2-ed2038c-amd64.tar.xz"
   },
   "miniz": {
     "name": "miniz",
