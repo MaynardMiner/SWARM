@@ -35,7 +35,7 @@ function Start-Peekaboo {
     $GetGPU = Get-Content ".\build\txt\getgpu.txt" | ConvertFrom-Csv
     $getversion = (Split-Path $script:MyInvocation.MyCommand.Path -Leaf)
     $version = $getversion -replace ("SWARM.", "")
-    $getuid = $(Get-NetAdapter | Select MacAddress).MacAddress -replace ("-", "")
+    $getuid = (Get-CimInstance win32_networkadapterconfiguration | where {$_.IPAddress -ne $null} | select MACAddress).MacAddress -replace ("`:", "")
     $enc = [system.Text.Encoding]::UTF8
     $string1 = "$getuid".ToLower()
     $data1 = $enc.GetBytes($string1) 

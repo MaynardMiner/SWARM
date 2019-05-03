@@ -45,7 +45,8 @@ Write-Host "Platform is $Platforms"; Write-Host "HiveOS ID is $HiveID"; Write-Ho
 
 ##Icon for windows
 if ($Platforms -eq "windows") {
-    Set-Location $WorkingDir; Invoke-Expression ".\build\powershell\icon.ps1 `"$WorkingDir\build\apps\comb.ico`""
+    Set-Location $WorkingDir;
+    Start-Process "powershell" -ArgumentList "-command .\build\powershell\icon.ps1 `".\build\apps\comb.ico`"" -NoNewWindow
     $Host.UI.RawUI.BackgroundColor = ($bckgrnd = 'Black'); $Host.UI.RawUI.ForegroundColor = 'White';
     $Host.PrivateData.ErrorForegroundColor = 'Red'; $Host.PrivateData.ErrorBackgroundColor = $bckgrnd;
     $Host.PrivateData.WarningForegroundColor = 'Magenta'; $Host.PrivateData.WarningBackgroundColor = $bckgrnd;
@@ -218,7 +219,7 @@ While ($True) {
             $cpu = $(Get-CimInstance Win32_PerfFormattedData_PerfOS_System).ProcessorQueueLength
             $LoadAverage = Set-Stat -Name "load-average" -Value $cpu
             $LoadAverages = @("$([Math]::Round($LoadAverage.Minute,2))", "$([Math]::Round($LoadAverage.Minute_5,2))", "$([Math]::Round($LoadAverage.Minute_15,2))")
-            $ramfree = $(Get-Counter '\Memory\Available MBytes').CounterSamples.CookedValue
+            $ramfree = [math]::Round((Get-Ciminstance Win32_OperatingSystem | Select FreePhysicalMemory).FreePhysicalMemory/1kb,0)
         }
     }
 
@@ -384,7 +385,7 @@ While ($True) {
                 'dstm' { try { Get-StatsDSTM }catch { Get-OhNo } }
                 'lolminer' { try { Get-StatsLolminer }catch { Get-OhNo } }
                 'sgminer-gm' { try { Get-StatsSgminer }catch { Get-OhNo } }
-                'cpuminer' { try { Get-StatsCpuminer }catch { Get-OhNo } }
+                'cpuminer' { Get-StatsCpuminer}
                 'xmrstak' { try { Get-StatsXmrstak }catch { Get-OhNo } }
                 'xmrig-opt' { try { Get-Statsxmrigopt }catch { Get-OhNo } }
                 'wildrig' { try { Get-StatsWildRig }catch { Get-OhNo } }

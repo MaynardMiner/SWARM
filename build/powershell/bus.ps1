@@ -90,7 +90,7 @@ Function Get-BusFunctionID {
 
 function Get-GPUCount {
     param (
-        [parameter(Position = 0, Mandatory = $true)]
+        [parameter(Position = 0, Mandatory = $false)]
         [string]$BusData
     )
 

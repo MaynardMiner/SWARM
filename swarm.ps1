@@ -260,11 +260,11 @@ Setting Path Variable For Commands: May require reboot to use.
     $ID = ".\build\pid\background_pid.txt"
     if (Test-Path $ID) { $Agent = Get-Content $ID }
     if ($Agent) { $BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue }
-    if ($BackGroundID.name -eq "powershell") { Stop-Process $BackGroundID | Out-Null }
+    if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }
     $ID = ".\build\pid\pill_pid.txt"
     if (Test-Path $ID) { $Agent = Get-Content $ID }
     if ($Agent) { $BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue }
-    if ($BackGroundID.name -eq "powershell") { Stop-Process $BackGroundID | Out-Null }
+    if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }
 }
 
 ##Start Date Collection
@@ -433,7 +433,7 @@ if ((Test-Path ".\config\parameters\newarguments.json") -or $Debug -eq $true) {
 ## Windows Start Up
 if ($Platform -eq "windows") { 
     ##Remove Exclusion
-    try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process powershell -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath '$(Convert-Path .)'" -WindowStyle Minimized } }catch { }
+    try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "pwsh" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath '$(Convert-Path .)'" -WindowStyle Minimized } }catch { }
 
     ## Pull Saved Worker Info (If recorded From Remote Command)
     if (Test-Path ".\buid\txt\hivekeys.txt") { $HiveKeys = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json }
@@ -573,7 +573,7 @@ if ($Platform -eq "windows") {
                 write-Log "Attempting to add current SWARM.bat to startup" -ForegroundColor Magenta
                 write-Log "If you do not wish SWARM to start on startup, use -Startup No argument"
                 write-Log "Startup FilePath: $Startup_Path"
-                $bat = "CMD /r powershell -ExecutionPolicy Bypass -command `"Set-Location $dir; Start-Process `"SWARM.bat`"`""
+                $bat = "CMD /r pwsh -ExecutionPolicy Bypass -command `"Set-Location $dir; Start-Process `"SWARM.bat`"`""
                 $Bat_Startup = Join-Path $Startup_Path "SWARM.bat"
                 $bat | Set-Content $Bat_Startup
             }

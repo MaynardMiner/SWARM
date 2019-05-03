@@ -138,7 +138,7 @@ Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 
 Get-ChildItem . -Recurse | Out-Null 
 
-try{if((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)){Start-Process powershell -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath '$(Convert-Path .)'"}}catch{}
+try{if((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)){Start-Process pwsh -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath '$(Convert-Path .)'"}}catch{}
 
 if($Proxy -eq ""){$PSDefaultParameterValues.Remove("*:Proxy")}
 else{$PSDefaultParameterValues["*:Proxy"] = $Proxy}

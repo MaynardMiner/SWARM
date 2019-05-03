@@ -185,7 +185,7 @@ function Start-LaunchCode {
                 ##Make Test.bat for users
                 if (-not (Test-Path "$WorkingDirectory\swarm-start.bat")) {
                     $minerbat = @()
-                    $minerbat += "CMD /r powershell -ExecutionPolicy Bypass -command `".\swarm-start.ps1`""
+                    $minerbat += "CMD /r pwsh -ExecutionPolicy Bypass -command `".\swarm-start.ps1`""
                     $minerbat += "cmd.exe"
                     $miner_bat = Join-Path $WorkingDirectory "swarm-start.bat"
                     $minerbat | Set-Content $miner_bat
@@ -194,7 +194,7 @@ function Start-LaunchCode {
                 ##Build Start Script
                 $script = @()
                 $script += "`$OutputEncoding = [System.Text.Encoding]::ASCII"
-                $script += "$dir\build\powershell\icon.ps1 `"$dir\build\apps\miner.ico`"" 
+                $script += "Start-Process `"powershell`" -ArgumentList `"-command `"`"Set-Location ```'C:\Users\Lake City Dave\Documents\GitHub\SWARM```'; & ```'$dir\build\powershell\icon.ps1```' ```'$dir\build\apps\miner.ico```'`"`"`" -NoNewWindow"
                 $script += "`$host.ui.RawUI.WindowTitle = `'$($MinerCurrent.Name) - $($MinerCurrent.Algo)`';"
                 $MinerCurrent.Prestart | ForEach-Object {
                     if ($_ -notlike "export LD_LIBRARY_PATH=$dir\build\export") {
@@ -210,6 +210,9 @@ function Start-LaunchCode {
                             $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FIlePath ""$Logs"" -Append; `$Output | Out-Host;}`'" 
                         }
                         "ccminer" {
+                            $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FIlePath ""$Logs"" -Append; `$Output | Out-Host;}`'" 
+                        }
+                        "cpuminer" {
                             $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FIlePath ""$Logs"" -Append; `$Output | Out-Host;}`'" 
                         }
                         "claymore" {

@@ -53,7 +53,7 @@ function start-update {
                     Write-Log "Stopping Previous Agent"
                     if (Test-Path $ID) {$Agent = Get-Content $ID}
                     if ($Agent) {$BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue}
-                    if ($BackGroundID.name -eq "powershell") {Stop-Process $BackGroundID | Out-Null}
+                    if ($BackGroundID.name -eq "pwsh") {Stop-Process $BackGroundID | Out-Null}
                 }
                 $OldBackup = Join-Path $PreviousPath "backup"
                 $OldStats = Join-Path $PreviousPath "stats"

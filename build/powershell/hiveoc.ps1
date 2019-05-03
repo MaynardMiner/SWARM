@@ -97,7 +97,7 @@ function Start-NVIDIAOC {
     $script += "Invoke-Expression `'.\nvidiaInspector.exe $OCArgs`'"
     Set-Location ".\build\apps"
     $script | Out-File "nvoc-start.ps1"
-    $Command = start-process "powershell.exe" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\nvoc-start.ps1""" -PassThru -WindowStyle Minimized -Wait
+    $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\nvoc-start.ps1""" -PassThru -WindowStyle Minimized -Wait
     Set-Location $WorkingDir
     Start-Sleep -s .5
     $ocmessage | Set-Content ".\build\txt\ocnvidia.txt"
@@ -244,7 +244,7 @@ function Start-AMDOC {
     }
     Set-Location ".\build\apps"
     $Script | OUt-File "AMDOC-start.ps1"
-    $Command = start-process "powershell.exe" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\AMDOC-start.ps1""" -PassThru -WindowStyle Minimized -Wait
+    $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\AMDOC-start.ps1""" -PassThru -WindowStyle Minimized -Wait
     Start-Sleep -S .5
     $ocmessage
     Set-Location $WorkingDir
@@ -265,7 +265,7 @@ function start-fans {
         $script += "Invoke-Expression `'.\nvidiaInspector.exe $FanArgs`'"
         Set-Location ".\build\apps"
         $script | Out-File "fan-start.ps1"
-        $Command = start-process "powershell.exe" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\fan-start.ps1""" -PassThru -WindowStyle Minimized -Wait
+        $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\fan-start.ps1""" -PassThru -WindowStyle Minimized -Wait
         Set-Location $Dir
     }
 }

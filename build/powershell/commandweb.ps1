@@ -54,7 +54,7 @@ function Start-Webcommand {
                 Stop-Process $MinerId
                 Start-Sleep -S 3
             }
-            Start-Process "powershell" -ArgumentList "-executionpolicy bypass -windowstyle maximized -command `".\build\powershell\reboot.ps1`""
+            Start-Process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle maximized -command `".\build\powershell\reboot.ps1`""
             exit
         }
   
@@ -85,7 +85,7 @@ function Start-Webcommand {
                     $messagetype = "info"
                     $data = "ps"
                     $pscommand = $command.result.exec -split "ps ", ""
-                    Start-Process "powershell" -ArgumentList "-executionpolicy bypass -command `"$pscommand | Tee-Object `"$WorkingDir\build\txt\getcommand.txt`"`"" -Verb RunAs -Wait
+                    Start-Process "pwsh" -ArgumentList "-executionpolicy bypass -command `"$pscommand | Tee-Object `"$WorkingDir\build\txt\getcommand.txt`"`"" -Verb RunAs -Wait
                     $getpayload = Get-Content ".\build\txt\getcommand.txt"
                     $line = @()
                     $getpayload | foreach {$line += "$_`n"}
@@ -131,7 +131,7 @@ function Start-Webcommand {
                             $method = "message"
                             $messagetype = "info"
                             $data = "$($command.result.exec)"
-                            start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command query""" -Wait -WindowStyle Minimized -Verb RunAs
+                            start-process "pwsh" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command query""" -Wait -WindowStyle Minimized -Verb RunAs
                             $getpayload = Get-Content ".\build\txt\version.txt"
                             $line = @()
                             $getpayload | foreach {$line += "$_`n"}
@@ -147,7 +147,7 @@ function Start-Webcommand {
                             $messagetype = "info"
                             $data = "$($command.result.exec)"
                             $arguments = $data -replace ("version ", "")
-                            start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command $arguments""" -WindowStyle Minimized -Verb Runas -Wait
+                            start-process "pwsh" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command $arguments""" -WindowStyle Minimized -Verb Runas -Wait
                             $getpayload = Get-Content ".\build\txt\version.txt"
                             $line = @()
                             $getpayload | foreach {$line += "$_`n"}
@@ -168,7 +168,7 @@ function Start-Webcommand {
                     $method = "message"
                     $messagetype = "info"
                     $data = "clear_profits"
-                    start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\clear_profits.ps1""" -WindowStyle Minimized -Verb Runas -Wait
+                    start-process "pwsh" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\clear_profits.ps1""" -WindowStyle Minimized -Verb Runas -Wait
                     $getpayload = Get-Content ".\build\txt\get.txt"
                     $line = @()
                     $getpayload | foreach {$line += "$_`n"}
@@ -183,7 +183,7 @@ function Start-Webcommand {
                     $method = "message"
                     $messagetype = "info"
                     $data = "clear_watts"
-                    start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\clear_watts.ps1""" -WindowStyle Minimized -Verb Runas -Wait
+                    start-process "pwsh" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\clear_watts.ps1""" -WindowStyle Minimized -Verb Runas -Wait
                     $getpayload = Get-Content ".\build\txt\get.txt"
                     $line = @()
                     $getpayload | foreach {$line += "$_`n"}
@@ -287,7 +287,7 @@ function Start-Webcommand {
                         }     
                     }
                     else {
-                        start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\get.ps1 $arguments""" -Wait -WindowStyle Minimized -Verb Runas; $Trigger = "exec"
+                        start-process "pwsh" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\get.ps1 $arguments""" -Wait -WindowStyle Minimized -Verb Runas; $Trigger = "exec"
                         $getpayload = Get-Content ".\build\txt\get.txt"
                         $getpayload | foreach {$line += "$_`n"}
                         $payload = $line
@@ -338,7 +338,7 @@ function Start-Webcommand {
                     $messagetype = "info"
                     $data = "$($command.result.exec)"
                     $arguments = $data -replace ("benchmark ", "")
-                    start-process "powershell" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\benchmark.ps1 $arguments""" -Wait -WindowStyle Minimized -Verb Runas
+                    start-process "pwsh" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\benchmark.ps1 $arguments""" -Wait -WindowStyle Minimized -Verb Runas
                     $getpayload = Get-Content ".\build\txt\get.txt"
                     $line = @()
                     $getpayload | foreach {$line += "$_`n"}

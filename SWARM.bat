@@ -19,4 +19,4 @@ REM ************NOTE***********************
 REM If you do not intend to use HiveOS, add -HiveOS No
 REM FOR ALL ARGUMENTS: SEE help folder. Explanation on how to use -Type NVIDIA1,NVIDIA2,NVIDIA3 is provided.
 
-powershell -executionpolicy Bypass -command ".\startup.ps1 -RigName1 SWARM1 -Currency USD -CoinExchange LTC -Location US -PoolName hashrefinery,zergpool,fairpool,nicehash,nlpool,blockmasters,phiphipool,zpool,blazepool,ahashpool -Type NVIDIA1 -Wallet1 1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i -Donate .5 -WattOMeter Yes -Farm_Hash xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+pwsh -executionpolicy Bypass -command ".\startup.ps1 -RigName1 SWARM1 -Currency USD -CoinExchange LTC -Location US -PoolName hashrefinery,zergpool,fairpool,nicehash,nlpool,blockmasters,phiphipool,zpool,blazepool,ahashpool -Type CPU -CPUThreads 2 -Wallet1 1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i -Donate .5 -WattOMeter Yes -Farm_Hash xxxxxxxxxxxxxxxxxxxxxxxxxxxx"

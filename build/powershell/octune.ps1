@@ -211,7 +211,7 @@ function Start-OC {
             else {$PillSleep = 1}
             $PillTimer = New-Object -TypeName System.Diagnostics.Stopwatch
             $PL = Join-Path $WorkingDir ".\build\apps"
-            $command = Start-Process "powershell" -ArgumentList "-executionpolicy bypass -windowstyle minimized -noexit -command `"&{`$host.ui.RawUI.WindowTitle = `'ETH-Pill`'; Set-Location $PL; Start-Sleep $PillSleep; Invoke-Expression `'.\OhGodAnETHlargementPill-r2.exe $PillDevices`'}`"" -WindowStyle Minimized -PassThru -Verb Runas
+            $command = Start-Process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -noexit -command `"&{`$host.ui.RawUI.WindowTitle = `'ETH-Pill`'; Set-Location $PL; Start-Sleep $PillSleep; Invoke-Expression `'.\OhGodAnETHlargementPill-r2.exe $PillDevices`'}`"" -WindowStyle Minimized -PassThru -Verb Runas
             $command.ID | Set-Content ".\build\pid\pill_pid.txt"
             $PillTimer.Restart()
             do {
@@ -482,14 +482,14 @@ function Start-OC {
         $script += "Invoke-Expression `'.\nvidiaInspector.exe $NVIDIAOCArgs`'"
         Set-Location ".\build\apps"
         $script | Out-File "NVIDIA-oc-start.ps1"
-        $Command = start-process "powershell.exe" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\NVIDIA-oc-start.ps1""" -PassThru -WindowStyle Minimized -Wait
+        $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\NVIDIA-oc-start.ps1""" -PassThru -WindowStyle Minimized -Wait
         Set-Location $Dir
     }
     
     if ($DoAMDOC -eq $true -and $Platforms -eq "windows") {
         Set-Location ".\build\apps"
         $Ascript | Out-File "AMD-oc-start.ps1"
-        $Command = start-process "powershell.exe" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\AMD-oc-start.ps1""" -PassThru -WindowStyle Minimized -Wait
+        $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\AMD-oc-start.ps1""" -PassThru -WindowStyle Minimized -Wait
         Set-Location $Dir
     }
     
