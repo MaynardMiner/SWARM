@@ -457,7 +457,7 @@ function Start-OC {
                                         else {$OCArgs += "Fan_P$($j)=$($FansMap[$j]);$($_Fans[$_Fans.Count-1]) "}
                                     }
                                 } else {
-                                    $OCArgs += "Fan_P0=$($FansMap[0]);$($Fans) Fan_P1=$($FansMap[1]);$($Fans) Fan_P2=$($FansMap[2]);$($Fans) Fan_P3=$($FansMap[3]);$($Fans) Fan_P4=$($FansMap[4]);$($Fans) "
+                                    $OCArgs += "Fan_ZeroRPM=0 Fan_P0=$($FansMap[0]);$($Fans) Fan_P1=$($FansMap[1]);$($Fans) Fan_P2=$($FansMap[2]);$($Fans) Fan_P3=$($FansMap[3]);$($Fans) Fan_P4=$($FansMap[4]);$($Fans) "
                                 }
                             }
                             else {
@@ -468,7 +468,7 @@ function Start-OC {
                                         else { $OCArgs += "Fan_P$($j)=$($FansMap[$j]);$($_Fans[$_Fans.Count-1]) " }
                                     }
                                 } else {
-                                    $OCArgs += "Fan_P0=$($FansMap[0]);$($Fans[$Select]) Fan_P1=$($FansMap[1]);$($Fans[$Select]) Fan_P2=$($FansMap[2]);$($Fans[$Select]) Fan_P3=$($FansMap[3]);$($Fans[$Select]) Fan_P4=$($FansMap[4]);$($Fans[$Select]) "
+                                    $OCArgs += "Fan_ZeroRPM=0 Fan_P0=$($FansMap[0]);$($Fans[$Select]) Fan_P1=$($FansMap[1]);$($Fans[$Select]) Fan_P2=$($FansMap[2]);$($Fans[$Select]) Fan_P3=$($FansMap[3]);$($Fans[$Select]) Fan_P4=$($FansMap[4]);$($Fans[$Select]) "
                                 }
                             }
                             $AScreenFans = "$($Miner.Type) Fans is $($Miner.ocfans) "

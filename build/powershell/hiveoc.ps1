@@ -163,11 +163,11 @@ function Start-AMDOC {
                 "FAN" {
                     if ($AMDOCFan) {
                         if ($AMDOCFAN.Count -eq 1 -and $AMDOCFAN -ne "") {
-                            $OCArgs += "Fan_P0=80;$($AMDOCFan) Fan_P1=80;$($AMDOCFan) Fan_P2=80;$($AMDOCFan) Fan_P3=80;$($AMDOCFan) Fan_P4=80;$($AMDOCFan) "
+                            $OCArgs += "Fan_ZeroRPM=0; Fan_P0=80;$($AMDOCFan) Fan_P1=80;$($AMDOCFan) Fan_P2=80;$($AMDOCFan) Fan_P3=80;$($AMDOCFan) Fan_P4=80;$($AMDOCFan) "
                             $ocmessage += "Setting GPU $($OCCount.AMD.$i) Fan Speed To $($AMDOCFan)`%"
                         }
                         else {
-                            $OCArgs += "Fan_P0=80;$($AMDOCFan[$Select]) Fan_P1=80;$($AMDOCFan[$Select]) Fan_P2=80;$($AMDOCFan[$Select]) Fan_P3=80;$($AMDOCFan[$Select]) Fan_P4=80;$($AMDOCFan[$Select]) "
+                            $OCArgs += "Fan_ZeroRPM=0 Fan_P0=80;$($AMDOCFan[$Select]) Fan_P1=80;$($AMDOCFan[$Select]) Fan_P2=80;$($AMDOCFan[$Select]) Fan_P3=80;$($AMDOCFan[$Select]) Fan_P4=80;$($AMDOCFan[$Select]) "
                             $ocmessage += "Setting GPU $($OCCount.AMD.$i) Fan Speed To $($AMDOCFan[$i])`%"
                         }
                     }
