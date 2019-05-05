@@ -3,9 +3,9 @@ $NVIDIATypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
-    if ($nvidia.ttminer.$ConfigType -and $Platform -eq "windows") { $Path = "$($nvidia.ttminer.$ConfigType)" }
+    if ($nvidia.ttminer.$ConfigType -and $global:Config.Params.Platform -eq "windows") { $Path = "$($nvidia.ttminer.$ConfigType)" }
     else { $Path = "None" }
-    if ($nvidia.ttminer.uri -and $Platform -eq "windows") { $Uri = "$($nvidia.ttminer.uri)" }
+    if ($nvidia.ttminer.uri -and $global:Config.Params.Platform -eq "windows") { $Uri = "$($nvidia.ttminer.uri)" }
     else { $Uri = "None" }
     if ($nvidia.ttminer.minername) { $MinerName = "$($nvidia.ttminer.minername)" }
     else { $MinerName = "None" }
@@ -53,7 +53,7 @@ $NVIDIATypes | ForEach-Object {
 
             if ($Check.RAW -ne "Bad") {
                 $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
-                    if ($_.Worker) { $Worker = "-worker $($_.Worker) " }else { $Worker = $Null }
+                    if ($_.Worker) { $global:Config.Params.Worker = "-worker $($_.Worker) " }else { $global:Config.Params.Worker = $Null }
                     [PSCustomObject]@{
                         MName      = $Name
                         Coin       = $Coins
@@ -66,7 +66,7 @@ $NVIDIATypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         DeviceCall = "ttminer"
-                        Arguments  = "-a $($Config.$ConfigType.naming.$($_.Algorithm)) --nvidia -o $($_.Protocol)://$($_.Host):$($_.Port) $worker-b localhost:$Port -u $($_.$User) -p $($_.$Pass) $($Config.$ConfigType.commands.$($_.Algorithm))"
+                        Arguments  = "-a $($Config.$ConfigType.naming.$($_.Algorithm)) --nvidia -o $($_.Protocol)://$($_.Host):$($_.Port) $global:Config.Params.Worker-b localhost:$Port -u $($_.$User) -p $($_.$Pass) $($Config.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
                         Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
                         PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }

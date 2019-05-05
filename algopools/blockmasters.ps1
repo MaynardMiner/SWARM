@@ -1,9 +1,9 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $blockpool_Request = [PSCustomObject]@{ } 
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
-if($XNSub -eq "Yes"){$X = "#xnsub"}
+if($global:Config.Params.xnsub -eq "Yes"){$X = "#xnsub"}
  
-if ($Poolname -eq $Name) {
+if ($Name -in $global:Config.Params.PoolName) {
     try { $blockpool_Request = Invoke-RestMethod "http://blockmasters.co/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
     catch { Write-Log "SWARM contacted ($Name) but there was no response."; return }
  
@@ -12,7 +12,7 @@ if ($Poolname -eq $Name) {
         return 
     } 
 
-    Switch ($Location) {
+    Switch ($global:Config.Params.Location) {
         "US" { $Region = $null }
         default { $Region = "eu." }
     }
@@ -26,7 +26,7 @@ if ($Poolname -eq $Name) {
 
         $blockpool_Algorithm = $blockpool_Request.$_.name.ToLower()
 
-        if ($Algorithm -contains $blockpool_Algorithm -or $ASIC_ALGO -contains $blockpool_Algorithm) {
+        if ($Algorithm -contains $blockpool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $blockpool_Algorithm) {
             if ($Name -notin $global:Exclusions.$blockpool_Algorithm.exclusions -and $blockpool_Algorithm -notin $Global:banhammer) {
                 $blockpool_Host = "$($Region)blockmasters.co$X"
                 $blockpool_Port = $blockpool_Request.$_.port
@@ -47,11 +47,11 @@ if ($Poolname -eq $Name) {
                 }
 
                 $Pass1 = $global:Wallets.Wallet1.Keys
-                $User1 = $global:Wallets.Wallet1.$Passwordcurrency1.address
+                $User1 = $global:Wallets.Wallet1.$($global:Config.Params.Passwordcurrency1).address
                 $Pass2 = $global:Wallets.Wallet2.Keys
-                $User2 = $global:Wallets.Wallet2.$Passwordcurrency2.address
+                $User2 = $global:Wallets.Wallet2.$($global:Config.Params.Passwordcurrency2).address
                 $Pass3 = $global:Wallets.Wallet3.Keys
-                $User3 = $global:Wallets.Wallet3.$Passwordcurrency3.address
+                $User3 = $global:Wallets.Wallet3.$($global:Config.Params.Passwordcurrency3).address
             
                 if ($global:Wallets.AltWallet1.keys) {
                     $global:Wallets.AltWallet1.Keys | ForEach-Object {
@@ -83,7 +83,7 @@ if ($Poolname -eq $Name) {
                     Symbol    = "$blockpool_Algorithm-Algo"
                     Mining    = $blockpool_Algorithm
                     Algorithm = $blockpool_Algorithm
-                    Price     = $Stat.$Stat_Algo
+                    Price     = $Stat.$($global:Config.Params.Stat_Algo)
                     Protocol  = "stratum+tcp"
                     Host      = $blockpool_Host
                     Port      = $blockpool_Port
@@ -91,11 +91,11 @@ if ($Poolname -eq $Name) {
                     User2     = $User2
                     User3     = $User3
                     CPUser    = $User1
-                    CPUPass   = "c=$Pass1,id=$Rigname1"
-                    Pass1     = "c=$Pass1,id=$Rigname1"
-                    Pass2     = "c=$Pass2,id=$Rigname2"
-                    Pass3     = "c=$Pass3,id=$Rigname3"
-                    Location  = $Location
+                    CPUPass   = "c=$Pass1,id=$($global:Config.Params.RigName1)"
+                    Pass1     = "c=$Pass1,id=$($global:Config.Params.RigName1)"
+                    Pass2     = "c=$Pass2,id=$($global:Config.Params.RigName2)"
+                    Pass3     = "c=$Pass3,id=$($global:Config.Params.RigName3)"
+                    Location  = $global:Config.Params.Location
                     SSL       = $false
                 }
             }

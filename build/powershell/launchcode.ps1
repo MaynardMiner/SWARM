@@ -15,8 +15,6 @@ function Start-LaunchCode {
 
     param(
         [Parameter(Mandatory = $true)]
-        [String]$Platforms,
-        [Parameter(Mandatory = $true)]
         [String]$NewMiner,
         [Parameter(Mandatory = $false)]
         [String]$PP,
@@ -153,7 +151,7 @@ function Start-LaunchCode {
 
     
 
-        if ($Platforms -eq "windows") {
+        if ($Global:Config.Params.Platform -eq "windows") {
             $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
             if ($MinerProcess -eq $null -or $MinerProcess.HasExited -eq $true) {
             
@@ -260,7 +258,7 @@ function Start-LaunchCode {
             else { $MinerProcess }
         } 
 
-        elseif ($Platforms -eq "linux") {
+        elseif ($Global:Config.Params.Platform -eq "linux") {
 
             ##Specified Dir Again For debugging / Testing - No Harm
             $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)

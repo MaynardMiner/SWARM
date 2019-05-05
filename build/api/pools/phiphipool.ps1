@@ -1,6 +1,6 @@
 function Get-Phiphipooldata {
     $Wallets = @()
-    $Type | ForEach-Object {
+    $global:Config.Params.Type | ForEach-Object {
         $Sel = $_
         $Pool = "phiphipool"
         $global:Share_Table.$Sel.Add($Pool, @{ })

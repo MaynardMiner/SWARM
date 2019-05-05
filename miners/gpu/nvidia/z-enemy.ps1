@@ -4,11 +4,11 @@ $NVIDIATypes | ForEach-Object {
     $Cname = "z-enemy"
 
     ##Miner Path Information
-    if ($nvidia.$Cname.$ConfigType -and $Platform -eq "linux") { $Path = "$($nvidia.$Cname.$ConfigType)" }
+    if ($nvidia.$Cname.$ConfigType -and $global:Config.Params.Platform -eq "linux") { $Path = "$($nvidia.$Cname.$ConfigType)" }
     else { $Path = "None" }
-    if ($nvidia.$Cname.uri -and $Platform -eq "linux") { $Uri = "$($nvidia.$Cname.uri)" }
+    if ($nvidia.$Cname.uri -and $global:Config.Params.Platform -eq "linux") { $Uri = "$($nvidia.$Cname.uri)" }
     else { $Uri = "None" }
-    if ($nvidia.$Cname.MinerName -and $Platform -eq "linux") { $MinerName = "$($nvidia.$Cname.MinerName)" }
+    if ($nvidia.$Cname.MinerName -and $global:Config.Params.Platform -eq "linux") { $MinerName = "$($nvidia.$Cname.MinerName)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$Cname-$Num"; $Port = "5300$Num";

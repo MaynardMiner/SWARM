@@ -1,6 +1,6 @@
 function Get-BlazepoolData {
     $Wallets = @()
-    $Type | ForEach-Object {
+    $global:Config.Params.Type | ForEach-Object {
         $Sel = $_
         $Pool = "blazepool"
         $global:Share_Table.$Sel.Add($Pool, @{ })

@@ -17,7 +17,7 @@ $CPUTypes | ForEach-Object {
     $Log = Join-Path $dir "logs\$ConfigType.log"
 
     ##Parse -CPUThreads
-    if ($CPUThreads -ne '') { $Devices = $CPUThreads }
+    if ($global:Config.Params.CPUThreads -ne '') { $Devices = $global:Config.Params.CPUThreads }
 
     ##Get Configuration File
     $GetConfig = "$dir\config\miners\$CName.json"
@@ -47,7 +47,7 @@ $CPUTypes | ForEach-Object {
         if ($Check.RAW -ne "Bad") {
             $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                     if ($Config.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($Config.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
-                    if ($Platform -eq "windows") { $APISet = "--http-enabled --http-port=10002" }
+                    if ($global:Config.Params.Platform -eq "windows") { $APISet = "--http-enabled --http-port=10002" }
                     else { $APISet = "--api-port=10002" }
                     [PSCustomObject]@{
                         MName      = $Name

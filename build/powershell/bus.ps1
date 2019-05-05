@@ -100,12 +100,12 @@ function Get-GPUCount {
     $DeviceList = @{ }
     $OCList = @{ }
 
-    if ($Type -like "*AMD*") { $DeviceList.Add("AMD", @{ })}
-    if ($Type -like "*NVIDIA*") { $DeviceList.Add("NVIDIA", @{ })}
-    if ($Type -like "*CPU*") { $DeviceList.Add("CPU", @{ })}
+    if ($global:Config.Params.Type -like "*AMD*") { $DeviceList.Add("AMD", @{ })}
+    if ($global:Config.Params.Type -like "*NVIDIA*") { $DeviceList.Add("NVIDIA", @{ })}
+    if ($global:Config.Params.Type -like "*CPU*") { $DeviceList.Add("CPU", @{ })}
 
-    if ($Type -like "*AMD*") { $OCList.Add("AMD", @{ })}
-    if ($Type -like "*NVIDIA*") { $OCList.Add("NVIDIA", @{ })}
+    if ($global:Config.Params.Type -like "*AMD*") { $OCList.Add("AMD", @{ })}
+    if ($global:Config.Params.Type -like "*NVIDIA*") { $OCList.Add("NVIDIA", @{ })}
     $OCList.Add("Onboard", @{ })
 
     $DeviceCounter = 0
@@ -119,7 +119,7 @@ function Get-GPUCount {
     $Bus | Sort-Object PCIBusID | Foreach {
         $Sel = $_
         if ($Sel.PnPID -match $nvidia -and $Sel.PCIBusID -ne 0) {
-            if ($Type -like "*NVIDIA*") {
+            if ($global:Config.Params.Type -like "*NVIDIA*") {
                 $DeviceList.Nvidia.Add("$NvidiaCounter", "$DeviceCounter")
                 $OCList.Nvidia.Add("$NvidiaCounter", "$DeviceCounter")
                 $NvidiaCounter++
@@ -128,7 +128,7 @@ function Get-GPUCount {
             }
         }
         elseif ($Sel.PnPID -match $amd -and $Sel.PCIBusID -ne 0) {
-            if ($Type -like "*AMD*") {
+            if ($global:Config.Params.Type -like "*AMD*") {
                 $DeviceList.AMD.Add("$AmdCounter", "$DeviceCounter")
                 $OCList.AMD.Add("$AmdCounter", "$OCCounter")
                 $AmdCounter++
@@ -142,7 +142,7 @@ function Get-GPUCount {
             $OCCounter++
         }
     }
-    if ($Type -like "*CPU*") { for ($i = 0; $i -lt $CPUThreads; $i++) { $DeviceList.CPU.Add("$($i)", $i) } }
+    if ($global:Config.Params.Type -like "*CPU*") { for ($i = 0; $i -lt $global:Config.Params.CPUThreads; $i++) { $DeviceList.CPU.Add("$($i)", $i) } }
     $DeviceList | ConvertTo-Json | Set-Content ".\build\txt\devicelist.txt"
     $OCList | ConvertTo-Json | Set-Content ".\build\txt\oclist.txt"
     $GPUCount = 0

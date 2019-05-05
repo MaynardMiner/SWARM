@@ -1,6 +1,6 @@
 function Get-FairpoolData {
     $Wallets = @()
-    $Type | ForEach-Object {
+    $global:Config.Params.Type | ForEach-Object {
         $Sel = $_
         $Pool = "fairpool"
         $global:Share_Table.$Sel.Add($Pool, @{ })

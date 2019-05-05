@@ -14,7 +14,7 @@ function Get-BestMiners {
 
     $BestMiners = @()
 
-    $Type | foreach {
+    $global:Config.Params.Type | foreach {
         $SelType = $_
         $BestTypeMiners = @()
         $OldMiners = @()

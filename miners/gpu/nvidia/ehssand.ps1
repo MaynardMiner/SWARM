@@ -3,11 +3,11 @@ $NVIDIATypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
-    if ($nvidia.ehssand.$ConfigType -and $cuda -eq "10") { $Path = "$($nvidia.ehssand.$ConfigType)" }
+    if ($nvidia.ehssand.$ConfigType -and $global:Config.Params.Cuda -eq "10") { $Path = "$($nvidia.ehssand.$ConfigType)" }
     else { $Path = "None" }
-    if ($nvidia.ehssand.uri -and $cuda -eq "10") { $Uri = "$($nvidia.ehssand.uri)" }
+    if ($nvidia.ehssand.uri -and $global:Config.Params.Cuda -eq "10") { $Uri = "$($nvidia.ehssand.uri)" }
     else { $Uri = "None" }
-    if ($nvidia.ehssand.minername -and $cuda -eq "10") { $MinerName = "$($nvidia.ehssand.minername)" }
+    if ($nvidia.ehssand.minername -and $global:Config.Params.Cuda -eq "10") { $MinerName = "$($nvidia.ehssand.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "ehssand-$Num"; $Port = "4400$Num"

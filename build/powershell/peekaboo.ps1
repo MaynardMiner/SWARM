@@ -89,7 +89,7 @@ function Start-Peekaboo {
         jsonrpc = "2.0"
         id      = "0"
         params  = @{
-            farm_hash        = "$FARM_HASH"
+            farm_hash        = "$($global:Config.Params.Farm_Hash)"
             server_url       = "$url"
             uid              = $uid
             boot_time        = "$UpTime"

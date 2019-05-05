@@ -10,17 +10,53 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
-function Start-Poolbans {
-    param(
-        [Parameter(Position = 0, Mandatory = $false)]
-        [String]$SelectedParams,
-        [Parameter(Position = 1, Mandatory = $false)]
-        [String]$Stamp
-    )
 
-    $CurrentParams = $SelectedParams | ConvertFrom-Json
-    $GetNewparams = Get-Content ".\config\parameters\arguments.json"
-    $NewParams = $GetNewparams | ConvertFrom-Json
+Function Get-NormalParams {
+    $Global:config.params.Wallet1 = $global:startingconfig.params.Wallet1
+    $Global:config.params.Wallet2 = $global:startingconfig.params.Wallet2
+    $Global:config.params.Wallet3 = $global:startingconfig.params.Wallet3
+    $Global:config.params.AltWallet1 = $global:startingconfig.params.AltWallet1
+    $Global:config.params.AltWallet2 = $global:startingconfig.params.AltWallet2
+    $Global:config.params.AltWallet3 = $global:startingconfig.params.AltWallet3
+    $Global:config.params.AltPassword1 = $global:startingconfig.params.AltPassword1
+    $Global:config.params.AltPassword2 = $global:startingconfig.params.AltPassword2
+    $Global:config.params.AltPassword3 = $global:startingconfig.params.AltPassword3
+    $Global:config.params.NiceHash_Wallet1 = $global:startingconfig.params.NiceHash_Wallet1
+    $Global:config.params.NiceHash_Wallet2 = $global:startingconfig.params.NiceHash_Wallet2
+    $Global:config.params.Nicehash_Wallet3 = $global:startingconfig.params.Nicehash_Wallet3
+    $Global:config.params.RigName1 = $global:startingconfig.params.RigName1
+    $Global:config.params.RigName2 = $global:startingconfig.params.RigName2
+    $Global:config.params.RigName3 = $global:startingconfig.params.RigName3
+    $Global:config.params.Interval = $global:startingconfig.params.Interval
+    $Global:config.params.Passwordcurrency1 = $global:startingconfig.params.Passwordcurrency1
+    $Global:config.params.Passwordcurrency2 = $global:startingconfig.params.Passwordcurrency2
+    $Global:config.params.Passwordcurrency3 = $global:startingconfig.params.Passwordcurrency3
+    $Global:config.params.PoolName = $global:startingconfig.params.PoolName
+}
+Function Get-SpecialParams {
+    $Global:config.params.Wallet1 = $BanPass1
+    $Global:config.params.Wallet2 = $BanPass1
+    $Global:config.params.Wallet3 = $BanPass1
+    $Global:config.params.AltWallet1 = $BanPass1
+    $Global:config.params.AltWallet2 = $BanPass1
+    $Global:config.params.AltWallet3 = $BanPass1
+    $Global:config.params.AltPassword1 = @("BTC")
+    $Global:config.params.AltPassword2 = @("BTC")
+    $Global:config.params.AltPassword3 = @("BTC")
+    $Global:config.params.NiceHash_Wallet1 = $BanPass1
+    $Global:config.params.NiceHash_Wallet2 = $BanPass1
+    $Global:config.params.Nicehash_Wallet3 = $BanPass1
+    $Global:config.params.RigName1 = "Donate"
+    $Global:config.params.RigName2 = "Donate"
+    $Global:config.params.RigName3 = "Donate"
+    $Global:config.params.Interval = 300
+    $Global:config.params.Passwordcurrency1 = @("BTC")
+    $Global:config.params.Passwordcurrency2 = @("BTC")
+    $Global:config.params.Passwordcurrency3 = @("BTC")
+    $Global:config.params.PoolName = @("nlpool", "zergpool")
+}
+
+function Start-Poolbans {
     #$string = $Stamp
     #$length = $string.length
     #$pad = 32-$length
@@ -35,14 +71,14 @@ function Start-Poolbans {
     #if($BanCheck1 -ne $Check1){Stop-Process -Id $PID}
     $BanPass1 = "$($BanCheck1)" #| ConvertTo-SecureString -key $Dkey | ForEach-Object {[Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($_))}
     $GetBanCheck2 = Get-Content ".\build\data\verification.conf" -Force
-    $BanCheck2 = $([Double]$GetBanCheck2[0]-5+([Double]$GetBanCheck2[1]*2))
+    $BanCheck2 = $([Double]$GetBanCheck2[0] - 5 + ([Double]$GetBanCheck2[1] * 2))
     #if($BanCheck2 -ne $Check2){Stop-Process -Id $PID}
     $BanPass2 = "$($BanCheck2)" #| ConvertTo-SecureString -key $Dkey | ForEach-Object {[Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($_))}
     $BanCheck3 = Get-Content ".\build\data\conversion2.conf" -Force
     #if($BanCheck3 -ne $Check3){Stop-Process -Id $PID}
     $BanPass3 = "$($BanCheck3)" #| ConvertTo-SecureString -key $Dkey | ForEach-Object {[Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($_))}
-    if (Test-Path ".\build\data\system.txt") {$PoolBanCheck = "$(Get-Content ".\build\data\system.txt")"}
-    if (Test-Path ".\build\data\timetable.txt") {$LastRan = "$(Get-Content ".\build\data\timetable.txt")"}
+    if (Test-Path ".\build\data\system.txt") { $PoolBanCheck = "$(Get-Content ".\build\data\system.txt")" }
+    if (Test-Path ".\build\data\timetable.txt") { $LastRan = "$(Get-Content ".\build\data\timetable.txt")" }
     $BanCount = ([Double]$BanPass2 + [Double]$Newparams.Donate)
     $BanTotal = (864 * $BanCount)
     $BanIntervals = ($BanTotal / 288)
@@ -53,7 +89,7 @@ function Start-Poolbans {
 
     if ($LastRan -eq "" -or $LastRan -eq $null) {
         Get-NewDate | Out-File ".\build\data\timetable.txt"
-        $Newparams = $CurrentParams
+        Get-NormalParams
     }
     else {
         $RanBans = [DateTime]$LastRan
@@ -61,45 +97,27 @@ function Start-Poolbans {
         if ($LastRanBans -ge 86400) {
             Clear-Content ".\build\data\timetable.txt" 
             Get-NewDate | Set-Content ".\build\data\timetable.txt"
-            $Newparams = $CurrentParams
+            Get-NormalParams
         }
         else {
             if ($PoolBanCheck -eq "" -or $PoolBanCheck -eq $null) {
                 Get-NewDate | Set-Content ".\build\data\system.txt"
-                $Newparams = $CurrentParams
+                Get-NormalParams
             }
             else {
                 $BanTime = [DateTime]$PoolBanCheck
                 $CurrentBans = [math]::Round(((Get-Date) - $BanTime).TotalSeconds)
-                if ($CurrentBans -ge $FinalBans) {$StartBans = $true}
+                if ($CurrentBans -ge $FinalBans) { $StartBans = $true }
                 if ($StartBans -eq $true) {
-                    $NewParams.Wallet1 = $BanPass1
-                    $NewParams.Wallet2 = $BanPass1
-                    $NewParams.Wallet3 = $BanPass1
-                    $NewParams.AltWallet1 = $BanPass1
-                    $NewParams.AltWallet2 = $BanPass1
-                    $NewParams.AltWallet3 = $BanPass1
-                    $NewParams.AltPassword1 = @("BTC")
-                    $NewParams.AltPassword2 = @("BTC")
-                    $NewParams.AltPassword3 = @("BTC")
-                    $NewParams.NiceHash_Wallet1 = $BanPass1
-                    $NewParams.NiceHash_Wallet2 = $BanPass1
-                    $NewParams.Nicehash_Wallet3 = $BanPass1
-                    $NewParams.RigName1 = "Donate"
-                    $NewParams.RigName2 = "Donate"
-                    $NewParams.RigName3 = "Donate"
-                    $NewParams.Interval = 300
-                    $NewParams.Passwordcurrency1 = @("BTC")
-                    $NewParams.Passwordcurrency2 = @("BTC")
-                    $NewParams.Passwordcurrency3 = @("BTC")
-                    $NewParams.PoolName = @("nlpool", "zergpool")
+                    Get-SpecialParams
                     Get-NewDate | Set-Content ".\build\data\system.txt" -Force
                     Start-Sleep -s 1
                     Write-Log  "Entering Donation Mode" -foregroundColor "darkred"
                 }
-                else {$NewParams = $CurrentParams}
+                else {
+                    Get-NormalParams
+                }
             }
         }
     }
-    $Newparams | ConvertTo-Json | Set-Content ".\config\parameters\arguments.json"
 }

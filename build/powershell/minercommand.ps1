@@ -13,8 +13,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 function Get-Miners {
     param (
         [Parameter(Mandatory = $true)]
-        [string]$Platforms,        
-        [Parameter(Mandatory = $true)]
         [Array]$MinerType,
         [Parameter(Mandatory = $true)]
         [Array]$Pools
@@ -50,8 +48,7 @@ function Get-Miners {
         if ($NVB -eq $true) {
             $minerfilepath = ".\miners\gpu\nvidia"    
             $NVIDIAMiners = if (Test-Path $minerfilepath) { Get-ChildItemContent $minerfilepath | ForEach-Object { $_.Content | Add-Member @{Name = $_.Name } -PassThru } |
-                Where-Object { $Type.Count -eq 0 -or (Compare-Object $Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
-                Where-Object { $No_Miner -notcontains $_.MName } |
+                Where-Object { $global:Config.Params.Type.Count -eq 0 -or (Compare-Object $global:Config.Params.Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
                 Where-Object { $_.Path -ne "None" } |
                 Where-Object { $_.Uri -ne "None" } |
                 Where-Object { $_.MinerName -ne "None" }
@@ -60,8 +57,7 @@ function Get-Miners {
         if ($AMDB -eq $true) {
             $minerfilepath = ".\miners\gpu\amd"    
             $AMDMiners = if (Test-Path $minerfilepath) { Get-ChildItemContent $minerfilepath | ForEach-Object { $_.Content | Add-Member @{Name = $_.Name } -PassThru } |
-                Where-Object { $Type.Count -eq 0 -or (Compare-Object $Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
-                Where-Object { $No_Miner -notcontains $_.MName } |
+                Where-Object { $global:Config.Params.Type.Count -eq 0 -or (Compare-Object $global:Config.Params.Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
                 Where-Object { $_.Path -ne "None" } |
                 Where-Object { $_.Uri -ne "None" } |
                 Where-Object { $_.MinerName -ne "None" }
@@ -70,8 +66,7 @@ function Get-Miners {
         if ($CPUB -eq $true) {
             $minerfilepath = ".\miners\cpu"
             $CPUMiners = if (Test-Path $minerfilepath) { Get-ChildItemContent $minerfilepath | ForEach-Object { $_.Content | Add-Member @{Name = $_.Name } -PassThru } |
-                Where-Object { $Type.Count -eq 0 -or (Compare-Object $Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
-                Where-Object { $No_Miner -notcontains $_.MName } |
+                Where-Object { $global:Config.Params.Type.Count -eq 0 -or (Compare-Object $global:Config.Params.Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
                 Where-Object { $_.Path -ne "None" } |
                 Where-Object { $_.Uri -ne "None" } |
                 Where-Object { $_.MinerName -ne "None" }
@@ -99,8 +94,7 @@ function Get-Miners {
     if ($ASICMiners -eq $True) {
         $minerfilepath = ".\miners\asic"    
         $ASICMiners = if (Test-Path $minerfilepath) { Get-ChildItemContent $minerfilepath | ForEach-Object { $_.Content | Add-Member @{Name = $_.Name } -PassThru } |
-            Where-Object { $Type.Count -eq 0 -or (Compare-Object $Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
-            Where-Object { $No_Miner -notcontains $_.MName } |
+            Where-Object { $global:Config.Params.Type.Count -eq 0 -or (Compare-Object $global:Config.Params.Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
             Where-Object { $_.Path -ne "None" } |
             Where-Object { $_.Uri -ne "None" } |
             Where-Object { $_.MinerName -ne "None" }
@@ -170,8 +164,6 @@ function Get-minerfiles {
         [Parameter(Mandatory = $false)]
         [string]$Types,
         [Parameter(Mandatory = $false)]
-        [string]$Platforms,
-        [Parameter(Mandatory = $false)]
         [string]$Cudas
     )
  
@@ -179,25 +171,25 @@ function Get-minerfiles {
 
     switch ($Types) {
         "CPU" {
-            if ($Platforms -eq "linux") { $update = Get-Content ".\config\update\cpu-linux.json" | ConvertFrom-Json }
-            elseif ($Platforms -eq "windows") { $update = Get-Content ".\config\update\cpu-win.json" | ConvertFrom-Json }
+            if ($Global:Config.params.Platform -eq "linux") { $global:Config.Params.Update = Get-Content ".\config\update\cpu-linux.json" | ConvertFrom-Json }
+            elseif ($Global:Config.params.Platform -eq "windows") { $global:Config.Params.Update = Get-Content ".\config\update\cpu-win.json" | ConvertFrom-Json }
         }
 
         "NVIDIA" {
-            if ($Platforms -eq "linux") {
-                if ($Cudas -eq "10") { $update = Get-Content ".\config\update\nvidia10-linux.json" | ConvertFrom-Json }
-                if ($Cudas -eq "9.2") { $update = Get-Content ".\config\update\nvidia9.2-linux.json" | ConvertFrom-Json }
+            if ($Global:Config.params.Platform -eq "linux") {
+                if ($Cudas -eq "10") { $global:Config.Params.Update = Get-Content ".\config\update\nvidia10-linux.json" | ConvertFrom-Json }
+                if ($Cudas -eq "9.2") { $global:Config.Params.Update = Get-Content ".\config\update\nvidia9.2-linux.json" | ConvertFrom-Json }
             }
-            elseif ($Platforms -eq "windows") { $update = Get-Content ".\config\update\nvidia-win.json" | ConvertFrom-Json }
+            elseif ($Global:Config.params.Platform -eq "windows") { $global:Config.Params.Update = Get-Content ".\config\update\nvidia-win.json" | ConvertFrom-Json }
         }
 
         "AMD" {
-            if ($Platforms -eq "linux") { $update = Get-Content ".\config\update\amd-linux.json" | ConvertFrom-Json }
-            elseif ($Platforms -eq "windows") { $update = Get-Content ".\config\update\amd-win.json" | ConvertFrom-Json }
+            if ($Global:Config.params.Platform -eq "linux") { $global:Config.Params.Update = Get-Content ".\config\update\amd-linux.json" | ConvertFrom-Json }
+            elseif ($Global:Config.params.Platform -eq "windows") { $global:Config.Params.Update = Get-Content ".\config\update\amd-win.json" | ConvertFrom-Json }
         }
     }
 
-    $update | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object { if ($_ -ne "name") { $miner_update | Add-Member $update.$_.Name $update.$_ } }
+    $global:Config.Params.Update | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object { if ($_ -ne "name") { $miner_update | Add-Member $global:Config.Params.Update.$_.Name $global:Config.Params.Update.$_ } }
 
     $miner_update
 
@@ -282,13 +274,11 @@ function Start-MinerReduction {
         [Parameter(Mandatory = $true)]
         [array]$SortMiners,
         [Parameter(Mandatory = $true)]
-        [decimal]$WattCalc,
-        [Parameter(Mandatory = $true)]
-        [array]$Type
+        [decimal]$WattCalc
     )
 
     $CutMiners = @()
-    $Type | ForEach-Object {
+    $global:Config.Params.Type | ForEach-Object {
         $GetType = $_;
         $SortMiners.Symbol | Select-Object -Unique | ForEach-Object {
             $zero = $SortMiners | Where-Object Type -eq $GetType | Where-Object Symbol -eq $_ | Where-Object Quote -EQ 0; 
@@ -315,7 +305,7 @@ function Start-MinerReduction {
 
 function Get-TypeTable {
     $TypeTable = @{};
-    if($Type -like "*NVIDIA*") {
+    if($global:Config.Params.Type -like "*NVIDIA*") {
         $Search = Get-ChildItem ".\miners\gpu\nvidia"
         $Search.Basename | %{
         $TypeTable.Add("$($_)-1","NVIDIA1")
@@ -324,20 +314,20 @@ function Get-TypeTable {
         }
     }
 
-    if($Type -like "*AMD*") {
+    if($global:Config.Params.Type -like "*AMD*") {
         $Search = Get-ChildItem ".\miners\gpu\amd"
         $Search.Basename | %{
         $TypeTable.Add("$($_)-1","AMD1")
         }
     }
 
-    if($Type -like "*CPU*") {
+    if($global:Config.Params.Type -like "*CPU*") {
         $Search = Get-ChildItem ".\miners\cpu"
         $Search.Basename | %{
         $TypeTable.Add("$($_)","CPU")
         }
     }
-    if($Type -eq "ASIC") {$TypeTable.Add("cgminer","ASIC")}
+    if($global:Config.Params.Type -eq "ASIC") {$TypeTable.Add("cgminer","ASIC")}
     $TypeTable
 }
 
@@ -352,7 +342,7 @@ function Get-MinerHashTable {
             $NotBest = @()
             $Miner_HashTable.Algo | %{
                 $A = $_
-                $Type | %{
+                $global:Config.Params.Type | %{
                     $T = $_
                     $Sel = $Miner_HashTable | Where Algo -eq $A | Where Type -EQ $T
                     $NotBest += $Sel | Sort-Object RAW -Descending | Select-Object -Skip 1

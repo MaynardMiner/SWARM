@@ -11,41 +11,27 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
-param(
-    [Parameter(Mandatory = $false)]
-    [String]$WorkingDir,
-    [Parameter(Mandatory = $false)]
-    [String]$Platforms,
-    [Parameter(Mandatory = $false)]
-    [String]$HiveId,
-    [Parameter(Mandatory = $false)]
-    [String]$HivePassword,
-    [Parameter(Mandatory = $false)]
-    [String]$HiveMirror,
-    [Parameter(Mandatory = $false)]
-    [String]$HiveOS,
-    [Parameter(Mandatory = $false)]
-    [Double]$REJPercent,
-    [Parameter(Mandatory = $false)]
-    [string]$Remote,
-    [Parameter(Mandatory = $false)]
-    [string]$API,
-    [Parameter(Mandatory = $false)]
-    [Int]$Port,
-    [Parameter(Mandatory = $false)]
-    [string]$APIPassword,
-    [Parameter(Mandatory = $false)]
-    [double]$Interval
+Param (
+[Parameter(mandatory=$false)]
+[string]$WorkingDir
 )
+
+Set-Location $WorkingDir
+
+$Global:config = [hashtable]::Synchronized(@{})
+$global:Config.Add("params",@{})
+$global:Config.Params.Add("WorkingDir",$WorkingDir)
+$global:Config.params = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
+$RigConf = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json
+$RigConf.PSObject.Properties.Name | % {$global:Config.params | Add-Member "$($_)" $RigConf.$_ -Force }
 
 [cultureinfo]::CurrentCulture = 'en-US'
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
 
-Write-Host "Platform is $Platforms"; Write-Host "HiveOS ID is $HiveID"; Write-Host "HiveOS = $HiveOS"
+Write-Host "Platform is $($global:Config.Params.PlatformPlatform)"; Write-Host "HiveOS ID is $($global:Config.Params.HiveID)"; Write-Host "HiveOS = $($global:Config.params.HiveOS)"
 
 ##Icon for windows
-if ($Platforms -eq "windows") {
-    Set-Location $WorkingDir;
+if ($global:Config.Params.Platform -eq "windows") {
     Start-Process "powershell" -ArgumentList "-command .\build\powershell\icon.ps1 `".\build\apps\comb.ico`"" -NoNewWindow
     $Host.UI.RawUI.BackgroundColor = ($bckgrnd = 'Black'); $Host.UI.RawUI.ForegroundColor = 'White';
     $Host.PrivateData.ErrorForegroundColor = 'Red'; $Host.PrivateData.ErrorBackgroundColor = $bckgrnd;
@@ -70,10 +56,10 @@ if ($Platforms -eq "windows") {
 . .\build\api\miners\cgminer.ps1;    . .\build\api\miners\nbminer.ps1;
 
 ##Start API Server
-Write-Host "API Port is $Port";      
+Write-Host "API Port is $($global:Config.Params.Port)";      
 $Posh_api = Get-APIServer;        
 $Posh_Api.BeginInvoke() | Out-Null
-if ($API -eq "Yes") { Write-Host "API Server Started- you can run http://localhost:$Port/end to close" -ForegroundColor Green }
+if ($global:Config.Params.API -eq "Yes") { Write-Host "API Server Started- you can run http://localhost:$($global:Config.Params.Port)/end to close" -ForegroundColor Green }
 
 ## SWARM miner PID
 $CheckForSWARM = ".\build\pid\miner_pid.txt"
@@ -89,7 +75,6 @@ $RestartTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 
 ##Get hive naming conventions:
 $GetHiveNames = ".\config\pools\pool-algos.json"
-$Interval = 60
 $HiveNames = if (Test-Path $GetHiveNames) { Get-Content $GetHiveNames | ConvertFrom-Json }
 $Waiting = $True;
 
@@ -138,10 +123,10 @@ While ($True) {
     }
 
     ## Determine if CPU in only used. Set Flags for what to do.
-    $CPUOnly = $true; $DoCPU = $false; $DoAMD = $false; $DoNVIDIA = $false; $DoASIC = $false
+    $global:Config.Params.CPUOnly = $true; $DoCPU = $false; $DoAMD = $false; $DoNVIDIA = $false; $DoASIC = $false
     $CurrentMiners | ForEach-Object {
         if ($_.Type -like "*NVIDIA*" -or $_.Type -like "*AMD*" -or $_.Type -like "*ASIC*") {
-            $CPUOnly = $false; "GPU" | Set-Content ".\build\txt\miner.txt"
+            $global:Config.Params.CPUOnly = $false; "GPU" | Set-Content ".\build\txt\miner.txt"
         }
         if ($_.Type -like "*NVIDIA*") {
             $DoNVIDIA = $true
@@ -207,10 +192,10 @@ While ($True) {
     if ($DoASIC) { $global:ASICHashRates | Add-Member -MemberType NoteProperty -Name "0" -Value 0; }
 
     ## Windows-To-Hive Stats
-    if ($Platforms -eq "windows") {
+    if ($global:Config.Params.Platform -eq "windows") {
 
         ## Rig Metrics
-        if ($HiveOS -eq "Yes") {
+        if ($global:Config.Params.HiveOS -eq "Yes") {
             $diskSpace = Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'" | Select-Object Freespace
             $diskSpace = $diskSpace.Freespace / [math]::pow( 1024, 3 )
             $diskSpace = [math]::Round($diskSpace)
@@ -286,7 +271,7 @@ While ($True) {
             ## Now Fans & Temps
             Switch ($global:TypeS) {
                 "NVIDIA" {
-                    switch ($Platforms) {
+                    switch ($global:Config.Params.Platform) {
                         "Windows" {
                             for ($i = 0; $i -lt $Devices.Count; $i++) {
                                 try { $global:GPUFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans $Devices[$i] }
@@ -298,7 +283,7 @@ While ($True) {
                             }
                         }
                         "linux" {
-                            switch ($HiveOS) {
+                            switch ($global:Config.Params.HiveOS) {
                                 "Yes" {
                                     for ($i = 0; $i -lt $Devices.Count; $i++) {
                                         try { $global:GPUFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans (Get-GPUs) }
@@ -324,7 +309,7 @@ While ($True) {
                     }
                 }
                 "AMD" {
-                    Switch ($Platforms) {
+                    Switch ($global:Config.Params.Platform) {
                         "windows" {
                             for ($i = 0; $i -lt $Devices.Count; $i++) {
                                 try { $global:GPUFans.$(Get-GPUS) = Set-Array $AMDStats.Fans $Devices[$i] }
@@ -336,7 +321,7 @@ While ($True) {
                             }
                         }
                         "linux" {
-                            switch ($HiveOS) {
+                            switch ($global:Config.Params.HiveOS) {
                                 "Yes" {
                                     for ($i = 0; $i -lt $Devices.Count; $i++) {
                                         try { $global:GPUFans.$(Get-GPUS) = Set-Array $AMDStats.Fans (Get-GPUs) }
@@ -398,7 +383,7 @@ While ($True) {
             if ($BackgroundTimer.Elapsed.TotalSeconds -gt 60) {
                 $Shares = [Double]$global:MinerACC + [double]$global:MinerREJ
                 $RJPercent = $global:MinerREJ / $Shares * 100
-                if ($RJPercent -gt $REJPercent -and $Shares -gt 0) {
+                if ($RJPercent -gt $global:Config.Params.Rejections -and $Shares -gt 0) {
                     Write-Host "Warning: Miner is reaching Rejection Limit- $($RJPercent.ToString("N2")) Percent Out of $Shares Shares" -foreground yellow
                     if (-not (Test-Path ".\timeout")) { New-Item "timeout" -ItemType Directory | Out-Null }
                     if (-not (Test-Path ".\timeout\warnings")) { New-Item ".\timeout\warnings" -ItemType Directory | Out-Null }
@@ -509,9 +494,9 @@ HSU=KHS
     }
         
     ## The below is for interfacing with HiveOS.
-    if ($Platforms -eq "windows" -and $HiveOS -eq "Yes") {
+    if ($global:Config.params.Platform -eq "windows" -and $global:Config.Params.HiveOS -eq "Yes") {
         $Stats = Build-HiveResponse
-        try { $response = Invoke-RestMethod "$HiveMirror/worker/api" -TimeoutSec 15 -Method POST -Body ($Stats | ConvertTo-Json -Depth 4 -Compress) -ContentType 'application/json' }
+        try { $response = Invoke-RestMethod "$($global:Config.Params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body ($Stats | ConvertTo-Json -Depth 4 -Compress) -ContentType 'application/json' }
         catch { Write-Warning "Failed To Contact HiveOS.Farm"; $response = $null }
         $response | ConvertTo-Json | Set-Content ".\build\txt\response.txt"
         if ($response) {
@@ -527,10 +512,10 @@ HSU=KHS
                     $parsed_batch = $do_command
                     $new_command = $do_command | ConvertFrom-StringData
                     $batch_command = [PSCustomObject]@{"result" = @{command = $new_command.Command; id = $new_command.id; $new_command.command = $parsed_batch } }
-                    $SwarmResponse = Start-webcommand -command $batch_command -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror
+                    $SwarmResponse = Start-webcommand -command $batch_command 
                 }
             }
-            else { $SwarmResponse = Start-webcommand -command $response -HiveID $HiveId -HivePassword $HivePassword -HiveMirror $HiveMirror }
+            else { $SwarmResponse = Start-webcommand -command $response }
             if ($SwarmResponse -ne $null) {
                 if ($SwarmResponse -eq "config") {
                     Write-Warning "Config Command Initiated- Restarting SWARM"

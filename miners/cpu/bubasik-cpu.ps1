@@ -16,7 +16,7 @@ $CPUTypes | ForEach-Object {
     $Log = Join-Path $dir "logs\$ConfigType.log"
 
     ##Parse -CPUThreads
-    if ($CPUThreads -ne '') { $Devices = $CPUThreads }
+    if ($global:Config.Params.CPUThreads -ne '') { $Devices = $global:Config.Params.CPUThreads }
 
     ##Get Configuration File
     $GetConfig = "$dir\config\miners\bubasik.json"

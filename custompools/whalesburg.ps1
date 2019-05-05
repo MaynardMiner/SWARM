@@ -12,9 +12,9 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $Whalesburg_Request = [PSCustomObject]@{} 
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
-if($XNSub -eq "Yes"){$X = "#xnsub"} 
+if($global:Config.Params.xnsub -eq "Yes"){$X = "#xnsub"} 
  
-if ($Poolname -eq $Name) {
+if ($global:Config.Params.PoolName -eq $Name) {
     try {$Whalesburg_Request = Invoke-RestMethod "https://payouts.whalesburg.com/profitabilities/share_price" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop} 
     catch {Write-Warning "SWARM contacted ($Name) but there was no response."; return}
   
@@ -43,18 +43,18 @@ if ($Poolname -eq $Name) {
             Symbol        = $Whalesburg_Algorithm
             Mining        = $Whalesburg_Algorithm
             Algorithm     = $Whalesburg_Algorithm
-            Price         = $Stat.$Stat_Algo
+            Price         = $Stat.$($global:Config.Params.Stat_Algo)
             StablePrice   = $Stat.Week
             MarginOfError = $Stat.Fluctuation
             Protocol      = "stratum+ssl"
             Host          = $Whalesburg_Host
             Port          = $Whalesburg_Port
-            User1         = $ETH
-            User2         = $ETH
-            User3         = $ETH
-            CPUser        = $ETH
-            Worker        = "$Worker"
-            Location      = $Location
+            User1         = $global:Config.Params.ETH
+            User2         = $global:Config.Params.ETH
+            User3         = $global:Config.Params.ETH
+            CPUser        = $global:Config.Params.ETH
+            Worker        = "$($global:Config.Params.Worker)"
+            Location      = $global:Config.Params.Location
             SSL           = $false
         }
     }

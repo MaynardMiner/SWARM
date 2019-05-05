@@ -10,7 +10,7 @@ $Devices = $null
 if ($Coins -eq $true) { $Pools = $CoinPools }else { $Pools = $AlgoPools }
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName
 
-$ASIC_ALGO | ForEach-Object {
+$global:Config.Params.ASIC_ALGO | ForEach-Object {
 
     $MinerAlgo = $_
     $Stat = Get-Stat -Name "$($Name)_$($MinerAlgo)_hashrate"
@@ -22,7 +22,7 @@ $ASIC_ALGO | ForEach-Object {
                 Coin       = $Coins
                 Delay      = $Config.$ConfigType.delay
                 Fees       = $Config.$ConfigType.fee.$($_.Algorithm)
-                Platform   = $Platform
+                Platform   = $global:Config.Params.Platform
                 Symbol     = "$($_.Symbol)"
                 MinerName  = $MinerName
                 Type       = $ConfigType
@@ -39,7 +39,7 @@ $ASIC_ALGO | ForEach-Object {
                 Port       = 4028
                 API        = "cgminer"
                 URI        = $Uri
-                Server     = $ASIC_IP
+                Server     = $global:Config.Params.ASIC_IP
                 BUILD      = $Build
                 Algo       = "$($_.Algorithm)"
                 Log        = "miner_generated"

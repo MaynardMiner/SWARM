@@ -12,27 +12,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
 function Get-APIServer {
-    if ($API -eq "Yes") {
+    if ($global:Config.Params.API -eq "Yes") {
 
         $Runspace = [runspacefactory]::CreateRunspace()
         $Runspace.Open()
 
         $APIServer = {
-            param($WorkingDir, $Port, $Remote, $APIPassword)
             [cultureinfo]::CurrentCulture = 'en-US'
-            Set-Location $WorkingDir            
+            Set-Location $global:Config.Params.WorkingDir            
             if (Test-Path ".\build\pid\api_pid.txt") { $AFID = Get-Content ".\build\pid\api_pid.txt"; $AID = Get-Process -ID $AFID -ErrorAction SilentlyContinue }
             if ($AID) { Stop-Process $AID -ErrorAction SilentlyContinue }
             $PID | Set-Content ".\build\pid\api_pid.txt"
             $listener = New-Object System.Net.HttpListener
             Write-Host "Listening ..."
-            if ($Remote -eq "yes") {
-                if ($APIPassword -ne "No") {
-                    [string]$Prefix = "http://+:$Port/$APIPassword/"
+            if ($global:Config.Params.Remote -eq "yes") {
+                if ($global:Config.Params.APIPassword -ne "No") {
+                    [string]$Prefix = "http://+:$($global:Config.Params.Port)/$($global:Config.Params.APIPassword)/"
                 }
-                else { $Prefix = "http://+:$Port/" }
+                else { $Prefix = "http://+:$($global:Config.Params.Port)/" }
             }
-            else { [string]$Prefix = "http://localhost:$Port/" }
+            else { [string]$Prefix = "http://localhost:$($global:Config.Params.Port)/" }
    
             # Run until you send a GET request to /end
             $listener.Prefixes.Add($Prefix) 
@@ -51,8 +50,8 @@ function Get-APIServer {
                 else {
                     # Split request URL to get command and options
                     $requestvars = [String]$request.Url -split "/"
-                    if ($Remote -eq "Yes" -and $APIPassword -ne "No") { $GET = $requestvars[4] }
-                    elseif ($Remote -eq "Yes" -and $APIPassword -eq "No") { $GET = $requestvars[3] }
+                    if ($global:Config.Params.Port -eq "Yes" -and $global:Config.Params.APIPassword -ne "No") { $GET = $requestvars[4] }
+                    elseif ($global:Config.Params.Remote -eq "Yes" -and $global:Config.Params.APIPassword -eq "No") { $GET = $requestvars[3] }
                     else { $GET = $requestvars[3] }
                     $requestcom = $GET -split "`&" | Select-Object -First 1
                     $requestargs = $GET -replace "$requestcom", ""
@@ -213,12 +212,8 @@ function Get-APIServer {
         $Posh_Api = [powershell]::Create()
         $Posh_Api.Runspace = $Runspace
         $Posh_Api.AddScript($APIServer) | Out-Null
-        $Posh_Api.AddArgument($WorkingDir) | Out-Null
-        $Posh_Api.AddArgument($Port) | Out-Null
-        $Posh_Api.AddArgument($Remote) | Out-Null
-        $Posh_Api.AddArgument($APIPassword) | Out-Null
         $Posh_Api
-        #Start-Job $APIServer -Name "APIServer" -ArgumentList $WorkingDir, $Port, $Remote, $APIPassword | OUt-Null
+        #Start-Job $APIServer -Name "APIServer" -ArgumentList $WorkingDir, $Port, $global:Config.Params.Remote, $global:Config.Params.APIPassword | OUt-Null
         Write-Host "Starting API Server" -ForegroundColor "Yellow"
     }
 }

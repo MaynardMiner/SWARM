@@ -3,11 +3,11 @@ $NVIDIATypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
-    if ($nvidia.'cc-yescrypt'.$ConfigType -and $cuda -eq "10") { $Path = "$($nvidia.'cc-yescrypt'.$ConfigType)" }
+    if ($nvidia.'cc-yescrypt'.$ConfigType -and $global:Config.Params.Cuda -eq "10") { $Path = "$($nvidia.'cc-yescrypt'.$ConfigType)" }
     else { $Path = "None" }
-    if ($nvidia.'cc-yescrypt'.uri -and $cuda -eq "10") { $Uri = "$($nvidia.'cc-yescrypt'.uri)" }
+    if ($nvidia.'cc-yescrypt'.uri -and $global:Config.Params.Cuda -eq "10") { $Uri = "$($nvidia.'cc-yescrypt'.uri)" }
     else { $Uri = "None" }
-    if ($nvidia.'cc-yescrypt'.minername -and $cuda -eq "10") { $MinerName = "$($nvidia.'cc-yescrypt'.minername)" }
+    if ($nvidia.'cc-yescrypt'.minername -and $global:Config.Params.Cuda -eq "10") { $MinerName = "$($nvidia.'cc-yescrypt'.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "cc-yescrypt-$Num"; $Port = "5500$Num";

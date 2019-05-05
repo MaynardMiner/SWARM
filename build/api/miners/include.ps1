@@ -40,9 +40,9 @@ function Set-APIFailure {
 ## NVIDIA HWMON
 function Set-NvidiaStats {
 
-    Switch ($Platforms) {
+    Switch ($Global:Config.Params.Platform) {
         "linux" {
-            switch ($HiveOS) {
+            switch ($global:Config.Params.HiveOS) {
                 "No" {
                     timeout.exe -s9 10 ./build/apps/VII-smi | Tee-Object -Variable getstats | Out-Null
                     if ($getstats) {
@@ -93,7 +93,7 @@ function Set-NvidiaStats {
 ## AMD HWMON
 function Set-AMDStats {
 
-    switch ($Platforms) {
+    switch ($Global:Config.Params.Platform) {
         "windows" {
             Invoke-Expression ".\build\apps\odvii.exe s" | Tee-Object -Variable amdout | Out-Null
             if ($amdout) {
@@ -122,7 +122,7 @@ function Set-AMDStats {
         }
 
         "linux" {
-            switch ($HiveOS) {
+            switch ($global:Config.Params.HiveOS) {
                 "Yes" {
                     $HiveStats = "/run/hive/gpu-stats.json"
                     do {
@@ -174,7 +174,7 @@ function Remove-ASICPools {
     )
 
     $ASIC_Pools = @{ }
-    $Timeout = 5
+    $global:Config.Params.Timeout = 5
 
     Switch ($Name) {
         "cgminer" {
@@ -184,7 +184,7 @@ function Remove-ASICPools {
             ##First we need to discover all pools
             $Commands = @{command = "pools"; parameter = 0 } | ConvertTo-Json -Compress
             $response = $Null
-            $response = Get-TCP -Server $AIP -Port $Port -Message $Commands -Timeout $timeout
+            $response = Get-TCP -Server $AIP -Port $Port -Message $Commands -Timeout 10
             if ($response) {
                 ##Windows screws up last character
                 if ($response[-1] -notmatch "}") { $response = $Response.Substring(0, $Response.Length - 1) }
@@ -195,7 +195,7 @@ function Remove-ASICPools {
                     $PoolNo = $($ASIC_Pools.$ASICM.$_)
                     $Commands = @{command = "removepool"; parameter = "$PoolNo" } | ConvertTo-Json -Compress; 
                     $response = $Null; 
-                    $response = Get-TCP -Server $AIP -Port $Port -Message $Commands -Timeout $timeout 
+                    $response = Get-TCP -Server $AIP -Port $Port -Message $Commands -Timeout 10 
                     $response
                 }
             }

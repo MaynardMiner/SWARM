@@ -1,6 +1,6 @@
 function Get-BlockmastersData {
     $Wallets = @()
-    $Type | ForEach-Object {
+    $global:Config.Params.Type | ForEach-Object {
         $Sel = $_
         $Pool = "blockmasters"
         $global:Share_Table.$Sel.Add($Pool, @{ })

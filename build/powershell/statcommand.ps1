@@ -79,17 +79,17 @@ function Set-Stat {
     )
 
     $Calcs = @{
-        Minute    = [Math]::Max([Math]::Round(60 / $Interval), 1)
-        Minute_5  = [Math]::Max([Math]::Round(300 / $Interval), 1)
-        Minute_15 = [Math]::Max([Math]::Round(900 / $Interval), 1)
-        Hour      = [Math]::Max([Math]::Round(3600 / $Interval), 1)
-        Hour_4    = [Math]::Max([Math]::Round(14400 / $Interval), 1)
-        Day       = [Math]::Max([Math]::Round(86400 / $Interval), 1)
-        Custom    = [Math]::Max([Math]::Round($Custom_Periods), 1)
+        Minute    = [Math]::Max([Math]::Round(60 / $global:Config.Params.Interval), 1)
+        Minute_5  = [Math]::Max([Math]::Round(300 / $global:Config.Params.Interval), 1)
+        Minute_15 = [Math]::Max([Math]::Round(900 / $global:Config.Params.Interval), 1)
+        Hour      = [Math]::Max([Math]::Round(3600 / $global:Config.Params.Interval), 1)
+        Hour_4    = [Math]::Max([Math]::Round(14400 / $global:Config.Params.Interval), 1)
+        Day       = [Math]::Max([Math]::Round(86400 / $global:Config.Params.Interval), 1)
+        Custom    = [Math]::Max([Math]::Round($global:Config.Params.Custom_Periods), 1)
     }
 
     if ($HashRate) {
-        $Calcs.Add("Hashrate", [Math]::Max([Math]::Round(3600 / $Interval), 1))
+        $Calcs.Add("Hashrate", [Math]::Max([Math]::Round(3600 / $global:Config.Params.Interval), 1))
     }
 
     $Max_Periods = 288

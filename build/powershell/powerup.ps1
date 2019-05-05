@@ -16,9 +16,7 @@ function Set-Power {
         [Parameter(Position=0, Mandatory=$true)]
         [String]$PwrType
     )
-
-    $Platforms = $Platform
-    
+        
     switch -Wildcard ($PwrType) {
         "*AMD*" { $Power = (Set-AMDStats).watts }
         "*NVIDIA*" { $Power = (Set-NvidiaStats).watts }
