@@ -31,7 +31,7 @@ if($Debug -eq $True)
  $config.add("params",@{})
  $startingconfig.add("params",@{})
 
- if(-not (Test-Path ".\config\parameters\newarguments.json")) {
+ if(Test-Path ".\config\parameters\newarguments.json") {
     $arguments = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json
     $arguments.PSObject.Properties.Name | %{$global:Config.Params.Add("$($_)",$arguments.$_)}
     $arguments.PSObject.Properties.Name | %{$Global:startingconfig.Params.Add("$($_)",$arguments.$_)}
