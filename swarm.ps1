@@ -78,7 +78,7 @@ if (-not $global:Config.Params.Platform) {
     else { $global:Config.Params.Platform = "linux" }
 }
 
-Write-log "OS = $global:Config.Params.Platform" -ForegroundColor Green
+Write-log "OS = $($global:Config.Params.Platform)" -ForegroundColor Green
 
 ## Load Codebase
 . .\build\powershell\killall.ps1; . .\build\powershell\remoteupdate.ps1; . .\build\powershell\octune.ps1;
