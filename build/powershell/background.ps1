@@ -20,10 +20,10 @@ Set-Location $WorkingDir
 
 $Global:config = [hashtable]::Synchronized(@{})
 $global:Config.Add("params",@{})
-$global:Config.Params.Add("WorkingDir",$WorkingDir)
 $global:Config.params = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
 $RigConf = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json
 $RigConf.PSObject.Properties.Name | % {$global:Config.params | Add-Member "$($_)" $RigConf.$_ -Force }
+$global:Config.Params | Add-Member "WorkingDir" $WorkingDir
 
 [cultureinfo]::CurrentCulture = 'en-US'
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
