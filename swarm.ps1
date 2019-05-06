@@ -605,7 +605,7 @@ While ($true) {
             $global:Config.Params.AltPassword2 = "BTC";
             $global:Config.Params.AltPassword3 = "BTC";
             $DonateTime = Get-Date; 
-            $DonateText = "Miner has donated on $DonateTime"; 
+            $DonateText = "Miner has last donated on $DonateTime"; 
             $DonateText | Set-Content ".\build\txt\donate.txt"
             if($SWARMAlgorithm.Count -gt 0 -and $SWARMAlgorithm -ne ""){$SWARMAlgorithm = $Null}
             if($global:Config.Params.Coin -gt 0){$global:Config.Params.Coin = $Null}
