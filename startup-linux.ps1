@@ -31,6 +31,4 @@ $Parsed.keys| % {
 
 $Params | convertto-Json | Out-File ".\config\parameters\arguments.json"
 
-$Params
-
 Invoke-Expression ".\swarm.ps1"

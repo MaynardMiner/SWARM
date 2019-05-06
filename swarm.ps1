@@ -49,6 +49,13 @@ if(Test-Path ".\build\txt\hivekeys.txt") {
     $HiveStuff.PSObject.Properties.Name | %{$Global:startingconfig.Params.Add("$($_)",$arguments.$_)}
     $HiveStuff = $null
 }
+if (-not $global:Config.Params.Platform) {
+    write-log "Detecting Platform..." -Foreground Cyan
+    if (Test-Path "C:\") { $global:Config.Params.Platform = "windows" }
+    else { $global:Config.Params.Platform = "linux" }
+}
+
+Write-log "OS = $($global:Config.Params.Platform)" -ForegroundColor Green
 
 ##filepath dir
 $dir = (Split-Path $script:MyInvocation.MyCommand.Path)
@@ -71,14 +78,6 @@ $Log = 1;
 . .\build\powershell\startlog.ps1;
 $global:logname = $null
 start-log -Number $Log;
-
-if (-not $global:Config.Params.Platform) {
-    write-log "Detecting Platform..." -Foreground Cyan
-    if (Test-Path "C:\") { $global:Config.Params.Platform = "windows" }
-    else { $global:Config.Params.Platform = "linux" }
-}
-
-Write-log "OS = $($global:Config.Params.Platform)" -ForegroundColor Green
 
 ## Load Codebase
 . .\build\powershell\killall.ps1; . .\build\powershell\remoteupdate.ps1; . .\build\powershell\octune.ps1;
