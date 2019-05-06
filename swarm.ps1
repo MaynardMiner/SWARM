@@ -55,8 +55,6 @@ if (-not $global:Config.Params.Platform) {
     else { $global:Config.Params.Platform = "linux" }
 }
 
-Write-log "OS = $($global:Config.Params.Platform)" -ForegroundColor Green
-
 ##filepath dir
 $dir = (Split-Path $script:MyInvocation.MyCommand.Path)
 $env:Path += ";$dir\build\cmd"
@@ -78,6 +76,7 @@ $Log = 1;
 . .\build\powershell\startlog.ps1;
 $global:logname = $null
 start-log -Number $Log;
+Write-log "OS = $($global:Config.Params.Platform)" -ForegroundColor Green
 
 ## Load Codebase
 . .\build\powershell\killall.ps1; . .\build\powershell\remoteupdate.ps1; . .\build\powershell\octune.ps1;
