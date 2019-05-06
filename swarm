@@ -15,4 +15,4 @@
 ## If you do not intend to use HiveOS, add -HiveOS No
 ## FOR ALL ARGUMENTS: SEE help folder. Explanation on how to use -Type NVIDIA1,NVIDIA2,NVIDIA3 is provided.
 
-sudo screen -S miner -m pwsh -command "&.\swarm.ps1 -HiveOS No -RigName1 MKVITO1 -Currency USD -CoinExchange LTC -Location US -PoolName ahashpool,blazepool,blockmasters,fairpool,hashrefinery,nicehash,nlpool,phiphipool,zergpool,zpool -Type NVIDIA1 -Wallet1 1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i -Donate .5 -WattOMeter No"
+sudo screen -S miner -m pwsh -command "&.\startup-linux.ps1 -HiveOS No -RigName1 MKVITO1 -Currency USD -CoinExchange LTC -Location US -PoolName ahashpool,blazepool,blockmasters,fairpool,hashrefinery,nicehash,nlpool,phiphipool,zergpool,zpool -Type NVIDIA1 -Wallet1 1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i -Donate .5 -WattOMeter No"
