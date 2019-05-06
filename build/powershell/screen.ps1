@@ -387,7 +387,7 @@ function Restart-Miner {
 
 function Get-MinerHashRate {
     $BestActiveMiners | ForEach-Object {
-        if($_.Profit_Day -ne "bench"){ $ScreenProfit = "$(($_.Profit_Day * $Rates.$($global:Config.Params.Currency)).ToString("N2")) $global:Config.Params.Currency/Day" } else{ $ScreenProfit = "Benchmarking" }
+        if($_.Profit_Day -ne "bench"){ $ScreenProfit = "$(($_.Profit_Day * $Rates.$($global:Config.Params.Currency)).ToString("N2")) $($global:Config.Params.Currency)/Day" } else{ $ScreenProfit = "Benchmarking" }
         if($_.Fiat_Day -ne "bench"){ $CurrentProfit = "$($_.Fiat_Day) $($global:Config.Params.Currency)/Day" } else { $CurrentProfit = "Benchmarking" }
         if ($null -eq $_.Xprocess -or $_.XProcess.HasExited) { $_.Status = "Failed" }
         $Miner_HashRates = Get-HashRate -Type $_.Type
