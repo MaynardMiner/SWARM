@@ -49,6 +49,7 @@ if(Test-Path ".\build\txt\hivekeys.txt") {
     $HiveStuff.PSObject.Properties.Name | %{$Global:startingconfig.Params.Add("$($_)",$arguments.$_)}
     $HiveStuff = $null
 }
+
 if (-not $global:Config.Params.Platform) {
     write-log "Detecting Platform..." -Foreground Cyan
     if (Test-Path "C:\") { $global:Config.Params.Platform = "windows" }
