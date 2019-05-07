@@ -109,6 +109,12 @@ function start-update {
                                         $Data.$_.naming | Add-Member "argon2d250" "argon2d250" -ErrorAction SilentlyContinue
                                         $Data.$_.fee | Add-Member "argon2d250" 1 -ErrorAction SilentlyContinue
                                         $Data.$_.oc | Add-Member "argon2d250" @{Power = ""; Core = ""; Memory = ""; Fans = ""} -ErrorAction SilentlyContinue
+
+                                        $Data.$_.commands| Add-Member "argond2d-dyn" "" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.difficulty | Add-Member "argond2d-dyn" "" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.naming | Add-Member "argond2d-dyn" "argond2d-dyn" -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.fee | Add-Member "argond2d-dyn" 1 -ErrorAction SilentlyContinue -Force
+                                        $Data.$_.oc | Add-Member "argond2d-dyn" @{Power = ""; Core = ""; Memory = ""; Fans = ""} -ErrorAction SilentlyContinue -Force
                                     }
                                 }
                             }
