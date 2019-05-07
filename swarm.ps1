@@ -1316,7 +1316,7 @@ While ($true) {
         Get-Charts | Out-File ".\build\txt\charts.txt" -Append
         $ProfitMessage = $null
         $BestActiveMiners | % {
-            if ($_.Profit_Day -ne "bench") { $ScreenProfit = "$(($_.Profit_Day * $Rates.$($global:Config.Params.Currency)).ToString("N2")) $global:Config.Params.Currency/Day" } else { $ScreenProfit = "Benchmarking" }
+            if ($_.Profit_Day -ne "bench") { $ScreenProfit = "$(($_.Profit_Day * $Rates.$($global:Config.Params.Currency)).ToString("N2")) $($global:Config.Params.Currency)/Day" } else { $ScreenProfit = "Benchmarking" }
             $ProfitMessage = "Current Daily Profit For $($_.Type): $ScreenProfit"
             $ProfitMessage | Out-File ".\build\txt\minerstats.txt" -Append
             $ProfitMessage | Out-File ".\build\txt\charts.txt" -Append
