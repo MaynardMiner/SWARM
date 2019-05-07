@@ -45,7 +45,7 @@ $ASICTypes | ForEach-Object {
                     Port       = 4028
                     API        = "cgminer"
                     URI        = $Uri
-                    Server     = $global:Config.Params.ASIC_IP
+                    Server     = $global:ASICS.$ConfigType.IP
                     BUILD      = $Build
                     Algo       = "$($_.Algorithm)"
                     Log        = "miner_generated"
