@@ -13,8 +13,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 function Get-Miners {
     param (
         [Parameter(Mandatory = $true)]
-        [Array]$MinerType,
-        [Parameter(Mandatory = $true)]
         [Array]$Pools
     )
 
@@ -28,7 +26,7 @@ function Get-Miners {
     $AMDB = $false
     $CPUB = $false
 
-    $MinerType | ForEach-Object {
+    $Global:Config.Params.Type | ForEach-Object {
         if ($_ -like "*ASIC*") { $ASICMiners = $true }
         if ($_ -like "*NVIDIA*") { $NVB = $true; $GPUMiners = $true }
         if ($_ -like "*AMD*") { $AMDB = $true; $GPUMiners = $true }

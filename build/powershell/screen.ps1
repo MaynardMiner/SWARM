@@ -357,7 +357,9 @@ function Restart-Miner {
                     $PreviousPorts = $PreviousMinerPorts | ConvertTo-Json -Compress
                     $_.Xprocess = Start-LaunchCode -PP $PreviousPorts -NewMiner $Current
                 } else {
-                    $_.Xprocess = Start-LaunchCode -NewMiner $Current -AIP $global:Config.Params.ASIC_IP
+                    if($global:ASICS.$($_.Type).IP){$AIP = $global:ASICS.$($_.Type).IP}
+                    else{$AIP = "localhost"}
+                    $_.Xprocess = Start-LaunchCode -NewMiner $Current -AIP $AIP
                 }
 
                 if ($null -eq $_.XProcess -or $_.XProcess.HasExited) {

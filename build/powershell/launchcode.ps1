@@ -406,17 +406,14 @@ function Start-LaunchCode {
     }
     else {
         $clear = Remove-ASICPools $AIP $MinerCurrent.Port $MinerCurrent.API
-        Start-Sleep -S 1
         $Commands = "addpool|$($MinerCurrent.Arguments)"
         Write-Log "Adding New Pool"
-        $response = Get-TCP -Server $AIP -Port $MinerCurrent.Port -Timeout 5 -Message $Commands
-        Start-Sleep -S 1
+        $response = Get-TCP -Server $AIP -Port $MinerCurrent.Port -Timeout 10 -Message $Commands
         $response = $null
         Write-Log "Switching To New Pool"
         $Commands = "switchpool|1"
-        $response = Get-TCP -Server $AIP -Port $MinerCurrent.Port -Timeout 5 -Message $Commands
-        if ($response) { $MinerProcess = @{StartTime = (Get-Date); HasExited = $false }
-        }
+        $response = Get-TCP -Server $AIP -Port $MinerCurrent.Port -Timeout 10 -Message $Commands
+        if ($response) { $MinerProcess = @{StartTime = (Get-Date); HasExited = $false }}
         $MinerProcess
     }
 }

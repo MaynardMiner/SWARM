@@ -174,7 +174,6 @@ function Remove-ASICPools {
     )
 
     $ASIC_Pools = @{ }
-    $global:Config.Params.Timeout = 5
 
     Switch ($Name) {
         "cgminer" {
@@ -195,7 +194,7 @@ function Remove-ASICPools {
                     $PoolNo = $($ASIC_Pools.$ASICM.$_)
                     $Commands = @{command = "removepool"; parameter = "$PoolNo" } | ConvertTo-Json -Compress; 
                     $response = $Null; 
-                    $response = Get-TCP -Server $AIP -Port $Port -Message $Commands -Timeout 10 
+                    $response = Get-TCP -Server $AIP -Port $Port -Message $Commands -Timeout 10
                     $response
                 }
             }
