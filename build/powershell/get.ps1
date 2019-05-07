@@ -253,7 +253,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
     "asic" {
         if (Test-Path ".\build\txt\bestminers.txt") { $BestMiners = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-Json }
         else { $Get += "No miners running" }
-        $ASIC = $BestMiners | Where Type -eq "ASIC"
+        $ASIC = $BestMiners | Where Type -eq $argument2
         if ($ASIC) {
             . .\build\powershell\hashrates.ps1
             $Get += "Miner Name: $($ASIC.MinerName)"
