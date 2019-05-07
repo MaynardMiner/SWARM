@@ -463,3 +463,96 @@ function Print-WattOMeter {
     
   " -foregroundcolor yellow
 }
+
+function Start-MinerLoop {
+    Do {
+        Set-Countdown
+        Get-MinerHashRate
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval - 20)) { break }
+        Set-Countdown
+        Get-MinerHashRate
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval - 20)) { break }
+        Set-Countdown
+        Restart-Miner
+        write-Log "
+
+  Type 'get stats' in a new terminal to view miner statistics- This IS a remote command!
+        Windows Users: Open cmd.exe or SWARM TERMINAL on desktop and enter command
+    https://github.com/MaynardMiner/SWARM/wiki/Commands-&-Suggested-Apps for more info.
+
+" -foreground Magenta
+        Get-MinerHashRate
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval - 20)) { break }
+        Set-Countdown
+        Get-MinerHashRate
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval - 20)) { break }
+        Set-Countdown
+        Restart-Miner
+        Get-MinerHashRate
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval - 20)) { break }
+        Set-Countdown
+        write-Log "
+
+  Type 'get active' in a new terminal to view all active miner details- This IS a remote command!
+          Windows Users: Open cmd.exe or SWARM TERMINAL on desktop and enter command
+       https://github.com/MaynardMiner/SWARM/wiki/Commands-&-Suggested-Apps for more info.
+      
+" -foreground Magenta
+        Get-MinerHashRate
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval - 20)) { break }
+        $RestartData = Restart-Database
+        if ($RestartData -eq "Yes") { break }
+
+    }While ($MinerWatch.Elapsed.TotalSeconds -lt ($MinerInterval - 20))
+}

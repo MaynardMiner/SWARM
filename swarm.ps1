@@ -79,16 +79,15 @@ if (-not $global:Config.Params.Platform) {
 
 ## Load Codebase
 . .\build\powershell\killall.ps1; . .\build\powershell\remoteupdate.ps1; . .\build\powershell\octune.ps1;
-. .\build\powershell\datafiles.ps1; . .\build\powershell\statcommand.ps1; . .\build\powershell\poolcommand.ps1;
-. .\build\powershell\minercommand.ps1; . .\build\powershell\launchcode.ps1; . .\build\powershell\datefiles.ps1;
+. .\build\powershell\datafiles.ps1; . .\build\powershell\command-stats.ps1; . .\build\powershell\command-pool.ps1;
+. .\build\powershell\command-miner.ps1; . .\build\powershell\launchcode.ps1; . .\build\powershell\datefiles.ps1;
 . .\build\powershell\watchdog.ps1; . .\build\powershell\download.ps1; . .\build\powershell\hashrates.ps1;
 . .\build\powershell\naming.ps1; . .\build\powershell\childitems.ps1; . .\build\powershell\powerup.ps1;
 . .\build\powershell\peekaboo.ps1; . .\build\powershell\checkbackground.ps1; . .\build\powershell\maker.ps1;
-. .\build\powershell\intensity.ps1; . .\build\powershell\poolbans.ps1; . .\build\powershell\cl.ps1;
-. .\build\powershell\newsort.ps1; . .\build\powershell\screen.ps1; . .\build\powershell\commandweb.ps1;
-. .\build\powershell\response.ps1; . .\build\api\html\api.ps1; . .\build\powershell\config_file.ps1;
-. .\build\powershell\altwallet.ps1; . .\build\api\pools\include.ps1; . .\build\api\miners\include.ps1;
-. .\build\api\miners\include.ps1;
+. .\build\powershell\intensity.ps1; . .\build\powershell\cl.ps1; . .\build\powershell\screen.ps1; 
+. .\build\powershell\command-web.ps1; . .\build\powershell\response.ps1; . .\build\api\html\api.ps1; 
+. .\build\powershell\config_file.ps1; . .\build\powershell\altwallet.ps1; . .\build\api\pools\include.ps1; 
+. .\build\api\miners\include.ps1; . .\build\api\miners\include.ps1;
 if ($global:Config.Params.Platform -eq "linux") { . .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1 }
 if ($global:Config.Params.Platform -eq "windows") { . .\build\powershell\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1; . .\build\powershell\environment.ps1; }
 
@@ -1425,96 +1424,7 @@ While ($true) {
         [GC]::WaitForPendingFinalizers()
         [GC]::Collect()
 
-        Do {
-            Set-Countdown
-            Get-MinerHashRate
-            if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
-            if ($ModeCheck -gt 0) { break }
-            Start-Sleep -s 5
-            if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
-            if ($ModeCheck -gt 0) { break }
-            Start-Sleep -s 5
-            if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
-            if ($ModeCheck -gt 0) { break }
-            Start-Sleep -s 5
-            if ($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval - 20)) { break }
-            Set-Countdown
-            Get-MinerHashRate
-            if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
-            if ($ModeCheck -gt 0) { break }
-            Start-Sleep -s 5
-            if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
-            if ($ModeCheck -gt 0) { break }
-            Start-Sleep -s 5
-            if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
-            if ($ModeCheck -gt 0) { break }
-            Start-Sleep -s 5
-            if ($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval - 20)) { break }
-            Set-Countdown
-            Restart-Miner
-            write-Log "
-
-      Type 'get stats' in a new terminal to view miner statistics- This IS a remote command!
-            Windows Users: Open cmd.exe or SWARM TERMINAL on desktop and enter command
-        https://github.com/MaynardMiner/SWARM/wiki/Commands-&-Suggested-Apps for more info.
-
-  " -foreground Magenta
-            Get-MinerHashRate
-            if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
-            if ($ModeCheck -gt 0) { break }
-            Start-Sleep -s 5
-            if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
-            if ($ModeCheck -gt 0) { break }
-            Start-Sleep -s 5
-            if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
-            if ($ModeCheck -gt 0) { break }
-            Start-Sleep -s 5
-            if ($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval - 20)) { break }
-            Set-Countdown
-            Get-MinerHashRate
-            if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
-            if ($ModeCheck -gt 0) { break }
-            Start-Sleep -s 5
-            if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
-            if ($ModeCheck -gt 0) { break }
-            Start-Sleep -s 5
-            if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
-            if ($ModeCheck -gt 0) { break }
-            Start-Sleep -s 5
-            if ($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval - 20)) { break }
-            Set-Countdown
-            Restart-Miner
-            Get-MinerHashRate
-            if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
-            if ($ModeCheck -gt 0) { break }
-            Start-Sleep -s 5
-            if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
-            if ($ModeCheck -gt 0) { break }
-            Start-Sleep -s 5
-            if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
-            if ($ModeCheck -gt 0) { break }
-            Start-Sleep -s 5
-            if ($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval - 20)) { break }
-            Set-Countdown
-            write-Log "
-
-      Type 'get active' in a new terminal to view all active miner details- This IS a remote command!
-              Windows Users: Open cmd.exe or SWARM TERMINAL on desktop and enter command
-           https://github.com/MaynardMiner/SWARM/wiki/Commands-&-Suggested-Apps for more info.
-          
-  " -foreground Magenta
-            Get-MinerHashRate
-            if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
-            if ($ModeCheck -gt 0) { break }
-            Start-Sleep -s 5
-            if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
-            if ($ModeCheck -gt 0) { break }
-            Start-Sleep -s 5
-            if ($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval - 20)) { break }
-            $RestartData = Restart-Database
-            if ($RestartData -eq "Yes") { break }
-
-        }While ($MinerWatch.Elapsed.TotalSeconds -lt ($MinerInterval - 20))
+        Start-MinerLoop
 
         ## Start WattOMeter function
         if ($global:Config.Params.WattOMeter -eq "Yes") {

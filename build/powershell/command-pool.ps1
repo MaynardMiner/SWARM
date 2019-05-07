@@ -11,6 +11,68 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
+function Get-Pools {
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$PoolType
+    )
+
+    Switch($PoolType)
+    {
+     "Algo"{$GetPools = if (Test-Path "algopools") {Get-ChildItemContent "algopools" | ForEach {if($_ -ne $Null){$_.Content | Add-Member @{Name = $_.Name} -PassThru}}}}
+     "Coin"{$GetPools = if (Test-Path "coinpools") {Get-ChildItemContent "coinpools" | ForEach {if($_ -ne $Null){$_.Content | Add-Member @{Name = $_.Name} -PassThru}}}}
+     "Custom"{$GetPools = if (Test-Path "custompools") {Get-ChildItemContent "custompools" | ForEach {if($_ -ne $Null){$_.Content | Add-Member @{Name = $_.Name} -PassThru}}}}
+    }
+
+    $GetPools
+  
+}
+
+function Sort-Pools {
+    Param(
+        [Parameter(Position = 0, Mandatory = $true, ValueFromPipeline = $true)]
+        [object]$Pools
+    )
+
+    $PoolPriority1 = @()
+    $PoolPriority2 = @()
+    $PoolPriority3 = @()
+}
+
+function Get-Volume {
+    $global:Pool_Hashrates.keys | ForEach-Object {
+        $SortAlgo = $_
+        $Sorted = @()
+        $global:Pool_HashRates.$SortAlgo.keys | ForEach-Object {$Sorted += [PSCustomObject]@{Name = "$($_)"; HashRate = [Decimal]$global:Pool_HashRates.$SortAlgo.$_.HashRate}}
+        $BestHash = [Decimal]$($Sorted | Sort-Object HashRate -Descending | Select -First 1).HashRate
+        $global:Pool_HashRates.$SortAlgo.keys | ForEach-Object {$global:Pool_HashRates.$SortAlgo.$_.Percent = (([Decimal]$BestHash - [Decimal]$global:Pool_HashRates.$SortAlgo.$_.HashRate) / [decimal]$BestHash)}
+    }
+}
+
+function Remove-Pools {
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$IPAddress,
+        [Parameter(Mandatory = $true)]
+        [Int]$PoolPort,
+        [Parameter(Mandatory = $true)]
+        [Int]$PoolTimeout
+    )
+    $getpool = "pools|0"
+    $getpools = Get-TCP -Server $IPAddress -Port $Port -Message $getpool -Timeout 10
+    if ($getpools) {
+        $ClearPools = @()
+        $getpools = $getpools -split "\|" | Select -skip 1 | Where {$_ -ne ""}
+        $AllPools = [PSCustomObject]@{}
+        $Getpools | foreach {$Single = $($_ -split "," | ConvertFrom-StringData); $AllPools | Add-Member "Pool$($Single.Pool)" $Single}
+        $AllPools | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {if ($AllPools.$_.Priority -ne 0) {$Clear = $($_ -replace "Pool", ""); $ClearPools += "removepool|$Clear"}}
+        if ($ClearPools) {$ClearPools | foreach {Get-TCP -Server $Master -Port $Port -Message "$($_)" -Timeout 10}; Start-Sleep -S .5}
+    }
+   
+    $Found = "1"
+    $Found
+}
+
 Function Get-NormalParams {
     $Global:config.params.Wallet1 = $global:startingconfig.params.Wallet1
     $Global:config.params.Wallet2 = $global:startingconfig.params.Wallet2

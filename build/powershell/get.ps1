@@ -37,9 +37,9 @@ $Get = @()
 
 . .\build\powershell\hashrates.ps1
 . .\build\powershell\octune.ps1
-. .\build\powershell\commandweb.ps1
+. .\build\powershell\command-web.ps1
 . .\build\powershell\powerup.ps1
-. .\build\powershell\statcommand.ps1
+. .\build\powershell\command-stats.ps1
 . .\build\powershell\response.ps1
 . .\build\powershell\hiveoc.ps1
 
@@ -286,7 +286,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
 
 
     "benchmarks" {
-        . .\build\powershell\statcommand.ps1
+        . .\build\powershell\command-stats.ps1
         . .\build\powershell\childitems.ps1
         . .\build\powershell\hashrates.ps1
         . .\build\powershell\wallettable.ps1
@@ -340,7 +340,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
     }
 
     "wallets" {
-        . .\build\powershell\statcommand.ps1
+        . .\build\powershell\command-stats.ps1
         . .\build\powershell\childitems.ps1
         . .\build\powershell\hashrates.ps1
         . .\build\powershell\wallettable.ps1   
