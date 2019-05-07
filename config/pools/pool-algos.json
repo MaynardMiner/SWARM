@@ -762,5 +762,12 @@
       "add pool or miner here",
       "comma seperated"
     ]
+  },
+  "wildkeccak": {
+    "hiveos_name": "wildkeccak",
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
   }
 }
