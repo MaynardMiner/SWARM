@@ -235,11 +235,19 @@ asic
     regarding what it is mining.
 
     USES:
-        get asic
+        get asic [ASIC]
     
     OPTIONS:
 
-        none
+        [ASIC]
+            This is the ASIC group you wish to contact.
+
+                example:
+                
+                    get asic ASIC1
+                    get asic ASIC2
+
+                    etc.
 
 
 to see all available SWARM commands, go to:
