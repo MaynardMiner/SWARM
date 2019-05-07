@@ -20,15 +20,9 @@ if ($json -eq $false) {
     }
 }
 
-$global:Params = @{ }
 $Defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json
-$Defaults | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | % { $Params.Add("$($_)", $Defaults.$_) }
-$Parsed.keys| % {
-    if ($Params.$_ -ne $Parsed.$_) {
-        $Params.$_ = $Parsed.$_
-    }
-}
+$Defaults.PSObject.Properties.Name | % { if (-not $Parsed.$_) { $Parsed.Add("$($_)",$Defaults.$_) } }
 
-$Params | convertto-Json | Out-File ".\config\parameters\arguments.json"
+$Parsed | convertto-json | Out-File ".\config\parameters\arguments.json"
 
 Invoke-Expression ".\swarm.ps1"
