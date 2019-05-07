@@ -16,6 +16,7 @@ function Get-APIServer {
 
         $Runspace = [runspacefactory]::CreateRunspace()
         $Runspace.Open()
+        $Runspace.SessionStateProxy.SetVariable('config',$global:Config)
 
         $APIServer = {
             [cultureinfo]::CurrentCulture = 'en-US'

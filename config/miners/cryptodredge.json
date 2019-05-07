@@ -7,6 +7,9 @@
     "commands": {
       "grincuckaroo29": "",
       "argon2d-dyn": "",
+      "argon2d-uis": "",
+      "argon2d4096": "",
+      "argon2d250": "",
       "lyra2z": "",
       "lyra2re": "",
       "x17": "",
@@ -38,6 +41,9 @@
     "difficulty": {
       "grincuckaroo29": "",
       "argon2d-dyn": "",
+      "argon2d-uis": "",
+      "argon2d4096": "",
+      "argon2d250": "",
       "lyra2z": "",
       "lyra2re": "",
       "x17": "",
@@ -69,6 +75,9 @@
     "naming": {
       "grincuckaroo29": "cuckaroo29",
       "argon2d-dyn": "argon2d",
+      "argon2d-uis": "argon2d4096",
+      "argon2d4096": "argon2d4096",
+      "argon2d250": "argon2d250",
       "lyra2z": "lyra2z",
       "lyra2re": "lyra2z",
       "x17": "x17",
@@ -100,6 +109,9 @@
     "fee": {
       "grincuckaroo29": 1,
       "argon2d-dyn": 1,
+      "argon2d-uis": 1,
+      "argon2d4096": 1,
+      "argon2d250": 1,
       "lyra2z": 1,
       "lyra2re": 1,
       "x17": 1,
@@ -136,6 +148,24 @@
         "Fans": ""
       },
       "argon2d-dyn": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "Fans": ""
+      },
+      "argon2d-uis": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "Fans": ""
+      },
+      "argon2d4096": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "Fans": ""
+      },
+      "argon2d250": {
         "Power": "",
         "Core": "",
         "Memory": "",
@@ -312,6 +342,9 @@
     "commands": {
       "grincuckaroo29": "",
       "argon2d-dyn": "",
+      "argon2d-uis": "",
+      "argon2d4096": "",
+      "argon2d250": "",
       "lyra2z": "",
       "lyra2re": "",
       "x17": "",
@@ -343,6 +376,9 @@
     "difficulty": {
       "grincuckaroo29": "",
       "argon2d-dyn": "",
+      "argon2d-uis": "",
+      "argon2d4096": "",
+      "argon2d250": "",
       "lyra2z": "",
       "lyra2re": "",
       "x17": "",
@@ -374,6 +410,9 @@
     "naming": {
       "grincuckaroo29": "cuckaroo29",
       "argon2d-dyn": "argon2d",
+      "argon2d-uis": "argon2d4096",
+      "argon2d4096": "argon2d4096",
+      "argon2d250": "argon2d250",
       "lyra2z": "lyra2z",
       "lyra2re": "lyra2z",
       "x17": "x17",
@@ -405,6 +444,9 @@
     "fee": {
       "grincuckaroo29": 1,
       "argon2d-dyn": 1,
+      "argon2d-uis": 1,
+      "argon2d4096": 1,
+      "argon2d250": 1,
       "lyra2z": 1,
       "lyra2re": 1,
       "x17": 1,
@@ -441,6 +483,24 @@
         "Fans": ""
       },
       "argon2d-dyn": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "Fans": ""
+      },
+      "argon2d-uis": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "Fans": ""
+      },
+      "argon2d4096": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "Fans": ""
+      },
+      "argon2d250": {
         "Power": "",
         "Core": "",
         "Memory": "",
@@ -617,6 +677,9 @@
     "commands": {
       "grincuckaroo29": "",
       "argon2d-dyn": "",
+      "argon2d-uis": "",
+      "argon2d4096": "",
+      "argon2d250": "",
       "lyra2z": "",
       "lyra2re": "",
       "x17": "",
@@ -648,6 +711,9 @@
     "difficulty": {
       "grincuckaroo29": "",
       "argon2d-dyn": "",
+      "argon2d-uis": "",
+      "argon2d4096": "",
+      "argon2d250": "",
       "lyra2z": "",
       "lyra2re": "",
       "x17": "",
@@ -679,6 +745,9 @@
     "naming": {
       "grincuckaroo29": "cuckaroo29",
       "argon2d-dyn": "argon2d",
+      "argon2d-uis": "argon2d4096",
+      "argon2d4096": "argon2d4096",
+      "argon2d250": "argon2d250",
       "lyra2z": "lyra2z",
       "lyra2re": "lyra2z",
       "x17": "x17",
@@ -710,6 +779,9 @@
     "fee": {
       "grincuckaroo29": 1,
       "argon2d-dyn": 1,
+      "argon2d-uis": 1,
+      "argon2d4096": 1,
+      "argon2d250": 1,
       "lyra2z": 1,
       "lyra2re": 1,
       "x17": 1,
@@ -746,6 +818,24 @@
         "Fans": ""
       },
       "argon2d-dyn": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "Fans": ""
+      },
+      "argon2d-uis": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "Fans": ""
+      },
+      "argon2d4096": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "Fans": ""
+      },
+      "argon2d250": {
         "Power": "",
         "Core": "",
         "Memory": "",

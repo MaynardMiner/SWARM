@@ -20,8 +20,22 @@
       "comma seperated"
     ]
   },
+  "argon2d-uis": {
+    "hiveos_name": "argon2d-uis",
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "argon2d4096": {
     "hiveos_name": "argon2d-uis",
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "argon2d250": {
+    "hiveos_name": "argon2d250",
     "exclusions": [
       "add pool or miner here",
       "comma seperated"
@@ -744,6 +758,13 @@
   },
   "lyra2vc0ban": {
     "hiveos_name": "lyra2vc0ban",
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "wildkeccak": {
+    "hiveos_name": "wildkeccak",
     "exclusions": [
       "add pool or miner here",
       "comma seperated"

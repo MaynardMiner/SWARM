@@ -16,14 +16,26 @@ Param (
 [string]$WorkingDir
 )
 
+$Workingdir = "C:\Users\Mayna\Documents\GitHub\SWARM"
 Set-Location $WorkingDir
 
 $Global:config = [hashtable]::Synchronized(@{})
 $global:Config.Add("params",@{})
-$global:Config.Params.Add("WorkingDir",$WorkingDir)
+if(Test-Path ".\config\parameters\newarguments.json") {$argpath = ".\config\parameters\newarguments.json"}
+else {$argpath = ".\config\parameters\arguments.json"}
 $global:Config.params = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
+if(Test-Path ".\build\txt\hivekeys.txt") {
 $RigConf = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json
 $RigConf.PSObject.Properties.Name | % {$global:Config.params | Add-Member "$($_)" $RigConf.$_ -Force }
+}
+$global:Config.Params | Add-Member "WorkingDir" $WorkingDir
+if (-not $global:Config.Params.Platform) {
+    write-log "Detecting Platform..." -Foreground Cyan
+    if (Test-Path "C:\") { $global:Config.Params.Platform = "windows" }
+    else { $global:Config.Params.Platform = "linux" }
+    Write-log "OS = $($global:Config.Params.Platform)" -ForegroundColor Green
+}
+
 
 [cultureinfo]::CurrentCulture = 'en-US'
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"

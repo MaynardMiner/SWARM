@@ -31,14 +31,14 @@ if($Debug -eq $True)
  $config.add("params",@{})
  $startingconfig.add("params",@{})
 
- if(-not (Test-Path ".\config\parameters\newarguments.json")) {
-    $arguments = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
+ if(Test-Path ".\config\parameters\newarguments.json") {
+    $arguments = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json
     $arguments.PSObject.Properties.Name | %{$global:Config.Params.Add("$($_)",$arguments.$_)}
     $arguments.PSObject.Properties.Name | %{$Global:startingconfig.Params.Add("$($_)",$arguments.$_)}
     $arguments = $null
  }
  else{
-     $arguments = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json
+     $arguments = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
      $arguments.PSObject.Properties.Name | %{$global:Config.Params.Add("$($_)",$arguments.$_)}
      $arguments.PSObject.Properties.Name | %{$Global:startingconfig.Params.Add("$($_)",$arguments.$_)}
     $arguments = $Null
@@ -71,14 +71,12 @@ $Log = 1;
 . .\build\powershell\startlog.ps1;
 $global:logname = $null
 start-log -Number $Log;
-
 if (-not $global:Config.Params.Platform) {
     write-log "Detecting Platform..." -Foreground Cyan
     if (Test-Path "C:\") { $global:Config.Params.Platform = "windows" }
     else { $global:Config.Params.Platform = "linux" }
+    Write-log "OS = $($global:Config.Params.Platform)" -ForegroundColor Green
 }
-
-Write-log "OS = $global:Config.Params.Platform" -ForegroundColor Green
 
 ## Load Codebase
 . .\build\powershell\killall.ps1; . .\build\powershell\remoteupdate.ps1; . .\build\powershell\octune.ps1;
@@ -605,7 +603,7 @@ While ($true) {
             $global:Config.Params.AltPassword2 = "BTC";
             $global:Config.Params.AltPassword3 = "BTC";
             $DonateTime = Get-Date; 
-            $DonateText = "Miner has donated on $DonateTime"; 
+            $DonateText = "Miner has last donated on $DonateTime"; 
             $DonateText | Set-Content ".\build\txt\donate.txt"
             if($SWARMAlgorithm.Count -gt 0 -and $SWARMAlgorithm -ne ""){$SWARMAlgorithm = $Null}
             if($global:Config.Params.Coin -gt 0){$global:Config.Params.Coin = $Null}
@@ -1318,7 +1316,7 @@ While ($true) {
         Get-Charts | Out-File ".\build\txt\charts.txt" -Append
         $ProfitMessage = $null
         $BestActiveMiners | % {
-            if ($_.Profit_Day -ne "bench") { $ScreenProfit = "$(($_.Profit_Day * $Rates.$($global:Config.Params.Currency)).ToString("N2")) $global:Config.Params.Currency/Day" } else { $ScreenProfit = "Benchmarking" }
+            if ($_.Profit_Day -ne "bench") { $ScreenProfit = "$(($_.Profit_Day * $Rates.$($global:Config.Params.Currency)).ToString("N2")) $($global:Config.Params.Currency)/Day" } else { $ScreenProfit = "Benchmarking" }
             $ProfitMessage = "Current Daily Profit For $($_.Type): $ScreenProfit"
             $ProfitMessage | Out-File ".\build\txt\minerstats.txt" -Append
             $ProfitMessage | Out-File ".\build\txt\charts.txt" -Append
