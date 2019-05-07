@@ -31,6 +31,7 @@ function start-update {
         $PreviousVersions += "SWARM.2.2.1"
         $PreviousVersions += "SWARM.2.2.2"
         $PreviousVersions += "SWARM.2.2.3"
+        $PreviousVersions += "SWARM.2.2.4"
 
         Write-Log "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
         Write-Log "Check $Location For any Previous Versions"
@@ -93,44 +94,46 @@ function start-update {
                             Write-Log "Pulled $OldJson"
                             $Data = $JsonData | ConvertFrom-Json;
 
-                            #if ($ChangeFile -eq "pool-algos.json") {
-                             # $Data | Add-Member "yespowerr16" @{"hiveos_name" = "yespowerr16"; "pools_to_exclude" = @("add pools here","comma seperated"); "miners_to_exclude" = @("add miners here","comma seperate")} -ErrorAction SilentlyContinue
-                              #$Data | Add-Member "yespowerr8" @{"hiveos_name" = "yespowerr8"; "pools_to_exclude" = @("add pools here","comma seperated"); "miners_to_exclude" = @("add miners here","comma seperate")} -ErrorAction SilentlyContinue
-                            #}
-
-                            #if ($ChangeFile -eq "cryptodredge.json") {
-                             #   $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                            if ($ChangeFile -eq "cryptodredge.json") {
+                                $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                     ##2.1.3
-                              #      if ($_ -ne "name") {
-                               #         $Data.$_.commands| Add-Member "argon2d-dyn" "" -ErrorAction SilentlyContinue
-                                #        $Data.$_.difficulty | Add-Member "argon2d-dyn" "" -ErrorAction SilentlyContinue
-                                 #       $Data.$_.naming | Add-Member "argon2d-dyn" "argon2d" -ErrorAction SilentlyContinue
-                                  #      $Data.$_.oc | Add-Member "argon2d-dyn" @{Power = ""; Core = ""; Memory = ""; Fans = ""} -ErrorAction SilentlyContinue
+                                    if ($_ -ne "name") {
+                                        $Data.$_.commands| Add-Member "argon2d4096" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "argon2d4096" "" -ErrorAction SilentlyContinue 
+                                        $Data.$_.naming | Add-Member "argon2d4096" "argon2d4096" -ErrorAction SilentlyContinue
+                                        $Data.$_.fee | Add-Member "argon2d4096" 1 -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "argon2d4096" @{Power = ""; Core = ""; Memory = ""; Fans = ""} -ErrorAction SilentlyContinue
 
-                                   #     $Data.$_.commands| Add-Member "grincuckaroo29" "" -ErrorAction SilentlyContinue
-                                    #    $Data.$_.difficulty | Add-Member "grincuckaroo29" "" -ErrorAction SilentlyContinue
-                                     #   $Data.$_.naming | Add-Member "grincuckaroo29" "cuckaroo29" -ErrorAction SilentlyContinue
-                                      #  $Data.$_.oc | Add-Member "grincuckaroo29" @{Power = ""; Core = ""; Memory = ""; Fans = ""} -ErrorAction SilentlyContinue
-                                    #}
-                              #  }
-                           # }
+                                        $Data.$_.commands| Add-Member "argon2d250" "" -ErrorAction SilentlyContinue
+                                        $Data.$_.difficulty | Add-Member "argon2d250" "" -ErrorAction SilentlyContinue 
+                                        $Data.$_.naming | Add-Member "argon2d250" "argon2d250" -ErrorAction SilentlyContinue
+                                        $Data.$_.fee | Add-Member "argon2d250" 1 -ErrorAction SilentlyContinue
+                                        $Data.$_.oc | Add-Member "argon2d250" @{Power = ""; Core = ""; Memory = ""; Fans = ""} -ErrorAction SilentlyContinue
+                                    }
+                                }
+                            }
 
-                          #  if ($ChangeFile -eq "gminer_amd.json") {
-                           #     $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
-                                    ##2.1.3
-                            #        if ($_ -ne "name") {
+                           if ($ChangeFile -eq "wildrig.json") {
+                               $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                  if ($_ -ne "name") {
+                                    $Data.$_.commands = $Data.$_.commands | Select -ExcludeProperty "rainforest"
+                                    $Data.$_.difficulty = $Data.$_.difficulty | Select -ExcludeProperty "rainforest"
+                                    $Data.$_.naming = $Data.$_.naming | Select -ExcludeProperty "rainforest"
+                                    $Data.$_.oc = $Data.$_.oc | Select -ExcludeProperty "rainforest"
 
-                             #           $Data.$_.commands| Add-Member "equihash210" "--algo 210_9 --pers auto" -ErrorAction SilentlyContinue
-                              #          $Data.$_.difficulty | Add-Member "equihash210" "" -ErrorAction SilentlyContinue
-                               #         $Data.$_.naming | Add-Member "equihash210" "equihash210" -ErrorAction SilentlyContinue
-                                #        $Data.$_.oc | Add-Member "equihash210"  @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue
-                                 #   }
-                              #  }
-                           # }
+                                    $Data.$_.commands| Add-Member "wildkeccak" "" -ErrorAction SilentlyContinue
+                                    $Data.$_.difficulty | Add-Member "wildkeccak" "" -ErrorAction SilentlyContinue
+                                    $Data.$_.naming | Add-Member "wildkeccak" "wildkeccak" -ErrorAction SilentlyContinue
+                                    $Data.$_.fee | Add-Member "wildkeccak" 1 -ErrorAction SilentlyContinue
+                                    $Data.$_.oc | Add-Member "wildkeccak"  @{dpm = ""; v = ""; core = ""; mem = ""; mdpm = ""; fans = ""} -ErrorAction SilentlyContinue
+                                }
+                              }
+                            }
 
-                           # if($ChangeFile -eq "pool-algos.json") {
-                            #        $Data.veil.hiveos_name = "veil"
-                            #}                            
+                           if($ChangeFile -eq "pool-algos.json") {
+                                    $Data | Add-Member "argon2d4096" @{ hiveos_name = "argon2d-uis"; exclusions = @("add pool or miner here","comma seperated") } -ErrorAction SilentlyContinue
+                                    $Data | Add-Member "argon2d250" @{ hiveos_name = "argon2d250"; exclusions = @("add pool or miner here","comma seperated") } -ErrorAction SilentlyContinue
+                            }                            
 
                             $Data | ConvertTo-Json -Depth 3 | Set-Content $NewJson;
                             Write-Log "Wrote To $NewJson"
