@@ -400,7 +400,7 @@ function Get-MinerHashRate {
         if ($_.Status -eq "Failed") { Write-Log " Not Running: " -ForegroundColor darkred -nonewline } 
         Write-Log "$($_.Name) current hashrate for $($_.Symbol) is" -nonewline
         Write-Log " $ScreenHash/s" -foreground green -End
-        Write-Log "$($_.Type) is currently mining on $($_.MinerPool)" -foregroundcolor Cyan
+        Write-Log "$($_.Type) is currently mining $($_.Algo) on $($_.MinerPool)" -foregroundcolor Cyan
         Write-Log "$($_.Type) previous hashrates for $($_.Symbol) is" -NoNewLine -Start
         Write-Log " $MinerPrevious/s" -foreground yellow -End
         Write-Log "Current Pool Projection: $CurrentProfit.  (This is live value with no modifiers)"
