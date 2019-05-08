@@ -115,6 +115,12 @@ function start-update {
                                         $Data.$_.naming | Add-Member "argond2d-dyn" "argond2d-dyn" -ErrorAction SilentlyContinue -Force
                                         $Data.$_.fee | Add-Member "argond2d-dyn" 1 -ErrorAction SilentlyContinue -Force
                                         $Data.$_.oc | Add-Member "argond2d-dyn" @{Power = ""; Core = ""; Memory = ""; Fans = ""} -ErrorAction SilentlyContinue -Force
+
+                                        $Data.$_.commands = $Data.$_.commands | Select -ExcludeProperty "cryptonightv7"
+                                        $Data.$_.difficulty = $Data.$_.difficulty | Select -ExcludeProperty "cryptonightv7"
+                                        $Data.$_.naming = $Data.$_.naming | Select -ExcludeProperty "cryptonightv7"
+                                        $Data.$_.fee = $Data.$_.fee | Select -ExcludeProperty "cryptonightv7"
+                                        $Data.$_.oc = $Data.$_.oc | Select -ExcludeProperty "cryptonightv7"    
                                     }
                                 }
                             }
@@ -125,6 +131,7 @@ function start-update {
                                     $Data.$_.commands = $Data.$_.commands | Select -ExcludeProperty "rainforest"
                                     $Data.$_.difficulty = $Data.$_.difficulty | Select -ExcludeProperty "rainforest"
                                     $Data.$_.naming = $Data.$_.naming | Select -ExcludeProperty "rainforest"
+                                    $Data.$_.fee = $Data.$_.fee | Select -ExcludeProperty "rainforest"
                                     $Data.$_.oc = $Data.$_.oc | Select -ExcludeProperty "rainforest"
 
                                     $Data.$_.commands| Add-Member "wildkeccak" "" -ErrorAction SilentlyContinue
