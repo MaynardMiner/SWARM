@@ -143,7 +143,7 @@ benchmark all
                 $GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json
                 if($Name -in $GetPoolBlock.Algo) {
                     $Get += "Found $($Name) in Pool Block file"
-                    $NewPoolBlock = $GetPoolBlock | Where Name -ne $Name | ConvertTo-Json
+                    $NewPoolBlock = $GetPoolBlock | Where Algo -ne $Name | ConvertTo-Json
                     if($NewPoolBlock){$NewPoolBlock | Set-Content ".\timeout\pool_block\pool_block.txt"}
                     else{Clear-Content ".\timeout\pool_block\pool_block.txt"}
                 }
@@ -152,7 +152,7 @@ benchmark all
                 $GetPoolBlock = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json
                 if($Name -in $GetPoolBlock.Algo) {
                     $Get += "Found $($Name) in Algo Block file"
-                    $NewPoolBlock = $GetPoolBlock | Where Name -ne $Name | ConvertTo-Json
+                    $NewPoolBlock = $GetPoolBlock | Where Algo -ne $Name | ConvertTo-Json
                     if($NewPoolBlock){$NewPoolBlock | Set-Content ".\timeout\algo_block\algo_block.txt"}
                     else{Clear-Content ".\timeout\algo_block\algo_block.txt"}
                 }
