@@ -52,8 +52,8 @@ Write-Log "
 
 					                                    Hybrid Auto-Profit Switching Miner
 						       BTC DONATION ADDRESS TO SUPPORT DEVELOPMENT: 1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i
-				  	             This Software Is Open-Source. However, 1.40% Dev Fee Was Written In This Code
-							   Dev Fee is NOT 1.50% of all Mining. 1.40% of 86400 seconds (24 hours)
+				  	             This Software Is Open-Source. However, 1.50% Dev Fee Was Written In This Code
+							   Dev Fee is NOT 1.50% of all Mining. 1.50% of 86400 seconds (24 hours)
 					                   It Can Take Awhile To Load At First Time Start-Up. Please Be Patient!
 " -foregroundcolor Yellow
 }
