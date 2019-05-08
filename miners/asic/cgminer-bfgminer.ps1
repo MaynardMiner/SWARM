@@ -26,8 +26,8 @@ $ASICTypes | ForEach-Object {
                 }
                 [PSCustomObject]@{
                     Coin       = $Coins
-                    Delay      = $Config.$ConfigType.delay
-                    Fees       = $Config.$ConfigType.fee.$($_.Algorithm)
+                    Delay      = $MinerConfig.$ConfigType.delay
+                    Fees       = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
                     Platform   = $global:Config.Params.Platform
                     Symbol     = "$($_.Symbol)"
                     MinerName  = $MinerName
