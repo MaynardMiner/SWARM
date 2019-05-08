@@ -173,9 +173,9 @@
     "cc-rfv2": {
         "name": "cc-rfv2",
         "type": "nvidia",
-        "NVIDIA1": ".\\bin\\cc-rfv2-1\\ccminer",
-        "NVIDIA2": ".\\bin\\cc-rfv2-2\\ccminer",
-        "NVIDIA3": ".\\bin\\cc-rfv2-3\\ccminer",
+        "NVIDIA1": ".\\bin\\cc-rfv2-1\\ccminer.exe",
+        "NVIDIA2": ".\\bin\\cc-rfv2-2\\ccminer.exe",
+        "NVIDIA3": ".\\bin\\cc-rfv2-3\\ccminer.exe",
         "minername": "ccminer.exe",
         "version": "2.3.1",
         "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/cc-rfv2-windows.zip"
