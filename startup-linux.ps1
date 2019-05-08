@@ -6,7 +6,7 @@ if ($json -eq $false) {
     $global:parsed = @{ }
     $args | % {
         $Command = $false
-        if ($_.Substring(0,1) -eq "-") { $Command = $true; $Com = $_ -replace "-", "" }
+        if ($_[0] -eq "-") { $Command = $true; $Com = $_ -replace "-", "" }
         if ($Command -eq $true) { $parsed.Add($Com, "new") }
         else {
             if ($parsed.$Com -eq "new") { $parsed.$Com = $_ }
