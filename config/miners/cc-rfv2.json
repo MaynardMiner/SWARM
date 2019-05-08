@@ -1,0 +1,69 @@
+{
+    "name": "cc-rfv2",
+    "NVIDIA1": {
+      "name": "NVIDIA1",
+      "delay": "1",
+      "prestart": [],
+      "commands": {
+        "rfv2": ""
+      },
+      "difficulty": {
+        "rfv2": ""
+      },
+      "naming": {
+        "rfv2": "rainforest"
+      },
+      "oc": {
+        "rfv2": {
+          "Power": "",
+          "Memory": "",
+          "Core": "",
+          "Fans": ""
+        }
+      }
+    },
+    "NVIDIA2": {
+      "name": "NVIDIA2",
+      "delay": "1",
+      "prestart": [],
+      "commands": {
+        "rfv2": ""
+      },
+      "difficulty": {
+        "rfv2": ""
+      },
+      "naming": {
+        "rfv2": "rainforest"
+      },
+      "oc": {
+        "rfv2": {
+          "Power": "",
+          "Memory": "",
+          "Core": "",
+          "Fans": ""
+        }
+      }
+    },
+    "NVIDIA3": {
+      "name": "NVIDIA3",
+      "delay": "1",
+      "prestart": [],
+      "commands": {
+        "rfv2": ""
+      },
+      "difficulty": {
+        "rfv2": ""
+      },
+      "naming": {
+        "rfv2": "rainforest"
+      },
+      "oc": {
+        "rfv2": {
+          "Power": "",
+          "Memory": "",
+          "Core": "",
+          "Fans": ""
+        }
+      }
+    }
+}
