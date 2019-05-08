@@ -77,8 +77,8 @@ switch ($Action) {
         }
     }
     "remove" {
-        if ($global:Config.Params.Bans) {
-            $global:Config.Params.Bans | % {
+        if ($Bans) {
+            $Bans | % {
                 $Arg = $_ -split "`:"
                 if ($Arg.Count -eq 1) {
                     switch ($Launch) {
