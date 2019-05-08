@@ -769,5 +769,12 @@
       "add pool or miner here",
       "comma seperated"
     ]
+  },
+  "rfv2": {
+    "hiveos_name": "rainforestv2",
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
   }
 }
