@@ -435,7 +435,7 @@ function Start-Webcommand {
                 $Defaults |Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | % {$Params.Add("$($_)",$Defaults.$_)}
   
                 $argjson | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name |  foreach {
-                    if ($Params.$_ -ne $argjson.$_) {
+                    if ($argjson.$_ -ne $Params.$_) {
                         switch ($_) {
                             default {$Params.$_ = $argjson.$_}
                             "Bans" {$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $Params.$_ = $NewParamArray}

@@ -162,7 +162,6 @@ function Start-OC {
 
     $OC_Algo = $global:oc_algos.$($Miner.Algo).$($Miner.Type)
     $Default = $global:oc_default."default_$($Miner.Type)"
-    $Default
     
     ##Check For Pill
     if ($OC_Algo.ETHPill) { $ETHPill = $true }
