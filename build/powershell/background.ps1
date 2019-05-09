@@ -16,7 +16,6 @@ Param (
 [string]$WorkingDir
 )
 
-$Workingdir = "C:\Users\Mayna\Documents\GitHub\SWARM"
 Set-Location $WorkingDir
 
 $Global:config = [hashtable]::Synchronized(@{})
