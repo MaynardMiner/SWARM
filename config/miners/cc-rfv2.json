@@ -13,7 +13,7 @@
         "naming": {
             "rfv2": "rfv2"
         },
-        "fee": null
+        "fee": 0
     },
     "NVIDIA2": {
         "name": "NVIDIA2",
@@ -28,7 +28,7 @@
         "naming": {
             "rfv2": "rfv2"
         },
-        "fee": null
+        "fee": 0
     },
     "NVIDIA3": {
         "name": "NVIDIA3",
@@ -43,6 +43,6 @@
         "naming": {
             "rfv2": "rfv2"
         },
-        "fee": null
+        "fee": 0
     }
 }
