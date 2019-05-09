@@ -104,8 +104,13 @@ function Get-HashRate {
         [Int]$Port
     )
 
-        $HashFile = Get-Content ".\build\txt\$Type-hash.txt"
-        [Double]$HashFile
+        $HashFile = ".\build\txt\$Type-hash.txt"
+        if(Test-Path $HashFile) {
+        $Hash = Get-Content ".\build\txt\$Type-hash.txt"
+        } else {
+            $Hash = 0
+        }
+        [Double]$Hash
 }
 
 filter ConvertTo-Hash {
