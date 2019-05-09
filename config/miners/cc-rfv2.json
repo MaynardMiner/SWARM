@@ -1,69 +1,48 @@
 {
     "name": "cc-rfv2",
     "NVIDIA1": {
-      "name": "NVIDIA1",
-      "delay": "1",
-      "prestart": [],
-      "commands": {
-        "rfv2": ""
-      },
-      "difficulty": {
-        "rfv2": ""
-      },
-      "naming": {
-        "rfv2": "rfv2"
-      },
-      "oc": {
-        "rfv2": {
-          "Power": "",
-          "Memory": "",
-          "Core": "",
-          "Fans": ""
-        }
-      }
+        "name": "NVIDIA1",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "rfv2": ""
+        },
+        "difficulty": {
+            "rfv2": ""
+        },
+        "naming": {
+            "rfv2": "rfv2"
+        },
+        "fee": null
     },
     "NVIDIA2": {
-      "name": "NVIDIA2",
-      "delay": "1",
-      "prestart": [],
-      "commands": {
-        "rfv2": ""
-      },
-      "difficulty": {
-        "rfv2": ""
-      },
-      "naming": {
-        "rfv2": "rfv2"
-      },
-      "oc": {
-        "rfv2": {
-          "Power": "",
-          "Memory": "",
-          "Core": "",
-          "Fans": ""
-        }
-      }
+        "name": "NVIDIA2",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "rfv2": ""
+        },
+        "difficulty": {
+            "rfv2": ""
+        },
+        "naming": {
+            "rfv2": "rfv2"
+        },
+        "fee": null
     },
     "NVIDIA3": {
-      "name": "NVIDIA3",
-      "delay": "1",
-      "prestart": [],
-      "commands": {
-        "rfv2": ""
-      },
-      "difficulty": {
-        "rfv2": ""
-      },
-      "naming": {
-        "rfv2": "rfv2"
-      },
-      "oc": {
-        "rfv2": {
-          "Power": "",
-          "Memory": "",
-          "Core": "",
-          "Fans": ""
-        }
-      }
+        "name": "NVIDIA3",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "rfv2": ""
+        },
+        "difficulty": {
+            "rfv2": ""
+        },
+        "naming": {
+            "rfv2": "rfv2"
+        },
+        "fee": null
     }
 }

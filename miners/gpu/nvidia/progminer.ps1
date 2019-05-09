@@ -72,12 +72,6 @@ $NVIDIATypes | ForEach-Object {
                         HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
                         Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
                         PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
-                        ocpower    = if ($MinerConfig.$ConfigType.oc.$($_.Algorithm).power) { $MinerConfig.$ConfigType.oc.$($_.Algorithm).power }else { $OC."default_$($ConfigType)".Power }
-                        occore     = if ($MinerConfig.$ConfigType.oc.$($_.Algorithm).core) { $MinerConfig.$ConfigType.oc.$($_.Algorithm).core }else { $OC."default_$($ConfigType)".core }
-                        ocmem      = if ($MinerConfig.$ConfigType.oc.$($_.Algorithm).memory) { $MinerConfig.$ConfigType.oc.$($_.Algorithm).memory }else { $OC."default_$($ConfigType)".memory }
-                        ocfans     = if ($MinerConfig.$ConfigType.oc.$($_.Algorithm).fans) { $MinerConfig.$ConfigType.oc.$($_.Algorithm).fans }else { $OC."default_$($ConfigType)".fans }
-                        ethpill    = $MinerConfig.$ConfigType.oc.$($_.Algorithm).ethpill
-                        pilldelay  = $MinerConfig.$ConfigType.oc.$($_.Algorithm).pilldelay
                         FullName   = "$($_.Mining)"
                         API        = "claymore"
                         Port       = $Port

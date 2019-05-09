@@ -1,78 +1,54 @@
 {
-  "name": "dstm",
-  "NVIDIA1": {
-    "name": "NVIDIA1",
-    "delay": "1",
-    "prestart": [],
-    "commands": {
-      "equihash": ""
+    "name": "dstm",
+    "NVIDIA1": {
+        "name": "NVIDIA1",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "equihash": ""
+        },
+        "difficulty": {
+            "equihash": ""
+        },
+        "naming": {
+            "equihash": "equihash"
+        },
+        "fee": {
+            "equihash": 2
+        }
     },
-    "difficulty": {
-      "equihash": ""
+    "NVIDIA2": {
+        "name": "NVIDIA2",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "equihash": ""
+        },
+        "difficulty": {
+            "equihash": ""
+        },
+        "naming": {
+            "equihash": "equihash"
+        },
+        "fee": {
+            "equihash": 2
+        }
     },
-    "naming": {
-      "equihash": "equihash"
-    },
-    "fee": {
-      "equihash": 2
-    },
-    "oc": {
-      "equihash": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      }
+    "NVIDIA3": {
+        "name": "NVIDIA3",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "equihash": ""
+        },
+        "difficulty": {
+            "equihash": ""
+        },
+        "naming": {
+            "equihash": "equihash"
+        },
+        "fee": {
+            "equihash": 2
+        }
     }
-  },
-  "NVIDIA2": {
-    "name": "NVIDIA2",
-    "delay": "1",
-    "prestart": [],
-    "commands": {
-      "equihash": ""
-    },
-    "difficulty": {
-      "equihash": ""
-    },
-    "naming": {
-      "equihash": "equihash"
-    },
-    "fee": {
-      "equihash": 2
-    },
-    "oc": {
-      "equihash": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      }
-    }
-  },
-  "NVIDIA3": {
-    "name": "NVIDIA3",
-    "delay": "1",
-    "prestart": [],
-    "commands": {
-      "equihash": ""
-    },
-    "difficulty": {
-      "equihash": ""
-    },
-    "naming": {
-      "equihash": "equihash"
-    },
-    "fee": {
-      "equihash": 2
-    },
-    "oc": {
-      "equihash": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      }
-    }
-  }
 }

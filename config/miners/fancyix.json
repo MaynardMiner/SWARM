@@ -1,116 +1,50 @@
 {
-  "name": "fancyIX",
-  "AMD1": {
-    "name": "AMD1",
-    "delay": "1",
-    "prestart": [
-      "export GPU_FORCE_64BIT_PTR 1",
-      "export GPU_MAX_HEAP_SIZE=100",
-      "export GPU_USE_SYNC_OBJECTS=1",
-      "export GPU_SINGLE_ALLOC_PERCENT=100",
-      "export GPU_MAX_ALLOC_PERCENT=100"
-    ],
-    "commands": {
-      "x22i": "-w 256 -I 22",
-      "phi2": "-w 256 -I 22",
-      "allium": "-w 256 -I 22",
-      "lyra2rev3": "-w 256 -I 24",
-      "lyra2v3": "-I 24 -w 256",
-      "argon2d-dyn": "-w 64 -g 2",
-      "mtp": "-w 256 -I 20"
-    },
-    "difficulty": {
-      "x22i": "",
-      "phi2": "",
-      "allium": "",
-      "lyra2rev3": "",
-      "lyra2v3": "",
-      "argon2d-dyn": "",
-      "mtp": ""
-    },
-    "naming": {
-      "x22i": "x22i",
-      "phi2": "phi2",
-      "allium": "allium",
-      "lyra2rev3": "lyra2rev3",
-      "lyra2v3": "lyra2rev3",
-      "argon2d-dyn": "argon2d",
-      "mtp": "mtp"
-    },
-    "fee": {
-      "x22i": 0,
-      "phi2": 0,
-      "allium": 0,
-      "lyra2rev3": 0,
-      "lyra2v3": 0,
-      "argon2d-dyn": 0,
-      "mtp": 0
-    },
-    "oc": {
-      "x22i": {
-        "dpm": "",
-        "v": "",
-        "core": "",
-        "mem": "",
-        "mdpm": "",
-        "fans": ""
-      },
-      "lyra2z": {
-        "dpm": "",
-        "v": "",
-        "core": "",
-        "mem": "",
-        "mdpm": "",
-        "fans": ""
-      },
-      "phi2": {
-        "dpm": "",
-        "v": "",
-        "core": "",
-        "mem": "",
-        "mdpm": "",
-        "fans": ""
-      },
-      "allium": {
-        "dpm": "",
-        "v": "",
-        "core": "",
-        "mem": "",
-        "mdpm": "",
-        "fans": ""
-      },
-      "lyra2rev3": {
-        "dpm": "",
-        "v": "",
-        "core": "",
-        "mem": "",
-        "mdpm": "",
-        "fans": ""
-      },
-      "mtp": {
-        "dpm": "",
-        "v": "",
-        "mdpm": "",
-        "fans": "",
-        "core": "",
-        "mem": ""
-      },
-      "argon2d": {
-        "dpm": "",
-        "v": "",
-        "mdpm": "",
-        "fans": "",
-        "core": "",
-        "mem": ""
-      },
-      "lyra2v3": {
-        "fans": "",
-        "v": "",
-        "dpm": "",
-        "mem": "",
-        "mdpm": "",
-        "core": ""
-      }
+    "name": "fancyIX",
+    "AMD1": {
+        "name": "AMD1",
+        "delay": "1",
+        "prestart": [
+            "export GPU_FORCE_64BIT_PTR 1",
+            "export GPU_MAX_HEAP_SIZE=100",
+            "export GPU_USE_SYNC_OBJECTS=1",
+            "export GPU_SINGLE_ALLOC_PERCENT=100",
+            "export GPU_MAX_ALLOC_PERCENT=100"
+        ],
+        "commands": {
+            "x22i": "-w 256 -I 22",
+            "phi2": "-w 256 -I 22",
+            "allium": "-w 256 -I 22",
+            "lyra2rev3": "-w 256 -I 24",
+            "lyra2v3": "-I 24 -w 256",
+            "argon2d-dyn": "-w 64 -g 2",
+            "mtp": "-w 256 -I 20"
+        },
+        "difficulty": {
+            "x22i": "",
+            "phi2": "",
+            "allium": "",
+            "lyra2rev3": "",
+            "lyra2v3": "",
+            "argon2d-dyn": "",
+            "mtp": ""
+        },
+        "naming": {
+            "x22i": "x22i",
+            "phi2": "phi2",
+            "allium": "allium",
+            "lyra2rev3": "lyra2rev3",
+            "lyra2v3": "lyra2rev3",
+            "argon2d-dyn": "argon2d",
+            "mtp": "mtp"
+        },
+        "fee": {
+            "x22i": 0,
+            "phi2": 0,
+            "allium": 0,
+            "lyra2rev3": 0,
+            "lyra2v3": 0,
+            "argon2d-dyn": 0,
+            "mtp": 0
+        }
     }
-  }
 }

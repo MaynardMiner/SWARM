@@ -13,9 +13,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 function start-update {
     param (
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $false)]
         [String]$Update,
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $false)]
         [String]$Dir
     )
 
@@ -32,6 +32,7 @@ function start-update {
         $PreviousVersions += "SWARM.2.2.2"
         $PreviousVersions += "SWARM.2.2.3"
         $PreviousVersions += "SWARM.2.2.4"
+
 
         Write-Log "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
         Write-Log "Check $Location For any Previous Versions"

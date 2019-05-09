@@ -63,7 +63,6 @@ $swarmstamp = "SWARMISBESTMINEREVER"
 if (-not (Test-Path ".\build\txt")) { New-Item -Name "txt" -ItemType "Directory" -Path ".\build" | Out-Null }
 $global:Config.Params.Platform | Set-Content ".\build\txt\os.txt"
 
-
 ##Start The Log
 $dir | Set-Content ".\build\bash\dir.sh";
 $Log = 1;
@@ -380,9 +379,6 @@ Making a terminal on desktop. This can be used for commands.
     ##Set Cuda For Commands
     if ($global:Config.Params.Type -like "*NVIDIA*") { $global:Config.Params.Cuda = "10"; $global:Config.Params.Cuda | Set-Content ".\build\txt\cuda.txt" }
 
-    ##Fan Start For Users not using HiveOS
-    if ($global:Config.Params.Type -like "*NVIDIA" -or $global:Config.Params.Type -like "*AMD*") { Start-Fans }
-
     ##Detect if drivers are installed, not generic- Close if not. Print message on screen
     if ($global:Config.Params.Type -like "*NVIDIA*" -and -not (Test-Path "C:\Program Files\NVIDIA Corporation\NVSMI\nvml.dll")) {
         write-Log "nvml.dll is missing" -ForegroundColor Red
@@ -613,6 +609,10 @@ Add-ASIC_ALGO
 While ($true) {
 
     do {
+
+        $global:oc_default = Get-Content ".\config\oc\oc-defaults.json" | ConvertFrom-Json
+        $global:oc_algos = Get-Content ".\config\oc\oc-algos.json" | ConvertFrom-Json
+
         ##Manage Pool Bans
         Start-PoolBans
         $global:All_AltWallets = $null
@@ -705,7 +705,7 @@ While ($true) {
         ##Save Watt Calcs
         if ($Watts) { $Watts | ConvertTo-Json | Out-File ".\config\power\power.json" }
         ##OC-Settings
-        $OC = Get-Content ".\config\oc\oc-settings.json" | ConvertFrom-Json
+        $OC = Get-Content ".\config\oc\oc-defaults.json" | ConvertFrom-Json
 
         ##Get Watt Configuration
         $WattHour = $(Get-Date | Select-Object hour).Hour
@@ -1075,16 +1075,6 @@ While ($true) {
                     JsonFile       = $_.Config
                     LogGPUS        = $LogType
                     Prestart       = $_.Prestart
-                    ocpl           = $_.ocpl
-                    ocdpm          = $_.ocdpm
-                    ocv            = $_.ocv
-                    occore         = $_.occore
-                    ocmem          = $_.ocmem
-                    ocmdpm         = $_.ocmdpm
-                    ocpower        = $_.ocpower
-                    ocfans         = $_.ocfans
-                    ethpill        = $_.ethpill
-                    pilldelay      = $_.pilldelay
                     Host           = $_.Host
                     User           = $_.User
                     CommandFile    = $_.CommandFile

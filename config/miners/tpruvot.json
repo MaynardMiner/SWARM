@@ -1,156 +1,80 @@
 {
-  "name": "tpruvot",
-  "NVIDIA1": {
-    "name": "NVIDIA1",
-    "delay": "1",
-    "prestart": [],
-    "commands": {
-      "lyra2v3": "",
-      "lyra2rev3": "",
-      "sha256q": "",
-      "exosis": ""
+    "name": "tpruvot",
+    "NVIDIA1": {
+        "name": "NVIDIA1",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "lyra2v3": "",
+            "lyra2rev3": "",
+            "sha256q": "",
+            "exosis": ""
+        },
+        "difficulty": {
+            "lyra2v3": "",
+            "lyra2rev3": "",
+            "sha256q": "",
+            "exosis": ""
+        },
+        "naming": {
+            "lyra2v3": "lyra2v3",
+            "lyra2rev3": "lyra2v3",
+            "sha256q": "sha256q",
+            "exosis": "exosis"
+        },
+        "fee": null
     },
-    "difficulty": {
-      "lyra2v3": "",
-      "lyra2rev3": "",
-      "sha256q": "",
-      "exosis": ""
+    "NVIDIA2": {
+        "name": "NVIDIA2",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "lyra2v3": "",
+            "lyra2rev3": "",
+            "sha256q": "",
+            "exosis": ""
+        },
+        "difficulty": {
+            "lyra2v3": "",
+            "lyra2rev3": "",
+            "sha256q": "",
+            "exosis": ""
+        },
+        "naming": {
+            "lyra2v3": "lyra2v3",
+            "lyra2rev3": "lyra2v3",
+            "sha256q": "sha256q",
+            "exosis": "exosis"
+        },
+        "fee": null
     },
-    "naming": {
-      "lyra2v3": "lyra2v3",
-      "lyra2rev3": "lyra2v3",
-      "sha256q": "sha256q",
-      "exosis": "exosis"
-    },
-    "oc": {
-      "lyra2v3": {
-        "Power": "",
-        "Memory": "",
-        "Core": "",
-        "Fans": ""
-      },
-      "lyra2rev3": {
-        "Power": "",
-        "Memory": "",
-        "Core": "",
-        "Fans": ""
-      },
-      "sha256q": {
-        "Power": "",
-        "Memory": "",
-        "Core": "",
-        "Fans": ""
-      },
-      "exosis": {
-        "Power": "",
-        "Memory": "",
-        "Core": "",
-        "Fans": ""
-      }
+    "NVIDIA3": {
+        "name": "NVIDIA3",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "lyra2v3": "",
+            "lyra2rev3": "",
+            "sha256q": "",
+            "exosis": ""
+        },
+        "difficulty": {
+            "lyra2v3": "",
+            "lyra2rev3": "",
+            "sha256q": "",
+            "exosis": ""
+        },
+        "naming": {
+            "lyra2v3": "lyra2v3",
+            "lyra2rev3": "lyra2v3",
+            "sha256q": "sha256q",
+            "exosis": "exosis"
+        },
+        "fee": {
+            "lyra2v3": 0,
+            "lyra2rev3": 0,
+            "sha256q": 0,
+            "exosis": 0
+        }
     }
-  },
-  "NVIDIA2": {
-    "name": "NVIDIA2",
-    "delay": "1",
-    "prestart": [],
-    "commands": {
-      "lyra2v3": "",
-      "lyra2rev3": "",
-      "sha256q": "",
-      "exosis": ""
-    },
-    "difficulty": {
-      "lyra2v3": "",
-      "lyra2rev3": "",
-      "sha256q": "",
-      "exosis": ""
-    },
-    "naming": {
-      "lyra2v3": "lyra2v3",
-      "lyra2rev3": "lyra2v3",
-      "sha256q": "sha256q",
-      "exosis": "exosis"
-    },
-    "oc": {
-      "lyra2v3": {
-        "Power": "",
-        "Memory": "",
-        "Core": "",
-        "Fans": ""
-      },
-      "lyra2rev3": {
-        "Power": "",
-        "Memory": "",
-        "Core": "",
-        "Fans": ""
-      },
-      "sha256q": {
-        "Power": "",
-        "Memory": "",
-        "Core": "",
-        "Fans": ""
-      },
-      "exosis": {
-        "Power": "",
-        "Memory": "",
-        "Core": "",
-        "Fans": ""
-      }
-    }
-  },
-  "NVIDIA3": {
-    "name": "NVIDIA3",
-    "delay": "1",
-    "prestart": [],
-    "commands": {
-      "lyra2v3": "",
-      "lyra2rev3": "",
-      "sha256q": "",
-      "exosis": ""
-    },
-    "difficulty": {
-      "lyra2v3": "",
-      "lyra2rev3": "",
-      "sha256q": "",
-      "exosis": ""
-    },
-    "naming": {
-      "lyra2v3": "lyra2v3",
-      "lyra2rev3": "lyra2v3",
-      "sha256q": "sha256q",
-      "exosis": "exosis"
-    },
-    "fee": {
-      "lyra2v3": 0,
-      "lyra2rev3": 0,
-      "sha256q": 0,
-      "exosis": 0
-    },
-    "oc": {
-      "lyra2v3": {
-        "Power": "",
-        "Memory": "",
-        "Core": "",
-        "Fans": ""
-      },
-      "lyra2rev3": {
-        "Power": "",
-        "Memory": "",
-        "Core": "",
-        "Fans": ""
-      },
-      "sha256q": {
-        "Power": "",
-        "Memory": "",
-        "Core": "",
-        "Fans": ""
-      },
-      "exosis": {
-        "Power": "",
-        "Memory": "",
-        "Core": "",
-        "Fans": ""
-      }
-    }
-  }
 }

@@ -86,12 +86,6 @@ $AMDTypes | ForEach-Object {
                         HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
                         Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
                         PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
-                        ocdpm      = if ($MinerConfig.$ConfigType.oc.$($_.Algorithm).dpm) { $MinerConfig.$ConfigType.oc.$($_.Algorithm).dpm }else { $OC."default_$($ConfigType)".dpm }
-                        ocv        = if ($MinerConfig.$ConfigType.oc.$($_.Algorithm).v) { $MinerConfig.$ConfigType.oc.$($_.Algorithm).v }else { $OC."default_$($ConfigType)".v }
-                        occore     = if ($MinerConfig.$ConfigType.oc.$($_.Algorithm).core) { $MinerConfig.$ConfigType.oc.$($_.Algorithm).core }else { $OC."default_$($ConfigType)".core }
-                        ocmem      = if ($MinerConfig.$ConfigType.oc.$($_.Algorithm).mem) { $MinerConfig.$ConfigType.oc.$($_.Algorithm).mem }else { $OC."default_$($ConfigType)".memory }
-                        ocmdpm     = if ($MinerConfig.$ConfigType.oc.$($_.Algorithm).mdpm) { $MinerConfig.$ConfigType.oc.$($_.Algorithm).mdpm }else { $OC."default_$($ConfigType)".mdpm }
-                        ocfans     = if ($MinerConfig.$ConfigType.oc.$($_.Algorithm).fans) { $MinerConfig.$ConfigType.oc.$($_.Algorithm).fans }else { $OC."default_$($ConfigType)".fans }
                         MinerPool  = "$($_.Name)"
                         FullName   = "$($_.Mining)"
                         API        = "gminer"

@@ -1,35 +1,25 @@
 {
-  "name": "sgminer-hex",
-  "AMD1": {
-    "name": "AMD1",
-    "delay": "1",
-    "prestart": [
-      "export GPU_MAX_HEAP_SIZE=100",
-      "export GPU_USE_SYNC_OBJECTS=1",
-      "export GPU_SINGLE_ALLOC_PERCENT=100",
-      "export GPU_MAX_ALLOC_PERCENT=100"
-    ],
-    "commands": {
-      "hex": ""
-    },
-    "difficulty": {
-      "hex": ""
-    },
-    "naming": {
-      "hex": "hex"
-    },
-    "fee": {
-      "hex": 0
-    },
-    "oc": {
-      "hex": {
-        "dpm": "",
-        "v": "",
-        "core": "",
-        "mem": "",
-        "mdpm": "",
-        "fans": ""
-      }
+    "name": "sgminer-hex",
+    "AMD1": {
+        "name": "AMD1",
+        "delay": "1",
+        "prestart": [
+            "export GPU_MAX_HEAP_SIZE=100",
+            "export GPU_USE_SYNC_OBJECTS=1",
+            "export GPU_SINGLE_ALLOC_PERCENT=100",
+            "export GPU_MAX_ALLOC_PERCENT=100"
+        ],
+        "commands": {
+            "hex": ""
+        },
+        "difficulty": {
+            "hex": ""
+        },
+        "naming": {
+            "hex": "hex"
+        },
+        "fee": {
+            "hex": 0
+        }
     }
-  }
 }
