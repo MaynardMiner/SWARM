@@ -1,180 +1,78 @@
 {
-  "name": "phoenix",
-  "NVIDIA1": {
-    "name": "NVIDIA1",
-    "delay": "1",
-    "prestart": [],
-    "commands": {
-      "ethash": "-proto 2 -rate 1",
-      "daggerhashimoto": "-proto 4 -stales 0",
-      "dagger": "-proto 2"
+    "name": "phoenix",
+    "NVIDIA1": {
+        "name": "NVIDIA1",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "ethash": "-proto 2 -rate 1",
+            "daggerhashimoto": "-proto 4 -stales 0",
+            "dagger": "-proto 2"
+        },
+        "difficulty": {
+            "ethash": "",
+            "daggerhashimoto": "",
+            "dagger": ""
+        },
+        "naming": {
+            "ethash": "ethash",
+            "daggerhashimoto": "daggerhashimoto",
+            "dagger": "dagger"
+        },
+        "fee": {
+            "ethash": 0.65,
+            "daggerhashimoto": 0.65,
+            "dagger": 0.65
+        }
     },
-    "difficulty": {
-      "ethash": "",
-      "daggerhashimoto": "",
-      "dagger": ""
+    "NVIDIA2": {
+        "name": "NVIDIA2",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "ethash": "-proto 2 -rate 1",
+            "daggerhashimoto": "-proto 4 -stales 0",
+            "dagger": "-proto 2"
+        },
+        "difficulty": {
+            "ethash": "",
+            "daggerhashimoto": "",
+            "dagger": ""
+        },
+        "naming": {
+            "ethash": "ethash",
+            "daggerhashimoto": "daggerhashimoto",
+            "dagger": "dagger"
+        },
+        "fee": {
+            "ethash": 0.65,
+            "daggerhashimoto": 0.65,
+            "dagger": 0.65
+        }
     },
-    "naming": {
-      "ethash": "ethash",
-      "daggerhashimoto": "daggerhashimoto",
-      "dagger": "dagger"
-    },
-    "fee": {
-      "ethash": 0.65,
-      "daggerhashimoto": 0.65,
-      "dagger": 0.65
-    },
-    "oc": {
-      "ethash": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "ETHPill": "",
-        "PillDelay": "",
-        "Fans": ""
-      },
-      "daggerhashimoto": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "ETHPill": "",
-        "PillDelay": "",
-        "Fans": ""
-      },
-      "dagger": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "ETHPill": "",
-        "PillDelay": "",
-        "Fans": ""
-      },
-      "progpow": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "ETHPill": "",
-        "PillDelay": "",
-        "Fans": ""
-      }
+    "NVIDIA3": {
+        "name": "NVIDIA3",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "ethash": "-proto 2 -rate 1",
+            "daggerhashimoto": "-proto 4 -stales 0",
+            "dagger": "-proto 2"
+        },
+        "difficulty": {
+            "ethash": "",
+            "daggerhashimoto": "",
+            "dagger": ""
+        },
+        "naming": {
+            "ethash": "ethash",
+            "daggerhashimoto": "daggerhashimoto",
+            "dagger": "dagger"
+        },
+        "fee": {
+            "ethash": 0.65,
+            "daggerhashimoto": 0.65,
+            "dagger": 0.65
+        }
     }
-  },
-  "NVIDIA2": {
-    "name": "NVIDIA2",
-    "delay": "1",
-    "prestart": [],
-    "commands": {
-      "ethash": "-proto 2 -rate 1",
-      "daggerhashimoto": "-proto 4 -stales 0",
-      "dagger": "-proto 2"
-    },
-    "difficulty": {
-      "ethash": "",
-      "daggerhashimoto": "",
-      "dagger": ""
-    },
-    "naming": {
-      "ethash": "ethash",
-      "daggerhashimoto": "daggerhashimoto",
-      "dagger": "dagger"
-    },
-    "fee": {
-      "ethash": 0.65,
-      "daggerhashimoto": 0.65,
-      "dagger": 0.65
-    },
-    "oc": {
-      "ethash": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "ETHPill": "",
-        "PillDelay": "",
-        "Fans": ""
-      },
-      "daggerhashimoto": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "ETHPill": "",
-        "PillDelay": "",
-        "Fans": ""
-      },
-      "dagger": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "ETHPill": "",
-        "PillDelay": "",
-        "Fans": ""
-      },
-      "progpow": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "ETHPill": "",
-        "PillDelay": "",
-        "Fans": ""
-      }
-    }
-  },
-  "NVIDIA3": {
-    "name": "NVIDIA3",
-    "delay": "1",
-    "prestart": [],
-    "commands": {
-      "ethash": "-proto 2 -rate 1",
-      "daggerhashimoto": "-proto 4 -stales 0",
-      "dagger": "-proto 2"
-    },
-    "difficulty": {
-      "ethash": "",
-      "daggerhashimoto": "",
-      "dagger": ""
-    },
-    "naming": {
-      "ethash": "ethash",
-      "daggerhashimoto": "daggerhashimoto",
-      "dagger": "dagger"
-    },
-    "fee": {
-      "ethash": 0.65,
-      "daggerhashimoto": 0.65,
-      "dagger": 0.65
-    },
-    "oc": {
-      "ethash": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "ETHPill": "",
-        "PillDelay": "",
-        "Fans": ""
-      },
-      "daggerhashimoto": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "ETHPill": "",
-        "PillDelay": "",
-        "Fans": ""
-      },
-      "dagger": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "ETHPill": "",
-        "PillDelay": "",
-        "Fans": ""
-      },
-      "progpow": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "ETHPill": "",
-        "PillDelay": "",
-        "Fans": ""
-      }
-    }
-  }
 }

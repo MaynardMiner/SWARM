@@ -11,6 +11,68 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
+function Get-Pools {
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$PoolType
+    )
+
+    Switch($PoolType)
+    {
+     "Algo"{$GetPools = if (Test-Path "algopools") {Get-ChildItemContent "algopools" | ForEach {if($_ -ne $Null){$_.Content | Add-Member @{Name = $_.Name} -PassThru}}}}
+     "Coin"{$GetPools = if (Test-Path "coinpools") {Get-ChildItemContent "coinpools" | ForEach {if($_ -ne $Null){$_.Content | Add-Member @{Name = $_.Name} -PassThru}}}}
+     "Custom"{$GetPools = if (Test-Path "custompools") {Get-ChildItemContent "custompools" | ForEach {if($_ -ne $Null){$_.Content | Add-Member @{Name = $_.Name} -PassThru}}}}
+    }
+
+    $GetPools
+  
+}
+
+function Sort-Pools {
+    Param(
+        [Parameter(Position = 0, Mandatory = $true, ValueFromPipeline = $true)]
+        [object]$Pools
+    )
+
+    $PoolPriority1 = @()
+    $PoolPriority2 = @()
+    $PoolPriority3 = @()
+}
+
+function Get-Volume {
+    $global:Pool_Hashrates.keys | ForEach-Object {
+        $SortAlgo = $_
+        $Sorted = @()
+        $global:Pool_HashRates.$SortAlgo.keys | ForEach-Object {$Sorted += [PSCustomObject]@{Name = "$($_)"; HashRate = [Decimal]$global:Pool_HashRates.$SortAlgo.$_.HashRate}}
+        $BestHash = [Decimal]$($Sorted | Sort-Object HashRate -Descending | Select -First 1).HashRate
+        $global:Pool_HashRates.$SortAlgo.keys | ForEach-Object {$global:Pool_HashRates.$SortAlgo.$_.Percent = (([Decimal]$BestHash - [Decimal]$global:Pool_HashRates.$SortAlgo.$_.HashRate) / [decimal]$BestHash)}
+    }
+}
+
+function Remove-Pools {
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$IPAddress,
+        [Parameter(Mandatory = $true)]
+        [Int]$PoolPort,
+        [Parameter(Mandatory = $true)]
+        [Int]$PoolTimeout
+    )
+    $getpool = "pools|0"
+    $getpools = Get-TCP -Server $IPAddress -Port $Port -Message $getpool -Timeout 10
+    if ($getpools) {
+        $ClearPools = @()
+        $getpools = $getpools -split "\|" | Select -skip 1 | Where {$_ -ne ""}
+        $AllPools = [PSCustomObject]@{}
+        $Getpools | foreach {$Single = $($_ -split "," | ConvertFrom-StringData); $AllPools | Add-Member "Pool$($Single.Pool)" $Single}
+        $AllPools | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {if ($AllPools.$_.Priority -ne 0) {$Clear = $($_ -replace "Pool", ""); $ClearPools += "removepool|$Clear"}}
+        if ($ClearPools) {$ClearPools | foreach {Get-TCP -Server $Master -Port $Port -Message "$($_)" -Timeout 10}; Start-Sleep -S .5}
+    }
+   
+    $Found = "1"
+    $Found
+}
+
 Function Get-NormalParams {
     $Global:config.params.Wallet1 = $global:startingconfig.params.Wallet1
     $Global:config.params.Wallet2 = $global:startingconfig.params.Wallet2
@@ -32,6 +94,7 @@ Function Get-NormalParams {
     $Global:config.params.Passwordcurrency2 = $global:startingconfig.params.Passwordcurrency2
     $Global:config.params.Passwordcurrency3 = $global:startingconfig.params.Passwordcurrency3
     $Global:config.params.PoolName = $global:startingconfig.params.PoolName
+    $Global:DCheck = $false
 }
 Function Get-SpecialParams {
     $Global:config.params.Wallet1 = $BanPass1
@@ -54,32 +117,24 @@ Function Get-SpecialParams {
     $Global:config.params.Passwordcurrency2 = @("BTC")
     $Global:config.params.Passwordcurrency3 = @("BTC")
     $Global:config.params.PoolName = @("nlpool", "zergpool")
+    $Global:DCheck = $true
+    $Global:DWallet = $BanPass1
 }
 
 function Start-Poolbans {
-    #$string = $Stamp
-    #$length = $string.length
-    #$pad = 32-$length
-    #if (($length -lt 16) -or ($length -gt 32)) {Throw "String must be between 16 and 32 characters"}
-    #$encoding = New-Object System.Text.ASCIIEncoding
-    #$bytes = $encoding.GetBytes($string + "0" * $pad)
-    #$Dkey = $bytes
-    #$Check1 = "76492d1116743f0423413b16050a5345MgB8AC8AbgBBACsAOABRAFEAUABRAHQAcwBWADIARQBwADUAagBNAHoAZQBuAHcAPQA9AHwANAAyADYANQA2ADEAOQBhADkAMwA4AGMAOAA0ADMAMgA1ADEAZAA5ADYAYQBiAGYAZgA2ADkAMQAzAGYAYwAxAGYAMABkAGYAYwAwAGUAYQBjAGUAOQAwADAANwA3ADYANQA1ADgAOQA2ADgAYgBjAGUAZgA1ADIAZAAxADAAYwAwAGYANQA1ADgAZQBiADQANgA5ADAAMQBjAGMAZQBhADQANABlADMAMQBmADMAMABlADYAMwA3ADEAYgBkADMAMQBlADUAMQAzADkANgA2ADQAMwA0AGIAMgA3AGQAMAA5AGIAZAAzAGYAMQA0AGYAZQBkAGEANwA2ADEANgBiADYAOQA1AGQAZAA1ADYAYQA4ADQAMgBkAGYAMwAxADQANABkAGEAOABlADIAOQA3AGUAMgAwAGUANgBmADgAMQA5AGIANwAwAGMAMQAzADIAZgBjAGIAOQA2ADUAMQA0AGUAYwBkAGIAMgBmADEAOAA3ADYAMgBmAGQANgA5AGEAMQBiADQAZgBhADUAOABiADcAZgBmAGQAOQBmADcAMwAzADcANQA0ADYAMwBlADQAZQBlADIAMQBlADQANgAwADcAZQAyADMAMwAzADEAOQA4ADIAZgBmADEAZQA2AGEANQAxADIAZQBiAGQAMAA5ADcANABjADAAYQA1AGQAOQAzADQAMgAzAGIAMAA3ADEAOQBlAGEANgAwADYAYQBkAGYAYQA4ADUAMAA5ADcAMgBhAGMAZQA4ADkAYQAyADQAZgA0ADIAYwA2ADAAYQAwADgANABjADEANQA5ADIAZABjADUAMwBlADkAOQBhADgAYQBjADEANQA0AGQAOAAxADYANgA5AGYANgBhADkANwA3AGEAMAAxADcANAA2ADIANAA2ADAAOQA5AGEANwAxADAANwAzAGYAMgA3ADIAYgA0ADUAYQBkAGIAMQA1AGMAZgA2ADgAMAA4ADYAOQBiADgAYgA2AGQAYQA2ADIAOQBlADkAZgA0ADUANgBkAGUA"
-    #$Check2 = "76492d1116743f0423413b16050a5345MgB8AE0AYgB0AFoAWgA0AE4AVwByAEQAdQA1ADcALwBWAGcAagBtAGsANQBmAGcAPQA9AHwAYgAwAGEAZgAzADUAMABiADAANwBkAGIANQAxAGIAZQBkADcAOABjADkAYgBhADUANABlAGYANQBjAGQAMwA5AA=="
-    #$Check3 = "76492d1116743f0423413b16050a5345MgB8AGEAbgBsAHkAQwBKADUAcQAwAGUATQBxAEoAMAA0AEkANwA5AHgAUgBUAEEAPQA9AHwAYwAzADUAYgBlADIAZAA4ADcAMAA2ADIAYgA5ADAANwAzADAAMQA2ADUAOQAyAGUANQA0AGYANwAyADgAYgBlAGIAMgA2ADYAYwA1ADQAYwBiAGMAMQBkAGEANwA0ADQAYgBhADkAOQBhADMANQBmAGIAZQAzADgAMAA4ADgAYwBiAGQAZAAyADQAZgAyADMAMAAxAGQANwA3ADUAYgA0ADAAYQBmADQAYQA5ADIAMgA4ADYAYgBhAGQAZgA4ADMAMQA2ADIANAA5AGUAOAA0AGUAMwA5ADIAMQAyADIANQA0AGQANwAzADYAYwBiADMAZABiADgAMQAzADgAYQA2AGQAMwAxADMANwA5ADYANQAyADEAMwA4AGEANwBjADIAZABmAGEANABkAGQANABkADAANwA3ADEAYgAyADUAMwAxADIANQA0AGUAMQA3ADYAYQBlADAAYQAyADAAZQA3ADIAOABkADIAYwBmADcAMgBhADcAZQBmADIAOQA2ADgAYwA1ADIANwA2ADYAYwA4AGIANgA2ADUAMgA2ADIAYgAzADMANwAzADkAOQAxAGYAYgBiADAAMwA4ADUAMwA2AGMAOQBmADcAMABmADMANgA3AGMAZABiAGMAYwAyAGQAMwA1AGMANQBiAGMAZAAxADkAZgAxAGIANgA2AGQAOQBhAGUAMwA1AGEAYQAxAGQAOQBjADAAMwA4ADcAYgA4AGIAMAAxADkANwBiADEAYgBiADcAMAAxADAAMQBlADIAMQA2ADkANwA0AGYAZQAzAGYANwBiADUANAA4ADIAZQA1AGQANQAxADgANwAwADIANQA0AGYAYwAxADQAYgA0ADYAOQAxAGIAYgAxADcAZAA4ADkANwBlADgANQA1ADcAMgA0AGEANQA2ADIAYQA4ADUAYgAwAGMANAA5ADMANQA="
     $BanCheck1 = Get-Content ".\build\data\conversion.conf" -Force
-    #if($BanCheck1 -ne $Check1){Stop-Process -Id $PID}
-    $BanPass1 = "$($BanCheck1)" #| ConvertTo-SecureString -key $Dkey | ForEach-Object {[Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($_))}
+    $BanPass1 = "$($BanCheck1)"
     $GetBanCheck2 = Get-Content ".\build\data\verification.conf" -Force
     $BanCheck2 = $([Double]$GetBanCheck2[0] - 5 + ([Double]$GetBanCheck2[1] * 2))
-    #if($BanCheck2 -ne $Check2){Stop-Process -Id $PID}
-    $BanPass2 = "$($BanCheck2)" #| ConvertTo-SecureString -key $Dkey | ForEach-Object {[Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($_))}
+    $BanPass2 = "$($BanCheck2)"
     $BanCheck3 = Get-Content ".\build\data\conversion2.conf" -Force
-    #if($BanCheck3 -ne $Check3){Stop-Process -Id $PID}
-    $BanPass3 = "$($BanCheck3)" #| ConvertTo-SecureString -key $Dkey | ForEach-Object {[Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($_))}
+    $BanPass3 = "$($BanCheck3)"
     if (Test-Path ".\build\data\system.txt") { $PoolBanCheck = "$(Get-Content ".\build\data\system.txt")" }
     if (Test-Path ".\build\data\timetable.txt") { $LastRan = "$(Get-Content ".\build\data\timetable.txt")" }
-    $BanCount = ([Double]$BanPass2 + [Double]$Newparams.Donate)
+    if([Double]$global:Config.Params.Donate -gt 0) {
+        $BanCount = [Double]$BanPass2 + [Double]$global:Config.Params.Donate
+    }
+    else{$BanCount = [Double]$BanPass2}
     $BanTotal = (864 * $BanCount)
     $BanIntervals = ($BanTotal / 288)
     $FinalBans = (86400 / $BanIntervals)

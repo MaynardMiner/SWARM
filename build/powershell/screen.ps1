@@ -217,15 +217,15 @@ There are miners that have failed! Check Your Settings And Arguments!
 Write-Log "
 
 Type `'mine`' in another terminal to see background miner, and its reason for failure.
-You may also view logs with in the "logs" directory, or 'get-screen [Type]'
-If miner is not your primary miner (AMD1 or NVIDIA1), type 'screen -r [Type]'
-https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration) >> Right Click 'Open URL In Browser'
+You may also view logs with in the `"logs`" directory, or `'get-screen [Type]`'
+If miner is not your primary miner (AMD1 or NVIDIA1), type `'screen -r [Type]`'
+https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration) >> Right Click `'Open URL In Browser`'
 " -ForegroundColor Darkred
     }
     elseif ($global:Config.Params.Platform -eq "windows") {
 Write-Log "
  
- SWARM attempted to catch screen output, and is stored in `'logs`' folder.
+ SWARM attempts to catch screen output, and is stored in `'logs`' folder.
  SWARM has also created a executable called `'swarm-start.bat`' located in the `'bin`'
  directory and folder of the miner. `'swarm-start.bat`' starts miner with last known settings, 
  and window stays open, so you may view issue.
@@ -357,7 +357,9 @@ function Restart-Miner {
                     $PreviousPorts = $PreviousMinerPorts | ConvertTo-Json -Compress
                     $_.Xprocess = Start-LaunchCode -PP $PreviousPorts -NewMiner $Current
                 } else {
-                    $_.Xprocess = Start-LaunchCode -NewMiner $Current -AIP $global:Config.Params.ASIC_IP
+                    if($global:ASICS.$($_.Type).IP){$AIP = $global:ASICS.$($_.Type).IP}
+                    else{$AIP = "localhost"}
+                    $_.Xprocess = Start-LaunchCode -NewMiner $Current -AIP $AIP
                 }
 
                 if ($null -eq $_.XProcess -or $_.XProcess.HasExited) {
@@ -460,4 +462,97 @@ function Print-WattOMeter {
       |__________|
     
   " -foregroundcolor yellow
+}
+
+function Start-MinerLoop {
+    Do {
+        Set-Countdown
+        Get-MinerHashRate
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval - 20)) { break }
+        Set-Countdown
+        Get-MinerHashRate
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval - 20)) { break }
+        Set-Countdown
+        Restart-Miner
+        write-Log "
+
+  Type 'get stats' in a new terminal to view miner statistics- This IS a remote command!
+        Windows Users: Open cmd.exe or SWARM TERMINAL on desktop and enter command
+    https://github.com/MaynardMiner/SWARM/wiki/Commands-&-Suggested-Apps for more info.
+
+" -foreground Magenta
+        Get-MinerHashRate
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval - 20)) { break }
+        Set-Countdown
+        Get-MinerHashRate
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval - 20)) { break }
+        Set-Countdown
+        Restart-Miner
+        Get-MinerHashRate
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval - 20)) { break }
+        Set-Countdown
+        write-Log "
+
+  Type 'get active' in a new terminal to view all active miner details- This IS a remote command!
+          Windows Users: Open cmd.exe or SWARM TERMINAL on desktop and enter command
+       https://github.com/MaynardMiner/SWARM/wiki/Commands-&-Suggested-Apps for more info.
+      
+" -foreground Magenta
+        Get-MinerHashRate
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval - 20)) { break }
+        $RestartData = Restart-Database
+        if ($RestartData -eq "Yes") { break }
+
+    }While ($MinerWatch.Elapsed.TotalSeconds -lt ($MinerInterval - 20))
 }

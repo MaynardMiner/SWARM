@@ -37,9 +37,9 @@ $Get = @()
 
 . .\build\powershell\hashrates.ps1
 . .\build\powershell\octune.ps1
-. .\build\powershell\commandweb.ps1
+. .\build\powershell\command-web.ps1
 . .\build\powershell\powerup.ps1
-. .\build\powershell\statcommand.ps1
+. .\build\powershell\command-stats.ps1
 . .\build\powershell\response.ps1
 . .\build\powershell\hiveoc.ps1
 
@@ -235,11 +235,19 @@ asic
     regarding what it is mining.
 
     USES:
-        get asic
+        get asic [ASIC]
     
     OPTIONS:
 
-        none
+        [ASIC]
+            This is the ASIC group you wish to contact.
+
+                example:
+                
+                    get asic ASIC1
+                    get asic ASIC2
+
+                    etc.
 
 
 to see all available SWARM commands, go to:
@@ -253,7 +261,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
     "asic" {
         if (Test-Path ".\build\txt\bestminers.txt") { $BestMiners = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-Json }
         else { $Get += "No miners running" }
-        $ASIC = $BestMiners | Where Type -eq "ASIC"
+        $ASIC = $BestMiners | Where Type -eq $argument2
         if ($ASIC) {
             . .\build\powershell\hashrates.ps1
             $Get += "Miner Name: $($ASIC.MinerName)"
@@ -278,7 +286,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
 
 
     "benchmarks" {
-        . .\build\powershell\statcommand.ps1
+        . .\build\powershell\command-stats.ps1
         . .\build\powershell\childitems.ps1
         . .\build\powershell\hashrates.ps1
         . .\build\powershell\wallettable.ps1
@@ -332,7 +340,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
     }
 
     "wallets" {
-        . .\build\powershell\statcommand.ps1
+        . .\build\powershell\command-stats.ps1
         . .\build\powershell\childitems.ps1
         . .\build\powershell\hashrates.ps1
         . .\build\powershell\wallettable.ps1   

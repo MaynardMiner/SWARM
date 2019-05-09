@@ -52,7 +52,7 @@
     "API_ID":  0,
     "Stat_Algo":  "Live",
     "Nicehash_Wallet3":  "",
-    "Donate":  ".5",
+    "Donate":  0.5,
     "Wallet3":  "",
     "AltPassword1":  "",
     "Auto_Coin":  "No",
@@ -85,7 +85,9 @@
     "Coin":  [
               ""
              ],
-    "ASIC_IP": "",
+    "ASIC_IP": [
+               ""
+               ],
     "ASIC_ALGO":  [
                     ""
                   ],

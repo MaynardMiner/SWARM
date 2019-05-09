@@ -77,8 +77,8 @@ switch ($Action) {
         }
     }
     "remove" {
-        if ($global:Config.Params.Bans) {
-            $global:Config.Params.Bans | % {
+        if ($Bans) {
+            $Bans | % {
                 $Arg = $_ -split "`:"
                 if ($Arg.Count -eq 1) {
                     switch ($Launch) {
@@ -95,7 +95,7 @@ switch ($Action) {
                     switch ($Launch) {
                         "Command" {
                             if ($Value -in $PoolJson.$Item.exclusions) {
-                                $PoolJson.$Item.exclusions = $PoolJson.$Item.exclusions | ForEach-Object { if ($_ -ne $Value) { $_ } }
+                                $PoolJson.$Item.exclusions = $PoolJson.$Item.exclusions | Where {$_ -ne $Value}
                                 $PoolChange = $true
                                 $Screen += "Removed $Value in $Item exclusions in pool-algos.json"
                             }

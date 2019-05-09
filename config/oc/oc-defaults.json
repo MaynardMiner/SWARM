@@ -1,0 +1,29 @@
+{
+    "Cards": "",
+    "default_NVIDIA1": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "Fans": ""
+    },
+    "default_NVIDIA2": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "Fans": ""
+    },
+    "default_NVIDIA3": {
+        "Power": "",
+        "Core": "",
+        "Memory": "",
+        "Fans": ""
+    },
+    "default_AMD1": {
+        "dpm": "",
+        "v": "",
+        "core": "",
+        "memory": "",
+        "mdpm": "",
+        "fans": ""
+    }
+}

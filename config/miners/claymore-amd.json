@@ -1,60 +1,34 @@
 {
-  "name": "claymore-amd",
-  "AMD1": {
-    "name": "AMD1",
-    "delay": "1",
-    "prestart": [
-      "export GPU_FORCE_64BIT_PTR 0",
-      "export GPU_MAX_HEAP_SIZE=100",
-      "export GPU_USE_SYNC_OBJECTS=1",
-      "export GPU_SINGLE_ALLOC_PERCENT=100",
-      "export GPU_MAX_ALLOC_PERCENT=100"
-    ],
-    "commands": {
-      "ethash": "",
-      "daggerhashimoto": "-esm 3 -estale 0",
-      "dagger": "-esm 2"
-    },
-    "difficulty": {
-      "ethash": "",
-      "daggerhashimoto": "",
-      "dagger": ""
-    },
-    "naming": {
-      "ethash": "ethash",
-      "daggerhashimoto": "daggerhashimoto",
-      "dagger": "dagger"
-    },
-    "fee": {
-      "ethash": 1,
-      "daggerhashimoto": 1,
-      "dagger": 1
-    },
-    "oc": {
-      "ethash": {
-        "dpm": "",
-        "v": "",
-        "core": "",
-        "mem": "",
-        "mdpm": "",
-        "fans": ""
-      },
-      "daggerhashimoto": {
-        "dpm": "",
-        "v": "",
-        "core": "",
-        "mem": "",
-        "mdpm": "",
-        "fans": ""
-      },
-      "dagger": {
-        "dpm": "",
-        "v": "",
-        "core": "",
-        "mem": "",
-        "mdpm": "",
-        "fans": ""
-      }
+    "name": "claymore-amd",
+    "AMD1": {
+        "name": "AMD1",
+        "delay": "1",
+        "prestart": [
+            "export GPU_FORCE_64BIT_PTR 0",
+            "export GPU_MAX_HEAP_SIZE=100",
+            "export GPU_USE_SYNC_OBJECTS=1",
+            "export GPU_SINGLE_ALLOC_PERCENT=100",
+            "export GPU_MAX_ALLOC_PERCENT=100"
+        ],
+        "commands": {
+            "ethash": "",
+            "daggerhashimoto": "-esm 3 -estale 0",
+            "dagger": "-esm 2"
+        },
+        "difficulty": {
+            "ethash": "",
+            "daggerhashimoto": "",
+            "dagger": ""
+        },
+        "naming": {
+            "ethash": "ethash",
+            "daggerhashimoto": "daggerhashimoto",
+            "dagger": "dagger"
+        },
+        "fee": {
+            "ethash": 1,
+            "daggerhashimoto": 1,
+            "dagger": 1
+        }
     }
-  }
 }

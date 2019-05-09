@@ -140,6 +140,16 @@
     "version": "2.3.1",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/tpruvot-linux-10.tar.gz"
   },
+  "cc-rfv2": {
+    "name": "cc-rfv2",
+    "type": "nvidia",
+    "NVIDIA1": ".\\bin\\cc-rfv2-1\\ccminer",
+    "NVIDIA2": ".\\bin\\cc-rfv2-2\\ccminer",
+    "NVIDIA3": ".\\bin\\cc-rfv2-3\\ccminer",
+    "minername": "ccminer",
+    "version": "2.3.1",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/cc-rfv2-linux.tar.gz"
+  },
   "trex": {
     "name": "trex",
     "type": "nvidia",
@@ -177,8 +187,8 @@
     "NVIDIA2": ".\\bin\\gminer-2\\miner",
     "NVIDIA3": ".\\bin\\gminer-3\\miner",
     "minername": "miner",
-    "version": "1.40",
-    "uri": "https://github.com/develsoftware/GMinerBetaRelease/releases/download/1.40/gminer_1_40_linux64.tar.xz"
+    "version": "1.42",
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.42/gminer_1_42_linux64.tar.xz"
   },
   "grin-miner": {
     "name": "grin-miner",

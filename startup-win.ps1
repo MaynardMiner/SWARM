@@ -1,12 +1,11 @@
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 $dir = Split-Path $script:MyInvocation.MyCommand.Path
 $json = $true
-try { $Parsed = $args | ConvertFrom-Json -ErrorAction Stop }catch { Write-Host "Could not convert from json, Trying different method"; $json = $false }
-if ($json -eq $false) {
+if ($args) {
     $global:parsed = @{ }
     $args | % {
         $Command = $false
-        if ($_ -like "*-*") { $Command = $true; $Com = $_ -replace "-", "" }
+        if ($_[0] -eq "-") { $Command = $true; $Com = $_ -replace "-", "" }
         if ($Command -eq $true) { $parsed.Add($Com, "new") }
         else {
             if ($parsed.$Com -eq "new") { $parsed.$Com = $_ }
@@ -19,9 +18,19 @@ if ($json -eq $false) {
         }
     }
 }
+elseif(Test-Path ".\config\parameters\arguments.json") {
+    $global:parsed = @{ }
+    $arguments = Get-Content ".\config\parameters\arguments.json" ConvertFrom-Json
+    $arguments.PSObject.Properties.Name | % { $Parsed.Add("$($_)", $arguments.$_) }
+}
+else{
+    Write-Host "No Arguments or arguments.json file found. Exiting."
+    Start-Sleep -S 3
+    exit
+}
 
 $Defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json
-$Defaults.PSObject.Properties.Name | % { if (-not $Parsed.$_) { $Parsed.Add("$($_)",$Defaults.$_) } }
+$Defaults.PSObject.Properties.Name | % { if (-not $Parsed.$_) { $Parsed.Add("$($_)", $Defaults.$_) } }
 
 $Parsed | convertto-json | Out-File ".\config\parameters\arguments.json"
 

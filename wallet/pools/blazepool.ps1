@@ -1,5 +1,5 @@
 . .\build\powershell\childitems.ps1
-. .\build\powershell\statcommand.ps1
+. .\build\powershell\command-stats.ps1
 
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName
 $PoolQuery = "http://api.blazepool.com/wallet/"
