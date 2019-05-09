@@ -416,8 +416,8 @@ function Start-OC {
                         $WolfArgs = "wolfamdctrl -i $($GCount.AMD.$GPU)$MEMArgs"
                         $AScript += "$WolfArgs"
                     }
-                    $AScreenMem += "$($Miner.Type) MEM is $($global:oc_algos.$($Miner.Algo).ocmem) "
-                    $AScreenMDPM += "$($Miner.Type) MDPM is $($Miner.ocmdpm) "
+                    $AScreenMem += "$($Miner.Type) MEM is $Mem "
+                    $AScreenMDPM += "$($Miner.Type) MDPM is $MemState "
                 }
 
                 if ($CoreClock) {
@@ -433,8 +433,8 @@ function Start-OC {
                             $AScript += $WolfArgs
                         }
                     }
-                    $AScreenCore += "$($Miner.Type) CORE is $($global:oc_algos.$($Miner.Algo).occore) "
-                    $AScreenDPM += "$($Miner.Type) DPM is $($Miner.ocdpm) "
+                    $AScreenCore += "$($Miner.Type) CORE is $CoreClock) "
+                    $AScreenDPM += "$($Miner.Type) DPM is $CoreState) "
                 }
 
                 if ($Voltage) {
@@ -447,7 +447,7 @@ function Start-OC {
                         }
                     }
                     $AScript += $VoltArgs
-                    $AScreenPower += "$($Miner.Type) V is $($Miner.ocv) "
+                    $AScreenPower += "$($Miner.Type) V is $Voltage "
                 }
 
                 if ($Fans) {
@@ -459,7 +459,7 @@ function Start-OC {
                         $WolfArgs = "wolfamdctrl -i $($GCount.AMD.$GPU)$FanArgs"
                         $AScript += $WolfArgs
                     }
-                    $AScreenFans += "$($_.Type) Fans is $($_.ocfans) "
+                    $AScreenFans += "$($_.Type) Fans is $Fans "
                 }
             }
 
