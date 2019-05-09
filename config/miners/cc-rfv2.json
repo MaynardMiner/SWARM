@@ -5,7 +5,7 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "rfv2": ""
+            "rfv2": "-i 11"
         },
         "difficulty": {
             "rfv2": ""
@@ -20,7 +20,7 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "rfv2": ""
+            "rfv2": "-i 11"
         },
         "difficulty": {
             "rfv2": ""
@@ -38,7 +38,7 @@
             "rfv2": ""
         },
         "difficulty": {
-            "rfv2": ""
+            "rfv2": "-i 11"
         },
         "naming": {
             "rfv2": "rfv2"
