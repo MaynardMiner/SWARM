@@ -125,10 +125,10 @@ $Pool = {
 $Pool = $Pool | ConvertFrom-StringData
 
 $Name = $Pool.Name 
-if ($Poolname -eq $Name -and $FileName -eq $Name) {
+if ($global:Config.Params.PoolName -eq $Name -and $FileName -eq $Name) {
     $Custom_Request = [PSCustomObject]@{} 
     [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
-if($XNSub -eq "Yes"){$X = "#xnsub"} 
+if($global:Config.Params.xnsub -eq "Yes"){$X = "#xnsub"} 
 
     ##First lets make sure miner has algorithm. If not, add it.
     try {$MinerFile = Get-Content ".\config\miners\$($Pool.Miner).json" | ConvertFrom-Json -ErrorAction Stop}
@@ -163,20 +163,20 @@ if($XNSub -eq "Yes"){$X = "#xnsub"}
     }
 
     $Custom_Algo = $Pool.Algo
-    $Coin = $Pool.Coin
+    $global:Config.Params.Coin = $Pool.Coin
 
     if ($Algorithm -contains $Custom_Algo -and $Bad_pools.$Custom_Algo -notcontains $Name) {
         $Custom_Host = "$($Pool.Miner_Url)"
         $Custom_Port = "$($Pool.Miner_Port)"
-        $Fees = $Custom_Request.$Coin.fees
+        $Fees = $Custom_Request.Coin.fees
         $DayStat = "24h_btc"
-        $Workers = $Custom_Request.$Coin.Workers
-        $Estimate = if ($Stat_Algo -eq "Day") {[Double]$Custom_Request.$Coin.$DayStat * [Double]$Pool.mbtc_mh_factor}else {[Double]$Custom_Request.$Coin.estimate * [Double]$Pool.mbtc_mh_factor}
+        $Workers = $Custom_Request.Coin.Workers
+        $Estimate = if ($global:Config.Params.Stat_Algo -eq "Day") {[Double]$Custom_Request.Coin.$DayStat * [Double]$Pool.mbtc_mh_factor}else {[Double]$Custom_Request.Coin.estimate * [Double]$Pool.mbtc_mh_factor}
         $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
  
         $SmallestValue = 1E-20
         $Stat = Set-Stat -Name "$($Name)_$($Custom_Algo)_profit" -Value ([Double]$Estimate/$Divisor *(1-($Pool.$_.fees/100)))
-        if ($Stat_Algo -eq "Day") {$Stats = $Stat.Live}else {$Stats = $Stat.$Stat_Algo}
+        if ($global:Config.Params.Stat_Algo -eq "Day") {$Stats = $Stat.Live}else {$Stats = $Stat.$($global:Config.Params.Stat_Algo)}
 
         [PSCustomObject]@{
             Priority      = $Priorities.Pool_Priorities.$Name
@@ -197,7 +197,7 @@ if($XNSub -eq "Yes"){$X = "#xnsub"}
             Pass1         = $Pool.Pass
             Pass2         = $Pool.Pass
             Pass3         = $Pool.Pass
-            Location      = $Location
+            Location      = $global:Config.Params.Location
             SSL           = $false
         }
     }    

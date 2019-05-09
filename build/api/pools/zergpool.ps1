@@ -1,7 +1,7 @@
 function Get-ZergpoolData {
     $Wallets = @()
 
-    $Type | ForEach-Object {
+    $global:Config.Params.Type | ForEach-Object {
         $Sel = $_
         $Pool = "zergpool"
         $global:Share_Table.$Sel.Add($Pool, @{ })

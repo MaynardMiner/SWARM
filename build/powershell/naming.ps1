@@ -60,8 +60,8 @@ function Add-ASIC_ALGO {
         $Algolist = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
         $Algolist = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
 
-        if($ASIC_ALGO -and $ASIC_ALGO -ne "") {
-            $ASIC_ALGO | ForEach-Object {
+        if($global:Config.Params.ASIC_ALGO -and $global:Config.Params.ASIC_ALGO -ne "") {
+            $global:Config.Params.ASIC_ALGO | ForEach-Object {
                 if($_ -notin $Algolist.PSObject.Properties.Name) {
                 $Algolist | Add-Member $_ @{"hiveos_name" = $_; exclusions = @("add pool or miner here","comma seperated")}
                 }

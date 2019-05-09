@@ -22,7 +22,7 @@ function Start-NVIDIAOC {
     $Decompress = $NewOC | ConvertFrom-Json
     $HiveNVOC = $Decompress | ConvertFrom-StringData
     $ocmessage = @()
-    $OCCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-JSon
+    $OCCount = Get-Content ".\build\txt\oclist.txt" | ConvertFrom-JSon
 
     $HiveNVOC.Keys | % {
         $key = $_
@@ -97,7 +97,7 @@ function Start-NVIDIAOC {
     $script += "Invoke-Expression `'.\nvidiaInspector.exe $OCArgs`'"
     Set-Location ".\build\apps"
     $script | Out-File "nvoc-start.ps1"
-    $Command = start-process "powershell.exe" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\nvoc-start.ps1""" -PassThru -WindowStyle Minimized -Wait
+    $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\nvoc-start.ps1""" -PassThru -WindowStyle Minimized -Wait
     Set-Location $WorkingDir
     Start-Sleep -s .5
     $ocmessage | Set-Content ".\build\txt\ocnvidia.txt"
@@ -114,7 +114,7 @@ function Start-AMDOC {
   
     $Decompress = $NewOC | ConvertFrom-Json
     $AMDOC = $Decompress | ConvertFrom-StringData
-    $OCCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-JSon
+    $OCCount = Get-Content ".\build\txt\oclist.txt" | ConvertFrom-JSon
     $ocmessage = @()
     $script = @()
     $script += "`$host.ui.RawUI.WindowTitle = `'OC-Start`';"
@@ -163,11 +163,11 @@ function Start-AMDOC {
                 "FAN" {
                     if ($AMDOCFan) {
                         if ($AMDOCFAN.Count -eq 1 -and $AMDOCFAN -ne "") {
-                            $OCArgs += "Fan_P0=80;$($AMDOCFan) Fan_P1=80;$($AMDOCFan) Fan_P2=80;$($AMDOCFan) Fan_P3=80;$($AMDOCFan) Fan_P4=80;$($AMDOCFan) "
+                            $OCArgs += "Fan_ZeroRPM=0; Fan_P0=80;$($AMDOCFan) Fan_P1=80;$($AMDOCFan) Fan_P2=80;$($AMDOCFan) Fan_P3=80;$($AMDOCFan) Fan_P4=80;$($AMDOCFan) "
                             $ocmessage += "Setting GPU $($OCCount.AMD.$i) Fan Speed To $($AMDOCFan)`%"
                         }
                         else {
-                            $OCArgs += "Fan_P0=80;$($AMDOCFan[$Select]) Fan_P1=80;$($AMDOCFan[$Select]) Fan_P2=80;$($AMDOCFan[$Select]) Fan_P3=80;$($AMDOCFan[$Select]) Fan_P4=80;$($AMDOCFan[$Select]) "
+                            $OCArgs += "Fan_ZeroRPM=0 Fan_P0=80;$($AMDOCFan[$Select]) Fan_P1=80;$($AMDOCFan[$Select]) Fan_P2=80;$($AMDOCFan[$Select]) Fan_P3=80;$($AMDOCFan[$Select]) Fan_P4=80;$($AMDOCFan[$Select]) "
                             $ocmessage += "Setting GPU $($OCCount.AMD.$i) Fan Speed To $($AMDOCFan[$i])`%"
                         }
                     }
@@ -244,28 +244,10 @@ function Start-AMDOC {
     }
     Set-Location ".\build\apps"
     $Script | OUt-File "AMDOC-start.ps1"
-    $Command = start-process "powershell.exe" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\AMDOC-start.ps1""" -PassThru -WindowStyle Minimized -Wait
+    $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\AMDOC-start.ps1""" -PassThru -WindowStyle Minimized -Wait
     Start-Sleep -S .5
     $ocmessage
     Set-Location $WorkingDir
     $ocmessage | Set-Content ".\build\txt\ocamd.txt"
     Start-Sleep -s .5
-}  
-
-function start-fans {
-    $FanFile = Get-Content ".\config\oc\oc-settings.json" | ConvertFrom-Json
-    $FanArgs = @()
-  
-    if ($FanFile.'windows fan start') {
-        $Card = $FanFile.'windows fan start' -split ' '
-        for ($i = 0; $i -lt $Card.count; $i++) {$FanArgs += "-setFanSpeed:$i,$($Card[$i]) "}
-        Write-Log "Starting Fans" 
-        $script = @()
-        $script += "`$host.ui.RawUI.WindowTitle = `'OC-Start`';"
-        $script += "Invoke-Expression `'.\nvidiaInspector.exe $FanArgs`'"
-        Set-Location ".\build\apps"
-        $script | Out-File "fan-start.ps1"
-        $Command = start-process "powershell.exe" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\fan-start.ps1""" -PassThru -WindowStyle Minimized -Wait
-        Set-Location $Dir
-    }
 }

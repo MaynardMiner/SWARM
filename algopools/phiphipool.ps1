@@ -1,9 +1,9 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $phiphipool_Request = [PSCustomObject]@{ } 
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
-if($XNSub -eq "Yes"){$X = "#xnsub"}
+if($global:Config.Params.xnsub -eq "Yes"){$X = "#xnsub"}
 
-if ($Poolname -eq $Name) {
+if ($Name -in $global:Config.Params.PoolName) {
     try { $phiphipool_Request = Invoke-RestMethod "https://www.phi-phi-pool.com/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
     catch { Write-Log "SWARM contacted ($Name) but there was no response."; return }
  
@@ -12,7 +12,7 @@ if ($Poolname -eq $Name) {
         return 
     }
   
-    switch ($Location) {
+    switch ($global:Config.Params.Location) {
         "ASIA" { $region = "asia" }
         "US" { $region = "us" }
         "EUROPE" { $Region = "eu" }
@@ -27,7 +27,7 @@ if ($Poolname -eq $Name) {
 
         $phiphipool_Algorithm = $phiphipool_Request.$_.name.ToLower()
 
-        if ($Algorithm -contains $phiphipool_Algorithm -or $ASIC_ALGO -contains $phiphipool_Algorithm) {
+        if ($Algorithm -contains $phiphipool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $phiphipool_Algorithm) {
             if ($Name -notin $global:Exclusions.$phiphipool_Algorithm.exclusions -and $phiphipool_Algorithm -notin $Global:banhammer) {
                 $phiphipool_Port = $phiphipool_Request.$_.port
                 $phiphipool_Host = "$($Region).phi-phi-pool.com$X"
@@ -54,19 +54,19 @@ if ($Poolname -eq $Name) {
                     Symbol    = "$phiphipool_Algorithm-Algo"
                     Mining    = $phiphipool_Algorithm
                     Algorithm = $phiphipool_Algorithm
-                    Price     = $Stat.$Stat_Algo
+                    Price     = $Stat.$($global:Config.Params.Stat_Algo)
                     Protocol  = "stratum+tcp"
                     Host      = $phiphipool_Host
                     Port      = $phiphipool_Port
-                    User1     = $global:Wallets.Wallet1.$PasswordCurrency1.address
-                    User2     = $global:Wallets.Wallet2.$PasswordCurrency2.address
-                    User3     = $global:Wallets.Wallet3.$PasswordCurrency3.address
-                    CPUser    = $global:Wallets.Wallet1.$PasswordCurrency1.address                    
-                    CPUPass   = "c=$($global:Wallets.Wallet1.keys),id=$Rigname1"
-                    Pass1     = "c=$($global:Wallets.Wallet1.keys),id=$Rigname1"
-                    Pass2     = "c=$($global:Wallets.Wallet2.keys),id=$Rigname2"
-                    Pass3     = "c=$($global:Wallets.Wallet3.keys),id=$Rigname3"
-                    Location  = $Location
+                    User1     = $global:Wallets.Wallet1.$($global:Config.Params.Passwordcurrency1).address
+                    User2     = $global:Wallets.Wallet2.$($global:Config.Params.Passwordcurrency2).address
+                    User3     = $global:Wallets.Wallet3.$($global:Config.Params.Passwordcurrency3).address
+                    CPUser    = $global:Wallets.Wallet1.$($global:Config.Params.Passwordcurrency1).address   
+                    CPUPass    = $global:Wallets.Wallet1.$($global:Config.Params.Passwordcurrency1).address                                     
+                    Pass1     = "c=$($global:Wallets.Wallet1.keys),id=$($global:Config.Params.RigName1)"
+                    Pass2     = "c=$($global:Wallets.Wallet2.keys),id=$($global:Config.Params.RigName2)"
+                    Pass3     = "c=$($global:Wallets.Wallet3.keys),id=$($global:Config.Params.RigName3)"
+                    Location  = $global:Config.Params.Location
                     SSL       = $false
                 }
             }

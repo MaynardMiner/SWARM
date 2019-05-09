@@ -1,108 +1,66 @@
 {
-  "name": "grin-miner",
-  "NVIDIA1": {
-    "name": "NVIDIA1",
-    "delay": "1",
-    "prestart": [],
-    "commands": {
-      "grincuckaroo29": "",
-      "grincuckatoo31": ""
+    "name": "grin-miner",
+    "NVIDIA1": {
+        "name": "NVIDIA1",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "grincuckaroo29": "",
+            "grincuckatoo31": ""
+        },
+        "difficulty": {
+            "grincuckaroo29": "",
+            "grincuckatoo31": ""
+        },
+        "naming": {
+            "grincuckaroo29": "grincuckaroo29",
+            "grincuckatoo31": "grincuckatoo31"
+        },
+        "fee": {
+            "grincuckaroo29": 0,
+            "grincuckatoo31": 0
+        }
     },
-    "difficulty": {
-      "grincuckaroo29": "",
-      "grincuckatoo31": ""
+    "NVIDIA2": {
+        "name": "NVIDIA2",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "grincuckaroo29": "",
+            "grincuckatoo31": ""
+        },
+        "difficulty": {
+            "grincuckaroo29": "",
+            "grincuckatoo31": ""
+        },
+        "naming": {
+            "grincuckaroo29": "grincuckaroo29",
+            "grincuckatoo31": "grincuckatoo31"
+        },
+        "fee": {
+            "grincuckaroo29": 0,
+            "grincuckatoo31": 0
+        }
     },
-    "naming": {
-      "grincuckaroo29": "grincuckaroo29",
-      "grincuckatoo31": "grincuckatoo31"
-    },
-    "fee": {
-      "grincuckaroo29": 0,
-      "grincuckatoo31": 0
-    },
-    "oc": {
-      "grincuckaroo29": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      },
-      "grincuckatoo31": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      }
+    "NVIDIA3": {
+        "name": "NVIDIA3",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "grincuckaroo29": "",
+            "grincuckatoo31": ""
+        },
+        "difficulty": {
+            "grincuckaroo29": "",
+            "grincuckatoo31": ""
+        },
+        "naming": {
+            "grincuckaroo29": "grincuckaroo29",
+            "grincuckatoo31": "grincuckatoo31"
+        },
+        "fee": {
+            "grincuckaroo29": 0,
+            "grincuckatoo31": 0
+        }
     }
-  },
-  "NVIDIA2": {
-    "name": "NVIDIA2",
-    "delay": "1",
-    "prestart": [],
-    "commands": {
-      "grincuckaroo29": "",
-      "grincuckatoo31": ""
-    },
-    "difficulty": {
-      "grincuckaroo29": "",
-      "grincuckatoo31": ""
-    },
-    "naming": {
-      "grincuckaroo29": "grincuckaroo29",
-      "grincuckatoo31": "grincuckatoo31"
-    },
-    "fee": {
-      "grincuckaroo29": 0,
-      "grincuckatoo31": 0
-    },
-    "oc": {
-      "grincuckaroo29": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      },
-      "grincuckatoo31": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      }
-    }
-  },
-  "NVIDIA3": {
-    "name": "NVIDIA3",
-    "delay": "1",
-    "prestart": [],
-    "commands": {
-      "grincuckaroo29": "",
-      "grincuckatoo31": ""
-    },
-    "difficulty": {
-      "grincuckaroo29": "",
-      "grincuckatoo31": ""
-    },
-    "naming": {
-      "grincuckaroo29": "grincuckaroo29",
-      "grincuckatoo31": "grincuckatoo31"
-    },
-    "fee": {
-      "grincuckaroo29": 0,
-      "grincuckatoo31": 0
-    },
-    "oc": {
-      "grincuckaroo29": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      },
-      "grincuckatoo31": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      }
-    }
-  }
 }

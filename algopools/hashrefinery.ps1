@@ -1,9 +1,9 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $Hashrefinery_Request = [PSCustomObject]@{ } 
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
-if($XNSub -eq "Yes"){$X = "#xnsub"}
+if($global:Config.Params.xnsub -eq "Yes"){$X = "#xnsub"}
  
-if ($Poolname -eq $Name) {
+if ($Name -in $global:Config.Params.PoolName) {
     try { $Hashrefinery_Request = Invoke-RestMethod "http://pool.hashrefinery.com/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
     catch { Write-Log "SWARM contacted ($Name) but there was no response."; return }
 
@@ -21,7 +21,7 @@ if ($Poolname -eq $Name) {
    
         $Hashrefinery_Algorithm = $Hashrefinery_Request.$_.name.ToLower()
 
-        if ($Algorithm -contains $Hashrefinery_Algorithm -or $ASIC_ALGO -contains $Hashrefinery_Algorithm) {
+        if ($Algorithm -contains $Hashrefinery_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $Hashrefinery_Algorithm) {
             if ($Name -notin $global:Exclusions.$Hashrefinery_Algorithm.exclusions -and $Hashrefinery_Algorithm -notin $Global:banhammer) {
                 $Hashrefinery_Host = "$_.us.hashrefinery.com$X"
                 $Hashrefinery_Port = $Hashrefinery_Request.$_.port
@@ -48,19 +48,19 @@ if ($Poolname -eq $Name) {
                     Symbol    = "$Hashrefinery_Algorithm-Algo"
                     Mining    = $Hashrefinery_Algorithm
                     Algorithm = $Hashrefinery_Algorithm
-                    Price     = $Stat.$Stat_Algo
+                    Price     = $Stat.$($global:Config.Params.Stat_Algo)
                     Protocol  = "stratum+tcp"
                     Host      = $Hashrefinery_Host
                     Port      = $Hashrefinery_Port
-                    User1     = $global:Wallets.Wallet1.$PasswordCurrency1.address
-                    User2     = $global:Wallets.Wallet2.$PasswordCurrency2.address
-                    User3     = $global:Wallets.Wallet3.$PasswordCurrency3.address
-                    CPUser    = $global:Wallets.Wallet1.$PasswordCurrency1.address                    
-                    CPUPass   = "c=$($global:Wallets.Wallet1.keys),id=$Rigname1"
-                    Pass1     = "c=$($global:Wallets.Wallet1.keys),id=$Rigname1"
-                    Pass2     = "c=$($global:Wallets.Wallet2.keys),id=$Rigname2"
-                    Pass3     = "c=$($global:Wallets.Wallet3.keys),id=$Rigname3"
-                    Location  = $Location
+                    User1     = $global:Wallets.Wallet1.$($global:Config.Params.Passwordcurrency1).address
+                    User2     = $global:Wallets.Wallet2.$($global:Config.Params.Passwordcurrency2).address
+                    User3     = $global:Wallets.Wallet3.$($global:Config.Params.Passwordcurrency3).address
+                    CPUser    = $global:Wallets.Wallet1.$($global:Config.Params.Passwordcurrency1).address   
+                    CPUPass    = $global:Wallets.Wallet1.$($global:Config.Params.Passwordcurrency1).address                                     
+                    Pass1     = "c=$($global:Wallets.Wallet1.keys),id=$($global:Config.Params.RigName1)"
+                    Pass2     = "c=$($global:Wallets.Wallet2.keys),id=$($global:Config.Params.RigName2)"
+                    Pass3     = "c=$($global:Wallets.Wallet3.keys),id=$($global:Config.Params.RigName3)"
+                    Location  = $global:Config.Params.Location
                     SSL       = $false
                 }
             }

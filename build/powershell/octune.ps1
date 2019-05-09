@@ -21,12 +21,12 @@ function Set-VegaOC {
     function Get-RegDevices {
         Set-Location "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}"
         $Reg = $(Get-Item * -ErrorAction SilentlyContinue).Name
-        $Reg = $Reg | % {$_ -split "\\" | Select -Last 1} | % {if ($_ -like "*00*") {$_}}
-        $RegNames = @{}
+        $Reg = $Reg | % { $_ -split "\\" | Select -Last 1 } | % { if ($_ -like "*00*") { $_ } }
+        $RegNames = @{ }
         $Reg | foreach {
             $DriverDesc = $(Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\$($_)" -Name "DriverDesc").DriverDesc;
             if ($DriverDesc -like "*Vega*")
-            {$RegNames.Add("$($_)", $((Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\$($_)" -Name "ProviderName").ProviderName))};    
+            { $RegNames.Add("$($_)", $((Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\$($_)" -Name "ProviderName").ProviderName)) };    
         }
         Set-Location $WorkingDir; 
         $RegNames
@@ -58,20 +58,20 @@ function Set-VegaOC {
         $HX2
     }  
     
-    $PP = @{}
-    $Core = @{}
-    $Voltage = @{}
-    $Clock = @{}
+    $PP = @{ }
+    $Core = @{ }
+    $Voltage = @{ }
+    $Clock = @{ }
 
     $GetVegaOC = Get-Content ".\config\oc\vega-oc.json" | COnvertFrom-Json
-    if ($GetVegaOC.$OCAlgo.Core.Voltage.P7 -or $GetVegaOC.Default.Voltage.P7) {$Vega = $true; $VegaP = $GetVegaOC.$OCAlgo; $VegaOC = $GetVegaOC.Default}
+    if ($GetVegaOC.$OCAlgo.Core.Voltage.P7 -or $GetVegaOC.Default.Voltage.P7) { $Vega = $true; $VegaP = $GetVegaOC.$OCAlgo; $VegaOC = $GetVegaOC.Default }
 
     if ($Vega -eq $true) {
-        $VegaP.Core.Voltage | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | foreach {if ($VegaP.Core.Voltage.$_ -ne "") {$VegaOC.Core.Voltage.$_ = $VegaP.Core.Voltage.$_}}
-        $VegaP.Core.Clocks | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | foreach {if ($VegaP.Core.Clocks.$_ -ne "") {$VegaOC.Clock.Clocks.$_ = $VegaP.Core.Clocks.$_}}
+        $VegaP.Core.Voltage | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | foreach { if ($VegaP.Core.Voltage.$_ -ne "") { $VegaOC.Core.Voltage.$_ = $VegaP.Core.Voltage.$_ } }
+        $VegaP.Core.Clocks | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | foreach { if ($VegaP.Core.Clocks.$_ -ne "") { $VegaOC.Clock.Clocks.$_ = $VegaP.Core.Clocks.$_ } }
 
-        if ($VegaP.Memory.Voltage.P4) {$VegaOC.Memory.voltage.P4 = $VegaP.Memory.Voltage.P4}
-        if ($VegaP.Memory.Clocks.P4) {$VegaOC.Memory.Clocks.P4 = $VegaP.Memory.Clocks.P4}
+        if ($VegaP.Memory.Voltage.P4) { $VegaOC.Memory.voltage.P4 = $VegaP.Memory.Voltage.P4 }
+        if ($VegaP.Memory.Clocks.P4) { $VegaOC.Memory.Clocks.P4 = $VegaP.Memory.Clocks.P4 }
 
         $Voltage.ADD("P0", (HX4 $VegaOC.Core.Voltage.P0)); $Clock.Add("P0", (HX6 $VegaOC.Core.Clocks.P0))
         $Voltage.ADD("P1", (HX4 $VegaOC.Core.Voltage.P1)); $Clock.Add("P1", (HX6 $VegaOC.Core.Clocks.P1))
@@ -83,21 +83,21 @@ function Set-VegaOC {
         $Voltage.ADD("P7", (HX4 $VegaOC.Core.Voltage.P7)); $Clock.Add("P7", (HX6 $VegaOC.Core.Clocks.P7))
         $Core.Add("Voltage", $Voltage); $Core.Add("Clock", $Clock); $PP.Add("Core", $Core);
 
-        $Mem = @{}
-        $Voltage = @{}
-        $Clock = @{}
+        $Mem = @{ }
+        $Voltage = @{ }
+        $Clock = @{ }
         $Voltage.Add("P4", (HX4 $VegaOC.Memory.Voltage.P4)); $Clock.Add("P4", (HX6 $VegaOC.Memory.Clocks.P4))
         $Mem.Add("Voltage", $Voltage); $Mem.Add("Clock", $Clock); $PP.Add("Mem", $Mem);
 
     
-        if ($VegaP.Power_Limit_Max) {$VegaOC.Power_Limit_Max = $VegaP.Power_Limit_Max}
-        if ($VegaP.Current_Limit) {$VegaOC.Current_Limit = $VegaP.Current_Limit}
-        if ($VegaP.Wattage_Limit) {$VegaOC.Wattage_Limit = $VegaP.Wattage_Limit}     
-        if ($VegaP.Acoustic_Limit) {$VegaOC.Acoustic_Limit = $VegaP.Acoustic_Limit}     
-        if ($VegaP.Target_Temp) {$VegaOC.Target_Temp = $VegaP.Target_Temp}     
-        if ($VegaP.Max_Temp) {$VegaOC.Max_Temp = $VegaP.Max_Temp}     
-        if ($VegaP.Min_Fan) {$VegaOC.Min_Fan = $VegaP.Min_Fan}     
-        if ($VegaP.Max_Fan) {$VegaOC.Max_Fan = $VegaP.Max_Fan}     
+        if ($VegaP.Power_Limit_Max) { $VegaOC.Power_Limit_Max = $VegaP.Power_Limit_Max }
+        if ($VegaP.Current_Limit) { $VegaOC.Current_Limit = $VegaP.Current_Limit }
+        if ($VegaP.Wattage_Limit) { $VegaOC.Wattage_Limit = $VegaP.Wattage_Limit }     
+        if ($VegaP.Acoustic_Limit) { $VegaOC.Acoustic_Limit = $VegaP.Acoustic_Limit }     
+        if ($VegaP.Target_Temp) { $VegaOC.Target_Temp = $VegaP.Target_Temp }     
+        if ($VegaP.Max_Temp) { $VegaOC.Max_Temp = $VegaP.Max_Temp }     
+        if ($VegaP.Min_Fan) { $VegaOC.Min_Fan = $VegaP.Min_Fan }     
+        if ($VegaP.Max_Fan) { $VegaOC.Max_Fan = $VegaP.Max_Fan }     
 
 
         $PP.Add("Power_Limit_Max", (HX4 $VegaOC.Power_Limit_Max))
@@ -116,14 +116,14 @@ function Set-VegaOC {
             $PP_Table = Set-ItemProperty -PropertyType Binary -Value $Power_Play
         }
         if ($Platform -eq "windows") {
-            $hexified = $Power_PLay.Split(',') | % { "0x$_"}
+            $hexified = $Power_PLay.Split(',') | % { "0x$_" }
             $GetRegistry = (Get-RegDevices)
             $GetRegistry.Keys | foreach {
                 $Regkey = Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\$($_)" -Name "PP_PhmSoftPowerPlayTable" -ErrorAction SilentlyContinue
                 if ($Regkey) {
                     Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\$($_)" -Name "PP_PhmSoftPowerPlayTable" -Value ([byte[]]$hexified)
                 }
-                else {New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\$($_)" -Name "PP_PhmSoftPowerPlayTable" -PropertyType "Binary" -Value ([byte[]]$hexified) | Out-Null }
+                else { New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\$($_)" -Name "PP_PhmSoftPowerPlayTable" -PropertyType "Binary" -Value ([byte[]]$hexified) | Out-Null }
             }
             $MinerArray = Get-Content ".\build\txt\devicelist.txt" | COnvertFrom-Json
             $AMD = $MinerArray.AMD
@@ -139,8 +139,6 @@ function Set-VegaOC {
 function Start-OC {
     param(
         [Parameter(Mandatory = $false)]
-        [String]$Platforms,
-        [Parameter(Mandatory = $false)]
         [String]$NewMiner,
         [Parameter(Mandatory = $false)]
         [String]$Dir,
@@ -149,26 +147,26 @@ function Start-OC {
     )
 
     $Miner = $NewMiner | ConvertFrom-Json
-    $GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
-    $OCSettings = Get-Content ".\config\oc\oc-settings.json" | ConvertFrom-Json
-    
-    $nvidiaOC = $false; $DoNVIDIAOC = $false; $DoAMDOC = $false
-    $AMDOC = $false;    $ETHPill = $false;    $SettingsArgs = $false
-    
-    $Miner | foreach {
-        if ($Miner.Type -like "*NVIDIA*") {$nvidiaOC = $true}
-        if ($Miner.Type -like "*AMD*") {$AMDOC = $true}
+    Switch ($Global:Config.params.Platform) {
+        "linux" { $GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json }
+        "windows" { $GCount = Get-Content ".\build\txt\oclist.txt" | ConvertFrom-Json }
     }
     
-    if($nvidiaOC -or $AMDOC) { write-log "Setting $($Miner.Type) Overclocking" -ForegroundColor Cyan }
+    $nvidiaOC = $false; $DoNVIDIAOC = $false; $DoAMDOC = $false
+    $AMDOC = $false; $ETHPill = $false; $SettingsArgs = $false
+    
+    if ($Miner.Type -like "*NVIDIA*") { $nvidiaOC = $true }
+    if ($Miner.Type -like "*AMD*") { $AMDOC = $true }
+    
+    if ($nvidiaOC -or $AMDOC) { write-log "Setting $($Miner.Type) Overclocking" -ForegroundColor Cyan }
     
     ##Check For Pill
-    $Miner | foreach {if ($Miner.ethpill) {$ETHPill = $true}}
+    if ($global:oc_algos.$($Miner.Algo).ETHPill) { $ETHPill = $true }
     
     ## Stop previous Pill
     ## Will Restart It If it Required
-    if ($Platforms -eq "linux") {Start-Process "./build/bash/killall.sh" -ArgumentList "pill"}
-    if ($Platforms -eq "windows") {
+    if ($Global:Config.params.Platform -eq "linux") { Start-Process "./build/bash/killall.sh" -ArgumentList "pill" }
+    if ($Global:Config.params.Platform -eq "windows") {
         if (Test-Path (".\build\pid\pill_pid.txt")) {
             $PillPID = Get-Content ".\build\pid\pill_pid.txt"
             if ($PillPID) {
@@ -186,18 +184,18 @@ function Start-OC {
         write-log "Activating ETHPill" -ForegroundColor Cyan
 
         ##Devices
-        if ($Miner.Devices -eq "none") {$OCPillDevices = Get-DeviceString -TypeCount $GCount.NVIDIA.PSObject.Properties.Value.Count}
-        else {$OCPillDevices = Get-DeviceString -TypeDevices $Miner.Devices}
+        if ($Miner.Devices -eq "none") { $OCPillDevices = Get-DeviceString -TypeCount $GCount.NVIDIA.PSObject.Properties.Value.Count }
+        else { $OCPillDevices = Get-DeviceString -TypeDevices $Miner.Devices }
 
         ##Build Arguments
-        $OCPillDevices | foreach {$PillDevices += "$($_),"}
+        $OCPillDevices | foreach { $PillDevices += "$($_)," }
         $PillDevices = $PillDevices.Substring(0, $PillDevices.Length - 1)
         $PillDevices = "--RevA $PillDevices"
 
         ##Start Pill Linux
-        if ($Platforms -eq "linux") {
-            if ($Miner.PillDelay) {$PillSleep = $Miner.PillDelay}
-            else {$PillSleep = 1}
+        if ($Global:Config.params.Platform -eq "linux") {
+            if ($global:oc_algos.$($Miner.Algo).PillDelay) { $PillSleep = $global:oc_algos.$($Miner.Algo).PillDelay }
+            else { $PillSleep = 1 }
             $Pillconfig = "./build/apps/OhGodAnETHlargementPill-r2 $PillDevices"
             $Pillconfig | Set-Content ".\build\bash\pillconfig.sh"
             Start-Sleep -S .25
@@ -206,49 +204,82 @@ function Start-OC {
         }
 
         ##Start Pill Windows
-        if ($Platforms -eq "windows") {
-            if ($Miner.PillDelay) {$PillSleep = $Miner.PillDelay}
-            else {$PillSleep = 1}
+        if ($Global:Config.params.Platform -eq "windows") {
+            if ($global:oc_algos.$($Miner.Algo).PillDelay) { $PillSleep = $global:oc_algos.$($Miner.Algo).PillDelay }
+            else { $PillSleep = 1 }
             $PillTimer = New-Object -TypeName System.Diagnostics.Stopwatch
             $PL = Join-Path $WorkingDir ".\build\apps"
-            $command = Start-Process "powershell" -ArgumentList "-executionpolicy bypass -windowstyle minimized -noexit -command `"&{`$host.ui.RawUI.WindowTitle = `'ETH-Pill`'; Set-Location $PL; Start-Sleep $PillSleep; Invoke-Expression `'.\OhGodAnETHlargementPill-r2.exe $PillDevices`'}`"" -WindowStyle Minimized -PassThru -Verb Runas
+            $command = Start-Process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -noexit -command `"&{`$host.ui.RawUI.WindowTitle = `'ETH-Pill`'; Set-Location $PL; Start-Sleep $PillSleep; Invoke-Expression `'.\OhGodAnETHlargementPill-r2.exe $PillDevices`'}`"" -WindowStyle Minimized -PassThru -Verb Runas
             $command.ID | Set-Content ".\build\pid\pill_pid.txt"
             $PillTimer.Restart()
             do {
                 Start-Sleep -S 1
-                $ProcessId = if (Test-Path ".\build\pid\pill_pid.txt") {Get-Content ".\build\pid\pill_pid.txt"}
-                if ($ProcessID -ne $null) {$Process = Get-Process $ProcessId -ErrorAction SilentlyContinue}
+                $ProcessId = if (Test-Path ".\build\pid\pill_pid.txt") { Get-Content ".\build\pid\pill_pid.txt" }
+                if ($ProcessID -ne $null) { $Process = Get-Process $ProcessId -ErrorAction SilentlyContinue }
             }until($ProcessId -ne $null -or ($PillTimer.Elapsed.TotalSeconds) -ge 10)  
             $PillTimer.Stop()
         }
 
     }
     
-    $Card = $OCSettings.Cards -split ' '
+    $Card = $Global:oc_default.Cards -split ' '
     $Card = $Card -split ","
     
     #OC For Devices
     $NVIDIAOCArgs = @(); $NVIDIAPowerArgs = @(); $NScript = @(); $AScript = @()
     $NScript += "`#`!/usr/bin/env bash"
-    if ($Platforms -eq "linux") {$AScript += "`#`!/usr/bin/env bash"}
-    if ($Miner.ocmem -or $Miner.occore) {$SettingsArgs = $true}
-    if ($SettingsArgs -eq $true) {$NScript += "nvidia-settings"}
+    if ($Global:Config.params.Platform -eq "linux") { $AScript += "`#`!/usr/bin/env bash" }
+    if ($global:oc_algos.$($Miner.Algo).mem -or $global:oc_algos.$($Miner.Algo).core) { $SettingsArgs = $true }
+    if ($SettingsArgs -eq $true) { $NScript += "nvidia-settings" }
     
     if ($Miner.Type -like "*NVIDIA*") {
-        if ($Miner.Devices -eq "none") {$OCDevices = Get-DeviceString -TypeCount $GCount.NVIDIA.PSObject.Properties.Value.Count}
-        else {$OCDevices = Get-DeviceString -TypeDevices $Miner.Devices}
+        if ($Miner.Devices -eq "none") { $OCDevices = Get-DeviceString -TypeCount $GCount.NVIDIA.PSObject.Properties.Value.Count }
+        else { $OCDevices = Get-DeviceString -TypeDevices $Miner.Devices }
 
-        $Core = $Miner.occore -split ' ';             $Core = $Core -split ","
-        $Mem = $Miner.ocmem -split ' ';               $Mem = $Mem -split ","
-        $Power = $Miner.ocpower -split ' ';           $Power = $Power -split ","
-        $Fan = $Miner.ocfans -split ' ';              $Fan = $Fan -split ","
-                            $NScreenMiners = "$($Miner.MinerName) "
+        if ($global:oc_algos.$($Miner.Algo).core) {
+            $Core = $global:oc_algos.$($Miner.Algo).core -split ' '    
+            $Core = $Core -split ","
+        }
+        else {
+            $Core = $Global:oc_default.$($Miner.Type).core -split ' '
+            $Core = $Core -split ","
+        }
 
+        if ($global:oc_algos.$($Miner.Algo).mem) {
+            $Mem = $global:oc_algos.$($Miner.Algo).mem -split ' '    
+            $Mem = $Mem -split ","
+        }
+        else {
+            $Mem = $global:oc_default.$($Miner.Type).mem -split ' '
+            $Mem = $Mem -split ","
+        }
+
+        if ($global:oc_algos.$($Miner.Algo).power) {
+            $Power = $global:oc_algos.$($Miner.Algo).power -split ' '    
+            $Power = $Power -split ","
+        }
+        else {
+            $Power = $global:oc_default.$($Miner.Type).power -split ' '
+            $Power = $Power -split ","
+        }
+
+        if ($global:oc_algos.$($Miner.Algo).fans) {
+            $Fan = $global:oc_algos.$($Miner.Algo).fans -split ' '    
+            $Fan = $Fan -split ","
+        }
+        else {
+            $Fan = $global:oc_default.$($Miner.Type).fans -split ' '
+            $Fan = $Fan -split ","
+        }
+
+        $NScreenMiners = "$($Miner.MinerName) "
+
+        
         if ($Card) {
 
             for ($i = 0; $i -lt $OCDevices.Count; $i++) {
                 $GPU = $OCDevices[$i]
-                if ($Platforms -eq "linux") {$NScript += "nvidia-smi -i $($GCount.NVIDIA.$GPU) -pm ENABLED";}
+                if ($Global:Config.params.Platform -eq "linux") { $NScript += "nvidia-smi -i $($GCount.NVIDIA.$GPU) -pm ENABLED"; }
             }
         
             if ($Core) {
@@ -257,27 +288,27 @@ function Start-OC {
                     $GPU = $OCDevices[$i]
                     $X = 3
                     Switch ($Card[$($GCount.NVIDIA.$i)]) {
-                        "1050" {$X = 2}
-                        "1050ti" {$X = 2}
-                        "P106-100" {$X = 2}
-                        "P106-090" {$X = 1}
-                        "P104-100" {$X = 1}
-                        "P102-100" {$X = 1}
+                        "1050" { $X = 2 }
+                        "1050ti" { $X = 2 }
+                        "P106-100" { $X = 2 }
+                        "P106-090" { $X = 1 }
+                        "P104-100" { $X = 1 }
+                        "P102-100" { $X = 1 }
                     }
-                    if ($Platforms -eq "linux") {$NVIDIACORE += " -a [gpu:$($GCount.NVIDIA.$GPU)]/GPUGraphicsClockOffset[$X]=$($Core[$i])"}
-                    if ($Platforms -eq "windows") {$NVIDIAOCArgs += "-setBaseClockOffset:$($GCount.NVIDIA.$GPU),0,$($Core[$i]) "}
+                    if ($Global:Config.params.Platform -eq "linux") { $NVIDIACORE += " -a [gpu:$($GCount.NVIDIA.$GPU)]/GPUGraphicsClockOffset[$X]=$($Core[$i])" }
+                    if ($Global:Config.params.Platform -eq "windows") { $NVIDIAOCArgs += "-setBaseClockOffset:$($GCount.NVIDIA.$GPU),0,$($Core[$i]) " }
                 }
-                $NScreenCore += "$($Miner.Type) Core is $($Miner.occore) "
+                $NScreenCore += "$($Miner.Type) Core is $Core "
             }
 
             if ($Fan) {
                 $DONVIDIAOC = $true
                 for ($i = 0; $i -lt $OCDevices.Count; $i++) {
                     $GPU = $OCDevices[$i]
-                    if ($Platforms -eq "linux") {$NVIDIAFAN += " -a [gpu:$($GCount.NVIDIA.$GPU)]/GPUFanControlState=1 -a [fan:$($GCount.NVIDIA.$GPU)]/GPUTargetFanSpeed=$($Fan[$i])"}
-                    if ($Platforms -eq "windows") {$NVIDIAOCArgs += "-setFanSpeed:$($GCount.NVIDIA.$GPU),$($Fan[$i]) "}
+                    if ($Global:Config.params.Platform -eq "linux") { $NVIDIAFAN += " -a [gpu:$($GCount.NVIDIA.$GPU)]/GPUFanControlState=1 -a [fan:$($GCount.NVIDIA.$GPU)]/GPUTargetFanSpeed=$($Fan[$i])" }
+                    if ($Global:Config.params.Platform -eq "windows") { $NVIDIAOCArgs += "-setFanSpeed:$($GCount.NVIDIA.$GPU),$($Fan[$i]) " }
                 }
-                $NScreenFan += "$($Miner.Type) Fan is $($Miner.ocfans) "
+                $NScreenFan += "$($Miner.Type) Fan is $Fan "
             }
 
             if ($Mem) {
@@ -286,58 +317,107 @@ function Start-OC {
                     $GPU = $OCDevices[$i]
                     $X = 3
                     Switch ($Card[$($GCount.NVIDIA.$i)]) {
-                        "1050" {$X = 2}
-                        "1050ti" {$X = 2}
-                        "P106-100" {$X = 2}
-                        "P106-090" {$X = 1}
-                        "P104-100" {$X = 1}
-                        "P102-100" {$X = 1}
+                        "1050" { $X = 2 }
+                        "1050ti" { $X = 2 }
+                        "P106-100" { $X = 2 }
+                        "P106-090" { $X = 1 }
+                        "P104-100" { $X = 1 }
+                        "P102-100" { $X = 1 }
                     }
-                    if ($Platforms -eq "linux") {$NVIDIAMEM += " -a [gpu:$($GCount.NVIDIA.$GPU)]/GPUMemoryTransferRateOffset[$X]=$($Mem[$i])"}
-                    if ($Platforms -eq "windows") {$NVIDIAOCArgs += "-setMemoryClockOffset:$($GCount.NVIDIA.$GPU),0,$($Mem[$i]) "} 
+                    if ($Global:Config.params.Platform -eq "linux") { $NVIDIAMEM += " -a [gpu:$($GCount.NVIDIA.$GPU)]/GPUMemoryTransferRateOffset[$X]=$($Mem[$i])" }
+                    if ($Global:Config.params.Platform -eq "windows") { $NVIDIAOCArgs += "-setMemoryClockOffset:$($GCount.NVIDIA.$GPU),0,$($Mem[$i]) " } 
                 }
-                $NScreenMem += "$($Miner.Type) Memory is $($Miner.ocmem) "
+                $NScreenMem += "$($Miner.Type) Memory is $Mem "
             }
     
             if ($Power) {
                 $DONVIDIAOC = $true
                 for ($i = 0; $i -lt $OCDevices.Count; $i++) {
                     $GPU = $OCDevices[$i]
-                    if ($Platforms -eq "linux") {$NScript += "nvidia-smi -i $($GCount.NVIDIA.$GPU) -pl $($Power[$i])";}
-                    elseif ($Platforms -eq "windows") {$NVIDIAOCArgs += "-setPowerTarget:$($GCount.NVIDIA.$GPU),$($Power[$i]) "}
-                    }
-                $NScreenPower += "$($Miner.Type) Power is $($Miner.ocpower) "
+                    if ($Global:Config.params.Platform -eq "linux") { $NScript += "nvidia-smi -i $($GCount.NVIDIA.$GPU) -pl $($Power[$i])"; }
+                    elseif ($Global:Config.params.Platform -eq "windows") { $NVIDIAOCArgs += "-setPowerTarget:$($GCount.NVIDIA.$GPU),$($Power[$i]) " }
+                }
+                $NScreenPower += "$($Miner.Type) Power is $Power "
             }
         }
     }
     
     if ($Miner.Type -like "*AMD*") {
-        if ($Miner.Devices -eq "none") {$OCDevices = Get-DeviceString -TypeCount $GCount.AMD.PSObject.Properties.Value.Count }
-        else {$OCDevices = Get-DeviceString -TypeDevices $Miner.Devices}
-        
-        $Core = $Miner.occore -split ' ';        $CoreClock = $Core -split ","
-        $Mem = $Miner.ocmem -split ' ';          $MemClock = $Mem -split "," 
-        $V = $Miner.ocv -split ' ';              $Voltage = $V -split ","
-        $DPM = $Miner.ocdpm -split ' ';          $CoreState = $DPM -split ","
-        $MDPM = $Miner.ocmdpm -split ' ';        $MemState = $MDPM -split ","
-        $Fan = $Miner.ocfans -split ' ';         $Fans = $Fan -split ","
-                     $AScreenMiners = "$($Miner.MinerName) ";
+        if ($Miner.Devices -eq "none") { $OCDevices = Get-DeviceString -TypeCount $GCount.AMD.PSObject.Properties.Value.Count }
+        else { $OCDevices = Get-DeviceString -TypeDevices $Miner.Devices }
+
+
+        if ($global:oc_algos.$($Miner.Algo).core) {
+            $Core = $global:oc_algos.$($Miner.Algo).core -split ' '    
+            $CoreClock = $Core -split ","
+        }
+        else {
+            $Core = $Global:oc_default.$($Miner.Type).core -split ' '
+            $CoreClock = $Core -split ","
+        }
+
+        if ($global:oc_algos.$($Miner.Algo).mem) {
+            $Mem = $global:oc_algos.$($Miner.Algo).mem -split ' '    
+            $MemClock = $Mem -split ","
+        }
+        else {
+            $Mem = $Global:oc_default.$($Miner.Type).mem -split ' '
+            $MemClock = $Mem -split ","
+        }
+
+        if ($global:oc_algos.$($Miner.Algo).v) {
+            $V = $global:oc_algos.$($Miner.Algo).v -split ' '    
+            $Voltage = $V -split ","
+        }
+        else {
+            $V = $Global:oc_default.$($Miner.Type).v -split ' '
+            $Voltage = $V -split ","
+        }
+
+        if ($global:oc_algos.$($Miner.Algo).dpm) {
+            $DPM = $global:oc_algos.$($Miner.Algo).dpm -split ' '    
+            $CoreState = $DPM -split ","
+        }
+        else {
+            $DPM = $Global:oc_default.$($Miner.Type).dpm -split ' '
+            $CoreState = $DPM -split ","
+        }
+
+        if ($global:oc_algos.$($Miner.Algo).mdpm) {
+            $MDPM = $global:oc_algos.$($Miner.Algo).mdpm -split ' '    
+            $MemState = $MDPM -split ","
+        }
+        else {
+            $MDPM = $Global:oc_default.$($Miner.Type).mdpm -split ' '
+            $MemState = $MDPM -split ","
+        }
+
+        if ($global:oc_algos.$($Miner.Algo).fans) {
+            $Fan = $global:oc_algos.$($Miner.Algo).fans -split ' '    
+            $Fans = $Fan -split ","
+        }
+        else {
+            $Fan = $Global:oc_default.$($Miner.Type).fans -split ' '
+            $Fans = $Fan -split ","
+        }
+
+        $AScreenMiners = "$($Miner.MinerName) ";
     
         if ($Card) {
-            if ($Platforms -eq "linux") {
+            if ($Global:Config.params.Platform -eq "linux") {
 
                 if ($MemClock -or $MemState) {
                     $DOAmdOC = $true
                     for ($i = 0; $i -lt $OCDevices.Count; $i++) {
                         $GPU = $OCDevices[$i]
                         $MEMArgs = $null
-                        if ($MemClock[$GPU]) {$MEMArgs += " --mem-clock $($MemClock[$i])"}
-                        if ($MemState[$GPU]) {$MEMArgs += " --mem-state $($MemState[$i])"}
+                        if ($MemClock[$GPU]) { $MEMArgs += " --mem-clock $($MemClock[$i])" }
+                        if ($MemState[$GPU]) { $MEMArgs += " --mem-state $($MemState[$i])" }
                         $WolfArgs = "wolfamdctrl -i $($GCount.AMD.$GPU)$MEMArgs"
                         $AScript += "$WolfArgs"
                     }
-                    $AScreenMem += "$($Miner.Type) MEM is $($Miner.ocmem) "
-                    $AScreenMDPM += "$($Miner.Type) MDPM is $($Miner.ocmdpm) "
+                    $AScreenMem += "$($Miner.Type) MEM is $Mem "
+                    $AScreenMDPM += "$($Miner.Type) MDPM is $MemState "
                 }
 
                 if ($CoreClock) {
@@ -346,15 +426,15 @@ function Start-OC {
                         $GPU = $OCDevices[$i]
                         $PStates = 8
                         for ($j = 1; $j -lt $PStates; $j++) {
-                        $CoreArgs = $null
-                        if ($CoreClock[$GPU]) {$CoreArgs += " --core-clock $($CoreClock[$i])"}
-                        $CoreArgs += " --core-state $j"
-                        $WolfArgs = "wolfamdctrl -i $($GCount.AMD.$GPU)$CoreArgs"
-                        $AScript += $WolfArgs
+                            $CoreArgs = $null
+                            if ($CoreClock[$GPU]) { $CoreArgs += " --core-clock $($CoreClock[$i])" }
+                            $CoreArgs += " --core-state $j"
+                            $WolfArgs = "wolfamdctrl -i $($GCount.AMD.$GPU)$CoreArgs"
+                            $AScript += $WolfArgs
                         }
                     }
-                    $AScreenCore += "$($Miner.Type) CORE is $($Miner.occore) "
-                    $AScreenDPM += "$($Miner.Type) DPM is $($Miner.ocdpm) "
+                    $AScreenCore += "$($Miner.Type) CORE is $CoreClock) "
+                    $AScreenDPM += "$($Miner.Type) DPM is $CoreState) "
                 }
 
                 if ($Voltage) {
@@ -363,11 +443,11 @@ function Start-OC {
                     for ($i = 0; $i -lt $OCDevices.Count; $i++) {
                         $GPU = $OCDevices[$i]
                         for ($ia = 0; $ia -lt 16; $ia++) {
-                            if ($Voltage[$GPU]) {$VoltArgs += "wolfamdctrl -i $($GCount.AMD.$GPU) --vddc-table-set $($Voltage[$GPU]) --volt-state $ia"}
+                            if ($Voltage[$GPU]) { $VoltArgs += "wolfamdctrl -i $($GCount.AMD.$GPU) --vddc-table-set $($Voltage[$GPU]) --volt-state $ia" }
                         }
                     }
                     $AScript += $VoltArgs
-                    $AScreenPower += "$($Miner.Type) V is $($Miner.ocv) "
+                    $AScreenPower += "$($Miner.Type) V is $Voltage "
                 }
 
                 if ($Fans) {
@@ -375,31 +455,31 @@ function Start-OC {
                         $DOAmdOC = $true
                         $GPU = $OCDevices[$i]
                         $FanArgs = $null
-                        if ($Fans[$GPU]) {$Fanargs += " --set-fanspeed $($Fans[$i])"}
+                        if ($Fans[$GPU]) { $Fanargs += " --set-fanspeed $($Fans[$i])" }
                         $WolfArgs = "wolfamdctrl -i $($GCount.AMD.$GPU)$FanArgs"
                         $AScript += $WolfArgs
                     }
-                    $AScreenFans += "$($_.Type) Fans is $($_.ocfans) "
+                    $AScreenFans += "$($_.Type) Fans is $Fans "
                 }
             }
 
-            if ($Platforms -eq "windows") {
+            if ($Global:Config.params.Platform -eq "windows") {
                 Invoke-Expression ".\build\apps\odvii.exe s" | Tee-Object -Variable stats | OUt-Null
                 $stats = $stats | ConvertFrom-StringData
-                $Model = $stats.keys | % {if ($_ -like "*Model*") {$stats.$_}}
-                $Default_Core_Clock = @{}
-                $Default_Core_Voltage = @{}
-                $Default_Mem_Clock = @{}
-                $Default_Mem_Voltage = @{}
-                $stats.keys | % {if ($_ -like "*Core Clock*") {$Default_Core_Clock.Add($_, $stats.$_)}}
-                $stats.keys | % {if ($_ -like "*Core Voltage*") {$Default_Core_Voltage.Add($_, $stats.$_)}}
-                $stats.keys | % {if ($_ -like "*Mem Clock*") {$Default_Mem_Clock.Add($_, $stats.$_)}}
-                $stats.keys | % {if ($_ -like "*Mem Voltage*") {$Default_Mem_Voltage.Add($_, $stats.$_)}}
+                $Model = $stats.keys | % { if ($_ -like "*Model*") { $stats.$_ } }
+                $Default_Core_Clock = @{ }
+                $Default_Core_Voltage = @{ }
+                $Default_Mem_Clock = @{ }
+                $Default_Mem_Voltage = @{ }
+                $stats.keys | % { if ($_ -like "*Core Clock*") { $Default_Core_Clock.Add($_, $stats.$_) } }
+                $stats.keys | % { if ($_ -like "*Core Voltage*") { $Default_Core_Voltage.Add($_, $stats.$_) } }
+                $stats.keys | % { if ($_ -like "*Mem Clock*") { $Default_Mem_Clock.Add($_, $stats.$_) } }
+                $stats.keys | % { if ($_ -like "*Mem Voltage*") { $Default_Mem_Voltage.Add($_, $stats.$_) } }
                                     
                 $Ascript += "`$host.ui.RawUI.WindowTitle = `'OC-Start`';"
                 Invoke-Expression ".\build\apps\odvii.exe s" | Tee-Object -Variable Model | OUt-Null
                 $Model = $Model | ConvertFrom-StringData
-                $Model = $Model.keys | % {if ($_ -like "*Model*") {$Model.$_}}
+                $Model = $Model.keys | % { if ($_ -like "*Model*") { $Model.$_ } }
     
                 for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Name.Count; $i++) {
                     $OCArgs = $null
@@ -411,109 +491,112 @@ function Start-OC {
                     if ($MemClock -or $MDPM) {
                         $DOAmdOC = $true
                         $MPStates = 3
-                        if ($Model[$Select] -like "*Vega*") {$MPStates = 4}
-                        if ($MemClock.Count -eq 1) {$Memory_Clock = $MemClock}else {$Memory_Clock = $MemClock[$Select]}
-                        if ($MDPM.Count -eq 1) {$Mem_State = $MDPM}else {$Mem_State = $MDPM[$Select]}
+                        if ($Model[$Select] -like "*Vega*") { $MPStates = 4 }
+                        if ($MemClock.Count -eq 1) { $Memory_Clock = $MemClock }else { $Memory_Clock = $MemClock[$Select] }
+                        if ($MDPM.Count -eq 1) { $Mem_State = $MDPM }else { $Mem_State = $MDPM[$Select] }
                         $DefaultMemClock = $Default_Mem_Clock."Gpu $Select P$($PStates-1) Mem Clock"
                         $DefaultMemVolt = $Default_Mem_Voltage."Gpu $Select P$($PStates-1) Mem Voltage"
-                        if ($Memory_Clock) {$Mem = $Memory_Clock}else {$Mem = $DefaultMemClock}
-                        if($Mem -like '*;*') {
+                        if ($Memory_Clock) { $Mem = $Memory_Clock }else { $Mem = $DefaultMemClock }
+                        if ($Mem -like '*;*') {
                             $OCArgs += "Mem_P$($MPStates-1)=$($Mem) "
-                        } else {
-                            if ($Mem_State) { $MV = $Default_Mem_Voltage."Gpu $Select P$($Mem_State) Mem Voltage" }else {$MV = $DefaultMemVolt}
+                        }
+                        else {
+                            if ($Mem_State) { $MV = $Default_Mem_Voltage."Gpu $Select P$($Mem_State) Mem Voltage" }else { $MV = $DefaultMemVolt }
                             $OCArgs += "Mem_P$($MPStates-1)=$($Mem);$MV "
-                            }
-                        $AScreenMem = "$($Miner.Type) MEM is $($Miner.ocmem) "
+                        }
+                        $AScreenMem = "$($Miner.Type) MEM is $($global:oc_algos.$($Miner.Algo).ocmem) "
                         $AScreenMDPM = "$($Miner.Type) MDPM is $($Miner.ocmdpm) "
                     }
 
                     if ($CoreClock -or $Voltage) {
                         $DOAmdOC = $true
                         $PStates = 8
-                       for ($j = 1; $j -lt $PStates; $j++) {
-                            if ($CoreClock.Count -eq 1) {$Core_Clock = $CoreClock}else {$Core_Clock = $CoreClock[$Select]}
-                            if ($Voltage.Count -eq 1) {$Core_Volt = $Voltage}else {$Core_Volt = $Voltage[$Select]}
+                        for ($j = 1; $j -lt $PStates; $j++) {
+                            if ($CoreClock.Count -eq 1) { $Core_Clock = $CoreClock }else { $Core_Clock = $CoreClock[$Select] }
+                            if ($Voltage.Count -eq 1) { $Core_Volt = $Voltage }else { $Core_Volt = $Voltage[$Select] }
                             $DefaultCoreClock = $Default_Core_Clock."Gpu $Select P$j Core Clock"
                             $DefaultCoreVolt = $Default_Core_Voltage."Gpu $Select P$j Core Voltage"
-                            if ($Core_Clock) {$CClock = $Core_Clock}else {$CClock = $DefaultCoreClock}
-                            if ($Core_Volt) {$CVolt = $Core_Volt}else {$CVolt = $DefaultCoreVolt}
+                            if ($Core_Clock) { $CClock = $Core_Clock }else { $CClock = $DefaultCoreClock }
+                            if ($Core_Volt) { $CVolt = $Core_Volt }else { $CVolt = $DefaultCoreVolt }
                             $OCArgs += "GPU_P$j=$CClock;$CVolt "
                         }
-                        $AScreenCore = "$($Miner.Type) CORE is $($Miner.occore) "
+                        $AScreenCore = "$($Miner.Type) CORE is $($global:oc_algos.$($Miner.Algo).occore) "
                         $AScreenDPM = "$($Miner.Type) Core Voltage is $($Miner.ocv) "
                     }
 
                     if ($Fans) {
                         $DOAmdOC = $true
-                        $FansMap = (55,60,65,68,70)
+                        $FansMap = (55, 60, 65, 68, 70)
                         if ($Fans.Count -eq 1) {
-                            if($Fans[0] -like '*;*') {
+                            if ($Fans[0] -like '*;*') {
                                 $_Fans = $Fans[0] -split ';'
-                                    for($j = 0; $j -lt 5; $j++) {
-                                        if($j -lt $_Fans.Count) {$OCArgs += "Fan_P$($j)=$($FansMap[$j]);$($_Fans[$j]) "} 
-                                        else {$OCArgs += "Fan_P$($j)=$($FansMap[$j]);$($_Fans[$_Fans.Count-1]) "}
-                                    }
-                                } else {
-                                    $OCArgs += "Fan_P0=$($FansMap[0]);$($Fans) Fan_P1=$($FansMap[1]);$($Fans) Fan_P2=$($FansMap[2]);$($Fans) Fan_P3=$($FansMap[3]);$($Fans) Fan_P4=$($FansMap[4]);$($Fans) "
+                                for ($j = 0; $j -lt 5; $j++) {
+                                    if ($j -lt $_Fans.Count) { $OCArgs += "Fan_P$($j)=$($FansMap[$j]);$($_Fans[$j]) " } 
+                                    else { $OCArgs += "Fan_P$($j)=$($FansMap[$j]);$($_Fans[$_Fans.Count-1]) " }
                                 }
                             }
                             else {
-                                if($Fans[$Select] -like '*;*') {
-                                    $_Fans = $Fans[$Select] -split ';'
-                                    for($j = 0; $j -lt 5; $j++) {
-                                        if($j -lt $_Fans.Count) {$OCArgs += "Fan_P$($j)=$($FansMap[$j]);$($_Fans[$j]) "} 
-                                        else { $OCArgs += "Fan_P$($j)=$($FansMap[$j]);$($_Fans[$_Fans.Count-1]) " }
-                                    }
-                                } else {
-                                    $OCArgs += "Fan_P0=$($FansMap[0]);$($Fans[$Select]) Fan_P1=$($FansMap[1]);$($Fans[$Select]) Fan_P2=$($FansMap[2]);$($Fans[$Select]) Fan_P3=$($FansMap[3]);$($Fans[$Select]) Fan_P4=$($FansMap[4]);$($Fans[$Select]) "
+                                $OCArgs += "Fan_ZeroRPM=0 Fan_P0=$($FansMap[0]);$($Fans) Fan_P1=$($FansMap[1]);$($Fans) Fan_P2=$($FansMap[2]);$($Fans) Fan_P3=$($FansMap[3]);$($Fans) Fan_P4=$($FansMap[4]);$($Fans) "
+                            }
+                        }
+                        else {
+                            if ($Fans[$Select] -like '*;*') {
+                                $_Fans = $Fans[$Select] -split ';'
+                                for ($j = 0; $j -lt 5; $j++) {
+                                    if ($j -lt $_Fans.Count) { $OCArgs += "Fan_P$($j)=$($FansMap[$j]);$($_Fans[$j]) " } 
+                                    else { $OCArgs += "Fan_P$($j)=$($FansMap[$j]);$($_Fans[$_Fans.Count-1]) " }
                                 }
                             }
-                            $AScreenFans = "$($Miner.Type) Fans is $($Miner.ocfans) "
+                            else {
+                                $OCArgs += "Fan_ZeroRPM=0 Fan_P0=$($FansMap[0]);$($Fans[$Select]) Fan_P1=$($FansMap[1]);$($Fans[$Select]) Fan_P2=$($FansMap[2]);$($Fans[$Select]) Fan_P3=$($FansMap[3]);$($Fans[$Select]) Fan_P4=$($FansMap[4]);$($Fans[$Select]) "
+                            }
                         }
-                        $AScript += "Start-Process `".\OverdriveNTool.exe`" -ArgumentList `"$OCArgs`" -WindowStyle Minimized -Wait"
+                        $AScreenFans = "$($Miner.Type) Fans is $($Miner.ocfans) "
                     }
+                    $AScript += "Start-Process `".\OverdriveNTool.exe`" -ArgumentList `"$OCArgs`" -WindowStyle Minimized -Wait"
                 }
             }
         }
+    }
     
-    if ($DoNVIDIAOC -eq $true -and $Platforms -eq "windows") {
+    if ($DoNVIDIAOC -eq $true -and $Global:Config.params.Platform -eq "windows") {
         $script = @()
         $script += "`$host.ui.RawUI.WindowTitle = `'OC-Start`';"
         $script += "Invoke-Expression `'.\nvidiaInspector.exe $NVIDIAOCArgs`'"
         Set-Location ".\build\apps"
         $script | Out-File "NVIDIA-oc-start.ps1"
-        $Command = start-process "powershell.exe" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\NVIDIA-oc-start.ps1""" -PassThru -WindowStyle Minimized -Wait
+        $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\NVIDIA-oc-start.ps1""" -PassThru -WindowStyle Minimized -Wait
         Set-Location $Dir
     }
     
-    if ($DoAMDOC -eq $true -and $Platforms -eq "windows") {
+    if ($DoAMDOC -eq $true -and $Global:Config.params.Platform -eq "windows") {
         Set-Location ".\build\apps"
         $Ascript | Out-File "AMD-oc-start.ps1"
-        $Command = start-process "powershell.exe" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\AMD-oc-start.ps1""" -PassThru -WindowStyle Minimized -Wait
+        $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\AMD-oc-start.ps1""" -PassThru -WindowStyle Minimized -Wait
         Set-Location $Dir
     }
     
-    if ($DOAmdOC -eq $true -and $Platforms -eq "linux") {
+    if ($DOAmdOC -eq $true -and $Global:Config.params.Platform -eq "linux") {
         Start-Process "./build/bash/killall.sh" -ArgumentList "OC_AMD" -Wait
         Start-Process "screen" -ArgumentList "-S OC_AMD -d -m" -Wait
         Start-Sleep -S .25
         $AScript | Out-File ".\build\bash\amdoc.sh"
         Start-Sleep -S .25
         Start-Process "chmod" -ArgumentList "+x build/bash/amdoc.sh" -Wait
-        if (Test-Path ".\build\bash\amdoc.sh") {Start-Process "screen" -ArgumentList "-S OC_AMD -X stuff ./build/bash/amdoc.sh`n"; Start-Sleep -S 1;}
+        if (Test-Path ".\build\bash\amdoc.sh") { Start-Process "screen" -ArgumentList "-S OC_AMD -X stuff ./build/bash/amdoc.sh`n"; Start-Sleep -S 1; }
     }
     
-    if ($DoNVIDIAOC -eq $true -and $Platforms -eq "linux") {
-        if ($Core) {$NScript[1] = "$($NScript[1])$NVIDIACORE"}
-        if ($Mem) {$NScript[1] = "$($NScript[1])$NVIDIAMEM"}
-        if ($Fan) {$NScript[1] = "$($NScript[1])$NVIDIAFAN"}
+    if ($DoNVIDIAOC -eq $true -and $Global:Config.params.Platform -eq "linux") {
+        if ($Core) { $NScript[1] = "$($NScript[1])$NVIDIACORE" }
+        if ($Mem) { $NScript[1] = "$($NScript[1])$NVIDIAMEM" }
+        if ($Fan) { $NScript[1] = "$($NScript[1])$NVIDIAFAN" }
         Start-Process "./build/bash/killall.sh" -ArgumentList "OC_NVIDIA" -Wait
         Start-Process "screen" -ArgumentList "-S OC_NVIDIA -d -m"
         Start-Sleep -S .25
         $NScript | Out-File ".\build\bash\nvidiaoc.sh"
         Start-Sleep -S .25
         Start-Process "chmod" -ArgumentList "+x build/bash/nvidiaoc.sh" -Wait
-        if (Test-Path ".\build\bash\nvidiaoc.sh") {Start-Process "screen" -ArgumentList "-S OC_NVIDIA -X stuff ./build/bash/nvidiaoc.sh`n"; Start-Sleep -S 1;}
+        if (Test-Path ".\build\bash\nvidiaoc.sh") { Start-Process "screen" -ArgumentList "-S OC_NVIDIA -X stuff ./build/bash/nvidiaoc.sh`n"; Start-Sleep -S 1; }
     }
     
     $OCMessage = @()
@@ -538,7 +621,7 @@ function Start-OC {
     }
 
     $OCMessage | % {
-      write-log "$($_)" -ForegroundColor Cyan
+        write-log "$($_)" -ForegroundColor Cyan
     }
 
     $OCMessage | Add-Content -Path ".\build\txt\oc-settings.txt"

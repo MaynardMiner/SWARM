@@ -7,6 +7,7 @@ param (
     [string]$Launch  
 )
 
+[cultureinfo]::CurrentCulture = 'en-US'
 
 Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))
 $dir = Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))
@@ -94,7 +95,7 @@ switch ($Action) {
                     switch ($Launch) {
                         "Command" {
                             if ($Value -in $PoolJson.$Item.exclusions) {
-                                $PoolJson.$Item.exclusions = $PoolJson.$Item.exclusions | ForEach-Object { if ($_ -ne $Value) { $_ } }
+                                $PoolJson.$Item.exclusions = $PoolJson.$Item.exclusions | Where {$_ -ne $Value}
                                 $PoolChange = $true
                                 $Screen += "Removed $Value in $Item exclusions in pool-algos.json"
                             }

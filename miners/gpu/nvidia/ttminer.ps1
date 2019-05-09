@@ -3,9 +3,9 @@ $NVIDIATypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
-    if ($nvidia.ttminer.$ConfigType -and $Platform -eq "windows") { $Path = "$($nvidia.ttminer.$ConfigType)" }
+    if ($nvidia.ttminer.$ConfigType -and $global:Config.Params.Platform -eq "windows") { $Path = "$($nvidia.ttminer.$ConfigType)" }
     else { $Path = "None" }
-    if ($nvidia.ttminer.uri -and $Platform -eq "windows") { $Uri = "$($nvidia.ttminer.uri)" }
+    if ($nvidia.ttminer.uri -and $global:Config.Params.Platform -eq "windows") { $Uri = "$($nvidia.ttminer.uri)" }
     else { $Uri = "None" }
     if ($nvidia.ttminer.minername) { $MinerName = "$($nvidia.ttminer.minername)" }
     else { $MinerName = "None" }
@@ -27,7 +27,7 @@ $NVIDIATypes | ForEach-Object {
 
     ##Get Configuration File
     $GetConfig = "$dir\config\miners\ttminer.json"
-    try { $Config = Get-Content $GetConfig | ConvertFrom-Json }
+    try { $MinerConfig = Get-Content $GetConfig | ConvertFrom-Json }
     catch { Write-Log "Warning: No config found at $GetConfig" }
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
@@ -38,12 +38,12 @@ $NVIDIATypes | ForEach-Object {
     $Prestart = @()
     if (Test-Path $BE) { $Prestart += "export LD_PRELOAD=libcurl-compat.so.3.0.0" }
     $PreStart += "export LD_LIBRARY_PATH=$ExportDir"
-    $Config.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
+    $MinerConfig.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 
     if ($Coins -eq $true) { $Pools = $CoinPools }else { $Pools = $AlgoPools }
 
     ##Build Miner Settings
-    $Config.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+    $MinerConfig.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
 
         $MinerAlgo = $_
 
@@ -57,8 +57,8 @@ $NVIDIATypes | ForEach-Object {
                     [PSCustomObject]@{
                         MName      = $Name
                         Coin       = $Coins
-                        Delay      = $Config.$ConfigType.delay
-                        Fees       = $Config.$ConfigType.fee.$($_.Algorithm)
+                        Delay      = $MinerConfig.$ConfigType.delay
+                        Fees       = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
                         Symbol     = "$($_.Symbol)"
                         MinerName  = $MinerName
                         Prestart   = $PreStart
@@ -66,16 +66,10 @@ $NVIDIATypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         DeviceCall = "ttminer"
-                        Arguments  = "-a $($Config.$ConfigType.naming.$($_.Algorithm)) --nvidia -o $($_.Protocol)://$($_.Host):$($_.Port) $worker-b localhost:$Port -u $($_.$User) -p $($_.$Pass) $($Config.$ConfigType.commands.$($_.Algorithm))"
+                        Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --nvidia -o $($_.Protocol)://$($_.Host):$($_.Port) $Worker-b localhost:$Port -u $($_.$User) -p $($_.$Pass) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
                         Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
                         PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
-                        ocpower    = if ($Config.$ConfigType.oc.$($_.Algorithm).power) { $Config.$ConfigType.oc.$($_.Algorithm).power }else { $OC."default_$($ConfigType)".Power }
-                        occore     = if ($Config.$ConfigType.oc.$($_.Algorithm).core) { $Config.$ConfigType.oc.$($_.Algorithm).core }else { $OC."default_$($ConfigType)".core }
-                        ocmem      = if ($Config.$ConfigType.oc.$($_.Algorithm).memory) { $Config.$ConfigType.oc.$($_.Algorithm).memory }else { $OC."default_$($ConfigType)".memory }
-                        ocfans     = if ($Config.$ConfigType.oc.$($_.Algorithm).fans) { $Config.$ConfigType.oc.$($_.Algorithm).fans }else { $OC."default_$($ConfigType)".fans }
-                        ethpill    = $Config.$ConfigType.oc.$($_.Algorithm).ethpill
-                        pilldelay  = $Config.$ConfigType.oc.$($_.Algorithm).pilldelay
                         MinerPool  = "$($_.Name)"
                         FullName   = "$($_.Mining)"
                         Port       = $Port

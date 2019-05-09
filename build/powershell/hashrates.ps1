@@ -89,7 +89,7 @@ function Get-HTTP {
     )
 
     try {
-        $response = Invoke-WebRequest "http://$($Server):$($Port)$($Message)" -UseBasicParsing -TimeoutSec $timeout
+        $response = Invoke-WebRequest "http://$($Server):$($Port)$($Message)" -UseBasicParsing -TimeoutSec $Timeout
     }
     catch {$Error.Remove($error[$Error.Count - 1])}
     $response
@@ -100,8 +100,6 @@ function Get-HashRate {
     param(
         [Parameter(Mandatory = $true)]
         [String]$Type,
-        [Parameter(Mandatory = $false)]
-        [String]$API,
         [Parameter(Mandatory = $false)]
         [Int]$Port
     )

@@ -11,21 +11,17 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 function get-AMDPlatform {
-    param(
-        [Parameter(Mandatory = $true)]
-        [string]$Platforms
-    )
 
-    if ($Platforms -eq "linux") {
+    if ($Global:Config.Params.Platform -eq "linux") {
         $A = Invoke-Expression ".\build\apps\getplatforms" | Tee-Object -Variable clplatform
         Start-Sleep -S .5
-        $GPUPlatform = $clplatform | Select-String "AMD Accelerated Parallel Processing"
+        $GPUPlatform = $global:Config.Params.CLPlatform | Select-String "AMD Accelerated Parallel Processing"
         $GPUPlatform = $GPUPlatform -replace (" ", "")
         $GPUPlatform = $GPUPlatform -split "AMD" | Select -First 1
         $GPUPlatform
     }
 
-    if ($Platforms -eq "windows") {
+    if ($Global:Config.Params.Platform -eq "windows") {
         $A = (clinfo) | Select-string "Platform Vendor"
         $PlatformA = @()
         for ($i = 0; $i -lt $A.Count; $i++) { $PlatSel = $A | Select -Skip $i -First 1; $PlatSel = $PlatSel -replace "Platform Vendor", "$i"; $PlatSel = $PlatSel -replace ":", "="; $PlatformA += $PlatSel}

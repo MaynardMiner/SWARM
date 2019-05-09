@@ -1,0 +1,3776 @@
+{
+    "aeon": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "aergo": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "allium": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "argon2d250": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "argon2d4096": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "argon2d-dyn": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "argon2d-uis": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "astralhash": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "balloon": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "bcd": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "beam": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "bitcore": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "blake": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "blake2s": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "c11": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "cnfastv2": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "cnsuperfast ": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "cryptonight": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "cryptonightgpu": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "cryptonightheavy": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "cryptonightmonero": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "cryptonightr": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "cryptonightsuperfast": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "cryptonightv7": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "cryptonightv8": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "cuckaroo29": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "cuckatoo31": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "cuckoo": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "dagger": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "daggerhashimoto": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "dedal": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "equihash": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "equihash144": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "equihash192": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "equihash200": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "equihash210": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "equihash96": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "equihash-btg": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "ethash": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "exosis": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "geek": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "grincuckaroo29": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "grincuckatoo31": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "groestl": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "hex": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "hmq1725": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "hodl": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "honeycomb": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "hsr": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "jackpot": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "jeonghash": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "keccak": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "keccakc": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "lbk3": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "lbry": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "lyra2re": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "lyra2rev2": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "lyra2rev3": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "lyra2v2": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "lyra2v3": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "lyra2vc0ban": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "lyra2z": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "lyra2zz": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "m7m": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "mtp": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "myr-gr": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "neoscrypt": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "nist5": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "nrghash": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "padihash": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "pawelhash": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "phi": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "phi2": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "polytimos": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "progpow": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "qubit": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "rainforest": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "renesis": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "rfv2": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "scrypt": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "sha256": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "sha256q": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "sha256t": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "sib": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "skein": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "skunk": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "sonoa": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "timetravel": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "tribus": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "veil": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "verushash": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "wildkeccak": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "x11": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "x11evo": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "x13": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "x16r": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "x16rt": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "x16s": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "x17": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "x18": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "x21s": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "x22i": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "xevan": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "yescrypt": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "yescryptr16": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "yescryptr32": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "yescryptr8": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "yespower": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "yespowerr16": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "yespowerr8": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    },
+    "zhash": {
+        "NVIDIA1": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA2": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "NVIDIA3": {
+            "Power": "",
+            "Core": "",
+            "Memory": "",
+            "Fans": "",
+            "ETHPill": "",
+            "PillDelay": ""
+        },
+        "AMD1": {
+            "fans": "",
+            "v": "",
+            "dpm": "",
+            "mem": "",
+            "mdpm": "",
+            "core": ""
+        }
+    }
+}

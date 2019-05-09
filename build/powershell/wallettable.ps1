@@ -11,6 +11,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 function Get-WalletTable {
+    [cultureinfo]::CurrentCulture = 'en-US'
 
     if(Test-Path ".\wallet\values\*"){Remove-Item ".\wallet\values\*" -Force}
 

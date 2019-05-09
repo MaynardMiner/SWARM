@@ -29,6 +29,7 @@ param(
 ## Set to SWARM dir
 Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))
 $Message = @()
+[cultureinfo]::CurrentCulture = 'en-US'
 
 if ($Command -eq "!") {$Message += "No Command Given. Try version query"; Write-Host $($Message | Select -last 1)}
 else {$CommandQuery = $Command -replace ("!", "")}

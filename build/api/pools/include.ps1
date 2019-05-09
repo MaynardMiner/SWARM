@@ -9,17 +9,19 @@ function Get-CoinShares {
     . .\build\api\pools\fairpool.ps1;
     . .\build\api\pools\blazepool.ps1;
 
-    $type | ForEach-Object { $global:Share_Table.Add("$($_)", @{ }) }
+    $global:Config.Params.Type | ForEach-Object { $global:Share_Table.Add("$($_)", @{ }) }
 
-    ##For now
-    switch ($Poolname) {
-        "zergpool" { Get-ZergpoolData }
-        "nlpool" { Get-NlPoolData }        
-        "ahashpool" { Get-AhashpoolData }
-        "blockmasters" { Get-BlockMastersData }
-        "hashrefinery" { Get-HashRefineryData }
-        "phiphipool" { Get-PhiphipoolData }
-        "fairpool" { Get-FairpoolData }
-        "blazepool" { Get-BlazepoolData }
+    ##For 
+    $global:Config.Params.Poolname | % {
+        switch ($_) {
+            "zergpool" { Get-ZergpoolData }
+            "nlpool" { Get-NlPoolData }        
+            "ahashpool" { Get-AhashpoolData }
+            "blockmasters" { Get-BlockMastersData }
+            "hashrefinery" { Get-HashRefineryData }
+            "phiphipool" { Get-PhiphipoolData }
+            "fairpool" { Get-FairpoolData }
+            "blazepool" { Get-BlazepoolData }
+        }
     }
 }

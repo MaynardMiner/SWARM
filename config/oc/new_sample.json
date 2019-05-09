@@ -8,11 +8,6 @@ IMPORTANT NOTE: Obviously the OC-Nvidia.conf file is a huge file. It may be smar
 { 
   "Cards": "1070 1070 1070 1050ti 1050ti 1050ti 1070 1050ti 1050ti 1070 1070 1050ti 1050ti" 
 
-If you would like swarm to start fans on Windows startup- enter fan in % here:
-
-"windows fan start": "70 70 75 75 70 75 70 70 75 70 70 70 70",
-
-
 If Cards Is Not Empty: Defaults MUST Be Specified For ALL Cards! You cannot leave blank! "default" is settings used for algorithms left without any oc settings. Have "Cards" set will essentially "turn on" OC-Tuning
 
 "default_NVIDIA1": {
@@ -32,7 +27,7 @@ ETHPill for dagger algos:
   },
 
 
-For Algorithms: They are located within each miner.json in the miners folder.
+For Algorithms: They are located oc-algos.json in the oc folder.
 You can choose to leave blank, such as below: If you do, MM.Hash will use "default" settings above.
 
 

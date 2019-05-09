@@ -2767,3 +2767,78 @@ API overhaul:
   Note: Update will not transfer pool-algos.json this release
         This means you must add bans again, if done through
         command.
+
+  2.2.3
+
+  Note: This is a mainly a patch for the below issues:
+
+  -Fixed WattOMeter for Linux/AMD (both HiveOS and generic *nix)
+  -Added GPUWatts to background screen for linux / fixed
+  -Added "mining" to ``get stats lite``
+  -Latest Bleeding Edge now supported for HiveOS!
+  -Latest Vega Image now supported for HiveOS!
+  -Fixed .tgz extraction issue with teamredminer.
+   * Swarm will now handle .tgz files.
+  -Fixed linux watchdog (close all screen on exit).
+
+  -gminer updated
+
+
+  2.2.4
+
+  Windows USERS: SWARM now requires latest .NET and Powershell:
+  * https://github.com/PowerShell/PowerShell/releases
+  * https://dotnet.microsoft.com/download/dotnet-framework/net472
+
+  SWARM should support latest NVIDIA Drivers, and Adrenaline Drivers
+
+  NEW FEATURES!
+
+  -SWARM now works in Windows 7/8 (Expiremental)
+   * If you use- Please let me know if there are
+     issues with miners.
+
+  -SWARM will handle oc for AMD, even with onboard cards.
+
+  -Updated WMI to v2
+  -Fixed Windows cpuminer screen output
+  -Fixed Directory Parsing with spaces (Windows)
+  -Enforced En-US Culture for Math & Time
+  -``benchmark timeout`` will now clear download blocks
+  -MiniZ updated
+  -Bminer updated
+
+  2.2.5
+
+  Note: All miner.json, oc, pools, and other files have been changed.
+  It was too much to code Transferring.
+
+  Update will only transfer stats & backup.
+
+  -gminer updated
+  -Crytpodredge updated
+  -argon algos added
+  -rfv2 algo added
+   * if you have issues- Add "-i 11" in cc-rfv2.json under "commands"
+  -New ProgPOW for AMD (Windows- Compiled for latest OpenCL, slightly optimized).
+   * Does not require older drivers to be installed. Can use latest.
+   * More 'tweaking' coming soon + ethash-ProgPOW support.
+
+  New Features:
+
+  -OC by algorithm, not miner. oc-algos.json has been added.
+  -New startup method.
+   * Allows either arguments, or users can pre-set ".\config\parameters\arguments.json"
+   * If newarguments.json is created- It will be used at startup instead.
+  
+  ASIC: Mutliple ASICS on 1 SWARM.
+   * example: ``-ASIC_IP 192.168.0.1:Rig1,192.168.02:Rig2``  etc. [ip address]:[nickname]
+   * asics can be added via ".\config\asic\asic-list.json" (Do not use -ASIC_IP then).
+   * no limit.
+
+  ``get asic`` now can specify which asic details to get: ``get asic ASIC1``
+
+  NOTE: I do not own a lot of ASICS. My testing was limited. Let me know if you have issues.
+
+  -Fixed Windows 7/8 automatic gpu detection. #123
+  -Fixed minor screen logging issues.

@@ -1,138 +1,78 @@
 {
-  "NVIDIA1": {
-    "name": "NVIDIA1",
-    "delay": "1",
-    "prestart": [],
-    "commands": {
-      "yescrypt": "-i 12.5",
-      "yescryptr16": "-i 12.5",
-      "yescryptr32": "-i 12.5"
+    "NVIDIA1": {
+        "name": "NVIDIA1",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "yescrypt": "-i 12.5",
+            "yescryptr16": "-i 12.5",
+            "yescryptr32": "-i 12.5"
+        },
+        "difficulty": {
+            "yescrypt": "",
+            "yescryptr16": "",
+            "yescryptr32": ""
+        },
+        "naming": {
+            "yescrypt": "yescrypt",
+            "yescryptr16": "yescryptr16",
+            "yescryptr32": "yescryptr32"
+        },
+        "fee": {
+            "yescrypt": 0,
+            "yescryptr16": 0,
+            "yescryptr32": 0
+        }
     },
-    "difficulty": {
-      "yescrypt": "",
-      "yescryptr16": "",
-      "yescryptr32": ""
+    "NVIDIA2": {
+        "name": "NVIDIA2",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "yescrypt": "",
+            "yescryptr16": "",
+            "yescryptr32": ""
+        },
+        "difficulty": {
+            "yescrypt": "",
+            "yescryptr16": "",
+            "yescryptr32": ""
+        },
+        "naming": {
+            "yescrypt": "yescrypt",
+            "yescryptr16": "yescryptr16",
+            "yescryptr32": "yescryptr32"
+        },
+        "fee": {
+            "yescrypt": 0,
+            "yescryptr16": 0,
+            "yescryptr32": 0
+        }
     },
-    "naming": {
-      "yescrypt": "yescrypt",
-      "yescryptr16": "yescryptr16",
-      "yescryptr32": "yescryptr32"
+    "NVIDIA3": {
+        "name": "NVIDIA3",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "yescrypt": "",
+            "yescryptr16": "",
+            "yescryptr32": ""
+        },
+        "difficulty": {
+            "yescrypt": "",
+            "yescryptr16": "",
+            "yescryptr32": ""
+        },
+        "naming": {
+            "yescrypt": "yescrypt",
+            "yescryptr16": "yescryptr16",
+            "yescryptr32": "yescryptr32"
+        },
+        "fee": {
+            "yescrypt": 0,
+            "yescryptr16": 0,
+            "yescryptr32": 0
+        }
     },
-    "fee": {
-      "yescrypt": 0,
-      "yescryptr16": 0,
-      "yescryptr32": 0
-    },
-    "oc": {
-      "yescrypt": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      },
-      "yescryptr16": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      },
-      "yescryptr32": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      }
-    }
-  },
-  "NVIDIA2": {
-    "name": "NVIDIA2",
-    "delay": "1",
-    "prestart": [],
-    "commands": {
-      "yescrypt": "",
-      "yescryptr16": "",
-      "yescryptr32": ""
-    },
-    "difficulty": {
-      "yescrypt": "",
-      "yescryptr16": "",
-      "yescryptr32": ""
-    },
-    "naming": {
-      "yescrypt": "yescrypt",
-      "yescryptr16": "yescryptr16",
-      "yescryptr32": "yescryptr32"
-    },
-    "fee": {
-      "yescrypt": 0,
-      "yescryptr16": 0,
-      "yescryptr32": 0
-    },
-    "oc": {
-      "yescrypt": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      },
-      "yescryptr16": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      },
-      "yescryptr32": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      }
-    }
-  },
-  "NVIDIA3": {
-    "name": "NVIDIA3",
-    "delay": "1",
-    "prestart": [],
-    "commands": {
-      "yescrypt": "",
-      "yescryptr16": "",
-      "yescryptr32": ""
-    },
-    "difficulty": {
-      "yescrypt": "",
-      "yescryptr16": "",
-      "yescryptr32": ""
-    },
-    "naming": {
-      "yescrypt": "yescrypt",
-      "yescryptr16": "yescryptr16",
-      "yescryptr32": "yescryptr32"
-    },
-    "fee": {
-      "yescrypt": 0,
-      "yescryptr16": 0,
-      "yescryptr32": 0
-    },
-    "oc": {
-      "yescrypt": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      },
-      "yescryptr16": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      },
-      "yescryptr32": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      }
-    }
-  },
-  "name": "ccmineryescrypt"
+    "name": "ccmineryescrypt"
 }

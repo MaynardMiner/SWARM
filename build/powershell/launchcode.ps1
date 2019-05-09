@@ -15,8 +15,6 @@ function Start-LaunchCode {
 
     param(
         [Parameter(Mandatory = $true)]
-        [String]$Platforms,
-        [Parameter(Mandatory = $true)]
         [String]$NewMiner,
         [Parameter(Mandatory = $false)]
         [String]$PP,
@@ -153,7 +151,7 @@ function Start-LaunchCode {
 
     
 
-        if ($Platforms -eq "windows") {
+        if ($Global:Config.Params.Platform -eq "windows") {
             $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
             if ($MinerProcess -eq $null -or $MinerProcess.HasExited -eq $true) {
             
@@ -185,7 +183,7 @@ function Start-LaunchCode {
                 ##Make Test.bat for users
                 if (-not (Test-Path "$WorkingDirectory\swarm-start.bat")) {
                     $minerbat = @()
-                    $minerbat += "CMD /r powershell -ExecutionPolicy Bypass -command `".\swarm-start.ps1`""
+                    $minerbat += "CMD /r pwsh -ExecutionPolicy Bypass -command `".\swarm-start.ps1`""
                     $minerbat += "cmd.exe"
                     $miner_bat = Join-Path $WorkingDirectory "swarm-start.bat"
                     $minerbat | Set-Content $miner_bat
@@ -194,7 +192,7 @@ function Start-LaunchCode {
                 ##Build Start Script
                 $script = @()
                 $script += "`$OutputEncoding = [System.Text.Encoding]::ASCII"
-                $script += "$dir\build\powershell\icon.ps1 `"$dir\build\apps\miner.ico`"" 
+                $script += "Start-Process `"powershell`" -ArgumentList `"-command `"`"Set-Location ```'$dir```'; & ```'$dir\build\powershell\icon.ps1```' ```'$dir\build\apps\miner.ico```'`"`"`" -NoNewWindow"
                 $script += "`$host.ui.RawUI.WindowTitle = `'$($MinerCurrent.Name) - $($MinerCurrent.Algo)`';"
                 $MinerCurrent.Prestart | ForEach-Object {
                     if ($_ -notlike "export LD_LIBRARY_PATH=$dir\build\export") {
@@ -212,10 +210,16 @@ function Start-LaunchCode {
                         "ccminer" {
                             $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FIlePath ""$Logs"" -Append; `$Output | Out-Host;}`'" 
                         }
+                        "cpuminer" {
+                            $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FIlePath ""$Logs"" -Append; `$Output | Out-Host;}`'" 
+                        }
                         "claymore" {
                             $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FIlePath ""$Logs"" -Append; `$Output | Out-Host;}`'" 
                         }
                         "xmrstak" {
+                            $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FIlePath ""$Logs"" -Append; `$Output | Out-Host;}`'" 
+                        }
+                        "xmrig-opt" {
                             $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FIlePath ""$Logs"" -Append; `$Output | Out-Host;}`'" 
                         }
                         "wildrig" {
@@ -254,7 +258,7 @@ function Start-LaunchCode {
             else { $MinerProcess }
         } 
 
-        elseif ($Platforms -eq "linux") {
+        elseif ($Global:Config.Params.Platform -eq "linux") {
 
             ##Specified Dir Again For debugging / Testing - No Harm
             $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
@@ -402,17 +406,14 @@ function Start-LaunchCode {
     }
     else {
         $clear = Remove-ASICPools $AIP $MinerCurrent.Port $MinerCurrent.API
-        Start-Sleep -S 1
         $Commands = "addpool|$($MinerCurrent.Arguments)"
         Write-Log "Adding New Pool"
-        $response = Get-TCP -Server $AIP -Port $MinerCurrent.Port -Timeout 5 -Message $Commands
-        Start-Sleep -S 1
+        $response = Get-TCP -Server $AIP -Port $MinerCurrent.Port -Timeout 10 -Message $Commands
         $response = $null
         Write-Log "Switching To New Pool"
         $Commands = "switchpool|1"
-        $response = Get-TCP -Server $AIP -Port $MinerCurrent.Port -Timeout 5 -Message $Commands
-        if ($response) { $MinerProcess = @{StartTime = (Get-Date); HasExited = $false }
-        }
+        $response = Get-TCP -Server $AIP -Port $MinerCurrent.Port -Timeout 10 -Message $Commands
+        if ($response) { $MinerProcess = @{StartTime = (Get-Date); HasExited = $false }}
         $MinerProcess
     }
 }

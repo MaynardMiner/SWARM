@@ -37,8 +37,8 @@
     "NVIDIA2": ".\\bin\\cryptodredge-2\\CryptoDredge",
     "NVIDIA3": ".\\bin\\cryptodredge-3\\CryptoDredge",
     "minername": "CryptoDredge",
-    "version": "0.18.0",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/CryptoDredge-Linux-10.tar.gz"
+    "version": "0.19.0",
+    "uri": "https://github.com/technobyl/CryptoDredge/releases/download/v0.19.0/CryptoDredge_0.19.0_cuda_10.0_linux.tar.gz"
   },
   "cc-mtp": {
     "name": "cc-mtp",
@@ -140,6 +140,16 @@
     "version": "2.3.1",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/tpruvot-linux-10.tar.gz"
   },
+  "cc-rfv2": {
+    "name": "cc-rfv2",
+    "type": "nvidia",
+    "NVIDIA1": ".\\bin\\cc-rfv2-1\\ccminer",
+    "NVIDIA2": ".\\bin\\cc-rfv2-2\\ccminer",
+    "NVIDIA3": ".\\bin\\cc-rfv2-3\\ccminer",
+    "minername": "ccminer",
+    "version": "2.3.1",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/cc-rfv2-linux.tar.gz"
+  },
   "trex": {
     "name": "trex",
     "type": "nvidia",
@@ -177,8 +187,8 @@
     "NVIDIA2": ".\\bin\\gminer-2\\miner",
     "NVIDIA3": ".\\bin\\gminer-3\\miner",
     "minername": "miner",
-    "version": "1.39",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.39/gminer_1_39_linux64.tar.xz"
+    "version": "1.42",
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.42/gminer_1_42_linux64.tar.xz"
   },
   "grin-miner": {
     "name": "grin-miner",
@@ -197,8 +207,8 @@
     "NVIDIA2": ".\\bin\\bminer-2\\bminer",
     "NVIDIA3": ".\\bin\\bminer-3\\bminer",
     "minername": "bminer",
-    "version": "15.5.1",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/bminer-linux.tar.gz"
+    "version": "15.5.2",
+    "uri": "https://www.bminercontent.com/releases/bminer-v15.5.2-ed2038c-amd64.tar.xz"
   },
   "miniz": {
     "name": "miniz",
@@ -207,7 +217,7 @@
     "NVIDIA2": ".\\bin\\miniz-2\\miniZ",
     "NVIDIA3": ".\\bin\\miniz-3\\miniZ",
     "minername": "miniZ",
-    "version": "1.3n",
+    "version": "1.3n4",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/miniz-linux.tar.gz"
   },
   "progminer": {

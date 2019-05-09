@@ -2,9 +2,9 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $fairpool_Request = [PSCustomObject]@{ } 
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
-if($XNSub -eq "Yes"){$X = "#xnsub"}
+if($global:Config.Params.xnsub -eq "Yes"){$X = "#xnsub"}
  
-if ($Poolname -eq $Name) {
+if ($Name -in $global:Config.Params.PoolName) {
     try { $fairpool_Request = Invoke-RestMethod "https://fairpool.pro/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
     catch { Write-Log "SWARM contacted ($Name) but there was no response."; return }
  
@@ -13,7 +13,7 @@ if ($Poolname -eq $Name) {
         return 
     }
 
-    Switch ($Location) {
+    Switch ($global:Config.Params.Location) {
         "US" { $Region = "us1.fairpool.pro" }
         default { $Region = "eu1.fairpool.pro" }
     }
@@ -27,7 +27,7 @@ if ($Poolname -eq $Name) {
  
         $fairpool_Algorithm = $fairpool_Request.$_.name.ToLower()
 
-        if ($Algorithm -contains $fairpool_Algorithm -or $ASIC_ALGO -contains $fairpool_Algorithm) {
+        if ($Algorithm -contains $fairpool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $fairpool_Algorithm) {
             if ($Name -notin $global:Exclusions.$fairpool_Algorithm.exclusions -and $fairpool_Algorithm -notin $Global:banhammer) {
                 $fairpool_Host = "$region$X"
                 $fairpool_Port = $fairpool_Request.$_.port
@@ -54,19 +54,19 @@ if ($Poolname -eq $Name) {
                     Symbol    = "$fairpool_Algorithm-Algo"
                     Mining    = $fairpool_Algorithm
                     Algorithm = $fairpool_Algorithm
-                    Price     = $Stat.$Stat_Algo
+                    Price     = $Stat.$($global:Config.Params.Stat_Algo)
                     Protocol  = "stratum+tcp"
                     Host      = $fairpool_Host
                     Port      = $fairpool_Port
-                    User1     = $global:Wallets.Wallet1.$PasswordCurrency1.address
-                    User2     = $global:Wallets.Wallet2.$PasswordCurrency2.address
-                    User3     = $global:Wallets.Wallet3.$PasswordCurrency3.address
-                    CPUser    = $global:Wallets.Wallet1.$PasswordCurrency1.address                    
-                    CPUPass   = "c=$($global:Wallets.Wallet1.keys),id=$Rigname1"
-                    Pass1     = "c=$($global:Wallets.Wallet1.keys),id=$Rigname1"
-                    Pass2     = "c=$($global:Wallets.Wallet2.keys),id=$Rigname2"
-                    Pass3     = "c=$($global:Wallets.Wallet3.keys),id=$Rigname3"
-                    Location  = $Location
+                    User1     = $global:Wallets.Wallet1.$($global:Config.Params.Passwordcurrency1).address
+                    User2     = $global:Wallets.Wallet2.$($global:Config.Params.Passwordcurrency2).address
+                    User3     = $global:Wallets.Wallet3.$($global:Config.Params.Passwordcurrency3).address
+                    CPUser    = $global:Wallets.Wallet1.$($global:Config.Params.Passwordcurrency1).address   
+                    CPUPass    = $global:Wallets.Wallet1.$($global:Config.Params.Passwordcurrency1).address                                     
+                    Pass1     = "c=$($global:Wallets.Wallet1.keys),id=$($global:Config.Params.RigName1)"
+                    Pass2     = "c=$($global:Wallets.Wallet2.keys),id=$($global:Config.Params.RigName2)"
+                    Pass3     = "c=$($global:Wallets.Wallet3.keys),id=$($global:Config.Params.RigName3)"
+                    Location  = $global:Config.Params.Location
                     SSL       = $false
                 }
             }

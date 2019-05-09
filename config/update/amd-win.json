@@ -40,8 +40,8 @@
   "AMD2":".\\bin\\gminer-amd-2\\miner.exe", 
   "AMD3":".\\bin\\gminer-amd-3\\miner.exe", 
   "minername":"miner", 
-  "version":"1.38",
-  "uri":"https://github.com/develsoftware/GMinerRelease/releases/download/1.39/gminer_1_39_windows64.zip"
+  "version":"1.40",
+  "uri":"https://github.com/develsoftware/GMinerBetaRelease/releases/download/1.40/gminer_1_40_windows64.zip"
   },
 
 "phoenix-amd": {
@@ -117,8 +117,8 @@
 "AMD2":".\\bin\\wildrig-2\\wildrig.exe", 
 "AMD3":".\\bin\\wildrig-3\\wildrig.exe", 
 "minername":"wildrig.exe", 
-"version":"0.15.6", 
-"uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/wildrig-windows.zip"
+"version":"0.16.0", 
+"uri":"https://github.com/andru-kun/wildrig-multi/releases/download/0.16.0/wildrig-multi-windows-0.16.0-beta.7z"
 }, 
 
 "fancyix": {

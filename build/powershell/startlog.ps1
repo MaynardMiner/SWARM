@@ -14,10 +14,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 function start-log {
     param (
         [Parameter(Mandatory = $false)]
-        [String]$Platforms,
-        [Parameter(Mandatory = $false)]
-        [String]$HiveOS,
-        [Parameter(Mandatory = $false)]
         [int]$Number
     )
     #Start the log

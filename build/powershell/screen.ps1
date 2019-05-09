@@ -20,16 +20,16 @@ function Get-Charts {
     $WattTable = $false
     $ProfitTable | ForEach-Object { if ($_.Power -ne 0) { $WattTable = $True } }
 
-    $Type | ForEach-Object {
+    $global:Config.Params.Type | ForEach-Object {
         $Table = $ProfitTable | Where-Object TYPE -eq $_;
         $global:index = $Table.Count
     
         $Table | ForEach-Object { $Power_Levels.Add("$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)", @{ }) }
         ##Profit Levels
         $Level = $null
-        $Table | Sort-Object -Property Profits | ForEach-Object { if ($Null -ne $_.Profits) { $Profit = ($_.Profits * $Rates.$Currency).ToString("N2"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("Profit", "$Level $Profit $Currency/Day"); } }
+        $Table | Sort-Object -Property Profits | ForEach-Object { if ($Null -ne $_.Profits) { $Profit = ($_.Profits * $Rates.$($global:Config.Params.Currency)).ToString("N2"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("Profit", "$Level $Profit $global:Config.Params.Currency/Day"); } }
         $Level = $null
-        if($CoinExchange){$Table | Sort-Object -Property Pool_Estimate | ForEach-Object { if ($_.Pool_Estimate -gt 0) { $Profit = ($_.Pool_Estimate / $BTCExchangeRate).ToString("N5"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("Alt_Profit", "$Level $Profit $Y/Day"); } }}
+        if($global:Config.Params.CoinExchange){$Table | Sort-Object -Property Pool_Estimate | ForEach-Object { if ($_.Pool_Estimate -gt 0) { $Profit = ($_.Pool_Estimate / $BTCExchangeRate).ToString("N5"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("Alt_Profit", "$Level $Profit $Y/Day"); } }}
         $Level = $null
         $Table | Sort-Object -Property Profits | ForEach-Object { if ($Null -ne $_.Profits) { $Profit = ($_.Profits).ToString("N5"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("BTC_Profit", "$Level $Profit BTC/Day"); } }
         $Level = $null
@@ -37,10 +37,10 @@ function Get-Charts {
         $Level = $null
         $Table | Sort-Object -Property Shares | ForEach-Object { if ($Null -ne $_.Shares) { if ($_.Shares -eq "N/A") { $_.Shares = 0 }else { $_.Shares = $($_.Shares -as [Decimal]).ToString("N3") }; $Shares = "$($_.Shares)"; $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; if ($_.Shares -ne 0) { $Level = $Level + $Power }else { $Level = "|" }; $Power_Levels.$MinerName.Add("Shares", "$Level $Shares %"); } }
         $Level = $null
-        if ($WattTable -eq $true) { $Table | Sort-Object -Property Power | ForEach-Object { if ($_.Power -ne 0) { $Pwatts = ($_.Power * $Rates.$Currency).ToString("N2"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("Watts", "$Level $PWatts $Currency/Day"); } }}
+        if ($WattTable -eq $true) { $Table | Sort-Object -Property Power | ForEach-Object { if ($_.Power -ne 0) { $Pwatts = ($_.Power * $Rates.$($global:Config.Params.Currency)).ToString("N2"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("Watts", "$Level $PWatts $global:Config.Params.Currency/Day"); } }}
     }
 
-    $Type | ForEach-Object {
+    $global:Config.Params.Type | ForEach-Object {
         $Table = $ProfitTable | Where-Object TYPE -eq $_;
         $Border_Lt = @()
         $Status += "GROUP $($_)"
@@ -63,12 +63,12 @@ function Get-Charts {
             $magenta = "35";
             $HLevel = "Hashrate:"
             $HStat = if ($Null -ne $_.Hashrates) { "$me[${red};1m$($Power_Levels.$MinerName.Hashrate)${me}[0m" }else { "$me[${red};1mBenchmarking${me}[0m" }
-            $CLevel = "$Currency Profit:"
+            $CLevel = "$($global:Config.Params.Currency) Profit:"
             $CStat = if ($Null -ne $_.Profits) { "$me[${green};1m$($Power_Levels.$MinerName.Profit)${me}[0m" }else { "$me[${green};1mBenchmarking${me}[0m" }
             $BLevel = "BTC Profit:"
             $BStat = if ($Null -ne $_.Profits) { "$me[${yellow};1m$($Power_Levels.$MinerName.BTC_Profit)${me}[0m" }else { "$me[${yellow};1mBenchmarking${me}[0m" }
-            if($CoinExchange) {
-                $ALevel = "$CoinExchange Profit:"
+            if($global:Config.Params.CoinExchange) {
+                $ALevel = "$($global:Config.Params.CoinExchange) Profit:"
                 $AStat = if ($_.Pool_Estimate -gt 0) { "$me[${cyan};1m$($Power_Levels.$MinerName.ALT_Profit)${me}[0m" }else { "$me[${cyan};1mBenchmarking${me}[0m" }
                 }
             $SLevel = "Shares:"
@@ -87,7 +87,7 @@ function Get-Charts {
             $Table_Item += "$me[${white};1m$($CLevel.PadRight(14))${me}[0m $CStat"
             $Table_Item += "$me[${white};1m$($SLevel.PadRight(14))${me}[0m $SStat"
             $Table_Item += "$me[${white};1m$($BLevel.PadRight(14))${me}[0m $BStat"
-            if($CoinExchange) {
+            if($global:Config.Params.CoinExchange) {
             $Table_Item += "$me[${white};1m$($ALevel.PadRight(14))${me}[0m $AStat"
             }
             if($WattTable -eq $true) {
@@ -106,19 +106,19 @@ function Get-Charts {
 function Get-MinerStatus {
     $WattTable = $false
     $ProfitTable | ForEach-Object { if ($_.Power -gt 0) { $WattTable = $True } }
-    $Type | ForEach-Object {
+    $global:Config.Params.Type | ForEach-Object {
         $Table = $ProfitTable | Where-Object TYPE -eq $_;
         $global:index = 0
         if ($WattTable) {
-            if ($CoinExchange) {
+            if ($global:Config.Params.CoinExchange) {
                 $Table | Sort-Object -Property Profits -Descending | Format-Table -GroupBy Type (
                     @{Label = "Miner"; Expression = { "$global:index $($_.Miner)"; $global:index += 1 }; },
                     @{Label = "Coin"; Expression = { $($_.Name) } },
                     @{Label = "Speed"; Expression = { $($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$($_ | ConvertTo-Hash)/s" }else { "Bench" } } }; Align = 'center' },
-                    @{Label = "Watt/Day"; Expression = { $($_.Power) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.$Currency).ToString("N2") }else { "Bench" } } }; Align = 'center' },
+                    @{Label = "Watt/Day"; Expression = { $($_.Power) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.$($global:Config.Params.Currency)).ToString("N2") }else { "Bench" } } }; Align = 'center' },
                     @{Label = "BTC/Day"; Expression = { $($_.Profits) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } } }; Align = 'right' },
                     @{Label = "$Y/Day"; Expression = { $($_.Pool_Estimate) | ForEach-Object { if ($null -ne $_) { ($_ / $BTCExchangeRate).ToString("N5") }else { "Bench" } } }; Align = 'right' },
-                    @{Label = "$Currency/Day"; Expression = { $($_.Profits) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.$Currency).ToString("N2") }else { "Bench" } } }; Align = 'center' },
+                    @{Label = "$($global:Config.Params.Currency)/Day"; Expression = { $($_.Profits) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.$($global:Config.Params.Currency)).ToString("N2") }else { "Bench" } } }; Align = 'center' },
                     @{Label = "Pool"; Expression = { $($_.MinerPool) }; Align = 'center' },
                     @{Label = "Shares"; Expression = { $($_.Shares -as [Decimal]).ToString("N2") }; Align = 'center' },
                     @{Label = "Vol."; Expression = { $($_.Volume) | ForEach-Object { if ($null -ne $_) { $_.ToString("N2") }else { "Bench" } } }; Align = 'left' }
@@ -129,9 +129,9 @@ function Get-MinerStatus {
                     @{Label = "Miner"; Expression = { "$global:index $($_.Miner)"; $global:index += 1 }; },
                     @{Label = "Coin"; Expression = { $($_.Name) } },
                     @{Label = "Speed"; Expression = { $($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$($_ | ConvertTo-Hash)/s" }else { "Bench" } } }; Align = 'center' },
-                    @{Label = "Watt/Day"; Expression = { $($_.Power) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.$Currency).ToString("N2") }else { "Bench" } } }; Align = 'center' },
+                    @{Label = "Watt/Day"; Expression = { $($_.Power) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.$($global:Config.Params.Currency)).ToString("N2") }else { "Bench" } } }; Align = 'center' },
                     @{Label = "BTC/Day"; Expression = { $($_.Profits) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } } }; Align = 'right' },
-                    @{Label = "$Currency/Day"; Expression = { $($_.Profits) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.$Currency).ToString("N2") }else { "Bench" } } }; Align = 'center' },
+                    @{Label = "$($global:Config.Params.Currency)/Day"; Expression = { $($_.Profits) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.$($global:Config.Params.Currency)).ToString("N2") }else { "Bench" } } }; Align = 'center' },
                     @{Label = "Pool"; Expression = { $($_.MinerPool) }; Align = 'center' },
                     @{Label = "Shares"; Expression = { $($_.Shares -as [Decimal]).ToString("N2") }; Align = 'center' },
                     @{Label = "Vol."; Expression = { $($_.Volume) | ForEach-Object { if ($null -ne $_) { $_.ToString("N2") }else { "Bench" } } }; Align = 'left' }
@@ -139,14 +139,14 @@ function Get-MinerStatus {
             }
         }
         else {
-            if ($CoinExchange) {
+            if ($global:Config.Params.CoinExchange) {
                 $Table | Sort-Object -Property Profits -Descending | Format-Table -GroupBy Type (
                     @{Label = "Miner"; Expression = { "$global:index $($_.Miner)"; $global:index += 1 }; },
                     @{Label = "Coin"; Expression = { $($_.Name) } },
                     @{Label = "Speed"; Expression = { $($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$($_ | ConvertTo-Hash)/s" }else { "Bench" } } }; Align = 'center' },
                     @{Label = "BTC/Day"; Expression = { $($_.Profits) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } } }; Align = 'right' },
                     @{Label = "$Y/Day"; Expression = { $($_.Pool_Estimate) | ForEach-Object { if ($null -ne $_) { ($_ / $BTCExchangeRate).ToString("N5") }else { "Bench" } } }; Align = 'right' },
-                    @{Label = "$Currency/Day"; Expression = { $($_.Profits) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.$Currency).ToString("N2") }else { "Bench" } } }; Align = 'center' },
+                    @{Label = "$($global:Config.Params.Currency)/Day"; Expression = { $($_.Profits) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.$($global:Config.Params.Currency)).ToString("N2") }else { "Bench" } } }; Align = 'center' },
                     @{Label = "Pool"; Expression = { $($_.MinerPool) }; Align = 'center' },
                     @{Label = "Shares"; Expression = { $($_.Shares -as [Decimal]).ToString("N2") }; Align = 'center' },
                     @{Label = "Vol."; Expression = { $($_.Volume) | ForEach-Object { if ($null -ne $_) { $_.ToString("N2") }else { "Bench" } } }; Align = 'left' }
@@ -158,7 +158,7 @@ function Get-MinerStatus {
                     @{Label = "Coin"; Expression = { $($_.Name) } },
                     @{Label = "Speed"; Expression = { $($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$($_ | ConvertTo-Hash)/s" }else { "Bench" } } }; Align = 'center' },
                     @{Label = "BTC/Day"; Expression = { $($_.Profits) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } } }; Align = 'right' },
-                    @{Label = "$Currency/Day"; Expression = { $($_.Profits) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.$Currency).ToString("N2") }else { "Bench" } } }; Align = 'center' },
+                    @{Label = "$($global:Config.Params.Currency)/Day"; Expression = { $($_.Profits) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.$($global:Config.Params.Currency)).ToString("N2") }else { "Bench" } } }; Align = 'center' },
                     @{Label = "Pool"; Expression = { $($_.MinerPool) }; Align = 'center' },
                     @{Label = "Shares"; Expression = { $($_.Shares -as [Decimal]).ToString("N2") }; Align = 'center' },
                     @{Label = "Vol."; Expression = { $($_.Volume) | ForEach-Object { if ($null -ne $_) { $_.ToString("N2") }else { "Bench" } } }; Align = 'left' }
@@ -171,7 +171,7 @@ function Get-MinerStatus {
 
 function Get-StatusLite {
     $screen = @()
-    $Type | ForEach-Object {
+    $global:Config.Params.Type | ForEach-Object {
         $screen += 
         "
 ########################
@@ -188,8 +188,9 @@ function Get-StatusLite {
 
             $Screen += 
             "        Miner: $($_.Miner)
+        Mining: $($_.Name)
         Speed: $($_.HashRates | ForEach-Object {if ($null -ne $_) {"$($_ | ConvertTo-Hash)/s"}else {"Benchmarking"}})
-        Profit: $($_.Profits | ForEach-Object {if ($null -ne $_) {"$(($_ * $Rates.$Currency).ToString("N2")) $Currency/Day"}else {"Bench"}}) 
+        Profit: $($_.Profits | ForEach-Object {if ($null -ne $_) {"$(($_ * $Rates.$($global:Config.Params.Currency)).ToString("N2")) $global:Config.Params.Currency/Day"}else {"Bench"}}) 
         Pool: $($_.MinerPool)
         Shares: $($($_.Shares -as [Decimal]).ToString("N3"))
 "
@@ -212,19 +213,19 @@ Write-Log "
 There are miners that have failed! Check Your Settings And Arguments!
 " -ForegroundColor DarkRed
 
-    if ($Platform -eq "linux") {
+    if ($global:Config.Params.Platform -eq "linux") {
 Write-Log "
 
 Type `'mine`' in another terminal to see background miner, and its reason for failure.
-You may also view logs with in the "logs" directory, or 'get-screen [Type]'
-If miner is not your primary miner (AMD1 or NVIDIA1), type 'screen -r [Type]'
-https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration) >> Right Click 'Open URL In Browser'
+You may also view logs with in the `"logs`" directory, or `'get-screen [Type]`'
+If miner is not your primary miner (AMD1 or NVIDIA1), type `'screen -r [Type]`'
+https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration) >> Right Click `'Open URL In Browser`'
 " -ForegroundColor Darkred
     }
-    elseif ($Platform -eq "windows") {
+    elseif ($global:Config.Params.Platform -eq "windows") {
 Write-Log "
  
- SWARM attempted to catch screen output, and is stored in `'logs`' folder.
+ SWARM attempts to catch screen output, and is stored in `'logs`' folder.
  SWARM has also created a executable called `'swarm-start.bat`' located in the `'bin`'
  directory and folder of the miner. `'swarm-start.bat`' starts miner with last known settings, 
  and window stays open, so you may view issue.
@@ -243,7 +244,7 @@ function Invoke-MinerSuccess1 {
                       (/\)(____(_______)      
 Waiting 15 Seconds For Miners To Load & Restarting Background Tracking
 " -ForegroundColor Magenta
-    if ($Platform -eq "linux") {
+    if ($global:Config.Params.Platform -eq "linux") {
         Write-Log "
 
 Type `'mine`' in another terminal to see miner working- This is NOT a remote command!
@@ -254,7 +255,7 @@ https://github.com/MaynardMiner/SWARM/wiki/Commands-&-Suggested-Apps For More In
 
 " -ForegroundColor Magenta
     }
-    elseif ($Platform -eq "windows") {
+    elseif ($global:Config.Params.Platform -eq "windows") {
         Write-Log "
 
 There is now a new window where miner is working. The output may be different from
@@ -345,7 +346,7 @@ function Get-Logo {
 function Restart-Miner {
     $BestActiveMiners | ForEach-Object {
         $Restart = $false
-        if ($_.XProcess -eq $null -or $_.XProcess.HasExited -and $Lite -eq "No") {
+        if ($_.XProcess -eq $null -or $_.XProcess.HasExited -and $global:Config.Params.Lite -eq "No") {
                 
                 $_.InstanceName = "$($_.Type)-$($Instance)"
                 $_.Activated++
@@ -354,9 +355,11 @@ function Restart-Miner {
 
                 if($_.Type -ne "ASIC") { 
                     $PreviousPorts = $PreviousMinerPorts | ConvertTo-Json -Compress
-                    $_.Xprocess = Start-LaunchCode -PP $PreviousPorts -Platforms $Platform -NewMiner $Current
+                    $_.Xprocess = Start-LaunchCode -PP $PreviousPorts -NewMiner $Current
                 } else {
-                    $_.Xprocess = Start-LaunchCode -Platforms $Platform -NewMiner $Current -AIP $ASIC_IP
+                    if($global:ASICS.$($_.Type).IP){$AIP = $global:ASICS.$($_.Type).IP}
+                    else{$AIP = "localhost"}
+                    $_.Xprocess = Start-LaunchCode -NewMiner $Current -AIP $AIP
                 }
 
                 if ($null -eq $_.XProcess -or $_.XProcess.HasExited) {
@@ -386,8 +389,8 @@ function Restart-Miner {
 
 function Get-MinerHashRate {
     $BestActiveMiners | ForEach-Object {
-        if($_.Profit_Day -ne "bench"){ $ScreenProfit = "$(($_.Profit_Day * $Rates.$Currency).ToString("N2")) $Currency/Day" } else{ $ScreenProfit = "Benchmarking" }
-        if($_.Fiat_Day -ne "bench"){ $CurrentProfit = "$($_.Fiat_Day) $Currency/Day" } else { $CurrentProfit = "Benchmarking" }
+        if($_.Profit_Day -ne "bench"){ $ScreenProfit = "$(($_.Profit_Day * $Rates.$($global:Config.Params.Currency)).ToString("N2")) $($global:Config.Params.Currency)/Day" } else{ $ScreenProfit = "Benchmarking" }
+        if($_.Fiat_Day -ne "bench"){ $CurrentProfit = "$($_.Fiat_Day) $($global:Config.Params.Currency)/Day" } else { $CurrentProfit = "Benchmarking" }
         if ($null -eq $_.Xprocess -or $_.XProcess.HasExited) { $_.Status = "Failed" }
         $Miner_HashRates = Get-HashRate -Type $_.Type
         $GetDayStat = Get-Stat "$($_.Name)_$($_.Algo)_HashRate"
@@ -399,7 +402,7 @@ function Get-MinerHashRate {
         if ($_.Status -eq "Failed") { Write-Log " Not Running: " -ForegroundColor darkred -nonewline } 
         Write-Log "$($_.Name) current hashrate for $($_.Symbol) is" -nonewline
         Write-Log " $ScreenHash/s" -foreground green -End
-        Write-Log "$($_.Type) is currently mining on $($_.MinerPool)" -foregroundcolor Cyan
+        Write-Log "$($_.Type) is currently mining $($_.Algo) on $($_.MinerPool)" -foregroundcolor Cyan
         Write-Log "$($_.Type) previous hashrates for $($_.Symbol) is" -NoNewLine -Start
         Write-Log " $MinerPrevious/s" -foreground yellow -End
         Write-Log "Current Pool Projection: $CurrentProfit.  (This is live value with no modifiers)"
@@ -409,9 +412,9 @@ function Get-MinerHashRate {
 }
 
 function Set-Countdown {
-    if ($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false) { $CountDown = Invoke-SWARMMode $SwitchTime; $CountDown = $Countdown * -1 }
+    if ($global:Config.Params.SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false) { $CountDown = Invoke-SWARMMode $SwitchTime; $CountDown = $Countdown * -1 }
     else { $Countdown = ([math]::Round(($MinerInterval - 20) - $MinerWatch.Elapsed.TotalSeconds)) }
-    if ($SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false) { $CountMessage = "SWARM Mode Starts: $($Countdown) seconds" }
+    if ($global:Config.Params.SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false) { $CountMessage = "SWARM Mode Starts: $($Countdown) seconds" }
     else { $CountMessage = "Time Left Until Database Starts: $($Countdown) seconds" }
     Write-Log "$CountMessage 
 "-foreground DarkMagenta
@@ -459,4 +462,97 @@ function Print-WattOMeter {
       |__________|
     
   " -foregroundcolor yellow
+}
+
+function Start-MinerLoop {
+    Do {
+        Set-Countdown
+        Get-MinerHashRate
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval - 20)) { break }
+        Set-Countdown
+        Get-MinerHashRate
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval - 20)) { break }
+        Set-Countdown
+        Restart-Miner
+        write-Log "
+
+  Type 'get stats' in a new terminal to view miner statistics- This IS a remote command!
+        Windows Users: Open cmd.exe or SWARM TERMINAL on desktop and enter command
+    https://github.com/MaynardMiner/SWARM/wiki/Commands-&-Suggested-Apps for more info.
+
+" -foreground Magenta
+        Get-MinerHashRate
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval - 20)) { break }
+        Set-Countdown
+        Get-MinerHashRate
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval - 20)) { break }
+        Set-Countdown
+        Restart-Miner
+        Get-MinerHashRate
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval - 20)) { break }
+        Set-Countdown
+        write-Log "
+
+  Type 'get active' in a new terminal to view all active miner details- This IS a remote command!
+          Windows Users: Open cmd.exe or SWARM TERMINAL on desktop and enter command
+       https://github.com/MaynardMiner/SWARM/wiki/Commands-&-Suggested-Apps for more info.
+      
+" -foreground Magenta
+        Get-MinerHashRate
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($SWARM_IT) { $ModeCheck = Invoke-SWARMMode $SwitchTime }
+        if ($ModeCheck -gt 0) { break }
+        Start-Sleep -s 5
+        if ($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval - 20)) { break }
+        $RestartData = Restart-Database
+        if ($RestartData -eq "Yes") { break }
+
+    }While ($MinerWatch.Elapsed.TotalSeconds -lt ($MinerInterval - 20))
 }

@@ -4,13 +4,13 @@ $Zergpool_Sorted = [PSCustomObject]@{ }
 $Zergpool_UnSorted = [PSCustomObject]@{ }
 
 $DoAutoCoin = $false
-if($Coin.Count -eq 0){$DoAutoCoin = $true}
-$Coin | %{ if($_ -eq ""){$DoAutoCoin = $true}}
+if($global:Config.Params.Coin.Count -eq 0){$DoAutoCoin = $true}
+$global:Config.Params.Coin | %{ if($_ -eq ""){$DoAutoCoin = $true}}
 
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
-if ($XNSub -eq "Yes") { $X = "#xnsub" } 
+if ($global:Config.Params.xnsub -eq "Yes") { $X = "#xnsub" } 
 
-if ($Poolname -eq $Name) {
+if ($Name -in $global:Config.Params.PoolName) {
     try { $zergpool_Request = Invoke-RestMethod "http://zergpool.com:8080/api/currencies" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }
     catch {
         Write-Log "SWARM contacted ($Name) for a failed API check. (Coins)"; 
@@ -25,7 +25,7 @@ if ($Poolname -eq $Name) {
     $zergpool_Request.PSObject.Properties.Name | ForEach-Object { $zergpool_Request.$_ | Add-Member "sym" $_ }
     $ZergAlgos = @()
     $ZergAlgos += $Algorithm
-    $ZergAlgos += $ASIC_ALGO
+    $ZergAlgos += $global:Config.Params.ASIC_ALGO
 
     $Algos = $ZergAlgos | ForEach-Object { if ($Bad_pools.$_ -notcontains $Name) { $_ } }
     $zergpool_Request.PSObject.Properties.Value | % { $_.Estimate = [Decimal]$_.Estimate }
@@ -34,8 +34,8 @@ if ($Poolname -eq $Name) {
     $Active = $zergpool_Request.PSObject.Properties.Value | Where-Object sym -in $global:ActiveSymbol
     if ($Active) { $Active | ForEach-Object { $Zergpool_Sorted | Add-Member $_.sym $_ -Force } }
 
-    if ($Coin.Count -gt 1 -and $Coin -ne "") {
-        $CoinsOnly = $zergpool_Request.PSObject.Properties.Value | Where-Object sym -in $Coin
+    if ($global:Config.Params.Coin.Count -gt 1 -and $global:Config.Params.Coin -ne "") {
+        $CoinsOnly = $zergpool_Request.PSObject.Properties.Value | Where-Object sym -in $global:Config.Params.Coin
         if ($CoinsOnly) { $CoinsOnly | ForEach-Object { $Zergpool_Sorted | Add-Member $_.sym $_ -Force } }
     }
 
@@ -61,7 +61,7 @@ if ($Poolname -eq $Name) {
         }
     }
 
-    if ($Stat_All -eq "Yes") {
+    if ($global:Config.Params.Stat_All -eq "Yes") {
         $Algos | ForEach-Object {
 
             $Selected = $_
@@ -110,11 +110,11 @@ if ($Poolname -eq $Name) {
             try { $Stat = Set-Stat -Name "$($Name)_$($Zergpool_Symbol)_coin_profit" -Value ([double]$zergpool_Estimate / $Divisor * (1 - ($zergpool_fees / 100))) }catch { Write-Log "Failed To Calculate Stat For $Zergpool_Symbol" }
 
             $Pass1 = $global:Wallets.Wallet1.Keys
-            $User1 = $global:Wallets.Wallet1.$Passwordcurrency1.address
+            $User1 = $global:Wallets.Wallet1.$($global:Config.Params.Passwordcurrency1).address
             $Pass2 = $global:Wallets.Wallet2.Keys
-            $User2 = $global:Wallets.Wallet2.$Passwordcurrency2.address
+            $User2 = $global:Wallets.Wallet2.$($global:Config.Params.Passwordcurrency2).address
             $Pass3 = $global:Wallets.Wallet3.Keys
-            $User3 = $global:Wallets.Wallet3.$Passwordcurrency3.address
+            $User3 = $global:Wallets.Wallet3.$($global:Config.Params.Passwordcurrency3).address
 
             if ($global:Wallets.AltWallet1.keys) {
                 $global:Wallets.AltWallet1.Keys | ForEach-Object {
@@ -162,7 +162,7 @@ if ($Poolname -eq $Name) {
                 Symbol    = "$Zergpool_Symbol-Coin"
                 Mining    = $Zergpool_Algorithm
                 Algorithm = $zergpool_Algorithm
-                Price     = $Stat.$Stat_Coin
+                Price     = $Stat.$($global:Config.Params.Stat_Coin)
                 Protocol  = "stratum+tcp"
                 Host      = $zergpool_Host
                 Port      = $zergpool_Port
@@ -170,11 +170,11 @@ if ($Poolname -eq $Name) {
                 User2     = $User2
                 User3     = $User3
                 CPUser    = $User1
-                CPUPass   = "c=$Pass1,mc=$Zergpool_Symbol,id=$Rigname1"
-                Pass1     = "c=$Pass1,mc=$Zergpool_Symbol,id=$Rigname1"
-                Pass2     = "c=$Pass2,mc=$Zergpool_Symbol,id=$Rigname2"
-                Pass3     = "c=$Pass3,mc=$Zergpool_Symbol,id=$Rigname3"
-                Location  = $Location
+                CPUPass   = "c=$Pass1,mc=$Zergpool_Symbol,id=$($global:Config.Params.RigName1)"
+                Pass1     = "c=$Pass1,mc=$Zergpool_Symbol,id=$($global:Config.Params.RigName1)"
+                Pass2     = "c=$Pass2,mc=$Zergpool_Symbol,id=$($global:Config.Params.RigName2)"
+                Pass3     = "c=$Pass3,mc=$Zergpool_Symbol,id=$($global:Config.Params.RigName3)"
+                Location  = $global:Config.Params.Location
                 SSL       = $false
             } 
         }

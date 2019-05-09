@@ -1,78 +1,54 @@
 {
-  "NVIDIA1": {
-    "name": "NVIDIA1",
-    "delay": "1",
-    "prestart": [],
-    "commands": {
-      "argon2d-dyn": ""
+    "NVIDIA1": {
+        "name": "NVIDIA1",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "argon2d-dyn": ""
+        },
+        "difficulty": {
+            "argon2d-dyn": ""
+        },
+        "naming": {
+            "argon2d-dyn": "argon2d"
+        },
+        "fee": {
+            "argon2d-dyn": 0
+        }
     },
-    "difficulty": {
-      "argon2d-dyn": ""
+    "NVIDIA2": {
+        "name": "NVIDIA2",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "argon2d-dyn": ""
+        },
+        "difficulty": {
+            "argon2d-dyn": ""
+        },
+        "naming": {
+            "argon2d-dyn": "argon2d"
+        },
+        "fee": {
+            "argon2d-dyn": 0
+        }
     },
-    "naming": {
-      "argon2d-dyn": "argon2d"
+    "NVIDIA3": {
+        "name": "NVIDIA3",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "argon2d-dyn": ""
+        },
+        "difficulty": {
+            "argon2d-dyn": ""
+        },
+        "naming": {
+            "argon2d-dyn": "argon2d"
+        },
+        "fee": {
+            "argon2d-dyn": 0
+        }
     },
-    "fee": {
-      "argon2d-dyn": 0
-    },
-    "oc": {
-      "argon2d-dyn": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      }
-    }
-  },
-  "NVIDIA2": {
-    "name": "NVIDIA2",
-    "delay": "1",
-    "prestart": [],
-    "commands": {
-      "argon2d-dyn": ""
-    },
-    "difficulty": {
-      "argon2d-dyn": ""
-    },
-    "naming": {
-      "argon2d-dyn": "argon2d"
-    },
-    "fee": {
-      "argon2d-dyn": 0
-    },
-    "oc": {
-      "argon2d-dyn": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      }
-    }
-  },
-  "NVIDIA3": {
-    "name": "NVIDIA3",
-    "delay": "1",
-    "prestart": [],
-    "commands": {
-      "argon2d-dyn": ""
-    },
-    "difficulty": {
-      "argon2d-dyn": ""
-    },
-    "naming": {
-      "argon2d-dyn": "argon2d"
-    },
-    "fee": {
-      "argon2d-dyn": 0
-    },
-    "oc": {
-      "argon2d-dyn": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      }
-    }
-  },
-  "name": "ehssand"
+    "name": "ehssand"
 }

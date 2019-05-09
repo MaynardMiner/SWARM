@@ -6,4 +6,4 @@ set arg2=%2
 set arg3=%3
 set arg4=%4
 set arg5=%5
-powershell -executionpolicy bypass -command "%CMDDIR%/build/powershell/version.ps1 -command !%arg1% -name !%arg2% -exe !%arg3% -version !%arg4% -uri !%arg5% -Platform windows"
+pwsh -ExecutionPolicy Bypass -command "set-location ""%CMDDIR%\build\powershell""; .\version.ps1 -command !%arg1% -name !%arg2% -exe !%arg3% -version !%arg4% -uri !%arg5% -Platform windows"
