@@ -1241,6 +1241,9 @@ While ($true) {
         }
 
 
+        $global:oc_default = $null
+        $global:oc_algos = $null
+        
         ##Outputs the correct notification of miner launches.
         ##Restarts Timer for Interval.
         $MinerWatch.Restart()
