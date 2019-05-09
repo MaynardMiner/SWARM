@@ -501,7 +501,7 @@ AMD USERS: PLEASE READ .\config\oc\new_sample.json FOR INSTRUCTIONS ON OVERCLOCK
 
 ## Determine AMD platform
 if ($global:Config.Params.Type -like "*AMD*") {
-    if ($global:Config.Params.CLPlatform -ne "") { $AMDPlatform = $global:Config.Params.CLPlatform }
+    if ([string]$global:Config.Params.CLPlatform) { $AMDPlatform = [string]$global:Config.Params.CLPlatform }
     else {
         [string]$AMDPlatform = get-AMDPlatform
         write-Log "AMD OpenCL Platform is $AMDPlatform"
