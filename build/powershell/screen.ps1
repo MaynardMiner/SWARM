@@ -217,15 +217,15 @@ There are miners that have failed! Check Your Settings And Arguments!
 Write-Log "
 
 Type `'mine`' in another terminal to see background miner, and its reason for failure.
-You may also view logs with in the "logs" directory, or 'get-screen [Type]'
-If miner is not your primary miner (AMD1 or NVIDIA1), type 'screen -r [Type]'
-https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration) >> Right Click 'Open URL In Browser'
+You may also view logs with in the `"logs`" directory, or `'get-screen [Type]`'
+If miner is not your primary miner (AMD1 or NVIDIA1), type `'screen -r [Type]`'
+https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration) >> Right Click `'Open URL In Browser`'
 " -ForegroundColor Darkred
     }
     elseif ($global:Config.Params.Platform -eq "windows") {
 Write-Log "
  
- SWARM attempted to catch screen output, and is stored in `'logs`' folder.
+ SWARM attempts to catch screen output, and is stored in `'logs`' folder.
  SWARM has also created a executable called `'swarm-start.bat`' located in the `'bin`'
  directory and folder of the miner. `'swarm-start.bat`' starts miner with last known settings, 
  and window stays open, so you may view issue.
