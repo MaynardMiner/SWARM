@@ -232,7 +232,7 @@ function Start-OC {
     $NVIDIAOCArgs = @(); $NVIDIAPowerArgs = @(); $NScript = @(); $AScript = @()
     $NScript += "`#`!/usr/bin/env bash"
     $Num = 1
-    if($global:Config.params.HiveOS -eq "Yes"){$NScript += "export DISPLAY=`":0`""; $Num = 2}
+    if($Global:Config.params.HiveOS -eq "Yes"){$NScript += "export DISPLAY=`":0`""; $Num = 2}
     if($Global:Config.params.Platform -eq "linux") {
         $AScript += "`#`!/usr/bin/env bash" 
     }
