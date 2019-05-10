@@ -278,16 +278,10 @@ function Start-OC {
         
         if ($Card) {
 
-            $NScript += "`#`!/usr/bin/env bash"
-            $Num = 1
-            if($Global:Config.params.HiveOS -eq "Yes"){$NScript += "export DISPLAY=`":0`""; $Num = 2}
-
-            if ($SettingsArgs -eq $true) { $NScript += "nvidia-settings " }
-
             if($SettingsArgs -eq $true) {
                 for ($i = 0; $i -lt $OCDevices.Count; $i++) {
                     $GPU = $OCDevices[$i]
-                    $OCPOWERM += " -a [gpu:$GPU]/GPUPowerMizerMode=1"
+                    $NSettings += " -a [gpu:$GPU]/GPUPowerMizerMode=1"
                 }
             }    
         
@@ -304,7 +298,7 @@ function Start-OC {
                         "P104-100" { $X = 1 }
                         "P102-100" { $X = 1 }
                     }
-                    if ($Global:Config.params.Platform -eq "linux") { $NVIDIACORE += " -a [gpu:$GPU]/GPUGraphicsClockOffset[$X]=$($Core[$i])" }
+                    if ($Global:Config.params.Platform -eq "linux") { $NSettings += " -a [gpu:$GPU]/GPUGraphicsClockOffset[$X]=$($Core[$i])" }
                     if ($Global:Config.params.Platform -eq "windows") { $NVIDIAOCArgs += "-setBaseClockOffset:$GPU,0,$($Core[$i]) " }
                 }
                 $NScreenCore += "$($Miner.Type) Core is $Core "
@@ -314,7 +308,7 @@ function Start-OC {
                 $DONVIDIAOC = $true
                 for ($i = 0; $i -lt $OCDevices.Count; $i++) {
                     $GPU = $OCDevices[$i]
-                    if ($Global:Config.params.Platform -eq "linux") { $NVIDIAFAN += " -a [gpu:$GPU]/GPUFanControlState=1 -a [fan:$($GCount.NVIDIA.$GPU)]/GPUTargetFanSpeed=$($Fan[$i])" }
+                    if ($Global:Config.params.Platform -eq "linux") { $NSettings += " -a [gpu:$GPU]/GPUFanControlState=1 -a [fan:$($GCount.NVIDIA.$GPU)]/GPUTargetFanSpeed=$($Fan[$i])" }
                     if ($Global:Config.params.Platform -eq "windows") { $NVIDIAOCArgs += "-setFanSpeed:$GPU,$($Fan[$i]) " }
                 }
                 $NScreenFan += "$($Miner.Type) Fan is $Fan "
@@ -333,23 +327,24 @@ function Start-OC {
                         "P104-100" { $X = 1 }
                         "P102-100" { $X = 1 }
                     }
-                    if ($Global:Config.params.Platform -eq "linux") { $NVIDIAMEM += " -a [gpu:$GPU]/GPUMemoryTransferRateOffset[$X]=$($Mem[$i])" }
+                    if ($Global:Config.params.Platform -eq "linux") { $NSettings += " -a [gpu:$GPU]/GPUMemoryTransferRateOffset[$X]=$($Mem[$i])" }
                     if ($Global:Config.params.Platform -eq "windows") { $NVIDIAOCArgs += "-setMemoryClockOffset:$GPU,0,$($Mem[$i]) " } 
                 }
                 $NScreenMem += "$($Miner.Type) Memory is $Mem "
             }
     
+            $NPL = @()
             if ($Power) {
                 $DONVIDIAOC = $true
                 for ($i = 0; $i -lt $OCDevices.Count; $i++) {
                     $GPU = $OCDevices[$i]
-                    if ($Global:Config.params.Platform -eq "linux") { $NScript += "nvidia-smi -i $GPU -pl $($Power[$i])"; }
+                    if ($Global:Config.params.Platform -eq "linux") { $NPL += "nvidia-smi -i $GPU -pl $($Power[$i])"; }
                     elseif ($Global:Config.params.Platform -eq "windows") { $NVIDIAOCArgs += "-setPowerTarget:$GPU,$($Power[$i]) " }
                 }
 
                 for ($i = 0; $i -lt $OCDevices.Count; $i++) {
                     $GPU = $OCDevices[$i]
-                    if ($Global:Config.params.Platform -eq "linux") { $NScript += "nvidia-smi -i $GPU -pm ENABLED"; }
+                    if ($Global:Config.params.Platform -eq "linux") { $NPL += "nvidia-smi -i $GPU -pm ENABLED"; }
                 }
     
                 $NScreenPower += "$($Miner.Type) Power is $Power "
@@ -419,7 +414,7 @@ function Start-OC {
         $AScreenMiners = "$($Miner.MinerName) ";
     
         if ($Card) {
-            
+
             if($Global:Config.params.Platform -eq "linux") {
                 $AScript += "`#`!/usr/bin/env bash" 
             }
@@ -607,10 +602,11 @@ function Start-OC {
     }
     
     if ($DoNVIDIAOC -eq $true -and $Global:Config.params.Platform -eq "linux") {
-        if ($OCPOWERM) { $NScript[1] = "$($NScript[$Num])$OCPOWERM" }
-        if ($Core) { $NScript[1] = "$($NScript[$Num])$NVIDIACORE" }
-        if ($Mem) { $NScript[1] = "$($NScript[$Num])$NVIDIAMEM" }
-        if ($Fan) { $NScript[1] = "$($NScript[$Num])$NVIDIAFAN" }
+        $NScript = @()
+        $NScript += "`#`!/usr/bin/env bash"
+        if($Global:Config.params.HiveOS -eq "Yes"){$NScript += "export DISPLAY=`":0`""}
+        if ($SettingsArgs -eq $true) { $NScript += "nvidia-settings $NSettings" }
+        if($NPL){$NScript += $NPL}
         Start-Process "./build/bash/killall.sh" -ArgumentList "OC_NVIDIA" -Wait
         Start-Process "screen" -ArgumentList "-S OC_NVIDIA -d -m"
         Start-Sleep -S 1
