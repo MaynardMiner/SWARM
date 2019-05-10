@@ -69,7 +69,7 @@ $CPUTypes | ForEach-Object {
                         FullName   = "$($_.Mining)"
                         Port       = 10002
                         API        = "xmrig-opt"
-                        Wallet     = "$($_.$User)"
+                        Wallet     = "$($_.User1)"
                         URI        = $Uri
                         Server     = "localhost"                        
                         Algo       = "$($_.Algorithm)"

@@ -852,7 +852,7 @@ While ($true) {
                                 $Download = $true
                                 if (-not (Test-Path $ALgoMiner.Path)) {
                                     if (-not (Test-Path ".\timeout\download_block")) { New-Item -Name "download_block" -Path ".\timeout" -ItemType "directory" | OUt-Null }
-                                    "$($Algominer.Name)" | Out-File ".\timeout\download_block\download_block.txt" -Append
+                                    "$($Algominer.Name)" | Add-Content ".\timeout\download_block\download_block.txt"
                                 }
                             }
                             else {

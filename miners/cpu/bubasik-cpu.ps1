@@ -51,7 +51,7 @@ $CPUTypes | ForEach-Object {
                         Coin       = $Coins
                         Delay      = $MinerConfig.$ConfigType.delay
                         Fees       = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
-                        Symbol     = "$($($_.Algorithm))"
+                        Symbol     = "$($_.Symbol)"
                         MinerName  = $MinerName
                         Prestart   = $PreStart
                         Type       = $ConfigType
@@ -66,7 +66,7 @@ $CPUTypes | ForEach-Object {
                         FullName   = "$($_.Mining)"
                         Port       = 10001
                         API        = "cpuminer"
-                        Wallet     = "$($_.$User)"
+                        Wallet     = "$($_.User1)"
                         URI        = $Uri
                         Server     = "localhost"
                         Algo       = "$($_.Algorithm)"
