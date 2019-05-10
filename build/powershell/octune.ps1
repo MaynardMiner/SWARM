@@ -326,6 +326,8 @@ function Start-OC {
                         "P106-090" { $X = 1 }
                         "P104-100" { $X = 1 }
                         "P102-100" { $X = 1 }
+                        "1660" {$X = 4}
+                        "1660ti" {$X = 4}
                     }
                     if ($Global:Config.params.Platform -eq "linux") { $NSettings += " -a [gpu:$GPU]/GPUMemoryTransferRateOffset[$X]=$($Mem[$i])" }
                     if ($Global:Config.params.Platform -eq "windows") { $NVIDIAOCArgs += "-setMemoryClockOffset:$GPU,0,$($Mem[$i]) " } 
