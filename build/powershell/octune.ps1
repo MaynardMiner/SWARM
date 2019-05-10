@@ -230,26 +230,12 @@ function Start-OC {
     
     #OC For Devices
     $NVIDIAOCArgs = @(); $NVIDIAPowerArgs = @(); $NScript = @(); $AScript = @()
-    $NScript += "`#`!/usr/bin/env bash"
-    $Num = 1
-    if($Global:Config.params.HiveOS -eq "Yes"){$NScript += "export DISPLAY=`":0`""; $Num = 2}
-    if($Global:Config.params.Platform -eq "linux") {
-        $AScript += "`#`!/usr/bin/env bash" 
-    }
     if ($OC_Algo.Memory -or $OC_Algo.Core -or $OC_Algo.Fans) { $SettingsArgs = $true }
     elseif ($Default.Memory -or $Default.Core -or $Default.Fans) { $SettingsArgs = $true }
-    if ($SettingsArgs -eq $true) { $NScript += "nvidia-settings " }
     
     if ($Miner.Type -like "*NVIDIA*") {
         if ($Miner.Devices -eq "none") { $OCDevices = Get-DeviceString -TypeCount $GCount.NVIDIA.PSObject.Properties.Value.Count }
         else { $OCDevices = Get-DeviceString -TypeDevices $Miner.Devices }
-
-        if($SettingsArgs -eq $true) {
-            for ($i = 0; $i -lt $OCDevices.Count; $i++) {
-                $GPU = $OCDevices[$i]
-                $OCPOWERM += " -a [gpu:$GPU]/GPUPowerMizerMode=1"
-            }
-        }
 
         if ($OC_Algo.core) {
             $Core = $OC_Algo.core -split ' '    
@@ -292,10 +278,18 @@ function Start-OC {
         
         if ($Card) {
 
-            for ($i = 0; $i -lt $OCDevices.Count; $i++) {
-                $GPU = $OCDevices[$i]
-                if ($Global:Config.params.Platform -eq "linux") { $NScript += "nvidia-smi -i $GPU -pm ENABLED"; }
-            }
+            $NScript += "`#`!/usr/bin/env bash"
+            $Num = 1
+            if($Global:Config.params.HiveOS -eq "Yes"){$NScript += "export DISPLAY=`":0`""; $Num = 2}
+
+            if ($SettingsArgs -eq $true) { $NScript += "nvidia-settings " }
+
+            if($SettingsArgs -eq $true) {
+                for ($i = 0; $i -lt $OCDevices.Count; $i++) {
+                    $GPU = $OCDevices[$i]
+                    $OCPOWERM += " -a [gpu:$GPU]/GPUPowerMizerMode=1"
+                }
+            }    
         
             if ($Core) {
                 $DONVIDIAOC = $true
@@ -352,6 +346,12 @@ function Start-OC {
                     if ($Global:Config.params.Platform -eq "linux") { $NScript += "nvidia-smi -i $GPU -pl $($Power[$i])"; }
                     elseif ($Global:Config.params.Platform -eq "windows") { $NVIDIAOCArgs += "-setPowerTarget:$GPU,$($Power[$i]) " }
                 }
+
+                for ($i = 0; $i -lt $OCDevices.Count; $i++) {
+                    $GPU = $OCDevices[$i]
+                    if ($Global:Config.params.Platform -eq "linux") { $NScript += "nvidia-smi -i $GPU -pm ENABLED"; }
+                }
+    
                 $NScreenPower += "$($Miner.Type) Power is $Power "
             }
         }
@@ -419,6 +419,11 @@ function Start-OC {
         $AScreenMiners = "$($Miner.MinerName) ";
     
         if ($Card) {
+            
+            if($Global:Config.params.Platform -eq "linux") {
+                $AScript += "`#`!/usr/bin/env bash" 
+            }
+        
             if ($Global:Config.params.Platform -eq "linux") {
 
                 if ($MemClock -or $MemState) {
