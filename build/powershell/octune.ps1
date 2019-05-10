@@ -595,7 +595,7 @@ function Start-OC {
         if ($Fan) { $NScript[1] = "$($NScript[1])$NVIDIAFAN" }
         Start-Process "./build/bash/killall.sh" -ArgumentList "OC_NVIDIA" -Wait
         Start-Process "screen" -ArgumentList "-S OC_NVIDIA -d -m"
-        Start-Sleep -S .25
+        Start-Sleep -S 1
         $NScript | Out-File ".\build\bash\nvidiaoc.sh"
         Start-Sleep -S .25
         Start-Process "chmod" -ArgumentList "+x build/bash/nvidiaoc.sh" -Wait
