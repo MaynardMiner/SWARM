@@ -290,7 +290,7 @@ function Start-OC {
                 for ($i = 0; $i -lt $OCDevices.Count; $i++) {
                     $GPU = $OCDevices[$i]
                     $X = 3
-                    Switch ($Card[$($GCount.NVIDIA.$i)]) {
+                    Switch ($Card[$GPU]) {
                         "1050" { $X = 2 }
                         "1050ti" { $X = 2 }
                         "P106-100" { $X = 2 }
