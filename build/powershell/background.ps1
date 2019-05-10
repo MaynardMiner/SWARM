@@ -64,7 +64,7 @@ if ($global:Config.Params.Platform -eq "windows") {
 . .\build\api\miners\wildrig.ps1;    . .\build\api\miners\xmrig-opt.ps1;    . .\build\api\miners\xmrstak.ps1;
 . .\build\powershell\hashrates.ps1;  . .\build\powershell\command-web.ps1;   . .\build\powershell\response.ps1;
 . .\build\powershell\hiveoc.ps1;     . .\build\powershell\command-stats.ps1;  . .\build\api\miners\srbminer.ps1;
-. .\build\api\miners\cgminer.ps1;    . .\build\api\miners\nbminer.ps1;
+. .\build\api\miners\cgminer.ps1;    . .\build\api\miners\nbminer.ps1;        . .\build\api\miners\multiminer.ps1;
 
 ##Start API Server
 Write-Host "API Port is $($global:Config.Params.Port)";      
@@ -388,6 +388,7 @@ While ($True) {
                 'cgminer' { try { Get-StatsCgminer }catch { Get-OhNo } }
                 'nebutech' { try { Get-StatsNebutech }catch { Get-OhNo } }
                 'srbminer' { try { Get-StatsSrbminer }catch { Get-OhNo } }
+                'multiminer' { try { Get-StatsMultiminer }catch { Get-OhNo } }
             }
 
             ##Check To See if High Rejections

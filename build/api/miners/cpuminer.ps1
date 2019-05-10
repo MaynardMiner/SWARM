@@ -15,7 +15,6 @@ function Get-StatsCpuminer {
         else { $Hash = $Data -split ";" | Select-String "H/s"; $kilo = $false }
         $Hash = $Hash | ForEach-Object { $_ -split "=" | Select-Object -Last 1 }
         $J = $Hash | ForEach-Object { Invoke-Expression [Double]$_ }
-        $CPUHash = @()
         if ($kilo -eq $true) {
             if ($Hash) { 
                 for ($i = 0; $i -lt $Devices.Count; $i++) {$global:CPUHashrates.$i = $Hash[$i]}

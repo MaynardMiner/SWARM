@@ -1,0 +1,126 @@
+{
+    "NVIDIA1": {
+        "name": "NVIDIA1",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "argon2d-dyn": "",
+            "argon2d250": "",
+            "argon2d500": "",
+            "argon2d4096": "",
+            "argon2d-crds": "",
+            "argon2d-uis": "",
+            "argon2ad": ""
+        },
+        "difficulty": {
+            "argon2d-dyn": "",
+            "argon2d250": "",
+            "argon2d500": "",
+            "argon2d4096": "",
+            "argon2d-crds": "",
+            "argon2d-uis": "",
+            "argon2ad": ""
+        },
+        "naming": {
+            "argon2d-dyn": "argon2d500",
+            "argon2d250": "argon2d250",
+            "argon2d500": "argon2d500",
+            "argon2d4096": "argon2d4096",
+            "argon2d-crds": "argon2d-250",
+            "argon2d-uis": "argon2d4096",
+            "argon2ad": "argon2ad"
+        },
+        "fee": {
+            "argon2d-dyn": 0,
+            "argon2d250": 0,
+            "argon2d500": 0,
+            "argon2d4096": 0,
+            "argon2d-crds": 0,
+            "argon2d-uis": 0,
+            "argon2ad": 0
+        }
+    },
+    "NVIDIA2": {
+        "name": "NVIDIA2",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "argon2d-dyn": "--gpu-batchsize 1024",
+            "argon2d250": "--gpu-batchsize 1024",
+            "argon2d500": "--gpu-batchsize 1024",
+            "argon2d4096": "--gpu-batchsize 1024",
+            "argon2d-crds": "--gpu-batchsize 1024",
+            "argon2d-uis": "--gpu-batchsize 1024" ,
+            "argon2ad": "--gpu-batchsize 1024"
+        },
+        "difficulty": {
+            "argon2d-dyn": "",
+            "argon2d250": "",
+            "argon2d500": "",
+            "argon2d4096": "",
+            "argon2d-crds": "",
+            "argon2d-uis": "",
+            "argon2ad": ""
+        },
+        "naming": {
+            "argon2d-dyn": "argon2d500",
+            "argon2d250": "argon2d250",
+            "argon2d500": "argon2d500",
+            "argon2d4096": "argon2d4096",
+            "argon2d-crds": "argon2d-250",
+            "argon2d-uis": "argon2d4096",
+            "argon2ad": "argon2ad"
+        },
+        "fee": {
+            "argon2d-dyn": 0,
+            "argon2d250": 0,
+            "argon2d500": 0,
+            "argon2d4096": 0,
+            "argon2d-crds": 0,
+            "argon2d-uis": 0,
+            "argon2ad": 0
+        }
+    },
+    "NVIDIA3": {
+        "name": "NVIDIA3",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "argon2d-dyn": "",
+            "argon2d250": "",
+            "argon2d500": "",
+            "argon2d4096": "",
+            "argon2d-crds": "",
+            "argon2d-uis": "",
+            "argon2ad": ""
+        },
+        "difficulty": {
+            "argon2d-dyn": "",
+            "argon2d250": "",
+            "argon2d500": "",
+            "argon2d4096": "",
+            "argon2d-crds": "",
+            "argon2d-uis": "",
+            "argon2ad": ""
+        },
+        "naming": {
+            "argon2d-dyn": "argon2d500",
+            "argon2d250": "argon2d250",
+            "argon2d500": "argon2d500",
+            "argon2d4096": "argon2d4096",
+            "argon2d-crds": "argon2d-250",
+            "argon2d-uis": "argon2d4096",
+            "argon2ad": "argon2ad"
+        },
+        "fee": {
+            "argon2d-dyn": 0,
+            "argon2d250": 0,
+            "argon2d500": 0,
+            "argon2d4096": 0,
+            "argon2d-crds": 0,
+            "argon2d-uis": 0,
+            "argon2ad": 0
+        }
+    },
+    "name": "multiminer"
+}

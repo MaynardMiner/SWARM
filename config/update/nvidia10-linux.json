@@ -20,6 +20,16 @@
     "version": "22.3",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/nbminer-linux.tar.gz"
   },
+  "multiminer": {
+    "name": "multiminer",
+    "type": "nvidia",
+    "NVIDIA1": ".\\bin\\multiminer-1\\multiminer",
+    "NVIDIA2": ".\\bin\\multiminer-2\\multiminer",
+    "NVIDIA3": ".\\bin\\multiminer-3\\multiminer",
+    "minername": "multiminer",
+    "version": "1.1.0",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/multiminer-linux.tar.gz"
+  },
   "phoenix": {
     "name": "phoenix",
     "type": "nvidia",

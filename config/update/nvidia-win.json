@@ -180,6 +180,16 @@
         "version": "2.3.1",
         "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/cc-rfv2-windows.zip"
       },
+      "multiminer": {
+        "name": "multiminer",
+        "type": "nvidia",
+        "NVIDIA1": ".\\bin\\multiminer-1\\multiminer.exe",
+        "NVIDIA2": ".\\bin\\multiminer-2\\multiminer.exe",
+        "NVIDIA3": ".\\bin\\multiminer-3\\multiminer.exe",
+        "minername": "multiminer.exe",
+        "version": "1.1.0",
+        "uri": "https://github.com/bogdanadnan/multiminer/releases/download/v1.1.0/multiminer_v1.1.0_24.01.2019.zip"
+      },
     "trex": {
         "name": "trex",
         "type": "nvidia",
