@@ -232,12 +232,20 @@ function Start-OC {
     $NVIDIAOCArgs = @(); $NVIDIAPowerArgs = @(); $NScript = @(); $AScript = @()
     $NScript += "`#`!/usr/bin/env bash"
     if ($Global:Config.params.Platform -eq "linux") { $AScript += "`#`!/usr/bin/env bash" }
-    if ($OC_Algo.mem -or $OC_Algo.core) { $SettingsArgs = $true }
-    if ($SettingsArgs -eq $true) { $NScript += "nvidia-settings" }
+    if ($OC_Algo.Memory -or $OC_Algo.Core -or $OC_Algo.Fans) { $SettingsArgs = $true }
+    elseif ($Default.Memory -or $Default.Core -or $Default.Fans) { $SettingsArgs = $true }
+    if ($SettingsArgs -eq $true) { $NScript += "nvidia-settings " }
     
     if ($Miner.Type -like "*NVIDIA*") {
         if ($Miner.Devices -eq "none") { $OCDevices = Get-DeviceString -TypeCount $GCount.NVIDIA.PSObject.Properties.Value.Count }
         else { $OCDevices = Get-DeviceString -TypeDevices $Miner.Devices }
+
+        if($SettingsArgs -eq $true) {
+            for ($i = 0; $i -lt $OCDevices.Count; $i++) {
+                $GPU = $OCDevices[$i]
+                $OCPOWERM += " -a [gpu:$GPU]/GPUPowerMizerMode=1"
+            }
+        }
 
         if ($OC_Algo.core) {
             $Core = $OC_Algo.core -split ' '    
@@ -590,6 +598,7 @@ function Start-OC {
     }
     
     if ($DoNVIDIAOC -eq $true -and $Global:Config.params.Platform -eq "linux") {
+        if ($OCPOWERM) { $NScript[1] = "$($NScript[1])$OCPOWERM" }
         if ($Core) { $NScript[1] = "$($NScript[1])$NVIDIACORE" }
         if ($Mem) { $NScript[1] = "$($NScript[1])$NVIDIAMEM" }
         if ($Fan) { $NScript[1] = "$($NScript[1])$NVIDIAFAN" }
