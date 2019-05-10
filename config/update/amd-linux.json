@@ -20,6 +20,16 @@
     "version": "1.42",
     "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.42/gminer_1_42_linux64.tar.xz"
   },
+  "multiminer-amd": {
+    "name": "multiminer-amd",
+    "type": "amd",
+    "NVIDIA1": ".\\bin\\multiminer-amd-1\\multiminer",
+    "NVIDIA2": ".\\bin\\multiminer-amd-2\\multiminer",
+    "NVIDIA3": ".\\bin\\multiminer-amd-3\\multiminer",
+    "minername": "multiminer",
+    "version": "1.1.0",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/multiminer-linux.tar.gz"
+  },
   "energi-amd": {
     "name": "energi-amd",
     "type": "amd",

@@ -67,9 +67,12 @@ switch ($Action) {
                             }
                         }
                         "process" {
-                            if ($Value -notin $PoolJson.$Item.exclusions) {
-                                $Global:Exclusions.$Item.exclusions += $Value
+                            if ($Global:Exclusions.$Item) {
+                                if($Value -notin $Global:Exclusions.$Item.exclusions) {
+                                    $Global:Exclusions.$Item.exclusions += $Value
+                                }
                             }
+                            else{Write-Log "WARNING: Cannot add $Value to $Item Bans" -ForeGroundColor Yellow}
                         }
                     }
                 }
