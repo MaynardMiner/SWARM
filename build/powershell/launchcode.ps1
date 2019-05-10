@@ -37,6 +37,7 @@ function Start-LaunchCode {
             "*NVIDIA*" {
                 if ($MinerCurrent.Devices -ne "none") {
                     switch ($MinerCurrent.DeviceCall) {
+                        "multiminer" { $MinerArguments = "$($MinerCurrent.Arguments)" }
                         "ccminer" { $MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "ewbf" { $MinerArguments = "--cuda_devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "miniz" { $MinerArguments = "-cd $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
