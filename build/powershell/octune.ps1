@@ -231,8 +231,9 @@ function Start-OC {
     #OC For Devices
     $NVIDIAOCArgs = @(); $NVIDIAPowerArgs = @(); $NScript = @(); $AScript = @()
     $NScript += "`#`!/usr/bin/env bash"
-    $NScript += "export DISPLAY=`":0`""
-    if ($Global:Config.params.Platform -eq "linux") {
+    $Num = 1
+    if($global:Config.params.HiveOS -eq "Yes"){$NScript += "export DISPLAY=`":0`""; $Num = 2}
+    if($Global:Config.params.Platform -eq "linux") {
         $AScript += "`#`!/usr/bin/env bash" 
     }
     if ($OC_Algo.Memory -or $OC_Algo.Core -or $OC_Algo.Fans) { $SettingsArgs = $true }
@@ -601,10 +602,10 @@ function Start-OC {
     }
     
     if ($DoNVIDIAOC -eq $true -and $Global:Config.params.Platform -eq "linux") {
-        if ($OCPOWERM) { $NScript[1] = "$($NScript[2])$OCPOWERM" }
-        if ($Core) { $NScript[1] = "$($NScript[2])$NVIDIACORE" }
-        if ($Mem) { $NScript[1] = "$($NScript[2])$NVIDIAMEM" }
-        if ($Fan) { $NScript[1] = "$($NScript[2])$NVIDIAFAN" }
+        if ($OCPOWERM) { $NScript[1] = "$($NScript[$Num])$OCPOWERM" }
+        if ($Core) { $NScript[1] = "$($NScript[$Num])$NVIDIACORE" }
+        if ($Mem) { $NScript[1] = "$($NScript[$Num])$NVIDIAMEM" }
+        if ($Fan) { $NScript[1] = "$($NScript[$Num])$NVIDIAFAN" }
         Start-Process "./build/bash/killall.sh" -ArgumentList "OC_NVIDIA" -Wait
         Start-Process "screen" -ArgumentList "-S OC_NVIDIA -d -m"
         Start-Sleep -S 1
