@@ -460,7 +460,11 @@ function Print-WattOMeter {
       |==========|
       |   WATT   |
       |__________|
-    
+  
+  Note: -WattOMeter No Does Not
+  Stop Watt Calculations.
+  `".\config\power.json`" must not have
+  any values stored.
   " -foregroundcolor yellow
 }
 

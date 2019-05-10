@@ -704,8 +704,6 @@ While ($true) {
 
         ##Save Watt Calcs
         if ($Watts) { $Watts | ConvertTo-Json | Out-File ".\config\power\power.json" }
-        ##OC-Settings
-        $OC = Get-Content ".\config\oc\oc-defaults.json" | ConvertFrom-Json
 
         ##Get Watt Configuration
         $WattHour = $(Get-Date | Select-Object hour).Hour
@@ -1240,10 +1238,6 @@ While ($true) {
             }
         }
 
-
-        $global:oc_default = $null
-        $global:oc_algos = $null
-        
         ##Outputs the correct notification of miner launches.
         ##Restarts Timer for Interval.
         $MinerWatch.Restart()

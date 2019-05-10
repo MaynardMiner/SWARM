@@ -1,10 +1,9 @@
 {
-    "Favor_Coins":  "No",
     "AltWallet2":  "",
     "Poolname":  [
                      "nlpool",
-                     "blockmasters",
-                     "ahashpool"
+                     "zergpool",
+                     "nicehash"
                  ],
     "Rigname2":  "SWARM",
     "SWARM_Mode":  "No",
@@ -42,7 +41,6 @@
     "Benchmark":  190,
     "PoolBanCount":  2,
     "Platform":  "",
-    "Proxy":  "",
     "AlgoBanCount":  3,
     "Rigname1":  "SWARM",
     "API_Key":  "",
