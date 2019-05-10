@@ -621,10 +621,6 @@ While ($true) {
         ## Check to see if wallet is present:
         if (-not $global:Config.Params.Wallet1) { write-Log "missing wallet1 argument, exiting in 5 seconds" -ForeGroundColor Red; Start-Sleep -S 5; exit }
 
-        ## Make it so that if Farm_Hash Is Not Specified, HiveOS functions are removed.
-        ## In case user forgets to change -HiveOS to "No"
-        if (-not $global:Config.Params.Farm_Hash) { $global:Config.Params.HiveOS = "No" }
-
         if ($global:config.params.Rigname1 -eq "Donate") { $Donating = $True }
         else { $Donating = $False }
         if ($Donating -eq $True) {
