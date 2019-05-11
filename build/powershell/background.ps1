@@ -58,10 +58,10 @@ if (-not $global:Config.Hive_Params.HiveID) {
     $global:Config.Hive_Params.Add("Timezone", $Null)
 }
 if (-not $global:Config.Params.Platform) {
-    write-log "Detecting Platform..." -Foreground Cyan
+    write-Host "Detecting Platform..." -Foreground Cyan
     if (Test-Path "C:\") { $global:Config.Params.Platform = "windows" }
     else { $global:Config.Params.Platform = "linux" }
-    Write-log "OS = $($global:Config.Params.Platform)" -ForegroundColor Green
+    Write-Host "OS = $($global:Config.Params.Platform)" -ForegroundColor Green
 }
 
 
