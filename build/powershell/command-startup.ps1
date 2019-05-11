@@ -24,7 +24,7 @@ function Start-LinuxConfig {
     if (Test-Path $Rig_File) {
 
         ## Get Hive Config
-        $RigConf = Get-Content $Rig_File | ConvertFrom-Json
+        $RigConf = Get-Content $Rig_File
         $config = [string]$RigConf.result.config | ConvertFrom-StringData                
         $global:Config.Hive_Params.HiveWorker = $config.WORKER_NAME -replace "`"", ""
         $global:Config.Hive_Params.HivePassword = $config.RIG_PASSWD -replace "`"", ""
