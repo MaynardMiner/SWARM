@@ -25,19 +25,19 @@ function Start-LinuxConfig {
 
         ## Get Hive Config
         $RigConf = Get-Content $Rig_File
-        $config = $RigConf | ConvertFrom-StringData                
-        $global:Config.Hive_Params.HiveWorker = $config.WORKER_NAME -replace "`"", ""
-        $global:Config.Hive_Params.HivePassword = $config.RIG_PASSWD -replace "`"", ""
-        $global:Config.Hive_Params.HiveMirror = $config.HIVE_HOST_URL -replace "`"", ""
-        $global:Config.Hive_Params.FarmID = $config.FARM_ID -replace "`"", ""
-        $global:Config.Hive_Params.HiveID = $config.RIG_ID -replace "`"", ""
-        $global:Config.Hive_Params.Wd_enabled = $config.WD_ENABLED -replace "`"", ""
-        $global:Config.Hive_Params.Wd_Miner = $config.WD_MINER -replace "`"", ""
-        $global:Config.Hive_Params.Wd_reboot = $config.WD_REBOOT -replace "`"", ""
-        $global:Config.Hive_Params.Wd_minhashes = $config.WD_MINHASHES -replace "`"", ""
-        $global:Config.Hive_Params.Miner = $config.MINER -replace "`"", ""
-        $global:Config.Hive_Params.Miner2 = $config.MINER2 -replace "`"", ""
-        $global:Config.Hive_Params.Timezone = $Config.TIMEZONE -replace "`"", ""
+        $RigConf = $RigConf | ConvertFrom-StringData                
+        $global:Config.Hive_Params.HiveWorker = $RigConf.WORKER_NAME -replace "`"", ""
+        $global:Config.Hive_Params.HivePassword = $RigConf.RIG_PASSWD -replace "`"", ""
+        $global:Config.Hive_Params.HiveMirror = $RigConf.HIVE_HOST_URL -replace "`"", ""
+        $global:Config.Hive_Params.FarmID = $RigConf.FARM_ID -replace "`"", ""
+        $global:Config.Hive_Params.HiveID = $RigConf.RIG_ID -replace "`"", ""
+        $global:Config.Hive_Params.Wd_enabled = $RigConf.WD_ENABLED -replace "`"", ""
+        $global:Config.Hive_Params.Wd_Miner = $RigConf.WD_MINER -replace "`"", ""
+        $global:Config.Hive_Params.Wd_reboot = $RigConf.WD_REBOOT -replace "`"", ""
+        $global:Config.Hive_Params.Wd_minhashes = $RigConf.WD_MINHASHES -replace "`"", ""
+        $global:Config.Hive_Params.Miner = $RigConf.MINER -replace "`"", ""
+        $global:Config.Hive_Params.Miner2 = $RigConf.MINER2 -replace "`"", ""
+        $global:Config.Hive_Params.Timezone = $RigConf.TIMEZONE -replace "`"", ""
 
         ## HiveOS Specific Stuff
         if ($NotHiveOS -eq $false) {
@@ -98,7 +98,7 @@ function Start-LinuxConfig {
         Get-Data -CmdDir $Global:Dir
 
         ## Set Arguments/New Parameters
-        if($global:Config.HiveParams.HiveID) {
+        if($global:Config.Hive_Params.HiveID) {
         $global:Config.Hive_Params | ConvertTo-Json | Set-Content ".\build\txt\hivekeys.txt"
         }
 }
@@ -244,19 +244,19 @@ function Start-WindowsConfig {
     
                 Switch ($Action) {
                     "config" {
-                        $config = [string]$RigConf.result.config | ConvertFrom-StringData                
-                        $global:Config.Hive_Params.HiveWorker = $config.WORKER_NAME -replace "`"", ""
-                        $global:Config.Hive_Params.HivePassword = $config.RIG_PASSWD -replace "`"", ""
-                        $global:Config.Hive_Params.HiveMirror = $config.HIVE_HOST_URL -replace "`"", ""
-                        $global:Config.Hive_Params.FarmID = $config.FARM_ID -replace "`"", ""
-                        $global:Config.Hive_Params.HiveID = $config.RIG_ID -replace "`"", ""
-                        $global:Config.Hive_Params.Wd_enabled = $config.WD_ENABLED -replace "`"", ""
-                        $global:Config.Hive_Params.Wd_Miner = $config.WD_MINER -replace "`"", ""
-                        $global:Config.Hive_Params.Wd_reboot = $config.WD_REBOOT -replace "`"", ""
-                        $global:Config.Hive_Params.Wd_minhashes = $config.WD_MINHASHES -replace "`"", ""
-                        $global:Config.Hive_Params.Miner = $config.MINER -replace "`"", ""
-                        $global:Config.Hive_Params.Miner2 = $config.MINER2 -replace "`"", ""
-                        $global:Config.Hive_Params.Timezone = $Config.TIMEZONE -replace "`"", ""
+                        $Rig = [string]$RigConf.result.config | ConvertFrom-StringData                
+                        $global:Config.Hive_Params.HiveWorker = $Rig.WORKER_NAME -replace "`"", ""
+                        $global:Config.Hive_Params.HivePassword = $Rig.RIG_PASSWD -replace "`"", ""
+                        $global:Config.Hive_Params.HiveMirror = $Rig.HIVE_HOST_URL -replace "`"", ""
+                        $global:Config.Hive_Params.FarmID = $Rig.FARM_ID -replace "`"", ""
+                        $global:Config.Hive_Params.HiveID = $Rig.RIG_ID -replace "`"", ""
+                        $global:Config.Hive_Params.Wd_enabled = $Rig.WD_ENABLED -replace "`"", ""
+                        $global:Config.Hive_Params.Wd_Miner = $Rig.WD_MINER -replace "`"", ""
+                        $global:Config.Hive_Params.Wd_reboot = $Rig.WD_REBOOT -replace "`"", ""
+                        $global:Config.Hive_Params.Wd_minhashes = $Rig.WD_MINHASHES -replace "`"", ""
+                        $global:Config.Hive_Params.Miner = $Rig.MINER -replace "`"", ""
+                        $global:Config.Hive_Params.Miner2 = $Rig.MINER2 -replace "`"", ""
+                        $global:Config.Hive_Params.Timezone = $Rig.TIMEZONE -replace "`"", ""
     
                         if (Test-Path ".\build\txt\hivekeys.txt") { $OldHiveKeys = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json }
     
