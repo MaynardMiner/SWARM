@@ -16,7 +16,7 @@ $NVIDIATypes | ForEach-Object {
     }
 
     ##Log Directory
-    $Log = Join-Path $dir "logs\$ConfigType.log"
+    $Log = Join-Path $($global:Dir) "logs\$ConfigType.log"
 
     ##Parse -GPUDevices
     if ($Get_Devices -ne "none") {
@@ -31,12 +31,12 @@ $NVIDIATypes | ForEach-Object {
     else { $Devices = $Get_Devices }
 
     ##Get Configuration File
-    $GetConfig = "$dir\config\miners\claymore.json"
+    $GetConfig = "$($global:Dir)\config\miners\claymore.json"
     try { $MinerConfig = Get-Content $GetConfig | ConvertFrom-Json }
     catch { Write-Log "Warning: No config found at $GetConfig" }
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
-    $ExportDir = Join-Path $dir "build\export"
+    $ExportDir = Join-Path $($global:Dir) "build\export"
 
     ##Prestart actions before miner launch
     $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"

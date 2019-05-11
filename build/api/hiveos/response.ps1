@@ -20,12 +20,12 @@ function Build-HiveResponse {
 
     $Stats = @{
         method  = "stats"
-        rig_id  = $global:Config.Params.HiveID
+        rig_id  = $global:Config.hive_Params.HiveID
         jsonrpc = "2.0"
         id      = "0"
         params  = @{
-            rig_id      = $global:Config.Params.HiveID
-            passwd      = $global:Config.Params.HivePassword
+            rig_id      = $global:Config.hive_Params.HiveID
+            passwd      = $global:Config.hive_params.HivePassword
             miner       = "custom"
             meta        = @{
                 custom = @{
@@ -69,12 +69,12 @@ function Add-HiveResponse {
      
     $myresponse = @{
         method  = $method
-        rig_id  = $global:Config.params.HiveID
+        rig_id  = $global:Config.hive_Params.HiveID
         jsonrpc = "2.0"
         id      = "0"
         params  = @{
-            rig_id = $global:Config.params.HiveID
-            passwd = $global:Config.params.HivePassword
+            rig_id = $global:Config.hive_Params.HiveID
+            passwd = $global:Config.hive_params.HivePassword
             type   = $messagetype
             data   = $data
         }

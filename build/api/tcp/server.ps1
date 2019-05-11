@@ -20,15 +20,17 @@ function Get-TCPServer {
             $line = $reader.ReadLine()
             if ($line) {
                 switch ($line) {
-                    "summary" {
-                        $Current_Stats = $Stats.Summary | ConvertTo-Json -Compress
-                        $writer = New-Object IO.StreamWriter($stream)
-                        $writer.WriteLine($Current_Stats)
-                        $writer.Dispose()        
-                    }
+                    "summary" { $Message = $Stats.Summary | ConvertTo-Json -Compress }
+                    "stats" { $Message = $Stats.Stats | ConvertTo-Json -Compress }
+                    "params" { $Message = $Stats.params | ConvertTo-Json -Compress }
                 }
+                $writer = New-Object IO.StreamWriter($stream)
+                $writer.WriteLine($Message)
+                $writer.Dispose()        
             }
             $reader.Dispose()
+            $stream.Dispose()
+            $client.Dispose()
             Start-Sleep -Milliseconds 500
         }
         $server.Stop()

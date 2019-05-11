@@ -13,18 +13,18 @@ $CPUTypes | ForEach-Object {
     $Name = "bubasik";
 
     ##Log Directory
-    $Log = Join-Path $dir "logs\$ConfigType.log"
+    $Log = Join-Path $($global:Dir) "logs\$ConfigType.log"
 
     ##Parse -CPUThreads
     if ($global:Config.Params.CPUThreads -ne '') { $Devices = $global:Config.Params.CPUThreads }
 
     ##Get Configuration File
-    $GetConfig = "$dir\config\miners\bubasik.json"
+    $GetConfig = "$($global:Dir)\config\miners\bubasik.json"
     try { $MinerConfig = Get-Content $GetConfig | ConvertFrom-Json }
     catch { Write-Log "Warning: No config found at $GetConfig" }
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
-    $ExportDir = Join-Path $dir "build\export"
+    $ExportDir = Join-Path $($global:Dir) "build\export"
 
     ##Prestart actions before miner launch
     $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"

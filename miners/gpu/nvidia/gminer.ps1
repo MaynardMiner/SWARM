@@ -19,7 +19,7 @@ $NVIDIATypes | ForEach-Object {
     }
 
     ##Log Directory
-    $Log = Join-Path $dir "logs\$ConfigType.log"
+    $Log = Join-Path $($global:Dir) "logs\$ConfigType.log"
 
     ##Parse -GPUDevices
     if ($Get_Devices -ne "none") {
@@ -44,12 +44,12 @@ $NVIDIATypes | ForEach-Object {
     else { $GCount.NVIDIA.PSObject.Properties.Name | ForEach-Object { $ArgDevices += "$($GCount.NVIDIA.$_) " }; $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1) }
 
     ##Get Configuration File
-    $GetConfig = "$dir\config\miners\gminer.json"
+    $GetConfig = "$($global:Dir)\config\miners\gminer.json"
     try { $MinerConfig = Get-Content $GetConfig | ConvertFrom-Json }
     catch { Write-Log "Warning: No config found at $GetConfig" }
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
-    $ExportDir = Join-Path $dir "build\export"
+    $ExportDir = Join-Path $($global:Dir) "build\export"
 
     ##Prestart actions before miner launch
     $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"

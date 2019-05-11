@@ -214,7 +214,6 @@ function Get-APIServer {
         $Posh_Api.Runspace = $Runspace
         $Posh_Api.AddScript($APIServer) | Out-Null
         $Posh_Api
-        #Start-Job $APIServer -Name "APIServer" -ArgumentList $WorkingDir, $Port, $global:Config.Params.Remote, $global:Config.Params.APIPassword | OUt-Null
         Write-Host "Starting API Server" -ForegroundColor "Yellow"
     }
 }

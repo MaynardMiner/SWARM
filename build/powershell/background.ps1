@@ -12,24 +12,51 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
 Param (
-[Parameter(mandatory=$false)]
-[string]$WorkingDir
+    [Parameter(mandatory = $false)]
+    [string]$WorkingDir
 )
 
+$global:Dir = $WorkingDir
 Set-Location $WorkingDir
 
-$Global:config = [hashtable]::Synchronized(@{})
-$Global:stats = [hashtable]::Synchronized(@{})
-$Global:stats.Add("summary",@{})
-$global:Config.Add("params",@{})
-if(Test-Path ".\config\parameters\newarguments.json") {$argpath = ".\config\parameters\newarguments.json"}
-else {$argpath = ".\config\parameters\arguments.json"}
-$global:Config.params = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
-if(Test-Path ".\build\txt\hivekeys.txt") {
-$RigConf = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json
-$RigConf.PSObject.Properties.Name | % {$global:Config.params | Add-Member "$($_)" $RigConf.$_ -Force }
+## Get Parameters
+$Global:config = [hashtable]::Synchronized(@{ })
+$Global:stats = [hashtable]::Synchronized(@{ })
+$Global:stats.Add("summary", @{ })
+$Global:stats.Add("params", @{ })
+$Global:stats.Add("stats", @{ })
+$global:Config.Add("params", @{ })
+$global:Config.Add("Hive_Params", @{ })
+if (Test-Path ".\config\parameters\newarguments.json") {
+    $arguments = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json
+    $arguments.PSObject.Properties.Name | % { $global:Config.Params.Add("$($_)", $arguments.$_) }
+    $arguments = $null
 }
-$global:Config.Params | Add-Member "WorkingDir" $WorkingDir
+else {
+    $arguments = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
+    $arguments.PSObject.Properties.Name | % { $global:Config.Params.Add("$($_)", $arguments.$_) }
+    $arguments = $null
+}
+if (Test-Path ".\build\txt\hivekeys.txt") {
+    $HiveStuff = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json
+    $HiveStuff.PSObject.Properties.Name | % { $global:Config.Hive_Params.Add("$($_)", $HiveStuff.$_) }
+    $HiveStuff = $null
+}
+if (-not $global:Config.Hive_Params.HiveID) {
+    Write-Host "No HiveID- HiveOS Disabled"
+    $global:Config.Hive_Params.Add("HiveID", $Null)
+    $global:Config.Hive_Params.Add("HivePassword", $Null)
+    $global:Config.Hive_Params.Add("HiveWorker", $Null)
+    $global:Config.Hive_Params.Add("HiveMirror", "https://api.hiveos.farm")
+    $global:Config.Hive_Params.Add("FarmID", $Null)
+    $global:Config.Hive_Params.Add("Wd_Enabled", $null)
+    $Global:config.Hive_Params.Add("Wd_miner", $Null)
+    $Global:config.Hive_Params.Add("Wd_reboot", $Null)
+    $Global:config.Hive_Params.Add("Wd_minhashes", $Null)
+    $Global:config.Hive_Params.Add("Miner", $Null)
+    $global:Config.Hive_Params.Add("Miner2", $Null)
+    $global:Config.Hive_Params.Add("Timezone", $Null)
+}
 if (-not $global:Config.Params.Platform) {
     write-log "Detecting Platform..." -Foreground Cyan
     if (Test-Path "C:\") { $global:Config.Params.Platform = "windows" }
@@ -41,7 +68,7 @@ if (-not $global:Config.Params.Platform) {
 [cultureinfo]::CurrentCulture = 'en-US'
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
 
-Write-Host "Platform is $($global:Config.Params.PlatformPlatform)"; Write-Host "HiveOS ID is $($global:Config.Params.HiveID)"; Write-Host "HiveOS = $($global:Config.params.HiveOS)"
+Write-Host "Platform is $($global:Config.Params.PlatformPlatform)"; Write-Host "HiveOS ID is $($global:Config.hive_params.HiveID)"; Write-Host "HiveOS = $($global:Config.params.HiveOS)"
 
 ##Icon for windows
 if ($global:Config.Params.Platform -eq "windows") {
@@ -57,17 +84,17 @@ if ($global:Config.Params.Platform -eq "windows") {
 
 ## Codebase for Further Functions
 ## Codebase for Further Functions
-. .\build\api\html\api.ps1;          . .\build\api\html\include.ps1;        . .\build\api\miners\bminer.ps1;
-. .\build\api\miners\ccminer.ps1;    . .\build\api\miners\cpuminer.ps1;     . .\build\api\miners\cpuminer.ps1;
-. .\build\api\miners\dstm.ps1;       . .\build\api\miners\energiminer.ps1;  . .\build\api\miners\ethminer.ps1;
-. .\build\api\miners\ewbf.ps1;       . .\build\api\miners\excavator.ps1;    . .\build\api\miners\gminer.ps1;
-. .\build\api\miners\grin-miner.ps1; . .\build\api\miners\include.ps1;      . .\build\api\miners\lolminer.ps1;
-. .\build\api\miners\miniz.ps1;      . .\build\api\miners\sgminer.ps1;      . .\build\api\miners\trex.ps1;
-. .\build\api\miners\wildrig.ps1;    . .\build\api\miners\xmrig-opt.ps1;    . .\build\api\miners\xmrstak.ps1;
-. .\build\powershell\hashrates.ps1;  . .\build\powershell\command-web.ps1;   . .\build\powershell\response.ps1;
-. .\build\powershell\hiveoc.ps1;     . .\build\powershell\command-stats.ps1;  . .\build\api\miners\srbminer.ps1;
-. .\build\api\miners\cgminer.ps1;    . .\build\api\miners\nbminer.ps1;        . .\build\api\miners\multiminer.ps1;
-. .\build\api\tcp\server.ps1;
+. .\build\api\html\api.ps1; . .\build\api\html\include.ps1; . .\build\api\miners\bminer.ps1;
+. .\build\api\miners\ccminer.ps1; . .\build\api\miners\cpuminer.ps1; . .\build\api\miners\cpuminer.ps1;
+. .\build\api\miners\dstm.ps1; . .\build\api\miners\energiminer.ps1; . .\build\api\miners\ethminer.ps1;
+. .\build\api\miners\ewbf.ps1; . .\build\api\miners\excavator.ps1; . .\build\api\miners\gminer.ps1;
+. .\build\api\miners\grin-miner.ps1; . .\build\api\miners\include.ps1; . .\build\api\miners\lolminer.ps1;
+. .\build\api\miners\miniz.ps1; . .\build\api\miners\sgminer.ps1; . .\build\api\miners\trex.ps1;
+. .\build\api\miners\wildrig.ps1; . .\build\api\miners\xmrig-opt.ps1; . .\build\api\miners\xmrstak.ps1;
+. .\build\powershell\hashrates.ps1; . .\build\api\hiveos\do-command.ps1; . .\build\api\hiveos\response.ps1;
+. .\build\api\hiveos\hiveoc.ps1; . .\build\powershell\command-stats.ps1; . .\build\api\miners\srbminer.ps1;
+. .\build\api\miners\cgminer.ps1; . .\build\api\miners\nbminer.ps1; . .\build\api\miners\multiminer.ps1;
+. .\build\api\tcp\server.ps1;     . .\build\api\hiveos\stats.ps1
 
 ##Start API Server
 Write-Host "API Port is $($global:Config.Params.Port)";      
@@ -206,9 +233,9 @@ While ($True) {
         }
     }
     if ($DoASIC) { 
-        $ASICS = $CurrentMiners.Type | Where {$_ -like "*ASIC*"}
+        $ASICS = $CurrentMiners.Type | Where { $_ -like "*ASIC*" }
         for ($i = 0; $i -lt $ASICS.Count; $i++) {
-        $global:ASICHashRates | Add-Member -MemberType NoteProperty -Name "0" -Value 0; 
+            $global:ASICHashRates | Add-Member -MemberType NoteProperty -Name "0" -Value 0; 
         }
     }
 
@@ -225,7 +252,7 @@ While ($True) {
             $cpu = $(Get-CimInstance Win32_PerfFormattedData_PerfOS_System).ProcessorQueueLength
             $LoadAverage = Set-Stat -Name "load-average" -Value $cpu
             $LoadAverages = @("$([Math]::Round($LoadAverage.Minute,2))", "$([Math]::Round($LoadAverage.Minute_5,2))", "$([Math]::Round($LoadAverage.Minute_15,2))")
-            $ramfree = [math]::Round((Get-Ciminstance Win32_OperatingSystem | Select FreePhysicalMemory).FreePhysicalMemory/1kb,2)
+            $ramfree = [math]::Round((Get-Ciminstance Win32_OperatingSystem | Select FreePhysicalMemory).FreePhysicalMemory / 1kb, 2)
         }
     }
 
@@ -238,7 +265,7 @@ While ($True) {
     ## Start API Calls For Each Miner
     if ($CurrentMiners -and $GETSWARM.HasExited -eq $false) {
 
-        $global:MinerTable = @{}
+        $global:MinerTable = @{ }
 
         $CurrentMiners | ForEach-Object {
 
@@ -393,7 +420,7 @@ While ($True) {
                 'dstm' { try { Get-StatsDSTM }catch { Get-OhNo } }
                 'lolminer' { try { Get-StatsLolminer }catch { Get-OhNo } }
                 'sgminer-gm' { try { Get-StatsSgminer }catch { Get-OhNo } }
-                'cpuminer' { Get-StatsCpuminer}
+                'cpuminer' { Get-StatsCpuminer }
                 'xmrstak' { try { Get-StatsXmrstak }catch { Get-OhNo } }
                 'xmrig-opt' { try { Get-Statsxmrigopt }catch { Get-OhNo } }
                 'wildrig' { try { Get-StatsWildRig }catch { Get-OhNo } }
@@ -482,24 +509,28 @@ HiveOS Name For Algo is $StatAlgo" -ForegroundColor Magenta
 
 
     $global:Stats.summary = @{
-         summary = $global:MinerTable;
-         gpus = $global:GPUHashTable;
-         cpus = $global:CPUHashTable;
-         asics = $global:ASICHashTable;
-         cpu_total = $global:CPUKHS;
-         asic_total = $global:ASICKHS;
-         gpu_total = $global:GPUKHS;
-         algo = $StatAlgo;
-         uptime = $global:UPTIME;
-         hsu = "khs";
-         fans = $global:GPUFanTable;
-         temps = $global:GPUTempTable;
-         power = $global:GPUPowerTable;
-         params = $global:config.params;
-         accepted = $global:AllACC;
-         rejected = $global:AllREJ;
+        summary = $global:MinerTable;
     }
-    
+    $global:Stats.stats = @{
+        gpus       = $global:GPUHashTable;
+        cpus       = $global:CPUHashTable;
+        asics      = $global:ASICHashTable;
+        cpu_total  = $global:CPUKHS;
+        asic_total = $global:ASICKHS;
+        gpu_total  = $global:GPUKHS;
+        algo       = $StatAlgo;
+        uptime     = $global:UPTIME;
+        hsu        = "khs";
+        fans       = $global:GPUFanTable;
+        temps      = $global:GPUTempTable;
+        power      = $global:GPUPowerTable;
+        accepted   = $global:AllACC;
+        rejected   = $global:AllREJ;
+    }
+    $global:Stats.params = @{
+        params = $global:config.params
+    }
+
     $HIVE = "
 $($global:GPUHashTable -join "`n")
 $($global:GPUFanTable -join "`n")
@@ -536,57 +567,9 @@ HSU=KHS
         Write-Host " UPTIME=$global:UPTIME
 " -ForegroundColor White
     }
-        
-    ## The below is for interfacing with HiveOS.
-    if ($global:Config.params.Platform -eq "windows" -and $global:Config.Params.HiveOS -eq "Yes") {
-        $Stats = Build-HiveResponse
-        try { $response = Invoke-RestMethod "$($global:Config.Params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body ($Stats | ConvertTo-Json -Depth 4 -Compress) -ContentType 'application/json' }
-        catch { Write-Warning "Failed To Contact HiveOS.Farm"; $response = $null }
-        $response | ConvertTo-Json | Set-Content ".\build\txt\response.txt"
-        if ($response) {
-            if ($response.result.command -eq "batch") {
-                $batch = $response.result.commands
-                for ($b = 0; $b -lt $batch.count; $b++) {
-                    $do_command = $batch[$b]
-                    $do_command = $do_command -replace "@{", ""
-                    $do_command = $do_command -replace "}", ""
-                    $do_command = $do_command -split ";"
-                    $do_command = $do_command -replace "amd_oc=", ""
-                    $do_command = $do_command -replace "nvidia_oc=", ""
-                    $parsed_batch = $do_command
-                    $new_command = $do_command | ConvertFrom-StringData
-                    $batch_command = [PSCustomObject]@{"result" = @{command = $new_command.Command; id = $new_command.id; $new_command.command = $parsed_batch } }
-                    $SwarmResponse = Start-webcommand -command $batch_command 
-                }
-            }
-            else { $SwarmResponse = Start-webcommand -command $response }
-            if ($SwarmResponse -ne $null) {
-                if ($SwarmResponse -eq "config") {
-                    Write-Warning "Config Command Initiated- Restarting SWARM"
-                    $MinerFile = ".\build\pid\miner_pid.txt"
-                    if (Test-Path $MinerFile) { $MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue }
-                    if ($MinerId) {
-                        Stop-Process $MinerId
-                        Start-Sleep -S 3
-                    }
-                    Start-Process ".\SWARM.bat"
-                    Start-Sleep -S 3
-                    Exit
-                }
-                if ($SwarmResponse -eq "stats") {
-                    Write-Host "Hive Received Stats"
-                }
-                if ($SwarmResponse -eq "exec") {
-                    Write-Host "Sent Command To Hive"
-                }
-                if ($SwarmResponse -eq "update") {
-                    Write-Host "Update Completed- Exiting"
-                    Exit
-                }
-            }
-        }
-    }
-
+    
+    Send-HiveStats 
+    
     if ($BackgroundTimer.Elapsed.TotalSeconds -gt 120) { Clear-Content ".\build\txt\hivestats.txt"; $BackgroundTimer.Restart() }
 
     if ($RestartTimer.Elapsed.TotalSeconds -le 10) {

@@ -90,7 +90,7 @@ function Expand-WebRequest {
             else { Write-Log "Download Failed!" -ForegroundColor DarkRed; break }
 
             New-Item -Path ".\x64\$temp" -ItemType "Directory" -Force | Out-Null; Start-Sleep -S 1
-            Start-Process ".\build\apps\7z.exe" "x `"$dir\$X64_zip`" -o`"$dir\x64\$temp`" -y" -Wait -WindowStyle Minimized -verb Runas
+            Start-Process ".\build\apps\7z.exe" "x `"$($global:dir)\$X64_zip`" -o`"$($global:dir)\x64\$temp`" -y" -Wait -WindowStyle Minimized -verb Runas
 
             $Stuff = Get-ChildItem ".\x64\$Temp"
             if ($Stuff) { Write-Log "Extraction Succeeded!" -ForegroundColor Green }

@@ -98,7 +98,7 @@ function Start-NVIDIAOC {
     Set-Location ".\build\apps"
     $script | Out-File "nvoc-start.ps1"
     $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\nvoc-start.ps1""" -PassThru -WindowStyle Minimized -Wait
-    Set-Location $WorkingDir
+    Set-Location $Global:Dir
     Start-Sleep -s .5
     $ocmessage | Set-Content ".\build\txt\ocnvidia.txt"
     Start-Sleep -S .5
@@ -247,7 +247,7 @@ function Start-AMDOC {
     $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\AMDOC-start.ps1""" -PassThru -WindowStyle Minimized -Wait
     Start-Sleep -S .5
     $ocmessage
-    Set-Location $WorkingDir
+    Set-Location $Global:Dir
     $ocmessage | Set-Content ".\build\txt\ocamd.txt"
     Start-Sleep -s .5
 }

@@ -74,26 +74,26 @@ function Remove-Pools {
 }
 
 Function Get-NormalParams {
-    $Global:config.params.Wallet1 = $global:startingconfig.params.Wallet1
-    $Global:config.params.Wallet2 = $global:startingconfig.params.Wallet2
-    $Global:config.params.Wallet3 = $global:startingconfig.params.Wallet3
-    $Global:config.params.AltWallet1 = $global:startingconfig.params.AltWallet1
-    $Global:config.params.AltWallet2 = $global:startingconfig.params.AltWallet2
-    $Global:config.params.AltWallet3 = $global:startingconfig.params.AltWallet3
-    $Global:config.params.AltPassword1 = $global:startingconfig.params.AltPassword1
-    $Global:config.params.AltPassword2 = $global:startingconfig.params.AltPassword2
-    $Global:config.params.AltPassword3 = $global:startingconfig.params.AltPassword3
-    $Global:config.params.NiceHash_Wallet1 = $global:startingconfig.params.NiceHash_Wallet1
-    $Global:config.params.NiceHash_Wallet2 = $global:startingconfig.params.NiceHash_Wallet2
-    $Global:config.params.Nicehash_Wallet3 = $global:startingconfig.params.Nicehash_Wallet3
-    $Global:config.params.RigName1 = $global:startingconfig.params.RigName1
-    $Global:config.params.RigName2 = $global:startingconfig.params.RigName2
-    $Global:config.params.RigName3 = $global:startingconfig.params.RigName3
-    $Global:config.params.Interval = $global:startingconfig.params.Interval
-    $Global:config.params.Passwordcurrency1 = $global:startingconfig.params.Passwordcurrency1
-    $Global:config.params.Passwordcurrency2 = $global:startingconfig.params.Passwordcurrency2
-    $Global:config.params.Passwordcurrency3 = $global:startingconfig.params.Passwordcurrency3
-    $Global:config.params.PoolName = $global:startingconfig.params.PoolName
+    $Global:config.params.Wallet1 = $global:Config.user_params.Wallet1
+    $Global:config.params.Wallet2 = $global:Config.user_params.Wallet2
+    $Global:config.params.Wallet3 = $global:Config.user_params.Wallet3
+    $Global:config.params.AltWallet1 = $global:Config.user_params.AltWallet1
+    $Global:config.params.AltWallet2 = $global:Config.user_params.AltWallet2
+    $Global:config.params.AltWallet3 = $global:Config.user_params.AltWallet3
+    $Global:config.params.AltPassword1 = $global:Config.user_params.AltPassword1
+    $Global:config.params.AltPassword2 = $global:Config.user_params.AltPassword2
+    $Global:config.params.AltPassword3 = $global:Config.user_params.AltPassword3
+    $Global:config.params.NiceHash_Wallet1 = $global:Config.user_params.NiceHash_Wallet1
+    $Global:config.params.NiceHash_Wallet2 = $global:Config.user_params.NiceHash_Wallet2
+    $Global:config.params.Nicehash_Wallet3 = $global:Config.user_params.Nicehash_Wallet3
+    $Global:config.params.RigName1 = $global:Config.user_params.RigName1
+    $Global:config.params.RigName2 = $global:Config.user_params.RigName2
+    $Global:config.params.RigName3 = $global:Config.user_params.RigName3
+    $Global:config.params.Interval = $global:Config.user_params.Interval
+    $Global:config.params.Passwordcurrency1 = $global:Config.user_params.Passwordcurrency1
+    $Global:config.params.Passwordcurrency2 = $global:Config.user_params.Passwordcurrency2
+    $Global:config.params.Passwordcurrency3 = $global:Config.user_params.Passwordcurrency3
+    $Global:config.params.PoolName = $global:Config.user_params.PoolName
     $Global:DCheck = $false
 }
 Function Get-SpecialParams {

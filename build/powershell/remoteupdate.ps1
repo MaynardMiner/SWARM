@@ -14,12 +14,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 function start-update {
     param (
         [Parameter(Mandatory = $false)]
-        [String]$Update,
-        [Parameter(Mandatory = $false)]
-        [String]$Dir
+        [String]$Update
     )
 
-    $Location = split-Path $Dir
+    $Location = split-Path $($global:Dir)
     $StartUpdate = $True
     if ($Global:Config.params.Platform -eq "linux" -and $Update -eq "No") { $StartUpdate = $false }
 

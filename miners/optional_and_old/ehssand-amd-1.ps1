@@ -16,19 +16,19 @@ $AMDTypes | ForEach-Object {
         1 { $Get_Devices = $AMDDevices1 }
     }
     ##Log Directory
-    $Log = Join-Path $dir "logs\$ConfigType.log"
+    $Log = Join-Path $($global:Dir) "logs\$ConfigType.log"
 
     ##Parse -GPUDevices
     if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
     else { $Devices = $Get_Devices }
 
     ##Get Configuration File
-    $GetConfig = "$dir\config\miners\$CName.json"
+    $GetConfig = "$($global:Dir)\config\miners\$CName.json"
     try { $MinerConfig = Get-Content $GetConfig | ConvertFrom-Json }
     catch { Write-Log "Warning: No config found at $GetConfig" }
 
     ##Export would be /path/to/[SWARMVERSION]/build/export && Bleeding Edge Check##
-    $ExportDir = Join-Path $dir "build\export"
+    $ExportDir = Join-Path $($global:Dir) "build\export"
 
     ##Prestart actions before miner launch
     $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"

@@ -28,7 +28,7 @@ function Set-VegaOC {
             if ($DriverDesc -like "*Vega*")
             { $RegNames.Add("$($_)", $((Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\$($_)" -Name "ProviderName").ProviderName)) };    
         }
-        Set-Location $WorkingDir; 
+        Set-Location $global:Dir; 
         $RegNames
     }
     function HX4 {
@@ -141,8 +141,6 @@ function Start-OC {
         [Parameter(Mandatory = $false)]
         [String]$NewMiner,
         [Parameter(Mandatory = $false)]
-        [String]$Dir,
-        [Parameter(Mandatory = $false)]
         [String]$Website
     )
 
@@ -211,7 +209,7 @@ function Start-OC {
             if ($OC_Algo.PillDelay) { $PillSleep = $OC_Algo.PillDelay }
             else { $PillSleep = 1 }
             $PillTimer = New-Object -TypeName System.Diagnostics.Stopwatch
-            $PL = Join-Path $WorkingDir ".\build\apps"
+            $PL = Join-Path "$($global:Dir)" ".\build\apps"
             $command = Start-Process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -noexit -command `"&{`$host.ui.RawUI.WindowTitle = `'ETH-Pill`'; Set-Location $PL; Start-Sleep $PillSleep; Invoke-Expression `'.\OhGodAnETHlargementPill-r2.exe $PillDevices`'}`"" -WindowStyle Minimized -PassThru -Verb Runas
             $command.ID | Set-Content ".\build\pid\pill_pid.txt"
             $PillTimer.Restart()
@@ -585,14 +583,14 @@ if ($DoNVIDIAOC -eq $true -and $Global:Config.params.Platform -eq "windows") {
     Set-Location ".\build\apps"
     $script | Out-File "NVIDIA-oc-start.ps1"
     $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\NVIDIA-oc-start.ps1""" -PassThru -WindowStyle Minimized -Wait
-    Set-Location $Dir
+    Set-Location $($global:Dir)
 }
     
 if ($DoAMDOC -eq $true -and $Global:Config.params.Platform -eq "windows") {
     Set-Location ".\build\apps"
     $Ascript | Out-File "AMD-oc-start.ps1"
     $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\AMD-oc-start.ps1""" -PassThru -WindowStyle Minimized -Wait
-    Set-Location $Dir
+    Set-Location $($global:Dir)
 }
     
 if ($DOAmdOC -eq $true -and $Global:Config.params.Platform -eq "linux") {

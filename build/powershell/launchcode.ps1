@@ -68,7 +68,7 @@ function Start-LaunchCode {
                     switch ($MinerCurrent.DeviceCall) {
                         "excavator" {
                             $MinerDirectory = Split-Path ($MinerCurrent.Path) -Parent
-                            $CommandFilePath = Join-Path $dir "$($MinerDirectory)\command.json"
+                            $CommandFilePath = Join-Path $Global:Dir "$($MinerDirectory)\command.json"
                             $MinerArguments = "-c command.json -p $($MinerCurrent.Port)"
                             $NHDevices = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
                             $NiceDevices = Get-DeviceString -TypeCount $NHDevices.NVIDIA.Count
@@ -153,11 +153,10 @@ function Start-LaunchCode {
     
 
         if ($Global:Config.Params.Platform -eq "windows") {
-            $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
             if ($MinerProcess -eq $null -or $MinerProcess.HasExited -eq $true) {
             
                 #dir
-                $WorkingDirectory = Join-Path $Dir $(Split-Path $($MinerCurrent.Path))
+                $WorkingDirectory = Join-Path $Global:Dir $(Split-Path $($MinerCurrent.Path))
 
                 ##Classic Logo For Windows
                 Write-Log "
@@ -193,10 +192,10 @@ function Start-LaunchCode {
                 ##Build Start Script
                 $script = @()
                 $script += "`$OutputEncoding = [System.Text.Encoding]::ASCII"
-                $script += "Start-Process `"powershell`" -ArgumentList `"-command `"`"Set-Location ```'$dir```'; & ```'$dir\build\powershell\icon.ps1```' ```'$dir\build\apps\miner.ico```'`"`"`" -NoNewWindow"
+                $script += "Start-Process `"powershell`" -ArgumentList `"-command `"`"Set-Location ```'$($global:Dir)```'; & ```'$($global:Dir)\build\powershell\icon.ps1```' ```'$($global:Dir)\build\apps\miner.ico```'`"`"`" -NoNewWindow"
                 $script += "`$host.ui.RawUI.WindowTitle = `'$($MinerCurrent.Name) - $($MinerCurrent.Algo)`';"
                 $MinerCurrent.Prestart | ForEach-Object {
-                    if ($_ -notlike "export LD_LIBRARY_PATH=$dir\build\export") {
+                    if ($_ -notlike "export LD_LIBRARY_PATH=$($global:Dir)\build\export") {
                         $setx = $_ -replace "export ", "set "
                         $setx = $setx -replace "=", " "
                         $script += "$setx"
@@ -265,16 +264,15 @@ function Start-LaunchCode {
         elseif ($Global:Config.Params.Platform -eq "linux") {
 
             ##Specified Dir Again For debugging / Testing - No Harm
-            $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
-            $MinerDir = Join-Path $Dir $(Split-Path $($MinerCurrent.Path))
+            $MinerDir = Join-Path $($global:Dir) $(Split-Path $($MinerCurrent.Path))
             $MinerDir = $(Resolve-Path $MinerDir).Path
-            $MinerEXE = Join-Path $Dir $MinerCurrent.Path
+            $MinerEXE = Join-Path $($global:Dir) $MinerCurrent.Path
             $MinerEXE = $(Resolve-Path $MinerExe).Path
             $StartDate = Get-Date
 
             ##PID Tracking Path & Date
-            $PIDPath = Join-Path $Dir "build\pid\$($MinerCurrent.InstanceName)_pid.txt"
-            $PIDInfoPath = Join-Path $Dir "build\pid\$($MinerCurrent.InstanceName)_info.txt"
+            $PIDPath = Join-Path $($global:Dir) "build\pid\$($MinerCurrent.InstanceName)_pid.txt"
+            $PIDInfoPath = Join-Path $($global:Dir) "build\pid\$($MinerCurrent.InstanceName)_info.txt"
             $PIDInfo = @{miner_exec = "$MinerEXE"; start_date = "$StartDate"; pid_path = "$PIDPath"; }
             $PIDInfo | ConvertTo-Json | Set-Content $PIDInfoPath
 
@@ -341,7 +339,7 @@ function Start-LaunchCode {
             Write-Log "Starting $($MinerCurrent.Name) Mining $($MinerCurrent.Symbol) on $($MinerCurrent.Type)" -ForegroundColor Cyan
 
             ##FilePaths
-            $Export = Join-Path $Dir "build\export"
+            $Export = Join-Path $($global:Dir) "build\export"
 
             ##Build Two Bash Scripts: First script is to start miner while SWARM is running
             ##Second Script is to build a "test script" written in bin folder for users to
@@ -373,7 +371,7 @@ function Start-LaunchCode {
             $Script += "screen -S $($MinerCurrent.Type) -X stuff $`"cd $MinerDir\n`"", "sleep .1"
 
             ##This launches the previous generated configs.
-            $Script += "screen -S $($MinerCurrent.Type) -X stuff $`"`$(< $Dir/build/bash/config.sh)\n`""
+            $Script += "screen -S $($MinerCurrent.Type) -X stuff $`"`$(< $($global:Dir)/build/bash/config.sh)\n`""
             $TestScript += $Daemon
 
             ##Write Both Scripts

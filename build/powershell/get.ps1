@@ -37,11 +37,11 @@ $Get = @()
 
 . .\build\powershell\hashrates.ps1
 . .\build\powershell\octune.ps1
-. .\build\powershell\command-web.ps1
+. .\build\api\hiveos\do-command.ps1
 . .\build\powershell\powerup.ps1
 . .\build\powershell\command-stats.ps1
-. .\build\powershell\response.ps1
-. .\build\powershell\hiveoc.ps1
+. .\build\api\hiveos\response.ps1
+. .\build\api\hiveos\hiveoc.ps1
 
 Switch ($argument1) {
     "help" {
