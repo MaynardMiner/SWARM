@@ -25,7 +25,7 @@ function Start-LinuxConfig {
 
         ## Get Hive Config
         $RigConf = Get-Content $Rig_File
-        $config = [string]$RigConf.result.config | ConvertFrom-StringData                
+        $config = $RigConf | ConvertFrom-StringData                
         $global:Config.Hive_Params.HiveWorker = $config.WORKER_NAME -replace "`"", ""
         $global:Config.Hive_Params.HivePassword = $config.RIG_PASSWD -replace "`"", ""
         $global:Config.Hive_Params.HiveMirror = $config.HIVE_HOST_URL -replace "`"", ""
@@ -87,6 +87,7 @@ function Start-LinuxConfig {
                 }
             }
         }
+    }
     
         ## Aaaaannnd...Que that sexy loading screen
         Get-SexyUnixLogo
@@ -97,8 +98,9 @@ function Start-LinuxConfig {
         Get-Data -CmdDir $Global:Dir
 
         ## Set Arguments/New Parameters
+        if($global:Config.HiveParams.HiveID) {
         $global:Config.Hive_Params | ConvertTo-Json | Set-Content ".\build\txt\hivekeys.txt"
-    }
+        }
 }
 
 function Start-AgentCheck {
