@@ -19,6 +19,8 @@ Param (
 Set-Location $WorkingDir
 
 $Global:config = [hashtable]::Synchronized(@{})
+$Global:stats = [hashtable]::Synchronized(@{})
+$Global:stats.Add("summary",@{})
 $global:Config.Add("params",@{})
 if(Test-Path ".\config\parameters\newarguments.json") {$argpath = ".\config\parameters\newarguments.json"}
 else {$argpath = ".\config\parameters\arguments.json"}
@@ -65,11 +67,14 @@ if ($global:Config.Params.Platform -eq "windows") {
 . .\build\powershell\hashrates.ps1;  . .\build\powershell\command-web.ps1;   . .\build\powershell\response.ps1;
 . .\build\powershell\hiveoc.ps1;     . .\build\powershell\command-stats.ps1;  . .\build\api\miners\srbminer.ps1;
 . .\build\api\miners\cgminer.ps1;    . .\build\api\miners\nbminer.ps1;        . .\build\api\miners\multiminer.ps1;
+. .\build\api\tcp\server.ps1;
 
 ##Start API Server
 Write-Host "API Port is $($global:Config.Params.Port)";      
-$Posh_api = Get-APIServer;        
+$Posh_api = Get-APIServer;  
 $Posh_Api.BeginInvoke() | Out-Null
+$Posh_tcp = Get-TCPServer;
+$Posh_tcp.BeginInvoke() | Out-Null
 if ($global:Config.Params.API -eq "Yes") { Write-Host "API Server Started- you can run http://localhost:$($global:Config.Params.Port)/end to close" -ForegroundColor Green }
 
 ## SWARM miner PID
@@ -200,7 +205,12 @@ While ($True) {
             $global:CPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.CPU.$i)" -Value 0; 
         }
     }
-    if ($DoASIC) { $global:ASICHashRates | Add-Member -MemberType NoteProperty -Name "0" -Value 0; }
+    if ($DoASIC) { 
+        $ASICS = $CurrentMiners.Type | Where {$_ -like "*ASIC*"}
+        for ($i = 0; $i -lt $ASICS.Count; $i++) {
+        $global:ASICHashRates | Add-Member -MemberType NoteProperty -Name "0" -Value 0; 
+        }
+    }
 
     ## Windows-To-Hive Stats
     if ($global:Config.Params.Platform -eq "windows") {
@@ -228,11 +238,13 @@ While ($True) {
     ## Start API Calls For Each Miner
     if ($CurrentMiners -and $GETSWARM.HasExited -eq $false) {
 
+        $global:MinerTable = @{}
+
         $CurrentMiners | ForEach-Object {
 
             ## Static Miner Information
             $MinerAlgo = "$($_.Algo)"; $MinerName = "$($_.MinerName)"; $Name = "$($_.Name)";
-            $Port = $($_.Port); $MinerType = "$($_.Type)"; $MinerAPI = "$($_.API)";
+            $Port = $($_.Port); $global:MinerType = "$($_.Type)"; $MinerAPI = "$($_.API)";
             $Server = "$($_.Server)"; $HashPath = ".\logs\$($_.Type).log"; $global:TypeS = "none"
             $global:Devices = 0; $MinerDevices = $_.Devices
 
@@ -468,6 +480,26 @@ HiveOS Name For Algo is $StatAlgo" -ForegroundColor Magenta
     if ($DoASIC) { $global:ASICKHS = [Math]::Round($global:ASICKHS, 4) }
     $global:UPTIME = [math]::Round(((Get-Date) - $StartTime).TotalSeconds)
 
+
+    $global:Stats.summary = @{
+         summary = $global:MinerTable;
+         gpus = $global:GPUHashTable;
+         cpus = $global:CPUHashTable;
+         asics = $global:ASICHashTable;
+         cpu_total = $global:CPUKHS;
+         asic_total = $global:ASICKHS;
+         gpu_total = $global:GPUKHS;
+         algo = $StatAlgo;
+         uptime = $global:UPTIME;
+         hsu = "khs";
+         fans = $global:GPUFanTable;
+         temps = $global:GPUTempTable;
+         power = $global:GPUPowerTable;
+         params = $global:config.params;
+         accepted = $global:AllACC;
+         rejected = $global:AllREJ;
+    }
+    
     $HIVE = "
 $($global:GPUHashTable -join "`n")
 $($global:GPUFanTable -join "`n")
