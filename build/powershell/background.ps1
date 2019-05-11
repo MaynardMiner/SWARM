@@ -68,7 +68,7 @@ if (-not $global:Config.Params.Platform) {
 [cultureinfo]::CurrentCulture = 'en-US'
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
 
-Write-Host "Platform is $($global:Config.Params.PlatformPlatform)"; Write-Host "HiveOS ID is $($global:Config.hive_params.HiveID)"; Write-Host "HiveOS = $($global:Config.params.HiveOS)"
+Write-Host "Platform is $($global:Config.Params.Platform)"; Write-Host "HiveOS ID is $($global:Config.hive_params.HiveID)"; Write-Host "HiveOS = $($global:Config.params.HiveOS)"
 
 ##Icon for windows
 if ($global:Config.Params.Platform -eq "windows") {
