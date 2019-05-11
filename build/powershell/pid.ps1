@@ -15,11 +15,12 @@ Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.
 
 . .\build\powershell\killall.ps1;
 [cultureinfo]::CurrentCulture = 'en-US'
+$MinerContent = Get-Content ".\build\pid\miner_pid.txt"
+
 
 While ($true) {
        $Title = "SWARM"
         Write-Host "Checking To See if SWARM Is Running"
-        $MinerContent = Get-Content ".\build\pid\miner_pid.txt"
             if ($MinerContent -ne $null) {
                 Write-Host "Miner Name is $Title"
                 Write-Host "Miner Process Id is Currently $($MinerContent)" -foregroundcolor yellow
