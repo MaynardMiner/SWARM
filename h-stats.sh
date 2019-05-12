@@ -12,26 +12,20 @@ cd `dirname $0`
 	case $myminer in
 		GPU)
 			stats_raw=`echo "stats" | nc -w 2 localhost 6099`
-			temp=$(jq -c '.temps' <<< "$stats_raw")
-			fans=$(jq -c '.fans' <<< "$stats_raw")
-			hashrates=$(jq -c '.hashrates' <<< "$stats_raw")
 			ac=$(jq -c '[.accepted]' <<< "$stats_raw")
 			rj=$(jq -c '[.rejected]' <<< "$stats_raw")
-			uptime=$(jq -c '[.uptime]' <<< "$stats_raw")
-			hsu=$(jq -c '[.hsu]' <<< "$stats_raw")
-			algo=$(jq -c '[.algo]' <<< "$stats_raw")
-			khs=$(jq -c '[.uptime]' <<< "$stats_raw")
+			uptime=$(jq -c '.uptime' <<< "$stats_raw")
+			hsu=$(jq -c '.hsu' <<< "$stats_raw")
+			algo=$(jq -c '.algo' <<< "$stats_raw")
+			khs=$(jq -c '.gpu_total' <<< "$stats_raw")
 
 		stats=$(jq -n \
 					  --arg uptime "$uptime" \
 					  --arg ac "$ac" \
 					  --arg rj "$rj" \
-					  --arg temp "$temp" \
-					  --arg fan "$fans" \
 					  --arg hs_units "$hsu" \
-					  --arg hs "$hashrates" \
 					  --arg algo "$algo" \
-					  '{$hs, $hs_units, $temp, $fan, $uptime, ar: [$ac, $rj], $algo}')
+					  '{ hs: [.gpus], temp: [.temps], fan: [.fans], $uptime, ar: [$ac, $rj], $hs_units}' <<< "$stats_raw")
 			;;
 		CPU)
 				cpkhs=(`echo "$mystats" | grep 'CPUKHS=' | sed -e 's/.*=//' | tr -d '\r'`)
