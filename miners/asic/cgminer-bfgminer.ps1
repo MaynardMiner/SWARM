@@ -7,7 +7,7 @@ $ASICTypes | ForEach-Object {
     $MinerName = "cgminer"
     $Path = "no path"
 
-    $User = "User1"; $Name = "cgminer-$Num"
+    $User = "User1"; $Name = "asicminer-$Num"
 
     $Devices = $null
 
@@ -25,6 +25,7 @@ $ASICTypes | ForEach-Object {
                 $Pass = $Pass -replace "$($global:Config.Params.Rigname1)","$($global:ASICS.$ConfigType.NickName)"
                 }
                 [PSCustomObject]@{
+                    MName      = $Name
                     Coin       = $Coins
                     Delay      = $MinerConfig.$ConfigType.delay
                     Fees       = $MinerConfig.$ConfigType.fee.$($_.Algorithm)

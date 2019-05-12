@@ -179,7 +179,7 @@ function Remove-ASICPools {
     Switch ($Name) {
         "cgminer" {
             $ASICM = "cgminer"
-            Write-Host "Clearing all previous cgminer pools." -ForegroundColor "Yellow"
+            Write-Log "Clearing all previous cgminer pools." -ForegroundColor "Yellow"
             $ASIC_Pools.Add($ASICM, @{ })
             ##First we need to discover all pools
             $Commands = @{command = "pools"; parameter = 0 } | ConvertTo-Json -Compress
@@ -199,7 +199,7 @@ function Remove-ASICPools {
                     $response
                 }
             }
-            else { Write-Warning "Failed To Gather cgminer Pool List!" }
+            else { Write-Log "WARNING: Failed To Gather cgminer Pool List!" -ForegroundColor Yellow }
         }
     }
 }

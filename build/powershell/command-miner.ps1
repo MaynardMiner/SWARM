@@ -80,11 +80,8 @@ function Get-Miners {
         $minerfilepath = ".\miners\asic"    
         $ASICMiners = if (Test-Path $minerfilepath) { Get-ChildItemContent $minerfilepath | ForEach-Object { $_.Content | Add-Member @{Name = $_.Name } -PassThru } |
             Where-Object { $global:Config.Params.Type.Count -eq 0 -or (Compare-Object $global:Config.Params.Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
-            Where-Object { $_.Path -ne "None" } |
-            Where-Object { $_.Uri -ne "None" } |
-            Where-Object { $_.MinerName -ne "None" }
         }
-        $ASICMiners | ForEach-Object { $GetMiners.Add($_) | Out-Null }
+        $ASICMiners | ForEach-Object { $_.Name = $_.MName; $GetMiners.Add($_) | Out-Null }
     }
         
     $Note = @()

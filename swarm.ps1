@@ -259,11 +259,13 @@ While ($true) {
 
         if ($Global:ASICS) {
             $Global:ASICS.Keys | ForEach-Object {
+                if($_ -notin $Global:Config.Params.Type) {
                 $Global:Config.Params.Type += $_
+                }
             }
         }
         $Global:Config.Params.Type = $GLobal:Config.Params.Type | Where { $_ -ne "ASIC" }
-        $ASICTypes = @(); if ($global:COnfig.Params.Type -like "*ASIC*") { $global:Config.Params.Type | Where { $_ -like "*ASIC*" } | % { $ASICTypes += $_ } }
+        $ASICTypes = @(); if ($global:Config.Params.Type -like "*ASIC*") { $global:Config.Params.Type | Where { $_ -like "*ASIC*" } | % { $ASICTypes += $_ } }
 
 
         $global:oc_default = Get-Content ".\config\oc\oc-defaults.json" | ConvertFrom-Json
