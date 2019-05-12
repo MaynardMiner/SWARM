@@ -92,7 +92,8 @@ function Set-Stat {
         $Calcs.Add("Hashrate", [Math]::Max([Math]::Round(3600 / $global:Config.Params.Interval), 1))
     }
 
-    $Max_Periods = 288
+    if($global:Config.Params.Max_Periods -and $global:Config.Params.Max_Periods -ne ""){$Max_Periods = $global:Config.Params.Max_Periods}
+    else {$Max_Periods = 288}
     $Hash_Max = 15
     if ($name -eq "load-average") { $Max_Periods = 90; $Path = "build\txt\$Name.txt" }
     else { $Path = "stats\$Name.txt" }
