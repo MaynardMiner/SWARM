@@ -25,7 +25,7 @@ While ($true) {
                 Write-Host "Miner Name is $Title"
                 Write-Host "Miner Process Id is Currently $($MinerContent)" -foregroundcolor yellow
                 $MinerProcess = Get-Process -Id $MinerContent -ErrorAction SilentlyContinue
-                if ($MinerProcess -ne $null -or $MinerProcess.HasExited -eq $false) {
+                if ($MinerProcess -eq $null -or $MinerProcess.HasExited -eq $false) {
                     Write-Host "$($Title) Status: Is Currently Running" -foregroundcolor green
                 }
                 else {
