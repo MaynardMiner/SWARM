@@ -162,12 +162,6 @@ While ($True) {
         $Waiting = $True
         $StartTime = Get-Date
         $NEW = 0;
-        $NEW | Set-Content ".\build\txt\NVIDIA1-hash.txt";
-        $NEW | Set-Content ".\build\txt\NVIDIA2-hash.txt";
-        $NEW | Set-Content ".\build\txt\NVIDIA2-hash.txt";
-        $NEW | Set-Content ".\build\txt\AMD1-hash.txt";  
-        $NEW | Set-Content ".\build\txt\CPU-hash.txt";
-        $NEW | Set-Content ".\build\txt\ASIC-hash.txt"
     }
 
     ## Determine if CPU in only used. Set Flags for what to do.
