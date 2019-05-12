@@ -16,27 +16,26 @@ Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.
 . .\build\powershell\killall.ps1;
 [cultureinfo]::CurrentCulture = 'en-US'
 $MinerContent = Get-Content ".\build\pid\miner_pid.txt"
-
+if($MinerContent){
+    $MinerProcess = Get-Process -Id $MinerContent -ErrorAction SilentlyContinue
+}
 
 While ($true) {
        $Title = "SWARM"
         Write-Host "Checking To See if SWARM Is Running"
-            if ($MinerContent -ne $null) {
-                Write-Host "Miner Name is $Title"
-                Write-Host "Miner Process Id is Currently $($MinerContent)" -foregroundcolor yellow
-                $MinerProcess = Get-Process -Id $MinerContent -ErrorAction SilentlyContinue
-                if ($MinerProcess -eq $null -or $MinerProcess.HasExited -eq $false) {
-                    Write-Host "$($Title) Status: Is Currently Running" -foregroundcolor green
-                }
-                else {
-                    Write-Host "Closing SWARM" -foregroundcolor red
-                    Get-Date | Out-File ".\build\data\timetable.txt"
-                    $Miners = Get-ChildItem ".\build\pid"
-                    start-killscript
-                    Start-Process ".\build\bash\killall.sh" -ArgumentList "pidinfo" -Wait
-                }
+        Write-Host "Miner Name is $Title"
+        Write-Host "Miner Process Id is Currently $($MinerContent)" -foregroundcolor yellow
+            if ($MinerProcess.HasExited -eq $false) {
+                Write-Host "$($Title) Status: Is Currently Running" -foregroundcolor green
             }
-    Start-Sleep -S 1
-}
+            else {
+                Write-Host "Closing SWARM" -foregroundcolor red
+                Get-Date | Out-File ".\build\data\timetable.txt"
+                $Miners = Get-ChildItem ".\build\pid"
+                start-killscript
+                Start-Process ".\build\bash\killall.sh" -ArgumentList "pidinfo" -Wait
+            }
+        Start-Sleep -S 1
+    }
 
   
