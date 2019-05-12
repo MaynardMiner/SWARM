@@ -5,9 +5,6 @@ function Get-SWARMServer {
     $Runspace.SessionStateProxy.SetVariable('stats', $global:stats)
 
     $TCPServer = {
-        if (Test-Path ".\build\pid\tcp_pid.txt") { $AFID = Get-Content ".\build\pid\tcp_pid.txt"; $AID = Get-Process -ID $AFID -ErrorAction SilentlyContinue }
-        if ($AID) { Stop-Process $AID -ErrorAction SilentlyContinue }
-        $PID | Set-Content ".\build\pid\tcp_pid.txt"
         $addr = [ipaddress]'127.0.0.1'
         $port = 5099
         $endpoint = New-Object Net.IPEndPoint ($addr, $port)
