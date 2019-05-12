@@ -12,14 +12,14 @@ cd `dirname $0`
 	case $myminer in
 		GPU)
 			stats_raw=`echo "stats" | nc -w 2 localhost 6099`
-			local temp=$(jq -c '.temps' <<< "$stats_raw")
-			local fans=$(jq -c '.fans' <<< "$stats_raw")
-			local hashrates=$(jq -c '.hashrates' <<< "$stats_raw")
-			local ac=$(jq -c '[.accepted]' <<< "$stats_raw")
-			local rj=$(jq -c '[.rejected]' <<< "$stats_raw")
-			local uptime=$(jq -c '[.uptime]' <<< "$stats_raw")
-			local hsu=$(jq -c '[.hsu]' <<< "$stats_raw")
-			local algo=$(jq -c '[.algo]' <<< "$stats_raw")
+			temp=$(jq -c '.temps' <<< "$stats_raw")
+			fans=$(jq -c '.fans' <<< "$stats_raw")
+			hashrates=$(jq -c '.hashrates' <<< "$stats_raw")
+			ac=$(jq -c '[.accepted]' <<< "$stats_raw")
+			rj=$(jq -c '[.rejected]' <<< "$stats_raw")
+			uptime=$(jq -c '[.uptime]' <<< "$stats_raw")
+			hsu=$(jq -c '[.hsu]' <<< "$stats_raw")
+			algo=$(jq -c '[.algo]' <<< "$stats_raw")
 			khs=$(jq -c '[.uptime]' <<< "$stats_raw")
 
 		stats=$(jq -n \
