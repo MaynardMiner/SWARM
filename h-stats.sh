@@ -10,7 +10,6 @@ cd `dirname $0`
 	khs=0
 	stats=
 	case $myminer in
-
 		GPU)
 			stats_raw=`echo "stats" | nc -w 2 localhost 6099`
 			local temp=$(jq -c '.temps' <<< "$stats_raw")
@@ -23,7 +22,8 @@ cd `dirname $0`
 			local algo=$(jq -c '[.algo]' <<< "$stats_raw")
 			khs=$(jq -c '[.uptime]' <<< "$stats_raw")
 
-		stats=$(jq -c --arg uptime "$uptime" \
+		stats=$(jq -n \
+					  --arg uptime "$uptime" \
 					  --arg ac "$ac" \
 					  --arg rj "$rj" \
 					  --arg temp "$temp" \
