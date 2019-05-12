@@ -5,7 +5,6 @@ cd `dirname $0`
 . /hive/miners/custom/$CUSTOM_MINER/h-manifest.conf
 
 	local mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-	local mystats=$(< $mydir/build/txt/hivestats.txt)
 	local myminer=$(< $mydir"/build/txt/miner.txt")
 	local mindex=$2 #empty or 2, 3, 4, ...
 	khs=0

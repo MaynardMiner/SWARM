@@ -327,7 +327,6 @@ function Start-CrashReporting {
 function Clear-Stats {
     $FileClear = @()
     $FileClear += ".\build\txt\minerstats.txt"
-    $FileClear += ".\build\txt\hivestats.txt"
     $FileClear += ".\build\txt\mineractive.txt"
     $FileClear += ".\build\bash\hivecpu.sh"
     $FileClear += ".\build\txt\profittable.txt"

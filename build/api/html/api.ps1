@@ -79,47 +79,6 @@ function Get-APIServer {
                                 }
                             }
                             "getstats" {
-                                if (Test-Path ".\build\txt\hivestats.txt") {
-                                    $result = Get-Content ".\build\txt\hivestats.txt" | ConvertFrom-StringData
-                                    $Stat = @()
-                                    for ($i = 0; $i -lt $result.GPUKHS.Count; $i++) {
-                                        $GPU = @{"GPU$i" = @{
-                                                hashrate    = $result.GPUKHS | Select-Object -skip $i -First 1; 
-                                                temperature = $result.GPUTEMP | Select-Object -skip $i -First 1;
-                                                fans        = $result.GPUFAN | Select-Object -skip $i -First 1;
-                                            }
-                                        }; 
-                                        $Stat += $GPU
-                                    }
-                                    for ($i = 0; $i -lt $result.CPUKHS.Count; $i++) {
-                                        $CPU = @{"CPU$i" = @{
-                                                hashrate    = $result.CPUKHS | Select-Object -skip $i -First 1; 
-                                                temperature = $result.CPUTEMP | Select-Object -skip $i -First 1;
-                                                fans        = $result.CPUFAN | Select-Object -skip $i -First 1;
-                                            }
-                                        };
-                                        $Stat += $CPU
-                                    }
-                                    for ($i = 0; $i -lt $result.ASICKHS.Count; $i++) {
-                                        $ASIC = @{"ASIC" = @{
-                                                hashrate = $result.ASICKHS | Select-Object -skip $i -First 1; 
-                                            }
-                                        };
-                                        $Stat += $ASIC
-                                    }
-                                    $Stat += @{Algorithm = $result.ALGO }
-                                    $Stat += @{Uptime = $result.UPTIME }
-                                    $Stat += @{"Hash_Units" = $result.HSU }
-                                    $Stat += @{Accepted = $result.ACC }
-                                    $Stat += @{Rejected = $result.REJ }
-                                    $message = $Stat | ConvertTo-Json -Depth 4 -Compress;
-                                    $response.ContentType = 'application/json'; 
-                                }
-                                else {
-                                    # If no matching subdirectory/route is found generate a 404 message
-                                    $message = @("No Data") | ConvertTo-Json -Compress;
-                                    $response.ContentType = 'application/json';
-                                }
                             }
                             "getbest" {
                                 if (Test-Path ".\build\txt\bestminers.txt") {

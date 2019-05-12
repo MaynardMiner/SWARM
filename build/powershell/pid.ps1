@@ -31,7 +31,6 @@ While ($true) {
                 else {
                     Write-Host "Closing SWARM" -foregroundcolor red
                     Get-Date | Out-File ".\build\data\timetable.txt"
-                    Clear-Content ".\build\txt\hivestats.txt"
                     $Miners = Get-ChildItem ".\build\pid"
                     start-killscript
                     Start-Process ".\build\bash\killall.sh" -ArgumentList "pidinfo" -Wait
