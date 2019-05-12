@@ -478,15 +478,15 @@ HiveOS Name For Algo is $StatAlgo" -ForegroundColor Magenta
 
     if ($DoNVIDIA) {
         for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {
-            $global:GPUHashTable[$($GCount.NVIDIA.$i)] = "GPUKHS={0:f4}" -f $($global:GPUHashrates.$($GCount.NVIDIA.$i))
-            $global:GPUFanTable[$($GCount.NVIDIA.$i)] = "GPUFAN=$($global:GPUFans.$($GCount.NVIDIA.$i))"
-            $global:GPUTempTable[$($GCount.NVIDIA.$i)] = "GPUTEMP=$($global:GPUTemps.$($GCount.NVIDIA.$i))"
-            $global:GPUPowerTable[$($GCount.NVIDIA.$i)] = "GPUWATTS=$($global:GPUPower.$($GCount.NVIDIA.$i))"
+            $global:GPUHashTable[$($GCount.NVIDIA.$i)] = "{0:f4}" -f $($global:GPUHashrates.$($GCount.NVIDIA.$i))
+            $global:GPUFanTable[$($GCount.NVIDIA.$i)] = "$($global:GPUFans.$($GCount.NVIDIA.$i))"
+            $global:GPUTempTable[$($GCount.NVIDIA.$i)] = "$($global:GPUTemps.$($GCount.NVIDIA.$i))"
+            $global:GPUPowerTable[$($GCount.NVIDIA.$i)] = "$($global:GPUPower.$($GCount.NVIDIA.$i))"
         }
     }
     if ($DoAMD) {
         for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {
-            $global:GPUHashTable[$($GCount.AMD.$i)] = "GPUKHS={0:f4}" -f $($global:GPUHashrates.$($GCount.AMD.$i))
+            $global:GPUHashTable[$($GCount.AMD.$i)] = "{0:f4}" -f $($global:GPUHashrates.$($GCount.AMD.$i))
             $global:GPUFanTable[$($GCount.AMD.$i)] = "GPUFAN=$($global:GPUFans.$($GCount.AMD.$i))"
             $global:GPUTempTable[$($GCount.AMD.$i)] = "GPUTEMP=$($global:GPUTemps.$($GCount.AMD.$i))"
             $global:GPUPowerTable[$($GCount.AMD.$i)] = "GPUWATTS=$($global:GPUPower.$($GCount.AMD.$i))"
@@ -495,11 +495,11 @@ HiveOS Name For Algo is $StatAlgo" -ForegroundColor Magenta
 
     if ($DoCPU) {
         for ($i = 0; $i -lt $GCount.CPU.PSObject.Properties.Value.Count; $i++) {
-            $global:CPUHashTable[$($GCount.CPU.$i)] = "CPUKHS={0:f4}" -f $($global:CPUHashrates.$($GCount.CPU.$i))
+            $global:CPUHashTable[$($GCount.CPU.$i)] = "{0:f4}" -f $($global:CPUHashrates.$($GCount.CPU.$i))
         }
     }
 
-    if ($DoASIC) { $global:ASICHashTable[0] = "ASICKHS={0:f4}" -f $($global:ASICHashrates."0") }
+    if ($DoASIC) { $global:ASICHashTable[0] = "{0:f4}" -f $($global:ASICHashrates."0") }
 
     if ($DoAMD -or $DoNVIDIA) { $global:GPUKHS = [Math]::Round($global:GPUKHS, 4) }
     if ($DoCPU) { $global:CPUKHS = [Math]::Round($global:CPUKHS, 4) }
@@ -532,9 +532,9 @@ HiveOS Name For Algo is $StatAlgo" -ForegroundColor Magenta
 
     if ($GetMiners -and $GETSWARM.HasExited -eq $false) {
         Write-Host " "
-        if ($DoAMD -or $DoNVIDIA) { Write-Host "$global:GPUHashTable" -ForegroundColor Green }
-        if ($DoCPU) { Write-Host "$global:CPUHashTable" -ForegroundColor Green }
-        if ($DoASIC) { Write-Host "$global:ASICHashTable" -ForegroundColor Green }
+        if ($DoAMD -or $DoNVIDIA) { Write-Host "GPU_Hashrates:$global:GPUHashTable" -ForegroundColor Green }
+        if ($DoCPU) { Write-Host "CPU_Hashrates:$global:CPUHashTable" -ForegroundColor Green }
+        if ($DoASIC) { Write-Host "ASIC_Hashrates:$global:ASICHashTable" -ForegroundColor Green }
         if ($DoAMD -or $DoNVIDIA) { Write-Host "$global:GPUFanTable" -ForegroundColor Yellow }
         if ($DoAMD -or $DoNVIDIA) { Write-Host "$global:GPUTempTable" -ForegroundColor Cyan }
         if ($DoAMD -or $DoNVIDIA) { Write-Host "$global:GPUPowerTable"  -ForegroundColor Magenta }
@@ -549,8 +549,6 @@ HiveOS Name For Algo is $StatAlgo" -ForegroundColor Magenta
     }
     
     Send-HiveStats 
-    
-    if ($BackgroundTimer.Elapsed.TotalSeconds -gt 120) { Clear-Content ".\build\txt\hivestats.txt"; $BackgroundTimer.Restart() }
 
     if ($RestartTimer.Elapsed.TotalSeconds -le 10) {
         $GoToSleep = [math]::Round(10 - $RestartTimer.Elapsed.TotalSeconds)
