@@ -36,7 +36,7 @@ While ($true) {
                     Start-Process ".\build\bash\killall.sh" -ArgumentList "pidinfo" -Wait
                 }
             }
-    Start-Sleep -S 3.75
+    Start-Sleep -S 1
 }
 
   

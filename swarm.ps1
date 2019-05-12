@@ -204,7 +204,6 @@ if ($global:Config.Params.Type -like "*NVIDIA*" -or $global:Config.Params.Type -
     $NVIDIATypes = @(); if ($global:Config.Params.Type -like "*NVIDIA*") { $global:Config.Params.Type | Where { $_ -like "*NVIDIA*" } | % { $NVIDIATypes += $_ } }
     $CPUTypes = @(); if ($global:Config.Params.Type -like "*CPU*") { $global:Config.Params.Type | Where { $_ -like "*CPU*" } | % { $CPUTypes += $_ } }
     $AMDTypes = @(); if ($global:Config.Params.Type -like "*AMD*") { $global:Config.Params.Type | Where { $_ -like "*AMD*" } | % { $AMDTypes += $_ } }
-    $ASICTypes = @(); if ($global:COnfig.Params.Type -like "*ASIC*") { $global:Config.Params.Type | Where { $_ -like "*ASIC*" } | % { $ASICTypes += $_ } }
 }
 
 #Get Miner Config Files
@@ -264,6 +263,7 @@ While ($true) {
             }
         }
         $Global:Config.Params.Type = $GLobal:Config.Params.Type | Where { $_ -ne "ASIC" }
+        $ASICTypes = @(); if ($global:COnfig.Params.Type -like "*ASIC*") { $global:Config.Params.Type | Where { $_ -like "*ASIC*" } | % { $ASICTypes += $_ } }
 
 
         $global:oc_default = Get-Content ".\config\oc\oc-defaults.json" | ConvertFrom-Json
@@ -844,7 +844,7 @@ While ($true) {
             if ($null -eq $_.XProcess -or $_.XProcess.HasExited -and $global:Config.Params.Lite -eq "No") {
 
                 $Restart = $true
-                Start-Sleep -S $_.Delay
+                if($_.Type -notlike "*ASIC*"){Start-Sleep -S $_.Delay}
                 $_.InstanceName = "$($_.Type)-$($Instance)"
                 $_.Activated++
                 $Instance++
@@ -856,7 +856,8 @@ While ($true) {
                     if (Test-Path $OCFile) { Clear-Content $OcFile -Force; "Current OC Settings:" | Set-Content $OCFile }
                     $ClearedOC = $true
                 }
-                Start-OC -NewMiner $Current -Website $Website
+
+                if($_.Type -notlike "*ASIC*"){Start-OC -NewMiner $Current -Website $Website}
 
                 ##Launch Miners
                 write-Log "Starting $($_.InstanceName)"

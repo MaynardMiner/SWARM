@@ -71,7 +71,7 @@
     "Switch_Threshold":  "0",
     "API":  "Yes",
     "CLPlatform":  "",
-    "Max_Periods": "",
+    "Max_Periods": 288,
     "Port":  4099,
     "Remote":  "No",
     "APIPassword":  "No",

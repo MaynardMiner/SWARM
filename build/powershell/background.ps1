@@ -170,7 +170,7 @@ While ($True) {
         if ($_.Type -eq "CPU") {
             $DoCPU = $true
         }
-        if ($_.Type -eq "ASIC") {
+        if ($_.Type -like "*ASIC*") {
             $DoASIC = $true
         }
     }

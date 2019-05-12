@@ -24,7 +24,7 @@ function Start-LaunchCode {
 
     $MinerCurrent = $NewMiner | ConvertFrom-Json
 
-    if ($MinerCurrent.Type -ne "ASIC") {
+    if ($MinerCurrent.Type -notlike "*ASIC*") {
         ##Remove Old PID FIle
         $MinerTimer = New-Object -TypeName System.Diagnostics.Stopwatch
         $Export = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\export")  
