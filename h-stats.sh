@@ -12,23 +12,26 @@ cd `dirname $0`
 	case $myminer in
 		GPU)
 			stats_raw=`echo "stats" | nc -w 2 localhost 6099`
-			ac=$(jq '[.accepted]' <<< "$stats_raw")
-			rj=$(jq '[.rejected]' <<< "$stats_raw")
-			uptime=$(jq '.uptime' <<< "$stats_raw")
-			gpus=$(jq -c '.gpus' <<< "$stats_raw")
-			fans=$(jq -c '.fans' <<< "$stats_raw")
-			temp=$(jq -c '.temps' <<< "$stats_raw")
+			ac=$(jq -r '[.accepted]' <<< "$stats_raw")
+			rj=$(jq -r '[.rejected]' <<< "$stats_raw")
+			uptime=$(jq -r '.uptime' <<< "$stats_raw")
+			gpus=$(jq -c '.gpus' <<< "$stats_raw" | tr -d '"')
+			fans=$(jq -c '.fans' <<< "$stats_raw" | tr -d '"')
+			temps=$(jq -c '.temps' <<< "$stats_raw" | tr -d '"')
 			hsu=$(jq '.hsu' <<< "$stats_raw")
 			algo=$(jq '.algo' <<< "$stats_raw")
 			khs=$(jq '.gpu_total' <<< "$stats_raw")
 
 		stats=$(jq -n \
+					  --arg hs "$gpus" \
+					  --arg fan "$fans" \
+					  --arg temp "$temps" \
 					  --arg uptime "$uptime" \
 					  --arg ac "$ac" \
 					  --arg rj "$rj" \
 					  --arg hs_units "$hsu" \
 					  --arg algo "$algo" \
-					  '{ hs: .gpus, temp: .temps, fan: .fans, $uptime, ar: [$ac, $rj], $hs_units}' <<< "$stats_raw")
+					  '{$hs, $fan, $temp, $uptime, ar: [$ac, $rj], $hs_units, $algo}')
 			;;
 		CPU)
 				cpkhs=(`echo "$mystats" | grep 'CPUKHS=' | sed -e 's/.*=//' | tr -d '\r'`)
