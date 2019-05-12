@@ -94,14 +94,19 @@ if ($global:Config.Params.Platform -eq "windows") {
 . .\build\powershell\hashrates.ps1; . .\build\api\hiveos\do-command.ps1; . .\build\api\hiveos\response.ps1;
 . .\build\api\hiveos\hiveoc.ps1; . .\build\powershell\command-stats.ps1; . .\build\api\miners\srbminer.ps1;
 . .\build\api\miners\cgminer.ps1; . .\build\api\miners\nbminer.ps1; . .\build\api\miners\multiminer.ps1;
-. .\build\api\tcp\server.ps1;     . .\build\api\hiveos\stats.ps1
+. .\build\api\tcp\agent-server.ps1; . .\build\api\hiveos\stats.ps1;  . .\build\api\tcp\hive-server.ps1;
 
 ##Start API Server
+$Hive_Path = "/hive/bin"
 Write-Host "API Port is $($global:Config.Params.Port)";      
 $Posh_api = Get-APIServer;  
 $Posh_Api.BeginInvoke() | Out-Null
-$Posh_tcp = Get-TCPServer;
-$Posh_tcp.BeginInvoke() | Out-Null
+$Posh_SwarmTCP = Get-SWARMServer;
+$Posh_SwarmTCP.BeginInvoke() | Out-Null
+if(test-path $Hive_Path) {
+$Posh_HiveTCP= Get-HiveServer;
+$Posh_HiveTCP.BeginInvoke() | Out-Null
+}
 if ($global:Config.Params.API -eq "Yes") { Write-Host "API Server Started- you can run http://localhost:$($global:Config.Params.Port)/end to close" -ForegroundColor Green }
 
 ## SWARM miner PID
@@ -530,25 +535,6 @@ HiveOS Name For Algo is $StatAlgo" -ForegroundColor Magenta
     $global:Stats.params = @{
         params = $global:config.params
     }
-
-    $HIVE = "
-$($global:GPUHashTable -join "`n")
-$($global:GPUFanTable -join "`n")
-$($global:GPUTempTable -join "`n")
-$($global:GPUPowerTable -join "`n")
-$($global:CPUHashTable -join "`n")
-$($global:ASICHashTable -join "`n")
-GPU_TOTAL_KHS=$global:GPUKHS
-CPU_TOTAL_KHS=$global:CPUKHS
-ASIC_TOTAL_KHS=$global:ASICKHS
-ACC=$global:ALLACC
-REJ=$global:ALLREJ
-ALGO=$SwarmAlgo
-HIVEALGO=$StatAlgo
-UPTIME=$global:UPTIME
-HSU=KHS
-"
-    $Hive | Set-Content ".\build\txt\hivestats.txt"
 
     if ($GetMiners -and $GETSWARM.HasExited -eq $false) {
         Write-Host " "

@@ -1,4 +1,4 @@
-function Get-TCPServer {
+function Get-SWARMServer {
 
     $Runspace = [runspacefactory]::CreateRunspace()
     $Runspace.Open()
@@ -40,6 +40,6 @@ function Get-TCPServer {
     $Posh_Api.Runspace = $Runspace
     $Posh_Api.AddScript($TCPServer) | Out-Null
     $Posh_Api
-    Write-Host "Starting TCP Server" -ForegroundColor "Yellow"
+    Write-Host "Starting Agent TCP Server" -ForegroundColor "Yellow"
 
 }
