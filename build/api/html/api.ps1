@@ -211,6 +211,6 @@ function Get-APIServer {
         $Posh_Api.Runspace = $Runspace
         $Posh_Api.AddScript($APIServer) | Out-Null
         $Posh_Api
-        Write-Host "Starting API Server" -ForegroundColor "Yellow"
+        Write-Host "Starting HTML Server" -ForegroundColor "Yellow"
     }
 }

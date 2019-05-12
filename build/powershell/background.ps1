@@ -124,7 +124,6 @@ $RestartTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 ##Get hive naming conventions:
 $GetHiveNames = ".\config\pools\pool-algos.json"
 $HiveNames = if (Test-Path $GetHiveNames) { Get-Content $GetHiveNames | ConvertFrom-Json }
-$Waiting = $True;
 
 While ($True) {
 
@@ -144,24 +143,16 @@ While ($True) {
     if ($GetMiners -and $GETSWARM.HasExited -eq $false) {
         $GetMiners | ForEach-Object { if (-not ($CurrentMiners | Where-Object Path -eq $_.Path | Where-Object Arguments -eq $_.Arguments )) { $Switched = $true } }
         if ($Switched -eq $True) {
-            $Waiting = $false
             Write-Host "Miners Have Switched
 " -ForegroundColor Cyan
             $CurrentMiners = $GetMiners;
             ##Set Starting Date & Device Flags
             $StartTime = Get-Date
             ## Determine Which GPU's to stat
-            $CurrentMiners | ForEach-Object {
-                $NEW = 0; 
-                $NEW | Set-Content ".\build\txt\$($_.Type)-hash.txt";
-                $Name = $($_.Name)
-            }
         }
     }
     else {
-        $Waiting = $True
         $StartTime = Get-Date
-        $NEW = 0;
     }
 
     ## Determine if CPU in only used. Set Flags for what to do.
