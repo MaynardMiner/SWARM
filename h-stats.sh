@@ -4,51 +4,27 @@ cd `dirname $0`
 
 . /hive/miners/custom/$CUSTOM_MINER/h-manifest.conf
 
-	local mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-	local myminer=$(< $mydir"/build/txt/miner.txt")
-	local mindex=$2 #empty or 2, 3, 4, ...
+	mindex=$2 #empty or 2, 3, 4, ...
 	khs=0
 	stats=
-	case $myminer in
-		GPU)
 			stats_raw=`echo "stats" | nc -w 2 localhost 6099`
-			ac=$(jq -r '[.accepted]' <<< "$stats_raw")
-			rj=$(jq -r '[.rejected]' <<< "$stats_raw")
-			uptime=$(jq -r '.uptime' <<< "$stats_raw")
-			gpus=$(jq -c '.gpus' <<< "$stats_raw" | tr -d '"')
-			fans=$(jq -c '.fans' <<< "$stats_raw" | tr -d '"')
-			temps=$(jq -c '.temps' <<< "$stats_raw" | tr -d '"')
-			hsu=$(jq '.hsu' <<< "$stats_raw")
-			algo=$(jq '.algo' <<< "$stats_raw")
-			khs=$(jq '.gpu_total' <<< "$stats_raw")
+			ac=$(jq -c -r '.accepted' <<< "$stats_raw" | tr -d '"')
+			rj=$(jq -c -r '.rejected' <<< "$stats_raw" | tr -d '"')
+			uptime=$(jq -r '.uptime' <<< "$stats_raw" | tr -d '"')
+			gpus=$(jq -r '.gpus' <<< "$stats_raw" | tr -d '"')
+			fans=$(jq -r '.fans' <<< "$stats_raw" | tr -d '"')
+			temps=$(jq -r '.temps' <<< "$stats_raw" | tr -d '"')
+			hsu=$(jq -r '.hsu' <<< "$stats_raw")
+			algo=$(jq -r '.algo' <<< "$stats_raw")
+			khs=$(jq -r '.gpu_total' <<< "$stats_raw")
 
 		stats=$(jq -n \
-					  --arg hs "$gpus" \
-					  --arg fan "$fans" \
-					  --arg temp "$temps" \
+					  --argjson hs "`echo "${gpus[@]}" | jq -c .`" \
+					  --argjson fan "`echo "${fans[@]}" | jq -c .`" \
+					  --argjson temp "`echo "${temps[@]}" | jq -c .`" \
 					  --arg uptime "$uptime" \
 					  --arg ac "$ac" \
 					  --arg rj "$rj" \
 					  --arg hs_units "$hsu" \
 					  --arg algo "$algo" \
 					  '{$hs, $fan, $temp, $uptime, ar: [$ac, $rj], $hs_units, $algo}')
-			;;
-		CPU)
-				cpkhs=(`echo "$mystats" | grep 'CPUKHS=' | sed -e 's/.*=//' | tr -d '\r'`)
-				algo=`echo "$mystats" | grep -m1 'HIVEALGO=' | sed -e 's/.*=//' | tr -d '\r'`
-				local ac=`echo "$mystats" | grep -m1 'ACC=' | sed -e 's/.*=//' | tr -d '\r'`
-				local rj=`echo "$mystats" | grep -m1 'REJ=' | sed -e 's/.*=//' | tr -d '\r'`
-				uptime=`echo "$mystats" | grep -m1 'UPTIME=' | sed -e 's/.*=//' | tr -d '\r'`
-				khs=`echo "$mystats" | grep -m1 'CPU_TOTAL_KHS=' | sed -e 's/.*=//' | tr -d '\r'`
-				hs=`echo "$mystats" | grep -m1 'HSU=' | sed -e 's/.*=//' | tr -d '\r'`
-
-
-			stats=$(jq -n \
-				    --argjson hs "`echo "${cpkhs[@]}" | tr " " "\n" | jq -cs '.'`" \
-					--arg hs_units "$hs" \
-				     --arg uptime "$uptime", --arg algo "$algo" \
-					--arg ac "$ac" --arg rj "$rj" \
-					'{$hs, $hs_units, $temp, $fan, $uptime, ar: [$ac, $rj], $algo}')
-			;;
-
-esac
