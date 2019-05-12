@@ -21,9 +21,6 @@ function Get-APIServer {
         $APIServer = {
             [cultureinfo]::CurrentCulture = 'en-US'
             Set-Location $global:Config.Params.WorkingDir            
-            if (Test-Path ".\build\pid\api_pid.txt") { $AFID = Get-Content ".\build\pid\api_pid.txt"; $AID = Get-Process -ID $AFID -ErrorAction SilentlyContinue }
-            if ($AID) { Stop-Process $AID -ErrorAction SilentlyContinue }
-            $PID | Set-Content ".\build\pid\api_pid.txt"
             $listener = New-Object System.Net.HttpListener
             Write-Host "Listening ..."
             if ($global:Config.Params.Remote -eq "yes") {
