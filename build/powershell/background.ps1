@@ -532,19 +532,19 @@ HiveOS Name For Algo is $StatAlgo" -ForegroundColor Magenta
 
     if ($GetMiners -and $GETSWARM.HasExited -eq $false) {
         Write-Host " "
-        if ($DoAMD -or $DoNVIDIA) { Write-Host "GPU_Hashrates:$global:GPUHashTable" -ForegroundColor Green }
-        if ($DoCPU) { Write-Host "CPU_Hashrates:$global:CPUHashTable" -ForegroundColor Green }
-        if ($DoASIC) { Write-Host "ASIC_Hashrates:$global:ASICHashTable" -ForegroundColor Green }
-        if ($DoAMD -or $DoNVIDIA) { Write-Host "$global:GPUFanTable" -ForegroundColor Yellow }
-        if ($DoAMD -or $DoNVIDIA) { Write-Host "$global:GPUTempTable" -ForegroundColor Cyan }
+        if ($DoAMD -or $DoNVIDIA) { Write-Host "GPU_Hashrates: $global:GPUHashTable" -ForegroundColor Green }
+        if ($DoCPU) { Write-Host "CPU_Hashrates: $global:CPUHashTable" -ForegroundColor Green }
+        if ($DoASIC) { Write-Host "ASIC_Hashrates: $global:ASICHashTable" -ForegroundColor Green }
+        if ($DoAMD -or $DoNVIDIA) { Write-Host "GPU_Fans: $global:GPUFanTable" -ForegroundColor Yellow }
+        if ($DoAMD -or $DoNVIDIA) { Write-Host "GPU_Temps: $global:GPUTempTable" -ForegroundColor Cyan }
         if ($DoAMD -or $DoNVIDIA) { Write-Host "$global:GPUPowerTable"  -ForegroundColor Magenta }
-        if ($DoAMD -or $DoNVIDIA) { Write-Host "GPU_TOTAL_KHS=$global:GPUKHS" -ForegroundColor Yellow }
-        if ($DoCPU) { Write-Host "CPU_TOTAL_KHS=$global:CPUKHS" -ForegroundColor Yellow }
-        if ($DoASIC) { Write-Host "ASIC_TOTAL_KHS=$global:ASICKHS" -ForegroundColor Yellow }
-        Write-Host "ACC=$global:ALLACC" -ForegroundColor DarkGreen -NoNewline
-        Write-Host " REJ=$global:ALLREJ" -ForegroundColor DarkRed -NoNewline
-        Write-Host " ALGO=$SwarmAlgo" -ForegroundColor Gray -NoNewline
-        Write-Host " UPTIME=$global:UPTIME
+        if ($DoAMD -or $DoNVIDIA) { Write-Host "GPU_TOTAL_KHS: $global:GPUKHS" -ForegroundColor Yellow }
+        if ($DoCPU) { Write-Host "CPU_TOTAL_KHS: $global:CPUKHS" -ForegroundColor Yellow }
+        if ($DoASIC) { Write-Host "ASIC_TOTAL_KHS: $global:ASICKHS" -ForegroundColor Yellow }
+        Write-Host "ACC: $global:ALLACC" -ForegroundColor DarkGreen -NoNewline
+        Write-Host " REJ: $global:ALLREJ" -ForegroundColor DarkRed -NoNewline
+        Write-Host " ALGO: $SwarmAlgo" -ForegroundColor Gray -NoNewline
+        Write-Host " UPTIME: $global:UPTIME
 " -ForegroundColor White
     }
     
