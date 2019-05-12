@@ -534,9 +534,9 @@ HiveOS Name For Algo is $StatAlgo" -ForegroundColor Magenta
         if ($DoASIC) { Write-Host "ASIC_TOTAL_KHS: $global:ASICKHS" -ForegroundColor Yellow }
         Write-Host "ACC: $global:ALLACC" -ForegroundColor DarkGreen -NoNewline
         Write-Host " REJ: $global:ALLREJ" -ForegroundColor DarkRed -NoNewline
-        Write-Host " ALGO: $SwarmAlgo" -ForegroundColor Gray -NoNewline
+        Write-Host " ALGO: $SwarmAlgo" -ForegroundColor White -NoNewline
         Write-Host " UPTIME: $global:UPTIME
-" -ForegroundColor White
+" -ForegroundColor Yellow
     }
     
     Send-HiveStats 
