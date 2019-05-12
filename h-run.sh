@@ -40,25 +40,4 @@ sudo ln -s /opt/microsoft/powershell/6.1.0/pwsh /usr/bin/pwsh
 sudo rm -rf /tmp/powershell.tar.gz
 fi
 
-SWARMPORT=5099
-HIVEPORT=6099
-
-while true; do
-	for con in `netstat -anp | grep TIME_WAIT | grep $SWARMPORT | awk '{print $5}'`; do
-		killcx $con lo
-	done
-	netstat -anp | grep TIME_WAIT | grep $SWARMPORT &&
-		continue ||
-		break
-done
-
-while true; do
-	for con in `netstat -anp | grep TIME_WAIT | grep $HIVEPORT | awk '{print $5}'`; do
-		killcx $con lo
-	done
-	netstat -anp | grep TIME_WAIT | grep $HIVEPORT &&
-		continue ||
-		break
-done
-
 pwsh -command "&.\startup.ps1 $(< /hive/miners/custom/$CUSTOM_NAME/$CUSTOM_NAME.conf)" $@

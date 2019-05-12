@@ -6,9 +6,11 @@ cd `dirname $0`
 
 	mindex=$2 #empty or 2, 3, 4, ...
 	khs=0
-	stats=
-			stats_raw=`echo "stats" | nc -w 2 localhost 6099`
-			ac=$(jq -c -r '.accepted' <<< "$stats_raw" | tr -d '"')
+		  stats_raw=`echo "stats" | nc -w 2 localhost 6099`
+		  if [[ $? -ne 0  || -z $stats_raw ]]; then
+		  	echo -e "${YELLOW}Failed to read SWARM stats from localhost:6099${NOCOLOR}"
+		  else
+		  	ac=$(jq -c -r '.accepted' <<< "$stats_raw" | tr -d '"')
 			rj=$(jq -c -r '.rejected' <<< "$stats_raw" | tr -d '"')
 			uptime=$(jq -r '.uptime' <<< "$stats_raw" | tr -d '"')
 			gpus=$(jq -r '.gpus' <<< "$stats_raw" | tr -d '"')
@@ -18,7 +20,7 @@ cd `dirname $0`
 			algo=$(jq -r '.algo' <<< "$stats_raw")
 			khs=$(jq -r '.gpu_total' <<< "$stats_raw")
 
-		stats=$(jq -n \
+			stats=$(jq -n \
 					  --argjson hs "`echo "${gpus[@]}" | jq -c .`" \
 					  --argjson fan "`echo "${fans[@]}" | jq -c .`" \
 					  --argjson temp "`echo "${temps[@]}" | jq -c .`" \
@@ -28,3 +30,4 @@ cd `dirname $0`
 					  --arg hs_units "$hsu" \
 					  --arg algo "$algo" \
 					  '{$hs, $fan, $temp, $uptime, ar: [$ac, $rj], $hs_units, $algo}')
+		  fi

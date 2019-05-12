@@ -15,28 +15,6 @@
 ## If you do not intend to use HiveOS, add -HiveOS No
 ## FOR ALL ARGUMENTS: SEE help folder. Explanation on how to use -Type NVIDIA1,NVIDIA2,NVIDIA3 is provided.
 
-## This is to ensure tcp ports are closed before start:
-SWARMPORT=5099
-HIVEPORT=6099
-
-while true; do
-	for con in `netstat -anp | grep TIME_WAIT | grep $SWARMPORT | awk '{print $5}'`; do
-		killcx $con lo
-	done
-	netstat -anp | grep TIME_WAIT | grep $SWARMPORT &&
-		continue ||
-		break
-done
-
-while true; do
-	for con in `netstat -anp | grep TIME_WAIT | grep $HIVEPORT | awk '{print $5}'`; do
-		killcx $con lo
-	done
-	netstat -anp | grep TIME_WAIT | grep $HIVEPORT &&
-		continue ||
-		break
-done
-
 ## This creates a screen for SWARM to work in, and then runs startup:
 
 sudo screen -S miner -m pwsh -command "&.\startup.ps1 -HiveOS No -RigName1 MKVITO1 -Currency USD -CoinExchange LTC -Location US -PoolName ahashpool,blazepool,blockmasters,fairpool,hashrefinery,nicehash,nlpool,phiphipool,zergpool,zpool -Type NVIDIA1 -Wallet1 1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i -Donate .5 -WattOMeter No"
