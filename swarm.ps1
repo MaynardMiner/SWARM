@@ -946,6 +946,7 @@ While ($true) {
                     "GLT-ASTRALHASH" { $ScreenName = "GLT:ASTRALHASH" }
                     "GLT-PAWELHASH" { $ScreenName = "GLT:PAWELHASH" }
                     "GLT-SKUNK" { $ScreenName = "GLT:SKUNK" }
+                    "XMY-ARGON2D4096" { $ScreenName = "XMY:ARGON2D4096" }
                     default { $ScreenName = "$($Miner.Symbol):$($Miner.Algo)".ToUpper() }
                 }
             }
