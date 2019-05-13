@@ -2878,6 +2878,14 @@ API overhaul:
 
     Example:
     -Stat_Algo Minute_15(900) / -Interval 300 = 3 periods minimum.
+  
+  ``-Track_Shares``
+  * Allows the tracking of current shares on pool, where applicable.
+    Default is "Yes"
+
+ -New Features!
+  * Will only display volume, shares, and watt/day if values are greater
+    than zero on ``get stats``.
 
   -TCP enabled.
   * SWARM now utilizes TCP for data collection, and HiveOS contacts
@@ -2885,4 +2893,3 @@ API overhaul:
     (HiveOS 6099) in case there is issues with one.
   * This will dramatically reduce read/writes.
   * This slightly increases RAM use.
-
