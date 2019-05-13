@@ -6,7 +6,7 @@ function Get-ZergpoolData {
         $Pool = "zergpool"
         $global:Share_Table.$Sel.Add($Pool, @{ })
         $User_Wallet = $($Miners | Where-Object Type -eq $Sel | Where-Object MinerPool -eq $Pool | Select-Object -Property Wallet -Unique).Wallet
-        if ($Wallets -notcontains $User_Wallet) { try { $HTML = Invoke-WebRequest -Uri "http://www.zergpool.com/site/wallet_miners_results?address=$User_Wallet" -TimeoutSec 5 -ErrorAction Stop }catch { Write-Log "Failed to get Shares from $Pool" } }
+        if ($Wallets -notcontains $User_Wallet) { try { $HTML = Invoke-WebRequest -Uri "http://www.zergpool.com/site/wallet_miners_results?address=$User_Wallet" -TimeoutSec 10 -ErrorAction Stop }catch { Write-Log "Failed to get Shares from $Pool" } }
         $Wallets += $User_Wallet
         $string = $HTML.Content
         $string = $string -split "src=`"/images/"
