@@ -71,7 +71,7 @@ function Set-Stat {
         [Parameter(Mandatory = $true)]
         [String]$Name, 
         [Parameter(Mandatory = $false)]
-        [Double]$HashRate,
+        [switch]$HashRate,
         [Parameter(Mandatory = $true)]
         [Double]$Value, 
         [Parameter(Mandatory = $false)]
@@ -83,19 +83,20 @@ function Set-Stat {
         Minute_5  = [Math]::Max([Math]::Round(300 / $global:Config.Params.Interval), 1)
         Minute_15 = [Math]::Max([Math]::Round(900 / $global:Config.Params.Interval), 1)
         Hour      = [Math]::Max([Math]::Round(3600 / $global:Config.Params.Interval), 1)
-        Hour_4    = [Math]::Max([Math]::Round(14400 / $global:Config.Params.Interval), 1)
-        Day       = [Math]::Max([Math]::Round(86400 / $global:Config.Params.Interval), 1)
-        Custom    = [Math]::Max([Math]::Round($global:Config.Params.Custom_Periods), 1)
     }
 
-    if ($HashRate) {
-        $Calcs.Add("Hashrate", [Math]::Max([Math]::Round(3600 / $global:Config.Params.Interval), 1))
+    if(-not $HashRate) {
+    $Calcs.Add("Hour_4",[Math]::Max([Math]::Round(14400 / $global:Config.Params.Interval), 1))
+    $Calcs.Add("Day",[Math]::Max([Math]::Round(86400 / $global:Config.Params.Interval), 1))
+    $Calcs.Add("Custom",[Math]::Max([Math]::Round($global:Config.Params.Custom_Periods), 1))
     }
 
-    $Max_Periods = $global:Config.params.Max_Periods
-    $Hash_Max = 15
+    if($HashRate) { $Max_Periods = 12}
+    else{$Max_Periods = $global:Config.params.Max_Periods}
+
     if ($name -eq "load-average") { $Max_Periods = 90; $Path = "build\txt\$Name.txt" }
     else { $Path = "stats\$Name.txt" }
+    
     $SmallestValue = 1E-20
 
     if ((Test-Path $Path) -and $HashRate) {
@@ -106,14 +107,9 @@ function Set-Stat {
             Minute_5  = [Double]$Stat.Minute_5
             Minute_15 = [Double]$Stat.Minute_15
             Hour      = [Double]$Stat.Hour
-            Hour_4    = [Double]$Stat.Hour_4
-            Day       = [Double]$Stat.Day
-            Custom    = [Double]$Stat.Custom
-            Hashrate  = [Double]$Stat.Hashrate
-            Hash_Val  = $Stat.Hash_Val
             Values    = $Stat.Values
         }
-    } 
+    }
     elseif (Test-Path $Path) {
         $Stat = Get-Content $Path | ConvertFrom-Json 
         $Stat = [PSCustomObject]@{
@@ -135,11 +131,6 @@ function Set-Stat {
             Minute_5  = $Value
             Minute_15 = $Value
             Hour      = $Value
-            Hour_4    = $Value
-            Day       = $Value
-            Custom    = $Value
-            Hashrate  = $HashRate
-            Hash_Val  = @()
             Values    = @()
         }
     }
@@ -160,14 +151,8 @@ function Set-Stat {
     $Stat.Values += [decimal]$Value
     if ($Stat.Values.Count -gt $Max_Periods) { $Stat.Values = $Stat.Values | Select -Skip 1 }
 
-    if ($HashRate) {
-        $Stat.Hash_Val += [decimal]$Hashrate
-        if ($Stat.Hash_Val.Count -gt $Hash_Max) { $Stat.Hash_Val = $Stat.Hash_Val | Select -Skip 1 }
-    }
-
     $Calcs.keys | foreach {
-        if ($_ -eq "Hashrate") { $T = $Stat.Hash_Val }
-        else { $T = $Stat.Values }
+        $T = $Stat.Values
         $Theta = (Get-Theta -Calcs $Calcs.$_ -Values $T)
         $Alpha = [Double](Get-Alpha($Theta.Count))
         $Zeta = [Double]$Theta.Sum / $Theta.Count
@@ -177,7 +162,6 @@ function Set-Stat {
     if (-not (Test-Path "stats")) { New-Item "stats" -ItemType "directory" }
 
     $Stat.Values = @( $Stat.Values | % { [Decimal]$_ } )
-    if ($Stat.Hash_Val) { $Stat.Hash_Val = @( $Stat.Hash_Val | % { [Decimal]$_ } ) }
 
     if ($HashRate) {
         [PSCustomObject]@{
@@ -186,12 +170,7 @@ function Set-Stat {
             Minute_5  = [Decimal]$Stat.Minute_5
             Minute_15 = [Decimal]$Stat.Minute_15
             Hour      = [Decimal]$Stat.Hour
-            Hour_4    = [Decimal]$Stat.Hour_4
-            Day       = [Decimal]$Stat.Day
-            Custom    = [Decimal]$Stat.Custom
-            Hashrate  = [Decimal]$Stat.Hashrate
             Values    = $Stat.Values
-            Hash_Val  = $Stat.Hash_Val
         } | ConvertTo-Json | Set-Content $Path
     }
     else {

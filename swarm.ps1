@@ -1141,7 +1141,7 @@ While ($true) {
                                             $Watts.$($_.Algo)."$($_.Type)_Watts" = "$GPUPower"
                                         }
                                     }
-                                    $Stat = Set-Stat -Name "$($_.Name)_$($_.Algo)_hashrate" -Value $Miner_HashRates
+                                    $Stat = Set-Stat -Name "$($_.Name)_$($_.Algo)_hashrate" -Value $Miner_HashRates -HashRate
                                     Start-Sleep -s 1
                                     $GetLiveStat = Get-Stat "$($_.Name)_$($_.Algo)_hashrate"
                                     $StatCheck = "$($GetLiveStat.Live)"

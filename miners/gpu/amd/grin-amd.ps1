@@ -66,7 +66,7 @@ $AMDTypes | ForEach-Object {
                         Host       = "$($_.Host):$($_.Port)"
                         User       = "$($_.$User)"
                         Arguments  = "$($_.Host):$($_.Port) $($_.$User) $($_.Algorithm)"
-                        HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
+                        HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour}
                         Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
                         PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
                         MinerPool  = "$($_.Name)"
