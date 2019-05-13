@@ -1,10 +1,9 @@
 {
-    "Favor_Coins":  "No",
     "AltWallet2":  "",
     "Poolname":  [
                      "nlpool",
-                     "blockmasters",
-                     "ahashpool"
+                     "zergpool",
+                     "nicehash"
                  ],
     "Rigname2":  "SWARM",
     "SWARM_Mode":  "No",
@@ -30,7 +29,9 @@
     "Farm_Hash":  "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     "Wallet2":  "",
     "HiveOS":  "Yes",
-    "GPUDevices2":  [],
+    "GPUDevices2": [
+                    ""
+                   ],
     "CoinExchange":  "",
     "Interval":  300,
     "Passwordcurrency1": "BTC",
@@ -39,16 +40,17 @@
     "Timeout":  24,
     "Benchmark":  190,
     "PoolBanCount":  2,
-    "Platform":  "windows",
-    "Proxy":  "",
+    "Platform":  "",
     "AlgoBanCount":  3,
     "Rigname1":  "SWARM",
     "API_Key":  "",
-    "GPUDevices3":  [],
+    "GPUDevices3":  [
+                     ""
+                    ],
     "API_ID":  0,
     "Stat_Algo":  "Live",
     "Nicehash_Wallet3":  "",
-    "Donate":  ".5",
+    "Donate":  0.5,
     "Wallet3":  "",
     "AltPassword1":  "",
     "Auto_Coin":  "No",
@@ -56,19 +58,12 @@
                  "NVIDIA1"
              ],
     "Conserve":  "No",
-    "GPUDevices1":  [],
+    "GPUDevices1":   [
+                      ""
+                     ],
     "Rejections":  75,
     "AltWallet3":  "",
     "Nicehash_Fee":  "",
-    "No_Algo1":  [
-                    ""
-                ],
-    "No_Algo2":  [
-                    ""
-                ],
-    "No_Algo3":  [
-                    ""
-                ],
     "MinerBanCount":  4,
     "Wallet1":  "",
     "PoolBans":  "Yes",
@@ -76,19 +71,32 @@
     "Switch_Threshold":  "0",
     "API":  "Yes",
     "CLPlatform":  "",
+    "Track_Shares": "Yes",
+    "Max_Periods": 288,
     "Port":  4099,
     "Remote":  "No",
-    "APIPassword":  "",
+    "APIPassword":  "No",
     "Startup":  "Yes",
     "ETH":  "",
     "Worker":  "",
-    "No_Miner":  [
-                     ""
-                 ],
     "Algorithm":  [
                     ""
                 ],
-    "Coin": "",
-    "ASIC_IP": "",
-    "ASIC_ALGO": ""
+    "Coin":  [
+              ""
+             ],
+    "ASIC_IP": [
+               ""
+               ],
+    "ASIC_ALGO":  [
+                    ""
+                  ],
+    "Stat_All": "No",
+    "Custom_Periods": 1,
+    "Volume": "No",
+    "Auto_Algo": "Yes",
+    "Bans": [
+             ""
+            ],
+    "Xnsub": ""
 }

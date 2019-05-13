@@ -1,31 +1,41 @@
 {
   "name": "amd-linux",
-  "claymore": {
-    "name": "claymore_amd",
+  "claymore-amd": {
+    "name": "claymore-amd",
     "type": "amd",
     "AMD1": ".\\bin\\claymore-amd-1\\ethdcrminer64",
     "AMD2": ".\\bin\\claymore-amd-2\\ethdcrminer64",
     "AMD3": ".\\bin\\claymore-amd-3\\ethdcrminer64",
     "minername": "ethdcrminer64",
-    "version": "12.0",
+    "version": "14.0",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/Claymore-Linux.tar.gz"
   },
-  "gminer_amd": {
-    "name": "gminer_amd",
+  "gminer-amd": {
+    "name": "gminer-amd",
     "type": "amd",
-    "AMD1": ".\\bin\\gminer_amd-1\\miner",
-    "AMD2": ".\\bin\\gminer_amd-2\\miner",
-    "AMD3": ".\\bin\\gminer_amd-3\\miner",
+    "AMD1": ".\\bin\\gminer-amd-1\\miner",
+    "AMD2": ".\\bin\\gminer-amd-2\\miner",
+    "AMD3": ".\\bin\\gminer-amd-3\\miner",
     "minername": "miner",
-    "version": "1.38",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/gminer-linux.tar.gz"
+    "version": "1.42",
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.42/gminer_1_42_linux64.tar.xz"
   },
-  "energi_amd": {
-    "name": "energi_amd",
+  "multiminer-amd": {
+    "name": "multiminer-amd",
     "type": "amd",
-    "AMD1": ".\\bin\\energi_amd-1\\energiminer",
-    "AMD2": ".\\bin\\energi_amd-2\\energiminer",
-    "AMD3": ".\\bin\\energi_amd-3\\energiminer",
+    "AMD1": ".\\bin\\multiminer-amd-1\\multiminer",
+    "AMD2": ".\\bin\\multiminer-amd-2\\multiminer",
+    "AMD3": ".\\bin\\multiminer-amd-3\\multiminer",
+    "minername": "multiminer",
+    "version": "1.1.0",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/multiminer-linux.tar.gz"
+  },
+  "energi-amd": {
+    "name": "energi-amd",
+    "type": "amd",
+    "AMD1": ".\\bin\\energi-amd-1\\energiminer",
+    "AMD2": ".\\bin\\energi-amd-2\\energiminer",
+    "AMD3": ".\\bin\\energi-amd-3\\energiminer",
     "minername": "energiminer",
     "version": "2.2.1",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/energiminer-linux.tar.gz"
@@ -40,18 +50,18 @@
     "version": "1.0.2",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/grin-miner-linux.tar.gz"
   },
-  "ehssand_amd": {
-    "name": "ehssand_amd",
+  "ehssand-amd": {
+    "name": "ehssand-amd",
     "type": "amd",
-    "AMD1": ".\\bin\\ehssand_amd-1\\sgminer",
-    "AMD2": ".\\bin\\ehssand_amd-2\\sgminer",
-    "AMD3": ".\\bin\\ehssand_amd-3\\sgminer",
+    "AMD1": ".\\bin\\ehssand-amd-1\\sgminer",
+    "AMD2": ".\\bin\\ehssand-amd-2\\sgminer",
+    "AMD3": ".\\bin\\ehssand-amd-3\\sgminer",
     "minername": "sgminer",
     "version": "1",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/ehssand-linux.tar.gz"
   },
-  "phoenix_amd": {
-    "name": "phoenix_amd",
+  "phoenix-amd": {
+    "name": "phoenix-amd",
     "type": "amd",
     "AMD1": ".\\bin\\phoenix-amd-1\\PhoenixMiner",
     "AMD2": ".\\bin\\phoenix-amd-2\\PhoenixMiner",
@@ -67,18 +77,8 @@
     "AMD2": ".\\bin\\lolMiner-AMD-2\\lolMiner",
     "AMD3": ".\\bin\\lolMiner-AMD-3\\lolMiner",
     "minername": "lolMiner",
-    "version": "0.6",
+    "version": "0.8",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/lolminer-linux.tar.gz"
-  },
-  "lolminerv7": {
-    "name": "lolminerv7",
-    "type": "amd",
-    "AMD1": ".\\bin\\lolMinerv7-AMD-1\\lolMiner",
-    "AMD2": ".\\bin\\lolMinerv7-AMD-2\\lolMiner",
-    "AMD3": ".\\bin\\lolMinerv7-AMD-3\\lolMiner",
-    "minername": "lolMiner",
-    "version": "0.7.1",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/lolminerv7-linux.tar.gz"
   },
   "avermore": {
     "name": "avermore",
@@ -123,12 +123,12 @@
   "teamredminer": {
     "name": "teamredminer",
     "type": "amd",
-    "AMD1": ".\\bin\\tdxminer-1\\teamredminer",
-    "AMD2": ".\\bin\\tdxminer-2\\teamredminer",
-    "AMD3": ".\\bin\\tdxminer-3\\teamredminer",
+    "AMD1": ".\\bin\\teamredminer-1\\teamredminer",
+    "AMD2": ".\\bin\\teamredminer-2\\teamredminer",
+    "AMD3": ".\\bin\\teamredminer-3\\teamredminer",
     "minername": "teamredminer",
-    "version": "0.4.3",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/teamredminer-linux.tar.gz"
+    "version": "0.4.4",
+    "uri": "https://github.com/todxx/teamredminer/releases/download/v0.4.5/teamredminer-v0.4.5-linux.tgz"
   },
   "xmr-stak": {
     "name": "xmr-stak",
@@ -147,8 +147,8 @@
     "AMD2": ".\\bin\\wildrig-2\\wildrig-multi",
     "AMD3": ".\\bin\\wildrig-3\\wildrig-multi",
     "minername": "wildrig-multi",
-    "version": "0.15.4.15",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/wildrig-linux.tar.gz"
+    "version": "0.16.2",
+    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.16.2/wildrig-multi-linux-0.16.2-beta.tar.gz"
   },
   "fancyix": {
     "name": "fancyix",
@@ -170,12 +170,12 @@
     "version": "2.14.1",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/xmrig-amd-linux.tar.gz"
   },
-  "progminer_amd": {
-    "name": "progminer_amd",
+  "progminer-amd": {
+    "name": "progminer-amd",
     "type": "amd",
-    "AMD1": ".\\bin\\progminer_amd-1\\progminer",
-    "AMD2": ".\\bin\\progminer_amd-2\\progminer",
-    "AMD3": ".\\bin\\progminer_amd-3\\progminer",
+    "AMD1": ".\\bin\\progminer-amd-1\\progminer",
+    "AMD2": ".\\bin\\progminer-amd-2\\progminer",
+    "AMD3": ".\\bin\\progminer-amd-3\\progminer",
     "minername": "progminer",
     "version": "0.17.0",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/progminer-linux-10.tar.gz"

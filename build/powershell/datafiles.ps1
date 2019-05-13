@@ -26,6 +26,22 @@ function Get-Data {
         Set-Location $CmdDir     
     }
 
+    if (Test-Path ".\build\bash\nview") {
+        Copy-Item ".\build\bash\nview" -Destination "/usr/bin" -force | Out-Null
+        Set-Location "/usr/bin"
+        Start-Process "chmod" -ArgumentList "+x nview"
+        Set-Location "/"
+        Set-Location $CmdDir
+    }
+
+    if (Test-Path ".\build\bash\bans") {
+        Copy-Item ".\build\bash\bans" -Destination "/usr/bin" -force | Out-Null
+        Set-Location "/usr/bin"
+        Start-Process "chmod" -ArgumentList "+x bans"
+        Set-Location "/"
+        Set-Location $CmdDir
+    }
+
     if (Test-Path ".\build\bash\get") {
         Copy-Item ".\build\bash\get" -Destination "/usr/bin" -force | Out-Null
         Set-Location "/usr/bin"
@@ -212,7 +228,7 @@ function Get-Data {
         Start-Process "chmod" -ArgumentList "+x get-lambo"
         Set-Location "/"
         Set-Location $CmdDir
-    }      
+    }
    
     Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
     

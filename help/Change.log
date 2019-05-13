@@ -2488,4 +2488,401 @@ API overhaul:
 
   -zpool can now auto_coin switch.
   
+  2.1.7
+
+  #106 fixed gminer and grinminer AMD oc
+
+  -Fixed z-enemy miner numbering for device groups.
+  -Added progpow to Phoenix Miner for AMD.
   
+  New Miner
+  * Nebutech Miner added!
+
+  New Features!
+  * Time stamps on output / logging.
+  * Windows Side formatting has Now
+    been changed to match linux formatting
+    on main screen.
+  * SWARM will now generate a batch to
+    open CMD / basic instructions on
+    desktop in windows (for commands).
+
+  -Performed some code staging for
+   oc & web control (not implemented yet).
+
+  -AMD optional_and_old miners were updated
+   to new .ps1 format (some may not work in
+   general). I did not test, as I don't
+   support them.
+
+  -miner screens in windows output was fixed
+   further, for miners that do not support logging.
+   (Windows)
+
+  2.1.8
+
+  NOTE: Remote Updates has been disabled! You will not be able to
+  remote update, and version must be cleanly installed. Transferring
+  old statistics and miners will cause major errors.
+
+  HUGE UPDATE
+
+  -Statistics system is now greatly improved, and was completely
+  rewritten. Here are the bullet points:
+  * Statistics for time frames are now based on exponential
+    weighted moving averages.
+  * ``-Stat_All`` argument has been added which when enabled to
+      Yes, it will pull / save ALL coin stats. However, this is
+      a huge expenditure of CPU and system resources to do. Not
+      reccommend on 2 threaded CPU's. Default is No
+  * ``-Custom_Periods`` argument has been added. This will allow the
+      user to specify the number of periods that SWARM should gather
+      its data from, with "periods" defined as each pull from pool.
+      Default is 1 (to reduce use).
+  * Stat files will store values from every pull from pool.
+  * Stats are pulled on demand, and only when needed to reduce RAM use.
+  * Default is still Live stats.
+
+  Note: This new statistics system does increase load times slighty.
+  It is a little more stressful on USB sticks as well. If you are 
+  using USB, you may consider increasing -Interval, and limiting
+  Number of ``-Type`` you use. This system is much better, but does
+  increase resource use.
+
+  -Overclocking system was reworked- It now runs sycnrously to miner
+   launch. It will close miner, start OC, and then open miner when finished.
+   * OC values are displayed on main screen when this occurs.
+
+  -Added "fees" to miner files. SWARM now factors fees into calculations.
+
+  -Switch culture for time data to ENUS to avoid weird time errors.
+  
+  -Screen will now display average profit / day
+  -Screen will now display current profit / day
+
+  -``view`` command has been created. This allows a command to be run
+     that will refresh every ``-n`` seconds. ``-OnChange`` flag will
+     make it so that it will only update screen if output has changed.
+     * example: ``view get stats -n 60 -OnChange``
+       This will run the command ``get stats`` every 60 seconds,
+       and if the output is different- Will update the console screen.
+
+  New Miner!
+  SRBMiner
+
+  -bminer Updated
+  -ttminer updated
+  -wildrig Updated
+  -teamredminer updated
+
+    2.1.8
+
+  Bug Fixes:
+    -Resored zpool Auto_Coin
+    -Fixed timeout looping issue
+
+  Default Changes:
+    -All miner files that has "_" in its name was changed to "-"
+    -This resovles 'get-benchmark' issues.
+    -The miner.json in config folder will not be tranferred on update.
+        -You may have to fill out that file.
+    -Stat_Algo and -Stat_Coin defaults are now "Day"
+
+  New Features!
+
+   -Miners are "Pre-sorted"
+        -Instead of pulling all the miner files, and creating a miner
+         combination for every coin / algo, miners hashrates are compared
+         first. This means only the miners that have the highest hashrates
+         will be added to the initial database, reducing load times.
+        -This new method reduces the time it takes to load miners / database
+                 On Pentium 2 thread CPU:
+                 -With one algo pool - ~20 seconds
+                 -With one coin pool - ~1 minute
+                 -With two coin pools - ~2 minutes
+                 -With two coin pools and -Stat_All "Yes": ~3 minutes.
+                 -All pool combos and -Stat_All "Yes": ~4-5 minutes.
+        -This makes -Stat_All Yes on lower end CPU's feasable.
+        -Stat_All Yes means EVERY coin statistic is stored (that are gpu mineable)
+         when pool is qued for data, not just the ones that are most profitable.
+         This allows for better historical data for ``-Stat_Algo``
+        -SWARM always only uses a single CPU thread.
+
+   -SWARM log is greatly improved.
+      -transcript method was removed.
+      -SWARM now logs screen output in the same manner it was displayed.
+      -SWARM will store verbose warning/error output that was created
+       at the end of each loop, and and startup.
+      -get screen miner output is much cleaner.
+
+    -Cleaned up some more older miner files.
+    -Some old .ps1 files were removed.
+    -Cleaned some of the codebase (Spring Cleaning)
+    
+    Note: There is further I can do to reduce load times for
+    Database sorting, I am working on it.
+
+
+
+    2.2-frickin.0
+
+   Note: Thank you very much for your patience and
+   helping me assist with trial and error of figuring
+   out this new system. I am fairly certain as of this
+   release, every bug has been fixed with your help,
+   and we now have an awesome new system.
+
+   -Volume equation changed, performs much better.
+    * Volume had an issue with conversion of [Double]
+    * This issue made it appear to work, but the calcs
+      were off.
+    * After 100+ debug trials, I have confirmed for myself
+      it is correct now. Pre-Tested by trial users.
+
+   -Pool Load times for coins sped up.
+        -Over 50% faster. This includes -Stat_All.
+         Using more sophisticated pipeline input to
+         reduce time.
+    
+   -Forced Stat conformity.
+       -if there are more than 3 tracked stat values:
+         SWARM will begin to start comparing the incoming
+         stat with the last three. If the stat is 70% Higher
+         or lower than one of the 3 previous stats- It is ignored.
+       -This will create better Profit / Day averages.
+       -This will ignore bs over-inflated stats.
+         
+       NOTE: If the super ultra-rare circumstance occurs- that the first three
+       stats pulled by SWARM from pools were insanely high, or insanely
+       low- I can't control the fact that it will ignore the next stats.
+       Be advised that you should be careful to watch the very first 3
+       runs when profit is cleared.
+
+   -Switch Threshold
+      -Now factors miners with previous coins, even if that coin was
+       not pulled.
+
+   NEW FEATURES!
+
+   -Miner Downloads have been re-done. Very much improved:
+      -SWARM now self-determines the compression type.
+      -SWARM will run the correct decompression software.
+      -SWARM will determine the correct file path of the exectuable
+       and other files. This includes compression not originally
+       packaged in a folder, or folders that had different names
+       than the name of the compression file.
+      -I removed previous code for dpkg files and ergo excavator miner.
+
+    -Version update no longer has ridiculous rules to use.
+       -If a miner has a direct download (megashared and google download won't work).
+       -Use that link.
+       -Done.
+
+    -If Wallet1 is not specifed, miner will shut down.
+      * Because of this, if you use -Wallet1 as your last
+        argument, you will be able to tell if there is an
+        issue with your arguments, such as spacing between them,
+        etc.
+
+    -StatsInterval argument will default to 1 if miners are benchmarking.
+
+    -Because it confused users: -CoinExchange will show profit / day of coin
+     of you own choosing (can use BTC). This will NOT calculate power draw.
+     Only Miner Fees & Current Profit.
+
+     Note: There is one item unaddressed with the system, that is Switching_Threshold-
+       Switching_Threshold argument works fine with algorithms. However, coins, which
+       are piped into database only when they are profitable- Creates a scenario in
+       which the current coin you are mining may not be added to the database next pull.
+       This means the Switching_Threshold will not be applied to it.
+       I am working on a solution, but this one will take time.
+
+
+   2.2.1
+
+  Note: Windows users. It is advised to rocket launch arguments after update. This
+  is because parameters have changed!
+
+  -Stats were removed of potential compounding of figures due to modifiers, should
+   be closer to realistic when -Volume "yes" is used.
+
+  -No_Miner was removed
+  -All No_Algo arguments was removed.
+
+  ``-Xnsub [Yes/No] now added for extranonce.subscribe method. Default is no.``
+
+  ``-Bans`` argument now added! Allows user to specify in depth
+    prohibitions from algorithms from anywhere to pools to specific
+    devices. See help.txt for usage.
+
+    ``Bans`` command added. Allow users to permenantly adjust config\pool
+      .json to add bans to miners. Can be ran remotely. It works exactly 
+      like ``-Bans`` argument, only that the changes are permanent until removed
+      unles ``-Bans`` argument, which is temporary to instance of current running
+      SWARM.
+
+      ``bans add c11:zergpool,sonoa:z-enemy1,grincuckatoo31:NVIDIA2,RVN:zpool``
+      ``bans remove c11:zergpool,sonoa:z-enemy1,grincuckatoo31:NVIDIA2,RVN:zpool``
+
+  ``-Coin`` argument can accept multiple coins! Can be used to mine a finite
+     set of coins of your choosing. Note: This is expiremental. Please report
+     issues.
+
+    ``-Coin RVN,VEIL,GIN,XZC -Algorithm x16r,VEIL,x16rt,mtp -Auto_Coin Yes -Auto_Algo No``
+                Will mine only those coins on pools that support coinpools.
+
+    ``-Coin RVN,VEIL,GIN,XZC -Algorithm x16r,VEIL,x16rt,mtp -Auto_Coin Yes -Auto_Algo Yes``
+              Will mine those coins on coinpools, and will mine algorithms on algo pools
+
+     Again, this is expirimental, please let me know if you try and have issues.
+
+  -Issues with zpool coin and algo files were fixed.
+  -Switching_Threshold should now add previously mined coins to database.
+  -Colors was removed at the end of launch in h-run.sh, it is depreciated.
+  -.git information will no longer be added to release- It was causing extraction issues.
+  -Updated parameter parsing on windows side to prevent potenial issues.
+  -ASIC_ALGO should add to pool-algos.json, so you can ban coins remotely.
+  -``view`` command has changed to ``nview`` to prevent conflict with ``mc``
+  -Attempted fix of -GPUDevices argumetns when 0 is specified. It appears to work for me.
+  -Miner fixes to ``Write-Log`` function users pointed out.
+  -bans.json added, for global bans. Will only be created when used.
+  -Cleaned up some API methods.
+
+
+
+     2.2.2
+
+  -Updated TeamRedMiner
+  -Updated Gminer
+
+  Small Fixes:
+
+  -Fixed Global ``-Bans`` #118
+  -Fixed Zpool with -Coin argument.
+
+  -SWARM can now handle tar.xz links.
+  -Attempted fix of error when Switching_Threshold
+   is applied to a miner that is benchmarking. #117
+
+  Note: Update will not transfer pool-algos.json this release
+        This means you must add bans again, if done through
+        command.
+
+  2.2.3
+
+  Note: This is a mainly a patch for the below issues:
+
+  -Fixed WattOMeter for Linux/AMD (both HiveOS and generic *nix)
+  -Added GPUWatts to background screen for linux / fixed
+  -Added "mining" to ``get stats lite``
+  -Latest Bleeding Edge now supported for HiveOS!
+  -Latest Vega Image now supported for HiveOS!
+  -Fixed .tgz extraction issue with teamredminer.
+   * Swarm will now handle .tgz files.
+  -Fixed linux watchdog (close all screen on exit).
+
+  -gminer updated
+
+
+  2.2.4
+
+  Windows USERS: SWARM now requires latest .NET and Powershell:
+  * https://github.com/PowerShell/PowerShell/releases
+  * https://dotnet.microsoft.com/download/dotnet-framework/net472
+
+  SWARM should support latest NVIDIA Drivers, and Adrenaline Drivers
+
+  NEW FEATURES!
+
+  -SWARM now works in Windows 7/8 (Expiremental)
+   * If you use- Please let me know if there are
+     issues with miners.
+
+  -SWARM will handle oc for AMD, even with onboard cards.
+
+  -Updated WMI to v2
+  -Fixed Windows cpuminer screen output
+  -Fixed Directory Parsing with spaces (Windows)
+  -Enforced En-US Culture for Math & Time
+  -``benchmark timeout`` will now clear download blocks
+  -MiniZ updated
+  -Bminer updated
+
+  2.2.5
+
+  Note: All miner.json, oc, pools, and other files have been changed.
+  It was too much to code Transferring.
+
+  Update will only transfer stats & backup.
+
+  -gminer updated
+  -Crytpodredge updated
+  -argon algos added
+  -rfv2 algo added
+   * if you have issues- Add "-i 11" in cc-rfv2.json under "commands"
+  -New ProgPOW for AMD (Windows- Compiled for latest OpenCL, slightly optimized).
+   * Does not require older drivers to be installed. Can use latest.
+   * More 'tweaking' coming soon + ethash-ProgPOW support.
+
+  New Features:
+
+  -OC by algorithm, not miner. oc-algos.json has been added.
+  -New startup method.
+   * Allows either arguments, or users can pre-set ".\config\parameters\arguments.json"
+   * If newarguments.json is created- It will be used at startup instead.
+  
+  ASIC: Mutliple ASICS on 1 SWARM.
+   * example: ``-ASIC_IP 192.168.0.1:Rig1,192.168.02:Rig2``  etc. [ip address]:[nickname]
+   * asics can be added via ".\config\asic\asic-list.json" (Do not use -ASIC_IP then).
+   * no limit.
+
+  ``get asic`` now can specify which asic details to get: ``get asic ASIC1``
+
+  NOTE: I do not own a lot of ASICS. My testing was limited. Let me know if you have issues.
+
+  -Fixed Windows 7/8 automatic gpu detection. #123
+  -Fixed minor screen logging issues.
+
+  2.2.6
+
+  Note: It is not recommended to update if you are using SWARM.2.2.3 or
+  earlier. Use fresh install.
+
+  -nbminer updated
+  -wildrig updated
+  -bminer updated
+  -miniz updated (It was notated as "test" version)
+
+  -ASIC is now working. Report if issues with new
+   multiple ASIC feature has issues. There was typos
+   I missed which broke it.
+
+  -OC for SWARM should now be working. It was redone
+   to match HiveOS's system for OC, and code staging
+   for oc through HiveOS flight sheets (not ready yet)
+
+  -Fixed various small typos in codebase. Removed old /
+   erroneous code.
+
+  -multiminer-amd should now be working.
+
+  -Fixed "alhpa_testing" error.
+
+  -NEW ARGUMENTS!
+
+  ``-Max_Periods``
+  * Allows users to define the maximum periods Recorded
+    for Profit files. Will reduced stat file size, should not
+    go below time frame(in seconds) / interval. Default
+    is 288.
+
+    Example:
+    -Stat_Algo Minute_15(900) / -Interval 300 = 3 periods minimum.
+
+  -TCP enabled.
+  * SWARM now utilizes TCP for data collection, and HiveOS contacts
+    SWARM through TCP port 6099. Seperate ports are open (SWARM 5099),
+    (HiveOS 6099) in case there is issues with one.
+  * This will dramatically reduce read/writes.
+  * This slightly increases RAM use.
+

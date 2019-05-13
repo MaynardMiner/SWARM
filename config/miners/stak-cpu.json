@@ -1,0 +1,50 @@
+{
+    "name": "stak-cpu",
+    "CPU": {
+        "name": "CPU",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "cryptonight": "",
+            "cryptonightv7": "",
+            "cryptonightv8": "",
+            "cryptonightheavy": "",
+            "cryptonightgpu": "",
+            "cryptonightsuperfast": "",
+            "cryptonightr": "",
+            "cryptonight_v8_reversewalt": ""
+        },
+        "difficulty": {
+            "cryptonight": "",
+            "cryptonightv7": "",
+            "cryptonightv8": "",
+            "cryptonightheavy": "",
+            "cryptonightgpu": "",
+            "cryptonightsuperfast": "",
+            "cryptonightr": "",
+            "cryptonight_v8_reversewaltz": ""
+        },
+        "naming": {
+            "cryptonight": "cryptonight",
+            "cryptonightv7": "cryptonight_v7",
+            "cryptonightv8": "cryptonight_v8",
+            "cryptonightheavy": "cryptonight_heavy",
+            "cryptonightgpu": "cryptonight_gpu",
+            "cryptonight_superfast": "cryptonight_superfast",
+            "cryptonightsuperfast": "cryptonight_superfast",
+            "cryptonightr": "cryptonight_r",
+            "cryptonight_v8_reversewaltz": "cryptonight_v8_reversewaltz"
+        },
+        "fee": {
+            "cryptonight": 1,
+            "cryptonightv7": 1,
+            "cryptonightv8": 1,
+            "cryptonightheavy": 1,
+            "cryptonightgpu": 1,
+            "cryptonight_superfast": 1,
+            "cryptonightsuperfast": 1,
+            "cryptonightr": 1,
+            "cryptonight_v8_reversewaltz": 1
+        }
+    }
+}

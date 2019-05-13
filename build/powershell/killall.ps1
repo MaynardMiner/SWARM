@@ -30,5 +30,4 @@ function start-killscript {
     $OpenScreens | foreach {
     Start-Process ".\build\bash\killall.sh" -ArgumentList $_ -Wait
     }
-    Start-Process ".\build\bash\killall.sh" -ArgumentList "pidinfo" -Wait
 }

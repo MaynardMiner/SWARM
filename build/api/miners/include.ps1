@@ -11,6 +11,7 @@ function Write-MinerData1 {
 
 function Write-MinerData2 {
     $global:RAW | Set-Content ".\build\txt\$MinerType-hash.txt"
+    $global:MinerTable.ADD("$($global:MinerType)",$global:RAW)
     Write-Host "Miner $Name was clocked at $($global:RAW | ConvertTo-Hash)/s" -foreground Yellow
 }
 
@@ -40,9 +41,9 @@ function Set-APIFailure {
 ## NVIDIA HWMON
 function Set-NvidiaStats {
 
-    Switch ($Platforms) {
+    Switch ($Global:Config.Params.Platform) {
         "linux" {
-            switch ($HiveOS) {
+            switch ($global:Config.Params.HiveOS) {
                 "No" {
                     timeout.exe -s9 10 ./build/apps/VII-smi | Tee-Object -Variable getstats | Out-Null
                     if ($getstats) {
@@ -93,7 +94,7 @@ function Set-NvidiaStats {
 ## AMD HWMON
 function Set-AMDStats {
 
-    switch ($Platforms) {
+    switch ($Global:Config.Params.Platform) {
         "windows" {
             Invoke-Expression ".\build\apps\odvii.exe s" | Tee-Object -Variable amdout | Out-Null
             if ($amdout) {
@@ -122,7 +123,7 @@ function Set-AMDStats {
         }
 
         "linux" {
-            switch ($HiveOS) {
+            switch ($global:Config.Params.HiveOS) {
                 "Yes" {
                     $HiveStats = "/run/hive/gpu-stats.json"
                     do {
@@ -132,17 +133,20 @@ function Set-AMDStats {
                                 $AMDStats = @{ }
                                 $AMDFans = $( $GetHiveStats.fan | ForEach-Object { if ($_ -ne 0) { $_ } } )
                                 $AMDTemps = $( $GetHiveStats.temp | ForEach-Object { if ($_ -ne 0) { $_ } } )
+                                $AMDWatts = $( $GetHiveStats.power | ForEach-Object { if ($_ -ne 0) { $_ } } )
                             }
                             Start-Sleep -S .5
                         }
-                    }while ($GetHiveStats.temp.count -lt 1 -and $GetHiveStats.fan.count -lt 1)
+                    }while ($GetHiveStats.temp.count -lt 1 -and $GetHiveStats.fan.count -lt 1 -and $GetHiveStats.power.count -lt 1)
                 }
                 "No" {
                     $AMDStats = @{ }
-                    timeout.exe -s9 10 rocm-smi -f | Tee-Object -Variable AMDFans | Out-Null
+                    timeout -s9 10 rocm-smi -f | Tee-Object -Variable AMDFans | Out-Null
                     $AMDFans = $AMDFans | Select-String "%" | ForEach-Object { $_ -split "\(" | Select-Object -Skip 1 -first 1 } | ForEach-Object { $_ -split "\)" | Select-Object -first 1 }
-                    timeout.exe -s9 10 rocm-smi -t | Tee-Object -Variable AMDTemps | Out-Null
+                    timeout -s9 10 rocm-smi -t | Tee-Object -Variable AMDTemps | Out-Null
                     $AMDTemps = $AMDTemps | Select-String -CaseSensitive "Temperature" | ForEach-Object { $_ -split ":" | Select-Object -skip 2 -First 1 } | ForEach-Object { $_ -replace (" ", "") } | ForEach-Object { $_ -replace ("c", "") }
+                    timeout -s9 10 rocm-smi -P | Tee-Object -Variable AMDWatts | Out-Null
+                    $AMDWatts = $AMDWatts | Select-String -CaseSensitive "W" | foreach {$_ -split (":", "") | Select -skip 2 -first 1} | foreach {$_ -replace ("W", "")}
                 }
             }
         }
@@ -171,17 +175,16 @@ function Remove-ASICPools {
     )
 
     $ASIC_Pools = @{ }
-    $Timeout = 5
 
     Switch ($Name) {
         "cgminer" {
             $ASICM = "cgminer"
-            Write-Host "Clearing all previous cgminer pools." -ForegroundColor "Yellow"
+            Write-Log "Clearing all previous cgminer pools." -ForegroundColor "Yellow"
             $ASIC_Pools.Add($ASICM, @{ })
             ##First we need to discover all pools
             $Commands = @{command = "pools"; parameter = 0 } | ConvertTo-Json -Compress
             $response = $Null
-            $response = Get-TCP -Server $AIP -Port $Port -Message $Commands -Timeout $timeout
+            $response = Get-TCP -Server $AIP -Port $Port -Message $Commands -Timeout 10
             if ($response) {
                 ##Windows screws up last character
                 if ($response[-1] -notmatch "}") { $response = $Response.Substring(0, $Response.Length - 1) }
@@ -192,11 +195,11 @@ function Remove-ASICPools {
                     $PoolNo = $($ASIC_Pools.$ASICM.$_)
                     $Commands = @{command = "removepool"; parameter = "$PoolNo" } | ConvertTo-Json -Compress; 
                     $response = $Null; 
-                    $response = Get-TCP -Server $AIP -Port $Port -Message $Commands -Timeout $timeout 
+                    $response = Get-TCP -Server $AIP -Port $Port -Message $Commands -Timeout 10
                     $response
                 }
             }
-            else { Write-Warning "Failed To Gather cgminer Pool List!" }
+            else { Write-Log "WARNING: Failed To Gather cgminer Pool List!" -ForegroundColor Yellow }
         }
     }
 }

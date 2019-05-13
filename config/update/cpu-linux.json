@@ -8,8 +8,8 @@
     "version": "3.8.8.4",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v8.0/cpuminer-bubasik.tar.gz"
   },
-  "xmrig_cpu": {
-    "name": "xmrig_cpu",
+  "xmrig-cpu": {
+    "name": "xmrig-cpu",
     "type": "cpu",
     "CPU": ".\\bin\\xmrig-cpu-1\\xmrig",
     "minername": "xmrig",

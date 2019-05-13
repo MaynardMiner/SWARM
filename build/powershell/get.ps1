@@ -23,9 +23,11 @@ param(
     [Parameter(Position = 4, Mandatory = $false)]
     [String]$argument5 = $null,
     [Parameter(Position = 5, Mandatory = $false)]
-    [String]$argument6 = $null
+    [String]$argument6 = $null,
+    [Parameter(Mandatory = $false)]
+    [switch]$asjson
 )
-
+[cultureinfo]::CurrentCulture = 'en-US'
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
 
 Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))
@@ -35,11 +37,11 @@ $Get = @()
 
 . .\build\powershell\hashrates.ps1
 . .\build\powershell\octune.ps1
-. .\build\powershell\commandweb.ps1
+. .\build\api\hiveos\do-command.ps1
 . .\build\powershell\powerup.ps1
-. .\build\powershell\statcommand.ps1
-. .\build\powershell\response.ps1
-. .\build\powershell\hiveoc.ps1
+. .\build\powershell\command-stats.ps1
+. .\build\api\hiveos\response.ps1
+. .\build\api\hiveos\hiveoc.ps1
 
 Switch ($argument1) {
     "help" {
@@ -66,219 +68,225 @@ miners
  can be used to view background miner information.
 
     USES:
-
-    get miners [platform] [name] [param] [sub-param1] [sub-param2]
+        get miners [platform] [name] [param] [sub-param1] [sub-param2]
 
     OPTIONS:
+        
+        platform
+        [NVIDIA1] [NVIDIA2] [NVIDIA3] [AMD1] [CPU] [all]
 
-    platform
-    [NVIDIA1] [NVIDIA2] [NVIDIA3] [AMD1] [CPU] [all]
+        name
+        name of miner, as per the names of .json in config/miners
+        if you are unsure of miner name, running-
 
-    name:
-    name of miner, as per the names of .json in config/miners
-    if you are unsure of miner name, running-
-
-    get miners [platform]
+            get miners [platform]
     
-    to see all miners for that platform
+        to see all miners for that platform
 
-    param:
-    [prestart] [commands] [difficulty] [naming]   [oc]
+    params
+        [prestart] [commands] [difficulty] [naming]   [oc]
 
-    sub-param1   [algo]     [algo]      [algo]   [algo]
+        sub-param1   [algo]     [algo]      [algo]   [algo]
 
-    sub-param2                                   [power]
-                                                 [core]
-                                                 [mem]
-                                                 [dpm]
-                                                  [v]
-                                                 [mdpm]
+        sub-param2                                   [power]
+                                                     [core]
+                                                     [mem]
+                                                     [dpm]
+                                                      [v]
+                                                     [mdpm]
 
-   example uses of sub-params:
+        example uses of params:
 
-   get miners NVIDIA1 enemy naming 
-   (Will list all naming items)
+            get miners NVIDIA1 enemy naming 
+            (Will list all naming items)
 
-   get miners NVIDIA1 enemy oc hex core 
-   (Will list core for hex algorithm)
+            get miners NVIDIA1 enemy oc hex core 
+            (Will list oc core setting for hex algorithm)
+
 
 screen
- can be used to remotely view SWARM's transcripts. Great way to
- view miner remotely. Returns last 300 lines in log.
+    can be used to remotely view SWARM's transcripts. Great way to
+    view miner remotely. Returns last 300 lines in log.
 
     USES:
 
-    get screen [platform]
+        get screen [platform]
 
     OPTIONS:
 
-    platform:
-    [miner] [NVIDIA1] [NVIDIA2] [NVIDIA3] [CPU] [AMD1]
+        platform:
+        [miner] [NVIDIA1] [NVIDIA2] [NVIDIA3] [CPU] [AMD1]
+
 
 version
- used to view current version of miner.
+    used to view current version of miner.
 
     USES:
 
-    get version [name]
+        get version [name]
 
     OPTIONS:
  
-    name:
-    name of miner, as per the names of .json in config/miners
-    if you are unsure of miner name, choose 'all' to identify.
+        name
+            name of miner, as per the names of .json in config/miners
+            if you are unsure of miner name, choose 'all' to identify.
+
 
 benchmarks
- used to view current a benchmark.
+    used to view current a benchmark.
 
     USES:
 
-    get benchmark [name] [algo]
+        get benchmark [name] [algo]
 
     OPTIONS:
 
-    name:
-    name of miner, as per the names of .json in config/miners.
+        name
+            name of miner, as per the names of .json in config/miners.
 
-    algo:
-    the algorithm stat you wish to view.
+        algo
+            the algorithm stat you wish to view.
+
 
 stats
- Used to view SWARM stats screen. This will display current
- critical mining information and statistics.
+    Used to view SWARM stats screen. This will display current
+    critical mining information and statistics.
 
     USES:
 
-    get stats
+        get stats
+
 
 active
- Used to view current and historical launched miners, and
- display critical information regarding their arguments
- and time running.
+    Used to view current and historical launched miners, and
+    display critical information regarding their arguments
+    and time running.
 
     USES:
 
-    get active
+        get active
+
 
 power
- Used to view power benchmarks/table. This allows you to view
- either WattOMeter stats, or config/power settings depending
- on use.
+    Used to view power benchmarks/table. This allows you to view
+    either WattOMeter stats, or config/power settings depending
+    on use.
 
     USES:
 
-    get power [platform] [type] [algo]
+        get power [platform] [type] [algo]
 
     OPTIONS:
 
-    platform:
-    [NVIDIA1] [NVIDIA2] [NVIDIA3] [AMD1] [CPU]
+        platform
+        [NVIDIA1] [NVIDIA2] [NVIDIA3] [AMD1] [CPU]
 
-    type:
-    [wattometer] [stat]
+        type
+        [wattometer] [stat]
 
-    algo:
-    all avaiable algorithms in SWARM
+        algo
+        all avaiable algorithms in SWARM
+
 
 paramters
- Used to view SWARM's current parameters/arguments/settings
+    Used to view SWARM's current parameters/arguments/settings
 
     USES:
 
-    get parameters [name]
+        get parameters [name]
 
     OPTIONS:
 
-    name:
-    name of parameter you wish to view. If you are unsure,
-    specify 'all'
+        name
+            name of parameter you wish to view. If you are unsure,
+            specify 'all'
+
 
 wallets
- print balance sheet of your current wallet balances
+    print balance sheet of your current wallet balances
    
     USES:
    
-    get wallet
+        get wallet
    
     OPTIONS: none
 
+
 update 
- will perform a remote update. Currently works only for windows.
- Linux coming soon.
+    will perform a remote update. Currently works only for windows.
+    Linux coming soon.
 
     USES:
    
-    get update [URI]
+        get update [URI]
      
     OPTIONS:
 
-    URI
-    user specified link for .zip update. Use this if you are not
-    updating to the next immediate version. This technically
-    does not have to be from SWARM repository, however:
-        1.) Must end with SWARM.number.of.version.zip
-        2.) Link cannot contain spaces
-        3.) Must be using a SWARM.number.of.version file
+        URI
+            user specified link for .zip update. Use this if you are not
+            updating to the next immediate version. This technically
+            does not have to be from SWARM repository, however:
+            1.) Must end with SWARM.number.of.version.zip
+            2.) Link cannot contain spaces
+            3.) Must be using a SWARM.number.of.version file
 
+asic
+    Will que ASIC connect to swarm to get further information
+    regarding what it is mining.
 
+    USES:
+        get asic [ASIC]
+    
+    OPTIONS:
 
+        [ASIC]
+            This is the ASIC group you wish to contact.
+
+                example:
+                
+                    get asic ASIC1
+                    get asic ASIC2
+
+                    etc.
 
 
 to see all available SWARM commands, go to:
 
 https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
-
-current working windows commands:
-
-get help
-get benchmarks
-get oc
-get active
-get stats
-get screen
-get update (windows only)
-get wallets
-reboot
-version
-benchmark [algorithm | miner | timeout | all] [name (if miner or algorithm used)]
-miner restart
-ps [powershell command]
-clear_profits
-clear_watts
 "
         $help
         $help | out-file ".\build\txt\get.txt"
     }
 
     "asic" {
-        if(Test-Path ".\build\txt\bestminers.txt") {$BestMiners = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-Json}
-        else{$Get += "No miners running"}
-        $ASIC = $BestMiners | Where Type -eq "ASIC"
-        if($ASIC) {
+        if (Test-Path ".\build\txt\bestminers.txt") { $BestMiners = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-Json }
+        else { $Get += "No miners running" }
+        $ASIC = $BestMiners | Where Type -eq $argument2
+        if ($ASIC) {
             . .\build\powershell\hashrates.ps1
             $Get += "Miner Name: $($ASIC.MinerName)"
             $Get += "Miner Currently Mining: $($ASIC.Symbol)"
-            $command = @{command = "pools"; parameter = "0"} | ConvertTo-Json -Compress
+            $command = @{command = "pools"; parameter = "0" } | ConvertTo-Json -Compress
             $request = Get-TCP -Port $ASIC.Port -Server $ASIC.Server -Message $Command -Timeout 5
-            if($request) {
+            if ($request) {
                 $response = $request | ConvertFrom-Json
                 $PoolDetails = $response.POOLS | Where Pool -eq 1
-                if($PoolDetails) {
-                    if($PoolDetails[-1] -notmatch "}"){$PoolDetails =$PoolDetails.Substring(0,$PoolDetails.Length-1)}
-                   $PoolDetails | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | %{
-                       $Get += "Active Pool $($_) = $($PoolDetails.$_)"
-                   }
+                if ($PoolDetails) {
+                    if ($PoolDetails[-1] -notmatch "}") { $PoolDetails = $PoolDetails.Substring(0, $PoolDetails.Length - 1) }
+                    $PoolDetails | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | % {
+                        $Get += "Active Pool $($_) = $($PoolDetails.$_)"
+                    }
                 }
-                else{$Get += "contacted $($ASIC.MinerName), but no active pool was found"}
+                else { $Get += "contacted $($ASIC.MinerName), but no active pool was found" }
             }
-            else{$Get += "Failed to contact miner on $($ASIC.Server) ($ASIC.Port) to get details"}
+            else { $Get += "Failed to contact miner on $($ASIC.Server) ($ASIC.Port) to get details" }
         }
-        else{$Get += "No ASIC miners running"}
+        else { $Get += "No ASIC miners running" }
     }
 
 
     "benchmarks" {
-        . .\build\powershell\statcommand.ps1
+        . .\build\powershell\command-stats.ps1
         . .\build\powershell\childitems.ps1
         . .\build\powershell\hashrates.ps1
         . .\build\powershell\wallettable.ps1
@@ -289,40 +297,50 @@ clear_watts
                     "all" {
                         $StatNames = Get-ChildItem ".\stats" | Where Name -LIKE "*hashrate*"
                         $StatNames = $StatNames.Name -replace ".txt", ""
-                        $Stats = [PSCustomObject]@{}
-                        if (Test-Path "stats") {Get-ChildItemContent "stats" | ForEach {$Stats | Add-Member $_.Name $_.Content}}
+                        $Stats = [PSCustomObject]@{ }
+                        if (Test-Path "stats") { Get-ChildItemContent "stats" | ForEach { $Stats | Add-Member $_.Name $_.Content } }
                     }
                     default {
-                        $Stats = [PSCustomObject]@{}
+                        $Stats = [PSCustomObject]@{ }
                         $StatNames = Get-ChildItem ".\stats" | Where Name -like "*$argument2*"
                         $StatNames = $StatNames.Name -replace ".txt", ""
-                        if (Test-Path "stats") {Get-ChildItemContent "stats" | ForEach {$Stats | Add-Member $_.Name $_.Content}}
+                        if (Test-Path "stats") { Get-ChildItemContent "stats" | ForEach { $Stats | Add-Member $_.Name $_.Content } }
                     }
                 } 
             }
             else {
                 $StatNames = Get-ChildItem ".\stats" | Where Name -LIKE "*hashrate*"
                 $StatNames = $StatNames.Name -replace ".txt", ""
-                $Stats = [PSCustomObject]@{}
-                if (Test-Path "stats") {Get-ChildItemContent "stats" | ForEach {$Stats | Add-Member $_.Name $_.Content}}
+                $Stats = [PSCustomObject]@{ }
+                if (Test-Path "stats") { Get-ChildItemContent "stats" | ForEach { $Stats | Add-Member $_.Name $_.Content } }
             }
             $BenchTable = @()
-            $StatNames | Foreach {$BenchTable += [PSCustomObject]@{Miner = $_ -split "_" | Select -First 1; Algo = $_ -split "_" | Select -Skip 1 -First 1; HashRates = $Stats."$($_)".Day | ConvertTo-Hash}}
+            $StatNames | Foreach {
+                $BenchTable += [PSCustomObject]@{
+                    Miner     = $_ -split "_" | Select -First 1; 
+                    Algo      = $_ -split "_" | Select -Skip 1 -First 1; 
+                    HashRates = $Stats."$($_)".Day | ConvertTo-Hash; 
+                    Raw       = $Stats."$($_)".Day
+                }
+            }
             function Get-BenchTable {
                 $BenchTable | Sort-Object -Property Algo -Descending | Format-Table (
-                    @{Label = "Miner"; Expression = {$($_.Miner)}},
-                    @{Label = "Algorithm"; Expression = {$($_.Algo)}},
-                    @{Label = "Speed"; Expression = {$($_.HashRates)}}    
+                    @{Label = "Miner"; Expression = { $($_.Miner) } },
+                    @{Label = "Algorithm"; Expression = { $($_.Algo) } },
+                    @{Label = "Speed"; Expression = { $($_.HashRates) } }    
                 )
             }
-            $Get = Get-BenchTable
+            if ($asjson) {
+                $Get = $BenchTable | ConvertTo-Json
+            }
+            else { $Get = Get-BenchTable }
             Get-BenchTable | Out-File ".\build\txt\get.txt"
         }
-        else {$Get = "No Stats Found"}
+        else { $Get = "No Stats Found" }
     }
 
     "wallets" {
-        . .\build\powershell\statcommand.ps1
+        . .\build\powershell\command-stats.ps1
         . .\build\powershell\childitems.ps1
         . .\build\powershell\hashrates.ps1
         . .\build\powershell\wallettable.ps1   
@@ -335,11 +353,11 @@ clear_watts
                 if (Test-Path ".\build\txt\minerstatslite.txt") {
                     $Get = Get-Content ".\build\txt\minerstatslite.txt"
                 }
-                else {$Get = "No Stats History Found"}    
+                else { $Get = "No Stats History Found" }    
             }
             else {
-                if (Test-Path ".\build\txt\minerstatslite.txt") {$Get = Get-Content ".\build\txt\minerstatslite.txt"}
-                else {$Get = "No Stats History Found"}
+                if (Test-Path ".\build\txt\minerstatslite.txt") { $Get = Get-Content ".\build\txt\minerstatslite.txt" }
+                else { $Get = "No Stats History Found" }
             }
         }
         else {
@@ -347,49 +365,51 @@ clear_watts
                 $Total = [int]$Argument2 + 1
                 if (Test-Path ".\build\txt\minerstats.txt") {
                     $Get = Get-Content ".\build\txt\minerstats.txt"
-                    $Get = $Get | % {$Number = 0; if ($_ -ne "") {$Number = $_.SubString(0, 2); $Number = $Number -replace " ", ""; try {$Number = [int]$Number}catch {$Number = 0}}; if ($Number -lt $Total) {$_}}
+                    $Get = $Get | % { $Number = 0; if ($_ -ne "") { $Number = $_.SubString(0, 2); $Number = $Number -replace " ", ""; try { $Number = [int]$Number }catch { $Number = 0 } }; if ($Number -lt $Total) { $_ } }
                 }
-                else {$Get = "No Stats History Found"}    
+                else { $Get = "No Stats History Found" }    
 
             }
             else {
-                if (Test-Path ".\build\txt\minerstats.txt") {$Get = Get-Content ".\build\txt\minerstats.txt"}
-                else {$Get = "No Stats History Found"}
+                if (Test-Path ".\build\txt\minerstats.txt") { $Get = Get-Content ".\build\txt\minerstats.txt" }
+                else { $Get = "No Stats History Found" }
             }
         }
     }
-    "charts"{if (Test-Path ".\build\txt\charts.txt") {$Get = Get-Content ".\build\txt\charts.txt"}}
+    "charts" { if (Test-Path ".\build\txt\charts.txt") { $Get = Get-Content ".\build\txt\charts.txt" } }
     "active" {
-        if (Test-Path ".\build\txt\mineractive.txt") {$Get = Get-Content ".\build\txt\mineractive.txt"}
-        else {$Get = "No Miner History Found"}
+        if (Test-Path ".\build\txt\mineractive.txt") { $Get = Get-Content ".\build\txt\mineractive.txt" }
+        else { $Get = "No Miner History Found" }
     }
     "parameters" {
-        if (Test-Path ".\config\parameters\arguments.json") {
+        if (Test-Path ".\config\parameters\newarguments.json") {$FilePath = ".\config\parameters\arguments.json"}
+        else {$FilePath = ".\config\parameters\arguments.json"}
+        if(Test-Path $FilePath) {
             $SwarmParameters = @()
-            $MinerArgs = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
-            $MinerArgs | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Foreach {$SwarmParameters += "$($_): $($MinerArgs.$_)"}
+            $MinerArgs = Get-Content $FilePath | ConvertFrom-Json
+            $MinerArgs | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Foreach { $SwarmParameters += "$($_): $($MinerArgs.$_)" }
         }
-        else {$SwarmParameters += "No Parameters For SWARM found"}
+        else { $SwarmParameters += "No Parameters For SWARM found" }
         $Get = $SwarmParameters
     }
     "screen" {
-        if (Test-Path ".\logs\$($argument2).log") {$Get = Get-Content ".\logs\$($argument2).log"}
-        if ($argument2 -eq "miner") {if (Test-Path ".\logs\*active*") {$Get = Get-Content ".\logs\*active.log*"}}
+        if (Test-Path ".\logs\$($argument2).log") { $Get = Get-Content ".\logs\$($argument2).log" }
+        if ($argument2 -eq "miner") { if (Test-Path ".\logs\*active*") { $Get = Get-Content ".\logs\*active.log*" } }
         $Get = $Get | Select -Last 300
     }
     "oc" {
-        if (Test-Path ".\build\txt\oc-settings.txt") {$Get = Get-Content ".\build\txt\oc-settings.txt"}
-        else {$Get = "No oc settings found"}
+        if (Test-Path ".\build\txt\oc-settings.txt") { $Get = Get-Content ".\build\txt\oc-settings.txt" }
+        else { $Get = "No oc settings found" }
     }
     "miners" {
         $GetJsons = Get-ChildItem ".\config\miners"
-        $ConvertJsons = [PSCustomObject]@{}
-        $GetJsons | foreach {$Getfile = Get-Content ".\config\miners\$($_)" | ConvertFrom-Json; $ConvertJsons | Add-Member $Getfile.Name $Getfile -Force}
+        $ConvertJsons = [PSCustomObject]@{ }
+        $GetJsons.Name | foreach { $Getfile = Get-Content ".\config\miners\$($_)" | ConvertFrom-Json; $ConvertJsons | Add-Member $Getfile.Name $Getfile -Force }
         if ($argument2) {
             $Get += "Current $Argument2 Miner List:"
             $Get += " "   
-            $ConvertJsons.PSObject.Properties.Name | Where {$ConvertJsons.$_.$Argument2} | foreach {$Get += "$($_)"}
-            $Selected = $ConvertJsons.PSObject.Properties.Name | Where {$_ -eq $Argument3} | % {$ConvertJsons.$_}
+            $ConvertJsons.PSObject.Properties.Name | Where { $ConvertJsons.$_.$Argument2 } | foreach { $Get += "$($_)" }
+            $Selected = $ConvertJsons.PSObject.Properties.Name | Where { $_ -eq $Argument3 } | % { $ConvertJsons.$_ }
             if ($Selected) {
                 $Cuda = Get-Content ".\build\txt\cuda.txt"
                 $Platform = Get-Content ".\build\txt\os.txt"
@@ -397,24 +417,24 @@ clear_watts
                     $Number = $argument2 -Replace "NVIDIA", ""
                     if ($Platform -eq "linux") {
                         switch ($Cuda) {
-                            "9.2" {$UpdateJson = Get-Content ".\config\update\nvidia9.2-linux.json" | ConvertFrom-Json}
-                            "10" {$UpdateJson = Get-Content ".\config\update\nvidia10-linux.json" | ConvertFrom-Json}
+                            "9.2" { $UpdateJson = Get-Content ".\config\update\nvidia9.2-linux.json" | ConvertFrom-Json }
+                            "10" { $UpdateJson = Get-Content ".\config\update\nvidia10-linux.json" | ConvertFrom-Json }
                         }
                     }
-                    else {$UpdateJson = Get-Content ".\config\update\nvidia-win.json" | ConvertFrom-JSon}
+                    else { $UpdateJson = Get-Content ".\config\update\nvidia-win.json" | ConvertFrom-JSon }
                 }
                 if ($argument2 -like "*AMD*") {
                     $Number = $argument2 -Replace "AMD", ""
                     switch ($Platform) {
-                        "linux" {$UpdateJson = Get-Content ".\config\update\amd-linux.json" | ConvertFrom-Json}
-                        "windows" {$UpdateJson = Get-Content ".\config\update\amd-windows.json" | ConvertFrom-Json}
+                        "linux" { $UpdateJson = Get-Content ".\config\update\amd-linux.json" | ConvertFrom-Json }
+                        "windows" { $UpdateJson = Get-Content ".\config\update\amd-windows.json" | ConvertFrom-Json }
                     }
                 }
                 if ($argument2 -like "*CPU*") {
                     $Number = 1
                     switch ($Platform) {  
-                        "linux" {$UpdateJson = Get-Content ".\config\update\cpu-linux.json" | ConvertFrom-Json}
-                        "windows" {$UpdateJson = Get-Content ".\config\update\cpu-windows.json" | ConvertFrom-Json}
+                        "linux" { $UpdateJson = Get-Content ".\config\update\cpu-linux.json" | ConvertFrom-Json }
+                        "windows" { $UpdateJson = Get-Content ".\config\update\cpu-windows.json" | ConvertFrom-Json }
                     }
                 }
                 $getpath = "path$($Number)"
@@ -433,24 +453,24 @@ clear_watts
                         $Get += " "
                         $Get += "Getting: $Argument1 $Argument2 $Argument3 $Argument4 $Argument5"
                         $Get += " "
-                        $Get += if ($selected.$argument2.$argument4.$argument5) {$selected.$argument2.$argument4.$argument5}else {"none"}
+                        $Get += if ($selected.$argument2.$argument4.$argument5) { $selected.$argument2.$argument4.$argument5 }else { "none" }
                     }
                     elseif ($argument6) {
                         $Get += " "
                         $Get += "Getting: $Argument1 $Argument2 $Argument3 $Argument4 $Argument5 $Argument6"
                         $Get += " "
-                        $Get += if ($selected.$argument2.$argument4.$argument5.$Arguement6) {$selected.$argument2.$argument4.$argument5.$Arguement6}else {"none"}
+                        $Get += if ($selected.$argument2.$argument4.$argument5.$Arguement6) { $selected.$argument2.$argument4.$argument5.$Arguement6 }else { "none" }
                     }
                     else {
                         $Get += " "
                         $Get += "Getting: $Argument1 $Argument2 $Argument3 $Argument4"
                         $Get += " "
-                        $Get += if ($selected.$argument2.$argument4) {$selected.$argument2.$argument4}else {"none"}
+                        $Get += if ($selected.$argument2.$argument4) { $selected.$argument2.$argument4 }else { "none" }
                     }
                 }  
             }
         }
-        else {$Get += "No Platforms Selected: Please choose a platform NVIDIA1,NVIDIA2,NVIDIA3,AMD1,CPU"}
+        else { $Get += "No Platforms Selected: Please choose a platform NVIDIA1,NVIDIA2,NVIDIA3,AMD1,CPU" }
     }
     "update" {
         if (Test-Path "C:\") {
@@ -459,18 +479,18 @@ clear_watts
                 $version = Get-Content ".\build\txt\version.txt"
                 $versionnumber = $version -replace "SWARM.", ""
                 $version1 = $versionnumber[4]
-                $version1 = $version1 | % {iex $_}
+                $version1 = $version1 | % { iex $_ }
                 $version1 = $version1 + 1
                 $version2 = $versionnumber[2]
                 $version3 = $versionnumber[0]
                 if ($version1 -eq 10) {
                     $version1 = 0; 
-                    $version2 = $version2 | % {iex $_}
+                    $version2 = $version2 | % { iex $_ }
                     $version2 = $version2 + 1
                 }
                 if ($version2 -eq 10) {
                     $version2 = 0; 
-                    $version3 = $version3 | % {iex $_}
+                    $version3 = $version3 | % { iex $_ }
                     $version3 = $version3 + 1
                 }
                 $versionnumber = "$version3.$version2.$version1"    
@@ -498,14 +518,14 @@ clear_watts
                 $FileName = join-path ".\x64" "SWARM.$VersionNumber.zip"
                 $DLFileName = Join-Path "$Dir" "x64\SWARM.$VersionNumber.zip"
                 $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$versionNumber/SWARM.$VersionNumber.zip"
-                try { Invoke-WebRequest $URI -OutFile $FileName -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }catch {$Failed = $true; Write-Host "Failed To Contact Github For Download! Must Do So Manually"}
+                try { Invoke-WebRequest $URI -OutFile $FileName -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }catch { $Failed = $true; Write-Host "Failed To Contact Github For Download! Must Do So Manually" }
                 Start-Sleep -S 5
                 if ($Failed -eq $false) {
                     Start-Process "7z" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -Wait -WindowStyle Minimized
                     Start-Sleep -S 3
                     Write-Host "Config Command Initiated- Restarting SWARM`n"
                     $MinerFile = ".\build\pid\miner_pid.txt"
-                    if (Test-Path $MinerFile) {$MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue}
+                    if (Test-Path $MinerFile) { $MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue }
                     Stop-Process $MinerId -Force
                     Write-Host "Stopping Old Miner`n"
                     Start-Sleep -S 5
@@ -520,9 +540,9 @@ clear_watts
                     Set-Location $Dir
                 }
             }
-            else {$Get += "Cannot update. Are you administrator?"}
+            else { $Get += "Cannot update. Are you administrator?" }
         }
-        else {$Get += "get update can only run in windows currently..."}
+        else { $Get += "get update can only run in windows currently..." }
     }
 
     default {

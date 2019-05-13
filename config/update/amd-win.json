@@ -1,51 +1,60 @@
  {
 "name":"amd-win", 
-"claymore": {
-"name":"claymore_amd", 
+"claymore-amd": {
+"name":"claymore-amd", 
 "type":"amd", 
 "AMD1":".\\bin\\claymore-amd-1\\ethdcrminer64.exe", 
 "AMD2":".\\bin\\claymore-amd-2\\ethdcrminer64.exe", 
 "AMD3":".\\bin\\claymore-amd-3\\ethdcrminer64.exe", 
 "minername":"ethdcrminer64.exe", 
-"version":"12.0", 
+"version":"14.0", 
 "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/Claymore-Windows.zip"
 }, 
-
-"energi_amd": {
-"name":"energi_amd", 
+"multiminer-amd": {
+  "name": "multiminer-amd",
+  "type": "amd",
+  "AMD1": ".\\bin\\multiminer-amd-1\\multiminer.exe",
+  "AMD2": ".\\bin\\multiminer-amd-2\\multiminer.exe",
+  "AMD3": ".\\bin\\multiminer-amd-3\\multiminer.exe",
+  "minername": "multiminer.exe",
+  "version": "1.1.0",
+  "uri": "https://github.com/bogdanadnan/multiminer/releases/download/v1.1.0/multiminer_v1.1.0_24.01.2019.zip"
+},
+"energi-amd": {
+"name":"energi-amd", 
 "type":"amd", 
-"AMD1":".\\bin\\energi_amd-1\\energiminer.exe", 
-"AMD2":".\\bin\\energi_amd-2\\energiminer.exe", 
-"AMD3":".\\bin\\energi_amd-3\\energiminer.exe", 
+"AMD1":".\\bin\\energi-amd-1\\energiminer.exe", 
+"AMD2":".\\bin\\energi-amd-2\\energiminer.exe", 
+"AMD3":".\\bin\\energi-amd-3\\energiminer.exe", 
 "minername":"energiminer.exe", 
 "version":"2.2.1", 
 "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/energiminer-windows.zip"
 }, 
 
-"ehssand_amd": {
-"name":"ehssand_amd", 
+"ehssand-amd": {
+"name":"ehssand-amd", 
 "type":"amd", 
-"AMD1":".\\bin\\ehssand_amd-1\\sgminer.exe", 
-"AMD2":".\\bin\\ehssand_amd-2\\sgminer.exe", 
-"AMD3":".\\bin\\ehssand_amd-3\\sgminer.exe", 
+"AMD1":".\\bin\\ehssand-amd-1\\sgminer.exe", 
+"AMD2":".\\bin\\ehssand-amd-2\\sgminer.exe", 
+"AMD3":".\\bin\\ehssand-amd-3\\sgminer.exe", 
 "minername":"sgminer.exe", 
 "version":"1", 
 "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/ehssand-windows.zip"
 }, 
 
-"gminer": {
-  "name":"gminer", 
+"gminer-amd": {
+  "name":"gminer-amd", 
   "type":"amd", 
-  "AMD1":".\\bin\\gminer_amd-1\\miner.exe", 
-  "AMD2":".\\bin\\gminer_amd-2\\miner.exe", 
-  "AMD3":".\\bin\\gminer_amd-3\\miner.exe", 
+  "AMD1":".\\bin\\gminer-amd-1\\miner.exe", 
+  "AMD2":".\\bin\\gminer-amd-2\\miner.exe", 
+  "AMD3":".\\bin\\gminer-amd-3\\miner.exe", 
   "minername":"miner", 
-  "version":"1.38",
-  "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/gminer-windows.zip"
+  "version":"1.40",
+  "uri":"https://github.com/develsoftware/GMinerBetaRelease/releases/download/1.40/gminer_1_40_windows64.zip"
   },
 
-"phoenix_amd": {
-"name":"phoenix_amd", 
+"phoenix-amd": {
+"name":"phoenix-amd", 
 "type":"amd", 
 "AMD1":".\\bin\\phoenix-amd-1\\PhoenixMiner.exe", 
 "AMD2":".\\bin\\phoenix-amd-2\\PhoenixMiner.exe", 
@@ -84,30 +93,19 @@
 "AMD2":".\\bin\\lolMiner-AMD-2\\lolMiner.exe", 
 "AMD3":".\\bin\\lolMiner-AMD-3\\lolMiner.exe", 
 "minername":"lolMiner.exe", 
-"version":"0.7", 
+"version":"0.8", 
 "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/lolminer-windows.zip"
 }, 
-
-"lolminerv7": {
-    "name": "lolminerv7",
-    "type": "amd",
-    "AMD1": ".\\bin\\lolMinerv7-AMD-1\\lolMiner.exe",
-    "AMD2": ".\\bin\\lolMinerv7-AMD-2\\lolMiner.exe",
-    "AMD3": ".\\bin\\lolMinerv7-AMD-3\\lolMiner.exe",
-    "minername": "lolMiner.exe",
-    "version": "0.7",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/lolminerv7-windows.zip"
-  },
 
 "teamredminer": {
 "name":"teamredminer", 
 "type":"amd", 
-"AMD1":".\\bin\\tdxminer-1\\teamredminer.exe", 
-"AMD2":".\\bin\\tdxminer-2\\teamredminer.exe", 
-"AMD3":".\\bin\\tdxminer-3\\teamredminer.exe", 
+"AMD1":".\\bin\\teamredminer-1\\teamredminer.exe", 
+"AMD2":".\\bin\\teamredminer-2\\teamredminer.exe", 
+"AMD3":".\\bin\\teamredminer-3\\teamredminer.exe", 
 "minername":"teamredminer.exe", 
-"version":"0.4.3", 
-"uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/teamredminer-windows.zip"
+"version":"0.4.4", 
+"uri":"https://github.com/todxx/teamredminer/releases/download/v0.4.5/teamredminer-v0.4.5-win.zip"
 }, 
 
 "xmr-stak": {
@@ -128,8 +126,8 @@
 "AMD2":".\\bin\\wildrig-2\\wildrig.exe", 
 "AMD3":".\\bin\\wildrig-3\\wildrig.exe", 
 "minername":"wildrig.exe", 
-"version":"0.15.4.15", 
-"uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/wildrig-windows.zip"
+"version":"0.16.2", 
+"uri":"https://github.com/andru-kun/wildrig-multi/releases/download/0.16.2/wildrig-multi-windows-0.16.2-beta.7z"
 }, 
 
 "fancyix": {
@@ -152,13 +150,23 @@
 "minername":"xmrig-amd.exe", 
 "version":"2.14.1", 
 "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/xmrig-amd-windows.zip"
-}, 
-"progminer_amd": {
-"name":"progminer_amd", 
+},
+"srbminer": {
+  "name":"srbminer", 
+  "type":"amd", 
+  "AMD1":".\\bin\\srbminer-1\\SRBMiner-CN.exe", 
+  "AMD2":".\\bin\\srbminer-2\\SRBMiner-CN.exe", 
+  "AMD3":".\\bin\\srbminer-3\\SRBMiner-CN.exe", 
+  "minername":"SRBMiner-CN.exe", 
+  "version":"1.8.4", 
+  "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/srbminer-windows.zip"
+  },
+"progminer-amd": {
+"name":"progminer-amd", 
 "type":"amd", 
-"AMD1":".\\bin\\progminer_amd-1\\progpowminer-amd.exe", 
-"AMD2":".\\bin\\progminer_amd-2\\progpowminer-amd.exe", 
-"AMD3":".\\bin\\progminer_amd-3\\progpowminer-amd.exe", 
+"AMD1":".\\bin\\progminer-amd-1\\progpowminer-amd.exe", 
+"AMD2":".\\bin\\progminer-amd-2\\progpowminer-amd.exe", 
+"AMD3":".\\bin\\progminer-amd-3\\progpowminer-amd.exe", 
 "minername":"progpowminer-amd.exe", 
 "version":"1.12", 
 "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/progminer-windows.zip"

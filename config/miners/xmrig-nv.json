@@ -1,0 +1,90 @@
+{
+    "name": "xmrig-nv",
+    "NVIDIA1": {
+        "name": "NVIDIA1",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "cryptonightv8": "",
+            "cryptonightv7": "",
+            "cryptonightheavy": "",
+            "cryptonightr": ""
+        },
+        "difficulty": {
+            "cryptonightv8": "",
+            "cryptonightv7": "",
+            "cryptonightheavy": "",
+            "cryptonightr": ""
+        },
+        "naming": {
+            "cryptonightv8": "cn/2",
+            "cryptonightv7": "cn/1",
+            "cryptonightheavy": "cn-heavy",
+            "cryptonightr": "cn/r"
+        },
+        "fee": {
+            "cryptonightv8": 1,
+            "cryptonightv7": 1,
+            "cryptonightheavy": 1,
+            "cryptonightr": 1
+        }
+    },
+    "NVIDIA2": {
+        "name": "NVIDIA2",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "cryptonightv8": "",
+            "cryptonightv7": "",
+            "cryptonightheavy": "",
+            "cryptonightr": ""
+        },
+        "difficulty": {
+            "cryptonightv8": "",
+            "cryptonightv7": "",
+            "cryptonightheavy": "",
+            "cryptonightr": ""
+        },
+        "naming": {
+            "cryptonightv8": "cn/2",
+            "cryptonightv7": "cn/1",
+            "cryptonightheavy": "cn-heavy",
+            "cryptonightr": "cn/r"
+        },
+        "fee": {
+            "cryptonightv8": 1,
+            "cryptonightv7": 1,
+            "cryptonightheavy": 1,
+            "cryptonightr": 1
+        }
+    },
+    "NVIDIA3": {
+        "name": "NVIDIA3",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "cryptonightv8": "",
+            "cryptonightv7": "",
+            "cryptonightheavy": "",
+            "cryptonightr": ""
+        },
+        "difficulty": {
+            "cryptonightv8": "",
+            "cryptonightv7": "",
+            "cryptonightheavy": "",
+            "cryptonightr": ""
+        },
+        "naming": {
+            "cryptonightv8": "cn/2",
+            "cryptonightv7": "cn/1",
+            "cryptonightheavy": "cn-heavy",
+            "cryptonightr": "cn/r"
+        },
+        "fee": {
+            "cryptonightv8": 1,
+            "cryptonightv7": 1,
+            "cryptonightheavy": 1,
+            "cryptonightr": 1
+        }
+    }
+}

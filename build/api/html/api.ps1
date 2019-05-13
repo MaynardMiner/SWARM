@@ -12,27 +12,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
 function Get-APIServer {
-    if ($API -eq "Yes") {
+    if ($global:Config.Params.API -eq "Yes") {
 
         $Runspace = [runspacefactory]::CreateRunspace()
         $Runspace.Open()
+        $Runspace.SessionStateProxy.SetVariable('config',$global:Config)
 
         $APIServer = {
-            param($WorkingDir, $Port, $Remote, $APIPassword)
-
-            Set-Location $WorkingDir            
-            if (Test-Path ".\build\pid\api_pid.txt") { $AFID = Get-Content ".\build\pid\api_pid.txt"; $AID = Get-Process -ID $AFID -ErrorAction SilentlyContinue }
-            if ($AID) { Stop-Process $AID -ErrorAction SilentlyContinue }
-            $PID | Set-Content ".\build\pid\api_pid.txt"
+            [cultureinfo]::CurrentCulture = 'en-US'
+            Set-Location $global:Config.Params.WorkingDir            
             $listener = New-Object System.Net.HttpListener
             Write-Host "Listening ..."
-            if ($Remote -eq "yes") {
-                if ($APIPassword -ne "No") {
-                    [string]$Prefix = "http://+:$Port/$APIPassword/"
+            if ($global:Config.Params.Remote -eq "yes") {
+                if ($global:Config.Params.APIPassword -ne "No") {
+                    [string]$Prefix = "http://+:$($global:Config.Params.Port)/$($global:Config.Params.APIPassword)/"
                 }
-                else { $Prefix = "http://+:$Port/" }
+                else { $Prefix = "http://+:$($global:Config.Params.Port)/" }
             }
-            else { [string]$Prefix = "http://localhost:$Port/" }
+            else { [string]$Prefix = "http://localhost:$($global:Config.Params.Port)/" }
    
             # Run until you send a GET request to /end
             $listener.Prefixes.Add($Prefix) 
@@ -51,8 +48,8 @@ function Get-APIServer {
                 else {
                     # Split request URL to get command and options
                     $requestvars = [String]$request.Url -split "/"
-                    if ($Remote -eq "Yes" -and $APIPassword -ne "No") { $GET = $requestvars[4] }
-                    elseif ($Remote -eq "Yes" -and $APIPassword -eq "No") { $GET = $requestvars[3] }
+                    if ($global:Config.Params.Port -eq "Yes" -and $global:Config.Params.APIPassword -ne "No") { $GET = $requestvars[4] }
+                    elseif ($global:Config.Params.Remote -eq "Yes" -and $global:Config.Params.APIPassword -eq "No") { $GET = $requestvars[3] }
                     else { $GET = $requestvars[3] }
                     $requestcom = $GET -split "`&" | Select-Object -First 1
                     $requestargs = $GET -replace "$requestcom", ""
@@ -82,47 +79,6 @@ function Get-APIServer {
                                 }
                             }
                             "getstats" {
-                                if (Test-Path ".\build\txt\hivestats.txt") {
-                                    $result = Get-Content ".\build\txt\hivestats.txt" | ConvertFrom-StringData
-                                    $Stat = @()
-                                    for ($i = 0; $i -lt $result.GPUKHS.Count; $i++) {
-                                        $GPU = @{"GPU$i" = @{
-                                                hashrate    = $result.GPUKHS | Select-Object -skip $i -First 1; 
-                                                temperature = $result.GPUTEMP | Select-Object -skip $i -First 1;
-                                                fans        = $result.GPUFAN | Select-Object -skip $i -First 1;
-                                            }
-                                        }; 
-                                        $Stat += $GPU
-                                    }
-                                    for ($i = 0; $i -lt $result.CPUKHS.Count; $i++) {
-                                        $CPU = @{"CPU$i" = @{
-                                                hashrate    = $result.CPUKHS | Select-Object -skip $i -First 1; 
-                                                temperature = $result.CPUTEMP | Select-Object -skip $i -First 1;
-                                                fans        = $result.CPUFAN | Select-Object -skip $i -First 1;
-                                            }
-                                        };
-                                        $Stat += $CPU
-                                    }
-                                    for ($i = 0; $i -lt $result.ASICKHS.Count; $i++) {
-                                        $ASIC = @{"ASIC" = @{
-                                                hashrate = $result.ASICKHS | Select-Object -skip $i -First 1; 
-                                            }
-                                        };
-                                        $Stat += $ASIC
-                                    }
-                                    $Stat += @{Algorithm = $result.ALGO }
-                                    $Stat += @{Uptime = $result.UPTIME }
-                                    $Stat += @{"Hash_Units" = $result.HSU }
-                                    $Stat += @{Accepted = $result.ACC }
-                                    $Stat += @{Rejected = $result.REJ }
-                                    $message = $Stat | ConvertTo-Json -Depth 4 -Compress;
-                                    $response.ContentType = 'application/json'; 
-                                }
-                                else {
-                                    # If no matching subdirectory/route is found generate a 404 message
-                                    $message = @("No Data") | ConvertTo-Json -Compress;
-                                    $response.ContentType = 'application/json';
-                                }
                             }
                             "getbest" {
                                 if (Test-Path ".\build\txt\bestminers.txt") {
@@ -213,12 +169,7 @@ function Get-APIServer {
         $Posh_Api = [powershell]::Create()
         $Posh_Api.Runspace = $Runspace
         $Posh_Api.AddScript($APIServer) | Out-Null
-        $Posh_Api.AddArgument($WorkingDir) | Out-Null
-        $Posh_Api.AddArgument($Port) | Out-Null
-        $Posh_Api.AddArgument($Remote) | Out-Null
-        $Posh_Api.AddArgument($APIPassword) | Out-Null
         $Posh_Api
-        #Start-Job $APIServer -Name "APIServer" -ArgumentList $WorkingDir, $Port, $Remote, $APIPassword | OUt-Null
-        Write-Host "Starting API Server" -ForegroundColor "Yellow"
+        Write-Host "Starting HTML Server" -ForegroundColor "Yellow"
     }
 }

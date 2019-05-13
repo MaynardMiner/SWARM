@@ -15,14 +15,15 @@ function Get-GPUCount {
     $nvidiacounted = $false
     $amdcounted = $false
     $DeviceList = @{}
-    if ($Type -like "*AMD*") {$DeviceList.Add("AMD", @{})
+    if ($global:Config.Params.Type -like "*AMD*") {$DeviceList.Add("AMD", @{})
     }
-    if ($Type -like "*NVIDIA*") {$DeviceList.Add("NVIDIA", @{})
+    if ($global:Config.Params.Type -like "*NVIDIA*") {$DeviceList.Add("NVIDIA", @{})
     }
-    if ($Type -like "*CPU*") {$DeviceList.Add("CPU", @{})
+    if ($global:Config.Params.Type -like "*CPU*") {$DeviceList.Add("CPU", @{})
     }
 
-    lspci | Tee-Object ".\build\txt\gpucount.txt" | OUt-Null
+    Invoke-Expression "lspci" | Tee-Object -Variable lspci | Out-null
+    $lspci | Set-Content ".\build\txt\gpucount.txt"
     $GetBus = Get-Content ".\build\txt\gpucount.txt"
     $GetBus = $GetBus | Select-String "VGA", "3D"
     $AMDCount = 0
@@ -33,14 +34,14 @@ function Get-GPUCount {
     $GetBus | Foreach {
         if ($_ -like "*Advanced Micro Devices*" -or $_ -like "*RS880*" -or $_ -like "*Stoney*" -or $_ -like "*NVIDIA*" -and $_ -notlike "*nForce*") {
             if ($_ -like "*Advanced Micro Devices*" -or $_ -like "*RS880*" -or $_ -like "*Stoney*") {
-                if ($Type -like "*AMD*") {
+                if ($global:Config.Params.Type -like "*AMD*") {
                     $DeviceList.AMD.Add("$AMDCount", "$CardCount")
                     $AMDCount++
                     $CardCount++
                 }
             }
             if ($_ -like "*NVIDIA*") {
-                if ($Type -like "*NVIDIA*") {
+                if ($global:Config.Params.Type -like "*NVIDIA*") {
                     $DeviceList.NVIDIA.Add("$NVIDIACount", "$CardCount")
                     $NVIDIACount++
                     $CardCount++
@@ -49,10 +50,10 @@ function Get-GPUCount {
         }
     }
 
-    $Type | Foreach {
+    $global:Config.Params.Type | Foreach {
         if ($_ -like "*CPU*") {
-            Write-Host "Getting CPU Count"
-            for ($i = 0; $i -lt $CPUThreads; $i++) { 
+            Write-Log "Getting CPU Count"
+            for ($i = 0; $i -lt $global:Config.Params.CPUThreads; $i++) { 
                 $DeviceList.CPU.Add("$($i)", $i)
             }
         }

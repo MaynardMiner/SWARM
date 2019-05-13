@@ -1,123 +1,78 @@
 {
-  "name": "zjazz",
-  "NVIDIA1": {
-    "name": "NVIDIA1",
-    "delay": "1",
-    "prestart": [],
-    "commands": {
-      "cuckoo": "",
-      "bitcash": "",
-      "x22i": ""
+    "name": "zjazz",
+    "NVIDIA1": {
+        "name": "NVIDIA1",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "cuckoo": "",
+            "bitcash": "",
+            "x22i": ""
+        },
+        "difficulty": {
+            "cuckoo": "",
+            "bitcash": "",
+            "x22i": ""
+        },
+        "naming": {
+            "cuckoo": "bitcash",
+            "bitcash": "bitcash",
+            "x22i": "x22i"
+        },
+        "fee": {
+            "cuckoo": 2,
+            "bitcash": 2,
+            "x22i": 2
+        }
     },
-    "difficulty": {
-      "cuckoo": "",
-      "bitcash": "",
-      "x22i": ""
+    "NVIDIA2": {
+        "name": "NVIDIA2",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "cuckoo": "",
+            "bitcash": "",
+            "x22i": ""
+        },
+        "difficulty": {
+            "cuckoo": "",
+            "bitcash": "",
+            "x22i": ""
+        },
+        "naming": {
+            "cuckoo": "bitcash",
+            "bitcash": "bitcash",
+            "x22i": "x22i"
+        },
+        "fee": {
+            "cuckoo": 2,
+            "bitcash": 2,
+            "x22i": 2
+        }
     },
-    "naming": {
-      "cuckoo": "bitcash",
-      "bitcash": "bitcash",
-      "x22i": "x22i"
-    },
-    "oc": {
-      "cuckoo": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      },
-      "bitcash": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      },
-      "x22i": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      }
+    "NVIDIA3": {
+        "name": "NVIDIA3",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "cuckoo": "",
+            "bitcash": "",
+            "x22i": ""
+        },
+        "difficulty": {
+            "cuckoo": "",
+            "bitcash": "",
+            "x22i": ""
+        },
+        "naming": {
+            "cuckoo": "bitcash",
+            "bitcash": "bitcash",
+            "x22i": "x22i"
+        },
+        "fee": {
+            "cuckoo": 2,
+            "bitcash": 2,
+            "x22i": 2
+        }
     }
-  },
-  "NVIDIA2": {
-    "name": "NVIDIA2",
-    "delay": "1",
-    "prestart": [],
-    "commands": {
-      "cuckoo": "",
-      "bitcash": "",
-      "x22i": ""
-    },
-    "difficulty": {
-      "cuckoo": "",
-      "bitcash": "",
-      "x22i": ""
-    },
-    "naming": {
-      "cuckoo": "bitcash",
-      "bitcash": "bitcash",
-      "x22i": "x22i"
-    },
-    "oc": {
-      "cuckoo": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      },
-      "bitcash": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      },
-      "x22i": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      }
-    }
-  },
-  "NVIDIA3": {
-    "name": "NVIDIA3",
-    "delay": "1",
-    "prestart": [],
-    "commands": {
-      "cuckoo": "",
-      "bitcash": "",
-      "x22i": ""
-    },
-    "difficulty": {
-      "cuckoo": "",
-      "bitcash": "",
-      "x22i": ""
-    },
-    "naming": {
-      "cuckoo": "bitcash",
-      "bitcash": "bitcash",
-      "x22i": "x22i"
-    },
-    "oc": {
-      "cuckoo": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      },
-      "bitcash": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      },
-      "x22i": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      }
-    }
-  }
 }

@@ -25,7 +25,7 @@ function Get-ChildItemContent {
             $Content = &$_.FullName
         }
         else {
-            try{$Content = $_ | Get-Content | ConvertFrom-Json}catch{Write-Host "Warning: Could Not Identify $FullName- Remove to stop this error" -ForegroundColor Red}
+            try{$Content = $_ | Get-Content | ConvertFrom-Json}catch{Write-Log "WARNING: Could Not Identify $FullName, It Is Corrupt- Remove File To Stop." -ForegroundColor Red}
         }
         $Content | ForEach-Object {
             [PSCustomObject]@{Name = $Name; Content = $_}

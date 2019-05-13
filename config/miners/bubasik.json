@@ -1,29 +1,36 @@
 {
-  "CPU": {
-    "name": "CPU",
-    "delay": "1",
-    "prestart": [],
-    "commands": {
-      "yespower": "",
-      "hodl": "",
-      "yespowerr16": "",
-      "yescryptr8": "",
-      "yescryptr32": ""
+    "CPU": {
+        "name": "CPU",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "yespower": "",
+            "hodl": "",
+            "yespowerr16": "",
+            "yescryptr8": "",
+            "yescryptr32": ""
+        },
+        "difficulty": {
+            "yespower": "",
+            "hodl": "",
+            "yespowerr16": "",
+            "yescryptr8": "",
+            "yescryptr32": ""
+        },
+        "naming": {
+            "yespower": "yespower",
+            "hodl": "hodl",
+            "yespowerr16": "yespowerr16",
+            "yescryptr8": "yescryptr8",
+            "yescryptr32": "yescryptr32"
+        },
+        "fee": {
+            "yespower": 0,
+            "hodl": 0,
+            "yespowerr16": 0,
+            "yescryptr8": 0,
+            "yescryptr32": 0
+        }
     },
-    "difficulty": {
-      "yespower": "",
-      "hodl": "",
-      "yespowerr16": "",
-      "yescryptr8": "",
-      "yescryptr32": ""
-    },
-    "naming": {
-      "yespower": "yespower",
-      "hodl": "hodl",
-      "yespowerr16": "yespowerr16",
-      "yescryptr8": "yescryptr8",
-      "yescryptr32": "yescryptr32"
-    }
-  },
-  "name": "bubasik"
+    "name": "bubasik"
 }

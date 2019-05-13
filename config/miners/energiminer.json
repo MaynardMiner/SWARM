@@ -1,69 +1,54 @@
 {
-  "NVIDIA1": {
-    "name": "NVIDIA1",
-    "delay": "1",
-    "prestart": [],
-    "commands": {
-      "nrghash": ""
+    "NVIDIA1": {
+        "name": "NVIDIA1",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "nrghash": ""
+        },
+        "difficulty": {
+            "nrghash": ""
+        },
+        "naming": {
+            "nrghash": "nrghash"
+        },
+        "fee": {
+            "nrghash": 0
+        }
     },
-    "difficulty": {
-      "nrghash": ""
+    "NVIDIA2": {
+        "name": "NVIDIA2",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "nrghash": ""
+        },
+        "difficulty": {
+            "nrghash": ""
+        },
+        "naming": {
+            "nrghash": "nrghash"
+        },
+        "fee": {
+            "nrghash": 0
+        }
     },
-    "naming": {
-      "nrghash": "nrghash"
+    "NVIDIA3": {
+        "name": "NVIDIA3",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "nrghash": ""
+        },
+        "difficulty": {
+            "nrghash": ""
+        },
+        "naming": {
+            "nrghash": "nrghash"
+        },
+        "fee": {
+            "nrghash": 0
+        }
     },
-    "oc": {
-      "nrghash": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      }
-    }
-  },
-  "NVIDIA2": {
-    "name": "NVIDIA2",
-    "delay": "1",
-    "prestart": [],
-    "commands": {
-      "nrghash": ""
-    },
-    "difficulty": {
-      "nrghash": ""
-    },
-    "naming": {
-      "nrghash": "nrghash"
-    },
-    "oc": {
-      "nrghash": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      }
-    }
-  },
-  "NVIDIA3": {
-    "name": "NVIDIA3",
-    "delay": "1",
-    "prestart": [],
-    "commands": {
-      "nrghash": ""
-    },
-    "difficulty": {
-      "nrghash": ""
-    },
-    "naming": {
-      "nrghash": "nrghash"
-    },
-    "oc": {
-      "nrghash": {
-        "Power": "",
-        "Core": "",
-        "Memory": "",
-        "Fans": ""
-      }
-    }
-  },
-  "name": "energiminer"
+    "name": "energiminer"
 }

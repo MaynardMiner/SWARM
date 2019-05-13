@@ -24,6 +24,7 @@ param(
         [Parameter(Position=5, Mandatory=$false)]
         [String]$argument6
      )
+     [cultureinfo]::CurrentCulture = 'en-US'
 
      Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))
 
@@ -119,7 +120,7 @@ param(
        }
    "benchmarks"
    {
-    . .\build\powershell\statcommand.ps1
+    . .\build\powershell\command-stats.ps1
     . .\build\powershell\childitems.ps1
     . .\build\powershell\hashrates.ps1
     if(Test-path ".\stats")

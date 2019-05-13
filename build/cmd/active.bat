@@ -1,4 +1,4 @@
 @echo off
 pushd %~dp0
 set /p CMDDIR=<dir.txt
-powershell -executionpolicy bypass -command "%CMDDIR%/build/powershell/active.ps1"
+pwsh -executionpolicy bypass -command "& ""%CMDDIR%/build/powershell/active.ps1"""

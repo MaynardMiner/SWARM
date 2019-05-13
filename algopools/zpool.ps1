@@ -1,52 +1,59 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $Zpool_Request = [PSCustomObject]@{ } 
-[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls" 
+[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
+if($global:Config.Params.xnsub -eq "Yes"){$X = "#xnsub"} 
  
-if ($Poolname -eq $Name) {
+if ($Name -in $global:Config.Params.PoolName) {
     try { $Zpool_Request = Invoke-RestMethod "http://www.zpool.ca/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
-    catch { Write-Warning "SWARM contacted ($Name) but there was no response."; return }
+    catch { Write-Log "SWARM contacted ($Name) but there was no response."; return }
   
     if (($Zpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) { 
-        Write-Warning "SWARM contacted ($Name) but ($Name) the response was empty." 
+        Write-Log "SWARM contacted ($Name) but ($Name) the response was empty." 
         return
     } 
    
-    Switch ($Location) {
+    Switch ($global:Config.Params.Location) {
         "US" { $region = "na" }
         "EUROPE" { $region = "eu" }
         "ASIA" { $region = "sea" }
     }
   
-    $Zpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | Where-Object { $Zpool_Request.$_.hashrate -gt 0 } | Where-Object { $Naming.$($Zpool_Request.$_.name) } | ForEach-Object {
+    $Zpool_Request | 
+    Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
+    Select-Object -ExpandProperty Name | 
+    Where-Object { $Zpool_Request.$_.hashrate -gt 0 } | 
+    Where-Object { $global:Exclusions.$($Zpool_Request.$_.name) } |
+    ForEach-Object {
     
         $Zpool_Algorithm = $Zpool_Request.$_.name.ToLower()
   
-        if ($Algorithm -contains $Zpool_Algorithm -or $ASIC_ALGO -contains $Zpool_Algorithm) {
-            if ($Bad_pools.$Zpool_Algorithm -notcontains $Name) {
+        if ($Algorithm -contains $Zpool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $Zpool_Algorithm) {
+            if ($Name -notin $global:Exclusions.$Zpool_Algorithm.exclusions -and $Zpool_Algorithm -notin $Global:banhammer) {
                 $Zpool_Port = $Zpool_Request.$_.port
-                $Zpool_Host = "$($ZPool_Algorithm).$($region).mine.zpool.ca"
-
+                $Zpool_Host = "$($ZPool_Algorithm).$($region).mine.zpool.ca$X"
                 $Divisor = (1000000 * $Zpool_Request.$_.mbtc_mh_factor)
-                $Global:DivisorTable.zpool.Add($Zpool_Algorithm,$Zpool_Request.$_.mbtc_mh_factor)
-
                 $Fees = $Zpool_Request.$_.fees
-                $Global:FeeTable.zpool.Add($Zpool_Algorithm,$Zpool_Request.$_.fees)
-                
                 $Workers = $Zpool_Request.$_.Workers
-                $Estimate = if ($Stat_Algo -eq "Day") { [Double]$Zpool_Request.$_.estimate_last24h }else { [Double]$Zpool_Request.$_.estimate_current }
+                $Hashrate = $Zpool_Request.$_.hashrate
 
-                ## ZPool fees are calculated differently, due to pool fee structure.
+                $Global:DivisorTable.zpool.Add($Zpool_Algorithm, $Divisor)
+                $Global:FeeTable.zpool.Add($Zpool_Algorithm, $Fees)
+
+                $StatPath = ".\stats\($Name)_$($Zpool_Algorithm)_profit.txt"
+                $Estimate = if (-not (Test-Path $StatPath)) { [Double]$Zpool_Request.$_.estimate_last24h } else { [Double]$Zpool_Request.$_.estimate_current }
+
                 $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
+                $Stat = Set-Stat -Name "$($Name)_$($Zpool_Algorithm)_profit" -HashRate $HashRate -Value ([Double]$Cut / $Divisor)
 
-                $Stat = Set-Stat -Name "$($Name)_$($Zpool_Algorithm)_profit" -Value ([Double]$Cut / $Divisor)
-                if ($Stat_Algo -eq "Day") { $CStat = $Stat.Live }else { $CStat = $Stat.$Stat_Algo }
+                if (-not $global:Pool_Hashrates.$Zpool_Algorithm) { $global:Pool_Hashrates.Add("$Zpool_Algorithm", @{ }) }
+                if (-not $global:Pool_Hashrates.$Zpool_Algorithm.$Name) { $global:Pool_Hashrates.$Zpool_Algorithm.Add("$Name", @{HashRate = "$($Stat.HashRate)"; Percent = "" }) }
          
                 $Pass1 = $global:Wallets.Wallet1.Keys
-                $User1 = $global:Wallets.Wallet1.$Passwordcurrency1.address
+                $User1 = $global:Wallets.Wallet1.$($global:Config.Params.Passwordcurrency1).address
                 $Pass2 = $global:Wallets.Wallet2.Keys
-                $User2 = $global:Wallets.Wallet2.$Passwordcurrency2.address
+                $User2 = $global:Wallets.Wallet2.$($global:Config.Params.Passwordcurrency2).address
                 $Pass3 = $global:Wallets.Wallet3.Keys
-                $User3 = $global:Wallets.Wallet3.$Passwordcurrency3.address
+                $User3 = $global:Wallets.Wallet3.$($global:Config.Params.Passwordcurrency3).address
 
                 if ($global:Wallets.AltWallet1.keys) {
                     $global:Wallets.AltWallet1.Keys | ForEach-Object {
@@ -74,26 +81,24 @@ if ($Poolname -eq $Name) {
                 }
                 
                 [PSCustomObject]@{
-                    Priority      = $Priorities.Pool_Priorities.$Name
-                    Symbol        = "$Zpool_Algorithm-Algo"
-                    Mining        = $Zpool_Algorithm
-                    Algorithm     = $Zpool_Algorithm
-                    Price         = $CStat
-                    StablePrice   = $Stat.Week
-                    MarginOfError = $Stat.Fluctuation
-                    Protocol      = "stratum+tcp"
-                    Host          = $Zpool_Host
-                    Port          = $Zpool_Port
-                    User1         = $User1
-                    User2         = $User2
-                    User3         = $User3
-                    CPUser        = $User1
-                    CPUPass       = "c=$Pass1,id=$Rigname1"
-                    Pass1         = "c=$Pass1,id=$Rigname1"
-                    Pass2         = "c=$Pass2,id=$Rigname2"
-                    Pass3         = "c=$Pass3,id=$Rigname3"
-                    Location      = $Location
-                    SSL           = $false
+                    Priority  = $Priorities.Pool_Priorities.$Name
+                    Symbol    = "$Zpool_Algorithm-Algo"
+                    Mining    = $Zpool_Algorithm
+                    Algorithm = $Zpool_Algorithm
+                    Price     = $Stat.$($global:Config.Params.Stat_Algo)
+                    Protocol  = "stratum+tcp"
+                    Host      = $Zpool_Host
+                    Port      = $Zpool_Port
+                    User1     = $User1
+                    User2     = $User2
+                    User3     = $User3
+                    CPUser    = $User1
+                    CPUPass   = "c=$Pass1,id=$($global:Config.Params.RigName1)"
+                    Pass1     = "c=$Pass1,id=$($global:Config.Params.RigName1)"
+                    Pass2     = "c=$Pass2,id=$($global:Config.Params.RigName2)"
+                    Pass3     = "c=$Pass3,id=$($global:Config.Params.RigName3)"
+                    Location  = $global:Config.Params.Location
+                    SSL       = $false
                 }
             }
         }

@@ -1,0 +1,17 @@
+{
+    "Note": "Add Or Remove ASICS As Neccesary From This List, Using 'ASIC[Number]' Format",
+    "ASICS": {
+        "ASIC1": {
+            "IP": "IP ADDRESS",
+            "NickName": "NickName1"
+        },
+        "ASIC2": {
+            "IP": "IP ADDRESS",
+            "NickName": "NickName2"
+        },
+        "ASIC3": {
+            "IP": "IP ADDRESS",
+            "NickName": "NickName2"
+        }
+    }
+}

@@ -82,7 +82,7 @@ benchmark all
         $Get += "Removed All Benchmarks and Bans"
     }
     "miner" {
-        if ($Name -ne $Null) {
+        if ($Name) {
             if($Arg1){
                 if (Test-Path ".\stats\$($Name)_$($Arg1)_hashrate.txt") {Remove-Item ".\stats\$($Name)_$($Arg1)_hashrate.txt" -Force}
                 if (Test-Path ".\backup\$($Name)_$($Arg1)_hashrate.txt") {Remove-Item ".\backup\$($Name)_$($Arg1)_hashrate.txt" -Force}
@@ -95,32 +95,41 @@ benchmark all
               $Get += "Removed all $Name stats and bans."
             }
             if (Test-Path ".\timeout\pool_block\pool_block.txt") {
-                $NewPoolBlock = @()
                 $GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json
-                $GetPoolBlock | foreach {if ($_.Name -ne $Name) {$NewPoolBlock += $_}else {$Get += "Found $($_.Name) in Pool Block file"}}
-                if ($NewPoolBlock) {$NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt"}
-                else {Clear-Content ".\timeout\pool_block\pool_block.txt"}
+                if($Name -in $GetPoolBlock.Name) {
+                    $Get += "Found $($Name) in Pool Block file"
+                    $NewPoolBlock = $GetPoolBlock | Where Name -ne $Name | ConvertTo-Json
+                    if($NewPoolBlock){$NewPoolBlock | Set-Content ".\timeout\pool_block\pool_block.txt"}
+                    else{Clear-Content ".\timeout\pool_block\pool_block.txt"}
+                }
             }
             if (Test-Path ".\timeout\algo_block\algo_block.txt") {
-                $NewPoolBlock = @()
                 $GetPoolBlock = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json
-                $GetPoolBlock | foreach {if ($_.Name -ne $Name) {$NewPoolBlock += $_}else {$Get += "Found $($_.Name) in Algo Block file"}}
-                if ($NewPoolBlock) {$NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block\algo_block.txt"}
-                else {Clear-Content ".\timeout\algo_block\algo_block.txt"}
+                if($Name -in $GetPoolBlock.Name) {
+                    $Get += "Found $($Name) in Algo Block file"
+                    $NewPoolBlock = $GetPoolBlock | Where Name -ne $Name | ConvertTo-Json
+                    if($NewPoolBlock){$NewPoolBlock | Set-Content ".\timeout\algo_block\algo_block.txt"}
+                    else{Clear-Content ".\timeout\algo_block\algo_block.txt"}
+                }
             }
             if (Test-Path ".\timeout\miner_block\miner_block.txt") {
-                $NewPoolBlock = @()
                 $GetPoolBlock = Get-Content ".\timeout\miner_block\miner_block.txt" | ConvertFrom-Json
-                $GetPoolBlock | foreach {if ($_.Name -ne $Name) {$NewPoolBlock += $_}else {$Get += "Found $($_.Name) in Miner Block file"}}
-                if ($NewPoolBlock) {$NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block\algo_block.txt"}
-                else {Clear-Content ".\timeout\miner_block\miner_block.txt"}
+                if($Name -in $GetPoolBlock.Name) {
+                    $Get += "Found $($Name) in Miner Block file"
+                    $NewPoolBlock = $GetPoolBlock | Where Name -ne $Name | ConvertTo-Json
+                    if($NewPoolBlock){$NewPoolBlock | Set-Content ".\timeout\miner_block\miner_block.txt"}
+                    else{Clear-Content ".\timeout\miner_block\miner_block.txt"}
+                }
             }
             if (Test-Path ".\timeout\download_block\download_block.txt") {
                 $NewPoolBlock = @()
-                $GetPoolBlock = Get-Content ".\timeout\download_block\download_block.txt" | ConvertFrom-Json
-                $GetPoolBlock | foreach {if ($_.Name -ne $Name) {$NewPoolBlock += $_}else {$Get += "Found $($_.Name) in Download Block file"}}
-                if ($NewPoolBlock) {$NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block\algo_block.txt"}
-                else {Clear-Content ".\timeout\download_block\download_block.txt"}
+                $GetPoolBlock = Get-Content ".\timeout\download_block\download_block.txt"
+                if($Name -in $GetPoolBlock) {
+                    $Get += "Found $($Name) in Download Block file"
+                    $NewPoolBlock = $GetPoolBlock | Where Name -ne $Name | ConvertTo-Json
+                    if($NewPoolBlock){$NewPoolBlock | Set-Content ".\timeout\download_block\download_block.txt"}
+                    else{Clear-Content ".\timeout\download_block\download_block.txt"}
+                }
             }
         }
     }
@@ -131,18 +140,22 @@ benchmark all
             if (Test-Path ".\backup\*$($Name)_hashrate.txt*") {Remove-Item ".\backup\*$($Name)_hashrate.txt*" -Force}
             if (Test-Path ".\backup\*$($Name)_power.txt*") {Remove-Item ".\backup\*$($Name)_power.txt*" -Force}
             if (Test-Path ".\timeout\pool_block\pool_block.txt") {
-                $NewPoolBlock = @()
                 $GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json
-                $GetPoolBlock | foreach {if ($_.Algo -ne $Name) {$NewPoolBlock += $_}else {$Get += "Found $($_.Algo) in Pool Block file"}}
-                if ($NewPoolBlock) {$NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt"}
-                else {Clear-Content ".\timeout\pool_block\pool_block.txt"}
+                if($Name -in $GetPoolBlock.Algo) {
+                    $Get += "Found $($Name) in Pool Block file"
+                    $NewPoolBlock = $GetPoolBlock | Where Algo -ne $Name | ConvertTo-Json
+                    if($NewPoolBlock){$NewPoolBlock | Set-Content ".\timeout\pool_block\pool_block.txt"}
+                    else{Clear-Content ".\timeout\pool_block\pool_block.txt"}
+                }
             }
             if (Test-Path ".\timeout\algo_block\algo_block.txt") {
-                $NewPoolBlock = @()
                 $GetPoolBlock = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json
-                $GetPoolBlock | foreach {if ($_.Algo -ne $Name) {$NewPoolBlock += $_}else {$Get += "Found $($_.Algo) in Algo Block file"}}
-                if ($NewPoolBlock) {$NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block\algo_block.txt"}
-                else {Clear-Content ".\timeout\algo_block\algo_block.txt"}
+                if($Name -in $GetPoolBlock.Algo) {
+                    $Get += "Found $($Name) in Algo Block file"
+                    $NewPoolBlock = $GetPoolBlock | Where Algo -ne $Name | ConvertTo-Json
+                    if($NewPoolBlock){$NewPoolBlock | Set-Content ".\timeout\algo_block\algo_block.txt"}
+                    else{Clear-Content ".\timeout\algo_block\algo_block.txt"}
+                }
             }
             $Get += "Removed all $Name stats and bans."
         }

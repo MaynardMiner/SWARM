@@ -15,8 +15,6 @@ function Start-LaunchCode {
 
     param(
         [Parameter(Mandatory = $true)]
-        [String]$Platforms,
-        [Parameter(Mandatory = $true)]
         [String]$NewMiner,
         [Parameter(Mandatory = $false)]
         [String]$PP,
@@ -26,7 +24,7 @@ function Start-LaunchCode {
 
     $MinerCurrent = $NewMiner | ConvertFrom-Json
 
-    if ($MinerCurrent.Type -ne "ASIC") {
+    if ($MinerCurrent.Type -notlike "*ASIC*") {
         ##Remove Old PID FIle
         $MinerTimer = New-Object -TypeName System.Diagnostics.Stopwatch
         $Export = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\export")  
@@ -39,6 +37,7 @@ function Start-LaunchCode {
             "*NVIDIA*" {
                 if ($MinerCurrent.Devices -ne "none") {
                     switch ($MinerCurrent.DeviceCall) {
+                        "multiminer" { $MinerArguments = "$($MinerCurrent.Arguments)" }
                         "ccminer" { $MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "ewbf" { $MinerArguments = "--cuda_devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "miniz" { $MinerArguments = "-cd $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
@@ -69,7 +68,7 @@ function Start-LaunchCode {
                     switch ($MinerCurrent.DeviceCall) {
                         "excavator" {
                             $MinerDirectory = Split-Path ($MinerCurrent.Path) -Parent
-                            $CommandFilePath = Join-Path $dir "$($MinerDirectory)\command.json"
+                            $CommandFilePath = Join-Path $Global:Dir "$($MinerDirectory)\command.json"
                             $MinerArguments = "-c command.json -p $($MinerCurrent.Port)"
                             $NHDevices = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
                             $NiceDevices = Get-DeviceString -TypeCount $NHDevices.NVIDIA.Count
@@ -87,7 +86,7 @@ function Start-LaunchCode {
                     switch ($MinerCurrent.DeviceCall) {
                         "claymore" { $MinerArguments = "-di $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "xmrstak" { $MinerArguments = "$($MinerCurrent.Arguments)" }
-                        "sgminer-gm" { Write-Host "Miner Has Devices"; $MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
+                        "sgminer-gm" { Write-Log "Miner Has Devices"; $MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "tdxminer" { $MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "lolminer" { $MinerArguments = "--devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "wildrig" { $MinerArguments = "$($MinerCurrent.Arguments)" }
@@ -147,21 +146,35 @@ function Start-LaunchCode {
         }
 
         switch ($MinerCurrent.DeviceCall) {
-            "gminer" { Write-Host "SOME ALGOS MAY REQUIRE 6GB+ VRAM TO WORK" -ForegroundColor Green }
-            "bminer" { Write-Host "SOME ALGOS MAY REQUIRE 6GB+ VRAM TO WORK" -ForegroundColor Green }
+            "gminer" { Write-Log "SOME ALGOS MAY REQUIRE 6GB+ VRAM TO WORK" -ForegroundColor Green }
+            "bminer" { Write-Log "SOME ALGOS MAY REQUIRE 6GB+ VRAM TO WORK" -ForegroundColor Green }
         }
 
     
 
-        if ($Platforms -eq "windows") {
-            $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
+        if ($Global:Config.Params.Platform -eq "windows") {
             if ($MinerProcess -eq $null -or $MinerProcess.HasExited -eq $true) {
-
-                ##User specified delay
-                Start-Sleep -S $MinerCurrent.Delay
             
                 #dir
-                $WorkingDirectory = Join-Path $Dir $(Split-Path $($MinerCurrent.Path))
+                $WorkingDirectory = Join-Path $Global:Dir $(Split-Path $($MinerCurrent.Path))
+
+                ##Classic Logo For Windows
+                Write-Log "
+            ______________
+          /.----------..-'
+   -.     ||           \\
+   .----'-||-.          \\
+   |o _   || |           \\
+   | [_]  || |_...-----.._\\
+   | [_]  ||.'            ``-._ _
+   | [_]  '.O)_...-----....._ ``.\
+   / [_]o .' _ _'''''''''_ _ `. ``.       __
+   |______/.'  _  ``.---.'  _  ``.\  ``._./  \Cl
+   |'''''/, .' _ '. . , .' _ '. .``. .o'|   \ear
+   ``---..|; : (_) : ;-; : (_) : ;-'``--.|    \ing windows for $($MinerCurrent.Type) & Tracking
+          ' '. _ .' ' ' '. _ .' '      /     \
+           ``._ _ _,'   ``._ _ _,'       ``._____\        
+   "
 
                 ##Remove Old Logs
                 Remove-Item ".\logs\*$($MinerCurrent.Type)*" -Force -ErrorAction SilentlyContinue
@@ -170,7 +183,7 @@ function Start-LaunchCode {
                 ##Make Test.bat for users
                 if (-not (Test-Path "$WorkingDirectory\swarm-start.bat")) {
                     $minerbat = @()
-                    $minerbat += "CMD /r powershell -ExecutionPolicy Bypass -command `".\swarm-start.ps1`""
+                    $minerbat += "CMD /r pwsh -ExecutionPolicy Bypass -command `".\swarm-start.ps1`""
                     $minerbat += "cmd.exe"
                     $miner_bat = Join-Path $WorkingDirectory "swarm-start.bat"
                     $minerbat | Set-Content $miner_bat
@@ -179,18 +192,47 @@ function Start-LaunchCode {
                 ##Build Start Script
                 $script = @()
                 $script += "`$OutputEncoding = [System.Text.Encoding]::ASCII"
-                $script += ". `"$dir\build\powershell\output.ps1`";"
-                $script += "$dir\build\powershell\icon.ps1 `"$dir\build\apps\miner.ico`"" 
+                $script += "Start-Process `"powershell`" -ArgumentList `"-command `"`"Set-Location ```'$($global:Dir)```'; & ```'$($global:Dir)\build\powershell\icon.ps1```' ```'$($global:Dir)\build\apps\miner.ico```'`"`"`" -NoNewWindow"
                 $script += "`$host.ui.RawUI.WindowTitle = `'$($MinerCurrent.Name) - $($MinerCurrent.Algo)`';"
                 $MinerCurrent.Prestart | ForEach-Object {
-                    if ($_ -notlike "export LD_LIBRARY_PATH=$dir\build\export") {
-                        $setx = $_ -replace "export ", "setx "
+                    if ($_ -notlike "export LD_LIBRARY_PATH=$($global:Dir)\build\export") {
+                        $setx = $_ -replace "export ", "set "
                         $setx = $setx -replace "=", " "
                         $script += "$setx"
                     }
                 }
                 ##Determine if Miner needs logging
-                if ($MinerCurrent.Log -ne "miner_generated") { $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FIlePath ""$Logs"" -Append; `$Output | Out-Host}`'" }
+                if ($MinerCurrent.Log -ne "miner_generated") {
+                    Switch ($MinerCurrent.API) {
+                        "lolminer" {
+                            $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FilePath ""$Logs"" -Append; `$Output | Out-Host;}`'" 
+                        }
+                        "ccminer" {
+                            $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FilePath ""$Logs"" -Append; `$Output | Out-Host;}`'" 
+                        }
+                        "cpuminer" {
+                            $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FilePath ""$Logs"" -Append; `$Output | Out-Host;}`'" 
+                        }
+                        "claymore" {
+                            $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FilePath ""$Logs"" -Append; `$Output | Out-Host;}`'" 
+                        }
+                        "xmrstak" {
+                            $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FilePath ""$Logs"" -Append; `$Output | Out-Host;}`'" 
+                        }
+                        "xmrig-opt" {
+                            $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FilePath ""$Logs"" -Append; `$Output | Out-Host;}`'" 
+                        }
+                        "wildrig" {
+                            $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FilePath ""$Logs"" -Append; `$Output | Out-Host;}`'" 
+                        }
+                        "multiminer" {
+                            $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FilePath ""$Logs"" -Append; `$Output | Out-Host;}`'" 
+                        }
+                        default { 
+                            $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output += `$_ -replace `"\\[\d+(;\d+)?m`"; if(`$Output -cmatch `"`\n`"){`$OutPut | Out-File -FilePath ""$Logs"" -Append; `$Output | Out-Host; `$Output = `$null}}`'" 
+                        }
+                    }
+                }
                 else { $script += "Invoke-Expression "".\$($MinerCurrent.MinerName) $MinerArguments""" }            
                 $script | Out-File "$WorkingDirectory\swarm-start.ps1"
                 Start-Sleep -S .5
@@ -219,19 +261,18 @@ function Start-LaunchCode {
             else { $MinerProcess }
         } 
 
-        elseif ($Platforms -eq "linux") {
+        elseif ($Global:Config.Params.Platform -eq "linux") {
 
             ##Specified Dir Again For debugging / Testing - No Harm
-            $Dir = (Split-Path $script:MyInvocation.MyCommand.Path)
-            $MinerDir = Join-Path $Dir $(Split-Path $($MinerCurrent.Path))
+            $MinerDir = Join-Path $($global:Dir) $(Split-Path $($MinerCurrent.Path))
             $MinerDir = $(Resolve-Path $MinerDir).Path
-            $MinerEXE = Join-Path $Dir $MinerCurrent.Path
+            $MinerEXE = Join-Path $($global:Dir) $MinerCurrent.Path
             $MinerEXE = $(Resolve-Path $MinerExe).Path
             $StartDate = Get-Date
 
             ##PID Tracking Path & Date
-            $PIDPath = Join-Path $Dir "build\pid\$($MinerCurrent.InstanceName)_pid.txt"
-            $PIDInfoPath = Join-Path $Dir "build\pid\$($MinerCurrent.InstanceName)_info.txt"
+            $PIDPath = Join-Path $($global:Dir) "build\pid\$($MinerCurrent.InstanceName)_pid.txt"
+            $PIDInfoPath = Join-Path $($global:Dir) "build\pid\$($MinerCurrent.InstanceName)_info.txt"
             $PIDInfo = @{miner_exec = "$MinerEXE"; start_date = "$StartDate"; pid_path = "$PIDPath"; }
             $PIDInfo | ConvertTo-Json | Set-Content $PIDInfoPath
 
@@ -255,7 +296,7 @@ function Start-LaunchCode {
             $Daemon | Set-Content ".\build\bash\config.sh" -Force
 
             ##Classic Logo For Linux
-            Write-Host "
+            Write-Log "
          ______________
        /.----------..-'
 -.     ||           \\
@@ -294,14 +335,11 @@ function Start-LaunchCode {
             ##Bash Script to free Port
             Start-Process ".\build\bash\killcx.sh" -ArgumentList $MinerCurrent.Port
 
-            ##User generated Delay (Optional)
-            Start-Sleep -S $MinerCurrent.Delay
-
             ##Notification To User That Miner Is Attempting To start
-            Write-Host "Starting $($MinerCurrent.Name) Mining $($MinerCurrent.Coins) on $($MinerCurrent.Type)" -ForegroundColor Cyan
+            Write-Log "Starting $($MinerCurrent.Name) Mining $($MinerCurrent.Symbol) on $($MinerCurrent.Type)" -ForegroundColor Cyan
 
             ##FilePaths
-            $Export = Join-Path $Dir "build\export"
+            $Export = Join-Path $($global:Dir) "build\export"
 
             ##Build Two Bash Scripts: First script is to start miner while SWARM is running
             ##Second Script is to build a "test script" written in bin folder for users to
@@ -333,7 +371,7 @@ function Start-LaunchCode {
             $Script += "screen -S $($MinerCurrent.Type) -X stuff $`"cd $MinerDir\n`"", "sleep .1"
 
             ##This launches the previous generated configs.
-            $Script += "screen -S $($MinerCurrent.Type) -X stuff $`"`$(< $Dir/build/bash/config.sh)\n`""
+            $Script += "screen -S $($MinerCurrent.Type) -X stuff $`"`$(< $($global:Dir)/build/bash/config.sh)\n`""
             $TestScript += $Daemon
 
             ##Write Both Scripts
@@ -358,7 +396,7 @@ function Start-LaunchCode {
                 #Sleep for 1 every second
                 Start-Sleep -S 1
                 #Write We Are getting ID
-                Write-Host "Getting Process ID for $($MinerCurrent.MinerName)"
+                Write-Log "Getting Process ID for $($MinerCurrent.MinerName)"
                 if (Test-Path $PIDPath) { $MinerPID = Get-Content $PIDPath | Select-Object -First 1 }
                 ##Powershell Get Process Instance
                 if ($MinerPID) { $MinerProcess = Get-Process -ID $MinerPid -ErrorAction SilentlyContinue }
@@ -370,16 +408,14 @@ function Start-LaunchCode {
     }
     else {
         $clear = Remove-ASICPools $AIP $MinerCurrent.Port $MinerCurrent.API
-        Start-Sleep -S 1
         $Commands = "addpool|$($MinerCurrent.Arguments)"
-        Write-Host "Adding New Pool"
-        $response = Get-TCP -Server $AIP -Port $MinerCurrent.Port -Timeout 5 -Message $Commands
-        Start-Sleep -S 1
+        Write-Log "Adding New Pool"
+        $response = Get-TCP -Server $AIP -Port $MinerCurrent.Port -Timeout 10 -Message $Commands
         $response = $null
-        Write-Host "Switching To New Pool"
+        Write-Log "Switching To New Pool"
         $Commands = "switchpool|1"
-        $response = Get-TCP -Server $AIP -Port $MinerCurrent.Port -Timeout 5 -Message $Commands
-        if($response){$MinerProcess = @{StartTime = (Get-Date); HasExited = $false}}
+        $response = Get-TCP -Server $AIP -Port $MinerCurrent.Port -Timeout 10 -Message $Commands
+        if ($response) { $MinerProcess = @{StartTime = (Get-Date); HasExited = $false }}
         $MinerProcess
     }
 }

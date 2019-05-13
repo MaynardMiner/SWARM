@@ -1,0 +1,80 @@
+{
+    "name": "nbminer",
+    "NVIDIA1": {
+        "name": "NVIDIA1",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "daggerhashimoto": "",
+            "grincuckaroo29": "",
+            "grincuckatoo31": ""
+        },
+        "difficulty": {
+            "daggerhashimoto": "",
+            "grincuckaroo29": "",
+            "grincuckatoo31": ""
+        },
+        "naming": {
+            "daggerhashimoto": "daggerhashimoto",
+            "grincuckaroo29": "daggerhashimoto",
+            "grincuckatoo31": "grincuckatoo31"
+        },
+        "fee": {
+            "daggerhashimoto": 0.65,
+            "grincuckaroo29": 2,
+            "grincuckatoo31": 2
+        }
+    },
+    "NVIDIA2": {
+        "name": "NVIDIA2",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "ethash": "",
+            "daggerhashimoto": "",
+            "grincuckaroo29": "",
+            "grincuckatoo31": ""
+        },
+        "difficulty": {
+            "ethash": "",
+            "daggerhashimoto": "",
+            "grincuckaroo29": "",
+            "grincuckatoo31": ""
+        },
+        "naming": {
+            "daggerhashimoto": "daggerhashimoto",
+            "grincuckaroo29": "grincuckaroo29",
+            "grincuckatoo31": "grincuckatoo31"
+        },
+        "fee": {
+            "daggerhashimoto": 0.65,
+            "grincuckaroo29": 2,
+            "grincuckatoo31": 2
+        }
+    },
+    "NVIDIA3": {
+        "name": "NVIDIA3",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "daggerhashimoto": "",
+            "grincuckaroo29": "",
+            "grincuckatoo31": ""
+        },
+        "difficulty": {
+            "daggerhashimoto": "",
+            "grincuckaroo29": "",
+            "grincuckatoo31": ""
+        },
+        "naming": {
+            "daggerhashimoto": "daggerhashimoto",
+            "grincuckaroo29": "grincuckaroo29",
+            "grincuckatoo31": "grincuckatoo31"
+        },
+        "fee": {
+            "daggerhashimoto": 0.65,
+            "grincuckaroo29": 2,
+            "grincuckatoo31": 2
+        }
+    }
+}
