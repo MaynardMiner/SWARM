@@ -13,9 +13,9 @@
 "multiminer-amd": {
   "name": "multiminer-amd",
   "type": "amd",
-  "NVIDIA1": ".\\bin\\multiminer-amd-1\\multiminer.exe",
-  "NVIDIA2": ".\\bin\\multiminer-amd-2\\multiminer.exe",
-  "NVIDIA3": ".\\bin\\multiminer-amd-3\\multiminer.exe",
+  "AMD1": ".\\bin\\multiminer-amd-1\\multiminer.exe",
+  "AMD2": ".\\bin\\multiminer-amd-2\\multiminer.exe",
+  "AMD3": ".\\bin\\multiminer-amd-3\\multiminer.exe",
   "minername": "multiminer.exe",
   "version": "1.1.0",
   "uri": "https://github.com/bogdanadnan/multiminer/releases/download/v1.1.0/multiminer_v1.1.0_24.01.2019.zip"

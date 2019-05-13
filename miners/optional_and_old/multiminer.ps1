@@ -24,6 +24,7 @@ $NVIDIATypes | ForEach-Object {
     ##Parse -GPUDevices
     if ($Get_Devices -ne "none") {
         $ArgDevices = $null
+        $Devices = $null
         $GPUDevices1 = $Get_Devices
         $GPUDevices1 = $GPUDevices1 -split ","
         for($i = 0; $i -lt $GPUDevices1.Count; $i++){$GPUDevices1[$i] = [Double]$GPUDevices1[$i] + 1}
