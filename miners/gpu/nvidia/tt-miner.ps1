@@ -2,15 +2,17 @@ $NVIDIATypes | ForEach-Object {
     
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
+    $CName = "tt-miner"
+
     ##Miner Path Information
-    if ($nvidia.ttminer.$ConfigType -and $global:Config.Params.Platform -eq "windows") { $Path = "$($nvidia.ttminer.$ConfigType)" }
+    if ($nvidia.$CName.$ConfigType -and $global:Config.Params.Platform -eq "windows") { $Path = "$($nvidia.$CName.$ConfigType)" }
     else { $Path = "None" }
-    if ($nvidia.ttminer.uri -and $global:Config.Params.Platform -eq "windows") { $Uri = "$($nvidia.ttminer.uri)" }
+    if ($nvidia.$CName.uri -and $global:Config.Params.Platform -eq "windows") { $Uri = "$($nvidia.$CName.uri)" }
     else { $Uri = "None" }
-    if ($nvidia.ttminer.minername) { $MinerName = "$($nvidia.ttminer.minername)" }
+    if ($nvidia.$CName.minername) { $MinerName = "$($nvidia.$CName.minername)" }
     else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "ttminer-$Num"; $Port = "5100$Num";
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "5100$Num";
 
     Switch ($Num) {
         1 { $Get_Devices = $NVIDIADevices1 }
@@ -26,9 +28,7 @@ $NVIDIATypes | ForEach-Object {
     else { $Devices = $Get_Devices }
 
     ##Get Configuration File
-    $GetConfig = "$($global:Dir)\config\miners\ttminer.json"
-    try { $MinerConfig = Get-Content $GetConfig | ConvertFrom-Json }
-    catch { Write-Log "Warning: No config found at $GetConfig" }
+    $MinerConfig = $Global:config.miners.$CName
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = Join-Path $($global:Dir) "build\export"

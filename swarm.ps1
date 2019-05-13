@@ -27,7 +27,7 @@ $global:cultureENUS = New-Object System.Globalization.CultureInfo("en-US")
 . .\build\powershell\command-startup.ps1;
 
 ## Get Parameters
-$Global:config = [hashtable]::Synchronized(@{ })
+$Global:config = @{ }
 Get-Parameters
 
 ##filepath dir
@@ -229,6 +229,10 @@ if ($Error.Count -gt 0) {
 While ($true) {
 
     do {
+
+        if($Global:config.Params.Type -like "*AMD*" -or $Global:config.params.Type -like "*NVIDIA*" -or $Global:Params.Type -like "*CPU*") {
+        Get-MinerConfigs
+        }
 
         Add-ASIC_ALGO
 

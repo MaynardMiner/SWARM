@@ -25,10 +25,8 @@ $NVIDIATypes | ForEach-Object {
     if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
     else { $Devices = $Get_Devices }
 
-    ##Get Configuration File
-    $GetConfig = "$($global:Dir)\config\miners\zjazz.json"
-    try { $MinerConfig = Get-Content $GetConfig | ConvertFrom-Json }
-    catch { Write-Log "Warning: No config found at $GetConfig" }
+    ##Get Configuration Fil
+    $MinerConfig = $Global:config.miners.zjazz
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = Join-Path $($global:Dir) "build\export"

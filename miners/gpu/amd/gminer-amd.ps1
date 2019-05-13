@@ -42,9 +42,7 @@ $AMDTypes | ForEach-Object {
     else { $GCount.AMD.PSObject.Properties.Name | ForEach-Object { $ArgDevices += "$($GCount.AMD.$_) " }; $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1) }
 
     ##Get Configuration File
-    $GetConfig = "$($global:Dir)\config\miners\$CName.json"
-    try { $MinerConfig = Get-Content $GetConfig | ConvertFrom-Json }
-    catch { Write-Log "Warning: No config found at $GetConfig" }
+    $MinerConfig = $Global:config.miners.$CName
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = Join-Path $($global:Dir) "build\export"

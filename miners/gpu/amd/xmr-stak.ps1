@@ -21,9 +21,7 @@ $AMDTypes | ForEach-Object {
     $Log = Join-Path $($global:Dir) "logs\$ConfigType.log"
 
     ##Get Configuration File
-    $GetConfig = "$($global:Dir)\config\miners\$CName.json"
-    try { $MinerConfig = Get-Content $GetConfig | ConvertFrom-Json }
-    catch { Write-Log "Warning: No config found at $GetConfig" }
+    $MinerConfig = $Global:config.miners.$CName
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = Join-Path $($global:Dir) "build\export"

@@ -19,9 +19,7 @@ $CPUTypes | ForEach-Object {
     if ($global:Config.Params.CPUThreads -ne '') { $Devices = $global:Config.Params.CPUThreads }
 
     ##Get Configuration File
-    $GetConfig = "$($global:Dir)\config\miners\sugarchain.json"
-    try { $MinerConfig = Get-Content $GetConfig | ConvertFrom-Json }
-    catch { Write-Log "Warning: No config found at $GetConfig" }
+    $MinerConfig = $Global:config.miners.sugarchain
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = Join-Path $($global:Dir) "build\export"

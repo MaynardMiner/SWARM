@@ -2,12 +2,14 @@ $NVIDIATypes | ForEach-Object {
     
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
-    ##Miner Path Information
-    if ($nvidia."cc-verus".$ConfigType) { $Path = "$($nvidia."cc-verus".$ConfigType)" } else { $Path = "None" }
-    if ($nvidia."cc-verus".uri) { $Uri = "$($nvidia."cc-verus".uri)" } else { $Uri = "None" }
-    if ($nvidia."cc-verus".minername) { $MinerName = "$($nvidia."cc-verus".minername)" } else { $MinerName = "None" }
+    $CName = 'cc-verus'
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "cc-verus-$Num"; $Port = "4100$Num"
+    ##Miner Path Information
+    if ($nvidia.$CName.$ConfigType) { $Path = "$($nvidia.$CName.$ConfigType)" } else { $Path = "None" }
+    if ($nvidia.$CName.uri) { $Uri = "$($nvidia.$CName.uri)" } else { $Uri = "None" }
+    if ($nvidia.$CName.minername) { $MinerName = "$($nvidia.$CName.minername)" } else { $MinerName = "None" }
+
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "4100$Num"
 
     Switch ($Num) {
         1 { $Get_Devices = $NVIDIADevices1 }
@@ -23,9 +25,7 @@ $NVIDIATypes | ForEach-Object {
     else { $Devices = $Get_Devices }
 
     ##Get Configuration File
-    $GetConfig = "$($global:Dir)\config\miners\cc-verus.json"
-    try { $MinerConfig = Get-Content $GetConfig | ConvertFrom-Json }
-    catch { Write-Log "Warning: No config found at $GetConfig" }
+    $MinerConfig = $Global:config.miners.$CName
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = Join-Path $($global:Dir) "build\export"
