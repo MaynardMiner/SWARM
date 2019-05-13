@@ -31,6 +31,7 @@ function start-update {
         $PreviousVersions += "SWARM.2.2.3"
         $PreviousVersions += "SWARM.2.2.4"
         $PreviousVersions += "SWARM.2.2.5"
+        $PreviousVersions += "SWARM.2.2.6"
 
         $StatsOnly = $null
 
@@ -135,6 +136,11 @@ function start-update {
                                             $Data.$_.difficulty | Add-Member "wildkeccak" "" -ErrorAction SilentlyContinue
                                             $Data.$_.naming | Add-Member "wildkeccak" "wildkeccak" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "wildkeccak" 1 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "xevan" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "xevan" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.naming | Add-Member "xevan" "xevan" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "xevan" 1 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }
