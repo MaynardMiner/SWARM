@@ -17,8 +17,8 @@
         "NVIDIA2": ".\\bin\\nbminer-2\\nbminer.exe",
         "NVIDIA3": ".\\bin\\nbminer-3\\nbminer.exe",
         "minername": "nbminer.exe",
-        "version": "22.3",
-        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/nbminer-windows.zip"
+        "version": "23.2",
+        "uri": "https://github.com/NebuTech/NBMiner/releases/download/v23.2.1/NBMiner_23.2_hotfix_Win.zip"
       },    
     "cc-mtp": {
         "name": "cc-mtp",
@@ -57,8 +57,8 @@
         "NVIDIA2": ".\\bin\\bminer-2\\bminer.exe",
         "NVIDIA3": ".\\bin\\bminer-3\\bminer.exe",
         "minername": "bminer",
-        "version": "15.5.2",
-        "uri": "https://www.bminercontent.com/releases/bminer-lite-v15.5.2-ed2038c-amd64.zip"
+        "version": "15.5.3",
+        "uri": "https://www.bminercontent.com/releases/bminer-lite-v15.5.3-747d98e-amd64.zip"
     },
     "ehssand": {
         "name": "ehssand",
@@ -87,7 +87,7 @@
         "NVIDIA2": ".\\bin\\claymore-2\\ethdcrminer64.exe",
         "NVIDIA3": ".\\bin\\claymore-3\\ethdcrminer64.exe",
         "minername": "ethdcrminer64.exe",
-        "version": "12.0",
+        "version": "14.0",
         "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/Claymore-Windows.zip"
     },
     "cryptodredge": {
@@ -147,7 +147,7 @@
         "NVIDIA2": ".\\bin\\miniz-2\\miniZ.exe",
         "NVIDIA3": ".\\bin\\miniz-3\\miniZ.exe",
         "minername": "miniZ.exe",
-        "version": "1.3n4",
+        "version": "v1.3n5",
         "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/miniz-windows.zip"
     },
     "phoenix": {
