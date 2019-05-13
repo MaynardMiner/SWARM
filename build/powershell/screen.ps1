@@ -27,7 +27,7 @@ function Get-Charts {
         $Table | ForEach-Object { $Power_Levels.Add("$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)", @{ }) }
         ##Profit Levels
         $Level = $null
-        $Table | Sort-Object -Property Profits | ForEach-Object { if ($Null -ne $_.Profits) { $Profit = ($_.Profits * $Rates.$($global:Config.Params.Currency)).ToString("N2"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("Profit", "$Level $Profit $global:Config.Params.Currency/Day"); } }
+        $Table | Sort-Object -Property Profits | ForEach-Object { if ($Null -ne $_.Profits) { $Profit = ($_.Profits * $Rates.$($global:Config.Params.Currency)).ToString("N2"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("Profit", "$Level $Profit $($global:Config.Params.Currency)/Day"); } }
         $Level = $null
         if($global:Config.Params.CoinExchange){$Table | Sort-Object -Property Pool_Estimate | ForEach-Object { if ($_.Pool_Estimate -gt 0) { $Profit = ($_.Pool_Estimate / $BTCExchangeRate).ToString("N5"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("Alt_Profit", "$Level $Profit $Y/Day"); } }}
         $Level = $null
@@ -37,7 +37,7 @@ function Get-Charts {
         $Level = $null
         $Table | Sort-Object -Property Shares | ForEach-Object { if ($Null -ne $_.Shares) { if ($_.Shares -eq "N/A") { $_.Shares = 0 }else { $_.Shares = $($_.Shares -as [Decimal]).ToString("N3") }; $Shares = "$($_.Shares)"; $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; if ($_.Shares -ne 0) { $Level = $Level + $Power }else { $Level = "|" }; $Power_Levels.$MinerName.Add("Shares", "$Level $Shares %"); } }
         $Level = $null
-        if ($WattTable -eq $true) { $Table | Sort-Object -Property Power | ForEach-Object { if ($_.Power -ne 0) { $Pwatts = ($_.Power * $Rates.$($global:Config.Params.Currency)).ToString("N2"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("Watts", "$Level $PWatts $global:Config.Params.Currency/Day"); } }}
+        if ($WattTable -eq $true) { $Table | Sort-Object -Property Power | ForEach-Object { if ($_.Power -ne 0) { $Pwatts = ($_.Power * $Rates.$($global:Config.Params.Currency)).ToString("N2"); $MinerName = "$($_.Name)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("Watts", "$Level $PWatts $($global:Config.Params.Currency)/Day"); } }}
     }
 
     $global:Config.Params.Type | ForEach-Object {
