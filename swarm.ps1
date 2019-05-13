@@ -932,7 +932,7 @@ While ($true) {
         ##Get Shares
         $global:Share_Table = @{ }
         write-Log "Getting Coin Tracking From Pool" -foregroundColor Cyan
-        Get-CoinShares
+        if($global:Config.params.Track_Shares -eq "Yes") { Get-CoinShares }
 
         ##Build Simple Stats Table For Screen/Command
         $ProfitTable = @()
@@ -1028,6 +1028,7 @@ While ($true) {
         $StatusLite | Out-File ".\build\txt\minerstatslite.txt" -Append
         $MiningStatus | Out-File ".\build\txt\minerstatslite.txt" -Append
         $BanMessage | Out-File ".\build\txt\minerstatslite.txt" -Append
+        $ProfitTable = $null
 
         ## Load mini logo
         Get-Logo
