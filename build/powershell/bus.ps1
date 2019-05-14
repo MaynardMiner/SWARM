@@ -10,6 +10,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
+
 Function Resolve-PCIBusInfo { 
 
     param ( 
@@ -73,7 +74,6 @@ Function Get-BusFunctionID {
         elseif ($Devices[$i].PNPDeviceID -match "PCI\\VEN_1002*") { $brand = "amd" }
         else { $Brand = "microsoft" }
 
-        $GPURAM = $Devices[$i].AdapterRam
         $GPURAM = (Get-CimInstance Win32_VideoController | where PNPDeviceID -eq $Devices[$i].PNPDeviceID).AdapterRam
         $GPURAM = "{0:f0}" -f $($GPURAM / 1000000)
         $GPURAM = "$($GPURAM)M"
@@ -90,27 +90,17 @@ Function Get-BusFunctionID {
 }
 
 function Get-GPUCount {
-    param (
-        [parameter(Position = 0, Mandatory = $false)]
-        [string]$BusData
-    )
 
-    $Bus = $BusData | ConvertFrom-Json
-    $Bus = $Bus | Sort-Object PCIBusID
+    $Bus = $global:BusData | Sort-Object PCIBusID
     $DeviceList = @{ }
     $OCList = @{ }
 
-    if ($global:Config.Params.Type -like "*AMD*") { $DeviceList.Add("AMD", @{ })
-    }
-    if ($global:Config.Params.Type -like "*NVIDIA*") { $DeviceList.Add("NVIDIA", @{ })
-    }
-    if ($global:Config.Params.Type -like "*CPU*") { $DeviceList.Add("CPU", @{ })
-    }
+    if ($global:Config.Params.Type -like "*AMD*") { $DeviceList.Add("AMD", @{ })}
+    if ($global:Config.Params.Type -like "*NVIDIA*") { $DeviceList.Add("NVIDIA", @{ })}
+    if ($global:Config.Params.Type -like "*CPU*") { $DeviceList.Add("CPU", @{ })}
 
-    if ($global:Config.Params.Type -like "*AMD*") { $OCList.Add("AMD", @{ })
-    }
-    if ($global:Config.Params.Type -like "*NVIDIA*") { $OCList.Add("NVIDIA", @{ })
-    }
+    if ($global:Config.Params.Type -like "*AMD*") { $OCList.Add("AMD", @{ })}
+    if ($global:Config.Params.Type -like "*NVIDIA*") { $OCList.Add("NVIDIA", @{ })}
     $OCList.Add("Onboard", @{ })
 
     $DeviceCounter = 0

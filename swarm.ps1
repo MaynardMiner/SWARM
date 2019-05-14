@@ -155,6 +155,7 @@ $global:Pool_Hashrates = @{ }
 
 ## Initialize
  $global:GPU_Count = $null
+ $global:BusData = $null
  switch ($global:Config.params.Platform) {
      "linux" { Start-LinuxConfig }
      "windows" { Start-WindowsConfig }

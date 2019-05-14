@@ -13,16 +13,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 function Start-Peekaboo {
     param (
         [Parameter(Mandatory = $false)]
-        [String]$GPUData,
-        [Parameter(Mandatory = $false)]
         [String]$version
     )
 
     ##"{0:f0}" -f $($Test.AdapterRam/1000000)
     Switch ($global:Config.Params.Platform) {
         "windows" {
-            $AMDData = $GPUData | ConvertFrom-Json
-            $NVIDIAData = $GPUData | ConvertFrom-Json
+            $AMDData = $global:BusData
+            $NVIDIAData = $global:BusData
             $AMDData = $AMDData | Where PnPID -match "PCI\\VEN_1002*"
             $NVIDIAData = $NVIDIAData | Where PnPID -match "PCI\\VEN_10DE*"
             Invoke-Expression ".\build\apps\nvidia-smi.exe --query-gpu=gpu_bus_id,vbios_version,gpu_name,memory.total,power.min_limit,power.default_limit,power.max_limit --format=csv > "".\build\txt\getgpu.txt"""
