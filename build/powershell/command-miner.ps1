@@ -334,3 +334,14 @@ function Get-BestMiners {
 
     $BestMiners
 }
+
+
+function Get-MinerConfigs {
+    $Configs = Get-ChildItem ".\config\miners"
+    $Configs.Name | % {
+       $FileDir = Join-Path ".\config\miners" $_
+       $A = Get-Content $FileDir | ConvertFrom-Json
+       if(-not $global:Config.miners) {$global:Config.Add("miners",@{})}
+       if($A.Name -notin $global:Config.miners.keys){$global:Config.miners.Add($A.Name,$A)}
+    }
+}

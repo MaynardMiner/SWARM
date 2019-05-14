@@ -25,10 +25,8 @@ $NVIDIATypes | ForEach-Object {
     if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
     else { $Devices = $Get_Devices }
 
-    ##Get Configuration File
-    $GetConfig = "$($global:Dir)\config\miners\zjazz.json"
-    try { $MinerConfig = Get-Content $GetConfig | ConvertFrom-Json }
-    catch { Write-Log "Warning: No config found at $GetConfig" }
+    ##Get Configuration Fil
+    $MinerConfig = $Global:config.miners.zjazz
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = Join-Path $($global:Dir) "build\export"
@@ -66,7 +64,7 @@ $NVIDIATypes | ForEach-Object {
                         Devices    = $Devices
                         DeviceCall = "zjazz"
                         Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -b 0.0.0.0:$Port --hashrate-per-gpu -u $($_.$User) -p $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                        HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
+                        HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour}
                         Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
                         PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
                         MinerPool  = "$($_.Name)"

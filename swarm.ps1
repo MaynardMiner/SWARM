@@ -27,7 +27,7 @@ $global:cultureENUS = New-Object System.Globalization.CultureInfo("en-US")
 . .\build\powershell\command-startup.ps1;
 
 ## Get Parameters
-$Global:config = [hashtable]::Synchronized(@{ })
+$Global:config = @{ }
 Get-Parameters
 
 ##filepath dir
@@ -229,6 +229,10 @@ if ($Error.Count -gt 0) {
 While ($true) {
 
     do {
+
+        if($Global:config.Params.Type -like "*AMD*" -or $Global:config.params.Type -like "*NVIDIA*" -or $Global:Params.Type -like "*CPU*") {
+        Get-MinerConfigs
+        }
 
         Add-ASIC_ALGO
 
@@ -1137,7 +1141,7 @@ While ($true) {
                                             $Watts.$($_.Algo)."$($_.Type)_Watts" = "$GPUPower"
                                         }
                                     }
-                                    $Stat = Set-Stat -Name "$($_.Name)_$($_.Algo)_hashrate" -Value $Miner_HashRates
+                                    $Stat = Set-Stat -Name "$($_.Name)_$($_.Algo)_hashrate" -Value $Miner_HashRates -AsHashRate
                                     Start-Sleep -s 1
                                     $GetLiveStat = Get-Stat "$($_.Name)_$($_.Algo)_hashrate"
                                     $StatCheck = "$($GetLiveStat.Live)"

@@ -23,9 +23,7 @@ $AMDTypes | ForEach-Object {
     else { $Devices = $Get_Devices }
 
     ##Get Configuration File
-    $GetConfig = "$($global:Dir)\config\miners\$CName.json"
-    try { $MinerConfig = Get-Content $GetConfig | ConvertFrom-Json }
-    catch { Write-Log "Warning: No config found at $GetConfig" }
+    $MinerConfig = $Global:config.miners.$CName
 
     ##Export would be /path/to/[SWARMVERSION]/build/export && Bleeding Edge Check##
     $ExportDir = Join-Path $($global:Dir) "build\export"
@@ -64,7 +62,7 @@ $AMDTypes | ForEach-Object {
                         Devices    = $Devices
                         DeviceCall = "sgminer-gm"
                         Arguments  = "--gpu-platform $AMDPlatform --api-listen --api-port $Port -k $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.$User) -p $($_.$Pass)$($Diff) -T $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                        HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
+                        HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour}
                         Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
                         PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
                         MinerPool  = "$($_.Name)"

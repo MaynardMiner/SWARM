@@ -23,9 +23,7 @@ $NVIDIATypes | ForEach-Object {
     else { $Devices = $Get_Devices }
 
     ##Get Configuration File
-    $GetConfig = "$($global:Dir)\config\miners\bminer.json"
-    try { $MinerConfig = Get-Content $GetConfig | ConvertFrom-Json }
-    catch { Write-Log "Warning: No config found at $GetConfig" }
+    $MinerConfig = $Global:config.miners.bminer
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = Join-Path $($global:Dir) "build\export"
@@ -66,7 +64,7 @@ $NVIDIATypes | ForEach-Object {
                         Devices    = $Devices
                         DeviceCall = "bminer"
                         Arguments  = "-uri $($MinerConfig.$ConfigType.naming.$($_.Algorithm))://$($_.$User)$Pass$Diff@$($_.Host):$($_.Port) -logfile `'$Log`' -api 127.0.0.1:$Port"
-                        HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
+                        HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour}
                         Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
                         PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
                         MinerPool  = "$($_.Name)"

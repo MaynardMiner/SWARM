@@ -2893,3 +2893,26 @@ API overhaul:
     (HiveOS 6099) in case there is issues with one.
   * This will dramatically reduce read/writes.
   * This slightly increases RAM use.
+
+
+  2.2.7
+
+  -Hashrates are now based on hourly averages.
+  -Defaulted maximum hashrate periods to 12 periods.
+   * Should speed up miner loadtimes.
+
+  SWARM now pre-loads miner.json's at the start of each loop
+  * Slightly increased RAM use, but faster miner load times.
+  * Miner.json can be edited while SWARM is running.
+
+  -Wildrig updated
+  -tt-miner updated
+  -cryptodredge updated
+
+  xevan added to miner files.
+
+  This update will exclude the following .json files:
+    -trex.json
+    -ttminer.json
+
+  Sugarchain CPU miner configuration fixed.
