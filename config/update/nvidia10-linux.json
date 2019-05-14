@@ -47,8 +47,8 @@
     "NVIDIA2": ".\\bin\\cryptodredge-2\\CryptoDredge",
     "NVIDIA3": ".\\bin\\cryptodredge-3\\CryptoDredge",
     "minername": "CryptoDredge",
-    "version": "0.19.1",
-    "uri": "https://github.com/technobyl/CryptoDredge/releases/download/v0.19.1/CryptoDredge_0.19.1_cuda_10.1_linux.tar.gz"
+    "version": "0.19.0",
+    "uri": "https://github.com/technobyl/CryptoDredge/releases/download/v0.19.0/CryptoDredge_0.19.0_cuda_10.0_linux.tar.gz"
   },
   "cc-mtp": {
     "name": "cc-mtp",
