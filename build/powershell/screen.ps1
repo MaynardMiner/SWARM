@@ -238,7 +238,7 @@ function Get-StatusLite {
             "        Miner: $($_.Miner)
         Mining: $($_.Name)
         Speed: $($_.HashRates | ForEach-Object {if ($null -ne $_) {"$($_ | ConvertTo-Hash)/s"}else {"Benchmarking"}})
-        Profit: $($_.Profits | ForEach-Object {if ($null -ne $_) {"$(($_ * $Rates.$($global:Config.Params.Currency)).ToString("N2")) $global:Config.Params.Currency/Day"}else {"Bench"}}) 
+        Profit: $($_.Profits | ForEach-Object {if ($null -ne $_) {"$(($_ * $Rates.$($global:Config.Params.Currency)).ToString("N2")) $($global:Config.Params.Currency)/Day"}else {"Bench"}}) 
         Pool: $($_.MinerPool)
         Shares: $($($_.Shares -as [Decimal]).ToString("N3"))
 "
