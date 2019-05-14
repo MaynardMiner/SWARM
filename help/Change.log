@@ -2905,7 +2905,7 @@ API overhaul:
   * Slightly increased RAM use, but faster miner load times.
   * Miner.json can be edited while SWARM is running.
 
-  -Wildrig updated
+  -Wildrig updated (Note: Vega Users Caution)
   -tt-miner updated
   
   xevan added to miner files.
@@ -2915,3 +2915,7 @@ API overhaul:
     -ttminer.json
 
   Sugarchain CPU miner configuration fixed.
+
+  Fixed ``get stats lite`` Currency/Day
+
+  Multiminer-AMD (Linux version) binary fixed.
