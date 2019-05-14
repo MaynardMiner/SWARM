@@ -60,7 +60,7 @@ $AMDTypes | ForEach-Object {
                         DeviceCall = "xmrstak"
                         Arguments  = "--currency $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -i $Port --url stratum+tcp://$($_.Host):$($_.Port) --user $($_.$User) --pass $($_.$Pass)$($Diff) --rigid SWARM --noCPU --noNVIDIA --use-nicehash $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"    
                         HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour}
-                        Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
+                        Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
                         FullName   = "$($_.Mining)"
                         MinerPool  = "$($_.Name)"
