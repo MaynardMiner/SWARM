@@ -32,6 +32,7 @@ function start-update {
         $PreviousVersions += "SWARM.2.2.4"
         $PreviousVersions += "SWARM.2.2.5"
         $PreviousVersions += "SWARM.2.2.6"
+        $PreviousVersions += "SWARM.2.2.7"
 
         $StatsOnly = $null
 
