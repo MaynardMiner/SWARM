@@ -66,12 +66,12 @@ Function Get-BusFunctionID {
         $getsubvendor = $Devices[$i].PNPDeviceID -split "&REV_" | Select -first 1
         $getsubvendor = $getsubvendor.Substring($getsubvendor.Length - 4)
         if ($subvendorlist.$getsubvendor) { $subvendor = $subvendorlist.$getsubvendor }
-        elseif ($Devices[$i].PNPDeviceID -match "PCI\\VEN_10DE*") { $subvendor = "nvidia" }
-        elseif ($Devices[$i].PNPDeviceID -match "PCI\\VEN_1002*") { $subvendor = "amd" }
+        elseif ($Devices[$i].PNPDeviceID -like "*PCI\VEN_10DE*") { $subvendor = "nvidia" }
+        elseif ($Devices[$i].PNPDeviceID -like "*PCI\VEN_1002*") { $subvendor = "amd" }
         else { $subvendor = "microsoft" }
 
-        if ($Devices[$i].PNPDeviceID -match "PCI\\VEN_10DE*") { $brand = "nvidia" }
-        elseif ($Devices[$i].PNPDeviceID -match "PCI\\VEN_1002*") { $brand = "amd" }
+        if ($Devices[$i].PNPDeviceID -like "*PCI\VEN_10DE*") { $brand = "nvidia" }
+        elseif ($Devices[$i].PNPDeviceID -like "*PCI\VEN_1002*") { $brand = "amd" }
         else { $Brand = "microsoft" }
 
         $GPURAM = (Get-CimInstance Win32_VideoController | where PNPDeviceID -eq $Devices[$i].PNPDeviceID).AdapterRam
@@ -81,7 +81,7 @@ Function Get-BusFunctionID {
         new-object psobject -property @{ 
             "Name"      = $Devices[$i].Name;
             "PnPID"     = $Devices[$i].PNPDeviceID
-            "PCIBusID"  = $businfo.BusID; 
+            "PCIBusID"  = "$($businfo.BusID)"
             "subvendor" = $subvendor
             "Brand"     = $brand
             "ram"       = $GPURAM
@@ -107,20 +107,18 @@ function Get-GPUCount {
     $OCCounter = 0
     $NvidiaCounter = 0
     $AmdCounter = 0 
-    $OnboardCounter = 0 
-    $nvidia = "PCI\\VEN_10DE*"
-    $amd = "PCI\\VEN_1002*"
-
-    $Bus | Sort-Object PCIBusID | Foreach {
+    $OnboardCounter = 0
+    
+    $Bus | Foreach {
         $Sel = $_
-        if ($Sel.PnPID -match $nvidia -and $Sel.PCIBusID -ne 0) {
-            $DeviceList.Nvidia.Add("$NvidiaCounter", "$DeviceCounter")
-            $OCList.Nvidia.Add("$NvidiaCounter", "$DeviceCounter")
+        if ($Sel.Brand -eq "nvidia" -and $Sel.PCIBusID -ne "0") {
+            $DeviceList.NVIDIA.Add("$NvidiaCounter", "$DeviceCounter")
+            $OCList.NVIDIA.Add("$NvidiaCounter", "$DeviceCounter")
             $NvidiaCounter++
             $DeviceCounter++
             $OCCounter++
         }
-        elseif ($Sel.PnPID -match $amd -and $Sel.PCIBusID -ne 0) {
+        elseif ($Sel.Brand -eq "amd" -and $Sel.PCIBusID -ne "0") {
             $DeviceList.AMD.Add("$AmdCounter", "$DeviceCounter")
             $OCList.AMD.Add("$AmdCounter", "$OCCounter")
             $AmdCounter++
@@ -133,6 +131,7 @@ function Get-GPUCount {
             $OCCounter++
         }
     }
+    
     if ($global:Config.Params.Type -like "*CPU*") { for ($i = 0; $i -lt $global:Config.Params.CPUThreads; $i++) { $DeviceList.CPU.Add("$($i)", $i) } }
     $DeviceList | ConvertTo-Json | Set-Content ".\build\txt\devicelist.txt"
     $OCList | ConvertTo-Json | Set-Content ".\build\txt\oclist.txt"
