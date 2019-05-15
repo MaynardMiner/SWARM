@@ -212,10 +212,10 @@ function Start-WindowsConfig {
     $TotalMemory | Set-Content ".\build\txt\ram.txt"
     
     ## GPU Bus Hash Table
-    $GetBusData = Get-BusFunctionID | ConvertTo-Json -Compress
+    $global:BusData = Get-BusFunctionID
     
     ## Get Total GPU HashTable
-    $Global:GPU_Count = Get-GPUCount $GetBusData
+    $Global:GPU_Count = Get-GPUCount
     
     ## Say Hello To Hive
     if ($global:Config.Params.HiveOS -eq "Yes") {
@@ -227,7 +227,7 @@ function Start-WindowsConfig {
             Start-Sleep -S 1
         }
         ## Initiate Contact
-        $hiveresponse = Start-Peekaboo -Version $Version -GPUData $GetBusData; 
+        $hiveresponse = Start-Peekaboo -Version $Version
     
         if ($hiveresponse.result) {
             $RigConf = $hiveresponse
