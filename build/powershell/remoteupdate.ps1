@@ -98,6 +98,18 @@ function start-update {
                                 Write-Log "Pulled $OldJson"
                                 $Data = $JsonData | ConvertFrom-Json;
 
+                                if ($ChangeFile -eq "t-rex.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        ##2.1.3
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands | Add-Member "mtp" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "mtp" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "mtp" "mtp" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "mtp" 1 -ErrorAction SilentlyContinue
+                                        }
+                                    }
+                                }
+
                                 if ($ChangeFile -eq "cryptodredge.json") {
                                     $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                         ##2.1.3
