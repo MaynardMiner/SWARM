@@ -190,15 +190,15 @@
         "version": "1.1.0",
         "uri": "https://github.com/bogdanadnan/multiminer/releases/download/v1.1.0/multiminer_v1.1.0_24.01.2019.zip"
       },
-    "trex": {
-        "name": "trex",
+    "t-rex": {
+        "name": "t-rex",
         "type": "nvidia",
         "NVIDIA1": ".\\bin\\trex-1\\t-rex.exe",
         "NVIDIA2": ".\\bin\\trex-2\\t-rex.exe",
         "NVIDIA3": ".\\bin\\trex-3\\t-rex.exe",
         "minername": "t-rex.exe",
-        "version": "0.9.2",
-        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/t-rex-windows-10.zip"
+        "version": "0.10.2",
+        "uri": "https://github.com/trexminer/T-Rex/releases/download/0.10.2/t-rex-0.10.2-win-cuda10.0.zip"
     },
     "zjazz": {
         "name": "zjazz",
@@ -210,12 +210,12 @@
         "version": "1.2",
         "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/zjazz-windows.zip"
     },
-    "ttminer": {
-        "name": "ttminer",
+    "tt-miner": {
+        "name": "tt-miner",
         "type": "nvidia",
-        "NVIDIA1": ".\\bin\\ttminer-1\\TT-Miner.exe",
-        "NVIDIA2": ".\\bin\\ttminer-2\\TT-Miner.exe",
-        "NVIDIA3": ".\\bin\\ttminer-3\\TT-Miner.exe",
+        "NVIDIA1": ".\\bin\\tt-miner-1\\TT-Miner.exe",
+        "NVIDIA2": ".\\bin\\tt-miner-2\\TT-Miner.exe",
+        "NVIDIA3": ".\\bin\\tt-miner-3\\TT-Miner.exe",
         "minername": "TT-Miner.exe",
         "version": "2.2.3",
         "uri": "https://tradeproject.de/download/Miner/TT-Miner.zip"
