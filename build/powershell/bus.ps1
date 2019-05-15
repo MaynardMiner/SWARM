@@ -55,6 +55,7 @@ Function Resolve-PCIBusInfo {
     
 Function Get-BusFunctionID {
     #gwmi -query "SELECT * FROM Win32_PnPEntity"
+    $GPUS = @()
     $Services = @("nvlddmkm", "amdkmdap", "igfx", "BasicDisplay")
     $Devices = Get-CimInstance -namespace root\cimv2 -class Win32_PnPEntity | where Service -in $Services | Where DeviceID -like "*PCI*"
     
@@ -78,7 +79,7 @@ Function Get-BusFunctionID {
         $GPURAM = "{0:f0}" -f $($GPURAM / 1000000)
         $GPURAM = "$($GPURAM)M"
 
-        new-object psobject -property @{ 
+        $GPUS += [PSCustomObject]@{
             "Name"      = $Devices[$i].Name;
             "PnPID"     = $Devices[$i].PNPDeviceID
             "PCIBusID"  = "$($businfo.BusID)"
@@ -87,6 +88,7 @@ Function Get-BusFunctionID {
             "ram"       = $GPURAM
         }
     }
+    $GPUS
 }
 
 function Get-GPUCount {
@@ -108,7 +110,7 @@ function Get-GPUCount {
     $NvidiaCounter = 0
     $AmdCounter = 0 
     $OnboardCounter = 0
-    
+
     $Bus | Foreach {
         $Sel = $_
         if ($Sel.Brand -eq "nvidia" -and $Sel.PCIBusID -ne "0") {
