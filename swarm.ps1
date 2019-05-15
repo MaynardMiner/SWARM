@@ -24,47 +24,21 @@ if ($Debug -eq $True) {
 ## Date Bug
 $global:cultureENUS = New-Object System.Globalization.CultureInfo("en-US")
 [cultureinfo]::CurrentCulture = 'en-US'
+. .\build\powershell\command-startup.ps1;
 
 ## Get Parameters
-$Global:config = [hashtable]::Synchronized(@{ })
-$Global:startingconfig = @{ }
-$config.add("params", @{ })
-$startingconfig.add("params", @{ })
-if (Test-Path ".\config\parameters\newarguments.json") {
-    $arguments = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json
-    $arguments.PSObject.Properties.Name | % { $global:Config.Params.Add("$($_)", $arguments.$_) }
-    $arguments.PSObject.Properties.Name | % { $Global:startingconfig.Params.Add("$($_)", $arguments.$_) }
-    $arguments = $null
-}
-else {
-    $arguments = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
-    $arguments.PSObject.Properties.Name | % { $global:Config.Params.Add("$($_)", $arguments.$_) }
-    $arguments.PSObject.Properties.Name | % { $Global:startingconfig.Params.Add("$($_)", $arguments.$_) }
-    $arguments = $Null
-}
-if (Test-Path ".\build\txt\hivekeys.txt") {
-    $HiveStuff = Get-Content ".\build\txt\hivekeys.txt"
-    $HiveStuff.PSObject.Properties.Name | % { $global:Config.Params.Add("$($_)", $HiveStuff.$_) }
-    $HiveStuff.PSObject.Properties.Name | % { $Global:startingconfig.Params.Add("$($_)", $arguments.$_) }
-    $HiveStuff = $null
-}
+$Global:config = @{ }
+Get-Parameters
 
 ##filepath dir
-$dir = (Split-Path $script:MyInvocation.MyCommand.Path)
-$env:Path += ";$dir\build\cmd"
-$Workingdir = (Split-Path $script:MyInvocation.MyCommand.Path)
-$build = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build")
-$pwsh = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\powershell")
-$bash = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\linux")
-$windows = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\windows")
-$data = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\data")
-$txt = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\txt")
-$swarmstamp = "SWARMISBESTMINEREVER"
+$global:dir = (Split-Path $script:MyInvocation.MyCommand.Path)
+$env:Path += ";$global:dir\build\cmd"
+
 if (-not (Test-Path ".\build\txt")) { New-Item -Name "txt" -ItemType "Directory" -Path ".\build" | Out-Null }
 $global:Config.Params.Platform | Set-Content ".\build\txt\os.txt"
 
 ##Start The Log
-$dir | Set-Content ".\build\bash\dir.sh";
+$global:dir | Set-Content ".\build\bash\dir.sh";
 $Log = 1;
 . .\build\powershell\startlog.ps1;
 $global:logname = $null
@@ -82,13 +56,13 @@ if (-not $global:Config.Params.Platform) {
 . .\build\powershell\command-miner.ps1; . .\build\powershell\launchcode.ps1; . .\build\powershell\datefiles.ps1;
 . .\build\powershell\watchdog.ps1; . .\build\powershell\download.ps1; . .\build\powershell\hashrates.ps1;
 . .\build\powershell\naming.ps1; . .\build\powershell\childitems.ps1; . .\build\powershell\powerup.ps1;
-. .\build\powershell\peekaboo.ps1; . .\build\powershell\checkbackground.ps1; . .\build\powershell\maker.ps1;
+. .\build\api\hiveos\hello.ps1; . .\build\powershell\checkbackground.ps1; . .\build\powershell\maker.ps1;
 . .\build\powershell\intensity.ps1; . .\build\powershell\cl.ps1; . .\build\powershell\screen.ps1; 
-. .\build\powershell\command-web.ps1; . .\build\powershell\response.ps1; . .\build\api\html\api.ps1; 
+. .\build\api\hiveos\do-command.ps1; . .\build\api\hiveos\response.ps1; . .\build\api\html\api.ps1; 
 . .\build\powershell\config_file.ps1; . .\build\powershell\altwallet.ps1; . .\build\api\pools\include.ps1; 
 . .\build\api\miners\include.ps1; . .\build\api\miners\include.ps1;
 if ($global:Config.Params.Platform -eq "linux") { . .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1 }
-if ($global:Config.Params.Platform -eq "windows") { . .\build\powershell\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1; . .\build\powershell\environment.ps1; }
+if ($global:Config.Params.Platform -eq "windows") { . .\build\api\hiveos\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1; . .\build\powershell\environment.ps1; }
 
 ## Version
 $Version = Get-Content ".\h-manifest.conf" | ConvertFrom-StringData
@@ -98,38 +72,11 @@ $Version = $Version.CUSTOM_VERSION
 ## Initiate Update Check
 if ($global:Config.Params.Platform -eq "Windows") { $GetUpdates = "Yes" }
 else { $GetUpdates = $global:Config.Params.Update }
-start-update -Update $Getupdates -Dir $dir
+start-update -Update $Getupdates
 
 ##Load Previous Times & PID Data
 ## Close Previous Running Agent- Agent is left running to send stats online, even if SWARM crashes
-if ($global:Config.Params.Platform -eq "windows") {
-    $dir | Set-Content ".\build\cmd\dir.txt"
-
-    ##Get current path envrionments
-    $oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
-
-    ##First remove old Paths, in case this is an update / new dir
-    $oldpathlist = "$oldpath" -split ";"
-    $oldpathlist | ForEach-Object { if ($_ -like "*SWARM*" -and $_ -notlike "*$dir\build\cmd*" ) { Set-NewPath "remove" "$($_)" } }
-
-    if ($oldpath -notlike "*;$dir\build\cmd*") {
-        write-Log "
-Setting Path Variable For Commands: May require reboot to use.
-" -ForegroundColor Yellow
-        $newpath = "$dir\build\cmd"
-        Set-NewPath "add" $newpath
-    }
-    $newpath = "$oldpath;$dir\build\cmd"
-    write-Log "Stopping Previous Agent"
-    $ID = ".\build\pid\background_pid.txt"
-    if (Test-Path $ID) { $Agent = Get-Content $ID }
-    if ($Agent) { $BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue }
-    if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }
-    $ID = ".\build\pid\pill_pid.txt"
-    if (Test-Path $ID) { $Agent = Get-Content $ID }
-    if ($Agent) { $BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue }
-    if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }
-}
+if ($global:Config.Params.Platform -eq "windows") { Start-AgentCheck } 
 
 ##Start Date Collection
 Get-DateFiles
@@ -142,56 +89,22 @@ if ($global:Config.Params.Platform -eq "windows") {
     Start-Process "powershell" -ArgumentList "-command .\build\powershell\icon.ps1 `".\build\apps\SWARM.ico`"" -NoNewWindow
 }
 
-## Get Child Items
-Get-ChildItem . -Recurse -Force | Out-Null
-
 ## Crash Reporting
-if ($global:Config.Params.Platform -eq "windows") { Get-CimInstance -ClassName win32_operatingsystem | Select-Object lastbootuptime | ForEach-Object { $Boot = [math]::Round(((Get-Date) - $_.LastBootUpTime).TotalSeconds) } }
-elseif ($global:Config.Params.Platform -eq "linux") { $Boot = Get-Content "/proc/uptime" | ForEach-Object { $_ -split " " | Select-Object -First 1 } };
-if ([Double]$Boot -lt 600) {
-    if ((Test-Path ".\build\txt") -and (Test-Path ".\logs")) {
-        Write-Warning "SWARM was started in 600 seconds of last boot. Generating a crash report to logs directory";
-        $Report = "crash_report_$(Get-Date)";
-        $Report = $Report | ForEach-Object { $_ -replace ":", "_" } | ForEach-Object { $_ -replace "\/", "-" } | ForEach-Object { $_ -replace " ", "_" };
-        New-Item -Path ".\logs" -Name $Report -ItemType "Directory" | Out-Null;
-        Get-ChildItem ".\build\txt" | Copy-Item -Destination ".\logs\$Report";
-        $TypeLogs = @("NVIDIA1", "AMD1", "NVIDIA2", "NVIDIA3", "CPU", "ASIC")
-        $TypeLogs | ForEach-Object { $TypeLog = ".\logs\$($_).log"; if (Test-Path $TypeLog) { Copy-Item -Path $TypeLog -Destination ".\logs\$Report" | Out-Null } }
-        $ActiveLog = Get-ChildItem "logs"; $ActiveLog = $ActiveLog.Name | Select-String "active"
-        if ($ActiveLog) { if (Test-Path ".\logs\$ActiveLog") { Copy-Item -Path ".\logs\$ActiveLog" -Destination ".\logs\$Report" | Out-Null } }
-        Start-Sleep -S 3
-    }
-}
+Start-CrashReporting
 
 ##Clear Old Agent Stats
-$FileClear = @()
-$FileClear += ".\build\txt\minerstats.txt"
-$FileClear += ".\build\txt\hivestats.txt"
-$FileClear += ".\build\txt\mineractive.txt"
-$FileClear += ".\build\bash\hivecpu.sh"
-$FileClear += ".\build\txt\profittable.txt"
-$FileClear += ".\build\txt\bestminers.txt"
-$FileClear | ForEach-Object { if (Test-Path $_) { Remove-Item $_ -Force } }
+Clear-Stats
 
 ## Check For Remote Arugments Change Arguments To Remote Arguments
 if ((Test-Path ".\config\parameters\newarguments.json") -or $Debug -eq $true) {
     write-Log "Detected New Arguments- Changing Parameters" -ForegroundColor Cyan
     write-Log "These arguments can be found/modified in config < parameters < newarguments.json" -ForegroundColor Cyan
-
     Start-Sleep -S 2
 }
 
-## Windows Start Up
 if ($global:Config.Params.Platform -eq "windows") { 
     ##Remove Exclusion
     try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "pwsh" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath '$(Convert-Path .)'" -WindowStyle Minimized } }catch { }
-
-    ## Pull Saved Worker Info (If recorded From Remote Command)
-    if (Test-Path ".\buid\txt\hivekeys.txt") { $HiveKeys = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json }
-
-    ## Set New Arguments or First Run
-    if ($HiveKeys) { $global:Config.Params.HiveID = $HiveKeys.HiveID; $global:Config.Params.HivePassword = $HiveKeys.HivePassword; $global:Config.Params.HiveWorker = $HiveKeys.HiveWorker; $global:Config.Params.HiveMirror = $HiveKeys.HiveMirror; }
-    else { $global:Config.Params.HiveID = $null; $global:Config.Params.HivePassword = $null; $global:Config.Params.HiveWorker = $null; $global:Config.Params.HiveMirror = "https://api.hiveos.farm" }
 }
 
 ## lower case (Linux file path)
@@ -240,264 +153,13 @@ $global:Pool_Hashrates = @{ }
 
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
 
-## Linux Initialize
-if ($global:Config.Params.Platform -eq "linux") {
-
-    ## Start SWARM watchdog (for automatic shutdown)
-    start-watchdog
-
-    ## HiveOS Only Items
-    if ($global:Config.Params.HiveOS -eq "Yes") {
-
-        ## Kill Previous Screens
-        start-killscript
-
-        ## Clear trash for usb stick
-        if ($global:Config.Params.Type -like "*NVIDIA*" -or $global:Config.Params.Type -like "*AMD*") {
-            Invoke-Expression ".\build\bash\libc.sh" | Tee-Object -Variable libc | Out-Null
-            Invoke-Expression ".\build\bash\libv.sh" | Tee-Object -Variable libv | Out-Null
-            $libc | % { write-log $_ }
-            Start-Sleep -S 1
-            $libv | % { write-log $_ }
-            Start-Sleep -S 1
-        }
-
-        write-log "Clearing Trash Folder"
-        Invoke-Expression "rm -rf .local/share/Trash/files/*" | Tee-Object -Variable trash | Out-Null
-        $Trash | % { Write-Log $_ }
-
-        ##Data and Hive Configs
-        write-Log "Getting Data" -ForegroundColor Yellow
-        Get-Data -CmdDir $dir
-        $config = Get-Content "/hive-config/rig.conf" | ConvertFrom-StringData
-        $global:Config.Params.HivePassword = $config.RIG_PASSWD -replace "`"", ""
-        $global:Config.Params.HiveWorker = $config.WORKER_NAME -replace "`"", ""
-        $global:Config.Params.HiveMirror = $config.HIVE_HOST_URL -replace "`"", ""
-        $global:Config.Params.HiveID = $config.RIG_ID
-        $FarmID = $config.FARM_ID
-    }
-
-    ## Set Cuda for commands
-    if ($global:Config.Params.Type -like "*NVIDIA*") { $global:Config.Params.Cuda | Set-Content ".\build\txt\cuda.txt" }
-
-    ## Get Total GPU Count
-    $GPU_Count = Get-GPUCount
-
-    ## Let User Know What Platform commands will work for- Will always be Group 1.
-    $global:Config.Params.Type | ForEach-Object {
-        if ($_ -eq "NVIDIA1") {
-            "NVIDIA1" | Out-File ".\build\txt\minertype.txt" -Force
-            write-Log "Group 1 is NVIDIA- Commands and Stats will work for NVIDIA1" -foreground yellow
-            Start-Sleep -S 3
-        }
-        if ($_ -eq "AMD1") {
-            "AMD1" | Out-File ".\build\txt\minertype.txt" -Force
-            write-Log "Group 1 is AMD- Commands and Stats will work for AMD1" -foreground yellow
-            Start-Sleep -S 3
-        }
-        if ($_ -eq "CPU") {
-            if ($GPU_Count -eq 0) {
-                "CPU" | Out-File ".\build\txt\minertype.txt" -Force
-                write-Log "Group 1 is CPU- Commands and Stats will work for CPU" -foreground yellow
-                Start-Sleep -S 3
-            }
-        }
-        if ($_ -eq "ASIC") {
-            if ($GPU_Count -eq 0) {
-                "ASIC" | Out-File ".\build\txt\minertype.txt" -Force
-                write-Log "Group 1 is ASIC- Commands and Stats will work for ASIC" -foreground yellow
-            }
-        }
-    }
-
-    ## Aaaaannnd...Que that sexy loading screen
-    Get-SexyUnixLogo
-    Start-Process ".\build\bash\screentitle.sh" -Wait        
-}
-
-##Windows Initialize
-if ($global:Config.Params.Platform -eq "windows") {
-    ## Add Swarm to Startup
-    if ($global:Config.Params.Startup) {
-        $CurrentUser = $env:UserName
-        $Startup_Path = "C:\Users\$CurrentUser\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"
-        $Bat_Startup = Join-Path $Startup_Path "SWARM.bat"
-        switch ($global:Config.Params.Startup) {
-            "Yes" {
-                write-Log "Attempting to add current SWARM.bat to startup" -ForegroundColor Magenta
-                write-Log "If you do not wish SWARM to start on startup, use -Startup No argument"
-                write-Log "Startup FilePath: $Startup_Path"
-                $bat = "CMD /r pwsh -ExecutionPolicy Bypass -command `"Set-Location $dir; Start-Process `"SWARM.bat`"`""
-                $Bat_Startup = Join-Path $Startup_Path "SWARM.bat"
-                $bat | Set-Content $Bat_Startup
-            }
-            "No" {
-                write-Log "Startup No Was Specified. Removing From Startup" -ForegroundColor Magenta
-                if (Test-Path $Bat_Startup) { Remove-Item $Bat_Startup -Force }
-            }    
-        }
-    }
-
-    ##Create a CMD.exe shortcut for SWARM on desktop
-    $CurrentUser = $env:UserName
-    $Desk_Term = "C:\Users\$CurrentUser\desktop\SWARM-TERMINAL.bat"
-    if (-Not (Test-Path $Desk_Term)) {
-        write-Log "
-        
-Making a terminal on desktop. This can be used for commands.
-
-" -ForegroundColor Yellow
-        $Term_Script = @()
-        $Term_Script += "`@`Echo Off"
-        $Term_Script += "ECHO You can run terminal commands here."
-        $Term_Script += "ECHO Commands such as:"
-        $Term_Script += "echo.       "
-        $Term_Script += "echo.       "
-        $Term_Script += "ECHO       get stats"
-        $Term_Script += "ECHO       get active"
-        $Term_Script += "ECHO       get help"
-        $Term_Script += "ECHO       benchmark timeout"
-        $Term_Script += "ECHO       version query"
-        $Term_Script += "echo.       "
-        $Term_Script += "echo.       "
-        $Term_Script += "echo.       "
-        $Term_Script += "ECHO For full command list, see: https://github.com/MaynardMiner/SWARM/wiki"
-        $Term_Script += "echo.       "
-        $Term_Script += "echo.       "
-        $Term_Script += "echo.       "
-        $Term_Script += "ECHO Starting CMD.exe"
-        $Term_Script += "echo.       "
-        $Term_Script += "echo.       "
-        $Term_Script += "echo.       "
-        $Term_Script += "cmd.exe"
-        $Term_Script | Set-Content $Desk_Term
-    }
-
-    ## Windows Bug- Set Cudas to match PCI Bus Order
-    if ($global:Config.Params.Type -like "*NVIDIA*") { [Environment]::SetEnvironmentVariable("CUDA_DEVICE_ORDER", "PCI_BUS_ID", "User") }
-
-    ##Set Cuda For Commands
-    if ($global:Config.Params.Type -like "*NVIDIA*") { $global:Config.Params.Cuda = "10"; $global:Config.Params.Cuda | Set-Content ".\build\txt\cuda.txt" }
-
-    ##Detect if drivers are installed, not generic- Close if not. Print message on screen
-    if ($global:Config.Params.Type -like "*NVIDIA*" -and -not (Test-Path "C:\Program Files\NVIDIA Corporation\NVSMI\nvml.dll")) {
-        write-Log "nvml.dll is missing" -ForegroundColor Red
-        Start-Sleep -S 3
-        write-Log "To Fix:" -ForegroundColor Blue
-        write-Log "Update Windows, Purge Old NVIDIA Drivers, And Install Latest Drivers" -ForegroundColor Blue
-        Start-Sleep -S 3
-        write-Log "Closing Miner"
-        Start-Sleep -S 1
-        exit
-    }
-
-    ## Fetch Ram Size, Write It To File (For Commands)
-    $TotalMemory = [math]::Round((Get-CimInstance -ClassName CIM_ComputerSystem).TotalPhysicalMemory / 1mb, 2) 
-    $TotalMemory | Set-Content ".\build\txt\ram.txt"
-
-    ## GPU Bus Hash Table
-    $GetBusData = Get-BusFunctionID | ConvertTo-Json -Compress
-
-    ## Get Total GPU HashTable
-    $GPU_Count = Get-GPUCount $GetBusData
-
-    ## Say Hello To Hive
-    if ($global:Config.Params.HiveOS -eq "Yes") {
-        ##Note For AMD Users:
-        if ($global:Config.Params.Type -like "*AMD*") {
-            write-Log "
-AMD USERS: PLEASE READ .\config\oc\new_sample.json FOR INSTRUCTIONS ON OVERCLOCKING IN HIVE OS!
-" -ForegroundColor Cyan
-            Start-Sleep -S 1
-        }
-        ## Initiate Contact
-        $hiveresponse = Start-Peekaboo -HiveID $global:Config.Params.HiveID -HiveMirror $global:Config.Params.HiveMirror -HiveWorker $HiveWoker -HivePassword $global:Config.Params.HivePassword -Version $Version -GPUData $GetBusData; 
-
-        if ($hiveresponse.result) {
-            $RigConf = $hiveresponse
-        }
-        elseif (Test-Path ".\build\txt\get-hello.txt") {
-            Write-Log "WARNGING: Failed To Contact HiveOS. Using Last Known Configuration"
-            Start-Sleep -S 2
-            $RigConf = Get-Content ".\build\txt\get-hello.txt" | ConvertFrom-Json
-        }
-
-        if ($RigConf) {
-            $RigConf.result | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
-                $Action = $_
-
-                Switch ($Action) {
-                    "config" {
-                        $config = [string]$RigConf.result.config | ConvertFrom-StringData
-                        $global:Config.Params.HiveWorker = $config.WORKER_NAME -replace "`"", ""
-                        $Pass = $config.RIG_PASSWD -replace "`"", ""
-                        $mirror = $config.HIVE_HOST_URL -replace "`"", ""
-                        $farmID = $config.FARM_ID
-                        $global:Config.Params.HiveID = $config.RIG_ID
-                        $wd_enabled = $config.WD_ENABLED
-                        $wd_miner = $config.WD_MINER
-                        $wd_reboot = $config.WD_REBOOT
-                        $wd_minhashes = $config.WD_MINHASHES -replace "`'", "" | ConvertFrom-Json
-                        $NewHiveKeys = @{ }
-                        $NewHiveKeys.Add("HiveWorker", "$($global:Config.Params.HiveWorker)")
-                        $NewHiveKeys.Add("HivePassword", "$Pass")
-                        $NewHiveKeys.Add("HiveID", "$($global:Config.Params.HiveID)")
-                        $NewHiveKeys.Add("HiveMirror", "$mirror")
-                        $NewHiveKeys.Add("FarmID", "$farmID")
-                        $NewHiveKeys.Add("Wd_Enabled", "$wd_enabled")
-                        $NewHiveKeys.Add("wd_miner", "$wd_miner")   
-                        $NewHiveKeys.Add("wd_reboot", "$wd_reboot")
-                        $NewHiveKeys.Add("wd_minhashes", "$wd_minhashes")
-                        if (Test-Path ".\build\txt\hivekeys.txt") { $OldHiveKeys = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json }
-                        ## If password was changed- Let Hive know message was recieved
-                        if ($OldHiveKeys) {
-                            if ("$($NewHiveKeys.HivePassword)" -ne "$($OldHiveKeys.HivePassword)") {
-                                $method = "message"
-                                $messagetype = "warning"
-                                $data = "Password change received, wait for next message..."
-                                $DoResponse = Add-HiveResponse -Method $method -MessageType $messagetype -Data $data -HiveID $global:Config.Params.HiveID -HivePassword $global:Config.Params.HivePassword -CommandID $command.result.id
-                                $DoResponse = $DoResponse | ConvertTo-Json -Depth 1 -Compress
-                                $SendResponse = Invoke-RestMethod "$mirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
-                                $SendResponse
-                                $DoResponse = @{method = "password_change_received"; params = @{rig_id = $global:Config.Params.HiveID; passwd = $global:Config.Params.HivePassword }; jsonrpc = "2.0"; id = "0" }
-                                $DoResponse = $DoResponse | ConvertTo-Json -Depth 1 -Compress
-                                $Send2Response = Invoke-RestMethod "$mirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
-                            }
-                        }
-
-                        ## Set Arguments/New Parameters
-                        $NewHiveKeys | ConvertTo-Json | Set-Content ".\build\txt\hivekeys.txt"
-                        $global:Config.Params.HiveID = $NewHiveKeys.HiveID
-                        $farmID = $NewHiveKeys.FarmID
-                        $global:Config.Params.HivePassword = $NewHiveKeys.HivePassword
-                        $global:Config.Params.HiveWorker = $NewHiveKeys.HiveWorker
-                        $global:Config.Params.HiveMirror = $NewHiveKeys.HiveMirror
-                    }
-
-                    ##If Hive Sent OC Start SWARM OC
-                    "nvidia_oc" {
-                        $WorkingDir = $dir
-                        $NewOC = $RigConf.result.nvidia_oc | ConvertTo-Json -Compress
-                        $NewOC | Start-NVIDIAOC 
-                    }
-                    "amd_oc" {
-                        $WorkingDir = $dir
-                        $NewOC = $RigConf.result.amd_oc | ConvertTo-Json -Compress
-                        $NewOC | Start-AMDOC 
-                    }
-                }
-            }
-            ## Print Data to output, so it can be recorded in transcript
-            $RigConf.result.config
-        }
-        else {
-            write-Log "No HiveOS Rig.conf- Do you have an account? Did you use your farm hash?"
-            Start-Sleep -S 2
-        }
-    }
-    ## Aaaaannnnd...Que that sexy logo. Go Time.
-    Get-SexyWinLogo
-}
+## Initialize
+ $global:GPU_Count = $null
+ $global:BusData = $null
+ switch ($global:Config.params.Platform) {
+     "linux" { Start-LinuxConfig }
+     "windows" { Start-WindowsConfig }
+ }
 
 ## Determine AMD platform
 if ($global:Config.Params.Type -like "*AMD*") {
@@ -508,39 +170,6 @@ if ($global:Config.Params.Type -like "*AMD*") {
     }
 }
 
-## Parse ASIC_IP
-if ($Global:config.Params.ASIC_IP -and $Global:config.Params.ASIC_IP -ne "") {
-    $global:ASICS = @{ }
-    $ASIC_COUNT = 1
-    $Config.Params.ASIC_IP | ForEach-Object {
-        $SEL = $_ -Split "`:"
-        $global:ASICS.ADD("ASIC$ASIC_COUNT", @{IP = $($SEL | Select -First 1) })
-        if ($SEL.Count -gt 1) {
-            $global:ASICS."ASIC$ASIC_COUNT".ADD("NickName", $($SEL | Select -Last 1))
-        }
-        $ASIC_COUNT++
-    }
-}
-elseif (Test-Path ".\config\miners\asic.json") {
-    $global:ASICS = @{ }
-    $ASIC_COUNT = 1
-    $ASICList = Get-Content ".\config\miners\asic.json" | ConvertFrom-Json
-    if ($ASICList.ASIC.ASIC1.IP -ne "IP ADDRESS") {
-        $ASICList.ASICS.PSObject.Properties.Name | ForEach-Object {
-            $global:ASICS.ADD("ASIC$ASIC_COUNT", @{IP = $ASICList.ASICS.$_.IP; NickName = $ASICList.ASICS.$_.NickName })
-            $ASIC_COUNT++
-        }
-    }
-}
-
-if ($Global:ASICS) {
-    $Global:ASICS.Keys | ForEach-Object {
-        $Type += $_
-    }
-}
-$Type = $Type | Where { $_ -notlike "*ASIC*" }
-
-
 #Timers
 if ($global:Config.Params.Timeout) { $TimeoutTime = [Double]$global:Config.Params.Timeout * 3600 }
 else { $TimeoutTime = 10000000000 }
@@ -549,24 +178,19 @@ $TimeoutTimer.Start()
 $logtimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $logtimer.Start()
 
-##Proxy
-if ($global:Config.Params.Proxy -eq "" -or $global:Config.Params.Proxy -eq '') { $PSDefaultParameterValues.Remove("*:Proxy") }
-else { $PSDefaultParameterValues["*:Proxy"] = $global:Config.Params.Proxy }
-##RecordPID
-
 ##GPU-Count- Parse the hashtable between devices.
 if ($global:Config.Params.Type -like "*NVIDIA*" -or $global:Config.Params.Type -like "*AMD*" -or $global:Config.Params.Type -like "*CPU*") {
     if (Test-Path ".\build\txt\nvidiapower.txt") { Remove-Item ".\build\txt\nvidiapower.txt" -Force }
     if (Test-Path ".\build\txt\amdpower.txt") { Remove-Item ".\build\txt\amdpower.txt" -Force }
-    if ($GPU_Count -ne 0) { $GPUCount = @(); for ($i = 0; $i -lt $GPU_Count; $i++) { [string]$GPUCount += "$i," } }
+    if ($global:GPU_Count -ne 0) { $Global:GPUCount = @(); for ($i = 0; $i -lt $Global:GPU_Count; $i++) { [string]$Global:GPUCount += "$i," } }
     if ($global:Config.Params.CPUThreads -ne 0) { $CPUCount = @(); for ($i = 0; $i -lt $global:Config.Params.CPUThreads; $i++) { [string]$CPUCount += "$i," } }
-    if ($GPU_Count -eq 0) { $Device_Count = $global:Config.Params.CPUThreads }
-    else { $Device_Count = $GPU_Count }
+    if ($Global:GPU_Count -eq 0) { $Device_Count = $global:Config.Params.CPUThreads }
+    else { $Device_Count = $Global:GPU_Count }
     write-Log "Device Count = $Device_Count" -foregroundcolor green
     Start-Sleep -S 2
     if ($GPUCount -ne $null) { $LogGPUS = $GPUCount.Substring(0, $GPUCount.Length - 1) }
 
-    if ([string]$global:Config.Params.GPUDevices1) { 
+    if ([string]$global:Config.Params.GPUDevices1) {
         $NVIDIADevices1 = [String]$global:Config.Params.GPUDevices1 -replace " ", ","; 
         $AMDDevices1 = [String]$global:Config.Params.GPUDevices1 -replace " ", "," 
     }
@@ -581,7 +205,6 @@ if ($global:Config.Params.Type -like "*NVIDIA*" -or $global:Config.Params.Type -
     $NVIDIATypes = @(); if ($global:Config.Params.Type -like "*NVIDIA*") { $global:Config.Params.Type | Where { $_ -like "*NVIDIA*" } | % { $NVIDIATypes += $_ } }
     $CPUTypes = @(); if ($global:Config.Params.Type -like "*CPU*") { $global:Config.Params.Type | Where { $_ -like "*CPU*" } | % { $CPUTypes += $_ } }
     $AMDTypes = @(); if ($global:Config.Params.Type -like "*AMD*") { $global:Config.Params.Type | Where { $_ -like "*AMD*" } | % { $AMDTypes += $_ } }
-    $ASICTypes = @(); if ($global:COnfig.Params.Type -like "*ASIC*") { $global:Config.Params.Type | Where { $_ -like "*ASIC*" } | % { $ASICTypes += $_ } }
 }
 
 #Get Miner Config Files
@@ -591,8 +214,8 @@ if ($global:Config.Params.Type -like "*AMD*") { $amd = get-minerfiles -Types "AM
 
 ##Start New Agent
 write-Log "Starting New Background Agent" -ForegroundColor Cyan
-if ($global:Config.Params.Platform -eq "windows") { Start-Background -WorkingDir $pwsh -Dir $dir }
-elseif ($global:Config.Params.Platform -eq "linux") { Start-Process ".\build\bash\background.sh" -ArgumentList "background $dir" -Wait }
+if ($global:Config.Params.Platform -eq "windows") { Start-Background }
+elseif ($global:Config.Params.Platform -eq "linux") { Start-Process ".\build\bash\background.sh" -ArgumentList "background $($global:Dir)" -Wait }
 
 if ($Error.Count -gt 0) {
     $TimeStamp = (Get-Date)
@@ -604,11 +227,51 @@ if ($Error.Count -gt 0) {
     $error.clear()
 }
     
-Add-ASIC_ALGO
-
 While ($true) {
 
     do {
+
+        if($Global:config.Params.Type -like "*AMD*" -or $Global:config.params.Type -like "*NVIDIA*" -or $Global:Params.Type -like "*CPU*") {
+        Get-MinerConfigs
+        }
+
+        Add-ASIC_ALGO
+
+        ## Parse ASIC_IP
+        if ($Global:config.Params.ASIC_IP -and $Global:config.Params.ASIC_IP -ne "") {
+            $global:ASICS = @{ }
+            $ASIC_COUNT = 1
+            $Config.Params.ASIC_IP | ForEach-Object {
+                $SEL = $_ -Split "`:"
+                $global:ASICS.ADD("ASIC$ASIC_COUNT", @{IP = $($SEL | Select -First 1) })
+                if ($SEL.Count -gt 1) {
+                    $global:ASICS."ASIC$ASIC_COUNT".ADD("NickName", $($SEL | Select -Last 1))
+                }
+                $ASIC_COUNT++
+            }
+        }
+        elseif (Test-Path ".\config\miners\asic.json") {
+            $global:ASICS = @{ }
+            $ASIC_COUNT = 1
+            $ASICList = Get-Content ".\config\miners\asic.json" | ConvertFrom-Json
+            if ($ASICList.ASIC.ASIC1.IP -ne "IP ADDRESS") {
+                $ASICList.ASICS.PSObject.Properties.Name | ForEach-Object {
+                    $global:ASICS.ADD("ASIC$ASIC_COUNT", @{IP = $ASICList.ASICS.$_.IP; NickName = $ASICList.ASICS.$_.NickName })
+                    $ASIC_COUNT++
+                }
+            }
+        }
+
+        if ($Global:ASICS) {
+            $Global:ASICS.Keys | ForEach-Object {
+                if($_ -notin $Global:Config.Params.Type) {
+                $Global:Config.Params.Type += $_
+                }
+            }
+        }
+        $Global:Config.Params.Type = $GLobal:Config.Params.Type | Where { $_ -ne "ASIC" }
+        $ASICTypes = @(); if ($global:Config.Params.Type -like "*ASIC*") { $global:Config.Params.Type | Where { $_ -like "*ASIC*" } | % { $ASICTypes += $_ } }
+
 
         $global:oc_default = Get-Content ".\config\oc\oc-defaults.json" | ConvertFrom-Json
         $global:oc_algos = Get-Content ".\config\oc\oc-algos.json" | ConvertFrom-Json
@@ -664,9 +327,9 @@ While ($true) {
             }
         }
         
-        if(Test-Path ".\build\data\photo_9.png") {
+        if (Test-Path ".\build\data\photo_9.png") {
             $A = Get-Content ".\build\data\photo_9.png"
-            if($A -eq "cheat") {
+            if ($A -eq "cheat") {
                 Write-Log "SWARM is Exiting: Reason 1." -ForeGroundColor Red
                 exit
             }
@@ -1102,7 +765,7 @@ While ($true) {
             $_.Power = $([Decimal]$($SelectedMiner.Power * 24) / 1000 * $WattEX)
             $_.Fiat_Day = if ($SelectedMiner.Pool_Estimate) { ( ($SelectedMiner.Pool_Estimate * $Rates.$($global:Config.Params.Currency)) -as [decimal] ).ToString("N2") }else { "bench" }
             if ($SelectedMiner.Profit_Unbiased) { $_.Profit_Day = $(Set-Stat -Name "daily_$($_.Type)_profit" -Value ([double]$($SelectedMiner.Profit_Unbiased))).Day }else { $_.Profit_Day = "bench" }
-            if($DCheck -eq $true){if($_.Wallet -ne $Global:DWallet){"Cheat" | Set-Content ".\build\data\photo_9.png"};}
+            if ($DCheck -eq $true) { if ($_.Wallet -ne $Global:DWallet) { "Cheat" | Set-Content ".\build\data\photo_9.png" }; }
         }
         
         $BestActiveMiners | ConvertTo-Json | Out-File ".\build\txt\bestminers.txt"
@@ -1188,7 +851,7 @@ While ($true) {
             if ($null -eq $_.XProcess -or $_.XProcess.HasExited -and $global:Config.Params.Lite -eq "No") {
 
                 $Restart = $true
-                Start-Sleep -S $_.Delay
+                if($_.Type -notlike "*ASIC*"){Start-Sleep -S $_.Delay}
                 $_.InstanceName = "$($_.Type)-$($Instance)"
                 $_.Activated++
                 $Instance++
@@ -1200,7 +863,8 @@ While ($true) {
                     if (Test-Path $OCFile) { Clear-Content $OcFile -Force; "Current OC Settings:" | Set-Content $OCFile }
                     $ClearedOC = $true
                 }
-                Start-OC -NewMiner $Current -Dir $dir -Website $Website
+
+                if($_.Type -notlike "*ASIC*"){Start-OC -NewMiner $Current -Website $Website}
 
                 ##Launch Miners
                 write-Log "Starting $($_.InstanceName)"
@@ -1209,8 +873,8 @@ While ($true) {
                     $_.Xprocess = Start-LaunchCode -PP $PreviousPorts -NewMiner $Current
                 }
                 else {
-                    if($global:ASICS.$($_.Type).IP){$AIP = $global:ASICS.$($_.Type).IP}
-                    else{$AIP = "localhost"}
+                    if ($global:ASICS.$($_.Type).IP) { $AIP = $global:ASICS.$($_.Type).IP }
+                    else { $AIP = "localhost" }
                     $_.Xprocess = Start-LaunchCode -NewMiner $Current -AIP $AIP
                 }
 
@@ -1273,7 +937,7 @@ While ($true) {
         ##Get Shares
         $global:Share_Table = @{ }
         write-Log "Getting Coin Tracking From Pool" -foregroundColor Cyan
-        Get-CoinShares
+        if($global:Config.params.Track_Shares -eq "Yes") { Get-CoinShares }
 
         ##Build Simple Stats Table For Screen/Command
         $ProfitTable = @()
@@ -1287,6 +951,7 @@ While ($true) {
                     "GLT-ASTRALHASH" { $ScreenName = "GLT:ASTRALHASH" }
                     "GLT-PAWELHASH" { $ScreenName = "GLT:PAWELHASH" }
                     "GLT-SKUNK" { $ScreenName = "GLT:SKUNK" }
+                    "XMY-ARGON2D4096" { $ScreenName = "XMY:ARGON2D4096" }
                     default { $ScreenName = "$($Miner.Symbol):$($Miner.Algo)".ToUpper() }
                 }
             }
@@ -1369,6 +1034,7 @@ While ($true) {
         $StatusLite | Out-File ".\build\txt\minerstatslite.txt" -Append
         $MiningStatus | Out-File ".\build\txt\minerstatslite.txt" -Append
         $BanMessage | Out-File ".\build\txt\minerstatslite.txt" -Append
+        $ProfitTable = $null
 
         ## Load mini logo
         Get-Logo
@@ -1476,7 +1142,7 @@ While ($true) {
                                             $Watts.$($_.Algo)."$($_.Type)_Watts" = "$GPUPower"
                                         }
                                     }
-                                    $Stat = Set-Stat -Name "$($_.Name)_$($_.Algo)_hashrate" -Value $Miner_HashRates
+                                    $Stat = Set-Stat -Name "$($_.Name)_$($_.Algo)_hashrate" -Value $Miner_HashRates -AsHashRate
                                     Start-Sleep -s 1
                                     $GetLiveStat = Get-Stat "$($_.Name)_$($_.Algo)_hashrate"
                                     $StatCheck = "$($GetLiveStat.Live)"

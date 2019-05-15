@@ -5,7 +5,7 @@ function Get-AhashpoolData {
         $Pool = "ahashpool"
         $global:Share_Table.$Sel.Add($Pool, @{ })
         $User_Wallet = $($Miners | Where-Object Type -eq $Sel | Where-Object MinerPool -eq $Pool | Select-Object -Property Wallet -Unique).Wallet
-        if ($Wallets -notcontains $User_Wallet) { try { $HTML = Invoke-WebRequest -Uri "https://www.ahashpool.com/wallet_wallet_miners_results.php?wallet=$User_Wallet&showdetails=1" -TimeoutSec 5 -ErrorAction Stop }catch { Write-Log "Failed to get Shares from $Pool" } }
+        if ($Wallets -notcontains $User_Wallet) { try { $HTML = Invoke-WebRequest -Uri "https://www.ahashpool.com/wallet_wallet_miners_results.php?wallet=$User_Wallet&showdetails=1" -TimeoutSec 10 -ErrorAction Stop }catch { Write-Log "Failed to get Shares from $Pool" } }
         $Wallets += $User_Wallet
         $string = $HTML.Content
         $string = $string -split "class=`"ssrow`"><td><b>"

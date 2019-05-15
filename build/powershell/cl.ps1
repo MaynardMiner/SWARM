@@ -13,7 +13,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 function get-AMDPlatform {
 
     if ($Global:Config.Params.Platform -eq "linux") {
-        alpha_testing
         $A = Invoke-Expression ".\build\apps\getplatforms" | Tee-Object -Variable amdclplatform
         Start-Sleep -S .5
         $GPUPlatform = $amdclplatform | Select-String "AMD Accelerated Parallel Processing"

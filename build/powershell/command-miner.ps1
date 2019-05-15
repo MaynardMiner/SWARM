@@ -74,32 +74,14 @@ function Get-Miners {
         if ($NVIDIAMiners) { $NVIDIAminers | ForEach-Object { $_.Name = $_.MName; $GetMiners.Add($_) | Out-Null } }
         if ($AMDMiners) { $AMDMiners | ForEach-Object { $_.Name = $_.MName; $GetMiners.Add($_) | Out-Null } }
         if ($CPUMiners) { $CPUMiners | ForEach-Object { $_.Name = $_.MName; $GetMiners.Add($_) | Out-Null } }
-        
-        $NVIDIA1EX = $GetMiners | Where-Object TYPE -eq "NVIDIA1" | ForEach-Object { if ($No_Algo1 -contains $_.Algo) { $_ } }
-        $NVIDIA2EX = $GetMiners | Where-Object TYPE -eq "NVIDIA2" | ForEach-Object { if ($No_Algo2 -contains $_.Algo) { $_ } }
-        $NVIDIA3EX = $GetMiners | Where-Object TYPE -eq "NVIDIA3" | ForEach-Object { if ($No_Algo3 -contains $_.Algo) { $_ } }
-        $AMD1EX = $GetMiners | Where-Object TYPE -eq "AMD1" | ForEach-Object { if ($No_Algo1 -contains $_.Algo) { $_ } }
-        $AMD2EX = $GetMiners | Where-Object TYPE -eq "AMD2" | ForEach-Object { if ($No_Algo2 -contains $_.Algo) { $_ } }
-        $AMD3EX = $GetMiners | Where-Object TYPE -eq "AMD3" | ForEach-Object { if ($No_Algo3 -contains $_.Algo) { $_ } }
-
-        $NVIDIA1EX | ForEach-Object { $GetMiners.Remove($_) } | Out-Null;
-        $NVIDIA2EX | ForEach-Object { $GetMiners.Remove($_) } | Out-Null;
-        $NVIDIA3EX | ForEach-Object { $GetMiners.Remove($_) } | Out-Null;
-        $AMD1EX | ForEach-Object { $GetMiners.Remove($_) } | Out-Null;
-        $AMD2EX | ForEach-Object { $GetMiners.Remove($_) } | Out-Null;
-        $AMD3EX | ForEach-Object { $GetMiners.Remove($_) } | Out-Null;
     }
+
     if ($ASICMiners -eq $True) {
         $minerfilepath = ".\miners\asic"    
         $ASICMiners = if (Test-Path $minerfilepath) { Get-ChildItemContent $minerfilepath | ForEach-Object { $_.Content | Add-Member @{Name = $_.Name } -PassThru } |
-            Where-Object { $global:Config.Params.Type.Count -eq 0 -or (Compare-Object $global:Config.Params.Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
-            Where-Object { $_.Path -ne "None" } |
-            Where-Object { $_.Uri -ne "None" } |
-            Where-Object { $_.MinerName -ne "None" }
+            Where-Object { $global:Config.Params.Type.Count -eq 0 -or (Compare-Object $global:Config.Params.Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 }
         }
-        $ASICMiners | ForEach-Object { $GetMiners.Add($_) | Out-Null }
-        $ASICEX = $GetMiners | Where-Object TYPE -eq "ASIC" | ForEach-Object { if ($No_Algo1 -contains $_.Algo) { $_ } }
-        $ASICEX | ForEach-Object { $GetMiners.Remove($_) } | Out-Null;
+        $ASICMiners | ForEach-Object { $_.Name = $_.MName; $GetMiners.Add($_) | Out-Null }
     }
         
     $Note = @()
@@ -301,34 +283,6 @@ function Start-MinerReduction {
     $CutMiners
 }
 
-function Get-TypeTable {
-    $TypeTable = @{};
-    if($global:Config.Params.Type -like "*NVIDIA*") {
-        $Search = Get-ChildItem ".\miners\gpu\nvidia"
-        $Search.Basename | %{
-        $TypeTable.Add("$($_)-1","NVIDIA1")
-        $TypeTable.ADD("$($_)-2","NVIDIA2")
-        $TypeTable.ADD("$($_)-3","NVIDIA3")
-        }
-    }
-
-    if($global:Config.Params.Type -like "*AMD*") {
-        $Search = Get-ChildItem ".\miners\gpu\amd"
-        $Search.Basename | %{
-        $TypeTable.Add("$($_)-1","AMD1")
-        }
-    }
-
-    if($global:Config.Params.Type -like "*CPU*") {
-        $Search = Get-ChildItem ".\miners\cpu"
-        $Search.Basename | %{
-        $TypeTable.Add("$($_)","CPU")
-        }
-    }
-    if($global:Config.Params.Type -eq "ASIC") {$TypeTable.Add("cgminer","ASIC")}
-    $TypeTable
-}
-
 function Get-MinerHashTable {
         Invoke-Expression ".\build\powershell\get.ps1 benchmarks all -asjson" | Tee-Object -Variable Miner_HashTable | Out-Null
         if($Miner_HashTable -and $Miner_HashTable -ne "No Stats Found"){
@@ -379,4 +333,15 @@ function Get-BestMiners {
     }
 
     $BestMiners
+}
+
+
+function Get-MinerConfigs {
+    $Configs = Get-ChildItem ".\config\miners"
+    $Configs.Name | % {
+       $FileDir = Join-Path ".\config\miners" $_
+       $A = Get-Content $FileDir | ConvertFrom-Json
+       if(-not $global:Config.miners) {$global:Config.Add("miners",@{})}
+       if($A.Name -notin $global:Config.miners.keys){$global:Config.miners.Add($A.Name,$A)}
+    }
 }

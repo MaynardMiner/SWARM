@@ -7,7 +7,7 @@
     "AMD2": ".\\bin\\claymore-amd-2\\ethdcrminer64",
     "AMD3": ".\\bin\\claymore-amd-3\\ethdcrminer64",
     "minername": "ethdcrminer64",
-    "version": "12.0",
+    "version": "14.0",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/Claymore-Linux.tar.gz"
   },
   "gminer-amd": {
@@ -23,9 +23,9 @@
   "multiminer-amd": {
     "name": "multiminer-amd",
     "type": "amd",
-    "NVIDIA1": ".\\bin\\multiminer-amd-1\\multiminer",
-    "NVIDIA2": ".\\bin\\multiminer-amd-2\\multiminer",
-    "NVIDIA3": ".\\bin\\multiminer-amd-3\\multiminer",
+    "AMD1": ".\\bin\\multiminer-amd-1\\multiminer",
+    "AMD2": ".\\bin\\multiminer-amd-2\\multiminer",
+    "AMD3": ".\\bin\\multiminer-amd-3\\multiminer",
     "minername": "multiminer",
     "version": "1.1.0",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/multiminer-linux.tar.gz"
@@ -147,8 +147,8 @@
     "AMD2": ".\\bin\\wildrig-2\\wildrig-multi",
     "AMD3": ".\\bin\\wildrig-3\\wildrig-multi",
     "minername": "wildrig-multi",
-    "version": "0.16.0",
-    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.16.0/wildrig-multi-linux-0.16.0-beta.tar.gz"
+    "version": "0.16.3",
+    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.16.3/wildrig-multi-linux-0.16.3-beta.tar.gz"
   },
   "fancyix": {
     "name": "fancyix",

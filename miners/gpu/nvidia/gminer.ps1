@@ -19,7 +19,7 @@ $NVIDIATypes | ForEach-Object {
     }
 
     ##Log Directory
-    $Log = Join-Path $dir "logs\$ConfigType.log"
+    $Log = Join-Path $($global:Dir) "logs\$ConfigType.log"
 
     ##Parse -GPUDevices
     if ($Get_Devices -ne "none") {
@@ -44,12 +44,10 @@ $NVIDIATypes | ForEach-Object {
     else { $GCount.NVIDIA.PSObject.Properties.Name | ForEach-Object { $ArgDevices += "$($GCount.NVIDIA.$_) " }; $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1) }
 
     ##Get Configuration File
-    $GetConfig = "$dir\config\miners\gminer.json"
-    try { $MinerConfig = Get-Content $GetConfig | ConvertFrom-Json }
-    catch { Write-Log "Warning: No config found at $GetConfig" }
+    $MinerConfig = $Global:config.miners.gminer
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
-    $ExportDir = Join-Path $dir "build\export"
+    $ExportDir = Join-Path $($global:Dir) "build\export"
 
     ##Prestart actions before miner launch
     $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
@@ -85,8 +83,8 @@ $NVIDIATypes | ForEach-Object {
                         Devices    = $Devices
                         DeviceCall = "gminer"
                         Arguments  = "--api $Port --server $($_.Host) --port $($_.Port) --user $($_.$User) --logfile `'$Log`' --pass $($_.$Pass)$Diff $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                        HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
-                        Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
+                        HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour}
+                        Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
                         MinerPool  = "$($_.Name)"
                         FullName   = "$($_.Mining)"

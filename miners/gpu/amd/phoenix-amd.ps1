@@ -18,7 +18,7 @@ $AMDTypes | ForEach-Object {
     }
 
     ##Log Directory
-    $Log = Join-Path $dir "logs\$ConfigType.log"
+    $Log = Join-Path $($global:Dir) "logs\$ConfigType.log"
 
     ##Parse -GPUDevices
     if ($Get_Devices -ne "none") {
@@ -33,12 +33,10 @@ $AMDTypes | ForEach-Object {
     else { $Devices = $Get_Devices }
 
     ##Get Configuration File
-    $GetConfig = "$dir\config\miners\$Cname.json"
-    try { $MinerConfig = Get-Content $GetConfig | ConvertFrom-Json }
-    catch { Write-Log "Warning: No config found at $GetConfig" }
+    $MinerConfig = $Global:config.miners.$Cname
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
-    $ExportDir = Join-Path $dir "build\export"
+    $ExportDir = Join-Path $($global:Dir) "build\export"
 
     ##Prestart actions before miner launch
     $Prestart = @()
@@ -74,8 +72,8 @@ $AMDTypes | ForEach-Object {
                         Devices    = $Devices
                         DeviceCall = "claymore"
                         Arguments  = "-platform 1 -mport $Port -mode 1 -allcoins 1 -allpools 1 -epool $($_.Protocol)://$($_.Host):$($_.Port) -ewal $($_.$User) $MinerWorker-wd 0 -logfile `'$(Split-Path $Log -Leaf)`' -logdir `'$(Split-Path $Log)`' -gser 2 -dbg -1 -eres 2 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                        HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
-                        Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
+                        HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour}
+                        Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
                         FullName   = "$($_.Mining)"
                         API        = "claymore"

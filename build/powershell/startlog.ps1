@@ -28,7 +28,7 @@ function start-log {
         } 
         Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
     }
-    $global:logname = Join-Path $dir "logs\miner$($Number)-active.log"
+    $global:logname = Join-Path $Global:Dir "logs\miner$($Number)-active.log"
     Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 }
 

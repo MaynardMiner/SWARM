@@ -7,15 +7,15 @@
 "AMD2":".\\bin\\claymore-amd-2\\ethdcrminer64.exe", 
 "AMD3":".\\bin\\claymore-amd-3\\ethdcrminer64.exe", 
 "minername":"ethdcrminer64.exe", 
-"version":"12.0", 
+"version":"14.0", 
 "uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/Claymore-Windows.zip"
 }, 
 "multiminer-amd": {
   "name": "multiminer-amd",
   "type": "amd",
-  "NVIDIA1": ".\\bin\\multiminer-amd-1\\multiminer.exe",
-  "NVIDIA2": ".\\bin\\multiminer-amd-2\\multiminer.exe",
-  "NVIDIA3": ".\\bin\\multiminer-amd-3\\multiminer.exe",
+  "AMD1": ".\\bin\\multiminer-amd-1\\multiminer.exe",
+  "AMD2": ".\\bin\\multiminer-amd-2\\multiminer.exe",
+  "AMD3": ".\\bin\\multiminer-amd-3\\multiminer.exe",
   "minername": "multiminer.exe",
   "version": "1.1.0",
   "uri": "https://github.com/bogdanadnan/multiminer/releases/download/v1.1.0/multiminer_v1.1.0_24.01.2019.zip"
@@ -126,8 +126,8 @@
 "AMD2":".\\bin\\wildrig-2\\wildrig.exe", 
 "AMD3":".\\bin\\wildrig-3\\wildrig.exe", 
 "minername":"wildrig.exe", 
-"version":"0.16.0", 
-"uri":"https://github.com/andru-kun/wildrig-multi/releases/download/0.16.0/wildrig-multi-windows-0.16.0-beta.7z"
+"version":"0.16.3", 
+"uri":"https://github.com/andru-kun/wildrig-multi/releases/download/0.16.3/wildrig-multi-windows-0.16.3-beta.7z"
 }, 
 
 "fancyix": {

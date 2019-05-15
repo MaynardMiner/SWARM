@@ -99,20 +99,42 @@ function Get-HTTP {
 function Get-HashRate {
     param(
         [Parameter(Mandatory = $true)]
-        [String]$Type,
-        [Parameter(Mandatory = $false)]
-        [Int]$Port
+        [String]$Type
     )
 
-        $HashFile = ".\build\txt\$Type-hash.txt"
-        if(Test-Path $HashFile) {
-        $Hash = Get-Content ".\build\txt\$Type-hash.txt"
-        } else {
-            $Hash = 0
-        }
-        [Double]$Hash
-}
+    $Port = 5099
+    $Message = "summary"
+    $Server = "localhost"
+    $Timeout = 5
 
+    try {
+        $Client = New-Object System.Net.Sockets.TcpClient $Server, $Port
+        $Stream = $Client.GetStream()
+        $Writer = New-Object System.IO.StreamWriter $Stream
+        $Reader = New-Object System.IO.StreamReader $Stream
+        $client.SendTimeout = $Timeout * 1000
+        $client.ReceiveTimeout = $Timeout * 1000
+        $Writer.AutoFlush = $true
+
+        $Writer.WriteLine($Message)
+        $Response = $Reader.ReadLine()
+    }
+    catch { $Error.Remove($error[$Error.Count - 1])}
+    finally {
+        if ($Reader) {$Reader.Close()}
+        if ($Writer) {$Writer.Close()}
+        if ($Stream) {$Stream.Close()}
+        if ($Client) {$Client.Close()}
+    }
+
+    if($response) {
+        $response = $response | ConvertFrom-Json
+        $response = [Double]$response.summary.$Type
+    }
+    else{$response = [Double]0}
+
+    $Response
+}
 filter ConvertTo-Hash {
     $Hash = $_
     switch ([math]::truncate([math]::log($Hash, [Math]::Pow(1000, 1)))) {

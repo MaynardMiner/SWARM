@@ -20,19 +20,17 @@ $NVIDIATypes | ForEach-Object {
     }
 
     ##Log Directory
-    $Log = Join-Path $dir "logs\$ConfigType.log"
+    $Log = Join-Path $($global:Dir) "logs\$ConfigType.log"
 
     ##Parse -GPUDevices
     if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
     else { $Devices = $Get_Devices }
 
     ##Get Configuration File
-    $GetConfig = "$dir\config\miners\$CName.json"
-    try { $MinerConfig = Get-Content $GetConfig | ConvertFrom-Json }
-    catch { Write-Log "Warning: No config found at $GetConfig" }
+    $MinerConfig = $Global:config.miners.$CName
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
-    $ExportDir = Join-Path $dir "build\export"
+    $ExportDir = Join-Path $($global:Dir) "build\export"
 
     ##Prestart actions before miner launch
     $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
@@ -67,8 +65,8 @@ $NVIDIATypes | ForEach-Object {
                         Devices    = $Devices
                         DeviceCall = "xmrstak"
                         Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --api-port=$Port -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.$User) -p $($_.$Pass)$($Diff) --donate-level 1 --nicehash $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"    
-                        HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
-                        Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
+                        HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour}
+                        Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
                         FullName   = "$($_.Mining)"
                         MinerPool  = "$($_.Name)"

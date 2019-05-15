@@ -2842,3 +2842,80 @@ API overhaul:
 
   -Fixed Windows 7/8 automatic gpu detection. #123
   -Fixed minor screen logging issues.
+
+  2.2.6
+
+  Note: It is not recommended to update if you are using SWARM.2.2.3 or
+  earlier. Use fresh install.
+
+  -nbminer updated
+  -wildrig updated
+  -bminer updated
+  -miniz updated (It was notated as "test" version)
+
+  -ASIC is now working. Report if issues with new
+   multiple ASIC feature has issues. There was typos
+   I missed which broke it.
+
+  -OC for SWARM should now be working. It was redone
+   to match HiveOS's system for OC, and code staging
+   for oc through HiveOS flight sheets (not ready yet)
+
+  -Fixed various small typos in codebase. Removed old /
+   erroneous code.
+
+  -multiminer-amd should now be working.
+
+  -Fixed "alhpa_testing" error.
+
+  -NEW ARGUMENTS!
+
+  ``-Max_Periods``
+  * Allows users to define the maximum periods Recorded
+    for Profit files. Will reduced stat file size, should not
+    go below time frame(in seconds) / interval. Default
+    is 288.
+
+    Example:
+    -Stat_Algo Minute_15(900) / -Interval 300 = 3 periods minimum.
+  
+  ``-Track_Shares``
+  * Allows the tracking of current shares on pool, where applicable.
+    Default is "Yes"
+
+ -New Features!
+  * Will only display volume, shares, and watt/day if values are greater
+    than zero on ``get stats``.
+
+  -TCP enabled.
+  * SWARM now utilizes TCP for data collection, and HiveOS contacts
+    SWARM through TCP port 6099. Seperate ports are open (SWARM 5099),
+    (HiveOS 6099) in case there is issues with one.
+  * This will dramatically reduce read/writes.
+  * This slightly increases RAM use.
+
+
+  2.2.7
+
+  -Hashrates are now based on hourly averages.
+  -Defaulted maximum hashrate periods to 12 periods.
+   * Should speed up miner loadtimes.
+
+  SWARM now pre-loads miner.json's at the start of each loop
+  * Slightly increased RAM use, but faster miner load times.
+  * Miner.json can be edited while SWARM is running.
+
+  -Wildrig updated (Note: Vega Users Caution)
+  -tt-miner updated
+  
+  xevan added to miner files.
+
+  This update will exclude the following .json files:
+    -trex.json
+    -ttminer.json
+
+  Sugarchain CPU miner configuration fixed.
+
+  Fixed ``get stats lite`` Currency/Day
+
+  Multiminer-AMD (Linux version) binary fixed.

@@ -10,6 +10,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
+
 Function Resolve-PCIBusInfo { 
 
     param ( 
@@ -54,7 +55,7 @@ Function Resolve-PCIBusInfo {
     
 Function Get-BusFunctionID {
     #gwmi -query "SELECT * FROM Win32_PnPEntity"
-    $Services = @("nvlddmkm","amdkmdap","igfx","BasicDisplay")
+    $Services = @("nvlddmkm", "amdkmdap", "igfx", "BasicDisplay")
     $Devices = Get-CimInstance -namespace root\cimv2 -class Win32_PnPEntity | where Service -in $Services | Where DeviceID -like "*PCI*"
     
     for ($i = 0; $i -lt $Devices.Count; $i++) {
@@ -73,7 +74,6 @@ Function Get-BusFunctionID {
         elseif ($Devices[$i].PNPDeviceID -match "PCI\\VEN_1002*") { $brand = "amd" }
         else { $Brand = "microsoft" }
 
-        $GPURAM = $Devices[$i].AdapterRam
         $GPURAM = (Get-CimInstance Win32_VideoController | where PNPDeviceID -eq $Devices[$i].PNPDeviceID).AdapterRam
         $GPURAM = "{0:f0}" -f $($GPURAM / 1000000)
         $GPURAM = "$($GPURAM)M"
@@ -90,13 +90,8 @@ Function Get-BusFunctionID {
 }
 
 function Get-GPUCount {
-    param (
-        [parameter(Position = 0, Mandatory = $false)]
-        [string]$BusData
-    )
 
-    $Bus = $BusData | ConvertFrom-Json
-    $Bus = $Bus | Sort-Object PCIBusID
+    $Bus = $global:BusData | Sort-Object PCIBusID
     $DeviceList = @{ }
     $OCList = @{ }
 
@@ -119,22 +114,18 @@ function Get-GPUCount {
     $Bus | Sort-Object PCIBusID | Foreach {
         $Sel = $_
         if ($Sel.PnPID -match $nvidia -and $Sel.PCIBusID -ne 0) {
-            if ($global:Config.Params.Type -like "*NVIDIA*") {
-                $DeviceList.Nvidia.Add("$NvidiaCounter", "$DeviceCounter")
-                $OCList.Nvidia.Add("$NvidiaCounter", "$DeviceCounter")
-                $NvidiaCounter++
-                $DeviceCounter++
-                $OCCounter++
-            }
+            $DeviceList.Nvidia.Add("$NvidiaCounter", "$DeviceCounter")
+            $OCList.Nvidia.Add("$NvidiaCounter", "$DeviceCounter")
+            $NvidiaCounter++
+            $DeviceCounter++
+            $OCCounter++
         }
         elseif ($Sel.PnPID -match $amd -and $Sel.PCIBusID -ne 0) {
-            if ($global:Config.Params.Type -like "*AMD*") {
-                $DeviceList.AMD.Add("$AmdCounter", "$DeviceCounter")
-                $OCList.AMD.Add("$AmdCounter", "$OCCounter")
-                $AmdCounter++
-                $DeviceCounter++
-                $OCCounter++
-            }
+            $DeviceList.AMD.Add("$AmdCounter", "$DeviceCounter")
+            $OCList.AMD.Add("$AmdCounter", "$OCCounter")
+            $AmdCounter++
+            $DeviceCounter++
+            $OCCounter++
         }
         else {
             $OCList.Onboard.Add("$OnboardCounter", "$OCCounter")

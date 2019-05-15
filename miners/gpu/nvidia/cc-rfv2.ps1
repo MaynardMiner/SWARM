@@ -2,15 +2,17 @@ $NVIDIATypes | ForEach-Object {
     
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
+    $CName = 'cc-rfv2'
+
     ##Miner Path Information
-    if ($nvidia.'cc-rfv2'.$ConfigType) { $Path = "$($nvidia.'cc-rfv2'.$ConfigType)" }
+    if ($nvidia.$CName.$ConfigType) { $Path = "$($nvidia.$CName.$ConfigType)" }
     else { $Path = "None" }
-    if ($nvidia.'cc-rfv2'.uri) { $Uri = "$($nvidia.'cc-rfv2'.uri)" }
+    if ($nvidia.$CName.uri) { $Uri = "$($nvidia.$CName.uri)" }
     else { $Uri = "None" }
-    if ($nvidia.'cc-rfv2'.minername) { $MinerName = "$($nvidia.'cc-rfv2'.minername)" }
+    if ($nvidia.$CName.minername) { $MinerName = "$($nvidia.$CName.minername)" }
     else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "cc-rfv2-$Num"; $Port = "5300$Num"
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "5300$Num"
 
     Switch ($Num) {
         1 { $Get_Devices = $NVIDIADevices1 }
@@ -19,19 +21,17 @@ $NVIDIATypes | ForEach-Object {
     }
 
     ##Log Directory
-    $Log = Join-Path $dir "logs\$ConfigType.log"
+    $Log = Join-Path $($global:Dir) "logs\$ConfigType.log"
 
     ##Parse -GPUDevices
     if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
     else { $Devices = $Get_Devices }
 
     ##Get Configuration File
-    $GetConfig = "$dir\config\miners\cc-rfv2.json"
-    try { $MinerConfig = Get-Content $GetConfig | ConvertFrom-Json }
-    catch { Write-Log "Warning: No config found at $GetConfig" }
+    $MinerConfig = $Global:config.miners.$CName
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
-    $ExportDir = Join-Path $dir "build\export"
+    $ExportDir = Join-Path $($global:Dir) "build\export"
 
     ##Prestart actions before miner launch
     $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
@@ -67,8 +67,8 @@ $NVIDIATypes | ForEach-Object {
                         Devices    = $Devices
                         DeviceCall = "ccminer"
                         Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -b 0.0.0.0:$Port -u $($_.$User) -p $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                        HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
-                        Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
+                        HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour}
+                        Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
                         MinerPool  = "$($_.Name)"
                         FullName   = "$($_.Mining)"

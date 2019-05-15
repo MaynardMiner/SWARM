@@ -29,12 +29,10 @@ $AMDTypes | ForEach-Object {
     else { $Devices = $Get_Devices }
   
     ##Get Configuration File
-    $GetConfig = "$dir\config\miners\$CName.json"
-    try { $MinerConfig = Get-Content $GetConfig | ConvertFrom-Json }
-    catch { Write-Log "Warning: No config found at $GetConfig" }
+    $MinerConfig = $Global:config.miners.$CName
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
-    $ExportDir = Join-Path $dir "build\export"
+    $ExportDir = Join-Path $($global:Dir) "build\export"
 
     ##Prestart actions before miner launch
     $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
@@ -70,8 +68,8 @@ $AMDTypes | ForEach-Object {
                             Devices    = $Devices
                             DeviceCall = "energiminer"
                             Arguments  = "--opencl-platform $AMDPlatform -G stratum://$($_.$User).$($_.$Pass)@$($_.Algorithm).mine.zergpool.com:$($_.Port)"
-                            HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
-                            Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
+                            HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour}
+                            Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                             PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
                             MinerPool  = "$($_.Name)"
                             FullName   = "$($_.Mining)"

@@ -1,5 +1,5 @@
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
-$dir = Split-Path $script:MyInvocation.MyCommand.Path
+$Dir = Split-Path $script:MyInvocation.MyCommand.Path
 
 if (Test-Path ".\config\parameters\default.json") {
     $Defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json
@@ -52,7 +52,7 @@ $Defaults.PSObject.Properties.Name | % { if (-not [string]$Parsed.$_) { $Parsed.
 $Parsed | convertto-json | Out-File ".\config\parameters\arguments.json"
 
 if(Test-path "C:\") {
-    Start-Process "CMD" -ArgumentList "/C powershell -noexit -executionpolicy Bypass -windowstyle maximized -command `"pwsh -command `"Set-Location C:\; Set-Location `'$dir`'; .\swarm.ps1`"`"" -Verb RunAs
+    Start-Process "CMD" -ArgumentList "/C powershell -Version 5.0 -noexit -executionpolicy Bypass -windowstyle maximized -command `"pwsh -command `"Set-Location C:\; Set-Location `'$Dir`'; .\swarm.ps1`"`"" -Verb RunAs
 }
 else {
     Invoke-Expression ".\swarm.ps1"

@@ -38,7 +38,8 @@
             "pawelhash": "",
             "bmw512": "",
             "honeycomb": "",
-            "wildkeccak": ""
+            "wildkeccak": "",
+            "xevan": ""
         },
         "difficulty": {
             "bcd": "",
@@ -74,7 +75,8 @@
             "pawelhash": "",
             "bmw512": "",
             "honeycomb": "",
-            "wildkeccak": ""
+            "wildkeccak": "",
+            "xevan": ""
         },
         "naming": {
             "bcd": "bcd",
@@ -110,7 +112,8 @@
             "pawelhash": "glt-pawelhash",
             "bmw512": "bmw512",
             "honeycomb": "honeycomb",
-            "wildkeccak": "wildkeccak"
+            "wildkeccak": "wildkeccak",
+            "xevan": "xevan"
         },
         "fee": {
             "bcd": 1,
@@ -146,7 +149,8 @@
             "pawelhash": 1,
             "bmw512": 1,
             "honeycomb": 1,
-            "wildkeccak": 1
+            "wildkeccak": 1,
+            "xevan": 1
         }
     }
 }

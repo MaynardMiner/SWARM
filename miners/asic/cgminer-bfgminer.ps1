@@ -7,7 +7,7 @@ $ASICTypes | ForEach-Object {
     $MinerName = "cgminer"
     $Path = "no path"
 
-    $User = "User1"; $Name = "cgminer-$Num"
+    $User = "User1"; $Name = "asicminer-$Num"
 
     $Devices = $null
 
@@ -25,6 +25,7 @@ $ASICTypes | ForEach-Object {
                 $Pass = $Pass -replace "$($global:Config.Params.Rigname1)","$($global:ASICS.$ConfigType.NickName)"
                 }
                 [PSCustomObject]@{
+                    MName      = $Name
                     Coin       = $Coins
                     Delay      = $MinerConfig.$ConfigType.delay
                     Fees       = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
@@ -37,7 +38,7 @@ $ASICTypes | ForEach-Object {
                     DeviceCall = "cgminer"
                     Wallet     = "$($_.$User)"
                     Arguments  = "stratum+tcp://$($_.Host):$($_.Port),$($_.$User),$Pass"
-                    HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
+                    HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour}
                     Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
                     PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
                     MinerPool  = "$($_.Name)"

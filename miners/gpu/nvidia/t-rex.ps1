@@ -2,15 +2,17 @@ $NVIDIATypes | ForEach-Object {
     
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
+    $Cname = "t-rex"
+
     ##Miner Path Information
-    if ($nvidia.ttminer.$ConfigType -and $global:Config.Params.Platform -eq "windows") { $Path = "$($nvidia.ttminer.$ConfigType)" }
+    if ($nvidia.$CName.$ConfigType) { $Path = "$($nvidia.$CName.$ConfigType)" }
     else { $Path = "None" }
-    if ($nvidia.ttminer.uri -and $global:Config.Params.Platform -eq "windows") { $Uri = "$($nvidia.ttminer.uri)" }
+    if ($nvidia.$CName.uri) { $Uri = "$($nvidia.$CName.uri)" }
     else { $Uri = "None" }
-    if ($nvidia.ttminer.minername) { $MinerName = "$($nvidia.ttminer.minername)" }
+    if ($nvidia.$CName.minername) { $MinerName = "$($nvidia.$CName.minername)" }
     else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "ttminer-$Num"; $Port = "5100$Num";
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "5000$Num"; $Port2 = "8000$Num"
 
     Switch ($Num) {
         1 { $Get_Devices = $NVIDIADevices1 }
@@ -19,19 +21,17 @@ $NVIDIATypes | ForEach-Object {
     }
 
     ##Log Directory
-    $Log = Join-Path $dir "logs\$ConfigType.log"
+    $Log = Join-Path $($global:Dir) "logs\$ConfigType.log"
 
     ##Parse -GPUDevices
     if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
     else { $Devices = $Get_Devices }
 
     ##Get Configuration File
-    $GetConfig = "$dir\config\miners\ttminer.json"
-    try { $MinerConfig = Get-Content $GetConfig | ConvertFrom-Json }
-    catch { Write-Log "Warning: No config found at $GetConfig" }
+    $MinerConfig = $Global:config.miners.$CName
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
-    $ExportDir = Join-Path $dir "build\export"
+    $ExportDir = Join-Path $($global:Dir) "build\export"
 
     ##Prestart actions before miner launch
     $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
@@ -53,7 +53,7 @@ $NVIDIATypes | ForEach-Object {
 
             if ($Check.RAW -ne "Bad") {
                 $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
-                    if ($_.Worker) { $Worker = "-worker $($_.Worker) " }else { $Worker = $Null }
+                    if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
                     [PSCustomObject]@{
                         MName      = $Name
                         Coin       = $Coins
@@ -65,20 +65,20 @@ $NVIDIATypes | ForEach-Object {
                         Type       = $ConfigType
                         Path       = $Path
                         Devices    = $Devices
-                        DeviceCall = "ttminer"
-                        Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --nvidia -o $($_.Protocol)://$($_.Host):$($_.Port) $Worker-b localhost:$Port -u $($_.$User) -p $($_.$Pass) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                        HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Day }
-                        Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
+                        DeviceCall = "trex"
+                        Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --no-nvml -o stratum+tcp://$($_.Host):$($_.Port) --api-bind-telnet 0.0.0.0:$Port2 -l `'$Log`' --api-bind-http 0.0.0.0:$Port -u $($_.$User) -p $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                        HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour}
+                        Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
                         MinerPool  = "$($_.Name)"
                         FullName   = "$($_.Mining)"
                         Port       = $Port
-                        API        = "claymore"
+                        API        = "trex"
                         Wallet     = "$($_.$User)"
                         URI        = $Uri
                         Server     = "localhost"
-                        Algo       = "$($_.Algorithm)"                         
-                        Log        = $Log 
+                        Algo       = "$($_.Algorithm)"
+                        Log        = "miner_generated"                                     
                     }            
                 }
             }

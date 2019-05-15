@@ -7,7 +7,7 @@
     "NVIDIA2": ".\\bin\\claymore-2\\ethdcrminer64",
     "NVIDIA3": ".\\bin\\claymore-3\\ethdcrminer64",
     "minername": "ethdcrminer64",
-    "version": "12.0",
+    "version": "14.0",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/Claymore-Linux.tar.gz"
   },
   "nbminer": {
@@ -17,8 +17,8 @@
     "NVIDIA2": ".\\bin\\nbminer-2\\nbminer",
     "NVIDIA3": ".\\bin\\nbminer-3\\nbminer",
     "minername": "nbminer",
-    "version": "22.3",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/nbminer-linux.tar.gz"
+    "version": "23.2",
+    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v23.2.1/NBMiner_23.2_hotfix_Linux.tgz"
   },
   "multiminer": {
     "name": "multiminer",
@@ -217,8 +217,8 @@
     "NVIDIA2": ".\\bin\\bminer-2\\bminer",
     "NVIDIA3": ".\\bin\\bminer-3\\bminer",
     "minername": "bminer",
-    "version": "15.5.2",
-    "uri": "https://www.bminercontent.com/releases/bminer-v15.5.2-ed2038c-amd64.tar.xz"
+    "version": "15.5.3",
+    "uri": "https://www.bminercontent.com/releases/bminer-v15.5.3-747d98e-amd64.tar.xz"
   },
   "miniz": {
     "name": "miniz",
@@ -227,7 +227,7 @@
     "NVIDIA2": ".\\bin\\miniz-2\\miniZ",
     "NVIDIA3": ".\\bin\\miniz-3\\miniZ",
     "minername": "miniZ",
-    "version": "1.3n4",
+    "version": "v1.3n5",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/miniz-linux.tar.gz"
   },
   "progminer": {

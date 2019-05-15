@@ -11,15 +11,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 function Start-Background {
-    param(
-        [Parameter(Mandatory = $false)]
-        [String]$Dir,
-        [Parameter(Mandatory = $false)]
-        [String]$WorkingDir
-    )
   
     $BackgroundTimer = New-Object -TypeName System.Diagnostics.Stopwatch
-    $command = Start-Process "pwsh" -WorkingDirectory $WorkingDir -ArgumentList "-executionpolicy bypass -windowstyle minimized -command `"&{`$host.ui.RawUI.WindowTitle = `'Background Agent`'; &.\Background.ps1 -WorkingDir `'$dir`'}`"" -WindowStyle Minimized -PassThru -Verb Runas
+    $command = Start-Process "pwsh" -WorkingDirectory "$($global:Dir)\build\powershell" -ArgumentList "-executionpolicy bypass -NoExit -windowstyle minimized -command `"&{`$host.ui.RawUI.WindowTitle = `'Background Agent`'; &.\Background.ps1 -WorkingDir `'$($global:Dir)`'}`"" -WindowStyle Minimized -PassThru -Verb Runas
     $command.ID | Set-Content ".\build\pid\background_pid.txt"
     $BackgroundTimer.Restart()
     do {
@@ -45,6 +39,6 @@ function Start-BackgroundCheck {
         Start-Sleep -S .25
         Start-Process "screen" -ArgumentList "-S background -d -m" -Wait
         Start-Sleep -S .25
-        Start-Process ".\build\bash\background.sh" -ArgumentList "background $dir" -Wait
+        Start-Process ".\build\bash\background.sh" -ArgumentList "background $Global:Dir" -Wait
     }
 }
