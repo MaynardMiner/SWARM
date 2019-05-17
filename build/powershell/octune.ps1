@@ -41,7 +41,7 @@ function Start-OC {
     
     ## Stop previous Pill
     ## Will Restart It If it Required
-    if ($Global:Config.params.Platform -eq "linux") { Start-Process "./build/bash/killall.sh" -ArgumentList "pill" }
+    if ($Global:Config.params.Platform -eq "linux") { Start-Process "./build/bash/killall.sh" -ArgumentList "pill-$($Miner.Type)" -Wait }
     if ($Global:Config.params.Platform -eq "windows") {
         if (Test-Path (".\build\pid\pill_pid.txt")) {
             $PillPID = Get-Content ".\build\pid\pill_pid.txt"
@@ -70,16 +70,18 @@ function Start-OC {
 
         ##Start Pill Linux
         if ($Global:Config.params.Platform -eq "linux") {
+            if($OC_Algo.PillDelay){$PillDelay = $OC_Algo.PillDelay}
+            else{$PillDelay = 1}
             $PillScript = @()
             $PillScript += "`#`!/usr/bin/env bash"
             if ($Global:Config.params.HiveOS -eq "Yes") { $PillScript += "export DISPLAY=`":0`"" }
-            $PillScript = "./build/apps/OhGodAnETHlargementPill-r2 $PillDevices"
-            Start-Process "screen" -ArgumentList "-S pill -d -m" -Wait
-            Start-Sleep -S 1
-            $NScript | Out-File ".\build\bash\pill.sh"
+            $PillScript += "./build/apps/OhGodAnETHlargementPill-r2 $PillDevices"
+            Start-Process "screen" -ArgumentList "-S pill-$($Miner.Type) -d -m" -Wait
+            Start-Sleep -S $PillDelay
+            $PillScript | Out-File ".\build\bash\pill.sh"
             Start-Sleep -S .25
             if (Test-Path ".\build\bash\pill.sh") { Start-Process "chmod" -ArgumentList "+x build/bash/pill.sh" -Wait }
-            if (Test-Path ".\build\bash\pill.sh") { Start-Process "screen" -ArgumentList "-S pill -X stuff ./build/bash/pill.sh`n" -Wait }
+            if (Test-Path ".\build\bash\pill.sh") { Start-Process "screen" -ArgumentList "-S pill-$($Miner.Type) -X stuff ./build/bash/pill.sh`n" -Wait }
         }
 
         ##Start Pill Windows
@@ -122,7 +124,7 @@ function Start-OC {
             $Core = $Core -split ","
         }
 
-        if ($OC_Algo.mem) {
+        if ($OC_Algo.memory) {
             $Mem = $OC_Algo.memory -split ' '    
             $Mem = $Mem -split ","
         }
@@ -487,13 +489,13 @@ if ($DoNVIDIAOC -eq $true -and $Global:Config.params.Platform -eq "linux") {
     if ($Global:Config.params.HiveOS -eq "Yes") { $NScript += "export DISPLAY=`":0`"" }
     if ($SettingsArgs -eq $true) { $NScript += "nvidia-settings $NSettings" }
     if ($NPL) { $NScript += $NPL }
-    Start-Process "./build/bash/killall.sh" -ArgumentList "OC_NVIDIA" -Wait
-    Start-Process "screen" -ArgumentList "-S OC_NVIDIA -d -m"
+    Start-Process "./build/bash/killall.sh" -ArgumentList "OC_$($Miner.Type)" -Wait
+    Start-Process "screen" -ArgumentList "-S OC_$($Miner.Type) -d -m"
     Start-Sleep -S 1
     $NScript | Out-File ".\build\bash\nvidiaoc.sh"
     Start-Sleep -S .25
     Start-Process "chmod" -ArgumentList "+x build/bash/nvidiaoc.sh" -Wait
-    if (Test-Path ".\build\bash\nvidiaoc.sh") { Start-Process "screen" -ArgumentList "-S OC_NVIDIA -X stuff ./build/bash/nvidiaoc.sh`n"; Start-Sleep -S 1; }
+    if (Test-Path ".\build\bash\nvidiaoc.sh") { Start-Process "screen" -ArgumentList "-S OC_$($Miner.Type) -X stuff ./build/bash/nvidiaoc.sh`n"; Start-Sleep -S 1; }
 }
     
 $OCMessage = @()
