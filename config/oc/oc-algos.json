@@ -987,12 +987,12 @@
     },
     "daggerhashimoto": {
         "NVIDIA1": {
-            "Power": "",
-            "Core": "",
-            "Memory": "",
-            "Fans": "",
-            "ETHPill": "",
-            "PillDelay": ""
+            "Power": "175 175 175 175 175",
+            "Core": "75 75 75 75 75",
+            "Memory": "900 900 900 900 900",
+            "Fans": "75 75 75 75 75",
+            "ETHPill": "Yes",
+            "PillDelay": "1"
         },
         "NVIDIA2": {
             "Power": "",
