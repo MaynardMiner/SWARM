@@ -70,13 +70,16 @@ function Start-OC {
 
         ##Start Pill Linux
         if ($Global:Config.params.Platform -eq "linux") {
-            if ($OC_Algo.PillDelay) { $PillSleep = $OC_Algo.PillDelay }
-            else { $PillSleep = 1 }
-            $Pillconfig = "./build/apps/OhGodAnETHlargementPill-r2 $PillDevices"
-            $Pillconfig | Set-Content ".\build\bash\pillconfig.sh"
+            $PillScript = @()
+            $PillScript += "`#`!/usr/bin/env bash"
+            if ($Global:Config.params.HiveOS -eq "Yes") { $PillScript += "export DISPLAY=`":0`"" }
+            $PillScript = "./build/apps/OhGodAnETHlargementPill-r2 $PillDevices"
+            Start-Process "screen" -ArgumentList "-S pill -d -m" -Wait
+            Start-Sleep -S 1
+            $NScript | Out-File ".\build\bash\pill.sh"
             Start-Sleep -S .25
-            Start-Process "./build/bash/pill.sh" -ArgumentList "$PillSleep" -Wait
-            Start-Process "sync" -Wait
+            if (Test-Path ".\build\bash\pill.sh") { Start-Process "chmod" -ArgumentList "+x build/bash/pill.sh" -Wait }
+            if (Test-Path ".\build\bash\pill.sh") { Start-Process "screen" -ArgumentList "-S pill -X stuff ./build/bash/pill.sh`n" -Wait }
         }
 
         ##Start Pill Windows
