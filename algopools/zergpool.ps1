@@ -16,13 +16,14 @@ if ($Name -in $global:Config.Params.PoolName) {
     Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
     Select-Object -ExpandProperty Name | 
     Where-Object { $Zergpool_Request.$_.hashrate -gt 0 } | 
-    Where-Object { $global:Exclusions.$($Zergpool_Request.$_.name) } |
-    ForEach-Object {
-    
-        $Zergpool_Algorithm = $Zergpool_Request.$_.name.ToLower()
-  
+    Where-Object {
+        $Algo = $Zergpool_Request.$_.name.ToLower();
+        $local:Zergpool_Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name | Where { $Algo -in $global:Config.Pool_Algos.$_.alt_names }
+        return $Zergpool_Algorithm
+    } |
+    ForEach-Object {  
         if ($Algorithm -contains $Zergpool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $Zergpool_Algorithm) {
-            if ($Name -notin $global:Exclusions.$Zergpool_Algorithm.exclusions -and $Zergpool_Algorithm -notin $Global:banhammer) {
+            if ($Name -notin $global:Config.Pool_Algos.$Zergpool_Algorithm.exclusions -and $Zergpool_Algorithm -notin $Global:banhammer) {
                 $Zergpool_Port = $Zergpool_Request.$_.port
                 $Zergpool_Host = "$($Zergpool_Algorithm).mine.zergpool.com$X"
                 $Divisor = (1000000 * $Zergpool_Request.$_.mbtc_mh_factor)

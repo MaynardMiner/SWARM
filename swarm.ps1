@@ -50,6 +50,8 @@ if (-not $global:Config.Params.Platform) {
     Write-log "OS = $($global:Config.Params.Platform)" -ForegroundColor Green
 }
 
+$global:Config.Add("Pool_Algos",(Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json))
+
 ## Load Codebase
 . .\build\powershell\killall.ps1; . .\build\powershell\remoteupdate.ps1; . .\build\powershell\octune.ps1;
 . .\build\powershell\datafiles.ps1; . .\build\powershell\command-stats.ps1; . .\build\powershell\command-pool.ps1;
@@ -144,7 +146,6 @@ $UserDonate = "MaynardVII"
 $WorkerDonate = "Rig1"
 $PoolNumber = 1
 $ActiveMinerPrograms = @()
-$Priorities = Get-Content ".\config\pools\pool-priority.json" | ConvertFrom-Json
 $Global:DWallet = $null
 $global:DCheck = $false
 $DonationMode = $false
@@ -235,6 +236,7 @@ While ($true) {
         Get-MinerConfigs
         }
 
+        $global:Config.Pool_Algos = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
         Add-ASIC_ALGO
 
         ## Parse ASIC_IP
@@ -312,13 +314,12 @@ While ($true) {
         #Get Algorithms and Bans
         $Algorithm = @()
         $global:BanHammer = @()
-        $global:Exclusions = $null
         $Get_User_Bans = . .\build\powershell\bans.ps1 "add" $global:Config.Params.Bans "process"
 
         ##Add Algorithms
         if ($global:Config.Params.Coin.Count -eq 1 -and $global:Config.Params.Coin -ne "") { $global:Config.Params.Passwordcurrency1 = $global:Config.Params.Coin; $global:Config.Params.Passwordcurrency2 = $global:Config.Params.Coin; $global:Config.Params.Passwordcurrency3 = $global:Config.Params.Coin }
         if ($SWARMAlgorithm) { $SWARMALgorithm | ForEach-Object { $Algorithm += $_ } }
-        elseif ($global:Config.Params.Auto_Algo -eq "Yes") { $Algorithm = $global:Exclusions.PSObject.Properties.Name }
+        elseif ($global:Config.Params.Auto_Algo -eq "Yes") { $Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name }
         if ($global:Config.Params.Type -notlike "*NVIDIA*") {
             if ($global:Config.Params.Type -notlike "*AMD*") {
                 if ($global:Config.Params.Type -notlike "*CPU*") {
@@ -445,7 +446,7 @@ While ($true) {
         ##Get Algorithms again, in case custom changed it.
         if ($global:Config.Params.Coin.Count -eq 1 -and $global:Config.Params.Coin -ne "") { $global:Config.Params.Passwordcurrency1 = $global:Config.Params.Coin; $global:Config.Params.Passwordcurrency2 = $global:Config.Params.Coin; $global:Config.Params.Passwordcurrency3 = $global:Config.Params.Coin }
         if ($SWARMAlgorithm) { $SWARMALgorithm | ForEach-Object { $Algorithm += $_ } }
-        elseif ($global:Config.Params.Auto_Algo -eq "Yes") { $Algorithm = $global:Exclusions.PSObject.Properties.Name }
+        elseif ($global:Config.Params.Auto_Algo -eq "Yes") { $Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name }
         if ($global:Config.Params.Type -notlike "*NVIDIA*") {
             if ($global:Config.Params.Type -notlike "*AMD*") {
                 if ($global:Config.Params.Type -notlike "*CPU*") {

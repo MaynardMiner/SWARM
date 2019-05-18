@@ -22,13 +22,14 @@ if ($Name -in $global:Config.Params.PoolName) {
     Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
     Select-Object -ExpandProperty Name | 
     Where-Object { $fairpool_Request.$_.hashrate -gt 0 } | 
-    Where-Object { $global:Exclusions.$($fairpool_Request.$_.name) } |
+    Where-Object {
+        $Algo = $fairpool_Request.$_.name.ToLower();
+        $local:fairpool_Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name | Where { $Algo -in $global:Config.Pool_Algos.$_.alt_names }
+        return $fairpool_Algorithm
+    } |
     ForEach-Object {
- 
-        $fairpool_Algorithm = $fairpool_Request.$_.name.ToLower()
-
         if ($Algorithm -contains $fairpool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $fairpool_Algorithm) {
-            if ($Name -notin $global:Exclusions.$fairpool_Algorithm.exclusions -and $fairpool_Algorithm -notin $Global:banhammer) {
+            if ($Name -notin $global:Config.Pool_Algos.$fairpool_Algorithm.exclusions -and $fairpool_Algorithm -notin $Global:banhammer) {
                 $fairpool_Host = "$region$X"
                 $fairpool_Port = $fairpool_Request.$_.port
                 $Divisor = (1000000 * $fairpool_Request.$_.mbtc_mh_factor)

@@ -5,36 +5,32 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "zhash": "",
-            "daggerhashimoto": "",
-            "equihash144": "-pers auto",
-            "beam": "",
-            "grincuckaroo29": "",
-            "grincuckatoo31": ""
+            "ethash": "",
+            "equihash_144/5": "",
+            "equihash_150/5": "",
+            "cuckaroo29": "",
+            "cuckatoo31": ""
         },
         "difficulty": {
-            "zhash": "",
-            "daggerhashimoto": "",
-            "equihash144": "",
-            "beam": "",
-            "grincuckaroo29": "",
-            "grincuckatoo31": ""
+            "ethash": "",
+            "equihash_144/5": "",
+            "equihash_150/5": "",
+            "cuckaroo29": "",
+            "cuckatoo31": ""
         },
         "naming": {
-            "zhash": "zhash",
-            "daggerhashimoto": "ethstratum",
-            "equihash144": "equihash1445",
-            "beam": "beam",
-            "grincuckaroo29": "cuckaroo29",
-            "grincuckatoo31": "cuckatoo31"
+            "ethash": "ethash",
+            "equihash_144/5": "equihash_144/5",
+            "equihash_150/5": "equihash_150/5",
+            "cuckaroo29": "cuckaroo29",
+            "cuckatoo31": "cuckatoo31"
         },
         "fee": {
-            "zhash": 2,
-            "daggerhashimoto": 0.65,
-            "equihash144": 2,
-            "beam": 2,
-            "grincuckaroo29": 1,
-            "grincuckatoo31": 1
+            "ethash": 0.65,
+            "equihash_144/5": 2,
+            "equihash_150": 2,
+            "cuckaroo29": 1,
+            "cuckatoo31": 1
         }
     },
     "NVIDIA2": {
@@ -42,36 +38,32 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "zhash": "",
-            "daggerhashimoto": "",
-            "equihash144": "-pers auto",
-            "beam": "",
-            "grincuckaroo29": "-pers auto",
-            "grincuckatoo31": "-pers auto"
+            "ethash": "",
+            "equihash_144/5": "",
+            "equihash_150/5": "",
+            "cuckaroo29": "",
+            "cuckatoo31": ""
         },
         "difficulty": {
-            "zhash": "",
-            "daggerhashimoto": "",
-            "equihash144": "",
-            "beam": "",
-            "grincuckaroo29": "",
-            "grincuckatoo31": ""
+            "ethash": "",
+            "equihash_144/5": "",
+            "equihash_150/5": "",
+            "cuckaroo29": "",
+            "cuckatoo31": ""
         },
         "naming": {
-            "zhash": "zhash",
-            "daggerhashimoto": "ethstratum",
-            "equihash144": "equihash1445",
-            "beam": "beam",
-            "grincuckaroo29": "cuckaroo29",
-            "grincuckatoo31": "cuckatoo31"
+            "ethash": "ethash",
+            "equihash_144/5": "equihash_144/5",
+            "equihash_150/5": "equihash_150/5",
+            "cuckaroo29": "cuckaroo29",
+            "cuckatoo31": "cuckatoo31"
         },
         "fee": {
-            "zhash": 2,
-            "daggerhashimoto": 0.65,
-            "equihash144": 2,
-            "beam": 2,
-            "grincuckaroo29": 1,
-            "grincuckatoo31": 1
+            "ethash": 0.65,
+            "equihash_144/5": 2,
+            "equihash_150": 2,
+            "cuckaroo29": 1,
+            "cuckatoo31": 1
         }
     },
     "NVIDIA3": {
@@ -79,36 +71,32 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "zhash": "",
-            "daggerhashimoto": "",
-            "equihash144": "-pers auto",
-            "beam": "",
-            "grincuckaroo29": "-pers auto",
-            "grincuckatoo31": "-pers auto"
+            "ethash": "",
+            "equihash_144/5": "",
+            "equihash_150/5": "",
+            "cuckaroo29": "",
+            "cuckatoo31": ""
         },
         "difficulty": {
-            "zhash": "",
-            "daggerhashimoto": "",
-            "equihash144": "",
-            "beam": "",
-            "grincuckaroo29": "",
-            "grincuckatoo31": ""
+            "ethash": "",
+            "equihash_144/5": "",
+            "equihash_150/5": "",
+            "cuckaroo29": "",
+            "cuckatoo31": ""
         },
         "naming": {
-            "zhash": "zhash",
-            "daggerhashimoto": "ethstratum",
-            "equihash144": "equihash1445",
-            "beam": "beam",
-            "grincuckaroo29": "cuckaroo29",
-            "grincuckatoo31": "cuckatoo31"
+            "ethash": "ethash",
+            "equihash_144/5": "equihash_144/5",
+            "equihash_150/5": "equihash_150/5",
+            "cuckaroo29": "cuckaroo29",
+            "cuckatoo31": "cuckatoo31"
         },
         "fee": {
-            "zhash": 2,
-            "daggerhashimoto": 0.65,
-            "equihash144": 2,
-            "beam": 2,
-            "grincuckaroo29": 1,
-            "grincuckatoo31": 1
+            "ethash": 0.65,
+            "equihash_144/5": 2,
+            "equihash_150": 2,
+            "cuckaroo29": 1,
+            "cuckatoo31": 1
         }
     }
 }

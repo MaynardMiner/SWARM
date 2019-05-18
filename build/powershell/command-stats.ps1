@@ -100,6 +100,7 @@ function Set-Stat {
     if ($AsHashrate) { $Max_Periods = 15 }
     else { $Max_Periods = $global:Config.params.Max_Periods }
     $Hash_Max = 15
+    $name = $name -replace "`/","`-"
     if ($name -eq "load-average") { $Max_Periods = 90; $Path = "build\txt\$Name.txt" }
     else { $Path = "stats\$Name.txt" }
     $SmallestValue = 1E-20
@@ -259,6 +260,7 @@ function Get-Stat {
         [String]$Name
     )
 
+    $name = $name -replace "`/","`-"
     if (-not (Test-Path "stats")) { New-Item "stats" -ItemType "directory" }
     if ($name -eq "load-average") { Get-ChildItem "build\txt" | Where-Object Extension -NE ".ps1" | Where-Object BaseName -EQ $Name | Get-Content | ConvertFrom-Json }
     else { Get-ChildItem "stats" | Where-Object Extension -NE ".ps1" | Where-Object BaseName -EQ $Name | Get-Content | ConvertFrom-Json }

@@ -10,44 +10,36 @@
             "export GPU_MAX_ALLOC_PERCENT=100"
         ],
         "commands": {
-            "beam": "--algo 150_5 --pers auto",
-            "grincuckaroo29": "--algo grin29",
-            "equihash-btg": "--algo 144_5 --pers BgoldPoW",
-            "equihash192": "--algo 192_7 --pers auto",
-            "equihash144": "--algo 144_5 --pers auto",
-            "equihash210": "--algo 210_9 --pers auto",
-            "equihash200": "--algo 200_9 --pers auto",
-            "zhash": "--algo 144_5 --pers auto"
+            "equihash_150/5": "",
+            "cuckaroo29": "",
+            "equihash_192/7": "",
+            "equihash_144/5": "",
+            "equihash_210/9": "",
+            "equihash_200/9": ""
         },
         "difficulty": {
-            "beam": "",
-            "grincuckaroo29": "",
-            "equihash-btg": "",
-            "equihash192": "",
-            "equihash144": "",
-            "equihash210": "",
-            "equihash200": "",
-            "zhash": ""
+            "equihash_150/5": "",
+            "cuckaroo29": "",
+            "equihash_192/7": "",
+            "equihash_144/5": "",
+            "equihash_210/9": "",
+            "equihash_200/9": ""
         },
         "naming": {
-            "beam": "beam",
-            "grincuckaroo29": "grincuckaroo29",
-            "equihash-btg": "equihash-btg",
-            "equihash192": "equihash192",
-            "equihash144": "equihash144",
-            "equihash210": "equihash210",
-            "equihash200": "equihash200",
-            "zhash": "zhash"
+            "equihash_150/5": "equihash_150/5",
+            "cuckaroo29": "cuckaroo29",
+            "equihash_192/7": "equihash_192/7",
+            "equihash_144/5": "equihash_144/5",
+            "equihash_210/9": "equihash_210/9",
+            "equihash_200/9": "equihash_210/9"
         },
         "fee": {
-            "beam": 2,
-            "grincuckaroo29": 2,
-            "equihash-btg": 2,
-            "equihash192": 2,
-            "equihash144": 2,
-            "equihash210": 2,
-            "equihash200": 2,
-            "zhash": 2
+            "equihash_150/5": 2,
+            "cuckaroo29": 2,
+            "equihash_192/7": 2,
+            "equihash_144/5": 2,
+            "equihash_210/9": 2,
+            "equihash_200/9": 2
         }
     }
 }

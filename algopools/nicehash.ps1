@@ -22,13 +22,14 @@ if ($Name -in $global:Config.Params.PoolName) {
     $nicehash_Request.result | 
     Select-Object -ExpandProperty simplemultialgo | 
     Where-Object paying -ne 0 | 
-    Where-Object { $global:Exclusions.$($_.name) } |
+    Where-Object {
+        $Algo = $_.name.ToLower();
+        $local:Nicehash_Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name | Where { $Algo -in $global:Config.Pool_Algos.$_.alt_names }
+        return $Nicehash_Algorithm
+    } |
     ForEach-Object {
-    
-        $nicehash_Algorithm = $_.name.ToLower()
-
         if ($Algorithm -contains $nicehash_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $nicehash_Algorithm) {
-            if ($Name -notin $global:Exclusions.$nicehash_Algorithm.exclusions -and $nicehash_Algorithm -notin $Global:banhammer) {
+            if ($Name -notin $global:Config.Pool_Algos.$nicehash_Algorithm.exclusions -and $nicehash_Algorithm -notin $Global:banhammer) {
 
                 ## Nicehash 'Gets' you with the fees. If you read the fine print,
                 ## If you do not use a nicehash wallet- Your total fee will end up

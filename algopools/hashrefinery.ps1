@@ -16,13 +16,14 @@ if ($Name -in $global:Config.Params.PoolName) {
     Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
     Select-Object -ExpandProperty Name | 
     Where-Object { $Hashrefinery_Request.$_.hashrate -gt 0 } | 
-    Where-Object { $global:Exclusions.$($Hashrefinery_Request.$_.name) } |
+    Where-Object {
+        $Algo = $Hashrefinery_Request.$_.name.ToLower();
+        $local:Hashrefinery_Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name | Where { $Algo -in $global:Config.Pool_Algos.$_.alt_names }
+        return $Hashrefinery_Algorithm
+    } |
     ForEach-Object {
-   
-        $Hashrefinery_Algorithm = $Hashrefinery_Request.$_.name.ToLower()
-
         if ($Algorithm -contains $Hashrefinery_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $Hashrefinery_Algorithm) {
-            if ($Name -notin $global:Exclusions.$Hashrefinery_Algorithm.exclusions -and $Hashrefinery_Algorithm -notin $Global:banhammer) {
+            if ($Name -notin $global:Config.Pool_Algos.$Hashrefinery_Algorithm.exclusions -and $Hashrefinery_Algorithm -notin $Global:banhammer) {
                 $Hashrefinery_Host = "$_.us.hashrefinery.com$X"
                 $Hashrefinery_Port = $Hashrefinery_Request.$_.port
                 $Divisor = (1000000 * $Hashrefinery_Request.$_.mbtc_mh_factor)

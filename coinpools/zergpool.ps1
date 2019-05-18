@@ -23,6 +23,10 @@ if ($Name -in $global:Config.Params.PoolName) {
     }
    
     $zergpool_Request.PSObject.Properties.Name | ForEach-Object { $zergpool_Request.$_ | Add-Member "sym" $_ }
+    $zergpool_Request.PSObject.Properties.Name | ForEach-Object { 
+        $Algo = $zergpool_Request.$_.Algo.ToLower()
+        $zergpool_Request.$_.Algo = $global:Config.Pool_Algos.PSObject.Properties.Name | % {if($Algo -in $global:Config.Pool_Algos.$_.alt_names){$_}}
+    }
     $ZergAlgos = @()
     $ZergAlgos += $Algorithm
     $ZergAlgos += $global:Config.Params.ASIC_ALGO
@@ -48,8 +52,8 @@ if ($Name -in $global:Config.Params.PoolName) {
             Where-Object Algo -eq $Selected | 
             Where-Object Algo -in $global:FeeTable.zergpool.keys | 
             Where-Object Algo -in $global:divisortable.zergpool.Keys |
-            Where-Object { $global:Exclusions.$($_.Algo) } |
-            Where-Object { $Name -notin $global:Exclusions.$($_.sym).exclusions }  |
+            Where-Object { $global:Config.Pool_Algos.$($_.Algo) } |
+            Where-Object { $Name -notin $global:Config.Pool_Algos.$($_.Algo).exclusions }  |
             Where-Object Sym -notin $global:BanHammer |
             Where-Object noautotrade -eq "0" | 
             Where-Object estimate -gt 0 | 
@@ -70,8 +74,8 @@ if ($Name -in $global:Config.Params.PoolName) {
             Where-Object Algo -eq $Selected |
             Where-Object Algo -in $global:FeeTable.zergpool.keys |
             Where-Object Algo -in $global:divisortable.zergpool.Keys |
-            Where-Object { $global:Exclusions.$($_.Algo) } |
-            Where-Object { $Name -notin $global:Exclusions.$($_.sym).exclusions }  |
+            Where-Object { $global:Config.Pool_Algos.$($_.Algo) } |
+            Where-Object { $Name -notin $global:Config.Pool_Algos.$($_.sym).exclusions }  |
             Where-Object Sym -notin $global:BanHammer |
             Where-Object noautotrade -eq "0" |
             Where-Object estimate -gt 0 |

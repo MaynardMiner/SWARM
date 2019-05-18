@@ -17,13 +17,14 @@ if ($Name -in $global:Config.Params.PoolName) {
     Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
     Select-Object -ExpandProperty Name | 
     Where-Object { $ahashpool_Request.$_.hashrate -gt 0 } | 
-    Where-Object { $global:Exclusions.$($ahashpool_Request.$_.name) } |
+    Where-Object {
+        $Algo = $ahashpool_Request.$_.name.ToLower();
+        $local:ahashpool_Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name | Where { $Algo -in $global:Config.Pool_Algos.$_.alt_names }
+        return $ahashpool_Algorithm
+    } |
     ForEach-Object {
- 
-        $ahashpool_Algorithm = $ahashpool_Request.$_.name.ToLower()
-
         if ($Algorithm -contains $ahashpool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $ahashpool_Algorithm) {
-            if ($Name -notin $global:Exclusions.$ahashpool_Algorithm.exclusions -and $ahashpool_Algorithm -notin $Global:banhammer) {
+            if ($Name -notin $global:Config.Pool_Algos.$ahashpool_Algorithm.exclusions -and $ahashpool_Algorithm -notin $Global:banhammer) {
                 $ahashpool_Host = "$_.mine.ahashpool.com$X"
                 $ahashpool_Port = $ahashpool_Request.$_.port
                 $Fees = $ahashpool_Request.$_.fees

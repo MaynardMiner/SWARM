@@ -39,17 +39,36 @@ $NVIDIATypes | ForEach-Object {
 
         $MinerAlgo = $_
 
-        if ($MinerAlgo -in $Algorithm -and $Name -notin $global:Exclusions.$MinerAlgo.exclusions -and $ConfigType -notin $global:Exclusions.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
+        if ($MinerAlgo -in $Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
             $Stat = Get-Stat -Name "$($Name)_$($MinerAlgo)_hashrate"
             $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
         
             if ($Check.RAW -ne "Bad") {
                 $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
-                    Switch ($_.Name) {
-                        "nicehash" { $Pass = "" }
-                        default { $Pass = ".$($($_.$Pass) -replace ",","%2C")" }
+                    $Sel = $_.Algorithm
+                    $SelName = $_.Name
+                    Switch ($SelName) {
+                        "nicehash" {
+                            switch ($Sel) {
+                                "ethash" { $Pass = ""; $Naming = "ethstratum"; $AddArgs = "" }
+                                "cuckaroo29" { $Pass = ""; $Naming = "cuckaroo29"; $AddArgs = "-pers auto " }
+                                "cuckatoo31" { $Pass = ""; $Naming = "cuckatoo31"; $AddArgs = "-pers auto " }
+                                "equihash_150/5" { $Pass = ""; $Naming = "beam"; $AddArgs = "" }
+                                "equihash_144/5" { $Pass = ""; $Naming = "zhash"; $AddArgs = "" }
+                            }
+                        }
+                        "whalesburg" {
+                            switch ($Sel) {
+                                "ethash" { $Pass = ""; $Naming = "ethproxy+ssl"; $AddArgs = "" }
+                            }
+                        }
+                        default {
+                            switch ($Sel) {
+                                "equihash_144/5" { $Pass = ".$($($_.$Pass) -replace ",","%2C")"; $Naming = "equihash1445"; $AddArgs = "-pers auto " }
+                            }
+                        }
                     }
-                    if ($_.Worker) { $Pass1 = ".$($_.Worker)" }
+                    if ($_.Worker) { $Pass = ".$($_.Worker)" }
                     if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = "%2Cd=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
                     [PSCustomObject]@{
                         MName      = $Name
@@ -63,8 +82,8 @@ $NVIDIATypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         DeviceCall = "bminer"
-                        Arguments  = "-uri $($MinerConfig.$ConfigType.naming.$($_.Algorithm))://$($_.$User)$Pass$Diff@$($_.Host):$($_.Port) -logfile `'$Log`' -api 127.0.0.1:$Port"
-                        HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour}
+                        Arguments  = "-uri $($Naming)://$($_.$User)$Pass$Diff@$($_.Host):$($_.Port) $AddArgs-logfile `'$Log`' -api 127.0.0.1:$Port"
+                        HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour }
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
                         MinerPool  = "$($_.Name)"

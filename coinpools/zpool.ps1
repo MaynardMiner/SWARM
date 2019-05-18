@@ -29,6 +29,10 @@ if ($Name -in $global:Config.Params.PoolName) {
     }
    
     $zpool_Request.PSObject.Properties.Name | ForEach-Object { $zpool_Request.$_ | Add-Member "sym" $_ }
+    $zpool_Request.PSObject.Properties.Name | ForEach-Object { 
+        $Algo = $zpool_Request.$_.Algo.ToLower()
+        $zpool_Request.$_.Algo = $global:Config.Pool_Algos.PSObject.Properties.Name | % {if($Algo -in $global:Config.Pool_Algos.$_.alt_names){$_}}
+    }
     $zpoolAlgos = @()
     $zpoolAlgos += $Algorithm
     $zpoolAlgos += $global:Config.Params.ASIC_ALGO
@@ -54,8 +58,8 @@ if ($Name -in $global:Config.Params.PoolName) {
             Where-Object Algo -eq $Selected | 
             Where-Object Algo -in $global:FeeTable.zpool.keys | 
             Where-Object Algo -in $global:divisortable.zpool.Keys |
-            Where-Object { $global:Exclusions.$($_.Algo) } |
-            Where-Object { $Name -notin $global:Exclusions.$($_.sym).exclusions } |
+            Where-Object { $global:Config.Pool_Algos.$($_.Algo) } |
+            Where-Object { $Name -notin $global:Config.Pool_Algos.$($_.sym).exclusions } |
             Where-Object Sym -notin $global:BanHammer |
             Where-Object estimate -gt 0 | 
             Where-Object hashrate -ne 0 | 
@@ -75,8 +79,8 @@ if ($Name -in $global:Config.Params.PoolName) {
             Where-Object Algo -eq $Selected |
             Where-Object Algo -in $global:FeeTable.zpool.keys |
             Where-Object Algo -in $global:divisortable.zpool.Keys |
-            Where-Object { $global:Exclusions.$($_.Algo) } |
-            Where-Object { $Name -notin $global:Exclusions.$($_.sym).exclusions } |
+            Where-Object { $global:Config.Pool_Algos.$($_.Algo) } |
+            Where-Object { $Name -notin $global:Config.Pool_Algos.$($_.sym).exclusions } |
             Where-Object Sym -notin $global:BanHammer |
             Where-Object estimate -gt 0 |
             Where-Object hashrate -ne 0 |
@@ -88,7 +92,7 @@ if ($Name -in $global:Config.Params.PoolName) {
         }
 
         $zpool_UnSorted | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | ForEach-Object {
-            if ($Name -notin $global:Exclusions.$zpool_Symbol.exclusions -and $zpool_Symbol -notin $Global:banhammer) {
+            if ($Name -notin $global:Config.Pool_Algos.$zpool_Symbol.exclusions -and $zpool_Symbol -notin $Global:banhammer) {
                 $zpool_Algorithm = $zpool_UnSorted.$_.algo.ToLower()
                 $zpool_Symbol = $zpool_UnSorted.$_.sym.ToUpper()
                 $Fees = [Double]$global:FeeTable.zpool.$zpool_Algorithm

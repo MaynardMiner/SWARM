@@ -11,27 +11,19 @@
             "export GPU_MAX_ALLOC_PERCENT=100"
         ],
         "commands": {
-            "ethash": "-proto 2 -rate 1",
-            "daggerhashimoto": "-proto 4 -stales 0",
-            "dagger": "-proto 2",
-            "progpow": "-coin bci -proto 1"
+            "ethash": "",
+            "progpow": ""
         },
         "difficulty": {
             "ethash": "",
-            "daggerhashimoto": "",
-            "dagger": "",
             "progpow": ""
         },
         "naming": {
             "ethash": "ethash",
-            "daggerhashimoto": "daggerhashimoto",
-            "dagger": "dagger",
             "progpow": "progpow"
         },
         "fee": {
             "ethash": 0.65,
-            "daggerhashimoto": 0.65,
-            "dagger": 0.65,
             "progpow": 0.65
         }
     }

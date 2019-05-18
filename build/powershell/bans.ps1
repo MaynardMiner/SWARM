@@ -22,7 +22,6 @@ $JsonBanHammer = @()
 $BanJson | % { $global:banhammer += $_ }
 $BanJson | % { $JsonBanHammer += $_ }
 
-$Global:Exclusions = $PoolJson
 $BanChange = $false
 $PoolChange = $false
 
@@ -67,9 +66,9 @@ switch ($Action) {
                             }
                         }
                         "process" {
-                            if ($Global:Exclusions.$Item) {
-                                if($Value -notin $Global:Exclusions.$Item.exclusions) {
-                                    $Global:Exclusions.$Item.exclusions += $Value
+                            if ($global:Config.Pool_Algos.$Item) {
+                                if($Value -notin $global:Config.Pool_Algos.$Item.exclusions) {
+                                    $global:Config.Pool_Algos.$Item.exclusions += $Value
                                 }
                             }
                             else{Write-Log "WARNING: Cannot add $Value to $Item Bans" -ForeGroundColor Yellow}

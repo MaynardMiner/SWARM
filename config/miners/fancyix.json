@@ -15,8 +15,7 @@
             "phi2": "-w 256 -I 22",
             "allium": "-w 256 -I 22",
             "lyra2rev3": "-w 256 -I 24",
-            "lyra2v3": "-I 24 -w 256",
-            "argon2d-dyn": "-w 64 -g 2",
+            "argon2d500": "-w 64 -g 2",
             "mtp": "-w 256 -I 20"
         },
         "difficulty": {
@@ -24,8 +23,7 @@
             "phi2": "",
             "allium": "",
             "lyra2rev3": "",
-            "lyra2v3": "",
-            "argon2d-dyn": "",
+            "argon2d500": "",
             "mtp": ""
         },
         "naming": {
@@ -33,8 +31,7 @@
             "phi2": "phi2",
             "allium": "allium",
             "lyra2rev3": "lyra2rev3",
-            "lyra2v3": "lyra2rev3",
-            "argon2d-dyn": "argon2d",
+            "argon2d500": "argon2d",
             "mtp": "mtp"
         },
         "fee": {
@@ -42,8 +39,7 @@
             "phi2": 0,
             "allium": 0,
             "lyra2rev3": 0,
-            "lyra2v3": 0,
-            "argon2d-dyn": 0,
+            "argon2d500": 0,
             "mtp": 0
         }
     }

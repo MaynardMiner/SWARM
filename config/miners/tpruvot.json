@@ -5,19 +5,16 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "lyra2v3": "",
             "lyra2rev3": "",
             "sha256q": "",
             "exosis": ""
         },
         "difficulty": {
-            "lyra2v3": "",
             "lyra2rev3": "",
             "sha256q": "",
             "exosis": ""
         },
         "naming": {
-            "lyra2v3": "lyra2v3",
             "lyra2rev3": "lyra2v3",
             "sha256q": "sha256q",
             "exosis": "exosis"
@@ -29,19 +26,16 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "lyra2v3": "",
             "lyra2rev3": "",
             "sha256q": "",
             "exosis": ""
         },
         "difficulty": {
-            "lyra2v3": "",
             "lyra2rev3": "",
             "sha256q": "",
             "exosis": ""
         },
         "naming": {
-            "lyra2v3": "lyra2v3",
             "lyra2rev3": "lyra2v3",
             "sha256q": "sha256q",
             "exosis": "exosis"
@@ -53,25 +47,21 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "lyra2v3": "",
             "lyra2rev3": "",
             "sha256q": "",
             "exosis": ""
         },
         "difficulty": {
-            "lyra2v3": "",
             "lyra2rev3": "",
             "sha256q": "",
             "exosis": ""
         },
         "naming": {
-            "lyra2v3": "lyra2v3",
             "lyra2rev3": "lyra2v3",
             "sha256q": "sha256q",
             "exosis": "exosis"
         },
         "fee": {
-            "lyra2v3": 0,
             "lyra2rev3": 0,
             "sha256q": 0,
             "exosis": 0

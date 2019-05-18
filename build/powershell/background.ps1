@@ -266,8 +266,7 @@ While ($True) {
             $global:Devices = 0; $MinerDevices = $_.Devices
 
             ##Algorithm Parsing For Stats
-            if ($MinerType -ne "ASIC") { $HiveAlgo = $HiveNames.$MinerAlgo.hiveos_name }
-            else { $HiveAlgo = $MinerAlgo }
+            $HiveAlgo = $MinerAlgo
 
             ## Determine API Type
             if ($MinerType -like "*NVIDIA*") { $global:TypeS = "NVIDIA" }

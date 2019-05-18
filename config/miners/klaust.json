@@ -5,19 +5,15 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "lyra2v3": "",
             "lyra2rev3": ""
         },
         "difficulty": {
-            "lyra2v3": "",
             "lyra2rev3": ""
         },
         "naming": {
-            "lyra2v3": "Lyra2REv3",
             "lyra2rev3": "Lyra2REv3"
         },
         "fee": {
-            "lyra2v3": 0,
             "lyra2rev3": 0
         }
     },
@@ -26,19 +22,15 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "lyra2v3": "",
             "lyra2rev3": ""
         },
         "difficulty": {
-            "lyra2v3": "",
             "lyra2rev3": ""
         },
         "naming": {
-            "lyra2v3": "Lyra2REv3",
             "lyra2rev3": "Lyra2REv3"
         },
         "fee": {
-            "lyra2v3": 0,
             "lyra2rev3": 0
         }
     },
@@ -47,19 +39,15 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "lyra2v3": "",
             "lyra2rev3": ""
         },
         "difficulty": {
-            "lyra2v3": "",
             "lyra2rev3": ""
         },
         "naming": {
-            "lyra2v3": "Lyra2REv3",
             "lyra2rev3": "Lyra2REv3"
         },
         "fee": {
-            "lyra2v3": 0,
             "lyra2rev3": 0
         }
     }

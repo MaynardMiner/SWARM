@@ -4,16 +4,16 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "nrghash": ""
+            "energihash": ""
         },
         "difficulty": {
-            "nrghash": ""
+            "energihash": ""
         },
         "naming": {
-            "nrghash": "nrghash"
+            "energihash": "nrghash"
         },
         "fee": {
-            "nrghash": 0
+            "energihash": 0
         }
     },
     "NVIDIA2": {
@@ -21,16 +21,16 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "nrghash": ""
+            "energihash": ""
         },
         "difficulty": {
-            "nrghash": ""
+            "energihash": ""
         },
         "naming": {
-            "nrghash": "nrghash"
+            "energihash": "nrghash"
         },
         "fee": {
-            "nrghash": 0
+            "energihash": 0
         }
     },
     "NVIDIA3": {
@@ -38,16 +38,16 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "nrghash": ""
+            "energihash": ""
         },
         "difficulty": {
-            "nrghash": ""
+            "energihash": ""
         },
         "naming": {
-            "nrghash": "nrghash"
+            "energihash": "nrghash"
         },
         "fee": {
-            "nrghash": 0
+            "energihash": 0
         }
     },
     "name": "energiminer"

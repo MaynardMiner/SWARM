@@ -18,15 +18,16 @@ if ($Name -in $global:Config.Params.PoolName) {
     Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
     Select-Object -ExpandProperty Name | 
     Where-Object { $nlpool_Request.$_.hashrate -gt 0 } | 
-    Where-Object { $global:Exclusions.$($nlpool_Request.$_.name) } |
     Where-Object { $nlpool_Request.$_.name -NE "sha256" } | 
-    Where-Object { $($nlpool_Request.$_.estimate_current) -gt 0 } | 
+    Where-Object { $($nlpool_Request.$_.estimate_current) -gt 0 } |
+    Where-Object {
+        $Algo = $nlpool_Request.$_.name.ToLower();
+        $local:nlpoolAlgo_Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name | Where { $Algo -in $global:Config.Pool_Algos.$_.alt_names }
+        return $nlpoolAlgo_Algorithm
+    } |
     ForEach-Object {
-        
-        $nlpoolAlgo_Algorithm = $nlpool_Request.$_.name.ToLower()
-
         if ($Algorithm -contains $nlpoolAlgo_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $nlpoolAlgo_Algorithm) {
-            if ($Name -notin $global:Exclusions.$nlpoolAlgo_Algorithm.exclusions -and $nlpoolAlgo_Algorithm -notin $Global:banhammer) {
+            if ($Name -notin $global:Config.Pool_Algos.$nlpoolAlgo_Algorithm.exclusions -and $nlpoolAlgo_Algorithm -notin $Global:banhammer) {
                 $nlpoolAlgo_Host = "mine.nlpool.nl$X"
                 $nlpoolAlgo_Port = $nlpool_Request.$_.port
                 $Divisor = (1000000 * $nlpool_Request.$_.mbtc_mh_factor)

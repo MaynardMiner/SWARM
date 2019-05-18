@@ -21,13 +21,14 @@ if ($Name -in $global:Config.Params.PoolName) {
     Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
     Select-Object -ExpandProperty Name | 
     Where-Object { $blockpool_Request.$_.hashrate -gt 0 } | 
-    Where-Object { $global:Exclusions.$($blockpool_Request.$_.name) } |
+    Where-Object {
+        $Algo = $blockpool_Request.$_.name.ToLower();
+        $local:blockpool_Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name | Where { $Algo -in $global:Config.Pool_Algos.$_.alt_names }
+        return $blockpool_Algorithm
+    } |
     ForEach-Object {
-
-        $blockpool_Algorithm = $blockpool_Request.$_.name.ToLower()
-
         if ($Algorithm -contains $blockpool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $blockpool_Algorithm) {
-            if ($Name -notin $global:Exclusions.$blockpool_Algorithm.exclusions -and $blockpool_Algorithm -notin $Global:banhammer) {
+            if ($Name -notin $global:Config.Pool_Algos.$blockpool_Algorithm.exclusions -and $blockpool_Algorithm -notin $Global:banhammer) {
                 $blockpool_Host = "$($Region)blockmasters.co$X"
                 $blockpool_Port = $blockpool_Request.$_.port
                 $Divisor = (1000000 * $blockpool_Request.$_.mbtc_mh_factor)

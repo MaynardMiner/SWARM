@@ -9,16 +9,16 @@
             "export GPU_MAX_ALLOC_PERCENT=100"
         ],
         "commands": {
-            "nrghash": ""
+            "energihash": ""
         },
         "difficulty": {
-            "nrghash": ""
+            "energihash": ""
         },
         "naming": {
-            "nrghash": "nrghash"
+            "energihash": "nrghash"
         },
         "fee": {
-            "nrghash": 0
+            "energihash": 0
         }
     },
     "name": "energi-amd"

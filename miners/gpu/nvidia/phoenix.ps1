@@ -51,12 +51,31 @@ $NVIDIATypes | ForEach-Object {
 
         $MinerAlgo = $_
 
-        if ($MinerAlgo -in $Algorithm -and $Name -notin $global:Exclusions.$MinerAlgo.exclusions -and $ConfigType -notin $global:Exclusions.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
+        if ($MinerAlgo -in $Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
             $Stat = Get-Stat -Name "$($Name)_$($MinerAlgo)_hashrate"
             $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
 
             if ($Check.RAW -ne "Bad") {
                 $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
+                    $SelName = $_.Name
+                    $SelAlgo = $_.Algorithm
+                    switch ($SelName) {
+                        "nicehash" {
+                            switch ($SelAlgo) {
+                                "ethash" { $AddArgs = "-proto 4 -stales 0 " }
+                            }
+                        }
+                        "whalesburg" {
+                            switch ($SelAlgo) {
+                                "ethash" { $AddArgs = "-proto 2 -rate 1 " }
+                            }
+                        }
+                        "zergpool" {
+                            switch ($SelAlgo) {
+                                "progpow" { $AddArgs = "-coin bci -proto 1 " }
+                            }
+                        }
+                    }
                     if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
                     if ($_.Worker) { $MinerWorker = "-worker $($_.Worker) " }
                     else { $MinerWorker = "-pass $($_.$Pass)$($Diff) " }
