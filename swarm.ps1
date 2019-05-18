@@ -178,6 +178,7 @@ $TimeoutTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $TimeoutTimer.Start()
 $logtimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $logtimer.Start()
+$LoadTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 
 ##GPU-Count- Parse the hashtable between devices.
 if ($global:Config.Params.Type -like "*NVIDIA*" -or $global:Config.Params.Type -like "*AMD*" -or $global:Config.Params.Type -like "*CPU*") {
@@ -424,6 +425,7 @@ While ($true) {
         }
 
         ##Get Algorithm Pools
+        $LoadTimer.Restart()
         write-Log "Checking Algo Pools." -Foregroundcolor yellow;
         $AllAlgoPools = Get-Pools -PoolType "Algo"
         ##Get Custom Pools
@@ -441,6 +443,8 @@ While ($true) {
             if ($Top_3_Custom) { $Top_3_Custom | ForEach-Object { $AlgoPools.Add($_) | Out-Null } }
             $Top_3_Algo = $Null;
             $Top_3_Custom = $Null;
+            $LoadTimer.Stop()
+            Write-Log "Algo Pools Loading Time: $($LoadTimer.Elapsed.TotalSeconds)" -Foreground Green
         }
 
         ##Get Algorithms again, in case custom changed it.
@@ -474,6 +478,7 @@ While ($true) {
 
         ##Optional: Load Coin Database
         if ($global:Config.Params.Auto_Coin -eq "Yes") {
+            $LoadTimer.Restart()
             write-Log "Adding Coin Pools. . ." -ForegroundColor Yellow
             $AllCoinPools = Get-Pools -PoolType "Coin"
             $CoinPools = New-Object System.Collections.ArrayList
@@ -481,14 +486,19 @@ While ($true) {
             $CoinPoolNames = $CoinPools.Name | Select-Object -Unique
             if ($CoinPoolNames) { $CoinPoolNames | ForEach-Object { $CoinName = $_; $RemovePools = $AlgoPools | Where-Object Name -eq $CoinName; $RemovePools | ForEach-Object { $AlgoPools.Remove($_) | Out-Null } } }
             $RemovePools = $null
+            $LoadTimer.Stop()
+            Write-Log "Coin Pools Loading Time: $($LoadTimer.Elapsed.TotalSeconds)" -Foreground Green
         }
 
         if ($AlgoPools.Count -gt 0) {
+            $LoadTimer.Restart()
             write-Log "Checking Algo Miners. . . ." -ForegroundColor Yellow
             ##Load Only Needed Algorithm Miners
             $AlgoMiners = New-Object System.Collections.ArrayList
             $SearchMiners = Get-Miners -Pools $AlgoPools;
             $SearchMiners | % { $AlgoMiners.Add($_) | Out-Null }
+            $LoadTimer.Stop()
+            Write-Log "Algo Miners Loading Time: $($LoadTimer.Elapsed.TotalSeconds)" -Foreground Green
        
             ##Download Miners, If Miner fails three times- A ban is created against miner, and it should stop downloading.
             ##This works by every time it fails to download, it writes miner name to the download block list. If it counts
@@ -539,6 +549,7 @@ While ($true) {
         }
 
         if ($CoinPools.Count -gt 0) {
+            $LoadTimer.Restart()
             $Coins = $true
             write-Log "Checking Coin Miners. . . . ." -ForegroundColor Yellow
             ##Load Only Needed Coin Miners
@@ -548,6 +559,8 @@ While ($true) {
             $DownloadNote = @()
             $Download = $false
             $BadCoinMiners = @()
+            $LoadTimer.Stop()
+            Write-Log "Coin Miners Loading Time: $($LoadTimer.Elapsed.TotalSeconds)" -Foreground Green
 
             if ($global:Config.Params.Lite -eq "No") {
                 $CoinMiners | ForEach {
@@ -953,6 +966,7 @@ While ($true) {
                     "GLT-PAWELHASH" { $ScreenName = "GLT:PAWELHASH" }
                     "GLT-SKUNK" { $ScreenName = "GLT:SKUNK" }
                     "XMY-ARGON2D4096" { $ScreenName = "XMY:ARGON2D4096" }
+                    "ARG-ARGON2D4096" { $ScreenName = "ARG:ARGON2D4096" }
                     default { $ScreenName = "$($Miner.Symbol):$($Miner.Algo)".ToUpper() }
                 }
             }
