@@ -266,7 +266,8 @@ While ($True) {
             $global:Devices = 0; $MinerDevices = $_.Devices
 
             ##Algorithm Parsing For Stats
-            $HiveAlgo = $MinerAlgo
+            $HiveAlgo = $MinerAlgo -replace "`_"," "
+            $NewName = $MinerAlgo -replace "`/","`-"
 
             ## Determine API Type
             if ($MinerType -like "*NVIDIA*") { $global:TypeS = "NVIDIA" }
@@ -427,9 +428,9 @@ While ($True) {
                     Write-Host "Warning: Miner is reaching Rejection Limit- $($RJPercent.ToString("N2")) Percent Out of $Shares Shares" -foreground yellow
                     if (-not (Test-Path ".\timeout")) { New-Item "timeout" -ItemType Directory | Out-Null }
                     if (-not (Test-Path ".\timeout\warnings")) { New-Item ".\timeout\warnings" -ItemType Directory | Out-Null }
-                    "Bad Shares" | Out-File ".\timeout\warnings\$($_.Name)_$($_.Algo)_rejection.txt"
+                    "Bad Shares" | Out-File ".\timeout\warnings\$($_.Name)_$($NewName)_rejection.txt"
                 }
-                else { if (Test-Path ".\timeout\warnings\$($_.Name)_$($_.Algo)_rejection.txt") { Remove-Item ".\timeout\warnings\$($_.Name)_$($_.Algo)_rejection.txt" -Force } }
+                else { if (Test-Path ".\timeout\warnings\$($_.Name)_$($NewName)_rejection.txt") { Remove-Item ".\timeout\warnings\$($_.Name)_$($NewName)_rejection.txt" -Force } }
             }
         }
     }

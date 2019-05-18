@@ -1105,6 +1105,7 @@ While ($true) {
             $MinerBan = $false
             $Strike = $false
             if ($_.BestMiner -eq $true) {
+                $NewName = $_.Algo -replace "`/","`-"
                 if ($null -eq $_.XProcess -or $_.XProcess.HasExited) {
                     $_.Status = "Failed"
                     $_.WasBenchMarked = $False
@@ -1122,10 +1123,8 @@ While ($true) {
                             $Miner_HashRates = Get-HashRate -Type $_.Type
                             $_.HashRate = $Miner_HashRates
                             if ($_.WasBenchmarked -eq $False) {
-                                $HashRateFilePath = Join-Path ".\stats" "$($_.Name)_$($_.Algo)_hashrate.txt"
-                                $PowerFilePath = Join-Path ".\stats" "$($_.Name)_$($_.Algo)_power.txt"
-                                $NewHashrateFilePath = Join-Path ".\backup" "$($_.Name)_$($_.Algo)_hashrate.txt"
-                                $NewPowerFilePath = Join-Path ".\backup" "$($_.Name)_$($_.Algo)_power.txt"
+                                $HashRateFilePath = Join-Path ".\stats" "$($_.Name)_$($NewName)_hashrate.txt"
+                                $NewHashrateFilePath = Join-Path ".\backup" "$($_.Name)_$($NewName)_hashrate.txt"
                                 if (-not (Test-Path "backup")) { New-Item "backup" -ItemType "directory" | Out-Null }
                                 write-Log "$($_.Name) $($_.Symbol) Starting Bench"
                                 if ($null -eq $Miner_HashRates -or $Miner_HashRates -eq 0) {
@@ -1157,9 +1156,9 @@ While ($true) {
                                             $Watts.$($_.Algo)."$($_.Type)_Watts" = "$GPUPower"
                                         }
                                     }
-                                    $Stat = Set-Stat -Name "$($_.Name)_$($_.Algo)_hashrate" -Value $Miner_HashRates -AsHashRate
+                                    $Stat = Set-Stat -Name "$($_.Name)_$($NewName)_hashrate" -Value $Miner_HashRates -AsHashRate
                                     Start-Sleep -s 1
-                                    $GetLiveStat = Get-Stat "$($_.Name)_$($_.Algo)_hashrate"
+                                    $GetLiveStat = Get-Stat "$($_.Name)_$($NewName)_hashrate"
                                     $StatCheck = "$($GetLiveStat.Live)"
                                     $ScreenCheck = "$($StatCheck | ConvertTo-Hash)"
                                     if ($ScreenCheck -eq "0.00 PH" -or $null -eq $StatCheck) {
@@ -1184,7 +1183,7 @@ While ($true) {
                             }
                         }
                         ##Check For High Rejections
-                        $RejectCheck = Join-Path ".\timeout\warnings" "$($_.Name)_$($_.Algo)_rejection.txt"
+                        $RejectCheck = Join-Path ".\timeout\warnings" "$($_.Name)_$($NewName)_rejection.txt"
                         if (Test-Path $RejectCheck) {
                             write-Log "Rejections Are Too High" -ForegroundColor DarkRed
                             $_.WasBenchmarked = $false
@@ -1209,9 +1208,9 @@ While ($true) {
                             if (-not (Test-Path ".\timeout\miner_block")) { New-Item -Path ".\timeout" -Name "miner_block" -ItemType "directory" | Out-Null }
                             if (-not (Test-Path ".\timeout\warnings")) { New-Item -Path ".\timeout" -Name "warnings" -ItemType "directory" | Out-Null }
                             Start-Sleep -S .25
-                            $global:Config.Params.TimeoutFile = Join-Path ".\timeout\warnings" "$($_.Name)_$($_.Algo)_TIMEOUT.txt"
-                            $HashRateFilePath = Join-Path ".\stats" "$($_.Name)_$($_.Algo)_hashrate.txt"
-                            if (-not (Test-Path $global:Config.Params.TimeoutFile)) { "$($_.Name) $($_.Symbol) Hashrate Check Timed Out" | Set-Content ".\timeout\warnings\$($_.Name)_$($_.Algo)_TIMEOUT.txt" -Force }
+                            $global:Config.Params.TimeoutFile = Join-Path ".\timeout\warnings" "$($_.Name)_$($NewName)_TIMEOUT.txt"
+                            $HashRateFilePath = Join-Path ".\stats" "$($_.Name)_$($NewName)_hashrate.txt"
+                            if (-not (Test-Path $global:Config.Params.TimeoutFile)) { "$($_.Name) $($_.Symbol) Hashrate Check Timed Out" | Set-Content ".\timeout\warnings\$($_.Name)_$($NewName)_TIMEOUT.txt" -Force }
                             if ($Warnings."$($_.Name)" -eq $null) { $Warnings += [PSCustomObject]@{"$($_.Name)" = [PSCustomObject]@{bad = 0 } }
                             }
                             if ($Warnings."$($_.Name)_$($_.Algo)" -eq $null) { $Warnings += [PSCustomObject]@{"$($_.Name)_$($_.Algo)" = [PSCustomObject]@{bad = 0 } }
