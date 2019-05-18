@@ -20,6 +20,7 @@ function Get-Intensity {
         [String]$LogPath
     )
 
+    $LogAlgo = $LogAlgo -replace "`/","`-"
     $ParseLog = ".\logs\$($LogMiner).log"
     if (Test-Path $ParseLog) {
         $GetInfo = Get-Content $ParseLog
