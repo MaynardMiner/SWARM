@@ -44,7 +44,8 @@ if ($Name -in $global:Config.Params.PoolName) {
                 $Estimate = if (-not (Test-Path $StatPath)) { [Double]$Zpool_Request.$_.estimate_last24h } else { [Double]$Zpool_Request.$_.estimate_current }
 
                 $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
-                $Stat = Set-Stat -Name "$($Name)_$($Zpool_Algorithm)_profit" -HashRate $HashRate -Value ([Double]$Cut / $Divisor)
+                $StatAlgo = $Zpool_Algorithm -replace "`_","`-"
+                $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ([Double]$Cut / $Divisor)
 
                 if (-not $global:Pool_Hashrates.$Zpool_Algorithm) { $global:Pool_Hashrates.Add("$Zpool_Algorithm", @{ }) }
                 if (-not $global:Pool_Hashrates.$Zpool_Algorithm.$Name) { $global:Pool_Hashrates.$Zpool_Algorithm.Add("$Name", @{HashRate = "$($Stat.HashRate)"; Percent = "" }) }

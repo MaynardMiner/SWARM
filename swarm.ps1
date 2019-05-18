@@ -272,6 +272,7 @@ While ($true) {
                 }
             }
         }
+        
         $Global:Config.Params.Type = $GLobal:Config.Params.Type | Where { $_ -ne "ASIC" }
         $ASICTypes = @(); if ($global:Config.Params.Type -like "*ASIC*") { $global:Config.Params.Type | Where { $_ -like "*ASIC*" } | % { $ASICTypes += $_ } }
 
@@ -1105,7 +1106,8 @@ While ($true) {
             $MinerBan = $false
             $Strike = $false
             if ($_.BestMiner -eq $true) {
-                $NewName = $_.Algo -replace "`/","`-"
+                $NewName = $_.Algo -replace "`_","`-"
+                $NewName = $NewName -replace "`/","`-"
                 if ($null -eq $_.XProcess -or $_.XProcess.HasExited) {
                     $_.Status = "Failed"
                     $_.WasBenchMarked = $False

@@ -34,10 +34,12 @@ if ($Name -in $global:Config.Params.PoolName) {
                 $Hashrate = $blazepool_Request.$_.hashrate
 
                 if (-not (Test-Path $StatPath)) {
-                    $Stat = Set-Stat -Name "$($Name)_$($blazepool_Algorithm)_profit" -HashRate $HashRate -Value ( [Double]$blazepool_Request.$_.estimate_last24h / $Divisor * (1 - ($blazepool_Request.$_.fees / 100)))
+                    $StatAlgo = $blazepool_Algorithm -replace "`_","`-"
+                    $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( [Double]$blazepool_Request.$_.estimate_last24h / $Divisor * (1 - ($blazepool_Request.$_.fees / 100)))
                 } 
                 else {
-                    $Stat = Set-Stat -Name "$($Name)_$($blazepool_Algorithm)_profit" -HashRate $HashRate -Value ( [Double]$blazepool_Request.$_.estimate_current / $Divisor * (1 - ($blazepool_Request.$_.fees / 100)))
+                    $StatAlgo = $blazepool_Algorithm -replace "`_","`-"
+                    $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( [Double]$blazepool_Request.$_.estimate_current / $Divisor * (1 - ($blazepool_Request.$_.fees / 100)))
                 }
 
                 if (-not $global:Pool_Hashrates.$blazepool_Algorithm) { $global:Pool_Hashrates.Add("$blazepool_Algorithm", @{ })

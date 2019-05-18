@@ -34,10 +34,12 @@ if ($Name -in $global:Config.Params.PoolName) {
                 $Hashrate = $Zergpool_Request.$_.hashrate
 
                 if (-not (Test-Path $StatPath)) {
-                    $Stat = Set-Stat -Name "$($Name)_$($Zergpool_Algorithm)_profit" -HashRate $HashRate -Value ( [Double]$Zergpool_Request.$_.estimate_last24h / $Divisor * (1 - ($Zergpool_Request.$_.fees / 100)))
+                    $StatAlgo = $Zergpool_Algorithm -replace "`_","`-"
+                    $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( [Double]$Zergpool_Request.$_.estimate_last24h / $Divisor * (1 - ($Zergpool_Request.$_.fees / 100)))
                 } 
                 else {
-                    $Stat = Set-Stat -Name "$($Name)_$($Zergpool_Algorithm)_profit" -HashRate $HashRate -Value ( [Double]$Zergpool_Request.$_.estimate_current / $Divisor * (1 - ($Zergpool_Request.$_.fees / 100)))
+                    $StatAlgo = $Zergpool_Algorithm -replace "`_","`-"
+                    $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( [Double]$Zergpool_Request.$_.estimate_current / $Divisor * (1 - ($Zergpool_Request.$_.fees / 100)))
                 }
 
                 if (-not $global:Pool_Hashrates.$Zergpool_Algorithm) { $global:Pool_Hashrates.Add("$Zergpool_Algorithm", @{ })

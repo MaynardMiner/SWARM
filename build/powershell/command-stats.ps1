@@ -272,6 +272,7 @@ function Remove-Stat {
         [String]$Name
     )
 
+    $name = $name -replace "`/","`-"
     $Remove = Join-Path ".\stats" "$Name"
     if (Test-Path $Remove) {
         Remove-Item -path $Remove
@@ -391,6 +392,8 @@ function Remove-BanHashrates {
         if (test-path ".\stats") { $A = Get-ChildItem "stats" | Where BaseName -Like "*hashrate*" }
         $global:BanHammer | ForEach-Object {
             $Sel = $_.ToLower()
+            $Sel = $Sel -replace "`/","`-"
+            $Sel = $Sel -replace "`_","`-"        
             $A.BaseName | ForEach-Object {
                 $Parse = $_ -split "`_"
                 if ($Parse[0] -eq $Sel) {

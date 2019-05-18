@@ -268,6 +268,7 @@ While ($True) {
             ##Algorithm Parsing For Stats
             $HiveAlgo = $MinerAlgo -replace "`_"," "
             $NewName = $MinerAlgo -replace "`/","`-"
+            $NewName = $MinerAlgo -replace "`_","`-"
 
             ## Determine API Type
             if ($MinerType -like "*NVIDIA*") { $global:TypeS = "NVIDIA" }

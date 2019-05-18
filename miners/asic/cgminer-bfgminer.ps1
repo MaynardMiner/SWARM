@@ -16,6 +16,7 @@ $ASICTypes | ForEach-Object {
     $global:Config.Params.ASIC_ALGO | ForEach-Object {
 
         $MinerAlgo = $_
+        $StatAlgo = $MinerAlgo -replace "`_","`-"
         $Stat = Get-Stat -Name "$($Name)_$($MinerAlgo)_hashrate"
 
         if ($MinerAlgo -in $Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
@@ -39,7 +40,7 @@ $ASICTypes | ForEach-Object {
                     Wallet     = "$($_.$User)"
                     Arguments  = "stratum+tcp://$($_.Host):$($_.Port),$($_.$User),$Pass"
                     HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour}
-                    Quote      = if ($Stat.Day) { $Stat.Day * ($_.Price) }else { 0 }
+                    Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                     PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
                     MinerPool  = "$($_.Name)"
                     FullName   = "$($_.Mining)"

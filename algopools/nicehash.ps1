@@ -49,7 +49,8 @@ if ($Name -in $global:Config.Params.PoolName) {
                 ## My experience, whatever they state is return- Is
                 ## usually pretty close to actual.
 
-                $Stat = Set-Stat -Name "$($Name)_$($Nicehash_Algorithm)_profit" -Value ([Double]$_.paying / $Divisor * (1 - ($Fee / 100)))
+                $StatAlgo = $Nicehash_Algorithm -replace "`_","`-"
+                $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -Value ([Double]$_.paying / $Divisor * (1 - ($Fee / 100)))
      
                 [PSCustomObject]@{
                     Priority  = $Priorities.Pool_Priorities.$Name

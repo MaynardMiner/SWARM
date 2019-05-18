@@ -33,10 +33,12 @@ if ($Name -in $global:Config.Params.PoolName) {
                 $Hashrate = $Hashrefinery_Request.$_.hashrate
 
                 if (-not (Test-Path $StatPath)) {
-                    $Stat = Set-Stat -Name "$($Name)_$($Hashrefinery_Algorithm)_profit" -HashRate $HashRate -Value ( [Double]$Hashrefinery_Request.$_.estimate_last24h / $Divisor * (1 - ($Hashrefinery_Request.$_.fees / 100)))
+                    $StatAlgo = $Hashrefinery_Algorithm -replace "`_","`-"
+                    $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( [Double]$Hashrefinery_Request.$_.estimate_last24h / $Divisor * (1 - ($Hashrefinery_Request.$_.fees / 100)))
                 } 
                 else {
-                    $Stat = Set-Stat -Name "$($Name)_$($Hashrefinery_Algorithm)_profit" -HashRate $HashRate -Value ( [Double]$Hashrefinery_Request.$_.estimate_current / $Divisor * (1 - ($Hashrefinery_Request.$_.fees / 100)))
+                    $StatAlgo = $Hashrefinery_Algorithm -replace "`_","`-"
+                    $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( [Double]$Hashrefinery_Request.$_.estimate_current / $Divisor * (1 - ($Hashrefinery_Request.$_.fees / 100)))
                 }
 
                 if (-not $global:Pool_Hashrates.$Hashrefinery_Algorithm) { $global:Pool_Hashrates.Add("$Hashrefinery_Algorithm", @{ })

@@ -100,7 +100,10 @@ if ($Name -in $global:Config.Params.PoolName) {
                 $Divisor = (1000000 * [Double]$global:DivisorTable.zpool.$zpool_Algorithm)
                 $Workers = [Double]$zpool_UnSorted.$_.Workers
                 $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
-                try { $Stat = Set-Stat -Name "$($Name)_$($zpool_Symbol)_coin_profit" -Value ([Double]$Cut / $Divisor) }catch { Write-Log "Failed To Calculate Stat For $zpool_Symbol" }
+                try { 
+                    $StatAlgo = $zpool_Symbol -replace "`_","`-" 
+                    $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_coin_profit" -Value ([Double]$Cut / $Divisor) 
+                }catch { Write-Log "Failed To Calculate Stat For $zpool_Symbol" }
             }
         }
 

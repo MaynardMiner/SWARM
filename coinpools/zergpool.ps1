@@ -93,7 +93,10 @@ if ($Name -in $global:Config.Params.PoolName) {
                 $zergpool_Fees = [Double]$global:FeeTable.zergpool.$Zergpool_Algorithm
                 $zergpool_Estimate = [Double]$Zergpool_UnSorted.$_.estimate * 0.001
                 $Divisor = (1000000 * [Double]$global:DivisorTable.zergpool.$Zergpool_Algorithm)    
-                try { $Stat = Set-Stat -Name "$($Name)_$($Zergpool_Symbol)_coin_profit" -Value ([double]$zergpool_Estimate / $Divisor * (1 - ($zergpool_fees / 100))) }catch { Write-Log "Failed To Calculate Stat For $Zergpool_Symbol" }
+                try {
+                    $StatAlgo = $Zergpool_Symbol -replace "`_","`-" 
+                    $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_coin_profit" -Value ([double]$zergpool_Estimate / $Divisor * (1 - ($zergpool_fees / 100))) 
+                }catch { Write-Log "Failed To Calculate Stat For $Zergpool_Symbol" }
             }
         }
 

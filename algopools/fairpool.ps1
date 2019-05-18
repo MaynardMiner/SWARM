@@ -39,10 +39,12 @@ if ($Name -in $global:Config.Params.PoolName) {
                 $Hashrate = $blockpool_Request.$_.hashrate
 
                 if (-not (Test-Path $StatPath)) {
-                    $Stat = Set-Stat -Name "$($Name)_$($fairpool_Algorithm)_profit" -Hashrate $Hashrate -Value ( [Double]$fairpool_Request.$_.estimate_last24h / $Divisor * (1 - ($fairpool_Request.$_.fees / 100)))
+                    $StatAlgo = $fairpool_Algorithm -replace "`_","`-"
+                    $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -Hashrate $Hashrate -Value ( [Double]$fairpool_Request.$_.estimate_last24h / $Divisor * (1 - ($fairpool_Request.$_.fees / 100)))
                 } 
                 else {
-                    $Stat = Set-Stat -Name "$($Name)_$($fairpool_Algorithm)_profit" -Hashrate $Hashrate -Value ( [Double]$fairpool_Request.$_.estimate_current / $Divisor * (1 - ($fairpool_Request.$_.fees / 100)))
+                    $StatAlgo = $fairpool_Algorithm -replace "`_","`-"
+                    $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -Hashrate $Hashrate -Value ( [Double]$fairpool_Request.$_.estimate_current / $Divisor * (1 - ($fairpool_Request.$_.fees / 100)))
                 }
 
                 if (-not $global:Pool_Hashrates.$fairpool_Algorithm) { $global:Pool_Hashrates.Add("$fairpool_Algorithm", @{ })
