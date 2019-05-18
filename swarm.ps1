@@ -444,7 +444,7 @@ While ($true) {
             $Top_3_Algo = $Null;
             $Top_3_Custom = $Null;
             $LoadTimer.Stop()
-            Write-Log "Algo Pools Loading Time: $($LoadTimer.Elapsed.TotalSeconds)" -Foreground Green
+            Write-Log "Algo Pools Loading Time: $([math]::Round($LoadTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green
         }
 
         ##Get Algorithms again, in case custom changed it.
@@ -487,7 +487,7 @@ While ($true) {
             if ($CoinPoolNames) { $CoinPoolNames | ForEach-Object { $CoinName = $_; $RemovePools = $AlgoPools | Where-Object Name -eq $CoinName; $RemovePools | ForEach-Object { $AlgoPools.Remove($_) | Out-Null } } }
             $RemovePools = $null
             $LoadTimer.Stop()
-            Write-Log "Coin Pools Loading Time: $($LoadTimer.Elapsed.TotalSeconds)" -Foreground Green
+            Write-Log "Coin Pools Loading Time: $([math]::Round($LoadTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green
         }
 
         if ($AlgoPools.Count -gt 0) {
@@ -498,7 +498,7 @@ While ($true) {
             $SearchMiners = Get-Miners -Pools $AlgoPools;
             $SearchMiners | % { $AlgoMiners.Add($_) | Out-Null }
             $LoadTimer.Stop()
-            Write-Log "Algo Miners Loading Time: $($LoadTimer.Elapsed.TotalSeconds)" -Foreground Green
+            Write-Log "Algo Miners Loading Time: $([math]::Round($LoadTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green
        
             ##Download Miners, If Miner fails three times- A ban is created against miner, and it should stop downloading.
             ##This works by every time it fails to download, it writes miner name to the download block list. If it counts
@@ -560,7 +560,7 @@ While ($true) {
             $Download = $false
             $BadCoinMiners = @()
             $LoadTimer.Stop()
-            Write-Log "Coin Miners Loading Time: $($LoadTimer.Elapsed.TotalSeconds)" -Foreground Green
+            Write-Log "Coin Miners Loading Time: $([math]::Round($LoadTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green
 
             if ($global:Config.Params.Lite -eq "No") {
                 $CoinMiners | ForEach {
