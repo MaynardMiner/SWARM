@@ -25,14 +25,14 @@
         },
         "naming": {
             "phi2": "phi2",
-            "cryptonightv8": "cnv8",
+            "cryptonight-v8": "cnv8",
             "lyra2re": "lyra2z",
             "lyra2rev3": "lyra2rev3",
-            "cryptonigh/r": "cnr"
+            "cryptonight-r": "cnr"
         },
         "fee": {
             "phi2": 3,
-            "cryptonightv8": 2.5,
+            "cryptonight-v8": 2.5,
             "lyra2re": 3,
             "lyra2rev3": 2.5,
             "cyrtponight-r": 2.5
