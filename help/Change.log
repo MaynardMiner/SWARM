@@ -2071,7 +2071,7 @@ Note: Am aware that XMRig and XMRstak have Updates
 -Added reboot.ps1
 -Cleaned up Claymore/ethminer style API for windows agent errors.
 -Removed -pers auto args on grin algo launches- Did not add to remote update.
--Added cryptonight/r
+-Added cyrtponight-r
 -Removed lyra2z from fancyIX- It would just crash cards.
 
 2.0.5
@@ -2919,3 +2919,35 @@ API overhaul:
   Fixed ``get stats lite`` Currency/Day
 
   Multiminer-AMD (Linux version) binary fixed.
+
+
+   2.2.9
+
+   NOTE: Updating to 2.2.9 is not possible. Due to the nature of changes, the amount of changes,
+   and the requirements of these changes: It is recommeneded to rebenchmark and fresh install SWARM.
+
+   FIXES
+
+   * Fixed Memory for nvidia OC in linux
+   * Fixed ETHPill (export display) in linux
+   * Renamed all instances of Hashrates.Day to
+     Hashrates.Hour - Some where missed. This will
+     Fix ASIC issues, as well as some issues on screen.
+   * Found small typos in miner files.
+   * Removed -Version 5.0 in powershell startups
+   * OC for amd displayed on main screen.
+
+   NEW FEATURES:
+
+   Expiremental:
+   * HiveOS / SWARM name conformity for all algorithms.
+
+   Expiremental:
+   * HiveOS OC SYCRONIZATION!
+     * This allows you to use oc_profiles with swarm
+     * A working -API_Key from HiveOS must be specified.
+     * See Details Here: https://github.com/MaynardMiner/SWARM/wiki/HiveOS-OC-Tuning
+       for limitations and how it operates.
+
+
+   
