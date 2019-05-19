@@ -25,7 +25,7 @@ if ($Name -in $global:Config.Params.PoolName) {
         if ($Algorithm -contains $Zergpool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $Zergpool_Algorithm) {
             if ($Name -notin $global:Config.Pool_Algos.$Zergpool_Algorithm.exclusions -and $Zergpool_Algorithm -notin $Global:banhammer) {
                 $Zergpool_Port = $Zergpool_Request.$_.port
-                $Zergpool_Host = "$($Zergpool_Algorithm).mine.zergpool.com$X"
+                $Zergpool_Host = "$($Zergpool_Request.$_.name.ToLower()).mine.zergpool.com$X"
                 $Divisor = (1000000 * $Zergpool_Request.$_.mbtc_mh_factor)
                 $Global:DivisorTable.zergpool.Add($Zergpool_Algorithm, $Zergpool_Request.$_.mbtc_mh_factor)
                 $Fees = $Zergpool_Request.$_.fees
