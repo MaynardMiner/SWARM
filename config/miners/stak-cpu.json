@@ -11,7 +11,7 @@
             "cryptonight-heavy": "",
             "cryptonight-gpu": "",
             "cryptonight-superfast": "",
-            "cryptonight/r": ""
+            "cyrtponight-r": ""
         },
         "difficulty": {
             "cryptonight": "",
@@ -20,7 +20,7 @@
             "cryptonight-heavy": "",
             "cryptonight-gpu": "",
             "cryptonight-superfast": "",
-            "cryptonight/r": ""
+            "cyrtponight-r": ""
         },
         "naming": {
             "cryptonight": "cryptonight",
@@ -29,7 +29,7 @@
             "cryptonight-heavy": "cryptonight_heavy",
             "cryptonight-gpu": "cryptonight_gpu",
             "cryptonight-superfast": "cryptonight_superfast",
-            "cryptonight/r": "cryptonight_r"
+            "cyrtponight-r": "cryptonight_r"
         },
         "fee": {
             "cryptonight": 1,
@@ -38,7 +38,7 @@
             "cryptonight-heavy": 1,
             "cryptonight-gpu": 1,
             "cryptonight-superfast": 1,
-            "cryptonight/r": 1
+            "cyrtponight-r": 1
         }
     }
 }
