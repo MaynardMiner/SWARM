@@ -619,8 +619,6 @@ function Start-MinerLoop {
         if ($ModeCheck -gt 0) { break }
         Start-Sleep -s 5
         if ($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval - 20)) { break }
-        $RestartData = Restart-Database
-        if ($RestartData -eq "Yes") { break }
 
     }While ($MinerWatch.Elapsed.TotalSeconds -lt ($MinerInterval - 20))
 }

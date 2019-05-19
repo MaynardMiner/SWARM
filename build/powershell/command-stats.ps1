@@ -339,9 +339,6 @@ function Invoke-SwarmMode {
         [int]$ModeDeviation = 5
     )
 
-
-
-
     $DateMinute = [Int]$SwarmMode_Start.Minute + $ModeDeviation
     $DateMinute = ([math]::Floor(($DateMinute / $ModeDeviation)) * $ModeDeviation)
     if ($DateMinute -gt 59) { $DateMinute = 0; $DateHour = [Int]$SwarmMode_Start.Hour; $DateHour = [int]$DateHour + 1 }else { $DateHour = [Int]$SwarmMode_Start.Hour; $DateHour = [int]$DateHour }
