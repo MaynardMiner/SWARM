@@ -331,7 +331,7 @@ if ($Miner.Type -like "*AMD*") {
                     $WolfArgs = "wolfamdctrl -i $($GCount.AMD.$GPU)$MEMArgs"
                     $AScript += "$WolfArgs"
                 }
-                $AScreenMem += "$($Miner.Type) MEM is $Mem "
+                $AScreenMem += "$($Miner.Type) MEM is $MemClock "
                 $AScreenMDPM += "$($Miner.Type) MDPM is $MemState "
             }
 
@@ -428,8 +428,8 @@ if ($Miner.Type -like "*AMD*") {
                         if ($Mem_State) { $MV = $Default_Mem_Voltage."Gpu $Select P$($Mem_State) Mem Voltage" }else { $MV = $DefaultMemVolt }
                         $OCArgs += "Mem_P$($MPStates-1)=$($Mem);$MV "
                     }
-                    $AScreenMem = "$($Miner.Type) MEM is $($OC_Algo.ocmem) "
-                    $AScreenMDPM = "$($Miner.Type) MDPM is $($Miner.ocmdpm) "
+                    $AScreenMem = "$($Miner.Type) MEM is $($MemClock) "
+                    $AScreenMDPM = "$($Miner.Type) MDPM is $($MemState) "
                 }
 
                 if ($CoreClock -or $Voltage) {
@@ -444,8 +444,8 @@ if ($Miner.Type -like "*AMD*") {
                         if ($Core_Volt) { $CVolt = $Core_Volt }else { $CVolt = $DefaultCoreVolt }
                         $OCArgs += "GPU_P$j=$CClock;$CVolt "
                     }
-                    $AScreenCore = "$($Miner.Type) CORE is $($OC_Algo.occore) "
-                    $AScreenDPM = "$($Miner.Type) Core Voltage is $($Miner.ocv) "
+                    $AScreenCore = "$($Miner.Type) CORE is $($CoreClock) "
+                    $AScreenDPM = "$($Miner.Type) Core Voltage is $($Voltage) "
                 }
 
                 if ($Fans) {
@@ -475,7 +475,7 @@ if ($Miner.Type -like "*AMD*") {
                             $OCArgs += "Fan_ZeroRPM=0 Fan_P0=$($FansMap[0]);$($Fans[$Select]) Fan_P1=$($FansMap[1]);$($Fans[$Select]) Fan_P2=$($FansMap[2]);$($Fans[$Select]) Fan_P3=$($FansMap[3]);$($Fans[$Select]) Fan_P4=$($FansMap[4]);$($Fans[$Select]) "
                         }
                     }
-                    $AScreenFans = "$($Miner.Type) Fans is $($Miner.ocfans) "
+                    $AScreenFans = "$($Miner.Type) Fans is $($Fans) "
                 }
                 $AScript += "Start-Process `".\OverdriveNTool.exe`" -ArgumentList `"$OCArgs`" -WindowStyle Minimized -Wait"
             }
