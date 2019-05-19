@@ -456,10 +456,9 @@ function Get-MinerHashRate {
         if ($_.Fiat_Day -ne "bench") { $CurrentProfit = "$($_.Fiat_Day) $($global:Config.Params.Currency)/Day" } else { $CurrentProfit = "Benchmarking" }
         if ($null -eq $_.Xprocess -or $_.XProcess.HasExited) { $_.Status = "Failed" }
         $Miner_HashRates = Get-HashRate -Type $_.Type
-        $NewName = $_.Algo -replace "`/","`-"
         $NewName = $_.Algo -replace "`_","`-"
         $GetDayStat = Get-Stat "$($_.Name)_$($NewName)_HashRate"
-        $DayStat = "$($GetDayStat.Day)"
+        $DayStat = "$($GetDayStat.Hour)"
         $MinerPrevious = "$($DayStat | ConvertTo-Hash)"
         $ScreenHash = "$($Miner_HashRates | ConvertTo-Hash)"
         Write-Log "$($_.Type) is currently" -foreground Green -NoNewLine -Start
