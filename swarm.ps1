@@ -62,7 +62,7 @@ $global:Config.Add("Pool_Algos",(Get-Content ".\config\pools\pool-algos.json" | 
 . .\build\powershell\intensity.ps1; . .\build\powershell\cl.ps1; . .\build\powershell\screen.ps1; 
 . .\build\api\hiveos\do-command.ps1; . .\build\api\hiveos\response.ps1; . .\build\api\html\api.ps1; 
 . .\build\powershell\config_file.ps1; . .\build\powershell\altwallet.ps1; . .\build\api\pools\include.ps1; 
-. .\build\api\miners\include.ps1; . .\build\api\miners\include.ps1;
+. .\build\api\miners\include.ps1; . .\build\api\miners\include.ps1; . .\build\api\hiveos\oc-tune.ps1;
 if ($global:Config.Params.Platform -eq "linux") { . .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1 }
 if ($global:Config.Params.Platform -eq "windows") { . .\build\api\hiveos\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1; . .\build\powershell\environment.ps1; }
 
@@ -860,6 +860,7 @@ While ($true) {
             }
         }
         
+        $HiveOCTune = $false
         ##Miners That Should Be Running
         ##Start them if neccessary
         $BestActiveMiners | ForEach-Object {
@@ -873,13 +874,22 @@ While ($true) {
                 $Current = $_ | ConvertTo-Json -Compress
 
                 ##First Do OC
-                if ($ClearedOC -eq $False) {
-                    $OCFile = ".\build\txt\oc-settings.txt"
-                    if (Test-Path $OCFile) { Clear-Content $OcFile -Force; "Current OC Settings:" | Set-Content $OCFile }
-                    $ClearedOC = $true
+                if($global:Config.Params.API_Key -and $global:Config.Params.API_Key -ne "") {
+                    if($HiveOCTune -eq $false) {
+                        if($_.Type -notlike "*ASIC*") {
+                            Start-HiveTune $_.Algo
+                            $HiveOCTune = $true
+                        }
+                    }
+                } else {
+                    if ($ClearedOC -eq $False) {
+                        $OCFile = ".\build\txt\oc-settings.txt"
+                        if (Test-Path $OCFile) { Clear-Content $OcFile -Force; "Current OC Settings:" | Set-Content $OCFile }
+                        $ClearedOC = $true
+                    }
+                    if($_.Type -notlike "*ASIC*"){Start-OC -NewMiner $Current -Website $Website}
                 }
 
-                if($_.Type -notlike "*ASIC*"){Start-OC -NewMiner $Current -Website $Website}
 
                 ##Launch Miners
                 write-Log "Starting $($_.InstanceName)"
