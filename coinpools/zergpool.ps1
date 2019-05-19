@@ -23,8 +23,9 @@ if ($Name -in $global:Config.Params.PoolName) {
     }
    
     $zergpool_Request.PSObject.Properties.Name | ForEach-Object { $zergpool_Request.$_ | Add-Member "sym" $_ }
-    $zergpool_Request.PSObject.Properties.Name | ForEach-Object { 
+    $zergpool_Request.PSObject.Properties.Name | ForEach-Object {
         $Algo = $zergpool_Request.$_.Algo.ToLower()
+        $zergpool_Request.$_ | Add-Member "Original_Algo" $Algo
         $zergpool_Request.$_.Algo = $global:Config.Pool_Algos.PSObject.Properties.Name | % {if($Algo -in $global:Config.Pool_Algos.$_.alt_names){$_}}
     }
     $ZergAlgos = @()
@@ -104,9 +105,8 @@ if ($Name -in $global:Config.Params.PoolName) {
 
             $Zergpool_Algorithm = $Zergpool_Sorted.$_.algo.ToLower()
             $Zergpool_Symbol = $Zergpool_Sorted.$_.sym.ToUpper()
-            $zergpool_Coin = $Zergpool_Sorted.$_.Name.Tolower()
             $zergpool_Port = $Zergpool_Sorted.$_.port
-            $zergpool_Host = "$($Zergpool_Sorted.$_.algo).mine.zergpool.com$X"
+            $zergpool_Host = "$($Zergpool_Sorted.$_.Original_Algo).mine.zergpool.com$X"
 
             $zergpool_Fees = [Double]$global:FeeTable.zergpool.$Zergpool_Algorithm
 

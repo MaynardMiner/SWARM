@@ -29,8 +29,9 @@ if ($Name -in $global:Config.Params.PoolName) {
     }
    
     $zpool_Request.PSObject.Properties.Name | ForEach-Object { $zpool_Request.$_ | Add-Member "sym" $_ }
-    $zpool_Request.PSObject.Properties.Name | ForEach-Object { 
+    $zpool_Request.PSObject.Properties.Name | ForEach-Object {
         $Algo = $zpool_Request.$_.Algo.ToLower()
+        $zpool_Request.$_ | Add-Member "Original_Algo" $Algo
         $zpool_Request.$_.Algo = $global:Config.Pool_Algos.PSObject.Properties.Name | % {if($Algo -in $global:Config.Pool_Algos.$_.alt_names){$_}}
     }
     $zpoolAlgos = @()
@@ -111,9 +112,8 @@ if ($Name -in $global:Config.Params.PoolName) {
 
             $zpool_Algorithm = $zpool_Sorted.$_.algo.ToLower()
             $zpool_Symbol = $zpool_Sorted.$_.sym.ToUpper()
-            $zpool_Coin = $zpool_Sorted.$_.Name.Tolower()
             $zpool_Port = $zpool_Sorted.$_.port
-            $Zpool_Host = "$($ZPool_Algorithm).$($region).mine.zpool.ca$X"
+            $Zpool_Host = "$($zpool_Request.$_.Original_Algo).$($region).mine.zpool.ca$X"
             $Fees = [Double]$global:FeeTable.zpool.$zpool_Algorithm
             $Estimate = [Double]$zpool_Sorted.$_.estimate * 0.001
             $Divisor = (1000000 * [Double]$global:DivisorTable.zpool.$zpool_Algorithm)
