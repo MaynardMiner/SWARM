@@ -83,7 +83,7 @@ $NVIDIATypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         DeviceCall = "bminer"
-                        Arguments  = "-uri $($Naming)://$($_.$User)$Pass$Diff@$($_.Host):$($_.Port) $AddArgs-logfile `'$Log`' -api 127.0.0.1:$Port"
+                        Arguments  = "-uri $($Naming)://$($_.$User)$Pass$Diff@$($_.Host):$($_.Port) $AddArgs-logfile `'$Log`' -api 127.0.0.1:$Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour }
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
