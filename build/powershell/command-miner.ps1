@@ -38,6 +38,7 @@ function Get-Miners {
     if (Test-Path ".\timeout\pool_block\pool_block.txt") { $GetPoolBlocks = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json }
     if (Test-Path ".\timeout\algo_block\algo_block.txt") { $GetAlgoBlocks = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json }
     if (Test-Path ".\timeout\miner_block\miner_block.txt") { $GetMinerBlocks = Get-Content ".\timeout\miner_block\miner_block.txt" | ConvertFrom-Json }
+    if (Test-Path ".\timeout\download_block\download_block.txt") { $GetDownloadBlocks = Get-Content ".\timeout\download_block\download_block.txt" | ConvertFrom-Json }
 
     ## Start Running miner scripts, Create an array of Miner Hash Tables
     $GetMiners = New-Object System.Collections.ArrayList
@@ -93,6 +94,7 @@ function Get-Miners {
         $TPoolBlocks = $GetPoolBlocks | Where-Object Algo -eq $_.Algo | Where-Object Name -eq $_.Name | Where-Object Type -eq $_.Type | Where-Object MinerPool -eq $_.Minerpool
         $TAlgoBlocks = $GetAlgoBlocks | Where-Object Algo -eq $_.Algo | Where-Object Name -eq $_.Name | Where-Object Type -eq $_.Type
         $TMinerBlocks = $GetMinerBlocks | Where-Object Name -eq $_.Name | Where-Object Type -eq $_.Type
+        $TDownloadBlocks = $GetDownloadBlocks | Where-Object Name -eq $_.Name
 
         if ($TPoolBlocks) {
             $Warning = "Warning: Blocking $($_.Name) mining $($_.Algo) on $($_.MinerPool) for $($_.Type)"; 
@@ -106,6 +108,11 @@ function Get-Miners {
         }
         elseif ($TMinerBlocks) {
             $Warning = "Warning: Blocking $($_.Name) for $($_.Type)"; 
+            if ($Note -notcontains $Warning) { $Note += $Warning }
+            $ScreenedMiners += $_
+        }
+        elseif ($TDownloadBlocks) {
+            $Warning = "Warning: Blocking $($_.Name) - Download Failed"; 
             if ($Note -notcontains $Warning) { $Note += $Warning }
             $ScreenedMiners += $_
         }
@@ -206,8 +213,8 @@ function start-minersorting {
             }
             else { $WattCalc3 = 0 }
             
-            if ($global:Pool_Hashrates.$_.$MinerPool.Percent -gt 0) {$Hash_Percent = $global:Pool_Hashrates.$_.$MinerPool.Percent * 100}
-            else{$Hash_Percent = 0}
+            if ($global:Pool_Hashrates.$_.$MinerPool.Percent -gt 0) { $Hash_Percent = $global:Pool_Hashrates.$_.$MinerPool.Percent * 100 }
+            else { $Hash_Percent = 0 }
 
             $Miner_Volume = ([Double]($Miner.Quote * (1 - ($Hash_Percent / 100))))
             $Miner_Modified = ([Double]($Miner_Volume * (1 - ($Miner.Fees / 100))))
@@ -217,7 +224,7 @@ function start-minersorting {
             $Miner_Profits | Add-Member $_  ([Double]($Miner_Modified + $WattCalc3))  ##Used to calculate BTC/Day and sort miners
             $Miner_Unbias | Add-Member $_  ([Double]($Miner_Modified + $WattCalc3))  ##Uset to calculate Daily profit/day moving averages
             $Miner_Pool_Estimates | Add-Member $_ ([Double]($Miner.Quote)) ##RAW calculation for Live Value (Used On screen)
-            $Miner_Vol | Add-Member $_ $( if($global:Pool_Hashrates.$_.$MinerPool.Percent -gt 0){[Double]$global:Pool_Hashrates.$_.$MinerPool.Percent * 100} else { 0 } )
+            $Miner_Vol | Add-Member $_ $( if ($global:Pool_Hashrates.$_.$MinerPool.Percent -gt 0) { [Double]$global:Pool_Hashrates.$_.$MinerPool.Percent * 100 } else { 0 } )
         }
             
         $Miner_Power = [Double]($Miner_PowerX.PSObject.Properties.Value | Measure-Object -Sum).Sum
@@ -284,26 +291,27 @@ function Start-MinerReduction {
 }
 
 function Get-MinerHashTable {
-        Invoke-Expression ".\build\powershell\get.ps1 benchmarks all -asjson" | Tee-Object -Variable Miner_HashTable | Out-Null
-        if($Miner_HashTable -and $Miner_HashTable -ne "No Stats Found"){
-            $Miner_HashTable = $Miner_HashTable | ConvertFrom-Json
-        }else{$Miner_HashTable = $null}
+    Invoke-Expression ".\build\powershell\get.ps1 benchmarks all -asjson" | Tee-Object -Variable Miner_HashTable | Out-Null
+    if ($Miner_HashTable -and $Miner_HashTable -ne "No Stats Found") {
+        $Miner_HashTable = $Miner_HashTable | ConvertFrom-Json
+    }
+    else { $Miner_HashTable = $null }
 
-        if($Miner_HashTable) {
-            $Miner_HashTable | %{$_ | Add-Member "Type" $global:TypeTable.$($_.Miner)}
-            $NotBest = @()
-            $Miner_HashTable.Algo | %{
-                $A = $_
-                $global:Config.Params.Type | %{
-                    $T = $_
-                    $Sel = $Miner_HashTable | Where Algo -eq $A | Where Type -EQ $T
-                    $NotBest += $Sel | Sort-Object RAW -Descending | Select-Object -Skip 1
-                }
+    if ($Miner_HashTable) {
+        $Miner_HashTable | % { $_ | Add-Member "Type" $global:TypeTable.$($_.Miner) }
+        $NotBest = @()
+        $Miner_HashTable.Algo | % {
+            $A = $_
+            $global:Config.Params.Type | % {
+                $T = $_
+                $Sel = $Miner_HashTable | Where Algo -eq $A | Where Type -EQ $T
+                $NotBest += $Sel | Sort-Object RAW -Descending | Select-Object -Skip 1
             }
-
-            $Miner_HashTable | % {$Sel = $NotBest | Where Miner -eq $_.Miner | Where Algo -eq $_.Algo | Where Type -eq $_.Type; if($Sel){$_.Raw = "Bad"}}
         }
-        $Miner_HashTable
+
+        $Miner_HashTable | % { $Sel = $NotBest | Where Miner -eq $_.Miner | Where Algo -eq $_.Algo | Where Type -eq $_.Type; if ($Sel) { $_.Raw = "Bad" } }
+    }
+    $Miner_HashTable
 }
 function Get-BestMiners {
 
@@ -317,18 +325,18 @@ function Get-BestMiners {
         $MinerCombo = @()
 
         $TypeMiners = $Miners | Where Type -EQ $SelType
-        $BestActiveMiners | ForEach {$Miners | Where Path -EQ $_.Path | Where Arguments -EQ $_.Arguments | Where Type -EQ $SelType | ForEach {$OldMiners += $_}}
+        $BestActiveMiners | ForEach { $Miners | Where Path -EQ $_.Path | Where Arguments -EQ $_.Arguments | Where Type -EQ $SelType | ForEach { $OldMiners += $_ } }
         if ($OldMiners) {
-            $OldTypeMiners += $OldMiners | Where Profit -gt 0 | Sort-Object @{Expression = "Profit"; Descending = $true} | Select -First 1
-            $OldTypeMiners += $OldMiners | Where Profit -lt 0 | Sort-Object @{Expression = "Profit"; Descending = $false} | Select -First 1
+            $OldTypeMiners += $OldMiners | Where Profit -gt 0 | Sort-Object @{Expression = "Profit"; Descending = $true } | Select -First 1
+            $OldTypeMiners += $OldMiners | Where Profit -lt 0 | Sort-Object @{Expression = "Profit"; Descending = $false } | Select -First 1
             $OldTypeMiners = $OldTypeMiners | Select -First 1
-            $OldTypeMiners | foreach { $_ | Add-Member "Old" "Yes"}
+            $OldTypeMiners | foreach { $_ | Add-Member "Old" "Yes" }
         }
-        if ($OldTypeMiners) {$MinerCombo += $OldTypeMiners}
+        if ($OldTypeMiners) { $MinerCombo += $OldTypeMiners }
         $MinerCombo += $TypeMiners | Where Profit -NE $NULL
         $BestTypeMiners += $TypeMiners | Where Profit -EQ $NULL | Select -First 1
-        $BestTypeMiners += $MinerCombo | Where Profit -NE $Null | Where Profit -gt 0 | Sort-Object {($_ | Measure Profit -Sum).Sum} -Descending | Select -First 1
-        $BestTypeMiners += $MinerCombo | Where Profit -NE $Null | Where Profit -lt 0 | Sort-Object {($_ | Measure Profit -Sum).Sum} -Descending | Select -First 1
+        $BestTypeMiners += $MinerCombo | Where Profit -NE $Null | Where Profit -gt 0 | Sort-Object { ($_ | Measure Profit -Sum).Sum } -Descending | Select -First 1
+        $BestTypeMiners += $MinerCombo | Where Profit -NE $Null | Where Profit -lt 0 | Sort-Object { ($_ | Measure Profit -Sum).Sum } -Descending | Select -First 1
         $BestMiners += $BestTypeMiners | Select -first 1
     }
 
@@ -339,9 +347,41 @@ function Get-BestMiners {
 function Get-MinerConfigs {
     $Configs = Get-ChildItem ".\config\miners"
     $Configs.Name | % {
-       $FileDir = Join-Path ".\config\miners" $_
-       $A = Get-Content $FileDir | ConvertFrom-Json
-       if(-not $global:Config.miners) {$global:Config.Add("miners",@{})}
-       if($A.Name -notin $global:Config.miners.keys){$global:Config.miners.Add($A.Name,$A)}
+        $FileDir = Join-Path ".\config\miners" $_
+        $A = Get-Content $FileDir | ConvertFrom-Json
+        if (-not $global:Config.miners) { $global:Config.Add("miners", @{ })
+        }
+        if ($A.Name -notin $global:Config.miners.keys) { $global:Config.miners.Add($A.Name, $A) }
     }
+}
+
+function Get-MinerBinary {
+    [Parameter(Position = 0, Mandatory = $false)]
+    [string]$SelMiner
+
+    $Miner = $SelMiner | ConvertFrom-Json;
+    $MaxAttempts = 3;
+    ## Success 1 means to continue forward (ASIC)
+    ## Success 2 means that miner failed, and loop should restart
+    ## Success 3 means that miner download succeded
+    $Success = 1;
+
+    if ($Miner.Type -notlike "*ASIC*") {
+        for ($i = 0; $i -lt $MaxAttempts; $i++) {
+            if ( -not (Test-Path $Miner.Path) ) {
+                write-Log "$($Miner.Name) Not Found- Downloading" -ForegroundColor Yellow
+                Expand-WebRequest $Miner.URI $Miner.Path
+            }
+        }
+        if( Test-Path $Miner.Path ) {
+            $Success = 3
+        } else {
+            $Success = 2
+            if ( -not (Test-Path ".\timeout\download_block") ) { New-Item -Name "download_block" -Path ".\timeout" -ItemType "directory" | OUt-Null }
+            $SelMiner | Add-Content ".\timeout\download_block\download_block.txt"
+        }
+    }
+    else { $Success = 1 }
+
+    $Success
 }

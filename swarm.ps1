@@ -500,53 +500,6 @@ While ($true) {
             $SearchMiners | % { $AlgoMiners.Add($_) | Out-Null }
             $LoadTimer.Stop()
             Write-Log "Algo Miners Loading Time: $([math]::Round($LoadTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green
-       
-            ##Download Miners, If Miner fails three times- A ban is created against miner, and it should stop downloading.
-            ##This works by every time it fails to download, it writes miner name to the download block list. If it counts
-            ##The name more than three times- It skips over miner. It also interactively rebuilds the AlgoMiners Array into
-            ##A new array with the miner removed. I know, complicated, right?
-            $DownloadNote = @()
-            $Download = $false
-            $BadAlgoMiners = @()
-
-            if ($global:Config.Params.Lite -eq "No") {
-                $AlgoMiners | ForEach {
-                    $AlgoMiner = $_
-                    if ($AlgoMiner.Type -notlike "*ASIC*") {
-                        if (Test-Path ".\timeout\download_block\download_block.txt") { $DLTimeout = Get-Content ".\timeout\download_block\download_block.txt" }
-                        $DLName = $DLTimeout | Select-String "$($AlgoMiner.Name)"
-                        if (-not (Test-Path $AlgoMiner.Path)) {
-                            write-Log "Miner Not Found- Downloading" -ForegroundColor Yellow
-                            if ($DLName.Count -lt 3) {
-                                Expand-WebRequest $AlgoMiner.URI $ALgoMiner.Path
-                                Start-Sleep -S 1
-                                $Download = $true
-                                if (-not (Test-Path $ALgoMiner.Path)) {
-                                    if (-not (Test-Path ".\timeout\download_block")) { New-Item -Name "download_block" -Path ".\timeout" -ItemType "directory" | OUt-Null }
-                                    "$($Algominer.Name)" | Add-Content ".\timeout\download_block\download_block.txt"
-                                }
-                            }
-                            else {
-                                $DLWarning = "$($AlgoMiner.Name) download failed too many times- Blocking"; 
-                                if ($DownloadNote -notcontains $DLWarning) { $DownloadNote += $DLWarning }
-                                $BadAlgoMiners += $_
-                            }
-                        }
-                    }       
-                }
-
-                $BadAlgoMiners | % { $AlgoMiners.Remove($_) } | Out-Null;
-                $BadAlgoMiners = $Null
-                $DLTimeout = $null
-                $DlName = $Null
-                ## Print Warnings
-                if ($DownloadNote) { $DownloadNote | % { write-Log "$($_)" -ForegroundColor Red } }
-                $DownloadNote = $null
-            }
-   
-
-            ## Linux Bug- Restart Loop if miners were downloaded. If not, miners were skipped over
-            if ($Download -eq $true -and $CoinPools.Count -eq 0) { continue }
         }
 
         if ($CoinPools.Count -gt 0) {
@@ -557,52 +510,8 @@ While ($true) {
             $CoinMiners = New-Object System.Collections.ArrayList
             $SearchMiners = Get-Miners -Pools $CoinPools;
             $SearchMiners | % { $CoinMiners.Add($_) | Out-Null }
-            $DownloadNote = @()
-            $Download = $false
-            $BadCoinMiners = @()
             $LoadTimer.Stop()
             Write-Log "Coin Miners Loading Time: $([math]::Round($LoadTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green
-
-            if ($global:Config.Params.Lite -eq "No") {
-                $CoinMiners | ForEach {
-                    $CoinMiner = $_
-                    if ($CoinMiner.Type -notlike "*ASIC*") {
-                        if (Test-Path ".\timeout\download_block\download_block.txt") { $DLTimeout = Get-Content ".\timeout\download_block\download_block.txt" }
-                        $DLName = $DLTimeout | Select-String "$($CoinMiner.Name)"
-                        if (-not (Test-Path $CoinMiner.Path)) {
-                            write-Log "Miner Not Found- Downloading" -ForegroundColor Yellow
-                            if ($DLName.Count -lt 3) {
-                                Expand-WebRequest $CoinMiner.URI $CoinMiner.Path
-                                $Download = $true
-                                if (-not (Test-Path $CoinMiner.Path)) {
-                                    if (-not (Test-Path ".\timeout\download_block")) { New-Item -Name "download_block" -Path ".\timeout" -ItemType "directory" | OUt-Null }
-                                    "$($CoinMiner.Name)" | Out-File ".\timeout\download_block\download_block.txt" -Append
-                                }
-                            }
-                            else {
-                                $DLWarning = "$($CoinMiner.Name) download failed too many times- Blocking"; 
-                                if ($DownloadNote -notcontains $DLWarning) { $DownloadNote += $DLWarning }
-                                $BadCoinMiners += $_
-                            }
-                        }
-                    }       
-                }
-
-                $BadCoinMiners | % { $CoinMiners.Remove($_) } | Out-Null;
-                $BadCoinMiners = $Null
-                $DLTimeout = $null
-                $DlName = $Null
-                ## Print Warnings
-                if ($DownloadNote) {
-                    $DownloadNote | % {        
-                        write-Log "$($_)" -ForegroundColor Red }
-                }
-                $DownloadNote = $null
-            } 
-
-
-            ## Linux Bug- Restart Loop if miners were downloaded. If not, miners were skipped over
-            if ($Download -eq $true) { continue }
         }
 
         $Miners = New-Object System.Collections.ArrayList
@@ -725,6 +634,7 @@ While ($true) {
                     DeviceCall     = $_.DeviceCall
                     MinerName      = $_.MinerName
                     Path           = $_.Path
+                    Uri            = $_.Uri
                     Arguments      = $_.Arguments
                     API            = $_.API
                     Port           = $_.Port
@@ -771,6 +681,19 @@ While ($true) {
         $ActiveMinerPrograms | ForEach-Object {
             if ($BestMiners_Combo | Where-Object Type -EQ $_.Type | Where-Object Path -EQ $_.Path | Where-Object Arguments -EQ $_.Arguments) { $_.BestMiner = $true; $BestActiveMiners += $_ }
             else { $_.BestMiner = $false }
+        }
+
+        $BestActiveMiners | ForEach-Object {
+            $Success = 0;
+            $CheckPath = Test-Path $_.Path
+            if ( $_.Type -notlike "*ASIC*" -and $CheckPath -eq $false ) {
+                $SelMiner = $_ | ConvertTo-Json -Compress
+                $Success = Get-MinerBinary $SelMiner
+            } else { $Success = 1 }
+            if($Success -eq 2) {
+                Write-Log "WARNING: Miner Failed To Download Three Times- Restarting SWARM" -ForeGroundColor Yellow
+                continue
+            }
         }
 
         ##Modify BestMiners for API
