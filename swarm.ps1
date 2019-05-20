@@ -13,6 +13,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ## Set Current Path
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+##filepath dir
+$global:dir = (Split-Path $script:MyInvocation.MyCommand.Path)
+$env:Path += ";$global:dir\build\cmd"
+Get-ChildItem . -Recurse | Unblock-File
+try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$($global:Dir)`'" -WindowStyle Minimized } }catch { }
+New-NetFirewallRule -DisplayName 'swarm.ps1' -Direction Inbound -Program "$global:dir\swarm.ps1" -Action Allow | Out-Null
 
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
 $Debug = $false
@@ -29,10 +35,6 @@ $global:cultureENUS = New-Object System.Globalization.CultureInfo("en-US")
 ## Get Parameters
 $Global:config = @{ }
 Get-Parameters
-
-##filepath dir
-$global:dir = (Split-Path $script:MyInvocation.MyCommand.Path)
-$env:Path += ";$global:dir\build\cmd"
 
 if (-not (Test-Path ".\build\txt")) { New-Item -Name "txt" -ItemType "Directory" -Path ".\build" | Out-Null }
 $global:Config.Params.Platform | Set-Content ".\build\txt\os.txt"
@@ -106,7 +108,6 @@ if ((Test-Path ".\config\parameters\newarguments.json") -or $Debug -eq $true) {
 
 if ($global:Config.Params.Platform -eq "windows") { 
     ##Remove Exclusion
-    try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "pwsh" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath '$(Convert-Path .)'" -WindowStyle Minimized } }catch { }
 }
 
 ## lower case (Linux file path)

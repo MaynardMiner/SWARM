@@ -18,6 +18,8 @@ Param (
 
 $global:Dir = $WorkingDir
 Set-Location $WorkingDir
+try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$WorkingDir`'" -WindowStyle Minimized } }catch { }
+New-NetFirewallRule -DisplayName 'background.ps1' -Direction Inbound -Program "$global:dir\build\powershell\background.ps1" -Action Allow | Out-Null
 
 ## Get Parameters
 $Global:config = [hashtable]::Synchronized(@{ })

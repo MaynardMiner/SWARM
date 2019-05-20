@@ -1,5 +1,7 @@
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 $Dir = Split-Path $script:MyInvocation.MyCommand.Path
+try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$Dir`'" -WindowStyle Minimized } }catch { }
+
 
 if (Test-Path ".\config\parameters\default.json") {
     $Defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json

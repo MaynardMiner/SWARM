@@ -192,6 +192,7 @@ function Start-LaunchCode {
                 ##Build Start Script
                 $script = @()
                 $script += "`$OutputEncoding = [System.Text.Encoding]::ASCII"
+                $script += "New-NetFirewallRule -DisplayName `'$($MinerCurrent.MinerName)`' -Direction Inbound -Program `'$WorkingDirectory`' -Action Allow"
                 $script += "Start-Process `"powershell`" -ArgumentList `"-command `"`"Set-Location ```'$($global:Dir)```'; & ```'$($global:Dir)\build\powershell\icon.ps1```' ```'$($global:Dir)\build\apps\miner.ico```'`"`"`" -NoNewWindow"
                 $script += "`$host.ui.RawUI.WindowTitle = `'$($MinerCurrent.Name) - $($MinerCurrent.Algo)`';"
                 $MinerCurrent.Prestart | ForEach-Object {
