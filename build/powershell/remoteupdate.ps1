@@ -18,22 +18,22 @@ function start-update {
     )
 
     $Location = split-Path $($global:Dir)
-    $StartUpdate = $True
+    $StartUpdate = $false
     if ($Global:Config.params.Platform -eq "linux" -and $Update -eq "No") { $StartUpdate = $false }
 
     if ($StartUpdate -eq $true) {
-        #$PreviousVersions = @()
-        #$PreviousVersions += "SWARM.2.1.8"
-        #$PreviousVersions += "SWARM.2.1.9"
-        #$PreviousVersions += "SWARM.2.2.0"
-        #$PreviousVersions += "SWARM.2.2.1"
-        #$PreviousVersions += "SWARM.2.2.2"
-        #$PreviousVersions += "SWARM.2.2.3"
-        #$PreviousVersions += "SWARM.2.2.4"
-        #$PreviousVersions += "SWARM.2.2.5"
-        #$PreviousVersions += "SWARM.2.2.6"
-        #$PreviousVersions += "SWARM.2.2.7"
-        #$PreviousVersions += "SWARM.2.2.8"
+        $PreviousVersions = @()
+        $PreviousVersions += "SWARM.2.1.8"
+        $PreviousVersions += "SWARM.2.1.9"
+        $PreviousVersions += "SWARM.2.2.0"
+        $PreviousVersions += "SWARM.2.2.1"
+        $PreviousVersions += "SWARM.2.2.2"
+        $PreviousVersions += "SWARM.2.2.3"
+        $PreviousVersions += "SWARM.2.2.4"
+        $PreviousVersions += "SWARM.2.2.5"
+        $PreviousVersions += "SWARM.2.2.6"
+        $PreviousVersions += "SWARM.2.2.7"
+        $PreviousVersions += "SWARM.2.2.8"
 
         $StatsOnly = $null
 
