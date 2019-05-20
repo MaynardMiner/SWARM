@@ -1042,7 +1042,7 @@ While ($true) {
         }
         $mcolor = "93"
         $me = [char]27
-        $MiningStatus = "$me[${mcolor}mCurrently Mining $($BestMiners_Combo.Algo) Algorithm${me}[0m"
+        $MiningStatus = "$me[${mcolor}mCurrently Mining $($BestMiners_Combo.Algo) Algorithm on $($BestMiners_Combo.MinerPool)${me}[0m"
         $MiningStatus | Out-File ".\build\txt\minerstats.txt" -Append
         $MiningStatus | Out-File ".\build\txt\charts.txt" -Append
         $BanMessage = @()

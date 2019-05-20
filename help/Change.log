@@ -2941,6 +2941,12 @@ API overhaul:
 
    Expiremental:
    * HiveOS / SWARM name conformity for all algorithms.
+   * Note: For commands and arguments: all
+     equihash algos have "_" instead of " "
+     example:
+       equihash_144/5
+       equihash_150/5
+       etc.
 
    Expiremental:
    * HiveOS OC SYCRONIZATION!
