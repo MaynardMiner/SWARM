@@ -370,7 +370,7 @@ function Get-MinerBinary {
         for ($i = 0; $i -lt $MaxAttempts; $i++) {
             if ( -not (Test-Path $Miner.Path) ) {
                 write-Log "$($Miner.Name) Not Found- Downloading" -ForegroundColor Yellow
-                Expand-WebRequest $Miner.URI $Miner.Path
+                Expand-WebRequest $Miner.URI $Miner.Path $Miner.version
             }
         }
         if( Test-Path $Miner.Path ) {

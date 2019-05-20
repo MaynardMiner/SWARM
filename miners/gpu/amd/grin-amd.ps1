@@ -72,6 +72,7 @@ $AMDTypes | ForEach-Object {
                         Type       = $ConfigType
                         Path       = $Path
                         Devices    = $Devices
+                        Version    = "$($amd.$CName.version)"
                         DeviceCall = "grin-miner"
                         Host       = "$($_.Host):$($_.Port)"
                         User       = "$($_.$User)"

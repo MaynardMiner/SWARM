@@ -635,6 +635,7 @@ While ($true) {
                     MinerName      = $_.MinerName
                     Path           = $_.Path
                     Uri            = $_.Uri
+                    Version        = $_.Version
                     Arguments      = $_.Arguments
                     API            = $_.API
                     Port           = $_.Port
@@ -941,10 +942,8 @@ While ($true) {
         $GetStatusPoolBans = ".\timeout\pool_block\pool_block.txt"
         $GetStatusMinerBans = ".\timeout\miner_block\miner_block.txt"
         $GetStatusDownloadBans = ".\timeout\download_block\download_block.txt"
-        if (Test-Path $GetStatusDownloadBans) { $StatusDownloadBans = Get-Content $GetStatusDownloadBans }
+        if (Test-Path $GetStatusDownloadBans) { $StatusDownloadBans = Get-Content $GetStatusDownloadBans | ConvertFrom-Json }
         else { $StatusDownloadBans = $null }
-        $GetDLBans = @();
-        if ($StatusDownloadBans) { $StatusDownloadBans | ForEach-Object { if ($GetDLBans -notcontains $_) { $GetDlBans += $_ } } }
         if (Test-Path $GetStatusAlgoBans) { $StatusAlgoBans = Get-Content $GetStatusAlgoBans | ConvertFrom-Json }
         else { $StatusAlgoBans = $null }
         if (Test-Path $GetStatusPoolBans) { $StatusPoolBans = Get-Content $GetStatusPoolBans | ConvertFrom-Json }
@@ -974,6 +973,7 @@ While ($true) {
         if ($StatusAlgoBans) { $StatusAlgoBans | ForEach-Object { $BanMessage += "$me[${mcolor}m$($_.Name) mining $($_.Algo) is banned from all pools${me}[0m" } }
         if ($StatusPoolBans) { $StatusPoolBans | ForEach-Object { $BanMessage += "$me[${mcolor}m$($_.Name) mining $($_.Algo) is banned from $($_.MinerPool)${me}[0m" } }
         if ($StatusMinerBans) { $StatusMinerBans | ForEach-Object { $BanMessage += "$me[${mcolor}m$($_.Name) is banned${me}[0m" } }
+        if ($StatusDownloadBans) { $StatusDownloadBans | ForEach-Object { $BanMessage += "$me[${mcolor}m$($_.Name) is banned: Download Failed${me}[0m" } }
         if ($GetDLBans) { $GetDLBans | ForEach-Object { $BanMessage += "$me[${mcolor}m$($_) failed to download${me}[0m" } }
         if ($ConserveMessage) { $ConserveMessage | ForEach-Object { $BanMessage += "$me[${mcolor}m$($_)${me}[0m" } }
         $BanMessage | Out-File ".\build\txt\minerstats.txt" -Append

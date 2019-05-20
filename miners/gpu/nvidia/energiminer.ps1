@@ -68,6 +68,7 @@ $NVIDIATypes | ForEach-Object {
                         Type       = $ConfigType
                         Path       = $Path
                         Devices    = $Devices
+                        Version    = "$($nvidia.energiminer.version)"
                         DeviceCall = "energiminer"
                         Arguments  = "-U stratum://$($_.$User).$($_.$Pass)@$($_.Algorithm).mine.zergpool.com:$($_.Port)"
                         HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour}

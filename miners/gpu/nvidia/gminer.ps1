@@ -91,6 +91,7 @@ $NVIDIATypes | ForEach-Object {
                         Path       = $Path
                         ArgDevices = $ArgDevices
                         Devices    = $Devices
+                        Version    = "$($cpu.gminer.version)"
                         DeviceCall = "gminer"
                         Arguments  = "--api $Port --server $($_.Host) --port $($_.Port) $AddArgs--user $($_.$User) --logfile `'$Log`' --pass $($_.$Pass)$Diff $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour}

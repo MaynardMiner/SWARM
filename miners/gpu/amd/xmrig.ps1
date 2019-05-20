@@ -57,6 +57,7 @@ $AMDTypes | ForEach-Object {
                         Type       = $ConfigType
                         Path       = $Path
                         Devices    = "none"
+                        Version    = "$($amd.xmrig.version)"
                         DeviceCall = "xmrstak"
                         Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --api-port=$Port -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.$User) -p $($_.$Pass)$($Diff) --donate-level=1 --nicehash --opencl-platform=$AMDPlatform $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"    
                         HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour}

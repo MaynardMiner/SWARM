@@ -23,22 +23,23 @@ function start-update {
 
     if ($StartUpdate -eq $true) {
         $PreviousVersions = @()
-        $PreviousVersions += "SWARM.2.1.8"
-        $PreviousVersions += "SWARM.2.1.9"
-        $PreviousVersions += "SWARM.2.2.0"
-        $PreviousVersions += "SWARM.2.2.1"
-        $PreviousVersions += "SWARM.2.2.2"
-        $PreviousVersions += "SWARM.2.2.3"
-        $PreviousVersions += "SWARM.2.2.4"
-        $PreviousVersions += "SWARM.2.2.5"
-        $PreviousVersions += "SWARM.2.2.6"
-        $PreviousVersions += "SWARM.2.2.7"
-        $PreviousVersions += "SWARM.2.2.8"
+        $PreviousVersions += "SWARM.2.2.9"
 
         $StatsOnly = $null
 
         Write-Log "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
         Write-Log "Check $Location For any Previous Versions"
+
+        if (Test-Path "C:\") {
+            $amd = Get-Content ".\config\update\amd-win.json" | ConvertFrom-Json
+            $nvidia = Get-Content ".\config\update\nvidia-win.json" | ConvertFrom-Json
+            $cpu = Get-Content ".\config\update\cpu-win.json" | ConvertFrom-Json
+        }
+        else {
+            $amd = Get-Content ".\config\update\amd-linux.json" | ConvertFrom-Json
+            $nvidia = Get-Content ".\config\update\nvidia10-linux.json" | ConvertFrom-Json
+            $cpu = Get-Content ".\config\update\cpu-linux.json" | ConvertFrom-Json
+        }
 
         $CurrentVersion = (Get-Content ".\h-manifest.conf" | ConvertFrom-StringData).CUSTOM_VERSION
         $CurrentVersion = "$($CurrentVersion[0])$($CurrentVersion[2])$($CurrentVersion[4])"
@@ -99,70 +100,16 @@ function start-update {
                                 Write-Log "Pulled $OldJson"
                                 $Data = $JsonData | ConvertFrom-Json;
 
-                                if ($ChangeFile -eq "t-rex.json") {
-                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
-                                        ##2.1.3
-                                        if ($_ -ne "name") {
-                                            $Data.$_.commands | Add-Member "mtp" "" -ErrorAction SilentlyContinue
-                                            $Data.$_.difficulty | Add-Member "mtp" "" -ErrorAction SilentlyContinue 
-                                            $Data.$_.naming | Add-Member "mtp" "mtp" -ErrorAction SilentlyContinue
-                                            $Data.$_.fee | Add-Member "mtp" 1 -ErrorAction SilentlyContinue
-                                        }
-                                    }
-                                }
-
-                                if ($ChangeFile -eq "cryptodredge.json") {
-                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
-                                        ##2.1.3
-                                        if ($_ -ne "name") {
-                                            $Data.$_.commands | Add-Member "argon2d4096" "" -ErrorAction SilentlyContinue
-                                            $Data.$_.difficulty | Add-Member "argon2d4096" "" -ErrorAction SilentlyContinue 
-                                            $Data.$_.naming | Add-Member "argon2d4096" "argon2d4096" -ErrorAction SilentlyContinue
-                                            $Data.$_.fee | Add-Member "argon2d4096" 1 -ErrorAction SilentlyContinue
-
-                                            $Data.$_.commands | Add-Member "argon2d250" "" -ErrorAction SilentlyContinue
-                                            $Data.$_.difficulty | Add-Member "argon2d250" "" -ErrorAction SilentlyContinue 
-                                            $Data.$_.naming | Add-Member "argon2d250" "argon2d250" -ErrorAction SilentlyContinue
-                                            $Data.$_.fee | Add-Member "argon2d250" 1 -ErrorAction SilentlyContinue
-
-                                            $Data.$_.commands | Add-Member "argond2d-dyn" "" -ErrorAction SilentlyContinue -Force
-                                            $Data.$_.difficulty | Add-Member "argond2d-dyn" "" -ErrorAction SilentlyContinue -Force
-                                            $Data.$_.naming | Add-Member "argond2d-dyn" "argond2d-dyn" -ErrorAction SilentlyContinue -Force
-                                            $Data.$_.fee | Add-Member "argond2d-dyn" 1 -ErrorAction SilentlyContinue -Force
-
-                                            $Data.$_.commands = $Data.$_.commands | Select -ExcludeProperty "cryptonightv7"
-                                            $Data.$_.difficulty = $Data.$_.difficulty | Select -ExcludeProperty "cryptonightv7"
-                                            $Data.$_.naming = $Data.$_.naming | Select -ExcludeProperty "cryptonightv7"
-                                            $Data.$_.fee = $Data.$_.fee | Select -ExcludeProperty "cryptonightv7"
-                                        }
-                                    }
-                                }
-
-                                if ($ChangeFile -eq "wildrig.json") {
-                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
-                                        if ($_ -ne "name") {
-                                            $Data.$_.commands = $Data.$_.commands | Select -ExcludeProperty "rainforest"
-                                            $Data.$_.difficulty = $Data.$_.difficulty | Select -ExcludeProperty "rainforest"
-                                            $Data.$_.naming = $Data.$_.naming | Select -ExcludeProperty "rainforest"
-                                            $Data.$_.fee = $Data.$_.fee | Select -ExcludeProperty "rainforest"
-
-                                            $Data.$_.commands | Add-Member "wildkeccak" "" -ErrorAction SilentlyContinue
-                                            $Data.$_.difficulty | Add-Member "wildkeccak" "" -ErrorAction SilentlyContinue
-                                            $Data.$_.naming | Add-Member "wildkeccak" "wildkeccak" -ErrorAction SilentlyContinue
-                                            $Data.$_.fee | Add-Member "wildkeccak" 1 -ErrorAction SilentlyContinue
-
-                                            $Data.$_.commands | Add-Member "xevan" "" -ErrorAction SilentlyContinue
-                                            $Data.$_.difficulty | Add-Member "xevan" "" -ErrorAction SilentlyContinue
-                                            $Data.$_.naming | Add-Member "xevan" "xevan" -ErrorAction SilentlyContinue
-                                            $Data.$_.fee | Add-Member "xevan" 1 -ErrorAction SilentlyContinue
-                                        }
-                                    }
-                                }
-
-                                if ($ChangeFile -eq "pool-algos.json") {
-                                    $Data | Add-Member "argon2d4096" @{ hiveos_name = "argon2d-uis"; exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
-                                    $Data | Add-Member "argon2d250" @{ hiveos_name = "argon2d250"; exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
-                                }                            
+                                #if ($ChangeFile -eq "cryptodredge.json") {
+                                 #   $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                  #      if ($_ -ne "name") {
+                                   #         $Data.$_.commands | Add-Member "argon2d4096" "" -ErrorAction SilentlyContinue
+                                    #        $Data.$_.difficulty | Add-Member "argon2d4096" "" -ErrorAction SilentlyContinue 
+                                     #       $Data.$_.naming | Add-Member "argon2d4096" "argon2d4096" -ErrorAction SilentlyContinue
+                                     #       $Data.$_.fee | Add-Member "argon2d4096" 1 -ErrorAction SilentlyContinue
+                                     #   }
+                                   # }
+                                #}
 
                                 $Data | ConvertTo-Json -Depth 3 | Set-Content $NewJson;
                                 Write-Log "Wrote To $NewJson"
@@ -183,6 +130,91 @@ function start-update {
                         $Data | ConvertTo-Json -Depth 3 | Set-Content $NameJson;
                         Write-Log "Wrote To $NameJson"
                     }
+
+                    $amd.PSobject.Properties.Name | ForEach-Object {
+                        if ($_ -ne "name") {
+                            if (-not (Test-Path ".\bin")) { New-Item -Name "bin" -ItemType Directory }
+                            $MinerPath1 = Join-Path $PreviousPath ( Split-Path $($amd.$_.AMD1 -replace "\.", ""))
+                            $NewMinerPath1 = Join-Path $global:Dir ( Split-Path $($amd.$_.AMD1 -replace "\.", ""))
+                            if ( Test-Path $Minerpath1 ) {
+                                $SwarmV = "$Minerpath1\swarm-version.txt"
+                                if (Test-Path $SWARMV) {    
+                                    $GetVersion = Get-Content "$Minerpath1\swarm-version.txt"
+                                    if ($GetVersion -eq $amd.$_.version) {
+                                        Write-Log "Moving $MinerPath1"
+                                        Move-Item $MinerPath1 $NewMinerPath1
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    $cpu.PSobject.Properties.Name | ForEach-Object {
+                        if ($_ -ne "name") {
+                            if (-not (Test-Path ".\bin")) { New-Item -Name "bin" -ItemType Directory }
+                            $MinerPath1 = Join-Path $PreviousPath ( Split-Path $($cpu.$_.CPU -replace "\.", ""))
+                            $NewMinerPath1 = Join-Path $global:Dir ( Split-Path $($cpu.$_.CPU -replace "\.", ""))
+                            if ( Test-Path $Minerpath1 ) {
+                                $SwarmV = "$Minerpath1\swarm-version.txt"
+                                if (Test-Path $SWARMV) {
+                                    $GetVersion = Get-Content $SwarmV
+                                    if ($GetVersion -eq $cpu.$_.version) {
+                                        Write-Log "Moving $MinerPath1"
+                                        Move-Item $MinerPath1 $NewMinerPath1
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    $nvidia.PSobject.Properties.Name | ForEach-Object {
+                        if ($_ -ne "name") {
+
+                            if (-not (Test-Path ".\bin")) { New-Item -Name "bin" -ItemType Directory }
+
+                            $MinerPath1 = Join-Path $PreviousPath ( Split-Path $($nvidia.$_.NVIDIA1 -replace "\.", ""))
+                            $NewMinerPath1 = Join-Path $global:Dir ( Split-Path $($nvidia.$_.NVIDIA1 -replace "\.", ""))
+
+                            $MinerPath2 = Join-Path $PreviousPath ( Split-Path $($nvidia.$_.NVIDIA2 -replace "\.", ""))
+                            $NewMinerPath2 = Join-Path $global:Dir ( Split-Path $($nvidia.$_.NVIDIA2 -replace "\.", ""))
+
+                            $MinerPath3 = Join-Path $PreviousPath ( Split-Path $($nvidia.$_.NVIDIA3 -replace "\.", ""))
+                            $NewMinerPath3 = Join-Path $global:Dir ( Split-Path $($nvidia.$_.NVIDIA3 -replace "\.", ""))
+
+                            if ( Test-Path $Minerpath1 ) {
+                                $SwarmV = "$Minerpath1\swarm-version.txt"
+                                if (Test-Path $SWARMV) {
+                                    $GetVersion = Get-Content $SwarmV
+                                    if ($GetVersion -eq $nvidia.$_.version) {
+                                        Write-Log "Moving $MinerPath1"
+                                        Move-Item $MinerPath1 $NewMinerPath1
+                                    }
+                                }
+                            }
+                            if ( Test-Path $Minerpath2 ) {
+                                $SwarmV = "$Minerpath2\swarm-version.txt"
+                                if (Test-Path $SWARMV) {
+                                    $GetVersion = Get-Content $SwarmV
+                                    if ($GetVersion -eq $nvidia.$_.version) {
+                                        Write-Log "Moving $MinerPath2"
+                                        Move-Item $MinerPath2 $NewMinerPath2
+                                    }
+                                }
+                            }
+                            if ( Test-Path $Minerpath3 ) {
+                                $SwarmV = "$Minerpath3\swarm-version.txt"
+                                if (Test-Path $SWARMV) {
+                                    $GetVersion = Get-Content $SwarmV
+                                    $GetVersion = Get-Content "$Minerpath3\swarm-version.txt"
+                                    if ($GetVersion -eq $nvidia.$_.version) {
+                                        Write-Log "Moving $MinerPath3"
+                                        Move-Item $MinerPath3 $NewMinerPath3
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     Remove-Item $PreviousPath -recurse -force
                 }
             }

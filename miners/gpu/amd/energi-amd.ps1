@@ -67,6 +67,7 @@ $AMDTypes | ForEach-Object {
                             Type       = $ConfigType
                             Path       = $Path
                             Devices    = $Devices
+                            Version    = "$($amd.$CName.version)"
                             DeviceCall = "energiminer"
                             Arguments  = "--opencl-platform $AMDPlatform -G stratum://$($_.$User).$($_.$Pass)@$($_.Algorithm).mine.zergpool.com:$($_.Port)"
                             HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour}

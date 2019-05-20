@@ -61,6 +61,7 @@ $AMDTypes | ForEach-Object {
                         Type       = $ConfigType
                         Path       = $Path
                         Devices    = "none"
+                        Version    = "$($amd.wildrig.version)"
                         DeviceCall = "wildrig"
                         Arguments  = "--opencl-platform=$AMDPlatform --api-port $Port --algo $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --url stratum+tcp://$($_.Host):$($_.Port) --donate-level 1 --user $($_.$User) --pass $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($MinerConfig.$ConfigType.naming.$($_.Algorithm)))"
                         HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour}
