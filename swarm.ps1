@@ -16,7 +16,7 @@ Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 ##filepath dir
 $global:dir = (Split-Path $script:MyInvocation.MyCommand.Path)
 $env:Path += ";$global:dir\build\cmd"
-Get-ChildItem . -Recurse | Unblock-File
+try { Get-ChildItem . -Recurse | Unblock-File } catch {}
 try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$($global:Dir)`'" -WindowStyle Minimized } }catch { }
 try { if( -not ( Get-NetFireWallRule | Where {$_.Name -like "*$global:dir\swarm.ps1*"} ) ) { New-NetFirewallRule -DisplayName 'swarm.ps1' -Direction Inbound -Program "$global:dir\swarm.ps1" -Action Allow | Out-Null} } catch { }
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
