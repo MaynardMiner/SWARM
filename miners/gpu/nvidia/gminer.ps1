@@ -72,8 +72,10 @@ $NVIDIATypes | ForEach-Object {
                     $SelAlgo = $_.Algorithm
                     switch($SelAlgo) {
                         "equihash_150/5" {$AddArgs = "--algo 150_5 --pers auto "}
+                        "cuckoo_cycle" {$AddArgs = "--algo aeternity "}
                         "cuckaroo29" {$AddArgs = "--algo grin29 "}
                         "cuckatoo31" {$AddArgs = "--algo grin31 "}
+                        "equihash_96/5" {$AddArgs = "--algo 96_5 --pers auto "}
                         "equihash_192/7" {$AddArgs = "--algo 192_7 --pers auto "}
                         "equihash_144/5" {$AddArgs = "--algo 144_5 --pers auto "}
                         "equihash_210/9" {$AddArgs = "--algo 210_9 --pers auto "}
@@ -92,7 +94,7 @@ $NVIDIATypes | ForEach-Object {
                         Path       = $Path
                         ArgDevices = $ArgDevices
                         Devices    = $Devices
-                        Version    = "$($cpu.gminer.version)"
+                        Version    = "$($nvidia.gminer.version)"
                         DeviceCall = "gminer"
                         Arguments  = "--api $Port --server $($_.Host) --port $($_.Port) $AddArgs--user $($_.$User) --logfile `'$Log`' --pass $($_.$Pass)$Diff $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour}

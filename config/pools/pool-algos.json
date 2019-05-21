@@ -217,6 +217,18 @@
             "comma seperated"
         ]
     },
+    "cuckoo_cycle": {
+        "alt_names": [
+            "cuckoocycle",
+            "cuckoo_cycle",
+            "aeternity",
+            "cuckoo"
+        ],
+        "exclusions": [
+            "add pool or miner here",
+            "comma seperated"
+        ]
+    },
     "cuckaroo29": {
         "alt_names": [
             "cuckaroo29",
