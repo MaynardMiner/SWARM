@@ -14,25 +14,25 @@
             "cryptonight-v8": "",
             "cryptonight-v7": "",
             "cryptonight-heavy": "",
-            "cyrtponight-r": ""
+            "cryptonight-r": ""
         },
         "difficulty": {
             "cryptonight-v8": "",
             "cryptonight-v7": "",
             "cryptonight-heavy": "",
-            "cyrtponight-r": ""
+            "cryptonight-r": ""
         },
         "naming": {
             "cryptonight-v8": "cn/2",
             "cryptonight-v7": "cn/1",
             "cryptonight-heavy": "cn-heavy",
-            "cyrtponight-r": "cn/r"
+            "cryptonight-r": "cn/r"
         },
         "fee": {
             "cryptonight-v8": 1,
             "cryptonight-v7": 1,
             "cryptonight-heavy": 1,
-            "cyrtponight-r": 1
+            "cryptonight-r": 1
         }
     }
 }

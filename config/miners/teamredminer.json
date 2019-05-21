@@ -14,14 +14,14 @@
             "cryptonight-v8": "",
             "lyra2re": "",
             "lyra2rev3": "",
-            "cyrtponight-r": ""
+            "cryptonight-r": ""
         },
         "difficulty": {
             "phi2": "",
             "cryptonight-v8": "",
             "lyra2re": "",
             "lyra2rev3": "",
-            "cyrtponight-r": ""
+            "cryptonight-r": ""
         },
         "naming": {
             "phi2": "phi2",
@@ -35,7 +35,7 @@
             "cryptonight-v8": 2.5,
             "lyra2re": 3,
             "lyra2rev3": 2.5,
-            "cyrtponight-r": 2.5
+            "cryptonight-r": 2.5
         }
     }
 }
