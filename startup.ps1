@@ -12,7 +12,7 @@ if (Test-Path ".\config\parameters\default.json") {
 }
 
 $List = $Defaults.PSObject.Properties.Name
-$global:parsed = @{ }
+$parsed = @{ }
 
 if ($args) {
     $args | % {
@@ -39,9 +39,13 @@ if ($args) {
             }
         }
     }
+} elseif (test-path ".\config.json") {
+    $parsed = @{ }
+    $arguments = Get-Content ".\config.json" | ConvertFrom-Json
+    $arguments.PSObject.Properties.Name | % { $Parsed.Add("$($_)", $arguments.$_) }
 } elseif (Test-Path ".\config\parameters\arguments.json") {
-    $global:parsed = @{ }
-    $arguments = Get-Content ".\config\parameters\arguments.json" ConvertFrom-Json
+    $parsed = @{ }
+    $arguments = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
     $arguments.PSObject.Properties.Name | % { $Parsed.Add("$($_)", $arguments.$_) }
 } else {
     Write-Host "No Arguments or arguments.json file found. Exiting."
