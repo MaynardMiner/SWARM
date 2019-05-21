@@ -2980,3 +2980,29 @@ API overhaul:
   -t-rex updated
    * x25x algo added.
 
+
+  2.3.1
+
+  NOTE: Updating will transfer old stats, but not
+  Miner.json. This is due to the number of typos
+  that were fixed across multiple files.
+
+  This if final version / work through of both betas:
+
+  Corrections:
+
+  -There was an issue in which SWARM was continuously
+   adding firewall exceptions for miner each time a new
+   one started- Leaving a fairly long list of exceptions.
+   This version fixes that issue, and will clear all the
+   extra exceptions on startup (will only do it once, ever).
+
+  -typo for cryptonight-r: Fixed.
+
+  -teamredminer download issue: Fixed.
+
+  New FEATURES:
+
+  Ban notices on HiveOS is displayed [algorithm]:[name].
+  * This allows copy/paste of bans into arguments.
+

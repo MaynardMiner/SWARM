@@ -24,6 +24,7 @@ function start-update {
     if ($StartUpdate -eq $true) {
         $PreviousVersions = @()
         $PreviousVersions += "SWARM.2.2.9"
+        $PreviousVersions += "SWARM.2.3.0"
 
         $StatsOnly = $null
 
@@ -81,7 +82,7 @@ function start-update {
                     Get-ChildItem -Path "$($OldTimeout)\*" -Include *.txt | Copy-Item -Destination ".\timeout"
                 }
                 if ($StatsOnly -ne "Yes") {
-                    $Jsons = @("miners", "oc", "power", "pools", "asic", "wallets")
+                    $Jsons = @("oc", "power", "pools", "asic", "wallets")
                     $UpdateType = @("CPU", "AMD1", "NVIDIA1", "NVIDIA2", "NVIDIA3")
                     $Exclude = @("claymore_amd.json", "ehssand_amd.json", "gminer_amd.json", "phoenix_amd.json", "progminer_amd.json", "stak_cpu.json", "xmrig_cpu.json", "enemy.json", "xmrig_nv.json")
                     if ($CurrentVersion -lt 222) { $Exclude += "pool-algo.json" }
