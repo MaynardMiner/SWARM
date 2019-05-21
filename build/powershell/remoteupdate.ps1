@@ -18,7 +18,7 @@ function start-update {
     )
 
     $Location = split-Path $($global:Dir)
-    $StartUpdate = $false
+    $StartUpdate = $true
     if ($Global:Config.params.Platform -eq "linux" -and $Update -eq "No") { $StartUpdate = $false }
 
     if ($StartUpdate -eq $true) {
