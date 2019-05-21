@@ -193,7 +193,7 @@ function Start-LaunchCode {
                 $Program = "$WorkingDirectory\$($MinerCurrent.Minername)"
                 $script = @()
                 $script += "`$OutputEncoding = [System.Text.Encoding]::ASCII"
-                if( -not ($(Get-NetFireWallRule).DisplayName | Where {$_.Name -like "*$Program*"}) ) {
+                if( -not (Get-NetFireWallRule | Where {$_.Name -like "*$Program*"}) ) {
                 $script += "New-NetFirewallRule -DisplayName `'$($MinerCurrent.Name)`' -Direction Inbound -Program `'$Program`' -Action Allow"
                 }
                 $script += "Start-Process `"powershell`" -ArgumentList `"-command `"`"Set-Location ```'$($global:Dir)```'; & ```'$($global:Dir)\build\powershell\icon.ps1```' ```'$($global:Dir)\build\apps\miner.ico```'`"`"`" -NoNewWindow"
