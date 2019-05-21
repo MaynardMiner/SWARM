@@ -20,7 +20,7 @@ try { Get-ChildItem . -Recurse | Unblock-File } catch {}
 try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$($global:Dir)`'" -WindowStyle Minimized } }catch { }
 if(-not (Test-Path ".\build\txt\fixed.txt")) {
 try {
-Write-Host "Remove Previous Net Firewall Rules"
+Write-Host "Removing Previous Net Firewall Rules"
 Remove-NetFirewallRule -All
 } catch {}
 "Fixed" | Set-Content ".\build\txt\fixed.txt"
