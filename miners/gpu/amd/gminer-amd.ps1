@@ -71,6 +71,7 @@ $AMDTypes | ForEach-Object {
                     switch($SelAlgo) {
                         "equihash_150/5" {$AddArgs = "--algo 150_5 --pers auto "}
                         "cuckaroo29" {$AddArgs = "--algo grin29 "}
+                        "cuckatoo31" {$AddArgs = "--algo grin31 "}
                         "equihash_192/7" {$AddArgs = "--algo 192_7 --pers auto "}
                         "equihash_144/5" {$AddArgs = "--algo 144_5 --pers auto "}
                         "equihash_210/9" {$AddArgs = "--algo 210_9 --pers auto "}

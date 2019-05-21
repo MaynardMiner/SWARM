@@ -101,15 +101,89 @@ function start-update {
                                 $Data = $JsonData | ConvertFrom-Json;
 
                                 #if ($ChangeFile -eq "cryptodredge.json") {
-                                 #   $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
-                                  #      if ($_ -ne "name") {
-                                   #         $Data.$_.commands | Add-Member "argon2d4096" "" -ErrorAction SilentlyContinue
-                                    #        $Data.$_.difficulty | Add-Member "argon2d4096" "" -ErrorAction SilentlyContinue 
-                                     #       $Data.$_.naming | Add-Member "argon2d4096" "argon2d4096" -ErrorAction SilentlyContinue
-                                     #       $Data.$_.fee | Add-Member "argon2d4096" 1 -ErrorAction SilentlyContinue
-                                     #   }
-                                   # }
+                                #   $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                #      if ($_ -ne "name") {
+                                #         $Data.$_.commands | Add-Member "argon2d4096" "" -ErrorAction SilentlyContinue
+                                #        $Data.$_.difficulty | Add-Member "argon2d4096" "" -ErrorAction SilentlyContinue 
+                                #       $Data.$_.naming | Add-Member "argon2d4096" "argon2d4096" -ErrorAction SilentlyContinue
+                                #       $Data.$_.fee | Add-Member "argon2d4096" 1 -ErrorAction SilentlyContinue
+                                #   }
+                                # }
                                 #}
+
+                                if ($ChangeFile -eq "gminer-amd.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands | Add-Member "cuckatoo31" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "cuckatoo31" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "cuckatoo31" "cuckatoo31" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "cuckatoo31" 2 -ErrorAction SilentlyContinue
+                                        }
+                                    }
+                                }
+
+                                if ($ChangeFile -eq "gminer.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands | Add-Member "cuckatoo31" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "cuckatoo31" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "cuckatoo31" "cuckatoo31" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "cuckatoo31" 2 -ErrorAction SilentlyContinue
+                                        }
+                                    }
+                                }
+
+                                if ($ChangeFile -eq "t-rex.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands | Add-Member "x25x" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "x25x" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "x25x" "x25x" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "x25x" 1 -ErrorAction SilentlyContinue
+                                        }
+                                    }
+                                }
+ 
+                                if($ChangeFile -eq "pool-algos.json") {
+                                    $Data | add-Member "x25x" @{alt_names = @("x25x"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
+                                }
+
+                                if($ChangeFile -eq "oc-algos.json") {
+                                    $Data | Add-Member "x25x" @{
+                                        "NVIDIA1" = @{
+                                            "Fans" = ""
+                                            "ETHPill"= ""
+                                            "Core"=""
+                                            "Memory"=""
+                                            "Power"= ""
+                                            "PillDelay"= ""
+                                        };               
+                                        "NVIDIA2" = @{
+                                            "Fans" = ""
+                                            "ETHPill"= ""
+                                            "Core"=""
+                                            "Memory"=""
+                                            "Power"= ""
+                                            "PillDelay"= ""
+                                        };                          
+                                        "NVIDIA3" = @{
+                                            "Fans" = ""
+                                            "ETHPill"= ""
+                                            "Core"=""
+                                            "Memory"=""
+                                            "Power"= ""
+                                            "PillDelay"= ""
+                                        };                         
+                                        "AMD1"= @{
+                                            "fans"= ""
+                                            "v"= ""
+                                            "dpm"= ""
+                                            "mem"= ""
+                                            "mdpm"= ""
+                                            "core"= ""
+                                        }                                
+                                    } -ErrorAction SilentlyContinue
+                                }
 
                                 $Data | ConvertTo-Json -Depth 3 | Set-Content $NewJson;
                                 Write-Log "Wrote To $NewJson"
