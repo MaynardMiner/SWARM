@@ -18,7 +18,14 @@ $global:dir = (Split-Path $script:MyInvocation.MyCommand.Path)
 $env:Path += ";$global:dir\build\cmd"
 try { Get-ChildItem . -Recurse | Unblock-File } catch {}
 try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$($global:Dir)`'" -WindowStyle Minimized } }catch { }
-try { if( -not ( Get-NetFireWallRule | Where {$_.Name -like "*$global:dir\swarm.ps1*"} ) ) { New-NetFirewallRule -DisplayName 'swarm.ps1' -Direction Inbound -Program "$global:dir\swarm.ps1" -Action Allow | Out-Null} } catch { }
+if(-not (Test-Path ".\build\txt\fixed.txt")) {
+try {
+Write-Host "Remove Previous Net Firewall Rules"
+Remove-NetFirewallRule -All
+} catch {}
+"Fixed" | Set-Content ".\build\txt\fixed.txt"
+}
+try { if( -not ( Get-NetFireWallRule | Where {$_.DisplayName -like "*swarm.ps1*"} ) ) { New-NetFirewallRule -DisplayName 'swarm.ps1' -Direction Inbound -Program "$global:dir\swarm.ps1" -Action Allow | Out-Null} } catch { }
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
 $Debug = $false
 if ($Debug -eq $True) {
@@ -1167,7 +1174,7 @@ While ($true) {
                             if ($MinerPoolBan -eq $true) {
                                 $minerjson = $_ | ConvertTo-Json -Compress
                                 $reason = Get-MinerTimeout $minerjson
-                                $HiveMessage = "Ban: $($_.Name)/$($_.Algo) From $($_.MinerPool)- $reason "
+                                $HiveMessage = "Ban: $($_.Algo):$($_.Name) From $($_.MinerPool)- $reason "
                                 write-Log "Strike Two: Benchmarking Has Failed - $HiveMessage
 " -ForegroundColor DarkRed
                                 $NewPoolBlock = @()
@@ -1185,7 +1192,7 @@ While ($true) {
                             if ($MinerAlgoBan -eq $true) {
                                 $minerjson = $_ | ConvertTo-Json -Compress
                                 $reason = Get-MinerTimeout $minerjson
-                                $HiveMessage = "Ban: $($_.Name)/$($_.Algo) from all pools- $reason "
+                                $HiveMessage = "Ban: $($_.Algo):$($_.Name) from all pools- $reason "
                                 write-Log "Strike three: $HiveMessage
 " -ForegroundColor DarkRed
                                 $NewAlgoBlock = @()
