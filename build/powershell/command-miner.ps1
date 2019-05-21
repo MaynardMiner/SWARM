@@ -378,7 +378,11 @@ function Get-MinerBinary {
         } else {
             $Success = 2
             if ( -not (Test-Path ".\timeout\download_block") ) { New-Item -Name "download_block" -Path ".\timeout" -ItemType "directory" | OUt-Null }
-            $SelMiner | Add-Content ".\timeout\download_block\download_block.txt"
+            $MinersArray = @()
+            if(Test-Path ".\timeout\download_block\download_block.txt"){$OldTimeouts = Get-Content ".\timeout\download_block\download_block.txt" | ConvertFrom-Json}
+            if($OldTimeouts){$OldTimeouts | %{$MinersArray += $_}}
+            $MinersArray += $Miner
+            $MinersArray | ConvertTo-Json -Depth 3 | Add-Content ".\timeout\download_block\download_block.txt"
         }
     }
     else { $Success = 1 }

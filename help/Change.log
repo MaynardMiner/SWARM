@@ -2956,4 +2956,27 @@ API overhaul:
        for limitations and how it operates.
 
 
-   
+      2.3.0
+
+  * SWARM adds to windows defender exclusion path.
+  * SWARM adds to windows firewall exception.
+  * Miners added to windows firewall exception.
+
+  NEW FEATURES !
+
+  experimental:
+  SWARM only download miners when needed.
+  * SWARM will download miners on demand.
+  * SWARM will block miners from bad downloads
+    on demand.
+
+  expiremental:
+  SWARM will migrate previous miners if 
+  their version did not change.
+
+  -gminer updated
+   * cuckatoo31 added back in.
+  -wildrig updated
+  -t-rex updated
+   * x25x algo added.
+
