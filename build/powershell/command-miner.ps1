@@ -383,6 +383,9 @@ function Get-MinerBinary {
             if($OldTimeouts){$OldTimeouts | %{$MinersArray += $_}}
             $MinersArray += $Miner
             $MinersArray | ConvertTo-Json -Depth 3 | Add-Content ".\timeout\download_block\download_block.txt"
+            $HiveMessage = "Ban: $($Miner.Name) - Download Failed"
+            $HiveWarning = @{result = @{command = "timeout" } }
+            if ($global:Config.Params.HiveOS -eq "Yes") { try { $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage }catch { Write-Log "Failed To Notify HiveOS" -ForegroundColor Red } }
         }
     }
     else { $Success = 1 }
