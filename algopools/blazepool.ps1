@@ -17,13 +17,14 @@ if ($Name -in $global:Config.Params.PoolName) {
     Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
     Select-Object -ExpandProperty Name | 
     Where-Object { $blazepool_Request.$_.hashrate -gt 0 } | 
-    Where-Object { $global:Exclusions.$($blazepool_Request.$_.name) } |
+    Where-Object {
+        $Algo = $blazepool_Request.$_.name.ToLower();
+        $local:blazepool_Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name | Where { $Algo -in $global:Config.Pool_Algos.$_.alt_names }
+        return $blazepool_Algorithm
+    } |
     ForEach-Object {
-
-        $blazepool_Algorithm = $blazepool_Request.$_.name.ToLower()
-
         if ($Algorithm -contains $blazepool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $blazepool_Algorithm) {
-            if ($Name -notin $global:Exclusions.$blazepool_Algorithm.exclusions -and $blazepool_Algorithm -notin $Global:banhammer) {
+            if ($Name -notin $global:Config.Pool_Algos.$blazepool_Algorithm.exclusions -and $blazepool_Algorithm -notin $Global:banhammer) {
                 $blazepool_Host = "$_.mine.blazepool.com$X"
                 $blazepool_Port = $blazepool_Request.$_.port
                 $Divisor = (1000000 * $blazepool_Request.$_.mbtc_mh_factor)
@@ -33,10 +34,12 @@ if ($Name -in $global:Config.Params.PoolName) {
                 $Hashrate = $blazepool_Request.$_.hashrate
 
                 if (-not (Test-Path $StatPath)) {
-                    $Stat = Set-Stat -Name "$($Name)_$($blazepool_Algorithm)_profit" -HashRate $HashRate -Value ( [Double]$blazepool_Request.$_.estimate_last24h / $Divisor * (1 - ($blazepool_Request.$_.fees / 100)))
+                    $StatAlgo = $blazepool_Algorithm -replace "`_","`-"
+                    $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( [Double]$blazepool_Request.$_.estimate_last24h / $Divisor * (1 - ($blazepool_Request.$_.fees / 100)))
                 } 
                 else {
-                    $Stat = Set-Stat -Name "$($Name)_$($blazepool_Algorithm)_profit" -HashRate $HashRate -Value ( [Double]$blazepool_Request.$_.estimate_current / $Divisor * (1 - ($blazepool_Request.$_.fees / 100)))
+                    $StatAlgo = $blazepool_Algorithm -replace "`_","`-"
+                    $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( [Double]$blazepool_Request.$_.estimate_current / $Divisor * (1 - ($blazepool_Request.$_.fees / 100)))
                 }
 
                 if (-not $global:Pool_Hashrates.$blazepool_Algorithm) { $global:Pool_Hashrates.Add("$blazepool_Algorithm", @{ })

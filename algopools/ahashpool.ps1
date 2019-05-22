@@ -17,13 +17,14 @@ if ($Name -in $global:Config.Params.PoolName) {
     Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
     Select-Object -ExpandProperty Name | 
     Where-Object { $ahashpool_Request.$_.hashrate -gt 0 } | 
-    Where-Object { $global:Exclusions.$($ahashpool_Request.$_.name) } |
+    Where-Object {
+        $Algo = $ahashpool_Request.$_.name.ToLower();
+        $local:ahashpool_Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name | Where { $Algo -in $global:Config.Pool_Algos.$_.alt_names }
+        return $ahashpool_Algorithm
+    } |
     ForEach-Object {
- 
-        $ahashpool_Algorithm = $ahashpool_Request.$_.name.ToLower()
-
         if ($Algorithm -contains $ahashpool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $ahashpool_Algorithm) {
-            if ($Name -notin $global:Exclusions.$ahashpool_Algorithm.exclusions -and $ahashpool_Algorithm -notin $Global:banhammer) {
+            if ($Name -notin $global:Config.Pool_Algos.$ahashpool_Algorithm.exclusions -and $ahashpool_Algorithm -notin $Global:banhammer) {
                 $ahashpool_Host = "$_.mine.ahashpool.com$X"
                 $ahashpool_Port = $ahashpool_Request.$_.port
                 $Fees = $ahashpool_Request.$_.fees
@@ -33,10 +34,12 @@ if ($Name -in $global:Config.Params.PoolName) {
                 $Hashrate = $ahashpool_Request.$_.hashrate
 
                 if (-not (Test-Path $StatPath)) {
-                    $Stat = Set-Stat -Name "$($Name)_$($ahashpool_Algorithm)_profit" -HashRate $HashRate -Value ( [Double]$ahashpool_Request.$_.estimate_last24h / $Divisor * (1 - ($ahashpool_Request.$_.fees / 100)))
+                    $StatAlgo = $ahashpool_Algorithm -replace "`_","`-"
+                    $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( [Double]$ahashpool_Request.$_.estimate_last24h / $Divisor * (1 - ($ahashpool_Request.$_.fees / 100)))
                 } 
                 else {
-                    $Stat = Set-Stat -Name "$($Name)_$($ahashpool_Algorithm)_profit" -HashRate $HashRate -Value ( [Double]$ahashpool_Request.$_.estimate_current / $Divisor * (1 - ($ahashpool_Request.$_.fees / 100)))
+                    $StatAlgo = $ahashpool_Algorithm -replace "`_","`-"
+                    $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( [Double]$ahashpool_Request.$_.estimate_current / $Divisor * (1 - ($ahashpool_Request.$_.fees / 100)))
                 }
 
                 if (-not $global:Pool_Hashrates.$ahashpool_Algorithm) { $global:Pool_Hashrates.Add("$ahashpool_Algorithm", @{ })

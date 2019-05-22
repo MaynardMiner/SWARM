@@ -135,6 +135,7 @@ benchmark all
     }
     "algorithm" {
         if ($Name -ne "" -or $Name -ne $Null) {
+            $name = $name -replace "`/","`-"
             if (Test-Path ".\stats\*$($Name)_hashrate.txt*") {Remove-Item ".\stats\*$($Name)_hashrate.txt*" -Force}
             if (Test-Path ".\stats\*$($Name)_power.txt*") {Remove-Item ".\stats\*$($Name)_power.txt*" -Force}
             if (Test-Path ".\backup\*$($Name)_hashrate.txt*") {Remove-Item ".\backup\*$($Name)_hashrate.txt*" -Force}

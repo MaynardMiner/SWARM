@@ -77,8 +77,8 @@
         "NVIDIA2": ".\\bin\\gminer-2\\miner.exe",
         "NVIDIA3": ".\\bin\\gminer-3\\miner.exe",
         "minername": "miner",
-        "version": "1.42",
-        "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.42/gminer_1_42_windows64.zip"
+        "version": "1.43",
+        "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.43/gminer_1_43_windows64.zip"
     },
     "claymore": {
         "name": "claymore",
@@ -197,8 +197,8 @@
         "NVIDIA2": ".\\bin\\trex-2\\t-rex.exe",
         "NVIDIA3": ".\\bin\\trex-3\\t-rex.exe",
         "minername": "t-rex.exe",
-        "version": "0.10.2",
-        "uri": "https://github.com/trexminer/T-Rex/releases/download/0.10.2/t-rex-0.10.2-win-cuda10.0.zip"
+        "version": "0.11.0",
+        "uri": "https://github.com/trexminer/T-Rex/releases/download/0.11.0/t-rex-0.11.0-win-cuda10.0.zip"
     },
     "zjazz": {
         "name": "zjazz",

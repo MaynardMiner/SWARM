@@ -5,13 +5,13 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "rfv2": "-i 11"
+            "rainforestv2": "-i 11"
         },
         "difficulty": {
-            "rfv2": ""
+            "rainforestv2": ""
         },
         "naming": {
-            "rfv2": "rfv2"
+            "rainforestv2": "rfv2"
         },
         "fee": 0
     },
@@ -20,13 +20,13 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "rfv2": "-i 11"
+            "rainforestv2": "-i 11"
         },
         "difficulty": {
-            "rfv2": ""
+            "rainforestv2": ""
         },
         "naming": {
-            "rfv2": "rfv2"
+            "rainforestv2": "rfv2"
         },
         "fee": 0
     },
@@ -35,13 +35,13 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "rfv2": ""
+            "rainforestv2": ""
         },
         "difficulty": {
-            "rfv2": "-i 11"
+            "rainforestv2": "-i 11"
         },
         "naming": {
-            "rfv2": "rfv2"
+            "rainforestv2": "rfv2"
         },
         "fee": 0
     }

@@ -1,629 +1,695 @@
 {
-    "aeon": {
-        "hiveos_name": "cryptonight-lite",
+    "cryptonight-lite": {
+        "alt_names": [
+            "cryptonight-lite",
+            "aeon"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "aergo": {
-        "hiveos_name": "aergo",
+        "alt_names": [
+            "aergo"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "allium": {
-        "hiveos_name": "allium",
+        "alt_names": [
+            "allium"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "argon2d250": {
-        "hiveos_name": "argon2d250",
+        "alt_names": [
+            "argon2d250",
+            "argon2d-crds"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "argon2d4096": {
-        "hiveos_name": "argon2d-uis",
+        "alt_names": [
+            "argon2d4096",
+            "argon2d-uis"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
-    "argon2d-dyn": {
-        "hiveos_name": "argon2d-dyn",
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "argon2d-uis": {
-        "hiveos_name": "argon2d-uis",
+    "argon2d500": {
+        "alt_names": [
+            "argon2d500",
+            "argon2d-dyn"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "astralhash": {
-        "hiveos_name": "astralhash",
+        "alt_names": [
+            "astralhash"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "balloon": {
-        "hiveos_name": "bcd",
+        "alt_names": [
+            "balloon"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "bcd": {
-        "hiveos_name": "bcd",
+        "alt_names": [
+            "bcd"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
-    "beam": {
-        "hiveos_name": "equihash 150/5",
+    "equihash_150/5": {
+        "alt_names": [
+            "beam"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "bitcore": {
-        "hiveos_name": "bitcore",
+        "alt_names": [
+            "bitcore"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "blake": {
-        "hiveos_name": "blake",
+        "alt_names": [
+            "blake"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "blake2s": {
-        "hiveos_name": "blake2s",
+        "alt_names": [
+            "blake2s"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "c11": {
-        "hiveos_name": "c11",
+        "alt_names": [
+            "c11"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
-    "cnfastv2": {
-        "hiveos_name": "cryptonight-fast-v8",
+    "cryptonight-fast-v8": {
+        "alt_names": [
+            "cryptonight-fast-v8",
+            "cnfastv2"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
-    "cnsuperfast ": {
-        "hiveos_name": "cryptonight-sfast",
+    "cryptonight-sfast": {
+        "alt_names": [
+            "cnsuperfast",
+            "cryptonight-sfast"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "cryptonight": {
-        "hiveos_name": "cryptonight",
+        "alt_names": [
+            "cryptonight"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
-    "cryptonightgpu": {
-        "hiveos_name": "cryptonight-gpu",
+    "cryptonight-gpu": {
+        "alt_names": [
+            "cryptonight-gpu",
+            "cryptonightgpu"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
-    "cryptonightheavy": {
-        "hiveos_name": "cryptonight-heavy",
+    "cryptonight-heavy": {
+        "alt_names": [
+            "cryptonight-heavy",
+            "cryptonightheavy"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
-    "cryptonightmonero": {
-        "hiveos_name": "cryptonight",
+    "cryptonight-r": {
+        "alt_names": [
+            "cryptonightr",
+            "cryptonightmonero"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
-    "cryptonightr": {
-        "hiveos_name": "cryptonight/r",
+    "cryptonight-superfast": {
+        "alt_names": [
+            "cryptonight-superfast",
+            "cryptonightsuperfast"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
-    "cryptonightsuperfast": {
-        "hiveos_name": "cryptonight-superfast",
+    "cryptonight-v7": {
+        "alt_names": [
+            "cryptonightv7"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
-    "cryptonightv7": {
-        "hiveos_name": "cryptonight-v7",
+    "cryptonight-v8": {
+        "alt_names": [
+            "cryptonight-v8",
+            "cryptonightv8"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
-    "cryptonightv8": {
-        "hiveos_name": "cryptonight-v8",
+    "cuckoo_cycle": {
+        "alt_names": [
+            "cuckoocycle",
+            "cuckoo_cycle",
+            "aeternity",
+            "cuckoo"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "cuckaroo29": {
-        "hiveos_name": "cuckaroo29",
+        "alt_names": [
+            "cuckaroo29",
+            "grincuckaroo29"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "cuckatoo31": {
-        "hiveos_name": "cuckatoo31",
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "cuckoo": {
-        "hiveos_name": "cuckoo",
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "dagger": {
-        "hiveos_name": "ethash",
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "daggerhashimoto": {
-        "hiveos_name": "ethash",
+        "alt_names": [
+            "cuckatoo31",
+            "grincuckatoo31"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "dedal": {
-        "hiveos_name": "dedal",
+        "alt_names": [
+            "dedal"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
-    "equihash": {
-        "hiveos_name": "equihash",
+    "equihash_144/5": {
+        "alt_names": [
+            "equihash_144/5",
+            "equihash144",
+            "equihash-btg",
+            "zhash"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
-    "equihash144": {
-        "hiveos_name": "equihash 144/5",
+    "equihash_192/7": {
+        "alt_names": [
+            "equihash_192/7",
+            "equihash192"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
-    "equihash192": {
-        "hiveos_name": "equihash 192/7",
+    "equihash_210/9": {
+        "alt_names": [
+            "equihash_210/9",
+            "equihash200",
+            "equihash210"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
-    "equihash200": {
-        "hiveos_name": "equihash 210/9",
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "equihash210": {
-        "hiveos_name": "equihash 210/9",
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "equihash96": {
-        "hiveos_name": "equihash 96/5",
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "equihash-btg": {
-        "hiveos_name": "equihash 144/5",
+    "equihash_96/5": {
+        "alt_names": [
+            "equihash_96/5",
+            "equihash96"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "ethash": {
-        "hiveos_name": "ethash",
+        "alt_names": [
+            "ethash",
+            "dagger",
+            "daggerhashimoto"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "exosis": {
-        "hiveos_name": "exosis",
+        "alt_names": [
+            "exosis"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "geek": {
-        "hiveos_name": "geek",
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "grincuckaroo29": {
-        "hiveos_name": "cuckaroo29",
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "grincuckatoo31": {
-        "hiveos_name": "cuckatoo31",
+        "alt_names": [
+            "geek"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "groestl": {
-        "hiveos_name": "groestl",
+        "alt_names": [
+            "groestl"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "hex": {
-        "hiveos_name": "hex",
+        "alt_names": [
+            "hex"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "hmq1725": {
-        "hiveos_name": "hmq1725",
+        "alt_names": [
+            "hmq1725"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "hodl": {
-        "hiveos_name": "hodl",
+        "alt_names": [
+            "hodl"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "honeycomb": {
-        "hiveos_name": "honeycomb",
+        "alt_names": [
+            "honeycomb"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "hsr": {
-        "hiveos_name": "hsr",
+        "alt_names": [
+            "hsr"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "jackpot": {
-        "hiveos_name": "jackpot",
+        "alt_names": [
+            "jackpot"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "jeonghash": {
-        "hiveos_name": "jeonghash",
+        "alt_names": [
+            "jeonghash"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "keccak": {
-        "hiveos_name": "keccak",
+        "alt_names": [
+            "keccak"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "keccakc": {
-        "hiveos_name": "keccakc",
+        "alt_names": [
+            "keccakc"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "lbk3": {
-        "hiveos_name": "lbk3",
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "lbry": {
-        "hiveos_name": "lbry",
+        "alt_names": [
+            "lbk3"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "lyra2re": {
-        "hiveos_name": "lyra2z",
+        "alt_names": [
+            "lyra2re",
+            "lyra2z"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "lyra2rev2": {
-        "hiveos_name": "lyra2rev2",
+        "alt_names": [
+            "lyra2rev2",
+            "lyra2v2"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "lyra2rev3": {
-        "hiveos_name": "lyra2v3",
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "lyra2v2": {
-        "hiveos_name": "lyra2rev2",
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "lyra2v3": {
-        "hiveos_name": "lyra2v3",
+        "alt_names": [
+            "lyra2v3",
+            "lyra2rev3"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "lyra2vc0ban": {
-        "hiveos_name": "lyra2vc0ban",
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "lyra2z": {
-        "hiveos_name": "lyra2z",
+        "alt_names": [
+            "lyra2vc0ban"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "lyra2zz": {
-        "hiveos_name": "lyra2zz",
+        "alt_names": [
+            "lyra2zz"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "m7m": {
-        "hiveos_name": "m7m",
+        "alt_names": [
+            "m7m"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "mtp": {
-        "hiveos_name": "mtp",
+        "alt_names": [
+            "mtp"
+        ],
         "exclusions": [
             "add pool or miner here",
-            "comma seperated"
+            "comma seperated",
+            "NVIDIA3"
         ]
     },
     "myr-gr": {
-        "hiveos_name": "myr-gr",
+        "alt_names": [
+            "myr-gr"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "neoscrypt": {
-        "hiveos_name": "neoscrypt",
+        "alt_names": [
+            "neoscrypt"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
-    "nist5": {
-        "hiveos_name": "nist5",
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "nrghash": {
-        "hiveos_name": "energihash",
+    "energihash": {
+        "alt_names": [
+            "energihash",
+            "nrghash"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "padihash": {
-        "hiveos_name": "padihash",
+        "alt_names": [
+            "padihash"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "pawelhash": {
-        "hiveos_name": "pawelhash",
+        "alt_names": [
+            "pawelhash"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "phi": {
-        "hiveos_name": "phi",
+        "alt_names": [
+            "phi"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "phi2": {
-        "hiveos_name": "phi2",
+        "alt_names": [
+            "phi2"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "polytimos": {
-        "hiveos_name": "polytimos",
+        "alt_names": [
+            "polytimos"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "progpow": {
-        "hiveos_name": "progpow",
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "qubit": {
-        "hiveos_name": "qubit",
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "rainforest": {
-        "hiveos_name": "rainforest",
+        "alt_names": [
+            "progpow"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "renesis": {
-        "hiveos_name": "renesis",
+        "alt_names": [
+            "renesis"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
-    "rfv2": {
-        "hiveos_name": "rainforestv2",
+    "rainforestv2": {
+        "alt_names": [
+            "rfv2"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "scrypt": {
-        "hiveos_name": "scrypt",
+        "alt_names": [
+            "scrypt"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "sha256": {
-        "hiveos_name": "sha256",
+        "alt_names": [
+            "sha256"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "sha256q": {
-        "hiveos_name": "sha256q",
+        "alt_names": [
+            "sha256q"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "sha256t": {
-        "hiveos_name": "sha256t",
+        "alt_names": [
+            "sha256t"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "sib": {
-        "hiveos_name": "sib",
+        "alt_names": [
+            "sib"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "skein": {
-        "hiveos_name": "skein",
+        "alt_names": [
+            "skein"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "skunk": {
-        "hiveos_name": "skunk",
+        "alt_names": [
+            "skunk"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "sonoa": {
-        "hiveos_name": "sonoa",
+        "alt_names": [
+            "sonoa"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "timetravel": {
-        "hiveos_name": "timetravel",
+        "alt_names": [
+            "timetravel"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "tribus": {
-        "hiveos_name": "tribus",
+        "alt_names": [
+            "tribus"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "veil": {
-        "hiveos_name": "veil",
+        "alt_names": [
+            "veil"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated",
@@ -631,147 +697,171 @@
         ]
     },
     "verushash": {
-        "hiveos_name": "verushash",
+        "alt_names": [
+            "verushash"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "wildkeccak": {
-        "hiveos_name": "wildkeccak",
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "x11": {
-        "hiveos_name": "x11",
+        "alt_names": [
+            "wildkeccak"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "x11evo": {
-        "hiveos_name": "x11evo",
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "x13": {
-        "hiveos_name": "x13",
+        "alt_names": [
+            "x11evo"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "x16r": {
-        "hiveos_name": "x16r",
+        "alt_names": [
+            "x16r"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "x16rt": {
-        "hiveos_name": "x16rt",
+        "alt_names": [
+            "x16rt"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "x16s": {
-        "hiveos_name": "x16s",
+        "alt_names": [
+            "x16s"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "x17": {
-        "hiveos_name": "x17",
+        "alt_names": [
+            "x17"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "x18": {
-        "hiveos_name": "x18",
+        "alt_names": [
+            "x18"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "x21s": {
-        "hiveos_name": "x21s",
+        "alt_names": [
+            "x21s"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "x22i": {
-        "hiveos_name": "x22i",
+        "alt_names": [
+            "x22i"
+        ],
+        "exclusions": [
+            "add pool or miner here",
+            "comma seperated"
+        ]
+    },
+    "x25x": {
+        "alt_names": [
+            "x25x"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "xevan": {
-        "hiveos_name": "xevan",
+        "alt_names": [
+            "xevan"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "yescrypt": {
-        "hiveos_name": "yescrypt",
+        "alt_names": [
+            "yescrypt"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "yescryptr16": {
-        "hiveos_name": "yescryptr16",
+        "alt_names": [
+            "yescryptr16"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "yescryptr32": {
-        "hiveos_name": "yescryptr32",
+        "alt_names": [
+            "yescryptr32"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "yescryptr8": {
-        "hiveos_name": "yescrypt",
+        "alt_names": [
+            "yescrypt"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "yespower": {
-        "hiveos_name": "yespower",
+        "alt_names": [
+            "yespower"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "yespowerr16": {
-        "hiveos_name": "yespowerr16",
+        "alt_names": [
+            "yespowerr16"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"
         ]
     },
     "yespowerr8": {
-        "hiveos_name": "yespowerr8",
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "zhash": {
-        "hiveos_name": "equihash 144/5",
+        "alt_names": [
+            "yespowerr8"
+        ],
         "exclusions": [
             "add pool or miner here",
             "comma seperated"

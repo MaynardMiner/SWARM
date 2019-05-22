@@ -47,9 +47,10 @@ $AMDTypes | ForEach-Object {
 
         $MinerAlgo = $_
 
-        if ($MinerAlgo -in $Algorithm -and $Name -notin $global:Exclusions.$MinerAlgo.exclusions -and $ConfigType -notin $global:Exclusions.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
-            $Stat = Get-Stat -Name "$($Name)_$($MinerAlgo)_hashrate"
-            $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
+        if ($MinerAlgo -in $Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
+            $StatAlgo = $MinerAlgo -replace "`_","`-"
+            $Stat = Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
+           $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
         
             if ($Check.RAW -ne "Bad") {
                 $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
@@ -64,6 +65,7 @@ $AMDTypes | ForEach-Object {
                         Type       = $ConfigType
                         Path       = $Path
                         Devices    = $Devices
+                        Version    = "$($amd.$CName.version)"
                         DeviceCall = "progminer_amd"
                         Arguments  = "-G -P stratum+tcp://$($_.$User)@$($_.Host):$($_.Port) --api-port -$Port --opencl-platform $AMDPlatform $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour}

@@ -396,12 +396,26 @@ function Restart-Miner {
         $Restart = $false
         if ($_.XProcess -eq $null -or $_.XProcess.HasExited -and $global:Config.Params.Lite -eq "No") {
                 
+            $Restart = $true
+            if ($_.Type -notlike "*ASIC*") { Start-Sleep -S $_.Delay }
             $_.InstanceName = "$($_.Type)-$($Instance)"
             $_.Activated++
             $Instance++
             $Current = $_ | ConvertTo-Json -Compress
 
-            if ($_.Type -ne "ASIC") { 
+            ##First Do OC
+            if ($ClearedOC -eq $False) {
+                $OCFile = ".\build\txt\oc-settings.txt"
+                if (Test-Path $OCFile) { Clear-Content $OcFile -Force; "Current OC Settings:" | Set-Content $OCFile }
+                $ClearedOC = $true
+            }
+
+            if ($_.Type -notlike "*ASIC*") { Start-OC -NewMiner $Current -Website $Website }
+            
+
+            ##Launch Miners
+            write-Log "Starting $($_.InstanceName)"
+            if ($_.Type -notlike "*ASIC*") {
                 $PreviousPorts = $PreviousMinerPorts | ConvertTo-Json -Compress
                 $_.Xprocess = Start-LaunchCode -PP $PreviousPorts -NewMiner $Current
             }
@@ -442,8 +456,9 @@ function Get-MinerHashRate {
         if ($_.Fiat_Day -ne "bench") { $CurrentProfit = "$($_.Fiat_Day) $($global:Config.Params.Currency)/Day" } else { $CurrentProfit = "Benchmarking" }
         if ($null -eq $_.Xprocess -or $_.XProcess.HasExited) { $_.Status = "Failed" }
         $Miner_HashRates = Get-HashRate -Type $_.Type
-        $GetDayStat = Get-Stat "$($_.Name)_$($_.Algo)_HashRate"
-        $DayStat = "$($GetDayStat.Day)"
+        $NewName = $_.Algo -replace "`_","`-"
+        $GetDayStat = Get-Stat "$($_.Name)_$($NewName)_HashRate"
+        $DayStat = "$($GetDayStat.Hour)"
         $MinerPrevious = "$($DayStat | ConvertTo-Hash)"
         $ScreenHash = "$($Miner_HashRates | ConvertTo-Hash)"
         Write-Log "$($_.Type) is currently" -foreground Green -NoNewLine -Start
@@ -604,8 +619,6 @@ function Start-MinerLoop {
         if ($ModeCheck -gt 0) { break }
         Start-Sleep -s 5
         if ($MinerWatch.Elapsed.TotalSeconds -ge ($MinerInterval - 20)) { break }
-        $RestartData = Restart-Database
-        if ($RestartData -eq "Yes") { break }
 
     }While ($MinerWatch.Elapsed.TotalSeconds -lt ($MinerInterval - 20))
 }

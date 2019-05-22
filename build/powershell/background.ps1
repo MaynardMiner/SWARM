@@ -18,6 +18,8 @@ Param (
 
 $global:Dir = $WorkingDir
 Set-Location $WorkingDir
+try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$WorkingDir`'" -WindowStyle Minimized } }catch { }
+try { if( -not ( Get-NetFireWallRule | Where {$_.DisplayName -like "*background.ps1*"} ) ) { New-NetFirewallRule -DisplayName 'background.ps1' -Direction Inbound -Program "$workingdir\build\powershell\background.ps1" -Action Allow | Out-Null} } catch { }
 
 ## Get Parameters
 $Global:config = [hashtable]::Synchronized(@{ })
@@ -234,15 +236,15 @@ While ($True) {
 
         ## Rig Metrics
         if ($global:Config.Params.HiveOS -eq "Yes") {
-            $diskSpace = Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'" | Select-Object Freespace
+            $diskSpace = try {Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'" -ErrorAction Stop | Select-Object Freespace } catch {0}
             $diskSpace = $diskSpace.Freespace / [math]::pow( 1024, 3 )
             $diskSpace = [math]::Round($diskSpace)
             $diskSpace = "$($diskSpace)G"
             $ramtotal = Get-Content ".\build\txt\ram.txt" | Select-Object -First 1
-            $cpu = $(Get-CimInstance Win32_PerfFormattedData_PerfOS_System).ProcessorQueueLength
+            $cpu = try{ $(Get-CimInstance Win32_PerfFormattedData_PerfOS_System -ErrorAction Stop).ProcessorQueueLength} catch {0}
             $LoadAverage = Set-Stat -Name "load-average" -Value $cpu
             $LoadAverages = @("$([Math]::Round($LoadAverage.Minute,2))", "$([Math]::Round($LoadAverage.Minute_5,2))", "$([Math]::Round($LoadAverage.Minute_15,2))")
-            $ramfree = [math]::Round((Get-Ciminstance Win32_OperatingSystem | Select FreePhysicalMemory).FreePhysicalMemory / 1kb, 2)
+            $ramfree = try { [math]::Round((Get-Ciminstance Win32_OperatingSystem -ErrorAction Stop | Select FreePhysicalMemory).FreePhysicalMemory / 1kb, 2)} catch{0}
         }
     }
 
@@ -266,8 +268,9 @@ While ($True) {
             $global:Devices = 0; $MinerDevices = $_.Devices
 
             ##Algorithm Parsing For Stats
-            if ($MinerType -ne "ASIC") { $HiveAlgo = $HiveNames.$MinerAlgo.hiveos_name }
-            else { $HiveAlgo = $MinerAlgo }
+            $HiveAlgo = $MinerAlgo -replace "`_"," "
+            $NewName = $MinerAlgo -replace "`/","`-"
+            $NewName = $MinerAlgo -replace "`_","`-"
 
             ## Determine API Type
             if ($MinerType -like "*NVIDIA*") { $global:TypeS = "NVIDIA" }
@@ -428,9 +431,9 @@ While ($True) {
                     Write-Host "Warning: Miner is reaching Rejection Limit- $($RJPercent.ToString("N2")) Percent Out of $Shares Shares" -foreground yellow
                     if (-not (Test-Path ".\timeout")) { New-Item "timeout" -ItemType Directory | Out-Null }
                     if (-not (Test-Path ".\timeout\warnings")) { New-Item ".\timeout\warnings" -ItemType Directory | Out-Null }
-                    "Bad Shares" | Out-File ".\timeout\warnings\$($_.Name)_$($_.Algo)_rejection.txt"
+                    "Bad Shares" | Out-File ".\timeout\warnings\$($_.Name)_$($NewName)_rejection.txt"
                 }
-                else { if (Test-Path ".\timeout\warnings\$($_.Name)_$($_.Algo)_rejection.txt") { Remove-Item ".\timeout\warnings\$($_.Name)_$($_.Algo)_rejection.txt" -Force } }
+                else { if (Test-Path ".\timeout\warnings\$($_.Name)_$($NewName)_rejection.txt") { Remove-Item ".\timeout\warnings\$($_.Name)_$($NewName)_rejection.txt" -Force } }
             }
         }
     }

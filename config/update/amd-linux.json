@@ -17,8 +17,8 @@
     "AMD2": ".\\bin\\gminer-amd-2\\miner",
     "AMD3": ".\\bin\\gminer-amd-3\\miner",
     "minername": "miner",
-    "version": "1.42",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.42/gminer_1_42_linux64.tar.xz"
+    "version": "1.43",
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.43/gmine_1_43_linux64.tar.xz"
   },
   "multiminer-amd": {
     "name": "multiminer-amd",
@@ -147,8 +147,8 @@
     "AMD2": ".\\bin\\wildrig-2\\wildrig-multi",
     "AMD3": ".\\bin\\wildrig-3\\wildrig-multi",
     "minername": "wildrig-multi",
-    "version": "0.16.4",
-    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.16.4/wildrig-multi-linux-0.16.4-beta.tar.gz"
+    "version": "0.16.5",
+    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.16.5/wildrig-multi-linux-0.16.5-beta.tar.gz"
   },
   "fancyix": {
     "name": "fancyix",

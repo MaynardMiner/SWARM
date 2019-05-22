@@ -1,5 +1,7 @@
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 $Dir = Split-Path $script:MyInvocation.MyCommand.Path
+try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$Dir`'" -WindowStyle Minimized } }catch { }
+
 
 if (Test-Path ".\config\parameters\default.json") {
     $Defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json
@@ -10,7 +12,7 @@ if (Test-Path ".\config\parameters\default.json") {
 }
 
 $List = $Defaults.PSObject.Properties.Name
-$global:parsed = @{ }
+$parsed = @{ }
 
 if ($args) {
     $args | % {
@@ -37,9 +39,13 @@ if ($args) {
             }
         }
     }
+} elseif (test-path ".\config.json") {
+    $parsed = @{ }
+    $arguments = Get-Content ".\config.json" | ConvertFrom-Json
+    $arguments.PSObject.Properties.Name | % { $Parsed.Add("$($_)", $arguments.$_) }
 } elseif (Test-Path ".\config\parameters\arguments.json") {
-    $global:parsed = @{ }
-    $arguments = Get-Content ".\config\parameters\arguments.json" ConvertFrom-Json
+    $parsed = @{ }
+    $arguments = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
     $arguments.PSObject.Properties.Name | % { $Parsed.Add("$($_)", $arguments.$_) }
 } else {
     Write-Host "No Arguments or arguments.json file found. Exiting."
@@ -47,12 +53,12 @@ if ($args) {
     exit
 }
 
-$Defaults.PSObject.Properties.Name | % { if (-not [string]$Parsed.$_) { $Parsed.Add("$($_)", $Defaults.$_) } }
+$Defaults.PSObject.Properties.Name | % { if ($_ -notin $Parsed.keys) { $Parsed.Add("$($_)", $Defaults.$_) } }
 
 $Parsed | convertto-json | Out-File ".\config\parameters\arguments.json"
 
 if(Test-path "C:\") {
-    Start-Process "CMD" -ArgumentList "/C powershell -Version 5.0 -noexit -executionpolicy Bypass -windowstyle maximized -command `"pwsh -command `"Set-Location C:\; Set-Location `'$Dir`'; .\swarm.ps1`"`"" -Verb RunAs
+    Start-Process "CMD" -ArgumentList "/C powershell -noexit -executionpolicy Bypass -windowstyle maximized -command `"pwsh -command `"Set-Location C:\; Set-Location `'$Dir`'; .\swarm.ps1`"`"" -Verb RunAs
 }
 else {
     Invoke-Expression ".\swarm.ps1"

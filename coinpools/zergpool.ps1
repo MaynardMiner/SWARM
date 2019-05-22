@@ -23,6 +23,11 @@ if ($Name -in $global:Config.Params.PoolName) {
     }
    
     $zergpool_Request.PSObject.Properties.Name | ForEach-Object { $zergpool_Request.$_ | Add-Member "sym" $_ }
+    $zergpool_Request.PSObject.Properties.Name | ForEach-Object {
+        $Algo = $zergpool_Request.$_.Algo.ToLower()
+        $zergpool_Request.$_ | Add-Member "Original_Algo" $Algo
+        $zergpool_Request.$_.Algo = $global:Config.Pool_Algos.PSObject.Properties.Name | % {if($Algo -in $global:Config.Pool_Algos.$_.alt_names){$_}}
+    }
     $ZergAlgos = @()
     $ZergAlgos += $Algorithm
     $ZergAlgos += $global:Config.Params.ASIC_ALGO
@@ -48,8 +53,8 @@ if ($Name -in $global:Config.Params.PoolName) {
             Where-Object Algo -eq $Selected | 
             Where-Object Algo -in $global:FeeTable.zergpool.keys | 
             Where-Object Algo -in $global:divisortable.zergpool.Keys |
-            Where-Object { $global:Exclusions.$($_.Algo) } |
-            Where-Object { $Name -notin $global:Exclusions.$($_.sym).exclusions }  |
+            Where-Object { $global:Config.Pool_Algos.$($_.Algo) } |
+            Where-Object { $Name -notin $global:Config.Pool_Algos.$($_.Algo).exclusions }  |
             Where-Object Sym -notin $global:BanHammer |
             Where-Object noautotrade -eq "0" | 
             Where-Object estimate -gt 0 | 
@@ -70,8 +75,8 @@ if ($Name -in $global:Config.Params.PoolName) {
             Where-Object Algo -eq $Selected |
             Where-Object Algo -in $global:FeeTable.zergpool.keys |
             Where-Object Algo -in $global:divisortable.zergpool.Keys |
-            Where-Object { $global:Exclusions.$($_.Algo) } |
-            Where-Object { $Name -notin $global:Exclusions.$($_.sym).exclusions }  |
+            Where-Object { $global:Config.Pool_Algos.$($_.Algo) } |
+            Where-Object { $Name -notin $global:Config.Pool_Algos.$($_.sym).exclusions }  |
             Where-Object Sym -notin $global:BanHammer |
             Where-Object noautotrade -eq "0" |
             Where-Object estimate -gt 0 |
@@ -89,7 +94,10 @@ if ($Name -in $global:Config.Params.PoolName) {
                 $zergpool_Fees = [Double]$global:FeeTable.zergpool.$Zergpool_Algorithm
                 $zergpool_Estimate = [Double]$Zergpool_UnSorted.$_.estimate * 0.001
                 $Divisor = (1000000 * [Double]$global:DivisorTable.zergpool.$Zergpool_Algorithm)    
-                try { $Stat = Set-Stat -Name "$($Name)_$($Zergpool_Symbol)_coin_profit" -Value ([double]$zergpool_Estimate / $Divisor * (1 - ($zergpool_fees / 100))) }catch { Write-Log "Failed To Calculate Stat For $Zergpool_Symbol" }
+                try {
+                    $StatAlgo = $Zergpool_Symbol -replace "`_","`-" 
+                    $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_coin_profit" -Value ([double]$zergpool_Estimate / $Divisor * (1 - ($zergpool_fees / 100))) 
+                }catch { Write-Log "Failed To Calculate Stat For $Zergpool_Symbol" }
             }
         }
 
@@ -97,9 +105,8 @@ if ($Name -in $global:Config.Params.PoolName) {
 
             $Zergpool_Algorithm = $Zergpool_Sorted.$_.algo.ToLower()
             $Zergpool_Symbol = $Zergpool_Sorted.$_.sym.ToUpper()
-            $zergpool_Coin = $Zergpool_Sorted.$_.Name.Tolower()
             $zergpool_Port = $Zergpool_Sorted.$_.port
-            $zergpool_Host = "$($Zergpool_Sorted.$_.algo).mine.zergpool.com$X"
+            $zergpool_Host = "$($Zergpool_Sorted.$_.Original_Algo).mine.zergpool.com$X"
 
             $zergpool_Fees = [Double]$global:FeeTable.zergpool.$Zergpool_Algorithm
 

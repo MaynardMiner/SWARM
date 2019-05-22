@@ -319,8 +319,8 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 $BenchTable += [PSCustomObject]@{
                     Miner     = $_ -split "_" | Select -First 1; 
                     Algo      = $_ -split "_" | Select -Skip 1 -First 1; 
-                    HashRates = $Stats."$($_)".Day | ConvertTo-Hash; 
-                    Raw       = $Stats."$($_)".Day
+                    HashRates = $Stats."$($_)".Hour | ConvertTo-Hash; 
+                    Raw       = $Stats."$($_)".Hour
                 }
             }
             function Get-BenchTable {

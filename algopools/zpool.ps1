@@ -22,15 +22,16 @@ if ($Name -in $global:Config.Params.PoolName) {
     Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
     Select-Object -ExpandProperty Name | 
     Where-Object { $Zpool_Request.$_.hashrate -gt 0 } | 
-    Where-Object { $global:Exclusions.$($Zpool_Request.$_.name) } |
+    Where-Object {
+        $Algo = $Zpool_Request.$_.name.ToLower();
+        $local:Zpool_Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name | Where { $Algo -in $global:Config.Pool_Algos.$_.alt_names }
+        return $Zpool_Algorithm
+    } |
     ForEach-Object {
-    
-        $Zpool_Algorithm = $Zpool_Request.$_.name.ToLower()
-  
         if ($Algorithm -contains $Zpool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $Zpool_Algorithm) {
-            if ($Name -notin $global:Exclusions.$Zpool_Algorithm.exclusions -and $Zpool_Algorithm -notin $Global:banhammer) {
+            if ($Name -notin $global:Config.Pool_Algos.$Zpool_Algorithm.exclusions -and $Zpool_Algorithm -notin $Global:banhammer) {
                 $Zpool_Port = $Zpool_Request.$_.port
-                $Zpool_Host = "$($ZPool_Algorithm).$($region).mine.zpool.ca$X"
+                $Zpool_Host = "$($Zpool_Request.$_.name.ToLower()).$($region).mine.zpool.ca$X"
                 $Divisor = (1000000 * $Zpool_Request.$_.mbtc_mh_factor)
                 $Fees = $Zpool_Request.$_.fees
                 $Workers = $Zpool_Request.$_.Workers
@@ -43,7 +44,8 @@ if ($Name -in $global:Config.Params.PoolName) {
                 $Estimate = if (-not (Test-Path $StatPath)) { [Double]$Zpool_Request.$_.estimate_last24h } else { [Double]$Zpool_Request.$_.estimate_current }
 
                 $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
-                $Stat = Set-Stat -Name "$($Name)_$($Zpool_Algorithm)_profit" -HashRate $HashRate -Value ([Double]$Cut / $Divisor)
+                $StatAlgo = $Zpool_Algorithm -replace "`_","`-"
+                $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ([Double]$Cut / $Divisor)
 
                 if (-not $global:Pool_Hashrates.$Zpool_Algorithm) { $global:Pool_Hashrates.Add("$Zpool_Algorithm", @{ }) }
                 if (-not $global:Pool_Hashrates.$Zpool_Algorithm.$Name) { $global:Pool_Hashrates.$Zpool_Algorithm.Add("$Name", @{HashRate = "$($Stat.HashRate)"; Percent = "" }) }
