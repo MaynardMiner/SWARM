@@ -31,7 +31,7 @@ function Start-Webcommand {
         }
   
   
-        "OK" {$trigger = "stats"}
+        "OK" { $trigger = "stats" }
   
         "reboot" {
             $method = "message"
@@ -43,7 +43,7 @@ function Start-Webcommand {
             Write-Host $method $messagetype $data
             $trigger = "reboot"
             $MinerFile = ".\build\pid\miner_pid.txt"
-            if (Test-Path $MinerFile) {$MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue}
+            if (Test-Path $MinerFile) { $MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue }
             if ($MinerId) {
                 Stop-Process $MinerId
                 Start-Sleep -S 3
@@ -65,14 +65,14 @@ function Start-Webcommand {
                     invoke-expression ".\build\apps\nvidia-smi.exe" | Tee-Object ".\build\txt\getcommand.txt" | Out-Null
                     $getpayload = Get-Content ".\build\txt\getcommand.txt"
                     $line = @()
-                    $getpayload | foreach {$line += "$_`n"}
+                    $getpayload | foreach { $line += "$_`n" }
                     $payload = $line
                     $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload
                     $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
                     $SendResponse = Invoke-RestMethod "$($global:config.hive_params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
                     Write-Host $method $messagetype $data
                     $trigger = "exec"
-                    if (Test-Path ".\build\txt\getcommand.txt") {Clear-Content ".\build\txt\getcommand.txt"}  
+                    if (Test-Path ".\build\txt\getcommand.txt") { Clear-Content ".\build\txt\getcommand.txt" }  
                 }
                 "ps" {
                     $method = "message"
@@ -82,14 +82,14 @@ function Start-Webcommand {
                     Start-Process "pwsh" -ArgumentList "-executionpolicy bypass -command `"$pscommand | Tee-Object `"$($global:Dir)\build\txt\getcommand.txt`"`"" -Verb RunAs -Wait
                     $getpayload = Get-Content ".\build\txt\getcommand.txt"
                     $line = @()
-                    $getpayload | foreach {$line += "$_`n"}
+                    $getpayload | foreach { $line += "$_`n" }
                     $payload = $line
                     $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload
                     $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
                     $SendResponse = Invoke-RestMethod "$($global:config.hive_params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
                     Write-Host $method $messagetype $data
                     $trigger = "exec"
-                    if (Test-Path ".\build\txt\getcommand.txt") {Clear-Content ".\build\txt\getcommand.txt"}
+                    if (Test-Path ".\build\txt\getcommand.txt") { Clear-Content ".\build\txt\getcommand.txt" }
                 }
                 "stats" {
                     $method = "message"
@@ -97,7 +97,7 @@ function Start-Webcommand {
                     $data = "stats"
                     $getpayload = Get-Content ".\build\txt\minerstats.txt"
                     $line = @()
-                    $getpayload | foreach {$line += "$_`n"}
+                    $getpayload | foreach { $line += "$_`n" }
                     $payload = $line
                     $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload
                     $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
@@ -111,7 +111,7 @@ function Start-Webcommand {
                     $data = "active"
                     $getpayload = Get-Content ".\build\txt\mineractive.txt"
                     $line = @()
-                    $getpayload | foreach {$line += "$_`n"}
+                    $getpayload | foreach { $line += "$_`n" }
                     $payload = $line
                     $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload
                     $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
@@ -128,7 +128,7 @@ function Start-Webcommand {
                             start-process "pwsh" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command query""" -Wait -WindowStyle Minimized -Verb RunAs
                             $getpayload = Get-Content ".\build\txt\version.txt"
                             $line = @()
-                            $getpayload | foreach {$line += "$_`n"}
+                            $getpayload | foreach { $line += "$_`n" }
                             $payload = $line
                             $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload
                             $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
@@ -144,7 +144,7 @@ function Start-Webcommand {
                             start-process "pwsh" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command $arguments""" -WindowStyle Minimized -Verb Runas -Wait
                             $getpayload = Get-Content ".\build\txt\version.txt"
                             $line = @()
-                            $getpayload | foreach {$line += "$_`n"}
+                            $getpayload | foreach { $line += "$_`n" }
                             $payload = $line
                             $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload
                             $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
@@ -165,7 +165,7 @@ function Start-Webcommand {
                     start-process "pwsh" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\clear_profits.ps1""" -WindowStyle Minimized -Verb Runas -Wait
                     $getpayload = Get-Content ".\build\txt\get.txt"
                     $line = @()
-                    $getpayload | foreach {$line += "$_`n"}
+                    $getpayload | foreach { $line += "$_`n" }
                     $payload = $line 
                     $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload
                     $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
@@ -180,7 +180,7 @@ function Start-Webcommand {
                     start-process "pwsh" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\clear_watts.ps1""" -WindowStyle Minimized -Verb Runas -Wait
                     $getpayload = Get-Content ".\build\txt\get.txt"
                     $line = @()
-                    $getpayload | foreach {$line += "$_`n"}
+                    $getpayload | foreach { $line += "$_`n" }
                     $payload = $line 
                     $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload
                     $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
@@ -201,18 +201,18 @@ function Start-Webcommand {
                         $version = Get-Content ".\build\txt\version.txt"
                         $versionnumber = $version -replace "SWARM.", ""
                         $version1 = $versionnumber[4]
-                        $version1 = $version1 | % {iex $_}
+                        $version1 = $version1 | % { iex $_ }
                         $version1 = $version1 + 1
                         $version2 = $versionnumber[2]
                         $version3 = $versionnumber[0]
                         if ($version1 -eq 10) {
                             $version1 = 0; 
-                            $version2 = $version2 | % {iex $_}
+                            $version2 = $version2 | % { iex $_ }
                             $version2 = $version2 + 1
                         }
                         if ($version2 -eq 10) {
                             $version2 = 0; 
-                            $version3 = $version3 | % {iex $_}
+                            $version3 = $version3 | % { iex $_ }
                             $version3 = $version3 + 1
                         }
                         $versionnumber = "$version3.$version2.$version1"    
@@ -260,7 +260,7 @@ function Start-Webcommand {
                             $line += "Config Command Initiated- Restarting SWARM`n"
                             Write-Host "Config Command Initiated- Restarting SWARM"
                             $MinerFile = ".\build\pid\miner_pid.txt"
-                            if (Test-Path $MinerFile) {$MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue}
+                            if (Test-Path $MinerFile) { $MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue }
                             if ($MinerId) {
                                 Stop-Process $MinerId -Force
                                 $line += "Stopping Old Miner`n"
@@ -283,7 +283,7 @@ function Start-Webcommand {
                     else {
                         start-process "pwsh" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\get.ps1 $arguments""" -Wait -WindowStyle Minimized -Verb Runas; $Trigger = "exec"
                         $getpayload = Get-Content ".\build\txt\get.txt"
-                        $getpayload | foreach {$line += "$_`n"}
+                        $getpayload | foreach { $line += "$_`n" }
                         $payload = $line
                     }
                     $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload
@@ -312,7 +312,7 @@ function Start-Webcommand {
                             $SendResponse = Invoke-RestMethod "$($global:config.hive_params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
                             Write-Host $method $messagetype $data
                             $GetMiner = Get-Content ".\build\pid\miner_pid.txt"
-                            if ($GetMiner) {$MinerProcess = Get-PRocess -ID $GetMiner -ErrorAction SilentlyContinue; if ($MinerProcess) {Stop-Process $MinerProcess}}
+                            if ($GetMiner) { $MinerProcess = Get-PRocess -ID $GetMiner -ErrorAction SilentlyContinue; if ($MinerProcess) { Stop-Process $MinerProcess } }
                             $trigger = "exec"
                         }
                         "start" {
@@ -335,7 +335,7 @@ function Start-Webcommand {
                     start-process "pwsh" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\benchmark.ps1 $arguments""" -Wait -WindowStyle Minimized -Verb Runas
                     $getpayload = Get-Content ".\build\txt\get.txt"
                     $line = @()
-                    $getpayload | foreach {$line += "$_`n"}
+                    $getpayload | foreach { $line += "$_`n" }
                     $payload = $line 
                     $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload
                     $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
@@ -354,7 +354,7 @@ function Start-Webcommand {
             $NewOC | Start-NVIDIAOC
             $getpayload = Get-Content ".\build\txt\ocnvidia.txt"
             $line = @()
-            $getpayload | foreach {$line += "$_`n"}
+            $getpayload | foreach { $line += "$_`n" }
             $payload = $line
             $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload
             $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
@@ -371,7 +371,7 @@ function Start-Webcommand {
             $NewOC | Start-AMDOC
             $getpayload = Get-Content ".\build\txt\ocamd.txt"
             $line = @()
-            $getpayload | foreach {$line += "$_`n"}
+            $getpayload | foreach { $line += "$_`n" }
             $payload = $line
             $DoResponse = Add-HiveResponse -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload
             $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
@@ -388,12 +388,12 @@ function Start-Webcommand {
                 $Pass = $rig.RIG_PASSWD -replace "`"", ""
                 $mirror = $rig.HIVE_HOST_URL -replace "`"", ""
                 $hiveWorkerID = $rig.RIG_ID
-                $NewHiveKeys = @{}
+                $NewHiveKeys = @{ }
                 $NewHiveKeys.Add("HiveWorker", "$hiveworker")
                 $NewHiveKeys.Add("HivePassword", "$Pass")
                 $NewHiveKeys.Add("HiveID", "$hiveWorkerID")
                 $NewHiveKeys.Add("HiveMirror", "$mirror")
-                if (Test-Path ".\build\txt\hivekeys.txt") {$OldHiveKeys = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json}
+                if (Test-Path ".\build\txt\hivekeys.txt") { $OldHiveKeys = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json }
                 if ($OldHiveKeys) {
                     if ($NewHiveKeys.HivePassword -ne $OldHiveKeys.HivePassword) {
                         Write-Warning "Detected New Password"
@@ -404,7 +404,7 @@ function Start-Webcommand {
                         $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
                         $SendResponse = Invoke-RestMethod "$($global:config.hive_params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
                         $SendResponse
-                        $DoResponse = @{method = "password_change_received"; params = @{rig_id = $global:config.hive_params.HiveID; passwd = $global:config.hive_params.HivePassWord}; jsonrpc = "2.0"; id = "0"}
+                        $DoResponse = @{method = "password_change_received"; params = @{rig_id = $global:config.hive_params.HiveID; passwd = $global:config.hive_params.HivePassWord }; jsonrpc = "2.0"; id = "0" }
                         $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
                         $Send2Response = Invoke-RestMethod "$($global:config.hive_params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
                     }
@@ -417,40 +417,50 @@ function Start-Webcommand {
                 $messagetype = "success"
                 $data = "Rig config changed"
                 $arguments = $command.result.wallet
-                $argjson = @{}
+                $argjson = @{ }
                 $start = $arguments.Lastindexof("CUSTOM_USER_CONFIG=") + 20
                 $end = $arguments.LastIndexOf("META") - 3
                 $arguments = $arguments.substring($start, ($end - $start))
                 $arguments = $arguments -replace "\'\\\'", ""
                 $arguments = $arguments -replace "\u0027", "`'"
-                $arguments = $arguments -split " -"
-                $arguments = $arguments | foreach {$_.trim(" ")}
-                $arguments = $arguments | % {$_.trimstart("-")}
-                $arguments | foreach {$argument = $_ -split " " | Select -first 1; $argparam = $_ -split " " | Select -last 1; $argjson.Add($argument, $argparam); }
-                $argjson = $argjson | ConvertTo-Json | ConvertFrom-Json
+                try { $test = $arguments | ConvertFrom-Json; if ($test) { $isjon = $true } } catch { $isjson = $false }
+                if ($isjson) {
+                    $Params = @{ }
+                    $test.PSObject.Properties.Name | % { $Params.Add("$($_)", $test.$_) }
+                    $Defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json
+                    $Defaults.PSObject.Properties.Name | % { if ($_ -notin $Parsed.keys) { $Params.Add("$($_)", $Defaults.$_) } }
+
+                }
+                else {
+                    $arguments = $arguments -split " -"
+                    $arguments = $arguments | foreach { $_.trim(" ") }
+                    $arguments = $arguments | % { $_.trimstart("-") }
+                    $arguments | foreach { $argument = $_ -split " " | Select -first 1; $argparam = $_ -split " " | Select -last 1; $argjson.Add($argument, $argparam); }
+                    $argjson = $argjson | ConvertTo-Json | ConvertFrom-Json
   
-                $Defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json   
-                $Params = @{}
+                    $Defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json   
+                    $Params = @{ }
   
-                $Defaults |Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | % {$Params.Add("$($_)",$Defaults.$_)}
+                    $Defaults | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | % { $Params.Add("$($_)", $Defaults.$_) }
   
-                $argjson | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name |  foreach {
-                    if ($argjson.$_ -ne $Params.$_) {
-                        switch ($_) {
-                            default {$Params.$_ = $argjson.$_}
-                            "Bans" {$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $Params.$_ = $NewParamArray}
-                            "Coin" {$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $Params.$_ = $NewParamArray}
-                            "Algorithm" {$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $Params.$_ = $NewParamArray}
-                            "GPUDevices3" {$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $Params.$_ = $NewParamArray}
-                            "Config.params.GPUDevices2" {$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $Params.$_ = $NewParamArray}
-                            "GPUDevices1" {$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $Params.$_ = $NewParamArray}
-                            "Asic_Algo" {$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $Params.$_ = $NewParamArray}
-                            "Type" {$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $Params.$_ = $NewParamArray}
-                            "Poolname" {$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $Params.$_ = $NewParamArray}
-                            "Currency" {$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $Params.$_ = $NewParamArray}
-                            "PasswordCurrency1" {$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $Params.$_ = $NewParamArray}
-                            "PasswordCurrency2" {$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $Params.$_ = $NewParamArray}
-                            "PasswordCurrency3" {$NewParamArray = @(); $argjson.$_ -split "," | Foreach {$NewParamArray += $_}; $Params.$_ = $NewParamArray}
+                    $argjson | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                        if ($argjson.$_ -ne $Params.$_) {
+                            switch ($_) {
+                                default { $Params.$_ = $argjson.$_ }
+                                "Bans" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "Coin" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "Algorithm" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "GPUDevices3" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "Config.params.GPUDevices2" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "GPUDevices1" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "Asic_Algo" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "Type" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "Poolname" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "Currency" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "PasswordCurrency1" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "PasswordCurrency2" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "PasswordCurrency3" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                            }
                         }
                     }
                 }
@@ -465,6 +475,6 @@ function Start-Webcommand {
         }
   
     }
-    if (Test-Path ".\build\txt\get.txt") {Clear-Content ".\build\txt\get.txt"}
+    if (Test-Path ".\build\txt\get.txt") { Clear-Content ".\build\txt\get.txt" }
     $trigger
 }
