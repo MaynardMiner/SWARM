@@ -56,7 +56,7 @@
         "NVIDIA1": ".\\bin\\bminer-1\\bminer.exe",
         "NVIDIA2": ".\\bin\\bminer-2\\bminer.exe",
         "NVIDIA3": ".\\bin\\bminer-3\\bminer.exe",
-        "minername": "bminer",
+        "minername": "bminer.exe",
         "version": "15.5.3",
         "uri": "https://www.bminercontent.com/releases/bminer-lite-v15.5.3-747d98e-amd64.zip"
     },
@@ -76,7 +76,7 @@
         "NVIDIA1": ".\\bin\\gminer-1\\miner.exe",
         "NVIDIA2": ".\\bin\\gminer-2\\miner.exe",
         "NVIDIA3": ".\\bin\\gminer-3\\miner.exe",
-        "minername": "miner",
+        "minername": "miner.exe",
         "version": "1.43",
         "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.43/gminer_1_43_windows64.zip"
     },
@@ -156,7 +156,7 @@
         "NVIDIA1": ".\\bin\\phoenix-1\\PhoenixMiner.exe",
         "NVIDIA2": ".\\bin\\phoenix-2\\PhoenixMiner.exe",
         "NVIDIA3": ".\\bin\\phoenix-3\\PhoenixMiner.exe",
-        "minername": "PhoenixMiner",
+        "minername": "PhoenixMiner.exe",
         "version": "4.2c",
         "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/phoenix-miner-windows.zip"
     },
