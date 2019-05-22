@@ -428,7 +428,7 @@ function Start-Webcommand {
                     $Params = @{ }
                     $test.PSObject.Properties.Name | % { $Params.Add("$($_)", $test.$_) }
                     $Defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json
-                    $Defaults.PSObject.Properties.Name | % { if ($_ -notin $Parsed.keys) { $Params.Add("$($_)", $Defaults.$_) } }
+                    $Defaults.PSObject.Properties.Name | % { if ($_ -notin $Params.keys) { $Params.Add("$($_)", $Defaults.$_) } }
 
                 }
                 else {
