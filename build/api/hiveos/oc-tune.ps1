@@ -38,8 +38,8 @@ function Start-HiveTune {
 
     if ($CheckOC) {
         $Global:Config.params.Type | ForEach-Object {
-            if ($_ -like "*NVIDIA*") { $CheckNVIDIA = $true }
-            if ($_ -like "*AMD*") { $CheckAMD = $True }
+            if ($_ -like "*NVIDIA1*") { $CheckNVIDIA = $true }
+            if ($_ -like "*AMD1*") { $CheckAMD = $True }
         }
         switch ($Global:Config.params.Platform) {
             "windows" {
