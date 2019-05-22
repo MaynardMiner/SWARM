@@ -51,7 +51,7 @@ function Start-HiveTune {
                         $CheckFile = ".\build\txt\ocnvidia.txt"
                         $LastWrite = Get-Item $CheckFile | Foreach { $_.LastWriteTime }
                         Start-Sleep -Milliseconds 50
-                    } While ( ($LastWrite - $CheckDate).TotalSeconds -lt 0 -or $OCT.Elapsed.TotalSeconds -gt 15 )
+                    } While ( ($LastWrite - $CheckDate).TotalSeconds -lt 0 -or $OCT.Elapsed.TotalSeconds -lt 15 )
                     $OCT.Stop()
                     if($OCT.Elapsed.TotalSeconds -gt 15){Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow}
                 }
@@ -63,7 +63,7 @@ function Start-HiveTune {
                         $CheckFile = ".\build\txt\ocamd.txt"
                         $LastWrite = Get-Item $CheckFile | Foreach { $_.LastWriteTime }
                         Start-Sleep -Milliseconds 50
-                    } While ( ($LastWrite - $CheckDate).TotalSeconds -lt 0 -or $OCT.Elapsed.TotalSeconds -gt 15 )
+                    } While ( ($LastWrite - $CheckDate).TotalSeconds -lt 0 -or $OCT.Elapsed.TotalSeconds -lt 15 )
                     $OCT.Stop()
                     if($OCT.Elapsed.TotalSeconds -gt 15){Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow}
                 }
@@ -79,7 +79,7 @@ function Start-HiveTune {
                         Start-Sleep -Milliseconds 50
                     } While (($LastWrite - $CheckDate).TotalSeconds -lt 0)
                     $OCT.Stop()
-                    if($OCT.Elapsed.TotalSeconds -gt 15){Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow}
+                    if($OCT.Elapsed.TotalSeconds -gt 15 -or $OCT.Elapsed.TotalSeconds -lt 15 ){Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow}
                 }
                 if ($CheckAMD) {
                     Write-Log "Verifying OC was Set...." -ForegroundColor Cyan
@@ -91,7 +91,7 @@ function Start-HiveTune {
                         Start-Sleep -Milliseconds 50
                     } While (($LastWrite - $CheckDate).TotalSeconds -lt 0)
                     $OCT.Stop()
-                    if($OCT.Elapsed.TotalSeconds -gt 15){Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow}
+                    if($OCT.Elapsed.TotalSeconds -gt 15 -or $OCT.Elapsed.TotalSeconds -lt 15){Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow}
                 }
             }
         }
