@@ -807,7 +807,7 @@ While ($true) {
                 ##First Do OC
                 if($global:Config.Params.API_Key -and $global:Config.Params.API_Key -ne "") {
                     if($HiveOCTune -eq $false) {
-                        if($_.Type -notlike "*ASIC*") {
+                        if($_.Type -notlike "*ASIC*" -and $_.Type -like "*1*") {
                             Start-HiveTune $_.Algo
                             $HiveOCTune = $true
                         }
