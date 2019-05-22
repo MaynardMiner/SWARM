@@ -423,7 +423,7 @@ function Start-Webcommand {
                 $arguments = $arguments.substring($start, ($end - $start))
                 $arguments = $arguments -replace "\'\\\'", ""
                 $arguments = $arguments -replace "\u0027", "`'"
-                try { $test = $arguments | ConvertFrom-Json; if ($test) { $isjon = $true } } catch { $isjson = $false }
+                try { $test = "$arguments" | ConvertFrom-Json; if ($test) { $isjson = $true } } catch { $isjson = $false }
                 if ($isjson) {
                     $Params = @{ }
                     $test.PSObject.Properties.Name | % { $Params.Add("$($_)", $test.$_) }
