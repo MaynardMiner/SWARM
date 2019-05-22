@@ -40,9 +40,13 @@ sudo ln -s /opt/microsoft/powershell/6.1.0/pwsh /usr/bin/pwsh
 sudo rm -rf /tmp/powershell.tar.gz
 fi
 
-if jq -e . >/dev/null 2>&1 <<<"$@"; then
-  $@ > $PWD/config.json
-  pwsh -command "& .\startup.ps1"
+json=`echo cat $SWARMCONF`
+$json | jq -e . >/dev/null 2>&1
+get=$?
+
+if [ "$get" -eq 0 ]; then
+  $json > $PWD/config.json;
+  pwsh -command "& .\startup.ps1";
   else
-  pwsh -command "&.\startup.ps1 $(< /hive/miners/custom/$CUSTOM_NAME/$CUSTOM_NAME.conf)" $@
+  pwsh -command "&.\startup.ps1 $(< /hive/miners/custom/$CUSTOM_NAME/$CUSTOM_NAME.conf)" $@;
 fi
