@@ -240,7 +240,7 @@ While ($true) {
 
     do {
 
-        if($Global:config.Params.Type -like "*AMD*" -or $Global:config.params.Type -like "*NVIDIA*" -or $Global:Params.Type -like "*CPU*") {
+        if($Global:config.Params.Type -like "*AMD*" -or $Global:config.params.Type -like "*NVIDIA*" -or $Global:Config.Params.Type -like "*CPU*") {
         Get-MinerConfigs
         }
 
