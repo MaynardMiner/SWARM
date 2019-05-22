@@ -271,6 +271,7 @@ While ($True) {
             $HiveAlgo = $MinerAlgo -replace "`_"," "
             $NewName = $MinerAlgo -replace "`/","`-"
             $NewName = $MinerAlgo -replace "`_","`-"
+            $NewName = $NewName -replace "veil","x16rt"
 
             ## Determine API Type
             if ($MinerType -like "*NVIDIA*") { $global:TypeS = "NVIDIA" }
