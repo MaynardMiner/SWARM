@@ -193,8 +193,11 @@ function Start-LaunchCode {
                 $Program = "$WorkingDirectory\$($MinerCurrent.MinerName)"
                 $script = @()
                 $script += "`$OutputEncoding = [System.Text.Encoding]::ASCII"
-                if( -not (Get-NetFireWallRule | Where {$_.DisplayName -like "*$($MinerCurrent.MinerName)*"}) ) {
-                $script += "New-NetFirewallRule -DisplayName `'$($MinerCurrent.Minername)`' -Direction Inbound -Program `'$Program`' -Action Allow"
+                try{ $Net = Get-NetFireWallRule } catch {}
+                if($Net) {
+                    if ( -not ( $Net | Where {$_.DisplayName -like "*$($MinerCurrent.MinerName)*"} ) ) {
+                        $script += "New-NetFirewallRule -DisplayName `'$($MinerCurrent.Minername)`' -Direction Inbound -Program `'$Program`' -Action Allow"
+                    }
                 }
                 $script += "Start-Process `"powershell`" -ArgumentList `"-command `"`"Set-Location ```'$($global:Dir)```'; & ```'$($global:Dir)\build\powershell\icon.ps1```' ```'$($global:Dir)\build\apps\miner.ico```'`"`"`" -NoNewWindow"
                 $script += "`$host.ui.RawUI.WindowTitle = `'$($MinerCurrent.Name) - $($MinerCurrent.Algo)`';"
