@@ -3013,3 +3013,18 @@ API overhaul:
   Ban notices on HiveOS is displayed [algorithm]:[name].
   * This allows copy/paste of bans into arguments.
 
+
+  2.3.2
+
+  -Extended Windows Time For HiveOS by a few seconds.
+  -Changed Veil to display as "x16rt" on HiveOS (for overclocking).
+  -Windows OverdriveNtool will run once (not one for each card).
+  -[Net.SecurityProtocolType]::Tls12 instead of 'tls12' (more proper).
+  
+  OC for AMD1 or NVIDIA1 only on HiveOS!
+  * May be useful for a hybrid rig, in which you
+    wish to set dynamic oc for one of the device groups.
+    (other groups should remain static/same oc at all times).
+
+  Code staging for #Device Bus, so multiple instances of SWARM
+  could be ran on same rig.
