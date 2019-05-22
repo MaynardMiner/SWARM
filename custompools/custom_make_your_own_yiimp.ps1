@@ -127,7 +127,6 @@ $Pool = $Pool | ConvertFrom-StringData
 $Name = $Pool.Name 
 if ($global:Config.Params.PoolName -eq $Name -and $FileName -eq $Name) {
     $Custom_Request = [PSCustomObject]@{} 
-    [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
 if($global:Config.Params.xnsub -eq "Yes"){$X = "#xnsub"} 
 
     ##First lets make sure miner has algorithm. If not, add it.

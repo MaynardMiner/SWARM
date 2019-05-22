@@ -406,7 +406,6 @@ if ($Miner.Type -like "*AMD*") {
             $Model = $Model.keys | % { if ($_ -like "*Model*") { $Model.$_ } }
     
             for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Name.Count; $i++) {
-                $OCArgs = $null
                 $OCArgs += "-ac$($GCount.AMD.$i) "
                 $Select = $GCount.AMD.PSOBject.Properties.Name
                 $Select = $Select | Sort-Object
@@ -477,8 +476,8 @@ if ($Miner.Type -like "*AMD*") {
                     }
                     $AScreenFans = "$($Miner.Type) Fans is $($Fans) "
                 }
-                $AScript += "Start-Process `".\OverdriveNTool.exe`" -ArgumentList `"$OCArgs`" -WindowStyle Minimized -Wait"
             }
+            $AScript += "Start-Process `".\OverdriveNTool.exe`" -ArgumentList `"$OCArgs`" -WindowStyle Minimized -Wait"
         }
     }
 }

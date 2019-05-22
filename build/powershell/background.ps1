@@ -68,7 +68,7 @@ if (-not $global:Config.Params.Platform) {
 
 
 [cultureinfo]::CurrentCulture = 'en-US'
-[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12,[Net.SecurityProtocolType]::Tls11,[Net.SecurityProtocolType]::tls
 
 Write-Host "Platform is $($global:Config.Params.Platform)"; Write-Host "HiveOS ID is $($global:Config.hive_params.HiveID)"; Write-Host "HiveOS = $($global:Config.params.HiveOS)"
 
@@ -269,6 +269,7 @@ While ($True) {
 
             ##Algorithm Parsing For Stats
             $HiveAlgo = $MinerAlgo -replace "`_"," "
+            $HiveAlgo = $HiveAlgo -replace "veil","x16rt"
             $NewName = $MinerAlgo -replace "`/","`-"
             $NewName = $MinerAlgo -replace "`_","`-"
 

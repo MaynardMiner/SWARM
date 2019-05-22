@@ -11,7 +11,6 @@
 
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $Whalesburg_Request = [PSCustomObject]@{} 
-[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
 if($global:Config.Params.xnsub -eq "Yes"){$X = "#xnsub"} 
  
 if ($global:Config.Params.PoolName -eq $Name) {

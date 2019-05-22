@@ -7,6 +7,7 @@ function Start-HiveTune {
 
     Write-Log "Checking Hive OC Tuning" -ForegroundColor Cyan
     $Algo = $Algo -replace "`_", " "
+    $Algo = $Algo -replace "veil","x16rt"
     $Url = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/workers/$($Global:Config.hive_params.HiveID)"
     $CheckOC = $false
     $CheckDate = Get-Date
@@ -47,25 +48,29 @@ function Start-HiveTune {
                     Write-Log "Verifying OC was Set...." -ForegroundColor Cyan
                     $OCT = New-Object -TypeName System.Diagnostics.Stopwatch
                     $OCT.Restart()
+                    $CheckFile = ".\build\txt\ocnvidia.txt"
                     do {
-                        $CheckFile = ".\build\txt\ocnvidia.txt"
                         $LastWrite = Get-Item $CheckFile | Foreach { $_.LastWriteTime }
+                        $CheckTime = [math]::Round(($CheckDate - $LastWrite).TotalSeconds)
+                        $TOtalTime = $OCT.Elapsed.TotalSeconds
                         Start-Sleep -Milliseconds 50
-                    } While ( ($LastWrite - $CheckDate).TotalSeconds -lt 0 -or $OCT.Elapsed.TotalSeconds -lt 15 )
+                    } Until ( $CheckTime -le 0 -or $TOtalTime -ge 30 )
                     $OCT.Stop()
-                    if($OCT.Elapsed.TotalSeconds -gt 15){Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow}
+                    if($OCT.Elapsed.TotalSeconds -ge 30){Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow}
                 }
                 if ($CheckAMD) {
                     Write-Log "Verifying OC was Set...." -ForegroundColor Cyan
                     $OCT = New-Object -TypeName System.Diagnostics.Stopwatch
                     $OCT.Restart()
+                    $CheckFile = ".\build\txt\ocamd.txt"
                     do {
-                        $CheckFile = ".\build\txt\ocamd.txt"
                         $LastWrite = Get-Item $CheckFile | Foreach { $_.LastWriteTime }
+                        $CheckTime = [math]::Round(($CheckDate - $LastWrite).TotalSeconds)
+                        $TOtalTime = $OCT.Elapsed.TotalSeconds
                         Start-Sleep -Milliseconds 50
-                    } While ( ($LastWrite - $CheckDate).TotalSeconds -lt 0 -or $OCT.Elapsed.TotalSeconds -lt 15 )
+                    } Until ( $CheckTime -le 0 -or $TOtalTime -ge 30 )
                     $OCT.Stop()
-                    if($OCT.Elapsed.TotalSeconds -gt 15){Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow}
+                    if($OCT.Elapsed.TotalSeconds -ge 30){Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow}
                 }
             }
             "linux" {
@@ -73,25 +78,28 @@ function Start-HiveTune {
                     Write-Log "Verifying OC was Set...." -ForegroundColor Cyan
                     $OCT = New-Object -TypeName System.Diagnostics.Stopwatch
                     $OCT.Restart()
+                    $Checkfile = "/var/log/nvidia-oc.log"
                     do {
-                        $Checkfile = "/var/log/nvidia-oc.log"
                         $LastWrite = Get-Item $CheckFile | Foreach { $_.LastWriteTime }
+                        $CheckTime = [math]::Round(($CheckDate - $LastWrite).TotalSeconds)
+                        $TOtalTime = $OCT.Elapsed.TotalSeconds
                         Start-Sleep -Milliseconds 50
-                    } While (($LastWrite - $CheckDate).TotalSeconds -lt 0)
-                    $OCT.Stop()
-                    if($OCT.Elapsed.TotalSeconds -gt 15 -or $OCT.Elapsed.TotalSeconds -lt 15 ){Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow}
+                    } Until ( $CheckTime -le 0 -or $TOtalTime -ge 30 )
+                    if($OCT.Elapsed.TotalSeconds -ge 30){Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow}
                 }
                 if ($CheckAMD) {
                     Write-Log "Verifying OC was Set...." -ForegroundColor Cyan
                     $OCT = New-Object -TypeName System.Diagnostics.Stopwatch
                     $OCT.Restart()
+                    $Checkfile = "/var/log/amd-oc.log"
                     do {
-                        $Checkfile = "/var/log/amd-oc.log"
                         $LastWrite = Get-Item $CheckFile | Foreach { $_.LastWriteTime }
+                        $CheckTime = [math]::Round(($CheckDate - $LastWrite).TotalSeconds)
+                        $TOtalTime = $OCT.Elapsed.TotalSeconds
                         Start-Sleep -Milliseconds 50
-                    } While (($LastWrite - $CheckDate).TotalSeconds -lt 0)
+                    } Until ( $CheckTime -le 0 -or $TOtalTime -ge 30 )
                     $OCT.Stop()
-                    if($OCT.Elapsed.TotalSeconds -gt 15 -or $OCT.Elapsed.TotalSeconds -lt 15){Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow}
+                    if($OCT.Elapsed.TotalSeconds -ge 30){Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow}
                 }
             }
         }

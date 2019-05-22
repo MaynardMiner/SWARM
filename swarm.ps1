@@ -159,7 +159,7 @@ $DonationMode = $false
 $Warnings = @()
 $global:Pool_Hashrates = @{ }
 
-[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12,[Net.SecurityProtocolType]::Tls11,[Net.SecurityProtocolType]::tls
 
 ## Initialize
  $global:GPU_Count = $null
