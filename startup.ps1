@@ -53,7 +53,7 @@ if ($args) {
     exit
 }
 
-$Defaults.PSObject.Properties.Name | % { if (-not [string]$Parsed.$_) { $Parsed.Add("$($_)", $Defaults.$_) } }
+$Defaults.PSObject.Properties.Name | % { if ($_ -notin $Parsed.keys) { $Parsed.Add("$($_)", $Defaults.$_) } }
 
 $Parsed | convertto-json | Out-File ".\config\parameters\arguments.json"
 
