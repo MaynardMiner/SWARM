@@ -3003,6 +3003,13 @@ API overhaul:
 
   New FEATURES:
 
+  SWARM can now accept .json in flight sheet user config section!
+  * You can now copy .\config\parameters\defaults.json
+    and edit as neccessary. Then paste into user config.
+  * Windows will write parameters to .\config\parameters\newarguments.json
+    as always.
+  * HiveOS version will write to config.json in SWARM main dir.
+
   Ban notices on HiveOS is displayed [algorithm]:[name].
   * This allows copy/paste of bans into arguments.
 
