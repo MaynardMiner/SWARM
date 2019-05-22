@@ -7,7 +7,6 @@ $DoAutoCoin = $false
 if($global:Config.Params.Coin.Count -eq 0){ $DoAutoCoin = $true }
 $global:Config.Params.Coin | %{ if($_ -eq ""){ $DoAutoCoin = $true} }
 
-[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
 if ($global:Config.Params.xnsub -eq "Yes") { $X = "#xnsub" } 
 
 if ($Name -in $global:Config.Params.PoolName) {
