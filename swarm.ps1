@@ -25,7 +25,11 @@ Remove-NetFirewallRule -All
 } catch {}
 "Fixed" | Set-Content ".\build\txt\fixed.txt"
 }
-try { if( -not ( Get-NetFireWallRule | Where {$_.DisplayName -like "*swarm.ps1*"} ) ) { New-NetFirewallRule -DisplayName 'swarm.ps1' -Direction Inbound -Program "$global:dir\swarm.ps1" -Action Allow | Out-Null} } catch { }
+try{ $Net = Get-NetFireWallRule } catch {}
+if($Net) {
+try { if( -not ( $Net | Where {$_.DisplayName -like "*swarm.ps1*"} ) ) { New-NetFirewallRule -DisplayName 'swarm.ps1' -Direction Inbound -Program "$global:dir\swarm.ps1" -Action Allow | Out-Null} } catch { }
+}
+$Net = $Null
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
 $Debug = $false
 if ($Debug -eq $True) {
