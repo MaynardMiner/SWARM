@@ -13,7 +13,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ## Set Current Path
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
-
+##filepath dir
+$global:dir = (Split-Path $script:MyInvocation.MyCommand.Path)
+$env:Path += ";$global:dir\build\cmd"
+try { Get-ChildItem . -Recurse | Unblock-File } catch {}
+try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$($global:Dir)`'" -WindowStyle Minimized } }catch { }
+if(-not (Test-Path ".\build\txt\fixed.txt")) {
+try {
+Write-Host "Removing Previous Net Firewall Rules"
+Remove-NetFirewallRule -All
+} catch {}
+"Fixed" | Set-Content ".\build\txt\fixed.txt"
+}
+try { if( -not ( Get-NetFireWallRule | Where {$_.DisplayName -like "*swarm.ps1*"} ) ) { New-NetFirewallRule -DisplayName 'swarm.ps1' -Direction Inbound -Program "$global:dir\swarm.ps1" -Action Allow | Out-Null} } catch { }
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
 $Debug = $false
 if ($Debug -eq $True) {
@@ -29,10 +41,6 @@ $global:cultureENUS = New-Object System.Globalization.CultureInfo("en-US")
 ## Get Parameters
 $Global:config = @{ }
 Get-Parameters
-
-##filepath dir
-$global:dir = (Split-Path $script:MyInvocation.MyCommand.Path)
-$env:Path += ";$global:dir\build\cmd"
 
 if (-not (Test-Path ".\build\txt")) { New-Item -Name "txt" -ItemType "Directory" -Path ".\build" | Out-Null }
 $global:Config.Params.Platform | Set-Content ".\build\txt\os.txt"
@@ -50,6 +58,8 @@ if (-not $global:Config.Params.Platform) {
     Write-log "OS = $($global:Config.Params.Platform)" -ForegroundColor Green
 }
 
+$global:Config.Add("Pool_Algos",(Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json))
+
 ## Load Codebase
 . .\build\powershell\killall.ps1; . .\build\powershell\remoteupdate.ps1; . .\build\powershell\octune.ps1;
 . .\build\powershell\datafiles.ps1; . .\build\powershell\command-stats.ps1; . .\build\powershell\command-pool.ps1;
@@ -60,7 +70,7 @@ if (-not $global:Config.Params.Platform) {
 . .\build\powershell\intensity.ps1; . .\build\powershell\cl.ps1; . .\build\powershell\screen.ps1; 
 . .\build\api\hiveos\do-command.ps1; . .\build\api\hiveos\response.ps1; . .\build\api\html\api.ps1; 
 . .\build\powershell\config_file.ps1; . .\build\powershell\altwallet.ps1; . .\build\api\pools\include.ps1; 
-. .\build\api\miners\include.ps1; . .\build\api\miners\include.ps1;
+. .\build\api\miners\include.ps1; . .\build\api\miners\include.ps1; . .\build\api\hiveos\oc-tune.ps1;
 if ($global:Config.Params.Platform -eq "linux") { . .\build\powershell\sexyunixlogo.ps1; . .\build\powershell\gpu-count-unix.ps1 }
 if ($global:Config.Params.Platform -eq "windows") { . .\build\api\hiveos\hiveoc.ps1; . .\build\powershell\sexywinlogo.ps1; . .\build\powershell\bus.ps1; . .\build\powershell\environment.ps1; }
 
@@ -104,7 +114,6 @@ if ((Test-Path ".\config\parameters\newarguments.json") -or $Debug -eq $true) {
 
 if ($global:Config.Params.Platform -eq "windows") { 
     ##Remove Exclusion
-    try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "pwsh" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath '$(Convert-Path .)'" -WindowStyle Minimized } }catch { }
 }
 
 ## lower case (Linux file path)
@@ -144,14 +153,13 @@ $UserDonate = "MaynardVII"
 $WorkerDonate = "Rig1"
 $PoolNumber = 1
 $ActiveMinerPrograms = @()
-$Priorities = Get-Content ".\config\pools\pool-priority.json" | ConvertFrom-Json
 $Global:DWallet = $null
 $global:DCheck = $false
 $DonationMode = $false
 $Warnings = @()
 $global:Pool_Hashrates = @{ }
 
-[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12,[Net.SecurityProtocolType]::Tls11,[Net.SecurityProtocolType]::tls
 
 ## Initialize
  $global:GPU_Count = $null
@@ -177,6 +185,7 @@ $TimeoutTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $TimeoutTimer.Start()
 $logtimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $logtimer.Start()
+$LoadTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 
 ##GPU-Count- Parse the hashtable between devices.
 if ($global:Config.Params.Type -like "*NVIDIA*" -or $global:Config.Params.Type -like "*AMD*" -or $global:Config.Params.Type -like "*CPU*") {
@@ -235,6 +244,7 @@ While ($true) {
         Get-MinerConfigs
         }
 
+        $global:Config.Pool_Algos = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
         Add-ASIC_ALGO
 
         ## Parse ASIC_IP
@@ -269,6 +279,7 @@ While ($true) {
                 }
             }
         }
+        
         $Global:Config.Params.Type = $GLobal:Config.Params.Type | Where { $_ -ne "ASIC" }
         $ASICTypes = @(); if ($global:Config.Params.Type -like "*ASIC*") { $global:Config.Params.Type | Where { $_ -like "*ASIC*" } | % { $ASICTypes += $_ } }
 
@@ -312,13 +323,12 @@ While ($true) {
         #Get Algorithms and Bans
         $Algorithm = @()
         $global:BanHammer = @()
-        $global:Exclusions = $null
         $Get_User_Bans = . .\build\powershell\bans.ps1 "add" $global:Config.Params.Bans "process"
 
         ##Add Algorithms
         if ($global:Config.Params.Coin.Count -eq 1 -and $global:Config.Params.Coin -ne "") { $global:Config.Params.Passwordcurrency1 = $global:Config.Params.Coin; $global:Config.Params.Passwordcurrency2 = $global:Config.Params.Coin; $global:Config.Params.Passwordcurrency3 = $global:Config.Params.Coin }
         if ($SWARMAlgorithm) { $SWARMALgorithm | ForEach-Object { $Algorithm += $_ } }
-        elseif ($global:Config.Params.Auto_Algo -eq "Yes") { $Algorithm = $global:Exclusions.PSObject.Properties.Name }
+        elseif ($global:Config.Params.Auto_Algo -eq "Yes") { $Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name }
         if ($global:Config.Params.Type -notlike "*NVIDIA*") {
             if ($global:Config.Params.Type -notlike "*AMD*") {
                 if ($global:Config.Params.Type -notlike "*CPU*") {
@@ -423,6 +433,7 @@ While ($true) {
         }
 
         ##Get Algorithm Pools
+        $LoadTimer.Restart()
         write-Log "Checking Algo Pools." -Foregroundcolor yellow;
         $AllAlgoPools = Get-Pools -PoolType "Algo"
         ##Get Custom Pools
@@ -440,12 +451,14 @@ While ($true) {
             if ($Top_3_Custom) { $Top_3_Custom | ForEach-Object { $AlgoPools.Add($_) | Out-Null } }
             $Top_3_Algo = $Null;
             $Top_3_Custom = $Null;
+            $LoadTimer.Stop()
+            Write-Log "Algo Pools Loading Time: $([math]::Round($LoadTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green
         }
 
         ##Get Algorithms again, in case custom changed it.
         if ($global:Config.Params.Coin.Count -eq 1 -and $global:Config.Params.Coin -ne "") { $global:Config.Params.Passwordcurrency1 = $global:Config.Params.Coin; $global:Config.Params.Passwordcurrency2 = $global:Config.Params.Coin; $global:Config.Params.Passwordcurrency3 = $global:Config.Params.Coin }
         if ($SWARMAlgorithm) { $SWARMALgorithm | ForEach-Object { $Algorithm += $_ } }
-        elseif ($global:Config.Params.Auto_Algo -eq "Yes") { $Algorithm = $global:Exclusions.PSObject.Properties.Name }
+        elseif ($global:Config.Params.Auto_Algo -eq "Yes") { $Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name }
         if ($global:Config.Params.Type -notlike "*NVIDIA*") {
             if ($global:Config.Params.Type -notlike "*AMD*") {
                 if ($global:Config.Params.Type -notlike "*CPU*") {
@@ -473,6 +486,7 @@ While ($true) {
 
         ##Optional: Load Coin Database
         if ($global:Config.Params.Auto_Coin -eq "Yes") {
+            $LoadTimer.Restart()
             write-Log "Adding Coin Pools. . ." -ForegroundColor Yellow
             $AllCoinPools = Get-Pools -PoolType "Coin"
             $CoinPools = New-Object System.Collections.ArrayList
@@ -480,114 +494,31 @@ While ($true) {
             $CoinPoolNames = $CoinPools.Name | Select-Object -Unique
             if ($CoinPoolNames) { $CoinPoolNames | ForEach-Object { $CoinName = $_; $RemovePools = $AlgoPools | Where-Object Name -eq $CoinName; $RemovePools | ForEach-Object { $AlgoPools.Remove($_) | Out-Null } } }
             $RemovePools = $null
+            $LoadTimer.Stop()
+            Write-Log "Coin Pools Loading Time: $([math]::Round($LoadTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green
         }
 
         if ($AlgoPools.Count -gt 0) {
+            $LoadTimer.Restart()
             write-Log "Checking Algo Miners. . . ." -ForegroundColor Yellow
             ##Load Only Needed Algorithm Miners
             $AlgoMiners = New-Object System.Collections.ArrayList
             $SearchMiners = Get-Miners -Pools $AlgoPools;
             $SearchMiners | % { $AlgoMiners.Add($_) | Out-Null }
-       
-            ##Download Miners, If Miner fails three times- A ban is created against miner, and it should stop downloading.
-            ##This works by every time it fails to download, it writes miner name to the download block list. If it counts
-            ##The name more than three times- It skips over miner. It also interactively rebuilds the AlgoMiners Array into
-            ##A new array with the miner removed. I know, complicated, right?
-            $DownloadNote = @()
-            $Download = $false
-            $BadAlgoMiners = @()
-
-            if ($global:Config.Params.Lite -eq "No") {
-                $AlgoMiners | ForEach {
-                    $AlgoMiner = $_
-                    if ($AlgoMiner.Type -notlike "*ASIC*") {
-                        if (Test-Path ".\timeout\download_block\download_block.txt") { $DLTimeout = Get-Content ".\timeout\download_block\download_block.txt" }
-                        $DLName = $DLTimeout | Select-String "$($AlgoMiner.Name)"
-                        if (-not (Test-Path $AlgoMiner.Path)) {
-                            write-Log "Miner Not Found- Downloading" -ForegroundColor Yellow
-                            if ($DLName.Count -lt 3) {
-                                Expand-WebRequest $AlgoMiner.URI $ALgoMiner.Path
-                                Start-Sleep -S 1
-                                $Download = $true
-                                if (-not (Test-Path $ALgoMiner.Path)) {
-                                    if (-not (Test-Path ".\timeout\download_block")) { New-Item -Name "download_block" -Path ".\timeout" -ItemType "directory" | OUt-Null }
-                                    "$($Algominer.Name)" | Add-Content ".\timeout\download_block\download_block.txt"
-                                }
-                            }
-                            else {
-                                $DLWarning = "$($AlgoMiner.Name) download failed too many times- Blocking"; 
-                                if ($DownloadNote -notcontains $DLWarning) { $DownloadNote += $DLWarning }
-                                $BadAlgoMiners += $_
-                            }
-                        }
-                    }       
-                }
-
-                $BadAlgoMiners | % { $AlgoMiners.Remove($_) } | Out-Null;
-                $BadAlgoMiners = $Null
-                $DLTimeout = $null
-                $DlName = $Null
-                ## Print Warnings
-                if ($DownloadNote) { $DownloadNote | % { write-Log "$($_)" -ForegroundColor Red } }
-                $DownloadNote = $null
-            }
-   
-
-            ## Linux Bug- Restart Loop if miners were downloaded. If not, miners were skipped over
-            if ($Download -eq $true -and $CoinPools.Count -eq 0) { continue }
+            $LoadTimer.Stop()
+            Write-Log "Algo Miners Loading Time: $([math]::Round($LoadTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green
         }
 
         if ($CoinPools.Count -gt 0) {
+            $LoadTimer.Restart()
             $Coins = $true
             write-Log "Checking Coin Miners. . . . ." -ForegroundColor Yellow
             ##Load Only Needed Coin Miners
             $CoinMiners = New-Object System.Collections.ArrayList
             $SearchMiners = Get-Miners -Pools $CoinPools;
             $SearchMiners | % { $CoinMiners.Add($_) | Out-Null }
-            $DownloadNote = @()
-            $Download = $false
-            $BadCoinMiners = @()
-
-            if ($global:Config.Params.Lite -eq "No") {
-                $CoinMiners | ForEach {
-                    $CoinMiner = $_
-                    if ($CoinMiner.Type -notlike "*ASIC*") {
-                        if (Test-Path ".\timeout\download_block\download_block.txt") { $DLTimeout = Get-Content ".\timeout\download_block\download_block.txt" }
-                        $DLName = $DLTimeout | Select-String "$($CoinMiner.Name)"
-                        if (-not (Test-Path $CoinMiner.Path)) {
-                            write-Log "Miner Not Found- Downloading" -ForegroundColor Yellow
-                            if ($DLName.Count -lt 3) {
-                                Expand-WebRequest $CoinMiner.URI $CoinMiner.Path
-                                $Download = $true
-                                if (-not (Test-Path $CoinMiner.Path)) {
-                                    if (-not (Test-Path ".\timeout\download_block")) { New-Item -Name "download_block" -Path ".\timeout" -ItemType "directory" | OUt-Null }
-                                    "$($CoinMiner.Name)" | Out-File ".\timeout\download_block\download_block.txt" -Append
-                                }
-                            }
-                            else {
-                                $DLWarning = "$($CoinMiner.Name) download failed too many times- Blocking"; 
-                                if ($DownloadNote -notcontains $DLWarning) { $DownloadNote += $DLWarning }
-                                $BadCoinMiners += $_
-                            }
-                        }
-                    }       
-                }
-
-                $BadCoinMiners | % { $CoinMiners.Remove($_) } | Out-Null;
-                $BadCoinMiners = $Null
-                $DLTimeout = $null
-                $DlName = $Null
-                ## Print Warnings
-                if ($DownloadNote) {
-                    $DownloadNote | % {        
-                        write-Log "$($_)" -ForegroundColor Red }
-                }
-                $DownloadNote = $null
-            } 
-
-
-            ## Linux Bug- Restart Loop if miners were downloaded. If not, miners were skipped over
-            if ($Download -eq $true) { continue }
+            $LoadTimer.Stop()
+            Write-Log "Coin Miners Loading Time: $([math]::Round($LoadTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green
         }
 
         $Miners = New-Object System.Collections.ArrayList
@@ -710,6 +641,8 @@ While ($true) {
                     DeviceCall     = $_.DeviceCall
                     MinerName      = $_.MinerName
                     Path           = $_.Path
+                    Uri            = $_.Uri
+                    Version        = $_.Version
                     Arguments      = $_.Arguments
                     API            = $_.API
                     Port           = $_.Port
@@ -756,6 +689,19 @@ While ($true) {
         $ActiveMinerPrograms | ForEach-Object {
             if ($BestMiners_Combo | Where-Object Type -EQ $_.Type | Where-Object Path -EQ $_.Path | Where-Object Arguments -EQ $_.Arguments) { $_.BestMiner = $true; $BestActiveMiners += $_ }
             else { $_.BestMiner = $false }
+        }
+
+        $BestActiveMiners | ForEach-Object {
+            $Success = 0;
+            $CheckPath = Test-Path $_.Path
+            if ( $_.Type -notlike "*ASIC*" -and $CheckPath -eq $false ) {
+                $SelMiner = $_ | ConvertTo-Json -Compress
+                $Success = Get-MinerBinary $SelMiner
+            } else { $Success = 1 }
+            if($Success -eq 2) {
+                Write-Log "WARNING: Miner Failed To Download Three Times- Restarting SWARM" -ForeGroundColor Yellow
+                continue
+            }
         }
 
         ##Modify BestMiners for API
@@ -845,6 +791,7 @@ While ($true) {
             }
         }
         
+        $HiveOCTune = $false
         ##Miners That Should Be Running
         ##Start them if neccessary
         $BestActiveMiners | ForEach-Object {
@@ -858,13 +805,22 @@ While ($true) {
                 $Current = $_ | ConvertTo-Json -Compress
 
                 ##First Do OC
-                if ($ClearedOC -eq $False) {
-                    $OCFile = ".\build\txt\oc-settings.txt"
-                    if (Test-Path $OCFile) { Clear-Content $OcFile -Force; "Current OC Settings:" | Set-Content $OCFile }
-                    $ClearedOC = $true
+                if($global:Config.Params.API_Key -and $global:Config.Params.API_Key -ne "") {
+                    if($HiveOCTune -eq $false) {
+                        if($_.Type -notlike "*ASIC*" -and $_.Type -like "*1*") {
+                            Start-HiveTune $_.Algo
+                            $HiveOCTune = $true
+                        }
+                    }
+                } else {
+                    if ($ClearedOC -eq $False) {
+                        $OCFile = ".\build\txt\oc-settings.txt"
+                        if (Test-Path $OCFile) { Clear-Content $OcFile -Force; "Current OC Settings:" | Set-Content $OCFile }
+                        $ClearedOC = $true
+                    }
+                    if($_.Type -notlike "*ASIC*"){Start-OC -NewMiner $Current -Website $Website}
                 }
 
-                if($_.Type -notlike "*ASIC*"){Start-OC -NewMiner $Current -Website $Website}
 
                 ##Launch Miners
                 write-Log "Starting $($_.InstanceName)"
@@ -952,6 +908,7 @@ While ($true) {
                     "GLT-PAWELHASH" { $ScreenName = "GLT:PAWELHASH" }
                     "GLT-SKUNK" { $ScreenName = "GLT:SKUNK" }
                     "XMY-ARGON2D4096" { $ScreenName = "XMY:ARGON2D4096" }
+                    "ARG-ARGON2D4096" { $ScreenName = "ARG:ARGON2D4096" }
                     default { $ScreenName = "$($Miner.Symbol):$($Miner.Algo)".ToUpper() }
                 }
             }
@@ -992,10 +949,8 @@ While ($true) {
         $GetStatusPoolBans = ".\timeout\pool_block\pool_block.txt"
         $GetStatusMinerBans = ".\timeout\miner_block\miner_block.txt"
         $GetStatusDownloadBans = ".\timeout\download_block\download_block.txt"
-        if (Test-Path $GetStatusDownloadBans) { $StatusDownloadBans = Get-Content $GetStatusDownloadBans }
+        if (Test-Path $GetStatusDownloadBans) { $StatusDownloadBans = Get-Content $GetStatusDownloadBans | ConvertFrom-Json }
         else { $StatusDownloadBans = $null }
-        $GetDLBans = @();
-        if ($StatusDownloadBans) { $StatusDownloadBans | ForEach-Object { if ($GetDLBans -notcontains $_) { $GetDlBans += $_ } } }
         if (Test-Path $GetStatusAlgoBans) { $StatusAlgoBans = Get-Content $GetStatusAlgoBans | ConvertFrom-Json }
         else { $StatusAlgoBans = $null }
         if (Test-Path $GetStatusPoolBans) { $StatusPoolBans = Get-Content $GetStatusPoolBans | ConvertFrom-Json }
@@ -1016,7 +971,7 @@ While ($true) {
         }
         $mcolor = "93"
         $me = [char]27
-        $MiningStatus = "$me[${mcolor}mCurrently Mining $($BestMiners_Combo.Algo) Algorithm${me}[0m"
+        $MiningStatus = "$me[${mcolor}mCurrently Mining $($BestMiners_Combo.Algo) Algorithm on $($BestMiners_Combo.MinerPool)${me}[0m"
         $MiningStatus | Out-File ".\build\txt\minerstats.txt" -Append
         $MiningStatus | Out-File ".\build\txt\charts.txt" -Append
         $BanMessage = @()
@@ -1025,6 +980,7 @@ While ($true) {
         if ($StatusAlgoBans) { $StatusAlgoBans | ForEach-Object { $BanMessage += "$me[${mcolor}m$($_.Name) mining $($_.Algo) is banned from all pools${me}[0m" } }
         if ($StatusPoolBans) { $StatusPoolBans | ForEach-Object { $BanMessage += "$me[${mcolor}m$($_.Name) mining $($_.Algo) is banned from $($_.MinerPool)${me}[0m" } }
         if ($StatusMinerBans) { $StatusMinerBans | ForEach-Object { $BanMessage += "$me[${mcolor}m$($_.Name) is banned${me}[0m" } }
+        if ($StatusDownloadBans) { $StatusDownloadBans | ForEach-Object { $BanMessage += "$me[${mcolor}m$($_.Name) is banned: Download Failed${me}[0m" } }
         if ($GetDLBans) { $GetDLBans | ForEach-Object { $BanMessage += "$me[${mcolor}m$($_) failed to download${me}[0m" } }
         if ($ConserveMessage) { $ConserveMessage | ForEach-Object { $BanMessage += "$me[${mcolor}m$($_)${me}[0m" } }
         $BanMessage | Out-File ".\build\txt\minerstats.txt" -Append
@@ -1090,6 +1046,8 @@ While ($true) {
             $MinerBan = $false
             $Strike = $false
             if ($_.BestMiner -eq $true) {
+                $NewName = $_.Algo -replace "`_","`-"
+                $NewName = $NewName -replace "`/","`-"
                 if ($null -eq $_.XProcess -or $_.XProcess.HasExited) {
                     $_.Status = "Failed"
                     $_.WasBenchMarked = $False
@@ -1107,10 +1065,8 @@ While ($true) {
                             $Miner_HashRates = Get-HashRate -Type $_.Type
                             $_.HashRate = $Miner_HashRates
                             if ($_.WasBenchmarked -eq $False) {
-                                $HashRateFilePath = Join-Path ".\stats" "$($_.Name)_$($_.Algo)_hashrate.txt"
-                                $PowerFilePath = Join-Path ".\stats" "$($_.Name)_$($_.Algo)_power.txt"
-                                $NewHashrateFilePath = Join-Path ".\backup" "$($_.Name)_$($_.Algo)_hashrate.txt"
-                                $NewPowerFilePath = Join-Path ".\backup" "$($_.Name)_$($_.Algo)_power.txt"
+                                $HashRateFilePath = Join-Path ".\stats" "$($_.Name)_$($NewName)_hashrate.txt"
+                                $NewHashrateFilePath = Join-Path ".\backup" "$($_.Name)_$($NewName)_hashrate.txt"
                                 if (-not (Test-Path "backup")) { New-Item "backup" -ItemType "directory" | Out-Null }
                                 write-Log "$($_.Name) $($_.Symbol) Starting Bench"
                                 if ($null -eq $Miner_HashRates -or $Miner_HashRates -eq 0) {
@@ -1142,9 +1098,9 @@ While ($true) {
                                             $Watts.$($_.Algo)."$($_.Type)_Watts" = "$GPUPower"
                                         }
                                     }
-                                    $Stat = Set-Stat -Name "$($_.Name)_$($_.Algo)_hashrate" -Value $Miner_HashRates -AsHashRate
+                                    $Stat = Set-Stat -Name "$($_.Name)_$($NewName)_hashrate" -Value $Miner_HashRates -AsHashRate
                                     Start-Sleep -s 1
-                                    $GetLiveStat = Get-Stat "$($_.Name)_$($_.Algo)_hashrate"
+                                    $GetLiveStat = Get-Stat "$($_.Name)_$($NewName)_hashrate"
                                     $StatCheck = "$($GetLiveStat.Live)"
                                     $ScreenCheck = "$($StatCheck | ConvertTo-Hash)"
                                     if ($ScreenCheck -eq "0.00 PH" -or $null -eq $StatCheck) {
@@ -1169,7 +1125,7 @@ While ($true) {
                             }
                         }
                         ##Check For High Rejections
-                        $RejectCheck = Join-Path ".\timeout\warnings" "$($_.Name)_$($_.Algo)_rejection.txt"
+                        $RejectCheck = Join-Path ".\timeout\warnings" "$($_.Name)_$($NewName)_rejection.txt"
                         if (Test-Path $RejectCheck) {
                             write-Log "Rejections Are Too High" -ForegroundColor DarkRed
                             $_.WasBenchmarked = $false
@@ -1194,9 +1150,9 @@ While ($true) {
                             if (-not (Test-Path ".\timeout\miner_block")) { New-Item -Path ".\timeout" -Name "miner_block" -ItemType "directory" | Out-Null }
                             if (-not (Test-Path ".\timeout\warnings")) { New-Item -Path ".\timeout" -Name "warnings" -ItemType "directory" | Out-Null }
                             Start-Sleep -S .25
-                            $global:Config.Params.TimeoutFile = Join-Path ".\timeout\warnings" "$($_.Name)_$($_.Algo)_TIMEOUT.txt"
-                            $HashRateFilePath = Join-Path ".\stats" "$($_.Name)_$($_.Algo)_hashrate.txt"
-                            if (-not (Test-Path $global:Config.Params.TimeoutFile)) { "$($_.Name) $($_.Symbol) Hashrate Check Timed Out" | Set-Content ".\timeout\warnings\$($_.Name)_$($_.Algo)_TIMEOUT.txt" -Force }
+                            $global:Config.Params.TimeoutFile = Join-Path ".\timeout\warnings" "$($_.Name)_$($NewName)_TIMEOUT.txt"
+                            $HashRateFilePath = Join-Path ".\stats" "$($_.Name)_$($NewName)_hashrate.txt"
+                            if (-not (Test-Path $global:Config.Params.TimeoutFile)) { "$($_.Name) $($_.Symbol) Hashrate Check Timed Out" | Set-Content ".\timeout\warnings\$($_.Name)_$($NewName)_TIMEOUT.txt" -Force }
                             if ($Warnings."$($_.Name)" -eq $null) { $Warnings += [PSCustomObject]@{"$($_.Name)" = [PSCustomObject]@{bad = 0 } }
                             }
                             if ($Warnings."$($_.Name)_$($_.Algo)" -eq $null) { $Warnings += [PSCustomObject]@{"$($_.Name)_$($_.Algo)" = [PSCustomObject]@{bad = 0 } }
@@ -1218,7 +1174,7 @@ While ($true) {
                             if ($MinerPoolBan -eq $true) {
                                 $minerjson = $_ | ConvertTo-Json -Compress
                                 $reason = Get-MinerTimeout $minerjson
-                                $HiveMessage = "Ban: $($_.Name)/$($_.Algo) From $($_.MinerPool)- $reason "
+                                $HiveMessage = "Ban: $($_.Algo):$($_.Name) From $($_.MinerPool)- $reason "
                                 write-Log "Strike Two: Benchmarking Has Failed - $HiveMessage
 " -ForegroundColor DarkRed
                                 $NewPoolBlock = @()
@@ -1236,7 +1192,7 @@ While ($true) {
                             if ($MinerAlgoBan -eq $true) {
                                 $minerjson = $_ | ConvertTo-Json -Compress
                                 $reason = Get-MinerTimeout $minerjson
-                                $HiveMessage = "Ban: $($_.Name)/$($_.Algo) from all pools- $reason "
+                                $HiveMessage = "Ban: $($_.Algo):$($_.Name) from all pools- $reason "
                                 write-Log "Strike three: $HiveMessage
 " -ForegroundColor DarkRed
                                 $NewAlgoBlock = @()

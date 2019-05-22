@@ -100,6 +100,7 @@ function Set-Stat {
     if ($AsHashrate) { $Max_Periods = 15 }
     else { $Max_Periods = $global:Config.params.Max_Periods }
     $Hash_Max = 15
+    $name = $name -replace "`/","`-"
     if ($name -eq "load-average") { $Max_Periods = 90; $Path = "build\txt\$Name.txt" }
     else { $Path = "stats\$Name.txt" }
     $SmallestValue = 1E-20
@@ -259,6 +260,7 @@ function Get-Stat {
         [String]$Name
     )
 
+    $name = $name -replace "`/","`-"
     if (-not (Test-Path "stats")) { New-Item "stats" -ItemType "directory" }
     if ($name -eq "load-average") { Get-ChildItem "build\txt" | Where-Object Extension -NE ".ps1" | Where-Object BaseName -EQ $Name | Get-Content | ConvertFrom-Json }
     else { Get-ChildItem "stats" | Where-Object Extension -NE ".ps1" | Where-Object BaseName -EQ $Name | Get-Content | ConvertFrom-Json }
@@ -270,6 +272,7 @@ function Remove-Stat {
         [String]$Name
     )
 
+    $name = $name -replace "`/","`-"
     $Remove = Join-Path ".\stats" "$Name"
     if (Test-Path $Remove) {
         Remove-Item -path $Remove
@@ -336,9 +339,6 @@ function Invoke-SwarmMode {
         [int]$ModeDeviation = 5
     )
 
-
-
-
     $DateMinute = [Int]$SwarmMode_Start.Minute + $ModeDeviation
     $DateMinute = ([math]::Floor(($DateMinute / $ModeDeviation)) * $ModeDeviation)
     if ($DateMinute -gt 59) { $DateMinute = 0; $DateHour = [Int]$SwarmMode_Start.Hour; $DateHour = [int]$DateHour + 1 }else { $DateHour = [Int]$SwarmMode_Start.Hour; $DateHour = [int]$DateHour }
@@ -389,6 +389,8 @@ function Remove-BanHashrates {
         if (test-path ".\stats") { $A = Get-ChildItem "stats" | Where BaseName -Like "*hashrate*" }
         $global:BanHammer | ForEach-Object {
             $Sel = $_.ToLower()
+            $Sel = $Sel -replace "`/","`-"
+            $Sel = $Sel -replace "`_","`-"        
             $A.BaseName | ForEach-Object {
                 $Parse = $_ -split "`_"
                 if ($Parse[0] -eq $Sel) {

@@ -5,24 +5,16 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "ethash": "-proto 2 -rate 1",
-            "daggerhashimoto": "-proto 4 -stales 0",
-            "dagger": "-proto 2"
+            "ethash": ""
         },
         "difficulty": {
-            "ethash": "",
-            "daggerhashimoto": "",
-            "dagger": ""
+            "ethash": ""
         },
         "naming": {
-            "ethash": "ethash",
-            "daggerhashimoto": "daggerhashimoto",
-            "dagger": "dagger"
+            "ethash": "ethash"
         },
         "fee": {
-            "ethash": 0.65,
-            "daggerhashimoto": 0.65,
-            "dagger": 0.65
+            "ethash": 0.65
         }
     },
     "NVIDIA2": {
@@ -30,24 +22,16 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "ethash": "-proto 2 -rate 1",
-            "daggerhashimoto": "-proto 4 -stales 0",
-            "dagger": "-proto 2"
+            "ethash": ""
         },
         "difficulty": {
-            "ethash": "",
-            "daggerhashimoto": "",
-            "dagger": ""
+            "ethash": ""
         },
         "naming": {
-            "ethash": "ethash",
-            "daggerhashimoto": "daggerhashimoto",
-            "dagger": "dagger"
+            "ethash": "ethash"
         },
         "fee": {
-            "ethash": 0.65,
-            "daggerhashimoto": 0.65,
-            "dagger": 0.65
+            "ethash": 0.65
         }
     },
     "NVIDIA3": {
@@ -55,24 +39,16 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "ethash": "-proto 2 -rate 1",
-            "daggerhashimoto": "-proto 4 -stales 0",
-            "dagger": "-proto 2"
+            "ethash": ""
         },
         "difficulty": {
-            "ethash": "",
-            "daggerhashimoto": "",
-            "dagger": ""
+            "ethash": ""
         },
         "naming": {
-            "ethash": "ethash",
-            "daggerhashimoto": "daggerhashimoto",
-            "dagger": "dagger"
+            "ethash": "ethash"
         },
         "fee": {
-            "ethash": 0.65,
-            "daggerhashimoto": 0.65,
-            "dagger": 0.65
+            "ethash": 0.65
         }
     }
 }

@@ -154,8 +154,7 @@ function Start-AMDOC {
         $Select = $OCCount.AMD.PSOBject.Properties.Name
         $Select = $Select | Sort-Object
         $Select = $Select[$i]
-        $OcArgs = $null
-        $OcArgs = "-ac$($OCCount.AMD.$i) "
+        $OcArgs += "-ac$($OCCount.AMD.$i) "
 
         $AMDOC.Keys | % {
             $key = $_
@@ -238,10 +237,10 @@ function Start-AMDOC {
                 }        
             }
         }
+    }
    
         $Script += "Start-Process `".\OverdriveNTool.exe`" -ArgumentList `"$OCArgs`" -WindowStyle Minimized -Wait"
         
-    }
     Set-Location ".\build\apps"
     $Script | OUt-File "AMDOC-start.ps1"
     $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\AMDOC-start.ps1""" -PassThru -WindowStyle Minimized -Wait

@@ -47,9 +47,10 @@ $NVIDIATypes | ForEach-Object {
 
         $MinerAlgo = $_
 
-        if ($MinerAlgo -in $Algorithm -and $Name -notin $global:Exclusions.$MinerAlgo.exclusions -and $ConfigType -notin $global:Exclusions.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
-            $Stat = Get-Stat -Name "$($Name)_$($MinerAlgo)_hashrate"
-            $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
+        if ($MinerAlgo -in $Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
+            $StatAlgo = $MinerAlgo -replace "`_","`-"
+            $Stat = Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
+           $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
 
             if ($Check.RAW -ne "Bad") {
                 $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
@@ -65,8 +66,9 @@ $NVIDIATypes | ForEach-Object {
                         Type       = $ConfigType
                         Path       = $Path
                         Devices    = $Devices
+                        Version    = "$($nvidia.$CName.version)"
                         DeviceCall = "trex"
-                        Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --no-nvml -o stratum+tcp://$($_.Host):$($_.Port) --api-bind-telnet 0.0.0.0:$Port2 -l `'$Log`' --api-bind-http 0.0.0.0:$Port -u $($_.$User) -p $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                        Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --no-watchdog --no-nvml -o stratum+tcp://$($_.Host):$($_.Port) --api-bind-telnet 0.0.0.0:$Port2 -l `'$Log`' --api-bind-http 0.0.0.0:$Port -u $($_.$User) -p $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour}
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }

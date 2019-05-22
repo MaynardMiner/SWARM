@@ -11,24 +11,16 @@
             "export GPU_MAX_ALLOC_PERCENT=100"
         ],
         "commands": {
-            "ethash": "",
-            "daggerhashimoto": "-esm 3 -estale 0",
-            "dagger": "-esm 2"
+            "ethash": ""
         },
         "difficulty": {
-            "ethash": "",
-            "daggerhashimoto": "",
-            "dagger": ""
+            "ethash": ""
         },
         "naming": {
-            "ethash": "ethash",
-            "daggerhashimoto": "daggerhashimoto",
-            "dagger": "dagger"
+            "ethash": "ethash"
         },
         "fee": {
-            "ethash": 1,
-            "daggerhashimoto": 1,
-            "dagger": 1
+            "ethash": 1
         }
     }
 }

@@ -49,12 +49,18 @@ $NVIDIATypes | ForEach-Object {
 
         $MinerAlgo = $_
 
-        if ($MinerAlgo -in $Algorithm -and $Name -notin $global:Exclusions.$MinerAlgo.exclusions -and $ConfigType -notin $global:Exclusions.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
-            $Stat = Get-Stat -Name "$($Name)_$($MinerAlgo)_hashrate"
-            $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
+        if ($MinerAlgo -in $Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
+            $StatAlgo = $MinerAlgo -replace "`_","`-"
+            $Stat = Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
+           $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
 
             if ($Check.RAW -ne "Bad") {
                 $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
+                    $SelName = $_.Name
+                    switch($SelName) {
+                        "nicehash" {$AddArgs = "-esm 3 -estale 0 "}
+                        default {$AddArgs = ""}
+                    }
                     if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
                     if ($_.Worker) { $MinerWorker = "-eworker $($_.Worker) " }
                     else { $MinerWorker = "-epsw $($_.$Pass)$($Diff) " }
@@ -69,8 +75,9 @@ $NVIDIATypes | ForEach-Object {
                         Type       = $ConfigType
                         Path       = $Path
                         Devices    = $Devices
+                        Version    = "$($nvidia.claymore.version)"
                         DeviceCall = "claymore"
-                        Arguments  = "-platform 2 -mport $Port -mode 1 -allcoins 1 -allpools 1 -epool $($_.Protocol)://$($_.Host):$($_.Port) -logfile `'$Log`' -ewal $($_.$User) $MinerWorker-wd 0 -gser 2 -dbg -1 -eres 1 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                        Arguments  = "-platform 2 -mport $Port -mode 1 -allcoins 1 $AddArgs-allpools 1 -epool $($_.Protocol)://$($_.Host):$($_.Port) -logfile `'$Log`' -ewal $($_.$User) $MinerWorker-wd 0 -gser 2 -dbg -1 -eres 1 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour}
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }

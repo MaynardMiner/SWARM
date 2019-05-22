@@ -16,7 +16,9 @@ function Expand-WebRequest {
         [Parameter(Mandatory = $true, Position = 0)]
         [String]$Uri,
         [Parameter(Mandatory = $true, Position = 1)]
-        [String]$Path
+        [String]$Path,
+        [Parameter(Mandatory = $true, Position = 2)]
+        [String]$version
     )
 
     $Zip = Split-Path $Uri -Leaf; $BinPath = (Split-Path $Path); $BinPath = (Split-Path $BinPath -Leaf);
@@ -102,7 +104,10 @@ function Expand-WebRequest {
             $DirName = Split-Path $Contents -Leaf
             Move-Item -Path $Contents -Destination ".\bin" -Force | Out-Null; Start-Sleep -S 1
             Rename-Item -Path ".\bin\$DirName" -NewName "$BinPath" | Out-Null
-            if (Test-Path $Path) { Write-Log "Finished Successfully!" -ForegroundColor Green }
+            if (Test-Path $Path) {
+                $Version | Set-Content ".\bin\$BinPath\swarm-version.txt"
+                Write-Log "Finished Successfully!" -ForegroundColor Green 
+            }
             if (Test-Path ".\x64\$Temp") { Remove-Item ".\x64\$Temp" -Recurse -Force | Out-Null }
         }
 

@@ -5,32 +5,24 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "equihash-btg": "--par=144,5 --pers BgoldPoW",
-            "equihash144": "--par=144,5 --pers auto",
-            "equihash210": "--par=210,9 --pers auto",
-            "equihash200": "--par=200,9 --pers auto",
-            "zhash": "--par=144,5 --pers auto"
+            "equihash_144/5": "",
+            "equihash_210/9": "",
+            "equihash_200/9": ""
         },
         "difficulty": {
-            "equihash-btg": "",
-            "equihash144": "",
-            "equihash210": "",
-            "equihash200": "",
-            "zhash": ""
+            "equihash_144/5": "",
+            "equihash_210/9": "",
+            "equihash_200/9": ""
         },
         "naming": {
-            "equihash-btg": "equihash-btg",
-            "equihash144": "equihash144",
-            "equihash210": "equihash210",
-            "equihash200": "equihash200",
-            "zhash": "zhash"
+            "equihash_144/5": "equihash_144/5",
+            "equihash_210/9": "equihash_210/9",
+            "equihash_200/9": "equihash_200/9"
         },
         "fee": {
-            "equihash-btg": 2,
-            "equihash144": 2,
-            "equihash210": 2,
-            "equihash200": 2,
-            "zhash": 2
+            "equihash_144/5": 2,
+            "equihash_210/9": 2,
+            "equihash_200/9": 2
         }
     },
     "NVIDIA2": {
@@ -38,32 +30,25 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "equihash-btg": "--par=144,5 --pers BgoldPoW",
-            "equihash144": "--par=144,5 --pers auto",
-            "equihash210": "--par=210,9 --pers auto",
-            "equihash200": "--par=200,9 --pers auto",
-            "zhash": "--par=144,5 --pers auto"
+            "equihash_144/5": "",
+            "equihash_210/9": "",
+            "equihash_200/9": ""
         },
         "difficulty": {
-            "equihash-btg": "",
             "equihash144": "",
             "equihash210": "",
-            "equihash200": "",
-            "zhash": ""
+            "equihash200": ""
         },
         "naming": {
-            "equihash-btg": "equihash-btg",
             "equihash144": "equihash144",
             "equihash210": "equihash210",
-            "equihash200": "equihash200",
-            "zhash": "zhash"
+            "equihash200": "equihash200"
         },
         "fee": {
             "equihash-btg": 2,
             "equihash144": 2,
             "equihash210": 2,
-            "equihash200": 2,
-            "zhash": 2
+            "equihash200": 2
         }
     },
     "NVIDIA3": {
@@ -71,28 +56,23 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "equihash-btg": "--par=144,5 --pers BgoldPoW",
-            "equihash144": "--par=144,5 --pers auto",
-            "equihash210": "--par=210,9 --pers auto",
-            "equihash200": "--par=200,9 --pers auto",
-            "zhash": "--par=144,5 --pers auto"
+            "equihash_144/5": "",
+            "equihash_210/9": "",
+            "equihash_200/9": ""
         },
         "difficulty": {
-            "equihash-btg": "",
             "equihash144": "",
             "equihash210": "",
             "equihash200": "",
             "zhash": ""
         },
         "naming": {
-            "equihash-btg": "equihash-btg",
             "equihash144": "equihash144",
             "equihash210": "equihash210",
             "equihash200": "equihash200",
             "zhash": "zhash"
         },
         "fee": {
-            "equihash-btg": 2,
             "equihash144": 2,
             "equihash210": 2,
             "equihash200": 2,

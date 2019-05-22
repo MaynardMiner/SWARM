@@ -11,41 +11,36 @@
             "export GPU_MAX_ALLOC_PERCENT=100"
         ],
         "commands": {
-            "cryptonightv7": "",
-            "cryptonightv8": "",
-            "cryptonightheavy": "",
-            "cryptonightgpu": "",
-            "cryptonightsuperfast": "",
-            "cryptonightr": ""
+            "cryptonight-v7": "",
+            "cryptonight-v8": "",
+            "cryptonight-heavy": "",
+            "cryptonight-gpu": "",
+            "cryptonight-superfast": "",
+            "cryptonight-r": ""
         },
         "difficulty": {
-            "cryptonightv7": "",
-            "cryptonightv8": "",
-            "cryptonightheavy": "",
-            "cryptonightgpu": "",
-            "cryptonightsuperfast": "",
-            "cryptonightr": "",
-            "cryptonight_v8_reversewaltz": ""
+            "cryptonight-v7": "",
+            "cryptonight-v8": "",
+            "cryptonight-heavy": "",
+            "cryptonight-gpu": "",
+            "cryptonight-superfast": "",
+            "cryptonight-r": ""
         },
         "naming": {
-            "cryptonightv7": "cryptonight_v7",
-            "cryptonightv8": "cryptonight_v8",
-            "cryptonightheavy": "cryptonight_heavy",
-            "cryptonightgpu": "cryptonight_gpu",
-            "cryptonight_superfast": "cryptonight_superfast",
-            "cryptonightsuperfast": "cryptonight_superfast",
-            "cryptonightr": "cryptonight_r",
-            "cryptonight_v8_reversewaltz": "cryptonight_v8_reversewaltz"
+            "cryptonight-v7": "cryptonight_v7",
+            "cryptonight-v8": "cryptonight_v8",
+            "cryptonight-heavy": "cryptonight_heavy",
+            "cryptonight-gpu": "cryptonight_gpu",
+            "cryptonight-superfast": "cryptonight_superfast",
+            "cryptonight-r": "cryptonight_r"
         },
         "fee": {
-            "cryptonightv7": 1,
-            "cryptonightv8": 1,
-            "cryptonightheavy": 1,
-            "cryptonightgpu": 1,
-            "cryptonight_superfast": 1,
-            "cryptonightsuperfast": 1,
-            "cryptonightr": 1,
-            "cryptonight_v8_reversewaltz": 1
+            "cryptonight-v7": 1,
+            "cryptonight-v8": 1,
+            "cryptonight-heavy": 1,
+            "cryptonight-gpu": 1,
+            "cryptonight-superfast": 1,
+            "cryptonight-r": 1
         }
     }
 }

@@ -44,20 +44,25 @@ $NVIDIATypes | ForEach-Object {
 
         $MinerAlgo = $_
 
-        if ($MinerAlgo -in $Algorithm -and $Name -notin $global:Exclusions.$MinerAlgo.exclusions -and $ConfigType -notin $global:Exclusions.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
-            $Stat = Get-Stat -Name "$($Name)_$($MinerAlgo)_hashrate"
-            $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
-
-            switch ($MinerAlgo) {
-                "daggerhashimoto" { $Stratum = "ethnh+tcp://"; $A = "ethash" }
-                "grincuckaroo29" { $Stratum = "stratum+tcp://"; $A = "cuckaroo" }
-                "grincuckatoo31" { $Stratum = "stratum+tcp://"; $A = "cuckatoo" }
-                "ethash" { $Stratum = "stratum+ssl://"; $A = "ethash" }
-                default { $Stratum = "stratum+tcp://" }
-            }
+        if ($MinerAlgo -in $Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
+            $StatAlgo = $MinerAlgo -replace "`_","`-"
+            $Stat = Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
+           $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
             $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
             if ($Check.RAW -ne "Bad") {
                 $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
+                    $SelName = $_.Name
+                    switch ($MinerAlgo) {
+                        "ethash" {
+                            Switch($SelName) {
+                                "nicehash" {$Stratum = "ethnh+tcp://"; $A = "ethash"}
+                                "whalesburg" {$Stratum = "stratum+ssl://"; $A = "ethash"}
+                            }
+                        }
+                        "cuckaroo29" { $Stratum = "stratum+tcp://"; $A = "cuckaroo" }
+                        "cuckatoo31" { $Stratum = "stratum+tcp://"; $A = "cuckatoo" }
+                        default { $Stratum = "stratum+tcp://" }
+                    }        
                     if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
                     [PSCustomObject]@{
                         MName      = $Name
@@ -70,6 +75,7 @@ $NVIDIATypes | ForEach-Object {
                         Type       = $ConfigType
                         Path       = $Path
                         Devices    = $Devices
+                        Version    = "$($nvidia.nbminer.version)"
                         DeviceCall = "ccminer"
                         Arguments  = "-a $A --api 0.0.0.0:$Port --url $Stratum$($_.Host):$($_.Port) --user $($_.$User) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour}

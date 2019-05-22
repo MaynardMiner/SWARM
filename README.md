@@ -28,7 +28,7 @@ To focus solely on SWARM's project mission: SWARM was written to integrate fully
 
 **Highly Sophisticated Customizations**
 
-SWARM is very customizable. At the base layer- It is easy to setup by simply inputting some basic user configuration at launch, and SWARM will handle the rest. However, beyond the base layer, SWARM offers a sophisticated oc tuning system, along with the ability to customize environment varibles, miner arguments, pool difficulty, and even a system for factoring power cost/calculation into profit analysis. SWARM allows you prohibt miners from certain algorithms, or prohibit mining certain algorithms on certain pools. SWARM also has the ability to control your overclocking internally, including support for AMD Vega in Windows using the latest drivers. It also supports accepting overclocking commands via HiveOS's website- However, algorithm profiles are not available (HiveOS is working on it).
+SWARM is very customizable. At the base layer- It is easy to setup by simply inputting some basic user configuration at launch, and SWARM will handle the rest. However, beyond the base layer, SWARM offers a sophisticated oc tuning system, along with the ability to customize environment varibles, miner arguments, pool difficulty, and even a system for factoring power cost/calculation into profit analysis. SWARM allows you prohibt miners from certain algorithms, or prohibit mining certain algorithms on certain pools. SWARM also has the ability to control your overclocking internally, including support for AMD Vega in Windows using the latest drivers. It also supports accepting overclocking commands via HiveOS's website, with use of -API_key.
 
 ![alt text](https://github.com/MaynardMiner/SWARM/blob/master/build/data/win%20example.png)
 

@@ -127,7 +127,6 @@ $Pool = $Pool | ConvertFrom-StringData
 $Name = $Pool.Name 
 if ($global:Config.Params.PoolName -eq $Name -and $FileName -eq $Name) {
     $Custom_Request = [PSCustomObject]@{} 
-    [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
 if($global:Config.Params.xnsub -eq "Yes"){$X = "#xnsub"} 
 
     ##First lets make sure miner has algorithm. If not, add it.
@@ -175,7 +174,8 @@ if($global:Config.Params.xnsub -eq "Yes"){$X = "#xnsub"}
         $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
  
         $SmallestValue = 1E-20
-        $Stat = Set-Stat -Name "$($Name)_$($Custom_Algo)_profit" -Value ([Double]$Estimate/$Divisor *(1-($Pool.$_.fees/100)))
+        $StatAlgo = $Custom_Algo -replace "`_","`-" 
+        $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -Value ([Double]$Estimate/$Divisor *(1-($Pool.$_.fees/100)))
         if ($global:Config.Params.Stat_Algo -eq "Day") {$Stats = $Stat.Live}else {$Stats = $Stat.$($global:Config.Params.Stat_Algo)}
 
         [PSCustomObject]@{

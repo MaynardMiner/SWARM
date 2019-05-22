@@ -5,24 +5,24 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "daggerhashimoto": "",
-            "grincuckaroo29": "",
-            "grincuckatoo31": ""
+            "ethash": "",
+            "cuckaroo29": "",
+            "cuckatoo31": ""
         },
         "difficulty": {
-            "daggerhashimoto": "",
-            "grincuckaroo29": "",
-            "grincuckatoo31": ""
+            "ethash": "",
+            "cuckaroo29": "",
+            "cuckatoo31": ""
         },
         "naming": {
-            "daggerhashimoto": "daggerhashimoto",
-            "grincuckaroo29": "daggerhashimoto",
-            "grincuckatoo31": "grincuckatoo31"
+            "ethash": "",
+            "cuckaroo29": "",
+            "cuckatoo31": ""
         },
         "fee": {
-            "daggerhashimoto": 0.65,
-            "grincuckaroo29": 2,
-            "grincuckatoo31": 2
+            "ethash": 0.65,
+            "cuckaroo29": 2,
+            "cuckatoo31": 2
         }
     },
     "NVIDIA2": {
@@ -31,25 +31,23 @@
         "prestart": [],
         "commands": {
             "ethash": "",
-            "daggerhashimoto": "",
-            "grincuckaroo29": "",
-            "grincuckatoo31": ""
+            "cuckaroo29": "",
+            "cuckatoo31": ""
         },
         "difficulty": {
             "ethash": "",
-            "daggerhashimoto": "",
-            "grincuckaroo29": "",
-            "grincuckatoo31": ""
+            "cuckaroo29": "",
+            "cuckatoo31": ""
         },
         "naming": {
-            "daggerhashimoto": "daggerhashimoto",
-            "grincuckaroo29": "grincuckaroo29",
-            "grincuckatoo31": "grincuckatoo31"
+            "ethash": "",
+            "cuckaroo29": "",
+            "cuckatoo31": ""
         },
         "fee": {
-            "daggerhashimoto": 0.65,
-            "grincuckaroo29": 2,
-            "grincuckatoo31": 2
+            "ethash": 0.65,
+            "cuckaroo29": 2,
+            "cuckatoo31": 2
         }
     },
     "NVIDIA3": {
@@ -57,24 +55,24 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "daggerhashimoto": "",
-            "grincuckaroo29": "",
-            "grincuckatoo31": ""
+            "ethash": "",
+            "cuckaroo29": "",
+            "cuckatoo31": ""
         },
         "difficulty": {
-            "daggerhashimoto": "",
-            "grincuckaroo29": "",
-            "grincuckatoo31": ""
+            "ethash": "",
+            "cuckaroo29": "",
+            "cuckatoo31": ""
         },
         "naming": {
-            "daggerhashimoto": "daggerhashimoto",
-            "grincuckaroo29": "grincuckaroo29",
-            "grincuckatoo31": "grincuckatoo31"
+            "ethash": "",
+            "cuckaroo29": "",
+            "cuckatoo31": ""
         },
         "fee": {
-            "daggerhashimoto": 0.65,
-            "grincuckaroo29": 2,
-            "grincuckatoo31": 2
+            "ethash": 0.65,
+            "cuckaroo29": 2,
+            "cuckatoo31": 2
         }
     }
 }

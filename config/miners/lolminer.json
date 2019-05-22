@@ -11,27 +11,28 @@
             "export GPU_MAX_ALLOC_PERCENT=100"
         ],
         "commands": {
-            "zhash": "--coin AUTO144_5",
-            "equihash192": "--coin AUTO192_7",
-            "beam": "--coin BEAM --tls 0",
-            "grincuckatoo31": "--coin GRIN-AT31"
+            "equihash_144/5": "",
+            "equihash_192/7": "",
+            "equihash_150/5": "",
+            "cuckatoo31": ""
         },
         "difficulty": {
-            "zhash": "",
-            "equihash192": "",
-            "beam": "",
-            "grincuckatoo31": ""
+            "equihash_144/5": "",
+            "equihash_192/7": "",
+            "equihash_150/5": "",
+            "cuckatoo31": ""
         },
         "naming": {
-            "zhash": "zhash",
-            "equihash192": "equihash192",
-            "beam": "beam",
-            "grincuckatoo31": "grincuckatoo31"
+            "equihash_144/5": "equihash_144/5",
+            "equihash_192/7": "equihash_192/7",
+            "equihash_150/5": "equihash_150/5",
+            "cuckatoo31": "cuckatoo31"
         },
         "fee": {
-            "zhash": 1,
-            "equihash192": 1,
-            "beam": 1
+            "equihash_144/5": 1,
+            "equihash_192/7": 1,
+            "equihash_150/5": 1,
+            "cuckatoo31": 1
         }
     }
 }

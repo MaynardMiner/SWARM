@@ -28,7 +28,7 @@ param(
     [switch]$asjson
 )
 [cultureinfo]::CurrentCulture = 'en-US'
-[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12,[Net.SecurityProtocolType]::Tls11,[Net.SecurityProtocolType]::tls
 
 Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))
 $dir = Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))
@@ -319,8 +319,8 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 $BenchTable += [PSCustomObject]@{
                     Miner     = $_ -split "_" | Select -First 1; 
                     Algo      = $_ -split "_" | Select -Skip 1 -First 1; 
-                    HashRates = $Stats."$($_)".Day | ConvertTo-Hash; 
-                    Raw       = $Stats."$($_)".Day
+                    HashRates = $Stats."$($_)".Hour | ConvertTo-Hash; 
+                    Raw       = $Stats."$($_)".Hour
                 }
             }
             function Get-BenchTable {

@@ -22,8 +22,8 @@ function Get-Algorithm {
 
     $Algorithm = (Get-Culture).TextInfo.ToTitleCase(($Algorithm -replace "_", " ")) -replace " "
 
-    if ($Algorithms.$Algorithm) {$Algorithms.$Algorithm}
-    else {$Algorithm}
+    if ($Algorithms.$Algorithm) { $Algorithms.$Algorithm }
+    else { $Algorithm }
 }
 
 function Convert-DateString ([string]$Date, [string[]]$Format) {
@@ -44,27 +44,25 @@ function Get-AlgoList {
 }
 
 function Get-BadPools {
-$Badpools = @()
-$Pool_Json.PSObject.Properties.Name | %{$Badpools +=  [PSCustomObject]@{"$_" = $Pool_Json.$_.pools_to_exclude}}
-$Badpools
+    $Badpools = @()
+    $Pool_Json.PSObject.Properties.Name | % { $Badpools += [PSCustomObject]@{"$_" = $Pool_Json.$_.pools_to_exclude } }
+    $Badpools
 }
 
 function Get-BadMiners {
     $Badpools = @()
-    $Pool_Json.PSObject.Properties.Name | %{$Badpools +=  [PSCustomObject]@{"$_" = $Pool_Json.$_.miners_to_exclude}}
+    $Pool_Json.PSObject.Properties.Name | % { $Badpools += [PSCustomObject]@{"$_" = $Pool_Json.$_.miners_to_exclude } }
     $Badpools
 }
 
 function Add-ASIC_ALGO {
-        ##Add ASIC_ALGO to pool-algos.txt for bans, etc
-        $Algolist = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
-        $Algolist = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
 
-        if($global:Config.Params.ASIC_ALGO -and $global:Config.Params.ASIC_ALGO -ne "") {
-            $global:Config.Params.ASIC_ALGO | ForEach-Object {
-                if($_ -notin $Algolist.PSObject.Properties.Name) {
-                $Algolist | Add-Member $_ @{"hiveos_name" = $_; exclusions = @("add pool or miner here","comma seperated")}
-                }
+    if ($global:Config.Params.ASIC_ALGO -and $global:Config.Params.ASIC_ALGO -ne "") {
+        $global:Config.Params.ASIC_ALGO | ForEach-Object {
+            if ($_ -notin $global:Config.Pool_Algos.PSObject.Properties.Name) {
+                $global:Config.Pool_Algos | Add-Member $_ @{"alt_names" = $_; exclusions = @("add pool or miner here", "comma seperated") }
+                $global:Config.Pool_Algos | Set-Content ".\config\pools\pool-algos.json"
+            }
         } 
     }
 }

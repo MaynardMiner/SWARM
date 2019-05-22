@@ -2071,7 +2071,7 @@ Note: Am aware that XMRig and XMRstak have Updates
 -Added reboot.ps1
 -Cleaned up Claymore/ethminer style API for windows agent errors.
 -Removed -pers auto args on grin algo launches- Did not add to remote update.
--Added cryptonight/r
+-Added cyrtponight-r
 -Removed lyra2z from fancyIX- It would just crash cards.
 
 2.0.5
@@ -2919,3 +2919,112 @@ API overhaul:
   Fixed ``get stats lite`` Currency/Day
 
   Multiminer-AMD (Linux version) binary fixed.
+
+
+   2.2.9
+
+   NOTE: Updating to 2.2.9 is not possible. Due to the nature of changes, the amount of changes,
+   and the requirements of these changes: It is recommeneded to rebenchmark and fresh install SWARM.
+
+   FIXES
+
+   * Fixed Memory for nvidia OC in linux
+   * Fixed ETHPill (export display) in linux
+   * Renamed all instances of Hashrates.Day to
+     Hashrates.Hour - Some where missed. This will
+     Fix ASIC issues, as well as some issues on screen.
+   * Found small typos in miner files.
+   * Removed -Version 5.0 in powershell startups
+   * OC for amd displayed on main screen.
+
+   NEW FEATURES:
+
+   Expiremental:
+   * HiveOS / SWARM name conformity for all algorithms.
+   * Note: For commands and arguments: all
+     equihash algos have "_" instead of " "
+     example:
+       equihash_144/5
+       equihash_150/5
+       etc.
+
+   Expiremental:
+   * HiveOS OC SYCRONIZATION!
+     * This allows you to use oc_profiles with swarm
+     * A working -API_Key from HiveOS must be specified.
+     * See Details Here: https://github.com/MaynardMiner/SWARM/wiki/HiveOS-OC-Tuning
+       for limitations and how it operates.
+
+
+      2.3.0
+
+  * SWARM adds to windows defender exclusion path.
+  * SWARM adds to windows firewall exception.
+  * Miners added to windows firewall exception.
+
+  NEW FEATURES !
+
+  experimental:
+  SWARM only download miners when needed.
+  * SWARM will download miners on demand.
+  * SWARM will block miners from bad downloads
+    on demand.
+
+  expiremental:
+  SWARM will migrate previous miners if 
+  their version did not change.
+
+  -gminer updated
+   * cuckatoo31 added back in.
+  -wildrig updated
+  -t-rex updated
+   * x25x algo added.
+
+
+  2.3.1
+
+  NOTE: Updating will transfer old stats, but not
+  Miner.json. This is due to the number of typos
+  that were fixed across multiple files.
+
+  This if final version / work through of both betas:
+
+  Corrections:
+
+  -There was an issue in which SWARM was continuously
+   adding firewall exceptions for miner each time a new
+   one started- Leaving a fairly long list of exceptions.
+   This version fixes that issue, and will clear all the
+   extra exceptions on startup (will only do it once, ever).
+
+  -typo for cryptonight-r: Fixed.
+
+  -teamredminer download issue: Fixed.
+
+  New FEATURES:
+
+  SWARM can now accept .json in flight sheet user config section!
+  * You can now copy .\config\parameters\defaults.json
+    and edit as neccessary. Then paste into user config.
+  * Windows will write parameters to .\config\parameters\newarguments.json
+    as always.
+  * HiveOS version will write to config.json in SWARM main dir.
+
+  Ban notices on HiveOS is displayed [algorithm]:[name].
+  * This allows copy/paste of bans into arguments.
+
+
+  2.3.2
+
+  -Extended Windows Time For HiveOS by a few seconds.
+  -Changed Veil to display as "x16rt" on HiveOS (for overclocking).
+  -Windows OverdriveNtool will run once (not one for each card).
+  -[Net.SecurityProtocolType]::Tls12 instead of 'tls12' (more proper).
+  
+  OC for AMD1 or NVIDIA1 only on HiveOS!
+  * May be useful for a hybrid rig, in which you
+    wish to set dynamic oc for one of the device groups.
+    (other groups should remain static/same oc at all times).
+
+  Code staging for #Device Bus, so multiple instances of SWARM
+  could be ran on same rig.
