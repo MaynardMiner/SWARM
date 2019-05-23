@@ -18,12 +18,12 @@ $global:dir = (Split-Path $script:MyInvocation.MyCommand.Path)
 $env:Path += ";$global:dir\build\cmd"
 try { Get-ChildItem . -Recurse | Unblock-File } catch {}
 try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$($global:Dir)`'" -WindowStyle Minimized } }catch { }
-if(-not (Test-Path ".\build\txt\fixed.txt")) {
+if( -not (Test-Path ".\build\fixed.txt") ) {
 try {
 Write-Host "Removing Previous Net Firewall Rules"
 Remove-NetFirewallRule -All
 } catch {}
-"Fixed" | Set-Content ".\build\txt\fixed.txt"
+"Fixed" | Set-Content ".\build\fixed.txt"
 }
 try{ $Net = Get-NetFireWallRule } catch {}
 if($Net) {
@@ -887,7 +887,7 @@ While ($true) {
             $MinerStatInt = 1
         }
         else {
-            if ($global:Config.Params.SWARM_Mode -eq "Yes") {
+            if ($global:Config.Params.SWARM_Mode -eq "Yes" -and $Donating -eq $False) {
                 $SWARM_IT = $true
                 write-Log "SWARM MODE ACTIVATED!" -ForegroundColor Green;
                 $SwitchTime = Get-Date
