@@ -25,6 +25,10 @@ try { if( -not ( $Net | Where {$_.DisplayName -like "*background.ps1*"} ) ) { Ne
 }
 $Net = $null
 
+##Get hive naming conventions:
+$GetHiveNames = ".\config\pools\pool-algos.json"
+$HiveNames = if (Test-Path $GetHiveNames) { Get-Content $GetHiveNames | ConvertFrom-Json }
+
 ## Get Parameters
 $Global:config = [hashtable]::Synchronized(@{ })
 $Global:stats = [hashtable]::Synchronized(@{ })
@@ -78,7 +82,7 @@ Write-Host "Platform is $($global:Config.Params.Platform)"; Write-Host "HiveOS I
 
 ##Icon for windows
 if ($global:Config.Params.Platform -eq "windows") {
-    Start-Process "powershell" -ArgumentList "-command .\build\powershell\icon.ps1 `".\build\apps\comb.ico`"" -NoNewWindow
+    . .\build\powershell\icon.ps1 '.\build\apps\comb.ico'
     $Host.UI.RawUI.BackgroundColor = ($bckgrnd = 'Black'); $Host.UI.RawUI.ForegroundColor = 'White';
     $Host.PrivateData.ErrorForegroundColor = 'Red'; $Host.PrivateData.ErrorBackgroundColor = $bckgrnd;
     $Host.PrivateData.WarningForegroundColor = 'Magenta'; $Host.PrivateData.WarningBackgroundColor = $bckgrnd;
@@ -107,7 +111,7 @@ $Hive_Path = "/hive/bin"
 Write-Host "API Port is $($global:Config.Params.Port)";
 
 if($Global:config.Params.API -eq "Yes") {
-$Posh_api = Get-APIServer;  
+$Posh_api = Get-AP44444444444444444IServer;  
 $Posh_Api.BeginInvoke() | Out-Null
 $Posh_api = $null
 }
@@ -135,10 +139,6 @@ $GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
 $BackgroundTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $BackgroundTimer.Restart()
 $RestartTimer = New-Object -TypeName System.Diagnostics.Stopwatch
-
-##Get hive naming conventions:
-$GetHiveNames = ".\config\pools\pool-algos.json"
-$HiveNames = if (Test-Path $GetHiveNames) { Get-Content $GetHiveNames | ConvertFrom-Json }
 
 While ($True) {
 

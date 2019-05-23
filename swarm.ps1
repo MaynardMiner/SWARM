@@ -110,7 +110,6 @@ $PID | Out-File ".\build\pid\miner_pid.txt"
 ## Change console icon and title
 if ($global:Config.Params.Platform -eq "windows") {
     $host.ui.RawUI.WindowTitle = "SWARM";
-    Start-Process "powershell" -ArgumentList "-command .\build\powershell\icon.ps1 `".\build\apps\SWARM.ico`"" -NoNewWindow
 }
 
 ##Clear Old Agent Stats
