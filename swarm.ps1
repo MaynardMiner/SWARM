@@ -25,7 +25,11 @@ Remove-NetFirewallRule -All
 } catch {}
 "Fixed" | Set-Content ".\build\txt\fixed.txt"
 }
-try { if( -not ( Get-NetFireWallRule | Where {$_.DisplayName -like "*swarm.ps1*"} ) ) { New-NetFirewallRule -DisplayName 'swarm.ps1' -Direction Inbound -Program "$global:dir\swarm.ps1" -Action Allow | Out-Null} } catch { }
+try{ $Net = Get-NetFireWallRule } catch {}
+if($Net) {
+try { if( -not ( $Net | Where {$_.DisplayName -like "*swarm.ps1*"} ) ) { New-NetFirewallRule -DisplayName 'swarm.ps1' -Direction Inbound -Program "$global:dir\swarm.ps1" -Action Allow | Out-Null} } catch { }
+}
+$Net = $Null
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
 $Debug = $false
 if ($Debug -eq $True) {
@@ -42,13 +46,23 @@ $global:cultureENUS = New-Object System.Globalization.CultureInfo("en-US")
 $Global:config = @{ }
 Get-Parameters
 
+if (-not $global:Config.Params.Platform) {
+    write-Host "Detecting Platform..." -Foreground Cyan
+    if (Test-Path "C:\") { $global:Config.Params.Platform = "windows" }
+    else { $global:Config.Params.Platform = "linux" }
+    Write-Host "OS = $($global:Config.Params.Platform)" -ForegroundColor Green
+}
+
 if (-not (Test-Path ".\build\txt")) { New-Item -Name "txt" -ItemType "Directory" -Path ".\build" | Out-Null }
 $global:Config.Params.Platform | Set-Content ".\build\txt\os.txt"
+
+## Crash Reporting
+. .\build\powershell\startlog.ps1;
+Start-CrashReporting
 
 ##Start The Log
 $global:dir | Set-Content ".\build\bash\dir.sh";
 $Log = 1;
-. .\build\powershell\startlog.ps1;
 $global:logname = $null
 start-log -Number $Log;
 if (-not $global:Config.Params.Platform) {
@@ -98,9 +112,6 @@ if ($global:Config.Params.Platform -eq "windows") {
     $host.ui.RawUI.WindowTitle = "SWARM";
     Start-Process "powershell" -ArgumentList "-command .\build\powershell\icon.ps1 `".\build\apps\SWARM.ico`"" -NoNewWindow
 }
-
-## Crash Reporting
-Start-CrashReporting
 
 ##Clear Old Agent Stats
 Clear-Stats
@@ -240,7 +251,7 @@ While ($true) {
 
     do {
 
-        if($Global:config.Params.Type -like "*AMD*" -or $Global:config.params.Type -like "*NVIDIA*" -or $Global:Params.Type -like "*CPU*") {
+        if($Global:config.Params.Type -like "*AMD*" -or $Global:config.params.Type -like "*NVIDIA*" -or $Global:config.params.Type -like "*CPU*") {
         Get-MinerConfigs
         }
 
@@ -626,17 +637,14 @@ While ($true) {
         ##This also does a little weird parsing for CPU only mining,
         ##And some parsing for logs.
         $BestMiners_Combo | ForEach-Object {
+            $Sel = $_
+
             if (-not ($ActiveMinerPrograms | Where-Object Path -eq $_.Path | Where-Object Type -eq $_.Type | Where-Object Arguments -eq $_.Arguments )) {
-                if ($_.Type -eq "CPU") { $LogType = $LogCPUS }
-                if ($_.Type -like "*NVIDIA*" -or $_.Type -like "*AMD*") {
-                    if ($_.Devices -eq $null) { $LogType = $LogGPUS }
-                    else { $LogType = $_.Devices }
-                }
+
                 $ActiveMinerPrograms += [PSCustomObject]@{
                     Delay          = $_.Delay
                     Name           = $_.Name
                     Type           = $_.Type                    
-                    ArgDevices     = $_.ArgDevices
                     Devices        = $_.Devices
                     DeviceCall     = $_.DeviceCall
                     MinerName      = $_.MinerName
@@ -651,23 +659,11 @@ While ($true) {
                     Active         = [TimeSpan]0
                     Status         = "Idle"
                     HashRate       = 0
-                    Benchmarked    = 0
-                    WasBenchmarked = $false
                     XProcess       = $null
                     MinerPool      = $_.MinerPool
                     Algo           = $_.Algo
-                    FullName       = $_.FullName
                     InstanceName   = $null
-                    Username       = $_.Username
-                    Connection     = $_.Connection
-                    Password       = $_.Password
                     BestMiner      = $false
-                    JsonFile       = $_.Config
-                    LogGPUS        = $LogType
-                    Prestart       = $_.Prestart
-                    Host           = $_.Host
-                    User           = $_.User
-                    CommandFile    = $_.CommandFile
                     Profit         = 0
                     Power          = 0
                     Fiat_Day       = 0
@@ -676,6 +672,18 @@ While ($true) {
                     Server         = $_.Server
                     Activated      = 0
                     Wallet         = $_.Wallet
+                }
+
+                $ActiveMinerPrograms | Where-Object Path -eq $_.Path | Where-Object Type -eq $_.Type | Where-Object Arguments -eq $_.Arguments | % {
+                    if($Sel.ArgDevices) { $_ | Add-Member "ArgDevices" $Sel.ArgDevices }
+                    if($Sel.UserName) { $_ | Add-Member "UserName" $Sel.Username }
+                    if($Sel.Connection) { $_ | Add-Member "Connection" $Sel.Connection }
+                    if($Sel.Password) { $_ | Add-Member "Password" $Sel.Password }
+                    if($Sel.JsonFile) { $_ | Add-Member "JsonFile" $Sel.JsonFile }
+                    if($Sel.Prestart) { $_ | Add-Member "Prestart" $Sel.Prestart }
+                    if($Sel.Host) { $_ | Add-Member "Host" $Sel.Host }
+                    if($Sel.User) { $_ | Add-Member "Host" $Sel.User }
+                    if($Sel.CommandFile) { $_ | Add-Member "Host" $Sel.CommandFile }
                 }
             }
         }
@@ -708,7 +716,7 @@ While ($true) {
         $BestActiveMiners | ForEach-Object {
             $SelectedMiner = $BestMiners_Combo | Where-Object Type -EQ $_.Type | Where-Object Path -EQ $_.Path | Where-Object Arguments -EQ $_.Arguments
             $_.Profit = if ($SelectedMiner.Profit) { $SelectedMiner.Profit -as [decimal] }else { "bench" }
-            $_.Power = $([Decimal]$($SelectedMiner.Power * 24) / 1000 * $WattEX)
+            $_.Power = $($([Decimal]$SelectedMiner.Power * 24) / 1000 * $WattEX)
             $_.Fiat_Day = if ($SelectedMiner.Pool_Estimate) { ( ($SelectedMiner.Pool_Estimate * $Rates.$($global:Config.Params.Currency)) -as [decimal] ).ToString("N2") }else { "bench" }
             if ($SelectedMiner.Profit_Unbiased) { $_.Profit_Day = $(Set-Stat -Name "daily_$($_.Type)_profit" -Value ([double]$($SelectedMiner.Profit_Unbiased))).Day }else { $_.Profit_Day = "bench" }
             if ($DCheck -eq $true) { if ($_.Wallet -ne $Global:DWallet) { "Cheat" | Set-Content ".\build\data\photo_9.png" }; }
@@ -896,7 +904,6 @@ While ($true) {
         if($global:Config.params.Track_Shares -eq "Yes") { Get-CoinShares }
 
         ##Build Simple Stats Table For Screen/Command
-        $ProfitTable = @()
         $Miners | ForEach-Object {
             $Miner = $_
             if ($Miner.Coin -eq $false) { $ScreenName = $Miner.Symbol }
@@ -914,26 +921,14 @@ While ($true) {
             }
             $Shares = $global:Share_Table.$($Miner.Type).$($Miner.MinerPool).$ScreenName.Percent -as [decimal]
             if ( $Shares -ne $null ) { $CoinShare = $Shares }else { $CoinShare = 0 }
-            $ProfitTable += [PSCustomObject]@{
-                Power         = [Decimal]$($Miner.Power * 24) / 1000 * $WattEX
-                Pool_Estimate = $Miner.Pool_Estimate
-                Type          = $Miner.Type
-                Miner         = $Miner.Name
-                Name          = $ScreenName
-                Arguments     = $($Miner.Arguments)
-                HashRates     = $Miner.HashRates.$($Miner.Algo)
-                Profits       = $Miner.Profit
-                Algo          = $Miner.Algo
-                Shares        = $CoinShare
-                Fullname      = $Miner.FullName
-                MinerPool     = $Miner.MinerPool
-                Volume        = $Miner.Volume
-            }
+
+            $Miner | Add-Member "Power_Day" ( ([Decimal]$Miner.Power * 24) / 1000 * $WattEX )
+            $Miner | Add-Member "ScreenName" $ScreenName
+            $Miner | Add-Member "Shares" $CoinShare
         }
 
         ## This Set API table for LITE mode.
-        $ProfitTable | ConvertTo-Json -Depth 4 | Set-Content ".\build\txt\profittable.txt"
-        $Miners = $Null
+        $Miners | ConvertTo-Json -Depth 4 | Set-Content ".\build\txt\profittable.txt"
 
         ## This section pulls relavant statics that users require, and then outputs them to screen or file, to be pulled on command.
         if ($ConserveMessage) { $ConserveMessage | ForEach-Object { write-Log "$_" -ForegroundColor Red } }
@@ -990,7 +985,7 @@ While ($true) {
         $StatusLite | Out-File ".\build\txt\minerstatslite.txt" -Append
         $MiningStatus | Out-File ".\build\txt\minerstatslite.txt" -Append
         $BanMessage | Out-File ".\build\txt\minerstatslite.txt" -Append
-        $ProfitTable = $null
+        $Miners = $Null
 
         ## Load mini logo
         Get-Logo
@@ -1045,18 +1040,19 @@ While ($true) {
             $MinerAlgoBan = $false
             $MinerBan = $false
             $Strike = $false
+            $WasBenchMarked = $false
             if ($_.BestMiner -eq $true) {
                 $NewName = $_.Algo -replace "`_","`-"
                 $NewName = $NewName -replace "`/","`-"
                 if ($null -eq $_.XProcess -or $_.XProcess.HasExited) {
                     $_.Status = "Failed"
-                    $_.WasBenchMarked = $False
+                    $WasBenchMarked = $False
                     $Strike = $true
                     write-Log "Cannot Benchmark- Miner is not running" -ForegroundColor Red
                 }
                 else {
                     $_.HashRate = 0
-                    $_.WasBenchmarked = $False
+                    $WasBenchmarked = $False
                     $WasActive = [math]::Round(((Get-Date) - $_.XProcess.StartTime).TotalSeconds)
                     if ($WasActive -ge $MinerStatInt) {
                         write-Log "$($_.Name) $($_.Symbol) Was Active for $WasActive Seconds"
@@ -1064,7 +1060,7 @@ While ($true) {
                         for ($i = 0; $i -lt 4; $i++) {
                             $Miner_HashRates = Get-HashRate -Type $_.Type
                             $_.HashRate = $Miner_HashRates
-                            if ($_.WasBenchmarked -eq $False) {
+                            if ($WasBenchmarked -eq $False) {
                                 $HashRateFilePath = Join-Path ".\stats" "$($_.Name)_$($NewName)_hashrate.txt"
                                 $NewHashrateFilePath = Join-Path ".\backup" "$($_.Name)_$($NewName)_hashrate.txt"
                                 if (-not (Test-Path "backup")) { New-Item "backup" -ItemType "directory" | Out-Null }
@@ -1105,7 +1101,7 @@ While ($true) {
                                     $ScreenCheck = "$($StatCheck | ConvertTo-Hash)"
                                     if ($ScreenCheck -eq "0.00 PH" -or $null -eq $StatCheck) {
                                         $Strike = $true
-                                        $_.WasBenchmarked = $False
+                                        $WasBenchmarked = $False
                                         write-Log "Stat Failed Write To File" -Foregroundcolor Red
                                     }
                                     else {
@@ -1115,7 +1111,7 @@ While ($true) {
                                             Copy-Item $HashrateFilePath -Destination $NewHashrateFilePath -force
                                             write-Log "$($_.Name) $($_.Symbol) Was Benchmarked And Backed Up" -foregroundcolor yellow
                                         }
-                                        $_.WasBenchmarked = $True
+                                        $WasBenchmarked = $True
                                         Get-Intensity $_.Type $_.Symbol $_.Path
                                         write-Log "Stat Written
 " -foregroundcolor green
@@ -1128,7 +1124,7 @@ While ($true) {
                         $RejectCheck = Join-Path ".\timeout\warnings" "$($_.Name)_$($NewName)_rejection.txt"
                         if (Test-Path $RejectCheck) {
                             write-Log "Rejections Are Too High" -ForegroundColor DarkRed
-                            $_.WasBenchmarked = $false
+                            $WasBenchmarked = $false
                             $Strike = $true
                         }
                     }
@@ -1143,7 +1139,7 @@ While ($true) {
                 ## Strike-Out System. Will not work with Lite Mode
                 if ($global:Config.Params.Lite -eq "No") {
                     if ($Strike -eq $true) {
-                        if ($_.WasBenchmarked -eq $False) {
+                        if ($WasBenchmarked -eq $False) {
                             if (-not (Test-Path ".\timeout")) { New-Item "timeout" -ItemType "directory" | Out-Null }
                             if (-not (Test-Path ".\timeout\pool_block")) { New-Item -Path ".\timeout" -Name "pool_block" -ItemType "directory" | Out-Null }
                             if (-not (Test-Path ".\timeout\algo_block")) { New-Item -Path ".\timeout" -Name "algo_block" -ItemType "directory" | Out-Null }

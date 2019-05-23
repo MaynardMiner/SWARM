@@ -67,11 +67,10 @@ $NVIDIATypes | ForEach-Object {
                         Version    = "$($nvidia.$CName.version)"
                         DeviceCall = "xmrstak"
                         Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --api-port=$Port -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.$User) -p $($_.$Pass)$($Diff) --donate-level 1 --nicehash $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"    
-                        HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour}
+                        HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
-                        PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
-                        FullName   = "$($_.Mining)"
-                        MinerPool  = "$($_.Name)"
+                        Power     =  if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } 
+MinerPool  = "$($_.Name)"
                         Port       = $Port
                         API        = "xmrstak"
                         Wallet     = "$($_.$User)"

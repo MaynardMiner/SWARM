@@ -161,12 +161,7 @@ if ($Name -in $global:Config.Params.PoolName) {
             }
 
             [PSCustomObject]@{
-                Estimate  = $zergpool_Estimate
-                Divisor   = $Divisor
-                Fees      = $zergpool_Fees
-                Priority  = $Priorities.Pool_Priorities.$Name
                 Symbol    = "$Zergpool_Symbol-Coin"
-                Mining    = $Zergpool_Algorithm
                 Algorithm = $zergpool_Algorithm
                 Price     = $Stat.$($global:Config.Params.Stat_Coin)
                 Protocol  = "stratum+tcp"
@@ -175,13 +170,9 @@ if ($Name -in $global:Config.Params.PoolName) {
                 User1     = $User1
                 User2     = $User2
                 User3     = $User3
-                CPUser    = $User1
-                CPUPass   = "c=$Pass1,mc=$Zergpool_Symbol,id=$($global:Config.Params.RigName1)"
                 Pass1     = "c=$Pass1,mc=$Zergpool_Symbol,id=$($global:Config.Params.RigName1)"
                 Pass2     = "c=$Pass2,mc=$Zergpool_Symbol,id=$($global:Config.Params.RigName2)"
                 Pass3     = "c=$Pass3,mc=$Zergpool_Symbol,id=$($global:Config.Params.RigName3)"
-                Location  = $global:Config.Params.Location
-                SSL       = $false
             } 
         }
     }

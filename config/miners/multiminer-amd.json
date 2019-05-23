@@ -4,9 +4,9 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "argon2d250": "",
-            "argon2d500": "",
-            "argon2d4096": ""
+            "argon2d250": "--gpu-batchsize=2048 -t 4",
+            "argon2d500": "--gpu-batchsize=2048 -t 4",
+            "argon2d4096": "--gpu-batchsize=750 -t 2"
         },
         "difficulty": {
             "argon2d250": "",

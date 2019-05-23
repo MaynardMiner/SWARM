@@ -64,11 +64,10 @@ $AMDTypes | ForEach-Object {
                         Version    = "$($amd.srbminer.version)"
                         DeviceCall = "srbminer"
                         Arguments  = "--adldisable --ccryptonighttype $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -cgpuid $Devices --cnicehash true --cpool $($_.Host):$($_.Port) --cwallet $($_.$User) --cpassword $($_.$Pass) --apienable --logfile `'$Log`' --apiport $Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                        HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour}
+                        HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
-                        PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
+                        Power     =  if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } 
                         MinerPool  = "$($_.Name)"
-                        FullName   = "$($_.Mining)"
                         Port       = $Port 
                         API        = "srbminer"
                         Wallet     = "$($_.$User)"

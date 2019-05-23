@@ -191,67 +191,33 @@ function start-minersorting {
     )
 
     $SortMiners | ForEach-Object {
-        $Miner = $_
 
-        $Miner_HashRates = [PSCustomObject]@{ }
-        $Miner_Profits = [PSCustomObject]@{ }
-        $Miner_Unbias = [PSCustomObject]@{ }
-        $Miner_PowerX = [PSCustomObject]@{ }
-        $Miner_Pool_Estimates = [PSCustomObject]@{ }
-        $Miner_Vol = [PSCustomObject]@{ }
+        $Miner = $_
      
-        $Miner_Types = $Miner.Type | Select-Object -Unique
         $MinerPool = $Miner.MinerPool | Select-Object -Unique
 
-        $Miner.HashRates | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
-            if ($Miner.PowerX.$_ -ne $null) {
-                $Day = 24;
-                $Kilo = 1000;
-                $WattCalc1 = (([Double]$Miner.PowerX.$_) * $Day)
-                $WattCalc2 = [Double]$WattCalc1 / $Kilo;
-                $WattCalc3 = [Double](($WattCalc2 * $WattCalc) * -1)
-            }
-            else { $WattCalc3 = 0 }
+        if ($Miner.Power -gt 0) { $WattCalc3 = (((([Double]$Miner.Power * 24) / 1000) * $WattCalc) * -1)}
+        else { $WattCalc3 = 0 }
             
-            if ($global:Pool_Hashrates.$_.$MinerPool.Percent -gt 0) { $Hash_Percent = $global:Pool_Hashrates.$_.$MinerPool.Percent * 100 }
-            else { $Hash_Percent = 0 }
+        if ($global:Pool_Hashrates.$($Miner.Algo).$MinerPool.Percent -gt 0) { $Hash_Percent = $global:Pool_Hashrates.$($Miner.Algo).$MinerPool.Percent * 100 }
+        else { $Hash_Percent = 0 }
 
-            $Miner_Volume = ([Double]($Miner.Quote * (1 - ($Hash_Percent / 100))))
-            $Miner_Modified = ([Double]($Miner_Volume * (1 - ($Miner.Fees / 100))))
+        $Miner_Volume = ([Double]($Miner.Quote * (1 - ($Hash_Percent / 100))))
+        $Miner_Modified = ([Double]($Miner_Volume * (1 - ($Miner.Fees / 100))))
 
-            $Miner_HashRates | Add-Member $_ ([Double]$Miner.HashRates.$_)
-            $Miner_PowerX | Add-Member $_ ([Double]$Miner.PowerX.$_)
-            $Miner_Profits | Add-Member $_  ([Double]($Miner_Modified + $WattCalc3))  ##Used to calculate BTC/Day and sort miners
-            $Miner_Unbias | Add-Member $_  ([Double]($Miner_Modified + $WattCalc3))  ##Uset to calculate Daily profit/day moving averages
-            $Miner_Pool_Estimates | Add-Member $_ ([Double]($Miner.Quote)) ##RAW calculation for Live Value (Used On screen)
-            $Miner_Vol | Add-Member $_ $( if ($global:Pool_Hashrates.$_.$MinerPool.Percent -gt 0) { [Double]$global:Pool_Hashrates.$_.$MinerPool.Percent * 100 } else { 0 } )
-        }
+        $Miner | Add-Member Profit ([Double]($Miner_Modified + $WattCalc3)) ##Used to calculate BTC/Day and sort miners
+        $Miner | Add-Member Profit_Unbiased ([Double]($Miner_Modified + $WattCalc3)) ##Uset to calculate Daily profit/day moving averages
+        $Miner | Add-Member Pool_Estimate ([Double]($Miner.Quote)) ##RAW calculation for Live Value (Used On screen)
+        $Miner | Add-Member Volume $( if ($global:Pool_Hashrates.$($Miner.Algo).$MinerPool.Percent -gt 0) { [Double]$global:Pool_Hashrates.$($Miner.Algo).$MinerPool.Percent * 100 } else { 0 } )
             
-        $Miner_Power = [Double]($Miner_PowerX.PSObject.Properties.Value | Measure-Object -Sum).Sum
-        $Miner_Profit = [Double]($Miner_Profits.PSObject.Properties.Value | Measure-Object -Sum).Sum
-        $Miner_Unbiased = [Double]($Miner_Unbias.PSObject.Properties.Value | Measure-Object -Sum).Sum
-        $Miner_Pool_Estimate = [Double]($Miner_Pool_Estimates.PSObject.Properties.Value | Measure-Object -Sum).sum
-        $Miner_Volume = [Double]($Miner_Vol.PSObject.Properties.Value | Measure-Object -Sum).sum
-
-        $Miner.HashRates | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
-            if ((-not [String]$Miner.HashRates.$_) -or (-not [String]$Miner.PowerX.$_)) {
-                $Miner_HashRates.$_ = $null
-                $Miner_PowerX.$_ = $null
-                $Miner_Profit = $null
-                $Miner_Unbiased = $null
-                $Miner_Power = $null
-                $Miner_Pool_Estimate = $null
-                $Miner_Volume = $null
-            }
+        if (-not $Miner.HashRates) {
+            $miner.HashRates = $null
+            $Miner.Profit = $null
+            $Miner.Profit_Unbiased = $null
+            $Miner.Pool_Estimate = $null
+            $Miner.Volume = $null
+            $Miner.Power = $null
         }
-
-        $Miner.HashRates = $Miner_HashRates
-        $Miner.PowerX = $Miner_PowerX
-        $Miner | Add-Member Profit $Miner_Profit
-        $Miner | Add-Member Profit_Unbiased $Miner_Unbiased
-        $Miner | Add-Member Power $Miner_Power
-        $Miner | Add-Member Pool_Estimate $Miner_Pool_Estimate
-        $Miner | Add-Member Volume $Miner_Volume
     }
 }
 
@@ -373,14 +339,15 @@ function Get-MinerBinary {
                 Expand-WebRequest $Miner.URI $Miner.Path $Miner.version
             }
         }
-        if( Test-Path $Miner.Path ) {
+        if ( Test-Path $Miner.Path ) {
             $Success = 3
-        } else {
+        }
+        else {
             $Success = 2
             if ( -not (Test-Path ".\timeout\download_block") ) { New-Item -Name "download_block" -Path ".\timeout" -ItemType "directory" | OUt-Null }
             $MinersArray = @()
-            if(Test-Path ".\timeout\download_block\download_block.txt"){$OldTimeouts = Get-Content ".\timeout\download_block\download_block.txt" | ConvertFrom-Json}
-            if($OldTimeouts){$OldTimeouts | %{$MinersArray += $_}}
+            if (Test-Path ".\timeout\download_block\download_block.txt") { $OldTimeouts = Get-Content ".\timeout\download_block\download_block.txt" | ConvertFrom-Json }
+            if ($OldTimeouts) { $OldTimeouts | % { $MinersArray += $_ } }
             $MinersArray += $Miner
             $MinersArray | ConvertTo-Json -Depth 3 | Add-Content ".\timeout\download_block\download_block.txt"
             $HiveMessage = "Ban: $($Miner.Name) - Download Failed"

@@ -12,7 +12,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
 function Get-APIServer {
-    if ($global:Config.Params.API -eq "Yes") {
 
         $Runspace = [runspacefactory]::CreateRunspace()
         $Runspace.Open()
@@ -64,8 +63,8 @@ function Get-APIServer {
                                     $Types | ForEach-Object {
                                         $MinersOn = $false
                                         $Selected = $getsummary | Where-Object Type -eq $_
-                                        $Selected | ForEach-Object { if ($_.Profits -ne $null) { $MinersOn = $true } }
-                                        if ($MinersOn -eq $true) { $Selected = $Selected | Sort-Object -Property Profits -Descending }
+                                        $Selected | ForEach-Object { if ($_.Profit -ne $null) { $MinersOn = $true } }
+                                        if ($MinersOn -eq $true) { $Selected = $Selected | Sort-Object -Property Profit -Descending }
                                         else { $Selected = $Selected | Sort-Object -Property Pool_Estimate -Descending }                
                                         $result += @{"$($_)" = @($Selected) }
                                     }
@@ -88,8 +87,8 @@ function Get-APIServer {
                                     $Types | ForEach-Object {
                                         $MinersOn = $false
                                         $Selected = $getbest | Where-Object Type -eq $_
-                                        $Selected | ForEach-Object { if ($_.Profits -ne $null) { $MinersOn = $true } }
-                                        if ($MinersOn -eq $true) { $Selected = $Selected | Sort-Object -Property Profits -Descending }
+                                        $Selected | ForEach-Object { if ($_.Profit -ne $null) { $MinersOn = $true } }
+                                        if ($MinersOn -eq $true) { $Selected = $Selected | Sort-Object -Property Profit -Descending }
                                         else { $Selected = $Selected | Sort-Object -Property Pool_Estimate -Descending }                
                                         $result += @{"$($_)" = @($Selected) }
                                     }
@@ -172,4 +171,3 @@ function Get-APIServer {
         $Posh_Api
         Write-Host "Starting HTML Server" -ForegroundColor "Yellow"
     }
-}

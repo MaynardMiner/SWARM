@@ -19,7 +19,11 @@ Param (
 $global:Dir = $WorkingDir
 Set-Location $WorkingDir
 try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$WorkingDir`'" -WindowStyle Minimized } }catch { }
-try { if( -not ( Get-NetFireWallRule | Where {$_.DisplayName -like "*background.ps1*"} ) ) { New-NetFirewallRule -DisplayName 'background.ps1' -Direction Inbound -Program "$workingdir\build\powershell\background.ps1" -Action Allow | Out-Null} } catch { }
+try{ $Net = Get-NetFireWallRule } catch {}
+if($Net) {
+try { if( -not ( $Net | Where {$_.DisplayName -like "*background.ps1*"} ) ) { New-NetFirewallRule -DisplayName 'background.ps1' -Direction Inbound -Program "$workingdir\build\powershell\background.ps1" -Action Allow | Out-Null} } catch { }
+}
+$Net = $null
 
 ## Get Parameters
 $Global:config = [hashtable]::Synchronized(@{ })
@@ -100,15 +104,24 @@ if ($global:Config.Params.Platform -eq "windows") {
 
 ##Start API Server
 $Hive_Path = "/hive/bin"
-Write-Host "API Port is $($global:Config.Params.Port)";      
+Write-Host "API Port is $($global:Config.Params.Port)";
+
+if($Global:config.Params.API -eq "Yes") {
 $Posh_api = Get-APIServer;  
 $Posh_Api.BeginInvoke() | Out-Null
+$Posh_api = $null
+}
+
 $Posh_SwarmTCP = Get-SWARMServer;
 $Posh_SwarmTCP.BeginInvoke() | Out-Null
+$Posh_SwarmTCP = $Null
+
 if(test-path $Hive_Path) {
 $Posh_HiveTCP= Get-HiveServer;
 $Posh_HiveTCP.BeginInvoke() | Out-Null
+$Posh_HiveTCP = $null
 }
+
 if ($global:Config.Params.API -eq "Yes") { Write-Host "API Server Started- you can run http://localhost:$($global:Config.Params.Port)/end to close" -ForegroundColor Green }
 
 ## SWARM miner PID
