@@ -11,6 +11,46 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
+function Remove-ASICPools {
+    param (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [string]$AIP,
+        [Parameter(Mandatory = $true, Position = 1)]
+        [string]$Port,
+        [Parameter(Mandatory = $true, Position = 2)]
+        [string]$Name
+    )
+
+    $ASIC_Pools = @{ }
+
+    Switch ($Name) {
+        "cgminer" {
+            $ASICM = "cgminer"
+            Write-Log "Clearing all previous cgminer pools." -ForegroundColor "Yellow"
+            $ASIC_Pools.Add($ASICM, @{ })
+            ##First we need to discover all pools
+            $Commands = @{command = "pools"; parameter = 0 } | ConvertTo-Json -Compress
+            $response = $Null
+            $response = Get-TCP -Server $AIP -Port $Port -Message $Commands -Timeout 10
+            if ($response) {
+                ##Windows screws up last character
+                if ($response[-1] -notmatch "}") { $response = $Response.Substring(0, $Response.Length - 1) }
+                $PoolList = $response | ConvertFrom-Json
+                $PoolList = $PoolList.POOLS
+                $PoolList | ForEach-Object { $ASIC_Pools.$ASICM.Add("Pool_$($_.Pool)", $_.Pool) }
+                $ASIC_Pools.$ASICM.keys | ForEach-Object {
+                    $PoolNo = $($ASIC_Pools.$ASICM.$_)
+                    $Commands = @{command = "removepool"; parameter = "$PoolNo" } | ConvertTo-Json -Compress; 
+                    $response = $Null; 
+                    $response = Get-TCP -Server $AIP -Port $Port -Message $Commands -Timeout 10
+                    $response
+                }
+            }
+            else { Write-Log "WARNING: Failed To Gather cgminer Pool List!" -ForegroundColor Yellow }
+        }
+    }
+}
+
 function Start-LaunchCode {
 
     param(
@@ -27,11 +67,11 @@ function Start-LaunchCode {
     if ($MinerCurrent.Type -notlike "*ASIC*") {
         ##Remove Old PID FIle
         $MinerTimer = New-Object -TypeName System.Diagnostics.Stopwatch
-        $Export = (Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "build\export")  
+        $Export = Join-Path $Global:Dir "build\export"
         $PIDMiners = "$($MinerCurrent.Type)"
         if (Test-Path ".\build\pid\*$PIDMiners*") { Remove-Item ".\build\pid\*$PIDMiners*" }
         if (Test-Path ".\build\*$($MinerCurrent.Type)*-hash.txt") { Clear-Content ".\build\*$($MinerCurrent.Type)*-hash.txt" }
-        $Logs = Join-Path (Split-Path $script:MyInvocation.MyCommand.Path) "logs\$($MinerCurrent.Type).log" 
+        $Logs = Join-Path $Global:Dir "logs\$($MinerCurrent.Type).log" 
 
         switch -WildCard ($MinerCurrent.Type) {
             "*NVIDIA*" {
@@ -199,7 +239,7 @@ function Start-LaunchCode {
                         $script += "New-NetFirewallRule -DisplayName `'$($MinerCurrent.Minername)`' -Direction Inbound -Program `'$Program`' -Action Allow"
                     }
                 }
-                $script += ". `'$($global:Dir)\build\powershell\icon.ps1`' `'$($global:Dir)\build\apps\miner.ico`'"
+                $script += "Start-Process `"powershell`" -ArgumentList `"$global:dir\build\powershell\icon.ps1 ``'$global:dir\build\apps\miner.ico``'`" -NoNewWindow"
                 $script += "`$host.ui.RawUI.WindowTitle = `'$($MinerCurrent.Name) - $($MinerCurrent.Algo)`';"
                 $MinerCurrent.Prestart | ForEach-Object {
                     if ($_ -notlike "export LD_LIBRARY_PATH=$($global:Dir)\build\export") {
@@ -235,6 +275,9 @@ function Start-LaunchCode {
                         "multiminer" {
                             $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FilePath ""$Logs"" -Append; `$Output | Out-Host;}`'" 
                         }
+                        "nebutech" {
+                            $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FilePath ""$Logs"" -Append; `$Output | Out-Host;}`'" 
+                        }
                         default { 
                             $script += "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output += `$_ -replace `"\\[\d+(;\d+)?m`"; if(`$Output -cmatch `"`\n`"){`$OutPut | Out-File -FilePath ""$Logs"" -Append; `$Output | Out-Host; `$Output = `$null}}`'" 
                         }
@@ -250,7 +293,7 @@ function Start-LaunchCode {
                     Set-Location $WorkingDirectory
                     $ControllerProcess = Get-Process -Id $ControllerProcessID
                     if ($ControllerProcess -eq $null) { return }
-                    $Process = Start-Process "CMD" -ArgumentList "/c powershell.exe -executionpolicy bypass -command "".\swarm-start.ps1""" -PassThru -WindowStyle Minimized
+                    $Process = Start-Process "CMD" -ArgumentList "/c pwsh -executionpolicy bypass -command "".\swarm-start.ps1""" -PassThru -WindowStyle Minimized
                     if ($Process -eq $null) { [PSCustomObject]@{ProcessId = $null }; return
                     };
                     [PSCustomObject]@{ProcessId = $Process.Id; ProcessHandle = $Process.Handle };

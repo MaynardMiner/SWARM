@@ -1,7 +1,7 @@
 function Get-StatsExcavator {
 
     $Message = @{id = 1; method = "algorithm.list"; params = @() } | ConvertTo-Json -Compress
-    $Request = Get-TCP -Server $Server -Port $port -Message $Message
+    $Request = Get-TCP -Server $global:Server -Port $global:Port -Message $Message
     if ($Request) {
         try { $Data = $Null; $Data = $Request | ConvertFrom-Json -ErrorAction Stop; }
         catch { Write-Host "Failed To parse API" -ForegroundColor Red; break }
@@ -12,13 +12,13 @@ function Get-StatsExcavator {
     else { Set-APIFailure; Break }
 
     $Message = @{id = 1; method = "worker.list"; params = @() } | ConvertTo-Json -Compress
-    $GetThreads = $Null; $GetThreads = Get-TCP -Server $Server -Port $port -Message $Message
+    $GetThreads = $Null; $GetThreads = Get-TCP -Server $global:Server -Port $global:Port -Message $Message
     if ($GetThreads) {
         $Threads = $GetThreads | ConvertFrom-Json -ErrorAction Stop
         $Hash = $Null; $Hash = $Threads.workers.algorithms.speed
         try { 
-            for ($i = 0; $i -lt $Devices.Count; $i++) { 
-                $global:GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $i) / 1000 
+            for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { 
+                $global:GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $global:i) / 1000 
             } 
         }
         catch { Write-Host "Failed To parse threads" -ForegroundColor Red }

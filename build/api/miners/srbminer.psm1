@@ -1,5 +1,5 @@
 function Get-StatsSrbminer {
-    $Request = Get-HTTP -Server $Server -Port $Port
+    $Request = Get-HTTP -Server $global:Server -Port $global:Port
     if ($Request) {
         try { $Data = $Request.Content | ConvertFrom-Json -ErrorAction Stop }
         Catch { Write-Host "Failed To parse API" -ForegroundColor Red; Break }
@@ -8,8 +8,8 @@ function Get-StatsSrbminer {
             $Hash = $Data.devices.hashrate
             Write-MinerData2;
             try {
-                for ($i = 0; $i -lt $Devices.Count; $i++) { 
-                    $global:GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $i) / 1000 
+                for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { 
+                    $global:GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $global:i) / 1000 
                 }
             }
             catch { Write-Host "Failed To parse Threads" -ForegroundColor Red };

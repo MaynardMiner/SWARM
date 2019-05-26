@@ -56,6 +56,10 @@ try {
 catch { }
 $Net = $Null
 
+if(Test-Path "C:\") {
+    Start-Process "powershell" -ArgumentList "$global:dir\build\powershell\icon.ps1 `'$global:dir\build\apps\SWARM.ico`'" -NoNewWindow
+}
+
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
 $Global:Debug = $false
 if ($Global:Debug -eq $True) {
@@ -525,6 +529,9 @@ While ($true) {
         #######                       End Phase 6                               ######
         ##############################################################################
 
+        Remove-Module -Name "hashrates"
+        Remove-Module -Name "stats"
+        
     }until($Error.Count -gt 0)
     Add-LogErrors
     continue;

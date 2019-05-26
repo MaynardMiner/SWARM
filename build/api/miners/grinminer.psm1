@@ -11,8 +11,8 @@ function Get-StatsGrinMiner {
         }
         Write-MinerData2;
         try { 
-            for ($i = 0; $i -lt $Devices.Count; $i++) { 
-                $global:GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $i) 
+            for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { 
+                $global:GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $global:i) 
             }
         }
         catch { Write-Host "Failed To parse GPU Threads" -ForegroundColor Red };

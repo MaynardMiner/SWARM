@@ -1,7 +1,7 @@
 function Get-StatsCgminer {
     $Hash_Table = @{HS = 1; KHS = 1000; MHS = 1000000; GHS = 1000000000; THS = 1000000000000; PHS = 1000000000000000 }
     $Command = "summary|0"
-    $Request = Get-TCP -Server $Server -Port $port -Message $Command
+    $Request = Get-TCP -Server $global:Server -Port $global:Port -Message $Command
     if ($Request) {
         $response = $Request -split "SUMMARY," | Select-Object -Last 1
         $response = $Request -split "," | ConvertFrom-StringData

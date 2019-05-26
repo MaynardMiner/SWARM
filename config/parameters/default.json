@@ -32,7 +32,7 @@
     "GPUDevices2": [
                     ""
                    ],
-    "CoinExchange":  "",
+    "CoinExchange":  "ETH",
     "Interval":  300,
     "Passwordcurrency1": "BTC",
     "CPUThreads":  1,

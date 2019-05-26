@@ -1,12 +1,12 @@
 function Get-StatsCpuminer {
-    $GetCPUSummary = Get-TCP -Server $Server -Port $Port -Message "summary"
+    $GetCPUSummary = Get-TCP -Server $global:Server -Port $global:Port -Message "summary"
     if ($GetCPUSummary) {
         $CPUSUM = $GetCPUSummary -split ";" | Select-String "KHS=" | ForEach-Object { $_ -replace ("KHS=", "") }
         $global:RAW = [double]$CPUSUM * 1000
         Write-MinerData2
     }
     else { Write-Host "API Summary Failed- Could Not Total Hashrate" -Foreground Red; break }
-    $GetCPUThreads = Get-TCP -Server $Server -Port $Port -Message "threads"
+    $GetCPUThreads = Get-TCP -Server $global:Server -Port $global:Port -Message "threads"
     if ($GetCPUThreads) {
         $Data = $GetCPUThreads -split "\|"
         $kilo = $false
@@ -17,13 +17,13 @@ function Get-StatsCpuminer {
         $J = $Hash | ForEach-Object { Invoke-Expression [Double]$_ }
         if ($kilo -eq $true) {
             if ($Hash) { 
-                for ($i = 0; $i -lt $Devices.Count; $i++) {$global:CPUHashrates.$i = $Hash[$i]}
+                for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) {$global:CPUHashrates.$global:i = $Hash[$global:i]}
             }
             $J | ForEach-Object { $global:CPUKHS += $_ }
         }
         else {
             if ($Hash) { 
-                for ($i = 0; $i -lt $Devices.Count; $i++) { $global:CPUHashrates.$i = $Hash[$i] / 1000 } 
+                for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { $global:CPUHashrates.$global:i = $Hash[$global:i] / 1000 } 
             }
             $J | ForEach-Object { $global:CPUKHS += $_ }
         }

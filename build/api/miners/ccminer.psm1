@@ -7,7 +7,7 @@ function Get-StatsCcminer {
         default { $Multiplier = 1000 }
     }
 
-    $Request = $Null; $Request = Get-TCP -Server $Server -Port $port -Message "summary"
+    $Request = $Null; $Request = Get-TCP -Server $global:Server -Port $global:Port -Message "summary"
     if ($Request) {
         try { $GetKHS = $Request -split ";" | ConvertFrom-StringData -ErrorAction Stop }catch { Write-Warning "Failed To Get Summary"; break }
         $global:RAW = if ([Double]$GetKHS.KHS -ne 0 -or [Double]$GetKHS.ACC -ne 0) { [Double]$GetKHS.KHS * $Multiplier }
@@ -15,13 +15,13 @@ function Get-StatsCcminer {
         $global:GPUKHS += if ([Double]$GetKHS.KHS -ne 0 -or [Double]$GetKHS.ACC -ne 0) { [Double]$GetKHS.KHS }
     }
     else { Set-APIFailure }
-    $GetThreads = $Null; $GetThreads = Get-TCP -Server $Server -Port $port -Message "threads"
+    $GetThreads = $Null; $GetThreads = Get-TCP -Server $global:Server -Port $global:Port -Message "threads"
     if ($GetThreads) {
         $Data = $GetThreads -split "\|"
         $Hash = $Data -split ";" | Select-String "KHS" | ForEach-Object { $_ -replace ("KHS=", "") }
         try { 
-            for ($i = 0; $i -lt $Devices.Count; $i++) { 
-                $global:GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i 
+            for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { 
+                $global:GPUHashrates.$(Get-Gpus) = Set-Array $Hash $global:i 
             } 
         }
         catch { Write-Host "Failed To parse Threads" -ForegroundColor Red };

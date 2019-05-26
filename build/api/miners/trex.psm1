@@ -1,5 +1,5 @@
 function Get-StatsTrex {
-    $Request = Get-HTTP -Port $Port -Message "/summary"
+    $Request = Get-HTTP -Port $global:Port -Message "/summary"
     if ($Request) {
         try { $Data = $Request.Content | ConvertFrom-Json -ErrorAction Stop; }catch { Write-Host "Failed To parse API" -ForegroundColor Red }
         if ([Double]$Data.hashrate_minute -ne 0 -or [Double]$Data.accepted_count -ne 0) { 
@@ -9,8 +9,8 @@ function Get-StatsTrex {
         Write-MinerData2;
         $Hash = $Data.gpus.hashrate_minute
         try { 
-            for ($i = 0; $i -lt $Devices.Count; $i++) { 
-                $global:GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $i) / 1000 
+            for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { 
+                $global:GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $global:i) / 1000 
             } 
         }
         catch { Write-Host "Failed To parse Threads" -ForegroundColor Red };

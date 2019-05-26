@@ -11,7 +11,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 function Set-HiveResponse {
-    $mem = @($($ramfree), $($ramtotal - $ramfree))
+    $mem = @($($global:ramfree), $($global:ramtotal - $global:ramfree))
     $global:GPUHashTable = $global:GPUHashTable | foreach { $_ -replace ("GPUKHS=", "") }
     $global:GPUPowerTable = $global:GPUPowerTable | foreach { $_ -replace ("GPUWATTS=", "") }
     $global:GPUFanTable = $global:GPUFanTable | foreach { $_ -replace ("GPUFAN=", "") }
@@ -39,15 +39,15 @@ function Set-HiveResponse {
                 fan      = @($global:GPUFanTable)
                 uptime   = $global:UPTIME
                 ar       = @($AR)
-                algo     = $StatAlgo
+                algo     = $Global:StatAlgo
             }
             total_khs   = $global:GPUKHS
             temp        = @($global:GPUTempTable)
             fan         = @($global:GPUFanTable)
             power       = @($global:GPUPowerTable)
-            df          = "$diskspace"
+            df          = "$global:diskspace"
             mem         = @($mem)
-            cpuavg      = $LoadAverages
+            cpuavg      = $global:LoadAverages
         }
     }
     $Stats

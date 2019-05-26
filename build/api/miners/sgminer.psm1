@@ -1,6 +1,6 @@
 function Get-StatsSgminer {
     $Message = @{command = "summary+devs"; parameter = "" } | ConvertTo-Json -Compress
-    $Request = Get-TCP -Server $Server -Port $port -Message $Message
+    $Request = Get-TCP -Server $global:Server -Port $global:Port -Message $Message
     if ($Request) {
         $Tryother = $false
         try { $Data = $Null; $Data = $Request | ConvertFrom-Json -ErrorAction Stop }catch { $Tryother = $true }
@@ -23,8 +23,8 @@ function Get-StatsSgminer {
         Write-MinerData2;
         $global:GPUKHS += $Sum
         try { 
-            for ($i = 0; $i -lt $Devices.Count; $i++) { 
-                $global:GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i 
+            for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { 
+                $global:GPUHashrates.$(Get-Gpus) = Set-Array $Hash $global:i 
             } 
         }
         catch { Write-Host "Failed To parse GPU Array" -ForegroundColor Red };

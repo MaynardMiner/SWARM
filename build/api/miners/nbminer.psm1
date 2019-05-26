@@ -1,5 +1,5 @@
 function Get-StatsNebutech {
-    $Request = Invoke-RestMethod "http://$($Server):$($Port)/api/v1/status" -UseBasicParsing -Method Get -TimeoutSec 5
+    $Request = Invoke-RestMethod "http://$($global:Server):$($global:Port)/api/v1/status" -UseBasicParsing -Method Get -TimeoutSec 5
     if ($Request) {
         $Data = $Request
         $global:RAW += [Double]$Data.miner.total_hashrate_raw
@@ -7,8 +7,8 @@ function Get-StatsNebutech {
         Write-MinerData2;
         $Hash = $Data.Miner.devices.hashrate_raw | %{[Double]$_ / 1000}
         try {
-            for ($i = 0; $i -lt $Devices.Count; $i++) {
-                $global:GPUHashrates.$(Get-Gpus) = Set-Array $Hash $i
+            for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) {
+                $global:GPUHashrates.$(Get-Gpus) = Set-Array $Hash $global:i
             } 
         }
         catch { Write-Host "Failed To parse Threads" -ForegroundColor Red };

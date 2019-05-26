@@ -18,7 +18,7 @@ function Get-StatsEthminer {
         default { $Divsor = 1 }
     }
 
-    $Request = Get-TCP -Server $Server -Port $Port -Message $Message
+    $Request = Get-TCP -Server $global:Server -Port $global:Port -Message $Message
     if ($Request) {
         try { $Data = $Request | ConvertFrom-Json -ErrorAction Stop; }
         catch { Write-Host "Failed To parse API" -ForegroundColor Red; Break }
@@ -29,8 +29,8 @@ function Get-StatsEthminer {
         $Hash = $Threads -split ";" | ForEach-Object { [Double]$_ / $Divsor }
         
         try { 
-            for ($i = 0; $i -lt $Devices.Count; $i++) { 
-                $global:GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $i) 
+            for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { 
+                $global:GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $global:i) 
             } 
         }
         catch { Write-Host "Failed To parse GPU Threads" -ForegroundColor Red };

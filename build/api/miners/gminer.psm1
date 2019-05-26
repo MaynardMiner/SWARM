@@ -1,5 +1,5 @@
 function Get-StatsGminer {
-    $Request = Get-HTTP -Server $server -Port $Port -Message "/stat" -Timeout 5
+    $Request = Get-HTTP -Server $global:Server -Port $global:Port -Message "/stat" -Timeout 5
     if ($Request) {
         try { $Data = $Request.Content | ConvertFrom-Json -ErrorAction Stop }
         Catch { Write-Host "Failed To parse API" -ForegroundColor Red; Break }
@@ -8,8 +8,8 @@ function Get-StatsGminer {
             $Hash = $Data.devices.speed
             Write-MinerData2;
             try { 
-                for ($i = 0; $i -lt $Devices.Count; $i++) { 
-                    $global:GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $i) / 1000 
+                for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { 
+                    $global:GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $global:i) / 1000 
                 }
             }
             catch { Write-Host "Failed To parse Threads" -ForegroundColor Red };

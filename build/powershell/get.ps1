@@ -49,8 +49,6 @@ if ($P -notlike "*$dir\build\powershell*") {
 
 $Get = @()
 
-. .\build\powershell\octune.ps1
-. .\build\powershell\powerup.ps1
 Import-Module -Name "$globe\stats.psm1"
 Import-Module -Name "$globe\include.psm1"
 Import-Module -Name "$Dir\build\api\hiveos\docommand.psm1"
@@ -300,8 +298,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
 
     "benchmarks" {
         Import-Module -Name "$globe\hashrates.psm1"
-        . .\build\powershell\wallettable.ps1
-
+        
         if (Test-path ".\stats") {
             if ($argument2) {
                 switch ($argument2) {
