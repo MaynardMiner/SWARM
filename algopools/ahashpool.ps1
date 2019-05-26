@@ -23,7 +23,7 @@ if ($Name -in $global:Config.Params.PoolName) {
         return $ahashpool_Algorithm
     } |
     ForEach-Object {
-        if ($Algorithm -contains $ahashpool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $ahashpool_Algorithm) {
+        if ($global:Algorithm -contains $ahashpool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $ahashpool_Algorithm) {
             if ($Name -notin $global:Config.Pool_Algos.$ahashpool_Algorithm.exclusions -and $ahashpool_Algorithm -notin $Global:banhammer) {
                 $ahashpool_Host = "$_.mine.ahashpool.com$X"
                 $ahashpool_Port = $ahashpool_Request.$_.port

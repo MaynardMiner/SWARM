@@ -1,5 +1,5 @@
 ## Simplified functions (To Shorten)
-function Get-GPUs { $GPU = $global:Devices[$i]; $GCount.$($global:TypeS).$GPU };
+function Get-GPUs { $GPU = $global:Devices[$i]; $Global:GCount.$($global:TypeS).$GPU };
 
 function Write-MinerData1 {
     Write-Host " "

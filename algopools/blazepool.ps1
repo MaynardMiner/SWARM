@@ -23,7 +23,7 @@ if ($Name -in $global:Config.Params.PoolName) {
         return $blazepool_Algorithm
     } |
     ForEach-Object {
-        if ($Algorithm -contains $blazepool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $blazepool_Algorithm) {
+        if ($global:Algorithm -contains $blazepool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $blazepool_Algorithm) {
             if ($Name -notin $global:Config.Pool_Algos.$blazepool_Algorithm.exclusions -and $blazepool_Algorithm -notin $Global:banhammer) {
                 $blazepool_Host = "$_.mine.blazepool.com$X"
                 $blazepool_Port = $blazepool_Request.$_.port

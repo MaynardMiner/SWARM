@@ -29,19 +29,33 @@ param(
 )
 [cultureinfo]::CurrentCulture = 'en-US'
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12,[Net.SecurityProtocolType]::Tls11,[Net.SecurityProtocolType]::tls
-
 Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))
 $dir = Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))
 
+$Startup = "$dir\build\powershell\startup";
+$Web = "$dir\build\api\web";
+$globe = "$dir\build\powershell\global";
+$Build = "$dir\build\powershell\build";
+$Pool = "$dir\build\powershell\pool";
+$p = [Environment]::GetEnvironmentVariable("PSModulePath")
+if ($P -notlike "*$dir\build\powershell*") {
+    $P += ";$Startup";
+    $P += ";$Web";
+    $P += ";$globe";
+    $P += ";$Build";
+    $P += ";$Pool";
+    [Environment]::SetEnvironmentVariable("PSModulePath", $p)
+}
+
 $Get = @()
 
-. .\build\powershell\hashrates.ps1
 . .\build\powershell\octune.ps1
-. .\build\api\hiveos\do-command.ps1
 . .\build\powershell\powerup.ps1
-. .\build\powershell\command-stats.ps1
-. .\build\api\hiveos\response.ps1
-. .\build\api\hiveos\hiveoc.ps1
+Import-Module -Name "$globe\stats.psm1"
+Import-Module -Name "$globe\include.psm1"
+Import-Module -Name "$Dir\build\api\hiveos\docommand.psm1"
+Import-Module -Name "$Dir\build\api\hiveos\response.psm1"
+Import-Module -Name "$Dir\build\api\hiveos\hiveoc.psm1"
 
 Switch ($argument1) {
     "help" {
@@ -263,7 +277,6 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
         else { $Get += "No miners running" }
         $ASIC = $BestMiners | Where Type -eq $argument2
         if ($ASIC) {
-            . .\build\powershell\hashrates.ps1
             $Get += "Miner Name: $($ASIC.MinerName)"
             $Get += "Miner Currently Mining: $($ASIC.Symbol)"
             $command = @{command = "pools"; parameter = "0" } | ConvertTo-Json -Compress
@@ -286,9 +299,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
 
 
     "benchmarks" {
-        . .\build\powershell\command-stats.ps1
-        . .\build\powershell\childitems.ps1
-        . .\build\powershell\hashrates.ps1
+        Import-Module -Name "$globe\hashrates.psm1"
         . .\build\powershell\wallettable.ps1
 
         if (Test-path ".\stats") {
@@ -337,6 +348,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
             Get-BenchTable | Out-File ".\build\txt\get.txt"
         }
         else { $Get = "No Stats Found" }
+        Remove-Module -Name "hashrates"
     }
 
     "wallets" {
@@ -560,3 +572,9 @@ if ($get -ne $null) {
     $Get
     $Get | Set-Content ".\build\txt\get.txt"
 }
+
+Remove-Module -Name "stats"
+Remove-Module -Name "include"
+Remove-Module -Name "docommand"
+Remove-Module -Name "response"
+Remove-Module -Name "hiveoc"

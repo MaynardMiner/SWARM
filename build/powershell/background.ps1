@@ -93,7 +93,6 @@ if ($global:Config.Params.Platform -eq "windows") {
 }
 
 ## Codebase for Further Functions
-## Codebase for Further Functions
 . .\build\api\html\api.ps1; . .\build\api\html\include.ps1; . .\build\api\miners\bminer.ps1;
 . .\build\api\miners\ccminer.ps1; . .\build\api\miners\cpuminer.ps1; . .\build\api\miners\cpuminer.ps1;
 . .\build\api\miners\dstm.ps1; . .\build\api\miners\energiminer.ps1; . .\build\api\miners\ethminer.ps1;
@@ -111,7 +110,7 @@ $Hive_Path = "/hive/bin"
 Write-Host "API Port is $($global:Config.Params.Port)";
 
 if($Global:config.Params.API -eq "Yes") {
-$Posh_api = Get-AP44444444444444444IServer;  
+$Posh_api = Get-APIServer;
 $Posh_Api.BeginInvoke() | Out-Null
 $Posh_api = $null
 }
@@ -133,7 +132,7 @@ $CheckForSWARM = ".\build\pid\miner_pid.txt"
 if (Test-Path $CheckForSWARM) { $GetSWARMID = Get-Content $CheckForSWARM; $GETSWARM = Get-Process -ID $GetSWARMID -ErrorAction SilentlyContinue }
 
 ##Get Active Miners And Devices
-$GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
+$Global:GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
 
 ##Timers
 $BackgroundTimer = New-Object -TypeName System.Diagnostics.Stopwatch
@@ -215,26 +214,26 @@ While ($True) {
     ##Start Adding Zeros
     if ($DoAMD -or $DoNVIDIA) {
         if ($DoAMD) {
-            for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {
-                $global:GPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0; 
-                $global:GPUFans | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0; 
-                $global:GPUTemps | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0; 
-                $global:GPUPower | Add-Member -MemberType NoteProperty -Name "$($GCount.AMD.$i)" -Value 0
+            for ($i = 0; $i -lt $Global:GCount.AMD.PSObject.Properties.Value.Count; $i++) {
+                $global:GPUHashrates | Add-Member -MemberType NoteProperty -Name "$($Global:GCount.AMD.$i)" -Value 0; 
+                $global:GPUFans | Add-Member -MemberType NoteProperty -Name "$($Global:GCount.AMD.$i)" -Value 0; 
+                $global:GPUTemps | Add-Member -MemberType NoteProperty -Name "$($Global:GCount.AMD.$i)" -Value 0; 
+                $global:GPUPower | Add-Member -MemberType NoteProperty -Name "$($Global:GCount.AMD.$i)" -Value 0
             }
         }
         if ($DoNVIDIA) {
-            for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {
-                $global:GPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; 
-                $global:GPUFans | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; 
-                $global:GPUTemps | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0; 
-                $global:GPUPower | Add-Member -MemberType NoteProperty -Name "$($GCount.NVIDIA.$i)" -Value 0    
+            for ($i = 0; $i -lt $Global:GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {
+                $global:GPUHashrates | Add-Member -MemberType NoteProperty -Name "$($Global:GCount.NVIDIA.$i)" -Value 0; 
+                $global:GPUFans | Add-Member -MemberType NoteProperty -Name "$($Global:GCount.NVIDIA.$i)" -Value 0; 
+                $global:GPUTemps | Add-Member -MemberType NoteProperty -Name "$($Global:GCount.NVIDIA.$i)" -Value 0; 
+                $global:GPUPower | Add-Member -MemberType NoteProperty -Name "$($Global:GCount.NVIDIA.$i)" -Value 0    
             }
         }
     }
     
     if ($DOCPU) {
-        for ($i = 0; $i -lt $GCount.CPU.PSObject.Properties.Value.Count; $i++) {
-            $global:CPUHashrates | Add-Member -MemberType NoteProperty -Name "$($GCount.CPU.$i)" -Value 0; 
+        for ($i = 0; $i -lt $Global:GCount.CPU.PSObject.Properties.Value.Count; $i++) {
+            $global:CPUHashrates | Add-Member -MemberType NoteProperty -Name "$($Global:GCount.CPU.$i)" -Value 0; 
         }
     }
     if ($DoASIC) { 
@@ -254,8 +253,8 @@ While ($True) {
             $diskSpace = [math]::Round($diskSpace)
             $diskSpace = "$($diskSpace)G"
             $ramtotal = Get-Content ".\build\txt\ram.txt" | Select-Object -First 1
-            $cpu = try{ $(Get-CimInstance Win32_PerfFormattedData_PerfOS_System -ErrorAction Stop).ProcessorQueueLength} catch {0}
-            $LoadAverage = Set-Stat -Name "load-average" -Value $cpu
+            $Global:cpu = try{ $(Get-CimInstance Win32_PerfFormattedData_PerfOS_System -ErrorAction Stop).ProcessorQueueLength} catch {0}
+            $LoadAverage = Set-Stat -Name "load-average" -Value $Global:cpu
             $LoadAverages = @("$([Math]::Round($LoadAverage.Minute,2))", "$([Math]::Round($LoadAverage.Minute_5,2))", "$([Math]::Round($LoadAverage.Minute_15,2))")
             $ramfree = try { [math]::Round((Get-Ciminstance Win32_OperatingSystem -ErrorAction Stop | Select FreePhysicalMemory).FreePhysicalMemory / 1kb, 2)} catch{0}
         }
@@ -302,15 +301,15 @@ While ($True) {
             ## Determine Devices
             Switch ($global:TypeS) {
                 "NVIDIA" {
-                    if ($MinerDevices -eq "none") { $global:Devices = Get-DeviceString -TypeCount $GCount.NVIDIA.PSObject.Properties.Value.Count }
+                    if ($MinerDevices -eq "none") { $global:Devices = Get-DeviceString -TypeCount $Global:GCount.NVIDIA.PSObject.Properties.Value.Count }
                     else { $global:Devices = Get-DeviceString -TypeDevices $MinerDevices }
                 }
                 "AMD" {
-                    if ($MinerDevices -eq "none") { $global:Devices = Get-DeviceString -TypeCount $GCount.AMD.PSObject.Properties.Value.Count }
+                    if ($MinerDevices -eq "none") { $global:Devices = Get-DeviceString -TypeCount $Global:GCount.AMD.PSObject.Properties.Value.Count }
                     else { $global:Devices = Get-DeviceString -TypeDevices $MinerDevices }
                 }
                 "ASIC" { $global:Devices = $null }
-                "CPU" { $global:Devices = Get-DeviceString -TypeCount $GCount.CPU.PSObject.Properties.Value.Count }
+                "CPU" { $global:Devices = Get-DeviceString -TypeCount $Global:GCount.CPU.PSObject.Properties.Value.Count }
             }
 
             ## Get Power Stats
@@ -466,17 +465,17 @@ HiveOS Name For Algo is $StatAlgo" -ForegroundColor Magenta
 
     ##Now To Format All Stats For Online Table And Screen
     if ($DoNVIDIA) {
-        for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {
+        for ($i = 0; $i -lt $Global:GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {
             $global:GPUHashTable += 0; $global:GPUFanTable += 0; $global:GPUTempTable += 0; $global:GPUPowerTable += 0;
         }
     }
     if ($DoAMD) {
-        for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {
+        for ($i = 0; $i -lt $Global:GCount.AMD.PSObject.Properties.Value.Count; $i++) {
             $global:GPUHashTable += 0; $global:GPUFanTable += 0; $global:GPUTempTable += 0; $global:GPUPowerTable += 0;
         }
     }
     if ($DoCPU) {
-        for ($i = 0; $i -lt $GCount.CPU.PSObject.Properties.Value.Count; $i++) {
+        for ($i = 0; $i -lt $Global:GCount.CPU.PSObject.Properties.Value.Count; $i++) {
             $global:CPUHashTable += 0;
         }
     }
@@ -485,25 +484,25 @@ HiveOS Name For Algo is $StatAlgo" -ForegroundColor Magenta
     }
 
     if ($DoNVIDIA) {
-        for ($i = 0; $i -lt $GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {
-            $global:GPUHashTable[$($GCount.NVIDIA.$i)] = "{0:f4}" -f $($global:GPUHashrates.$($GCount.NVIDIA.$i))
-            $global:GPUFanTable[$($GCount.NVIDIA.$i)] = "$($global:GPUFans.$($GCount.NVIDIA.$i))"
-            $global:GPUTempTable[$($GCount.NVIDIA.$i)] = "$($global:GPUTemps.$($GCount.NVIDIA.$i))"
-            $global:GPUPowerTable[$($GCount.NVIDIA.$i)] = "$($global:GPUPower.$($GCount.NVIDIA.$i))"
+        for ($i = 0; $i -lt $Global:GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {
+            $global:GPUHashTable[$($Global:GCount.NVIDIA.$i)] = "{0:f4}" -f $($global:GPUHashrates.$($Global:GCount.NVIDIA.$i))
+            $global:GPUFanTable[$($Global:GCount.NVIDIA.$i)] = "$($global:GPUFans.$($Global:GCount.NVIDIA.$i))"
+            $global:GPUTempTable[$($Global:GCount.NVIDIA.$i)] = "$($global:GPUTemps.$($Global:GCount.NVIDIA.$i))"
+            $global:GPUPowerTable[$($Global:GCount.NVIDIA.$i)] = "$($global:GPUPower.$($Global:GCount.NVIDIA.$i))"
         }
     }
     if ($DoAMD) {
-        for ($i = 0; $i -lt $GCount.AMD.PSObject.Properties.Value.Count; $i++) {
-            $global:GPUHashTable[$($GCount.AMD.$i)] = "{0:f4}" -f $($global:GPUHashrates.$($GCount.AMD.$i))
-            $global:GPUFanTable[$($GCount.AMD.$i)] = "$($global:GPUFans.$($GCount.AMD.$i))"
-            $global:GPUTempTable[$($GCount.AMD.$i)] = "$($global:GPUTemps.$($GCount.AMD.$i))"
-            $global:GPUPowerTable[$($GCount.AMD.$i)] = "$($global:GPUPower.$($GCount.AMD.$i))"
+        for ($i = 0; $i -lt $Global:GCount.AMD.PSObject.Properties.Value.Count; $i++) {
+            $global:GPUHashTable[$($Global:GCount.AMD.$i)] = "{0:f4}" -f $($global:GPUHashrates.$($Global:GCount.AMD.$i))
+            $global:GPUFanTable[$($Global:GCount.AMD.$i)] = "$($global:GPUFans.$($Global:GCount.AMD.$i))"
+            $global:GPUTempTable[$($Global:GCount.AMD.$i)] = "$($global:GPUTemps.$($Global:GCount.AMD.$i))"
+            $global:GPUPowerTable[$($Global:GCount.AMD.$i)] = "$($global:GPUPower.$($Global:GCount.AMD.$i))"
         }
     }
 
     if ($DoCPU) {
-        for ($i = 0; $i -lt $GCount.CPU.PSObject.Properties.Value.Count; $i++) {
-            $global:CPUHashTable[$($GCount.CPU.$i)] = "{0:f4}" -f $($global:CPUHashrates.$($GCount.CPU.$i))
+        for ($i = 0; $i -lt $Global:GCount.CPU.PSObject.Properties.Value.Count; $i++) {
+            $global:CPUHashTable[$($Global:GCount.CPU.$i)] = "{0:f4}" -f $($global:CPUHashrates.$($Global:GCount.CPU.$i))
         }
     }
 

@@ -28,7 +28,7 @@ if ($Name -in $global:Config.Params.PoolName) {
         return $Nicehash_Algorithm
     } |
     ForEach-Object {
-        if ($Algorithm -contains $nicehash_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $nicehash_Algorithm) {
+        if ($global:Algorithm -contains $nicehash_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $nicehash_Algorithm) {
             if ($Name -notin $global:Config.Pool_Algos.$nicehash_Algorithm.exclusions -and $nicehash_Algorithm -notin $Global:banhammer) {
 
                 ## Nicehash 'Gets' you with the fees. If you read the fine print,

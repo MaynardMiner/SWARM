@@ -22,7 +22,7 @@ if ($Name -in $global:Config.Params.PoolName) {
         return $Hashrefinery_Algorithm
     } |
     ForEach-Object {
-        if ($Algorithm -contains $Hashrefinery_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $Hashrefinery_Algorithm) {
+        if ($global:Algorithm -contains $Hashrefinery_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $Hashrefinery_Algorithm) {
             if ($Name -notin $global:Config.Pool_Algos.$Hashrefinery_Algorithm.exclusions -and $Hashrefinery_Algorithm -notin $Global:banhammer) {
                 $Hashrefinery_Host = "$_.us.hashrefinery.com$X"
                 $Hashrefinery_Port = $Hashrefinery_Request.$_.port

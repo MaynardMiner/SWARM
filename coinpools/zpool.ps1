@@ -34,7 +34,7 @@ if ($Name -in $global:Config.Params.PoolName) {
         $zpool_Request.$_.Algo = $global:Config.Pool_Algos.PSObject.Properties.Name | % {if($Algo -in $global:Config.Pool_Algos.$_.alt_names){$_}}
     }
     $zpoolAlgos = @()
-    $zpoolAlgos += $Algorithm
+    $zpoolAlgos += $global:Algorithm
     $zpoolAlgos += $global:Config.Params.ASIC_ALGO
 
     $Algos = $zpoolAlgos | ForEach-Object { if ($Bad_pools.$_ -notcontains $Name) { $_ } }

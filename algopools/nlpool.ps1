@@ -26,7 +26,7 @@ if ($Name -in $global:Config.Params.PoolName) {
         return $nlpoolAlgo_Algorithm
     } |
     ForEach-Object {
-        if ($Algorithm -contains $nlpoolAlgo_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $nlpoolAlgo_Algorithm) {
+        if ($global:Algorithm -contains $nlpoolAlgo_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $nlpoolAlgo_Algorithm) {
             if ($Name -notin $global:Config.Pool_Algos.$nlpoolAlgo_Algorithm.exclusions -and $nlpoolAlgo_Algorithm -notin $Global:banhammer) {
                 $nlpoolAlgo_Host = "mine.nlpool.nl$X"
                 $nlpoolAlgo_Port = $nlpool_Request.$_.port

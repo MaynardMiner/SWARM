@@ -27,7 +27,7 @@ if ($Name -in $global:Config.Params.PoolName) {
         return $blockpool_Algorithm
     } |
     ForEach-Object {
-        if ($Algorithm -contains $blockpool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $blockpool_Algorithm) {
+        if ($global:Algorithm -contains $blockpool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $blockpool_Algorithm) {
             if ($Name -notin $global:Config.Pool_Algos.$blockpool_Algorithm.exclusions -and $blockpool_Algorithm -notin $Global:banhammer) {
                 $blockpool_Host = "$($Region)blockmasters.co$X"
                 $blockpool_Port = $blockpool_Request.$_.port

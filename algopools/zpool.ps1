@@ -28,7 +28,7 @@ if ($Name -in $global:Config.Params.PoolName) {
         return $Zpool_Algorithm
     } |
     ForEach-Object {
-        if ($Algorithm -contains $Zpool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $Zpool_Algorithm) {
+        if ($global:Algorithm -contains $Zpool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $Zpool_Algorithm) {
             if ($Name -notin $global:Config.Pool_Algos.$Zpool_Algorithm.exclusions -and $Zpool_Algorithm -notin $Global:banhammer) {
                 $Zpool_Port = $Zpool_Request.$_.port
                 $Zpool_Host = "$($Zpool_Request.$_.name.ToLower()).$($region).mine.zpool.ca$X"

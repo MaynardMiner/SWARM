@@ -1,20 +1,20 @@
-$AMDTypes | ForEach-Object {
+$Global:AMDTypes | ForEach-Object {
     
     $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
     $CName = "multiminer-amd"
 
     ##Miner Path Information
-    if ($amd.$CName.$ConfigType) { $Path = "$($amd.$CName.$ConfigType)" }
+    if ($Global:amd.$CName.$ConfigType) { $Path = "$($Global:amd.$CName.$ConfigType)" }
     else { $Path = "None" }
-    if ($amd.$CName.uri) { $Uri = "$($amd.$CName.uri)" }
+    if ($Global:amd.$CName.uri) { $Uri = "$($Global:amd.$CName.uri)" }
     else { $Uri = "None" }
-    if ($amd.$CName.minername) { $MinerName = "$($amd.$CName.minername)" }
+    if ($Global:amd.$CName.minername) { $MinerName = "$($Global:amd.$CName.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "3500$Num"
 
     Switch ($Num) {
-        1 { $Get_Devices = $AMDDevices1 }
+        1 { $Get_Devices = $Global:AMDDevices1 }
     }
 
     ##Log Directory
@@ -46,13 +46,13 @@ $AMDTypes | ForEach-Object {
     $PreStart += "export LD_LIBRARY_PATH=$ExportDir"
     $MinerConfig.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 
-    if ($Coins -eq $true) { $Pools = $CoinPools }else { $Pools = $AlgoPools }
+    if ($Global:Coins -eq $true) { $Pools = $global:CoinPools }else { $Pools = $global:AlgoPools }
 
     $MinerConfig.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
 
         $MinerAlgo = $_
 
-        if ($MinerAlgo -in $Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
+        if ($MinerAlgo -in $global:Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
             $StatAlgo = $MinerAlgo -replace "`_","`-"
             $Stat = Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
            $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
@@ -62,7 +62,7 @@ $AMDTypes | ForEach-Object {
                     if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
                     [PSCustomObject]@{
                         MName      = $Name
-                        Coin       = $Coins
+                        Coin       = $Global:Coins
                         Delay      = $MinerConfig.$ConfigType.delay
                         Fees       = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
                         Symbol     = "$($_.Symbol)"
@@ -71,12 +71,12 @@ $AMDTypes | ForEach-Object {
                         Type       = $ConfigType
                         Path       = $Path
                         Devices    = $Devices
-                        Version    = "$($amd.$CName.version)"
+                        Version    = "$($Global:amd.$CName.version)"
                         DeviceCall = "multiminer"
                         Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -b 0.0.0.0:$Port --use-gpu=OPENCL $ArgDevices-u $($_.$User) -p $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
-                        Power     =  if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } 
+                        Power     =  if ($global:Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $global:Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($global:Watts.default."$($ConfigType)_Watts") { $global:Watts.default."$($ConfigType)_Watts" }else { 0 } 
                         MinerPool  = "$($_.Name)"
                         Port       = $Port
                         API        = "multiminer"

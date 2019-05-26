@@ -28,7 +28,7 @@ if ($Name -in $global:Config.Params.PoolName) {
         return $fairpool_Algorithm
     } |
     ForEach-Object {
-        if ($Algorithm -contains $fairpool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $fairpool_Algorithm) {
+        if ($global:Algorithm -contains $fairpool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $fairpool_Algorithm) {
             if ($Name -notin $global:Config.Pool_Algos.$fairpool_Algorithm.exclusions -and $fairpool_Algorithm -notin $Global:banhammer) {
                 $fairpool_Host = "$region$X"
                 $fairpool_Port = $fairpool_Request.$_.port

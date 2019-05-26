@@ -28,7 +28,7 @@ if ($Name -in $global:Config.Params.PoolName) {
         return $phiphipool_Algorithm
     } |
     ForEach-Object {
-        if ($Algorithm -contains $phiphipool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $phiphipool_Algorithm) {
+        if ($global:Algorithm -contains $phiphipool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $phiphipool_Algorithm) {
             if ($Name -notin $global:Config.Pool_Algos.$phiphipool_Algorithm.exclusions -and $phiphipool_Algorithm -notin $Global:banhammer) {
                 $phiphipool_Port = $phiphipool_Request.$_.port
                 $phiphipool_Host = "$($Region).phi-phi-pool.com$X"

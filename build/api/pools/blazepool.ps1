@@ -4,7 +4,7 @@ function Get-BlazepoolData {
         $Sel = $_
         $Pool = "blazepool"
         $global:Share_Table.$Sel.Add($Pool, @{ })
-        $User_Wallet = $($Miners | Where-Object Type -eq $Sel | Where-Object MinerPool -eq $Pool | Select-Object -Property Wallet -Unique).Wallet
+        $User_Wallet = $($Global:Miners | Where-Object Type -eq $Sel | Where-Object MinerPool -eq $Pool | Select-Object -Property Wallet -Unique).Wallet
         if ($Wallets -notcontains $User_Wallet) { try { $HTML = Invoke-RestMethod -Uri "http://api.blazepool.com/data/$User_Wallet" -TimeoutSec 10 -ErrorAction Stop }catch { Write-Log "Failed to get Shares from $Pool" } }
         $sum = $HTML.summary
         if ($sum) {

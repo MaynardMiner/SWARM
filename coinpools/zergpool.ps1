@@ -28,7 +28,7 @@ if ($Name -in $global:Config.Params.PoolName) {
         $zergpool_Request.$_.Algo = $global:Config.Pool_Algos.PSObject.Properties.Name | % {if($Algo -in $global:Config.Pool_Algos.$_.alt_names){$_}}
     }
     $ZergAlgos = @()
-    $ZergAlgos += $Algorithm
+    $ZergAlgos += $global:Algorithm
     $ZergAlgos += $global:Config.Params.ASIC_ALGO
 
     $Algos = $ZergAlgos | ForEach-Object { if ($Bad_pools.$_ -notcontains $Name) { $_ } }

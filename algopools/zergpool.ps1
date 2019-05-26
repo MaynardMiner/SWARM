@@ -22,7 +22,7 @@ if ($Name -in $global:Config.Params.PoolName) {
         return $Zergpool_Algorithm
     } |
     ForEach-Object {  
-        if ($Algorithm -contains $Zergpool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $Zergpool_Algorithm) {
+        if ($global:Algorithm -contains $Zergpool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $Zergpool_Algorithm) {
             if ($Name -notin $global:Config.Pool_Algos.$Zergpool_Algorithm.exclusions -and $Zergpool_Algorithm -notin $Global:banhammer) {
                 $Zergpool_Port = $Zergpool_Request.$_.port
                 $Zergpool_Host = "$($Zergpool_Request.$_.name.ToLower()).mine.zergpool.com$X"
