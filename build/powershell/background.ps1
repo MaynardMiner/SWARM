@@ -47,6 +47,8 @@ if ($P -notlike "*$Global:Dir\build\powershell*") {
     Write-Host "Modules Are Loaded" -ForegroundColor Green
 }
 
+$global:Modules = @()
+
 Import-Module -Name "$global:background\startup.psm1"
 ## Get Parameters
 $Global:config = [hashtable]::Synchronized(@{ })
@@ -109,6 +111,7 @@ While ($True) {
     Import-Module -Name "$global:global\gpu.psm1"
     Import-Module -Name "$global:global\stats.psm1"
     Import-Module -Name "$global:global\hashrates.psm1"
+    
     Invoke-MinerCheck
     New-StatTables
     Get-Metrics
@@ -533,8 +536,6 @@ HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
 
     Remove-Module -Name "gpu"
     Remove-Module -Name "run"
-    Remove-Module -Name "stats"
-    Remove-Module -Name "hashrates"
     
     if ($global:Websites) {
         $GetNetMods = @($global:NetModules | Foreach { Get-ChildItem $_ })

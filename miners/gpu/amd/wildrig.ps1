@@ -63,7 +63,7 @@ $Global:AMDTypes | ForEach-Object {
                         Devices    = "none"
                         Version    = "$($Global:amd.wildrig.version)"
                         DeviceCall = "wildrig"
-                        Arguments  = "--opencl-platform=$AMDPlatform --api-port $Port --algo $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --url stratum+tcp://$($_.Host):$($_.Port) --donate-level 1 --user $($_.$User) --pass $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($MinerConfig.$ConfigType.naming.$($_.Algorithm)))"
+                        Arguments  = "--opencl-platform=$Global:AMDPlatform --api-port $Port --algo $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --url stratum+tcp://$($_.Host):$($_.Port) --donate-level 1 --user $($_.$User) --pass $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($MinerConfig.$ConfigType.naming.$($_.Algorithm)))"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         Power     =  if ($global:Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $global:Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($global:Watts.default."$($ConfigType)_Watts") { $global:Watts.default."$($ConfigType)_Watts" }else { 0 } 

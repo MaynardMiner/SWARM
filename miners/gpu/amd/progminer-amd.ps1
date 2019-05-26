@@ -67,7 +67,7 @@ $Global:AMDTypes | ForEach-Object {
                         Devices    = $Devices
                         Version    = "$($Global:amd.$CName.version)"
                         DeviceCall = "progminer_amd"
-                        Arguments  = "-G -P stratum+tcp://$($_.$User)@$($_.Host):$($_.Port) --api-port -$Port --opencl-platform $AMDPlatform $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                        Arguments  = "-G -P stratum+tcp://$($_.$User)@$($_.Host):$($_.Port) --api-port -$Port --opencl-platform $Global:AMDPlatform $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         Power     =  if ($global:Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $global:Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($global:Watts.default."$($ConfigType)_Watts") { $global:Watts.default."$($ConfigType)_Watts" }else { 0 } 

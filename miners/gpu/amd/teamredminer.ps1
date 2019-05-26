@@ -63,7 +63,7 @@ $Global:AMDTypes | ForEach-Object {
                         Devices    = $Devices
                         Version    = "$($Global:amd.teamredminer.version)"
                         DeviceCall = "tdxminer"
-                        Arguments  = "--platform $AMDPlatform -a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --api_listen=0.0.0.0:$Port -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.$User) --log_file `'$Log`' --bus_reorder -p $($_.$Pass)$($DIff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                        Arguments  = "--platform $Global:AMDPlatform -a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --api_listen=0.0.0.0:$Port -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.$User) --log_file `'$Log`' --bus_reorder -p $($_.$Pass)$($DIff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         Power     =  if ($global:Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $global:Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($global:Watts.default."$($ConfigType)_Watts") { $global:Watts.default."$($ConfigType)_Watts" }else { 0 } 

@@ -92,47 +92,46 @@ if ($P -notlike "*$Global:Dir\build\powershell*") {
     Write-Host "Modules Are Loaded" -ForegroundColor Green
 }
 
+$global:Modules = @()
+. .\build\powershell\startup\modules.ps1
+
 ## Date Bug
 $global:cultureENUS = New-Object System.Globalization.CultureInfo("en-US")
 [cultureinfo]::CurrentCulture = 'en-US'
 
-## Global Modules
-Import-Module -Name "$global:global\include.psm1"
+## Startup Modules
+Add-Module "$global:global\include.psm1"
 
 ## Get Parameters
 $Global:config = @{ }
-Import-Module -Name "$global:Startup\parameters.psm1"
+Add-Module "$global:Startup\parameters.psm1"
 Get-Parameters
-Remove-Module -Name "parameters"
 
 ## Crash Reporting
-Import-Module -Name "$global:Startup\crashreport.psm1"
+Add-Module "$global:Startup\crashreport.psm1"
 Start-CrashReporting
-Remove-Module -Name "crashreport"
 
 ## Start The Log
+Add-Module "$global:Startup\startlog.psm1"
 $global:dir | Set-Content ".\build\bash\dir.sh";
 $global:LogNum = 1;
 $global:logname = $null
-Import-Module -Name "$global:Startup\startlog.psm1"
 start-log -Number $global:LogNum;
-Remove-Module -Name "startlog"
 
 ## Initiate Update Check
+Add-Module "$global:Startup\remoteagent.psm1"
 if ($global:Config.Params.Platform -eq "Windows" -or $global:Config.Params.Update -eq "Yes") { 
-    Import-Module -Name "$global:Startup\remoteagent.psm1"
     Get-Version
     start-update -Update $Getupdates
 }
 if ($global:Config.Params.Platform -eq "windows") { Start-AgentCheck }
-Remove-Module -Name "remoteagent"
 
 ## create debug/command folder
 if (-not (Test-Path ".\build\txt")) { New-Item -Path ".\build" -Name "txt" -ItemType "directory" | Out-Null }
 
 ##Start Data Collection
+Add-Module "$global:Startup\datafiles.psm1"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11, [Net.SecurityProtocolType]::tls
-Import-Module -Name "$global:Startup\datafiles.psm1"
 Get-DateFiles
 Clear-Stats
 Get-ArgNotice
@@ -146,7 +145,6 @@ catch {
     write-Log "Failed to syncronize time- Are you root/administrator?" -ForegroundColor red; 
     Start-Sleep -S 5 
 }
-Remove-Module -Name "datafiles"
 
 ##HiveOS Confirmation
 write-Log "HiveOS = $($global:Config.Params.HiveOS)"
@@ -188,29 +186,24 @@ $global:GPU_Count = $null
 $global:BusData = $null
 switch ($global:Config.params.Platform) {
     "linux" {
-        Import-Module "$global:Startup\linuxconfig.psm1"
-        Import-Module -Name "$global:Startup\sexyunixlogo.psm1"
+        Add-Module "$global:Startup\linuxconfig.psm1"
+        Add-Module "$global:Startup\sexyunixlogo.psm1"
         Start-LinuxConfig 
-        Remove-Module "linuxconfig" 
-        Remove-Module "sexyunixlogo" 
     }
     "windows" { 
-        Import-Module "$global:Startup\winconfig.psm1"
-        Import-Module -Name "$global:Startup\sexywinlogo.psm1"
+        Add-Module "$global:Startup\winconfig.psm1"
+        Add-Module "$global:Startup\sexywinlogo.psm1"
         Start-WindowsConfig 
-        Remove-Module "winconfig" 
-        Remove-Module "sexywinlogo" 
     }
 }
 
 ## Determine AMD platform
 if ($global:Config.Params.Type -like "*AMD*") {
-    if ([string]$global:Config.Params.CLPlatform) { $AMDPlatform = [string]$global:Config.Params.CLPlatform }
+    if ([string]$global:Config.Params.CLPlatform) { $Global:AMDPlatform = [string]$global:Config.Params.CLPlatform }
     else {
-        Import-Module "$global:Startup\cl.psm1"
-        [string]$AMDPlatform = get-AMDPlatform
-        write-Log "AMD OpenCL Platform is $AMDPlatform"
-        Remove-Module "cl"
+        Add-Module "$global:Startup\cl.psm1"
+        [string]$global:AMDPlatform = get-AMDPlatform
+        write-Log "AMD OpenCL Platform is $Global:AMDPlatform"
     }
 }
 
@@ -243,7 +236,7 @@ if ($global:Config.Params.Type -like "*NVIDIA*" -or $global:Config.Params.Type -
 }
 
 #Get Miner Config Files
-Import-Module "$global:Startup\getconfigs.psm1"
+Add-Module "$global:Startup\getconfigs.psm1"
 if ($global:Config.Params.Type -like "*CPU*") { $Global:cpu = get-minerfiles -Types "CPU" }
 if ($global:Config.Params.Type -like "*NVIDIA*") { $Global:nvidia = get-minerfiles -Types "NVIDIA" -Cudas $global:Config.Params.Cuda }
 if ($global:Config.Params.Type -like "*AMD*") { $Global:amd = get-minerfiles -Types "AMD" }
@@ -252,9 +245,9 @@ if ($global:Config.Params.Type -like "*AMD*") { $Global:amd = get-minerfiles -Ty
 write-Log "Starting New Background Agent" -ForegroundColor Cyan
 if ($global:Config.Params.Platform -eq "windows") { Start-Background }
 elseif ($global:Config.Params.Platform -eq "linux") { Start-Process ".\build\bash\background.sh" -ArgumentList "background $($global:Dir)" -Wait }
-Remove-Module "getconfigs"
 
 Add-LogErrors
+Remove-Modules
 
 ##############################################################################
 #######                      End Startup                                ######
@@ -268,6 +261,11 @@ While ($true) {
         #######                     PHASE 1: Build                              ######
         ##############################################################################
 
+        ##Build Modules
+        Add-Module "$global:global\include.psm1"
+        Add-Module "$global:global\stats.psm1"
+
+
         ## Check to see if wallet is present:
         if (-not $global:Config.Params.Wallet1) { 
             write-Log "missing wallet1 argument, exiting in 5 seconds" -ForeGroundColor Red; 
@@ -277,26 +275,24 @@ While ($true) {
 
 
         ## Load Miner Configurations
+        Add-Module "$Build\configs.psm1"
         $Global:ASICTypes = @(); $global:ASICS = @{ }
-        Import-Module -Name "$Build\configs.psm1"
         Get-MinerConfigs
         $global:Config.Pool_Algos = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
         Add-ASICS
         $global:oc_default = Get-Content ".\config\oc\oc-defaults.json" | ConvertFrom-Json
         $global:oc_algos = Get-Content ".\config\oc\oc-algos.json" | ConvertFrom-Json
-        Remove-Module -Name "configs"
 
 
         ##Manage Pool Bans
-        Import-Module "$Build\poolbans.psm1"
+        Add-Module "$Build\poolbans.psm1"
         Start-PoolBans
         $global:All_AltWallets = $null
         $SWARMAlgorithm = $Config.Params.Algorithm;
-        Remove-Module -Name "poolbans"
 
 
         ## Handle Wallet Stuff / Bans
-        Import-Module "$Build\wallets.psm1"
+        Add-Module "$Build\wallets.psm1"
         Set-Donation
         Get-Wallets
         $global:Algorithm = @()
@@ -305,16 +301,15 @@ While ($true) {
         Add-Algorithms
         Set-Donation
         if ($global:Config.Params.Coin.Count -eq 1 -and $global:Config.Params.Coin -ne "") { $global:Config.Params.Auto_Coin = "No" }
-        Remove-Module "wallets"
 
 
         # Pricing and Clearing Timeouts 
-        Import-Module "$Build\pricing.psm1"
+        Add-Module "$Build\pricing.psm1"
         Get-Watts
         Get-Pricing
         Clear-Timeouts
-        Remove-Module "pricing"
 
+        Remove-Modules
 
         ##############################################################################
         #######                         END PHASE 1                             ######
@@ -326,9 +321,9 @@ While ($true) {
         #######                        PHASE 2: POOLS                           ######
         ##############################################################################
 
-        ##Stats Is needed for remaining Phases
-        #Import-Module -Name "$global:dir\build\powershell\stats.psm1"
-        #mport-Module -Name "$global:dir\build\powershell\phasepool.psm1"
+        ##Pool Modules
+        Add-Module "$global:global\include.psm1"
+        Add-Module "$global:global\stats.psm1"
 
         ## Build Initial Pool Hash Tables
         $global:Coins = $false
@@ -339,19 +334,17 @@ While ($true) {
         $global:CoinPools = $null
 
 
-        Import-Module -Name "$Pool\initial.psm1"
-        Import-Module -Name "$global\stats.psm1"
+        Add-Module "$Pool\initial.psm1"
         Get-PoolTables
         Remove-BanHashrates
         $global:Miner_HashTable = Get-MinerHashTable
-        Remove-Module -Name "initial"
 
 
         ##Get Algorithm Pools
-        Import-Module -Name "$Pool\gather.psm1"
+        Add-Module "$Pool\gather.psm1"
         Get-AlgoPools
         Get-CoinPools
-        Remove-Module -Name "gather"
+        Remove-Modules
 
         $global:FeeTable = $Null
         $global:DivisorTable = $Null
@@ -366,18 +359,21 @@ While ($true) {
         #######                        PHASE 3: Miners                          ######
         ##############################################################################
 
+        ##Miners Modules
+        Add-Module "$global:global\include.psm1"
+        Add-Module "$global:global\stats.psm1"
+
         $global:AlgoMiners = $Null
         $global:CoinMiners = $Null
         $Global:Miners = New-Object System.Collections.ArrayList
-        
 
-        Import-Module -Name "$global:MinerP\gather.psm1"
+        ##Load The Miners
+        Add-Module "$global:MinerP\gather.psm1"
         Get-AlgoMiners
         Get-CoinMiners
-        Remove-Module -Name "gather"
+
+        ##Send error if no miners found
         $global:Miner_HashTable = $Null
-
-
         if ($Global:Miners.Count -eq 0) {
             $WebMessage = "No Miners Found! Check Arguments/Net Connection"
             Send-Warning $WebMessage
@@ -385,11 +381,8 @@ While ($true) {
             continue  
         }
 
-
-        ## If Volume is specified, gather pool vol.
-        ## Sort The Miners
-        ## Add Switching_Threshold
-        Import-Module -Name "$global:MinerP\sorting.psm1"
+        ##Sort The Miners
+        Add-Module "$global:MinerP\sorting.psm1"
         if ($global:Config.Params.Volume -eq "Yes") { Get-Volume }
         $CutMiners = Start-MinerReduction -SortMiners $Global:Miners -WattCalc $global:WattEX
         $CutMiners | ForEach-Object { $Global:Miners.Remove($_) } | Out-Null;
@@ -398,21 +391,17 @@ While ($true) {
         start-minersorting -SortMiners $Global:Miners -WattCalc $global:WattEX
         $global:Pool_Hashrates = @{ }
         Add-SwitchingThreshold
-        Remove-Module -Name "sorting"
 
-
-        ## Remove Bad Miners
-        ## Get The Best Miners|
-        Import-Module -Name "$global:MinerP\choose.psm1"
+        ##Choose The Best Miners
+        Add-Module "$global:MinerP\choose.psm1"
         Remove-BadMiners
         $global:Miners_Combo = Get-BestMiners
         $global:bestminers_combo = Get-Conservative
-        Remove-Module "choose"
-
-        ##Write On Screen Best Choice  
         $BestMiners_Selected = $global:bestminers_combo.Symbol
         $BestPool_Selected = $global:bestminers_combo.MinerPool
         write-Log "Most Ideal Choice Is $($BestMiners_Selected) on $($BestPool_Selected)" -foregroundcolor green
+
+        Remove-Modules
         
         ##############################################################################
         #######                        End Phase 3                             ######
@@ -421,41 +410,38 @@ While ($true) {
         ##############################################################################
         #######                        Phase 4: Control                         ######
         ##############################################################################
-        
+
+        Add-Module "$global:global\include.psm1"
+        Add-Module "$global:global\stats.psm1"
+        Add-Module "$global:Control\config.psm1"
+
         ## Build the Current Active Miners
         $global:Restart = $false
         $global:NoMiners = $false
         $ConserveMessage = @()
         $Global:BestActiveMIners = @()
 
-
         ## Add New Miners- Download if neccessary
-        Import-Module -Name "$global:Control\initial.psm1"
+        ## Ammend Their Pricing
+        Add-Module "$global:Control\initial.psm1"
         Start-MinerDownloads
         Get-ActiveMiners $global:bestminers_combo
         Get-BestActiveMiners
-        Remove-Module -Name "initial"
-
-
-        ##Modify Princing For API / Screen
-        ##Stop Miners if Conserver -Yes flaq qualifies
-        Import-Module -Name "$global:Control\modify.psm1"
         Get-ActivePricing
         $PreviousMinerPorts = @{AMD1 = ""; NVIDIA1 = ""; NVIDIA2 = ""; NVIDIA3 = ""; CPU = "" }
         $global:ClearedOC = $false; $global:ClearedHash = $false; $Global:HiveOCTune = $false
         $global:NoMiners = $false;
-        Remove-Module -Name "modify"
 
 
         ##Start / Stop / Restart Miners
         ##Handle OC
-        Import-Module "$global:Control\run.psm1"
+        Add-Module "$global:Control\run.psm1"
+        Add-Module "$global:Control\launchcode.psm1"
+        Add-Module "$global:Control\config.psm1"
         Stop-ActiveMiners
         Start-NewMiners -Reason "Launch"
-        Remove-Module -Name "run"
 
-
-        Import-Module -Name "$global:Control\notify.psm1"
+        ##Determine Benchmarking
         $global:BenchmarkMode = $false
         $global:BestActiveMiners | ForEach-Object {
             $StatAlgo = $_.Algo -replace "`_","`-"        
@@ -463,17 +449,21 @@ While ($true) {
                 $global:BenchmarkMode = $true; 
             }
         }
+
+        ##Determing Interval
+        Add-Module "$global:Control\notify.psm1"
         $global:SWARM_IT = $false
         $global:MinerInterval = $null
         $global:MinerStatInt = $Null
-        $ModeCheck = 0
+        $global:ModeCheck = 0
         Get-LaunchNotification
         Get-Interval
         ##Get Shares
         $global:Share_Table = @{ }
         write-Log "Getting Coin Tracking From Pool" -foregroundColor Cyan
         if ($global:Config.params.Track_Shares -eq "Yes") { Get-CoinShares }
-        Remove-Module -Name "notify"
+
+        Remove-Modules
 
         ##############################################################################
         #######                        End Phase 4                              ######
@@ -482,10 +472,16 @@ While ($true) {
 
         ##############################################################################
         #######                        Phase 5: Run                             ######
-        ##############################################################################
+        #############################################################################
 
-        Import-Module -Name "$global:Run\initial.psm1"
-        Import-Module -Name "$global:global\hashrates.psm1"
+
+        Add-Module "$global:global\include.psm1"
+        Add-Module "$global:global\stats.psm1"
+        Add-Module "$global:global\hashrates.psm1"
+
+        ## Clear Old Commands Data
+        Add-Module "$global:Run\initial.psm1"
+        Get-ExchangeRate
         Get-ScreenName
         $Global:Miners | ConvertTo-Json -Depth 4 | Set-Content ".\build\txt\profittable.txt"
         Clear-Commands
@@ -493,11 +489,9 @@ While ($true) {
         Get-Date | Out-File ".\build\txt\charts.txt"
         Get-MinerStatus | Out-File ".\build\txt\minerstats.txt" -Append
         Get-Charts | Out-File ".\build\txt\charts.txt" -Append
-        Get-ExchangeRate
-        Remove-Module -Name "initial"
 
-
-        Import-Module -name "$global:Run\commands.psm1"
+        ## Refreshing Pricing Data
+        Add-Module "$global:Run\commands.psm1"
         Get-PriceMessage
         Get-Commands
         $Global:Miners = $Null
@@ -505,12 +499,12 @@ While ($true) {
         Update-Logging
         Get-Date | Out-File ".\build\txt\mineractive.txt"
         Get-MinerActive | Out-File ".\build\txt\mineractive.txt" -Append
-        Remove-Module -Name "commands"
 
-
-        Import-Module -name "$global:Run\loop.psm1"
+        ##Start SWARM Loop
+        Add-Module "$global:Run\loop.psm1"
         Start-MinerLoop
-        Remove-Module -name "loop"
+
+        Remove-Modules
 
         
         ##############################################################################
@@ -521,7 +515,11 @@ While ($true) {
         #######                       Phase 6: Benchmark                        ######
         ##############################################################################
 
-        Import-Module -Name "$global:benchmark\attempt.psm1"
+        Add-Module "$global:global\include.psm1"
+        Add-Module "$global:global\stats.psm1"
+        Add-Module "$global:global\gpu.psm1"
+        Add-Module "$global:global\hashrates.psm1"
+        Add-Module "$global:benchmark\attempt.psm1"
 
         ## Start WattOMeter function
         if ($global:Config.Params.WattOMeter -eq "Yes") { Start-WattOMeter }
@@ -533,11 +531,11 @@ While ($true) {
         ##############################################################################
         #######                       End Phase 6                               ######
         ##############################################################################
+        Remove-Modules
 
-        Remove-Module -Name "hashrates"
-        Remove-Module -Name "stats"
-        
     }until($Error.Count -gt 0)
+    Add-Module "$global:global\include.psm1"
     Add-LogErrors
+    Remove-Modules
     continue;
 }
