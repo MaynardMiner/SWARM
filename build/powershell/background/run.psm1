@@ -19,7 +19,6 @@ function Write-MinerData1 {
 }
 
 function Write-MinerData2 {
-    $global:RAW | Set-Content ".\build\txt\$global:MinerType-hash.txt"
     $global:MinerTable.ADD("$($global:MinerType)",$global:RAW)
     Write-Host "Miner $global:Name was clocked at $($global:RAW | ConvertTo-Hash)/s" -foreground Yellow
 }

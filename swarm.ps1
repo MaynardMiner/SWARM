@@ -175,6 +175,7 @@ $global:MinerWatch = New-Object -TypeName System.Diagnostics.Stopwatch
 $global:WattEx = $Null
 $global:Rates = $Null
 $Global:BestActiveMIners = $Null
+$global:BTCExchangeRate = $Null
 
 ##Determine Net Modules
 $global:NetModules = @()
@@ -483,7 +484,6 @@ While ($true) {
         Import-Module -Name "$global:global\hashrates.psm1"
         Get-ScreenName
         $Global:Miners | ConvertTo-Json -Depth 4 | Set-Content ".\build\txt\profittable.txt"
-        $global:BTCExchangeRate = Get-ExchangeRate
         Clear-Commands
         Get-Date | Out-File ".\build\txt\minerstats.txt"
         Get-Date | Out-File ".\build\txt\charts.txt"

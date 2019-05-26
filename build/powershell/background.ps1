@@ -390,11 +390,11 @@ While ($True) {
                     } catch { Get-OhNo } 
                 }
                 'nebutech' { 
-                    #try { 
+                    try { 
                         Import-Module -Name "$global:miners\nbminer.psm1"; 
                         Get-StatsNebutech
                         Remove-Module -name "nbminer"
-                    #} catch { Get-OhNo } 
+                    } catch { Get-OhNo } 
                 }
                 'srbminer' { 
                     try { 
