@@ -58,7 +58,7 @@ function Start-WattOMeter {
   " -foregroundcolor yellow
 }
 
-Start-Benchmark {
+function Start-Benchmark {
     $global:BestActiveMiners | ForEach-Object {
         $global:ActiveSymbol += $($_.Symbol)
         $MinerPoolBan = $false
