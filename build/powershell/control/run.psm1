@@ -54,7 +54,7 @@ function Start-NewMiners {
             Import-Module "$global:Control\config.psm1"
             Import-Module "$global:global\gpu.psm1"
 
-            $Restart = $true
+            $global:Restart = $true
             if ($Miner.Type -notlike "*ASIC*") { Start-Sleep -S $Miner.Delay }
             $Miner.InstanceName = "$($Miner.Type)-$($global:Instance)"
             $Miner.Activated++

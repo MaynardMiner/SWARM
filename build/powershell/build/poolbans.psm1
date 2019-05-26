@@ -104,9 +104,9 @@ function Start-Poolbans {
 }
 
 function Set-Donation {
-    if ($global:config.params.Rigname1 -eq "Donate") { $Donating = $True }
-    else { $Donating = $False }
-    if ($Donating -eq $True) {
+    if ($global:config.params.Rigname1 -eq "Donate") { $global:Donating = $True }
+    else { $global:Donating = $False }
+    if ($global:Donating -eq $True) {
         $global:Config.Params.Passwordcurrency1 = "BTC";
         $global:Config.Params.Passwordcurrency2 = "BTC";
         $global:Config.Params.Passwordcurrency3 = "BTC";

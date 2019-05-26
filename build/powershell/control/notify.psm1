@@ -61,23 +61,32 @@ https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration) >> Ri
     }
     Start-Sleep -s 10
 }
+
+function Invoke-NoChange {
+    Write-Log "
+        
+        
+Most Profitable Miners Are Running
+" -foreground DarkCyan
+    Start-Sleep -s 5
+}
+
 function Get-LaunchNotification {
     $global:MinerWatch.Restart()
-    if ($Restart -eq $true -and $global:NoMiners -eq $true) { Invoke-MinerWarning }
-    if ($global:Config.Params.Platform -eq "linux" -and $Restart -eq $true -and $global:NoMiners -eq $false) { Invoke-MinerSuccess }
-    if ($global:Config.Params.Platform -eq "windows" -and $Restart -eq $true -and $global:NoMiners -eq $false) { Invoke-MinerSuccess }
-    if ($Restart -eq $false) { Invoke-NoChange }
+    if ($global:Restart -eq $true -and $global:NoMiners -eq $true) { Invoke-MinerWarning }
+    if ($global:Config.Params.Platform -eq "linux" -and $global:Restart -eq $true -and $global:NoMiners -eq $false) { Invoke-MinerSuccess }
+    if ($global:Config.Params.Platform -eq "windows" -and $global:Restart -eq $true -and $global:NoMiners -eq $false) { Invoke-MinerSuccess }
+    if ($global:Restart -eq $false) { Invoke-NoChange }
 }
 
 function Get-Interval {
-    if ($BenchmarkMode -eq $true) {
+    if ($global:BenchmarkMode -eq $true) {
         write-Log "SWARM is Benchmarking Miners." -Foreground Yellow;
-        Print-Benchmarking
         $global:MinerInterval = $global:Config.Params.Benchmark
         $global:MinerStatInt = 1
     }
     else {
-        if ($global:Config.Params.SWARM_Mode -eq "Yes" -and $Donating -eq $False) {
+        if ($global:Config.Params.SWARM_Mode -eq "Yes" -and $global:Donating -eq $False) {
             $global:SWARM_IT = $true
             write-Log "SWARM MODE ACTIVATED!" -ForegroundColor Green;
             $global:SwitchTime = Get-Date

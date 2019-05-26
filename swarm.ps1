@@ -413,7 +413,6 @@ While ($true) {
         $BestMiners_Selected = $global:bestminers_combo.Symbol
         $BestPool_Selected = $global:bestminers_combo.MinerPool
         write-Log "Most Ideal Choice Is $($BestMiners_Selected) on $($BestPool_Selected)" -foregroundcolor green
-
         
         ##############################################################################
         #######                        End Phase 3                             ######
@@ -424,7 +423,7 @@ While ($true) {
         ##############################################################################
         
         ## Build the Current Active Miners
-        $Restart = $false
+        $global:Restart = $false
         $global:NoMiners = $false
         $ConserveMessage = @()
         $Global:BestActiveMIners = @()
@@ -457,8 +456,13 @@ While ($true) {
 
 
         Import-Module -Name "$global:Control\notify.psm1"
-        $global:BestActiveMiners | ForEach-Object { if (-not (Test-Path ".\stats\$($_.Name)_$($_.Algo)_hashrate.txt")) { $BenchmarkMode = $true; } }
-        $BenchmarkMode = $false
+        $global:BenchmarkMode = $false
+        $global:BestActiveMiners | ForEach-Object {
+            $StatAlgo = $_.Algo -replace "`_","`-"        
+            if (-not (Test-Path ".\stats\$($_.Name)_$($StatAlgo)_hashrate.txt")) { 
+                $global:BenchmarkMode = $true; 
+            }
+        }
         $global:SWARM_IT = $false
         $global:MinerInterval = $null
         $global:MinerStatInt = $Null
@@ -496,6 +500,7 @@ While ($true) {
         Import-Module -name "$global:Run\commands.psm1"
         Get-PriceMessage
         Get-Commands
+        $Global:Miners = $Null
         Get-Logo
         Update-Logging
         Get-Date | Out-File ".\build\txt\mineractive.txt"

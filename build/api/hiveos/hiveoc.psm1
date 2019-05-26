@@ -22,6 +22,23 @@ function Start-NVIDIAOC($NewOC) {
     $HiveNVOC.Keys | % {
         $key = $_
         Switch ($key) {
+            "OHGODAPILL_ENABLED" {
+                if($HiveNVOC.OHGODAPILL_ENABLED -eq 1) {
+                    $PillArg = $HiveNVOC.OHGODAPILL_ARG
+                    $PillDelay = $HiveNVOC.RUNNING_DELAY
+                    $PillProc = Get-Process -Name "OhGodAnETHlargementPill-r2" -ErrorAction SilentlyContinue
+                    if($PillProc) { $PillProc | %{ Stop-Process -Id $_.ID } }
+                    if($HiveNVOC.OHGODAPILL_START_TIMEOUT -gt 0) { $Sleep = "timeout $($HiveNVOC.OHGODAPILL_START_TIMEOUT) > NUL" }
+                    $Script = @()
+                    $Script += "$Sleep"
+                    $Script += "start /min `"`" `"$global:Dir\build\apps\OhGodAnETHlargementPill-r2.exe`" $PillArg"
+                    $Script | Set-Content ".\build\apps\pill.bat"
+                    $Process = Start-Process ".\build\apps\pill.bat" -WindowStyle Minimized
+                } else {
+                    $PillProc = Get-Process -Name "OhGodAnETHlargementPill-r2" -ErrorAction SilentlyContinue
+                    if($PillProc) { $PillProc | %{ Stop-Process -Id $_.ID } }
+                }
+            }
             "FAN" {
                 $NVOCFan = $HiveNVOC.FAN -replace "`"", ""
                 $NVOCFAN = $NVOCFan -split " "

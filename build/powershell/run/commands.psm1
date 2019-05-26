@@ -81,7 +81,6 @@ function Get-Commands {
     $MiningStatus | Out-File ".\build\txt\minerstatslite.txt" -Append
     $BanMessage | Out-File ".\build\txt\minerstatslite.txt" -Append
     $MiningStatus | Out-File ".\build\txt\minerstatslite.txt" -Append
-    $Global:Miners = $Null
 }
 
 function Get-Logo {

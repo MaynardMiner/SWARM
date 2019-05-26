@@ -1,7 +1,7 @@
 function Set-Countdown {
-    if ($global:Config.Params.SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false) { $CountDown = Invoke-SWARMMode $global:SwitchTime; $CountDown = $Countdown * -1 }
+    if ($global:Config.Params.SWARM_Mode -eq "Yes" -and $global:BenchmarkMode -eq $false) { $CountDown = Invoke-SWARMMode $global:SwitchTime; $CountDown = $Countdown * -1 }
     else { $Countdown = ([math]::Round(($global:MinerInterval - 20) - $global:MinerWatch.Elapsed.TotalSeconds)) }
-    if ($global:Config.Params.SWARM_Mode -eq "Yes" -and $BenchmarkMode -eq $false) { $CountMessage = "SWARM Mode Starts: $($Countdown) seconds" }
+    if ($global:Config.Params.SWARM_Mode -eq "Yes" -and $global:BenchmarkMode -eq $false) { $CountMessage = "SWARM Mode Starts: $($Countdown) seconds" }
     else { $CountMessage = "Time Left Until Database Starts: $($Countdown) seconds" }
     Write-Log "$CountMessage 
 "-foreground DarkMagenta
