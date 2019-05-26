@@ -106,15 +106,15 @@ function Get-Metrics {
     if ($global:Config.Params.Platform -eq "windows") {
         ## Rig Metrics
         if ($global:Config.Params.HiveOS -eq "Yes") {
-            $diskSpace = try { Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'" -ErrorAction Stop | Select-Object Freespace } catch { 0 }
+            $diskSpace = try { Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'" -ErrorAction Stop | Select-Object Freespace } catch {  Write-Host "Failed To Get disk info" -ForegroundColor Red; 0 }
             $diskSpace = $diskSpace.Freespace / [math]::pow( 1024, 3 )
             $diskSpace = [math]::Round($diskSpace)
             $global:diskSpace = "$($diskSpace)G"
             $global:ramtotal = Get-Content ".\build\txt\ram.txt" | Select-Object -First 1
-            $Global:cpu = try { $(Get-CimInstance Win32_PerfFormattedData_PerfOS_System -ErrorAction Stop).ProcessorQueueLength } catch { 0 }
+            $Global:cpu = try { $(Get-CimInstance Win32_PerfFormattedData_PerfOS_System -ErrorAction Stop).ProcessorQueueLength } catch { Write-Host "Failed To Get CPU load" -ForegroundColor Red; 0  }
             $LoadAverage = Set-Stat -Name "load-average" -Value $Global:cpu
             $Global:LoadAverages = @("$([Math]::Round($LoadAverage.Minute,2))", "$([Math]::Round($LoadAverage.Minute_5,2))", "$([Math]::Round($LoadAverage.Minute_15,2))")
-            $global:ramfree = try { [math]::Round((Get-Ciminstance Win32_OperatingSystem -ErrorAction Stop | Select FreePhysicalMemory).FreePhysicalMemory / 1kb, 2) } catch { 0 }
+            $global:ramfree = try { [math]::Round((Get-Ciminstance Win32_OperatingSystem -ErrorAction Stop | Select FreePhysicalMemory).FreePhysicalMemory / 1kb, 2) } catch {Write-Host "Failed To Get RAM Size" -ForegroundColor Red, 0 }
         }
     }
 }

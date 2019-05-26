@@ -1,9 +1,7 @@
 Function Get-ExchangeRate {
     if ($global:Config.Params.CoinExchange) {
-        $Y = "$($global:Config.Params.CoinExchange)"
-        $H = "$($global:Config.Params.Currency)"
-        $J = "BTC"
-        $global:BTCExchangeRate = Invoke-WebRequest "https://min-api.cryptocompare.com/data/pricemulti?fsyms=$Y&tsyms=$J" -UseBasicParsing | ConvertFrom-Json | Select-Object -ExpandProperty $Y | Select-Object -ExpandProperty $J
+        $Uri = "https://min-api.cryptocompare.com/data/pricemulti?fsyms=$($global:Config.Params.CoinExchange)&tsyms=BTC"
+        $global:BTCExchangeRate = Invoke-WebRequest $URI -UseBasicParsing | ConvertFrom-Json | Select-Object -ExpandProperty $global:Config.params.CoinExchange | Select-Object -ExpandProperty "BTC"
     }
 }
 
