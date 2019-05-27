@@ -92,7 +92,7 @@ function Start-NewMiners {
                         $ClearedOC = $true
                     }
                     if ($Miner.Type -notlike "*ASIC*") {
-                        Add-Module "$Global:Control\octune.ps1"
+                        Add-Module "$Global:Control\octune.psm1"
                         Start-OC -NewMiner $Current -Website $Website
                     }
                 }
