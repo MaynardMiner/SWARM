@@ -48,17 +48,13 @@ function Get-CoinPools {
         ##Optional: Load Coin Database
         if ($global:Config.Params.Auto_Coin -eq "Yes") {
             $global:QuickTimer.Restart()
-            $coin_files = Get-ChildItem "coinpools" | Where BaseName -in $global:Config.params.poolname #| Select -First 1
+            $coin_files = Get-ChildItem "coinpools" | Where BaseName -in $global:Config.params.poolname
             write-Log "Adding Coin Pools. . ." -ForegroundColor Yellow
             $AllCoinPools = Get-Pools -PoolType "Coin" -Items $coin_files
             $global:CoinPools = New-Object System.Collections.ArrayList
-            $AllCoinPools.Algo | Select-Object -Unique | ForEach-Object {
-               $SelAlgo = $_
-               $Sel = $AllCoinPools | Where-Object Algo -EQ $SelAlgo | Sort-Object Price -Descending | Select-Object -First 3 
-               $Sel | % {$global:CoinPools.ADD($_) | Out-Null}
-            }
+            $AllCoinPools.algorithm | Select-Object -Unique | ForEach-Object { $SelAlgo = $_; $Sel = $AllCoinPools | Where-Object algorithm -EQ $SelAlgo | Sort-Object Price -Descending | Select-Object -First 3; $Sel | % {$global:CoinPools.ADD($_) | Out-Null} }
             $CoinPoolNames = $global:CoinPools.Name | Select-Object -Unique
-            if ($CoinPoolNames) {
+            if ($CoinPoolNames) { 
                 $CoinPoolNames | ForEach-Object { 
                     $CoinName = $_; 
                     $RemovePools = $Global:AlgoPools | Where-Object Name -eq $CoinName; 

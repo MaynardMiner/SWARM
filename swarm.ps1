@@ -346,9 +346,6 @@ While ($true) {
         Get-CoinPools
         Remove-Modules
 
-        $global:FeeTable = $Null
-        $global:DivisorTable = $Null
-
         ##############################################################################
         #######                         END PHASE 2                             ######
         ##############################################################################
@@ -400,6 +397,10 @@ While ($true) {
         $BestMiners_Selected = $global:bestminers_combo.Symbol
         $BestPool_Selected = $global:bestminers_combo.MinerPool
         write-Log "Most Ideal Choice Is $($BestMiners_Selected) on $($BestPool_Selected)" -foregroundcolor green
+
+        $global:FeeTable = $Null
+        $global:divisortable = $Null
+        $global:Miner_HashTable = $Null
 
         Remove-Modules
         
