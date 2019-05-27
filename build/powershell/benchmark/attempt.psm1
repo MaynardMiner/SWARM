@@ -119,13 +119,16 @@ function Start-Benchmark {
                                 Start-Sleep -S .25
                                 $GPUPower = 0
                                 if ($global:Config.Params.WattOMeter -eq "yes" -and $_.Type -ne "CPU") {
-                                    if ($global:Watts.$($_.Algo)) {
-                                        $global:Watts.$($_.Algo)."$($_.Type)_Watts" = "$GPUPower"
+                                    $GetWatts = Get-Content ".\config\power\power.json" | ConvertFrom-Json
+                                    if ($GetWatts.$($_.Algo)) {
+                                        $GetWatts.$($_.Algo)."$($_.Type)_Watts" = "$GPUPower"
+                                        $GetWatts | ConvertTo-Json -Depth 3 | Set-Content ".\config\power.json"
                                     }
                                     else {
                                         $WattTypes = @{NVIDIA1_Watts = ""; NVIDIA2_Watts = ""; NVIDIA3_Watts = ""; AMD1_Watts = ""; CPU_Watts = "" }
-                                        $global:Watts | Add-Member "$($_.Algo)" $WattTypes
-                                        $global:Watts.$($_.Algo)."$($_.Type)_Watts" = "$GPUPower"
+                                        $GetWatts | Add-Member "$($_.Algo)" $WattTypes
+                                        $GetWatts.$($_.Algo)."$($_.Type)_Watts" = "$GPUPower"
+                                        $GetWatts | ConvertTo-Json -Depth 3 | Set-Content ".\config\power.json"
                                     }
                                 }
                             }
