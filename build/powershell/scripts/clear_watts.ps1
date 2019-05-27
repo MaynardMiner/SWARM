@@ -12,7 +12,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 [cultureinfo]::CurrentCulture = 'en-US'
 $Get = @()
-Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))
+Set-Location (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
 Write-Host "Moving Default Watt File Content To Current Power.Json file"
 $Get += "Moving Default Watt File Content To Current Power.Json file"
 if (Test-Path ".\build\data\reset.json") {$Defaults = Get-Content ".\build\data\reset.json"}

@@ -1,31 +1,28 @@
-. .\build\powershell\childitems.ps1
-. .\build\powershell\command-stats.ps1
-
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName
 $PoolQuery = "http://phi-phi-pool.com/api/wallet?address="
 
 $Query = @()
 
-if ($WalletKeys.Wallet1.BTC.address -ne "" -and $WalletKeys.Wallet1.BTC.Pools -contains $Name) {
-    $WalletKeys.Wallet1.BTC.pools | ForEach-Object {
-        if ($Query.Name -notcontains "$($Name)_$($WalletKeys.Wallet1.BTC.address)") {
-            $Query += [PSCustomObject]@{Name = "$($Name)_$($WalletKeys.Wallet1.BTC.address)"; Symbol = "BTC"; Address = $WalletKeys.Wallet1.BTC.address; Response = "" }
+if ($Global:WalletKeys.Wallet1.BTC.address -ne "" -and $Global:WalletKeys.Wallet1.BTC.Pools -contains $Name) {
+    $Global:WalletKeys.Wallet1.BTC.pools | ForEach-Object {
+        if ($Query.Name -notcontains "$($Name)_$($Global:WalletKeys.Wallet1.BTC.address)") {
+            $Query += [PSCustomObject]@{Name = "$($Name)_$($Global:WalletKeys.Wallet1.BTC.address)"; Symbol = "BTC"; Address = $Global:WalletKeys.Wallet1.BTC.address; Response = "" }
         }
     }
 }
 
-if ($WalletKeys.Wallet2.BTC.address -ne "" -and $WalletKeys.Wallet2.BTC.Pools -contains $Name) {
-    $WalletKeys.Wallet2.BTC.pools | ForEach-Object {
-        if ($Query.Name -notcontains "$($Name)_$($WalletKeys.Wallet2.BTC.address)") {
-            $Query += [PSCustomObject]@{Name = "$($Name)_$($WalletKeys.Wallet2.BTC.address)"; Symbol = "BTC"; Address = $WalletKeys.Wallet2.BTC.address; Response = "" }
+if ($Global:WalletKeys.Wallet2.BTC.address -ne "" -and $Global:WalletKeys.Wallet2.BTC.Pools -contains $Name) {
+    $Global:WalletKeys.Wallet2.BTC.pools | ForEach-Object {
+        if ($Query.Name -notcontains "$($Name)_$($Global:WalletKeys.Wallet2.BTC.address)") {
+            $Query += [PSCustomObject]@{Name = "$($Name)_$($Global:WalletKeys.Wallet2.BTC.address)"; Symbol = "BTC"; Address = $Global:WalletKeys.Wallet2.BTC.address; Response = "" }
         }
     }
 }
 
-if ($WalletKeys.Wallet2.BTC.address -ne "" -and $WalletKeys.Wallet2.BTC.Pools -contains $Name) {
-    $WalletKeys.Wallet3.BTC.pools | ForEach-Object {
-        if ($Query.Name -notcontains "$($Name)_$($WalletKeys.Wallet3.BTC.address)") {
-            $Query += [PSCustomObject]@{Name = "$($Name)_$($WalletKeys.Wallet3.BTC.address)"; Symbol = "BTC"; Address = $WalletKeys.Wallet3.BTC.address; Response = "" }
+if ($Global:WalletKeys.Wallet2.BTC.address -ne "" -and $Global:WalletKeys.Wallet2.BTC.Pools -contains $Name) {
+    $Global:WalletKeys.Wallet3.BTC.pools | ForEach-Object {
+        if ($Query.Name -notcontains "$($Name)_$($Global:WalletKeys.Wallet3.BTC.address)") {
+            $Query += [PSCustomObject]@{Name = "$($Name)_$($Global:WalletKeys.Wallet3.BTC.address)"; Symbol = "BTC"; Address = $Global:WalletKeys.Wallet3.BTC.address; Response = "" }
         }
     }
 }

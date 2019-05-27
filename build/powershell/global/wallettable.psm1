@@ -10,15 +10,15 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
-function Get-WalletTable {
+
+Function Get-WalletTable {
+
     [cultureinfo]::CurrentCulture = 'en-US'
-
     if(Test-Path ".\wallet\values\*"){Remove-Item ".\wallet\values\*" -Force}
-
-    $WalletKeys = [PSCustomObject]@{}
-    Get-ChildItemContent ".\wallet\keys" | ForEach {$WalletKeys | Add-Member $_.Name $_.Content} 
-
-    if(Test-path ".\wallet\pools"){Get-ChildItemContent ".\wallet\pools"}
+    
+    $global:WalletKeys = [PSCustomObject]@{}
+    Get-ChildItemContent -Path ".\wallet\keys" | ForEach {$global:WalletKeys | Add-Member $_.Name $_.Content} 
+    Get-ChildItemContent -Path ".\wallet\pools"
 
     $WalletTable = @()
     if (-not $GetWStats) {$GetWStats = get-wstats}
@@ -37,16 +37,16 @@ function Get-WalletTable {
         if($Sym -notcontains $GetWStats.$_.Symbol){$Sym += $GetWStats.$_.Symbol}
     }
 
-    $Format = @()
-    $Format += ""
+    $global:Format = @()
+    $global:Format += ""
     $WalletTable | %{
-     $Format += "Address: $($_.Address)"
-     $Format += "Pool: $($_.Pool)"
-     $Format += "Ticker: $($_.Ticker)"
-     $Format += "Unpaid: $($_.Unpaid)"
-     $Format += "Balance: $($_.Balance)"
-     $Format += "Last Checked: $($_."Last Checked")"
-     $Format += ""
+     $global:Format += "Address: $($_.Address)"
+     $global:Format += "Pool: $($_.Pool)"
+     $global:Format += "Ticker: $($_.Ticker)"
+     $global:Format += "Unpaid: $($_.Unpaid)"
+     $global:Format += "Balance: $($_.Balance)"
+     $global:Format += "Last Checked: $($_."Last Checked")"
+     $global:Format += ""
     }
 
     $Sym | %{
@@ -56,12 +56,12 @@ function Get-WalletTable {
      $Grouping.Unpaid | %{$Total_Unpaid += $_ }
      $Grouping.Balance | %{$Total_Balance += $_ }
 
-     $Format += ""
-     $Format += "Total $($_) Balance = $Total_Balance"
-     $Format += "Total $($_) Unpaid = $Total_Unpaid (Reflects Current Total Potential Earnings)"
-     $Format += ""
+     $global:Format += ""
+     $global:Format += "Total $($_) Balance = $Total_Balance"
+     $global:Format += "Total $($_) Unpaid = $Total_Unpaid (Reflects Current Total Potential Earnings)"
+     $global:Format += ""
     }
 
-    $Format
+    $global:Format
 
 }

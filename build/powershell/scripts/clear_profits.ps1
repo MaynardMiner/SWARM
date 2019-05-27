@@ -12,7 +12,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 [cultureinfo]::CurrentCulture = 'en-US'
 $Get = @()
-Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))
+Set-Location (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
 Write-Host "Gathering All Profit Stats"
 $Get += "Gathering All Profit Stats"
 if (Test-Path ".\stats\*profit.txt*") {Remove-Item ".\stats\*profit.txt*" -Force}

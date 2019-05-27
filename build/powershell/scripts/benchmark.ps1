@@ -19,7 +19,10 @@ param(
     [parameter(Position = 2, Mandatory = $false)]
     [String]$Arg1 = $Null
 )
-Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))
+
+[cultureinfo]::CurrentCulture = 'en-US'
+Set-Location (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
+$dir = (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
 
 Write-Host "Checking For $command Benchmarks"
 $Get = @()

@@ -27,7 +27,8 @@ param(
 )
 
 ## Set to SWARM dir
-Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))
+Set-Location (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
+$dir = (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
 $Message = @()
 [cultureinfo]::CurrentCulture = 'en-US'
 

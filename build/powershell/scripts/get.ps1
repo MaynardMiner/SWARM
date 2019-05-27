@@ -30,31 +30,29 @@ param(
 [cultureinfo]::CurrentCulture = 'en-US'
 $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
 [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
-Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))
-$dir = Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))
+Set-Location (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
+$dir = (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
 
-$Startup = "$dir\build\powershell\startup";
-$Web = "$dir\build\api\web";
-$globe = "$dir\build\powershell\global";
-$Build = "$dir\build\powershell\build";
-$Pool = "$dir\build\powershell\pool";
+if(-not $Global:Startup){$Global:Startup = "$dir\build\powershell\startup";}
+if(-not $Global:Global){$Global:Global = "$dir\build\powershell\global";}
+if(-not $Global:Build){$Global:Build = "$dir\build\powershell\build";}
+if(-not $Global:Pool){$Global:Pool = "$dir\build\powershell\pool";}
+if(-not $Global:Startup){$Global:Startup = "$dir\build\powershell\startup";}
+if(-not $Global:Web){$Global:Web = "$dir\build\powershell\web";}
 $p = [Environment]::GetEnvironmentVariable("PSModulePath")
 if ($P -notlike "*$dir\build\powershell*") {
-    $P += ";$Startup";
-    $P += ";$Web";
-    $P += ";$globe";
-    $P += ";$Build";
-    $P += ";$Pool";
+    $P += ";$Global:Startup";
+    $P += ";$Global:Global";
+    $P += ";$Global:Build";
+    $P += ";$Global:Pool";
+    $P += ";$Global:Web";
     [Environment]::SetEnvironmentVariable("PSModulePath", $p)
 }
 
 $Get = @()
 
-Import-Module -Name "$globe\stats.psm1"
-Import-Module -Name "$globe\include.psm1"
-Import-Module -Name "$Dir\build\api\hiveos\docommand.psm1"
-Import-Module -Name "$Dir\build\api\hiveos\response.psm1"
-Import-Module -Name "$Dir\build\api\hiveos\hiveoc.psm1"
+Import-Module -Name "$Global:Global\stats.psm1" -Scope Global
+Import-Module -Name "$Global:Global\include.psm1" -Scope Global
 
 Switch ($argument1) {
     "help" {
@@ -298,8 +296,9 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
 
 
     "benchmarks" {
-        Import-Module -Name "$globe\hashrates.psm1"
-        
+
+        Import-Module -Name "$Global:Global\hashrates.psm1"
+
         if (Test-path ".\stats") {
             if ($argument2) {
                 switch ($argument2) {
@@ -340,56 +339,55 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 )
             }
             if ($asjson) {
-                $Get = $BenchTable | ConvertTo-Json
+                $Get += $BenchTable | ConvertTo-Json
             }
-            else { $Get = Get-BenchTable }
+            else { $Get += Get-BenchTable }
             Get-BenchTable | Out-File ".\build\txt\get.txt"
         }
-        else { $Get = "No Stats Found" }
+        else { $Get += "No Stats Found" }
+
         Remove-Module -Name "hashrates"
     }
 
     "wallets" {
-        . .\build\powershell\command-stats.ps1
-        . .\build\powershell\childitems.ps1
-        . .\build\powershell\hashrates.ps1
-        . .\build\powershell\scripts\wallettable.ps1   
+        Import-Module "$global:Global\wallettable.psm1" -Scope Global
         $Get = Get-WalletTable
+        Remove-Module "wallettable"
     }
     "stats" {
         if ($Argument2 -eq "lite") {
             if ($Argument3) {
                 $Total = [int]$Argument3 + 1
                 if (Test-Path ".\build\txt\minerstatslite.txt") {
-                    $Get = Get-Content ".\build\txt\minerstatslite.txt"
+                    $Get += Get-Content ".\build\txt\minerstatslite.txt"
                 }
-                else { $Get = "No Stats History Found" }    
+                else { $Get += "No Stats History Found" }    
             }
             else {
-                if (Test-Path ".\build\txt\minerstatslite.txt") { $Get = Get-Content ".\build\txt\minerstatslite.txt" }
-                else { $Get = "No Stats History Found" }
+                if (Test-Path ".\build\txt\minerstatslite.txt") { $Get += Get-Content ".\build\txt\minerstatslite.txt" }
+                else { $Get += "No Stats History Found" }
             }
         }
         else {
             if ($Argument2) {
                 $Total = [int]$Argument2 + 1
                 if (Test-Path ".\build\txt\minerstats.txt") {
-                    $Get = Get-Content ".\build\txt\minerstats.txt"
-                    $Get = $Get | % { $Number = 0; if ($_ -ne "") { $Number = $_.SubString(0, 2); $Number = $Number -replace " ", ""; try { $Number = [int]$Number }catch { $Number = 0 } }; if ($Number -lt $Total) { $_ } }
+                    $Get += Get-Content ".\build\txt\minerstats.txt"
+                    $Get += $Get | % { $Number = 0; if ($_ -ne "") { $Number = $_.SubString(0, 2); $Number = $Number -replace " ", ""; try { $Number = [int]$Number }catch { $Number = 0 } }; if ($Number -lt $Total) { $_ } }
                 }
-                else { $Get = "No Stats History Found" }    
+                else { $Get += "No Stats History Found" }    
 
             }
             else {
-                if (Test-Path ".\build\txt\minerstats.txt") { $Get = Get-Content ".\build\txt\minerstats.txt" }
-                else { $Get = "No Stats History Found" }
+                if (Test-Path ".\build\txt\minerstats.txt") { $Get += Get-Content ".\build\txt\minerstats.txt" }
+                else { $Get += "No Stats History Found" }
             }
         }
     }
-    "charts" { if (Test-Path ".\build\txt\charts.txt") { $Get = Get-Content ".\build\txt\charts.txt" } }
+    "charts" { if (Test-Path ".\build\txt\charts.txt") { $Get += Get-Content ".\build\txt\charts.txt" } }
     "active" {
-        if (Test-Path ".\build\txt\mineractive.txt") { $Get = Get-Content ".\build\txt\mineractive.txt" }
-        else { $Get = "No Miner History Found" }
+        if (Test-Path ".\build\txt\mineractive.txt") { $Get += Get-Content ".\build\txt\mineractive.txt" }
+        else { $Get += "No Miner History Found" }
     }
     "parameters" {
         if (Test-Path ".\config\parameters\newarguments.json") {$FilePath = ".\config\parameters\arguments.json"}
@@ -400,16 +398,16 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
             $MinerArgs | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Foreach { $SwarmParameters += "$($_): $($MinerArgs.$_)" }
         }
         else { $SwarmParameters += "No Parameters For SWARM found" }
-        $Get = $SwarmParameters
+        $Get += $SwarmParameters
     }
     "screen" {
-        if (Test-Path ".\logs\$($argument2).log") { $Get = Get-Content ".\logs\$($argument2).log" }
-        if ($argument2 -eq "miner") { if (Test-Path ".\logs\*active*") { $Get = Get-Content ".\logs\*active.log*" } }
-        $Get = $Get | Select -Last 300
+        if (Test-Path ".\logs\$($argument2).log") { $Get += Get-Content ".\logs\$($argument2).log" }
+        if ($argument2 -eq "miner") { if (Test-Path ".\logs\*active*") { $Get += Get-Content ".\logs\*active.log*" } }
+        $Get += $Get | Select -Last 300
     }
     "oc" {
-        if (Test-Path ".\build\txt\oc-settings.txt") { $Get = Get-Content ".\build\txt\oc-settings.txt" }
-        else { $Get = "No oc settings found" }
+        if (Test-Path ".\build\txt\oc-settings.txt") { $Get += Get-Content ".\build\txt\oc-settings.txt" }
+        else { $Get += "No oc settings found" }
     }
     "miners" {
         $GetJsons = Get-ChildItem ".\config\miners"
@@ -556,7 +554,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
     }
 
     default {
-        $Get =
+        $Get +=
         "item not found or specified. use:
 
 get help
@@ -566,13 +564,9 @@ to see a list of availble items.
     }
 }
 
-if ($get -ne $null) {
     $Get
     $Get | Set-Content ".\build\txt\get.txt"
-}
+
 
 Remove-Module -Name "stats"
 Remove-Module -Name "include"
-Remove-Module -Name "docommand"
-Remove-Module -Name "response"
-Remove-Module -Name "hiveoc"

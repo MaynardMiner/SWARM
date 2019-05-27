@@ -10,7 +10,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
-Set-Location (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))
+Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))
 if (Test-Path ".\txt\minerstats.txt") {Get-Content ".\txt\minerstats.txt"}
 else {Write-Host "No Stat history found"}
 

@@ -10,8 +10,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
-Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))
-
+Set-Location (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
+$dir = (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
 Write-Host "Clearing All Previous Stored HiveOS Data"
 if(test-path ".\build\txt"){Remove-Item ".\build\txt\*" -Force}
 if(test-path ".\config\parameters\newarguments.json"){Remove-Item ".\config\parameters\newarguments.json" -Force}
