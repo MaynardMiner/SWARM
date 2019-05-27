@@ -341,7 +341,10 @@ While ($true) {
         Get-PoolTables
         Remove-BanHashrates
         $global:Miner_HashTable = Get-MinerHashTable
-
+        ##Add Global Modules - They Get Removed in Above Function
+        Remove-Modules
+        Import-Module -Name "$global:global\include.psm1"
+        Import-Module "$global:global\stats.psm1"
 
         ##Get Algorithm Pools
         Add-Module "$Pool\gather.psm1"
@@ -403,18 +406,6 @@ While ($true) {
 
 
         Remove-Modules
-
-        ##Clear Variables To Reduce Memory Footprint:
-        $global:FeeTable = $Null
-        $global:divisortable = $Null
-        $global:Miner_HashTable = $Null
-        $global:Watts = $Null
-        $global:BestMiners_Selected = $Null
-        $global:All_AltWallets = $Null
-        $global:Algorithm = $null
-        $global:amd = $Null
-        $global:nvidia = $Null
-        $global:cpu = $null        
         
         ##############################################################################
         #######                        End Phase 3                             ######
@@ -470,15 +461,6 @@ While ($true) {
 
         Remove-Modules
 
-        ##Clear Variables To Reduce Memory Footprint:
-        $global:BusData = $null
-        $global:BanHammer = $Null
-        $global:Config.Pool_Algos = $null
-        $global:oc_algos = $null
-        $global:oc_default = $null
-        $global:PreviousMinerPorts = $Null
-
-
         ##############################################################################
         #######                        End Phase 4                              ######
         ##############################################################################
@@ -509,7 +491,6 @@ While ($true) {
         Get-PriceMessage
         Get-Commands
         $Global:Miners = $Null
-        $global:bestminers_combo = $Null
         Get-Logo
         Update-Logging
         Get-Date | Out-File ".\build\txt\mineractive.txt"

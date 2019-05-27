@@ -39,7 +39,7 @@ $Global:ASICTypes | ForEach-Object {
                     DeviceCall = "cgminer"
                     Wallet     = "$($_.$User)"
                     Arguments  = "stratum+tcp://$($_.Host):$($_.Port),$($_.$User),$Pass"
-                    HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour}
+                    HashRates  = $Stat.Hour
                     Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                     Power     = [PSCustomObject]@{$($_.Algorithm) = if ($global:Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $global:Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($global:Watts.default."$($ConfigType)_Watts") { $global:Watts.default."$($ConfigType)_Watts" }else { 0 } }
                     MinerPool  = "$($_.Name)"
