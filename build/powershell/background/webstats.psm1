@@ -36,7 +36,7 @@ function Send-WebStats {
                         $SwarmResponse = Start-webcommand -command $batch_command -website $_
                     }
                 }
-                else { $SwarmResponse = Start-webcommand -command $response }
+                else { $SwarmResponse = Start-webcommand -command $response -website $_ }
                 if ($SwarmResponse -ne $null) {
                     if ($SwarmResponse -eq "config") {
                         Write-Warning "Config Command Initiated- Restarting SWARM"

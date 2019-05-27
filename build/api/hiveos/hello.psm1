@@ -12,6 +12,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 function Start-Hello($RigData) {
 
+    $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
+    [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
+
+
     $Hello = @{
         method  = "hello"
         jsonrpc = "2.0"

@@ -102,6 +102,8 @@ function Invoke-WebCommand {
         [Parameter(Mandatory = $false)]
         [string]$Id
     )
+    $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
+    [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
 
     ##First load Correct Modules
     Switch ($Site) {
@@ -115,7 +117,7 @@ function Invoke-WebCommand {
             $Return = Start-Hello $InputObject 
         }
         "Message" {
-            if ($InputObject) { $Get = $InputObject | ConvertTo-Json -Depth 1}
+            if ($InputObject) { $Get = $InputObject | ConvertTo-Json -Depth 3}
             else {
                 $GetParams = @{ }
                 if ($method) { $GetParams.Add("method", $method) }

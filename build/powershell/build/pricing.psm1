@@ -5,6 +5,8 @@ function Get-Watts {
 }
 
 function Get-Pricing {
+    $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
+    [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
     try {
         Write-Log "SWARM Is Building The Database. Auto-Coin Switching: $($global:Config.Params.Auto_Coin)" -foreground "yellow"
         $global:Rates = Invoke-RestMethod "https://api.coinbase.com/v2/exchange-rates?currency=BTC" -UseBasicParsing | Select-Object -ExpandProperty data | Select-Object -ExpandProperty rates

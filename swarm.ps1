@@ -131,7 +131,10 @@ if (-not (Test-Path ".\build\txt")) { New-Item -Path ".\build" -Name "txt" -Item
 
 ##Start Data Collection
 Add-Module "$global:Startup\datafiles.psm1"
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Tls11, [Net.SecurityProtocolType]::tls
+
+$AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
+[System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
+
 Get-DateFiles
 Clear-Stats
 Get-ArgNotice

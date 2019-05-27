@@ -69,6 +69,9 @@ function Expand-WebRequest {
         [String]$version
     )
 
+    $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
+    [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
+
     $Zip = Split-Path $Uri -Leaf; $BinPath = (Split-Path $Path); $BinPath = (Split-Path $BinPath -Leaf);
     $Name = (Split-Path $Path -Leaf); $X64_zip = Join-Path ".\x64" $Zip;
     $BaseName = $( (Split-Path $Path -Leaf) -split "\.") | Select -First 1
@@ -193,7 +196,7 @@ function Get-MinerBinary {
             $MinersArray | ConvertTo-Json -Depth 3 | Add-Content ".\timeout\download_block\download_block.txt"
             $HiveMessage = "Ban: $($Miner.Name) - Download Failed"
             $HiveWarning = @{result = @{command = "timeout" } }
-            if ($global:Config.Params.HiveOS -eq "Yes") { try { $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage }catch { Write-Log "Failed To Notify HiveOS" -ForegroundColor Red } }
+            if ($global:Config.Params.HiveOS -eq "Yes") { try { $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "HiveOS" }catch { Write-Log "Failed To Notify HiveOS" -ForegroundColor Red } }
         }
     }
     else { $Success = 1 }

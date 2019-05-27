@@ -1,4 +1,6 @@
 Function Get-ExchangeRate {
+    $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
+    [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
     if ($global:Config.Params.CoinExchange) {
         $Uri = "https://min-api.cryptocompare.com/data/pricemulti?fsyms=$($global:Config.Params.CoinExchange)&tsyms=BTC"
         $global:BTCExchangeRate = Invoke-WebRequest $URI -UseBasicParsing | ConvertFrom-Json | Select-Object -ExpandProperty $global:Config.params.CoinExchange | Select-Object -ExpandProperty "BTC"
@@ -36,15 +38,6 @@ function Get-ScreenName {
         $Miner | Add-Member "Power_Day" ( ([Decimal]$Miner.Power * 24) / 1000 * $global:WattEX )
         $Miner | Add-Member "ScreenName" $ScreenName
         $Miner | Add-Member "Shares" $CoinShare
-    }
-}
-
-function Get-ExchangeRate {
-    if ($global:Config.Params.CoinExchange) {
-        $Y = [string]$global:Config.Params.CoinExchange
-        $H = [string]$global:Config.Params.Currency
-        $J = [string]'BTC'
-        $global:BTCExchangeRate = Invoke-WebRequest "https://min-api.cryptocompare.com/data/pricemulti?fsyms=$Y&tsyms=$J" -UseBasicParsing | ConvertFrom-Json | Select-Object -ExpandProperty $Y | Select-Object -ExpandProperty $J
     }
 }
 

@@ -62,7 +62,7 @@ function Get-HTTP {
     )
 
     try {
-        $response = Invoke-WebRequest "http://$($Server):$($Port)$($Message)" -UseBasicParsing -TimeoutSec $Timeout
+        $response = Invoke-WebRequest "http://$($global:Server):$($Port)$($Message)" -UseBasicParsing -TimeoutSec $Timeout
     }
     catch {$Error.Remove($error[$Error.Count - 1])}
     $response

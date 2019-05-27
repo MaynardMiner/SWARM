@@ -77,6 +77,7 @@ function Set-Response {
         "HiveOS" {$Params = "Hive_Params"}
         "SWARM" {$Params = "Swarm_Params"}
     }
+    
     $myresponse = @{
         method  = $method
         rig_id  = $global:Config.$Params.HiveID

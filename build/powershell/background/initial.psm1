@@ -10,7 +10,7 @@ function Invoke-MinerCheck {
     if (Test-Path $CheckForMiners) { $global:GetMiners = Get-Content $CheckForMiners | ConvertFrom-Json -ErrorAction Stop }
     else { Write-Host "No Miners Running..." }
     if ($global:GETSWARM.HasExited -eq $true) { Write-Host "SWARM Has Exited..."; }
-    
+
     ##Handle New Miners
     if ($global:GetMiners -and $global:GETSWARM.HasExited -eq $false) {
         $global:GetMiners | ForEach-Object { if (-not ($global:CurrentMiners | Where-Object Path -eq $_.Path | Where-Object Arguments -eq $_.Arguments )) { $Switched = $true } }
@@ -18,15 +18,12 @@ function Invoke-MinerCheck {
             Write-Host "Miners Have Switched
     " -ForegroundColor Cyan
             $global:CurrentMiners = $global:GetMiners;
-            ##Set Starting Date & Device Flags
             $global:StartTime = Get-Date
+            ##Set Starting Date & Device Flags
             ## Determine Which GPU's to stat
         }
     }
-    else {
-        $global:StartTime = Get-Date
-    }
-    
+        
     ## Determine if CPU in only used. Set Flags for what to do.
     $global:CurrentMiners | ForEach-Object {
         if ($_.Type -like "*NVIDIA*" -or $_.Type -like "*AMD*" -or $_.Type -like "*ASIC*") {

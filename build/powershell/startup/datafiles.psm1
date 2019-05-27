@@ -41,6 +41,9 @@ function Set-NewType {
 }
 
 function get-NIST {
+    $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
+    [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
+    
     $progressPreference = 'silentlyContinue'
     try {
         $WebRequest = Invoke-WebRequest -Uri 'http://nist.time.gov/actualtime.cgi' -UseBasicParsing -TimeoutSec 10

@@ -2,6 +2,7 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $ahashpool_Request = [PSCustomObject]@{ } 
 
+
 if($global:Config.Params.xnsub -eq "Yes"){$X = "#xnsub"}
 
 if ($Name -in $global:Config.Params.PoolName) {

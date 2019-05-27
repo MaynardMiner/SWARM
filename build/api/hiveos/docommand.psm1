@@ -20,7 +20,11 @@ function Start-Webcommand {
         [Parameter(Mandatory = $false)]
         [string]$WebSite
     )
- 
+
+    $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
+    [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
+
+    
     Switch ($Command.result.command) { 
         "timeout" {
             $method = "message"

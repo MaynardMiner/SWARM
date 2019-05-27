@@ -229,7 +229,7 @@ function Start-Benchmark {
                             $NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt"
                             $Global:Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" | ForEach-Object { try { $_.bad = 0 }catch { } }
                             $HiveWarning = @{result = @{command = "timeout" } }
-                            if ($global:Config.Params.HiveOS -eq "Yes") { try { $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage }catch { Write-Log "WARNING: Failed To Notify HiveOS" -ForeGroundColor Yellow } }
+                            if ($global:Config.Params.HiveOS -eq "Yes") { try { $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "HiveOS" }catch { Write-Log "WARNING: Failed To Notify HiveOS" -ForeGroundColor Yellow } }
                             Start-Sleep -S 1
                         }
                         ##Strike Three: He's Outta Here
@@ -249,7 +249,7 @@ function Start-Benchmark {
                             $Global:Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" | ForEach-Object { try { $_.bad = 0 }catch { } }
                             $Global:Warnings."$($_.Name)_$($_.Algo)" | ForEach-Object { try { $_.bad = 0 }catch { } }
                             $HiveWarning = @{result = @{command = "timeout" } }
-                            if ($global:Config.Params.HiveOS -eq "Yes") { try { $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage }catch { Write-Log "WARNING: Failed To Notify HiveOS" -ForeGroundColor Yellow } }
+                            if ($global:Config.Params.HiveOS -eq "Yes") { try { $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "HiveOS" }catch { Write-Log "WARNING: Failed To Notify HiveOS" -ForeGroundColor Yellow } }
                             Start-Sleep -S 1
                         }
                         ##Strike Four: Miner is Finished
@@ -268,7 +268,7 @@ function Start-Benchmark {
                             $Global:Warnings."$($_.Name)_$($_.Algo)" | ForEach-Object { try { $_.bad = 0 }catch { } }
                             $Global:Warnings."$($_.Name)" | ForEach-Object { try { $_.bad = 0 }catch { } }
                             $HiveWarning = @{result = @{command = "timeout" } }
-                            if ($global:Config.Params.HiveOS -eq "Yes") { try { $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage }catch { Write-Log "WARNING: Failed To Notify HiveOS" -ForeGroundColor Yellow } }
+                            if ($global:Config.Params.HiveOS -eq "Yes") { try { $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "HiveOS" }catch { Write-Log "WARNING: Failed To Notify HiveOS" -ForeGroundColor Yellow } }
                             Start-Sleep -S 1
                         }
                     }

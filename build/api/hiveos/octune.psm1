@@ -5,6 +5,9 @@ function Start-HiveTune {
         [string]$Algo
     )
 
+    $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
+    [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
+
     Write-Log "Checking Hive OC Tuning" -ForegroundColor Cyan
     $Algo = $Algo -replace "`_", " "
     $Algo = $Algo -replace "veil","x16rt"

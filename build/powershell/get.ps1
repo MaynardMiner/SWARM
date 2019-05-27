@@ -28,7 +28,8 @@ param(
     [switch]$asjson
 )
 [cultureinfo]::CurrentCulture = 'en-US'
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12,[Net.SecurityProtocolType]::Tls11,[Net.SecurityProtocolType]::tls
+$AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
+[System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
 Set-Location (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))
 $dir = Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))
 

@@ -16,7 +16,7 @@ Param (
     [string]$WorkingDir
 )
 
-$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
+#$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
 $global:Dir = $WorkingDir
 Set-Location $WorkingDir
 try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$WorkingDir`'" -WindowStyle Minimized } }catch { }
@@ -56,7 +56,8 @@ $Global:config = [hashtable]::Synchronized(@{ })
 $Global:stats = [hashtable]::Synchronized(@{ })
 Get-Params
 [cultureinfo]::CurrentCulture = 'en-US'
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12,[Net.SecurityProtocolType]::Tls11,[Net.SecurityProtocolType]::tls
+$AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
+[System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
 Set-Window
 
 $global:NetModules = @()
@@ -89,7 +90,7 @@ $global:diskSpace = $null
 $global:ramtotal = $null
 $Global:cpu = $null
 $Global:LoadAverages = $null
-$Global:StartTime = $Null
+$Global:StartTime = Get-Date
 $CheckForSWARM = ".\build\pid\miner_pid.txt"
 if (Test-Path $CheckForSWARM) { $global:GETSWARMID = Get-Content $CheckForSWARM; $Global:GETSWARM = Get-Process -ID $global:GETSWARMID -ErrorAction SilentlyContinue }
 $Global:GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json

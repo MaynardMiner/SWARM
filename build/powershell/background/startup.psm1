@@ -14,8 +14,8 @@ function Get-Params {
         $arguments.PSObject.Properties.Name | % { $global:Config.Params.Add("$($_)", $arguments.$_) }
         $arguments = $null
     }
-    if (Test-Path ".\build\txt\hivekeys.txt") {
-        $HiveStuff = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json
+    if (Test-Path ".\build\txt\Hive_Params_keys.txt") {
+        $HiveStuff = Get-Content ".\build\txt\Hive_Params_keys.txt" | ConvertFrom-Json
         $HiveStuff.PSObject.Properties.Name | % { $global:Config.Hive_Params.Add("$($_)", $HiveStuff.$_) }
         $HiveStuff = $null
     }
