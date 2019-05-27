@@ -416,7 +416,7 @@ While ($true) {
 
         Add-Module "$global:global\include.psm1"
         Add-Module "$global:global\stats.psm1"
-        Add-Module "$global:global\hashrates.psm1"
+        if($Global:Config.params.Type -like "*ASIC*") { Add-Module "$global:global\hashrates.psm1" }
         Add-Module "$global:Control\config.psm1"
 
         ## Build the Current Active Miners
