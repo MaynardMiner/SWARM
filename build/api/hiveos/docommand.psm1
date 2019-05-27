@@ -24,15 +24,20 @@ function Start-Webcommand {
     $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
     [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
 
+    switch($WebSite){
+        "HiveOS"{$Param = "hive_params"}
+        "Swarm"{$Param = "swarm_params"}
+    }
+
     
     Switch ($Command.result.command) { 
         "timeout" {
             $method = "message"
             $messagetype = "warning"
             $data = $swarm_message
-            $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -Site $WebSite -Site $WebSite
+            $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -Site $WebSite
             $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-            $SendResponse = Invoke-RestMethod "$($global:config.hive_params.HiveMirror)/worker/api" -TimeoutSec 10 -Method POST -Body $DoResponse -ContentType 'application/json'
+            $SendResponse = Invoke-RestMethod "$($global:config.$Param.HiveMirror)/worker/api" -TimeoutSec 10 -Method POST -Body $DoResponse -ContentType 'application/json'
             $trigger = "exec"
         }
     
@@ -42,9 +47,9 @@ function Start-Webcommand {
             $method = "message"
             $messagetype = "success"
             $data = "Rebooting"
-            $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Site $WebSite -Site $WebSite
+            $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Site $WebSite
             $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-            $SendResponse = Invoke-RestMethod "$($global:config.hive_params.HiveMirror)/worker/api" -TimeoutSec 10 -Method POST -Body $DoResponse -ContentType 'application/json'
+            $SendResponse = Invoke-RestMethod "$($global:config.$Param.HiveMirror)/worker/api" -TimeoutSec 10 -Method POST -Body $DoResponse -ContentType 'application/json'
             Write-Host $method $messagetype $data
             $trigger = "reboot"
             $MinerFile = ".\build\pid\miner_pid.txt"
@@ -74,7 +79,7 @@ function Start-Webcommand {
                     $payload = $line
                     $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
                     $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                    $SendResponse = Invoke-RestMethod "$($global:config.hive_params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+                    $SendResponse = Invoke-RestMethod "$($global:config.$Param.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
                     Write-Host $method $messagetype $data
                     $trigger = "exec"
                     if (Test-Path ".\build\txt\getcommand.txt") { Clear-Content ".\build\txt\getcommand.txt" }  
@@ -91,7 +96,7 @@ function Start-Webcommand {
                     $payload = $line
                     $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
                     $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                    $SendResponse = Invoke-RestMethod "$($global:config.hive_params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+                    $SendResponse = Invoke-RestMethod "$($global:config.$Param.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
                     Write-Host $method $messagetype $data
                     $trigger = "exec"
                     if (Test-Path ".\build\txt\getcommand.txt") { Clear-Content ".\build\txt\getcommand.txt" }
@@ -106,7 +111,7 @@ function Start-Webcommand {
                     $payload = $line
                     $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
                     $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                    $SendResponse = Invoke-RestMethod "$($global:config.hive_params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+                    $SendResponse = Invoke-RestMethod "$($global:config.$Param.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
                     Write-Host $method $messagetype $data
                     $trigger = "exec"
                 }
@@ -120,7 +125,7 @@ function Start-Webcommand {
                     $payload = $line
                     $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload
                     $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                    $SendResponse = Invoke-RestMethod "$($global:config.hive_params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+                    $SendResponse = Invoke-RestMethod "$($global:config.$Param.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
                     Write-Host $method $messagetype $data
                     $trigger = "exec"
                 }
@@ -137,7 +142,7 @@ function Start-Webcommand {
                             $payload = $line
                             $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
                             $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                            $SendResponse = Invoke-RestMethod "$($global:config.hive_params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+                            $SendResponse = Invoke-RestMethod "$($global:config.$Param.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
                             Write-Host $method $messagetype $data
                             $trigger = "exec"
                         }
@@ -153,7 +158,7 @@ function Start-Webcommand {
                             $payload = $line
                             $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
                             $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                            $SendResponse = Invoke-RestMethod "$($global:config.hive_params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+                            $SendResponse = Invoke-RestMethod "$($global:config.$Param.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
                             Write-Host $method $messagetype $data
                             Start-Process ".\SWARM.bat"
                             Start-Sleep -S 2
@@ -174,7 +179,7 @@ function Start-Webcommand {
                     $payload = $line 
                     $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
                     $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                    $SendResponse = Invoke-RestMethod "$($global:config.hive_params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+                    $SendResponse = Invoke-RestMethod "$($global:config.$Param.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
                     Write-Host $method $messagetype $data
                     $trigger = "exec"
                 }
@@ -189,7 +194,7 @@ function Start-Webcommand {
                     $payload = $line 
                     $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
                     $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                    $SendResponse = Invoke-RestMethod "$($global:config.hive_params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+                    $SendResponse = Invoke-RestMethod "$($global:config.$Param.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
                     Write-Host $method $messagetype $data
                     $trigger = "exec"
                 }
@@ -293,7 +298,7 @@ function Start-Webcommand {
                     }
                     $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
                     $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                    $SendResponse = Invoke-RestMethod "$($global:config.hive_params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+                    $SendResponse = Invoke-RestMethod "$($global:config.$Param.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
                     Write-Host $method $messagetype $data
                 }
                 "miner" {
@@ -304,7 +309,7 @@ function Start-Webcommand {
                             $data = "Miner Restarted"
                             $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Site $WebSite
                             $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                            $SendResponse = Invoke-RestMethod "$($global:config.hive_params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+                            $SendResponse = Invoke-RestMethod "$($global:config.$Param.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
                             Write-Host $method $messagetype $data
                             $trigger = "config"
                         }
@@ -314,7 +319,7 @@ function Start-Webcommand {
                             $data = "Miner stopped"
                             $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Site $WebSite
                             $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                            $SendResponse = Invoke-RestMethod "$($global:config.hive_params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+                            $SendResponse = Invoke-RestMethod "$($global:config.$Param.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
                             Write-Host $method $messagetype $data
                             $GetMiner = Get-Content ".\build\pid\miner_pid.txt"
                             if ($GetMiner) { $MinerProcess = Get-PRocess -ID $GetMiner -ErrorAction SilentlyContinue; if ($MinerProcess) { Stop-Process $MinerProcess } }
@@ -326,7 +331,7 @@ function Start-Webcommand {
                             $data = "Miner started"
                             $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Site $WebSite
                             $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                            $SendResponse = Invoke-RestMethod "$($global:config.hive_params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+                            $SendResponse = Invoke-RestMethod "$($global:config.$Param.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
                             Write-Host $method $messagetype $data
                             $trigger = "config"
                         }
@@ -344,7 +349,7 @@ function Start-Webcommand {
                     $payload = $line 
                     $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
                     $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                    $SendResponse = Invoke-RestMethod "$($global:config.hive_params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+                    $SendResponse = Invoke-RestMethod "$($global:config.$Param.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
                     Write-Host $method $messagetype $data
                     $trigger = "exec"
                 }
@@ -362,7 +367,7 @@ function Start-Webcommand {
             $payload = $line
             $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
             $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-            $SendResponse = Invoke-RestMethod "$($global:config.hive_params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+            $SendResponse = Invoke-RestMethod "$($global:config.$Param.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
             Write-Host $method $messagetype $data
             $trigger = "exec"
         }
@@ -378,7 +383,7 @@ function Start-Webcommand {
             $payload = $line
             $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
             $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-            $SendResponse = Invoke-RestMethod "$($global:config.hive_params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+            $SendResponse = Invoke-RestMethod "$($global:config.$Param.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
             Write-Host $method $messagetype $data
             $trigger = "exec"
         }
@@ -405,11 +410,11 @@ function Start-Webcommand {
                         $data = "Password change received, wait for next message..."
                         $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Site $WebSite
                         $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                        $SendResponse = Invoke-RestMethod "$($global:config.hive_params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+                        $SendResponse = Invoke-RestMethod "$($global:config.$Param.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
                         $SendResponse
-                        $DoResponse = @{method = "password_change_received"; params = @{rig_id = $global:config.hive_params.HiveID; passwd = $global:config.hive_params.HivePassWord }; jsonrpc = "2.0"; id = "0" }
+                        $DoResponse = @{method = "password_change_received"; params = @{rig_id = $global:config.$Param.HiveID; passwd = $global:config.$Param.HivePassWord }; jsonrpc = "2.0"; id = "0" }
                         $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                        $Send2Response = Invoke-RestMethod "$($global:config.hive_params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+                        $Send2Response = Invoke-RestMethod "$($global:config.$Param.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
                     }
                 }
                 $NewHiveKeys | ConvertTo-Json | Set-Content ".\build\txt\hivekeys.txt"        
@@ -470,7 +475,7 @@ function Start-Webcommand {
   
                 $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Site $WebSite
                 $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                $SendResponse = Invoke-RestMethod "$($global:config.hive_params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+                $SendResponse = Invoke-RestMethod "$($global:config.$Param.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
                 $SendResponse
                 $Params | convertto-Json | Out-File ".\config\parameters\newarguments.json"
             }

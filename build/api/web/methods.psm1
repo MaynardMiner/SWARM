@@ -149,3 +149,16 @@ function Get-WebModules {
     }
     $Web_Mods | %{ Add-Module $_.FullName}
 }
+
+function Remove-WebModules {
+    Param(
+        [Parameter(Position=0,Mandatory=$true)]
+        [string]$Site
+    )
+    
+    Switch($Site) {
+        "HiveOS" { $Web_Mods = Get-ChildItem ".\build\api\hiveos";}
+        "SWARM" { $Web_Mods = Get-ChildItem ".\build\api\SWARM";}
+    }
+    $Web_Mods | %{ Remove-Module -Name "$($_.BaseName)"}
+}

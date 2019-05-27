@@ -182,8 +182,8 @@ $global:BTCExchangeRate = $Null
 ##Determine Net Modules
 $global:NetModules = @()
 $global:WebSites = @()
-if ($Config.Params.Farm_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") { $global:NetModules += ".\build\api\hiveos"; $global:WebSites += "HiveOS" }
-if ($Config.Params.Swarm_Hash -eq "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") { $global:NetModules += ".\build\api\SWARM"; $global:WebSites += "SWARM" }
+if ($Global:Config.Params.Farm_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" -or (Test-Path "/hive/miners") ) { $global:NetModules += ".\build\api\hiveos"; $global:WebSites += "HiveOS" }
+#if ($Config.Params.Swarm_Hash -eq "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") { $global:NetModules += ".\build\api\SWARM"; $global:WebSites += "SWARM" }
 
 ## Initialize
 $global:GPU_Count = $null
@@ -380,9 +380,23 @@ While ($true) {
 
         ##Send error if no miners found
         $global:Miner_HashTable = $Null
+        $global:Miners = $Null
         if ($Global:Miners.Count -eq 0) {
-            $WebMessage = "No Miners Found! Check Arguments/Net Connection"
-            Send-Warning $WebMessage
+            $HiveMessage = "No Miners Found! Check Arguments/Net Connection"
+            $HiveWarning = @{result = @{command = "timeout" } }
+            if ($global:NetModules) {
+                $global:Websites | ForEach-Object {
+                    $Sel = $_
+                    try {
+                        Add-Module "$global:Web\methods.psm1"
+                        Get-WebModules $Sel
+                        $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
+                    }
+                    catch { Write-Log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
+                    Remove-WebModules $sel
+                }
+            }
+            Write-Log "$HiveMessage" -ForegroundColor Red
             start-sleep $global:Config.Params.Interval;
             continue  
         }
@@ -419,7 +433,7 @@ While ($true) {
 
         Add-Module "$global:global\include.psm1"
         Add-Module "$global:global\stats.psm1"
-        if($Global:Config.params.Type -like "*ASIC*") { Add-Module "$global:global\hashrates.psm1" }
+        if ($Global:Config.params.Type -like "*ASIC*") { Add-Module "$global:global\hashrates.psm1" }
         Add-Module "$global:Control\config.psm1"
 
         ## Build the Current Active Miners
