@@ -14,6 +14,7 @@ function Start-HiveTune {
     $Url = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/workers/$($Global:Config.hive_params.HiveID)"
     $CheckOC = $false
     $CheckDate = Get-Date
+    $Success = $false
 
     ## Generate New Auth Token:
     #$Auth = @{ login = "User"; password = "pass"; twofa_code = ""; remember = $true; } | ConvertTo-Json -Compress
@@ -38,6 +39,7 @@ function Start-HiveTune {
         if ($A.commands.id) { Write-Log "Sent OC to HiveOS" -ForegroundColor Green; $CheckOC = $true; }
     } else {
         Write-Log "HiveOS Settings Already Set to $Message" -ForegroundColor Cyan
+        $Success = $true
     }
 
     if ($CheckOC) {
@@ -59,7 +61,10 @@ function Start-HiveTune {
                         Start-Sleep -Milliseconds 50
                     } Until ( $CheckTime -le 0 -or $TOtalTime -ge 30 )
                     $OCT.Stop()
-                    if($OCT.Elapsed.TotalSeconds -ge 30){Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow}
+                    if($OCT.Elapsed.TotalSeconds -ge 30){
+                        $Success = $false
+                        Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow
+                    } else{$Success -eq $true}
                 }
                 if ($CheckAMD) {
                     Write-Log "Verifying OC was Set...." -ForegroundColor Cyan
@@ -73,7 +78,10 @@ function Start-HiveTune {
                         Start-Sleep -Milliseconds 50
                     } Until ( $CheckTime -le 0 -or $TOtalTime -ge 30 )
                     $OCT.Stop()
-                    if($OCT.Elapsed.TotalSeconds -ge 30){Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow}
+                    if($OCT.Elapsed.TotalSeconds -ge 30){
+                        $Success = $false
+                        Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow
+                    } else{$Success -eq $true}
                 }
             }
             "linux" {
@@ -88,7 +96,10 @@ function Start-HiveTune {
                         $TOtalTime = $OCT.Elapsed.TotalSeconds
                         Start-Sleep -Milliseconds 50
                     } Until ( $CheckTime -le 0 -or $TOtalTime -ge 30 )
-                    if($OCT.Elapsed.TotalSeconds -ge 30){Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow}
+                    if($OCT.Elapsed.TotalSeconds -ge 30){
+                        $Success = $false
+                        Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow
+                    } else{$Success -eq $true}
                 }
                 if ($CheckAMD) {
                     Write-Log "Verifying OC was Set...." -ForegroundColor Cyan
@@ -102,9 +113,14 @@ function Start-HiveTune {
                         Start-Sleep -Milliseconds 50
                     } Until ( $CheckTime -le 0 -or $TOtalTime -ge 30 )
                     $OCT.Stop()
-                    if($OCT.Elapsed.TotalSeconds -ge 30){Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow}
+                    if($OCT.Elapsed.TotalSeconds -ge 30){
+                        $Success = $false
+                        Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow
+                    } else{$Success -eq $true}
                 }
             }
         }
     }
+    
+    $Success
 }

@@ -3,7 +3,7 @@ function Get-Params {
     $Global:stats.Add("params", @{ })
     $Global:stats.Add("stats", @{ })
     $global:Config.Add("params", @{ })
-    $global:Config.Add("Hive_Params", @{ })
+    $global:Config.Add("hive_params", @{ })
     if (Test-Path ".\config\parameters\newarguments.json") {
         $arguments = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json
         $arguments.PSObject.Properties.Name | % { $global:Config.Params.Add("$($_)", $arguments.$_) }
@@ -14,25 +14,25 @@ function Get-Params {
         $arguments.PSObject.Properties.Name | % { $global:Config.Params.Add("$($_)", $arguments.$_) }
         $arguments = $null
     }
-    if (Test-Path ".\build\txt\Hive_Params_keys.txt") {
-        $HiveStuff = Get-Content ".\build\txt\Hive_Params_keys.txt" | ConvertFrom-Json
-        $HiveStuff.PSObject.Properties.Name | % { $global:Config.Hive_Params.Add("$($_)", $HiveStuff.$_) }
+    if (Test-Path ".\build\txt\hive_params_keys.txt") {
+        $HiveStuff = Get-Content ".\build\txt\hive_params_keys.txt" | ConvertFrom-Json
+        $HiveStuff.PSObject.Properties.Name | % { $global:Config.hive_params.Add("$($_)", $HiveStuff.$_) }
         $HiveStuff = $null
     }
-    if (-not $global:Config.Hive_Params.HiveID) {
+    if (-not $global:Config.hive_params.HiveID) {
         Write-Host "No HiveID- HiveOS Disabled"
-        $global:Config.Hive_Params.Add("HiveID", $Null)
-        $global:Config.Hive_Params.Add("HivePassword", $Null)
-        $global:Config.Hive_Params.Add("HiveWorker", $Null)
-        $global:Config.Hive_Params.Add("HiveMirror", "https://api.hiveos.farm")
-        $global:Config.Hive_Params.Add("FarmID", $Null)
-        $global:Config.Hive_Params.Add("Wd_Enabled", $null)
-        $Global:config.Hive_Params.Add("Wd_miner", $Null)
-        $Global:config.Hive_Params.Add("Wd_reboot", $Null)
-        $Global:config.Hive_Params.Add("Wd_minhashes", $Null)
-        $Global:config.Hive_Params.Add("Miner", $Null)
-        $global:Config.Hive_Params.Add("Miner2", $Null)
-        $global:Config.Hive_Params.Add("Timezone", $Null)
+        $global:Config.hive_params.Add("HiveID", $Null)
+        $global:Config.hive_params.Add("HivePassword", $Null)
+        $global:Config.hive_params.Add("HiveWorker", $Null)
+        $global:Config.hive_params.Add("HiveMirror", "https://api.hiveos.farm")
+        $global:Config.hive_params.Add("FarmID", $Null)
+        $global:Config.hive_params.Add("Wd_Enabled", $null)
+        $Global:config.hive_params.Add("Wd_miner", $Null)
+        $Global:config.hive_params.Add("Wd_reboot", $Null)
+        $Global:config.hive_params.Add("Wd_minhashes", $Null)
+        $Global:config.hive_params.Add("Miner", $Null)
+        $global:Config.hive_params.Add("Miner2", $Null)
+        $global:Config.hive_params.Add("Timezone", $Null)
     }
     if (-not $global:Config.Params.Platform) {
         write-Host "Detecting Platform..." -Foreground Cyan

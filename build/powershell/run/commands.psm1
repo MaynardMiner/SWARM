@@ -109,14 +109,12 @@ function Update-Logging {
     if ($global:logtimer.Elapsed.TotalSeconds -ge 3600) {
         Start-Sleep -S 3
         if (Test-Path ".\logs\*active*") {
-            Set-Location ".\logs"
-            $OldActiveFile = Get-ChildItem "*active*"
+            $OldActiveFile = Get-ChildItem ".\logs" | Where BaseName -like "*active*"
             $OldActiveFile | ForEach-Object {
-                $RenameActive = $_ -replace ("-active", "")
+                $RenameActive = $_.fullname -replace ("-active", "")
                 if (Test-Path $RenameActive) { Remove-Item $RenameActive -Force }
-                Rename-Item $_ -NewName $RenameActive -force
+                Rename-Item $_.FullName -NewName $RenameActive -force
             }
-            Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
         }
         $GLobal:LogNum++
         $global:logname = ".\logs\miner$($global:LogNum)-active.log"

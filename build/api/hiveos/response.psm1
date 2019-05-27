@@ -12,7 +12,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 function Set-Stats($Site) {
     Switch($Site){
-        "HiveOS" {$Params = "Hive_Params"}
+        "HiveOS" {$Params = "hive_params"}
         "SWARM" {$Params = "Swarm_Params"}
     }
     $mem = @($($global:ramfree), $($global:ramtotal - $global:ramfree))
@@ -74,7 +74,7 @@ function Set-Response {
     )
      
     Switch($Site){
-        "HiveOS" {$Params = "Hive_Params"}
+        "HiveOS" {$Params = "hive_params"}
         "SWARM" {$Params = "Swarm_Params"}
     }
     

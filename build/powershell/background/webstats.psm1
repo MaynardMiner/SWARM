@@ -14,7 +14,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ## The below is for interfacing with HiveOS.
 
 function Send-WebStats {
-    if ($global:Config.Hive_Params.HiveID -and -not (test-Path "/hive/miners")) {
+    if ($global:Config.hive_params.HiveID -and -not (test-Path "/hive/miners")) {
         $global:WebSites | ForEach-Object {
             Get-WebModules $_
             $Stats = Set-Stats $_

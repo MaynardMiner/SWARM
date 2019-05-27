@@ -122,7 +122,7 @@ function Start-LaunchCode {
             }
 
             "*AMD*" {
-                if ($MinerCurrent.Devices -ne "none") {   
+                if ($MinerCurrent.Devices -ne "none") {
                     switch ($MinerCurrent.DeviceCall) {
                         "claymore" { $MinerArguments = "-di $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "xmrstak" { $MinerArguments = "$($MinerCurrent.Arguments)" }
@@ -148,7 +148,7 @@ function Start-LaunchCode {
                             }
                             Clear-Content ".\lyclMiner.conf" -force
                             $NewLines | Set-Content ".\lyclMiner.conf"
-                            Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+                            Set-Location $Global:Dir
                         }           
                     }
                 }
@@ -169,7 +169,7 @@ function Start-LaunchCode {
                             }
                             Clear-Content ".\lyclMiner.conf" -force
                             $NewLines | Set-Content ".\lyclMiner.conf"
-                            Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+                            Set-Location $Global:Dir
                         }
                         "grin-miner" { set-minerconfig $NewMiner $Logs }
                         "gminer" { $MinerArguments = "-d $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)" }

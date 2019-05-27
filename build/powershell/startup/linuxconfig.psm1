@@ -305,18 +305,18 @@ function Start-LinuxConfig {
         ## Get Hive Config
         $RigConf = Get-Content $Rig_File
         $RigConf = $RigConf | ConvertFrom-StringData                
-        $global:Config.Hive_Params.HiveWorker = $RigConf.WORKER_NAME -replace "`"", ""
-        $global:Config.Hive_Params.HivePassword = $RigConf.RIG_PASSWD -replace "`"", ""
-        $global:Config.Hive_Params.HiveMirror = $RigConf.HIVE_HOST_URL -replace "`"", ""
-        $global:Config.Hive_Params.FarmID = $RigConf.FARM_ID -replace "`"", ""
-        $global:Config.Hive_Params.HiveID = $RigConf.RIG_ID -replace "`"", ""
-        $global:Config.Hive_Params.Wd_enabled = $RigConf.WD_ENABLED -replace "`"", ""
-        $global:Config.Hive_Params.Wd_Miner = $RigConf.WD_MINER -replace "`"", ""
-        $global:Config.Hive_Params.Wd_reboot = $RigConf.WD_REBOOT -replace "`"", ""
-        $global:Config.Hive_Params.Wd_minhashes = $RigConf.WD_MINHASHES -replace "`"", ""
-        $global:Config.Hive_Params.Miner = $RigConf.MINER -replace "`"", ""
-        $global:Config.Hive_Params.Miner2 = $RigConf.MINER2 -replace "`"", ""
-        $global:Config.Hive_Params.Timezone = $RigConf.TIMEZONE -replace "`"", ""
+        $global:Config.hive_params.HiveWorker = $RigConf.WORKER_NAME -replace "`"", ""
+        $global:Config.hive_params.HivePassword = $RigConf.RIG_PASSWD -replace "`"", ""
+        $global:Config.hive_params.HiveMirror = $RigConf.HIVE_HOST_URL -replace "`"", ""
+        $global:Config.hive_params.FarmID = $RigConf.FARM_ID -replace "`"", ""
+        $global:Config.hive_params.HiveID = $RigConf.RIG_ID -replace "`"", ""
+        $global:Config.hive_params.Wd_enabled = $RigConf.WD_ENABLED -replace "`"", ""
+        $global:Config.hive_params.Wd_Miner = $RigConf.WD_MINER -replace "`"", ""
+        $global:Config.hive_params.Wd_reboot = $RigConf.WD_REBOOT -replace "`"", ""
+        $global:Config.hive_params.Wd_minhashes = $RigConf.WD_MINHASHES -replace "`"", ""
+        $global:Config.hive_params.Miner = $RigConf.MINER -replace "`"", ""
+        $global:Config.hive_params.Miner2 = $RigConf.MINER2 -replace "`"", ""
+        $global:Config.hive_params.Timezone = $RigConf.TIMEZONE -replace "`"", ""
 
         ## HiveOS Specific Stuff
         if ($NotHiveOS -eq $false) {
@@ -377,7 +377,7 @@ function Start-LinuxConfig {
     Get-Data
 
     ## Set Arguments/New Parameters
-    if ($global:Config.Hive_Params.HiveID) {
-        $global:Config.Hive_Params | ConvertTo-Json | Set-Content ".\build\txt\hivekeys.txt"
+    if ($global:Config.hive_params.HiveID) {
+        $global:Config.hive_params | ConvertTo-Json | Set-Content ".\build\txt\hivekeys.txt"
     }
 }

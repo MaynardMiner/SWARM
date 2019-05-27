@@ -42,9 +42,9 @@ function Start-NewMiners {
         [string]$Reason
     )
 
-    $HiveOCTune = $false
     $ClearedOC = $false
     $WebSiteOC = $False
+    $OC_Success = $false
 
     $global:BestActiveMiners | ForEach-Object {
         $Miner = $_
@@ -70,10 +70,10 @@ function Start-NewMiners {
                         switch ($_) {
                             "HiveOS" {
                                 if ($global:Config.Params.API_Key -and $global:Config.Params.API_Key -ne "") {
-                                    if ($HiveOCTune -eq $false) {
+                                    if ($WebSiteOC -eq $false) {
                                         if ($Miner.Type -notlike "*ASIC*" -and $Miner.Type -like "*1*") {
-                                            Start-HiveTune $Miner.Algo
-                                            $HiveOCTune = $true
+                                            $OC_Success = Start-HiveTune $Miner.Algo
+                                            $WebSiteOC = $true
                                         }
                                     }
                                 }
@@ -85,13 +85,16 @@ function Start-NewMiners {
                     }
                     $GetNetMods | ForEach-Object { Remove-Module -Name "$($_.BaseName)" }
                 }
-                else {
+                if ($OC_Success -eq $false -and $WebSiteOC -eq $true) {
                     if ($ClearedOC -eq $False) {
                         $OCFile = ".\build\txt\oc-settings.txt"
                         if (Test-Path $OCFile) { Clear-Content $OcFile -Force; "Current OC Settings:" | Set-Content $OCFile }
                         $ClearedOC = $true
                     }
-                    if ($Miner.Type -notlike "*ASIC*") { Start-OC -NewMiner $Current -Website $Website }
+                    if ($Miner.Type -notlike "*ASIC*") {
+                        Add-Module "$Global:Control\octune.ps1"
+                        Start-OC -NewMiner $Current -Website $Website
+                    }
                 }
             }
 

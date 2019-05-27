@@ -58,7 +58,7 @@ function Start-Hello($RigData) {
     Write-Log "$GetHello" -ForegroundColor Green
 
     try {
-        $response = Invoke-RestMethod "$($Global:Config.Hive_Params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body ($Hello | ConvertTo-Json -Depth 3 -Compress) -ContentType 'application/json'
+        $response = Invoke-RestMethod "$($Global:Config.hive_params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body ($Hello | ConvertTo-Json -Depth 3 -Compress) -ContentType 'application/json'
         $response | ConvertTo-Json | Out-File ".\build\txt\get-hive-hello.txt"
         $message = $response
     }
@@ -70,7 +70,7 @@ function Start-Hello($RigData) {
 function Start-WebStartup($response,$Site) {
     
     switch($Site){
-        "HiveOS" {$Params = "Hive_Params"}
+        "HiveOS" {$Params = "hive_params"}
         "SWARM" {$Params = "SWARM_Params"}
     }
 
