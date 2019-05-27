@@ -10,7 +10,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
-function Set-HiveResponse {
+function Set-Stats($Site) {
+    Switch($Site){
+        "HiveOS" {$Params = "Hive_Params"}
+        "SWARM" {$Params = "Swarm_Params"}
+    }
     $mem = @($($global:ramfree), $($global:ramtotal - $global:ramfree))
     $global:GPUHashTable = $global:GPUHashTable | foreach { $_ -replace ("GPUKHS=", "") }
     $global:GPUPowerTable = $global:GPUPowerTable | foreach { $_ -replace ("GPUWATTS=", "") }
@@ -20,12 +24,12 @@ function Set-HiveResponse {
 
     $Stats = @{
         method  = "stats"
-        rig_id  = $global:Config.hive_Params.HiveID
+        rig_id  = $global:Config.$Params.HiveID
         jsonrpc = "2.0"
         id      = "0"
         params  = @{
-            rig_id      = $global:Config.hive_Params.HiveID
-            passwd      = $global:Config.hive_params.HivePassword
+            rig_id      = $global:Config.$Params.HiveID
+            passwd      = $global:Config.$Params.HivePassword
             miner       = "custom"
             meta        = @{
                 custom = @{
@@ -53,28 +57,34 @@ function Set-HiveResponse {
     $Stats
 }
 
-function Add-HiveResponse {
+function Set-Response {
     Param(
         [Parameter(Mandatory = $false)]
         [string]$method,
         [Parameter(Mandatory = $false)]
-        [string]$messagetype,
+        [string]$messagetype, 
         [Parameter(Mandatory = $false)]
         [string]$data,
         [Parameter(Mandatory = $false)]
         [array]$payload,
         [Parameter(Mandatory = $false)]
-        [string]$CommandID
+        [string]$CommandID,
+        [Parameter(Mandatory = $false)]
+        [string]$Site
     )
      
+    Switch($Site){
+        "HiveOS" {$Params = "Hive_Params"}
+        "SWARM" {$Params = "Swarm_Params"}
+    }
     $myresponse = @{
         method  = $method
-        rig_id  = $global:Config.hive_Params.HiveID
+        rig_id  = $global:Config.$Params.HiveID
         jsonrpc = "2.0"
         id      = "0"
         params  = @{
-            rig_id = $global:Config.hive_Params.HiveID
-            passwd = $global:Config.hive_params.HivePassword
+            rig_id = $global:Config.$Params.HiveID
+            passwd = $global:Config.$Params.HivePassword
             type   = $messagetype
             data   = $data
         }

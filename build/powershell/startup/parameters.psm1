@@ -2,6 +2,7 @@ function Get-Parameters {
     $Global:config.add("params", @{ })
     $Global:Config.add("user_params",@{ })
     $Global:Config.add("Hive_Params",@{})
+    $Global:Config.add("SWARM_Params",@{})
     if (Test-Path ".\config\parameters\newarguments.json") {
         $arguments = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json
         $arguments.PSObject.Properties.Name | % { $global:Config.Params.Add("$($_)", $arguments.$_) }
@@ -30,6 +31,20 @@ function Get-Parameters {
         $Global:config.Hive_Params.Add("Miner", $Null)
         $global:Config.Hive_Params.Add("Miner2", $Null)
         $global:Config.Hive_Params.Add("Timezone", $Null)
+    }
+    if (-not $global:Config.SWARM_Params.HiveID) {
+        $global:Config.SWARM_Params.Add("HiveID", $Null)
+        $global:Config.SWARM_Params.Add("HivePassword", $Null)
+        $global:Config.SWARM_Params.Add("HiveWorker", $Null)
+        $global:Config.SWARM_Params.Add("HiveMirror", "SWARMSITE")
+        $global:Config.SWARM_Params.Add("FarmID", $Null)
+        $global:Config.SWARM_Params.Add("Wd_Enabled", $null)
+        $Global:config.SWARM_Params.Add("Wd_miner", $Null)
+        $Global:config.SWARM_Params.Add("Wd_reboot", $Null)
+        $Global:config.SWARM_Params.Add("Wd_minhashes", $Null)
+        $Global:config.SWARM_Params.Add("Miner", $Null)
+        $global:Config.SWARM_Params.Add("Miner2", $Null)
+        $global:Config.SWARM_Params.Add("Timezone", $Null)
     }
 
     if (-not $global:Config.Params.Platform) {

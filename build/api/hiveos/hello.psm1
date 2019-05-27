@@ -10,7 +10,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
-function Start-Peekaboo($RigData) {
+function Start-Hello($RigData) {
 
     $Hello = @{
         method  = "hello"
@@ -55,10 +55,81 @@ function Start-Peekaboo($RigData) {
 
     try {
         $response = Invoke-RestMethod "$($Global:Config.Hive_Params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body ($Hello | ConvertTo-Json -Depth 3 -Compress) -ContentType 'application/json'
-        $response | ConvertTo-Json | Out-File ".\build\txt\get-hello.txt"
+        $response | ConvertTo-Json | Out-File ".\build\txt\get-hive-hello.txt"
         $message = $response
     }
     catch { $message = "Failed To Contact HiveOS.Farm" }
 
     return $message
+}
+
+function Start-WebStartup($response,$Site) {
+    
+    switch($Site){
+        "HiveOS" {$Params = "Hive_Params"}
+        "SWARM" {$Params = "SWARM_Params"}
+    }
+
+    if ($response.result) { $RigConf = $response }
+    elseif (Test-Path ".\build\txt\get-hive-hello.txt") {
+        Write-Log "WARNGING: Failed To Contact HiveOS. Using Last Known Configuration"
+        Start-Sleep -S 2
+        $RigConf = Get-Content ".\build\txt\get-hive-hello.txt" | ConvertFrom-Json
+    }
+    if ($RigConf) {
+        $RigConf.result | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+            $Action = $_
+            Switch ($Action) {
+                "config" {
+                    $Rig = [string]$RigConf.result.config | ConvertFrom-StringData                
+                    $global:Config.$Params.HiveWorker = $Rig.WORKER_NAME -replace "`"", ""
+                    $global:Config.$Params.HivePassword = $Rig.RIG_PASSWD -replace "`"", ""
+                    $global:Config.$Params.HiveMirror = $Rig.HIVE_HOST_URL -replace "`"", ""
+                    $global:Config.$Params.FarmID = $Rig.FARM_ID -replace "`"", ""
+                    $global:Config.$Params.HiveID = $Rig.RIG_ID -replace "`"", ""
+                    $global:Config.$Params.Wd_enabled = $Rig.WD_ENABLED -replace "`"", ""
+                    $global:Config.$Params.Wd_Miner = $Rig.WD_MINER -replace "`"", ""
+                    $global:Config.$Params.Wd_reboot = $Rig.WD_REBOOT -replace "`"", ""
+                    $global:Config.$Params.Wd_minhashes = $Rig.WD_MINHASHES -replace "`"", ""
+                    $global:Config.$Params.Miner = $Rig.MINER -replace "`"", ""
+                    $global:Config.$Params.Miner2 = $Rig.MINER2 -replace "`"", ""
+                    $global:Config.$Params.Timezone = $Rig.TIMEZONE -replace "`"", ""
+
+                    if (Test-Path ".\build\txt\hivekeys.txt") { $OldHiveKeys = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json }
+
+                    ## If password was changed- Let Hive know message was recieved
+
+                    if ($OldHiveKeys) {
+                        if ("$($global:Config.$Params.HivePassword)" -ne "$($OldHiveKeys.HivePassword)") {
+                            $method = "message"
+                            $messagetype = "warning"
+                            $data = "Password change received, wait for next message..."
+                            $DoResponse = Set-Response -Method $method -MessageType $messagetype -Data $data -CommandID $command.result.id -Site $Site
+                            $sendResponse = $DoResponse | Invoke-WebCommand -Site $Site -Action "Message"
+                            $SendResponse
+                            $DoResponse = @{method = "password_change_received"; params = @{rig_id = $global:Config.$Params.HiveID; passwd = $global:Config.$Params.HivePassword }; jsonrpc = "2.0"; id = "0" }
+                            $send2Response = $DoResponse | Invoke-WebCommand -Site $Site -Action "Message"
+                        }
+                    }
+
+                    ## Set Arguments/New Parameters
+                    $global:Config.$Params | ConvertTo-Json | Set-Content ".\build\txt\$($Params)_keys.txt"
+                }
+
+                ##If Hive Sent OC Start SWARM OC
+                "nvidia_oc" {
+                    Start-NVIDIAOC $RigConf.result.nvidia_oc 
+                }
+                "amd_oc" {
+                    Start-AMDOC $RigConf.result.amd_oc
+                }
+            }
+        }
+        ## Print Data to output, so it can be recorded in transcript
+        $RigConf.result.config
+    }
+    else {
+        write-Log "No HiveOS Rig.conf- Do you have an account? Did you use your farm hash?"
+        Start-Sleep -S 2
+    }
 }

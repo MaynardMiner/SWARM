@@ -47,9 +47,10 @@ if ($P -notlike "*$Global:Dir\build\powershell*") {
     Write-Host "Modules Are Loaded" -ForegroundColor Green
 }
 
+Import-Module "$Global:Global\modules.psm1" -Scope Global
 $global:Modules = @()
 
-Import-Module -Name "$global:background\startup.psm1"
+Add-Module "$global:background\startup.psm1"
 ## Get Parameters
 $Global:config = [hashtable]::Synchronized(@{ })
 $Global:stats = [hashtable]::Synchronized(@{ })
@@ -106,11 +107,11 @@ While ($True) {
     $global:HIVE_ALGO = @{ }; $Group1 = $null; $Default_Group = $null; 
     $Hive = $null; $global:UPTIME = 0;
 
-    Import-Module -Name "$global:background\run.psm1"
-    Import-Module -Name "$global:background\initial.psm1"
-    Import-Module -Name "$global:global\gpu.psm1"
-    Import-Module -Name "$global:global\stats.psm1"
-    Import-Module -Name "$global:global\hashrates.psm1"
+    Add-Module "$global:background\run.psm1"
+    Add-Module "$global:background\initial.psm1"
+    Add-Module "$global:global\gpu.psm1"
+    Add-Module "$global:global\stats.psm1"
+    Add-Module "$global:global\hashrates.psm1"
     
     Invoke-MinerCheck
     New-StatTables
@@ -268,147 +269,147 @@ While ($True) {
             switch ($global:MinerAPI) {
                 'energiminer' { 
                     try { 
-                        Import-Module -Name "$global:miners\energiminer.psm1"; 
+                        Add-Module "$global:miners\energiminer.psm1"; 
                         Get-StatsEnergiminer;
                         Remove-Module -name "energiminer"
                     } catch { Get-OhNo } 
                 }
                 'claymore' { 
                     try { 
-                        Import-Module -Name "$global:miners\ethminer.psm1"; 
+                        Add-Module "$global:miners\ethminer.psm1"; 
                         Get-StatsEthminer;
                         Remove-Module -name "ethminer"
                     } catch { Get-OhNo } 
                 }
                 'excavator' {
                     try { 
-                        Import-Module -Name "$global:miners\excavator.psm1"; 
+                        Add-Module "$global:miners\excavator.psm1"; 
                         Get-StatsExcavator;
                         Remove-Module -name "excavator"
                     } catch { Get-OhNo } 
                 }
                 'miniz' { 
                     try { 
-                        Import-Module -Name "$global:miners\miniz.psm1"; 
+                        Add-Module "$global:miners\miniz.psm1"; 
                         Get-Statsminiz;
                         Remove-Module -name "miniz"
                     } catch { Get-OhNo } 
                 }
                 'gminer' { 
                     try { 
-                        Import-Module -Name "$global:miners\gminer.psm1"; 
+                        Add-Module "$global:miners\gminer.psm1"; 
                         Get-StatsGminer;
                         Remove-Module -name "gminer"
                     } catch { Get-OhNo } 
                 }
                 'grin-miner' { 
                     try { 
-                        Import-Module -Name "$global:miners\grinminer.psm1"; 
+                        Add-Module "$global:miners\grinminer.psm1"; 
                         Get-StartGrinMiner;
                         Remove-Module -name "grinminer"
                     } catch { Get-OhNo } 
                 }
                 'ewbf' { 
                     try { 
-                        Import-Module -Name "$global:miners\ewbf.psm1"; 
+                        Add-Module "$global:miners\ewbf.psm1"; 
                         Get-Statsewbf;
                         Remove-Module -name "ewbf"
                     } catch { Get-OhNo } 
                 }
                 'ccminer' { 
                     try { 
-                        Import-Module -Name "$global:miners\ccminer.psm1"; 
+                        Add-Module "$global:miners\ccminer.psm1"; 
                         Get-StatsCcminer;
                         Remove-Module -name "ccminer"
                     } catch { Get-OhNo } 
                 }
                 'bminer' { 
                     try { 
-                        Import-Module -Name "$global:miners\bminer.psm1"; 
+                        Add-Module "$global:miners\bminer.psm1"; 
                         Get-StatsBminer;
                         Remove-Module -name "bminer"
                     } catch { Get-OhNo } 
                 }
                 'trex' { 
                     try { 
-                        Import-Module -Name "$global:miners\trex.psm1"; 
+                        Add-Module "$global:miners\trex.psm1"; 
                         Get-StatsTrex;
                         Remove-Module -name "trex"
                     } catch { Get-OhNo } 
                 }
                 'dstm' { 
                     try { 
-                        Import-Module -Name "$global:miners\dstm.psm1"; 
+                        Add-Module "$global:miners\dstm.psm1"; 
                         Get-Statsdstm;
                         Remove-Module -name "dstm"
                     } catch { Get-OhNo } 
                 }
                 'lolminer' { 
                     try { 
-                        Import-Module -Name "$global:miners\lolminer.psm1"; 
+                        Add-Module "$global:miners\lolminer.psm1"; 
                         Get-Statslolminer;
                         Remove-Module -name "lolminer"
                     } catch { Get-OhNo } 
                 }
                 'sgminer-gm' { 
                     try { 
-                        Import-Module -Name "$global:miners\sgminer.psm1"; 
+                        Add-Module "$global:miners\sgminer.psm1"; 
                         Get-StatsSgminer;
                         Remove-Module -name "sgminer"
                     } catch { Get-OhNo } 
                 }
                 'cpuminer' { 
                     try { 
-                        Import-Module -Name "$global:miners\cpuminer.psm1"; 
+                        Add-Module "$global:miners\cpuminer.psm1"; 
                         Get-Statscpuminer;
                         Remove-Module -name "cpuminer"
                     } catch { Get-OhNo } 
                 }
                 'xmrstak' { 
                     try { 
-                        Import-Module -Name "$global:miners\xmrstak.psm1"; 
+                        Add-Module "$global:miners\xmrstak.psm1"; 
                         Get-Statsxmrstak;
                         Remove-Module -name "xmrstak"
                     } catch { Get-OhNo } 
                 }
                 'xmrig-opt' { 
                     try { 
-                        Import-Module -Name "$global:miners\xmrigopt.psm1"; 
+                        Add-Module "$global:miners\xmrigopt.psm1"; 
                         Get-Statsxmrigopt;
                         Remove-Module -name "xmrigopt"
                     } catch { Get-OhNo } 
                 }
                 'wildrig' { 
                     try { 
-                        Import-Module -Name "$global:miners\wildrig.psm1"; 
+                        Add-Module "$global:miners\wildrig.psm1"; 
                         Get-Statswildrig
                         Remove-Module -name "wildrig"
                     } catch { Get-OhNo } 
                 }
                 'cgminer' { 
                     try { 
-                        Import-Module -Name "$global:miners\cgminer.psm1"; 
+                        Add-Module "$global:miners\cgminer.psm1"; 
                         Get-Statscgminer
                         Remove-Module -name "cgminer"
                     } catch { Get-OhNo } 
                 }
                 'nebutech' { 
                     try { 
-                        Import-Module -Name "$global:miners\nbminer.psm1"; 
+                        Add-Module "$global:miners\nbminer.psm1"; 
                         Get-StatsNebutech
                         Remove-Module -name "nbminer"
                     } catch { Get-OhNo } 
                 }
                 'srbminer' { 
                     try { 
-                        Import-Module -Name "$global:miners\srbminer.psm1"; 
+                        Add-Module "$global:miners\srbminer.psm1"; 
                         Get-Statssrbminer
                         Remove-Module -name "srbminer"
                     } catch { Get-OhNo } 
                 }
                 'multiminer' { 
                     try { 
-                        Import-Module -Name "$global:miners\multiminer.psm1"; 
+                        Add-Module "$global:miners\multiminer.psm1"; 
                         Get-Statsmultiminer
                         Remove-Module -name "multiminer"
                     } catch { Get-OhNo } 
@@ -538,11 +539,9 @@ HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
     Remove-Module -Name "run"
     
     if ($global:Websites) {
-        $GetNetMods = @($global:NetModules | Foreach { Get-ChildItem $_ })
-        $GetNetMods | ForEach-Object { Import-Module $_.FullName }
-        Import-Module -Name "$global:Web\methods.psm1"
-        Send-HiveStats
-        $GetNetMods | ForEach-Object {Remove-Module -Name "$($_.BaseName)"}
+        Add-Module "$global:Web\methods.psm1"
+        Add-Module "$global:background\webstats.psm1"
+        Send-WebStats
     }
 
     if ($RestartTimer.Elapsed.TotalSeconds -le 10) {

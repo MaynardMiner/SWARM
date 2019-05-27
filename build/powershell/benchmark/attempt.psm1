@@ -1,3 +1,26 @@
+function Get-MinerTimeout {
+    param(
+        [Parameter(Mandatory = $true, Position = 0)]
+        [string]$minerjson
+    )
+
+    $miner = $minerjson | ConvertFrom-Json
+    $reason = "error"
+
+    if ($Miner.hashrate -eq 0 -or $null -eq $Miner.hashrate) {
+        if ($null -eq $miner.xprocess) { $reason = "no start" }
+        else {
+            $MinerProc = Get-Process -Id $miner.xprocess.id -ErrorAction SilentlyContinue
+            if ($null -eq $MinerProc) { $reason = "crashed" }
+            else { $reason = "no hash" }
+        }
+    }
+    $RejectCheck = Join-Path ".\timeout\warnings" "$($miner.Name)_$($miner.Algo)_rejection.txt"
+    if (Test-Path $RejectCheck) { $reason = "rejections" }
+
+    return $reason
+}
+
 function Set-Power {
     param(
         [Parameter(Position=0, Mandatory=$true)]

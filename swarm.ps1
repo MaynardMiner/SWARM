@@ -56,7 +56,7 @@ try {
 catch { }
 $Net = $Null
 
-if(Test-Path "C:\") {
+if (Test-Path "C:\") {
     Start-Process "powershell" -ArgumentList "$global:dir\build\powershell\icon.ps1 `'$global:dir\build\apps\SWARM.ico`'" -NoNewWindow
 }
 
@@ -92,12 +92,12 @@ if ($P -notlike "*$Global:Dir\build\powershell*") {
     Write-Host "Modules Are Loaded" -ForegroundColor Green
 }
 
+Import-Module -Name "$Global:Global\modules.psm1" -Scope Global
 $global:Modules = @()
-. .\build\powershell\startup\modules.ps1
 
 ## Date Bug
 $global:cultureENUS = New-Object System.Globalization.CultureInfo("en-US")
-[cultureinfo]::CurrentCulture = 'en-US'
+Import-Module -Name "$Global:Global\modules.psm1"
 
 ## Startup Modules
 Add-Module "$global:global\include.psm1"
@@ -441,22 +441,14 @@ While ($true) {
         Stop-ActiveMiners
         Start-NewMiners -Reason "Launch"
 
-        ##Determine Benchmarking
-        $global:BenchmarkMode = $false
-        $global:BestActiveMiners | ForEach-Object {
-            $StatAlgo = $_.Algo -replace "`_","`-"        
-            if (-not (Test-Path ".\stats\$($_.Name)_$($StatAlgo)_hashrate.txt")) { 
-                $global:BenchmarkMode = $true; 
-            }
-        }
-
         ##Determing Interval
         Add-Module "$global:Control\notify.psm1"
+        Get-LaunchNotification
         $global:SWARM_IT = $false
         $global:MinerInterval = $null
         $global:MinerStatInt = $Null
         $global:ModeCheck = 0
-        Get-LaunchNotification
+        $global:BenchmarkMode = $false
         Get-Interval
         ##Get Shares
         $global:Share_Table = @{ }

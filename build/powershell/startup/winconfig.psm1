@@ -222,97 +222,29 @@ function Start-WindowsConfig {
     
     ## Websites
     if ($global:Websites) {
-        $GetNetMods = @($global:NetModules | Foreach { Get-ChildItem $_ })
-        $GetNetMods | ForEach-Object { Import-Module $_.FullName }
-        Import-Module -Name "$global:Web\methods.psm1"
+        Add-Module "$global:Web\methods.psm1"
         $rigdata = Get-RigData $Global:Config.Params.Platform
 
         $global:Websites | ForEach-Object {
-
             switch ($_) {
                 "HiveOS" {
-                    $hiveresponse = Start-Peekaboo $rigdata
-                    if ($hiveresponse.result) {
-                        $RigConf = $hiveresponse
-                    }
-                    elseif (Test-Path ".\build\txt\get-hello.txt") {
-                        Write-Log "WARNGING: Failed To Contact HiveOS. Using Last Known Configuration"
-                        Start-Sleep -S 2
-                        $RigConf = Get-Content ".\build\txt\get-hello.txt" | ConvertFrom-Json
-                    }
-                
-                    if ($RigConf) {
-                        $RigConf.result | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
-                            $Action = $_
-                
-                            Switch ($Action) {
-                                "config" {
-                                    $Rig = [string]$RigConf.result.config | ConvertFrom-StringData                
-                                    $global:Config.Hive_Params.HiveWorker = $Rig.WORKER_NAME -replace "`"", ""
-                                    $global:Config.Hive_Params.HivePassword = $Rig.RIG_PASSWD -replace "`"", ""
-                                    $global:Config.Hive_Params.HiveMirror = $Rig.HIVE_HOST_URL -replace "`"", ""
-                                    $global:Config.Hive_Params.FarmID = $Rig.FARM_ID -replace "`"", ""
-                                    $global:Config.Hive_Params.HiveID = $Rig.RIG_ID -replace "`"", ""
-                                    $global:Config.Hive_Params.Wd_enabled = $Rig.WD_ENABLED -replace "`"", ""
-                                    $global:Config.Hive_Params.Wd_Miner = $Rig.WD_MINER -replace "`"", ""
-                                    $global:Config.Hive_Params.Wd_reboot = $Rig.WD_REBOOT -replace "`"", ""
-                                    $global:Config.Hive_Params.Wd_minhashes = $Rig.WD_MINHASHES -replace "`"", ""
-                                    $global:Config.Hive_Params.Miner = $Rig.MINER -replace "`"", ""
-                                    $global:Config.Hive_Params.Miner2 = $Rig.MINER2 -replace "`"", ""
-                                    $global:Config.Hive_Params.Timezone = $Rig.TIMEZONE -replace "`"", ""
-                
-                                    if (Test-Path ".\build\txt\hivekeys.txt") { $OldHiveKeys = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json }
-                
-                                    ## If password was changed- Let Hive know message was recieved
-                
-                                    if ($OldHiveKeys) {
-                                        if ("$($global:Config.Hive_Params.HivePassword)" -ne "$($OldHiveKeys.HivePassword)") {
-                                            $method = "message"
-                                            $messagetype = "warning"
-                                            $data = "Password change received, wait for next message..."
-                                            $DoResponse = Add-HiveResponse -Method $method -MessageType $messagetype -Data $data -CommandID $command.result.id
-                                            $DoResponse = $DoResponse | ConvertTo-Json -Depth 1 -Compress
-                                            $SendResponse = Invoke-RestMethod "$($global:Config.Hive_Params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
-                                            $SendResponse
-                                            $DoResponse = @{method = "password_change_received"; params = @{rig_id = $global:Config.Hive_Params.HiveID; passwd = $global:Config.Hive_Params.HivePassword }; jsonrpc = "2.0"; id = "0" }
-                                            $DoResponse = $DoResponse | ConvertTo-Json -Depth 1 -Compress
-                                            $Send2Response = Invoke-RestMethod "$mirror/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
-                                        }
-                                    }
-                
-                                    ## Set Arguments/New Parameters
-                                    $global:Config.Hive_Params | ConvertTo-Json | Set-Content ".\build\txt\hivekeys.txt"
-                                }
-                
-                                ##If Hive Sent OC Start SWARM OC
-                                "nvidia_oc" {
-                                    Start-NVIDIAOC $RigConf.result.nvidia_oc 
-                                }
-                                "amd_oc" {
-                                    Start-AMDOC $RigConf.result.amd_oc
-                                }
-                            }
-                        }
-                        ## Print Data to output, so it can be recorded in transcript
-                        $RigConf.result.config
-                        $GetNetMods | ForEach-Object {Remove-Module $_.BaseName} 
-                        Remove-Module -Name "methods"
-                    }
-                    else {
-                        write-Log "No HiveOS Rig.conf- Do you have an account? Did you use your farm hash?"
-                        Start-Sleep -S 2
-                        $GetNetMods | ForEach-Object {Remove-Module $_.BaseName} 
-                        Remove-Module -Name "methods"
-                    }
+                    Get-WebModules "HiveOS"
+                    $response = $rigdata | Invoke-WebCommand -Site "HiveOS" -Action "Hello"
+                    Start-WebStartup $response "HiveOS"
                 }
-
+                "SWARM" {
+                    Get-WebModules "SWARM"
+                    $response = $rigdata | Invoke-WebCommand -Site "SWARM" -Action "Hello"
+                    Start-WebStartup $response "SWARM"
+                }
             }
-
         }
+
     }
+    Remove-Module -Name "methods"
 
-## Aaaaannnnd...Que that sexy logo. Go Time.
+    ## Aaaaannnnd...Que that sexy logo. Go Time.
 
-Get-SexyWinLogo
+    Get-SexyWinLogo
 
 }

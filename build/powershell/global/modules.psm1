@@ -1,7 +1,7 @@
 function Add-Module($Path) {
     $name = $(Get-Item $Path).BaseName
     $A = Get-Module | Where Name -eq $name
-    if (-not $A) { Import-Module -Name $Path }
+    if (-not $A) { Import-Module -Name $Path -Scope Global }
     if ($name -notin $global:Modules) { $global:Modules += $Name }
 }
 

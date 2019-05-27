@@ -80,13 +80,21 @@ function Get-LaunchNotification {
 }
 
 function Get-Interval {
+    ##Determine Benchmarking
+    $global:BestActiveMiners | ForEach-Object {
+        $StatAlgo = $_.Algo -replace "`_", "`-"        
+        if (-not (Test-Path ".\stats\$($_.Name)_$($StatAlgo)_hashrate.txt")) { 
+            $global:BenchmarkMode = $true; 
+        }
+    }
+
     if ($global:BenchmarkMode -eq $true) {
         write-Log "SWARM is Benchmarking Miners." -Foreground Yellow;
         $global:MinerInterval = $global:Config.Params.Benchmark
         $global:MinerStatInt = 1
     }
     else {
-        if ($global:Config.Params.SWARM_Mode -eq "Yes" -and $global:Donating -eq $False) {
+        if ($global:Config.Params.SWARM_Mode -eq "Yes") {
             $global:SWARM_IT = $true
             write-Log "SWARM MODE ACTIVATED!" -ForegroundColor Green;
             $global:SwitchTime = Get-Date
