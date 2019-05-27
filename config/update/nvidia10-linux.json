@@ -130,16 +130,6 @@
     "version": "8.24",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/klaust-linux-10.tar.gz"
   },
-  "lolminer": {
-    "name": "lolminer",
-    "type": "nvidia",
-    "NVIDIA1": ".\\bin\\lolMiner-NVIDIA-1\\lolMiner",
-    "NVIDIA2": ".\\bin\\lolMiner-NVIDIA-2\\lolMiner",
-    "NVIDIA3": ".\\bin\\lolMiner-NVIDIA-3\\lolMiner",
-    "minername": "lolMiner",
-    "version": "0.43",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/lolMiner-Linux.tar.gz"
-  },
   "tpruvot": {
     "name": "tpruvot",
     "type": "nvidia",
