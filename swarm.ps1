@@ -471,7 +471,6 @@ While ($true) {
         Remove-Modules
 
         ##Clear Variables To Reduce Memory Footprint:
-        $global:bestminers_combo = $Null
         $global:BusData = $null
         $global:BanHammer = $Null
         $global:Config.Pool_Algos = $null
@@ -510,6 +509,7 @@ While ($true) {
         Get-PriceMessage
         Get-Commands
         $Global:Miners = $Null
+        $global:bestminers_combo = $Null
         Get-Logo
         Update-Logging
         Get-Date | Out-File ".\build\txt\mineractive.txt"

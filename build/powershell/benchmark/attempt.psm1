@@ -122,13 +122,13 @@ function Start-Benchmark {
                                     $GetWatts = Get-Content ".\config\power\power.json" | ConvertFrom-Json
                                     if ($GetWatts.$($_.Algo)) {
                                         $GetWatts.$($_.Algo)."$($_.Type)_Watts" = "$GPUPower"
-                                        $GetWatts | ConvertTo-Json -Depth 3 | Set-Content ".\config\power.json"
+                                        $GetWatts | ConvertTo-Json -Depth 3 | Set-Content ".\config\power\power.json"
                                     }
                                     else {
                                         $WattTypes = @{NVIDIA1_Watts = ""; NVIDIA2_Watts = ""; NVIDIA3_Watts = ""; AMD1_Watts = ""; CPU_Watts = "" }
                                         $GetWatts | Add-Member "$($_.Algo)" $WattTypes
                                         $GetWatts.$($_.Algo)."$($_.Type)_Watts" = "$GPUPower"
-                                        $GetWatts | ConvertTo-Json -Depth 3 | Set-Content ".\config\power.json"
+                                        $GetWatts | ConvertTo-Json -Depth 3 | Set-Content ".\config\power\power.json"
                                     }
                                 }
                             }
@@ -138,14 +138,16 @@ function Start-Benchmark {
                                 if ($global:Config.Params.WattOMeter -eq "yes" -and $_.Type -ne "CPU") {
                                     $GetWatts = Get-Content ".\config\power\power.json" | ConvertFrom-Json
                                     if ($GetWatts.$($_.Algo)) {
-                                        $GetWatts.$($_.Algo)."$($_.Type)_Watts" = "$GPUPower"
-                                        $GetWatts | ConvertTo-Json -Depth 3 | Set-Content ".\config\power.json"
+                                        $StatPower = Set-Stat -Name "$($_.Name)_$($NewName)_Watts" -Value $GPUPower
+                                        $GetWatts.$($_.Algo)."$($_.Type)_Watts" = "$($StatPower.Day)"
+                                        $GetWatts | ConvertTo-Json -Depth 3 | Set-Content ".\config\power\power.json"
                                     }
                                     else {
+                                        $StatPower = Set-Stat -Name "$($_.Name)_$($NewName)_Watts" -Value $GPUPower
                                         $WattTypes = @{NVIDIA1_Watts = ""; NVIDIA2_Watts = ""; NVIDIA3_Watts = ""; AMD1_Watts = ""; CPU_Watts = "" }
                                         $GetWatts | Add-Member "$($_.Algo)" $WattTypes
-                                        $GetWatts.$($_.Algo)."$($_.Type)_Watts" = "$GPUPower"
-                                        $GetWatts | ConvertTo-Json -Depth 3 | Set-Content ".\config\power.json"
+                                        $GetWatts.$($_.Algo)."$($_.Type)_Watts" = "$($StatPower.Day)"
+                                        $GetWatts | ConvertTo-Json -Depth 3 | Set-Content ".\config\power\power.json"
                                     }
                                 }
                                 $Stat = Set-Stat -Name "$($_.Name)_$($NewName)_hashrate" -Value $Miner_HashRates -AsHashRate
