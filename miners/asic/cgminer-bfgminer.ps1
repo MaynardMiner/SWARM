@@ -30,7 +30,6 @@ $Global:ASICTypes | ForEach-Object {
                     Coin       = $Global:Coins
                     Delay      = $MinerConfig.$ConfigType.delay
                     Fees       = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
-                    Platform   = $global:Config.Params.Platform
                     Symbol     = "$($_.Symbol)"
                     MinerName  = $MinerName
                     Type       = $ConfigType
@@ -41,7 +40,7 @@ $Global:ASICTypes | ForEach-Object {
                     Arguments  = "stratum+tcp://$($_.Host):$($_.Port),$($_.$User),$Pass"
                     HashRates  = $Stat.Hour
                     Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
-                    Power     = [PSCustomObject]@{$($_.Algorithm) = if ($global:Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $global:Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($global:Watts.default."$($ConfigType)_Watts") { $global:Watts.default."$($ConfigType)_Watts" }else { 0 } }
+                    Power     =  if ($global:Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $global:Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($global:Watts.default."$($ConfigType)_Watts") { $global:Watts.default."$($ConfigType)_Watts" }else { 0 }
                     MinerPool  = "$($_.Name)"
                     Port       = 4028
                     API        = "cgminer"

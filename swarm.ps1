@@ -97,7 +97,6 @@ $global:Modules = @()
 
 ## Date Bug
 $global:cultureENUS = New-Object System.Globalization.CultureInfo("en-US")
-Import-Module -Name "$Global:Global\modules.psm1"
 
 ## Startup Modules
 Import-Module "$global:global\include.psm1" -Scope Global
@@ -343,8 +342,8 @@ While ($true) {
         $global:Miner_HashTable = Get-MinerHashTable
         ##Add Global Modules - They Get Removed in Above Function
         Remove-Modules
-        Import-Module -Name "$global:global\include.psm1"
-        Import-Module "$global:global\stats.psm1"
+        Import-Module -Name "$global:global\include.psm1" -Scope Global
+        Add-Module "$global:global\stats.psm1"
 
         ##Get Algorithm Pools
         Add-Module "$Pool\gather.psm1"
@@ -417,6 +416,7 @@ While ($true) {
 
         Add-Module "$global:global\include.psm1"
         Add-Module "$global:global\stats.psm1"
+        Add-Module "$global:global\hashrates.psm1"
         Add-Module "$global:Control\config.psm1"
 
         ## Build the Current Active Miners
@@ -530,6 +530,8 @@ While ($true) {
         Remove-Modules
 
     }until($Error.Count -gt 0)
+    Import-Module "$global:global\include.psm1" -Scope Global
     Add-LogErrors
+    Remove-Modules
     continue;
 }

@@ -270,6 +270,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
     }
 
     "asic" {
+        Import-Module -Name "$Global:Global\hashrates.psm1"
         if (Test-Path ".\build\txt\bestminers.txt") { $BestMiners = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-Json }
         else { $Get += "No miners running" }
         $ASIC = $BestMiners | Where Type -eq $argument2
@@ -289,9 +290,10 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 }
                 else { $Get += "contacted $($ASIC.MinerName), but no active pool was found" }
             }
-            else { $Get += "Failed to contact miner on $($ASIC.Server) ($ASIC.Port) to get details" }
+            else { $Get += "Failed to contact miner on $($ASIC.Server) $($ASIC.Port) to get details" }
         }
         else { $Get += "No ASIC miners running" }
+        remove-module -Name "hashrates"
     }
 
 

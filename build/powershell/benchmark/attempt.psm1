@@ -10,9 +10,12 @@ function Get-MinerTimeout {
     if ($Miner.hashrate -eq 0 -or $null -eq $Miner.hashrate) {
         if ($null -eq $miner.xprocess) { $reason = "no start" }
         else {
-            $MinerProc = Get-Process -Id $miner.xprocess.id -ErrorAction SilentlyContinue
-            if ($null -eq $MinerProc) { $reason = "crashed" }
-            else { $reason = "no hash" }
+            if ($Miner.Type -ne "*ASIC*") {
+                $MinerProc = Get-Process -Id $miner.xprocess.id -ErrorAction SilentlyContinue
+                if ($null -eq $MinerProc) { $reason = "crashed" }
+                else { $reason = "no hash" }
+            }
+            else { $Reason = "no hash" }
         }
     }
     $RejectCheck = Join-Path ".\timeout\warnings" "$($miner.Name)_$($miner.Algo)_rejection.txt"
@@ -23,7 +26,7 @@ function Get-MinerTimeout {
 
 function Set-Power {
     param(
-        [Parameter(Position=0, Mandatory=$true)]
+        [Parameter(Position = 0, Mandatory = $true)]
         [String]$PwrType
     )
         
@@ -45,15 +48,15 @@ function Get-Intensity {
         [String]$LogPath
     )
 
-    $LogAlgo = $LogAlgo -replace "`/","`-"
+    $LogAlgo = $LogAlgo -replace "`/", "`-"
     $ParseLog = ".\logs\$($LogMiner).log"
     if (Test-Path $ParseLog) {
         $GetInfo = Get-Content $ParseLog
         $GetIntensity = $GetInfo | Select-String "intensity"
         $GetDifficulty = $GetInfo | Select-String "difficulty"
         $NotePath = Split-Path $LogPath
-        if ($GetIntensity) {$GetIntensity | Set-Content "$NotePath\$($LogAlgo)_intensity.txt"}
-        if ($GetDifficulty) {$GetDifficulty | Set-Content "$NotePath\$($LogAlgo)_difficulty.txt"}
+        if ($GetIntensity) { $GetIntensity | Set-Content "$NotePath\$($LogAlgo)_intensity.txt" }
+        if ($GetDifficulty) { $GetDifficulty | Set-Content "$NotePath\$($LogAlgo)_difficulty.txt" }
     }
 }
 

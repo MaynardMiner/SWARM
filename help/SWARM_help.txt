@@ -36,6 +36,18 @@ Argument          Options           Explanation
                AMD1,
 	       ASIC]
 
+-Donate      [Percentage]           Percent you wish to donate daily to support further development. 
+                                    Miner remembers when you open or close, so it will not steal 
+                                    from you...However it only resets donation switch if miner 
+                                    hasn't ran for 24 hours. Default is .5
+
+***********************************************************************************************************
+***********************************************************************************************************
+***********************************************************************************************************
+
+                   -ASIC Arguments-
+             [Used along with -Type ASIC]
+
 -ASIC_ALGO [algorithm1,algorithm2]  Algorithms you wish ASIC to mine. This list will be seperate from
                                     other devices, and therefor ~should~ be able to work on other rigs.
 
@@ -44,12 +56,7 @@ Argument          Options           Explanation
                                     If you wish to add multiple ASIC, comma seperate each one:
 
                                     -ASIC_IP 192.168.0.1:Rig1,192.168.0.2:Rig2,192.168.0.3:Rig3
-
--Donate      [Percentage]           Percent you wish to donate daily to support further development. 
-                                    Miner remembers when you open or close, so it will not steal 
-                                    from you...However it only resets donation switch if miner 
-                                    hasn't ran for 24 hours. Default is .5
-
+                                
 
 ***********************************************************************************************************
 ***********************************************************************************************************
