@@ -25,6 +25,14 @@ function Get-Data {
         Set-Location $global:Dir     
     }
 
+    if (Test-Path ".\build\bash\modules") {
+        Copy-Item ".\build\bash\modules" -Destination "/usr/bin" -force | Out-Null
+        Set-Location "/usr/bin"
+        Start-Process "chmod" -ArgumentList "+x modules"
+        Set-Location "/"
+        Set-Location $global:Dir     
+    }
+
     if (Test-Path ".\build\bash\get") {
         Copy-Item ".\build\bash\get" -Destination "/usr/bin" -force | Out-Null
         Set-Location "/usr/bin"

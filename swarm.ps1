@@ -101,6 +101,8 @@ $global:cultureENUS = New-Object System.Globalization.CultureInfo("en-US")
 ## Startup Modules
 Import-Module "$global:global\include.psm1" -Scope Global
 
+##Insert Single Modules Here
+
 ## Get Parameters
 $Global:config = @{ }
 Add-Module "$global:Startup\parameters.psm1"
@@ -254,6 +256,8 @@ Remove-Modules
 While ($true) {
 
     do {
+
+        ##Insert Looping Modules Here
 
         ##############################################################################
         #######                     PHASE 1: Build                              ######
