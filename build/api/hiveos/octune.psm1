@@ -64,7 +64,10 @@ function Start-HiveTune {
                     if($OCT.Elapsed.TotalSeconds -ge 30){
                         $Success = $false
                         Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow
-                    } else{$Success -eq $true}
+                    } else{
+                        Write-Log "OC Was Changed." -ForegroundColor Cyan
+                        $Success  = $true
+                    }
                 }
                 if ($CheckAMD) {
                     Write-Log "Verifying OC was Set...." -ForegroundColor Cyan
@@ -81,7 +84,10 @@ function Start-HiveTune {
                     if($OCT.Elapsed.TotalSeconds -ge 30){
                         $Success = $false
                         Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow
-                    } else{$Success -eq $true}
+                    } else{
+                        Write-Log "OC Was Changed." -ForegroundColor Cyan
+                        $Success  = $true
+                    }
                 }
             }
             "linux" {
@@ -99,7 +105,10 @@ function Start-HiveTune {
                     if($OCT.Elapsed.TotalSeconds -ge 30){
                         $Success = $false
                         Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow
-                    } else{$Success -eq $true}
+                    } else{
+                        Write-Log "OC Was Changed." -ForegroundColor Cyan
+                        $Success  = $true
+                    }
                 }
                 if ($CheckAMD) {
                     Write-Log "Verifying OC was Set...." -ForegroundColor Cyan
@@ -116,7 +125,10 @@ function Start-HiveTune {
                     if($OCT.Elapsed.TotalSeconds -ge 30){
                         $Success = $false
                         Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow
-                    } else{$Success -eq $true}
+                    } else{
+                        Write-Log "OC Was Changed." -ForegroundColor Cyan
+                        $Success  = $true
+                    }
                 }
             }
         }
