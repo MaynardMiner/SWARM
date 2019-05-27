@@ -36,12 +36,12 @@ function Get-TCP {
         $Writer.WriteLine($Message)
         $Response = $Reader.ReadLine()
     }
-    catch { $Error.Remove($error[$Error.Count - 1])}
+    catch { $Error.Remove($error[$Error.Count - 1]) }
     finally {
-        if ($Reader) {$Reader.Close()}
-        if ($Writer) {$Writer.Close()}
-        if ($Stream) {$Stream.Close()}
-        if ($Client) {$Client.Close()}
+        if ($Reader) { $Reader.Close() }
+        if ($Writer) { $Writer.Close() }
+        if ($Stream) { $Stream.Close() }
+        if ($Client) { $Client.Close() }
     }
 
     $response
@@ -64,7 +64,7 @@ function Get-HTTP {
     try {
         $response = Invoke-WebRequest "http://$($global:Server):$($Port)$($Message)" -UseBasicParsing -TimeoutSec $Timeout
     }
-    catch {$Error.Remove($error[$Error.Count - 1])}
+    catch { $Error.Remove($error[$Error.Count - 1]) }
     $response
 }
 
@@ -92,43 +92,45 @@ function Get-HashRate {
         $Writer.WriteLine($Message)
         $Response = $Reader.ReadLine()
     }
-    catch { $Error.Remove($error[$Error.Count - 1])}
+    catch { $Error.Remove($error[$Error.Count - 1]) }
     finally {
-        if ($Reader) {$Reader.Close()}
-        if ($Writer) {$Writer.Close()}
-        if ($Stream) {$Stream.Close()}
-        if ($Client) {$Client.Close()}
+        if ($Reader) { $Reader.Close() }
+        if ($Writer) { $Writer.Close() }
+        if ($Stream) { $Stream.Close() }
+        if ($Client) { $Client.Close() }
     }
 
-    if($response) {
+    if ($response) {
         $response = $response | ConvertFrom-Json
         $response = [Double]$response.summary.$Type
     }
-    else{$response = [Double]0}
+    else { $response = [Double]0 }
 
     $Response
 }
 filter ConvertTo-Hash {
     $Hash = $_
-    switch ([math]::truncate([math]::log($Hash, [Math]::Pow(1000, 1)))) {
-        0 {"{0:n2} H" -f ($Hash / [Math]::Pow(1000, 0))}
-        1 {"{0:n2} KH" -f ($Hash / [Math]::Pow(1000, 1))}
-        2 {"{0:n2} MH" -f ($Hash / [Math]::Pow(1000, 2))}
-        3 {"{0:n2} GH" -f ($Hash / [Math]::Pow(1000, 3))}
-        4 {"{0:n2} TH" -f ($Hash / [Math]::Pow(1000, 4))}
-        Default {"{0:n2} PH" -f ($Hash / [Math]::Pow(1000, 5))}
+    if ($Hash) {
+        switch ([math]::truncate([math]::log($Hash, [Math]::Pow(1000, 1)))) {
+            0 { "{0:n2} H" -f ($Hash / [Math]::Pow(1000, 0)) }
+            1 { "{0:n2} KH" -f ($Hash / [Math]::Pow(1000, 1)) }
+            2 { "{0:n2} MH" -f ($Hash / [Math]::Pow(1000, 2)) }
+            3 { "{0:n2} GH" -f ($Hash / [Math]::Pow(1000, 3)) }
+            4 { "{0:n2} TH" -f ($Hash / [Math]::Pow(1000, 4)) }
+            Default { "{0:n2} PH" -f ($Hash / [Math]::Pow(1000, 5)) }
+        }
     }
 }
 
 filter ConvertTo-LogHash {
     $Hash = $_
     switch ([math]::truncate([math]::log($Hash, [Math]::Pow(1000, 1)))) {
-        0 {"{0:n2} `nhs" -f ($Hash / [Math]::Pow(1000, 0))}
-        1 {"{0:n2} `nkhs" -f ($Hash / [Math]::Pow(1000, 1))}
-        2 {"{0:n2} `nmhs" -f ($Hash / [Math]::Pow(1000, 2))}
-        3 {"{0:n2} `nghs" -f ($Hash / [Math]::Pow(1000, 3))}
-        4 {"{0:n2} `nths" -f ($Hash / [Math]::Pow(1000, 4))}
-        Default {"{0:n2} `nphs" -f ($Hash / [Math]::Pow(1000, 5))}
+        0 { "{0:n2} `nhs" -f ($Hash / [Math]::Pow(1000, 0)) }
+        1 { "{0:n2} `nkhs" -f ($Hash / [Math]::Pow(1000, 1)) }
+        2 { "{0:n2} `nmhs" -f ($Hash / [Math]::Pow(1000, 2)) }
+        3 { "{0:n2} `nghs" -f ($Hash / [Math]::Pow(1000, 3)) }
+        4 { "{0:n2} `nths" -f ($Hash / [Math]::Pow(1000, 4)) }
+        Default { "{0:n2} `nphs" -f ($Hash / [Math]::Pow(1000, 5)) }
     }
 }
 
@@ -138,7 +140,7 @@ function Get-MinerHashRate {
         if ($_.Fiat_Day -ne "bench") { $CurrentProfit = "$($_.Fiat_Day) $($global:Config.Params.Currency)/Day" } else { $CurrentProfit = "Benchmarking" }
         if ($null -eq $_.Xprocess -or $_.XProcess.HasExited) { $_.Status = "Failed" }
         $Miner_HashRates = Get-HashRate -Type $_.Type
-        $NewName = $_.Algo -replace "`_","`-"
+        $NewName = $_.Algo -replace "`_", "`-"
         $GetDayStat = Get-Stat "$($_.Name)_$($NewName)_HashRate"
         $DayStat = "$($GetDayStat.Hour)"
         $MinerPrevious = "$($DayStat | ConvertTo-Hash)"
