@@ -1,6 +1,5 @@
 function Get-Watts {
-    if ($global:Watts) { $global:Watts | ConvertTo-Json | Out-File ".\config\power\power.json" }
-    if (-not $Global:Watt) { $global:Watts = Get-Content ".\config\power\power.json" | ConvertFrom-Json }
+    if (-not $Global:Watts) { $global:Watts = Get-Content ".\config\power\power.json" | ConvertFrom-Json }
     $global:WattHour = $(Get-Date | Select-Object hour).Hour
 }
 

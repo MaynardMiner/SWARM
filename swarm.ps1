@@ -238,13 +238,9 @@ if ($global:Config.Params.Type -like "*NVIDIA*" -or $global:Config.Params.Type -
     $Global:AMDTypes = @(); if ($global:Config.Params.Type -like "*AMD*") { $global:Config.Params.Type | Where { $_ -like "*AMD*" } | % { $Global:AMDTypes += $_ } }
 }
 
-#Get Miner Config Files
-Add-Module "$global:Startup\getconfigs.psm1"
-if ($global:Config.Params.Type -like "*CPU*") { $Global:cpu = get-minerfiles -Types "CPU" }
-if ($global:Config.Params.Type -like "*NVIDIA*") { $Global:nvidia = get-minerfiles -Types "NVIDIA" -Cudas $global:Config.Params.Cuda }
-if ($global:Config.Params.Type -like "*AMD*") { $Global:amd = get-minerfiles -Types "AMD" }
 
 ##Start New Agent
+Add-Module "$global:Startup\getconfigs.psm1"
 write-Log "Starting New Background Agent" -ForegroundColor Cyan
 if ($global:Config.Params.Platform -eq "windows") { Start-Background }
 elseif ($global:Config.Params.Platform -eq "linux") { Start-Process ".\build\bash\background.sh" -ArgumentList "background $($global:Dir)" -Wait }
@@ -268,6 +264,11 @@ While ($true) {
         Add-Module "$global:global\include.psm1"
         Add-Module "$global:global\stats.psm1"
 
+        #Get Miner Config Files
+        Add-Module "$global:build\miners.psm1"
+        if ($global:Config.Params.Type -like "*CPU*") { $Global:cpu = get-minerfiles -Types "CPU" }
+        if ($global:Config.Params.Type -like "*NVIDIA*") { $Global:nvidia = get-minerfiles -Types "NVIDIA" -Cudas $global:Config.Params.Cuda }
+        if ($global:Config.Params.Type -like "*AMD*") { $Global:amd = get-minerfiles -Types "AMD" }
 
         ## Check to see if wallet is present:
         if (-not $global:Config.Params.Wallet1) { 
@@ -275,7 +276,6 @@ While ($true) {
             Start-Sleep -S 5; 
             exit 
         }
-
 
         ## Load Miner Configurations
         Add-Module "$Build\configs.psm1"
@@ -304,7 +304,7 @@ While ($true) {
         Add-Algorithms
         Set-Donation
         if ($global:Config.Params.Coin.Count -eq 1 -and $global:Config.Params.Coin -ne "") { $global:Config.Params.Auto_Coin = "No" }
-
+        $global:PoolJson = $null
 
         # Pricing and Clearing Timeouts 
         Add-Module "$Build\pricing.psm1"
@@ -401,11 +401,20 @@ While ($true) {
         $BestPool_Selected = $global:bestminers_combo.MinerPool
         write-Log "Most Ideal Choice Is $($BestMiners_Selected) on $($BestPool_Selected)" -foregroundcolor green
 
+
+        Remove-Modules
+
+        ##Clear Variables To Reduce Memory Footprint:
         $global:FeeTable = $Null
         $global:divisortable = $Null
         $global:Miner_HashTable = $Null
-
-        Remove-Modules
+        $global:Watts = $Null
+        $global:BestMiners_Selected = $Null
+        $global:All_AltWallets = $Null
+        $global:Algorithm = $null
+        $global:amd = $Null
+        $global:nvidia = $Null
+        $global:cpu = $null        
         
         ##############################################################################
         #######                        End Phase 3                             ######
@@ -460,6 +469,16 @@ While ($true) {
         if ($global:Config.params.Track_Shares -eq "Yes") { Get-CoinShares }
 
         Remove-Modules
+
+        ##Clear Variables To Reduce Memory Footprint:
+        $global:bestminers_combo = $Null
+        $global:BusData = $null
+        $global:BanHammer = $Null
+        $global:Config.Pool_Algos = $null
+        $global:oc_algos = $null
+        $global:oc_default = $null
+        $global:PreviousMinerPorts = $Null
+
 
         ##############################################################################
         #######                        End Phase 4                              ######
