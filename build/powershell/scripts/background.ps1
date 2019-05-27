@@ -23,11 +23,11 @@ Set-Location $WorkingDir
 try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$WorkingDir`'" -WindowStyle Minimized } }catch { }
 try{ $Net = Get-NetFireWallRule } catch {}
 if($Net) {
-try { if( -not ( $Net | Where {$_.DisplayName -like "*background.ps1*"} ) ) { New-NetFirewallRule -DisplayName 'background.ps1' -Direction Inbound -Program "$workingdir\build\powershell\background.ps1" -Action Allow | Out-Null} } catch { }
+try { if( -not ( $Net | Where {$_.DisplayName -like "*background.ps1*"} ) ) { New-NetFirewallRule -DisplayName 'background.ps1' -Direction Inbound -Program "$workingdir\build\powershell\scripts\background.ps1" -Action Allow | Out-Null} } catch { }
 }
 $Net = $null
 
-if(Test-Path "C:\"){ Start-Process "powershell" -ArgumentList "$global:dir\build\powershell\icon.ps1 `'$global:dir\build\apps\comb.ico`'" -NoNewWindow }
+if(Test-Path "C:\"){ Start-Process "powershell" -ArgumentList "$global:dir\build\powershell\scripts\icon.ps1 `'$global:dir\build\apps\comb.ico`'" -NoNewWindow }
 
 $global:global = "$Global:Dir\build\powershell\global";
 $global:background = "$Global:Dir\build\powershell\background";

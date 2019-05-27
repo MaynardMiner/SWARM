@@ -1,7 +1,7 @@
 function Start-Background {
   
     $BackgroundTimer = New-Object -TypeName System.Diagnostics.Stopwatch
-    $command = Start-Process "pwsh" -WorkingDirectory "$($global:Dir)\build\powershell" -ArgumentList "-executionpolicy bypass -NoExit -windowstyle minimized -command `"&{`$host.ui.RawUI.WindowTitle = `'Background Agent`'; &.\Background.ps1 -WorkingDir `'$($global:Dir)`'}`"" -WindowStyle Minimized -PassThru -Verb Runas
+    $command = Start-Process "pwsh" -WorkingDirectory "$($global:Dir)\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -NoExit -windowstyle minimized -command `"&{`$host.ui.RawUI.WindowTitle = `'Background Agent`'; &.\Background.ps1 -WorkingDir `'$($global:Dir)`'}`"" -WindowStyle Minimized -PassThru -Verb Runas
     $command.ID | Set-Content ".\build\pid\background_pid.txt"
     $BackgroundTimer.Restart()
     do {

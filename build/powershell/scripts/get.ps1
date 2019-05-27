@@ -353,7 +353,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
         . .\build\powershell\command-stats.ps1
         . .\build\powershell\childitems.ps1
         . .\build\powershell\hashrates.ps1
-        . .\build\powershell\wallettable.ps1   
+        . .\build\powershell\scripts\wallettable.ps1   
         $Get = Get-WalletTable
     }
     "stats" {

@@ -33,7 +33,7 @@ function Remove-BanHashrates {
     }
 }
 function Get-MinerHashTable {
-    Invoke-Expression ".\build\powershell\get.ps1 benchmarks all -asjson" | Tee-Object -Variable Miner_Hash | Out-Null
+    Invoke-Expression ".\build\powershell\scripts\get.ps1 benchmarks all -asjson" | Tee-Object -Variable Miner_Hash | Out-Null
     if ($Miner_Hash -and $Miner_Hash -ne "No Stats Found") {
         $Miner_Hash = $Miner_Hash | ConvertFrom-Json
     }

@@ -1,1 +1,1 @@
-pwsh -noexit -executionpolicy bypass -windowstyle maximized -command ".\build\powershell\reset.ps1"
+pwsh -noexit -executionpolicy bypass -windowstyle maximized -command ".\build\powershell\scripts\reset.ps1"

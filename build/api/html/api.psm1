@@ -103,35 +103,35 @@ function Get-APIServer {
                             }
                             "get" {
                                 $result = @()
-                                Invoke-Expression ".\build\powershell\get.ps1$requestargs" | Tee-Object -Variable getbest | Out-Null;
+                                Invoke-Expression ".\build\powershell\scripts\get.ps1$requestargs" | Tee-Object -Variable getbest | Out-Null;
                                 $getbest | ForEach-Object { $result += "$_`n" };
                                 $message = $result | ConvertTo-Json;
                                 $response.ContentType = 'application/json';
                             }
                             "version" {
                                 $result = @()
-                                Invoke-Expression ".\build\powershell\version.ps1$requestargs" | Tee-Object -Variable getbest | Out-Null;
+                                Invoke-Expression ".\build\powershell\scripts\version.ps1$requestargs" | Tee-Object -Variable getbest | Out-Null;
                                 $getbest | ForEach-Object { $result += "$_`n" };
                                 $message = $result | ConvertTo-Json;
                                 $response.ContentType = 'application/json';
                             }
                             "clear_profits" {
                                 $result = @()
-                                Invoke-Expression ".\build\powershell\clear_profits.ps1$requestargs" | Tee-Object -Variable getbest | Out-Null;
+                                Invoke-Expression ".\build\powershell\scripts\clear_profits.ps1.ps1$requestargs" | Tee-Object -Variable getbest | Out-Null;
                                 $getbest | ForEach-Object { $result += "$_`n" };
                                 $message = $result | ConvertTo-Json;
                                 $response.ContentType = 'application/json';
                             }
                             "clear_watts" {
                                 $result = @()
-                                Invoke-Expression ".\build\powershell\clear_watts.ps1$requestargs" | Tee-Object -Variable getbest | Out-Null;
+                                Invoke-Expression ".\build\powershell\scripts\clear_watts.ps1$requestargs" | Tee-Object -Variable getbest | Out-Null;
                                 $getbest | ForEach-Object { $result += "$_`n" };
                                 $message = $result | ConvertTo-Json;
                                 $response.ContentType = 'application/json';
                             }
                             "benchmark" {
                                 $result = @()
-                                Invoke-Expression ".\build\powershell\benchmark.ps1$requestargs" | Tee-Object -Variable getbest | Out-Null;
+                                Invoke-Expression ".\build\powershell\scripts\benchmark.ps1$requestargs" | Tee-Object -Variable getbest | Out-Null;
                                 $getbest | ForEach-Object { $result += "$_`n" };
                                 $message = $result | ConvertTo-Json;
                                 $response.ContentType = 'application/json';

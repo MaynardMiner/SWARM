@@ -239,7 +239,7 @@ function Start-LaunchCode {
                         $script += "New-NetFirewallRule -DisplayName `'$($MinerCurrent.Minername)`' -Direction Inbound -Program `'$Program`' -Action Allow"
                     }
                 }
-                $script += "Start-Process `"powershell`" -ArgumentList `"$global:dir\build\powershell\icon.ps1 ``'$global:dir\build\apps\miner.ico``'`" -NoNewWindow"
+                $script += "Start-Process `"powershell`" -ArgumentList `"$global:dir\build\powershell\scripts\icon.ps1 ``'$global:dir\build\apps\miner.ico``'`" -NoNewWindow"
                 $script += "`$host.ui.RawUI.WindowTitle = `'$($MinerCurrent.Name) - $($MinerCurrent.Algo)`';"
                 $MinerCurrent.Prestart | ForEach-Object {
                     if ($_ -notlike "export LD_LIBRARY_PATH=$($global:Dir)\build\export") {

@@ -53,7 +53,7 @@ function Start-Webcommand {
                 Stop-Process $MinerId
                 Start-Sleep -S 3
             }
-            Start-Process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle maximized -command `".\build\powershell\reboot.ps1`""
+            Start-Process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle maximized -command `".\build\powershell\scripts\reboot.ps1`""
             exit
         }
   
@@ -130,7 +130,7 @@ function Start-Webcommand {
                             $method = "message"
                             $messagetype = "info"
                             $data = "$($command.result.exec)"
-                            start-process "pwsh" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command query""" -Wait -WindowStyle Minimized -Verb RunAs
+                            start-process "pwsh" -Workingdirectory ".\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command query""" -Wait -WindowStyle Minimized -Verb RunAs
                             $getpayload = Get-Content ".\build\txt\version.txt"
                             $line = @()
                             $getpayload | foreach { $line += "$_`n" }
@@ -146,7 +146,7 @@ function Start-Webcommand {
                             $messagetype = "info"
                             $data = "$($command.result.exec)"
                             $arguments = $data -replace ("version ", "")
-                            start-process "pwsh" -Workingdirectory ".\build\powershell" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command $arguments""" -WindowStyle Minimized -Verb Runas -Wait
+                            start-process "pwsh" -Workingdirectory ".\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command $arguments""" -WindowStyle Minimized -Verb Runas -Wait
                             $getpayload = Get-Content ".\build\txt\version.txt"
                             $line = @()
                             $getpayload | foreach { $line += "$_`n" }

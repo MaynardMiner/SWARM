@@ -57,7 +57,7 @@ catch { }
 $Net = $Null
 
 if (Test-Path "C:\") {
-    Start-Process "powershell" -ArgumentList "$global:dir\build\powershell\icon.ps1 `'$global:dir\build\apps\SWARM.ico`'" -NoNewWindow
+    Start-Process "powershell" -ArgumentList "$global:dir\build\powershell\scripts\icon.ps1 `'$global:dir\build\apps\SWARM.ico`'" -NoNewWindow
 }
 
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
@@ -300,7 +300,7 @@ While ($true) {
         Get-Wallets
         $global:Algorithm = @()
         $global:BanHammer = @()
-        . .\build\powershell\bans.ps1 "add" $global:Config.Params.Bans "process" | Out-Null
+        . .\build\powershell\scripts\bans.ps1 "add" $global:Config.Params.Bans "process" | Out-Null
         Add-Algorithms
         Set-Donation
         if ($global:Config.Params.Coin.Count -eq 1 -and $global:Config.Params.Coin -ne "") { $global:Config.Params.Auto_Coin = "No" }
