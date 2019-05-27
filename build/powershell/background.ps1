@@ -17,6 +17,7 @@ Param (
 )
 
 #$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
+#$WorkingDir = "/root/hive/miners/custom/SWARM"
 $global:Dir = $WorkingDir
 Set-Location $WorkingDir
 try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$WorkingDir`'" -WindowStyle Minimized } }catch { }
@@ -48,6 +49,8 @@ if ($P -notlike "*$Global:Dir\build\powershell*") {
 }
 
 Import-Module "$Global:Global\modules.psm1" -Scope Global
+Import-Module "$global:global\include.psm1" -Scope Global
+
 $global:Modules = @()
 
 Add-Module "$global:background\startup.psm1"
@@ -63,7 +66,7 @@ Set-Window
 $global:NetModules = @()
 $global:WebSites = @()
 if ($Config.Params.Farm_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") { $global:NetModules += ".\build\api\hiveos"; $global:WebSites += "HiveOS" }
-if ($Config.Params.Swarm_Hash -eq "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") { $global:NetModules += ".\build\api\SWARM"; $global:WebSites += "SWARM" }
+#if ($Config.Params.Swarm_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") { $global:NetModules += ".\build\api\SWARM"; $global:WebSites += "SWARM" }
 
 Write-Host "Platform is $($global:Config.Params.Platform)"; 
 Write-Host "HiveOS ID is $($global:Config.hive_params.HiveID)"; 
@@ -92,7 +95,10 @@ $Global:cpu = $null
 $Global:LoadAverages = $null
 $Global:StartTime = Get-Date
 $CheckForSWARM = ".\build\pid\miner_pid.txt"
-if (Test-Path $CheckForSWARM) { $global:GETSWARMID = Get-Content $CheckForSWARM; $Global:GETSWARM = Get-Process -ID $global:GETSWARMID -ErrorAction SilentlyContinue }
+if (Test-Path $CheckForSWARM) { 
+    $global:GETSWARMID = Get-Content $CheckForSWARM; 
+    $Global:GETSWARM = Get-Process -ID $global:GETSWARMID -ErrorAction SilentlyContinue 
+}
 $Global:GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
 $global:BackgroundTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $global:BackgroundTimer.Restart()
@@ -101,6 +107,13 @@ $global:RestartTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 Remove-Module -Name "startup"
 
 While ($True) {
+
+    if($global:Config.Params.Platform -eq "linux" -and -not $global:WebSites) {
+        if($global:GETSWARM.HasExited -eq $true) {
+            Write-Host "Closing down SWARM" -ForegroundColor Yellow
+            start-killscript
+        }
+    }
 
     $global:CPUOnly = $True ; $global:DoCPU = $false; $global:DoAMD = $false; 
     $global:DoNVIDIA = $false; $global:DoASIC = $false; $global:AllKHS = 0; 

@@ -100,7 +100,7 @@ $global:cultureENUS = New-Object System.Globalization.CultureInfo("en-US")
 Import-Module -Name "$Global:Global\modules.psm1"
 
 ## Startup Modules
-Add-Module "$global:global\include.psm1"
+Import-Module "$global:global\include.psm1" -Scope Global
 
 ## Get Parameters
 $Global:config = @{ }
@@ -549,8 +549,6 @@ While ($true) {
         Remove-Modules
 
     }until($Error.Count -gt 0)
-    Add-Module "$global:global\include.psm1"
     Add-LogErrors
-    Remove-Modules
     continue;
 }

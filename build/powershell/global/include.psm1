@@ -14,7 +14,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 function Add-LogErrors {
     if ($Error.Count -gt 0) {
         $TimeStamp = (Get-Date)
-        $errormesage = "[$TimeStamp]: Startup Generated The Following Warnings/Errors-"
+        $errormesage = "[$TimeStamp]: SWARM Generated The Following Warnings/Errors-"
         $errormesage | Add-Content $global:logname
         $Message = @()
         $error | foreach { $Message += "$($_.InvocationInfo.InvocationName)`: $($_.Exception.Message)"; $Message += $_.InvocationINfo.PositionMessage; $Message += $_.InvocationInfo.Line; $Message += $_.InvocationINfo.Scriptname; $MEssage += "" }
@@ -164,8 +164,6 @@ function start-killscript {
     $OpenScreens += "AMD2"
     $OpenScreens += "AMD3"
     $OpenScreens += "CPU"
-    $OpenScreens += "ASIC"
-    $OpenScreens += "background"
     $OpenScreens += "OC_AMD"
     $OpenScreens += "OC_NVIDIA1"
     $OpenScreens += "OC_NVIDIA2"
@@ -177,4 +175,5 @@ function start-killscript {
     $OpenScreens | foreach {
         Start-Process ".\build\bash\killall.sh" -ArgumentList $_ -Wait
     }
+    Start-Process ".\build\bash\killall.sh" -ArgumentList "background" -Wait
 }

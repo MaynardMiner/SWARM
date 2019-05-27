@@ -1,10 +1,3 @@
-function start-watchdog {
-    If ($global:Config.Params.Platform -eq "linux") {
-        Start-Process "screen" -ArgumentList "-S pidinfo -d -m"
-        Start-Sleep -S 1
-        Start-Process ".\build\bash\pidinfo.sh" -ArgumentList "pidinfo miner"
-    }
-}
 
 function Get-Data {
 
@@ -279,9 +272,6 @@ function Get-GPUCount {
 
 function Start-LinuxConfig {
 
-    ## Start SWARM watchdog (for automatic shutdown)
-    start-watchdog
-
     ## Kill Previous Screens
     start-killscript
 
@@ -347,19 +337,19 @@ function Start-LinuxConfig {
                 write-Log "Group 1 is NVIDIA- Commands and Stats will work for NVIDIA1" -foreground yellow
                 Start-Sleep -S 3
             }
-            if ($_ -eq "AMD1") {
+            elseif ($_ -eq "AMD1") {
                 "AMD1" | Out-File ".\build\txt\minertype.txt" -Force
                 write-Log "Group 1 is AMD- Commands and Stats will work for AMD1" -foreground yellow
                 Start-Sleep -S 3
             }
-            if ($_ -eq "CPU") {
+            elseif ($_ -eq "CPU") {
                 if ($Global:GPU_Count -eq 0) {
                     "CPU" | Out-File ".\build\txt\minertype.txt" -Force
                     write-Log "Group 1 is CPU- Commands and Stats will work for CPU" -foreground yellow
                     Start-Sleep -S 3
                 }
             }
-            if ($_ -eq "ASIC") {
+            elseif ($_ -eq "ASIC") {
                 if ($global:GPU_Count -eq 0) {
                     "ASIC" | Out-File ".\build\txt\minertype.txt" -Force
                     write-Log "Group 1 is ASIC- Commands and Stats will work for ASIC" -foreground yellow
