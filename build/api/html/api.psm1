@@ -117,7 +117,7 @@ function Get-APIServer {
                             }
                             "clear_profits" {
                                 $result = @()
-                                Invoke-Expression ".\build\powershell\scripts\clear_profits.ps1.ps1$requestargs" | Tee-Object -Variable getbest | Out-Null;
+                                Invoke-Expression ".\build\powershell\scripts\clear_profits.ps1$requestargs" | Tee-Object -Variable getbest | Out-Null;
                                 $getbest | ForEach-Object { $result += "$_`n" };
                                 $message = $result | ConvertTo-Json;
                                 $response.ContentType = 'application/json';
