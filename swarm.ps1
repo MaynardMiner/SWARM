@@ -392,7 +392,7 @@ While ($true) {
         if ($global:Config.Params.Volume -eq "Yes") { Get-Volume }
         $CutMiners = Start-MinerReduction -SortMiners $Global:Miners -WattCalc $global:WattEX
         $CutMiners | ForEach-Object { $Global:Miners.Remove($_) } | Out-Null;
-        $CuTminers = $Null
+        $Cutminers = $Null
         $Global:Miners | ForEach-Object { $_.Symbol = $_.Symbol -replace "-Algo", ""; $_.Symbol = $_.Symbol -replace "-Coin", "" }
         start-minersorting -SortMiners $Global:Miners -WattCalc $global:WattEX
         $global:Pool_Hashrates = @{ }
@@ -406,7 +406,6 @@ While ($true) {
         $BestMiners_Selected = $global:bestminers_combo.Symbol
         $BestPool_Selected = $global:bestminers_combo.MinerPool
         write-Log "Most Ideal Choice Is $($BestMiners_Selected) on $($BestPool_Selected)" -foregroundcolor green
-
 
         Remove-Modules
         
@@ -426,7 +425,6 @@ While ($true) {
         ## Build the Current Active Miners
         $global:Restart = $false
         $global:NoMiners = $false
-        $ConserveMessage = @()
         $Global:BestActiveMIners = @()
 
         ## Add New Miners- Download if neccessary
@@ -436,7 +434,7 @@ While ($true) {
         Get-ActiveMiners $global:bestminers_combo
         Get-BestActiveMiners
         Get-ActivePricing
-        $PreviousMinerPorts = @{AMD1 = ""; NVIDIA1 = ""; NVIDIA2 = ""; NVIDIA3 = ""; CPU = "" }
+        $global:PreviousMinerPorts = @{AMD1 = ""; NVIDIA1 = ""; NVIDIA2 = ""; NVIDIA3 = ""; CPU = "" }
         $global:ClearedOC = $false; $global:ClearedHash = $false; $Global:HiveOCTune = $false
         $global:NoMiners = $false;
 

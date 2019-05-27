@@ -21,7 +21,7 @@ function Stop-ActiveMiners {
                         $MinerInfo = ".\build\pid\$($_.InstanceName)_info.txt"
                         if (Test-Path $MinerInfo) {
                             $_.Status = "Idle"
-                            $PreviousMinerPorts.$($_.Type) = "($_.Port)"
+                            $global:PreviousMinerPorts.$($_.Type) = "($_.Port)"
                             $MI = Get-Content $MinerInfo | ConvertFrom-Json
                             $PIDTime = [DateTime]$MI.start_date
                             $Exec = Split-Path $MI.miner_exec -Leaf
@@ -102,7 +102,7 @@ function Start-NewMiners {
             ##Launch Miners
             write-Log "Starting $($Miner.InstanceName)"
             if ($Miner.Type -notlike "*ASIC*") {
-                $PreviousPorts = $PreviousMinerPorts | ConvertTo-Json -Compress
+                $PreviousPorts = $global:PreviousMinerPorts | ConvertTo-Json -Compress
                 $Miner.Xprocess = Start-LaunchCode -PP $PreviousPorts -NewMiner $Current
             }
             else {
