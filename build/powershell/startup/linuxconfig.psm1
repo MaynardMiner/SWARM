@@ -331,25 +331,24 @@ function Start-LinuxConfig {
         $Global:GPU_Count = Get-GPUCount
     
         ## Let User Know What Platform commands will work for- Will always be Group 1.
-        $global:Config.Params.Type | ForEach-Object {
-            if ($_ -eq "NVIDIA1") {
+            if ($global:Config.Params.Type -like "*NVIDIA1*") {
                 "NVIDIA1" | Out-File ".\build\txt\minertype.txt" -Force
                 write-Log "Group 1 is NVIDIA- Commands and Stats will work for NVIDIA1" -foreground yellow
                 Start-Sleep -S 3
             }
-            elseif ($_ -eq "AMD1") {
+            elseif ($global:Config.Params.Type -like "*AMD1*") {
                 "AMD1" | Out-File ".\build\txt\minertype.txt" -Force
                 write-Log "Group 1 is AMD- Commands and Stats will work for AMD1" -foreground yellow
                 Start-Sleep -S 3
             }
-            elseif ($_ -eq "CPU") {
+            elseif ($global:Config.Params.Type -like "*CPU*") {
                 if ($Global:GPU_Count -eq 0) {
                     "CPU" | Out-File ".\build\txt\minertype.txt" -Force
                     write-Log "Group 1 is CPU- Commands and Stats will work for CPU" -foreground yellow
                     Start-Sleep -S 3
                 }
             }
-            elseif ($_ -eq "ASIC") {
+            elseif ($global:Config.Params.Type -like "*ASIC*") {
                 if ($global:GPU_Count -eq 0) {
                     "ASIC" | Out-File ".\build\txt\minertype.txt" -Force
                     write-Log "Group 1 is ASIC- Commands and Stats will work for ASIC" -foreground yellow
