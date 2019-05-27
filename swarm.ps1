@@ -380,7 +380,6 @@ While ($true) {
 
         ##Send error if no miners found
         $global:Miner_HashTable = $Null
-        $global:Miners = $Null
         if ($Global:Miners.Count -eq 0) {
             $HiveMessage = "No Miners Found! Check Arguments/Net Connection"
             $HiveWarning = @{result = @{command = "timeout" } }
