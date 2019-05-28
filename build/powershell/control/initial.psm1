@@ -206,6 +206,7 @@ function Get-MinerBinary {
 
 function Start-MinerDownloads {
     $global:Miners | ForEach-Object {
+        $MineName = $_.Name
         $Success = 0;
         $CheckPath = Test-Path $_.Path
         if ( $_.Type -notlike "*ASIC*" -and $CheckPath -eq $false ) {
@@ -214,6 +215,21 @@ function Start-MinerDownloads {
         }
         else { $Success = 1 }
         if ($Success -eq 2) {
+            $HiveMessage = "$MineName Download Failed"
+            $HiveWarning = @{result = @{command = "timeout" } }
+            if ($global:Websites) {
+                $global:Websites | ForEach-Object {
+                    $Sel = $_
+                    try {
+                        Add-Module "$global:Web\methods.psm1"
+                        Get-WebModules $Sel
+                        $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
+                    }
+                    catch { Write-Log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
+                    Remove-WebModules $sel
+                }
+            }
+            Write-Log "$HiveMessage" -ForegroundColor Red
             Write-Log "WARNING: Miner Failed To Download Three Times- Restarting SWARM" -ForeGroundColor Yellow
             continue
         }

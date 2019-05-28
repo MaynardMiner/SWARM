@@ -383,7 +383,7 @@ While ($true) {
         if ($Global:Miners.Count -eq 0) {
             $HiveMessage = "No Miners Found! Check Arguments/Net Connection"
             $HiveWarning = @{result = @{command = "timeout" } }
-            if ($global:NetModules) {
+            if ($global:Websites) {
                 $global:Websites | ForEach-Object {
                     $Sel = $_
                     try {
