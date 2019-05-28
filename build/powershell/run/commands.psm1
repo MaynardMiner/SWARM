@@ -104,7 +104,7 @@ function Get-Logo {
 function Update-Logging {
     if ($global:LogNum -eq 12) {
         Remove-Item ".\logs\*miner*" -Force -ErrorAction SilentlyContinue
-        Remove-Item ".\logs\*crash_report*" -Force -ErrorAction SilentlyContinue
+        Remove-Item ".\logs\*crash_report*" -Force -Recurse -ErrorAction SilentlyContinue
         $global:LogNum = 0
     }
     if ($global:logtimer.Elapsed.TotalSeconds -ge 3600) {
