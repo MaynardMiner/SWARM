@@ -3028,3 +3028,73 @@ API overhaul:
 
   Code staging for #Device Bus, so multiple instances of SWARM
   could be ran on same rig.
+
+
+  2.3.3
+
+  NOTE: 15,000 Code changes happened between last release and
+  this one. However, none of the statistics system was changed-
+  Should be good to update.
+
+  -Miners were update.
+
+  Fixes:
+
+  -Weird glitching occurred with loading gpu bus:
+   Attempted fix was applied.
+  -Fixed ETHPill for HiveOS in Windows.
+  -Fixed oc from locking up from HiveOS (if it timed out).
+  -Made improvements / fixes to ASIC system.
+  -Coinpools like Algopools wil select more than one pool
+   as top pool, so a rollover pool is available due to a
+   pool ban.
+
+  NEW FEATURES:
+
+  -Modules
+   * Swarm is setup for user created .psm1 modules.
+   * Users can used (remotely) ``modules`` command to add
+     new modules.
+   * examples:
+       ``modules "C:\hello.psm1" looping``
+         This injects a module directly into SWARM's codebase
+         "looping" means it will run at each new loop.
+         ``modules "C:\hello.psm1" single``
+         "single" means it will run once at startup.
+   * Most important values in SWARM have become $global
+     variables, meaning your modules can change / affect them.
+   * If you make a module and would like to share- Send me module,
+     and I will upload to a repo.
+   * Note: powershell can run most linux commands natively.
+     Pro-Tip: You can save linux commands to powershell variables easily:
+      ```
+      invoke-expression "echo hello" | Tee-Object -Variable hello | Out-Null
+      $hello
+      hello
+      ```       
+   * This allows you to add settings / print extra infmation in logs (Write-Log),
+     Uses are kind of endless.
+
+   -Net-Modules
+    * SWARM is now setup to run other statistic sites, though none have been added
+      as of yet. However, you can now eventually import/export net modules for each
+      website, and send data to them. More uses for this will come soon.
+
+   -API by default is set to no, which should reduce RAM use.
+
+   -If HiveOS fails to change OC (times out), SWARM will now run its own internal oc
+    if it is set (as a backup).
+
+   -All miners download at once, again per user requests.
+
+   -You no longer need to stop SWARM to modify watt files.
+
+   -Watt reading are now averages.
+
+   -SWARM now is module based, meaning it will only load code in
+    when needed, and will remove code when finished. This greatly
+    reduces SWARM's Memory footprint.
+
+
+
+   
