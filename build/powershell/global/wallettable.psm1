@@ -12,16 +12,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
 Function Get-WalletTable {
-
+    param (
+        [Parameter(Mandatory=$false)]
+        [switch]$asjson
+    )
     [cultureinfo]::CurrentCulture = 'en-US'
-    if(Test-Path ".\wallet\values\*"){Remove-Item ".\wallet\values\*" -Force}
+    if (Test-Path ".\wallet\values\*") { Remove-Item ".\wallet\values\*" -Force }
     
-    $global:WalletKeys = [PSCustomObject]@{}
-    Get-ChildItemContent -Path ".\wallet\keys" | ForEach {$global:WalletKeys | Add-Member $_.Name $_.Content} 
+    $global:WalletKeys = [PSCustomObject]@{ }
+    Get-ChildItemContent -Path ".\wallet\keys" | ForEach { $global:WalletKeys | Add-Member $_.Name $_.Content } 
     Get-ChildItemContent -Path ".\wallet\pools"
 
     $WalletTable = @()
-    if (-not $GetWStats) {$GetWStats = get-wstats}
+    if (-not $GetWStats) { $GetWStats = get-wstats }
 
     $Sym = @()
 
@@ -34,34 +37,39 @@ Function Get-WalletTable {
             Balance        = $GetWStats.$_.Balance -as [decimal]
             "Last Checked" = $GetWStats.$_.Date
         }
-        if($Sym -notcontains $GetWStats.$_.Symbol){$Sym += $GetWStats.$_.Symbol}
+        if ($Sym -notcontains $GetWStats.$_.Symbol) { $Sym += $GetWStats.$_.Symbol }
     }
 
-    $global:Format = @()
-    $global:Format += ""
-    $WalletTable | %{
-     $global:Format += "Address: $($_.Address)"
-     $global:Format += "Pool: $($_.Pool)"
-     $global:Format += "Ticker: $($_.Ticker)"
-     $global:Format += "Unpaid: $($_.Unpaid)"
-     $global:Format += "Balance: $($_.Balance)"
-     $global:Format += "Last Checked: $($_."Last Checked")"
-     $global:Format += ""
+    if (-not $asjson) {
+        $global:Format = @()
+        $global:Format += ""
+        $WalletTable | % {
+            $global:Format += "Address: $($_.Address)"
+            $global:Format += "Pool: $($_.Pool)"
+            $global:Format += "Ticker: $($_.Ticker)"
+            $global:Format += "Unpaid: $($_.Unpaid)"
+            $global:Format += "Balance: $($_.Balance)"
+            $global:Format += "Last Checked: $($_."Last Checked")"
+            $global:Format += ""
+        }
+
+        $Sym | % {
+            $Grouping = $WalletTable | Where Ticker -eq $_
+            $Total_Unpaid = 0
+            $Total_Balace = 0
+            $Grouping.Unpaid | % { $Total_Unpaid += $_ }
+            $Grouping.Balance | % { $Total_Balance += $_ }
+
+            $global:Format += ""
+            $global:Format += "Total $($_) Balance = $Total_Balance"
+            $global:Format += "Total $($_) Unpaid = $Total_Unpaid (Reflects Current Total Potential Earnings)"
+            $global:Format += ""
+        }
+        $global:Format
     }
-
-    $Sym | %{
-     $Grouping = $WalletTable | Where Ticker -eq $_
-     $Total_Unpaid = 0
-     $Total_Balace = 0
-     $Grouping.Unpaid | %{$Total_Unpaid += $_ }
-     $Grouping.Balance | %{$Total_Balance += $_ }
-
-     $global:Format += ""
-     $global:Format += "Total $($_) Balance = $Total_Balance"
-     $global:Format += "Total $($_) Unpaid = $Total_Unpaid (Reflects Current Total Potential Earnings)"
-     $global:Format += ""
+    else {
+        $Json = $WalletTable | ConvertTo-Json
+        $Json
     }
-
-    $global:Format
 
 }

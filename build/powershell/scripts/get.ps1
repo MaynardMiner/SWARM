@@ -353,7 +353,9 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
 
     "wallets" {
         Import-Module "$global:Global\wallettable.psm1" -Scope Global
-        $Get = Get-WalletTable
+        if($asjson){
+        $Get = Get-WalletTable -asjson
+        } else {$Get += Get-WalletTable}
         Remove-Module "wallettable"
     }
     "stats" {
