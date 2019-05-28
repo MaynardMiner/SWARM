@@ -229,16 +229,16 @@ function Start-LaunchCode {
                     $minerbat | Set-Content $miner_bat
                 }
 
+                $Net = Get-NetFireWallRule | Where DisplayName -eq "SWARM $($MinerCurrent.MinerName)"
+                if (-not $net) {
+                    $Program = Join-Path "$WorkingDirectory" "$($MinerCurrent.MinerName)"
+                    New-NetFirewallRule -DisplayName "SWARM $($MinerCurrent.Minername)" -Direction Inbound -Program $Program -Action Allow | Out-Null
+                }
+                
+
                 ##Build Start Script
-                $Program = "$WorkingDirectory\$($MinerCurrent.MinerName)"
                 $script = @()
                 $script += "`$OutputEncoding = [System.Text.Encoding]::ASCII"
-                try{ $Net = Get-NetFireWallRule } catch {}
-                if($Net) {
-                    if ( -not ( $Net | Where {$_.DisplayName -like "*$($MinerCurrent.MinerName)*"} ) ) {
-                        $script += "New-NetFirewallRule -DisplayName `'$($MinerCurrent.Minername)`' -Direction Inbound -Program `'$Program`' -Action Allow"
-                    }
-                }
                 $script += "Start-Process `"powershell`" -ArgumentList `"$global:dir\build\powershell\scripts\icon.ps1 ``'$global:dir\build\apps\miner.ico``'`" -NoNewWindow"
                 $script += "`$host.ui.RawUI.WindowTitle = `'$($MinerCurrent.Name) - $($MinerCurrent.Algo)`';"
                 $MinerCurrent.Prestart | ForEach-Object {
@@ -465,7 +465,8 @@ function Start-LaunchCode {
         Write-Log "Switching To New Pool"
         $Commands = "switchpool|1"
         $response = Get-TCP -Server $AIP -Port $MinerCurrent.Port -Timeout 10 -Message $Commands
-        if ($response) { $MinerProcess = @{StartTime = (Get-Date); HasExited = $false }}
+        if ($response) { $MinerProcess = @{StartTime = (Get-Date); HasExited = $false }
+        }
         $MinerProcess
     }
 }
