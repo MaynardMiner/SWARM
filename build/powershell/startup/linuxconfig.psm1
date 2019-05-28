@@ -90,25 +90,25 @@ function Get-Data {
     }
 
     if (-not (Test-Path ".\build\export\libstdc++.so.6")) {
-        Start-Process ln -ArgumentList "-s $CmdDir/build/export/libstdc++.so.6.0.25 $CmdDir/build/export/libstdc++.so.6" -Wait
+        Start-Process ln -ArgumentList "-s $global:Dir/build/export/libstdc++.so.6.0.25 $global:Dir/build/export/libstdc++.so.6" -Wait
         Set-Location "/"
         Set-Location $global:Dir     
     }
 
     if (-not (Test-Path ".\build\export\libnvrtc.so.9.2")) {
-        Start-Process ln -ArgumentList "-s $CmdDir/build/export/libnvrtc.so.9.2.148 $CmdDir/build/export/libnvrtc.so.9.2" -Wait
+        Start-Process ln -ArgumentList "-s $global:Dir/build/export/libnvrtc.so.9.2.148 $global:Dir/build/export/libnvrtc.so.9.2" -Wait
         Set-Location "/"
         Set-Location $global:Dir     
     }
 
     if (-not (Test-Path ".\build\export\libnvrtc.so.10.0")) {
-        Start-Process ln -ArgumentList "-s $CmdDir/build/export/libnvrtc.so.10.0.130 $CmdDir/build/export/libnvrtc.so.10.0" -Wait
+        Start-Process ln -ArgumentList "-s $global:Dir/build/export/libnvrtc.so.10.0.130 $global:Dir/build/export/libnvrtc.so.10.0" -Wait
         Set-Location "/"
         Set-Location $global:Dir     
     }
 
     if (-not (Test-Path ".\build\export\libnvrtc.so.10.1")) {
-        Start-Process ln -ArgumentList "-s $CmdDir/build/export/libnvrtc.so.10.1.105 $CmdDir/build/export/libnvrtc.so.10.1" -Wait
+        Start-Process ln -ArgumentList "-s $global:Dir/build/export/libnvrtc.so.10.1.105 $global:Dir/build/export/libnvrtc.so.10.1" -Wait
         Set-Location "/"
         Set-Location $global:Dir     
     }
