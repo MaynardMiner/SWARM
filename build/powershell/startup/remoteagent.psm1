@@ -31,6 +31,7 @@ function start-update {
         $PreviousVersions = @()
         $PreviousVersions += "SWARM.2.2.9"
         $PreviousVersions += "SWARM.2.3.0"
+        $PreviousVersions += "SWARM.2.3.1"
 
         $StatsOnly = $null
 
@@ -116,6 +117,18 @@ function start-update {
                                 #   }
                                 # }
                                 #}
+
+
+                                if ($ChangeFile -eq "wildrig.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands | Add-Member "x25x" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "x25x" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "x25x" "x25x" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "x25x" 1 -ErrorAction SilentlyContinue
+                                        }
+                                    }
+                                }
 
                                 if ($ChangeFile -eq "gminer-amd.json") {
                                     $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
