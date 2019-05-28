@@ -194,28 +194,7 @@ function Get-MinerBinary {
             if ($OldTimeouts) { $OldTimeouts | % { $MinersArray += $_ } }
             $MinersArray += $Miner
             $MinersArray | ConvertTo-Json -Depth 3 | Add-Content ".\timeout\download_block\download_block.txt"
-            $HiveMessage = "Ban: $($Miner.Name) - Download Failed"
-            $HiveWarning = @{result = @{command = "timeout" } }
-            if ($global:Config.Params.HiveOS -eq "Yes") { try { $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "HiveOS" }catch { Write-Log "Failed To Notify HiveOS" -ForegroundColor Red } }
-        }
-    }
-    else { $Success = 1 }
-
-    $Success
-}
-
-function Start-MinerDownloads {
-    $global:Miners | ForEach-Object {
-        $MineName = $_.Name
-        $Success = 0;
-        $CheckPath = Test-Path $_.Path
-        if ( $_.Type -notlike "*ASIC*" -and $CheckPath -eq $false ) {
-            $SelMiner = $_ | ConvertTo-Json -Compress
-            $Success = Get-MinerBinary $SelMiner
-        }
-        else { $Success = 1 }
-        if ($Success -eq 2) {
-            $HiveMessage = "$MineName Download Failed"
+            $HiveMessage = "$($Miner.Name) Has Failed To Download"
             $HiveWarning = @{result = @{command = "timeout" } }
             if ($global:Websites) {
                 $global:Websites | ForEach-Object {
@@ -230,6 +209,23 @@ function Start-MinerDownloads {
                 }
             }
             Write-Log "$HiveMessage" -ForegroundColor Red
+        }
+    }
+    else { $Success = 1 }
+
+    $Success
+}
+
+function Start-MinerDownloads {
+    $global:Miners | ForEach-Object {
+        $Success = 0;
+        $CheckPath = Test-Path $_.Path
+        if ( $_.Type -notlike "*ASIC*" -and $CheckPath -eq $false ) {
+            $SelMiner = $_ | ConvertTo-Json -Compress
+            $Success = Get-MinerBinary $SelMiner
+        }
+        else { $Success = 1 }
+        if ($Success -eq 2) {
             Write-Log "WARNING: Miner Failed To Download Three Times- Restarting SWARM" -ForeGroundColor Yellow
             continue
         }
