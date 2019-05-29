@@ -115,7 +115,10 @@ if ($global:Config.Params.Platform -eq "Windows" -or $global:Config.Params.Updat
     Get-Version
     start-update -Update $Getupdates
 }
-if ($global:Config.Params.Platform -eq "windows") { Start-AgentCheck }
+if ($global:Config.Params.Platform -eq "windows") { 
+    Add-Module "$global:Startup\getconfigs.psm1"
+    Start-AgentCheck 
+}
 
 ## create debug/command folder
 if (-not (Test-Path ".\build\txt")) { New-Item -Path ".\build" -Name "txt" -ItemType "directory" | Out-Null }

@@ -37,15 +37,15 @@ if ($Name -in $global:Config.Params.PoolName) {
                 $Workers = $Zpool_Request.$_.Workers
                 $Hashrate = $Zpool_Request.$_.hashrate
 
-                $Global:DivisorTable.zpool.Add($Zpool_Algorithm, $Divisor)
+                $Global:DivisorTable.zpool.Add($Zpool_Algorithm, $Zpool_Request.$_.mbtc_mh_factor)
                 $Global:FeeTable.zpool.Add($Zpool_Algorithm, $Fees)
 
                 $StatPath = ".\stats\($Name)_$($Zpool_Algorithm)_profit.txt"
                 $Estimate = if (-not (Test-Path $StatPath)) { [Double]$Zpool_Request.$_.estimate_last24h } else { [Double]$Zpool_Request.$_.estimate_current }
 
-                $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
+                $Cut = ConvertFrom-Fees $Fees $Workers $Estimate $Divisor
                 $StatAlgo = $Zpool_Algorithm -replace "`_","`-"
-                $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ([Double]$Cut / $Divisor)
+                $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value $Cut
 
                 if (-not $global:Pool_Hashrates.$Zpool_Algorithm) { $global:Pool_Hashrates.Add("$Zpool_Algorithm", @{ }) }
                 if (-not $global:Pool_Hashrates.$Zpool_Algorithm.$Name) { $global:Pool_Hashrates.$Zpool_Algorithm.Add("$Name", @{HashRate = "$($Stat.HashRate)"; Percent = "" }) }

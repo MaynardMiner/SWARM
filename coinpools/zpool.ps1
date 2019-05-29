@@ -99,10 +99,10 @@ if ($Name -in $global:Config.Params.PoolName) {
                 $Estimate = [Double]$zpool_UnSorted.$_.estimate * 0.001
                 $Divisor = (1000000 * [Double]$global:DivisorTable.zpool.$zpool_Algorithm)
                 $Workers = [Double]$zpool_UnSorted.$_.Workers
-                $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
+                $Cut = ConvertFrom-Fees $Fees $Workers $Estimate $Divisor
                 try { 
                     $StatAlgo = $zpool_Symbol -replace "`_","`-" 
-                    $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_coin_profit" -Value ([Double]$Cut / $Divisor) 
+                    $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_coin_profit" -Value $Cut
                 }catch { Write-Log "Failed To Calculate Stat For $zpool_Symbol" }
             }
         }
@@ -118,9 +118,9 @@ if ($Name -in $global:Config.Params.PoolName) {
             $Divisor = (1000000 * [Double]$global:DivisorTable.zpool.$zpool_Algorithm)
             $Workers = $zpool_Sorted.$_.Workers
 
-            $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
+            $Cut = ConvertFrom-Fees $Fees $Workers $Estimate $Divisor
 
-            $Stat = Set-Stat -Name "$($Name)_$($zpool_Symbol)_coin_profit" -Value ([Double]$Cut / $Divisor)
+            $Stat = Set-Stat -Name "$($Name)_$($zpool_Symbol)_coin_profit" -Value $Cut
 
             $Pass1 = $global:Wallets.Wallet1.Keys
             $User1 = $global:Wallets.Wallet1.$($global:Config.Params.Passwordcurrency1).address

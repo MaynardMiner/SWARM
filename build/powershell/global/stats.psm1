@@ -281,12 +281,14 @@ function ConvertFrom-Fees {
         [Parameter(Position = 1, Mandatory = $true)]
         [Double]$Workers,
         [Parameter(Position = 2, Mandatory = $true)]
-        [Double]$Estimate
+        [Double]$Estimate,
+        [Parameter(Position = 3, Mandatory = $true)]
+        [Double]$Divisor
     )
 
     [Double]$FeeStat = $fees / 100
     [Double]$WorkerPercent = $Workers * $FeeStat
     [Double]$PoolCut = $WorkerPercent + $Fees
-    $WorkerFee = $Estimate * (1 - ($PoolCut / 100))
+    [Double]$WorkerFee = $Estimate / $Divisor * (1 - ($PoolCut / 100))
     return $WorkerFee
-} 
+}
