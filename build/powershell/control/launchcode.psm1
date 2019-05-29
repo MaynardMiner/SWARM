@@ -88,7 +88,7 @@ function Start-LaunchCode {
                         "trex" { $MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "ttminer" { $MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "bminer" { $MinerArguments = "-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
-                        "lolminer" { $MinerArguments = "--devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
+                        "lolminer" { $MinerArguments = "--devices $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)" }
                         "xmrstak" { $MinerArguments = "--cuda-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "progminer" { $MinerArguments = "--cuda-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "grin-miner" { set-minerconfig $NewMiner $Logs }
@@ -116,6 +116,7 @@ function Start-LaunchCode {
                         }
                         "grin-miner" { set-minerconfig $NewMiner $Logs }
                         "gminer" { $MinerArguments = "-d $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)" }
+                        "lolminer" { $MinerArguments = "--devices $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)" }
                         default { $MinerArguments = "$($MinerCurrent.Arguments)" }
                     }
                 }
@@ -128,7 +129,7 @@ function Start-LaunchCode {
                         "xmrstak" { $MinerArguments = "$($MinerCurrent.Arguments)" }
                         "sgminer-gm" { Write-Log "Miner Has Devices"; $MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "tdxminer" { $MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
-                        "lolminer" { $MinerArguments = "--devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
+                        "lolminer" { $MinerArguments = "--devices $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)" }
                         "wildrig" { $MinerArguments = "$($MinerCurrent.Arguments)" }
                         "grin-miner" { set-minerconfig $NewMiner $Logs }
                         "gminer" { $MinerArguments = "-d $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)" }
@@ -173,6 +174,7 @@ function Start-LaunchCode {
                         }
                         "grin-miner" { set-minerconfig $NewMiner $Logs }
                         "gminer" { $MinerArguments = "-d $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)" }
+                        "lolminer" { $MinerArguments = "--devices $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)" }
                         default { $MinerArguments = "$($MinerCurrent.Arguments)" }
                     }
                 }

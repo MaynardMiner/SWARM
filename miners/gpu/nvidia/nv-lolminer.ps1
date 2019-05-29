@@ -1,19 +1,22 @@
-$Global:AMDTypes | ForEach-Object {
+$Global:NVIDIATypes | ForEach-Object {
     
-    $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
+    $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
+    $CName = "nv-lolminer"
 
     ##Miner Path Information
-    if ($Global:amd.lolminer.$ConfigType) { $Path = "$($Global:amd.lolminer.$ConfigType)" }
+    if ($Global:nvidia.$CName.$ConfigType) { $Path = "$($Global:nvidia.$CName.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:amd.lolminer.uri) { $Uri = "$($Global:amd.lolminer.uri)" }
+    if ($Global:nvidia.$CName.uri) { $Uri = "$($Global:nvidia.$CName.uri)" }
     else { $Uri = "None" }
-    if ($Global:amd.lolminer.minername) { $MinerName = "$($Global:amd.lolminer.minername)" }
+    if ($Global:nvidia.$CName.minername) { $MinerName = "$($Global:nvidia.$CName.minername)" }
     else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "lolminer-$Num"; $Port = "2400$Num"
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "6300$Num"
 
     Switch ($Num) {
-        1 { $Get_Devices = $Global:AMDDevices1 }
+        1 { $Get_Devices = $Global:NVIDIADevices1 }
+        2 { $Get_Devices = $Global:NVIDIADevices2 }
+        3 { $Get_Devices = $Global:NVIDIADevices3 }
     }
 
     ##Log Directory
@@ -25,23 +28,19 @@ $Global:AMDTypes | ForEach-Object {
         $GPUDevices1 = $GPUDevices1 -replace ',', ' '
         $Devices = $GPUDevices1
     }
-    else { $Devices = $Get_Devices }
-
-    ##gminer apparently doesn't know how to tell the difference between
-    ##cuda and amd devices, like every other miner that exists. So now I 
-    ##have to spend an hour and parse devices
-    ##to matching platforms.
+    else { $Devices = $Get_Devices }    
+    
     $ArgDevices = $Null
     if ($Get_Devices -ne "none") {
-        $GPUDevices1 = $Get_Devices
-        $GPUEDevices1 = $GPUDevices1 -split ","
-        $GPUEDevices1 | ForEach-Object { $ArgDevices += "$($Global:GCount.AMD.$_) " }
+        $GPUEDevices = $Get_Devices
+        $GPUEDevices = $GPUEDevices -split ","
+        $GPUEDevices | ForEach-Object { $ArgDevices += "$($Global:GCount.NVIDIA.$_) " }
         $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1)
     }
-    else { $Global:GCount.AMD.PSObject.Properties.Name | ForEach-Object { $ArgDevices += "$($Global:GCount.AMD.$_) " }; $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1) }
+    else { $Global:GCount.NVIDIA.PSObject.Properties.Name | ForEach-Object { $ArgDevices += "$($Global:GCount.NVIDIA.$_) " }; $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1) }
 
     ##Get Configuration File
-    $MinerConfig = $Global:config.miners.lolminer
+    $MinerConfig = $Global:config.miners.gminer
 
     ##Export would be /path/to/[SWARMVERSION]/build/export && Bleeding Edge Check##
     $ExportDir = Join-Path $($global:Dir) "build\export"
@@ -87,10 +86,10 @@ $Global:AMDTypes | ForEach-Object {
                         Type       = $ConfigType
                         Path       = $Path
                         Devices    = $Devices
-                        Version    = "$($Global:amd.lolminer.version)"
+                        Version    = "$($Global:nvidia.$CName.version)"
                         ArgDevices = $ArgDevices
                         DeviceCall = "lolminer"
-                        Arguments  = "--pool $($_.Host) --port $($_.Port) --user $($_.$User) $AddArgs--pass $($_.$Pass)$($Diff) --apiport $Port --logs 0 --devices AMD $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                        Arguments  = "--pool $($_.Host) --port $($_.Port) --user $($_.$User) $AddArgs--pass $($_.$Pass)$($Diff) --apiport $Port --logs 0 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         Power     =  if ($global:Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $global:Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($global:Watts.default."$($ConfigType)_Watts") { $global:Watts.default."$($ConfigType)_Watts" }else { 0 } 

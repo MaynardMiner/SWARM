@@ -229,5 +229,15 @@
         "minername": "xmrig-nvidia.exe",
         "version": "2.14.1",
         "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/xmrig-nvidia-windows.zip"
-    }
+    },
+    "nv-lolminer": {
+        "name":"nv-lolminer", 
+        "type":"nvidia", 
+        "AMD1":".\\bin\\nv-lolminer-1\\lolMiner.exe", 
+        "AMD2":".\\bin\\nv-lolminer-2\\lolMiner.exe", 
+        "AMD3":".\\bin\\nv-lolminer-3\\lolMiner.exe", 
+        "minername":"lolMiner.exe", 
+        "version":"0.8.1", 
+        "uri":"https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.8.1/lolMiner_v081_Win64.zip"
+        }     
 }

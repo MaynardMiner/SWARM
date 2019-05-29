@@ -249,5 +249,15 @@
     "minername": "ccminer",
     "version": "6.1",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/cc-verus-linux.tar.gz"
+  },
+  "nv-lolminer": {
+    "name": "nv-lolminer",
+    "type": "nvidia",
+    "AMD1": ".\\bin\\nv-lolminer-1\\lolMiner",
+    "AMD2": ".\\bin\\nv-lolminer-2\\lolMiner",
+    "AMD3": ".\\bin\\nv-lolminer-3\\lolMiner",
+    "minername": "lolMiner",
+    "version": "0.8.1",
+    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.8.1/lolMiner_v081_Lin64.tar.gz"
   }
 }

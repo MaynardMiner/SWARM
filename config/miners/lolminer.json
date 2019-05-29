@@ -11,24 +11,28 @@
             "export GPU_MAX_ALLOC_PERCENT=100"
         ],
         "commands": {
+            "equihash_96/5": "",
             "equihash_144/5": "",
             "equihash_192/7": "",
             "equihash_150/5": "",
             "cuckatoo31": ""
         },
         "difficulty": {
+            "equihash_96/5": "",
             "equihash_144/5": "",
             "equihash_192/7": "",
             "equihash_150/5": "",
             "cuckatoo31": ""
         },
         "naming": {
+            "equihash_96/5": "equihash_144/5",
             "equihash_144/5": "equihash_144/5",
             "equihash_192/7": "equihash_192/7",
             "equihash_150/5": "equihash_150/5",
             "cuckatoo31": "cuckatoo31"
         },
         "fee": {
+            "equihash_96/5": 1,
             "equihash_144/5": 1,
             "equihash_192/7": 1,
             "equihash_150/5": 1,
