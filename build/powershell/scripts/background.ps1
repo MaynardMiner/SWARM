@@ -27,7 +27,7 @@ try { if( -not ( $Net | Where {$_.DisplayName -like "*background.ps1*"} ) ) { Ne
 }
 $Net = $null
 
-if(Test-Path "C:\"){ Start-Process "powershell" -ArgumentList "$global:dir\build\powershell\scripts\icon.ps1 `'$global:dir\build\apps\comb.ico`'" -NoNewWindow }
+if(Test-Path "C:\"){ Start-Process "powershell" -ArgumentList "Set-Location `'$global:dir`'; .\build\powershell\scripts\icon.ps1 `'$global:dir\build\apps\comb.ico`'" -NoNewWindow }
 
 $global:global = "$Global:Dir\build\powershell\global";
 $global:background = "$Global:Dir\build\powershell\background";

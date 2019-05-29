@@ -229,17 +229,18 @@ function Start-LaunchCode {
                     $minerbat | Set-Content $miner_bat
                 }
 
-                $Net = Get-NetFireWallRule | Where DisplayName -eq "SWARM $($MinerCurrent.MinerName)"
-                if (-not $net) {
-                    $Program = Join-Path "$WorkingDirectory" "$($MinerCurrent.MinerName)"
-                    New-NetFirewallRule -DisplayName "SWARM $($MinerCurrent.Minername)" -Direction Inbound -Program $Program -Action Allow | Out-Null
-                }
-                
+                try { 
+                    $Net = Get-NetFireWallRule | Where DisplayName -eq "SWARM $($MinerCurrent.MinerName)"
+                    if (-not $net) {
+                        $Program = Join-Path "$WorkingDirectory" "$($MinerCurrent.MinerName)"
+                        New-NetFirewallRule -DisplayName "SWARM $($MinerCurrent.Minername)" -Direction Inbound -Program $Program -Action Allow | Out-Null
+                    }
+                } catch {}
 
                 ##Build Start Script
                 $script = @()
                 $script += "`$OutputEncoding = [System.Text.Encoding]::ASCII"
-                $script += "Start-Process `"powershell`" -ArgumentList `"$global:dir\build\powershell\scripts\icon.ps1 ``'$global:dir\build\apps\miner.ico``'`" -NoNewWindow"
+                $script += "Start-Process `"powershell`" -ArgumentList `"Set-Location ``'$global:dir``'; .\build\powershell\scripts\icon.ps1 ``'$global:dir\build\apps\miner.ico``'`" -NoNewWindow"
                 $script += "`$host.ui.RawUI.WindowTitle = `'$($MinerCurrent.Name) - $($MinerCurrent.Algo)`';"
                 $MinerCurrent.Prestart | ForEach-Object {
                     if ($_ -notlike "export LD_LIBRARY_PATH=$($global:Dir)\build\export") {

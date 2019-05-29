@@ -40,12 +40,14 @@ function Get-MinerHashTable {
     else { $Miner_Hash = $null }
 
     $TypeTable = @{ }
-    $cpu.PSobject.Properties.Name | %{$TypeTable.Add("$($_)","CPU")}
-    $amd.PSObject.Properties.Name | %{$TypeTable.Add("$($_)-1","AMD1")}
+    $cpu.PSobject.Properties.Name | %{ if($_ -ne "name"){$TypeTable.Add("$($_)","CPU")} }
+    $amd.PSObject.Properties.Name | %{if($_ -ne "name"){$TypeTable.Add("$($_)-1","AMD1")}}
     $nvidia.PSObject.Properties.Name | % {
-        $TypeTable.Add("$($_)-1","NVIDIA1")
-        $TypeTable.Add("$($_)-2","NVIDIA2")
-        $TypeTable.Add("$($_)-3","NVIDIA3")
+        if($_ -ne "name"){
+            $TypeTable.Add("$($_)-1","NVIDIA1")
+            $TypeTable.Add("$($_)-2","NVIDIA2")
+            $TypeTable.Add("$($_)-3","NVIDIA3")
+        }
     }
     $SELASIC = $global:Config.Params.Type | Where {$_ -like "*ASIC*"}
 

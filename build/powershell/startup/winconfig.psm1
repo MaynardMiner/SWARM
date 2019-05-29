@@ -239,9 +239,8 @@ function Start-WindowsConfig {
                 }
             }
         }
-
+        Remove-Module -Name "methods"
     }
-    Remove-Module -Name "methods"
 
     ## Aaaaannnnd...Que that sexy logo. Go Time.
 

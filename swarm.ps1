@@ -31,16 +31,6 @@ try {
 }
 catch { }
 
-## Remove Extra NetFirewall - Temp Fix.
-if ( -not (Test-Path ".\build\fixed.txt") ) { 
-    try { 
-        Write-Host "Removing Previous Net Firewall Rules"; 
-        Remove-NetFirewallRule -All 
-    }
-    catch { }
-    "Fixed" | Set-Content ".\build\fixed.txt"
-}
-
 ## Set Firewall Rule
 try { 
     $Net = Get-NetFireWallRule 
@@ -57,7 +47,7 @@ catch { }
 $Net = $Null
 
 if (Test-Path "C:\") {
-    Start-Process "powershell" -ArgumentList "$global:dir\build\powershell\scripts\icon.ps1 `'$global:dir\build\apps\SWARM.ico`'" -NoNewWindow
+    Start-Process "powershell" -ArgumentList "Set-Location `'$global:dir`'; .\build\powershell\scripts\icon.ps1 `'$global:dir\build\apps\SWARM.ico`'" -NoNewWindow
 }
 
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
