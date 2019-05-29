@@ -140,7 +140,7 @@ Get-DateFiles
 Clear-Stats
 Get-ArgNotice
 Set-NewType
-if ($global:Config.Parms.SWARM_MODE -eq "Yes") {
+if ($global:Config.Params.SWARM_Mode -eq "Yes") {
     write-Log "Sycronizing Time Through Nist" -ForegroundColor Yellow
     $Sync = Get-Nist
     try {

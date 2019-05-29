@@ -43,17 +43,9 @@ function Set-NewType {
 function get-NIST {
     $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
     [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
-    
-    $progressPreference = 'silentlyContinue'
-    try {
-        $WebRequest = Invoke-WebRequest -Uri 'http://nist.time.gov/actualtime.cgi' -UseBasicParsing -TimeoutSec 10
-        $GetDate = $WebRequest.Content -Split "<timestamp time=`"" | Select -Last 1 | % {$_ -split "`" delay" | Select -First 1}
-        $GetNIST = (Get-Date -Date '1970-01-01 00:00:00Z').AddMilliseconds([Double]$GetDate/ 1000)
-    }
-    Catch {
-        Write-Warning "Failed To Get NIST time. Using Local Time."
-        $GetNIST = Get-Date
-    }
-    $progressPreference = 'Continue'
-    $GetNIST
+    try {$WebRequest = Invoke-WebRequest -Uri 'http://nist.time.gov/actualtime.cgi' -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop} catch{Write-Warning "NIST Server Timed Out. Using Local Time"; return Get-Date }
+    $milliseconds = [int64](($webRequest.Content -replace '.*timestamp time="|" delay=".*') / 1000)
+    $NistTime = (New-Object -TypeName DateTime -ArgumentList (1970, 1, 1)).AddMilliseconds($milliseconds)
+    $GetNIST = [System.TimeZoneInfo]::ConvertTimeFromUtc($GetNIST, (Get-Timezone))
+    return $GetNIST
 }
