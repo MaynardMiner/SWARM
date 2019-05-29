@@ -134,6 +134,7 @@ function Start-WebStartup($response,$Site) {
     }
     else {
         write-Log "No HiveOS Rig.conf- Do you have an account? Did you use your farm hash?"
+        write-Log "Try running Hive_Windows_Reset.bat then try again."
         Start-Sleep -S 2
     }
 }

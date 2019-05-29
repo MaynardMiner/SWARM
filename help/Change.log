@@ -3081,3 +3081,35 @@ API overhaul:
 
 
    
+  2.3.3 [2.3.2 final]
+
+  -Miners up to date.
+
+  -Modules:
+  https://github.com/MaynardMiner/SWARM/wiki/Modules
+
+  -JSON config:
+  https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration)
+
+  -API by default is set to no, which should reduce RAM use.
+
+  -If HiveOS fails to change OC (times out), SWARM will now run its own internal oc
+   if it is set (as a backup).
+
+  -All miners download at once, again per user requests.
+
+  -You no longer need to stop SWARM to modify watt files.
+
+  -Watt reading are now averages.
+
+  -Reduced SWARM's Memory footprint.
+
+  -NIST sync only if "SWARM_MODE": "Yes"
+
+  -Bug in Crash Reporting fixed.
+  
+  -``get wallets -asjson`` created
+
+  -``get benchmarks -asjson`` created
+
+  -GPUData for NVIDIA cards in linux (later use).
