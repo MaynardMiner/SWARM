@@ -3113,3 +3113,5 @@ API overhaul:
   -``get benchmarks -asjson`` created
 
   -GPUData for NVIDIA cards in linux (later use).
+
+  -Small Fixes for Windows 7/8 compatibility.
