@@ -46,6 +46,6 @@ function get-NIST {
     try {$WebRequest = Invoke-WebRequest -Uri 'http://nist.time.gov/actualtime.cgi' -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop} catch{Write-Warning "NIST Server Timed Out. Using Local Time"; return Get-Date }
     $milliseconds = [int64](($webRequest.Content -replace '.*timestamp time="|" delay=".*') / 1000)
     $NistTime = (New-Object -TypeName DateTime -ArgumentList (1970, 1, 1)).AddMilliseconds($milliseconds)
-    $GetNIST = [System.TimeZoneInfo]::ConvertTimeFromUtc($GetNIST, (Get-Timezone))
+    $GetNIST = [System.TimeZoneInfo]::ConvertTimeFromUtc($NistTime, (Get-Timezone))
     return $GetNIST
 }
