@@ -20,25 +20,8 @@ $Global:AMDTypes | ForEach-Object {
     $Log = Join-Path $($global:Dir) "logs\$ConfigType.log"
 
     ##Parse -GPUDevices
-    if ($Get_Devices -ne "none") {
-        $GPUDevices1 = $Get_Devices
-        $GPUDevices1 = $GPUDevices1 -replace ',', ' '
-        $Devices = $GPUDevices1
-    }
+    if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
     else { $Devices = $Get_Devices }
-
-    ##gminer apparently doesn't know how to tell the difference between
-    ##cuda and amd devices, like every other miner that exists. So now I 
-    ##have to spend an hour and parse devices
-    ##to matching platforms.
-    $ArgDevices = $Null
-    if ($Get_Devices -ne "none") {
-        $GPUDevices1 = $Get_Devices
-        $GPUEDevices1 = $GPUDevices1 -split ","
-        $GPUEDevices1 | ForEach-Object { $ArgDevices += "$($Global:GCount.AMD.$_) " }
-        $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1)
-    }
-    else { $Global:GCount.AMD.PSObject.Properties.Name | ForEach-Object { $ArgDevices += "$($Global:GCount.AMD.$_) " }; $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1) }
 
     ##Get Configuration File
     $MinerConfig = $Global:config.miners.lolminer
@@ -88,9 +71,8 @@ $Global:AMDTypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Version    = "$($Global:amd.lolminer.version)"
-                        ArgDevices = $ArgDevices
                         DeviceCall = "lolminer"
-                        Arguments  = "--pool $($_.Host) --port $($_.Port) --user $($_.$User) $AddArgs--pass $($_.$Pass)$($Diff) --apiport $Port --logs 0 --devices AMD $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                        Arguments  = "--pool $($_.Host) --port $($_.Port) --user $($_.$User) $AddArgs--pass $($_.$Pass)$($Diff) --apiport $Port --logs 0 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         Power     =  if ($global:Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $global:Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($global:Watts.default."$($ConfigType)_Watts") { $global:Watts.default."$($ConfigType)_Watts" }else { 0 } 

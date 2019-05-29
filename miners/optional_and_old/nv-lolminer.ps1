@@ -23,24 +23,11 @@ $Global:NVIDIATypes | ForEach-Object {
     $Log = Join-Path $($global:Dir) "logs\$ConfigType.log"
 
     ##Parse -GPUDevices
-    if ($Get_Devices -ne "none") {
-        $GPUDevices1 = $Get_Devices
-        $GPUDevices1 = $GPUDevices1 -replace ',', ' '
-        $Devices = $GPUDevices1
-    }
-    else { $Devices = $Get_Devices }    
-    
-    $ArgDevices = $Null
-    if ($Get_Devices -ne "none") {
-        $GPUEDevices = $Get_Devices
-        $GPUEDevices = $GPUEDevices -split ","
-        $GPUEDevices | ForEach-Object { $ArgDevices += "$($Global:GCount.NVIDIA.$_) " }
-        $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1)
-    }
-    else { $Global:GCount.NVIDIA.PSObject.Properties.Name | ForEach-Object { $ArgDevices += "$($Global:GCount.NVIDIA.$_) " }; $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1) }
+    if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
+    else { $Devices = $Get_Devices }
 
     ##Get Configuration File
-    $MinerConfig = $Global:config.miners.gminer
+    $MinerConfig = $Global:config.miners.$CName
 
     ##Export would be /path/to/[SWARMVERSION]/build/export && Bleeding Edge Check##
     $ExportDir = Join-Path $($global:Dir) "build\export"
@@ -87,7 +74,6 @@ $Global:NVIDIATypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Version    = "$($Global:nvidia.$CName.version)"
-                        ArgDevices = $ArgDevices
                         DeviceCall = "lolminer"
                         Arguments  = "--pool $($_.Host) --port $($_.Port) --user $($_.$User) $AddArgs--pass $($_.$Pass)$($Diff) --apiport $Port --logs 0 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour

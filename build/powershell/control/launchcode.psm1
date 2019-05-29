@@ -116,7 +116,7 @@ function Start-LaunchCode {
                         }
                         "grin-miner" { set-minerconfig $NewMiner $Logs }
                         "gminer" { $MinerArguments = "-d $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)" }
-                        "lolminer" { $MinerArguments = "--devices $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)" }
+                        "lolminer" { $MinerArguments = "--devices NVIDIA $($MinerCurrent.Arguments)" }
                         default { $MinerArguments = "$($MinerCurrent.Arguments)" }
                     }
                 }
@@ -129,7 +129,7 @@ function Start-LaunchCode {
                         "xmrstak" { $MinerArguments = "$($MinerCurrent.Arguments)" }
                         "sgminer-gm" { Write-Log "Miner Has Devices"; $MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "tdxminer" { $MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
-                        "lolminer" { $MinerArguments = "--devices $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)" }
+                        "lolminer" { $MinerArguments = "--devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "wildrig" { $MinerArguments = "$($MinerCurrent.Arguments)" }
                         "grin-miner" { set-minerconfig $NewMiner $Logs }
                         "gminer" { $MinerArguments = "-d $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)" }
@@ -174,7 +174,7 @@ function Start-LaunchCode {
                         }
                         "grin-miner" { set-minerconfig $NewMiner $Logs }
                         "gminer" { $MinerArguments = "-d $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)" }
-                        "lolminer" { $MinerArguments = "--devices $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)" }
+                        "lolminer" { $MinerArguments = "--devices AMD $($MinerCurrent.Arguments)" }
                         default { $MinerArguments = "$($MinerCurrent.Arguments)" }
                     }
                 }

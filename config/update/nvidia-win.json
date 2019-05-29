@@ -233,9 +233,9 @@
     "nv-lolminer": {
         "name":"nv-lolminer", 
         "type":"nvidia", 
-        "AMD1":".\\bin\\nv-lolminer-1\\lolMiner.exe", 
-        "AMD2":".\\bin\\nv-lolminer-2\\lolMiner.exe", 
-        "AMD3":".\\bin\\nv-lolminer-3\\lolMiner.exe", 
+        "NVIDIA1":".\\bin\\nv-lolminer-1\\lolMiner.exe", 
+        "NVIDIA2":".\\bin\\nv-lolminer-2\\lolMiner.exe", 
+        "NVIDIA3":".\\bin\\nv-lolminer-3\\lolMiner.exe", 
         "minername":"lolMiner.exe", 
         "version":"0.8.1", 
         "uri":"https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.8.1/lolMiner_v081_Win64.zip"
