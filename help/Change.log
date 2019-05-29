@@ -3083,6 +3083,10 @@ API overhaul:
    
   2.3.3 [2.3.2 final]
 
+  IMPORTANT: -WattOMeter No is no longer used!
+  Either use -WattOMeter Yes or -WattOMeter [Decimal Value]
+  or don't specify at all ("" in .json).
+
   -Miners up to date.
 
   -Modules:
