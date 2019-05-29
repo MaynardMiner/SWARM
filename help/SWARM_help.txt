@@ -32,9 +32,9 @@ Argument          Options           Explanation
 -Type         [CPU,                 Device groups you wish to mine with. Nvidia has three groups in case
                NVIDIA1,             you wish to divide your GPU devices into seperate groups to assist in
                NVIDIA2,             benchmarking, or to prevent entire miner from becoming inoperable if
-               NVIDIA3              one gpu fails. Currently only 1 AMD group supported.
-               AMD1,
-	       ASIC]
+               NVIDIA3              one gpu fails. Currently only 1 AMD group supported. NVIDIA2 and NVIDIA3
+               AMD1,                require wallet2 and wallet3 arguments, along with GPUDevices1,2,3
+	       ASIC]                respectively (See advanced section)
 
 -Donate      [Percentage]           Percent you wish to donate daily to support further development. 
                                     Miner remembers when you open or close, so it will not steal 
@@ -205,14 +205,15 @@ Argument            Options             Explanation
 -Rejections 	    [0-100]	    Default is 50. This the % of rejections required for SWARM to 
 				    consider background miner as timing out.
 
--WattOMeter   [Yes or Decimal]      This turns on the on the self-generated watt settings for SWARM.
+-WattOMeter   [Yes or No]           This turns on the on the self-generated watt settings for SWARM.
                                     This will allow watts recorded for each algorithm
                                     as a stat, and continues to be recorded with every switch.
-                                    This may not be stable in larger rigs. Using [Yes] value, you
-                                    will use the values specified in ".\config\power\power.json",
-                                    if you use a decimal figure, such as [0.012], will use that
-                                    value as cost of kwh. Default is "Yes". Not specficing it,
-                                    means SWARM will not use it.
+                                    This may not be stable in larger rigs. Default is Yes.
+
+-kwh          [decimal number]      Default is "" ($null). This is the kw/h pricing of your electricty costs.
+                                    -kwh 0.10 would mean your electricty cost it 0.10 kwh. If argument is ommited,
+                                    or left as "" in config.json- kw/h figures will based on values in power.json.
+                                    This parameter overrides kwh values in power.json
 
 -Threshold     [.1 - 100000]	    Expressed in BTC/day. Default is .02. If the total daily profits of a
 				    particular algo/coin exceed the -Threshold argument, it will be removed
@@ -312,33 +313,33 @@ Argument            Options             Explanation
                                         to fine tune profitability based on the variable rates and extra
                                         fees associated with using the nicehash service. Default is 2.                     
 
--AltCoinWallet1       [Wallet Address]    Altcoin wallet adddress. Is used in combinatation of -Wallet1
+-AltWallet1       [Wallet Address]    Altcoin wallet adddress. Is used in combinatation of -Wallet1
                                           argument. This will tell SWARM if it switches
                                           to auto-exchange into specified coin.
                                           Used when -Type NVIDIA1/AMD1/CPU/ASIC is specified.
 
--AltCoinWallet2       [Wallet Address]    Altcoin wallet adddress. Is used in combinatation of -Wallet1
+-AltWallet2       [Wallet Address]       Altcoin wallet adddress. Is used in combinatation of -Wallet1
                                           argument. This will tell SWARM
                                           to auto-exchange into a coin other than BTC.
                                           Used when -Type NVIDIA2 is specified.
 
--AltCoinWallet2  [Wallet Address]        Altcoin wallet adddress. Is used in combinatation of -Wallet1
+-AltWallet2  [Wallet Address]           Altcoin wallet adddress. Is used in combinatation of -Wallet1
                                          argument. This will tell SWARM if it switches to pool
                                          to auto-exchange into a coin other than BTC.
                                          Used when -Type NVIDIA2 is specified.
 
--AltCoinPassword1	 [Symbol]       Wallet address symbol of corresponding wallet. Is used
+-AltPassword1	 [Symbol]               Wallet address symbol of corresponding wallet. Is used
                                         in combination of -PasswordCurrency1 argument. This will tell
                                         SWARM if it switches to pool to use this coin symbol
                                         in password arguments. Used when -Type NVIDIA1/AMD1/CPU/ASIC
 					is specified. 
 
--AltCoinPassword2	 [Symbol]       Wallet address symbol of corresponding wallet. Is used
+-AltPassword2	 [Symbol]               Wallet address symbol of corresponding wallet. Is used
                                         in combination of -PasswordCurrency1 argument. This will tell
                                         SWARM if it switches to pool to use this coin symbol
                                         in password arguments. Used when -Type NVIDIA2 is specified. 
 					
--ALtCoinPassword3	 [Symbol]       Wallet address symbol of corresponding wallet. Is used
+-ALtPassword3	 [Symbol]               Wallet address symbol of corresponding wallet. Is used
                                         in combination of -PasswordCurrency1 argument. This will tell
                                         SWARM if it switches to pool to use this coin symbol
                                         in password arguments. Used when -Type NVIDIA3 is specified.

@@ -1,9 +1,7 @@
 function Get-Watts {
     if (-not $Global:Watts) { $global:Watts = Get-Content ".\config\power\power.json" | ConvertFrom-Json }
-    if($global:Config.params.WattOMeter -ne "") {
-        if($global:Config.params.WattoMeter -ne "Yes") {
-            $global:WattHour = [Decimal]$global:Config.params.WattOMeter
-        }
+    if($global:Config.params.kwh -ne "") {
+        $global:WattHour = $global:Config.Params.kwh
     } else { $global:WattHour = $global:Watts.KWh.$((Get-Date | Select-Object hour).Hour) }
 }
 

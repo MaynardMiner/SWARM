@@ -3123,3 +3123,11 @@ API overhaul:
   -Removed all instances of 'sudo' in codebase.
    * It still recommeneded and in most cases
      required to run SWARM with root privelages.
+
+  2.3.4
+
+  -wattometer restored to Yes or No.
+  
+  NEW ARGUMENT:
+
+  ``-kwh`` set hourly electricity rate.

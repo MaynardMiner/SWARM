@@ -527,7 +527,7 @@ While ($true) {
         Add-Module "$global:benchmark\attempt.psm1"
 
         ## Start WattOMeter function
-        if ($global:Config.Params.WattOMeter -ne "") { Start-WattOMeter }
+        if ($global:Config.Params.WattOMeter -eq "Yes") { Start-WattOMeter }
         $global:ActiveSymbol = @()
 
         ##Try To Benchmark

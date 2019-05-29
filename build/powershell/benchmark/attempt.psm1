@@ -121,7 +121,7 @@ function Start-Benchmark {
                                 write-Log "Stat Attempt Yielded 0" -Foregroundcolor Red
                                 Start-Sleep -S .25
                                 $GPUPower = 0
-                                if ($global:Config.Params.WattOMeter -ne "" -and $_.Type -ne "CPU") {
+                                if ($global:Config.Params.WattOMeter -eq "Yes" -and $_.Type -ne "CPU") {
                                     $GetWatts = Get-Content ".\config\power\power.json" | ConvertFrom-Json
                                     if ($GetWatts.$($_.Algo)) {
                                         $GetWatts.$($_.Algo)."$($_.Type)_Watts" = "$GPUPower"
@@ -136,9 +136,9 @@ function Start-Benchmark {
                                 }
                             }
                             else {
-                                if ($global:Config.Params.WattOMeter -ne "" -and $_.Type -ne "CPU") { try { $GPUPower = Set-Power $($_.Type) }catch { write-Log "WattOMeter Failed"; $GPUPower = 0 } }
+                                if ($global:Config.Params.WattOMeter -eq "Yes" -and $_.Type -ne "CPU") { try { $GPUPower = Set-Power $($_.Type) }catch { write-Log "WattOMeter Failed"; $GPUPower = 0 } }
                                 else { $GPUPower = 1 }
-                                if ($global:Config.Params.WattOMeter -ne "" -and $_.Type -ne "CPU") {
+                                if ($global:Config.Params.WattOMeter -eq "Yes" -and $_.Type -ne "CPU") {
                                     $GetWatts = Get-Content ".\config\power\power.json" | ConvertFrom-Json
                                     if ($GetWatts.$($_.Algo)) {
                                         $StatPower = Set-Stat -Name "$($_.Name)_$($NewName)_Watts" -Value $GPUPower
@@ -165,7 +165,7 @@ function Start-Benchmark {
                                 }
                                 else {
                                     write-Log "Recorded Hashrate For $($_.Name) $($_.Symbol) Is $($ScreenCheck)" -foregroundcolor "magenta"
-                                    if ($global:Config.Params.WattOMeter -ne "") { write-Log "Watt-O-Meter scored $($_.Name) $($_.Symbol) at $($GPUPower) Watts" -ForegroundColor magenta }
+                                    if ($global:Config.Params.WattOMeter -eq "Yes") { write-Log "Watt-O-Meter scored $($_.Name) $($_.Symbol) at $($GPUPower) Watts" -ForegroundColor magenta }
                                     if (-not (Test-Path $NewHashrateFilePath)) {
                                         Copy-Item $HashrateFilePath -Destination $NewHashrateFilePath -force
                                         write-Log "$($_.Name) $($_.Symbol) Was Benchmarked And Backed Up" -foregroundcolor yellow
