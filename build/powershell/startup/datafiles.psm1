@@ -47,7 +47,8 @@ function get-NIST {
     $progressPreference = 'silentlyContinue'
     try {
         $WebRequest = Invoke-WebRequest -Uri 'http://nist.time.gov/actualtime.cgi' -UseBasicParsing -TimeoutSec 10
-        $GetNIST = (Get-Date -Date '1970-01-01 00:00:00Z').AddMilliseconds(([XML]$WebRequest.Content | Select -expandproperty timestamp | Select -ExpandProperty time) / 1000)
+        $GetDate = $WebRequest.Content -Split "<timestamp time=`"" | Select -Last 1 | % {$_ -split "`" delay" | Select -First 1}
+        $GetNIST = (Get-Date -Date '1970-01-01 00:00:00Z').AddMilliseconds([Double]$GetDate/ 1000)
     }
     Catch {
         Write-Warning "Failed To Get NIST time. Using Local Time."

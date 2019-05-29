@@ -140,16 +140,17 @@ Get-DateFiles
 Clear-Stats
 Get-ArgNotice
 Set-NewType
-write-Log "Sycronizing Time Through Nist" -ForegroundColor Yellow
-$Sync = Get-Nist
-try {
-    Set-Date $Sync -ErrorAction Stop 
+if ($global:Config.Parms.SWARM_MODE -eq "Yes") {
+    write-Log "Sycronizing Time Through Nist" -ForegroundColor Yellow
+    $Sync = Get-Nist
+    try {
+        Set-Date $Sync -ErrorAction Stop 
+    }
+    catch { 
+        write-Log "Failed to syncronize time- Are you root/administrator?" -ForegroundColor red; 
+        Start-Sleep -S 5 
+    }
 }
-catch { 
-    write-Log "Failed to syncronize time- Are you root/administrator?" -ForegroundColor red; 
-    Start-Sleep -S 5 
-}
-
 ##HiveOS Confirmation
 write-Log "HiveOS = $($global:Config.Params.HiveOS)"
 

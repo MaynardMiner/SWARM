@@ -218,33 +218,54 @@ function Get-GPUCount {
     $nvidiacounted = $false
     $amdcounted = $false
     $DeviceList = @{ }
-    if ($global:Config.Params.Type -like "*AMD*") { $DeviceList.Add("AMD", @{ })
+    if ($global:Config.Params.Type -like "*AMD*") { $DeviceList.Add("AMD", @{ }) 
     }
-    if ($global:Config.Params.Type -like "*NVIDIA*") { $DeviceList.Add("NVIDIA", @{ })
+    if ($global:Config.Params.Type -like "*NVIDIA*") { 
+        $DeviceList.Add("NVIDIA", @{ }); 
+        invoke-expression "nvidia-smi --query-gpu=gpu_bus_id,gpu_name,memory.total,power.min_limit,power.default_limit,power.max_limit,vbios_version --format=csv" | Tee-Object -Variable NVSMI | Out-Null
+        $NVSMI = $NVSMI | ConvertFrom-Csv
+        $NVSMI | % { $_."pci.bus_id" = $_."pci.bus_id" -replace "00000000:", "" }
     }
-    if ($global:Config.Params.Type -like "*CPU*") { $DeviceList.Add("CPU", @{ })
+    if ($global:Config.Params.Type -like "*CPU*") { $DeviceList.Add("CPU", @{ }) 
     }
 
     Invoke-Expression "lspci" | Tee-Object -Variable lspci | Out-null
     $lspci | Set-Content ".\build\txt\gpucount.txt"
-    $GetBus = Get-Content ".\build\txt\gpucount.txt"
-    $GetBus = $GetBus | Select-String "VGA", "3D"
+    $GetBus = $lspci | Select-String "VGA", "3D"
     $AMDCount = 0
     $NVIDIACount = 0
     $CardCount = 0
-
+    $global:BusData = @()
 
     $GetBus | Foreach {
-        if ($_ -like "*Advanced Micro Devices*" -or $_ -like "*RS880*" -or $_ -like "*Stoney*" -or $_ -like "*NVIDIA*" -and $_ -notlike "*nForce*") {
-            if ($_ -like "*Advanced Micro Devices*" -or $_ -like "*RS880*" -or $_ -like "*Stoney*") {
-                if ($global:Config.Params.Type -like "*AMD*") {
+        if ($_ -like "*Advanced Micro Devices*" -or $_ -like "*NVIDIA*") {
+            ##AMD
+            if ($_ -like "*Advanced Micro Devices*" -and $_ -notlike "*RS880*" -and $_ -notlike "*Stoney*") {
+                if ($global:Config.Params.Type -like "*AMD*") {        
                     $DeviceList.AMD.Add("$AMDCount", "$CardCount")
                     $AMDCount++
                     $CardCount++
                 }
             }
-            if ($_ -like "*NVIDIA*") {
+            if ($_ -like "*NVIDIA*" -and $_ -notlike "*nForce*") {
                 if ($global:Config.Params.Type -like "*NVIDIA*") {
+                    $Sel = $_
+                    $busid = $Sel -split " " | Select -First 1
+                    $subvendor = invoke-expression "lspci -vmms $busid" | Tee-Object -Variable subvendor | %{$_ | Select-String "SVendor" | % {$_ -split "SVendor:\s" | Select -Last 1}}
+                    $NVSMI | Where "pci.bus_id" -eq $busid | % {
+
+                        $global:BusData += [PSCustomObject]@{
+                            busid = $busid
+                            name  = $_.name
+                            brand = "nvidia"
+                            subvendor = $subvendor
+                            mem = $_."memory.total [MiB]"
+                            vbios = $_.vbios_version
+                            plim_min = $_."power.min_limit [W]"
+                            plim_def =  $_."power.default_limit [W]"
+                            plim_max = $_."power.max_limit [W]"
+                        }
+                    }
                     $DeviceList.NVIDIA.Add("$NVIDIACount", "$CardCount")
                     $NVIDIACount++
                     $CardCount++
