@@ -142,7 +142,7 @@ While ($True) {
         $global:CurrentMiners | ForEach-Object {
 
             ## Static Miner Information
-            $global:MinerAlgo = "$($_.Algo)"; $MinerName = "$($_.MinerName)"; $global:Name = "$($_.Name)";
+            $global:MinerAlgo = "$($_.Algo)"; $global:MinerName = "$($_.MinerName)"; $global:Name = "$($_.Name)";
             $global:Port = $($_.Port); $global:MinerType = "$($_.Type)"; $global:MinerAPI = "$($_.API)";
             $global:Server = "$($_.Server)"; $HashPath = ".\logs\$($_.Type).log"; $global:TypeS = "none"
             $global:Devices = 0; $MinerDevices = $_.Devices
