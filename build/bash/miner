@@ -17,17 +17,17 @@ case $1 in
 
 	start)
         echo "Starting SWARM"
-        sudo $(< $mydir/dir.sh)/swarm
+        $(< $mydir/dir.sh)/swarm
         ;;
     restart)
            echo "Restarting SWARM"
-           sudo screen -S miner -X quit
+           screen -S miner -X quit
            sleep 3
-           sudo $(< $mydir/dir.sh)/swarm
+           $(< $mydir/dir.sh)/swarm
         ;;
     stop)
         echo "Stopping SWARM"
-        sudo screen -S miner -X quit
+        screen -S miner -X quit
         ;;
     *)
           echo "command does not exist"

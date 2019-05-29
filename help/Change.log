@@ -283,7 +283,7 @@ Did not get to fixing anything on AMD side. Still working on it.
 There is going to be no c version. b version should now work in Ubuntu:
 
 -download/clone MM.Test (beta version).
--run install.sh as root : sudo ./install.sh. This will install all bash commands.
+-run install.sh as root : ./install.sh. This will install all bash commands.
 -open/edit StartMM with your specified arguments.
 -Launch MM.Hash (Not as superuser!) ./StartMM
 -Operates just like Hive-OS version, just open a new terminal and type desired command.
@@ -339,7 +339,7 @@ If you are running a different OS, it must be added: -HiveOS NO
 
 If you wish to use on a Unix OS other than hive:
 run:
-sudo ./install.sh
+./install.sh
 Note: You may have to edit ./install.sh depending on flavor
 edit 'swarm' in main directory with your arguments
 launch miner by 

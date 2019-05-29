@@ -10,4 +10,4 @@
 #You should have received a copy of the GNU General Public License
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-sudo screen -S miner -X title "FOR HELP ON USE SEE WIKI: https://github.com/MaynardMiner/SWARM/wiki"
+screen -S miner -X title "FOR HELP ON USE SEE WIKI: https://github.com/MaynardMiner/SWARM/wiki"
