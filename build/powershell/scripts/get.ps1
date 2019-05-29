@@ -526,14 +526,21 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                     $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$VersionNumber/SWARM.$VersionNumber.zip"
                 }
                 Write-Host "Main Directory is $Location`n"
+                $line += "Main Directory is $Location`n"
                 $NewLocation = Join-Path (Split-Path $Dir) "SWARM.$VersionNumber"
+                $line += "New Location is $NewLocation"
+                Write-Host "New Location is $NewLocation"
                 $FileName = join-path ".\x64" "SWARM.$VersionNumber.zip"
+                Write-Host "New"
                 $DLFileName = Join-Path "$Dir" "x64\SWARM.$VersionNumber.zip"
+                $line += "Extraction Path is $DLFileName"
+                Write-Host "Extraction Path is $DLFileName"
                 $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$versionNumber/SWARM.$VersionNumber.zip"
                 try { Invoke-WebRequest $URI -OutFile $FileName -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }catch { $Failed = $true; Write-Host "Failed To Contact Github For Download! Must Do So Manually" }
                 Start-Sleep -S 5
                 if ($Failed -eq $false) {
-                    Start-Process "7z" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -Wait -WindowStyle Minimized
+                    Get-Location | Out-Host
+                    Start-Process ".\build\apps\7z.exe" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -Wait -WindowStyle Minimized
                     Start-Sleep -S 3
                     Write-Host "Config Command Initiated- Restarting SWARM`n"
                     $MinerFile = ".\build\pid\miner_pid.txt"

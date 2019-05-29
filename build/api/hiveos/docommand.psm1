@@ -265,7 +265,7 @@ function Start-Webcommand {
                         }
                         Start-Sleep -S 5
                         if ($Failed -eq $false) {
-                            Start-Process "7z" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -Wait -WindowStyle Minimized
+                            Start-Process ".\build\apps\7z" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -Wait -WindowStyle Minimized
                             Start-Sleep -S 3
                             $line += "Config Command Initiated- Restarting SWARM`n"
                             Write-Host "Config Command Initiated- Restarting SWARM"
