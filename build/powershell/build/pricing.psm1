@@ -1,6 +1,10 @@
 function Get-Watts {
     if (-not $Global:Watts) { $global:Watts = Get-Content ".\config\power\power.json" | ConvertFrom-Json }
-    $global:WattHour = $(Get-Date | Select-Object hour).Hour
+    if($global:Config.params.WattOMeter -ne "") {
+        if($global:Config.params.WattoMeter -ne "Yes") {
+            $global:WattHour = [Decimal]$global:Config.params.WattOMeter
+        }
+    } else { $global:WattHour = $global:Watts.KWh.$((Get-Date | Select-Object hour).Hour) }
 }
 
 function Get-Pricing {
@@ -10,7 +14,7 @@ function Get-Pricing {
         Write-Log "SWARM Is Building The Database. Auto-Coin Switching: $($global:Config.Params.Auto_Coin)" -foreground "yellow"
         $global:Rates = Invoke-RestMethod "https://api.coinbase.com/v2/exchange-rates?currency=BTC" -UseBasicParsing | Select-Object -ExpandProperty data | Select-Object -ExpandProperty rates
         $global:Config.Params.Currency | Where-Object { $global:Rates.$_ } | ForEach-Object { $global:Rates | Add-Member $_ ([Double]$global:Rates.$_) -Force }
-        $global:WattEX = [Double](((1 / $global:Rates.$($global:Config.Params.Currency)) * $global:Watts.KWh.$global:WattHour))
+        $global:WattEX = [Double](((1 / $global:Rates.$($global:Config.Params.Currency)) * $global:WattHour))
     }
     catch {
         write-Log "WARNING: Coinbase Unreachable. " -ForeGroundColor Yellow

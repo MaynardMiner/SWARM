@@ -1,870 +1,871 @@
 {
-    "cryptonight-lite": {
-        "alt_names": [
-            "cryptonight-lite",
-            "aeon"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "aergo": {
-        "alt_names": [
-            "aergo"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "allium": {
-        "alt_names": [
-            "allium"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "argon2d250": {
-        "alt_names": [
-            "argon2d250",
-            "argon2d-crds"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "argon2d4096": {
-        "alt_names": [
-            "argon2d4096",
-            "argon2d-uis"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "argon2d500": {
-        "alt_names": [
-            "argon2d500",
-            "argon2d-dyn"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "astralhash": {
-        "alt_names": [
-            "astralhash"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "balloon": {
-        "alt_names": [
-            "balloon"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "bcd": {
-        "alt_names": [
-            "bcd"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "equihash_150/5": {
-        "alt_names": [
-            "beam"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "bitcore": {
-        "alt_names": [
-            "bitcore"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "blake": {
-        "alt_names": [
-            "blake"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "blake2s": {
-        "alt_names": [
-            "blake2s"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "c11": {
-        "alt_names": [
-            "c11"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "cryptonight-fast-v8": {
-        "alt_names": [
-            "cryptonight-fast-v8",
-            "cnfastv2"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "cryptonight-sfast": {
-        "alt_names": [
-            "cnsuperfast",
-            "cryptonight-sfast"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "cryptonight": {
-        "alt_names": [
-            "cryptonight"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "cryptonight-gpu": {
-        "alt_names": [
-            "cryptonight-gpu",
-            "cryptonightgpu"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "cryptonight-heavy": {
-        "alt_names": [
-            "cryptonight-heavy",
-            "cryptonightheavy"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "cryptonight-r": {
-        "alt_names": [
-            "cryptonightr",
-            "cryptonightmonero"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "cryptonight-superfast": {
-        "alt_names": [
-            "cryptonight-superfast",
-            "cryptonightsuperfast"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "cryptonight-v7": {
-        "alt_names": [
-            "cryptonightv7"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "cryptonight-v8": {
-        "alt_names": [
-            "cryptonight-v8",
-            "cryptonightv8"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "cuckoo_cycle": {
-        "alt_names": [
-            "cuckoocycle",
-            "cuckoo_cycle",
-            "aeternity",
-            "cuckoo"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "cuckaroo29": {
-        "alt_names": [
-            "cuckaroo29",
-            "grincuckaroo29"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "cuckatoo31": {
-        "alt_names": [
-            "cuckatoo31",
-            "grincuckatoo31"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "dedal": {
-        "alt_names": [
-            "dedal"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "equihash_144/5": {
-        "alt_names": [
-            "equihash_144/5",
-            "equihash144",
-            "equihash-btg",
-            "zhash"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "equihash_192/7": {
-        "alt_names": [
-            "equihash_192/7",
-            "equihash192"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "equihash_210/9": {
-        "alt_names": [
-            "equihash_210/9",
-            "equihash200",
-            "equihash210"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "equihash_96/5": {
-        "alt_names": [
-            "equihash_96/5",
-            "equihash96"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "ethash": {
-        "alt_names": [
-            "ethash",
-            "dagger",
-            "daggerhashimoto"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "exosis": {
-        "alt_names": [
-            "exosis"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "geek": {
-        "alt_names": [
-            "geek"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "groestl": {
-        "alt_names": [
-            "groestl"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "hex": {
-        "alt_names": [
-            "hex"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "hmq1725": {
-        "alt_names": [
-            "hmq1725"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "hodl": {
-        "alt_names": [
-            "hodl"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "honeycomb": {
-        "alt_names": [
-            "honeycomb"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "hsr": {
-        "alt_names": [
-            "hsr"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "jackpot": {
-        "alt_names": [
-            "jackpot"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "jeonghash": {
-        "alt_names": [
-            "jeonghash"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "keccak": {
-        "alt_names": [
-            "keccak"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "keccakc": {
-        "alt_names": [
-            "keccakc"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "lbk3": {
-        "alt_names": [
-            "lbk3"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "lyra2z": {
-        "alt_names": [
-            "lyra2re",
-            "lyra2z"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "lyra2rev2": {
-        "alt_names": [
-            "lyra2rev2",
-            "lyra2v2"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "lyra2v3": {
-        "alt_names": [
-            "lyra2v3",
-            "lyra2rev3"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "lyra2vc0ban": {
-        "alt_names": [
-            "lyra2vc0ban"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "lyra2zz": {
-        "alt_names": [
-            "lyra2zz"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "m7m": {
-        "alt_names": [
-            "m7m"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "mtp": {
-        "alt_names": [
-            "mtp"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated",
-            "NVIDIA3"
-        ]
-    },
-    "myr-gr": {
-        "alt_names": [
-            "myr-gr"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "neoscrypt": {
-        "alt_names": [
-            "neoscrypt"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "energihash": {
-        "alt_names": [
-            "energihash",
-            "nrghash"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "padihash": {
-        "alt_names": [
-            "padihash"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "pawelhash": {
-        "alt_names": [
-            "pawelhash"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "phi": {
-        "alt_names": [
-            "phi"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "phi2": {
-        "alt_names": [
-            "phi2"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "polytimos": {
-        "alt_names": [
-            "polytimos"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "progpow": {
-        "alt_names": [
-            "progpow"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "renesis": {
-        "alt_names": [
-            "renesis"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "rainforestv2": {
-        "alt_names": [
-            "rfv2"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "scrypt": {
-        "alt_names": [
-            "scrypt"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "sha256": {
-        "alt_names": [
-            "sha256"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "sha256q": {
-        "alt_names": [
-            "sha256q"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "sha256t": {
-        "alt_names": [
-            "sha256t"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "sib": {
-        "alt_names": [
-            "sib"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "skein": {
-        "alt_names": [
-            "skein"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "skunk": {
-        "alt_names": [
-            "skunk"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "sonoa": {
-        "alt_names": [
-            "sonoa"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "timetravel": {
-        "alt_names": [
-            "timetravel"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "tribus": {
-        "alt_names": [
-            "tribus"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "veil": {
-        "alt_names": [
-            "veil"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated",
-            "nlpool"
-        ]
-    },
-    "verushash": {
-        "alt_names": [
-            "verushash"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "wildkeccak": {
-        "alt_names": [
-            "wildkeccak"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "x11evo": {
-        "alt_names": [
-            "x11evo"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "x16r": {
-        "alt_names": [
-            "x16r"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "x16rt": {
-        "alt_names": [
-            "x16rt"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "x16s": {
-        "alt_names": [
-            "x16s"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "x17": {
-        "alt_names": [
-            "x17"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "x18": {
-        "alt_names": [
-            "x18"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "x21s": {
-        "alt_names": [
-            "x21s"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "x22i": {
-        "alt_names": [
-            "x22i"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "x25x": {
-        "alt_names": [
-            "x25x"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "xevan": {
-        "alt_names": [
-            "xevan"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "yescrypt": {
-        "alt_names": [
-            "yescrypt"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "yescryptr16": {
-        "alt_names": [
-            "yescryptr16"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "yescryptr32": {
-        "alt_names": [
-            "yescryptr32"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "yescryptr8": {
-        "alt_names": [
-            "yescrypt"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "yespower": {
-        "alt_names": [
-            "yespower"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "yespowerr16": {
-        "alt_names": [
-            "yespowerr16"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    },
-    "yespowerr8": {
-        "alt_names": [
-            "yespowerr8"
-        ],
-        "exclusions": [
-            "add pool or miner here",
-            "comma seperated"
-        ]
-    }
+  "cryptonight-lite": {
+    "alt_names": [
+      "cryptonight-lite",
+      "aeon"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "aergo": {
+    "alt_names": [
+      "aergo"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "allium": {
+    "alt_names": [
+      "allium"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "argon2d250": {
+    "alt_names": [
+      "argon2d250",
+      "argon2d-crds"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "argon2d4096": {
+    "alt_names": [
+      "argon2d4096",
+      "argon2d-uis"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "argon2d500": {
+    "alt_names": [
+      "argon2d500",
+      "argon2d-dyn"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "astralhash": {
+    "alt_names": [
+      "astralhash"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "balloon": {
+    "alt_names": [
+      "balloon"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "bcd": {
+    "alt_names": [
+      "bcd"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "equihash_150/5": {
+    "alt_names": [
+      "beam"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "bitcore": {
+    "alt_names": [
+      "bitcore"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "blake": {
+    "alt_names": [
+      "blake"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "blake2s": {
+    "alt_names": [
+      "blake2s"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "c11": {
+    "alt_names": [
+      "c11"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "cryptonight-fast-v8": {
+    "alt_names": [
+      "cryptonight-fast-v8",
+      "cnfastv2"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "cryptonight-sfast": {
+    "alt_names": [
+      "cnsuperfast",
+      "cryptonight-sfast"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "cryptonight": {
+    "alt_names": [
+      "cryptonight"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "cryptonight-gpu": {
+    "alt_names": [
+      "cryptonight-gpu",
+      "cryptonightgpu"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "cryptonight-heavy": {
+    "alt_names": [
+      "cryptonight-heavy",
+      "cryptonightheavy"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "cryptonight-r": {
+    "alt_names": [
+      "cryptonightr",
+      "cryptonightmonero"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "cryptonight-superfast": {
+    "alt_names": [
+      "cryptonight-superfast",
+      "cryptonightsuperfast"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "cryptonight-v7": {
+    "alt_names": [
+      "cryptonightv7"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "cryptonight-v8": {
+    "alt_names": [
+      "cryptonight-v8",
+      "cryptonightv8"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "cuckoo_cycle": {
+    "alt_names": [
+      "cuckoocycle",
+      "cuckoo_cycle",
+      "aeternity",
+      "cuckoo"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "cuckaroo29": {
+    "alt_names": [
+      "cuckaroo29",
+      "grincuckaroo29"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "cuckatoo31": {
+    "alt_names": [
+      "cuckatoo31",
+      "grincuckatoo31"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "dedal": {
+    "alt_names": [
+      "dedal"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "equihash_144/5": {
+    "alt_names": [
+      "equihash_144/5",
+      "equihash144",
+      "equihash-btg",
+      "zhash"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "equihash_192/7": {
+    "alt_names": [
+      "equihash_192/7",
+      "equihash192"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "equihash_210/9": {
+    "alt_names": [
+      "equihash_210/9",
+      "equihash200",
+      "equihash210"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "equihash_96/5": {
+    "alt_names": [
+      "equihash_96/5",
+      "equihash96"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "ethash": {
+    "alt_names": [
+      "ethash",
+      "dagger",
+      "daggerhashimoto"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "exosis": {
+    "alt_names": [
+      "exosis"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "geek": {
+    "alt_names": [
+      "geek"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "groestl": {
+    "alt_names": [
+      "groestl"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "hex": {
+    "alt_names": [
+      "hex"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "hmq1725": {
+    "alt_names": [
+      "hmq1725"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "hodl": {
+    "alt_names": [
+      "hodl"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "honeycomb": {
+    "alt_names": [
+      "honeycomb"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "hsr": {
+    "alt_names": [
+      "hsr"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "jackpot": {
+    "alt_names": [
+      "jackpot"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "jeonghash": {
+    "alt_names": [
+      "jeonghash"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "keccak": {
+    "alt_names": [
+      "keccak"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "keccakc": {
+    "alt_names": [
+      "keccakc"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "lbk3": {
+    "alt_names": [
+      "lbk3"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "lyra2z": {
+    "alt_names": [
+      "lyra2re",
+      "lyra2z"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "lyra2rev2": {
+    "alt_names": [
+      "lyra2rev2",
+      "lyra2v2"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "lyra2v3": {
+    "alt_names": [
+      "lyra2v3",
+      "lyra2rev3"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "lyra2vc0ban": {
+    "alt_names": [
+      "lyra2vc0ban"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "lyra2zz": {
+    "alt_names": [
+      "lyra2zz"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "m7m": {
+    "alt_names": [
+      "m7m"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "mtp": {
+    "alt_names": [
+      "mtp"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated",
+      "NVIDIA3"
+    ]
+  },
+  "myr-gr": {
+    "alt_names": [
+      "myr-gr"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "neoscrypt": {
+    "alt_names": [
+      "neoscrypt"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "energihash": {
+    "alt_names": [
+      "energihash",
+      "nrghash"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "padihash": {
+    "alt_names": [
+      "padihash"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "pawelhash": {
+    "alt_names": [
+      "pawelhash"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "phi": {
+    "alt_names": [
+      "phi"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "phi2": {
+    "alt_names": [
+      "phi2",
+      "lux"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "polytimos": {
+    "alt_names": [
+      "polytimos"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "progpow": {
+    "alt_names": [
+      "progpow"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "renesis": {
+    "alt_names": [
+      "renesis"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "rainforestv2": {
+    "alt_names": [
+      "rfv2"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "scrypt": {
+    "alt_names": [
+      "scrypt"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "sha256": {
+    "alt_names": [
+      "sha256"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "sha256q": {
+    "alt_names": [
+      "sha256q"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "sha256t": {
+    "alt_names": [
+      "sha256t"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "sib": {
+    "alt_names": [
+      "sib"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "skein": {
+    "alt_names": [
+      "skein"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "skunk": {
+    "alt_names": [
+      "skunk"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "sonoa": {
+    "alt_names": [
+      "sonoa"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "timetravel": {
+    "alt_names": [
+      "timetravel"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "tribus": {
+    "alt_names": [
+      "tribus"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "veil": {
+    "alt_names": [
+      "veil"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated",
+      "nlpool"
+    ]
+  },
+  "verushash": {
+    "alt_names": [
+      "verushash"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "wildkeccak": {
+    "alt_names": [
+      "wildkeccak"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "x11evo": {
+    "alt_names": [
+      "x11evo"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "x16r": {
+    "alt_names": [
+      "x16r"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "x16rt": {
+    "alt_names": [
+      "x16rt"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "x16s": {
+    "alt_names": [
+      "x16s"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "x17": {
+    "alt_names": [
+      "x17"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "x18": {
+    "alt_names": [
+      "x18"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "x21s": {
+    "alt_names": [
+      "x21s"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "x22i": {
+    "alt_names": [
+      "x22i"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "x25x": {
+    "alt_names": [
+      "x25x"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "xevan": {
+    "alt_names": [
+      "xevan"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "yescrypt": {
+    "alt_names": [
+      "yescrypt"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "yescryptr16": {
+    "alt_names": [
+      "yescryptr16"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "yescryptr32": {
+    "alt_names": [
+      "yescryptr32"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "yescryptr8": {
+    "alt_names": [
+      "yescrypt"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "yespower": {
+    "alt_names": [
+      "yespower"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "yespowerr16": {
+    "alt_names": [
+      "yespowerr16"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "yespowerr8": {
+    "alt_names": [
+      "yespowerr8"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  }
 }
