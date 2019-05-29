@@ -58,7 +58,8 @@ $Defaults.PSObject.Properties.Name | % { if ($_ -notin $Parsed.keys) { $Parsed.A
 $Parsed | convertto-json | Out-File ".\config\parameters\arguments.json"
 
 if(Test-path "C:\") {
-    Start-Process "CMD" -ArgumentList "/C powershell -noexit -executionpolicy Bypass -windowstyle maximized -command `"pwsh -command `"Set-Location C:\; Set-Location `'$Dir`'; .\swarm.ps1`"`"" -Verb RunAs
+    $host.ui.RawUI.WindowTitle = "SWARM";
+    Start-Process "CMD" -ArgumentList "/C `"pwsh -noexit -executionpolicy Bypass -WindowStyle Maximized -command `"Set-Location C:\; Set-Location `'$Dir`'; .\swarm.ps1`"`"" -Verb RunAs
 }
 else {
     Invoke-Expression ".\swarm.ps1"

@@ -1,14 +1,14 @@
-$CPUTypes | ForEach-Object {
+$Global:CPUTypes | ForEach-Object {
     
     $ConfigType = $_;
     $CName = "xmrig-cpu"
 
     ##Miner Path Information
-    if ($cpu.$CName.$ConfigType) { $Path = "$($cpu.$CName.$ConfigType)" }
+    if ($Global:cpu.$CName.$ConfigType) { $Path = "$($Global:cpu.$CName.$ConfigType)" }
     else { $Path = "None" }
-    if ($cpu.$CName.uri) { $Uri = "$($cpu.$CName.uri)" }
+    if ($Global:cpu.$CName.uri) { $Uri = "$($Global:cpu.$CName.uri)" }
     else { $Uri = "None" }
-    if ($cpu.$CName.minername) { $MinerName = "$($cpu.$CName.minername)" }
+    if ($Global:cpu.$CName.minername) { $MinerName = "$($Global:cpu.$CName.minername)" }
     else { $MinerName = "None" }
 
     $Name = "$CName";
@@ -31,14 +31,14 @@ $CPUTypes | ForEach-Object {
     $PreStart += "export LD_LIBRARY_PATH=$ExportDir"
     $MinerConfig.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 
-    if ($Coins -eq $true) { $Pools = $CoinPools }else { $Pools = $AlgoPools }
+    if ($Global:Coins -eq $true) { $Pools = $global:CoinPools }else { $Pools = $global:AlgoPools }
 
     ##Build Miner Settings
     $MinerConfig.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
 
         $MinerAlgo = $_
 
-        if ($MinerAlgo -in $Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
+        if ($MinerAlgo -in $global:Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
             $StatAlgo = $MinerAlgo -replace "`_","`-"
             $Stat = Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
            $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
@@ -50,7 +50,7 @@ $CPUTypes | ForEach-Object {
                     else { $APISet = "--api-port=10002" }
                     [PSCustomObject]@{
                         MName      = $Name
-                        Coin       = $Coins
+                        Coin       = $Global:Coins
                         Delay      = $MinerConfig.$ConfigType.delay
                         Fees       = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
                         Symbol     = "$($_.Symbol)"
@@ -59,14 +59,13 @@ $CPUTypes | ForEach-Object {
                         Type       = $ConfigType
                         Path       = $Path
                         Devices    = $Devices
-                        Version    = "$($cpu.$CName.version)"
+                        Version    = "$($Global:cpu.$CName.version)"
                         DeviceCall = "xmrig-opt"
                         Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) $APISet -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.User1) -p $($_.Pass1)$($Diff) --donate-level=1 --nicehash $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                        HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour}
+                        HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
-                        PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
+                        Power     =  if ($global:Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $global:Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($global:Watts.default."$($ConfigType)_Watts") { $global:Watts.default."$($ConfigType)_Watts" }else { 0 } 
                         MinerPool  = "$($_.Name)"
-                        FullName   = "$($_.Mining)"
                         Port       = 10002
                         API        = "xmrig-opt"
                         Wallet     = "$($_.User1)"

@@ -2,6 +2,7 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $blazepool_Request = [PSCustomObject]@{ } 
 
+
 if($global:Config.Params.xnsub -eq "Yes"){$X = "#xnsub"}
  
 if ($Name -in $global:Config.Params.PoolName) {
@@ -23,7 +24,7 @@ if ($Name -in $global:Config.Params.PoolName) {
         return $blazepool_Algorithm
     } |
     ForEach-Object {
-        if ($Algorithm -contains $blazepool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $blazepool_Algorithm) {
+        if ($global:Algorithm -contains $blazepool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $blazepool_Algorithm) {
             if ($Name -notin $global:Config.Pool_Algos.$blazepool_Algorithm.exclusions -and $blazepool_Algorithm -notin $Global:banhammer) {
                 $blazepool_Host = "$_.mine.blazepool.com$X"
                 $blazepool_Port = $blazepool_Request.$_.port
@@ -48,9 +49,7 @@ if ($Name -in $global:Config.Params.PoolName) {
                 }
     
                 [PSCustomObject]@{
-                    Priority  = $Priorities.Pool_Priorities.$Name
                     Symbol    = "$blazepool_Algorithm-Algo"
-                    Mining    = $blazepool_Algorithm
                     Algorithm = $blazepool_Algorithm
                     Price     = $Stat.$($global:Config.Params.Stat_Algo)
                     Protocol  = "stratum+tcp"
@@ -59,13 +58,9 @@ if ($Name -in $global:Config.Params.PoolName) {
                     User1     = $global:Wallets.Wallet1.$($global:Config.Params.Passwordcurrency1).address
                     User2     = $global:Wallets.Wallet2.$($global:Config.Params.Passwordcurrency2).address
                     User3     = $global:Wallets.Wallet3.$($global:Config.Params.Passwordcurrency3).address
-                    CPUser    = $global:Wallets.Wallet1.$($global:Config.Params.Passwordcurrency1).address   
-                    CPUPass    = $global:Wallets.Wallet1.$($global:Config.Params.Passwordcurrency1).address                                     
                     Pass1     = "c=$($global:Wallets.Wallet1.keys),id=$($global:Config.Params.RigName1)"
                     Pass2     = "c=$($global:Wallets.Wallet2.keys),id=$($global:Config.Params.RigName2)"
                     Pass3     = "c=$($global:Wallets.Wallet3.keys),id=$($global:Config.Params.RigName3)"
-                    Location  = $global:Config.Params.Location
-                    SSL       = $false
                 }
             }
         }

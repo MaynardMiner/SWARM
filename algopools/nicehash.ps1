@@ -28,7 +28,7 @@ if ($Name -in $global:Config.Params.PoolName) {
         return $Nicehash_Algorithm
     } |
     ForEach-Object {
-        if ($Algorithm -contains $nicehash_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $nicehash_Algorithm) {
+        if ($global:Algorithm -contains $nicehash_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $nicehash_Algorithm) {
             if ($Name -notin $global:Config.Pool_Algos.$nicehash_Algorithm.exclusions -and $nicehash_Algorithm -notin $Global:banhammer) {
 
                 ## Nicehash 'Gets' you with the fees. If you read the fine print,
@@ -53,11 +53,8 @@ if ($Name -in $global:Config.Params.PoolName) {
                 $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -Value ([Double]$_.paying / $Divisor * (1 - ($Fee / 100)))
      
                 [PSCustomObject]@{
-                    Priority  = $Priorities.Pool_Priorities.$Name
-                    Coin      = "No"
                     Excavator = $nicehash_excavator
                     Symbol    = "$nicehash_Algorithm-Algo"
-                    Mining    = $nicehash_Algorithm
                     Algorithm = $nicehash_Algorithm
                     Price     = $Stat.$($global:Config.Params.Stat_Algo)
                     Protocol  = "stratum+tcp"
@@ -66,13 +63,9 @@ if ($Name -in $global:Config.Params.PoolName) {
                     User1     = "$NH_Wallet1.$($global:Config.Params.RigName1)"
                     User2     = "$NH_Wallet2.$($global:Config.Params.RigName2)"
                     User3     = "$NH_Wallet3.$($global:Config.Params.RigName3)"
-                    CPUser    = "$NH_Wallet1.$($global:Config.Params.RigName1)"
-                    CPUPass   = "x"
                     Pass1     = "x"
                     Pass2     = "x"
                     Pass3     = "x"
-                    Location  = $global:Config.Params.Location
-                    SSL       = $false
                 }
             }
         }

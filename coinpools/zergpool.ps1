@@ -28,7 +28,7 @@ if ($Name -in $global:Config.Params.PoolName) {
         $zergpool_Request.$_.Algo = $global:Config.Pool_Algos.PSObject.Properties.Name | % {if($Algo -in $global:Config.Pool_Algos.$_.alt_names){$_}}
     }
     $ZergAlgos = @()
-    $ZergAlgos += $Algorithm
+    $ZergAlgos += $global:Algorithm
     $ZergAlgos += $global:Config.Params.ASIC_ALGO
 
     $Algos = $ZergAlgos | ForEach-Object { if ($Bad_pools.$_ -notcontains $Name) { $_ } }
@@ -161,12 +161,7 @@ if ($Name -in $global:Config.Params.PoolName) {
             }
 
             [PSCustomObject]@{
-                Estimate  = $zergpool_Estimate
-                Divisor   = $Divisor
-                Fees      = $zergpool_Fees
-                Priority  = $Priorities.Pool_Priorities.$Name
                 Symbol    = "$Zergpool_Symbol-Coin"
-                Mining    = $Zergpool_Algorithm
                 Algorithm = $zergpool_Algorithm
                 Price     = $Stat.$($global:Config.Params.Stat_Coin)
                 Protocol  = "stratum+tcp"
@@ -175,13 +170,9 @@ if ($Name -in $global:Config.Params.PoolName) {
                 User1     = $User1
                 User2     = $User2
                 User3     = $User3
-                CPUser    = $User1
-                CPUPass   = "c=$Pass1,mc=$Zergpool_Symbol,id=$($global:Config.Params.RigName1)"
                 Pass1     = "c=$Pass1,mc=$Zergpool_Symbol,id=$($global:Config.Params.RigName1)"
                 Pass2     = "c=$Pass2,mc=$Zergpool_Symbol,id=$($global:Config.Params.RigName2)"
                 Pass3     = "c=$Pass3,mc=$Zergpool_Symbol,id=$($global:Config.Params.RigName3)"
-                Location  = $global:Config.Params.Location
-                SSL       = $false
             } 
         }
     }

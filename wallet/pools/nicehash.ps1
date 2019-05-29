@@ -1,30 +1,27 @@
-. .\build\powershell\childitems.ps1
-. .\build\powershell\command-stats.ps1
-
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName
 $PoolQuery = "https://api.nicehash.com/api?method=stats.provider&addr="
 
 $Query = @()
-if ($WalletKeys.Nicehash_Wallet1.BTC.Pools -contains $Name) {
-    $WalletKeys.Nicehash_Wallet1.BTC.pools | % {
-        if ($Query.Name -notcontains "$($Name)_$($WalletKeys.Nicehash_Wallet1.BTC.address)") {
-            $Query += [PSCustomObject]@{Name = "$($Name)_$($WalletKeys.Nicehash_Wallet1.BTC.address)"; Symbol = "BTC"; Address = $WalletKeys.Nicehash_Wallet1.BTC.address; Response = ""}
+if ($Global:WalletKeys.Nicehash_Wallet1.BTC.Pools -contains $Name) {
+    $Global:WalletKeys.Nicehash_Wallet1.BTC.pools | % {
+        if ($Query.Name -notcontains "$($Name)_$($Global:WalletKeys.Nicehash_Wallet1.BTC.address)") {
+            $Query += [PSCustomObject]@{Name = "$($Name)_$($Global:WalletKeys.Nicehash_Wallet1.BTC.address)"; Symbol = "BTC"; Address = $Global:WalletKeys.Nicehash_Wallet1.BTC.address; Response = ""}
         }
     }
 }
 
-if ($WalletKeys.Nicehash_Wallet2.BTC.Pools -contains $Name) {
-    $WalletKeys.Nicehash_Wallet2.BTC.pools | % {
-        if ($Query.Name -notcontains "$($Name)_$($WalletKeys.Nicehash_Wallet2.BTC.address)") {
-            $Query += [PSCustomObject]@{Name = "$($Name)_$($WalletKeys.Nicehash_Wallet2.BTC.address)"; Symbol = "BTC"; Address = $WalletKeys.Nicehash_Wallet2.BTC.address; Response = ""}
+if ($Global:WalletKeys.Nicehash_Wallet2.BTC.Pools -contains $Name) {
+    $Global:WalletKeys.Nicehash_Wallet2.BTC.pools | % {
+        if ($Query.Name -notcontains "$($Name)_$($Global:WalletKeys.Nicehash_Wallet2.BTC.address)") {
+            $Query += [PSCustomObject]@{Name = "$($Name)_$($Global:WalletKeys.Nicehash_Wallet2.BTC.address)"; Symbol = "BTC"; Address = $Global:WalletKeys.Nicehash_Wallet2.BTC.address; Response = ""}
         }
     }
 }
 
-if ($WalletKeys.Nicehash_Wallet3.BTC.Pools -contains $Name) {
-    $WalletKeys.Nicehash_Wallet3.BTC.pools | % {
-        if ($Query.Name -notcontains "$($Name)_$($WalletKeys.Nicehash_Wallet3.BTC.address)") {
-            $Query += [PSCustomObject]@{Name = "$($Name)_$($WalletKeys.Nicehash_Wallet3.BTC.address)"; Symbol = "BTC"; Address = $WalletKeys.Nicehash_Wallet3.BTC.address; Response = ""}
+if ($Global:WalletKeys.Nicehash_Wallet3.BTC.Pools -contains $Name) {
+    $Global:WalletKeys.Nicehash_Wallet3.BTC.pools | % {
+        if ($Query.Name -notcontains "$($Name)_$($Global:WalletKeys.Nicehash_Wallet3.BTC.address)") {
+            $Query += [PSCustomObject]@{Name = "$($Name)_$($Global:WalletKeys.Nicehash_Wallet3.BTC.address)"; Symbol = "BTC"; Address = $Global:WalletKeys.Nicehash_Wallet3.BTC.address; Response = ""}
         }
     }
 }

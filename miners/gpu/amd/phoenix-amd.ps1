@@ -1,20 +1,20 @@
-$AMDTypes | ForEach-Object {
+$Global:AMDTypes | ForEach-Object {
     
     $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
     $Cname = "phoenix-amd"
 
     ##Miner Path Information
-    if ($amd.$Cname.$ConfigType) { $Path = "$($amd.$Cname.$ConfigType)" }
+    if ($Global:amd.$Cname.$ConfigType) { $Path = "$($Global:amd.$Cname.$ConfigType)" }
     else { $Path = "None" }
-    if ($amd.$Cname.uri) { $Uri = "$($amd.$Cname.uri)" }
+    if ($Global:amd.$Cname.uri) { $Uri = "$($Global:amd.$Cname.uri)" }
     else { $Uri = "None" }
-    if ($amd.$Cname.minername) { $MinerName = "$($amd.$Cname.minername)" }
+    if ($Global:amd.$Cname.minername) { $MinerName = "$($Global:amd.$Cname.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$Cname-$Num"; $Port = "2600$Num"
 
     Switch ($Num) {
-        1 { $Get_Devices = $AMDDevices1 }
+        1 { $Get_Devices = $Global:AMDDevices1 }
     }
 
     ##Log Directory
@@ -43,14 +43,14 @@ $AMDTypes | ForEach-Object {
     $PreStart += "export LD_LIBRARY_PATH=$ExportDir"
     $MinerConfig.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 
-    if ($Coins -eq $true) { $Pools = $CoinPools }else { $Pools = $AlgoPools }
+    if ($Global:Coins -eq $true) { $Pools = $global:CoinPools }else { $Pools = $global:AlgoPools }
 
     ##Build Miner Settings
     $MinerConfig.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
 
         $MinerAlgo = $_
 
-        if ($MinerAlgo -in $Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
+        if ($MinerAlgo -in $global:Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
             $StatAlgo = $MinerAlgo -replace "`_","`-"
             $Stat = Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
            $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
@@ -81,7 +81,7 @@ $AMDTypes | ForEach-Object {
                     else { $MinerWorker = "-epsw $($_.$Pass)$($Diff) " }
                     [PSCustomObject]@{
                         MName      = $Name
-                        Coin       = $Coins
+                        Coin       = $Global:Coins
                         Delay      = $MinerConfig.$ConfigType.delay
                         Fees       = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
                         Symbol     = "$($_.Symbol)"
@@ -90,13 +90,12 @@ $AMDTypes | ForEach-Object {
                         Type       = $ConfigType
                         Path       = $Path
                         Devices    = $Devices
-                        Version    = "$($amd.$CName.version)"
+                        Version    = "$($Global:amd.$CName.version)"
                         DeviceCall = "claymore"
                         Arguments  = "-platform 1 -mport $Port -mode 1 -allcoins 1 -allpools 1 $AddArgs-epool $($_.Protocol)://$($_.Host):$($_.Port) -ewal $($_.$User) $MinerWorker-wd 0 -logfile `'$(Split-Path $Log -Leaf)`' -logdir `'$(Split-Path $Log)`' -gser 2 -dbg -1 -eres 2 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                        HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour }
+                        HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
-                        PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
-                        FullName   = "$($_.Mining)"
+                        Power     =  if ($global:Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $global:Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($global:Watts.default."$($ConfigType)_Watts") { $global:Watts.default."$($ConfigType)_Watts" }else { 0 } 
                         API        = "claymore"
                         Port       = $Port
                         MinerPool  = "$($_.Name)"

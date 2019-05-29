@@ -23,243 +23,225 @@ Start-Process ".\build\bash\libcurl3.sh" -Wait
 
 $dir | set-content ".\build\bash\dir.sh"
 
-    if(Test-Path ".\build\bash\stats")
-    {
-         Copy-Item ".\build\bash\stats" -Destination "/usr/bin" -force | Out-Null
-         Set-Location "/usr/bin"
-         Start-Process "chmod" -ArgumentList "+x stats"
-         Set-Location "/"
-         Set-Location $Dir     
-    }
+if (Test-Path ".\build\bash\stats") {
+    Copy-Item ".\build\bash\stats" -Destination "/usr/bin" -force | Out-Null
+    Set-Location "/usr/bin"
+    Start-Process "chmod" -ArgumentList "+x stats"
+    Set-Location "/"
+    Set-Location $Dir     
+}
 
-    if(Test-Path ".\build\bash\view")
-    {
-         Copy-Item ".\build\bash\view" -Destination "/usr/bin" -force | Out-Null
-         Set-Location "/usr/bin"
-         Start-Process "chmod" -ArgumentList "+x view"
-         Set-Location "/"
-         Set-Location $Dir     
-    }
+if (Test-Path ".\build\bash\view") {
+    Copy-Item ".\build\bash\view" -Destination "/usr/bin" -force | Out-Null
+    Set-Location "/usr/bin"
+    Start-Process "chmod" -ArgumentList "+x view"
+    Set-Location "/"
+    Set-Location $Dir     
+}
 
-    if(Test-Path ".\build\apps\wolfamdctrl")
-    {
-      Start-Process ln -ArgumentList "-s $dir/build/apps/wolfamdctrl /usr/bin/wolfamdctrl" -Wait
-      Set-Location "/usr/bin"
-      Start-Process "chmod" -ArgumentList "+x wolfamdctrl"
-      Set-Location "/"
-      Set-Location $Dir
-    }
+if (Test-Path ".\build\apps\wolfamdctrl") {
+    Start-Process ln -ArgumentList "-s $dir/build/apps/wolfamdctrl /usr/bin/wolfamdctrl" -Wait
+    Set-Location "/usr/bin"
+    Start-Process "chmod" -ArgumentList "+x wolfamdctrl"
+    Set-Location "/"
+    Set-Location $Dir
+}
 
-    if(Test-Path ".\build\bash\miner")
-    {
-         Copy-Item ".\build\bash\miner" -Destination "/usr/bin" -force | Out-Null
-         Set-Location "/usr/bin"
-         Start-Process "chmod" -ArgumentList "+x miner"
-         Set-Location "/"
-         Set-Location $Dir     
-    }
+if (Test-Path ".\build\bash\miner") {
+    Copy-Item ".\build\bash\miner" -Destination "/usr/bin" -force | Out-Null
+    Set-Location "/usr/bin"
+    Start-Process "chmod" -ArgumentList "+x miner"
+    Set-Location "/"
+    Set-Location $Dir     
+}
 
-    if(Test-Path ".\build\bash\get")
-    {
-         Copy-Item ".\build\bash\get" -Destination "/usr/bin" -force | Out-Null
-         Set-Location "/usr/bin"
-         Start-Process "chmod" -ArgumentList "+x get"
-         Set-Location "/"
-         Set-Location $Dir     
-    }
+if (Test-Path ".\build\bash\get") {
+    Copy-Item ".\build\bash\get" -Destination "/usr/bin" -force | Out-Null
+    Set-Location "/usr/bin"
+    Start-Process "chmod" -ArgumentList "+x get"
+    Set-Location "/"
+    Set-Location $Dir     
+}
 
-    if(Test-Path ".\build\bash\get-lambo")
-    {
-         Copy-Item ".\build\bash\get-lambo" -Destination "/usr/bin" -force | Out-Null
-         Set-Location "/usr/bin"
-         Start-Process "chmod" -ArgumentList "+x get-lambo"
-         Set-Location "/"
-         Set-Location $Dir     
-    }
+if (Test-Path ".\build\bash\modules") {
+    Copy-Item ".\build\bash\modules" -Destination "/usr/bin" -force | Out-Null
+    Set-Location "/usr/bin"
+    Start-Process "chmod" -ArgumentList "+x modules"
+    Set-Location "/"
+    Set-Location $Dir     
+}
 
-    if(Test-Path ".\build\export\libcudart.so.9.2.148")
-    {
-     Start-Process ln -ArgumentList "-s $dir/build/export/libcudart.so.9.2.148 $dir/build/export/libcudart.so.9.2" -Wait
-     Set-Location "/"
-     Set-Location $Dir     
-    }
+if (Test-Path ".\build\bash\get-lambo") {
+    Copy-Item ".\build\bash\get-lambo" -Destination "/usr/bin" -force | Out-Null
+    Set-Location "/usr/bin"
+    Start-Process "chmod" -ArgumentList "+x get-lambo"
+    Set-Location "/"
+    Set-Location $Dir     
+}
 
-    if(Test-Path ".\build\export\libcudart.so.10.0.130")
-    {
-     Start-Process ln -ArgumentList "-s $dir/build/export/libcudart.so.10.0.130 $dir/build/export/libcudart.so.10.0" -Wait
-     Set-Location "/"
-     Set-Location $Dir     
-    }
+if (Test-Path ".\build\export\libcudart.so.9.2.148") {
+    Start-Process ln -ArgumentList "-s $dir/build/export/libcudart.so.9.2.148 $dir/build/export/libcudart.so.9.2" -Wait
+    Set-Location "/"
+    Set-Location $Dir     
+}
 
-    if (Test-Path ".\build\export\libcudart.so.10.1.105") {
-      Start-Process ln -ArgumentList "-s $dir/build/export/libcudart.so.10.1.105 $dir/build/export/libcudart.so.10.1" -Wait
-      Set-Location "/"
-      Set-Location $Dir     
-  }
+if (Test-Path ".\build\export\libcudart.so.10.0.130") {
+    Start-Process ln -ArgumentList "-s $dir/build/export/libcudart.so.10.0.130 $dir/build/export/libcudart.so.10.0" -Wait
+    Set-Location "/"
+    Set-Location $Dir     
+}
 
-
-    if(Test-Path ".\build\export\libmicrohttpd.so.10.34.0")
-     {
-      Start-Process ln -ArgumentList "-s $dir/build/export/libmicrohttpd.so.10.34.0 $dir/build/export/libmicrohttpd.so.10" -Wait
-      Set-Location "/"
-      Set-Location $Dir     
-     }
-
-     if(Test-Path ".\build\export\libstdc++.so.6.0.25")
-     {
-      Start-Process ln -ArgumentList "-s $dir/build/export/libstdc++.so.6.0.25 $dir/build/export/libstdc++.so.6" -Wait
-      Set-Location "/"
-      Set-Location $Dir     
-     }
-
-     if(Test-Path ".\build\export\libhwloc.so.5.5.0")
-     {
-      Start-Process ln -ArgumentList "-s $dir/build/export/libhwloc.so.5.5.0 $dir/build/export/libhwloc.so.5" -Wait
-      Set-Location "/"
-      Set-Location $Dir     
-     }
+if (Test-Path ".\build\export\libcudart.so.10.1.105") {
+    Start-Process ln -ArgumentList "-s $dir/build/export/libcudart.so.10.1.105 $dir/build/export/libcudart.so.10.1" -Wait
+    Set-Location "/"
+    Set-Location $Dir     
+}
 
 
-     if(Test-Path ".\build\export\libnvrtc.so.9.2.148")
-     {
-      Start-Process ln -ArgumentList "-s $dir/build/export/libnvrtc.so.9.2.148 $dir/build/export/libnvrtc.so.9.2" -Wait
-      Set-Location "/"
-      Set-Location $Dir     
-     }
+if (Test-Path ".\build\export\libmicrohttpd.so.10.34.0") {
+    Start-Process ln -ArgumentList "-s $dir/build/export/libmicrohttpd.so.10.34.0 $dir/build/export/libmicrohttpd.so.10" -Wait
+    Set-Location "/"
+    Set-Location $Dir     
+}
 
-     if(Test-Path ".\build\export\libnvrtc.so.10.0.130")
-     {
-      Start-Process ln -ArgumentList "-s $dir/build/export/libnvrtc.so.10.0.130 $dir/build/export/libnvrtc.so.10.0" -Wait
-      Set-Location "/"
-      Set-Location $Dir     
-     }
+if (Test-Path ".\build\export\libstdc++.so.6.0.25") {
+    Start-Process ln -ArgumentList "-s $dir/build/export/libstdc++.so.6.0.25 $dir/build/export/libstdc++.so.6" -Wait
+    Set-Location "/"
+    Set-Location $Dir     
+}
 
-     if(Test-Path ".\build\export\libnvrtc.so.10.1.105")
-     {
-      Start-Process ln -ArgumentList "-s $dir/build/export/libnvrtc.so.10.2.105 $dir/build/export/libnvrtc.so.10.1" -Wait
-      Set-Location "/"
-      Set-Location $Dir     
-     }
+if (Test-Path ".\build\export\libhwloc.so.5.5.0") {
+    Start-Process ln -ArgumentList "-s $dir/build/export/libhwloc.so.5.5.0 $dir/build/export/libhwloc.so.5" -Wait
+    Set-Location "/"
+    Set-Location $Dir     
+}
 
-     if (Test-Path ".\build\export\libnvrtc-builtins.so.10.1.105") {
-      Start-Process ln -ArgumentList "-s $dir/build/export/libnvrtc-builtins.so.10.1.105 $dir/build/export/libnvrtc-builtins.so.10.1" -Wait
-      Set-Location "/"
-      Set-Location $Dir
-      Start-Sleep -S 1
-  }
 
-  if (Test-Path ".\build\export\libnvrtc-builtins.so.10.1") {
-      Start-Process ln -ArgumentList "-s $dir/build/export/libnvrtc-builtins.so.10.1 $dir/build/export/libnvrtc-builtins.so" -Wait
-      Set-Location "/"
-      Set-Location $Dir     
-  }
+if (Test-Path ".\build\export\libnvrtc.so.9.2.148") {
+    Start-Process ln -ArgumentList "-s $dir/build/export/libnvrtc.so.9.2.148 $dir/build/export/libnvrtc.so.9.2" -Wait
+    Set-Location "/"
+    Set-Location $Dir     
+}
+
+if (Test-Path ".\build\export\libnvrtc.so.10.0.130") {
+    Start-Process ln -ArgumentList "-s $dir/build/export/libnvrtc.so.10.0.130 $dir/build/export/libnvrtc.so.10.0" -Wait
+    Set-Location "/"
+    Set-Location $Dir     
+}
+
+if (Test-Path ".\build\export\libnvrtc.so.10.1.105") {
+    Start-Process ln -ArgumentList "-s $dir/build/export/libnvrtc.so.10.2.105 $dir/build/export/libnvrtc.so.10.1" -Wait
+    Set-Location "/"
+    Set-Location $Dir     
+}
+
+if (Test-Path ".\build\export\libnvrtc-builtins.so.10.1.105") {
+    Start-Process ln -ArgumentList "-s $dir/build/export/libnvrtc-builtins.so.10.1.105 $dir/build/export/libnvrtc-builtins.so.10.1" -Wait
+    Set-Location "/"
+    Set-Location $Dir
+    Start-Sleep -S 1
+}
+
+if (Test-Path ".\build\export\libnvrtc-builtins.so.10.1") {
+    Start-Process ln -ArgumentList "-s $dir/build/export/libnvrtc-builtins.so.10.1 $dir/build/export/libnvrtc-builtins.so" -Wait
+    Set-Location "/"
+    Set-Location $Dir     
+}
  
-    if(Test-Path ".\build\bash\get-oc")
-    {
-         Copy-Item ".\build\bash\get-oc" -Destination "/usr/bin" -force | Out-Null
-         Set-Location "/usr/bin"
-         Start-Process "chmod" -ArgumentList "+x get-oc"
-         Set-Location "/"
-         Set-Location $Dir     
-    }
+if (Test-Path ".\build\bash\get-oc") {
+    Copy-Item ".\build\bash\get-oc" -Destination "/usr/bin" -force | Out-Null
+    Set-Location "/usr/bin"
+    Start-Process "chmod" -ArgumentList "+x get-oc"
+    Set-Location "/"
+    Set-Location $Dir     
+}
    
-   if(Test-Path ".\build\bash\active")
-    {
-       Copy-Item ".\build\bash\active" -Destination "/usr/bin" -force | Out-Null
-       Set-Location "/usr/bin"
-       Start-Process "chmod" -ArgumentList "+x active"
-       Set-Location "/"
-         Set-Location $Dir     
-       }
+if (Test-Path ".\build\bash\active") {
+    Copy-Item ".\build\bash\active" -Destination "/usr/bin" -force | Out-Null
+    Set-Location "/usr/bin"
+    Start-Process "chmod" -ArgumentList "+x active"
+    Set-Location "/"
+    Set-Location $Dir     
+}
 
-    if(Test-Path ".\build\bash\version")
-     {
-      Copy-Item ".\build\bash\version" -Destination "/usr/bin" -force | Out-Null
-      Set-Location "/usr/bin"
-      Start-Process "chmod" -ArgumentList "+x version"
-      Set-Location "/"
-         Set-Location $Dir     
-    }
+if (Test-Path ".\build\bash\version") {
+    Copy-Item ".\build\bash\version" -Destination "/usr/bin" -force | Out-Null
+    Set-Location "/usr/bin"
+    Start-Process "chmod" -ArgumentList "+x version"
+    Set-Location "/"
+    Set-Location $Dir     
+}
     
-       if(Test-Path ".\build\bash\get-screen")
-    {
-       Copy-Item ".\build\bash\get-screen" -Destination "/usr/bin" -force | Out-Null
-       Set-Location "/usr/bin"
-       Start-Process "chmod" -ArgumentList "+x get-screen"
-       Set-Location "/"
-         Set-Location $Dir     
-       }
+if (Test-Path ".\build\bash\get-screen") {
+    Copy-Item ".\build\bash\get-screen" -Destination "/usr/bin" -force | Out-Null
+    Set-Location "/usr/bin"
+    Start-Process "chmod" -ArgumentList "+x get-screen"
+    Set-Location "/"
+    Set-Location $Dir     
+}
    
-   if(Test-Path ".\build\bash\mine")
-    {
-       Copy-Item ".\build\bash\mine" -Destination "/usr/bin" -force | Out-Null
-       Set-Location "/usr/bin"
-       Start-Process "chmod" -ArgumentList "+x mine"
-       Set-Location "/"
-         Set-Location $Dir     
-       }
+if (Test-Path ".\build\bash\mine") {
+    Copy-Item ".\build\bash\mine" -Destination "/usr/bin" -force | Out-Null
+    Set-Location "/usr/bin"
+    Start-Process "chmod" -ArgumentList "+x mine"
+    Set-Location "/"
+    Set-Location $Dir     
+}
    
-   if(Test-Path ".\build\bash\background")
-    {
-       Copy-Item ".\build\bash\background" -Destination "/usr/bin" -force | Out-Null
-       Set-Location "/usr/bin"
-       Start-Process "chmod" -ArgumentList "+x background"
-       Set-Location "/"
-         Set-Location $Dir     
-       }
+if (Test-Path ".\build\bash\background") {
+    Copy-Item ".\build\bash\background" -Destination "/usr/bin" -force | Out-Null
+    Set-Location "/usr/bin"
+    Start-Process "chmod" -ArgumentList "+x background"
+    Set-Location "/"
+    Set-Location $Dir     
+}
    
-   if(Test-Path ".\build\bash\pidinfo")
-    {
-       Copy-Item ".\build\bash\pidinfo" -Destination "/usr/bin" -force | Out-Null
-       Set-Location "/usr/bin"
-       Start-Process "chmod" -ArgumentList "+x pidinfo"
-       Set-Location "/"
-         Set-Location $Dir     
-       }
+if (Test-Path ".\build\bash\pidinfo") {
+    Copy-Item ".\build\bash\pidinfo" -Destination "/usr/bin" -force | Out-Null
+    Set-Location "/usr/bin"
+    Start-Process "chmod" -ArgumentList "+x pidinfo"
+    Set-Location "/"
+    Set-Location $Dir     
+}
 
-   if(Test-Path ".\build\bash\dir.sh")
-    {
-       Copy-Item ".\build\bash\dir.sh" -Destination "/usr/bin" -force | Out-Null
-       Set-Location "/usr/bin"
-       Start-Process "chmod" -ArgumentList "+x dir.sh"
-       Set-Location "/"
-         Set-Location $Dir     
-       }
+if (Test-Path ".\build\bash\dir.sh") {
+    Copy-Item ".\build\bash\dir.sh" -Destination "/usr/bin" -force | Out-Null
+    Set-Location "/usr/bin"
+    Start-Process "chmod" -ArgumentList "+x dir.sh"
+    Set-Location "/"
+    Set-Location $Dir     
+}
 
-       if(Test-Path ".\build\bash\benchmark")
-       {
-          Copy-Item ".\build\bash\benchmark" -Destination "/usr/bin" -force | Out-Null
-          Set-Location "/usr/bin"
-          Start-Process "chmod" -ArgumentList "+x benchmark"
-          Set-Location "/"
-         Set-Location $Dir     
-          }
+if (Test-Path ".\build\bash\benchmark") {
+    Copy-Item ".\build\bash\benchmark" -Destination "/usr/bin" -force | Out-Null
+    Set-Location "/usr/bin"
+    Start-Process "chmod" -ArgumentList "+x benchmark"
+    Set-Location "/"
+    Set-Location $Dir     
+}
 
-          if(Test-Path ".\build\bash\clear_profits")
-          {
-             Copy-Item ".\build\bash\clear_profits" -Destination "/usr/bin" -force | Out-Null
-             Set-Location "/usr/bin"
-             Start-Process "chmod" -ArgumentList "+x clear_profits"
-             Set-Location "/"
-         Set-Location $Dir     
-             }
+if (Test-Path ".\build\bash\clear_profits") {
+    Copy-Item ".\build\bash\clear_profits" -Destination "/usr/bin" -force | Out-Null
+    Set-Location "/usr/bin"
+    Start-Process "chmod" -ArgumentList "+x clear_profits"
+    Set-Location "/"
+    Set-Location $Dir     
+}
 
-             if(Test-Path ".\build\bash\clear_watts")
-             {
-               Copy-Item ".\build\bash\clear_watts" -Destination "/usr/bin" -force | Out-Null
-               Set-Location "/usr/bin"
-               Start-Process "chmod" -ArgumentList "+x clear_watts"
-               Set-Location "/"
-               Set-Location $CmdDir
-             }  
+if (Test-Path ".\build\bash\clear_watts") {
+    Copy-Item ".\build\bash\clear_watts" -Destination "/usr/bin" -force | Out-Null
+    Set-Location "/usr/bin"
+    Start-Process "chmod" -ArgumentList "+x clear_watts"
+    Set-Location "/"
+    Set-Location $CmdDir
+}  
 
-          if(Test-Path ".\build\bash\get-lambo")
-           {
-              Copy-Item ".\build\bash\get-lambo" -Destination "/usr/bin" -force | Out-Null
-              Set-Location "/usr/bin"
-              Start-Process "chmod" -ArgumentList "+x get-lambo"
-              Set-Location "/"
-         Set-Location $Dir     
-           }      
+if (Test-Path ".\build\bash\get-lambo") {
+    Copy-Item ".\build\bash\get-lambo" -Destination "/usr/bin" -force | Out-Null
+    Set-Location "/usr/bin"
+    Start-Process "chmod" -ArgumentList "+x get-lambo"
+    Set-Location "/"
+    Set-Location $Dir     
+}      
    
-    Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)

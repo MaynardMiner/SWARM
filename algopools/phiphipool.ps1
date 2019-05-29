@@ -28,7 +28,7 @@ if ($Name -in $global:Config.Params.PoolName) {
         return $phiphipool_Algorithm
     } |
     ForEach-Object {
-        if ($Algorithm -contains $phiphipool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $phiphipool_Algorithm) {
+        if ($global:Algorithm -contains $phiphipool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $phiphipool_Algorithm) {
             if ($Name -notin $global:Config.Pool_Algos.$phiphipool_Algorithm.exclusions -and $phiphipool_Algorithm -notin $Global:banhammer) {
                 $phiphipool_Port = $phiphipool_Request.$_.port
                 $phiphipool_Host = "$($Region).phi-phi-pool.com$X"
@@ -53,9 +53,7 @@ if ($Name -in $global:Config.Params.PoolName) {
                 }
 
                 [PSCustomObject]@{
-                    Priority  = $Priorities.Pool_Priorities.$Name
                     Symbol    = "$phiphipool_Algorithm-Algo"
-                    Mining    = $phiphipool_Algorithm
                     Algorithm = $phiphipool_Algorithm
                     Price     = $Stat.$($global:Config.Params.Stat_Algo)
                     Protocol  = "stratum+tcp"
@@ -64,13 +62,9 @@ if ($Name -in $global:Config.Params.PoolName) {
                     User1     = $global:Wallets.Wallet1.$($global:Config.Params.Passwordcurrency1).address
                     User2     = $global:Wallets.Wallet2.$($global:Config.Params.Passwordcurrency2).address
                     User3     = $global:Wallets.Wallet3.$($global:Config.Params.Passwordcurrency3).address
-                    CPUser    = $global:Wallets.Wallet1.$($global:Config.Params.Passwordcurrency1).address   
-                    CPUPass    = $global:Wallets.Wallet1.$($global:Config.Params.Passwordcurrency1).address                                     
                     Pass1     = "c=$($global:Wallets.Wallet1.keys),id=$($global:Config.Params.RigName1)"
                     Pass2     = "c=$($global:Wallets.Wallet2.keys),id=$($global:Config.Params.RigName2)"
                     Pass3     = "c=$($global:Wallets.Wallet3.keys),id=$($global:Config.Params.RigName3)"
-                    Location  = $global:Config.Params.Location
-                    SSL       = $false
                 }
             }
         }

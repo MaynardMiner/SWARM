@@ -28,7 +28,7 @@ if ($Name -in $global:Config.Params.PoolName) {
         return $Zpool_Algorithm
     } |
     ForEach-Object {
-        if ($Algorithm -contains $Zpool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $Zpool_Algorithm) {
+        if ($global:Algorithm -contains $Zpool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $Zpool_Algorithm) {
             if ($Name -notin $global:Config.Pool_Algos.$Zpool_Algorithm.exclusions -and $Zpool_Algorithm -notin $Global:banhammer) {
                 $Zpool_Port = $Zpool_Request.$_.port
                 $Zpool_Host = "$($Zpool_Request.$_.name.ToLower()).$($region).mine.zpool.ca$X"
@@ -83,9 +83,7 @@ if ($Name -in $global:Config.Params.PoolName) {
                 }
                 
                 [PSCustomObject]@{
-                    Priority  = $Priorities.Pool_Priorities.$Name
                     Symbol    = "$Zpool_Algorithm-Algo"
-                    Mining    = $Zpool_Algorithm
                     Algorithm = $Zpool_Algorithm
                     Price     = $Stat.$($global:Config.Params.Stat_Algo)
                     Protocol  = "stratum+tcp"
@@ -94,13 +92,9 @@ if ($Name -in $global:Config.Params.PoolName) {
                     User1     = $User1
                     User2     = $User2
                     User3     = $User3
-                    CPUser    = $User1
-                    CPUPass   = "c=$Pass1,id=$($global:Config.Params.RigName1)"
                     Pass1     = "c=$Pass1,id=$($global:Config.Params.RigName1)"
                     Pass2     = "c=$Pass2,id=$($global:Config.Params.RigName2)"
                     Pass3     = "c=$Pass3,id=$($global:Config.Params.RigName3)"
-                    Location  = $global:Config.Params.Location
-                    SSL       = $false
                 }
             }
         }

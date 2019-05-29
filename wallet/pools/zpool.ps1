@@ -1,51 +1,48 @@
-. .\build\powershell\childitems.ps1
-. .\build\powershell\command-stats.ps1
-
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName
 $PoolQuery = "https://zpool.ca/api/wallet?address="
 
 $Query = @()
 
-$WalletKeys.AltWallet1.PSObject.Properties.Name | ForEach-Object {
-    if ($WalletKeys.AltWallet1.$_.address -ne "" -and $WalletKeys.AltWallet1.$_.Pools -contains $Name) {
-        if ($Query.Name -notcontains "$($Name)_$($WalletKeys.AltWallet1.$_.address)") {
-            $Query += [PSCustomObject]@{Name = "$($Name)_$($WalletKeys.AltWallet1.$_.address)"; Symbol = $_; Address = $WalletKeys.AltWallet1.$_.address; Response = "" }
+$Global:WalletKeys.AltWallet1.PSObject.Properties.Name | ForEach-Object {
+    if ($Global:WalletKeys.AltWallet1.$_.address -ne "" -and $Global:WalletKeys.AltWallet1.$_.Pools -contains $Name) {
+        if ($Query.Name -notcontains "$($Name)_$($Global:WalletKeys.AltWallet1.$_.address)") {
+            $Query += [PSCustomObject]@{Name = "$($Name)_$($Global:WalletKeys.AltWallet1.$_.address)"; Symbol = $_; Address = $Global:WalletKeys.AltWallet1.$_.address; Response = "" }
         }
     }
-    elseif ($WalletKeys.Wallet1.BTC.address -ne "" -and $WalletKeys.Wallet1.BTC.Pools -contains $Name) {
-        $WalletKeys.Wallet1.BTC.pools | ForEach-Object {
-            if ($Query.Name -notcontains "$($Name)_$($WalletKeys.Wallet1.BTC.address)") {
-                $Query += [PSCustomObject]@{Name = "$($Name)_$($WalletKeys.Wallet1.BTC.address)"; Symbol = "BTC"; Address = $WalletKeys.Wallet1.BTC.address; Response = "" }
+    elseif ($Global:WalletKeys.Wallet1.BTC.address -ne "" -and $Global:WalletKeys.Wallet1.BTC.Pools -contains $Name) {
+        $Global:WalletKeys.Wallet1.BTC.pools | ForEach-Object {
+            if ($Query.Name -notcontains "$($Name)_$($Global:WalletKeys.Wallet1.BTC.address)") {
+                $Query += [PSCustomObject]@{Name = "$($Name)_$($Global:WalletKeys.Wallet1.BTC.address)"; Symbol = "BTC"; Address = $Global:WalletKeys.Wallet1.BTC.address; Response = "" }
             }
         }
     }    
 }
 
-$WalletKeys.AltWallet2.PSObject.Properties.Name | ForEach-Object {
-    if ($WalletKeys.AltWallet2.$_.address -ne "" -and $WalletKeys.AltWallet2.$_.Pools -contains $Name) {
-        if ($Query.Name -notcontains "$($Name)_$($WalletKeys.AltWallet2.$_.address)") {
-            $Query += [PSCustomObject]@{Name = "$($Name)_$($WalletKeys.AltWallet2.$_.address)"; Symbol = $_; Address = $WalletKeys.AltWallet2.$_.address; Response = "" }
+$Global:WalletKeys.AltWallet2.PSObject.Properties.Name | ForEach-Object {
+    if ($Global:WalletKeys.AltWallet2.$_.address -ne "" -and $Global:WalletKeys.AltWallet2.$_.Pools -contains $Name) {
+        if ($Query.Name -notcontains "$($Name)_$($Global:WalletKeys.AltWallet2.$_.address)") {
+            $Query += [PSCustomObject]@{Name = "$($Name)_$($Global:WalletKeys.AltWallet2.$_.address)"; Symbol = $_; Address = $Global:WalletKeys.AltWallet2.$_.address; Response = "" }
         }
     }
-    elseif ($WalletKeys.Wallet2.BTC.address -ne "" -and $WalletKeys.Wallet2.BTC.Pools -contains $Name) {
-        $WalletKeys.Wallet2.BTC.pools | ForEach-Object {
-            if ($Query.Name -notcontains "$($Name)_$($WalletKeys.Wallet2.BTC.address)") {
-                $Query += [PSCustomObject]@{Name = "$($Name)_$($WalletKeys.Wallet2.BTC.address)"; Symbol = "BTC"; Address = $WalletKeys.Wallet2.BTC.address; Response = "" }
+    elseif ($Global:WalletKeys.Wallet2.BTC.address -ne "" -and $Global:WalletKeys.Wallet2.BTC.Pools -contains $Name) {
+        $Global:WalletKeys.Wallet2.BTC.pools | ForEach-Object {
+            if ($Query.Name -notcontains "$($Name)_$($Global:WalletKeys.Wallet2.BTC.address)") {
+                $Query += [PSCustomObject]@{Name = "$($Name)_$($Global:WalletKeys.Wallet2.BTC.address)"; Symbol = "BTC"; Address = $Global:WalletKeys.Wallet2.BTC.address; Response = "" }
             }
         }
     }    
 }
 
-$WalletKeys.AltWallet3.PSObject.Properties.Name | ForEach-Object {
-    if ($WalletKeys.AltWallet3.$_.address -ne "" -and $WalletKeys.AltWallet3.$_.Pools -contains $Name) {
-        if ($Query.Name -notcontains "$($Name)_$($WalletKeys.AltWallet3.$_.address)") {
-            $Query += [PSCustomObject]@{Name = "$($Name)_$($WalletKeys.AltWallet3.$_.address)"; Symbol = $_; Address = $WalletKeys.AltWallet3.$_.address; Response = "" }
+$Global:WalletKeys.AltWallet3.PSObject.Properties.Name | ForEach-Object {
+    if ($Global:WalletKeys.AltWallet3.$_.address -ne "" -and $Global:WalletKeys.AltWallet3.$_.Pools -contains $Name) {
+        if ($Query.Name -notcontains "$($Name)_$($Global:WalletKeys.AltWallet3.$_.address)") {
+            $Query += [PSCustomObject]@{Name = "$($Name)_$($Global:WalletKeys.AltWallet3.$_.address)"; Symbol = $_; Address = $Global:WalletKeys.AltWallet3.$_.address; Response = "" }
         }
     }
-    elseif ($WalletKeys.Wallet3.BTC.address -ne "" -and $WalletKeys.Wallet3.BTC.Pools -contains $Name) {
-        $WalletKeys.Wallet3.BTC.pools | ForEach-Object {
-            if ($Query.Name -notcontains "$($Name)_$($WalletKeys.Wallet3.BTC.address)") {
-                $Query += [PSCustomObject]@{Name = "$($Name)_$($WalletKeys.Wallet3.BTC.address)"; Symbol = "BTC"; Address = $WalletKeys.Wallet3.BTC.address; Response = "" }
+    elseif ($Global:WalletKeys.Wallet3.BTC.address -ne "" -and $Global:WalletKeys.Wallet3.BTC.Pools -contains $Name) {
+        $Global:WalletKeys.Wallet3.BTC.pools | ForEach-Object {
+            if ($Query.Name -notcontains "$($Name)_$($Global:WalletKeys.Wallet3.BTC.address)") {
+                $Query += [PSCustomObject]@{Name = "$($Name)_$($Global:WalletKeys.Wallet3.BTC.address)"; Symbol = "BTC"; Address = $Global:WalletKeys.Wallet3.BTC.address; Response = "" }
             }
         }
     }    

@@ -1,21 +1,21 @@
-$NVIDIATypes | ForEach-Object {
+$Global:NVIDIATypes | ForEach-Object {
     
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
-    if ($nvidia.'cc-yescrypt'.$ConfigType -and $global:Config.Params.Cuda -eq "10") { $Path = "$($nvidia.'cc-yescrypt'.$ConfigType)" }
+    if ($Global:nvidia.'cc-yescrypt'.$ConfigType -and $global:Config.Params.Cuda -eq "10") { $Path = "$($Global:nvidia.'cc-yescrypt'.$ConfigType)" }
     else { $Path = "None" }
-    if ($nvidia.'cc-yescrypt'.uri -and $global:Config.Params.Cuda -eq "10") { $Uri = "$($nvidia.'cc-yescrypt'.uri)" }
+    if ($Global:nvidia.'cc-yescrypt'.uri -and $global:Config.Params.Cuda -eq "10") { $Uri = "$($Global:nvidia.'cc-yescrypt'.uri)" }
     else { $Uri = "None" }
-    if ($nvidia.'cc-yescrypt'.minername -and $global:Config.Params.Cuda -eq "10") { $MinerName = "$($nvidia.'cc-yescrypt'.minername)" }
+    if ($Global:nvidia.'cc-yescrypt'.minername -and $global:Config.Params.Cuda -eq "10") { $MinerName = "$($Global:nvidia.'cc-yescrypt'.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "cc-yescrypt-$Num"; $Port = "5500$Num";
 
     Switch ($Num) {
-        1 { $Get_Devices = $NVIDIADevices1 }
-        2 { $Get_Devices = $NVIDIADevices2 }
-        3 { $Get_Devices = $NVIDIADevices3 }
+        1 { $Get_Devices = $Global:NVIDIADevices1 }
+        2 { $Get_Devices = $Global:NVIDIADevices2 }
+        3 { $Get_Devices = $Global:NVIDIADevices3 }
     }
 
     ##Log Directory
@@ -38,14 +38,14 @@ $NVIDIATypes | ForEach-Object {
     $PreStart += "export LD_LIBRARY_PATH=$ExportDir"
     $MinerConfig.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 
-    if ($Coins -eq $true) { $Pools = $CoinPools }else { $Pools = $AlgoPools }
+    if ($Global:Coins -eq $true) { $Pools = $global:CoinPools }else { $Pools = $global:AlgoPools }
 
     ##Build Miner Settings
     $MinerConfig.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
 
         $MinerAlgo = $_
 
-        if ($MinerAlgo -in $Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
+        if ($MinerAlgo -in $global:Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
             $StatAlgo = $MinerAlgo -replace "`_","`-"
             $Stat = Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
            $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
@@ -55,7 +55,7 @@ $NVIDIATypes | ForEach-Object {
                     if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
                     [PSCustomObject]@{
                         MName      = $Name
-                        Coin       = $Coins
+                        Coin       = $Global:Coins
                         Delay      = $MinerConfig.$ConfigType.delay
                         Fees       = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
                         Symbol     = "$($_.Symbol)"
@@ -64,14 +64,13 @@ $NVIDIATypes | ForEach-Object {
                         Type       = $ConfigType
                         Path       = $Path
                         Devices    = $Devices
-                        Version    = "$($nvidia.'cc-yescrypt'.version)"
+                        Version    = "$($Global:nvidia.'cc-yescrypt'.version)"
                         DeviceCall = "ccminer"
                         Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -b 0.0.0.0:$Port -u $($_.$User) -p $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                        HashRates  = [PSCustomObject]@{$($_.Algorithm) = $Stat.Hour}
+                        HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
-                        PowerX     = [PSCustomObject]@{$($_.Algorithm) = if ($Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($Watts.default."$($ConfigType)_Watts") { $Watts.default."$($ConfigType)_Watts" }else { 0 } }
+                        Power     =  if ($global:Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $global:Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($global:Watts.default."$($ConfigType)_Watts") { $global:Watts.default."$($ConfigType)_Watts" }else { 0 } 
                         MinerPool  = "$($_.Name)"
-                        FullName   = "$($_.Mining)"
                         Port       = $Port
                         API        = "Ccminer"
                         Wallet     = "$($_.$User)"

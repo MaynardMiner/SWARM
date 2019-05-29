@@ -7,4 +7,4 @@ set arg3=%3
 set arg4=%4
 set arg5=%5
 set arg6=%6
-pwsh -ExecutionPolicy Bypass -command "set-location ""%CMDDIR%\build\powershell""; .\get.ps1 %*"
+pwsh -ExecutionPolicy Bypass -command "set-location ""%CMDDIR%\build\powershell\scripts""; .\get.ps1 %*"

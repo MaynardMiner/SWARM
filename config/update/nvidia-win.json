@@ -77,8 +77,8 @@
         "NVIDIA2": ".\\bin\\gminer-2\\miner.exe",
         "NVIDIA3": ".\\bin\\gminer-3\\miner.exe",
         "minername": "miner.exe",
-        "version": "1.43",
-        "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.43/gminer_1_43_windows64.zip"
+        "version": "1.44",
+        "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.44/gminer_1_44_windows64.zip"
     },
     "claymore": {
         "name": "claymore",
@@ -87,7 +87,7 @@
         "NVIDIA2": ".\\bin\\claymore-2\\ethdcrminer64.exe",
         "NVIDIA3": ".\\bin\\claymore-3\\ethdcrminer64.exe",
         "minername": "ethdcrminer64.exe",
-        "version": "14.0",
+        "version": "14.6",
         "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/Claymore-Windows.zip"
     },
     "cryptodredge": {
@@ -117,8 +117,8 @@
         "NVIDIA2": ".\\bin\\z-enemy-2\\z-enemy.exe",
         "NVIDIA3": ".\\bin\\z-enemy-3\\z-enemy.exe",
         "minername": "z-enemy.exe",
-        "version": "1.28",
-        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/z-enemy-windows10.zip"
+        "version": "2.00",
+        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/z-enemy-windows.zip"
     },
     "ewbf": {
         "name": "ewbf",
