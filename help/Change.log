@@ -3131,3 +3131,17 @@ API overhaul:
   NEW ARGUMENT:
 
   ``-kwh`` set hourly electricity rate.
+
+  -Found bug where a needed value wasn't being passed into module
+   for ttminer and phoenix miner, which could have resulted in
+   incorrect hashrates: Fixed.
+
+  -Added equihash_96/5 to lolminer
+  -Added back nv-lolminer miner.
+   * Cannot use with AMD/NVIDIA
+     Platforms together. One or the other.
+   * Becuase of this - it was added to
+     optional miners folder.
+
+  -Further Effort Was Made To Reduce
+   Memory footprint.
