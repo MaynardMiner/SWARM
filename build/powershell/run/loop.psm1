@@ -28,7 +28,7 @@ function Invoke-SwarmMode {
 }
 
 function Restart-Miner {
-    Import-Module "$global:Control\run.psm1"
+    Import-Module "$($global:Config.var.control)\run.psm1"
     Start-NewMiners -Reason "Restart"
     Remove-Module -Name "run"
 }

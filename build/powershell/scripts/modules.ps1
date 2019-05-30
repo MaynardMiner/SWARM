@@ -39,11 +39,11 @@ if (Test-Path $Path) {
             Switch ($Style) {
                 "single" {
                     $message += "User specifed module is a single-run module. Adding in startup phase."
-                    $SWARMPS1 = $SWARMPS1 -replace "##Insert Single Modules Here", "Add-Module `"`$global:global\$($Item.Name)`"`n##Insert Single Modules Here"
+                    $SWARMPS1 = $SWARMPS1 -replace "##Insert Single Modules Here", "Add-Module `"`$($global:Config.var.global)\$($Item.Name)`"`n##Insert Single Modules Here"
                 }
                 "looping" {
                     $message += "User specifed module is a looping module. Adding in build phase."
-                    $SWARMPS1 = $SWARMPS1 -replace "        ##Insert Looping Modules Here", "        Add-Module `"`$global:global\$($Item.Name)`"`n        ##Insert Looping Modules Here"
+                    $SWARMPS1 = $SWARMPS1 -replace "        ##Insert Looping Modules Here", "        Add-Module `"`$($global:Config.var.global)\$($Item.Name)`"`n        ##Insert Looping Modules Here"
                     ##Insert Single Modules Here
                 }
             }

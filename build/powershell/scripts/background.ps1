@@ -33,16 +33,16 @@ $Net = $null
 
 if($IsWindows){ Start-Process "powershell" -ArgumentList "Set-Location `'$($global:Config.var.dir)`'; .\build\powershell\scripts\icon.ps1 `'$($global:Config.var.dir)\build\apps\comb.ico`'" -NoNewWindow }
 
-$global:global = "$($global:Config.var.dir)\build\powershell\global";
-$global:background = "$($global:Config.var.dir)\build\powershell\background";
-$global:miners = "$($global:Config.var.dir)\build\api\miners";
-$global:tcp = "$($global:Config.var.dir)\build\api\tcp";
-$global:html = "$($global:Config.var.dir)\build\api\html";
+$global:Config.var.Add("global","$($global:Config.var.dir)\build\powershell\global")
+$global:Config.var.Add("background","$($global:Config.var.dir)\build\powershell\background")
+$global:Config.var.Add("miners","$($global:Config.var.dir)\build\powershell\miners")
+$global:Config.var.Add("tcp","$($global:Config.var.dir)\build\powershell\tcp")
+$global:Config.var.Add("html","$($global:Config.var.dir)\build\powershell\html")
 $global:Config.var.Add("web","$($global:Config.var.dir)\build\api\web")
 
 $p = [Environment]::GetEnvironmentVariable("PSModulePath")
 if ($P -notlike "*$($global:Config.var.dir)\build\powershell*") {
-    $P += ";$global:global";
+    $P += ";$($global:Config.var.global)";
     $P += ";$global:background";
     $P += ";$global:miners";
     $P += ";$global:tcp";
@@ -52,8 +52,8 @@ if ($P -notlike "*$($global:Config.var.dir)\build\powershell*") {
     Write-Host "Modules Are Loaded" -ForegroundColor Green
 }
 
-Import-Module "$Global:Global\modules.psm1" -Scope Global
-Import-Module "$global:global\include.psm1" -Scope Global
+Import-Module "$($global:Config.var.global)\modules.psm1" -Scope Global
+Import-Module "$($global:Config.var.global)\include.psm1" -Scope Global
 
 $global:Modules = @()
 
@@ -125,9 +125,9 @@ While ($True) {
 
     Add-Module "$global:background\run.psm1"
     Add-Module "$global:background\initial.psm1"
-    Add-Module "$global:global\gpu.psm1"
-    Add-Module "$global:global\stats.psm1"
-    Add-Module "$global:global\hashrates.psm1"
+    Add-Module "$($global:Config.var.global)\gpu.psm1"
+    Add-Module "$($global:Config.var.global)\stats.psm1"
+    Add-Module "$($global:Config.var.global)\hashrates.psm1"
     
     Invoke-MinerCheck
     New-StatTables

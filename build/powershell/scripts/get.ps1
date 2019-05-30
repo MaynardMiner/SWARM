@@ -52,8 +52,8 @@ if ($P -notlike "*$dir\build\powershell*") {
 
 $Get = @()
 
-Import-Module -Name "$Global:Global\stats.psm1" -Scope Global
-Import-Module -Name "$Global:Global\include.psm1" -Scope Global
+Import-Module -Name "$($global:Config.var.global)\stats.psm1" -Scope Global
+Import-Module -Name "$($global:Config.var.global)\include.psm1" -Scope Global
 
 Switch ($argument1) {
     "help" {
@@ -271,7 +271,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
     }
 
     "asic" {
-        Import-Module -Name "$Global:Global\hashrates.psm1"
+        Import-Module -Name "$($global:Config.var.global)\hashrates.psm1"
         if (Test-Path ".\build\txt\bestminers.txt") { $BestMiners = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-Json }
         else { $Get += "No miners running" }
         $ASIC = $BestMiners | Where Type -eq $argument2
@@ -300,7 +300,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
 
     "benchmarks" {
 
-        Import-Module -Name "$Global:Global\hashrates.psm1"
+        Import-Module -Name "$($global:Config.var.global)\hashrates.psm1"
 
         if (Test-path ".\stats") {
             if ($argument2) {
@@ -353,7 +353,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
     }
 
     "wallets" {
-        Import-Module "$global:Global\wallettable.psm1" -Scope Global
+        Import-Module "$($global:Config.var.global)\wallettable.psm1" -Scope Global
         if($asjson){
         $Get = Get-WalletTable -asjson
         } else {$Get += Get-WalletTable}
