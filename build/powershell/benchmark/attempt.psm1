@@ -244,7 +244,7 @@ function Start-Benchmark {
                                 $global:Websites | ForEach-Object {
                                     $Sel = $_
                                     try {
-                                        Add-Module "$global:Web\methods.psm1"
+                                        Add-Module "$($global:Config.var.web)\methods.psm1"
                                         Get-WebModules $Sel
                                         $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
                                     }
@@ -276,7 +276,7 @@ function Start-Benchmark {
                                 $global:Websites | ForEach-Object {
                                     $Sel = $_
                                     try {
-                                        Add-Module "$global:Web\methods.psm1"
+                                        Add-Module "$($global:Config.var.web)\methods.psm1"
                                         Get-WebModules $Sel
                                         $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
                                     }
@@ -307,7 +307,7 @@ function Start-Benchmark {
                                 $global:Websites | ForEach-Object {
                                     $Sel = $_
                                     try {
-                                        Add-Module "$global:Web\methods.psm1"
+                                        Add-Module "$($global:Config.var.web)\methods.psm1"
                                         Get-WebModules $Sel
                                         $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
                                     }

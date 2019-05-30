@@ -17,16 +17,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ## Set Current Path
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
+$Global:config = [hashtable]::Synchronized(@{})
 
 ##filepath dir
-$global:dir = (Split-Path $script:MyInvocation.MyCommand.Path)
-$env:Path += ";$global:dir\build\cmd"
+$Global:Config.Add("var",@{})
+$Global:Config.var.Add("dir",(Split-Path $script:MyInvocation.MyCommand.Path))
+
+$env:Path += ";$($global:Config.var.dir)\build\cmd"
 try { Get-ChildItem . -Recurse | Unblock-File } catch { }
 
 ## Exclusion Windows Defender
 try { 
     if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { 
-        Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$($global:Dir)`'" -WindowStyle Minimized 
+        Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$($global:Config.var.Dir)`'" -WindowStyle Minimized 
     } 
 }
 catch { }
@@ -37,7 +40,7 @@ try {
     if ($Net) {
         try { 
             if ( -not ( $Net | Where { $_.DisplayName -like "*swarm.ps1*" } ) ) { 
-                New-NetFirewallRule -DisplayName 'swarm.ps1' -Direction Inbound -Program "$global:dir\swarm.ps1" -Action Allow | Out-Null
+                New-NetFirewallRule -DisplayName 'swarm.ps1' -Direction Inbound -Program "$($global:Config.var.dir)\swarm.ps1" -Action Allow | Out-Null
             } 
         }
         catch { }
@@ -47,30 +50,30 @@ catch { }
 $Net = $Null
 
 if ($IsWindows) {
-    Start-Process "powershell" -ArgumentList "Set-Location `'$global:dir`'; .\build\powershell\scripts\icon.ps1 `'$global:dir\build\apps\SWARM.ico`'" -NoNewWindow
+    Start-Process "powershell" -ArgumentList "Set-Location `'$($global:Config.var.dir)`'; .\build\powershell\scripts\icon.ps1 `'$($global:Config.var.dir)\build\apps\SWARM.ico`'" -NoNewWindow
 }
 
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
-$Global:Debug = $false
-if ($Global:Debug -eq $True) {
+$Global:Config.var.Add("debug",$false)
+if ($global:config.var.debug -eq $True) {
     Start-Transcript ".\logs\debug.log"
     if (($IsWindows)) { Set-ExecutionPolicy Bypass -Scope Process }
 }
 
 ## Load Modules
-$global:Startup = "$Global:Dir\build\powershell\startup";
-$global:Web = "$Global:Dir\build\api\web";
-$global:global = "$Global:Dir\build\powershell\global";
-$global:Build = "$Global:Dir\build\powershell\build";
-$global:Pool = "$Global:Dir\build\powershell\pool";
-$global:MinerP = "$Global:Dir\build\powershell\miner";
-$global:Control = "$Global:Dir\build\powershell\control";
-$global:Run = "$Global:Dir\build\powershell\run";
-$global:benchmark = "$Global:Dir\build\powershell\benchmark";
+$global:Config.var.Add("startup","$($global:Config.var.dir)\build\powershell\startup")
+$global:Config.var.Add("web","$($global:Config.var.dir)\build\powershell\web")
+$global:Config.var.Add("global","$($global:Config.var.dir)\build\powershell\global")
+$global:Config.var.Add("build","$($global:Config.var.dir)\build\powershell\build")
+$global:Config.var.Add("pool","$($global:Config.var.dir)\build\powershell\pool")
+$global:Config.var.Add("miner","$($global:Config.var.dir)\build\powershell\miner")
+$global:Config.var.Add("control","$($global:Config.var.dir)\build\powershell\control")
+$global:Config.var.Add("run","$($global:Config.var.dir)\build\powershell\run")
+$global:Config.var.Add("benchmark","$($global:Config.var.dir)\build\powershell\benchmark")
 $p = [Environment]::GetEnvironmentVariable("PSModulePath")
-if ($P -notlike "*$Global:Dir\build\powershell*") {
-    $P += ";$global:Startup";
-    $P += ";$global:Web";
+if ($P -notlike "*$($global:Config.var.dir)\build\powershell*") {
+    $P += ";$($global:Config.var.startup)";
+    $P += ";$($global:Config.var.web)";
     $P += ";$global:global";
     $P += ";$global:Build";
     $P += ";$global:Pool";
@@ -94,29 +97,28 @@ Import-Module "$global:global\include.psm1" -Scope Global
 ##Insert Single Modules Here
 
 ## Get Parameters
-$Global:config = @{ }
-Add-Module "$global:Startup\parameters.psm1"
+Add-Module "$($global:Config.var.startup)\parameters.psm1"
 Get-Parameters
 
 ## Crash Reporting
-Add-Module "$global:Startup\crashreport.psm1"
+Add-Module "$($global:Config.var.startup)\crashreport.psm1"
 Start-CrashReporting
 
 ## Start The Log
-Add-Module "$global:Startup\startlog.psm1"
-$global:dir | Set-Content ".\build\bash\dir.sh";
+Add-Module "$($global:Config.var.startup)\startlog.psm1"
+$global:Config.var.dir | Set-Content ".\build\bash\dir.sh";
 $global:LogNum = 1;
 $global:logname = $null
 start-log -Number $global:LogNum;
 
 ## Initiate Update Check
-Add-Module "$global:Startup\remoteagent.psm1"
+Add-Module "$($global:Config.var.startup)\remoteagent.psm1"
 if ($global:Config.Params.Platform -eq "Windows" -or $global:Config.Params.Update -eq "Yes") { 
     Get-Version
     start-update -Update $Getupdates
 }
 if ($global:Config.Params.Platform -eq "windows") { 
-    Add-Module "$global:Startup\getconfigs.psm1"
+    Add-Module "$($global:Config.var.startup)\getconfigs.psm1"
     Start-AgentCheck 
 }
 
@@ -124,7 +126,7 @@ if ($global:Config.Params.Platform -eq "windows") {
 if (-not (Test-Path ".\build\txt")) { New-Item -Path ".\build" -Name "txt" -ItemType "directory" | Out-Null }
 
 ##Start Data Collection
-Add-Module "$global:Startup\datafiles.psm1"
+Add-Module "$($global:Config.var.startup)\datafiles.psm1"
 
 $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
 [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
@@ -184,13 +186,13 @@ $global:GPU_Count = $null
 $global:BusData = $null
 switch ($global:Config.params.Platform) {
     "linux" {
-        Add-Module "$global:Startup\linuxconfig.psm1"
-        Add-Module "$global:Startup\sexyunixlogo.psm1"
+        Add-Module "$($global:Config.var.startup)\linuxconfig.psm1"
+        Add-Module "$($global:Config.var.startup)\sexyunixlogo.psm1"
         Start-LinuxConfig 
     }
     "windows" { 
-        Add-Module "$global:Startup\winconfig.psm1"
-        Add-Module "$global:Startup\sexywinlogo.psm1"
+        Add-Module "$($global:Config.var.startup)\winconfig.psm1"
+        Add-Module "$($global:Config.var.startup)\sexywinlogo.psm1"
         Start-WindowsConfig 
     }
 }
@@ -199,7 +201,7 @@ switch ($global:Config.params.Platform) {
 if ($global:Config.Params.Type -like "*AMD*") {
     if ([string]$global:Config.Params.CLPlatform) { $Global:AMDPlatform = [string]$global:Config.Params.CLPlatform }
     else {
-        Add-Module "$global:Startup\cl.psm1"
+        Add-Module "$($global:Config.var.startup)\cl.psm1"
         [string]$global:AMDPlatform = get-AMDPlatform
         write-Log "AMD OpenCL Platform is $Global:AMDPlatform"
     }
@@ -235,10 +237,10 @@ if ($global:Config.Params.Type -like "*NVIDIA*" -or $global:Config.Params.Type -
 
 
 ##Start New Agent
-Add-Module "$global:Startup\getconfigs.psm1"
+Add-Module "$($global:Config.var.startup)\getconfigs.psm1"
 write-Log "Starting New Background Agent" -ForegroundColor Cyan
 if ($global:Config.Params.Platform -eq "windows") { Start-Background }
-elseif ($global:Config.Params.Platform -eq "linux") { Start-Process ".\build\bash\background.sh" -ArgumentList "background $($global:Dir)" -Wait }
+elseif ($global:Config.Params.Platform -eq "linux") { Start-Process ".\build\bash\background.sh" -ArgumentList "background $($($global:Config.var.dir))" -Wait }
 
 Add-LogErrors
 Remove-Modules
@@ -402,7 +404,7 @@ While ($true) {
                 $global:Websites | ForEach-Object {
                     $Sel = $_
                     try {
-                        Add-Module "$global:Web\methods.psm1"
+                        Add-Module "$($global:Config.var.web)\methods.psm1"
                         Get-WebModules $Sel
                         $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
                     }

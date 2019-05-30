@@ -89,7 +89,7 @@ function Start-OC {
             if ($OC_Algo.PillDelay) { $PillSleep = $OC_Algo.PillDelay }
             else { $PillSleep = 1 }
             $PillTimer = New-Object -TypeName System.Diagnostics.Stopwatch
-            $PL = Join-Path "$($global:Dir)" ".\build\apps"
+            $PL = Join-Path "$($global:Config.var.dir)" ".\build\apps"
             $command = Start-Process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -noexit -command `"&{`$host.ui.RawUI.WindowTitle = `'ETH-Pill`'; Set-Location $PL; Start-Sleep $PillSleep; Invoke-Expression `'.\OhGodAnETHlargementPill-r2.exe $PillDevices`'}`"" -WindowStyle Minimized -PassThru -Verb Runas
             $command.ID | Set-Content ".\build\pid\pill_pid.txt"
             $PillTimer.Restart()
@@ -489,14 +489,14 @@ if ($DoNVIDIAOC -eq $true -and $Global:Config.params.Platform -eq "windows") {
     Set-Location ".\build\apps"
     $script | Out-File "NVIDIA-oc-start.ps1"
     $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\NVIDIA-oc-start.ps1""" -PassThru -WindowStyle Minimized -Wait
-    Set-Location $($global:Dir)
+    Set-Location $($global:Config.var.dir)
 }
     
 if ($DoAMDOC -eq $true -and $Global:Config.params.Platform -eq "windows") {
     Set-Location ".\build\apps"
     $Ascript | Out-File "AMD-oc-start.ps1"
     $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\AMD-oc-start.ps1""" -PassThru -WindowStyle Minimized -Wait
-    Set-Location $($global:Dir)
+    Set-Location $($global:Config.var.dir)
 }
     
 if ($DOAmdOC -eq $true -and $Global:Config.params.Platform -eq "linux") {

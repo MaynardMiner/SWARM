@@ -18,7 +18,11 @@ Param (
 
 #$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
 #$WorkingDir = "/root/hive/miners/custom/SWARM"
-$global:Dir = $WorkingDir
+$Global:config = [hashtable]::Synchronized(@{ })
+$Global:stats = [hashtable]::Synchronized(@{ })
+$global:config.Add("var",@{})
+$global:Config.var.Add("dir",$WorkingDir)
+$global:Config.var.dir = $WorkingDir
 Set-Location $WorkingDir
 try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$WorkingDir`'" -WindowStyle Minimized } }catch { }
 try{ $Net = Get-NetFireWallRule } catch {}
@@ -27,23 +31,23 @@ try { if( -not ( $Net | Where {$_.DisplayName -like "*background.ps1*"} ) ) { Ne
 }
 $Net = $null
 
-if($IsWindows){ Start-Process "powershell" -ArgumentList "Set-Location `'$global:dir`'; .\build\powershell\scripts\icon.ps1 `'$global:dir\build\apps\comb.ico`'" -NoNewWindow }
+if($IsWindows){ Start-Process "powershell" -ArgumentList "Set-Location `'$($global:Config.var.dir)`'; .\build\powershell\scripts\icon.ps1 `'$($global:Config.var.dir)\build\apps\comb.ico`'" -NoNewWindow }
 
-$global:global = "$Global:Dir\build\powershell\global";
-$global:background = "$Global:Dir\build\powershell\background";
-$global:miners = "$Global:Dir\build\api\miners";
-$global:tcp = "$Global:Dir\build\api\tcp";
-$global:html = "$Global:Dir\build\api\html";
-$global:web = "$Global:Dir\build\api\web";
+$global:global = "$($global:Config.var.dir)\build\powershell\global";
+$global:background = "$($global:Config.var.dir)\build\powershell\background";
+$global:miners = "$($global:Config.var.dir)\build\api\miners";
+$global:tcp = "$($global:Config.var.dir)\build\api\tcp";
+$global:html = "$($global:Config.var.dir)\build\api\html";
+$global:Config.var.Add("web","$($global:Config.var.dir)\build\api\web")
 
 $p = [Environment]::GetEnvironmentVariable("PSModulePath")
-if ($P -notlike "*$Global:Dir\build\powershell*") {
+if ($P -notlike "*$($global:Config.var.dir)\build\powershell*") {
     $P += ";$global:global";
     $P += ";$global:background";
     $P += ";$global:miners";
     $P += ";$global:tcp";
     $P += ";$global:html";
-    $P += ";$global:web";
+    $P += ";$($global:Config.var.web)";
     [Environment]::SetEnvironmentVariable("PSModulePath", $p)
     Write-Host "Modules Are Loaded" -ForegroundColor Green
 }
@@ -55,8 +59,6 @@ $global:Modules = @()
 
 Add-Module "$global:background\startup.psm1"
 ## Get Parameters
-$Global:config = [hashtable]::Synchronized(@{ })
-$Global:stats = [hashtable]::Synchronized(@{ })
 Get-Params
 [cultureinfo]::CurrentCulture = 'en-US'
 $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
@@ -553,7 +555,7 @@ HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
     Remove-Module -Name "run"
     
     if ($global:Websites) {
-        Add-Module "$global:Web\methods.psm1"
+        Add-Module "$($global:Config.var.web)\methods.psm1"
         Add-Module "$global:background\webstats.psm1"
         Send-WebStats
     }

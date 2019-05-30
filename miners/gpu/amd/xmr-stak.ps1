@@ -18,13 +18,13 @@ $Global:AMDTypes | ForEach-Object {
     }
 
     ##Log Directory
-    $Log = Join-Path $($global:Dir) "logs\$ConfigType.log"
+    $Log = Join-Path $($global:Config.var.dir) "logs\$ConfigType.log"
 
     ##Get Configuration File
     $MinerConfig = $Global:config.miners.$CName
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
-    $ExportDir = Join-Path $($global:Dir) "build\export"
+    $ExportDir = Join-Path $($global:Config.var.dir) "build\export"
 
     ##Prestart actions before miner launch
     $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"

@@ -6,7 +6,7 @@ function Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x stats"
         Set-Location "/"
-        Set-Location $global:Dir     
+        Set-Location $global:Config.var.dir     
     }
 
     if (Test-Path ".\build\bash\nview") {
@@ -14,7 +14,7 @@ function Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x nview"
         Set-Location "/"
-        Set-Location $global:Dir     
+        Set-Location $global:Config.var.dir     
     }
 
     if (Test-Path ".\build\bash\bans") {
@@ -22,7 +22,7 @@ function Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x bans"
         Set-Location "/"
-        Set-Location $global:Dir     
+        Set-Location $global:Config.var.dir     
     }
 
     if (Test-Path ".\build\bash\modules") {
@@ -30,7 +30,7 @@ function Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x modules"
         Set-Location "/"
-        Set-Location $global:Dir     
+        Set-Location $global:Config.var.dir     
     }
 
     if (Test-Path ".\build\bash\get") {
@@ -38,79 +38,79 @@ function Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x get"
         Set-Location "/"
-        Set-Location $global:Dir     
+        Set-Location $global:Config.var.dir     
     }
 
     if (-not (Test-Path ".\build\export\libnvrtc-builtins.so.10.1")) {
-        Start-Process ln -ArgumentList "-s $global:Dir/build/export/libnvrtc-builtins.so.10.1.105 $global:Dir/build/export/libnvrtc-builtins.so.10.1" -Wait
+        Start-Process ln -ArgumentList "-s $($global:Config.var.dir)/build/export/libnvrtc-builtins.so.10.1.105 $($global:Config.var.dir)/build/export/libnvrtc-builtins.so.10.1" -Wait
         Set-Location "/"
-        Set-Location $global:Dir     
+        Set-Location $($global:Config.var.dir)     
     }
 
     if (-not (Test-Path ".\build\export\libnvrtc-builtins.so")) {
-        Start-Process ln -ArgumentList "-s $global:Dir/build/export/libnvrtc-builtins.so.10.1 $global:Dir/build/export/libnvrtc-builtins.so" -Wait
+        Start-Process ln -ArgumentList "-s $($global:Config.var.dir)/build/export/libnvrtc-builtins.so.10.1 $($global:Config.var.dir)/build/export/libnvrtc-builtins.so" -Wait
         Set-Location "/"
-        Set-Location $global:Dir     
+        Set-Location $global:Config.var.dir     
     }
 
     if (-not (Test-Path ".\build\export\libcudart.so.10.1")) {
-        Start-Process ln -ArgumentList "-s $global:Dir/build/export/libcudart.so.10.1.105 $global:Dir/build/export/libcudart.so.10.1" -Wait
+        Start-Process ln -ArgumentList "-s $($global:Config.var.dir)/build/export/libcudart.so.10.1.105 $($global:Config.var.dir)/build/export/libcudart.so.10.1" -Wait
         Set-Location "/"
-        Set-Location $global:Dir     
+        Set-Location $global:Config.var.dir     
     }
 
     if (-not (Test-Path ".\build\export\libcudart.so.10.0")) {
-        Start-Process ln -ArgumentList "-s $global:Dir/build/export/libcudart.so.10.0.130 $global:Dir/build/export/libcudart.so.10.0" -Wait
+        Start-Process ln -ArgumentList "-s $($global:Config.var.dir)/build/export/libcudart.so.10.0.130 $($global:Config.var.dir)/build/export/libcudart.so.10.0" -Wait
         Set-Location "/"
-        Set-Location $global:Dir     
+        Set-Location $global:Config.var.dir     
     }
     
     if (-not (Test-Path ".\build\export\libcudart.so.9.2")) {
-        Start-Process ln -ArgumentList "-s $global:Dir/build/export/libcudart.so.9.2.148 $global:Dir/build/export/libcudart.so.9.2" -Wait
+        Start-Process ln -ArgumentList "-s $($global:Config.var.dir)/build/export/libcudart.so.9.2.148 $($global:Config.var.dir)/build/export/libcudart.so.9.2" -Wait
         Set-Location "/"
-        Set-Location $global:Dir     
+        Set-Location $global:Config.var.dir     
     }
 
     if (-not (Test-Path ".\build\export\libmicrohttpd.so.10")) {
-        Start-Process ln -ArgumentList "-s $global:Dir/build/export/libmicrohttpd.so.10.34.0 $global:Dir/build/export/libmicrohttpd.so.10" -Wait
+        Start-Process ln -ArgumentList "-s $($global:Config.var.dir)/build/export/libmicrohttpd.so.10.34.0 $($global:Config.var.dir)/build/export/libmicrohttpd.so.10" -Wait
         Set-Location "/"
-        Set-Location $global:Dir     
+        Set-Location $global:Config.var.dir     
     }
 
     if (-not (Test-Path ".\build\export\libcudart.so.10.1")) {
-        Start-Process ln -ArgumentList "-s $global:Dir/build/export/libcudart.so.10.0.130 $global:Dir/build/export/libcudart.so.10.0" -Wait
+        Start-Process ln -ArgumentList "-s $($global:Config.var.dir)/build/export/libcudart.so.10.0.130 $($global:Config.var.dir)/build/export/libcudart.so.10.0" -Wait
         Set-Location "/"
-        Set-Location $global:Dir     
+        Set-Location $global:Config.var.dir     
     }
     
     if (-not (Test-Path ".\build\export\libhwloc.so.5")) {
-        Start-Process ln -ArgumentList "-s $global:Dir/build/export/libhwloc.so.5.5.0 $global:Dir/build/export/libhwloc.so.5" -Wait
+        Start-Process ln -ArgumentList "-s $($global:Config.var.dir)/build/export/libhwloc.so.5.5.0 $($global:Config.var.dir)/build/export/libhwloc.so.5" -Wait
         Set-Location "/"
-        Set-Location $global:Dir     
+        Set-Location $global:Config.var.dir     
     }
 
     if (-not (Test-Path ".\build\export\libstdc++.so.6")) {
-        Start-Process ln -ArgumentList "-s $global:Dir/build/export/libstdc++.so.6.0.25 $global:Dir/build/export/libstdc++.so.6" -Wait
+        Start-Process ln -ArgumentList "-s $($global:Config.var.dir)/build/export/libstdc++.so.6.0.25 $($global:Config.var.dir)/build/export/libstdc++.so.6" -Wait
         Set-Location "/"
-        Set-Location $global:Dir     
+        Set-Location $global:Config.var.dir     
     }
 
     if (-not (Test-Path ".\build\export\libnvrtc.so.9.2")) {
-        Start-Process ln -ArgumentList "-s $global:Dir/build/export/libnvrtc.so.9.2.148 $global:Dir/build/export/libnvrtc.so.9.2" -Wait
+        Start-Process ln -ArgumentList "-s $($global:Config.var.dir)/build/export/libnvrtc.so.9.2.148 $($global:Config.var.dir)/build/export/libnvrtc.so.9.2" -Wait
         Set-Location "/"
-        Set-Location $global:Dir     
+        Set-Location $global:Config.var.dir     
     }
 
     if (-not (Test-Path ".\build\export\libnvrtc.so.10.0")) {
-        Start-Process ln -ArgumentList "-s $global:Dir/build/export/libnvrtc.so.10.0.130 $global:Dir/build/export/libnvrtc.so.10.0" -Wait
+        Start-Process ln -ArgumentList "-s $($global:Config.var.dir)/build/export/libnvrtc.so.10.0.130 $($global:Config.var.dir)/build/export/libnvrtc.so.10.0" -Wait
         Set-Location "/"
-        Set-Location $global:Dir     
+        Set-Location $global:Config.var.dir     
     }
 
     if (-not (Test-Path ".\build\export\libnvrtc.so.10.1")) {
-        Start-Process ln -ArgumentList "-s $global:Dir/build/export/libnvrtc.so.10.1.105 $global:Dir/build/export/libnvrtc.so.10.1" -Wait
+        Start-Process ln -ArgumentList "-s $($global:Config.var.dir)/build/export/libnvrtc.so.10.1.105 $($global:Config.var.dir)/build/export/libnvrtc.so.10.1" -Wait
         Set-Location "/"
-        Set-Location $global:Dir     
+        Set-Location $global:Config.var.dir     
     }
 
     if (Test-Path ".\build\bash\get-oc") {
@@ -118,7 +118,7 @@ function Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x get-oc"
         Set-Location "/"
-        Set-Location $global:Dir     
+        Set-Location $global:Config.var.dir     
     }
    
     if (Test-Path ".\build\bash\active") {
@@ -126,7 +126,7 @@ function Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x active"
         Set-Location "/"
-        Set-Location $global:Dir     
+        Set-Location $global:Config.var.dir     
     }
 
     if (Test-Path ".\build\bash\version") {
@@ -134,7 +134,7 @@ function Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x version"
         Set-Location "/"
-        Set-Location $global:Dir     
+        Set-Location $global:Config.var.dir     
     }
     
     if (Test-Path ".\build\bash\get-screen") {
@@ -142,7 +142,7 @@ function Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x get-screen"
         Set-Location "/"
-        Set-Location $global:Dir     
+        Set-Location $global:Config.var.dir     
     }
    
     if (Test-Path ".\build\bash\mine") {
@@ -150,7 +150,7 @@ function Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x mine"
         Set-Location "/"
-        Set-Location $global:Dir     
+        Set-Location $global:Config.var.dir     
     }
    
     if (Test-Path ".\build\bash\background") {
@@ -158,7 +158,7 @@ function Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x background"
         Set-Location "/"
-        Set-Location $global:Dir     
+        Set-Location $global:Config.var.dir     
     }
    
     if (Test-Path ".\build\bash\pidinfo") {
@@ -166,7 +166,7 @@ function Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x pidinfo"
         Set-Location "/"
-        Set-Location $global:Dir     
+        Set-Location $global:Config.var.dir     
     }
 
     if (Test-Path ".\build\bash\dir.sh") {
@@ -174,7 +174,7 @@ function Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x dir.sh"
         Set-Location "/"
-        Set-Location $global:Dir     
+        Set-Location $global:Config.var.dir     
     }
 
     if (Test-Path ".\build\bash\benchmark") {
@@ -182,7 +182,7 @@ function Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x benchmark"
         Set-Location "/"
-        Set-Location $global:Dir     
+        Set-Location $global:Config.var.dir     
     }
 
     if (Test-Path ".\build\bash\clear_profits") {
@@ -190,7 +190,7 @@ function Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x clear_profits"
         Set-Location "/"
-        Set-Location $global:Dir     
+        Set-Location $global:Config.var.dir     
     }  
 
     if (Test-Path ".\build\bash\clear_watts") {
@@ -198,7 +198,7 @@ function Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x clear_watts"
         Set-Location "/"
-        Set-Location $global:Dir     
+        Set-Location $global:Config.var.dir     
     }  
 
     if (Test-Path ".\build\bash\get-lambo") {
@@ -206,10 +206,10 @@ function Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x get-lambo"
         Set-Location "/"
-        Set-Location $global:Dir     
+        Set-Location $global:Config.var.dir     
     }
    
-    Set-Location $global:Dir
+    Set-Location $global:Config.var.dir
     
 }
 

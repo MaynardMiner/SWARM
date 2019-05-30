@@ -33,19 +33,20 @@ $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12'
 Set-Location (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
 $dir = (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
 
-if(-not $Global:Startup){$Global:Startup = "$dir\build\powershell\startup";}
-if(-not $Global:Global){$Global:Global = "$dir\build\powershell\global";}
-if(-not $Global:Build){$Global:Build = "$dir\build\powershell\build";}
-if(-not $Global:Pool){$Global:Pool = "$dir\build\powershell\pool";}
-if(-not $Global:Startup){$Global:Startup = "$dir\build\powershell\startup";}
-if(-not $Global:Web){$Global:Web = "$dir\build\powershell\web";}
+if(-not $Global:Config){$Global:Config = @{}}
+if(-not $Global:Config.var){$Global:Config.var = @{}}
+if(-not $global:Config.var.startup){$global:Config.var.startup = "$dir\build\powershell\startup";}
+if(-not $Global:Config.var.global){$Global:Config.var.global = "$dir\build\powershell\global";}
+if(-not $Global:Config.var.build){$Global:Config.var.build = "$dir\build\powershell\build";}
+if(-not $Global:Config.var.pool){$Global:Config.var.pool = "$dir\build\powershell\pool";}
+if(-not $Global:Config.var.web){$Global:Config.var.web = "$dir\build\powershell\web";}
 $p = [Environment]::GetEnvironmentVariable("PSModulePath")
 if ($P -notlike "*$dir\build\powershell*") {
-    $P += ";$Global:Startup";
-    $P += ";$Global:Global";
-    $P += ";$Global:Build";
-    $P += ";$Global:Pool";
-    $P += ";$Global:Web";
+    $P += ";$($Global:Config.var.startup)";
+    $P += ";$($Global:Config.var.global)";
+    $P += ";$($Global:Config.var.build)";
+    $P += ";$($Global:Config.var.pool)";
+    $P += ";$($Global:Config.var.web)";
     [Environment]::SetEnvironmentVariable("PSModulePath", $p)
 }
 

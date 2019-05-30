@@ -18,7 +18,7 @@ $Global:AMDTypes | ForEach-Object {
     }
 
     ##Log Directory
-    $Log = Join-Path $($global:Dir) "logs\$ConfigType.log"
+    $Log = Join-Path $($global:Config.var.dir) "logs\$ConfigType.log"
 
     ##Parse -GPUDevices
     if ($Get_Devices -ne "none") {
@@ -36,7 +36,7 @@ $Global:AMDTypes | ForEach-Object {
     $MinerConfig = $Global:config.miners.$Cname
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
-    $ExportDir = Join-Path $($global:Dir) "build\export"
+    $ExportDir = Join-Path $($global:Config.var.dir) "build\export"
 
     ##Prestart actions before miner launch
     $Prestart = @()

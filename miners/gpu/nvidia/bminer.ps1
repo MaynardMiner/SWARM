@@ -16,7 +16,7 @@ $Global:NVIDIATypes | ForEach-Object {
     }
 
     ##Log Directory
-    $Log = Join-Path $($global:Dir) "logs\$ConfigType.log"
+    $Log = Join-Path $($global:Config.var.dir) "logs\$ConfigType.log"
 
     ##Parse -GPUDevices
     if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
@@ -26,7 +26,7 @@ $Global:NVIDIATypes | ForEach-Object {
     $MinerConfig = $Global:config.miners.bminer
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
-    $ExportDir = Join-Path $($global:Dir) "build\export"
+    $ExportDir = Join-Path $($global:Config.var.dir) "build\export"
 
     ##Prestart actions before miner launch
     $PreStart += "export LD_LIBRARY_PATH=$ExportDir"

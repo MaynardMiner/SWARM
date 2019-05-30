@@ -74,7 +74,7 @@ function Get-RigData($CPlat) {
             }
             if ($DriverDesc) { $AMDDriver = "$DriverDesc" }else { $AMDDriver = "0.0.0" }
             $RigData.Add("amd_version", $AMDDriver)
-            Set-Location $global:Dir
+            Set-Location $global:Config.var.dir
         }
         "linux" { }
     }
