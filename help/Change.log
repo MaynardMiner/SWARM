@@ -3145,3 +3145,7 @@ API overhaul:
 
   -Further Effort Was Made To Reduce
    Memory footprint.
+
+  -Attempted fix of Windows ``get update``
+   commands. Since it was broken last release-
+   It will work updating next version forward.
