@@ -18,12 +18,12 @@ function Get-Pools {
 }
 function Get-AlgoPools {
     $global:QuickTimer.Restart()
-    $Files = Get-ChildItem "algopools" | Where BaseName -in $global:Config.params.poolname #| Select -First 1
+    $Files = Get-ChildItem "algopools" | Where BaseName -in $global:Config.params.poolname
     write-Log "Checking Algo Pools." -Foregroundcolor yellow;
     $AllAlgoPools = Get-Pools -PoolType "Algo" -Items $Files
     ##Get Custom Pools
     write-Log "Adding Custom Pools. ." -ForegroundColor Yellow;
-    $Files = Get-ChildItem "custompools" | Where BaseName -in $global:Config.params.poolname #| Select -First 1
+    $Files = Get-ChildItem "custompools" | Where BaseName -in $global:Config.params.poolname
     $AllCustomPools = Get-Pools -PoolType "Custom" -Items $Files
 
     if ($global:Config.Params.Auto_Algo -eq "Yes" -or $SingleMode -eq $True) {
