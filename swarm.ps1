@@ -349,6 +349,7 @@ While ($true) {
         $global:SingleMode = $false
         $global:AlgoPools = $Null
         $global:CoinPools = $null
+        $global:Pool_Hashrates = @{ }
 
 
         Add-Module "$Pool\initial.psm1"
@@ -385,7 +386,6 @@ While ($true) {
         Add-Module "$global:global\include.psm1"
         Add-Module "$global:global\stats.psm1"
 
-        $global:Pool_Hashrates = @{ }
         $global:Miner_HashTable = $Null
         $Global:Miners = New-Object System.Collections.ArrayList
 
