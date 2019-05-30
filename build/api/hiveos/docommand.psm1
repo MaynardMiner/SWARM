@@ -24,9 +24,9 @@ function Start-Webcommand {
     $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
     [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
 
-    switch($WebSite){
-        "HiveOS"{$Param = "hive_params"}
-        "Swarm"{$Param = "swarm_params"}
+    switch ($WebSite) {
+        "HiveOS" { $Param = "hive_params" }
+        "Swarm" { $Param = "swarm_params" }
     }
 
     
@@ -249,7 +249,7 @@ function Start-Webcommand {
                         $line += "Main Directory is $Location`n"
                         Write-Host "Main Directory is $Location"
                         $NewLocation = Join-Path (Split-Path $global:Dir) "SWARM.$VersionNumber"
-                        $FileName = join-path ".\x64" "SWARM.$VersionNumber.zip"
+                        $FileName = join-path "$global:Dir\x64" "SWARM.$VersionNumber.zip"
                         $DLFileName = Join-Path "$($global:Dir)" "x64\SWARM.$VersionNumber.zip"
                         if ($URI) {
                             $line += "Attempting To Download New Version at $URI`n"
@@ -265,11 +265,11 @@ function Start-Webcommand {
                         }
                         Start-Sleep -S 5
                         if ($Failed -eq $false) {
-                            Start-Process ".\build\apps\7z" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -Wait -WindowStyle Minimized
+                            Start-Process "$global:Dir\build\apps\7z.exe" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -Wait -WindowStyle Minimized
                             Start-Sleep -S 3
                             $line += "Config Command Initiated- Restarting SWARM`n"
                             Write-Host "Config Command Initiated- Restarting SWARM"
-                            $MinerFile = ".\build\pid\miner_pid.txt"
+                            $MinerFile = "$global:Dir\build\pid\miner_pid.txt"
                             if (Test-Path $MinerFile) { $MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue }
                             if ($MinerId) {
                                 Stop-Process $MinerId -Force
