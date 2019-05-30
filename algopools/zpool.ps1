@@ -1,6 +1,6 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $Zpool_Request = [PSCustomObject]@{ } 
-[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
+
 if($global:Config.Params.xnsub -eq "Yes"){$X = "#xnsub"} 
  
 if ($Name -in $global:Config.Params.PoolName) {
@@ -22,28 +22,30 @@ if ($Name -in $global:Config.Params.PoolName) {
     Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
     Select-Object -ExpandProperty Name | 
     Where-Object { $Zpool_Request.$_.hashrate -gt 0 } | 
-    Where-Object { $global:Exclusions.$($Zpool_Request.$_.name) } |
+    Where-Object {
+        $Algo = $Zpool_Request.$_.name.ToLower();
+        $local:Zpool_Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name | Where { $Algo -in $global:Config.Pool_Algos.$_.alt_names }
+        return $Zpool_Algorithm
+    } |
     ForEach-Object {
-    
-        $Zpool_Algorithm = $Zpool_Request.$_.name.ToLower()
-  
-        if ($Algorithm -contains $Zpool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $Zpool_Algorithm) {
-            if ($Name -notin $global:Exclusions.$Zpool_Algorithm.exclusions -and $Zpool_Algorithm -notin $Global:banhammer) {
+        if ($global:Algorithm -contains $Zpool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $Zpool_Algorithm) {
+            if ($Name -notin $global:Config.Pool_Algos.$Zpool_Algorithm.exclusions -and $Zpool_Algorithm -notin $Global:banhammer) {
                 $Zpool_Port = $Zpool_Request.$_.port
-                $Zpool_Host = "$($ZPool_Algorithm).$($region).mine.zpool.ca$X"
+                $Zpool_Host = "$($Zpool_Request.$_.name.ToLower()).$($region).mine.zpool.ca$X"
                 $Divisor = (1000000 * $Zpool_Request.$_.mbtc_mh_factor)
                 $Fees = $Zpool_Request.$_.fees
                 $Workers = $Zpool_Request.$_.Workers
                 $Hashrate = $Zpool_Request.$_.hashrate
 
-                $Global:DivisorTable.zpool.Add($Zpool_Algorithm, $Divisor)
+                $Global:DivisorTable.zpool.Add($Zpool_Algorithm, $Zpool_Request.$_.mbtc_mh_factor)
                 $Global:FeeTable.zpool.Add($Zpool_Algorithm, $Fees)
 
                 $StatPath = ".\stats\($Name)_$($Zpool_Algorithm)_profit.txt"
                 $Estimate = if (-not (Test-Path $StatPath)) { [Double]$Zpool_Request.$_.estimate_last24h } else { [Double]$Zpool_Request.$_.estimate_current }
 
-                $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
-                $Stat = Set-Stat -Name "$($Name)_$($Zpool_Algorithm)_profit" -HashRate $HashRate -Value ([Double]$Cut / $Divisor)
+                $Cut = ConvertFrom-Fees $Fees $Workers $Estimate $Divisor
+                $StatAlgo = $Zpool_Algorithm -replace "`_","`-"
+                $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value $Cut
 
                 if (-not $global:Pool_Hashrates.$Zpool_Algorithm) { $global:Pool_Hashrates.Add("$Zpool_Algorithm", @{ }) }
                 if (-not $global:Pool_Hashrates.$Zpool_Algorithm.$Name) { $global:Pool_Hashrates.$Zpool_Algorithm.Add("$Name", @{HashRate = "$($Stat.HashRate)"; Percent = "" }) }
@@ -81,9 +83,7 @@ if ($Name -in $global:Config.Params.PoolName) {
                 }
                 
                 [PSCustomObject]@{
-                    Priority  = $Priorities.Pool_Priorities.$Name
                     Symbol    = "$Zpool_Algorithm-Algo"
-                    Mining    = $Zpool_Algorithm
                     Algorithm = $Zpool_Algorithm
                     Price     = $Stat.$($global:Config.Params.Stat_Algo)
                     Protocol  = "stratum+tcp"
@@ -92,13 +92,9 @@ if ($Name -in $global:Config.Params.PoolName) {
                     User1     = $User1
                     User2     = $User2
                     User3     = $User3
-                    CPUser    = $User1
-                    CPUPass   = "c=$Pass1,id=$($global:Config.Params.RigName1)"
                     Pass1     = "c=$Pass1,id=$($global:Config.Params.RigName1)"
                     Pass2     = "c=$Pass2,id=$($global:Config.Params.RigName2)"
                     Pass3     = "c=$Pass3,id=$($global:Config.Params.RigName3)"
-                    Location  = $global:Config.Params.Location
-                    SSL       = $false
                 }
             }
         }

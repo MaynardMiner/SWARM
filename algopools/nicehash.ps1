@@ -1,7 +1,7 @@
 
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $nicehash_Request = [PSCustomObject]@{ } 
-[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
+
 if($global:Config.Params.xnsub -eq "Yes"){$X = "#xnsub"}
  
 if ($Name -in $global:Config.Params.PoolName) {
@@ -22,13 +22,14 @@ if ($Name -in $global:Config.Params.PoolName) {
     $nicehash_Request.result | 
     Select-Object -ExpandProperty simplemultialgo | 
     Where-Object paying -ne 0 | 
-    Where-Object { $global:Exclusions.$($_.name) } |
+    Where-Object {
+        $Algo = $_.name.ToLower();
+        $local:Nicehash_Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name | Where { $Algo -in $global:Config.Pool_Algos.$_.alt_names }
+        return $Nicehash_Algorithm
+    } |
     ForEach-Object {
-    
-        $nicehash_Algorithm = $_.name.ToLower()
-
-        if ($Algorithm -contains $nicehash_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $nicehash_Algorithm) {
-            if ($Name -notin $global:Exclusions.$nicehash_Algorithm.exclusions -and $nicehash_Algorithm -notin $Global:banhammer) {
+        if ($global:Algorithm -contains $nicehash_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $nicehash_Algorithm) {
+            if ($Name -notin $global:Config.Pool_Algos.$nicehash_Algorithm.exclusions -and $nicehash_Algorithm -notin $Global:banhammer) {
 
                 ## Nicehash 'Gets' you with the fees. If you read the fine print,
                 ## If you do not use a nicehash wallet- Your total fee will end up
@@ -48,14 +49,12 @@ if ($Name -in $global:Config.Params.PoolName) {
                 ## My experience, whatever they state is return- Is
                 ## usually pretty close to actual.
 
-                $Stat = Set-Stat -Name "$($Name)_$($Nicehash_Algorithm)_profit" -Value ([Double]$_.paying / $Divisor * (1 - ($Fee / 100)))
+                $StatAlgo = $Nicehash_Algorithm -replace "`_","`-"
+                $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -Value ([Double]$_.paying / $Divisor * (1 - ($Fee / 100)))
      
                 [PSCustomObject]@{
-                    Priority  = $Priorities.Pool_Priorities.$Name
-                    Coin      = "No"
                     Excavator = $nicehash_excavator
                     Symbol    = "$nicehash_Algorithm-Algo"
-                    Mining    = $nicehash_Algorithm
                     Algorithm = $nicehash_Algorithm
                     Price     = $Stat.$($global:Config.Params.Stat_Algo)
                     Protocol  = "stratum+tcp"
@@ -64,13 +63,9 @@ if ($Name -in $global:Config.Params.PoolName) {
                     User1     = "$NH_Wallet1.$($global:Config.Params.RigName1)"
                     User2     = "$NH_Wallet2.$($global:Config.Params.RigName2)"
                     User3     = "$NH_Wallet3.$($global:Config.Params.RigName3)"
-                    CPUser    = "$NH_Wallet1.$($global:Config.Params.RigName1)"
-                    CPUPass   = "x"
                     Pass1     = "x"
                     Pass2     = "x"
                     Pass3     = "x"
-                    Location  = $global:Config.Params.Location
-                    SSL       = $false
                 }
             }
         }

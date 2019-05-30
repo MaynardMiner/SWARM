@@ -30,7 +30,9 @@
             "astralhash": "",
             "jeonghash": "",
             "padihash": "",
-            "pawelhash": ""
+            "pawelhash": "",
+            "mtp": "",
+            "x25x": ""
         },
         "difficulty": {
             "tribus": "",
@@ -59,7 +61,9 @@
             "astralhash": "",
             "jeonghash": "",
             "padihash": "",
-            "pawelhash": ""
+            "pawelhash": "",
+            "mtp": "",
+            "x25x": ""
         },
         "naming": {
             "tribus": "tribus",
@@ -88,7 +92,9 @@
             "astralhash": "astralhash",
             "jeonghash": "jeonghash",
             "padihash": "padihash",
-            "pawelhash": "pawelhash"
+            "pawelhash": "pawelhash",
+            "mtp": "mtp",
+            "x25x": ""
         },
         "fee": {
             "tribus": 1,
@@ -117,7 +123,9 @@
             "astralhash": 1,
             "jeonghash": 1,
             "padihash": 1,
-            "pawelhash": 1
+            "pawelhash": 1,
+            "mtp": 1,
+            "x25x": 1
         }
     },
     "NVIDIA2": {
@@ -151,7 +159,9 @@
             "astralhash": "",
             "jeonghash": "",
             "padihash": "",
-            "pawelhash": ""
+            "pawelhash": "",
+            "mtp": "",
+            "x25x": ""
         },
         "difficulty": {
             "tribus": "",
@@ -180,7 +190,9 @@
             "astralhash": "",
             "jeonghash": "",
             "padihash": "",
-            "pawelhash": ""
+            "pawelhash": "",
+            "mtp": "",
+            "x25x": ""
         },
         "naming": {
             "tribus": "tribus",
@@ -209,7 +221,9 @@
             "astralhash": "astralhash",
             "jeonghash": "jeonghash",
             "padihash": "padihash",
-            "pawelhash": "pawelhash"
+            "pawelhash": "pawelhash",
+            "mtp": "mtp",
+            "x25x": ""
         },
         "fee": {
             "tribus": 1,
@@ -238,7 +252,9 @@
             "astralhash": 1,
             "jeonghash": 1,
             "padihash": 1,
-            "pawelhash": 1
+            "pawelhash": 1,
+            "mtp": 1,
+            "x25x": 1
         }
     },
     "NVIDIA3": {
@@ -272,7 +288,9 @@
             "astralhash": "",
             "jeonghash": "",
             "padihash": "",
-            "pawelhash": ""
+            "pawelhash": "",
+            "mtp": "",
+            "x25x": ""
         },
         "difficulty": {
             "tribus": "",
@@ -301,7 +319,9 @@
             "astralhash": "",
             "jeonghash": "",
             "padihash": "",
-            "pawelhash": ""
+            "pawelhash": "",
+            "mtp": "",
+            "x25x": ""
         },
         "naming": {
             "tribus": "tribus",
@@ -330,7 +350,9 @@
             "astralhash": "astralhash",
             "jeonghash": "jeonghash",
             "padihash": "padihash",
-            "pawelhash": "pawelhash"
+            "pawelhash": "pawelhash",
+            "mtp": "mtp",
+            "x25x": ""
         },
         "fee": {
             "tribus": 1,
@@ -359,7 +381,9 @@
             "astralhash": 1,
             "jeonghash": 1,
             "padihash": 1,
-            "pawelhash": 1
+            "pawelhash": 1,
+            "mtp": 1,
+            "x25x": 1
         }
     },
     "name": "t-rex"

@@ -1,5 +1,6 @@
 {
     "AltWallet2":  "",
+    "kwh": "",
     "Poolname":  [
                      "nlpool",
                      "zergpool",
@@ -32,7 +33,7 @@
     "GPUDevices2": [
                     ""
                    ],
-    "CoinExchange":  "",
+    "CoinExchange":  "ETH",
     "Interval":  300,
     "Passwordcurrency1": "BTC",
     "CPUThreads":  1,
@@ -69,7 +70,7 @@
     "PoolBans":  "Yes",
     "Update":  "Yes",
     "Switch_Threshold":  "0",
-    "API":  "Yes",
+    "API":  "No",
     "CLPlatform":  "",
     "Track_Shares": "Yes",
     "Max_Periods": 288,

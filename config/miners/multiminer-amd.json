@@ -4,40 +4,24 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "argon2d-dyn": "",
-            "argon2d250": "",
-            "argon2d500": "",
-            "argon2d4096": "",
-            "argon2d-crds": "",
-            "argon2d-uis": "",
-            "argon2ad": ""
+            "argon2d250": "--gpu-batchsize=2048 -t 4",
+            "argon2d500": "--gpu-batchsize=2048 -t 4",
+            "argon2d4096": "--gpu-batchsize=750 -t 2"
         },
         "difficulty": {
-            "argon2d-dyn": "",
             "argon2d250": "",
             "argon2d500": "",
-            "argon2d4096": "",
-            "argon2d-crds": "",
-            "argon2d-uis": "",
-            "argon2ad": ""
+            "argon2d4096": ""
         },
         "naming": {
-            "argon2d-dyn": "argon2d500",
             "argon2d250": "argon2d250",
             "argon2d500": "argon2d500",
-            "argon2d4096": "argon2d4096",
-            "argon2d-crds": "argon2d-250",
-            "argon2d-uis": "argon2d4096",
-            "argon2ad": "argon2ad"
+            "argon2d4096": "argon2d4096"
         },
         "fee": {
-            "argon2d-dyn": 0,
             "argon2d250": 0,
             "argon2d500": 0,
-            "argon2d4096": 0,
-            "argon2d-crds": 0,
-            "argon2d-uis": 0,
-            "argon2ad": 0
+            "argon2d4096": 0
         }
     },
     "name": "multiminer-amd"

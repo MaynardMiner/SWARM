@@ -21,7 +21,9 @@
     "NVIDIA2": {
         "name": "NVIDIA2",
         "delay": "1",
-        "prestart": [],
+        "prestart": [
+            "echo THIS MINER REQUIRES 6GB OF RAM MINIMUM"
+        ],
         "commands": {
             "mtp": ""
         },
@@ -36,7 +38,9 @@
     "NVIDIA3": {
         "name": "NVIDIA3",
         "delay": "1",
-        "prestart": [],
+        "prestart": [
+            "echo THIS MINER REQUIRES 6GB OF RAM MINIMUM"
+        ],
         "commands": {
             "mtp": ""
         },

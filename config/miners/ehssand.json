@@ -4,16 +4,16 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "argon2d-dyn": ""
+            "argon2d500": ""
         },
         "difficulty": {
-            "argon2d-dyn": ""
+            "argon2d500": ""
         },
         "naming": {
-            "argon2d-dyn": "argon2d"
+            "argon2d500": "argon2d"
         },
         "fee": {
-            "argon2d-dyn": 0
+            "argon2d500": 0
         }
     },
     "NVIDIA2": {
@@ -21,16 +21,16 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "argon2d-dyn": ""
+            "argon2d500": ""
         },
         "difficulty": {
-            "argon2d-dyn": ""
+            "argon2d500": ""
         },
         "naming": {
-            "argon2d-dyn": "argon2d"
+            "argon2d500": "argon2d"
         },
         "fee": {
-            "argon2d-dyn": 0
+            "argon2d500": 0
         }
     },
     "NVIDIA3": {
@@ -38,16 +38,20 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "argon2d-dyn": ""
+            "argon2d500": "",
+            "skein2": ""
         },
         "difficulty": {
-            "argon2d-dyn": ""
+            "argon2d500": "",
+            "skein2": ""
         },
         "naming": {
-            "argon2d-dyn": "argon2d"
+            "argon2d500": "argon2d",
+            "skein2": "skein2"
         },
         "fee": {
-            "argon2d-dyn": 0
+            "argon2d500": 0,
+            "skein2": 0
         }
     },
     "name": "ehssand"

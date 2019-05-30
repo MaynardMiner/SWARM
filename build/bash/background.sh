@@ -10,7 +10,7 @@
 #You should have received a copy of the GNU General Public License
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-sudo screen -S background -d -m
+screen -S background -d -m
 sleep 1
-sudo screen -S $1 -X stuff $"pwsh -command ./build/powershell/background.ps1 -WorkingDir $2\n"
+screen -S $1 -X stuff $"pwsh -command ./build/powershell/scripts/background.ps1 -WorkingDir $2\n"
 

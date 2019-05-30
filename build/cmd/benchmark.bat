@@ -1,4 +1,4 @@
 @echo off
 pushd %~dp0
 set /p CMDDIR=<dir.txt
-pwsh -ExecutionPolicy Bypass -command "set-location ""%CMDDIR%\build\powershell""; .\benchmark.ps1 %*"
+pwsh -ExecutionPolicy Bypass -command "set-location ""%CMDDIR%\build\powershell\scripts""; .\benchmark.ps1 %*"

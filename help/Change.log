@@ -283,7 +283,7 @@ Did not get to fixing anything on AMD side. Still working on it.
 There is going to be no c version. b version should now work in Ubuntu:
 
 -download/clone MM.Test (beta version).
--run install.sh as root : sudo ./install.sh. This will install all bash commands.
+-run install.sh as root : ./install.sh. This will install all bash commands.
 -open/edit StartMM with your specified arguments.
 -Launch MM.Hash (Not as superuser!) ./StartMM
 -Operates just like Hive-OS version, just open a new terminal and type desired command.
@@ -339,7 +339,7 @@ If you are running a different OS, it must be added: -HiveOS NO
 
 If you wish to use on a Unix OS other than hive:
 run:
-sudo ./install.sh
+./install.sh
 Note: You may have to edit ./install.sh depending on flavor
 edit 'swarm' in main directory with your arguments
 launch miner by 
@@ -2071,7 +2071,7 @@ Note: Am aware that XMRig and XMRstak have Updates
 -Added reboot.ps1
 -Cleaned up Claymore/ethminer style API for windows agent errors.
 -Removed -pers auto args on grin algo launches- Did not add to remote update.
--Added cryptonight/r
+-Added cyrtponight-r
 -Removed lyra2z from fancyIX- It would just crash cards.
 
 2.0.5
@@ -2905,10 +2905,9 @@ API overhaul:
   * Slightly increased RAM use, but faster miner load times.
   * Miner.json can be edited while SWARM is running.
 
-  -Wildrig updated
+  -Wildrig updated (Note: Vega Users Caution)
   -tt-miner updated
-  -cryptodredge updated
-
+  
   xevan added to miner files.
 
   This update will exclude the following .json files:
@@ -2916,3 +2915,237 @@ API overhaul:
     -ttminer.json
 
   Sugarchain CPU miner configuration fixed.
+
+  Fixed ``get stats lite`` Currency/Day
+
+  Multiminer-AMD (Linux version) binary fixed.
+
+
+   2.2.9
+
+   NOTE: Updating to 2.2.9 is not possible. Due to the nature of changes, the amount of changes,
+   and the requirements of these changes: It is recommeneded to rebenchmark and fresh install SWARM.
+
+   FIXES
+
+   * Fixed Memory for nvidia OC in linux
+   * Fixed ETHPill (export display) in linux
+   * Renamed all instances of Hashrates.Day to
+     Hashrates.Hour - Some where missed. This will
+     Fix ASIC issues, as well as some issues on screen.
+   * Found small typos in miner files.
+   * Removed -Version 5.0 in powershell startups
+   * OC for amd displayed on main screen.
+
+   NEW FEATURES:
+
+   Expiremental:
+   * HiveOS / SWARM name conformity for all algorithms.
+   * Note: For commands and arguments: all
+     equihash algos have "_" instead of " "
+     example:
+       equihash_144/5
+       equihash_150/5
+       etc.
+
+   Expiremental:
+   * HiveOS OC SYCRONIZATION!
+     * This allows you to use oc_profiles with swarm
+     * A working -API_Key from HiveOS must be specified.
+     * See Details Here: https://github.com/MaynardMiner/SWARM/wiki/HiveOS-OC-Tuning
+       for limitations and how it operates.
+
+
+      2.3.0
+
+  * SWARM adds to windows defender exclusion path.
+  * SWARM adds to windows firewall exception.
+  * Miners added to windows firewall exception.
+
+  NEW FEATURES !
+
+  experimental:
+  SWARM only download miners when needed.
+  * SWARM will download miners on demand.
+  * SWARM will block miners from bad downloads
+    on demand.
+
+  expiremental:
+  SWARM will migrate previous miners if 
+  their version did not change.
+
+  -gminer updated
+   * cuckatoo31 added back in.
+  -wildrig updated
+  -t-rex updated
+   * x25x algo added.
+
+
+  2.3.1
+
+  NOTE: Updating will transfer old stats, but not
+  Miner.json. This is due to the number of typos
+  that were fixed across multiple files.
+
+  This if final version / work through of both betas:
+
+  Corrections:
+
+  -There was an issue in which SWARM was continuously
+   adding firewall exceptions for miner each time a new
+   one started- Leaving a fairly long list of exceptions.
+   This version fixes that issue, and will clear all the
+   extra exceptions on startup (will only do it once, ever).
+
+  -typo for cryptonight-r: Fixed.
+
+  -teamredminer download issue: Fixed.
+
+  New FEATURES:
+
+  SWARM can now accept .json in flight sheet user config section!
+  * You can now copy .\config\parameters\defaults.json
+    and edit as neccessary. Then paste into user config.
+  * Windows will write parameters to .\config\parameters\newarguments.json
+    as always.
+  * HiveOS version will write to config.json in SWARM main dir.
+
+  Ban notices on HiveOS is displayed [algorithm]:[name].
+  * This allows copy/paste of bans into arguments.
+
+  2.3.2
+
+  NOTE: 15,000 Code changes happened between last release and
+  this one. However, none of the statistics system was changed-
+  Should be good to update.
+
+  -Miners were update.
+
+  Fixes:
+
+  -Weird glitching occurred with loading gpu bus:
+   Attempted fix was applied.
+  -Fixed ETHPill for HiveOS in Windows.
+  -Fixed oc from locking up from HiveOS (if it timed out).
+  -Made improvements / fixes to ASIC system.
+  -Coinpools like Algopools wil select more than one pool
+   as top pool, so a rollover pool is available due to a
+   pool ban.
+
+  NEW FEATURES:
+
+  -Modules
+   * Swarm is setup for user created .psm1 modules.
+   * Users can used (remotely) ``modules`` command to add
+     new modules.
+   * examples:
+       ``modules "C:\hello.psm1" looping``
+         This injects a module directly into SWARM's codebase
+         "looping" means it will run at each new loop.
+         ``modules "C:\hello.psm1" single``
+         "single" means it will run once at startup.
+   * Most important values in SWARM have become $global
+     variables, meaning your modules can change / affect them.
+   * If you make a module and would like to share- Send me module,
+     and I will upload to a repo.
+   * Note: powershell can run most linux commands natively.
+     Pro-Tip: You can save linux commands to powershell variables easily:
+      ```
+      invoke-expression "echo hello" | Tee-Object -Variable hello | Out-Null
+      $hello
+      hello
+      ```       
+   * This allows you to add settings / print extra infmation in logs (Write-Log),
+     Uses are kind of endless.
+
+   -Net-Modules
+    * SWARM is now setup to run other statistic sites, though none have been added
+      as of yet. However, you can now eventually import/export net modules for each
+      website, and send data to them. More uses for this will come soon.
+
+   -API by default is set to no, which should reduce RAM use.
+
+   -If HiveOS fails to change OC (times out), SWARM will now run its own internal oc
+    if it is set (as a backup).
+
+   -All miners download at once, again per user requests.
+
+   -You no longer need to stop SWARM to modify watt files.
+
+   -Watt reading are now averages.
+
+   -SWARM now is module based, meaning it will only load code in
+    when needed, and will remove code when finished. This greatly
+    reduces SWARM's Memory footprint.
+
+
+
+   
+  2.3.3 [2.3.2 final]
+
+  IMPORTANT: -WattOMeter No is no longer used!
+  Either use -WattOMeter Yes or -WattOMeter [Decimal Value]
+  or don't specify at all ("" in .json).
+
+  -Miners up to date.
+
+  -Modules:
+  https://github.com/MaynardMiner/SWARM/wiki/Modules
+
+  -JSON config:
+  https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration)
+
+  -API by default is set to no, which should reduce RAM use.
+
+  -If HiveOS fails to change OC (times out), SWARM will now run its own internal oc
+   if it is set (as a backup).
+
+  -All miners download at once, again per user requests.
+
+  -You no longer need to stop SWARM to modify watt files.
+
+  -Watt reading are now averages.
+
+  -Reduced SWARM's Memory footprint.
+
+  -NIST sync only if "SWARM_MODE": "Yes"
+
+  -Bug in Crash Reporting fixed.
+  
+  -``get wallets -asjson`` created
+
+  -``get benchmarks -asjson`` created
+
+  -GPUData for NVIDIA cards in linux (later use).
+
+  -Small Fixes for Windows 7/8 compatibility.
+
+  -Removed all instances of 'sudo' in codebase.
+   * It still recommeneded and in most cases
+     required to run SWARM with root privelages.
+
+  2.3.4
+
+  -wattometer restored to Yes or No.
+  
+  NEW ARGUMENT:
+
+  ``-kwh`` set hourly electricity rate.
+
+  -Found bug where a needed value wasn't being passed into module
+   for ttminer and phoenix miner, which could have resulted in
+   incorrect hashrates: Fixed.
+
+  -Added equihash_96/5 to lolminer
+  -Added back nv-lolminer miner.
+   * Cannot use with AMD/NVIDIA
+     Platforms together. One or the other.
+   * Becuase of this - it was added to
+     optional miners folder.
+
+  -Further Effort Was Made To Reduce
+   Memory footprint.
+
+  -Attempted fix of Windows ``get update``
+   commands. Since it was broken last release-
+   It will work updating next version forward.

@@ -1,6 +1,6 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName
 $nlpool_Request = [PSCustomObject]@{ }
-[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
+
 if($global:Config.Params.xnsub -eq "Yes"){$X = "#xnsub"}
 
 if ($Name -in $global:Config.Params.PoolName) {
@@ -18,15 +18,16 @@ if ($Name -in $global:Config.Params.PoolName) {
     Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
     Select-Object -ExpandProperty Name | 
     Where-Object { $nlpool_Request.$_.hashrate -gt 0 } | 
-    Where-Object { $global:Exclusions.$($nlpool_Request.$_.name) } |
     Where-Object { $nlpool_Request.$_.name -NE "sha256" } | 
-    Where-Object { $($nlpool_Request.$_.estimate_current) -gt 0 } | 
+    Where-Object { $($nlpool_Request.$_.estimate_current) -gt 0 } |
+    Where-Object {
+        $Algo = $nlpool_Request.$_.name.ToLower();
+        $local:nlpoolAlgo_Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name | Where { $Algo -in $global:Config.Pool_Algos.$_.alt_names }
+        return $nlpoolAlgo_Algorithm
+    } |
     ForEach-Object {
-        
-        $nlpoolAlgo_Algorithm = $nlpool_Request.$_.name.ToLower()
-
-        if ($Algorithm -contains $nlpoolAlgo_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $nlpoolAlgo_Algorithm) {
-            if ($Name -notin $global:Exclusions.$nlpoolAlgo_Algorithm.exclusions -and $nlpoolAlgo_Algorithm -notin $Global:banhammer) {
+        if ($global:Algorithm -contains $nlpoolAlgo_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $nlpoolAlgo_Algorithm) {
+            if ($Name -notin $global:Config.Pool_Algos.$nlpoolAlgo_Algorithm.exclusions -and $nlpoolAlgo_Algorithm -notin $Global:banhammer) {
                 $nlpoolAlgo_Host = "mine.nlpool.nl$X"
                 $nlpoolAlgo_Port = $nlpool_Request.$_.port
                 $Divisor = (1000000 * $nlpool_Request.$_.mbtc_mh_factor)
@@ -34,10 +35,12 @@ if ($Name -in $global:Config.Params.PoolName) {
                 $Hashrate = $nlpool_Request.$_.hashrate
 
                 if (-not (Test-Path $StatPath)) {
-                    $Stat = Set-Stat -Name "$($Name)_$($nlpoolAlgo_Algorithm)_profit" -Hashrate $Hashrate -Value ( [Double]$nlpool_Request.$_.estimate_last24h / $Divisor * (1 - ($nlpool_Request.$_.fees / 100)))
+                    $StatAlgo = $nlpoolAlgo_Algorithm -replace "`_","`-"
+                    $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -Hashrate $Hashrate -Value ( [Double]$nlpool_Request.$_.estimate_last24h / $Divisor * (1 - ($nlpool_Request.$_.fees / 100)))
                 } 
                 else {
-                    $Stat = Set-Stat -Name "$($Name)_$($nlpoolAlgo_Algorithm)_profit" -Hashrate $HashRates -Value ( [Double]$nlpool_Request.$_.estimate_current / $Divisor * (1 - ($nlpool_Request.$_.fees / 100)))
+                    $StatAlgo = $nlpoolAlgo_Algorithm -replace "`_","`-"
+                    $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -Hashrate $HashRates -Value ( [Double]$nlpool_Request.$_.estimate_current / $Divisor * (1 - ($nlpool_Request.$_.fees / 100)))
                 }
 
                 if (-not $global:Pool_Hashrates.$nlpoolAlgo_Algorithm) { $global:Pool_Hashrates.Add("$nlpoolAlgo_Algorithm", @{ })
@@ -78,9 +81,7 @@ if ($Name -in $global:Config.Params.PoolName) {
                 }
                             
                 [PSCustomObject]@{
-                    Priority  = $Priorities.Pool_Priorities.$Name
                     Symbol    = "$nlpoolAlgo_Algorithm-Algo"
-                    Mining    = $nlpoolAlgo_Algorithm
                     Algorithm = $nlpoolAlgo_Algorithm
                     Price     = $Stat.$($global:Config.Params.Stat_Algo)
                     Protocol  = "stratum+tcp"
@@ -89,13 +90,9 @@ if ($Name -in $global:Config.Params.PoolName) {
                     User1     = $User1
                     User2     = $User2
                     User3     = $User3
-                    CPUser    = $User1
-                    CPUPass   = "c=$Pass1,id=$($global:Config.Params.RigName1)"
                     Pass1     = "c=$Pass1,id=$($global:Config.Params.RigName1)"
                     Pass2     = "c=$Pass2,id=$($global:Config.Params.RigName2)"
                     Pass3     = "c=$Pass3,id=$($global:Config.Params.RigName3)"
-                    Location  = $global:Config.Params.Location
-                    SSL       = $false
                 }
             }
         }

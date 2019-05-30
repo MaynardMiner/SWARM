@@ -7,7 +7,6 @@ $DoAutoCoin = $false
 if($global:Config.Params.Coin.Count -eq 0){ $DoAutoCoin = $true }
 $global:Config.Params.Coin | %{ if($_ -eq ""){ $DoAutoCoin = $true} }
 
-[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
 if ($global:Config.Params.xnsub -eq "Yes") { $X = "#xnsub" } 
 
 if ($Name -in $global:Config.Params.PoolName) {
@@ -29,8 +28,13 @@ if ($Name -in $global:Config.Params.PoolName) {
     }
    
     $zpool_Request.PSObject.Properties.Name | ForEach-Object { $zpool_Request.$_ | Add-Member "sym" $_ }
+    $zpool_Request.PSObject.Properties.Name | ForEach-Object {
+        $Algo = $zpool_Request.$_.Algo.ToLower()
+        $zpool_Request.$_ | Add-Member "Original_Algo" $Algo
+        $zpool_Request.$_.Algo = $global:Config.Pool_Algos.PSObject.Properties.Name | % {if($Algo -in $global:Config.Pool_Algos.$_.alt_names){$_}}
+    }
     $zpoolAlgos = @()
-    $zpoolAlgos += $Algorithm
+    $zpoolAlgos += $global:Algorithm
     $zpoolAlgos += $global:Config.Params.ASIC_ALGO
 
     $Algos = $zpoolAlgos | ForEach-Object { if ($Bad_pools.$_ -notcontains $Name) { $_ } }
@@ -54,8 +58,8 @@ if ($Name -in $global:Config.Params.PoolName) {
             Where-Object Algo -eq $Selected | 
             Where-Object Algo -in $global:FeeTable.zpool.keys | 
             Where-Object Algo -in $global:divisortable.zpool.Keys |
-            Where-Object { $global:Exclusions.$($_.Algo) } |
-            Where-Object { $Name -notin $global:Exclusions.$($_.sym).exclusions } |
+            Where-Object { $global:Config.Pool_Algos.$($_.Algo) } |
+            Where-Object { $Name -notin $global:Config.Pool_Algos.$($_.sym).exclusions } |
             Where-Object Sym -notin $global:BanHammer |
             Where-Object estimate -gt 0 | 
             Where-Object hashrate -ne 0 | 
@@ -75,8 +79,8 @@ if ($Name -in $global:Config.Params.PoolName) {
             Where-Object Algo -eq $Selected |
             Where-Object Algo -in $global:FeeTable.zpool.keys |
             Where-Object Algo -in $global:divisortable.zpool.Keys |
-            Where-Object { $global:Exclusions.$($_.Algo) } |
-            Where-Object { $Name -notin $global:Exclusions.$($_.sym).exclusions } |
+            Where-Object { $global:Config.Pool_Algos.$($_.Algo) } |
+            Where-Object { $Name -notin $global:Config.Pool_Algos.$($_.sym).exclusions } |
             Where-Object Sym -notin $global:BanHammer |
             Where-Object estimate -gt 0 |
             Where-Object hashrate -ne 0 |
@@ -88,15 +92,18 @@ if ($Name -in $global:Config.Params.PoolName) {
         }
 
         $zpool_UnSorted | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | ForEach-Object {
-            if ($Name -notin $global:Exclusions.$zpool_Symbol.exclusions -and $zpool_Symbol -notin $Global:banhammer) {
+            if ($Name -notin $global:Config.Pool_Algos.$zpool_Symbol.exclusions -and $zpool_Symbol -notin $Global:banhammer) {
                 $zpool_Algorithm = $zpool_UnSorted.$_.algo.ToLower()
                 $zpool_Symbol = $zpool_UnSorted.$_.sym.ToUpper()
                 $Fees = [Double]$global:FeeTable.zpool.$zpool_Algorithm
                 $Estimate = [Double]$zpool_UnSorted.$_.estimate * 0.001
                 $Divisor = (1000000 * [Double]$global:DivisorTable.zpool.$zpool_Algorithm)
                 $Workers = [Double]$zpool_UnSorted.$_.Workers
-                $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
-                try { $Stat = Set-Stat -Name "$($Name)_$($zpool_Symbol)_coin_profit" -Value ([Double]$Cut / $Divisor) }catch { Write-Log "Failed To Calculate Stat For $zpool_Symbol" }
+                $Cut = ConvertFrom-Fees $Fees $Workers $Estimate $Divisor
+                try { 
+                    $StatAlgo = $zpool_Symbol -replace "`_","`-" 
+                    $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_coin_profit" -Value $Cut
+                }catch { Write-Log "Failed To Calculate Stat For $zpool_Symbol" }
             }
         }
 
@@ -104,17 +111,16 @@ if ($Name -in $global:Config.Params.PoolName) {
 
             $zpool_Algorithm = $zpool_Sorted.$_.algo.ToLower()
             $zpool_Symbol = $zpool_Sorted.$_.sym.ToUpper()
-            $zpool_Coin = $zpool_Sorted.$_.Name.Tolower()
             $zpool_Port = $zpool_Sorted.$_.port
-            $Zpool_Host = "$($ZPool_Algorithm).$($region).mine.zpool.ca$X"
+            $Zpool_Host = "$($zpool_Request.$_.Original_Algo).$($region).mine.zpool.ca$X"
             $Fees = [Double]$global:FeeTable.zpool.$zpool_Algorithm
             $Estimate = [Double]$zpool_Sorted.$_.estimate * 0.001
             $Divisor = (1000000 * [Double]$global:DivisorTable.zpool.$zpool_Algorithm)
             $Workers = $zpool_Sorted.$_.Workers
 
-            $Cut = ConvertFrom-Fees $Fees $Workers $Estimate
+            $Cut = ConvertFrom-Fees $Fees $Workers $Estimate $Divisor
 
-            $Stat = Set-Stat -Name "$($Name)_$($zpool_Symbol)_coin_profit" -Value ([Double]$Cut / $Divisor)
+            $Stat = Set-Stat -Name "$($Name)_$($zpool_Symbol)_coin_profit" -Value $Cut
 
             $Pass1 = $global:Wallets.Wallet1.Keys
             $User1 = $global:Wallets.Wallet1.$($global:Config.Params.Passwordcurrency1).address
@@ -162,9 +168,7 @@ if ($Name -in $global:Config.Params.PoolName) {
             }
 
             [PSCustomObject]@{
-                Priority  = $Priorities.Pool_Priorities.$Name
                 Symbol    = "$zpool_Symbol-Coin"
-                Mining    = $zpool_Algorithm
                 Algorithm = $zpool_Algorithm
                 Price     = $Stat.$($global:Config.Params.Stat_Coin)
                 Protocol  = "stratum+tcp"
@@ -173,13 +177,9 @@ if ($Name -in $global:Config.Params.PoolName) {
                 User1     = $User1
                 User2     = $User2
                 User3     = $User3
-                CPUser    = $User1
-                CPUPass   = "c=$Pass1,zap=$zpool_Symbol,id=$($global:Config.Params.RigName1)"
                 Pass1     = "c=$Pass1,zap=$zpool_Symbol,id=$($global:Config.Params.RigName1)"
                 Pass2     = "c=$Pass2,zap=$zpool_Symbol,id=$($global:Config.Params.RigName2)"
                 Pass3     = "c=$Pass3,zap=$zpool_Symbol,id=$($global:Config.Params.RigName3)"
-                Location  = $global:Config.Params.Location
-                SSL       = $false
             } 
         }
     }

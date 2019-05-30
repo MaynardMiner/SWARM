@@ -10,16 +10,16 @@
             "export GPU_MAX_ALLOC_PERCENT=100"
         ],
         "commands": {
-            "argon2d-dyn": "-g 2"
+            "argon2d500": "-g 2"
         },
         "difficulty": {
-            "argon2d-dyn": ""
+            "argon2d500": ""
         },
         "naming": {
-            "argon2d-dyn": "argon2d"
+            "argon2d500": "argon2d"
         },
         "fee": {
-            "argon2d-dyn": 0
+            "argon2d500": 0
         }
     }
 }

@@ -17,4 +17,4 @@
 
 ## This creates a screen for SWARM to work in, and then runs startup:
 
-sudo screen -S miner -m pwsh -command "&.\startup.ps1 -HiveOS No -RigName1 MKVITO1 -Currency USD -CoinExchange LTC -Location US -PoolName ahashpool,blazepool,blockmasters,fairpool,hashrefinery,nicehash,nlpool,phiphipool,zergpool,zpool -Type NVIDIA1 -Wallet1 1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i -Donate .5 -WattOMeter No"
+screen -S miner -m pwsh -command "&.\startup.ps1 -HiveOS No -RigName1 MKVITO1 -Currency USD -CoinExchange LTC -Location US -PoolName ahashpool,blazepool,blockmasters,fairpool,hashrefinery,nicehash,nlpool,phiphipool,zergpool,zpool -Type NVIDIA1 -Wallet1 1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i -Donate .5 -WattOMeter No"

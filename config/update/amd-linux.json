@@ -7,7 +7,7 @@
     "AMD2": ".\\bin\\claymore-amd-2\\ethdcrminer64",
     "AMD3": ".\\bin\\claymore-amd-3\\ethdcrminer64",
     "minername": "ethdcrminer64",
-    "version": "14.0",
+    "version": "14.6",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/Claymore-Linux.tar.gz"
   },
   "gminer-amd": {
@@ -17,8 +17,8 @@
     "AMD2": ".\\bin\\gminer-amd-2\\miner",
     "AMD3": ".\\bin\\gminer-amd-3\\miner",
     "minername": "miner",
-    "version": "1.42",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.42/gminer_1_42_linux64.tar.xz"
+    "version": "1.44",
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.44/gminer_1_44_linux64.tar.xz"
   },
   "multiminer-amd": {
     "name": "multiminer-amd",
@@ -77,8 +77,8 @@
     "AMD2": ".\\bin\\lolMiner-AMD-2\\lolMiner",
     "AMD3": ".\\bin\\lolMiner-AMD-3\\lolMiner",
     "minername": "lolMiner",
-    "version": "0.8",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/lolminer-linux.tar.gz"
+    "version": "0.8.1",
+    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.8.1/lolMiner_v081_Lin64.tar.gz"
   },
   "avermore": {
     "name": "avermore",
@@ -127,7 +127,7 @@
     "AMD2": ".\\bin\\teamredminer-2\\teamredminer",
     "AMD3": ".\\bin\\teamredminer-3\\teamredminer",
     "minername": "teamredminer",
-    "version": "0.4.4",
+    "version": "0.4.5",
     "uri": "https://github.com/todxx/teamredminer/releases/download/v0.4.5/teamredminer-v0.4.5-linux.tgz"
   },
   "xmr-stak": {
@@ -147,8 +147,8 @@
     "AMD2": ".\\bin\\wildrig-2\\wildrig-multi",
     "AMD3": ".\\bin\\wildrig-3\\wildrig-multi",
     "minername": "wildrig-multi",
-    "version": "0.16.3",
-    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.16.3/wildrig-multi-linux-0.16.3-beta.tar.gz"
+    "version": "0.17.3",
+    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.17.3/wildrig-multi-linux-0.17.3-beta.tar.gz"
   },
   "fancyix": {
     "name": "fancyix",

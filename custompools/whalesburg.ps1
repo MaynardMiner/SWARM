@@ -11,7 +11,6 @@
 
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $Whalesburg_Request = [PSCustomObject]@{} 
-[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
 if($global:Config.Params.xnsub -eq "Yes"){$X = "#xnsub"} 
  
 if ($global:Config.Params.PoolName -eq $Name) {
@@ -28,7 +27,7 @@ if ($global:Config.Params.PoolName -eq $Name) {
 
     $Whalesburg_Algorithm = "ethash"
   
-    if ($Algorithm -contains $Whalesburg_Algorithm -and $Bad_pools.$Whalesburg_Algorithm -notcontains $Name) {
+    if ($global:Algorithm -contains $Whalesburg_Algorithm -and $Bad_pools.$Whalesburg_Algorithm -notcontains $Name) {
         $Whalesburg_Port = "7777"
         $Whalesburg_Host = "eu1.whalesburg.com"
         ## add fee to compare to nicehash (Still trying to understand PPS+)
