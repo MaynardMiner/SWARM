@@ -29,6 +29,7 @@ function Get-SWARMServer {
             $stream.Dispose()
             $client.Dispose()
             Start-Sleep -Milliseconds 500
+            [GC]::Collect()
         }
         $server.Stop()
     }

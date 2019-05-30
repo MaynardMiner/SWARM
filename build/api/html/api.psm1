@@ -160,6 +160,7 @@ function Get-APIServer {
                         $GET = $null
                         $requestvars = $null
                         $requestcom = $null
+                        [GC]::Collect()
                     }
                 }
             }
