@@ -485,7 +485,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
         else { $Get += "No Platforms Selected: Please choose a platform NVIDIA1,NVIDIA2,NVIDIA3,AMD1,CPU" }
     }
     "update" {
-        if (Test-Path "C:\") {
+        if ($IsWindows) {
             $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
             if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator) -ne $false) {
                 $version = Get-Content ".\build\txt\version.txt"

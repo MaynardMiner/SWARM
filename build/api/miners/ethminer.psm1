@@ -1,18 +1,18 @@
 function Get-StatsEthminer {
 
-    if ($MinerName -eq "PhoenixMiner" -or $MinerName -eq "Phoenixminer.exe") { 
+    if ($global:MinerName -eq "PhoenixMiner" -or $global:MinerName -eq "Phoenixminer.exe") { 
         $Message = @{id = 1; jsonrpc = "2.0"; method = "miner_getstat2" } | ConvertTo-Json -Compress
     }
     else {
         $Message = @{id = 1; jsonrpc = "2.0"; method = "miner_getstat1" } | ConvertTo-Json -Compress
     }
 
-    switch ($MinerName) {
+    switch ($global:MinerName) {
         "TT-Miner" { $Multiplier = 1 }
         "TT-Miner.exe" { $Multiplier = 1 }
         default { $Multiplier = 1000 }
     }
-    switch ($MinerName) {
+    switch ($global:MinerName) {
         "TT-Miner" { $Divsor = 1000 }
         "TT-Miner.exe" { $Divsor = 1000 }
         default { $Divsor = 1 }

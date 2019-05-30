@@ -1,9 +1,9 @@
 function Get-StatsCcminer {
-    switch ($MinerName) {
-        "zjazz_cuda.exe" { if ($MinerAlgo -eq "cuckoo") { $Multiplier = 2000000 }else { $Multiplier = 1000 } }
-        "zjazz_cuda" { if ($MinerAlgo -eq "cuckoo") { $Multiplier = 2000000 }else { $Multiplier = 1000 } }
-        "zjazz_amd.exe" { if ($MinerAlgo -eq "cuckoo") { $Multiplier = 2000000 }else { $Multiplier = 1000 } }
-        "zjazz_amd" { if ($MinerAlgo -eq "cuckoo") { $Multiplier = 2000000 }else { $Multiplier = 1000 } }
+    switch ($global:MinerName) {
+        "zjazz_cuda.exe" { if ($Global:MinerAlgo -eq "cuckoo_cycle") { $Multiplier = 2000000 }else { $Multiplier = 1000 } }
+        "zjazz_cuda" { if ($Global:MinerAlgo -eq "cuckoo_cycle") { $Multiplier = 2000000 }else { $Multiplier = 1000 } }
+        "zjazz_amd.exe" { if ($Global:MinerAlgo -eq "cuckoo_cycle") { $Multiplier = 2000000 }else { $Multiplier = 1000 } }
+        "zjazz_amd" { if ($Global:MinerAlgo -eq "cuckoo_cycle") { $Multiplier = 2000000 }else { $Multiplier = 1000 } }
         default { $Multiplier = 1000 }
     }
 

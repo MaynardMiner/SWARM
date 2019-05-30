@@ -27,7 +27,7 @@ try { if( -not ( $Net | Where {$_.DisplayName -like "*background.ps1*"} ) ) { Ne
 }
 $Net = $null
 
-if(Test-Path "C:\"){ Start-Process "powershell" -ArgumentList "Set-Location `'$global:dir`'; .\build\powershell\scripts\icon.ps1 `'$global:dir\build\apps\comb.ico`'" -NoNewWindow }
+if($IsWindows){ Start-Process "powershell" -ArgumentList "Set-Location `'$global:dir`'; .\build\powershell\scripts\icon.ps1 `'$global:dir\build\apps\comb.ico`'" -NoNewWindow }
 
 $global:global = "$Global:Dir\build\powershell\global";
 $global:background = "$Global:Dir\build\powershell\background";
@@ -142,7 +142,7 @@ While ($True) {
         $global:CurrentMiners | ForEach-Object {
 
             ## Static Miner Information
-            $global:MinerAlgo = "$($_.Algo)"; $MinerName = "$($_.MinerName)"; $global:Name = "$($_.Name)";
+            $global:MinerAlgo = "$($_.Algo)"; $global:MinerName = "$($_.MinerName)"; $global:Name = "$($_.Name)";
             $global:Port = $($_.Port); $global:MinerType = "$($_.Type)"; $global:MinerAPI = "$($_.API)";
             $global:Server = "$($_.Server)"; $HashPath = ".\logs\$($_.Type).log"; $global:TypeS = "none"
             $global:Devices = 0; $MinerDevices = $_.Devices

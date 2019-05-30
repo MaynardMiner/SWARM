@@ -36,7 +36,7 @@ function Get-Params {
     }
     if (-not $global:Config.Params.Platform) {
         write-Host "Detecting Platform..." -Foreground Cyan
-        if (Test-Path "C:\") { $global:Config.Params.Platform = "windows" }
+        if ($IsWindows) { $global:Config.Params.Platform = "windows" }
         else { $global:Config.Params.Platform = "linux" }
         Write-Host "OS = $($global:Config.Params.Platform)" -ForegroundColor Green
     }

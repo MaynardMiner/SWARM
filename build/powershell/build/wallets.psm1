@@ -12,7 +12,7 @@ function Set-Donation {
         $DonateTime = Get-Date; 
         $DonateText = "Miner has last donated on $DonateTime"; 
         $DonateText | Set-Content ".\build\txt\donate.txt"
-        if ($SWARMAlgorithm.Count -gt 0 -and $SWARMAlgorithm -ne "") { $SWARMAlgorithm = $Null }
+        if ($global:SWARMAlgorithm.Count -gt 0 -and $global:SWARMAlgorithm -ne "") { $global:SWARMAlgorithm = $Null }
         if ($global:Config.Params.Coin -gt 0) { $global:Config.Params.Coin = $Null }
     }
     elseif ($global:Config.Params.Coin.Count -eq 1 -and $global:Config.Params.Coin -ne "") {
@@ -119,7 +119,7 @@ function Get-Wallets {
 
 function Add-Algorithms {
     if ($global:Config.Params.Coin.Count -eq 1 -and $global:Config.Params.Coin -ne "") { $global:Config.Params.Passwordcurrency1 = $global:Config.Params.Coin; $global:Config.Params.Passwordcurrency2 = $global:Config.Params.Coin; $global:Config.Params.Passwordcurrency3 = $global:Config.Params.Coin }
-    if ($SWARMAlgorithm) { $SWARMALgorithm | ForEach-Object { $global:Algorithm += $_ } }
+    if ($global:SWARMAlgorithm) { $global:SWARMAlgorithm | ForEach-Object { $global:Algorithm += $_ } }
     elseif ($global:Config.Params.Auto_Algo -eq "Yes") { $global:Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name }
     if ($global:Config.Params.Type -notlike "*NVIDIA*") {
         if ($global:Config.Params.Type -notlike "*AMD*") {

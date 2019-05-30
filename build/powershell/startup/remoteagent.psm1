@@ -39,7 +39,7 @@ function start-update {
         Write-Log "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
         Write-Log "Check $Location For any Previous Versions"
 
-        if (Test-Path "C:\") {
+        if ($IsWindows) {
             $Global:amd = Get-Content ".\config\update\amd-win.json" | ConvertFrom-Json
             $Global:nvidia = Get-Content ".\config\update\nvidia-win.json" | ConvertFrom-Json
             $Global:cpu = Get-Content ".\config\update\cpu-win.json" | ConvertFrom-Json

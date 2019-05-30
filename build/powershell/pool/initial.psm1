@@ -7,7 +7,7 @@ function Get-PoolTables {
     $global:divisortable.Add("zergpool", @{ })
     $global:divisortable.Add("fairpool", @{ })
     
-    if ($global:Config.Params.Coin.Count -eq 1 -and $global:Config.Params.Coin -ne "" -and $SWARMAlgorithm.Count -eq 1 -and $global:Config.Params.SWARM_Mode -ne "") {
+    if ($global:Config.Params.Coin.Count -eq 1 -and $global:Config.Params.Coin -ne "" -and $global:SWARMAlgorithm.Count -eq 1 -and $global:Config.Params.SWARM_Mode -ne "") {
         $global:SingleMode = $true
     }
 }

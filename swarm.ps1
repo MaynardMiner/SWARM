@@ -46,7 +46,7 @@ try {
 catch { }
 $Net = $Null
 
-if (Test-Path "C:\") {
+if ($IsWindows) {
     Start-Process "powershell" -ArgumentList "Set-Location `'$global:dir`'; .\build\powershell\scripts\icon.ps1 `'$global:dir\build\apps\SWARM.ico`'" -NoNewWindow
 }
 
@@ -54,7 +54,7 @@ if (Test-Path "C:\") {
 $Global:Debug = $false
 if ($Global:Debug -eq $True) {
     Start-Transcript ".\logs\debug.log"
-    if ((Test-Path "C:\")) { Set-ExecutionPolicy Bypass -Scope Process }
+    if (($IsWindows)) { Set-ExecutionPolicy Bypass -Scope Process }
 }
 
 ## Load Modules
@@ -243,6 +243,13 @@ elseif ($global:Config.Params.Platform -eq "linux") { Start-Process ".\build\bas
 Add-LogErrors
 Remove-Modules
 
+$global:BusData = $Null
+$global:CPUCount = $Null
+$global:GPUCount = $Null
+$Version = $Null
+$global:GPU_Count = $Null
+$Device_Count = $Null 
+
 ##############################################################################
 #######                      End Startup                                ######
 ##############################################################################
@@ -256,6 +263,12 @@ While ($true) {
         ##############################################################################
         #######                     PHASE 1: Build                              ######
         ##############################################################################
+        $global:Algorithm = @()
+        $global:BanHammer = @()
+        $Global:ASICTypes = @(); 
+        $global:ASICS = @{ }
+        $global:All_AltWallets = $null
+        $global:SWARMAlgorithm = $Config.Params.Algorithm
 
         ##Build Modules
         Add-Module "$global:global\include.psm1"
@@ -276,32 +289,25 @@ While ($true) {
 
         ## Load Miner Configurations
         Add-Module "$Build\configs.psm1"
-        $Global:ASICTypes = @(); $global:ASICS = @{ }
         Get-MinerConfigs
         $global:Config.Pool_Algos = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
         Add-ASICS
         $global:oc_default = Get-Content ".\config\oc\oc-defaults.json" | ConvertFrom-Json
         $global:oc_algos = Get-Content ".\config\oc\oc-algos.json" | ConvertFrom-Json
 
-
         ##Manage Pool Bans
         Add-Module "$Build\poolbans.psm1"
         Start-PoolBans
-        $global:All_AltWallets = $null
-        $SWARMAlgorithm = $Config.Params.Algorithm;
 
 
         ## Handle Wallet Stuff / Bans
         Add-Module "$Build\wallets.psm1"
         Set-Donation
         Get-Wallets
-        $global:Algorithm = @()
-        $global:BanHammer = @()
         . .\build\powershell\scripts\bans.ps1 "add" $global:Config.Params.Bans "process" | Out-Null
         Add-Algorithms
         Set-Donation
         if ($global:Config.Params.Coin.Count -eq 1 -and $global:Config.Params.Coin -ne "") { $global:Config.Params.Auto_Coin = "No" }
-        $global:PoolJson = $null
 
         # Pricing and Clearing Timeouts 
         Add-Module "$Build\pricing.psm1"
@@ -310,6 +316,17 @@ While ($true) {
         Clear-Timeouts
 
         Remove-Modules
+        $Screen = $null
+        $Value = $null
+        $Item = $null
+        $JsonBanHammer = $null
+        $Launch = $null
+        $PoolJson = $null
+        $BanChange = $null
+        $BanDir = $null
+        $PoolDir = $null
+        $PoolChange = $null
+
 
         ##############################################################################
         #######                         END PHASE 1                             ######
@@ -348,6 +365,10 @@ While ($true) {
         Get-AlgoPools
         Get-CoinPools
         Remove-Modules
+        Clear-Variable -Name "FeeTable" -ErrorAction Ignore -Scope Global
+        Clear-Variable -Name "divisortable" -ErrorAction Ignore -Scope Global
+        Clear-Variable -Name "All_AltWallets" -ErrorAction Ignore -Scope Global
+        Clear-Variable -Name "Wallets" -ErrorAction Ignore -Scope Global
 
         ##############################################################################
         #######                         END PHASE 2                             ######
@@ -363,8 +384,8 @@ While ($true) {
         Add-Module "$global:global\include.psm1"
         Add-Module "$global:global\stats.psm1"
 
-        $global:AlgoMiners = $Null
-        $global:CoinMiners = $Null
+        $global:Pool_Hashrates = @{ }
+        $global:Miner_HashTable = $Null
         $Global:Miners = New-Object System.Collections.ArrayList
 
         ##Load The Miners
@@ -373,7 +394,6 @@ While ($true) {
         Get-CoinMiners
 
         ##Send error if no miners found
-        $global:Miner_HashTable = $Null
         if ($Global:Miners.Count -eq 0) {
             $HiveMessage = "No Miners Found! Check Arguments/Net Connection"
             $HiveWarning = @{result = @{command = "timeout" } }
@@ -399,10 +419,8 @@ While ($true) {
         if ($global:Config.Params.Volume -eq "Yes") { Get-Volume }
         $CutMiners = Start-MinerReduction -SortMiners $Global:Miners -WattCalc $global:WattEX
         $CutMiners | ForEach-Object { $Global:Miners.Remove($_) } | Out-Null;
-        $Cutminers = $Null
         $Global:Miners | ForEach-Object { $_.Symbol = $_.Symbol -replace "-Algo", ""; $_.Symbol = $_.Symbol -replace "-Coin", "" }
         start-minersorting -SortMiners $Global:Miners -WattCalc $global:WattEX
-        $global:Pool_Hashrates = @{ }
         Add-SwitchingThreshold
 
         ##Choose The Best Miners
@@ -415,7 +433,18 @@ While ($true) {
         write-Log "Most Ideal Choice Is $($BestMiners_Selected) on $($BestPool_Selected)" -foregroundcolor green
 
         Remove-Modules
-        
+        $global:Algorithm = $null
+        $CutMiners = $null
+        $global:Miners_Combo = $null
+        $BestMiners_Selected = $null
+        $BestPool_Selected = $null
+        $Global:amd = $null
+        $Global:nvidia = $null
+        $Global:cpu = $null
+        $global:Pool_Hashrates = $null
+        $global:Miner_HashTable = $null
+        $global:Watts = $null
+
         ##############################################################################
         #######                        End Phase 3                             ######
         ############################################################################## 
@@ -424,15 +453,25 @@ While ($true) {
         #######                        Phase 4: Control                         ######
         ##############################################################################
 
-        Add-Module "$global:global\include.psm1"
-        Add-Module "$global:global\stats.psm1"
-        if ($Global:Config.params.Type -like "*ASIC*") { Add-Module "$global:global\hashrates.psm1" }
-        Add-Module "$global:Control\config.psm1"
-
         ## Build the Current Active Miners
         $global:Restart = $false
         $global:NoMiners = $false
         $Global:BestActiveMIners = @()
+        $global:PreviousMinerPorts = @{AMD1 = ""; NVIDIA1 = ""; NVIDIA2 = ""; NVIDIA3 = ""; CPU = "" }
+        $global:ClearedOC = $false; 
+        $global:ClearedHash = $false; 
+        $Global:HiveOCTune = $false
+        $global:SWARM_IT = $false
+        $global:MinerInterval = $null
+        $global:MinerStatInt = $Null
+        $global:ModeCheck = 0
+        $global:BenchmarkMode = $false
+        $global:Share_Table = @{ }
+
+        Add-Module "$global:global\include.psm1"
+        Add-Module "$global:global\stats.psm1"
+        if ($Global:Config.params.Type -like "*ASIC*") { Add-Module "$global:global\hashrates.psm1" }
+        Add-Module "$global:Control\config.psm1"
 
         ## Add New Miners- Download if neccessary
         ## Ammend Their Pricing
@@ -441,10 +480,6 @@ While ($true) {
         Get-ActiveMiners $global:bestminers_combo
         Get-BestActiveMiners
         Get-ActivePricing
-        $global:PreviousMinerPorts = @{AMD1 = ""; NVIDIA1 = ""; NVIDIA2 = ""; NVIDIA3 = ""; CPU = "" }
-        $global:ClearedOC = $false; $global:ClearedHash = $false; $Global:HiveOCTune = $false
-        $global:NoMiners = $false;
-
 
         ##Start / Stop / Restart Miners
         ##Handle OC
@@ -457,18 +492,19 @@ While ($true) {
         ##Determing Interval
         Add-Module "$global:Control\notify.psm1"
         Get-LaunchNotification
-        $global:SWARM_IT = $false
-        $global:MinerInterval = $null
-        $global:MinerStatInt = $Null
-        $global:ModeCheck = 0
-        $global:BenchmarkMode = $false
         Get-Interval
         ##Get Shares
-        $global:Share_Table = @{ }
         write-Log "Getting Coin Tracking From Pool" -foregroundColor Cyan
         if ($global:Config.params.Track_Shares -eq "Yes") { Get-CoinShares }
 
         Remove-Modules
+        $global:oc_algos = $null
+        $global:oc_default = $null
+        $global:PreviousMinerPorts = $null
+        $global:Restart = $null
+        $global:NoMiners = $null
+        $global:ClearedOC = $null
+        $Global:HiveOCTune = $null
 
         ##############################################################################
         #######                        End Phase 4                              ######
@@ -499,7 +535,7 @@ While ($true) {
         Add-Module "$global:Run\commands.psm1"
         Get-PriceMessage
         Get-Commands
-        $Global:Miners = $Null
+        $Global:Miners.Clear()
         Get-Logo
         Update-Logging
         Get-Date | Out-File ".\build\txt\mineractive.txt"
@@ -510,7 +546,6 @@ While ($true) {
         Start-MinerLoop
 
         Remove-Modules
-
         
         ##############################################################################
         #######                        End Phase 5                              ######

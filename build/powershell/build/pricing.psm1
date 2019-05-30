@@ -10,8 +10,7 @@ function Get-Pricing {
     [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
     try {
         Write-Log "SWARM Is Building The Database. Auto-Coin Switching: $($global:Config.Params.Auto_Coin)" -foreground "yellow"
-        $global:Rates = Invoke-RestMethod "https://api.coinbase.com/v2/exchange-rates?currency=BTC" -UseBasicParsing | Select-Object -ExpandProperty data | Select-Object -ExpandProperty rates
-        $global:Config.Params.Currency | Where-Object { $global:Rates.$_ } | ForEach-Object { $global:Rates | Add-Member $_ ([Double]$global:Rates.$_) -Force }
+        $global:Rates = Invoke-RestMethod "https://api.coinbase.com/v2/exchange-rates?currency=BTC" -UseBasicParsing | Select-Object -ExpandProperty data | Select-Object -ExpandProperty rates | Select-Object "$($global:Config.Params.Currency)"
         $global:WattEX = [Double](((1 / $global:Rates.$($global:Config.Params.Currency)) * $global:WattHour))
     }
     catch {

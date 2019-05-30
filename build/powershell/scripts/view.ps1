@@ -28,7 +28,7 @@ Param (
 )
 
 Clear-Host
-if((Test-Path "C:\")){$Platform = "windows"}
+if(($IsWindows)){$Platform = "windows"}
 if(-not $n){$n = 5}
 [cultureinfo]::CurrentCulture = 'en-US'
 

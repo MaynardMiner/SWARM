@@ -22,7 +22,7 @@ if (Test-Path $Path) {
     if ($Item.Name -like "*psm1*") {
         if (test-path ".\build\pid\miner_pid.txt") {
             ##windows
-            if (test-Path "C:\") {
+            if ($IsWindows) {
                 $MPID = Get-Content ".\build\pid\miner_pid.txt" | % { Get-Process -Id $_ -ErrorAction SilentlyContinue }
                 if ($MPID) {
                     Stop-Process -Id $MPID.ID
@@ -51,7 +51,7 @@ if (Test-Path $Path) {
             $SWARMPS1 | Set-Content ".\swarm.ps1" -Encoding UTF8
             $message += "Module added. Restarting SWARM"
 
-            if (test-Path "C:\") { Start-Process ".\SWARM.bat" }
+            if ($IsWindows) { Start-Process ".\SWARM.bat" }
             else { Start-Process "miner" -ArgumentList "start" -Wait }
         }
     }

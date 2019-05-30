@@ -117,7 +117,7 @@ function Set-Donation {
         $DonateTime = Get-Date; 
         $DonateText = "Miner has last donated on $DonateTime"; 
         $DonateText | Set-Content ".\build\txt\donate.txt"
-        if ($SWARMAlgorithm.Count -gt 0 -and $SWARMAlgorithm -ne "") { $SWARMAlgorithm = $Null }
+        if ($global:SWARMAlgorithm.Count -gt 0 -and $global:SWARMAlgorithm -ne "") { $global:SWARMAlgorithm = $Null }
         if ($global:Config.Params.Coin -gt 0) { $global:Config.Params.Coin = $Null }
     }
     elseif ($global:Config.Params.Coin.Count -eq 1 -and $global:Config.Params.Coin -ne "") {
