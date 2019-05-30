@@ -29,8 +29,10 @@ function Get-HiveServer {
             $stream.Dispose()
             $client.Dispose()
             Start-Sleep -Milliseconds 500
+            [GC]::Collect()
         }
         $server.Stop()
+        
     }
 
     $Posh_Api = [powershell]::Create()

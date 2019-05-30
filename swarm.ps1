@@ -325,8 +325,8 @@ While ($true) {
         $BanChange = $null
         $BanDir = $null
         $PoolDir = $null
-        $PoolChange = $null
-
+        $PoolChange = $Null
+        [GC]::Collect()
 
         ##############################################################################
         #######                         END PHASE 1                             ######
@@ -369,6 +369,7 @@ While ($true) {
         Clear-Variable -Name "divisortable" -ErrorAction Ignore -Scope Global
         Clear-Variable -Name "All_AltWallets" -ErrorAction Ignore -Scope Global
         Clear-Variable -Name "Wallets" -ErrorAction Ignore -Scope Global
+		[GC]::Collect()
 
         ##############################################################################
         #######                         END PHASE 2                             ######
@@ -444,6 +445,7 @@ While ($true) {
         $global:Pool_Hashrates = $null
         $global:Miner_HashTable = $null
         $global:Watts = $null
+		[GC]::Collect()
 
         ##############################################################################
         #######                        End Phase 3                             ######
@@ -505,6 +507,7 @@ While ($true) {
         $global:NoMiners = $null
         $global:ClearedOC = $null
         $Global:HiveOCTune = $null
+		[GC]::Collect()
 
         ##############################################################################
         #######                        End Phase 4                              ######
@@ -546,7 +549,8 @@ While ($true) {
         Start-MinerLoop
 
         Remove-Modules
-        
+        [GC]::Collect()
+
         ##############################################################################
         #######                        End Phase 5                              ######
         ##############################################################################
@@ -572,6 +576,7 @@ While ($true) {
         #######                       End Phase 6                               ######
         ##############################################################################
         Remove-Modules
+		[GC]::Collect()
 
     }until($Error.Count -gt 0)
     Import-Module "$global:global\include.psm1" -Scope Global
