@@ -109,7 +109,7 @@ function Global:Start-Benchmark {
                     Global:Write-Log "$($_.Name) $($_.Symbol) Was Active for $WasActive Seconds"
                     Global:Write-Log "Attempting to record hashrate for $($_.Name) $($_.Symbol)" -foregroundcolor "Cyan"
                     for ($i = 0; $i -lt 4; $i++) {
-                        $Miner_HashRates = Global:Global:Get-HashRate -Type $_.Type
+                        $Miner_HashRates = Global:Get-HashRate -Type $_.Type
                         $_.HashRate = $Miner_HashRates
                         if ($global:WasBenchmarked -eq $False) {
                             $HashRateFilePath = Join-Path ".\stats" "$($_.Name)_$($NewName)_hashrate.txt"
