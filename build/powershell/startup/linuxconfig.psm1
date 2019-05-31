@@ -217,18 +217,10 @@ function Global:Get-GPUCount {
 
     $nvidiacounted = $false
     $amdcounted = $false
-    $DeviceList = @{ }
-    if ($global:Config.Params.Type -like "*AMD*") { $DeviceList.Add("AMD", @{ }) 
-    }
-    if ($global:Config.Params.Type -like "*NVIDIA*") { 
-        $DeviceList.Add("NVIDIA", @{ }); 
-        invoke-expression "nvidia-smi --query-gpu=gpu_bus_id,gpu_name,memory.total,power.min_limit,power.default_limit,power.max_limit,vbios_version --format=csv" | Tee-Object -Variable NVSMI | Out-Null
-        $NVSMI = $NVSMI | ConvertFrom-Csv
-        $NVSMI | % { $_."pci.bus_id" = $_."pci.bus_id" -replace "00000000:", "" }
-    }
-    if ($global:Config.Params.Type -like "*CPU*") { $DeviceList.Add("CPU", @{ }) 
-    }
-
+    $GN = $false
+    $GA = $false
+    $NoType = $true
+    $DeviceList = @{ AMD = @{ }; NVIDIA = @{ }; CPU = @{ }; }
     Invoke-Expression "lspci" | Tee-Object -Variable lspci | Out-null
     $lspci | Set-Content ".\build\txt\gpucount.txt"
     $GetBus = $lspci | Select-String "VGA", "3D"
@@ -236,6 +228,34 @@ function Global:Get-GPUCount {
     $NVIDIACount = 0
     $CardCount = 0
     $global:BusData = @()
+
+    if ($GetBus -like "*NVIDIA*") {
+        invoke-expression "nvidia-smi --query-gpu=gpu_bus_id,gpu_name,memory.total,power.min_limit,power.default_limit,power.max_limit,vbios_version --format=csv" | Tee-Object -Variable NVSMI | Out-Null
+        $NVSMI = $NVSMI | ConvertFrom-Csv
+        $NVSMI | % { $_."pci.bus_id" = $_."pci.bus_id" -replace "00000000:", "" }
+        $GN = $true
+    }
+    if ($GetBus -like "*AMD*") { $GA = $true }
+
+    if ($GA -or $GN) {
+        Global:Write-Log "Searching GPU Types" -ForegroundColor Yellow
+        $TypeArray = @("NVIDIA1", "NVIDIA2", "NVIDIA3", "AMD1")
+        $TypeArray | ForEach-Object { if ($_ -in $Global:Config.Params.Type) { $NoType = $false } }
+        if ($NoType -eq $true) {
+            if ($GA) { 
+                Global:Write-Log "AMD Detected: Adding AMD" -ForegroundColor Magenta
+                $global:Config.params.Type += "AMD1" 
+            }
+            if ($GN -and $GA) {
+                Global:Write-Log "NVIDIA Also Detected" -ForegroundColor Magenta
+                $global:Config.params.Type += "NVIDIA2" 
+            }
+            elseif ($GN) { 
+                Global:Write-Log "NVIDIA Detected: Adding NVIDIA" -ForegroundColor Magenta
+                $global:Config.Params.Type += "NVIDIA1" 
+            }
+        }
+    }
 
     $GetBus | Foreach {
         if ($_ -like "*Advanced Micro Devices*" -or $_ -like "*NVIDIA*") {
@@ -248,28 +268,26 @@ function Global:Get-GPUCount {
                 }
             }
             if ($_ -like "*NVIDIA*" -and $_ -notlike "*nForce*") {
-                if ($global:Config.Params.Type -like "*NVIDIA*") {
-                    $Sel = $_
-                    $busid = $Sel -split " " | Select -First 1
-                    $subvendor = invoke-expression "lspci -vmms $busid" | Tee-Object -Variable subvendor | %{$_ | Select-String "SVendor" | % {$_ -split "SVendor:\s" | Select -Last 1}}
-                    $NVSMI | Where "pci.bus_id" -eq $busid | % {
+                $Sel = $_
+                $busid = $Sel -split " " | Select -First 1
+                $subvendor = invoke-expression "lspci -vmms $busid" | Tee-Object -Variable subvendor | % { $_ | Select-String "SVendor" | % { $_ -split "SVendor:\s" | Select -Last 1 } }
+                $NVSMI | Where "pci.bus_id" -eq $busid | % {
 
-                        $global:BusData += [PSCustomObject]@{
-                            busid = $busid
-                            name  = $_.name
-                            brand = "nvidia"
-                            subvendor = $subvendor
-                            mem = $_."memory.total [MiB]"
-                            vbios = $_.vbios_version
-                            plim_min = $_."power.min_limit [W]"
-                            plim_def =  $_."power.default_limit [W]"
-                            plim_max = $_."power.max_limit [W]"
-                        }
+                    $global:BusData += [PSCustomObject]@{
+                        busid     = $busid
+                        name      = $_.name
+                        brand     = "nvidia"
+                        subvendor = $subvendor
+                        mem       = $_."memory.total [MiB]"
+                        vbios     = $_.vbios_version
+                        plim_min  = $_."power.min_limit [W]"
+                        plim_def  = $_."power.default_limit [W]"
+                        plim_max  = $_."power.max_limit [W]"
                     }
-                    $DeviceList.NVIDIA.Add("$NVIDIACount", "$CardCount")
-                    $NVIDIACount++
-                    $CardCount++
                 }
+                $DeviceList.NVIDIA.Add("$NVIDIACount", "$CardCount")
+                $NVIDIACount++
+                $CardCount++
             }
         }
     }
@@ -329,6 +347,9 @@ function Global:Start-LinuxConfig {
         $global:Config.hive_params.Miner2 = $RigConf.MINER2 -replace "`"", ""
         $global:Config.hive_params.Timezone = $RigConf.TIMEZONE -replace "`"", ""
 
+        ## Get Total GPU Count
+        $Global:GPU_Count = Global:Get-GPUCount
+
         ## HiveOS Specific Stuff
         if ($NotHiveOS -eq $false) {
             if ($global:Config.Params.Type -like "*NVIDIA*" -or $global:Config.Params.Type -like "*AMD*") {
@@ -347,9 +368,6 @@ function Global:Start-LinuxConfig {
 
         ## Set Cuda for commands
         if ($global:Config.Params.Type -like "*NVIDIA*") { $global:Config.Params.Cuda | Set-Content ".\build\txt\cuda.txt" }
-
-        ## Get Total GPU Count
-        $Global:GPU_Count = Global:Get-GPUCount
     
         ## Let User Know What Platform commands will work for- Will always be Group 1.
         if ($global:Config.Params.Type -like "*NVIDIA1*") {

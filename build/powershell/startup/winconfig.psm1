@@ -81,21 +81,11 @@ Function Get-BusFunctionID {
 function Global:Get-GPUCount {
 
     $Bus = $global:BusData | Sort-Object PCIBusID
-    $DeviceList = @{ }
-    $OCList = @{ }
-
-    if ($global:Config.Params.Type -like "*AMD*") { $DeviceList.Add("AMD", @{ })
-    }
-    if ($global:Config.Params.Type -like "*NVIDIA*") { $DeviceList.Add("NVIDIA", @{ })
-    }
-    if ($global:Config.Params.Type -like "*CPU*") { $DeviceList.Add("CPU", @{ })
-    }
-
-    if ($global:Config.Params.Type -like "*AMD*") { $OCList.Add("AMD", @{ })
-    }
-    if ($global:Config.Params.Type -like "*NVIDIA*") { $OCList.Add("NVIDIA", @{ })
-    }
-    $OCList.Add("Onboard", @{ })
+    $DeviceList = @{ AMD = @{}; NVIDIA = @{}; CPU = @{} }
+    $OCList = @{ AMD = @{}; Onboard = @{}; NVIDIA = @{}; }
+    $GN = $false
+    $GA = $false
+    $NoType = $true
 
     $DeviceCounter = 0
     $OCCounter = 0
@@ -106,6 +96,7 @@ function Global:Get-GPUCount {
     $Bus | Foreach {
         $Sel = $_
         if ($Sel.Brand -eq "nvidia" -and $Sel.PCIBusID -ne "0") {
+            $GN = $true
             $DeviceList.NVIDIA.Add("$NvidiaCounter", "$DeviceCounter")
             $OCList.NVIDIA.Add("$NvidiaCounter", "$DeviceCounter")
             $NvidiaCounter++
@@ -113,6 +104,7 @@ function Global:Get-GPUCount {
             $OCCounter++
         }
         elseif ($Sel.Brand -eq "amd" -and $Sel.PCIBusID -ne "0") {
+            $GA = $true
             $DeviceList.AMD.Add("$AmdCounter", "$DeviceCounter")
             $OCList.AMD.Add("$AmdCounter", "$OCCounter")
             $AmdCounter++
@@ -125,6 +117,27 @@ function Global:Get-GPUCount {
             $OCCounter++
         }
     }
+
+    if ($GA -or $GN) {
+        Global:Write-Log "Searching GPU Types" -ForegroundColor Yellow
+        $TypeArray = @("NVIDIA1", "NVIDIA2", "NVIDIA3", "AMD1")
+        $TypeArray | ForEach-Object { if ($_ -in $Global:Config.Params.Type) { $NoType = $false } }
+        if ($NoType -eq $true) {
+            if ($GA) { 
+                Global:Write-Log "AMD Detected: Adding AMD" -ForegroundColor Magenta
+                $global:Config.params.Type += "AMD1" 
+            }
+            if ($GN -and $GA) {
+                Global:Write-Log "NVIDIA Also Detected" -ForegroundColor Magenta
+                $global:Config.params.Type += "NVIDIA2" 
+            }
+            elseif ($GN) { 
+                Global:Write-Log "NVIDIA Detected: Adding NVIDIA" -ForegroundColor Magenta
+                $global:Config.Params.Type += "NVIDIA1" 
+            }
+        }
+    }
+
     
     if ($global:Config.Params.Type -like "*CPU*") { for ($i = 0; $i -lt $global:Config.Params.CPUThreads; $i++) { $DeviceList.CPU.Add("$($i)", $i) } }
     $DeviceList | ConvertTo-Json | Set-Content ".\build\txt\devicelist.txt"
