@@ -68,6 +68,39 @@ These arguments can be added for additional customization and options
 
 Argument            Options             Explanation
 
+-Max_Periods    [any number]        Default is 288. SWARM calculates profit via a rolling expontenial
+                                    moving average, with each new period happening at the end of your
+                                    interval. With a default interval of 300 seconds (5 minutes),
+                                    and 288 periods: That means you will have factored 86400 seconds
+                                    of pricing data, or an entire day of pricing pulls from pools.
+                                    It is not advised to set this number higher than 288. This is
+                                    only available to help reduce SWARM's memory footprint. If you
+                                    are using -Stat_Algo and -Stat_Coin live, there is no reason to
+                                    record 288 periods of data, since you are using live pricing.
+                                    You can set this number to 1. If you were using Minute_15
+                                    with an -interval of 300 (5 minutes), there is no real reason
+                                    to store nore than 3 periods of data (15 minutes total).
+
+-API_Key        [HiveOS API key]    Default is "" (none). By supplying SWARM with your HiveOS
+                                    API key (you must generate one in account > settings), SWARM
+                                    is able to use OC profiles from HiveOS. If you set an algorithm
+                                    profile, and SWARM switched to that algorithm- It will notify
+                                    HiveOS, triggering an OC command. SWARM will confirm OC was changed.
+                                    If 30 seconds has passed, and HiveOS has not set OC, SWARM will
+                                    contiue forward. Note: This takes precedence over SWARM's OC
+                                    settings.
+
+-Track_Shares   [Yes,No]            Default is Yes. SWARM will gather your current share percentage
+                                    from pools, if it is possible to do so. Zergpool will only gather
+                                    shares if -Auto_Coin Yes is on. Some pools share gathering is
+                                    possible yet.
+
+-Volume         [Yes,No]            Default is No. Volume calculates pool hashrate % in comparision
+                                    to other pools, and will penalize pools based on percent difference
+                                    from pool with highest hashrate. This means SWARM favors pools with
+                                    the highest hashrates for each algorithm. The % values are displayed
+                                    on get stats screen, under Vol.
+
 -Xnsub          [Yes,No]            Default is "No". Will add #xnsub for ASIC to signify Extranonce.Subscribe
                                     method. Not all cgminer / ASICS / Pools may support this.
 
@@ -187,7 +220,11 @@ Argument            Options             Explanation
 -SWARM_Mode      Yes or No          SWARM_Mode Allows sycronization of all SWARM Users. SWARM will
                                     collectively pull database at the same time for all users with
                                     SWARM_Mode set to "yes". Intervals are based on 5 minute periods.
-                                    This disables -Interval argument. Default is No.
+                                    This disables -Interval argument. Default is No. Your rig will
+                                    still mine what is best for your cards. This simply syncronizes
+                                    your rig to pull pricing data at the same time as other using
+                                    this argument, increasing the chance you will mine the same thing.
+                                    This is useful to sycronize all your rigs to switch together.
 
 -PoolBans       [Yes or No]         Default is "Yes". This option will ban miners from specific pools
                                     if it detects high rejections or no hashrate. Bans are lifted
@@ -358,7 +395,7 @@ Argument            Options             Explanation
 
 Dividing Miner
 
-MM.Hash has the capability of dividing miner into seperate device groups. By default, 
+SWARM has the capability of dividing miner into seperate device groups. By default, 
 it is set to use Wallet1 & PasswordCurrency1. You can however choose to divide you miner, up to three 
 different groups. This is the commands/options you must add to do so:
 
@@ -377,7 +414,7 @@ To use 2 Groups, and Mine with CPU processor would be:
 For Type
 if (Type = NVIDIA1)
 
--GPUDevices1 = Devices you are using for group for all miners.
+-GPUDevices1 = Devices you are using for group NVIDIA1 for all miners.
 
 Lastly you must set your wallet/password info. Here are basic:
 

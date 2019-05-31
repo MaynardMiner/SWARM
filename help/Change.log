@@ -3149,3 +3149,24 @@ API overhaul:
   -Attempted fix of Windows ``get update``
    commands. Since it was broken last release-
    It will work updating next version forward.
+
+  
+ 2.3.5
+
+ -cpuminer-opt (sugarchain) updated
+ -fixed path assertion in backgroun agent
+  which prevented certain remote commands from
+  working.
+
+  Note: CPU miners are safe to use with GPU mining.
+  You must use -CPUthreads argument, and it is
+  recommended to leave a thread free on larger
+  rigs.
+
+  -Volume argument added to help.txt.
+
+  -Max_Periods argument added to help.txt.
+
+  -API_Key argument added to help.txt.
+
+  -Track_Shares argument added to help.txt.
