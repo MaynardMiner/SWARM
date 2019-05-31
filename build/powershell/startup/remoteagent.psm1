@@ -33,6 +33,7 @@ function start-update {
         $PreviousVersions += "SWARM.2.3.0"
         $PreviousVersions += "SWARM.2.3.1"
         $PreviousVersions += "SWARM.2.3.2"
+        $PreviousVersions += "SWARM.2.3.3"
 
         $StatsOnly = $null
 
@@ -106,7 +107,8 @@ function start-update {
                             if ($ChangeFile -notin $Exclude) {
                                 $JsonData = Get-Content $OldJson;
                                 Write-Log "Pulled $OldJson"
-                                $Data = $JsonData | ConvertFrom-Json;
+
+                                try{$Data = $JsonData | ConvertFrom-Json -ErrorAction Stop} catch{}
 
                                 #if ($ChangeFile -eq "cryptodredge.json") {
                                 #   $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {

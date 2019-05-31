@@ -530,7 +530,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 $NewLocation = Join-Path (Split-Path $Dir) "SWARM.$VersionNumber"
                 $line += "New Location is $NewLocation"
                 Write-Host "New Location is $NewLocation"
-                $FileName = join-path ".\x64" "SWARM.$VersionNumber.zip"
+                $FileName = join-path "$Dir\x64" "SWARM.$VersionNumber.zip"
                 Write-Host "New"
                 $DLFileName = Join-Path "$Dir" "x64\SWARM.$VersionNumber.zip"
                 $line += "Extraction Path is $DLFileName"
@@ -540,20 +540,20 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 Start-Sleep -S 5
                 if ($Failed -eq $false) {
                     Get-Location | Out-Host
-                    Start-Process ".\build\apps\7z.exe" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -Wait -WindowStyle Minimized
+                    Start-Process "$Dir\build\apps\7z.exe" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -Wait -WindowStyle Minimized
                     Start-Sleep -S 3
                     Write-Host "Config Command Initiated- Restarting SWARM`n"
-                    $MinerFile = ".\build\pid\miner_pid.txt"
+                    $MinerFile = "$Dir\build\pid\miner_pid.txt"
                     if (Test-Path $MinerFile) { $MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue }
                     Stop-Process $MinerId -Force
                     Write-Host "Stopping Old Miner`n"
                     Start-Sleep -S 5
                     Write-Host "Attempting to start new SWARM verison at $NewLocation\SWARM.bat"
                     Write-Host "Downloaded and extracted SWARM successfully`n"
-                    Copy-Item ".\SWARM.bat" -Destination $NewLocation -Force
-                    Copy-Item ".\config\parameters\newarguments.json" -Destination "$NewLocation\config\parameters" -Force
+                    Copy-Item "$Dir\SWARM.bat" -Destination $NewLocation -Force
+                    Copy-Item "$Dir\config\parameters\newarguments.json" -Destination "$NewLocation\config\parameters" -Force
                     New-Item -Name "pid" -Path "$NewLocation\build" -ItemType "Directory"
-                    Copy-Item ".\build\pid\background_pid.txt" -Destination "$NewLocation\build\pid" -Force
+                    Copy-Item "$Dir\build\pid\background_pid.txt" -Destination "$NewLocation\build\pid" -Force
                     Set-Location $NewLocation
                     Start-Process "SWARM.bat"
                     Set-Location $Dir
