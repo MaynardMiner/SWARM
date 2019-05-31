@@ -587,14 +587,14 @@ While ($true) {
         Global:Add-Module "$($(v).global)\gpu.psm1"
         Global:Add-Module "$($(v).global)\hashrates.psm1"
         Global:Add-Module "$($(v).benchmark)\attempt.psm1"
+        $global:ActiveSymbol = @()
 
         ##Insert Benchmark Single Modules Here
 
         ##Insert Benchmark Looping Modules Here
 
         ## Start WattOMeter function
-        if ($global:Config.Params.WattOMeter -eq "Yes") { Start-WattOMeter }
-        $global:ActiveSymbol = @()
+        if ($global:Config.Params.WattOMeter -eq "Yes") { Global:Start-WattOMeter }
 
         ##Try To Benchmark
         Global:Start-Benchmark
@@ -602,11 +602,13 @@ While ($true) {
         ##############################################################################
         #######                       End Phase 6                               ######
         ##############################################################################
+
         Global:Remove-Modules
         Get-Job -State Completed | Remove-Job
         [GC]::Collect()
         [GC]::WaitForPendingFinalizers()
         [GC]::Collect()    
+
     }until($Error.Count -gt 0)
     Import-Module "$($(v).global)\include.psm1" -Scope Global
     Global:Add-LogErrors

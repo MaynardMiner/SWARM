@@ -27,15 +27,26 @@ function Global:Get-MinerTimeout {
 function Global:Set-Power {
     param(
         [Parameter(Position = 0, Mandatory = $true)]
-        [String]$PwrType
+        [String]$PwrType,
+        [Parameter(Position = 1, Mandatory = $true)]
+        [String]$PwrDevices
     )
-        
+        $GPUPower = 0
     switch -Wildcard ($PwrType) {
-        "*AMD*" { $Power = (Global:Set-AMDStats).watts }
-        "*NVIDIA*" { $Power = (Global:Set-NvidiaStats).watts }
+        "*AMD*" { $GPUPower = (Global:Set-AMDStats).watts }
+         "*NVIDIA*" { 
+            $D = Global:Get-DeviceString -TypeCount $($Global:GCount.NVIDIA.PSObject.Properties.Value.Count) -TypeDevices $PwrDevices
+            $Power = (Global:Set-NvidiaStats).watts 
+            for($i = 0; $i -lt $D.Count; $i++){
+                $DI = $D[$i]
+                $GPUPower += $Power[$DI]
+            }
+            Remove-Variable Power
+            Remove-Variable D
+            Remove-Variable DI
+        }
     }
-
-    $($Power | Measure-Object -Sum).Sum
+    $($GPUPower | Measure-Object -Sum).Sum
 }
 
 function Global:Get-Intensity {
@@ -136,7 +147,7 @@ function Global:Start-Benchmark {
                                 }
                             }
                             else {
-                                if ($global:Config.Params.WattOMeter -eq "Yes" -and $_.Type -ne "CPU") { try { $GPUPower = Global:Set-Power $($_.Type) }catch { Global:Write-Log "WattOMeter Failed"; $GPUPower = 0 } }
+                                if ($global:Config.Params.WattOMeter -eq "Yes" -and $_.Type -ne "CPU") { try { $GPUPower = Global:Set-Power $($_.Type) $($_.Devices) }catch { Global:Write-Log "WattOMeter Failed"; $GPUPower = 0 } }
                                 else { $GPUPower = 1 }
                                 if ($global:Config.Params.WattOMeter -eq "Yes" -and $_.Type -ne "CPU") {
                                     $GetWatts = Get-Content ".\config\power\power.json" | ConvertFrom-Json
