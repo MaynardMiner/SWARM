@@ -564,5 +564,8 @@ HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
         if ($GoToSleep -gt 0) { Start-Sleep -S $GoToSleep }
     }
     
+    Get-Job -State Completed | Remove-Job
     [GC]::Collect()
+    [GC]::WaitForPendingFinalizers()
+    [GC]::Collect()    
 }

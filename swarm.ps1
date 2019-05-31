@@ -331,7 +331,6 @@ While ($true) {
         $BanDir = $null
         $PoolDir = $null
         $PoolChange = $Null
-        [GC]::Collect()
 
         ##############################################################################
         #######                         END PHASE 1                             ######
@@ -376,7 +375,6 @@ While ($true) {
         Clear-Variable -Name "divisortable" -ErrorAction Ignore -Scope Global
         Clear-Variable -Name "All_AltWallets" -ErrorAction Ignore -Scope Global
         Clear-Variable -Name "Wallets" -ErrorAction Ignore -Scope Global
-		[GC]::Collect()
 
         ##############################################################################
         #######                         END PHASE 2                             ######
@@ -451,7 +449,6 @@ While ($true) {
         $global:Pool_Hashrates = $null
         $global:Miner_HashTable = $null
         $global:Watts = $null
-		[GC]::Collect()
 
         ##############################################################################
         #######                        End Phase 3                             ######
@@ -513,7 +510,6 @@ While ($true) {
         $global:NoMiners = $null
         $global:ClearedOC = $null
         $Global:HiveOCTune = $null
-		[GC]::Collect()
 
         ##############################################################################
         #######                        End Phase 4                              ######
@@ -555,7 +551,6 @@ While ($true) {
         Global:Start-MinerLoop
 
         Global:Remove-Modules
-        [GC]::Collect()
 
         ##############################################################################
         #######                        End Phase 5                              ######
@@ -582,8 +577,10 @@ While ($true) {
         #######                       End Phase 6                               ######
         ##############################################################################
         Global:Remove-Modules
-		[GC]::Collect()
-
+        Get-Job -State Completed | Remove-Job
+        [GC]::Collect()
+        [GC]::WaitForPendingFinalizers()
+        [GC]::Collect()    
     }until($Error.Count -gt 0)
     Import-Module "$($(v).global)\include.psm1" -Scope Global
     Global:Add-LogErrors
