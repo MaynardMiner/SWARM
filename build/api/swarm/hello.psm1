@@ -10,7 +10,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
-function Start-Hello($RigData) {
+function Global:Start-Hello($RigData) {
     
     $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
     [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
@@ -51,10 +51,10 @@ function Start-Hello($RigData) {
         }
     }
       
-    Write-Log "Saying Hello To SWARM"
+    Global:Write-Log "Saying Hello To SWARM"
     $GetHello = $Hello | ConvertTo-Json -Depth 3 -Compress
     $GetHello | Set-Content ".\build\txt\hello.txt"
-    Write-Log "$GetHello" -ForegroundColor Green
+    Global:Write-Log "$GetHello" -ForegroundColor Green
 
     try {
         $response = Invoke-RestMethod "$($Global:Config.hive_params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body ($Hello | ConvertTo-Json -Depth 3 -Compress) -ContentType 'application/json'

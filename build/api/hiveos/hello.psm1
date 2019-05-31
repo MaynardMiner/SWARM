@@ -10,7 +10,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
-function Start-Hello($RigData) {
+function Global:Start-Hello($RigData) {
 
     $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
     [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
@@ -52,10 +52,10 @@ function Start-Hello($RigData) {
         }
     }
       
-    Write-Log "Saying Hello To Hive"
+    Global:Write-Log "Saying Hello To Hive"
     $GetHello = $Hello | ConvertTo-Json -Depth 3 -Compress
     $GetHello | Set-Content ".\build\txt\hello.txt"
-    Write-Log "$GetHello" -ForegroundColor Green
+    Global:Write-Log "$GetHello" -ForegroundColor Green
 
     try {
         $response = Invoke-RestMethod "$($Global:Config.hive_params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body ($Hello | ConvertTo-Json -Depth 3 -Compress) -ContentType 'application/json'
@@ -67,7 +67,7 @@ function Start-Hello($RigData) {
     return $message
 }
 
-function Start-WebStartup($response,$Site) {
+function Global:Start-WebStartup($response,$Site) {
     
     switch($Site){
         "HiveOS" {$Params = "hive_params"}
@@ -76,7 +76,7 @@ function Start-WebStartup($response,$Site) {
 
     if ($response.result) { $RigConf = $response }
     elseif (Test-Path ".\build\txt\get-hive-hello.txt") {
-        Write-Log "WARNGING: Failed To Contact HiveOS. Using Last Known Configuration"
+        Global:Write-Log "WARNGING: Failed To Contact HiveOS. Using Last Known Configuration"
         Start-Sleep -S 2
         $RigConf = Get-Content ".\build\txt\get-hive-hello.txt" | ConvertFrom-Json
     }
@@ -108,11 +108,11 @@ function Start-WebStartup($response,$Site) {
                             $method = "message"
                             $messagetype = "warning"
                             $data = "Password change received, wait for next message..."
-                            $DoResponse = Set-Response -Method $method -MessageType $messagetype -Data $data -CommandID $command.result.id -Site $Site
-                            $sendResponse = $DoResponse | Invoke-WebCommand -Site $Site -Action "Message"
+                            $DoResponse = Global:Set-Response -Method $method -MessageType $messagetype -Data $data -CommandID $command.result.id -Site $Site
+                            $sendResponse = $DoResponse | Global:Invoke-WebCommand -Site $Site -Action "Message"
                             $SendResponse
                             $DoResponse = @{method = "password_change_received"; params = @{rig_id = $global:Config.$Params.HiveID; passwd = $global:Config.$Params.HivePassword }; jsonrpc = "2.0"; id = "0" }
-                            $send2Response = $DoResponse | Invoke-WebCommand -Site $Site -Action "Message"
+                            $send2Response = $DoResponse | Global:Invoke-WebCommand -Site $Site -Action "Message"
                         }
                     }
 
@@ -122,10 +122,10 @@ function Start-WebStartup($response,$Site) {
 
                 ##If Hive Sent OC Start SWARM OC
                 "nvidia_oc" {
-                    Start-NVIDIAOC $RigConf.result.nvidia_oc 
+                    Global:Start-NVIDIAOC $RigConf.result.nvidia_oc 
                 }
                 "amd_oc" {
-                    Start-AMDOC $RigConf.result.amd_oc
+                    Global:Start-AMDOC $RigConf.result.amd_oc
                 }
             }
         }
@@ -133,8 +133,8 @@ function Start-WebStartup($response,$Site) {
         $RigConf.result.config
     }
     else {
-        write-Log "No HiveOS Rig.conf- Do you have an account? Did you use your farm hash?"
-        write-Log "Try running Hive_Windows_Reset.bat then try again."
+        Global:Write-Log "No HiveOS Rig.conf- Do you have an account? Did you use your farm hash?"
+        Global:Write-Log "Try running Hive_Windows_Reset.bat then try again."
         Start-Sleep -S 2
     }
 }

@@ -1,4 +1,4 @@
-function Get-MinerTimeout {
+function Global:Get-MinerTimeout {
     param(
         [Parameter(Mandatory = $true, Position = 0)]
         [string]$minerjson
@@ -24,21 +24,21 @@ function Get-MinerTimeout {
     return $reason
 }
 
-function Set-Power {
+function Global:Set-Power {
     param(
         [Parameter(Position = 0, Mandatory = $true)]
         [String]$PwrType
     )
         
     switch -Wildcard ($PwrType) {
-        "*AMD*" { $Power = (Set-AMDStats).watts }
-        "*NVIDIA*" { $Power = (Set-NvidiaStats).watts }
+        "*AMD*" { $Power = (Global:Set-AMDStats).watts }
+        "*NVIDIA*" { $Power = (Global:Set-NvidiaStats).watts }
     }
 
     $($Power | Measure-Object -Sum).Sum
 }
 
-function Get-Intensity {
+function Global:Get-Intensity {
     param(
         [Parameter(Position = 0, Mandatory = $false)]
         [String]$LogMiner,
@@ -60,8 +60,8 @@ function Get-Intensity {
     }
 }
 
-function Start-WattOMeter {
-    Write-Log "
+function Global:Start-WattOMeter {
+    Global:Write-Log "
 
   Starting Watt-O-Meter
        __________
@@ -84,7 +84,7 @@ function Start-WattOMeter {
   " -foregroundcolor yellow
 }
 
-function Start-Benchmark {
+function Global:Start-Benchmark {
     $global:BestActiveMiners | ForEach-Object {
         $global:ActiveSymbol += $($_.Symbol)
         $MinerPoolBan = $false
@@ -99,26 +99,26 @@ function Start-Benchmark {
                 $_.Status = "Failed"
                 $global:WasBenchmarked = $False
                 $Global:Strike = $true
-                write-Log "Cannot Benchmark- Miner is not running" -ForegroundColor Red
+                Global:Write-Log "Cannot Benchmark- Miner is not running" -ForegroundColor Red
             }
             else {
                 $_.HashRate = 0
                 $global:WasBenchmarked = $False
                 $WasActive = [math]::Round(((Get-Date) - $_.XProcess.StartTime).TotalSeconds)
                 if ($WasActive -ge $global:MinerStatInt) {
-                    write-Log "$($_.Name) $($_.Symbol) Was Active for $WasActive Seconds"
-                    write-Log "Attempting to record hashrate for $($_.Name) $($_.Symbol)" -foregroundcolor "Cyan"
+                    Global:Write-Log "$($_.Name) $($_.Symbol) Was Active for $WasActive Seconds"
+                    Global:Write-Log "Attempting to record hashrate for $($_.Name) $($_.Symbol)" -foregroundcolor "Cyan"
                     for ($i = 0; $i -lt 4; $i++) {
-                        $Miner_HashRates = Get-HashRate -Type $_.Type
+                        $Miner_HashRates = Global:Global:Get-HashRate -Type $_.Type
                         $_.HashRate = $Miner_HashRates
                         if ($global:WasBenchmarked -eq $False) {
                             $HashRateFilePath = Join-Path ".\stats" "$($_.Name)_$($NewName)_hashrate.txt"
                             $NewHashrateFilePath = Join-Path ".\backup" "$($_.Name)_$($NewName)_hashrate.txt"
                             if (-not (Test-Path "backup")) { New-Item "backup" -ItemType "directory" | Out-Null }
-                            write-Log "$($_.Name) $($_.Symbol) Starting Bench"
+                            Global:Write-Log "$($_.Name) $($_.Symbol) Starting Bench"
                             if ($null -eq $Miner_HashRates -or $Miner_HashRates -eq 0) {
                                 $Global:Strike = $true
-                                write-Log "Stat Attempt Yielded 0" -Foregroundcolor Red
+                                Global:Write-Log "Stat Attempt Yielded 0" -Foregroundcolor Red
                                 Start-Sleep -S .25
                                 $GPUPower = 0
                                 if ($global:Config.Params.WattOMeter -eq "Yes" -and $_.Type -ne "CPU") {
@@ -136,43 +136,43 @@ function Start-Benchmark {
                                 }
                             }
                             else {
-                                if ($global:Config.Params.WattOMeter -eq "Yes" -and $_.Type -ne "CPU") { try { $GPUPower = Set-Power $($_.Type) }catch { write-Log "WattOMeter Failed"; $GPUPower = 0 } }
+                                if ($global:Config.Params.WattOMeter -eq "Yes" -and $_.Type -ne "CPU") { try { $GPUPower = Global:Set-Power $($_.Type) }catch { Global:Write-Log "WattOMeter Failed"; $GPUPower = 0 } }
                                 else { $GPUPower = 1 }
                                 if ($global:Config.Params.WattOMeter -eq "Yes" -and $_.Type -ne "CPU") {
                                     $GetWatts = Get-Content ".\config\power\power.json" | ConvertFrom-Json
                                     if ($GetWatts.$($_.Algo)) {
-                                        $StatPower = Set-Stat -Name "$($_.Name)_$($NewName)_Watts" -Value $GPUPower
+                                        $StatPower = Global:Set-Stat -Name "$($_.Name)_$($NewName)_Watts" -Value $GPUPower
                                         $GetWatts.$($_.Algo)."$($_.Type)_Watts" = "$($StatPower.Day)"
                                         $GetWatts | ConvertTo-Json -Depth 3 | Set-Content ".\config\power\power.json"
                                     }
                                     else {
-                                        $StatPower = Set-Stat -Name "$($_.Name)_$($NewName)_Watts" -Value $GPUPower
+                                        $StatPower = Global:Set-Stat -Name "$($_.Name)_$($NewName)_Watts" -Value $GPUPower
                                         $WattTypes = @{NVIDIA1_Watts = ""; NVIDIA2_Watts = ""; NVIDIA3_Watts = ""; AMD1_Watts = ""; CPU_Watts = "" }
                                         $GetWatts | Add-Member "$($_.Algo)" $WattTypes
                                         $GetWatts.$($_.Algo)."$($_.Type)_Watts" = "$($StatPower.Day)"
                                         $GetWatts | ConvertTo-Json -Depth 3 | Set-Content ".\config\power\power.json"
                                     }
                                 }
-                                $Stat = Set-Stat -Name "$($_.Name)_$($NewName)_hashrate" -Value $Miner_HashRates -AsHashRate
+                                $Stat = Global:Set-Stat -Name "$($_.Name)_$($NewName)_hashrate" -Value $Miner_HashRates -AsHashRate
                                 Start-Sleep -s 1
-                                $GetLiveStat = Get-Stat "$($_.Name)_$($NewName)_hashrate"
+                                $GetLiveStat = Global:Get-Stat "$($_.Name)_$($NewName)_hashrate"
                                 $StatCheck = "$($GetLiveStat.Live)"
-                                $ScreenCheck = "$($StatCheck | ConvertTo-Hash)"
+                                $ScreenCheck = "$($StatCheck | Global:ConvertTo-Hash)"
                                 if ($ScreenCheck -eq "0.00 PH" -or $null -eq $StatCheck) {
                                     $Global:Strike = $true
                                     $global:WasBenchmarked = $False
-                                    write-Log "Stat Failed Write To File" -Foregroundcolor Red
+                                    Global:Write-Log "Stat Failed Write To File" -Foregroundcolor Red
                                 }
                                 else {
-                                    write-Log "Recorded Hashrate For $($_.Name) $($_.Symbol) Is $($ScreenCheck)" -foregroundcolor "magenta"
-                                    if ($global:Config.Params.WattOMeter -eq "Yes") { write-Log "Watt-O-Meter scored $($_.Name) $($_.Symbol) at $($GPUPower) Watts" -ForegroundColor magenta }
+                                    Global:Write-Log "Recorded Hashrate For $($_.Name) $($_.Symbol) Is $($ScreenCheck)" -foregroundcolor "magenta"
+                                    if ($global:Config.Params.WattOMeter -eq "Yes") { Global:Write-Log "Watt-O-Meter scored $($_.Name) $($_.Symbol) at $($GPUPower) Watts" -ForegroundColor magenta }
                                     if (-not (Test-Path $NewHashrateFilePath)) {
                                         Copy-Item $HashrateFilePath -Destination $NewHashrateFilePath -force
-                                        write-Log "$($_.Name) $($_.Symbol) Was Benchmarked And Backed Up" -foregroundcolor yellow
+                                        Global:Write-Log "$($_.Name) $($_.Symbol) Was Benchmarked And Backed Up" -foregroundcolor yellow
                                     }
                                     $global:WasBenchmarked = $True
-                                    Get-Intensity $_.Type $_.Symbol $_.Path
-                                    write-Log "Stat Written
+                                    Global:Get-Intensity $_.Type $_.Symbol $_.Path
+                                    Global:Write-Log "Stat Written
 " -foregroundcolor green
                                     $Global:Strike = $false
                                 } 
@@ -182,7 +182,7 @@ function Start-Benchmark {
                     ##Check For High Rejections
                     $RejectCheck = Join-Path ".\timeout\warnings" "$($_.Name)_$($NewName)_rejection.txt"
                     if (Test-Path $RejectCheck) {
-                        write-Log "Rejections Are Too High" -ForegroundColor DarkRed
+                        Global:Write-Log "Rejections Are Too High" -ForegroundColor DarkRed
                         $global:WasBenchmarked = $false
                         $Global:Strike = $true
                     }
@@ -222,15 +222,15 @@ function Start-Benchmark {
                         if ($Global:Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)".bad -ge $global:Config.Params.PoolBanCount) { $MinerPoolBan = $true }
                         ##Strike One
                         if ($MinerPoolBan -eq $false -and $MinerAlgoBan -eq $false -and $MinerBan -eq $false) {
-                            write-Log "First Strike: There was issue with benchmarking.
+                            Global:Write-Log "First Strike: There was issue with benchmarking.
 " -ForegroundColor DarkRed;
                         }
                         ##Strike Two
                         if ($MinerPoolBan -eq $true) {
                             $minerjson = $_ | ConvertTo-Json -Compress
-                            $reason = Get-MinerTimeout $minerjson
+                            $reason = Global:Get-MinerTimeout $minerjson
                             $HiveMessage = "Ban: $($_.Algo):$($_.Name) From $($_.MinerPool)- $reason "
-                            write-Log "Strike Two: Benchmarking Has Failed - $HiveMessage
+                            Global:Write-Log "Strike Two: Benchmarking Has Failed - $HiveMessage
 " -ForegroundColor DarkRed
                             $NewPoolBlock = @()
                             if (Test-Path ".\timeout\pool_block\pool_block.txt") { $GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json }
@@ -245,22 +245,22 @@ function Start-Benchmark {
                                     $Sel = $_
                                     try {
                                         Global:Add-Module "$($(v).web)\methods.psm1"
-                                        Get-WebModules $Sel
-                                        $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
+                                        Global:Get-WebModules $Sel
+                                        $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
                                     }
-                                    catch { Write-Log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
-                                    Remove-WebModules $sel
+                                    catch { Global:Write-Log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
+                                    Global:Remove-WebModules $sel
                                 }
                             }
-                            Write-Log "$HiveMessage" -ForegroundColor Red
+                            Global:Write-Log "$HiveMessage" -ForegroundColor Red
                             Start-Sleep -S 1
                         }
                         ##Strike Three: He's Outta Here
                         if ($MinerAlgoBan -eq $true) {
                             $minerjson = $_ | ConvertTo-Json -Compress
-                            $reason = Get-MinerTimeout $minerjson
+                            $reason = Global:Get-MinerTimeout $minerjson
                             $HiveMessage = "Ban: $($_.Algo):$($_.Name) from all pools- $reason "
-                            write-Log "Strike three: $HiveMessage
+                            Global:Write-Log "Strike three: $HiveMessage
 " -ForegroundColor DarkRed
                             $NewAlgoBlock = @()
                             if (Test-Path $HashRateFilePath) { Remove-Item $HashRateFilePath -Force }
@@ -277,20 +277,20 @@ function Start-Benchmark {
                                     $Sel = $_
                                     try {
                                         Global:Add-Module "$($(v).web)\methods.psm1"
-                                        Get-WebModules $Sel
-                                        $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
+                                        Global:Get-WebModules $Sel
+                                        $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
                                     }
-                                    catch { Write-Log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
-                                    Remove-WebModules $sel
+                                    catch { Global:Write-Log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
+                                    Global:Remove-WebModules $sel
                                 }
                             }
-                            Write-Log "$HiveMessage" -ForegroundColor Red
+                            Global:Write-Log "$HiveMessage" -ForegroundColor Red
                             Start-Sleep -S 1
                         }
                         ##Strike Four: Miner is Finished
                         if ($MinerBan -eq $true) {
                             $HiveMessage = "$($_.Name) sucks, shutting it down."
-                            write-Log "$HiveMessage
+                            Global:Write-Log "$HiveMessage
 " -ForegroundColor DarkRed
                             $NewMinerBlock = @()
                             if (Test-Path $HashRateFilePath) { Remove-Item $HashRateFilePath -Force }
@@ -308,14 +308,14 @@ function Start-Benchmark {
                                     $Sel = $_
                                     try {
                                         Global:Add-Module "$($(v).web)\methods.psm1"
-                                        Get-WebModules $Sel
-                                        $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
+                                        Global:Get-WebModules $Sel
+                                        $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
                                     }
-                                    catch { Write-Log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
-                                    Remove-WebModules $sel
+                                    catch { Global:Write-Log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
+                                    Global:Remove-WebModules $sel
                                 }
                             }
-                            Write-Log "$HiveMessage" -ForegroundColor Red
+                            Global:Write-Log "$HiveMessage" -ForegroundColor Red
                             Start-Sleep -S 1
                         }
                     }

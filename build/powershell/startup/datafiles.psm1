@@ -1,4 +1,4 @@
-function Get-DateFiles {
+function Global:Get-DateFiles {
     param (
         [Parameter(Mandatory = $false)]
         [String]$CmdDir
@@ -11,15 +11,15 @@ function Get-DateFiles {
     if ($global:Config.Params.Platform -eq "windows") { $host.ui.RawUI.WindowTitle = "SWARM"; }
 }
 
-function get-argnotice {
+function Global:get-argnotice {
     if ((Test-Path ".\config\parameters\newarguments.json") -or $Debug -eq $true) {
-        write-Log "Detected New Arguments- Changing Parameters" -ForegroundColor Cyan
-        write-Log "These arguments can be found/modified in config < parameters < newarguments.json" -ForegroundColor Cyan
+        Global:Write-Log "Detected New Arguments- Changing Parameters" -ForegroundColor Cyan
+        Global:Write-Log "These arguments can be found/modified in config < parameters < newarguments.json" -ForegroundColor Cyan
         Start-Sleep -S 2
     }    
 }
 
-function Clear-Stats {
+function Global:Clear-Stats {
     $FileClear = @()
     $FileClear += ".\build\txt\minerstats.txt"
     $FileClear += ".\build\txt\mineractive.txt"
@@ -29,7 +29,7 @@ function Clear-Stats {
     $FileClear | ForEach-Object { if (Test-Path $_) { Remove-Item $_ -Force } }
 }
 
-function Set-NewType {
+function Global:Set-NewType {
     $global:Config.Params.Type | ForEach-Object {
         if ($_ -eq "amd1") { $_ = "AMD1" }
         if ($_ -eq "nvidia1") { $_ = "NVIDIA1" }
@@ -40,7 +40,7 @@ function Set-NewType {
     }    
 }
 
-function get-NIST {
+function Global:get-NIST {
     $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
     [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
     try {$WebRequest = Invoke-WebRequest -Uri 'http://nist.time.gov/actualtime.cgi' -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop} catch{Write-Warning "NIST Server Timed Out. Using Local Time"; return Get-Date }

@@ -49,7 +49,7 @@ Function Get-BusFunctionID {
     for ($i = 0; $i -lt $Devices.Count; $i++) {
         $deviceId = $Devices[$i].PNPDeviceID
         $locationInfo = (get-itemproperty -path "HKLM:\SYSTEM\CurrentControlSet\Enum\$deviceID" -name locationinformation -ErrorAction Stop).locationINformation
-        $businfo = Resolve-PCIBusInfo -locationInfo $locationinfo
+        $businfo = Global:Resolve-PCIBusInfo -locationInfo $locationinfo
         $subvendorlist = Get-Content ".\build\data\vendor.json" | ConvertFrom-Json
         $getsubvendor = $Devices[$i].PNPDeviceID -split "&REV_" | Select -first 1
         $getsubvendor = $getsubvendor.Substring($getsubvendor.Length - 4)
@@ -78,7 +78,7 @@ Function Get-BusFunctionID {
     $GPUS
 }
 
-function Get-GPUCount {
+function Global:Get-GPUCount {
 
     $Bus = $global:BusData | Sort-Object PCIBusID
     $DeviceList = @{ }
@@ -134,7 +134,7 @@ function Get-GPUCount {
     $GPUCount += $DeviceList.AMD.Count
     $GPUCount
 }
-function Start-WindowsConfig {
+function Global:Start-WindowsConfig {
 
     ## Add Swarm to Startup
     if ($global:Config.Params.Startup) {
@@ -143,15 +143,15 @@ function Start-WindowsConfig {
         $Bat_Startup = Join-Path $Startup_Path "SWARM.bat"
         switch ($global:Config.Params.Startup) {
             "Yes" {
-                write-Log "Attempting to add current SWARM.bat to startup" -ForegroundColor Magenta
-                write-Log "If you do not wish SWARM to start on startup, use -Startup No argument"
-                write-Log "Startup FilePath: $Startup_Path"
+                Global:Write-Log "Attempting to add current SWARM.bat to startup" -ForegroundColor Magenta
+                Global:Write-Log "If you do not wish SWARM to start on startup, use -Startup No argument"
+                Global:Write-Log "Startup FilePath: $Startup_Path"
                 $bat = "CMD /r pwsh -ExecutionPolicy Bypass -command `"Set-Location $($(v).dir); Start-Process `"SWARM.bat`"`""
                 $Bat_Startup = Join-Path $Startup_Path "SWARM.bat"
                 $bat | Set-Content $Bat_Startup
             }
             "No" {
-                write-Log "Startup No Was Specified. Removing From Startup" -ForegroundColor Magenta
+                Global:Write-Log "Startup No Was Specified. Removing From Startup" -ForegroundColor Magenta
                 if (Test-Path $Bat_Startup) { Remove-Item $Bat_Startup -Force }
             }    
         }
@@ -161,7 +161,7 @@ function Start-WindowsConfig {
     $CurrentUser = $env:UserName
     $Desk_Term = "C:\Users\$CurrentUser\desktop\SWARM-TERMINAL.bat"
     if (-Not (Test-Path $Desk_Term)) {
-        write-Log "
+        Global:Write-Log "
             
     Making a terminal on desktop. This can be used for commands.
     
@@ -200,12 +200,12 @@ function Start-WindowsConfig {
     
     ##Detect if drivers are installed, not generic- Close if not. Print message on screen
     if ($global:Config.Params.Type -like "*NVIDIA*" -and -not (Test-Path "C:\Program Files\NVIDIA Corporation\NVSMI\nvml.dll")) {
-        write-Log "nvml.dll is missing" -ForegroundColor Red
+        Global:Write-Log "nvml.dll is missing" -ForegroundColor Red
         Start-Sleep -S 3
-        write-Log "To Fix:" -ForegroundColor Blue
-        write-Log "Update Windows, Purge Old NVIDIA Drivers, And Install Latest Drivers" -ForegroundColor Blue
+        Global:Write-Log "To Fix:" -ForegroundColor Blue
+        Global:Write-Log "Update Windows, Purge Old NVIDIA Drivers, And Install Latest Drivers" -ForegroundColor Blue
         Start-Sleep -S 3
-        write-Log "Closing Miner"
+        Global:Write-Log "Closing Miner"
         Start-Sleep -S 1
         exit
     }
@@ -215,27 +215,27 @@ function Start-WindowsConfig {
     $TotalMemory | Set-Content ".\build\txt\ram.txt"
     
     ## GPU Bus Hash Table
-    $global:BusData = Get-BusFunctionID
+    $global:BusData = Global:Get-BusFunctionID
     
     ## Get Total GPU HashTable
-    $Global:GPU_Count = Get-GPUCount
+    $Global:GPU_Count = Global:Get-GPUCount
     
     ## Websites
     if ($global:Websites) {
         Global:Add-Module "$($(v).web)\methods.psm1"
-        $rigdata = Get-RigData $Global:Config.Params.Platform
+        $rigdata = Global:Get-RigData $Global:Config.Params.Platform
 
         $global:Websites | ForEach-Object {
             switch ($_) {
                 "HiveOS" {
-                    Get-WebModules "HiveOS"
-                    $response = $rigdata | Invoke-WebCommand -Site "HiveOS" -Action "Hello"
-                    Start-WebStartup $response "HiveOS"
+                    Global:Get-WebModules "HiveOS"
+                    $response = $rigdata | Global:Invoke-WebCommand -Site "HiveOS" -Action "Hello"
+                    Global:Start-WebStartup $response "HiveOS"
                 }
                 "SWARM" {
-                    Get-WebModules "SWARM"
-                    $response = $rigdata | Invoke-WebCommand -Site "SWARM" -Action "Hello"
-                    Start-WebStartup $response "SWARM"
+                    Global:Get-WebModules "SWARM"
+                    $response = $rigdata | Global:Invoke-WebCommand -Site "SWARM" -Action "Hello"
+                    Global:Start-WebStartup $response "SWARM"
                 }
             }
         }
@@ -244,6 +244,6 @@ function Start-WindowsConfig {
 
     ## Aaaaannnnd...Que that sexy logo. Go Time.
 
-    Get-SexyWinLogo
+    Global:Get-SexyWinLogo
 
 }

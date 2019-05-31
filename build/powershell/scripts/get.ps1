@@ -281,7 +281,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
             $Get += "Miner Name: $($ASIC.MinerName)"
             $Get += "Miner Currently Mining: $($ASIC.Symbol)"
             $command = @{command = "pools"; parameter = "0" } | ConvertTo-Json -Compress
-            $request = Get-TCP -Port $ASIC.Port -Server $ASIC.Server -Message $Command -Timeout 5
+            $request = Global:Get-TCP -Port $ASIC.Port -Server $ASIC.Server -Message $Command -Timeout 5
             if ($request) {
                 $response = $request | ConvertFrom-Json
                 $PoolDetails = $response.POOLS | Where Pool -eq 1
@@ -332,11 +332,11 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 $BenchTable += [PSCustomObject]@{
                     Miner     = $_ -split "_" | Select -First 1; 
                     Algo      = $_ -split "_" | Select -Skip 1 -First 1; 
-                    HashRates = $Stats."$($_)".Hour | ConvertTo-Hash; 
+                    HashRates = $Stats."$($_)".Hour | Global:ConvertTo-Hash; 
                     Raw       = $Stats."$($_)".Hour
                 }
             }
-            function Get-BenchTable {
+            function Global:Get-BenchTable {
                 $BenchTable | Sort-Object -Property Algo -Descending | Format-Table (
                     @{Label = "Miner"; Expression = { $($_.Miner) } },
                     @{Label = "Algorithm"; Expression = { $($_.Algo) } },
@@ -357,8 +357,8 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
     "wallets" {
         Import-Module "$($(v).global)\wallettable.psm1" -Scope Global
         if($asjson){
-        $Get = Get-WalletTable -asjson
-        } else {$Get += Get-WalletTable}
+        $Get = Global:Get-WalletTable -asjson
+        } else {$Get += Global:Get-WalletTable}
         Remove-Module "wallettable"
     }
     "stats" {

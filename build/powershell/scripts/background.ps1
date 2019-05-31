@@ -58,11 +58,11 @@ Import-Module "$($(v).global)\include.psm1" -Scope Global
 Global:Add-Module "$($(v).background)\startup.psm1"
 
 ## Get Parameters
-Get-Params
+Global:Get-Params
 [cultureinfo]::CurrentCulture = 'en-US'
 $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
 [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
-Set-Window
+Global:Set-Window
 
 $(v).Add("NetModules",@())
 $(v).Add("WebSites",@())
@@ -73,7 +73,7 @@ Write-Host "Platform is $($global:Config.Params.Platform)";
 Write-Host "HiveOS ID is $($global:Config.hive_params.HiveID)"; 
 Write-Host "HiveOS = $($global:Config.params.HiveOS)"
 
-Start-Servers
+Global:Start-Servers
 
 ##Starting Variables.
 $global:GPUHashrates = $null       
@@ -112,7 +112,7 @@ While ($True) {
     if($global:Config.Params.Platform -eq "linux" -and -not $global:WebSites) {
         if($global:GETSWARM.HasExited -eq $true) {
             Write-Host "Closing down SWARM" -ForegroundColor Yellow
-            start-killscript
+            Global:start-killscript
         }
     }
 
@@ -128,12 +128,12 @@ While ($True) {
     Global:Add-Module "$($(v).global)\stats.psm1"
     Global:Add-Module "$($(v).global)\hashrates.psm1"
     
-    Invoke-MinerCheck
-    New-StatTables
-    Get-Metrics
+    Global:Invoke-MinerCheck
+    Global:New-StatTables
+    Global:Get-Metrics
     Remove-Module "initial"
-    if ($global:DoNVIDIA -eq $true) { $NVIDIAStats = Set-NvidiaStats }
-    if ($global:DoAMD -eq $true) { $AMDStats = Set-AMDStats }
+    if ($global:DoNVIDIA -eq $true) { $NVIDIAStats = Global:Set-NvidiaStats }
+    if ($global:DoAMD -eq $true) { $AMDStats = Global:Set-AMDStats }
 
     ## Start API Calls For Each Miner
     if ($global:CurrentMiners -and $Global:GETSWARM.HasExited -eq $false) {
@@ -170,15 +170,15 @@ While ($True) {
             ## Determine Devices
             Switch ($global:TypeS) {
                 "NVIDIA" {
-                    if ($MinerDevices -eq "none") { $global:Devices = Get-DeviceString -TypeCount $Global:GCount.NVIDIA.PSObject.Properties.Value.Count }
-                    else { $global:Devices = Get-DeviceString -TypeDevices $MinerDevices }
+                    if ($MinerDevices -eq "none") { $global:Devices = Global:Get-DeviceString -TypeCount $Global:GCount.NVIDIA.PSObject.Properties.Value.Count }
+                    else { $global:Devices = Global:Get-DeviceString -TypeDevices $MinerDevices }
                 }
                 "AMD" {
-                    if ($MinerDevices -eq "none") { $global:Devices = Get-DeviceString -TypeCount $Global:GCount.AMD.PSObject.Properties.Value.Count }
-                    else { $global:Devices = Get-DeviceString -TypeDevices $MinerDevices }
+                    if ($MinerDevices -eq "none") { $global:Devices = Global:Get-DeviceString -TypeCount $Global:GCount.AMD.PSObject.Properties.Value.Count }
+                    else { $global:Devices = Global:Get-DeviceString -TypeDevices $MinerDevices }
                 }
                 "ASIC" { $global:Devices = $null }
-                "CPU" { $global:Devices = Get-DeviceString -TypeCount $Global:GCount.CPU.PSObject.Properties.Value.Count }
+                "CPU" { $global:Devices = Global:Get-DeviceString -TypeCount $Global:GCount.CPU.PSObject.Properties.Value.Count }
             }
 
             ## Get Power Stats
@@ -187,7 +187,7 @@ While ($True) {
             if ($global:TypeS -eq "NVIDIA" -or $global:TypeS -eq "AMD") {
                 if ($StatPower -ne "" -or $StatPower -ne $null) {
                     for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
-                        $global:GPUPower.$(Get-GPUS) = Set-Array $StatPower $global:Devices[$global:i]
+                        $global:GPUPower.$(Global:Get-GPUs) = Global:Set-Array $StatPower $global:Devices[$global:i]
                     }
                 }
             }
@@ -199,11 +199,11 @@ While ($True) {
                     switch ($global:Config.Params.Platform) {
                         "Windows" {
                             for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
-                                try { $global:GPUFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans $global:Devices[$global:i] }
+                                try { $global:GPUFans.$(Global:Get-GPUs) = Global:Set-Array $NVIDIAStats.Fans $global:Devices[$global:i] }
                                 catch { Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break }
                             }
                             for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
-                                try { $global:GPUTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps $global:Devices[$global:i] }
+                                try { $global:GPUTemps.$(Global:Get-GPUs) = Global:Set-Array $NVIDIAStats.Temps $global:Devices[$global:i] }
                                 catch { Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break }
                             }
                         }
@@ -211,21 +211,21 @@ While ($True) {
                             switch ($global:Config.Params.HiveOS) {
                                 "Yes" {
                                     for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
-                                        try { $global:GPUFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans (Get-GPUs) }
+                                        try { $global:GPUFans.$(Global:Get-GPUs) = Global:Set-Array $NVIDIAStats.Fans (Global:Get-GPUs) }
                                         catch { Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break }
                                     }
                                     for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
-                                        try { $global:GPUTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps (Get-GPUs) }
+                                        try { $global:GPUTemps.$(Global:Get-GPUs) = Global:Set-Array $NVIDIAStats.Temps (Global:Get-GPUs) }
                                         catch { Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break }
                                     }            
                                 }
                                 "No" {
                                     for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
-                                        try { $global:GPUFans.$(Get-GPUS) = Set-Array $NVIDIAStats.Fans $global:Devices[$global:i] }
+                                        try { $global:GPUFans.$(Global:Get-GPUs) = Global:Set-Array $NVIDIAStats.Fans $global:Devices[$global:i] }
                                         catch { Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break }
                                     }
                                     for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
-                                        try { $global:GPUTemps.$(Get-GPUS) = Set-Array $NVIDIAStats.Temps $global:Devices[$global:i] }
+                                        try { $global:GPUTemps.$(Global:Get-GPUs) = Global:Set-Array $NVIDIAStats.Temps $global:Devices[$global:i] }
                                         catch { Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break }
                                     }                    
                                 }
@@ -237,11 +237,11 @@ While ($True) {
                     Switch ($global:Config.Params.Platform) {
                         "windows" {
                             for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
-                                try { $global:GPUFans.$(Get-GPUS) = Set-Array $AMDStats.Fans $global:Devices[$global:i] }
+                                try { $global:GPUFans.$(Global:Get-GPUs) = Global:Set-Array $AMDStats.Fans $global:Devices[$global:i] }
                                 catch { Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break }
                             }
                             for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
-                                try { $global:GPUTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps $global:Devices[$global:i] }
+                                try { $global:GPUTemps.$(Global:Get-GPUs) = Global:Set-Array $AMDStats.Temps $global:Devices[$global:i] }
                                 catch { Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break }
                             }
                         }
@@ -249,21 +249,21 @@ While ($True) {
                             switch ($global:Config.Params.HiveOS) {
                                 "Yes" {
                                     for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
-                                        try { $global:GPUFans.$(Get-GPUS) = Set-Array $AMDStats.Fans (Get-GPUs) }
+                                        try { $global:GPUFans.$(Global:Get-GPUs) = Global:Set-Array $AMDStats.Fans (Global:Get-GPUs) }
                                         catch { Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break }
                                     }
                                     for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
-                                        try { $global:GPUTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps (Get-GPUs) }
+                                        try { $global:GPUTemps.$(Global:Get-GPUs) = Global:Set-Array $AMDStats.Temps (Global:Get-GPUs) }
                                         catch { Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break }
                                     }
                                 }
                                 "No" {
                                     for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
-                                        try { $global:GPUFans.$(Get-GPUS) = Set-Array $AMDStats.Fans $global:Devices[$global:i] }
+                                        try { $global:GPUFans.$(Global:Get-GPUs) = Global:Set-Array $AMDStats.Fans $global:Devices[$global:i] }
                                         catch { Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break }
                                     }
                                     for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
-                                        try { $global:GPUTemps.$(Get-GPUS) = Set-Array $AMDStats.Temps $global:Devices[$global:i] }
+                                        try { $global:GPUTemps.$(Global:Get-GPUs) = Global:Set-Array $AMDStats.Temps $global:Devices[$global:i] }
                                         catch { Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break }
                                     }
                                 }
@@ -278,156 +278,156 @@ While ($True) {
             $global:MinerACC = 0;
 
             ##Write Miner Information
-            Write-MinerData1
+            Global:Write-MinerData1
 
             ## Start Calling Miner API
             switch ($global:MinerAPI) {
                 'energiminer' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\energiminer.psm1"; 
-                        Get-StatsEnergiminer;
+                        Global:Get-StatsEnergiminer;
                         Remove-Module -name "energiminer"
-                    } catch { Get-OhNo } 
+                    } catch { Global:Get-OhNo } 
                 }
                 'claymore' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\ethminer.psm1"; 
-                        Get-StatsEthminer;
+                        Global:Get-StatsEthminer;
                         Remove-Module -name "ethminer"
-                    } catch { Get-OhNo } 
+                    } catch { Global:Get-OhNo } 
                 }
                 'excavator' {
                     try { 
                         Global:Add-Module "$($(v).miners)\excavator.psm1"; 
-                        Get-StatsExcavator;
+                        Global:Get-StatsExcavator;
                         Remove-Module -name "excavator"
-                    } catch { Get-OhNo } 
+                    } catch { Global:Get-OhNo } 
                 }
                 'miniz' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\miniz.psm1"; 
-                        Get-Statsminiz;
+                        Global:Get-Statsminiz;
                         Remove-Module -name "miniz"
-                    } catch { Get-OhNo } 
+                    } catch { Global:Get-OhNo } 
                 }
                 'gminer' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\gminer.psm1"; 
-                        Get-StatsGminer;
+                        Global:Get-StatsGminer;
                         Remove-Module -name "gminer"
-                    } catch { Get-OhNo } 
+                    } catch { Global:Get-OhNo } 
                 }
                 'grin-miner' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\grinminer.psm1"; 
-                        Get-StartGrinMiner;
+                        Global:Get-StartGrinMiner;
                         Remove-Module -name "grinminer"
-                    } catch { Get-OhNo } 
+                    } catch { Global:Get-OhNo } 
                 }
                 'ewbf' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\ewbf.psm1"; 
-                        Get-Statsewbf;
+                        Global:Get-Statsewbf;
                         Remove-Module -name "ewbf"
-                    } catch { Get-OhNo } 
+                    } catch { Global:Get-OhNo } 
                 }
                 'ccminer' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\ccminer.psm1"; 
-                        Get-StatsCcminer;
+                        Global:Get-StatsCcminer;
                         Remove-Module -name "ccminer"
-                    } catch { Get-OhNo } 
+                    } catch { Global:Get-OhNo } 
                 }
                 'bminer' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\bminer.psm1"; 
-                        Get-StatsBminer;
+                        Global:Get-StatsBminer;
                         Remove-Module -name "bminer"
-                    } catch { Get-OhNo } 
+                    } catch { Global:Get-OhNo } 
                 }
                 'trex' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\trex.psm1"; 
-                        Get-StatsTrex;
+                        Global:Get-StatsTrex;
                         Remove-Module -name "trex"
-                    } catch { Get-OhNo } 
+                    } catch { Global:Get-OhNo } 
                 }
                 'dstm' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\dstm.psm1"; 
-                        Get-Statsdstm;
+                        Global:Get-Statsdstm;
                         Remove-Module -name "dstm"
-                    } catch { Get-OhNo } 
+                    } catch { Global:Get-OhNo } 
                 }
                 'lolminer' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\lolminer.psm1"; 
-                        Get-Statslolminer;
+                        Global:Get-Statslolminer;
                         Remove-Module -name "lolminer"
-                    } catch { Get-OhNo } 
+                    } catch { Global:Get-OhNo } 
                 }
                 'sgminer-gm' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\sgminer.psm1"; 
-                        Get-StatsSgminer;
+                        Global:Get-StatsSgminer;
                         Remove-Module -name "sgminer"
-                    } catch { Get-OhNo } 
+                    } catch { Global:Get-OhNo } 
                 }
                 'cpuminer' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\cpuminer.psm1"; 
-                        Get-Statscpuminer;
+                        Global:Get-Statscpuminer;
                         Remove-Module -name "cpuminer"
-                    } catch { Get-OhNo } 
+                    } catch { Global:Get-OhNo } 
                 }
                 'xmrstak' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\xmrstak.psm1"; 
-                        Get-Statsxmrstak;
+                        Global:Get-Statsxmrstak;
                         Remove-Module -name "xmrstak"
-                    } catch { Get-OhNo } 
+                    } catch { Global:Get-OhNo } 
                 }
                 'xmrig-opt' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\xmrigopt.psm1"; 
-                        Get-Statsxmrigopt;
+                        Global:Get-Statsxmrigopt;
                         Remove-Module -name "xmrigopt"
-                    } catch { Get-OhNo } 
+                    } catch { Global:Get-OhNo } 
                 }
                 'wildrig' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\wildrig.psm1"; 
-                        Get-Statswildrig
+                        Global:Get-Statswildrig
                         Remove-Module -name "wildrig"
-                    } catch { Get-OhNo } 
+                    } catch { Global:Get-OhNo } 
                 }
                 'cgminer' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\cgminer.psm1"; 
-                        Get-Statscgminer
+                        Global:Get-Statscgminer
                         Remove-Module -name "cgminer"
-                    } catch { Get-OhNo } 
+                    } catch { Global:Get-OhNo } 
                 }
                 'nebutech' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\nbminer.psm1"; 
-                        Get-StatsNebutech
+                        Global:Get-StatsNebutech
                         Remove-Module -name "nbminer"
-                    } catch { Get-OhNo } 
+                    } catch { Global:Get-OhNo } 
                 }
                 'srbminer' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\srbminer.psm1"; 
-                        Get-Statssrbminer
+                        Global:Get-Statssrbminer
                         Remove-Module -name "srbminer"
-                    } catch { Get-OhNo } 
+                    } catch { Global:Get-OhNo } 
                 }
                 'multiminer' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\multiminer.psm1"; 
-                        Get-Statsmultiminer
+                        Global:Get-Statsmultiminer
                         Remove-Module -name "multiminer"
-                    } catch { Get-OhNo } 
+                    } catch { Global:Get-OhNo } 
                 }
             }
 
@@ -556,7 +556,7 @@ HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
     if ($global:Websites) {
         Global:Add-Module "$($(v).web)\methods.psm1"
         Global:Add-Module "$($(v).background)\webstats.psm1"
-        Send-WebStats
+        Global:Send-WebStats
     }
 
     if ($RestartTimer.Elapsed.TotalSeconds -le 10) {

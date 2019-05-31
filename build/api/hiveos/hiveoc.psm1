@@ -10,7 +10,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
-function Start-NVIDIAOC($NewOC) {
+function Global:Start-NVIDIAOC($NewOC) {
 
     $script = @()
     $script += "`$host.ui.RawUI.WindowTitle = `'OC-Start`';"
@@ -118,7 +118,7 @@ function Start-NVIDIAOC($NewOC) {
 }
 
 
-function Start-AMDOC($NewOC) {
+function Global:Start-AMDOC($NewOC) {
   
     $AMDOC = $NewOC | ConvertFrom-StringData
     $OCCount = Get-Content ".\build\txt\oclist.txt" | ConvertFrom-JSon

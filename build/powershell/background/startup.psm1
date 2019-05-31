@@ -1,4 +1,4 @@
-function Get-Params {
+function Global:Get-Params {
     $Global:stats.Add("summary", @{ })
     $Global:stats.Add("params", @{ })
     $Global:stats.Add("stats", @{ })
@@ -42,7 +42,7 @@ function Get-Params {
     }
 }
 
-function Set-Window {
+function Global:Set-Window {
     if ($global:Config.Params.Platform -eq "windows") {
         . .\build\powershell\scripts\icon.ps1 '.\build\apps\comb.ico'
         $Host.UI.RawUI.BackgroundColor = ($bckgrnd = 'Black'); $Host.UI.RawUI.ForegroundColor = 'White';
@@ -55,7 +55,7 @@ function Set-Window {
     }    
 }
 
-function Start-Servers {
+function Global:Start-Servers {
     ##Start API Server
     $Hive_Path = "/hive/bin"
     Write-Host "API Port is $($global:Config.Params.Port)";

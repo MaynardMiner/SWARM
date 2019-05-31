@@ -11,8 +11,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
-function Get-SexyUnixLogo {
-Write-Log "
+function Global:Get-SexyUnixLogo {
+Global:Write-Log "
 
                                                                                     BEWARE OF THE
                                                                       ███████╗██╗    ██╗ █████╗ ██████╗ ███╗   ███╗

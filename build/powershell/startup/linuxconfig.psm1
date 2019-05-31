@@ -1,5 +1,5 @@
 
-function Get-Data {
+function Global:Get-Data {
 
     if (Test-Path ".\build\bash\stats") {
         Copy-Item ".\build\bash\stats" -Destination "/usr/bin" -force | Out-Null
@@ -213,7 +213,7 @@ function Get-Data {
     
 }
 
-function Get-GPUCount {
+function Global:Get-GPUCount {
 
     $nvidiacounted = $false
     $amdcounted = $false
@@ -276,7 +276,7 @@ function Get-GPUCount {
 
     $global:Config.Params.Type | Foreach {
         if ($_ -like "*CPU*") {
-            Write-Log "Getting CPU Count"
+            Global:Write-Log "Getting CPU Count"
             for ($i = 0; $i -lt $global:Config.Params.CPUThreads; $i++) { 
                 $DeviceList.CPU.Add("$($i)", $i)
             }
@@ -291,10 +291,10 @@ function Get-GPUCount {
     
 }
 
-function Start-LinuxConfig {
+function Global:Start-LinuxConfig {
 
     ## Kill Previous Screens
-    start-killscript
+    Global:start-killscript
 
     ## Check if this is a hive-os image
     ## If HiveOS "Yes" Connect To Hive (Not Ready Yet)
@@ -334,56 +334,56 @@ function Start-LinuxConfig {
             if ($global:Config.Params.Type -like "*NVIDIA*" -or $global:Config.Params.Type -like "*AMD*") {
                 Invoke-Expression ".\build\bash\libc.sh" | Tee-Object -Variable libc | Out-Null
                 Invoke-Expression ".\build\bash\libv.sh" | Tee-Object -Variable libv | Out-Null
-                $libc | % { write-log $_ }
+                $libc | % { Global:Write-Log $_ }
                 Start-Sleep -S 1
-                $libv | % { write-log $_ }
+                $libv | % { Global:Write-Log $_ }
                 Start-Sleep -S 1
             }
 
-            write-log "Clearing Trash Folder"
+            Global:Write-Log "Clearing Trash Folder"
             Invoke-Expression "rm -rf .local/share/Trash/files/*" | Tee-Object -Variable trash | Out-Null
-            $Trash | % { Write-Log $_ }
+            $Trash | % { Global:Write-Log $_ }
         }
 
         ## Set Cuda for commands
         if ($global:Config.Params.Type -like "*NVIDIA*") { $global:Config.Params.Cuda | Set-Content ".\build\txt\cuda.txt" }
 
         ## Get Total GPU Count
-        $Global:GPU_Count = Get-GPUCount
+        $Global:GPU_Count = Global:Get-GPUCount
     
         ## Let User Know What Platform commands will work for- Will always be Group 1.
         if ($global:Config.Params.Type -like "*NVIDIA1*") {
             "NVIDIA1" | Out-File ".\build\txt\minertype.txt" -Force
-            write-Log "Group 1 is NVIDIA- Commands and Stats will work for NVIDIA1" -foreground yellow
+            Global:Write-Log "Group 1 is NVIDIA- Commands and Stats will work for NVIDIA1" -foreground yellow
             Start-Sleep -S 3
         }
         elseif ($global:Config.Params.Type -like "*AMD1*") {
             "AMD1" | Out-File ".\build\txt\minertype.txt" -Force
-            write-Log "Group 1 is AMD- Commands and Stats will work for AMD1" -foreground yellow
+            Global:Write-Log "Group 1 is AMD- Commands and Stats will work for AMD1" -foreground yellow
             Start-Sleep -S 3
         }
         elseif ($global:Config.Params.Type -like "*CPU*") {
             if ($Global:GPU_Count -eq 0) {
                 "CPU" | Out-File ".\build\txt\minertype.txt" -Force
-                write-Log "Group 1 is CPU- Commands and Stats will work for CPU" -foreground yellow
+                Global:Write-Log "Group 1 is CPU- Commands and Stats will work for CPU" -foreground yellow
                 Start-Sleep -S 3
             }
         }
         elseif ($global:Config.Params.Type -like "*ASIC*") {
             if ($global:GPU_Count -eq 0) {
                 "ASIC" | Out-File ".\build\txt\minertype.txt" -Force
-                write-Log "Group 1 is ASIC- Commands and Stats will work for ASIC" -foreground yellow
+                Global:Write-Log "Group 1 is ASIC- Commands and Stats will work for ASIC" -foreground yellow
             }
         }
     }
     
     ## Aaaaannnd...Que that sexy loading screen
-    Get-SexyUnixLogo
+    Global:Get-SexyUnixLogo
     Start-Process ".\build\bash\screentitle.sh" -Wait    
 
     ##Data and Hive Configs
-    write-Log "Getting Data" -ForegroundColor Yellow
-    Get-Data
+    Global:Write-Log "Getting Data" -ForegroundColor Yellow
+    Global:Get-Data
 
     ## Set Arguments/New Parameters
     if ($global:Config.hive_params.HiveID) {

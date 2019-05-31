@@ -11,13 +11,13 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
-function Get-Version {
+function Global:Get-Version {
 $global:Version = Get-Content ".\h-manifest.conf" | ConvertFrom-StringData
 $global:Version.CUSTOM_VERSION | Set-Content ".\build\txt\version.txt"
 $global:Version = $global:Version.CUSTOM_VERSION
 }
 
-function start-update {
+function Global:start-update {
     param (
         [Parameter(Mandatory = $false)]
         [String]$Update
@@ -37,8 +37,8 @@ function start-update {
 
         $StatsOnly = $null
 
-        Write-Log "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
-        Write-Log "Check $Location For any Previous Versions"
+        Global:Write-Log "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
+        Global:Write-Log "Check $Location For any Previous Versions"
 
         if ($IsWindows) {
             $Global:amd = Get-Content ".\config\update\amd-win.json" | ConvertFrom-Json
@@ -57,14 +57,14 @@ function start-update {
         $PreviousVersions | foreach {
             $PreviousPath = Join-Path "$Location" "$_"
             if (Test-Path $PreviousPath) {
-                Write-Log "Detected Previous Version"
-                Write-Log "Previous Version is $($PreviousPath)"
-                Write-Log "Gathering Old Version Config And HashRates- Then Deleting"
+                Global:Write-Log "Detected Previous Version"
+                Global:Write-Log "Previous Version is $($PreviousPath)"
+                Global:Write-Log "Gathering Old Version Config And HashRates- Then Deleting"
                 Start-Sleep -S 10
                 $ID = ".\build\pid\background_pid.txt"
                 if ($Global:Config.params.Platform -eq "windows") { Start-Sleep -S 10 }
                 if ($Global:Config.params.Platform -eq "windows") {
-                    Write-Log "Stopping Previous Agent"
+                    Global:Write-Log "Stopping Previous Agent"
                     if (Test-Path $ID) { $Agent = Get-Content $ID }
                     if ($Agent) { $BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue }
                     if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }
@@ -106,7 +106,7 @@ function start-update {
                             $NewJson = Join-Path $NewJson_Path "$ChangeFile";
                             if ($ChangeFile -notin $Exclude) {
                                 $JsonData = Get-Content $OldJson;
-                                Write-Log "Pulled $OldJson"
+                                Global:Write-Log "Pulled $OldJson"
 
                                 try{$Data = $JsonData | ConvertFrom-Json -ErrorAction Stop} catch{}
 
@@ -218,7 +218,7 @@ function start-update {
                                 }
 
                                 $Data | ConvertTo-Json -Depth 3 | Set-Content $NewJson;
-                                Write-Log "Wrote To $NewJson"
+                                Global:Write-Log "Wrote To $NewJson"
                             }
                         }
                     }
@@ -230,11 +230,11 @@ function start-update {
                         $NewName = $ChangeFile -Replace ".json", "";
                         $NameJson = Join-Path ".\config\miners" "$ChangeFile";
                         $JsonData = Get-Content $NameJson;
-                        Write-Log "Pulled $NameJson"
+                        Global:Write-Log "Pulled $NameJson"
                         $Data = $JsonData | ConvertFrom-Json;
                         $Data | Add-Member "name" "$NewName" -ErrorAction SilentlyContinue
                         $Data | ConvertTo-Json -Depth 3 | Set-Content $NameJson;
-                        Write-Log "Wrote To $NameJson"
+                        Global:Write-Log "Wrote To $NameJson"
                     }
 
                     $Global:amd.PSobject.Properties.Name | ForEach-Object {
@@ -247,7 +247,7 @@ function start-update {
                                 if (Test-Path $SWARMV) {    
                                     $GetVersion = Get-Content "$Minerpath1\swarm-version.txt"
                                     if ($GetVersion -eq $Global:amd.$_.version) {
-                                        Write-Log "Moving $MinerPath1"
+                                        Global:Write-Log "Moving $MinerPath1"
                                         Move-Item $MinerPath1 $NewMinerPath1
                                     }
                                 }
@@ -265,7 +265,7 @@ function start-update {
                                 if (Test-Path $SWARMV) {
                                     $GetVersion = Get-Content $SwarmV
                                     if ($GetVersion -eq $Global:cpu.$_.version) {
-                                        Write-Log "Moving $MinerPath1"
+                                        Global:Write-Log "Moving $MinerPath1"
                                         Move-Item $MinerPath1 $NewMinerPath1
                                     }
                                 }
@@ -292,7 +292,7 @@ function start-update {
                                 if (Test-Path $SWARMV) {
                                     $GetVersion = Get-Content $SwarmV
                                     if ($GetVersion -eq $Global:nvidia.$_.version) {
-                                        Write-Log "Moving $MinerPath1"
+                                        Global:Write-Log "Moving $MinerPath1"
                                         Move-Item $MinerPath1 $NewMinerPath1
                                     }
                                 }
@@ -302,7 +302,7 @@ function start-update {
                                 if (Test-Path $SWARMV) {
                                     $GetVersion = Get-Content $SwarmV
                                     if ($GetVersion -eq $Global:nvidia.$_.version) {
-                                        Write-Log "Moving $MinerPath2"
+                                        Global:Write-Log "Moving $MinerPath2"
                                         Move-Item $MinerPath2 $NewMinerPath2
                                     }
                                 }
@@ -313,7 +313,7 @@ function start-update {
                                     $GetVersion = Get-Content $SwarmV
                                     $GetVersion = Get-Content "$Minerpath3\swarm-version.txt"
                                     if ($GetVersion -eq $Global:nvidia.$_.version) {
-                                        Write-Log "Moving $MinerPath3"
+                                        Global:Write-Log "Moving $MinerPath3"
                                         Move-Item $MinerPath3 $NewMinerPath3
                                     }
                                 }
@@ -328,7 +328,7 @@ function start-update {
     }
 }
 
-function Start-AgentCheck {
+function Global:Start-AgentCheck {
 
     $($(v).dir) | Set-Content ".\build\cmd\dir.txt"
 
@@ -337,17 +337,17 @@ function Start-AgentCheck {
 
     ##First remove old Paths, in case this is an update / new dir
     $oldpathlist = "$oldpath" -split ";"
-    $oldpathlist | ForEach-Object { if ($_ -like "*SWARM*" -and $_ -notlike "*$($(v).dir)\build\cmd*" ) { Set-NewPath "remove" "$($_)" } }
+    $oldpathlist | ForEach-Object { if ($_ -like "*SWARM*" -and $_ -notlike "*$($(v).dir)\build\cmd*" ) { Global:Set-NewPath "remove" "$($_)" } }
 
     if ($oldpath -notlike "*;$($(v).dir)\build\cmd*") {
-        write-Log "
+        Global:Write-Log "
 Setting Path Variable For Commands: May require reboot to use.
 " -ForegroundColor Yellow
         $newpath = "$($(v).dir)\build\cmd"
-        Set-NewPath "add" $newpath
+        Global:Set-NewPath "add" $newpath
     }
     $newpath = "$oldpath;$($(v).dir)\build\cmd"
-    write-Log "Stopping Previous Agent"
+    Global:Write-Log "Stopping Previous Agent"
     $ID = ".\build\pid\background_pid.txt"
     if (Test-Path $ID) { $Agent = Get-Content $ID }
     if ($Agent) { $BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue }

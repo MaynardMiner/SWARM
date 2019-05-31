@@ -1,4 +1,4 @@
-function Get-Parameters {
+function Global:Get-Parameters {
     $Global:config.add("params", @{ })
     $Global:Config.add("user_params",@{ })
     $Global:Config.add("hive_params",@{})

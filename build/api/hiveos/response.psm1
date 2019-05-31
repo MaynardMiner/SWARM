@@ -10,7 +10,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
-function Set-Stats($Site) {
+function Global:Set-Stats($Site) {
     Switch($Site){
         "HiveOS" {$Params = "hive_params"}
         "SWARM" {$Params = "Swarm_Params"}
@@ -57,7 +57,7 @@ function Set-Stats($Site) {
     $Stats
 }
 
-function Set-Response {
+function Global:Set-Response {
     Param(
         [Parameter(Mandatory = $false)]
         [string]$method,

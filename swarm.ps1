@@ -100,11 +100,11 @@ Import-Module "$($(v).global)\include.psm1" -Scope Global
 
 ## Get Parameters
 Global:Add-Module "$($(v).startup)\parameters.psm1"
-Get-Parameters
+Global:Get-Parameters
 
 ## Crash Reporting
 Global:Add-Module "$($(v).startup)\crashreport.psm1"
-Start-CrashReporting
+Global:Start-CrashReporting
 
 ## Start The Log
 Global:Add-Module "$($(v).startup)\startlog.psm1"
@@ -112,17 +112,17 @@ $($(v).dir) | Set-Content ".\build\bash\dir.sh";
 $(v).Add("LogNum",1)
 $global:LogNum = 1;
 $global:logname = $null
-start-log -Number $global:LogNum;
+Global:Start-Log -Number $global:LogNum;
 
 ## Initiate Update Check
 Global:Add-Module "$($(v).startup)\remoteagent.psm1"
 if ($global:Config.Params.Platform -eq "Windows" -or $global:Config.Params.Update -eq "Yes") { 
-    Get-Version
-    start-update -Update $Getupdates
+    Global:Get-Version
+    Global:Start-Update -Update $Getupdates
 }
 if ($global:Config.Params.Platform -eq "windows") { 
     Global:Add-Module "$($(v).startup)\getconfigs.psm1"
-    Start-AgentCheck 
+    Global:Start-AgentCheck 
 }
 
 ## create debug/command folder
@@ -134,23 +134,23 @@ Global:Add-Module "$($(v).startup)\datafiles.psm1"
 $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
 [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
 
-Get-DateFiles
-Clear-Stats
-Get-ArgNotice
-Set-NewType
+Global:Get-DateFiles
+Global:Clear-Stats
+Global:Get-ArgNotice
+Global:Set-NewType
 if ($global:Config.Params.SWARM_Mode -eq "Yes") {
-    write-Log "Sycronizing Time Through Nist" -ForegroundColor Yellow
-    $Sync = Get-Nist
+    Global:Write-Log "Sycronizing Time Through Nist" -ForegroundColor Yellow
+    $Sync = Global:Get-Nist
     try {
         Set-Date $Sync -ErrorAction Stop 
     }
     catch { 
-        write-Log "Failed to syncronize time- Are you root/administrator?" -ForegroundColor red; 
+        Global:Write-Log "Failed to syncronize time- Are you root/administrator?" -ForegroundColor red; 
         Start-Sleep -S 5 
     }
 }
 ##HiveOS Confirmation
-write-Log "HiveOS = $($global:Config.Params.HiveOS)"
+Global:Write-Log "HiveOS = $($global:Config.Params.HiveOS)"
 
 #Startings Settings (Non User Arguments):
 $global:Instance = 1
@@ -191,12 +191,12 @@ switch ($global:Config.params.Platform) {
     "linux" {
         Global:Add-Module "$($(v).startup)\linuxconfig.psm1"
         Global:Add-Module "$($(v).startup)\sexyunixlogo.psm1"
-        Start-LinuxConfig 
+        Global:Start-LinuxConfig 
     }
     "windows" { 
         Global:Add-Module "$($(v).startup)\winconfig.psm1"
         Global:Add-Module "$($(v).startup)\sexywinlogo.psm1"
-        Start-WindowsConfig 
+        Global:Start-WindowsConfig 
     }
 }
 
@@ -205,8 +205,8 @@ if ($global:Config.Params.Type -like "*AMD*") {
     if ([string]$global:Config.Params.CLPlatform) { $Global:AMDPlatform = [string]$global:Config.Params.CLPlatform }
     else {
         Global:Add-Module "$($(v).startup)\cl.psm1"
-        [string]$global:AMDPlatform = get-AMDPlatform
-        write-Log "AMD OpenCL Platform is $Global:AMDPlatform"
+        [string]$global:AMDPlatform = Global:Get-AMDPlatform
+        Global:Write-Log "AMD OpenCL Platform is $Global:AMDPlatform"
     }
 }
 
@@ -218,7 +218,7 @@ if ($global:Config.Params.Type -like "*NVIDIA*" -or $global:Config.Params.Type -
     if ($global:Config.Params.CPUThreads -ne 0) { $CPUCount = @(); for ($i = 0; $i -lt $global:Config.Params.CPUThreads; $i++) { [string]$CPUCount += "$i," } }
     if ($Global:GPU_Count -eq 0) { $Device_Count = $global:Config.Params.CPUThreads }
     else { $Device_Count = $Global:GPU_Count }
-    write-Log "Device Count = $Device_Count" -foregroundcolor green
+    Global:Write-Log "Device Count = $Device_Count" -foregroundcolor green
     Start-Sleep -S 2
 
     if ([string]$global:Config.Params.GPUDevices1) {
@@ -241,11 +241,11 @@ if ($global:Config.Params.Type -like "*NVIDIA*" -or $global:Config.Params.Type -
 
 ##Start New Agent
 Global:Add-Module "$($(v).startup)\getconfigs.psm1"
-write-Log "Starting New Background Agent" -ForegroundColor Cyan
-if ($global:Config.Params.Platform -eq "windows") { Start-Background }
+Global:Write-Log "Starting New Background Agent" -ForegroundColor Cyan
+if ($global:Config.Params.Platform -eq "windows") { Global:Start-Background }
 elseif ($global:Config.Params.Platform -eq "linux") { Start-Process ".\build\bash\background.sh" -ArgumentList "background $($($(v).dir))" -Wait }
 
-Add-LogErrors
+Global:Add-LogErrors
 Global:Remove-Modules
 
 $global:BusData = $Null
@@ -281,44 +281,44 @@ While ($true) {
 
         #Get Miner Config Files
         Global:Add-Module "$($(v).build)\miners.psm1"
-        if ($global:Config.Params.Type -like "*CPU*") { $Global:cpu = get-minerfiles -Types "CPU" }
-        if ($global:Config.Params.Type -like "*NVIDIA*") { $Global:nvidia = get-minerfiles -Types "NVIDIA" -Cudas $global:Config.Params.Cuda }
-        if ($global:Config.Params.Type -like "*AMD*") { $Global:amd = get-minerfiles -Types "AMD" }
+        if ($global:Config.Params.Type -like "*CPU*") { $Global:cpu = Global:Get-minerfiles -Types "CPU" }
+        if ($global:Config.Params.Type -like "*NVIDIA*") { $Global:nvidia = Global:Get-minerfiles -Types "NVIDIA" -Cudas $global:Config.Params.Cuda }
+        if ($global:Config.Params.Type -like "*AMD*") { $Global:amd = Global:Get-minerfiles -Types "AMD" }
 
         ## Check to see if wallet is present:
         if (-not $global:Config.Params.Wallet1) { 
-            write-Log "missing wallet1 argument, exiting in 5 seconds" -ForeGroundColor Red; 
+            Global:Write-Log "missing wallet1 argument, exiting in 5 seconds" -ForeGroundColor Red; 
             Start-Sleep -S 5; 
             exit 
         }
 
         ## Load Miner Configurations
         Global:Add-Module "$($(v).build)\configs.psm1"
-        Get-MinerConfigs
+        Global:Get-MinerConfigs
         $global:Config.Pool_Algos = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
-        Add-ASICS
+        Global:Add-ASICS
         $global:oc_default = Get-Content ".\config\oc\oc-defaults.json" | ConvertFrom-Json
         $global:oc_algos = Get-Content ".\config\oc\oc-algos.json" | ConvertFrom-Json
 
         ##Manage Pool Bans
         Global:Add-Module "$($(v).build)\poolbans.psm1"
-        Start-PoolBans
+        Global:Start-PoolBans
 
 
         ## Handle Wallet Stuff / Bans
         Global:Add-Module "$($(v).build)\wallets.psm1"
-        Set-Donation
-        Get-Wallets
+        Global:Set-Donation
+        Global:Get-Wallets
         . .\build\powershell\scripts\bans.ps1 "add" $global:Config.Params.Bans "process" | Out-Null
-        Add-Algorithms
-        Set-Donation
+        Global:Add-Algorithms
+        Global:Set-Donation
         if ($global:Config.Params.Coin.Count -eq 1 -and $global:Config.Params.Coin -ne "") { $global:Config.Params.Auto_Coin = "No" }
 
         # Pricing and Clearing Timeouts 
         Global:Add-Module "$($(v).build)\pricing.psm1"
-        Get-Watts
-        Get-Pricing
-        Clear-Timeouts
+        Global:Get-Watts
+        Global:Get-Pricing
+        Global:Clear-Timeouts
 
         Global:Remove-Modules
         $Screen = $null
@@ -358,9 +358,9 @@ While ($true) {
 
 
         Global:Add-Module "$($(v).pool)\initial.psm1"
-        Get-PoolTables
-        Remove-BanHashrates
-        $global:Miner_HashTable = Get-MinerHashTable
+        Global:Get-PoolTables
+        Global:Remove-BanHashrates
+        $global:Miner_HashTable = Global:Get-MinerHashTable
         ##Add Global Modules - They Get Removed in Above Function
         Global:Remove-Modules
         . .\build\powershell\global\modules.ps1
@@ -369,8 +369,8 @@ While ($true) {
 
         ##Get Algorithm Pools
         Global:Add-Module "$($(v).pool)\gather.psm1"
-        Get-AlgoPools
-        Get-CoinPools
+        Global:Get-AlgoPools
+        Global:Get-CoinPools
         Global:Remove-Modules
         Clear-Variable -Name "FeeTable" -ErrorAction Ignore -Scope Global
         Clear-Variable -Name "divisortable" -ErrorAction Ignore -Scope Global
@@ -397,8 +397,8 @@ While ($true) {
 
         ##Load The Miners
         Global:Add-Module "$($(v).miner)\gather.psm1"
-        Get-AlgoMiners
-        Get-CoinMiners
+        Global:Get-AlgoMiners
+        Global:Get-CoinMiners
 
         ##Send error if no miners found
         if ($Global:Miners.Count -eq 0) {
@@ -409,14 +409,14 @@ While ($true) {
                     $Sel = $_
                     try {
                         Global:Add-Module "$($(v).web)\methods.psm1"
-                        Get-WebModules $Sel
-                        $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
+                        Global:Get-WebModules $Sel
+                        $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
                     }
-                    catch { Write-Log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
-                    Remove-WebModules $sel
+                    catch { Global:Write-Log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
+                    Global:Remove-WebModules $sel
                 }
             }
-            Write-Log "$HiveMessage" -ForegroundColor Red
+            Global:Write-Log "$HiveMessage" -ForegroundColor Red
             start-sleep $global:Config.Params.Interval;
             continue  
         }
@@ -424,20 +424,20 @@ While ($true) {
         ##Sort The Miners
         Global:Add-Module "$($(v).miner)\sorting.psm1"
         if ($global:Config.Params.Volume -eq "Yes") { Get-Volume }
-        $CutMiners = Start-MinerReduction -SortMiners $Global:Miners -WattCalc $global:WattEX
+        $CutMiners = Global:Start-MinerReduction
         $CutMiners | ForEach-Object { $Global:Miners.Remove($_) } | Out-Null;
         $Global:Miners | ForEach-Object { $_.Symbol = $_.Symbol -replace "-Algo", ""; $_.Symbol = $_.Symbol -replace "-Coin", "" }
-        start-minersorting -SortMiners $Global:Miners -WattCalc $global:WattEX
-        Add-SwitchingThreshold
+        Global:Start-Sorting
+        Global:Add-SwitchingThreshold
 
         ##Choose The Best Miners
         Global:Add-Module "$($(v).miner)\choose.psm1"
         Remove-BadMiners
-        $global:Miners_Combo = Get-BestMiners
-        $global:bestminers_combo = Get-Conservative
+        $global:Miners_Combo = Global:Get-BestMiners
+        $global:bestminers_combo = Global:Get-Conservative
         $BestMiners_Selected = $global:bestminers_combo.Symbol
         $BestPool_Selected = $global:bestminers_combo.MinerPool
-        write-Log "Most Ideal Choice Is $($BestMiners_Selected) on $($BestPool_Selected)" -foregroundcolor green
+        Global:Write-Log "Most Ideal Choice Is $($BestMiners_Selected) on $($BestPool_Selected)" -foregroundcolor green
 
         Global:Remove-Modules
         $global:Algorithm = $null
@@ -484,26 +484,26 @@ While ($true) {
         ## Add New Miners- Download if neccessary
         ## Ammend Their Pricing
         Global:Add-Module "$($(v).control)\initial.psm1"
-        Start-MinerDownloads
-        Get-ActiveMiners $global:bestminers_combo
-        Get-BestActiveMiners
-        Get-ActivePricing
+        Global:Start-MinerDownloads
+        Global:Get-ActiveMiners $global:bestminers_combo
+        Global:Get-BestActiveMiners
+        Global:Get-ActivePricing
 
         ##Start / Stop / Restart Miners
         ##Handle OC
         Global:Add-Module "$($(v).control)\run.psm1"
         Global:Add-Module "$($(v).control)\launchcode.psm1"
         Global:Add-Module "$($(v).control)\config.psm1"
-        Stop-ActiveMiners
-        Start-NewMiners -Reason "Launch"
+        Global:Stop-ActiveMiners
+        Global:Start-NewMiners -Reason "Launch"
 
         ##Determing Interval
         Global:Add-Module "$($(v).control)\notify.psm1"
-        Get-LaunchNotification
-        Get-Interval
+        Global:Get-LaunchNotification
+        Global:Get-Interval
         ##Get Shares
-        write-Log "Getting Coin Tracking From Pool" -foregroundColor Cyan
-        if ($global:Config.params.Track_Shares -eq "Yes") { Get-CoinShares }
+        Global:Write-Log "Getting Coin Tracking From Pool" -foregroundColor Cyan
+        if ($glbal:Config.params.Track_Shares -eq "Yes") { Global:Get-CoinShares }
 
         Global:Remove-Modules
         $global:oc_algos = $null
@@ -531,28 +531,28 @@ While ($true) {
 
         ## Clear Old Commands Data
         Global:Add-Module "$($(v).run)\initial.psm1"
-        Get-ExchangeRate
-        Get-ScreenName
+        Global:Get-ExchangeRate
+        Global:Get-ScreenName
         $Global:Miners | ConvertTo-Json -Depth 4 | Set-Content ".\build\txt\profittable.txt"
-        Clear-Commands
+        Global:Clear-Commands
         Get-Date | Out-File ".\build\txt\minerstats.txt"
         Get-Date | Out-File ".\build\txt\charts.txt"
-        Get-MinerStatus | Out-File ".\build\txt\minerstats.txt" -Append
-        Get-Charts | Out-File ".\build\txt\charts.txt" -Append
+        Global:Get-MinerStatus | Out-File ".\build\txt\minerstats.txt" -Append
+        Global:Get-Charts | Out-File ".\build\txt\charts.txt" -Append
 
         ## Refreshing Pricing Data
         Global:Add-Module "$($(v).run)\commands.psm1"
-        Get-PriceMessage
-        Get-Commands
+        Global:Get-PriceMessage
+        Global:Get-Commands
         $Global:Miners.Clear()
-        Get-Logo
-        Update-Logging
+        Global:Get-Logo
+        Global:Update-Logging
         Get-Date | Out-File ".\build\txt\mineractive.txt"
-        Get-MinerActive | Out-File ".\build\txt\mineractive.txt" -Append
+        Global:Get-MinerActive | Out-File ".\build\txt\mineractive.txt" -Append
 
         ##Start SWARM Loop
         Global:Add-Module "$($(v).run)\loop.psm1"
-        Start-MinerLoop
+        Global:Start-MinerLoop
 
         Global:Remove-Modules
         [GC]::Collect()
@@ -576,7 +576,7 @@ While ($true) {
         $global:ActiveSymbol = @()
 
         ##Try To Benchmark
-        Start-Benchmark
+        Global:Start-Benchmark
 
         ##############################################################################
         #######                       End Phase 6                               ######
@@ -586,7 +586,7 @@ While ($true) {
 
     }until($Error.Count -gt 0)
     Import-Module "$($(v).global)\include.psm1" -Scope Global
-    Add-LogErrors
+    Global:Add-LogErrors
     Global:Remove-Modules
     continue;
 }

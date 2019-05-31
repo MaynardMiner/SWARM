@@ -1,6 +1,6 @@
 
 
-function Get-RigData($CPlat) {
+function Global:Get-RigData($CPlat) {
 
     Switch ($CPlat) {
         "windows" {
@@ -46,7 +46,7 @@ function Get-RigData($CPlat) {
             $RigData.cpu.Add("cores", $cpucores)
             $cpuid = $cpud.DeviceID
             $RigData.cpu.Add("cpu_id", $cpuid)
-            Write-Log "Running Coreinfo For AES detection" -ForegroundColor Yellow
+            Global:Write-Log "Running Coreinfo For AES detection" -ForegroundColor Yellow
             Invoke-Expression ".\build\apps\Coreinfo.exe" | Tee-Object -Variable AES | Out-Null
             $AES = $AES | Select-String "Supports AES extensions"
             if ($AES) { $HasAES = 1 }else { $HasAES = 0 }
@@ -83,7 +83,7 @@ function Get-RigData($CPlat) {
 
 }
 
-function Invoke-WebCommand {
+function Global:Invoke-WebCommand {
     Param (
         [Parameter(ValueFromPipeline = $true)]
         $InputObject,
@@ -137,7 +137,7 @@ function Invoke-WebCommand {
     $Return
 }
 
-function Get-WebModules {
+function Global:Get-WebModules {
     Param(
         [Parameter(Position=0,Mandatory=$true)]
         [string]$Site
@@ -150,7 +150,7 @@ function Get-WebModules {
     $Web_Mods | %{ Global:Add-Module $_.FullName}
 }
 
-function Remove-WebModules {
+function Global:Remove-WebModules {
     Param(
         [Parameter(Position=0,Mandatory=$true)]
         [string]$Site

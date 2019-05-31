@@ -11,7 +11,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #> 
 
-function Start-Webcommand {
+function Global:Start-Webcommand {
     Param(
         [Parameter(Mandatory = $false)]
         [Object]$Command,

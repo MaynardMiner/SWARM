@@ -1,4 +1,4 @@
-function Get-HiveServer {
+function Global:Get-HiveServer {
 
     $Runspace = [runspacefactory]::CreateRunspace()
     $Runspace.Open()

@@ -1,4 +1,4 @@
-function Start-Background {
+function Global:Start-Background {
   
     $BackgroundTimer = New-Object -TypeName System.Diagnostics.Stopwatch
     $command = Start-Process "pwsh" -WorkingDirectory "$($(v).dir)\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -NoExit -windowstyle minimized -command `"&{`$host.ui.RawUI.WindowTitle = `'Background Agent`'; &.\Background.ps1 -WorkingDir `'$($(v).dir)`'}`"" -WindowStyle Minimized -PassThru -Verb Runas
@@ -6,14 +6,14 @@ function Start-Background {
     $BackgroundTimer.Restart()
     do {
         Start-Sleep -S 1
-        write-log "Getting Process ID for Background Agent"
+        Global:Write-Log "Getting Process ID for Background Agent"
         $ProcessId = if (Test-Path ".\build\pid\background_pid.txt") {Get-Content ".\build\pid\background_pid.txt"}
         if ($ProcessID -ne $null) {$Process = Get-Process $ProcessId -ErrorAction SilentlyContinue}
     }until($ProcessId -ne $null -or ($BackgroundTimer.Elapsed.TotalSeconds) -ge 10)  
     $BackgroundTimer.Stop()
 }
 
-function Set-NewPath {
+function Global:Set-NewPath {
     param (
      [Parameter(Mandatory=$true,Position=0)]
      [string]$Action,
@@ -40,7 +40,7 @@ function Set-NewPath {
 }
 
 
-function Start-AgentCheck {
+function Global:Start-AgentCheck {
 
     $($(v).dir) | Set-Content ".\build\cmd\dir.txt"
 
@@ -49,17 +49,17 @@ function Start-AgentCheck {
 
     ##First remove old Paths, in case this is an update / new dir
     $oldpathlist = "$oldpath" -split ";"
-    $oldpathlist | ForEach-Object { if ($_ -like "*SWARM*" -and $_ -notlike "*$($(v).dir)\build\cmd*" ) { Set-NewPath "remove" "$($_)" } }
+    $oldpathlist | ForEach-Object { if ($_ -like "*SWARM*" -and $_ -notlike "*$($(v).dir)\build\cmd*" ) { Global:Set-NewPath "remove" "$($_)" } }
 
     if ($oldpath -notlike "*;$($(v).dir)\build\cmd*") {
-        write-Log "
+        Global:Write-Log "
 Setting Path Variable For Commands: May require reboot to use.
 " -ForegroundColor Yellow
         $newpath = "$($(v).dir)\build\cmd"
-        Set-NewPath "add" $newpath
+        Global:Set-NewPath "add" $newpath
     }
     $newpath = "$oldpath;$($(v).dir)\build\cmd"
-    write-Log "Stopping Previous Agent"
+    Global:Write-Log "Stopping Previous Agent"
     $ID = ".\build\pid\background_pid.txt"
     if (Test-Path $ID) { $Agent = Get-Content $ID }
     if ($Agent) { $BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue }

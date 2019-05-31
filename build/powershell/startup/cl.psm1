@@ -1,4 +1,4 @@
-function get-AMDPlatform {
+function Global:get-AMDPlatform {
 
     if ($Global:Config.Params.Platform -eq "linux") {
         $A = Invoke-Expression ".\build\apps\getplatforms" | Tee-Object -Variable amdclplatform

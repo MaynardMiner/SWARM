@@ -1,4 +1,4 @@
-function Get-CoinShares {
+function Global:Get-CoinShares {
 
     . .\build\api\pools\zergpool.ps1;
     . .\build\api\pools\nlpool.ps1;    

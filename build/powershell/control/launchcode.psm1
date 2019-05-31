@@ -11,7 +11,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
-function Remove-ASICPools {
+function Global:Remove-ASICPools {
     param (
         [Parameter(Mandatory = $true, Position = 0)]
         [string]$AIP,
@@ -26,12 +26,12 @@ function Remove-ASICPools {
     Switch ($Name) {
         "cgminer" {
             $ASICM = "cgminer"
-            Write-Log "Clearing all previous cgminer pools." -ForegroundColor "Yellow"
+            Global:Write-Log "Clearing all previous cgminer pools." -ForegroundColor "Yellow"
             $ASIC_Pools.Add($ASICM, @{ })
             ##First we need to discover all pools
             $Commands = @{command = "pools"; parameter = 0 } | ConvertTo-Json -Compress
             $response = $Null
-            $response = Get-TCP -Server $AIP -Port $Port -Message $Commands -Timeout 10
+            $response = Global:Get-TCP -Server $AIP -Port $Port -Message $Commands -Timeout 10
             if ($response) {
                 ##Windows screws up last character
                 if ($response[-1] -notmatch "}") { $response = $Response.Substring(0, $Response.Length - 1) }
@@ -42,16 +42,16 @@ function Remove-ASICPools {
                     $PoolNo = $($ASIC_Pools.$ASICM.$_)
                     $Commands = @{command = "removepool"; parameter = "$PoolNo" } | ConvertTo-Json -Compress; 
                     $response = $Null; 
-                    $response = Get-TCP -Server $AIP -Port $Port -Message $Commands -Timeout 10
+                    $response = Global:Get-TCP -Server $AIP -Port $Port -Message $Commands -Timeout 10
                     $response
                 }
             }
-            else { Write-Log "WARNING: Failed To Gather cgminer Pool List!" -ForegroundColor Yellow }
+            else { Global:Write-Log "WARNING: Failed To Gather cgminer Pool List!" -ForegroundColor Yellow }
         }
     }
 }
 
-function Start-LaunchCode {
+function Global:Start-LaunchCode {
 
     param(
         [Parameter(Mandatory = $true)]
@@ -111,7 +111,7 @@ function Start-LaunchCode {
                             $CommandFilePath = Join-Path $($(v).dir) "$($MinerDirectory)\command.json"
                             $MinerArguments = "-c command.json -p $($MinerCurrent.Port)"
                             $NHDevices = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
-                            $NiceDevices = Get-DeviceString -TypeCount $NHDevices.NVIDIA.Count
+                            $NiceDevices = Global:Get-DeviceString -TypeCount $NHDevices.NVIDIA.Count
                             set-nicehash $($MinerCurrent.NPool) 3200 $($MinerCurrent.NUser) $($MinerCurrent.Algo) $($MinerCurrent.CommandFile) "$NiceDevices"
                         }
                         "grin-miner" { set-minerconfig $NewMiner $Logs }
@@ -127,7 +127,7 @@ function Start-LaunchCode {
                     switch ($MinerCurrent.DeviceCall) {
                         "claymore" { $MinerArguments = "-di $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "xmrstak" { $MinerArguments = "$($MinerCurrent.Arguments)" }
-                        "sgminer-gm" { Write-Log "Miner Has Devices"; $MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
+                        "sgminer-gm" { Global:Write-Log "Miner Has Devices"; $MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "tdxminer" { $MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "lolminer" { $MinerArguments = "--devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "wildrig" { $MinerArguments = "$($MinerCurrent.Arguments)" }
@@ -188,8 +188,8 @@ function Start-LaunchCode {
         }
 
         switch ($MinerCurrent.DeviceCall) {
-            "gminer" { Write-Log "SOME ALGOS MAY REQUIRE 6GB+ VRAM TO WORK" -ForegroundColor Green }
-            "bminer" { Write-Log "SOME ALGOS MAY REQUIRE 6GB+ VRAM TO WORK" -ForegroundColor Green }
+            "gminer" { Global:Write-Log "SOME ALGOS MAY REQUIRE 6GB+ VRAM TO WORK" -ForegroundColor Green }
+            "bminer" { Global:Write-Log "SOME ALGOS MAY REQUIRE 6GB+ VRAM TO WORK" -ForegroundColor Green }
         }
 
     
@@ -201,7 +201,7 @@ function Start-LaunchCode {
                 $WorkingDirectory = Join-Path $($(v).dir) $(Split-Path $($MinerCurrent.Path))
 
                 ##Classic Logo For Windows
-                Write-Log "
+                Global:Write-Log "
             ______________
           /.----------..-'
    -.     ||           \\
@@ -349,7 +349,7 @@ function Start-LaunchCode {
             $Daemon | Set-Content ".\build\bash\config.sh" -Force
 
             ##Classic Logo For Linux
-            Write-Log "
+            Global:Write-Log "
          ______________
        /.----------..-'
 -.     ||           \\
@@ -389,7 +389,7 @@ function Start-LaunchCode {
             Start-Process ".\build\bash\killcx.sh" -ArgumentList $MinerCurrent.Port
 
             ##Notification To User That Miner Is Attempting To start
-            Write-Log "Starting $($MinerCurrent.Name) Mining $($MinerCurrent.Symbol) on $($MinerCurrent.Type)" -ForegroundColor Cyan
+            Global:Write-Log "Starting $($MinerCurrent.Name) Mining $($MinerCurrent.Symbol) on $($MinerCurrent.Type)" -ForegroundColor Cyan
 
             ##FilePaths
             $Export = Join-Path $($(v).dir) "build\export"
@@ -449,7 +449,7 @@ function Start-LaunchCode {
                 #Sleep for 1 every second
                 Start-Sleep -S 1
                 #Write We Are getting ID
-                Write-Log "Getting Process ID for $($MinerCurrent.MinerName)"
+                Global:Write-Log "Getting Process ID for $($MinerCurrent.MinerName)"
                 if (Test-Path $PIDPath) { $MinerPID = Get-Content $PIDPath | Select-Object -First 1 }
                 ##Powershell Get Process Instance
                 if ($MinerPID) { $MinerProcess = Get-Process -ID $MinerPid -ErrorAction SilentlyContinue }
@@ -460,14 +460,14 @@ function Start-LaunchCode {
         }
     }
     else {
-        $clear = Remove-ASICPools $AIP $MinerCurrent.Port $MinerCurrent.API
+        $clear = Global:Remove-ASICPools $AIP $MinerCurrent.Port $MinerCurrent.API
         $Commands = "addpool|$($MinerCurrent.Arguments)"
-        Write-Log "Adding New Pool"
-        $response = Get-TCP -Server $AIP -Port $MinerCurrent.Port -Timeout 10 -Message $Commands
+        Global:Write-Log "Adding New Pool"
+        $response = Global:Get-TCP -Server $AIP -Port $MinerCurrent.Port -Timeout 10 -Message $Commands
         $response = $null
-        Write-Log "Switching To New Pool"
+        Global:Write-Log "Switching To New Pool"
         $Commands = "switchpool|1"
-        $response = Get-TCP -Server $AIP -Port $MinerCurrent.Port -Timeout 10 -Message $Commands
+        $response = Global:Get-TCP -Server $AIP -Port $MinerCurrent.Port -Timeout 10 -Message $Commands
         if ($response) { $MinerProcess = @{StartTime = (Get-Date); HasExited = $false }
         }
         $MinerProcess

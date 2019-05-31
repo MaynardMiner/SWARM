@@ -1,16 +1,16 @@
 
-function Get-OhNo {
+function Global:Get-OhNo {
     Write-Host "Failed To Collect Miner Data" -ForegroundColor Red
 }
 
-function Set-APIFailure {
+function Global:Set-APIFailure {
     Write-Host "API Summary Failed- Could Not Total Hashrate Or No Accepted Shares" -Foreground Red; 
     $global:RAW | Set-Content ".\build\txt\$global:MinerType-hash.txt";
 }
 
-function Get-GPUs { $GPU = $global:Devices[$i]; $Global:GCount.$($global:TypeS).$GPU };
+function Global:Get-GPUs { $GPU = $global:Devices[$i]; $Global:GCount.$($global:TypeS).$GPU };
 
-function Write-MinerData1 {
+function Global:Write-MinerData1 {
     Write-Host " "
     Write-Host "Miner $global:MinerType is $global:MinerAPI api"
     Write-Host "Miner Port is $global:Port"
@@ -18,12 +18,12 @@ function Write-MinerData1 {
     Write-Host "Miner is Mining $global:MinerAlgo"
 }
 
-function Write-MinerData2 {
+function Global:Write-MinerData2 {
     $global:MinerTable.ADD("$($global:MinerType)",$global:RAW)
-    Write-Host "Miner $global:Name was clocked at $($global:RAW | ConvertTo-Hash)/s" -foreground Yellow
+    Write-Host "Miner $global:Name was clocked at $( $global:RAW | Global:ConvertTo-Hash )/s" -foreground Yellow
 }
 
-function Set-Array {
+function Global:Set-Array {
     param(
         [Parameter(Position = 0, Mandatory = $true)]
         [Object]$ParseRates,

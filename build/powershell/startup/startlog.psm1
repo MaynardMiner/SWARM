@@ -1,4 +1,4 @@
-function start-log {
+function Global:start-log {
     param (
         [Parameter(Mandatory = $false)]
         [int]$Number

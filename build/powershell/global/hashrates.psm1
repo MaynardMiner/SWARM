@@ -11,7 +11,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
-function Get-TCP {
+function Global:Get-TCP {
      
     param(
         [Parameter(Mandatory = $false)]
@@ -48,7 +48,7 @@ function Get-TCP {
   
 }
 
-function Get-HTTP {
+function Global:Get-HTTP {
      
     param(
         [Parameter(Mandatory = $false)]
@@ -69,7 +69,7 @@ function Get-HTTP {
 }
 
 
-function Get-HashRate {
+function Global:Get-HashRate {
     param(
         [Parameter(Mandatory = $true)]
         [String]$Type
@@ -108,7 +108,7 @@ function Get-HashRate {
 
     $Response
 }
-filter ConvertTo-Hash {
+filter Global:ConvertTo-Hash {
     $Hash = $_
     switch ([math]::truncate([math]::log($Hash, [Math]::Pow(1000, 1)))) {
         0 {"{0:n2} H" -f ($Hash / [Math]::Pow(1000, 0))}
@@ -120,39 +120,27 @@ filter ConvertTo-Hash {
     }
 }
 
-filter ConvertTo-LogHash {
-    $Hash = $_
-    switch ([math]::truncate([math]::log($Hash, [Math]::Pow(1000, 1)))) {
-        0 {"{0:n2} `nhs" -f ($Hash / [Math]::Pow(1000, 0))}
-        1 {"{0:n2} `nkhs" -f ($Hash / [Math]::Pow(1000, 1))}
-        2 {"{0:n2} `nmhs" -f ($Hash / [Math]::Pow(1000, 2))}
-        3 {"{0:n2} `nghs" -f ($Hash / [Math]::Pow(1000, 3))}
-        4 {"{0:n2} `nths" -f ($Hash / [Math]::Pow(1000, 4))}
-        Default {"{0:n2} `nphs" -f ($Hash / [Math]::Pow(1000, 5))}
-    }
-}
-
-function Get-MinerHashRate {
+function Global:Get-MinerHashRate {
     $BestActiveMiners | ForEach-Object {
         if ($_.Profit_Day -ne "bench") { $ScreenProfit = "$(($_.Profit_Day * $global:Rates.$($global:Config.Params.Currency)).ToString("N2")) $($global:Config.Params.Currency)/Day" } else { $ScreenProfit = "Benchmarking" }
         if ($_.Fiat_Day -ne "bench") { $CurrentProfit = "$($_.Fiat_Day) $($global:Config.Params.Currency)/Day" } else { $CurrentProfit = "Benchmarking" }
         if ($null -eq $_.Xprocess -or $_.XProcess.HasExited) { $_.Status = "Failed" }
-        $Miner_HashRates = Get-HashRate -Type $_.Type
+        $Miner_HashRates = Global:Get-HashRate -Type $_.Type
         $NewName = $_.Algo -replace "`_","`-"
-        $GetDayStat = Get-Stat "$($_.Name)_$($NewName)_HashRate"
+        $GetDayStat = Global:Get-Stat "$($_.Name)_$($NewName)_HashRate"
         $DayStat = "$($GetDayStat.Hour)"
-        $MinerPrevious = "$($DayStat | ConvertTo-Hash)"
-        $ScreenHash = "$($Miner_HashRates | ConvertTo-Hash)"
-        Write-Log "$($_.Type) is currently" -foreground Green -NoNewLine -Start
-        if ($_.Status -eq "Running") { Write-Log " Running: " -ForegroundColor green -nonewline }
-        if ($_.Status -eq "Failed") { Write-Log " Not Running: " -ForegroundColor darkred -nonewline } 
-        Write-Log "$($_.Name) current hashrate for $($_.Symbol) is" -nonewline
-        Write-Log " $ScreenHash/s" -foreground green -End
-        Write-Log "$($_.Type) is currently mining $($_.Algo) on $($_.MinerPool)" -foregroundcolor Cyan
-        Write-Log "$($_.Type) previous hashrates for $($_.Symbol) is" -NoNewLine -Start
-        Write-Log " $MinerPrevious/s" -foreground yellow -End
-        Write-Log "Current Pool Projection: $CurrentProfit.  (This is live value with no modifiers)"
-        Write-Log "Current Daily Profit: $ScreenProfit.      (This is daily average with watt calculations)
+        $MinerPrevious = "$($DayStat | Global:ConvertTo-Hash)"
+        $ScreenHash = "$($Miner_HashRates | Global:ConvertTo-Hash)"
+        Global:Write-Log "$($_.Type) is currently" -foreground Green -NoNewLine -Start
+        if ($_.Status -eq "Running") { Global:Write-Log " Running: " -ForegroundColor green -nonewline }
+        if ($_.Status -eq "Failed") { Global:Write-Log " Not Running: " -ForegroundColor darkred -nonewline } 
+        Global:Write-Log "$($_.Name) current hashrate for $($_.Symbol) is" -nonewline
+        Global:Write-Log " $ScreenHash/s" -foreground green -End
+        Global:Write-Log "$($_.Type) is currently mining $($_.Algo) on $($_.MinerPool)" -foregroundcolor Cyan
+        Global:Write-Log "$($_.Type) previous hashrates for $($_.Symbol) is" -NoNewLine -Start
+        Global:Write-Log " $MinerPrevious/s" -foreground yellow -End
+        Global:Write-Log "Current Pool Projection: $CurrentProfit.  (This is live value with no modifiers)"
+        Global:Write-Log "Current Daily Profit: $ScreenProfit.      (This is daily average with watt calculations)
 "
     }
 }

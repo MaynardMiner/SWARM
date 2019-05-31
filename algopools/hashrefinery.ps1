@@ -5,10 +5,10 @@ if($global:Config.Params.xnsub -eq "Yes"){$X = "#xnsub"}
  
 if ($Name -in $global:Config.Params.PoolName) {
     try { $Hashrefinery_Request = Invoke-RestMethod "http://pool.hashrefinery.com/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
-    catch { Write-Log "SWARM contacted ($Name) but there was no response."; return }
+    catch { Global:Write-Log "SWARM contacted ($Name) but there was no response."; return }
 
     if (($Hashrefinery_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) { 
-        Write-Log "SWARM contacted ($Name) but ($Name) the response was empty." 
+        Global:Write-Log "SWARM contacted ($Name) but ($Name) the response was empty." 
         return 
     }  
    
@@ -34,11 +34,11 @@ if ($Name -in $global:Config.Params.PoolName) {
 
                 if (-not (Test-Path $StatPath)) {
                     $StatAlgo = $Hashrefinery_Algorithm -replace "`_","`-"
-                    $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( [Double]$Hashrefinery_Request.$_.estimate_last24h / $Divisor * (1 - ($Hashrefinery_Request.$_.fees / 100)))
+                    $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( [Double]$Hashrefinery_Request.$_.estimate_last24h / $Divisor * (1 - ($Hashrefinery_Request.$_.fees / 100)))
                 } 
                 else {
                     $StatAlgo = $Hashrefinery_Algorithm -replace "`_","`-"
-                    $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( [Double]$Hashrefinery_Request.$_.estimate_current / $Divisor * (1 - ($Hashrefinery_Request.$_.fees / 100)))
+                    $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( [Double]$Hashrefinery_Request.$_.estimate_current / $Divisor * (1 - ($Hashrefinery_Request.$_.fees / 100)))
                 }
 
                 if (-not $global:Pool_Hashrates.$Hashrefinery_Algorithm) { $global:Pool_Hashrates.Add("$Hashrefinery_Algorithm", @{ })
