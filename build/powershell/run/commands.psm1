@@ -107,6 +107,9 @@ function Global:Update-Logging {
         Remove-Item ".\logs\*crash_report*" -Force -Recurse -ErrorAction SilentlyContinue
         $global:LogNum = 0
     }
+    if((Get-ChildItem ".\logs" | Where BaseName -match "crash_report").count -gt 12){
+        Remove-Item ".\logs\*crash_report*" -Force -Recurse -ErrorAction SilentlyContinue
+    }
     if ($global:logtimer.Elapsed.TotalSeconds -ge 3600) {
         Start-Sleep -S 3
         if (Test-Path ".\logs\*active*") {
