@@ -528,9 +528,7 @@ HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
         accepted   = $global:AllACC;
         rejected   = $global:AllREJ;
     }
-    $global:Stats.params = @{
-        params = $global:config.params
-    }
+    $global:Stats.params = $global:config.Params
 
     if ($global:GetMiners -and $global:GETSWARM.HasExited -eq $false) {
         Write-Host " "

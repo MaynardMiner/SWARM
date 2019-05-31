@@ -40,6 +40,7 @@ function Global:Get-Params {
         else { $global:Config.Params.Platform = "linux" }
         Write-Host "OS = $($global:Config.Params.Platform)" -ForegroundColor Green
     }
+    $global:Stats.params = $global:config.Params
 }
 
 function Global:Set-Window {
@@ -62,21 +63,21 @@ function Global:Start-Servers {
 
     if ($Global:config.Params.API -eq "Yes") {
         Import-Module -Name "$($(v).html)\api.psm1"
-        $Posh_api = Get-APIServer;
+        $Posh_api = Global:Get-APIServer;
         $Posh_Api.BeginInvoke() | Out-Null
         $Posh_api = $null
         Remove-Module -Name "api"
     }
 
     Import-Module -Name "$($(v).tcp)\agentserver.psm1"
-    $Posh_SwarmTCP = Get-SWARMServer;
+    $Posh_SwarmTCP = Global:Get-SWARMServer;
     $Posh_SwarmTCP.BeginInvoke() | Out-Null
     $Posh_SwarmTCP = $Null
     Remove-Module -Name "agentserver"
 
-    if (test-path $Hive_Path) {
+    if ( (test-path $Hive_Path) -or $global:Config.Params.TCP -eq "Yes" ) {
         Import-Module -Name "$($(v).tcp)\hiveserver.psm1"
-        $Posh_HiveTCP = Get-HiveServer;
+        $Posh_HiveTCP = Global:Get-HiveServer;
         $Posh_HiveTCP.BeginInvoke() | Out-Null
         $Posh_HiveTCP = $null
         Remove-Module -Name "hiveserver"
