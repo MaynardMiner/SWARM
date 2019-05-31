@@ -3170,3 +3170,30 @@ API overhaul:
   -API_Key argument added to help.txt.
 
   -Track_Shares argument added to help.txt.
+
+
+ 2.3.6
+
+ Expiremental Version:
+
+ This is an alternative update to 2.3.5,
+ for users that would like to help me develop
+ SWARM faster by testing larger changes.
+
+ this is from ``alpha_testing`` branch.
+
+ -NEW FEATURES
+
+ -Global Functions
+  * All functions in SWARM are shared globally
+  * This allows .psm1 modules to call functions
+  * This help self-developers create modules for
+    SWARM using SWARM's code base along with their
+    created module.
+
+ -Memory footprint reduced further (10%).
+ -Since memory use is low, increased interval
+  period to send stats to HiveOS.
+  * This should allow for better/more accurate stats
+    on site, and less "dead space" in which no data
+    is shown on rig.
