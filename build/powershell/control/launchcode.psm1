@@ -88,7 +88,7 @@ function Global:Start-LaunchCode {
                         "trex" { $MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "ttminer" { $MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "bminer" { $MinerArguments = "-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
-                        "lolminer" { $MinerArguments = "--devices $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)" }
+                        "lolminer" { $MinerArguments = "--devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "xmrstak" { $MinerArguments = "--cuda-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "progminer" { $MinerArguments = "--cuda-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "grin-miner" { set-minerconfig $NewMiner $Logs }
