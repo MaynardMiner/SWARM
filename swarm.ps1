@@ -204,6 +204,7 @@ switch ($global:Config.params.Platform) {
 if ($global:Config.Params.Type -like "*AMD*") {
     if ([string]$global:Config.Params.CLPlatform) { $Global:AMDPlatform = [string]$global:Config.Params.CLPlatform }
     else {
+        Global:Write-Log "Getting AMD OPENCL Platform. Note: If SWARM doesn't continue, a GPU has crashed on rig." -ForeGroundColor Yellow
         Global:Add-Module "$($(v).startup)\cl.psm1"
         [string]$global:AMDPlatform = Global:Get-AMDPlatform
         Global:Write-Log "AMD OpenCL Platform is $Global:AMDPlatform"
