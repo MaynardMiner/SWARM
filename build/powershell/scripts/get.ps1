@@ -33,27 +33,29 @@ $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12'
 Set-Location (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
 $dir = (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
 
-if(-not $Global:Config){$Global:Config = @{}}
-if(-not $Global:Config.var){$Global:Config.var = @{}}
-if(-not $global:Config.var.startup){$global:Config.var.startup = "$dir\build\powershell\startup";}
-if(-not $Global:Config.var.global){$Global:Config.var.global = "$dir\build\powershell\global";}
-if(-not $Global:Config.var.build){$Global:Config.var.build = "$dir\build\powershell\build";}
-if(-not $Global:Config.var.pool){$Global:Config.var.pool = "$dir\build\powershell\pool";}
-if(-not $Global:Config.var.web){$Global:Config.var.web = "$dir\build\powershell\web";}
+. .\build\powershell\global\modules.ps1
+
+if(-not $(v) ){$Global:Config = @{}; $Global:Config.Add("var",@{}) }
+if(-not $(v).startup ){$(v).Add("startup","$dir\build\powershell\startup")}
+if(-not $(v).global ){$(v).Add("global","$dir\build\powershell\global")}
+if(-not $(v).build ){$(v).Add("build","$dir\build\powershell\build")}
+if(-not $(v).pool ){$(v).Add("pool","$dir\build\powershell\pool")}
+if(-not $(v).web ){$(v).Add("web","$dir\build\api\web")}
+
 $p = [Environment]::GetEnvironmentVariable("PSModulePath")
 if ($P -notlike "*$dir\build\powershell*") {
-    $P += ";$($Global:Config.var.startup)";
-    $P += ";$($Global:Config.var.global)";
-    $P += ";$($Global:Config.var.build)";
-    $P += ";$($Global:Config.var.pool)";
-    $P += ";$($Global:Config.var.web)";
+    $P += ";$($(v).startup)";
+    $P += ";$($(v).global)";
+    $P += ";$($(v).build)";
+    $P += ";$($(v).pool)";
+    $P += ";$($(v).web)";
     [Environment]::SetEnvironmentVariable("PSModulePath", $p)
 }
 
 $Get = @()
 
-Import-Module -Name "$($global:Config.var.global)\stats.psm1" -Scope Global
-Import-Module -Name "$($global:Config.var.global)\include.psm1" -Scope Global
+Import-Module -Name "$($(v).global)\stats.psm1" -Scope Global
+Import-Module -Name "$($(v).global)\include.psm1" -Scope Global
 
 Switch ($argument1) {
     "help" {
@@ -271,7 +273,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
     }
 
     "asic" {
-        Import-Module -Name "$($global:Config.var.global)\hashrates.psm1"
+        Import-Module -Name "$($(v).global)\hashrates.psm1"
         if (Test-Path ".\build\txt\bestminers.txt") { $BestMiners = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-Json }
         else { $Get += "No miners running" }
         $ASIC = $BestMiners | Where Type -eq $argument2
@@ -300,7 +302,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
 
     "benchmarks" {
 
-        Import-Module -Name "$($global:Config.var.global)\hashrates.psm1"
+        Import-Module -Name "$($(v).global)\hashrates.psm1"
 
         if (Test-path ".\stats") {
             if ($argument2) {
@@ -353,7 +355,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
     }
 
     "wallets" {
-        Import-Module "$($global:Config.var.global)\wallettable.psm1" -Scope Global
+        Import-Module "$($(v).global)\wallettable.psm1" -Scope Global
         if($asjson){
         $Get = Get-WalletTable -asjson
         } else {$Get += Get-WalletTable}

@@ -31,7 +31,7 @@ function Start-NVIDIAOC($NewOC) {
                     if($HiveNVOC.OHGODAPILL_START_TIMEOUT -gt 0) { $Sleep = "timeout $($HiveNVOC.OHGODAPILL_START_TIMEOUT) > NUL" }
                     $Script = @()
                     $Script += "$Sleep"
-                    $Script += "start /min `"`" `"$($global:Config.var.dir)\build\apps\OhGodAnETHlargementPill-r2.exe`" $PillArg"
+                    $Script += "start /min `"`" `"$($(v).dir)\build\apps\OhGodAnETHlargementPill-r2.exe`" $PillArg"
                     $Script | Set-Content ".\build\apps\pill.bat"
                     $Process = Start-Process ".\build\apps\pill.bat" -WindowStyle Minimized
                 } else {
@@ -110,7 +110,7 @@ function Start-NVIDIAOC($NewOC) {
     Set-Location ".\build\apps"
     $script | Out-File "nvoc-start.ps1"
     $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\nvoc-start.ps1""" -PassThru -WindowStyle Minimized -Wait
-    Set-Location $global:Config.var.dir
+    Set-Location $($(v).dir)
     Start-Sleep -s .5
     $ocmessage | Set-Content ".\build\txt\ocnvidia.txt"
     Start-Sleep -S .5
@@ -253,7 +253,7 @@ function Start-AMDOC($NewOC) {
     $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\AMDOC-start.ps1""" -PassThru -WindowStyle Minimized -Wait
     Start-Sleep -S .5
     $ocmessage
-    Set-Location $global:Config.var.dir
+    Set-Location $($(v).dir)
     $ocmessage | Set-Content ".\build\txt\ocamd.txt"
     Start-Sleep -s .5
 }

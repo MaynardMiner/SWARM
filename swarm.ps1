@@ -18,18 +18,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ## Set Current Path
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 $Global:config = [hashtable]::Synchronized(@{})
-
+ 
 ##filepath dir
 $Global:Config.Add("var",@{})
-$Global:Config.var.Add("dir",(Split-Path $script:MyInvocation.MyCommand.Path))
+. .\build\powershell\global\modules.ps1
 
-$env:Path += ";$($global:Config.var.dir)\build\cmd"
+$(v).Add("dir",(Split-Path $script:MyInvocation.MyCommand.Path))
+
+$env:Path += ";$($(v).dir)\build\cmd"
 try { Get-ChildItem . -Recurse | Unblock-File } catch { }
 
 ## Exclusion Windows Defender
 try { 
     if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { 
-        Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$($global:Config.var.Dir)`'" -WindowStyle Minimized 
+        Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$($(v).dir)`'" -WindowStyle Minimized 
     } 
 }
 catch { }
@@ -40,7 +42,7 @@ try {
     if ($Net) {
         try { 
             if ( -not ( $Net | Where { $_.DisplayName -like "*swarm.ps1*" } ) ) { 
-                New-NetFirewallRule -DisplayName 'swarm.ps1' -Direction Inbound -Program "$($global:Config.var.dir)\swarm.ps1" -Action Allow | Out-Null
+                New-NetFirewallRule -DisplayName 'swarm.ps1' -Direction Inbound -Program "$($(v).dir)\swarm.ps1" -Action Allow | Out-Null
             } 
         }
         catch { }
@@ -50,75 +52,76 @@ catch { }
 $Net = $Null
 
 if ($IsWindows) {
-    Start-Process "powershell" -ArgumentList "Set-Location `'$($global:Config.var.dir)`'; .\build\powershell\scripts\icon.ps1 `'$($global:Config.var.dir)\build\apps\SWARM.ico`'" -NoNewWindow
+    Start-Process "powershell" -ArgumentList "Set-Location `'$($(v).dir)`'; .\build\powershell\scripts\icon.ps1 `'$($(v).dir)\build\apps\SWARM.ico`'" -NoNewWindow
 }
 
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
-$Global:Config.var.Add("debug",$false)
+$(v).Add("debug",$false)
 if ($global:config.var.debug -eq $True) {
     Start-Transcript ".\logs\debug.log"
     if (($IsWindows)) { Set-ExecutionPolicy Bypass -Scope Process }
 }
 
 ## Load Modules
-$global:Config.var.Add("startup","$($global:Config.var.dir)\build\powershell\startup")
-$global:Config.var.Add("web","$($global:Config.var.dir)\build\powershell\web")
-$global:Config.var.Add("global","$($global:Config.var.dir)\build\powershell\global")
-$global:Config.var.Add("build","$($global:Config.var.dir)\build\powershell\build")
-$global:Config.var.Add("pool","$($global:Config.var.dir)\build\powershell\pool")
-$global:Config.var.Add("miner","$($global:Config.var.dir)\build\powershell\miner")
-$global:Config.var.Add("control","$($global:Config.var.dir)\build\powershell\control")
-$global:Config.var.Add("run","$($global:Config.var.dir)\build\powershell\run")
-$global:Config.var.Add("benchmark","$($global:Config.var.dir)\build\powershell\benchmark")
+$(v).Add("startup","$($(v).dir)\build\powershell\startup")
+$(v).Add("web","$($(v).dir)\build\api\web")
+$(v).Add("global","$($(v).dir)\build\powershell\global")
+$(v).Add("build","$($(v).dir)\build\powershell\build")
+$(v).Add("pool","$($(v).dir)\build\powershell\pool")
+$(v).Add("miner","$($(v).dir)\build\powershell\miner")
+$(v).Add("control","$($(v).dir)\build\powershell\control")
+$(v).Add("run","$($(v).dir)\build\powershell\run")
+$(v).Add("benchmark","$($(v).dir)\build\powershell\benchmark")
+
 $p = [Environment]::GetEnvironmentVariable("PSModulePath")
-if ($P -notlike "*$($global:Config.var.dir)\build\powershell*") {
-    $P += ";$($global:Config.var.startup)";
-    $P += ";$($global:Config.var.web)";
-    $P += ";$($global:Config.var.global)";
-    $P += ";$($global:Config.var.build)";
-    $P += ";$($global:Config.var.pool)";
-    $P += ";$($global:Config.var.miner)";
-    $P += ";$($global:Config.var.control)";
-    $P += ";$($global:Config.var.run)";
-    $P += ";$($global:Config.var.benchmark)";
+if ($P -notlike "*$($(v).dir)\build\powershell*") {
+    $P += ";$($(v).startup)";
+    $P += ";$($(v).web)";
+    $P += ";$($(v).global)";
+    $P += ";$($(v).build)";
+    $P += ";$($(v).pool)";
+    $P += ";$($(v).miner)";
+    $P += ";$($(v).control)";
+    $P += ";$($(v).run)";
+    $P += ";$($(v).benchmark)";
     [Environment]::SetEnvironmentVariable("PSModulePath", $p)
     Write-Host "Modules Are Loaded" -ForegroundColor Green
 }
 
-Import-Module -Name "$($global:Config.var.global)\modules.psm1" -Scope Global
-$global:Modules = @()
+$(v).Add("Modules",@())
 
 ## Date Bug
 $global:cultureENUS = New-Object System.Globalization.CultureInfo("en-US")
 
 ## Startup Modules
-Import-Module "$($global:Config.var.global)\include.psm1" -Scope Global
+Import-Module "$($(v).global)\include.psm1" -Scope Global
 
 ##Insert Single Modules Here
 
 ## Get Parameters
-Add-Module "$($global:Config.var.startup)\parameters.psm1"
+Global:Add-Module "$($(v).startup)\parameters.psm1"
 Get-Parameters
 
 ## Crash Reporting
-Add-Module "$($global:Config.var.startup)\crashreport.psm1"
+Global:Add-Module "$($(v).startup)\crashreport.psm1"
 Start-CrashReporting
 
 ## Start The Log
-Add-Module "$($global:Config.var.startup)\startlog.psm1"
-$global:Config.var.dir | Set-Content ".\build\bash\dir.sh";
+Global:Add-Module "$($(v).startup)\startlog.psm1"
+$($(v).dir) | Set-Content ".\build\bash\dir.sh";
+$(v).Add("LogNum",1)
 $global:LogNum = 1;
 $global:logname = $null
 start-log -Number $global:LogNum;
 
 ## Initiate Update Check
-Add-Module "$($global:Config.var.startup)\remoteagent.psm1"
+Global:Add-Module "$($(v).startup)\remoteagent.psm1"
 if ($global:Config.Params.Platform -eq "Windows" -or $global:Config.Params.Update -eq "Yes") { 
     Get-Version
     start-update -Update $Getupdates
 }
 if ($global:Config.Params.Platform -eq "windows") { 
-    Add-Module "$($global:Config.var.startup)\getconfigs.psm1"
+    Global:Add-Module "$($(v).startup)\getconfigs.psm1"
     Start-AgentCheck 
 }
 
@@ -126,7 +129,7 @@ if ($global:Config.Params.Platform -eq "windows") {
 if (-not (Test-Path ".\build\txt")) { New-Item -Path ".\build" -Name "txt" -ItemType "directory" | Out-Null }
 
 ##Start Data Collection
-Add-Module "$($global:Config.var.startup)\datafiles.psm1"
+Global:Add-Module "$($(v).startup)\datafiles.psm1"
 
 $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
 [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
@@ -186,13 +189,13 @@ $global:GPU_Count = $null
 $global:BusData = $null
 switch ($global:Config.params.Platform) {
     "linux" {
-        Add-Module "$($global:Config.var.startup)\linuxconfig.psm1"
-        Add-Module "$($global:Config.var.startup)\sexyunixlogo.psm1"
+        Global:Add-Module "$($(v).startup)\linuxconfig.psm1"
+        Global:Add-Module "$($(v).startup)\sexyunixlogo.psm1"
         Start-LinuxConfig 
     }
     "windows" { 
-        Add-Module "$($global:Config.var.startup)\winconfig.psm1"
-        Add-Module "$($global:Config.var.startup)\sexywinlogo.psm1"
+        Global:Add-Module "$($(v).startup)\winconfig.psm1"
+        Global:Add-Module "$($(v).startup)\sexywinlogo.psm1"
         Start-WindowsConfig 
     }
 }
@@ -201,7 +204,7 @@ switch ($global:Config.params.Platform) {
 if ($global:Config.Params.Type -like "*AMD*") {
     if ([string]$global:Config.Params.CLPlatform) { $Global:AMDPlatform = [string]$global:Config.Params.CLPlatform }
     else {
-        Add-Module "$($global:Config.var.startup)\cl.psm1"
+        Global:Add-Module "$($(v).startup)\cl.psm1"
         [string]$global:AMDPlatform = get-AMDPlatform
         write-Log "AMD OpenCL Platform is $Global:AMDPlatform"
     }
@@ -237,13 +240,13 @@ if ($global:Config.Params.Type -like "*NVIDIA*" -or $global:Config.Params.Type -
 
 
 ##Start New Agent
-Add-Module "$($global:Config.var.startup)\getconfigs.psm1"
+Global:Add-Module "$($(v).startup)\getconfigs.psm1"
 write-Log "Starting New Background Agent" -ForegroundColor Cyan
 if ($global:Config.Params.Platform -eq "windows") { Start-Background }
-elseif ($global:Config.Params.Platform -eq "linux") { Start-Process ".\build\bash\background.sh" -ArgumentList "background $($($global:Config.var.dir))" -Wait }
+elseif ($global:Config.Params.Platform -eq "linux") { Start-Process ".\build\bash\background.sh" -ArgumentList "background $($($(v).dir))" -Wait }
 
 Add-LogErrors
-Remove-Modules
+Global:Remove-Modules
 
 $global:BusData = $Null
 $global:CPUCount = $Null
@@ -273,11 +276,11 @@ While ($true) {
         $global:SWARMAlgorithm = $Config.Params.Algorithm
 
         ##Build Modules
-        Add-Module "$($global:Config.var.global)\include.psm1"
-        Add-Module "$($global:Config.var.global)\stats.psm1"
+        Global:Add-Module "$($(v).global)\include.psm1"
+        Global:Add-Module "$($(v).global)\stats.psm1"
 
         #Get Miner Config Files
-        Add-Module "$($global:Config.var.build)\miners.psm1"
+        Global:Add-Module "$($(v).build)\miners.psm1"
         if ($global:Config.Params.Type -like "*CPU*") { $Global:cpu = get-minerfiles -Types "CPU" }
         if ($global:Config.Params.Type -like "*NVIDIA*") { $Global:nvidia = get-minerfiles -Types "NVIDIA" -Cudas $global:Config.Params.Cuda }
         if ($global:Config.Params.Type -like "*AMD*") { $Global:amd = get-minerfiles -Types "AMD" }
@@ -290,7 +293,7 @@ While ($true) {
         }
 
         ## Load Miner Configurations
-        Add-Module "$($global:Config.var.build)\configs.psm1"
+        Global:Add-Module "$($(v).build)\configs.psm1"
         Get-MinerConfigs
         $global:Config.Pool_Algos = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
         Add-ASICS
@@ -298,12 +301,12 @@ While ($true) {
         $global:oc_algos = Get-Content ".\config\oc\oc-algos.json" | ConvertFrom-Json
 
         ##Manage Pool Bans
-        Add-Module "$($global:Config.var.build)\poolbans.psm1"
+        Global:Add-Module "$($(v).build)\poolbans.psm1"
         Start-PoolBans
 
 
         ## Handle Wallet Stuff / Bans
-        Add-Module "$($global:Config.var.build)\wallets.psm1"
+        Global:Add-Module "$($(v).build)\wallets.psm1"
         Set-Donation
         Get-Wallets
         . .\build\powershell\scripts\bans.ps1 "add" $global:Config.Params.Bans "process" | Out-Null
@@ -312,12 +315,12 @@ While ($true) {
         if ($global:Config.Params.Coin.Count -eq 1 -and $global:Config.Params.Coin -ne "") { $global:Config.Params.Auto_Coin = "No" }
 
         # Pricing and Clearing Timeouts 
-        Add-Module "$($global:Config.var.build)\pricing.psm1"
+        Global:Add-Module "$($(v).build)\pricing.psm1"
         Get-Watts
         Get-Pricing
         Clear-Timeouts
 
-        Remove-Modules
+        Global:Remove-Modules
         $Screen = $null
         $Value = $null
         $Item = $null
@@ -341,8 +344,8 @@ While ($true) {
         ##############################################################################
 
         ##Pool Modules
-        Add-Module "$($global:Config.var.global)\include.psm1"
-        Add-Module "$($global:Config.var.global)\stats.psm1"
+        Global:Add-Module "$($(v).global)\include.psm1"
+        Global:Add-Module "$($(v).global)\stats.psm1"
 
         ## Build Initial Pool Hash Tables
         $global:Coins = $false
@@ -354,20 +357,21 @@ While ($true) {
         $global:Pool_Hashrates = @{ }
 
 
-        Add-Module "$($global:Config.var.pool)\initial.psm1"
+        Global:Add-Module "$($(v).pool)\initial.psm1"
         Get-PoolTables
         Remove-BanHashrates
         $global:Miner_HashTable = Get-MinerHashTable
         ##Add Global Modules - They Get Removed in Above Function
-        Remove-Modules
-        Import-Module -Name "$($global:Config.var.global)\include.psm1" -Scope Global
-        Add-Module "$($global:Config.var.global)\stats.psm1"
+        Global:Remove-Modules
+        . .\build\powershell\global\modules.ps1
+        Import-Module -Name "$($(v).global)\include.psm1" -Scope Global
+        Global:Add-Module "$($(v).global)\stats.psm1"
 
         ##Get Algorithm Pools
-        Add-Module "$($global:Config.var.pool)\gather.psm1"
+        Global:Add-Module "$($(v).pool)\gather.psm1"
         Get-AlgoPools
         Get-CoinPools
-        Remove-Modules
+        Global:Remove-Modules
         Clear-Variable -Name "FeeTable" -ErrorAction Ignore -Scope Global
         Clear-Variable -Name "divisortable" -ErrorAction Ignore -Scope Global
         Clear-Variable -Name "All_AltWallets" -ErrorAction Ignore -Scope Global
@@ -385,14 +389,14 @@ While ($true) {
         ##############################################################################
 
         ##Miners Modules
-        Add-Module "$($global:Config.var.global)\include.psm1"
-        Add-Module "$($global:Config.var.global)\stats.psm1"
+        Global:Add-Module "$($(v).global)\include.psm1"
+        Global:Add-Module "$($(v).global)\stats.psm1"
 
         $global:Miner_HashTable = $Null
         $Global:Miners = New-Object System.Collections.ArrayList
 
         ##Load The Miners
-        Add-Module "$($global:Config.var.miner)\gather.psm1"
+        Global:Add-Module "$($(v).miner)\gather.psm1"
         Get-AlgoMiners
         Get-CoinMiners
 
@@ -404,7 +408,7 @@ While ($true) {
                 $global:Websites | ForEach-Object {
                     $Sel = $_
                     try {
-                        Add-Module "$($global:Config.var.web)\methods.psm1"
+                        Global:Add-Module "$($(v).web)\methods.psm1"
                         Get-WebModules $Sel
                         $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
                     }
@@ -418,7 +422,7 @@ While ($true) {
         }
 
         ##Sort The Miners
-        Add-Module "$($global:Config.var.miner)\sorting.psm1"
+        Global:Add-Module "$($(v).miner)\sorting.psm1"
         if ($global:Config.Params.Volume -eq "Yes") { Get-Volume }
         $CutMiners = Start-MinerReduction -SortMiners $Global:Miners -WattCalc $global:WattEX
         $CutMiners | ForEach-Object { $Global:Miners.Remove($_) } | Out-Null;
@@ -427,7 +431,7 @@ While ($true) {
         Add-SwitchingThreshold
 
         ##Choose The Best Miners
-        Add-Module "$($global:Config.var.miner)\choose.psm1"
+        Global:Add-Module "$($(v).miner)\choose.psm1"
         Remove-BadMiners
         $global:Miners_Combo = Get-BestMiners
         $global:bestminers_combo = Get-Conservative
@@ -435,7 +439,7 @@ While ($true) {
         $BestPool_Selected = $global:bestminers_combo.MinerPool
         write-Log "Most Ideal Choice Is $($BestMiners_Selected) on $($BestPool_Selected)" -foregroundcolor green
 
-        Remove-Modules
+        Global:Remove-Modules
         $global:Algorithm = $null
         $CutMiners = $null
         $global:Miners_Combo = $null
@@ -472,14 +476,14 @@ While ($true) {
         $global:BenchmarkMode = $false
         $global:Share_Table = @{ }
 
-        Add-Module "$($global:Config.var.global)\include.psm1"
-        Add-Module "$($global:Config.var.global)\stats.psm1"
-        if ($Global:Config.params.Type -like "*ASIC*") { Add-Module "$($global:Config.var.global)\hashrates.psm1" }
-        Add-Module "$($global:Config.var.control)\config.psm1"
+        Global:Add-Module "$($(v).global)\include.psm1"
+        Global:Add-Module "$($(v).global)\stats.psm1"
+        if ($Global:Config.params.Type -like "*ASIC*") { Global:Add-Module "$($(v).global)\hashrates.psm1" }
+        Global:Add-Module "$($(v).control)\config.psm1"
 
         ## Add New Miners- Download if neccessary
         ## Ammend Their Pricing
-        Add-Module "$($global:Config.var.control)\initial.psm1"
+        Global:Add-Module "$($(v).control)\initial.psm1"
         Start-MinerDownloads
         Get-ActiveMiners $global:bestminers_combo
         Get-BestActiveMiners
@@ -487,21 +491,21 @@ While ($true) {
 
         ##Start / Stop / Restart Miners
         ##Handle OC
-        Add-Module "$($global:Config.var.control)\run.psm1"
-        Add-Module "$($global:Config.var.control)\launchcode.psm1"
-        Add-Module "$($global:Config.var.control)\config.psm1"
+        Global:Add-Module "$($(v).control)\run.psm1"
+        Global:Add-Module "$($(v).control)\launchcode.psm1"
+        Global:Add-Module "$($(v).control)\config.psm1"
         Stop-ActiveMiners
         Start-NewMiners -Reason "Launch"
 
         ##Determing Interval
-        Add-Module "$($global:Config.var.control)\notify.psm1"
+        Global:Add-Module "$($(v).control)\notify.psm1"
         Get-LaunchNotification
         Get-Interval
         ##Get Shares
         write-Log "Getting Coin Tracking From Pool" -foregroundColor Cyan
         if ($global:Config.params.Track_Shares -eq "Yes") { Get-CoinShares }
 
-        Remove-Modules
+        Global:Remove-Modules
         $global:oc_algos = $null
         $global:oc_default = $null
         $global:PreviousMinerPorts = $null
@@ -521,12 +525,12 @@ While ($true) {
         #############################################################################
 
 
-        Add-Module "$($global:Config.var.global)\include.psm1"
-        Add-Module "$($global:Config.var.global)\stats.psm1"
-        Add-Module "$($global:Config.var.global)\hashrates.psm1"
+        Global:Add-Module "$($(v).global)\include.psm1"
+        Global:Add-Module "$($(v).global)\stats.psm1"
+        Global:Add-Module "$($(v).global)\hashrates.psm1"
 
         ## Clear Old Commands Data
-        Add-Module "$($global:Config.var.run)\initial.psm1"
+        Global:Add-Module "$($(v).run)\initial.psm1"
         Get-ExchangeRate
         Get-ScreenName
         $Global:Miners | ConvertTo-Json -Depth 4 | Set-Content ".\build\txt\profittable.txt"
@@ -537,7 +541,7 @@ While ($true) {
         Get-Charts | Out-File ".\build\txt\charts.txt" -Append
 
         ## Refreshing Pricing Data
-        Add-Module "$($global:Config.var.run)\commands.psm1"
+        Global:Add-Module "$($(v).run)\commands.psm1"
         Get-PriceMessage
         Get-Commands
         $Global:Miners.Clear()
@@ -547,10 +551,10 @@ While ($true) {
         Get-MinerActive | Out-File ".\build\txt\mineractive.txt" -Append
 
         ##Start SWARM Loop
-        Add-Module "$($global:Config.var.run)\loop.psm1"
+        Global:Add-Module "$($(v).run)\loop.psm1"
         Start-MinerLoop
 
-        Remove-Modules
+        Global:Remove-Modules
         [GC]::Collect()
 
         ##############################################################################
@@ -561,11 +565,11 @@ While ($true) {
         #######                       Phase 6: Benchmark                        ######
         ##############################################################################
 
-        Add-Module "$($global:Config.var.global)\include.psm1"
-        Add-Module "$($global:Config.var.global)\stats.psm1"
-        Add-Module "$($global:Config.var.global)\gpu.psm1"
-        Add-Module "$($global:Config.var.global)\hashrates.psm1"
-        Add-Module "$($global:Config.var.benchmark)\attempt.psm1"
+        Global:Add-Module "$($(v).global)\include.psm1"
+        Global:Add-Module "$($(v).global)\stats.psm1"
+        Global:Add-Module "$($(v).global)\gpu.psm1"
+        Global:Add-Module "$($(v).global)\hashrates.psm1"
+        Global:Add-Module "$($(v).benchmark)\attempt.psm1"
 
         ## Start WattOMeter function
         if ($global:Config.Params.WattOMeter -eq "Yes") { Start-WattOMeter }
@@ -577,12 +581,12 @@ While ($true) {
         ##############################################################################
         #######                       End Phase 6                               ######
         ##############################################################################
-        Remove-Modules
+        Global:Remove-Modules
 		[GC]::Collect()
 
     }until($Error.Count -gt 0)
-    Import-Module "$($global:Config.var.global)\include.psm1" -Scope Global
+    Import-Module "$($(v).global)\include.psm1" -Scope Global
     Add-LogErrors
-    Remove-Modules
+    Global:Remove-Modules
     continue;
 }

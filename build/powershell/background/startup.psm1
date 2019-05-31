@@ -61,21 +61,21 @@ function Start-Servers {
     Write-Host "API Port is $($global:Config.Params.Port)";
 
     if ($Global:config.Params.API -eq "Yes") {
-        Import-Module -Name "$global:html\api.psm1"
+        Import-Module -Name "$($(v).html)\api.psm1"
         $Posh_api = Get-APIServer;
         $Posh_Api.BeginInvoke() | Out-Null
         $Posh_api = $null
         Remove-Module -Name "api"
     }
 
-    Import-Module -Name "$global:tcp\agentserver.psm1"
+    Import-Module -Name "$($(v).tcp)\agentserver.psm1"
     $Posh_SwarmTCP = Get-SWARMServer;
     $Posh_SwarmTCP.BeginInvoke() | Out-Null
     $Posh_SwarmTCP = $Null
     Remove-Module -Name "agentserver"
 
     if (test-path $Hive_Path) {
-        Import-Module -Name "$global:tcp\hiveserver.psm1"
+        Import-Module -Name "$($(v).tcp)\hiveserver.psm1"
         $Posh_HiveTCP = Get-HiveServer;
         $Posh_HiveTCP.BeginInvoke() | Out-Null
         $Posh_HiveTCP = $null

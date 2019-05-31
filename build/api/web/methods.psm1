@@ -74,7 +74,7 @@ function Get-RigData($CPlat) {
             }
             if ($DriverDesc) { $AMDDriver = "$DriverDesc" }else { $AMDDriver = "0.0.0" }
             $RigData.Add("amd_version", $AMDDriver)
-            Set-Location $global:Config.var.dir
+            Set-Location $($(v).dir)
         }
         "linux" { }
     }
@@ -147,7 +147,7 @@ function Get-WebModules {
         "HiveOS" { $Web_Mods = Get-ChildItem ".\build\api\hiveos";}
         "SWARM" { $Web_Mods = Get-ChildItem ".\build\api\SWARM";}
     }
-    $Web_Mods | %{ Add-Module $_.FullName}
+    $Web_Mods | %{ Global:Add-Module $_.FullName}
 }
 
 function Remove-WebModules {

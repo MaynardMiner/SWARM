@@ -50,9 +50,9 @@ function Start-NewMiners {
         $Miner = $_
 
         if ($null -eq $Miner.XProcess -or $Miner.XProcess.HasExited -and $global:Config.Params.Lite -eq "No") {
-            Add-Module "$($global:Config.var.control)\launchcode.psm1"
-            Add-Module "$($global:Config.var.control)\config.psm1"
-            Add-Module "$($global:Config.var.global)\gpu.psm1"
+            Global:Add-Module "$($(v).control)\launchcode.psm1"
+            Global:Add-Module "$($(v).control)\config.psm1"
+            Global:Add-Module "$($(v).global)\gpu.psm1"
 
             $global:Restart = $true
             if ($Miner.Type -notlike "*ASIC*") { Start-Sleep -S $Miner.Delay }
@@ -93,7 +93,7 @@ function Start-NewMiners {
                     }
                     if ($Miner.Type -notlike "*ASIC*") {
                         Write-Log "Starting SWARM OC" -ForegroundColor Cyan
-                        Add-Module "$($global:Config.var.control)\octune.psm1"
+                        Global:Add-Module "$($(v).control)\octune.psm1"
                         Start-OC -NewMiner $Current -Website $Website
                     }
                 }

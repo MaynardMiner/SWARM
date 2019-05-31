@@ -1,11 +1,11 @@
-function Add-Module($Path) {
+function Global:Add-Module($Path) {
     $name = $(Get-Item $Path).BaseName
     $A = Get-Module | Where Name -eq $name
     if (-not $A) { Import-Module -Name $Path -Scope Global }
-    if ($name -notin $global:Modules) { $global:Modules += $Name }
+    if ($name -notin $global:Config.var.modules) { $global:Config.var.modules += $Name }
 }
 
-function Remove-Modules {
+function Global:Remove-Modules {
     param (
         [Parameter(Position = 0, Mandatory = $false)]
         [string]$Path = $Null
@@ -17,16 +17,19 @@ function Remove-Modules {
         $name = $(Get-Item $Path).BaseName
         if ($Name -in $mods) {
             Remove-Module -Name $name
-            $global:Modules = $global:Modules | where {$_ -ne $name}
+            $global:Config.var.modules = $global:Config.var.modules | where {$_ -ne $name}
         }
     }
     else {
-        $global:Modules | ForEach-Object {
+        $global:Config.var.modules | ForEach-Object {
             $Sel = $_
             if ($Sel -in $mods) {
                 Remove-Module -Name "$Sel"
             }
         }
-        $global:Modules = @()
+        $global:Config.var.modules = @()
     }
 }
+
+function global:variable($X) { if($X) {$Global:Config.var.$X} else {$global:Config.var} }
+Set-Alias -Name v -Value global:variable -Scope Global

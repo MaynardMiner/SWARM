@@ -146,7 +146,7 @@ function Start-WindowsConfig {
                 write-Log "Attempting to add current SWARM.bat to startup" -ForegroundColor Magenta
                 write-Log "If you do not wish SWARM to start on startup, use -Startup No argument"
                 write-Log "Startup FilePath: $Startup_Path"
-                $bat = "CMD /r pwsh -ExecutionPolicy Bypass -command `"Set-Location $($global:Config.var.dir); Start-Process `"SWARM.bat`"`""
+                $bat = "CMD /r pwsh -ExecutionPolicy Bypass -command `"Set-Location $($(v).dir); Start-Process `"SWARM.bat`"`""
                 $Bat_Startup = Join-Path $Startup_Path "SWARM.bat"
                 $bat | Set-Content $Bat_Startup
             }
@@ -222,7 +222,7 @@ function Start-WindowsConfig {
     
     ## Websites
     if ($global:Websites) {
-        Add-Module "$($global:Config.var.web)\methods.psm1"
+        Global:Add-Module "$($(v).web)\methods.psm1"
         $rigdata = Get-RigData $Global:Config.Params.Platform
 
         $global:Websites | ForEach-Object {

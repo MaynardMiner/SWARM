@@ -16,7 +16,7 @@ $Global:AMDTypes | ForEach-Object {
         1 { $Get_Devices = $Global:AMDDevices1 }
     }
     ##Log Directory
-    $Log = Join-Path $($global:Config.var.dir) "logs\$ConfigType.log"
+    $Log = Join-Path $($(v).dir) "logs\$ConfigType.log"
 
     ##Parse -GPUDevices
     if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
@@ -26,7 +26,7 @@ $Global:AMDTypes | ForEach-Object {
     $MinerConfig = $Global:config.miners.$CName
 
     ##Export would be /path/to/[SWARMVERSION]/build/export && Bleeding Edge Check##
-    $ExportDir = Join-Path $($global:Config.var.dir) "build\export"
+    $ExportDir = Join-Path $($(v).dir) "build\export"
 
     ##Prestart actions before miner launch
     $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"

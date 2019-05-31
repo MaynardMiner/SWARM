@@ -18,12 +18,13 @@ Param (
 
 #$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
 #$WorkingDir = "/root/hive/miners/custom/SWARM"
+Set-Location $WorkingDir
+. .\build\powershell\global\modules.ps1
 $Global:config = [hashtable]::Synchronized(@{ })
 $Global:stats = [hashtable]::Synchronized(@{ })
 $global:config.Add("var",@{})
-$global:Config.var.Add("dir",$WorkingDir)
-$global:Config.var.dir = $WorkingDir
-Set-Location $WorkingDir
+$(v).Add("dir",$WorkingDir)
+
 try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$WorkingDir`'" -WindowStyle Minimized } }catch { }
 try{ $Net = Get-NetFireWallRule } catch {}
 if($Net) {
@@ -31,33 +32,31 @@ try { if( -not ( $Net | Where {$_.DisplayName -like "*background.ps1*"} ) ) { Ne
 }
 $Net = $null
 
-if($IsWindows){ Start-Process "powershell" -ArgumentList "Set-Location `'$($global:Config.var.dir)`'; .\build\powershell\scripts\icon.ps1 `'$($global:Config.var.dir)\build\apps\comb.ico`'" -NoNewWindow }
+if($IsWindows){ Start-Process "powershell" -ArgumentList "Set-Location `'$($(v).dir)`'; .\build\powershell\scripts\icon.ps1 `'$($(v).dir)\build\apps\comb.ico`'" -NoNewWindow }
 
-$global:Config.var.Add("global","$($global:Config.var.dir)\build\powershell\global")
-$global:Config.var.Add("background","$($global:Config.var.dir)\build\powershell\background")
-$global:Config.var.Add("miners","$($global:Config.var.dir)\build\powershell\miners")
-$global:Config.var.Add("tcp","$($global:Config.var.dir)\build\powershell\tcp")
-$global:Config.var.Add("html","$($global:Config.var.dir)\build\powershell\html")
-$global:Config.var.Add("web","$($global:Config.var.dir)\build\api\web")
+$(v).Add("global","$($(v).dir)\build\powershell\global")
+$(v).Add("background","$($(v).dir)\build\powershell\background")
+$(v).Add("miners","$($(v).dir)\build\api\miners")
+$(v).Add("tcp","$($(v).dir)\build\api\tcp")
+$(v).Add("html","$($(v).dir)\build\api\html")
+$(v).Add("web","$($(v).dir)\build\api\web")
 
 $p = [Environment]::GetEnvironmentVariable("PSModulePath")
-if ($P -notlike "*$($global:Config.var.dir)\build\powershell*") {
-    $P += ";$($global:Config.var.global)";
-    $P += ";$global:background";
-    $P += ";$global:miners";
-    $P += ";$global:tcp";
-    $P += ";$global:html";
-    $P += ";$($global:Config.var.web)";
+if ($P -notlike "*$($(v).dir)\build\powershell*") {
+    $P += ";$($(v).global)";
+    $P += ";$($(v).background)";
+    $P += ";$($(v).miners)";
+    $P += ";$($(v).tcp)";
+    $P += ";$($(v).html)";
+    $P += ";$($(v).web)";
     [Environment]::SetEnvironmentVariable("PSModulePath", $p)
     Write-Host "Modules Are Loaded" -ForegroundColor Green
 }
 
-Import-Module "$($global:Config.var.global)\modules.psm1" -Scope Global
-Import-Module "$($global:Config.var.global)\include.psm1" -Scope Global
+$(v).Add("Modules",@())
+Import-Module "$($(v).global)\include.psm1" -Scope Global
+Global:Add-Module "$($(v).background)\startup.psm1"
 
-$global:Modules = @()
-
-Add-Module "$global:background\startup.psm1"
 ## Get Parameters
 Get-Params
 [cultureinfo]::CurrentCulture = 'en-US'
@@ -65,8 +64,8 @@ $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12'
 [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
 Set-Window
 
-$global:NetModules = @()
-$global:WebSites = @()
+$(v).Add("NetModules",@())
+$(v).Add("WebSites",@())
 if ($Config.Params.Farm_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" -and -not (Test-Path "/hive/miners") ) { $global:NetModules += ".\build\api\hiveos"; $global:WebSites += "HiveOS" }
 #if ($Config.Params.Swarm_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") { $global:NetModules += ".\build\api\SWARM"; $global:WebSites += "SWARM" }
 
@@ -123,11 +122,11 @@ While ($True) {
     $global:HIVE_ALGO = @{ }; $Group1 = $null; $Default_Group = $null; 
     $Hive = $null; $global:UPTIME = 0;
 
-    Add-Module "$global:background\run.psm1"
-    Add-Module "$global:background\initial.psm1"
-    Add-Module "$($global:Config.var.global)\gpu.psm1"
-    Add-Module "$($global:Config.var.global)\stats.psm1"
-    Add-Module "$($global:Config.var.global)\hashrates.psm1"
+    Global:Add-Module "$($(v).background)\run.psm1"
+    Global:Add-Module "$($(v).background)\initial.psm1"
+    Global:Add-Module "$($(v).global)\gpu.psm1"
+    Global:Add-Module "$($(v).global)\stats.psm1"
+    Global:Add-Module "$($(v).global)\hashrates.psm1"
     
     Invoke-MinerCheck
     New-StatTables
@@ -285,147 +284,147 @@ While ($True) {
             switch ($global:MinerAPI) {
                 'energiminer' { 
                     try { 
-                        Add-Module "$global:miners\energiminer.psm1"; 
+                        Global:Add-Module "$($(v).miners)\energiminer.psm1"; 
                         Get-StatsEnergiminer;
                         Remove-Module -name "energiminer"
                     } catch { Get-OhNo } 
                 }
                 'claymore' { 
                     try { 
-                        Add-Module "$global:miners\ethminer.psm1"; 
+                        Global:Add-Module "$($(v).miners)\ethminer.psm1"; 
                         Get-StatsEthminer;
                         Remove-Module -name "ethminer"
                     } catch { Get-OhNo } 
                 }
                 'excavator' {
                     try { 
-                        Add-Module "$global:miners\excavator.psm1"; 
+                        Global:Add-Module "$($(v).miners)\excavator.psm1"; 
                         Get-StatsExcavator;
                         Remove-Module -name "excavator"
                     } catch { Get-OhNo } 
                 }
                 'miniz' { 
                     try { 
-                        Add-Module "$global:miners\miniz.psm1"; 
+                        Global:Add-Module "$($(v).miners)\miniz.psm1"; 
                         Get-Statsminiz;
                         Remove-Module -name "miniz"
                     } catch { Get-OhNo } 
                 }
                 'gminer' { 
                     try { 
-                        Add-Module "$global:miners\gminer.psm1"; 
+                        Global:Add-Module "$($(v).miners)\gminer.psm1"; 
                         Get-StatsGminer;
                         Remove-Module -name "gminer"
                     } catch { Get-OhNo } 
                 }
                 'grin-miner' { 
                     try { 
-                        Add-Module "$global:miners\grinminer.psm1"; 
+                        Global:Add-Module "$($(v).miners)\grinminer.psm1"; 
                         Get-StartGrinMiner;
                         Remove-Module -name "grinminer"
                     } catch { Get-OhNo } 
                 }
                 'ewbf' { 
                     try { 
-                        Add-Module "$global:miners\ewbf.psm1"; 
+                        Global:Add-Module "$($(v).miners)\ewbf.psm1"; 
                         Get-Statsewbf;
                         Remove-Module -name "ewbf"
                     } catch { Get-OhNo } 
                 }
                 'ccminer' { 
                     try { 
-                        Add-Module "$global:miners\ccminer.psm1"; 
+                        Global:Add-Module "$($(v).miners)\ccminer.psm1"; 
                         Get-StatsCcminer;
                         Remove-Module -name "ccminer"
                     } catch { Get-OhNo } 
                 }
                 'bminer' { 
                     try { 
-                        Add-Module "$global:miners\bminer.psm1"; 
+                        Global:Add-Module "$($(v).miners)\bminer.psm1"; 
                         Get-StatsBminer;
                         Remove-Module -name "bminer"
                     } catch { Get-OhNo } 
                 }
                 'trex' { 
                     try { 
-                        Add-Module "$global:miners\trex.psm1"; 
+                        Global:Add-Module "$($(v).miners)\trex.psm1"; 
                         Get-StatsTrex;
                         Remove-Module -name "trex"
                     } catch { Get-OhNo } 
                 }
                 'dstm' { 
                     try { 
-                        Add-Module "$global:miners\dstm.psm1"; 
+                        Global:Add-Module "$($(v).miners)\dstm.psm1"; 
                         Get-Statsdstm;
                         Remove-Module -name "dstm"
                     } catch { Get-OhNo } 
                 }
                 'lolminer' { 
                     try { 
-                        Add-Module "$global:miners\lolminer.psm1"; 
+                        Global:Add-Module "$($(v).miners)\lolminer.psm1"; 
                         Get-Statslolminer;
                         Remove-Module -name "lolminer"
                     } catch { Get-OhNo } 
                 }
                 'sgminer-gm' { 
                     try { 
-                        Add-Module "$global:miners\sgminer.psm1"; 
+                        Global:Add-Module "$($(v).miners)\sgminer.psm1"; 
                         Get-StatsSgminer;
                         Remove-Module -name "sgminer"
                     } catch { Get-OhNo } 
                 }
                 'cpuminer' { 
                     try { 
-                        Add-Module "$global:miners\cpuminer.psm1"; 
+                        Global:Add-Module "$($(v).miners)\cpuminer.psm1"; 
                         Get-Statscpuminer;
                         Remove-Module -name "cpuminer"
                     } catch { Get-OhNo } 
                 }
                 'xmrstak' { 
                     try { 
-                        Add-Module "$global:miners\xmrstak.psm1"; 
+                        Global:Add-Module "$($(v).miners)\xmrstak.psm1"; 
                         Get-Statsxmrstak;
                         Remove-Module -name "xmrstak"
                     } catch { Get-OhNo } 
                 }
                 'xmrig-opt' { 
                     try { 
-                        Add-Module "$global:miners\xmrigopt.psm1"; 
+                        Global:Add-Module "$($(v).miners)\xmrigopt.psm1"; 
                         Get-Statsxmrigopt;
                         Remove-Module -name "xmrigopt"
                     } catch { Get-OhNo } 
                 }
                 'wildrig' { 
                     try { 
-                        Add-Module "$global:miners\wildrig.psm1"; 
+                        Global:Add-Module "$($(v).miners)\wildrig.psm1"; 
                         Get-Statswildrig
                         Remove-Module -name "wildrig"
                     } catch { Get-OhNo } 
                 }
                 'cgminer' { 
                     try { 
-                        Add-Module "$global:miners\cgminer.psm1"; 
+                        Global:Add-Module "$($(v).miners)\cgminer.psm1"; 
                         Get-Statscgminer
                         Remove-Module -name "cgminer"
                     } catch { Get-OhNo } 
                 }
                 'nebutech' { 
                     try { 
-                        Add-Module "$global:miners\nbminer.psm1"; 
+                        Global:Add-Module "$($(v).miners)\nbminer.psm1"; 
                         Get-StatsNebutech
                         Remove-Module -name "nbminer"
                     } catch { Get-OhNo } 
                 }
                 'srbminer' { 
                     try { 
-                        Add-Module "$global:miners\srbminer.psm1"; 
+                        Global:Add-Module "$($(v).miners)\srbminer.psm1"; 
                         Get-Statssrbminer
                         Remove-Module -name "srbminer"
                     } catch { Get-OhNo } 
                 }
                 'multiminer' { 
                     try { 
-                        Add-Module "$global:miners\multiminer.psm1"; 
+                        Global:Add-Module "$($(v).miners)\multiminer.psm1"; 
                         Get-Statsmultiminer
                         Remove-Module -name "multiminer"
                     } catch { Get-OhNo } 
@@ -555,8 +554,8 @@ HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
     Remove-Module -Name "run"
     
     if ($global:Websites) {
-        Add-Module "$($global:Config.var.web)\methods.psm1"
-        Add-Module "$global:background\webstats.psm1"
+        Global:Add-Module "$($(v).web)\methods.psm1"
+        Global:Add-Module "$($(v).background)\webstats.psm1"
         Send-WebStats
     }
 

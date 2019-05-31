@@ -143,7 +143,7 @@ function Expand-WebRequest {
             else { Write-Log "Download Failed!" -ForegroundColor DarkRed; break }
 
             New-Item -Path ".\x64\$temp" -ItemType "Directory" -Force | Out-Null; Start-Sleep -S 1
-            Start-Process ".\build\apps\7z.exe" "x `"$($global:Config.var.dir)\$X64_zip`" -o`"$($global:Config.var.dir)\x64\$temp`" -y" -Wait -WindowStyle Minimized -verb Runas
+            Start-Process ".\build\apps\7z.exe" "x `"$($(v).dir)\$X64_zip`" -o`"$($(v).dir)\x64\$temp`" -y" -Wait -WindowStyle Minimized -verb Runas
 
             $Stuff = Get-ChildItem ".\x64\$Temp"
             if ($Stuff) { Write-Log "Extraction Succeeded!" -ForegroundColor Green }
@@ -200,7 +200,7 @@ function Get-MinerBinary {
                 $global:Websites | ForEach-Object {
                     $Sel = $_
                     try {
-                        Add-Module "$($global:Config.var.web)\methods.psm1"
+                        Global:Add-Module "$($(v).web)\methods.psm1"
                         Get-WebModules $Sel
                         $SendToHive = Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
                     }
