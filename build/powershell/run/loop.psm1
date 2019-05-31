@@ -36,10 +36,6 @@ function Global:Restart-Miner {
 
 
 function Global:Start-MinerLoop {
-    Get-Job -State Completed | Remove-Job
-    [GC]::Collect()
-    [GC]::WaitForPendingFinalizers()
-    [GC]::Collect()
     Do {
         Global:Set-Countdown
         Global:Get-MinerHashRate
