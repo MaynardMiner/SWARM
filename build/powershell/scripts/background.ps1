@@ -559,8 +559,8 @@ HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
         Global:Send-WebStats
     }
 
-    if ($RestartTimer.Elapsed.TotalSeconds -le 10) {
-        $GoToSleep = [math]::Round(10 - $RestartTimer.Elapsed.TotalSeconds)
+    if ($RestartTimer.Elapsed.TotalSeconds -le 5) {
+        $GoToSleep = [math]::Round(5 - $RestartTimer.Elapsed.TotalSeconds)
         if ($GoToSleep -gt 0) { Start-Sleep -S $GoToSleep }
     }
     
