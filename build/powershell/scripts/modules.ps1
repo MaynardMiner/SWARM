@@ -1,7 +1,9 @@
 Param (
     [Parameter(Position = 0, Mandatory = $true)]
     [string]$Path,
-    [Parameter(Position = 1, Mandatory = $true)]
+    [Parameter(Position = 2, Mandatory = $true)]
+    [string]$Phase,
+    [Parameter(Position = 3, Mandatory = $true)]
     [string]$Style
 )
 
@@ -38,12 +40,30 @@ if (Test-Path $Path) {
 
             Switch ($Style) {
                 "single" {
+                    switch($Phase){
+                        "startup" {$Location = "##Insert Startup Single Modules Here"}
+                        "build" {$Location = "##Insert Build Single Modules Here"}
+                        "pools" {$Location = "##Insert Pools Single Modules Here"}
+                        "miners" {$Location = "##Insert Miners Single Modules Here"}
+                        "control" {$Location = "##Insert Control Single Modules Here"}
+                        "run" {$Location = "##Insert Run Single Modules Here"}
+                        "benchmark" {$Location = "##Insert Benchmark Single Modules Here"}
+                    }
                     $message += "User specifed module is a single-run module. Adding in startup phase."
-                    $SWARMPS1 = $SWARMPS1 -replace "##Insert Single Modules Here", "Global:Add-Module `"`$($(v).global)\$($Item.Name)`"`n##Insert Single Modules Here"
+                    $SWARMPS1 = $SWARMPS1 -replace "$Location", "Global:Add-Module `"`$($(v).global)\$($Item.Name)`"`n$Location"
                 }
                 "looping" {
+                    Switch($Phase){
+                    "startup" {$Location = "##Insert Startup Looping Modules Here"}
+                    "build" {$Location = "##Insert Build Looping Modules Here"}
+                    "pools" {$Location = "##Insert Pools Looping Modules Here"}
+                    "miners" {$Location = "##Insert Miners Looping Modules Here"}
+                    "control" {$Location = "##Insert Control Looping Modules Here"}
+                    "run" {$Location = "##Insert Run Looping Modules Here"}
+                    "benchmark" {$Location = "##Insert Benchmark Looping Modules Here"}
+                    }
                     $message += "User specifed module is a looping module. Adding in build phase."
-                    $SWARMPS1 = $SWARMPS1 -replace "        ##Insert Looping Modules Here", "        Global:Add-Module `"`$($(v).global)\$($Item.Name)`"`n        ##Insert Looping Modules Here"
+                    $SWARMPS1 = $SWARMPS1 -replace "        $Location", "        Global:Add-Module `"`$($(v).global)\$($Item.Name)`"`n        $Location"
                     ##Insert Single Modules Here
                 }
             }

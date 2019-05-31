@@ -276,6 +276,10 @@ While ($true) {
         $global:All_AltWallets = $null
         $global:SWARMAlgorithm = $Config.Params.Algorithm
 
+        ##Insert Build Single Modules Here
+
+        ##Insert Build Looping Modules Here
+
         ##Build Modules
         Global:Add-Module "$($(v).global)\include.psm1"
         Global:Add-Module "$($(v).global)\stats.psm1"
@@ -356,6 +360,9 @@ While ($true) {
         $global:CoinPools = $null
         $global:Pool_Hashrates = @{ }
 
+        ##Insert Pools Single Modules Here
+
+        ##Insert Pools Looping Modules Here
 
         Global:Add-Module "$($(v).pool)\initial.psm1"
         Global:Get-PoolTables
@@ -393,6 +400,11 @@ While ($true) {
 
         $global:Miner_HashTable = $Null
         $Global:Miners = New-Object System.Collections.ArrayList
+
+        ##Insert Miners Single Modules Here
+
+        ##Insert Miners Looping Modules Here
+
 
         ##Load The Miners
         Global:Add-Module "$($(v).miner)\gather.psm1"
@@ -474,6 +486,11 @@ While ($true) {
         $global:BenchmarkMode = $false
         $global:Share_Table = @{ }
 
+        ##Insert Control Single Modules Here
+
+        ##Insert Control Looping Modules Here
+
+
         Global:Add-Module "$($(v).global)\include.psm1"
         Global:Add-Module "$($(v).global)\stats.psm1"
         if ($Global:Config.params.Type -like "*ASIC*") { Global:Add-Module "$($(v).global)\hashrates.psm1" }
@@ -526,6 +543,10 @@ While ($true) {
         Global:Add-Module "$($(v).global)\stats.psm1"
         Global:Add-Module "$($(v).global)\hashrates.psm1"
 
+        ##Insert Run Single Modules Here
+
+        ##Insert Run Looping Modules Here
+
         ## Clear Old Commands Data
         Global:Add-Module "$($(v).run)\initial.psm1"
         Global:Get-ExchangeRate
@@ -566,6 +587,10 @@ While ($true) {
         Global:Add-Module "$($(v).global)\gpu.psm1"
         Global:Add-Module "$($(v).global)\hashrates.psm1"
         Global:Add-Module "$($(v).benchmark)\attempt.psm1"
+
+        ##Insert Benchmark Single Modules Here
+
+        ##Insert Benchmark Looping Modules Here
 
         ## Start WattOMeter function
         if ($global:Config.Params.WattOMeter -eq "Yes") { Start-WattOMeter }
