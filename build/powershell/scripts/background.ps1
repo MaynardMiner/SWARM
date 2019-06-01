@@ -17,7 +17,7 @@ Param (
 )
 
 #$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
-$WorkingDir = "/root/hive/miners/custom/SWARM"
+#$WorkingDir = "/root/hive/miners/custom/SWARM"
 Set-Location $WorkingDir
 . .\build\powershell\global\modules.ps1
 $Global:config = [hashtable]::Synchronized(@{ })
