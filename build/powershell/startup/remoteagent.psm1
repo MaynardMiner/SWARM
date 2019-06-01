@@ -35,6 +35,8 @@ function start-update {
         $PreviousVersions += "SWARM.2.3.2"
         $PreviousVersions += "SWARM.2.3.3"
         $PreviousVersions += "SWARM.2.3.4"
+        $PreviousVersions += "SWARM.2.3.5"
+        $PreviousVersions += "SWARM.2.3.6"
 
         $StatsOnly = $null
 
@@ -146,6 +148,17 @@ function start-update {
                                             $Data.$_.difficulty | Add-Member "equihash_96/5" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "equihash_96/5" "equihash_96/5" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "equihash_96/5" 2 -ErrorAction SilentlyContinue
+                                        }
+                                    }
+                                }
+
+                                if ($ChangeFile -eq "fancyix.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands | Add-Member "x25x" "-gpu-threads 2 -w 256 -g 4" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "x25x" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "x25x" "x25x" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "x25x" 0 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }
