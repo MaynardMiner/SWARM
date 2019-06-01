@@ -3197,3 +3197,31 @@ API overhaul:
   * This should allow for better/more accurate stats
     on site, and less "dead space" in which no data
     is shown on rig.
+
+  2.3.8
+
+  Expiremental Version:
+
+  This is alternative update to 2.3.7, which
+  uses new experimental features for beta testing.
+
+  this is from ``alpha_testing`` branch.
+
+  NEW FEATURES:
+
+  -After first miner starts- SWARM will always stat a value
+  to HiveOS. If hashrate is zero, SWARM will stat 1 h/s
+  for all GPUs / khs total. This is to let you know that
+  SWARM is working, just current miner has not outputted
+  hashrate in their API yet.
+
+  -``features`` command added for windows. Will list CPU
+    features. Reserved code for further use (auto CPU 
+    mining detection).
+
+  -``bans`` have cuckatoo31 added by default. This means if you
+    wish to add further bans, you must do ``-Bans cuckatoo31,rest:ofyourbans,here``
+
+  -x25x added properly to miners
+  
+  -Added skein2 algo (nvidia only, sgminer for skein2 is too old).
