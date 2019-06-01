@@ -238,10 +238,10 @@ function Global:Get-GPUCount {
     if ($GetBus -like "*AMD*") { $GA = $true }
 
     if ($GA -or $GN) {
-        Global:Write-Log "Searching GPU Types" -ForegroundColor Yellow
         $TypeArray = @("NVIDIA1", "NVIDIA2", "NVIDIA3", "AMD1")
         $TypeArray | ForEach-Object { if ($_ -in $Global:Config.Params.Type) { $NoType = $false } }
         if ($NoType -eq $true) {
+            Global:Write-Log "Searching GPU Types" -ForegroundColor Yellow
             if ($GA) { 
                 Global:Write-Log "AMD Detected: Adding AMD" -ForegroundColor Magenta
                 $global:Config.params.Type += "AMD1" 

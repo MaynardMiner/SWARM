@@ -17,7 +17,7 @@ Param (
 )
 
 #$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
-#$WorkingDir = "/root/hive/miners/custom/SWARM"
+$WorkingDir = "/root/hive/miners/custom/SWARM"
 Set-Location $WorkingDir
 . .\build\powershell\global\modules.ps1
 $Global:config = [hashtable]::Synchronized(@{ })
@@ -494,6 +494,37 @@ HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
             $global:GPUPowerTable[$($Global:GCount.AMD.$global:i)] = "$($global:GPUPower.$($Global:GCount.AMD.$global:i))"
         }
     }
+
+    ##Select Only For Each Device Group
+    $DeviceTable = @()
+    if([string]$global:Config.Params.GPUDevices1){ $DeviceTable += $global:Config.Params.GPUDevices1 }
+    if([string]$global:Config.Params.GPUDevices2){ $DeviceTable += $global:Config.Params.GPUDevices2 }
+    if([string]$global:Config.Params.GPUDevices3){ $DeviceTable += $global:Config.Params.GPUDevices3 }
+
+    if($DeviceTable){
+        $DeviceTable = $DeviceTable | Sort-Object
+        $TempGPU = @()
+        $TempFan = @()
+        $TempTemp = @()
+        $TempPower = @()
+        for($global:i = 0; $global:i -lt $DeviceTable.Count; $global:i++){
+            $G = $DeviceTable[$i]
+            $TempGPU += $global:GPUHashTable[$G]
+            $TempFan += $global:GPUFanTable[$G]
+            $TempTemp += $global:GPUTempTable[$G]
+            $TempPower += $global:GPUPowerTable[$G]
+        }
+        $global:GPUHashTable = $TempGPU
+        $global:GPUFanTable = $TempFan
+        $global:GPUTempTable = $TempTemp
+        $global:GPUPowerTable = $TempPower
+        Remove-Variable TempGPU
+        Remove-Variable TempFan
+        Remove-Variable TempTemp
+        Remove-Variable TempPower
+    }
+
+    Remove-Variable DeviceTable
 
     if ($global:DoCPU) {
         for ($global:i = 0; $global:i -lt $Global:GCount.CPU.PSObject.Properties.Value.Count; $global:i++) {
