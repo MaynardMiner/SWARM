@@ -26,6 +26,8 @@
     "AltPassword3": "",
     "CPUOnly":  "No",
     "Wallet":  "Yes",
+    "TCP": "No",
+    "TCP_Port": 6099,
     "StatsInterval":  1,
     "Farm_Hash":  "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     "Wallet2":  "",
@@ -97,7 +99,7 @@
     "Volume": "No",
     "Auto_Algo": "Yes",
     "Bans": [
-             ""
+             "cuckatoo31"
             ],
     "Xnsub": ""
 }

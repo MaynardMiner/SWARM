@@ -16,30 +16,30 @@ Param (
     [string]$WorkingDir
 )
 
-#$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
+$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
 #$WorkingDir = "/root/hive/miners/custom/SWARM"
 Set-Location $WorkingDir
 . .\build\powershell\global\modules.ps1
 $Global:config = [hashtable]::Synchronized(@{ })
 $Global:stats = [hashtable]::Synchronized(@{ })
-$global:config.Add("var",@{})
-$(v).Add("dir",$WorkingDir)
+$global:config.Add("var", @{ })
+$(v).Add("dir", $WorkingDir)
 
 try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$WorkingDir`'" -WindowStyle Minimized } }catch { }
-try{ $Net = Get-NetFireWallRule } catch {}
-if($Net) {
-try { if( -not ( $Net | Where {$_.DisplayName -like "*background.ps1*"} ) ) { New-NetFirewallRule -DisplayName 'background.ps1' -Direction Inbound -Program "$workingdir\build\powershell\scripts\background.ps1" -Action Allow | Out-Null} } catch { }
+try { $Net = Get-NetFireWallRule } catch { }
+if ($Net) {
+    try { if ( -not ( $Net | Where { $_.DisplayName -like "*background.ps1*" } ) ) { New-NetFirewallRule -DisplayName 'background.ps1' -Direction Inbound -Program "$workingdir\build\powershell\scripts\background.ps1" -Action Allow | Out-Null } } catch { }
 }
 $Net = $null
 
-if($IsWindows){ Start-Process "powershell" -ArgumentList "Set-Location `'$($(v).dir)`'; .\build\powershell\scripts\icon.ps1 `'$($(v).dir)\build\apps\comb.ico`'" -NoNewWindow }
+if ($IsWindows) { Start-Process "powershell" -ArgumentList "Set-Location `'$($(v).dir)`'; .\build\powershell\scripts\icon.ps1 `'$($(v).dir)\build\apps\comb.ico`'" -NoNewWindow }
 
-$(v).Add("global","$($(v).dir)\build\powershell\global")
-$(v).Add("background","$($(v).dir)\build\powershell\background")
-$(v).Add("miners","$($(v).dir)\build\api\miners")
-$(v).Add("tcp","$($(v).dir)\build\api\tcp")
-$(v).Add("html","$($(v).dir)\build\api\html")
-$(v).Add("web","$($(v).dir)\build\api\web")
+$(v).Add("global", "$($(v).dir)\build\powershell\global")
+$(v).Add("background", "$($(v).dir)\build\powershell\background")
+$(v).Add("miners", "$($(v).dir)\build\api\miners")
+$(v).Add("tcp", "$($(v).dir)\build\api\tcp")
+$(v).Add("html", "$($(v).dir)\build\api\html")
+$(v).Add("web", "$($(v).dir)\build\api\web")
 
 $p = [Environment]::GetEnvironmentVariable("PSModulePath")
 if ($P -notlike "*$($(v).dir)\build\powershell*") {
@@ -53,7 +53,7 @@ if ($P -notlike "*$($(v).dir)\build\powershell*") {
     Write-Host "Modules Are Loaded" -ForegroundColor Green
 }
 
-$(v).Add("Modules",@())
+$(v).Add("Modules", @())
 Import-Module "$($(v).global)\include.psm1" -Scope Global
 Global:Add-Module "$($(v).background)\startup.psm1"
 
@@ -64,8 +64,8 @@ $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12'
 [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
 Global:Set-Window
 
-$(v).Add("NetModules",@())
-$(v).Add("WebSites",@())
+$(v).Add("NetModules", @())
+$(v).Add("WebSites", @())
 if ($Config.Params.Farm_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" -and -not (Test-Path "/hive/miners") ) { $global:NetModules += ".\build\api\hiveos"; $global:WebSites += "HiveOS" }
 #if ($Config.Params.Swarm_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") { $global:NetModules += ".\build\api\SWARM"; $global:WebSites += "SWARM" }
 
@@ -109,8 +109,8 @@ Remove-Module -Name "startup"
 
 While ($True) {
 
-    if($global:Config.Params.Platform -eq "linux" -and -not $global:WebSites) {
-        if($global:GETSWARM.HasExited -eq $true) {
+    if ($global:Config.Params.Platform -eq "linux" -and -not $global:WebSites) {
+        if ($global:GETSWARM.HasExited -eq $true) {
             Write-Host "Closing down SWARM" -ForegroundColor Yellow
             Global:start-killscript
         }
@@ -149,10 +149,10 @@ While ($True) {
             $global:Devices = 0; $MinerDevices = $_.Devices
 
             ##Algorithm Parsing For Stats
-            $HiveAlgo = $global:MinerAlgo -replace "`_"," "
-            $HiveAlgo = $HiveAlgo -replace "veil","x16rt"
-            $NewName = $global:MinerAlgo -replace "`/","`-"
-            $NewName = $global:MinerAlgo -replace "`_","`-"
+            $HiveAlgo = $global:MinerAlgo -replace "`_", " "
+            $HiveAlgo = $HiveAlgo -replace "veil", "x16rt"
+            $NewName = $global:MinerAlgo -replace "`/", "`-"
+            $NewName = $global:MinerAlgo -replace "`_", "`-"
 
             ## Determine API Type
             if ($global:MinerType -like "*NVIDIA*") { $global:TypeS = "NVIDIA" }
@@ -287,147 +287,168 @@ While ($True) {
                         Global:Add-Module "$($(v).miners)\energiminer.psm1"; 
                         Global:Get-StatsEnergiminer;
                         Remove-Module -name "energiminer"
-                    } catch { Global:Get-OhNo } 
+                    }
+                    catch { Global:Get-OhNo } 
                 }
                 'claymore' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\ethminer.psm1"; 
                         Global:Get-StatsEthminer;
                         Remove-Module -name "ethminer"
-                    } catch { Global:Get-OhNo } 
+                    }
+                    catch { Global:Get-OhNo } 
                 }
                 'excavator' {
                     try { 
                         Global:Add-Module "$($(v).miners)\excavator.psm1"; 
                         Global:Get-StatsExcavator;
                         Remove-Module -name "excavator"
-                    } catch { Global:Get-OhNo } 
+                    }
+                    catch { Global:Get-OhNo } 
                 }
                 'miniz' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\miniz.psm1"; 
                         Global:Get-Statsminiz;
                         Remove-Module -name "miniz"
-                    } catch { Global:Get-OhNo } 
+                    }
+                    catch { Global:Get-OhNo } 
                 }
                 'gminer' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\gminer.psm1"; 
                         Global:Get-StatsGminer;
                         Remove-Module -name "gminer"
-                    } catch { Global:Get-OhNo } 
+                    }
+                    catch { Global:Get-OhNo } 
                 }
                 'grin-miner' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\grinminer.psm1"; 
                         Global:Get-StartGrinMiner;
                         Remove-Module -name "grinminer"
-                    } catch { Global:Get-OhNo } 
+                    }
+                    catch { Global:Get-OhNo } 
                 }
                 'ewbf' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\ewbf.psm1"; 
                         Global:Get-Statsewbf;
                         Remove-Module -name "ewbf"
-                    } catch { Global:Get-OhNo } 
+                    }
+                    catch { Global:Get-OhNo } 
                 }
                 'ccminer' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\ccminer.psm1"; 
                         Global:Get-StatsCcminer;
                         Remove-Module -name "ccminer"
-                    } catch { Global:Get-OhNo } 
+                    }
+                    catch { Global:Get-OhNo } 
                 }
                 'bminer' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\bminer.psm1"; 
                         Global:Get-StatsBminer;
                         Remove-Module -name "bminer"
-                    } catch { Global:Get-OhNo } 
+                    }
+                    catch { Global:Get-OhNo } 
                 }
                 'trex' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\trex.psm1"; 
                         Global:Get-StatsTrex;
                         Remove-Module -name "trex"
-                    } catch { Global:Get-OhNo } 
+                    }
+                    catch { Global:Get-OhNo } 
                 }
                 'dstm' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\dstm.psm1"; 
                         Global:Get-Statsdstm;
                         Remove-Module -name "dstm"
-                    } catch { Global:Get-OhNo } 
+                    }
+                    catch { Global:Get-OhNo } 
                 }
                 'lolminer' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\lolminer.psm1"; 
                         Global:Get-Statslolminer;
                         Remove-Module -name "lolminer"
-                    } catch { Global:Get-OhNo } 
+                    }
+                    catch { Global:Get-OhNo } 
                 }
                 'sgminer-gm' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\sgminer.psm1"; 
                         Global:Get-StatsSgminer;
                         Remove-Module -name "sgminer"
-                    } catch { Global:Get-OhNo } 
+                    }
+                    catch { Global:Get-OhNo } 
                 }
                 'cpuminer' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\cpuminer.psm1"; 
                         Global:Get-Statscpuminer;
                         Remove-Module -name "cpuminer"
-                    } catch { Global:Get-OhNo } 
+                    }
+                    catch { Global:Get-OhNo } 
                 }
                 'xmrstak' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\xmrstak.psm1"; 
                         Global:Get-Statsxmrstak;
                         Remove-Module -name "xmrstak"
-                    } catch { Global:Get-OhNo } 
+                    }
+                    catch { Global:Get-OhNo } 
                 }
                 'xmrig-opt' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\xmrigopt.psm1"; 
                         Global:Get-Statsxmrigopt;
                         Remove-Module -name "xmrigopt"
-                    } catch { Global:Get-OhNo } 
+                    }
+                    catch { Global:Get-OhNo } 
                 }
                 'wildrig' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\wildrig.psm1"; 
                         Global:Get-Statswildrig
                         Remove-Module -name "wildrig"
-                    } catch { Global:Get-OhNo } 
+                    }
+                    catch { Global:Get-OhNo } 
                 }
                 'cgminer' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\cgminer.psm1"; 
                         Global:Get-Statscgminer
                         Remove-Module -name "cgminer"
-                    } catch { Global:Get-OhNo } 
+                    }
+                    catch { Global:Get-OhNo } 
                 }
                 'nebutech' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\nbminer.psm1"; 
                         Global:Get-StatsNebutech
                         Remove-Module -name "nbminer"
-                    } catch { Global:Get-OhNo } 
+                    }
+                    catch { Global:Get-OhNo } 
                 }
                 'srbminer' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\srbminer.psm1"; 
                         Global:Get-Statssrbminer
                         Remove-Module -name "srbminer"
-                    } catch { Global:Get-OhNo } 
+                    }
+                    catch { Global:Get-OhNo } 
                 }
                 'multiminer' { 
                     try { 
                         Global:Add-Module "$($(v).miners)\multiminer.psm1"; 
                         Global:Get-Statsmultiminer
                         Remove-Module -name "multiminer"
-                    } catch { Global:Get-OhNo } 
+                    }
+                    catch { Global:Get-OhNo } 
                 }
             }
 
@@ -497,17 +518,17 @@ HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
 
     ##Select Only For Each Device Group
     $DeviceTable = @()
-    if([string]$global:Config.Params.GPUDevices1){ $DeviceTable += $global:Config.Params.GPUDevices1 }
-    if([string]$global:Config.Params.GPUDevices2){ $DeviceTable += $global:Config.Params.GPUDevices2 }
-    if([string]$global:Config.Params.GPUDevices3){ $DeviceTable += $global:Config.Params.GPUDevices3 }
+    if ([string]$global:Config.Params.GPUDevices1) { $DeviceTable += $global:Config.Params.GPUDevices1 }
+    if ([string]$global:Config.Params.GPUDevices2) { $DeviceTable += $global:Config.Params.GPUDevices2 }
+    if ([string]$global:Config.Params.GPUDevices3) { $DeviceTable += $global:Config.Params.GPUDevices3 }
 
-    if($DeviceTable){
+    if ($DeviceTable) {
         $DeviceTable = $DeviceTable | Sort-Object
         $TempGPU = @()
         $TempFan = @()
         $TempTemp = @()
         $TempPower = @()
-        for($global:i = 0; $global:i -lt $DeviceTable.Count; $global:i++){
+        for ($global:i = 0; $global:i -lt $DeviceTable.Count; $global:i++) {
             $G = $DeviceTable[$i]
             $TempGPU += $global:GPUHashTable[$G]
             $TempFan += $global:GPUFanTable[$G]
@@ -539,6 +560,11 @@ HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
     if ($global:DoASIC) { $global:ASICKHS = [Math]::Round($global:ASICKHS, 4) }
     $global:UPTIME = [math]::Round(((Get-Date) - $Global:StartTime).TotalSeconds)
 
+    ##Modify Stats to show something For Online
+    if($global:DoNVIDIA -or $global:AMD){
+        for($global:i=0; $global:i -lt $global:GPUHashTable.Count; $global:i++) { $global:GPUHashTable[$global:i] = $global:GPUHashTable[$global:i] -replace "0.0000","0.0001" }
+        if($global:GPUKHS -eq 0){$global:GPUKHS = 0.0001}
+    }
 
     $global:Stats.summary = @{
         summary = $global:MinerTable;

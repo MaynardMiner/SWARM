@@ -1,4 +1,4 @@
-Function Resolve-PCIBusInfo { 
+Function Global:Resolve-PCIBusInfo { 
 
     param ( 
         [parameter(ValueFromPipeline = $true, Mandatory = $true)] 
@@ -40,7 +40,7 @@ Function Resolve-PCIBusInfo {
     }          
 }
     
-Function Get-BusFunctionID {
+Function Global:Get-BusFunctionID {
     #gwmi -query "SELECT * FROM Win32_PnPEntity"
     $GPUS = @()
     $Services = @("nvlddmkm", "amdkmdap", "igfx", "BasicDisplay")

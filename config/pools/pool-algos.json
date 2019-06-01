@@ -492,8 +492,7 @@
     ],
     "exclusions": [
       "add pool or miner here",
-      "comma seperated",
-      "NVIDIA3"
+      "comma seperated"
     ]
   },
   "myr-gr": {
@@ -645,6 +644,15 @@
   "skein": {
     "alt_names": [
       "skein"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "skein2": {
+    "alt_names": [
+      "skein2"
     ],
     "exclusions": [
       "add pool or miner here",
