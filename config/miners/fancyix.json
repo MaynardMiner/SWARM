@@ -11,13 +11,13 @@
             "export GPU_MAX_ALLOC_PERCENT=100"
         ],
         "commands": {
-            "x22i": "-gpu-threads 2 -w 256 -I 22",
-            "phi2": "-gpu-threads 2 -w 256 -I 22",
-            "allium": "-gpu-threads 2 -w 256 -I 22",
-            "lyra2rev3": "-gpu-threads 2 -w 256 -I 24",
-            "argon2d500": "-gpu-threads 2 -w 64 -g 2",
-            "mtp": "-gpu-threads 2 -w 256 -I 20",
-            "x25x": "-gpu-threads 2 -w 256 -g 4"
+            "x22i": "--gpu-threads 2 -w 256 -I 22",
+            "phi2": "--gpu-threads 2 -w 256 -I 22",
+            "allium": "--gpu-threads 2 -w 256 -I 22",
+            "lyra2rev3": "--gpu-threads 2 -w 256 -I 24",
+            "argon2d500": "--gpu-threads 2 -w 64 -g 2",
+            "mtp": "--gpu-threads 2 -w 256 -I 20",
+            "x25x": "--gpu-threads 2 -w 256 -g 4"
         },
         "difficulty": {
             "x22i": "",
