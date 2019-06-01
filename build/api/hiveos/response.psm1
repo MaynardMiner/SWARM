@@ -11,9 +11,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 function Global:Set-Stats($Site) {
-    Switch($Site){
-        "HiveOS" {$Params = "hive_params"}
-        "SWARM" {$Params = "Swarm_Params"}
+    Switch ($Site) {
+        "HiveOS" { $Params = "hive_params" }
+        "SWARM" { $Params = "Swarm_Params" }
     }
     $mem = @($($global:ramfree), $($global:ramtotal - $global:ramfree))
     $global:GPUHashTable = $global:GPUHashTable | foreach { $_ -replace ("GPUKHS=", "") }
@@ -22,36 +22,42 @@ function Global:Set-Stats($Site) {
     $global:GPUTempTable = $global:GPUTempTable | foreach { $_ -replace ("GPUTEMP=", "") }
     $AR = @("$global:ALLACC", "$global:ALLREJ")
 
+    if ($GPUHashTable) {
+        $miner_stats = @{
+            hs       = @($global:GPUHashTable)
+            hs_units = "khs"
+            temp     = @($global:GPUTempTable)
+            fan      = @($global:GPUFanTable)
+            uptime   = $global:UPTIME
+            ar       = @($AR)
+            algo     = $Global:StatAlgo
+        }
+    } else {
+        $Miner_stats = $null
+    }
+
     $Stats = @{
         method  = "stats"
         rig_id  = $global:Config.$Params.HiveID
         jsonrpc = "2.0"
         id      = "0"
         params  = @{
-            rig_id      = $global:Config.$Params.HiveID
-            passwd      = $global:Config.$Params.HivePassword
-            miner       = "custom"
-            meta        = @{
+            rig_id    = $global:Config.$Params.HiveID
+            passwd    = $global:Config.$Params.HivePassword
+            miner     = "custom"
+            meta      = @{
                 custom = @{
                     coin = "BTC"
                 }
             }
-            miner_stats = @{
-                hs       = @($global:GPUHashTable)
-                hs_units = "khs"
-                temp     = @($global:GPUTempTable)
-                fan      = @($global:GPUFanTable)
-                uptime   = $global:UPTIME
-                ar       = @($AR)
-                algo     = $Global:StatAlgo
-            }
-            total_khs   = $global:GPUKHS
-            temp        = @($global:GPUTempTable)
-            fan         = @($global:GPUFanTable)
-            power       = @($global:GPUPowerTable)
-            df          = "$global:diskspace"
-            mem         = @($mem)
-            cpuavg      = $global:LoadAverages
+            miner_stats = $miner_stats
+            total_khs = $global:GPUKHS
+            temp      = @($global:GPUTempTable)
+            fan       = @($global:GPUFanTable)
+            power     = @($global:GPUPowerTable)
+            df        = "$global:diskspace"
+            mem       = @($mem)
+            cpuavg    = $global:LoadAverages
         }
     }
     $Stats
@@ -73,9 +79,9 @@ function Global:Set-Response {
         [string]$Site
     )
      
-    Switch($Site){
-        "HiveOS" {$Params = "hive_params"}
-        "SWARM" {$Params = "Swarm_Params"}
+    Switch ($Site) {
+        "HiveOS" { $Params = "hive_params" }
+        "SWARM" { $Params = "Swarm_Params" }
     }
     
     $myresponse = @{

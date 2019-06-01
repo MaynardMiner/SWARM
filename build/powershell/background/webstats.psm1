@@ -16,9 +16,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 function Global:Send-WebStats {
     if ($global:Config.hive_params.HiveID -and -not (test-Path "/hive/miners")) {
         $global:WebSites | ForEach-Object {
-            Get-WebModules $_
-            $Stats = Set-Stats $_
-            $response = $Stats | Invoke-WebCommand -Site $_ -Action "message"
+            Global:Get-WebModules $_
+            $Stats = Global:Set-Stats $_
+            $response = $Stats | Global:Invoke-WebCommand -Site $_ -Action "message"
             $response | ConvertTo-Json | Set-Content ".\build\txt\response.txt"
             if ($response) {
                 if ($response.result.command -eq "batch") {
@@ -33,10 +33,10 @@ function Global:Send-WebStats {
                         $parsed_batch = $do_command
                         $new_command = $do_command | ConvertFrom-StringData
                         $batch_command = [PSCustomObject]@{"result" = @{command = $new_command.Command; id = $new_command.id; $new_command.command = $parsed_batch } }
-                        $SwarmResponse = Start-webcommand -command $batch_command -website $_
+                        $SwarmResponse = Global:Start-webcommand -command $batch_command -website $_
                     }
                 }
-                else { $SwarmResponse = Start-webcommand -command $response -website $_ }
+                else { $SwarmResponse = Global:Start-webcommand -command $response -website $_ }
                 if ($SwarmResponse -ne $null) {
                     if ($SwarmResponse -eq "config") {
                         Write-Warning "Config Command Initiated- Restarting SWARM"
