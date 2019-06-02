@@ -109,7 +109,7 @@ function Global:Expand-WebRequest {
             Global:Write-Log "Download URI is $URI"
             Global:Write-Log "Miner Exec is $Name"
             Global:Write-Log "Miner Dir is $MoveThere"
-            Start-Process -Filepath "wget" -ArgumentList "$Uri -O x64/$Zip" -Wait
+            Invoke-WebRequest $Uri -OutFile ".\x64\$Zip" -UseBasicParsing
 
             if (Test-Path "$X64_zip") { Global:Write-Log "Download Succeeded!" -ForegroundColor Green }
             else { Global:Write-Log "Download Failed!" -ForegroundColor DarkRed; break }
@@ -144,8 +144,8 @@ function Global:Expand-WebRequest {
             else { Global:Write-Log "Download Failed!" -ForegroundColor DarkRed; break }
 
             New-Item -Path ".\x64\$temp" -ItemType "Directory" -Force | Out-Null; Start-Sleep -S 1
-            if($IsWindows) {Start-Process ".\build\apps\7z.exe" "x `"$($global:dir)\$X64_zip`" -o`"$($global:dir)\x64\$temp`" -y" -Wait -WindowStyle Minimized -verb Runas}
-            else {Start-Process "unzip" -ArgumentList "$($global:dir)\$X64_zip -d $($global:dir)\x64\$temp" -Wait}
+            if($IsWindows) { Start-Process ".\build\apps\7z.exe" "x `"$($(v).dir)\$X64_zip`" -o`"$($(v).dir)\x64\$temp`" -y" -Wait -WindowStyle Minimized -verb Runas }
+            else { Start-Process "unzip" -ArgumentList "$($(v).dir)/$X64_zip -d $($(v).dir)/x64/$temp" -Wait }
 
             $Stuff = Get-ChildItem ".\x64\$Temp"
             if ($Stuff) { Global:Write-Log "Extraction Succeeded!" -ForegroundColor Green }

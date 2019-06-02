@@ -25,17 +25,6 @@ Argument          Options           Explanation
 -Wallet1      [Wallet Address]      Address of your wallet. By default SWARM assumes it to be BTC.
                                     See Advanced arguments to change that.
 
--PasswordCurrency1  [Symbol]        Symbol of your wallet address, specifically for Wallet1. Most pools
-                                    only accept BTC for auto-exchange. See pools for options.                                  
-
-
--Type         [CPU,                 Device groups you wish to mine with. Nvidia has three groups in case
-               NVIDIA1,             you wish to divide your GPU devices into seperate groups to assist in
-               NVIDIA2,             benchmarking, or to prevent entire miner from becoming inoperable if
-               NVIDIA3              one gpu fails. Currently only 1 AMD group supported. NVIDIA2 and NVIDIA3
-               AMD1,                require wallet2 and wallet3 arguments, along with GPUDevices1,2,3
-	       ASIC]                respectively (See advanced section)
-
 -Donate      [Percentage]           Percent you wish to donate daily to support further development. 
                                     Miner remembers when you open or close, so it will not steal 
                                     from you...However it only resets donation switch if miner 
@@ -67,6 +56,16 @@ Argument          Options           Explanation
 These arguments can be added for additional customization and options
 
 Argument            Options             Explanation
+
+-Type         [CPU,                 Device groups you wish to mine with. Nvidia has three groups in case
+               NVIDIA1,             you wish to divide your GPU devices into seperate groups to assist in
+               NVIDIA2,             benchmarking, or to prevent entire miner from becoming inoperable if
+               NVIDIA3              one gpu fails. Currently only 1 AMD group supported. NVIDIA2 and NVIDIA3
+               AMD1,                require wallet2 and wallet3 arguments, along with GPUDevices1,2,3
+	       ASIC]                respectively (See advanced section)
+
+-PasswordCurrency1  [Symbol]        Symbol of your wallet address, specifically for Wallet1. Most pools
+                                    only accept BTC for auto-exchange. See pools for options.                                  
 
 -No_GLT         [Yes or No]         Default is "Yes". Disables GLT coin. Most users and statistics
                                     has shown that GLT never pays out what it states that it should.
