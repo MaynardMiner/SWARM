@@ -19,8 +19,9 @@ Param (
 #$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
 #$WorkingDir = "/root/hive/miners/custom/SWARM"
 Set-Location $WorkingDir
-$StartTime = $(Get-Date).ToUniversalTime()
-$StartTime = ([DateTimeOffset]$StartTime).ToUnixTimeSeconds()
+$UtcTime = Get-Date -Date "1970-01-01 00:00:00Z"
+$UTCTime = $UtcTime.ToUniversalTime()
+$StartTime = [Math]::Round(((Get-Date) - $UtcTime).TotalSeconds)
 . .\build\powershell\global\modules.ps1
 $Global:config = [hashtable]::Synchronized(@{ })
 $Global:stats = [hashtable]::Synchronized(@{ })
