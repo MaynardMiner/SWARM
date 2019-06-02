@@ -3225,3 +3225,13 @@ API overhaul:
   -x25x added properly to miners
   
   -Added skein2 algo (nvidia only, sgminer for skein2 is too old).
+
+  New Argument:
+
+  ``-No_GLT``
+  ```
+  -No_GLT         [Yes or No]         
+  Default is "Yes". Disables GLT coin. Most users and statistics
+  has shown that GLT never pays out what it states that it should.
+  Reducing profit.
+  ```

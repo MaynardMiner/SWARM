@@ -68,6 +68,10 @@ These arguments can be added for additional customization and options
 
 Argument            Options             Explanation
 
+-No_GLT         [Yes or No]         Default is "Yes". Disables GLT coin. Most users and statistics
+                                    has shown that GLT never pays out what it states that it should.
+                                    Reducing profit.
+
 -TCP            [Yes or No]         Default is No. Activates TCP port for API on -API_Port. Note:
                                     If SWARM is in HiveOS, it will turn on automatically.
 
