@@ -94,7 +94,7 @@
             "padihash": "padihash",
             "pawelhash": "pawelhash",
             "mtp": "mtp",
-            "x25x": ""
+            "x25x": "x25x"
         },
         "fee": {
             "tribus": 1,
@@ -223,7 +223,7 @@
             "padihash": "padihash",
             "pawelhash": "pawelhash",
             "mtp": "mtp",
-            "x25x": ""
+            "x25x": "x25x"
         },
         "fee": {
             "tribus": 1,
@@ -352,7 +352,7 @@
             "padihash": "padihash",
             "pawelhash": "pawelhash",
             "mtp": "mtp",
-            "x25x": ""
+            "x25x": "x25x"
         },
         "fee": {
             "tribus": 1,
