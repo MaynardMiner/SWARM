@@ -3190,4 +3190,7 @@ API overhaul:
     can be upwards of 60% off. A discussed system
     to correct this is in the works.
 
+ -Fixed ``benchmark`` command to work with
+  equihash algorithms. It should remove Hashrate 
+  and Watts files.
 
