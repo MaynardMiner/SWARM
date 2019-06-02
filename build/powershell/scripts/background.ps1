@@ -16,7 +16,7 @@ Param (
     [string]$WorkingDir
 )
 
-$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
+#$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
 #$WorkingDir = "/root/hive/miners/custom/SWARM"
 Set-Location $WorkingDir
 . .\build\powershell\global\modules.ps1
