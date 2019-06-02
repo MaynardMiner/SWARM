@@ -14,14 +14,14 @@ function Global:Get-CoinShares {
     ##For 
     $global:Config.Params.Poolname | % {
         switch ($_) {
-            "zergpool" { Get-ZergpoolData }
-            "nlpool" { Get-NlPoolData }        
-            "ahashpool" { Get-AhashpoolData }
-            "blockmasters" { Get-BlockMastersData }
-            "hashrefinery" { Get-HashRefineryData }
-            "phiphipool" { Get-PhiphipoolData }
-            "fairpool" { Get-FairpoolData }
-            "blazepool" { Get-BlazepoolData }
+            "zergpool" { Global:Get-ZergpoolData }
+            "nlpool" { Global:Get-NlPoolData }        
+            "ahashpool" { Global:Get-AhashpoolData }
+            "blockmasters" { Global:Get-BlockMastersData }
+            "hashrefinery" { Global:Get-HashRefineryData }
+            "phiphipool" { Global:Get-PhiphipoolData }
+            "fairpool" { Global:Get-FairpoolData }
+            "blazepool" { Global:Get-BlazepoolData }
         }
     }
 }

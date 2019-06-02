@@ -26,12 +26,12 @@ function Global:Get-AlgoPools {
     ##Get Custom Pools
     Global:Write-Log "Adding Custom Pools. ." -ForegroundColor Yellow;
     $Files = Get-ChildItem "custompools" | Where BaseName -in $global:Config.params.poolname
+    $global:AlgoPools = New-Object System.Collections.ArrayList
     $AllCustomPools = Global:Get-Pools -PoolType "Custom" -Items $Files
 
     if ($global:Config.Params.Auto_Algo -eq "Yes" -or $SingleMode -eq $True) {
 
         ## Select the best 3 of each algorithm
-        $global:AlgoPools = New-Object System.Collections.ArrayList
         $AllAlgoPools.Symbol | Select-Object -Unique | ForEach-Object { 
             $AllAlgoPools | 
             Where-Object Symbol -EQ $_ | 
@@ -56,20 +56,21 @@ function Global:Get-CoinPools {
         $global:QuickTimer.Restart()
         $coin_files = Get-ChildItem "coinpools" | Where BaseName -in $global:Config.params.poolname
         Global:Write-Log "Adding Coin Pools. . ." -ForegroundColor Yellow
-        $AllCoinPools = Get-Pools -PoolType "Coin" -Items $coin_files
+        $AllCoinPools = Global:Get-Pools -PoolType "Coin" -Items $coin_files        
         $global:CoinPools = New-Object System.Collections.ArrayList
         $AllCoinPools.algorithm | Select-Object -Unique | ForEach-Object { 
             $AllCoinPools | 
-            Where-Object algorithm -EQ $SelAlgo | 
-            Sort-Object Price -Descending | 
-            Select-Object -First 3 |
-            ForEach-Object { $global:CoinPools.ADD($_) | Out-Null } 
+                Where-Object algorithm -EQ $_ | 
+                Sort-Object Price -Descending | 
+                Select-Object -First 3 | 
+                ForEach-Object { 
+                    $global:CoinPools.ADD($_) | Out-Null 
+                } 
+            }
+        $global:CoinPools.Name | Select-Object -Unique | ForEach-Object {
+            $Remove = $Global:AlgoPools | Where-Object Name -eq $_
+            $Remove | ForEach-Object { $Global:AlgoPools.Remove($_) | Out-Null }
         }
-        $global:CoinPools.Name | Select-Object -Unique | ForEach-Object { 
-            $Global:AlgoPools | 
-            Where-Object Name -EQ $_ | 
-            ForEach-Object { $Global:AlgoPools.Remove($_) | Out-Null } 
-        } 
         $global:QuickTimer.Stop()
         Global:Write-Log "Coin Pools Loading Time: $([math]::Round($global:QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green
     }

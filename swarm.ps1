@@ -116,7 +116,7 @@ Global:Start-Log -Number $global:LogNum;
 
 ## Initiate Update Check
 Global:Add-Module "$($(v).startup)\remoteagent.psm1"
-if ($global:Config.Params.Platform -eq "Windows" -or $global:Config.Params.Update -eq "Yes") { 
+if ($global:Config.Params.Platform -eq "Windows" -or $global:Config.Params.Update -eq "Yes") {
     Global:Get-Version
     Global:Start-Update -Update $Getupdates
 }
@@ -358,7 +358,7 @@ While ($true) {
         $global:divisortable = @{ }
         $global:SingleMode = $false
         $global:AlgoPools = $Null
-        $global:CoinPools = $null
+        $global:CoinPools = $Null
         $global:Pool_Hashrates = @{ }
 
         ##Insert Pools Single Modules Here
