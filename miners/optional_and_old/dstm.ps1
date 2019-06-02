@@ -67,6 +67,7 @@ $Global:NVIDIATypes | ForEach-Object {
                         Type       = $ConfigType
                         Path       = $Path
                         Devices    = $Devices
+                        Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
                         Version    = "$($Global:nvidia.dstm.version)"
                         DeviceCall = "dstm"
                         Arguments  = "--server $($_.Host) --port $($_.Port) --user $($_.$User) --pass $($_.$Pass)$($Diff) --telemetry=0.0.0.0:$Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"

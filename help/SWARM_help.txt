@@ -75,8 +75,7 @@ Argument            Options             Explanation
 -TCP            [Yes or No]         Default is No. Activates TCP port for API on -API_Port. Note:
                                     If SWARM is in HiveOS, it will turn on automatically.
 
--TCP_Port       [Int]               Default is 6099. Activates TCP Port for API. See Below for APIPassword
-                                    Methods.
+-TCP_Port       [Int]               Default is 6099. Activates TCP Port for API. 
 
 -Max_Periods    [any number]        Default is 288. SWARM calculates profit via a rolling expontenial
                                     moving average, with each new period happening at the end of your

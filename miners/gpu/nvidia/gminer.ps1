@@ -94,6 +94,7 @@ $Global:NVIDIATypes | ForEach-Object {
                         Path       = $Path
                         ArgDevices = $ArgDevices
                         Devices    = $Devices
+                        Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
                         Version    = "$($Global:nvidia.gminer.version)"
                         DeviceCall = "gminer"
                         Arguments  = "--api $Port --server $($_.Host) --port $($_.Port) $AddArgs--user $($_.$User) --logfile `'$Log`' --pass $($_.$Pass)$Diff $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"

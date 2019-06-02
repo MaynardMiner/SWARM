@@ -69,6 +69,7 @@ API Methods:
         "58",
         "54"
         ]
+"stratum": "stratum+tcp://daggerhashimoto.usa.nicehash.com:3353"  ##Current Stratum Group 1 (NVIDIA1 or AMD1) is mining.
 }
 
 'params'

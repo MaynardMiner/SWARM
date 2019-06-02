@@ -118,9 +118,9 @@ While ($True) {
 
     $global:CPUOnly = $True ; $global:DoCPU = $false; $global:DoAMD = $false; 
     $global:DoNVIDIA = $false; $global:DoASIC = $false; $global:AllKHS = 0; 
-    $global:AllACC = 0; $global:ALLREJ = 0; $global:SWARM_ALGO = @{ }; 
+    $global:AllACC = 0; $global:ALLREJ = 0;
     $global:HIVE_ALGO = @{ }; $Group1 = $null; $Default_Group = $null; 
-    $Hive = $null; $global:UPTIME = 0;
+    $Hive = $null; $global:UPTIME = 0; $global:Web_Stratum = @{ }
 
     Global:Add-Module "$($(v).background)\run.psm1"
     Global:Add-Module "$($(v).background)\initial.psm1"
@@ -146,7 +146,7 @@ While ($True) {
             $global:MinerAlgo = "$($_.Algo)"; $global:MinerName = "$($_.MinerName)"; $global:Name = "$($_.Name)";
             $global:Port = $($_.Port); $global:MinerType = "$($_.Type)"; $global:MinerAPI = "$($_.API)";
             $global:Server = "$($_.Server)"; $HashPath = ".\logs\$($_.Type).log"; $global:TypeS = "none"
-            $global:Devices = 0; $MinerDevices = $_.Devices
+            $global:Devices = 0; $MinerDevices = $_.Devices; $MinerStratum = $_.Stratum;
 
             ##Algorithm Parsing For Stats
             $HiveAlgo = $global:MinerAlgo -replace "`_", " "
@@ -162,9 +162,18 @@ While ($True) {
 
             ##Build Algo Table
             switch ($global:MinerType) {
-                "NVIDIA1" { $global:HIVE_ALGO.Add("Main", $HiveAlgo); $global:SWARM_ALGO.Add("Main", $global:MinerAlgo) }
-                "AMD1" { $global:HIVE_ALGO.Add("Main", $HiveAlgo); $global:SWARM_ALGO.Add("Main", $global:MinerAlgo) }
-                default { $global:HIVE_ALGO.Add($global:MinerType, $HiveAlgo); $global:SWARM_ALGO.Add($global:MinerType, $global:MinerAlgo) }
+                "NVIDIA1" { 
+                    $global:HIVE_ALGO.Add("Main", $HiveAlgo); 
+                    $global:Web_Stratum.Add("Main", $MinerStratum); 
+                }
+                "AMD1" { 
+                    $global:HIVE_ALGO.Add("Main", $HiveAlgo); 
+                    $global:Web_Stratum.Add("Main", $MinerStratum); 
+                }
+                default { 
+                    $global:HIVE_ALGO.Add($global:MinerType, $HiveAlgo); 
+                    $global:Web_Stratum.Add($global:MinerType, $MinerStratum); 
+                }
             }         
             
             ## Determine Devices
@@ -472,8 +481,10 @@ While ($True) {
     if ($global:HIVE_ALGO.Main) { $Global:StatAlgo = $global:HIVE_ALGO.Main }
     else { $FirstMiner = $global:HIVE_ALGO.keys | Select-Object -First 1; if ($FirstMiner) { $Global:StatAlgo = $global:HIVE_ALGO.$FirstMiner } }
 
-    if ($global:SWARM_ALGO.Main) { $SwarmAlgo = $global:SWARM_ALGO.Main }
-    else { $FirstMiner = $global:SWARM_ALGO.keys | Select-Object -First 1; if ($FirstMiner) { $Global:StatAlgo = $global:SWARM_ALGO.$FirstMiner } }
+    if ($global:Web_Stratum.Main) { $Global:StatStratum = $global:Web_Stratum.Main }
+    else { $FirstStrat = $global:Web_Stratum.keys | Select-Object -First 1; if ($FirstStrat) { $Global:StatStratum = $global:HIVE_ALGO.$FirstMiner } }
+
+    
     if ($Global:StatAlgo) {
         Write-Host "
 HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
@@ -584,6 +595,7 @@ HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
         power      = $global:GPUPowerTable;
         accepted   = $global:AllACC;
         rejected   = $global:AllREJ;
+        Stratum    = $Global:StatStratum
     }
     $global:Stats.params = $global:config.Params
 
@@ -601,8 +613,9 @@ HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
         Write-Host "ACC: $global:ALLACC" -ForegroundColor DarkGreen -NoNewline
         Write-Host " REJ: $global:ALLREJ" -ForegroundColor DarkRed -NoNewline
         Write-Host " ALGO: $SwarmAlgo" -ForegroundColor White -NoNewline
-        Write-Host " UPTIME: $global:UPTIME
-" -ForegroundColor Yellow
+        Write-Host " UPTIME: $global:UPTIME" -ForegroundColor Yellow
+        Write-Host "Stratum: $global:StatStratum
+" -ForegroundColor Cyan
     }
 
     Remove-Module -Name "gpu"

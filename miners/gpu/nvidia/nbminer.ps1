@@ -75,6 +75,7 @@ $Global:NVIDIATypes | ForEach-Object {
                         Type       = $ConfigType
                         Path       = $Path
                         Devices    = $Devices
+                        Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
                         Version    = "$($Global:nvidia.nbminer.version)"
                         DeviceCall = "ccminer"
                         Arguments  = "-a $A --api 0.0.0.0:$Port --url $Stratum$($_.Host):$($_.Port) --user $($_.$User) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"

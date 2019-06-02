@@ -35,6 +35,7 @@ $Global:ASICTypes | ForEach-Object {
                     Type       = $ConfigType
                     Path       = $Path
                     Devices    = $Devices
+                    Stratum    = "$($_.Stratum)://$($_.Host):$($_.Port)" 
                     DeviceCall = "cgminer"
                     Wallet     = "$($_.$User)"
                     Arguments  = "stratum+tcp://$($_.Host):$($_.Port),$($_.$User),$Pass"

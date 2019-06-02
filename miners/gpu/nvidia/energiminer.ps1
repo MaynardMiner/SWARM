@@ -68,6 +68,7 @@ $Global:NVIDIATypes | ForEach-Object {
                         Type       = $ConfigType
                         Path       = $Path
                         Devices    = $Devices
+                        Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
                         Version    = "$($Global:nvidia.energiminer.version)"
                         DeviceCall = "energiminer"
                         Arguments  = "-U stratum://$($_.$User).$($_.$Pass)@$($_.Algorithm).mine.zergpool.com:$($_.Port)"

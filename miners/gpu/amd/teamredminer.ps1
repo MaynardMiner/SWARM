@@ -61,6 +61,7 @@ $Global:AMDTypes | ForEach-Object {
                         Type       = $ConfigType
                         Path       = $Path
                         Devices    = $Devices
+                        Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
                         Version    = "$($Global:amd.teamredminer.version)"
                         DeviceCall = "tdxminer"
                         Arguments  = "--platform $Global:AMDPlatform -a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --api_listen=0.0.0.0:$Port -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.$User) --log_file `'$Log`' --bus_reorder -p $($_.$Pass)$($DIff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"

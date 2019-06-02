@@ -65,6 +65,7 @@ $Global:AMDTypes | ForEach-Object {
                         Type       = $ConfigType
                         Path       = $Path
                         Devices    = $Devices
+                        Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
                         Version    = "$($Global:amd.$CName.version)"
                         DeviceCall = "progminer_amd"
                         Arguments  = "-G -P stratum+tcp://$($_.$User)@$($_.Host):$($_.Port) --api-port -$Port --opencl-platform $Global:AMDPlatform $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"

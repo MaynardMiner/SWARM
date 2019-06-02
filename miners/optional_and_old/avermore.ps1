@@ -62,6 +62,7 @@ $Global:AMDTypes | ForEach-Object {
                         Type       = $ConfigType
                         Path       = $Path
                         Devices    = $Devices
+                        Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
                         Version    = "$($Global:amd.avermore.version)"
                         DeviceCall = "sgminer-gm"
                         Arguments  = "--gpu-platform $Global:AMDPlatform --api-listen --api-port $Port -k $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.$User) -p $($_.$Pass)$($Diff) -T $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"

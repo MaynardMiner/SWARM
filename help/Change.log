@@ -3226,7 +3226,7 @@ API overhaul:
   
   -Added skein2 algo (nvidia only, sgminer for skein2 is too old).
 
-  New Argument:
+  New arguments:
 
   ``-No_GLT``
   ```
@@ -3234,4 +3234,15 @@ API overhaul:
   Default is "Yes". Disables GLT coin. Most users and statistics
   has shown that GLT never pays out what it states that it should.
   Reducing profit.
+  ```
+
+  ```
+  -TCP            [Yes or No]         
+  Default is No. Activates TCP port for API on -API_Port. Note:
+  If SWARM is in HiveOS, it will turn on automatically.
+  ```
+
+  ```
+  -TCP_Port       [Int]               
+  Default is 6099. Activates TCP Port for API.
   ```

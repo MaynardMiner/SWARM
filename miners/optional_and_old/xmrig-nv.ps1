@@ -64,6 +64,7 @@ $Global:NVIDIATypes | ForEach-Object {
                         Type       = $ConfigType
                         Path       = $Path
                         Devices    = $Devices
+                        Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
                         Version    = "$($Global:nvidia.$CName.version)"
                         DeviceCall = "xmrstak"
                         Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --api-port=$Port -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.$User) -p $($_.$Pass)$($Diff) --donate-level 1 --nicehash $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"    

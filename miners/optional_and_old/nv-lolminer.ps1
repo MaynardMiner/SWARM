@@ -73,6 +73,7 @@ $Global:NVIDIATypes | ForEach-Object {
                         Type       = $ConfigType
                         Path       = $Path
                         Devices    = $Devices
+                        Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
                         Version    = "$($Global:nvidia.$CName.version)"
                         DeviceCall = "lolminer"
                         Arguments  = "--pool $($_.Host) --port $($_.Port) --user $($_.$User) $AddArgs--pass $($_.$Pass)$($Diff) --apiport $Port --logs 0 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"

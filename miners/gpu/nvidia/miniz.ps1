@@ -73,6 +73,7 @@ $Global:NVIDIATypes | ForEach-Object {
                         Type       = $ConfigType
                         Path       = $Path
                         Devices    = $Devices
+                        Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
                         Version    = "$($Global:nvidia.miniz.version)"
                         DeviceCall = "miniz"
                         Arguments  = "--telemetry 0.0.0.0:$Port --server $($_.Host) --port $($_.Port) $AddArgs--user $($_.$User) --pass $($_.$Pass)$($Diff) --logfile=`'$log`' $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"

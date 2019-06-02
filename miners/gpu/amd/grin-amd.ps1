@@ -63,6 +63,7 @@ $Global:AMDTypes | ForEach-Object {
                         Type       = $ConfigType
                         Path       = $Path
                         Devices    = $Devices
+                        Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
                         Version    = "$($Global:amd.$CName.version)"
                         DeviceCall = "grin-miner"
                         Host       = "$($_.Host):$($_.Port)"

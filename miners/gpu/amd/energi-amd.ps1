@@ -67,6 +67,7 @@ $Global:AMDTypes | ForEach-Object {
                             Type       = $ConfigType
                             Path       = $Path
                             Devices    = $Devices
+                        Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
                             Version    = "$($Global:amd.$CName.version)"
                             DeviceCall = "energiminer"
                             Arguments  = "--opencl-platform $Global:AMDPlatform -G stratum://$($_.$User).$($_.$Pass)@$($_.Algorithm).mine.zergpool.com:$($_.Port)"

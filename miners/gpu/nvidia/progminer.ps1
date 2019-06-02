@@ -66,6 +66,7 @@ $Global:NVIDIATypes | ForEach-Object {
                         Type       = $ConfigType
                         Path       = $Path
                         Devices    = $Devices
+                        Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
                         Version    = "$($Global:nvidia.progminer.version)"
                         DeviceCall = "progminer"
                         Arguments  = "-U -P stratum+tcp://$($_.$User)@$($_.Host):$($_.Port) --api-port -$Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
