@@ -144,7 +144,8 @@ function Global:Expand-WebRequest {
             else { Global:Write-Log "Download Failed!" -ForegroundColor DarkRed; break }
 
             New-Item -Path ".\x64\$temp" -ItemType "Directory" -Force | Out-Null; Start-Sleep -S 1
-            Start-Process ".\build\apps\7z.exe" "x `"$($(v).dir)\$X64_zip`" -o`"$($(v).dir)\x64\$temp`" -y" -Wait -WindowStyle Minimized -verb Runas
+            if($IsWindows) {Start-Process ".\build\apps\7z.exe" "x `"$($global:dir)\$X64_zip`" -o`"$($global:dir)\x64\$temp`" -y" -Wait -WindowStyle Minimized -verb Runas}
+            else {Start-Process "unzip" -ArgumentList "$($global:dir)\$X64_zip -d $($global:dir)\x64\$temp" -Wait}
 
             $Stuff = Get-ChildItem ".\x64\$Temp"
             if ($Stuff) { Global:Write-Log "Extraction Succeeded!" -ForegroundColor Green }
