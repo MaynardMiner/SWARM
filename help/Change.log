@@ -3170,3 +3170,24 @@ API overhaul:
   -API_Key argument added to help.txt.
 
   -Track_Shares argument added to help.txt.
+
+  2.3.6
+  
+  Expiremental release
+
+ 2.3.7
+
+ -x25x fixed.
+ -skein2 added
+ -fancyIX updated
+ -gminer updated
+
+ -cuckatoo31 is banned by default.
+  * If you wish to remove it- Omit it from
+    -Bans argument, or just -Bans ""
+  * This has been done because due to
+    nicehash's rejection rounding - Profit / Day
+    can be upwards of 60% off. A discussed system
+    to correct this is in the works.
+
+
