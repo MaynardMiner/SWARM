@@ -19,6 +19,8 @@ Param (
 #$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
 #$WorkingDir = "/root/hive/miners/custom/SWARM"
 Set-Location $WorkingDir
+$StartTime = $(Get-Date).ToUniversalTime()
+$StartTime = ([DateTimeOffset]$StartTime).ToUnixTimeSeconds()
 . .\build\powershell\global\modules.ps1
 $Global:config = [hashtable]::Synchronized(@{ })
 $Global:stats = [hashtable]::Synchronized(@{ })
@@ -595,7 +597,8 @@ HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
         power      = $global:GPUPowerTable;
         accepted   = $global:AllACC;
         rejected   = $global:AllREJ;
-        Stratum    = $Global:StatStratum
+        stratum    = $Global:StatStratum
+        start_time = $StartTime
     }
     $global:Stats.params = $global:config.Params
 
@@ -614,8 +617,9 @@ HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
         Write-Host " REJ: $global:ALLREJ" -ForegroundColor DarkRed -NoNewline
         Write-Host " ALGO: $SwarmAlgo" -ForegroundColor White -NoNewline
         Write-Host " UPTIME: $global:UPTIME" -ForegroundColor Yellow
-        Write-Host "Stratum: $global:StatStratum
-" -ForegroundColor Cyan
+        Write-Host "STRATUM: $global:StatStratum" -ForegroundColor Cyan
+        Write-Host "START_TIME: $StartTime
+" -ForegroundColor Magenta
     }
 
     Remove-Module -Name "gpu"
