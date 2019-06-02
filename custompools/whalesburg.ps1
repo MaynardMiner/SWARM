@@ -39,12 +39,8 @@ if ($global:Config.Params.PoolName -eq $Name) {
 
         [PSCustomObject]@{
             Priority      = $Priorities.Pool_Priorities.$Name
-            Symbol        = $Whalesburg_Algorithm
-            Mining        = $Whalesburg_Algorithm
             Algorithm     = $Whalesburg_Algorithm
             Price         = $Stat.$($global:Config.Params.Stat_Algo)
-            StablePrice   = $Stat.Week
-            MarginOfError = $Stat.Fluctuation
             Protocol      = "stratum+ssl"
             Host          = $Whalesburg_Host
             Port          = $Whalesburg_Port
