@@ -67,7 +67,7 @@ $Global:NVIDIATypes | ForEach-Object {
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
                         Version    = "$($Global:nvidia.cryptodredge.version)"
                         DeviceCall = "ccminer"
-                        Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --no-nvml -o stratum+tcp://$($_.Host):$($_.Port) -b 0.0.0.0:$Port --log `'$Log`' -u $($_.$User) -p $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                        Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -b 0.0.0.0:$Port --log `'$Log`' -u $($_.$User) -p $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         Power     =  if ($global:Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $global:Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($global:Watts.default."$($ConfigType)_Watts") { $global:Watts.default."$($ConfigType)_Watts" }else { 0 } 
