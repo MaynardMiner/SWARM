@@ -189,8 +189,8 @@ Argument            Options             Explanation
                                     Set this if SWARM fails to guess correct platform. However,
                                     SWARM ~should~ auto-detect correct platform.
 
--Farm_Hash     [address]            This is required for Windows. Specify Farm_Hash in order to use HiveOS
-                                    website. Farm_Hash is attained by making a user account in HiveOS.
+-Hive_Hash     [address]            This is required for Windows. Specify Hive_Hash in order to use HiveOS
+                                    website. Farm Hash is attained by making a user account in HiveOS.
 
 -Benchmark     [0-100000]           Expressed in seconds. Default 180. Sets specific interval time for when coin 
 				    is in benchmark mode. Can be used for faster benchmarking. When coin has

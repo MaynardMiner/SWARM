@@ -11,7 +11,7 @@ function Global:Start-HiveTune {
     Global:Write-Log "Checking Hive OC Tuning" -ForegroundColor Cyan
     $Algo = $Algo -replace "`_", " "
     $Algo = $Algo -replace "veil","x16rt"
-    $Url = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/workers/$($Global:Config.hive_params.HiveID)"
+    $Url = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/workers/$($Global:Config.hive_params.Id)"
     $CheckOC = $false
     $CheckDate = Get-Date
     $Success = $false

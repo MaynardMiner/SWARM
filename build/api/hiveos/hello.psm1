@@ -21,8 +21,8 @@ function Global:Start-Hello($RigData) {
         jsonrpc = "2.0"
         id      = "0"
         params  = @{
-            farm_hash        = "$($global:Config.Params.Farm_Hash)"
-            server_url       = "$($global:Config.hive_params.HiveMirror)"
+            farm_hash        = "$($global:Config.Params.Hive_Hash)"
+            server_url       = "$($global:Config.hive_params.Mirror)"
             uid              = $RigData.uid
             boot_time        = "$($RigData.boot_time)"
             boot_event       = "0"
@@ -33,7 +33,7 @@ function Global:Start-Hello($RigData) {
             gpu              = $RigData.gpu
             gpu_count_amd    = "$($RigData.gpu_count_amd)"
             gpu_count_nvidia = "$($RigData.gpu_count_nvidia)"
-            worker_name      = "$($global:Config.hive_params.HiveWorker)" 
+            worker_name      = "$($global:Config.hive_params.Worker)" 
             version          = ""
             kernel           = "$($RigData.kernel)"
             amd_version      = "$($RigData.amd_version)"
@@ -41,6 +41,7 @@ function Global:Start-Hello($RigData) {
             mb               = @{
                 manufacturer = "$($RigData.mb.manufacturer)"
                 product      = "$($RigData.mb.product)" 
+                system_uuid  = "$($RigData.mb.system_uuid)" 
             }
             cpu              = @{
                 model  = "$($RigData.cpu.model)"
@@ -54,11 +55,11 @@ function Global:Start-Hello($RigData) {
       
     Global:Write-Log "Saying Hello To Hive"
     $GetHello = $Hello | ConvertTo-Json -Depth 3 -Compress
-    $GetHello | Set-Content ".\build\txt\hello.txt"
+    $GetHello | Set-Content ".\build\txt\hive_hello.txt"
     Global:Write-Log "$GetHello" -ForegroundColor Green
 
     try {
-        $response = Invoke-RestMethod "$($Global:Config.hive_params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body ($Hello | ConvertTo-Json -Depth 3 -Compress) -ContentType 'application/json'
+        $response = Invoke-RestMethod "$($Global:Config.hive_params.Mirror)/worker/api" -TimeoutSec 15 -Method POST -Body ($Hello | ConvertTo-Json -Depth 3 -Compress) -ContentType 'application/json'
         $response | ConvertTo-Json | Out-File ".\build\txt\get-hive-hello.txt"
         $message = $response
     }
@@ -86,11 +87,11 @@ function Global:Start-WebStartup($response,$Site) {
             Switch ($Action) {
                 "config" {
                     $Rig = [string]$RigConf.result.config | ConvertFrom-StringData                
-                    $global:Config.$Params.HiveWorker = $Rig.WORKER_NAME -replace "`"", ""
-                    $global:Config.$Params.HivePassword = $Rig.RIG_PASSWD -replace "`"", ""
-                    $global:Config.$Params.HiveMirror = $Rig.HIVE_HOST_URL -replace "`"", ""
+                    $global:Config.$Params.Worker = $Rig.WORKER_NAME -replace "`"", ""
+                    $global:Config.$Params.Password = $Rig.RIG_PASSWD -replace "`"", ""
+                    $global:Config.$Params.Mirror = $Rig.HIVE_HOST_URL -replace "`"", ""
                     $global:Config.$Params.FarmID = $Rig.FARM_ID -replace "`"", ""
-                    $global:Config.$Params.HiveID = $Rig.RIG_ID -replace "`"", ""
+                    $global:Config.$Params.Id = $Rig.RIG_ID -replace "`"", ""
                     $global:Config.$Params.Wd_enabled = $Rig.WD_ENABLED -replace "`"", ""
                     $global:Config.$Params.Wd_Miner = $Rig.WD_MINER -replace "`"", ""
                     $global:Config.$Params.Wd_reboot = $Rig.WD_REBOOT -replace "`"", ""
@@ -99,19 +100,19 @@ function Global:Start-WebStartup($response,$Site) {
                     $global:Config.$Params.Miner2 = $Rig.MINER2 -replace "`"", ""
                     $global:Config.$Params.Timezone = $Rig.TIMEZONE -replace "`"", ""
 
-                    if (Test-Path ".\build\txt\hivekeys.txt") { $OldHiveKeys = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json }
+                    if (Test-Path ".\build\txt\$($Params)_keys.txt") { $OldHiveKeys = Get-Content ".\build\txt\$($Params)_keys.txt" | ConvertFrom-Json }
 
                     ## If password was changed- Let Hive know message was recieved
 
                     if ($OldHiveKeys) {
-                        if ("$($global:Config.$Params.HivePassword)" -ne "$($OldHiveKeys.HivePassword)") {
+                        if ("$($global:Config.$Params.Password)" -ne "$($OldHiveKeys.Password)") {
                             $method = "message"
                             $messagetype = "warning"
                             $data = "Password change received, wait for next message..."
                             $DoResponse = Global:Set-Response -Method $method -MessageType $messagetype -Data $data -CommandID $command.result.id -Site $Site
                             $sendResponse = $DoResponse | Global:Invoke-WebCommand -Site $Site -Action "Message"
                             $SendResponse
-                            $DoResponse = @{method = "password_change_received"; params = @{rig_id = $global:Config.$Params.HiveID; passwd = $global:Config.$Params.HivePassword }; jsonrpc = "2.0"; id = "0" }
+                            $DoResponse = @{method = "password_change_received"; params = @{rig_id = $global:Config.$Params.Id; passwd = $global:Config.$Params.Password }; jsonrpc = "2.0"; id = "0" }
                             $send2Response = $DoResponse | Global:Invoke-WebCommand -Site $Site -Action "Message"
                         }
                     }

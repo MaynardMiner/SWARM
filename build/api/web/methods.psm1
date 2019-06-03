@@ -96,6 +96,9 @@ function Global:Get-RigData {
             $Boot = $(Invoke-Expression "cat /proc/uptime") -split " " | Select -First 1
             $Boot_Time = [Math]::Round($Date - $Boot)     
             $RigData.Add("boot_time",$Boot_Time)
+            $swarmversion = Get-Content ".\h-manifest.conf" | ConvertFrom-StringData
+            $swarmversion = $swarmversion.CUSTOM_VERSION
+            $RigData.Add("kernel",$swarmversion)
             $IP = @()
             $IPs = $(Invoke-Expression "hostname -I | sed `'s`/ `/`\n`/g`'") | foreach {if($_ -ne ""){$IP += $_}}
             $RigData.Add("ip",$IP)
@@ -124,7 +127,7 @@ function Global:Get-RigData {
             $cpu_cores = Invoke-Expression "lscpu | grep `"`^CPU(s):`" | sed `'s`/CPU(s):[ `\t]`*`/`/`g`'"
             $aes = Invoke-Expression "lscpu | grep `"`^Flags:`.`*aes`" | wc -l"
             $RigData.Add("cpu",@{
-                cpu_model = $cpu_model
+                model = $cpu_model
                 cores = $cpu_cores
                 aes = $AES
                 cpu_id = $cpuid
@@ -170,14 +173,14 @@ function Global:Invoke-WebCommand {
 
     ##First load Correct Modules
     Switch ($Site) {
-        "HiveOS" { $URL = $global:config.hive_params.HiveMirror; }
+        "HiveOS" { $URL = $global:config.hive_params.Mirror; }
         "SWARM" { $URL = $global:Config.swarm_params.SWARMMirror; }
     }
 
     ##Run Command Based on action
     Switch ($Action) {
         "Hello" { 
-            $Return = Start-Hello $InputObject 
+            $Return = Global:Start-Hello $InputObject 
         }
         "Message" {
             if ($InputObject) { $Get = $InputObject | ConvertTo-Json -Depth 3 }
@@ -188,7 +191,7 @@ function Global:Invoke-WebCommand {
                 if ($data) { $GetParams.Add("data", $data) }
                 if ($payload) { $GetParams.Add("payload", $payload) }
                 if ($Id) { $GetParams.Add("Id", $Id) }
-                $Get = Set-Response @$GetParams;
+                $Get = Global:Set-Response @$GetParams;
                 $Get = $Get | ConvertTo-JSon -Depth 1
             }
             try { $Return = Invoke-RestMethod "$URL/worker/api" -TimeoutSec 10 -Method Post -Body $Get -ContentType 'application/json' }
@@ -208,7 +211,7 @@ function Global:Get-WebModules {
     
     Switch ($Site) {
         "HiveOS" { $Web_Mods = Get-ChildItem ".\build\api\hiveos"; }
-        "SWARM" { $Web_Mods = Get-ChildItem ".\build\api\SWARM"; }
+        "SWARM" { $Web_Mods = Get-ChildItem ".\build\api\swarm"; }
     }
     $Web_Mods | % { Global:Add-Module $_.FullName }
 }
@@ -221,7 +224,7 @@ function Global:Remove-WebModules {
     
     Switch ($Site) {
         "HiveOS" { $Web_Mods = Get-ChildItem ".\build\api\hiveos"; }
-        "SWARM" { $Web_Mods = Get-ChildItem ".\build\api\SWARM"; }
+        "SWARM" { $Web_Mods = Get-ChildItem ".\build\api\swarm"; }
     }
     $Web_Mods | % { Remove-Module -Name "$($_.BaseName)" }
 }

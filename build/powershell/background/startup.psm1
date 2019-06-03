@@ -19,12 +19,12 @@ function Global:Get-Params {
         $HiveStuff.PSObject.Properties.Name | % { $global:Config.hive_params.Add("$($_)", $HiveStuff.$_) }
         $HiveStuff = $null
     }
-    if (-not $global:Config.hive_params.HiveID) {
-        Write-Host "No HiveID- HiveOS Disabled"
-        $global:Config.hive_params.Add("HiveID", $Null)
-        $global:Config.hive_params.Add("HivePassword", $Null)
-        $global:Config.hive_params.Add("HiveWorker", $Null)
-        $global:Config.hive_params.Add("HiveMirror", "https://api.hiveos.farm")
+    if (-not $global:Config.hive_params.Id) {
+        Write-Host "No Id- HiveOS Disabled"
+        $global:Config.hive_params.Add("Id", $Null)
+        $global:Config.hive_params.Add("Password", $Null)
+        $global:Config.hive_params.Add("Worker", $Null)
+        $global:Config.hive_params.Add("Mirror", "https://api.hiveos.farm")
         $global:Config.hive_params.Add("FarmID", $Null)
         $global:Config.hive_params.Add("Wd_Enabled", $null)
         $Global:config.hive_params.Add("Wd_miner", $Null)

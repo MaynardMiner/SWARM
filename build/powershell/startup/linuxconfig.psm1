@@ -353,19 +353,13 @@ function Global:Start-LinuxConfig {
     ## Check if this is a hive-os image
     ## If HiveOS "Yes" Connect To Hive (Not Ready Yet)
     $HiveBin = "/hive/bin"
-    $Rig_File = "/hive-config/rig.conf"
+    $Hive_File = "/hive-config/rig.conf"
     $Hive = $false
     $NotHiveOS = $false
     if (Test-Path $HiveBin) { $Hive = $true }
-    if ($Hive -eq $false -and $global:Config.Params.Farm_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") {
-        if (-not (Test-Path $Rig_File) ) {
-            $NotHiveOS = $True
-            New-Item -ItemType Directory -Name "/hive-config" -Force
-        }
-    }
 
-        ## Get Total GPU Count
-        $Global:GPU_Count = Global:Get-GPUCount
+    ## Get Total GPU Count
+    $Global:GPU_Count = Global:Get-GPUCount
 
     if ($global:Websites) {
         Global:Add-Module "$($(v).web)\methods.psm1"
@@ -374,9 +368,11 @@ function Global:Start-LinuxConfig {
         $global:Websites | ForEach-Object {
             switch ($_) {
                 "HiveOS" {
+                    if($Hive -eq $false){
                     Global:Get-WebModules "HiveOS"
                     $response = $rigdata | Global:Invoke-WebCommand -Site "HiveOS" -Action "Hello"
                     Global:Start-WebStartup $response "HiveOS"
+                    }
                 }
                 "SWARM" {
                     Global:Get-WebModules "SWARM"
@@ -393,11 +389,11 @@ function Global:Start-LinuxConfig {
         ## Get Hive Config
         $RigConf = Get-Content $Rig_File
         $RigConf = $RigConf | ConvertFrom-StringData                
-        $global:Config.hive_params.HiveWorker = $RigConf.WORKER_NAME -replace "`"", ""
-        $global:Config.hive_params.HivePassword = $RigConf.RIG_PASSWD -replace "`"", ""
-        $global:Config.hive_params.HiveMirror = $RigConf.HIVE_HOST_URL -replace "`"", ""
+        $global:Config.hive_params.Worker = $RigConf.WORKER_NAME -replace "`"", ""
+        $global:Config.hive_params.Password = $RigConf.RIG_PASSWD -replace "`"", ""
+        $global:Config.hive_params.Mirror = $RigConf.HIVE_HOST_URL -replace "`"", ""
         $global:Config.hive_params.FarmID = $RigConf.FARM_ID -replace "`"", ""
-        $global:Config.hive_params.HiveID = $RigConf.RIG_ID -replace "`"", ""
+        $global:Config.hive_params.Id = $RigConf.RIG_ID -replace "`"", ""
         $global:Config.hive_params.Wd_enabled = $RigConf.WD_ENABLED -replace "`"", ""
         $global:Config.hive_params.Wd_Miner = $RigConf.WD_MINER -replace "`"", ""
         $global:Config.hive_params.Wd_reboot = $RigConf.WD_REBOOT -replace "`"", ""
@@ -461,7 +457,7 @@ function Global:Start-LinuxConfig {
     Global:Get-Data
 
     ## Set Arguments/New Parameters
-    if ($global:Config.hive_params.HiveID) {
+    if ($global:Config.hive_params.Id) {
         $global:Config.hive_params | ConvertTo-Json | Set-Content ".\build\txt\hivekeys.txt"
     }
 }

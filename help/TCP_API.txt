@@ -107,7 +107,7 @@ Current User Params:
     "CPUOnly":  "No",
     "Wallet":  "Yes",
     "StatsInterval":  1,
-    "Farm_Hash":  "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "Hive_Hash":  "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     "Wallet2":  "",
     "HiveOS":  "Yes",
     "GPUDevices2": [
