@@ -11,9 +11,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 function Global:Start-Hello($RigData) {
-    
+
     $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
     [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
+
 
     $Hello = @{
         method  = "hello"
@@ -51,17 +52,89 @@ function Global:Start-Hello($RigData) {
         }
     }
       
-    Global:Write-Log "Saying Hello To SWARM"
+    Global:Write-Log "Saying Hello To Hive"
     $GetHello = $Hello | ConvertTo-Json -Depth 3 -Compress
     $GetHello | Set-Content ".\build\txt\hello.txt"
     Global:Write-Log "$GetHello" -ForegroundColor Green
 
     try {
         $response = Invoke-RestMethod "$($Global:Config.hive_params.HiveMirror)/worker/api" -TimeoutSec 15 -Method POST -Body ($Hello | ConvertTo-Json -Depth 3 -Compress) -ContentType 'application/json'
-        $response | ConvertTo-Json | Out-File ".\build\txt\get-swarm-hello.txt"
+        $response | ConvertTo-Json | Out-File ".\build\txt\get-hive-hello.txt"
         $message = $response
     }
-    catch { $message = "Failed To Contact SWARM webstie" }
+    catch { $message = "Failed To Contact HiveOS.Farm" }
 
     return $message
+}
+
+function Global:Start-WebStartup($response,$Site) {
+    
+    switch($Site){
+        "HiveOS" {$Params = "hive_params"}
+        "SWARM" {$Params = "SWARM_Params"}
+    }
+
+    if ($response.result) { $RigConf = $response }
+    elseif (Test-Path ".\build\txt\get-hive-hello.txt") {
+        Global:Write-Log "WARNGING: Failed To Contact HiveOS. Using Last Known Configuration"
+        Start-Sleep -S 2
+        $RigConf = Get-Content ".\build\txt\get-hive-hello.txt" | ConvertFrom-Json
+    }
+    if ($RigConf) {
+        $RigConf.result | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+            $Action = $_
+            Switch ($Action) {
+                "config" {
+                    $Rig = [string]$RigConf.result.config | ConvertFrom-StringData                
+                    $global:Config.$Params.HiveWorker = $Rig.WORKER_NAME -replace "`"", ""
+                    $global:Config.$Params.HivePassword = $Rig.RIG_PASSWD -replace "`"", ""
+                    $global:Config.$Params.HiveMirror = $Rig.HIVE_HOST_URL -replace "`"", ""
+                    $global:Config.$Params.FarmID = $Rig.FARM_ID -replace "`"", ""
+                    $global:Config.$Params.HiveID = $Rig.RIG_ID -replace "`"", ""
+                    $global:Config.$Params.Wd_enabled = $Rig.WD_ENABLED -replace "`"", ""
+                    $global:Config.$Params.Wd_Miner = $Rig.WD_MINER -replace "`"", ""
+                    $global:Config.$Params.Wd_reboot = $Rig.WD_REBOOT -replace "`"", ""
+                    $global:Config.$Params.Wd_minhashes = $Rig.WD_MINHASHES -replace "`"", ""
+                    $global:Config.$Params.Miner = $Rig.MINER -replace "`"", ""
+                    $global:Config.$Params.Miner2 = $Rig.MINER2 -replace "`"", ""
+                    $global:Config.$Params.Timezone = $Rig.TIMEZONE -replace "`"", ""
+
+                    if (Test-Path ".\build\txt\hivekeys.txt") { $OldHiveKeys = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json }
+
+                    ## If password was changed- Let Hive know message was recieved
+
+                    if ($OldHiveKeys) {
+                        if ("$($global:Config.$Params.HivePassword)" -ne "$($OldHiveKeys.HivePassword)") {
+                            $method = "message"
+                            $messagetype = "warning"
+                            $data = "Password change received, wait for next message..."
+                            $DoResponse = Global:Set-Response -Method $method -MessageType $messagetype -Data $data -CommandID $command.result.id -Site $Site
+                            $sendResponse = $DoResponse | Global:Invoke-WebCommand -Site $Site -Action "Message"
+                            $SendResponse
+                            $DoResponse = @{method = "password_change_received"; params = @{rig_id = $global:Config.$Params.HiveID; passwd = $global:Config.$Params.HivePassword }; jsonrpc = "2.0"; id = "0" }
+                            $send2Response = $DoResponse | Global:Invoke-WebCommand -Site $Site -Action "Message"
+                        }
+                    }
+
+                    ## Set Arguments/New Parameters
+                    $global:Config.$Params | ConvertTo-Json | Set-Content ".\build\txt\$($Params)_keys.txt"
+                }
+
+                ##If Hive Sent OC Start SWARM OC
+                "nvidia_oc" {
+                    Global:Start-NVIDIAOC $RigConf.result.nvidia_oc 
+                }
+                "amd_oc" {
+                    Global:Start-AMDOC $RigConf.result.amd_oc
+                }
+            }
+        }
+        ## Print Data to output, so it can be recorded in transcript
+        $RigConf.result.config
+    }
+    else {
+        Global:Write-Log "No SWARM Config- Do you have an account? Did you use your farm hash?"
+        Global:Write-Log "Try running Hive_Windows_Reset.bat then try again."
+        Start-Sleep -S 2
+    }
 }

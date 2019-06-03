@@ -235,8 +235,31 @@ function Global:Get-GPUCount {
         $NVSMI | % { $_."pci.bus_id" = $_."pci.bus_id" -replace "00000000:", "" }
         $GN = $true
     }
-    if ($GetBus -like "*AMD*") { $GA = $true }
-
+    if ($GetBus -like "*AMD*") { 
+        $ROCM = invoke-expression "dmesg" | Select-String "amdgpu"
+        $AMDMem = invoke-expression "./build/apps/amdmeminfo"
+        $PCIArray = @()
+        $PCICount = 0
+        $PCI = $AMDMem | Select-String "Found Card: ","PCI: ","BIOS Version","Memory Model"
+        $PCI | %{ 
+            if($_ -like "*Memory Model*") {
+                $PCIArray += @{ 
+                    $($PCI[$PCICount-1] -split "PCI: " | Select -Last 1) = @{ 
+                        name = $(
+                                    $PCI[$PCICount-3] -split "Found Card: " | Select -Last 1 | % {
+                                        $Get = [String]$_; $Get1 = $Get.Substring($Get.IndexOf("(")) -replace "\(",""; 
+                                        $Get2 = $Get1 -replace "\)",""; $Get2
+                                    }
+                                ); 
+                            bios = $($PCI[$PCICount-2] -split "Bios Version: " | Select -Last 1); 
+                            memory = $($PCI[$PCICount] -split "Memory Model: " | Select -Last 1);
+                    }
+                }
+            }; 
+            $PCIcount++ 
+        }
+        $GA = $true
+    }
     if ($GA -or $GN) {
         $TypeArray = @("NVIDIA1", "NVIDIA2", "NVIDIA3", "AMD1")
         $TypeArray | ForEach-Object { if ($_ -in $Global:Config.Params.Type) { $NoType = $false } }
@@ -261,10 +284,22 @@ function Global:Get-GPUCount {
         if ($_ -like "*Advanced Micro Devices*" -or $_ -like "*NVIDIA*") {
             ##AMD
             if ($_ -like "*Advanced Micro Devices*" -and $_ -notlike "*RS880*" -and $_ -notlike "*Stoney*") {
-                if ($global:Config.Params.Type -like "*AMD*") {        
+                if ($global:Config.Params.Type -like "*AMD*") {
+                    $Sel = $_
+                    $busid = $Sel -split " " | Select -First 1            
                     $DeviceList.AMD.Add("$AMDCount", "$CardCount")
                     $AMDCount++
                     $CardCount++
+                    $subvendor = invoke-expression "lspci -vmms $busid" | Tee-Object -Variable subvendor | % { $_ | Select-String "SVendor" | % { $_ -split "SVendor:\s" | Select -Last 1 } }
+                    $mem = "$($ROCM | Select-String "amdgpu 0000`:$busid`: VRAM`: " | %{ $_ -split "amdgpu 0000`:$busid`: VRAM`: " | Select -Last 1} | % {$_ -split "M" | Select -First 1})M"
+                    $global:BusData += [PSCustomObject]@{
+                        busid = $busid
+                        name = $PCIArray.$busid.name
+                        brand = "amd"
+                        subvendor = $subvendor
+                        vbios = $PCIArray.$busid.bios
+                        mem_type = $PCIArray.$busid.memory
+                    }
                 }
             }
             if ($_ -like "*NVIDIA*" -and $_ -notlike "*nForce*") {
@@ -314,6 +349,7 @@ function Global:Start-LinuxConfig {
     ## Kill Previous Screens
     Global:start-killscript
 
+     
     ## Check if this is a hive-os image
     ## If HiveOS "Yes" Connect To Hive (Not Ready Yet)
     $HiveBin = "/hive/bin"
@@ -326,7 +362,30 @@ function Global:Start-LinuxConfig {
             $NotHiveOS = $True
             New-Item -ItemType Directory -Name "/hive-config" -Force
         }
-        ##Connect To Hive
+    }
+
+        ## Get Total GPU Count
+        $Global:GPU_Count = Global:Get-GPUCount
+
+    if ($global:Websites) {
+        Global:Add-Module "$($(v).web)\methods.psm1"
+        $rigdata = Global:Get-RigData
+
+        $global:Websites | ForEach-Object {
+            switch ($_) {
+                "HiveOS" {
+                    Global:Get-WebModules "HiveOS"
+                    $response = $rigdata | Global:Invoke-WebCommand -Site "HiveOS" -Action "Hello"
+                    Global:Start-WebStartup $response "HiveOS"
+                }
+                "SWARM" {
+                    Global:Get-WebModules "SWARM"
+                    $response = $rigdata | Global:Invoke-WebCommand -Site "SWARM" -Action "Hello"
+                    Global:Start-WebStartup $response "SWARM"
+                }
+            }
+        }
+        Remove-Module -Name "methods"
     }
 
     if (Test-Path $Rig_File) {
@@ -347,8 +406,6 @@ function Global:Start-LinuxConfig {
         $global:Config.hive_params.Miner2 = $RigConf.MINER2 -replace "`"", ""
         $global:Config.hive_params.Timezone = $RigConf.TIMEZONE -replace "`"", ""
 
-        ## Get Total GPU Count
-        $Global:GPU_Count = Global:Get-GPUCount
 
         ## HiveOS Specific Stuff
         if ($NotHiveOS -eq $false) {

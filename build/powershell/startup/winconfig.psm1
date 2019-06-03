@@ -236,7 +236,7 @@ function Global:Start-WindowsConfig {
     ## Websites
     if ($global:Websites) {
         Global:Add-Module "$($(v).web)\methods.psm1"
-        $rigdata = Global:Get-RigData $Global:Config.Params.Platform
+        $rigdata = Global:Get-RigData
 
         $global:Websites | ForEach-Object {
             switch ($_) {

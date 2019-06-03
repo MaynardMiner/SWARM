@@ -139,7 +139,7 @@ Global:Clear-Stats
 Global:Get-ArgNotice
 Global:Set-NewType
 if ($global:Config.Params.SWARM_Mode -eq "Yes") {
-    Global:Write-Log "Sycronizing Time Through Nist" -ForegroundColor Yellow
+    Global:Write-Log "Sycronizing Time To Nist" -ForegroundColor Yellow
     $Sync = Global:Get-Nist
     try {
         Set-Date $Sync -ErrorAction Stop 
