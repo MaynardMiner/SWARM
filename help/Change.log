@@ -3198,14 +3198,12 @@ API overhaul:
     on site, and less "dead space" in which no data
     is shown on rig.
 
-  2.3.8
+  2.3.7
 
-  Expiremental Version:
+  Beta Test Version:
 
-  This is alternative update to 2.3.7, which
-  uses new experimental features for beta testing.
-
-  this is from ``alpha_testing`` branch.
+  NOTE: There is A LOT of changes on this release.
+  Carefully run tests before simply loading in all rigs.
 
   NEW FEATURES:
 
@@ -3219,7 +3217,7 @@ API overhaul:
     features. Reserved code for further use (auto CPU 
     mining detection).
 
-  -``bans`` have cuckatoo31 added by default. This means if you
+  -``bans`` has cuckatoo31 added by default. This means if you
     wish to add further bans, you must do ``-Bans cuckatoo31,rest:ofyourbans,here``
 
   -x25x added properly to miners
@@ -3228,12 +3226,11 @@ API overhaul:
 
   New arguments:
 
-  ``-No_GLT``
   ```
   -No_GLT         [Yes or No]         
   Default is "Yes". Disables GLT coin. Most users and statistics
   has shown that GLT never pays out what it states that it should.
-  Reducing profit.
+  Reducing profit. May improve returns, especially with -auto_coin
   ```
 
   ```
@@ -3246,3 +3243,21 @@ API overhaul:
   -TCP_Port       [Int]               
   Default is 6099. Activates TCP Port for API.
   ```
+
+  "All_Altwallets" in wallets.json allow solo mining:
+
+    example:
+    ```
+    "XZC,m=solo": "a9087sdfa0s08790dfs0awer9dfglksj"
+    ```
+
+  SideNote: Latest dredge release -No-NVML was not working
+  for some users. I removed, so this will increase load for
+  his miner (double ques to drivers), and potentially lower
+  hashrates.
+
+  -TPC_API.txt added to help folder.
+
+  -Web methods were udpated.
+
+  Miners were updated.
