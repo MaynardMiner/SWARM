@@ -71,3 +71,13 @@ Setting Path Variable For Commands: May require reboot to use.
 }
 
 
+function Global:Get-Optional {
+    if($Global:Config.Params.Optional) {
+        Get-ChildItem ".\miners\optional_and_old" | Where BaseName -in $global:Config.Params.Optional | ForEach-Object {
+            $Path = $_.FullName
+            $FileType = Get-Content $Path
+            if( $FileType[0] -like "*`$Global:AMDTypes*" ) {Move-Item -Path $Path -Destination ".\miners\gpu\amd"}
+            if( $FileType[0] -like "*`$Global:NVIDIATypes*" ) {Move-Item -Path $Path -Destination ".\miners\gpu\nvidia"}
+        }
+    }    
+}
