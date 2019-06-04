@@ -57,6 +57,11 @@ These arguments can be added for additional customization and options
 
 Argument            Options             Explanation
 
+-optional     [array,               Default is empty array. Specifying this parameter will move
+               of,                  an optiona/old miner into the main miners directory.
+               miner,               the name used is the name of the .ps1 filename minus the .ps1
+               filenames]           example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
+
 -Type         [CPU,                 Device groups you wish to mine with. Nvidia has three groups in case
                NVIDIA1,             you wish to divide your GPU devices into seperate groups to assist in
                NVIDIA2,             benchmarking, or to prevent entire miner from becoming inoperable if

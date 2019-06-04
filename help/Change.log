@@ -3227,6 +3227,16 @@ API overhaul:
   New arguments:
 
   ```
+  -Optional     [array,   
+                  of,                 
+                miner,               
+               filenames]           
+Default is empty array. Specifying this parameter will move
+an optiona/old miner into the main miners directory.
+the name used is the name of the .ps1 filename minus the .ps1
+example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
+```
+  ```
   -No_GLT         [Yes or No]         
   Default is "Yes". Disables GLT coin. Most users and statistics
   has shown that GLT never pays out what it states that it should.
