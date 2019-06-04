@@ -3205,6 +3205,9 @@ API overhaul:
   NOTE: There is A LOT of changes on this release.
   Carefully run tests before simply loading in all rigs.
 
+  VERY IMPORTANT NOTICE! 
+  ``-Farm_Hash`` has change to ``-hive_hash``
+
   NEW FEATURES:
 
   -Type Argument no longer needed if using just GPU's.
