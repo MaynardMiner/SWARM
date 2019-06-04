@@ -16,7 +16,7 @@
             "allium": "--gpu-threads 2 -w 256 -I 22",
             "lyra2rev3": "--gpu-threads 2 -w 256 -I 24",
             "argon2d500": "--gpu-threads 2 -w 64 -g 2",
-            "mtp": "--gpu-threads 2 -w 256 -I 20",
+            "mtp": "-I 20 -p 0,strict,verbose,d=700",
             "x25x": "--gpu-threads 2 -w 256 -g 4"
         },
         "difficulty": {

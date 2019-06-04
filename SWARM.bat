@@ -13,10 +13,10 @@ REM Type: -ASIC_IP and -ASIC_ALGO must be used with -Type ASIC (see help on argu
 REM Wallet1: Your BTC Wallet. Add -Wallet2 or -Wallet3 if using -Type NVIDIA2 or NVIDIA3
 REM Donate: Donation in percent
 REM WattOMeter: Use Watt Calculations (Default is 0.10 / kwh). Can be modified. See Wiki
-REM Farm_Hash: HiveOS Farm Hash
+REM Hive_Hash: HiveOS Farm Hash
 
 REM ************NOTE***********************
 REM If you do not intend to use HiveOS, add -HiveOS No
 REM FOR ALL ARGUMENTS: SEE help folder. Explanation on how to use -Type NVIDIA1,NVIDIA2,NVIDIA3 is provided.
 
-pwsh -executionpolicy Bypass -command ".\startup.ps1 -Auto_Coin Yes -RigName1 SWARM1 -Currency USD -CoinExchange LTC -Location US -PoolName hashrefinery,zergpool,fairpool,nicehash,nlpool,blockmasters,phiphipool,zpool,blazepool,ahashpool -Type NVIDIA1,CPU -CPUThreads 2 -Wallet1 1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i -Donate .5 -WattOMeter Yes -Farm_Hash xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+pwsh -executionpolicy Bypass -command ".\startup.ps1 -Auto_Coin Yes -RigName1 SWARM1 -Currency USD -CoinExchange LTC -Location US -PoolName hashrefinery,zergpool,fairpool,nicehash,nlpool,blockmasters,phiphipool,zpool,blazepool,ahashpool -Type NVIDIA1,CPU -CPUThreads 2 -Wallet1 1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i -Donate .5 -WattOMeter Yes -Hive_Hash xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"

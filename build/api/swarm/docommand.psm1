@@ -402,7 +402,7 @@ function Global:Start-Webcommand {
                 $NewHiveKeys.Add("Password", "$Pass")
                 $NewHiveKeys.Add("Id", "$hiveWorkerID")
                 $NewHiveKeys.Add("Mirror", "$mirror")
-                if (Test-Path ".\build\txt\hivekeys.txt") { $OldHiveKeys = Get-Content ".\build\txt\hivekeys.txt" | ConvertFrom-Json }
+                if (Test-Path ".\build\txt\$($Param)_keys.txt") { $OldHiveKeys = Get-Content ".\build\txt\$($Param)_keys.txt" | ConvertFrom-Json }
                 if ($OldHiveKeys) {
                     if ($NewHiveKeys.Password -ne $OldHiveKeys.Password) {
                         Write-Warning "Detected New Password"
@@ -418,7 +418,7 @@ function Global:Start-Webcommand {
                         $Send2Response = Invoke-RestMethod "$($global:config.$Param.Mirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
                     }
                 }
-                $NewHiveKeys | ConvertTo-Json | Set-Content ".\build\txt\hivekeys.txt"        
+                $NewHiveKeys | ConvertTo-Json | Set-Content ".\build\txt\$($Param)_keys.txt"        
             }
   
             if ($Command.result.wallet) {

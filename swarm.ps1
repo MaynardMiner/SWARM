@@ -247,6 +247,8 @@ Global:Write-Log "Starting New Background Agent" -ForegroundColor Cyan
 if ($global:Config.Params.Platform -eq "windows") { Global:Start-Background }
 elseif ($global:Config.Params.Platform -eq "linux") { Start-Process ".\build\bash\background.sh" -ArgumentList "background $($($(v).dir))" -Wait }
 
+##Get Optional Miners
+Global:Get-Optional
 Global:Add-LogErrors
 Global:Remove-Modules
 

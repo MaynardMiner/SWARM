@@ -3205,7 +3205,16 @@ API overhaul:
   NOTE: There is A LOT of changes on this release.
   Carefully run tests before simply loading in all rigs.
 
+  VERY IMPORTANT NOTICE! 
+  ``-Farm_Hash`` has change to ``-hive_hash``
+
   NEW FEATURES:
+
+  -Type Argument no longer needed if using just GPU's.
+   This means currently you need only two arguments to 
+   run SWARM- The rest can be automated. However -Type
+   parameter still exists in case you wish to force
+   types (such as using CPU and NVIDIA2/3 etc).
 
   -After first miner starts- SWARM will always stat a value
   to HiveOS. If hashrate is zero, SWARM will stat 1 h/s
@@ -3217,15 +3226,22 @@ API overhaul:
     features. Reserved code for further use (auto CPU 
     mining detection).
 
-  -``bans`` has cuckatoo31 added by default. This means if you
-    wish to add further bans, you must do ``-Bans cuckatoo31,rest:ofyourbans,here``
-
   -x25x added properly to miners
   
   -Added skein2 algo (nvidia only, sgminer for skein2 is too old).
 
   New arguments:
 
+  ```
+  -Optional     [array,   
+                  of,                 
+                miner,               
+               filenames]           
+Default is empty array. Specifying this parameter will move
+an optiona/old miner into the main miners directory.
+the name used is the name of the .ps1 filename minus the .ps1
+example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
+```
   ```
   -No_GLT         [Yes or No]         
   Default is "Yes". Disables GLT coin. Most users and statistics
@@ -3244,7 +3260,7 @@ API overhaul:
   Default is 6099. Activates TCP Port for API.
   ```
 
-  "All_Altwallets" in wallets.json allow solo mining:
+  "All_Altwallets" in wallets.json allow solo mining and party mining:
 
     example:
     ```
