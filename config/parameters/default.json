@@ -99,9 +99,7 @@
     "Custom_Periods": 1,
     "Volume": "No",
     "Auto_Algo": "Yes",
-    "Bans": [
-             "cuckatoo31"
-            ],
+    "Bans": [],
     "Xnsub": "",
     "No_GLT": "Yes",
     "optional": []
