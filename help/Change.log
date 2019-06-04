@@ -3226,9 +3226,6 @@ API overhaul:
     features. Reserved code for further use (auto CPU 
     mining detection).
 
-  -``bans`` has cuckatoo31 added by default. This means if you
-    wish to add further bans, you must do ``-Bans cuckatoo31,rest:ofyourbans,here``
-
   -x25x added properly to miners
   
   -Added skein2 algo (nvidia only, sgminer for skein2 is too old).
