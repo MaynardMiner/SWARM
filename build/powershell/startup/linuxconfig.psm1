@@ -229,13 +229,13 @@ function Global:Get-GPUCount {
     $CardCount = 0
     $global:BusData = @()
 
-    if ($GetBus -like "*NVIDIA*") {
+    if ($_ -like "*NVIDIA*" -and $_ -notlike "*nForce*") {
         invoke-expression "nvidia-smi --query-gpu=gpu_bus_id,gpu_name,memory.total,power.min_limit,power.default_limit,power.max_limit,vbios_version --format=csv" | Tee-Object -Variable NVSMI | Out-Null
         $NVSMI = $NVSMI | ConvertFrom-Csv
         $NVSMI | % { $_."pci.bus_id" = $_."pci.bus_id" -replace "00000000:", "" }
         $GN = $true
     }
-    if ($GetBus -like "*AMD*") { 
+    if ($GetBus -like "*Advanced Micro Devices*" -and $_ -notlike "*RS880*" -and $_ -notlike "*Stoney*") {
         $ROCM = invoke-expression "dmesg" | Select-String "amdgpu"
         $AMDMem = invoke-expression "./build/apps/amdmeminfo"
         $PCIArray = @()
@@ -273,7 +273,7 @@ function Global:Get-GPUCount {
                 Global:Write-Log "NVIDIA Also Detected" -ForegroundColor Magenta
                 $global:Config.params.Type += "NVIDIA2" 
             }
-            elseif ($GN) { 
+            elseif ($GN) {
                 Global:Write-Log "NVIDIA Detected: Adding NVIDIA" -ForegroundColor Magenta
                 $global:Config.Params.Type += "NVIDIA1" 
             }
