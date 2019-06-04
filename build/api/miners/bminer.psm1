@@ -1,5 +1,5 @@
-function Get-StatsBminer {
-    $Request = Get-HTTP -Port $global:Port -Message "/api/status"
+function Global:Get-StatsBminer {
+    $Request = Global:Get-HTTP -Port $global:Port -Message "/api/status"
     if ($Request) {
         try { $Data = $Request.Content | ConvertFrom-Json -ErrorAction Stop; }
         catch { Write-Host "Failed To parse API" -ForegroundColor Red }
@@ -7,11 +7,11 @@ function Get-StatsBminer {
             $GPU = $Devices[$global:i]; $global:RAW += [Double]$Data.Miners.$GPU.solver.solution_rate / 1
             $global:GPUKHS += [Double]$Data.Miners.$GPU.solver.solution_rate / 1000
         }
-        Write-MinerData2;
+        Global:Write-MinerData2;
         $Hash = $Data.Miners
         try {
             for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { 
-                $GPU = $Devices[$global:i]; $global:GPUHashrates.$(Get-Gpus) = [Double]$Hash.$GPU.solver.solution_rate / 1000
+                $GPU = $Devices[$global:i]; $global:GPUHashrates.$(Global:Get-GPUs) = [Double]$Hash.$GPU.solver.solution_rate / 1000
             } 
         }
         catch { Write-Host "Failed To parse Threads" -ForegroundColor Red };
@@ -20,5 +20,5 @@ function Get-StatsBminer {
         $global:ALLACC += $global:MinerACC
         $global:ALLREJ += $global:MinerREJ
     }
-    else { Set-APIFailure }
+    else { Global:Set-APIFailure }
 }

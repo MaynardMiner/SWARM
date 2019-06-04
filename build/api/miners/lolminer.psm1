@@ -1,16 +1,16 @@
 
-function Get-StatsLolminer {
+function Global:Get-StatsLolminer {
     $Message = "/summary"
-    $Request = Get-HTTP -Server $global:Server -Port $global:Port -Message $Message
+    $Request = Global:Get-HTTP -Server $global:Server -Port $global:Port -Message $Message
     if ($request) {
         try { $Data = $Request.Content | ConvertFrom-Json -ErrorAction Stop; }catch { Write-Host "Failed To parse API" -ForegroundColor Red; break }
         $global:RAW = [Double]$Data.Session.Performance_Summary        
         $global:GPUKHS += [Double]$Data.Session.Performance_Summary / 1000
-        Write-MinerData2;
+        Global:Write-MinerData2;
         $Hash = $Data.GPUs.Performance
         try { 
             for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { 
-                $global:GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $global:i) / 1000 
+                $global:GPUHashrates.$(Global:Get-GPUs) = (Global:Set-Array $Hash $global:i) / 1000 
             } 
         }
         catch { Write-Host "Failed To parse GPU Array" -ForegroundColor Red };
@@ -28,8 +28,8 @@ function Get-StatsLolminer {
         if ($Speed) {
             $global:RAW += [Double]$Speed 
             $global:GPUKHS += [Double]$Speed / 1000
-            Write-MinerData2;
+            Global:Write-MinerData2;
         }
     }
-    else { Set-APIFailure }
+    else { Global:Set-APIFailure }
 }

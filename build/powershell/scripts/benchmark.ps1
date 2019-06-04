@@ -138,11 +138,12 @@ benchmark all
     }
     "algorithm" {
         if ($Name -ne "" -or $Name -ne $Null) {
-            $name = $name -replace "`/","`-"
-            if (Test-Path ".\stats\*$($Name)_hashrate.txt*") {Remove-Item ".\stats\*$($Name)_hashrate.txt*" -Force}
-            if (Test-Path ".\stats\*$($Name)_power.txt*") {Remove-Item ".\stats\*$($Name)_power.txt*" -Force}
-            if (Test-Path ".\backup\*$($Name)_hashrate.txt*") {Remove-Item ".\backup\*$($Name)_hashrate.txt*" -Force}
-            if (Test-Path ".\backup\*$($Name)_power.txt*") {Remove-Item ".\backup\*$($Name)_power.txt*" -Force}
+            $filename = $name -replace "`/","`-"
+            $filename = $filename -replace "`_","`-"
+            if (Test-Path ".\stats\*$($filename)_hashrate.txt*") {Remove-Item ".\stats\*$($filename)_hashrate.txt*" -Force}
+            if (Test-Path ".\stats\*$($filename)_Watts.txt*") {Remove-Item ".\stats\*$($filename)_Watts.txt*" -Force}
+            if (Test-Path ".\backup\*$($filename)_hashrate.txt*") {Remove-Item ".\backup\*$($filename)_hashrate.txt*" -Force}
+            if (Test-Path ".\backup\*$($filename)_Watts.txt*") {Remove-Item ".\backup\*$($filename)_Watts.txt*" -Force}
             if (Test-Path ".\timeout\pool_block\pool_block.txt") {
                 $GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json
                 if($Name -in $GetPoolBlock.Algo) {

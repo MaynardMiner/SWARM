@@ -1,4 +1,4 @@
-function Get-DeviceString {
+function Global:Get-DeviceString {
     param(
         [Parameter(Mandatory = $false)]
         [String]$TypeDevices = "none",
@@ -22,7 +22,7 @@ function Get-DeviceString {
     $TypeGPU
 }
 
-function Set-NvidiaStats {
+function Global:Set-NvidiaStats {
 
     Switch ($Global:Config.Params.Platform) {
         "linux" {
@@ -75,7 +75,7 @@ function Set-NvidiaStats {
 }
 
 ## AMD HWMON
-function Set-AMDStats {
+function Global:Set-AMDStats {
 
     switch ($Global:Config.Params.Platform) {
         "windows" {
@@ -143,11 +143,11 @@ function Set-AMDStats {
 
 }
 
-function Get-OhNo {
+function Global:Get-OhNo {
     Write-Host "Failed To Collect Miner Data" -ForegroundColor Red
 }
 
-function Remove-ASICPools {
+function Global:Remove-ASICPools {
     param (
         [Parameter(Mandatory = $true, Position = 0)]
         [string]$AIP,
@@ -162,12 +162,12 @@ function Remove-ASICPools {
     Switch ($Name) {
         "cgminer" {
             $ASICM = "cgminer"
-            Write-Log "Clearing all previous cgminer pools." -ForegroundColor "Yellow"
+            Global:Write-Log "Clearing all previous cgminer pools." -ForegroundColor "Yellow"
             $ASIC_Pools.Add($ASICM, @{ })
             ##First we need to discover all pools
             $Commands = @{command = "pools"; parameter = 0 } | ConvertTo-Json -Compress
             $response = $Null
-            $response = Get-TCP -Server $AIP -Port $Port -Message $Commands -Timeout 10
+            $response = Global:Get-TCP -Server $AIP -Port $Port -Message $Commands -Timeout 10
             if ($response) {
                 ##Windows screws up last character
                 if ($response[-1] -notmatch "}") { $response = $Response.Substring(0, $Response.Length - 1) }
@@ -178,11 +178,11 @@ function Remove-ASICPools {
                     $PoolNo = $($ASIC_Pools.$ASICM.$_)
                     $Commands = @{command = "removepool"; parameter = "$PoolNo" } | ConvertTo-Json -Compress; 
                     $response = $Null; 
-                    $response = Get-TCP -Server $AIP -Port $Port -Message $Commands -Timeout 10
+                    $response = Global:Get-TCP -Server $AIP -Port $Port -Message $Commands -Timeout 10
                     $response
                 }
             }
-            else { Write-Log "WARNING: Failed To Gather cgminer Pool List!" -ForegroundColor Yellow }
+            else { Global:Write-Log "WARNING: Failed To Gather cgminer Pool List!" -ForegroundColor Yellow }
         }
     }
 }

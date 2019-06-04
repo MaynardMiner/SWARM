@@ -49,8 +49,8 @@
   "AMD2":".\\bin\\gminer-amd-2\\miner.exe", 
   "AMD3":".\\bin\\gminer-amd-3\\miner.exe", 
   "minername":"miner.exe", 
-  "version":"1.44",
-  "uri":"https://github.com/develsoftware/GMinerRelease/releases/download/1.44/gminer_1_44_windows64.zip"
+  "version":"1.45",
+  "uri":"https://github.com/develsoftware/GMinerRelease/releases/download/1.45/gminer_1_45_windows64.zip"
   },
 
 "phoenix-amd": {
@@ -126,8 +126,8 @@
 "AMD2":".\\bin\\wildrig-2\\wildrig.exe", 
 "AMD3":".\\bin\\wildrig-3\\wildrig.exe", 
 "minername":"wildrig.exe", 
-"version":"0.17.2", 
-"uri":"https://github.com/andru-kun/wildrig-multi/releases/download/0.17.2/wildrig-multi-windows-0.17.2-beta.7z"
+"version":"0.17.3", 
+"uri":"https://github.com/andru-kun/wildrig-multi/releases/download/0.17.3/wildrig-multi-windows-0.17.3-beta.7z"
 }, 
 
 "fancyix": {
@@ -137,8 +137,8 @@
 "AMD2":".\\bin\\fancyix-2\\sgminer.exe", 
 "AMD3":".\\bin\\fancyix-3\\sgminer.exe", 
 "minername":"sgminer.exe", 
-"version":"beta5ip3", 
-"uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/sgminer-fancyIX.zip"
+"version":"0.0.6.0", 
+"uri":"https://github.com/fancyIX/sgminer-phi2-branch/releases/download/5.6.1.3.b6/sgminer-phi2-fancyIX-win64-0.6.0.0.zip"
 },
 
 "xmrig": {

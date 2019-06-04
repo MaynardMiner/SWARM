@@ -17,8 +17,8 @@
     "AMD2": ".\\bin\\gminer-amd-2\\miner",
     "AMD3": ".\\bin\\gminer-amd-3\\miner",
     "minername": "miner",
-    "version": "1.44",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.44/gminer_1_44_linux64.tar.xz"
+    "version": "1.45",
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.45/gminer_1_45_linux64.tar.xz"
   },
   "multiminer-amd": {
     "name": "multiminer-amd",
@@ -147,8 +147,8 @@
     "AMD2": ".\\bin\\wildrig-2\\wildrig-multi",
     "AMD3": ".\\bin\\wildrig-3\\wildrig-multi",
     "minername": "wildrig-multi",
-    "version": "0.17.2",
-    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.17.2/wildrig-multi-linux-0.17.2-beta.tar.gz"
+    "version": "0.17.3",
+    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.17.3/wildrig-multi-linux-0.17.3-beta.tar.gz"
   },
   "fancyix": {
     "name": "fancyix",
@@ -157,8 +157,8 @@
     "AMD2": ".\\bin\\fancyix-2\\sgminer",
     "AMD3": ".\\bin\\fancyix-3\\sgminer",
     "minername": "sgminer",
-    "version": "beta5ip3",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/fancyIX-linux.tar.gz"
+    "version": "0.6.0.0",
+    "uri": "https://github.com/fancyIX/sgminer-phi2-branch/releases/download/5.6.1.3.b6/sgminer-phi2-fancyIX-linux-amd64-0.6.0.0.zip"
   },
   "xmrig": {
     "name": "xmrig",

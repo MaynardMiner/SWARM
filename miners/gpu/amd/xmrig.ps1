@@ -17,13 +17,13 @@ $Global:AMDTypes | ForEach-Object {
     }
 
     ##Log Directory
-    $Log = Join-Path $($global:Dir) "logs\$ConfigType.log"
+    $Log = Join-Path $($(v).dir) "logs\$ConfigType.log"
 
     ##Get Configuration File
     $MinerConfig = $Global:config.miners.xmrig
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
-    $ExportDir = Join-Path $($global:Dir) "build\export"
+    $ExportDir = Join-Path $($(v).dir) "build\export"
 
     ##Prestart actions before miner launch
     $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
@@ -40,7 +40,7 @@ $Global:AMDTypes | ForEach-Object {
 
         if ($MinerAlgo -in $global:Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
             $StatAlgo = $MinerAlgo -replace "`_", "`-"
-            $Stat = Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
+            $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
             $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
         
             if ($Check.RAW -ne "Bad") {

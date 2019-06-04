@@ -1,4 +1,4 @@
-function Get-Params {
+function Global:Get-Params {
     $Global:stats.Add("summary", @{ })
     $Global:stats.Add("params", @{ })
     $Global:stats.Add("stats", @{ })
@@ -19,12 +19,12 @@ function Get-Params {
         $HiveStuff.PSObject.Properties.Name | % { $global:Config.hive_params.Add("$($_)", $HiveStuff.$_) }
         $HiveStuff = $null
     }
-    if (-not $global:Config.hive_params.HiveID) {
-        Write-Host "No HiveID- HiveOS Disabled"
-        $global:Config.hive_params.Add("HiveID", $Null)
-        $global:Config.hive_params.Add("HivePassword", $Null)
-        $global:Config.hive_params.Add("HiveWorker", $Null)
-        $global:Config.hive_params.Add("HiveMirror", "https://api.hiveos.farm")
+    if (-not $global:Config.hive_params.Id) {
+        Write-Host "No Id- HiveOS Disabled"
+        $global:Config.hive_params.Add("Id", $Null)
+        $global:Config.hive_params.Add("Password", $Null)
+        $global:Config.hive_params.Add("Worker", $Null)
+        $global:Config.hive_params.Add("Mirror", "https://api.hiveos.farm")
         $global:Config.hive_params.Add("FarmID", $Null)
         $global:Config.hive_params.Add("Wd_Enabled", $null)
         $Global:config.hive_params.Add("Wd_miner", $Null)
@@ -36,13 +36,14 @@ function Get-Params {
     }
     if (-not $global:Config.Params.Platform) {
         write-Host "Detecting Platform..." -Foreground Cyan
-        if (Test-Path "C:\") { $global:Config.Params.Platform = "windows" }
+        if ($IsWindows) { $global:Config.Params.Platform = "windows" }
         else { $global:Config.Params.Platform = "linux" }
         Write-Host "OS = $($global:Config.Params.Platform)" -ForegroundColor Green
     }
+    $global:Stats.params = $global:config.Params
 }
 
-function Set-Window {
+function Global:Set-Window {
     if ($global:Config.Params.Platform -eq "windows") {
         . .\build\powershell\scripts\icon.ps1 '.\build\apps\comb.ico'
         $Host.UI.RawUI.BackgroundColor = ($bckgrnd = 'Black'); $Host.UI.RawUI.ForegroundColor = 'White';
@@ -55,28 +56,28 @@ function Set-Window {
     }    
 }
 
-function Start-Servers {
+function Global:Start-Servers {
     ##Start API Server
     $Hive_Path = "/hive/bin"
     Write-Host "API Port is $($global:Config.Params.Port)";
 
     if ($Global:config.Params.API -eq "Yes") {
-        Import-Module -Name "$global:html\api.psm1"
-        $Posh_api = Get-APIServer;
+        Import-Module -Name "$($(v).html)\api.psm1"
+        $Posh_api = Global:Get-APIServer;
         $Posh_Api.BeginInvoke() | Out-Null
         $Posh_api = $null
         Remove-Module -Name "api"
     }
 
-    Import-Module -Name "$global:tcp\agentserver.psm1"
-    $Posh_SwarmTCP = Get-SWARMServer;
+    Import-Module -Name "$($(v).tcp)\agentserver.psm1"
+    $Posh_SwarmTCP = Global:Get-SWARMServer;
     $Posh_SwarmTCP.BeginInvoke() | Out-Null
     $Posh_SwarmTCP = $Null
     Remove-Module -Name "agentserver"
 
-    if (test-path $Hive_Path) {
-        Import-Module -Name "$global:tcp\hiveserver.psm1"
-        $Posh_HiveTCP = Get-HiveServer;
+    if ( (test-path $Hive_Path) -or $global:Config.Params.TCP -eq "Yes" ) {
+        Import-Module -Name "$($(v).tcp)\hiveserver.psm1"
+        $Posh_HiveTCP = Global:Get-HiveServer;
         $Posh_HiveTCP.BeginInvoke() | Out-Null
         $Posh_HiveTCP = $null
         Remove-Module -Name "hiveserver"

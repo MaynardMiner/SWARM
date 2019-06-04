@@ -1,4 +1,4 @@
-function Get-minerfiles {
+function Global:Get-minerfiles {
     param(
         [Parameter(Mandatory = $false)]
         [string]$Types,

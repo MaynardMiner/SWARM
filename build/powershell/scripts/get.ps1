@@ -33,26 +33,29 @@ $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12'
 Set-Location (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
 $dir = (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
 
-if(-not $Global:Startup){$Global:Startup = "$dir\build\powershell\startup";}
-if(-not $Global:Global){$Global:Global = "$dir\build\powershell\global";}
-if(-not $Global:Build){$Global:Build = "$dir\build\powershell\build";}
-if(-not $Global:Pool){$Global:Pool = "$dir\build\powershell\pool";}
-if(-not $Global:Startup){$Global:Startup = "$dir\build\powershell\startup";}
-if(-not $Global:Web){$Global:Web = "$dir\build\powershell\web";}
+. .\build\powershell\global\modules.ps1
+
+if(-not $(v) ){$Global:Config = @{}; $Global:Config.Add("var",@{}) }
+if(-not $(v).startup ){$(v).Add("startup","$dir\build\powershell\startup")}
+if(-not $(v).global ){$(v).Add("global","$dir\build\powershell\global")}
+if(-not $(v).build ){$(v).Add("build","$dir\build\powershell\build")}
+if(-not $(v).pool ){$(v).Add("pool","$dir\build\powershell\pool")}
+if(-not $(v).web ){$(v).Add("web","$dir\build\api\web")}
+
 $p = [Environment]::GetEnvironmentVariable("PSModulePath")
 if ($P -notlike "*$dir\build\powershell*") {
-    $P += ";$Global:Startup";
-    $P += ";$Global:Global";
-    $P += ";$Global:Build";
-    $P += ";$Global:Pool";
-    $P += ";$Global:Web";
+    $P += ";$($(v).startup)";
+    $P += ";$($(v).global)";
+    $P += ";$($(v).build)";
+    $P += ";$($(v).pool)";
+    $P += ";$($(v).web)";
     [Environment]::SetEnvironmentVariable("PSModulePath", $p)
 }
 
 $Get = @()
 
-Import-Module -Name "$Global:Global\stats.psm1" -Scope Global
-Import-Module -Name "$Global:Global\include.psm1" -Scope Global
+Import-Module -Name "$($(v).global)\stats.psm1" -Scope Global
+Import-Module -Name "$($(v).global)\include.psm1" -Scope Global
 
 Switch ($argument1) {
     "help" {
@@ -270,7 +273,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
     }
 
     "asic" {
-        Import-Module -Name "$Global:Global\hashrates.psm1"
+        Import-Module -Name "$($(v).global)\hashrates.psm1"
         if (Test-Path ".\build\txt\bestminers.txt") { $BestMiners = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-Json }
         else { $Get += "No miners running" }
         $ASIC = $BestMiners | Where Type -eq $argument2
@@ -278,7 +281,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
             $Get += "Miner Name: $($ASIC.MinerName)"
             $Get += "Miner Currently Mining: $($ASIC.Symbol)"
             $command = @{command = "pools"; parameter = "0" } | ConvertTo-Json -Compress
-            $request = Get-TCP -Port $ASIC.Port -Server $ASIC.Server -Message $Command -Timeout 5
+            $request = Global:Get-TCP -Port $ASIC.Port -Server $ASIC.Server -Message $Command -Timeout 5
             if ($request) {
                 $response = $request | ConvertFrom-Json
                 $PoolDetails = $response.POOLS | Where Pool -eq 1
@@ -299,7 +302,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
 
     "benchmarks" {
 
-        Import-Module -Name "$Global:Global\hashrates.psm1"
+        Import-Module -Name "$($(v).global)\hashrates.psm1"
 
         if (Test-path ".\stats") {
             if ($argument2) {
@@ -329,11 +332,11 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 $BenchTable += [PSCustomObject]@{
                     Miner     = $_ -split "_" | Select -First 1; 
                     Algo      = $_ -split "_" | Select -Skip 1 -First 1; 
-                    HashRates = $Stats."$($_)".Hour | ConvertTo-Hash; 
+                    HashRates = $Stats."$($_)".Hour | Global:ConvertTo-Hash; 
                     Raw       = $Stats."$($_)".Hour
                 }
             }
-            function Get-BenchTable {
+            function Global:Get-BenchTable {
                 $BenchTable | Sort-Object -Property Algo -Descending | Format-Table (
                     @{Label = "Miner"; Expression = { $($_.Miner) } },
                     @{Label = "Algorithm"; Expression = { $($_.Algo) } },
@@ -352,10 +355,10 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
     }
 
     "wallets" {
-        Import-Module "$global:Global\wallettable.psm1" -Scope Global
+        Import-Module "$($(v).global)\wallettable.psm1" -Scope Global
         if($asjson){
-        $Get = Get-WalletTable -asjson
-        } else {$Get += Get-WalletTable}
+        $Get = Global:Get-WalletTable -asjson
+        } else {$Get += Global:Get-WalletTable}
         Remove-Module "wallettable"
     }
     "stats" {
@@ -485,7 +488,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
         else { $Get += "No Platforms Selected: Please choose a platform NVIDIA1,NVIDIA2,NVIDIA3,AMD1,CPU" }
     }
     "update" {
-        if (Test-Path "C:\") {
+        if ($IsWindows) {
             $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
             if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator) -ne $false) {
                 $version = Get-Content ".\build\txt\version.txt"
@@ -526,27 +529,34 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                     $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$VersionNumber/SWARM.$VersionNumber.zip"
                 }
                 Write-Host "Main Directory is $Location`n"
+                $line += "Main Directory is $Location`n"
                 $NewLocation = Join-Path (Split-Path $Dir) "SWARM.$VersionNumber"
-                $FileName = join-path ".\x64" "SWARM.$VersionNumber.zip"
+                $line += "New Location is $NewLocation"
+                Write-Host "New Location is $NewLocation"
+                $FileName = join-path "$Dir\x64" "SWARM.$VersionNumber.zip"
+                Write-Host "New"
                 $DLFileName = Join-Path "$Dir" "x64\SWARM.$VersionNumber.zip"
+                $line += "Extraction Path is $DLFileName"
+                Write-Host "Extraction Path is $DLFileName"
                 $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$versionNumber/SWARM.$VersionNumber.zip"
                 try { Invoke-WebRequest $URI -OutFile $FileName -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }catch { $Failed = $true; Write-Host "Failed To Contact Github For Download! Must Do So Manually" }
                 Start-Sleep -S 5
                 if ($Failed -eq $false) {
-                    Start-Process "7z" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -Wait -WindowStyle Minimized
+                    Get-Location | Out-Host
+                    Start-Process "$Dir\build\apps\7z.exe" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -Wait -WindowStyle Minimized
                     Start-Sleep -S 3
                     Write-Host "Config Command Initiated- Restarting SWARM`n"
-                    $MinerFile = ".\build\pid\miner_pid.txt"
+                    $MinerFile = "$Dir\build\pid\miner_pid.txt"
                     if (Test-Path $MinerFile) { $MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue }
                     Stop-Process $MinerId -Force
                     Write-Host "Stopping Old Miner`n"
                     Start-Sleep -S 5
                     Write-Host "Attempting to start new SWARM verison at $NewLocation\SWARM.bat"
                     Write-Host "Downloaded and extracted SWARM successfully`n"
-                    Copy-Item ".\SWARM.bat" -Destination $NewLocation -Force
-                    Copy-Item ".\config\parameters\newarguments.json" -Destination "$NewLocation\config\parameters" -Force
+                    Copy-Item "$Dir\SWARM.bat" -Destination $NewLocation -Force
+                    Copy-Item "$Dir\config\parameters\newarguments.json" -Destination "$NewLocation\config\parameters" -Force
                     New-Item -Name "pid" -Path "$NewLocation\build" -ItemType "Directory"
-                    Copy-Item ".\build\pid\background_pid.txt" -Destination "$NewLocation\build\pid" -Force
+                    Copy-Item "$Dir\build\pid\background_pid.txt" -Destination "$NewLocation\build\pid" -Force
                     Set-Location $NewLocation
                     Start-Process "SWARM.bat"
                     Set-Location $Dir

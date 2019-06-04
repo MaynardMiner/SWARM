@@ -1,24 +1,24 @@
-function Get-StatsExcavator {
+function Global:Get-StatsExcavator {
 
     $Message = @{id = 1; method = "algorithm.list"; params = @() } | ConvertTo-Json -Compress
-    $Request = Get-TCP -Server $global:Server -Port $global:Port -Message $Message
+    $Request = Global:Get-TCP -Server $global:Server -Port $global:Port -Message $Message
     if ($Request) {
         try { $Data = $Null; $Data = $Request | ConvertFrom-Json -ErrorAction Stop; }
         catch { Write-Host "Failed To parse API" -ForegroundColor Red; break }
         $global:RAW = $Summary.algorithms.speed
-        Write-MinerData2;
+        Global:Write-MinerData2;
         $global:GPUKHS += [Double]$Summary.algorithms.speed / 1000
     }
-    else { Set-APIFailure; Break }
+    else { Global:Set-APIFailure; Break }
 
     $Message = @{id = 1; method = "worker.list"; params = @() } | ConvertTo-Json -Compress
-    $GetThreads = $Null; $GetThreads = Get-TCP -Server $global:Server -Port $global:Port -Message $Message
+    $GetThreads = $Null; $GetThreads = Global:Get-TCP -Server $global:Server -Port $global:Port -Message $Message
     if ($GetThreads) {
         $Threads = $GetThreads | ConvertFrom-Json -ErrorAction Stop
         $Hash = $Null; $Hash = $Threads.workers.algorithms.speed
         try { 
             for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { 
-                $global:GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $global:i) / 1000 
+                $global:GPUHashrates.$(Global:Get-GPUs) = (Global:Set-Array $Hash $global:i) / 1000 
             } 
         }
         catch { Write-Host "Failed To parse threads" -ForegroundColor Red }

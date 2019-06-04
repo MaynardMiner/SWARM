@@ -1,6 +1,6 @@
-function Get-StatsSgminer {
+function Global:Get-StatsSgminer {
     $Message = @{command = "summary+devs"; parameter = "" } | ConvertTo-Json -Compress
-    $Request = Get-TCP -Server $global:Server -Port $global:Port -Message $Message
+    $Request = Global:Get-TCP -Server $global:Server -Port $global:Port -Message $Message
     if ($Request) {
         $Tryother = $false
         try { $Data = $Null; $Data = $Request | ConvertFrom-Json -ErrorAction Stop }catch { $Tryother = $true }
@@ -20,11 +20,11 @@ function Get-StatsSgminer {
         elseif ($summary.'KHS 30s' -gt 0) { $sum = $summary.'KHS 30s'; $sgkey = 'KHS 30s' }
         $Hash = $threads.$sgkey
         $global:RAW += [Double]$Sum * 1000
-        Write-MinerData2;
+        Global:Write-MinerData2;
         $global:GPUKHS += $Sum
         try { 
             for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { 
-                $global:GPUHashrates.$(Get-Gpus) = Set-Array $Hash $global:i 
+                $global:GPUHashrates.$(Global:Get-GPUs) = Global:Set-Array $Hash $global:i 
             } 
         }
         catch { Write-Host "Failed To parse GPU Array" -ForegroundColor Red };
@@ -33,5 +33,5 @@ function Get-StatsSgminer {
         $global:ALLACC += $global:MinerACC
         $global:ALLREJ += $global:MinerREJ
     }
-    else { Set-APIFailure; break }
+    else { Global:Set-APIFailure; break }
 }

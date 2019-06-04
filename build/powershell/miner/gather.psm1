@@ -1,4 +1,4 @@
-function Get-Miners {
+function Global:Get-Miners {
     
     ## Reset Arrays In Case Of Weirdness
     $GetPoolBlocks = $null
@@ -93,40 +93,30 @@ function Get-Miners {
     }
     
     $ScreenedMiners | ForEach-Object { $GetMiners.Remove($_) } | Out-Null;
-    if ($Note) { $Note | ForEach-Object { Write-Log "$($_)" -ForegroundColor Magenta } }
+    if ($Note) { $Note | ForEach-Object { Global:Write-Log "$($_)" -ForegroundColor Magenta } }
     $GetMiners
 }
-function Get-AlgoMiners {
+function Global:Get-AlgoMiners {
     if ($global:AlgoPools.Count -gt 0) {
         $global:QuickTimer.Restart()
-        write-Log "Checking Algo Miners. . . ." -ForegroundColor Yellow
+        Global:Write-Log "Checking Algo Miners. . . ." -ForegroundColor Yellow
         ##Load Only Needed Algorithm Miners
-        $Global:AlgoMiners = New-Object System.Collections.ArrayList
-        $SearchMiners = Get-Miners
-        $SearchMiners | % { $Global:AlgoMiners.Add($_) | Out-Null }
-        $SearchMiners = $null
-        $global:AlgoPools = $null
-        if ($Global:AlgoMiners) { $Global:AlgoMiners | % { $Global:Miners.Add($_) | Out-Null } }
-        $Global:AlgoMiners = $null
+        Get-Miners | % { $Global:Miners.Add($_) | Out-Null }
+        $AlgoPools.Clear()
         $global:QuickTimer.Stop()
-        Write-Log "Algo Miners Loading Time: $([math]::Round($global:QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green    
+        Global:Write-Log "Algo Miners Loading Time: $([math]::Round($global:QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green    
     }
 }
 
-function Get-CoinMiners {
+function Global:Get-CoinMiners {
     if ($global:CoinPools.Count -gt 0) {
         $global:QuickTimer.Restart()
         $Global:Coins = $true
-        write-Log "Checking Coin Miners. . . . ." -ForegroundColor Yellow
+        Global:Write-Log "Checking Coin Miners. . . . ." -ForegroundColor Yellow
         ##Load Only Needed Coin Miners
-        $Global:CoinMiners = New-Object System.Collections.ArrayList
-        $SearchMiners = Get-Miners
-        $SearchMiners | % { $Global:CoinMiners.Add($_) | Out-Null }
-        $SearchMiners = $Null
-        $global:CoinPools = $null
-        if ($Global:CoinMiners) { $Global:CoinMiners | % { $Global:Miners.Add($_) | Out-Null } }
-        $Global:CoinMiners = $null
+        Get-Miners | % { $Global:Miners.Add($_) | Out-Null }
+        $CoinPools.Clear()
         $global:QuickTimer.Stop()
-        Write-Log "Coin Miners Loading Time: $([math]::Round($global:QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green    
+        Global:Write-Log "Coin Miners Loading Time: $([math]::Round($global:QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green    
     }
 }

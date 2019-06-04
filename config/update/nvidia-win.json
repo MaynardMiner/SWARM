@@ -77,8 +77,8 @@
         "NVIDIA2": ".\\bin\\gminer-2\\miner.exe",
         "NVIDIA3": ".\\bin\\gminer-3\\miner.exe",
         "minername": "miner.exe",
-        "version": "1.44",
-        "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.44/gminer_1_44_windows64.zip"
+        "version": "1.45",
+        "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.45/gminer_1_45_windows64.zip"
     },
     "claymore": {
         "name": "claymore",
@@ -97,8 +97,8 @@
         "NVIDIA2": ".\\bin\\cryptodredge-2\\CryptoDredge.exe",
         "NVIDIA3": ".\\bin\\cryptodredge-3\\CryptoDredge.exe",
         "minername": "CryptoDredge.exe",
-        "version": "0.19.0",
-        "uri": "https://github.com/technobyl/CryptoDredge/releases/download/v0.19.0/CryptoDredge_0.19.0_cuda_10.0_windows.zip"
+        "version": "0.20.1",
+        "uri": "https://github.com/technobyl/CryptoDredge/releases/download/v0.20.1/CryptoDredge_0.20.1_cuda_10.0_windows.zip"
     },
     "dstm": {
         "name": "dstm",
@@ -217,7 +217,7 @@
         "NVIDIA2": ".\\bin\\tt-miner-2\\TT-Miner.exe",
         "NVIDIA3": ".\\bin\\tt-miner-3\\TT-Miner.exe",
         "minername": "TT-Miner.exe",
-        "version": "2.2.3",
+        "version": "2.2.5",
         "uri": "https://tradeproject.de/download/Miner/TT-Miner.zip"
     },
     "xmrig-nv": {
@@ -229,5 +229,15 @@
         "minername": "xmrig-nvidia.exe",
         "version": "2.14.1",
         "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/xmrig-nvidia-windows.zip"
-    }
+    },
+    "nv-lolminer": {
+        "name":"nv-lolminer", 
+        "type":"nvidia", 
+        "NVIDIA1":".\\bin\\nv-lolminer-1\\lolMiner.exe", 
+        "NVIDIA2":".\\bin\\nv-lolminer-2\\lolMiner.exe", 
+        "NVIDIA3":".\\bin\\nv-lolminer-3\\lolMiner.exe", 
+        "minername":"lolMiner.exe", 
+        "version":"0.8.1", 
+        "uri":"https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.8.1/lolMiner_v081_Win64.zip"
+        }     
 }

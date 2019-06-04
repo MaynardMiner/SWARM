@@ -47,8 +47,8 @@
     "NVIDIA2": ".\\bin\\cryptodredge-2\\CryptoDredge",
     "NVIDIA3": ".\\bin\\cryptodredge-3\\CryptoDredge",
     "minername": "CryptoDredge",
-    "version": "0.19.0",
-    "uri": "https://github.com/technobyl/CryptoDredge/releases/download/v0.19.0/CryptoDredge_0.19.0_cuda_10.0_linux.tar.gz"
+    "version": "0.20.1",
+    "uri": "https://github.com/technobyl/CryptoDredge/releases/download/v0.20.1/CryptoDredge_0.20.1_cuda_10.0_linux.tar.gz"
   },
   "cc-mtp": {
     "name": "cc-mtp",
@@ -187,8 +187,8 @@
     "NVIDIA2": ".\\bin\\gminer-2\\miner",
     "NVIDIA3": ".\\bin\\gminer-3\\miner",
     "minername": "miner",
-    "version": "1.44",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.44/gminer_1_44_linux64.tar.xz"
+    "version": "1.45",
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.45/gminer_1_45_linux64.tar.xz"
   },
   "grin-miner": {
     "name": "grin-miner",
@@ -249,5 +249,15 @@
     "minername": "ccminer",
     "version": "6.1",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/cc-verus-linux.tar.gz"
+  },
+  "nv-lolminer": {
+    "name": "nv-lolminer",
+    "type": "nvidia",
+    "NVIDIA1": ".\\bin\\nv-lolminer-1\\lolMiner",
+    "NVIDIA2": ".\\bin\\nv-lolminer-2\\lolMiner",
+    "NVIDIA3": ".\\bin\\nv-lolminer-3\\lolMiner",
+    "minername": "lolMiner",
+    "version": "0.8.1",
+    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.8.1/lolMiner_v081_Lin64.tar.gz"
   }
 }

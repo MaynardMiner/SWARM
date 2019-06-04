@@ -283,7 +283,7 @@ Did not get to fixing anything on AMD side. Still working on it.
 There is going to be no c version. b version should now work in Ubuntu:
 
 -download/clone MM.Test (beta version).
--run install.sh as root : sudo ./install.sh. This will install all bash commands.
+-run install.sh as root : ./install.sh. This will install all bash commands.
 -open/edit StartMM with your specified arguments.
 -Launch MM.Hash (Not as superuser!) ./StartMM
 -Operates just like Hive-OS version, just open a new terminal and type desired command.
@@ -339,7 +339,7 @@ If you are running a different OS, it must be added: -HiveOS NO
 
 If you wish to use on a Unix OS other than hive:
 run:
-sudo ./install.sh
+./install.sh
 Note: You may have to edit ./install.sh depending on flavor
 edit 'swarm' in main directory with your arguments
 launch miner by 
@@ -3083,6 +3083,10 @@ API overhaul:
    
   2.3.3 [2.3.2 final]
 
+  IMPORTANT: -WattOMeter No is no longer used!
+  Either use -WattOMeter Yes or -WattOMeter [Decimal Value]
+  or don't specify at all ("" in .json).
+
   -Miners up to date.
 
   -Modules:
@@ -3113,3 +3117,166 @@ API overhaul:
   -``get benchmarks -asjson`` created
 
   -GPUData for NVIDIA cards in linux (later use).
+
+  -Small Fixes for Windows 7/8 compatibility.
+
+  -Removed all instances of 'sudo' in codebase.
+   * It still recommeneded and in most cases
+     required to run SWARM with root privelages.
+
+  2.3.4
+
+  -wattometer restored to Yes or No.
+  
+  NEW ARGUMENT:
+
+  ``-kwh`` set hourly electricity rate.
+
+  -Found bug where a needed value wasn't being passed into module
+   for ttminer and phoenix miner, which could have resulted in
+   incorrect hashrates: Fixed.
+
+  -Added equihash_96/5 to lolminer
+  -Added back nv-lolminer miner.
+   * Cannot use with AMD/NVIDIA
+     Platforms together. One or the other.
+   * Becuase of this - it was added to
+     optional miners folder.
+
+  -Further Effort Was Made To Reduce
+   Memory footprint.
+
+  -Attempted fix of Windows ``get update``
+   commands. Since it was broken last release-
+   It will work updating next version forward.
+
+  
+ 2.3.5
+
+ -cpuminer-opt (sugarchain) updated
+ -fixed path assertion in backgroun agent
+  which prevented certain remote commands from
+  working.
+
+  Note: CPU miners are safe to use with GPU mining.
+  You must use -CPUthreads argument, and it is
+  recommended to leave a thread free on larger
+  rigs.
+
+  -Volume argument added to help.txt.
+
+  -Max_Periods argument added to help.txt.
+
+  -API_Key argument added to help.txt.
+
+  -Track_Shares argument added to help.txt.
+
+
+ 2.3.6
+
+ Expiremental Version:
+
+ This is an alternative update to 2.3.5,
+ for users that would like to help me develop
+ SWARM faster by testing larger changes.
+
+ this is from ``alpha_testing`` branch.
+
+ -NEW FEATURES
+
+ -Global Functions
+  * All functions in SWARM are shared globally
+  * This allows .psm1 modules to call functions
+  * This help self-developers create modules for
+    SWARM using SWARM's code base along with their
+    created module.
+
+ -Memory footprint reduced further (10%).
+ -Since memory use is low, increased interval
+  period to send stats to HiveOS.
+  * This should allow for better/more accurate stats
+    on site, and less "dead space" in which no data
+    is shown on rig.
+
+  2.3.7
+
+  Beta Test Version:
+
+  NOTE: There is A LOT of changes on this release.
+  Carefully run tests before simply loading in all rigs.
+
+  VERY IMPORTANT NOTICE! 
+  ``-Farm_Hash`` has change to ``-hive_hash``
+
+  NEW FEATURES:
+
+  -Type Argument no longer needed if using just GPU's.
+   This means currently you need only two arguments to 
+   run SWARM- The rest can be automated. However -Type
+   parameter still exists in case you wish to force
+   types (such as using CPU and NVIDIA2/3 etc).
+
+  -After first miner starts- SWARM will always stat a value
+  to HiveOS. If hashrate is zero, SWARM will stat 1 h/s
+  for all GPUs / khs total. This is to let you know that
+  SWARM is working, just current miner has not outputted
+  hashrate in their API yet.
+
+  -``features`` command added for windows. Will list CPU
+    features. Reserved code for further use (auto CPU 
+    mining detection).
+
+  -``bans`` has cuckatoo31 added by default. This means if you
+    wish to add further bans, you must do ``-Bans cuckatoo31,rest:ofyourbans,here``
+
+  -x25x added properly to miners
+  
+  -Added skein2 algo (nvidia only, sgminer for skein2 is too old).
+
+  New arguments:
+
+  ```
+  -Optional     [array,   
+                  of,                 
+                miner,               
+               filenames]           
+Default is empty array. Specifying this parameter will move
+an optiona/old miner into the main miners directory.
+the name used is the name of the .ps1 filename minus the .ps1
+example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
+```
+  ```
+  -No_GLT         [Yes or No]         
+  Default is "Yes". Disables GLT coin. Most users and statistics
+  has shown that GLT never pays out what it states that it should.
+  Reducing profit. May improve returns, especially with -auto_coin
+  ```
+
+  ```
+  -TCP            [Yes or No]         
+  Default is No. Activates TCP port for API on -API_Port. Note:
+  If SWARM is in HiveOS, it will turn on automatically.
+  ```
+
+  ```
+  -TCP_Port       [Int]               
+  Default is 6099. Activates TCP Port for API.
+  ```
+
+  "All_Altwallets" in wallets.json allow solo mining and party mining:
+
+    example:
+    ```
+    "XZC,m=solo": "a9087sdfa0s08790dfs0awer9dfglksj"
+    ```
+
+  SideNote: Latest dredge release -No-NVML was not working
+  for some users. I removed, so this will increase load for
+  his miner (double ques to drivers), and potentially lower
+  hashrates.
+
+  -TPC_API.txt added to help folder.
+
+  -Web methods were udpated.
+
+  Miners were updated.

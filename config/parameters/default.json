@@ -1,5 +1,6 @@
 {
     "AltWallet2":  "",
+    "kwh": "",
     "Poolname":  [
                      "nlpool",
                      "zergpool",
@@ -25,8 +26,11 @@
     "AltPassword3": "",
     "CPUOnly":  "No",
     "Wallet":  "Yes",
+    "TCP": "No",
+    "TCP_Port": 6099,
     "StatsInterval":  1,
-    "Farm_Hash":  "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "Hive_Hash":  "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "SWARM_Hash":  "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     "Wallet2":  "",
     "HiveOS":  "Yes",
     "GPUDevices2": [
@@ -96,7 +100,9 @@
     "Volume": "No",
     "Auto_Algo": "Yes",
     "Bans": [
-             ""
+             "cuckatoo31"
             ],
-    "Xnsub": ""
+    "Xnsub": "",
+    "No_GLT": "Yes",
+    "optional": []
 }

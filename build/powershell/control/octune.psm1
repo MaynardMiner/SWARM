@@ -11,7 +11,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
-function Start-OC {
+function Global:Start-OC {
     param(
         [Parameter(Mandatory = $false)]
         [String]$NewMiner,
@@ -31,7 +31,7 @@ function Start-OC {
     if ($Miner.Type -like "*NVIDIA*") { $nvidiaOC = $true }
     if ($Miner.Type -like "*AMD*") { $AMDOC = $true }
     
-    if ($nvidiaOC -or $AMDOC) { write-log "Setting $($Miner.Type) Overclocking" -ForegroundColor Cyan }
+    if ($nvidiaOC -or $AMDOC) { Global:Write-Log "Setting $($Miner.Type) Overclocking" -ForegroundColor Cyan }
 
     $OC_Algo = $global:oc_algos.$($Miner.Algo).$($Miner.Type)
     $Default = $global:oc_default."default_$($Miner.Type)"
@@ -57,11 +57,11 @@ function Start-OC {
     ##Start New Pill
     if ($ETHPill -eq $true) {
 
-        write-log "Activating ETHPill" -ForegroundColor Cyan
+        Global:Write-Log "Activating ETHPill" -ForegroundColor Cyan
 
         ##Devices
-        if ($Miner.Devices -eq "none") { $OCPillDevices = Get-DeviceString -TypeCount $Global:GCount.NVIDIA.PSObject.Properties.Value.Count }
-        else { $OCPillDevices = Get-DeviceString -TypeDevices $Miner.Devices }
+        if ($Miner.Devices -eq "none") { $OCPillDevices = Global:Get-DeviceString -TypeCount $Global:GCount.NVIDIA.PSObject.Properties.Value.Count }
+        else { $OCPillDevices = Global:Get-DeviceString -TypeDevices $Miner.Devices }
 
         ##Build Arguments
         $OCPillDevices | foreach { $PillDevices += "$($_)," }
@@ -89,7 +89,7 @@ function Start-OC {
             if ($OC_Algo.PillDelay) { $PillSleep = $OC_Algo.PillDelay }
             else { $PillSleep = 1 }
             $PillTimer = New-Object -TypeName System.Diagnostics.Stopwatch
-            $PL = Join-Path "$($global:Dir)" ".\build\apps"
+            $PL = Join-Path "$($(v).dir)" ".\build\apps"
             $command = Start-Process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -noexit -command `"&{`$host.ui.RawUI.WindowTitle = `'ETH-Pill`'; Set-Location $PL; Start-Sleep $PillSleep; Invoke-Expression `'.\OhGodAnETHlargementPill-r2.exe $PillDevices`'}`"" -WindowStyle Minimized -PassThru -Verb Runas
             $command.ID | Set-Content ".\build\pid\pill_pid.txt"
             $PillTimer.Restart()
@@ -112,8 +112,8 @@ function Start-OC {
     elseif ($Default.Memory -or $Default.Core -or $Default.Fans) { $SettingsArgs = $true }
     
     if ($Miner.Type -like "*NVIDIA*") {
-        if ($Miner.Devices -eq "none") { $OCDevices = Get-DeviceString -TypeCount $Global:GCount.NVIDIA.PSObject.Properties.Value.Count }
-        else { $OCDevices = Get-DeviceString -TypeDevices $Miner.Devices }
+        if ($Miner.Devices -eq "none") { $OCDevices = Global:Get-DeviceString -TypeCount $Global:GCount.NVIDIA.PSObject.Properties.Value.Count }
+        else { $OCDevices = Global:Get-DeviceString -TypeDevices $Miner.Devices }
 
         if ($OC_Algo.core) {
             $Core = $OC_Algo.core -split ' '    
@@ -247,8 +247,8 @@ function Start-OC {
 }
     
 if ($Miner.Type -like "*AMD*") {
-    if ($Miner.Devices -eq "none") { $OCDevices = Get-DeviceString -TypeCount $Global:GCount.AMD.PSObject.Properties.Value.Count }
-    else { $OCDevices = Get-DeviceString -TypeDevices $Miner.Devices }
+    if ($Miner.Devices -eq "none") { $OCDevices = Global:Get-DeviceString -TypeCount $Global:GCount.AMD.PSObject.Properties.Value.Count }
+    else { $OCDevices = Global:Get-DeviceString -TypeDevices $Miner.Devices }
 
 
     if ($OC_Algo.core) {
@@ -270,11 +270,11 @@ if ($Miner.Type -like "*AMD*") {
     }
 
     if ($OC_Algo.v) {
-        $V = $OC_Algo.v -split ' '    
+        $V = $OC_Algo.$(v).-split ' '    
         $Voltage = $V -split ","
     }
     else {
-        $V = $Default.v -split ' '
+        $V = $Default.$(v).-split ' '
         $Voltage = $V -split ","
     }
 
@@ -489,14 +489,14 @@ if ($DoNVIDIAOC -eq $true -and $Global:Config.params.Platform -eq "windows") {
     Set-Location ".\build\apps"
     $script | Out-File "NVIDIA-oc-start.ps1"
     $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\NVIDIA-oc-start.ps1""" -PassThru -WindowStyle Minimized -Wait
-    Set-Location $($global:Dir)
+    Set-Location $($(v).dir)
 }
     
 if ($DoAMDOC -eq $true -and $Global:Config.params.Platform -eq "windows") {
     Set-Location ".\build\apps"
     $Ascript | Out-File "AMD-oc-start.ps1"
     $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\AMD-oc-start.ps1""" -PassThru -WindowStyle Minimized -Wait
-    Set-Location $($global:Dir)
+    Set-Location $($(v).dir)
 }
     
 if ($DOAmdOC -eq $true -and $Global:Config.params.Platform -eq "linux") {
@@ -546,7 +546,7 @@ if ($DoAMDOC -eq $true) {
 }
 
 $OCMessage | % {
-    write-log "$($_)" -ForegroundColor Cyan
+    Global:Write-Log "$($_)" -ForegroundColor Cyan
 }
 
 $OCMessage | Add-Content -Path ".\build\txt\oc-settings.txt"

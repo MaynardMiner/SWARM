@@ -11,7 +11,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
-function Get-APIServer {
+function Global:Get-APIServer {
 
         $Runspace = [runspacefactory]::CreateRunspace()
         $Runspace.Open()
@@ -160,6 +160,7 @@ function Get-APIServer {
                         $GET = $null
                         $requestvars = $null
                         $requestcom = $null
+                        [GC]::Collect()
                     }
                 }
             }

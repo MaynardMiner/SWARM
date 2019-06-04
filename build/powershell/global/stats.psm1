@@ -11,9 +11,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
-function Get-Alpha($X) { (2 / ($X + 1) ) }
+function Global:Get-Alpha($X) { (2 / ($X + 1) ) }
 
-function Get-Theta { 
+function Global:Get-Theta { 
     param (
         [Parameter(Mandatory = $true)]
         [Int]$Calcs,
@@ -23,7 +23,7 @@ function Get-Theta {
     $Values | Select -Last $Calcs | Measure-Object -Sum 
 }
 
-function Set-Stat {
+function Global:Set-Stat {
     param(
         [Parameter(Mandatory = $true)]
         [String]$Name, 
@@ -155,8 +155,8 @@ function Set-Stat {
     $Calcs.keys | foreach {
         if ($_ -eq "Hashrate") { $T = $Stat.Hash_Val }
         else { $T = $Stat.Values }
-        $Theta = (Get-Theta -Calcs $Calcs.$_ -Values $T)
-        $Alpha = [Double](Get-Alpha($Theta.Count))
+        $Theta = (Global:Get-Theta -Calcs $Calcs.$_ -Values $T)
+        $Alpha = [Double](Global:Get-Alpha($Theta.Count))
         $Zeta = [Double]$Theta.Sum / $Theta.Count
         $Stat.$_ = [Math]::Max( ( $Zeta * $Alpha + $($Stat.$_) * (1 - $Alpha) ) , $SmallestValue )
     }
@@ -211,7 +211,7 @@ function Set-Stat {
 
 }
 
-function Get-Stat {
+function Global:Get-Stat {
     param(
         [Parameter(Mandatory = $true)]
         [String]$Name
@@ -223,7 +223,7 @@ function Get-Stat {
     else { Get-ChildItem "stats" | Where-Object Extension -NE ".ps1" | Where-Object BaseName -EQ $Name | Get-Content | ConvertFrom-Json }
 }
 
-function Set-WStat {
+function Global:Set-WStat {
     param(
         [Parameter(Mandatory = $true)]
         [String]$Name,
@@ -268,25 +268,27 @@ function Set-WStat {
 
 }
 
-function get-wstats {
+function Global:get-wstats {
     $GetWStats = [PSCustomObject]@{ }
-    if (Test-Path ".\wallet\values") { Get-ChildItemContent ".\wallet\values" | ForEach { $GetWStats | Add-Member $_.Name $_.Content } }
+    if (Test-Path ".\wallet\values") { Global:Get-ChildItemContent ".\wallet\values" | ForEach { $GetWStats | Add-Member $_.Name $_.Content } }
     $GetWStats
 }
 
-function ConvertFrom-Fees {
+function Global:ConvertFrom-Fees {
     param(
         [Parameter(Position = 0, Mandatory = $true)]
         [Double]$Fees,
         [Parameter(Position = 1, Mandatory = $true)]
         [Double]$Workers,
         [Parameter(Position = 2, Mandatory = $true)]
-        [Double]$Estimate
+        [Double]$Estimate,
+        [Parameter(Position = 3, Mandatory = $true)]
+        [Double]$Divisor
     )
 
     [Double]$FeeStat = $fees / 100
     [Double]$WorkerPercent = $Workers * $FeeStat
     [Double]$PoolCut = $WorkerPercent + $Fees
-    $WorkerFee = $Estimate * (1 - ($PoolCut / 100))
+    [Double]$WorkerFee = $Estimate / $Divisor * (1 - ($PoolCut / 100))
     return $WorkerFee
-} 
+}

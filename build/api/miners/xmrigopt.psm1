@@ -1,7 +1,7 @@
 
-function Get-Statsxmrigopt {
+function Global:Get-Statsxmrigopt {
     $Message = "/api.json"
-    $Request = Get-HTTP -Port $global:Port -Message $Message
+    $Request = Global:Get-HTTP -Port $global:Port -Message $Message
     if ($Request) {
         try { $Data = $Request.Content | ConvertFrom-Json -ErrorAction Stop; }catch { Write-Host "Failed To gather summary" -ForegroundColor Red; break }
         $HashRate_Total = [Double]$Data.hashrate.total[0]
@@ -9,7 +9,7 @@ function Get-Statsxmrigopt {
         if (-not $HashRate_Total) { $HashRate_Total = [Double]$Data.hashrate.total[2] } #fix
         $global:RAW = $HashRate_Total
         $global:CPUKHS = $HashRate_Total / 1000
-        Write-MinerData2
+        Global:Write-MinerData2
         Write-Host "Note: XMR-STAK/XMRig API is not great. You can't match threads to specific CPU." -ForegroundColor Yellow
         try { 
             $Hash = for ($global:i = 0; $global:i -lt $Data.hashrate.threads.count; $global:i++) {

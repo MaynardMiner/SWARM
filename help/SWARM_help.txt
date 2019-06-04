@@ -25,17 +25,6 @@ Argument          Options           Explanation
 -Wallet1      [Wallet Address]      Address of your wallet. By default SWARM assumes it to be BTC.
                                     See Advanced arguments to change that.
 
--PasswordCurrency1  [Symbol]        Symbol of your wallet address, specifically for Wallet1. Most pools
-                                    only accept BTC for auto-exchange. See pools for options.                                  
-
-
--Type         [CPU,                 Device groups you wish to mine with. Nvidia has three groups in case
-               NVIDIA1,             you wish to divide your GPU devices into seperate groups to assist in
-               NVIDIA2,             benchmarking, or to prevent entire miner from becoming inoperable if
-               NVIDIA3              one gpu fails. Currently only 1 AMD group supported.
-               AMD1,
-	       ASIC]
-
 -Donate      [Percentage]           Percent you wish to donate daily to support further development. 
                                     Miner remembers when you open or close, so it will not steal 
                                     from you...However it only resets donation switch if miner 
@@ -67,6 +56,63 @@ Argument          Options           Explanation
 These arguments can be added for additional customization and options
 
 Argument            Options             Explanation
+
+-optional     [array,               Default is empty array. Specifying this parameter will move
+               of,                  an optiona/old miner into the main miners directory.
+               miner,               the name used is the name of the .ps1 filename minus the .ps1
+               filenames]           example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
+
+-Type         [CPU,                 Device groups you wish to mine with. Nvidia has three groups in case
+               NVIDIA1,             you wish to divide your GPU devices into seperate groups to assist in
+               NVIDIA2,             benchmarking, or to prevent entire miner from becoming inoperable if
+               NVIDIA3              one gpu fails. Currently only 1 AMD group supported. NVIDIA2 and NVIDIA3
+               AMD1,                require wallet2 and wallet3 arguments, along with GPUDevices1,2,3
+	       ASIC]                respectively (See advanced section)
+
+-PasswordCurrency1  [Symbol]        Symbol of your wallet address, specifically for Wallet1. Most pools
+                                    only accept BTC for auto-exchange. See pools for options.                                  
+
+-No_GLT         [Yes or No]         Default is "Yes". Disables GLT coin. Most users and statistics
+                                    has shown that GLT never pays out what it states that it should.
+                                    Reducing profit.
+
+-TCP            [Yes or No]         Default is No. Activates TCP port for API on -API_Port. Note:
+                                    If SWARM is in HiveOS, it will turn on automatically.
+
+-TCP_Port       [Int]               Default is 6099. Activates TCP Port for API. 
+
+-Max_Periods    [any number]        Default is 288. SWARM calculates profit via a rolling expontenial
+                                    moving average, with each new period happening at the end of your
+                                    interval. With a default interval of 300 seconds (5 minutes),
+                                    and 288 periods: That means you will have factored 86400 seconds
+                                    of pricing data, or an entire day of pricing pulls from pools.
+                                    It is not advised to set this number higher than 288. This is
+                                    only available to help reduce SWARM's memory footprint. If you
+                                    are using -Stat_Algo and -Stat_Coin live, there is no reason to
+                                    record 288 periods of data, since you are using live pricing.
+                                    You can set this number to 1. If you were using Minute_15
+                                    with an -interval of 300 (5 minutes), there is no real reason
+                                    to store nore than 3 periods of data (15 minutes total).
+
+-API_Key        [HiveOS API key]    Default is "" (none). By supplying SWARM with your HiveOS
+                                    API key (you must generate one in account > settings), SWARM
+                                    is able to use OC profiles from HiveOS. If you set an algorithm
+                                    profile, and SWARM switched to that algorithm- It will notify
+                                    HiveOS, triggering an OC command. SWARM will confirm OC was changed.
+                                    If 30 seconds has passed, and HiveOS has not set OC, SWARM will
+                                    contiue forward. Note: This takes precedence over SWARM's OC
+                                    settings.
+
+-Track_Shares   [Yes,No]            Default is Yes. SWARM will gather your current share percentage
+                                    from pools, if it is possible to do so. Zergpool will only gather
+                                    shares if -Auto_Coin Yes is on. Some pools share gathering is
+                                    possible yet.
+
+-Volume         [Yes,No]            Default is No. Volume calculates pool hashrate % in comparision
+                                    to other pools, and will penalize pools based on percent difference
+                                    from pool with highest hashrate. This means SWARM favors pools with
+                                    the highest hashrates for each algorithm. The % values are displayed
+                                    on get stats screen, under Vol.
 
 -Xnsub          [Yes,No]            Default is "No". Will add #xnsub for ASIC to signify Extranonce.Subscribe
                                     method. Not all cgminer / ASICS / Pools may support this.
@@ -148,8 +194,8 @@ Argument            Options             Explanation
                                     Set this if SWARM fails to guess correct platform. However,
                                     SWARM ~should~ auto-detect correct platform.
 
--Farm_Hash     [address]            This is required for Windows. Specify Farm_Hash in order to use HiveOS
-                                    website. Farm_Hash is attained by making a user account in HiveOS.
+-Hive_Hash     [address]            This is required for Windows. Specify Hive_Hash in order to use HiveOS
+                                    website. Farm Hash is attained by making a user account in HiveOS.
 
 -Benchmark     [0-100000]           Expressed in seconds. Default 180. Sets specific interval time for when coin 
 				    is in benchmark mode. Can be used for faster benchmarking. When coin has
@@ -187,7 +233,11 @@ Argument            Options             Explanation
 -SWARM_Mode      Yes or No          SWARM_Mode Allows sycronization of all SWARM Users. SWARM will
                                     collectively pull database at the same time for all users with
                                     SWARM_Mode set to "yes". Intervals are based on 5 minute periods.
-                                    This disables -Interval argument. Default is No.
+                                    This disables -Interval argument. Default is No. Your rig will
+                                    still mine what is best for your cards. This simply syncronizes
+                                    your rig to pull pricing data at the same time as other using
+                                    this argument, increasing the chance you will mine the same thing.
+                                    This is useful to sycronize all your rigs to switch together.
 
 -PoolBans       [Yes or No]         Default is "Yes". This option will ban miners from specific pools
                                     if it detects high rejections or no hashrate. Bans are lifted
@@ -206,9 +256,14 @@ Argument            Options             Explanation
 				    consider background miner as timing out.
 
 -WattOMeter   [Yes or No]           This turns on the on the self-generated watt settings for SWARM.
-                                    Default is No. This will allow watts recorded for each algorithm
+                                    This will allow watts recorded for each algorithm
                                     as a stat, and continues to be recorded with every switch.
-                                    This may not be stable in larger rigs.                         
+                                    This may not be stable in larger rigs. Default is Yes.
+
+-kwh          [decimal number]      Default is "" ($null). This is the kw/h pricing of your electricty costs.
+                                    -kwh 0.10 would mean your electricty cost it 0.10 kwh. If argument is ommited,
+                                    or left as "" in config.json- kw/h figures will based on values in power.json.
+                                    This parameter overrides kwh values in power.json
 
 -Threshold     [.1 - 100000]	    Expressed in BTC/day. Default is .02. If the total daily profits of a
 				    particular algo/coin exceed the -Threshold argument, it will be removed
@@ -308,33 +363,33 @@ Argument            Options             Explanation
                                         to fine tune profitability based on the variable rates and extra
                                         fees associated with using the nicehash service. Default is 2.                     
 
--AltCoinWallet1       [Wallet Address]    Altcoin wallet adddress. Is used in combinatation of -Wallet1
+-AltWallet1       [Wallet Address]    Altcoin wallet adddress. Is used in combinatation of -Wallet1
                                           argument. This will tell SWARM if it switches
                                           to auto-exchange into specified coin.
                                           Used when -Type NVIDIA1/AMD1/CPU/ASIC is specified.
 
--AltCoinWallet2       [Wallet Address]    Altcoin wallet adddress. Is used in combinatation of -Wallet1
+-AltWallet2       [Wallet Address]       Altcoin wallet adddress. Is used in combinatation of -Wallet1
                                           argument. This will tell SWARM
                                           to auto-exchange into a coin other than BTC.
                                           Used when -Type NVIDIA2 is specified.
 
--AltCoinWallet2  [Wallet Address]        Altcoin wallet adddress. Is used in combinatation of -Wallet1
+-AltWallet2  [Wallet Address]           Altcoin wallet adddress. Is used in combinatation of -Wallet1
                                          argument. This will tell SWARM if it switches to pool
                                          to auto-exchange into a coin other than BTC.
                                          Used when -Type NVIDIA2 is specified.
 
--AltCoinPassword1	 [Symbol]       Wallet address symbol of corresponding wallet. Is used
+-AltPassword1	 [Symbol]               Wallet address symbol of corresponding wallet. Is used
                                         in combination of -PasswordCurrency1 argument. This will tell
                                         SWARM if it switches to pool to use this coin symbol
                                         in password arguments. Used when -Type NVIDIA1/AMD1/CPU/ASIC
 					is specified. 
 
--AltCoinPassword2	 [Symbol]       Wallet address symbol of corresponding wallet. Is used
+-AltPassword2	 [Symbol]               Wallet address symbol of corresponding wallet. Is used
                                         in combination of -PasswordCurrency1 argument. This will tell
                                         SWARM if it switches to pool to use this coin symbol
                                         in password arguments. Used when -Type NVIDIA2 is specified. 
 					
--ALtCoinPassword3	 [Symbol]       Wallet address symbol of corresponding wallet. Is used
+-ALtPassword3	 [Symbol]               Wallet address symbol of corresponding wallet. Is used
                                         in combination of -PasswordCurrency1 argument. This will tell
                                         SWARM if it switches to pool to use this coin symbol
                                         in password arguments. Used when -Type NVIDIA3 is specified.
@@ -353,7 +408,7 @@ Argument            Options             Explanation
 
 Dividing Miner
 
-MM.Hash has the capability of dividing miner into seperate device groups. By default, 
+SWARM has the capability of dividing miner into seperate device groups. By default, 
 it is set to use Wallet1 & PasswordCurrency1. You can however choose to divide you miner, up to three 
 different groups. This is the commands/options you must add to do so:
 
@@ -372,7 +427,7 @@ To use 2 Groups, and Mine with CPU processor would be:
 For Type
 if (Type = NVIDIA1)
 
--GPUDevices1 = Devices you are using for group for all miners.
+-GPUDevices1 = Devices you are using for group NVIDIA1 for all miners.
 
 Lastly you must set your wallet/password info. Here are basic:
 

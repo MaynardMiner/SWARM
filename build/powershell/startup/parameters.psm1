@@ -1,4 +1,4 @@
-function Get-Parameters {
+function Global:Get-Parameters {
     $Global:config.add("params", @{ })
     $Global:Config.add("user_params",@{ })
     $Global:Config.add("hive_params",@{})
@@ -19,11 +19,11 @@ function Get-Parameters {
         $HiveStuff.PSObject.Properties.Name | % { $global:Config.hive_params.Add("$($_)", $HiveStuff.$_) }
         $HiveStuff = $null
     }
-    if (-not $global:Config.hive_params.HiveID) {
-        $global:Config.hive_params.Add("HiveID", $Null)
-        $global:Config.hive_params.Add("HivePassword", $Null)
-        $global:Config.hive_params.Add("HiveWorker", $Null)
-        $global:Config.hive_params.Add("HiveMirror", "https://api.hiveos.farm")
+    if (-not $global:Config.hive_params.Id) {
+        $global:Config.hive_params.Add("Id", $Null)
+        $global:Config.hive_params.Add("Password", $Null)
+        $global:Config.hive_params.Add("Worker", $Null)
+        $global:Config.hive_params.Add("Mirror", "https://api.hiveos.farm")
         $global:Config.hive_params.Add("FarmID", $Null)
         $global:Config.hive_params.Add("Wd_Enabled", $null)
         $Global:config.hive_params.Add("Wd_miner", $Null)
@@ -33,11 +33,11 @@ function Get-Parameters {
         $global:Config.hive_params.Add("Miner2", $Null)
         $global:Config.hive_params.Add("Timezone", $Null)
     }
-    if (-not $global:Config.SWARM_Params.HiveID) {
-        $global:Config.SWARM_Params.Add("HiveID", $Null)
-        $global:Config.SWARM_Params.Add("HivePassword", $Null)
-        $global:Config.SWARM_Params.Add("HiveWorker", $Null)
-        $global:Config.SWARM_Params.Add("HiveMirror", "SWARMSITE")
+    if (-not $global:Config.SWARM_Params.Id) {
+        $global:Config.SWARM_Params.Add("Id", $Null)
+        $global:Config.SWARM_Params.Add("Password", $Null)
+        $global:Config.SWARM_Params.Add("Worker", $Null)
+        $global:Config.SWARM_Params.Add("Mirror", "https://swarm-web.davisinfo.ro")
         $global:Config.SWARM_Params.Add("FarmID", $Null)
         $global:Config.SWARM_Params.Add("Wd_Enabled", $null)
         $Global:config.SWARM_Params.Add("Wd_miner", $Null)
@@ -50,7 +50,7 @@ function Get-Parameters {
 
     if (-not $global:Config.Params.Platform) {
         write-Host "Detecting Platform..." -Foreground Cyan
-        if (Test-Path "C:\") { $global:Config.Params.Platform = "windows" }
+        if ($IsWindows) { $global:Config.Params.Platform = "windows" }
         else { $global:Config.Params.Platform = "linux" }
         Write-Host "OS = $($global:Config.Params.Platform)" -ForegroundColor Green
     }

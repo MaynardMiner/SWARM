@@ -1,4 +1,4 @@
-function Get-PoolTables {
+function Global:Get-PoolTables {
     $global:FeeTable.Add("zpool", @{ })
     $global:FeeTable.Add("zergpool", @{ })
     $global:FeeTable.Add("fairpool", @{ })
@@ -7,13 +7,13 @@ function Get-PoolTables {
     $global:divisortable.Add("zergpool", @{ })
     $global:divisortable.Add("fairpool", @{ })
     
-    if ($global:Config.Params.Coin.Count -eq 1 -and $global:Config.Params.Coin -ne "" -and $SWARMAlgorithm.Count -eq 1 -and $global:Config.Params.SWARM_Mode -ne "") {
+    if ($global:Config.Params.Coin.Count -eq 1 -and $global:Config.Params.Coin -ne "" -and $global:SWARMAlgorithm.Count -eq 1 -and $global:Config.Params.SWARM_Mode -ne "") {
         $global:SingleMode = $true
     }
 }
 
-function Remove-BanHashrates {
-    Write-Log "Loading Miner Hashrates" -ForegroundColor Yellow
+function Global:Remove-BanHashrates {
+    Global:Write-Log "Loading Miner Hashrates" -ForegroundColor Yellow
     if ($global:BanHammer -gt 0 -and $global:BanHammer -ne "") {
         if (test-path ".\stats") { $A = Get-ChildItem "stats" | Where BaseName -Like "*hashrate*" }
         $global:BanHammer | ForEach-Object {
@@ -32,7 +32,7 @@ function Remove-BanHashrates {
         }
     }
 }
-function Get-MinerHashTable {
+function Global:Get-MinerHashTable {
     Invoke-Expression ".\build\powershell\scripts\get.ps1 benchmarks all -asjson" | Tee-Object -Variable Miner_Hash | Out-Null
     if ($Miner_Hash -and $Miner_Hash -ne "No Stats Found") {
         $Miner_Hash = $Miner_Hash | ConvertFrom-Json
@@ -40,12 +40,14 @@ function Get-MinerHashTable {
     else { $Miner_Hash = $null }
 
     $TypeTable = @{ }
-    $cpu.PSobject.Properties.Name | %{$TypeTable.Add("$($_)","CPU")}
-    $amd.PSObject.Properties.Name | %{$TypeTable.Add("$($_)-1","AMD1")}
+    $cpu.PSobject.Properties.Name | %{ if($_ -ne "name"){$TypeTable.Add("$($_)","CPU")} }
+    $amd.PSObject.Properties.Name | %{if($_ -ne "name"){$TypeTable.Add("$($_)-1","AMD1")}}
     $nvidia.PSObject.Properties.Name | % {
-        $TypeTable.Add("$($_)-1","NVIDIA1")
-        $TypeTable.Add("$($_)-2","NVIDIA2")
-        $TypeTable.Add("$($_)-3","NVIDIA3")
+        if($_ -ne "name"){
+            $TypeTable.Add("$($_)-1","NVIDIA1")
+            $TypeTable.Add("$($_)-2","NVIDIA2")
+            $TypeTable.Add("$($_)-3","NVIDIA3")
+        }
     }
     $SELASIC = $global:Config.Params.Type | Where {$_ -like "*ASIC*"}
 
