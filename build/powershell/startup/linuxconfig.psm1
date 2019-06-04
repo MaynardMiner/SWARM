@@ -235,24 +235,24 @@ function Global:Get-GPUCount {
         $NVSMI | % { $_."pci.bus_id" = $_."pci.bus_id" -replace "00000000:", "" }
         $GN = $true
     }
-    if ($GetBus -like "*AMD*") { 
+    if ($GetBus -like "*AMD*") {
         $ROCM = invoke-expression "dmesg" | Select-String "amdgpu"
         $AMDMem = invoke-expression "./build/apps/amdmeminfo"
         $PCIArray = @()
         $PCICount = 0
-        $PCI = $AMDMem | Select-String "Found Card: ","PCI: ","BIOS Version","Memory Model"
-        $PCI | %{ 
-            if($_ -like "*Memory Model*") {
+        $PCI = $AMDMem | Select-String "Found Card: ", "PCI: ", "BIOS Version", "Memory Model"
+        $PCI | % { 
+            if ($_ -like "*Memory Model*") {
                 $PCIArray += @{ 
-                    $($PCI[$PCICount-1] -split "PCI: " | Select -Last 1) = @{ 
-                        name = $(
-                                    $PCI[$PCICount-3] -split "Found Card: " | Select -Last 1 | % {
-                                        $Get = [String]$_; $Get1 = $Get.Substring($Get.IndexOf("(")) -replace "\(",""; 
-                                        $Get2 = $Get1 -replace "\)",""; $Get2
-                                    }
-                                ); 
-                            bios = $($PCI[$PCICount-2] -split "Bios Version: " | Select -Last 1); 
-                            memory = $($PCI[$PCICount] -split "Memory Model: " | Select -Last 1);
+                    $($PCI[$PCICount - 1] -split "PCI: " | Select -Last 1) = @{ 
+                        name   = $(
+                            $PCI[$PCICount - 3] -split "Found Card: " | Select -Last 1 | % {
+                                $Get = [String]$_; $Get1 = $Get.Substring($Get.IndexOf("(")) -replace "\(", ""; 
+                                $Get2 = $Get1 -replace "\)", ""; $Get2
+                            }
+                        ); 
+                        bios   = $($PCI[$PCICount - 2] -split "Bios Version: " | Select -Last 1); 
+                        memory = $($PCI[$PCICount] -split "Memory Model: " | Select -Last 1);
                     }
                 }
             }; 
@@ -293,12 +293,12 @@ function Global:Get-GPUCount {
                     $subvendor = invoke-expression "lspci -vmms $busid" | Tee-Object -Variable subvendor | % { $_ | Select-String "SVendor" | % { $_ -split "SVendor:\s" | Select -Last 1 } }
                     $mem = "$($ROCM | Select-String "amdgpu 0000`:$busid`: VRAM`: " | %{ $_ -split "amdgpu 0000`:$busid`: VRAM`: " | Select -Last 1} | % {$_ -split "M" | Select -First 1})M"
                     $global:BusData += [PSCustomObject]@{
-                        busid = $busid
-                        name = $PCIArray.$busid.name
-                        brand = "amd"
+                        busid     = $busid
+                        name      = $PCIArray.$busid.name
+                        brand     = "amd"
                         subvendor = $subvendor
-                        vbios = $PCIArray.$busid.bios
-                        mem_type = $PCIArray.$busid.memory
+                        vbios     = $PCIArray.$busid.bios
+                        mem_type  = $PCIArray.$busid.memory
                     }
                 }
             }
@@ -368,10 +368,10 @@ function Global:Start-LinuxConfig {
         $global:Websites | ForEach-Object {
             switch ($_) {
                 "HiveOS" {
-                    if($Hive -eq $false){
-                    Global:Get-WebModules "HiveOS"
-                    $response = $rigdata | Global:Invoke-WebCommand -Site "HiveOS" -Action "Hello"
-                    Global:Start-WebStartup $response "HiveOS"
+                    if ($Hive -eq $false) {
+                        Global:Get-WebModules "HiveOS"
+                        $response = $rigdata | Global:Invoke-WebCommand -Site "HiveOS" -Action "Hello"
+                        Global:Start-WebStartup $response "HiveOS"
                     }
                 }
                 "SWARM" {
@@ -384,7 +384,7 @@ function Global:Start-LinuxConfig {
         Remove-Module -Name "methods"
     }
 
-    if (Test-Path $Rig_File) {
+    if (Test-Path $Hive_File) {
 
         ## Get Hive Config
         $RigConf = Get-Content $Rig_File
@@ -418,33 +418,33 @@ function Global:Start-LinuxConfig {
             Invoke-Expression "rm -rf .local/share/Trash/files/*" | Tee-Object -Variable trash | Out-Null
             $Trash | % { Global:Write-Log $_ }
         }
+    }
 
-        ## Set Cuda for commands
-        if ($global:Config.Params.Type -like "*NVIDIA*") { $global:Config.Params.Cuda | Set-Content ".\build\txt\cuda.txt" }
+    ## Set Cuda for commands
+    if ($global:Config.Params.Type -like "*NVIDIA*") { $global:Config.Params.Cuda | Set-Content ".\build\txt\cuda.txt" }
     
-        ## Let User Know What Platform commands will work for- Will always be Group 1.
-        if ($global:Config.Params.Type -like "*NVIDIA1*") {
-            "NVIDIA1" | Out-File ".\build\txt\minertype.txt" -Force
-            Global:Write-Log "Group 1 is NVIDIA- Commands and Stats will work for NVIDIA1" -foreground yellow
+    ## Let User Know What Platform commands will work for- Will always be Group 1.
+    if ($global:Config.Params.Type -like "*NVIDIA1*") {
+        "NVIDIA1" | Out-File ".\build\txt\minertype.txt" -Force
+        Global:Write-Log "Group 1 is NVIDIA- Commands and Stats will work for NVIDIA1" -foreground yellow
+        Start-Sleep -S 3
+    }
+    elseif ($global:Config.Params.Type -like "*AMD1*") {
+        "AMD1" | Out-File ".\build\txt\minertype.txt" -Force
+        Global:Write-Log "Group 1 is AMD- Commands and Stats will work for AMD1" -foreground yellow
+        Start-Sleep -S 3
+    }
+    elseif ($global:Config.Params.Type -like "*CPU*") {
+        if ($Global:GPU_Count -eq 0) {
+            "CPU" | Out-File ".\build\txt\minertype.txt" -Force
+            Global:Write-Log "Group 1 is CPU- Commands and Stats will work for CPU" -foreground yellow
             Start-Sleep -S 3
         }
-        elseif ($global:Config.Params.Type -like "*AMD1*") {
-            "AMD1" | Out-File ".\build\txt\minertype.txt" -Force
-            Global:Write-Log "Group 1 is AMD- Commands and Stats will work for AMD1" -foreground yellow
-            Start-Sleep -S 3
-        }
-        elseif ($global:Config.Params.Type -like "*CPU*") {
-            if ($Global:GPU_Count -eq 0) {
-                "CPU" | Out-File ".\build\txt\minertype.txt" -Force
-                Global:Write-Log "Group 1 is CPU- Commands and Stats will work for CPU" -foreground yellow
-                Start-Sleep -S 3
-            }
-        }
-        elseif ($global:Config.Params.Type -like "*ASIC*") {
-            if ($global:GPU_Count -eq 0) {
-                "ASIC" | Out-File ".\build\txt\minertype.txt" -Force
-                Global:Write-Log "Group 1 is ASIC- Commands and Stats will work for ASIC" -foreground yellow
-            }
+    }
+    elseif ($global:Config.Params.Type -like "*ASIC*") {
+        if ($global:GPU_Count -eq 0) {
+            "ASIC" | Out-File ".\build\txt\minertype.txt" -Force
+            Global:Write-Log "Group 1 is ASIC- Commands and Stats will work for ASIC" -foreground yellow
         }
     }
     
