@@ -3207,6 +3207,12 @@ API overhaul:
 
   NEW FEATURES:
 
+  -Type Argument no longer needed if using just GPU's.
+   This means currently you need only two arguments to 
+   run SWARM- The rest can be automated. However -Type
+   parameter still exists in case you wish to force
+   types (such as using CPU and NVIDIA2/3 etc).
+
   -After first miner starts- SWARM will always stat a value
   to HiveOS. If hashrate is zero, SWARM will stat 1 h/s
   for all GPUs / khs total. This is to let you know that
@@ -3254,7 +3260,7 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
   Default is 6099. Activates TCP Port for API.
   ```
 
-  "All_Altwallets" in wallets.json allow solo mining:
+  "All_Altwallets" in wallets.json allow solo mining and party mining:
 
     example:
     ```
