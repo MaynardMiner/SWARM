@@ -229,13 +229,13 @@ function Global:Get-GPUCount {
     $CardCount = 0
     $global:BusData = @()
 
-    if ($GetBus -like "*NVIDIA*") {
+    if ($GetBus -like "*NVIDIA*" -and $GetBus -notlike "*nForce*") {
         invoke-expression "nvidia-smi --query-gpu=gpu_bus_id,gpu_name,memory.total,power.min_limit,power.default_limit,power.max_limit,vbios_version --format=csv" | Tee-Object -Variable NVSMI | Out-Null
         $NVSMI = $NVSMI | ConvertFrom-Csv
         $NVSMI | % { $_."pci.bus_id" = $_."pci.bus_id" -replace "00000000:", "" }
         $GN = $true
     }
-    if ($GetBus -like "*AMD*") {
+    if ($GetBus -like "*Advanced Micro Devices*" -and $GetBus -notlike "*RS880*" -and $GetBus -notlike "*Stoney*") {
         $ROCM = invoke-expression "dmesg" | Select-String "amdgpu"
         $AMDMem = invoke-expression "./build/apps/amdmeminfo"
         $PCIArray = @()
