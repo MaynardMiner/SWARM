@@ -3302,3 +3302,9 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
   -Wildrig updated, anime algo added
 
   -cc-rfv2 updated (speed increase)
+
+  -Added more to (vars), allowing more
+   variables to be passed into user
+   created modules. A full list
+   of varibles and their definitions
+   will come soon.
