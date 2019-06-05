@@ -3277,3 +3277,28 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
   -Web methods were udpated.
 
   Miners were updated.
+
+
+  2.3.8
+
+  -Removed NVIDIA1 as default type, so AMD cards can be
+   auto detected.
+
+  -Added README.md to some of the config folders. (Will add more)
+
+  -Per user debate, rollbacked minimum hashrates. SWARM will stat 0
+   hashrates while miners are loading. This is going to show N/A
+   on HiveOS website. I can't fix- It is HiveOS. But this makes
+   hashrate watchdog more viable.
+
+  -Per user debate, changed argument ``-NO_GLT`` to ``-Ban_GLT``
+   as the double negative ``-No_GLT No`` is confusing.
+
+  -Fixed rig.conf parsing for HiveOS, which was causing warning
+   notification issues in beta.
+
+  -Fixed auto GPU detection of AMD from beta version.
+
+  -Wildrig updated, anime algo added
+
+  -cc-rfv2 updated (speed increase)

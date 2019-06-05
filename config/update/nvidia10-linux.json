@@ -147,7 +147,7 @@
     "NVIDIA2": ".\\bin\\cc-rfv2-2\\ccminer",
     "NVIDIA3": ".\\bin\\cc-rfv2-3\\ccminer",
     "minername": "ccminer",
-    "version": "2.3.1",
+    "version": "1.0.2",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/cc-rfv2-linux.tar.gz"
   },
   "t-rex": {

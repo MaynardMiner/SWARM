@@ -133,6 +133,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "x25x" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "x25x" "x25x" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "x25x" 1 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "anime" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "anime" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "anime" "anime" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "anime" 1 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }
@@ -196,6 +201,7 @@ function Global:start-update {
                                 }
 
                                 if($ChangeFile -eq "oc-algos.json") {
+
                                     $Data | Add-Member "x25x" @{
                                         "NVIDIA1" = @{
                                             "Fans" = ""
@@ -230,6 +236,42 @@ function Global:start-update {
                                             "core"= ""
                                         }                                
                                     } -ErrorAction SilentlyContinue
+
+                                   $Data| Add-Member "anime" @{
+                                        "NVIDIA1" = @{
+                                            "Fans" = ""
+                                            "ETHPill"= ""
+                                            "Core"=""
+                                            "Memory"=""
+                                            "Power"= ""
+                                            "PillDelay"= ""
+                                        };               
+                                        "NVIDIA2" = @{
+                                            "Fans" = ""
+                                            "ETHPill"= ""
+                                            "Core"=""
+                                            "Memory"=""
+                                            "Power"= ""
+                                            "PillDelay"= ""
+                                        };                          
+                                        "NVIDIA3" = @{
+                                            "Fans" = ""
+                                            "ETHPill"= ""
+                                            "Core"=""
+                                            "Memory"=""
+                                            "Power"= ""
+                                            "PillDelay"= ""
+                                        };                         
+                                        "AMD1"= @{
+                                            "fans"= ""
+                                            "v"= ""
+                                            "dpm"= ""
+                                            "mem"= ""
+                                            "mdpm"= ""
+                                            "core"= ""
+                                        }                                
+                                    } -ErrorAction SilentlyContinue
+
                                 }
 
                                 $Data | ConvertTo-Json -Depth 3 | Set-Content $NewJson;
