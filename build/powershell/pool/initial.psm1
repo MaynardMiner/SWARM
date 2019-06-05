@@ -7,7 +7,7 @@ function Global:Get-PoolTables {
     $global:divisortable.Add("zergpool", @{ })
     $global:divisortable.Add("fairpool", @{ })
     
-    if ($global:Config.Params.Coin.Count -eq 1 -and $global:Config.Params.Coin -ne "" -and $global:SWARMAlgorithm.Count -eq 1 -and $global:Config.Params.SWARM_Mode -ne "") {
+    if ($(arg).Coin.Count -eq 1 -and $(arg).Coin -ne "" -and $global:SWARMAlgorithm.Count -eq 1 -and $(arg).SWARM_Mode -ne "") {
         $global:SingleMode = $true
     }
 }
@@ -49,7 +49,7 @@ function Global:Get-MinerHashTable {
             $TypeTable.Add("$($_)-3","NVIDIA3")
         }
     }
-    $SELASIC = $global:Config.Params.Type | Where {$_ -like "*ASIC*"}
+    $SELASIC = $(arg).Type | Where {$_ -like "*ASIC*"}
 
     $SELASIC | %{
         $SelType = $_
@@ -62,7 +62,7 @@ function Global:Get-MinerHashTable {
         $NotBest = @()
         $Miner_Hash.Algo | % {
             $A = $_
-            $global:Config.Params.Type | % {
+            $(arg).Type | % {
                 $T = $_
                 $Sel = $Miner_Hash | Where Algo -eq $A | Where Type -EQ $T
                 $NotBest += $Sel | Sort-Object RAW -Descending | Select-Object -Skip 1

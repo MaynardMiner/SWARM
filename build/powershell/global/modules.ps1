@@ -32,5 +32,7 @@ function Global:Remove-Modules {
 }
 
 function Global:variable($X) { if($X) {$Global:Config.var.$X} else {$global:Config.var} }
-Set-Alias -Name v -Value global:variable -Scope Global
+function Global:params($X) { if($X) {$global:Config.params.$X} else {$global:Config.Params} }
+Set-Alias -Name vars -Value global:variable -Scope Global
+Set-Alias -Name arg -Value global:params -Scope Global
 Set-Alias -Name Log -Value Global:Write-Log

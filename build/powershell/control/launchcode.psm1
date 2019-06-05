@@ -67,11 +67,11 @@ function Global:Start-LaunchCode {
     if ($MinerCurrent.Type -notlike "*ASIC*") {
         ##Remove Old PID FIle
         $MinerTimer = New-Object -TypeName System.Diagnostics.Stopwatch
-        $Export = Join-Path $($(v).dir) "build\export"
+        $Export = Join-Path $($(vars).dir) "build\export"
         $PIDMiners = "$($MinerCurrent.Type)"
         if (Test-Path ".\build\pid\*$PIDMiners*") { Remove-Item ".\build\pid\*$PIDMiners*" }
         if (Test-Path ".\build\*$($MinerCurrent.Type)*-hash.txt") { Clear-Content ".\build\*$($MinerCurrent.Type)*-hash.txt" }
-        $Logs = Join-Path $($(v).dir) "logs\$($MinerCurrent.Type).log" 
+        $Logs = Join-Path $($(vars).dir) "logs\$($MinerCurrent.Type).log" 
 
         switch -WildCard ($MinerCurrent.Type) {
             "*NVIDIA*" {
@@ -108,7 +108,7 @@ function Global:Start-LaunchCode {
                     switch ($MinerCurrent.DeviceCall) {
                         "excavator" {
                             $MinerDirectory = Split-Path ($MinerCurrent.Path) -Parent
-                            $CommandFilePath = Join-Path $($(v).dir) "$($MinerDirectory)\command.json"
+                            $CommandFilePath = Join-Path $($(vars).dir) "$($MinerDirectory)\command.json"
                             $MinerArguments = "-c command.json -p $($MinerCurrent.Port)"
                             $NHDevices = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
                             $NiceDevices = Global:Get-DeviceString -TypeCount $NHDevices.NVIDIA.Count
@@ -149,7 +149,7 @@ function Global:Start-LaunchCode {
                             }
                             Clear-Content ".\lyclMiner.conf" -force
                             $NewLines | Set-Content ".\lyclMiner.conf"
-                            Set-Location $($(v).dir)
+                            Set-Location $($(vars).dir)
                         }           
                     }
                 }
@@ -170,7 +170,7 @@ function Global:Start-LaunchCode {
                             }
                             Clear-Content ".\lyclMiner.conf" -force
                             $NewLines | Set-Content ".\lyclMiner.conf"
-                            Set-Location $($(v).dir)
+                            Set-Location $($(vars).dir)
                         }
                         "grin-miner" { set-minerconfig $NewMiner $Logs }
                         "gminer" { $MinerArguments = "-d $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)" }
@@ -194,11 +194,11 @@ function Global:Start-LaunchCode {
 
     
 
-        if ($Global:Config.Params.Platform -eq "windows") {
+        if ($(arg).Platform -eq "windows") {
             if ($MinerProcess -eq $null -or $MinerProcess.HasExited -eq $true) {
             
                 #dir
-                $WorkingDirectory = Join-Path $($(v).dir) $(Split-Path $($MinerCurrent.Path))
+                $WorkingDirectory = Join-Path $($(vars).dir) $(Split-Path $($MinerCurrent.Path))
 
                 ##Classic Logo For Windows
                 Global:Write-Log "
@@ -242,10 +242,10 @@ function Global:Start-LaunchCode {
                 ##Build Start Script
                 $script = @()
                 $script += "`$OutputEncoding = [System.Text.Encoding]::ASCII"
-                $script += "Start-Process `"powershell`" -ArgumentList `"Set-Location ``'$($(v).dir)``'; .\build\powershell\scripts\icon.ps1 ``'$($(v).dir)\build\apps\miner.ico``'`" -NoNewWindow"
+                $script += "Start-Process `"powershell`" -ArgumentList `"Set-Location ``'$($(vars).dir)``'; .\build\powershell\scripts\icon.ps1 ``'$($(vars).dir)\build\apps\miner.ico``'`" -NoNewWindow"
                 $script += "`$host.ui.RawUI.WindowTitle = `'$($MinerCurrent.Name) - $($MinerCurrent.Algo)`';"
                 $MinerCurrent.Prestart | ForEach-Object {
-                    if ($_ -notlike "export LD_LIBRARY_PATH=$($(v).dir)\build\export") {
+                    if ($_ -notlike "export LD_LIBRARY_PATH=$($(vars).dir)\build\export") {
                         $setx = $_ -replace "export ", "set "
                         $setx = $setx -replace "=", " "
                         $script += "$setx"
@@ -317,18 +317,18 @@ function Global:Start-LaunchCode {
             else { $MinerProcess }
         } 
 
-        elseif ($Global:Config.Params.Platform -eq "linux") {
+        elseif ($(arg).Platform -eq "linux") {
 
             ##Specified Dir Again For debugging / Testing - No Harm
-            $MinerDir = Join-Path $($(v).dir) $(Split-Path $($MinerCurrent.Path))
+            $MinerDir = Join-Path $($(vars).dir) $(Split-Path $($MinerCurrent.Path))
             $MinerDir = $(Resolve-Path $MinerDir).Path
-            $MinerEXE = Join-Path $($(v).dir) $MinerCurrent.Path
+            $MinerEXE = Join-Path $($(vars).dir) $MinerCurrent.Path
             $MinerEXE = $(Resolve-Path $MinerExe).Path
             $StartDate = Get-Date
 
             ##PID Tracking Path & Date
-            $PIDPath = Join-Path $($(v).dir) "build\pid\$($MinerCurrent.InstanceName)_pid.txt"
-            $PIDInfoPath = Join-Path $($(v).dir) "build\pid\$($MinerCurrent.InstanceName)_info.txt"
+            $PIDPath = Join-Path $($(vars).dir) "build\pid\$($MinerCurrent.InstanceName)_pid.txt"
+            $PIDInfoPath = Join-Path $($(vars).dir) "build\pid\$($MinerCurrent.InstanceName)_info.txt"
             $PIDInfo = @{miner_exec = "$MinerEXE"; start_date = "$StartDate"; pid_path = "$PIDPath"; }
             $PIDInfo | ConvertTo-Json | Set-Content $PIDInfoPath
 
@@ -395,7 +395,7 @@ function Global:Start-LaunchCode {
             Global:Write-Log "Starting $($MinerCurrent.Name) Mining $($MinerCurrent.Symbol) on $($MinerCurrent.Type)" -ForegroundColor Cyan
 
             ##FilePaths
-            $Export = Join-Path $($(v).dir) "build\export"
+            $Export = Join-Path $($(vars).dir) "build\export"
 
             ##Build Two Bash Scripts: First script is to start miner while SWARM is running
             ##Second Script is to build a "test script" written in bin folder for users to
@@ -427,7 +427,7 @@ function Global:Start-LaunchCode {
             $Script += "screen -S $($MinerCurrent.Type) -X stuff $`"cd $MinerDir\n`"", "sleep .1"
 
             ##This launches the previous generated configs.
-            $Script += "screen -S $($MinerCurrent.Type) -X stuff $`"`$(< $($(v).dir)/build/bash/config.sh)\n`""
+            $Script += "screen -S $($MinerCurrent.Type) -X stuff $`"`$(< $($(vars).dir)/build/bash/config.sh)\n`""
             $TestScript += $Daemon
 
             ##Write Both Scripts

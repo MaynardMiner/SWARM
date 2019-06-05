@@ -1,6 +1,6 @@
 function Global:Get-HashrefineryData {
     $Wallets = @()
-    $global:Config.Params.Type | ForEach-Object {
+    $(arg).Type | ForEach-Object {
         $Sel = $_
         $Pool = "hashrefinery"
         $global:Share_Table.$Sel.Add($Pool, @{ })

@@ -19,7 +19,7 @@ $Global:NVIDIATypes | ForEach-Object {
     }
 
     ##Log Directory
-    $Log = Join-Path $($(v).dir) "logs\$ConfigType.log"
+    $Log = Join-Path $($(vars).dir) "logs\$ConfigType.log"
 
     ##Parse -GPUDevices
     if ($Get_Devices -ne "none") {
@@ -33,7 +33,7 @@ $Global:NVIDIATypes | ForEach-Object {
     $MinerConfig = $Global:config.miners.energiminer
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
-    $ExportDir = Join-Path $($(v).dir) "build\export"
+    $ExportDir = Join-Path $($(vars).dir) "build\export"
 
     ##Prestart actions before miner launch
     $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
@@ -61,7 +61,7 @@ $Global:NVIDIATypes | ForEach-Object {
                         Coin       = $Global:Coins
                         Delay      = $MinerConfig.$ConfigType.delay
                         Fees       = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
-                        Platform   = $global:Config.Params.Platform
+                        Platform   = $(arg).Platform
                         Symbol     = "$($_.Symbol)"
                         MinerName  = $MinerName
                         Prestart   = $PreStart
@@ -74,7 +74,7 @@ $Global:NVIDIATypes | ForEach-Object {
                         Arguments  = "-U stratum://$($_.$User).$($_.$Pass)@$($_.Algorithm).mine.zergpool.com:$($_.Port)"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
-                        Power     =  if ($global:Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $global:Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($global:Watts.default."$($ConfigType)_Watts") { $global:Watts.default."$($ConfigType)_Watts" }else { 0 } 
+                        Power     =  if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                         MinerPool  = "$($_.Name)"
                         Port       = 0
                         API        = "energiminer"

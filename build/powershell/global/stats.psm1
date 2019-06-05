@@ -38,24 +38,24 @@ function Global:Set-Stat {
     )
 
     $Calcs = @{
-        Minute    = [Math]::Max([Math]::Round(60 / $global:Config.Params.Interval), 1)
-        Minute_5  = [Math]::Max([Math]::Round(300 / $global:Config.Params.Interval), 1)
-        Minute_15 = [Math]::Max([Math]::Round(900 / $global:Config.Params.Interval), 1)
-        Hour      = [Math]::Max([Math]::Round(3600 / $global:Config.Params.Interval), 1)
+        Minute    = [Math]::Max([Math]::Round(60 / $(arg).Interval), 1)
+        Minute_5  = [Math]::Max([Math]::Round(300 / $(arg).Interval), 1)
+        Minute_15 = [Math]::Max([Math]::Round(900 / $(arg).Interval), 1)
+        Hour      = [Math]::Max([Math]::Round(3600 / $(arg).Interval), 1)
     }
 
     if (-not $AsHashrate) {
-        $Calcs.Add("Hour_4", [Math]::Max([Math]::Round(14400 / $global:Config.Params.Interval), 1))
-        $Calcs.Add("Day", [Math]::Max([Math]::Round(14400 / $global:Config.Params.Interval), 1))
-        $Calcs.Add("Custom", [Math]::Max([Math]::Round(14400 / $global:Config.Params.Interval), 1))
+        $Calcs.Add("Hour_4", [Math]::Max([Math]::Round(14400 / $(arg).Interval), 1))
+        $Calcs.Add("Day", [Math]::Max([Math]::Round(14400 / $(arg).Interval), 1))
+        $Calcs.Add("Custom", [Math]::Max([Math]::Round(14400 / $(arg).Interval), 1))
     }
 
     if ($HashRate) {
-        $Calcs.Add("Hashrate", [Math]::Max([Math]::Round(3600 / $global:Config.Params.Interval), 1))
+        $Calcs.Add("Hashrate", [Math]::Max([Math]::Round(3600 / $(arg).Interval), 1))
     }
 
     if ($AsHashrate) { $Max_Periods = 15 }
-    else { $Max_Periods = $global:Config.params.Max_Periods }
+    else { $Max_Periods = $(arg).Max_Periods }
     $Hash_Max = 15
     $name = $name -replace "`/","`-"
     if ($name -eq "load-average") { $Max_Periods = 90; $Path = "build\txt\$Name.txt" }

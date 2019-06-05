@@ -1,10 +1,10 @@
 function Global:Stop-ActiveMiners {
-    $global:ActiveMinerPrograms | ForEach-Object {
+    $(vars).ActiveMinerPrograms | ForEach-Object {
            
         ##Miners Not Set To Run
         if ($_.BestMiner -eq $false) {
         
-            if ($global:Config.Params.Platform -eq "windows") {
+            if ($(arg).Platform -eq "windows") {
                 if ($_.XProcess -eq $Null) { $_.Status = "Failed" }
                 elseif ($_.XProcess.HasExited -eq $false) {
                     $_.Active += (Get-Date) - $_.XProcess.StartTime
@@ -14,7 +14,7 @@ function Global:Stop-ActiveMiners {
                 }
             }
 
-            if ($global:Config.Params.Platform -eq "linux") {
+            if ($(arg).Platform -eq "linux") {
                 if ($_.XProcess -eq $Null) { $_.Status = "Failed" }
                 else {
                     if ($_.Type -notlike "*ASIC*") {
@@ -46,30 +46,30 @@ function Global:Start-NewMiners {
     $WebSiteOC = $False
     $OC_Success = $false
 
-    $global:BestActiveMiners | ForEach-Object {
+    $(vars).BestActiveMIners | ForEach-Object {
         $Miner = $_
 
-        if ($null -eq $Miner.XProcess -or $Miner.XProcess.HasExited -and $global:Config.Params.Lite -eq "No") {
-            Global:Add-Module "$($(v).control)\launchcode.psm1"
-            Global:Add-Module "$($(v).control)\config.psm1"
-            Global:Add-Module "$($(v).global)\gpu.psm1"
+        if ($null -eq $Miner.XProcess -or $Miner.XProcess.HasExited -and $(arg).Lite -eq "No") {
+            Global:Add-Module "$($(vars).control)\launchcode.psm1"
+            Global:Add-Module "$($(vars).control)\config.psm1"
+            Global:Add-Module "$($(vars).global)\gpu.psm1"
 
             $global:Restart = $true
             if ($Miner.Type -notlike "*ASIC*") { Start-Sleep -S $Miner.Delay }
-            $Miner.InstanceName = "$($Miner.Type)-$($global:Instance)"
+            $Miner.InstanceName = "$($Miner.Type)-$($(vars).Instance)"
             $Miner.Activated++
-            $global:Instance++
+            $(vars).Instance++
             $Current = $Miner | ConvertTo-Json -Compress
 
             ##First Do OC
             if ($Reason -eq "Launch") {
-                if ($global:Websites) {
-                    $GetNetMods = @($global:NetModules | Foreach { Get-ChildItem $_ })
+                if ($(vars).WebSites) {
+                    $GetNetMods = @($(vars).NetModules | Foreach { Get-ChildItem $_ })
                     $GetNetMods | ForEach-Object { Import-Module -Name "$($_.FullName)" }
-                    $global:WebSites | ForEach-Object {
+                    $(vars).WebSites | ForEach-Object {
                         switch ($_) {
                             "HiveOS" {
-                                if ($global:Config.Params.API_Key -and $global:Config.Params.API_Key -ne "") {
+                                if ($(arg).API_Key -and $(arg).API_Key -ne "") {
                                     if ($WebSiteOC -eq $false) {
                                         if ($Miner.Type -notlike "*ASIC*" -and $Miner.Type -like "*1*") {
                                             $OC_Success = Global:Start-HiveTune $Miner.Algo
@@ -93,7 +93,7 @@ function Global:Start-NewMiners {
                     }
                     if ($Miner.Type -notlike "*ASIC*") {
                         Global:Write-Log "Starting SWARM OC" -ForegroundColor Cyan
-                        Global:Add-Module "$($(v).control)\octune.psm1"
+                        Global:Add-Module "$($(vars).control)\octune.psm1"
                         Global:Start-OC -NewMiner $Current -Website $Website
                     }
                 }

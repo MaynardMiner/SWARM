@@ -5,9 +5,9 @@ $Global:NVIDIATypes | ForEach-Object {
     $CName = "tt-miner"
 
     ##Miner Path Information
-    if ($Global:nvidia.$CName.$ConfigType -and $global:Config.Params.Platform -eq "windows") { $Path = "$($Global:nvidia.$CName.$ConfigType)" }
+    if ($Global:nvidia.$CName.$ConfigType -and $(arg).Platform -eq "windows") { $Path = "$($Global:nvidia.$CName.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:nvidia.$CName.uri -and $global:Config.Params.Platform -eq "windows") { $Uri = "$($Global:nvidia.$CName.uri)" }
+    if ($Global:nvidia.$CName.uri -and $(arg).Platform -eq "windows") { $Uri = "$($Global:nvidia.$CName.uri)" }
     else { $Uri = "None" }
     if ($Global:nvidia.$CName.minername) { $MinerName = "$($Global:nvidia.$CName.minername)" }
     else { $MinerName = "None" }
@@ -21,7 +21,7 @@ $Global:NVIDIATypes | ForEach-Object {
     }
 
     ##Log Directory
-    $Log = Join-Path $($(v).dir) "logs\$ConfigType.log"
+    $Log = Join-Path $($(vars).dir) "logs\$ConfigType.log"
 
     ##Parse -GPUDevices
     if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
@@ -31,7 +31,7 @@ $Global:NVIDIATypes | ForEach-Object {
     $MinerConfig = $Global:config.miners.$CName
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
-    $ExportDir = Join-Path $($(v).dir) "build\export"
+    $ExportDir = Join-Path $($(vars).dir) "build\export"
 
     ##Prestart actions before miner launch
     $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
@@ -72,7 +72,7 @@ $Global:NVIDIATypes | ForEach-Object {
                         Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --nvidia -o $($_.Protocol)://$($_.Host):$($_.Port) $Worker-b localhost:$Port -u $($_.$User) -p $($_.$Pass) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
-                        Power     =  if ($global:Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $global:Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($global:Watts.default."$($ConfigType)_Watts") { $global:Watts.default."$($ConfigType)_Watts" }else { 0 } 
+                        Power     =  if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                         MinerPool  = "$($_.Name)"
                         Port       = $Port
                         API        = "claymore"

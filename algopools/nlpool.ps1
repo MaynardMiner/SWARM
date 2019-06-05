@@ -1,9 +1,9 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName
 $nlpool_Request = [PSCustomObject]@{ }
 
-if($global:Config.Params.xnsub -eq "Yes"){$X = "#xnsub"}
+if($(arg).xnsub -eq "Yes"){$X = "#xnsub"}
 
-if ($Name -in $global:Config.Params.PoolName) {
+if ($Name -in $(arg).PoolName) {
     try { $nlpool_Request = Invoke-RestMethod "https://nlpool.nl/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }
     catch { Global:Write-Log "SWARM contacted ($Name) but there was no response."; return }
    
@@ -26,7 +26,7 @@ if ($Name -in $global:Config.Params.PoolName) {
         return $nlpoolAlgo_Algorithm
     } |
     ForEach-Object {
-        if ($global:Algorithm -contains $nlpoolAlgo_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $nlpoolAlgo_Algorithm) {
+        if ($global:Algorithm -contains $nlpoolAlgo_Algorithm -or $(arg).ASIC_ALGO -contains $nlpoolAlgo_Algorithm) {
             if ($Name -notin $global:Config.Pool_Algos.$nlpoolAlgo_Algorithm.exclusions -and $nlpoolAlgo_Algorithm -notin $Global:banhammer) {
                 $nlpoolAlgo_Host = "mine.nlpool.nl$X"
                 $nlpoolAlgo_Port = $nlpool_Request.$_.port
@@ -43,17 +43,17 @@ if ($Name -in $global:Config.Params.PoolName) {
                     $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -Hashrate $HashRates -Value ( [Double]$nlpool_Request.$_.estimate_current / $Divisor * (1 - ($nlpool_Request.$_.fees / 100)))
                 }
 
-                if (-not $global:Pool_Hashrates.$nlpoolAlgo_Algorithm) { $global:Pool_Hashrates.Add("$nlpoolAlgo_Algorithm", @{ })
+                if (-not $(vars).Pool_Hashrates.$nlpoolAlgo_Algorithm) { $(vars).Pool_Hashrates.Add("$nlpoolAlgo_Algorithm", @{ })
                 }
-                if (-not $global:Pool_Hashrates.$nlpoolAlgo_Algorithm.$Name) { $global:Pool_Hashrates.$nlpoolAlgo_Algorithm.Add("$Name", @{HashRate = "$($Stat.HashRate)"; Percent = "" })
+                if (-not $(vars).Pool_Hashrates.$nlpoolAlgo_Algorithm.$Name) { $(vars).Pool_Hashrates.$nlpoolAlgo_Algorithm.Add("$Name", @{HashRate = "$($Stat.HashRate)"; Percent = "" })
                 }
         
                 $Pass1 = $global:Wallets.Wallet1.Keys
-                $User1 = $global:Wallets.Wallet1.$($global:Config.Params.Passwordcurrency1).address
+                $User1 = $global:Wallets.Wallet1.$($(arg).Passwordcurrency1).address
                 $Pass2 = $global:Wallets.Wallet2.Keys
-                $User2 = $global:Wallets.Wallet2.$($global:Config.Params.Passwordcurrency2).address
+                $User2 = $global:Wallets.Wallet2.$($(arg).Passwordcurrency2).address
                 $Pass3 = $global:Wallets.Wallet3.Keys
-                $User3 = $global:Wallets.Wallet3.$($global:Config.Params.Passwordcurrency3).address
+                $User3 = $global:Wallets.Wallet3.$($(arg).Passwordcurrency3).address
 
                 if ($global:Wallets.AltWallet1.keys) {
                     $global:Wallets.AltWallet1.Keys | ForEach-Object {
@@ -83,16 +83,16 @@ if ($Name -in $global:Config.Params.PoolName) {
                 [PSCustomObject]@{
                     Symbol    = "$nlpoolAlgo_Algorithm-Algo"
                     Algorithm = $nlpoolAlgo_Algorithm
-                    Price     = $Stat.$($global:Config.Params.Stat_Algo)
+                    Price     = $Stat.$($(arg).Stat_Algo)
                     Protocol  = "stratum+tcp"
                     Host      = $nlpoolAlgo_Host
                     Port      = $nlpoolAlgo_Port
                     User1     = $User1
                     User2     = $User2
                     User3     = $User3
-                    Pass1     = "c=$Pass1,id=$($global:Config.Params.RigName1)"
-                    Pass2     = "c=$Pass2,id=$($global:Config.Params.RigName2)"
-                    Pass3     = "c=$Pass3,id=$($global:Config.Params.RigName3)"
+                    Pass1     = "c=$Pass1,id=$($(arg).RigName1)"
+                    Pass2     = "c=$Pass2,id=$($(arg).RigName2)"
+                    Pass3     = "c=$Pass3,id=$($(arg).RigName3)"
                 }
             }
         }

@@ -100,9 +100,9 @@ function Global:New-StatTables {
 }
 
 function Global:Get-Metrics {
-    if ($global:Config.Params.Platform -eq "windows") {
+    if ($(arg).Platform -eq "windows") {
         ## Rig Metrics
-        if ($global:Config.Params.HiveOS -eq "Yes") {
+        if ($(arg).HiveOS -eq "Yes") {
             $diskSpace = try { Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'" -ErrorAction Stop | Select-Object Freespace } catch {  Write-Host "Failed To Get disk info" -ForegroundColor Red; 0 }
             $diskSpace = $diskSpace.Freespace / [math]::pow( 1024, 3 )
             $diskSpace = [math]::Round($diskSpace)

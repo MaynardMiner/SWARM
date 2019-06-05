@@ -1,6 +1,6 @@
 function Global:Remove-BadMiners {
     $BadMiners = @()
-    if ($global:Config.Params.Threshold -ne 0) { $Global:Miners | ForEach-Object { if ($_.Profit -gt $global:Config.Params.Threshold) { $BadMiners += $_ } } }
+    if ($(arg).Threshold -ne 0) { $Global:Miners | ForEach-Object { if ($_.Profit -gt $(arg).Threshold) { $BadMiners += $_ } } }
     $BadMiners | ForEach-Object { $Global:Miners.Remove($_) }
     $BadMiners = $Null
 }
@@ -9,7 +9,7 @@ function Global:Get-BestMiners {
 
     $BestMiners = @()
 
-    $global:Config.Params.Type | foreach {
+    $(arg).Type | foreach {
         $SelType = $_
         $BestTypeMiners = @()
         $OldMiners = @()
@@ -17,7 +17,7 @@ function Global:Get-BestMiners {
         $MinerCombo = @()
 
         $TypeMiners = $Global:Miners | Where Type -EQ $SelType
-        $BestActiveMiners | ForEach { $Global:Miners | Where Path -EQ $_.Path | Where Arguments -EQ $_.Arguments | Where Type -EQ $SelType | ForEach { $OldMiners += $_ } }
+        $(vars).BestActiveMiners | ForEach { $Global:Miners | Where Path -EQ $_.Path | Where Arguments -EQ $_.Arguments | Where Type -EQ $SelType | ForEach { $OldMiners += $_ } }
         if ($OldMiners) {
             $OldTypeMiners += $OldMiners | Where Profit -gt 0 | Sort-Object @{Expression = "Profit"; Descending = $true } | Select -First 1
             $OldTypeMiners += $OldMiners | Where Profit -lt 0 | Sort-Object @{Expression = "Profit"; Descending = $false } | Select -First 1
@@ -36,9 +36,9 @@ function Global:Get-BestMiners {
 }
 
 function Global:Get-Conservative {
-    if ($global:Config.Params.Conserve -eq "Yes") {
+    if ($(arg).Conserve -eq "Yes") {
         $global:bestminers_combo = @()
-        $global:Config.Params.Type | ForEach-Object {
+        $(arg).Type | ForEach-Object {
             $SelType = $_
             $ConserveArray = @()
             $ConserveArray += $global:Miners_Combo | Where-Object Type -EQ $SelType | Where-Object Profit -EQ $NULL
