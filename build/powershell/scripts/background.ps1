@@ -576,8 +576,8 @@ HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
 
     ##Modify Stats to show something For Online
     if($global:DoNVIDIA -or $global:AMD){
-        for($global:i=0; $global:i -lt $global:GPUHashTable.Count; $global:i++) { $global:GPUHashTable[$global:i] = $global:GPUHashTable[$global:i] -replace "0.0000","0.0001" }
-        if($global:GPUKHS -eq 0){$global:GPUKHS = 0.0001}
+        for($global:i=0; $global:i -lt $global:GPUHashTable.Count; $global:i++) { $global:GPUHashTable[$global:i] = $global:GPUHashTable[$global:i] -replace "0.0000","0" }
+        if($global:GPUKHS -eq 0){$global:GPUKHS = "0"}
     }
 
     $global:Stats.summary = @{
