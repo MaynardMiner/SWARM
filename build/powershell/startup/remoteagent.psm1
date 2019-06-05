@@ -238,7 +238,7 @@ function Global:start-update {
                         }
                     }
                     $NameJson_Path = Join-Path ".\config" "miners";
-                    $GetOld_Json = Get-ChildItem $NameJson_Path;
+                    $GetOld_Json = Get-ChildItem $NameJson_Path | Where Extension -ne ".md"
                     $GetOld_Json = $GetOld_Json.Name
                     $GetOld_Json | foreach {
                         $ChangeFile = $_

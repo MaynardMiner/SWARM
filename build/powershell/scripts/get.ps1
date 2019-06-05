@@ -417,7 +417,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
         else { $Get += "No oc settings found" }
     }
     "miners" {
-        $GetJsons = Get-ChildItem ".\config\miners"
+        $GetJsons = Get-ChildItem ".\config\miners" | Where Extension -ne ".md"
         $ConvertJsons = [PSCustomObject]@{ }
         $GetJsons.Name | foreach { $Getfile = Get-Content ".\config\miners\$($_)" | ConvertFrom-Json; $ConvertJsons | Add-Member $Getfile.Name $Getfile -Force }
         if ($argument2) {

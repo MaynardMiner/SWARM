@@ -1,6 +1,6 @@
 function Global:Get-MinerConfigs {
     if ($Global:config.Params.Type -like "*AMD*" -or $Global:config.params.Type -like "*NVIDIA*" -or $Global:config.params.Type -like "*CPU*") {
-        $Configs = Get-ChildItem ".\config\miners"
+        $Configs = Get-ChildItem ".\config\miners" | Where Extension -ne ".md"
         $Configs.Name | % {
             $FileDir = Join-Path ".\config\miners" $_
             $A = Get-Content $FileDir | ConvertFrom-Json
