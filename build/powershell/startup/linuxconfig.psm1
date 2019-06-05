@@ -387,7 +387,7 @@ function Global:Start-LinuxConfig {
     if (Test-Path $Hive_File) {
 
         ## Get Hive Config
-        $RigConf = Get-Content $Rig_File
+        $RigConf = Get-Content $Hive_File
         $RigConf = $RigConf | ConvertFrom-StringData                
         $global:Config.hive_params.Worker = $RigConf.WORKER_NAME -replace "`"", ""
         $global:Config.hive_params.Password = $RigConf.RIG_PASSWD -replace "`"", ""
