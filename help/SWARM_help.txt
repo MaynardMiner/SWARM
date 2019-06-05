@@ -72,7 +72,7 @@ Argument            Options             Explanation
 -PasswordCurrency1  [Symbol]        Symbol of your wallet address, specifically for Wallet1. Most pools
                                     only accept BTC for auto-exchange. See pools for options.                                  
 
--No_GLT         [Yes or No]         Default is "Yes". Disables GLT coin. Most users and statistics
+-Ban_GLT         [Yes or No]         Default is "Yes". Disables GLT coin. Most users and statistics
                                     has shown that GLT never pays out what it states that it should.
                                     Reducing profit.
 

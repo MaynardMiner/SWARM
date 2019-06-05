@@ -6,7 +6,7 @@ $Zergpool_UnSorted = [PSCustomObject]@{ }
 $DoAutoCoin = $false
 if($global:Config.Params.Coin.Count -eq 0){$DoAutoCoin = $true}
 $global:Config.Params.Coin | %{ if($_ -eq ""){$DoAutoCoin = $true}}
-if($Global:Config.Params.NO_GLT -eq "Yes"){$NoGLT = "GLT"}
+if($Global:Config.Params.Ban_GLT -eq "Yes"){$NoGLT = "GLT"}
 
 if ($global:Config.Params.xnsub -eq "Yes") { $X = "#xnsub" } 
 
