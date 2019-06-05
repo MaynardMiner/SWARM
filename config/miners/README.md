@@ -39,15 +39,15 @@ cc-mtp.json has an NVIDIA1,NVIDIA2,NVIDIA3 device groups. If you were using
 the argument ``-Type NVIDIA1,NVIDIA2`` you would use the NVIDIA2 section for
 the NVIDIA2 device group, NVIDIA1 section for the NVIDIA1 device group.
 
-# Name [Device Group]                           [STRING],[Sub-Item Of Device Group]
+### Name [Device Group]                           [STRING],[Sub-Item Of Device Group]
 * Name of current hashtable.
 
-# Delay [int]                                   [Integer],[Sub-Item Of Device Group]
+### Delay [int]                                   [Integer],[Sub-Item Of Device Group]
 * Whole numbers only (int)
 * Specifies a delay period between launches.
 * Number signifies seconds.
 
-# Prestart [STRING]                             [STRING],[Sub-Item Of Device Group]
+### Prestart [STRING]                             [STRING],[Sub-Item Of Device Group]
 * These are bash/shell/cmd commands.
 * These items will be ran immediately before starting miner.
 * These commmands will be executed in the same window as shell for miner.
@@ -55,7 +55,7 @@ the NVIDIA2 device group, NVIDIA1 section for the NVIDIA1 device group.
 * Can launch pre-scripts here.
 * Can set environment variables here.
 
-# Commands [String]                            [STRING],[Sub-Item Of Device Group]
+### Commands [String]                            [STRING],[Sub-Item Of Device Group]
 * Additional arguments.
 * Users can add additional commands / arguments for each miner here.
 * Adding "-i 20" for a ccminer would specify an intensity of 20.
@@ -68,7 +68,7 @@ the NVIDIA2 device group, NVIDIA1 section for the NVIDIA1 device group.
 * "200" would specify difficulty of 200
 * This does now work for all miners.
 
-# Naming [STRING]                               [STRING],[Sub-Item of Device Group]
+### Naming [STRING]                               [STRING],[Sub-Item of Device Group]
 * This is the conversion method from SWARM names algorithm to miner aglortihm
 * Some miners use different names than SWARM to denote algorithms.
 * If you are adding a new algorithm- You must add it to Pool-Algos.json first.
@@ -79,7 +79,7 @@ the NVIDIA2 device group, NVIDIA1 section for the NVIDIA1 device group.
 ```
 * This may not work for all miners.
 
-# Fee [int]                                     [INT],[Sub-Item of Device Group]
+### Fee [int]                                     [INT],[Sub-Item of Device Group]
 * Fee for current algorithm.
 * Must be an integer value.
 * Must ALWAYS be present.
