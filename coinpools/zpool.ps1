@@ -6,6 +6,7 @@ $zpool_UnSorted = [PSCustomObject]@{ }
 $DoAutoCoin = $false
 if($global:Config.Params.Coin.Count -eq 0){ $DoAutoCoin = $true }
 $global:Config.Params.Coin | %{ if($_ -eq ""){ $DoAutoCoin = $true} }
+if($Global:Config.Params.Ban_GLT -eq "Yes"){$NoGLT = "GLT"}
 
 if ($global:Config.Params.xnsub -eq "Yes") { $X = "#xnsub" } 
 
@@ -61,6 +62,7 @@ if ($Name -in $global:Config.Params.PoolName) {
             Where-Object { $global:Config.Pool_Algos.$($_.Algo) } |
             Where-Object { $Name -notin $global:Config.Pool_Algos.$($_.sym).exclusions } |
             Where-Object Sym -notin $global:BanHammer |
+            Where-Object Sym -notlike "*$NoGLT*" |
             Where-Object estimate -gt 0 | 
             Where-Object hashrate -ne 0 | 
             Sort-Object Price -Descending |
