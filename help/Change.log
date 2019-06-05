@@ -3308,3 +3308,5 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
    created modules. A full list
    of varibles and their definitions
    will come soon.
+
+  -Further Resource use reduction. (marginal)
