@@ -35,27 +35,27 @@ $dir = (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCo
 
 . .\build\powershell\global\modules.ps1
 
-if(-not $(v) ){$Global:Config = @{}; $Global:Config.Add("var",@{}) }
-if(-not $(v).startup ){$(v).Add("startup","$dir\build\powershell\startup")}
-if(-not $(v).global ){$(v).Add("global","$dir\build\powershell\global")}
-if(-not $(v).build ){$(v).Add("build","$dir\build\powershell\build")}
-if(-not $(v).pool ){$(v).Add("pool","$dir\build\powershell\pool")}
-if(-not $(v).web ){$(v).Add("web","$dir\build\api\web")}
+if(-not $(vars) ){$Global:Config = @{}; $Global:Config.Add("var",@{}) }
+if(-not $(vars).startup ){$(vars).Add("startup","$dir\build\powershell\startup")}
+if(-not $(vars).global ){$(vars).Add("global","$dir\build\powershell\global")}
+if(-not $(vars).build ){$(vars).Add("build","$dir\build\powershell\build")}
+if(-not $(vars).pool ){$(vars).Add("pool","$dir\build\powershell\pool")}
+if(-not $(vars).web ){$(vars).Add("web","$dir\build\api\web")}
 
 $p = [Environment]::GetEnvironmentVariable("PSModulePath")
 if ($P -notlike "*$dir\build\powershell*") {
-    $P += ";$($(v).startup)";
-    $P += ";$($(v).global)";
-    $P += ";$($(v).build)";
-    $P += ";$($(v).pool)";
-    $P += ";$($(v).web)";
+    $P += ";$($(vars).startup)";
+    $P += ";$($(vars).global)";
+    $P += ";$($(vars).build)";
+    $P += ";$($(vars).pool)";
+    $P += ";$($(vars).web)";
     [Environment]::SetEnvironmentVariable("PSModulePath", $p)
 }
 
 $Get = @()
 
-Import-Module -Name "$($(v).global)\stats.psm1" -Scope Global
-Import-Module -Name "$($(v).global)\include.psm1" -Scope Global
+Import-Module -Name "$($(vars).global)\stats.psm1" -Scope Global
+Import-Module -Name "$($(vars).global)\include.psm1" -Scope Global
 
 Switch ($argument1) {
     "help" {
@@ -273,7 +273,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
     }
 
     "asic" {
-        Import-Module -Name "$($(v).global)\hashrates.psm1"
+        Import-Module -Name "$($(vars).global)\hashrates.psm1"
         if (Test-Path ".\build\txt\bestminers.txt") { $BestMiners = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-Json }
         else { $Get += "No miners running" }
         $ASIC = $BestMiners | Where Type -eq $argument2
@@ -302,7 +302,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
 
     "benchmarks" {
 
-        Import-Module -Name "$($(v).global)\hashrates.psm1"
+        Import-Module -Name "$($(vars).global)\hashrates.psm1"
 
         if (Test-path ".\stats") {
             if ($argument2) {
@@ -355,7 +355,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
     }
 
     "wallets" {
-        Import-Module "$($(v).global)\wallettable.psm1" -Scope Global
+        Import-Module "$($(vars).global)\wallettable.psm1" -Scope Global
         if($asjson){
         $Get = Global:Get-WalletTable -asjson
         } else {$Get += Global:Get-WalletTable}

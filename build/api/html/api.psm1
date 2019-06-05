@@ -19,16 +19,16 @@ function Global:Get-APIServer {
 
         $APIServer = {
             [cultureinfo]::CurrentCulture = 'en-US'
-            Set-Location $global:Config.Params.WorkingDir            
+            Set-Location $(arg).WorkingDir            
             $listener = New-Object System.Net.HttpListener
             Write-Host "Listening ..."
-            if ($global:Config.Params.Remote -eq "yes") {
-                if ($global:Config.Params.APIPassword -ne "No") {
-                    [string]$Prefix = "http://+:$($global:Config.Params.Port)/$($global:Config.Params.APIPassword)/"
+            if ($(arg).Remote -eq "yes") {
+                if ($(arg).APIPassword -ne "No") {
+                    [string]$Prefix = "http://+:$($(arg).Port)/$($(arg).APIPassword)/"
                 }
-                else { $Prefix = "http://+:$($global:Config.Params.Port)/" }
+                else { $Prefix = "http://+:$($(arg).Port)/" }
             }
-            else { [string]$Prefix = "http://localhost:$($global:Config.Params.Port)/" }
+            else { [string]$Prefix = "http://localhost:$($(arg).Port)/" }
    
             # Run until you send a GET request to /end
             $listener.Prefixes.Add($Prefix) 
@@ -47,8 +47,8 @@ function Global:Get-APIServer {
                 else {
                     # Split request URL to get command and options
                     $requestvars = [String]$request.Url -split "/"
-                    if ($global:Config.Params.Port -eq "Yes" -and $global:Config.Params.APIPassword -ne "No") { $GET = $requestvars[4] }
-                    elseif ($global:Config.Params.Remote -eq "Yes" -and $global:Config.Params.APIPassword -eq "No") { $GET = $requestvars[3] }
+                    if ($(arg).Port -eq "Yes" -and $(arg).APIPassword -ne "No") { $GET = $requestvars[4] }
+                    elseif ($(arg).Remote -eq "Yes" -and $(arg).APIPassword -eq "No") { $GET = $requestvars[3] }
                     else { $GET = $requestvars[3] }
                     $requestcom = $GET -split "`&" | Select-Object -First 1
                     $requestargs = $GET -replace "$requestcom", ""

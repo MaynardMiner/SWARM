@@ -1,9 +1,9 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $blockpool_Request = [PSCustomObject]@{ } 
 
-if($global:Config.Params.xnsub -eq "Yes"){$X = "#xnsub"}
+if($(arg).xnsub -eq "Yes"){$X = "#xnsub"}
  
-if ($Name -in $global:Config.Params.PoolName) {
+if ($Name -in $(arg).PoolName) {
     try { $blockpool_Request = Invoke-RestMethod "http://blockmasters.co/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
     catch { Global:Write-Log "SWARM contacted ($Name) but there was no response."; return }
  
@@ -12,7 +12,7 @@ if ($Name -in $global:Config.Params.PoolName) {
         return 
     } 
 
-    Switch ($global:Config.Params.Location) {
+    Switch ($(arg).Location) {
         "US" { $Region = $null }
         default { $Region = "eu." }
     }
@@ -27,7 +27,7 @@ if ($Name -in $global:Config.Params.PoolName) {
         return $blockpool_Algorithm
     } |
     ForEach-Object {
-        if ($global:Algorithm -contains $blockpool_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $blockpool_Algorithm) {
+        if ($global:Algorithm -contains $blockpool_Algorithm -or $(arg).ASIC_ALGO -contains $blockpool_Algorithm) {
             if ($Name -notin $global:Config.Pool_Algos.$blockpool_Algorithm.exclusions -and $blockpool_Algorithm -notin $Global:banhammer) {
                 $blockpool_Host = "$($Region)blockmasters.co$X"
                 $blockpool_Port = $blockpool_Request.$_.port
@@ -44,17 +44,17 @@ if ($Name -in $global:Config.Params.PoolName) {
                     $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( [Double]$blockpool_Request.$_.estimate_current / $Divisor * (1 - ($blockpool_Request.$_.fees / 100)))
                 }
 
-                if (-not $global:Pool_Hashrates.$blockpool_Algorithm) { $global:Pool_Hashrates.Add("$blockpool_Algorithm", @{ })
+                if (-not $(vars).Pool_Hashrates.$blockpool_Algorithm) { $(vars).Pool_Hashrates.Add("$blockpool_Algorithm", @{ })
                 }
-                if (-not $global:Pool_Hashrates.$blockpool_Algorithm.$Name) { $global:Pool_Hashrates.$blockpool_Algorithm.Add("$Name", @{HashRate = "$($Stat.HashRate)"; Percent = "" })
+                if (-not $(vars).Pool_Hashrates.$blockpool_Algorithm.$Name) { $(vars).Pool_Hashrates.$blockpool_Algorithm.Add("$Name", @{HashRate = "$($Stat.HashRate)"; Percent = "" })
                 }
 
                 $Pass1 = $global:Wallets.Wallet1.Keys
-                $User1 = $global:Wallets.Wallet1.$($global:Config.Params.Passwordcurrency1).address
+                $User1 = $global:Wallets.Wallet1.$($(arg).Passwordcurrency1).address
                 $Pass2 = $global:Wallets.Wallet2.Keys
-                $User2 = $global:Wallets.Wallet2.$($global:Config.Params.Passwordcurrency2).address
+                $User2 = $global:Wallets.Wallet2.$($(arg).Passwordcurrency2).address
                 $Pass3 = $global:Wallets.Wallet3.Keys
-                $User3 = $global:Wallets.Wallet3.$($global:Config.Params.Passwordcurrency3).address
+                $User3 = $global:Wallets.Wallet3.$($(arg).Passwordcurrency3).address
             
                 if ($global:Wallets.AltWallet1.keys) {
                     $global:Wallets.AltWallet1.Keys | ForEach-Object {
@@ -84,16 +84,16 @@ if ($Name -in $global:Config.Params.PoolName) {
                 [PSCustomObject]@{            
                     Symbol    = "$blockpool_Algorithm-Algo"
                     Algorithm = $blockpool_Algorithm
-                    Price     = $Stat.$($global:Config.Params.Stat_Algo)
+                    Price     = $Stat.$($(arg).Stat_Algo)
                     Protocol  = "stratum+tcp"
                     Host      = $blockpool_Host
                     Port      = $blockpool_Port
                     User1     = $User1
                     User2     = $User2
                     User3     = $User3
-                    Pass1     = "c=$Pass1,id=$($global:Config.Params.RigName1)"
-                    Pass2     = "c=$Pass2,id=$($global:Config.Params.RigName2)"
-                    Pass3     = "c=$Pass3,id=$($global:Config.Params.RigName3)"
+                    Pass1     = "c=$Pass1,id=$($(arg).RigName1)"
+                    Pass2     = "c=$Pass2,id=$($(arg).RigName2)"
+                    Pass3     = "c=$Pass3,id=$($(arg).RigName3)"
                 }
             }
         }

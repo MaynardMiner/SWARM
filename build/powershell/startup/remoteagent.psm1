@@ -23,9 +23,9 @@ function Global:start-update {
         [String]$Update
     )
 
-    $Location = split-Path $($(v).dir)
+    $Location = split-Path $($(vars).dir)
     $StartUpdate = $true
-    if ($Global:Config.params.Platform -eq "linux" -and $Update -eq "No") { $StartUpdate = $false }
+    if ($(arg).Platform -eq "linux" -and $Update -eq "No") { $StartUpdate = $false }
 
     if ($StartUpdate -eq $true) {
         $PreviousVersions = @()
@@ -66,8 +66,8 @@ function Global:start-update {
                 Global:Write-Log "Gathering Old Version Config And HashRates- Then Deleting"
                 Start-Sleep -S 10
                 $ID = ".\build\pid\background_pid.txt"
-                if ($Global:Config.params.Platform -eq "windows") { Start-Sleep -S 10 }
-                if ($Global:Config.params.Platform -eq "windows") {
+                if ($(arg).Platform -eq "windows") { Start-Sleep -S 10 }
+                if ($(arg).Platform -eq "windows") {
                     Global:Write-Log "Stopping Previous Agent"
                     if (Test-Path $ID) { $Agent = Get-Content $ID }
                     if ($Agent) { $BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue }
@@ -298,7 +298,7 @@ function Global:start-update {
                         if ($_ -ne "name") {
                             if (-not (Test-Path ".\bin")) { New-Item -Name "bin" -ItemType Directory }
                             $MinerPath1 = Join-Path $PreviousPath ( Split-Path $($Global:amd.$_.AMD1 -replace "\.", ""))
-                            $NewMinerPath1 = Join-Path $($(v).dir) ( Split-Path $($Global:amd.$_.AMD1 -replace "\.", ""))
+                            $NewMinerPath1 = Join-Path $($(vars).dir) ( Split-Path $($Global:amd.$_.AMD1 -replace "\.", ""))
                             if ( Test-Path $Minerpath1 ) {
                                 $SwarmV = "$Minerpath1\swarm-version.txt"
                                 if (Test-Path $SWARMV) {    
@@ -316,7 +316,7 @@ function Global:start-update {
                         if ($_ -ne "name") {
                             if (-not (Test-Path ".\bin")) { New-Item -Name "bin" -ItemType Directory }
                             $MinerPath1 = Join-Path $PreviousPath ( Split-Path $($Global:cpu.$_.CPU -replace "\.", ""))
-                            $NewMinerPath1 = Join-Path $($(v).dir) ( Split-Path $($Global:cpu.$_.CPU -replace "\.", ""))
+                            $NewMinerPath1 = Join-Path $($(vars).dir) ( Split-Path $($Global:cpu.$_.CPU -replace "\.", ""))
                             if ( Test-Path $Minerpath1 ) {
                                 $SwarmV = "$Minerpath1\swarm-version.txt"
                                 if (Test-Path $SWARMV) {
@@ -336,13 +336,13 @@ function Global:start-update {
                             if (-not (Test-Path ".\bin")) { New-Item -Name "bin" -ItemType Directory }
 
                             $MinerPath1 = Join-Path $PreviousPath ( Split-Path $($Global:nvidia.$_.NVIDIA1 -replace "\.", ""))
-                            $NewMinerPath1 = Join-Path $($(v).dir) ( Split-Path $($Global:nvidia.$_.NVIDIA1 -replace "\.", ""))
+                            $NewMinerPath1 = Join-Path $($(vars).dir) ( Split-Path $($Global:nvidia.$_.NVIDIA1 -replace "\.", ""))
 
                             $MinerPath2 = Join-Path $PreviousPath ( Split-Path $($Global:nvidia.$_.NVIDIA2 -replace "\.", ""))
-                            $NewMinerPath2 = Join-Path $($(v).dir) ( Split-Path $($Global:nvidia.$_.NVIDIA2 -replace "\.", ""))
+                            $NewMinerPath2 = Join-Path $($(vars).dir) ( Split-Path $($Global:nvidia.$_.NVIDIA2 -replace "\.", ""))
 
                             $MinerPath3 = Join-Path $PreviousPath ( Split-Path $($Global:nvidia.$_.NVIDIA3 -replace "\.", ""))
-                            $NewMinerPath3 = Join-Path $($(v).dir) ( Split-Path $($Global:nvidia.$_.NVIDIA3 -replace "\.", ""))
+                            $NewMinerPath3 = Join-Path $($(vars).dir) ( Split-Path $($Global:nvidia.$_.NVIDIA3 -replace "\.", ""))
 
                             if ( Test-Path $Minerpath1 ) {
                                 $SwarmV = "$Minerpath1\swarm-version.txt"
@@ -387,23 +387,23 @@ function Global:start-update {
 
 function Global:Start-AgentCheck {
 
-    $($(v).dir) | Set-Content ".\build\cmd\dir.txt"
+    $($(vars).dir) | Set-Content ".\build\cmd\dir.txt"
 
     ##Get current path envrionments
     $oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
 
     ##First remove old Paths, in case this is an update / new dir
     $oldpathlist = "$oldpath" -split ";"
-    $oldpathlist | ForEach-Object { if ($_ -like "*SWARM*" -and $_ -notlike "*$($(v).dir)\build\cmd*" ) { Global:Set-NewPath "remove" "$($_)" } }
+    $oldpathlist | ForEach-Object { if ($_ -like "*SWARM*" -and $_ -notlike "*$($(vars).dir)\build\cmd*" ) { Global:Set-NewPath "remove" "$($_)" } }
 
-    if ($oldpath -notlike "*;$($(v).dir)\build\cmd*") {
+    if ($oldpath -notlike "*;$($(vars).dir)\build\cmd*") {
         Global:Write-Log "
 Setting Path Variable For Commands: May require reboot to use.
 " -ForegroundColor Yellow
-        $newpath = "$($(v).dir)\build\cmd"
+        $newpath = "$($(vars).dir)\build\cmd"
         Global:Set-NewPath "add" $newpath
     }
-    $newpath = "$oldpath;$($(v).dir)\build\cmd"
+    $newpath = "$oldpath;$($(vars).dir)\build\cmd"
     Global:Write-Log "Stopping Previous Agent"
     $ID = ".\build\pid\background_pid.txt"
     if (Test-Path $ID) { $Agent = Get-Content $ID }

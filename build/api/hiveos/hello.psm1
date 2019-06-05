@@ -21,7 +21,7 @@ function Global:Start-Hello($RigData) {
         jsonrpc = "2.0"
         id      = "0"
         params  = @{
-            farm_hash        = "$($global:Config.Params.Hive_Hash)"
+            farm_hash        = "$($(arg).Hive_Hash)"
             server_url       = "$($global:Config.hive_params.Mirror)"
             uid              = $RigData.uid
             boot_time        = "$($RigData.boot_time)"

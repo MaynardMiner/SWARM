@@ -19,17 +19,17 @@ function Global:Get-Pools {
   
 }
 function Global:Get-AlgoPools {
-    $global:QuickTimer.Restart()
-    $Files = Get-ChildItem "algopools" | Where BaseName -in $global:Config.params.poolname
+    $(vars).QuickTimer.Restart()
+    $Files = Get-ChildItem "algopools" | Where BaseName -in $(arg).poolname
     Global:Write-Log "Checking Algo Pools." -Foregroundcolor yellow;
     $AllAlgoPools = Global:Get-Pools -PoolType "Algo" -Items $Files
     ##Get Custom Pools
     Global:Write-Log "Adding Custom Pools. ." -ForegroundColor Yellow;
-    $Files = Get-ChildItem "custompools" | Where BaseName -in $global:Config.params.poolname
+    $Files = Get-ChildItem "custompools" | Where BaseName -in $(arg).poolname
     $global:AlgoPools = New-Object System.Collections.ArrayList
     $AllCustomPools = Global:Get-Pools -PoolType "Custom" -Items $Files
 
-    if ($global:Config.Params.Auto_Algo -eq "Yes" -or $SingleMode -eq $True) {
+    if ($(arg).Auto_Algo -eq "Yes" -or $SingleMode -eq $True) {
 
         ## Select the best 3 of each algorithm
         $AllAlgoPools.Symbol | Select-Object -Unique | ForEach-Object { 
@@ -46,15 +46,15 @@ function Global:Get-AlgoPools {
             Select-Object -First 3 
             ForEach-Object { $global:AlgoPools.Add($_) | Out-Null }
         };
-        $global:QuickTimer.Stop()
-        Global:Write-Log "Algo Pools Loading Time: $([math]::Round($global:QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green
+        $(vars).QuickTimer.Stop()
+        Global:Write-Log "Algo Pools Loading Time: $([math]::Round($(vars).QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green
     }
 }
 function Global:Get-CoinPools {
     ##Optional: Load Coin Database
-    if ($global:Config.Params.Auto_Coin -eq "Yes") {
-        $global:QuickTimer.Restart()
-        $coin_files = Get-ChildItem "coinpools" | Where BaseName -in $global:Config.params.poolname
+    if ($(arg).Auto_Coin -eq "Yes") {
+        $(vars).QuickTimer.Restart()
+        $coin_files = Get-ChildItem "coinpools" | Where BaseName -in $(arg).poolname
         Global:Write-Log "Adding Coin Pools. . ." -ForegroundColor Yellow
         $AllCoinPools = Global:Get-Pools -PoolType "Coin" -Items $coin_files        
         $global:CoinPools = New-Object System.Collections.ArrayList
@@ -71,8 +71,8 @@ function Global:Get-CoinPools {
             $Remove = $Global:AlgoPools | Where-Object Name -eq $_
             $Remove | ForEach-Object { $Global:AlgoPools.Remove($_) | Out-Null }
         }
-        $global:QuickTimer.Stop()
-        Global:Write-Log "Coin Pools Loading Time: $([math]::Round($global:QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green
+        $(vars).QuickTimer.Stop()
+        Global:Write-Log "Coin Pools Loading Time: $([math]::Round($(vars).QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green
     }
 }
 

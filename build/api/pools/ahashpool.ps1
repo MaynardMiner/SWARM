@@ -1,6 +1,6 @@
 function Global:Get-AhashpoolData {
     $Wallets = @()
-    $global:Config.Params.Type | ForEach-Object {
+    $(arg).Type | ForEach-Object {
         $Sel = $_
         $Pool = "ahashpool"
         $global:Share_Table.$Sel.Add($Pool, @{ })

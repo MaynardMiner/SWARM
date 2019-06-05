@@ -2,9 +2,9 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $nicehash_Request = [PSCustomObject]@{ } 
 
-if($global:Config.Params.xnsub -eq "Yes"){$X = "#xnsub"}
+if($(arg).xnsub -eq "Yes"){$X = "#xnsub"}
  
-if ($Name -in $global:Config.Params.PoolName) {
+if ($Name -in $(arg).PoolName) {
     try { $nicehash_Request = Invoke-RestMethod "https://api.nicehash.com/api?method=simplemultialgo.info" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
     catch { Global:Write-Log "SWARM contacted ($Name) but there was no response."; return }
  
@@ -13,7 +13,7 @@ if ($Name -in $global:Config.Params.PoolName) {
         return 
     } 
   
-    Switch ($global:Config.Params.Location) {
+    Switch ($(arg).Location) {
         "US" { $Region = "usa" }
         "ASIA" { $Region = "hk" }
         "EUROPE" { $Region = "eu" }
@@ -28,7 +28,7 @@ if ($Name -in $global:Config.Params.PoolName) {
         return $Nicehash_Algorithm
     } |
     ForEach-Object {
-        if ($global:Algorithm -contains $nicehash_Algorithm -or $global:Config.Params.ASIC_ALGO -contains $nicehash_Algorithm) {
+        if ($global:Algorithm -contains $nicehash_Algorithm -or $(arg).ASIC_ALGO -contains $nicehash_Algorithm) {
             if ($Name -notin $global:Config.Pool_Algos.$nicehash_Algorithm.exclusions -and $nicehash_Algorithm -notin $Global:banhammer) {
 
                 ## Nicehash 'Gets' you with the fees. If you read the fine print,
@@ -36,9 +36,9 @@ if ($Name -in $global:Config.Params.PoolName) {
                 ## becoming 5%. If you use a nicehash wallet, the fee is variable,
                 ## but usually around 2%.
             
-                if (-not $global:Config.Params.Nicehash_Wallet1) { $NH_Wallet1 = $global:Config.Params.Wallet1; [Double]$Fee = 5; }else { $NH_Wallet1 = $global:Config.Params.Nicehash_Wallet1; [Double]$Fee = $global:Config.Params.Nicehash_Fee }
-                if (-not $global:Config.Params.Nicehash_Wallet2) { $NH_Wallet2 = $global:Config.Params.Wallet2; [Double]$Fee = 5; }else { $NH_Wallet2 = $global:Config.Params.Nicehash_Wallet2; [Double]$Fee = $global:Config.Params.Nicehash_Fee }
-                if (-not $global:Config.Params.Nicehash_Wallet3) { $NH_Wallet3 = $global:Config.Params.Wallet3; [Double]$Fee = 5; }else { $NH_Wallet3 = $global:Config.Params.Nicehash_Wallet3; [Double]$Fee = $global:Config.Params.Nicehash_Fee }
+                if (-not $(arg).Nicehash_Wallet1) { $NH_Wallet1 = $(arg).Wallet1; [Double]$Fee = 5; }else { $NH_Wallet1 = $(arg).Nicehash_Wallet1; [Double]$Fee = $(arg).Nicehash_Fee }
+                if (-not $(arg).Nicehash_Wallet2) { $NH_Wallet2 = $(arg).Wallet2; [Double]$Fee = 5; }else { $NH_Wallet2 = $(arg).Nicehash_Wallet2; [Double]$Fee = $(arg).Nicehash_Fee }
+                if (-not $(arg).Nicehash_Wallet3) { $NH_Wallet3 = $(arg).Wallet3; [Double]$Fee = 5; }else { $NH_Wallet3 = $(arg).Nicehash_Wallet3; [Double]$Fee = $(arg).Nicehash_Fee }
 
                 $nicehash_Host = "$($_.name).$Region.nicehash.com$X"
                 $nicehash_excavator = "nhmp.$Region.nicehash.com$X"
@@ -56,13 +56,13 @@ if ($Name -in $global:Config.Params.PoolName) {
                     Excavator = $nicehash_excavator
                     Symbol    = "$nicehash_Algorithm-Algo"
                     Algorithm = $nicehash_Algorithm
-                    Price     = $Stat.$($global:Config.Params.Stat_Algo)
+                    Price     = $Stat.$($(arg).Stat_Algo)
                     Protocol  = "stratum+tcp"
                     Host      = $nicehash_Host
                     Port      = $nicehash_Port
-                    User1     = "$NH_Wallet1.$($global:Config.Params.RigName1)"
-                    User2     = "$NH_Wallet2.$($global:Config.Params.RigName2)"
-                    User3     = "$NH_Wallet3.$($global:Config.Params.RigName3)"
+                    User1     = "$NH_Wallet1.$($(arg).RigName1)"
+                    User2     = "$NH_Wallet2.$($(arg).RigName2)"
+                    User3     = "$NH_Wallet3.$($(arg).RigName3)"
                     Pass1     = "x"
                     Pass2     = "x"
                     Pass3     = "x"

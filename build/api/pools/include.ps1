@@ -9,10 +9,10 @@ function Global:Get-CoinShares {
     . .\build\api\pools\fairpool.ps1;
     . .\build\api\pools\blazepool.ps1;
 
-    $global:Config.Params.Type | ForEach-Object { $global:Share_Table.Add("$($_)", @{ }) }
+    $(arg).Type | ForEach-Object { $global:Share_Table.Add("$($_)", @{ }) }
 
     ##For 
-    $global:Config.Params.Poolname | % {
+    $(arg).Poolname | % {
         switch ($_) {
             "zergpool" { Global:Get-ZergpoolData }
             "nlpool" { Global:Get-NlPoolData }        

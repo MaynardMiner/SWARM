@@ -96,7 +96,7 @@ function Global:Start-WattOMeter {
 }
 
 function Global:Start-Benchmark {
-    $global:BestActiveMiners | ForEach-Object {
+    $(vars).BestActiveMIners | ForEach-Object {
         $global:ActiveSymbol += $($_.Symbol)
         $MinerPoolBan = $false
         $MinerAlgoBan = $false
@@ -132,7 +132,7 @@ function Global:Start-Benchmark {
                                 Global:Write-Log "Stat Attempt Yielded 0" -Foregroundcolor Red
                                 Start-Sleep -S .25
                                 $GPUPower = 0
-                                if ($global:Config.Params.WattOMeter -eq "Yes" -and $_.Type -ne "CPU") {
+                                if ($(arg).WattOMeter -eq "Yes" -and $_.Type -ne "CPU") {
                                     $GetWatts = Get-Content ".\config\power\power.json" | ConvertFrom-Json
                                     if ($GetWatts.$($_.Algo)) {
                                         $GetWatts.$($_.Algo)."$($_.Type)_Watts" = "$GPUPower"
@@ -147,9 +147,9 @@ function Global:Start-Benchmark {
                                 }
                             }
                             else {
-                                if ($global:Config.Params.WattOMeter -eq "Yes" -and $_.Type -ne "CPU") { try { $GPUPower = Global:Set-Power $($_.Type) $($_.Devices) }catch { Global:Write-Log "WattOMeter Failed"; $GPUPower = 0 } }
+                                if ($(arg).WattOMeter -eq "Yes" -and $_.Type -ne "CPU") { try { $GPUPower = Global:Set-Power $($_.Type) $($_.Devices) }catch { Global:Write-Log "WattOMeter Failed"; $GPUPower = 0 } }
                                 else { $GPUPower = 1 }
-                                if ($global:Config.Params.WattOMeter -eq "Yes" -and $_.Type -ne "CPU") {
+                                if ($(arg).WattOMeter -eq "Yes" -and $_.Type -ne "CPU") {
                                     $GetWatts = Get-Content ".\config\power\power.json" | ConvertFrom-Json
                                     if ($GetWatts.$($_.Algo)) {
                                         $StatPower = Global:Set-Stat -Name "$($_.Name)_$($NewName)_Watts" -Value $GPUPower
@@ -176,7 +176,7 @@ function Global:Start-Benchmark {
                                 }
                                 else {
                                     Global:Write-Log "Recorded Hashrate For $($_.Name) $($_.Symbol) Is $($ScreenCheck)" -foregroundcolor "magenta"
-                                    if ($global:Config.Params.WattOMeter -eq "Yes") { Global:Write-Log "Watt-O-Meter scored $($_.Name) $($_.Symbol) at $($GPUPower) Watts" -ForegroundColor magenta }
+                                    if ($(arg).WattOMeter -eq "Yes") { Global:Write-Log "Watt-O-Meter scored $($_.Name) $($_.Symbol) at $($GPUPower) Watts" -ForegroundColor magenta }
                                     if (-not (Test-Path $NewHashrateFilePath)) {
                                         Copy-Item $HashrateFilePath -Destination $NewHashrateFilePath -force
                                         Global:Write-Log "$($_.Name) $($_.Symbol) Was Benchmarked And Backed Up" -foregroundcolor yellow
@@ -201,13 +201,13 @@ function Global:Start-Benchmark {
             }
 
             if ($Global:Strike -ne $true) {
-                if ($Global:Warnings."$($_.Name)" -ne $null) { $Global:Warnings."$($_.Name)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
-                if ($Global:Warnings."$($_.Name)_$($_.Algo)" -ne $null) { $Global:Warnings."$($_.Name)_$($_.Algo)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
-                if ($Global:Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" -ne $null) { $Global:Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
+                if ($(vars).Warnings."$($_.Name)" -ne $null) { $(vars).Warnings."$($_.Name)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
+                if ($(vars).Warnings."$($_.Name)_$($_.Algo)" -ne $null) { $(vars).Warnings."$($_.Name)_$($_.Algo)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
+                if ($(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" -ne $null) { $(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
             }
      
             ## Strike-Out System. Will not work with Lite Mode
-            if ($global:Config.Params.Lite -eq "No") {
+            if ($(arg).Lite -eq "No") {
                 if ($Global:Strike -eq $true) {
                     if ($global:WasBenchmarked -eq $False) {
                         if (-not (Test-Path ".\timeout")) { New-Item "timeout" -ItemType "directory" | Out-Null }
@@ -216,21 +216,21 @@ function Global:Start-Benchmark {
                         if (-not (Test-Path ".\timeout\miner_block")) { New-Item -Path ".\timeout" -Name "miner_block" -ItemType "directory" | Out-Null }
                         if (-not (Test-Path ".\timeout\warnings")) { New-Item -Path ".\timeout" -Name "warnings" -ItemType "directory" | Out-Null }
                         Start-Sleep -S .25
-                        $global:Config.Params.TimeoutFile = Join-Path ".\timeout\warnings" "$($_.Name)_$($NewName)_TIMEOUT.txt"
+                        $(arg).TimeoutFile = Join-Path ".\timeout\warnings" "$($_.Name)_$($NewName)_TIMEOUT.txt"
                         $HashRateFilePath = Join-Path ".\stats" "$($_.Name)_$($NewName)_hashrate.txt"
-                        if (-not (Test-Path $global:Config.Params.TimeoutFile)) { "$($_.Name) $($_.Symbol) Hashrate Check Timed Out" | Set-Content ".\timeout\warnings\$($_.Name)_$($NewName)_TIMEOUT.txt" -Force }
-                        if ($Global:Warnings."$($_.Name)" -eq $null) { $Global:Warnings += [PSCustomObject]@{"$($_.Name)" = [PSCustomObject]@{bad = 0 } }
+                        if (-not (Test-Path $(arg).TimeoutFile)) { "$($_.Name) $($_.Symbol) Hashrate Check Timed Out" | Set-Content ".\timeout\warnings\$($_.Name)_$($NewName)_TIMEOUT.txt" -Force }
+                        if ($(vars).Warnings."$($_.Name)" -eq $null) { $(vars).Warnings += [PSCustomObject]@{"$($_.Name)" = [PSCustomObject]@{bad = 0 } }
                         }
-                        if ($Global:Warnings."$($_.Name)_$($_.Algo)" -eq $null) { $Global:Warnings += [PSCustomObject]@{"$($_.Name)_$($_.Algo)" = [PSCustomObject]@{bad = 0 } }
+                        if ($(vars).Warnings."$($_.Name)_$($_.Algo)" -eq $null) { $(vars).Warnings += [PSCustomObject]@{"$($_.Name)_$($_.Algo)" = [PSCustomObject]@{bad = 0 } }
                         }
-                        if ($Global:Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" -eq $null) { $Global:Warnings += [PSCustomObject]@{"$($_.Name)_$($_.Algo)_$($_.MinerPool)" = [PSCustomObject]@{bad = 0 } }
+                        if ($(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" -eq $null) { $(vars).Warnings += [PSCustomObject]@{"$($_.Name)_$($_.Algo)_$($_.MinerPool)" = [PSCustomObject]@{bad = 0 } }
                         }
-                        $Global:Warnings."$($_.Name)" | ForEach-Object { try { $_.bad++ }catch { } }
-                        $Global:Warnings."$($_.Name)_$($_.Algo)" | ForEach-Object { try { $_.bad++ }catch { } }
-                        $Global:Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" | ForEach-Object { try { $_.bad++ }catch { } }
-                        if ($Global:Warnings."$($_.Name)".bad -ge $global:Config.Params.MinerBanCount) { $MinerBan = $true }
-                        if ($Global:Warnings."$($_.Name)_$($_.Algo)".bad -ge $global:Config.Params.AlgoBanCount) { $MinerAlgoBan = $true }
-                        if ($Global:Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)".bad -ge $global:Config.Params.PoolBanCount) { $MinerPoolBan = $true }
+                        $(vars).Warnings."$($_.Name)" | ForEach-Object { try { $_.bad++ }catch { } }
+                        $(vars).Warnings."$($_.Name)_$($_.Algo)" | ForEach-Object { try { $_.bad++ }catch { } }
+                        $(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" | ForEach-Object { try { $_.bad++ }catch { } }
+                        if ($(vars).Warnings."$($_.Name)".bad -ge $(arg).MinerBanCount) { $MinerBan = $true }
+                        if ($(vars).Warnings."$($_.Name)_$($_.Algo)".bad -ge $(arg).AlgoBanCount) { $MinerAlgoBan = $true }
+                        if ($(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)".bad -ge $(arg).PoolBanCount) { $MinerPoolBan = $true }
                         ##Strike One
                         if ($MinerPoolBan -eq $false -and $MinerAlgoBan -eq $false -and $MinerBan -eq $false) {
                             Global:Write-Log "First Strike: There was issue with benchmarking.
@@ -249,13 +249,13 @@ function Global:Start-Benchmark {
                             if ($GetPoolBlock) { $GetPoolBlock | ForEach-Object { $NewPoolBlock += $_ } }
                             $NewPoolBlock += $_
                             $NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt"
-                            $Global:Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" | ForEach-Object { try { $_.bad = 0 }catch { } }
+                            $(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" | ForEach-Object { try { $_.bad = 0 }catch { } }
                             $HiveWarning = @{result = @{command = "timeout" } }
-                            if ($global:Websites) {
-                                $global:Websites | ForEach-Object {
+                            if ($(vars).WebSites) {
+                                $(vars).WebSites | ForEach-Object {
                                     $Sel = $_
                                     try {
-                                        Global:Add-Module "$($(v).web)\methods.psm1"
+                                        Global:Add-Module "$($(vars).web)\methods.psm1"
                                         Global:Get-WebModules $Sel
                                         $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
                                     }
@@ -280,14 +280,14 @@ function Global:Start-Benchmark {
                             if ($GetAlgoBlock) { $GetAlgoBlock | ForEach-Object { $NewAlgoBlock += $_ } }
                             $NewAlgoBlock += $_
                             $NewAlgoBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block\algo_block.txt"
-                            $Global:Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" | ForEach-Object { try { $_.bad = 0 }catch { } }
-                            $Global:Warnings."$($_.Name)_$($_.Algo)" | ForEach-Object { try { $_.bad = 0 }catch { } }
+                            $(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" | ForEach-Object { try { $_.bad = 0 }catch { } }
+                            $(vars).Warnings."$($_.Name)_$($_.Algo)" | ForEach-Object { try { $_.bad = 0 }catch { } }
                             $HiveWarning = @{result = @{command = "timeout" } }
-                            if ($global:Websites) {
-                                $global:Websites | ForEach-Object {
+                            if ($(vars).WebSites) {
+                                $(vars).WebSites | ForEach-Object {
                                     $Sel = $_
                                     try {
-                                        Global:Add-Module "$($(v).web)\methods.psm1"
+                                        Global:Add-Module "$($(vars).web)\methods.psm1"
                                         Global:Get-WebModules $Sel
                                         $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
                                     }
@@ -310,15 +310,15 @@ function Global:Start-Benchmark {
                             if ($GetMinerBlock) { $GetMinerBlock | ForEach-Object { $NewMinerBlock += $_ } }
                             $NewMinerBlock += $_
                             $NewMinerBlock | ConvertTo-Json | Set-Content ".\timeout\miner_block\miner_block.txt"
-                            $Global:Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" | ForEach-Object { try { $_.bad = 0 }catch { } }
-                            $Global:Warnings."$($_.Name)_$($_.Algo)" | ForEach-Object { try { $_.bad = 0 }catch { } }
-                            $Global:Warnings."$($_.Name)" | ForEach-Object { try { $_.bad = 0 }catch { } }
+                            $(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" | ForEach-Object { try { $_.bad = 0 }catch { } }
+                            $(vars).Warnings."$($_.Name)_$($_.Algo)" | ForEach-Object { try { $_.bad = 0 }catch { } }
+                            $(vars).Warnings."$($_.Name)" | ForEach-Object { try { $_.bad = 0 }catch { } }
                             $HiveWarning = @{result = @{command = "timeout" } }
-                            if ($global:Websites) {
-                                $global:Websites | ForEach-Object {
+                            if ($(vars).WebSites) {
+                                $(vars).WebSites | ForEach-Object {
                                     $Sel = $_
                                     try {
-                                        Global:Add-Module "$($(v).web)\methods.psm1"
+                                        Global:Add-Module "$($(vars).web)\methods.psm1"
                                         Global:Get-WebModules $Sel
                                         $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
                                     }
