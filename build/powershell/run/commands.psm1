@@ -1,4 +1,4 @@
-function Get-StatusLite {
+function Global:Get-StatusLite {
     $screen = @()
     $global:Config.Params.Type | ForEach-Object {
         $screen += 
@@ -18,7 +18,7 @@ function Get-StatusLite {
             $Screen += 
             "        Miner: $($_.Miner)
         Mining: $($_.ScreenName)
-        Speed: $($_.HashRates | ForEach-Object {if ($null -ne $_) {"$($_ | ConvertTo-Hash)/s"}else {"Benchmarking"}})
+        Speed: $($_.HashRates | ForEach-Object {if ($null -ne $_) {"$($_ | Global:ConvertTo-Hash)/s"}else {"Benchmarking"}})
         Profit: $($_.Profit | ForEach-Object {if ($null -ne $_) {"$(($_ * $global:Rates.$($global:Config.Params.Currency)).ToString("N2")) $($global:Config.Params.Currency)/Day"}else {"Bench"}}) 
         Pool: $($_.MinerPool)
         Shares: $($($_.Shares -as [Decimal]).ToString("N3"))
@@ -35,7 +35,7 @@ function Get-StatusLite {
     $screen
 }
 
-function Get-PriceMessage {
+function Global:Get-PriceMessage {
     $global:BestActiveMiners | % {
         if ($_.Profit_Day -ne "bench") { $ScreenProfit = "$(($_.Profit_Day * $global:Rates.$($global:Config.Params.Currency)).ToString("N2")) $($global:Config.Params.Currency)/Day" } else { $ScreenProfit = "Benchmarking" }
         $ProfitMessage = "Current Daily Profit For $($_.Type): $ScreenProfit"
@@ -45,7 +45,7 @@ function Get-PriceMessage {
 }
 
 
-function Get-Commands {
+function Global:Get-Commands {
     $GetStatusAlgoBans = ".\timeout\algo_block\algo_block.txt"
     $GetStatusPoolBans = ".\timeout\pool_block\pool_block.txt"
     $GetStatusMinerBans = ".\timeout\miner_block\miner_block.txt"
@@ -74,7 +74,7 @@ function Get-Commands {
     if ($ConserveMessage) { $ConserveMessage | ForEach-Object { $BanMessage += "$me[${mcolor}m$($_)${me}[0m" } }
     $BanMessage | Out-File ".\build\txt\minerstats.txt" -Append
     $BanMessage | Out-File ".\build\txt\charts.txt" -Append
-    $StatusLite = Get-StatusLite
+    $StatusLite = Global:Get-StatusLite
     $StatusDate = Get-Date
     $StatusDate | Out-File ".\build\txt\minerstatslite.txt"
     $StatusLite | Out-File ".\build\txt\minerstatslite.txt" -Append
@@ -83,8 +83,8 @@ function Get-Commands {
     $MiningStatus | Out-File ".\build\txt\minerstatslite.txt" -Append
 }
 
-function Get-Logo {
-    Write-Log '
+function Global:Get-Logo {
+    Global:Write-Log '
                                                                         (                    (      *     
                                                                          )\ ) (  (      (     )\ ) (  `    
                                                                          (()/( )\))(     )\   (()/( )\))(   
@@ -94,18 +94,21 @@ function Get-Logo {
                                                                          \__ \ \ \/\/ / / _ \ |   /| |\/| | 
                                                                          |___/  \_/\_/ /_/ \_\|_|_\|_|  |_| 
                                                                                                           ' -foregroundcolor "DarkRed"
-    Write-Log '                                                           sudo apt-get lambo
+    Global:Write-Log '                                                           sudo apt-get lambo
                                                                                  
                                                                                  
                                                                                  
                                                                                  ' -foregroundcolor "Yellow"
 }
 
-function Update-Logging {
+function Global:Update-Logging {
     if ($global:LogNum -eq 12) {
         Remove-Item ".\logs\*miner*" -Force -ErrorAction SilentlyContinue
         Remove-Item ".\logs\*crash_report*" -Force -Recurse -ErrorAction SilentlyContinue
         $global:LogNum = 0
+    }
+    if((Get-ChildItem ".\logs" | Where BaseName -match "crash_report").count -gt 12){
+        Remove-Item ".\logs\*crash_report*" -Force -Recurse -ErrorAction SilentlyContinue
     }
     if ($global:logtimer.Elapsed.TotalSeconds -ge 3600) {
         Start-Sleep -S 3
@@ -123,7 +126,7 @@ function Update-Logging {
     }
 }
 
-function Get-MinerActive {
+function Global:Get-MinerActive {
     $ActiveMinerPrograms | Sort-Object -Descending Status,
     { if ($null -eq $_.XProcess) { [DateTime]0 }else { $_.XProcess.StartTime }
     } | Select-Object -First (1 + 6 + 6) | Format-Table -Wrap -GroupBy Status (

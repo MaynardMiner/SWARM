@@ -1,4 +1,4 @@
-function start-log {
+function Global:start-log {
     param (
         [Parameter(Mandatory = $false)]
         [int]$Number
@@ -13,5 +13,5 @@ function start-log {
             Move-Item ".\logs\$($OldActiveFile.Name)" $RenameActive -force
         }
     }
-    $global:logname = Join-Path $Global:Dir "logs\miner$($Number)-active.log"
+    $global:logname = Join-Path $($(v).dir) "logs\miner$($Number)-active.log"
 }

@@ -1,19 +1,19 @@
-function Start-Background {
+function Global:Start-Background {
   
     $BackgroundTimer = New-Object -TypeName System.Diagnostics.Stopwatch
-    $command = Start-Process "pwsh" -WorkingDirectory "$($global:Dir)\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -NoExit -windowstyle minimized -command `"&{`$host.ui.RawUI.WindowTitle = `'Background Agent`'; &.\Background.ps1 -WorkingDir `'$($global:Dir)`'}`"" -WindowStyle Minimized -PassThru -Verb Runas
+    $command = Start-Process "pwsh" -WorkingDirectory "$($(v).dir)\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -NoExit -windowstyle minimized -command `"&{`$host.ui.RawUI.WindowTitle = `'Background Agent`'; &.\Background.ps1 -WorkingDir `'$($(v).dir)`'}`"" -WindowStyle Minimized -PassThru -Verb Runas
     $command.ID | Set-Content ".\build\pid\background_pid.txt"
     $BackgroundTimer.Restart()
     do {
         Start-Sleep -S 1
-        write-log "Getting Process ID for Background Agent"
+        Global:Write-Log "Getting Process ID for Background Agent"
         $ProcessId = if (Test-Path ".\build\pid\background_pid.txt") {Get-Content ".\build\pid\background_pid.txt"}
         if ($ProcessID -ne $null) {$Process = Get-Process $ProcessId -ErrorAction SilentlyContinue}
     }until($ProcessId -ne $null -or ($BackgroundTimer.Elapsed.TotalSeconds) -ge 10)  
     $BackgroundTimer.Stop()
 }
 
-function Set-NewPath {
+function Global:Set-NewPath {
     param (
      [Parameter(Mandatory=$true,Position=0)]
      [string]$Action,
@@ -40,26 +40,26 @@ function Set-NewPath {
 }
 
 
-function Start-AgentCheck {
+function Global:Start-AgentCheck {
 
-    $Global:dir | Set-Content ".\build\cmd\dir.txt"
+    $($(v).dir) | Set-Content ".\build\cmd\dir.txt"
 
     ##Get current path envrionments
     $oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
 
     ##First remove old Paths, in case this is an update / new dir
     $oldpathlist = "$oldpath" -split ";"
-    $oldpathlist | ForEach-Object { if ($_ -like "*SWARM*" -and $_ -notlike "*$($global:dir)\build\cmd*" ) { Set-NewPath "remove" "$($_)" } }
+    $oldpathlist | ForEach-Object { if ($_ -like "*SWARM*" -and $_ -notlike "*$($(v).dir)\build\cmd*" ) { Global:Set-NewPath "remove" "$($_)" } }
 
-    if ($oldpath -notlike "*;$($global:dir)\build\cmd*") {
-        write-Log "
+    if ($oldpath -notlike "*;$($(v).dir)\build\cmd*") {
+        Global:Write-Log "
 Setting Path Variable For Commands: May require reboot to use.
 " -ForegroundColor Yellow
-        $newpath = "$global:dir\build\cmd"
-        Set-NewPath "add" $newpath
+        $newpath = "$($(v).dir)\build\cmd"
+        Global:Set-NewPath "add" $newpath
     }
-    $newpath = "$oldpath;$($global:dir)\build\cmd"
-    write-Log "Stopping Previous Agent"
+    $newpath = "$oldpath;$($(v).dir)\build\cmd"
+    Global:Write-Log "Stopping Previous Agent"
     $ID = ".\build\pid\background_pid.txt"
     if (Test-Path $ID) { $Agent = Get-Content $ID }
     if ($Agent) { $BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue }
@@ -71,3 +71,13 @@ Setting Path Variable For Commands: May require reboot to use.
 }
 
 
+function Global:Get-Optional {
+    if($Global:Config.Params.Optional) {
+        Get-ChildItem ".\miners\optional_and_old" | Where BaseName -in $global:Config.Params.Optional | ForEach-Object {
+            $Path = $_.FullName
+            $FileType = Get-Content $Path
+            if( $FileType[0] -like "*`$Global:AMDTypes*" ) {Move-Item -Path $Path -Destination ".\miners\gpu\amd"}
+            if( $FileType[0] -like "*`$Global:NVIDIATypes*" ) {Move-Item -Path $Path -Destination ".\miners\gpu\nvidia"}
+        }
+    }    
+}

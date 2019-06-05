@@ -12,12 +12,12 @@ if ($global:Config.Params.xnsub -eq "Yes") { $X = "#xnsub" }
 if ($Name -in $global:Config.Params.PoolName) {
     try { $zpool_Request = Invoke-RestMethod "https://zpool.ca/api/currencies" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }
     catch {
-        Write-Log "SWARM contacted ($Name) for a failed API check. (Coins)"; 
+        Global:Write-Log "SWARM contacted ($Name) for a failed API check. (Coins)"; 
         return
     }
 
     if (($zpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) { 
-        Write-Log "SWARM contacted ($Name) but ($Name) the response was empty." 
+        Global:Write-Log "SWARM contacted ($Name) but ($Name) the response was empty." 
         return
     }
 
@@ -102,8 +102,8 @@ if ($Name -in $global:Config.Params.PoolName) {
                 $Cut = ConvertFrom-Fees $Fees $Workers $Estimate $Divisor
                 try { 
                     $StatAlgo = $zpool_Symbol -replace "`_","`-" 
-                    $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_coin_profit" -Value $Cut
-                }catch { Write-Log "Failed To Calculate Stat For $zpool_Symbol" }
+                    $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_coin_profit" -Value $Cut
+                }catch { Global:Write-Log "Failed To Calculate Stat For $zpool_Symbol" }
             }
         }
 
@@ -120,7 +120,7 @@ if ($Name -in $global:Config.Params.PoolName) {
 
             $Cut = ConvertFrom-Fees $Fees $Workers $Estimate $Divisor
 
-            $Stat = Set-Stat -Name "$($Name)_$($zpool_Symbol)_coin_profit" -Value $Cut
+            $Stat = Global:Set-Stat -Name "$($Name)_$($zpool_Symbol)_coin_profit" -Value $Cut
 
             $Pass1 = $global:Wallets.Wallet1.Keys
             $User1 = $global:Wallets.Wallet1.$($global:Config.Params.Passwordcurrency1).address

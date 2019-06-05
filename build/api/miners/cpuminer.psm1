@@ -1,12 +1,12 @@
-function Get-StatsCpuminer {
-    $GetCPUSummary = Get-TCP -Server $global:Server -Port $global:Port -Message "summary"
+function Global:Get-StatsCpuminer {
+    $GetCPUSummary = Global:Get-TCP -Server $global:Server -Port $global:Port -Message "summary"
     if ($GetCPUSummary) {
         $CPUSUM = $GetCPUSummary -split ";" | Select-String "KHS=" | ForEach-Object { $_ -replace ("KHS=", "") }
         $global:RAW = [double]$CPUSUM * 1000
-        Write-MinerData2
+        Global:Write-MinerData2
     }
     else { Write-Host "API Summary Failed- Could Not Total Hashrate" -Foreground Red; break }
-    $GetCPUThreads = Get-TCP -Server $global:Server -Port $global:Port -Message "threads"
+    $GetCPUThreads = Global:Get-TCP -Server $global:Server -Port $global:Port -Message "threads"
     if ($GetCPUThreads) {
         $Data = $GetCPUThreads -split "\|"
         $kilo = $false

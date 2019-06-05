@@ -1,4 +1,4 @@
-function Set-Donation {
+function Global:Set-Donation {
     if ($global:config.params.Rigname1 -eq "Donate") { $global:Donating = $True }
     else { $global:Donating = $False }
     if ($global:Donating -eq $True) {
@@ -22,7 +22,7 @@ function Set-Donation {
     }
 }
 
-function Get-AltWallets {
+function Global:Get-AltWallets {
 
     ##Get Wallet Config
     $Wallet_Json = Get-Content ".\config\wallets\wallets.json" | ConvertFrom-Json
@@ -58,14 +58,14 @@ function Get-AltWallets {
     $Wallet_Configs
 }
 
-function Get-Wallets {
+function Global:Get-Wallets {
 
     ## Wallet Information
     $global:Wallets = [PSCustomObject]@{ }
     $NewWallet1 = @()
     $NewWallet2 = @()
     $NewWallet3 = @()
-    $AltWallet_Config = Get-AltWallets
+    $AltWallet_Config = Global:Get-AltWallets
     
     ##Remove NiceHash From Regular Wallet
     if ($global:Config.Params.Nicehash_Wallet1) { $global:Config.Params.PoolName | % { if ($_ -ne "nicehash") { $NewWallet1 += $_ } } }
@@ -77,7 +77,7 @@ function Get-Wallets {
     
     $C = $true
     if ($global:Config.Params.Coin) { $C = $false }
-    if ($C -eq $false) { write-log "Coin Parameter Specified, disabling All alternative wallets." -ForegroundColor Yellow }
+    if ($C -eq $false) { Global:Write-Log "Coin Parameter Specified, disabling All alternative wallets." -ForegroundColor Yellow }
     
     if ($global:Config.Params.AltWallet1 -and $C -eq $true) { $global:Wallets | Add-Member "AltWallet1" @{$global:Config.Params.AltPassword1 = @{address = $global:Config.Params.AltWallet1; Pools = $NewWallet1 } }
     }
@@ -117,7 +117,7 @@ function Get-Wallets {
     $global:Wallets.PSObject.Properties.Name | % { $global:Wallets.$_ | ConvertTo-Json -Depth 3 | Set-Content ".\wallet\keys\$($_).txt" }
 }
 
-function Add-Algorithms {
+function Global:Add-Algorithms {
     if ($global:Config.Params.Coin.Count -eq 1 -and $global:Config.Params.Coin -ne "") { $global:Config.Params.Passwordcurrency1 = $global:Config.Params.Coin; $global:Config.Params.Passwordcurrency2 = $global:Config.Params.Coin; $global:Config.Params.Passwordcurrency3 = $global:Config.Params.Coin }
     if ($global:SWARMAlgorithm) { $global:SWARMAlgorithm | ForEach-Object { $global:Algorithm += $_ } }
     elseif ($global:Config.Params.Auto_Algo -eq "Yes") { $global:Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name }
@@ -131,7 +131,7 @@ function Add-Algorithms {
     if (Test-Path ".\build\data\photo_9.png") {
         $A = Get-Content ".\build\data\photo_9.png"
         if ($A -eq "cheat") {
-            Write-Log "SWARM is Exiting: Reason 1." -ForeGroundColor Red
+            Global:Write-Log "SWARM is Exiting: Reason 1." -ForeGroundColor Red
             exit
         }
     }

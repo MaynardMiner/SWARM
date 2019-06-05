@@ -11,7 +11,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
-Function Get-WalletTable {
+Function Global:Get-WalletTable {
     param (
         [Parameter(Mandatory=$false)]
         [switch]$asjson
@@ -20,8 +20,8 @@ Function Get-WalletTable {
     if (Test-Path ".\wallet\values\*") { Remove-Item ".\wallet\values\*" -Force }
     
     $global:WalletKeys = [PSCustomObject]@{ }
-    Get-ChildItemContent -Path ".\wallet\keys" | ForEach { $global:WalletKeys | Add-Member $_.Name $_.Content } 
-    Get-ChildItemContent -Path ".\wallet\pools"
+    Global:Get-ChildItemContent -Path ".\wallet\keys" | ForEach { $global:WalletKeys | Add-Member $_.Name $_.Content } 
+    Global:Get-ChildItemContent -Path ".\wallet\pools"
 
     $WalletTable = @()
     if (-not $GetWStats) { $GetWStats = get-wstats }

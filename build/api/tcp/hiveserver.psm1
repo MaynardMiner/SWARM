@@ -1,4 +1,4 @@
-function Get-HiveServer {
+function Global:Get-HiveServer {
 
     $Runspace = [runspacefactory]::CreateRunspace()
     $Runspace.Open()
@@ -6,7 +6,7 @@ function Get-HiveServer {
 
     $TCPServer = {
         $addr = [ipaddress]'127.0.0.1'
-        $port = 6099
+        $port = $Stats.params.TCP_Port
         $endpoint = New-Object Net.IPEndPoint ($addr, $port)
         $server = New-Object Net.Sockets.TcpListener $endpoint
         $server.Start()

@@ -1,4 +1,4 @@
-function Get-PoolTables {
+function Global:Get-PoolTables {
     $global:FeeTable.Add("zpool", @{ })
     $global:FeeTable.Add("zergpool", @{ })
     $global:FeeTable.Add("fairpool", @{ })
@@ -12,8 +12,8 @@ function Get-PoolTables {
     }
 }
 
-function Remove-BanHashrates {
-    Write-Log "Loading Miner Hashrates" -ForegroundColor Yellow
+function Global:Remove-BanHashrates {
+    Global:Write-Log "Loading Miner Hashrates" -ForegroundColor Yellow
     if ($global:BanHammer -gt 0 -and $global:BanHammer -ne "") {
         if (test-path ".\stats") { $A = Get-ChildItem "stats" | Where BaseName -Like "*hashrate*" }
         $global:BanHammer | ForEach-Object {
@@ -32,7 +32,7 @@ function Remove-BanHashrates {
         }
     }
 }
-function Get-MinerHashTable {
+function Global:Get-MinerHashTable {
     Invoke-Expression ".\build\powershell\scripts\get.ps1 benchmarks all -asjson" | Tee-Object -Variable Miner_Hash | Out-Null
     if ($Miner_Hash -and $Miner_Hash -ne "No Stats Found") {
         $Miner_Hash = $Miner_Hash | ConvertFrom-Json

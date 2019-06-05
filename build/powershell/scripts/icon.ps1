@@ -21,7 +21,7 @@ param(
 $WM_SETICON = 0x80 
 $ICON_SMALL = 0 
  
-function Main { 
+function Global:Main { 
     [System.Reflection.Assembly ]::LoadWithPartialName("System.Drawing") | out-null 
  
     # Verify the file exists 
@@ -42,7 +42,7 @@ function Main {
 ## Invoke a Win32 P/Invoke call. 
 ## From: Lee Holmes 
 ## http://www.leeholmes.com/blog/GetTheOwnerOfAProcessInPowerShellPInvokeAndRefOutParameters.aspx 
-function Invoke-Win32([string] $dllName, [Type] $returnType,  
+function Global:Invoke-Win32([string] $dllName, [Type] $returnType,  
     [string] $methodName, [Type[]] $parameterTypes, [Object[]] $parameters) { 
     ## Begin to build the dynamic assembly 
     $domain = [AppDomain]::CurrentDomain 
@@ -104,14 +104,14 @@ function Invoke-Win32([string] $dllName, [Type] $returnType,
     } 
 } 
  
-function SendMessage([IntPtr] $hWnd, [Int32] $message, [Int32] $wParam, [Int32] $lParam) { 
+function Global:SendMessage([IntPtr] $hWnd, [Int32] $message, [Int32] $wParam, [Int32] $lParam) { 
     $parameterTypes = [IntPtr], [Int32], [Int32], [Int32] 
     $parameters = $hWnd, $message, $wParam, $lParam 
  
     Invoke-Win32 "user32.dll" ([Int32]) "SendMessage" $parameterTypes $parameters  
 } 
  
-function GetConsoleWindow() { 
+function Global:GetConsoleWindow() { 
     Invoke-Win32 "kernel32" ([IntPtr]) "GetConsoleWindow" 
 } 
  

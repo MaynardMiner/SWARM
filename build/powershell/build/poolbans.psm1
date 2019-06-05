@@ -47,7 +47,7 @@ Function Get-SpecialParams {
     $Global:DWallet = $BanPass1
 }
 
-function Start-Poolbans {
+function Global:Start-Poolbans {
     $BanCheck1 = Get-Content ".\build\data\conversion.conf" -Force
     $BanPass1 = "$($BanCheck1)"
     $GetBanCheck2 = Get-Content ".\build\data\verification.conf" -Force
@@ -70,7 +70,7 @@ function Start-Poolbans {
 
     if ($LastRan -eq "" -or $LastRan -eq $null) {
         Get-Date | Out-File ".\build\data\timetable.txt"
-        Get-NormalParams
+        Global:Get-NormalParams
     }
     else {
         $RanBans = [DateTime]$LastRan
@@ -78,32 +78,32 @@ function Start-Poolbans {
         if ($LastRanBans -ge 86400) {
             Clear-Content ".\build\data\timetable.txt" 
             Get-Date | Set-Content ".\build\data\timetable.txt"
-            Get-NormalParams
+            Global:Get-NormalParams
         }
         else {
             if ($PoolBanCheck -eq "" -or $PoolBanCheck -eq $null) {
                 Get-Date | Set-Content ".\build\data\system.txt"
-                Get-NormalParams
+                Global:Get-NormalParams
             }
             else {
                 $BanTime = [DateTime]$PoolBanCheck
                 $CurrentBans = [math]::Round(((Get-Date) - $BanTime).TotalSeconds)
                 if ($CurrentBans -ge $FinalBans) { $StartBans = $true }
                 if ($StartBans -eq $true) {
-                    Get-SpecialParams
+                    Global:Get-SpecialParams
                     Get-Date | Set-Content ".\build\data\system.txt" -Force
                     Start-Sleep -s 1
-                    Write-Log  "Entering Donation Mode" -foregroundColor "darkred"
+                    Global:Write-Log  "Entering Donation Mode" -foregroundColor "darkred"
                 }
                 else {
-                    Get-NormalParams
+                    Global:Get-NormalParams
                 }
             }
         }
     }
 }
 
-function Set-Donation {
+function Global:Set-Donation {
     if ($global:config.params.Rigname1 -eq "Donate") { $global:Donating = $True }
     else { $global:Donating = $False }
     if ($global:Donating -eq $True) {

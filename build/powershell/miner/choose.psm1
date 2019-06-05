@@ -1,11 +1,11 @@
-function Remove-BadMiners {
+function Global:Remove-BadMiners {
     $BadMiners = @()
     if ($global:Config.Params.Threshold -ne 0) { $Global:Miners | ForEach-Object { if ($_.Profit -gt $global:Config.Params.Threshold) { $BadMiners += $_ } } }
     $BadMiners | ForEach-Object { $Global:Miners.Remove($_) }
     $BadMiners = $Null
 }
 
-function Get-BestMiners {
+function Global:Get-BestMiners {
 
     $BestMiners = @()
 
@@ -35,7 +35,7 @@ function Get-BestMiners {
     $BestMiners
 }
 
-function Get-Conservative {
+function Global:Get-Conservative {
     if ($global:Config.Params.Conserve -eq "Yes") {
         $global:bestminers_combo = @()
         $global:Config.Params.Type | ForEach-Object {

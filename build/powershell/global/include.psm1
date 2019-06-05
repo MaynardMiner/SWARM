@@ -11,7 +11,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
-function Add-LogErrors {
+function Global:Add-LogErrors {
     if ($Error.Count -gt 0) {
         $TimeStamp = (Get-Date)
         $errormesage = "[$TimeStamp]: SWARM Generated The Following Warnings/Errors-"
@@ -23,26 +23,7 @@ function Add-LogErrors {
     }
 }
 
-function Send-Warning {
-    $GetNetMods = @($global:NetModules | Foreach { Get-ChildItem $_ })
-    $GetNetMods | ForEach-Object { Import-Module $_.FullName }
-    $WebWarning = @{result = @{command = "timeout" } }
-    $global:WebSites | ForEach-Object {
-        Switch ($_) {
-            "HiveOS" {
-                try { 
-                    $SendToHive = Start-webcommand -command $WebWarning -swarm_message $WebMessage -Website $_
-                }
-                catch { Write-Warning "Failed To Notify $($_)" } 
-            }
-        }
-    }
-    write-Log $HiveMessage -ForeGroundColor Red
-    $GetNetMods | ForEach-Object { Remove-Module $_.BaseName } 
-    start-sleep $global:Config.Params.Interval;
-}
-
-function write-log {
+function Global:Write-Log {
     param (
         [Parameter(Mandatory = $false, Position = 0)]
         [string]$In,
@@ -103,7 +84,7 @@ function write-log {
 
 }
 
-function Get-ChildItemContent {
+function Global:Get-ChildItemContent {
     param(
         [Parameter(Mandatory = $false)]
         [String]$Path,
@@ -122,7 +103,7 @@ function Get-ChildItemContent {
             $Content = &$_.FullName
         }
         else {
-            try { $Content = $_ | Get-Content | ConvertFrom-Json }catch { Write-Log "WARNING: Could Not Identify $FullName, It Is Corrupt- Remove File To Stop." -ForegroundColor Red }
+            try { $Content = $_ | Get-Content | ConvertFrom-Json }catch { Global:Write-Log "WARNING: Could Not Identify $FullName, It Is Corrupt- Remove File To Stop." -ForegroundColor Red }
         }
         $Content | ForEach-Object {
             [PSCustomObject]@{Name = $Name; Content = $_ }
@@ -153,7 +134,7 @@ function Get-ChildItemContent {
     $AllContent
 }
 
-function start-killscript {
+function Global:start-killscript {
 
     ##Clear-Screens In Case Of Restart
     $OpenScreens = @()

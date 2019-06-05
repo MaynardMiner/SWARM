@@ -1,4 +1,4 @@
-function Stop-ActiveMiners {
+function Global:Stop-ActiveMiners {
     $global:ActiveMinerPrograms | ForEach-Object {
            
         ##Miners Not Set To Run
@@ -36,7 +36,7 @@ function Stop-ActiveMiners {
     }
 }
 
-function Start-NewMiners {
+function Global:Start-NewMiners {
     param (
         [Parameter(Mandatory = $true)]
         [string]$Reason
@@ -50,9 +50,9 @@ function Start-NewMiners {
         $Miner = $_
 
         if ($null -eq $Miner.XProcess -or $Miner.XProcess.HasExited -and $global:Config.Params.Lite -eq "No") {
-            Add-Module "$global:Control\launchcode.psm1"
-            Add-Module "$global:Control\config.psm1"
-            Add-Module "$global:global\gpu.psm1"
+            Global:Add-Module "$($(v).control)\launchcode.psm1"
+            Global:Add-Module "$($(v).control)\config.psm1"
+            Global:Add-Module "$($(v).global)\gpu.psm1"
 
             $global:Restart = $true
             if ($Miner.Type -notlike "*ASIC*") { Start-Sleep -S $Miner.Delay }
@@ -72,7 +72,7 @@ function Start-NewMiners {
                                 if ($global:Config.Params.API_Key -and $global:Config.Params.API_Key -ne "") {
                                     if ($WebSiteOC -eq $false) {
                                         if ($Miner.Type -notlike "*ASIC*" -and $Miner.Type -like "*1*") {
-                                            $OC_Success = Start-HiveTune $Miner.Algo
+                                            $OC_Success = Global:Start-HiveTune $Miner.Algo
                                             $WebSiteOC = $true
                                         }
                                     }
@@ -92,39 +92,39 @@ function Start-NewMiners {
                         $ClearedOC = $true
                     }
                     if ($Miner.Type -notlike "*ASIC*") {
-                        Write-Log "Starting SWARM OC" -ForegroundColor Cyan
-                        Add-Module "$Global:Control\octune.psm1"
-                        Start-OC -NewMiner $Current -Website $Website
+                        Global:Write-Log "Starting SWARM OC" -ForegroundColor Cyan
+                        Global:Add-Module "$($(v).control)\octune.psm1"
+                        Global:Start-OC -NewMiner $Current -Website $Website
                     }
                 }
             }
 
 
             ##Launch Miners
-            write-Log "Starting $($Miner.InstanceName)"
+            Global:Write-Log "Starting $($Miner.InstanceName)"
             if ($Miner.Type -notlike "*ASIC*") {
                 $PreviousPorts = $global:PreviousMinerPorts | ConvertTo-Json -Compress
-                $Miner.Xprocess = Start-LaunchCode -PP $PreviousPorts -NewMiner $Current
+                $Miner.Xprocess = Global:Start-LaunchCode -PP $PreviousPorts -NewMiner $Current
             }
             else {
                 if ($global:ASICS.$($Miner.Type).IP) { $AIP = $global:ASICS.$($Miner.Type).IP }
                 else { $AIP = "localhost" }
-                $Miner.Xprocess = Start-LaunchCode -NewMiner $Current -AIP $AIP
+                $Miner.Xprocess = Global:Start-LaunchCode -NewMiner $Current -AIP $AIP
             }
 
             ##Confirm They are Running
             if ($Miner.XProcess -eq $null -or $Miner.Xprocess.HasExited -eq $true) {
                 $Miner.Status = "Failed"
                 $global:NoMiners = $true
-                write-Log "$($Miner.MinerName) Failed To Launch" -ForegroundColor Darkred
+                Global:Write-Log "$($Miner.MinerName) Failed To Launch" -ForegroundColor Darkred
             }
             else {
                 $Miner.Status = "Running"
-                if ($Miner.Type -notlike "*ASIC*") { write-Log "Process Id is $($Miner.XProcess.ID)" }
-                write-Log "$($Miner.MinerName) Is Running!" -ForegroundColor Green
+                if ($Miner.Type -notlike "*ASIC*") { Global:Write-Log "Process Id is $($Miner.XProcess.ID)" }
+                Global:Write-Log "$($Miner.MinerName) Is Running!" -ForegroundColor Green
             }
             if ($Reason -eq "Restart") {
-                Write-Log "
+                Global:Write-Log "
        
             //\\  _______
            //  \\//~//.--|

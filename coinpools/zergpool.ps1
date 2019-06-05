@@ -6,18 +6,19 @@ $Zergpool_UnSorted = [PSCustomObject]@{ }
 $DoAutoCoin = $false
 if($global:Config.Params.Coin.Count -eq 0){$DoAutoCoin = $true}
 $global:Config.Params.Coin | %{ if($_ -eq ""){$DoAutoCoin = $true}}
+if($Global:Config.Params.NO_GLT -eq "Yes"){$NoGLT = "GLT"}
 
 if ($global:Config.Params.xnsub -eq "Yes") { $X = "#xnsub" } 
 
 if ($Name -in $global:Config.Params.PoolName) {
     try { $zergpool_Request = Invoke-RestMethod "http://zergpool.com:8080/api/currencies" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }
     catch {
-        Write-Log "SWARM contacted ($Name) for a failed API check. (Coins)"; 
+        Global:Write-Log "SWARM contacted ($Name) for a failed API check. (Coins)"; 
         return
     }
 
     if (($Zergpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) { 
-        Write-Log "SWARM contacted ($Name) but ($Name) the response was empty." 
+        Global:Write-Log "SWARM contacted ($Name) but ($Name) the response was empty." 
         return
     }
    
@@ -55,6 +56,7 @@ if ($Name -in $global:Config.Params.PoolName) {
             Where-Object { $global:Config.Pool_Algos.$($_.Algo) } |
             Where-Object { $Name -notin $global:Config.Pool_Algos.$($_.Algo).exclusions }  |
             Where-Object Sym -notin $global:BanHammer |
+            Where-Object Sym -notlike "*$NoGLT*" |
             Where-Object noautotrade -eq "0" | 
             Where-Object estimate -gt 0 | 
             Where-Object hashrate -ne 0 | 
@@ -77,6 +79,7 @@ if ($Name -in $global:Config.Params.PoolName) {
             Where-Object { $global:Config.Pool_Algos.$($_.Algo) } |
             Where-Object { $Name -notin $global:Config.Pool_Algos.$($_.sym).exclusions }  |
             Where-Object Sym -notin $global:BanHammer |
+            Where-Object Sym -notlike "*$NoGLT*" |
             Where-Object noautotrade -eq "0" |
             Where-Object estimate -gt 0 |
             Where-Object hashrate -ne 0 |
@@ -95,8 +98,8 @@ if ($Name -in $global:Config.Params.PoolName) {
                 $Divisor = (1000000 * [Double]$global:DivisorTable.zergpool.$Zergpool_Algorithm)    
                 try {
                     $StatAlgo = $Zergpool_Symbol -replace "`_","`-" 
-                    $Stat = Set-Stat -Name "$($Name)_$($StatAlgo)_coin_profit" -Value ([double]$zergpool_Estimate / $Divisor * (1 - ($zergpool_fees / 100))) 
-                }catch { Write-Log "Failed To Calculate Stat For $Zergpool_Symbol" }
+                    $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_coin_profit" -Value ([double]$zergpool_Estimate / $Divisor * (1 - ($zergpool_fees / 100))) 
+                }catch { Global:Write-Log "Failed To Calculate Stat For $Zergpool_Symbol" }
             }
         }
 
@@ -113,7 +116,7 @@ if ($Name -in $global:Config.Params.PoolName) {
 
             $Divisor = (1000000 * [Double]$global:DivisorTable.zergpool.$Zergpool_Algorithm)
         
-            try { $Stat = Set-Stat -Name "$($Name)_$($Zergpool_Symbol)_coin_profit" -Value ([double]$zergpool_Estimate / $Divisor * (1 - ($zergpool_fees / 100))) }catch { Write-Log "Failed To Calculate Stat For $Zergpool_Symbol" }
+            try { $Stat = Global:Set-Stat -Name "$($Name)_$($Zergpool_Symbol)_coin_profit" -Value ([double]$zergpool_Estimate / $Divisor * (1 - ($zergpool_fees / 100))) }catch { Global:Write-Log "Failed To Calculate Stat For $Zergpool_Symbol" }
 
             $Pass1 = $global:Wallets.Wallet1.Keys
             $User1 = $global:Wallets.Wallet1.$($global:Config.Params.Passwordcurrency1).address

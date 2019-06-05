@@ -71,7 +71,7 @@ switch ($Action) {
                                     $global:Config.Pool_Algos.$Item.exclusions += $Value
                                 }
                             }
-                            else{Write-Log "WARNING: Cannot add $Value to $Item Bans" -ForeGroundColor Yellow}
+                            else{Global:Write-Log "WARNING: Cannot add $Value to $Item Bans" -ForeGroundColor Yellow}
                         }
                     }
                 }
