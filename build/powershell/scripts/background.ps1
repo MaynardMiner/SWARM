@@ -616,7 +616,7 @@ HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
         if ($global:DoASIC) { Write-Host "ASIC_TOTAL_KHS: $global:ASICKHS" -ForegroundColor Yellow }
         Write-Host "ACC: $global:ALLACC" -ForegroundColor DarkGreen -NoNewline
         Write-Host " REJ: $global:ALLREJ" -ForegroundColor DarkRed -NoNewline
-        Write-Host " ALGO: $SwarmAlgo" -ForegroundColor White -NoNewline
+        Write-Host " ALGO: $Global:StatAlgo" -ForegroundColor White -NoNewline
         Write-Host " UPTIME: $global:UPTIME" -ForegroundColor Yellow
         Write-Host "STRATUM: $global:StatStratum" -ForegroundColor Cyan
         Write-Host "START_TIME: $StartTime
