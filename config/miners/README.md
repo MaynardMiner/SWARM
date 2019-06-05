@@ -62,7 +62,7 @@ the NVIDIA2 device group, NVIDIA1 section for the NVIDIA1 device group.
 * A space should be between each new item "-i 20 --No-NVML"
 * This may not work for all miners.
 
-# Difficulty [String]                           [STRING],[Sub-Item of Device Group]
+### Difficulty [String]                           [STRING],[Sub-Item of Device Group]
 * Add your difficulty setting here.
 * This is a string- Do not add int values here. keep " " between number
 * "200" would specify difficulty of 200
