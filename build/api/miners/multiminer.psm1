@@ -1,12 +1,12 @@
-function Get-StatsMultiminer {
-    $GetSummary = Get-TCP -Server $global:Server -Port $global:Port -Message "summary"
+function Global:Get-StatsMultiminer {
+    $GetSummary = Global:Get-TCP -Server $global:Server -Port $global:Port -Message "summary"
     if ($GetSummary) {
         $SUM = $GetSummary -split ";" | Select-String "KHS=" | ForEach-Object { $_ -replace ("KHS=", "") }
         $global:RAW = [double]$SUM * 1000
-        Write-MinerData2
+        Global:Write-MinerData2
     }
     else { Write-Host "API Summary Failed- Could Not Total Hashrate" -Foreground Red; break }
-    $GetThreads = Get-TCP -Server $global:Server -Port $global:Port -Message "threads"
+    $GetThreads = Global:Get-TCP -Server $global:Server -Port $global:Port -Message "threads"
     if ($GetThreads) {
         $Data = $GetThreads -split "\|"
         $kilo = $false
@@ -17,13 +17,13 @@ function Get-StatsMultiminer {
         $J = $Hash | ForEach-Object { Invoke-Expression [Double]$_ }
         if ($kilo -eq $true) {
             if ($Hash) { 
-                for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { $global:GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $global:i) }
+                for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { $global:GPUHashrates.$(Global:Get-GPUs) = (Global:Set-Array $Hash $global:i) }
             }
             $J | ForEach-Object { $global:CPUKHS += $_ }
         }
         else {
             if ($Hash) { 
-                for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { $global:GPUHashrates.$(Get-Gpus) = (Set-Array $Hash $global:i) / 1000 } 
+                for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { $global:GPUHashrates.$(Global:Get-GPUs) = (Global:Set-Array $Hash $global:i) / 1000 } 
             }
             $J | ForEach-Object { $global:GPUKHS += $_ }
         }

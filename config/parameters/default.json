@@ -26,8 +26,11 @@
     "AltPassword3": "",
     "CPUOnly":  "No",
     "Wallet":  "Yes",
+    "TCP": "No",
+    "TCP_Port": 6099,
     "StatsInterval":  1,
-    "Farm_Hash":  "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "Hive_Hash":  "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "SWARM_Hash":  "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     "Wallet2":  "",
     "HiveOS":  "Yes",
     "GPUDevices2": [
@@ -55,9 +58,7 @@
     "Wallet3":  "",
     "AltPassword1":  "",
     "Auto_Coin":  "No",
-    "Type":  [
-                 "NVIDIA1"
-             ],
+    "Type":  [ ],
     "Conserve":  "No",
     "GPUDevices1":   [
                       ""
@@ -96,8 +97,8 @@
     "Custom_Periods": 1,
     "Volume": "No",
     "Auto_Algo": "Yes",
-    "Bans": [
-             "cuckatoo31"
-            ],
-    "Xnsub": ""
+    "Bans": [],
+    "Xnsub": "",
+    "Ban_GLT": "Yes",
+    "optional": []
 }

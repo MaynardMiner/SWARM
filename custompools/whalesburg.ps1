@@ -35,16 +35,12 @@ if ($global:Config.Params.PoolName -eq $Name) {
         ## btc/mhs/day
         $Estimate = ((([Double]$Whalesburg_Request.mh_per_second_price * 86400))) * $ETHExchangeRate
 
-        $Stat = Set-Stat -Name "$($Name)_$($Whalesburg_Algorithm)_profit" -Value ([Double]$Estimate * (1 - ($Prorate / 100)))
+        $Stat = Global:Set-Stat -Name "$($Name)_$($Whalesburg_Algorithm)_profit" -Value ([Double]$Estimate * (1 - ($Prorate / 100)))
 
         [PSCustomObject]@{
             Priority      = $Priorities.Pool_Priorities.$Name
-            Symbol        = $Whalesburg_Algorithm
-            Mining        = $Whalesburg_Algorithm
             Algorithm     = $Whalesburg_Algorithm
             Price         = $Stat.$($global:Config.Params.Stat_Algo)
-            StablePrice   = $Stat.Week
-            MarginOfError = $Stat.Fluctuation
             Protocol      = "stratum+ssl"
             Host          = $Whalesburg_Host
             Port          = $Whalesburg_Port

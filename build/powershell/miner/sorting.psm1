@@ -1,18 +1,11 @@
-function Start-MinerReduction {
-
-    param (
-        [Parameter(Mandatory = $true)]
-        [array]$SortMiners,
-        [Parameter(Mandatory = $true)]
-        [decimal]$WattCalc
-    )
+function Global:Start-MinerReduction {
 
     $CutMiners = @()
     $global:Config.Params.Type | ForEach-Object {
         $GetType = $_;
-        $SortMiners.Symbol | Select-Object -Unique | ForEach-Object {
-            $zero = $SortMiners | Where-Object Type -eq $GetType | Where-Object Symbol -eq $_ | Where-Object Quote -EQ 0; 
-            $nonzero = $SortMiners | Where-Object Type -eq $GetType | Where-Object Symbol -eq $_ | Where-Object Quote -NE 0;
+        $Global:Miners.Symbol | Select-Object -Unique | ForEach-Object {
+            $zero = $Global:Miners | Where-Object Type -eq $GetType | Where-Object Symbol -eq $_ | Where-Object Quote -EQ 0; 
+            $nonzero = $Global:Miners | Where-Object Type -eq $GetType | Where-Object Symbol -eq $_ | Where-Object Quote -NE 0;
 
             if ($zero) {
                 $GetMinersToCut = @()
@@ -34,7 +27,7 @@ function Start-MinerReduction {
 }
 
 
-function Get-Volume {
+function Global:Get-Volume {
     $global:Pool_Hashrates.keys | ForEach-Object {
         $SortAlgo = $_
         $Sorted = @()
@@ -44,21 +37,15 @@ function Get-Volume {
     }
 }
 
-function start-minersorting {
-    param (
-        [Parameter(Mandatory = $true)]
-        [array]$SortMiners,
-        [Parameter(Mandatory = $true)]
-        [decimal]$WattCalc
-    )
+function Global:Start-Sorting {
 
-    $SortMiners | ForEach-Object {
+    $Global:Miners | ForEach-Object {
 
         $Miner = $_
      
         $MinerPool = $Miner.MinerPool | Select-Object -Unique
 
-        if ($Miner.Power -gt 0) { $WattCalc3 = (((([Double]$Miner.Power * 24) / 1000) * $WattCalc) * -1) }
+        if ($Miner.Power -gt 0) { $WattCalc3 = (((([Double]$Miner.Power * 24) / 1000) * $Global:WattEX) * -1) }
         else { $WattCalc3 = 0 }
             
         if ($global:Pool_Hashrates.$($Miner.Algo).$MinerPool.Percent -gt 0) { $Hash_Percent = $global:Pool_Hashrates.$($Miner.Algo).$MinerPool.Percent * 100 }
@@ -83,20 +70,20 @@ function start-minersorting {
     }
 }
 
-function Add-SwitchingThreshold {
+function Global:Add-SwitchingThreshold {
     $BestActiveMiners | ForEach-Object {
         $Sel = $_
         $SWMiner = $Global:Miners | Where-Object Path -EQ $Sel.path | Where-Object Arguments -EQ $Sel.Arguments | Where-Object Type -EQ $Sel.Type 
         if ($SWMiner -and $SWMiner.Profit -ne $NULL -and $SWMiner.Profit -ne "bench") {
             if ($global:Config.Params.Switch_Threshold) {
-                write-Log "Switching_Threshold changes $($SWMiner.Name) $($SWMiner.Algo) base factored price from $(($SWMiner.Profit * $global:Rates.$($global:Config.Params.Currency)).ToString("N2"))" -ForegroundColor Cyan -NoNewLine -Start; 
+                Global:Write-Log "Switching_Threshold changes $($SWMiner.Name) $($SWMiner.Algo) base factored price from $(($SWMiner.Profit * $global:Rates.$($global:Config.Params.Currency)).ToString("N2"))" -ForegroundColor Cyan -NoNewLine -Start; 
                 if ($SWMiner.Profit -GT 0) {
                     $($Global:Miners | Where Path -eq $SWMiner.path | Where Arguments -eq $SWMiner.Arguments | Where Type -eq $SWMINer.Type).Profit = [Decimal]$SWMiner.Profit * (1 + ($global:Config.Params.Switch_Threshold / 100)) 
                 }
                 else {
                     $($Global:Miners | Where Path -eq $SWMiner.path | Where Arguments -eq $SWMiner.Arguments | Where Type -eq $SWMINer.Type).Profit = [Decimal]$SWMiner.Profit * (1 + ($global:Config.Params.Switch_Threshold / -100))
                 }  
-                write-Log " to $(($SWMiner.Profit * $global:Rates.$($global:Config.Params.Currency)).ToString("N2"))" -ForegroundColor Cyan -End
+                Global:Write-Log " to $(($SWMiner.Profit * $global:Rates.$($global:Config.Params.Currency)).ToString("N2"))" -ForegroundColor Cyan -End
             }
         }
     }

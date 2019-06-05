@@ -1,4 +1,4 @@
-function Get-SWARMServer {
+function Global:Get-SWARMServer {
 
     $Runspace = [runspacefactory]::CreateRunspace()
     $Runspace.Open()

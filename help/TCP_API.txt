@@ -1,0 +1,186 @@
+SWARM TCP Specification:
+
+Activating SWARM's TCP API-
+
+Arguments:
+-TCP_Port 6099
+-TCP Yes
+
+.json:
+
+"TCP": "Yes",
+"TCP_Port": 6099
+
+
+API Methods:
+
+'stats'
+
+{
+"hsu":"khs",                ##Current HashRate Units
+"fans":[                    ##GPU Fans Speeds, in percentage: Arranged by BUS.
+        "85",
+        "80",
+        "80",
+        "80",
+        "80",
+        "85",
+        "80",
+        "80"
+        ],               
+"asic_total":null,          ##Total ASIC HashRate
+"gpus":[                    ##Miner Hashrates. Should be arranged by bus, but some miners fail to do this. Also, some miners have multiple threads, and fail to specify which thread is which.
+        "21751.1100",
+        "21691.3850",
+        "21872.1230",
+        "14172.0000",
+        "22028.8420",
+        "21450.7080",
+        "0.0008",
+        "0.0008"
+        ],
+"uptime":384.0,             ##Uptime in seconds. This is for current active miner / since last switch.
+"power":[                   ##Watt/hour. Arranged in order of Bus.
+         "170",
+         "173",
+         "171",
+         "75",
+         "170",
+         "169",
+         "140",
+         "154"
+         ],
+"accepted":275,             ##Accepted Share Total.
+"gpu_total":122966.1697,    ##GPU Total HashRate.
+"asics":null,               ##ASIC Hashrates.
+"cpu_total":137.82,         ##CPU Total Hashrate.
+"algo":"x16rt",             ##Current Algo- If multiple device groups- Only group 1 is specfied.
+"rejected":1,               ##Rejected Amount
+"cpus":[                    ##Array of each CPU thread (Some miners open mutliple threads, may not be accurate).
+        "0.0490"
+       ],
+"temps":[                   ##temps
+        "70",
+        "59",
+        "62",
+        "47",
+        "65",
+        "69",
+        "58",
+        "54"
+        ]
+"stratum": "stratum+tcp://daggerhashimoto.usa.nicehash.com:3353"  ##Current Stratum Group 1 (NVIDIA1 or AMD1) is mining.
+"start_time": "1559591282" ##Linux UTC Time Of When Agent was started.
+}
+
+'params'
+
+Current User Params:
+
+{
+    "TCP": "No",
+    "TCP_Port": 6099,
+    "AltWallet2":  "",
+    "kwh": "",
+    "Poolname":  [
+                     "nlpool",
+                     "zergpool",
+                     "nicehash"
+                 ],
+    "Rigname2":  "SWARM",
+    "SWARM_Mode":  "No",
+    "Cuda":  "10",
+    "Passwordcurrency3": "BTC",
+    "Currency":  [
+                     "USD"
+                 ],
+    "Nicehash_Wallet2":  "",
+    "AltWallet1":  "",
+    "Stat_Coin":  "Live",
+    "Passwordcurrency2": "BTC",
+    "WattOMeter":  "Yes",
+    "Rigname3":  "SWARM",
+    "AltPassword2":  "",
+    "Location":  "US",
+    "Lite":  "No",
+    "Threshold":  0.02,
+    "AltPassword3": "",
+    "CPUOnly":  "No",
+    "Wallet":  "Yes",
+    "StatsInterval":  1,
+    "Hive_Hash":  "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "Wallet2":  "",
+    "HiveOS":  "Yes",
+    "GPUDevices2": [
+                    ""
+                   ],
+    "CoinExchange":  "ETH",
+    "Interval":  300,
+    "Passwordcurrency1": "BTC",
+    "CPUThreads":  1,
+    "Nicehash_Wallet1":  "",
+    "Timeout":  24,
+    "Benchmark":  190,
+    "PoolBanCount":  2,
+    "Platform":  "",
+    "AlgoBanCount":  3,
+    "Rigname1":  "SWARM",
+    "API_Key":  "",
+    "GPUDevices3":  [
+                     ""
+                    ],
+    "API_ID":  0,
+    "Stat_Algo":  "Live",
+    "Nicehash_Wallet3":  "",
+    "Donate":  0.5,
+    "Wallet3":  "",
+    "AltPassword1":  "",
+    "Auto_Coin":  "No",
+    "Type":  [
+                 "NVIDIA1"
+             ],
+    "Conserve":  "No",
+    "GPUDevices1":   [
+                      ""
+                     ],
+    "Rejections":  75,
+    "AltWallet3":  "",
+    "Nicehash_Fee":  "",
+    "MinerBanCount":  4,
+    "Wallet1":  "",
+    "PoolBans":  "Yes",
+    "Update":  "Yes",
+    "Switch_Threshold":  "0",
+    "API":  "No",
+    "CLPlatform":  "",
+    "Track_Shares": "Yes",
+    "Max_Periods": 288,
+    "Port":  4099,
+    "Remote":  "No",
+    "APIPassword":  "No",
+    "Startup":  "Yes",
+    "ETH":  "",
+    "Worker":  "",
+    "Algorithm":  [
+                    ""
+                ],
+    "Coin":  [
+              ""
+             ],
+    "ASIC_IP": [
+               ""
+               ],
+    "ASIC_ALGO":  [
+                    ""
+                  ],
+    "Stat_All": "No",
+    "Custom_Periods": 1,
+    "Volume": "No",
+    "Auto_Algo": "Yes",
+    "Bans": [
+             ""
+            ],
+    "Xnsub": ""
+}
+
+

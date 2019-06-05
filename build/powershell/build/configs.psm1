@@ -1,4 +1,4 @@
-function Get-MinerConfigs {
+function Global:Get-MinerConfigs {
     if ($Global:config.Params.Type -like "*AMD*" -or $Global:config.params.Type -like "*NVIDIA*" -or $Global:config.params.Type -like "*CPU*") {
         $Configs = Get-ChildItem ".\config\miners"
         $Configs.Name | % {
@@ -11,7 +11,7 @@ function Get-MinerConfigs {
     }
 }
 
-function Add-ASICS {
+function Global:Add-ASICS {
 
     if ($global:Config.Params.ASIC_ALGO -and $global:Config.Params.ASIC_ALGO -ne "") {
         $global:Config.Params.ASIC_ALGO | ForEach-Object {

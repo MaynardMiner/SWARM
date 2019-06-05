@@ -25,17 +25,6 @@ Argument          Options           Explanation
 -Wallet1      [Wallet Address]      Address of your wallet. By default SWARM assumes it to be BTC.
                                     See Advanced arguments to change that.
 
--PasswordCurrency1  [Symbol]        Symbol of your wallet address, specifically for Wallet1. Most pools
-                                    only accept BTC for auto-exchange. See pools for options.                                  
-
-
--Type         [CPU,                 Device groups you wish to mine with. Nvidia has three groups in case
-               NVIDIA1,             you wish to divide your GPU devices into seperate groups to assist in
-               NVIDIA2,             benchmarking, or to prevent entire miner from becoming inoperable if
-               NVIDIA3              one gpu fails. Currently only 1 AMD group supported. NVIDIA2 and NVIDIA3
-               AMD1,                require wallet2 and wallet3 arguments, along with GPUDevices1,2,3
-	       ASIC]                respectively (See advanced section)
-
 -Donate      [Percentage]           Percent you wish to donate daily to support further development. 
                                     Miner remembers when you open or close, so it will not steal 
                                     from you...However it only resets donation switch if miner 
@@ -67,6 +56,30 @@ Argument          Options           Explanation
 These arguments can be added for additional customization and options
 
 Argument            Options             Explanation
+
+-optional     [array,               Default is empty array. Specifying this parameter will move
+               of,                  an optiona/old miner into the main miners directory.
+               miner,               the name used is the name of the .ps1 filename minus the .ps1
+               filenames]           example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
+
+-Type         [CPU,                 Device groups you wish to mine with. Nvidia has three groups in case
+               NVIDIA1,             you wish to divide your GPU devices into seperate groups to assist in
+               NVIDIA2,             benchmarking, or to prevent entire miner from becoming inoperable if
+               NVIDIA3              one gpu fails. Currently only 1 AMD group supported. NVIDIA2 and NVIDIA3
+               AMD1,                require wallet2 and wallet3 arguments, along with GPUDevices1,2,3
+	       ASIC]                respectively (See advanced section)
+
+-PasswordCurrency1  [Symbol]        Symbol of your wallet address, specifically for Wallet1. Most pools
+                                    only accept BTC for auto-exchange. See pools for options.                                  
+
+-Ban_GLT         [Yes or No]         Default is "Yes". Disables GLT coin. Most users and statistics
+                                    has shown that GLT never pays out what it states that it should.
+                                    Reducing profit.
+
+-TCP            [Yes or No]         Default is No. Activates TCP port for API on -API_Port. Note:
+                                    If SWARM is in HiveOS, it will turn on automatically.
+
+-TCP_Port       [Int]               Default is 6099. Activates TCP Port for API. 
 
 -Max_Periods    [any number]        Default is 288. SWARM calculates profit via a rolling expontenial
                                     moving average, with each new period happening at the end of your
@@ -181,8 +194,8 @@ Argument            Options             Explanation
                                     Set this if SWARM fails to guess correct platform. However,
                                     SWARM ~should~ auto-detect correct platform.
 
--Farm_Hash     [address]            This is required for Windows. Specify Farm_Hash in order to use HiveOS
-                                    website. Farm_Hash is attained by making a user account in HiveOS.
+-Hive_Hash     [address]            This is required for Windows. Specify Hive_Hash in order to use HiveOS
+                                    website. Farm Hash is attained by making a user account in HiveOS.
 
 -Benchmark     [0-100000]           Expressed in seconds. Default 180. Sets specific interval time for when coin 
 				    is in benchmark mode. Can be used for faster benchmarking. When coin has

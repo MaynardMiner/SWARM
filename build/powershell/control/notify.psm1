@@ -1,6 +1,6 @@
 
-function Invoke-MinerSuccess {
-    Write-Log "         
+function Global:Invoke-MinerSuccess {
+    Global:Write-Log "         
         
                          //\\  _______
                         //  \\//~//.--|
@@ -10,7 +10,7 @@ function Invoke-MinerSuccess {
 Waiting 15 Seconds For Miners To Load & Restarting Background Tracking
 " -ForegroundColor Magenta
     if ($global:Config.Params.Platform -eq "linux") {
-        Write-Log "
+        Global:Write-Log "
 
 Type `'mine`' in another terminal to see miner working- This is NOT a remote command!
 
@@ -21,7 +21,7 @@ https://github.com/MaynardMiner/SWARM/wiki/Commands-&-Suggested-Apps For More In
 " -ForegroundColor Magenta
     }
     elseif ($global:Config.Params.Platform -eq "windows") {
-        Write-Log "
+        Global:Write-Log "
 
 There is now a new window where miner is working. The output may be different from
 
@@ -34,15 +34,15 @@ tracking of algorithms and GPU information. It can be used to observe issues, if
 }
 
 
-function Invoke-MinerWarning {
+function Global:Invoke-MinerWarning {
     ##Notify User Of Failures
-    Write-Log "
+    Global:Write-Log "
    
 There are miners that have failed! Check Your Settings And Arguments!
 " -ForegroundColor DarkRed
 
     if ($global:Config.Params.Platform -eq "linux") {
-        Write-Log "
+        Global:Write-Log "
 
 Type `'mine`' in another terminal to see background miner, and its reason for failure.
 You may also view logs with in the `"logs`" directory, or `'get-screen [Type]`'
@@ -51,7 +51,7 @@ https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration) >> Ri
 " -ForegroundColor Darkred
     }
     elseif ($global:Config.Params.Platform -eq "windows") {
-        Write-Log "
+        Global:Write-Log "
  
  SWARM attempts to catch screen output, and is stored in `'logs`' folder.
  SWARM has also created a executable called `'swarm-start.bat`' located in the `'bin`'
@@ -62,8 +62,8 @@ https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration) >> Ri
     Start-Sleep -s 10
 }
 
-function Invoke-NoChange {
-    Write-Log "
+function Global:Invoke-NoChange {
+    Global:Write-Log "
         
         
 Most Profitable Miners Are Running
@@ -71,15 +71,15 @@ Most Profitable Miners Are Running
     Start-Sleep -s 5
 }
 
-function Get-LaunchNotification {
+function Global:Get-LaunchNotification {
     $global:MinerWatch.Restart()
-    if ($global:Restart -eq $true -and $global:NoMiners -eq $true) { Invoke-MinerWarning }
-    if ($global:Config.Params.Platform -eq "linux" -and $global:Restart -eq $true -and $global:NoMiners -eq $false) { Invoke-MinerSuccess }
-    if ($global:Config.Params.Platform -eq "windows" -and $global:Restart -eq $true -and $global:NoMiners -eq $false) { Invoke-MinerSuccess }
-    if ($global:Restart -eq $false) { Invoke-NoChange }
+    if ($global:Restart -eq $true -and $global:NoMiners -eq $true) { Global:Invoke-MinerWarning }
+    if ($global:Config.Params.Platform -eq "linux" -and $global:Restart -eq $true -and $global:NoMiners -eq $false) { Global:Invoke-MinerSuccess }
+    if ($global:Config.Params.Platform -eq "windows" -and $global:Restart -eq $true -and $global:NoMiners -eq $false) { Global:Invoke-MinerSuccess }
+    if ($global:Restart -eq $false) { Global:Invoke-NoChange }
 }
 
-function Get-Interval {
+function Global:Get-Interval {
     ##Determine Benchmarking
     $global:BestActiveMiners | ForEach-Object {
         $StatAlgo = $_.Algo -replace "`_", "`-"        
@@ -89,16 +89,16 @@ function Get-Interval {
     }
 
     if ($global:BenchmarkMode -eq $true) {
-        write-Log "SWARM is Benchmarking Miners." -Foreground Yellow;
+        Global:Write-Log "SWARM is Benchmarking Miners." -Foreground Yellow;
         $global:MinerInterval = $global:Config.Params.Benchmark
         $global:MinerStatInt = 1
     }
     else {
         if ($global:Config.Params.SWARM_Mode -eq "Yes") {
             $global:SWARM_IT = $true
-            write-Log "SWARM MODE ACTIVATED!" -ForegroundColor Green;
+            Global:Write-Log "SWARM MODE ACTIVATED!" -ForegroundColor Green;
             $global:SwitchTime = Get-Date
-            write-Log "SWARM Mode Start Time is $global:SwitchTime" -ForegroundColor Cyan;
+            Global:Write-Log "SWARM Mode Start Time is $global:SwitchTime" -ForegroundColor Cyan;
             $global:MinerInterval = 10000000;
             $global:MinerStatInt = $global:Config.Params.StatsInterval
         }
@@ -106,7 +106,7 @@ function Get-Interval {
     }
 }
 
-function Get-CoinShares {
+function Global:Get-CoinShares {
 
     . .\build\api\pools\zergpool.ps1;
     . .\build\api\pools\nlpool.ps1;    

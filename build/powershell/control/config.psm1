@@ -1,4 +1,4 @@
-function set-minerconfig {
+function Global:set-minerconfig {
     param (
         [Parameter(mandatory = $true, position = 0)]
         [string] $InputMiner,
@@ -8,12 +8,12 @@ function set-minerconfig {
       
     $ConfigMiner = $InputMiner | ConvertFrom-JSon
     $ConfigPathDir = Split-Path $ConfigMiner.Path
-    if ($ConfigMiner.Devices -ne "none") {$MinerDevices = Get-DeviceString -TypeDevices $ConfigMiner.Devices}
+    if ($ConfigMiner.Devices -ne "none") {$MinerDevices = Global:Get-DeviceString -TypeDevices $ConfigMiner.Devices}
     else {
         $Global:GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
         if($ConfigMiner.Type -like "*NVIDIA*"){$TypeS = "NVIDIA"}
         if($ConfigMiner.Type -like "*AMD*"){$TypeS = "AMD"}
-        $MinerDevices = Get-DeviceString -TypeCount $($Global:GCount.$TypeS.PSObject.Properties.Value.Count)
+        $MinerDevices = Global:Get-DeviceString -TypeCount $($Global:GCount.$TypeS.PSObject.Properties.Value.Count)
     }
     $ConfigFile = @()
 
@@ -122,7 +122,7 @@ function set-minerconfig {
     $ConfigFile | Set-Content $Config
 }
 
-function set-nicehash {
+function Global:set-nicehash {
     param(
         [Parameter(Position = 0, Mandatory = $false)]
         [String]$NHPool,
@@ -149,7 +149,7 @@ function set-nicehash {
     ##$CommandFile = ".\bin\excavator-1\command.json"
     ##$NHDevices = "0,2,6,9,10"
 
-    $NHMDevices = Get-DeviceString -TypeDevices $NHDevices
+    $NHMDevices = Global:Get-DeviceString -TypeDevices $NHDevices
     $Workers = @()
     if ($NHCommands) {
         $Workers += $NHCommands | ConvertFrom-Json

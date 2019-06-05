@@ -1,4 +1,4 @@
-function Get-StatsCcminer {
+function Global:Get-StatsCcminer {
     switch ($global:MinerName) {
         "zjazz_cuda.exe" { if ($Global:MinerAlgo -eq "cuckoo_cycle") { $Multiplier = 2000000 }else { $Multiplier = 1000 } }
         "zjazz_cuda" { if ($Global:MinerAlgo -eq "cuckoo_cycle") { $Multiplier = 2000000 }else { $Multiplier = 1000 } }
@@ -7,21 +7,21 @@ function Get-StatsCcminer {
         default { $Multiplier = 1000 }
     }
 
-    $Request = $Null; $Request = Get-TCP -Server $global:Server -Port $global:Port -Message "summary"
+    $Request = $Null; $Request = Global:Get-TCP -Server $global:Server -Port $global:Port -Message "summary"
     if ($Request) {
         try { $GetKHS = $Request -split ";" | ConvertFrom-StringData -ErrorAction Stop }catch { Write-Warning "Failed To Get Summary"; break }
         $global:RAW = if ([Double]$GetKHS.KHS -ne 0 -or [Double]$GetKHS.ACC -ne 0) { [Double]$GetKHS.KHS * $Multiplier }
-        Write-MinerData2;
+        Global:Write-MinerData2;
         $global:GPUKHS += if ([Double]$GetKHS.KHS -ne 0 -or [Double]$GetKHS.ACC -ne 0) { [Double]$GetKHS.KHS }
     }
-    else { Set-APIFailure }
-    $GetThreads = $Null; $GetThreads = Get-TCP -Server $global:Server -Port $global:Port -Message "threads"
+    else { Global:Set-APIFailure }
+    $GetThreads = $Null; $GetThreads = Global:Get-TCP -Server $global:Server -Port $global:Port -Message "threads"
     if ($GetThreads) {
         $Data = $GetThreads -split "\|"
         $Hash = $Data -split ";" | Select-String "KHS" | ForEach-Object { $_ -replace ("KHS=", "") }
         try { 
             for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { 
-                $global:GPUHashrates.$(Get-Gpus) = Set-Array $Hash $global:i 
+                $global:GPUHashrates.$(Global:Get-GPUs) = Global:Set-Array $Hash $global:i 
             } 
         }
         catch { Write-Host "Failed To parse Threads" -ForegroundColor Red };
