@@ -39,6 +39,7 @@ I am a sole developer, and this is a large project. I prioritize workload by req
 * Have the latest cuda/amd drivers installed.
 * Latest C++ Redistributable Packages for Visual Studio.
 * HiveOS user account, your farm hash ready. Ideally a pre-made flight sheet for SWARM. See wiki on how to setup a flight sheet.
+* Latest Powershell Core, along with it being set in your PATH environment variable (should be done during install of Powershell Core).
 
 *Install Steps:*
 
