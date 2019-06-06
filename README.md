@@ -1,201 +1,36 @@
-**SWARM**
+# SWARM: Profit Switching Administrator For HiveOS & Windows
 
- **Hybrid Profit Switching Miner For HiveOS & Windows.**
-
- **Important Note:**
-
- If you would like SWARM incorporated into an OS besides HiveOS/Windows, contact the developers, and show them this:
-
-https://github.com/MaynardMiner/SWARM/wiki/Developer's-Corner
-
-**IF YOU NEED HELP, OR ARE LOST AT USING SWARM- TAKE ADVANTAGE OF THE WIKI:**
+## SWARM wiki:
 
 https://github.com/MaynardMiner/SWARM/wiki
 
-**What is SWARM?**
+## What is SWARM?
 
-**Concept**
+### Concept
 
-SWARM is an collection scripts written in both powershell and bash, and is a profit switching mining system that will work within any OS with very few/little changes. (The miners that SWARM uses may vary) SWARM, is written to be used as an all purpose/all platform mining system that can be implemented/managed on a large scale basis. It was developed for larger mining administrators, who are generally unable to interact with every mining unit/rig directly. SWARM deviates from conventional in-depth GUI interfaces, or a centralized monitoring system/screen which are a burden to mining administrators. SWARM introduces a new method of interface which is meant to assist larger mining systems, by displaying information per user command. Because SWARM's interface is command based as opposed to GUI- Users are able to create scripts of their own to micro-manage their farms/workers. This also allows minimal OS requirements to run, and therefor lends to its versatility to operate in many different environments. The other unique feature of SWARM, is SWARM writes its own scripts, based on user entry- Allowing you to test/troubleshoot issues individually. Prior to miners launching- swarm-start.bat or startup.sh is created in /bin/minerfolder. This means you can troubleshoot last known settings/issues by referring to the bash/batch script written by SWARM. SWARM is meant to expand upon itself, rather than be centralized in design.
+SWARM is an collection scripts written in both powershell and bash, and is a profit switching mining system that will work within any OS with very few/little changes. (The miners that SWARM uses may vary) SWARM, is written to be used as an all purpose/all platform mining system that can be implemented/managed on a large scale basis. It was developed for larger mining administrators, who are generally unable to interact with every mining unit/rig directly. It favors command line interfacing vs. GUI.
 
-**API**
-
-SWARM has an api-only layer, which is produced when ``-LITE Yes`` is specified. This ``LITE`` mode allows for the data of SWARM to be displayed in json format through HTTP. This allows both users and developers to create their own mining administration/launch script for miners, and simply use SWARM to gather data and formulate calculations on which miner/pool/algo combination is most profitable. The linux side the commands SWARM use can be used in any bash script, after they have been installed. The Widows side allow commands to be ran through HiveOS's interface, and has a feature in which you are able to run powershell or cmd commands remotely through HiveOS's website through the use of ``ps``. SWARM also has a runtime API which can be accessed to gather stats, and can be setup to be accessed remotely.
-
-**HiveOS Integration (Windows or Linux)**
+### HiveOS Integration (Windows or Linux)
 
 To focus solely on SWARM's project mission: SWARM was written to integrate fully with HiveOS as of version 1.4.5. The developer of SWARM recognizes the attempt to make an OS/website as sophisticated as the years of development and effort placed into HiveOS would be pointless. Therefor, knowing that SWARM was capable of operating within HiveOS- SWARM was introduced to HiveOS as an available custom miner, and can be integrated rather easily. SWARM also has created a significant amout of scripts which can be ran automatically through HiveOS, and even locally on rig- Allowing you to run multiple terminals and windows, and customize your own setup. Commands like ``get stats`` and ``benchmark all`` can be ran at any moment- Allowing you to quick make changes as neccessary. You also have ALL of the functionality you would get with HiveOS, along with MOST of the functionality of HiveOS's website in the Windows version.
 
-**Highly Sophisticated Customizations**
+### Highly Sophisticated Customizations
 
 SWARM is very customizable. At the base layer- It is easy to setup by simply inputting some basic user configuration at launch, and SWARM will handle the rest. However, beyond the base layer, SWARM offers a sophisticated oc tuning system, along with the ability to customize environment varibles, miner arguments, pool difficulty, and even a system for factoring power cost/calculation into profit analysis. SWARM allows you prohibt miners from certain algorithms, or prohibit mining certain algorithms on certain pools. SWARM also has the ability to control your overclocking internally, including support for AMD Vega in Windows using the latest drivers. It also supports accepting overclocking commands via HiveOS's website, with use of -API_key.
 
 ![alt text](https://github.com/MaynardMiner/SWARM/blob/master/build/data/win%20example.png)
 
-**Bash or Powershell Scripting**
+### Bash or Powershell Scripting
 
 SWARM was designed to make SWARM bigger than itself. All commands can be executed via bash scripts/shell commands on the linux side, and we are slowly implementing the same features to the window's side. With the ``Lite`` mode, SWARM can be easily incorporated into any current miningOS available, and users can customize/create their own launch process, independent of SWARM. With the remote ``ps`` command, SWARM allows you with HiveOS interface to send remote powershell/cmd.exe commands to rigs, allowing you to execute your own scripts remotely.
 
-**Development**
+## Development 
 
-I am a sole developer, and this is a large project. I prioritize workload by requests and activity, if you would like me to develop/improve a particular version Just notify me. Currently, the most popular, most used, and most user supported feature of SWARM is utilizing it as a custom miner in HiveOS.
+I am a sole developer, and this is a large project. I prioritize workload by requests and activity, if you would like me to develop/improve a particular version Just notify me. Currently, the most popular, most used, and most user supported feature of SWARM is utilizing it as a custom miner in HiveOS. This was not an easy task, and also not easy to continue to maintain. This is why the fee of 1.5% is applied.
 
-**No Lost User Data**
+## Simple Install Instructions 
 
-SWARM has an update system, that allows users to update SWARM through HiveOS. The unique feature of SWARM, is that upon updating- all stats, hashrates, user configurations are transferred between versions. (Barring an occasional item that may be written over due to the update/changes). This means that once you build SWARM to your liking- You are usually able to continue transferring all your settings from one version to the next. SWARM also records samples of first-time benchmarks, and saves them into the backup folder, so if you ever need to "reset" SWARM- you have backed up information to work with.
-
- **How Does SWARM work?**
-
- SWARM can be broken down into 6 phases:
-
- ``Startup Phase``
-
- ``SWARM begins initial start by detecting current features/platform/devices, and automatically generating default tables in which to build calculations. Once SWARM has built to its environment, including installing possible missing libraries- It begins to gather current recorded stat information from previous launches, as well as initializing an update if it required and user has specified it. On Windows- SWARM adds itself to startup, as well sets a PATH variable so you can run commands by simply opening cmd.exe and typing the command.``
-
- ``Pool Phase``
-
- ``The next phase is the process of querying remote sites, and gathering their data. Depending on user specification, the type of pricing data gathered and recorded may vary. SWARM through process of elimination determines the most profitable pool/algo combinations, and selects them, and adds them to the database. The rest of the data is stored to drive, so that long term calculations can be made. SWARM has the ability for users to add custom pools, if they are familiar with how Yiimp works, so they can add algorithms that may be no be autoexchanged. This currently works only with yiimp designed pools, and only if the pool supports it.``
-
- ``Miner Phase``
-
- ``The following phase can vary depending on user specification. Either SWARM will begin to detect if miners are required, and download them, or SWARM LITE will begin to initiate the http API server. As SWARM gathers miner information, through process of elimination, based on previous recorded hashrates and potential 'bans': SWARM begins to collect the most efficient miners to use based on a combination of user settings and previous stored data. SWARM refers to all the config files located in the config directory to determine what miners to use, and what algorithms and pools to mine. The config folder, and all jsons located in it are the "brains" of SWARM, and fine tuning is capable by modifying these jsons, including adding additional arguments to miners, excluding pools or algorithms, or even preventing a miner from using a certain algorithm.``
-
- ``Database Phase``
-
- ``SWARM in this phase begins to do a comparative analysis between Pools and Miners- Determining (based on user settings) what the most optimal miner to use is, and what pool should be used. At the end of this phase: The final database is outputted to the API server, and the background agent, which controls the remote features of SWARM as well as initiates the oc settings user has specified (if it was specified)``
- 
- ``Launch Phase``
-
- ``SWARM begins the process of launching miners, verifying they are running, and recording their stats- Outputting basic information to main screen. During this phase, SWARM is monitoring miners in background, and is acting as a "watchdog" to restart miners that crash, or stop mining if issues may occur``
-
- ``Benchmark Phase``
-
-``SWARM begins taking the data it has gathered, and saving it to file. At this time, if user specified power calculations: SWARM will take a sample watt calculation. SWARM will also notate if miner had issues, and determines on a three-strike multi-tier system if the miner should be banned from use. SWARM also gathers logs, and records keywords from miner logs such as "intensity" and "difficulty", and outputs this information into the miner directory itself, allowing users to view historically how the miner operated (for fine-tuning).``
-
-**Features**
-
-```
-                          HiveOS |  Windows  | Unix (non HiveOS)
-                                 |           |
-HiveOS Integration          x    |     x     |  
-Fast GPU Start Times        x    |           |       
-Best Hashrates              x    |           |
-Lowest Watt Use             x    |           |       
-NVIDIA Algo OC-Tuning       x    |     x     |       x
-AMD Algo OC-Tuning          x    |     x     |       x
-Power Calculations          x    |     x     |       x
-Backs Up Benchmarks         x    |     x     |       x
-Remote Updates              x    |     x     |       x
-Real Time Monitoring        x    |     x     |       x
-Cuda 9.2 Miners             x    |           |       x
-Cuda 10 Miners              x    |     x     |       x
-'Lite' version              x    |     x     |       x
-Remote Command Interface    x    |     x     |       x
-Time Out System             x    |     x     |       x
-Bash Script Making          x    |     x     |       x
-User Support                x    |     x     |       x
-Vega Support           x (No-Oc) |     x     |       
-RTX Supoort                 x    |     x     |       x      
-Run Commands via HiveOS     x    | x(with ps)|
-
-```
-
--Works within HiveOS, or Windows- AMD Miners for windows are new and expirmental.
-
--No Windows WDDM driver stack means faster spool up times compared to windows. Critical for profit switching.
-
--Most users report increases in hashrates using Unix as opposed to windows.
-
--80% integration of HiveOS website in Windows Version, by supplying farm hash and rocket launching SWARM as a custom miner.
-
--Algorithm specific OC Tuning for linux. Nvidia tuning currently only for Windows. (AMD coming soon).
-
--Watt calculations, manual or a built in resource Watt-O-Meter.
-
--Backs up initial benchmarks, making updating or recovery a charm. Remote updates transfers all user settings.
-
--Shows real time hashrates from miners on screen, background agent shows fan/temps/power usage.
-
--Displays close to real-time monitoring, directly from miners to HiveOS website. Allows for HiveOS monitoring and graph data.
-
--Despite its size- Memory use is low, more Read/Write of data is incorporated.
-
--Latest miners, updated frequently.
-
--Windows Miners Cuda 10 / AMD 19.1.1 (install 18.6.1 first, upgrade to 19.1.1)
-
--HiveOS Miners Cuda 9.2, and 10.
-
--Additional HiveOS online commands to open new windows to view stats, miner history, real-time data.
-
--Hundreds of user configuration options, including the unique ability to build scripts using bash commands on linux version.
-
--Sophisticated time-out system to avoid pool issues/high rejections/miner issues...All user adjustable.
-
--Linux launches miners in a unique manner to avoid zombie applications from harming tracking.
-
--Sophisticated monitoring system, which tracks all activity of mining. However, simple to use interface to manage it.
-
--Deviates from the current norm of other miners utilizing GUI system interface, and focuses more on mutli-screen/command
- interface, allowing more skilled users to generate their own mining system.
-
--API interface for statistics with LITE mode- Allows developers to integrate SWARM with their own customized implemtations.
-
--API command interfacing/bash command control lends towards scalabilty and larger scale implementations.
-
--Strong support via discord. Users with rig setups of 100s of GPU's are using and troubleshooting as updates are released. The mining world constantly changes- Almost on a day-to-day basis. SWARM tries to keep up with changes, and sometimes it may cause conflictions/bugs/issues. Feel free to contact ManyardVII on SWARM discord channel if you need direct assistance, or post on the boards for user aid.
-
-**Pools**
-```
-nicehash (-Nicehash_Wallet(1,2,3) and -Nicehash_Password arguments optional)
-blockmasters
-fairpool
-nlpool
-ahashpool
-blazepool
-hashrefinery
-phiphipool
-zpool
-whalesburg (requires -ETH and -Worker Arguments)
-zergpool
-
-```
-
-**Miners**
-```
-Avermore (AMD)
-Bubalisk (CPU)
-ehssand (NVIDIA/AMD)
-energiminer (NVIDIA/AMD)
-miniz (NVIDIA)
-gminer (NVIDIA)
-grin-miner (AMD)
-bminer (NVIDIA)
-dstm (NVIDIA)
-xmr-stak (AMD)
-xmrig (AMD)
-ccminer-yescrypt (NVIDIA)
-ccminer-mtp (NVIDIA)
-CryptoDredge (NVIDIA)
-Tpruvot (NVIDIA)
-T-rex (NVIDIA)
-Z-Enemy (NVIDIA) 
-Claymore (NVIDIA) (AMD)
-Phoenix Miner (NVIDIA) (AMD)
-Dstm (NVIDIA)
-EWBF (NVIDIA)
-JayDDee (CPU)
-SGminer-Phi2 (AMD)
-Sgminer-VII (AMD)
-Sgminer-Hex (AMD)
-teamredminer (AMD)
-WidRig-Multi (AMD)
-zjazz (NVIDIA)
-excavator (NVIDIA)
-lolminer (AMD) (NVIDIA)
-```
-
-**Simple Install Instructions (Windows):**
+### Windows
 
 SWARM requires no installation. However there are a few pre-requisites:
 
@@ -227,8 +62,8 @@ Step 6: (Optional) Apply flight sheet to your newly created SWARM worker.
 Step 7: (Optional) Confirm SWARM has restarted- At this point when background agent starts- SWARM should communicate stats to
         HiveOS, and should be ready to accept commands. You will no longer need to modify the .bat file- You modify arguments
         through HiveOS and your flight sheet.
-
-**Simple Install Instructions (HIVEOS):**
+        
+### HIVEOS
 
 NOTE: HiveOS currently uses Cuda 10 as default.
 
@@ -244,11 +79,11 @@ Coin/Wallet is irrelevant. You can basically enter whatever you want. Then navig
 
 From there you should see this window. Pool and URL are setup with arguments. However, Hive 2.0 requires those fields to not be empty. You can simply enter anything there. See photo below on how to setup miner. Just insert the name of the latest release, and the release tar.gz file link. Then insert your arguments in the bottom box:
 
-FULL ARGUMENT LIST:
+## FULL ARGUMENT LIST:
 
 https://github.com/MaynardMiner/SWARM/blob/master/Help%20Files/SWARM_help.txt
 
-SAMPLE ARGUMENT SETUPS:
+## SAMPLE ARGUMENT SETUPS:
 
 https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration)
 
@@ -258,15 +93,7 @@ https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration)
 
 You may need to Rocket Launch/Reboot in order to have Agent restart and start recieving data from SWARM
 
-**Known Issues**
-
-GPU mining within linux is an efficient process, but is also load intensive on system resources. Both SWARM and HiveOS website require data from drivers and miners, which can be strenous on larger mining rigs. There can be delays to recieve stats in this situation for either SWARM or HiveOS website. I am constantly working on ways to reduce this load.
-
-Windows version, and its ability to contact and communicate its data is a relativly new design. If you use Windows version, please report your results or issues, and ways to better improve the system.
-
-HiveOS API 2.0 beta is not finished- The moment it is (it has been discussed with developers), using oc profiles for algorithms will be possible. Until then, there is currently no method on website to switch oc profiles while a miner is running, so SWARM cannot use oc algorithm profiles in HiveOS. However, SWARM does have its own local oc tuning system.
-
-**CONTACT**
+## CONTACT
 
 Communication channels For SWARM- 
 
@@ -276,7 +103,7 @@ Telegram: @Swarm_Mining
 
 Reddit: https://www.reddit.com/r/SWARM_Miner
 
-**DONATE TO SUPPORT!**
+## DONATE TO SUPPORT!
 
 BTC 1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i
 
