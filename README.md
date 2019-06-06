@@ -52,7 +52,7 @@ Step 3: Launch SWARM.bat.
 
 Step 4: (Optional) When background agent starts- Go to HiveOS.
 
-Step 5: (Optional) Create a flight sheet for SWARM (SEE HiveOS install below), you can omit download link, but not arguments!
+Step 5: (Optional) Create a flight sheet for SWARM (SEE HiveOS install below), you can omit Installation URL, but not arguments!
 
 Step 6: (Optional) Apply flight sheet to your newly created SWARM worker.
 
