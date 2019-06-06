@@ -10,7 +10,7 @@ https://github.com/MaynardMiner/SWARM/wiki
 
 SWARM is an collection scripts written in both powershell and bash, and is a profit switching mining script that will work within any OS with very few/little changes. (The miners that SWARM uses may vary) SWARM, is written to be used as an all purpose/all platform mining system that can be implemented/managed on a large scale basis. It was developed for larger mining administrators, who are generally unable to interact with every mining unit/rig directly. It favors command line interfacing vs. GUI.
 
-**This is not a fork of multiminer/nemosminer/sniffdog. This is an original software.
+**This is not a fork of multiminer/nemosminer/sniffdog. This is an original software.**
 
 ### HiveOS Integration (Windows or Linux)
 
