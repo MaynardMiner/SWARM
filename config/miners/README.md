@@ -1,4 +1,4 @@
-# Using / Understandn Miner Configuration Files
+# Using / Understanding Miner Configuration Files
 
 Inside this folder are the items which can be actively modified for each miners that exist in SWARM.
 This is a breakdown of each file, how to use it, and example uses.
