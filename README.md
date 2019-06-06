@@ -32,24 +32,18 @@ I am a sole developer, and this is a large project. I prioritize workload by req
 
 ### Windows
 
-SWARM requires no installation. However there are a few pre-requisites:
-
--Windows 10 minimum.
-
--Have the latest cuda/amd drivers installed.
-
--Latest C++ Redistributable Packages for Visual Studio.
-
-(Optional):
-
--HiveOS user account, your farm hash ready. Ideally a pre-made flight sheet for SWARM. See wiki on how to setup a flight sheet.
+**SWARM requires no installation. However there are a few pre-requisites:
+* Windows 10 minimum.
+* Have the latest cuda/amd drivers installed.
+* Latest C++ Redistributable Packages for Visual Studio.
+* HiveOS user account, your farm hash ready. Ideally a pre-made flight sheet for SWARM. See wiki on how to setup a flight sheet.
 
 *Install Steps:*
 
 Step 1: Open SWARM.bat, change wallet with your BTC wallet, modify/add/replace arguments to your specifications. See help
         files for a list of arguments. Or use github wiki. If using HiveOS- You will only ever have to do this once.
 
-Step 2: (Optional): If you wish to use HiveOS, add your farm hash.
+Step 2: (Optional): If you wish to use HiveOS, add your farm hash as ``-Hive_Hash``
 
 Step 3: Launch SWARM.bat.
 
