@@ -30,8 +30,13 @@ To focus solely on SWARM's project mission: SWARM was written to integrate fully
   multiple wallets / switching at a pool level.
 * Tracks historical statistics using rolling
   exponential moving averages.
+* Adjust starting difficulty of each miner.
 * Control pricing time frames.
 * Divide rig into seperate mining groups.
+* Test .bat files are made in each .\bin folder of
+  miner using last SWARM settings (for miner troubleshooting).
+* Intesity/Difficulty are recorded with hashrates, and stored in
+  .\bin folder of miner. (Where applicable).
 
 SWARM is very customizable. At the base layer- It is easy to setup by simply inputting some basic user configuration at launch, and SWARM will handle the rest. However, beyond the base layer, SWARM offers a sophisticated oc tuning system, along with the ability to customize environment varibles, miner arguments, pool difficulty, and even a system for factoring power cost/calculation into profit analysis. SWARM allows you prohibt miners from certain algorithms, or prohibit mining certain algorithms on certain pools. SWARM also has the ability to control your overclocking internally, including support for AMD Vega in Windows using the latest drivers. It also supports accepting overclocking commands via HiveOS's website, with use of -API_key. 
 
