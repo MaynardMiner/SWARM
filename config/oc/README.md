@@ -22,7 +22,7 @@ If Cards Is Not Empty: Defaults MUST Be Specified For ALL Cards! You cannot leav
      "Power": "150 150 150 75 75 75 150 75 75 150 150 75 75", 
      "Core": "100 100 100 100 100 100 100 100 100 100 100 100 100", 
      "Memory": "1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000" 
-     "Fans": "75 75 75 75 75 75 75 75 75 75 75 75 75"
+     "Fans": "75 75 75 75 65 75 75 85 75 75 65 75 75"
      } 
 ```
 
@@ -33,7 +33,7 @@ You may elect to use only 1 value, which will set all cards to that value:
      "Power": "150", 
      "Core": "100", 
      "Memory": "100"
-     "Fans": "75 75 75 75 75 75 75 75 75 75 75 75 75"
+     "Fans": "75 75 75 75 65 75 75 85 75 75 65 75 75"
      } 
 ```
 
