@@ -10,6 +10,8 @@ https://github.com/MaynardMiner/SWARM/wiki
 
 SWARM is an collection scripts written in both powershell and bash, and is a profit switching mining script that will work within any OS with very few/little changes. (The miners that SWARM uses may vary) SWARM, is written to be used as an all purpose/all platform mining system that can be implemented/managed on a large scale basis. It was developed for larger mining administrators, who are generally unable to interact with every mining unit/rig directly. It favors command line interfacing vs. GUI.
 
+** This is not a fork of multiminer/nemosminer/sniffdog. This is an original software.
+
 ### HiveOS Integration (Windows or Linux)
 
 To focus solely on SWARM's project mission: SWARM was written to integrate fully with HiveOS as of version 1.4.5. The developer of SWARM recognizes the attempt to make an OS/website as sophisticated as the years of development and effort placed into HiveOS would be pointless. Therefor, knowing that SWARM was capable of operating within HiveOS- SWARM was introduced to HiveOS as an available custom miner, and can be integrated rather easily. SWARM also has created a significant amout of scripts which can be ran automatically through HiveOS, and even locally on rig- Allowing you to run multiple terminals and windows, and customize your own setup. Commands like ``get stats`` and ``benchmark all`` can be ran at any moment- Allowing you to quick make changes as neccessary. You also have ALL of the functionality you would get with HiveOS, along with MOST of the functionality of HiveOS's website in the Windows version.
@@ -140,19 +142,6 @@ PROCESS IN GENERAL PRIOR TO USING SWARM.
 
 You may see other apps inside apps folder- These are depreciated, and no longer
 in use.
-
-Thanks To:
-
-```
-Sniffdog
-Nemosminer
-Uselessguru
-Aaronsace
-```
-
-They were the pioneers to powershell scriptmining. Their scripts helped me to piece together a buggy but workable linux miner, which was the original purpose of SWARM, since none of them did so at the time. Since then it has grown to what it is today.
-
-
 
 
 
