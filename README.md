@@ -34,7 +34,7 @@ I am a sole developer, and this is a large project. I prioritize workload by req
 
 ### Windows
 
-**SWARM requires no installation. However there are a few pre-requisites:
+**SWARM requires no installation. However there are a few pre-requisites:**
 * Windows 10 minimum.
 * Have the latest cuda/amd drivers installed.
 * Latest C++ Redistributable Packages for Visual Studio.
