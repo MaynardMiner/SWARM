@@ -58,9 +58,7 @@
     "Wallet3":  "",
     "AltPassword1":  "",
     "Auto_Coin":  "No",
-    "Type":  [
-                 "NVIDIA1"
-             ],
+    "Type":  [ ],
     "Conserve":  "No",
     "GPUDevices1":   [
                       ""
@@ -101,6 +99,6 @@
     "Auto_Algo": "Yes",
     "Bans": [],
     "Xnsub": "",
-    "No_GLT": "Yes",
+    "Ban_GLT": "Yes",
     "optional": []
 }

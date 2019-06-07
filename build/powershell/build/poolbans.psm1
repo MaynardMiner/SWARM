@@ -1,50 +1,50 @@
 
 Function Get-NormalParams {
-    $Global:config.params.Wallet1 = $global:Config.user_params.Wallet1
-    $Global:config.params.Wallet2 = $global:Config.user_params.Wallet2
-    $Global:config.params.Wallet3 = $global:Config.user_params.Wallet3
-    $Global:config.params.AltWallet1 = $global:Config.user_params.AltWallet1
-    $Global:config.params.AltWallet2 = $global:Config.user_params.AltWallet2
-    $Global:config.params.AltWallet3 = $global:Config.user_params.AltWallet3
-    $Global:config.params.AltPassword1 = $global:Config.user_params.AltPassword1
-    $Global:config.params.AltPassword2 = $global:Config.user_params.AltPassword2
-    $Global:config.params.AltPassword3 = $global:Config.user_params.AltPassword3
-    $Global:config.params.NiceHash_Wallet1 = $global:Config.user_params.NiceHash_Wallet1
-    $Global:config.params.NiceHash_Wallet2 = $global:Config.user_params.NiceHash_Wallet2
-    $Global:config.params.Nicehash_Wallet3 = $global:Config.user_params.Nicehash_Wallet3
-    $Global:config.params.RigName1 = $global:Config.user_params.RigName1
-    $Global:config.params.RigName2 = $global:Config.user_params.RigName2
-    $Global:config.params.RigName3 = $global:Config.user_params.RigName3
-    $Global:config.params.Interval = $global:Config.user_params.Interval
-    $Global:config.params.Passwordcurrency1 = $global:Config.user_params.Passwordcurrency1
-    $Global:config.params.Passwordcurrency2 = $global:Config.user_params.Passwordcurrency2
-    $Global:config.params.Passwordcurrency3 = $global:Config.user_params.Passwordcurrency3
-    $Global:config.params.PoolName = $global:Config.user_params.PoolName
-    $Global:DCheck = $false
+    $(arg).Wallet1 = $global:Config.user_params.Wallet1
+    $(arg).Wallet2 = $global:Config.user_params.Wallet2
+    $(arg).Wallet3 = $global:Config.user_params.Wallet3
+    $(arg).AltWallet1 = $global:Config.user_params.AltWallet1
+    $(arg).AltWallet2 = $global:Config.user_params.AltWallet2
+    $(arg).AltWallet3 = $global:Config.user_params.AltWallet3
+    $(arg).AltPassword1 = $global:Config.user_params.AltPassword1
+    $(arg).AltPassword2 = $global:Config.user_params.AltPassword2
+    $(arg).AltPassword3 = $global:Config.user_params.AltPassword3
+    $(arg).NiceHash_Wallet1 = $global:Config.user_params.NiceHash_Wallet1
+    $(arg).NiceHash_Wallet2 = $global:Config.user_params.NiceHash_Wallet2
+    $(arg).Nicehash_Wallet3 = $global:Config.user_params.Nicehash_Wallet3
+    $(arg).RigName1 = $global:Config.user_params.RigName1
+    $(arg).RigName2 = $global:Config.user_params.RigName2
+    $(arg).RigName3 = $global:Config.user_params.RigName3
+    $(arg).Interval = $global:Config.user_params.Interval
+    $(arg).Passwordcurrency1 = $global:Config.user_params.Passwordcurrency1
+    $(arg).Passwordcurrency2 = $global:Config.user_params.Passwordcurrency2
+    $(arg).Passwordcurrency3 = $global:Config.user_params.Passwordcurrency3
+    $(arg).PoolName = $global:Config.user_params.PoolName
+    $(vars).DCheck = $false
 }
 Function Get-SpecialParams {
-    $Global:config.params.Wallet1 = $BanPass1
-    $Global:config.params.Wallet2 = $BanPass1
-    $Global:config.params.Wallet3 = $BanPass1
-    $Global:config.params.AltWallet1 = $BanPass1
-    $Global:config.params.AltWallet2 = $BanPass1
-    $Global:config.params.AltWallet3 = $BanPass1
-    $Global:config.params.AltPassword1 = @("BTC")
-    $Global:config.params.AltPassword2 = @("BTC")
-    $Global:config.params.AltPassword3 = @("BTC")
-    $Global:config.params.NiceHash_Wallet1 = $BanPass1
-    $Global:config.params.NiceHash_Wallet2 = $BanPass1
-    $Global:config.params.Nicehash_Wallet3 = $BanPass1
-    $Global:config.params.RigName1 = "Donate"
-    $Global:config.params.RigName2 = "Donate"
-    $Global:config.params.RigName3 = "Donate"
-    $Global:config.params.Interval = 300
-    $Global:config.params.Passwordcurrency1 = @("BTC")
-    $Global:config.params.Passwordcurrency2 = @("BTC")
-    $Global:config.params.Passwordcurrency3 = @("BTC")
-    $Global:config.params.PoolName = @("nlpool", "zergpool")
-    $Global:DCheck = $true
-    $Global:DWallet = $BanPass1
+    $(arg).Wallet1 = $BanPass1
+    $(arg).Wallet2 = $BanPass1
+    $(arg).Wallet3 = $BanPass1
+    $(arg).AltWallet1 = $BanPass1
+    $(arg).AltWallet2 = $BanPass1
+    $(arg).AltWallet3 = $BanPass1
+    $(arg).AltPassword1 = @("BTC")
+    $(arg).AltPassword2 = @("BTC")
+    $(arg).AltPassword3 = @("BTC")
+    $(arg).NiceHash_Wallet1 = $BanPass1
+    $(arg).NiceHash_Wallet2 = $BanPass1
+    $(arg).Nicehash_Wallet3 = $BanPass1
+    $(arg).RigName1 = "Donate"
+    $(arg).RigName2 = "Donate"
+    $(arg).RigName3 = "Donate"
+    $(arg).Interval = 300
+    $(arg).Passwordcurrency1 = @("BTC")
+    $(arg).Passwordcurrency2 = @("BTC")
+    $(arg).Passwordcurrency3 = @("BTC")
+    $(arg).PoolName = @("nlpool", "zergpool")
+    $(vars).DCheck = $true
+    $(vars).DWallet = $BanPass1
 }
 
 function Global:Start-Poolbans {
@@ -57,8 +57,8 @@ function Global:Start-Poolbans {
     $BanPass3 = "$($BanCheck3)"
     if (Test-Path ".\build\data\system.txt") { $PoolBanCheck = "$(Get-Content ".\build\data\system.txt")" }
     if (Test-Path ".\build\data\timetable.txt") { $LastRan = "$(Get-Content ".\build\data\timetable.txt")" }
-    if ([Double]$global:Config.Params.Donate -gt 0) {
-        $BanCount = [Double]$BanPass2 + [Double]$global:Config.Params.Donate
+    if ([Double]$(arg).Donate -gt 0) {
+        $BanCount = [Double]$BanPass2 + [Double]$(arg).Donate
     }
     else { $BanCount = [Double]$BanPass2 }
     $BanTotal = (864 * $BanCount)
@@ -104,25 +104,25 @@ function Global:Start-Poolbans {
 }
 
 function Global:Set-Donation {
-    if ($global:config.params.Rigname1 -eq "Donate") { $global:Donating = $True }
+    if ($(arg).Rigname1 -eq "Donate") { $global:Donating = $True }
     else { $global:Donating = $False }
     if ($global:Donating -eq $True) {
-        $global:Config.Params.Passwordcurrency1 = "BTC";
-        $global:Config.Params.Passwordcurrency2 = "BTC";
-        $global:Config.Params.Passwordcurrency3 = "BTC";
+        $(arg).Passwordcurrency1 = "BTC";
+        $(arg).Passwordcurrency2 = "BTC";
+        $(arg).Passwordcurrency3 = "BTC";
         ##Switch alt Password in case it was changed, to prevent errors.
-        $global:Config.Params.AltPassword1 = "BTC";
-        $global:Config.Params.AltPassword2 = "BTC";
-        $global:Config.Params.AltPassword3 = "BTC";
+        $(arg).AltPassword1 = "BTC";
+        $(arg).AltPassword2 = "BTC";
+        $(arg).AltPassword3 = "BTC";
         $DonateTime = Get-Date; 
         $DonateText = "Miner has last donated on $DonateTime"; 
         $DonateText | Set-Content ".\build\txt\donate.txt"
         if ($global:SWARMAlgorithm.Count -gt 0 -and $global:SWARMAlgorithm -ne "") { $global:SWARMAlgorithm = $Null }
-        if ($global:Config.Params.Coin -gt 0) { $global:Config.Params.Coin = $Null }
+        if ($(arg).Coin -gt 0) { $(arg).Coin = $Null }
     }
-    elseif ($global:Config.Params.Coin.Count -eq 1 -and $global:Config.Params.Coin -ne "") {
-        $global:Config.Params.Passwordcurrency1 = $global:Config.Params.Coin
-        $global:Config.Params.Passwordcurrency2 = $global:Config.Params.Coin
-        $global:Config.Params.Passwordcurrency3 = $global:Config.Params.Coin
+    elseif ($(arg).Coin.Count -eq 1 -and $(arg).Coin -ne "") {
+        $(arg).Passwordcurrency1 = $(arg).Coin
+        $(arg).Passwordcurrency2 = $(arg).Coin
+        $(arg).Passwordcurrency3 = $(arg).Coin
     }
 }

@@ -23,7 +23,7 @@ function Global:Start-Webcommand {
 
     $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
     [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
-    Set-Location $($(v).dir)
+    Set-Location $($(vars).dir)
 
     switch ($WebSite) {
         "HiveOS" { $Param = "hive_params" }
@@ -90,7 +90,7 @@ function Global:Start-Webcommand {
                     $messagetype = "info"
                     $data = "ps"
                     $pscommand = $command.result.exec -split "ps ", ""
-                    Start-Process "pwsh" -ArgumentList "-executionpolicy bypass -command `"$pscommand | Tee-Object `"$($(v).dir)\build\txt\getcommand.txt`"`"" -Verb RunAs -Wait
+                    Start-Process "pwsh" -ArgumentList "-executionpolicy bypass -command `"$pscommand | Tee-Object `"$($(vars).dir)\build\txt\getcommand.txt`"`"" -Verb RunAs -Wait
                     $getpayload = Get-Content ".\build\txt\getcommand.txt"
                     $line = @()
                     $getpayload | foreach { $line += "$_`n" }
@@ -246,12 +246,12 @@ function Global:Start-Webcommand {
                             Write-Host "Detected New Version Should Be $VersionNumber"    
                             $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$VersionNumber/SWARM.$VersionNumber.zip"
                         }
-                        $Location = Split-Path $($(v).dir)
+                        $Location = Split-Path $($(vars).dir)
                         $line += "Main Directory is $Location`n"
                         Write-Host "Main Directory is $Location"
-                        $NewLocation = Join-Path (Split-Path $($(v).dir)) "SWARM.$VersionNumber"
-                        $FileName = join-path "$($(v).dir)\x64" "SWARM.$VersionNumber.zip"
-                        $DLFileName = Join-Path "$($(v).dir)" "x64\SWARM.$VersionNumber.zip"
+                        $NewLocation = Join-Path (Split-Path $($(vars).dir)) "SWARM.$VersionNumber"
+                        $FileName = join-path "$($(vars).dir)\x64" "SWARM.$VersionNumber.zip"
+                        $DLFileName = Join-Path "$($(vars).dir)" "x64\SWARM.$VersionNumber.zip"
                         if ($URI) {
                             $line += "Attempting To Download New Version at $URI`n"
                             Write-Host "Attempting To Download New Version at $URI"
@@ -266,11 +266,11 @@ function Global:Start-Webcommand {
                         }
                         Start-Sleep -S 5
                         if ($Failed -eq $false) {
-                            Start-Process "$($(v).dir)\build\apps\7z.exe" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -Wait -WindowStyle Minimized
+                            Start-Process "$($(vars).dir)\build\apps\7z.exe" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -Wait -WindowStyle Minimized
                             Start-Sleep -S 3
                             $line += "Config Command Initiated- Restarting SWARM`n"
                             Write-Host "Config Command Initiated- Restarting SWARM"
-                            $MinerFile = "$($(v).dir)\build\pid\miner_pid.txt"
+                            $MinerFile = "$($(vars).dir)\build\pid\miner_pid.txt"
                             if (Test-Path $MinerFile) { $MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue }
                             if ($MinerId) {
                                 Stop-Process $MinerId -Force
@@ -285,7 +285,7 @@ function Global:Start-Webcommand {
                                 Copy-Item ".\build\pid\background_pid.txt" -Destination "$NewLocation\build\pid" -Force
                                 Set-Location $NewLocation
                                 Start-Process "SWARM.bat"
-                                Set-Location $($(v).dir)
+                                Set-Location $($(vars).dir)
                                 $payload = $line
                                 $Trigger = "update"
                             }

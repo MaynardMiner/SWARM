@@ -1,6 +1,6 @@
 function Global:Start-CrashReporting {
-    if ($global:Config.Params.Platform -eq "windows") { Get-CimInstance -ClassName win32_operatingsystem | Select-Object lastbootuptime | ForEach-Object { $Boot = [math]::Round(((Get-Date) - $_.LastBootUpTime).TotalSeconds) } }
-    elseif ($global:Config.Params.Platform -eq "linux") { $Boot = Get-Content "/proc/uptime" | ForEach-Object { $_ -split " " | Select-Object -First 1 } };
+    if ($(arg).Platform -eq "windows") { Get-CimInstance -ClassName win32_operatingsystem | Select-Object lastbootuptime | ForEach-Object { $Boot = [math]::Round(((Get-Date) - $_.LastBootUpTime).TotalSeconds) } }
+    elseif ($(arg).Platform -eq "linux") { $Boot = Get-Content "/proc/uptime" | ForEach-Object { $_ -split " " | Select-Object -First 1 } };
     if ([Double]$Boot -lt 600) {
         if ((Test-Path ".\build\txt") -and (Test-Path ".\logs")) {
             Write-Warning "SWARM was started in 600 seconds of last boot. Generating a crash report to logs directory";

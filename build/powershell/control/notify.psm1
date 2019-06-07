@@ -9,7 +9,7 @@ function Global:Invoke-MinerSuccess {
                       (/\)(____(_______)      
 Waiting 15 Seconds For Miners To Load & Restarting Background Tracking
 " -ForegroundColor Magenta
-    if ($global:Config.Params.Platform -eq "linux") {
+    if ($(arg).Platform -eq "linux") {
         Global:Write-Log "
 
 Type `'mine`' in another terminal to see miner working- This is NOT a remote command!
@@ -20,7 +20,7 @@ https://github.com/MaynardMiner/SWARM/wiki/Commands-&-Suggested-Apps For More In
 
 " -ForegroundColor Magenta
     }
-    elseif ($global:Config.Params.Platform -eq "windows") {
+    elseif ($(arg).Platform -eq "windows") {
         Global:Write-Log "
 
 There is now a new window where miner is working. The output may be different from
@@ -41,7 +41,7 @@ function Global:Invoke-MinerWarning {
 There are miners that have failed! Check Your Settings And Arguments!
 " -ForegroundColor DarkRed
 
-    if ($global:Config.Params.Platform -eq "linux") {
+    if ($(arg).Platform -eq "linux") {
         Global:Write-Log "
 
 Type `'mine`' in another terminal to see background miner, and its reason for failure.
@@ -50,7 +50,7 @@ If miner is not your primary miner (AMD1 or NVIDIA1), type `'screen -r [Type]`'
 https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration) >> Right Click `'Open URL In Browser`'
 " -ForegroundColor Darkred
     }
-    elseif ($global:Config.Params.Platform -eq "windows") {
+    elseif ($(arg).Platform -eq "windows") {
         Global:Write-Log "
  
  SWARM attempts to catch screen output, and is stored in `'logs`' folder.
@@ -72,16 +72,16 @@ Most Profitable Miners Are Running
 }
 
 function Global:Get-LaunchNotification {
-    $global:MinerWatch.Restart()
+    $(vars).MinerWatch.Restart()
     if ($global:Restart -eq $true -and $global:NoMiners -eq $true) { Global:Invoke-MinerWarning }
-    if ($global:Config.Params.Platform -eq "linux" -and $global:Restart -eq $true -and $global:NoMiners -eq $false) { Global:Invoke-MinerSuccess }
-    if ($global:Config.Params.Platform -eq "windows" -and $global:Restart -eq $true -and $global:NoMiners -eq $false) { Global:Invoke-MinerSuccess }
+    if ($(arg).Platform -eq "linux" -and $global:Restart -eq $true -and $global:NoMiners -eq $false) { Global:Invoke-MinerSuccess }
+    if ($(arg).Platform -eq "windows" -and $global:Restart -eq $true -and $global:NoMiners -eq $false) { Global:Invoke-MinerSuccess }
     if ($global:Restart -eq $false) { Global:Invoke-NoChange }
 }
 
 function Global:Get-Interval {
     ##Determine Benchmarking
-    $global:BestActiveMiners | ForEach-Object {
+    $(vars).BestActiveMIners | ForEach-Object {
         $StatAlgo = $_.Algo -replace "`_", "`-"        
         if (-not (Test-Path ".\stats\$($_.Name)_$($StatAlgo)_hashrate.txt")) { 
             $global:BenchmarkMode = $true; 
@@ -90,19 +90,19 @@ function Global:Get-Interval {
 
     if ($global:BenchmarkMode -eq $true) {
         Global:Write-Log "SWARM is Benchmarking Miners." -Foreground Yellow;
-        $global:MinerInterval = $global:Config.Params.Benchmark
+        $global:MinerInterval = $(arg).Benchmark
         $global:MinerStatInt = 1
     }
     else {
-        if ($global:Config.Params.SWARM_Mode -eq "Yes") {
+        if ($(arg).SWARM_Mode -eq "Yes") {
             $global:SWARM_IT = $true
             Global:Write-Log "SWARM MODE ACTIVATED!" -ForegroundColor Green;
             $global:SwitchTime = Get-Date
             Global:Write-Log "SWARM Mode Start Time is $global:SwitchTime" -ForegroundColor Cyan;
             $global:MinerInterval = 10000000;
-            $global:MinerStatInt = $global:Config.Params.StatsInterval
+            $global:MinerStatInt = $(arg).StatsInterval
         }
-        else { $global:MinerInterval = $global:Config.Params.Interval; $global:MinerStatInt = $global:Config.Params.StatsInterval }
+        else { $global:MinerInterval = $(arg).Interval; $global:MinerStatInt = $(arg).StatsInterval }
     }
 }
 
@@ -117,10 +117,10 @@ function Global:Get-CoinShares {
     . .\build\api\pools\fairpool.ps1;
     . .\build\api\pools\blazepool.ps1;
 
-    $global:Config.Params.Type | ForEach-Object { $global:Share_Table.Add("$($_)", @{ }) }
+    $(arg).Type | ForEach-Object { $global:Share_Table.Add("$($_)", @{ }) }
 
     ##For 
-    $global:Config.Params.Poolname | % {
+    $(arg).Poolname | % {
         switch ($_) {
             "zergpool" { Get-ZergpoolData }
             "nlpool" { Get-NlPoolData }        

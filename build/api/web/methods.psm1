@@ -78,7 +78,7 @@ function Global:Get-RigData {
             }
             if ($DriverDesc) { $AMDDriver = "$DriverDesc" }else { $AMDDriver = "0.0.0" }
             $RigData.Add("amd_version", $AMDDriver)
-            Set-Location $($(v).dir)
+            Set-Location $($(vars).dir)
         }
         $false {
             ##dmidecode 3.1

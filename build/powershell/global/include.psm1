@@ -15,10 +15,10 @@ function Global:Add-LogErrors {
     if ($Error.Count -gt 0) {
         $TimeStamp = (Get-Date)
         $errormesage = "[$TimeStamp]: SWARM Generated The Following Warnings/Errors-"
-        $errormesage | Add-Content $global:logname
+        $errormesage | Add-Content $(vars).logname
         $Message = @()
         $error | foreach { $Message += "$($_.InvocationInfo.InvocationName)`: $($_.Exception.Message)"; $Message += $_.InvocationINfo.PositionMessage; $Message += $_.InvocationInfo.Line; $Message += $_.InvocationINfo.Scriptname; $MEssage += "" }
-        $Message | Add-Content $global:logname
+        $Message | Add-Content $(vars).logname
         $error.clear()
     }
 }
@@ -40,7 +40,7 @@ function Global:Write-Log {
     )
     
     $Date = (Get-Date)
-    $File = $global:logname
+    $File = $(vars).logname
 
     if ($ForeGround) { $Color = $ForeGround }
     if ($ForeGroundColor) { $Color = $ForeGroundColor }

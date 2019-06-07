@@ -20,7 +20,7 @@ function Global:Start-OC {
     )
 
     $Miner = $NewMiner | ConvertFrom-Json
-    Switch ($Global:Config.params.Platform) {
+    Switch ($(arg).Platform) {
         "linux" { $Global:GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json }
         "windows" { $Global:GCount = Get-Content ".\build\txt\oclist.txt" | ConvertFrom-Json }
     }
@@ -41,8 +41,8 @@ function Global:Start-OC {
     
     ## Stop previous Pill
     ## Will Restart It If it Required
-    if ($Global:Config.params.Platform -eq "linux") { Start-Process "./build/bash/killall.sh" -ArgumentList "pill-$($Miner.Type)" -Wait }
-    if ($Global:Config.params.Platform -eq "windows") {
+    if ($(arg).Platform -eq "linux") { Start-Process "./build/bash/killall.sh" -ArgumentList "pill-$($Miner.Type)" -Wait }
+    if ($(arg).Platform -eq "windows") {
         if (Test-Path (".\build\pid\pill_pid.txt")) {
             $PillPID = Get-Content ".\build\pid\pill_pid.txt"
             if ($PillPID) {
@@ -69,12 +69,12 @@ function Global:Start-OC {
         $PillDevices = "--RevA $PillDevices"
 
         ##Start Pill Linux
-        if ($Global:Config.params.Platform -eq "linux") {
+        if ($(arg).Platform -eq "linux") {
             if($OC_Algo.PillDelay){$PillDelay = $OC_Algo.PillDelay}
             else{$PillDelay = 1}
             $PillScript = @()
             $PillScript += "`#`!/usr/bin/env bash"
-            if ($Global:Config.params.HiveOS -eq "Yes") { $PillScript += "export DISPLAY=`":0`"" }
+            if ($(arg).HiveOS -eq "Yes") { $PillScript += "export DISPLAY=`":0`"" }
             $PillScript += "./build/apps/OhGodAnETHlargementPill-r2 $PillDevices"
             Start-Process "screen" -ArgumentList "-S pill-$($Miner.Type) -d -m" -Wait
             Start-Sleep -S $PillDelay
@@ -85,11 +85,11 @@ function Global:Start-OC {
         }
 
         ##Start Pill Windows
-        if ($Global:Config.params.Platform -eq "windows") {
+        if ($(arg).Platform -eq "windows") {
             if ($OC_Algo.PillDelay) { $PillSleep = $OC_Algo.PillDelay }
             else { $PillSleep = 1 }
             $PillTimer = New-Object -TypeName System.Diagnostics.Stopwatch
-            $PL = Join-Path "$($(v).dir)" ".\build\apps"
+            $PL = Join-Path "$($(vars).dir)" ".\build\apps"
             $command = Start-Process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -noexit -command `"&{`$host.ui.RawUI.WindowTitle = `'ETH-Pill`'; Set-Location $PL; Start-Sleep $PillSleep; Invoke-Expression `'.\OhGodAnETHlargementPill-r2.exe $PillDevices`'}`"" -WindowStyle Minimized -PassThru -Verb Runas
             $command.ID | Set-Content ".\build\pid\pill_pid.txt"
             $PillTimer.Restart()
@@ -179,8 +179,8 @@ function Global:Start-OC {
                         "P104-100" { $X = 1 }
                         "P102-100" { $X = 1 }
                     }
-                    if ($Global:Config.params.Platform -eq "linux") { $NSettings += " -a [gpu:$GPU]/GPUGraphicsClockOffset[$X]=$($Cores)" }
-                    if ($Global:Config.params.Platform -eq "windows") { $NVIDIAOCArgs += "-setBaseClockOffset:$GPU,0,$($Cores) " }
+                    if ($(arg).Platform -eq "linux") { $NSettings += " -a [gpu:$GPU]/GPUGraphicsClockOffset[$X]=$($Cores)" }
+                    if ($(arg).Platform -eq "windows") { $NVIDIAOCArgs += "-setBaseClockOffset:$GPU,0,$($Cores) " }
                 }
                 $NScreenCore += "$($Miner.Type) Core is $Core "
             }
@@ -192,8 +192,8 @@ function Global:Start-OC {
                         $Fans = $Fan[$i]
                     } else { $Fans = $Fan | Select -First 1 }
                     $GPU = $OCDevices[$i]
-                    if ($Global:Config.params.Platform -eq "linux") { $NSettings += " -a [gpu:$GPU]/GPUFanControlState=1 -a [fan:$($Global:GCount.NVIDIA.$GPU)]/GPUTargetFanSpeed=$($Fans)" }
-                    if ($Global:Config.params.Platform -eq "windows") { $NVIDIAOCArgs += "-setFanSpeed:$GPU,$($Fans) " }
+                    if ($(arg).Platform -eq "linux") { $NSettings += " -a [gpu:$GPU]/GPUFanControlState=1 -a [fan:$($Global:GCount.NVIDIA.$GPU)]/GPUTargetFanSpeed=$($Fans)" }
+                    if ($(arg).Platform -eq "windows") { $NVIDIAOCArgs += "-setFanSpeed:$GPU,$($Fans) " }
                 }
                 $NScreenFan += "$($Miner.Type) Fan is $Fan "
             }
@@ -216,8 +216,8 @@ function Global:Start-OC {
                         "1660" {$X = 4}
                         "1660ti" {$X = 4}
                     }
-                    if ($Global:Config.params.Platform -eq "linux") { $NSettings += " -a [gpu:$GPU]/GPUMemoryTransferRateOffset[$X]=$($Mems)" }
-                    if ($Global:Config.params.Platform -eq "windows") { $NVIDIAOCArgs += "-setMemoryClockOffset:$GPU,0,$($Mems) " } 
+                    if ($(arg).Platform -eq "linux") { $NSettings += " -a [gpu:$GPU]/GPUMemoryTransferRateOffset[$X]=$($Mems)" }
+                    if ($(arg).Platform -eq "windows") { $NVIDIAOCArgs += "-setMemoryClockOffset:$GPU,0,$($Mems) " } 
                 }
                 $NScreenMem += "$($Miner.Type) Memory is $Mem "
             }
@@ -230,11 +230,11 @@ function Global:Start-OC {
                         $Powers = $Power[$i]
                     } else { $Powers = $Power | Select -First 1 }
                     $GPU = $OCDevices[$i]
-                    if ($Global:Config.params.Platform -eq "linux") { $NPL += "nvidia-smi -i $GPU -pl $($Powers)"; }
-                    elseif ($Global:Config.params.Platform -eq "windows") { $NVIDIAOCArgs += "-setPowerTarget:$GPU,$($Powers) " }
+                    if ($(arg).Platform -eq "linux") { $NPL += "nvidia-smi -i $GPU -pl $($Powers)"; }
+                    elseif ($(arg).Platform -eq "windows") { $NVIDIAOCArgs += "-setPowerTarget:$GPU,$($Powers) " }
                 }
 
-                if ($Global:Config.params.Platform -eq "linux") {
+                if ($(arg).Platform -eq "linux") {
                     for ($i = 0; $i -lt $OCDevices.Count; $i++) {
                         $GPU = $OCDevices[$i]
                         $NPL += "nvidia-smi -i $GPU -pm ENABLED"; 
@@ -270,11 +270,11 @@ if ($Miner.Type -like "*AMD*") {
     }
 
     if ($OC_Algo.v) {
-        $V = $OC_Algo.$(v).-split ' '    
+        $V = $OC_Algo.$(vars).-split ' '    
         $Voltage = $V -split ","
     }
     else {
-        $V = $Default.$(v).-split ' '
+        $V = $Default.$(vars).-split ' '
         $Voltage = $V -split ","
     }
 
@@ -309,11 +309,11 @@ if ($Miner.Type -like "*AMD*") {
     
     if ($Card) {
 
-        if ($Global:Config.params.Platform -eq "linux") {
+        if ($(arg).Platform -eq "linux") {
             $AScript += "`#`!/usr/bin/env bash" 
         }
         
-        if ($Global:Config.params.Platform -eq "linux") {
+        if ($(arg).Platform -eq "linux") {
 
             if ($MemClock -or $MemState) {
                 $DOAmdOC = $true
@@ -387,7 +387,7 @@ if ($Miner.Type -like "*AMD*") {
             }
         }
 
-        if ($Global:Config.params.Platform -eq "windows") {
+        if ($(arg).Platform -eq "windows") {
             Invoke-Expression ".\build\apps\odvii.exe s" | Tee-Object -Variable stats | OUt-Null
             $stats = $stats | ConvertFrom-StringData
             $Model = $stats.keys | % { if ($_ -like "*Model*") { $stats.$_ } }
@@ -482,24 +482,24 @@ if ($Miner.Type -like "*AMD*") {
     }
 }
     
-if ($DoNVIDIAOC -eq $true -and $Global:Config.params.Platform -eq "windows") {
+if ($DoNVIDIAOC -eq $true -and $(arg).Platform -eq "windows") {
     $script = @()
     $script += "`$host.ui.RawUI.WindowTitle = `'OC-Start`';"
     $script += "Invoke-Expression `'.\nvidiaInspector.exe $NVIDIAOCArgs`'"
     Set-Location ".\build\apps"
     $script | Out-File "NVIDIA-oc-start.ps1"
     $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\NVIDIA-oc-start.ps1""" -PassThru -WindowStyle Minimized -Wait
-    Set-Location $($(v).dir)
+    Set-Location $($(vars).dir)
 }
     
-if ($DoAMDOC -eq $true -and $Global:Config.params.Platform -eq "windows") {
+if ($DoAMDOC -eq $true -and $(arg).Platform -eq "windows") {
     Set-Location ".\build\apps"
     $Ascript | Out-File "AMD-oc-start.ps1"
     $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\AMD-oc-start.ps1""" -PassThru -WindowStyle Minimized -Wait
-    Set-Location $($(v).dir)
+    Set-Location $($(vars).dir)
 }
     
-if ($DOAmdOC -eq $true -and $Global:Config.params.Platform -eq "linux") {
+if ($DOAmdOC -eq $true -and $(arg).Platform -eq "linux") {
     Start-Process "./build/bash/killall.sh" -ArgumentList "OC_AMD" -Wait
     Start-Process "screen" -ArgumentList "-S OC_AMD -d -m" -Wait
     Start-Sleep -S .25
@@ -509,10 +509,10 @@ if ($DOAmdOC -eq $true -and $Global:Config.params.Platform -eq "linux") {
     if (Test-Path ".\build\bash\amdoc.sh") { Start-Process "screen" -ArgumentList "-S OC_AMD -X stuff ./build/bash/amdoc.sh`n"; Start-Sleep -S 1; }
 }
     
-if ($DoNVIDIAOC -eq $true -and $Global:Config.params.Platform -eq "linux") {
+if ($DoNVIDIAOC -eq $true -and $(arg).Platform -eq "linux") {
     $NScript = @()
     $NScript += "`#`!/usr/bin/env bash"
-    if ($Global:Config.params.HiveOS -eq "Yes") { $NScript += "export DISPLAY=`":0`"" }
+    if ($(arg).HiveOS -eq "Yes") { $NScript += "export DISPLAY=`":0`"" }
     if ($SettingsArgs -eq $true) { $NScript += "nvidia-settings $NSettings" }
     if ($NPL) { $NScript += $NPL }
     Start-Process "./build/bash/killall.sh" -ArgumentList "OC_$($Miner.Type)" -Wait

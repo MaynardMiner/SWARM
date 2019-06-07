@@ -4,12 +4,13 @@ $zpool_Sorted = [PSCustomObject]@{ }
 $zpool_UnSorted = [PSCustomObject]@{ }
 
 $DoAutoCoin = $false
-if($global:Config.Params.Coin.Count -eq 0){ $DoAutoCoin = $true }
-$global:Config.Params.Coin | %{ if($_ -eq ""){ $DoAutoCoin = $true} }
+if($(arg).Coin.Count -eq 0){ $DoAutoCoin = $true }
+$(arg).Coin | %{ if($_ -eq ""){ $DoAutoCoin = $true} }
+if($(arg).Ban_GLT -eq "Yes"){$NoGLT = "GLT"}
 
-if ($global:Config.Params.xnsub -eq "Yes") { $X = "#xnsub" } 
+if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" } 
 
-if ($Name -in $global:Config.Params.PoolName) {
+if ($Name -in $(arg).PoolName) {
     try { $zpool_Request = Invoke-RestMethod "https://zpool.ca/api/currencies" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }
     catch {
         Global:Write-Log "SWARM contacted ($Name) for a failed API check. (Coins)"; 
@@ -21,7 +22,7 @@ if ($Name -in $global:Config.Params.PoolName) {
         return
     }
 
-    Switch ($global:Config.Params.Location) {
+    Switch ($(arg).Location) {
         "US" { $region = "na" }
         "EUROPE" { $region = "eu" }
         "ASIA" { $region = "sea" }
@@ -35,7 +36,7 @@ if ($Name -in $global:Config.Params.PoolName) {
     }
     $zpoolAlgos = @()
     $zpoolAlgos += $global:Algorithm
-    $zpoolAlgos += $global:Config.Params.ASIC_ALGO
+    $zpoolAlgos += $(arg).ASIC_ALGO
 
     $Algos = $zpoolAlgos | ForEach-Object { if ($Bad_pools.$_ -notcontains $Name) { $_ } }
     $zpool_Request.PSObject.Properties.Value | % { $_.Estimate = [Decimal]$_.Estimate }
@@ -44,8 +45,8 @@ if ($Name -in $global:Config.Params.PoolName) {
     $Active = $zpool_Request.PSObject.Properties.Value | Where-Object sym -in $global:ActiveSymbol
     if ($Active) { $Active | ForEach-Object { $zpool_Sorted | Add-Member $_.sym $_ -Force } }
 
-    if ($global:Config.Params.Coin.Count -gt 1 -and $global:Config.Params.Coin -ne "") {
-        $CoinsOnly = $zpool_Request.PSObject.Properties.Value | Where-Object sym -in $global:Config.Params.Coin
+    if ($(arg).Coin.Count -gt 1 -and $(arg).Coin -ne "") {
+        $CoinsOnly = $zpool_Request.PSObject.Properties.Value | Where-Object sym -in $(arg).Coin
         if ($CoinsOnly) { $CoinsOnly | ForEach-Object { $zpool_Sorted | Add-Member $_.sym $_ -Force } }
     }
 
@@ -61,6 +62,7 @@ if ($Name -in $global:Config.Params.PoolName) {
             Where-Object { $global:Config.Pool_Algos.$($_.Algo) } |
             Where-Object { $Name -notin $global:Config.Pool_Algos.$($_.sym).exclusions } |
             Where-Object Sym -notin $global:BanHammer |
+            Where-Object Sym -notlike "*$NoGLT*" |
             Where-Object estimate -gt 0 | 
             Where-Object hashrate -ne 0 | 
             Sort-Object Price -Descending |
@@ -70,7 +72,7 @@ if ($Name -in $global:Config.Params.PoolName) {
         }
     }
 
-    if ($global:Config.Params.Stat_All -eq "Yes") {
+    if ($(arg).Stat_All -eq "Yes") {
         $Algos | ForEach-Object {
 
             $Selected = $_
@@ -123,11 +125,11 @@ if ($Name -in $global:Config.Params.PoolName) {
             $Stat = Global:Set-Stat -Name "$($Name)_$($zpool_Symbol)_coin_profit" -Value $Cut
 
             $Pass1 = $global:Wallets.Wallet1.Keys
-            $User1 = $global:Wallets.Wallet1.$($global:Config.Params.Passwordcurrency1).address
+            $User1 = $global:Wallets.Wallet1.$($(arg).Passwordcurrency1).address
             $Pass2 = $global:Wallets.Wallet2.Keys
-            $User2 = $global:Wallets.Wallet2.$($global:Config.Params.Passwordcurrency2).address
+            $User2 = $global:Wallets.Wallet2.$($(arg).Passwordcurrency2).address
             $Pass3 = $global:Wallets.Wallet3.Keys
-            $User3 = $global:Wallets.Wallet3.$($global:Config.Params.Passwordcurrency3).address
+            $User3 = $global:Wallets.Wallet3.$($(arg).Passwordcurrency3).address
 
             if ($global:Wallets.AltWallet1.keys) {
                 $global:Wallets.AltWallet1.Keys | ForEach-Object {
@@ -171,16 +173,16 @@ if ($Name -in $global:Config.Params.PoolName) {
             [PSCustomObject]@{
                 Symbol    = "$zpool_Symbol-Coin"
                 Algorithm = $zpool_Algorithm
-                Price     = $Stat.$($global:Config.Params.Stat_Coin)
+                Price     = $Stat.$($(arg).Stat_Coin)
                 Protocol  = "stratum+tcp"
                 Host      = $zpool_Host
                 Port      = $zpool_Port
                 User1     = $User1
                 User2     = $User2
                 User3     = $User3
-                Pass1     = "c=$Pass1,zap=$zpool_Symbol,id=$($global:Config.Params.RigName1)"
-                Pass2     = "c=$Pass2,zap=$zpool_Symbol,id=$($global:Config.Params.RigName2)"
-                Pass3     = "c=$Pass3,zap=$zpool_Symbol,id=$($global:Config.Params.RigName3)"
+                Pass1     = "c=$Pass1,zap=$zpool_Symbol,id=$($(arg).RigName1)"
+                Pass2     = "c=$Pass2,zap=$zpool_Symbol,id=$($(arg).RigName2)"
+                Pass3     = "c=$Pass3,zap=$zpool_Symbol,id=$($(arg).RigName3)"
             } 
         }
     }

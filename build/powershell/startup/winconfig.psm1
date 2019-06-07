@@ -120,26 +120,26 @@ function Global:Get-GPUCount {
 
     if ($GA -or $GN) {
         $TypeArray = @("NVIDIA1", "NVIDIA2", "NVIDIA3", "AMD1")
-        $TypeArray | ForEach-Object { if ($_ -in $Global:Config.Params.Type) { $NoType = $false } }
+        $TypeArray | ForEach-Object { if ($_ -in $(arg).Type) { $NoType = $false } }
         if ($NoType -eq $true) {
             Global:Write-Log "Searching GPU Types" -ForegroundColor Yellow
             if ($GA) { 
                 Global:Write-Log "AMD Detected: Adding AMD" -ForegroundColor Magenta
-                $global:Config.params.Type += "AMD1" 
+                $(arg).Type += "AMD1" 
             }
             if ($GN -and $GA) {
                 Global:Write-Log "NVIDIA Also Detected" -ForegroundColor Magenta
-                $global:Config.params.Type += "NVIDIA2" 
+                $(arg).Type += "NVIDIA2" 
             }
             elseif ($GN) { 
                 Global:Write-Log "NVIDIA Detected: Adding NVIDIA" -ForegroundColor Magenta
-                $global:Config.Params.Type += "NVIDIA1" 
+                $(arg).Type += "NVIDIA1" 
             }
         }
     }
 
     
-    if ($global:Config.Params.Type -like "*CPU*") { for ($i = 0; $i -lt $global:Config.Params.CPUThreads; $i++) { $DeviceList.CPU.Add("$($i)", $i) } }
+    if ($(arg).Type -like "*CPU*") { for ($i = 0; $i -lt $(arg).CPUThreads; $i++) { $DeviceList.CPU.Add("$($i)", $i) } }
     $DeviceList | ConvertTo-Json | Set-Content ".\build\txt\devicelist.txt"
     $OCList | ConvertTo-Json | Set-Content ".\build\txt\oclist.txt"
     $GPUCount = 0
@@ -150,16 +150,16 @@ function Global:Get-GPUCount {
 function Global:Start-WindowsConfig {
 
     ## Add Swarm to Startup
-    if ($global:Config.Params.Startup) {
+    if ($(arg).Startup) {
         $CurrentUser = $env:UserName
         $Startup_Path = "C:\Users\$CurrentUser\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"
         $Bat_Startup = Join-Path $Startup_Path "SWARM.bat"
-        switch ($global:Config.Params.Startup) {
+        switch ($(arg).Startup) {
             "Yes" {
                 Global:Write-Log "Attempting to add current SWARM.bat to startup" -ForegroundColor Magenta
                 Global:Write-Log "If you do not wish SWARM to start on startup, use -Startup No argument"
                 Global:Write-Log "Startup FilePath: $Startup_Path"
-                $bat = "CMD /r pwsh -ExecutionPolicy Bypass -command `"Set-Location $($(v).dir); Start-Process `"SWARM.bat`"`""
+                $bat = "CMD /r pwsh -ExecutionPolicy Bypass -command `"Set-Location $($(vars).dir); Start-Process `"SWARM.bat`"`""
                 $Bat_Startup = Join-Path $Startup_Path "SWARM.bat"
                 $bat | Set-Content $Bat_Startup
             }
@@ -206,13 +206,13 @@ function Global:Start-WindowsConfig {
     }
     
     ## Windows Bug- Set Cudas to match PCI Bus Order
-    if ($global:Config.Params.Type -like "*NVIDIA*") { [Environment]::SetEnvironmentVariable("CUDA_DEVICE_ORDER", "PCI_BUS_ID", "User") }
+    if ($(arg).Type -like "*NVIDIA*") { [Environment]::SetEnvironmentVariable("CUDA_DEVICE_ORDER", "PCI_BUS_ID", "User") }
     
     ##Set Cuda For Commands
-    if ($global:Config.Params.Type -like "*NVIDIA*") { $global:Config.Params.Cuda = "10"; $global:Config.Params.Cuda | Set-Content ".\build\txt\cuda.txt" }
+    if ($(arg).Type -like "*NVIDIA*") { $(arg).Cuda = "10"; $(arg).Cuda | Set-Content ".\build\txt\cuda.txt" }
     
     ##Detect if drivers are installed, not generic- Close if not. Print message on screen
-    if ($global:Config.Params.Type -like "*NVIDIA*" -and -not (Test-Path "C:\Program Files\NVIDIA Corporation\NVSMI\nvml.dll")) {
+    if ($(arg).Type -like "*NVIDIA*" -and -not (Test-Path "C:\Program Files\NVIDIA Corporation\NVSMI\nvml.dll")) {
         Global:Write-Log "nvml.dll is missing" -ForegroundColor Red
         Start-Sleep -S 3
         Global:Write-Log "To Fix:" -ForegroundColor Blue
@@ -234,11 +234,11 @@ function Global:Start-WindowsConfig {
     $Global:GPU_Count = Global:Get-GPUCount
     
     ## Websites
-    if ($global:Websites) {
-        Global:Add-Module "$($(v).web)\methods.psm1"
+    if ($(vars).WebSites) {
+        Global:Add-Module "$($(vars).web)\methods.psm1"
         $rigdata = Global:Get-RigData
 
-        $global:Websites | ForEach-Object {
+        $(vars).WebSites | ForEach-Object {
             switch ($_) {
                 "HiveOS" {
                     Global:Get-WebModules "HiveOS"
