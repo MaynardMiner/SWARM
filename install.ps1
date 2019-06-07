@@ -242,6 +242,14 @@ if (Test-Path ".\build\bash\get-lambo") {
     Start-Process "chmod" -ArgumentList "+x get-lambo"
     Set-Location "/"
     Set-Location $Dir     
-}      
+}
+
+if (Test-Path ".\build\bash\swarm") {
+    Copy-Item ".\build\bash\swarm" -Destination "/usr/bin" -force | Out-Null
+    Set-Location "/usr/bin"
+    Start-Process "chmod" -ArgumentList "+x swarm"
+    Set-Location "/"
+    Set-Location $Dir     
+}
    
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
