@@ -244,10 +244,10 @@ if (Test-Path ".\build\bash\get-lambo") {
     Set-Location $Dir     
 }
 
-if (Test-Path ".\build\bash\swarm") {
-    Copy-Item ".\build\bash\swarm" -Destination "/usr/bin" -force | Out-Null
+if (Test-Path ".\build\bash\set_swarm") {
+    Copy-Item ".\build\bash\set_swarm" -Destination "/usr/bin" -force | Out-Null
     Set-Location "/usr/bin"
-    Start-Process "chmod" -ArgumentList "+x swarm"
+    Start-Process "chmod" -ArgumentList "+x set_swarm"
     Set-Location "/"
     Set-Location $Dir     
 }
