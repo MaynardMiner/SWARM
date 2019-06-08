@@ -132,10 +132,14 @@ While ($True) {
     Global:Add-Module "$($(vars).global)\stats.psm1"
     Global:Add-Module "$($(vars).global)\hashrates.psm1"
     
+    Write-Host "Checking Miners"
     Global:Invoke-MinerCheck
+    Write-Host "Getting Stats Table"
     Global:New-StatTables
+    Write-Host "Garthering Metrics"
     Global:Get-Metrics
     Remove-Module "initial"
+    Write-Host "Getting GPU Stats"
     if ($global:DoNVIDIA -eq $true) { $NVIDIAStats = Global:Set-NvidiaStats }
     if ($global:DoAMD -eq $true) { $AMDStats = Global:Set-AMDStats }
 

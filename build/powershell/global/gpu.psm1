@@ -28,7 +28,7 @@ function Global:Set-NvidiaStats {
         "linux" {
             switch ($(arg).HiveOS) {
                 "No" {
-                    timeout.exe -s9 10 ./build/apps/VII-smi | Tee-Object -Variable getstats | Out-Null
+                    timeout -s9 10 ./build/apps/VII-smi | Tee-Object -Variable getstats | Out-Null
                     if ($getstats) {
                         $nvidiai = $getstats | ConvertFrom-StringData
                         $nvinfo = @{ }
