@@ -57,7 +57,7 @@ if ($IsWindows) {
 
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
 $(vars).Add("debug",$false)
-if ($global:config.var.debug -eq $True) {
+if ($global:config.vars.debug -eq $True) {
     Start-Transcript ".\logs\debug.log"
     if (($IsWindows)) { Set-ExecutionPolicy Bypass -Scope Process }
 }
