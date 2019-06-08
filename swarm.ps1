@@ -18,16 +18,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ## Set Current Path
 $Global:config = [hashtable]::Synchronized(@{})
 $Global:Config.Add("vars",@{})
-$(vars).Add( "dir",(Split-Path $script:MyInvocation.MyCommand.Path) )
-$(vars).dir = $(vars).dir -replace "/var/tmp","/root"
-Set-Location $(vars).dir
+$Global:Config.vars.Add( "dir",(Split-Path $script:MyInvocation.MyCommand.Path) )
+$Global:Config.vars.dir = $Global:Config.vars.dir -replace "/var/tmp","/root"
+Set-Location $Global:Config.vars.dir
 
 ##filepath dir
 . .\build\powershell\global\modules.ps1
-
-
 $env:Path += ";$($(vars).dir)\build\cmd"
-try { Get-ChildItem . -Recurse | Unblock-File } catch { }
+
+try { Get-ChildItem $($(vars).dir) -Recurse | Unblock-File } catch { }
 
 ## Exclusion Windows Defender
 try { 

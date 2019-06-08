@@ -24,7 +24,7 @@ $UTCTime = $UtcTime.ToUniversalTime()
 $StartTime = [Math]::Round(((Get-Date) - $UtcTime).TotalSeconds)
 $Global:config = [hashtable]::Synchronized(@{ })
 $Global:stats = [hashtable]::Synchronized(@{ })
-$global:config.Add("var", @{ })
+$global:config.Add("vars", @{ })
 . .\build\powershell\global\modules.ps1
 $(vars).Add("dir", $WorkingDir)
 

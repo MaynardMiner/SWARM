@@ -31,7 +31,7 @@ function Global:Remove-Modules {
     }
 }
 
-function Global:variable($X) { if($X) {$Global:Config.var.$X} else {$global:Config.var} }
+function Global:variable($X) { if($X) {$Global:Config.vars.$X} else {$global:Config.vars} }
 function Global:params($X) { if($X) {$global:Config.params.$X} else {$global:Config.Params} }
 Set-Alias -Name vars -Value global:variable -Scope Global
 Set-Alias -Name arg -Value global:params -Scope Global

@@ -36,7 +36,7 @@ Set-Location $dir
 
 . .\build\powershell\global\modules.ps1
 
-if(-not $(vars) ){$Global:Config = @{}; $Global:Config.Add("var",@{}) }
+if(-not $(vars) ){$Global:Config = @{}; $Global:Config.Add("vars",@{}) }
 if(-not $(vars).startup ){$(vars).Add("startup","$dir\build\powershell\startup")}
 if(-not $(vars).global ){$(vars).Add("global","$dir\build\powershell\global")}
 if(-not $(vars).build ){$(vars).Add("build","$dir\build\powershell\build")}
