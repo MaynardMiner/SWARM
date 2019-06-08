@@ -148,6 +148,7 @@ if ($(arg).SWARM_Mode -eq "Yes") {
     }
 }
 ##HiveOS Confirmation
+if( (Test-Path "/hive/miners") -or $(arg).Hive_Hash ) { $(arg).HiveOS = "Yes" }
 Global:Write-Log "HiveOS = $($(arg).HiveOS)"
 
 #Startings Settings (Non User Arguments):

@@ -32,7 +32,7 @@
     "Hive_Hash":  "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     "SWARM_Hash":  "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     "Wallet2":  "",
-    "HiveOS":  "Yes",
+    "HiveOS":  "No",
     "GPUDevices2": [
                     ""
                    ],
