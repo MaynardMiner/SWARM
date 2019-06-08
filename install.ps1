@@ -11,9 +11,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
-
-Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 $dir = (Split-Path $script:MyInvocation.MyCommand.Path)
+$dir = $dir -replace "/var/tmp","/root"
+Set-Location $dir
 $dir
 
 ##Check for libc
@@ -233,7 +233,7 @@ if (Test-Path ".\build\bash\clear_watts") {
     Set-Location "/usr/bin"
     Start-Process "chmod" -ArgumentList "+x clear_watts"
     Set-Location "/"
-    Set-Location $CmdDir
+    Set-Location $Dir
 }  
 
 if (Test-Path ".\build\bash\get-lambo") {
@@ -242,6 +242,14 @@ if (Test-Path ".\build\bash\get-lambo") {
     Start-Process "chmod" -ArgumentList "+x get-lambo"
     Set-Location "/"
     Set-Location $Dir     
-}      
+}
+
+if (Test-Path ".\build\bash\set_swarm") {
+    Copy-Item ".\build\bash\set_swarm" -Destination "/usr/bin" -force | Out-Null
+    Set-Location "/usr/bin"
+    Start-Process "chmod" -ArgumentList "+x set_swarm"
+    Set-Location "/"
+    Set-Location $Dir     
+}
    
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)

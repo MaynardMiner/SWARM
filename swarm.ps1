@@ -16,17 +16,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##############################################################################
 
 ## Set Current Path
-Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
 $Global:config = [hashtable]::Synchronized(@{})
- 
+$Global:Config.Add("vars",@{})
+$Global:Config.vars.Add( "dir",(Split-Path $script:MyInvocation.MyCommand.Path) )
+$Global:Config.vars.dir = $Global:Config.vars.dir -replace "/var/tmp","/root"
+Set-Location $Global:Config.vars.dir
+
 ##filepath dir
-$Global:Config.Add("var",@{})
 . .\build\powershell\global\modules.ps1
-
-$(vars).Add("dir",(Split-Path $script:MyInvocation.MyCommand.Path))
-
 $env:Path += ";$($(vars).dir)\build\cmd"
-try { Get-ChildItem . -Recurse | Unblock-File } catch { }
+
+try { Get-ChildItem $($(vars).dir) -Recurse | Unblock-File } catch { }
 
 ## Exclusion Windows Defender
 try { 
@@ -57,7 +57,7 @@ if ($IsWindows) {
 
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
 $(vars).Add("debug",$false)
-if ($global:config.var.debug -eq $True) {
+if ($global:config.vars.debug -eq $True) {
     Start-Transcript ".\logs\debug.log"
     if (($IsWindows)) { Set-ExecutionPolicy Bypass -Scope Process }
 }
@@ -148,6 +148,7 @@ if ($(arg).SWARM_Mode -eq "Yes") {
     }
 }
 ##HiveOS Confirmation
+if( (Test-Path "/hive/miners") -or $(arg).Hive_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" ) { $(arg).HiveOS = "Yes" }
 Global:Write-Log "HiveOS = $($(arg).HiveOS)"
 
 #Startings Settings (Non User Arguments):

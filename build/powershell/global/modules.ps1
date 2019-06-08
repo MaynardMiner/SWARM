@@ -2,7 +2,7 @@ function Global:Add-Module($Path) {
     $name = $(Get-Item $Path).BaseName
     $A = Get-Module | Where Name -eq $name
     if (-not $A) { Import-Module -Name $Path -Scope Global }
-    if ($name -notin $global:Config.var.modules) { $global:Config.var.modules += $Name }
+    if ($name -notin $global:config.vars.modules) { $global:config.vars.modules += $Name }
 }
 
 function Global:Remove-Modules {
@@ -17,21 +17,21 @@ function Global:Remove-Modules {
         $name = $(Get-Item $Path).BaseName
         if ($Name -in $mods) {
             Remove-Module -Name $name
-            $global:Config.var.modules = $global:Config.var.modules | where {$_ -ne $name}
+            $global:config.vars.modules = $global:config.vars.modules | where {$_ -ne $name}
         }
     }
     else {
-        $global:Config.var.modules | ForEach-Object {
+        $global:config.vars.modules | ForEach-Object {
             $Sel = $_
             if ($Sel -in $mods) {
                 Remove-Module -Name "$Sel"
             }
         }
-        $global:Config.var.modules = @()
+        $global:config.vars.modules = @()
     }
 }
 
-function Global:variable($X) { if($X) {$Global:Config.var.$X} else {$global:Config.var} }
+function Global:variable($X) { if($X) {$Global:Config.vars.$X} else {$global:Config.vars} }
 function Global:params($X) { if($X) {$global:Config.params.$X} else {$global:Config.Params} }
 Set-Alias -Name vars -Value global:variable -Scope Global
 Set-Alias -Name arg -Value global:params -Scope Global

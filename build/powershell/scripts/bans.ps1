@@ -9,8 +9,9 @@ param (
 
 [cultureinfo]::CurrentCulture = 'en-US'
 
-Set-Location (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
 $dir = (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
+$dir = $dir -replace "/var/tmp","/root"
+Set-Location $dir
 
 if (-not $Launch) { $Launch = "command" }
 $PoolDir = ".\config\pools\pool-algos.json"; $BanDir = ".\config\pools\bans.json"    

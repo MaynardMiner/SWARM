@@ -273,7 +273,7 @@ function Global:Get-GPUCount {
                 Global:Write-Log "NVIDIA Also Detected" -ForegroundColor Magenta
                 $(arg).Type += "NVIDIA2" 
             }
-            elseif ($GN) { 
+            elseif ($GN) {
                 Global:Write-Log "NVIDIA Detected: Adding NVIDIA" -ForegroundColor Magenta
                 $(arg).Type += "NVIDIA1" 
             }

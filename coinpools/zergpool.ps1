@@ -153,7 +153,8 @@ if ($Name -in $(arg).PoolName) {
             if ($global:All_AltWallets) {
                 $global:All_AltWallets | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                     $Sym = $_ -split "," | Select -first 1
-                    if ($Sym -eq $Zergpool_Symbol) {
+                    $Zerg_Sym = $Zergpool_Symbol -split "-" | Select -First 1
+                    if ($Sym -eq $Zerg_Sym -or $Sym -eq $Zergpool_Symbol) {
                         $Pass1 = $_
                         $User1 = $global:All_AltWallets.$_
                         $Pass2 = $_

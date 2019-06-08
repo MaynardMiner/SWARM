@@ -30,12 +30,13 @@ param(
 [cultureinfo]::CurrentCulture = 'en-US'
 $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
 [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
-Set-Location (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
 $dir = (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
+$dir = $dir -replace "/var/tmp","/root"
+Set-Location $dir
 
 . .\build\powershell\global\modules.ps1
 
-if(-not $(vars) ){$Global:Config = @{}; $Global:Config.Add("var",@{}) }
+if(-not $(vars) ){$Global:Config = @{}; $Global:Config.Add("vars",@{}) }
 if(-not $(vars).startup ){$(vars).Add("startup","$dir\build\powershell\startup")}
 if(-not $(vars).global ){$(vars).Add("global","$dir\build\powershell\global")}
 if(-not $(vars).build ){$(vars).Add("build","$dir\build\powershell\build")}

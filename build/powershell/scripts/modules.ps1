@@ -10,8 +10,9 @@ Param (
 [cultureinfo]::CurrentCulture = 'en-US'
 $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
 [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
-Set-Location (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
 $dir = (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
+$dir = $dir -replace "/var/tmp","/root"
+Set-Location $dir
 
 $message = @()
 

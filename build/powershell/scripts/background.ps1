@@ -24,7 +24,7 @@ $UTCTime = $UtcTime.ToUniversalTime()
 $StartTime = [Math]::Round(((Get-Date) - $UtcTime).TotalSeconds)
 $Global:config = [hashtable]::Synchronized(@{ })
 $Global:stats = [hashtable]::Synchronized(@{ })
-$global:config.Add("var", @{ })
+$global:config.Add("vars", @{ })
 . .\build\powershell\global\modules.ps1
 $(vars).Add("dir", $WorkingDir)
 
@@ -72,6 +72,7 @@ $(vars).Add("WebSites", @())
 if ($Config.Params.Hive_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" -and -not (Test-Path "/hive/miners") ) { $(vars).NetModules += ".\build\api\hiveos"; $(vars).WebSites += "HiveOS" }
 ##if ($Config.Params.Swarm_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") { $(vars).NetModules += ".\build\api\SWARM"; $(vars).WebSites += "SWARM" }
 
+if( (Test-Path "/hive/miners") -or $(arg).Hive_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" ) { $(arg).HiveOS = "Yes" }
 Write-Host "Platform is $($(arg).Platform)"; 
 Write-Host "HiveOS ID is $($global:Config.hive_params.Id)"; 
 Write-Host "HiveOS = $($(arg).HiveOS)"
