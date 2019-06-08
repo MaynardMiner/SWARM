@@ -25,8 +25,10 @@ As root user to disable
         }
         "off" {
             "No" | Set-Content "/root/swarm_mode.txt"
-            if(test-Path "/root/xminer_old.sh"){Remove-Item "/root/xminer.sh" -Force}
-            Move-Item -Path "/root/xminer_old.sh" -Destination "/root/xminer.sh"
+            if(test-Path "/root/xminer_old.sh"){
+                $Old = Get-Content "/root/xminer_old.sh"
+                $Old | Set-Content "/root/xminer.sh"
+            }
             Start-Process "chmod" -ArgumentList "+x /root/xminer.sh" -Wait
             Write-Host "SWARM will not run at startup- OS will ignore swarm"
         }
