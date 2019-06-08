@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ## Set Current Path
 $Global:config = [hashtable]::Synchronized(@{})
-$Global:Config.Add("var",@{})
+$Global:Config.Add("vars",@{})
 $(vars).Add( "dir",(Split-Path $script:MyInvocation.MyCommand.Path) )
 $(vars).dir = $(vars).dir -replace "/var/tmp","/root"
 Set-Location $(vars).dir
