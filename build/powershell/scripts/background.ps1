@@ -72,7 +72,7 @@ $(vars).Add("WebSites", @())
 if ($Config.Params.Hive_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" -and -not (Test-Path "/hive/miners") ) { $(vars).NetModules += ".\build\api\hiveos"; $(vars).WebSites += "HiveOS" }
 ##if ($Config.Params.Swarm_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") { $(vars).NetModules += ".\build\api\SWARM"; $(vars).WebSites += "SWARM" }
 
-if( (Test-Path "/hive/miners") -or $(arg).Hive_Hash ) { $(arg).HiveOS = "Yes" }
+if( (Test-Path "/hive/miners") -or $(arg).Hive_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" ) { $(arg).HiveOS = "Yes" }
 Write-Host "Platform is $($(arg).Platform)"; 
 Write-Host "HiveOS ID is $($global:Config.hive_params.Id)"; 
 Write-Host "HiveOS = $($(arg).HiveOS)"
@@ -132,14 +132,10 @@ While ($True) {
     Global:Add-Module "$($(vars).global)\stats.psm1"
     Global:Add-Module "$($(vars).global)\hashrates.psm1"
     
-    Write-Host "Checking Miners"
     Global:Invoke-MinerCheck
-    Write-Host "Getting Stats Table"
     Global:New-StatTables
-    Write-Host "Garthering Metrics"
     Global:Get-Metrics
     Remove-Module "initial"
-    Write-Host "Getting GPU Stats"
     if ($global:DoNVIDIA -eq $true) { $NVIDIAStats = Global:Set-NvidiaStats }
     if ($global:DoAMD -eq $true) { $AMDStats = Global:Set-AMDStats }
 
