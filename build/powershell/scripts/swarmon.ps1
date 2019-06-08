@@ -9,7 +9,8 @@ if($Action) {
     $Save = $False
     switch($Action) {
         "on" {
-            if(-not ($Changed | Select-String "SWARM_MODE")){ $Changed = $Changed -replace "    /root/utils/update_configGet.sh","    /root/utils/update_configGet.sh`n    if [ -f /root/swarm_mode.txt ]; then`n    SWARM_MODE=``cat /miners/SWARM_MODE```n        if [ `"`$SWARM_MODE`" = `"Yes`"]; then`n            pwsh -command `"./root/SWARM/build/powershell/scripts/smos_config.ps1`"`n        fi`n    fi"; $Save = $True }
+            if( -not ($Changed | Select-String "swarm_mode.txt") ) { 
+                $Changed = $Changed -replace "    /root/utils/update_configGet.sh","    /root/utils/update_configGet.sh`n    if grep -Fxq `"Yes`" /root/swarm_mode.txt`n    then`n        pwsh -command `"./root/SWARM/build/powershell/scripts/smos_config.ps1`"`n    fi"; $Save = $True }
             "Yes" | Set-Content "/root/swarm_mode.txt"
         }
         "off" {
