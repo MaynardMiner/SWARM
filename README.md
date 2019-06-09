@@ -1,4 +1,4 @@
-# SWARM: Profit Switching AI For HiveOS, SMOS, & Windows
+# SWARM: Profit Switching AI For HiveOS, SMOS, Linux, & Windows
 
 ## SWARM wiki:
 
