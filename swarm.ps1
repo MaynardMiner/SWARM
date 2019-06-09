@@ -245,8 +245,8 @@ Global:Get-Optional
 Global:Add-LogErrors
 Global:Remove-Modules
 
-$(vars).BusData = $Null
-$(vars).GPU_Count = $Null
+$(vars).Remove("BusData")
+$(vars).Remove("GPU_Count")
 
 ##############################################################################
 #######                      End Startup                                ######
