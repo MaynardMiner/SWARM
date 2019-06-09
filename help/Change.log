@@ -3310,3 +3310,25 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
    will come soon.
 
   -Further Resource use reduction. (marginal)
+
+
+  2.3.9
+
+  NEW FEATURES!
+
+  SMOS Support:
+
+  https://github.com/MaynardMiner/SWARM/wiki/SMOS-Install
+
+  -Fixed Log Cylcing Issues.
+  -Fixed ``version update`` command
+  -Fixed ``get parameters`` command for Windows (was showing arguments.json always).
+
+  -T-Rex updated
+  -TeamRedMiner updated, x16 algos added.
+  -xmrig amd updated
+  -xmrig nvidia updated (windows, need to compile for linux still).
+  -xmrstak updated.
+
+  -Added more to ``vars`` parameter for modules.
+  -Wiki was updated.
