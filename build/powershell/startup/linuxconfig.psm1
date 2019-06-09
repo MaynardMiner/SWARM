@@ -282,6 +282,7 @@ function Global:Get-GPUCount {
 
     $GetBus | Foreach {
         if ($_ -like "*Advanced Micro Devices*" -or $_ -like "*NVIDIA*") {
+            Write-Log "Gathering GPU Data - Please Wait..." -ForegroundColor Yellow
             ##AMD
             if ($_ -like "*Advanced Micro Devices*" -and $_ -notlike "*RS880*" -and $_ -notlike "*Stoney*") {
                 if ($(arg).Type -like "*AMD*") {
@@ -349,7 +350,6 @@ function Global:Start-LinuxConfig {
     ## Kill Previous Screens
     Global:start-killscript
 
-     
     ## Check if this is a hive-os image
     ## If HiveOS "Yes" Connect To Hive (Not Ready Yet)
     $HiveBin = "/hive/bin"
