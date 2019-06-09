@@ -104,7 +104,7 @@ if (Test-Path $CheckForSWARM) {
     $global:GETSWARMID = Get-Content $CheckForSWARM; 
     $Global:GETSWARM = Get-Process -ID $global:GETSWARMID -ErrorAction SilentlyContinue 
 }
-$Global:GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
+$(vars).ADD("GCount",(Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json))
 $global:BackgroundTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 $global:BackgroundTimer.Restart()
 $global:RestartTimer = New-Object -TypeName System.Diagnostics.Stopwatch
@@ -183,15 +183,15 @@ While ($True) {
             ## Determine Devices
             Switch ($global:TypeS) {
                 "NVIDIA" {
-                    if ($MinerDevices -eq "none") { $global:Devices = Global:Get-DeviceString -TypeCount $Global:GCount.NVIDIA.PSObject.Properties.Value.Count }
+                    if ($MinerDevices -eq "none") { $global:Devices = Global:Get-DeviceString -TypeCount $(vars).GCount.NVIDIA.PSObject.Properties.Value.Count }
                     else { $global:Devices = Global:Get-DeviceString -TypeDevices $MinerDevices }
                 }
                 "AMD" {
-                    if ($MinerDevices -eq "none") { $global:Devices = Global:Get-DeviceString -TypeCount $Global:GCount.AMD.PSObject.Properties.Value.Count }
+                    if ($MinerDevices -eq "none") { $global:Devices = Global:Get-DeviceString -TypeCount $(vars).GCount.AMD.PSObject.Properties.Value.Count }
                     else { $global:Devices = Global:Get-DeviceString -TypeDevices $MinerDevices }
                 }
                 "ASIC" { $global:Devices = $null }
-                "CPU" { $global:Devices = Global:Get-DeviceString -TypeCount $Global:GCount.CPU.PSObject.Properties.Value.Count }
+                "CPU" { $global:Devices = Global:Get-DeviceString -TypeCount $(vars).GCount.CPU.PSObject.Properties.Value.Count }
             }
 
             ## Get Power Stats
@@ -496,17 +496,17 @@ HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
 
     ##Now To Format All Stats For Online Table And Screen
     if ($global:DoNVIDIA) {
-        for ($global:i = 0; $global:i -lt $Global:GCount.NVIDIA.PSObject.Properties.Value.Count; $global:i++) {
+        for ($global:i = 0; $global:i -lt $(vars).GCount.NVIDIA.PSObject.Properties.Value.Count; $global:i++) {
             $global:GPUHashTable += 0; $global:GPUFanTable += 0; $global:GPUTempTable += 0; $global:GPUPowerTable += 0;
         }
     }
     if ($global:DoAMD) {
-        for ($global:i = 0; $global:i -lt $Global:GCount.AMD.PSObject.Properties.Value.Count; $global:i++) {
+        for ($global:i = 0; $global:i -lt $(vars).GCount.AMD.PSObject.Properties.Value.Count; $global:i++) {
             $global:GPUHashTable += 0; $global:GPUFanTable += 0; $global:GPUTempTable += 0; $global:GPUPowerTable += 0;
         }
     }
     if ($global:DoCPU) {
-        for ($global:i = 0; $global:i -lt $Global:GCount.CPU.PSObject.Properties.Value.Count; $global:i++) {
+        for ($global:i = 0; $global:i -lt $(vars).GCount.CPU.PSObject.Properties.Value.Count; $global:i++) {
             $global:CPUHashTable += 0;
         }
     }
@@ -515,19 +515,19 @@ HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
     }
 
     if ($global:DoNVIDIA) {
-        for ($global:i = 0; $global:i -lt $Global:GCount.NVIDIA.PSObject.Properties.Value.Count; $global:i++) {
-            $global:GPUHashTable[$($Global:GCount.NVIDIA.$global:i)] = "{0:f4}" -f $($global:GPUHashrates.$($Global:GCount.NVIDIA.$global:i))
-            $global:GPUFanTable[$($Global:GCount.NVIDIA.$global:i)] = "$($global:GPUFans.$($Global:GCount.NVIDIA.$global:i))"
-            $global:GPUTempTable[$($Global:GCount.NVIDIA.$global:i)] = "$($global:GPUTemps.$($Global:GCount.NVIDIA.$global:i))"
-            $global:GPUPowerTable[$($Global:GCount.NVIDIA.$global:i)] = "$($global:GPUPower.$($Global:GCount.NVIDIA.$global:i))"
+        for ($global:i = 0; $global:i -lt $(vars).GCount.NVIDIA.PSObject.Properties.Value.Count; $global:i++) {
+            $global:GPUHashTable[$($(vars).GCount.NVIDIA.$global:i)] = "{0:f4}" -f $($global:GPUHashrates.$($(vars).GCount.NVIDIA.$global:i))
+            $global:GPUFanTable[$($(vars).GCount.NVIDIA.$global:i)] = "$($global:GPUFans.$($(vars).GCount.NVIDIA.$global:i))"
+            $global:GPUTempTable[$($(vars).GCount.NVIDIA.$global:i)] = "$($global:GPUTemps.$($(vars).GCount.NVIDIA.$global:i))"
+            $global:GPUPowerTable[$($(vars).GCount.NVIDIA.$global:i)] = "$($global:GPUPower.$($(vars).GCount.NVIDIA.$global:i))"
         }
     }
     if ($global:DoAMD) {
-        for ($global:i = 0; $global:i -lt $Global:GCount.AMD.PSObject.Properties.Value.Count; $global:i++) {
-            $global:GPUHashTable[$($Global:GCount.AMD.$global:i)] = "{0:f4}" -f $($global:GPUHashrates.$($Global:GCount.AMD.$global:i))
-            $global:GPUFanTable[$($Global:GCount.AMD.$global:i)] = "$($global:GPUFans.$($Global:GCount.AMD.$global:i))"
-            $global:GPUTempTable[$($Global:GCount.AMD.$global:i)] = "$($global:GPUTemps.$($Global:GCount.AMD.$global:i))"
-            $global:GPUPowerTable[$($Global:GCount.AMD.$global:i)] = "$($global:GPUPower.$($Global:GCount.AMD.$global:i))"
+        for ($global:i = 0; $global:i -lt $(vars).GCount.AMD.PSObject.Properties.Value.Count; $global:i++) {
+            $global:GPUHashTable[$($(vars).GCount.AMD.$global:i)] = "{0:f4}" -f $($global:GPUHashrates.$($(vars).GCount.AMD.$global:i))
+            $global:GPUFanTable[$($(vars).GCount.AMD.$global:i)] = "$($global:GPUFans.$($(vars).GCount.AMD.$global:i))"
+            $global:GPUTempTable[$($(vars).GCount.AMD.$global:i)] = "$($global:GPUTemps.$($(vars).GCount.AMD.$global:i))"
+            $global:GPUPowerTable[$($(vars).GCount.AMD.$global:i)] = "$($global:GPUPower.$($(vars).GCount.AMD.$global:i))"
         }
     }
 
@@ -563,8 +563,8 @@ HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
     Remove-Variable DeviceTable
 
     if ($global:DoCPU) {
-        for ($global:i = 0; $global:i -lt $Global:GCount.CPU.PSObject.Properties.Value.Count; $global:i++) {
-            $global:CPUHashTable[$($Global:GCount.CPU.$global:i)] = "{0:f4}" -f $($global:CPUHashrates.$($Global:GCount.CPU.$global:i))
+        for ($global:i = 0; $global:i -lt $(vars).GCount.CPU.PSObject.Properties.Value.Count; $global:i++) {
+            $global:CPUHashTable[$($(vars).GCount.CPU.$global:i)] = "{0:f4}" -f $($global:CPUHashrates.$($(vars).GCount.CPU.$global:i))
         }
     }
 

@@ -1,4 +1,4 @@
-$Global:AMDTypes | ForEach-Object {
+$(vars).AMDTypes | ForEach-Object {
     
     $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
     $CName = "gminer-amd"
@@ -14,7 +14,7 @@ $Global:AMDTypes | ForEach-Object {
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "3300$Num"
 
     Switch ($Num) {
-        1 { $Get_Devices = $Global:AMDDevices1 }
+        1 { $Get_Devices = $(vars).AMDDevices1 }
     }
     
     ##Log Directory
@@ -36,10 +36,10 @@ $Global:AMDTypes | ForEach-Object {
     if ($Get_Devices -ne "none") {
         $GPUDevices1 = $Get_Devices
         $GPUEDevices1 = $GPUDevices1 -split ","
-        $GPUEDevices1 | ForEach-Object { $ArgDevices += "$($Global:GCount.AMD.$_) " }
+        $GPUEDevices1 | ForEach-Object { $ArgDevices += "$($(vars).GCount.AMD.$_) " }
         $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1)
     }
-    else { $Global:GCount.AMD.PSObject.Properties.Name | ForEach-Object { $ArgDevices += "$($Global:GCount.AMD.$_) " }; $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1) }
+    else { $(vars).GCount.AMD.PSObject.Properties.Name | ForEach-Object { $ArgDevices += "$($(vars).GCount.AMD.$_) " }; $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1) }
 
     ##Get Configuration File
     $MinerConfig = $Global:config.miners.$CName

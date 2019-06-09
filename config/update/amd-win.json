@@ -104,8 +104,8 @@
 "AMD2":".\\bin\\teamredminer-2\\teamredminer.exe", 
 "AMD3":".\\bin\\teamredminer-3\\teamredminer.exe", 
 "minername":"teamredminer.exe", 
-"version":"0.4.5", 
-"uri":"https://github.com/todxx/teamredminer/releases/download/v0.4.5/teamredminer-v0.4.5-win.zip"
+"version":"0.5.1", 
+"uri":"https://github.com/todxx/teamredminer/releases/download/0.5.1/teamredminer-v0.5.1-win.zip"
 }, 
 
 "xmr-stak": {
@@ -115,8 +115,8 @@
 "AMD2":".\\bin\\xmrstak-2\\xmr-stak.exe", 
 "AMD3":".\\bin\\xmrstak-3\\xmr-stak.exe", 
 "minername":"xmr-stak.exe", 
-"version":"2.10.4", 
-"uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/xmr-stak-windows.zip"
+"version":"2.10.5", 
+"uri":"https://github.com/fireice-uk/xmr-stak/releases/download/2.10.5/xmr-stak-win64-2.10.5.zip"
 }, 
 
 "wildrig": {
@@ -148,8 +148,8 @@
 "AMD2":".\\bin\\xmrig-amd-2\\xmrig-amd.exe", 
 "AMD3":".\\bin\\xmrig-amd-3\\xmrig-amd.exe", 
 "minername":"xmrig-amd.exe", 
-"version":"2.14.1", 
-"uri":"https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/xmrig-amd-windows.zip"
+"version":"2.14.4", 
+"uri":"https://github.com/xmrig/xmrig-amd/releases/download/v2.14.4/xmrig-amd-2.14.4-msvc-win64.zip"
 },
 "srbminer": {
   "name":"srbminer", 

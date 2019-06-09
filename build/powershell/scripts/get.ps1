@@ -398,7 +398,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
         else { $Get += "No Miner History Found" }
     }
     "parameters" {
-        if (Test-Path ".\config\parameters\newarguments.json") {$FilePath = ".\config\parameters\arguments.json"}
+        if (Test-Path ".\config\parameters\newarguments.json") {$FilePath = ".\config\parameters\newarguments.json"}
         else {$FilePath = ".\config\parameters\arguments.json"}
         if(Test-Path $FilePath) {
             $SwarmParameters = @()

@@ -69,26 +69,26 @@ function Global:New-StatTables {
     ##Start Adding Zeros
     if ($global:DoAMD -or $global:DoNVIDIA) {
         if ($global:DoAMD) {
-            for ($i = 0; $i -lt $Global:GCount.AMD.PSObject.Properties.Value.Count; $i++) {
-                $global:GPUHashrates | Add-Member -MemberType NoteProperty -Name "$($Global:GCount.AMD.$i)" -Value 0; 
-                $global:GPUFans | Add-Member -MemberType NoteProperty -Name "$($Global:GCount.AMD.$i)" -Value 0; 
-                $global:GPUTemps | Add-Member -MemberType NoteProperty -Name "$($Global:GCount.AMD.$i)" -Value 0; 
-                $global:GPUPower | Add-Member -MemberType NoteProperty -Name "$($Global:GCount.AMD.$i)" -Value 0
+            for ($i = 0; $i -lt $(vars).GCount.AMD.PSObject.Properties.Value.Count; $i++) {
+                $global:GPUHashrates | Add-Member -MemberType NoteProperty -Name "$($(vars).GCount.AMD.$i)" -Value 0; 
+                $global:GPUFans | Add-Member -MemberType NoteProperty -Name "$($(vars).GCount.AMD.$i)" -Value 0; 
+                $global:GPUTemps | Add-Member -MemberType NoteProperty -Name "$($(vars).GCount.AMD.$i)" -Value 0; 
+                $global:GPUPower | Add-Member -MemberType NoteProperty -Name "$($(vars).GCount.AMD.$i)" -Value 0
             }
         }
         if ($global:DoNVIDIA) {
-            for ($i = 0; $i -lt $Global:GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {
-                $global:GPUHashrates | Add-Member -MemberType NoteProperty -Name "$($Global:GCount.NVIDIA.$i)" -Value 0; 
-                $global:GPUFans | Add-Member -MemberType NoteProperty -Name "$($Global:GCount.NVIDIA.$i)" -Value 0; 
-                $global:GPUTemps | Add-Member -MemberType NoteProperty -Name "$($Global:GCount.NVIDIA.$i)" -Value 0; 
-                $global:GPUPower | Add-Member -MemberType NoteProperty -Name "$($Global:GCount.NVIDIA.$i)" -Value 0    
+            for ($i = 0; $i -lt $(vars).GCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {
+                $global:GPUHashrates | Add-Member -MemberType NoteProperty -Name "$($(vars).GCount.NVIDIA.$i)" -Value 0; 
+                $global:GPUFans | Add-Member -MemberType NoteProperty -Name "$($(vars).GCount.NVIDIA.$i)" -Value 0; 
+                $global:GPUTemps | Add-Member -MemberType NoteProperty -Name "$($(vars).GCount.NVIDIA.$i)" -Value 0; 
+                $global:GPUPower | Add-Member -MemberType NoteProperty -Name "$($(vars).GCount.NVIDIA.$i)" -Value 0    
             }
         }
     }
     
     if ($global:DoCPU) {
-        for ($i = 0; $i -lt $Global:GCount.CPU.PSObject.Properties.Value.Count; $i++) {
-            $global:CPUHashrates | Add-Member -MemberType NoteProperty -Name "$($Global:GCount.CPU.$i)" -Value 0; 
+        for ($i = 0; $i -lt $(vars).GCount.CPU.PSObject.Properties.Value.Count; $i++) {
+            $global:CPUHashrates | Add-Member -MemberType NoteProperty -Name "$($(vars).GCount.CPU.$i)" -Value 0; 
         }
     }
     if ($global:DoASIC) { 

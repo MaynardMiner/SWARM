@@ -21,8 +21,8 @@ function Global:Start-OC {
 
     $Miner = $NewMiner | ConvertFrom-Json
     Switch ($(arg).Platform) {
-        "linux" { $Global:GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json }
-        "windows" { $Global:GCount = Get-Content ".\build\txt\oclist.txt" | ConvertFrom-Json }
+        "linux" { $(vars).GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json }
+        "windows" { $(vars).GCount = Get-Content ".\build\txt\oclist.txt" | ConvertFrom-Json }
     }
     
     $nvidiaOC = $false; $DoNVIDIAOC = $false; $DoAMDOC = $false
@@ -60,7 +60,7 @@ function Global:Start-OC {
         Global:Write-Log "Activating ETHPill" -ForegroundColor Cyan
 
         ##Devices
-        if ($Miner.Devices -eq "none") { $OCPillDevices = Global:Get-DeviceString -TypeCount $Global:GCount.NVIDIA.PSObject.Properties.Value.Count }
+        if ($Miner.Devices -eq "none") { $OCPillDevices = Global:Get-DeviceString -TypeCount $(vars).GCount.NVIDIA.PSObject.Properties.Value.Count }
         else { $OCPillDevices = Global:Get-DeviceString -TypeDevices $Miner.Devices }
 
         ##Build Arguments
@@ -112,7 +112,7 @@ function Global:Start-OC {
     elseif ($Default.Memory -or $Default.Core -or $Default.Fans) { $SettingsArgs = $true }
     
     if ($Miner.Type -like "*NVIDIA*") {
-        if ($Miner.Devices -eq "none") { $OCDevices = Global:Get-DeviceString -TypeCount $Global:GCount.NVIDIA.PSObject.Properties.Value.Count }
+        if ($Miner.Devices -eq "none") { $OCDevices = Global:Get-DeviceString -TypeCount $(vars).GCount.NVIDIA.PSObject.Properties.Value.Count }
         else { $OCDevices = Global:Get-DeviceString -TypeDevices $Miner.Devices }
 
         if ($OC_Algo.core) {
@@ -192,7 +192,7 @@ function Global:Start-OC {
                         $Fans = $Fan[$i]
                     } else { $Fans = $Fan | Select -First 1 }
                     $GPU = $OCDevices[$i]
-                    if ($(arg).Platform -eq "linux") { $NSettings += " -a [gpu:$GPU]/GPUFanControlState=1 -a [fan:$($Global:GCount.NVIDIA.$GPU)]/GPUTargetFanSpeed=$($Fans)" }
+                    if ($(arg).Platform -eq "linux") { $NSettings += " -a [gpu:$GPU]/GPUFanControlState=1 -a [fan:$($(vars).GCount.NVIDIA.$GPU)]/GPUTargetFanSpeed=$($Fans)" }
                     if ($(arg).Platform -eq "windows") { $NVIDIAOCArgs += "-setFanSpeed:$GPU,$($Fans) " }
                 }
                 $NScreenFan += "$($Miner.Type) Fan is $Fan "
@@ -247,7 +247,7 @@ function Global:Start-OC {
 }
     
 if ($Miner.Type -like "*AMD*") {
-    if ($Miner.Devices -eq "none") { $OCDevices = Global:Get-DeviceString -TypeCount $Global:GCount.AMD.PSObject.Properties.Value.Count }
+    if ($Miner.Devices -eq "none") { $OCDevices = Global:Get-DeviceString -TypeCount $(vars).GCount.AMD.PSObject.Properties.Value.Count }
     else { $OCDevices = Global:Get-DeviceString -TypeDevices $Miner.Devices }
 
 
@@ -328,7 +328,7 @@ if ($Miner.Type -like "*AMD*") {
                     $MEMArgs = $null
                     if ($MemClock[$GPU]) { $MEMArgs += " --mem-clock $($MemClocks)" }
                     if ($MemState[$GPU]) { $MEMArgs += " --mem-state $($MemStates)" }
-                    $WolfArgs = "wolfamdctrl -i $($Global:GCount.AMD.$GPU)$MEMArgs"
+                    $WolfArgs = "wolfamdctrl -i $($(vars).GCount.AMD.$GPU)$MEMArgs"
                     $AScript += "$WolfArgs"
                 }
                 $AScreenMem += "$($Miner.Type) MEM is $MemClock "
@@ -347,7 +347,7 @@ if ($Miner.Type -like "*AMD*") {
                         $CoreArgs = $null
                         if ($CoreClock[$GPU]) { $CoreArgs += " --core-clock $($CoreClocks)" }
                         $CoreArgs += " --core-state $j"
-                        $WolfArgs = "wolfamdctrl -i $($Global:GCount.AMD.$GPU)$CoreArgs"
+                        $WolfArgs = "wolfamdctrl -i $($(vars).GCount.AMD.$GPU)$CoreArgs"
                         $AScript += $WolfArgs
                     }
                 }
@@ -364,7 +364,7 @@ if ($Miner.Type -like "*AMD*") {
                     } else { $Voltages = $Voltage | Select -First 1 }
                     $GPU = $OCDevices[$i]
                     for ($ia = 0; $ia -lt 16; $ia++) {
-                        if ($Voltages) { $VoltArgs += "wolfamdctrl -i $($Global:GCount.AMD.$GPU) --vddc-table-set $($Voltages) --volt-state $ia" }
+                        if ($Voltages) { $VoltArgs += "wolfamdctrl -i $($(vars).GCount.AMD.$GPU) --vddc-table-set $($Voltages) --volt-state $ia" }
                     }
                 }
                 $AScript += $VoltArgs
@@ -380,7 +380,7 @@ if ($Miner.Type -like "*AMD*") {
                     $GPU = $OCDevices[$i]
                     $FanArgs = $null
                     if ($Fans[$GPU]) { $Fanargs += " --set-fanspeed $($Fanss)" }
-                    $WolfArgs = "wolfamdctrl -i $($Global:GCount.AMD.$GPU)$FanArgs"
+                    $WolfArgs = "wolfamdctrl -i $($(vars).GCount.AMD.$GPU)$FanArgs"
                     $AScript += $WolfArgs
                 }
                 $AScreenFans += "$($_.Type) Fans is $Fans "
@@ -405,9 +405,9 @@ if ($Miner.Type -like "*AMD*") {
             $Model = $Model | ConvertFrom-StringData
             $Model = $Model.keys | % { if ($_ -like "*Model*") { $Model.$_ } }
     
-            for ($i = 0; $i -lt $Global:GCount.AMD.PSObject.Properties.Name.Count; $i++) {
-                $OCArgs += "-ac$($Global:GCount.AMD.$i) "
-                $Select = $Global:GCount.AMD.PSOBject.Properties.Name
+            for ($i = 0; $i -lt $(vars).GCount.AMD.PSObject.Properties.Name.Count; $i++) {
+                $OCArgs += "-ac$($(vars).GCount.AMD.$i) "
+                $Select = $(vars).GCount.AMD.PSOBject.Properties.Name
                 $Select = $Select | Sort-Object
                 $Select = $Select[$i]
 

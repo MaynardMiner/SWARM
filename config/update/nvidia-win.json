@@ -197,8 +197,8 @@
         "NVIDIA2": ".\\bin\\trex-2\\t-rex.exe",
         "NVIDIA3": ".\\bin\\trex-3\\t-rex.exe",
         "minername": "t-rex.exe",
-        "version": "0.11.0",
-        "uri": "https://github.com/trexminer/T-Rex/releases/download/0.11.0/t-rex-0.11.0-win-cuda10.0.zip"
+        "version": "0.11.1",
+        "uri": "https://github.com/trexminer/T-Rex/releases/download/0.11.1/t-rex-0.11.1-win-cuda10.0.zip"
     },
     "zjazz": {
         "name": "zjazz",
@@ -227,8 +227,8 @@
         "NVIDIA2": ".\\bin\\xmrig-nv-2\\xmrig-nvidia.exe",
         "NVIDIA3": ".\\bin\\xmrig-nv-3\\xmrig-nvidia.exe",
         "minername": "xmrig-nvidia.exe",
-        "version": "2.14.1",
-        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/xmrig-nvidia-windows.zip"
+        "version": "2.14.4",
+        "uri": "https://github.com/xmrig/xmrig-nvidia/releases/download/v2.14.4/xmrig-nvidia-2.14.4-cuda10_1-win64.zip"
     },
     "nv-lolminer": {
         "name":"nv-lolminer", 

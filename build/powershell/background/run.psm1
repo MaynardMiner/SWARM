@@ -8,7 +8,7 @@ function Global:Set-APIFailure {
     $global:RAW | Set-Content ".\build\txt\$global:MinerType-hash.txt";
 }
 
-function Global:Get-GPUs { $GPU = $global:Devices[$i]; $Global:GCount.$($global:TypeS).$GPU };
+function Global:Get-GPUs { $GPU = $global:Devices[$i]; $(vars).GCount.$($global:TypeS).$GPU };
 
 function Global:Write-MinerData1 {
     Write-Host " "

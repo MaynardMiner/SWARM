@@ -1,4 +1,4 @@
-# SWARM: Profit Switching AI For HiveOS & Windows
+# SWARM: Profit Switching AI For HiveOS, SMOS, Linux, & Windows
 
 ## SWARM wiki:
 
@@ -15,6 +15,10 @@ SWARM is an collection scripts written in both powershell and bash, and is a pro
 ### HiveOS Integration (Windows or Linux)
 
 To focus solely on SWARM's project mission: SWARM was written to integrate fully with HiveOS as of version 1.4.5. The developer of SWARM recognizes the attempt to make an OS/website as sophisticated as the years of development and effort placed into HiveOS would be pointless. Therefor, knowing that SWARM was capable of operating within HiveOS- SWARM was introduced to HiveOS as an available custom miner, and can be integrated rather easily. SWARM also has created a significant amout of scripts which can be ran automatically through HiveOS, and even locally on rig- Allowing you to run multiple terminals and windows, and customize your own setup. Commands like ``get stats`` and ``benchmark all`` can be ran at any moment- Allowing you to quick make changes as neccessary. You also have ALL of the functionality you would get with HiveOS, along with MOST of the functionality of HiveOS's website in the Windows version.
+
+### SMOS Integration
+
+After many user requests, SWARM now works in Simple Miner. See Wiki on how to setup. Simplemining.net is lighter than HiveOS, which makes it generally easier to use for an experienced miner, but non-experienced Linux user.
 
 ### Highly Sophisticated Customizations
 * OC Tuning by algorithm
@@ -56,10 +60,11 @@ I am a sole developer, and this is a large project. I prioritize workload by req
 
 **SWARM requires no installation. However there are a few pre-requisites:**
 * Windows 10 is supported, but it should work in Windows 7/8.
-* Have the latest cuda/amd drivers installed.
+* Have recent cuda/amd drivers installed.
 * Latest C++ Redistributable Packages for Visual Studio.
 * HiveOS user account, your farm hash ready. Ideally a pre-made flight sheet for SWARM. See wiki on how to setup a flight sheet.
 * Latest Powershell Core, along with it being set in your PATH environment variable (should be done during install of Powershell Core).
+* Latest .NET core runtime.
 
 *Install Steps:*
 

@@ -80,7 +80,7 @@ Function Global:Get-BusFunctionID {
 
 function Global:Get-GPUCount {
 
-    $Bus = $global:BusData | Sort-Object PCIBusID
+    $Bus = $(vars).BusData | Sort-Object PCIBusID
     $DeviceList = @{ AMD = @{}; NVIDIA = @{}; CPU = @{} }
     $OCList = @{ AMD = @{}; Onboard = @{}; NVIDIA = @{}; }
     $GN = $false
@@ -228,10 +228,10 @@ function Global:Start-WindowsConfig {
     $TotalMemory | Set-Content ".\build\txt\ram.txt"
     
     ## GPU Bus Hash Table
-    $global:BusData = Global:Get-BusFunctionID
+    $(vars).BusData = Global:Get-BusFunctionID
     
     ## Get Total GPU HashTable
-    $Global:GPU_Count = Global:Get-GPUCount
+    $(vars).GPU_Count = Global:Get-GPUCount
     
     ## Websites
     if ($(vars).WebSites) {
