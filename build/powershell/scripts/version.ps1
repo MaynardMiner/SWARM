@@ -62,31 +62,42 @@ if ($CommandQuery) {
         }
     }
 
+    $Types = @("NVIDIA1","NVIDIA2","NVIDIA3","AMD1","CPU")
+
     switch ($CommandQuery) {
         "Update" {
             $Sel = $MinerSearch | Where { $_.$Name }
             if ($Sel) {
                 $Sel.$Name.version = $Version
                 $Sel.$Name.uri = $Uri
-                $FilePath = Join-Path $dir "\config\update\$($Get.Name).json"
+                $FilePath = Join-Path $dir "\config\update\$($Sel.Name).json"
                 $Sel | ConvertTo-Json -Depth 3 | Set-Content $FilePath
-                $Message += "$Name was found in $($Get.name)."
+                $Message += "$Name was found in $($Sel.name)."
                 Write-Host $($Message | Select -last 1) 
-                $Message += "Wrote New Settings to $($Get.name)"
+                $Message += "Wrote New Settings to $($Sel.name)"
                 Write-Host $($Message | Select -last 1)
                 $Message += "Stopping Miner & Waiting 5 Seconds"
                 Write-Host $($Message | Select -last 1)
                 switch ($IsWindows) {
                     $true {
                         $ID = Get-Content ".\build\pid\miner_pid.txt"
-                        Stop-Process -Id $ID
+                        if(Get-Process -id $ID -ErrorAction SilentlyContinue){Stop-Process -Id $ID}
                         Start-Sleep -S 5
                     }
                     $false {
                         screen -S miner -X quit
                         Start-Sleep -S 5
+                        if(test-path "/hive/miners/custom") {
+                            $Message += "Restarting Swarm"
+                            Write-Host $($Message | Select -last 1)
+                            miner start
+                        }
                     }
                 }
+                $Message += "Removing Old Miner From Bin"
+                Write-Host $($Message | Select -last 1)
+                $Dirs = $Sel.$Name.PSObject.Properties.Name | % { if( $_ -in $Types ){ Split-Path $Sel.$Name.$_ } }
+                $Dirs | % { if(Test-Path $_){Remove-Item $_ -Recurse -Force} }
                 $Message += "Depending on OS- Miner May Need To Be Manually Restarted."
                 Write-Host $($Message | Select -last 1)
             }
