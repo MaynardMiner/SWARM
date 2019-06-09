@@ -18,9 +18,9 @@ function Global:Start-Hello($RigData) {
     ## Get Device Groups
     $Count = 0
     $ad = $false
-    $Check = $Global:Busdata | Where brand -eq "amd"
+    $Check = $(vars).BusData | Where brand -eq "amd"
     if ($Check) { $ad = $true }
-    $Global:BusData | % {
+    $(vars).BusData | % {
         if ($ad) {
             if ($_.brand -eq "amd") { $_ | Add-Member "devices_group" "AMD1" }
             else {

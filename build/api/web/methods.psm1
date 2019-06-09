@@ -13,8 +13,8 @@ function Global:Get-RigData {
     Switch ($IsWindows) {
         $True {
             $RigData = @{ }
-            $AMDData = $global:BusData
-            $NVIDIAData = $global:BusData
+            $AMDData = $(vars).BusData
+            $NVIDIAData = $(vars).BusData
             $AMDData = $AMDData | Where PnPID -match "PCI\\VEN_1002*"
             $NVIDIAData = $NVIDIAData | Where PnPID -match "PCI\\VEN_10DE*"
             Invoke-Expression ".\build\apps\nvidia-smi.exe --query-gpu=gpu_bus_id,vbios_version,gpu_name,memory.total,power.min_limit,power.default_limit,power.max_limit --format=csv > "".\build\txt\getgpu.txt"""
@@ -138,10 +138,10 @@ function Global:Get-RigData {
             $disk_model = $disk -split ":"
             $disk_model = "$($disk_model | select -Last 2 | Select -First 1) $($disk_model | Select -Skip 1 -First 1)"
             $RigData.Add("disk_model",$disk_model)
-            $RigData.Add("gpu_count_nvidia",$($global:BusData | where Brand -eq "nvidia").Count)
-            $RigData.Add("gpu_count_amd",$($global:BusData | where Brand -eq "amd").Count)
+            $RigData.Add("gpu_count_nvidia",$($(vars).BusData | where Brand -eq "nvidia").Count)
+            $RigData.Add("gpu_count_amd",$($(vars).BusData | where Brand -eq "amd").Count)
             $GPUS = @()
-            $GPUS += $Global:BusData
+            $GPUS += $(vars).BusData
             $RigData.Add("gpu",$GPUS)
         }
     }

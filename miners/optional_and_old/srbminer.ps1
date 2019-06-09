@@ -1,4 +1,4 @@
-$Global:AMDTypes | ForEach-Object {
+$(vars).AMDTypes | ForEach-Object {
     
     $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
 
@@ -13,7 +13,7 @@ $Global:AMDTypes | ForEach-Object {
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "srbminer-$Num"; $Port = "3300$Num"
 
     Switch ($Num) {
-        1 { $Get_Devices = $Global:AMDDevices1 }
+        1 { $Get_Devices = $(vars).AMDDevices1 }
     }
 
     ##Log Directory

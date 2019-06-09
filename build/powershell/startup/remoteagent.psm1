@@ -184,6 +184,31 @@ function Global:start-update {
                                         }
                                     }
                                 }
+                                if ($ChangeFile -eq "teamredminer.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands | Add-Member "x16r" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "x16r" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "x16r" "x16r" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "x16r" 2.5 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "x16s" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "x16s" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "x16s" "x16s" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "x16s" 2.5 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "x16rt" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "x16rt" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "x16rt" "x16rt" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "x16rt" 2.5 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "veil" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "veil" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "veil" "veil" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "veil" 2.5 -ErrorAction SilentlyContinue
+                                        }
+                                    }
+                                }
 
                                 if ($ChangeFile -eq "t-rex.json") {
                                     $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {

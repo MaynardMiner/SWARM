@@ -1,4 +1,4 @@
-$Global:NVIDIATypes | ForEach-Object {
+$(vars).NVIDIATypes | ForEach-Object {
     
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
@@ -15,9 +15,9 @@ $Global:NVIDIATypes | ForEach-Object {
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "5100$Num";
 
     Switch ($Num) {
-        1 { $Get_Devices = $Global:NVIDIADevices1 }
-        2 { $Get_Devices = $Global:NVIDIADevices2 }
-        3 { $Get_Devices = $Global:NVIDIADevices3 }
+        1 { $Get_Devices = $(vars).NVIDIADevices1 }
+        2 { $Get_Devices = $(vars).NVIDIADevices2 }
+        3 { $Get_Devices = $(vars).NVIDIADevices3 }
     }
 
     ##Log Directory

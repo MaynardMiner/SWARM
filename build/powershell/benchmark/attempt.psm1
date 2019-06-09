@@ -35,7 +35,7 @@ function Global:Set-Power {
     switch -Wildcard ($PwrType) {
         "*AMD*" { $GPUPower = (Global:Set-AMDStats).watts }
          "*NVIDIA*" { 
-            $D = Global:Get-DeviceString -TypeCount $($Global:GCount.NVIDIA.PSObject.Properties.Value.Count) -TypeDevices $PwrDevices
+            $D = Global:Get-DeviceString -TypeCount $($(vars).GCount.NVIDIA.PSObject.Properties.Value.Count) -TypeDevices $PwrDevices
             $Power = (Global:Set-NvidiaStats).watts 
             for($i = 0; $i -lt $D.Count; $i++){
                 $DI = $D[$i]

@@ -1,4 +1,4 @@
-$Global:CPUTypes | ForEach-Object {
+$(vars).CPUTypes | ForEach-Object {
     
     $ConfigType = $_;
     $CName = "xmrig-cpu"
