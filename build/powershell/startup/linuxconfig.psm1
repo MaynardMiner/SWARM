@@ -227,7 +227,7 @@ function Global:Get-GPUCount {
     $AMDCount = 0
     $NVIDIACount = 0
     $CardCount = 0
-    $global:BusData = @()
+    $(vars).BusData = @()
 
     if ($GetBus -like "*NVIDIA*" -and $GetBus -notlike "*nForce*") {
         invoke-expression "nvidia-smi --query-gpu=gpu_bus_id,gpu_name,memory.total,power.min_limit,power.default_limit,power.max_limit,vbios_version --format=csv" | Tee-Object -Variable NVSMI | Out-Null
@@ -292,7 +292,7 @@ function Global:Get-GPUCount {
                     $CardCount++
                     $subvendor = invoke-expression "lspci -vmms $busid" | Tee-Object -Variable subvendor | % { $_ | Select-String "SVendor" | % { $_ -split "SVendor:\s" | Select -Last 1 } }
                     $mem = "$($ROCM | Select-String "amdgpu 0000`:$busid`: VRAM`: " | %{ $_ -split "amdgpu 0000`:$busid`: VRAM`: " | Select -Last 1} | % {$_ -split "M" | Select -First 1})M"
-                    $global:BusData += [PSCustomObject]@{
+                    $(vars).BusData += [PSCustomObject]@{
                         busid     = $busid
                         name      = $PCIArray.$busid.name
                         brand     = "amd"
@@ -308,7 +308,7 @@ function Global:Get-GPUCount {
                 $subvendor = invoke-expression "lspci -vmms $busid" | Tee-Object -Variable subvendor | % { $_ | Select-String "SVendor" | % { $_ -split "SVendor:\s" | Select -Last 1 } }
                 $NVSMI | Where "pci.bus_id" -eq $busid | % {
 
-                    $global:BusData += [PSCustomObject]@{
+                    $(vars).BusData += [PSCustomObject]@{
                         busid     = $busid
                         name      = $_.name
                         brand     = "nvidia"
@@ -359,7 +359,7 @@ function Global:Start-LinuxConfig {
     if (Test-Path $HiveBin) { $Hive = $true }
 
     ## Get Total GPU Count
-    $Global:GPU_Count = Global:Get-GPUCount
+    $(vars).GPU_Count = Global:Get-GPUCount
 
     if ($(vars).WebSites) {
         Global:Add-Module "$($(vars).web)\methods.psm1"
@@ -435,14 +435,14 @@ function Global:Start-LinuxConfig {
         Start-Sleep -S 3
     }
     elseif ($(arg).Type -like "*CPU*") {
-        if ($Global:GPU_Count -eq 0) {
+        if ($(vars).GPU_Count -eq 0) {
             "CPU" | Out-File ".\build\txt\minertype.txt" -Force
             Global:Write-Log "Group 1 is CPU- Commands and Stats will work for CPU" -foreground yellow
             Start-Sleep -S 3
         }
     }
     elseif ($(arg).Type -like "*ASIC*") {
-        if ($global:GPU_Count -eq 0) {
+        if ($(vars).GPU_Count -eq 0) {
             "ASIC" | Out-File ".\build\txt\minertype.txt" -Force
             Global:Write-Log "Group 1 is ASIC- Commands and Stats will work for ASIC" -foreground yellow
         }

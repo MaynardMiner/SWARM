@@ -1,4 +1,4 @@
-$Global:NVIDIATypes | ForEach-Object {
+$(vars).NVIDIATypes | ForEach-Object {
     
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
@@ -13,9 +13,9 @@ $Global:NVIDIATypes | ForEach-Object {
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "gminer-$Num"; $Port = "4600$Num"
 
     Switch ($Num) {
-        1 { $Get_Devices = $Global:NVIDIADevices1 }
-        2 { $Get_Devices = $Global:NVIDIADevices2 }
-        3 { $Get_Devices = $Global:NVIDIADevices3 }
+        1 { $Get_Devices = $(vars).NVIDIADevices1 }
+        2 { $Get_Devices = $(vars).NVIDIADevices2 }
+        3 { $Get_Devices = $(vars).NVIDIADevices3 }
     }
 
     ##Log Directory
@@ -38,10 +38,10 @@ $Global:NVIDIATypes | ForEach-Object {
     if ($Get_Devices -ne "none") {
         $GPUEDevices = $Get_Devices
         $GPUEDevices = $GPUEDevices -split ","
-        $GPUEDevices | ForEach-Object { $ArgDevices += "$($Global:GCount.NVIDIA.$_) " }
+        $GPUEDevices | ForEach-Object { $ArgDevices += "$($(vars).GCount.NVIDIA.$_) " }
         $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1)
     }
-    else { $Global:GCount.NVIDIA.PSObject.Properties.Name | ForEach-Object { $ArgDevices += "$($Global:GCount.NVIDIA.$_) " }; $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1) }
+    else { $(vars).GCount.NVIDIA.PSObject.Properties.Name | ForEach-Object { $ArgDevices += "$($(vars).GCount.NVIDIA.$_) " }; $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1) }
 
     ##Get Configuration File
     $MinerConfig = $Global:config.miners.gminer

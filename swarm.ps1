@@ -179,8 +179,8 @@ if ($(arg).Hive_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" -or (Test-Path "/hive
 ##if ($Config.Params.Swarm_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") { $(vars).NetModules += ".\build\api\swarm"; $(vars).WebSites += "SWARM" }
 
 ## Initialize
-$global:GPU_Count = $null
-$global:BusData = $null
+$(vars).Add("GPU_Count",$Null)
+$(vars).Add("BusData",$Null)
 switch ($(arg).Platform) {
     "linux" {
         Global:Add-Module "$($(vars).startup)\linuxconfig.psm1"
@@ -206,32 +206,31 @@ if ($(arg).Type -like "*AMD*") {
 }
 
 ##GPU-Count- Parse the hashtable between devices.
-
 if ($(arg).Type -like "*NVIDIA*" -or $(arg).Type -like "*AMD*" -or $(arg).Type -like "*CPU*") {
     if (Test-Path ".\build\txt\nvidiapower.txt") { Remove-Item ".\build\txt\nvidiapower.txt" -Force }
     if (Test-Path ".\build\txt\amdpower.txt") { Remove-Item ".\build\txt\amdpower.txt" -Force }
-    if ($global:GPU_Count -ne 0) { $Global:GPUCount = @(); for ($i = 0; $i -lt $Global:GPU_Count; $i++) { [string]$Global:GPUCount += "$i," } }
-    if ($(arg).CPUThreads -ne 0) { $CPUCount = @(); for ($i = 0; $i -lt $(arg).CPUThreads; $i++) { [string]$CPUCount += "$i," } }
-    if ($Global:GPU_Count -eq 0) { $Device_Count = $(arg).CPUThreads }
-    else { $Device_Count = $Global:GPU_Count }
+    if ($(vars).GPU_Count -eq 0) { $Device_Count = $(arg).CPUThreads }
+    else { $Device_Count = $(vars).GPU_Count }
     Global:Write-Log "Device Count = $Device_Count" -foregroundcolor green
+    Remove-Variable -Name Device_Count
     Start-Sleep -S 2
 
+   
     if ([string]$(arg).GPUDevices1) {
-        $Global:NVIDIADevices1 = [String]$(arg).GPUDevices1 -replace " ", ","; 
-        $Global:AMDDevices1 = [String]$(arg).GPUDevices1 -replace " ", "," 
+        $(vars).Add("NVIDIADevices1",[String]$(arg).GPUDevices1 -replace " ", ",")
+        $(vars).Add("AMDDevices1",[String]$(arg).GPUDevices1 -replace " ", ",")
     }
     else { 
-        $Global:NVIDIADevices1 = "none"; 
-        $Global:AMDDevices1 = "none" 
+        $(vars).Add("NVIDIADevices1","none")
+        $(vars).Add("AMDDevices1","none")
     }
-    if ([string]$(arg).GPUDevices2) { $Global:NVIDIADevices2 = [String]$(arg).GPUDevices2 -replace " ", "," } else { $Global:NVIDIADevices2 = "none" }
-    if ([string]$(arg).GPUDevices3) { $Global:NVIDIADevices3 = [String]$(arg).GPUDevices3 -replace " ", "," } else { $Global:NVIDIADevices3 = "none" }
+    if ([string]$(arg).GPUDevices2) { $(vars).Add("NVIDIADevices2",[String]$(arg).GPUDevices2 -replace " ", ",") } else { $(vars).Add("NVIDIADevices2","none") }
+    if ([string]$(arg).GPUDevices3) { $(vars).Add("NVIDIADevices3",[String]$(arg).GPUDevices3 -replace " ", ",") } else { $(vars).Add("NVIDIADevices3","none") }
 
-    $Global:GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
-    $Global:NVIDIATypes = @(); if ($(arg).Type -like "*NVIDIA*") { $(arg).Type | Where { $_ -like "*NVIDIA*" } | % { $Global:NVIDIATypes += $_ } }
-    $Global:CPUTypes = @(); if ($(arg).Type -like "*CPU*") { $(arg).Type | Where { $_ -like "*CPU*" } | % { $Global:CPUTypes += $_ } }
-    $Global:AMDTypes = @(); if ($(arg).Type -like "*AMD*") { $(arg).Type | Where { $_ -like "*AMD*" } | % { $Global:AMDTypes += $_ } }
+    $(vars).Add("GCount",(Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json))
+    $(vars).Add("NVIDIATypes",@()); if ($(arg).Type -like "*NVIDIA*") { $(arg).Type | Where { $_ -like "*NVIDIA*" } | % { $(vars).NVIDIATypes += $_ } }
+    $(vars).Add("CPUTypes",@()); if ($(arg).Type -like "*CPU*") { $(arg).Type | Where { $_ -like "*CPU*" } | % { $(vars).CPUTypes += $_ } }
+    $(vars).Add("AMDTypes",@()); if ($(arg).Type -like "*AMD*") { $(arg).Type | Where { $_ -like "*AMD*" } | % { $(vars).AMDTypes += $_ } }
 }
 
 
@@ -246,12 +245,8 @@ Global:Get-Optional
 Global:Add-LogErrors
 Global:Remove-Modules
 
-$global:BusData = $Null
-$global:CPUCount = $Null
-$global:GPUCount = $Null
-$Version = $Null
-$global:GPU_Count = $Null
-$Device_Count = $Null 
+$(vars).BusData = $Null
+$(vars).GPU_Count = $Null
 
 ##############################################################################
 #######                      End Startup                                ######

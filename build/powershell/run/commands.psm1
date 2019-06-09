@@ -122,7 +122,7 @@ function Global:Update-Logging {
         }
         $(vars).LogNum++
         $(vars).logname = ".\logs\miner$($(vars).LogNum)-active.log"
-        $LogTimer.Restart()
+        $(vars).logtimer.Restart()
     }
 }
 
