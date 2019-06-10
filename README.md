@@ -111,6 +111,12 @@ https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration)
 
 ![alt text](https://raw.githubusercontent.com/MaynardMiner/SWARM/master/build/data/Second.png)
 
+### SMOS
+
+There is a guide which allows SMOS users to load SWARM into SMOS. It can be found in the wiki:
+
+https://github.com/MaynardMiner/SWARM/wiki/SMOS-Install
+
 **Note**
 
 You may need to Rocket Launch/Reboot in order to have Agent restart and start recieving data from SWARM
