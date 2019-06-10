@@ -389,6 +389,7 @@ function Global:Start-LaunchCode {
             if ($FileChecked -eq $false) { Write-Warning "Failed To Write Miner Details To File" }
 
             ##Bash Script to free Port
+            Write-Log "Clearing Miner Port..." -ForegroundColor Cyan
             Start-Process ".\build\bash\killcx.sh" -ArgumentList $MinerCurrent.Port -Wait
 
             ##Notification To User That Miner Is Attempting To start
