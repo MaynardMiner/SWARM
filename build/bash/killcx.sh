@@ -12,7 +12,7 @@
 
 while true; do
   for con in `netstat -anp 2>/dev/null | grep TIME_WAIT | grep $1 | awk '{print $5}'`; do
-    killcx $con lo >/dev/null 2>&1
+    ./build/apps/killcx $con lo >/dev/null 2>&1
   done
     netstat -anp 2>/dev/null | grep TIME_WAIT | grep $1 > /dev/null &&
     continue ||
