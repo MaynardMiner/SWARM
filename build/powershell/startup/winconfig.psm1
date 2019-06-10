@@ -75,7 +75,7 @@ Function Global:Get-BusFunctionID {
             "ram"       = $GPURAM
         }
     }
-    $GPUS
+    $GPUS | Sort-Object -Property PCIBusID
 }
 
 function Global:Get-GPUCount {

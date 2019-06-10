@@ -3321,6 +3321,7 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
   https://github.com/MaynardMiner/SWARM/wiki/SMOS-Install
 
   -Fixed Log Cylcing Issues.
+  -Windows: Fixed Bus Sorting of GPUs.
   -Fixed ``version update`` command
   -Fixed ``get parameters`` command for Windows (was showing arguments.json always).
 
