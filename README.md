@@ -103,7 +103,7 @@ From there you should see this window. Pool and URL are setup with arguments. Ho
 
 ## FULL ARGUMENT LIST:
 
-https://github.com/MaynardMiner/SWARM/blob/master/Help%20Files/SWARM_help.txt
+[/help/SWARM_help.txt](https://github.com/MaynardMiner/SWARM/blob/master/help/SWARM_help.txt)
 
 ## SAMPLE ARGUMENT SETUPS:
 
