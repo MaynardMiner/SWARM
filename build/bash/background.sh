@@ -12,5 +12,5 @@
 
 screen -S background -d -m
 sleep 1
-screen -S $1 -X stuff $"pwsh -command ./build/powershell/scripts/background.ps1 -WorkingDir $2\n"
+sudo screen -S $1 -X stuff $"pwsh -command ./build/powershell/scripts/background.ps1 -WorkingDir $2\n"
 
