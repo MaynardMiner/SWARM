@@ -282,7 +282,6 @@ function Global:Get-GPUCount {
 
     $GetBus | Foreach {
         if ($_ -like "*Advanced Micro Devices*" -or $_ -like "*NVIDIA*") {
-            Write-Log "Gathering GPU Data - Please Wait..." -ForegroundColor Yellow
             ##AMD
             if ($_ -like "*Advanced Micro Devices*" -and $_ -notlike "*RS880*" -and $_ -notlike "*Stoney*") {
                 if ($(arg).Type -like "*AMD*") {
