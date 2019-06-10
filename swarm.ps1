@@ -217,15 +217,15 @@ if ($(arg).Type -like "*NVIDIA*" -or $(arg).Type -like "*AMD*" -or $(arg).Type -
 
    
     if ([string]$(arg).GPUDevices1) {
-        $(vars).Add("NVIDIADevices1",[String]$(arg).GPUDevices1 -replace " ", ",")
-        $(vars).Add("AMDDevices1",[String]$(arg).GPUDevices1 -replace " ", ",")
+        $(vars).Add("NVIDIADevices1",([String]$(arg).GPUDevices1 -replace " ", ","))
+        $(vars).Add("AMDDevices1",([String]$(arg).GPUDevices1 -replace " ", ","))
     }
     else { 
         $(vars).Add("NVIDIADevices1","none")
         $(vars).Add("AMDDevices1","none")
     }
-    if ([string]$(arg).GPUDevices2) { $(vars).Add("NVIDIADevices2",[String]$(arg).GPUDevices2 -replace " ", ",") } else { $(vars).Add("NVIDIADevices2","none") }
-    if ([string]$(arg).GPUDevices3) { $(vars).Add("NVIDIADevices3",[String]$(arg).GPUDevices3 -replace " ", ",") } else { $(vars).Add("NVIDIADevices3","none") }
+    if ([string]$(arg).GPUDevices2) { $(vars).Add("NVIDIADevices2",([String]$(arg).GPUDevices2 -replace " ", ",")) } else { $(vars).Add("NVIDIADevices2","none") }
+    if ([string]$(arg).GPUDevices3) { $(vars).Add("NVIDIADevices3",([String]$(arg).GPUDevices3 -replace " ", ",")) } else { $(vars).Add("NVIDIADevices3","none") }
 
     $(vars).Add("GCount",(Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json))
     $(vars).Add("NVIDIATypes",@()); if ($(arg).Type -like "*NVIDIA*") { $(arg).Type | Where { $_ -like "*NVIDIA*" } | % { $(vars).NVIDIATypes += $_ } }
