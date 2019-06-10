@@ -3324,6 +3324,14 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
   -Fixed ``version update`` command
   -Fixed ``get parameters`` command for Windows (was showing arguments.json always).
 
+  -Notification Miner Port is being cleared on screen (linux).
+  * SWARM will wait until miner port is cleared (indefinitely, if such is the case,
+   notifying user there is issue with rig).
+  * I am doing this, because there is a growing issue with latest miners having
+    ports hang in linux- This is developer issues of miners themselves. 
+    This way can go to developers and let them know their miners won't 
+    close ports properly on exit.
+
   -T-Rex updated
   -TeamRedMiner updated, x16 algos added.
   -xmrig amd updated
