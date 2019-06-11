@@ -105,7 +105,7 @@ Answer"
 if ($DoBasic) {
     do {
         clear-host
-        $ans = Read-Host -Prompt "First We Need To Determine What You Are Mining With.
+        $tutorial = Read-Host -Prompt "First We Need To Determine What You Are Mining With.
 
 Are you GPU mining or mining with an ASIC?
 
@@ -114,11 +114,11 @@ Are you GPU mining or mining with an ASIC?
 3. Both.
 
 Answer"
-        $Check = Confirm-Answer $ans @("1", "2", "3")
+        $Check = Confirm-Answer $tutorial @("1", "2", "3")
         if ($Check -eq 1) { continue }
     }while ($Check -eq 1)
 
-    if ($ans -eq "1" -or $ans -eq "3") {
+    if ($tutorial -eq "1" -or $tutorial -eq "3") {
         do {
             Clear-Host
             do {
@@ -209,8 +209,135 @@ Okay, let's try again."
         clear-host
 
     }
-    else {
-        ## ASIC Stuff
+    ## DO ASIC
+    if ($tutorial -eq "2" -or $tutorial -eq "3") {
+
+        if (-not $Config.Type) {
+            $Config.Add("Type", @())
+        }
+        else { $Config.Type += "ASIC" }
+        
+        do {
+            do {
+                Clear-Host
+                $ans = Read-Host -Prompt "Okay, Now we need gather informationa about ASICS.
+
+Before we continue- It should be noted that SWARM does not work with all ASICS. If it
+does not work for you, please contact developer, and he will attempt to rectify.
+
+How many ASICS do you wish SWARM to monitor?
+
+Answer"
+
+                try { [int]$ans }catch { Write-Host "Answer must be a number"; Start-Sleep -S 3; continue }
+
+                do {
+                    Clear-Host
+                    $Confirm = Read-Host -Prompt "You have specified $ans ASICS. Is this correct?
+            
+1 Yes
+2 No
+
+Answer"
+                    $Check = Confirm-Answer $Confirm @("1", "2")
+                }while ($Check -eq 1)
+        
+                if ($Confirm -eq "2") {
+                    Write-Host "Okay, let's try again."
+                    Start-Sleep -S 3
+                    continue
+                }
+            }while ($Confirm -ne "1")
+
+            $Config.Add("ASIC_IP", @())
+
+            for ($i = 0; $i -lt [int]$ans; $i++) {
+                do {
+                    clear-host
+                    Write-Host "Lets Do ASIC `#$($i+1)
+"
+                    $ans1 = Read-Host -Prompt "What is IP of ASIC `#$($i+1)?
+
+Answer"
+                    clear-host
+                    $ans2 = Read-Host -Prompt "What is Nickname of ASIC `#$($i+1)
+
+Answer"
+                    clear-host
+                    $ans3 = Read-Host -Prompt "You have specified:
+ASIC `#$($i+1) IP: $ans1
+ASIC `#$($i+1) Nickname: $ans2
+
+Is This Correct?
+
+1 Yes
+2 No
+
+Answer"
+                    $Check = Confirm-Answer $ans3 @("1", "2")
+                    if ($ans3 -eq "2") {
+                        Write-Host "Okay, lets try again."
+                        Start-Sleep -S 3
+                        continue
+                    }
+                }while ($ans3 -eq "2")
+            
+                $Config.ASIC_IP += "$ans1`:$ans2"
+            }
+
+            do {
+                Clear-Host
+                $Config.ASIC_IP
+
+                $Confirm = Read-Host -Prompt "
+This is the current list of Array ASIC_IP
+
+Is this correct?
+
+1 Yes
+2 No
+
+Answer"
+                $Check = Confirm-Answer $Confirm @("1", "2")
+            }while ($Check -eq 1)
+
+            if ($Confirm -eq "2") {
+                Write-Host "Okay, lets try again"
+                $Config.Remove("ASIC_IP")
+                Start-Sleep -S 3
+                continue
+            }
+        }while ($Confirm -eq "2")
+
+     do{
+         Clear-Host
+         $ans = Read-Host -Prompt "Now we must determine ASIC mining algorithms.
+
+Please specify algorithms you wish to use. These name should match the pools
+you wish to mine on. If pools use different names for the same algorithm-
+You must add both names. These names should be comma seperated
+
+Example:
+
+x11,scrypt,sha256
+
+Answer"
+    
+     $ans1 = Read-Host -Prompt "You have chosen the following algorithms
+     
+$ans
+
+Is this correct?
+
+1 Yes
+2 No
+
+Answer"
+    $Check = Confirm-Answer $an1 @("1","2")
+     }while($Check -eq 1)
+
+     $List = $ans1 -split ","
+     $Config.Add("ASIC_ALGO",$List)
     }
 
     ## Location Question
