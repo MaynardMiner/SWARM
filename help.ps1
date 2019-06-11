@@ -225,6 +225,12 @@ Okay, let's try again."
 Before we continue- It should be noted that SWARM does not work with all ASICS. If it
 does not work for you, please contact developer, and he will attempt to rectify.
 
+Note: SWARM cannot open ports/networking for ASIC. If not being used locally: You
+must ensure ports are forwards, and firewalls are disabled.
+
+SWARM attempt to communicate through ASICS Through Port 4028. ASICs must have
+their API enabled and listening.
+
 How many ASICS do you wish SWARM to monitor?
 
 Answer"
