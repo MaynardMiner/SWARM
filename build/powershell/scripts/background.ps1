@@ -16,7 +16,7 @@ Param (
     [string]$WorkingDir
 )
 
-#$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
+$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
 #$WorkingDir = "/root/hive/miners/custom/SWARM"
 Set-Location $WorkingDir
 $UtcTime = Get-Date -Date "1970-01-01 00:00:00Z"
@@ -43,6 +43,11 @@ $(vars).Add("miners", "$($(vars).dir)\build\api\miners")
 $(vars).Add("tcp", "$($(vars).dir)\build\api\tcp")
 $(vars).Add("html", "$($(vars).dir)\build\api\html")
 $(vars).Add("web", "$($(vars).dir)\build\api\web")
+
+if(Test-Path ".\build\txt\data.xml"){
+    $(vars).Add("onboard",([xml](Get-Content ".\build\txt\data.xml")))
+    $(vars).onboard = $(vars).onboard.gpuz_dump.card | Where vendor -ne "AMD/ATI" | Where vendor -ne "NVIDIA"
+}
 
 $p = [Environment]::GetEnvironmentVariable("PSModulePath")
 if ($P -notlike "*$($(vars).dir)\build\powershell*") {

@@ -391,6 +391,7 @@ While ($true) {
         Global:Add-Module "$($(vars).global)\stats.psm1"
 
         $global:Miner_HashTable = $Null
+        $(vars).Add( "Thresholds", @() )
         $Global:Miners = New-Object System.Collections.ArrayList
 
         ##Insert Miners Single Modules Here
@@ -565,6 +566,7 @@ While ($true) {
         Global:Start-MinerLoop
 
         Global:Remove-Modules
+        $(vars).Remove("Thresholds")
 
         ##############################################################################
         #######                        End Phase 5                              ######

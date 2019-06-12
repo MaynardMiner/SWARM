@@ -63,6 +63,8 @@ function Global:Get-Commands {
     $MiningStatus = "$me[${mcolor}mCurrently Mining $($global:bestminers_combo.Algo) Algorithm on $($global:bestminers_combo.MinerPool)${me}[0m"
     $MiningStatus | Out-File ".\build\txt\minerstats.txt" -Append
     $MiningStatus | Out-File ".\build\txt\charts.txt" -Append
+    $(vars).Thresholds | Out-File ".\build\txt\minerstats.txt" -Append
+    $(vars).Thresholds | Out-File ".\build\txt\charts.txt" -Append
     $BanMessage = @()
     $mcolor = "91"
     $me = [char]27
