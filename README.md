@@ -143,6 +143,7 @@ SWARM uses the following programs to help with oc tuning:
 -wolfamdctrl/ohgodatool
 -overdriventool
 -OhGodAnETHlargementPill-r2
+-techPowerUp GPU-Z
 
 All licenses and developer information are included. I am not responsible for
 these softwares, nor do I maintain them. They are downloaded from their

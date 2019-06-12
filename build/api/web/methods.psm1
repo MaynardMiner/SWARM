@@ -42,10 +42,8 @@ function Global:Get-RigData {
             $RigData.cpu.Add("cores", $cpucores)
             $cpuid = $cpud.DeviceID
             $RigData.cpu.Add("cpu_id", $cpuid)
-            Global:Write-Log "Running Coreinfo For AES detection" -ForegroundColor Yellow
-            Invoke-Expression ".\build\apps\Coreinfo.exe" | Tee-Object -Variable AES | Out-Null
-            $AES = $AES | Select-String "Supports AES extensions"
-            if ($AES) { $HasAES = 1 }else { $HasAES = 0 }
+            $AES = $(Invoke-Expression ".\build\apps\features-win.exe" | Select -Skip 1 | ConvertFrom-StringData)."AES-NI"
+            if ($AES -eq "Yes") { $HasAES = 1 }else { $HasAES = 0 }
             $RigData.cpu.Add("aes", $HasAES)
             $disk = $(Get-CimInstance win32_diskdrive).model
             $diskSpace = Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'" | Select-Object Size
