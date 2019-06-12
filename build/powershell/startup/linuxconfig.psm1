@@ -297,6 +297,7 @@ function Global:Get-GPUCount {
                         name      = $PCIArray.$busid.name
                         brand     = "amd"
                         subvendor = $subvendor
+                        mem       = $mem
                         vbios     = $PCIArray.$busid.bios
                         mem_type  = $PCIArray.$busid.memory
                     }
