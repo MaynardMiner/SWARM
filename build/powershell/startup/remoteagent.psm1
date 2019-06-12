@@ -143,6 +143,15 @@ function Global:start-update {
                                     }
                                 }
 
+                                if ($ChangeFile -eq "fancyix.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands.mtp = "-I 20"
+                                            $Data.$_.difficulty.mtp = "700"
+                                        }
+                                    }
+                                }
+
                                 if ($ChangeFile -eq "gminer-amd.json") {
                                     $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                         if ($_ -ne "name") {

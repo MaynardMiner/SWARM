@@ -3354,3 +3354,7 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
   -Fixed issue if more than one active logfile was present
 
   -Code staging for a guided step-by-step tutorial to set up SWARM.
+
+  -SWARM should display a message is a miner was skipped over due to ``-threshold``
+
+  -Per user request- Removed FancyIX's suggest settings for mtp (-p 0,strict,verbose,d=700)
