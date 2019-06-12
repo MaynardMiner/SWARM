@@ -3341,3 +3341,16 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
 
   -Added more to ``vars`` parameter for modules.
   -Wiki was updated.
+
+
+  2.4.0
+
+  -Removed CoreInfo for AES detection
+  -Better GPU detection (windows)
+   * Lists Correct VRAM
+   * AMD lists vbios version
+   * AMD lists memory vendor
+
+  -Fixed issue if more than one active logfile was present
+
+  -Code staging for a guided step-by-step tutorial to set up SWARM.
