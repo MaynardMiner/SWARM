@@ -3358,3 +3358,5 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
   -SWARM should display a message is a miner was skipped over due to ``-threshold``
 
   -Per user request- Removed FancyIX's suggest settings for mtp (-p 0,strict,verbose,d=700)
+
+  -Test-Path HiveOS oc log first to prevent error generation

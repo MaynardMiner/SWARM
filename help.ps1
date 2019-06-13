@@ -6,7 +6,7 @@ $Global:Config.vars.dir = $Global:Config.vars.dir -replace "/var/tmp","/root"
 Set-Location $Global:Config.vars.dir
 . .\build\powershell\global\modules.ps1
 
-$(vars).Add("config",@{})
+$(vars).Add("config",[ordered]@{})
 $(vars).config = @{ }
 
 function Global:Confirm-Answer($Answer, $Possibilities) {
@@ -725,10 +725,15 @@ This is your settings in a copy/paste form for flight sheet/config:
                             Write-Host ""
                             Write-Host ""                
                 $(vars).input = Global:Get-Advanced_Settings
-            if($(vars).input -gt 0 -and $(vars).input -lt 7){
+            if($(vars).input -in 1 .. 6){
                 Add-Module "$hd\strategy.psm1"
                 Global:Get-Strategy
                 Remove-Module -Name strategy
+            }
+            elseif($(vars).input -in 7 .. 12){
+                Add-Module "$hd\switching.psm1"
+                Global:Get-Switching
+                Remove-Module -Name switching
             }
             }While($(vars).continue = $true)
         }
