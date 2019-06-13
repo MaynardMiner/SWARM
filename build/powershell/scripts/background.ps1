@@ -646,5 +646,6 @@ HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
     Get-Job -State Completed | Remove-Job
     [GC]::Collect()
     [GC]::WaitForPendingFinalizers()
-    [GC]::Collect()    
+    [GC]::Collect()
+    Clear-History
 }

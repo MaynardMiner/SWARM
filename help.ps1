@@ -735,5 +735,10 @@ This is your settings in a copy/paste form for flight sheet/config:
                 Global:Get-Switching
                 Remove-Module -Name switching
             }
+            elseif($(vars).input -in 13 .. 20){
+                Add-Module "$hd\statistics.psm1"
+                Global:Get-Statistics
+                Remove-Module -Name statistics
+            }
             }While($(vars).continue = $true)
         }
