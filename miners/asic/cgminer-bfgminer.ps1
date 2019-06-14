@@ -44,6 +44,7 @@ $Global:ASICTypes | ForEach-Object {
                     Power     =  if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 }
                     MinerPool  = "$($_.Name)"
                     Port       = 4028
+                    Worker     = $($global:ASICS.$ConfigType.NickName)
                     API        = "cgminer"
                     URI        = $Uri
                     Server     = $global:ASICS.$ConfigType.IP
