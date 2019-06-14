@@ -1,17 +1,16 @@
 function Global:Get-Params {
-    $Global:stats.Add("summary", @{ })
-    $Global:stats.Add("params", @{ })
-    $Global:stats.Add("stats", @{ })
     $global:Config.Add("params", @{ })
     $global:Config.Add("hive_params", @{ })
+    $global:Config.Add("stats", @{ })
+    $global:Config.Add("summary",@{ })
     if (Test-Path ".\config\parameters\newarguments.json") {
         $arguments = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json
-        $arguments.PSObject.Properties.Name | % { $(arg).Add("$($_)", $arguments.$_) }
+        $arguments.PSObject.Properties.Name | % { $global:config.params.Add("$($_)", $arguments.$_) }
         $arguments = $null
     }
     else {
         $arguments = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
-        $arguments.PSObject.Properties.Name | % { $(arg).Add("$($_)", $arguments.$_) }
+        $arguments.PSObject.Properties.Name | % { $global:Config.params.Add("$($_)", $arguments.$_) }
         $arguments = $null
     }
     if (Test-Path ".\build\txt\hive_params_keys.txt") {
@@ -40,7 +39,6 @@ function Global:Get-Params {
         else { $(arg).Platform = "linux" }
         Write-Host "OS = $($(arg).Platform)" -ForegroundColor Green
     }
-    $global:Stats.params = $(arg)
 }
 
 function Global:Set-Window {
@@ -76,11 +74,11 @@ function Global:Start-Servers {
     Remove-Module -Name "agentserver"
 
     if ( (test-path $Hive_Path) -or $(arg).TCP -eq "Yes" ) {
-        Import-Module -Name "$($(vars).tcp)\hiveserver.psm1"
+        Import-Module -Name "$($(vars).tcp)\tcpserver.psm1"
         $Posh_HiveTCP = Global:Get-HiveServer;
         $Posh_HiveTCP.BeginInvoke() | Out-Null
         $Posh_HiveTCP = $null
-        Remove-Module -Name "hiveserver"
+        Remove-Module -Name "tcpserver"
     }
     if ($(arg).API -eq "Yes") { Write-Host "API Server Started- you can run http://localhost:$($(arg).Port)/end to close" -ForegroundColor Green }
 }

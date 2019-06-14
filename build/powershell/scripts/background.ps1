@@ -23,7 +23,6 @@ $UtcTime = Get-Date -Date "1970-01-01 00:00:00Z"
 $UTCTime = $UtcTime.ToUniversalTime()
 $StartTime = [Math]::Round(((Get-Date) - $UtcTime).TotalSeconds)
 $Global:config = [hashtable]::Synchronized(@{ })
-$Global:stats = [hashtable]::Synchronized(@{ })
 $global:config.Add("vars", @{ })
 . .\build\powershell\global\modules.ps1
 $(vars).Add("dir", $WorkingDir)
@@ -588,10 +587,10 @@ HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
         if($global:GPUKHS -eq 0){$global:GPUKHS = "0"}
     }
 
-    $global:Stats.summary = @{
+    $Global:config.summary = @{
         summary = $global:MinerTable;
     }
-    $global:Stats.stats = @{
+    $global:Config.stats = @{
         gpus       = $global:GPUHashTable;
         cpus       = $global:CPUHashTable;
         asics      = $global:ASICHashTable;
@@ -609,7 +608,7 @@ HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
         stratum    = $Global:StatStratum
         start_time = $StartTime
     }
-    $global:Stats.params = $(arg)
+    $global:Config.params = $(arg)
 
     if ($global:GetMiners -and $global:GETSWARM.HasExited -eq $false) {
         Write-Host " "

@@ -2,7 +2,7 @@ function Global:Get-SWARMServer {
 
     $Runspace = [runspacefactory]::CreateRunspace()
     $Runspace.Open()
-    $Runspace.SessionStateProxy.SetVariable('stats', $global:stats)
+    $Runspace.SessionStateProxy.SetVariable('stats', $global:Config)
 
     $TCPServer = {
         $addr = [ipaddress]'127.0.0.1'

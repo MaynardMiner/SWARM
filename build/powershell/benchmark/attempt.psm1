@@ -213,6 +213,8 @@ function Global:Start-Benchmark {
                 if ($Global:Strike -eq $true) {
                     if ($global:WasBenchmarked -eq $False) {
                         if (-not (Test-Path ".\timeout")) { New-Item "timeout" -ItemType "directory" | Out-Null }
+                        if (-not (test-Path ".\timeout\Ban_Number.txt") ) { $(vars).Ban_Number = 1; $(vars).Ban_Number | Out-File ".\timeout\Ban_Number.txt" }
+                        else{ $(vars).Ban_Number = Get-Content ".\timeout\Ban_Number.txt" }
                         if (-not (Test-Path ".\timeout\pool_block")) { New-Item -Path ".\timeout" -Name "pool_block" -ItemType "directory" | Out-Null }
                         if (-not (Test-Path ".\timeout\algo_block")) { New-Item -Path ".\timeout" -Name "algo_block" -ItemType "directory" | Out-Null }
                         if (-not (Test-Path ".\timeout\miner_block")) { New-Item -Path ".\timeout" -Name "miner_block" -ItemType "directory" | Out-Null }

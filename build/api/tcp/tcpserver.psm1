@@ -2,10 +2,14 @@ function Global:Get-HiveServer {
 
     $Runspace = [runspacefactory]::CreateRunspace()
     $Runspace.Open()
-    $Runspace.SessionStateProxy.SetVariable('stats', $global:stats)
+    $Runspace.SessionStateProxy.SetVariable('stats', $global:Config)
 
     $TCPServer = {
+        if ($Stats.params.Remote -eq "yes") {
+            $addr = [ipaddress]'0.0.0.0'
+        } else {
         $addr = [ipaddress]'127.0.0.1'
+        }
         $port = $Stats.params.TCP_Port
         $endpoint = New-Object Net.IPEndPoint ($addr, $port)
         $server = New-Object Net.Sockets.TcpListener $endpoint
