@@ -116,6 +116,8 @@ $global:RestartTimer = New-Object -TypeName System.Diagnostics.Stopwatch
 
 Remove-Module -Name "startup"
 
+if($IsWindows){ $(vars).Add("Cores",$(Get-CimInstance -ClassName "Win32_Processor" | Select-Object -Property "NumberOfCores").NumberOfCores)}
+
 While ($True) {
 
     if ($(arg).Platform -eq "linux" -and -not $(vars).WebSites) {
