@@ -602,7 +602,7 @@ While ($true) {
         [GC]::Collect()
         [GC]::WaitForPendingFinalizers()
         [GC]::Collect()    
-
+        Clear-History
     }until($Error.Count -gt 0)
     Import-Module "$($(vars).global)\include.psm1" -Scope Global
     Global:Add-LogErrors

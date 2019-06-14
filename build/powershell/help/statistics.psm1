@@ -334,7 +334,7 @@ Function Global:Get-Custom_Periods{
 
 Default is 1. This will allow the user to specify the number of periods
 that SWARM should gather its data from, with `"periods`" defined as each 
-pull from pull. Default is 1 (to reduce use). If used, -Stat_Algo and /or
+pull from pool. Default is 1 (to reduce use). If used, -Stat_Algo and /or
 -Stat_Coin should be set to `"custom`"
 
 Note: -Stat_Algo Custom and -Stat_Coin Custom should be specified.
