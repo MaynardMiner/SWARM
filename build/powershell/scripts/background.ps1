@@ -499,12 +499,6 @@ While ($True) {
     if ($global:Workers.Main) { $Global:StatWorker = $global:Workers.Main }
     else { $FirstWorker = $global:Workers.keys | Select-Object -First 1; if ($FirstWorker) { $Global:StatWorker = $global:Workers.$FirstWorker } }
 
-    
-    if ($Global:StatAlgo) {
-        Write-Host "
-HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
-    }
-
     ##Now To Format All Stats For Online Table And Screen
     if ($global:DoNVIDIA) {
         for ($global:i = 0; $global:i -lt $(vars).GCount.NVIDIA.PSObject.Properties.Value.Count; $global:i++) {
