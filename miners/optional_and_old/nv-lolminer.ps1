@@ -14,9 +14,9 @@ $(vars).NVIDIATypes | ForEach-Object {
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "6300$Num"
 
     Switch ($Num) {
-        1 { $Get_Devices = $(vars).NVIDIADevices1 }
-        2 { $Get_Devices = $(vars).NVIDIADevices2 }
-        3 { $Get_Devices = $(vars).NVIDIADevices3 }
+        1 { $Get_Devices = $(vars).NVIDIADevices1; $Rig = $(arg).RigName1 }
+        2 { $Get_Devices = $(vars).NVIDIADevices2; $Rig = $(arg).RigName2 }
+        3 { $Get_Devices = $(vars).NVIDIADevices3; $Rig = $(arg).RigName3 }
     }
 
     ##Log Directory
@@ -47,19 +47,19 @@ $(vars).NVIDIATypes | ForEach-Object {
         $MinerAlgo = $_
 
         if ($MinerAlgo -in $global:Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
-            $StatAlgo = $MinerAlgo -replace "`_","`-"
+            $StatAlgo = $MinerAlgo -replace "`_", "`-"
             $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
-           $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
+            $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
         
             if ($Check.RAW -ne "Bad") {
                 $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                     $SelAlgo = $_.Algorithm
-                    switch($SelAlgo) {
-                        "equihash_144/5" {$AddArgs = "--coin AUTO144_5 "}
-                        "equihash_96/5" {$AddArgs = "--coin MNX "}
-                        "equihash_192/7" {$AddArgs = "--coin AUTO192_7 "}
-                        "equihash_150/5" {$AddArgs = "--coin BEAM --tls 0 "}
-                        "cuckatoo31" {$AddArgs = "--coin GRIN-AT31 "}
+                    switch ($SelAlgo) {
+                        "equihash_144/5" { $AddArgs = "--coin AUTO144_5 " }
+                        "equihash_96/5" { $AddArgs = "--coin MNX " }
+                        "equihash_192/7" { $AddArgs = "--coin AUTO192_7 " }
+                        "equihash_150/5" { $AddArgs = "--coin BEAM --tls 0 " }
+                        "cuckatoo31" { $AddArgs = "--coin GRIN-AT31 " }
                     }
                     if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
                     [PSCustomObject]@{
@@ -79,9 +79,10 @@ $(vars).NVIDIATypes | ForEach-Object {
                         Arguments  = "--pool $($_.Host) --port $($_.Port) --user $($_.$User) $AddArgs--pass $($_.$Pass)$($Diff) --apiport $Port --logs 0 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
-                        Power     =  if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
+                        Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                         MinerPool  = "$($_.Name)"
                         Port       = $Port
+                        Worker     = $Rig
                         API        = "lolminer"
                         Wallet     = "$($_.$User)"
                         URI        = $Uri

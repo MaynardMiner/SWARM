@@ -13,7 +13,7 @@ $(vars).AMDTypes | ForEach-Object {
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "fancyix-$Num"; $Port = "2200$Num"
 
     Switch ($Num) {
-        1 { $Get_Devices = $(vars).AMDDevices1 }
+        1 { $Get_Devices = $(vars).AMDDevices1; $Rig = $(arg).Rigname1 }
     }
 
     ##Log Directory
@@ -44,9 +44,9 @@ $(vars).AMDTypes | ForEach-Object {
         $MinerAlgo = $_
 
         if ($MinerAlgo -in $global:Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
-            $StatAlgo = $MinerAlgo -replace "`_","`-"
+            $StatAlgo = $MinerAlgo -replace "`_", "`-"
             $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
-           $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
+            $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
         
             if ($Check.RAW -ne "Bad") {
                 $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
@@ -68,9 +68,10 @@ $(vars).AMDTypes | ForEach-Object {
                         Arguments  = "--gpu-platform $Global:AMDPlatform --api-listen --api-port $Port -k $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.$User) -p $($_.$Pass)$($Diff) -T $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
-                        Power     =  if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
+                        Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                         MinerPool  = "$($_.Name)"
                         Port       = $Port
+                        Worker     = $Rig
                         API        = "sgminer-gm"
                         Wallet     = "$($_.$User)"
                         URI        = $Uri

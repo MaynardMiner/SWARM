@@ -39,12 +39,12 @@ $(vars).CPUTypes | ForEach-Object {
         $MinerAlgo = $_
 
         if ($MinerAlgo -in $global:Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
-            $StatAlgo = $MinerAlgo -replace "`_","`-"
+            $StatAlgo = $MinerAlgo -replace "`_", "`-"
             $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
-           $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
+            $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
         
-        if ($Check.RAW -ne "Bad") {
-            $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
+            if ($Check.RAW -ne "Bad") {
+                $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                     if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
                     if ($(arg).Platform -eq "windows") { $APISet = "--http-enabled --http-port=10002" }
                     else { $APISet = "--api-port=10002" }
@@ -64,8 +64,9 @@ $(vars).CPUTypes | ForEach-Object {
                         DeviceCall = "xmrig-opt"
                         Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) $APISet -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.User1) -p $($_.Pass1)$($Diff) --donate-level=1 --nicehash $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
+                        Worker     = $(arg).Rigname1
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
-                        Power     =  if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
+                        Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                         MinerPool  = "$($_.Name)"
                         Port       = 10002
                         API        = "xmrig-opt"

@@ -14,7 +14,7 @@ $(vars).AMDTypes | ForEach-Object {
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "3000$Num"
 
     Switch ($Num) {
-        1 { $Get_Devices = $(vars).AMDDevices1 }
+        1 { $Get_Devices = $(vars).AMDDevices1; $Rig = $(arg).Rigname1 }
     }
 
     ##Log Directory
@@ -67,6 +67,7 @@ $(vars).AMDTypes | ForEach-Object {
                         Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                         MinerPool  = "$($_.Name)"
                         Port       = $Port
+                        Worker     = $Rig
                         API        = "xmrstak"
                         Wallet     = "$($_.$User)"
                         URI        = $Uri
