@@ -1,20 +1,21 @@
 ## Confirm Answer Is Correct
-$Global:config = @{}
-$Global:Config.Add("vars",@{})
-$Global:Config.vars.Add( "dir",(Split-Path $script:MyInvocation.MyCommand.Path) )
-$Global:Config.vars.dir = $Global:Config.vars.dir -replace "/var/tmp","/root"
+$Global:config = @{ }
+$Global:Config.Add("vars", @{ })
+$Global:Config.vars.Add( "dir", (Split-Path $script:MyInvocation.MyCommand.Path) )
+$Global:Config.vars.dir = $Global:Config.vars.dir -replace "/var/tmp", "/root"
 Set-Location $Global:Config.vars.dir
 . .\build\powershell\global\modules.ps1
 
-$(vars).Add("config",[ordered]@{})
+$(vars).Add("config", [ordered]@{ })
 $(vars).config = @{ }
 
 function Global:Confirm-Answer($Answer, $Possibilities) {
     if ($Answer -notin $Possibilities) {
-        if($Possibilities.count -gt 41){
+        if ($Possibilities.count -gt 10) {
             Write-Host "Invalid Selection" -ForegroundColor Red
-        } else {
-        Write-Host "Please Select The Following: $Possibilities" -ForegroundColor Red
+        }
+        else {
+            Write-Host "Please Select The Following: $Possibilities" -ForegroundColor Red
         }
         Start-Sleep 3
         return 1
@@ -125,13 +126,13 @@ Please choose an advanced setting you wish to modify:
 42 I wish to turn on updates (-Update)
 
 Answer"
-$A = 42
-$Num = 0
-$CheckArray = @()
-for($i=0; $i -lt $A; $i++){$CheckArray += ($Num+1); $Num++}
- $Check = Global:Confirm-Answer $ans $CheckArray
-    }While($Check -eq 1)
-$ans
+        $A = 42
+        $Num = 0
+        $CheckArray = @()
+        for ($i = 0; $i -lt $A; $i++) { $CheckArray += ($Num + 1); $Num++ }
+        $Check = Global:Confirm-Answer $ans $CheckArray
+    }While ($Check -eq 1)
+    $ans
 }
 
 ##Ans 3 = CPU
@@ -631,7 +632,7 @@ Is This Correct?
 2 No
 
 Answer"
-                        $Check = Global:Confirm-Answer $Confirm @("1","2")
+                        $Check = Global:Confirm-Answer $Confirm @("1", "2")
                     }While ($Check -eq 1)
                     if ($Confirm -ne "1") {
                         Write-Host "Okay, lets try again"
@@ -642,39 +643,48 @@ Answer"
         }While ($Confirm -ne "1")
     }
 
-        if ($nice) {
-            $(vars).config.Type | % {
-                switch ($_) {
-                    "AMD1" { if (-not $(vars).config.Nicehash_Wallet1) { $(vars).config.Add("Nicehash_Wallet1", $nice) } }
-                    "NVIDIA1" { if (-not $(vars).config.Nicehash_Wallet1) { $(vars).config.Add("Nicehash_Wallet1", $nice) } }
-                    "CPU" { if (-not $(vars).config.Nicehash_Wallet1) { $(vars).config.Add("Nicehash_Wallet1", $nice) } }
-                    "ASIC" { if (-not $(vars).config.Nicehash_Wallet1) { $(vars).config.Add("Nicehash_Wallet1", $nice) } }
-                    "NVIDIA2" { if (-not $(vars).config.Nicehash_Wallet1) { $(vars).config.Add("Nicehash_Wallet2", $nice) } }
-                    "NVIDIA3" { if (-not $(vars).config.Nicehash_Wallet1) { $(vars).config.Add("Nicehash_Wallet3", $nice) } }
-                }
+    if ($nice) {
+        $(vars).config.Type | % {
+            switch ($_) {
+                "AMD1" { if (-not $(vars).config.Nicehash_Wallet1) { $(vars).config.Add("Nicehash_Wallet1", $nice) } }
+                "NVIDIA1" { if (-not $(vars).config.Nicehash_Wallet1) { $(vars).config.Add("Nicehash_Wallet1", $nice) } }
+                "CPU" { if (-not $(vars).config.Nicehash_Wallet1) { $(vars).config.Add("Nicehash_Wallet1", $nice) } }
+                "ASIC" { if (-not $(vars).config.Nicehash_Wallet1) { $(vars).config.Add("Nicehash_Wallet1", $nice) } }
+                "NVIDIA2" { if (-not $(vars).config.Nicehash_Wallet1) { $(vars).config.Add("Nicehash_Wallet2", $nice) } }
+                "NVIDIA3" { if (-not $(vars).config.Nicehash_Wallet1) { $(vars).config.Add("Nicehash_Wallet3", $nice) } }
             }
         }
     }
+}
 
-            Write-Host "Well, the basic settings are done. This is what we have so far:
+Write-Host "Well, the basic settings are done. This is what we have so far:
 "
 
-            $(vars).config
+$(vars).config
 
-            Start-Sleep -S 1
+Start-Sleep -S 1
 
-            Write-Host "
+Write-Host "
 These settings along with default advanced settings will be saved to `".\config\parameter\newarguments.json`""
-            Write-Host "If you run -help again in future, it will prompt if you wish to load your basic configs."
-            Write-Host "
+Write-Host "If you run -help again in future, it will prompt if you wish to load your basic configs."
+Write-Host "
             
 If using HiveOS- You can copy and paste this into your flight sheet:
 
 "
+$Arg = $null
 
-            $(vars).config | ConvertTo-Json -Compress
-            do {
-            $Confirm = Read-Host -Prompt "
+$(vars).config.keys | % {
+    if ($(vars).config.$_ -and $(vars).config.$_ -ne "") {
+        if ( $(vars).config.$_ -is [Array]) { $Sec = "$($(vars).config.$_)" -replace " ", "," }
+        else { $Sec = $(vars).Config.$_ }
+        $Arg += "-$($_) $Sec "
+    }
+}
+$Arg.Substring(0, $Arg.Length - 1)      
+
+do {
+    $Confirm = Read-Host -Prompt "
             
 You can now start SWARM. Would you like to save these settings, and start SWARM?
 
@@ -686,59 +696,72 @@ Would you like to start advanced configs?
 2 No. I have plenty of time. I would like to go through all settings, knowing that it will take awhile.
 
 Answer"
-            $Check = Global:Confirm-Answer $Confirm @("1", "2")
-        }While ($Check -eq 1)
+    $Check = Global:Confirm-Answer $Confirm @("1", "2")
+}While ($Check -eq 1)
 
+Clear-Host
+
+if ($Confirm -eq "1") {
+    Write-Host "Saving Settings"
+    $Defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json
+    $Defaults.PSObject.Properties.Name | % { if ($_ -notin $(vars).config.keys) { $(vars).config.Add("$($_)", $Defaults.$_) } }
+    $(vars).config | ConvertTo-Json | Set-Content ".\config\parameters\newarguments.json"
+    Start-Sleep -S 2
+    Write-Host "Settings Saved! Run SWARM.bat to start SWARM!"
+}
+if ($Confirm -eq "2") {
+    $(vars).add("continue", $True)
+    $hd = "$($(vars).dir)\build\powershell\help"
+    $(vars).Add("input", $null)
+    $p = [Environment]::GetEnvironmentVariable("PSModulePath")
+    if ($P -notlike "$($(vars).dir)\build\powershell\help*") {
+        $P += ";$($(vars).dir)\build\powershell\help)";
+        [Environment]::SetEnvironmentVariable("PSModulePath", $p)
+    }            
+    do {
         Clear-Host
-
-        if($Confirm -eq "1") {
-            Write-Host "Saving Settings"
-            $Defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json
-            $Defaults.PSObject.Properties.Name | % { if ($_ -notin $(vars).config.keys) { $(vars).config.Add("$($_)", $Defaults.$_) } }
-            $(vars).config | ConvertTo-Json | Set-Content ".\config\parameters\newarguments.json"
-            Start-Sleep -S 2
-            Write-Host "Settings Saved! Run SWARM.bat to start SWARM!"
-        }
-        if($Confirm -eq "2") {
-            $(vars).add("continue",$True)
-            $hd = "$($(vars).dir)\build\powershell\help"
-            $(vars).Add("input",$null)
-            $p = [Environment]::GetEnvironmentVariable("PSModulePath")
-            if ($P -notlike "$($(vars).dir)\build\powershell\help*") {
-                $P += ";$($(vars).dir)\build\powershell\help)";
-                [Environment]::SetEnvironmentVariable("PSModulePath", $p)
-            }            
-            do{
-                Clear-Host
-                Write-Host "These are your current settings:
+        Write-Host "These are your current settings:
                 "
-                Start-Sleep -S 2
-                            $(vars).config
+        Start-Sleep -S 2
+        $(vars).config
                 
-                            Write-Host "
+        Write-Host "
 
 This is your settings in a copy/paste form for flight sheet/config:
                 "
-                Start-Sleep -S 2
-                            $(vars).config | ConvertTo-Json -Compress
-                Start-Sleep -S 2
-                            Write-Host ""
-                            Write-Host ""                
-                $(vars).input = Global:Get-Advanced_Settings
-            if($(vars).input -in 1 .. 6){
-                Add-Module "$hd\strategy.psm1"
-                Global:Get-Strategy
-                Remove-Module -Name strategy
+        Start-Sleep -S 2
+        $Arg = $null
+        $(vars).config.keys | % {
+            if ($(vars).config.$_ -and $(vars).config.$_ -ne "") {
+                if ( $(vars).config.$_ -is [Array]) { $Sec = "$($(vars).config.$_)" -replace " ", "," }
+                else { $Sec = $(vars).Config.$_ }
+                $Arg += "-$($_) $Sec "
             }
-            elseif($(vars).input -in 7 .. 12){
-                Add-Module "$hd\switching.psm1"
-                Global:Get-Switching
-                Remove-Module -Name switching
-            }
-            elseif($(vars).input -in 13 .. 20){
-                Add-Module "$hd\statistics.psm1"
-                Global:Get-Statistics
-                Remove-Module -Name statistics
-            }
-            }While($(vars).continue = $true)
         }
+        $Arg.Substring(0, $Arg.Length - 1)      
+        Start-Sleep -S 2
+        Write-Host ""
+        Write-Host ""                
+        $(vars).input = Global:Get-Advanced_Settings
+        if ($(vars).input -in 1 .. 6) {
+            Add-Module "$hd\strategy.psm1"
+            Global:Get-Strategy
+            Global:Remove-Modules
+        }
+        elseif ($(vars).input -in 7 .. 12) {
+            Add-Module "$hd\switching.psm1"
+            Global:Get-Switching
+            Global:Remove-Modules
+        }
+        elseif ($(vars).input -in 13 .. 20) {
+            Add-Module "$hd\statistics.psm1"
+            Global:Get-Statistics
+            Global:Remove-Modules
+        }
+        elseif ($(vars).input -in 21 .. 28) {
+            Add-Module "$hd\admin.psm1"
+            Global:Get-Admin
+            Global:Remove-Modules
+        }
+    }While ($(vars).continue = $true)
+}
