@@ -36,6 +36,7 @@ function Global:Get-ActiveMiners($global:bestminers_combo) {
                 Activated    = 0
                 Wallet       = $_.Wallet
                 Stratum      = $_.Stratum
+                Instance     = 0
             }
 
             $(vars).ActiveMinerPrograms | Where-Object Path -eq $_.Path | Where-Object Type -eq $_.Type | Where-Object Arguments -eq $_.Arguments | % {

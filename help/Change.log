@@ -3360,3 +3360,8 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
   -Per user request- Removed FancyIX's suggest settings for mtp (-p 0,strict,verbose,d=700)
 
   -Test-Path HiveOS oc log first to prevent error generation
+
+  -``get active screen`` displays differently
+   * removed "Days", as it wasn't needed.
+   * added "#", which is the instance number
+   * ordered by instance- Greatest (most recently ran miners) to least.

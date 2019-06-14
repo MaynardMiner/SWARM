@@ -57,6 +57,7 @@ function Global:Start-NewMiners {
             $global:Restart = $true
             if ($Miner.Type -notlike "*ASIC*") { Start-Sleep -S $Miner.Delay }
             $Miner.InstanceName = "$($Miner.Type)-$($(vars).Instance)"
+            $Miner.Instance = $(vars).Instance
             $Miner.Activated++
             $(vars).Instance++
             $Current = $Miner | ConvertTo-Json -Compress
