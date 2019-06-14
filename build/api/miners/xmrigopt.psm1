@@ -28,5 +28,5 @@ function Global:Get-Statsxmrigopt {
         $global:ALLACC += $global:MinerACC
         $global:ALLREJ += $global:MinerREJ
     }
-    else { Write-Host "$MinerAPI API Failed- Could Not Get Stats" -Foreground Red; $global:BCPURAW = 0; $global:BCPURAW | Set-Content ".\build\txt\$MinerType-hash.txt" }
+    else { Write-Host "$MinerAPI API Failed- Could Not Get Stats" -Foreground Red; $global:BCPURAW = 0; }
 }

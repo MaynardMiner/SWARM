@@ -70,7 +70,6 @@ function Global:Start-LaunchCode {
         $Export = Join-Path $($(vars).dir) "build\export"
         $PIDMiners = "$($MinerCurrent.Type)"
         if (Test-Path ".\build\pid\*$PIDMiners*") { Remove-Item ".\build\pid\*$PIDMiners*" }
-        if (Test-Path ".\build\*$($MinerCurrent.Type)*-hash.txt") { Clear-Content ".\build\*$($MinerCurrent.Type)*-hash.txt" }
         $Logs = Join-Path $($(vars).dir) "logs\$($MinerCurrent.Type).log" 
 
         switch -WildCard ($MinerCurrent.Type) {
