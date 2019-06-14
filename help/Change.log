@@ -3365,3 +3365,12 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
    * removed "Days", as it wasn't needed.
    * added "#", which is the instance number
    * ordered by instance- Greatest (most recently ran miners) to least.
+
+  NEW ARGUMENT
+
+  ``-TypeBanCount``
+
+  Like PoolBanCount,MinerBanCount, and AlgoBanCount, TypeBanCount will take
+  action if a device type (AMD1,CPU,NVIDIA1,etc.) has x consecutive banned
+  miners in a row- Where x is -TypeBanCount. When x has been reached, SWARM
+  will reset all timeouts, then restart computer.
