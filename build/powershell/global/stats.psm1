@@ -37,21 +37,24 @@ function Global:Set-Stat {
         [switch]$AsHashrate
     )
 
+    if($name -eq "load-average"){$Interval = 10}
+    else{$Interval = $(arg).Interval }
+
     $Calcs = @{
-        Minute    = [Math]::Max([Math]::Round(60 / $(arg).Interval), 1)
-        Minute_5  = [Math]::Max([Math]::Round(300 / $(arg).Interval), 1)
-        Minute_15 = [Math]::Max([Math]::Round(900 / $(arg).Interval), 1)
-        Hour      = [Math]::Max([Math]::Round(3600 / $(arg).Interval), 1)
+        Minute    = [Math]::Max([Math]::Round(60 / $Interval), 1)
+        Minute_5  = [Math]::Max([Math]::Round(300 / $Interval), 1)
+        Minute_15 = [Math]::Max([Math]::Round(900 / $Interval), 1)
+        Hour      = [Math]::Max([Math]::Round(3600 / $Interval), 1)
     }
 
     if (-not $AsHashrate) {
-        $Calcs.Add("Hour_4", [Math]::Max([Math]::Round(14400 / $(arg).Interval), 1))
-        $Calcs.Add("Day", [Math]::Max([Math]::Round(14400 / $(arg).Interval), 1))
-        $Calcs.Add("Custom", [Math]::Max([Math]::Round(14400 / $(arg).Interval), 1))
+        $Calcs.Add("Hour_4", [Math]::Max([Math]::Round(14400 / $Interval), 1))
+        $Calcs.Add("Day", [Math]::Max([Math]::Round(14400 / $Interval), 1))
+        $Calcs.Add("Custom", [Math]::Max([Math]::Round(14400 / $Interval), 1))
     }
 
     if ($HashRate) {
-        $Calcs.Add("Hashrate", [Math]::Max([Math]::Round(3600 / $(arg).Interval), 1))
+        $Calcs.Add("Hashrate", [Math]::Max([Math]::Round(3600 / $Interval), 1))
     }
 
     if ($AsHashrate) { $Max_Periods = 15 }
