@@ -130,7 +130,7 @@ While ($True) {
     $global:DoNVIDIA = $false; $global:DoASIC = $false; $global:AllKHS = 0; 
     $global:AllACC = 0; $global:ALLREJ = 0;
     $global:HIVE_ALGO = @{ }; $Group1 = $null; $Default_Group = $null; 
-    $Hive = $null; $global:UPTIME = 0; $global:Web_Stratum = @{ }
+    $Hive = $null; $global:UPTIME = 0; $global:Web_Stratum = @{ }; $global:Workers = @{ }
 
     Global:Add-Module "$($(vars).background)\run.psm1"
     Global:Add-Module "$($(vars).background)\initial.psm1"
@@ -156,7 +156,7 @@ While ($True) {
             $global:MinerAlgo = "$($_.Algo)"; $global:MinerName = "$($_.MinerName)"; $global:Name = "$($_.Name)";
             $global:Port = $($_.Port); $global:MinerType = "$($_.Type)"; $global:MinerAPI = "$($_.API)";
             $global:Server = "$($_.Server)"; $HashPath = ".\logs\$($_.Type).log"; $global:TypeS = "none"
-            $global:Devices = 0; $MinerDevices = $_.Devices; $MinerStratum = $_.Stratum;
+            $global:Devices = 0; $MinerDevices = $_.Devices; $MinerStratum = $_.Stratum; $Worker = $_.Worker
 
             ##Algorithm Parsing For Stats
             $HiveAlgo = $global:MinerAlgo -replace "`_", " "
@@ -175,10 +175,12 @@ While ($True) {
                 "NVIDIA1" { 
                     $global:HIVE_ALGO.Add("Main", $HiveAlgo); 
                     $global:Web_Stratum.Add("Main", $MinerStratum); 
+                    $global:Workers.Add("Main",$Worker)
                 }
                 "AMD1" { 
                     $global:HIVE_ALGO.Add("Main", $HiveAlgo); 
-                    $global:Web_Stratum.Add("Main", $MinerStratum); 
+                    $global:Web_Stratum.Add("Main", $MinerStratum);
+                    $global:Workers.Add("Main",$Worker)
                 }
                 default { 
                     $global:HIVE_ALGO.Add($global:MinerType, $HiveAlgo); 
@@ -492,7 +494,10 @@ While ($True) {
     else { $FirstMiner = $global:HIVE_ALGO.keys | Select-Object -First 1; if ($FirstMiner) { $Global:StatAlgo = $global:HIVE_ALGO.$FirstMiner } }
 
     if ($global:Web_Stratum.Main) { $Global:StatStratum = $global:Web_Stratum.Main }
-    else { $FirstStrat = $global:Web_Stratum.keys | Select-Object -First 1; if ($FirstStrat) { $Global:StatStratum = $global:HIVE_ALGO.$FirstMiner } }
+    else { $FirstStrat = $global:Web_Stratum.keys | Select-Object -First 1; if ($FirstStrat) { $Global:StatStratum = $global:HIVE_ALGO.$FirstStrat } }
+
+    if ($global:Workers.Main) { $Global:StatWorker = $global:Workers.Main }
+    else { $FirstWorker = $global:Workers.keys | Select-Object -First 1; if ($FirstWorker) { $Global:StatWorker = $global:Workers.$FirstWorker } }
 
     
     if ($Global:StatAlgo) {
@@ -607,6 +612,7 @@ HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
         rejected   = $global:AllREJ;
         stratum    = $Global:StatStratum
         start_time = $StartTime
+        workername = $Global:StatWorker
     }
     $global:Config.params = $(arg)
 
@@ -626,8 +632,9 @@ HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
         Write-Host " ALGO: $Global:StatAlgo" -ForegroundColor White -NoNewline
         Write-Host " UPTIME: $global:UPTIME" -ForegroundColor Yellow
         Write-Host "STRATUM: $global:StatStratum" -ForegroundColor Cyan
-        Write-Host "START_TIME: $StartTime
-" -ForegroundColor Magenta
+        Write-Host "START_TIME: $StartTime" -ForegroundColor Magenta -NoNewline
+        Write-Host " WORKER: $global:StatWorker
+" -ForegroundColor Yellow
     }
 
     Remove-Module -Name "gpu"

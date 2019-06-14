@@ -3376,3 +3376,7 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
   action if a device type (AMD1,CPU,NVIDIA1,etc.) has x consecutive banned
   miners in a row- Where x is -TypeBanCount. When x has been reached, SWARM
   will reset all timeouts, then restart computer.
+
+  -``Remote`` [Yes or No] will now make TCP remote as well HTML.
+
+  -TCP api now shows "WorkerName"
