@@ -3366,6 +3366,8 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
    * added "#", which is the instance number
    * ordered by instance- Greatest (most recently ran miners) to least.
 
+  -Improved CPU metrics (Windows)
+
   NEW ARGUMENT
 
   ``-TypeBanCount``
