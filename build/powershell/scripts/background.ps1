@@ -621,12 +621,12 @@ While ($True) {
         if ($global:DoAMD -or $global:DoNVIDIA) { Write-Host "GPU_TOTAL_KHS: $global:GPUKHS" -ForegroundColor Yellow }
         if ($global:DoCPU) { Write-Host "CPU_TOTAL_KHS: $global:CPUKHS" -ForegroundColor Yellow }
         if ($global:DoASIC) { Write-Host "ASIC_TOTAL_KHS: $global:ASICKHS" -ForegroundColor Yellow }
-        Write-Host "ACC: $global:ALLACC" -ForegroundColor DarkGreen -NoNewline
-        Write-Host " REJ: $global:ALLREJ" -ForegroundColor DarkRed -NoNewline
-        Write-Host " ALGO: $Global:StatAlgo" -ForegroundColor White -NoNewline
+        Write-Host "ACC: $global:ALLACC" -ForegroundColor DarkGreen -NoNewline; Write-Host " `|" -NoNewline
+        Write-Host " REJ: $global:ALLREJ" -ForegroundColor DarkRed -NoNewline; Write-Host " `|" -NoNewline
+        Write-Host " ALGO: $Global:StatAlgo" -ForegroundColor White -NoNewline; Write-Host " `|" -NoNewline
         Write-Host " UPTIME: $global:UPTIME" -ForegroundColor Yellow
         Write-Host "STRATUM: $global:StatStratum" -ForegroundColor Cyan
-        Write-Host "START_TIME: $StartTime" -ForegroundColor Magenta -NoNewline
+        Write-Host "START_TIME: $StartTime" -ForegroundColor Magenta -NoNewline; Write-Host " `|" -NoNewline
         Write-Host " WORKER: $global:StatWorker
 " -ForegroundColor Yellow
     }
