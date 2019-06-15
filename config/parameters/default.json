@@ -87,6 +87,7 @@
     "SWARM_Mode": "No",
     "Switch_Threshold": "0",
     "TCP": "No",
+    "TCP_IP": "127.0.0.1",
     "TCP_Port": 6099,
     "Threshold": 0.02,
     "Timeout": 24,
