@@ -3368,7 +3368,7 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
 
   -Improved CPU metrics (Windows)
 
-  NEW ARGUMENT
+  NEW ARGUMENTS!
 
   ``-TypeBanCount``
 
@@ -3377,6 +3377,9 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
   miners in a row- Where x is -TypeBanCount. When x has been reached, SWARM
   will reset all timeouts, then restart computer.
 
-  -``Remote`` [Yes or No] will now make TCP remote as well HTML.
+  ``-TCP_IP``
+   Default is 127.0.0.1. Sets IP for tcp api.
 
   -TCP api now shows "WorkerName"
+
+  -fixed html api (I didn't notice I broke it. It is restored).
