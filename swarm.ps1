@@ -101,6 +101,7 @@ Import-Module "$($(vars).global)\include.psm1" -Scope Global
 ## Get Parameters
 Global:Add-Module "$($(vars).startup)\parameters.psm1"
 Global:Get-Parameters
+$(arg).TCP_Port | Out-File ".\build\txt\port.txt"
 
 ## Crash Reporting
 Global:Add-Module "$($(vars).startup)\crashreport.psm1"
