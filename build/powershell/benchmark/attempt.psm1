@@ -5,7 +5,7 @@ function Global:Get-MinerTimeout {
     )
 
     $miner = $minerjson | ConvertFrom-Json
-    $reason = "error"
+    $reason = "unknown error"
 
     if ($Miner.hashrate -eq 0 -or $null -eq $Miner.hashrate) {
         if ($null -eq $miner.xprocess) { $reason = "no start" }
@@ -338,7 +338,7 @@ function Global:Start-Benchmark {
                             Start-Sleep -S 1
                         }
                         if($TypeBan -eq $true){
-
+                            if($_.Type -notlike "*ASIC*" -or $_.Type -ne "CPU") {
                             $HiveMessage = "$($_.Type) Have timed out $( $(arg).TypeBanCount ) bad miners. A card must have crashed. Rebooting system"
                             $HiveWarning = @{result = @{command = "timeout" } }
                             if ($(vars).WebSites) {
@@ -358,6 +358,7 @@ function Global:Start-Benchmark {
                             Remove-Item ".\timeout" -Recurse -Force
                             if($IsWindows){ Restart-Computer -Force}
                             elseif($IsLinux){ Invoke-Expression "reboot" }
+                        }
                         }
                     }
                 }

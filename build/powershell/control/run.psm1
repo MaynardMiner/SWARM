@@ -8,7 +8,20 @@ function Global:Stop-ActiveMiners {
                 if ($_.XProcess -eq $Null) { $_.Status = "Failed" }
                 elseif ($_.XProcess.HasExited -eq $false) {
                     $_.Active += (Get-Date) - $_.XProcess.StartTime
-                    if ($_.Type -notlike "*ASIC*") { $_.XProcess.CloseMainWindow() | Out-Null }
+                    $N = 0
+                    if ($_.Type -notlike "*ASIC*") {
+                        do {
+                            $N++
+                            $_.XProcess.CloseMainWindow() | Out-Null 
+                            Start-Sleep -S .5
+                            if ($_.XProcess.HasExited -eq $False) {
+                                Stop-Process -Id $_.XProcess.Id | Out-Null
+                            }
+                            if($N -gt 5) {
+                                Write-Log "SWARM is trying to close program. It will not close." -ForegroundColor Darkred
+                            }
+                        }while ($_.XProcess.HasExited -eq $False)
+                    }
                     else { $_.Xprocess.HasExited = $true; $_.XProcess.StartTime = $null }
                     $_.Status = "Idle"
                 }
@@ -123,22 +136,23 @@ function Global:Start-NewMiners {
                 $Miner.Status = "Running"
                 if ($Miner.Type -notlike "*ASIC*") { Global:Write-Log "Process Id is $($Miner.XProcess.ID)" }
                 Global:Write-Log "$($Miner.MinerName) Is Running!" -ForegroundColor Green
-            }
-            if ($Reason -eq "Restart") {
-                Global:Write-Log "
-       
-            //\\  _______
-           //  \\//~//.--|
-           Y   /\\~~//_  |
-          _L  |_((_|___L_|
-         (/\)(____(_______)        
-      
-    Waiting 20 Seconds For Miners To Fully Load
-    
-    " 
-                Start-Sleep -s 20
-    
+                $(vars).current_procs += $Miner.Xprocess.ID
             }
         }
+    }
+    if ($Reason -eq "Restart" -and $global:Restart -eq $true) {
+        Global:Write-Log "
+
+    //\\  _______
+   //  \\//~//.--|
+   Y   /\\~~//_  |
+  _L  |_((_|___L_|
+ (/\)(____(_______)        
+
+Waiting 20 Seconds For Miners To Fully Load
+
+" 
+        Start-Sleep -s 20
+
     }
 }

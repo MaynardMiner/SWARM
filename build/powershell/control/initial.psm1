@@ -55,6 +55,7 @@ function Global:Get-ActiveMiners($global:bestminers_combo) {
     }
 }
 
+
 function Global:Get-BestActiveMiners {
     $(vars).ActiveMinerPrograms | ForEach-Object {
         if ($global:BestMiners_Combo | Where-Object Type -EQ $_.Type | Where-Object Path -EQ $_.Path | Where-Object Arguments -EQ $_.Arguments) { $_.BestMiner = $true; $(vars).BestActiveMIners += $_ }
