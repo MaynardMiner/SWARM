@@ -3390,3 +3390,7 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
    close all child process associated with that starting script. This includes if users added 
    pre-starting scripts. Linux - The screen window is closes, meaning all processes in that 
    screen are closed with it...Hence it is not needed.
+
+  -Windows: It is common that if a miner card has crashed, the miner window will not close.
+   if user specifies ``-Startup Yes`` (Default is Yes), SWARM will restart computer after
+   2 minutes of the window staying open. It will notify HiveOS this is the case.
