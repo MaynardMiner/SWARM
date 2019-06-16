@@ -650,8 +650,8 @@ Answer"
                 "NVIDIA1" { if (-not $(vars).config.Nicehash_Wallet1) { $(vars).config.Add("Nicehash_Wallet1", $nice) } }
                 "CPU" { if (-not $(vars).config.Nicehash_Wallet1) { $(vars).config.Add("Nicehash_Wallet1", $nice) } }
                 "ASIC" { if (-not $(vars).config.Nicehash_Wallet1) { $(vars).config.Add("Nicehash_Wallet1", $nice) } }
-                "NVIDIA2" { if (-not $(vars).config.Nicehash_Wallet1) { $(vars).config.Add("Nicehash_Wallet2", $nice) } }
-                "NVIDIA3" { if (-not $(vars).config.Nicehash_Wallet1) { $(vars).config.Add("Nicehash_Wallet3", $nice) } }
+                "NVIDIA2" { if (-not $(vars).config.Nicehash_Wallet2) { $(vars).config.Add("Nicehash_Wallet2", $nice) } }
+                "NVIDIA3" { if (-not $(vars).config.Nicehash_Wallet3) { $(vars).config.Add("Nicehash_Wallet3", $nice) } }
             }
         }
     }
