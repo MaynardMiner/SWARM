@@ -303,7 +303,12 @@ function Global:Start-LaunchCode {
                     };
                     [PSCustomObject]@{ProcessId = $Process.Id; ProcessHandle = $Process.Handle };
                     $ControllerProcess.Handle | Out-Null; $Process.Handle | Out-Null; 
-                    do { if ($ControllerProcess.WaitForExit(1000)) { $Process.CloseMainWindow() | Out-Null } }while ($Process.HasExited -eq $false)
+                    do { if ($ControllerProcess.WaitForExit(1000) ) { 
+                        $Child = Get-Process | where { $_.Parent -eq $Process }
+                        $Child | %{ Stop-Process -Id $_.Id }
+                        $Process.CloseMainWindow() | Out-Null
+                    } 
+                }while ($Process.HasExited -eq $false)
                 }
       
                 do { sleep 1; $JobOutput = Receive-Job $Job }

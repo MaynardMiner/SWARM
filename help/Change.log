@@ -3383,3 +3383,10 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
   -TCP api now shows "WorkerName"
 
   -fixed html api (I didn't notice I broke it. It is restored).
+
+  -There was a rare issue in windows when the background script controlloing active miner
+   would crash. This would result in the SWARM launching a new miner while
+   the active miner continued to run. When SWARM restarts/closes miners, it will now
+   close all child process associated with that starting script. This includes if users added 
+   pre-starting scripts. Linux - The screen window is closes, meaning all processes in that 
+   screen are closed with it...Hence it is not needed.

@@ -11,15 +11,10 @@ function Global:Stop-ActiveMiners {
                     $N = 0
                     if ($_.Type -notlike "*ASIC*") {
                         do {
-                            $N++
-                            $_.XProcess.CloseMainWindow() | Out-Null 
-                            Start-Sleep -S .5
-                            if ($_.XProcess.HasExited -eq $False) {
-                                Stop-Process -Id $_.XProcess.Id | Out-Null
-                            }
-                            if($N -gt 5) {
-                                Write-Log "SWARM is trying to close program. It will not close." -ForegroundColor Darkred
-                            }
+                            $Sel = $_
+                            if ($Sel.Xprocess.Id) { $Childs = Get-Process | Where { $_.Parent.ID -eq $Sel.XProcess.ID } }
+                            $Childs | % { Stop-Process -Id $_.Id }
+                            $Sel.XProcess.CloseMainWindow() | Out-Null 
                         }while ($_.XProcess.HasExited -eq $False)
                     }
                     else { $_.Xprocess.HasExited = $true; $_.XProcess.StartTime = $null }
@@ -113,6 +108,12 @@ function Global:Start-NewMiners {
                 }
             }
 
+            ##Kill Open Miner Windows That May Still Be Open
+            if ($IsWindows -and $Reason -eq "Restart") {
+                $Sel = $_
+                if ($Sel.Xprocess.Id) { $Childs = Get-Process | Where { $_.Parent.ID -eq $Sel.XProcess.ID } }
+                $Childs | % { Stop-Process -Id $_.Id }
+            }
 
             ##Launch Miners
             Global:Write-Log "Starting $($Miner.InstanceName)"
