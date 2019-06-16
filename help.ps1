@@ -63,6 +63,7 @@ function Start-CPU_Question {
 
 function Global:Get-Advanced_Settings {
     do {
+        Clear-Host
         $ans = Read-Host -Prompt "These are advanced configs. More information regarding advanced parameters can be found here:
     
 https://github.com/MaynardMiner/SWARM/blob/master/help/SWARM_help.txt
@@ -660,16 +661,7 @@ Answer"
 Write-Host "Well, the basic settings are done. This is what we have so far:
 "
 
-$Num = 0
-$(vars).config.keys | % {
-    $Line += "$($_) $($(vars).config.$_)  "
-    $Num++
-    if($Num -eq 2){
-    Write-Host $Line
-    $Line = $null
-    $Num = 0
-    }
-}
+$(vars).config
 
 Start-Sleep -S 1
 
@@ -729,57 +721,91 @@ if ($Confirm -eq "2") {
     }            
     do {
         Clear-Host
-        Write-Host "These are your current settings:
+        do {
+            Clear-Host
+            Write-Host "These are your current settings:
                 "
-        Start-Sleep -S 2
-        $Num = 0
-        $(vars).config.keys | % {
-            $Line += "$($_) $($(vars).config.$_)  "
-            $Num++
-            if($Num -eq 2){
-            Write-Host $Line
-            $Line = $null
-            $Num = 0
-            }
-        }
-                        
-        Write-Host "
+            Start-Sleep -S 2
+            $(vars).config
+                
+            Write-Host "
 
 This is your settings in a copy/paste form for flight sheet/config:
                 "
-        Start-Sleep -S 2
-        $Arg = $null
-        $(vars).config.keys | % {
-            if ($(vars).config.$_ -and $(vars).config.$_ -ne "") {
-                if ( $(vars).config.$_ -is [Array]) { $Sec = "$($(vars).config.$_)" -replace " ", "," }
-                else { $Sec = $(vars).Config.$_ }
-                $Arg += "-$($_) $Sec "
+            Start-Sleep -S 2
+            $Arg = $null
+            $(vars).config.keys | % {
+                if ($(vars).config.$_ -and $(vars).config.$_ -ne "") {
+                    if ( $(vars).config.$_ -is [Array]) { $Sec = "$($(vars).config.$_)" -replace " ", "," }
+                    else { $Sec = $(vars).Config.$_ }
+                    $Arg += "-$($_) $Sec "
+                }
+            }
+            $Arg.Substring(0, $Arg.Length - 1)      
+            Start-Sleep -S 2
+            Write-Host ""
+            Write-Host ""
+            $ans = Read-Host -Prompt "What would you like to do?
+
+1 I would like to change a parameter
+2 I would like to view a parameter
+
+Answer"
+            $Check = Global:Confirm-Answer $Ans @("1", "2")
+        }While ($Check -eq 1)
+        Switch ($ans) {
+            "1" {
+                $(vars).input = Global:Get-Advanced_Settings
+                if ($(vars).input -in 1 .. 6) {
+                    Add-Module "$hd\strategy.psm1"
+                    Global:Get-Strategy
+                    Global:Remove-Modules
+                }
+                elseif ($(vars).input -in 7 .. 12) {
+                    Add-Module "$hd\switching.psm1"
+                    Global:Get-Switching
+                    Global:Remove-Modules
+                }
+                elseif ($(vars).input -in 13 .. 20) {
+                    Add-Module "$hd\statistics.psm1"
+                    Global:Get-Statistics
+                    Global:Remove-Modules
+                }
+                elseif ($(vars).input -in 21 .. 28) {
+                    Add-Module "$hd\admin.psm1"
+                    Global:Get-Admin
+                    Global:Remove-Modules
+                }
+            }
+            "2" {
+                do {
+                    Clear-Host
+                    $Num = 0
+                    $Table = @{ }
+                    $List = @()
+                    $(vars).config.keys | % { $Table.Add("$Num", $_); $List += "$Num $($_)"; $NUm++ }
+                    $ans = Read-Host -Prompt "Which Parameter would you like to view?
+            
+$($List -join "`n")
+
+Answer"
+                    $Check = Global:Confirm-Answer $ans @(1 .. ($Num - 1))
+                }while ($Check -eq 1)
+                do{
+                clear-host
+                $(vars).continue = Read-Host -Prompt "Here is Parameter $($Table.$Ans):
+                
+$($(vars).Config.$($Table.$Ans))
+
+Do You Wish To Continue
+
+1 Yes
+2 No
+
+Answer"
+                    $check = Global:Confirm-Answer $(vars).continue @("1", "2")
+                }while ($check -eq 1)
             }
         }
-        $Arg.Substring(0, $Arg.Length - 1)      
-        Start-Sleep -S 2
-        Write-Host ""
-        Write-Host ""                
-        $(vars).input = Global:Get-Advanced_Settings
-        if ($(vars).input -in 1 .. 6) {
-            Add-Module "$hd\strategy.psm1"
-            Global:Get-Strategy
-            Global:Remove-Modules
-        }
-        elseif ($(vars).input -in 7 .. 12) {
-            Add-Module "$hd\switching.psm1"
-            Global:Get-Switching
-            Global:Remove-Modules
-        }
-        elseif ($(vars).input -in 13 .. 20) {
-            Add-Module "$hd\statistics.psm1"
-            Global:Get-Statistics
-            Global:Remove-Modules
-        }
-        elseif ($(vars).input -in 21 .. 28) {
-            Add-Module "$hd\admin.psm1"
-            Global:Get-Admin
-            Global:Remove-Modules
-        }
-    }While ($(vars).continue = $true)
+    }While ($(vars).continue -eq $true)
 }
