@@ -660,7 +660,15 @@ Answer"
 Write-Host "Well, the basic settings are done. This is what we have so far:
 "
 
-$(vars).config
+$Num = 0
+$(vars).config.keys | % {
+    $Line += "$($_) $($(vars).config.$_)  "
+    $Num++
+    if($Num -eq 3){
+    Write-Host $Line
+    $Num = 0
+    }
+}
 
 Start-Sleep -S 1
 
@@ -723,8 +731,16 @@ if ($Confirm -eq "2") {
         Write-Host "These are your current settings:
                 "
         Start-Sleep -S 2
-        $(vars).config
-                
+        $Num = 0
+        $(vars).config.keys | % {
+            $Line += "$($_) $($(vars).config.$_)  "
+            $Num++
+            if($Num -eq 3){
+            Write-Host $Line
+            $Num = 0
+            }
+        }
+                        
         Write-Host "
 
 This is your settings in a copy/paste form for flight sheet/config:
