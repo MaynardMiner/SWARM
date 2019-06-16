@@ -9,8 +9,10 @@ function Global:Stop-ActiveMiners {
                 elseif ($_.XProcess.HasExited -eq $false) {
                     $_.Active += (Get-Date) - $_.XProcess.StartTime
                     if ($_.Type -notlike "*ASIC*") {
+                        $Sel = $_
                         $_.XProcess.CloseMainWindow() | Out-Null
                         $Num = 0
+                        $Child = Get-Process | Where Parent -eq $Sel.XProcess.Id | Where ProcessName -eq $($Sel.MinerName.replace(".exe", ""))
                         do {
                             Start-Sleep -S 1
                             $Num++
@@ -37,7 +39,7 @@ function Global:Stop-ActiveMiners {
                                 }
                                 Restart-Computer
                             }
-                        }Until($_.Xprocess.HasExited -eq $true)
+                        }Until($Child.HasExited -eq $true)
                     }
                     else { $_.Xprocess.HasExited = $true; $_.XProcess.StartTime = $null }
                     $_.Status = "Idle"
@@ -134,6 +136,8 @@ function Global:Start-NewMiners {
             if ($IsWindows -and $Reason -eq "Restart") {
                 $_.XProcess.CloseMainWindow() | Out-Null
                 $Num = 0
+                $Sel = $_
+                $Child = Get-Process | Where Parent -eq $Sel.XProcess.Id | Where ProcessName -eq $($Sel.MinerName.replace(".exe", ""))
                 do {
                     Start-Sleep -S 1
                     $Num++
@@ -160,7 +164,7 @@ function Global:Start-NewMiners {
                         }
                         Restart-Computer
                     }
-                }Until($_.Xprocess.HasExited -eq $true)
+                }Until($Child.HasExited -eq $true)
             }
 
             ##Launch Miners
