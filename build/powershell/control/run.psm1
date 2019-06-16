@@ -200,7 +200,7 @@ function Global:Start-NewMiners {
                         if ($Miner.Subprocesses) {
                             $Miner.SubProcesses = $Miner.SubProcesses | % { $Cur = $_.id; Get-Process | Where $_.Parent.ID -eq $Child | Where ProcessName -eq $Miner.MinerName.Replace(".exe", "") }
                         }
-                    }while ($Miner.SubProcesses -eq $null)
+                    }while ($Null -eq $Miner.SubProcesses)
                 }
             }
             else {
