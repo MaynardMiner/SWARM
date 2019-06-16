@@ -664,7 +664,7 @@ $Num = 0
 $(vars).config.keys | % {
     $Line += "$($_) $($(vars).config.$_)  "
     $Num++
-    if($Num -eq 3){
+    if($Num -eq 2){
     Write-Host $Line
     $Line = $null
     $Num = 0
@@ -736,7 +736,7 @@ if ($Confirm -eq "2") {
         $(vars).config.keys | % {
             $Line += "$($_) $($(vars).config.$_)  "
             $Num++
-            if($Num -eq 3){
+            if($Num -eq 2){
             Write-Host $Line
             $Line = $null
             $Num = 0
