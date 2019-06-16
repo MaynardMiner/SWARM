@@ -11,15 +11,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
-function Global:Start-OC {
-    param(
-        [Parameter(Mandatory = $false)]
-        [String]$NewMiner,
-        [Parameter(Mandatory = $false)]
-        [String]$Website
-    )
-
-    $Miner = $NewMiner | ConvertFrom-Json
+function Global:Start-OC($Miner,$Website) {
     Switch ($(arg).Platform) {
         "linux" { $(vars).GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json }
         "windows" { $(vars).GCount = Get-Content ".\build\txt\oclist.txt" | ConvertFrom-Json }

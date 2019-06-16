@@ -38,6 +38,7 @@ function Global:Get-ActiveMiners($global:bestminers_combo) {
                 Stratum      = $_.Stratum
                 Instance     = 0
                 Worker       = $_.Worker
+                SubProcesses   = $null
             }
 
             $(vars).ActiveMinerPrograms | Where-Object Path -eq $_.Path | Where-Object Type -eq $_.Type | Where-Object Arguments -eq $_.Arguments | % {
