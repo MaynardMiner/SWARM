@@ -51,18 +51,7 @@ function Global:Remove-ASICPools {
     }
 }
 
-function Global:Start-LaunchCode {
-
-    param(
-        [Parameter(Mandatory = $true)]
-        [String]$NewMiner,
-        [Parameter(Mandatory = $false)]
-        [String]$PP,
-        [Parameter(Mandatory = $false)]
-        [String]$AIP
-    ) 
-
-    $MinerCurrent = $NewMiner | ConvertFrom-Json
+function Global:Start-LaunchCode($MinerCurrent,$AIP) {
 
     if ($MinerCurrent.Type -notlike "*ASIC*") {
         ##Remove Old PID FIle
@@ -288,6 +277,7 @@ function Global:Start-LaunchCode {
                         }
                     }
                 }
+
                 else { $script += "Invoke-Expression "".\$($MinerCurrent.MinerName) $MinerArguments""" }            
                 $script | Out-File "$WorkingDirectory\swarm-start.ps1"
                 Start-Sleep -S .5
@@ -302,7 +292,6 @@ function Global:Start-LaunchCode {
                     if ($Process -eq $null) { [PSCustomObject]@{ProcessId = $null }; return
                     };
                     [PSCustomObject]@{ProcessId = $Process.Id; ProcessHandle = $Process.Handle };
-                    $ControllerProcess.Handle | Out-Null; $Process.Handle | Out-Null; 
                     do { if ($ControllerProcess.WaitForExit(1000) ) {
                         $Process.CloseMainWindow() | Out-Null
                     }
@@ -313,7 +302,6 @@ function Global:Start-LaunchCode {
                 while ($JobOutput -eq $null)
       
                 $Process = Get-Process | Where-Object Id -EQ $JobOutput.ProcessId
-                $Process.Handle | Out-Null
                 $Process
             }
             else { $MinerProcess }
