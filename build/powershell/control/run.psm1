@@ -10,12 +10,10 @@ function Global:Stop-ActiveMiners {
                     $_.Active += (Get-Date) - $_.XProcess.StartTime
                     $N = 0
                     if ($_.Type -notlike "*ASIC*") {
-                        do {
-                            $Sel = $_
-                            if ($Sel.Xprocess.Id) { $Childs = Get-Process | Where { $_.Parent.ID -eq $Sel.XProcess.ID } }
-                            $Childs | % { Stop-Process -Id $_.Id }
-                            $Sel.XProcess.CloseMainWindow() | Out-Null 
-                        }while ($_.XProcess.HasExited -eq $False)
+                        $Sel = $_
+                        if ($Sel.Xprocess.Id) { $Childs = Get-Process | Where { $_.Parent.ID -eq $Sel.XProcess.ID } }
+                        $Childs | % { Stop-Process -Id $_.Id }
+                        $Sel.XProcess.CloseMainWindow() | Out-Null 
                     }
                     else { $_.Xprocess.HasExited = $true; $_.XProcess.StartTime = $null }
                     $_.Status = "Idle"
@@ -113,6 +111,7 @@ function Global:Start-NewMiners {
                 $Sel = $_
                 if ($Sel.Xprocess.Id) { $Childs = Get-Process | Where { $_.Parent.ID -eq $Sel.XProcess.ID } }
                 $Childs | % { Stop-Process -Id $_.Id }
+                $Sel.XProcess.CloseMainWindow() | Out-Null 
             }
 
             ##Launch Miners
