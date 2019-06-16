@@ -8,12 +8,36 @@ function Global:Stop-ActiveMiners {
                 if ($_.XProcess -eq $Null) { $_.Status = "Failed" }
                 elseif ($_.XProcess.HasExited -eq $false) {
                     $_.Active += (Get-Date) - $_.XProcess.StartTime
-                    $N = 0
                     if ($_.Type -notlike "*ASIC*") {
-                        $Sel = $_
-                        if ($Sel.Xprocess.Id) { $Childs = Get-Process | Where { $_.Parent.ID -eq $Sel.XProcess.ID } }
-                        $Childs | % { Stop-Process -Id $_.Id }
-                        $Sel.XProcess.CloseMainWindow() | Out-Null 
+                        $_.XProcess.CloseMainWindow() | Out-Null
+                        $Num = 0
+                        do {
+                            Start-Sleep -S 1
+                            $Num++
+                            if ($Num -gt 5) {
+                                Write-Log "SWARM IS WAITING FOR MINER TO CLOSE. IT WILL NOT CLOSE" -ForegroundColor Red
+                            }
+                            if ($Num -gt 180) {
+                                if ($(arg).Startup -eq "Yes") {
+                                    $HiveMessage = "2 minutes miner will not close - Restarting Computers"
+                                    $HiveWarning = @{result = @{command = "timeout" } }
+                                    if ($(vars).WebSites) {
+                                        $(vars).WebSites | ForEach-Object {
+                                            $Sel = $_
+                                            try {
+                                                Global:Add-Module "$($(vars).web)\methods.psm1"
+                                                Global:Get-WebModules $Sel
+                                                $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
+                                            }
+                                            catch { Global:Write-Log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
+                                            Global:Remove-WebModules $sel
+                                        }
+                                    }
+                                    Global:Write-Log "$HiveMessage" -ForegroundColor Red
+                                }
+                                Restart-Computer
+                            }
+                        }Until($_.Xprocess.HasExited -eq $true)
                     }
                     else { $_.Xprocess.HasExited = $true; $_.XProcess.StartTime = $null }
                     $_.Status = "Idle"
@@ -108,10 +132,35 @@ function Global:Start-NewMiners {
 
             ##Kill Open Miner Windows That May Still Be Open
             if ($IsWindows -and $Reason -eq "Restart") {
-                $Sel = $_
-                if ($Sel.Xprocess.Id) { $Childs = Get-Process | Where { $_.Parent.ID -eq $Sel.XProcess.ID } }
-                $Childs | % { Stop-Process -Id $_.Id }
-                $Sel.XProcess.CloseMainWindow() | Out-Null 
+                $_.XProcess.CloseMainWindow() | Out-Null
+                $Num = 0
+                do {
+                    Start-Sleep -S 1
+                    $Num++
+                    if ($Num -gt 5) {
+                        Write-Log "SWARM IS WAITING FOR MINER TO CLOSE. IT WILL NOT CLOSE" -ForegroundColor Red
+                    }
+                    if ($Num -gt 180) {
+                        if ($(arg).Startup -eq "Yes") {
+                            $HiveMessage = "2 minutes miner will not close - Restarting Computers"
+                            $HiveWarning = @{result = @{command = "timeout" } }
+                            if ($(vars).WebSites) {
+                                $(vars).WebSites | ForEach-Object {
+                                    $Sel = $_
+                                    try {
+                                        Global:Add-Module "$($(vars).web)\methods.psm1"
+                                        Global:Get-WebModules $Sel
+                                        $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
+                                    }
+                                    catch { Global:Write-Log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
+                                    Global:Remove-WebModules $sel
+                                }
+                            }
+                            Global:Write-Log "$HiveMessage" -ForegroundColor Red
+                        }
+                        Restart-Computer
+                    }
+                }Until($_.Xprocess.HasExited -eq $true)
             }
 
             ##Launch Miners
