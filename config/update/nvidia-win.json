@@ -87,8 +87,8 @@
         "NVIDIA2": ".\\bin\\claymore-2\\ethdcrminer64.exe",
         "NVIDIA3": ".\\bin\\claymore-3\\ethdcrminer64.exe",
         "minername": "ethdcrminer64.exe",
-        "version": "14.6",
-        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/Claymore-Windows.zip"
+        "version": "14.7",
+        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/claymore-windows.zip"
     },
     "cryptodredge": {
         "name": "cryptodredge",

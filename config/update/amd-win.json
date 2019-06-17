@@ -8,7 +8,7 @@
     "AMD3": ".\\bin\\claymore-amd-3\\ethdcrminer64.exe",
     "minername": "ethdcrminer64.exe",
     "version": "14.0",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/Claymore-Windows.zip"
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/claymore-windows.zip"
   },
   "multiminer-amd": {
     "name": "multiminer-amd",

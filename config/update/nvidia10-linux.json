@@ -7,7 +7,7 @@
     "NVIDIA2": ".\\bin\\claymore-2\\ethdcrminer64",
     "NVIDIA3": ".\\bin\\claymore-3\\ethdcrminer64",
     "minername": "ethdcrminer64",
-    "version": "14.6",
+    "version": "14.7",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/Claymore-Linux.tar.gz"
   },
   "nbminer": {
