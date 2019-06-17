@@ -20,6 +20,16 @@
     "version": "1.45",
     "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.45/gminer_1_45_linux64.tar.xz"
   },
+  "kbminer-amd": {
+    "name": "kbminer-amd",
+    "type": "amd",
+    "AMD1": ".\\bin\\kbminer-amd-1\\kbminer",
+    "AMD2": ".\\bin\\kbminer-amd-2\\kbminer",
+    "AMD3": ".\\bin\\kbminer-amd-3\\kbminer",
+    "minername": "kbminer",
+    "version": "1.3.8",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/kbminer-linux.tar.gz"
+  },
   "multiminer-amd": {
     "name": "multiminer-amd",
     "type": "amd",
