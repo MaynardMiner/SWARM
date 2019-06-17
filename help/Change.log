@@ -3345,6 +3345,8 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
 
   2.4.0
 
+  Note- This is beta version from beta_testing branch
+
    GUIDED HELP
    * There are four different ways to start guided help:
      * run command ``swarm_help`` after SWARM has started in HiveOS/Windows
