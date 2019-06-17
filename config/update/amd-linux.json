@@ -167,7 +167,7 @@
     "AMD2": ".\\bin\\xmrig-amd-2\\xmrig-amd",
     "AMD3": ".\\bin\\xmrig-amd-3\\xmrig-amd",
     "minername": "xmrig-amd",
-    "version": "2.14.1",
+    "version": "2.14.4",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/xmrig-amd-linux.tar.gz"
   },
   "progminer-amd": {
