@@ -76,8 +76,14 @@ function Global:Get-Optional {
         Get-ChildItem ".\miners\optional_and_old" | Where BaseName -in $(arg).Optional | ForEach-Object {
             $Path = $_.FullName
             $FileType = Get-Content $Path
-            if( $FileType[0] -like "*`$(vars).AMDTypes*" ) {Move-Item -Path $Path -Destination ".\miners\gpu\amd"}
-            if( $FileType[0] -like "*`$(vars).NVIDIATypes*" ) {Move-Item -Path $Path -Destination ".\miners\gpu\nvidia"}
+            if( $FileType[0] -like "*`$(vars).AMDTypes*" ) {
+                $CheckA = Join-Path "$(vars).dir\miners\gpu\amd" $_.Name
+                if(-not (Test-Path $CheckA)) {Move-Item -Path $Path -Destination ".\miners\gpu\amd"}
+            }
+            if( $FileType[0] -like "*`$(vars).NVIDIATypes*" ) {
+                $CheckN = Join-Path "$(vars).dir\miners\gpu\nvidia" $_.Name
+                if(-not (Test-Path $CheckN)) {Move-Item -Path $Path -Destination ".\miners\gpu\nvidia"}
+            }
         }
     }    
 }
