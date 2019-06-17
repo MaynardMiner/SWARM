@@ -77,11 +77,11 @@ function Global:Get-Optional {
             $Path = $_.FullName
             $FileType = Get-Content $Path
             if( $FileType[0] -like "*`$(vars).AMDTypes*" ) {
-                $CheckA = Join-Path "$(vars).dir\miners\gpu\amd" $_.Name
+                $CheckA = Join-Path "$($(vars).dir)\miners\gpu\amd" $_.Name
                 if(-not (Test-Path $CheckA)) {Move-Item -Path $Path -Destination ".\miners\gpu\amd"}
             }
             if( $FileType[0] -like "*`$(vars).NVIDIATypes*" ) {
-                $CheckN = Join-Path "$(vars).dir\miners\gpu\nvidia" $_.Name
+                $CheckN = Join-Path "$($(vars).dir)\miners\gpu\nvidia" $_.Name
                 if(-not (Test-Path $CheckN)) {Move-Item -Path $Path -Destination ".\miners\gpu\nvidia"}
             }
         }
