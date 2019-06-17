@@ -17,8 +17,8 @@
         "NVIDIA2": ".\\bin\\nbminer-2\\nbminer.exe",
         "NVIDIA3": ".\\bin\\nbminer-3\\nbminer.exe",
         "minername": "nbminer.exe",
-        "version": "23.2",
-        "uri": "https://github.com/NebuTech/NBMiner/releases/download/v23.2.1/NBMiner_23.2_hotfix_Win.zip"
+        "version": "23.3",
+        "uri": "https://github.com/NebuTech/NBMiner/releases/download/v23.3/NBMiner_23.3_Win.zip"
       },    
     "cc-mtp": {
         "name": "cc-mtp",
