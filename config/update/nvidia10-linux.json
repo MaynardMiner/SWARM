@@ -57,8 +57,8 @@
     "NVIDIA2": ".\\bin\\cc-mtp-2\\ccminer",
     "NVIDIA3": ".\\bin\\cc-mtp-3\\ccminer",
     "minername": "ccminer",
-    "version": "0.16.2",
-    "uri": "https://github.com/MaynardMiner/ccminerMTP/releases/download/v1.1.10.2-mtp-linux/ccminerMTP-linux-Cuda10.tar.gz"
+    "version": "1.1.19-test",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/cc-mtp-linux.tar.gz"
   },
   "dstm": {
     "name": "dstm",
@@ -237,7 +237,7 @@
     "NVIDIA2": ".\\bin\\xmrig-nv-2\\xmrig-nvidia",
     "NVIDIA3": ".\\bin\\xmrig-nv-3\\xmrig-nvidia",
     "minername": "xmrig-nvidia",
-    "version": "2.14.1",
+    "version": "2.14.4",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/xmrig-nvidia-linux.tar.gz"
   },
   "cc-verus": {
