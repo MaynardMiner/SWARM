@@ -5,8 +5,8 @@
     "type": "cpu",
     "CPU": ".\\bin\\bubasik\\cpuminer-sse2.exe",
     "minername": "cpuminer-sse2.exe",
-    "version": "3.9.2.4",
-    "uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.9.2.4/cpuminer-opt-3.9.2.4-windows.zip"
+    "version": "3.9.3.1",
+    "uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.9.3.1/cpuminer-opt-3.9.3.1-windows.zip"
   },
   "xmrig-cpu": {
     "name": "xmrig-cpu",
@@ -21,7 +21,7 @@
     "type": "cpu",
     "CPU": ".\\bin\\sugarchain-1\\cpuminer-avx2.exe",
     "minername": "cpuminer-avx2.exe",
-    "version": "3.9.1",
+    "version": "3.9.3.1",
     "uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.9.1/cpuminer-opt-3.9.1-windows.zip"
   }
 }
