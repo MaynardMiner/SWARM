@@ -16,7 +16,7 @@ function Global:Get-StatusLite {
             else { $Screen += "Postion $($statindex): " }
 
             $Screen += 
-            "        Miner: $($_.Miner)
+            "        Miner: $($_.Name)
         Mining: $($_.ScreenName)
         Speed: $($_.HashRates | ForEach-Object {if ($null -ne $_) {"$($_ | Global:ConvertTo-Hash)/s"}else {"Benchmarking"}})
         Profit: $($_.Profit | ForEach-Object {if ($null -ne $_) {"$(($_ * $(vars).Rates.$($(arg).Currency)).ToString("N2")) $($(arg).Currency)/Day"}else {"Bench"}}) 
@@ -80,7 +80,6 @@ function Global:Get-Commands {
     $StatusDate = Get-Date
     $StatusDate | Out-File ".\build\txt\minerstatslite.txt"
     $StatusLite | Out-File ".\build\txt\minerstatslite.txt" -Append
-    $MiningStatus | Out-File ".\build\txt\minerstatslite.txt" -Append
     $BanMessage | Out-File ".\build\txt\minerstatslite.txt" -Append
     $MiningStatus | Out-File ".\build\txt\minerstatslite.txt" -Append
 }
