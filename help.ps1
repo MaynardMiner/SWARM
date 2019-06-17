@@ -8,6 +8,7 @@ Set-Location $Global:Config.vars.dir
 
 $(vars).Add("config", [ordered]@{ })
 $(vars).config = @{ }
+$(vars).Add("Modules",@())
 
 function Global:Confirm-Answer($Answer, $Possibilities) {
     if ($Answer -notin $Possibilities) {
@@ -110,7 +111,7 @@ Please choose an advanced setting you wish to modify:
 29 I want to add/remove pool share tracking (-Track_Shares)
 30 I wish the stats screen to show an additional altcoin/day value (-CoinExchange)
 31 I wish to change the default fiat currency from USD (-Currency)
-32 I wish to turn off/on HiveOS website stats (-HiveOS)
+32 I wish to turn off/on HiveOS website stats - WINDOWS (-Hive_Hash)
 33 I wish to turn on CPUOnly for HiveOS (-CPUOnly)
 
 [API]
@@ -119,25 +120,20 @@ Please choose an advanced setting you wish to modify:
 36 I wish to set an API password (-APIPassword)
 37 I wish to turn on TCP API (-TCP)
 38 I wish to set TCP Port (-TCP_Port)
+39 I wish to set TCP IP address (-TCP_IP)
+40 I wish to set my HiveOS API Key for overclocking (-API_Key)
 
-[Maintence/Troubleshooting]
-39 I want to force SWARM to use a specific platform (windows,linux) (-Platform)
-40 I do not wish SWARM to run at Windows startup (-Startup)
-41 SWARM is not detecting the correct OpenCL platform for AMD (-CLPlatform)
-42 I wish to turn on updates (-Update)
+[Maintenance/Troubleshooting]
+41 I want to force SWARM to use a specific platform (windows,linux) (-Platform)
+42 I do not wish SWARM to run at Windows startup (-Startup)
+43 SWARM is not detecting the correct OpenCL platform for AMD (-CLPlatform)
+44 I wish to turn on updates (-Update)
 
 Answer"
-        $A = 42
-        $Num = 0
-        $CheckArray = @()
-        for ($i = 0; $i -lt $A; $i++) { $CheckArray += ($Num + 1); $Num++ }
-        $Check = Global:Confirm-Answer $ans $CheckArray
+        $Check = Global:Confirm-Answer $ans @(1 .. 44)
     }While ($Check -eq 1)
     $ans
 }
-
-##Ans 3 = CPU
-##And 4 = CPUTHreads
 
 Clear-Host
 
@@ -658,67 +654,30 @@ Answer"
     }
 }
 
-Write-Host "Well, the basic settings are done. This is what we have so far:
-"
 
-$(vars).config
+$(vars).add("continue", $True)
+$(vars).Add("input", $null)
+$hd = "$($(vars).dir)\build\powershell\help"
+$p = [Environment]::GetEnvironmentVariable("PSModulePath")
+if ($P -notlike "$($(vars).dir)\build\powershell\help*") {
+    $P += ";$($(vars).dir)\build\powershell\help)";
+    [Environment]::SetEnvironmentVariable("PSModulePath", $p)
+}            
 
-Start-Sleep -S 1
-
-Write-Host "
-These settings along with default advanced settings will be saved to `".\config\parameter\newarguments.json`""
-Write-Host "If you run -help again in future, it will prompt if you wish to load your basic configs."
-Write-Host "
-            
-If using HiveOS- You can copy and paste this into your flight sheet:
-
-"
-$Arg = $null
-
-$(vars).config.keys | % {
-    if ($(vars).config.$_ -and $(vars).config.$_ -ne "") {
-        if ( $(vars).config.$_ -is [Array]) { $Sec = "$($(vars).config.$_)" -replace " ", "," }
-        else { $Sec = $(vars).Config.$_ }
-        $Arg += "-$($_) $Sec "
-    }
-}
-$Arg.Substring(0, $Arg.Length - 1)      
-
-do {
-    $Confirm = Read-Host -Prompt "
-            
-You can now start SWARM. Would you like to save these settings, and start SWARM?
-
-or
-
-Would you like to start advanced configs?
-
-1 MY BODY IS READY! LETS START SWARM!
-2 No. I have plenty of time. I would like to go through all settings, knowing that it will take awhile.
-
-Answer"
-    $Check = Global:Confirm-Answer $Confirm @("1", "2")
-}While ($Check -eq 1)
-
-Clear-Host
-
+do{
+    Clear-Host
+    Add-Module "$hd\choices.psm1"
+    $Confirm = Global:Get-Choices
+    Global:Remove-Modules
 if ($Confirm -eq "1") {
     Write-Host "Saving Settings"
     $Defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json
     $Defaults.PSObject.Properties.Name | % { if ($_ -notin $(vars).config.keys) { $(vars).config.Add("$($_)", $Defaults.$_) } }
     $(vars).config | ConvertTo-Json | Set-Content ".\config\parameters\newarguments.json"
     Start-Sleep -S 2
-    Write-Host "Settings Saved! Run SWARM.bat to start SWARM!"
+    Write-Host "Settings Saved to `".\config\parameter\newarguments.json`" ! You can Run SWARM.bat (windows) or ./swarm (linux as root) to start SWARM!"
 }
 if ($Confirm -eq "2") {
-    $(vars).add("continue", $True)
-    $hd = "$($(vars).dir)\build\powershell\help"
-    $(vars).Add("input", $null)
-    $p = [Environment]::GetEnvironmentVariable("PSModulePath")
-    if ($P -notlike "$($(vars).dir)\build\powershell\help*") {
-        $P += ";$($(vars).dir)\build\powershell\help)";
-        [Environment]::SetEnvironmentVariable("PSModulePath", $p)
-    }            
     do {
         Clear-Host
         do {
@@ -749,9 +708,10 @@ This is your settings in a copy/paste form for flight sheet/config:
 
 1 I would like to change a parameter
 2 I would like to view a parameter
+3 I am finished
 
 Answer"
-            $Check = Global:Confirm-Answer $Ans @("1", "2")
+            $Check = Global:Confirm-Answer $Ans @("1", "2", "3")
         }While ($Check -eq 1)
         Switch ($ans) {
             "1" {
@@ -776,6 +736,21 @@ Answer"
                     Global:Get-Admin
                     Global:Remove-Modules
                 }
+                elseif ($(vars).input -in 29 .. 33) {
+                    Add-Module "$hd\interface.psm1"
+                    Global:Get-Interface
+                    Global:Remove-Modules
+                }
+                elseif ($(vars).input -in 34 .. 40) {
+                    Add-Module "$hd\api.psm1"
+                    Global:Get-API
+                    Global:Remove-Modules
+                }
+                elseif ($(vars).input -in 41 .. 44) {
+                    Add-Module "$hd\maintenance.psm1"
+                    Global:Get-Maintenance
+                    Global:Remove-Modules
+                }
             }
             "2" {
                 do {
@@ -793,9 +768,9 @@ Answer"
                 }while ($Check -eq 1)
                 do{
                 clear-host
-                $(vars).continue = Read-Host -Prompt "Here is Parameter $($Table.$Ans):
+                $Confirm = Read-Host -Prompt "Here is Parameter $($Table.$Ans):
                 
-$($(vars).Config.$($Table.$Ans))
+$( $(vars).Config.$($Table.$Ans) -join "`n" )
 
 Do You Wish To Continue
 
@@ -803,9 +778,17 @@ Do You Wish To Continue
 2 No
 
 Answer"
-                    $check = Global:Confirm-Answer $(vars).continue @("1", "2")
+                    $check = Global:Confirm-Answer $Confirm @("1", "2")
+                    Switch($Confirm){
+                        "1" {$(vars).continue = $true}
+                        "2" {$(vars).continue = $false}
+                    }            
                 }while ($check -eq 1)
             }
+            "3"{
+                $(vars).continue = $false
+            }    
         }
     }While ($(vars).continue -eq $true)
 }
+}Until($Confirm -eq "1")

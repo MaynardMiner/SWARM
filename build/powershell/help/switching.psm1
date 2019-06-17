@@ -214,12 +214,16 @@ function Global:Get-Switching {
 
     do {
         clear-host
-        $(vars).continue = Read-Host -Prompt "Do You Wish To Continue?
+        $Confirm = Read-Host -Prompt "Do You Wish To Continue?
     
 1 Yes
 2 No
 
 Answer"
-        $check = Global:Confirm-Answer $(vars).continue @("1", "2")
+        $check = Global:Confirm-Answer $Confirm @("1", "2")
+        Switch($Confirm){
+            "1" {$(vars).continue = $true}
+            "2" {$(vars).continue = $false}
+        }
     }while ($check -eq 1)
 }
