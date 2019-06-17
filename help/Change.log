@@ -3394,3 +3394,8 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
   -Windows: It is common that if a miner card has crashed, the miner window will not close.
    if user specifies ``-Startup Yes`` (Default is Yes), SWARM will restart computer after
    2 minutes of the window staying open. It will notify HiveOS this is the case.
+
+  -xmrig linux update
+  -xmr-stak linux updated
+  -cpuminer updated
+  -cc-mtp updated
