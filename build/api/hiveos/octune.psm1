@@ -23,7 +23,7 @@ function Global:Start-HiveTune {
     #Token = $A.access_token
 
     ## Get Current Worker:
-    $T = @{Authorization = "Bearer $($global:Config.Params.API_Key)" }
+    $T = @{Authorization = "Bearer $($(arg).API_Key)" }
     $Splat = @{ Method = "GET"; Uri = $Url; Headers = $T; ContentType = 'application/json'; }
     try { $A = Invoke-RestMethod @Splat -TimeoutSec 10 -ErrorAction Stop } catch { Global:Write-Log "WARNING: Failed to Contact HiveOS for OC" -ForegroundColor Yellow; return }
 
@@ -32,7 +32,7 @@ function Global:Start-HiveTune {
         Global:Write-Log "Setting Hive OC to $Message Settings" -ForegroundColor Cyan
     if ($A.oc_algo -ne $Choice) {
         Global:Write-Log "Contacting HiveOS To Set $Message as current OC setting" -ForegroundColor Cyan
-        $T = @{Authorization = "Bearer $($global:Config.Params.API_Key)" }
+        $T = @{Authorization = "Bearer $($(arg).API_Key)" }
         $Command = @{oc_algo = $Choice } | ConvertTo-Json
         $Splat = @{ Method = "Patch"; Uri = $Url; Headers = $T; ContentType = 'application/json'; }
         try { $A = Invoke-RestMethod @Splat -Body $Command -TimeoutSec 10 -ErrorAction Stop }catch { Global:Write-Log "WARNING: Failed To Send OC to HiveOS" -ForegroundColor Yellow; return }
@@ -43,11 +43,11 @@ function Global:Start-HiveTune {
     }
 
     if ($CheckOC) {
-        $Global:Config.params.Type | ForEach-Object {
+        $(arg).Type | ForEach-Object {
             if ($_ -like "*NVIDIA1*") { $CheckNVIDIA = $true }
             if ($_ -like "*AMD1*") { $CheckAMD = $True }
         }
-        switch ($Global:Config.params.Platform) {
+        switch ($(arg).Platform) {
             "windows" {
                 if ($CheckNVIDIA) {
                     Global:Write-Log "Verifying OC was Set...." -ForegroundColor Cyan
@@ -97,9 +97,11 @@ function Global:Start-HiveTune {
                     $OCT.Restart()
                     $Checkfile = "/var/log/nvidia-oc.log"
                     do {
+                        if(test-path $Checkfile){
                         $LastWrite = Get-Item $CheckFile | Foreach { $_.LastWriteTime }
                         $CheckTime = [math]::Round(($CheckDate - $LastWrite).TotalSeconds)
                         $TOtalTime = $OCT.Elapsed.TotalSeconds
+                        }
                         Start-Sleep -Milliseconds 50
                     } Until ( $CheckTime -le 0 -or $TOtalTime -ge 30 )
                     if($OCT.Elapsed.TotalSeconds -ge 30){
@@ -116,10 +118,12 @@ function Global:Start-HiveTune {
                     $OCT.Restart()
                     $Checkfile = "/var/log/amd-oc.log"
                     do {
+                        if(test-path $Checkfile){
                         $LastWrite = Get-Item $CheckFile | Foreach { $_.LastWriteTime }
                         $CheckTime = [math]::Round(($CheckDate - $LastWrite).TotalSeconds)
                         $TOtalTime = $OCT.Elapsed.TotalSeconds
                         Start-Sleep -Milliseconds 50
+                        }
                     } Until ( $CheckTime -le 0 -or $TOtalTime -ge 30 )
                     $OCT.Stop()
                     if($OCT.Elapsed.TotalSeconds -ge 30){

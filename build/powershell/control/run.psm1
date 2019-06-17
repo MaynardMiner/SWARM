@@ -1,20 +1,62 @@
 function Global:Stop-ActiveMiners {
-    $global:ActiveMinerPrograms | ForEach-Object {
+    $(vars).ActiveMinerPrograms | ForEach-Object {
            
         ##Miners Not Set To Run
         if ($_.BestMiner -eq $false) {
         
-            if ($global:Config.Params.Platform -eq "windows") {
+            if ($(arg).Platform -eq "windows") {
                 if ($_.XProcess -eq $Null) { $_.Status = "Failed" }
                 elseif ($_.XProcess.HasExited -eq $false) {
                     $_.Active += (Get-Date) - $_.XProcess.StartTime
-                    if ($_.Type -notlike "*ASIC*") { $_.XProcess.CloseMainWindow() | Out-Null }
+                    if ($_.Type -notlike "*ASIC*") {
+                        $Num = 0
+                        $Sel = $_
+                        if ($Sel.XProcess.Id) {
+                            $Childs = Get-Process | Where { $_.Parent.Id -eq $Sel.XProcess.Id }
+                            Write-Log "Closing all Previous Child Processes For $($Sel.Type)" -ForeGroundColor Cyan
+                            $Child = $Childs | % {
+                                $Proc = $_; 
+                                Get-Process | Where { $_.Parent.Id -eq $Proc.Id } 
+                            }
+                        }
+                        do {
+                            $Sel.XProcess.CloseMainWindow() | Out-Null
+                            Start-Sleep -S 1
+                            $Num++
+                            if ($Num -gt 5) {
+                                Write-Log "SWARM IS WAITING FOR MINER TO CLOSE. IT WILL NOT CLOSE" -ForegroundColor Red
+                            }
+                            if ($Num -gt 180) {
+                                if ($(arg).Startup -eq "Yes") {
+                                    $HiveMessage = "2 minutes miner will not close - Restarting Computer"
+                                    $HiveWarning = @{result = @{command = "timeout" } }
+                                    if ($(vars).WebSites) {
+                                        $(vars).WebSites | ForEach-Object {
+                                            $Sel = $_
+                                            try {
+                                                Global:Add-Module "$($(vars).web)\methods.psm1"
+                                                Global:Get-WebModules $Sel
+                                                $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
+                                            }
+                                            catch { Global:Write-Log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
+                                            Global:Remove-WebModules $sel
+                                        }
+                                    }
+                                    Global:Write-Log "$HiveMessage" -ForegroundColor Red
+                                }
+                                Restart-Computer
+                            }
+                        }Until($false -notin $Child.HasExited)
+                        if ($Sel.SubProcesses -and $false -in $Sel.SubProcesses.HasExited) { 
+                            $Sel.SubProcesses | % { $Check = $_.CloseMainWindow(); if ($Check -eq $False) { Stop-Process -Id $_.Id } }
+                        }
+                    }
                     else { $_.Xprocess.HasExited = $true; $_.XProcess.StartTime = $null }
                     $_.Status = "Idle"
                 }
             }
 
-            if ($global:Config.Params.Platform -eq "linux") {
+            if ($(arg).Platform -eq "linux") {
                 if ($_.XProcess -eq $Null) { $_.Status = "Failed" }
                 else {
                     if ($_.Type -notlike "*ASIC*") {
@@ -46,30 +88,30 @@ function Global:Start-NewMiners {
     $WebSiteOC = $False
     $OC_Success = $false
 
-    $global:BestActiveMiners | ForEach-Object {
+    $(vars).BestActiveMIners | ForEach-Object {
         $Miner = $_
 
-        if ($null -eq $Miner.XProcess -or $Miner.XProcess.HasExited -and $global:Config.Params.Lite -eq "No") {
-            Global:Add-Module "$($(v).control)\launchcode.psm1"
-            Global:Add-Module "$($(v).control)\config.psm1"
-            Global:Add-Module "$($(v).global)\gpu.psm1"
+        if ($null -eq $Miner.XProcess -or $Miner.XProcess.HasExited -and $(arg).Lite -eq "No") {
+            Global:Add-Module "$($(vars).control)\launchcode.psm1"
+            Global:Add-Module "$($(vars).control)\config.psm1"
+            Global:Add-Module "$($(vars).global)\gpu.psm1"
 
             $global:Restart = $true
             if ($Miner.Type -notlike "*ASIC*") { Start-Sleep -S $Miner.Delay }
-            $Miner.InstanceName = "$($Miner.Type)-$($global:Instance)"
+            $Miner.InstanceName = "$($Miner.Type)-$($(vars).Instance)"
+            $Miner.Instance = $(vars).Instance
             $Miner.Activated++
-            $global:Instance++
-            $Current = $Miner | ConvertTo-Json -Compress
+            $(vars).Instance++
 
             ##First Do OC
             if ($Reason -eq "Launch") {
-                if ($global:Websites) {
-                    $GetNetMods = @($global:NetModules | Foreach { Get-ChildItem $_ })
+                if ($(vars).WebSites) {
+                    $GetNetMods = @($(vars).NetModules | Foreach { Get-ChildItem $_ })
                     $GetNetMods | ForEach-Object { Import-Module -Name "$($_.FullName)" }
-                    $global:WebSites | ForEach-Object {
+                    $(vars).WebSites | ForEach-Object {
                         switch ($_) {
                             "HiveOS" {
-                                if ($global:Config.Params.API_Key -and $global:Config.Params.API_Key -ne "") {
+                                if ($(arg).API_Key -and $(arg).API_Key -ne "") {
                                     if ($WebSiteOC -eq $false) {
                                         if ($Miner.Type -notlike "*ASIC*" -and $Miner.Type -like "*1*") {
                                             $OC_Success = Global:Start-HiveTune $Miner.Algo
@@ -93,23 +135,78 @@ function Global:Start-NewMiners {
                     }
                     if ($Miner.Type -notlike "*ASIC*") {
                         Global:Write-Log "Starting SWARM OC" -ForegroundColor Cyan
-                        Global:Add-Module "$($(v).control)\octune.psm1"
-                        Global:Start-OC -NewMiner $Current -Website $Website
+                        Global:Add-Module "$($(vars).control)\octune.psm1"
+                        Global:Start-OC($Miner, $Website)
                     }
                 }
             }
 
+            ##Kill Open Miner Windows That May Still Be Open
+            if ($IsWindows) {
+                if ($_.Type -notlike "*ASIC*") {
+                    $Num = 0
+                    $Sel = $_
+                    if ($Sel.XProcess.Id -ne $null) {
+                        $Childs = Get-Process | Where { $_.Parent.Id -eq $Sel.XProcess.Id }
+                        Write-Log "Closing all Previous Child Processes For $($Sel.Type)" -ForeGroundColor Cyan
+                        $Child = $Childs | % {
+                            $Proc = $_; 
+                            Get-Process | Where { $_.Parent.Id -eq $Proc.Id } 
+                        }
+                    }
+                    if ($Sel.HasExited -eq $false) {
+                        do {
+                            $Sel.XProcess.CloseMainWindow() | Out-Null
+                            Start-Sleep -S 1
+                            $Num++
+                            if ($Num -gt 5) {
+                                Write-Log "SWARM IS WAITING FOR MINER TO CLOSE. IT WILL NOT CLOSE" -ForegroundColor Red
+                            }
+                            if ($Num -gt 180) {
+                                if ($(arg).Startup -eq "Yes") {
+                                    $HiveMessage = "2 minutes miner will not close - Restarting Computer"
+                                    $HiveWarning = @{result = @{command = "timeout" } }
+                                    if ($(vars).WebSites) {
+                                        $(vars).WebSites | ForEach-Object {
+                                            $Sel = $_
+                                            try {
+                                                Global:Add-Module "$($(vars).web)\methods.psm1"
+                                                Global:Get-WebModules $Sel
+                                                $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
+                                            }
+                                            catch { Global:Write-Log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
+                                            Global:Remove-WebModules $sel
+                                        }
+                                    }
+                                    Global:Write-Log "$HiveMessage" -ForegroundColor Red
+                                }
+                                Restart-Computer
+                            }
+                        }Until($false -notin $Child.HasExited)
+                    }
+                    if ($Sel.SubProcesses -and $false -in $Sel.SubProcesses.HasExited) { 
+                        $Sel.SubProcesses | % { $Check = $_.CloseMainWindow(); if ($Check -eq $False) { Stop-Process -Id $_.Id } }
+                    }
+                }
+            }
 
             ##Launch Miners
             Global:Write-Log "Starting $($Miner.InstanceName)"
             if ($Miner.Type -notlike "*ASIC*") {
-                $PreviousPorts = $global:PreviousMinerPorts | ConvertTo-Json -Compress
-                $Miner.Xprocess = Global:Start-LaunchCode -PP $PreviousPorts -NewMiner $Current
+                $Miner.Xprocess = Global:Start-LaunchCode $Miner
+                if ($IsWindows) {
+                    do {
+                        $Miner.SubProcesses = if ($Miner.Xprocess.Id) { Get-Process | Where { $_.Parent.ID -eq $Miner.Xprocess.Id } } else { $Null }
+                        if ($Miner.Subprocesses) {
+                            $Miner.SubProcesses = $Miner.SubProcesses | % { $Cur = $_.id; Get-Process | Where $_.Parent.ID -eq $Child | Where ProcessName -eq $Miner.MinerName.Replace(".exe", "") }
+                        }
+                    }while ($Null -eq $Miner.SubProcesses)
+                }
             }
             else {
                 if ($global:ASICS.$($Miner.Type).IP) { $AIP = $global:ASICS.$($Miner.Type).IP }
                 else { $AIP = "localhost" }
-                $Miner.Xprocess = Global:Start-LaunchCode -NewMiner $Current -AIP $AIP
+                $Miner.Xprocess = Global:Start-LaunchCode $Miner $AIP
             }
 
             ##Confirm They are Running
@@ -122,22 +219,23 @@ function Global:Start-NewMiners {
                 $Miner.Status = "Running"
                 if ($Miner.Type -notlike "*ASIC*") { Global:Write-Log "Process Id is $($Miner.XProcess.ID)" }
                 Global:Write-Log "$($Miner.MinerName) Is Running!" -ForegroundColor Green
-            }
-            if ($Reason -eq "Restart") {
-                Global:Write-Log "
-       
-            //\\  _______
-           //  \\//~//.--|
-           Y   /\\~~//_  |
-          _L  |_((_|___L_|
-         (/\)(____(_______)        
-      
-    Waiting 20 Seconds For Miners To Fully Load
-    
-    " 
-                Start-Sleep -s 20
-    
+                $(vars).current_procs += $Miner.Xprocess.ID
             }
         }
+    }
+    if ($Reason -eq "Restart" -and $global:Restart -eq $true) {
+        Global:Write-Log "
+
+    //\\  _______
+   //  \\//~//.--|
+   Y   /\\~~//_  |
+  _L  |_((_|___L_|
+ (/\)(____(_______)        
+
+Waiting 20 Seconds For Miners To Fully Load
+
+" 
+        Start-Sleep -s 20
+
     }
 }

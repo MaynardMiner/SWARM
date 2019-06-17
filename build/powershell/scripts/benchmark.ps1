@@ -21,8 +21,9 @@ param(
 )
 
 [cultureinfo]::CurrentCulture = 'en-US'
-Set-Location (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
 $dir = (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
+$dir = $dir -replace "/var/tmp","/root"
+Set-Location $dir
 
 Write-Host "Checking For $command Benchmarks"
 $Get = @()

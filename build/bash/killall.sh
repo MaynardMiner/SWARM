@@ -11,11 +11,11 @@
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 SESSION_NAME=$1
-screen -ls "$SESSION_NAME" | (
+sudo screen -ls "$SESSION_NAME" | (
   IFS=$(printf '\t');
   sed "s/^$IFS//" |
   while read -r name stuff; do
-      screen -S "$name" -X quit  >/dev/null 2>&1
-      screen -S "$name" -X quit  >/dev/null 2>&1
+      sudo screen -S "$name" -X quit  >/dev/null 2>&1
+      sudo screen -S "$name" -X quit  >/dev/null 2>&1
   done
 )

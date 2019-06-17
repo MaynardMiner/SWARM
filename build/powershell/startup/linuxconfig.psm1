@@ -6,7 +6,7 @@ function Global:Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x stats"
         Set-Location "/"
-        Set-Location $($(v).dir)     
+        Set-Location $($(vars).dir)     
     }
 
     if (Test-Path ".\build\bash\nview") {
@@ -14,7 +14,7 @@ function Global:Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x nview"
         Set-Location "/"
-        Set-Location $($(v).dir)     
+        Set-Location $($(vars).dir)     
     }
 
     if (Test-Path ".\build\bash\bans") {
@@ -22,7 +22,7 @@ function Global:Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x bans"
         Set-Location "/"
-        Set-Location $($(v).dir)     
+        Set-Location $($(vars).dir)     
     }
 
     if (Test-Path ".\build\bash\modules") {
@@ -30,7 +30,7 @@ function Global:Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x modules"
         Set-Location "/"
-        Set-Location $($(v).dir)     
+        Set-Location $($(vars).dir)     
     }
 
     if (Test-Path ".\build\bash\get") {
@@ -38,79 +38,79 @@ function Global:Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x get"
         Set-Location "/"
-        Set-Location $($(v).dir)     
+        Set-Location $($(vars).dir)     
     }
 
     if (-not (Test-Path ".\build\export\libnvrtc-builtins.so.10.1")) {
-        Start-Process ln -ArgumentList "-s $($(v).dir)/build/export/libnvrtc-builtins.so.10.1.105 $($(v).dir)/build/export/libnvrtc-builtins.so.10.1" -Wait
+        Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc-builtins.so.10.1.105 $($(vars).dir)/build/export/libnvrtc-builtins.so.10.1" -Wait
         Set-Location "/"
-        Set-Location $($(v).dir)     
+        Set-Location $($(vars).dir)     
     }
 
     if (-not (Test-Path ".\build\export\libnvrtc-builtins.so")) {
-        Start-Process ln -ArgumentList "-s $($(v).dir)/build/export/libnvrtc-builtins.so.10.1 $($(v).dir)/build/export/libnvrtc-builtins.so" -Wait
+        Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc-builtins.so.10.1 $($(vars).dir)/build/export/libnvrtc-builtins.so" -Wait
         Set-Location "/"
-        Set-Location $($(v).dir)     
+        Set-Location $($(vars).dir)     
     }
 
     if (-not (Test-Path ".\build\export\libcudart.so.10.1")) {
-        Start-Process ln -ArgumentList "-s $($(v).dir)/build/export/libcudart.so.10.1.105 $($(v).dir)/build/export/libcudart.so.10.1" -Wait
+        Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libcudart.so.10.1.105 $($(vars).dir)/build/export/libcudart.so.10.1" -Wait
         Set-Location "/"
-        Set-Location $($(v).dir)     
+        Set-Location $($(vars).dir)     
     }
 
     if (-not (Test-Path ".\build\export\libcudart.so.10.0")) {
-        Start-Process ln -ArgumentList "-s $($(v).dir)/build/export/libcudart.so.10.0.130 $($(v).dir)/build/export/libcudart.so.10.0" -Wait
+        Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libcudart.so.10.0.130 $($(vars).dir)/build/export/libcudart.so.10.0" -Wait
         Set-Location "/"
-        Set-Location $($(v).dir)     
+        Set-Location $($(vars).dir)     
     }
     
     if (-not (Test-Path ".\build\export\libcudart.so.9.2")) {
-        Start-Process ln -ArgumentList "-s $($(v).dir)/build/export/libcudart.so.9.2.148 $($(v).dir)/build/export/libcudart.so.9.2" -Wait
+        Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libcudart.so.9.2.148 $($(vars).dir)/build/export/libcudart.so.9.2" -Wait
         Set-Location "/"
-        Set-Location $($(v).dir)     
+        Set-Location $($(vars).dir)     
     }
 
     if (-not (Test-Path ".\build\export\libmicrohttpd.so.10")) {
-        Start-Process ln -ArgumentList "-s $($(v).dir)/build/export/libmicrohttpd.so.10.34.0 $($(v).dir)/build/export/libmicrohttpd.so.10" -Wait
+        Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libmicrohttpd.so.10.34.0 $($(vars).dir)/build/export/libmicrohttpd.so.10" -Wait
         Set-Location "/"
-        Set-Location $($(v).dir)     
+        Set-Location $($(vars).dir)     
     }
 
     if (-not (Test-Path ".\build\export\libcudart.so.10.1")) {
-        Start-Process ln -ArgumentList "-s $($(v).dir)/build/export/libcudart.so.10.0.130 $($(v).dir)/build/export/libcudart.so.10.0" -Wait
+        Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libcudart.so.10.0.130 $($(vars).dir)/build/export/libcudart.so.10.0" -Wait
         Set-Location "/"
-        Set-Location $($(v).dir)     
+        Set-Location $($(vars).dir)     
     }
     
     if (-not (Test-Path ".\build\export\libhwloc.so.5")) {
-        Start-Process ln -ArgumentList "-s $($(v).dir)/build/export/libhwloc.so.5.5.0 $($(v).dir)/build/export/libhwloc.so.5" -Wait
+        Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libhwloc.so.5.5.0 $($(vars).dir)/build/export/libhwloc.so.5" -Wait
         Set-Location "/"
-        Set-Location $($(v).dir)     
+        Set-Location $($(vars).dir)     
     }
 
     if (-not (Test-Path ".\build\export\libstdc++.so.6")) {
-        Start-Process ln -ArgumentList "-s $($(v).dir)/build/export/libstdc++.so.6.0.25 $($(v).dir)/build/export/libstdc++.so.6" -Wait
+        Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libstdc++.so.6.0.25 $($(vars).dir)/build/export/libstdc++.so.6" -Wait
         Set-Location "/"
-        Set-Location $($(v).dir)     
+        Set-Location $($(vars).dir)     
     }
 
     if (-not (Test-Path ".\build\export\libnvrtc.so.9.2")) {
-        Start-Process ln -ArgumentList "-s $($(v).dir)/build/export/libnvrtc.so.9.2.148 $($(v).dir)/build/export/libnvrtc.so.9.2" -Wait
+        Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc.so.9.2.148 $($(vars).dir)/build/export/libnvrtc.so.9.2" -Wait
         Set-Location "/"
-        Set-Location $($(v).dir)     
+        Set-Location $($(vars).dir)     
     }
 
     if (-not (Test-Path ".\build\export\libnvrtc.so.10.0")) {
-        Start-Process ln -ArgumentList "-s $($(v).dir)/build/export/libnvrtc.so.10.0.130 $($(v).dir)/build/export/libnvrtc.so.10.0" -Wait
+        Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc.so.10.0.130 $($(vars).dir)/build/export/libnvrtc.so.10.0" -Wait
         Set-Location "/"
-        Set-Location $($(v).dir)     
+        Set-Location $($(vars).dir)     
     }
 
     if (-not (Test-Path ".\build\export\libnvrtc.so.10.1")) {
-        Start-Process ln -ArgumentList "-s $($(v).dir)/build/export/libnvrtc.so.10.1.105 $($(v).dir)/build/export/libnvrtc.so.10.1" -Wait
+        Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc.so.10.1.105 $($(vars).dir)/build/export/libnvrtc.so.10.1" -Wait
         Set-Location "/"
-        Set-Location $($(v).dir)     
+        Set-Location $($(vars).dir)     
     }
 
     if (Test-Path ".\build\bash\get-oc") {
@@ -118,7 +118,7 @@ function Global:Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x get-oc"
         Set-Location "/"
-        Set-Location $($(v).dir)     
+        Set-Location $($(vars).dir)     
     }
    
     if (Test-Path ".\build\bash\active") {
@@ -126,7 +126,7 @@ function Global:Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x active"
         Set-Location "/"
-        Set-Location $($(v).dir)     
+        Set-Location $($(vars).dir)     
     }
 
     if (Test-Path ".\build\bash\version") {
@@ -134,7 +134,7 @@ function Global:Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x version"
         Set-Location "/"
-        Set-Location $($(v).dir)     
+        Set-Location $($(vars).dir)     
     }
     
     if (Test-Path ".\build\bash\get-screen") {
@@ -142,7 +142,7 @@ function Global:Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x get-screen"
         Set-Location "/"
-        Set-Location $($(v).dir)     
+        Set-Location $($(vars).dir)     
     }
    
     if (Test-Path ".\build\bash\mine") {
@@ -150,7 +150,7 @@ function Global:Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x mine"
         Set-Location "/"
-        Set-Location $($(v).dir)     
+        Set-Location $($(vars).dir)     
     }
    
     if (Test-Path ".\build\bash\background") {
@@ -158,7 +158,7 @@ function Global:Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x background"
         Set-Location "/"
-        Set-Location $($(v).dir)     
+        Set-Location $($(vars).dir)     
     }
    
     if (Test-Path ".\build\bash\pidinfo") {
@@ -166,7 +166,7 @@ function Global:Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x pidinfo"
         Set-Location "/"
-        Set-Location $($(v).dir)     
+        Set-Location $($(vars).dir)     
     }
 
     if (Test-Path ".\build\bash\dir.sh") {
@@ -174,7 +174,7 @@ function Global:Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x dir.sh"
         Set-Location "/"
-        Set-Location $($(v).dir)     
+        Set-Location $($(vars).dir)     
     }
 
     if (Test-Path ".\build\bash\benchmark") {
@@ -182,7 +182,7 @@ function Global:Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x benchmark"
         Set-Location "/"
-        Set-Location $($(v).dir)     
+        Set-Location $($(vars).dir)     
     }
 
     if (Test-Path ".\build\bash\clear_profits") {
@@ -190,7 +190,7 @@ function Global:Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x clear_profits"
         Set-Location "/"
-        Set-Location $($(v).dir)     
+        Set-Location $($(vars).dir)     
     }  
 
     if (Test-Path ".\build\bash\clear_watts") {
@@ -198,7 +198,7 @@ function Global:Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x clear_watts"
         Set-Location "/"
-        Set-Location $($(v).dir)     
+        Set-Location $($(vars).dir)     
     }  
 
     if (Test-Path ".\build\bash\get-lambo") {
@@ -206,10 +206,10 @@ function Global:Get-Data {
         Set-Location "/usr/bin"
         Start-Process "chmod" -ArgumentList "+x get-lambo"
         Set-Location "/"
-        Set-Location $($(v).dir)     
+        Set-Location $($(vars).dir)     
     }
    
-    Set-Location $($(v).dir)
+    Set-Location $($(vars).dir)
     
 }
 
@@ -227,7 +227,7 @@ function Global:Get-GPUCount {
     $AMDCount = 0
     $NVIDIACount = 0
     $CardCount = 0
-    $global:BusData = @()
+    $(vars).BusData = @()
 
     if ($GetBus -like "*NVIDIA*" -and $GetBus -notlike "*nForce*") {
         invoke-expression "nvidia-smi --query-gpu=gpu_bus_id,gpu_name,memory.total,power.min_limit,power.default_limit,power.max_limit,vbios_version --format=csv" | Tee-Object -Variable NVSMI | Out-Null
@@ -262,20 +262,20 @@ function Global:Get-GPUCount {
     }
     if ($GA -or $GN) {
         $TypeArray = @("NVIDIA1", "NVIDIA2", "NVIDIA3", "AMD1")
-        $TypeArray | ForEach-Object { if ($_ -in $Global:Config.Params.Type) { $NoType = $false } }
+        $TypeArray | ForEach-Object { if ($_ -in $(arg).Type) { $NoType = $false } }
         if ($NoType -eq $true) {
             Global:Write-Log "Searching GPU Types" -ForegroundColor Yellow
             if ($GA) { 
                 Global:Write-Log "AMD Detected: Adding AMD" -ForegroundColor Magenta
-                $global:Config.params.Type += "AMD1" 
+                $(arg).Type += "AMD1" 
             }
             if ($GN -and $GA) {
                 Global:Write-Log "NVIDIA Also Detected" -ForegroundColor Magenta
-                $global:Config.params.Type += "NVIDIA2" 
+                $(arg).Type += "NVIDIA2" 
             }
-            elseif ($GN) { 
+            elseif ($GN) {
                 Global:Write-Log "NVIDIA Detected: Adding NVIDIA" -ForegroundColor Magenta
-                $global:Config.Params.Type += "NVIDIA1" 
+                $(arg).Type += "NVIDIA1" 
             }
         }
     }
@@ -284,7 +284,7 @@ function Global:Get-GPUCount {
         if ($_ -like "*Advanced Micro Devices*" -or $_ -like "*NVIDIA*") {
             ##AMD
             if ($_ -like "*Advanced Micro Devices*" -and $_ -notlike "*RS880*" -and $_ -notlike "*Stoney*") {
-                if ($global:Config.Params.Type -like "*AMD*") {
+                if ($(arg).Type -like "*AMD*") {
                     $Sel = $_
                     $busid = $Sel -split " " | Select -First 1            
                     $DeviceList.AMD.Add("$AMDCount", "$CardCount")
@@ -292,11 +292,12 @@ function Global:Get-GPUCount {
                     $CardCount++
                     $subvendor = invoke-expression "lspci -vmms $busid" | Tee-Object -Variable subvendor | % { $_ | Select-String "SVendor" | % { $_ -split "SVendor:\s" | Select -Last 1 } }
                     $mem = "$($ROCM | Select-String "amdgpu 0000`:$busid`: VRAM`: " | %{ $_ -split "amdgpu 0000`:$busid`: VRAM`: " | Select -Last 1} | % {$_ -split "M" | Select -First 1})M"
-                    $global:BusData += [PSCustomObject]@{
+                    $(vars).BusData += [PSCustomObject]@{
                         busid     = $busid
                         name      = $PCIArray.$busid.name
                         brand     = "amd"
                         subvendor = $subvendor
+                        mem       = $mem
                         vbios     = $PCIArray.$busid.bios
                         mem_type  = $PCIArray.$busid.memory
                     }
@@ -308,7 +309,7 @@ function Global:Get-GPUCount {
                 $subvendor = invoke-expression "lspci -vmms $busid" | Tee-Object -Variable subvendor | % { $_ | Select-String "SVendor" | % { $_ -split "SVendor:\s" | Select -Last 1 } }
                 $NVSMI | Where "pci.bus_id" -eq $busid | % {
 
-                    $global:BusData += [PSCustomObject]@{
+                    $(vars).BusData += [PSCustomObject]@{
                         busid     = $busid
                         name      = $_.name
                         brand     = "nvidia"
@@ -327,10 +328,10 @@ function Global:Get-GPUCount {
         }
     }
 
-    $global:Config.Params.Type | Foreach {
+    $(arg).Type | Foreach {
         if ($_ -like "*CPU*") {
             Global:Write-Log "Getting CPU Count"
-            for ($i = 0; $i -lt $global:Config.Params.CPUThreads; $i++) { 
+            for ($i = 0; $i -lt $(arg).CPUThreads; $i++) { 
                 $DeviceList.CPU.Add("$($i)", $i)
             }
         }
@@ -349,7 +350,6 @@ function Global:Start-LinuxConfig {
     ## Kill Previous Screens
     Global:start-killscript
 
-     
     ## Check if this is a hive-os image
     ## If HiveOS "Yes" Connect To Hive (Not Ready Yet)
     $HiveBin = "/hive/bin"
@@ -359,13 +359,13 @@ function Global:Start-LinuxConfig {
     if (Test-Path $HiveBin) { $Hive = $true }
 
     ## Get Total GPU Count
-    $Global:GPU_Count = Global:Get-GPUCount
+    $(vars).GPU_Count = Global:Get-GPUCount
 
-    if ($global:Websites) {
-        Global:Add-Module "$($(v).web)\methods.psm1"
+    if ($(vars).WebSites) {
+        Global:Add-Module "$($(vars).web)\methods.psm1"
         $rigdata = Global:Get-RigData
 
-        $global:Websites | ForEach-Object {
+        $(vars).WebSites | ForEach-Object {
             switch ($_) {
                 "HiveOS" {
                     if ($Hive -eq $false) {
@@ -405,7 +405,7 @@ function Global:Start-LinuxConfig {
 
         ## HiveOS Specific Stuff
         if ($NotHiveOS -eq $false) {
-            if ($global:Config.Params.Type -like "*NVIDIA*" -or $global:Config.Params.Type -like "*AMD*") {
+            if ($(arg).Type -like "*NVIDIA*" -or $(arg).Type -like "*AMD*") {
                 Invoke-Expression ".\build\bash\libc.sh" | Tee-Object -Variable libc | Out-Null
                 Invoke-Expression ".\build\bash\libv.sh" | Tee-Object -Variable libv | Out-Null
                 $libc | % { Global:Write-Log $_ }
@@ -421,28 +421,28 @@ function Global:Start-LinuxConfig {
     }
 
     ## Set Cuda for commands
-    if ($global:Config.Params.Type -like "*NVIDIA*") { $global:Config.Params.Cuda | Set-Content ".\build\txt\cuda.txt" }
+    if ($(arg).Type -like "*NVIDIA*") { $(arg).Cuda | Set-Content ".\build\txt\cuda.txt" }
     
     ## Let User Know What Platform commands will work for- Will always be Group 1.
-    if ($global:Config.Params.Type -like "*NVIDIA1*") {
+    if ($(arg).Type -like "*NVIDIA1*") {
         "NVIDIA1" | Out-File ".\build\txt\minertype.txt" -Force
         Global:Write-Log "Group 1 is NVIDIA- Commands and Stats will work for NVIDIA1" -foreground yellow
         Start-Sleep -S 3
     }
-    elseif ($global:Config.Params.Type -like "*AMD1*") {
+    elseif ($(arg).Type -like "*AMD1*") {
         "AMD1" | Out-File ".\build\txt\minertype.txt" -Force
         Global:Write-Log "Group 1 is AMD- Commands and Stats will work for AMD1" -foreground yellow
         Start-Sleep -S 3
     }
-    elseif ($global:Config.Params.Type -like "*CPU*") {
-        if ($Global:GPU_Count -eq 0) {
+    elseif ($(arg).Type -like "*CPU*") {
+        if ($(vars).GPU_Count -eq 0) {
             "CPU" | Out-File ".\build\txt\minertype.txt" -Force
             Global:Write-Log "Group 1 is CPU- Commands and Stats will work for CPU" -foreground yellow
             Start-Sleep -S 3
         }
     }
-    elseif ($global:Config.Params.Type -like "*ASIC*") {
-        if ($global:GPU_Count -eq 0) {
+    elseif ($(arg).Type -like "*ASIC*") {
+        if ($(vars).GPU_Count -eq 0) {
             "ASIC" | Out-File ".\build\txt\minertype.txt" -Force
             Global:Write-Log "Group 1 is ASIC- Commands and Stats will work for ASIC" -foreground yellow
         }

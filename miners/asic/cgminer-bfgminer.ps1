@@ -13,7 +13,7 @@ $Global:ASICTypes | ForEach-Object {
 
     if ($Global:Coins -eq $true) { $Pools = $global:CoinPools } else { $Pools = $global:AlgoPools }
 
-    $global:Config.Params.ASIC_ALGO | ForEach-Object {
+    $(arg).ASIC_ALGO | ForEach-Object {
 
         $MinerAlgo = $_
         $StatAlgo = $MinerAlgo -replace "`_","`-"
@@ -23,7 +23,7 @@ $Global:ASICTypes | ForEach-Object {
             $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                 $Pass = $_.Pass1 -replace ",", "`\,"
                 if($global:ASICS.$ConfigType.NickName) {
-                $Pass = $Pass -replace "$($global:Config.Params.Rigname1)","$($global:ASICS.$ConfigType.NickName)"
+                $Pass = $Pass -replace "$($(arg).Rigname1)","$($global:ASICS.$ConfigType.NickName)"
                 }
                 [PSCustomObject]@{
                     MName      = $Name
@@ -41,9 +41,10 @@ $Global:ASICTypes | ForEach-Object {
                     Arguments  = "stratum+tcp://$($_.Host):$($_.Port),$($_.$User),$Pass"
                     HashRates  = $Stat.Hour
                     Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
-                    Power     =  if ($global:Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $global:Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($global:Watts.default."$($ConfigType)_Watts") { $global:Watts.default."$($ConfigType)_Watts" }else { 0 }
+                    Power     =  if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 }
                     MinerPool  = "$($_.Name)"
                     Port       = 4028
+                    Worker     = $($global:ASICS.$ConfigType.NickName)
                     API        = "cgminer"
                     URI        = $Uri
                     Server     = $global:ASICS.$ConfigType.IP

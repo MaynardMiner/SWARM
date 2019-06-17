@@ -16,7 +16,7 @@ function Global:Get-Miners {
     if (Test-Path ".\timeout\miner_block\miner_block.txt") { $GetMinerBlocks = Get-Content ".\timeout\miner_block\miner_block.txt" | ConvertFrom-Json }
     if (Test-Path ".\timeout\download_block\download_block.txt") { $GetDownloadBlocks = Get-Content ".\timeout\download_block\download_block.txt" | ConvertFrom-Json }
 
-    $Global:Config.Params.Type | ForEach-Object {
+    $(arg).Type | ForEach-Object {
         if ($_ -like "*ASIC*" ) { $ASICMiners = $true; $SItems = Get-ChildItem ".\miners\asic" }
         if ($_ -like "*NVIDIA*" ) { $NVB = $true; $GPUMiners = $true; $NItems = Get-ChildItem ".\miners\gpu\nvidia" }
         if ($_ -like "*AMD*" ) { $AMDB = $true; $GPUMiners = $true; $AItems = Get-ChildItem ".\miners\gpu\amd" }
@@ -29,21 +29,21 @@ function Global:Get-Miners {
     if ($GPUMiners -eq $true) {
         if ($NVB -eq $true) {
             $NVIDIAMiners = Get-ChildItemContent -Path ".\miners\gpu\nvidia" | ForEach-Object { $_.Content | Add-Member @{Name = $_.Name } -PassThru } |
-                Where-Object { $global:Config.Params.Type.Count -eq 0 -or (Compare-Object $global:Config.Params.Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
+                Where-Object { $(arg).Type.Count -eq 0 -or (Compare-Object $(arg).Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
                 Where-Object { $_.Path -ne "None" } |
                 Where-Object { $_.Uri -ne "None" } |
                 Where-Object { $_.MinerName -ne "None" }
         }
         if ($AMDB -eq $true) {
             $AMDMiners = Get-ChildItemContent -Path ".\miners\gpu\amd" | ForEach-Object { $_.Content | Add-Member @{Name = $_.Name } -PassThru } |
-                Where-Object { $global:Config.Params.Type.Count -eq 0 -or (Compare-Object $global:Config.Params.Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
+                Where-Object { $(arg).Type.Count -eq 0 -or (Compare-Object $(arg).Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
                 Where-Object { $_.Path -ne "None" } |
                 Where-Object { $_.Uri -ne "None" } |
                 Where-Object { $_.MinerName -ne "None" }
         }
         if ($CPUB -eq $true) {
             $CPUMiners = Get-ChildItemContent -Path ".\miners\cpu" | ForEach-Object { $_.Content | Add-Member @{Name = $_.Name } -PassThru } |
-                Where-Object { $global:Config.Params.Type.Count -eq 0 -or (Compare-Object $global:Config.Params.Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
+                Where-Object { $(arg).Type.Count -eq 0 -or (Compare-Object $(arg).Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
                 Where-Object { $_.Path -ne "None" } |
                 Where-Object { $_.Uri -ne "None" } |
                 Where-Object { $_.MinerName -ne "None" }
@@ -56,7 +56,7 @@ function Global:Get-Miners {
 
     if ($ASICMiners -eq $True) {
         $ASICMiners = Get-ChildItemContent -Path ".\miners\asic" | ForEach-Object { $_.Content | Add-Member @{Name = $_.Name } -PassThru } |
-            Where-Object { $global:Config.Params.Type.Count -eq 0 -or (Compare-Object $global:Config.Params.Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 }
+            Where-Object { $(arg).Type.Count -eq 0 -or (Compare-Object $(arg).Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 }
         $ASICMiners | ForEach-Object { $_.Name = $_.MName; $GetMiners.Add($_) | Out-Null }
     }
     $Note = @()
@@ -98,25 +98,25 @@ function Global:Get-Miners {
 }
 function Global:Get-AlgoMiners {
     if ($global:AlgoPools.Count -gt 0) {
-        $global:QuickTimer.Restart()
+        $(vars).QuickTimer.Restart()
         Global:Write-Log "Checking Algo Miners. . . ." -ForegroundColor Yellow
         ##Load Only Needed Algorithm Miners
         Get-Miners | % { $Global:Miners.Add($_) | Out-Null }
         $AlgoPools.Clear()
-        $global:QuickTimer.Stop()
-        Global:Write-Log "Algo Miners Loading Time: $([math]::Round($global:QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green    
+        $(vars).QuickTimer.Stop()
+        Global:Write-Log "Algo Miners Loading Time: $([math]::Round($(vars).QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green    
     }
 }
 
 function Global:Get-CoinMiners {
     if ($global:CoinPools.Count -gt 0) {
-        $global:QuickTimer.Restart()
+        $(vars).QuickTimer.Restart()
         $Global:Coins = $true
         Global:Write-Log "Checking Coin Miners. . . . ." -ForegroundColor Yellow
         ##Load Only Needed Coin Miners
         Get-Miners | % { $Global:Miners.Add($_) | Out-Null }
         $CoinPools.Clear()
-        $global:QuickTimer.Stop()
-        Global:Write-Log "Coin Miners Loading Time: $([math]::Round($global:QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green    
+        $(vars).QuickTimer.Stop()
+        Global:Write-Log "Coin Miners Loading Time: $([math]::Round($(vars).QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green    
     }
 }

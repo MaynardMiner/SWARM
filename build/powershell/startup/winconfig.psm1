@@ -1,88 +1,133 @@
-Function Global:Resolve-PCIBusInfo { 
+Function Global:Get-PCISlot($X) { 
 
-    param ( 
-        [parameter(ValueFromPipeline = $true, Mandatory = $true)] 
-        [string] 
-        $locationInfo 
-    ) 
-    PROCESS { 
-        [void]($locationInfo -match "\d+,\d+,\d+")
-        $busId, $deviceID, $functionID = $matches[0] -split "," 
-    
-        switch ($busId) {
-            1 { $busID = "01:00.0" }
-            2 { $busID = "02:00.0" }
-            3 { $busID = "03:00.0" }
-            4 { $busID = "04:00.0" }
-            5 { $busID = "05:00.0" }
-            6 { $busID = "06:00.0" }
-            7 { $busID = "07:00.0" }
-            8 { $busID = "08:00.0" }
-            9 { $busID = "09:00.0" }
-            10 { $busID = "0a:00.0" }
-            11 { $busID = "0b:00.0" }
-            12 { $busID = "0c:00.0" }
-            13 { $busID = "0d:00.0" }
-            14 { $busID = "0e:00.0" }
-            15 { $busID = "0f:00.0" }
-            16 { $busID = "0g:00.0" }
-            17 { $busID = "0h:00.0" }
-            18 { $busID = "0i:00.0" }
-            19 { $busID = "0j:00.0" }
-            20 { $busID = "0k:00.0" }
-        }
+    switch ($X) {
+        "0:2:2" { $busId = "00:02.0" }
+        "1:0:0" { $busID = "01:00.0" }
+        "2:0:0" { $busID = "02:00.0" }
+        "3:0:0" { $busID = "03:00.0" }
+        "4:0:0" { $busID = "04:00.0" }
+        "5:0:0" { $busID = "05:00.0" }
+        "6:0:0" { $busID = "06:00.0" }
+        "7:0:0" { $busID = "07:00.0" }
+        "8:0:0" { $busID = "08:00.0" }
+        "9:0:0" { $busID = "09:00.0" }
+        "10:0:0" { $busID = "0a:00.0" }
+        "11:0:0" { $busID = "0b:00.0" }
+        "12:0:0" { $busID = "0c:00.0" }
+        "13:0:0" { $busID = "0d:00.0" }
+        "14:0:0" { $busID = "0e:00.0" }
+        "15:0:0" { $busID = "0f:00.0" }
+        "16:0:0" { $busID = "0g:00.0" }
+        "17:0:0" { $busID = "0h:00.0" }
+        "18:0:0" { $busID = "0i:00.0" }
+        "19:0:0" { $busID = "0j:00.0" }
+        "20:0:0" { $busID = "0k:00.0" }
+        "21:0:0" { $busID = "0l:00.0" }
+        "22:0:0" { $busID = "0m:00.0" }
+        "23:0:0" { $busID = "0n:00.0" }
+        "24:0:0" { $busID = "0o:00.0" }
+        "25:0:0" { $busID = "0p:00.0" }
+        "26:0:0" { $busID = "0q:00.0" }
+        "27:0:0" { $busID = "0r:00.0" }
+        "28:0:0" { $busID = "0s:00.0" }
+        "29:0:0" { $busID = "0t:00.0" }
+        "30:0:0" { $busID = "0u:00.0" }
+    }
 
-        new-object psobject -property @{ 
-            "BusID"      = $busID; 
-            "DeviceID"   = "$deviceID" 
-            "FunctionID" = "$functionID" 
-        } 
-    }          
+    $busID
 }
-    
-Function Global:Get-BusFunctionID {
-    #gwmi -query "SELECT * FROM Win32_PnPEntity"
+
+
+Function Global:Get-Bus {
+
     $GPUS = @()
+
+    if (test-Path ".\build\txt\gpu-count.txt") {
+        $OldCount = Get-Content ".\build\txt\gpu-count.txt" | ConvertFrom-Json 
+    }
+    else { $OldCount = 0 }
+
     $Services = @("nvlddmkm", "amdkmdap", "igfx", "BasicDisplay")
-    $Devices = Get-CimInstance -namespace root\cimv2 -class Win32_PnPEntity | where Service -in $Services | Where DeviceID -like "*PCI*"
-    
-    for ($i = 0; $i -lt $Devices.Count; $i++) {
-        $deviceId = $Devices[$i].PNPDeviceID
-        $locationInfo = (get-itemproperty -path "HKLM:\SYSTEM\CurrentControlSet\Enum\$deviceID" -name locationinformation -ErrorAction Stop).locationINformation
-        $businfo = Global:Resolve-PCIBusInfo -locationInfo $locationinfo
-        $subvendorlist = Get-Content ".\build\data\vendor.json" | ConvertFrom-Json
-        $getsubvendor = $Devices[$i].PNPDeviceID -split "&REV_" | Select -first 1
-        $getsubvendor = $getsubvendor.Substring($getsubvendor.Length - 4)
-        if ($subvendorlist.$getsubvendor) { $subvendor = $subvendorlist.$getsubvendor }
-        elseif ($Devices[$i].PNPDeviceID -like "*PCI\VEN_10DE*") { $subvendor = "nvidia" }
-        elseif ($Devices[$i].PNPDeviceID -like "*PCI\VEN_1002*") { $subvendor = "amd" }
-        else { $subvendor = "microsoft" }
+    $NewCount = $(Get-CimInstance -namespace root\cimv2 -class Win32_PnPEntity | where Service -in $Services | Where DeviceID -like "*PCI*").Count
 
-        if ($Devices[$i].PNPDeviceID -like "*PCI\VEN_10DE*") { $brand = "nvidia" }
-        elseif ($Devices[$i].PNPDeviceID -like "*PCI\VEN_1002*") { $brand = "amd" }
-        else { $Brand = "microsoft" }
+    if ($NewCount -ne $OldCount) {
+        Write-Log "GPU count is different - Gathering GPU information" -ForegroundColor Yellow
 
-        $GPURAM = (Get-CimInstance Win32_VideoController | where PNPDeviceID -eq $Devices[$i].PNPDeviceID).AdapterRam
-        $GPURAM = "{0:f0}" -f $($GPURAM / 1000000)
-        $GPURAM = "$($GPURAM)M"
+        ## Add key to bypass install question:
+        Set-Location HKCU:
+        if (-not (test-Path .\Software\techPowerUp)) {
+            New-Item -Path .\Software -Name techPowerUp | Out-Null
+            New-Item -path ".\Software\techPowerUp" -Name "GPU-Z" | Out-Null
+            New-ItemProperty -Path ".\Software\techPowerUp\GPU-Z" -Name "Install_Dir" -Value "no" | Out-Null
+        }
+        Set-Location $(vars).dir
 
-        $GPUS += [PSCustomObject]@{
-            "Name"      = $Devices[$i].Name;
-            "PnPID"     = $Devices[$i].PNPDeviceID
-            "PCIBusID"  = "$($businfo.BusID)"
-            "subvendor" = $subvendor
-            "Brand"     = $brand
-            "ram"       = $GPURAM
+        Start-Process ".\build\apps\gpu-z.exe" -ArgumentList "-dump $($(vars).dir)\build\txt\data.xml" -Wait
+        if (test-Path ".\build\txt\data.xml") {
+            $Data = $([xml](Get-Content ".\build\txt\data.xml")).gpuz_dump.card
+        }
+        else {
+            Write-Log "WARNING: Failed to gather GPU data" -ForegroundColor Yellow
         }
     }
+    elseif (test-path ".\build\txt\data.xml") {
+        $Data = $([xml](Get-Content ".\build\txt\data.xml")).gpuz_dump.card
+    }
+    else { write-Lost "WARNING: No GPU Data file found!" -ForegroundColor Yellow }
+
+    if ("NVIDIA" -in $Data.vendor) {
+        invoke-expression ".\build\apps\nvidia-smi.exe --query-gpu=gpu_bus_id,gpu_name,memory.total,power.min_limit,power.default_limit,power.max_limit,vbios_version --format=csv" | Tee-Object -Variable NVSMI | Out-Null
+        $NVSMI = $NVSMI | ConvertFrom-Csv
+        $NVSMI | % { $_."pci.bus_id" = $_."pci.bus_id".split("00000000:") | Select -Last 1 }
+    }
+
+    $Data | % {
+        if ($_.vendorid -eq "1002") {
+            $busid = $(Global:Get-PCISlot $_.location)
+            $GPUS += [PSCustomObject]@{
+                "busid"     = $busid
+                "name"      = $_.cardname
+                "brand"     = "amd"
+                "subvendor" = $_.subvendor
+                "mem"       = "$($_.memsize)MB"
+                "vbios"     = $_.biosversion
+                "mem_type"  = $_.memvendor
+            }
+        }
+        elseif ($_.vendorid -eq "10DE") {
+            $busid = $(Global:Get-PCISlot $_.location)
+            $SMI = $NVSMI | Where "pci.bus_id" -eq $busid
+            $GPUS += [PSCustomObject]@{
+                busid     = $busid
+                name      = $_.cardname
+                brand     = "nvidia"
+                subvendor = $_.subvendor
+                mem       = $SMI."memory.total [MiB]"
+                vbios     = $SMI.vbios_version
+                plim_min  = $SMI."power.min_limit [W]"
+                plim_def  = $SMI."power.default_limit [W]"
+                plim_max  = $SMI."power.max_limit [W]"
+            }
+        }
+        else {
+            $busid = $(Global:Get-PCISlot $_.location)
+            $GPUS += [PSCustomObject]@{
+                busid = $busid
+                name  = $_.cardname
+                brand = "cpu"
+            }
+        }
+    }
+
+    $NewCount | Set-Content ".\build\txt\gpu-count.txt"
     $GPUS
 }
 
 function Global:Get-GPUCount {
 
-    $Bus = $global:BusData | Sort-Object PCIBusID
-    $DeviceList = @{ AMD = @{}; NVIDIA = @{}; CPU = @{} }
-    $OCList = @{ AMD = @{}; Onboard = @{}; NVIDIA = @{}; }
+    $Bus = $(vars).BusData | Sort-Object busid
+    $DeviceList = @{ AMD = @{ }; NVIDIA = @{ }; CPU = @{ } }
+    $OCList = @{ AMD = @{ }; Onboard = @{ }; NVIDIA = @{ }; }
     $GN = $false
     $GA = $false
     $NoType = $true
@@ -95,7 +140,7 @@ function Global:Get-GPUCount {
 
     $Bus | Foreach {
         $Sel = $_
-        if ($Sel.Brand -eq "nvidia" -and $Sel.PCIBusID -ne "0") {
+        if ($Sel.Brand -eq "nvidia") {
             $GN = $true
             $DeviceList.NVIDIA.Add("$NvidiaCounter", "$DeviceCounter")
             $OCList.NVIDIA.Add("$NvidiaCounter", "$DeviceCounter")
@@ -103,7 +148,7 @@ function Global:Get-GPUCount {
             $DeviceCounter++
             $OCCounter++
         }
-        elseif ($Sel.Brand -eq "amd" -and $Sel.PCIBusID -ne "0") {
+        elseif ($Sel.Brand -eq "amd") {
             $GA = $true
             $DeviceList.AMD.Add("$AmdCounter", "$DeviceCounter")
             $OCList.AMD.Add("$AmdCounter", "$OCCounter")
@@ -120,26 +165,26 @@ function Global:Get-GPUCount {
 
     if ($GA -or $GN) {
         $TypeArray = @("NVIDIA1", "NVIDIA2", "NVIDIA3", "AMD1")
-        $TypeArray | ForEach-Object { if ($_ -in $Global:Config.Params.Type) { $NoType = $false } }
+        $TypeArray | ForEach-Object { if ($_ -in $(arg).Type) { $NoType = $false } }
         if ($NoType -eq $true) {
             Global:Write-Log "Searching GPU Types" -ForegroundColor Yellow
             if ($GA) { 
                 Global:Write-Log "AMD Detected: Adding AMD" -ForegroundColor Magenta
-                $global:Config.params.Type += "AMD1" 
+                $(arg).Type += "AMD1" 
             }
             if ($GN -and $GA) {
                 Global:Write-Log "NVIDIA Also Detected" -ForegroundColor Magenta
-                $global:Config.params.Type += "NVIDIA2" 
+                $(arg).Type += "NVIDIA2" 
             }
             elseif ($GN) { 
                 Global:Write-Log "NVIDIA Detected: Adding NVIDIA" -ForegroundColor Magenta
-                $global:Config.Params.Type += "NVIDIA1" 
+                $(arg).Type += "NVIDIA1" 
             }
         }
     }
 
     
-    if ($global:Config.Params.Type -like "*CPU*") { for ($i = 0; $i -lt $global:Config.Params.CPUThreads; $i++) { $DeviceList.CPU.Add("$($i)", $i) } }
+    if ($(arg).Type -like "*CPU*") { for ($i = 0; $i -lt $(arg).CPUThreads; $i++) { $DeviceList.CPU.Add("$($i)", $i) } }
     $DeviceList | ConvertTo-Json | Set-Content ".\build\txt\devicelist.txt"
     $OCList | ConvertTo-Json | Set-Content ".\build\txt\oclist.txt"
     $GPUCount = 0
@@ -150,16 +195,16 @@ function Global:Get-GPUCount {
 function Global:Start-WindowsConfig {
 
     ## Add Swarm to Startup
-    if ($global:Config.Params.Startup) {
+    if ($(arg).Startup) {
         $CurrentUser = $env:UserName
         $Startup_Path = "C:\Users\$CurrentUser\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"
         $Bat_Startup = Join-Path $Startup_Path "SWARM.bat"
-        switch ($global:Config.Params.Startup) {
+        switch ($(arg).Startup) {
             "Yes" {
                 Global:Write-Log "Attempting to add current SWARM.bat to startup" -ForegroundColor Magenta
                 Global:Write-Log "If you do not wish SWARM to start on startup, use -Startup No argument"
                 Global:Write-Log "Startup FilePath: $Startup_Path"
-                $bat = "CMD /r pwsh -ExecutionPolicy Bypass -command `"Set-Location $($(v).dir); Start-Process `"SWARM.bat`"`""
+                $bat = "CMD /r pwsh -ExecutionPolicy Bypass -command `"Set-Location $($(vars).dir); Start-Process `"SWARM.bat`"`""
                 $Bat_Startup = Join-Path $Startup_Path "SWARM.bat"
                 $bat | Set-Content $Bat_Startup
             }
@@ -206,13 +251,13 @@ function Global:Start-WindowsConfig {
     }
     
     ## Windows Bug- Set Cudas to match PCI Bus Order
-    if ($global:Config.Params.Type -like "*NVIDIA*") { [Environment]::SetEnvironmentVariable("CUDA_DEVICE_ORDER", "PCI_BUS_ID", "User") }
+    if ($(arg).Type -like "*NVIDIA*") { [Environment]::SetEnvironmentVariable("CUDA_DEVICE_ORDER", "PCI_BUS_ID", "User") }
     
     ##Set Cuda For Commands
-    if ($global:Config.Params.Type -like "*NVIDIA*") { $global:Config.Params.Cuda = "10"; $global:Config.Params.Cuda | Set-Content ".\build\txt\cuda.txt" }
+    if ($(arg).Type -like "*NVIDIA*") { $(arg).Cuda = "10"; $(arg).Cuda | Set-Content ".\build\txt\cuda.txt" }
     
     ##Detect if drivers are installed, not generic- Close if not. Print message on screen
-    if ($global:Config.Params.Type -like "*NVIDIA*" -and -not (Test-Path "C:\Program Files\NVIDIA Corporation\NVSMI\nvml.dll")) {
+    if ($(arg).Type -like "*NVIDIA*" -and -not (Test-Path "C:\Program Files\NVIDIA Corporation\NVSMI\nvml.dll")) {
         Global:Write-Log "nvml.dll is missing" -ForegroundColor Red
         Start-Sleep -S 3
         Global:Write-Log "To Fix:" -ForegroundColor Blue
@@ -228,17 +273,17 @@ function Global:Start-WindowsConfig {
     $TotalMemory | Set-Content ".\build\txt\ram.txt"
     
     ## GPU Bus Hash Table
-    $global:BusData = Global:Get-BusFunctionID
+    $(vars).BusData = Global:Get-Bus
     
     ## Get Total GPU HashTable
-    $Global:GPU_Count = Global:Get-GPUCount
+    $(vars).GPU_Count = Global:Get-GPUCount
     
     ## Websites
-    if ($global:Websites) {
-        Global:Add-Module "$($(v).web)\methods.psm1"
+    if ($(vars).WebSites) {
+        Global:Add-Module "$($(vars).web)\methods.psm1"
         $rigdata = Global:Get-RigData
 
-        $global:Websites | ForEach-Object {
+        $(vars).WebSites | ForEach-Object {
             switch ($_) {
                 "HiveOS" {
                     Global:Get-WebModules "HiveOS"

@@ -4,7 +4,6 @@ a="!$1"
 b="!$2"
 c="!$3"
 d="!$4"
-e="!$5"
 
 mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-pwsh -command "$(< $mydir/dir.sh)/build/powershell/scripts/version.ps1 -command $a -name $b -exe $c -version $d -uri $e"
+pwsh -command "$(< $mydir/dir.sh)/build/powershell/scripts/version.ps1 -command $a -name $b -version $c -uri $d"

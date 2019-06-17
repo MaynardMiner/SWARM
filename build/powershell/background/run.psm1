@@ -5,10 +5,9 @@ function Global:Get-OhNo {
 
 function Global:Set-APIFailure {
     Write-Host "API Summary Failed- Could Not Total Hashrate Or No Accepted Shares" -Foreground Red; 
-    $global:RAW | Set-Content ".\build\txt\$global:MinerType-hash.txt";
 }
 
-function Global:Get-GPUs { $GPU = $global:Devices[$i]; $Global:GCount.$($global:TypeS).$GPU };
+function Global:Get-GPUs { $GPU = $global:Devices[$i]; $(vars).GCount.$($global:TypeS).$GPU };
 
 function Global:Write-MinerData1 {
     Write-Host " "

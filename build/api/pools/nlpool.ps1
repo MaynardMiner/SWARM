@@ -1,6 +1,6 @@
 function Global:Get-NlpoolData {
     $Wallets = @()
-    $global:Config.Params.Type | ForEach-Object {
+    $(arg).Type | ForEach-Object {
         $Sel = $_
         $Pool = "nlpool"
         $global:Share_Table.$Sel.Add($Pool, @{ })

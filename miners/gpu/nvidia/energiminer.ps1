@@ -1,4 +1,4 @@
-$Global:NVIDIATypes | ForEach-Object {
+$(vars).NVIDIATypes | ForEach-Object {
     
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
@@ -13,13 +13,13 @@ $Global:NVIDIATypes | ForEach-Object {
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "energiminer-$Num"; $Port = "4500$Num"
 
     Switch ($Num) {
-        1 { $Get_Devices = $Global:NVIDIADevices1 }
-        2 { $Get_Devices = $Global:NVIDIADevices2 }
-        3 { $Get_Devices = $Global:NVIDIADevices3 }
+        1 { $Get_Devices = $(vars).NVIDIADevices1; $Rig = $(arg).RigName1 }
+        2 { $Get_Devices = $(vars).NVIDIADevices2; $Rig = $(arg).RigName2 }
+        3 { $Get_Devices = $(vars).NVIDIADevices3; $Rig = $(arg).RigName3 }
     }
 
     ##Log Directory
-    $Log = Join-Path $($(v).dir) "logs\$ConfigType.log"
+    $Log = Join-Path $($(vars).dir) "logs\$ConfigType.log"
 
     ##Parse -GPUDevices
     if ($Get_Devices -ne "none") {
@@ -33,7 +33,7 @@ $Global:NVIDIATypes | ForEach-Object {
     $MinerConfig = $Global:config.miners.energiminer
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
-    $ExportDir = Join-Path $($(v).dir) "build\export"
+    $ExportDir = Join-Path $($(vars).dir) "build\export"
 
     ##Prestart actions before miner launch
     $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
@@ -49,9 +49,9 @@ $Global:NVIDIATypes | ForEach-Object {
         $MinerAlgo = $_
 
         if ($MinerAlgo -in $global:Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
-            $StatAlgo = $MinerAlgo -replace "`_","`-"
+            $StatAlgo = $MinerAlgo -replace "`_", "`-"
             $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
-           $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
+            $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
 
             if ($Check.RAW -ne "Bad") {
                 $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
@@ -61,7 +61,7 @@ $Global:NVIDIATypes | ForEach-Object {
                         Coin       = $Global:Coins
                         Delay      = $MinerConfig.$ConfigType.delay
                         Fees       = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
-                        Platform   = $global:Config.Params.Platform
+                        Platform   = $(arg).Platform
                         Symbol     = "$($_.Symbol)"
                         MinerName  = $MinerName
                         Prestart   = $PreStart
@@ -74,7 +74,7 @@ $Global:NVIDIATypes | ForEach-Object {
                         Arguments  = "-U stratum://$($_.$User).$($_.$Pass)@$($_.Algorithm).mine.zergpool.com:$($_.Port)"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
-                        Power     =  if ($global:Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $global:Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($global:Watts.default."$($ConfigType)_Watts") { $global:Watts.default."$($ConfigType)_Watts" }else { 0 } 
+                        Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                         MinerPool  = "$($_.Name)"
                         Port       = 0
                         API        = "energiminer"

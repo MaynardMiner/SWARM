@@ -15,7 +15,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 function Global:Send-WebStats {
     if ($global:Config.hive_params.Id -and -not (test-Path "/hive/miners")) {
-        $global:WebSites | ForEach-Object {
+        $(vars).WebSites | ForEach-Object {
             Global:Get-WebModules $_
             $Stats = Global:Set-Stats $_
             $response = $Stats | Global:Invoke-WebCommand -Site $_ -Action "message"

@@ -2,9 +2,9 @@ function Global:Get-ActiveMiners($global:bestminers_combo) {
     $global:bestminers_combo | ForEach-Object {
         $Sel = $_
 
-        if (-not ($global:ActiveMinerPrograms | Where-Object Path -eq $_.Path | Where-Object Type -eq $_.Type | Where-Object Arguments -eq $_.Arguments )) {
+        if (-not ($(vars).ActiveMinerPrograms | Where-Object Path -eq $_.Path | Where-Object Type -eq $_.Type | Where-Object Arguments -eq $_.Arguments )) {
 
-            $global:ActiveMinerPrograms += [PSCustomObject]@{
+            $(vars).ActiveMinerPrograms += [PSCustomObject]@{
                 Delay        = $_.Delay
                 Name         = $_.Name
                 Type         = $_.Type                    
@@ -36,9 +36,12 @@ function Global:Get-ActiveMiners($global:bestminers_combo) {
                 Activated    = 0
                 Wallet       = $_.Wallet
                 Stratum      = $_.Stratum
+                Instance     = 0
+                Worker       = $_.Worker
+                SubProcesses   = $null
             }
 
-            $global:ActiveMinerPrograms | Where-Object Path -eq $_.Path | Where-Object Type -eq $_.Type | Where-Object Arguments -eq $_.Arguments | % {
+            $(vars).ActiveMinerPrograms | Where-Object Path -eq $_.Path | Where-Object Type -eq $_.Type | Where-Object Arguments -eq $_.Arguments | % {
                 if ($Sel.ArgDevices) { $_ | Add-Member "ArgDevices" $Sel.ArgDevices }
                 if ($Sel.UserName) { $_ | Add-Member "UserName" $Sel.Username }
                 if ($Sel.Connection) { $_ | Add-Member "Connection" $Sel.Connection }
@@ -53,9 +56,10 @@ function Global:Get-ActiveMiners($global:bestminers_combo) {
     }
 }
 
+
 function Global:Get-BestActiveMiners {
-    $global:ActiveMinerPrograms | ForEach-Object {
-        if ($global:BestMiners_Combo | Where-Object Type -EQ $_.Type | Where-Object Path -EQ $_.Path | Where-Object Arguments -EQ $_.Arguments) { $_.BestMiner = $true; $global:BestActiveMiners += $_ }
+    $(vars).ActiveMinerPrograms | ForEach-Object {
+        if ($global:BestMiners_Combo | Where-Object Type -EQ $_.Type | Where-Object Path -EQ $_.Path | Where-Object Arguments -EQ $_.Arguments) { $_.BestMiner = $true; $(vars).BestActiveMIners += $_ }
         else { $_.BestMiner = $false }
     }
 }
@@ -144,8 +148,8 @@ function Global:Expand-WebRequest {
             else { Global:Write-Log "Download Failed!" -ForegroundColor DarkRed; break }
 
             New-Item -Path ".\x64\$temp" -ItemType "Directory" -Force | Out-Null; Start-Sleep -S 1
-            if($IsWindows) { Start-Process ".\build\apps\7z.exe" "x `"$($(v).dir)\$X64_zip`" -o`"$($(v).dir)\x64\$temp`" -y" -Wait -WindowStyle Minimized -verb Runas }
-            else { Start-Process "unzip" -ArgumentList "$($(v).dir)/$X64_zip -d $($(v).dir)/x64/$temp" -Wait }
+            if($IsWindows) { Start-Process ".\build\apps\7z.exe" "x `"$($(vars).dir)\$X64_zip`" -o`"$($(vars).dir)\x64\$temp`" -y" -Wait -WindowStyle Minimized -verb Runas }
+            else { Start-Process "unzip" -ArgumentList "$($(vars).dir)/$X64_zip -d $($(vars).dir)/x64/$temp" -Wait }
 
             $Stuff = Get-ChildItem ".\x64\$Temp"
             if ($Stuff) { Global:Write-Log "Extraction Succeeded!" -ForegroundColor Green }
@@ -198,11 +202,11 @@ function Global:Get-MinerBinary {
             $MinersArray | ConvertTo-Json -Depth 3 | Add-Content ".\timeout\download_block\download_block.txt"
             $HiveMessage = "$($Miner.Name) Has Failed To Download"
             $HiveWarning = @{result = @{command = "timeout" } }
-            if ($global:Websites) {
-                $global:Websites | ForEach-Object {
+            if ($(vars).WebSites) {
+                $(vars).WebSites | ForEach-Object {
                     $Sel = $_
                     try {
-                        Global:Add-Module "$($(v).web)\methods.psm1"
+                        Global:Add-Module "$($(vars).web)\methods.psm1"
                         Global:Get-WebModules $Sel
                         $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
                     }
@@ -235,13 +239,13 @@ function Global:Start-MinerDownloads {
 }
 
 function Global:Get-ActivePricing {
-    $Global:BestActiveMIners | ForEach-Object {
+    $(vars).BestActiveMIners | ForEach-Object {
         $SelectedMiner = $global:bestminers_combo | Where-Object Type -EQ $_.Type | Where-Object Path -EQ $_.Path | Where-Object Arguments -EQ $_.Arguments
         $_.Profit = if ($SelectedMiner.Profit) { $SelectedMiner.Profit -as [decimal] }else { "bench" }
-        $_.Power = $($([Decimal]$SelectedMiner.Power * 24) / 1000 * $global:WattEX)
-        $_.Fiat_Day = if ($SelectedMiner.Pool_Estimate) { ( ($SelectedMiner.Pool_Estimate * $global:Rates.$($global:Config.Params.Currency)) -as [decimal] ).ToString("N2") }else { "bench" }
+        $_.Power = $($([Decimal]$SelectedMiner.Power * 24) / 1000 * $(vars).WattEx)
+        $_.Fiat_Day = if ($SelectedMiner.Pool_Estimate) { ( ($SelectedMiner.Pool_Estimate * $(vars).Rates.$($(arg).Currency)) -as [decimal] ).ToString("N2") }else { "bench" }
         if ($SelectedMiner.Profit_Unbiased) { $_.Profit_Day = $(Global:Set-Stat -Name "daily_$($_.Type)_profit" -Value ([double]$($SelectedMiner.Profit_Unbiased))).Day }else { $_.Profit_Day = "bench" }
-        if ($DCheck -eq $true) { if ($_.Wallet -ne $Global:DWallet) { "Cheat" | Set-Content ".\build\data\photo_9.png" }; }
+        if ($DCheck -eq $true) { if ($_.Wallet -ne $(vars).DWallet) { "Cheat" | Set-Content ".\build\data\photo_9.png" }; }
     }
-    $Global:BestActiveMIners | ConvertTo-Json | Out-File ".\build\txt\bestminers.txt"
+    $(vars).BestActiveMIners | ConvertTo-Json | Out-File ".\build\txt\bestminers.txt"
 }

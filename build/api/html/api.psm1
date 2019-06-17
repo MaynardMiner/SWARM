@@ -19,16 +19,16 @@ function Global:Get-APIServer {
 
         $APIServer = {
             [cultureinfo]::CurrentCulture = 'en-US'
-            Set-Location $global:Config.Params.WorkingDir            
+            Set-Location $Config.vars.dir
             $listener = New-Object System.Net.HttpListener
             Write-Host "Listening ..."
-            if ($global:Config.Params.Remote -eq "yes") {
-                if ($global:Config.Params.APIPassword -ne "No") {
-                    [string]$Prefix = "http://+:$($global:Config.Params.Port)/$($global:Config.Params.APIPassword)/"
+            if ($Config.params.Remote -eq "yes") {
+                if ($global.config.APIPassword -ne "No") {
+                    [string]$Prefix = "http://+:$($Config.params.Port)/$($Config.params.APIPassword)/"
                 }
-                else { $Prefix = "http://+:$($global:Config.Params.Port)/" }
+                else { $Prefix = "http://+:$($Config.Params.Port)/" }
             }
-            else { [string]$Prefix = "http://localhost:$($global:Config.Params.Port)/" }
+            else { [string]$Prefix = "http://localhost:$($Config.Params.Port)/" }
    
             # Run until you send a GET request to /end
             $listener.Prefixes.Add($Prefix) 
@@ -47,8 +47,8 @@ function Global:Get-APIServer {
                 else {
                     # Split request URL to get command and options
                     $requestvars = [String]$request.Url -split "/"
-                    if ($global:Config.Params.Port -eq "Yes" -and $global:Config.Params.APIPassword -ne "No") { $GET = $requestvars[4] }
-                    elseif ($global:Config.Params.Remote -eq "Yes" -and $global:Config.Params.APIPassword -eq "No") { $GET = $requestvars[3] }
+                    if ($Config.params.Port -eq "Yes" -and $config.params.APIPassword -ne "No") { $GET = $requestvars[4] }
+                    elseif ($Config.params.Remote -eq "Yes" -and $Config.params.APIPassword -eq "No") { $GET = $requestvars[3] }
                     else { $GET = $requestvars[3] }
                     $requestcom = $GET -split "`&" | Select-Object -First 1
                     $requestargs = $GET -replace "$requestcom", ""
@@ -78,6 +78,13 @@ function Global:Get-APIServer {
                                 }
                             }
                             "getstats" {
+                                if($Config.stats){
+                                $Message = $Config.stats | ConvertTo-Json -Compress
+                                $response.ContentType = 'application/json';
+                                } else {
+                                    $message = @("No Data") | ConvertTo-Json -Compress;
+                                    $response.ContentType = 'application/json';
+                                }
                             }
                             "getbest" {
                                 if (Test-Path ".\build\txt\bestminers.txt") {

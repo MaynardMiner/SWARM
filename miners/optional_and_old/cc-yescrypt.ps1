@@ -1,25 +1,25 @@
-$Global:NVIDIATypes | ForEach-Object {
+$(vars).NVIDIATypes | ForEach-Object {
     
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
-    if ($Global:nvidia.'cc-yescrypt'.$ConfigType -and $global:Config.Params.Cuda -eq "10") { $Path = "$($Global:nvidia.'cc-yescrypt'.$ConfigType)" }
+    if ($Global:nvidia.'cc-yescrypt'.$ConfigType -and $(arg).Cuda -eq "10") { $Path = "$($Global:nvidia.'cc-yescrypt'.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:nvidia.'cc-yescrypt'.uri -and $global:Config.Params.Cuda -eq "10") { $Uri = "$($Global:nvidia.'cc-yescrypt'.uri)" }
+    if ($Global:nvidia.'cc-yescrypt'.uri -and $(arg).Cuda -eq "10") { $Uri = "$($Global:nvidia.'cc-yescrypt'.uri)" }
     else { $Uri = "None" }
-    if ($Global:nvidia.'cc-yescrypt'.minername -and $global:Config.Params.Cuda -eq "10") { $MinerName = "$($Global:nvidia.'cc-yescrypt'.minername)" }
+    if ($Global:nvidia.'cc-yescrypt'.minername -and $(arg).Cuda -eq "10") { $MinerName = "$($Global:nvidia.'cc-yescrypt'.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "cc-yescrypt-$Num"; $Port = "5500$Num";
 
     Switch ($Num) {
-        1 { $Get_Devices = $Global:NVIDIADevices1 }
-        2 { $Get_Devices = $Global:NVIDIADevices2 }
-        3 { $Get_Devices = $Global:NVIDIADevices3 }
+        1 { $Get_Devices = $(vars).NVIDIADevices1; $Rig = $(arg).RigName1 }
+        2 { $Get_Devices = $(vars).NVIDIADevices2; $Rig = $(arg).RigName2 }
+        3 { $Get_Devices = $(vars).NVIDIADevices3; $Rig = $(arg).RigName3 }
     }
 
     ##Log Directory
-    $Log = Join-Path $($(v).dir) "logs\$ConfigType.log"
+    $Log = Join-Path $($(vars).dir) "logs\$ConfigType.log"
 
     ##Parse -GPUDevices
     if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
@@ -29,7 +29,7 @@ $Global:NVIDIATypes | ForEach-Object {
     $MinerConfig = $Global:config.miners.'cc-yescrypt'
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
-    $ExportDir = Join-Path $($(v).dir) "build\export"
+    $ExportDir = Join-Path $($(vars).dir) "build\export"
 
     ##Prestart actions before miner launch
     $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
@@ -46,12 +46,12 @@ $Global:NVIDIATypes | ForEach-Object {
         $MinerAlgo = $_
 
         if ($MinerAlgo -in $global:Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
-            $StatAlgo = $MinerAlgo -replace "`_","`-"
+            $StatAlgo = $MinerAlgo -replace "`_", "`-"
             $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
-           $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
+            $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
         
-        if ($Check.RAW -ne "Bad") {
-            $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
+            if ($Check.RAW -ne "Bad") {
+                $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                     if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
                     [PSCustomObject]@{
                         MName      = $Name
@@ -70,9 +70,10 @@ $Global:NVIDIATypes | ForEach-Object {
                         Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -b 0.0.0.0:$Port -u $($_.$User) -p $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
-                        Power     =  if ($global:Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $global:Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($global:Watts.default."$($ConfigType)_Watts") { $global:Watts.default."$($ConfigType)_Watts" }else { 0 } 
+                        Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                         MinerPool  = "$($_.Name)"
                         Port       = $Port
+                        Worker     = $Rig
                         API        = "Ccminer"
                         Wallet     = "$($_.$User)"
                         URI        = $Uri

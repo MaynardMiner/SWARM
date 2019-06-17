@@ -10,8 +10,8 @@ function Global:start-log {
         $OldActiveFile | ForEach-Object {
             $RenameActive = ".\logs\$($_.Name)" -replace ("-active", "")
             if (Test-Path $RenameActive) {Remove-Item $RenameActive -Force}
-            Move-Item ".\logs\$($OldActiveFile.Name)" $RenameActive -force
+            Move-Item ".\logs\$($_.Name)" $RenameActive -force
         }
     }
-    $global:logname = Join-Path $($(v).dir) "logs\miner$($Number)-active.log"
+    $(vars).logname = Join-Path $($(vars).dir) "logs\miner$($Number)-active.log"
 }

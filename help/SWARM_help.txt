@@ -72,7 +72,7 @@ Argument            Options             Explanation
 -PasswordCurrency1  [Symbol]        Symbol of your wallet address, specifically for Wallet1. Most pools
                                     only accept BTC for auto-exchange. See pools for options.                                  
 
--No_GLT         [Yes or No]         Default is "Yes". Disables GLT coin. Most users and statistics
+-Ban_GLT         [Yes or No]         Default is "Yes". Disables GLT coin. Most users and statistics
                                     has shown that GLT never pays out what it states that it should.
                                     Reducing profit.
 
@@ -80,6 +80,8 @@ Argument            Options             Explanation
                                     If SWARM is in HiveOS, it will turn on automatically.
 
 -TCP_Port       [Int]               Default is 6099. Activates TCP Port for API. 
+
+-TCP_IP       [IP Address]          Default is 0.0.0.0. Ip Address for TCP API.
 
 -Max_Periods    [any number]        Default is 288. SWARM calculates profit via a rolling expontenial
                                     moving average, with each new period happening at the end of your
@@ -123,7 +125,7 @@ Argument            Options             Explanation
 -Auto_Algo     [Yes,No]		    Default is "Yes". Should always be set to "Yes", except when using the -Coin
 				    Parameter with multiple coins. See -Coin for more information.
 
--Platform      [linux,windows]      Defualt is linux. Specify this if you are using windows. This lets SWARM
+-Platform      [linux,windows]      Default is "". This lets SWARM
                                     know to build itself for Windows operation. SWARM will attempt to detects
                                     if there is a C:\, if not, then it assumes SWARM is operating in linux.
                                     Otherwise, it will assume it is operating in windows. This parameter is
@@ -182,9 +184,9 @@ Argument            Options             Explanation
                                     itself to windows startup, allowing you to remote reboot through remote 
                                     commands.
 
--API            [Yes or No]         This Option Enables or Disables SWARM API. Default is Yes
+-API            [Yes or No]         This Option Enables or Disables SWARM html API. Default is No.
 
--Remote         [Yes or No]         This Option Enables Remote API. Default is No.
+-Remote         [Yes or No]         This Option Enables Remote html API. Default is No.
 
 -APIPassword    [chacters]          This sets password for Remote API. If your set this parameter,
                                     new endpoint for api is http://ipaddress:port/APIPassword/,
@@ -345,7 +347,7 @@ Argument            Options             Explanation
 
 -PasswordCurrency3    [Any]             Coin symbol that matches wallet address for Wallet3. By default
                                         it is BTC. Used when -Type NVIDIA1 is specified.                 
-
+                                        
 -Nicehash_Wallet1    [Wallet Address]   Nicehash wallet address. Must be specified and used if -Poolname
                                         nicehash is used in combination with Wallet1. 
                                         Used when -Type NVIDIA1 is specified.

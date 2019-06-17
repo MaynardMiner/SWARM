@@ -5,12 +5,12 @@ function Global:Get-Parameters {
     $Global:Config.add("SWARM_Params",@{})
     if (Test-Path ".\config\parameters\newarguments.json") {
         $arguments = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json
-        $arguments.PSObject.Properties.Name | % { $global:Config.Params.Add("$($_)", $arguments.$_) }
+        $arguments.PSObject.Properties.Name | % { $(arg).Add("$($_)", $arguments.$_) }
         $arguments.PSObject.Properties.Name | % { $Global:Config.user_params.Add("$($_)", $arguments.$_) }
     }
     else {
         $arguments = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
-        $arguments.PSObject.Properties.Name | % { $global:Config.Params.Add("$($_)", $arguments.$_) }
+        $arguments.PSObject.Properties.Name | % { $(arg).Add("$($_)", $arguments.$_) }
         $arguments.PSObject.Properties.Name | % { $Global:Config.user_params.Add("$($_)", $arguments.$_) }
         $arguments = $Null
     }
@@ -48,14 +48,14 @@ function Global:Get-Parameters {
         $global:Config.SWARM_Params.Add("Timezone", $Null)
     }
 
-    if (-not $global:Config.Params.Platform) {
+    if (-not $(arg).Platform) {
         write-Host "Detecting Platform..." -Foreground Cyan
-        if ($IsWindows) { $global:Config.Params.Platform = "windows" }
-        else { $global:Config.Params.Platform = "linux" }
-        Write-Host "OS = $($global:Config.Params.Platform)" -ForegroundColor Green
+        if ($IsWindows) { $(arg).Platform = "windows" }
+        else { $(arg).Platform = "linux" }
+        Write-Host "OS = $($(arg).Platform)" -ForegroundColor Green
     }
     if (-not (Test-Path ".\build\txt")) { New-Item -Name "txt" -ItemType "Directory" -Path ".\build" | Out-Null }
-    $global:Config.Params.Platform | Set-Content ".\build\txt\os.txt"
+    $(arg).Platform | Set-Content ".\build\txt\os.txt"
     ## Get Algorithms
     $global:Config.Add("Pool_Algos",(Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json))
 }

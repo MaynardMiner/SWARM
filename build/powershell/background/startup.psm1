@@ -1,17 +1,16 @@
 function Global:Get-Params {
-    $Global:stats.Add("summary", @{ })
-    $Global:stats.Add("params", @{ })
-    $Global:stats.Add("stats", @{ })
     $global:Config.Add("params", @{ })
     $global:Config.Add("hive_params", @{ })
+    $global:Config.Add("stats", @{ })
+    $global:Config.Add("summary",@{ })
     if (Test-Path ".\config\parameters\newarguments.json") {
         $arguments = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json
-        $arguments.PSObject.Properties.Name | % { $global:Config.Params.Add("$($_)", $arguments.$_) }
+        $arguments.PSObject.Properties.Name | % { $global:config.params.Add("$($_)", $arguments.$_) }
         $arguments = $null
     }
     else {
         $arguments = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
-        $arguments.PSObject.Properties.Name | % { $global:Config.Params.Add("$($_)", $arguments.$_) }
+        $arguments.PSObject.Properties.Name | % { $global:Config.params.Add("$($_)", $arguments.$_) }
         $arguments = $null
     }
     if (Test-Path ".\build\txt\hive_params_keys.txt") {
@@ -34,17 +33,16 @@ function Global:Get-Params {
         $global:Config.hive_params.Add("Miner2", $Null)
         $global:Config.hive_params.Add("Timezone", $Null)
     }
-    if (-not $global:Config.Params.Platform) {
+    if (-not $(arg).Platform) {
         write-Host "Detecting Platform..." -Foreground Cyan
-        if ($IsWindows) { $global:Config.Params.Platform = "windows" }
-        else { $global:Config.Params.Platform = "linux" }
-        Write-Host "OS = $($global:Config.Params.Platform)" -ForegroundColor Green
+        if ($IsWindows) { $(arg).Platform = "windows" }
+        else { $(arg).Platform = "linux" }
+        Write-Host "OS = $($(arg).Platform)" -ForegroundColor Green
     }
-    $global:Stats.params = $global:config.Params
 }
 
 function Global:Set-Window {
-    if ($global:Config.Params.Platform -eq "windows") {
+    if ($(arg).Platform -eq "windows") {
         . .\build\powershell\scripts\icon.ps1 '.\build\apps\comb.ico'
         $Host.UI.RawUI.BackgroundColor = ($bckgrnd = 'Black'); $Host.UI.RawUI.ForegroundColor = 'White';
         $Host.PrivateData.ErrorForegroundColor = 'Red'; $Host.PrivateData.ErrorBackgroundColor = $bckgrnd;
@@ -59,28 +57,28 @@ function Global:Set-Window {
 function Global:Start-Servers {
     ##Start API Server
     $Hive_Path = "/hive/bin"
-    Write-Host "API Port is $($global:Config.Params.Port)";
+    Write-Host "API Port is $($(arg).Port)";
 
-    if ($Global:config.Params.API -eq "Yes") {
-        Import-Module -Name "$($(v).html)\api.psm1"
+    if ($(arg).API -eq "Yes") {
+        Import-Module -Name "$($(vars).html)\api.psm1"
         $Posh_api = Global:Get-APIServer;
         $Posh_Api.BeginInvoke() | Out-Null
         $Posh_api = $null
         Remove-Module -Name "api"
     }
 
-    Import-Module -Name "$($(v).tcp)\agentserver.psm1"
+    Import-Module -Name "$($(vars).tcp)\agentserver.psm1"
     $Posh_SwarmTCP = Global:Get-SWARMServer;
     $Posh_SwarmTCP.BeginInvoke() | Out-Null
     $Posh_SwarmTCP = $Null
     Remove-Module -Name "agentserver"
 
-    if ( (test-path $Hive_Path) -or $global:Config.Params.TCP -eq "Yes" ) {
-        Import-Module -Name "$($(v).tcp)\hiveserver.psm1"
+    if ( (test-path $Hive_Path) -or $(arg).TCP -eq "Yes" ) {
+        Import-Module -Name "$($(vars).tcp)\tcpserver.psm1"
         $Posh_HiveTCP = Global:Get-HiveServer;
         $Posh_HiveTCP.BeginInvoke() | Out-Null
         $Posh_HiveTCP = $null
-        Remove-Module -Name "hiveserver"
+        Remove-Module -Name "tcpserver"
     }
-    if ($global:Config.Params.API -eq "Yes") { Write-Host "API Server Started- you can run http://localhost:$($global:Config.Params.Port)/end to close" -ForegroundColor Green }
+    if ($(arg).API -eq "Yes") { Write-Host "API Server Started- you can run http://localhost:$($(arg).Port)/end to close" -ForegroundColor Green }
 }

@@ -6,9 +6,10 @@ cd `dirname $0`
 
 	mindex=$2 #empty or 2, 3, 4, ...
 	khs=0
-		  stats_raw=`echo "stats" | nc -w 2 localhost 6099`
+		  port=`cat /hive/miners/custom/$CUSTOM_MINER/build/txt/port.txt`
+		  stats_raw=`echo "stats" | nc -w 2 localhost $port`
 		  if [[ $? -ne 0  || -z $stats_raw ]]; then
-		  	echo -e "${YELLOW}Failed to read SWARM stats from localhost:6099${NOCOLOR}"
+		  	echo -e "${YELLOW}Failed to read SWARM stats from localhost:$port${NOCOLOR}"
 		  else
 		  	ac=$(jq -c -r '.accepted' <<< "$stats_raw" | tr -d '"')
 			rj=$(jq -c -r '.rejected' <<< "$stats_raw" | tr -d '"')

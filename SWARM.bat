@@ -1,6 +1,11 @@
 @echo off
 
 REM ************QUICK ARGUMENTS CHEAT SHEET**************************************************
+REM
+REM
+REM NOTE: YOU CAN RUN ".\startup.ps1 -Help" for a guided configuration
+REM
+REM
 REM Rigname: Name of your rig
 REM Currency: Preferred Fiat Currency
 REM CoinExchange: AltCoin Coin Pricing (Besides BTC).

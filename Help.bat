@@ -1,0 +1,1 @@
+pwsh -executionpolicy Bypass -command ".\startup.ps1 -help"

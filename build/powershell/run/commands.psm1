@@ -1,6 +1,6 @@
 function Global:Get-StatusLite {
     $screen = @()
-    $global:Config.Params.Type | ForEach-Object {
+    $(arg).Type | ForEach-Object {
         $screen += 
         "
 ########################
@@ -19,7 +19,7 @@ function Global:Get-StatusLite {
             "        Miner: $($_.Miner)
         Mining: $($_.ScreenName)
         Speed: $($_.HashRates | ForEach-Object {if ($null -ne $_) {"$($_ | Global:ConvertTo-Hash)/s"}else {"Benchmarking"}})
-        Profit: $($_.Profit | ForEach-Object {if ($null -ne $_) {"$(($_ * $global:Rates.$($global:Config.Params.Currency)).ToString("N2")) $($global:Config.Params.Currency)/Day"}else {"Bench"}}) 
+        Profit: $($_.Profit | ForEach-Object {if ($null -ne $_) {"$(($_ * $(vars).Rates.$($(arg).Currency)).ToString("N2")) $($(arg).Currency)/Day"}else {"Bench"}}) 
         Pool: $($_.MinerPool)
         Shares: $($($_.Shares -as [Decimal]).ToString("N3"))
 "
@@ -36,8 +36,8 @@ function Global:Get-StatusLite {
 }
 
 function Global:Get-PriceMessage {
-    $global:BestActiveMiners | % {
-        if ($_.Profit_Day -ne "bench") { $ScreenProfit = "$(($_.Profit_Day * $global:Rates.$($global:Config.Params.Currency)).ToString("N2")) $($global:Config.Params.Currency)/Day" } else { $ScreenProfit = "Benchmarking" }
+    $(vars).BestActiveMIners | % {
+        if ($_.Profit_Day -ne "bench") { $ScreenProfit = "$(($_.Profit_Day * $(vars).Rates.$($(arg).Currency)).ToString("N2")) $($(arg).Currency)/Day" } else { $ScreenProfit = "Benchmarking" }
         $ProfitMessage = "Current Daily Profit For $($_.Type): $ScreenProfit"
         $ProfitMessage | Out-File ".\build\txt\minerstats.txt" -Append
         $ProfitMessage | Out-File ".\build\txt\charts.txt" -Append
@@ -63,6 +63,8 @@ function Global:Get-Commands {
     $MiningStatus = "$me[${mcolor}mCurrently Mining $($global:bestminers_combo.Algo) Algorithm on $($global:bestminers_combo.MinerPool)${me}[0m"
     $MiningStatus | Out-File ".\build\txt\minerstats.txt" -Append
     $MiningStatus | Out-File ".\build\txt\charts.txt" -Append
+    $(vars).Thresholds | Out-File ".\build\txt\minerstats.txt" -Append
+    $(vars).Thresholds | Out-File ".\build\txt\charts.txt" -Append
     $BanMessage = @()
     $mcolor = "91"
     $me = [char]27
@@ -102,15 +104,15 @@ function Global:Get-Logo {
 }
 
 function Global:Update-Logging {
-    if ($global:LogNum -eq 12) {
+    if ($(vars).LogNum -eq 12) {
         Remove-Item ".\logs\*miner*" -Force -ErrorAction SilentlyContinue
         Remove-Item ".\logs\*crash_report*" -Force -Recurse -ErrorAction SilentlyContinue
-        $global:LogNum = 0
+        $(vars).LogNum = 0
     }
     if((Get-ChildItem ".\logs" | Where BaseName -match "crash_report").count -gt 12){
         Remove-Item ".\logs\*crash_report*" -Force -Recurse -ErrorAction SilentlyContinue
     }
-    if ($global:logtimer.Elapsed.TotalSeconds -ge 3600) {
+    if ($(vars).logtimer.Elapsed.TotalSeconds -ge 3600) {
         Start-Sleep -S 3
         if (Test-Path ".\logs\*active*") {
             $OldActiveFile = Get-ChildItem ".\logs" | Where BaseName -like "*active*"
@@ -120,19 +122,18 @@ function Global:Update-Logging {
                 Rename-Item $_.FullName -NewName $RenameActive -force
             }
         }
-        $GLobal:LogNum++
-        $global:logname = ".\logs\miner$($global:LogNum)-active.log"
-        $LogTimer.Restart()
+        $(vars).LogNum++
+        $(vars).logname = ".\logs\miner$($(vars).LogNum)-active.log"
+        $(vars).logtimer.Restart()
     }
 }
 
 function Global:Get-MinerActive {
-    $ActiveMinerPrograms | Sort-Object -Descending Status,
-    { if ($null -eq $_.XProcess) { [DateTime]0 }else { $_.XProcess.StartTime }
-    } | Select-Object -First (1 + 6 + 6) | Format-Table -Wrap -GroupBy Status (
+    $(vars).ActiveMinerPrograms | Sort-Object -Descending Status,Instance | Select-Object -First (1 + 6 + 6) | Format-Table -Wrap -GroupBy Status (
         @{Label = "Name"; Expression = { "$($_.Name)" } },
-        @{Label = "Active"; Expression = { "{0:dd} Days {0:hh} Hours {0:mm} Minutes" -f $(if ($null -eq $_.XProcess) { $_.Active }else { if ($_.XProcess.HasExited) { ($_.Active) }else { ($_.Active + ((Get-Date) - $_.XProcess.StartTime)) } }) } },
-        @{Label = "Launched"; Expression = { Switch ($_.Activated) { 0 { "Never" } 1 { "Once" } Default { "$_ Times" } } } },
+        @{Label = "#"; Expression = { "$($_.Instance)" } },
+        @{Label = "Active"; Expression = { "{0:hh} Hours {0:mm} Minutes" -f $(if ($null -eq $_.XProcess) { $_.Active }else { if ($_.XProcess.HasExited) { ($_.Active) }else { ($_.Active + ((Get-Date) - $_.XProcess.StartTime)) } }) }; Align = 'center' },
+        @{Label = "Launched"; Expression = { Switch ($_.Activated) { 0 { "Never" } 1 { "Once" } Default { "$_ Times" } } }; Align = 'center' },
         @{Label = "Command"; Expression = { "$($_.MinerName) $($_.Devices) $($_.Arguments)" } }
     )
 }

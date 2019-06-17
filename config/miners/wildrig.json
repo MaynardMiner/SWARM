@@ -5,6 +5,7 @@
         "delay": "1",
         "prestart": [],
         "commands": {
+            "anime": "",
             "bcd": "",
             "c11": "",
             "geek": "",
@@ -42,6 +43,7 @@
             "x25x": ""
         },
         "difficulty": {
+            "anime": "",
             "bcd": "",
             "c11": "",
             "geek": "",
@@ -79,6 +81,7 @@
             "x25x": ""
         },
         "naming": {
+            "anime": "anime",
             "bcd": "bcd",
             "c11": "c11",
             "geek": "geek",
@@ -116,6 +119,7 @@
             "x25x": "x25x"
         },
         "fee": {
+            "anime": 1,
             "bcd": 1,
             "c11": 1,
             "geek": 1,

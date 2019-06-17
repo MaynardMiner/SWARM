@@ -14,28 +14,44 @@
             "cryptonight-v8": "",
             "lyra2re": "",
             "lyra2rev3": "",
-            "cryptonight-r": ""
+            "cryptonight-r": "",
+            "x16r" : "",
+            "x16s" : "",
+            "x16rt" : "",
+            "veil": ""
         },
         "difficulty": {
             "phi2": "",
             "cryptonight-v8": "",
             "lyra2re": "",
             "lyra2rev3": "",
-            "cryptonight-r": ""
+            "cryptonight-r": "",
+            "x16r" : "",
+            "x16s" : "",
+            "x16rt" : "",
+            "veil": ""
         },
         "naming": {
             "phi2": "phi2",
             "cryptonight-v8": "cnv8",
             "lyra2re": "lyra2z",
             "lyra2rev3": "lyra2rev3",
-            "cryptonight-r": "cnr"
+            "cryptonight-r": "cnr",
+            "x16r" : "x16r",
+            "x16s" : "x16s",
+            "x16rt" : "x16rt",
+            "veil": "x16rt"
         },
         "fee": {
             "phi2": 3,
             "cryptonight-v8": 2.5,
             "lyra2re": 3,
             "lyra2rev3": 2.5,
-            "cryptonight-r": 2.5
+            "cryptonight-r": 2.5,
+            "x16r" : 2.5,
+            "x16s" : 2.5,
+            "x16rt" : 2.5,
+            "veil": 2.5
         }
     }
 }

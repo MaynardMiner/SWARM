@@ -10,8 +10,9 @@ Param (
 [cultureinfo]::CurrentCulture = 'en-US'
 $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
 [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
-Set-Location (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
 $dir = (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
+$dir = $dir -replace "/var/tmp","/root"
+Set-Location $dir
 
 $message = @()
 
@@ -50,7 +51,7 @@ if (Test-Path $Path) {
                         "benchmark" {$Location = "##Insert Benchmark Single Modules Here"}
                     }
                     $message += "User specifed module is a single-run module. Adding in startup phase."
-                    $SWARMPS1 = $SWARMPS1 -replace "$Location", "Global:Add-Module `"`$($(v).global)\$($Item.Name)`"`n$Location"
+                    $SWARMPS1 = $SWARMPS1 -replace "$Location", "Global:Add-Module `"`$($(vars).global)\$($Item.Name)`"`n$Location"
                 }
                 "looping" {
                     Switch($Phase){
@@ -63,7 +64,7 @@ if (Test-Path $Path) {
                     "benchmark" {$Location = "##Insert Benchmark Looping Modules Here"}
                     }
                     $message += "User specifed module is a looping module. Adding in build phase."
-                    $SWARMPS1 = $SWARMPS1 -replace "        $Location", "        Global:Add-Module `"`$($(v).global)\$($Item.Name)`"`n        $Location"
+                    $SWARMPS1 = $SWARMPS1 -replace "        $Location", "        Global:Add-Module `"`$($(vars).global)\$($Item.Name)`"`n        $Location"
                     ##Insert Single Modules Here
                 }
             }

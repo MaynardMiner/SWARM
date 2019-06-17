@@ -18,26 +18,26 @@ function Global:Start-Hello($RigData) {
     ## Get Device Groups
     $Count = 0
     $ad = $false
-    $Check = $Global:Busdata | Where brand -eq "amd"
+    $Check = $(vars).BusData | Where brand -eq "amd"
     if ($Check) { $ad = $true }
-    $Global:BusData | % {
+    $(vars).BusData | % {
         if ($ad) {
             if ($_.brand -eq "amd") { $_ | Add-Member "devices_group" "AMD1" }
             else {
-                if ($global:Config.Params.GPUDevices3 -and $Count -in $global:Config.Params.GPUDevices3) {
+                if ($(arg).GPUDevices3 -and $Count -in $(arg).GPUDevices3) {
                     $_ | Add-Member "devices_group" "NVIDIA3" 
                 }
                 else { $_ | Add-Member "devices_group" "NVIDIA2" }
             }
         }
         else {
-            if ($global:Config.Params.GPUDevices1 -and $Count -in $global:Config.Params.GPUDevices1) {
+            if ($(arg).GPUDevices1 -and $Count -in $(arg).GPUDevices1) {
                 $_ | Add-Member "devices_group" "NVIDIA1" 
             }
-            elseif ($global:Config.Params.GPUDevices2 -and $Count -in $global:Config.Params.GPUDevices2) {
+            elseif ($(arg).GPUDevices2 -and $Count -in $(arg).GPUDevices2) {
                 $_ | Add-Member "devices_group" "NVIDIA2" 
             }
-            elseif ($global:Config.Params.GPUDevices3 -and $Count -in $global:Config.Params.GPUDevices3) {
+            elseif ($(arg).GPUDevices3 -and $Count -in $(arg).GPUDevices3) {
                 $_ | Add-Member "devices_group" "NVIDIA3" 
             }
             else { $_ | Add-Member "devices_group" "NVIDIA1" }
@@ -46,7 +46,7 @@ function Global:Start-Hello($RigData) {
     }
 
     $Hello = @{
-        farm_hash = "$($global:Config.Params.SWARM_Hash)"
+        farm_hash = "$($(arg).SWARM_Hash)"
         worker    = @{
             name                   = "$($global:Config.SWARM_params.Worker)"
             uid                    = $RigData.uid

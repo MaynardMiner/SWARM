@@ -1,4 +1,4 @@
-$Global:AMDTypes | ForEach-Object {
+$(vars).AMDTypes | ForEach-Object {
     
     $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
     $CName = "gminer-amd"
@@ -14,11 +14,11 @@ $Global:AMDTypes | ForEach-Object {
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "3300$Num"
 
     Switch ($Num) {
-        1 { $Get_Devices = $Global:AMDDevices1 }
+        1 { $Get_Devices = $(vars).AMDDevices1; $Rig = $(arg).Rigname1 }
     }
     
     ##Log Directory
-    $Log = Join-Path $($(v).dir) "logs\$ConfigType.log"
+    $Log = Join-Path $($(vars).dir) "logs\$ConfigType.log"
 
     ##Parse -GPUDevices
     if ($Get_Devices -ne "none") {
@@ -36,16 +36,16 @@ $Global:AMDTypes | ForEach-Object {
     if ($Get_Devices -ne "none") {
         $GPUDevices1 = $Get_Devices
         $GPUEDevices1 = $GPUDevices1 -split ","
-        $GPUEDevices1 | ForEach-Object { $ArgDevices += "$($Global:GCount.AMD.$_) " }
+        $GPUEDevices1 | ForEach-Object { $ArgDevices += "$($(vars).GCount.AMD.$_) " }
         $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1)
     }
-    else { $Global:GCount.AMD.PSObject.Properties.Name | ForEach-Object { $ArgDevices += "$($Global:GCount.AMD.$_) " }; $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1) }
+    else { $(vars).GCount.AMD.PSObject.Properties.Name | ForEach-Object { $ArgDevices += "$($(vars).GCount.AMD.$_) " }; $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1) }
 
     ##Get Configuration File
     $MinerConfig = $Global:config.miners.$CName
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
-    $ExportDir = Join-Path $($(v).dir) "build\export"
+    $ExportDir = Join-Path $($(vars).dir) "build\export"
 
     ##Prestart actions before miner launch
     $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
@@ -61,23 +61,23 @@ $Global:AMDTypes | ForEach-Object {
         $MinerAlgo = $_
 
         if ($MinerAlgo -in $global:Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
-            $StatAlgo = $MinerAlgo -replace "`_","`-"
+            $StatAlgo = $MinerAlgo -replace "`_", "`-"
             $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
-           $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
+            $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
         
             if ($Check.RAW -ne "Bad") {
                 $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                     $SelAlgo = $_.Algorithm
-                    switch($SelAlgo) {
-                        "equihash_150/5" {$AddArgs = "--algo 150_5 --pers auto "}
-                        "cuckoo_cycle" {$AddArgs = "--algo aeternity "}
-                        "cuckaroo29" {$AddArgs = "--algo grin29 "}
-                        "cuckatoo31" {$AddArgs = "--algo grin31 "}
-                        "equihash_96/5" {$AddArgs = "--algo 96_5 --pers auto "}
-                        "equihash_192/7" {$AddArgs = "--algo 192_7 --pers auto "}
-                        "equihash_144/5" {$AddArgs = "--algo 144_5 --pers auto "}
-                        "equihash_210/9" {$AddArgs = "--algo 210_9 --pers auto "}
-                        "equihash_200/9" {$AddArgs = "--algo 200_9 --pers auto "}            
+                    switch ($SelAlgo) {
+                        "equihash_150/5" { $AddArgs = "--algo 150_5 --pers auto " }
+                        "cuckoo_cycle" { $AddArgs = "--algo aeternity " }
+                        "cuckaroo29" { $AddArgs = "--algo grin29 " }
+                        "cuckatoo31" { $AddArgs = "--algo grin31 " }
+                        "equihash_96/5" { $AddArgs = "--algo 96_5 --pers auto " }
+                        "equihash_192/7" { $AddArgs = "--algo 192_7 --pers auto " }
+                        "equihash_144/5" { $AddArgs = "--algo 144_5 --pers auto " }
+                        "equihash_210/9" { $AddArgs = "--algo 210_9 --pers auto " }
+                        "equihash_200/9" { $AddArgs = "--algo 200_9 --pers auto " }            
                     }
                     if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
                     [PSCustomObject]@{
@@ -98,10 +98,11 @@ $Global:AMDTypes | ForEach-Object {
                         Arguments  = "--api $Port --server $($_.Host) --port $($_.Port) $AddArgs--user $($_.$User) --logfile `'$Log`' --pass $($_.$Pass)$Diff $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
-                        Power     =  if ($global:Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $global:Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($global:Watts.default."$($ConfigType)_Watts") { $global:Watts.default."$($ConfigType)_Watts" }else { 0 } 
+                        Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                         MinerPool  = "$($_.Name)"
                         API        = "gminer"
                         Port       = $Port
+                        Worker     = $Rig
                         Wallet     = "$($_.$User)"
                         URI        = $Uri
                         Server     = "localhost"

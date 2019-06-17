@@ -1,104 +1,105 @@
 {
-    "AltWallet2":  "",
-    "kwh": "",
-    "Poolname":  [
-                     "nlpool",
-                     "zergpool",
-                     "nicehash"
-                 ],
-    "Rigname2":  "SWARM",
-    "SWARM_Mode":  "No",
-    "Cuda":  "10",
-    "Passwordcurrency3": "BTC",
-    "Currency":  [
-                     "USD"
-                 ],
-    "Nicehash_Wallet2":  "",
-    "AltWallet1":  "",
-    "Stat_Coin":  "Live",
-    "Passwordcurrency2": "BTC",
-    "WattOMeter":  "Yes",
-    "Rigname3":  "SWARM",
-    "AltPassword2":  "",
-    "Location":  "US",
-    "Lite":  "No",
-    "Threshold":  0.02,
+    "AlgoBanCount": 3,
+    "Algorithm": [
+        ""
+    ],
+    "AltPassword1": "",
+    "AltPassword2": "",
     "AltPassword3": "",
-    "CPUOnly":  "No",
-    "Wallet":  "Yes",
-    "TCP": "No",
-    "TCP_Port": 6099,
-    "StatsInterval":  1,
-    "Hive_Hash":  "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    "SWARM_Hash":  "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    "Wallet2":  "",
-    "HiveOS":  "Yes",
-    "GPUDevices2": [
-                    ""
-                   ],
-    "CoinExchange":  "ETH",
-    "Interval":  300,
-    "Passwordcurrency1": "BTC",
-    "CPUThreads":  1,
-    "Nicehash_Wallet1":  "",
-    "Timeout":  24,
-    "Benchmark":  190,
-    "PoolBanCount":  2,
-    "Platform":  "",
-    "AlgoBanCount":  3,
-    "Rigname1":  "SWARM",
-    "API_Key":  "",
-    "GPUDevices3":  [
-                     ""
-                    ],
-    "API_ID":  0,
-    "Stat_Algo":  "Live",
-    "Nicehash_Wallet3":  "",
-    "Donate":  0.5,
-    "Wallet3":  "",
-    "AltPassword1":  "",
-    "Auto_Coin":  "No",
-    "Type":  [ ],
-    "Conserve":  "No",
-    "GPUDevices1":   [
-                      ""
-                     ],
-    "Rejections":  75,
-    "AltWallet3":  "",
-    "Nicehash_Fee":  "",
-    "MinerBanCount":  4,
-    "Wallet1":  "",
-    "PoolBans":  "Yes",
-    "Update":  "Yes",
-    "Switch_Threshold":  "0",
-    "API":  "No",
-    "CLPlatform":  "",
-    "Track_Shares": "Yes",
-    "Max_Periods": 288,
-    "Port":  4099,
-    "Remote":  "No",
-    "APIPassword":  "No",
-    "Startup":  "Yes",
-    "ETH":  "",
-    "Worker":  "",
-    "Algorithm":  [
-                    ""
-                ],
-    "Coin":  [
-              ""
-             ],
+    "AltWallet1": "",
+    "AltWallet2": "",
+    "AltWallet3": "",
+    "API": "No",
+    "API_ID": 0,
+    "API_Key": "",
+    "APIPassword": "No",
+    "ASIC_ALGO": [
+        ""
+    ],
     "ASIC_IP": [
-               ""
-               ],
-    "ASIC_ALGO":  [
-                    ""
-                  ],
-    "Stat_All": "No",
-    "Custom_Periods": 1,
-    "Volume": "No",
+        ""
+    ],
     "Auto_Algo": "Yes",
+    "Auto_Coin": "No",
+    "Ban_GLT": "Yes",
     "Bans": [],
-    "Xnsub": "",
-    "No_GLT": "Yes",
-    "optional": []
+    "Benchmark": 190,
+    "CLPlatform": "",
+    "Coin": [
+        ""
+    ],
+    "CoinExchange": "ETH",
+    "Conserve": "No",
+    "CPUOnly": "No",
+    "CPUThreads": 1,
+    "Cuda": "10",
+    "Currency": [
+        "USD"
+    ],
+    "Custom_Periods": 1,
+    "Donate": 0.5,
+    "ETH": "",
+    "GPUDevices1": [
+        ""
+    ],
+    "GPUDevices2": [
+        ""
+    ],
+    "GPUDevices3": [
+        ""
+    ],
+    "Hive_Hash": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "HiveOS": "No",
+    "Interval": 300,
+    "kwh": "",
+    "Lite": "No",
+    "Location": "US",
+    "Max_Periods": 288,
+    "MinerBanCount": 4,
+    "Nicehash_Fee": "",
+    "Nicehash_Wallet1": "",
+    "Nicehash_Wallet2": "",
+    "Nicehash_Wallet3": "",
+    "optional": [],
+    "Passwordcurrency1": "BTC",
+    "Passwordcurrency2": "BTC",
+    "Passwordcurrency3": "BTC",
+    "Platform": "",
+    "PoolBanCount": 2,
+    "PoolBans": "Yes",
+    "Poolname": [
+        "nlpool",
+        "zergpool",
+        "nicehash"
+    ],
+    "Port": 4099,
+    "Rejections": 75,
+    "Remote": "No",
+    "Rigname1": "SWARM",
+    "Rigname2": "SWARM",
+    "Rigname3": "SWARM",
+    "Startup": "Yes",
+    "Stat_Algo": "Live",
+    "Stat_All": "No",
+    "Stat_Coin": "Live",
+    "StatsInterval": 1,
+    "SWARM_Hash": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "SWARM_Mode": "No",
+    "Switch_Threshold": "0",
+    "TCP": "No",
+    "TCP_IP": "127.0.0.1",
+    "TCP_Port": 6099,
+    "Threshold": 0.02,
+    "Timeout": 24,
+    "Track_Shares": "Yes",
+    "Type": [],
+    "TypeBanCount": 5,
+    "Update": "Yes",
+    "Volume": "No",
+    "Wallet1": "",
+    "Wallet2": "",
+    "Wallet3": "",
+    "WattOMeter": "Yes",
+    "Worker": "",
+    "Xnsub": ""
 }

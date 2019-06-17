@@ -10,10 +10,10 @@ function Global:set-minerconfig {
     $ConfigPathDir = Split-Path $ConfigMiner.Path
     if ($ConfigMiner.Devices -ne "none") {$MinerDevices = Global:Get-DeviceString -TypeDevices $ConfigMiner.Devices}
     else {
-        $Global:GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
+        $(vars).GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
         if($ConfigMiner.Type -like "*NVIDIA*"){$TypeS = "NVIDIA"}
         if($ConfigMiner.Type -like "*AMD*"){$TypeS = "AMD"}
-        $MinerDevices = Global:Get-DeviceString -TypeCount $($Global:GCount.$TypeS.PSObject.Properties.Value.Count)
+        $MinerDevices = Global:Get-DeviceString -TypeCount $($(vars).GCount.$TypeS.PSObject.Properties.Value.Count)
     }
     $ConfigFile = @()
 

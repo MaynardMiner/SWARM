@@ -24,11 +24,11 @@ function Global:Get-DeviceString {
 
 function Global:Set-NvidiaStats {
 
-    Switch ($Global:Config.Params.Platform) {
+    Switch ($(arg).Platform) {
         "linux" {
-            switch ($global:Config.Params.HiveOS) {
+            switch ($(arg).HiveOS) {
                 "No" {
-                    timeout.exe -s9 10 ./build/apps/VII-smi | Tee-Object -Variable getstats | Out-Null
+                    timeout -s9 10 ./build/apps/VII-smi | Tee-Object -Variable getstats | Out-Null
                     if ($getstats) {
                         $nvidiai = $getstats | ConvertFrom-StringData
                         $nvinfo = @{ }
@@ -77,7 +77,7 @@ function Global:Set-NvidiaStats {
 ## AMD HWMON
 function Global:Set-AMDStats {
 
-    switch ($Global:Config.Params.Platform) {
+    switch ($(arg).Platform) {
         "windows" {
             Invoke-Expression ".\build\apps\odvii.exe s" | Tee-Object -Variable amdout | Out-Null
             if ($amdout) {
@@ -106,7 +106,7 @@ function Global:Set-AMDStats {
         }
 
         "linux" {
-            switch ($global:Config.Params.HiveOS) {
+            switch ($(arg).HiveOS) {
                 "Yes" {
                     $HiveStats = "/run/hive/gpu-stats.json"
                     do {

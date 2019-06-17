@@ -8,7 +8,7 @@ function Global:Get-DateFiles {
     else {New-Item -Path ".\build" -Name "pid" -ItemType "Directory" | Out-Null}
     Start-Sleep -S 1
     $PID | Out-File ".\build\pid\miner_pid.txt"
-    if ($global:Config.Params.Platform -eq "windows") { $host.ui.RawUI.WindowTitle = "SWARM"; }
+    if ($(arg).Platform -eq "windows") { $host.ui.RawUI.WindowTitle = "SWARM"; }
 }
 
 function Global:get-argnotice {
@@ -30,7 +30,7 @@ function Global:Clear-Stats {
 }
 
 function Global:Set-NewType {
-    $global:Config.Params.Type | ForEach-Object {
+    $(arg).Type | ForEach-Object {
         if ($_ -eq "amd1") { $_ = "AMD1" }
         if ($_ -eq "nvidia1") { $_ = "NVIDIA1" }
         if ($_ -eq "nvidia2") { $_ = "NVIDIA2" }

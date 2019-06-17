@@ -1,6 +1,11 @@
 #!/bin/bash
 
 ## ************QUICK ARGUMENTS CHEAT SHEET**************************************************
+##
+##
+## NOTE: YOU CAN RUN ".\startup.ps1 -Help" for a guided configuration
+##
+##
 ## Rigname: Name of your rig
 ## Currency: Preferred Fiat Currency
 ## CoinExchange: AltCoin Coin Pricing (Besides BTC).

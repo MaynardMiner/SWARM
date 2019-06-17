@@ -21,13 +21,13 @@ case $1 in
         ;;
     restart)
            echo "Restarting SWARM"
-           screen -S miner -X quit
+           sudo screen -S miner -X quit
            sleep 3
            $(< $mydir/dir.sh)/swarm
         ;;
     stop)
         echo "Stopping SWARM"
-        screen -S miner -X quit
+        sudo screen -S miner -X quit
         ;;
     *)
           echo "command does not exist"

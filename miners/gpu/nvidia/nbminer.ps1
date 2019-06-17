@@ -1,4 +1,4 @@
-$Global:NVIDIATypes | ForEach-Object {
+$(vars).NVIDIATypes | ForEach-Object {
     
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
@@ -13,13 +13,13 @@ $Global:NVIDIATypes | ForEach-Object {
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "nbminer-$Num"; $Port = "6200$Num";
 
     Switch ($Num) {
-        1 { $Get_Devices = $Global:NVIDIADevices1 }
-        2 { $Get_Devices = $Global:NVIDIADevices2 }
-        3 { $Get_Devices = $Global:NVIDIADevices3 }
+        1 { $Get_Devices = $(vars).NVIDIADevices1; $Rig = $(arg).RigName1 }
+        2 { $Get_Devices = $(vars).NVIDIADevices2; $Rig = $(arg).RigName2 }
+        3 { $Get_Devices = $(vars).NVIDIADevices3; $Rig = $(arg).RigName3 }
     }
 
     ##Log Directory
-    $Log = Join-Path $($(v).dir) "logs\$ConfigType.log"
+    $Log = Join-Path $($(vars).dir) "logs\$ConfigType.log"
 
     ##Parse -GPUDevices
     if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
@@ -29,7 +29,7 @@ $Global:NVIDIATypes | ForEach-Object {
     $MinerConfig = $Global:config.miners.nbminer
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
-    $ExportDir = Join-Path $($(v).dir) "build\export"
+    $ExportDir = Join-Path $($(vars).dir) "build\export"
 
     ##Prestart actions before miner launch
     $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
@@ -45,18 +45,18 @@ $Global:NVIDIATypes | ForEach-Object {
         $MinerAlgo = $_
 
         if ($MinerAlgo -in $global:Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
-            $StatAlgo = $MinerAlgo -replace "`_","`-"
+            $StatAlgo = $MinerAlgo -replace "`_", "`-"
             $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
-           $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
+            $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
             $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
             if ($Check.RAW -ne "Bad") {
                 $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                     $SelName = $_.Name
                     switch ($MinerAlgo) {
                         "ethash" {
-                            Switch($SelName) {
-                                "nicehash" {$Stratum = "ethnh+tcp://"; $A = "ethash"}
-                                "whalesburg" {$Stratum = "stratum+ssl://"; $A = "ethash"}
+                            Switch ($SelName) {
+                                "nicehash" { $Stratum = "ethnh+tcp://"; $A = "ethash" }
+                                "whalesburg" { $Stratum = "stratum+ssl://"; $A = "ethash" }
                             }
                         }
                         "cuckaroo29" { $Stratum = "stratum+tcp://"; $A = "cuckaroo" }
@@ -81,10 +81,11 @@ $Global:NVIDIATypes | ForEach-Object {
                         Arguments  = "-a $A --api 0.0.0.0:$Port --url $Stratum$($_.Host):$($_.Port) --user $($_.$User) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
-                        Power     =  if ($global:Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $global:Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($global:Watts.default."$($ConfigType)_Watts") { $global:Watts.default."$($ConfigType)_Watts" }else { 0 } 
+                        Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                         MinerPool  = "$($_.Name)"
                         API        = "nebutech"
                         Port       = $Port
+                        Worker     = $Rig
                         Wallet     = "$($_.$User)"
                         URI        = $Uri
                         Server     = "localhost"

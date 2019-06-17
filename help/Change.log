@@ -3277,3 +3277,141 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
   -Web methods were udpated.
 
   Miners were updated.
+
+
+  2.3.8
+
+  -Removed NVIDIA1 as default type, so AMD cards can be
+   auto detected.
+
+  -Added README.md to some of the config folders. (Will add more)
+
+  -Per user debate, rollbacked minimum hashrates. SWARM will stat 0
+   hashrates while miners are loading. This is going to show N/A
+   on HiveOS website. I can't fix- It is HiveOS. But this makes
+   hashrate watchdog more viable.
+
+  -Per user debate, changed argument ``-NO_GLT`` to ``-Ban_GLT``
+   as the double negative ``-No_GLT No`` is confusing.
+
+  -Fixed rig.conf parsing for HiveOS, which was causing warning
+   notification issues in beta.
+
+  -Fixed auto GPU detection of AMD from beta version.
+
+  -Wildrig updated, anime algo added
+
+  -cc-rfv2 updated (speed increase)
+
+  -Added more to (vars), allowing more
+   variables to be passed into user
+   created modules. A full list
+   of varibles and their definitions
+   will come soon.
+
+  -Further Resource use reduction. (marginal)
+
+
+  2.3.9
+
+  NEW FEATURES!
+
+  SMOS Support:
+
+  https://github.com/MaynardMiner/SWARM/wiki/SMOS-Install
+
+  -Fixed Log Cylcing Issues.
+  -Windows: Fixed Bus Sorting of GPUs.
+  -Fixed ``version update`` command
+  -Fixed ``get parameters`` command for Windows (was showing arguments.json always).
+
+  -Notification Miner Port is being cleared on screen (linux).
+  * SWARM will wait until miner port is cleared (indefinitely, if such is the case,
+   notifying user there is issue with rig).
+  * I am doing this, because there is a growing issue with latest miners having
+    ports hang in linux- This is developer issues of miners themselves. 
+    This way can go to developers and let them know their miners won't 
+    close ports properly on exit.
+
+  -T-Rex updated
+  -TeamRedMiner updated, x16 algos added.
+  -xmrig amd updated
+  -xmrig nvidia updated (windows, need to compile for linux still).
+  -xmrstak updated.
+
+  -Added more to ``vars`` parameter for modules.
+  -Wiki was updated.
+
+
+  2.4.0
+
+   GUIDED HELP
+   * There are four different ways to start guided help:
+     * run command ``swarm_help`` after SWARM has started in HiveOS/Windows
+     * [Linux] Run sudo ./help.sh (will install SWARM first, then run help)
+     * [Windows] Run Help.bat
+     * [ALL] opening either SWARM.bat or ./swarm, and adding ``-help``
+   * Will allow users to set up a basic configuration
+   * After basic config is created, will allow users to modify advanced settings.
+   * Everything is guided, and additional information beyond help.txt is supplied.
+   * Guided help will save your configuration to newarguments.json, as well as
+     provide a copy/paste of arguments for flighsheets/configs.
+
+    NEW ARGUMENTS!
+
+  ``-TypeBanCount``
+
+  Like PoolBanCount,MinerBanCount, and AlgoBanCount, TypeBanCount will take
+  action if a device type (AMD1,CPU,NVIDIA1,etc.) has x consecutive banned
+  miners in a row- Where x is -TypeBanCount. When x has been reached, SWARM
+  will reset all timeouts, then restart computer.
+
+  ``-TCP_IP``
+   Default is 127.0.0.1. Sets IP for tcp api.
+
+   -NEW FEATURES!
+
+  -Removed CoreInfo for AES detection
+  -Better GPU detection (windows)
+   * Lists Correct VRAM
+   * AMD lists vbios version
+   * AMD lists memory vendor
+
+  -Fixed issue if more than one active logfile was present
+
+  -Code staging for a guided step-by-step tutorial to set up SWARM.
+
+  -SWARM should display a message is a miner was skipped over due to ``-threshold``
+
+  -Per user request- Removed FancyIX's suggest settings for mtp (-p 0,strict,verbose,d=700)
+
+  -Test-Path HiveOS oc log first to prevent error generation
+
+  -``get active screen`` displays differently
+   * removed "Days", as it wasn't needed.
+   * added "#", which is the instance number
+   * ordered by instance- Greatest (most recently ran miners) to least.
+
+  -Improved CPU metrics (Windows)
+
+  -TCP api now shows "WorkerName"
+
+  -fixed html api (I didn't notice I broke it. It is restored).
+
+  -There was a rare issue in windows when the background script controlloing active miner
+   would crash. This would result in the SWARM launching a new miner while
+   the active miner continued to run. When SWARM restarts/closes miners, it will now
+   close all child process associated with that starting script. This includes if users added 
+   pre-starting scripts. Linux - The screen window is closes, meaning all processes in that 
+   screen are closed with it...Hence it is not needed.
+
+  -Windows: It is common that if a miner card has crashed, the miner window will not close.
+   if user specifies ``-Startup Yes`` (Default is Yes), SWARM will restart computer after
+   2 minutes of the window staying open. It will notify HiveOS this is the case.
+
+  -xmrig linux update
+  -xmr-stak linux updated
+  -cpuminer updated (note- avx2 only!!)
+  -cc-mtp updated
+  -nminer updated
+  -teamredminer updated
