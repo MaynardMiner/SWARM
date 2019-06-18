@@ -41,16 +41,17 @@ Function Global:Get-PCISlot($X) {
 Function Global:Get-Bus {
 
     $GPUS = @()
-
-    if (test-Path ".\build\txt\gpu-count.txt") {
-        $OldCount = Get-Content ".\build\txt\gpu-count.txt" | ConvertFrom-Json 
+    
+    $OldCount = if (Test-Path ".\build\txt\gpu-count.txt") { $(Get-Content ".\build\txt\gpu-count.txt") }
+    if ($OldCount) {
+        Write-Log "Previously Detected GPU Count is:" -ForegroundColor Yellow
+        $OldCount | Out-Host
+        Start-Sleep -S .5
     }
-    else { $OldCount = 0 }
+   Invoke-Expression ".\build\apps\pci\lspci.exe" | Select-String "VGA compatible controller" | Tee-Object -FilePath ".\build\txt\gpu-count.txt" | Out-Null
+   $NewCount = if (Test-Path ".\build\txt\gpu-count.txt") { $(Get-Content ".\build\txt\gpu-count.txt") }
 
-    $Services = @("nvlddmkm", "amdkmdap", "igfx", "BasicDisplay")
-    $NewCount = $(Get-CimInstance -namespace root\cimv2 -class Win32_PnPEntity | where Service -in $Services | Where DeviceID -like "*PCI*").Count
-
-    if ($NewCount -ne $OldCount) {
+    if ([string]$NewCount -ne [string]$OldCount) {
         Write-Log "GPU count is different - Gathering GPU information" -ForegroundColor Yellow
 
         ## Add key to bypass install question:
