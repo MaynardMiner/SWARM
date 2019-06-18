@@ -90,6 +90,7 @@ function Global:Start-LaunchCode($MinerCurrent,$AIP) {
                             $MinerArguments = "-c command.json -p $($MinerCurrent.Port)"
                             set-nicehash $($MinerCurrent.NPool) 3200 $($MinerCurrent.NUser) $($MinerCurrent.Algo) $($MinerCurrent.CommandFile) "$($MinerCurrent.Devices)" "$($MinerCurrent.NCommands)"
                         }
+                        default { $MinerArguments = "$($MinerCurrent.Arguments)" }
                     }
                 }
                 else {
@@ -138,7 +139,8 @@ function Global:Start-LaunchCode($MinerCurrent,$AIP) {
                             Clear-Content ".\lyclMiner.conf" -force
                             $NewLines | Set-Content ".\lyclMiner.conf"
                             Set-Location $($(vars).dir)
-                        }           
+                        }
+                        default { $MinerArguments = "$($MinerCurrent.Arguments)" }           
                     }
                 }
                 else {
@@ -174,13 +176,6 @@ function Global:Start-LaunchCode($MinerCurrent,$AIP) {
                 elseif ($MinerCurrent.DeviceCall -eq "xmrig-opt") { $MinerArguments = "-t $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
             }
         }
-
-        switch ($MinerCurrent.DeviceCall) {
-            "gminer" { Global:Write-Log "SOME ALGOS MAY REQUIRE 6GB+ VRAM TO WORK" -ForegroundColor Green }
-            "bminer" { Global:Write-Log "SOME ALGOS MAY REQUIRE 6GB+ VRAM TO WORK" -ForegroundColor Green }
-        }
-
-    
 
         if ($(arg).Platform -eq "windows") {
             if ($MinerProcess -eq $null -or $MinerProcess.HasExited -eq $true) {

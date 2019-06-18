@@ -1,0 +1,29 @@
+{
+    "name": "kbminer-amd",
+    "AMD1": {
+        "name": "AMD1",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "cuckaroo29": "",
+            "cuckatoo31": "",
+            "cuckoo_cycle": ""
+        },
+        "difficulty": {
+            "cuckaroo29": "",
+            "cuckatoo31": "",
+            "cuckoo_cycle": ""
+
+        },
+        "naming": {
+            "cuckaroo29": "grin-cuckaroo29",
+            "cuckatoo31": "grin-cuckatoo31",
+            "cuckoo_cycle": "ae"
+        },
+        "fee": {
+            "cuckaroo29": 2,
+            "cuckatoo31": 2,
+            "cuckoo_cycle": 2
+        }
+    }
+}

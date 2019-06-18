@@ -5,14 +5,14 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "grincuckaroo29": ""
+            "cuckaroo29": ""
         },
         "difficulty": {
-            "grincuckaroo29": ""
+            "cuckaroo29": ""
         },
         "naming": {
-            "grincuckaroo29": 0
+            "cuckaroo29": "cuckaroo29"
         },
-        "fee": null
+        "fee": 0
     }
 }
