@@ -3,11 +3,11 @@ $(vars).AMDTypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
 
     ##Miner Path Information
-    if ($Global:amd.fancyix.$ConfigType) { $Path = "$($Global:amd.fancyix.$ConfigType)" }
+    if ($(vars).amd.fancyix.$ConfigType) { $Path = "$($(vars).amd.fancyix.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:amd.fancyix.uri) { $Uri = "$($Global:amd.fancyix.uri)" }
+    if ($(vars).amd.fancyix.uri) { $Uri = "$($(vars).amd.fancyix.uri)" }
     else { $Uri = "None" }
-    if ($Global:amd.fancyix.minername) { $MinerName = "$($Global:amd.fancyix.minername)" }
+    if ($(vars).amd.fancyix.minername) { $MinerName = "$($(vars).amd.fancyix.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "fancyix-$Num"; $Port = "2200$Num"
@@ -63,9 +63,9 @@ $(vars).AMDTypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:amd.fancyix.version)"
+                        Version    = "$($(vars).amd.fancyix.version)"
                         DeviceCall = "sgminer-gm"
-                        Arguments  = "--gpu-platform $Global:AMDPlatform --api-listen --api-port $Port -k $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.$User) -p $($_.$Pass)$($Diff) -T $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                        Arguments  = "--gpu-platform $(vars).amdPlatform --api-listen --api-port $Port -k $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.$User) -p $($_.$Pass)$($Diff) -T $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 

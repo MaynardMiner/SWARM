@@ -3,11 +3,11 @@ $(vars).CPUTypes | ForEach-Object {
     $ConfigType = $_;
 
     ##Miner Path Information
-    if ($Global:cpu.sugarchain.$ConfigType) { $Path = "$($Global:cpu.sugarchain.$ConfigType)" }
+    if ($(vars).cpu.sugarchain.$ConfigType) { $Path = "$($(vars).cpu.sugarchain.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:cpu.sugarchain.uri) { $Uri = "$($Global:cpu.sugarchain.uri)" }
+    if ($(vars).cpu.sugarchain.uri) { $Uri = "$($(vars).cpu.sugarchain.uri)" }
     else { $Uri = "None" }
-    if ($Global:cpu.sugarchain.minername) { $MinerName = "$($Global:cpu.sugarchain.minername)" }
+    if ($(vars).cpu.sugarchain.minername) { $MinerName = "$($(vars).cpu.sugarchain.minername)" }
     else { $MinerName = "None" }
 
     $Name = "sugarchain";
@@ -57,7 +57,7 @@ $(vars).CPUTypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:cpu.sugarchain.version)"
+                        Version    = "$($(vars).cpu.sugarchain.version)"
                         DeviceCall = "cpuminer-opt"
                         Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -b 0.0.0.0:10001 -u $($_.User1) -p $($_.Pass1)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour

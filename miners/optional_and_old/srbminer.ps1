@@ -3,11 +3,11 @@ $(vars).AMDTypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
 
     ##Miner Path Information
-    if ($Global:amd.srbminer.$ConfigType) { $Path = "$($Global:amd.srbminer.$ConfigType)" }
+    if ($(vars).amd.srbminer.$ConfigType) { $Path = "$($(vars).amd.srbminer.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:amd.srbminer.uri) { $Uri = "$($Global:amd.srbminer.uri)" }
+    if ($(vars).amd.srbminer.uri) { $Uri = "$($(vars).amd.srbminer.uri)" }
     else { $Uri = "None" }
-    if ($Global:amd.srbminer.minername) { $MinerName = "$($Global:amd.srbminer.minername)" }
+    if ($(vars).amd.srbminer.minername) { $MinerName = "$($(vars).amd.srbminer.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "srbminer-$Num"; $Port = "3300$Num"
@@ -62,7 +62,7 @@ $(vars).AMDTypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:amd.srbminer.version)"
+                        Version    = "$($(vars).amd.srbminer.version)"
                         DeviceCall = "srbminer"
                         Arguments  = "--adldisable --ccryptonighttype $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -cgpuid $Devices --cnicehash true --cpool $($_.Host):$($_.Port) --cwallet $($_.$User) --cpassword $($_.$Pass) --apienable --logfile `'$Log`' --apiport $Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour

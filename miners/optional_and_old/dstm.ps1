@@ -3,11 +3,11 @@ $(vars).NVIDIATypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
-    if ($Global:nvidia.dstm.path1) { $Path = "$($Global:nvidia.dstm.path1)" }
+    if ($(vars).nvidia.dstm.path1) { $Path = "$($(vars).nvidia.dstm.path1)" }
     else { $Path = "None" }
-    if ($Global:nvidia.dstm.uri) { $Uri = "$($Global:nvidia.dstm.uri)" }
+    if ($(vars).nvidia.dstm.uri) { $Uri = "$($(vars).nvidia.dstm.uri)" }
     else { $Uri = "None" }
-    if ($Global:nvidia.dstm.minername) { $MinerName = "$($Global:nvidia.dstm.minername)" }
+    if ($(vars).nvidia.dstm.minername) { $MinerName = "$($(vars).nvidia.dstm.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "dstm-$Num"; $Port = "5600$Num";
@@ -68,7 +68,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:nvidia.dstm.version)"
+                        Version    = "$($(vars).nvidia.dstm.version)"
                         DeviceCall = "dstm"
                         Arguments  = "--server $($_.Host) --port $($_.Port) --user $($_.$User) --pass $($_.$Pass)$($Diff) --telemetry=0.0.0.0:$Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour

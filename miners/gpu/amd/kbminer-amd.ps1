@@ -5,11 +5,11 @@ $(vars).AMDTypes | ForEach-Object {
     $CName = "kbminer-amd"
 
     ##Miner Path Information
-    if ($Global:amd.$CName.$ConfigType) { $Path = "$($Global:amd.$CName.$ConfigType)" }
+    if ($(vars).amd.$CName.$ConfigType) { $Path = "$($(vars).amd.$CName.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:amd.$CName.uri) { $Uri = "$($Global:amd.$CName.uri)" }
+    if ($(vars).amd.$CName.uri) { $Uri = "$($(vars).amd.$CName.uri)" }
     else { $Uri = "None" }
-    if ($Global:amd.$CName.minername) { $MinerName = "$($Global:amd.$CName.minername)" }
+    if ($(vars).amd.$CName.minername) { $MinerName = "$($(vars).amd.$CName.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "3600$Num"
@@ -65,7 +65,7 @@ $(vars).AMDTypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:amd.$CName.version)"
+                        Version    = "$($(vars).amd.$CName.version)"
                         DeviceCall = "kbminer"
                         Arguments  = "--algorithm $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --enable-api --apiaddr $Port --pool stratum+tcp://$($_.Host):$($_.Port) --user $($_.$User) --pass $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour

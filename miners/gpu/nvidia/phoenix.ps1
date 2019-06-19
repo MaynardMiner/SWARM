@@ -3,11 +3,11 @@ $(vars).NVIDIATypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
-    if ($Global:nvidia.phoenix.$ConfigType) { $Path = "$($Global:nvidia.phoenix.$ConfigType)" }
+    if ($(vars).nvidia.phoenix.$ConfigType) { $Path = "$($(vars).nvidia.phoenix.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:nvidia.phoenix.uri) { $Uri = "$($Global:nvidia.phoenix.uri)" }
+    if ($(vars).nvidia.phoenix.uri) { $Uri = "$($(vars).nvidia.phoenix.uri)" }
     else { $Uri = "None" }
-    if ($Global:nvidia.phoenix.minername) { $MinerName = "$($Global:nvidia.phoenix.minername)" }
+    if ($(vars).nvidia.phoenix.minername) { $MinerName = "$($(vars).nvidia.phoenix.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "phoenix-$Num"; $Port = "4700$Num"
@@ -92,7 +92,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:nvidia.phoenix.version)"
+                        Version    = "$($(vars).nvidia.phoenix.version)"
                         DeviceCall = "claymore"
                         Arguments  = "-platform 2 -mport $Port -mode 1 -allcoins 1 -allpools 1 $AddArgs-pool $($_.Protocol)://$($_.Host):$($_.Port) -wal $($_.$User) $MinerWorker-wd 0 -logfile `'$(Split-Path $Log -Leaf)`' -logdir `'$(Split-Path $Log)`' -gser 2 -dbg -1 -eres 1 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour

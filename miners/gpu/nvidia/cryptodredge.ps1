@@ -3,11 +3,11 @@ $(vars).NVIDIATypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
-    if ($Global:nvidia.cryptodredge.$ConfigType) { $Path = "$($Global:nvidia.cryptodredge.$ConfigType)" }
+    if ($(vars).nvidia.cryptodredge.$ConfigType) { $Path = "$($(vars).nvidia.cryptodredge.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:nvidia.cryptodredge.uri) { $Uri = "$($Global:nvidia.cryptodredge.uri)" }
+    if ($(vars).nvidia.cryptodredge.uri) { $Uri = "$($(vars).nvidia.cryptodredge.uri)" }
     else { $Uri = "None" }
-    if ($Global:nvidia.cryptodredge.minername) { $MinerName = "$($Global:nvidia.cryptodredge.minername)" }
+    if ($(vars).nvidia.cryptodredge.minername) { $MinerName = "$($(vars).nvidia.cryptodredge.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "cryptodredge-$Num"; $Port = "4300$Num"
@@ -65,7 +65,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:nvidia.cryptodredge.version)"
+                        Version    = "$($(vars).nvidia.cryptodredge.version)"
                         DeviceCall = "ccminer"
                         Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -b 0.0.0.0:$Port --log `'$Log`' -u $($_.$User) -p $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour

@@ -5,11 +5,11 @@ $(vars).NVIDIATypes | ForEach-Object {
     $Cname = "t-rex"
 
     ##Miner Path Information
-    if ($Global:nvidia.$CName.$ConfigType) { $Path = "$($Global:nvidia.$CName.$ConfigType)" }
+    if ($(vars).nvidia.$CName.$ConfigType) { $Path = "$($(vars).nvidia.$CName.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:nvidia.$CName.uri) { $Uri = "$($Global:nvidia.$CName.uri)" }
+    if ($(vars).nvidia.$CName.uri) { $Uri = "$($(vars).nvidia.$CName.uri)" }
     else { $Uri = "None" }
-    if ($Global:nvidia.$CName.minername) { $MinerName = "$($Global:nvidia.$CName.minername)" }
+    if ($(vars).nvidia.$CName.minername) { $MinerName = "$($(vars).nvidia.$CName.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "5000$Num"; $Port2 = "8000$Num"
@@ -67,7 +67,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:nvidia.$CName.version)"
+                        Version    = "$($(vars).nvidia.$CName.version)"
                         DeviceCall = "trex"
                         Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --no-watchdog --no-nvml -o stratum+tcp://$($_.Host):$($_.Port) --api-bind-telnet 0.0.0.0:$Port2 -l `'$Log`' --api-bind-http 0.0.0.0:$Port -u $($_.$User) -p $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour

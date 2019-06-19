@@ -4,11 +4,11 @@ $(vars).AMDTypes | ForEach-Object {
     $Cname = "phoenix-amd"
 
     ##Miner Path Information
-    if ($Global:amd.$Cname.$ConfigType) { $Path = "$($Global:amd.$Cname.$ConfigType)" }
+    if ($(vars).amd.$Cname.$ConfigType) { $Path = "$($(vars).amd.$Cname.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:amd.$Cname.uri) { $Uri = "$($Global:amd.$Cname.uri)" }
+    if ($(vars).amd.$Cname.uri) { $Uri = "$($(vars).amd.$Cname.uri)" }
     else { $Uri = "None" }
-    if ($Global:amd.$Cname.minername) { $MinerName = "$($Global:amd.$Cname.minername)" }
+    if ($(vars).amd.$Cname.minername) { $MinerName = "$($(vars).amd.$Cname.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$Cname-$Num"; $Port = "2600$Num"
@@ -91,7 +91,7 @@ $(vars).AMDTypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:amd.$CName.version)"
+                        Version    = "$($(vars).amd.$CName.version)"
                         DeviceCall = "claymore"
                         Arguments  = "-platform 1 -mport $Port -mode 1 -allcoins 1 -allpools 1 $AddArgs-epool $($_.Protocol)://$($_.Host):$($_.Port) -ewal $($_.$User) $MinerWorker-wd 0 -logfile `'$(Split-Path $Log -Leaf)`' -logdir `'$(Split-Path $Log)`' -gser 2 -dbg -1 -eres 2 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour

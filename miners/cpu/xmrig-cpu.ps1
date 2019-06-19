@@ -4,11 +4,11 @@ $(vars).CPUTypes | ForEach-Object {
     $CName = "xmrig-cpu"
 
     ##Miner Path Information
-    if ($Global:cpu.$CName.$ConfigType) { $Path = "$($Global:cpu.$CName.$ConfigType)" }
+    if ($(vars).cpu.$CName.$ConfigType) { $Path = "$($(vars).cpu.$CName.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:cpu.$CName.uri) { $Uri = "$($Global:cpu.$CName.uri)" }
+    if ($(vars).cpu.$CName.uri) { $Uri = "$($(vars).cpu.$CName.uri)" }
     else { $Uri = "None" }
-    if ($Global:cpu.$CName.minername) { $MinerName = "$($Global:cpu.$CName.minername)" }
+    if ($(vars).cpu.$CName.minername) { $MinerName = "$($(vars).cpu.$CName.minername)" }
     else { $MinerName = "None" }
 
     $Name = "$CName";
@@ -60,7 +60,7 @@ $(vars).CPUTypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:cpu.$CName.version)"
+                        Version    = "$($(vars).cpu.$CName.version)"
                         DeviceCall = "xmrig-opt"
                         Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) $APISet -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.User1) -p $($_.Pass1)$($Diff) --donate-level=1 --nicehash $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour

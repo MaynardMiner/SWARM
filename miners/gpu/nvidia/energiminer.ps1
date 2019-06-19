@@ -3,11 +3,11 @@ $(vars).NVIDIATypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
-    if ($Global:nvidia.energiminer.$ConfigType) { $Path = "$($Global:nvidia.energiminer.$ConfigType)" }
+    if ($(vars).nvidia.energiminer.$ConfigType) { $Path = "$($(vars).nvidia.energiminer.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:nvidia.energiminer.uri) { $Uri = "$($Global:nvidia.energiminer.uri)" }
+    if ($(vars).nvidia.energiminer.uri) { $Uri = "$($(vars).nvidia.energiminer.uri)" }
     else { $Uri = "None" }
-    if ($Global:nvidia.energiminer.minername) { $MinerName = "$($Global:nvidia.energiminer.minername)" }
+    if ($(vars).nvidia.energiminer.minername) { $MinerName = "$($(vars).nvidia.energiminer.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "energiminer-$Num"; $Port = "4500$Num"
@@ -69,7 +69,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:nvidia.energiminer.version)"
+                        Version    = "$($(vars).nvidia.energiminer.version)"
                         DeviceCall = "energiminer"
                         Arguments  = "-U stratum://$($_.$User).$($_.$Pass)@$($_.Algorithm).mine.zergpool.com:$($_.Port)"
                         HashRates  = $Stat.Hour

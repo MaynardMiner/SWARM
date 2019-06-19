@@ -3,9 +3,9 @@ $(vars).NVIDIATypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
-    if ($Global:nvidia.claymore.$ConfigType) { $Path = "$($Global:nvidia.claymore.$ConfigType)" } else { $Path = "None" }
-    if ($Global:nvidia.claymore.uri) { $Uri = "$($Global:nvidia.claymore.uri)" } else { $Uri = "None" }
-    if ($Global:nvidia.claymore.minername) { $MinerName = "$($Global:nvidia.claymore.minername)" } else { $MinerName = "None" }
+    if ($(vars).nvidia.claymore.$ConfigType) { $Path = "$($(vars).nvidia.claymore.$ConfigType)" } else { $Path = "None" }
+    if ($(vars).nvidia.claymore.uri) { $Uri = "$($(vars).nvidia.claymore.uri)" } else { $Uri = "None" }
+    if ($(vars).nvidia.claymore.minername) { $MinerName = "$($(vars).nvidia.claymore.minername)" } else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "claymore-$Num"; $Port = "4200$Num"
 
@@ -76,7 +76,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:nvidia.claymore.version)"
+                        Version    = "$($(vars).nvidia.claymore.version)"
                         DeviceCall = "claymore"
                         Arguments  = "-platform 2 -mport $Port -mode 1 -allcoins 1 $AddArgs-allpools 1 -epool $($_.Protocol)://$($_.Host):$($_.Port) -logfile `'$Log`' -ewal $($_.$User) $MinerWorker-wd 0 -gser 2 -dbg -1 -eres 1 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour

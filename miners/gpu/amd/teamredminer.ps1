@@ -3,11 +3,11 @@ $(vars).AMDTypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
 
     ##Miner Path Information
-    if ($Global:amd.teamredminer.$ConfigType) { $Path = "$($Global:amd.teamredminer.$ConfigType)" }
+    if ($(vars).amd.teamredminer.$ConfigType) { $Path = "$($(vars).amd.teamredminer.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:amd.teamredminer.uri) { $Uri = "$($Global:amd.teamredminer.uri)" }
+    if ($(vars).amd.teamredminer.uri) { $Uri = "$($(vars).amd.teamredminer.uri)" }
     else { $Uri = "None" }
-    if ($Global:amd.teamredminer.minername) { $MinerName = "$($Global:amd.teamredminer.minername)" }
+    if ($(vars).amd.teamredminer.minername) { $MinerName = "$($(vars).amd.teamredminer.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "teamredminer-$Num"; $Port = "2800$Num"
@@ -62,9 +62,9 @@ $(vars).AMDTypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:amd.teamredminer.version)"
+                        Version    = "$($(vars).amd.teamredminer.version)"
                         DeviceCall = "tdxminer"
-                        Arguments  = "--platform $Global:AMDPlatform -a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --api_listen=0.0.0.0:$Port -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.$User) --log_file `'$Log`' --bus_reorder -p $($_.$Pass)$($DIff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                        Arguments  = "--platform $(vars).amdPlatform -a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --api_listen=0.0.0.0:$Port -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.$User) --log_file `'$Log`' --bus_reorder -p $($_.$Pass)$($DIff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 

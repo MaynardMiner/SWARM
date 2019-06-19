@@ -3,11 +3,11 @@ $(vars).NVIDIATypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
-    if ($Global:nvidia.'cc-mtp'.$ConfigType) { $Path = "$($Global:nvidia.'cc-mtp'.$ConfigType)" }
+    if ($(vars).nvidia.'cc-mtp'.$ConfigType) { $Path = "$($(vars).nvidia.'cc-mtp'.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:nvidia.'cc-mtp'.uri) { $Uri = "$($Global:nvidia.'cc-mtp'.uri)" }
+    if ($(vars).nvidia.'cc-mtp'.uri) { $Uri = "$($(vars).nvidia.'cc-mtp'.uri)" }
     else { $Uri = "None" }
-    if ($Global:nvidia.'cc-mtp'.minername) { $MinerName = "$($Global:nvidia.'cc-mtp'.minername)" }
+    if ($(vars).nvidia.'cc-mtp'.minername) { $MinerName = "$($(vars).nvidia.'cc-mtp'.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "cc-mtp-$Num"; $Port = "5400$Num";
@@ -65,7 +65,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:nvidia.'cc-mtp'.version)"
+                        Version    = "$($(vars).nvidia.'cc-mtp'.version)"
                         DeviceCall = "ccminer"
                         Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -b 0.0.0.0:$Port -u $($_.$User) -p $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour

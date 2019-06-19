@@ -197,12 +197,12 @@ switch ($(arg).Platform) {
 
 ## Determine AMD platform
 if ($(arg).Type -like "*AMD*") {
-    if ([string]$(arg).CLPlatform) { $Global:AMDPlatform = [string]$(arg).CLPlatform }
+    if ([string]$(arg).CLPlatform) { $(vars).amdPlatform = [string]$(arg).CLPlatform }
     else {
         Global:Write-Log "Getting AMD OPENCL Platform. Note: If SWARM doesn't continue, a GPU has crashed on rig." -ForeGroundColor Yellow
         Global:Add-Module "$($(vars).startup)\cl.psm1"
-        [string]$global:AMDPlatform = Global:Get-AMDPlatform
-        Global:Write-Log "AMD OpenCL Platform is $Global:AMDPlatform"
+        [string]$(vars).amdPlatform = Global:Get-AMDPlatform
+        Global:Write-Log "AMD OpenCL Platform is $(vars).amdPlatform"
     }
 }
 
@@ -279,9 +279,9 @@ While ($true) {
 
         #Get Miner Config Files
         Global:Add-Module "$($(vars).build)\miners.psm1"
-        if ($(arg).Type -like "*CPU*") { $Global:cpu = Global:Get-minerfiles -Types "CPU" }
-        if ($(arg).Type -like "*NVIDIA*") { $Global:nvidia = Global:Get-minerfiles -Types "NVIDIA" -Cudas $(arg).Cuda }
-        if ($(arg).Type -like "*AMD*") { $Global:amd = Global:Get-minerfiles -Types "AMD" }
+        if ($(arg).Type -like "*CPU*") { $(vars).Add("cpu",(Global:Get-minerfiles -Types "CPU")) }
+        if ($(arg).Type -like "*NVIDIA*") { $(vars).Add("nvidia",(Global:Get-minerfiles -Types "NVIDIA" -Cudas $(arg).Cuda)) }
+        if ($(arg).Type -like "*AMD*") { $(vars).Add("amd",(Global:Get-minerfiles -Types "AMD")) }
 
         ## Check to see if wallet is present:
         if (-not $(arg).Wallet1) { 
@@ -451,9 +451,9 @@ While ($true) {
         $global:Miners_Combo = $null
         $BestMiners_Selected = $null
         $BestPool_Selected = $null
-        $Global:amd = $null
-        $Global:nvidia = $null
-        $Global:cpu = $null
+        $(vars).Remove("amd")
+        $(vars).Remove("nvidia")
+        $(vars).Remove("cpu")
         $(vars).Pool_Hashrates = $null
         $global:Miner_HashTable = $null
         $(vars).Watts = $null

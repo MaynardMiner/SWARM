@@ -5,11 +5,11 @@ $(vars).NVIDIATypes | ForEach-Object {
     $CName = "tt-miner"
 
     ##Miner Path Information
-    if ($Global:nvidia.$CName.$ConfigType -and $(arg).Platform -eq "windows") { $Path = "$($Global:nvidia.$CName.$ConfigType)" }
+    if ($(vars).nvidia.$CName.$ConfigType -and $(arg).Platform -eq "windows") { $Path = "$($(vars).nvidia.$CName.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:nvidia.$CName.uri -and $(arg).Platform -eq "windows") { $Uri = "$($Global:nvidia.$CName.uri)" }
+    if ($(vars).nvidia.$CName.uri -and $(arg).Platform -eq "windows") { $Uri = "$($(vars).nvidia.$CName.uri)" }
     else { $Uri = "None" }
-    if ($Global:nvidia.$CName.minername) { $MinerName = "$($Global:nvidia.$CName.minername)" }
+    if ($(vars).nvidia.$CName.minername) { $MinerName = "$($(vars).nvidia.$CName.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "5100$Num";
@@ -67,7 +67,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:nvidia.$CName.version)"
+                        Version    = "$($(vars).nvidia.$CName.version)"
                         DeviceCall = "ttminer"
                         Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --nvidia -o $($_.Protocol)://$($_.Host):$($_.Port) $Worker-b localhost:$Port -u $($_.$User) -p $($_.$Pass) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour

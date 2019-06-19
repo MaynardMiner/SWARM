@@ -3,11 +3,11 @@ $(vars).NVIDIATypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
-    if ($Global:nvidia.gminer.$ConfigType) { $Path = "$($Global:nvidia.gminer.$ConfigType)" }
+    if ($(vars).nvidia.gminer.$ConfigType) { $Path = "$($(vars).nvidia.gminer.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:nvidia.gminer.uri) { $Uri = "$($Global:nvidia.gminer.uri)" }
+    if ($(vars).nvidia.gminer.uri) { $Uri = "$($(vars).nvidia.gminer.uri)" }
     else { $Uri = "None" }
-    if ($Global:nvidia.gminer.minername) { $MinerName = "$($Global:nvidia.gminer.minername)" }
+    if ($(vars).nvidia.gminer.minername) { $MinerName = "$($(vars).nvidia.gminer.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "gminer-$Num"; $Port = "4600$Num"
@@ -95,7 +95,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                         ArgDevices = $ArgDevices
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:nvidia.gminer.version)"
+                        Version    = "$($(vars).nvidia.gminer.version)"
                         DeviceCall = "gminer"
                         Arguments  = "--api $Port --server $($_.Host) --port $($_.Port) $AddArgs--user $($_.$User) --logfile `'$Log`' --pass $($_.$Pass)$Diff $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour

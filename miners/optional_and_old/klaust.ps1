@@ -3,11 +3,11 @@ $(vars).NVIDIATypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
-    if ($Global:nvidia.klaust.$ConfigType) { $Path = "$($Global:nvidia.klaust.$ConfigType)" }
+    if ($(vars).nvidia.klaust.$ConfigType) { $Path = "$($(vars).nvidia.klaust.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:nvidia.klaust.uri) { $Uri = "$($Global:nvidia.klaust.uri)" }
+    if ($(vars).nvidia.klaust.uri) { $Uri = "$($(vars).nvidia.klaust.uri)" }
     else { $Uri = "None" }
-    if ($Global:nvidia.klaust.minername) { $MinerName = "$($Global:nvidia.klaust.minername)" }
+    if ($(vars).nvidia.klaust.minername) { $MinerName = "$($(vars).nvidia.klaust.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "klaust-$Num"; $Port = "5900$Num";
@@ -64,7 +64,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                             Path       = $Path
                             Devices    = $Devices
                             Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                            Version    = "$($Global:nvidia.klaust.version)"
+                            Version    = "$($(vars).nvidia.klaust.version)"
                             DeviceCall = "ccminer"
                             Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -b 0.0.0.0:$Port -u $($_.$User) -p $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                             HashRates  = $Stat.Hour

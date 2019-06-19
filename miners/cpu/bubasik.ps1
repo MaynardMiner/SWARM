@@ -3,11 +3,11 @@ $(vars).CPUTypes | ForEach-Object {
     $ConfigType = $_;
 
     ##Miner Path Information
-    if ($Global:cpu.bubasik.$ConfigType) { $Path = "$($Global:cpu.bubasik.$ConfigType)" }
+    if ($(vars).cpu.bubasik.$ConfigType) { $Path = "$($(vars).cpu.bubasik.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:cpu.bubasik.uri) { $Uri = "$($Global:cpu.bubasik.uri)" }
+    if ($(vars).cpu.bubasik.uri) { $Uri = "$($(vars).cpu.bubasik.uri)" }
     else { $Uri = "None" }
-    if ($Global:cpu.bubasik.minername) { $MinerName = "$($Global:cpu.bubasik.minername)" }
+    if ($(vars).cpu.bubasik.minername) { $MinerName = "$($(vars).cpu.bubasik.minername)" }
     else { $MinerName = "None" }
 
     $Name = "bubasik";
@@ -58,7 +58,7 @@ $(vars).CPUTypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:cpu.bubasik.version)"
+                        Version    = "$($(vars).cpu.bubasik.version)"
                         DeviceCall = "cpuminer-opt"
                         Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -b 0.0.0.0:10001 -u $($_.User1) -p $($_.Pass1)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour

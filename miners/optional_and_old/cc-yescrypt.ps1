@@ -3,11 +3,11 @@ $(vars).NVIDIATypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
-    if ($Global:nvidia.'cc-yescrypt'.$ConfigType -and $(arg).Cuda -eq "10") { $Path = "$($Global:nvidia.'cc-yescrypt'.$ConfigType)" }
+    if ($(vars).nvidia.'cc-yescrypt'.$ConfigType -and $(arg).Cuda -eq "10") { $Path = "$($(vars).nvidia.'cc-yescrypt'.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:nvidia.'cc-yescrypt'.uri -and $(arg).Cuda -eq "10") { $Uri = "$($Global:nvidia.'cc-yescrypt'.uri)" }
+    if ($(vars).nvidia.'cc-yescrypt'.uri -and $(arg).Cuda -eq "10") { $Uri = "$($(vars).nvidia.'cc-yescrypt'.uri)" }
     else { $Uri = "None" }
-    if ($Global:nvidia.'cc-yescrypt'.minername -and $(arg).Cuda -eq "10") { $MinerName = "$($Global:nvidia.'cc-yescrypt'.minername)" }
+    if ($(vars).nvidia.'cc-yescrypt'.minername -and $(arg).Cuda -eq "10") { $MinerName = "$($(vars).nvidia.'cc-yescrypt'.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "cc-yescrypt-$Num"; $Port = "5500$Num";
@@ -65,7 +65,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:nvidia.'cc-yescrypt'.version)"
+                        Version    = "$($(vars).nvidia.'cc-yescrypt'.version)"
                         DeviceCall = "ccminer"
                         Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -b 0.0.0.0:$Port -u $($_.$User) -p $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour

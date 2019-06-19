@@ -133,7 +133,7 @@ Reddit: https://www.reddit.com/r/SWARM_Miner
 
 ## DONATE TO SUPPORT!
 
-BTC 1HQEj9fQy1z1PfAvdAiWTm449QpQ6b1XsJ
+BTC 1FpuMha1QPaWS4PTPZpU1zGRzKMevnDpwg
 
 RVN RKirUe978mBoa2MRWqeMGqDzVAKTafKh8H
 

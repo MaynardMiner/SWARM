@@ -3,11 +3,11 @@ $(vars).NVIDIATypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
-    if ($Global:nvidia.ewbf.$ConfigType) { $Path = "$($Global:nvidia.ewbf.$ConfigType)" }
+    if ($(vars).nvidia.ewbf.$ConfigType) { $Path = "$($(vars).nvidia.ewbf.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:nvidia.ewbf.uri) { $Uri = "$($Global:nvidia.ewbf.uri)" }
+    if ($(vars).nvidia.ewbf.uri) { $Uri = "$($(vars).nvidia.ewbf.uri)" }
     else { $Uri = "None" }
-    if ($Global:nvidia.ewbf.minername) { $MinerName = "$($Global:nvidia.ewbf.minername)" }
+    if ($(vars).nvidia.ewbf.minername) { $MinerName = "$($(vars).nvidia.ewbf.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "ewbf-$Num"; $Port = "5700$Num";
@@ -76,7 +76,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:nvidia.ewbf.version)"
+                        Version    = "$($(vars).nvidia.ewbf.version)"
                         DeviceCall = "ewbf"
                         Arguments  = "--api 0.0.0.0:$Port --server $($_.Host) $AddArgs--port $($_.Port) --user $($_.$User) --pass $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour

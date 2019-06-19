@@ -3,11 +3,11 @@ $(vars).NVIDIATypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
-    if ($Global:nvidia.multiminer.$ConfigType) { $Path = "$($Global:nvidia.multiminer.$ConfigType)" }
+    if ($(vars).nvidia.multiminer.$ConfigType) { $Path = "$($(vars).nvidia.multiminer.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:nvidia.multiminer.uri) { $Uri = "$($Global:nvidia.multiminer.uri)" }
+    if ($(vars).nvidia.multiminer.uri) { $Uri = "$($(vars).nvidia.multiminer.uri)" }
     else { $Uri = "None" }
-    if ($Global:nvidia.multiminer.minername) { $MinerName = "$($Global:nvidia.multiminer.minername)" }
+    if ($(vars).nvidia.multiminer.minername) { $MinerName = "$($(vars).nvidia.multiminer.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "multiminer-$Num"; $Port = "5400$Num"
@@ -73,7 +73,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:nvidia.multiminer.version)"
+                        Version    = "$($(vars).nvidia.multiminer.version)"
                         DeviceCall = "multiminer"
                         Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -b 0.0.0.0:$Port --use-gpu=CUDA $ArgDevices-u $($_.$User) -p $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour

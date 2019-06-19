@@ -3,11 +3,11 @@ $(vars).NVIDIATypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
-    if ($Global:nvidia.miniz.$ConfigType) { $Path = "$($Global:nvidia.miniz.$ConfigType)" }
+    if ($(vars).nvidia.miniz.$ConfigType) { $Path = "$($(vars).nvidia.miniz.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:nvidia.miniz.uri) { $Uri = "$($Global:nvidia.miniz.uri)" }
+    if ($(vars).nvidia.miniz.uri) { $Uri = "$($(vars).nvidia.miniz.uri)" }
     else { $Uri = "None" }
-    if ($Global:nvidia.miniz.minername) { $MinerName = "$($Global:nvidia.miniz.minername)" }
+    if ($(vars).nvidia.miniz.minername) { $MinerName = "$($(vars).nvidia.miniz.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "miniz-$Num"; $Port = "6000$Num";
@@ -74,7 +74,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:nvidia.miniz.version)"
+                        Version    = "$($(vars).nvidia.miniz.version)"
                         DeviceCall = "miniz"
                         Arguments  = "--telemetry 0.0.0.0:$Port --server $($_.Host) --port $($_.Port) $AddArgs--user $($_.$User) --pass $($_.$Pass)$($Diff) --logfile=`'$log`' $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour

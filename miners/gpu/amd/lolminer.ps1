@@ -3,11 +3,11 @@ $(vars).AMDTypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
 
     ##Miner Path Information
-    if ($Global:amd.lolminer.$ConfigType) { $Path = "$($Global:amd.lolminer.$ConfigType)" }
+    if ($(vars).amd.lolminer.$ConfigType) { $Path = "$($(vars).amd.lolminer.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:amd.lolminer.uri) { $Uri = "$($Global:amd.lolminer.uri)" }
+    if ($(vars).amd.lolminer.uri) { $Uri = "$($(vars).amd.lolminer.uri)" }
     else { $Uri = "None" }
-    if ($Global:amd.lolminer.minername) { $MinerName = "$($Global:amd.lolminer.minername)" }
+    if ($(vars).amd.lolminer.minername) { $MinerName = "$($(vars).amd.lolminer.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "lolminer-$Num"; $Port = "2400$Num"
@@ -71,7 +71,7 @@ $(vars).AMDTypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:amd.lolminer.version)"
+                        Version    = "$($(vars).amd.lolminer.version)"
                         DeviceCall = "lolminer"
                         Arguments  = "--pool $($_.Host) --port $($_.Port) --user $($_.$User) $AddArgs--pass $($_.$Pass)$($Diff) --apiport $Port --logs 0 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour

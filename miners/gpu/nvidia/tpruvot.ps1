@@ -3,11 +3,11 @@ $(vars).NVIDIATypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
-    if ($Global:nvidia.tpruvot.$ConfigType) { $Path = "$($Global:nvidia.tpruvot.$ConfigType)" }
+    if ($(vars).nvidia.tpruvot.$ConfigType) { $Path = "$($(vars).nvidia.tpruvot.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:nvidia.tpruvot.uri) { $Uri = "$($Global:nvidia.tpruvot.uri)" }
+    if ($(vars).nvidia.tpruvot.uri) { $Uri = "$($(vars).nvidia.tpruvot.uri)" }
     else { $Uri = "None" }
-    if ($Global:nvidia.tpruvot.minername) { $MinerName = "$($Global:nvidia.tpruvot.minername)" }
+    if ($(vars).nvidia.tpruvot.minername) { $MinerName = "$($(vars).nvidia.tpruvot.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "tpruvot-$Num"; $Port = "4900$Num"
@@ -65,7 +65,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:nvidia.tpruvot.version)"
+                        Version    = "$($(vars).nvidia.tpruvot.version)"
                         DeviceCall = "ccminer"
                         Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -b 0.0.0.0:$Port -u $($_.$User) -p $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour

@@ -4,11 +4,11 @@ $(vars).NVIDIATypes | ForEach-Object {
     $Cname = "z-enemy"
 
     ##Miner Path Information
-    if ($Global:nvidia.$Cname.$ConfigType -and $(arg).Platform -eq "linux") { $Path = "$($Global:nvidia.$Cname.$ConfigType)" }
+    if ($(vars).nvidia.$Cname.$ConfigType -and $(arg).Platform -eq "linux") { $Path = "$($(vars).nvidia.$Cname.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:nvidia.$Cname.uri -and $(arg).Platform -eq "linux") { $Uri = "$($Global:nvidia.$Cname.uri)" }
+    if ($(vars).nvidia.$Cname.uri -and $(arg).Platform -eq "linux") { $Uri = "$($(vars).nvidia.$Cname.uri)" }
     else { $Uri = "None" }
-    if ($Global:nvidia.$Cname.MinerName -and $(arg).Platform -eq "linux") { $MinerName = "$($Global:nvidia.$Cname.MinerName)" }
+    if ($(vars).nvidia.$Cname.MinerName -and $(arg).Platform -eq "linux") { $MinerName = "$($(vars).nvidia.$Cname.MinerName)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$Cname-$Num"; $Port = "5300$Num";
@@ -66,7 +66,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:nvidia.$CName.version)"
+                        Version    = "$($(vars).nvidia.$CName.version)"
                         DeviceCall = "ccminer"
                         Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --log=`'$Log`' -o stratum+tcp://$($_.Host):$($_.Port) -b 0.0.0.0:$Port -u $($_.$User) -p $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour

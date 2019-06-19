@@ -3,11 +3,11 @@ $(vars).NVIDIATypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
-    if ($Global:nvidia.progminer.$ConfigType) { $Path = "$($Global:nvidia.progminer.$ConfigType)" }
+    if ($(vars).nvidia.progminer.$ConfigType) { $Path = "$($(vars).nvidia.progminer.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:nvidia.progminer.uri) { $Uri = "$($Global:nvidia.progminer.uri)" }
+    if ($(vars).nvidia.progminer.uri) { $Uri = "$($(vars).nvidia.progminer.uri)" }
     else { $Uri = "None" }
-    if ($Global:nvidia.progminer.minername) { $MinerName = "$($Global:nvidia.progminer.minername)" }
+    if ($(vars).nvidia.progminer.minername) { $MinerName = "$($(vars).nvidia.progminer.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "progminer-$Num"; $Port = "4800$Num"
@@ -67,7 +67,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:nvidia.progminer.version)"
+                        Version    = "$($(vars).nvidia.progminer.version)"
                         DeviceCall = "progminer"
                         Arguments  = "-U -P stratum+tcp://$($_.$User)@$($_.Host):$($_.Port) --api-port -$Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour

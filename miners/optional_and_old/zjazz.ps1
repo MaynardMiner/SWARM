@@ -3,11 +3,11 @@ $(vars).NVIDIATypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
-    if ($Global:nvidia.zjazz.$ConfigType) { $Path = "$($Global:nvidia.zjazz.$ConfigType)" }
+    if ($(vars).nvidia.zjazz.$ConfigType) { $Path = "$($(vars).nvidia.zjazz.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:nvidia.zjazz.uri) { $Uri = "$($Global:nvidia.zjazz.uri)" }
+    if ($(vars).nvidia.zjazz.uri) { $Uri = "$($(vars).nvidia.zjazz.uri)" }
     else { $Uri = "None" }
-    if ($Global:nvidia.zjazz.minername) { $MinerName = "$($Global:nvidia.zjazz.minername)" }
+    if ($(vars).nvidia.zjazz.minername) { $MinerName = "$($(vars).nvidia.zjazz.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "zjazz-$Num"; $Port = "6100$Num";
@@ -64,7 +64,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:nvidia.zjazz.version)"
+                        Version    = "$($(vars).nvidia.zjazz.version)"
                         DeviceCall = "zjazz"
                         Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -b 0.0.0.0:$Port --hashrate-per-gpu -u $($_.$User) -p $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
