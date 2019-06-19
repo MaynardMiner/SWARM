@@ -43,7 +43,7 @@
             "equihash_144/5": "equihash_144/5",
             "equihash_210/9": "equihash_210/9",
             "equihash_200/9": "equihash_210/9",
-            "equihash_125/4": "equihash_210/9"
+            "equihash_125/4": "equihash_125/4"
         },
         "fee": {
             "equihash_150/5": 2,
