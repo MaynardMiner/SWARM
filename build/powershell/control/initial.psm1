@@ -49,8 +49,8 @@ function Global:Get-ActiveMiners($global:bestminers_combo) {
                 if ($Sel.JsonFile) { $_ | Add-Member "JsonFile" $Sel.JsonFile }
                 if ($Sel.Prestart) { $_ | Add-Member "Prestart" $Sel.Prestart }
                 if ($Sel.Host) { $_ | Add-Member "Host" $Sel.Host }
-                if ($Sel.User) { $_ | Add-Member "Host" $Sel.User }
-                if ($Sel.CommandFile) { $_ | Add-Member "Host" $Sel.CommandFile }
+                if ($Sel.User) { $_ | Add-Member "User" $Sel.User }
+                if ($Sel.CommandFile) { $_ | Add-Member "CommandFile" $Sel.CommandFile }
             }
         }
     }

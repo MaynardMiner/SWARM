@@ -1,8 +1,8 @@
 function Global:Get-StatsGrinMiner {
-    try { $Request = Get-Content ".\logs\$MinerType.log" -ErrorAction SilentlyContinue }catch { Write-Host "Failed to Read Miner Log"; break }
+    try { $Request = Get-Content ".\logs\$Global:MinerType.log" -ErrorAction SilentlyContinue }catch { Write-Host "Failed to Read Miner Log"; break }
     if ($Request) {
         $Hash = @()
-        $Devices | ForEach-Object {
+        $global:Devices | ForEach-Object {
             $DeviceData = $Null
             $DeviceData = $Request | Select-String "Device $($_)" | ForEach-Object { $_ | Select-String "Graphs per second: " } | Select-Object -Last 1
             $DeviceData = $DeviceData -split "Graphs per second: " | Select-Object -Last 1 | ForEach-Object { $_ -split " - Total" | Select-Object -First 1 }
@@ -11,7 +11,7 @@ function Global:Get-StatsGrinMiner {
         }
         Global:Write-MinerData2;
         try { 
-            for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { 
+            for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) { 
                 $global:GPUHashrates.$(Global:Get-GPUs) = (Global:Set-Array $Hash $global:i) 
             }
         }

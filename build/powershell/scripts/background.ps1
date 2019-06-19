@@ -347,7 +347,7 @@ While ($True) {
                 'grin-miner' { 
                     try { 
                         Global:Add-Module "$($(vars).miners)\grinminer.psm1"; 
-                        Global:Get-StartGrinMiner;
+                        Global:Get-StatsGrinMiner;
                         Remove-Module -name "grinminer"
                     }
                     catch { Global:Get-OhNo } 

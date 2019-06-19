@@ -120,7 +120,7 @@ function Global:Start-LaunchCode($MinerCurrent,$AIP) {
                         "tdxminer" { $MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "lolminer" { $MinerArguments = "--devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "wildrig" { $MinerArguments = "$($MinerCurrent.Arguments)" }
-                        "grin-miner" { set-minerconfig $NewMiner $Logs }
+                        "grin-miner" { Global:set-minerconfig $MinerCurrent $Logs }
                         "gminer" { $MinerArguments = "-d $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)" }
                         "progminer" { $MinerArguments = "--opencl-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "lyclminer" {
@@ -162,7 +162,7 @@ function Global:Start-LaunchCode($MinerCurrent,$AIP) {
                             $NewLines | Set-Content ".\lyclMiner.conf"
                             Set-Location $($(vars).dir)
                         }
-                        "grin-miner" { set-minerconfig $NewMiner $Logs }
+                        "grin-miner" { Global:set-minerconfig $MinerCurrent $Logs }
                         "gminer" { $MinerArguments = "-d $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)" }
                         "lolminer" { $MinerArguments = "--devices AMD $($MinerCurrent.Arguments)" }
                         default { $MinerArguments = "$($MinerCurrent.Arguments)" }
@@ -373,9 +373,10 @@ function Global:Start-LaunchCode($MinerCurrent,$AIP) {
             if ($FileChecked -eq $false) { Write-Warning "Failed To Write Miner Details To File" }
 
             ##Bash Script to free Port
+            if($MinerCurrent.Port -ne 0) {
             Write-Log "Clearing Miner Port `($($MinerCurrent.Port)`)..." -ForegroundColor Cyan
             Start-Process ".\build\bash\killcx.sh" -ArgumentList $MinerCurrent.Port -Wait
-
+            }
             ##Notification To User That Miner Is Attempting To start
             Global:Write-Log "Starting $($MinerCurrent.Name) Mining $($MinerCurrent.Symbol) on $($MinerCurrent.Type)" -ForegroundColor Cyan
 
