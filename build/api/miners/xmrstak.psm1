@@ -1,5 +1,6 @@
 function Global:Get-StatsXmrstak {
-    $Message = "/api.json"
+    if( $global:MinerName -like "*xmrig*"){$message = "/1/summary"}
+    else{ $Message = "/api.json" }
     $Request = Global:Get-HTTP -Port $global:Port -Message $Message
     if ($Request) {
         try { $Data = $Request.Content | ConvertFrom-Json -ErrorAction Stop; }catch { Write-Host "Failed To gather summary" -ForegroundColor Red; break }
