@@ -1,6 +1,4 @@
 function Global:Invoke-MinerCheck {
-    ## Timer For When To Restart Loop
-    $global:RestartTimer.Restart()
 
     ##Bool for Current Miners
     $Switched = $false

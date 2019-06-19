@@ -117,7 +117,8 @@ if($IsWindows){ $(vars).Add("Cores",$(Get-CimInstance -ClassName "Win32_Processo
 
 While ($True) {
 
-    $(vars).BackgroundTimer.restart()
+    ## Timer For When To Restart Loop
+    $(vars).BackgroundTimer.Restart()
 
     if ($(arg).Platform -eq "linux" -and -not $(vars).WebSites) {
         if ($global:GETSWARM.HasExited -eq $true) {
