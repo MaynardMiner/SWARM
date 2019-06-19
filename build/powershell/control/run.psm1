@@ -195,12 +195,15 @@ function Global:Start-NewMiners {
             if ($Miner.Type -notlike "*ASIC*") {
                 $Miner.Xprocess = Global:Start-LaunchCode $Miner
                 if ($IsWindows) {
+                    $(vars).QuickTimer.restart()
                     do {
                         $Miner.SubProcesses = if ($Miner.Xprocess.Id) { Get-Process | Where { $_.Parent.ID -eq $Miner.Xprocess.Id } } else { $Null }
                         if ($Miner.Subprocesses) {
                             $Miner.SubProcesses = $Miner.SubProcesses | % { $Cur = $_.id; Get-Process | Where $_.Parent.ID -eq $Child | Where ProcessName -eq $Miner.MinerName.Replace(".exe", "") }
                         }
-                    }while ($Null -eq $Miner.SubProcesses)
+                        Write-Log "Getting Process Id For $($Miner.Name)"
+                        Start-Sleep -S 1
+                    }Until($Null -ne $Miner.SubProcesses -or $(vars).QuickTimer.Elapsed.TotalSeconds -ge 5)
                 }
             }
             else {
