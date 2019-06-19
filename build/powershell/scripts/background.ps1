@@ -109,15 +109,15 @@ if (Test-Path $CheckForSWARM) {
     $Global:GETSWARM = Get-Process -ID $global:GETSWARMID -ErrorAction SilentlyContinue 
 }
 $(vars).ADD("GCount",(Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json))
-$global:BackgroundTimer = New-Object -TypeName System.Diagnostics.Stopwatch
-$global:BackgroundTimer.Restart()
-$global:RestartTimer = New-Object -TypeName System.Diagnostics.Stopwatch
+$(vars).ADD("BackgroundTimer",(New-Object -TypeName System.Diagnostics.Stopwatch))
 
 Remove-Module -Name "startup"
 
 if($IsWindows){ $(vars).Add("Cores",$(Get-CimInstance -ClassName "Win32_Processor" | Select-Object -Property "NumberOfCores").NumberOfCores)}
 
 While ($True) {
+
+    $(vars).BackgroundTimer.restart()
 
     if ($(arg).Platform -eq "linux" -and -not $(vars).WebSites) {
         if ($global:GETSWARM.HasExited -eq $true) {
@@ -640,8 +640,8 @@ While ($True) {
         Global:Send-WebStats
     }
 
-    if ($RestartTimer.Elapsed.TotalSeconds -le 5) {
-        $GoToSleep = [math]::Round(5 - $RestartTimer.Elapsed.TotalSeconds)
+    if ($(vars).BackgroundTimer.Elapsed.TotalSeconds -le 5) {
+        $GoToSleep = [math]::Round(5 - $(vars).BackgroundTimer.Elapsed.TotalSeconds)
         if ($GoToSleep -gt 0) { Start-Sleep -S $GoToSleep }
     }
     
