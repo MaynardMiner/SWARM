@@ -35,7 +35,7 @@ $(vars).AMDTypes | ForEach-Object {
     $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
     $Prestart = @()
     if (Test-Path $BE) { $Prestart += "export LD_PRELOAD=libcurl-compat.so.3.0.0" }
-    $PreStart += "export LD_LIBRARY_PATH=./:$ExportDir"
+    $PreStart += "export LD_LIBRARY_PATH=`.`/"
     $MinerConfig.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 
     if ($Global:Coins -eq $true) { $Pools = $global:CoinPools }else { $Pools = $global:AlgoPools }
@@ -67,7 +67,7 @@ $(vars).AMDTypes | ForEach-Object {
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
                         Version    = "$($(vars).amd.$CName.version)"
                         DeviceCall = "kbminer"
-                        Arguments  = "--algorithm $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --enable-api --apiaddr $Port --pool stratum+tcp://$($_.Host):$($_.Port) --user $($_.$User) --pass $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                        Arguments  = "--algorithm $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --enableapi --apiaddr $Port --pool $($_.Host):$($_.Port) --user $($_.$User) --pass $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
