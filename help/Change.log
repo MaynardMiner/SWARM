@@ -3465,3 +3465,19 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
     -Fixes grin-miner API
     -Fixes grin-miner launch.
     -These items were missed during beta-testing.
+
+
+
+    SWARM 2.4.3
+
+    -SWARM will now save version of miner to
+    swarm-version.txt in bin folder of miner.
+
+    -if version in swarm-version.txt and update.json
+     are a mismatch- SWARM will download miner to
+     latest version.
+    
+    -Version checking is useuful for users cloning
+     SWARM rather than downloading new version.
+
+    
