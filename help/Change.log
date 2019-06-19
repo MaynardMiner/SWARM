@@ -3417,3 +3417,27 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
   -cc-mtp updated
   -nminer updated
   -teamredminer updated
+
+  SWARM 2.4.1
+
+   GUIDED HELP
+   * There are four different ways to start guided help:
+     * run command ``swarm_help`` after SWARM has started in HiveOS/Windows
+     * [Linux] Run sudo ./help.sh (will install SWARM first, then run help)
+     * [Windows] Run Help.bat
+     * [ALL] opening either SWARM.bat or ./swarm, and adding ``-help``
+   * Will allow users to set up a basic configuration
+   * After basic config is created, will allow users to modify advanced settings.
+   * Everything is guided, and additional information beyond help.txt is supplied.
+   * Guided help will save your configuration to newarguments.json, as well as
+     provide a copy/paste of arguments for flighsheets/configs.
+
+  -Fixed auto-install of swarm_help for hiveos
+  -Using different method for PCI bus changes in Windows.
+  -Hive_Windows_Reset.bat will reset gpu count as well.
+  -WildRig updated skein2 added
+  -T-rex updated honeycomb added
+  -Claymore updated
+  -Attempted to add kbminer- Does not work on nicehash
+  -Added more params to global vars parameter (for modules)
+  -

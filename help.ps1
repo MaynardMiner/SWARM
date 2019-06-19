@@ -128,6 +128,7 @@ Please choose an advanced setting you wish to modify:
 42 I do not wish SWARM to run at Windows startup (-Startup)
 43 SWARM is not detecting the correct OpenCL platform for AMD (-CLPlatform)
 44 I wish to turn on updates (-Update)
+45 I wish to increase the maximum number of issues before SWARM restarts computer (-TypeBanCount)
 
 Answer"
         $Check = Global:Confirm-Answer $ans @(1 .. 44)

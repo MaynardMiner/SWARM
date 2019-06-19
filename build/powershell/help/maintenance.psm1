@@ -123,12 +123,45 @@ Switch($ans){
 if ($(vars).config.ContainsKey("Update")) { $(vars).config.Update = $ans } else { $(vars).config.Add("Update", $ans) }
 }
 
+function Global:Get-TypeBanCount {
+    Write-Host "Doing TypeBanCount"
+    Start-Sleep -S 3
+    do {
+        Clear-Host
+        $ans = Read-Host -Prompt "TypeBanCount    
+        
+[0-10]             
+
+Like PoolBanCount, TypeBanCount will take
+action if a device type (AMD1,CPU,NVIDIA1,etc.) has x consecutive banned
+miners in a row- Where x is -TypeBanCount. When x has been reached, SWARM
+will reset all timeouts, then restart computer.
+
+How many miners must be banned before SWARM restart computer?
+
+Answer"
+        do{
+            clear-host
+            $Confirm = Read-Host -Prompt "You have entered $ans
+            
+Is this correct?
+
+1 Yes
+2 No"
+          $Check = Global:Confirm-Answer $ans @("1","2")
+        }While($Check -eq 1)
+}While($Confirm -ne "1")
+
+if ($(vars).config.ContainsKey("TypeBanCount")) { $(vars).config.TypeBanCount = $ans } else { $(vars).config.Add("TypeBanCount", $ans) }
+}
+
 function Global:Get-Maintenance {
     switch ($(vars).input) {
         "41" { Global:Get-Platform }
         "42" { Global:Get-Startup }
         "43" { Global:Get-CLPlatform }
         "44" { Global:Get-Update }
+        "45" { Global:Get-TypeBanCount }
     }
 
     do {

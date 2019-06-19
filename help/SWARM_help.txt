@@ -254,6 +254,11 @@ Argument            Options             Explanation
 -AlgoBanCount    [0-10]             Default is 3. Number of strikes/bad benchmarks required before
                                     miner is banned from using algo.
 
+-TypeBanCount    [0-10]             Like PoolBanCount, TypeBanCount will take
+                                    action if a device type (AMD1,CPU,NVIDIA1,etc.) has x consecutive banned
+                                    miners in a row- Where x is -TypeBanCount. When x has been reached, SWARM
+                                    will reset all timeouts, then restart computer.
+
 -Rejections 	    [0-100]	    Default is 50. This the % of rejections required for SWARM to 
 				    consider background miner as timing out.
 
