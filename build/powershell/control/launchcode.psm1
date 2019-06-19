@@ -287,16 +287,15 @@ function Global:Start-LaunchCode($MinerCurrent,$AIP) {
                     if ($Process -eq $null) { [PSCustomObject]@{ProcessId = $null }; return
                     };
                     [PSCustomObject]@{ProcessId = $Process.Id; ProcessHandle = $Process.Handle };
-                    do { if ($ControllerProcess.WaitForExit(1000) ) {
-                        $Process.CloseMainWindow() | Out-Null
-                    }
-                }while ($Process.HasExited -eq $false)
+                    $ControllerProcess.Handle | Out-Null; $Process.Handle | Out-Null; 
+                    do { if ($ControllerProcess.WaitForExit(1000)) { $Process.CloseMainWindow() | Out-Null } }while ($Process.HasExited -eq $false)
                 }
       
                 do { sleep 1; $JobOutput = Receive-Job $Job }
                 while ($JobOutput -eq $null)
       
                 $Process = Get-Process | Where-Object Id -EQ $JobOutput.ProcessId
+                $Process.Handle | Out-Null
                 $Process
             }
             else { $MinerProcess }
