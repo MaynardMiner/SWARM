@@ -1,6 +1,6 @@
 # SWARM: Profit Switching AI For HiveOS, SMOS, Linux, & Windows
 
-**Developer Notice** : SWARM does perform occassional disk read/writes, more than a mining OS. If you are using a usb stick and have issues- It is likely the quality of the USB stick/condition.
+**Developer Notice** : SWARM does perform occassional disk read/writes, more than a typical mining OS. If you are using a usb stick and have issues- It is likely the quality of the USB stick/condition.
 
 ## SWARM wiki:
 
