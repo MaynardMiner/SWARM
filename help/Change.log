@@ -3440,4 +3440,4 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
   -Claymore updated
   -Attempted to add kbminer- Does not work on nicehash
   -Added more params to global vars parameter (for modules)
-  -
+  -TypeBanCount added to help files
