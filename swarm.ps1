@@ -196,13 +196,14 @@ switch ($(arg).Platform) {
 }
 
 ## Determine AMD platform
+$(vars).add("AMDPlatform",0)
 if ($(arg).Type -like "*AMD*") {
-    if ([string]$(arg).CLPlatform) { $(vars).amdPlatform = [string]$(arg).CLPlatform }
+    if ([string]$(arg).CLPlatform) { $(vars).AMDPlatform = [string]$(arg).CLPlatform }
     else {
         Global:Write-Log "Getting AMD OPENCL Platform. Note: If SWARM doesn't continue, a GPU has crashed on rig." -ForeGroundColor Yellow
         Global:Add-Module "$($(vars).startup)\cl.psm1"
-        [string]$(vars).amdPlatform = Global:Get-AMDPlatform
-        Global:Write-Log "AMD OpenCL Platform is $(vars).amdPlatform"
+        [string]$(vars).AMDPlatform = Global:Get-AMDPlatform
+        Global:Write-Log "AMD OpenCL Platform is $($(vars).AMDPlatform)"
     }
 }
 

@@ -68,7 +68,7 @@ $(vars).AMDTypes | ForEach-Object {
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
                         Version    = "$($(vars).amd.$CName.version)"
                         DeviceCall = "progminer_amd"
-                        Arguments  = "-G -P stratum+tcp://$($_.$User)@$($_.Host):$($_.Port) --api-port -$Port --opencl-platform $(vars).amdPlatform $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                        Arguments  = "-G -P stratum+tcp://$($_.$User)@$($_.Host):$($_.Port) --api-port -$Port --opencl-platform $($(vars).AMDPlatform) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 

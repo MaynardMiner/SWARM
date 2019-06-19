@@ -70,7 +70,7 @@ $(vars).AMDTypes | ForEach-Object {
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
                         Version    = "$($(vars).amd.$CName.version)"
                         DeviceCall = "energiminer"
-                        Arguments  = "--opencl-platform $(vars).amdPlatform -G stratum://$($_.$User).$($_.$Pass)@$($_.Algorithm).mine.zergpool.com:$($_.Port)"
+                        Arguments  = "--opencl-platform $($(vars).AMDPlatform) -G stratum://$($_.$User).$($_.$Pass)@$($_.Algorithm).mine.zergpool.com:$($_.Port)"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 }
