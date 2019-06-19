@@ -32,7 +32,8 @@
             "padihash": "",
             "pawelhash": "",
             "mtp": "",
-            "x25x": ""
+            "x25x": "",
+            "honeycomb": ""
         },
         "difficulty": {
             "tribus": "",
@@ -63,7 +64,8 @@
             "padihash": "",
             "pawelhash": "",
             "mtp": "",
-            "x25x": ""
+            "x25x": "",
+            "honeycomb": ""
         },
         "naming": {
             "tribus": "tribus",
@@ -94,7 +96,8 @@
             "padihash": "padihash",
             "pawelhash": "pawelhash",
             "mtp": "mtp",
-            "x25x": "x25x"
+            "x25x": "x25x",
+            "honeycomb": "honeycomb"
         },
         "fee": {
             "tribus": 1,
@@ -125,7 +128,8 @@
             "padihash": 1,
             "pawelhash": 1,
             "mtp": 1,
-            "x25x": 1
+            "x25x": 1,
+            "honeycomb": 1
         }
     },
     "NVIDIA2": {
@@ -161,7 +165,8 @@
             "padihash": "",
             "pawelhash": "",
             "mtp": "",
-            "x25x": ""
+            "x25x": "",
+            "honeycomb": ""
         },
         "difficulty": {
             "tribus": "",
@@ -192,7 +197,8 @@
             "padihash": "",
             "pawelhash": "",
             "mtp": "",
-            "x25x": ""
+            "x25x": "",
+            "honeycomb": ""
         },
         "naming": {
             "tribus": "tribus",
@@ -223,7 +229,8 @@
             "padihash": "padihash",
             "pawelhash": "pawelhash",
             "mtp": "mtp",
-            "x25x": "x25x"
+            "x25x": "x25x",
+            "honeycomb": "honeycomb"
         },
         "fee": {
             "tribus": 1,
@@ -254,7 +261,8 @@
             "padihash": 1,
             "pawelhash": 1,
             "mtp": 1,
-            "x25x": 1
+            "x25x": 1,
+            "honeycomb": 1
         }
     },
     "NVIDIA3": {
@@ -290,7 +298,8 @@
             "padihash": "",
             "pawelhash": "",
             "mtp": "",
-            "x25x": ""
+            "x25x": "",
+            "honeycomb": ""
         },
         "difficulty": {
             "tribus": "",
@@ -321,7 +330,8 @@
             "padihash": "",
             "pawelhash": "",
             "mtp": "",
-            "x25x": ""
+            "x25x": "",
+            "honeycomb": ""
         },
         "naming": {
             "tribus": "tribus",
@@ -352,7 +362,8 @@
             "padihash": "padihash",
             "pawelhash": "pawelhash",
             "mtp": "mtp",
-            "x25x": "x25x"
+            "x25x": "x25x",
+            "honeycomb": "honeycomb"
         },
         "fee": {
             "tribus": 1,
@@ -383,7 +394,8 @@
             "padihash": 1,
             "pawelhash": 1,
             "mtp": 1,
-            "x25x": 1
+            "x25x": 1,
+            "honeycomb": 1
         }
     },
     "name": "t-rex"
