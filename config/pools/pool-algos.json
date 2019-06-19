@@ -84,9 +84,18 @@
       "comma seperated"
     ]
   },
+  "equihash_125/4": {
+    "alt_names": [
+      "zelcash","equihash_125/4"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "equihash_150/5": {
     "alt_names": [
-      "beam"
+      "beam","equihash_150/5"
     ],
     "exclusions": [
       "add pool or miner here",
