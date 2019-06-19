@@ -5,7 +5,7 @@ function Global:Get-MinerTimeout {
     )
 
     $miner = $minerjson | ConvertFrom-Json
-    $reason = "error"
+    $reason = "unknown error"
 
     if ($Miner.hashrate -eq 0 -or $null -eq $Miner.hashrate) {
         if ($null -eq $miner.xprocess) { $reason = "no start" }
@@ -31,13 +31,13 @@ function Global:Set-Power {
         [Parameter(Position = 1, Mandatory = $true)]
         [String]$PwrDevices
     )
-        $GPUPower = 0
+    $GPUPower = 0
     switch -Wildcard ($PwrType) {
         "*AMD*" { $GPUPower = (Global:Set-AMDStats).watts }
-         "*NVIDIA*" { 
+        "*NVIDIA*" { 
             $D = Global:Get-DeviceString -TypeCount $($(vars).GCount.NVIDIA.PSObject.Properties.Value.Count) -TypeDevices $PwrDevices
             $Power = (Global:Set-NvidiaStats).watts 
-            for($i = 0; $i -lt $D.Count; $i++){
+            for ($i = 0; $i -lt $D.Count; $i++) {
                 $DI = $D[$i]
                 $GPUPower += $Power[$DI]
             }
@@ -101,6 +101,7 @@ function Global:Start-Benchmark {
         $MinerPoolBan = $false
         $MinerAlgoBan = $false
         $MinerBan = $false
+        $TypeBan = $False
         $Global:Strike = $false
         $global:WasBenchmarked = $false
         if ($_.BestMiner -eq $true) {
@@ -204,6 +205,7 @@ function Global:Start-Benchmark {
                 if ($(vars).Warnings."$($_.Name)" -ne $null) { $(vars).Warnings."$($_.Name)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
                 if ($(vars).Warnings."$($_.Name)_$($_.Algo)" -ne $null) { $(vars).Warnings."$($_.Name)_$($_.Algo)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
                 if ($(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" -ne $null) { $(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
+                if ($(vars).Warnings."$($_.Type)" -ne $null) { $(vars).Warnings."$($_.Type)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
             }
      
             ## Strike-Out System. Will not work with Lite Mode
@@ -211,6 +213,8 @@ function Global:Start-Benchmark {
                 if ($Global:Strike -eq $true) {
                     if ($global:WasBenchmarked -eq $False) {
                         if (-not (Test-Path ".\timeout")) { New-Item "timeout" -ItemType "directory" | Out-Null }
+                        if (-not (test-Path ".\timeout\Ban_Number.txt") ) { $(vars).Ban_Number = 1; $(vars).Ban_Number | Out-File ".\timeout\Ban_Number.txt" }
+                        else { $(vars).Ban_Number = Get-Content ".\timeout\Ban_Number.txt" }
                         if (-not (Test-Path ".\timeout\pool_block")) { New-Item -Path ".\timeout" -Name "pool_block" -ItemType "directory" | Out-Null }
                         if (-not (Test-Path ".\timeout\algo_block")) { New-Item -Path ".\timeout" -Name "algo_block" -ItemType "directory" | Out-Null }
                         if (-not (Test-Path ".\timeout\miner_block")) { New-Item -Path ".\timeout" -Name "miner_block" -ItemType "directory" | Out-Null }
@@ -224,6 +228,8 @@ function Global:Start-Benchmark {
                         if ($(vars).Warnings."$($_.Name)_$($_.Algo)" -eq $null) { $(vars).Warnings += [PSCustomObject]@{"$($_.Name)_$($_.Algo)" = [PSCustomObject]@{bad = 0 } }
                         }
                         if ($(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" -eq $null) { $(vars).Warnings += [PSCustomObject]@{"$($_.Name)_$($_.Algo)_$($_.MinerPool)" = [PSCustomObject]@{bad = 0 } }
+                        }
+                        if ($(vars).Warnings."$($_.Type)" -eq $null) { $(vars).Warnings += [PSCustomObject]@{"$($_.Type)" = [PSCustomObject]@{bad = 0 } }
                         }
                         $(vars).Warnings."$($_.Name)" | ForEach-Object { try { $_.bad++ }catch { } }
                         $(vars).Warnings."$($_.Name)_$($_.Algo)" | ForEach-Object { try { $_.bad++ }catch { } }
@@ -313,6 +319,8 @@ function Global:Start-Benchmark {
                             $(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" | ForEach-Object { try { $_.bad = 0 }catch { } }
                             $(vars).Warnings."$($_.Name)_$($_.Algo)" | ForEach-Object { try { $_.bad = 0 }catch { } }
                             $(vars).Warnings."$($_.Name)" | ForEach-Object { try { $_.bad = 0 }catch { } }
+                            $(vars).Warnings."$($_.Type)" | ForEach-Object { Try { $_.bad++ }catch { } }
+                            if ($(vars).Warnings."$($_.Type)".bad -ge $(arg).TypeBanCount ) { $TypeBan = $true }
                             $HiveWarning = @{result = @{command = "timeout" } }
                             if ($(vars).WebSites) {
                                 $(vars).WebSites | ForEach-Object {
@@ -328,6 +336,31 @@ function Global:Start-Benchmark {
                             }
                             Global:Write-Log "$HiveMessage" -ForegroundColor Red
                             Start-Sleep -S 1
+                        }
+                        if ($TypeBan -eq $true) {
+                            if ($_.Type -notlike "*ASIC*" -or $_.Type -ne "CPU") {
+                                if ($(arg).Startup -eq "Yes") {
+                                    $HiveMessage = "$($_.Type) Have timed out $( $(arg).TypeBanCount ) bad miners. A card must have crashed. Rebooting system..."
+                                    $HiveWarning = @{result = @{command = "timeout" } }
+                                    if ($(vars).WebSites) {
+                                        $(vars).WebSites | ForEach-Object {
+                                            $Sel = $_
+                                            try {
+                                                Global:Add-Module "$($(vars).web)\methods.psm1"
+                                                Global:Get-WebModules $Sel
+                                                $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
+                                            }
+                                            catch { Global:Write-Log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
+                                            Global:Remove-WebModules $sel
+                                        }
+                                    }
+                                    Global:Write-Log "$HiveMessage" -ForegroundColor Red
+                                    Start-Sleep -S 5
+                                    Remove-Item ".\timeout" -Recurse -Force
+                                    if ($IsWindows) { Restart-Computer -Force }
+                                    elseif ($IsLinux) { Invoke-Expression "reboot" }
+                                }
+                            }
                         }
                     }
                 }

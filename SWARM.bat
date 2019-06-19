@@ -1,6 +1,11 @@
 @echo off
 
 REM ************QUICK ARGUMENTS CHEAT SHEET**************************************************
+REM
+REM
+REM NOTE: YOU CAN RUN ".\startup.ps1 -Help" for a guided configuration
+REM
+REM
 REM Rigname: Name of your rig
 REM Currency: Preferred Fiat Currency
 REM CoinExchange: AltCoin Coin Pricing (Besides BTC).
@@ -19,4 +24,4 @@ REM ************NOTE***********************
 REM If you do not intend to use HiveOS, add -HiveOS No
 REM FOR ALL ARGUMENTS: SEE help folder. Explanation on how to use -Type NVIDIA1,NVIDIA2,NVIDIA3 is provided.
 
-pwsh -executionpolicy Bypass -command ".\startup.ps1 -Auto_Coin Yes -RigName1 SWARM1 -Currency USD -CoinExchange LTC -Location US -PoolName hashrefinery,zergpool,fairpool,nicehash,nlpool,blockmasters,phiphipool,zpool,blazepool,ahashpool -Type NVIDIA1,CPU -CPUThreads 2 -Wallet1 1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i -Donate .5 -WattOMeter Yes -Hive_Hash xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+pwsh -executionpolicy Bypass -command ".\startup.ps1 -Auto_Coin Yes -RigName1 SWARM1 -Currency USD -CoinExchange LTC -Location US -PoolName hashrefinery,zergpool,fairpool,nicehash,nlpool,blockmasters,phiphipool,zpool,blazepool,ahashpool -Type NVIDIA1,CPU -CPUThreads 2 -Wallet1 1FpuMha1QPaWS4PTPZpU1zGRzKMevnDpwg -Donate .5 -WattOMeter Yes -Hive_Hash xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"

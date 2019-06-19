@@ -3,19 +3,19 @@ $(vars).NVIDIATypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
-    if ($Global:nvidia.nbminer.$ConfigType) { $Path = "$($Global:nvidia.nbminer.$ConfigType)" }
+    if ($(vars).nvidia.nbminer.$ConfigType) { $Path = "$($(vars).nvidia.nbminer.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:nvidia.nbminer.uri) { $Uri = "$($Global:nvidia.nbminer.uri)" }
+    if ($(vars).nvidia.nbminer.uri) { $Uri = "$($(vars).nvidia.nbminer.uri)" }
     else { $Uri = "None" }
-    if ($Global:nvidia.nbminer.minername) { $MinerName = "$($Global:nvidia.nbminer.minername)" }
+    if ($(vars).nvidia.nbminer.minername) { $MinerName = "$($(vars).nvidia.nbminer.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "nbminer-$Num"; $Port = "6200$Num";
 
     Switch ($Num) {
-        1 { $Get_Devices = $(vars).NVIDIADevices1 }
-        2 { $Get_Devices = $(vars).NVIDIADevices2 }
-        3 { $Get_Devices = $(vars).NVIDIADevices3 }
+        1 { $Get_Devices = $(vars).NVIDIADevices1; $Rig = $(arg).RigName1 }
+        2 { $Get_Devices = $(vars).NVIDIADevices2; $Rig = $(arg).RigName2 }
+        3 { $Get_Devices = $(vars).NVIDIADevices3; $Rig = $(arg).RigName3 }
     }
 
     ##Log Directory
@@ -44,19 +44,19 @@ $(vars).NVIDIATypes | ForEach-Object {
 
         $MinerAlgo = $_
 
-        if ($MinerAlgo -in $global:Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
-            $StatAlgo = $MinerAlgo -replace "`_","`-"
+        if ($MinerAlgo -in $(vars).Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $(vars).BanHammer) {
+            $StatAlgo = $MinerAlgo -replace "`_", "`-"
             $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
-           $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
+            $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
             $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
             if ($Check.RAW -ne "Bad") {
                 $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                     $SelName = $_.Name
                     switch ($MinerAlgo) {
                         "ethash" {
-                            Switch($SelName) {
-                                "nicehash" {$Stratum = "ethnh+tcp://"; $A = "ethash"}
-                                "whalesburg" {$Stratum = "stratum+ssl://"; $A = "ethash"}
+                            Switch ($SelName) {
+                                "nicehash" { $Stratum = "ethnh+tcp://"; $A = "ethash" }
+                                "whalesburg" { $Stratum = "stratum+ssl://"; $A = "ethash" }
                             }
                         }
                         "cuckaroo29" { $Stratum = "stratum+tcp://"; $A = "cuckaroo" }
@@ -76,15 +76,16 @@ $(vars).NVIDIATypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:nvidia.nbminer.version)"
+                        Version    = "$($(vars).nvidia.nbminer.version)"
                         DeviceCall = "ccminer"
                         Arguments  = "-a $A --api 0.0.0.0:$Port --url $Stratum$($_.Host):$($_.Port) --user $($_.$User) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
-                        Power     =  if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
+                        Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                         MinerPool  = "$($_.Name)"
                         API        = "nebutech"
                         Port       = $Port
+                        Worker     = $Rig
                         Wallet     = "$($_.$User)"
                         URI        = $Uri
                         Server     = "localhost"

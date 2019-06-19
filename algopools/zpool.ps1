@@ -28,8 +28,8 @@ if ($Name -in $(arg).PoolName) {
         return $Zpool_Algorithm
     } |
     ForEach-Object {
-        if ($global:Algorithm -contains $Zpool_Algorithm -or $(arg).ASIC_ALGO -contains $Zpool_Algorithm) {
-            if ($Name -notin $global:Config.Pool_Algos.$Zpool_Algorithm.exclusions -and $Zpool_Algorithm -notin $Global:banhammer) {
+        if ($(vars).Algorithm -contains $Zpool_Algorithm -or $(arg).ASIC_ALGO -contains $Zpool_Algorithm) {
+            if ($Name -notin $global:Config.Pool_Algos.$Zpool_Algorithm.exclusions -and $Zpool_Algorithm -notin $(vars).BanHammer) {
                 $Zpool_Port = $Zpool_Request.$_.port
                 $Zpool_Host = "$($Zpool_Request.$_.name.ToLower()).$($region).mine.zpool.ca$X"
                 $Divisor = (1000000 * $Zpool_Request.$_.mbtc_mh_factor)

@@ -20,7 +20,7 @@ if (Test-Path $BanDir) { $BanJson = Get-Content $BanDir | ConvertFrom-Json }
 
 $Screen = @()
 $JsonBanHammer = @()
-$BanJson | % { $global:banhammer += $_ }
+$BanJson | % { $(vars).BanHammer += $_ }
 $BanJson | % { $JsonBanHammer += $_ }
 
 $BanChange = $false
@@ -36,7 +36,7 @@ switch ($Action) {
                 if ($Arg.Count -eq 1) {
                     switch ($Launch) {
                         "Process" {
-                            if ($Arg -notin $global:banhammer) { $global:banhammer += $Arg }
+                            if ($Arg -notin $(vars).BanHammer) { $(vars).BanHammer += $Arg }
                         }
                         "Command" {
                             if ($Arg -notin $JsonBanHammer) { $JsonBanHammer += $Arg }

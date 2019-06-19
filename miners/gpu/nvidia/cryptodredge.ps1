@@ -3,19 +3,19 @@ $(vars).NVIDIATypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
-    if ($Global:nvidia.cryptodredge.$ConfigType) { $Path = "$($Global:nvidia.cryptodredge.$ConfigType)" }
+    if ($(vars).nvidia.cryptodredge.$ConfigType) { $Path = "$($(vars).nvidia.cryptodredge.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:nvidia.cryptodredge.uri) { $Uri = "$($Global:nvidia.cryptodredge.uri)" }
+    if ($(vars).nvidia.cryptodredge.uri) { $Uri = "$($(vars).nvidia.cryptodredge.uri)" }
     else { $Uri = "None" }
-    if ($Global:nvidia.cryptodredge.minername) { $MinerName = "$($Global:nvidia.cryptodredge.minername)" }
+    if ($(vars).nvidia.cryptodredge.minername) { $MinerName = "$($(vars).nvidia.cryptodredge.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "cryptodredge-$Num"; $Port = "4300$Num"
 
     Switch ($Num) {
-        1 { $Get_Devices = $(vars).NVIDIADevices1 }
-        2 { $Get_Devices = $(vars).NVIDIADevices2 }
-        3 { $Get_Devices = $(vars).NVIDIADevices3 }
+        1 { $Get_Devices = $(vars).NVIDIADevices1; $Rig = $(arg).RigName1 }
+        2 { $Get_Devices = $(vars).NVIDIADevices2; $Rig = $(arg).RigName2 }
+        3 { $Get_Devices = $(vars).NVIDIADevices3; $Rig = $(arg).RigName3 }
     }
 
     ##Log Directory
@@ -44,10 +44,10 @@ $(vars).NVIDIATypes | ForEach-Object {
 
         $MinerAlgo = $_
 
-        if ($MinerAlgo -in $global:Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
-            $StatAlgo = $MinerAlgo -replace "`_","`-"
+        if ($MinerAlgo -in $(vars).Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $(vars).BanHammer) {
+            $StatAlgo = $MinerAlgo -replace "`_", "`-"
             $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
-           $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
+            $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
 
             if ($Check.RAW -ne "Bad") {
                 $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
@@ -65,14 +65,15 @@ $(vars).NVIDIATypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:nvidia.cryptodredge.version)"
+                        Version    = "$($(vars).nvidia.cryptodredge.version)"
                         DeviceCall = "ccminer"
                         Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -b 0.0.0.0:$Port --log `'$Log`' -u $($_.$User) -p $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
-                        Power     =  if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
+                        Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                         MinerPool  = "$($_.Name)"
                         Port       = $Port
+                        Worker     = $Rig
                         API        = "Ccminer"
                         Wallet     = "$($_.$User)"
                         URI        = $Uri

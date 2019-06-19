@@ -42,7 +42,7 @@ Function Get-SpecialParams {
     $(arg).Passwordcurrency1 = @("BTC")
     $(arg).Passwordcurrency2 = @("BTC")
     $(arg).Passwordcurrency3 = @("BTC")
-    $(arg).PoolName = @("nlpool", "zergpool")
+    $(arg).PoolName = @("zergpool")
     $(vars).DCheck = $true
     $(vars).DWallet = $BanPass1
 }

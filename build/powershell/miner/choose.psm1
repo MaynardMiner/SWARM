@@ -1,6 +1,12 @@
 function Global:Remove-BadMiners {
     $BadMiners = @()
-    if ($(arg).Threshold -ne 0) { $Global:Miners | ForEach-Object { if ($_.Profit -gt $(arg).Threshold) { $BadMiners += $_ } } }
+    if ($(arg).Threshold -ne 0) { $Global:Miners | ForEach-Object { 
+        if ($_.Profit -gt $(arg).Threshold) { 
+            $BadMiners += $_ 
+            $(vars).Thresholds += "$($_.Name) mining $($_.Algo) was removed this run: Profit/Day above $($(arg).Threshold) BTC"
+            }
+        } 
+    }
     $BadMiners | ForEach-Object { $Global:Miners.Remove($_) }
     $BadMiners = $Null
 }

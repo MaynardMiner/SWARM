@@ -208,6 +208,14 @@ function Global:Get-Data {
         Set-Location "/"
         Set-Location $($(vars).dir)     
     }
+
+    if (Test-Path ".\build\bash\swarm_help") {
+    Copy-Item ".\build\bash\swarm_help" -Destination "/usr/bin" -force | Out-Null
+    Set-Location "/usr/bin"
+    Start-Process "chmod" -ArgumentList "+x swarm_help"
+    Set-Location "/"
+    Set-Location $($(vars).dir)     
+    }
    
     Set-Location $($(vars).dir)
     
@@ -297,6 +305,7 @@ function Global:Get-GPUCount {
                         name      = $PCIArray.$busid.name
                         brand     = "amd"
                         subvendor = $subvendor
+                        mem       = $mem
                         vbios     = $PCIArray.$busid.bios
                         mem_type  = $PCIArray.$busid.memory
                     }

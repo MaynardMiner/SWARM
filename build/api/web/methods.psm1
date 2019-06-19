@@ -13,12 +13,7 @@ function Global:Get-RigData {
     Switch ($IsWindows) {
         $True {
             $RigData = @{ }
-            $AMDData = $(vars).BusData
-            $NVIDIAData = $(vars).BusData
-            $AMDData = $AMDData | Where PnPID -match "PCI\\VEN_1002*"
-            $NVIDIAData = $NVIDIAData | Where PnPID -match "PCI\\VEN_10DE*"
             Invoke-Expression ".\build\apps\nvidia-smi.exe --query-gpu=gpu_bus_id,vbios_version,gpu_name,memory.total,power.min_limit,power.default_limit,power.max_limit --format=csv > "".\build\txt\getgpu.txt"""
-            $GetGPU = Get-Content ".\build\txt\getgpu.txt" | ConvertFrom-Csv
             $getuid = (Get-CimInstance win32_networkadapterconfiguration | where { $_.IPAddress -ne $null } | select MACAddress).MacAddress -replace ("`:", "")
             $string1 = "$getuid".ToLower()
             $uid = Global:Get-StringHash $string1
@@ -29,14 +24,11 @@ function Global:Get-RigData {
             $RigData.Add("boot_time", $Uptime)
             $Ip = $(Get-CimInstance Win32_NetworkAdapterConfiguration | Where { $_.Ipaddress.length -gt 1 }).ipaddress[0]
             $RigData.Add("ip", "$Ip")
-            $GPUS = @()
-            if ($AMDData) { for ($i = 0; $i -lt $AMDData.name.Count; $i++) { $GPUS += @{busid = ($AMDData[$i].PCIBusID).ToLower(); name = $AMDData[$i].Name; brand = $AMDData[$i].brand; subvendor = $AMDData[$i].subvendor ; mem = $AMDData[$i].ram; mem_type = "unknown"; vbios = "unknown" } }
-            }
-            if ($GetGPU) { for ($i = 0; $i -lt $GetGPU.name.count; $i++) { $GPUS += @{busid = "$($GetGPU[$i]."pci.bus_id" -split ":",2 | Select -Last 1)".ToLower(); name = $GetGPU[$i].name; brand = "nvidia"; subvendor = $NVIDIAData[$i].subvendor ; mem = $GetGPU[$i]."memory.total [MiB]"; vbios = "$($GetGPU[$i].vbios_version)".ToLower(); plim_min = $GetGPU[$i]."power.min_limit [W]"; plim_def = $GetGPU[$i]."power.default_limit [W]"; plim_max = $GetGPU[$i]."power.max_limit [W]"; } }
-            }
-            $RigData.Add("gpu", $GPUS)
-            $RigData.Add("gpu_count_amd", "$($AMDData.name.Count)")
-            $RigData.Add("gpu_count_nvidia", "$($GetGPU.name.count)")
+            $RigData.Add("gpu", $(vars).BusData)
+            $AMDCount = ($(vars).BusData | Where brand -eq "amd").Count
+            $NVIDIACount = ($(vars).BusData | Where brand -eq "nvidia").Count
+            $RigData.Add("gpu_count_amd", "$AMDCount")
+            $RigData.Add("gpu_count_nvidia", "$NVIDIACount")
             $manu = $(Get-CimInstance Win32_BaseBoard | Select-Object Manufacturer).Manufacturer
             $RigData.Add("mb", @{ })
             $RigData.mb.Add("manufacturer", $manu)
@@ -50,10 +42,8 @@ function Global:Get-RigData {
             $RigData.cpu.Add("cores", $cpucores)
             $cpuid = $cpud.DeviceID
             $RigData.cpu.Add("cpu_id", $cpuid)
-            Global:Write-Log "Running Coreinfo For AES detection" -ForegroundColor Yellow
-            Invoke-Expression ".\build\apps\Coreinfo.exe" | Tee-Object -Variable AES | Out-Null
-            $AES = $AES | Select-String "Supports AES extensions"
-            if ($AES) { $HasAES = 1 }else { $HasAES = 0 }
+            $AES = $(Invoke-Expression ".\build\apps\features-win.exe" | Select -Skip 1 | ConvertFrom-StringData)."AES-NI"
+            if ($AES -eq "Yes") { $HasAES = 1 }else { $HasAES = 0 }
             $RigData.cpu.Add("aes", $HasAES)
             $disk = $(Get-CimInstance win32_diskdrive).model
             $diskSpace = Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'" | Select-Object Size

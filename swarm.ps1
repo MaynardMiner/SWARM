@@ -101,6 +101,7 @@ Import-Module "$($(vars).global)\include.psm1" -Scope Global
 ## Get Parameters
 Global:Add-Module "$($(vars).startup)\parameters.psm1"
 Global:Get-Parameters
+$(arg).TCP_Port | Out-File ".\build\txt\port.txt"
 
 ## Crash Reporting
 Global:Add-Module "$($(vars).startup)\crashreport.psm1"
@@ -195,13 +196,14 @@ switch ($(arg).Platform) {
 }
 
 ## Determine AMD platform
+$(vars).add("AMDPlatform",0)
 if ($(arg).Type -like "*AMD*") {
-    if ([string]$(arg).CLPlatform) { $Global:AMDPlatform = [string]$(arg).CLPlatform }
+    if ([string]$(arg).CLPlatform) { $(vars).AMDPlatform = [string]$(arg).CLPlatform }
     else {
         Global:Write-Log "Getting AMD OPENCL Platform. Note: If SWARM doesn't continue, a GPU has crashed on rig." -ForeGroundColor Yellow
         Global:Add-Module "$($(vars).startup)\cl.psm1"
-        [string]$global:AMDPlatform = Global:Get-AMDPlatform
-        Global:Write-Log "AMD OpenCL Platform is $Global:AMDPlatform"
+        [string]$(vars).AMDPlatform = Global:Get-AMDPlatform
+        Global:Write-Log "AMD OpenCL Platform is $($(vars).AMDPlatform)"
     }
 }
 
@@ -261,8 +263,8 @@ While ($true) {
         ##############################################################################
         #######                     PHASE 1: Build                              ######
         ##############################################################################
-        $global:Algorithm = @()
-        $global:BanHammer = @()
+        $(vars).Add("Algorithm",@())
+        $(vars).Add("BanHammer",@())
         $Global:ASICTypes = @(); 
         $global:ASICS = @{ }
         $global:All_AltWallets = $null
@@ -278,9 +280,9 @@ While ($true) {
 
         #Get Miner Config Files
         Global:Add-Module "$($(vars).build)\miners.psm1"
-        if ($(arg).Type -like "*CPU*") { $Global:cpu = Global:Get-minerfiles -Types "CPU" }
-        if ($(arg).Type -like "*NVIDIA*") { $Global:nvidia = Global:Get-minerfiles -Types "NVIDIA" -Cudas $(arg).Cuda }
-        if ($(arg).Type -like "*AMD*") { $Global:amd = Global:Get-minerfiles -Types "AMD" }
+        if ($(arg).Type -like "*CPU*") { $(vars).Add("cpu",(Global:Get-minerfiles -Types "CPU")) }
+        if ($(arg).Type -like "*NVIDIA*") { $(vars).Add("nvidia",(Global:Get-minerfiles -Types "NVIDIA" -Cudas $(arg).Cuda)) }
+        if ($(arg).Type -like "*AMD*") { $(vars).Add("amd",(Global:Get-minerfiles -Types "AMD")) }
 
         ## Check to see if wallet is present:
         if (-not $(arg).Wallet1) { 
@@ -391,6 +393,7 @@ While ($true) {
         Global:Add-Module "$($(vars).global)\stats.psm1"
 
         $global:Miner_HashTable = $Null
+        $(vars).Add( "Thresholds", @() )
         $Global:Miners = New-Object System.Collections.ArrayList
 
         ##Insert Miners Single Modules Here
@@ -443,14 +446,15 @@ While ($true) {
         Global:Write-Log "Most Ideal Choice Is $($BestMiners_Selected) on $($BestPool_Selected)" -foregroundcolor green
 
         Global:Remove-Modules
-        $global:Algorithm = $null
+        $(vars).Remove("Algorithm")
+        $(vars).Remove("BanHammer")
         $CutMiners = $null
         $global:Miners_Combo = $null
         $BestMiners_Selected = $null
         $BestPool_Selected = $null
-        $Global:amd = $null
-        $Global:nvidia = $null
-        $Global:cpu = $null
+        $(vars).Remove("amd")
+        $(vars).Remove("nvidia")
+        $(vars).Remove("cpu")
         $(vars).Pool_Hashrates = $null
         $global:Miner_HashTable = $null
         $(vars).Watts = $null
@@ -565,6 +569,7 @@ While ($true) {
         Global:Start-MinerLoop
 
         Global:Remove-Modules
+        $(vars).Remove("Thresholds")
 
         ##############################################################################
         #######                        End Phase 5                              ######
@@ -600,7 +605,7 @@ While ($true) {
         [GC]::Collect()
         [GC]::WaitForPendingFinalizers()
         [GC]::Collect()    
-
+        Clear-History
     }until($Error.Count -gt 0)
     Import-Module "$($(vars).global)\include.psm1" -Scope Global
     Global:Add-LogErrors

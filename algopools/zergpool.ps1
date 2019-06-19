@@ -22,8 +22,8 @@ if ($Name -in $(arg).PoolName) {
         return $Zergpool_Algorithm
     } |
     ForEach-Object {  
-        if ($global:Algorithm -contains $Zergpool_Algorithm -or $(arg).ASIC_ALGO -contains $Zergpool_Algorithm) {
-            if ($Name -notin $global:Config.Pool_Algos.$Zergpool_Algorithm.exclusions -and $Zergpool_Algorithm -notin $Global:banhammer) {
+        if ($(vars).Algorithm -contains $Zergpool_Algorithm -or $(arg).ASIC_ALGO -contains $Zergpool_Algorithm) {
+            if ($Name -notin $global:Config.Pool_Algos.$Zergpool_Algorithm.exclusions -and $Zergpool_Algorithm -notin $(vars).BanHammer) {
                 $Zergpool_Port = $Zergpool_Request.$_.port
                 $Zergpool_Host = "$($Zergpool_Request.$_.name.ToLower()).mine.zergpool.com$X"
                 $Divisor = (1000000 * $Zergpool_Request.$_.mbtc_mh_factor)

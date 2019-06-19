@@ -17,8 +17,8 @@
         "NVIDIA2": ".\\bin\\nbminer-2\\nbminer.exe",
         "NVIDIA3": ".\\bin\\nbminer-3\\nbminer.exe",
         "minername": "nbminer.exe",
-        "version": "23.2",
-        "uri": "https://github.com/NebuTech/NBMiner/releases/download/v23.2.1/NBMiner_23.2_hotfix_Win.zip"
+        "version": "23.3",
+        "uri": "https://github.com/NebuTech/NBMiner/releases/download/v23.3/NBMiner_23.3_Win.zip"
       },    
     "cc-mtp": {
         "name": "cc-mtp",
@@ -27,7 +27,7 @@
         "NVIDIA2": ".\\bin\\cc-mtp-2\\ccminer.exe",
         "NVIDIA3": ".\\bin\\cc-mtp-3\\ccminer.exe",
         "minername": "ccminer.exe",
-        "version": "1.1.10.2",
+        "version": " 1.1.19-test",
         "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/cc-mtp-windows.zip"
     },
     "cc-verus": {
@@ -87,8 +87,8 @@
         "NVIDIA2": ".\\bin\\claymore-2\\ethdcrminer64.exe",
         "NVIDIA3": ".\\bin\\claymore-3\\ethdcrminer64.exe",
         "minername": "ethdcrminer64.exe",
-        "version": "14.6",
-        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/Claymore-Windows.zip"
+        "version": "14.7",
+        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/claymore-windows.zip"
     },
     "cryptodredge": {
         "name": "cryptodredge",
@@ -197,8 +197,8 @@
         "NVIDIA2": ".\\bin\\trex-2\\t-rex.exe",
         "NVIDIA3": ".\\bin\\trex-3\\t-rex.exe",
         "minername": "t-rex.exe",
-        "version": "0.11.1",
-        "uri": "https://github.com/trexminer/T-Rex/releases/download/0.11.1/t-rex-0.11.1-win-cuda10.0.zip"
+        "version": "0.12.0",
+        "uri": "https://github.com/trexminer/T-Rex/releases/download/0.12.0/t-rex-0.12.0-win-cuda10.0.zip"
     },
     "zjazz": {
         "name": "zjazz",

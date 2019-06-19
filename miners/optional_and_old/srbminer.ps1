@@ -3,17 +3,17 @@ $(vars).AMDTypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
 
     ##Miner Path Information
-    if ($Global:amd.srbminer.$ConfigType) { $Path = "$($Global:amd.srbminer.$ConfigType)" }
+    if ($(vars).amd.srbminer.$ConfigType) { $Path = "$($(vars).amd.srbminer.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:amd.srbminer.uri) { $Uri = "$($Global:amd.srbminer.uri)" }
+    if ($(vars).amd.srbminer.uri) { $Uri = "$($(vars).amd.srbminer.uri)" }
     else { $Uri = "None" }
-    if ($Global:amd.srbminer.minername) { $MinerName = "$($Global:amd.srbminer.minername)" }
+    if ($(vars).amd.srbminer.minername) { $MinerName = "$($(vars).amd.srbminer.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "srbminer-$Num"; $Port = "3300$Num"
 
     Switch ($Num) {
-        1 { $Get_Devices = $(vars).AMDDevices1 }
+        1 { $Get_Devices = $(vars).AMDDevices1; $Rig = $(arg).Rigname1 }
     }
 
     ##Log Directory
@@ -42,10 +42,10 @@ $(vars).AMDTypes | ForEach-Object {
 
         $MinerAlgo = $_
 
-        if ($MinerAlgo -in $global:Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
-            $StatAlgo = $MinerAlgo -replace "`_","`-"
+        if ($MinerAlgo -in $(vars).Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $(vars).BanHammer) {
+            $StatAlgo = $MinerAlgo -replace "`_", "`-"
             $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
-           $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
+            $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
         
             if ($Check.RAW -ne "Bad") {
                 $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
@@ -62,14 +62,15 @@ $(vars).AMDTypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:amd.srbminer.version)"
+                        Version    = "$($(vars).amd.srbminer.version)"
                         DeviceCall = "srbminer"
                         Arguments  = "--adldisable --ccryptonighttype $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -cgpuid $Devices --cnicehash true --cpool $($_.Host):$($_.Port) --cwallet $($_.$User) --cpassword $($_.$Pass) --apienable --logfile `'$Log`' --apiport $Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
-                        Power     =  if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
+                        Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                         MinerPool  = "$($_.Name)"
-                        Port       = $Port 
+                        Port       = $Port
+                        Worker     = $Rig 
                         API        = "srbminer"
                         Wallet     = "$($_.$User)"
                         URI        = $Uri

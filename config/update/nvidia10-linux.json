@@ -7,7 +7,7 @@
     "NVIDIA2": ".\\bin\\claymore-2\\ethdcrminer64",
     "NVIDIA3": ".\\bin\\claymore-3\\ethdcrminer64",
     "minername": "ethdcrminer64",
-    "version": "14.6",
+    "version": "14.7",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/Claymore-Linux.tar.gz"
   },
   "nbminer": {
@@ -17,8 +17,8 @@
     "NVIDIA2": ".\\bin\\nbminer-2\\nbminer",
     "NVIDIA3": ".\\bin\\nbminer-3\\nbminer",
     "minername": "nbminer",
-    "version": "23.2",
-    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v23.2.1/NBMiner_23.2_hotfix_Linux.tgz"
+    "version": "23.3",
+    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v23.3/NBMiner_23.3_Linux.tgz"
   },
   "multiminer": {
     "name": "multiminer",
@@ -57,8 +57,8 @@
     "NVIDIA2": ".\\bin\\cc-mtp-2\\ccminer",
     "NVIDIA3": ".\\bin\\cc-mtp-3\\ccminer",
     "minername": "ccminer",
-    "version": "0.16.2",
-    "uri": "https://github.com/MaynardMiner/ccminerMTP/releases/download/v1.1.10.2-mtp-linux/ccminerMTP-linux-Cuda10.tar.gz"
+    "version": "1.1.19-test",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/cc-mtp-linux.tar.gz"
   },
   "dstm": {
     "name": "dstm",
@@ -157,8 +157,8 @@
     "NVIDIA2": ".\\bin\\t-rex-2\\t-rex",
     "NVIDIA3": ".\\bin\\t-rex-3\\t-rex",
     "minername": "t-rex",
-    "version": "0.11.1",
-    "uri": "https://github.com/trexminer/T-Rex/releases/download/0.11.1/t-rex-0.11.1-linux-cuda10.0.tar.gz"
+    "version": "0.12.0",
+    "uri": "https://github.com/trexminer/T-Rex/releases/download/0.12.0/t-rex-0.12.0-linux-cuda10.0.tar.gz"
   },
   "zjazz": {
     "name": "zjazz",
@@ -237,7 +237,7 @@
     "NVIDIA2": ".\\bin\\xmrig-nv-2\\xmrig-nvidia",
     "NVIDIA3": ".\\bin\\xmrig-nv-3\\xmrig-nvidia",
     "minername": "xmrig-nvidia",
-    "version": "2.14.1",
+    "version": "2.14.4",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/xmrig-nvidia-linux.tar.gz"
   },
   "cc-verus": {

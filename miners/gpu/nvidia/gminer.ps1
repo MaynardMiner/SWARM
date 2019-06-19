@@ -3,19 +3,19 @@ $(vars).NVIDIATypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
-    if ($Global:nvidia.gminer.$ConfigType) { $Path = "$($Global:nvidia.gminer.$ConfigType)" }
+    if ($(vars).nvidia.gminer.$ConfigType) { $Path = "$($(vars).nvidia.gminer.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:nvidia.gminer.uri) { $Uri = "$($Global:nvidia.gminer.uri)" }
+    if ($(vars).nvidia.gminer.uri) { $Uri = "$($(vars).nvidia.gminer.uri)" }
     else { $Uri = "None" }
-    if ($Global:nvidia.gminer.minername) { $MinerName = "$($Global:nvidia.gminer.minername)" }
+    if ($(vars).nvidia.gminer.minername) { $MinerName = "$($(vars).nvidia.gminer.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "gminer-$Num"; $Port = "4600$Num"
 
     Switch ($Num) {
-        1 { $Get_Devices = $(vars).NVIDIADevices1 }
-        2 { $Get_Devices = $(vars).NVIDIADevices2 }
-        3 { $Get_Devices = $(vars).NVIDIADevices3 }
+        1 { $Get_Devices = $(vars).NVIDIADevices1; $Rig = $(arg).RigName1 }
+        2 { $Get_Devices = $(vars).NVIDIADevices2; $Rig = $(arg).RigName2 }
+        3 { $Get_Devices = $(vars).NVIDIADevices3; $Rig = $(arg).RigName3 }
     }
 
     ##Log Directory
@@ -62,24 +62,24 @@ $(vars).NVIDIATypes | ForEach-Object {
 
         $MinerAlgo = $_
 
-        if ($MinerAlgo -in $global:Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
-            $StatAlgo = $MinerAlgo -replace "`_","`-"
+        if ($MinerAlgo -in $(vars).Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $(vars).BanHammer) {
+            $StatAlgo = $MinerAlgo -replace "`_", "`-"
             $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
-           $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
+            $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
 
             if ($Check.RAW -ne "Bad") {
                 $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                     $SelAlgo = $_.Algorithm
-                    switch($SelAlgo) {
-                        "equihash_150/5" {$AddArgs = "--algo 150_5 --pers auto "}
-                        "cuckoo_cycle" {$AddArgs = "--algo aeternity "}
-                        "cuckaroo29" {$AddArgs = "--algo grin29 "}
-                        "cuckatoo31" {$AddArgs = "--algo grin31 "}
-                        "equihash_96/5" {$AddArgs = "--algo 96_5 --pers auto "}
-                        "equihash_192/7" {$AddArgs = "--algo 192_7 --pers auto "}
-                        "equihash_144/5" {$AddArgs = "--algo 144_5 --pers auto "}
-                        "equihash_210/9" {$AddArgs = "--algo 210_9 --pers auto "}
-                        "equihash_200/9" {$AddArgs = "--algo 200_9 --pers auto "}            
+                    switch ($SelAlgo) {
+                        "equihash_150/5" { $AddArgs = "--algo 150_5 --pers auto " }
+                        "cuckoo_cycle" { $AddArgs = "--algo aeternity " }
+                        "cuckaroo29" { $AddArgs = "--algo grin29 " }
+                        "cuckatoo31" { $AddArgs = "--algo grin31 " }
+                        "equihash_96/5" { $AddArgs = "--algo 96_5 --pers auto " }
+                        "equihash_192/7" { $AddArgs = "--algo 192_7 --pers auto " }
+                        "equihash_144/5" { $AddArgs = "--algo 144_5 --pers auto " }
+                        "equihash_210/9" { $AddArgs = "--algo 210_9 --pers auto " }
+                        "equihash_200/9" { $AddArgs = "--algo 200_9 --pers auto " }            
                     }
                     if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
                     [PSCustomObject]@{
@@ -95,15 +95,16 @@ $(vars).NVIDIATypes | ForEach-Object {
                         ArgDevices = $ArgDevices
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:nvidia.gminer.version)"
+                        Version    = "$($(vars).nvidia.gminer.version)"
                         DeviceCall = "gminer"
                         Arguments  = "--api $Port --server $($_.Host) --port $($_.Port) $AddArgs--user $($_.$User) --logfile `'$Log`' --pass $($_.$Pass)$Diff $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
-                        Power     =  if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
+                        Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                         MinerPool  = "$($_.Name)"
                         API        = "gminer"
                         Port       = $Port
+                        Worker     = $Rig
                         Wallet     = "$($_.$User)"
                         URI        = $Uri
                         Server     = "localhost"

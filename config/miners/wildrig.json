@@ -40,7 +40,8 @@
             "honeycomb": "",
             "wildkeccak": "",
             "xevan": "",
-            "x25x": ""
+            "x25x": "",
+            "skein2": ""
         },
         "difficulty": {
             "anime": "",
@@ -78,7 +79,8 @@
             "honeycomb": "",
             "wildkeccak": "",
             "xevan": "",
-            "x25x": ""
+            "x25x": "",
+            "skein2": ""
         },
         "naming": {
             "anime": "anime",
@@ -116,7 +118,8 @@
             "honeycomb": "honeycomb",
             "wildkeccak": "wildkeccak",
             "xevan": "xevan",
-            "x25x": "x25x"
+            "x25x": "x25x",
+            "skein2": "skein2"
         },
         "fee": {
             "anime": 1,
@@ -154,7 +157,8 @@
             "honeycomb": 1,
             "wildkeccak": 1,
             "xevan": 1,
-            "x25x": 1
+            "x25x": 1,
+            "skein2": 1
         }
     }
 }

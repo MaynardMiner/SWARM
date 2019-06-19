@@ -1,6 +1,6 @@
 
 function Global:Get-Statsxmrigopt {
-    $Message = "/api.json"
+    $Message = "/1/summary"
     $Request = Global:Get-HTTP -Port $global:Port -Message $Message
     if ($Request) {
         try { $Data = $Request.Content | ConvertFrom-Json -ErrorAction Stop; }catch { Write-Host "Failed To gather summary" -ForegroundColor Red; break }
@@ -28,5 +28,5 @@ function Global:Get-Statsxmrigopt {
         $global:ALLACC += $global:MinerACC
         $global:ALLREJ += $global:MinerREJ
     }
-    else { Write-Host "$MinerAPI API Failed- Could Not Get Stats" -Foreground Red; $global:BCPURAW = 0; $global:BCPURAW | Set-Content ".\build\txt\$MinerType-hash.txt" }
+    else { Write-Host "$MinerAPI API Failed- Could Not Get Stats" -Foreground Red; $global:BCPURAW = 0; }
 }

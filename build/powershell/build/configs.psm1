@@ -22,15 +22,17 @@ function Global:Add-ASICS {
         } 
     }
     ## Parse ASIC_IP
-    if ($(arg).ASIC_IP -and $(arg).ASIC_IP -ne "") {
-        $ASIC_COUNT = 1
-        $Config.Params.ASIC_IP | ForEach-Object {
-            $SEL = $_ -Split "`:"
-            $global:ASICS.ADD("ASIC$ASIC_COUNT", @{IP = $($SEL | Select -First 1) })
-            if ($SEL.Count -gt 1) {
-                $global:ASICS."ASIC$ASIC_COUNT".ADD("NickName", $($SEL | Select -Last 1))
+    if ($(arg).Type -like "*ASIC*") {
+        if ($(arg).ASIC_IP -and $(arg).ASIC_IP -ne "") {
+            $ASIC_COUNT = 1
+            $Config.Params.ASIC_IP | ForEach-Object {
+                $SEL = $_ -Split "`:"
+                $global:ASICS.ADD("ASIC$ASIC_COUNT", @{IP = $($SEL | Select -First 1) })
+                if ($SEL.Count -gt 1) {
+                    $global:ASICS."ASIC$ASIC_COUNT".ADD("NickName", $($SEL | Select -Last 1))
+                }
+                $ASIC_COUNT++
             }
-            $ASIC_COUNT++
         }
     }
     elseif (Test-Path ".\config\miners\asic.json") {

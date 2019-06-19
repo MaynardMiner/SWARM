@@ -39,6 +39,8 @@ function Global:start-update {
         $PreviousVersions += "SWARM.2.3.6"
         $PreviousVersions += "SWARM.2.3.7"
         $PreviousVersions += "SWARM.2.3.8"
+        $PreviousVersions += "SWARM.2.3.9"
+        $PreviousVersions += "SWARM.2.4.0"
 
         $StatsOnly = $null
 
@@ -139,6 +141,26 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "anime" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "anime" "anime" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "anime" 1 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "skein2" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "skein2" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "skein2" "skein2" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "skein2" 1 -ErrorAction SilentlyContinue
+
+                                        }
+                                    }
+                                }
+
+                                if ($ChangeFile -eq "fancyix.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands.mtp = "-I 20"
+                                            $Data.$_.difficulty.mtp = "700"
+
+                                            $Data.$_.commands | Add-Member "x25x" "-gpu-threads 2 -w 256 -g 4" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "x25x" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "x25x" "x25x" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "x25x" 0 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }
@@ -155,17 +177,6 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "equihash_96/5" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "equihash_96/5" "equihash_96/5" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "equihash_96/5" 2 -ErrorAction SilentlyContinue
-                                        }
-                                    }
-                                }
-
-                                if ($ChangeFile -eq "fancyix.json") {
-                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
-                                        if ($_ -ne "name") {
-                                            $Data.$_.commands | Add-Member "x25x" "-gpu-threads 2 -w 256 -g 4" -ErrorAction SilentlyContinue
-                                            $Data.$_.difficulty | Add-Member "x25x" "" -ErrorAction SilentlyContinue 
-                                            $Data.$_.naming | Add-Member "x25x" "x25x" -ErrorAction SilentlyContinue
-                                            $Data.$_.fee | Add-Member "x25x" 0 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }
@@ -218,6 +229,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "x25x" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "x25x" "x25x" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "x25x" 1 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "honeycomb" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "honeycomb" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "honeycomb" "honeycomb" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "honeycomb" 1 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }

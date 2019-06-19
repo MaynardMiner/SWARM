@@ -3,19 +3,19 @@ $(vars).NVIDIATypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
-    if ($Global:nvidia.ewbf.$ConfigType) { $Path = "$($Global:nvidia.ewbf.$ConfigType)" }
+    if ($(vars).nvidia.ewbf.$ConfigType) { $Path = "$($(vars).nvidia.ewbf.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:nvidia.ewbf.uri) { $Uri = "$($Global:nvidia.ewbf.uri)" }
+    if ($(vars).nvidia.ewbf.uri) { $Uri = "$($(vars).nvidia.ewbf.uri)" }
     else { $Uri = "None" }
-    if ($Global:nvidia.ewbf.minername) { $MinerName = "$($Global:nvidia.ewbf.minername)" }
+    if ($(vars).nvidia.ewbf.minername) { $MinerName = "$($(vars).nvidia.ewbf.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "ewbf-$Num"; $Port = "5700$Num";
 
     Switch ($Num) {
-        1 { $Get_Devices = $(vars).NVIDIADevices1 }
-        2 { $Get_Devices = $(vars).NVIDIADevices2 }
-        3 { $Get_Devices = $(vars).NVIDIADevices3 }
+        1 { $Get_Devices = $(vars).NVIDIADevices1; $Rig = $(arg).RigName1 }
+        2 { $Get_Devices = $(vars).NVIDIADevices2; $Rig = $(arg).RigName2 }
+        3 { $Get_Devices = $(vars).NVIDIADevices3; $Rig = $(arg).RigName3 }
     }
 
     ##Log Directory
@@ -48,10 +48,10 @@ $(vars).NVIDIATypes | ForEach-Object {
 
         $MinerAlgo = $_
 
-        if ($MinerAlgo -in $global:Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
-            $StatAlgo = $MinerAlgo -replace "`_","`-"
+        if ($MinerAlgo -in $(vars).Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $(vars).BanHammer) {
+            $StatAlgo = $MinerAlgo -replace "`_", "`-"
             $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
-           $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
+            $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
         
             if ($Check.RAW -ne "Bad") {
                 $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
@@ -76,16 +76,16 @@ $(vars).NVIDIATypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:nvidia.ewbf.version)"
+                        Version    = "$($(vars).nvidia.ewbf.version)"
                         DeviceCall = "ewbf"
                         Arguments  = "--api 0.0.0.0:$Port --server $($_.Host) $AddArgs--port $($_.Port) --user $($_.$User) --pass $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
-                        Power     =  if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
+                        Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                         MinerPool  = "$($_.Name)"
-
                         API        = "EWBF"
                         Port       = $Port
+                        Worker     = $Rig
                         Wallet     = "$($_.$User)"
                         URI        = $Uri
                         Server     = "localhost"

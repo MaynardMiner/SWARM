@@ -28,8 +28,8 @@ if ($Name -in $(arg).PoolName) {
         return $fairpool_Algorithm
     } |
     ForEach-Object {
-        if ($global:Algorithm -contains $fairpool_Algorithm -or $(arg).ASIC_ALGO -contains $fairpool_Algorithm) {
-            if ($Name -notin $global:Config.Pool_Algos.$fairpool_Algorithm.exclusions -and $fairpool_Algorithm -notin $Global:banhammer) {
+        if ($(vars).Algorithm -contains $fairpool_Algorithm -or $(arg).ASIC_ALGO -contains $fairpool_Algorithm) {
+            if ($Name -notin $global:Config.Pool_Algos.$fairpool_Algorithm.exclusions -and $fairpool_Algorithm -notin $(vars).BanHammer) {
                 $fairpool_Host = "$region$X"
                 $fairpool_Port = $fairpool_Request.$_.port
                 $Divisor = (1000000 * $fairpool_Request.$_.mbtc_mh_factor)

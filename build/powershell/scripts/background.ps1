@@ -23,7 +23,6 @@ $UtcTime = Get-Date -Date "1970-01-01 00:00:00Z"
 $UTCTime = $UtcTime.ToUniversalTime()
 $StartTime = [Math]::Round(((Get-Date) - $UtcTime).TotalSeconds)
 $Global:config = [hashtable]::Synchronized(@{ })
-$Global:stats = [hashtable]::Synchronized(@{ })
 $global:config.Add("vars", @{ })
 . .\build\powershell\global\modules.ps1
 $(vars).Add("dir", $WorkingDir)
@@ -43,6 +42,11 @@ $(vars).Add("miners", "$($(vars).dir)\build\api\miners")
 $(vars).Add("tcp", "$($(vars).dir)\build\api\tcp")
 $(vars).Add("html", "$($(vars).dir)\build\api\html")
 $(vars).Add("web", "$($(vars).dir)\build\api\web")
+
+if(Test-Path ".\build\txt\data.xml"){
+    $(vars).Add("onboard",([xml](Get-Content ".\build\txt\data.xml")))
+    $(vars).onboard = $(vars).onboard.gpuz_dump.card | Where vendor -ne "AMD/ATI" | Where vendor -ne "NVIDIA"
+}
 
 $p = [Environment]::GetEnvironmentVariable("PSModulePath")
 if ($P -notlike "*$($(vars).dir)\build\powershell*") {
@@ -105,13 +109,16 @@ if (Test-Path $CheckForSWARM) {
     $Global:GETSWARM = Get-Process -ID $global:GETSWARMID -ErrorAction SilentlyContinue 
 }
 $(vars).ADD("GCount",(Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json))
-$global:BackgroundTimer = New-Object -TypeName System.Diagnostics.Stopwatch
-$global:BackgroundTimer.Restart()
-$global:RestartTimer = New-Object -TypeName System.Diagnostics.Stopwatch
+$(vars).ADD("BackgroundTimer",(New-Object -TypeName System.Diagnostics.Stopwatch))
 
 Remove-Module -Name "startup"
 
+if($IsWindows){ $(vars).Add("Cores",$(Get-CimInstance -ClassName "Win32_Processor" | Select-Object -Property "NumberOfCores").NumberOfCores)}
+
 While ($True) {
+
+    ## Timer For When To Restart Loop
+    $(vars).BackgroundTimer.Restart()
 
     if ($(arg).Platform -eq "linux" -and -not $(vars).WebSites) {
         if ($global:GETSWARM.HasExited -eq $true) {
@@ -124,7 +131,7 @@ While ($True) {
     $global:DoNVIDIA = $false; $global:DoASIC = $false; $global:AllKHS = 0; 
     $global:AllACC = 0; $global:ALLREJ = 0;
     $global:HIVE_ALGO = @{ }; $Group1 = $null; $Default_Group = $null; 
-    $Hive = $null; $global:UPTIME = 0; $global:Web_Stratum = @{ }
+    $Hive = $null; $global:UPTIME = 0; $global:Web_Stratum = @{ }; $global:Workers = @{ }
 
     Global:Add-Module "$($(vars).background)\run.psm1"
     Global:Add-Module "$($(vars).background)\initial.psm1"
@@ -150,7 +157,7 @@ While ($True) {
             $global:MinerAlgo = "$($_.Algo)"; $global:MinerName = "$($_.MinerName)"; $global:Name = "$($_.Name)";
             $global:Port = $($_.Port); $global:MinerType = "$($_.Type)"; $global:MinerAPI = "$($_.API)";
             $global:Server = "$($_.Server)"; $HashPath = ".\logs\$($_.Type).log"; $global:TypeS = "none"
-            $global:Devices = 0; $MinerDevices = $_.Devices; $MinerStratum = $_.Stratum;
+            $global:Devices = 0; $MinerDevices = $_.Devices; $MinerStratum = $_.Stratum; $Worker = $_.Worker
 
             ##Algorithm Parsing For Stats
             $HiveAlgo = $global:MinerAlgo -replace "`_", " "
@@ -169,10 +176,12 @@ While ($True) {
                 "NVIDIA1" { 
                     $global:HIVE_ALGO.Add("Main", $HiveAlgo); 
                     $global:Web_Stratum.Add("Main", $MinerStratum); 
+                    $global:Workers.Add("Main",$Worker)
                 }
                 "AMD1" { 
                     $global:HIVE_ALGO.Add("Main", $HiveAlgo); 
-                    $global:Web_Stratum.Add("Main", $MinerStratum); 
+                    $global:Web_Stratum.Add("Main", $MinerStratum);
+                    $global:Workers.Add("Main",$Worker)
                 }
                 default { 
                     $global:HIVE_ALGO.Add($global:MinerType, $HiveAlgo); 
@@ -486,13 +495,10 @@ While ($True) {
     else { $FirstMiner = $global:HIVE_ALGO.keys | Select-Object -First 1; if ($FirstMiner) { $Global:StatAlgo = $global:HIVE_ALGO.$FirstMiner } }
 
     if ($global:Web_Stratum.Main) { $Global:StatStratum = $global:Web_Stratum.Main }
-    else { $FirstStrat = $global:Web_Stratum.keys | Select-Object -First 1; if ($FirstStrat) { $Global:StatStratum = $global:HIVE_ALGO.$FirstMiner } }
+    else { $FirstStrat = $global:Web_Stratum.keys | Select-Object -First 1; if ($FirstStrat) { $Global:StatStratum = $global:HIVE_ALGO.$FirstStrat } }
 
-    
-    if ($Global:StatAlgo) {
-        Write-Host "
-HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
-    }
+    if ($global:Workers.Main) { $Global:StatWorker = $global:Workers.Main }
+    else { $FirstWorker = $global:Workers.keys | Select-Object -First 1; if ($FirstWorker) { $Global:StatWorker = $global:Workers.$FirstWorker } }
 
     ##Now To Format All Stats For Online Table And Screen
     if ($global:DoNVIDIA) {
@@ -581,10 +587,10 @@ HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
         if($global:GPUKHS -eq 0){$global:GPUKHS = "0"}
     }
 
-    $global:Stats.summary = @{
+    $Global:config.summary = @{
         summary = $global:MinerTable;
     }
-    $global:Stats.stats = @{
+    $global:Config.stats = @{
         gpus       = $global:GPUHashTable;
         cpus       = $global:CPUHashTable;
         asics      = $global:ASICHashTable;
@@ -601,8 +607,9 @@ HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
         rejected   = $global:AllREJ;
         stratum    = $Global:StatStratum
         start_time = $StartTime
+        workername = $Global:StatWorker
     }
-    $global:Stats.params = $(arg)
+    $global:Config.params = $(arg)
 
     if ($global:GetMiners -and $global:GETSWARM.HasExited -eq $false) {
         Write-Host " "
@@ -615,13 +622,14 @@ HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
         if ($global:DoAMD -or $global:DoNVIDIA) { Write-Host "GPU_TOTAL_KHS: $global:GPUKHS" -ForegroundColor Yellow }
         if ($global:DoCPU) { Write-Host "CPU_TOTAL_KHS: $global:CPUKHS" -ForegroundColor Yellow }
         if ($global:DoASIC) { Write-Host "ASIC_TOTAL_KHS: $global:ASICKHS" -ForegroundColor Yellow }
-        Write-Host "ACC: $global:ALLACC" -ForegroundColor DarkGreen -NoNewline
-        Write-Host " REJ: $global:ALLREJ" -ForegroundColor DarkRed -NoNewline
-        Write-Host " ALGO: $Global:StatAlgo" -ForegroundColor White -NoNewline
+        Write-Host "ACC: $global:ALLACC" -ForegroundColor DarkGreen -NoNewline; Write-Host " `|" -NoNewline
+        Write-Host " REJ: $global:ALLREJ" -ForegroundColor DarkRed -NoNewline; Write-Host " `|" -NoNewline
+        Write-Host " ALGO: $Global:StatAlgo" -ForegroundColor White -NoNewline; Write-Host " `|" -NoNewline
         Write-Host " UPTIME: $global:UPTIME" -ForegroundColor Yellow
         Write-Host "STRATUM: $global:StatStratum" -ForegroundColor Cyan
-        Write-Host "START_TIME: $StartTime
-" -ForegroundColor Magenta
+        Write-Host "START_TIME: $StartTime" -ForegroundColor Magenta -NoNewline; Write-Host " `|" -NoNewline
+        Write-Host " WORKER: $global:StatWorker
+" -ForegroundColor Yellow
     }
 
     Remove-Module -Name "gpu"
@@ -633,13 +641,14 @@ HiveOS Name For Algo is $Global:StatAlgo" -ForegroundColor Magenta
         Global:Send-WebStats
     }
 
-    if ($RestartTimer.Elapsed.TotalSeconds -le 5) {
-        $GoToSleep = [math]::Round(5 - $RestartTimer.Elapsed.TotalSeconds)
+    if ($(vars).BackgroundTimer.Elapsed.TotalSeconds -le 5) {
+        $GoToSleep = [math]::Round(5 - $(vars).BackgroundTimer.Elapsed.TotalSeconds)
         if ($GoToSleep -gt 0) { Start-Sleep -S $GoToSleep }
     }
     
     Get-Job -State Completed | Remove-Job
     [GC]::Collect()
     [GC]::WaitForPendingFinalizers()
-    [GC]::Collect()    
+    [GC]::Collect()
+    Clear-History
 }

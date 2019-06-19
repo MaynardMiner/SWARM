@@ -27,8 +27,8 @@ if ($Name -in $(arg).PoolName) {
         return $blockpool_Algorithm
     } |
     ForEach-Object {
-        if ($global:Algorithm -contains $blockpool_Algorithm -or $(arg).ASIC_ALGO -contains $blockpool_Algorithm) {
-            if ($Name -notin $global:Config.Pool_Algos.$blockpool_Algorithm.exclusions -and $blockpool_Algorithm -notin $Global:banhammer) {
+        if ($(vars).Algorithm -contains $blockpool_Algorithm -or $(arg).ASIC_ALGO -contains $blockpool_Algorithm) {
+            if ($Name -notin $global:Config.Pool_Algos.$blockpool_Algorithm.exclusions -and $blockpool_Algorithm -notin $(vars).BanHammer) {
                 $blockpool_Host = "$($Region)blockmasters.co$X"
                 $blockpool_Port = $blockpool_Request.$_.port
                 $Divisor = (1000000 * $blockpool_Request.$_.mbtc_mh_factor)

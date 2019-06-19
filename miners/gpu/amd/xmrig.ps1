@@ -3,17 +3,17 @@ $(vars).AMDTypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
 
     ##Miner Path Information
-    if ($Global:amd.xmrig.$ConfigType) { $Path = "$($Global:amd.xmrig.$ConfigType)" }
+    if ($(vars).amd.xmrig.$ConfigType) { $Path = "$($(vars).amd.xmrig.$ConfigType)" }
     else { $Path = "None" }
-    if ($Global:amd.xmrig.uri) { $Uri = "$($Global:amd.xmrig.uri)" }
+    if ($(vars).amd.xmrig.uri) { $Uri = "$($(vars).amd.xmrig.uri)" }
     else { $Uri = "None" }
-    if ($Global:amd.xmrig.minername) { $MinerName = "$($Global:amd.xmrig.minername)" }
+    if ($(vars).amd.xmrig.minername) { $MinerName = "$($(vars).amd.xmrig.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "xmrig-$Num"; $Port = "3100$Num"
 
     Switch ($Num) {
-        1 { $Get_Devices = $(vars).AMDDevices1 }
+        1 { $Get_Devices = $(vars).AMDDevices1; $Rig = $(arg).Rigname1 }
     }
 
     ##Log Directory
@@ -38,7 +38,7 @@ $(vars).AMDTypes | ForEach-Object {
 
         $MinerAlgo = $_
 
-        if ($MinerAlgo -in $global:Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
+        if ($MinerAlgo -in $(vars).Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $(vars).BanHammer) {
             $StatAlgo = $MinerAlgo -replace "`_", "`-"
             $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
             $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
@@ -58,14 +58,15 @@ $(vars).AMDTypes | ForEach-Object {
                         Path       = $Path
                         Devices    = "none"
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($Global:amd.xmrig.version)"
+                        Version    = "$($(vars).amd.xmrig.version)"
                         DeviceCall = "xmrstak"
-                        Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --api-port=$Port -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.$User) -p $($_.$Pass)$($Diff) --donate-level=1 --nicehash --opencl-platform=$Global:AMDPlatform $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"    
+                        Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --api-port=$Port -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.$User) -p $($_.$Pass)$($Diff) --donate-level=1 --nicehash --opencl-platform=$($(vars).AMDPlatform) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"    
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                         MinerPool  = "$($_.Name)"
                         Port       = $Port
+                        Worker     = $Rig
                         API        = "xmrstak"
                         Wallet     = "$($_.$User)"
                         URI        = $Uri

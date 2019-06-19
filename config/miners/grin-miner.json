@@ -5,20 +5,20 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "grincuckaroo29": "",
-            "grincuckatoo31": ""
+            "cuckaroo29": "",
+            "cuckatoo31": ""
         },
         "difficulty": {
-            "grincuckaroo29": "",
-            "grincuckatoo31": ""
+            "cuckaroo29": "",
+            "cuckatoo31": ""
         },
         "naming": {
-            "grincuckaroo29": "grincuckaroo29",
-            "grincuckatoo31": "grincuckatoo31"
+            "cuckaroo29": "cuckaroo29",
+            "cuckatoo31": "cuckatoo31"
         },
         "fee": {
-            "grincuckaroo29": 0,
-            "grincuckatoo31": 0
+            "cuckaroo29": 0,
+            "cuckatoo31": 0
         }
     },
     "NVIDIA2": {
@@ -26,20 +26,20 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "grincuckaroo29": "",
-            "grincuckatoo31": ""
+            "cuckaroo29": "",
+            "cuckatoo31": ""
         },
         "difficulty": {
-            "grincuckaroo29": "",
-            "grincuckatoo31": ""
+            "cuckaroo29": "",
+            "cuckatoo31": ""
         },
         "naming": {
-            "grincuckaroo29": "grincuckaroo29",
-            "grincuckatoo31": "grincuckatoo31"
+            "cuckaroo29": "cuckaroo29",
+            "cuckatoo31": "cuckatoo31"
         },
         "fee": {
-            "grincuckaroo29": 0,
-            "grincuckatoo31": 0
+            "cuckaroo29": 0,
+            "cuckatoo31": 0
         }
     },
     "NVIDIA3": {
@@ -47,20 +47,20 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "grincuckaroo29": "",
-            "grincuckatoo31": ""
+            "cuckaroo29": "",
+            "cuckatoo31": ""
         },
         "difficulty": {
-            "grincuckaroo29": "",
-            "grincuckatoo31": ""
+            "cuckaroo29": "",
+            "cuckatoo31": ""
         },
         "naming": {
-            "grincuckaroo29": "grincuckaroo29",
-            "grincuckatoo31": "grincuckatoo31"
+            "cuckaroo29": "cuckaroo29",
+            "cuckatoo31": "cuckatoo31"
         },
         "fee": {
-            "grincuckaroo29": 0,
-            "grincuckatoo31": 0
+            "cuckaroo29": 0,
+            "cuckatoo31": 0
         }
     }
 }

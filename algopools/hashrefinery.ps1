@@ -22,8 +22,8 @@ if ($Name -in $(arg).PoolName) {
         return $Hashrefinery_Algorithm
     } |
     ForEach-Object {
-        if ($global:Algorithm -contains $Hashrefinery_Algorithm -or $(arg).ASIC_ALGO -contains $Hashrefinery_Algorithm) {
-            if ($Name -notin $global:Config.Pool_Algos.$Hashrefinery_Algorithm.exclusions -and $Hashrefinery_Algorithm -notin $Global:banhammer) {
+        if ($(vars).Algorithm -contains $Hashrefinery_Algorithm -or $(arg).ASIC_ALGO -contains $Hashrefinery_Algorithm) {
+            if ($Name -notin $global:Config.Pool_Algos.$Hashrefinery_Algorithm.exclusions -and $Hashrefinery_Algorithm -notin $(vars).BanHammer) {
                 $Hashrefinery_Host = "$_.us.hashrefinery.com$X"
                 $Hashrefinery_Port = $Hashrefinery_Request.$_.port
                 $Divisor = (1000000 * $Hashrefinery_Request.$_.mbtc_mh_factor)

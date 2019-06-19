@@ -51,18 +51,7 @@ function Global:Remove-ASICPools {
     }
 }
 
-function Global:Start-LaunchCode {
-
-    param(
-        [Parameter(Mandatory = $true)]
-        [String]$NewMiner,
-        [Parameter(Mandatory = $false)]
-        [String]$PP,
-        [Parameter(Mandatory = $false)]
-        [String]$AIP
-    ) 
-
-    $MinerCurrent = $NewMiner | ConvertFrom-Json
+function Global:Start-LaunchCode($MinerCurrent,$AIP) {
 
     if ($MinerCurrent.Type -notlike "*ASIC*") {
         ##Remove Old PID FIle
@@ -70,7 +59,6 @@ function Global:Start-LaunchCode {
         $Export = Join-Path $($(vars).dir) "build\export"
         $PIDMiners = "$($MinerCurrent.Type)"
         if (Test-Path ".\build\pid\*$PIDMiners*") { Remove-Item ".\build\pid\*$PIDMiners*" }
-        if (Test-Path ".\build\*$($MinerCurrent.Type)*-hash.txt") { Clear-Content ".\build\*$($MinerCurrent.Type)*-hash.txt" }
         $Logs = Join-Path $($(vars).dir) "logs\$($MinerCurrent.Type).log" 
 
         switch -WildCard ($MinerCurrent.Type) {
@@ -102,6 +90,7 @@ function Global:Start-LaunchCode {
                             $MinerArguments = "-c command.json -p $($MinerCurrent.Port)"
                             set-nicehash $($MinerCurrent.NPool) 3200 $($MinerCurrent.NUser) $($MinerCurrent.Algo) $($MinerCurrent.CommandFile) "$($MinerCurrent.Devices)" "$($MinerCurrent.NCommands)"
                         }
+                        default { $MinerArguments = "$($MinerCurrent.Arguments)" }
                     }
                 }
                 else {
@@ -150,7 +139,8 @@ function Global:Start-LaunchCode {
                             Clear-Content ".\lyclMiner.conf" -force
                             $NewLines | Set-Content ".\lyclMiner.conf"
                             Set-Location $($(vars).dir)
-                        }           
+                        }
+                        default { $MinerArguments = "$($MinerCurrent.Arguments)" }           
                     }
                 }
                 else {
@@ -186,13 +176,6 @@ function Global:Start-LaunchCode {
                 elseif ($MinerCurrent.DeviceCall -eq "xmrig-opt") { $MinerArguments = "-t $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
             }
         }
-
-        switch ($MinerCurrent.DeviceCall) {
-            "gminer" { Global:Write-Log "SOME ALGOS MAY REQUIRE 6GB+ VRAM TO WORK" -ForegroundColor Green }
-            "bminer" { Global:Write-Log "SOME ALGOS MAY REQUIRE 6GB+ VRAM TO WORK" -ForegroundColor Green }
-        }
-
-    
 
         if ($(arg).Platform -eq "windows") {
             if ($MinerProcess -eq $null -or $MinerProcess.HasExited -eq $true) {
@@ -289,6 +272,7 @@ function Global:Start-LaunchCode {
                         }
                     }
                 }
+
                 else { $script += "Invoke-Expression "".\$($MinerCurrent.MinerName) $MinerArguments""" }            
                 $script | Out-File "$WorkingDirectory\swarm-start.ps1"
                 Start-Sleep -S .5
