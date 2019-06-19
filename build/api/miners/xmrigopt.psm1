@@ -1,6 +1,6 @@
 
 function Global:Get-Statsxmrigopt {
-    $Message = "/api.json"
+    $Message = "/1/summary"
     $Request = Global:Get-HTTP -Port $global:Port -Message $Message
     if ($Request) {
         try { $Data = $Request.Content | ConvertFrom-Json -ErrorAction Stop; }catch { Write-Host "Failed To gather summary" -ForegroundColor Red; break }

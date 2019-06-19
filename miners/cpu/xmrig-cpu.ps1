@@ -46,8 +46,6 @@ $(vars).CPUTypes | ForEach-Object {
             if ($Check.RAW -ne "Bad") {
                 $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                     if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
-                    if ($(arg).Platform -eq "windows") { $APISet = "--http-enabled --http-port=10002" }
-                    else { $APISet = "--api-port=10002" }
                     [PSCustomObject]@{
                         MName      = $Name
                         Coin       = $Global:Coins
@@ -62,7 +60,7 @@ $(vars).CPUTypes | ForEach-Object {
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
                         Version    = "$($(vars).cpu.$CName.version)"
                         DeviceCall = "xmrig-opt"
-                        Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) $APISet -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.User1) -p $($_.Pass1)$($Diff) --donate-level=1 --nicehash $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                        Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --api-port=10002 -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.User1) -p $($_.Pass1)$($Diff) --donate-level=1 --nicehash $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Worker     = $(arg).Rigname1
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
