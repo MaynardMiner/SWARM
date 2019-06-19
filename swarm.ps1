@@ -262,8 +262,8 @@ While ($true) {
         ##############################################################################
         #######                     PHASE 1: Build                              ######
         ##############################################################################
-        $global:Algorithm = @()
-        $global:BanHammer = @()
+        $(vars).Add("Algorithm",@())
+        $(vars).Add("BanHammer",@())
         $Global:ASICTypes = @(); 
         $global:ASICS = @{ }
         $global:All_AltWallets = $null
@@ -445,7 +445,8 @@ While ($true) {
         Global:Write-Log "Most Ideal Choice Is $($BestMiners_Selected) on $($BestPool_Selected)" -foregroundcolor green
 
         Global:Remove-Modules
-        $global:Algorithm = $null
+        $(vars).Remove("Algorithm")
+        $(vars).Remove("BanHammer")
         $CutMiners = $null
         $global:Miners_Combo = $null
         $BestMiners_Selected = $null

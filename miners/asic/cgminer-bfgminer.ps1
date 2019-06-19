@@ -19,7 +19,7 @@ $Global:ASICTypes | ForEach-Object {
         $StatAlgo = $MinerAlgo -replace "`_","`-"
         $Stat = Global:Get-Stat -Name "$($Name)_$($MinerAlgo)_hashrate"
 
-        if ($MinerAlgo -in $global:Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $global:banhammer) {
+        if ($MinerAlgo -in $(vars).Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $(vars).BanHammer) {
             $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                 $Pass = $_.Pass1 -replace ",", "`\,"
                 if($global:ASICS.$ConfigType.NickName) {

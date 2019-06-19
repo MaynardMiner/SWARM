@@ -27,7 +27,7 @@ if ($(arg).PoolName -eq $Name) {
 
     $Whalesburg_Algorithm = "ethash"
   
-    if ($global:Algorithm -contains $Whalesburg_Algorithm -and $Bad_pools.$Whalesburg_Algorithm -notcontains $Name) {
+    if ($(vars).Algorithm -contains $Whalesburg_Algorithm -and $Bad_pools.$Whalesburg_Algorithm -notcontains $Name) {
         $Whalesburg_Port = "7777"
         $Whalesburg_Host = "eu1.whalesburg.com"
         ## add fee to compare to nicehash (Still trying to understand PPS+)

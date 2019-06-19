@@ -28,8 +28,8 @@ if ($Name -in $(arg).PoolName) {
         return $Nicehash_Algorithm
     } |
     ForEach-Object {
-        if ($global:Algorithm -contains $nicehash_Algorithm -or $(arg).ASIC_ALGO -contains $nicehash_Algorithm) {
-            if ($Name -notin $global:Config.Pool_Algos.$nicehash_Algorithm.exclusions -and $nicehash_Algorithm -notin $Global:banhammer) {
+        if ($(vars).Algorithm -contains $nicehash_Algorithm -or $(arg).ASIC_ALGO -contains $nicehash_Algorithm) {
+            if ($Name -notin $global:Config.Pool_Algos.$nicehash_Algorithm.exclusions -and $nicehash_Algorithm -notin $(vars).BanHammer) {
 
                 ## Nicehash 'Gets' you with the fees. If you read the fine print,
                 ## If you do not use a nicehash wallet- Your total fee will end up

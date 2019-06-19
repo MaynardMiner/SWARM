@@ -119,12 +119,12 @@ function Global:Get-Wallets {
 
 function Global:Add-Algorithms {
     if ($(arg).Coin.Count -eq 1 -and $(arg).Coin -ne "") { $(arg).Passwordcurrency1 = $(arg).Coin; $(arg).Passwordcurrency2 = $(arg).Coin; $(arg).Passwordcurrency3 = $(arg).Coin }
-    if ($global:SWARMAlgorithm) { $global:SWARMAlgorithm | ForEach-Object { $global:Algorithm += $_ } }
-    elseif ($(arg).Auto_Algo -eq "Yes") { $global:Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name }
+    if ($global:SWARMAlgorithm) { $global:SWARMAlgorithm | ForEach-Object { $(vars).Algorithm += $_ } }
+    elseif ($(arg).Auto_Algo -eq "Yes") { $(vars).Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name }
     if ($(arg).Type -notlike "*NVIDIA*") {
         if ($(arg).Type -notlike "*AMD*") {
             if ($(arg).Type -notlike "*CPU*") {
-                $global:Algorithm -eq $null
+                $(vars).Algorithm -eq $null
             }
         }
     }

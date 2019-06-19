@@ -35,7 +35,7 @@ if ($Name -in $(arg).PoolName) {
         $zpool_Request.$_.Algo = $global:Config.Pool_Algos.PSObject.Properties.Name | % {if($Algo -in $global:Config.Pool_Algos.$_.alt_names){$_}}
     }
     $zpoolAlgos = @()
-    $zpoolAlgos += $global:Algorithm
+    $zpoolAlgos += $(vars).Algorithm
     $zpoolAlgos += $(arg).ASIC_ALGO
 
     $Algos = $zpoolAlgos | ForEach-Object { if ($Bad_pools.$_ -notcontains $Name) { $_ } }
@@ -61,7 +61,7 @@ if ($Name -in $(arg).PoolName) {
             Where-Object Algo -in $global:divisortable.zpool.Keys |
             Where-Object { $global:Config.Pool_Algos.$($_.Algo) } |
             Where-Object { $Name -notin $global:Config.Pool_Algos.$($_.sym).exclusions } |
-            Where-Object Sym -notin $global:BanHammer |
+            Where-Object Sym -notin $(vars).BanHammer |
             Where-Object Sym -notlike "*$NoGLT*" |
             Where-Object estimate -gt 0 | 
             Where-Object hashrate -ne 0 | 
@@ -83,7 +83,7 @@ if ($Name -in $(arg).PoolName) {
             Where-Object Algo -in $global:divisortable.zpool.Keys |
             Where-Object { $global:Config.Pool_Algos.$($_.Algo) } |
             Where-Object { $Name -notin $global:Config.Pool_Algos.$($_.sym).exclusions } |
-            Where-Object Sym -notin $global:BanHammer |
+            Where-Object Sym -notin $(vars).BanHammer |
             Where-Object estimate -gt 0 |
             Where-Object hashrate -ne 0 |
             Sort-Object Price -Descending |
@@ -94,7 +94,7 @@ if ($Name -in $(arg).PoolName) {
         }
 
         $zpool_UnSorted | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | ForEach-Object {
-            if ($Name -notin $global:Config.Pool_Algos.$zpool_Symbol.exclusions -and $zpool_Symbol -notin $Global:banhammer) {
+            if ($Name -notin $global:Config.Pool_Algos.$zpool_Symbol.exclusions -and $zpool_Symbol -notin $(vars).BanHammer) {
                 $zpool_Algorithm = $zpool_UnSorted.$_.algo.ToLower()
                 $zpool_Symbol = $zpool_UnSorted.$_.sym.ToUpper()
                 $Fees = [Double]$global:FeeTable.zpool.$zpool_Algorithm

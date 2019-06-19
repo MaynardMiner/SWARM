@@ -28,8 +28,8 @@ if ($Name -in $(arg).PoolName) {
         return $phiphipool_Algorithm
     } |
     ForEach-Object {
-        if ($global:Algorithm -contains $phiphipool_Algorithm -or $(arg).ASIC_ALGO -contains $phiphipool_Algorithm) {
-            if ($Name -notin $global:Config.Pool_Algos.$phiphipool_Algorithm.exclusions -and $phiphipool_Algorithm -notin $Global:banhammer) {
+        if ($(vars).Algorithm -contains $phiphipool_Algorithm -or $(arg).ASIC_ALGO -contains $phiphipool_Algorithm) {
+            if ($Name -notin $global:Config.Pool_Algos.$phiphipool_Algorithm.exclusions -and $phiphipool_Algorithm -notin $(vars).BanHammer) {
                 $phiphipool_Port = $phiphipool_Request.$_.port
                 $phiphipool_Host = "$($Region).phi-phi-pool.com$X"
                 $Divisor = (1000000 * $phiphipool_Request.$_.mbtc_mh_factor)

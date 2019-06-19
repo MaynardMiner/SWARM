@@ -331,7 +331,7 @@ Argument            Options             Explanation
 
 -Wallet1           [Wallet Address]     Wallet address for -Type CPU/AMD1/NVIDIA1/ASIC
                                         is specified. Default is donate BTC address:
-                                        1DRxiWx6yuZfN9hrEJa3BDXWVJ9yyJU36i
+                                        1HQEj9fQy1z1PfAvdAiWTm449QpQ6b1XsJ
 
 -Wallet2           [Wallet Address]     Wallet address for NVIDIA2 group. Will be used when -Type NVIDIA2
                                         is specified.

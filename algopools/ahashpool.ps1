@@ -24,8 +24,8 @@ if ($Name -in $(arg).PoolName) {
         return $ahashpool_Algorithm
     } |
     ForEach-Object {
-        if ($global:Algorithm -contains $ahashpool_Algorithm -or $(arg).ASIC_ALGO -contains $ahashpool_Algorithm) {
-            if ($Name -notin $global:Config.Pool_Algos.$ahashpool_Algorithm.exclusions -and $ahashpool_Algorithm -notin $Global:banhammer) {
+        if ($(vars).Algorithm -contains $ahashpool_Algorithm -or $(arg).ASIC_ALGO -contains $ahashpool_Algorithm) {
+            if ($Name -notin $global:Config.Pool_Algos.$ahashpool_Algorithm.exclusions -and $ahashpool_Algorithm -notin $(vars).BanHammer) {
                 $ahashpool_Host = "$_.mine.ahashpool.com$X"
                 $ahashpool_Port = $ahashpool_Request.$_.port
                 $Fees = $ahashpool_Request.$_.fees

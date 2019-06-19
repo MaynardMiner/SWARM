@@ -24,8 +24,8 @@ if ($Name -in $(arg).PoolName) {
         return $blazepool_Algorithm
     } |
     ForEach-Object {
-        if ($global:Algorithm -contains $blazepool_Algorithm -or $(arg).ASIC_ALGO -contains $blazepool_Algorithm) {
-            if ($Name -notin $global:Config.Pool_Algos.$blazepool_Algorithm.exclusions -and $blazepool_Algorithm -notin $Global:banhammer) {
+        if ($(vars).Algorithm -contains $blazepool_Algorithm -or $(arg).ASIC_ALGO -contains $blazepool_Algorithm) {
+            if ($Name -notin $global:Config.Pool_Algos.$blazepool_Algorithm.exclusions -and $blazepool_Algorithm -notin $(vars).BanHammer) {
                 $blazepool_Host = "$_.mine.blazepool.com$X"
                 $blazepool_Port = $blazepool_Request.$_.port
                 $Divisor = (1000000 * $blazepool_Request.$_.mbtc_mh_factor)

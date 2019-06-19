@@ -14,9 +14,9 @@ function Global:Get-PoolTables {
 
 function Global:Remove-BanHashrates {
     Global:Write-Log "Loading Miner Hashrates" -ForegroundColor Yellow
-    if ($global:BanHammer -gt 0 -and $global:BanHammer -ne "") {
+    if ($(vars).BanHammer -gt 0 -and $(vars).BanHammer -ne "") {
         if (test-path ".\stats") { $A = Get-ChildItem "stats" | Where BaseName -Like "*hashrate*" }
-        $global:BanHammer | ForEach-Object {
+        $(vars).BanHammer | ForEach-Object {
             $Sel = $_.ToLower()
             $Sel = $Sel -replace "`/","`-"
             $Sel = $Sel -replace "`_","`-"        
