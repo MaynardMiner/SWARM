@@ -131,42 +131,23 @@ function Global:Start-Webcommand {
                     $trigger = "exec"
                 }
                 "version" {
-                    Switch ($secondword) {
-                        "query" {
-                            $method = "message"
-                            $messagetype = "info"
-                            $data = "$($command.result.exec)"
-                            start-process "pwsh" -Workingdirectory ".\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command query""" -Wait -WindowStyle Minimized -Verb RunAs
-                            $getpayload = Get-Content ".\build\txt\version.txt"
-                            $line = @()
-                            $getpayload | foreach { $line += "$_`n" }
-                            $payload = $line
-                            $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
-                            $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                            $SendResponse = Invoke-RestMethod "$($global:config.$Param.Mirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
-                            Write-Host $method $messagetype $data
-                            $trigger = "exec"
-                        }
-                        "update" {
-                            $method = "message"
-                            $messagetype = "info"
-                            $data = "$($command.result.exec)"
-                            $arguments = $data -replace ("version ", "")
-                            start-process "pwsh" -Workingdirectory ".\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command $arguments""" -WindowStyle Minimized -Verb Runas -Wait
-                            $getpayload = Get-Content ".\build\txt\version.txt"
-                            $line = @()
-                            $getpayload | foreach { $line += "$_`n" }
-                            $payload = $line
-                            $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
-                            $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                            $SendResponse = Invoke-RestMethod "$($global:config.$Param.Mirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
-                            Write-Host $method $messagetype $data
-                            Start-Process ".\SWARM.bat"
-                            Start-Sleep -S 2
-                            $ID = ".\build\pid\background_pid.txt"
-                            $BackGroundID = Get-Process -id (Get-Content "$ID" -ErrorAction SilentlyContinue) -ErrorAction SilentlyContinue
-                            Stop-Process $BackGroundID | Out-Null
-                        }
+                    $method = "message"
+                    $messagetype = "info"
+                    $data = "$($command.result.exec)"
+                    $arguments = $data -replace ("version ", "")
+                    start-process "pwsh" -Workingdirectory ".\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 $arguments""" -WindowStyle Minimized -Verb Runas -Wait
+                    $getpayload = Get-Content ".\build\txt\get.txt"
+                    $line = @()
+                    $getpayload | foreach { $line += "$_`n" }
+                    $payload = $line
+                    $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
+                    $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+                    $SendResponse = Invoke-RestMethod "$($global:config.$Param.Mirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+                    Write-Host $method $messagetype $data
+                    switch($secondword){
+                        "query" { $trigger = "exec" }
+                        "update" { $trigger = "config" }
+                        default {$trigger = "exec"}
                     }
                 }
                 "clear_profits" {
