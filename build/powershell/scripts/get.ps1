@@ -544,7 +544,8 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 Start-Sleep -S 5
                 if ($Failed -eq $false) {
                     Get-Location | Out-Host
-                    Start-Process "$Dir\build\apps\7z.exe" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -Wait -WindowStyle Minimized
+                    $Proc = Start-Process "$Dir\build\apps\7z.exe" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -PassThru -WindowStyle Minimized
+                    $Proc | Wait-Process
                     Start-Sleep -S 3
                     Write-Host "Config Command Initiated- Restarting SWARM`n"
                     $MinerFile = "$Dir\build\pid\miner_pid.txt"

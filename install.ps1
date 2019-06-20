@@ -17,9 +17,12 @@ Set-Location $dir
 $dir
 
 ##Check for libc
-Start-Process ".\build\bash\libc.sh" -wait
-Start-Process ".\build\bash\libv.sh" -wait
-Start-Process ".\build\bash\libcurl3.sh" -Wait
+$Proc = Start-Process ".\build\bash\libc.sh" -PassThru
+$Proc | Wait-Process
+Start-Process ".\build\bash\libv.sh" -PassThru
+$Proc | Wait-Process
+Start-Process ".\build\bash\libcurl3.sh" -PassThru
+$Proc | Wait-Process
 
 $dir | set-content ".\build\bash\dir.sh"
 
@@ -40,7 +43,8 @@ if (Test-Path ".\build\bash\view") {
 }
 
 if (Test-Path ".\build\apps\wolfamdctrl") {
-    Start-Process ln -ArgumentList "-s $dir/build/apps/wolfamdctrl /usr/bin/wolfamdctrl" -Wait
+    $proc = Start-Process ln -ArgumentList "-s $dir/build/apps/wolfamdctrl /usr/bin/wolfamdctrl" -PassThru
+    $proc | Wait-Process
     Set-Location "/usr/bin"
     Start-Process "chmod" -ArgumentList "+x wolfamdctrl"
     Set-Location "/"
@@ -80,70 +84,81 @@ if (Test-Path ".\build\bash\get-lambo") {
 }
 
 if (Test-Path ".\build\export\libcudart.so.9.2.148") {
-    Start-Process ln -ArgumentList "-s $dir/build/export/libcudart.so.9.2.148 $dir/build/export/libcudart.so.9.2" -Wait
+    $Proc = Start-Process ln -ArgumentList "-s $dir/build/export/libcudart.so.9.2.148 $dir/build/export/libcudart.so.9.2" -PassThru
+    $Proc | Wait-Process
     Set-Location "/"
     Set-Location $Dir     
 }
 
 if (Test-Path ".\build\export\libcudart.so.10.0.130") {
-    Start-Process ln -ArgumentList "-s $dir/build/export/libcudart.so.10.0.130 $dir/build/export/libcudart.so.10.0" -Wait
+    $Proc = Start-Process ln -ArgumentList "-s $dir/build/export/libcudart.so.10.0.130 $dir/build/export/libcudart.so.10.0" -PassThru
+    $Proc | Wait-Process
     Set-Location "/"
     Set-Location $Dir     
 }
 
 if (Test-Path ".\build\export\libcudart.so.10.1.105") {
-    Start-Process ln -ArgumentList "-s $dir/build/export/libcudart.so.10.1.105 $dir/build/export/libcudart.so.10.1" -Wait
+    $Proc = Start-Process ln -ArgumentList "-s $dir/build/export/libcudart.so.10.1.105 $dir/build/export/libcudart.so.10.1" -PassThru
+    $Proc | Wait-Process
     Set-Location "/"
     Set-Location $Dir     
 }
 
 
 if (Test-Path ".\build\export\libmicrohttpd.so.10.34.0") {
-    Start-Process ln -ArgumentList "-s $dir/build/export/libmicrohttpd.so.10.34.0 $dir/build/export/libmicrohttpd.so.10" -Wait
+    $Proc = Start-Process ln -ArgumentList "-s $dir/build/export/libmicrohttpd.so.10.34.0 $dir/build/export/libmicrohttpd.so.10" -PassThru
+    $Proc | Wait-Process
     Set-Location "/"
     Set-Location $Dir     
 }
 
 if (Test-Path ".\build\export\libstdc++.so.6.0.25") {
-    Start-Process ln -ArgumentList "-s $dir/build/export/libstdc++.so.6.0.25 $dir/build/export/libstdc++.so.6" -Wait
+    $Proc = Start-Process ln -ArgumentList "-s $dir/build/export/libstdc++.so.6.0.25 $dir/build/export/libstdc++.so.6" -PassThru
+    $Proc | Wait-Process
     Set-Location "/"
     Set-Location $Dir     
 }
 
 if (Test-Path ".\build\export\libhwloc.so.5.5.0") {
-    Start-Process ln -ArgumentList "-s $dir/build/export/libhwloc.so.5.5.0 $dir/build/export/libhwloc.so.5" -Wait
+    $Proc = Start-Process ln -ArgumentList "-s $dir/build/export/libhwloc.so.5.5.0 $dir/build/export/libhwloc.so.5" -PassThru
+    $Proc | Wait-Process
     Set-Location "/"
     Set-Location $Dir     
 }
 
 
 if (Test-Path ".\build\export\libnvrtc.so.9.2.148") {
-    Start-Process ln -ArgumentList "-s $dir/build/export/libnvrtc.so.9.2.148 $dir/build/export/libnvrtc.so.9.2" -Wait
+    $Proc = Start-Process ln -ArgumentList "-s $dir/build/export/libnvrtc.so.9.2.148 $dir/build/export/libnvrtc.so.9.2" -PassThru
+    $Proc | Wait-Process
     Set-Location "/"
     Set-Location $Dir     
 }
 
 if (Test-Path ".\build\export\libnvrtc.so.10.0.130") {
-    Start-Process ln -ArgumentList "-s $dir/build/export/libnvrtc.so.10.0.130 $dir/build/export/libnvrtc.so.10.0" -Wait
+    $Proc = Start-Process ln -ArgumentList "-s $dir/build/export/libnvrtc.so.10.0.130 $dir/build/export/libnvrtc.so.10.0" -PassThru
+    $Proc | Wait-Process
     Set-Location "/"
     Set-Location $Dir     
 }
 
 if (Test-Path ".\build\export\libnvrtc.so.10.1.105") {
-    Start-Process ln -ArgumentList "-s $dir/build/export/libnvrtc.so.10.2.105 $dir/build/export/libnvrtc.so.10.1" -Wait
+    $Proc = Start-Process ln -ArgumentList "-s $dir/build/export/libnvrtc.so.10.2.105 $dir/build/export/libnvrtc.so.10.1" -PassThru
+    $Proc | Wait-Process
     Set-Location "/"
     Set-Location $Dir     
 }
 
 if (Test-Path ".\build\export\libnvrtc-builtins.so.10.1.105") {
-    Start-Process ln -ArgumentList "-s $dir/build/export/libnvrtc-builtins.so.10.1.105 $dir/build/export/libnvrtc-builtins.so.10.1" -Wait
+    $Proc = Start-Process ln -ArgumentList "-s $dir/build/export/libnvrtc-builtins.so.10.1.105 $dir/build/export/libnvrtc-builtins.so.10.1" -PassThru
+    $Proc | Wait-Process
     Set-Location "/"
     Set-Location $Dir
     Start-Sleep -S 1
 }
 
 if (Test-Path ".\build\export\libnvrtc-builtins.so.10.1") {
-    Start-Process ln -ArgumentList "-s $dir/build/export/libnvrtc-builtins.so.10.1 $dir/build/export/libnvrtc-builtins.so" -Wait
+    $Proc = Start-Process ln -ArgumentList "-s $dir/build/export/libnvrtc-builtins.so.10.1 $dir/build/export/libnvrtc-builtins.so" -PassThru
+    $Proc | Wait-Process
     Set-Location "/"
     Set-Location $Dir     
 }

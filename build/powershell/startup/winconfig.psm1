@@ -63,7 +63,9 @@ Function Global:Get-Bus {
         }
         Set-Location $(vars).dir
 
-        Start-Process ".\build\apps\gpu-z.exe" -ArgumentList "-dump $($(vars).dir)\build\txt\data.xml" -Wait
+        $proc = Start-Process ".\build\apps\gpu-z.exe" -ArgumentList "-dump $($(vars).dir)\build\txt\data.xml" -PassThru
+        $proc | Wait-Process
+        
         if (test-Path ".\build\txt\data.xml") {
             $Data = $([xml](Get-Content ".\build\txt\data.xml")).gpuz_dump.card
         }
@@ -274,7 +276,7 @@ function Global:Start-WindowsConfig {
     $TotalMemory | Set-Content ".\build\txt\ram.txt"
     
     ## GPU Bus Hash Table
-    $(vars).BusData = Global:Get-Bus
+    if($(arg).Type -like "*NVIDIA*" -or $(arg).Type -like "*AMD*") { $(vars).BusData = Global:Get-Bus }
     
     ## Get Total GPU HashTable
     $(vars).GPU_Count = Global:Get-GPUCount

@@ -3493,3 +3493,6 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
     -Wildrig updated
 
     -Fixed culture info of datetime errors.
+
+    -Windows 7/8: https://github.com/PowerShell/PowerShell/issues/6561
+     fixed -wait parameter issues- Known powershell bug.

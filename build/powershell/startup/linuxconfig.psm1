@@ -42,73 +42,85 @@ function Global:Get-Data {
     }
 
     if (-not (Test-Path ".\build\export\libnvrtc-builtins.so.10.1")) {
-        Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc-builtins.so.10.1.105 $($(vars).dir)/build/export/libnvrtc-builtins.so.10.1" -Wait
+        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc-builtins.so.10.1.105 $($(vars).dir)/build/export/libnvrtc-builtins.so.10.1" -PassThru
+        $Proc | Wait-Process
         Set-Location "/"
         Set-Location $($(vars).dir)     
     }
 
     if (-not (Test-Path ".\build\export\libnvrtc-builtins.so")) {
-        Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc-builtins.so.10.1 $($(vars).dir)/build/export/libnvrtc-builtins.so" -Wait
+        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc-builtins.so.10.1 $($(vars).dir)/build/export/libnvrtc-builtins.so" -PassThru
+        $Proc | Wait-Process
         Set-Location "/"
         Set-Location $($(vars).dir)     
     }
 
     if (-not (Test-Path ".\build\export\libcudart.so.10.1")) {
-        Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libcudart.so.10.1.105 $($(vars).dir)/build/export/libcudart.so.10.1" -Wait
+        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libcudart.so.10.1.105 $($(vars).dir)/build/export/libcudart.so.10.1" -PassThru
+        $Proc | Wait-Process
         Set-Location "/"
         Set-Location $($(vars).dir)     
     }
 
     if (-not (Test-Path ".\build\export\libcudart.so.10.0")) {
-        Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libcudart.so.10.0.130 $($(vars).dir)/build/export/libcudart.so.10.0" -Wait
+        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libcudart.so.10.0.130 $($(vars).dir)/build/export/libcudart.so.10.0" -PassThru
+        $Proc | Wait-Process
         Set-Location "/"
         Set-Location $($(vars).dir)     
     }
     
     if (-not (Test-Path ".\build\export\libcudart.so.9.2")) {
-        Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libcudart.so.9.2.148 $($(vars).dir)/build/export/libcudart.so.9.2" -Wait
+        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libcudart.so.9.2.148 $($(vars).dir)/build/export/libcudart.so.9.2" -PassThru
+        $Proc | Wait-Process
         Set-Location "/"
         Set-Location $($(vars).dir)     
     }
 
     if (-not (Test-Path ".\build\export\libmicrohttpd.so.10")) {
-        Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libmicrohttpd.so.10.34.0 $($(vars).dir)/build/export/libmicrohttpd.so.10" -Wait
+        $proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libmicrohttpd.so.10.34.0 $($(vars).dir)/build/export/libmicrohttpd.so.10" -PassThru
+        $Proc | Wait-Process
         Set-Location "/"
         Set-Location $($(vars).dir)     
     }
 
     if (-not (Test-Path ".\build\export\libcudart.so.10.1")) {
-        Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libcudart.so.10.0.130 $($(vars).dir)/build/export/libcudart.so.10.0" -Wait
+        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libcudart.so.10.0.130 $($(vars).dir)/build/export/libcudart.so.10.0" -PassThru
+        $Proc | Wait-Process
         Set-Location "/"
         Set-Location $($(vars).dir)     
     }
     
     if (-not (Test-Path ".\build\export\libhwloc.so.5")) {
-        Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libhwloc.so.5.5.0 $($(vars).dir)/build/export/libhwloc.so.5" -Wait
+        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libhwloc.so.5.5.0 $($(vars).dir)/build/export/libhwloc.so.5" -PassThru
+        $Proc | Wait-Process
         Set-Location "/"
         Set-Location $($(vars).dir)     
     }
 
     if (-not (Test-Path ".\build\export\libstdc++.so.6")) {
-        Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libstdc++.so.6.0.25 $($(vars).dir)/build/export/libstdc++.so.6" -Wait
+        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libstdc++.so.6.0.25 $($(vars).dir)/build/export/libstdc++.so.6" -PassThru
+        $Proc | Wait-Process
         Set-Location "/"
         Set-Location $($(vars).dir)     
     }
 
     if (-not (Test-Path ".\build\export\libnvrtc.so.9.2")) {
-        Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc.so.9.2.148 $($(vars).dir)/build/export/libnvrtc.so.9.2" -Wait
+        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc.so.9.2.148 $($(vars).dir)/build/export/libnvrtc.so.9.2" -PassThru
+        $Proc | Wait-Process
         Set-Location "/"
         Set-Location $($(vars).dir)     
     }
 
     if (-not (Test-Path ".\build\export\libnvrtc.so.10.0")) {
-        Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc.so.10.0.130 $($(vars).dir)/build/export/libnvrtc.so.10.0" -Wait
+        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc.so.10.0.130 $($(vars).dir)/build/export/libnvrtc.so.10.0" -PassThru
+        $Proc | Wait-Process
         Set-Location "/"
         Set-Location $($(vars).dir)     
     }
 
     if (-not (Test-Path ".\build\export\libnvrtc.so.10.1")) {
-        Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc.so.10.1.105 $($(vars).dir)/build/export/libnvrtc.so.10.1" -Wait
+        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc.so.10.1.105 $($(vars).dir)/build/export/libnvrtc.so.10.1" -PassThru
+        $Proc | Wait-Process
         Set-Location "/"
         Set-Location $($(vars).dir)     
     }
@@ -458,7 +470,8 @@ function Global:Start-LinuxConfig {
     
     ## Aaaaannnd...Que that sexy loading screen
     Global:Get-SexyUnixLogo
-    Start-Process ".\build\bash\screentitle.sh" -Wait    
+    $Proc = Start-Process ".\build\bash\screentitle.sh" -PassThru
+    $Proc | Wait-Process
 
     ##Data and Hive Configs
     Global:Write-Log "Getting Data" -ForegroundColor Yellow

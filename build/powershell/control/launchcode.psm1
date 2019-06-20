@@ -353,7 +353,8 @@ function Global:Start-LaunchCode($MinerCurrent,$AIP) {
         ``._ _ _,'   ``._ _ _,'       ``._____\        
 "
             ##Terminate Previous Miner Screens Of That Type.
-            Start-Process ".\build\bash\killall.sh" -ArgumentList "$($MinerCurrent.Type)" -Wait
+            $proc = Start-Process ".\build\bash\killall.sh" -ArgumentList "$($MinerCurrent.Type)" -PassThru
+            $proc | Wait-Process
 
             ##Remove Old Logs
             $MinerLogs = Get-ChildItem "logs" | Where-Object Name -like "*$($MinerCurrent.Type)*"
@@ -375,7 +376,8 @@ function Global:Start-LaunchCode($MinerCurrent,$AIP) {
             ##Bash Script to free Port
             if($MinerCurrent.Port -ne 0) {
             Write-Log "Clearing Miner Port `($($MinerCurrent.Port)`)..." -ForegroundColor Cyan
-            Start-Process ".\build\bash\killcx.sh" -ArgumentList $MinerCurrent.Port -Wait
+            $proc = Start-Process ".\build\bash\killcx.sh" -ArgumentList $MinerCurrent.Port -PassThru
+            $proc | Wait-Process
             }
             ##Notification To User That Miner Is Attempting To start
             Global:Write-Log "Starting $($MinerCurrent.Name) Mining $($MinerCurrent.Symbol) on $($MinerCurrent.Type)" -ForegroundColor Cyan
@@ -424,11 +426,14 @@ function Global:Start-LaunchCode($MinerCurrent,$AIP) {
             Start-Sleep -S 2
 
             ##chmod again, to be safe.
-            Start-Process "chmod" -ArgumentList "+x build/bash/startup.sh" -Wait
-            Start-Process "chmod" -ArgumentList "+x $MinerDir/startup.sh" -Wait
+            $Proc = Start-Process "chmod" -ArgumentList "+x build/bash/startup.sh" -PassThru
+            $Proc | Wait-Process
+            $Proc = Start-Process "chmod" -ArgumentList "+x $MinerDir/startup.sh" -PassThru
+            $Proc | Wait-Process
 
             ##Launch The Config
-            Start-Process ".\build\bash\startup.sh" -Wait
+            $Proc = Start-Process ".\build\bash\startup.sh" -PassThru
+            $Proc | Wait-Process
 
             ##Miner Should have started, PID will be written to specified file.
             ##For up to 10 seconds, we want to check for the specified PID, and

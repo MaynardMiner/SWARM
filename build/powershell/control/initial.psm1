@@ -121,8 +121,8 @@ function Global:Expand-WebRequest {
             Global:Write-Log "Extracting to temporary folder" -ForegroundColor Yellow
             New-Item -Path ".\x64\$temp" -ItemType "Directory" -Force | Out-Null; Start-Sleep -S 1
             switch ($Tar) {
-                "gz" { Start-Process "tar" -ArgumentList "-xzvf x64/$Zip -C x64/$temp" -Wait }
-                "xz" { Start-Process "tar" -ArgumentList "-xvJf x64/$Zip -C x64/$temp" -Wait }
+                "gz" { $Proc = Start-Process "tar" -ArgumentList "-xzvf x64/$Zip -C x64/$temp" -PassThru; $Proc | Wait-Process }
+                "xz" { $Proc = Start-Process "tar" -ArgumentList "-xvJf x64/$Zip -C x64/$temp" -PassThru; $Proc | Wait-Process }
             }
 
             $Stuff = Get-ChildItem ".\x64\$Temp"
@@ -148,8 +148,8 @@ function Global:Expand-WebRequest {
             else { Global:Write-Log "Download Failed!" -ForegroundColor DarkRed; break }
 
             New-Item -Path ".\x64\$temp" -ItemType "Directory" -Force | Out-Null; Start-Sleep -S 1
-            if ($IsWindows) { Start-Process ".\build\apps\7z.exe" "x `"$($(vars).dir)\$X64_zip`" -o`"$($(vars).dir)\x64\$temp`" -y" -Wait -WindowStyle Minimized -verb Runas }
-            else { Start-Process "unzip" -ArgumentList "$($(vars).dir)/$X64_zip -d $($(vars).dir)/x64/$temp" -Wait }
+            if ($IsWindows) { $Proc = Start-Process ".\build\apps\7z.exe" "x `"$($(vars).dir)\$X64_zip`" -o`"$($(vars).dir)\x64\$temp`" -y" -PassThru -WindowStyle Minimized -verb Runas; $Proc | Wait-Process}
+            else { $Proc = Start-Process "unzip" -ArgumentList "$($(vars).dir)/$X64_zip -d $($(vars).dir)/x64/$temp" -PassThru; $Proc | Wait-Process }
 
             $Stuff = Get-ChildItem ".\x64\$Temp"
             if ($Stuff) { Global:Write-Log "Extraction Succeeded!" -ForegroundColor Green }

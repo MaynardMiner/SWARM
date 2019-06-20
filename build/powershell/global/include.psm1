@@ -154,7 +154,9 @@ function Global:start-killscript {
     $OpenScreens += "pill-NVIDIA3"
     $OpenScreens += "API"
     $OpenScreens | foreach {
-        Start-Process ".\build\bash\killall.sh" -ArgumentList $_ -Wait
+        $Proc = Start-Process ".\build\bash\killall.sh" -ArgumentList $_ -PassThru
+        $Proc | Wait-Process
     }
-    Start-Process ".\build\bash\killall.sh" -ArgumentList "background" -Wait
+    $Proc = Start-Process ".\build\bash\killall.sh" -ArgumentList "background" -PassThru
+    $Proc | Wait-Process
 }

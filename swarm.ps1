@@ -239,7 +239,7 @@ if ($(arg).Type -like "*NVIDIA*" -or $(arg).Type -like "*AMD*" -or $(arg).Type -
 Global:Add-Module "$($(vars).startup)\getconfigs.psm1"
 Global:Write-Log "Starting New Background Agent" -ForegroundColor Cyan
 if ($(arg).Platform -eq "windows") { Global:Start-Background }
-elseif ($(arg).Platform -eq "linux") { Start-Process ".\build\bash\background.sh" -ArgumentList "background $($($(vars).dir))" -Wait }
+elseif ($(arg).Platform -eq "linux") { $Proc = Start-Process ".\build\bash\background.sh" -ArgumentList "background $($($(vars).dir))" -PassThru; $Proc | Wait-Process }
 
 ##Get Optional Miners
 Global:Get-Optional

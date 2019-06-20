@@ -109,7 +109,8 @@ function Global:Start-NVIDIAOC($NewOC) {
     $script += "Invoke-Expression `'.\nvidiaInspector.exe $OCArgs`'"
     Set-Location ".\build\apps"
     $script | Out-File "nvoc-start.ps1"
-    $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\nvoc-start.ps1""" -PassThru -WindowStyle Minimized -Wait
+    $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\nvoc-start.ps1""" -PassThru -WindowStyle Minimized
+    $Command | Wait-Process
     Set-Location $($(vars).dir)
     Start-Sleep -s .5
     $ocmessage | Set-Content ".\build\txt\ocnvidia.txt"
@@ -246,11 +247,12 @@ function Global:Start-AMDOC($NewOC) {
         }
     }
    
-        $Script += "Start-Process `".\OverdriveNTool.exe`" -ArgumentList `"$OCArgs`" -WindowStyle Minimized -Wait"
+        $Script += "`$Proc = Start-Process `".\OverdriveNTool.exe`" -ArgumentList `"$OCArgs`" -WindowStyle Minimized -PassThru; `$Proc | Wait-Process"
         
     Set-Location ".\build\apps"
     $Script | OUt-File "AMDOC-start.ps1"
-    $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\AMDOC-start.ps1""" -PassThru -WindowStyle Minimized -Wait
+    $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\AMDOC-start.ps1""" -PassThru -WindowStyle Minimized
+    $Command | Wait-Process
     Start-Sleep -S .5
     $ocmessage
     Set-Location $($(vars).dir)
