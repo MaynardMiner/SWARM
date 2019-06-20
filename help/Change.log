@@ -3480,4 +3480,14 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
     -Version checking is useuful for users cloning
      SWARM rather than downloading new version.
 
+    -``version update`` commmand for Windows is now
+      working again. Tested it repeatedly. It still
+      works for linux. To use:
+
+      ``version update [miner name] [version number] [download uri]``
+       (Still must be a direct download, Mega will not work)
+
+      If you are unsure of the denoted name SWARM uses for miner-
+      use the ``version query`` command.
     
+    -Wildrig updated
