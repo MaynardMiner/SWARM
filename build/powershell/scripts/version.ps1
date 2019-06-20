@@ -23,6 +23,7 @@ param(
 )
 
 ## Set to SWARM dir
+[cultureinfo]::CurrentCulture = 'en-US'
 $dir = (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
 $dir = $dir -replace "/var/tmp", "/root"
 Set-Location $dir

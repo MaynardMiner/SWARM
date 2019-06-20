@@ -17,7 +17,8 @@
 param( 
     [string] $iconFile 
 ) 
- 
+
+[cultureinfo]::CurrentCulture = 'en-US'
 $WM_SETICON = 0x80 
 $ICON_SMALL = 0 
  

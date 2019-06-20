@@ -2,6 +2,7 @@ param(
     [Parameter(Mandatory=$true, Position=0)]
     [string]$Action
 )
+[cultureinfo]::CurrentCulture = 'en-US'
 
 if($Action) {
     $SMOS_CONFIG = "/root/utils/update_register.sh"

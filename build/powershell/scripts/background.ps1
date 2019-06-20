@@ -16,6 +16,7 @@ Param (
     [string]$WorkingDir
 )
 
+[cultureinfo]::CurrentCulture = 'en-US'
 #$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
 #$WorkingDir = "/root/hive/miners/custom/SWARM"
 Set-Location $WorkingDir

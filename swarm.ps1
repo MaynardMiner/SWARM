@@ -17,6 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ## Set Current Path
 $Global:config = [hashtable]::Synchronized(@{})
+[cultureinfo]::CurrentCulture = 'en-US'
+
 $Global:Config.Add("vars",@{})
 $Global:Config.vars.Add( "dir",(Split-Path $script:MyInvocation.MyCommand.Path) )
 $Global:Config.vars.dir = $Global:Config.vars.dir -replace "/var/tmp","/root"
@@ -89,9 +91,6 @@ if ($P -notlike "*$($(vars).dir)\build\powershell*") {
 }
 
 $(vars).Add("Modules",@())
-
-## Date Bug
-$global:cultureENUS = New-Object System.Globalization.CultureInfo("en-US")
 
 ## Startup Modules
 Import-Module "$($(vars).global)\include.psm1" -Scope Global
