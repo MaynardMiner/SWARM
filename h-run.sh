@@ -32,11 +32,25 @@ logs-off
 
 if ! [ -x "$(command -v pwsh)" ]; then
 disk-expand
-wget https://github.com/PowerShell/PowerShell/releases/download/v6.1.0/powershell-6.1.0-linux-x64.tar.gz -O /tmp/powershell.tar.gz --no-check-certificate
-mkdir -p /opt/microsoft/powershell/6.1.0
-tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/6.1.0
-chmod +x /opt/microsoft/powershell/6.1.0/pwsh
-ln -s /opt/microsoft/powershell/6.1.0/pwsh /usr/bin/pwsh
+wget https://github.com/PowerShell/PowerShell/releases/download/v7.0.0-preview.1/powershell-7.0.0-preview.1-linux-x64.tar.gz -O /tmp/powershell.tar.gz --no-check-certificate
+mkdir -p /opt/microsoft/powershell/7.0.0
+tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7.0.0
+chmod +x /opt/microsoft/powershell/7.0.0/pwsh
+ln -s /opt/microsoft/powershell/7.0.0/pwsh /usr/bin/pwsh
+rm -rf /tmp/powershell.tar.gz
+fi
+
+PVERSION=`pwsh -version`
+
+if [ "$PVERSION" != "PowerShell 7.0.0-preview.1" ]; then
+echo "updating powershell to latest version"
+rm -rf /opt/microsoft/powershell/6.1.0
+rm -rf /usr/bin/pwsh
+wget https://github.com/PowerShell/PowerShell/releases/download/v7.0.0-preview.1/powershell-7.0.0-preview.1-linux-x64.tar.gz -O /tmp/powershell.tar.gz --no-check-certificate
+mkdir -p /opt/microsoft/powershell/7.0.0
+tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7.0.0
+chmod +x /opt/microsoft/powershell/7.0.0/pwsh
+ln -s /opt/microsoft/powershell/7.0.0/pwsh /usr/bin/pwsh
 rm -rf /tmp/powershell.tar.gz
 fi
 
