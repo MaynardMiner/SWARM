@@ -716,7 +716,8 @@ Answer"
         }While ($Check -eq 1)
         Switch ($ans) {
             "1" {
-                [int]$(vars).input = Global:Get-Advanced_Settings
+                $(vars).input = Global:Get-Advanced_Settings
+                if($IsLinux){$(vars).input = $(vars).input[1]}
                 if ($(vars).input -in 1 .. 6) {
                     Add-Module "$hd\strategy.psm1"
                     Global:Get-Strategy

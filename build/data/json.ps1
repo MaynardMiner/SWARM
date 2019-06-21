@@ -1,4 +1,4 @@
-function Get-TableFromJson($X) {
+function Global:Get-TableFromJson($X) {
     $bar = get-content -raw $X | ConvertFrom-Json
 
     # Build an ordered hashtable of the property-value pairs.

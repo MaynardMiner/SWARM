@@ -109,7 +109,7 @@ Answer"
     if ($(vars).config.ContainsKey("TCP")) { $(vars).config.TCP = $ans } else { $(vars).config.Add("TCP", $ans) }
 }
 
-function Get-TCP_Port {
+function Global:Get-TCP_Port {
     Write-Host "Doing TCP_Port"
     Start-Sleep -S 3
     do {

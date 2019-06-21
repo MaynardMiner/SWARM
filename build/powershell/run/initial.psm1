@@ -1,4 +1,4 @@
-Function Get-ExchangeRate {
+Function Global:Get-ExchangeRate {
     $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
     [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
     if ($(arg).CoinExchange) {
