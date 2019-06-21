@@ -3522,3 +3522,5 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
 
     -``swarm_help`` in linux was glitching out during selection of
      advanced paramters- Fixed.
+
+    -Wildrig Updated
