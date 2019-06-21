@@ -712,7 +712,7 @@ This is your settings in a copy/paste form for flight sheet/config:
 3 I am finished
 
 Answer"
-            $Check = Global:Confirm-Answer $Ans @("1", "2", "3")
+            [int]$Check = Global:Confirm-Answer $Ans @("1", "2", "3")
         }While ($Check -eq 1)
         Switch ($ans) {
             "1" {
