@@ -481,16 +481,16 @@ if ($DoNVIDIAOC -eq $true -and $(arg).Platform -eq "windows") {
     $script += "Invoke-Expression `'.\nvidiaInspector.exe $NVIDIAOCArgs`'"
     Set-Location ".\build\apps"
     $script | Out-File "NVIDIA-oc-start.ps1"
-    $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\NVIDIA-oc-start.ps1""" -PassThru -WindowStyle Minimized
-    $command | Wait-Process
+    $Proc = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\NVIDIA-oc-start.ps1""" -PassThru -WindowStyle Minimized
+    $Proc | Wait-Process
     Set-Location $($(vars).dir)
 }
     
 if ($DoAMDOC -eq $true -and $(arg).Platform -eq "windows") {
     Set-Location ".\build\apps"
     $Ascript | Out-File "AMD-oc-start.ps1"
-    $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\AMD-oc-start.ps1""" -PassThru -WindowStyle Minimized
-    $Command | Wait-Process
+    $Proc = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\AMD-oc-start.ps1""" -PassThru -WindowStyle Minimized
+    $Proc | Wait-Process
     Set-Location $($(vars).dir)
 }
     
