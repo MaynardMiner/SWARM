@@ -3496,3 +3496,5 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
 
     -Windows 7/8: https://github.com/PowerShell/PowerShell/issues/6561
      fixed -wait parameter issues- Known powershell bug.
+    
+    -Windows ASIC: Prevent GPU-detection from running if only ASIC specified.
