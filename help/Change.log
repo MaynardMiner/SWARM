@@ -3498,3 +3498,7 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
      fixed -wait parameter issues- Known powershell bug.
     
     -Windows ASIC: Prevent GPU-detection from running if only ASIC specified.
+
+    -For All_Altwallets
+     * Since your mining the coin directly, mc= / zap= is not needed .
+     * SWARM will now remove the mc= / zap= .

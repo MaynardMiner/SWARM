@@ -107,6 +107,7 @@ if ($Name -in $(arg).PoolName) {
 
             $Zergpool_Algorithm = $Zergpool_Sorted.$_.algo.ToLower()
             $Zergpool_Symbol = $Zergpool_Sorted.$_.sym.ToUpper()
+            $mc = "mc=$Zergpool_Symbol,"
             $zergpool_Port = $Zergpool_Sorted.$_.port
             $zergpool_Host = "$($Zergpool_Sorted.$_.Original_Algo).mine.zergpool.com$X"
 
@@ -155,6 +156,7 @@ if ($Name -in $(arg).PoolName) {
                     $Sym = $_ -split "," | Select -first 1
                     $Zerg_Sym = $Zergpool_Symbol -split "-" | Select -First 1
                     if ($Sym -eq $Zerg_Sym -or $Sym -eq $Zergpool_Symbol) {
+                        $mc = ""
                         $Pass1 = $_
                         $User1 = $global:All_AltWallets.$_
                         $Pass2 = $_
@@ -175,9 +177,9 @@ if ($Name -in $(arg).PoolName) {
                 User1     = $User1
                 User2     = $User2
                 User3     = $User3
-                Pass1     = "c=$Pass1,mc=$Zergpool_Symbol,id=$($(arg).RigName1)"
-                Pass2     = "c=$Pass2,mc=$Zergpool_Symbol,id=$($(arg).RigName2)"
-                Pass3     = "c=$Pass3,mc=$Zergpool_Symbol,id=$($(arg).RigName3)"
+                Pass1     = "c=$Pass1,$($mc)id=$($(arg).RigName1)"
+                Pass2     = "c=$Pass2,$($mc)id=$($(arg).RigName2)"
+                Pass3     = "c=$Pass3,$($mc)id=$($(arg).RigName3)"
             } 
         }
     }

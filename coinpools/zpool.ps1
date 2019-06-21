@@ -113,6 +113,7 @@ if ($Name -in $(arg).PoolName) {
 
             $zpool_Algorithm = $zpool_Sorted.$_.algo.ToLower()
             $zpool_Symbol = $zpool_Sorted.$_.sym.ToUpper()
+            $zap = "zap=$zpool_Symbol,"
             $zpool_Port = $zpool_Sorted.$_.port
             $Zpool_Host = "$($zpool_Request.$_.Original_Algo).$($region).mine.zpool.ca$X"
             $Fees = [Double]$global:FeeTable.zpool.$zpool_Algorithm
@@ -161,6 +162,7 @@ if ($Name -in $(arg).PoolName) {
                     $Sym = $_ -split "," | Select -first 1
                     $zpool_Sym = $zpool_Symbol -split "-" | Select -First 1
                     if ($Sym -eq $zpool_Sym -or $Sym -eq $zpool_Symbol) {
+                        $zap = ""
                         $Pass1 = $_
                         $User1 = $global:All_AltWallets.$_
                         $Pass2 = $_
@@ -181,9 +183,9 @@ if ($Name -in $(arg).PoolName) {
                 User1     = $User1
                 User2     = $User2
                 User3     = $User3
-                Pass1     = "c=$Pass1,zap=$zpool_Symbol,id=$($(arg).RigName1)"
-                Pass2     = "c=$Pass2,zap=$zpool_Symbol,id=$($(arg).RigName2)"
-                Pass3     = "c=$Pass3,zap=$zpool_Symbol,id=$($(arg).RigName3)"
+                Pass1     = "c=$Pass1,$($zap)id=$($(arg).RigName1)"
+                Pass2     = "c=$Pass2,$($zap)id=$($(arg).RigName2)"
+                Pass3     = "c=$Pass3,$($zap)id=$($(arg).RigName3)"
             } 
         }
     }
