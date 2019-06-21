@@ -3470,6 +3470,21 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
 
     SWARM 2.4.3
 
+    NOTE: Powershell 7.0.0 has issues with the command ``invoke-restmethod`` in linux.
+    Do not use it!
+
+   GUIDED HELP
+   * There are four different ways to start guided help:
+     * run command ``swarm_help`` after SWARM has started in HiveOS/Windows
+     * [Linux] Run sudo ./help.sh (will install SWARM first, then run help)
+     * [Windows] Run Help.bat
+     * [ALL] opening either SWARM.bat or ./swarm, and adding ``-help``
+   * Will allow users to set up a basic configuration
+   * After basic config is created, will allow users to modify advanced settings.
+   * Everything is guided, and additional information beyond help.txt is supplied.
+   * Guided help will save your configuration to newarguments.json, as well as
+     provide a copy/paste of arguments for flighsheets/configs.
+
     -SWARM will now save version of miner to
     swarm-version.txt in bin folder of miner.
 
@@ -3502,3 +3517,8 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
     -For All_Altwallets
      * Since your mining the coin directly, mc= / zap= is not needed .
      * SWARM will now remove the mc= / zap= .
+
+    -HiveOS: Auto-Upgrade of pwsh to 6.2.0
+
+    -``swarm_help`` in linux was glitching out during selection of
+     advanced paramters- Fixed.
