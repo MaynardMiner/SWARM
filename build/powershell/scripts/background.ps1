@@ -111,6 +111,15 @@ if (Test-Path $CheckForSWARM) {
 }
 $(vars).ADD("GCount",(Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json))
 $(vars).ADD("BackgroundTimer",(New-Object -TypeName System.Diagnostics.Stopwatch))
+$(vars).ADD("watchdog_start",(Get-Date))
+$(vars).ADD("watchdog_triggered",$false)
+
+## If miner was restarted due to watchdog
+if(test-path ".\build\txt\watchdog.txt"){ 
+    $(vars).watchdog_start = Get-Content ".\build\txt\watchdog.txt" 
+    $(vars).watchdog_triggered = $True
+    Remove-Item ".\build\txt\watchdog.txt" -Force
+}
 
 Remove-Module -Name "startup"
 
@@ -640,6 +649,12 @@ While ($True) {
         Global:Add-Module "$($(vars).web)\methods.psm1"
         Global:Add-Module "$($(vars).background)\webstats.psm1"
         Global:Send-WebStats
+    }
+
+    if ($global:Config.hive_params.Wd_enabled -eq "1"){
+        Global:Add-Module "$($(vars).background)\watchdog.psm1"
+        Global:Watch-Hashrate
+        Remove-Module -name "watchdog"
     }
 
     if ($(vars).BackgroundTimer.Elapsed.TotalSeconds -le 5) {

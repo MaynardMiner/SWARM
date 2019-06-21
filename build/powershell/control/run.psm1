@@ -240,6 +240,6 @@ Waiting 20 Seconds For Miners To Fully Load
 
 " 
         Start-Sleep -s 20
-
+        $global:Restart = $false
     }
 }
