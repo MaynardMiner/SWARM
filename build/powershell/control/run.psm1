@@ -69,7 +69,7 @@ function Global:Stop-ActiveMiners {
                             $Exec = Split-Path $MI.miner_exec -Leaf
                             $_.Active += (Get-Date) - $PIDTime
                             $Proc = Start-Process "start-stop-daemon" -ArgumentList "--stop --name $Exec --pidfile $($MI.pid_path) --retry 5" -PassThru
-                            $Proc = Wait-Process
+                            $Proc | Wait-Process
                         }
                     }
                     else { $_.Xprocess.HasExited = $true; $_.XProcess.StartTime = $null; $_.Status = "Idle" }
