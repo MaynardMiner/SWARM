@@ -712,11 +712,11 @@ This is your settings in a copy/paste form for flight sheet/config:
 3 I am finished
 
 Answer"
-            [int]$Check = Global:Confirm-Answer $Ans @("1", "2", "3")
+            $Check = Global:Confirm-Answer $Ans @("1", "2", "3")
         }While ($Check -eq 1)
         Switch ($ans) {
             "1" {
-                $(vars).input = Global:Get-Advanced_Settings
+                [int]$(vars).input = Global:Get-Advanced_Settings
                 if ($(vars).input -in 1 .. 6) {
                     Add-Module "$hd\strategy.psm1"
                     Global:Get-Strategy
