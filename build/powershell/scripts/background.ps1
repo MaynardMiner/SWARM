@@ -659,7 +659,7 @@ While ($True) {
 
     if($IsWindows -and $global:Config.hive_params.PUSH_INTERVAL -and $global:Config.hive_params.PUSH_INTERVAL -ne "") {
         $Push = [double]$global:Config.hive_params.PUSH_INTERVAL
-    } else {$Push -eq 10}
+    } else {$Push = 10}
     
     if ($(vars).BackgroundTimer.Elapsed.TotalSeconds -le $Push) {
         $GoToSleep = [math]::Round($Push - $(vars).BackgroundTimer.Elapsed.TotalSeconds)

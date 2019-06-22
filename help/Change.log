@@ -3499,6 +3499,8 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
     -Windows: Miner Delay works on HiveOS.
      * SWARM starts, but goes to sleep.
 
+    -HiveOS: Auto-Upgrade of pwsh to 6.2.0
+
     -SWARM will now save version of miner to
     swarm-version.txt in bin folder of miner.
 
@@ -3508,18 +3510,11 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
     
     -Version checking is useuful for users cloning
      SWARM rather than downloading new version.
-
-    -``version update`` commmand for Windows is now
-      working again. Tested it repeatedly. It still
-      works for linux. To use:
-
-      ``version update [miner name] [version number] [download uri]``
-       (Still must be a direct download, Mega will not work)
-
-      If you are unsure of the denoted name SWARM uses for miner-
-      use the ``version query`` command.
     
     -Wildrig updated
+    -gminer updated
+
+    FIXES
 
     -Fixed culture info of datetime errors.
 
@@ -3528,11 +3523,19 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
     
     -Windows ASIC: Prevent GPU-detection from running if only ASIC specified.
 
+        -``version update`` commmand for Windows is now
+      working again. Tested it repeatedly. It still
+      works for linux. To use:
+
+      ``version update [miner name] [version number] [download uri]``
+       (Still must be a direct download, Mega will not work)
+
+      If you are unsure of the denoted name SWARM uses for miner-
+      use the ``version query`` command.
+
     -For All_Altwallets
      * Since your mining the coin directly, mc= / zap= is not needed .
      * SWARM will now remove the mc= / zap= .
-
-    -HiveOS: Auto-Upgrade of pwsh to 6.2.0
 
     -``swarm_help`` in linux was glitching out during selection of
      advanced paramters- Fixed.
