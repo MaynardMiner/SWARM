@@ -80,5 +80,4 @@ Watchdog: OK" -ForegroundColor Cyan
         Start-Sleep -S 3
         Exit
     }
-    $(vars).watchdog_start
 }
