@@ -470,7 +470,7 @@ if ($Miner.Type -like "*AMD*") {
                     $AScreenFans = "$($Miner.Type) Fans is $($Fans) "
                 }
             }
-            $AScript += "`$Proc = Start-Process `".\OverdriveNTool.exe`" -ArgumentList `"$OCArgs`" -WindowStyle Minimized -PassThru; `$Proc | Wait-Process"
+            $AScript += "`$Proc = Start-Process `".\OverdriveNTool.exe`" -ArgumentList `"$OCArgs`" -WindowStyle hidden -PassThru; `$Proc | Wait-Process"
         }
     }
 }
@@ -481,7 +481,7 @@ if ($DoNVIDIAOC -eq $true -and $(arg).Platform -eq "windows") {
     $script += "Invoke-Expression `'.\nvidiaInspector.exe $NVIDIAOCArgs`'"
     Set-Location ".\build\apps"
     $script | Out-File "NVIDIA-oc-start.ps1"
-    $Proc = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\NVIDIA-oc-start.ps1""" -PassThru -WindowStyle Minimized
+    $Proc = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle hidden -command "".\NVIDIA-oc-start.ps1""" -PassThru -WindowStyle Minimized
     $Proc | Wait-Process
     Set-Location $($(vars).dir)
 }
@@ -489,7 +489,7 @@ if ($DoNVIDIAOC -eq $true -and $(arg).Platform -eq "windows") {
 if ($DoAMDOC -eq $true -and $(arg).Platform -eq "windows") {
     Set-Location ".\build\apps"
     $Ascript | Out-File "AMD-oc-start.ps1"
-    $Proc = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\AMD-oc-start.ps1""" -PassThru -WindowStyle Minimized
+    $Proc = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle hidden -command "".\AMD-oc-start.ps1""" -PassThru -WindowStyle Minimized
     $Proc | Wait-Process
     Set-Location $($(vars).dir)
 }

@@ -109,7 +109,7 @@ function Global:Start-NVIDIAOC($NewOC) {
     $script += "Invoke-Expression `'.\nvidiaInspector.exe $OCArgs`'"
     Set-Location ".\build\apps"
     $script | Out-File "nvoc-start.ps1"
-    $Proc = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\nvoc-start.ps1""" -PassThru -WindowStyle Minimized
+    $Proc = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle hidden -command "".\nvoc-start.ps1""" -PassThru -WindowStyle Minimized
     $Proc | Wait-Process
     Set-Location $($(vars).dir)
     Start-Sleep -s .5
@@ -251,7 +251,7 @@ function Global:Start-AMDOC($NewOC) {
         
     Set-Location ".\build\apps"
     $Script | OUt-File "AMDOC-start.ps1"
-    $Proc = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\AMDOC-start.ps1""" -PassThru -WindowStyle Minimized
+    $Proc = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle hidden -command "".\AMDOC-start.ps1""" -PassThru -WindowStyle Minimized
     $Proc | Wait-Process
     Start-Sleep -S .5
     $ocmessage
