@@ -651,7 +651,7 @@ While ($True) {
         Global:Send-WebStats
     }
 
-    if ($global:Config.hive_params.Wd_enabled -eq "1"){
+    if ($IsWindows -and $global:Config.params.startup -eq "Yes" -and $global:Config.hive_params.Wd_enabled -eq "1"){
         Global:Add-Module "$($(vars).background)\watchdog.psm1"
         Global:Watch-Hashrate
         Remove-Module -name "watchdog"
