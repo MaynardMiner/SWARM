@@ -89,6 +89,7 @@ if ($P -notlike "*$($(vars).dir)\build\powershell*") {
     [Environment]::SetEnvironmentVariable("PSModulePath", $p)
     Write-Host "Modules Are Loaded" -ForegroundColor Green
 }
+Remove-Variable -name P
 
 $(vars).Add("Modules",@())
 
