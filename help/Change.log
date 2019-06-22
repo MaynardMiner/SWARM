@@ -3488,6 +3488,16 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
      NEW FEATURES!
 
     -Windows: Hashrate Watchdog in HiveOS now works!
+     * LA reboot is not working- coming soon.
+    
+    -Windows: Push Interval works on HiveOS.
+
+    -Windows: GPU watchdog works on HiveOS.
+     * If a GPU shows a temperature of 0,
+       SWARM reboots computer
+
+    -Windows: Miner Delay works on HiveOS.
+     * SWARM starts, but goes to sleep.
 
     -SWARM will now save version of miner to
     swarm-version.txt in bin folder of miner.
@@ -3527,4 +3537,3 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
     -``swarm_help`` in linux was glitching out during selection of
      advanced paramters- Fixed.
 
-    -Wildrig Updated

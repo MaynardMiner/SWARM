@@ -32,6 +32,9 @@ function Global:Get-Parameters {
         $Global:config.hive_params.Add("Miner", $Null)
         $global:Config.hive_params.Add("Miner2", $Null)
         $global:Config.hive_params.Add("Timezone", $Null)
+        $global:Config.hive_params.Add("WD_CHECK_GPU", $Null)
+        $global:Config.hive_params.Add("PUSH_INTERVAL", $Null)
+        $global:Config.hive_params.Add("MINER_DELAY", $Null)
     }
     if (-not $global:Config.SWARM_Params.Id) {
         $global:Config.SWARM_Params.Add("Id", $Null)
@@ -46,6 +49,9 @@ function Global:Get-Parameters {
         $Global:config.SWARM_Params.Add("Miner", $Null)
         $global:Config.SWARM_Params.Add("Miner2", $Null)
         $global:Config.SWARM_Params.Add("Timezone", $Null)
+        $global:Config.SWARM_Params.Add("WD_CHECK_GPU", $Null)
+        $global:Config.SWARM_Params.Add("PUSH_INTERVAL", $Null)
+        $global:Config.SWARM_Params.Add("MINER_DELAY", $Null)
     }
 
     if (-not $(arg).Platform) {

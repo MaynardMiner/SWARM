@@ -99,6 +99,9 @@ function Global:Start-WebStartup($response,$Site) {
                     $global:Config.$Params.Miner = $Rig.MINER -replace "`"", ""
                     $global:Config.$Params.Miner2 = $Rig.MINER2 -replace "`"", ""
                     $global:Config.$Params.Timezone = $Rig.TIMEZONE -replace "`"", ""
+                    $global:Config.$Params.WD_CHECK_GPU = $Rig.WD_CHECK_GPU -replace "`"", ""
+                    $global:Config.$Params.PUSH_INTERVAL = $Rig.PUSH_INTERVAL -replace "`"", ""
+                    $global:Config.$Params.MINER_DELAY = $Rig.MINER_DELAY -replace "`"", ""
 
                     if (Test-Path ".\build\txt\$($Params)_keys.txt") { $OldHiveKeys = Get-Content ".\build\txt\$($Params)_keys.txt" | ConvertFrom-Json }
 

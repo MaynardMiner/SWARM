@@ -102,6 +102,13 @@ Global:Add-Module "$($(vars).startup)\parameters.psm1"
 Global:Get-Parameters
 $(arg).TCP_Port | Out-File ".\build\txt\port.txt"
 
+if($IsWindows -and $Global:config.hive_params.MINER_DELAY -and $Global:config.hive_params.MINER_DELAY -ne "") {
+    Write-Host "Miner Delay Specified- Sleeping for $($Global:config.hive_params.MINER_DELAY)"
+    $Sleep = [Double]$Global:config.hive_params.MINER_DELAY
+    Start-Sleep -S $Sleep
+    Remove-Variable -Name Sleep
+}
+
 ## Crash Reporting
 Global:Add-Module "$($(vars).startup)\crashreport.psm1"
 Global:Start-CrashReporting
