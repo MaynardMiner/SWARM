@@ -7,22 +7,26 @@
         "commands": {
             "equihash_144/5": "",
             "equihash_210/9": "",
-            "equihash_200/9": ""
+            "equihash_200/9": "",
+            "equihash_150/5": ""
         },
         "difficulty": {
             "equihash_144/5": "",
             "equihash_210/9": "",
-            "equihash_200/9": ""
+            "equihash_200/9": "",
+            "equihash_150/5": ""
         },
         "naming": {
             "equihash_144/5": "equihash_144/5",
             "equihash_210/9": "equihash_210/9",
-            "equihash_200/9": "equihash_200/9"
+            "equihash_200/9": "equihash_200/9",
+            "equihash_150/5": "equihash_150/5"
         },
         "fee": {
             "equihash_144/5": 2,
             "equihash_210/9": 2,
-            "equihash_200/9": 2
+            "equihash_200/9": 2,
+            "equihash_150/5": 2
         }
     },
     "NVIDIA2": {
@@ -32,23 +36,26 @@
         "commands": {
             "equihash_144/5": "",
             "equihash_210/9": "",
-            "equihash_200/9": ""
+            "equihash_200/9": "",
+            "equihash_150/5": ""
         },
         "difficulty": {
-            "equihash144": "",
-            "equihash210": "",
-            "equihash200": ""
+            "equihash_144/5": "",
+            "equihash_210/9": "",
+            "equihash_200/9": "",
+            "equihash_150/5": ""
         },
         "naming": {
-            "equihash144": "equihash144",
-            "equihash210": "equihash210",
-            "equihash200": "equihash200"
+            "equihash_144/5": "equihash_144/5",
+            "equihash_210/9": "equihash_210/9",
+            "equihash_200/9": "equihash_200/9",
+            "equihash_150/5": "equihash_150/5"
         },
         "fee": {
-            "equihash-btg": 2,
-            "equihash144": 2,
-            "equihash210": 2,
-            "equihash200": 2
+            "equihash_144/5": 2,
+            "equihash_210/9": 2,
+            "equihash_200/9": 2,
+            "equihash_150/5": 2
         }
     },
     "NVIDIA3": {
@@ -58,25 +65,26 @@
         "commands": {
             "equihash_144/5": "",
             "equihash_210/9": "",
-            "equihash_200/9": ""
+            "equihash_200/9": "",
+            "equihash_150/5": ""
         },
         "difficulty": {
-            "equihash144": "",
-            "equihash210": "",
-            "equihash200": "",
-            "zhash": ""
+            "equihash_144/5": "",
+            "equihash_210/9": "",
+            "equihash_200/9": "",
+            "equihash_150/5": ""
         },
         "naming": {
-            "equihash144": "equihash144",
-            "equihash210": "equihash210",
-            "equihash200": "equihash200",
-            "zhash": "zhash"
+            "equihash_144/5": "equihash_144/5",
+            "equihash_210/9": "equihash_210/9",
+            "equihash_200/9": "equihash_200/9",
+            "equihash_150/5": "equihash_150/5"
         },
         "fee": {
-            "equihash144": 2,
-            "equihash210": 2,
-            "equihash200": 2,
-            "zhash": 2
+            "equihash_144/5": 2,
+            "equihash_210/9": 2,
+            "equihash_200/9": 2,
+            "equihash_150/5": 2
         }
     }
 }
