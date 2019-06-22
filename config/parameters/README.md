@@ -1,6 +1,6 @@
 # Parameter Configuration
 
-There can be up to three differnt files here, each has a specific purpose.
+There can be up to three different files here, each has a specific purpose.
 
 
 ## default.json
@@ -16,7 +16,7 @@ There can be up to three differnt files here, each has a specific purpose.
 * All parameters must be listed here.
 
 ## newarguments.json
-* Created from remote configuration.
+* Created from remote configuration/configuration help-me
 * Has highest precedence- Will always use this config first.
 * Is effectively the user's flight sheet.
 
