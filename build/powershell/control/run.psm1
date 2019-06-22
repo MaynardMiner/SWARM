@@ -106,7 +106,7 @@ function Global:Start-NewMiners {
 
             ##First Do OC
             if ($Reason -eq "Launch") {
-                if ($(vars).WebSites) {
+                if ($(vars).WebSites -and $(vars).WebSites -ne "") {
                     $GetNetMods = @($(vars).NetModules | Foreach { Get-ChildItem $_ })
                     $GetNetMods | ForEach-Object { Import-Module -Name "$($_.FullName)" }
                     $(vars).WebSites | ForEach-Object {
@@ -128,17 +128,19 @@ function Global:Start-NewMiners {
                     }
                     $GetNetMods | ForEach-Object { Remove-Module -Name "$($_.BaseName)" }
                 }
-                if ($OC_Success -eq $false -and $WebSiteOC -eq $true) {
+                if ($OC_Success -eq $false -and $WebSiteOC -eq $false) {
                     if ($ClearedOC -eq $False) {
                         $OCFile = ".\build\txt\oc-settings.txt"
                         if (Test-Path $OCFile) { Clear-Content $OcFile -Force; "Current OC Settings:" | Set-Content $OCFile }
                         $ClearedOC = $true
                     }
-                    if ($Miner.Type -notlike "*ASIC*") {
-                        Global:Write-Log "Starting SWARM OC" -ForegroundColor Cyan
-                        Global:Add-Module "$($(vars).control)\octune.psm1"
-                        Global:Start-OC($Miner, $Website)
-                    }
+                }
+                elseif ($OC_Success -eq $false -and $WebSiteOC -eq $false -and $Miner.Type -notlike "*ASIC*" -and $(Get-Content ".\config\oc\oc-defaults.json" | ConvertFrom-Json).card -ne "") {
+                    Global:Write-Log "Starting SWARM OC" -ForegroundColor Cyan
+                    Global:Add-Module "$($(vars).control)\octune.psm1"
+                    Global:Start-OC($Miner)
+                    Remove-Module -name octune
+                    $OC_Success = $true
                 }
             }
 
