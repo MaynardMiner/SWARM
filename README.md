@@ -65,8 +65,11 @@ I am a sole developer, and this is a large project. I prioritize workload by req
 * Have recent cuda/amd drivers installed.
 * Latest C++ Redistributable Packages for Visual Studio.
 * HiveOS user account, your farm hash ready. Ideally a pre-made flight sheet for SWARM. See wiki on how to setup a flight sheet.
+  * https://hiveos.farm/
 * Latest Powershell Core, along with it being set in your PATH environment variable (should be done during install of Powershell Core).
+  * https://github.com/PowerShell/PowerShell/releases/tag/v6.2.1
 * Latest .NET core runtime.
+  * https://dotnet.microsoft.com/download
 
 *Install Steps:*
 
@@ -75,7 +78,7 @@ Step 1: Open SWARM.bat, change wallet with your BTC wallet, modify/add/replace a
 
 Step 2: (Optional): If you wish to use HiveOS, add your farm hash as ``-Hive_Hash``
 
-Step 3: Launch SWARM.bat.
+Step 3: Launch SWARM.bat (or run Help_Windows.bat for a very easy to use guided setup that will give instructions).
 
 Step 4: (Optional) When background agent starts- Go to HiveOS.
 
