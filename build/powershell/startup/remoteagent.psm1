@@ -42,6 +42,7 @@ function Global:start-update {
         $PreviousVersions += "SWARM.2.3.9"
         $PreviousVersions += "SWARM.2.4.0"
         $PreviousVersions += "SWARM.2.4.1"
+        $PreviousVersions += "SWARM.2.4.2"
 
         $StatsOnly = $null
 
@@ -148,6 +149,17 @@ function Global:start-update {
                                             $Data.$_.naming | Add-Member "skein2" "skein2" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "skein2" 1 -ErrorAction SilentlyContinue
 
+                                        }
+                                    }
+                                }
+
+                                if ($ChangeFile -eq "miniz.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands | Add-Member "equihash_150/5" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "equihash_150/5" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "equihash_150/5" "equihash_150/5" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "equihash_150/5" 2 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }
