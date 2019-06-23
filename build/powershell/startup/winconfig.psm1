@@ -277,13 +277,11 @@ function Global:Start-WindowsConfig {
     
     ## GPU Bus Hash Table
     $DoBus = $true
-    $(arg).Type | %{
-    if ($_ -notlike "*AMD*" -or $_ -notlike "*NVIDIA*") {
-            if ($_ -like "*ASIC*" -or $_ -like "*CPU*") {
-                $Dobus = $false
-            }
-        }
+    if ($(arg).Type -like "*CPU*" -or $(arg).Type -like "*ASIC*") {
+        if("AMD1" -notin $(arg).type -and "NVIDIA1" -notin $(arg).type -and "NVIDIA2" -notin $(arg).type -and "NVIDIA3" -notin $(arg).type) {
+        $Dobus = $false
     }
+}
 
     if ($DoBus -eq $true) { $(vars).BusData = Global:Get-Bus }
     $(vars).GPU_Count = Global:Get-GPUCount
