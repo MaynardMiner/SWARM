@@ -41,9 +41,6 @@ function Global:Set-Power {
                 $DI = $D[$i]
                 $GPUPower += $Power[$DI]
             }
-            Remove-Variable Power
-            Remove-Variable D
-            Remove-Variable DI
         }
     }
     $($GPUPower | Measure-Object -Sum).Sum
