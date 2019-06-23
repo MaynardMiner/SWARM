@@ -277,14 +277,16 @@ function Global:Start-WindowsConfig {
     
     ## GPU Bus Hash Table
     $DoBus = $true
-    if($(arg).Type -notlike "*AMD*" -or $(arg).Type -notlike "*NVIDIA*"){
-        if($(arg).Type -like "*ASIC*" -or $(arg).Type -like "*CPU*"){
-            $Dobus = $false
+    $(arg).Type | %{
+    if ($_ -notlike "*AMD*" -or $_ -notlike "*NVIDIA*") {
+            if ($_ -like "*ASIC*" -or $_ -like "*CPU*") {
+                $Dobus = $false
+            }
         }
     }
 
-    if($DoBus -eq $true){ $(vars).BusData = Global:Get-Bus }
-     $(vars).GPU_Count = Global:Get-GPUCount
+    if ($DoBus -eq $true) { $(vars).BusData = Global:Get-Bus }
+    $(vars).GPU_Count = Global:Get-GPUCount
 
     ## Websites
     if ($(vars).WebSites) {
@@ -308,33 +310,33 @@ function Global:Start-WindowsConfig {
         Remove-Module -Name "methods"
     }
 
-        ## Set Cuda for commands
-        if ($(arg).Type -like "*NVIDIA*") { $(arg).Cuda | Set-Content ".\build\txt\cuda.txt" }
+    ## Set Cuda for commands
+    if ($(arg).Type -like "*NVIDIA*") { $(arg).Cuda | Set-Content ".\build\txt\cuda.txt" }
     
-        ## Let User Know What Platform commands will work for- Will always be Group 1.
-        if ($(arg).Type -like "*NVIDIA1*") {
-            "NVIDIA1" | Out-File ".\build\txt\minertype.txt" -Force
-            Global:Write-Log "Group 1 is NVIDIA- Commands and Stats will work for NVIDIA1" -foreground yellow
+    ## Let User Know What Platform commands will work for- Will always be Group 1.
+    if ($(arg).Type -like "*NVIDIA1*") {
+        "NVIDIA1" | Out-File ".\build\txt\minertype.txt" -Force
+        Global:Write-Log "Group 1 is NVIDIA- Commands and Stats will work for NVIDIA1" -foreground yellow
+        Start-Sleep -S 3
+    }
+    elseif ($(arg).Type -like "*AMD1*") {
+        "AMD1" | Out-File ".\build\txt\minertype.txt" -Force
+        Global:Write-Log "Group 1 is AMD- Commands and Stats will work for AMD1" -foreground yellow
+        Start-Sleep -S 3
+    }
+    elseif ($(arg).Type -like "*CPU*") {
+        if ($(vars).GPU_Count -eq 0) {
+            "CPU" | Out-File ".\build\txt\minertype.txt" -Force
+            Global:Write-Log "Group 1 is CPU- Commands and Stats will work for CPU" -foreground yellow
             Start-Sleep -S 3
         }
-        elseif ($(arg).Type -like "*AMD1*") {
-            "AMD1" | Out-File ".\build\txt\minertype.txt" -Force
-            Global:Write-Log "Group 1 is AMD- Commands and Stats will work for AMD1" -foreground yellow
-            Start-Sleep -S 3
+    }
+    elseif ($(arg).Type -like "*ASIC*") {
+        if ($(vars).GPU_Count -eq 0) {
+            "ASIC" | Out-File ".\build\txt\minertype.txt" -Force
+            Global:Write-Log "Group 1 is ASIC- Commands and Stats will work for ASIC" -foreground yellow
         }
-        elseif ($(arg).Type -like "*CPU*") {
-            if ($(vars).GPU_Count -eq 0) {
-                "CPU" | Out-File ".\build\txt\minertype.txt" -Force
-                Global:Write-Log "Group 1 is CPU- Commands and Stats will work for CPU" -foreground yellow
-                Start-Sleep -S 3
-            }
-        }
-        elseif ($(arg).Type -like "*ASIC*") {
-            if ($(vars).GPU_Count -eq 0) {
-                "ASIC" | Out-File ".\build\txt\minertype.txt" -Force
-                Global:Write-Log "Group 1 is ASIC- Commands and Stats will work for ASIC" -foreground yellow
-            }
-        }    
+    }    
 
     ## Aaaaannnnd...Que that sexy logo. Go Time.
 

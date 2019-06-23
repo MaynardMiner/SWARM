@@ -251,11 +251,13 @@ function Global:Get-GPUCount {
 
     ## GPU Bus Hash Table
     $DoBus = $true
-    if ($(arg).Type -notlike "*AMD*" -or $(arg).Type -notlike "*NVIDIA*") {
-        if ($(arg).Type -like "*ASIC*" -or $(arg).Type -like "*CPU*") {
-            $Dobus = $false
+    $(arg).Type | %{
+    if ($_ -notlike "*AMD*" -or $_ -notlike "*NVIDIA*") {
+            if ($_ -like "*ASIC*" -or $_ -like "*CPU*") {
+                $Dobus = $false
+            }
         }
-    }    
+    }
     
     if ($DoBus -eq $true) {
         if ($GetBus -like "*NVIDIA*" -and $GetBus -notlike "*nForce*") {
