@@ -308,6 +308,34 @@ function Global:Start-WindowsConfig {
         Remove-Module -Name "methods"
     }
 
+        ## Set Cuda for commands
+        if ($(arg).Type -like "*NVIDIA*") { $(arg).Cuda | Set-Content ".\build\txt\cuda.txt" }
+    
+        ## Let User Know What Platform commands will work for- Will always be Group 1.
+        if ($(arg).Type -like "*NVIDIA1*") {
+            "NVIDIA1" | Out-File ".\build\txt\minertype.txt" -Force
+            Global:Write-Log "Group 1 is NVIDIA- Commands and Stats will work for NVIDIA1" -foreground yellow
+            Start-Sleep -S 3
+        }
+        elseif ($(arg).Type -like "*AMD1*") {
+            "AMD1" | Out-File ".\build\txt\minertype.txt" -Force
+            Global:Write-Log "Group 1 is AMD- Commands and Stats will work for AMD1" -foreground yellow
+            Start-Sleep -S 3
+        }
+        elseif ($(arg).Type -like "*CPU*") {
+            if ($(vars).GPU_Count -eq 0) {
+                "CPU" | Out-File ".\build\txt\minertype.txt" -Force
+                Global:Write-Log "Group 1 is CPU- Commands and Stats will work for CPU" -foreground yellow
+                Start-Sleep -S 3
+            }
+        }
+        elseif ($(arg).Type -like "*ASIC*") {
+            if ($(vars).GPU_Count -eq 0) {
+                "ASIC" | Out-File ".\build\txt\minertype.txt" -Force
+                Global:Write-Log "Group 1 is ASIC- Commands and Stats will work for ASIC" -foreground yellow
+            }
+        }    
+
     ## Aaaaannnnd...Que that sexy logo. Go Time.
 
     Global:Get-SexyWinLogo
