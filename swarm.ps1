@@ -183,7 +183,10 @@ $(vars).Add("BTCExchangeRate",$Null)
 ##Determine Net Modules
 $(vars).Add("NetModules",@())
 $(vars).Add("WebSites",@())
-if ($(arg).Hive_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" -or (Test-Path "/hive/miners") ) { $(vars).NetModules += ".\build\api\hiveos"; $(vars).WebSites += "HiveOS" }
+$WebArg = @("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx","")
+if ($(arg).Hive_Hash -notin $WebArg -or (Test-Path "/hive/miners") ) { $(vars).NetModules += ".\build\api\hiveos"; $(vars).WebSites += "HiveOS" }
+else{$(arg).HiveOS = "No"}
+Remove-Variable -Name WebArg
 ##if ($Config.Params.Swarm_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") { $(vars).NetModules += ".\build\api\swarm"; $(vars).WebSites += "SWARM" }
 
 ## Initialize

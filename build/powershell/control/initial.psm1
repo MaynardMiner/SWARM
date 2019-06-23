@@ -228,9 +228,9 @@ function Global:Start-MinerDownloads {
     $global:Miners | ForEach-Object {
         $Sel = $_
         $Success = 0;
-        $CheckPath = Test-Path $Sel.Path
-        $VersionPath = Join-Path (Split-Path $Sel.Path) "swarm-version.txt"
         if ( $Sel.Type -notlike "*ASIC*") {
+            $CheckPath = Test-Path $Sel.Path
+            $VersionPath = Join-Path (Split-Path $Sel.Path) "swarm-version.txt"
             if ( $CheckPath -eq $false ) {
                 $Success = Global:Get-MinerBinary $Sel "New"
             }
