@@ -68,11 +68,11 @@ function Global:Start-Hello($RigData) {
     return $message
 }
 
-function Global:Start-WebStartup($response,$Site) {
+function Global:Start-WebStartup($response, $Site) {
     
-    switch($Site){
-        "HiveOS" {$Params = "hive_params"}
-        "SWARM" {$Params = "SWARM_Params"}
+    switch ($Site) {
+        "HiveOS" { $Params = "hive_params" }
+        "SWARM" { $Params = "SWARM_Params" }
     }
 
     if ($response.result) { $RigConf = $response }
@@ -123,7 +123,60 @@ function Global:Start-WebStartup($response,$Site) {
                     ## Set Arguments/New Parameters
                     $global:Config.$Params | ConvertTo-Json | Set-Content ".\build\txt\$($Params)_keys.txt"
                 }
-
+                "wallet" {
+                    $arguments = [string]$RigConf.result.wallet
+                    if ($arguments -like "*-wallet1*" -or $arguments -like "*`"wallet1`"*") {
+                        $argjson = @{ }
+                        $start = $arguments.Lastindexof("CUSTOM_USER_CONFIG=") + 20
+                        $end = $arguments.LastIndexOf("META") - 3
+                        $arguments = $arguments.substring($start, ($end - $start))
+                        $arguments = $arguments -replace "\'\\\'", ""
+                        $arguments = $arguments -replace "\u0027", "`'"
+                        try { $test = "$arguments" | ConvertFrom-Json; if ($test) { $isjson = $true } } catch { $isjson = $false }
+                        if ($isjson) {
+                            $Params = @{ }
+                            $test.PSObject.Properties.Name | % { $Params.Add("$($_)", $test.$_) }
+                            $Defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json
+                            $Defaults.PSObject.Properties.Name | % { if ($_ -notin $Params.keys) { $Params.Add("$($_)", $Defaults.$_) } }
+    
+                        }
+                        else {
+                            $arguments = $arguments -split " -"
+                            $arguments = $arguments | foreach { $_.trim(" ") }
+                            $arguments = $arguments | % { $_.trimstart("-") }
+                            $arguments | foreach { $argument = $_ -split " " | Select -first 1; $argparam = $_ -split " " | Select -last 1; $argjson.Add($argument, $argparam); }
+                            $argjson = $argjson | ConvertTo-Json | ConvertFrom-Json
+      
+                            $Defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json   
+                            $Params = @{ }
+      
+                            $Defaults | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | % { $Params.Add("$($_)", $Defaults.$_) }
+      
+                            $argjson | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                if ($argjson.$_ -ne $Params.$_) {
+                                    switch ($_) {
+                                        default { $Params.$_ = $argjson.$_ }
+                                        "Bans" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                        "Coin" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                        "Algorithm" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                        "GPUDevices3" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                        "Config.params.GPUDevices2" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                        "GPUDevices1" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                        "Asic_Algo" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                        "Type" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                        "Poolname" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                        "Currency" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                        "PasswordCurrency1" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                        "PasswordCurrency2" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                        "PasswordCurrency3" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                    }
+                                }
+                            }
+                        }
+                        $Params | convertto-Json | Out-File ".\config\parameters\newarguments.json"
+                    }
+                    else{Write-Log "WARNING: User Fligh Sheet Arguments Did Not Contain -Wallet1 argument. They were ignored!" -ForegroundColor Yellow; Start-Sleep -S 3}
+                }
                 ##If Hive Sent OC Start SWARM OC
                 "nvidia_oc" {
                     Global:Start-NVIDIAOC $RigConf.result.nvidia_oc 
