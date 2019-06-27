@@ -12,7 +12,7 @@ function Global:Set-Donation {
         $DonateTime = Get-Date; 
         $DonateText = "Miner has last donated on $DonateTime"; 
         $DonateText | Set-Content ".\build\txt\donate.txt"
-        if ($global:SWARMAlgorithm.Count -gt 0 -and $global:SWARMAlgorithm -ne "") { $global:SWARMAlgorithm = $Null }
+        if ($(vars).SWARMAlgorithm.Count -gt 0 -and $(vars).SWARMAlgorithm -ne "") { $(vars).SWARMAlgorithm = $Null }
         if ($(arg).Coin -gt 0) { $(arg).Coin = $Null }
     }
     elseif ($(arg).Coin.Count -eq 1 -and $(arg).Coin -ne "") {
@@ -27,7 +27,7 @@ function Global:Get-AltWallets {
     ##Get Wallet Config
     $Wallet_Json = Get-Content ".\config\wallets\wallets.json" | ConvertFrom-Json
     
-    if(-not $(arg).AltWallet1){$Global:All_AltWallets = $Wallet_Json.All_AltWallets}
+    if(-not $(arg).AltWallet1){$(vars).All_AltWallets = $Wallet_Json.All_AltWallets}
 
     ##Sort Only Wallet Info
     $Wallet_Json = $Wallet_Json | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | % {if ($_ -like "*AltWallet*") {@{"$($_)" = $Wallet_Json.$_}}}
@@ -119,7 +119,7 @@ function Global:Get-Wallets {
 
 function Global:Add-Algorithms {
     if ($(arg).Coin.Count -eq 1 -and $(arg).Coin -ne "") { $(arg).Passwordcurrency1 = $(arg).Coin; $(arg).Passwordcurrency2 = $(arg).Coin; $(arg).Passwordcurrency3 = $(arg).Coin }
-    if ($global:SWARMAlgorithm) { $global:SWARMAlgorithm | ForEach-Object { $(vars).Algorithm += $_ } }
+    if ($(vars).SWARMAlgorithm) { $(vars).SWARMAlgorithm | ForEach-Object { $(vars).Algorithm += $_ } }
     elseif ($(arg).Auto_Algo -eq "Yes") { $(vars).Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name }
     if ($(arg).Type -notlike "*NVIDIA*") {
         if ($(arg).Type -notlike "*AMD*") {

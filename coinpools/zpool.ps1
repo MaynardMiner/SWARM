@@ -157,18 +157,18 @@ if ($Name -in $(arg).PoolName) {
                 }
             }
                 
-            if ($global:All_AltWallets) {
-                $global:All_AltWallets | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+            if ($(vars).All_AltWallets) {
+                $(vars).All_AltWallets | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                     $Sym = $_ -split "," | Select -first 1
                     $zpool_Sym = $zpool_Symbol -split "-" | Select -First 1
                     if ($Sym -eq $zpool_Sym -or $Sym -eq $zpool_Symbol) {
                         $zap = ""
                         $Pass1 = $_
-                        $User1 = $global:All_AltWallets.$_
+                        $User1 = $(vars).All_AltWallets.$_
                         $Pass2 = $_
-                        $User2 = $global:All_AltWallets.$_
+                        $User2 = $(vars).All_AltWallets.$_
                         $Pass3 = $_
-                        $User3 = $global:All_AltWallets.$_
+                        $User3 = $(vars).All_AltWallets.$_
                     }
                 }
             }

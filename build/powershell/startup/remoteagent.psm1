@@ -56,7 +56,7 @@ function Global:start-update {
         }
         else {
             $Global:amd = Get-Content ".\config\update\amd-linux.json" | ConvertFrom-Json
-            $Global:nvidia = Get-Content ".\config\update\nvidia10-linux.json" | ConvertFrom-Json
+            $Global:nvidia = Get-Content ".\config\update\nvidia-linux.json" | ConvertFrom-Json
             $Global:cpu = Get-Content ".\config\update\cpu-linux.json" | ConvertFrom-Json
         }
 

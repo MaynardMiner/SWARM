@@ -49,7 +49,7 @@ if ($Command) {
             $MinerSearch += Get-Content ".\config\update\cpu-win.json" | ConvertFrom-Json
         } 
         $false {
-            $MinerSearch += Get-Content ".\config\update\nvidia10-linux.json" | ConvertFrom-Json
+            $MinerSearch += Get-Content ".\config\update\nvidia-linux.json" | ConvertFrom-Json
             $MinerSearch += Get-Content ".\config\update\amd-linux.json" | ConvertFrom-Json
             $MinerSearch += Get-Content ".\config\update\cpu-linux.json" | ConvertFrom-Json  
         }

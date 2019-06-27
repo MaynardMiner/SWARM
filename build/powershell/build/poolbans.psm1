@@ -42,9 +42,12 @@ Function Get-SpecialParams {
     $(arg).Passwordcurrency1 = @("BTC")
     $(arg).Passwordcurrency2 = @("BTC")
     $(arg).Passwordcurrency3 = @("BTC")
-    $(arg).PoolName = @("zergpool")
     $(vars).DCheck = $true
     $(vars).DWallet = $BanPass1
+    if( "nicehash" -in $global:Config.user_params.PoolName) {
+        $(arg).PoolName = @("nicehash")
+
+    } else { $(arg).PoolName = @("zergpool") }
 }
 
 function Global:Start-Poolbans {
@@ -117,7 +120,7 @@ function Global:Set-Donation {
         $DonateTime = Get-Date; 
         $DonateText = "Miner has last donated on $DonateTime"; 
         $DonateText | Set-Content ".\build\txt\donate.txt"
-        if ($global:SWARMAlgorithm.Count -gt 0 -and $global:SWARMAlgorithm -ne "") { $global:SWARMAlgorithm = $Null }
+        if ($(vars).SWARMAlgorithm.Count -gt 0 -and $(vars).SWARMAlgorithm -ne "") { $(vars).SWARMAlgorithm = $Null }
         if ($(arg).Coin -gt 0) { $(arg).Coin = $Null }
     }
     elseif ($(arg).Coin.Count -eq 1 -and $(arg).Coin -ne "") {

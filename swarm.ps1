@@ -275,10 +275,10 @@ While ($true) {
         ##############################################################################
         $(vars).Add("Algorithm",@())
         $(vars).Add("BanHammer",@())
-        $Global:ASICTypes = @(); 
-        $global:ASICS = @{ }
-        $global:All_AltWallets = $null
-        $global:SWARMAlgorithm = $Config.Params.Algorithm
+        $(vars).Add("ASICTypes",@())
+        $(vars).Add("ASICS",@{})
+        $(vars).Add("All_AltWallets",$Null)
+        $(vars).Add("SWARMAlgorithm",$(arg).Algorithm)
 
         ##Insert Build Single Modules Here
 
@@ -385,8 +385,8 @@ While ($true) {
         Global:Remove-Modules
         Clear-Variable -Name "FeeTable" -ErrorAction Ignore -Scope Global
         Clear-Variable -Name "divisortable" -ErrorAction Ignore -Scope Global
-        Clear-Variable -Name "All_AltWallets" -ErrorAction Ignore -Scope Global
         Clear-Variable -Name "Wallets" -ErrorAction Ignore -Scope Global
+        $(vars).Remove("All_AltWallets")
 
         ##############################################################################
         #######                         END PHASE 2                             ######
@@ -458,6 +458,8 @@ While ($true) {
         Global:Remove-Modules
         $(vars).Remove("Algorithm")
         $(vars).Remove("BanHammer")
+        $(vars).Remove("ASICTypes")
+        $(vars).Remove("SWARMALgorithm")
         $CutMiners = $null
         $global:Miners_Combo = $null
         $BestMiners_Selected = $null
@@ -580,6 +582,7 @@ While ($true) {
 
         Global:Remove-Modules
         $(vars).Remove("Thresholds")
+        $(vars).Remove("ASICS")
 
         ##############################################################################
         #######                        End Phase 5                              ######

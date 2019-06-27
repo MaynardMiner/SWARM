@@ -1,4 +1,4 @@
-$Global:ASICTypes | ForEach-Object {
+$(vars).ASICTypes | ForEach-Object {
 
     $ConfigType = $_; $Num = $ConfigType -replace "ASIC", ""
 
@@ -22,8 +22,8 @@ $Global:ASICTypes | ForEach-Object {
         if ($MinerAlgo -in $(vars).Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $(vars).BanHammer) {
             $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                 $Pass = $_.Pass1 -replace ",", "`\,"
-                if($global:ASICS.$ConfigType.NickName) {
-                $Pass = $Pass -replace "$($(arg).Rigname1)","$($global:ASICS.$ConfigType.NickName)"
+                if($(vars).ASICS.$ConfigType.NickName) {
+                $Pass = $Pass -replace "$($(arg).Rigname1)","$($(vars).ASICS.$ConfigType.NickName)"
                 }
                 [PSCustomObject]@{
                     MName      = $Name
@@ -44,10 +44,10 @@ $Global:ASICTypes | ForEach-Object {
                     Power     =  if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 }
                     MinerPool  = "$($_.Name)"
                     Port       = 4028
-                    Worker     = $($global:ASICS.$ConfigType.NickName)
+                    Worker     = $($(vars).ASICS.$ConfigType.NickName)
                     API        = "cgminer"
                     URI        = $Uri
-                    Server     = $global:ASICS.$ConfigType.IP
+                    Server     = $(vars).ASICS.$ConfigType.IP
                     BUILD      = $Build
                     Algo       = "$($_.Algorithm)"
                     Log        = "miner_generated"

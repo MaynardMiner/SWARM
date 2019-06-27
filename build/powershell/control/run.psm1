@@ -210,7 +210,7 @@ function Global:Start-NewMiners {
                 }
             }
             else {
-                if ($global:ASICS.$($Miner.Type).IP) { $AIP = $global:ASICS.$($Miner.Type).IP }
+                if ($(vars).ASICS.$($Miner.Type).IP) { $AIP = $(vars).ASICS.$($Miner.Type).IP }
                 else { $AIP = "localhost" }
                 $Miner.Xprocess = Global:Start-LaunchCode $Miner $AIP
             }

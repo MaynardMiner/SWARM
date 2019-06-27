@@ -434,7 +434,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                     if ($Platform -eq "linux") {
                         switch ($Cuda) {
                             "9.2" { $UpdateJson = Get-Content ".\config\update\nvidia9.2-linux.json" | ConvertFrom-Json }
-                            "10" { $UpdateJson = Get-Content ".\config\update\nvidia10-linux.json" | ConvertFrom-Json }
+                            "10" { $UpdateJson = Get-Content ".\config\update\nvidia-linux.json" | ConvertFrom-Json }
                         }
                     }
                     else { $UpdateJson = Get-Content ".\config\update\nvidia-win.json" | ConvertFrom-JSon }
