@@ -92,30 +92,30 @@ function Global:Get-Optional {
         $NVIDIA = $NVIDIA | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Where { $NVIDIA.$_.optional -eq "Yes" } | % { $NVIDIA.$_ }
     }
     else {
-        $AMD = Get-Content ".\config\update\amd-win.json"
+        $AMD = Get-Content ".\config\update\amd-win.json" | ConvertFrom-Json
         $AMD = $AMD | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Where { $AMD.$_.optional -eq "Yes" } | % { $AMD.$_ }
-        $NVIDIA = Get-Content ".\config\update\nvidia-win.json"
+        $NVIDIA = Get-Content ".\config\update\nvidia-win.json" | ConvertFrom-Json
         $NVIDIA = $NVIDIA | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Where { $NVIDIA.$_.optional -eq "Yes" } | % { $NVIDIA.$_ }
     }
     ##AMD
-    if ($(arg.Type) -like "*AMD*") {
+    if ($(arg).Type -like "*AMD*") {
         $list = Get-ChildItem ".\miners\gpu\amd"
         $AMD | ForEach-Object {
-            if ($_ -in $list.basename) {
-                Write-Log "Found $_ in active miner folder, not specified in -optional parameter, moving to optional_and_old" -ForegroundColor Yellow
-                $file = $List | Where BaseName -eq $_
-                Move-Item -path $file -Destination ".\miners\optional_and_old\$($_.Name)" -Force
+            if ($_.Name -in $list.basename) {
+                Write-Log "Found $($_.Name) in active miner folder, not specified in -optional parameter, moving to optional_and_old" -ForegroundColor Yellow
+                $file = $List | Where BaseName -eq $($_.Name)
+                Move-Item -path $file -Destination ".\miners\optional_and_old\$($_.Name).ps1" -Force
             }
         }
     }
     ##NVIDIA
-    if ($(arg.Type) -like "*NVIDIA*") {
+    if ($(arg).Type -like "*NVIDIA*") {
         $list = Get-ChildItem ".\miners\gpu\nvidia"
         $NVIDIA | ForEach-Object {
-            if ($_ -in $list.basename) {
-                Write-Log "Found $_ in active miner folder, not specified in -optional parameter, moving to optional_and_old" -ForegroundColor Yellow
-                $file = $List | Where BaseName -eq $_
-                Move-Item -path $file -Destination ".\miners\optional_and_old\$($_.Name)" -Force
+            if ($_.Name -in $list.basename) {
+                Write-Log "Found $($_.Name) in active miner folder, not specified in -optional parameter, moving to optional_and_old" -ForegroundColor Yellow
+                $file = $List | Where BaseName -eq $($_.Name)
+                Move-Item -path $file -Destination ".\miners\optional_and_old\$($_.Name).ps1" -Force
             }
         }
     }

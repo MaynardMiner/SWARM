@@ -96,7 +96,7 @@
     "NVIDIA3": ".\\bin\\ewbf-3\\miner",
     "minername": "miner",
     "version": "0.6",
-    "optional": "No",
+    "optional": "Yes",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/ewbf-linux.tar.gz"
   },
   "cc-yescrypt": {
@@ -151,7 +151,7 @@
     "NVIDIA3": ".\\bin\\tpruvot-3\\ccminer",
     "minername": "ccminer",
     "version": "2.3.1",
-    "optional": "Yes",
+    "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/tpruvot-linux-10.tar.gz"
   },
   "cc-rfv2": {
@@ -184,7 +184,7 @@
     "NVIDIA3": ".\\bin\\zjazz-3\\zjazz_cuda",
     "minername": "zjazz_cuda",
     "version": "1.2",
-    "optional": "No",
+    "optional": "Yes",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/zjazz-linux-9-2.tar.gz"
   },
   "excavator": {

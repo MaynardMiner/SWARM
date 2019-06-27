@@ -162,6 +162,7 @@
     "AMD3": ".\\bin\\srbminer-3\\SRBMiner-CN.exe",
     "minername": "SRBMiner-CN.exe",
     "version": "1.8.4",
+    "optional": "Yes",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/srbminer-windows.zip"
   },
   "progminer-amd": {

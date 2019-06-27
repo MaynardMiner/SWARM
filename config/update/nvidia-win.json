@@ -63,7 +63,7 @@
         "NVIDIA3": ".\\bin\\bminer-3\\bminer.exe",
         "minername": "bminer.exe",
         "version": "15.5.3",
-        "optional": "Yes",
+        "optional": "No",
         "uri": "https://www.bminercontent.com/releases/bminer-lite-v15.5.3-747d98e-amd64.zip"
     },
     "ehssand": {
@@ -140,7 +140,7 @@
         "NVIDIA3": ".\\bin\\ewbf-3\\miner.exe",
         "minername": "miner.exe",
         "version": "0.6",
-        "optional": "No",
+        "optional": "Yes",
         "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/EWBF.Equihash.miner.v0.6.zip"
     },
     "klaust": {

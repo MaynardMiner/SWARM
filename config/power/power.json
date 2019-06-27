@@ -52,7 +52,7 @@
     "AMD1_Watts": "",
     "CPU_Watts": "",
     "NVIDIA3_Watts": "",
-    "NVIDIA2_Watts": "224.99999999999997"
+    "NVIDIA2_Watts": "224.999999113531"
   },
   "ethash": {
     "NVIDIA1_Watts": "",
