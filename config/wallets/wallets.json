@@ -28,10 +28,13 @@
       "9": "(Optional) You can add all wallets in AllAltWallets section-"
     },
     {
-      "10": "SWARM will scan if auto-coin is on and AllAltWallets sectoin if filled."
+      "10": "SWARM will scan if auto-coin is on and AllAltWallets section is filled."
     },
     {
-      "11": "If a coin matched the address symbol, and most profitable, it will mine to that wallet"
+      "11": "If a coin matched the address symbol, and most profitable, it will mine to that specific wallet."
+    },
+    {
+      "12": "If the most profitable coin is not a matched address symbol in AllAltWallets, SWARM will autoexchange to altwallets."
     }
   ],
 
