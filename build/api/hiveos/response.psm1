@@ -52,9 +52,9 @@ function Global:Set-Stats($Site) {
         $HGPUPowerTable = $Hash
         }
     } else {
-        $HiveGPUTempTable = $global:GPUTempTable
-        $HiveGPUFanTable = $global:GPUFanTable
-        $HiveGPUPowerTable = $global:GPUPowerTable
+        $HGPUTempTable = $global:GPUTempTable
+        $HGPUFanTable = $global:GPUFanTable
+        $HGPUPowerTable = $global:GPUPowerTable
     }
 
     $Stats = @{
@@ -73,14 +73,15 @@ function Global:Set-Stats($Site) {
             }
             miner_stats = $miner_stats
             total_khs = $global:GPUKHS
-            temp      = $HiveGPUTempTable
-            fan       = $HiveGPUFanTable
-            power     = $HiveGPUPowerTable
+            temp      = $HGPUTempTable
+            fan       = $HGPUFanTable
+            power     = $HGPUPowerTable
             df        = "$global:diskspace"
             mem       = @($mem)
             cpuavg    = $global:LoadAverages
         }
     }
+    $Stats | ConvertTo-Json -Compress -Depth 3 | Out-Host
     $Stats
 }
 
