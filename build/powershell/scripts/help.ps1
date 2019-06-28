@@ -1,9 +1,9 @@
 ## Confirm Answer Is Correct
 $Global:config = @{ }
 $Global:Config.Add("vars", @{ })
-$Global:Config.vars.Add( "dir", (Split-Path $script:MyInvocation.MyCommand.Path) )
+$Global:Config.vars.Add( "dir", $(Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))))
 $Global:Config.vars.dir = $Global:Config.vars.dir -replace "/var/tmp", "/root"
-Set-Location $Global:Config.vars.dir
+Set-Location $global:Config.vars.dir
 . .\build\powershell\global\modules.ps1
 
 $(vars).Add("config", [ordered]@{ })
