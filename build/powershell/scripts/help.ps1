@@ -167,7 +167,7 @@ Start-Sleep -S 3
 Clear-Host
 $DoBasic = $true
 
-if (Test-Path ".\config\parameters\newargumentss.json") {
+if (Test-Path ".\config\parameters\newarguments.json") {
     do {
         Clear-Host
         $ans = Read-Host -Prompt "It seems you have previous configs saved.
@@ -717,9 +717,9 @@ do {
         Write-Host "Saving Settings"
         $Defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json
         $Defaults.PSObject.Properties.Name | % { if ($_ -notin $(vars).config.keys) { $(vars).config.Add("$($_)", $Defaults.$_) } }
-        $(vars).config | ConvertTo-Json | Set-Content ".\config\parameters\newargumentss.json"
+        $(vars).config | ConvertTo-Json | Set-Content ".\config\parameters\newarguments.json"
         Start-Sleep -S 2
-        Write-Host "Settings Saved to `".\config\parameter\newargumentss.json`" ! You can Run SWARM.bat (windows) or ./swarm (linux as root) to start SWARM!"
+        Write-Host "Settings Saved to `".\config\parameter\newarguments.json`" ! You can Run SWARM.bat (windows) or ./swarm (linux as root) to start SWARM!"
     }
     if ($Confirm -eq "2") {
         do {
