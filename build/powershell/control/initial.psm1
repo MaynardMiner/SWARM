@@ -224,6 +224,84 @@ function Global:Get-MinerBinary($Miner,$Reason) {
     $Success
 }
 
+function Global:Stop-AllMiners {
+    $(vars).ActiveMinerPrograms | ForEach-Object {
+           
+        ##Miners Not Set To Run        
+            if ($(arg).Platform -eq "windows") {
+                if ($_.XProcess -eq $Null) { $_.Status = "Failed" }
+                elseif ($_.XProcess.HasExited -eq $false) {
+                    $_.Active += (Get-Date) - $_.XProcess.StartTime
+                    if ($_.Type -notlike "*ASIC*") {
+                        $Num = 0
+                        $Sel = $_
+                        if ($Sel.XProcess.Id) {
+                            $Childs = Get-Process | Where { $_.Parent.Id -eq $Sel.XProcess.Id }
+                            Write-Log "Closing all Previous Child Processes For $($Sel.Type)" -ForeGroundColor Cyan
+                            $Child = $Childs | % {
+                                $Proc = $_; 
+                                Get-Process | Where { $_.Parent.Id -eq $Proc.Id } 
+                            }
+                        }
+                        do {
+                            $Sel.XProcess.CloseMainWindow() | Out-Null
+                            Start-Sleep -S 1
+                            $Num++
+                            if ($Num -gt 5) {
+                                Write-Log "SWARM IS WAITING FOR MINER TO CLOSE. IT WILL NOT CLOSE" -ForegroundColor Red
+                            }
+                            if ($Num -gt 180) {
+                                if ($(arg).Startup -eq "Yes") {
+                                    $HiveMessage = "2 minutes miner will not close - Restarting Computer"
+                                    $HiveWarning = @{result = @{command = "timeout" } }
+                                    if ($(vars).WebSites) {
+                                        $(vars).WebSites | ForEach-Object {
+                                            $Sel = $_
+                                            try {
+                                                Global:Add-Module "$($(vars).web)\methods.psm1"
+                                                Global:Get-WebModules $Sel
+                                                $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
+                                            }
+                                            catch { Global:Write-Log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
+                                            Global:Remove-WebModules $sel
+                                        }
+                                    }
+                                    Global:Write-Log "$HiveMessage" -ForegroundColor Red
+                                }
+                                Restart-Computer
+                            }
+                        }Until($false -notin $Child.HasExited)
+                        if ($Sel.SubProcesses -and $false -in $Sel.SubProcesses.HasExited) { 
+                            $Sel.SubProcesses | % { $Check = $_.CloseMainWindow(); if ($Check -eq $False) { Stop-Process -Id $_.Id } }
+                        }
+                    }
+                    else { $_.Xprocess.HasExited = $true; $_.XProcess.StartTime = $null }
+                    $_.Status = "Idle"
+                }
+            }
+
+            if ($(arg).Platform -eq "linux") {
+                if ($_.XProcess -eq $Null) { $_.Status = "Failed" }
+                else {
+                    if ($_.Type -notlike "*ASIC*") {
+                        $MinerInfo = ".\build\pid\$($_.InstanceName)_info.txt"
+                        if (Test-Path $MinerInfo) {
+                            $_.Status = "Idle"
+                            $global:PreviousMinerPorts.$($_.Type) = "($_.Port)"
+                            $MI = Get-Content $MinerInfo | ConvertFrom-Json
+                            $PIDTime = [DateTime]$MI.start_date
+                            $Exec = Split-Path $MI.miner_exec -Leaf
+                            $_.Active += (Get-Date) - $PIDTime
+                            $Proc = Start-Process "start-stop-daemon" -ArgumentList "--stop --name $Exec --pidfile $($MI.pid_path) --retry 5" -PassThru
+                            $Proc | Wait-Process
+                        }
+                    }
+                    else { $_.Xprocess.HasExited = $true; $_.XProcess.StartTime = $null; $_.Status = "Idle" }
+                }
+            }
+        }
+}
+
 function Global:Start-MinerDownloads {
     $global:Miners | ForEach-Object {
         $Sel = $_
@@ -237,11 +315,13 @@ function Global:Start-MinerDownloads {
             elseif(test-path $VersionPath){
                 [String]$Old_Version = Get-Content $VersionPath
                 if($Old_Version -ne [string]$Sel.Version) {
+                    Global:Stop-AllMiners
                     Write-Log "There is a new version availble for $($Sel.Name), Downloading" -ForegroundColor Yellow
                     $Success = Global:Get-MinerBinary $Sel "Update"
                 }
             }
-            else{ 
+            else{
+                Global:Stop-AllMiners
                 Write-Log "Binary found, but swarm-version.txt is missing for $($Sel.Name), Downloading" -ForegroundColor Yellow
                 $Success = Global:Get-MinerBinary $Sel "Update"
             }
