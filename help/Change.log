@@ -3543,3 +3543,42 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
     -``swarm_help`` in linux was glitching out during selection of
      advanced paramters- Fixed.
 
+
+    # SWARM 2.4.4
+
+    ## New features!
+    * Windows: Added -Hive_Hash to Windows_Help.bat
+    * SWARM will close miners before updating new version
+     (mainly fixes windows "file is in use" potential error).
+    * If user has nicehash as only pool- Donate pool becomes nicehash.
+
+    ## NEW arguments!
+    * ``-Admin_Fee``
+        [0-50] Percentage
+        Admin_Fee allows users to set a seperate wallet, and specify
+        a certain percentage of time mined on that wallet a day.
+        Percentage is factored based on 300 seconds (default interval).
+        It is advised to either use a interval divisable by 300, or
+        use default/SWARM_MODE. If you specify an admin fee of 5%, 5%
+        of the total mining time will be mined on ``-Admin`` wallet.
+        Donation/Dev Fee overrides this, and has higher precedence!
+        I am working on a method to not overlap dev and admin fees.
+        -Admin_Fee will be an interval of 300 seconds divided among
+        periods in a 24 hour day.
+        A simple timestamp of when last Admin ran occurred will be
+        placed in ".\admin" folder for reference.
+
+    * ``-Admin``
+        Admin Wallet for ``-Admin_Fee`` Parameter
+    * ``-Admin_Pass`` Password symbol for ``-Admin``
+        Default is "BTC"
+
+    -Wildrig updated
+    -cc-mtp updated
+
+    FIXES:
+
+    SWARM will stop miners before updating miner if new version
+    is detected in update.json. This prevents access-denied errors.
+
+    -Added internal parameters to $(vars) parameter for modules.

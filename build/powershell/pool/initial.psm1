@@ -1,14 +1,14 @@
 function Global:Get-PoolTables {
-    $global:FeeTable.Add("zpool", @{ })
-    $global:FeeTable.Add("zergpool", @{ })
-    $global:FeeTable.Add("fairpool", @{ })
+    $(vars).FeeTable.Add("zpool", @{ })
+    $(vars).FeeTable.Add("zergpool", @{ })
+    $(vars).FeeTable.Add("fairpool", @{ })
 
-    $global:divisortable.Add("zpool", @{ })
-    $global:divisortable.Add("zergpool", @{ })
-    $global:divisortable.Add("fairpool", @{ })
+    $(vars).divisortable.Add("zpool", @{ })
+    $(vars).divisortable.Add("zergpool", @{ })
+    $(vars).divisortable.Add("fairpool", @{ })
     
     if ($(arg).Coin.Count -eq 1 -and $(arg).Coin -ne "" -and $(vars).SWARMAlgorithm.Count -eq 1 -and $(arg).SWARM_Mode -ne "") {
-        $global:SingleMode = $true
+        $(vars).SingleMode = $true
     }
 }
 

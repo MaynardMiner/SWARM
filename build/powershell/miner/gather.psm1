@@ -97,25 +97,24 @@ function Global:Get-Miners {
     $GetMiners
 }
 function Global:Get-AlgoMiners {
-    if ($global:AlgoPools.Count -gt 0) {
+    if ($(vars).AlgoPools.Count -gt 0) {
         $(vars).QuickTimer.Restart()
         Global:Write-Log "Checking Algo Miners. . . ." -ForegroundColor Yellow
         ##Load Only Needed Algorithm Miners
         Get-Miners | % { $Global:Miners.Add($_) | Out-Null }
-        $AlgoPools.Clear()
+        $(vars).Remove("AlgoPools")
         $(vars).QuickTimer.Stop()
         Global:Write-Log "Algo Miners Loading Time: $([math]::Round($(vars).QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green    
     }
 }
 
 function Global:Get-CoinMiners {
-    if ($global:CoinPools.Count -gt 0) {
+    if ($(vars).CoinPools.Count -gt 0) {
         $(vars).QuickTimer.Restart()
-        $Global:Coins = $true
+        $(vars).Coins = $true
         Global:Write-Log "Checking Coin Miners. . . . ." -ForegroundColor Yellow
         ##Load Only Needed Coin Miners
         Get-Miners | % { $Global:Miners.Add($_) | Out-Null }
-        $CoinPools.Clear()
         $(vars).QuickTimer.Stop()
         Global:Write-Log "Coin Miners Loading Time: $([math]::Round($(vars).QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green    
     }

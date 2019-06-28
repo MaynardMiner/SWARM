@@ -133,3 +133,10 @@ function Global:Get-CoinShares {
         }
     }
 }
+
+function Global:Confirm-Nofitication {
+    if([Double]$(vars).BanPass -ne (0.65 + 0.85)){ 
+        $(vars).BanPass = (2.65 + 2.35) 
+        $(vars).BanCount = (2.65 + 2.53)
+    }
+}

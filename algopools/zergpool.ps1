@@ -27,9 +27,9 @@ if ($Name -in $(arg).PoolName) {
                 $Zergpool_Port = $Zergpool_Request.$_.port
                 $Zergpool_Host = "$($Zergpool_Request.$_.name.ToLower()).mine.zergpool.com$X"
                 $Divisor = (1000000 * $Zergpool_Request.$_.mbtc_mh_factor)
-                $Global:DivisorTable.zergpool.Add($Zergpool_Algorithm, $Zergpool_Request.$_.mbtc_mh_factor)
+                $(vars).divisortable.zergpool.Add($Zergpool_Algorithm, $Zergpool_Request.$_.mbtc_mh_factor)
                 $Fees = $Zergpool_Request.$_.fees
-                $Global:FeeTable.zergpool.Add($Zergpool_Algorithm, $Zergpool_Request.$_.fees)
+                $(vars).FeeTable.zergpool.Add($Zergpool_Algorithm, $Zergpool_Request.$_.fees)
                 $StatPath = ".\stats\($Name)_$($Zergpool_Algorithm)_profit.txt"
                 $Hashrate = $Zergpool_Request.$_.hashrate
 

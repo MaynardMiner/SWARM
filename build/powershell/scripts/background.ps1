@@ -17,7 +17,7 @@ Param (
 )
 
 [cultureinfo]::CurrentCulture = 'en-US'
-#$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
+$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
 #$WorkingDir = "/root/hive/miners/custom/SWARM"
 Set-Location $WorkingDir
 $UtcTime = Get-Date -Date "1970-01-01 00:00:00Z"
@@ -63,6 +63,9 @@ if ($P -notlike "*$($(vars).dir)\build\powershell*") {
 
 $(vars).Add("Modules", @())
 Import-Module "$($(vars).global)\include.psm1" -Scope Global
+Import-Module "$($(vars).global)\stats.psm1" -Scope Global
+Import-Module "$($(vars).global)\hashrates.psm1" -Scope Global
+Import-Module "$($(vars).global)\gpu.psm1" -Scope Global
 Global:Add-Module "$($(vars).background)\startup.psm1"
 
 ## Get Parameters
@@ -145,9 +148,6 @@ While ($True) {
 
     Global:Add-Module "$($(vars).background)\run.psm1"
     Global:Add-Module "$($(vars).background)\initial.psm1"
-    Global:Add-Module "$($(vars).global)\gpu.psm1"
-    Global:Add-Module "$($(vars).global)\stats.psm1"
-    Global:Add-Module "$($(vars).global)\hashrates.psm1"
     
     Global:Invoke-MinerCheck
     Global:New-StatTables
@@ -637,12 +637,13 @@ While ($True) {
         Write-Host " ALGO: $Global:StatAlgo" -ForegroundColor White -NoNewline; Write-Host " `|" -NoNewline
         Write-Host " UPTIME: $global:UPTIME" -ForegroundColor Yellow
         Write-Host "STRATUM: $global:StatStratum" -ForegroundColor Cyan
-        Write-Host "START_TIME: $StartTime" -ForegroundColor Magenta -NoNewline; Write-Host " `|" -NoNewline
+        $origin = New-Object -Type DateTime -ArgumentList 1970, 1, 1, 0, 0, 0, 0
+        $SysTime = $origin.AddSeconds([Double]$StartTime)
+        Write-Host "START_TIME: $SysTime" -ForegroundColor Magenta -NoNewline; Write-Host " `|" -NoNewline
         Write-Host " WORKER: $global:StatWorker
 " -ForegroundColor Yellow
     }
 
-    Remove-Module -Name "gpu"
     Remove-Module -Name "run"
     
     if ($(vars).WebSites) {

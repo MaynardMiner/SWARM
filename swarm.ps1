@@ -93,15 +93,19 @@ Remove-Variable -name P
 
 $(vars).Add("Modules",@())
 
-## Startup Modules
-Import-Module "$($(vars).global)\include.psm1" -Scope Global
-
-##Insert Single Modules Here
-
 ## Get Parameters
 Global:Add-Module "$($(vars).startup)\parameters.psm1"
 Global:Get-Parameters
 $(arg).TCP_Port | Out-File ".\build\txt\port.txt"
+
+##Insert Single Modules Here
+
+## Startup Modules
+Import-Module "$($(vars).global)\include.psm1" -Scope Global
+Import-Module "$($(vars).global)\stats.psm1" -Scope Global
+Import-Module "$($(vars).global)\hashrates.psm1" -Scope Global
+Import-Module "$($(vars).global)\gpu.psm1" -Scope Global
+
 
 if($IsWindows -and $Global:config.hive_params.MINER_DELAY -and $Global:config.hive_params.MINER_DELAY -ne "") {
     Write-Host "Miner Delay Specified- Sleeping for $($Global:config.hive_params.MINER_DELAY)"
@@ -165,7 +169,6 @@ $(vars).Add("ActiveMinerPrograms",@())
 $(vars).Add("DWallet",$null)
 $(vars).Add("DCheck",$false)
 $(vars).Add("Warnings",@())
-$(vars).Add("Pool_Hashrates",@{})
 $(vars).Add("Watts",$Null)
 if ($(arg).Timeout) { $(vars).ADD("TimeoutTime",[Double]$(arg).Timeout * 3600) }
 else { $(vars).Add("TimeoutTime",10000000000) }
@@ -179,6 +182,8 @@ $(vars).Add("WattEx",$Null)
 $(vars).Add("Rates",$Null)
 $(vars).Add("BestActiveMiners",$Null)
 $(vars).Add("BTCExchangeRate",$Null)
+$(vars).Add("BanCount",0)
+$(vars).Add("BanPass",0)
 
 ##Determine Net Modules
 $(vars).Add("NetModules",@())
@@ -284,10 +289,6 @@ While ($true) {
 
         ##Insert Build Looping Modules Here
 
-        ##Build Modules
-        Global:Add-Module "$($(vars).global)\include.psm1"
-        Global:Add-Module "$($(vars).global)\stats.psm1"
-
         #Get Miner Config Files
         Global:Add-Module "$($(vars).build)\miners.psm1"
         if ($(arg).Type -like "*CPU*") { $(vars).Add("cpu",(Global:Get-minerfiles -Types "CPU")) }
@@ -306,8 +307,8 @@ While ($true) {
         Global:Get-MinerConfigs
         $global:Config.Pool_Algos = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
         Global:Add-ASICS
-        $global:oc_default = Get-Content ".\config\oc\oc-defaults.json" | ConvertFrom-Json
-        $global:oc_algos = Get-Content ".\config\oc\oc-algos.json" | ConvertFrom-Json
+        $(vars).Add( "oc_default",(Get-Content ".\config\oc\oc-defaults.json" | ConvertFrom-Json) )
+        $(vars).Add("oc_algos",(Get-Content ".\config\oc\oc-algos.json" | ConvertFrom-Json))
 
         ##Manage Pool Bans
         Global:Add-Module "$($(vars).build)\poolbans.psm1"
@@ -351,18 +352,14 @@ While ($true) {
         #######                        PHASE 2: POOLS                           ######
         ##############################################################################
 
-        ##Pool Modules
-        Global:Add-Module "$($(vars).global)\include.psm1"
-        Global:Add-Module "$($(vars).global)\stats.psm1"
-
         ## Build Initial Pool Hash Tables
-        $global:Coins = $false
-        $global:FeeTable = @{ }
-        $global:divisortable = @{ }
-        $global:SingleMode = $false
-        $global:AlgoPools = $Null
-        $global:CoinPools = $Null
-        $(vars).Pool_Hashrates = @{ }
+        $(vars).Add("Coins",$false)
+        $(vars).Add("FeeTable",@{})
+        $(vars).Add("divisortable",@{})
+        $(vars).Add("SingleMode",$false)
+        $(vars).Add("AlgoPools",1)
+        $(vars).Add("CoinPools",1)
+        $(vars).Add("Pool_Hashrates",@{})
 
         ##Insert Pools Single Modules Here
 
@@ -371,12 +368,10 @@ While ($true) {
         Global:Add-Module "$($(vars).pool)\initial.psm1"
         Global:Get-PoolTables
         Global:Remove-BanHashrates
-        $global:Miner_HashTable = Global:Get-MinerHashTable
+        $(vars).Add( "Miner_HashTable",(Global:Get-MinerHashTable) )
         ##Add Global Modules - They Get Removed in Above Function
         Global:Remove-Modules
         . .\build\powershell\global\modules.ps1
-        Import-Module -Name "$($(vars).global)\include.psm1" -Scope Global
-        Global:Add-Module "$($(vars).global)\stats.psm1"
 
         ##Get Algorithm Pools
         Global:Add-Module "$($(vars).pool)\gather.psm1"
@@ -387,6 +382,8 @@ While ($true) {
         Clear-Variable -Name "divisortable" -ErrorAction Ignore -Scope Global
         Clear-Variable -Name "Wallets" -ErrorAction Ignore -Scope Global
         $(vars).Remove("All_AltWallets")
+        $(vars).Remove("FeeTable")
+        $(vars).Remove("divisortable")
 
         ##############################################################################
         #######                         END PHASE 2                             ######
@@ -398,11 +395,6 @@ While ($true) {
         #######                        PHASE 3: Miners                          ######
         ##############################################################################
 
-        ##Miners Modules
-        Global:Add-Module "$($(vars).global)\include.psm1"
-        Global:Add-Module "$($(vars).global)\stats.psm1"
-
-        $global:Miner_HashTable = $Null
         $(vars).Add( "Thresholds", @() )
         $Global:Miners = New-Object System.Collections.ArrayList
 
@@ -460,6 +452,11 @@ While ($true) {
         $(vars).Remove("BanHammer")
         $(vars).Remove("ASICTypes")
         $(vars).Remove("SWARMALgorithm")
+        $(vars).Remove("Coins")
+        $(vars).Remove("SingleMode")
+        $(vars).Remove("Miner_HashTable")
+        if($(vars).CoinPools){ $(vars).Remove("CoinPools") }
+        if($(vars).AlgoPools){ $(vars).Remove("AlgoPools") }
         $CutMiners = $null
         $global:Miners_Combo = $null
         $BestMiners_Selected = $null
@@ -467,8 +464,7 @@ While ($true) {
         $(vars).Remove("amd")
         $(vars).Remove("nvidia")
         $(vars).Remove("cpu")
-        $(vars).Pool_Hashrates = $null
-        $global:Miner_HashTable = $null
+        $(vars).Remove("Pool_HashRates")
         $(vars).Watts = $null
 
         ##############################################################################
@@ -498,14 +494,9 @@ While ($true) {
 
         ##Insert Control Looping Modules Here
 
-
-        Global:Add-Module "$($(vars).global)\include.psm1"
-        Global:Add-Module "$($(vars).global)\stats.psm1"
-        if ($(arg).Type -like "*ASIC*") { Global:Add-Module "$($(vars).global)\hashrates.psm1" }
-        Global:Add-Module "$($(vars).control)\config.psm1"
-
         ## Add New Miners- Download if neccessary
         ## Ammend Their Pricing
+        Global:Add-Module "$($(vars).control)\config.psm1"
         Global:Add-Module "$($(vars).control)\initial.psm1"
         Global:Start-MinerDownloads
         Global:Get-ActiveMiners $global:bestminers_combo
@@ -529,8 +520,8 @@ While ($true) {
         if ($glbal:Config.params.Track_Shares -eq "Yes") { Global:Get-CoinShares }
 
         Global:Remove-Modules
-        $global:oc_algos = $null
-        $global:oc_default = $null
+        $(vars).remove("oc_algos")
+        $(vars).remove("oc_default")
         $global:PreviousMinerPorts = $null
         $global:Restart = $null
         $global:NoMiners = $null
@@ -545,11 +536,6 @@ While ($true) {
         ##############################################################################
         #######                        Phase 5: Run                             ######
         #############################################################################
-
-
-        Global:Add-Module "$($(vars).global)\include.psm1"
-        Global:Add-Module "$($(vars).global)\stats.psm1"
-        Global:Add-Module "$($(vars).global)\hashrates.psm1"
 
         ##Insert Run Single Modules Here
 
@@ -592,10 +578,6 @@ While ($true) {
         #######                       Phase 6: Benchmark                        ######
         ##############################################################################
 
-        Global:Add-Module "$($(vars).global)\include.psm1"
-        Global:Add-Module "$($(vars).global)\stats.psm1"
-        Global:Add-Module "$($(vars).global)\gpu.psm1"
-        Global:Add-Module "$($(vars).global)\hashrates.psm1"
         Global:Add-Module "$($(vars).benchmark)\attempt.psm1"
         $global:ActiveSymbol = @()
 
@@ -620,7 +602,6 @@ While ($true) {
         [GC]::Collect()    
         Clear-History
     }until($Error.Count -gt 0)
-    Import-Module "$($(vars).global)\include.psm1" -Scope Global
     Global:Add-LogErrors
     Global:Remove-Modules
     continue;

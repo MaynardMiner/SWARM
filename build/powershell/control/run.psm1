@@ -95,7 +95,6 @@ function Global:Start-NewMiners {
         if ($null -eq $Miner.XProcess -or $Miner.XProcess.HasExited -and $(arg).Lite -eq "No") {
             Global:Add-Module "$($(vars).control)\launchcode.psm1"
             Global:Add-Module "$($(vars).control)\config.psm1"
-            Global:Add-Module "$($(vars).global)\gpu.psm1"
 
             $global:Restart = $true
             if ($Miner.Type -notlike "*ASIC*") { Start-Sleep -S $Miner.Delay }

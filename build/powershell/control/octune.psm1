@@ -25,8 +25,8 @@ function Global:Start-OC($Miner) {
     
     if ($nvidiaOC -or $AMDOC) { Global:Write-Log "Setting $($Miner.Type) Overclocking" -ForegroundColor Cyan }
 
-    $OC_Algo = $global:oc_algos.$($Miner.Algo).$($Miner.Type)
-    $Default = $global:oc_default."default_$($Miner.Type)"
+    $OC_Algo = $(vars).oc_algos.$($Miner.Algo).$($Miner.Type)
+    $Default = $(vars).oc_default."default_$($Miner.Type)"
     
     ##Check For Pill
     if ($OC_Algo.ETHPill) { $ETHPill = $true }
@@ -96,7 +96,7 @@ function Global:Start-OC($Miner) {
 
     }
     
-    $Card = $global:oc_default.Cards -split ' '
+    $Card = $(vars).oc_default.Cards -split ' '
     $Card = $Card -split ","
     
     #OC For Devices

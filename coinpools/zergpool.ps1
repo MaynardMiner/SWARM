@@ -51,8 +51,8 @@ if ($Name -in $(arg).PoolName) {
 
             $Best = $zergpool_Request.PSObject.Properties.Value | 
             Where-Object Algo -eq $Selected | 
-            Where-Object Algo -in $global:FeeTable.zergpool.keys | 
-            Where-Object Algo -in $global:divisortable.zergpool.Keys |
+            Where-Object Algo -in $(vars).FeeTable.zergpool.keys | 
+            Where-Object Algo -in $(vars).divisortable.zergpool.Keys |
             Where-Object { $global:Config.Pool_Algos.$($_.Algo) } |
             Where-Object { $Name -notin $global:Config.Pool_Algos.$($_.Algo).exclusions }  |
             Where-Object Sym -notin $(vars).BanHammer |
@@ -74,8 +74,8 @@ if ($Name -in $(arg).PoolName) {
 
             $NotBest = $zergpool_Request.PSObject.Properties.Value |
             Where-Object Algo -eq $Selected |
-            Where-Object Algo -in $global:FeeTable.zergpool.keys |
-            Where-Object Algo -in $global:divisortable.zergpool.Keys |
+            Where-Object Algo -in $(vars).FeeTable.zergpool.keys |
+            Where-Object Algo -in $(vars).divisortable.zergpool.Keys |
             Where-Object { $global:Config.Pool_Algos.$($_.Algo) } |
             Where-Object { $Name -notin $global:Config.Pool_Algos.$($_.sym).exclusions }  |
             Where-Object Sym -notin $(vars).BanHammer |
@@ -93,9 +93,9 @@ if ($Name -in $(arg).PoolName) {
         $Zergpool_UnSorted | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | ForEach-Object {
                 $Zergpool_Algorithm = $Zergpool_UnSorted.$_.algo.ToLower()
                 $Zergpool_Symbol = $Zergpool_UnSorted.$_.sym.ToUpper()
-                $zergpool_Fees = [Double]$global:FeeTable.zergpool.$Zergpool_Algorithm
+                $zergpool_Fees = [Double]$(vars).FeeTable.zergpool.$Zergpool_Algorithm
                 $zergpool_Estimate = [Double]$Zergpool_UnSorted.$_.estimate * 0.001
-                $Divisor = (1000000 * [Double]$global:DivisorTable.zergpool.$Zergpool_Algorithm)    
+                $Divisor = (1000000 * [Double]$(vars).divisortable.zergpool.$Zergpool_Algorithm)    
                 try {
                     $StatAlgo = $Zergpool_Symbol -replace "`_","`-" 
                     $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_coin_profit" -Value ([double]$zergpool_Estimate / $Divisor * (1 - ($zergpool_fees / 100))) 
@@ -111,11 +111,11 @@ if ($Name -in $(arg).PoolName) {
             $zergpool_Port = $Zergpool_Sorted.$_.port
             $zergpool_Host = "$($Zergpool_Sorted.$_.Original_Algo).mine.zergpool.com$X"
 
-            $zergpool_Fees = [Double]$global:FeeTable.zergpool.$Zergpool_Algorithm
+            $zergpool_Fees = [Double]$(vars).FeeTable.zergpool.$Zergpool_Algorithm
 
             $zergpool_Estimate = [Double]$Zergpool_Sorted.$_.estimate * 0.001
 
-            $Divisor = (1000000 * [Double]$global:DivisorTable.zergpool.$Zergpool_Algorithm)
+            $Divisor = (1000000 * [Double]$(vars).divisortable.zergpool.$Zergpool_Algorithm)
         
             try { $Stat = Global:Set-Stat -Name "$($Name)_$($Zergpool_Symbol)_coin_profit" -Value ([double]$zergpool_Estimate / $Divisor * (1 - ($zergpool_fees / 100))) }catch { Global:Write-Log "Failed To Calculate Stat For $Zergpool_Symbol" }
 
