@@ -23,8 +23,8 @@
     "type": "cpu",
     "CPU": ".\\bin\\sugarchain-1\\cpuminer-avx2.exe",
     "minername": "cpuminer-avx2.exe",
-    "version": "3.9.3.1",
+    "version": "3.9.5",
     "optional": "No",
-    "uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.9.1/cpuminer-opt-3.9.1-windows.zip"
+    "uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.9.5/cpuminer-opt-3.9.5-windows.zip"
   }
 }
