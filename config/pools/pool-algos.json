@@ -450,6 +450,15 @@
       "comma seperated"
     ]
   },
+  "lyra2z330": {
+    "alt_names": [
+      "lyra2z330"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "lyra2rev2": {
     "alt_names": [
       "lyra2rev2",
