@@ -3551,6 +3551,10 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
     * SWARM will close miners before updating new version
      (mainly fixes windows "file is in use" potential error).
     * If user has nicehash as only pool- Donate pool becomes nicehash.
+    * SWARM will remove optional miners when not specified.
+    * Wildrig updated
+    * cc-mtp updated
+    * Lyraz330 algorithm added
 
     ## NEW arguments!
     * ``-Admin_Fee``
@@ -3573,12 +3577,7 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
     * ``-Admin_Pass`` Password symbol for ``-Admin``
         Default is "BTC"
 
-    -Wildrig updated
-    -cc-mtp updated
-
     FIXES:
-
-    SWARM will stop miners before updating miner if new version
-    is detected in update.json. This prevents access-denied errors.
-
-    -Added internal parameters to $(vars) parameter for modules.
+    * SWARM will stop miners before updating miner if new version
+      is detected in update.json. This prevents access-denied errors.
+    * Added internal parameters to $(vars) parameter for modules.
