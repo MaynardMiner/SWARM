@@ -150,9 +150,9 @@
         "NVIDIA2": ".\\bin\\klaust-2\\ccminer.exe",
         "NVIDIA3": ".\\bin\\klaust-3\\ccminer.exe",
         "minername": "ccminer.exe",
-        "version": "8.24",
+        "version": "8.25",
         "optional": "Yes",
-        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/klaust-windows.zip"
+        "uri": "https://github.com/KlausT/ccminer/releases/download/8.25/ccminer-825-cuda101-x64.zip"
     },
     "miniz": {
         "name": "miniz",
