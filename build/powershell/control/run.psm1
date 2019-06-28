@@ -5,7 +5,7 @@ function Global:Stop-ActiveMiners {
         if ($_.BestMiner -eq $false) {
         
             if ($(arg).Platform -eq "windows") {
-                if ($_.XProcess -eq $Null) { $_.Status = "Failed" }
+                if ($_.XProcess -eq $Null -and $_.Status -ne "Idle") { $_.Status = "Failed" }
                 elseif ($_.XProcess.HasExited -eq $false) {
                     $_.Active += (Get-Date) - $_.XProcess.StartTime
                     if ($_.Type -notlike "*ASIC*") {
@@ -57,7 +57,7 @@ function Global:Stop-ActiveMiners {
             }
 
             if ($(arg).Platform -eq "linux") {
-                if ($_.XProcess -eq $Null) { $_.Status = "Failed" }
+                if ($_.XProcess -eq $Null -and $_.Status -ne "Idle") { $_.Status = "Failed" }
                 else {
                     if ($_.Type -notlike "*ASIC*") {
                         $MinerInfo = ".\build\pid\$($_.InstanceName)_info.txt"
