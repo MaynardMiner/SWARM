@@ -5,7 +5,7 @@ function Global:Get-StatsMiniz {
         $Hash = $Data | Select-String "Sol/s" | Select-String "data-label" | ForEach-Object { $_ -split "</td>" | Select-Object -First 1 } | ForEach-Object { $_ -split ">" | Select-Object -Last 1 }
         $global:RAW = $Hash | Select-Object -Last 1
         Global:Write-MinerData2;
-        $global:GPUKHS += [Double]$global:BRAW / 1000
+        $global:GPUKHS += [Double]$global:RAW / 1000
         $Shares = $Data | Select-String "Shares" | Select-Object -Last 1 | ForEach-Object { $_ -split "</td>" | Select-Object -First 1 } | ForEach-Object { $_ -split ">" | Select-Object -Last 1 }
         try { 
             for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { 

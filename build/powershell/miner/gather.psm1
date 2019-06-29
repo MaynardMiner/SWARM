@@ -101,7 +101,7 @@ function Global:Get-AlgoMiners {
         $(vars).QuickTimer.Restart()
         Global:Write-Log "Checking Algo Miners. . . ." -ForegroundColor Yellow
         ##Load Only Needed Algorithm Miners
-        Get-Miners | % { $(vars).Miners.Add($_) | Out-Null }
+        Global:Get-Miners | % { $(vars).Miners.Add($_) | Out-Null }
         $(vars).Remove("AlgoPools")
         $(vars).QuickTimer.Stop()
         Global:Write-Log "Algo Miners Loading Time: $([math]::Round($(vars).QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green    
