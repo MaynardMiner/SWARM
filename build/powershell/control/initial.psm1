@@ -1,4 +1,4 @@
-function Global:Get-ActiveMiners($(vars).bestminers_combo) {
+function Global:Get-ActiveMiners {
     $(vars).bestminers_combo | ForEach-Object {
         $Sel = $_
 

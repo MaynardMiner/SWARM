@@ -507,7 +507,7 @@ While ($true) {
         Global:Add-Module "$($(vars).control)\config.psm1"
         Global:Add-Module "$($(vars).control)\initial.psm1"
         Global:Start-MinerDownloads
-        Global:Get-ActiveMiners $(vars).bestminers_combo
+        Global:Get-ActiveMiners
         Global:Get-BestActiveMiners
         Global:Get-ActivePricing
 
