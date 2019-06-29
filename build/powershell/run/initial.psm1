@@ -17,7 +17,7 @@ function Global:Clear-Commands {
 }
 
 function Global:Get-ScreenName {
-    $Global:Miners | ForEach-Object {
+    $(vars).Miners | ForEach-Object {
         $Miner = $_
         if ($Miner.Coin -eq $false) { $ScreenName = $Miner.Symbol }
         else {
@@ -45,12 +45,12 @@ function Global:Get-MinerStatus {
     $WattTable = $false
     $ShareTable = $false
     $VolumeTable = $false
-    $Global:Miners | ForEach-Object { if ([Double]$_.Power_Day -gt 0) { $WattTable = $True } }
-    $Global:Miners | ForEach-Object { if ([Double]$_.Shares -gt 0) { $ShareTable = $True } }
-    $Global:Miners | ForEach-Object { if ([Double]$_.Volume -gt 0) { $VolumeTable = $True } }
+    $(vars).Miners | ForEach-Object { if ([Double]$_.Power_Day -gt 0) { $WattTable = $True } }
+    $(vars).Miners | ForEach-Object { if ([Double]$_.Shares -gt 0) { $ShareTable = $True } }
+    $(vars).Miners | ForEach-Object { if ([Double]$_.Volume -gt 0) { $VolumeTable = $True } }
 
     $(arg).Type | ForEach-Object {
-        $Table = $Global:Miners | Where-Object TYPE -eq $_;
+        $Table = $(vars).Miners | Where-Object TYPE -eq $_;
         $global:index = 0
         if ($WattTable -and $ShareTable -and $VolumeTable) {
             $Table | Sort-Object -Property Profit -Descending | Format-Table -GroupBy Type (
@@ -162,10 +162,10 @@ function Global:Get-Charts {
     $Power = "|"
     $Power_Levels = @{ }
     $WattTable = $false
-    $Global:Miners | ForEach-Object { if ($_.Power_Day -ne 0) { $WattTable = $True } }
+    $(vars).Miners | ForEach-Object { if ($_.Power_Day -ne 0) { $WattTable = $True } }
 
     $(arg).Type | ForEach-Object {
-        $Table = $Global:Miners | Where-Object TYPE -eq $_;
+        $Table = $(vars).Miners | Where-Object TYPE -eq $_;
         $global:index = $Table.Count
     
         $Table | ForEach-Object { $Power_Levels.Add("$($_.ScreenName)_$($_.Miner)_$($_.MinerPool)_$($_.Type)", @{ }) }
@@ -185,7 +185,7 @@ function Global:Get-Charts {
     }
 
     $(arg).Type | ForEach-Object {
-        $Table = $Global:Miners | Where-Object TYPE -eq $_;
+        $Table = $(vars).Miners | Where-Object TYPE -eq $_;
         $Border_Lt = @()
         $Status += "GROUP $($_)"
         $Status += ""

@@ -114,7 +114,7 @@ function Global:Start-Benchmark {
                 $_.HashRate = 0
                 $global:WasBenchmarked = $False
                 $WasActive = [math]::Round(((Get-Date) - $_.XProcess.StartTime).TotalSeconds)
-                if ($WasActive -ge $global:MinerStatInt) {
+                if ($WasActive -ge $(vars).MinerstatInt) {
                     Global:Write-Log "$($_.Name) $($_.Symbol) Was Active for $WasActive Seconds"
                     Global:Write-Log "Attempting to record hashrate for $($_.Name) $($_.Symbol)" -foregroundcolor "Cyan"
                     for ($i = 0; $i -lt 4; $i++) {

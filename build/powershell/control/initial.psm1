@@ -1,5 +1,5 @@
-function Global:Get-ActiveMiners($global:bestminers_combo) {
-    $global:bestminers_combo | ForEach-Object {
+function Global:Get-ActiveMiners($(vars).bestminers_combo) {
+    $(vars).bestminers_combo | ForEach-Object {
         $Sel = $_
 
         if (-not ($(vars).ActiveMinerPrograms | Where-Object Path -eq $_.Path | Where-Object Type -eq $_.Type | Where-Object Arguments -eq $_.Arguments )) {
@@ -59,7 +59,7 @@ function Global:Get-ActiveMiners($global:bestminers_combo) {
 
 function Global:Get-BestActiveMiners {
     $(vars).ActiveMinerPrograms | ForEach-Object {
-        if ($global:BestMiners_Combo | Where-Object Type -EQ $_.Type | Where-Object Path -EQ $_.Path | Where-Object Arguments -EQ $_.Arguments) { $_.BestMiner = $true; $(vars).BestActiveMIners += $_ }
+        if ($(vars).bestminers_combo | Where-Object Type -EQ $_.Type | Where-Object Path -EQ $_.Path | Where-Object Arguments -EQ $_.Arguments) { $_.BestMiner = $true; $(vars).BestActiveMIners += $_ }
         else { $_.BestMiner = $false }
     }
 }
@@ -303,7 +303,7 @@ function Global:Stop-AllMiners {
 }
 
 function Global:Start-MinerDownloads {
-    $global:Miners | ForEach-Object {
+    $(vars).Miners | ForEach-Object {
         $Sel = $_
         $Success = 0;
         if ( $Sel.Type -notlike "*ASIC*") {
@@ -336,7 +336,7 @@ function Global:Start-MinerDownloads {
 
 function Global:Get-ActivePricing {
     $(vars).BestActiveMIners | ForEach-Object {
-        $SelectedMiner = $global:bestminers_combo | Where-Object Type -EQ $_.Type | Where-Object Path -EQ $_.Path | Where-Object Arguments -EQ $_.Arguments
+        $SelectedMiner = $(vars).bestminers_combo | Where-Object Type -EQ $_.Type | Where-Object Path -EQ $_.Path | Where-Object Arguments -EQ $_.Arguments
         $_.Profit = if ($SelectedMiner.Profit) { $SelectedMiner.Profit -as [decimal] }else { "bench" }
         $_.Power = $($([Decimal]$SelectedMiner.Power * 24) / 1000 * $(vars).WattEx)
         $_.Fiat_Day = if ($SelectedMiner.Pool_Estimate) { ( ($SelectedMiner.Pool_Estimate * $(vars).Rates.$($(arg).Currency)) -as [decimal] ).ToString("N2") }else { "bench" }

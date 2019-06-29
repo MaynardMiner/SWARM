@@ -260,6 +260,17 @@ function Global:start-update {
                                         }
                                     }
                                 }
+
+                                if ($ChangeFile -eq "sugarchain.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands | Add-Member "lyra2z330" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "lyra2z330" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "lyra2z330" "lyra2z330" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "lyra2z330" 0 -ErrorAction SilentlyContinue
+                                        }
+                                    }
+                                }
  
                                 if($ChangeFile -eq "pool-algos.json") {
                                     $Data | add-Member "x25x" @{alt_names = @("x25x"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue

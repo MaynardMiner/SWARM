@@ -184,6 +184,12 @@ $(vars).Add("BestActiveMiners",$Null)
 $(vars).Add("BTCExchangeRate",$Null)
 $(vars).Add("BanCount",0)
 $(vars).Add("BanPass",0)
+$(vars).Add("Priority",@{Admin = $false; Other = $false})
+$(vars).Add("AdminTime",0)
+if(test-Path ".\build\data\deviation.txt"){$(vars).Add("Deviation",(Get-Content ".\build\data\deviation.txt"))} 
+else{$(vars).Add("Deviation",0)}
+$(vars).Add("BenchmarkMode",$true)
+$(vars).Add("bestminers_combo"$Null)
 
 ##Determine Net Modules
 $(vars).Add("NetModules",@())
@@ -330,17 +336,18 @@ While ($true) {
         Global:Get-Pricing
         Global:Clear-Timeouts
 
+        Remove-Variable -Name BanDir -ErrorAction Ignore
+        Remove-Variable -Name Screen -ErrorAction Ignore
+        Remove-Variable -Name Value -ErrorAction Ignore
+        Remove-Variable -Name Item -ErrorAction Ignore
+        Remove-Variable -Name JsonBanHammer -ErrorAction Ignore
+        Remove-Variable -Name Launch -ErrorAction Ignore
+        Remove-Variable -Name BanChange -ErrorAction Ignore
+        Remove-Variable -Name PoolDir -ErrorAction Ignore
+        Remove-Variable -Name PoolChange -ErrorAction Ignore
+        Remove-Variable -Name BanJson -ErrorAction Ignore
+        Remove-Variable -Name Action -ErrorAction Ignore
         Global:Remove-Modules
-        $Screen = $null
-        $Value = $null
-        $Item = $null
-        $JsonBanHammer = $null
-        $Launch = $null
-        $PoolJson = $null
-        $BanChange = $null
-        $BanDir = $null
-        $PoolDir = $null
-        $PoolChange = $Null
 
         ##############################################################################
         #######                         END PHASE 1                             ######
@@ -378,9 +385,11 @@ While ($true) {
         Global:Get-AlgoPools
         Global:Get-CoinPools
         Global:Remove-Modules
-        Clear-Variable -Name "FeeTable" -ErrorAction Ignore -Scope Global
-        Clear-Variable -Name "divisortable" -ErrorAction Ignore -Scope Global
-        Clear-Variable -Name "Wallets" -ErrorAction Ignore -Scope Global
+        Clear-Variable -Name FeeTable -ErrorAction Ignore -Scope Global
+        Clear-Variable -Name divisortable -ErrorAction Ignore -Scope Global
+        Clear-Variable -Name Wallets -ErrorAction Ignore -Scope Global
+        Clear-Variable -Name Arg -ErrorAction Ignore -Scope Global
+        Clear-Variable -Name Net -ErrorAction Ignore -Scope Global
         $(vars).Remove("All_AltWallets")
         $(vars).Remove("FeeTable")
         $(vars).Remove("divisortable")
@@ -396,7 +405,7 @@ While ($true) {
         ##############################################################################
 
         $(vars).Add( "Thresholds", @() )
-        $Global:Miners = New-Object System.Collections.ArrayList
+        $(vars).Add("Miners",(New-Object System.Collections.ArrayList))
 
         ##Insert Miners Single Modules Here
 
@@ -409,7 +418,7 @@ While ($true) {
         Global:Get-CoinMiners
 
         ##Send error if no miners found
-        if ($Global:Miners.Count -eq 0) {
+        if ($(vars).Miners.Count -eq 0) {
             $HiveMessage = "No Miners Found! Check Arguments/Net Connection"
             $HiveWarning = @{result = @{command = "timeout" } }
             if ($(vars).WebSites) {
@@ -425,6 +434,9 @@ While ($true) {
                 }
             }
             Global:Write-Log "$HiveMessage" -ForegroundColor Red
+            Remove-Variable -Name HiveMessage -ErrorAction Ignore
+            Remove-Variable -Name HiveWarning -ErrorAction Ignore
+            Remove-Variable -Name Sel -ErrorAction Ignore
             start-sleep $(arg).Interval;
             continue  
         }
@@ -433,19 +445,18 @@ While ($true) {
         Global:Add-Module "$($(vars).miner)\sorting.psm1"
         if ($(arg).Volume -eq "Yes") { Get-Volume }
         $CutMiners = Global:Start-MinerReduction
-        $CutMiners | ForEach-Object { $Global:Miners.Remove($_) } | Out-Null;
-        $Global:Miners | ForEach-Object { $_.Symbol = $_.Symbol -replace "-Algo", ""; $_.Symbol = $_.Symbol -replace "-Coin", "" }
+        $CutMiners | ForEach-Object { $(vars).Miners.Remove($_) } | Out-Null;
+        Remove-Variable -Name CutMiners -ErrorAction Ignore
+        $(vars).Miners | ForEach-Object { $_.Symbol = $_.Symbol -replace "-Algo", ""; $_.Symbol = $_.Symbol -replace "-Coin", "" }
         Global:Start-Sorting
         Global:Add-SwitchingThreshold
 
         ##Choose The Best Miners
         Global:Add-Module "$($(vars).miner)\choose.psm1"
         Remove-BadMiners
-        $global:Miners_Combo = Global:Get-BestMiners
-        $global:bestminers_combo = Global:Get-Conservative
-        $BestMiners_Selected = $global:bestminers_combo.Symbol
-        $BestPool_Selected = $global:bestminers_combo.MinerPool
-        Global:Write-Log "Most Ideal Choice Is $($BestMiners_Selected) on $($BestPool_Selected)" -foregroundcolor green
+        $(vars).Add("Miners_Combo",(Global:Get-BestMiners))        
+        $(vars).bestminers_combo = Global:Get-Conservative
+        Global:Write-Log "Most Ideal Choice Is $($(vars).bestminers_combo.Symbol) on $($(vars).bestminers_combo.MinerPool)" -foregroundcolor green
 
         Global:Remove-Modules
         $(vars).Remove("Algorithm")
@@ -455,12 +466,10 @@ While ($true) {
         $(vars).Remove("Coins")
         $(vars).Remove("SingleMode")
         $(vars).Remove("Miner_HashTable")
+        $(vars).Remove("Miners_Combo")
         if($(vars).CoinPools){ $(vars).Remove("CoinPools") }
         if($(vars).AlgoPools){ $(vars).Remove("AlgoPools") }
-        $CutMiners = $null
-        $global:Miners_Combo = $null
-        $BestMiners_Selected = $null
-        $BestPool_Selected = $null
+        $(vars).Miners_Combo = $null
         $(vars).Remove("amd")
         $(vars).Remove("nvidia")
         $(vars).Remove("cpu")
@@ -487,7 +496,6 @@ While ($true) {
         $global:MinerInterval = $null
         $global:MinerStatInt = $Null
         $global:ModeCheck = 0
-        $global:BenchmarkMode = $false
         $global:Share_Table = @{ }
 
         ##Insert Control Single Modules Here
@@ -499,7 +507,7 @@ While ($true) {
         Global:Add-Module "$($(vars).control)\config.psm1"
         Global:Add-Module "$($(vars).control)\initial.psm1"
         Global:Start-MinerDownloads
-        Global:Get-ActiveMiners $global:bestminers_combo
+        Global:Get-ActiveMiners $(vars).bestminers_combo
         Global:Get-BestActiveMiners
         Global:Get-ActivePricing
 
@@ -545,7 +553,7 @@ While ($true) {
         Global:Add-Module "$($(vars).run)\initial.psm1"
         Global:Get-ExchangeRate
         Global:Get-ScreenName
-        $Global:Miners | ConvertTo-Json -Depth 4 | Set-Content ".\build\txt\profittable.txt"
+        $(vars).Miners | ConvertTo-Json -Depth 4 | Set-Content ".\build\txt\profittable.txt"
         Global:Clear-Commands
         Get-Date | Out-File ".\build\txt\minerstats.txt"
         Get-Date | Out-File ".\build\txt\charts.txt"
@@ -556,7 +564,7 @@ While ($true) {
         Global:Add-Module "$($(vars).run)\commands.psm1"
         Global:Get-PriceMessage
         Global:Get-Commands
-        $Global:Miners.Clear()
+        $(vars).remove("Miners")
         Global:Get-Logo
         Global:Update-Logging
         Get-Date | Out-File ".\build\txt\mineractive.txt"

@@ -20,10 +20,13 @@ function Global:Invoke-SwarmMode {
 }
 
 function Global:Set-Countdown {
-    if ($(arg).SWARM_Mode -eq "Yes" -and $global:BenchmarkMode -eq $false) { $CountDown = Global:Invoke-SWARMMode $global:SwitchTime; $CountDown = $Countdown * -1 }
-    else { $Countdown = ([math]::Round(($global:MinerInterval - 20) - $(vars).MinerWatch.Elapsed.TotalSeconds)) }
-    if ($(arg).SWARM_Mode -eq "Yes" -and $global:BenchmarkMode -eq $false) { $CountMessage = "SWARM Mode Starts: $($Countdown) seconds" }
-    else { $CountMessage = "Time Left Until Database Starts: $($Countdown) seconds" }
+    if ($(arg).SWARM_Mode -eq "Yes" -and $(vars).BenchmarkMode -eq $false) { 
+        $CountDown = Global:Invoke-SWARMMode $global:SwitchTime; $CountDown = $Countdown * -1 
+        $CountMessage = "SWARM Mode Starts: $($Countdown) seconds"
+    } else { 
+        $Countdown = ([math]::Round(($global:MinerInterval - 20) - $(vars).MinerWatch.Elapsed.TotalSeconds)) 
+        $CountMessage = "Time Left Until Database Starts: $($Countdown) seconds"
+    }
     Global:Write-Log "$CountMessage 
 "-foreground DarkMagenta
 }
