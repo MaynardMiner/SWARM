@@ -469,7 +469,6 @@ While ($true) {
         $(vars).Remove("Miners_Combo")
         if($(vars).CoinPools){ $(vars).Remove("CoinPools") }
         if($(vars).AlgoPools){ $(vars).Remove("AlgoPools") }
-        $(vars).Miners_Combo = $null
         $(vars).Remove("amd")
         $(vars).Remove("nvidia")
         $(vars).Remove("cpu")
@@ -487,7 +486,6 @@ While ($true) {
         ## Build the Current Active Miners
         $global:Restart = $false
         $global:NoMiners = $false
-        $(vars).BestActiveMIners = @()
         $global:PreviousMinerPorts = @{AMD1 = ""; NVIDIA1 = ""; NVIDIA2 = ""; NVIDIA3 = ""; CPU = "" }
         $global:ClearedOC = $false; 
         $global:ClearedHash = $false; 

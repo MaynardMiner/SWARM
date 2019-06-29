@@ -43,17 +43,15 @@ function Global:Get-BestMiners {
 
 function Global:Get-Conservative {
     if ($(arg).Conserve -eq "Yes") {
-        $(vars).bestminers_combo = @()
+        $bestminers_combo = @()
         $(arg).Type | ForEach-Object {
             $SelType = $_
             $ConserveArray = @()
             $ConserveArray += $(vars).Miners_Combo | Where-Object Type -EQ $SelType | Where-Object Profit -EQ $NULL
             $ConserveArray += $(vars).Miners_Combo | Where-Object Type -EQ $SelType | Where-Object Profit -GT 0
         }
-        $(vars).bestminers_combo += $ConserveArray
+        $bestminers_combo += $ConserveArray
     }
-    else { $(vars).bestminers_combo = $Miners_Combo }
-    $(vars).Miners_Combo = $Null
-    $ConserveArray = $null
-    $(vars).bestminers_combo
+    else { $bestminers_combo = $(vars).Miners_Combo }
+    $bestminers_combo
 }

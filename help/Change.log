@@ -3555,22 +3555,20 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
     * Wildrig updated
     * cc-mtp updated
     * Lyraz330 algorithm added
+    * Windows: SWARM will show .json sent to HiveOS for stats.
 
     ## NEW arguments!
     * ``-Admin_Fee``
         [0-50] Percentage
         Admin_Fee allows users to set a seperate wallet, and specify
-        a certain percentage of time mined on that wallet a day.
-        Percentage is factored based on 300 seconds (default interval).
-        It is advised to either use a interval divisable by 300, or
-        use default/SWARM_MODE. If you specify an admin fee of 5%, 5%
-        of the total mining time will be mined on ``-Admin`` wallet.
-        Donation/Dev Fee overrides this, and has higher precedence!
-        I am working on a method to not overlap dev and admin fees.
-        -Admin_Fee will be an interval of 300 seconds divided among
-        periods in a 24 hour day.
-        A simple timestamp of when last Admin ran occurred will be
-        placed in ".\admin" folder for reference.
+        a certain percentage of time mined on that wallet a day. Admin
+        Mode is done first, and then normal mode begins. Every 24 hours-
+        Admin_Mode starts again, mining % of day specified by this parameter.
+        If SWARM enters donation mode, time is either added to Admin_Fee, or
+        removed, to encompass an even distribution between admin mode and user mode.
+        Simple timestamp of when last Admin ran occurred will be
+        placed in ".\admin" folder for reference. They will be transferred on update.
+        ``-Admin`` must be specified if using ``-Admin_Fee``
 
     * ``-Admin``
         Admin Wallet for ``-Admin_Fee`` Parameter
@@ -3581,3 +3579,5 @@ example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
     * SWARM will stop miners before updating miner if new version
       is detected in update.json. This prevents access-denied errors.
     * Added internal parameters to $(vars) parameter for modules.
+    * Fixed issues in which SWARM did not stats fans/temps/power in
+      Windows version (HiveOS agent).
