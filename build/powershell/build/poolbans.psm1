@@ -111,7 +111,6 @@ function Global:Start-Poolbans {
             if ($Check -lt $global:Config.user_params.Interval) { $(vars).AdminTime = $Check }
             Write-Log "Currently In Admin Mode" -foregroundColor "darkred"
             Write-Log "Current Admin Run Time: $TotalAdminTime Seconds" -foregroundColor "darkred"
-            Get-Date | Set-Content ".\admin\current_admin_run.txt" -Force
         }
     }
 
