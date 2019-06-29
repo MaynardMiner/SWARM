@@ -81,7 +81,7 @@ function Global:Start-Poolbans {
     if (Test-Path ".\build\data\system.txt") { [DateTime]$PoolBanCheck = "$(Get-Content ".\build\data\system.txt")" }
     if (Test-Path ".\admin\last_admin_run.txt") { [DateTime]$AdminCheck = "$(Get-Content ".\admin\last_admin_run.txt")" }
     if (Test-Path ".\admin\current_admin_run.txt") { $AdminRun = "$(Get-Content ".\admin\current_admin_run.txt")" }
-    if ([Double]$(arg).Donate -gt 0 -and [Double]$(vars).BanCount -lt 6) {
+    if ([Double]$(arg).Donate -gt 0 -and [Double]$(vars).BanCount -lt 5) {
         $(vars).BanCount = [Double]$(vars).BanPass + [Double]$(arg).Donate
     }
     elseif ( [Double]$(vars).BanCount -lt 5 ) { $(vars).BanCount = [Double]$(vars).BanPass }

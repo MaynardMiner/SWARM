@@ -33,7 +33,7 @@ $(vars).AMDTypes | ForEach-Object {
 
     if ($(vars).Coins -eq $true) { $Pools = $(vars).CoinPools } else { $Pools = $(vars).AlgoPools }
 
-    if ($(vars).Bancount -lt 1) { $(vars).Bancount = 6 }
+    if ($(vars).Bancount -lt 1) { $(vars).Bancount = 5 }
 
 
     ##Build Miner Settings
