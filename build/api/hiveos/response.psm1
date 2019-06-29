@@ -15,7 +15,7 @@ function Global:Set-Stats($Site) {
         "HiveOS" { $Params = "hive_params" }
         "SWARM" { $Params = "Swarm_Params" }
     }
-    $mem = @($($global:ramfree), $($global:ramtotal - $global:ramfree))
+    $mem = @($($global:ramfree), [math]::round($global:ramtotal - $global:ramfree,2))
     $global:GPUHashTable = $global:GPUHashTable | foreach { $_ -replace ("GPUKHS=", "") }
     $global:GPUPowerTable = $global:GPUPowerTable | foreach { $_ -replace ("GPUWATTS=", "") }
     $global:GPUFanTable = $global:GPUFanTable | foreach { $_ -replace ("GPUFAN=", "") }
@@ -82,6 +82,7 @@ function Global:Set-Stats($Site) {
         }
     }
     $Stats | ConvertTo-Json -Compress -Depth 3 | Out-Host
+    write-host ""
     $Stats
 }
 
