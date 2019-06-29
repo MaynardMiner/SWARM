@@ -199,10 +199,10 @@ function Global:Start-Benchmark {
             }
 
             if ($Global:Strike -ne $true) {
-                if ($(vars).Warnings."$($_.Name)" -ne $null) { $(vars).Warnings."$($_.Name)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
-                if ($(vars).Warnings."$($_.Name)_$($_.Algo)" -ne $null) { $(vars).Warnings."$($_.Name)_$($_.Algo)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
-                if ($(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" -ne $null) { $(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
-                if ($(vars).Warnings."$($_.Type)" -ne $null) { $(vars).Warnings."$($_.Type)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
+                if ($null -ne $(vars).Warnings."$($_.Name)") { $(vars).Warnings."$($_.Name)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
+                if ($null -ne $(vars).Warnings."$($_.Name)_$($_.Algo)") { $(vars).Warnings."$($_.Name)_$($_.Algo)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
+                if ($null -ne $(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)") { $(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
+                if ($null -ne $(vars).Warnings."$($_.Type)") { $(vars).Warnings."$($_.Type)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
             }
      
             ## Strike-Out System. Will not work with Lite Mode

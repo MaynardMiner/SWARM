@@ -39,7 +39,6 @@ $(vars).AMDTypes | ForEach-Object {
 
     if ($(vars).Bancount -lt 1) { $(vars).Bancount = 5 }
 
-
     ##Build Miner Settings
     $MinerConfig.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
 

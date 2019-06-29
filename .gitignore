@@ -4,6 +4,7 @@ build/data/error.txt
 build/data/info.txt
 build/data/system.txt
 build/data/timetable.txt
+build/data/deviation.txt
 build/export/libhwloc.so.5
 build/export/libmicrohttpd.so.10
 build/pid/
@@ -36,4 +37,5 @@ build/export/libstdc++.so.6
 build/export/libnvrtc-builtins.so.10.1
 build/export/libnvrtc-builtins.so
 build/cmd/dir.txt
- config/power/power.json
+config/power/power.json
+admin

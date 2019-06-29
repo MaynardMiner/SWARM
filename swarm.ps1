@@ -186,7 +186,7 @@ $(vars).Add("BanCount",0)
 $(vars).Add("BanPass",0)
 $(vars).Add("Priority",@{Admin = $false; Other = $false})
 $(vars).Add("AdminTime",0)
-if(test-Path ".\build\data\deviation.txt"){$(vars).Add("Deviation",(Get-Content ".\build\data\deviation.txt"))} 
+if(test-Path ".\build\data\deviation.txt"){$(vars).Add("Deviation",[Double](Get-Content ".\build\data\deviation.txt"))} 
 else{$(vars).Add("Deviation",0)}
 $(vars).Add("BenchmarkMode",$true)
 $(vars).Add("bestminers_combo",$Null)

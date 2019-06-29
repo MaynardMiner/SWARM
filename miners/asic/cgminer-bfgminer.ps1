@@ -15,7 +15,6 @@ $(vars).ASICTypes | ForEach-Object {
 
     if ($(vars).Bancount -lt 1) { $(vars).Bancount = 5 }
 
-
     $(arg).ASIC_ALGO | ForEach-Object {
 
         $MinerAlgo = $_

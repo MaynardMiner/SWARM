@@ -79,7 +79,7 @@ function Global:Start-Poolbans {
     $BanCheck3 = Get-Content ".\build\data\conversion2.conf" -Force
     $BanPass3 = "$($BanCheck3)"
     if (Test-Path ".\build\data\system.txt") { [DateTime]$PoolBanCheck = "$(Get-Content ".\build\data\system.txt")" }
-    if (Test-Path ".\admin\last_admin_run.txt") { [DateTime]$AdminCheck = "$(Get-Content ".\admin\last_admin_run.txt")" }
+    if (Test-Path ".\admin\last_admin_finish.txt") { [DateTime]$AdminCheck = "$(Get-Content ".\admin\last_admin_finish.txt")" }
     if (Test-Path ".\admin\current_admin_run.txt") { $AdminRun = "$(Get-Content ".\admin\current_admin_run.txt")" }
     if ([Double]$(arg).Donate -gt 0 -and [Double]$(vars).BanCount -lt 5) {
         $(vars).BanCount = [Double]$(vars).BanPass + [Double]$(arg).Donate
@@ -100,7 +100,7 @@ function Global:Start-Poolbans {
     if ($(vars).Priority.Admin -eq $true) {
         $TotalAdminTime = [math]::Round(((Get-Date) - [datetime]$AdminRun).TotalSeconds)
         if ($TotalAdminTime -ge $(vars).AdminTime) {
-            Get-Date | Set-Content ".\admin\last_admin_run.txt" -Force
+            Get-Date | Set-Content ".\admin\last_admin_finish.txt" -Force
             Clear-Content ".\admin\current_admin_run.txt" -Force
             $(vars).Priority.Admin = $false
             $(vars).Deviation = 0
@@ -117,7 +117,8 @@ function Global:Start-Poolbans {
     if ($(arg).Admin_Fee -ne 0) {
         if ([string]$AdminCheck -eq "") {
             if (-not (test-path ".\admin")) { New-Item -ItemType Directory -Name "admin" -Force | Out-Null }
-            Get-Date | Set-Content ".\admin\last_admin_run.txt" -Force
+            Get-Date | Set-Content ".\admin\last_admin_finish.txt" -Force            
+            Get-Date | Set-Content ".\admin\last_admin_start.txt" -Force
             Get-Date | Set-Content ".\admin\current_admin_run.txt" -Force
             $(vars).Priority.Admin = $true
             Global:Write-Log  "Entering Admin Mode" -foregroundColor "darkred"
@@ -125,7 +126,8 @@ function Global:Start-Poolbans {
         else {
             $CurrentAdmin = [math]::Round(((Get-Date) - $AdminCheck).TotalSeconds)
             if ($CurrentAdmin -ge 86400) {
-                Get-Date | Set-Content ".\admin\last_admin_run.txt" -Force
+                Get-Date | Set-Content ".\admin\last_admin_finish.txt" -Force
+                Get-Date | Set-Content ".\admin\last_admin_start.txt" -Force
                 Get-Date | Set-Content ".\admin\current_admin_run.txt" -Force
                 $(vars).Priority.Admin = $true
                 Global:Write-Log  "Entering Admin Mode" -foregroundColor "darkred"
