@@ -75,11 +75,16 @@ function Global:start-update {
                 $OldTime = Join-Path $PreviousPath "build\data"
                 $OldConfig = Join-Path $PreviousPath "config"
                 $OldTimeout = Join-Path $PreviousPath "timeout"
+                $OldAdmin = Join-Path $PreviousPath "admin"
                 if (-not (Test-Path "backup")) { New-Item "backup" -ItemType "directory" | Out-Null }
                 if (-not (Test-Path "stats")) { New-Item "stats" -ItemType "directory" | Out-Null }
                 if (Test-Path $OldBackup) {
                     Get-ChildItem -Path "$($OldStats)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\stats"
                     Get-ChildItem -Path "$($OldBackup)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\backup"
+                }
+                if (Test-Path $OldAdmin){
+                    if (-not (Test-Path ".\admin")) { New-Item ".\admin" -ItemType "directory" | Out-Null }
+                    Get-ChildItem -Path "$($OldAdmin)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\admin"
                 }
                 #if(Test-Path $OldTime){Get-ChildItem -Path "$($OldTime)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\build\data"}
                 if (Test-Path $OldTimeout) {
