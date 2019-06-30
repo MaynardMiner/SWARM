@@ -297,13 +297,12 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
             else { $Get += "Failed to contact miner on $($ASIC.Server) $($ASIC.Port) to get details" }
         }
         else { $Get += "No ASIC miners running" }
-        remove-module -Name "hashrates"
     }
 
 
     "benchmarks" {
 
-        Import-Module -Name "$($(vars).global)\hashrates.psm1"
+        Import-Module -Name "$($(vars).global)\hashrates.psm1" -Scope Global
 
         if (Test-path ".\stats") {
             if ($argument2) {
@@ -351,8 +350,6 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
             Get-BenchTable | Out-File ".\build\txt\get.txt"
         }
         else { $Get += "No Stats Found" }
-
-        Remove-Module -Name "hashrates"
     }
 
     "wallets" {
@@ -434,7 +431,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                     if ($Platform -eq "linux") {
                         switch ($Cuda) {
                             "9.2" { $UpdateJson = Get-Content ".\config\update\nvidia9.2-linux.json" | ConvertFrom-Json }
-                            "10" { $UpdateJson = Get-Content ".\config\update\nvidia10-linux.json" | ConvertFrom-Json }
+                            "10" { $UpdateJson = Get-Content ".\config\update\nvidia-linux.json" | ConvertFrom-Json }
                         }
                     }
                     else { $UpdateJson = Get-Content ".\config\update\nvidia-win.json" | ConvertFrom-JSon }
@@ -544,7 +541,8 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 Start-Sleep -S 5
                 if ($Failed -eq $false) {
                     Get-Location | Out-Host
-                    Start-Process "$Dir\build\apps\7z.exe" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -Wait -WindowStyle Minimized
+                    $Proc = Start-Process "$Dir\build\apps\7z.exe" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -PassThru -WindowStyle Minimized
+                    $Proc | Wait-Process
                     Start-Sleep -S 3
                     Write-Host "Config Command Initiated- Restarting SWARM`n"
                     $MinerFile = "$Dir\build\pid\miner_pid.txt"
@@ -581,7 +579,3 @@ to see a list of availble items.
 
     $Get
     $Get | Set-Content ".\build\txt\get.txt"
-
-
-Remove-Module -Name "stats"
-Remove-Module -Name "include"

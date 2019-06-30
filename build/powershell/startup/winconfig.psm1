@@ -48,8 +48,8 @@ Function Global:Get-Bus {
         $OldCount | Out-Host
         Start-Sleep -S .5
     }
-   Invoke-Expression ".\build\apps\pci\lspci.exe" | Select-String "VGA compatible controller" | Tee-Object -FilePath ".\build\txt\gpu-count.txt" | Out-Null
-   $NewCount = if (Test-Path ".\build\txt\gpu-count.txt") { $(Get-Content ".\build\txt\gpu-count.txt") }
+    Invoke-Expression ".\build\apps\pci\lspci.exe" | Select-String "VGA compatible controller" | Tee-Object -FilePath ".\build\txt\gpu-count.txt" | Out-Null
+    $NewCount = if (Test-Path ".\build\txt\gpu-count.txt") { $(Get-Content ".\build\txt\gpu-count.txt") }
 
     if ([string]$NewCount -ne [string]$OldCount) {
         Write-Log "GPU count is different - Gathering GPU information" -ForegroundColor Yellow
@@ -63,7 +63,9 @@ Function Global:Get-Bus {
         }
         Set-Location $(vars).dir
 
-        Start-Process ".\build\apps\gpu-z.exe" -ArgumentList "-dump $($(vars).dir)\build\txt\data.xml" -Wait
+        $proc = Start-Process ".\build\apps\gpu-z.exe" -ArgumentList "-dump $($(vars).dir)\build\txt\data.xml" -PassThru
+        $proc | Wait-Process
+        
         if (test-Path ".\build\txt\data.xml") {
             $Data = $([xml](Get-Content ".\build\txt\data.xml")).gpuz_dump.card
         }
@@ -274,11 +276,16 @@ function Global:Start-WindowsConfig {
     $TotalMemory | Set-Content ".\build\txt\ram.txt"
     
     ## GPU Bus Hash Table
-    $(vars).BusData = Global:Get-Bus
-    
-    ## Get Total GPU HashTable
+    $DoBus = $true
+    if ($(arg).Type -like "*CPU*" -or $(arg).Type -like "*ASIC*") {
+        if("AMD1" -notin $(arg).type -and "NVIDIA1" -notin $(arg).type -and "NVIDIA2" -notin $(arg).type -and "NVIDIA3" -notin $(arg).type) {
+        $Dobus = $false
+    }
+}
+
+    if ($DoBus -eq $true) { $(vars).BusData = Global:Get-Bus }
     $(vars).GPU_Count = Global:Get-GPUCount
-    
+
     ## Websites
     if ($(vars).WebSites) {
         Global:Add-Module "$($(vars).web)\methods.psm1"
@@ -300,6 +307,34 @@ function Global:Start-WindowsConfig {
         }
         Remove-Module -Name "methods"
     }
+
+    ## Set Cuda for commands
+    if ($(arg).Type -like "*NVIDIA*") { $(arg).Cuda | Set-Content ".\build\txt\cuda.txt" }
+    
+    ## Let User Know What Platform commands will work for- Will always be Group 1.
+    if ($(arg).Type -like "*NVIDIA1*") {
+        "NVIDIA1" | Out-File ".\build\txt\minertype.txt" -Force
+        Global:Write-Log "Group 1 is NVIDIA- Commands and Stats will work for NVIDIA1" -foreground yellow
+        Start-Sleep -S 3
+    }
+    elseif ($(arg).Type -like "*AMD1*") {
+        "AMD1" | Out-File ".\build\txt\minertype.txt" -Force
+        Global:Write-Log "Group 1 is AMD- Commands and Stats will work for AMD1" -foreground yellow
+        Start-Sleep -S 3
+    }
+    elseif ($(arg).Type -like "*CPU*") {
+        if ($(vars).GPU_Count -eq 0) {
+            "CPU" | Out-File ".\build\txt\minertype.txt" -Force
+            Global:Write-Log "Group 1 is CPU- Commands and Stats will work for CPU" -foreground yellow
+            Start-Sleep -S 3
+        }
+    }
+    elseif ($(arg).Type -like "*ASIC*") {
+        if ($(vars).GPU_Count -eq 0) {
+            "ASIC" | Out-File ".\build\txt\minertype.txt" -Force
+            Global:Write-Log "Group 1 is ASIC- Commands and Stats will work for ASIC" -foreground yellow
+        }
+    }    
 
     ## Aaaaannnnd...Que that sexy logo. Go Time.
 

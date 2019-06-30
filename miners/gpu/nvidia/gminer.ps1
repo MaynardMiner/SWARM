@@ -55,7 +55,9 @@ $(vars).NVIDIATypes | ForEach-Object {
     $PreStart += "export LD_LIBRARY_PATH=$ExportDir"
     $MinerConfig.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 
-    if ($Global:Coins -eq $true) { $Pools = $global:CoinPools }else { $Pools = $global:AlgoPools }
+    if ($(vars).Coins -eq $true) { $Pools = $(vars).CoinPools } else { $Pools = $(vars).AlgoPools }
+
+    if ($(vars).Bancount -lt 1) { $(vars).Bancount = 5 }
 
     ##Build Miner Settings
     $MinerConfig.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
@@ -65,7 +67,7 @@ $(vars).NVIDIATypes | ForEach-Object {
         if ($MinerAlgo -in $(vars).Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $(vars).BanHammer) {
             $StatAlgo = $MinerAlgo -replace "`_", "`-"
             $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
-            $Check = $Global:Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
+            $Check = $(vars).Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
 
             if ($Check.RAW -ne "Bad") {
                 $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
@@ -79,12 +81,12 @@ $(vars).NVIDIATypes | ForEach-Object {
                         "equihash_192/7" { $AddArgs = "--algo 192_7 --pers auto " }
                         "equihash_144/5" { $AddArgs = "--algo 144_5 --pers auto " }
                         "equihash_210/9" { $AddArgs = "--algo 210_9 --pers auto " }
-                        "equihash_200/9" { $AddArgs = "--algo 200_9 --pers auto " }            
+                        "equihash_200/9" { $AddArgs = "--algo 200_9 --pers auto " }
                     }
                     if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
                     [PSCustomObject]@{
                         MName      = $Name
-                        Coin       = $Global:Coins
+                        Coin       = $(vars).Coins
                         Delay      = $MinerConfig.$ConfigType.delay
                         Fees       = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
                         Symbol     = "$($_.Symbol)"

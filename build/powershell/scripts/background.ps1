@@ -16,6 +16,7 @@ Param (
     [string]$WorkingDir
 )
 
+[cultureinfo]::CurrentCulture = 'en-US'
 #$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
 #$WorkingDir = "/root/hive/miners/custom/SWARM"
 Set-Location $WorkingDir
@@ -62,6 +63,9 @@ if ($P -notlike "*$($(vars).dir)\build\powershell*") {
 
 $(vars).Add("Modules", @())
 Import-Module "$($(vars).global)\include.psm1" -Scope Global
+Import-Module "$($(vars).global)\stats.psm1" -Scope Global
+Import-Module "$($(vars).global)\hashrates.psm1" -Scope Global
+Import-Module "$($(vars).global)\gpu.psm1" -Scope Global
 Global:Add-Module "$($(vars).background)\startup.psm1"
 
 ## Get Parameters
@@ -110,6 +114,15 @@ if (Test-Path $CheckForSWARM) {
 }
 $(vars).ADD("GCount",(Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json))
 $(vars).ADD("BackgroundTimer",(New-Object -TypeName System.Diagnostics.Stopwatch))
+$(vars).ADD("watchdog_start",(Get-Date))
+$(vars).ADD("watchdog_triggered",$false)
+
+## If miner was restarted due to watchdog
+if(test-path ".\build\txt\watchdog.txt"){ 
+    $(vars).watchdog_start = Get-Content ".\build\txt\watchdog.txt" 
+    $(vars).watchdog_triggered = $True
+    Remove-Item ".\build\txt\watchdog.txt" -Force
+}
 
 Remove-Module -Name "startup"
 
@@ -135,9 +148,6 @@ While ($True) {
 
     Global:Add-Module "$($(vars).background)\run.psm1"
     Global:Add-Module "$($(vars).background)\initial.psm1"
-    Global:Add-Module "$($(vars).global)\gpu.psm1"
-    Global:Add-Module "$($(vars).global)\stats.psm1"
-    Global:Add-Module "$($(vars).global)\hashrates.psm1"
     
     Global:Invoke-MinerCheck
     Global:New-StatTables
@@ -347,7 +357,7 @@ While ($True) {
                 'grin-miner' { 
                     try { 
                         Global:Add-Module "$($(vars).miners)\grinminer.psm1"; 
-                        Global:Get-StartGrinMiner;
+                        Global:Get-StatsGrinMiner;
                         Remove-Module -name "grinminer"
                     }
                     catch { Global:Get-OhNo } 
@@ -627,12 +637,13 @@ While ($True) {
         Write-Host " ALGO: $Global:StatAlgo" -ForegroundColor White -NoNewline; Write-Host " `|" -NoNewline
         Write-Host " UPTIME: $global:UPTIME" -ForegroundColor Yellow
         Write-Host "STRATUM: $global:StatStratum" -ForegroundColor Cyan
-        Write-Host "START_TIME: $StartTime" -ForegroundColor Magenta -NoNewline; Write-Host " `|" -NoNewline
+        $origin = New-Object -Type DateTime -ArgumentList 1970, 1, 1, 0, 0, 0, 0
+        $SysTime = $origin.AddSeconds([Double]$StartTime)
+        Write-Host "START_TIME: $SysTime" -ForegroundColor Magenta -NoNewline; Write-Host " `|" -NoNewline
         Write-Host " WORKER: $global:StatWorker
 " -ForegroundColor Yellow
     }
 
-    Remove-Module -Name "gpu"
     Remove-Module -Name "run"
     
     if ($(vars).WebSites) {
@@ -641,8 +652,18 @@ While ($True) {
         Global:Send-WebStats
     }
 
-    if ($(vars).BackgroundTimer.Elapsed.TotalSeconds -le 5) {
-        $GoToSleep = [math]::Round(5 - $(vars).BackgroundTimer.Elapsed.TotalSeconds)
+    if ($IsWindows -and $global:Config.params.startup -eq "Yes" -and $global:Config.hive_params.Wd_enabled -eq "1"){
+        Global:Add-Module "$($(vars).background)\watchdog.psm1"
+        Global:Watch-Hashrate
+        Remove-Module -name "watchdog"
+    }
+
+    if($IsWindows -and $global:Config.hive_params.PUSH_INTERVAL -and $global:Config.hive_params.PUSH_INTERVAL -ne "") {
+        $Push = [double]$global:Config.hive_params.PUSH_INTERVAL
+    } else {$Push = 10}
+    
+    if ($(vars).BackgroundTimer.Elapsed.TotalSeconds -le $Push) {
+        $GoToSleep = [math]::Round($Push - $(vars).BackgroundTimer.Elapsed.TotalSeconds)
         if ($GoToSleep -gt 0) { Start-Sleep -S $GoToSleep }
     }
     

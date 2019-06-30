@@ -90,7 +90,8 @@ function Global:Start-Webcommand {
                     $messagetype = "info"
                     $data = "ps"
                     $pscommand = $command.result.exec -split "ps ", ""
-                    Start-Process "pwsh" -ArgumentList "-executionpolicy bypass -command `"$pscommand | Tee-Object `"$($(vars).dir)\build\txt\getcommand.txt`"`"" -Verb RunAs -Wait
+                    $Proc = Start-Process "pwsh" -ArgumentList "-executionpolicy bypass -command `"$pscommand | Tee-Object `"$($(vars).dir)\build\txt\getcommand.txt`"`"" -PassThru -Verb RunAs
+                    $proc | Wait-Process
                     $getpayload = Get-Content ".\build\txt\getcommand.txt"
                     $line = @()
                     $getpayload | foreach { $line += "$_`n" }
@@ -131,49 +132,32 @@ function Global:Start-Webcommand {
                     $trigger = "exec"
                 }
                 "version" {
-                    Switch ($secondword) {
-                        "query" {
-                            $method = "message"
-                            $messagetype = "info"
-                            $data = "$($command.result.exec)"
-                            start-process "pwsh" -Workingdirectory ".\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command query""" -Wait -WindowStyle Minimized -Verb RunAs
-                            $getpayload = Get-Content ".\build\txt\version.txt"
-                            $line = @()
-                            $getpayload | foreach { $line += "$_`n" }
-                            $payload = $line
-                            $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
-                            $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                            $SendResponse = Invoke-RestMethod "$($global:config.$Param.Mirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
-                            Write-Host $method $messagetype $data
-                            $trigger = "exec"
-                        }
-                        "update" {
-                            $method = "message"
-                            $messagetype = "info"
-                            $data = "$($command.result.exec)"
-                            $arguments = $data -replace ("version ", "")
-                            start-process "pwsh" -Workingdirectory ".\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command $arguments""" -WindowStyle Minimized -Verb Runas -Wait
-                            $getpayload = Get-Content ".\build\txt\version.txt"
-                            $line = @()
-                            $getpayload | foreach { $line += "$_`n" }
-                            $payload = $line
-                            $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
-                            $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                            $SendResponse = Invoke-RestMethod "$($global:config.$Param.Mirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
-                            Write-Host $method $messagetype $data
-                            Start-Process ".\SWARM.bat"
-                            Start-Sleep -S 2
-                            $ID = ".\build\pid\background_pid.txt"
-                            $BackGroundID = Get-Process -id (Get-Content "$ID" -ErrorAction SilentlyContinue) -ErrorAction SilentlyContinue
-                            Stop-Process $BackGroundID | Out-Null
-                        }
+                    $method = "message"
+                    $messagetype = "info"
+                    $data = "$($command.result.exec)"
+                    $arguments = $data -replace ("version ", "")
+                    $proc = start-process "pwsh" -Workingdirectory ".\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 $arguments""" -WindowStyle Minimized -Verb Runas -PassThru
+                    $proc | Wait-Process
+                    $getpayload = Get-Content ".\build\txt\get.txt"
+                    $line = @()
+                    $getpayload | foreach { $line += "$_`n" }
+                    $payload = $line
+                    $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
+                    $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+                    $SendResponse = Invoke-RestMethod "$($global:config.$Param.Mirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+                    Write-Host $method $messagetype $data
+                    switch($secondword){
+                        "query" { $trigger = "exec" }
+                        "update" { $trigger = "config" }
+                        default {$trigger = "exec"}
                     }
                 }
                 "clear_profits" {
                     $method = "message"
                     $messagetype = "info"
                     $data = "clear_profits"
-                    start-process "pwsh" -Workingdirectory ".\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -command "".\clear_profits.ps1""" -WindowStyle Minimized -Verb Runas -Wait
+                    $proc = start-process "pwsh" -Workingdirectory ".\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -command "".\clear_profits.ps1""" -WindowStyle Minimized -Verb Runas -PassThru
+                    $proc | Wait-Process
                     $getpayload = Get-Content ".\build\txt\get.txt"
                     $line = @()
                     $getpayload | foreach { $line += "$_`n" }
@@ -188,7 +172,8 @@ function Global:Start-Webcommand {
                     $method = "message"
                     $messagetype = "info"
                     $data = "clear_watts"
-                    start-process "pwsh" -Workingdirectory ".\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -command "".\clear_watts.ps1""" -WindowStyle Minimized -Verb Runas -Wait
+                    $proc = start-process "pwsh" -Workingdirectory ".\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -command "".\clear_watts.ps1""" -WindowStyle Minimized -Verb Runas -PassThru
+                    $proc | Wait-Process
                     $getpayload = Get-Content ".\build\txt\get.txt"
                     $line = @()
                     $getpayload | foreach { $line += "$_`n" }
@@ -266,7 +251,9 @@ function Global:Start-Webcommand {
                         }
                         Start-Sleep -S 5
                         if ($Failed -eq $false) {
-                            Start-Process "$($(vars).dir)\build\apps\7z.exe" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -Wait -WindowStyle Minimized
+                            $proc = Start-Process "$($(vars).dir)\build\apps\7z.exe" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -WindowStyle Minimized -PassThru
+                            $proc | Wait-Process
+
                             Start-Sleep -S 3
                             $line += "Config Command Initiated- Restarting SWARM`n"
                             Write-Host "Config Command Initiated- Restarting SWARM"
@@ -292,7 +279,9 @@ function Global:Start-Webcommand {
                         }     
                     }
                     else {
-                        start-process "pwsh" -Workingdirectory ".\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -command "".\get.ps1 $arguments""" -Wait -WindowStyle Minimized -Verb Runas; $Trigger = "exec"
+                        $proc = start-process "pwsh" -Workingdirectory ".\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -command "".\get.ps1 $arguments""" -WindowStyle Minimized -Verb Runas -PassThru
+                        $proc | Wait-Process 
+                        $Trigger = "exec"
                         $getpayload = Get-Content ".\build\txt\get.txt"
                         $getpayload | foreach { $line += "$_`n" }
                         $payload = $line
@@ -343,7 +332,8 @@ function Global:Start-Webcommand {
                     $messagetype = "info"
                     $data = "$($command.result.exec)"
                     $arguments = $data -replace ("benchmark ", "")
-                    start-process "pwsh" -Workingdirectory ".\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -command "".\benchmark.ps1 $arguments""" -Wait -WindowStyle Minimized -Verb Runas
+                    $proc = start-process "pwsh" -Workingdirectory ".\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -command "".\benchmark.ps1 $arguments""" -WindowStyle Minimized -Verb Runas -PassThru
+                    $proc | Wait-Process
                     $getpayload = Get-Content ".\build\txt\get.txt"
                     $line = @()
                     $getpayload | foreach { $line += "$_`n" }

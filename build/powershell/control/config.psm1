@@ -1,12 +1,5 @@
-function Global:set-minerconfig {
-    param (
-        [Parameter(mandatory = $true, position = 0)]
-        [string] $InputMiner,
-        [Parameter(mandatory = $true, position = 1)]
-        [string] $Logs
-    )
+function Global:set-minerconfig($ConfigMiner,$Logs) {
       
-    $ConfigMiner = $InputMiner | ConvertFrom-JSon
     $ConfigPathDir = Split-Path $ConfigMiner.Path
     if ($ConfigMiner.Devices -ne "none") {$MinerDevices = Global:Get-DeviceString -TypeDevices $ConfigMiner.Devices}
     else {
@@ -36,7 +29,7 @@ function Global:set-minerconfig {
             $ConfigFile += "stratum_server_tls_enabled = false"
             $ConfigFile += ""
             switch ($ConfigMiner.Algo) {
-                "grincuckaroo29" {
+                "cuckaroo29" {
                     switch -WildCard ($ConfigMiner.Type) {
                         "*NVIDIA*" {
                             $MinerDevices | % {
@@ -68,7 +61,7 @@ function Global:set-minerconfig {
                         }
                     }
                 }
-             "grincuckatoo31"
+             "cuckatoo31"
              {
                 $NDevices = Get-Content ".\build\txt\gpucount.txt"
                 $NDevices = $NDevices | Select-String "VGA", "3D"
@@ -118,7 +111,7 @@ function Global:set-minerconfig {
 
     }
     $Config = Join-Path $ConfigPathDir $ConfigPath
-    Write-Host "Settng Config File To $Config" -ForegroundColor Yellow
+    Write-Log "Settng Config File To $Config" -ForegroundColor Yellow
     $ConfigFile | Set-Content $Config
 }
 

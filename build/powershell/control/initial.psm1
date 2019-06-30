@@ -1,5 +1,5 @@
-function Global:Get-ActiveMiners($global:bestminers_combo) {
-    $global:bestminers_combo | ForEach-Object {
+function Global:Get-ActiveMiners {
+    $(vars).bestminers_combo | ForEach-Object {
         $Sel = $_
 
         if (-not ($(vars).ActiveMinerPrograms | Where-Object Path -eq $_.Path | Where-Object Type -eq $_.Type | Where-Object Arguments -eq $_.Arguments )) {
@@ -38,7 +38,7 @@ function Global:Get-ActiveMiners($global:bestminers_combo) {
                 Stratum      = $_.Stratum
                 Instance     = 0
                 Worker       = $_.Worker
-                SubProcesses   = $null
+                SubProcesses = $null
             }
 
             $(vars).ActiveMinerPrograms | Where-Object Path -eq $_.Path | Where-Object Type -eq $_.Type | Where-Object Arguments -eq $_.Arguments | % {
@@ -49,8 +49,8 @@ function Global:Get-ActiveMiners($global:bestminers_combo) {
                 if ($Sel.JsonFile) { $_ | Add-Member "JsonFile" $Sel.JsonFile }
                 if ($Sel.Prestart) { $_ | Add-Member "Prestart" $Sel.Prestart }
                 if ($Sel.Host) { $_ | Add-Member "Host" $Sel.Host }
-                if ($Sel.User) { $_ | Add-Member "Host" $Sel.User }
-                if ($Sel.CommandFile) { $_ | Add-Member "Host" $Sel.CommandFile }
+                if ($Sel.User) { $_ | Add-Member "User" $Sel.User }
+                if ($Sel.CommandFile) { $_ | Add-Member "CommandFile" $Sel.CommandFile }
             }
         }
     }
@@ -58,8 +58,9 @@ function Global:Get-ActiveMiners($global:bestminers_combo) {
 
 
 function Global:Get-BestActiveMiners {
+    $(vars).BestActiveMiners = @()
     $(vars).ActiveMinerPrograms | ForEach-Object {
-        if ($global:BestMiners_Combo | Where-Object Type -EQ $_.Type | Where-Object Path -EQ $_.Path | Where-Object Arguments -EQ $_.Arguments) { $_.BestMiner = $true; $(vars).BestActiveMIners += $_ }
+        if ($(vars).bestminers_combo | Where-Object Type -EQ $_.Type | Where-Object Path -EQ $_.Path | Where-Object Arguments -EQ $_.Arguments) { $_.BestMiner = $true; $(vars).BestActiveMiners += $_ }
         else { $_.BestMiner = $false }
     }
 }
@@ -91,10 +92,10 @@ function Global:Expand-WebRequest {
     if ("tar" -in $FileType) { $Extraction = "tar" }
     if ("tgz" -in $FileType) { $Extraction = "tar" }
 
-    if($Extraction -eq "tar") {
-        if("gz" -in $FileType) { $Tar = "gz"}
-        if("xz" -in $FileType) { $Tar = "xz"}
-        if("tgz" -in $FileType) { $Tar = "gz"}
+    if ($Extraction -eq "tar") {
+        if ("gz" -in $FileType) { $Tar = "gz" }
+        if ("xz" -in $FileType) { $Tar = "xz" }
+        if ("tgz" -in $FileType) { $Tar = "gz" }
     }
 
     ##Delete any old download attempts - Start Fresh
@@ -120,9 +121,9 @@ function Global:Expand-WebRequest {
 
             Global:Write-Log "Extracting to temporary folder" -ForegroundColor Yellow
             New-Item -Path ".\x64\$temp" -ItemType "Directory" -Force | Out-Null; Start-Sleep -S 1
-            switch($Tar) {
-             "gz"{Start-Process "tar" -ArgumentList "-xzvf x64/$Zip -C x64/$temp" -Wait}
-             "xz"{Start-Process "tar" -ArgumentList "-xvJf x64/$Zip -C x64/$temp" -Wait}
+            switch ($Tar) {
+                "gz" { $Proc = Start-Process "tar" -ArgumentList "-xzvf x64/$Zip -C x64/$temp" -PassThru; $Proc | Wait-Process }
+                "xz" { $Proc = Start-Process "tar" -ArgumentList "-xvJf x64/$Zip -C x64/$temp" -PassThru; $Proc | Wait-Process }
             }
 
             $Stuff = Get-ChildItem ".\x64\$Temp"
@@ -148,8 +149,8 @@ function Global:Expand-WebRequest {
             else { Global:Write-Log "Download Failed!" -ForegroundColor DarkRed; break }
 
             New-Item -Path ".\x64\$temp" -ItemType "Directory" -Force | Out-Null; Start-Sleep -S 1
-            if($IsWindows) { Start-Process ".\build\apps\7z.exe" "x `"$($(vars).dir)\$X64_zip`" -o`"$($(vars).dir)\x64\$temp`" -y" -Wait -WindowStyle Minimized -verb Runas }
-            else { Start-Process "unzip" -ArgumentList "$($(vars).dir)/$X64_zip -d $($(vars).dir)/x64/$temp" -Wait }
+            if ($IsWindows) { $Proc = Start-Process ".\build\apps\7z.exe" "x `"$($(vars).dir)\$X64_zip`" -o`"$($(vars).dir)\x64\$temp`" -y" -PassThru -WindowStyle Minimized -verb Runas; $Proc | Wait-Process}
+            else { $Proc = Start-Process "unzip" -ArgumentList "$($(vars).dir)/$X64_zip -d $($(vars).dir)/x64/$temp" -PassThru; $Proc | Wait-Process }
 
             $Stuff = Get-ChildItem ".\x64\$Temp"
             if ($Stuff) { Global:Write-Log "Extraction Succeeded!" -ForegroundColor Green }
@@ -161,27 +162,29 @@ function Global:Expand-WebRequest {
             $DirName = Split-Path $Contents -Leaf
             Move-Item -Path $Contents -Destination ".\bin" -Force | Out-Null; Start-Sleep -S 1
             Rename-Item -Path ".\bin\$DirName" -NewName "$BinPath" | Out-Null
-            if (Test-Path $Path) {
-                $Version | Set-Content ".\bin\$BinPath\swarm-version.txt"
-                Global:Write-Log "Finished Successfully!" -ForegroundColor Green 
-            }
             if (Test-Path ".\x64\$Temp") { Remove-Item ".\x64\$Temp" -Recurse -Force | Out-Null }
         }
-
+    }
+    if (Test-Path $Path) {
+        $Version | Set-Content ".\bin\$BinPath\swarm-version.txt"
+        Global:Write-Log "Finished Successfully!" -ForegroundColor Green 
     }
 }
 
-function Global:Get-MinerBinary {
-    [Parameter(Position = 0, Mandatory = $false)]
-    [string]$SelMiner
+function Global:Get-MinerBinary($Miner,$Reason) {
 
-    $Miner = $SelMiner | ConvertFrom-Json;
     $MaxAttempts = 3;
     ## Success 1 means to continue forward (ASIC)
     ## Success 2 means that miner failed, and loop should restart
     ## Success 3 means that miner download succeded
     $Success = 1;
 
+    if($Reason -eq "Update" -and $Miner.Type -notlike "*ASIC*") {
+        if(test-path $Miner.Path){
+            Write-Log "Removing Old Miner..." -ForegroundColor Yellow
+            Remove-Item (Split-Path $Miner.Path) -Recurse -Force | Out-Null
+        }
+    }
     if ($Miner.Type -notlike "*ASIC*") {
         for ($i = 0; $i -lt $MaxAttempts; $i++) {
             if ( -not (Test-Path $Miner.Path) ) {
@@ -222,13 +225,108 @@ function Global:Get-MinerBinary {
     $Success
 }
 
+function Global:Stop-AllMiners {
+    $(vars).ActiveMinerPrograms | ForEach-Object {
+           Write-Log "WARNING: Stopping All Miners For Download" -ForegroundColor Yellow
+        ##Miners Not Set To Run        
+            if ($(arg).Platform -eq "windows") {
+                if ($_.XProcess -eq $Null) { $_.Status = "Failed" }
+                elseif ($_.XProcess.HasExited -eq $false) {
+                    $_.Active += (Get-Date) - $_.XProcess.StartTime
+                    if ($_.Type -notlike "*ASIC*") {
+                        $Num = 0
+                        $Sel = $_
+                        if ($Sel.XProcess.Id) {
+                            $Childs = Get-Process | Where { $_.Parent.Id -eq $Sel.XProcess.Id }
+                            Write-Log "Closing all Previous Child Processes For $($Sel.Type)" -ForeGroundColor Cyan
+                            $Child = $Childs | % {
+                                $Proc = $_; 
+                                Get-Process | Where { $_.Parent.Id -eq $Proc.Id } 
+                            }
+                        }
+                        do {
+                            $Sel.XProcess.CloseMainWindow() | Out-Null
+                            Start-Sleep -S 1
+                            $Num++
+                            if ($Num -gt 5) {
+                                Write-Log "SWARM IS WAITING FOR MINER TO CLOSE. IT WILL NOT CLOSE" -ForegroundColor Red
+                            }
+                            if ($Num -gt 180) {
+                                if ($(arg).Startup -eq "Yes") {
+                                    $HiveMessage = "2 minutes miner will not close - Restarting Computer"
+                                    $HiveWarning = @{result = @{command = "timeout" } }
+                                    if ($(vars).WebSites) {
+                                        $(vars).WebSites | ForEach-Object {
+                                            $Sel = $_
+                                            try {
+                                                Global:Add-Module "$($(vars).web)\methods.psm1"
+                                                Global:Get-WebModules $Sel
+                                                $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
+                                            }
+                                            catch { Global:Write-Log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
+                                            Global:Remove-WebModules $sel
+                                        }
+                                    }
+                                    Global:Write-Log "$HiveMessage" -ForegroundColor Red
+                                }
+                                Restart-Computer
+                            }
+                        }Until($false -notin $Child.HasExited)
+                        if ($Sel.SubProcesses -and $false -in $Sel.SubProcesses.HasExited) { 
+                            $Sel.SubProcesses | % { $Check = $_.CloseMainWindow(); if ($Check -eq $False) { Stop-Process -Id $_.Id } }
+                        }
+                    }
+                    else { $_.Xprocess.HasExited = $true; $_.XProcess.StartTime = $null }
+                    $_.Status = "Idle"
+                }
+            }
+
+            if ($(arg).Platform -eq "linux") {
+                if ($_.XProcess -eq $Null) { $_.Status = "Failed" }
+                else {
+                    if ($_.Type -notlike "*ASIC*") {
+                        $MinerInfo = ".\build\pid\$($_.InstanceName)_info.txt"
+                        if (Test-Path $MinerInfo) {
+                            $_.Status = "Idle"
+                            $global:PreviousMinerPorts.$($_.Type) = "($_.Port)"
+                            $MI = Get-Content $MinerInfo | ConvertFrom-Json
+                            $PIDTime = [DateTime]$MI.start_date
+                            $Exec = Split-Path $MI.miner_exec -Leaf
+                            $_.Active += (Get-Date) - $PIDTime
+                            $Proc = Start-Process "start-stop-daemon" -ArgumentList "--stop --name $Exec --pidfile $($MI.pid_path) --retry 5" -PassThru
+                            $Proc | Wait-Process
+                        }
+                    }
+                    else { $_.Xprocess.HasExited = $true; $_.XProcess.StartTime = $null; $_.Status = "Idle" }
+                }
+            }
+        }
+}
+
 function Global:Start-MinerDownloads {
-    $global:Miners | ForEach-Object {
+    $(vars).Miners | ForEach-Object {
+        $Sel = $_
         $Success = 0;
-        $CheckPath = Test-Path $_.Path
-        if ( $_.Type -notlike "*ASIC*" -and $CheckPath -eq $false ) {
-            $SelMiner = $_ | ConvertTo-Json -Compress
-            $Success = Global:Get-MinerBinary $SelMiner
+        if ( $Sel.Type -notlike "*ASIC*") {
+            $CheckPath = Test-Path $Sel.Path
+            $VersionPath = Join-Path (Split-Path $Sel.Path) "swarm-version.txt"
+            if ( $CheckPath -eq $false ) {
+                Global:Stop-AllMiners
+                $Success = Global:Get-MinerBinary $Sel "New"
+            }
+            elseif(test-path $VersionPath){
+                [String]$Old_Version = Get-Content $VersionPath
+                if($Old_Version -ne [string]$Sel.Version) {
+                    Global:Stop-AllMiners
+                    Write-Log "There is a new version availble for $($Sel.Name), Downloading" -ForegroundColor Yellow
+                    $Success = Global:Get-MinerBinary $Sel "Update"
+                }
+            }
+            else{
+                Global:Stop-AllMiners
+                Write-Log "Binary found, but swarm-version.txt is missing for $($Sel.Name), Downloading" -ForegroundColor Yellow
+                $Success = Global:Get-MinerBinary $Sel "Update"
+            }
         }
         else { $Success = 1 }
         if ($Success -eq 2) {
@@ -240,7 +338,7 @@ function Global:Start-MinerDownloads {
 
 function Global:Get-ActivePricing {
     $(vars).BestActiveMIners | ForEach-Object {
-        $SelectedMiner = $global:bestminers_combo | Where-Object Type -EQ $_.Type | Where-Object Path -EQ $_.Path | Where-Object Arguments -EQ $_.Arguments
+        $SelectedMiner = $(vars).bestminers_combo | Where-Object Type -EQ $_.Type | Where-Object Path -EQ $_.Path | Where-Object Arguments -EQ $_.Arguments
         $_.Profit = if ($SelectedMiner.Profit) { $SelectedMiner.Profit -as [decimal] }else { "bench" }
         $_.Power = $($([Decimal]$SelectedMiner.Power * 24) / 1000 * $(vars).WattEx)
         $_.Fiat_Day = if ($SelectedMiner.Pool_Estimate) { ( ($SelectedMiner.Pool_Estimate * $(vars).Rates.$($(arg).Currency)) -as [decimal] ).ToString("N2") }else { "bench" }

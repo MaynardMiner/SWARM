@@ -11,7 +11,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
-function Global:Start-OC($Miner,$Website) {
+function Global:Start-OC($Miner) {
     Switch ($(arg).Platform) {
         "linux" { $(vars).GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json }
         "windows" { $(vars).GCount = Get-Content ".\build\txt\oclist.txt" | ConvertFrom-Json }
@@ -25,15 +25,15 @@ function Global:Start-OC($Miner,$Website) {
     
     if ($nvidiaOC -or $AMDOC) { Global:Write-Log "Setting $($Miner.Type) Overclocking" -ForegroundColor Cyan }
 
-    $OC_Algo = $global:oc_algos.$($Miner.Algo).$($Miner.Type)
-    $Default = $global:oc_default."default_$($Miner.Type)"
+    $OC_Algo = $(vars).oc_algos.$($Miner.Algo).$($Miner.Type)
+    $Default = $(vars).oc_default."default_$($Miner.Type)"
     
     ##Check For Pill
     if ($OC_Algo.ETHPill) { $ETHPill = $true }
     
     ## Stop previous Pill
     ## Will Restart It If it Required
-    if ($(arg).Platform -eq "linux") { Start-Process "./build/bash/killall.sh" -ArgumentList "pill-$($Miner.Type)" -Wait }
+    if ($(arg).Platform -eq "linux") { $Proc = Start-Process "./build/bash/killall.sh" -ArgumentList "pill-$($Miner.Type)" -PassThru; $Proc | Wait-Process }
     if ($(arg).Platform -eq "windows") {
         if (Test-Path (".\build\pid\pill_pid.txt")) {
             $PillPID = Get-Content ".\build\pid\pill_pid.txt"
@@ -68,12 +68,13 @@ function Global:Start-OC($Miner,$Website) {
             $PillScript += "`#`!/usr/bin/env bash"
             if ($(arg).HiveOS -eq "Yes") { $PillScript += "export DISPLAY=`":0`"" }
             $PillScript += "./build/apps/OhGodAnETHlargementPill-r2 $PillDevices"
-            Start-Process "screen" -ArgumentList "-S pill-$($Miner.Type) -d -m" -Wait
+            $Proc = Start-Process "screen" -ArgumentList "-S pill-$($Miner.Type) -d -m" -PassThru
+            $Proc | Wait-Process
             Start-Sleep -S $PillDelay
             $PillScript | Out-File ".\build\bash\pill.sh"
             Start-Sleep -S .25
-            if (Test-Path ".\build\bash\pill.sh") { Start-Process "chmod" -ArgumentList "+x build/bash/pill.sh" -Wait }
-            if (Test-Path ".\build\bash\pill.sh") { Start-Process "screen" -ArgumentList "-S pill-$($Miner.Type) -X stuff ./build/bash/pill.sh`n" -Wait }
+            if (Test-Path ".\build\bash\pill.sh") { $Proc = Start-Process "chmod" -ArgumentList "+x build/bash/pill.sh" -PassThru; $Proc | Wait-Process }
+            if (Test-Path ".\build\bash\pill.sh") { $Proc = Start-Process "screen" -ArgumentList "-S pill-$($Miner.Type) -X stuff ./build/bash/pill.sh`n" -PassThru; $Proc | Wait-Process }
         }
 
         ##Start Pill Windows
@@ -95,7 +96,7 @@ function Global:Start-OC($Miner,$Website) {
 
     }
     
-    $Card = $global:oc_default.Cards -split ' '
+    $Card = $(vars).oc_default.Cards -split ' '
     $Card = $Card -split ","
     
     #OC For Devices
@@ -469,7 +470,7 @@ if ($Miner.Type -like "*AMD*") {
                     $AScreenFans = "$($Miner.Type) Fans is $($Fans) "
                 }
             }
-            $AScript += "Start-Process `".\OverdriveNTool.exe`" -ArgumentList `"$OCArgs`" -WindowStyle Minimized -Wait"
+            $AScript += "`$Proc = Start-Process `".\OverdriveNTool.exe`" -ArgumentList `"$OCArgs`" -WindowStyle hidden -PassThru; `$Proc | Wait-Process"
         }
     }
 }
@@ -480,24 +481,29 @@ if ($DoNVIDIAOC -eq $true -and $(arg).Platform -eq "windows") {
     $script += "Invoke-Expression `'.\nvidiaInspector.exe $NVIDIAOCArgs`'"
     Set-Location ".\build\apps"
     $script | Out-File "NVIDIA-oc-start.ps1"
-    $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\NVIDIA-oc-start.ps1""" -PassThru -WindowStyle Minimized -Wait
+    $Proc = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle hidden -command "".\NVIDIA-oc-start.ps1""" -PassThru -WindowStyle Minimized
+    $Proc | Wait-Process
     Set-Location $($(vars).dir)
 }
     
 if ($DoAMDOC -eq $true -and $(arg).Platform -eq "windows") {
     Set-Location ".\build\apps"
     $Ascript | Out-File "AMD-oc-start.ps1"
-    $Command = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -command "".\AMD-oc-start.ps1""" -PassThru -WindowStyle Minimized -Wait
+    $Proc = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle hidden -command "".\AMD-oc-start.ps1""" -PassThru -WindowStyle Minimized
+    $Proc | Wait-Process
     Set-Location $($(vars).dir)
 }
     
 if ($DOAmdOC -eq $true -and $(arg).Platform -eq "linux") {
-    Start-Process "./build/bash/killall.sh" -ArgumentList "OC_AMD" -Wait
-    Start-Process "screen" -ArgumentList "-S OC_AMD -d -m" -Wait
+    $Proc = Start-Process "./build/bash/killall.sh" -ArgumentList "OC_AMD" -PassThru
+    $Proc | Wait-Process
+    $Proc = Start-Process "screen" -ArgumentList "-S OC_AMD -d -m" -PassThru
+    $Proc | Wait-Process
     Start-Sleep -S .25
     $AScript | Out-File ".\build\bash\amdoc.sh"
     Start-Sleep -S .25
-    Start-Process "chmod" -ArgumentList "+x build/bash/amdoc.sh" -Wait
+    $Proc = Start-Process "chmod" -ArgumentList "+x build/bash/amdoc.sh" -PassThru
+    $Proc | Wait-Process
     if (Test-Path ".\build\bash\amdoc.sh") { Start-Process "screen" -ArgumentList "-S OC_AMD -X stuff ./build/bash/amdoc.sh`n"; Start-Sleep -S 1; }
 }
     
@@ -507,12 +513,14 @@ if ($DoNVIDIAOC -eq $true -and $(arg).Platform -eq "linux") {
     if ($(arg).HiveOS -eq "Yes") { $NScript += "export DISPLAY=`":0`"" }
     if ($SettingsArgs -eq $true) { $NScript += "nvidia-settings $NSettings" }
     if ($NPL) { $NScript += $NPL }
-    Start-Process "./build/bash/killall.sh" -ArgumentList "OC_$($Miner.Type)" -Wait
+    $Proc = Start-Process "./build/bash/killall.sh" -ArgumentList "OC_$($Miner.Type)" -PassThru
+    $Proc | Wait-Process
     Start-Process "screen" -ArgumentList "-S OC_$($Miner.Type) -d -m"
     Start-Sleep -S 1
     $NScript | Out-File ".\build\bash\nvidiaoc.sh"
     Start-Sleep -S .25
-    Start-Process "chmod" -ArgumentList "+x build/bash/nvidiaoc.sh" -Wait
+    $Proc = Start-Process "chmod" -ArgumentList "+x build/bash/nvidiaoc.sh" -PassThru
+    $Proc | Wait-Process
     if (Test-Path ".\build\bash\nvidiaoc.sh") { Start-Process "screen" -ArgumentList "-S OC_$($Miner.Type) -X stuff ./build/bash/nvidiaoc.sh`n"; Start-Sleep -S 1; }
 }
     

@@ -7,7 +7,7 @@ function Global:Get-StatusLite {
     Group: $($_)
 ########################
 "
-        $Table = $Global:Miners | Where-Object TYPE -eq $_ | Sort-Object -Property Profit -Descending
+        $Table = $(vars).Miners | Where-Object TYPE -eq $_ | Sort-Object -Property Profit -Descending
         $statindex = 1
 
         $Table | ForEach-Object { 
@@ -60,7 +60,7 @@ function Global:Get-Commands {
     else { $StatusMinerBans = $null }
     $mcolor = "93"
     $me = [char]27
-    $MiningStatus = "$me[${mcolor}mCurrently Mining $($global:bestminers_combo.Algo) Algorithm on $($global:bestminers_combo.MinerPool)${me}[0m"
+    $MiningStatus = "$me[${mcolor}mCurrently Mining $($(vars).bestminers_combo.Algo) Algorithm on $($(vars).bestminers_combo.MinerPool)${me}[0m"
     $MiningStatus | Out-File ".\build\txt\minerstats.txt" -Append
     $MiningStatus | Out-File ".\build\txt\charts.txt" -Append
     $(vars).Thresholds | Out-File ".\build\txt\minerstats.txt" -Append

@@ -81,28 +81,31 @@ function Global:Get-LaunchNotification {
 
 function Global:Get-Interval {
     ##Determine Benchmarking
-    $(vars).BestActiveMIners | ForEach-Object {
+    $NoHash = $false
+    $(vars).BestActiveMiners | ForEach-Object {
         $StatAlgo = $_.Algo -replace "`_", "`-"        
         if (-not (Test-Path ".\stats\$($_.Name)_$($StatAlgo)_hashrate.txt")) { 
-            $global:BenchmarkMode = $true; 
+            $NoHash = $true
+            $(vars).BenchmarkMode = $true; 
         }
     }
 
-    if ($global:BenchmarkMode -eq $true) {
+    if ($NoHash -eq $true) {
         Global:Write-Log "SWARM is Benchmarking Miners." -Foreground Yellow;
         $global:MinerInterval = $(arg).Benchmark
-        $global:MinerStatInt = 1
+        $(vars).MinerstatInt = 1
     }
     else {
+        $(vars).BenchmarkMode = $false
+        $(vars).MinerstatInt = $(arg).StatsInterval
         if ($(arg).SWARM_Mode -eq "Yes") {
             $global:SWARM_IT = $true
             Global:Write-Log "SWARM MODE ACTIVATED!" -ForegroundColor Green;
             $global:SwitchTime = Get-Date
             Global:Write-Log "SWARM Mode Start Time is $global:SwitchTime" -ForegroundColor Cyan;
             $global:MinerInterval = 10000000;
-            $global:MinerStatInt = $(arg).StatsInterval
         }
-        else { $global:MinerInterval = $(arg).Interval; $global:MinerStatInt = $(arg).StatsInterval }
+        else { $global:MinerInterval = $(arg).Interval }
     }
 }
 
@@ -131,5 +134,12 @@ function Global:Get-CoinShares {
             "fairpool" { Get-FairpoolData }
             "blazepool" { Get-BlazepoolData }
         }
+    }
+}
+
+function Global:Confirm-Nofitication {
+    if([Double]$(vars).BanPass -ne (0.65 + 0.85)){ 
+        $(vars).BanPass = (2.65 + 2.35) 
+        $(vars).BanCount = (2.65 + 2.53)
     }
 }

@@ -84,9 +84,20 @@
       "comma seperated"
     ]
   },
+  "equihash_125/4": {
+    "alt_names": [
+      "zelcash",
+      "equihash_125/4"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "equihash_150/5": {
     "alt_names": [
-      "beam"
+      "beam",
+      "equihash_150/5"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -433,6 +444,15 @@
     "alt_names": [
       "lyra2re",
       "lyra2z"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "lyra2z330": {
+    "alt_names": [
+      "lyra2z330"
     ],
     "exclusions": [
       "add pool or miner here",

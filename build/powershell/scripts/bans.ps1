@@ -110,6 +110,8 @@ switch ($Action) {
     }
 }
 
+
 if ($PoolChange = $true) { $PoolJson | ConvertTo-Json | Set-Content $PoolDir }
 if ($BanChange = $true) { if (-not $JSonBanHammer) { Clear-Content $Bandir }else { $JsonBanHammer | ConvertTo-Json | Set-Content $BanDir } }
 if ($Screen) { $Screen }
+

@@ -2,6 +2,7 @@ param(
     [Parameter(Mandatory=$true, Position=0)]
     [string]$Action
 )
+[cultureinfo]::CurrentCulture = 'en-US'
 
 if($Action) {
     $SMOS_CONFIG = "/root/utils/update_register.sh"
@@ -14,7 +15,8 @@ if($Action) {
             "Yes" | Set-Content "/root/swarm_mode.txt"
             if(-not (Test-Path "/root/xminer_old.sh")){Move-Item "/root/xminer.sh" "/root/xminer_old.sh" -Force}
             Copy-Item -Path "/root/SWARM/build/bash/xconfig.sh" -Destination "/root/xminer.sh" -Force
-            Start-Process "chmod" -ArgumentList "+x /root/xminer.sh" -Wait
+            $Proc = Start-Process "chmod" -ArgumentList "+x /root/xminer.sh" -PassThru
+            $Proc | Wait-Process
             Write-Host "SWARM will not run at startup- OS will ignore other miners."
             Write-Host ""
             Write-Host "Run: 
@@ -29,7 +31,8 @@ As root user to disable
                 $Old = Get-Content "/root/xminer_old.sh"
                 $Old | Set-Content "/root/xminer.sh"
             }
-            Start-Process "chmod" -ArgumentList "+x /root/xminer.sh" -Wait
+            $Proc = Start-Process "chmod" -ArgumentList "+x /root/xminer.sh" -PassThru
+            $Proc | Wait-Process
             Write-Host "SWARM will not run at startup- OS will ignore swarm"
         }
     }

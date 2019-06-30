@@ -5,7 +5,7 @@ function Global:Stop-ActiveMiners {
         if ($_.BestMiner -eq $false) {
         
             if ($(arg).Platform -eq "windows") {
-                if ($_.XProcess -eq $Null) { $_.Status = "Failed" }
+                if ($_.XProcess -eq $Null -and $_.Status -ne "Idle") { $_.Status = "Failed" }
                 elseif ($_.XProcess.HasExited -eq $false) {
                     $_.Active += (Get-Date) - $_.XProcess.StartTime
                     if ($_.Type -notlike "*ASIC*") {
@@ -57,7 +57,7 @@ function Global:Stop-ActiveMiners {
             }
 
             if ($(arg).Platform -eq "linux") {
-                if ($_.XProcess -eq $Null) { $_.Status = "Failed" }
+                if ($_.XProcess -eq $Null -and $_.Status -ne "Idle") { $_.Status = "Failed" }
                 else {
                     if ($_.Type -notlike "*ASIC*") {
                         $MinerInfo = ".\build\pid\$($_.InstanceName)_info.txt"
@@ -68,7 +68,8 @@ function Global:Stop-ActiveMiners {
                             $PIDTime = [DateTime]$MI.start_date
                             $Exec = Split-Path $MI.miner_exec -Leaf
                             $_.Active += (Get-Date) - $PIDTime
-                            Start-Process "start-stop-daemon" -ArgumentList "--stop --name $Exec --pidfile $($MI.pid_path) --retry 5" -Wait
+                            $Proc = Start-Process "start-stop-daemon" -ArgumentList "--stop --name $Exec --pidfile $($MI.pid_path) --retry 5" -PassThru
+                            $Proc | Wait-Process
                         }
                     }
                     else { $_.Xprocess.HasExited = $true; $_.XProcess.StartTime = $null; $_.Status = "Idle" }
@@ -94,7 +95,6 @@ function Global:Start-NewMiners {
         if ($null -eq $Miner.XProcess -or $Miner.XProcess.HasExited -and $(arg).Lite -eq "No") {
             Global:Add-Module "$($(vars).control)\launchcode.psm1"
             Global:Add-Module "$($(vars).control)\config.psm1"
-            Global:Add-Module "$($(vars).global)\gpu.psm1"
 
             $global:Restart = $true
             if ($Miner.Type -notlike "*ASIC*") { Start-Sleep -S $Miner.Delay }
@@ -105,7 +105,7 @@ function Global:Start-NewMiners {
 
             ##First Do OC
             if ($Reason -eq "Launch") {
-                if ($(vars).WebSites) {
+                if ($(vars).WebSites -and $(vars).WebSites -ne "") {
                     $GetNetMods = @($(vars).NetModules | Foreach { Get-ChildItem $_ })
                     $GetNetMods | ForEach-Object { Import-Module -Name "$($_.FullName)" }
                     $(vars).WebSites | ForEach-Object {
@@ -127,17 +127,19 @@ function Global:Start-NewMiners {
                     }
                     $GetNetMods | ForEach-Object { Remove-Module -Name "$($_.BaseName)" }
                 }
-                if ($OC_Success -eq $false -and $WebSiteOC -eq $true) {
+                if ($OC_Success -eq $false -and $WebSiteOC -eq $false) {
                     if ($ClearedOC -eq $False) {
                         $OCFile = ".\build\txt\oc-settings.txt"
                         if (Test-Path $OCFile) { Clear-Content $OcFile -Force; "Current OC Settings:" | Set-Content $OCFile }
                         $ClearedOC = $true
                     }
-                    if ($Miner.Type -notlike "*ASIC*") {
-                        Global:Write-Log "Starting SWARM OC" -ForegroundColor Cyan
-                        Global:Add-Module "$($(vars).control)\octune.psm1"
-                        Global:Start-OC($Miner, $Website)
-                    }
+                }
+                elseif ($OC_Success -eq $false -and $WebSiteOC -eq $false -and $Miner.Type -notlike "*ASIC*" -and $(Get-Content ".\config\oc\oc-defaults.json" | ConvertFrom-Json).card -ne "") {
+                    Global:Write-Log "Starting SWARM OC" -ForegroundColor Cyan
+                    Global:Add-Module "$($(vars).control)\octune.psm1"
+                    Global:Start-OC($Miner)
+                    Remove-Module -name octune
+                    $OC_Success = $true
                 }
             }
 
@@ -207,7 +209,7 @@ function Global:Start-NewMiners {
                 }
             }
             else {
-                if ($global:ASICS.$($Miner.Type).IP) { $AIP = $global:ASICS.$($Miner.Type).IP }
+                if ($(vars).ASICS.$($Miner.Type).IP) { $AIP = $(vars).ASICS.$($Miner.Type).IP }
                 else { $AIP = "localhost" }
                 $Miner.Xprocess = Global:Start-LaunchCode $Miner $AIP
             }
@@ -239,6 +241,6 @@ Waiting 20 Seconds For Miners To Fully Load
 
 " 
         Start-Sleep -s 20
-
+        $global:Restart = $false
     }
 }

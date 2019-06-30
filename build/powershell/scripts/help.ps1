@@ -1,14 +1,14 @@
 ## Confirm Answer Is Correct
 $Global:config = @{ }
 $Global:Config.Add("vars", @{ })
-$Global:Config.vars.Add( "dir", (Split-Path $script:MyInvocation.MyCommand.Path) )
+$Global:Config.vars.Add( "dir", $(Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path)))))
 $Global:Config.vars.dir = $Global:Config.vars.dir -replace "/var/tmp", "/root"
-Set-Location $Global:Config.vars.dir
+Set-Location $global:Config.vars.dir
 . .\build\powershell\global\modules.ps1
 
 $(vars).Add("config", [ordered]@{ })
 $(vars).config = @{ }
-$(vars).Add("Modules",@())
+$(vars).Add("Modules", @())
 
 function Global:Confirm-Answer($Answer, $Possibilities) {
     if ($Answer -notin $Possibilities) {
@@ -655,6 +655,49 @@ Answer"
     }
 }
 
+if($IsWindows) {
+        do{
+            Clear-Host
+            $ans = Read-Host -Prompt "SWARM has detected this is a Windows OS.
+
+Would you like to use HiveOS web dashboard for online statistics and remote control?
+
+1 Yes
+2 No
+
+Answer"
+            $Check = Global:Confirm-Answer $ans @("1","2")
+        }While($Check -eq 1)
+        switch($ans){
+            "2" {$(vars).config.add("Hive_Hash","xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+                $(vars).config.add("HiveOS","No")
+            }
+            "1" {
+                do{
+                    Clear-Host
+                    $ans1 = Read-Host -Prompt "Okay. Please go to HiveOS.farm, and create an account.
+
+You will receive a farm hash for your farm there. You can go to Farm > Settings, and it will be listed there.
+
+Please Enter Your Farm Hash"
+
+                    Clear-Host
+
+                    $ans2 = Read-Host -Prompt "You have entered $ans1
+Is this correct
+
+1 Yes
+2 No
+
+Answer"
+                    $Check = Global:Confirm-Answer $ans2 @("1","2")
+                }While($Check -eq 1)
+                $(vars).config.add("Hive_Hash",$ans1);
+                $(vars).config.add("HiveOS","Yes")
+            }
+        }
+}
+
 
 $(vars).add("continue", $True)
 $(vars).Add("input", $null)
@@ -665,111 +708,113 @@ if ($P -notlike "$($(vars).dir)\build\powershell\help*") {
     [Environment]::SetEnvironmentVariable("PSModulePath", $p)
 }            
 
-do{
+do {
     Clear-Host
     Add-Module "$hd\choices.psm1"
     $Confirm = Global:Get-Choices
     Global:Remove-Modules
-if ($Confirm -eq "1") {
-    Write-Host "Saving Settings"
-    $Defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json
-    $Defaults.PSObject.Properties.Name | % { if ($_ -notin $(vars).config.keys) { $(vars).config.Add("$($_)", $Defaults.$_) } }
-    $(vars).config | ConvertTo-Json | Set-Content ".\config\parameters\newarguments.json"
-    Start-Sleep -S 2
-    Write-Host "Settings Saved to `".\config\parameter\newarguments.json`" ! You can Run SWARM.bat (windows) or ./swarm (linux as root) to start SWARM!"
-}
-if ($Confirm -eq "2") {
-    do {
-        Clear-Host
+    if ($Confirm -eq "1") {
+        Write-Host "Saving Settings"
+        $Defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json
+        $Defaults.PSObject.Properties.Name | % { if ($_ -notin $(vars).config.keys) { $(vars).config.Add("$($_)", $Defaults.$_) } }
+        $(vars).config | ConvertTo-Json | Set-Content ".\config\parameters\newarguments.json"
+        Start-Sleep -S 2
+        Write-Host "Settings Saved to `".\config\parameter\newarguments.json`" ! You can Run SWARM.bat (windows) or ./swarm (linux as root) to start SWARM!"
+    }
+    if ($Confirm -eq "2") {
         do {
             Clear-Host
-            Write-Host "These are your current settings:
+            do {
+                Clear-Host
+                Write-Host "These are your current settings:
                 "
-            Start-Sleep -S 2
-            $(vars).config
+                Start-Sleep -S 2
+                $(vars).config
                 
-            Write-Host "
+                Write-Host "
 
 This is your settings in a copy/paste form for flight sheet/config:
                 "
-            Start-Sleep -S 2
-            $Arg = $null
-            $(vars).config.keys | % {
-                if ($(vars).config.$_ -and $(vars).config.$_ -ne "") {
-                    if ( $(vars).config.$_ -is [Array]) { $Sec = "$($(vars).config.$_)" -replace " ", "," }
-                    else { $Sec = $(vars).Config.$_ }
-                    $Arg += "-$($_) $Sec "
+                Start-Sleep -S 2
+                $Arg = $null
+                $(vars).config.keys | % {
+                    if ($(vars).config.$_ -and $(vars).config.$_ -ne "") {
+                        if ( $(vars).config.$_ -is [Array]) { $Sec = "$($(vars).config.$_)" -replace " ", "," }
+                        else { $Sec = $(vars).Config.$_ }
+                        $Arg += "-$($_) $Sec "
+                    }
                 }
-            }
-            $Arg.Substring(0, $Arg.Length - 1)      
-            Start-Sleep -S 2
-            Write-Host ""
-            Write-Host ""
-            $ans = Read-Host -Prompt "What would you like to do?
+                $Arg.Substring(0, $Arg.Length - 1)      
+                Start-Sleep -S 2
+                Write-Host ""
+                Write-Host ""
+                $ans = Read-Host -Prompt "What would you like to do?
 
 1 I would like to change a parameter
 2 I would like to view a parameter
 3 I am finished
 
 Answer"
-            $Check = Global:Confirm-Answer $Ans @("1", "2", "3")
-        }While ($Check -eq 1)
-        Switch ($ans) {
-            "1" {
-                $(vars).input = Global:Get-Advanced_Settings
-                if ($(vars).input -in 1 .. 6) {
-                    Add-Module "$hd\strategy.psm1"
-                    Global:Get-Strategy
-                    Global:Remove-Modules
+                $Check = Global:Confirm-Answer $Ans @("1", "2", "3")
+            }While ($Check -eq 1)
+            Switch ($ans) {
+                "1" {
+                    $(vars).input = Global:Get-Advanced_Settings
+                    $(vars).input = $(vars).input.ToLower()
+                    $(vars).input = $(vars).input | ForEach-Object { $Test = $Null; try {$Test = [int]$_} catch { }; if ($Test) { $Test } }
+                    if ($(vars).input -in 1 .. 6) {
+                        Add-Module "$hd\strategy.psm1"
+                        Global:Get-Strategy
+                        Global:Remove-Modules
+                    }
+                    elseif ($(vars).input -in 7 .. 12) {
+                        Add-Module "$hd\switching.psm1"
+                        Global:Get-Switching
+                        Global:Remove-Modules
+                    }
+                    elseif ($(vars).input -in 13 .. 20) {
+                        Add-Module "$hd\statistics.psm1"
+                        Global:Get-Statistics
+                        Global:Remove-Modules
+                    }
+                    elseif ($(vars).input -in 21 .. 28) {
+                        Add-Module "$hd\admin.psm1"
+                        Global:Get-Admin
+                        Global:Remove-Modules
+                    }
+                    elseif ($(vars).input -in 29 .. 33) {
+                        Add-Module "$hd\interface.psm1"
+                        Global:Get-Interface
+                        Global:Remove-Modules
+                    }
+                    elseif ($(vars).input -in 34 .. 40) {
+                        Add-Module "$hd\api.psm1"
+                        Global:Get-API
+                        Global:Remove-Modules
+                    }
+                    elseif ($(vars).input -in 41 .. 44) {
+                        Add-Module "$hd\maintenance.psm1"
+                        Global:Get-Maintenance
+                        Global:Remove-Modules
+                    }
                 }
-                elseif ($(vars).input -in 7 .. 12) {
-                    Add-Module "$hd\switching.psm1"
-                    Global:Get-Switching
-                    Global:Remove-Modules
-                }
-                elseif ($(vars).input -in 13 .. 20) {
-                    Add-Module "$hd\statistics.psm1"
-                    Global:Get-Statistics
-                    Global:Remove-Modules
-                }
-                elseif ($(vars).input -in 21 .. 28) {
-                    Add-Module "$hd\admin.psm1"
-                    Global:Get-Admin
-                    Global:Remove-Modules
-                }
-                elseif ($(vars).input -in 29 .. 33) {
-                    Add-Module "$hd\interface.psm1"
-                    Global:Get-Interface
-                    Global:Remove-Modules
-                }
-                elseif ($(vars).input -in 34 .. 40) {
-                    Add-Module "$hd\api.psm1"
-                    Global:Get-API
-                    Global:Remove-Modules
-                }
-                elseif ($(vars).input -in 41 .. 44) {
-                    Add-Module "$hd\maintenance.psm1"
-                    Global:Get-Maintenance
-                    Global:Remove-Modules
-                }
-            }
-            "2" {
-                do {
-                    Clear-Host
-                    $Num = 0
-                    $Table = @{ }
-                    $List = @()
-                    $(vars).config.keys | % { $Table.Add("$Num", $_); $List += "$Num $($_)"; $NUm++ }
-                    $ans = Read-Host -Prompt "Which Parameter would you like to view?
+                "2" {
+                    do {
+                        Clear-Host
+                        $Num = 0
+                        $Table = @{ }
+                        $List = @()
+                        $(vars).config.keys | % { $Table.Add("$Num", $_); $List += "$Num $($_)"; $NUm++ }
+                        $ans = Read-Host -Prompt "Which Parameter would you like to view?
             
 $($List -join "`n")
 
 Answer"
-                    $Check = Global:Confirm-Answer $ans @(1 .. ($Num - 1))
-                }while ($Check -eq 1)
-                do{
-                clear-host
-                $Confirm = Read-Host -Prompt "Here is Parameter $($Table.$Ans):
+                        $Check = Global:Confirm-Answer $ans @(1 .. ($Num - 1))
+                    }while ($Check -eq 1)
+                    do {
+                        clear-host
+                        $Confirm = Read-Host -Prompt "Here is Parameter $($Table.$Ans):
                 
 $( $(vars).Config.$($Table.$Ans) -join "`n" )
 
@@ -779,17 +824,17 @@ Do You Wish To Continue
 2 No
 
 Answer"
-                    $check = Global:Confirm-Answer $Confirm @("1", "2")
-                    Switch($Confirm){
-                        "1" {$(vars).continue = $true}
-                        "2" {$(vars).continue = $false}
-                    }            
-                }while ($check -eq 1)
+                        $check = Global:Confirm-Answer $Confirm @("1", "2")
+                        Switch ($Confirm) {
+                            "1" { $(vars).continue = $true }
+                            "2" { $(vars).continue = $false }
+                        }            
+                    }while ($check -eq 1)
+                }
+                "3" {
+                    $(vars).continue = $false
+                }    
             }
-            "3"{
-                $(vars).continue = $false
-            }    
-        }
-    }While ($(vars).continue -eq $true)
-}
+        }While ($(vars).continue -eq $true)
+    }
 }Until($Confirm -eq "1")

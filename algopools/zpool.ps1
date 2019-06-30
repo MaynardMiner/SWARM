@@ -37,8 +37,8 @@ if ($Name -in $(arg).PoolName) {
                 $Workers = $Zpool_Request.$_.Workers
                 $Hashrate = $Zpool_Request.$_.hashrate
 
-                $Global:DivisorTable.zpool.Add($Zpool_Algorithm, $Zpool_Request.$_.mbtc_mh_factor)
-                $Global:FeeTable.zpool.Add($Zpool_Algorithm, $Fees)
+                $(vars).divisortable.zpool.Add($Zpool_Algorithm, $Zpool_Request.$_.mbtc_mh_factor)
+                $(vars).FeeTable.zpool.Add($Zpool_Algorithm, $Fees)
 
                 $StatPath = ".\stats\($Name)_$($Zpool_Algorithm)_profit.txt"
                 $Estimate = if (-not (Test-Path $StatPath)) { [Double]$Zpool_Request.$_.estimate_last24h } else { [Double]$Zpool_Request.$_.estimate_current }

@@ -1,106 +1,98 @@
 {
-  "notes": [
-    {
-      "1.": "used IN PLACE OF altwallet arguments"
+
+    "Note": "Parameters (arguments) have a higher precedence, and may override configs below.",
+
+
+    "Active Exchange Wallets": {
+        "Note": "these will replicated -Altwallet Parameter, however here you can specify which pools to use. These are for Auto-Exchange, will be used instead of -Wallet Parameters if possible on pool.",
+        "AltWallets": {
+            "AltWallet1": {
+                "note": "Used with -Type NVIDIA1,AMD1,CPU, or ASIC",
+                "add coin symbol here": {
+                    "address": "",
+                    "pools": [
+                        "zergpool",
+                        "nlpool",
+                        "can be changed"
+                    ]
+                },
+                "add another coin symbol here": {
+                    "address": "coin address",
+                    "pools": [
+                        "zpool",
+                        "blazepool",
+                        "can be changed"
+                    ]
+                }
+            },
+            "AltWallet2": {
+                "note": "Used with -Type NVIDIA2",
+                "add coin symbol here": {
+                    "address": "",
+                    "pools": [
+                        "nlpool",
+                        "zpool",
+                        "can be changed"
+                    ]
+                },
+                "add another coin symbol here": {
+                    "address": "coin address",
+                    "pools": [
+                        "zpool",
+                        "blockmasters",
+                        "can be changed"
+                    ]
+                }
+            },
+            "AltWallet3": {
+                "note": "Used with -Type NVIDIA3",
+                "add coin symbol here": {
+                    "address": "",
+                    "pools": [
+                        "zergpool",
+                        "nlpool",
+                        "can be changed"
+                    ]
+                },
+                "add another coin symbol here": {
+                    "address": "coin address",
+                    "pools": [
+                        "zpool",
+                        "blockmasters",
+                        "can be changed"
+                    ]
+                }
+            }
+        }
     },
-    {
-      "2.": "Altwallet1 is for NVIDIA1,AMD1,ASIC, and CPU"
+
+
+
+    "Passive Alternative Wallets": {
+        "note": "These are passive wallets, used with -Auto_Coin. When switching to these coins- You can specify extra actions to occur, if pool can perform. You can continue adding as many coins as you desire.",
+        "coin list": {
+            "add coin symbol here": {
+                "address": "add address of coin if you wish to mine to that address, or leave alone.",
+                "solo": "'Yes' for solo mode. 'No' for normal mode",
+                "exchange": "'Yes' if you wish to auto-exchange. 'No' if you wish to mine this coin directly- address is required."
+            },
+            "Add another symbol of coin here": {
+                "address": "add address of coin if you wish to mine to that address, or leave alone.",
+                "solo": "'Yes' for solo mode. 'No' for normal mode",
+                "exchange": "'Yes' if you wish to auto-exchange. 'No' if you wish to mine this coin directly- address is required."
+            }
+        }
     },
-    {
-      "3.": "Altwallet2 is for NVIDIA2."
-    },
-    {
-      "4.": "Altwallet3 is for NVIDIA3."
-    },
-    {
-      "5.": "To use (Step 1): Replace 'add coin symbol here' with symbol of wallet"
-    },
-    {
-      "6.": "To use (Step 2): Add address of that coin. Set pools to use."
-    },
-    {
-      "7": "You can continue to add to the list, but only 1 wallet per pool. See bottom for example"
-    },
-    {
-      "8": "Warning: If anything below is modified, SWARM will start using this file."
-    },
-    {
-      "9": "(Optional) You can add all wallets in AllAltWallets section-"
-    },
-    {
-      "10": "SWARM will scan if auto-coin is on and AllAltWallets sectoin if filled."
-    },
-    {
-      "11": "If a coin matched the address symbol, and most profitable, it will mine to that wallet"
+
+
+
+    "Admin Wallet": {
+        "note": "If you wish to manage SWARM for someone else, you can add an admin fee for a daily %, and mine to your wallet.",
+        "admin fee percentage": 0,
+        "admin address": "1FpuMha1QPaWS4PTPZpU1zGRzKMevnDpwg",
+        "admin address symbol": "BTC"
     }
-  ],
-
-  "Altwallet1": {
-    "add coin symbol here": {
-      "address": "",
-      "pools": [
-        "zergpool",
-        "nlpool",
-        "can be changed"
-      ]
-    },
-    "add another coin symbol here": {
-      "address": "coin address",
-      "pools": [
-        "zpool",
-        "blockmasters",
-        "can be changed"
-      ]
-    }
-  },
 
 
 
-
-  "Altwallet2": {
-    "add coin symbol here": {
-      "address": "",
-      "pools": [
-        "zergpool",
-        "nlpool",
-        "can be changed"
-      ]
-    },
-    "add another coin symbol here": {
-      "address": "coin address",
-      "pools": [
-        "zpool",
-        "blockmasters",
-        "can be changed"
-      ]
-    }
-  },
-
-
-
-
-  "Altwallet3": {
-    "add coin symbol here": {
-      "address": "coin address",
-      "pools": [
-        "zergpool",
-        "nlpool",
-        "can be changed"
-      ]
-    },
-    "add another coin symbol here": {
-      "address": "coin address",
-      "pools": [
-        "zpool",
-        "blockmasters",
-        "can be changed"
-      ]
-    }
-  },
-
-  "All_AltWallets": {
-    "add coin symbol here": "Add Its Address Here",
-    "add another coin symbol here": "Add Its Address Here"
-  }
-  
 }

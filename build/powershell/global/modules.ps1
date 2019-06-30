@@ -2,7 +2,10 @@ function Global:Add-Module($Path) {
     $name = $(Get-Item $Path).BaseName
     $A = Get-Module | Where Name -eq $name
     if (-not $A) { Import-Module -Name $Path -Scope Global }
-    if ($name -notin $global:config.vars.modules) { $global:config.vars.modules += $Name }
+    if ($name -notin $global:config.vars.modules) {
+        $DoNotAdd = @("")
+        $global:config.vars.modules += $Name 
+    }
 }
 
 function Global:Remove-Modules {

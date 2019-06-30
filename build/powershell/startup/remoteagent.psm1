@@ -29,18 +29,12 @@ function Global:start-update {
 
     if ($StartUpdate -eq $true) {
         $PreviousVersions = @()
-        $PreviousVersions += "SWARM.2.2.9"
-        $PreviousVersions += "SWARM.2.3.0"
-        $PreviousVersions += "SWARM.2.3.1"
-        $PreviousVersions += "SWARM.2.3.2"
-        $PreviousVersions += "SWARM.2.3.3"
-        $PreviousVersions += "SWARM.2.3.4"
-        $PreviousVersions += "SWARM.2.3.5"
-        $PreviousVersions += "SWARM.2.3.6"
-        $PreviousVersions += "SWARM.2.3.7"
         $PreviousVersions += "SWARM.2.3.8"
         $PreviousVersions += "SWARM.2.3.9"
         $PreviousVersions += "SWARM.2.4.0"
+        $PreviousVersions += "SWARM.2.4.1"
+        $PreviousVersions += "SWARM.2.4.2"
+        $PreviousVersions += "SWARM.2.4.3"
 
         $StatsOnly = $null
 
@@ -54,7 +48,7 @@ function Global:start-update {
         }
         else {
             $Global:amd = Get-Content ".\config\update\amd-linux.json" | ConvertFrom-Json
-            $Global:nvidia = Get-Content ".\config\update\nvidia10-linux.json" | ConvertFrom-Json
+            $Global:nvidia = Get-Content ".\config\update\nvidia-linux.json" | ConvertFrom-Json
             $Global:cpu = Get-Content ".\config\update\cpu-linux.json" | ConvertFrom-Json
         }
 
@@ -81,11 +75,16 @@ function Global:start-update {
                 $OldTime = Join-Path $PreviousPath "build\data"
                 $OldConfig = Join-Path $PreviousPath "config"
                 $OldTimeout = Join-Path $PreviousPath "timeout"
+                $OldAdmin = Join-Path $PreviousPath "admin"
                 if (-not (Test-Path "backup")) { New-Item "backup" -ItemType "directory" | Out-Null }
                 if (-not (Test-Path "stats")) { New-Item "stats" -ItemType "directory" | Out-Null }
                 if (Test-Path $OldBackup) {
                     Get-ChildItem -Path "$($OldStats)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\stats"
                     Get-ChildItem -Path "$($OldBackup)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\backup"
+                }
+                if (Test-Path $OldAdmin){
+                    if (-not (Test-Path ".\admin")) { New-Item ".\admin" -ItemType "directory" | Out-Null }
+                    Get-ChildItem -Path "$($OldAdmin)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\admin"
                 }
                 #if(Test-Path $OldTime){Get-ChildItem -Path "$($OldTime)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\build\data"}
                 if (Test-Path $OldTimeout) {
@@ -99,9 +98,8 @@ function Global:start-update {
                 if ($StatsOnly -ne "Yes") {
                     $Jsons = @("oc", "power", "pools", "asic", "wallets")
                     $UpdateType = @("CPU", "AMD1", "NVIDIA1", "NVIDIA2", "NVIDIA3")
-                    $Exclude = @("claymore_amd.json", "ehssand_amd.json", "gminer_amd.json", "phoenix_amd.json", "progminer_amd.json", "stak_cpu.json", "xmrig_cpu.json", "enemy.json", "xmrig_nv.json")
-                    if ($CurrentVersion -lt 222) { $Exclude += "pool-algo.json" }
-                
+                    if ($CurrentVersion -lt 244) { $Exclude += "wallets.json" }
+
                     $Jsons | foreach {
                         $OldJson_Path = Join-Path $OldConfig "$($_)";
                         $NewJson_Path = Join-Path ".\config" "$($_)";
@@ -151,6 +149,17 @@ function Global:start-update {
                                     }
                                 }
 
+                                if ($ChangeFile -eq "miniz.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands | Add-Member "equihash_150/5" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "equihash_150/5" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "equihash_150/5" "equihash_150/5" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "equihash_150/5" 2 -ErrorAction SilentlyContinue
+                                        }
+                                    }
+                                }
+
                                 if ($ChangeFile -eq "fancyix.json") {
                                     $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                         if ($_ -ne "name") {
@@ -177,6 +186,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "equihash_96/5" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "equihash_96/5" "equihash_96/5" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "equihash_96/5" 2 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "equihash_125/4" "equihash_125/4" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "equihash_125/4" 2 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }
@@ -193,6 +207,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "equihash_96/5" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "equihash_96/5" "equihash_96/5" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "equihash_96/5" 2 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "equihash_125/4" "equihash_125/4" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "equihash_125/4" 2 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }
@@ -237,9 +256,21 @@ function Global:start-update {
                                         }
                                     }
                                 }
+
+                                if ($ChangeFile -eq "sugarchain.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands | Add-Member "lyra2z330" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "lyra2z330" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "lyra2z330" "lyra2z330" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "lyra2z330" 0 -ErrorAction SilentlyContinue
+                                        }
+                                    }
+                                }
  
                                 if($ChangeFile -eq "pool-algos.json") {
                                     $Data | add-Member "x25x" @{alt_names = @("x25x"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
+                                    $Data | add-Member "lyra2z330" @{alt_names = @("lyra2z330"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
                                 }
 
                                 if($ChangeFile -eq "oc-algos.json") {

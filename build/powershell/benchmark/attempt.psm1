@@ -41,9 +41,6 @@ function Global:Set-Power {
                 $DI = $D[$i]
                 $GPUPower += $Power[$DI]
             }
-            Remove-Variable Power
-            Remove-Variable D
-            Remove-Variable DI
         }
     }
     $($GPUPower | Measure-Object -Sum).Sum
@@ -117,7 +114,7 @@ function Global:Start-Benchmark {
                 $_.HashRate = 0
                 $global:WasBenchmarked = $False
                 $WasActive = [math]::Round(((Get-Date) - $_.XProcess.StartTime).TotalSeconds)
-                if ($WasActive -ge $global:MinerStatInt) {
+                if ($WasActive -ge $(vars).MinerstatInt) {
                     Global:Write-Log "$($_.Name) $($_.Symbol) Was Active for $WasActive Seconds"
                     Global:Write-Log "Attempting to record hashrate for $($_.Name) $($_.Symbol)" -foregroundcolor "Cyan"
                     for ($i = 0; $i -lt 4; $i++) {
@@ -202,10 +199,10 @@ function Global:Start-Benchmark {
             }
 
             if ($Global:Strike -ne $true) {
-                if ($(vars).Warnings."$($_.Name)" -ne $null) { $(vars).Warnings."$($_.Name)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
-                if ($(vars).Warnings."$($_.Name)_$($_.Algo)" -ne $null) { $(vars).Warnings."$($_.Name)_$($_.Algo)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
-                if ($(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" -ne $null) { $(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
-                if ($(vars).Warnings."$($_.Type)" -ne $null) { $(vars).Warnings."$($_.Type)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
+                if ($null -ne $(vars).Warnings."$($_.Name)") { $(vars).Warnings."$($_.Name)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
+                if ($null -ne $(vars).Warnings."$($_.Name)_$($_.Algo)") { $(vars).Warnings."$($_.Name)_$($_.Algo)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
+                if ($null -ne $(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)") { $(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
+                if ($null -ne $(vars).Warnings."$($_.Type)") { $(vars).Warnings."$($_.Type)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
             }
      
             ## Strike-Out System. Will not work with Lite Mode

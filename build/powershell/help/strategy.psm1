@@ -98,8 +98,10 @@ Answer"
             }
         }while ($Confirm -ne "1")
 
+        if($_ -ne "CPU"){
         if ( $(vars).config.Containskey($Password) ) { $(vars).config.$Password = $ans1 }else { $(vars).config.Add($Password, $ans1) }
         if ( $(vars).config.Containskey($Wallet) ) { $(vars).config.$Wallet = $ans2 }else { $(vars).config.Add($Wallet, $ans2) }
+        }
     }
 }
 

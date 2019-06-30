@@ -32,7 +32,7 @@ if (Test-Path $Path) {
                     Start-Sleep -S 5
                 }
             }
-            else { Start-Process "miner" -ArgumentList "stop" -Wait }
+            else { $Proc = Start-Process "miner" -ArgumentList "stop" -PassThru; $Proc | Wait-Process }
 
             ## Copy User's Module To Global Dir
             Copy-Item -Path $Item.FullName -Destination ".\build\powershell\global" -Force
@@ -73,7 +73,7 @@ if (Test-Path $Path) {
             $message += "Module added. Restarting SWARM"
 
             if ($IsWindows) { Start-Process ".\SWARM.bat" }
-            else { Start-Process "miner" -ArgumentList "start" -Wait }
+            else { $Proc = Start-Process "miner" -ArgumentList "start" -PassThru; $Proc | Wait-Process }
         }
     }
     else {

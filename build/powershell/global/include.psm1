@@ -21,6 +21,9 @@ function Global:Add-LogErrors {
         $Message | Add-Content $(vars).logname
         $error.clear()
     }
+    $GetBanCheck2 = Get-Content ".\build\data\verification.conf" -Force
+    $BanCheck2 = $([Double]$GetBanCheck2[0] - 5 + ([Double]$GetBanCheck2[1] * 2))
+    $(vars).BanPass = "$($BanCheck2)"
 }
 
 function Global:Write-Log {
@@ -154,7 +157,9 @@ function Global:start-killscript {
     $OpenScreens += "pill-NVIDIA3"
     $OpenScreens += "API"
     $OpenScreens | foreach {
-        Start-Process ".\build\bash\killall.sh" -ArgumentList $_ -Wait
+        $Proc = Start-Process ".\build\bash\killall.sh" -ArgumentList $_ -PassThru
+        $Proc | Wait-Process
     }
-    Start-Process ".\build\bash\killall.sh" -ArgumentList "background" -Wait
+    $Proc = Start-Process ".\build\bash\killall.sh" -ArgumentList "background" -PassThru
+    $Proc | Wait-Process
 }
