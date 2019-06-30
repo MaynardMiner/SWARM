@@ -311,6 +311,7 @@ function Global:Start-MinerDownloads {
             $CheckPath = Test-Path $Sel.Path
             $VersionPath = Join-Path (Split-Path $Sel.Path) "swarm-version.txt"
             if ( $CheckPath -eq $false ) {
+                Global:Stop-AllMiners
                 $Success = Global:Get-MinerBinary $Sel "New"
             }
             elseif(test-path $VersionPath){
