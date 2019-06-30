@@ -29,20 +29,12 @@ function Global:start-update {
 
     if ($StartUpdate -eq $true) {
         $PreviousVersions = @()
-        $PreviousVersions += "SWARM.2.2.9"
-        $PreviousVersions += "SWARM.2.3.0"
-        $PreviousVersions += "SWARM.2.3.1"
-        $PreviousVersions += "SWARM.2.3.2"
-        $PreviousVersions += "SWARM.2.3.3"
-        $PreviousVersions += "SWARM.2.3.4"
-        $PreviousVersions += "SWARM.2.3.5"
-        $PreviousVersions += "SWARM.2.3.6"
-        $PreviousVersions += "SWARM.2.3.7"
         $PreviousVersions += "SWARM.2.3.8"
         $PreviousVersions += "SWARM.2.3.9"
         $PreviousVersions += "SWARM.2.4.0"
         $PreviousVersions += "SWARM.2.4.1"
         $PreviousVersions += "SWARM.2.4.2"
+        $PreviousVersions += "SWARM.2.4.3"
 
         $StatsOnly = $null
 
@@ -101,9 +93,8 @@ function Global:start-update {
                 if ($StatsOnly -ne "Yes") {
                     $Jsons = @("oc", "power", "pools", "asic", "wallets")
                     $UpdateType = @("CPU", "AMD1", "NVIDIA1", "NVIDIA2", "NVIDIA3")
-                    $Exclude = @("claymore_amd.json", "ehssand_amd.json", "gminer_amd.json", "phoenix_amd.json", "progminer_amd.json", "stak_cpu.json", "xmrig_cpu.json", "enemy.json", "xmrig_nv.json")
-                    if ($CurrentVersion -lt 222) { $Exclude += "pool-algo.json" }
-                
+                    if ($CurrentVersion -lt 244) { $Exclude += "wallets.json" }
+
                     $Jsons | foreach {
                         $OldJson_Path = Join-Path $OldConfig "$($_)";
                         $NewJson_Path = Join-Path ".\config" "$($_)";
@@ -274,6 +265,7 @@ function Global:start-update {
  
                                 if($ChangeFile -eq "pool-algos.json") {
                                     $Data | add-Member "x25x" @{alt_names = @("x25x"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
+                                    $Data | add-Member "lyra2z330" @{alt_names = @("lyra2z330"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
                                 }
 
                                 if($ChangeFile -eq "oc-algos.json") {
