@@ -85,7 +85,7 @@ function Global:Start-NewMiners {
         [string]$Reason
     )
     
-    $(vars).OC_Success = $false
+    $OC_Success = $false
 
     $(vars).BestActiveMIners | ForEach-Object {
         $Miner = $_
@@ -115,37 +115,37 @@ function Global:Start-NewMiners {
 
                                     ## HiveOS Can only do Group 1, while SWARM can do all three.
                                     ## If group 1 has changed, SWARM will run oc for that group. 
-                                    ##If this is a different group- User is screwed for other groups.
+                                    ## If this is a different group- User is screwed for other groups.
 
                                     if ($Miner.Type -notlike "*ASIC*" -and $Miner.Type -ne "CPU" -and $Miner.Type -like "*1*") {
-                                        $(vars).OC_Success = Global:Start-HiveTune $Miner.Algo
+                                        $OC_Success = Global:Start-HiveTune $Miner.Algo
 
-                                        ## If it succeeded- SWARM will add to the OC_Groups, which
+                                        ## If it succeeded- SWARM will add to the oc_groups, which
                                         ## is a list of what OC has been done. If not, then it will
                                         ## omit, so it can attempt to run locally.
-                                        if ((vars).OC_Success -eq $true) { $(vars).OC_Groups += $Miner.Type }
+                                        if ($OC_Success -eq $true) { $(vars).oc_groups += $Miner.Type }
                                     }
                                 }
                                 ## However, if this isn't group one, and user has local oc settings-
-                                ## It will set to false, and continue on, omitting from OC_Groups.
-                                else { $(vars).OC_Success = $false }
+                                ## It will set to false, and continue on, omitting from oc_groups.
+                                else { $OC_Success = $false }
                             }
                             "SWARM" {
                                 if ([string]$(arg).API_Key -ne "") {
                                     if ($Miner.Type -notlike "*ASIC*" -and $Miner.Type -ne "CPU" -and $Miner.Type -like "*1*") {
                                         ## Not implemented yet
                                         ## Code will be added here
-                                        if ((vars).OC_Success -eq $true) { $(vars).OC_Groups += $Miner.Type }
+                                        if ($OC_Success -eq $true) { $(vars).oc_groups += $Miner.Type }
                                     }
                                 }
-                            } else { $(vars).OC_Success = $false }
+                            } else { $OC_Success = $false }
                         }
                     }
                     $GetNetMods | ForEach-Object { Remove-Module -Name "$($_.BaseName)" }
                 }
 
                 ## Reset get oc command file. Do only once, and only if web_oc wasn't ran/failed.
-                if ($Miner.Type -notlike "*ASIC*" -and $Miner.Type -ne "CPU" -and $Miner.Type -notin $(vars).OC_Groups) {
+                if ($Miner.Type -notlike "*ASIC*" -and $Miner.Type -ne "CPU" -and $Miner.Type -notin $(vars).oc_groups) {
                     $OCFile = ".\build\txt\oc-settings.txt"
                     if (Test-Path $OCFile) { Clear-Content $OcFile -Force }
                     "Current OC Settings:" | Set-Content $OCFile
@@ -153,14 +153,14 @@ function Global:Start-NewMiners {
                 
                 ## SWARM does each device group individually.
                 ## However, the device group could have been done already through website.
-                ## So it references the OC_Groups, and if its not in it- It runs oc for that group.
-                if ($Miner.Type -notlike "*ASIC*" -and $Miner.Type -ne "CPU" -and $Miner.Type -notin $(vars).OC_Groups -and $(Get-Content ".\config\oc\oc-defaults.json" | ConvertFrom-Json).cards -ne "") {
+                ## So it references the oc_groups, and if its not in it- It runs oc for that group.
+                if ($Miner.Type -notlike "*ASIC*" -and $Miner.Type -ne "CPU" -and $Miner.Type -notin $(vars).oc_groups -and $(Get-Content ".\config\oc\oc-defaults.json" | ConvertFrom-Json).cards -ne "") {
                     Global:Write-Log "Starting SWARM OC" -ForegroundColor Cyan
                     Global:Add-Module "$($(vars).control)\octune.psm1"
                     Global:Start-OC($Miner)
                     Remove-Module -name octune
                     ## OC_Success is a debug test flag at this point.
-                    $(vars).OC_Success = $true
+                    $OC_Success = $true
                 }
             }
 
