@@ -503,7 +503,7 @@ While ($true) {
         $global:ModeCheck = 0
         $global:Share_Table = @{ }
         $(vars).Add("oc_groups",@())
-
+        
         ##Insert Control Single Modules Here
 
         ##Insert Control Looping Modules Here

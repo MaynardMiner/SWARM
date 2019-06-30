@@ -143,13 +143,6 @@ function Global:Start-NewMiners {
                     }
                     $GetNetMods | ForEach-Object { Remove-Module -Name "$($_.BaseName)" }
                 }
-
-                ## Reset get oc command file. Do only once, and only if web_oc wasn't ran/failed.
-                if ($Miner.Type -notlike "*ASIC*" -and $Miner.Type -ne "CPU" -and $Miner.Type -notin $(vars).oc_groups) {
-                    $OCFile = ".\build\txt\oc-settings.txt"
-                    if (Test-Path $OCFile) { Clear-Content $OcFile -Force }
-                    "Current OC Settings:" | Set-Content $OCFile
-                }
                 
                 ## SWARM does each device group individually.
                 ## However, the device group could have been done already through website.

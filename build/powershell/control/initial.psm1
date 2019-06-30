@@ -58,11 +58,17 @@ function Global:Get-ActiveMiners {
 
 
 function Global:Get-BestActiveMiners {
+
+    ## Clear OC for miner groups. Build Header for get oc command.
+    "Current OC Settings:" | Set-Content ".\build\txt\oc-settings.txt"
+
+    ## Create Best Miners For Tracking
     $(vars).BestActiveMiners = @()
     $(vars).ActiveMinerPrograms | ForEach-Object {
         if ($(vars).bestminers_combo | Where-Object Type -EQ $_.Type | Where-Object Path -EQ $_.Path | Where-Object Arguments -EQ $_.Arguments) { $_.BestMiner = $true; $(vars).BestActiveMiners += $_ }
         else { $_.BestMiner = $false }
     }
+
 }
 
 function Global:Expand-WebRequest {

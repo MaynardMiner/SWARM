@@ -9,6 +9,7 @@ function Global:Start-HiveTune {
     [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
 
     Global:Write-Log "Checking Hive OC Tuning" -ForegroundColor Cyan
+    $OCSheet = @()
     $Algo = $Algo -replace "`_", " "
     $Algo = $Algo -replace "veil","x16rt"
     $Url = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/workers/$($Global:Config.hive_params.Id)"
@@ -39,6 +40,13 @@ function Global:Start-HiveTune {
         if ($A.commands.id) { Global:Write-Log "Sent OC to HiveOS" -ForegroundColor Green; $CheckOC = $true; }
     } else {
         Global:Write-Log "HiveOS Settings Already Set to $Message" -ForegroundColor Cyan
+        if($IsWindows) {
+        if(test-path ".\build\txt\ocnvidia.txt"){ $OCSheet += Get-Content ".\build\txt\ocnvidia.txt" }
+        if(test-path ".\build\txt\ocamd.txt"){ $OCSheet += Get-Content ".\build\txt\ocamd.txt" }
+        } else {
+        if(test-path "/var/log/nvidia-oc.log"){ $OCSheet += Get-Content "/var/log/nvidia-oc.log" }
+        if(test-path "/var/log/amd-oc.txt"){ $OCSheet += Get-Content "/var/log/amd-oc.txt" }
+        }
         $Success = $true
     }
 
@@ -66,6 +74,8 @@ function Global:Start-HiveTune {
                         Global:Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow
                     } else{
                         Global:Write-Log "OC Was Changed." -ForegroundColor Cyan
+                        if(test-path ".\build\txt\ocnvidia.txt"){ $OCSheet += Get-Content ".\build\txt\ocnvidia.txt" }
+                        $OCSheet += Get-Content ".\build\txt\ocamd.txt"
                         $Success  = $true
                     }
                 }
@@ -86,6 +96,8 @@ function Global:Start-HiveTune {
                         Global:Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow
                     } else{
                         Global:Write-Log "OC Was Changed." -ForegroundColor Cyan
+                        if(test-path ".\build\txt\ocamd.txt"){ $OCSheet += Get-Content ".\build\txt\ocamd.txt" }
+                        $OCSheet += Get-Content ".\build\txt\ocnvidia.txt"
                         $Success  = $true
                     }
                 }
@@ -109,6 +121,8 @@ function Global:Start-HiveTune {
                         Global:Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow
                     } else{
                         Global:Write-Log "OC Was Changed." -ForegroundColor Cyan
+                        if(test-path "/var/log/amd-oc.log"){ $OCSheet += Get-Content "/var/log/amd-oc.log" }
+                        $OCSheet += Get-Content "/var/log/nvidia-oc.log"
                         $Success  = $true
                     }
                 }
@@ -131,6 +145,8 @@ function Global:Start-HiveTune {
                         Global:Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow
                     } else{
                         Global:Write-Log "OC Was Changed." -ForegroundColor Cyan
+                        if(test-path "/var/log/nvidia-oc.log"){ $OCSheet += Get-Content "/var/log/nvidia-oc.log" }
+                        $OCSheet += Get-Content "/var/log/amd-oc.log"
                         $Success  = $true
                     }
                 }
@@ -138,5 +154,6 @@ function Global:Start-HiveTune {
         }
     }
     
+    $OCSheet | Add-Content -Path ".\build\txt\oc-settings.txt"
     $Success
 }
