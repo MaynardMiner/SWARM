@@ -101,7 +101,7 @@ function Global:Get-Optional {
     if ($(arg).Type -like "*AMD*") {
         $list = Get-ChildItem ".\miners\gpu\amd"
         $AMD | ForEach-Object {
-            if ($_.Name -in $list.basename) {
+            if ($_.Name -in $list.basename -and $_.Name -notin $(arg).optional) {
                 Write-Log "Found $($_.Name) in active miner folder, not specified in -optional parameter, moving to optional_and_old" -ForegroundColor Yellow
                 $file = $List | Where BaseName -eq $($_.Name)
                 Move-Item -path $file -Destination ".\miners\optional_and_old\$($_.Name).ps1" -Force
@@ -112,7 +112,7 @@ function Global:Get-Optional {
     if ($(arg).Type -like "*NVIDIA*") {
         $list = Get-ChildItem ".\miners\gpu\nvidia"
         $NVIDIA | ForEach-Object {
-            if ($_.Name -in $list.basename) {
+            if ($_.Name -in $list.basename -and $_.Name -notin $(arg).optional) {
                 Write-Log "Found $($_.Name) in active miner folder, not specified in -optional parameter, moving to optional_and_old" -ForegroundColor Yellow
                 $file = $List | Where BaseName -eq $($_.Name)
                 Move-Item -path $file -Destination ".\miners\optional_and_old\$($_.Name).ps1" -Force
