@@ -111,7 +111,7 @@ function Global:Start-NewMiners {
                     $(vars).WebSites | ForEach-Object {
                         switch ($_) {
                             "HiveOS" {
-                                if ($(arg).API_Key -and $(arg).API_Key -ne "") {
+                                if ([string]$(arg).API_Key -ne "") {
                                     if ($WebSiteOC -eq $false) {
                                         if ($Miner.Type -notlike "*ASIC*" -and $Miner.Type -like "*1*") {
                                             $OC_Success = Global:Start-HiveTune $Miner.Algo
@@ -121,7 +121,9 @@ function Global:Start-NewMiners {
                                 }
                             }
                             "SWARM" {
-                                $WebSiteOC = $true
+                                if ([string]$(arg).API_Key -ne "") {
+                                    $WebSiteOC = $true
+                                }
                             }
                         }
                     }
