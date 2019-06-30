@@ -4,9 +4,9 @@ $zpool_Sorted = [PSCustomObject]@{ }
 $zpool_UnSorted = [PSCustomObject]@{ }
 
 $DoAutoCoin = $false
-if($(arg).Coin.Count -eq 0){ $DoAutoCoin = $true }
-$(arg).Coin | %{ if($_ -eq ""){ $DoAutoCoin = $true} }
-if($(arg).Ban_GLT -eq "Yes"){$NoGLT = "GLT"}
+if ($(arg).Coin.Count -eq 0) { $DoAutoCoin = $true }
+$(arg).Coin | % { if ($_ -eq "") { $DoAutoCoin = $true } }
+if ($(arg).Ban_GLT -eq "Yes") { $NoGLT = "GLT" }
 
 if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" } 
 
@@ -32,7 +32,7 @@ if ($Name -in $(arg).PoolName) {
     $zpool_Request.PSObject.Properties.Name | ForEach-Object {
         $Algo = $zpool_Request.$_.Algo.ToLower()
         $zpool_Request.$_ | Add-Member "Original_Algo" $Algo
-        $zpool_Request.$_.Algo = $global:Config.Pool_Algos.PSObject.Properties.Name | % {if($Algo -in $global:Config.Pool_Algos.$_.alt_names){$_}}
+        $zpool_Request.$_.Algo = $global:Config.Pool_Algos.PSObject.Properties.Name | % { if ($Algo -in $global:Config.Pool_Algos.$_.alt_names) { $_ } }
     }
     $zpoolAlgos = @()
     $zpoolAlgos += $(vars).Algorithm
@@ -103,9 +103,10 @@ if ($Name -in $(arg).PoolName) {
                 $Workers = [Double]$zpool_UnSorted.$_.Workers
                 $Cut = ConvertFrom-Fees $Fees $Workers $Estimate $Divisor
                 try { 
-                    $StatAlgo = $zpool_Symbol -replace "`_","`-" 
+                    $StatAlgo = $zpool_Symbol -replace "`_", "`-" 
                     $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_coin_profit" -Value $Cut
-                }catch { Global:Write-Log "Failed To Calculate Stat For $zpool_Symbol" }
+                }
+                catch { Global:Write-Log "Failed To Calculate Stat For $zpool_Symbol" }
             }
         }
 
@@ -158,21 +159,23 @@ if ($Name -in $(arg).PoolName) {
             }
                 
             if ($(vars).All_AltWallets) {
-                $(vars).All_AltWallets | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
-                    $Sym = $_ -split "," | Select -first 1
-                    $zpool_Sym = $zpool_Symbol -split "-" | Select -First 1
-                    if ($Sym -eq $zpool_Sym -or $Sym -eq $zpool_Symbol) {
-                        $zap = ""
-                        $Pass1 = $_
-                        $User1 = $(vars).All_AltWallets.$_
-                        $Pass2 = $_
-                        $User2 = $(vars).All_AltWallets.$_
-                        $Pass3 = $_
-                        $User3 = $(vars).All_AltWallets.$_
+                $(vars).All_AltWallets.PSObject.Properties.Name | ForEach-Object {
+                    $Sym = $_
+                    $Zpool_Sym = $zpool_Symbol -split "-" | Select -First 1
+                    if ($(vars).All_AltWallets.$Sym.exchange -ne "Yes") {
+                        $Pass1 = $Sym
+                        $Pass2 = $Sym
+                        $Pass3 = $Sym
+                        $mc = ""
+                        if ($(vars).All_AltWallets.$Sym.address -ne "add address of coin if you wish to mine to that address, or leave alone." -and $(vars).All_AltWallets.$_.address -ne "") {
+                            $User1 = $(vars).All_AltWallets.$Sym.address
+                            $User2 = $(vars).All_AltWallets.$Sym.address
+                            $User3 = $(vars).All_AltWallets.$Sym.address
+                        }
                     }
                 }
             }
-
+    
             [PSCustomObject]@{
                 Symbol    = "$zpool_Symbol-Coin"
                 Algorithm = $zpool_Algorithm

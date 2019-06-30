@@ -263,6 +263,12 @@ Global:Write-Log "Starting New Background Agent" -ForegroundColor Cyan
 if ($(arg).Platform -eq "windows") { Global:Start-Background }
 elseif ($(arg).Platform -eq "linux") { $Proc = Start-Process ".\build\bash\background.sh" -ArgumentList "background $($($(vars).dir))" -PassThru; $Proc | Wait-Process }
 
+## Parse Wallet Configs
+Global:Add-Module "$($(vars).build)\wallets.psm1"
+$(vars).Add("All_AltWallets",$Null)
+Global:Get-Wallets
+if([String]$(arg).Admin_Fee -eq 0){if(test-Path ".\admin"){Remove-Item ".\admin" -Recurse -Force | Out-Null}}
+
 ##Get Optional Miners
 Global:Get-Optional
 Global:Add-LogErrors
@@ -288,7 +294,7 @@ While ($true) {
         $(vars).Add("BanHammer",@())
         $(vars).Add("ASICTypes",@())
         $(vars).Add("ASICS",@{})
-        $(vars).Add("All_AltWallets",$Null)
+        if(-not $(vars).ContainsKey("All_AltWallets")){ $(vars).Add("All_AltWallets",$Null) }
         $(vars).Add("SWARMAlgorithm",$(arg).Algorithm)
 
         ##Insert Build Single Modules Here
@@ -325,6 +331,7 @@ While ($true) {
         Global:Add-Module "$($(vars).build)\wallets.psm1"
         Global:Set-Donation
         Global:Get-Wallets
+        if([String]$(arg).Admin_Fee -eq 0){if(test-Path ".\admin"){Remove-Item ".\admin" -Recurse -Force | Out-Null}}
         . .\build\powershell\scripts\bans.ps1 "add" $(arg).Bans "process" | Out-Null
         Global:Add-Algorithms
         Global:Set-Donation
