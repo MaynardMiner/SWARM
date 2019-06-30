@@ -86,11 +86,17 @@ function Global:Start-NewMiners {
     )
     
     $OC_Success = $false
+    $New_OC_File = $false
 
     $(vars).BestActiveMIners | ForEach-Object {
         $Miner = $_
 
         if ($null -eq $Miner.XProcess -or $Miner.XProcess.HasExited -and $(arg).Lite -eq "No") {
+
+            if($New_OC_File -eq $false -and $Miner.Type -notlike "*ASIC*" -and $Miner.Type -ne "CPU"){
+                "Current OC Settings:" | Set-Content ".\build\txt\oc-settings.txt"; $New_OC_File = $true
+            }
+
             Global:Add-Module "$($(vars).control)\launchcode.psm1"
             Global:Add-Module "$($(vars).control)\config.psm1"
 

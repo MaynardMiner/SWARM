@@ -58,10 +58,6 @@ function Global:Get-ActiveMiners {
 
 
 function Global:Get-BestActiveMiners {
-
-    ## Clear OC for miner groups. Build Header for get oc command.
-    "Current OC Settings:" | Set-Content ".\build\txt\oc-settings.txt"
-
     ## Create Best Miners For Tracking
     $(vars).BestActiveMiners = @()
     $(vars).ActiveMinerPrograms | ForEach-Object {
