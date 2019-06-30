@@ -227,7 +227,7 @@ function Global:Get-MinerBinary($Miner,$Reason) {
 
 function Global:Stop-AllMiners {
     $(vars).ActiveMinerPrograms | ForEach-Object {
-           
+           Write-Log "WARNING: Stopping All Miners For Download" -ForegroundColor Yellow
         ##Miners Not Set To Run        
             if ($(arg).Platform -eq "windows") {
                 if ($_.XProcess -eq $Null) { $_.Status = "Failed" }
