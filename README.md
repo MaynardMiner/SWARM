@@ -2,6 +2,8 @@
 
 **Developer Notice** : SWARM does perform occassional disk read/writes, more than a typical mining OS. If you are using a usb stick and have issues- It is likely the quality of the USB stick/condition. SWARM will also degrade USB flash drives faster- It cannot be helped. It creates/stores a small database for profit tracking.
 
+**IMPORTANT** : SWARM attempts to provide miners that work for as many cards as possible. Some miners may work for your cards, some may not. All miners are set with default settings provided from developers themselves. There is a ``-Bans`` argument that lets you remotely remove miners from the list. SWARM should support, if not all late model cards.
+
 ## SWARM wiki:
 
 https://github.com/MaynardMiner/SWARM/wiki
