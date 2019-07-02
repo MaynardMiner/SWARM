@@ -502,7 +502,8 @@ While ($true) {
         $global:MinerStatInt = $Null
         $global:ModeCheck = 0
         $global:Share_Table = @{ }
-
+        $(vars).Add("oc_groups",@())
+        
         ##Insert Control Single Modules Here
 
         ##Insert Control Looping Modules Here
@@ -535,6 +536,7 @@ While ($true) {
         Global:Remove-Modules
         $(vars).remove("oc_algos")
         $(vars).remove("oc_default")
+        $(vars).remove("oc_groups")
         $global:PreviousMinerPorts = $null
         $global:Restart = $null
         $global:NoMiners = $null

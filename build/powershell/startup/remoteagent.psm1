@@ -96,7 +96,7 @@ function Global:start-update {
                     Get-ChildItem -Path "$($OldTimeout)\*" -Include *.txt | Copy-Item -Destination ".\timeout"
                 }
                 if ($StatsOnly -ne "Yes") {
-                    $Jsons = @("oc", "power", "pools", "asic", "wallets")
+                    $Jsons = @("asic","miners","oc","pools","power")
                     $UpdateType = @("CPU", "AMD1", "NVIDIA1", "NVIDIA2", "NVIDIA3")
                     if ($CurrentVersion -lt 244) { $Exclude += "wallets.json" }
 

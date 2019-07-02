@@ -274,6 +274,13 @@ Changelog
         Default is "BTC"
 
     ## FIXES:
+    * oc tuning between website and local is fixed- OC tuning can now
+      interchange between website and local oc.
+      * note: HiveOS can only do group 1 (AMD1/NVIDIA1)
+      * SWARM can do all device groups, so you can combine both, but
+        it will skip over group 1 if it is was done already through site.
+      * You can set SWARM oc to use as a backup in case website oc fails.
+        * At least the default oc, so you don't crash cards because web oc failed.
     * SWARM will stop miners before updating miner if new version
       is detected in update.json. This prevents access-denied errors.
     * Added internal parameters to $(vars) parameter for modules.

@@ -527,22 +527,24 @@ if ($DoNVIDIAOC -eq $true -and $(arg).Platform -eq "linux") {
 $OCMessage = @()
     
 if ($DoNVIDIAOC -eq $true) {
-    $OCMessage += ""
+    $OCMessage += "Group $($Miner.Type)"
     $OCMessage += "ETHPill: $ETHPill"
     $OCMessage += "$NScreenPower"
     $OCMessage += "$NScreenCore"
     $OCMessage += "$NScreenMem"
     $OCMessage += "$NScreenFan"
+    $OCMessage += ""
 }
 
 if ($DoAMDOC -eq $true) {
-    $OCMessage += ""
+    $OCMessage += "Group $($Miner.Type)"
     $OCMessage += "$AScreenCore"
     $OCMessage += "$AScreenDPM"
     $OCMessage += "$AScreenMem"
     $OCMessage += "$AScreenMDPM"
     $OCMessage += "$AScreenPower"
     $OCMessage += "$AScreenFans"
+    $OCMessage += ""
 }
 
 $OCMessage | % {
