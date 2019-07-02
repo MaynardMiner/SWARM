@@ -32,7 +32,7 @@ function Global:Get-ScreenName {
                 default { $ScreenName = "$($Miner.Symbol):$($Miner.Algo)".ToUpper() }
             }
         }
-        $Shares = $global:Share_Table.$($Miner.Type).$($Miner.MinerPool).$ScreenName.Percent -as [decimal]
+        $Shares = $(vars).Share_Table.$($Miner.Type).$($Miner.MinerPool).$ScreenName.Percent -as [decimal]
         if ( $Shares -ne $null ) { $CoinShare = $Shares }else { $CoinShare = 0 }
 
         $Miner | Add-Member "Power_Day" ( ([Decimal]$Miner.Power * 24) / 1000 * $(vars).WattEx )

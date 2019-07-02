@@ -24,7 +24,7 @@ function Global:Set-Countdown {
         $CountDown = Global:Invoke-SWARMMode $global:SwitchTime; $CountDown = $Countdown * -1 
         $CountMessage = "SWARM Mode Starts: $($Countdown) seconds"
     } else { 
-        $Countdown = ([math]::Round(($global:MinerInterval - 20) - $(vars).MinerWatch.Elapsed.TotalSeconds)) 
+        $Countdown = ([math]::Round(($(vars).MinerInterval - 20) - $(vars).MinerWatch.Elapsed.TotalSeconds)) 
         $CountMessage = "Time Left Until Database Starts: $($Countdown) seconds"
     }
     Global:Write-Log "$CountMessage 
@@ -42,28 +42,28 @@ function Global:Start-MinerLoop {
     Do {
         Global:Set-Countdown
         Global:Get-MinerHashRate
-        if ($global:SWARM_IT) { $global:ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
-        if ($global:ModeCheck -gt 0) { break }
+        if ($(vars).SWARM_IT) { $(vars).ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
+        if ($(vars).ModeCheck -gt 0) { break }
         Start-Sleep -s 5
-        if ($global:SWARM_IT) { $global:ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
-        if ($global:ModeCheck -gt 0) { break }
+        if ($(vars).SWARM_IT) { $(vars).ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
+        if ($(vars).ModeCheck -gt 0) { break }
         Start-Sleep -s 5
-        if ($global:SWARM_IT) { $global:ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
-        if ($global:ModeCheck -gt 0) { break }
+        if ($(vars).SWARM_IT) { $(vars).ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
+        if ($(vars).ModeCheck -gt 0) { break }
         Start-Sleep -s 5
-        if ($(vars).MinerWatch.Elapsed.TotalSeconds -ge ($global:MinerInterval - 20)) { break }
+        if ($(vars).MinerWatch.Elapsed.TotalSeconds -ge ($(vars).MinerInterval - 20)) { break }
         Global:Set-Countdown
         Global:Get-MinerHashRate
-        if ($global:SWARM_IT) { $global:ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
-        if ($global:ModeCheck -gt 0) { break }
+        if ($(vars).SWARM_IT) { $(vars).ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
+        if ($(vars).ModeCheck -gt 0) { break }
         Start-Sleep -s 5
-        if ($global:SWARM_IT) { $global:ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
-        if ($global:ModeCheck -gt 0) { break }
+        if ($(vars).SWARM_IT) { $(vars).ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
+        if ($(vars).ModeCheck -gt 0) { break }
         Start-Sleep -s 5
-        if ($global:SWARM_IT) { $global:ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
-        if ($global:ModeCheck -gt 0) { break }
+        if ($(vars).SWARM_IT) { $(vars).ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
+        if ($(vars).ModeCheck -gt 0) { break }
         Start-Sleep -s 5
-        if ($(vars).MinerWatch.Elapsed.TotalSeconds -ge ($global:MinerInterval - 20)) { break }
+        if ($(vars).MinerWatch.Elapsed.TotalSeconds -ge ($(vars).MinerInterval - 20)) { break }
         Global:Set-Countdown
         Global:Restart-Miner
         Global:Write-Log "
@@ -74,41 +74,41 @@ function Global:Start-MinerLoop {
 
 " -foreground Magenta
         Global:Get-MinerHashRate
-        if ($global:SWARM_IT) { $global:ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
-        if ($global:ModeCheck -gt 0) { break }
+        if ($(vars).SWARM_IT) { $(vars).ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
+        if ($(vars).ModeCheck -gt 0) { break }
         Start-Sleep -s 5
-        if ($global:SWARM_IT) { $global:ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
-        if ($global:ModeCheck -gt 0) { break }
+        if ($(vars).SWARM_IT) { $(vars).ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
+        if ($(vars).ModeCheck -gt 0) { break }
         Start-Sleep -s 5
-        if ($global:SWARM_IT) { $global:ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
-        if ($global:ModeCheck -gt 0) { break }
+        if ($(vars).SWARM_IT) { $(vars).ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
+        if ($(vars).ModeCheck -gt 0) { break }
         Start-Sleep -s 5
-        if ($(vars).MinerWatch.Elapsed.TotalSeconds -ge ($global:MinerInterval - 20)) { break }
+        if ($(vars).MinerWatch.Elapsed.TotalSeconds -ge ($(vars).MinerInterval - 20)) { break }
         Global:Set-Countdown
         Global:Get-MinerHashRate
-        if ($global:SWARM_IT) { $global:ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
-        if ($global:ModeCheck -gt 0) { break }
+        if ($(vars).SWARM_IT) { $(vars).ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
+        if ($(vars).ModeCheck -gt 0) { break }
         Start-Sleep -s 5
-        if ($global:SWARM_IT) { $global:ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
-        if ($global:ModeCheck -gt 0) { break }
+        if ($(vars).SWARM_IT) { $(vars).ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
+        if ($(vars).ModeCheck -gt 0) { break }
         Start-Sleep -s 5
-        if ($global:SWARM_IT) { $global:ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
-        if ($global:ModeCheck -gt 0) { break }
+        if ($(vars).SWARM_IT) { $(vars).ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
+        if ($(vars).ModeCheck -gt 0) { break }
         Start-Sleep -s 5
-        if ($(vars).MinerWatch.Elapsed.TotalSeconds -ge ($global:MinerInterval - 20)) { break }
+        if ($(vars).MinerWatch.Elapsed.TotalSeconds -ge ($(vars).MinerInterval - 20)) { break }
         Global:Set-Countdown
         Global:Restart-Miner
         Global:Get-MinerHashRate
-        if ($global:SWARM_IT) { $global:ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
-        if ($global:ModeCheck -gt 0) { break }
+        if ($(vars).SWARM_IT) { $(vars).ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
+        if ($(vars).ModeCheck -gt 0) { break }
         Start-Sleep -s 5
-        if ($global:SWARM_IT) { $global:ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
-        if ($global:ModeCheck -gt 0) { break }
+        if ($(vars).SWARM_IT) { $(vars).ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
+        if ($(vars).ModeCheck -gt 0) { break }
         Start-Sleep -s 5
-        if ($global:SWARM_IT) { $global:ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
-        if ($global:ModeCheck -gt 0) { break }
+        if ($(vars).SWARM_IT) { $(vars).ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
+        if ($(vars).ModeCheck -gt 0) { break }
         Start-Sleep -s 5
-        if ($(vars).MinerWatch.Elapsed.TotalSeconds -ge ($global:MinerInterval - 20)) { break }
+        if ($(vars).MinerWatch.Elapsed.TotalSeconds -ge ($(vars).MinerInterval - 20)) { break }
         Global:Set-Countdown
         Global:Write-Log "
 
@@ -118,13 +118,13 @@ function Global:Start-MinerLoop {
       
 " -foreground Magenta
         Global:Get-MinerHashRate
-        if ($global:SWARM_IT) { $global:ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
-        if ($global:ModeCheck -gt 0) { break }
+        if ($(vars).SWARM_IT) { $(vars).ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
+        if ($(vars).ModeCheck -gt 0) { break }
         Start-Sleep -s 5
-        if ($global:SWARM_IT) { $global:ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
-        if ($global:ModeCheck -gt 0) { break }
+        if ($(vars).SWARM_IT) { $(vars).ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
+        if ($(vars).ModeCheck -gt 0) { break }
         Start-Sleep -s 5
-        if ($(vars).MinerWatch.Elapsed.TotalSeconds -ge ($global:MinerInterval - 20)) { break }
+        if ($(vars).MinerWatch.Elapsed.TotalSeconds -ge ($(vars).MinerInterval - 20)) { break }
 
-    }While ($(vars).MinerWatch.Elapsed.TotalSeconds -lt ($global:MinerInterval - 20))
+    }While ($(vars).MinerWatch.Elapsed.TotalSeconds -lt ($(vars).MinerInterval - 20))
 }

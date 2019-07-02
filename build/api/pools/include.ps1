@@ -9,7 +9,7 @@ function Global:Get-CoinShares {
     . .\build\api\pools\fairpool.ps1;
     . .\build\api\pools\blazepool.ps1;
 
-    $(arg).Type | ForEach-Object { $global:Share_Table.Add("$($_)", @{ }) }
+    $(arg).Type | ForEach-Object { $(vars).Share_Table.Add("$($_)", @{ }) }
 
     ##For 
     $(arg).Poolname | % {

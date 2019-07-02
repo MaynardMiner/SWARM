@@ -73,10 +73,10 @@ Most Profitable Miners Are Running
 
 function Global:Get-LaunchNotification {
     $(vars).MinerWatch.Restart()
-    if ($global:Restart -eq $true -and $global:NoMiners -eq $true) { Global:Invoke-MinerWarning }
-    if ($(arg).Platform -eq "linux" -and $global:Restart -eq $true -and $global:NoMiners -eq $false) { Global:Invoke-MinerSuccess }
-    if ($(arg).Platform -eq "windows" -and $global:Restart -eq $true -and $global:NoMiners -eq $false) { Global:Invoke-MinerSuccess }
-    if ($global:Restart -eq $false) { Global:Invoke-NoChange }
+    if ($(vars).Restart -eq $true -and$(vars).NoMiners -eq $true) { Global:Invoke-MinerWarning }
+    if ($(arg).Platform -eq "linux" -and $(vars).Restart -eq $true -and$(vars).NoMiners -eq $false) { Global:Invoke-MinerSuccess }
+    if ($(arg).Platform -eq "windows" -and $(vars).Restart -eq $true -and$(vars).NoMiners -eq $false) { Global:Invoke-MinerSuccess }
+    if ($(vars).Restart -eq $false) { Global:Invoke-NoChange }
 }
 
 function Global:Get-Interval {
@@ -92,20 +92,20 @@ function Global:Get-Interval {
 
     if ($NoHash -eq $true) {
         Global:Write-Log "SWARM is Benchmarking Miners." -Foreground Yellow;
-        $global:MinerInterval = $(arg).Benchmark
-        $(vars).MinerstatInt = 1
+        $(vars).MinerInterval = $(arg).Benchmark
+        $(vars).MinerStatInt = 1
     }
     else {
         $(vars).BenchmarkMode = $false
-        $(vars).MinerstatInt = $(arg).StatsInterval
+        $(vars).MinerStatInt = $(arg).StatsInterval
         if ($(arg).SWARM_Mode -eq "Yes") {
-            $global:SWARM_IT = $true
+            $(vars).SWARM_IT = $true
             Global:Write-Log "SWARM MODE ACTIVATED!" -ForegroundColor Green;
             $global:SwitchTime = Get-Date
             Global:Write-Log "SWARM Mode Start Time is $global:SwitchTime" -ForegroundColor Cyan;
-            $global:MinerInterval = 10000000;
+            $(vars).MinerInterval = 10000000;
         }
-        else { $global:MinerInterval = $(arg).Interval }
+        else { $(vars).MinerInterval = $(arg).Interval }
     }
 }
 
@@ -120,7 +120,7 @@ function Global:Get-CoinShares {
     . .\build\api\pools\fairpool.ps1;
     . .\build\api\pools\blazepool.ps1;
 
-    $(arg).Type | ForEach-Object { $global:Share_Table.Add("$($_)", @{ }) }
+    $(arg).Type | ForEach-Object { $(vars).Share_Table.Add("$($_)", @{ }) }
 
     ##For 
     $(arg).Poolname | % {

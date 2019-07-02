@@ -63,7 +63,7 @@ function Global:Stop-ActiveMiners {
                         $MinerInfo = ".\build\pid\$($_.InstanceName)_info.txt"
                         if (Test-Path $MinerInfo) {
                             $_.Status = "Idle"
-                            $global:PreviousMinerPorts.$($_.Type) = "($_.Port)"
+                           $(vars).PreviousMinerPorts.$($_.Type) = "($_.Port)"
                             $MI = Get-Content $MinerInfo | ConvertFrom-Json
                             $PIDTime = [DateTime]$MI.start_date
                             $Exec = Split-Path $MI.miner_exec -Leaf
@@ -100,7 +100,7 @@ function Global:Start-NewMiners {
             Global:Add-Module "$($(vars).control)\launchcode.psm1"
             Global:Add-Module "$($(vars).control)\config.psm1"
 
-            $global:Restart = $true
+            $(vars).Restart = $true
             if ($Miner.Type -notlike "*ASIC*") { Start-Sleep -S $Miner.Delay }
             $Miner.InstanceName = "$($Miner.Type)-$($(vars).Instance)"
             $Miner.Instance = $(vars).Instance
@@ -237,7 +237,7 @@ function Global:Start-NewMiners {
             ##Confirm They are Running
             if ($Miner.XProcess -eq $null -or $Miner.Xprocess.HasExited -eq $true) {
                 $Miner.Status = "Failed"
-                $global:NoMiners = $true
+               $(vars).NoMiners = $true
                 Global:Write-Log "$($Miner.MinerName) Failed To Launch" -ForegroundColor Darkred
             }
             else {
@@ -248,7 +248,7 @@ function Global:Start-NewMiners {
             }
         }
     }
-    if ($Reason -eq "Restart" -and $global:Restart -eq $true) {
+    if ($Reason -eq "Restart" -and $(vars).Restart -eq $true) {
         Global:Write-Log "
 
     //\\  _______
@@ -261,6 +261,6 @@ Waiting 20 Seconds For Miners To Fully Load
 
 " 
         Start-Sleep -s 20
-        $global:Restart = $false
+        $(vars).Restart = $false
     }
 }

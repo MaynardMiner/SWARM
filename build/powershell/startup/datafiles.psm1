@@ -49,3 +49,36 @@ function Global:get-NIST {
     $GetNIST = [System.TimeZoneInfo]::ConvertTimeFromUtc($NistTime, (Get-Timezone))
     return $GetNIST
 }
+
+function Global:Add-New_Variables {
+$(vars).Add("Instance",1)
+$(vars).Add("ActiveMinerPrograms",@())
+$(vars).Add("DWallet",$null)
+$(vars).Add("DCheck",$false)
+$(vars).Add("Warnings",@())
+$(vars).Add("Watts",$Null)
+if ($(arg).Timeout) { $(vars).ADD("TimeoutTime",[Double]$(arg).Timeout * 3600) }
+else { $(vars).Add("TimeoutTime",10000000000) }
+$(vars).Add("TimeoutTimer",(New-Object -TypeName System.Diagnostics.Stopwatch))
+$(vars).TimeoutTimer.Start()
+$(vars).Add("logtimer",(New-Object -TypeName System.Diagnostics.Stopwatch))
+$(vars).logtimer.Start()
+$(vars).Add("QuickTimer",(New-Object -TypeName System.Diagnostics.Stopwatch))
+$(vars).Add("MinerWatch",(New-Object -TypeName System.Diagnostics.Stopwatch))
+$(vars).Add("WattEx",$Null)
+$(vars).Add("Rates",$Null)
+$(vars).Add("BestActiveMiners",@())
+$(vars).Add("BTCExchangeRate",$Null)
+$(vars).Add("BanCount",0)
+$(vars).Add("BanPass",0)
+$(vars).Add("Priority",@{Admin = $false; Other = $false})
+$(vars).Add("AdminTime",0)
+if(test-Path ".\build\data\deviation.txt"){$(vars).Add("Deviation",[Double](Get-Content ".\build\data\deviation.txt"))} 
+else{$(vars).Add("Deviation",0)}
+$(vars).Add("BenchmarkMode",$true)
+$(vars).Add("bestminers_combo",$Null)
+$(vars).Add("Active_Variables",(New-Object System.Collections.ArrayList))
+$(vars).Add("NetModules",@())
+$(vars).Add("WebSites",@())
+$(vars).Add("ActiveSymbol",@())
+}

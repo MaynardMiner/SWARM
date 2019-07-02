@@ -94,7 +94,7 @@ function Global:Start-WattOMeter {
 
 function Global:Start-Benchmark {
     $(vars).BestActiveMIners | ForEach-Object {
-        $global:ActiveSymbol += $($_.Symbol)
+        $(vars).ActiveSymbol += $($_.Symbol)
         $MinerPoolBan = $false
         $MinerAlgoBan = $false
         $MinerBan = $false
@@ -114,7 +114,7 @@ function Global:Start-Benchmark {
                 $_.HashRate = 0
                 $global:WasBenchmarked = $False
                 $WasActive = [math]::Round(((Get-Date) - $_.XProcess.StartTime).TotalSeconds)
-                if ($WasActive -ge $(vars).MinerstatInt) {
+                if ($WasActive -ge $(vars).MinerStatInt) {
                     Global:Write-Log "$($_.Name) $($_.Symbol) Was Active for $WasActive Seconds"
                     Global:Write-Log "Attempting to record hashrate for $($_.Name) $($_.Symbol)" -foregroundcolor "Cyan"
                     for ($i = 0; $i -lt 4; $i++) {

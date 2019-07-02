@@ -42,7 +42,7 @@ if ($Name -in $(arg).PoolName) {
     $zpool_Request.PSObject.Properties.Value | % { $_.Estimate = [Decimal]$_.Estimate }
 
     ##Add Active Coins for calcs
-    $Active = $zpool_Request.PSObject.Properties.Value | Where-Object sym -in $global:ActiveSymbol
+    $Active = $zpool_Request.PSObject.Properties.Value | Where-Object sym -in $(vars).ActiveSymbol
     if ($Active) { $Active | ForEach-Object { $zpool_Sorted | Add-Member $_.sym $_ -Force } }
 
     if ($(arg).Coin.Count -gt 1 -and $(arg).Coin -ne "") {
