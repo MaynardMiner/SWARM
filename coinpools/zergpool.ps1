@@ -13,12 +13,12 @@ if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" }
 if ($Name -in $(arg).PoolName) {
     try { $zergpool_Request = Invoke-RestMethod "http://zergpool.com:8080/api/currencies" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }
     catch {
-        Global:Write-Log "SWARM contacted ($Name) for a failed API check. (Coins)"; 
+        log "SWARM contacted ($Name) for a failed API check. (Coins)"; 
         return
     }
 
     if (($Zergpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) { 
-        Global:Write-Log "SWARM contacted ($Name) but ($Name) the response was empty." 
+        log "SWARM contacted ($Name) but ($Name) the response was empty." 
         return
     }
    
@@ -100,7 +100,7 @@ if ($Name -in $(arg).PoolName) {
                 $StatAlgo = $Zergpool_Symbol -replace "`_", "`-" 
                 $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_coin_profit" -Value ([double]$zergpool_Estimate / $Divisor * (1 - ($zergpool_fees / 100))) 
             }
-            catch { Global:Write-Log "Failed To Calculate Stat For $Zergpool_Symbol" }
+            catch { log "Failed To Calculate Stat For $Zergpool_Symbol" }
         }
     }
 
@@ -117,7 +117,7 @@ if ($Name -in $(arg).PoolName) {
 
         $Divisor = (1000000 * [Double]$(vars).divisortable.zergpool.$Zergpool_Algorithm)
         
-        try { $Stat = Global:Set-Stat -Name "$($Name)_$($Zergpool_Symbol)_coin_profit" -Value ([double]$zergpool_Estimate / $Divisor * (1 - ($zergpool_fees / 100))) }catch { Global:Write-Log "Failed To Calculate Stat For $Zergpool_Symbol" }
+        try { $Stat = Global:Set-Stat -Name "$($Name)_$($Zergpool_Symbol)_coin_profit" -Value ([double]$zergpool_Estimate / $Divisor * (1 - ($zergpool_fees / 100))) }catch { log "Failed To Calculate Stat For $Zergpool_Symbol" }
 
         $Pass1 = $global:Wallets.Wallet1.Keys
         $User1 = $global:Wallets.Wallet1.$($(arg).Passwordcurrency1).address

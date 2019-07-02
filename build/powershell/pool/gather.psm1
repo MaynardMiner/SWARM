@@ -21,10 +21,10 @@ function Global:Get-Pools {
 function Global:Get-AlgoPools {
     $(vars).QuickTimer.Restart()
     $Files = Get-ChildItem "algopools" | Where BaseName -in $(arg).poolname
-    Global:Write-Log "Checking Algo Pools." -Foregroundcolor yellow;
+    log "Checking Algo Pools." -Foregroundcolor yellow;
     $AllAlgoPools = Global:Get-Pools -PoolType "Algo" -Items $Files
     ##Get Custom Pools
-    Global:Write-Log "Adding Custom Pools. ." -ForegroundColor Yellow;
+    log "Adding Custom Pools. ." -ForegroundColor Yellow;
     $Files = Get-ChildItem "custompools" | Where BaseName -in $(arg).poolname
     $(vars).AlgoPools = New-Object System.Collections.ArrayList
     $AllCustomPools = Global:Get-Pools -PoolType "Custom" -Items $Files
@@ -47,7 +47,7 @@ function Global:Get-AlgoPools {
             ForEach-Object { $(vars).AlgoPools.Add($_) | Out-Null }
         };
         $(vars).QuickTimer.Stop()
-        Global:Write-Log "Algo Pools Loading Time: $([math]::Round($(vars).QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green
+        log "Algo Pools Loading Time: $([math]::Round($(vars).QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green
     }
 }
 function Global:Get-CoinPools {
@@ -55,7 +55,7 @@ function Global:Get-CoinPools {
     if ($(arg).Auto_Coin -eq "Yes") {
         $(vars).QuickTimer.Restart()
         $coin_files = Get-ChildItem "coinpools" | Where BaseName -in $(arg).poolname
-        Global:Write-Log "Adding Coin Pools. . ." -ForegroundColor Yellow
+        log "Adding Coin Pools. . ." -ForegroundColor Yellow
         $AllCoinPools = Global:Get-Pools -PoolType "Coin" -Items $coin_files        
         $(vars).CoinPools = New-Object System.Collections.ArrayList
         $AllCoinPools.algorithm | Select-Object -Unique | ForEach-Object { 
@@ -72,7 +72,7 @@ function Global:Get-CoinPools {
             $Remove | ForEach-Object { $(vars).AlgoPools.Remove($_) | Out-Null }
         }
         $(vars).QuickTimer.Stop()
-        Global:Write-Log "Coin Pools Loading Time: $([math]::Round($(vars).QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green
+        log "Coin Pools Loading Time: $([math]::Round($(vars).QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green
     }
 }
 

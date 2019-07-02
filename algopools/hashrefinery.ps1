@@ -5,10 +5,10 @@ if($(arg).xnsub -eq "Yes"){$X = "#xnsub"}
  
 if ($Name -in $(arg).PoolName) {
     try { $Hashrefinery_Request = Invoke-RestMethod "http://pool.hashrefinery.com/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
-    catch { Global:Write-Log "SWARM contacted ($Name) but there was no response."; return }
+    catch { log "SWARM contacted ($Name) but there was no response."; return }
 
     if (($Hashrefinery_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) { 
-        Global:Write-Log "SWARM contacted ($Name) but ($Name) the response was empty." 
+        log "SWARM contacted ($Name) but ($Name) the response was empty." 
         return 
     }  
    

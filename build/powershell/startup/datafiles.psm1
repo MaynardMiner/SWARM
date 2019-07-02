@@ -13,8 +13,8 @@ function Global:Get-DateFiles {
 
 function Global:get-argnotice {
     if ((Test-Path ".\config\parameters\newarguments.json") -or $Debug -eq $true) {
-        Global:Write-Log "Detected New Arguments- Changing Parameters" -ForegroundColor Cyan
-        Global:Write-Log "These arguments can be found/modified in config < parameters < newarguments.json" -ForegroundColor Cyan
+        log "Detected New Arguments- Changing Parameters" -ForegroundColor Cyan
+        log "These arguments can be found/modified in config < parameters < newarguments.json" -ForegroundColor Cyan
         Start-Sleep -S 2
     }    
 }

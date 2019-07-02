@@ -6,7 +6,7 @@ function Global:Start-Background {
     $BackgroundTimer.Restart()
     do {
         Start-Sleep -S 1
-        Global:Write-Log "Getting Process ID for Background Agent"
+        log "Getting Process ID for Background Agent"
         $ProcessId = if (Test-Path ".\build\pid\background_pid.txt") { Get-Content ".\build\pid\background_pid.txt" }
         if ($ProcessID -ne $null) { $Process = Get-Process $ProcessId -ErrorAction SilentlyContinue }
     }until($ProcessId -ne $null -or ($BackgroundTimer.Elapsed.TotalSeconds) -ge 10)  
@@ -52,14 +52,14 @@ function Global:Start-AgentCheck {
     $oldpathlist | ForEach-Object { if ($_ -like "*SWARM*" -and $_ -notlike "*$($(vars).dir)\build\cmd*" ) { Global:Set-NewPath "remove" "$($_)" } }
 
     if ($oldpath -notlike "*;$($(vars).dir)\build\cmd*") {
-        Global:Write-Log "
+        log "
 Setting Path Variable For Commands: May require reboot to use.
 " -ForegroundColor Yellow
         $newpath = "$($(vars).dir)\build\cmd"
         Global:Set-NewPath "add" $newpath
     }
     $newpath = "$oldpath;$($(vars).dir)\build\cmd"
-    Global:Write-Log "Stopping Previous Agent"
+    log "Stopping Previous Agent"
     $ID = ".\build\pid\background_pid.txt"
     if (Test-Path $ID) { $Agent = Get-Content $ID }
     if ($Agent) { $BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue }

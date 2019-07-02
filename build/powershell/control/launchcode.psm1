@@ -26,7 +26,7 @@ function Global:Remove-ASICPools {
     Switch ($Name) {
         "cgminer" {
             $ASICM = "cgminer"
-            Global:Write-Log "Clearing all previous cgminer pools." -ForegroundColor "Yellow"
+            log "Clearing all previous cgminer pools." -ForegroundColor "Yellow"
             $ASIC_Pools.Add($ASICM, @{ })
             ##First we need to discover all pools
             $Commands = @{command = "pools"; parameter = 0 } | ConvertTo-Json -Compress
@@ -46,7 +46,7 @@ function Global:Remove-ASICPools {
                     $response
                 }
             }
-            else { Global:Write-Log "WARNING: Failed To Gather cgminer Pool List!" -ForegroundColor Yellow }
+            else { log "WARNING: Failed To Gather cgminer Pool List!" -ForegroundColor Yellow }
         }
     }
 }
@@ -116,7 +116,7 @@ function Global:Start-LaunchCode($MinerCurrent,$AIP) {
                     switch ($MinerCurrent.DeviceCall) {
                         "claymore" { $MinerArguments = "-di $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "xmrstak" { $MinerArguments = "$($MinerCurrent.Arguments)" }
-                        "sgminer-gm" { Global:Write-Log "Miner Has Devices"; $MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
+                        "sgminer-gm" { log "Miner Has Devices"; $MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "tdxminer" { $MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "lolminer" { $MinerArguments = "--devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "wildrig" { $MinerArguments = "$($MinerCurrent.Arguments)" }
@@ -184,7 +184,7 @@ function Global:Start-LaunchCode($MinerCurrent,$AIP) {
                 $WorkingDirectory = Join-Path $($(vars).dir) $(Split-Path $($MinerCurrent.Path))
 
                 ##Classic Logo For Windows
-                Global:Write-Log "
+                log "
             ______________
           /.----------..-'
    -.     ||           \\
@@ -336,7 +336,7 @@ function Global:Start-LaunchCode($MinerCurrent,$AIP) {
             $Daemon | Set-Content ".\build\bash\config.sh" -Force
 
             ##Classic Logo For Linux
-            Global:Write-Log "
+            log "
          ______________
        /.----------..-'
 -.     ||           \\
@@ -380,7 +380,7 @@ function Global:Start-LaunchCode($MinerCurrent,$AIP) {
             $proc | Wait-Process
             }
             ##Notification To User That Miner Is Attempting To start
-            Global:Write-Log "Starting $($MinerCurrent.Name) Mining $($MinerCurrent.Symbol) on $($MinerCurrent.Type)" -ForegroundColor Cyan
+            log "Starting $($MinerCurrent.Name) Mining $($MinerCurrent.Symbol) on $($MinerCurrent.Type)" -ForegroundColor Cyan
 
             ##FilePaths
             $Export = Join-Path $($(vars).dir) "build\export"
@@ -443,7 +443,7 @@ function Global:Start-LaunchCode($MinerCurrent,$AIP) {
                 #Sleep for 1 every second
                 Start-Sleep -S 1
                 #Write We Are getting ID
-                Global:Write-Log "Getting Process ID for $($MinerCurrent.MinerName)"
+                log "Getting Process ID for $($MinerCurrent.MinerName)"
                 if (Test-Path $PIDPath) { $MinerPID = Get-Content $PIDPath | Select-Object -First 1 }
                 ##Powershell Get Process Instance
                 if ($MinerPID) { $MinerProcess = Get-Process -ID $MinerPid -ErrorAction SilentlyContinue }
@@ -456,10 +456,10 @@ function Global:Start-LaunchCode($MinerCurrent,$AIP) {
     else {
         $clear = Global:Remove-ASICPools $AIP $MinerCurrent.Port $MinerCurrent.API
         $Commands = "addpool|$($MinerCurrent.Arguments)"
-        Global:Write-Log "Adding New Pool"
+        log "Adding New Pool"
         $response = Global:Get-TCP -Server $AIP -Port $MinerCurrent.Port -Timeout 10 -Message $Commands
         $response = $null
-        Global:Write-Log "Switching To New Pool"
+        log "Switching To New Pool"
         $Commands = "switchpool|1"
         $response = Global:Get-TCP -Server $AIP -Port $MinerCurrent.Port -Timeout 10 -Message $Commands
         if ($response) { $MinerProcess = @{StartTime = (Get-Date); HasExited = $false }

@@ -101,7 +101,6 @@ $(arg).TCP_Port | Out-File ".\build\txt\port.txt"
 ##Insert Single Modules Here
 
 ## Startup Modules
-Import-Module "$($(vars).global)\include.psm1" -Scope Global
 Import-Module "$($(vars).global)\stats.psm1" -Scope Global
 Import-Module "$($(vars).global)\hashrates.psm1" -Scope Global
 Import-Module "$($(vars).global)\gpu.psm1" -Scope Global
@@ -121,7 +120,8 @@ Global:Start-CrashReporting
 ## Start The Log
 Global:Add-Module "$($(vars).startup)\startlog.psm1"
 $($(vars).dir) | Set-Content ".\build\bash\dir.sh";
-$(vars).Add("LogNum",1)
+$(vars).Add("lognum",1)
+$(vars).Add("logname",$null)
 Global:Start-Log -Number $(vars).LogNum;
 
 ## Initiate Update Check
@@ -149,19 +149,19 @@ Global:Clear-Stats
 Global:Get-ArgNotice
 Global:Set-NewType
 if ($(arg).SWARM_Mode -eq "Yes") {
-    Global:Write-Log "Sycronizing Time To Nist" -ForegroundColor Yellow
+    log "Sycronizing Time To Nist" -ForegroundColor Yellow
     $Sync = Global:Get-Nist
     try {
         Set-Date $Sync -ErrorAction Stop 
     }
     catch { 
-        Global:Write-Log "Failed to syncronize time- Are you root/administrator?" -ForegroundColor red; 
+        log "Failed to syncronize time- Are you root/administrator?" -ForegroundColor red; 
         Start-Sleep -S 5 
     }
 }
 ##HiveOS Confirmation
 if( (Test-Path "/hive/miners") -or $(arg).Hive_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" ) { $(arg).HiveOS = "Yes" }
-Global:Write-Log "HiveOS = $($(arg).HiveOS)"
+log "HiveOS = $($(arg).HiveOS)"
 
 #Startings Settings (Non User Arguments):
 Global:Add-New_Variables
@@ -194,10 +194,10 @@ $(vars).add("AMDPlatform",0)
 if ($(arg).Type -like "*AMD*") {
     if ([string]$(arg).CLPlatform) { $(vars).AMDPlatform = [string]$(arg).CLPlatform }
     else {
-        Global:Write-Log "Getting AMD OPENCL Platform. Note: If SWARM doesn't continue, a GPU has crashed on rig." -ForeGroundColor Yellow
+        log "Getting AMD OPENCL Platform. Note: If SWARM doesn't continue, a GPU has crashed on rig." -ForeGroundColor Yellow
         Global:Add-Module "$($(vars).startup)\cl.psm1"
         [string]$(vars).AMDPlatform = Global:Get-AMDPlatform
-        Global:Write-Log "AMD OpenCL Platform is $($(vars).AMDPlatform)"
+        log "AMD OpenCL Platform is $($(vars).AMDPlatform)"
     }
 }
 
@@ -207,7 +207,7 @@ if ($(arg).Type -like "*NVIDIA*" -or $(arg).Type -like "*AMD*" -or $(arg).Type -
     if (Test-Path ".\build\txt\amdpower.txt") { Remove-Item ".\build\txt\amdpower.txt" -Force }
     if ($(vars).GPU_Count -eq 0) { $Device_Count = $(arg).CPUThreads }
     else { $Device_Count = $(vars).GPU_Count }
-    Global:Write-Log "Device Count = $Device_Count" -foregroundcolor green
+    log "Device Count = $Device_Count" -foregroundcolor green
     Remove-Variable -Name Device_Count
     Start-Sleep -S 2
 
@@ -232,7 +232,7 @@ if ($(arg).Type -like "*NVIDIA*" -or $(arg).Type -like "*AMD*" -or $(arg).Type -
 
 ##Start New Agent
 Global:Add-Module "$($(vars).startup)\getconfigs.psm1"
-Global:Write-Log "Starting New Background Agent" -ForegroundColor Cyan
+log "Starting New Background Agent" -ForegroundColor Cyan
 if ($(arg).Platform -eq "windows") { Global:Start-Background }
 elseif ($(arg).Platform -eq "linux") { $Proc = Start-Process ".\build\bash\background.sh" -ArgumentList "background $($($(vars).dir))" -PassThru; $Proc | Wait-Process }
 
@@ -290,7 +290,7 @@ While ($true) {
 
         ## Check to see if wallet is present:
         if (-not $(arg).Wallet1) { 
-            Global:Write-Log "missing wallet1 argument, exiting in 5 seconds" -ForeGroundColor Red; 
+            log "missing wallet1 argument, exiting in 5 seconds" -ForeGroundColor Red; 
             Start-Sleep -S 5; 
             exit 
         }
@@ -415,11 +415,11 @@ While ($true) {
                         Global:Get-WebModules $Sel
                         $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
                     }
-                    catch { Global:Write-Log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
+                    catch { log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
                     Global:Remove-WebModules $sel
                 }
             }
-            Global:Write-Log "$HiveMessage" -ForegroundColor Red
+            log "$HiveMessage" -ForegroundColor Red
             Remove-Variable -Name HiveMessage -ErrorAction Ignore
             Remove-Variable -Name HiveWarning -ErrorAction Ignore
             Remove-Variable -Name Sel -ErrorAction Ignore
@@ -445,7 +445,7 @@ While ($true) {
         Remove-BadMiners
         build Miners_Combo (Global:Get-BestMiners)
         $(vars).bestminers_combo = Global:Get-Conservative
-        Global:Write-Log "Most Ideal Choice Is $($(vars).bestminers_combo.Symbol) on $($(vars).bestminers_combo.MinerPool)" -foregroundcolor green
+        log "Most Ideal Choice Is $($(vars).bestminers_combo.Symbol) on $($(vars).bestminers_combo.MinerPool)" -foregroundcolor green
 
         Global:Remove-Modules
         if(check CoinPools){ remove CoinPools }
@@ -509,7 +509,7 @@ While ($true) {
         Global:Get-LaunchNotification
         Global:Get-Interval
         ##Get Shares
-        Global:Write-Log "Getting Coin Tracking From Pool" -foregroundColor Cyan
+        log "Getting Coin Tracking From Pool" -foregroundColor Cyan
         if ($glbal:Config.params.Track_Shares -eq "Yes") { Global:Get-CoinShares }
 
         Global:Remove-Modules

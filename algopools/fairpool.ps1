@@ -6,10 +6,10 @@ if($(arg).xnsub -eq "Yes"){$X = "#xnsub"}
  
 if ($Name -in $(arg).PoolName) {
     try { $fairpool_Request = Invoke-RestMethod "https://fairpool.pro/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
-    catch { Global:Write-Log "SWARM contacted ($Name) but there was no response."; return }
+    catch { log "SWARM contacted ($Name) but there was no response."; return }
  
     if (($fairpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) { 
-        Global:Write-Log "SWARM contacted ($Name) but ($Name) the response was empty." 
+        log "SWARM contacted ($Name) but ($Name) the response was empty." 
         return 
     }
 

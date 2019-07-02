@@ -76,14 +76,14 @@ function Global:Add-SwitchingThreshold {
         $SWMiner = $(vars).Miners | Where-Object Path -EQ $Sel.path | Where-Object Arguments -EQ $Sel.Arguments | Where-Object Type -EQ $Sel.Type 
         if ($SWMiner -and $SWMiner.Profit -ne $NULL -and $SWMiner.Profit -ne "bench") {
             if ($(arg).Switch_Threshold) {
-                Global:Write-Log "Switching_Threshold changes $($SWMiner.Name) $($SWMiner.Algo) base factored price from $(($SWMiner.Profit * $(vars).Rates.$($(arg).Currency)).ToString("N2"))" -ForegroundColor Cyan -NoNewLine -Start; 
+                log "Switching_Threshold changes $($SWMiner.Name) $($SWMiner.Algo) base factored price from $(($SWMiner.Profit * $(vars).Rates.$($(arg).Currency)).ToString("N2"))" -ForegroundColor Cyan -NoNewLine -Start; 
                 if ($SWMiner.Profit -GT 0) {
                     $($(vars).Miners | Where Path -eq $SWMiner.path | Where Arguments -eq $SWMiner.Arguments | Where Type -eq $SWMINer.Type).Profit = [Decimal]$SWMiner.Profit * (1 + ($(arg).Switch_Threshold / 100)) 
                 }
                 else {
                     $($(vars).Miners | Where Path -eq $SWMiner.path | Where Arguments -eq $SWMiner.Arguments | Where Type -eq $SWMINer.Type).Profit = [Decimal]$SWMiner.Profit * (1 + ($(arg).Switch_Threshold / -100))
                 }  
-                Global:Write-Log " to $(($SWMiner.Profit * $(vars).Rates.$($(arg).Currency)).ToString("N2"))" -ForegroundColor Cyan -End
+                log " to $(($SWMiner.Profit * $(vars).Rates.$($(arg).Currency)).ToString("N2"))" -ForegroundColor Cyan -End
             }
         }
     }

@@ -62,7 +62,6 @@ if ($P -notlike "*$($(vars).dir)\build\powershell*") {
 }
 
 $(vars).Add("Modules", @())
-Import-Module "$($(vars).global)\include.psm1" -Scope Global
 Import-Module "$($(vars).global)\stats.psm1" -Scope Global
 Import-Module "$($(vars).global)\hashrates.psm1" -Scope Global
 Import-Module "$($(vars).global)\gpu.psm1" -Scope Global

@@ -85,7 +85,7 @@ function Global:Get-Commands {
 }
 
 function Global:Get-Logo {
-    Global:Write-Log '
+    log '
                                                                         (                    (      *     
                                                                          )\ ) (  (      (     )\ ) (  `    
                                                                          (()/( )\))(     )\   (()/( )\))(   
@@ -95,7 +95,7 @@ function Global:Get-Logo {
                                                                          \__ \ \ \/\/ / / _ \ |   /| |\/| | 
                                                                          |___/  \_/\_/ /_/ \_\|_|_\|_|  |_| 
                                                                                                           ' -foregroundcolor "DarkRed"
-    Global:Write-Log '                                                           sudo apt-get lambo
+    log '                                                           sudo apt-get lambo
                                                                                  
                                                                                  
                                                                                  

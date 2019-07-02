@@ -56,7 +56,6 @@ if ($P -notlike "*$dir\build\powershell*") {
 $Get = @()
 
 Import-Module -Name "$($(vars).global)\stats.psm1" -Scope Global
-Import-Module -Name "$($(vars).global)\include.psm1" -Scope Global
 
 Switch ($argument1) {
     "help" {

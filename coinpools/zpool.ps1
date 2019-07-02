@@ -13,12 +13,12 @@ if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" }
 if ($Name -in $(arg).PoolName) {
     try { $zpool_Request = Invoke-RestMethod "https://zpool.ca/api/currencies" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }
     catch {
-        Global:Write-Log "SWARM contacted ($Name) for a failed API check. (Coins)"; 
+        log "SWARM contacted ($Name) for a failed API check. (Coins)"; 
         return
     }
 
     if (($zpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) { 
-        Global:Write-Log "SWARM contacted ($Name) but ($Name) the response was empty." 
+        log "SWARM contacted ($Name) but ($Name) the response was empty." 
         return
     }
 
@@ -106,7 +106,7 @@ if ($Name -in $(arg).PoolName) {
                     $StatAlgo = $zpool_Symbol -replace "`_", "`-" 
                     $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_coin_profit" -Value $Cut
                 }
-                catch { Global:Write-Log "Failed To Calculate Stat For $zpool_Symbol" }
+                catch { log "Failed To Calculate Stat For $zpool_Symbol" }
             }
         }
 

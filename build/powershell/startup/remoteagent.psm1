@@ -38,8 +38,8 @@ function Global:start-update {
 
         $StatsOnly = $null
 
-        Global:Write-Log "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
-        Global:Write-Log "Check $Location For any Previous Versions"
+        log "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
+        log "Check $Location For any Previous Versions"
 
         if ($IsWindows) {
             $Global:amd = Get-Content ".\config\update\amd-win.json" | ConvertFrom-Json
@@ -58,14 +58,14 @@ function Global:start-update {
         $PreviousVersions | foreach {
             $PreviousPath = Join-Path "$Location" "$_"
             if (Test-Path $PreviousPath) {
-                Global:Write-Log "Detected Previous Version"
-                Global:Write-Log "Previous Version is $($PreviousPath)"
-                Global:Write-Log "Gathering Old Version Config And HashRates- Then Deleting"
+                log "Detected Previous Version"
+                log "Previous Version is $($PreviousPath)"
+                log "Gathering Old Version Config And HashRates- Then Deleting"
                 Start-Sleep -S 10
                 $ID = ".\build\pid\background_pid.txt"
                 if ($(arg).Platform -eq "windows") { Start-Sleep -S 10 }
                 if ($(arg).Platform -eq "windows") {
-                    Global:Write-Log "Stopping Previous Agent"
+                    log "Stopping Previous Agent"
                     if (Test-Path $ID) { $Agent = Get-Content $ID }
                     if ($Agent) { $BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue }
                     if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }
@@ -111,7 +111,7 @@ function Global:start-update {
                             $NewJson = Join-Path $NewJson_Path "$ChangeFile";
                             if ($ChangeFile -notin $Exclude) {
                                 $JsonData = Get-Content $OldJson;
-                                Global:Write-Log "Pulled $OldJson"
+                                log "Pulled $OldJson"
 
                                 try{$Data = $JsonData | ConvertFrom-Json -ErrorAction Stop} catch{}
 
@@ -348,7 +348,7 @@ function Global:start-update {
                                 }
 
                                 $Data | ConvertTo-Json -Depth 3 | Set-Content $NewJson;
-                                Global:Write-Log "Wrote To $NewJson"
+                                log "Wrote To $NewJson"
                             }
                         }
                     }
@@ -360,11 +360,11 @@ function Global:start-update {
                         $NewName = $ChangeFile -Replace ".json", "";
                         $NameJson = Join-Path ".\config\miners" "$ChangeFile";
                         $JsonData = Get-Content $NameJson;
-                        Global:Write-Log "Pulled $NameJson"
+                        log "Pulled $NameJson"
                         $Data = $JsonData | ConvertFrom-Json;
                         $Data | Add-Member "name" "$NewName" -ErrorAction SilentlyContinue
                         $Data | ConvertTo-Json -Depth 3 | Set-Content $NameJson;
-                        Global:Write-Log "Wrote To $NameJson"
+                        log "Wrote To $NameJson"
                     }
 
                     $Global:amd.PSobject.Properties.Name | ForEach-Object {
@@ -377,7 +377,7 @@ function Global:start-update {
                                 if (Test-Path $SWARMV) {    
                                     $GetVersion = Get-Content "$Minerpath1\swarm-version.txt"
                                     if ($GetVersion -eq $Global:amd.$_.version) {
-                                        Global:Write-Log "Moving $MinerPath1"
+                                        log "Moving $MinerPath1"
                                         Move-Item $MinerPath1 $NewMinerPath1
                                     }
                                 }
@@ -395,7 +395,7 @@ function Global:start-update {
                                 if (Test-Path $SWARMV) {
                                     $GetVersion = Get-Content $SwarmV
                                     if ($GetVersion -eq $Global:cpu.$_.version) {
-                                        Global:Write-Log "Moving $MinerPath1"
+                                        log "Moving $MinerPath1"
                                         Move-Item $MinerPath1 $NewMinerPath1
                                     }
                                 }
@@ -422,7 +422,7 @@ function Global:start-update {
                                 if (Test-Path $SWARMV) {
                                     $GetVersion = Get-Content $SwarmV
                                     if ($GetVersion -eq $Global:nvidia.$_.version) {
-                                        Global:Write-Log "Moving $MinerPath1"
+                                        log "Moving $MinerPath1"
                                         Move-Item $MinerPath1 $NewMinerPath1
                                     }
                                 }
@@ -432,7 +432,7 @@ function Global:start-update {
                                 if (Test-Path $SWARMV) {
                                     $GetVersion = Get-Content $SwarmV
                                     if ($GetVersion -eq $Global:nvidia.$_.version) {
-                                        Global:Write-Log "Moving $MinerPath2"
+                                        log "Moving $MinerPath2"
                                         Move-Item $MinerPath2 $NewMinerPath2
                                     }
                                 }
@@ -443,7 +443,7 @@ function Global:start-update {
                                     $GetVersion = Get-Content $SwarmV
                                     $GetVersion = Get-Content "$Minerpath3\swarm-version.txt"
                                     if ($GetVersion -eq $Global:nvidia.$_.version) {
-                                        Global:Write-Log "Moving $MinerPath3"
+                                        log "Moving $MinerPath3"
                                         Move-Item $MinerPath3 $NewMinerPath3
                                     }
                                 }
@@ -470,14 +470,14 @@ function Global:Start-AgentCheck {
     $oldpathlist | ForEach-Object { if ($_ -like "*SWARM*" -and $_ -notlike "*$($(vars).dir)\build\cmd*" ) { Global:Set-NewPath "remove" "$($_)" } }
 
     if ($oldpath -notlike "*;$($(vars).dir)\build\cmd*") {
-        Global:Write-Log "
+        log "
 Setting Path Variable For Commands: May require reboot to use.
 " -ForegroundColor Yellow
         $newpath = "$($(vars).dir)\build\cmd"
         Global:Set-NewPath "add" $newpath
     }
     $newpath = "$oldpath;$($(vars).dir)\build\cmd"
-    Global:Write-Log "Stopping Previous Agent"
+    log "Stopping Previous Agent"
     $ID = ".\build\pid\background_pid.txt"
     if (Test-Path $ID) { $Agent = Get-Content $ID }
     if ($Agent) { $BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue }

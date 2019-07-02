@@ -23,7 +23,7 @@ function Global:Start-OC($Miner) {
     if ($Miner.Type -like "*NVIDIA*") { $nvidiaOC = $true }
     if ($Miner.Type -like "*AMD*") { $AMDOC = $true }
     
-    if ($nvidiaOC -or $AMDOC) { Global:Write-Log "Setting $($Miner.Type) Overclocking" -ForegroundColor Cyan }
+    if ($nvidiaOC -or $AMDOC) { log "Setting $($Miner.Type) Overclocking" -ForegroundColor Cyan }
 
     $OC_Algo = $(vars).oc_algos.$($Miner.Algo).$($Miner.Type)
     $Default = $(vars).oc_default."default_$($Miner.Type)"
@@ -49,7 +49,7 @@ function Global:Start-OC($Miner) {
     ##Start New Pill
     if ($ETHPill -eq $true) {
 
-        Global:Write-Log "Activating ETHPill" -ForegroundColor Cyan
+        log "Activating ETHPill" -ForegroundColor Cyan
 
         ##Devices
         if ($Miner.Devices -eq "none") { $OCPillDevices = Global:Get-DeviceString -TypeCount $(vars).GCount.NVIDIA.PSObject.Properties.Value.Count }
@@ -548,7 +548,7 @@ if ($DoAMDOC -eq $true) {
 }
 
 $OCMessage | % {
-    Global:Write-Log "$($_)" -ForegroundColor Cyan
+    log "$($_)" -ForegroundColor Cyan
 }
 
 $OCMessage | Add-Content -Path ".\build\txt\oc-settings.txt"

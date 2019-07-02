@@ -113,15 +113,15 @@ function Global:Expand-WebRequest {
     Switch ($Extraction) {
     
         "tar" {
-            Global:Write-Log "Download URI is $URI"
-            Global:Write-Log "Miner Exec is $Name"
-            Global:Write-Log "Miner Dir is $MoveThere"
+            log "Download URI is $URI"
+            log "Miner Exec is $Name"
+            log "Miner Dir is $MoveThere"
             Invoke-WebRequest $Uri -OutFile ".\x64\$Zip" -UseBasicParsing
 
-            if (Test-Path "$X64_zip") { Global:Write-Log "Download Succeeded!" -ForegroundColor Green }
-            else { Global:Write-Log "Download Failed!" -ForegroundColor DarkRed; break }
+            if (Test-Path "$X64_zip") { log "Download Succeeded!" -ForegroundColor Green }
+            else { log "Download Failed!" -ForegroundColor DarkRed; break }
 
-            Global:Write-Log "Extracting to temporary folder" -ForegroundColor Yellow
+            log "Extracting to temporary folder" -ForegroundColor Yellow
             New-Item -Path ".\x64\$temp" -ItemType "Directory" -Force | Out-Null; Start-Sleep -S 1
             switch ($Tar) {
                 "gz" { $Proc = Start-Process "tar" -ArgumentList "-xzvf x64/$Zip -C x64/$temp" -PassThru; $Proc | Wait-Process }
@@ -129,37 +129,37 @@ function Global:Expand-WebRequest {
             }
 
             $Stuff = Get-ChildItem ".\x64\$Temp"
-            if ($Stuff) { Global:Write-Log "Extraction Succeeded!" -ForegroundColor Green }
-            else { Global:Write-Log "Extraction Failed!" -ForegroundColor darkred; break }
+            if ($Stuff) { log "Extraction Succeeded!" -ForegroundColor Green }
+            else { log "Extraction Failed!" -ForegroundColor darkred; break }
 
             ##Now the fun part find the dir that the exec is in.
             $Search = Get-ChildItem -Path ".\x64\$temp" -Filter "$Name" -Recurse -ErrorAction SilentlyContinue
-            if (-not $Search) { Global:Write-Log "Miner Executable Not Found" -ForegroundColor DarkRed; break }
+            if (-not $Search) { log "Miner Executable Not Found" -ForegroundColor DarkRed; break }
             $Contents = $Search.Directory.FullName | Select -First 1
             $DirName = Split-Path $Contents -Leaf
             Move-Item -Path $Contents -Destination ".\bin" -Force | Out-Null; Start-Sleep -S 1
             Rename-Item -Path ".\bin\$DirName" -NewName "$BinPath" | Out-Null; Start-Sleep -S 1
-            if (Test-Path $Path) { Global:Write-Log "Finished Successfully!" -ForegroundColor Green }
+            if (Test-Path $Path) { log "Finished Successfully!" -ForegroundColor Green }
             if (Test-Path ".\x64\$Temp") { Remove-Item ".\x64\$Temp" -Recurse -Force | Out-Null }
         }
         "zip" {
-            Global:Write-Log "Download URI is $URI"
-            Global:Write-Log "Miner Exec is $Name"
-            Global:Write-Log "Miner Dir is $MoveThere"
+            log "Download URI is $URI"
+            log "Miner Exec is $Name"
+            log "Miner Dir is $MoveThere"
             Invoke-WebRequest $Uri -OutFile "$X64_zip" -UseBasicParsing
-            if (Test-Path "$X64_zip") { Global:Write-Log "Download Succeeded!" -ForegroundColor Green }
-            else { Global:Write-Log "Download Failed!" -ForegroundColor DarkRed; break }
+            if (Test-Path "$X64_zip") { log "Download Succeeded!" -ForegroundColor Green }
+            else { log "Download Failed!" -ForegroundColor DarkRed; break }
 
             New-Item -Path ".\x64\$temp" -ItemType "Directory" -Force | Out-Null; Start-Sleep -S 1
             if ($IsWindows) { $Proc = Start-Process ".\build\apps\7z.exe" "x `"$($(vars).dir)\$X64_zip`" -o`"$($(vars).dir)\x64\$temp`" -y" -PassThru -WindowStyle Minimized -verb Runas; $Proc | Wait-Process}
             else { $Proc = Start-Process "unzip" -ArgumentList "$($(vars).dir)/$X64_zip -d $($(vars).dir)/x64/$temp" -PassThru; $Proc | Wait-Process }
 
             $Stuff = Get-ChildItem ".\x64\$Temp"
-            if ($Stuff) { Global:Write-Log "Extraction Succeeded!" -ForegroundColor Green }
-            else { Global:Write-Log "Extraction Failed!" -ForegroundColor darkred; break }
+            if ($Stuff) { log "Extraction Succeeded!" -ForegroundColor Green }
+            else { log "Extraction Failed!" -ForegroundColor darkred; break }
 
             $Search = Get-ChildItem -Path ".\x64\$temp" -Filter "$Name" -Recurse -ErrorAction SilentlyContinue
-            if (-not $Search) { Global:Write-Log "Miner Executable Not Found" -ForegroundColor DarkRed; break }
+            if (-not $Search) { log "Miner Executable Not Found" -ForegroundColor DarkRed; break }
             $Contents = $Search.Directory.FullName | Select -First 1
             $DirName = Split-Path $Contents -Leaf
             Move-Item -Path $Contents -Destination ".\bin" -Force | Out-Null; Start-Sleep -S 1
@@ -169,7 +169,7 @@ function Global:Expand-WebRequest {
     }
     if (Test-Path $Path) {
         $Version | Set-Content ".\bin\$BinPath\swarm-version.txt"
-        Global:Write-Log "Finished Successfully!" -ForegroundColor Green 
+        log "Finished Successfully!" -ForegroundColor Green 
     }
 }
 
@@ -190,7 +190,7 @@ function Global:Get-MinerBinary($Miner,$Reason) {
     if ($Miner.Type -notlike "*ASIC*") {
         for ($i = 0; $i -lt $MaxAttempts; $i++) {
             if ( -not (Test-Path $Miner.Path) ) {
-                Global:Write-Log "$($Miner.Name) Not Found- Downloading" -ForegroundColor Yellow
+                log "$($Miner.Name) Not Found- Downloading" -ForegroundColor Yellow
                 Global:Expand-WebRequest $Miner.URI $Miner.Path $Miner.version
             }
         }
@@ -215,11 +215,11 @@ function Global:Get-MinerBinary($Miner,$Reason) {
                         Global:Get-WebModules $Sel
                         $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
                     }
-                    catch { Global:Write-Log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
+                    catch { log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
                     Global:Remove-WebModules $sel
                 }
             }
-            Global:Write-Log "$HiveMessage" -ForegroundColor Red
+            log "$HiveMessage" -ForegroundColor Red
         }
     }
     else { $Success = 1 }
@@ -265,11 +265,11 @@ function Global:Stop-AllMiners {
                                                 Global:Get-WebModules $Sel
                                                 $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
                                             }
-                                            catch { Global:Write-Log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
+                                            catch { log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
                                             Global:Remove-WebModules $sel
                                         }
                                     }
-                                    Global:Write-Log "$HiveMessage" -ForegroundColor Red
+                                    log "$HiveMessage" -ForegroundColor Red
                                 }
                                 Restart-Computer
                             }
@@ -332,7 +332,7 @@ function Global:Start-MinerDownloads {
         }
         else { $Success = 1 }
         if ($Success -eq 2) {
-            Global:Write-Log "WARNING: Miner Failed To Download Three Times- Restarting SWARM" -ForeGroundColor Yellow
+            log "WARNING: Miner Failed To Download Three Times- Restarting SWARM" -ForeGroundColor Yellow
             continue
         }
     }

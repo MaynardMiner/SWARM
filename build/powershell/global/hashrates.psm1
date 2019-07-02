@@ -131,16 +131,16 @@ function Global:Get-MinerHashRate {
         $DayStat = "$($GetDayStat.Hour)"
         $MinerPrevious = "$($DayStat | Global:ConvertTo-Hash)"
         $ScreenHash = "$($Miner_HashRates | Global:ConvertTo-Hash)"
-        Global:Write-Log "$($_.Type) is currently" -foreground Green -NoNewLine -Start
-        if ($_.Status -eq "Running") { Global:Write-Log " Running: " -ForegroundColor green -nonewline }
-        if ($_.Status -eq "Failed") { Global:Write-Log " Not Running: " -ForegroundColor darkred -nonewline } 
-        Global:Write-Log "$($_.Name) current hashrate for $($_.Symbol) is" -nonewline
-        Global:Write-Log " $ScreenHash/s" -foreground green -End
-        Global:Write-Log "$($_.Type) is currently mining $($_.Algo) on $($_.MinerPool)" -foregroundcolor Cyan
-        Global:Write-Log "$($_.Type) previous hashrates for $($_.Symbol) is" -NoNewLine -Start
-        Global:Write-Log " $MinerPrevious/s" -foreground yellow -End
-        Global:Write-Log "Current Pool Projection: $CurrentProfit.  (This is live value with no modifiers)"
-        Global:Write-Log "Current Daily Profit: $ScreenProfit.      (This is daily average with watt calculations)
+        log "$($_.Type) is currently" -foreground Green -NoNewLine -Start
+        if ($_.Status -eq "Running") { log " Running: " -ForegroundColor green -nonewline }
+        if ($_.Status -eq "Failed") { log " Not Running: " -ForegroundColor darkred -nonewline } 
+        log "$($_.Name) current hashrate for $($_.Symbol) is" -nonewline
+        log " $ScreenHash/s" -foreground green -End
+        log "$($_.Type) is currently mining $($_.Algo) on $($_.MinerPool)" -foregroundcolor Cyan
+        log "$($_.Type) previous hashrates for $($_.Symbol) is" -NoNewLine -Start
+        log " $MinerPrevious/s" -foreground yellow -End
+        log "Current Pool Projection: $CurrentProfit.  (This is live value with no modifiers)"
+        log "Current Daily Profit: $ScreenProfit.      (This is daily average with watt calculations)
 "
     }
 }

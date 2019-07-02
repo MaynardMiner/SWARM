@@ -27,7 +27,7 @@ function Global:Set-Countdown {
         $Countdown = ([math]::Round(($(vars).MinerInterval - 20) - $(vars).MinerWatch.Elapsed.TotalSeconds)) 
         $CountMessage = "Time Left Until Database Starts: $($Countdown) seconds"
     }
-    Global:Write-Log "$CountMessage 
+    log "$CountMessage 
 "-foreground DarkMagenta
 }
 
@@ -66,7 +66,7 @@ function Global:Start-MinerLoop {
         if ($(vars).MinerWatch.Elapsed.TotalSeconds -ge ($(vars).MinerInterval - 20)) { break }
         Global:Set-Countdown
         Global:Restart-Miner
-        Global:Write-Log "
+        log "
 
   Type 'get stats' in a new terminal to view miner statistics- This IS a remote command!
         Windows Users: Open cmd.exe or SWARM TERMINAL on desktop and enter command
@@ -110,7 +110,7 @@ function Global:Start-MinerLoop {
         Start-Sleep -s 5
         if ($(vars).MinerWatch.Elapsed.TotalSeconds -ge ($(vars).MinerInterval - 20)) { break }
         Global:Set-Countdown
-        Global:Write-Log "
+        log "
 
   Type 'get active' in a new terminal to view all active miner details- This IS a remote command!
           Windows Users: Open cmd.exe or SWARM TERMINAL on desktop and enter command

@@ -6,10 +6,10 @@ if($(arg).xnsub -eq "Yes"){$X = "#xnsub"}
  
 if ($Name -in $(arg).PoolName) {
     try { $nicehash_Request = Invoke-RestMethod "https://api.nicehash.com/api?method=simplemultialgo.info" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
-    catch { Global:Write-Log "SWARM contacted ($Name) but there was no response."; return }
+    catch { log "SWARM contacted ($Name) but there was no response."; return }
  
     if (($nicehash_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) { 
-        Global:Write-Log "SWARM contacted ($Name) but ($Name) the response was empty." 
+        log "SWARM contacted ($Name) but ($Name) the response was empty." 
         return 
     } 
   

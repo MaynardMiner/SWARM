@@ -1,6 +1,6 @@
 
 function Global:Invoke-MinerSuccess {
-    Global:Write-Log "         
+    log "         
         
                          //\\  _______
                         //  \\//~//.--|
@@ -10,7 +10,7 @@ function Global:Invoke-MinerSuccess {
 Waiting 15 Seconds For Miners To Load & Restarting Background Tracking
 " -ForegroundColor Magenta
     if ($(arg).Platform -eq "linux") {
-        Global:Write-Log "
+        log "
 
 Type `'mine`' in another terminal to see miner working- This is NOT a remote command!
 
@@ -21,7 +21,7 @@ https://github.com/MaynardMiner/SWARM/wiki/Commands-&-Suggested-Apps For More In
 " -ForegroundColor Magenta
     }
     elseif ($(arg).Platform -eq "windows") {
-        Global:Write-Log "
+        log "
 
 There is now a new window where miner is working. The output may be different from
 
@@ -36,13 +36,13 @@ tracking of algorithms and GPU information. It can be used to observe issues, if
 
 function Global:Invoke-MinerWarning {
     ##Notify User Of Failures
-    Global:Write-Log "
+    log "
    
 There are miners that have failed! Check Your Settings And Arguments!
 " -ForegroundColor DarkRed
 
     if ($(arg).Platform -eq "linux") {
-        Global:Write-Log "
+        log "
 
 Type `'mine`' in another terminal to see background miner, and its reason for failure.
 You may also view logs with in the `"logs`" directory, or `'get-screen [Type]`'
@@ -51,7 +51,7 @@ https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration) >> Ri
 " -ForegroundColor Darkred
     }
     elseif ($(arg).Platform -eq "windows") {
-        Global:Write-Log "
+        log "
  
  SWARM attempts to catch screen output, and is stored in `'logs`' folder.
  SWARM has also created a executable called `'swarm-start.bat`' located in the `'bin`'
@@ -63,7 +63,7 @@ https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration) >> Ri
 }
 
 function Global:Invoke-NoChange {
-    Global:Write-Log "
+    log "
         
         
 Most Profitable Miners Are Running
@@ -91,7 +91,7 @@ function Global:Get-Interval {
     }
 
     if ($NoHash -eq $true) {
-        Global:Write-Log "SWARM is Benchmarking Miners." -Foreground Yellow;
+        log "SWARM is Benchmarking Miners." -Foreground Yellow;
         $(vars).MinerInterval = $(arg).Benchmark
         $(vars).MinerStatInt = 1
     }
@@ -100,9 +100,9 @@ function Global:Get-Interval {
         $(vars).MinerStatInt = $(arg).StatsInterval
         if ($(arg).SWARM_Mode -eq "Yes") {
             $(vars).SWARM_IT = $true
-            Global:Write-Log "SWARM MODE ACTIVATED!" -ForegroundColor Green;
+            log "SWARM MODE ACTIVATED!" -ForegroundColor Green;
             $global:SwitchTime = Get-Date
-            Global:Write-Log "SWARM Mode Start Time is $global:SwitchTime" -ForegroundColor Cyan;
+            log "SWARM Mode Start Time is $global:SwitchTime" -ForegroundColor Cyan;
             $(vars).MinerInterval = 10000000;
         }
         else { $(vars).MinerInterval = $(arg).Interval }

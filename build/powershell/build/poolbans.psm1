@@ -121,7 +121,7 @@ function Global:Start-Poolbans {
             Get-Date | Set-Content ".\admin\last_admin_start.txt" -Force
             Get-Date | Set-Content ".\admin\current_admin_run.txt" -Force
             $(vars).Priority.Admin = $true
-            Global:Write-Log  "Entering Admin Mode" -foregroundColor "darkred"
+            log  "Entering Admin Mode" -foregroundColor "darkred"
         }
         else {
             $CurrentAdmin = [math]::Round(((Get-Date) - $AdminCheck).TotalSeconds)
@@ -130,7 +130,7 @@ function Global:Start-Poolbans {
                 Get-Date | Set-Content ".\admin\last_admin_start.txt" -Force
                 Get-Date | Set-Content ".\admin\current_admin_run.txt" -Force
                 $(vars).Priority.Admin = $true
-                Global:Write-Log  "Entering Admin Mode" -foregroundColor "darkred"
+                log  "Entering Admin Mode" -foregroundColor "darkred"
             }
             if ([string]$AdminRun -ne "") {
                 $TotalAdminTime = [math]::Round(((Get-Date) - [datetime]$AdminRun).TotalSeconds)
@@ -176,7 +176,7 @@ function Global:Start-Poolbans {
             $(vars).Priority.Other = $true
             Get-Date | Set-Content ".\build\data\system.txt" -Force
             Start-Sleep -s 1
-            Global:Write-Log  "Entering Donation Mode" -foregroundColor "darkred"
+            log  "Entering Donation Mode" -foregroundColor "darkred"
         }
     }
 

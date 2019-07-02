@@ -104,7 +104,7 @@ function Global:Get-Wallets {
     
     $C = $true
     if ($(arg).Coin) { $C = $false }
-    if ($C -eq $false) { Global:Write-Log "Coin Parameter Specified, disabling All alternative wallets." -ForegroundColor Yellow }
+    if ($C -eq $false) { log "Coin Parameter Specified, disabling All alternative wallets." -ForegroundColor Yellow }
     
     if ($(arg).AltWallet1 -and $C -eq $true) { $global:Wallets | Add-Member "AltWallet1" @{$(arg).AltPassword1 = @{address = $(arg).AltWallet1; Pools = $NewWallet1 } }}
     elseif ($AltWallet_Config.AltWallet1 -and $C -eq $true) { $global:Wallets | Add-Member "AltWallet1" $AltWallet_Config.AltWallet1 }
@@ -155,7 +155,7 @@ function Global:Add-Algorithms {
     if (Test-Path ".\build\data\photo_9.png") {
         $A = Get-Content ".\build\data\photo_9.png"
         if ($A -eq "cheat") {
-            Global:Write-Log "SWARM is Exiting: Reason 1." -ForeGroundColor Red
+            log "SWARM is Exiting: Reason 1." -ForeGroundColor Red
             exit
         }
     }

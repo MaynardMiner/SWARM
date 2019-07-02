@@ -8,7 +8,7 @@ function Global:Start-HiveTune {
     $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
     [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
 
-    Global:Write-Log "Checking Hive OC Tuning" -ForegroundColor Cyan
+    log "Checking Hive OC Tuning" -ForegroundColor Cyan
     $OCSheet = @()
     $Algo = $Algo -replace "`_", " "
     $Algo = $Algo -replace "veil","x16rt"
@@ -26,20 +26,20 @@ function Global:Start-HiveTune {
     ## Get Current Worker:
     $T = @{Authorization = "Bearer $($(arg).API_Key)" }
     $Splat = @{ Method = "GET"; Uri = $Url; Headers = $T; ContentType = 'application/json'; }
-    try { $A = Invoke-RestMethod @Splat -TimeoutSec 10 -ErrorAction Stop } catch { Global:Write-Log "WARNING: Failed to Contact HiveOS for OC" -ForegroundColor Yellow; return }
+    try { $A = Invoke-RestMethod @Splat -TimeoutSec 10 -ErrorAction Stop } catch { log "WARNING: Failed to Contact HiveOS for OC" -ForegroundColor Yellow; return }
 
     ## Patch Worker:
     if ($Algo -in $A.oc_config.by_algo.algo) { $Choice = $Algo; $Message = $Choice} else { $choice = $null; $Message = "Default" }
-        Global:Write-Log "Setting Hive OC to $Message Settings" -ForegroundColor Cyan
+        log "Setting Hive OC to $Message Settings" -ForegroundColor Cyan
     if ($A.oc_algo -ne $Choice) {
-        Global:Write-Log "Contacting HiveOS To Set $Message as current OC setting" -ForegroundColor Cyan
+        log "Contacting HiveOS To Set $Message as current OC setting" -ForegroundColor Cyan
         $T = @{Authorization = "Bearer $($(arg).API_Key)" }
         $Command = @{oc_algo = $Choice } | ConvertTo-Json
         $Splat = @{ Method = "Patch"; Uri = $Url; Headers = $T; ContentType = 'application/json'; }
-        try { $A = Invoke-RestMethod @Splat -Body $Command -TimeoutSec 10 -ErrorAction Stop }catch { Global:Write-Log "WARNING: Failed To Send OC to HiveOS" -ForegroundColor Yellow; return }
-        if ($A.commands.id) { Global:Write-Log "Sent OC to HiveOS" -ForegroundColor Green; $CheckOC = $true; }
+        try { $A = Invoke-RestMethod @Splat -Body $Command -TimeoutSec 10 -ErrorAction Stop }catch { log "WARNING: Failed To Send OC to HiveOS" -ForegroundColor Yellow; return }
+        if ($A.commands.id) { log "Sent OC to HiveOS" -ForegroundColor Green; $CheckOC = $true; }
     } else {
-        Global:Write-Log "HiveOS Settings Already Set to $Message" -ForegroundColor Cyan
+        log "HiveOS Settings Already Set to $Message" -ForegroundColor Cyan
         if($IsWindows) {
         if(test-path ".\build\txt\ocnvidia.txt"){ $OCSheet += Get-Content ".\build\txt\ocnvidia.txt" }
         if(test-path ".\build\txt\ocamd.txt"){ $OCSheet += Get-Content ".\build\txt\ocamd.txt" }
@@ -58,7 +58,7 @@ function Global:Start-HiveTune {
         switch ($(arg).Platform) {
             "windows" {
                 if ($CheckNVIDIA) {
-                    Global:Write-Log "Verifying OC was Set...." -ForegroundColor Cyan
+                    log "Verifying OC was Set...." -ForegroundColor Cyan
                     $OCT = New-Object -TypeName System.Diagnostics.Stopwatch
                     $OCT.Restart()
                     $CheckFile = ".\build\txt\ocnvidia.txt"
@@ -71,16 +71,16 @@ function Global:Start-HiveTune {
                     $OCT.Stop()
                     if($OCT.Elapsed.TotalSeconds -ge 30){
                         $Success = $false
-                        Global:Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow
+                        log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow
                     } else{
-                        Global:Write-Log "OC Was Changed." -ForegroundColor Cyan
+                        log "OC Was Changed." -ForegroundColor Cyan
                         if(test-path ".\build\txt\ocnvidia.txt"){ $OCSheet += Get-Content ".\build\txt\ocnvidia.txt" }
                         $OCSheet += Get-Content ".\build\txt\ocamd.txt"
                         $Success  = $true
                     }
                 }
                 if ($CheckAMD) {
-                    Global:Write-Log "Verifying OC was Set...." -ForegroundColor Cyan
+                    log "Verifying OC was Set...." -ForegroundColor Cyan
                     $OCT = New-Object -TypeName System.Diagnostics.Stopwatch
                     $OCT.Restart()
                     $CheckFile = ".\build\txt\ocamd.txt"
@@ -93,9 +93,9 @@ function Global:Start-HiveTune {
                     $OCT.Stop()
                     if($OCT.Elapsed.TotalSeconds -ge 30){
                         $Success = $false
-                        Global:Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow
+                        log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow
                     } else{
-                        Global:Write-Log "OC Was Changed." -ForegroundColor Cyan
+                        log "OC Was Changed." -ForegroundColor Cyan
                         if(test-path ".\build\txt\ocamd.txt"){ $OCSheet += Get-Content ".\build\txt\ocamd.txt" }
                         $OCSheet += Get-Content ".\build\txt\ocnvidia.txt"
                         $Success  = $true
@@ -104,7 +104,7 @@ function Global:Start-HiveTune {
             }
             "linux" {
                 if ($CheckNVIDIA) {
-                    Global:Write-Log "Verifying OC was Set...." -ForegroundColor Cyan
+                    log "Verifying OC was Set...." -ForegroundColor Cyan
                     $OCT = New-Object -TypeName System.Diagnostics.Stopwatch
                     $OCT.Restart()
                     $Checkfile = "/var/log/nvidia-oc.log"
@@ -118,16 +118,16 @@ function Global:Start-HiveTune {
                     } Until ( $CheckTime -le 0 -or $TOtalTime -ge 30 )
                     if($OCT.Elapsed.TotalSeconds -ge 30){
                         $Success = $false
-                        Global:Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow
+                        log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow
                     } else{
-                        Global:Write-Log "OC Was Changed." -ForegroundColor Cyan
+                        log "OC Was Changed." -ForegroundColor Cyan
                         if(test-path "/var/log/amd-oc.log"){ $OCSheet += Get-Content "/var/log/amd-oc.log" }
                         $OCSheet += Get-Content "/var/log/nvidia-oc.log"
                         $Success  = $true
                     }
                 }
                 if ($CheckAMD) {
-                    Global:Write-Log "Verifying OC was Set...." -ForegroundColor Cyan
+                    log "Verifying OC was Set...." -ForegroundColor Cyan
                     $OCT = New-Object -TypeName System.Diagnostics.Stopwatch
                     $OCT.Restart()
                     $Checkfile = "/var/log/amd-oc.log"
@@ -142,9 +142,9 @@ function Global:Start-HiveTune {
                     $OCT.Stop()
                     if($OCT.Elapsed.TotalSeconds -ge 30){
                         $Success = $false
-                        Global:Write-Log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow
+                        log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow
                     } else{
-                        Global:Write-Log "OC Was Changed." -ForegroundColor Cyan
+                        log "OC Was Changed." -ForegroundColor Cyan
                         if(test-path "/var/log/nvidia-oc.log"){ $OCSheet += Get-Content "/var/log/nvidia-oc.log" }
                         $OCSheet += Get-Content "/var/log/amd-oc.log"
                         $Success  = $true

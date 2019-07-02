@@ -38,11 +38,11 @@ function Global:Stop-ActiveMiners {
                                                 Global:Get-WebModules $Sel
                                                 $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
                                             }
-                                            catch { Global:Write-Log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
+                                            catch { log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
                                             Global:Remove-WebModules $sel
                                         }
                                     }
-                                    Global:Write-Log "$HiveMessage" -ForegroundColor Red
+                                    log "$HiveMessage" -ForegroundColor Red
                                 }
                                 Restart-Computer
                             }
@@ -154,7 +154,7 @@ function Global:Start-NewMiners {
                 ## However, the device group could have been done already through website.
                 ## So it references the oc_groups, and if its not in it- It runs oc for that group.
                 if ($Miner.Type -notlike "*ASIC*" -and $Miner.Type -ne "CPU" -and $Miner.Type -notin $(vars).oc_groups -and $(Get-Content ".\config\oc\oc-defaults.json" | ConvertFrom-Json).cards -ne "") {
-                    Global:Write-Log "Starting SWARM OC" -ForegroundColor Cyan
+                    log "Starting SWARM OC" -ForegroundColor Cyan
                     Global:Add-Module "$($(vars).control)\octune.psm1"
                     Global:Start-OC($Miner)
                     Remove-Module -name octune
@@ -196,11 +196,11 @@ function Global:Start-NewMiners {
                                                 Global:Get-WebModules $Sel
                                                 $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
                                             }
-                                            catch { Global:Write-Log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
+                                            catch { log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
                                             Global:Remove-WebModules $sel
                                         }
                                     }
-                                    Global:Write-Log "$HiveMessage" -ForegroundColor Red
+                                    log "$HiveMessage" -ForegroundColor Red
                                 }
                                 Restart-Computer
                             }
@@ -213,7 +213,7 @@ function Global:Start-NewMiners {
             }
 
             ##Launch Miners
-            Global:Write-Log "Starting $($Miner.InstanceName)"
+            log "Starting $($Miner.InstanceName)"
             if ($Miner.Type -notlike "*ASIC*") {
                 $Miner.Xprocess = Global:Start-LaunchCode $Miner
                 if ($IsWindows) {
@@ -238,18 +238,18 @@ function Global:Start-NewMiners {
             if ($Miner.XProcess -eq $null -or $Miner.Xprocess.HasExited -eq $true) {
                 $Miner.Status = "Failed"
                $(vars).NoMiners = $true
-                Global:Write-Log "$($Miner.MinerName) Failed To Launch" -ForegroundColor Darkred
+                log "$($Miner.MinerName) Failed To Launch" -ForegroundColor Darkred
             }
             else {
                 $Miner.Status = "Running"
-                if ($Miner.Type -notlike "*ASIC*") { Global:Write-Log "Process Id is $($Miner.XProcess.ID)" }
-                Global:Write-Log "$($Miner.MinerName) Is Running!" -ForegroundColor Green
+                if ($Miner.Type -notlike "*ASIC*") { log "Process Id is $($Miner.XProcess.ID)" }
+                log "$($Miner.MinerName) Is Running!" -ForegroundColor Green
                 $(vars).current_procs += $Miner.Xprocess.ID
             }
         }
     }
     if ($Reason -eq "Restart" -and $(vars).Restart -eq $true) {
-        Global:Write-Log "
+        log "
 
     //\\  _______
    //  \\//~//.--|

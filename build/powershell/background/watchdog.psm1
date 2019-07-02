@@ -18,7 +18,7 @@ function Global:Watch-Hashrate {
                                 $SendToHive = Global:Start-webcommand -command $Warning -swarm_message $Message -Website "$($Sel)"
                             }
                             catch {
-                                Global:Write-Log "
+                                log "
 WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow 
                             } 
                             Global:Remove-WebModules $sel
@@ -48,7 +48,7 @@ Watchdog: WARNING Watchdog Will Restart Computer In $( [math]::Round($Global:Con
                                 $SendToHive = Global:Start-webcommand -command $Warning -swarm_message $Message -Website "$($Sel)"
                             }
                             catch {
-                                Global:Write-Log "
+                                log "
 WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow 
                             } 
                             Global:Remove-WebModules $sel
@@ -103,7 +103,7 @@ Watchdog: OK" -ForegroundColor Cyan
                                 $SendToHive = Global:Start-webcommand -command $Warning -swarm_message $Message -Website "$($Sel)"
                             }
                             catch {
-                                Global:Write-Log "
+                                log "
 WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow 
                             } 
                             Global:Remove-WebModules $sel

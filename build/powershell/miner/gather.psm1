@@ -93,18 +93,18 @@ function Global:Get-Miners {
     }
     
     $ScreenedMiners | ForEach-Object { $GetMiners.Remove($_) } | Out-Null;
-    if ($Note) { $Note | ForEach-Object { Global:Write-Log "$($_)" -ForegroundColor Magenta } }
+    if ($Note) { $Note | ForEach-Object { log "$($_)" -ForegroundColor Magenta } }
     $GetMiners
 }
 function Global:Get-AlgoMiners {
     if ($(vars).AlgoPools.Count -gt 0) {
         $(vars).QuickTimer.Restart()
-        Global:Write-Log "Checking Algo Miners. . . ." -ForegroundColor Yellow
+        log "Checking Algo Miners. . . ." -ForegroundColor Yellow
         ##Load Only Needed Algorithm Miners
         Global:Get-Miners | % { $(vars).Miners.Add($_) | Out-Null }
         $(vars).Remove("AlgoPools")
         $(vars).QuickTimer.Stop()
-        Global:Write-Log "Algo Miners Loading Time: $([math]::Round($(vars).QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green    
+        log "Algo Miners Loading Time: $([math]::Round($(vars).QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green    
     }
 }
 
@@ -112,10 +112,10 @@ function Global:Get-CoinMiners {
     if ($(vars).CoinPools.Count -gt 0) {
         $(vars).QuickTimer.Restart()
         $(vars).Coins = $true
-        Global:Write-Log "Checking Coin Miners. . . . ." -ForegroundColor Yellow
+        log "Checking Coin Miners. . . . ." -ForegroundColor Yellow
         ##Load Only Needed Coin Miners
         Get-Miners | % { $(vars).Miners.Add($_) | Out-Null }
         $(vars).QuickTimer.Stop()
-        Global:Write-Log "Coin Miners Loading Time: $([math]::Round($(vars).QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green    
+        log "Coin Miners Loading Time: $([math]::Round($(vars).QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green    
     }
 }

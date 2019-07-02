@@ -170,17 +170,17 @@ function Global:Get-GPUCount {
         $TypeArray = @("NVIDIA1", "NVIDIA2", "NVIDIA3", "AMD1")
         $TypeArray | ForEach-Object { if ($_ -in $(arg).Type) { $NoType = $false } }
         if ($NoType -eq $true) {
-            Global:Write-Log "Searching GPU Types" -ForegroundColor Yellow
+            log "Searching GPU Types" -ForegroundColor Yellow
             if ($GA) { 
-                Global:Write-Log "AMD Detected: Adding AMD" -ForegroundColor Magenta
+                log "AMD Detected: Adding AMD" -ForegroundColor Magenta
                 $(arg).Type += "AMD1" 
             }
             if ($GN -and $GA) {
-                Global:Write-Log "NVIDIA Also Detected" -ForegroundColor Magenta
+                log "NVIDIA Also Detected" -ForegroundColor Magenta
                 $(arg).Type += "NVIDIA2" 
             }
             elseif ($GN) { 
-                Global:Write-Log "NVIDIA Detected: Adding NVIDIA" -ForegroundColor Magenta
+                log "NVIDIA Detected: Adding NVIDIA" -ForegroundColor Magenta
                 $(arg).Type += "NVIDIA1" 
             }
         }
@@ -204,15 +204,15 @@ function Global:Start-WindowsConfig {
         $Bat_Startup = Join-Path $Startup_Path "SWARM.bat"
         switch ($(arg).Startup) {
             "Yes" {
-                Global:Write-Log "Attempting to add current SWARM.bat to startup" -ForegroundColor Magenta
-                Global:Write-Log "If you do not wish SWARM to start on startup, use -Startup No argument"
-                Global:Write-Log "Startup FilePath: $Startup_Path"
+                log "Attempting to add current SWARM.bat to startup" -ForegroundColor Magenta
+                log "If you do not wish SWARM to start on startup, use -Startup No argument"
+                log "Startup FilePath: $Startup_Path"
                 $bat = "CMD /r pwsh -ExecutionPolicy Bypass -command `"Set-Location $($(vars).dir); Start-Process `"SWARM.bat`"`""
                 $Bat_Startup = Join-Path $Startup_Path "SWARM.bat"
                 $bat | Set-Content $Bat_Startup
             }
             "No" {
-                Global:Write-Log "Startup No Was Specified. Removing From Startup" -ForegroundColor Magenta
+                log "Startup No Was Specified. Removing From Startup" -ForegroundColor Magenta
                 if (Test-Path $Bat_Startup) { Remove-Item $Bat_Startup -Force }
             }    
         }
@@ -222,7 +222,7 @@ function Global:Start-WindowsConfig {
     $CurrentUser = $env:UserName
     $Desk_Term = "C:\Users\$CurrentUser\desktop\SWARM-TERMINAL.bat"
     if (-Not (Test-Path $Desk_Term)) {
-        Global:Write-Log "
+        log "
             
     Making a terminal on desktop. This can be used for commands.
     
@@ -261,12 +261,12 @@ function Global:Start-WindowsConfig {
     
     ##Detect if drivers are installed, not generic- Close if not. Print message on screen
     if ($(arg).Type -like "*NVIDIA*" -and -not (Test-Path "C:\Program Files\NVIDIA Corporation\NVSMI\nvml.dll")) {
-        Global:Write-Log "nvml.dll is missing" -ForegroundColor Red
+        log "nvml.dll is missing" -ForegroundColor Red
         Start-Sleep -S 3
-        Global:Write-Log "To Fix:" -ForegroundColor Blue
-        Global:Write-Log "Update Windows, Purge Old NVIDIA Drivers, And Install Latest Drivers" -ForegroundColor Blue
+        log "To Fix:" -ForegroundColor Blue
+        log "Update Windows, Purge Old NVIDIA Drivers, And Install Latest Drivers" -ForegroundColor Blue
         Start-Sleep -S 3
-        Global:Write-Log "Closing Miner"
+        log "Closing Miner"
         Start-Sleep -S 1
         exit
     }
@@ -314,25 +314,25 @@ function Global:Start-WindowsConfig {
     ## Let User Know What Platform commands will work for- Will always be Group 1.
     if ($(arg).Type -like "*NVIDIA1*") {
         "NVIDIA1" | Out-File ".\build\txt\minertype.txt" -Force
-        Global:Write-Log "Group 1 is NVIDIA- Commands and Stats will work for NVIDIA1" -foreground yellow
+        log "Group 1 is NVIDIA- Commands and Stats will work for NVIDIA1" -foreground yellow
         Start-Sleep -S 3
     }
     elseif ($(arg).Type -like "*AMD1*") {
         "AMD1" | Out-File ".\build\txt\minertype.txt" -Force
-        Global:Write-Log "Group 1 is AMD- Commands and Stats will work for AMD1" -foreground yellow
+        log "Group 1 is AMD- Commands and Stats will work for AMD1" -foreground yellow
         Start-Sleep -S 3
     }
     elseif ($(arg).Type -like "*CPU*") {
         if ($(vars).GPU_Count -eq 0) {
             "CPU" | Out-File ".\build\txt\minertype.txt" -Force
-            Global:Write-Log "Group 1 is CPU- Commands and Stats will work for CPU" -foreground yellow
+            log "Group 1 is CPU- Commands and Stats will work for CPU" -foreground yellow
             Start-Sleep -S 3
         }
     }
     elseif ($(arg).Type -like "*ASIC*") {
         if ($(vars).GPU_Count -eq 0) {
             "ASIC" | Out-File ".\build\txt\minertype.txt" -Force
-            Global:Write-Log "Group 1 is ASIC- Commands and Stats will work for ASIC" -foreground yellow
+            log "Group 1 is ASIC- Commands and Stats will work for ASIC" -foreground yellow
         }
     }    
 
