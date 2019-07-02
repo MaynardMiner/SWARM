@@ -2,15 +2,12 @@ function Global:Add-LogErrors {
     if ($Error.Count -gt 0) {
         $TimeStamp = (Get-Date)
         $errormesage = "[$TimeStamp]: SWARM Generated The Following Warnings/Errors-"
-        $errormesage | Add-Content $(vars).logname
+        $errormesage | Add-Content $global:log_params.logname
         $Message = @()
         $error | foreach { $Message += "$($_.InvocationInfo.InvocationName)`: $($_.Exception.Message)"; $Message += $_.InvocationINfo.PositionMessage; $Message += $_.InvocationInfo.Line; $Message += $_.InvocationINfo.Scriptname; $MEssage += "" }
-        $Message | Add-Content $(vars).logname
+        $Message | Add-Content $global:log_params.logname
         $error.clear()
     }
-    $GetBanCheck2 = Get-Content ".\build\data\verification.conf" -Force
-    $BanCheck2 = $([Double]$GetBanCheck2[0] - 5 + ([Double]$GetBanCheck2[1] * 2))
-    $(vars).BanPass = "$($BanCheck2)"
 }
 
 function Global:Get-ChildItemContent {
@@ -148,7 +145,7 @@ function Global:Remove-Var([string]$X) {
     }
 }
 
-function log {
+function Global:Write-Log {
     param (
         [Parameter(Mandatory = $false, Position = 0)]
         [string]$In,
@@ -165,7 +162,7 @@ function log {
     )
     
     $Date = (Get-Date)
-    $File = $(vars).logname
+    $File = $global:log_params.logname
 
     if ($ForeGround) { $Color = $ForeGround }
     if ($ForeGroundColor) { $Color = $ForeGroundColor }
@@ -216,4 +213,4 @@ Set-Alias -Name arg -Value Global:Get-Param -Scope Global
 Set-Alias -Name build -Value Global:Build-Var -Scope Global
 Set-Alias -Name remove -Value Global:Remove-Var -Scope Global
 Set-Alias -Name check -Value Global:Confirm-Var -Scope Global
-Set-Alias -Name log -Value log
+Set-Alias -Name log -Value Global:Write-Log -Scope Global

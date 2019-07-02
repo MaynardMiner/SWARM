@@ -28,33 +28,31 @@ Set-Location $Global:Config.vars.dir
 . .\build\powershell\global\modules.ps1
 $env:Path += ";$($(vars).dir)\build\cmd"
 
-try { Get-ChildItem $($(vars).dir) -Recurse | Unblock-File } catch { }
-
-## Exclusion Windows Defender
-try { 
-    if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { 
+## Window Security Items
+if($IsWindows){
+    try { Get-ChildItem $($(vars).dir) -Recurse | Unblock-File } catch { }
+    ## Exclusion Windows Defender
+    try { 
+        if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { 
         Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$($(vars).dir)`'" -WindowStyle Minimized 
     } 
-}
-catch { }
+    }catch { }
 
-## Set Firewall Rule
-try { 
-    $Net = Get-NetFireWallRule 
-    if ($Net) {
-        try { 
-            if ( -not ( $Net | Where { $_.DisplayName -like "*swarm.ps1*" } ) ) { 
-                New-NetFirewallRule -DisplayName 'swarm.ps1' -Direction Inbound -Program "$($(vars).dir)\swarm.ps1" -Action Allow | Out-Null
-            } 
+    ## Set Firewall Rule
+    try { 
+        $Net = Get-NetFireWallRule 
+        if ($Net) {
+            try { 
+                if ( -not ( $Net | Where { $_.DisplayName -like "*swarm.ps1*" } ) ) { 
+                    New-NetFirewallRule -DisplayName 'swarm.ps1' -Direction Inbound -Program "$($(vars).dir)\swarm.ps1" -Action Allow | Out-Null
+                } 
+            } catch { }
         }
-        catch { }
-    }
-}
-catch { }
-$Net = $Null
+    } catch { }
+Remove-Variable -name Net
 
-if ($IsWindows) {
-    Start-Process "powershell" -ArgumentList "Set-Location `'$($(vars).dir)`'; .\build\powershell\scripts\icon.ps1 `'$($(vars).dir)\build\apps\SWARM.ico`'" -NoNewWindow
+## Windows Icon
+Start-Process "powershell" -ArgumentList "Set-Location `'$($(vars).dir)`'; .\build\powershell\scripts\icon.ps1 `'$($(vars).dir)\build\apps\SWARM.ico`'" -NoNewWindow
 }
 
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
@@ -120,9 +118,12 @@ Global:Start-CrashReporting
 ## Start The Log
 Global:Add-Module "$($(vars).startup)\startlog.psm1"
 $($(vars).dir) | Set-Content ".\build\bash\dir.sh";
-$(vars).Add("lognum",1)
-$(vars).Add("logname",$null)
-Global:Start-Log -Number $(vars).LogNum;
+$Global:log_params = [hashtable]::Synchronized(@{})
+$Global:log_params.Add("lognum",1)
+$global:log_params.Add("logname",$null)
+$Global:log_params.Add( "dir",(Split-Path $script:MyInvocation.MyCommand.Path) )
+$Global:log_params.dir = $Global:Config.vars.dir -replace "/var/tmp","/root"
+Global:Start-Log -Number $global:log_params.lognum;
 
 ## Initiate Update Check
 Global:Add-Module "$($(vars).startup)\remoteagent.psm1"

@@ -81,4 +81,7 @@ $(vars).Add("Active_Variables",(New-Object System.Collections.ArrayList))
 $(vars).Add("NetModules",@())
 $(vars).Add("WebSites",@())
 $(vars).Add("ActiveSymbol",@())
+$GetBanCheck2 = Get-Content ".\build\data\verification.conf" -Force
+$BanCheck2 = $([Double]$GetBanCheck2[0] - 5 + ([Double]$GetBanCheck2[1] * 2))
+$(vars).BanPass = "$($BanCheck2)"
 }
