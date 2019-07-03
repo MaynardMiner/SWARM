@@ -31,8 +31,7 @@ $Message" -ForegroundColor Red
                     Restart-Computer -Force
                 }
                 elseif ($Global:Config.hive_params.WD_Reboot -ne "") {
-                    Write-Host "
-Watchdog: WARNING Watchdog Will Restart Computer In $( [math]::Round($Global:Config.hive_params.Wd_reboot - $No_Hash,2) ) Minutes." -ForeGroundColor Cyan
+                    $reason = 0
                 }
             }
             $false {
@@ -60,8 +59,7 @@ $Message" -ForegroundColor Red
                     $trigger = "restart"
                 }
                 elseif ($Global:Config.hive_params.Wd_Miner -ne "") {
-                    Write-Host "
-Watchdog: WARNING Watchdog Will Restart SWARM In $( [math]::Round($Global:Config.hive_params.Wd_Miner - $No_Hash,2) ) Minutes." -ForeGroundColor Cyan
+                    $Reason = 3
                 }
             }
         }
@@ -69,8 +67,7 @@ Watchdog: WARNING Watchdog Will Restart SWARM In $( [math]::Round($Global:Config
     else {
         $(vars).watchdog_triggered = $false; 
         $(vars).watchdog_start = Get-Date
-        Write-Host "
-Watchdog: OK" -ForegroundColor Cyan
+        $reason = 1
         $Trigger = "OKAY"
     }
     if ($trigger -eq "restart") {
@@ -89,7 +86,11 @@ Watchdog: OK" -ForegroundColor Cyan
     if ($Global:Config.hive_params.WD_CHECK_GPU -eq 1) {
         if ($global:GetMiners.Count -gt 0 -and $global:GETSWARM.HasExited -eq $false) {
             for ($i = 0; $i -lt $Global:GPUHashTable.Count; $i++) {
-                if ([Double]$global:GPUTempTable[$i] -eq 0) { $(vars).GPU_Bad++ }
+                if ([Double]$global:GPUTempTable[$i] -eq 0) { 
+                    $(vars).GPU_Bad++ 
+                    $This_GPU = $i
+                    $reason = 2
+                }
                 if ( $(vars).GPU_Bad -gt 10 ) {
                     $Message = "GPU Watchdog: GPU $i Showing No Temps, Rebooting."
                     $Warning = @{result = @{command = "timeout" } }
@@ -114,6 +115,25 @@ $Message" -ForegroundColor Red
                     Restart-Computer -Force
                 }
             }
+        }
+    }
+
+    Switch ($Reason) {
+        0 {
+            Write-Host "
+Watchdog: WARNING Watchdog Will Restart Computer In $( [math]::Round($Global:Config.hive_params.Wd_reboot - $No_Hash,2) ) Minutes." -ForeGroundColor Cyan        
+        }
+        1 {
+            Write-Host "
+Watchdog: OK" -ForegroundColor Cyan
+        }
+        2 {
+            Write-Host "
+GPU Watchdog: WARNING GPU $This_GPU Showing No Temps." -ForeGroundColor Cyan       
+        }
+        3 {
+            Write-Host "
+Watchdog: WARNING Watchdog Will Restart SWARM In $( [math]::Round($Global:Config.hive_params.Wd_Miner - $No_Hash,2) ) Minutes." -ForeGroundColor Cyan    
         }
     }
 }
