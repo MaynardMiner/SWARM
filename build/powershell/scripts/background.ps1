@@ -27,6 +27,7 @@ $Global:config = [hashtable]::Synchronized(@{ })
 $global:config.Add("vars", @{ })
 . .\build\powershell\global\modules.ps1
 $(vars).Add("dir", $WorkingDir)
+$env:Path += ";$($(vars).dir)\build\cmd"
 
 try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$WorkingDir`'" -WindowStyle Minimized } }catch { }
 try { $Net = Get-NetFireWallRule } catch { }
@@ -115,6 +116,7 @@ $(vars).ADD("GCount",(Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Jso
 $(vars).ADD("BackgroundTimer",(New-Object -TypeName System.Diagnostics.Stopwatch))
 $(vars).ADD("watchdog_start",(Get-Date))
 $(vars).ADD("watchdog_triggered",$false)
+$(vars).Add("GPU_Bad",0)
 
 ## If miner was restarted due to watchdog
 if(test-path ".\build\txt\watchdog.txt"){ 

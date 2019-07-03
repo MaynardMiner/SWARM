@@ -1,4 +1,0 @@
-# OhGodAnETHlargementPill
-# Source Code:
-
-pciutils: https://github.com/pciutils/pciutils

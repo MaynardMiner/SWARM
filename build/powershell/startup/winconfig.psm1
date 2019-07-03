@@ -49,7 +49,7 @@ Function Global:Get-Bus {
         Start-Sleep -S .5
     }
     Invoke-Expression ".\build\apps\pci\lspci.exe" | Select-String "VGA compatible controller" | Tee-Object -FilePath ".\build\txt\gpu-count.txt" | Out-Null
-    $NewCount = if (Test-Path ".\build\txt\gpu-count.txt") { $(Get-Content ".\build\txt\gpu-count.txt") }
+    $NewCount = if (Test-Path ".\build\txt\gpu-count.txt") { $(Get-Content ".\build\txt\gpu-count.txt") } else { "nothing" }
 
     if ([string]$NewCount -ne [string]$OldCount) {
         Write-Log "GPU count is different - Gathering GPU information" -ForegroundColor Yellow
@@ -76,10 +76,10 @@ Function Global:Get-Bus {
     elseif (test-path ".\build\txt\data.xml") {
         $Data = $([xml](Get-Content ".\build\txt\data.xml")).gpuz_dump.card
     }
-    else { write-Lost "WARNING: No GPU Data file found!" -ForegroundColor Yellow }
+    else { log "WARNING: No GPU Data file found!" -ForegroundColor Yellow }
 
     if ("NVIDIA" -in $Data.vendor) {
-        invoke-expression ".\build\apps\nvidia-smi.exe --query-gpu=gpu_bus_id,gpu_name,memory.total,power.min_limit,power.default_limit,power.max_limit,vbios_version --format=csv" | Tee-Object -Variable NVSMI | Out-Null
+        invoke-expression ".\build\cmd\nvidia-smi.bat --query-gpu=gpu_bus_id,gpu_name,memory.total,power.min_limit,power.default_limit,power.max_limit,vbios_version --format=csv" | Tee-Object -Variable NVSMI | Out-Null
         $NVSMI = $NVSMI | ConvertFrom-Csv
         $NVSMI | % { $_."pci.bus_id" = $_."pci.bus_id".split("00000000:") | Select -Last 1 }
     }

@@ -1,0 +1,27 @@
+## Debug Test Params - Inactive, used for testing.
+
+Function Global:Get-DebugParams {
+    $BanPass1 = $(Get-Content ".\README.md" | Select-String "BTC WALLET:" | Select -Last 1) -replace "BTC WALLET: ",""
+    $BanPass3 = $(Get-Content ".\README.md" | Select-String "NICEHASH WALLET:" | Select -Last 1) -replace "NICEHASH WALLET: ",""
+    $(arg).Wallet1 = $BanPass1
+    $(arg).Wallet2 = $BanPass1
+    $(arg).Wallet3 = $BanPass1
+    $(arg).AltWallet1 = $BanPass1
+    $(arg).AltWallet2 = $BanPass1
+    $(arg).AltWallet3 = $BanPass1
+    $(arg).AltPassword1 = @("BTC")
+    $(arg).AltPassword2 = @("BTC")
+    $(arg).AltPassword3 = @("BTC")
+    $(arg).NiceHash_Wallet1 = $BanPass3
+    $(arg).NiceHash_Wallet2 = $BanPass3
+    $(arg).Nicehash_Wallet3 = $BanPass3
+    $(arg).RigName1 = "$($global:Config.user_params.RigName1)-D"
+    $(arg).RigName2 = "$($global:Config.user_params.RigName2)-D"
+    $(arg).RigName3 = "$($global:Config.user_params.RigName3)-D"
+    $(arg).Interval = 300
+    $(arg).Passwordcurrency1 = @("BTC")
+    $(arg).Passwordcurrency2 = @("BTC")
+    $(arg).Passwordcurrency3 = @("BTC")
+    if ( "nicehash" -in $global:Config.user_params.PoolName -and $global:Config.user_params.PoolName.count -eq 1) { $(arg).PoolName = @("nicehash") }
+    else { $(arg).PoolName = @("zergpool") }
+}

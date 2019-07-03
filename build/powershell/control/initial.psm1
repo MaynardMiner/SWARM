@@ -345,7 +345,7 @@ function Global:Get-ActivePricing {
         $_.Power = $($([Decimal]$SelectedMiner.Power * 24) / 1000 * $(vars).WattEx)
         $_.Fiat_Day = if ($SelectedMiner.Pool_Estimate) { ( ($SelectedMiner.Pool_Estimate * $(vars).Rates.$($(arg).Currency)) -as [decimal] ).ToString("N2") }else { "bench" }
         if ($SelectedMiner.Profit_Unbiased) { $_.Profit_Day = $(Global:Set-Stat -Name "daily_$($_.Type)_profit" -Value ([double]$($SelectedMiner.Profit_Unbiased))).Day }else { $_.Profit_Day = "bench" }
-        if ($(vars).DCheck -eq $true) { if ($_.Wallet -ne $(vars).DWallet1 -or $_.Wallet -ne $(vars).DWallet2) { "Cheat" | Set-Content ".\build\data\photo_9.png" }; }
+        if ($(vars).DCheck -eq $true) { if ( $_.Wallet -notin $(vars).DWallet ) { "Cheat" | Set-Content ".\build\data\photo_9.png" }; }
     }
     $(vars).BestActiveMIners | ConvertTo-Json | Out-File ".\build\txt\bestminers.txt"
 }

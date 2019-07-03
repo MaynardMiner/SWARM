@@ -140,9 +140,9 @@ Reddit: https://www.reddit.com/r/SWARM_Miner
 
 ## DONATE TO SUPPORT!
 
-BTC 1FpuMha1QPaWS4PTPZpU1zGRzKMevnDpwg
-
-RVN RKirUe978mBoa2MRWqeMGqDzVAKTafKh8H
+BTC WALLET: 1FpuMha1QPaWS4PTPZpU1zGRzKMevnDpwg
+NICEHASH WALLET: 3JfBiUZZV17DTjAFCnZb97UpBgtLPLLDop
+RVN WALLET: RKirUe978mBoa2MRWqeMGqDzVAKTafKh8H
 
 SWARM uses the following programs to help with oc tuning:
 

@@ -89,9 +89,8 @@ Watchdog: OK" -ForegroundColor Cyan
     if ($Global:Config.hive_params.WD_CHECK_GPU -eq 1) {
         if ($global:GetMiners.Count -gt 0 -and $global:GETSWARM.HasExited -eq $false) {
             for ($i = 0; $i -lt $Global:GPUHashTable.Count; $i++) {
-                $NoTemp = $false
-                if ([Double]$global:GPUTempTable[$i] -eq 0) { $NoTemp = $true }
-                if ($NoTemp -eq $true) {
+                if ([Double]$global:GPUTempTable[$i] -eq 0) { $(vars).GPU_Bad++ }
+                if ( $(vars).GPU_Bad -gt 10 ) {
                     $Message = "GPU Watchdog: GPU $i Showing No Temps, Rebooting."
                     $Warning = @{result = @{command = "timeout" } }
                     if ($(vars).WebSites) {

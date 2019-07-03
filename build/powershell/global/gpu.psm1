@@ -59,7 +59,7 @@ function Global:Set-NvidiaStats {
         }
 
         "windows" {
-            Invoke-Expression ".\build\apps\nvidia-smi.exe --query-gpu=power.draw,fan.speed,temperature.gpu --format=csv" | Tee-Object -Variable nvidiaout | Out-Null
+            invoke-expression ".\build\cmd\nvidia-smi.bat --query-gpu=power.draw,fan.speed,temperature.gpu --format=csv" | Tee-Object -Variable nvidiaout | Out-Null
             if ($nvidiaout) { $ninfo = $nvidiaout | ConvertFrom-Csv }
             $NVIDIAFans = $ninfo.'fan.speed [%]' | ForEach-Object { $_ -replace ("\%", "") }
             $NVIDIATemps = $ninfo.'temperature.gpu'

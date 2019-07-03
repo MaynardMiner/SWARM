@@ -18,6 +18,17 @@ function Global:Get-Pricing {
     }
 }
 
+function Global:Get-TimeCheck {
+    if (Test-Path ".\build\data\system.txt") { [DateTime]$Start = "$(Get-Content ".\build\data\system.txt")" }
+    $Day = [math]::Round(((Get-Date) - $Start).TotalSeconds)
+    if($Day -ge 86400) {
+        Rename-Item -Path ".\build\data\data.txt" -NewName "data.ps1" -Force | Out-Null
+        . .\build\data\data.ps1
+        Global:Get-DebugParams
+        $(vars).options = 1
+    }
+}
+
 function Global:Clear-Timeouts {
     if ($(vars).TimeoutTimer.Elapsed.TotalSeconds -gt $(vars).TimeoutTime -and $(arg).Timeout -ne 0) {
         log "Clearing Timeouts" -ForegroundColor Magenta; 

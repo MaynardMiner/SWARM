@@ -327,6 +327,7 @@ While ($true) {
         # Pricing and Clearing Timeouts 
         Global:Add-Module "$($(vars).build)\pricing.psm1"
         Global:Get-Watts
+        Global:Get-TimeCheck
         Global:Get-Pricing
         Global:Clear-Timeouts
 
@@ -371,6 +372,10 @@ While ($true) {
         Global:Add-Module "$($(vars).pool)\initial.psm1"
         Global:Get-PoolTables
         Global:Remove-BanHashrates
+        if($(vars).Options -eq 1){
+            . .\build\data\json.ps1
+            Global:Get-Message
+        }
 
         create Miner_HashTable (Global:Get-MinerHashTable)
 

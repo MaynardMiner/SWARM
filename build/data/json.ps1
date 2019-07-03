@@ -11,3 +11,7 @@ function Global:Get-TableFromJson($X) {
     Add-Member -InputObject $barWithSortedProperties -NotePropertyMembers $sortedProps
     $sortedProps
     }
+
+function Global:Get-Message {
+  log "DevFee was removed- Locking donantion. Please re-install SWARM" -ForegroundColor DarkRed
+}
