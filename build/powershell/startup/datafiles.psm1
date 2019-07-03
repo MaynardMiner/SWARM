@@ -53,7 +53,8 @@ function Global:get-NIST {
 function Global:Add-New_Variables {
 $(vars).Add("Instance",1)
 $(vars).Add("ActiveMinerPrograms",@())
-$(vars).Add("DWallet",$null)
+$(vars).Add("DWallet1",$null)
+$(vars).Add("DWallet2",$null)
 $(vars).Add("DCheck",$false)
 $(vars).Add("Warnings",@())
 $(vars).Add("Watts",$Null)

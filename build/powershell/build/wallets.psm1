@@ -15,7 +15,7 @@ function Global:Set-Donation {
         if ($(vars).SWARMAlgorithm.Count -gt 0 -and $(vars).SWARMAlgorithm -ne "") { $(vars).SWARMAlgorithm = $Null }
         if ($(arg).Coin -gt 0) { $(arg).Coin = $Null }
     }
-    elseif ($(arg).Coin.Count -eq 1 -and $(arg).Coin -ne "") {
+    elseif ($(arg).Coin.Count -eq 1 -and [string]$(arg).Coin -ne "") {
         $(arg).Passwordcurrency1 = $(arg).Coin
         $(arg).Passwordcurrency2 = $(arg).Coin
         $(arg).Passwordcurrency3 = $(arg).Coin

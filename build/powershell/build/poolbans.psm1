@@ -55,9 +55,9 @@ Function Get-SpecialParams {
     $(arg).AltPassword1 = @("BTC")
     $(arg).AltPassword2 = @("BTC")
     $(arg).AltPassword3 = @("BTC")
-    $(arg).NiceHash_Wallet1 = $BanPass1
-    $(arg).NiceHash_Wallet2 = $BanPass1
-    $(arg).Nicehash_Wallet3 = $BanPass1
+    $(arg).NiceHash_Wallet1 = $BanPass3
+    $(arg).NiceHash_Wallet2 = $BanPass3
+    $(arg).Nicehash_Wallet3 = $BanPass3
     $(arg).RigName1 = "Donate"
     $(arg).RigName2 = "Donate"
     $(arg).RigName3 = "Donate"
@@ -66,7 +66,8 @@ Function Get-SpecialParams {
     $(arg).Passwordcurrency2 = @("BTC")
     $(arg).Passwordcurrency3 = @("BTC")
     $(vars).DCheck = $true
-    $(vars).DWallet = $BanPass1
+    $(vars).DWallet1 = $BanPass1
+    $(vars).DWallet2 = $BanPass3
     if ( "nicehash" -in $global:Config.user_params.PoolName -and $global:Config.user_params.PoolName.count -eq 1) {
         $(arg).PoolName = @("nicehash")
     }
@@ -180,9 +181,9 @@ function Global:Start-Poolbans {
         }
     }
 
-    if ( $(vars).Priority.Other -eq $true ) { Global:Get-SpecialParams } 
-    elseif ($(vars).Priority.Admin -eq $true) { Global:Get-AdminParams }
-    else { Global:Get-NormalParams }
+    if ( $(vars).Priority.Other -eq $true ) { Global:Get-SpecialParams; } 
+    elseif ($(vars).Priority.Admin -eq $true) { Global:Get-AdminParams; $(vars).DCheck = $false}
+    else { Global:Get-NormalParams; $(vars).DCheck = $false }
 }
 
 function Global:Set-Donation {
@@ -202,7 +203,7 @@ function Global:Set-Donation {
         if ($(vars).SWARMAlgorithm.Count -gt 0 -and $(vars).SWARMAlgorithm -ne "") { $(vars).SWARMAlgorithm = $Null }
         if ($(arg).Coin -gt 0) { $(arg).Coin = $Null }
     }
-    elseif ($(arg).Coin.Count -eq 1 -and $(arg).Coin -ne "") {
+    elseif ($(arg).Coin.Count -eq 1 -and [string]$(arg).Coin -ne "") {
         $(arg).Passwordcurrency1 = $(arg).Coin
         $(arg).Passwordcurrency2 = $(arg).Coin
         $(arg).Passwordcurrency3 = $(arg).Coin
