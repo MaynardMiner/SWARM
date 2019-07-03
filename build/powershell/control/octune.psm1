@@ -263,11 +263,11 @@ if ($Miner.Type -like "*AMD*") {
     }
 
     if ($OC_Algo.v) {
-        $V = $OC_Algo.$(vars).-split ' '    
+        $V = $OC_Algo.v -split ' '    
         $Voltage = $V -split ","
     }
     else {
-        $V = $Default.$(vars).-split ' '
+        $V = $Default.v -split ' '
         $Voltage = $V -split ","
     }
 
