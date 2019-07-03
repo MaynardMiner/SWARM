@@ -123,28 +123,6 @@ function Global:Remove-Modules {
     }
 }
 
-
-function Global:Get-Var([string]$X) { if($X) {$Global:Config.vars.$X} else {$global:Config.vars} }
-
-function Global:Get-Param([string]$X) { if($X) {$global:Config.params.$X} else {$global:Config.Params} }
-
-function Global:Build-Var([string]$X,$Y) {
-    if($X -notin $Global:Config.vars.Active_Variables){ $Global:Config.vars.Active_Variables.Add($X) | Out-Null }
-    $Global:Config.vars.Add($X,$Y)
-}
-
-function Global:Remove-Var([string]$X) {
-    if($X -ne "all"){
-        $Global:Config.vars.Remove($X)
-        if($X -in $Global:Config.vars.Active_Variables){ $Global:Config.vars.Active_Variables.Remove($X) | Out-Null }
-    } else {
-        $Global:Config.vars.Active_Variables | ForEach-Object {
-            $Global:Config.vars.Remove($_)
-        }
-        $Global:Config.vars.Active_Variables = (New-Object System.Collections.ArrayList)
-    }
-}
-
 function Global:Write-Log {
     param (
         [Parameter(Mandatory = $false, Position = 0)]
@@ -204,6 +182,32 @@ function Global:Write-Log {
         }
     }
 
+}
+
+
+function Global:Get-Var([string]$X) { if($X) {$Global:Config.vars.$X} else {$global:Config.vars} }
+
+function Global:Get-Param([string]$X) { if($X) {$global:Config.params.$X} else {$global:Config.Params} }
+
+function Global:Build-Var([string]$X,$Y) {
+    if($X -notin $Global:Config.vars.Active_Variables){ $Global:Config.vars.Active_Variables.Add($X) | Out-Null }
+    $Global:Config.vars.Add($X,$Y)
+}
+
+function Global:Remove-Var([string]$X) {
+    if($X -ne "all"){
+        $Global:Config.vars.Remove($X)
+        if($X -in $Global:Config.vars.Active_Variables){ 
+            $Global:Config.vars.Active_Variables.Remove($X) | Out-Null 
+        } else { log "WARNING: Failed to remove variable $X" -ForeGroundColor Red}
+    } else {
+        $Global:Config.vars.Active_Variables | ForEach-Object {
+            if($Global:Config.vars.ContainsKey($X)){
+            $Global:Config.vars.Remove($_)
+            } else { log "WARNING: Failed to remove variable $X" -ForeGroundColor Red}
+        }
+        $Global:Config.vars.Active_Variables = (New-Object System.Collections.ArrayList)
+    }
 }
 
 function Global:Confirm-Var([string]$X){ if($Global:Config.vars.ContainsKey($X)){return $true} else{return $false}}

@@ -267,10 +267,11 @@ While ($true) {
 
         ## Basic Variable Control:
         ## 'create' will add a new variable to the variable hashtable (vars)
-        ## 'remove' will either remove the variable specified, or all varibles if nothing is specified.
-        ## 'create' will add the the (Vars)."Active_Variables" list as well as add the vars to (vars)
+        ## 'remove' will either remove the variable specified, or all varibles if 'all' is specified.
+        ## 'create' will add the the (Vars)."Active_Variables" list as well as add the vars to $(vars)
         ## 'remove' will remove the name from the "Active_Variables" array.
-        ## This allows the abililty to remove/add variables to both, as well as clear them all with a single command.
+        ##  This allows the abililty to remove/add variables to both, as well as clear them all with a single command.
+        ##  These are all global values- It can be used with user-created modules.
 
         create Algorithm @()
         create BanHammer @()
@@ -459,9 +460,9 @@ While ($true) {
         remove SingleMode
         remove Miner_HashTable
         remove Miners_Combo
-        remove amd
-        remove nvidia
-        remove cpu
+        if(check amd){ remove amd }
+        if(check nvidia){ remove nvidia }
+        if(check cpu){ remove cpu }
         remove Pool_HashRates
         $(vars).Watts = $null
 
@@ -520,7 +521,6 @@ While ($true) {
         remove PreviousMinerPorts
         remove Restart
         remove NoMiners
-        remove ModeCheck
 
         ##############################################################################
         #######                        End Phase 4                              ######
@@ -566,6 +566,7 @@ While ($true) {
         remove MinerInterval
         remove ASICS
         remove Share_Table
+        remove ModeCheck
 
         ##############################################################################
         #######                        End Phase 5                              ######
@@ -587,13 +588,12 @@ While ($true) {
         ##Try To Benchmark
         Global:Start-Benchmark
 
-        remove MinerStatInt
-
         ##############################################################################
         #######                       End Phase 6                               ######
         ##############################################################################
 
         ## Remaining Cleanup
+        remove all
         Global:Remove-Modules
         Get-Job -State Completed | Remove-Job
         [GC]::Collect()
