@@ -190,8 +190,9 @@ function Global:Get-Vars([string]$X) { if($X) {$Global:Config.vars.$X} else {$gl
 function Global:Get-Args([string]$X) { if($X) {$global:Config.params.$X} else {$global:Config.Params} }
 
 function Global:Build-Vars([string]$X,$Y) {
+
     if($X -notin $Global:Config.vars.Active_Variables){ $Global:Config.vars.Active_Variables.Add($X) | Out-Null }
-    $Global:Config.vars.Add($X,$Y)
+    if(-not $Global:Config.vars.ContainsKey($X)){ $Global:Config.vars.Add($X,$Y) }
 
 }
 function Global:Confirm-Vars([string]$X){ if($Global:Config.vars.ContainsKey($X)){return $true} else{return $false}}
