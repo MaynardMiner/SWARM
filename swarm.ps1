@@ -453,6 +453,7 @@ While ($true) {
         if(check AlgoPools){ remove AlgoPools }
         remove BanHammer
         remove ASICTypes
+        remove Algorithm
         remove SWARMALgorithm
         remove Coins
         remove SingleMode
