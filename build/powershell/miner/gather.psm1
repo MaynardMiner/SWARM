@@ -102,7 +102,7 @@ function Global:Get-AlgoMiners {
         log "Checking Algo Miners. . . ." -ForegroundColor Yellow
         ##Load Only Needed Algorithm Miners
         Global:Get-Miners | % { $(vars).Miners.Add($_) | Out-Null }
-        $(vars).Remove("AlgoPools")
+        remove AlgoPools
         $(vars).QuickTimer.Stop()
         log "Algo Miners Loading Time: $([math]::Round($(vars).QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green    
     }
@@ -115,6 +115,7 @@ function Global:Get-CoinMiners {
         log "Checking Coin Miners. . . . ." -ForegroundColor Yellow
         ##Load Only Needed Coin Miners
         Get-Miners | % { $(vars).Miners.Add($_) | Out-Null }
+        remove CoinPools
         $(vars).QuickTimer.Stop()
         log "Coin Miners Loading Time: $([math]::Round($(vars).QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green    
     }
