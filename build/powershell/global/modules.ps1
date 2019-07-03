@@ -139,7 +139,7 @@ function Global:Remove-Var([string]$X) {
         if($X -in $Global:Config.vars.Active_Variables){ $Global:Config.vars.Active_Variables.Remove($X) | Out-Null }
     } else {
         $Global:Config.vars.Active_Variables | ForEach-Object {
-            $Global:Config.vars.Active_Variables.Remove($_)
+            $Global:Config.vars.Remove($_)
         }
         $Global:Config.vars.Active_Variables = (New-Object System.Collections.ArrayList)
     }
@@ -210,7 +210,7 @@ function Global:Confirm-Var([string]$X){ if($Global:Config.vars.ContainsKey($X))
 
 Set-Alias -Name vars -Value Global:Get-Var -Scope Global
 Set-Alias -Name arg -Value Global:Get-Param -Scope Global
-Set-Alias -Name build -Value Global:Build-Var -Scope Global
+Set-Alias -Name create -Value Global:Build-Var -Scope Global
 Set-Alias -Name remove -Value Global:Remove-Var -Scope Global
 Set-Alias -Name check -Value Global:Confirm-Var -Scope Global
 Set-Alias -Name log -Value Global:Write-Log -Scope Global

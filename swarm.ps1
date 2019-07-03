@@ -266,18 +266,18 @@ While ($true) {
         ##############################################################################
 
         ## Basic Variable Control:
-        ## 'build' will add a new variable to the variable hashtable (vars)
+        ## 'create' will add a new variable to the variable hashtable (vars)
         ## 'remove' will either remove the variable specified, or all varibles if nothing is specified.
-        ## 'build' will add the the (Vars)."Active_Variables" list as well as add the vars to (vars)
+        ## 'create' will add the the (Vars)."Active_Variables" list as well as add the vars to (vars)
         ## 'remove' will remove the name from the "Active_Variables" array.
         ## This allows the abililty to remove/add variables to both, as well as clear them all with a single command.
 
-        build Algorithm @()
-        build BanHammer @()
-        build ASICTypes @()
-        build ASICS @{}
-        if(-not (check All_AltWallets)){ build All_AltWalltes $null }
-        build SWARMAlgorithm $(arg).Algorithm
+        create Algorithm @()
+        create BanHammer @()
+        create ASICTypes @()
+        create ASICS @{}
+        if(-not (check All_AltWallets)){ create All_AltWalltes $null }
+        create SWARMAlgorithm $(arg).Algorithm
 
         ##Insert Build Single Modules Here
 
@@ -285,9 +285,9 @@ While ($true) {
 
         #Get Miner Config Files
         Global:Add-Module "$($(vars).build)\miners.psm1"
-        if ($(arg).Type -like "*CPU*") { build cpu (Global:Get-minerfiles -Types "CPU") }
-        if ($(arg).Type -like "*NVIDIA*") { build nvidia (Global:Get-minerfiles -Types "NVIDIA" -Cudas $(arg).Cuda) }
-        if ($(arg).Type -like "*AMD*") { build amd (Global:Get-minerfiles -Types "AMD") }
+        if ($(arg).Type -like "*CPU*") { create cpu (Global:Get-minerfiles -Types "CPU") }
+        if ($(arg).Type -like "*NVIDIA*") { create nvidia (Global:Get-minerfiles -Types "NVIDIA" -Cudas $(arg).Cuda) }
+        if ($(arg).Type -like "*AMD*") { create amd (Global:Get-minerfiles -Types "AMD") }
 
         ## Check to see if wallet is present:
         if (-not $(arg).Wallet1) { 
@@ -301,8 +301,8 @@ While ($true) {
         Global:Get-MinerConfigs
         $global:Config.Pool_Algos = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
         Global:Add-ASICS
-        build oc_default (Get-Content ".\config\oc\oc-defaults.json" | ConvertFrom-Json)
-        build oc_algos (Get-Content ".\config\oc\oc-algos.json" | ConvertFrom-Json)
+        create oc_default (Get-Content ".\config\oc\oc-defaults.json" | ConvertFrom-Json)
+        create oc_algos (Get-Content ".\config\oc\oc-algos.json" | ConvertFrom-Json)
 
         ##Manage Pool Bans
         Global:Add-Module "$($(vars).build)\poolbans.psm1"
@@ -350,13 +350,13 @@ While ($true) {
         ##############################################################################
 
         ## Build Initial Pool Hash Tables
-        build Coins $false
-        build FeeTable @{}
-        build DivisorTable @{}
-        build SingleMode @{}
-        build AlgoPools 1
-        build CoinPools 1
-        build Pool_Hashrates @{}
+        create Coins $false
+        create FeeTable @{}
+        create DivisorTable @{}
+        create SingleMode @{}
+        create AlgoPools 1
+        create CoinPools 1
+        create Pool_Hashrates @{}
 
         ##Insert Pools Single Modules Here
 
@@ -366,7 +366,7 @@ While ($true) {
         Global:Get-PoolTables
         Global:Remove-BanHashrates
 
-        build Miner_HashTable (Global:Get-MinerHashTable)
+        create Miner_HashTable (Global:Get-MinerHashTable)
 
         ##Add Global Modules - They Get Removed in Above Function
         Global:Remove-Modules
@@ -392,8 +392,8 @@ While ($true) {
         #######                        PHASE 3: Miners                          ######
         ##############################################################################
 
-        build Thresholds @()
-        build Miners (New-Object System.Collections.ArrayList)
+        create Thresholds @()
+        create Miners (New-Object System.Collections.ArrayList)
 
         ##Insert Miners Single Modules Here
 
@@ -424,7 +424,7 @@ While ($true) {
             Remove-Variable -Name HiveMessage -ErrorAction Ignore
             Remove-Variable -Name HiveWarning -ErrorAction Ignore
             Remove-Variable -Name Sel -ErrorAction Ignore
-            start-sleep $(arg).Interval;
+            #start-sleep $(arg).Interval;
 
             ##remove all active parameters, Then restart loop
             remove all
@@ -444,14 +444,13 @@ While ($true) {
         ##Choose The Best Miners
         Global:Add-Module "$($(vars).miner)\choose.psm1"
         Remove-BadMiners
-        build Miners_Combo (Global:Get-BestMiners)
+        create Miners_Combo (Global:Get-BestMiners)
         $(vars).bestminers_combo = Global:Get-Conservative
         log "Most Ideal Choice Is $($(vars).bestminers_combo.Symbol) on $($(vars).bestminers_combo.MinerPool)" -foregroundcolor green
 
         Global:Remove-Modules
         if(check CoinPools){ remove CoinPools }
         if(check AlgoPools){ remove AlgoPools }
-        remove Algorithm
         remove BanHammer
         remove ASICTypes
         remove SWARMALgorithm
@@ -474,15 +473,15 @@ While ($true) {
         ##############################################################################
 
         ## Build the Current Active Miners
-        build Restart $false
-        build NoMiners $false
-        build PreviousMinerPorts @{AMD1 = ""; NVIDIA1 = ""; NVIDIA2 = ""; NVIDIA3 = ""; CPU = "" }
-        build SWARM_IT $false
-        build MinerInterval $null
-        build MinerStatInt $null
-        build ModeCheck 0
-        build Share_Table @{}
-        build oc_groups @()
+        create Restart $false
+        create NoMiners $false
+        create PreviousMinerPorts @{AMD1 = ""; NVIDIA1 = ""; NVIDIA2 = ""; NVIDIA3 = ""; CPU = "" }
+        create SWARM_IT $false
+        create MinerInterval $null
+        create MinerStatInt $null
+        create ModeCheck 0
+        create Share_Table @{}
+        create oc_groups @()
         
         ##Insert Control Single Modules Here
 
