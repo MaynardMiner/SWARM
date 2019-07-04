@@ -203,8 +203,8 @@ function Global:Get-MinerBinary($Miner,$Reason) {
             $MinersArray = @()
             if (Test-Path ".\timeout\download_block\download_block.txt") { $OldTimeouts = Get-Content ".\timeout\download_block\download_block.txt" | ConvertFrom-Json }
             if ($OldTimeouts) { $OldTimeouts | % { $MinersArray += $_ } }
-            $MinersArray += $Miner
-            $MinersArray | ConvertTo-Json -Depth 3 | Add-Content ".\timeout\download_block\download_block.txt"
+            if($Miner.Name -notin $MinersArray.Name) { $MinersArray += $Miner }
+            $MinersArray | ConvertTo-Json -Depth 3 | Set-Content ".\timeout\download_block\download_block.txt"
             $HiveMessage = "$($Miner.Name) Has Failed To Download"
             $HiveWarning = @{result = @{command = "timeout" } }
             if ($(vars).WebSites) {
@@ -333,6 +333,7 @@ function Global:Start-MinerDownloads {
         else { $Success = 1 }
         if ($Success -eq 2) {
             log "WARNING: Miner Failed To Download Three Times- Restarting SWARM" -ForeGroundColor Yellow
+            remove all
             continue
         }
     }
