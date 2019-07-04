@@ -40,7 +40,7 @@ function Global:Set-Warnings {
             }
         }
         "add" {
-            if (-not [string]$(vars).Warnings.$name.bad ) {
+            if ([string]$(vars).Warnings.$name.bad -eq "") {
                 $(vars).Warnings.ADD( [PSCustomObject]@{ "$name" = [PSCustomObject]@{ bad = 0 } } ) | Out-Null
             }
             else {
