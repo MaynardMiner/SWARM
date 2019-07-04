@@ -241,7 +241,7 @@ function Global:Start-Webcommand {
                             $line += "Attempting To Download New Version at $URI`n"
                             Write-Host "Attempting To Download New Version at $URI"
                             try { 
-                                Invoke-WebRequest $URI -OutFile $FileName -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop 
+                                Invoke-WebRequest $URI -OutFile $FileName -UseBasicParsing -TimeoutSec 10 -SkipCertificateCheck -ErrorAction Stop 
                             }
                             catch {
                                 $Failed = $true; 
