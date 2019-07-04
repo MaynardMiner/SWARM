@@ -28,14 +28,9 @@ $dir = (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCo
 $dir = $dir -replace "/var/tmp", "/root"
 Set-Location $dir
 $Message = @()
-[cultureinfo]::CurrentCulture = 'en-US'
 
 if ($IsLinux) {
-    if ($Command -eq "!") { $Message += "No Command Given. Try version query"; Write-Host $($Message | Select -last 1) }
-    else { $Command = $Command -replace ("!", "") }
-    $Name = $Name -replace "!", ""
-    $Version = $Version -replace "!", ""
-    $Uri = $Uri -replace "!", ""
+    if (-not $Command) { $Message += "No Command Given. Try version query"; Write-Host $($Message | Select -last 1) }
 }
 
 if ($Command) {
@@ -80,20 +75,18 @@ if ($Command) {
                 Write-Host $($Message | Select -last 1)
                 $Message += "Stopping Miner & Waiting 5 Seconds"
                 Write-Host $($Message | Select -last 1)
-                switch ($IsWindows) {
-                    $true {
-                        $ID = Get-Content ".\build\pid\miner_pid.txt"
-                        if (Get-Process -id $ID -ErrorAction SilentlyContinue) { Stop-Process -Id $ID }
-                        Start-Sleep -S 5
-                    }
-                    $false {
-                        Invoke-expression "miner stop"
-                        Start-Sleep -S 5
-                        if (test-path "/hive/miners/custom") {
-                            $Message += "Restarting Swarm"
-                            Write-Host $($Message | Select -last 1)
-                            Invoke-Expression "miner start"
-                        }
+                if ($IsWindows) {
+                    $ID = Get-Content ".\build\pid\miner_pid.txt"
+                    if (Get-Process -id $ID -ErrorAction SilentlyContinue) { Stop-Process -Id $ID }
+                    Start-Sleep -S 5
+                }
+                elseif ($IsLinux) {
+                    Start-Process "screen" -ArgumentList "-S miner -X quit" -Wait
+                    Start-Sleep -S 5
+                    if (test-path "/hive/miners/custom") {
+                        $Message += "Restarting Swarm"
+                        Write-Host $($Message | Select -last 1)
+                        Start-process "miner" -ArgumentList "start" -Wait
                     }
                 }
                 $Message += "Removing Old Miner From Bin"
@@ -118,8 +111,5 @@ if ($Command) {
         }
     }
 }
- 
-if ($CudaVersion) { $Message += "Cuda Version is $CudaVersion"; Write-Host $($Message | Select -last 1) }
 $Message | Set-Content ".\build\txt\get.txt"
-if ($MinerTables) { $MinerTables | Out-Host; $MinerTables | Out-File ".\build\txt\get.txt" -Append }
-
+if ($MinerTables) { Write-Host "Miner Table List:"; $MinerTables | Out-Host; $MinerTables | Out-File ".\build\txt\get.txt" -Append }
