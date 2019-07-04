@@ -52,7 +52,7 @@ if ($IsWindows) {
         }
     }
     catch { }
-    Remove-Variable -name Net
+    Remove-Variable -name Net -ErrorAction Ignore
 
     ## Windows Icon
     Start-Process "powershell" -ArgumentList "Set-Location `'$($(vars).dir)`'; .\build\powershell\scripts\icon.ps1 `'$($(vars).dir)\build\apps\SWARM.ico`'" -NoNewWindow
@@ -90,7 +90,7 @@ if ($P -notlike "*$($(vars).dir)\build\powershell*") {
     [Environment]::SetEnvironmentVariable("PSModulePath", $p)
     Write-Host "Modules Are Loaded" -ForegroundColor Green
 }
-Remove-Variable -name P
+Remove-Variable -name P -ErrorAction Ignore
 
 $(vars).Add("Modules", @())
 
@@ -111,7 +111,7 @@ if ($IsWindows -and $Global:config.hive_params.MINER_DELAY -and $Global:config.h
     Write-Host "Miner Delay Specified- Sleeping for $($Global:config.hive_params.MINER_DELAY)"
     $Sleep = [Double]$Global:config.hive_params.MINER_DELAY
     Start-Sleep -S $Sleep
-    Remove-Variable -Name Sleep
+    Remove-Variable -Name Sleep -ErrorAction Ignore
 }
 
 ## Crash Reporting
@@ -174,7 +174,7 @@ Global:Add-New_Variables
 $WebArg = @("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "")
 if ($(arg).Hive_Hash -notin $WebArg -or (Test-Path "/hive/miners") ) { $(vars).NetModules += ".\build\api\hiveos"; $(vars).WebSites += "HiveOS" }
 else { $(arg).HiveOS = "No" }
-Remove-Variable -Name WebArg
+Remove-Variable -Name WebArg -ErrorAction Ignore
 ##if ($Config.Params.Swarm_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") { $(vars).NetModules += ".\build\api\swarm"; $(vars).WebSites += "SWARM" }
 
 ## Initialize
@@ -212,7 +212,7 @@ if ($(arg).Type -like "*NVIDIA*" -or $(arg).Type -like "*AMD*" -or $(arg).Type -
     if ($(vars).GPU_Count -eq 0) { $Device_Count = $(arg).CPUThreads }
     else { $Device_Count = $(vars).GPU_Count }
     log "Device Count = $Device_Count" -foregroundcolor green
-    Remove-Variable -Name Device_Count
+    Remove-Variable -Name Device_Count -ErrorAction Ignore
     Start-Sleep -S 2
 
    
