@@ -36,7 +36,7 @@ function Global:Get-RigData {
             $RigData.mb.Add("product", $prod)
             $RigData.Add("cpu", @{ })
             $cpud = Get-CimInstance -Class Win32_processor | Select Name, DeviceID, NumberOfCores
-            $cpuname = $cpud.name
+            $cpuname = $cpud.name.Trim()
             $RigData.cpu.Add("model", $cpuname)
             $cpucores = $cpud.NumberOfCores
             $RigData.cpu.Add("cores", $cpucores)
