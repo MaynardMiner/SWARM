@@ -83,38 +83,41 @@ $Message" -ForegroundColor Red
         Exit
     }
 
+    $BadGPU = $false
+
     if ($Global:Config.hive_params.WD_CHECK_GPU -eq 1) {
         if ($global:GetMiners.Count -gt 0 -and $global:GETSWARM.HasExited -eq $false) {
             for ($i = 0; $i -lt $Global:GPUHashTable.Count; $i++) {
                 if ([Double]$global:GPUTempTable[$i] -eq 0) { 
-                    $(vars).GPU_Bad++ 
+                    $BadGPU = $true
                     $This_GPU = $i
                     $reason = 2
                 }
-                if ( $(vars).GPU_Bad -gt 10 ) {
-                    $Message = "GPU Watchdog: GPU $i Showing No Temps, Rebooting."
-                    $Warning = @{result = @{command = "timeout" } }
-                    if ($(vars).WebSites) {
-                        $(vars).WebSites | ForEach-Object {
-                            $Sel = $_
-                            try {
-                                Global:Add-Module "$($(vars).web)\methods.psm1"
-                                Global:Get-WebModules $Sel
-                                $SendToHive = Global:Start-webcommand -command $Warning -swarm_message $Message -Website "$($Sel)"
-                            }
-                            catch {
-                                log "
-WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow 
-                            } 
-                            Global:Remove-WebModules $sel
-                        }
+            }
+        }
+        if($BadGPU -eq $true){ $(vars).GPU_Bad++ }else{ $(vars).GPU_Bad = 0 }
+        if ( $(vars).GPU_Bad -ge 10 ) {
+            $Message = "GPU Watchdog: GPU $This_GPU Showing No Temps, Rebooting."
+            $Warning = @{result = @{command = "timeout" } }
+            if ($(vars).WebSites) {
+                $(vars).WebSites | ForEach-Object {
+                    $Sel = $_
+                    try {
+                        Global:Add-Module "$($(vars).web)\methods.psm1"
+                        Global:Get-WebModules $Sel
+                        $SendToHive = Global:Start-webcommand -command $Warning -swarm_message $Message -Website "$($Sel)"
                     }
-                    Write-Host "
-$Message" -ForegroundColor Red
-                    Start-Sleep -S 3
-                    Restart-Computer -Force
+                    catch {
+                        log "
+WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow 
+                    } 
+                    Global:Remove-WebModules $sel
                 }
             }
+            Write-Host "
+$Message" -ForegroundColor Red
+            Start-Sleep -S 3
+            Restart-Computer -Force
         }
     }
 

@@ -35,14 +35,14 @@
   },
   "veil": {
     "NVIDIA1_Watts": "",
-    "AMD1_Watts": "481.582012231186",
+    "AMD1_Watts": "507.666581462293",
     "CPU_Watts": "",
     "NVIDIA3_Watts": "",
     "NVIDIA2_Watts": "225"
   },
   "x16r": {
     "NVIDIA1_Watts": "",
-    "AMD1_Watts": "365",
+    "AMD1_Watts": "514.333333333333",
     "CPU_Watts": "",
     "NVIDIA3_Watts": "",
     "NVIDIA2_Watts": "225"
@@ -52,11 +52,11 @@
     "AMD1_Watts": "",
     "CPU_Watts": "",
     "NVIDIA3_Watts": "",
-    "NVIDIA2_Watts": "224.999999988373"
+    "NVIDIA2_Watts": "225"
   },
   "ethash": {
     "NVIDIA1_Watts": "",
-    "AMD1_Watts": "347.40434875227",
+    "AMD1_Watts": "391.309068479586",
     "CPU_Watts": "",
     "NVIDIA3_Watts": "",
     "NVIDIA2_Watts": "225"
@@ -108,7 +108,7 @@
     "AMD1_Watts": "341.428571428571",
     "CPU_Watts": "",
     "NVIDIA3_Watts": "",
-    "NVIDIA2_Watts": ""
+    "NVIDIA2_Watts": "225"
   },
   "argon2d500": {
     "NVIDIA1_Watts": "",
