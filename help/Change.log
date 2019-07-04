@@ -315,6 +315,8 @@ Changelog
           * The '&' would previously break ``version update`` command.
           * This works if you the url is between quotes (' ')
             example: ``version update cc-awesome 1.0.0 'https://mybadassminer.com/&getdownloads_1=&download_8008135'``
+    * Remove certification checks for github, and some other sites- This may Help
+      issues with users who's internet connection is not so great download miners.
         
     ## FIXES (from beta release)
     * When SWARM restarts loop (no miners! error, bad download, etc.), it
