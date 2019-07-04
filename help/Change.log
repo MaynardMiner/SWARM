@@ -332,3 +332,23 @@ Changelog
     * lolminer updated
     * gminer updated
     * miniz updated
+
+    2.4.6
+
+    ## NEW FEATURES
+
+    * If NVIDIA NVSMI folder is missing- SWARM will 
+      try to self-install.
+    * SWARM will now catch and list exceptions when if fails to
+      contact HiveOS for troubleshooting.
+
+    ## FIXES
+    * Exit Reason 1 error: Fixed.
+    * Fixed linux ``version query``
+    * Fixed nvidia-smi.exe issue for Windows.
+       * SWARM will install it.
+    
+    ## Updates
+    * Cpuminer-opt/sugarchain updated to 3.9.5.2
+    * Cryptodredge updated
+    * gminer updated

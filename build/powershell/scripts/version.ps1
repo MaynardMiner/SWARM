@@ -30,7 +30,11 @@ Set-Location $dir
 $Message = @()
 
 if ($IsLinux) {
-    if (-not $Command) { $Message += "No Command Given. Try version query"; Write-Host $($Message | Select -last 1) }
+    if ($Command -eq "!") { $Message += "No Command Given. Try version query"; Write-Host $($Message | Select -last 1) }
+    else { $Command = $Command -replace ("!", "") }
+    $Name = $Name -replace "!", ""
+    $Version = $Version -replace "!", ""
+    $Uri = $Uri -replace "!", ""
 }
 
 if ($Command) {

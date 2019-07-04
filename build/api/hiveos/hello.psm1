@@ -14,7 +14,8 @@ function Global:Start-Hello($RigData) {
 
     $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
     [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
-
+    
+    $message = @()
 
     $Hello = @{
         method  = "hello"
@@ -63,8 +64,14 @@ function Global:Start-Hello($RigData) {
         $response | ConvertTo-Json | Out-File ".\build\txt\get-hive-hello.txt"
         $message = $response
     }
-    catch { $message = "Failed To Contact HiveOS.Farm" }
-
+    catch { 
+            $message += "Failed To Contact HiveOS.Farm" 
+            $message += "Caught an exception:"
+            $message += "Exception Type: $($_.Exception.GetType().FullName)"
+            $message += "Exception Message: $($_.Exception.Message)"
+            $message | Out-Host
+    }
+    
     return $message
 }
 
