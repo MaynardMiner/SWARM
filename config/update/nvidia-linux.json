@@ -1,5 +1,5 @@
 {
-  "name": "nvidia10-linux",
+  "name": "nvidia-linux",
   "claymore": {
     "name": "claymore",
     "type": "nvidia",
