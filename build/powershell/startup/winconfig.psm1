@@ -260,9 +260,19 @@ function Global:Start-WindowsConfig {
     if ($(arg).Type -like "*NVIDIA*") { $(arg).Cuda = "10"; $(arg).Cuda | Set-Content ".\build\txt\cuda.txt" }
     
     ##Detect if drivers are installed, not generic- Close if not. Print message on screen
+    $Install_NVSMI = $false
     if ($(arg).Type -like "*NVIDIA*" -and -not (Test-Path "C:\Program Files\NVIDIA Corporation\NVSMI\nvml.dll")) {
         log "nvml.dll is missing" -ForegroundColor Red
         Start-Sleep -S 3
+        $Install_NVSMI = $true
+    }
+    if ($(arg).Type -like "*NVIDIA*" -and -not (Test-Path "C:\Program Files\NVIDIA Corporation\NVSMI\nvidia-smi.exe")) {
+        log "nvidia-smi.exe is missing" -ForegroundColor Red
+        Start-Sleep -S 3
+        $Install_NVSMI = $true
+    }
+
+    if($Install_NVSMI -eq $true) {
         log "SWARM is going to attempt to install NVSMI, but it could be incorrect drivers were installed." -ForegroundColor Red
         if(-not (Test-Path "C:\Program Files\NVIDIA Corporation")) { 
             log "SWARM failed to install NVSMI folder- No NVIDIA Corporation file found in C:\Program Files" -ForegroundColor Red
