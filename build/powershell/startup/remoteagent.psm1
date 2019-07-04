@@ -237,6 +237,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "veil" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "veil" "veil" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "veil" 2.5 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "mtp" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "mtp" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "mtp" "mtp" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "mtp" 2.5 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }
