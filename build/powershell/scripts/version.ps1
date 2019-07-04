@@ -87,12 +87,12 @@ if ($Command) {
                         Start-Sleep -S 5
                     }
                     $false {
-                        screen -S miner -X quit
+                        Invoke-expression "miner stop"
                         Start-Sleep -S 5
                         if (test-path "/hive/miners/custom") {
                             $Message += "Restarting Swarm"
                             Write-Host $($Message | Select -last 1)
-                            miner start
+                            Invoke-Expression "miner start"
                         }
                     }
                 }
