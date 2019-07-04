@@ -5,10 +5,10 @@ if($(arg).xnsub -eq "Yes"){$X = "#xnsub"}
  
 if ($Name -in $(arg).PoolName) {
     try { $Zpool_Request = Invoke-RestMethod "http://www.zpool.ca/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
-    catch { Global:Write-Log "SWARM contacted ($Name) but there was no response."; return }
+    catch { log "SWARM contacted ($Name) but there was no response."; return }
   
     if (($Zpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) { 
-        Global:Write-Log "SWARM contacted ($Name) but ($Name) the response was empty." 
+        log "SWARM contacted ($Name) but ($Name) the response was empty." 
         return
     } 
    
@@ -37,8 +37,8 @@ if ($Name -in $(arg).PoolName) {
                 $Workers = $Zpool_Request.$_.Workers
                 $Hashrate = $Zpool_Request.$_.hashrate
 
-                $Global:DivisorTable.zpool.Add($Zpool_Algorithm, $Zpool_Request.$_.mbtc_mh_factor)
-                $Global:FeeTable.zpool.Add($Zpool_Algorithm, $Fees)
+                $(vars).divisortable.zpool.Add($Zpool_Algorithm, $Zpool_Request.$_.mbtc_mh_factor)
+                $(vars).FeeTable.zpool.Add($Zpool_Algorithm, $Fees)
 
                 $StatPath = ".\stats\($Name)_$($Zpool_Algorithm)_profit.txt"
                 $Estimate = if (-not (Test-Path $StatPath)) { [Double]$Zpool_Request.$_.estimate_last24h } else { [Double]$Zpool_Request.$_.estimate_current }

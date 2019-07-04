@@ -7,7 +7,7 @@ function Global:Get-StatusLite {
     Group: $($_)
 ########################
 "
-        $Table = $Global:Miners | Where-Object TYPE -eq $_ | Sort-Object -Property Profit -Descending
+        $Table = $(vars).Miners | Where-Object TYPE -eq $_ | Sort-Object -Property Profit -Descending
         $statindex = 1
 
         $Table | ForEach-Object { 
@@ -60,7 +60,7 @@ function Global:Get-Commands {
     else { $StatusMinerBans = $null }
     $mcolor = "93"
     $me = [char]27
-    $MiningStatus = "$me[${mcolor}mCurrently Mining $($global:bestminers_combo.Algo) Algorithm on $($global:bestminers_combo.MinerPool)${me}[0m"
+    $MiningStatus = "$me[${mcolor}mCurrently Mining $($(vars).bestminers_combo.Algo) Algorithm on $($(vars).bestminers_combo.MinerPool)${me}[0m"
     $MiningStatus | Out-File ".\build\txt\minerstats.txt" -Append
     $MiningStatus | Out-File ".\build\txt\charts.txt" -Append
     $(vars).Thresholds | Out-File ".\build\txt\minerstats.txt" -Append
@@ -85,7 +85,7 @@ function Global:Get-Commands {
 }
 
 function Global:Get-Logo {
-    Global:Write-Log '
+    log '
                                                                         (                    (      *     
                                                                          )\ ) (  (      (     )\ ) (  `    
                                                                          (()/( )\))(     )\   (()/( )\))(   
@@ -95,7 +95,7 @@ function Global:Get-Logo {
                                                                          \__ \ \ \/\/ / / _ \ |   /| |\/| | 
                                                                          |___/  \_/\_/ /_/ \_\|_|_\|_|  |_| 
                                                                                                           ' -foregroundcolor "DarkRed"
-    Global:Write-Log '                                                           sudo apt-get lambo
+    log '                                                           sudo apt-get lambo
                                                                                  
                                                                                  
                                                                                  
@@ -103,10 +103,10 @@ function Global:Get-Logo {
 }
 
 function Global:Update-Logging {
-    if ($(vars).LogNum -eq 12) {
+    if ($global:log_params.lognum -eq 12) {
         Remove-Item ".\logs\*miner*" -Force -ErrorAction SilentlyContinue
         Remove-Item ".\logs\*crash_report*" -Force -Recurse -ErrorAction SilentlyContinue
-        $(vars).LogNum = 0
+        $global:log_params.lognum = 0
     }
     if((Get-ChildItem ".\logs" | Where BaseName -match "crash_report").count -gt 12){
         Remove-Item ".\logs\*crash_report*" -Force -Recurse -ErrorAction SilentlyContinue
@@ -121,8 +121,8 @@ function Global:Update-Logging {
                 Rename-Item $_.FullName -NewName $RenameActive -force
             }
         }
-        $(vars).LogNum++
-        $(vars).logname = ".\logs\miner$($(vars).LogNum)-active.log"
+        $global:log_params.lognum++
+        $global:log_params.logname = ".\logs\miner$($global:log_params.lognum)-active.log"
         $(vars).logtimer.Restart()
     }
 }

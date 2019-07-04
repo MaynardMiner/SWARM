@@ -5,10 +5,10 @@ if($(arg).xnsub -eq "Yes"){$X = "#xnsub"}
  
 if ($Name -in $(arg).PoolName) {
     try { $Zergpool_Request = Invoke-RestMethod "http://api.zergpool.com:8080/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
-    catch { Global:Write-Log "SWARM contacted ($Name) but there was no response."; return }
+    catch { log "SWARM contacted ($Name) but there was no response."; return }
   
     if (($Zergpool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) { 
-        Global:Write-Log "SWARM contacted ($Name) but ($Name) the response was empty." 
+        log "SWARM contacted ($Name) but ($Name) the response was empty." 
         return
     } 
      
@@ -27,9 +27,9 @@ if ($Name -in $(arg).PoolName) {
                 $Zergpool_Port = $Zergpool_Request.$_.port
                 $Zergpool_Host = "$($Zergpool_Request.$_.name.ToLower()).mine.zergpool.com$X"
                 $Divisor = (1000000 * $Zergpool_Request.$_.mbtc_mh_factor)
-                $Global:DivisorTable.zergpool.Add($Zergpool_Algorithm, $Zergpool_Request.$_.mbtc_mh_factor)
+                $(vars).divisortable.zergpool.Add($Zergpool_Algorithm, $Zergpool_Request.$_.mbtc_mh_factor)
                 $Fees = $Zergpool_Request.$_.fees
-                $Global:FeeTable.zergpool.Add($Zergpool_Algorithm, $Zergpool_Request.$_.fees)
+                $(vars).FeeTable.zergpool.Add($Zergpool_Algorithm, $Zergpool_Request.$_.fees)
                 $StatPath = ".\stats\($Name)_$($Zergpool_Algorithm)_profit.txt"
                 $Hashrate = $Zergpool_Request.$_.hashrate
 

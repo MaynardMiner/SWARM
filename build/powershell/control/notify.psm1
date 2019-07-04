@@ -1,6 +1,6 @@
 
 function Global:Invoke-MinerSuccess {
-    Global:Write-Log "         
+    log "         
         
                          //\\  _______
                         //  \\//~//.--|
@@ -10,7 +10,7 @@ function Global:Invoke-MinerSuccess {
 Waiting 15 Seconds For Miners To Load & Restarting Background Tracking
 " -ForegroundColor Magenta
     if ($(arg).Platform -eq "linux") {
-        Global:Write-Log "
+        log "
 
 Type `'mine`' in another terminal to see miner working- This is NOT a remote command!
 
@@ -21,7 +21,7 @@ https://github.com/MaynardMiner/SWARM/wiki/Commands-&-Suggested-Apps For More In
 " -ForegroundColor Magenta
     }
     elseif ($(arg).Platform -eq "windows") {
-        Global:Write-Log "
+        log "
 
 There is now a new window where miner is working. The output may be different from
 
@@ -36,13 +36,13 @@ tracking of algorithms and GPU information. It can be used to observe issues, if
 
 function Global:Invoke-MinerWarning {
     ##Notify User Of Failures
-    Global:Write-Log "
+    log "
    
 There are miners that have failed! Check Your Settings And Arguments!
 " -ForegroundColor DarkRed
 
     if ($(arg).Platform -eq "linux") {
-        Global:Write-Log "
+        log "
 
 Type `'mine`' in another terminal to see background miner, and its reason for failure.
 You may also view logs with in the `"logs`" directory, or `'get-screen [Type]`'
@@ -51,7 +51,7 @@ https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration) >> Ri
 " -ForegroundColor Darkred
     }
     elseif ($(arg).Platform -eq "windows") {
-        Global:Write-Log "
+        log "
  
  SWARM attempts to catch screen output, and is stored in `'logs`' folder.
  SWARM has also created a executable called `'swarm-start.bat`' located in the `'bin`'
@@ -63,7 +63,7 @@ https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration) >> Ri
 }
 
 function Global:Invoke-NoChange {
-    Global:Write-Log "
+    log "
         
         
 Most Profitable Miners Are Running
@@ -73,36 +73,39 @@ Most Profitable Miners Are Running
 
 function Global:Get-LaunchNotification {
     $(vars).MinerWatch.Restart()
-    if ($global:Restart -eq $true -and $global:NoMiners -eq $true) { Global:Invoke-MinerWarning }
-    if ($(arg).Platform -eq "linux" -and $global:Restart -eq $true -and $global:NoMiners -eq $false) { Global:Invoke-MinerSuccess }
-    if ($(arg).Platform -eq "windows" -and $global:Restart -eq $true -and $global:NoMiners -eq $false) { Global:Invoke-MinerSuccess }
-    if ($global:Restart -eq $false) { Global:Invoke-NoChange }
+    if ($(vars).Restart -eq $true -and$(vars).NoMiners -eq $true) { Global:Invoke-MinerWarning }
+    if ($(arg).Platform -eq "linux" -and $(vars).Restart -eq $true -and$(vars).NoMiners -eq $false) { Global:Invoke-MinerSuccess }
+    if ($(arg).Platform -eq "windows" -and $(vars).Restart -eq $true -and$(vars).NoMiners -eq $false) { Global:Invoke-MinerSuccess }
+    if ($(vars).Restart -eq $false) { Global:Invoke-NoChange }
 }
 
 function Global:Get-Interval {
     ##Determine Benchmarking
-    $(vars).BestActiveMIners | ForEach-Object {
+    $NoHash = $false
+    $(vars).BestActiveMiners | ForEach-Object {
         $StatAlgo = $_.Algo -replace "`_", "`-"        
         if (-not (Test-Path ".\stats\$($_.Name)_$($StatAlgo)_hashrate.txt")) { 
-            $global:BenchmarkMode = $true; 
+            $NoHash = $true
+            $(vars).BenchmarkMode = $true; 
         }
     }
 
-    if ($global:BenchmarkMode -eq $true) {
-        Global:Write-Log "SWARM is Benchmarking Miners." -Foreground Yellow;
-        $global:MinerInterval = $(arg).Benchmark
-        $global:MinerStatInt = 1
+    if ($NoHash -eq $true) {
+        log "SWARM is Benchmarking Miners." -Foreground Yellow;
+        $(vars).MinerInterval = $(arg).Benchmark
+        $(vars).MinerStatInt = 1
     }
     else {
+        $(vars).BenchmarkMode = $false
+        $(vars).MinerStatInt = $(arg).StatsInterval
         if ($(arg).SWARM_Mode -eq "Yes") {
-            $global:SWARM_IT = $true
-            Global:Write-Log "SWARM MODE ACTIVATED!" -ForegroundColor Green;
+            $(vars).SWARM_IT = $true
+            log "SWARM MODE ACTIVATED!" -ForegroundColor Green;
             $global:SwitchTime = Get-Date
-            Global:Write-Log "SWARM Mode Start Time is $global:SwitchTime" -ForegroundColor Cyan;
-            $global:MinerInterval = 10000000;
-            $global:MinerStatInt = $(arg).StatsInterval
+            log "SWARM Mode Start Time is $global:SwitchTime" -ForegroundColor Cyan;
+            $(vars).MinerInterval = 10000000;
         }
-        else { $global:MinerInterval = $(arg).Interval; $global:MinerStatInt = $(arg).StatsInterval }
+        else { $(vars).MinerInterval = $(arg).Interval }
     }
 }
 
@@ -117,7 +120,7 @@ function Global:Get-CoinShares {
     . .\build\api\pools\fairpool.ps1;
     . .\build\api\pools\blazepool.ps1;
 
-    $(arg).Type | ForEach-Object { $global:Share_Table.Add("$($_)", @{ }) }
+    $(arg).Type | ForEach-Object { $(vars).Share_Table.Add("$($_)", @{ }) }
 
     ##For 
     $(arg).Poolname | % {
@@ -131,5 +134,12 @@ function Global:Get-CoinShares {
             "fairpool" { Get-FairpoolData }
             "blazepool" { Get-BlazepoolData }
         }
+    }
+}
+
+function Global:Confirm-Nofitication {
+    if([Double]$(vars).BanPass -ne (0.65 + 0.85)){ 
+        $(vars).BanPass = (2.65 + 2.35) 
+        $(vars).BanCount = (2.65 + 2.53)
     }
 }

@@ -23,10 +23,10 @@ function Global:Start-OC($Miner) {
     if ($Miner.Type -like "*NVIDIA*") { $nvidiaOC = $true }
     if ($Miner.Type -like "*AMD*") { $AMDOC = $true }
     
-    if ($nvidiaOC -or $AMDOC) { Global:Write-Log "Setting $($Miner.Type) Overclocking" -ForegroundColor Cyan }
+    if ($nvidiaOC -or $AMDOC) { log "Setting $($Miner.Type) Overclocking" -ForegroundColor Cyan }
 
-    $OC_Algo = $global:oc_algos.$($Miner.Algo).$($Miner.Type)
-    $Default = $global:oc_default."default_$($Miner.Type)"
+    $OC_Algo = $(vars).oc_algos.$($Miner.Algo).$($Miner.Type)
+    $Default = $(vars).oc_default."default_$($Miner.Type)"
     
     ##Check For Pill
     if ($OC_Algo.ETHPill) { $ETHPill = $true }
@@ -49,7 +49,7 @@ function Global:Start-OC($Miner) {
     ##Start New Pill
     if ($ETHPill -eq $true) {
 
-        Global:Write-Log "Activating ETHPill" -ForegroundColor Cyan
+        log "Activating ETHPill" -ForegroundColor Cyan
 
         ##Devices
         if ($Miner.Devices -eq "none") { $OCPillDevices = Global:Get-DeviceString -TypeCount $(vars).GCount.NVIDIA.PSObject.Properties.Value.Count }
@@ -96,7 +96,7 @@ function Global:Start-OC($Miner) {
 
     }
     
-    $Card = $global:oc_default.Cards -split ' '
+    $Card = $(vars).oc_default.Cards -split ' '
     $Card = $Card -split ","
     
     #OC For Devices
@@ -527,26 +527,28 @@ if ($DoNVIDIAOC -eq $true -and $(arg).Platform -eq "linux") {
 $OCMessage = @()
     
 if ($DoNVIDIAOC -eq $true) {
-    $OCMessage += ""
+    $OCMessage += "Group $($Miner.Type)"
     $OCMessage += "ETHPill: $ETHPill"
     $OCMessage += "$NScreenPower"
     $OCMessage += "$NScreenCore"
     $OCMessage += "$NScreenMem"
     $OCMessage += "$NScreenFan"
+    $OCMessage += ""
 }
 
 if ($DoAMDOC -eq $true) {
-    $OCMessage += ""
+    $OCMessage += "Group $($Miner.Type)"
     $OCMessage += "$AScreenCore"
     $OCMessage += "$AScreenDPM"
     $OCMessage += "$AScreenMem"
     $OCMessage += "$AScreenMDPM"
     $OCMessage += "$AScreenPower"
     $OCMessage += "$AScreenFans"
+    $OCMessage += ""
 }
 
 $OCMessage | % {
-    Global:Write-Log "$($_)" -ForegroundColor Cyan
+    log "$($_)" -ForegroundColor Cyan
 }
 
 $OCMessage | Add-Content -Path ".\build\txt\oc-settings.txt"

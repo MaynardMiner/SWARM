@@ -12,7 +12,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
 function Global:Get-SexyUnixLogo {
-Global:Write-Log "
+log "
 
                                                                                     BEWARE OF THE
                                                                       ███████╗██╗    ██╗ █████╗ ██████╗ ███╗   ███╗

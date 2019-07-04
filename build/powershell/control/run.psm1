@@ -5,7 +5,7 @@ function Global:Stop-ActiveMiners {
         if ($_.BestMiner -eq $false) {
         
             if ($(arg).Platform -eq "windows") {
-                if ($_.XProcess -eq $Null) { $_.Status = "Failed" }
+                if ($_.XProcess -eq $Null -and $_.Status -ne "Idle") { $_.Status = "Failed" }
                 elseif ($_.XProcess.HasExited -eq $false) {
                     $_.Active += (Get-Date) - $_.XProcess.StartTime
                     if ($_.Type -notlike "*ASIC*") {
@@ -38,11 +38,11 @@ function Global:Stop-ActiveMiners {
                                                 Global:Get-WebModules $Sel
                                                 $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
                                             }
-                                            catch { Global:Write-Log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
+                                            catch { log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
                                             Global:Remove-WebModules $sel
                                         }
                                     }
-                                    Global:Write-Log "$HiveMessage" -ForegroundColor Red
+                                    log "$HiveMessage" -ForegroundColor Red
                                 }
                                 Restart-Computer
                             }
@@ -57,13 +57,13 @@ function Global:Stop-ActiveMiners {
             }
 
             if ($(arg).Platform -eq "linux") {
-                if ($_.XProcess -eq $Null) { $_.Status = "Failed" }
+                if ($_.XProcess -eq $Null -and $_.Status -ne "Idle") { $_.Status = "Failed" }
                 else {
                     if ($_.Type -notlike "*ASIC*") {
                         $MinerInfo = ".\build\pid\$($_.InstanceName)_info.txt"
                         if (Test-Path $MinerInfo) {
                             $_.Status = "Idle"
-                            $global:PreviousMinerPorts.$($_.Type) = "($_.Port)"
+                           $(vars).PreviousMinerPorts.$($_.Type) = "($_.Port)"
                             $MI = Get-Content $MinerInfo | ConvertFrom-Json
                             $PIDTime = [DateTime]$MI.start_date
                             $Exec = Split-Path $MI.miner_exec -Leaf
@@ -84,20 +84,23 @@ function Global:Start-NewMiners {
         [Parameter(Mandatory = $true)]
         [string]$Reason
     )
-
-    $ClearedOC = $false
-    $WebSiteOC = $False
+    
     $OC_Success = $false
+    $New_OC_File = $false
 
     $(vars).BestActiveMIners | ForEach-Object {
         $Miner = $_
 
         if ($null -eq $Miner.XProcess -or $Miner.XProcess.HasExited -and $(arg).Lite -eq "No") {
+
+            if($New_OC_File -eq $false -and $Miner.Type -notlike "*ASIC*" -and $Miner.Type -ne "CPU"){
+                "Current OC Settings:" | Set-Content ".\build\txt\oc-settings.txt"; $New_OC_File = $true
+            }
+
             Global:Add-Module "$($(vars).control)\launchcode.psm1"
             Global:Add-Module "$($(vars).control)\config.psm1"
-            Global:Add-Module "$($(vars).global)\gpu.psm1"
 
-            $global:Restart = $true
+            $(vars).Restart = $true
             if ($Miner.Type -notlike "*ASIC*") { Start-Sleep -S $Miner.Delay }
             $Miner.InstanceName = "$($Miner.Type)-$($(vars).Instance)"
             $Miner.Instance = $(vars).Instance
@@ -106,40 +109,56 @@ function Global:Start-NewMiners {
 
             ##First Do OC
             if ($Reason -eq "Launch") {
+                ## Check for Websites, Load Modules
                 if ($(vars).WebSites -and $(vars).WebSites -ne "") {
                     $GetNetMods = @($(vars).NetModules | Foreach { Get-ChildItem $_ })
                     $GetNetMods | ForEach-Object { Import-Module -Name "$($_.FullName)" }
                     $(vars).WebSites | ForEach-Object {
                         switch ($_) {
                             "HiveOS" {
-                                if ($(arg).API_Key -and $(arg).API_Key -ne "") {
-                                    if ($WebSiteOC -eq $false) {
-                                        if ($Miner.Type -notlike "*ASIC*" -and $Miner.Type -like "*1*") {
-                                            $OC_Success = Global:Start-HiveTune $Miner.Algo
-                                            $WebSiteOC = $true
-                                        }
+                                ## Do oc if they have API key
+                                if ([string]$(arg).API_Key -ne "") {
+
+                                    ## HiveOS Can only do Group 1, while SWARM can do all three.
+                                    ## If group 1 has changed, SWARM will run oc for that group. 
+                                    ## If this is a different group- User is screwed for other groups.
+
+                                    if ($Miner.Type -notlike "*ASIC*" -and $Miner.Type -ne "CPU" -and $Miner.Type -like "*1*") {
+                                        $OC_Success = Global:Start-HiveTune $Miner.Algo
+
+                                        ## If it succeeded- SWARM will add to the oc_groups, which
+                                        ## is a list of what OC has been done. If not, then it will
+                                        ## omit, so it can attempt to run locally.
+                                        if ($OC_Success -eq $true) { $(vars).oc_groups += $Miner.Type }
                                     }
                                 }
+                                ## However, if this isn't group one, and user has local oc settings-
+                                ## It will set to false, and continue on, omitting from oc_groups.
+                                else { $OC_Success = $false }
                             }
                             "SWARM" {
-                                $WebSiteOC = $true
-                            }
+                                if ([string]$(arg).API_Key -ne "") {
+                                    if ($Miner.Type -notlike "*ASIC*" -and $Miner.Type -ne "CPU" -and $Miner.Type -like "*1*") {
+                                        ## Not implemented yet
+                                        ## Code will be added here
+                                        if ($OC_Success -eq $true) { $(vars).oc_groups += $Miner.Type }
+                                    }
+                                }
+                            } else { $OC_Success = $false }
                         }
                     }
                     $GetNetMods | ForEach-Object { Remove-Module -Name "$($_.BaseName)" }
                 }
-                if ($OC_Success -eq $false -and $WebSiteOC -eq $false) {
-                    if ($ClearedOC -eq $False) {
-                        $OCFile = ".\build\txt\oc-settings.txt"
-                        if (Test-Path $OCFile) { Clear-Content $OcFile -Force; "Current OC Settings:" | Set-Content $OCFile }
-                        $ClearedOC = $true
-                    }
-                }
-                elseif ($OC_Success -eq $false -and $WebSiteOC -eq $false -and $Miner.Type -notlike "*ASIC*" -and $(Get-Content ".\config\oc\oc-defaults.json" | ConvertFrom-Json).card -ne "") {
-                    Global:Write-Log "Starting SWARM OC" -ForegroundColor Cyan
+                
+                ## SWARM does each device group individually.
+                ## However, the device group could have been done already through website.
+                ## So it references the oc_groups, and if its not in it- It runs oc for that group.
+                if ($Miner.Type -notlike "*ASIC*" -and $Miner.Type -ne "CPU" -and $Miner.Type -notin $(vars).oc_groups -and $(Get-Content ".\config\oc\oc-defaults.json" | ConvertFrom-Json).cards -ne "") {
+                    log "Starting SWARM OC" -ForegroundColor Cyan
                     Global:Add-Module "$($(vars).control)\octune.psm1"
                     Global:Start-OC($Miner)
                     Remove-Module -name octune
+                    ## OC_Success is a debug test flag at this point.
                     $OC_Success = $true
                 }
             }
@@ -177,11 +196,11 @@ function Global:Start-NewMiners {
                                                 Global:Get-WebModules $Sel
                                                 $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
                                             }
-                                            catch { Global:Write-Log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
+                                            catch { log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
                                             Global:Remove-WebModules $sel
                                         }
                                     }
-                                    Global:Write-Log "$HiveMessage" -ForegroundColor Red
+                                    log "$HiveMessage" -ForegroundColor Red
                                 }
                                 Restart-Computer
                             }
@@ -194,7 +213,7 @@ function Global:Start-NewMiners {
             }
 
             ##Launch Miners
-            Global:Write-Log "Starting $($Miner.InstanceName)"
+            log "Starting $($Miner.InstanceName)"
             if ($Miner.Type -notlike "*ASIC*") {
                 $Miner.Xprocess = Global:Start-LaunchCode $Miner
                 if ($IsWindows) {
@@ -210,7 +229,7 @@ function Global:Start-NewMiners {
                 }
             }
             else {
-                if ($global:ASICS.$($Miner.Type).IP) { $AIP = $global:ASICS.$($Miner.Type).IP }
+                if ($(vars).ASICS.$($Miner.Type).IP) { $AIP = $(vars).ASICS.$($Miner.Type).IP }
                 else { $AIP = "localhost" }
                 $Miner.Xprocess = Global:Start-LaunchCode $Miner $AIP
             }
@@ -218,19 +237,19 @@ function Global:Start-NewMiners {
             ##Confirm They are Running
             if ($Miner.XProcess -eq $null -or $Miner.Xprocess.HasExited -eq $true) {
                 $Miner.Status = "Failed"
-                $global:NoMiners = $true
-                Global:Write-Log "$($Miner.MinerName) Failed To Launch" -ForegroundColor Darkred
+               $(vars).NoMiners = $true
+                log "$($Miner.MinerName) Failed To Launch" -ForegroundColor Darkred
             }
             else {
                 $Miner.Status = "Running"
-                if ($Miner.Type -notlike "*ASIC*") { Global:Write-Log "Process Id is $($Miner.XProcess.ID)" }
-                Global:Write-Log "$($Miner.MinerName) Is Running!" -ForegroundColor Green
+                if ($Miner.Type -notlike "*ASIC*") { log "Process Id is $($Miner.XProcess.ID)" }
+                log "$($Miner.MinerName) Is Running!" -ForegroundColor Green
                 $(vars).current_procs += $Miner.Xprocess.ID
             }
         }
     }
-    if ($Reason -eq "Restart" -and $global:Restart -eq $true) {
-        Global:Write-Log "
+    if ($Reason -eq "Restart" -and $(vars).Restart -eq $true) {
+        log "
 
     //\\  _______
    //  \\//~//.--|
@@ -242,6 +261,6 @@ Waiting 20 Seconds For Miners To Fully Load
 
 " 
         Start-Sleep -s 20
-        $global:Restart = $false
+        $(vars).Restart = $false
     }
 }

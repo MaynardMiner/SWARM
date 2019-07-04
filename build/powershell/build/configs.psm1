@@ -27,28 +27,28 @@ function Global:Add-ASICS {
             $ASIC_COUNT = 1
             $Config.Params.ASIC_IP | ForEach-Object {
                 $SEL = $_ -Split "`:"
-                $global:ASICS.ADD("ASIC$ASIC_COUNT", @{IP = $($SEL | Select -First 1) })
+                $(vars).ASICS.ADD("ASIC$ASIC_COUNT", @{IP = $($SEL | Select -First 1) })
                 if ($SEL.Count -gt 1) {
-                    $global:ASICS."ASIC$ASIC_COUNT".ADD("NickName", $($SEL | Select -Last 1))
+                    $(vars).ASICS."ASIC$ASIC_COUNT".ADD("NickName", $($SEL | Select -Last 1))
                 }
                 $ASIC_COUNT++
             }
         }
     }
     elseif (Test-Path ".\config\miners\asic.json") {
-        $global:ASICS = @{ }
+        $(vars).ASICS = @{ }
         $ASIC_COUNT = 1
         $ASICList = Get-Content ".\config\miners\asic.json" | ConvertFrom-Json
         if ($ASICList.ASIC.ASIC1.IP -ne "IP ADDRESS") {
             $ASICList.ASICS.PSObject.Properties.Name | ForEach-Object {
-                $global:ASICS.ADD("ASIC$ASIC_COUNT", @{IP = $ASICList.ASICS.$_.IP; NickName = $ASICList.ASICS.$_.NickName })
+                $(vars).ASICS.ADD("ASIC$ASIC_COUNT", @{IP = $ASICList.ASICS.$_.IP; NickName = $ASICList.ASICS.$_.NickName })
                 $ASIC_COUNT++
             }
         }
     }
     
-    if ($Global:ASICS.Count -gt 0) {
-        $Global:ASICS.Keys | ForEach-Object {
+    if ($(vars).ASICS.Count -gt 0) {
+        $(vars).ASICS.Keys | ForEach-Object {
             if ($_ -notin $(arg).Type) {
                 $(arg).Type += $_
             }
@@ -56,6 +56,6 @@ function Global:Add-ASICS {
     }
 
     $(arg).Type = $(arg).Type | Where { $_ -ne "ASIC" }
-    if ($(arg).Type -like "*ASIC*") { $(arg).Type | Where { $_ -like "*ASIC*" } | % { $Global:ASICTypes += $_ } }
+    if ($(arg).Type -like "*ASIC*") { $(arg).Type | Where { $_ -like "*ASIC*" } | % { $(vars).ASICTypes += $_ } }
     if ($(arg).ASIC_IP -eq "") { $(arg).ASIC_IP = "localhost" }
 }

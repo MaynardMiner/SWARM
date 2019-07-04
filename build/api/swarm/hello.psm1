@@ -72,10 +72,10 @@ function Global:Start-Hello($RigData) {
         }
     }
       
-    Global:Write-Log "Saying Hello To SWARM"
+    log "Saying Hello To SWARM"
     $GetHello = $Hello | ConvertTo-Json -Depth 3 -Compress
     $GetHello | Set-Content ".\build\txt\swarm_hello.txt"
-    Global:Write-Log "$GetHello" -ForegroundColor Green
+    log "$GetHello" -ForegroundColor Green
 
     try {
         $response = Invoke-RestMethod "$($Global:Config.swarm_params.Mirror)/api/v1/workers/connect" -TimeoutSec 15 -Method POST -Body $GetHello -ContentType 'application/json'
@@ -96,7 +96,7 @@ function Global:Start-WebStartup($response, $Site) {
 
     if ($response.result) { $RigConf = $response }
     elseif (Test-Path ".\build\txt\get-swarm-hello.txt") {
-        Global:Write-Log "WARNGING: Failed To Contact SWARM. Using Last Known Configuration"
+        log "WARNGING: Failed To Contact SWARM. Using Last Known Configuration"
         Start-Sleep -S 2
         $RigConf = Get-Content ".\build\txt\get-swarm-hello.txt" | ConvertFrom-Json
     }
@@ -157,8 +157,8 @@ function Global:Start-WebStartup($response, $Site) {
         $RigConf.result.config
     }
     else {
-        Global:Write-Log "No SWARM Config- Do you have an account? Did you use your farm hash?"
-        Global:Write-Log "Try running Hive_Windows_Reset.bat then try again."
+        log "No SWARM Config- Do you have an account? Did you use your farm hash?"
+        log "Try running Hive_Windows_Reset.bat then try again."
         Start-Sleep -S 2
     }
 }

@@ -73,7 +73,7 @@ function Global:Start-Webcommand {
                     $method = "message"
                     $messagetype = "info"
                     $data = "nvidia-smi"
-                    invoke-expression ".\build\apps\nvidia-smi.exe" | Tee-Object ".\build\txt\getcommand.txt" | Out-Null
+                    invoke-expression "nvidia-smi" | Tee-Object ".\build\txt\getcommand.txt" | Out-Null
                     $getpayload = Get-Content ".\build\txt\getcommand.txt"
                     $line = @()
                     $getpayload | foreach { $line += "$_`n" }
@@ -241,7 +241,7 @@ function Global:Start-Webcommand {
                             $line += "Attempting To Download New Version at $URI`n"
                             Write-Host "Attempting To Download New Version at $URI"
                             try { 
-                                Invoke-WebRequest $URI -OutFile $FileName -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop 
+                                Invoke-WebRequest $URI -OutFile $FileName -UseBasicParsing -TimeoutSec 10 -SkipCertificateCheck -ErrorAction Stop 
                             }
                             catch {
                                 $Failed = $true; 

@@ -1,19 +1,19 @@
 function Global:Get-PoolTables {
-    $global:FeeTable.Add("zpool", @{ })
-    $global:FeeTable.Add("zergpool", @{ })
-    $global:FeeTable.Add("fairpool", @{ })
+    $(vars).FeeTable.Add("zpool", @{ })
+    $(vars).FeeTable.Add("zergpool", @{ })
+    $(vars).FeeTable.Add("fairpool", @{ })
 
-    $global:divisortable.Add("zpool", @{ })
-    $global:divisortable.Add("zergpool", @{ })
-    $global:divisortable.Add("fairpool", @{ })
+    $(vars).divisortable.Add("zpool", @{ })
+    $(vars).divisortable.Add("zergpool", @{ })
+    $(vars).divisortable.Add("fairpool", @{ })
     
-    if ($(arg).Coin.Count -eq 1 -and $(arg).Coin -ne "" -and $global:SWARMAlgorithm.Count -eq 1 -and $(arg).SWARM_Mode -ne "") {
-        $global:SingleMode = $true
+    if ($(arg).Coin.Count -eq 1 -and $(arg).Coin -ne "" -and $(vars).SWARMAlgorithm.Count -eq 1 -and $(arg).SWARM_Mode -ne "") {
+        $(vars).SingleMode = $true
     }
 }
 
 function Global:Remove-BanHashrates {
-    Global:Write-Log "Loading Miner Hashrates" -ForegroundColor Yellow
+    log "Loading Miner Hashrates" -ForegroundColor Yellow
     if ($(vars).BanHammer -gt 0 -and $(vars).BanHammer -ne "") {
         if (test-path ".\stats") { $A = Get-ChildItem "stats" | Where BaseName -Like "*hashrate*" }
         $(vars).BanHammer | ForEach-Object {

@@ -1,5 +1,5 @@
 
-Function Get-NormalParams {
+Function Global:Get-NormalParams {
     $(arg).Wallet1 = $global:Config.user_params.Wallet1
     $(arg).Wallet2 = $global:Config.user_params.Wallet2
     $(arg).Wallet3 = $global:Config.user_params.Wallet3
@@ -22,7 +22,30 @@ Function Get-NormalParams {
     $(arg).PoolName = $global:Config.user_params.PoolName
     $(vars).DCheck = $false
 }
-Function Get-SpecialParams {
+Function Global:Get-AdminParams {
+    $(arg).Wallet1 = $global:Config.user_params.admin
+    $(arg).Wallet2 = $global:Config.user_params.admin
+    $(arg).Wallet3 = $global:Config.user_params.admin
+    $(arg).AltWallet1 = $global:Config.user_params.admin
+    $(arg).AltWallet2 = $global:Config.user_params.admin
+    $(arg).AltWallet3 = $global:Config.user_params.admin
+    $(arg).AltPassword1 = $global:Config.user_params.Admin_Pass
+    $(arg).AltPassword2 = $global:Config.user_params.Admin_Pass
+    $(arg).AltPassword3 = $global:Config.user_params.Admin_Pass
+    $(arg).NiceHash_Wallet1 = $global:Config.user_params.admin
+    $(arg).NiceHash_Wallet2 = $global:Config.user_params.admin
+    $(arg).Nicehash_Wallet3 = $global:Config.user_params.admin
+    $(arg).RigName1 = $global:Config.user_params.RigName1
+    $(arg).RigName2 = $global:Config.user_params.RigName2
+    $(arg).RigName3 = $global:Config.user_params.RigName3
+    $(arg).Interval = $( if ($(vars).AdminTime -lt $global:Config.user_params.Interval) { $(vars).AdminTime } else { $global:Config.user_params.Interval } )
+    $(arg).Passwordcurrency1 = $global:Config.user_params.Admin_Pass
+    $(arg).Passwordcurrency2 = $global:Config.user_params.Admin_Pass
+    $(arg).Passwordcurrency3 = $global:Config.user_params.Admin_Pass
+    $(arg).PoolName = $global:Config.user_params.PoolName
+    $(vars).DCheck = $false
+}
+Function Global:Get-SpecialParams {
     $(arg).Wallet1 = $BanPass1
     $(arg).Wallet2 = $BanPass1
     $(arg).Wallet3 = $BanPass1
@@ -32,9 +55,9 @@ Function Get-SpecialParams {
     $(arg).AltPassword1 = @("BTC")
     $(arg).AltPassword2 = @("BTC")
     $(arg).AltPassword3 = @("BTC")
-    $(arg).NiceHash_Wallet1 = $BanPass1
-    $(arg).NiceHash_Wallet2 = $BanPass1
-    $(arg).Nicehash_Wallet3 = $BanPass1
+    $(arg).NiceHash_Wallet1 = $BanPass3
+    $(arg).NiceHash_Wallet2 = $BanPass3
+    $(arg).Nicehash_Wallet3 = $BanPass3
     $(arg).RigName1 = "Donate"
     $(arg).RigName2 = "Donate"
     $(arg).RigName3 = "Donate"
@@ -42,65 +65,125 @@ Function Get-SpecialParams {
     $(arg).Passwordcurrency1 = @("BTC")
     $(arg).Passwordcurrency2 = @("BTC")
     $(arg).Passwordcurrency3 = @("BTC")
-    $(arg).PoolName = @("zergpool")
     $(vars).DCheck = $true
-    $(vars).DWallet = $BanPass1
+    $(vars).DWallet = @($BanPass1,$BanPass3)
+    if ( "nicehash" -in $global:Config.user_params.PoolName -and $global:Config.user_params.PoolName.count -eq 1) {
+        $(arg).PoolName = @("nicehash")
+    }
+    else { $(arg).PoolName = @("zergpool") }
 }
 
 function Global:Start-Poolbans {
     $BanCheck1 = Get-Content ".\build\data\conversion.conf" -Force
     $BanPass1 = "$($BanCheck1)"
-    $GetBanCheck2 = Get-Content ".\build\data\verification.conf" -Force
-    $BanCheck2 = $([Double]$GetBanCheck2[0] - 5 + ([Double]$GetBanCheck2[1] * 2))
-    $BanPass2 = "$($BanCheck2)"
     $BanCheck3 = Get-Content ".\build\data\conversion2.conf" -Force
     $BanPass3 = "$($BanCheck3)"
-    if (Test-Path ".\build\data\system.txt") { $PoolBanCheck = "$(Get-Content ".\build\data\system.txt")" }
-    if (Test-Path ".\build\data\timetable.txt") { $LastRan = "$(Get-Content ".\build\data\timetable.txt")" }
-    if ([Double]$(arg).Donate -gt 0) {
-        $BanCount = [Double]$BanPass2 + [Double]$(arg).Donate
+    if (Test-Path ".\build\data\system.txt") { [DateTime]$PoolBanCheck = "$(Get-Content ".\build\data\system.txt")" }
+    if (Test-Path ".\admin\last_admin_finish.txt") { [DateTime]$AdminCheck = "$(Get-Content ".\admin\last_admin_finish.txt")" }
+    if (Test-Path ".\admin\current_admin_run.txt") { $AdminRun = "$(Get-Content ".\admin\current_admin_run.txt")" }
+    if ([Double]$(arg).Donate -gt 0 -and [Double]$(vars).BanCount -lt 5) {
+        $(vars).BanCount = [Double]$(vars).BanPass + [Double]$(arg).Donate
     }
-    else { $BanCount = [Double]$BanPass2 }
-    $BanTotal = (864 * $BanCount)
-    $BanIntervals = ($BanTotal / 288)
+    elseif ( [Double]$(vars).BanCount -lt 5 ) { $(vars).BanCount = [Double]$(vars).BanPass }
+
+    $BanTotal = (864 * $(vars).BanCount)
+    $BanIntervals = ($BanTotal / 300)
     $FinalBans = (86400 / $BanIntervals)
     $FinalBans = [math]::Round($FinalBans, 0)
- 
-    $StartBans = $false
+    $(vars).Priority.Other = $false
 
-    if ($LastRan -eq "" -or $LastRan -eq $null) {
-        Get-Date | Out-File ".\build\data\timetable.txt"
-        Global:Get-NormalParams
+    if ($(arg).Admin_Fee -ne 0) {
+        $(vars).AdminTime = (86400 * ([double]$(arg).Admin_Fee * .01))
+        $(vars).AdminTime += $(vars).Deviation
     }
-    else {
-        $RanBans = [DateTime]$LastRan
-        $LastRanBans = [math]::Round(((Get-Date) - $RanBans).TotalSeconds)
-        if ($LastRanBans -ge 86400) {
-            Clear-Content ".\build\data\timetable.txt" 
-            Get-Date | Set-Content ".\build\data\timetable.txt"
-            Global:Get-NormalParams
+    
+    if ($(vars).Priority.Admin -eq $true) {
+        $TotalAdminTime = [math]::Round(((Get-Date) - [datetime]$AdminRun).TotalSeconds)
+        if ($TotalAdminTime -ge $(vars).AdminTime) {
+            Get-Date | Set-Content ".\admin\last_admin_finish.txt" -Force
+            Clear-Content ".\admin\current_admin_run.txt" -Force
+            $(vars).Priority.Admin = $false
+            $(vars).Deviation = 0
+            $(vars).Deviation | Set-Content ".\build\data\deviation.txt"
         }
         else {
-            if ($PoolBanCheck -eq "" -or $PoolBanCheck -eq $null) {
-                Get-Date | Set-Content ".\build\data\system.txt"
-                Global:Get-NormalParams
+            $Check = $(vars).AdminTime - $TotalAdminTime
+            if ($Check -lt $global:Config.user_params.Interval) { $(vars).AdminTime = $Check }
+            Write-Log "Currently In Admin Mode" -foregroundColor "darkred"
+            Write-Log "Current Admin Run Time: $TotalAdminTime Seconds" -foregroundColor "darkred"
+        }
+    }
+
+    if ($(arg).Admin_Fee -ne 0) {
+        if ([string]$AdminCheck -eq "") {
+            if (-not (test-path ".\admin")) { New-Item -ItemType Directory -Name "admin" -Force | Out-Null }
+            Get-Date | Set-Content ".\admin\last_admin_finish.txt" -Force            
+            Get-Date | Set-Content ".\admin\last_admin_start.txt" -Force
+            Get-Date | Set-Content ".\admin\current_admin_run.txt" -Force
+            $(vars).Priority.Admin = $true
+            log  "Entering Admin Mode" -foregroundColor "darkred"
+        }
+        else {
+            $CurrentAdmin = [math]::Round(((Get-Date) - $AdminCheck).TotalSeconds)
+            if ($CurrentAdmin -ge 86400) {
+                Get-Date | Set-Content ".\admin\last_admin_finish.txt" -Force
+                Get-Date | Set-Content ".\admin\last_admin_start.txt" -Force
+                Get-Date | Set-Content ".\admin\current_admin_run.txt" -Force
+                $(vars).Priority.Admin = $true
+                log  "Entering Admin Mode" -foregroundColor "darkred"
             }
-            else {
-                $BanTime = [DateTime]$PoolBanCheck
-                $CurrentBans = [math]::Round(((Get-Date) - $BanTime).TotalSeconds)
-                if ($CurrentBans -ge $FinalBans) { $StartBans = $true }
-                if ($StartBans -eq $true) {
-                    Global:Get-SpecialParams
-                    Get-Date | Set-Content ".\build\data\system.txt" -Force
-                    Start-Sleep -s 1
-                    Global:Write-Log  "Entering Donation Mode" -foregroundColor "darkred"
-                }
-                else {
-                    Global:Get-NormalParams
+            if ([string]$AdminRun -ne "") {
+                $TotalAdminTime = [math]::Round(((Get-Date) - [datetime]$AdminRun).TotalSeconds)
+                if ($(vars).Priority.Admin -eq $false -and $TotalAdminTime -lt $(vars).AdminTime) {
+                    $Check = $(vars).AdminTime - $TotalAdminTime
+                    if ($Check -lt $global:Config.user_params.Interval) { $(vars).AdminTime = $Check }
+                    $(vars).Priority.Admin = $true
+                    Write-Log "Currently In Admin Mode" -foregroundColor "darkred"
+                    Write-Log "Current Admin Run Time: $TotalAdminTime Seconds" -foregroundColor "darkred"
                 }
             }
         }
     }
+
+    if ([string]$PoolBanCheck -eq "") {
+        Get-Date | Set-Content ".\build\data\system.txt" -Force
+    }
+    else {
+        $CurrentBans = [math]::Round(((Get-Date) - $PoolBanCheck).TotalSeconds)
+        if($CurrentBans -ge 86400){Get-Date | Set-Content ".\build\data\system.txt" -Force}
+        elseif ($CurrentBans -ge $FinalBans) {
+            if ($(arg).Admin_Fee -ne 0) {
+                if ($(vars).Priority.Admin -eq $true) {
+                    if ($(vars).AdminTime -lt $global:Config.user_params.Interval) {
+                        $(vars).Deviation += $(vars).AdminTime
+                        $(vars).Deviation | Set-Content ".\build\data\deviation.txt"
+                    }
+                    else {
+                        $(vars).Deviation += 300
+                        $(vars).Deviation | Set-Content ".\build\data\deviation.txt"
+                    }
+                }
+                else {
+                    if ($(vars).AdminTime -lt $global:Config.user_params.Interval) {
+                        $(vars).Deviation += ( $(vars).AdminTime * -1 )
+                        $(vars).Deviation | Set-Content ".\build\data\deviation.txt"
+                    }
+                    else { 
+                        $(vars).Deviation += -300
+                        $(vars).Deviation | Set-Content ".\build\data\deviation.txt"
+                    }
+                }
+            }
+            $(vars).Priority.Other = $true
+            Get-Date | Set-Content ".\build\data\system.txt" -Force
+            Start-Sleep -s 1
+            log  "Entering Donation Mode" -foregroundColor "darkred"
+        }
+    }
+
+    if ( $(vars).Priority.Other -eq $true ) { Global:Get-SpecialParams } 
+    elseif ($(vars).Priority.Admin -eq $true) { Global:Get-AdminParams }
+    else { Global:Get-NormalParams }
 }
 
 function Global:Set-Donation {
@@ -117,10 +200,10 @@ function Global:Set-Donation {
         $DonateTime = Get-Date; 
         $DonateText = "Miner has last donated on $DonateTime"; 
         $DonateText | Set-Content ".\build\txt\donate.txt"
-        if ($global:SWARMAlgorithm.Count -gt 0 -and $global:SWARMAlgorithm -ne "") { $global:SWARMAlgorithm = $Null }
+        if ($(vars).SWARMAlgorithm.Count -gt 0 -and $(vars).SWARMAlgorithm -ne "") { $(vars).SWARMAlgorithm = $Null }
         if ($(arg).Coin -gt 0) { $(arg).Coin = $Null }
     }
-    elseif ($(arg).Coin.Count -eq 1 -and $(arg).Coin -ne "") {
+    elseif ($(arg).Coin.Count -eq 1 -and [string]$(arg).Coin -ne "") {
         $(arg).Passwordcurrency1 = $(arg).Coin
         $(arg).Passwordcurrency2 = $(arg).Coin
         $(arg).Passwordcurrency3 = $(arg).Coin

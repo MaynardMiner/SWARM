@@ -101,5 +101,8 @@
     "Wallet3": "",
     "WattOMeter": "Yes",
     "Worker": "",
-    "Xnsub": ""
+    "Xnsub": "",
+    "Admin": "",
+    "Admin_Fee": 0,
+    "Admin_Pass": "BTC"
 }

@@ -13,7 +13,8 @@
             "yespowerr8": "",
             "yespowerr16": "",
             "yespowerr24": "",
-            "yespowerr32": ""
+            "yespowerr32": "",
+            "lyra2z330": ""
         },
         "difficulty": {
             "yescryptr8": "",
@@ -25,7 +26,8 @@
             "yespowerr8": "",
             "yespowerr16": "",
             "yespowerr24": "",
-            "yespowerr32": ""
+            "yespowerr32": "",
+            "lyra2z330": ""
         },
         "naming": {
             "yescryptr8": "yescryptr8",
@@ -37,7 +39,8 @@
             "yespowerr8": "yespowerr8",
             "yespowerr16": "yespowerr16",
             "yespowerr24": "yespowerr24",
-            "yespowerr32": "yespowerr32"
+            "yespowerr32": "yespowerr32",
+            "lyra2z330": "lyra2z330"
         },
         "fee": {
             "yescryptr8": 0,
@@ -49,7 +52,8 @@
             "yespowerr8": 0,
             "yespowerr16": 0,
             "yespowerr24": 0,
-            "yespowerr32": 0
+            "yespowerr32": 0,
+            "lyra2z330": 0
         }
     },
     "name": "sugarchain"

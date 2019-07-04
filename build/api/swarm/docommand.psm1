@@ -73,7 +73,7 @@ function Global:Start-Webcommand {
                     $method = "message"
                     $messagetype = "info"
                     $data = "nvidia-smi"
-                    invoke-expression ".\build\apps\nvidia-smi.exe" | Tee-Object ".\build\txt\getcommand.txt" | Out-Null
+                    invoke-expression ".\build\cmd\nvidia-smi.bat" | Tee-Object ".\build\txt\getcommand.txt" | Out-Null
                     $getpayload = Get-Content ".\build\txt\getcommand.txt"
                     $line = @()
                     $getpayload | foreach { $line += "$_`n" }

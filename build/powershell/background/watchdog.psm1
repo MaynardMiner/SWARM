@@ -18,7 +18,7 @@ function Global:Watch-Hashrate {
                                 $SendToHive = Global:Start-webcommand -command $Warning -swarm_message $Message -Website "$($Sel)"
                             }
                             catch {
-                                Global:Write-Log "
+                                log "
 WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow 
                             } 
                             Global:Remove-WebModules $sel
@@ -31,8 +31,7 @@ $Message" -ForegroundColor Red
                     Restart-Computer -Force
                 }
                 elseif ($Global:Config.hive_params.WD_Reboot -ne "") {
-                    Write-Host "
-Watchdog: WARNING Watchdog Will Restart Computer In $( [math]::Round($Global:Config.hive_params.Wd_reboot - $No_Hash,2) ) Minutes." -ForeGroundColor Cyan
+                    $reason = 0
                 }
             }
             $false {
@@ -48,7 +47,7 @@ Watchdog: WARNING Watchdog Will Restart Computer In $( [math]::Round($Global:Con
                                 $SendToHive = Global:Start-webcommand -command $Warning -swarm_message $Message -Website "$($Sel)"
                             }
                             catch {
-                                Global:Write-Log "
+                                log "
 WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow 
                             } 
                             Global:Remove-WebModules $sel
@@ -60,8 +59,7 @@ $Message" -ForegroundColor Red
                     $trigger = "restart"
                 }
                 elseif ($Global:Config.hive_params.Wd_Miner -ne "") {
-                    Write-Host "
-Watchdog: WARNING Watchdog Will Restart SWARM In $( [math]::Round($Global:Config.hive_params.Wd_Miner - $No_Hash,2) ) Minutes." -ForeGroundColor Cyan
+                    $Reason = 3
                 }
             }
         }
@@ -69,8 +67,7 @@ Watchdog: WARNING Watchdog Will Restart SWARM In $( [math]::Round($Global:Config
     else {
         $(vars).watchdog_triggered = $false; 
         $(vars).watchdog_start = Get-Date
-        Write-Host "
-Watchdog: OK" -ForegroundColor Cyan
+        $reason = 1
         $Trigger = "OKAY"
     }
     if ($trigger -eq "restart") {
@@ -86,35 +83,60 @@ Watchdog: OK" -ForegroundColor Cyan
         Exit
     }
 
+    $BadGPU = $false
+
     if ($Global:Config.hive_params.WD_CHECK_GPU -eq 1) {
         if ($global:GetMiners.Count -gt 0 -and $global:GETSWARM.HasExited -eq $false) {
             for ($i = 0; $i -lt $Global:GPUHashTable.Count; $i++) {
-                $NoTemp = $false
-                if ([Double]$global:GPUTempTable[$i] -eq 0) { $NoTemp = $true }
-                if ($NoTemp -eq $true) {
-                    $Message = "GPU Watchdog: GPU $i Showing No Temps, Rebooting."
-                    $Warning = @{result = @{command = "timeout" } }
-                    if ($(vars).WebSites) {
-                        $(vars).WebSites | ForEach-Object {
-                            $Sel = $_
-                            try {
-                                Global:Add-Module "$($(vars).web)\methods.psm1"
-                                Global:Get-WebModules $Sel
-                                $SendToHive = Global:Start-webcommand -command $Warning -swarm_message $Message -Website "$($Sel)"
-                            }
-                            catch {
-                                Global:Write-Log "
-WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow 
-                            } 
-                            Global:Remove-WebModules $sel
-                        }
-                    }
-                    Write-Host "
-$Message" -ForegroundColor Red
-                    Start-Sleep -S 3
-                    Restart-Computer -Force
+                if ([Double]$global:GPUTempTable[$i] -eq 0) { 
+                    $BadGPU = $true
+                    $This_GPU = $i
+                    $reason = 2
                 }
             }
+        }
+        if($BadGPU -eq $true){ $(vars).GPU_Bad++ }else{ $(vars).GPU_Bad = 0 }
+        if ( $(vars).GPU_Bad -ge 10 ) {
+            $Message = "GPU Watchdog: GPU $This_GPU Showing No Temps, Rebooting."
+            $Warning = @{result = @{command = "timeout" } }
+            if ($(vars).WebSites) {
+                $(vars).WebSites | ForEach-Object {
+                    $Sel = $_
+                    try {
+                        Global:Add-Module "$($(vars).web)\methods.psm1"
+                        Global:Get-WebModules $Sel
+                        $SendToHive = Global:Start-webcommand -command $Warning -swarm_message $Message -Website "$($Sel)"
+                    }
+                    catch {
+                        log "
+WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow 
+                    } 
+                    Global:Remove-WebModules $sel
+                }
+            }
+            Write-Host "
+$Message" -ForegroundColor Red
+            Start-Sleep -S 3
+            Restart-Computer -Force
+        }
+    }
+
+    Switch ($Reason) {
+        0 {
+            Write-Host "
+Watchdog: WARNING Watchdog Will Restart Computer In $( [math]::Round($Global:Config.hive_params.Wd_reboot - $No_Hash,2) ) Minutes." -ForeGroundColor Cyan        
+        }
+        1 {
+            Write-Host "
+Watchdog: OK" -ForegroundColor Cyan
+        }
+        2 {
+            Write-Host "
+GPU Watchdog: WARNING GPU $This_GPU Showing No Temps." -ForeGroundColor Cyan       
+        }
+        3 {
+            Write-Host "
+Watchdog: WARNING Watchdog Will Restart SWARM In $( [math]::Round($Global:Config.hive_params.Wd_Miner - $No_Hash,2) ) Minutes." -ForeGroundColor Cyan    
         }
     }
 }

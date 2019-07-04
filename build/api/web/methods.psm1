@@ -13,7 +13,7 @@ function Global:Get-RigData {
     Switch ($IsWindows) {
         $True {
             $RigData = @{ }
-            Invoke-Expression ".\build\apps\nvidia-smi.exe --query-gpu=gpu_bus_id,vbios_version,gpu_name,memory.total,power.min_limit,power.default_limit,power.max_limit --format=csv > "".\build\txt\getgpu.txt"""
+            invoke-expression ".\build\cmd\nvidia-smi.bat --query-gpu=gpu_bus_id,vbios_version,gpu_name,memory.total,power.min_limit,power.default_limit,power.max_limit --format=csv > "".\build\txt\getgpu.txt"""
             $getuid = (Get-CimInstance win32_networkadapterconfiguration | where { $_.IPAddress -ne $null } | select MACAddress).MacAddress -replace ("`:", "")
             $string1 = "$getuid".ToLower()
             $uid = Global:Get-StringHash $string1
@@ -54,7 +54,7 @@ function Global:Get-RigData {
             $swarmversion = Get-Content ".\h-manifest.conf" | ConvertFrom-StringData
             $swarmversion = $swarmversion.CUSTOM_VERSION
             $RigData.Add("kernel", $swarmversion)
-            Invoke-Expression ".\build\apps\nvidia-smi.exe --query-gpu=driver_version --format=csv" | Tee-Object -Variable nversion | Out-Null
+            invoke-expression ".\build\cmd\nvidia-smi.bat --query-gpu=driver_version --format=csv" | Tee-Object -Variable nversion | Out-Null
             $nvidiaversion = $nversion | ConvertFrom-Csv
             $nvidiaversion = $nvidiaversion.driver_version | Select -First 1
             $RigData.Add("nvidia_version", $nvidiaversion)
@@ -100,7 +100,7 @@ function Global:Get-RigData {
             $lan_config = [PSCustomObject]@{ dhcp = $lan_dhcp; address = $lan_address; gateway = $lan_gateway; dns = $lan_dns }
             $RigData.Add("net_interfaces",$net_interfaces)
             $RigData.Add("lan_config",$lan_config)
-            $nv_ver = Invoke-Expression "nvidia-smi --help | head -n 1 | awk `'{print `$NF}`' | sed `'s/v//`'"
+            $nv_ver = invoke-expression "nvidia-smi --help | head -n 1 | awk `'{print `$NF}`' | sed `'s/v//`'"
             $amd_ver = Invoke-Expression "dpkg -s amdgpu-pro 2`>`&1 | grep `'`^Version`: `' | sed `'s/Version: `/`/`' | awk -F`'-`' `'{print `$1}`'"
             if(-not $amd_ver){$amd_ver = Invoke-Expression "dpkg -s amdgpu 2`>`&1 | grep `'`^Version`: `' | sed `'s/Version: `/`/' | awk -F`'-`' `'{print `$1}`'"}
             if(-not $amd_ver){$amd_ver = "OpenCL" }

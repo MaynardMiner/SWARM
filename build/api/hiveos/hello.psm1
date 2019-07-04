@@ -53,10 +53,10 @@ function Global:Start-Hello($RigData) {
         }
     }
       
-    Global:Write-Log "Saying Hello To Hive"
+    log "Saying Hello To Hive"
     $GetHello = $Hello | ConvertTo-Json -Depth 3 -Compress
     $GetHello | Set-Content ".\build\txt\hive_hello.txt"
-    Global:Write-Log "$GetHello" -ForegroundColor Green
+    log "$GetHello" -ForegroundColor Green
 
     try {
         $response = Invoke-RestMethod "$($Global:Config.hive_params.Mirror)/worker/api" -TimeoutSec 15 -Method POST -Body ($Hello | ConvertTo-Json -Depth 3 -Compress) -ContentType 'application/json'
@@ -77,7 +77,7 @@ function Global:Start-WebStartup($response, $Site) {
 
     if ($response.result) { $RigConf = $response }
     elseif (Test-Path ".\build\txt\get-hive-hello.txt") {
-        Global:Write-Log "WARNGING: Failed To Contact HiveOS. Using Last Known Configuration"
+        log "WARNGING: Failed To Contact HiveOS. Using Last Known Configuration"
         Start-Sleep -S 2
         $RigConf = Get-Content ".\build\txt\get-hive-hello.txt" | ConvertFrom-Json
     }
@@ -190,8 +190,8 @@ function Global:Start-WebStartup($response, $Site) {
         $RigConf.result.config
     }
     else {
-        Global:Write-Log "No HiveOS Rig.conf- Do you have an account? Did you use your farm hash?"
-        Global:Write-Log "Try running Hive_Windows_Reset.bat then try again."
+        log "No HiveOS Rig.conf- Do you have an account? Did you use your farm hash?"
+        log "Try running Hive_Windows_Reset.bat then try again."
         Start-Sleep -S 2
     }
 }

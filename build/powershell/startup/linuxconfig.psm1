@@ -295,17 +295,17 @@ function Global:Get-GPUCount {
             $TypeArray = @("NVIDIA1", "NVIDIA2", "NVIDIA3", "AMD1")
             $TypeArray | ForEach-Object { if ($_ -in $(arg).Type) { $NoType = $false } }
             if ($NoType -eq $true) {
-                Global:Write-Log "Searching GPU Types" -ForegroundColor Yellow
+                log "Searching GPU Types" -ForegroundColor Yellow
                 if ($GA) { 
-                    Global:Write-Log "AMD Detected: Adding AMD" -ForegroundColor Magenta
+                    log "AMD Detected: Adding AMD" -ForegroundColor Magenta
                     $(arg).Type += "AMD1" 
                 }
                 if ($GN -and $GA) {
-                    Global:Write-Log "NVIDIA Also Detected" -ForegroundColor Magenta
+                    log "NVIDIA Also Detected" -ForegroundColor Magenta
                     $(arg).Type += "NVIDIA2" 
                 }
                 elseif ($GN) {
-                    Global:Write-Log "NVIDIA Detected: Adding NVIDIA" -ForegroundColor Magenta
+                    log "NVIDIA Detected: Adding NVIDIA" -ForegroundColor Magenta
                     $(arg).Type += "NVIDIA1" 
                 }
             }
@@ -362,7 +362,7 @@ function Global:Get-GPUCount {
 
     $(arg).Type | Foreach {
         if ($_ -like "*CPU*") {
-            Global:Write-Log "Getting CPU Count"
+            log "Getting CPU Count"
             for ($i = 0; $i -lt $(arg).CPUThreads; $i++) { 
                 $DeviceList.CPU.Add("$($i)", $i)
             }
@@ -440,15 +440,15 @@ function Global:Start-LinuxConfig {
             if ($(arg).Type -like "*NVIDIA*" -or $(arg).Type -like "*AMD*") {
                 Invoke-Expression ".\build\bash\libc.sh" | Tee-Object -Variable libc | Out-Null
                 Invoke-Expression ".\build\bash\libv.sh" | Tee-Object -Variable libv | Out-Null
-                $libc | % { Global:Write-Log $_ }
+                $libc | % { log $_ }
                 Start-Sleep -S 1
-                $libv | % { Global:Write-Log $_ }
+                $libv | % { log $_ }
                 Start-Sleep -S 1
             }
 
-            Global:Write-Log "Clearing Trash Folder"
+            log "Clearing Trash Folder"
             Invoke-Expression "rm -rf .local/share/Trash/files/*" | Tee-Object -Variable trash | Out-Null
-            $Trash | % { Global:Write-Log $_ }
+            $Trash | % { log $_ }
         }
     }
 
@@ -458,25 +458,25 @@ function Global:Start-LinuxConfig {
     ## Let User Know What Platform commands will work for- Will always be Group 1.
     if ($(arg).Type -like "*NVIDIA1*") {
         "NVIDIA1" | Out-File ".\build\txt\minertype.txt" -Force
-        Global:Write-Log "Group 1 is NVIDIA- Commands and Stats will work for NVIDIA1" -foreground yellow
+        log "Group 1 is NVIDIA- Commands and Stats will work for NVIDIA1" -foreground yellow
         Start-Sleep -S 3
     }
     elseif ($(arg).Type -like "*AMD1*") {
         "AMD1" | Out-File ".\build\txt\minertype.txt" -Force
-        Global:Write-Log "Group 1 is AMD- Commands and Stats will work for AMD1" -foreground yellow
+        log "Group 1 is AMD- Commands and Stats will work for AMD1" -foreground yellow
         Start-Sleep -S 3
     }
     elseif ($(arg).Type -like "*CPU*") {
         if ($(vars).GPU_Count -eq 0) {
             "CPU" | Out-File ".\build\txt\minertype.txt" -Force
-            Global:Write-Log "Group 1 is CPU- Commands and Stats will work for CPU" -foreground yellow
+            log "Group 1 is CPU- Commands and Stats will work for CPU" -foreground yellow
             Start-Sleep -S 3
         }
     }
     elseif ($(arg).Type -like "*ASIC*") {
         if ($(vars).GPU_Count -eq 0) {
             "ASIC" | Out-File ".\build\txt\minertype.txt" -Force
-            Global:Write-Log "Group 1 is ASIC- Commands and Stats will work for ASIC" -foreground yellow
+            log "Group 1 is ASIC- Commands and Stats will work for ASIC" -foreground yellow
         }
     }
     
@@ -486,7 +486,7 @@ function Global:Start-LinuxConfig {
     $Proc | Wait-Process
 
     ##Data and Hive Configs
-    Global:Write-Log "Getting Data" -ForegroundColor Yellow
+    log "Getting Data" -ForegroundColor Yellow
     Global:Get-Data
 
     ## Set Arguments/New Parameters

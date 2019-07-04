@@ -27,6 +27,7 @@ $Global:config = [hashtable]::Synchronized(@{ })
 $global:config.Add("vars", @{ })
 . .\build\powershell\global\modules.ps1
 $(vars).Add("dir", $WorkingDir)
+$env:Path += ";$($(vars).dir)\build\cmd"
 
 try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$WorkingDir`'" -WindowStyle Minimized } }catch { }
 try { $Net = Get-NetFireWallRule } catch { }
@@ -62,7 +63,9 @@ if ($P -notlike "*$($(vars).dir)\build\powershell*") {
 }
 
 $(vars).Add("Modules", @())
-Import-Module "$($(vars).global)\include.psm1" -Scope Global
+Import-Module "$($(vars).global)\stats.psm1" -Scope Global
+Import-Module "$($(vars).global)\hashrates.psm1" -Scope Global
+Import-Module "$($(vars).global)\gpu.psm1" -Scope Global
 Global:Add-Module "$($(vars).background)\startup.psm1"
 
 ## Get Parameters
@@ -113,6 +116,7 @@ $(vars).ADD("GCount",(Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Jso
 $(vars).ADD("BackgroundTimer",(New-Object -TypeName System.Diagnostics.Stopwatch))
 $(vars).ADD("watchdog_start",(Get-Date))
 $(vars).ADD("watchdog_triggered",$false)
+$(vars).Add("GPU_Bad",0)
 
 ## If miner was restarted due to watchdog
 if(test-path ".\build\txt\watchdog.txt"){ 
@@ -145,9 +149,6 @@ While ($True) {
 
     Global:Add-Module "$($(vars).background)\run.psm1"
     Global:Add-Module "$($(vars).background)\initial.psm1"
-    Global:Add-Module "$($(vars).global)\gpu.psm1"
-    Global:Add-Module "$($(vars).global)\stats.psm1"
-    Global:Add-Module "$($(vars).global)\hashrates.psm1"
     
     Global:Invoke-MinerCheck
     Global:New-StatTables
@@ -637,12 +638,13 @@ While ($True) {
         Write-Host " ALGO: $Global:StatAlgo" -ForegroundColor White -NoNewline; Write-Host " `|" -NoNewline
         Write-Host " UPTIME: $global:UPTIME" -ForegroundColor Yellow
         Write-Host "STRATUM: $global:StatStratum" -ForegroundColor Cyan
-        Write-Host "START_TIME: $StartTime" -ForegroundColor Magenta -NoNewline; Write-Host " `|" -NoNewline
+        $origin = New-Object -Type DateTime -ArgumentList 1970, 1, 1, 0, 0, 0, 0
+        $SysTime = $origin.AddSeconds([Double]$StartTime)
+        Write-Host "START_TIME: $SysTime" -ForegroundColor Magenta -NoNewline; Write-Host " `|" -NoNewline
         Write-Host " WORKER: $global:StatWorker
 " -ForegroundColor Yellow
     }
 
-    Remove-Module -Name "gpu"
     Remove-Module -Name "run"
     
     if ($(vars).WebSites) {

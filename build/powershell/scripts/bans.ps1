@@ -72,7 +72,7 @@ switch ($Action) {
                                     $global:Config.Pool_Algos.$Item.exclusions += $Value
                                 }
                             }
-                            else{Global:Write-Log "WARNING: Cannot add $Value to $Item Bans" -ForeGroundColor Yellow}
+                            else{log "WARNING: Cannot add $Value to $Item Bans" -ForeGroundColor Yellow}
                         }
                     }
                 }
@@ -110,6 +110,8 @@ switch ($Action) {
     }
 }
 
+
 if ($PoolChange = $true) { $PoolJson | ConvertTo-Json | Set-Content $PoolDir }
 if ($BanChange = $true) { if (-not $JSonBanHammer) { Clear-Content $Bandir }else { $JsonBanHammer | ConvertTo-Json | Set-Content $BanDir } }
 if ($Screen) { $Screen }
+
