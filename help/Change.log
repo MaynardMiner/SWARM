@@ -296,3 +296,39 @@ Changelog
     * t-rex updated
     * cc-mtp updated
     
+    2.4.5
+
+    ## FEATURES
+    * Cleaned up repository, removed uncessary files.
+    * All major variables for core program are now
+      contained in $(vars) variable.
+    * Add new functions to add/remove/check variables
+      for modules (see swarm.ps1 for description).
+    * SWARM will now try to 'guess' miner binary downloads,
+      when the link doesn't end with the package name.
+      * example: https://mybadassminer.com/download
+        * SWARM will assume this is a .zip or 7z if windows.
+        * SWARM will assume this is a tar.gz if linux.
+    * ``version update`` command was edited so that
+        links can contain special characters.
+        * example: https://mybadassminer.com/&getdownloads_1=&download_8008135
+          * The '&' would previously break ``version update`` command.
+          * This works if you the url is between quotes (' ')
+            example: ``version update cc-awesome 1.0.0 'https://mybadassminer.com/&getdownloads_1=&download_8008135'``
+        
+    ## FIXES (from beta release)
+    * When SWARM restarts loop (no miners! error, bad download, etc.), it
+      will not remove all previous variables, preventing dictionary errors.
+    * There was a typo for Windows AMD overclocking in beta version for
+      core voltage - Fixed.
+    * Reduced GPU Watchdog sensitivity from the first time it fails to displays
+      temps, to 10 times in a row it must fail to display temps before restart.
+    * Beta version- Coin miners would load, even when Auto_Coin wasn't specified:
+      was resolved.
+    * Beta version - Error output was missing in logs. This was fixed.
+
+    ## Updates:
+    * TeamRedMiner updated
+    * lolminer updated
+    * gminer updated
+    * miniz updated

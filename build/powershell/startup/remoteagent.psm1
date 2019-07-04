@@ -34,7 +34,8 @@ function Global:start-update {
         $PreviousVersions += "SWARM.2.4.0"
         $PreviousVersions += "SWARM.2.4.1"
         $PreviousVersions += "SWARM.2.4.2"
-        $PreviousVersions += "SWARM.2.4.3"
+        $PreviousVersions += "SWARM.2.4.3"        
+        $PreviousVersions += "SWARM.2.4.4"
 
         $StatsOnly = $null
 
@@ -96,9 +97,9 @@ function Global:start-update {
                     Get-ChildItem -Path "$($OldTimeout)\*" -Include *.txt | Copy-Item -Destination ".\timeout"
                 }
                 if ($StatsOnly -ne "Yes") {
-                    $Jsons = @("asic","miners","oc","pools","power")
+                    $Jsons = @("asic","miners","oc","pools","power","wallets")
                     $UpdateType = @("CPU", "AMD1", "NVIDIA1", "NVIDIA2", "NVIDIA3")
-                    if ($CurrentVersion -lt 244) { $Exclude += "wallets.json" }
+                    if ($CurrentVersion -le 243) { $Exclude += "wallets.json" }
 
                     $Jsons | foreach {
                         $OldJson_Path = Join-Path $OldConfig "$($_)";
