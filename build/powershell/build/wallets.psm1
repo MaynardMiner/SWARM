@@ -25,7 +25,7 @@ function Global:Set-Donation {
 function Global:Get-AltWallets {
 
     ##Get Wallet Config
-    if ([string]$(vars).AltWallet1 -notin "") { $Wallet_Json = Get-Content ".\config\wallets\wallets.json" | ConvertFrom-Json }
+    $Wallet_Json = Get-Content ".\config\wallets\wallets.json" | ConvertFrom-Json
     
     if ([string]$(arg).AltWallet1 -eq "") { 
         $(vars).All_AltWallets = $Wallet_Json."Passive Alternative Wallets"."coin list" 
@@ -63,7 +63,7 @@ function Global:Get-AltWallets {
         }
     }
 
-    if ([string]$(arg).AltWallet1 -eq "") { 
+    if ([string]$(arg).AltWallet1 -eq "") {
         ##Sort Only Wallet Info
         $Wallet_Json = $Wallet_Json."Active Exchange Wallets".AltWallets | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | % { if ($_ -like "*AltWallet*") { @{"$($_)" = $Wallet_Json."Active Exchange Wallets".AltWallets.$_ } } }
 
