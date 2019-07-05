@@ -107,7 +107,7 @@ Import-Module "$($(vars).global)\hashrates.psm1" -Scope Global
 Import-Module "$($(vars).global)\gpu.psm1" -Scope Global
 
 
-if ($IsWindows -and $Global:config.hive_params.MINER_DELAY -and $Global:config.hive_params.MINER_DELAY -ne "") {
+if ($IsWindows -and [string]$Global:config.hive_params.MINER_DELAY -ne "") {
     Write-Host "Miner Delay Specified- Sleeping for $($Global:config.hive_params.MINER_DELAY)"
     $Sleep = [Double]$Global:config.hive_params.MINER_DELAY
     Start-Sleep -S $Sleep
@@ -145,8 +145,7 @@ if (-not (Test-Path ".\build\txt")) { New-Item -Path ".\build" -Name "txt" -Item
 ##Start Data Collection
 Global:Add-Module "$($(vars).startup)\datafiles.psm1"
 
-$AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
-[System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
 
 Global:Get-DateFiles
 Global:Clear-Stats
