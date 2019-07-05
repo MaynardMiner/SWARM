@@ -24,10 +24,10 @@ function Global:Set-Stats($Site) {
 
     if ($GPUHashTable) {
         $miner_stats = @{
-            hs       = $global:GPUHashTable
+            hs       = @($global:GPUHashTable)
             hs_units = "khs"
-            temp     = $global:GPUTempTable
-            fan      = $global:GPUFanTable
+            temp     = @($global:GPUTempTable)
+            fan      = @($global:GPUFanTable)
             uptime   = $global:UPTIME
             ar       = @($AR)
             algo     = $Global:StatAlgo
@@ -54,7 +54,7 @@ function Global:Set-Stats($Site) {
     } else {
         $HGPUTempTable = $global:GPUTempTable
         $HGPUFanTable = $global:GPUFanTable
-        $HGPUPowerTable = $global:GPUPowerTable
+        $HGPUPowerTable =$global:GPUPowerTable
     }
 
     $Stats = @{
@@ -73,9 +73,9 @@ function Global:Set-Stats($Site) {
             }
             miner_stats = $miner_stats
             total_khs = $global:GPUKHS
-            temp      = $HGPUTempTable
-            fan       = $HGPUFanTable
-            power     = $HGPUPowerTable
+            temp      = @($HGPUTempTable)
+            fan       = @($HGPUFanTable)
+            power     = @($HGPUPowerTable)
             df        = "$global:diskspace"
             mem       = @($mem)
             cpuavg    = $global:LoadAverages

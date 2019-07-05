@@ -56,7 +56,7 @@ $(vars).Add("ActiveMinerPrograms",@())
 $(vars).Add("options",0)
 $(vars).Add("DWallet",$null)
 $(vars).Add("DCheck",$false)
-$(vars).Add("Warnings",(New-Object System.Collections.ArrayList))
+$(vars).Add("Warnings",@())
 $(vars).Add("Watts",$Null)
 if ($(arg).Timeout) { $(vars).ADD("TimeoutTime",[Double]$(arg).Timeout * 3600) }
 else { $(vars).Add("TimeoutTime",10000000000) }

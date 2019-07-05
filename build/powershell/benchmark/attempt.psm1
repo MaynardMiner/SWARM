@@ -34,20 +34,14 @@ function Global:Set-Warnings {
 
     switch ($command) {
         "clear" {
-            if ([string]$(vars).Warnings.$name.bad) { 
-                if ( $(vars).Warnings.Count -le 1 ) { $(vars).Warnings = New-Object System.Collections.ArrayList }
-                else { $(vars).Warnings.Remove($name) | Out-Null } 
-            }
+            if ([string]$(vars).Warnings.$name.bad -ne "") { $(vars).Warnings = $(vars).Warnings | Where $($_.keys -ne $name) }
         }
         "add" {
-            if ([string]$(vars).Warnings.$name.bad -eq "") {
-                $(vars).Warnings.ADD( [PSCustomObject]@{ "$name" = [PSCustomObject]@{ bad = 0 } } ) | Out-Null
-            }
-            else {
-                $(vars).Warnings.$name.bad++
-            }
+            if ([string]$(vars).Warnings.$name.bad -eq "") { $(vars).Warnings += @{ "$name" = @{ bad = 1 } } }
+            else { $(vars).Warnings.$name.bad++ }
         }
     }
+    if($(vars).Warnings.Count -eq 0) { $(vars).Warnings = @() }
 }
 
 function Global:Get-HiveWarning($HiveMessage) {
