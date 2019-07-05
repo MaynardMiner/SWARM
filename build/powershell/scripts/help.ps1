@@ -478,6 +478,11 @@ Answer"
                 $(vars).config.Add("Wallet$($i+1)", $ans)
             }
         }
+        elseif ("AMD1" -in $(vars).config.Type -and "NVIDIA2" -in $(vars).config.Type ) {
+            $ans = Read-Host -Prompt "Please Enter BTC Wallet"
+            $(vars).config.Add("Wallet1", $ans)
+            $(vars).config.Add("Wallet2", $ans)
+        }
         else {
             $ans = Read-Host -Prompt "Please Enter BTC Wallet"
             $(vars).config.Add("Wallet1", $ans)
@@ -655,10 +660,10 @@ Answer"
     }
 }
 
-if($IsWindows) {
-        do{
-            Clear-Host
-            $ans = Read-Host -Prompt "SWARM has detected this is a Windows OS.
+if ($IsWindows) {
+    do {
+        Clear-Host
+        $ans = Read-Host -Prompt "SWARM has detected this is a Windows OS.
 
 Would you like to use HiveOS web dashboard for online statistics and remote control?
 
@@ -666,36 +671,37 @@ Would you like to use HiveOS web dashboard for online statistics and remote cont
 2 No
 
 Answer"
-            $Check = Global:Confirm-Answer $ans @("1","2")
-        }While($Check -eq 1)
-        switch($ans){
-            "2" {$(vars).config.add("Hive_Hash","xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-                $(vars).config.add("HiveOS","No")
-            }
-            "1" {
-                do{
-                    Clear-Host
-                    $ans1 = Read-Host -Prompt "Okay. Please go to HiveOS.farm, and create an account.
+        $Check = Global:Confirm-Answer $ans @("1", "2")
+    }While ($Check -eq 1)
+    switch ($ans) {
+        "2" {
+            $(vars).config.add("Hive_Hash", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+            $(vars).config.add("HiveOS", "No")
+        }
+        "1" {
+            do {
+                Clear-Host
+                $ans1 = Read-Host -Prompt "Okay. Please go to HiveOS.farm, and create an account.
 
 You will receive a farm hash for your farm there. You can go to Farm > Settings, and it will be listed there.
 
 Please Enter Your Farm Hash"
 
-                    Clear-Host
+                Clear-Host
 
-                    $ans2 = Read-Host -Prompt "You have entered $ans1
+                $ans2 = Read-Host -Prompt "You have entered $ans1
 Is this correct
 
 1 Yes
 2 No
 
 Answer"
-                    $Check = Global:Confirm-Answer $ans2 @("1","2")
-                }While($Check -eq 1)
-                $(vars).config.add("Hive_Hash",$ans1);
-                $(vars).config.add("HiveOS","Yes")
-            }
+                $Check = Global:Confirm-Answer $ans2 @("1", "2")
+            }While ($Check -eq 1)
+            $(vars).config.add("Hive_Hash", $ans1);
+            $(vars).config.add("HiveOS", "Yes")
         }
+    }
 }
 
 
@@ -761,7 +767,7 @@ Answer"
                 "1" {
                     $(vars).input = Global:Get-Advanced_Settings
                     $(vars).input = $(vars).input.ToLower()
-                    $(vars).input = $(vars).input | ForEach-Object { $Test = $Null; try {$Test = [int]$_} catch { }; if ($Test) { $Test } }
+                    $(vars).input = $(vars).input | ForEach-Object { $Test = $Null; try { $Test = [int]$_ } catch { }; if ($Test) { $Test } }
                     if ($(vars).input -in 1 .. 6) {
                         Add-Module "$hd\strategy.psm1"
                         Global:Get-Strategy
