@@ -602,18 +602,18 @@ While ($True) {
         summary = $global:MinerTable;
     }
     $global:Config.stats = @{
-        gpus       = $global:GPUHashTable;
-        cpus       = $global:CPUHashTable;
-        asics      = $global:ASICHashTable;
+        gpus       = @($global:GPUHashTable);
+        cpus       = @($global:CPUHashTable);
+        asics      = @($global:ASICHashTable);
         cpu_total  = $global:CPUKHS;
         asic_total = $global:ASICKHS;
         gpu_total  = $global:GPUKHS;
         algo       = $Global:StatAlgo;
         uptime     = $global:UPTIME;
         hsu        = "khs";
-        fans       = $global:GPUFanTable;
-        temps      = $global:GPUTempTable;
-        power      = $global:GPUPowerTable;
+        fans       = @($global:GPUFanTable);
+        temps      = @($global:GPUTempTable);
+        power      = @($global:GPUPowerTable);
         accepted   = $global:AllACC;
         rejected   = $global:AllREJ;
         stratum    = $Global:StatStratum
