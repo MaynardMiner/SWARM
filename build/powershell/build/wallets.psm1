@@ -27,7 +27,11 @@ function Global:Get-AltWallets {
     ##Get Wallet Config
     $Wallet_Json = Get-Content ".\config\wallets\wallets.json" | ConvertFrom-Json
     
-    if ([string]$(arg).AltWallet1 -eq "") { $(vars).All_AltWallets = $Wallet_Json."Passive Alternative Wallets"."coin list" }
+    if ([string]$(arg).AltWallet1 -eq "") { 
+        $(vars).All_AltWallets = $Wallet_Json."Passive Alternative Wallets"."coin list" 
+    }
+    else { $(vars).All_AltWallets = $null }
+
     if ([String]$(arg).Admin_Fee -eq 0) {
         if ($Wallet_Json."Admin Wallet"."admin fee percentage" -ne 0) {
             if ($(arg).Containskey("Admin_Fee")) {
@@ -58,28 +62,31 @@ function Global:Get-AltWallets {
             }
         }
     }
-    ##Sort Only Wallet Info
-    $Wallet_Json = $Wallet_Json."Active Exchange Wallets".AltWallets | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | % { if ($_ -like "*AltWallet*") { @{"$($_)" = $Wallet_Json."Active Exchange Wallets".AltWallets.$_ } } }
 
-    ##Go Through Each Wallet, see if it has been modified.
-    $Wallet_Configs = @()
+    if ([string]$(arg).AltWallet1 -eq "") {
+        ##Sort Only Wallet Info
+        $Wallet_Json = $Wallet_Json."Active Exchange Wallets".AltWallets | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | % { if ($_ -like "*AltWallet*") { @{"$($_)" = $Wallet_Json."Active Exchange Wallets".AltWallets.$_ } } }
 
-    $Wallet_Json.keys | % {
-        $Add = $false
-        $Current_Wallet = $_
-        $Wallet_Hash = @{"$Current_Wallet" = @{ } }
-        $Wallet_Json.$Current_Wallet.PSObject.Properties.Name | % {
-            $Symbol = "$($_)"
-            if ($_ -ne "add coin symbol here" -and $_ -ne "add another coin symbol here" -and $_ -ne "note") {
-                $Wallet_Hash.$Current_Wallet.Add("$Symbol", @{ })
-                $Wallet_Pools = [Array]$Wallet_Json.$Current_Wallet.$Symbol.pools
-                $Wallet_Address = $Wallet_Json.$Current_Wallet.$Symbol.address
-                $Wallet_Hash.$Current_Wallet.$Symbol.Add("address", $Wallet_Address)
-                $Wallet_Hash.$Current_Wallet.$Symbol.Add("pools", $Wallet_Pools)
-                $Add = $true
+        ##Go Through Each Wallet, see if it has been modified.
+        $Wallet_Configs = @()
+
+        $Wallet_Json.keys | % {
+            $Add = $false
+            $Current_Wallet = $_
+            $Wallet_Hash = @{"$Current_Wallet" = @{ } }
+            $Wallet_Json.$Current_Wallet.PSObject.Properties.Name | % {
+                $Symbol = "$($_)"
+                if ($_ -ne "add coin symbol here" -and $_ -ne "add another coin symbol here" -and $_ -ne "note") {
+                    $Wallet_Hash.$Current_Wallet.Add("$Symbol", @{ })
+                    $Wallet_Pools = [Array]$Wallet_Json.$Current_Wallet.$Symbol.pools
+                    $Wallet_Address = $Wallet_Json.$Current_Wallet.$Symbol.address
+                    $Wallet_Hash.$Current_Wallet.$Symbol.Add("address", $Wallet_Address)
+                    $Wallet_Hash.$Current_Wallet.$Symbol.Add("pools", $Wallet_Pools)
+                    $Add = $true
+                }
             }
+            if ($Add -eq $true) { $Wallet_Configs += $Wallet_Hash }
         }
-        if ($Add -eq $true) { $Wallet_Configs += $Wallet_Hash }
     }
 
     $Wallet_Configs
@@ -106,10 +113,13 @@ function Global:Get-Wallets {
     if ($(arg).Coin) { $C = $false }
     if ($C -eq $false) { log "Coin Parameter Specified, disabling All alternative wallets." -ForegroundColor Yellow }
     
-    if ($(arg).AltWallet1 -and $C -eq $true) { $global:Wallets | Add-Member "AltWallet1" @{$(arg).AltPassword1 = @{address = $(arg).AltWallet1; Pools = $NewWallet1 } }}
+    if ($(arg).AltWallet1 -and $C -eq $true) { $global:Wallets | Add-Member "AltWallet1" @{$(arg).AltPassword1 = @{address = $(arg).AltWallet1; Pools = $NewWallet1 } }
+    }
     elseif ($AltWallet_Config.AltWallet1 -and $C -eq $true) { $global:Wallets | Add-Member "AltWallet1" $AltWallet_Config.AltWallet1 }
-    if ($(arg).Wallet1 -and $C -eq $true) { $global:Wallets | Add-Member "Wallet1" @{$(arg).Passwordcurrency1 = @{address = $(arg).Wallet1; Pools = $NewWallet1 } }}
-    else { $global:Wallets | Add-Member "Wallet1" @{"$($(arg).Passwordcurrency1)" = @{address = $(arg).Wallet1; Pools = $NewWallet1 } }}
+    if ($(arg).Wallet1 -and $C -eq $true) { $global:Wallets | Add-Member "Wallet1" @{$(arg).Passwordcurrency1 = @{address = $(arg).Wallet1; Pools = $NewWallet1 } }
+    }
+    else { $global:Wallets | Add-Member "Wallet1" @{"$($(arg).Passwordcurrency1)" = @{address = $(arg).Wallet1; Pools = $NewWallet1 } }
+    }
     
     if ($(arg).AltWallet2 -and $C -eq $true ) { $global:Wallets | Add-Member "AltWallet2" @{$(arg).AltPassword2 = @{address = $(arg).AltWallet2; Pools = $NewWallet2 } }
     }
