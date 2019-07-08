@@ -55,7 +55,22 @@ Argument          Options           Explanation
 
 These arguments can be added for additional customization and options
 
-Argument            Options             Explanation
+Argument      Options             Explanation
+
+-Admin_Fee    [0-50]                Expressed as Percentage. 
+                                    Admin_Fee allows users to set a seperate wallet, and specify
+                                    a certain percentage of time mined on that wallet a day. Admin
+                                    Mode is done first, and then normal mode begins. Every 24 hours-
+                                    Admin_Mode starts again, mining % of day specified by this parameter.
+                                    If SWARM enters donation mode, time is either added to Admin_Fee, or
+                                    removed, to encompass an even distribution between admin mode and user mode.
+                                    Simple timestamp of when last Admin ran occurred will be
+                                    placed in ".\admin" folder for reference. They will be transferred on update.
+                                    -Admin must be specified if using -Admin_Fee.
+
+-Admin        [address]             Admin Wallet for -Admin_Fee Parameter
+
+-Admin_Pass   [Symbol]              Default is BTC. The address coin symbol of -Admin.
 
 -optional     [array,               Default is empty array. Specifying this parameter will move
                of,                  an optiona/old miner into the main miners directory.
@@ -248,11 +263,14 @@ Argument            Options             Explanation
 -Conserve        [Yes or No]        Default is "No". This option will determine if SWARM should continue
                                     mining even though all estimates are negative figures.
 
--PoolBanCount    [0-10]             Default is 2. Number of strikes/bad benchmarks required before
+-PoolBanCount    [0-10]             Default is 3. Number of strikes/bad benchmarks required before
                                     miner is banned from using pool.
 
--AlgoBanCount    [0-10]             Default is 3. Number of strikes/bad benchmarks required before
+-AlgoBanCount    [0-10]             Default is 4. Number of strikes/bad benchmarks required before
                                     miner is banned from using algo.
+
+-MinerBanCount    [0-10]            Default is 5. Number of strikes/bad benchmarks required before
+                                    miner is banned entirely.
 
 -TypeBanCount    [0-10]             Like PoolBanCount, TypeBanCount will take
                                     action if a device type (AMD1,CPU,NVIDIA1,etc.) has x consecutive banned

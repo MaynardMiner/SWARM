@@ -571,13 +571,13 @@ While ($True) {
         $global:GPUFanTable = $TempFan
         $global:GPUTempTable = $TempTemp
         $global:GPUPowerTable = $TempPower
-        Remove-Variable TempGPU
-        Remove-Variable TempFan
-        Remove-Variable TempTemp
-        Remove-Variable TempPower
+        Remove-Variable TempGPU -ErrorAction Ignore
+        Remove-Variable TempFan -ErrorAction Ignore
+        Remove-Variable TempTemp -ErrorAction Ignore
+        Remove-Variable TempPower -ErrorAction Ignore
     }
 
-    Remove-Variable DeviceTable
+    Remove-Variable DeviceTable -ErrorAction Ignore
 
     if ($global:DoCPU) {
         for ($global:i = 0; $global:i -lt $(vars).GCount.CPU.PSObject.Properties.Value.Count; $global:i++) {
@@ -602,18 +602,18 @@ While ($True) {
         summary = $global:MinerTable;
     }
     $global:Config.stats = @{
-        gpus       = $global:GPUHashTable;
-        cpus       = $global:CPUHashTable;
-        asics      = $global:ASICHashTable;
+        gpus       = @($global:GPUHashTable);
+        cpus       = @($global:CPUHashTable);
+        asics      = @($global:ASICHashTable);
         cpu_total  = $global:CPUKHS;
         asic_total = $global:ASICKHS;
         gpu_total  = $global:GPUKHS;
         algo       = $Global:StatAlgo;
         uptime     = $global:UPTIME;
         hsu        = "khs";
-        fans       = $global:GPUFanTable;
-        temps      = $global:GPUTempTable;
-        power      = $global:GPUPowerTable;
+        fans       = @($global:GPUFanTable);
+        temps      = @($global:GPUTempTable);
+        power      = @($global:GPUPowerTable);
         accepted   = $global:AllACC;
         rejected   = $global:AllREJ;
         stratum    = $Global:StatStratum

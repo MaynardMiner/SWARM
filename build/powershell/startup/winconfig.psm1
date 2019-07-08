@@ -207,7 +207,7 @@ function Global:Start-WindowsConfig {
                 log "Attempting to add current SWARM.bat to startup" -ForegroundColor Magenta
                 log "If you do not wish SWARM to start on startup, use -Startup No argument"
                 log "Startup FilePath: $Startup_Path"
-                $bat = "CMD /r pwsh -ExecutionPolicy Bypass -command `"Set-Location $($(vars).dir); Start-Process `"SWARM.bat`"`""
+                $bat = "CMD /r pwsh -ExecutionPolicy Bypass -command `"Set-Location C:\; Set-Location `'$($(vars).dir)`'; Start-Process `"SWARM.bat`"`""
                 $Bat_Startup = Join-Path $Startup_Path "SWARM.bat"
                 $bat | Set-Content $Bat_Startup
             }
@@ -260,15 +260,39 @@ function Global:Start-WindowsConfig {
     if ($(arg).Type -like "*NVIDIA*") { $(arg).Cuda = "10"; $(arg).Cuda | Set-Content ".\build\txt\cuda.txt" }
     
     ##Detect if drivers are installed, not generic- Close if not. Print message on screen
+    $Install_NVSMI = $false
     if ($(arg).Type -like "*NVIDIA*" -and -not (Test-Path "C:\Program Files\NVIDIA Corporation\NVSMI\nvml.dll")) {
         log "nvml.dll is missing" -ForegroundColor Red
         Start-Sleep -S 3
-        log "To Fix:" -ForegroundColor Blue
-        log "Update Windows, Purge Old NVIDIA Drivers, And Install Latest Drivers" -ForegroundColor Blue
+        $Install_NVSMI = $true
+    }
+    if ($(arg).Type -like "*NVIDIA*" -and -not (Test-Path "C:\Program Files\NVIDIA Corporation\NVSMI\nvidia-smi.exe")) {
+        log "nvidia-smi.exe is missing" -ForegroundColor Red
         Start-Sleep -S 3
-        log "Closing Miner"
-        Start-Sleep -S 1
-        exit
+        $Install_NVSMI = $true
+    }
+
+    if($Install_NVSMI -eq $true) {
+        log "SWARM is going to attempt to install NVSMI, but it could be incorrect drivers were installed." -ForegroundColor Red
+        if(-not (Test-Path "C:\Program Files\NVIDIA Corporation")) { 
+            log "SWARM failed to install NVSMI folder- No NVIDIA Corporation file found in C:\Program Files" -ForegroundColor Red
+        } 
+        else {
+            log "extracting NVSMI folder.." -ForegroundColor Yellow
+            if(test-path ".\build\data\NVSMI"){ Remove-Item ".\build\data\NVSMI" -Force -Recurse}
+            $Proc = Start-Process ".\build\apps\7z.exe" "x `"$($(vars).dir)\build\data\NVSMI.zip`" -o`"$($(vars).dir)\build\data`" -y" -PassThru -WindowStyle Minimized -verb Runas
+            $Proc | Wait-Process
+            if(test-path ".\build\data\NVSMI"){
+                log "extraction was a success!" -ForeGroundColor Green
+                Start-Sleep -S 3
+                Move-Item ".\build\data\NVSMI" -Destination "C:\Program Files\NVIDIA Corporation" -Force
+                Start-Sleep -S 3
+                if(test-Path "C:\Program Files\NVIDIA Corporation\NVSMI"){
+                    log "NVSMI installed!" -ForeGroundColor Green
+                    Start-Sleep -S 1
+                } else {log "Failed to install NVSMI" -ForeGroundColor Red}
+            } else {log "Failed to extract NVSMI.zip" -ForeGroundColor Red}
+        }
     }
     
     ## Fetch Ram Size, Write It To File (For Commands)

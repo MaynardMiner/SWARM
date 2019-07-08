@@ -24,6 +24,49 @@ function Global:Get-MinerTimeout {
     return $reason
 }
 
+function Global:Set-Warnings {
+    param(
+        [Parameter(Mandatory = $true, Position = 0)]
+        [string]$command,
+        [Parameter(Mandatory = $true, Position = 1)]
+        [string]$name
+    )
+
+    switch ($command) {
+        "clear" {
+            if ([string]$(vars).Warnings.$name.bad -ne "") { $(vars).Warnings = $(vars).Warnings | Where $($_.keys -ne $name) }
+        }
+        "add" {
+            if ([string]$(vars).Warnings.$name.bad -eq "") {
+                $(vars).Warnings += @{ 
+                    "$name" = @{ 
+                        bad      = 1
+                        ban_time = Get-Date
+                    } 
+                } 
+            }
+            else { $(vars).Warnings.$name.bad++; $(vars).Warnings.$name.ban_time = Get-Date }
+        }
+    }
+    if ($(vars).Warnings.Count -eq 0) { $(vars).Warnings = @() }
+}
+
+function Global:Get-HiveWarning($HiveMessage) {
+    $HiveWarning = @{result = @{command = "timeout" } }
+    if ($(vars).WebSites) {
+        $(vars).WebSites | ForEach-Object {
+            $Sel = $_
+            try {
+                Global:Add-Module "$($(vars).web)\methods.psm1"
+                Global:Get-WebModules $Sel
+                $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
+            }
+            catch { log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
+            Global:Remove-WebModules $sel
+        }
+    }
+}
+
 function Global:Set-Power {
     param(
         [Parameter(Position = 0, Mandatory = $true)]
@@ -94,13 +137,30 @@ function Global:Start-WattOMeter {
 
 function Global:Start-Benchmark {
     $(vars).BestActiveMIners | ForEach-Object {
-        $(vars).ActiveSymbol += $($_.Symbol)
+
+        ## Bools for bans
         $MinerPoolBan = $false
         $MinerAlgoBan = $false
         $MinerBan = $false
         $TypeBan = $False
         $Global:Strike = $false
         $global:WasBenchmarked = $false
+
+        ## Symbol for switching threshold
+        $(vars).ActiveSymbol += $($_.Symbol)
+
+        ## Reset Bans if last one occurred an hour ago.
+        if ( [string]$(vars).Warnings."$($_.Name)".bad -ne "" ) {
+            $FirstTime = [math]::Round( ( (Get-Date) - $(vars).Warnings."$($_.Name)".ban_time ).TotalSeconds )
+            if ($FirstTime -ge 3600) {
+                Global:Set-Warnings clear "$($_.Type)"
+                Global:Set-Warnings clear "$($_.Name)"
+                Global:Set-Warnings clear "$($_.Name)_$($_.Algo)"
+                Global:Set-Warnings clear "$($_.Name)_$($_.Algo)_$($_.MinerPool)"
+            }
+        }
+        
+        ## Attempt to benchmark
         if ($_.BestMiner -eq $true) {
             $NewName = $_.Algo -replace "`_", "`-"
             $NewName = $NewName -replace "`/", "`-"
@@ -188,6 +248,7 @@ function Global:Start-Benchmark {
                             }
                         }
                     }
+
                     ##Check For High Rejections
                     $RejectCheck = Join-Path ".\timeout\warnings" "$($_.Name)_$($NewName)_rejection.txt"
                     if (Test-Path $RejectCheck) {
@@ -195,87 +256,74 @@ function Global:Start-Benchmark {
                         $global:WasBenchmarked = $false
                         $Global:Strike = $true
                     }
+
+                    ## Done
                 }
             }
 
+            ## If benchmark was successful- Reset the warnings
             if ($Global:Strike -ne $true) {
-                if ($null -ne $(vars).Warnings."$($_.Name)") { $(vars).Warnings."$($_.Name)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
-                if ($null -ne $(vars).Warnings."$($_.Name)_$($_.Algo)") { $(vars).Warnings."$($_.Name)_$($_.Algo)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
-                if ($null -ne $(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)") { $(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
-                if ($null -ne $(vars).Warnings."$($_.Type)") { $(vars).Warnings."$($_.Type)" | ForEach-Object { try { $_.bad = 0 }catch { } } }
+                Global:Set-Warnings clear "$($_.Type)"
+                Global:Set-Warnings clear "$($_.Name)"
+                Global:Set-Warnings clear "$($_.Name)_$($_.Algo)"
+                Global:Set-Warnings clear "$($_.Name)_$($_.Algo)_$($_.MinerPool)"
             }
      
             ## Strike-Out System. Will not work with Lite Mode
             if ($(arg).Lite -eq "No") {
                 if ($Global:Strike -eq $true) {
                     if ($global:WasBenchmarked -eq $False) {
+
+                        ## make dirs if they don't exit
+                        $HashRateFilePath = Join-Path ".\stats" "$($_.Name)_$($NewName)_hashrate.txt"
                         if (-not (Test-Path ".\timeout")) { New-Item "timeout" -ItemType "directory" | Out-Null }
-                        if (-not (test-Path ".\timeout\Ban_Number.txt") ) { $(vars).Ban_Number = 1; $(vars).Ban_Number | Out-File ".\timeout\Ban_Number.txt" }
-                        else { $(vars).Ban_Number = Get-Content ".\timeout\Ban_Number.txt" }
                         if (-not (Test-Path ".\timeout\pool_block")) { New-Item -Path ".\timeout" -Name "pool_block" -ItemType "directory" | Out-Null }
                         if (-not (Test-Path ".\timeout\algo_block")) { New-Item -Path ".\timeout" -Name "algo_block" -ItemType "directory" | Out-Null }
                         if (-not (Test-Path ".\timeout\miner_block")) { New-Item -Path ".\timeout" -Name "miner_block" -ItemType "directory" | Out-Null }
                         if (-not (Test-Path ".\timeout\warnings")) { New-Item -Path ".\timeout" -Name "warnings" -ItemType "directory" | Out-Null }
                         Start-Sleep -S .25
-                        $(arg).TimeoutFile = Join-Path ".\timeout\warnings" "$($_.Name)_$($NewName)_TIMEOUT.txt"
-                        $HashRateFilePath = Join-Path ".\stats" "$($_.Name)_$($NewName)_hashrate.txt"
-                        if (-not (Test-Path $(arg).TimeoutFile)) { "$($_.Name) $($_.Symbol) Hashrate Check Timed Out" | Set-Content ".\timeout\warnings\$($_.Name)_$($NewName)_TIMEOUT.txt" -Force }
-                        if ($(vars).Warnings."$($_.Name)" -eq $null) { $(vars).Warnings += [PSCustomObject]@{"$($_.Name)" = [PSCustomObject]@{bad = 0 } }
-                        }
-                        if ($(vars).Warnings."$($_.Name)_$($_.Algo)" -eq $null) { $(vars).Warnings += [PSCustomObject]@{"$($_.Name)_$($_.Algo)" = [PSCustomObject]@{bad = 0 } }
-                        }
-                        if ($(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" -eq $null) { $(vars).Warnings += [PSCustomObject]@{"$($_.Name)_$($_.Algo)_$($_.MinerPool)" = [PSCustomObject]@{bad = 0 } }
-                        }
-                        if ($(vars).Warnings."$($_.Type)" -eq $null) { $(vars).Warnings += [PSCustomObject]@{"$($_.Type)" = [PSCustomObject]@{bad = 0 } }
-                        }
-                        $(vars).Warnings."$($_.Name)" | ForEach-Object { try { $_.bad++ }catch { } }
-                        $(vars).Warnings."$($_.Name)_$($_.Algo)" | ForEach-Object { try { $_.bad++ }catch { } }
-                        $(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" | ForEach-Object { try { $_.bad++ }catch { } }
+
+                        ## Add To warnings is not present
+                        Global:Set-Warnings add "$($_.Name)"
+                        Global:Set-Warnings add "$($_.Name)_$($_.Algo)"
+                        Global:Set-Warnings add "$($_.Name)_$($_.Algo)_$($_.MinerPool)"
+                        $n = $(vars).Warnings."$($_.Name)".bad
+
                         if ($(vars).Warnings."$($_.Name)".bad -ge $(arg).MinerBanCount) { $MinerBan = $true }
-                        if ($(vars).Warnings."$($_.Name)_$($_.Algo)".bad -ge $(arg).AlgoBanCount) { $MinerAlgoBan = $true }
-                        if ($(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)".bad -ge $(arg).PoolBanCount) { $MinerPoolBan = $true }
+                        if ($(vars).Warnings."$($_.Name)_$($_.Algo)".bad -ge $(arg).AlgoBanCount) { $MinerAlgoBan = $true; }
+                        if ($(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)".bad -ge $(arg).PoolBanCount) { $MinerPoolBan = $true }    
+
                         ##Strike One
-                        if ($MinerPoolBan -eq $false -and $MinerAlgoBan -eq $false -and $MinerBan -eq $false) {
-                            log "First Strike: There was issue with benchmarking.
-" -ForegroundColor DarkRed;
+                        if (-not $MinerPoolBan -and -not $MinerAlgoBan -and -not $MinerBan ) {
+                            log "There was issue with benchmarking: Has occured $n times in an hour`n" -ForegroundColor DarkRed;
                         }
+                            
                         ##Strike Two
                         if ($MinerPoolBan -eq $true) {
                             $minerjson = $_ | ConvertTo-Json -Compress
                             $reason = Global:Get-MinerTimeout $minerjson
                             $HiveMessage = "Ban: $($_.Algo):$($_.Name) From $($_.MinerPool)- $reason "
-                            log "Strike Two: Benchmarking Has Failed - $HiveMessage
-" -ForegroundColor DarkRed
+                            log "There was issue with benchmarking: Has occured $n times in the last hour" -ForegroundColor DarkRed;
+                            log "$($_.Name) has exceeded Pool Ban Count: $HiveMessage `n" -ForegroundColor DarkRed                            
+                            Global:Get-HiveWarning $HiveMessage
                             $NewPoolBlock = @()
                             if (Test-Path ".\timeout\pool_block\pool_block.txt") { $GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json }
                             Start-Sleep -S 1
                             if ($GetPoolBlock) { $GetPoolBlock | ForEach-Object { $NewPoolBlock += $_ } }
                             $NewPoolBlock += $_
                             $NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt"
-                            $(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" | ForEach-Object { try { $_.bad = 0 }catch { } }
-                            $HiveWarning = @{result = @{command = "timeout" } }
-                            if ($(vars).WebSites) {
-                                $(vars).WebSites | ForEach-Object {
-                                    $Sel = $_
-                                    try {
-                                        Global:Add-Module "$($(vars).web)\methods.psm1"
-                                        Global:Get-WebModules $Sel
-                                        $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
-                                    }
-                                    catch { log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
-                                    Global:Remove-WebModules $sel
-                                }
-                            }
-                            log "$HiveMessage" -ForegroundColor Red
+                            Global:Set-Warnings clear "$($_.Name)_$($_.Algo)_$($_.MinerPool)"
                             Start-Sleep -S 1
                         }
+                            
                         ##Strike Three: He's Outta Here
                         if ($MinerAlgoBan -eq $true) {
                             $minerjson = $_ | ConvertTo-Json -Compress
                             $reason = Global:Get-MinerTimeout $minerjson
-                            $HiveMessage = "Ban: $($_.Algo):$($_.Name) from all pools- $reason "
-                            log "Strike three: $HiveMessage
-" -ForegroundColor DarkRed
+                            $HiveMessage = "Ban: $($_.Algo):$($_.Name) From All Pools- $reason "
+                            log "There was issue with benchmarking: Has occured $n times in the last hour" -ForegroundColor DarkRed;
+                            log "$($_.Name) has exceeded Algo Ban Count: $HiveMessage `n" -ForegroundColor DarkRed                            
+                            Global:Get-HiveWarning $HiveMessage
                             $NewAlgoBlock = @()
                             if (Test-Path $HashRateFilePath) { Remove-Item $HashRateFilePath -Force }
                             if (Test-Path ".\timeout\algo_block\algo_block.txt") { $GetAlgoBlock = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json }
@@ -283,29 +331,18 @@ function Global:Start-Benchmark {
                             if ($GetAlgoBlock) { $GetAlgoBlock | ForEach-Object { $NewAlgoBlock += $_ } }
                             $NewAlgoBlock += $_
                             $NewAlgoBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block\algo_block.txt"
-                            $(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" | ForEach-Object { try { $_.bad = 0 }catch { } }
-                            $(vars).Warnings."$($_.Name)_$($_.Algo)" | ForEach-Object { try { $_.bad = 0 }catch { } }
-                            $HiveWarning = @{result = @{command = "timeout" } }
-                            if ($(vars).WebSites) {
-                                $(vars).WebSites | ForEach-Object {
-                                    $Sel = $_
-                                    try {
-                                        Global:Add-Module "$($(vars).web)\methods.psm1"
-                                        Global:Get-WebModules $Sel
-                                        $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
-                                    }
-                                    catch { log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
-                                    Global:Remove-WebModules $sel
-                                }
-                            }
-                            log "$HiveMessage" -ForegroundColor Red
+                            Global:Set-Warnings clear "$($_.Name)_$($_.Algo)_$($_.MinerPool)"
+                            Global:Set-Warnings clear "$($_.Name)_$($_.Algo)"
                             Start-Sleep -S 1
                         }
+
                         ##Strike Four: Miner is Finished
                         if ($MinerBan -eq $true) {
-                            $HiveMessage = "$($_.Name) sucks, shutting it down."
-                            log "$HiveMessage
-" -ForegroundColor DarkRed
+                            $HiveMessage = "Ban miner: $($_.Name):$($_.Type)- $reason "
+                            log "There was issue with benchmarking: Has occured $n times in the last hour" -ForegroundColor DarkRed;
+                            log "$($_.Name) has exceeded Miner Ban Count: $HiveMessage `n" -ForegroundColor DarkRed                            
+                            log "$HiveMessage `n" -ForegroundColor DarkRed
+                            Global:Get-HiveWarning $HiveMessage
                             $NewMinerBlock = @()
                             if (Test-Path $HashRateFilePath) { Remove-Item $HashRateFilePath -Force }
                             if (Test-Path ".\timeout\miner_block\miner_block.txt") { $GetMinerBlock = Get-Content ".\timeout\miner_block\miner_block.txt" | ConvertFrom-Json }
@@ -313,45 +350,21 @@ function Global:Start-Benchmark {
                             if ($GetMinerBlock) { $GetMinerBlock | ForEach-Object { $NewMinerBlock += $_ } }
                             $NewMinerBlock += $_
                             $NewMinerBlock | ConvertTo-Json | Set-Content ".\timeout\miner_block\miner_block.txt"
-                            $(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)" | ForEach-Object { try { $_.bad = 0 }catch { } }
-                            $(vars).Warnings."$($_.Name)_$($_.Algo)" | ForEach-Object { try { $_.bad = 0 }catch { } }
-                            $(vars).Warnings."$($_.Name)" | ForEach-Object { try { $_.bad = 0 }catch { } }
-                            $(vars).Warnings."$($_.Type)" | ForEach-Object { Try { $_.bad++ }catch { } }
+                            Global:Set-Warnings clear "$($_.Name)_$($_.Algo)_$($_.MinerPool)"
+                            Global:Set-Warnings clear "$($_.Name)_$($_.Algo)"
+                            Global:Set-Warnings clear "$($_.Name)"
+                            Global:Set-Warnings add "$($_.Type)"
                             if ($(vars).Warnings."$($_.Type)".bad -ge $(arg).TypeBanCount ) { $TypeBan = $true }
-                            $HiveWarning = @{result = @{command = "timeout" } }
-                            if ($(vars).WebSites) {
-                                $(vars).WebSites | ForEach-Object {
-                                    $Sel = $_
-                                    try {
-                                        Global:Add-Module "$($(vars).web)\methods.psm1"
-                                        Global:Get-WebModules $Sel
-                                        $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
-                                    }
-                                    catch { log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
-                                    Global:Remove-WebModules $sel
-                                }
-                            }
-                            log "$HiveMessage" -ForegroundColor Red
                             Start-Sleep -S 1
                         }
+
+                        ## Restart Computer
                         if ($TypeBan -eq $true) {
                             if ($_.Type -notlike "*ASIC*" -or $_.Type -ne "CPU") {
                                 if ($(arg).Startup -eq "Yes") {
-                                    $HiveMessage = "$($_.Type) Have timed out $( $(arg).TypeBanCount ) bad miners. A card must have crashed. Rebooting system..."
-                                    $HiveWarning = @{result = @{command = "timeout" } }
-                                    if ($(vars).WebSites) {
-                                        $(vars).WebSites | ForEach-Object {
-                                            $Sel = $_
-                                            try {
-                                                Global:Add-Module "$($(vars).web)\methods.psm1"
-                                                Global:Get-WebModules $Sel
-                                                $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
-                                            }
-                                            catch { log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
-                                            Global:Remove-WebModules $sel
-                                        }
-                                    }
+                                    $HiveMessage = "$($_.Type) Have timed out $( $(arg).TypeBanCount ) bad miners. Rebooting system..."
                                     log "$HiveMessage" -ForegroundColor Red
+                                    Global:Get-HiveWarning $HiveMessage
                                     Start-Sleep -S 5
                                     Remove-Item ".\timeout" -Recurse -Force
                                     if ($IsWindows) { Restart-Computer -Force }

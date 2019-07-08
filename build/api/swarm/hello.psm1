@@ -14,6 +14,7 @@ function Global:Start-Hello($RigData) {
 
     $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
     [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
+    $Message = @()
 
     ## Get Device Groups
     $Count = 0
@@ -82,7 +83,13 @@ function Global:Start-Hello($RigData) {
         $response | ConvertTo-Json | Out-File ".\build\txt\get-swarm-hello.txt"
         $message = $response
     }
-    catch { $message = "Failed To Contact SWARM monitoring site" }
+    catch { 
+        $message += "Failed To Contact HiveOS.Farm" 
+        $message += "Caught an exception:"
+        $message += "Exception Type: $($_.Exception.GetType().FullName)"
+        $message += "Exception Message: $($_.Exception.Message)"
+        $message | Out-Host
+    }
 
     return $message
 }

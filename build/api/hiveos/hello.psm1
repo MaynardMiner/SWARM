@@ -14,7 +14,8 @@ function Global:Start-Hello($RigData) {
 
     $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
     [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
-
+    
+    $message = @()
 
     $Hello = @{
         method  = "hello"
@@ -30,7 +31,7 @@ function Global:Start-Hello($RigData) {
             net_interfaces   = ""
             openvpn          = "0"
             lan_config       = ""
-            gpu              = $RigData.gpu
+            gpu              = @($RigData.gpu)
             gpu_count_amd    = "$($RigData.gpu_count_amd)"
             gpu_count_nvidia = "$($RigData.gpu_count_nvidia)"
             worker_name      = "$($global:Config.hive_params.Worker)" 
@@ -63,8 +64,15 @@ function Global:Start-Hello($RigData) {
         $response | ConvertTo-Json | Out-File ".\build\txt\get-hive-hello.txt"
         $message = $response
     }
-    catch { $message = "Failed To Contact HiveOS.Farm" }
-
+    catch { 
+            $message += " `n"
+            $message += "Failed To Contact HiveOS.Farm `n" 
+            $message += "Caught the following exception- `n"
+            $message += "Exception Type: $($_.Exception.GetType().FullName) `n"
+            $message += "Exception Message: $($_.Exception.Message) `n"
+            log "$message" -ForegroundColor DarkRed
+    }
+    
     return $message
 }
 
@@ -175,7 +183,7 @@ function Global:Start-WebStartup($response, $Site) {
                         }
                         $Params | convertto-Json | Out-File ".\config\parameters\newarguments.json"
                     }
-                    else{Write-Log "WARNING: User Fligh Sheet Arguments Did Not Contain -Wallet1 argument. They were ignored!" -ForegroundColor Yellow; Start-Sleep -S 3}
+                    else{Write-Log "WARNING: User Flight Sheet Arguments Did Not Contain -Wallet1 argument. They were ignored!" -ForegroundColor Yellow; Start-Sleep -S 3}
                 }
                 ##If Hive Sent OC Start SWARM OC
                 "nvidia_oc" {

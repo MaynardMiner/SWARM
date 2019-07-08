@@ -13,7 +13,6 @@ function Global:Get-RigData {
     Switch ($IsWindows) {
         $True {
             $RigData = @{ }
-            invoke-expression ".\build\cmd\nvidia-smi.bat --query-gpu=gpu_bus_id,vbios_version,gpu_name,memory.total,power.min_limit,power.default_limit,power.max_limit --format=csv > "".\build\txt\getgpu.txt"""
             $getuid = (Get-CimInstance win32_networkadapterconfiguration | where { $_.IPAddress -ne $null } | select MACAddress).MacAddress -replace ("`:", "")
             $string1 = "$getuid".ToLower()
             $uid = Global:Get-StringHash $string1
@@ -36,7 +35,7 @@ function Global:Get-RigData {
             $RigData.mb.Add("product", $prod)
             $RigData.Add("cpu", @{ })
             $cpud = Get-CimInstance -Class Win32_processor | Select Name, DeviceID, NumberOfCores
-            $cpuname = $cpud.name
+            $cpuname = $cpud.name.Trim()
             $RigData.cpu.Add("model", $cpuname)
             $cpucores = $cpud.NumberOfCores
             $RigData.cpu.Add("cores", $cpucores)
