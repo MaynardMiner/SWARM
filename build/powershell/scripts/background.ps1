@@ -550,9 +550,9 @@ While ($True) {
 
     ##Select Only For Each Device Group
     $DeviceTable = @()
-    if ([string]$(arg).GPUDevices1) { $DeviceTable += $(arg).GPUDevices1 }
-    if ([string]$(arg).GPUDevices2) { $DeviceTable += $(arg).GPUDevices2 }
-    if ([string]$(arg).GPUDevices3) { $DeviceTable += $(arg).GPUDevices3 }
+    if ([string]$(arg).GPUDevices1) { $DeviceTable += $(arg).GPUDevices1 -split ","}
+    if ([string]$(arg).GPUDevices2) { $DeviceTable += $(arg).GPUDevices2 -split ","}
+    if ([string]$(arg).GPUDevices3) { $DeviceTable += $(arg).GPUDevices3 -split ","}
 
     if ($DeviceTable) {
         $DeviceTable = $DeviceTable | Sort-Object
@@ -562,10 +562,10 @@ While ($True) {
         $TempPower = @()
         for ($global:i = 0; $global:i -lt $DeviceTable.Count; $global:i++) {
             $G = $DeviceTable[$i]
-            $TempGPU += try{$global:GPUHashTable[$G]}catch{0}
-            $TempFan += try{$global:GPUFanTable[$G]}catch{0}
-            $TempTemp += try{$global:GPUTempTable[$G]}catch{0}
-            $TempPower += try{$global:GPUPowerTable[$G]}catch{0}
+            $TempGPU += try{$global:GPUHashTable[$G]}catch{"0"}
+            $TempFan += try{$global:GPUFanTable[$G]}catch{"0"}
+            $TempTemp += try{$global:GPUTempTable[$G]}catch{"0"}
+            $TempPower += try{$global:GPUPowerTable[$G]}catch{"0"}
         }
         $global:GPUHashTable = $TempGPU
         $global:GPUFanTable = $TempFan
