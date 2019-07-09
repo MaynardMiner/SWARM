@@ -29,6 +29,7 @@ $(vars).NVIDIATypes | ForEach-Object {
     $ExportDir = Join-Path $($(vars).dir) "build\export"
 
     ##Prestart actions before miner launch
+    $Prestart = @()
     $PreStart += "export LD_LIBRARY_PATH=$ExportDir"
     $MinerConfig.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 
