@@ -562,10 +562,10 @@ While ($True) {
         $TempPower = @()
         for ($global:i = 0; $global:i -lt $DeviceTable.Count; $global:i++) {
             $G = $DeviceTable[$i]
-            $TempGPU += if( $global:GPUHashTable[$G] ){ $global:GPUHashTable[$G] } else{0}
-            $TempFan += if( $global:GPUFanTable[$G] ){ $global:GPUFanTable[$G] } else{0}
-            $TempTemp += if( $global:GPUTempTable[$G] ){ $global:GPUTempTable[$G] } else{0}
-            $TempPower += if( $global:GPUPowerTable[$G] ){ $global:GPUPowerTable[$G] } else{0}
+            $TempGPU += try{$global:GPUHashTable[$G]}catch{0}
+            $TempFan += try{$global:GPUFanTable[$G]}catch{0}
+            $TempTemp += try{$global:GPUTempTable[$G]}catch{0}
+            $TempPower += try{$global:GPUPowerTable[$G]}catch{0}
         }
         $global:GPUHashTable = $TempGPU
         $global:GPUFanTable = $TempFan
