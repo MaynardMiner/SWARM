@@ -361,3 +361,21 @@ Changelog
     * Cpuminer-opt/sugarchain updated to 3.9.5.2
     * Cryptodredge updated
     * gminer updated    
+
+
+SWARM.2.4.7
+
+## Fixes
+* Wallets.json full depth was not being covertedto-Json on update.
+  This is resolved.
+* Wallets.json "Add another coin here" was getting added on occasion
+  to arguments as c=, causing certain miners to fail- This was resolved.
+
+## Updates
+* Wildrig_Multi (windows only release) 
+  * glt-globalhash not added HiveOS yet. Did not add to SWARM.
+    Very complicated to add one algorithm for Windows, but not Linux.
+  * note: SWARM by default bans glt coins on -Auto_Coin.
+  * another note: SWARM skips over coins or algorithms with no hashrate.
+* new teamredminer added
+  * cuckatoo31 added

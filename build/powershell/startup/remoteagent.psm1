@@ -37,6 +37,7 @@ function Global:start-update {
         $PreviousVersions += "SWARM.2.4.3"        
         $PreviousVersions += "SWARM.2.4.4"
         $PreviousVersions += "SWARM.2.4.5"
+        $PreviousVersions += "SWARM.2.4.6"
 
         $StatsOnly = $null
 
@@ -370,7 +371,7 @@ function Global:start-update {
                         log "Pulled $NameJson"
                         $Data = $JsonData | ConvertFrom-Json;
                         $Data | Add-Member "name" "$NewName" -ErrorAction SilentlyContinue
-                        $Data | ConvertTo-Json -Depth 3 | Set-Content $NameJson;
+                        $Data | ConvertTo-Json -Depth 5 | Set-Content $NameJson;
                         log "Wrote To $NameJson"
                     }
 
