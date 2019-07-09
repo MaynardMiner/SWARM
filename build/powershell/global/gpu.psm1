@@ -8,15 +8,15 @@ function Global:Get-DeviceString {
 
     if ($TypeDevices -ne "none") {
         $TypeDevices = $TypeDevices -replace (",", " ")
-        if ($TypeDevices -match " ") {$NewDevices = $TypeDevices -split " "}else {$NewDevices = $TypeDevices -split ""}
-        $NewDevices = Switch ($NewDevices) {"a" {"10"}; "b" {"11"}; "c" {"12"}; "e" {"13"}; "f" {"14"}; "g" {"15"}; "h" {"16"}; "i" {"17"}; "j" {"18"}; "k" {"19"}; "l" {"20"}; default {"$_"}; }
-        if ($TypeDevices -match " ") {$TypeGPU = $NewDevices}else {$TypeGPU = $NewDevices | ? {$_.trim() -ne ""}}
-        $TypeGPU = $TypeGPU | % {iex $_}
+        if ($TypeDevices -match " ") { $NewDevices = $TypeDevices -split " " }else { $NewDevices = $TypeDevices -split "" }
+        $NewDevices = Switch ($NewDevices) { "a" { "10" }; "b" { "11" }; "c" { "12" }; "e" { "13" }; "f" { "14" }; "g" { "15" }; "h" { "16" }; "i" { "17" }; "j" { "18" }; "k" { "19" }; "l" { "20" }; default { "$_" }; }
+        if ($TypeDevices -match " ") { $TypeGPU = $NewDevices }else { $TypeGPU = $NewDevices | ? { $_.trim() -ne "" } }
+        $TypeGPU = $TypeGPU | % { iex $_ }
     }
     else {
         $TypeGPU = @()
         $GetDevices = 0
-        for ($global:i = 0; $global:i -lt $TypeCount; $global:i++) {$TypeGPU += $GetDevices++}
+        for ($global:i = 0; $global:i -lt $TypeCount; $global:i++) { $TypeGPU += $GetDevices++ }
     }
 
     $TypeGPU
@@ -129,7 +129,7 @@ function Global:Set-AMDStats {
                     timeout -s9 10 rocm-smi -t | Tee-Object -Variable AMDTemps | Out-Null
                     $AMDTemps = $AMDTemps | Select-String -CaseSensitive "Temperature" | ForEach-Object { $_ -split ":" | Select-Object -skip 2 -First 1 } | ForEach-Object { $_ -replace (" ", "") } | ForEach-Object { $_ -replace ("c", "") }
                     timeout -s9 10 rocm-smi -P | Tee-Object -Variable AMDWatts | Out-Null
-                    $AMDWatts = $AMDWatts | Select-String -CaseSensitive "W" | foreach {$_ -split (":", "") | Select -skip 2 -first 1} | foreach {$_ -replace ("W", "")}
+                    $AMDWatts = $AMDWatts | Select-String -CaseSensitive "W" | foreach { $_ -split (":", "") | Select -skip 2 -first 1 } | foreach { $_ -replace ("W", "") }
                 }
             }
         }
