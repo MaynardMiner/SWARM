@@ -159,7 +159,7 @@ if ($Name -in $(arg).PoolName) {
             }
                 
             if ($(vars).All_AltWallets) {
-                $(vars).All_AltWallets.PSObject.Properties.Name | ForEach-Object {
+                $(vars).All_AltWallets.keys | ForEach-Object {
                     $Sym = $_
                     $Zpool_Sym = $zpool_Symbol -split "-" | Select -First 1
                     if ($(vars).All_AltWallets.$Sym.exchange -ne "Yes") {
