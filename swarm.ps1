@@ -445,6 +445,7 @@ While ($true) {
         ##Sort The Miners
         Global:Add-Module "$($(vars).miner)\sorting.psm1"
         if ($(arg).Volume -eq "Yes") { Get-Volume }
+        Global:Start-MinerDownloads
         $CutMiners = Global:Start-MinerReduction
         $CutMiners | ForEach-Object { $(vars).Miners.Remove($_) } | Out-Null;
         Remove-Variable -Name CutMiners -ErrorAction Ignore
@@ -504,7 +505,6 @@ While ($true) {
         ## Ammend Their Pricing
         Global:Add-Module "$($(vars).control)\config.psm1"
         Global:Add-Module "$($(vars).control)\initial.psm1"
-        Global:Start-MinerDownloads
         Global:Get-ActiveMiners
         Global:Get-BestActiveMiners
         Global:Get-ActivePricing
