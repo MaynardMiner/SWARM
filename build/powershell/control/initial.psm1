@@ -322,6 +322,7 @@ function Global:Stop-AllMiners {
 }
 
 function Global:Start-MinerDownloads {
+    $MinersStopped = $False
     $(vars).Miners | ForEach-Object {
         $Sel = $_
         $Success = 0;
@@ -329,19 +330,28 @@ function Global:Start-MinerDownloads {
             $CheckPath = Test-Path $Sel.Path
             $VersionPath = Join-Path (Split-Path $Sel.Path) "swarm-version.txt"
             if ( $CheckPath -eq $false ) {
-                Global:Stop-AllMiners
+                if($MinersStopped -eq $false){
+                    Global:Stop-AllMiners
+                    $MinersStopped = $true
+                }
                 $Success = Global:Get-MinerBinary $Sel "New"
             }
             elseif(test-path $VersionPath){
                 [String]$Old_Version = Get-Content $VersionPath
                 if($Old_Version -ne [string]$Sel.Version) {
-                    Global:Stop-AllMiners
-                    Write-Log "There is a new version availble for $($Sel.Name), Downloading" -ForegroundColor Yellow
+                    if($MinersStopped -eq $false){
+                        Global:Stop-AllMiners
+                        $MinersStopped = $true
+                    }
+                        Write-Log "There is a new version availble for $($Sel.Name), Downloading" -ForegroundColor Yellow
                     $Success = Global:Get-MinerBinary $Sel "Update"
                 }
             }
             else{
-                Global:Stop-AllMiners
+                if($MinersStopped -eq $false){
+                    Global:Stop-AllMiners
+                    $MinersStopped = $true
+                }
                 Write-Log "Binary found, but swarm-version.txt is missing for $($Sel.Name), Downloading" -ForegroundColor Yellow
                 $Success = Global:Get-MinerBinary $Sel "Update"
             }
