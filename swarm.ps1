@@ -435,7 +435,16 @@ While ($true) {
             Remove-Variable -Name HiveMessage -ErrorAction Ignore
             Remove-Variable -Name HiveWarning -ErrorAction Ignore
             Remove-Variable -Name Sel -ErrorAction Ignore
-            #start-sleep $(arg).Interval;
+
+            ## Go to sleep for interval
+            start-sleep $(arg).Interval;
+
+            ## Check How many times it occurred.
+            ## If it occurred more than 10 times-
+            ## Remove all current hashrates, and migrate backup hashrates
+            ## to stats folder. Then Restart Computer.
+            $(vars).No_Miners++
+            Global:Confirm-Backup
 
             ##remove all active parameters, Then restart loop
             remove all

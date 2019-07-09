@@ -2,13 +2,42 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $nicehash_Request = [PSCustomObject]@{ } 
 
-if($(arg).xnsub -eq "Yes"){$X = "#xnsub"}
+$Nicehash_Ports = 
+'{
+
+"scrypt":"3333",            "btc":"3334",               "scryptnf":"3335",          "x11":"3336",
+
+"x13":"3337",               "keccak":"3338",            "x15":"3339",               "nist5":"3340",
+
+"neoscrypt":"3341",         "lyra2re":"3342",           "whirlpoolx":"3343",        "qubit":"3344",
+
+"quark":"3345",             "axiom":"3346",             "lyra2rev2":"3347",         "scryptjanenf16":"3348",
+
+"blake256r8":"3349",        "blake256r14":"3350",       "blake256r8vnl":"3351",     "hodl":"3352",
+
+"daggerhashimoto":"3353",   "decred":"3354",            "cryptonight":"3355",       "lbry":"3356",
+
+"equihash":"3357",          "pascal":"3358",            "x11ghost":"3359",          "sia":"3360",
+
+"blake2s":"3361",           "skunk":"3362",             "cryptonightv7":"3363",     "cryptonightheavy":"3364",
+
+"lyra2z":"3365",            "x16r":"3366",              "cryptonightv8":"3367",     "sha256asicboost":"3368",
+
+"zhash":"3369",             "beam":"3370",              "grincuckaroo29":"3371",    "grincuckatoo31":3372,
+
+lyra2rev3:"3373",           "mtp":"3374",               "cryptonightr":"3375",      "cuckoocycle":"3376",
+
+}'    
+
+$Nicehash_Ports = $Nicehash_Ports | ConvertFrom-Json
+
+if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" }
  
 if ($Name -in $(arg).PoolName) {
-    try { $nicehash_Request = Invoke-RestMethod "https://api.nicehash.com/api?method=simplemultialgo.info" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
+    try { $nicehash_Request = Invoke-RestMethod "https://api2.nicehash.com/main/api/v2/public/simplemultialgo/info" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
     catch { log "SWARM contacted ($Name) but there was no response."; return }
  
-    if (($nicehash_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) { 
+    if ($nicehash_Request.miningAlgorithms.Count -le 1) {
         log "SWARM contacted ($Name) but ($Name) the response was empty." 
         return 
     } 
@@ -19,11 +48,11 @@ if ($Name -in $(arg).PoolName) {
         "EUROPE" { $Region = "eu" }
     }
 
-    $nicehash_Request.result | 
-    Select-Object -ExpandProperty simplemultialgo | 
-    Where-Object paying -ne 0 | 
+
+    $nicehash_Request.miningAlgorithms | 
+    Where-Object paying -gt 0 | 
     Where-Object {
-        $Algo = $_.name.ToLower();
+        $Algo = $_.Algorithm.ToLower();
         $local:Nicehash_Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name | Where { $Algo -in $global:Config.Pool_Algos.$_.alt_names }
         return $Nicehash_Algorithm
     } |
@@ -40,9 +69,9 @@ if ($Name -in $(arg).PoolName) {
                 if (-not $(arg).Nicehash_Wallet2) { $NH_Wallet2 = $(arg).Wallet2; [Double]$Fee = 5; }else { $NH_Wallet2 = $(arg).Nicehash_Wallet2; [Double]$Fee = $(arg).Nicehash_Fee }
                 if (-not $(arg).Nicehash_Wallet3) { $NH_Wallet3 = $(arg).Wallet3; [Double]$Fee = 5; }else { $NH_Wallet3 = $(arg).Nicehash_Wallet3; [Double]$Fee = $(arg).Nicehash_Fee }
 
-                $nicehash_Host = "$($_.name).$Region.nicehash.com$X"
-                $nicehash_excavator = "nhmp.$Region.nicehash.com$X"
-                $nicehash_Port = $_.port
+                $nicehash_Host = "$($Algo).$Region-new.nicehash.com$X"
+                $nicehash_excavator = "nhmp.$Region-new.nicehash.com$X"
+                $nicehash_Port = $nicehash_ports.$Algo
                 $Divisor = 1000000000
 
                 ## Nicehash is pretty straightforward being PPS. In
