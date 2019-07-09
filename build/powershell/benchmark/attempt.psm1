@@ -1,10 +1,5 @@
-function Global:Get-MinerTimeout {
-    param(
-        [Parameter(Mandatory = $true, Position = 0)]
-        [string]$minerjson
-    )
+function Global:Get-MinerTimeout($miner) {
 
-    $miner = $minerjson | ConvertFrom-Json
     $reason = "unknown error"
 
     if ($Miner.hashrate -eq 0 -or $null -eq $Miner.hashrate) {
@@ -300,8 +295,7 @@ function Global:Start-Benchmark {
                             
                         ##Strike Two
                         if ($MinerPoolBan -eq $true) {
-                            $minerjson = $_ | ConvertTo-Json -Compress
-                            $reason = Global:Get-MinerTimeout $minerjson
+                            $reason = Global:Get-MinerTimeout($_)
                             $HiveMessage = "Ban: $($_.Algo):$($_.Name) From $($_.MinerPool)- $reason "
                             log "There was issue with benchmarking: Has occured $n times in the last hour" -ForegroundColor DarkRed;
                             log "$($_.Name) has exceeded Pool Ban Count: $HiveMessage `n" -ForegroundColor DarkRed                            
@@ -318,8 +312,7 @@ function Global:Start-Benchmark {
                             
                         ##Strike Three: He's Outta Here
                         if ($MinerAlgoBan -eq $true) {
-                            $minerjson = $_ | ConvertTo-Json -Compress
-                            $reason = Global:Get-MinerTimeout $minerjson
+                            $reason = Global:Get-MinerTimeout($_)
                             $HiveMessage = "Ban: $($_.Algo):$($_.Name) From All Pools- $reason "
                             log "There was issue with benchmarking: Has occured $n times in the last hour" -ForegroundColor DarkRed;
                             log "$($_.Name) has exceeded Algo Ban Count: $HiveMessage `n" -ForegroundColor DarkRed                            
