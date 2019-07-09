@@ -27,8 +27,12 @@ function Global:Get-AltWallets {
     ##Get Wallet Config
     $Wallet_Json = Get-Content ".\config\wallets\wallets.json" | ConvertFrom-Json
     
-    if ([string]$(arg).AltWallet1 -eq "") { 
-        $(vars).All_AltWallets = $Wallet_Json."Passive Alternative Wallets"."coin list" 
+    if ([string]$(arg).AltWallet1 -eq "") {
+            $(vars).All_AltWallets = @{}
+            $Wallet_Json."Passive Alternative Wallets"."coin list".PSObject.Properties.Name | 
+            Where { $_ -ne "add coin symbol here" } | 
+            Where { $_ -ne "Add another symbol of coin here" } |
+            ForEach-Object { $(vars).All_AltWallets.ADD("$($_)",$Wallet_Json."Passive Alternative Wallets"."coin list".$_) }
     }
     else { $(vars).All_AltWallets = $null }
 

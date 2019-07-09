@@ -341,6 +341,16 @@
       "comma seperated"
     ]
   },
+  "globalhash": {
+    "alt_names": [
+      "globalhash",
+      "glt-globalhash"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "groestl": {
     "alt_names": [
       "groestl"
