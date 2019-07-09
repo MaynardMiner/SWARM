@@ -731,8 +731,7 @@
     ],
     "exclusions": [
       "add pool or miner here",
-      "comma seperated",
-      "nlpool"
+      "comma seperated"
     ]
   },
   "verushash": {
