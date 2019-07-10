@@ -39,6 +39,7 @@ function Global:start-update {
         $PreviousVersions += "SWARM.2.4.5"
         $PreviousVersions += "SWARM.2.4.6"
         $PreviousVersions += "SWARM.2.4.7"
+        $PreviousVersions += "SWARM.2.4.8"
 
         $StatsOnly = $null
 
@@ -119,17 +120,27 @@ function Global:start-update {
 
                                 try{$Data = $JsonData | ConvertFrom-Json -ErrorAction Stop} catch{}
 
-                                #if ($ChangeFile -eq "cryptodredge.json") {
-                                #   $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
-                                #      if ($_ -ne "name") {
-                                #         $Data.$_.commands | Add-Member "argon2d4096" "" -ErrorAction SilentlyContinue
-                                #        $Data.$_.difficulty | Add-Member "argon2d4096" "" -ErrorAction SilentlyContinue 
-                                #       $Data.$_.naming | Add-Member "argon2d4096" "argon2d4096" -ErrorAction SilentlyContinue
-                                #       $Data.$_.fee | Add-Member "argon2d4096" 1 -ErrorAction SilentlyContinue
-                                #   }
-                                # }
-                                #}
+                                if ($ChangeFile -eq "lolminer.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "equihash_125/4" "equihash_125/4" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "equihash_125/4" 1 -ErrorAction SilentlyContinue
+                                        }
+                                    }
+                                }
 
+                                if ($ChangeFile -eq "nv-lolminer.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "equihash_125/4" "equihash_125/4" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "equihash_125/4" 1 -ErrorAction SilentlyContinue
+                                        }
+                                    }
+                                }
 
                                 if ($ChangeFile -eq "wildrig.json") {
                                     $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
@@ -160,6 +171,17 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "equihash_150/5" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "equihash_150/5" "equihash_150/5" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "equihash_150/5" 2 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "equihash_192/7" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "equihash_192/7" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "equihash_192/7" "equihash_192/7" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "equihash_192/7" 2 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "equihash_125/4" "equihash_125/4" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "equihash_125/4" 2 -ErrorAction SilentlyContinue
+
                                         }
                                     }
                                 }

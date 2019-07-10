@@ -61,7 +61,9 @@ $(vars).NVIDIATypes | ForEach-Object {
                     switch ($SelAlgo) {
                         "equihash_144/5" { $AddArgs = "--par=144,5 --pers auto " }
                         "equihash_210/9" { $AddArgs = "--par=210,9 --pers auto " }
-                        "equihash_200/9" { $AddArgs = "--par=200,9 --pers auto " }    
+                        "equihash_200/9" { $AddArgs = "--par=200,9 --pers auto " } 
+                        "equihash_192/7" { $AddArgs = "--par=192,7 --pers auto " }       
+                        "equihash_125/4" { $AddArgs = "--par=125,4 --pers auto " }       
                         "equihash_150/5" { $AddArgs = "--par=150,5 --pers auto " }                    
                     }
                     if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
