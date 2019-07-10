@@ -176,8 +176,8 @@ Argument      Options             Explanation
 -Bans          [algo                Bans allows a user to specify bans on certain items in SWARM.
                algo:miner           Using [algo] only, SWARM will block all instances of that algo.
                algo:Type            Using [algo]:[Type], SWARM will block algorithm from that device type.
-               algo:pool]           Using [algo]:[Pool], SWARM will block algorithm from that pool.
-                                    Using [algo]:[Miner], SWARM will block algorithm from that specific miner.
+               algo:pool            Using [algo]:[Pool], SWARM will block algorithm from that pool.
+               miner]               Using [algo]:[Miner], SWARM will block algorithm from that specific miner.
                                     Using [COIN]:[Pool], SWARM will block that particular coin from pool.
                                     [COIN] is only relevant for -Auto_Coin "yes".
                                     If you wish to use multiple bans, comma seperate each item.
