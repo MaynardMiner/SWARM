@@ -388,3 +388,19 @@ SWARM.2.4.7
   * another note: SWARM skips over coins or algorithms with no hashrate.
 * new teamredminer added
   * cuckatoo31 added
+
+
+SWARM 2.4.8
+
+## FEATURES
+* Nicehash v2 api/methods added. SWARM will connect
+  to new platform.
+* If ``-Startup`` is "Yes" (Default is "Yes")
+  SWARM will migrate backup stats from backup
+  folder to stats folder, and restart rig.
+  After 10 intervals of "No Miner Found!"
+
+## Fixes
+* Fixed iDictionary error for Device Groups.
+* Fixed "Name" missing for All_Altwallets
+   ( solo mining can now work again).
