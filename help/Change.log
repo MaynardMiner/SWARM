@@ -404,3 +404,22 @@ SWARM 2.4.8
 * Fixed iDictionary error for Device Groups.
 * Fixed "Name" missing for All_Altwallets
    ( solo mining can now work again).
+
+# SWARM.2.4.9
+
+## NEW COMMAND!
+* ``send-config`` [linux only]
+  * Usage-example: ``send-config power '[your power .json config]'``
+  * Having the .json between ' ' is very important!
+  * Allows you to send a .json config remotely through
+  HiveOS web interface.
+  * ``send-config [json name without .json at end] [.json data]``
+  * Will have it work for Windows soon, but am still testing.
+
+## Features
+* Added nicehash_v1 file. You have to specify -Poolname nicehash_v1
+  * You can use either or. You cannot use both!
+
+## Updates
+* lolminer updated
+* added some algos to miniz that were missed.

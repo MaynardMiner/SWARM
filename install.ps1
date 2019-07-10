@@ -274,5 +274,13 @@ if (Test-Path ".\build\bash\swarm_help") {
     Set-Location "/"
     Set-Location $Dir     
 }
+
+if (Test-Path ".\build\bash\send-config") {
+    Copy-Item ".\build\bash\send-config" -Destination "/usr/bin" -force | Out-Null
+    Set-Location "/usr/bin"
+    Start-Process "chmod" -ArgumentList "+x send-config"
+    Set-Location "/"
+    Set-Location $Dir     
+}
    
 Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)

@@ -54,6 +54,7 @@ if ($P -notlike "*$dir\build\powershell*") {
 }
 
 $Get = @()
+if(test-path ".\build\txt\get.txt"){ Clear-Content ".\build\txt\get.txt" }
 
 Import-Module -Name "$($(vars).global)\stats.psm1" -Scope Global
 
