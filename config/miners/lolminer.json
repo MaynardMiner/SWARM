@@ -15,6 +15,7 @@
             "equihash_144/5": "",
             "equihash_192/7": "",
             "equihash_150/5": "",
+            "equihash_125/4": "",
             "cuckatoo31": ""
         },
         "difficulty": {
@@ -22,6 +23,7 @@
             "equihash_144/5": "",
             "equihash_192/7": "",
             "equihash_150/5": "",
+            "equihash_125/4": "",
             "cuckatoo31": ""
         },
         "naming": {
@@ -29,6 +31,7 @@
             "equihash_144/5": "equihash_144/5",
             "equihash_192/7": "equihash_192/7",
             "equihash_150/5": "equihash_150/5",
+            "equihash_125/4": "equihash_125/4",
             "cuckatoo31": "cuckatoo31"
         },
         "fee": {
@@ -36,6 +39,7 @@
             "equihash_144/5": 1,
             "equihash_192/7": 1,
             "equihash_150/5": 1,
+            "equihash_125/4": 1,
             "cuckatoo31": 1
         }
     }
