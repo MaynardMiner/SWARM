@@ -43,7 +43,7 @@ function Global:Get-AlgoPools {
             $AllCustomPools | 
             Where-Object Symbol -EQ $_ | 
             Sort-Object Price -Descending | 
-            Select-Object -First 3 
+            Select-Object -First 3 |
             ForEach-Object { $(vars).AlgoPools.Add($_) | Out-Null }
         };
         $(vars).QuickTimer.Stop()
