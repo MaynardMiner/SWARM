@@ -45,7 +45,7 @@ function Global:Start-Timer {
         if ($(vars).MinerWatch.Elapsed.TotalSeconds -ge ($(vars).MinerInterval - 20)) {$global:continue = $false }
         Start-Sleep -S 1
         $i++
-   }while($i -le 5 -or $continue -eq $false)
+   }while($i -le 15 -or $continue -eq $false)
 }
 
 
@@ -58,19 +58,7 @@ function Global:Start-MinerLoop {
         Global:Start-Timer
         if($global:continue -eq $false) { break }
 
-        ## Step 2 5 sec
-        Global:Set-Countdown
-        Global:Get-MinerHashRate
-        Global:Start-Timer
-        if($global:continue -eq $false) { break }
-
-        ## Step 3 10 sec
-        Global:Set-Countdown
-        Global:Get-MinerHashRate
-        Global:Start-Timer
-        if($global:continue -eq $false) { break }
-
-        ## Step 3 15 sec
+        ## Step 2 15 sec
         log "
     Type 'get stats' in a new terminal to view miner statistics- This IS a remote command!
         Windows Users: Open cmd.exe or SWARM TERMINAL on desktop and enter command
@@ -82,58 +70,19 @@ function Global:Start-MinerLoop {
         Global:Start-Timer
         if($global:continue -eq $false) { break }
 
-        ## Step 4 20 sec
-        Global:Set-Countdown
-        Global:Get-MinerHashRate
-        Global:Start-Timer
-        if($global:continue -eq $false) { break }
-        
-        ## Set 5 25 Sec
-        Global:Set-Countdown
-        Global:Get-MinerHashRate
-        Global:Start-Timer
-        if($global:continue -eq $false) { break }
-
-        ## Step 6 30 sec
+        ## Step 3 30 sec
         Global:Set-Countdown
         Global:Restart-Miner
         Global:Get-MinerHashRate
         Global:Start-Timer
         if($global:continue -eq $false) { break }
 
-        ## Step 7 35 sec
-        Global:Set-Countdown
-        Global:Get-MinerHashRate
-        Global:Start-Timer
-        if($global:continue -eq $false) { break }
-
-        ## Step 8 40 sec
-        Global:Set-Countdown
-        Global:Get-MinerHashRate
-        Global:Start-Timer
-        if($global:continue -eq $false) { break }
-
-
-        ## Step 9 45 sec
+        ## Step 4 45 sec
         log "
-
-  Type 'get stats' in a new terminal to view miner statistics- This IS a remote command!
-        Windows Users: Open cmd.exe or SWARM TERMINAL on desktop and enter command
-    https://github.com/MaynardMiner/SWARM/wiki/Commands-&-Suggested-Apps for more info.
-
-        " -foreground Magenta
-        Global:Set-Countdown
-        Global:Get-MinerHashRate
-        Global:Start-Timer
-        if($global:continue -eq $false) { break }
-        
-        ## Step 10 50 sec
-        Global:Set-Countdown
-        Global:Get-MinerHashRate
-        Global:Start-Timer
-        if($global:continue -eq $false) { break }
-
-        ## Step 11 55 sec
+    Type 'get active' in a new terminal to view miner launch commands- This IS a remote command!
+            Windows Users: Open cmd.exe or SWARM TERMINAL on desktop and enter command
+       https://github.com/MaynardMiner/SWARM/wiki/Commands-&-Suggested-Apps for more info.
+        " -foreground Magenta        
         Global:Set-Countdown
         Global:Get-MinerHashRate
         Global:Start-Timer
