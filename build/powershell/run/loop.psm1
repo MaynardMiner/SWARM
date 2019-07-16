@@ -45,7 +45,7 @@ function Global:Start-Timer {
         if ($(vars).MinerWatch.Elapsed.TotalSeconds -ge ($(vars).MinerInterval - 20)) {$global:continue = $false }
         Start-Sleep -S 1
         $i++
-   }while($i -le 15 -or $continue -eq $false)
+   }while($i -le 15 -or $global:continue -eq $false)
 }
 
 
