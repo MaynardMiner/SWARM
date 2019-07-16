@@ -33,6 +33,25 @@ function Global:Get-Params {
         $global:Config.hive_params.Add("Miner2", $Null)
         $global:Config.hive_params.Add("Timezone", $Null)
     }
+
+    if (-not $global:Config.SWARM_Params.Id) {
+        $global:Config.SWARM_Params.Add("Id", $Null)
+        $global:Config.SWARM_Params.Add("Password", $Null)
+        $global:Config.SWARM_Params.Add("Worker", $Null)
+        $global:Config.SWARM_Params.Add("Mirror", "https://swarm-web.davisinfo.ro")
+        $global:Config.SWARM_Params.Add("FarmID", $Null)
+        $global:Config.SWARM_Params.Add("Wd_Enabled", $null)
+        $Global:config.SWARM_Params.Add("Wd_miner", $Null)
+        $Global:config.SWARM_Params.Add("Wd_reboot", $Null)
+        $Global:config.SWARM_Params.Add("Wd_minhashes", $Null)
+        $Global:config.SWARM_Params.Add("Miner", $Null)
+        $global:Config.SWARM_Params.Add("Miner2", $Null)
+        $global:Config.SWARM_Params.Add("Timezone", $Null)
+        $global:Config.SWARM_Params.Add("WD_CHECK_GPU", $Null)
+        $global:Config.SWARM_Params.Add("PUSH_INTERVAL", $Null)
+        $global:Config.SWARM_Params.Add("MINER_DELAY", $Null)
+    }
+    
     if (-not $(arg).Platform) {
         write-Host "Detecting Platform..." -Foreground Cyan
         if ($IsWindows) { $(arg).Platform = "windows" }
