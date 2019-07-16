@@ -62,6 +62,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                         "equihash_192/7" { $AddArgs = "--coin AUTO192_7 " }
                         "equihash_150/5" { $AddArgs = "--coin BEAM --tls 0 " }
                         "equihash_125/4" { $AddArgs = "--coin ZEL --tls 0 " }
+                        "cuckaroo29" { $AddArgs = "--coin GRIN-AD29 " }
                         "cuckatoo31" { $AddArgs = "--coin GRIN-AT31 " }
                     }
                     if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }

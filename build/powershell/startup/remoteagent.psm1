@@ -127,6 +127,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "equihash_125/4" "equihash_125/4" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "equihash_125/4" 1 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "cuckaroo29" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "cuckaroo29" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "cuckaroo29" "cuckaroo29" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "cuckaroo29" 1 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }
