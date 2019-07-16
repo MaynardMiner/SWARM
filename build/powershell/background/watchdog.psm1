@@ -88,7 +88,7 @@ $Message" -ForegroundColor Red
     if ($Global:Config.hive_params.WD_CHECK_GPU -eq 1) {
         if ($global:GetMiners.Count -gt 0 -and $global:GETSWARM.HasExited -eq $false) {
             for ($i = 0; $i -lt $Global:GPUHashTable.Count; $i++) {
-                if ([Double]$global:GPUTempTable[$i] -eq 0) { 
+                if ([Double]$global:GPUTempTable[$i] -le 0) { 
                     $BadGPU = $true
                     $This_GPU = $i
                     $reason = 2

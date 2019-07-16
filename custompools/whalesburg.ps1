@@ -40,6 +40,7 @@ if ($(arg).PoolName -eq $Name) {
         [PSCustomObject]@{
             Priority      = $Priorities.Pool_Priorities.$Name
             Algorithm     = $Whalesburg_Algorithm
+            Symbol        = "$Whalesburg_Algorithm-Algo"
             Price         = $Stat.$($(arg).Stat_Algo)
             Protocol      = "stratum+ssl"
             Host          = $Whalesburg_Host
