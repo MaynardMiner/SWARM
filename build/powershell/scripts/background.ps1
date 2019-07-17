@@ -18,7 +18,7 @@ Param (
 
 [cultureinfo]::CurrentCulture = 'en-US'
 #$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
-$WorkingDir = "/root/hive/miners/custom/SWARM"
+#$WorkingDir = "/root/hive/miners/custom/SWARM"
 Set-Location $WorkingDir
 $UtcTime = Get-Date -Date "1970-01-01 00:00:00Z"
 $UTCTime = $UtcTime.ToUniversalTime()
