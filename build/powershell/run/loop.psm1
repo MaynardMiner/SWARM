@@ -45,7 +45,7 @@ function Global:Start-Timer {
         if ($(vars).MinerWatch.Elapsed.TotalSeconds -ge ($(vars).MinerInterval - 20)) {$global:continue = $false }
         Start-Sleep -S 1
         $i++
-   }while($i -le 15 -or $global:continue -eq $false)
+   }until($i -ge 15 -or $global:continue -eq $false)
 }
 
 
@@ -60,6 +60,7 @@ function Global:Start-MinerLoop {
 
         ## Step 2 15 sec
         log "
+
     Type 'get stats' in a new terminal to view miner statistics- This IS a remote command!
         Windows Users: Open cmd.exe or SWARM TERMINAL on desktop and enter command
     https://github.com/MaynardMiner/SWARM/wiki/Commands-&-Suggested-Apps for more info.
@@ -79,6 +80,7 @@ function Global:Start-MinerLoop {
 
         ## Step 4 45 sec
         log "
+
     Type 'get active' in a new terminal to view miner launch commands- This IS a remote command!
             Windows Users: Open cmd.exe or SWARM TERMINAL on desktop and enter command
        https://github.com/MaynardMiner/SWARM/wiki/Commands-&-Suggested-Apps for more info.
