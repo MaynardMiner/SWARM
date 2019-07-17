@@ -423,3 +423,22 @@ SWARM 2.4.8
 ## Updates
 * lolminer updated
 * added some algos to miniz that were missed.
+
+# SWARM 2.5.0
+
+## New Features!
+* Added more to GUI
+  * every minute:
+    * Active Miner
+    * Rejections & Shares
+    * Command to view screen
+    * Arguments (excluding -d parameter, added at runtime)
+  * will add color to make output easier to read later.
+
+## Fixes
+* Corrected zpool currencies statistics. (Algo was fine).
+
+## Updates
+* lolminer updated
+* gminer updated
+* cpuminer-opt/sugarchain updated
