@@ -18,7 +18,7 @@ Param (
 
 [cultureinfo]::CurrentCulture = 'en-US'
 #$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
-#$WorkingDir = "/root/hive/miners/custom/SWARM"
+$WorkingDir = "/root/hive/miners/custom/SWARM"
 Set-Location $WorkingDir
 $UtcTime = Get-Date -Date "1970-01-01 00:00:00Z"
 $UTCTime = $UtcTime.ToUniversalTime()
@@ -45,8 +45,8 @@ $(vars).Add("tcp", "$($(vars).dir)\build\api\tcp")
 $(vars).Add("html", "$($(vars).dir)\build\api\html")
 $(vars).Add("web", "$($(vars).dir)\build\api\web")
 
-if(Test-Path ".\build\txt\data.xml"){
-    $(vars).Add("onboard",([xml](Get-Content ".\build\txt\data.xml")))
+if (Test-Path ".\build\txt\data.xml") {
+    $(vars).Add("onboard", ([xml](Get-Content ".\build\txt\data.xml")))
     $(vars).onboard = $(vars).onboard.gpuz_dump.card | Where vendor -ne "AMD/ATI" | Where vendor -ne "NVIDIA"
 }
 
@@ -80,7 +80,7 @@ $(vars).Add("WebSites", @())
 if ($Config.Params.Hive_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" -and -not (Test-Path "/hive/miners") ) { $(vars).NetModules += ".\build\api\hiveos"; $(vars).WebSites += "HiveOS" }
 ##if ($Config.Params.Swarm_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") { $(vars).NetModules += ".\build\api\SWARM"; $(vars).WebSites += "SWARM" }
 
-if( (Test-Path "/hive/miners") -or $(arg).Hive_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" ) { $(arg).HiveOS = "Yes" }
+if ( (Test-Path "/hive/miners") -or $(arg).Hive_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" ) { $(arg).HiveOS = "Yes" }
 Write-Host "Platform is $($(arg).Platform)"; 
 Write-Host "HiveOS ID is $($global:Config.hive_params.Id)"; 
 Write-Host "HiveOS = $($(arg).HiveOS)"
@@ -112,14 +112,14 @@ if (Test-Path $CheckForSWARM) {
     $global:GETSWARMID = Get-Content $CheckForSWARM; 
     $Global:GETSWARM = Get-Process -ID $global:GETSWARMID -ErrorAction SilentlyContinue 
 }
-$(vars).ADD("GCount",(Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json))
-$(vars).ADD("BackgroundTimer",(New-Object -TypeName System.Diagnostics.Stopwatch))
-$(vars).ADD("watchdog_start",(Get-Date))
-$(vars).ADD("watchdog_triggered",$false)
-$(vars).Add("GPU_Bad",0)
+$(vars).ADD("GCount", (Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json))
+$(vars).ADD("BackgroundTimer", (New-Object -TypeName System.Diagnostics.Stopwatch))
+$(vars).ADD("watchdog_start", (Get-Date))
+$(vars).ADD("watchdog_triggered", $false)
+$(vars).Add("GPU_Bad", 0)
 
 ## If miner was restarted due to watchdog
-if(test-path ".\build\txt\watchdog.txt"){ 
+if (test-path ".\build\txt\watchdog.txt") { 
     $(vars).watchdog_start = Get-Content ".\build\txt\watchdog.txt" 
     $(vars).watchdog_triggered = $True
     Remove-Item ".\build\txt\watchdog.txt" -Force
@@ -127,7 +127,7 @@ if(test-path ".\build\txt\watchdog.txt"){
 
 Remove-Module -Name "startup"
 
-if($IsWindows){ $(vars).Add("Cores",$(Get-CimInstance -ClassName "Win32_Processor" | Select-Object -Property "NumberOfCores").NumberOfCores)}
+if ($IsWindows) { $(vars).Add("Cores", $(Get-CimInstance -ClassName "Win32_Processor" | Select-Object -Property "NumberOfCores").NumberOfCores) }
 
 While ($True) {
 
@@ -187,12 +187,12 @@ While ($True) {
                 "NVIDIA1" { 
                     $global:HIVE_ALGO.Add("Main", $HiveAlgo); 
                     $global:Web_Stratum.Add("Main", $MinerStratum); 
-                    $global:Workers.Add("Main",$Worker)
+                    $global:Workers.Add("Main", $Worker)
                 }
                 "AMD1" { 
                     $global:HIVE_ALGO.Add("Main", $HiveAlgo); 
                     $global:Web_Stratum.Add("Main", $MinerStratum);
-                    $global:Workers.Add("Main",$Worker)
+                    $global:Workers.Add("Main", $Worker)
                 }
                 default { 
                     $global:HIVE_ALGO.Add($global:MinerType, $HiveAlgo); 
@@ -486,15 +486,12 @@ While ($True) {
             }
 
             ##Check To See if High Rejections
-            if ($BackgroundTimer.Elapsed.TotalSeconds -gt 60) {
-                $Shares = [Double]$global:MinerACC + [double]$global:MinerREJ
-                $RJPercent = $global:MinerREJ / $Shares * 100
-                if( $global:MinerTable.$($global:MinerType) ) { $global:MinerTable.$($global:MinerType).Add("rej", "$RJPercent`:$Shares") }
-                if ($RJPercent -gt $(arg).Rejections -and $Shares -gt 0) {
-                    Write-Host "Warning: Miner is reaching Rejection Limit- $($RJPercent.ToString("N2")) Percent Out of $Shares Shares" -foreground yellow
-                }
-                else { if (Test-Path ".\timeout\warnings\$($_.Name)_$($NewName)_rejection.txt") { Remove-Item ".\timeout\warnings\$($_.Name)_$($NewName)_rejection.txt" -Force } }
-            }
+            $Shares = [Double]$global:MinerACC + [double]$global:MinerREJ
+            $RJPercent = $global:MinerREJ / $Shares * 100
+            if ( $global:MinerTable.$($global:MinerType) ) { $global:MinerTable.$($global:MinerType).Add("rej", "$RJPercent`:$Shares") }
+            if ($RJPercent -gt $(arg).Rejections -and $Shares -gt 0) {
+                Write-Host "Warning: Miner is reaching Rejection Limit- $($RJPercent.ToString("N2")) Percent Out of $Shares Shares" -foreground yellow
+            } 
         }
     }
 
@@ -548,9 +545,9 @@ While ($True) {
 
     ##Select Only For Each Device Group
     $DeviceTable = @()
-    if ([string]$(arg).GPUDevices1) { $DeviceTable += $(arg).GPUDevices1 -split ","}
-    if ([string]$(arg).GPUDevices2) { $DeviceTable += $(arg).GPUDevices2 -split ","}
-    if ([string]$(arg).GPUDevices3) { $DeviceTable += $(arg).GPUDevices3 -split ","}
+    if ([string]$(arg).GPUDevices1) { $DeviceTable += $(arg).GPUDevices1 -split "," }
+    if ([string]$(arg).GPUDevices2) { $DeviceTable += $(arg).GPUDevices2 -split "," }
+    if ([string]$(arg).GPUDevices3) { $DeviceTable += $(arg).GPUDevices3 -split "," }
 
     if ($DeviceTable) {
         $DeviceTable = $DeviceTable | Sort-Object
@@ -560,10 +557,10 @@ While ($True) {
         $TempPower = @()
         for ($global:i = 0; $global:i -lt $DeviceTable.Count; $global:i++) {
             $G = $DeviceTable[$i]
-            $TempGPU += try{$global:GPUHashTable[$G]}catch{"0"}
-            $TempFan += try{$global:GPUFanTable[$G]}catch{"0"}
-            $TempTemp += try{$global:GPUTempTable[$G]}catch{"0"}
-            $TempPower += try{$global:GPUPowerTable[$G]}catch{"0"}
+            $TempGPU += try { $global:GPUHashTable[$G] }catch { "0" }
+            $TempFan += try { $global:GPUFanTable[$G] }catch { "0" }
+            $TempTemp += try { $global:GPUTempTable[$G] }catch { "0" }
+            $TempPower += try { $global:GPUPowerTable[$G] }catch { "0" }
         }
         $global:GPUHashTable = $TempGPU
         $global:GPUFanTable = $TempFan
@@ -591,9 +588,9 @@ While ($True) {
     $global:UPTIME = [math]::Round(((Get-Date) - $Global:StartTime).TotalSeconds)
 
     ##Modify Stats to show something For Online
-    if($global:DoNVIDIA -or $global:AMD){
-        for($global:i=0; $global:i -lt $global:GPUHashTable.Count; $global:i++) { $global:GPUHashTable[$global:i] = $global:GPUHashTable[$global:i] -replace "0.0000","0" }
-        if($global:GPUKHS -eq 0){$global:GPUKHS = "0"}
+    if ($global:DoNVIDIA -or $global:AMD) {
+        for ($global:i = 0; $global:i -lt $global:GPUHashTable.Count; $global:i++) { $global:GPUHashTable[$global:i] = $global:GPUHashTable[$global:i] -replace "0.0000", "0" }
+        if ($global:GPUKHS -eq 0) { $global:GPUKHS = "0" }
     }
 
     $Global:config.summary = @{
@@ -651,15 +648,16 @@ While ($True) {
         Global:Send-WebStats
     }
 
-    if ($IsWindows -and $global:Config.params.startup -eq "Yes" -and $global:Config.hive_params.Wd_enabled -eq "1"){
+    if ($IsWindows -and $global:Config.params.startup -eq "Yes" -and $global:Config.hive_params.Wd_enabled -eq "1") {
         Global:Add-Module "$($(vars).background)\watchdog.psm1"
         Global:Watch-Hashrate
         Remove-Module -name "watchdog"
     }
 
-    if($IsWindows -and $global:Config.hive_params.PUSH_INTERVAL -and $global:Config.hive_params.PUSH_INTERVAL -ne "") {
+    if ($IsWindows -and $global:Config.hive_params.PUSH_INTERVAL -and $global:Config.hive_params.PUSH_INTERVAL -ne "") {
         $Push = [double]$global:Config.hive_params.PUSH_INTERVAL
-    } else {$Push = 10}
+    }
+    else { $Push = 10 }
     
     if ($(vars).BackgroundTimer.Elapsed.TotalSeconds -le $Push) {
         $GoToSleep = [math]::Round($Push - $(vars).BackgroundTimer.Elapsed.TotalSeconds)

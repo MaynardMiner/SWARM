@@ -69,11 +69,7 @@ function Global:Get-HTTP {
 }
 
 
-function Global:Get-HashRate {
-    param(
-        [Parameter(Mandatory = $true)]
-        [String]$Type
-    )
+function Global:Get-SWARMTCP {
 
     $Port = 5099
     $Message = "summary"
@@ -102,22 +98,10 @@ function Global:Get-HashRate {
 
     if($response) {
         $response = $response | ConvertFrom-Json
-        $response = [Double]$response.summary.$Type.hash
-    }
-    else{$response = [Double]0}
+        $Response = $Response.Summary
+    } else {$response = $null}
 
     $Response
-}
-filter Global:ConvertTo-Hash {
-    $Hash = $_
-    switch ([math]::truncate([math]::log($Hash, [Math]::Pow(1000, 1)))) {
-        0 {"{0:n2} H" -f ($Hash / [Math]::Pow(1000, 0))}
-        1 {"{0:n2} KH" -f ($Hash / [Math]::Pow(1000, 1))}
-        2 {"{0:n2} MH" -f ($Hash / [Math]::Pow(1000, 2))}
-        3 {"{0:n2} GH" -f ($Hash / [Math]::Pow(1000, 3))}
-        4 {"{0:n2} TH" -f ($Hash / [Math]::Pow(1000, 4))}
-        Default {"{0:n2} PH" -f ($Hash / [Math]::Pow(1000, 5))}
-    }
 }
 
 function Global:Get-Rejections {
@@ -126,39 +110,32 @@ function Global:Get-Rejections {
         [String]$Type
     )
 
-    $Port = 5099
-    $Message = "summary"
-    $Server = "localhost"
-    $Timeout = 5
+    $res = Global:Get-SWARMTCP
+    if($res.$Type.rej){
+        $data = $res.$Type.rej
+    } else {
+        $data = "0:0"
+   }
 
-    try {
-        $Client = New-Object System.Net.Sockets.TcpClient $Server, $Port
-        $Stream = $Client.GetStream()
-        $Writer = New-Object System.IO.StreamWriter $Stream
-        $Reader = New-Object System.IO.StreamReader $Stream
-        $client.SendTimeout = $Timeout * 1000
-        $client.ReceiveTimeout = $Timeout * 1000
-        $Writer.AutoFlush = $true
-
-        $Writer.WriteLine($Message)
-        $Response = $Reader.ReadLine()
-    }
-    catch { $Error.Remove($error[$Error.Count - 1])}
-    finally {
-        if ($Reader) {$Reader.Close()}
-        if ($Writer) {$Writer.Close()}
-        if ($Stream) {$Stream.Close()}
-        if ($Client) {$Client.Close()}
-    }
-
-    if($response) {
-        $response = $response | ConvertFrom-Json
-        $response = [Double]$response.summary.$Type.rej
-    }
-    else{$response = "0:0"}
-
-    $Response
+   $data
 }
+
+function Global:Get-HashRate {
+    param(
+        [Parameter(Mandatory = $true)]
+        [String]$Type
+    )
+
+    $res = Global:Get-SWARMTCP
+    if($res.$Type.hash){
+        $data = [Double]$res.$Type.hash
+    } else {
+        $data = 0
+   }
+   
+   $data
+}
+
 function Global:Get-MinerHashRate {
     $(vars).BestActiveMiners | ForEach-Object {
         if ($_.Profit_Day -ne "bench") { $ScreenProfit = "$(($_.Profit_Day * $(vars).Rates.$($(arg).Currency)).ToString("N2")) $($(arg).Currency)/Day" } else { $ScreenProfit = "Benchmarking" }
