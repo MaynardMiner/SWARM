@@ -49,7 +49,20 @@ function Global:Start-Timer {
 }
 
 function Global:Get-MinerChart {
+    log "
     
+Current Miners:
+"
+    $(vars).BestActiveMiners | % {
+        $Rj = "$(Get-Rejections -Type $_.Type)"
+        $Percent =  $RJ -split "`:" | Select -First 1
+        $Shares =  $RJ -split "`:" | Select -Last 1
+        log "
+Miner: $($_.MinerName) `| Arguments: $($_.Arguments)
+Rejection Percent: $RJ `| Total Shares: $($_.)
+Current Screen: $($_.Type) (Run `'screen -r $($_.Type)`' To View Active Mining Screen)
+"
+    }
 }
 
 function Global:Start-MinerLoop {
@@ -97,7 +110,6 @@ function Global:Start-MinerLoop {
         Global:Set-Countdown
         Global:Restart-Miner
         Global:Get-MinerChart
-        Global:Get-MinerHashRate
         Global:Start-Timer
         if($global:continue -eq $false) { break }
     }While ($(vars).MinerWatch.Elapsed.TotalSeconds -lt ($(vars).MinerInterval - 20))
