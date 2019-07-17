@@ -59,12 +59,13 @@ $(
         $Percent =  $RJ -split "`:" | Select -First 1
         $Shares =  $RJ -split "`:" | Select -Last 1
 
-"
-Miner: $($_.MinerName)
-Rejection Percent: $Percent
+"Miner: $($_.MinerName)
+Rejection Percent: $([math]::Round($Percent,0))
 Total Shares: $Shares
 Current Screen: $($_.Type) (Run `'screen -r $($_.Type)`' To View Active Mining Screen)
-Arguments: $($_.Arguments)"
+Arguments: $($_.Arguments)
+
+"
     }
 )"
 }
