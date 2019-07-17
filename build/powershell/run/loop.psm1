@@ -48,6 +48,9 @@ function Global:Start-Timer {
    }until($i -ge 15 -or $global:continue -eq $false)
 }
 
+function Global:Get-MinerChart {
+    
+}
 
 function Global:Start-MinerLoop {
     $global:continue = $true
@@ -93,6 +96,7 @@ function Global:Start-MinerLoop {
         ## Step 12 60 sec
         Global:Set-Countdown
         Global:Restart-Miner
+        Global:Get-MinerChart
         Global:Get-MinerHashRate
         Global:Start-Timer
         if($global:continue -eq $false) { break }

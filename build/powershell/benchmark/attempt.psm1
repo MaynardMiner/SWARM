@@ -245,16 +245,17 @@ function Global:Start-Benchmark {
                     }
 
                     ##Check For High Rejections
-                    $RejectCheck = Join-Path ".\timeout\warnings" "$($_.Name)_$($NewName)_rejection.txt"
-                    if (Test-Path $RejectCheck) {
-                        log "Rejections Are Too High" -ForegroundColor DarkRed
-                        $global:WasBenchmarked = $false
-                        $Global:Strike = $true
+                    $Rj = Global:Get-Rejections -Type $_.Type
+                    if($RJ) {
+                    $Percent = $RJ -split "`:" | Select -First 1
+                    $Shares = $RJ -Split "`:" | Select -Last 1
+                    if ([Double]$Percent -gt $(arg).Rejections -and [Double]$Shares -gt 0) {
+                        log "Rejection Percentage at $Percent out of $Shares shares- Adding Strike Against Miner" -Foreground Red
+                        $Global:Strike = $True
                     }
-
-                    ## Done
                 }
             }
+        }
 
             ## If benchmark was successful- Reset the warnings
             if ($Global:Strike -ne $true) {
