@@ -10,7 +10,11 @@ Contains the codebase for SWARM regarding communicating with other programs/webs
 
 Contains linux bash codebase
 
-## Powershell
+## powershell
 
 Contains powershell codebase.
+
+## cmd
+
+Contains .bat files for PATH resolution for Windows.
 
