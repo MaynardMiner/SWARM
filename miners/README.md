@@ -13,18 +13,18 @@ that SWARM runs to do things such as:
 * Gather environment settings.
 * Pull user configuration settings, and add to miner startup.
 
-## ASIC
+## asic
 
 This folder contains the script for ASIC miners bfgminer and sgminer.
 
-## AMD
+## gpu/amd
 
 This folder contains the scripts for the current default miners.
 
-## NVIDIA
+## gpu/nvidia
 
 This folder contains the scripts for the current nvidia miners.
 
-## CPU
+## cpu
 
 This folder contains the scripts for the current cpu miners.
