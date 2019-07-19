@@ -18,3 +18,15 @@ Contains powershell codebase.
 
 Contains .bat files for PATH resolution for Windows.
 
+## apps
+
+Contains third party applications that SWARM uses.
+
+## data
+
+Placeholder for data files, such as vendor identification list, and photos for wiki.
+
+## export
+
+Libs for linux that miners require to run. They are in SWARM so that SWARM can be ran
+in most linux environments.
