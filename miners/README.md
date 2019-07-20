@@ -6,7 +6,7 @@ These are the scripts that SWARM pull to setup the miners.
 
 ## Why is there also a miners folder in config section?
 
-Those are merely user configuration/settings. These are the actually scripts
+Those are merely user configuration/settings. These are the actual scripts
 that SWARM runs to do things such as:
 * Divide miner by devices.
 * Generate initial quote for hashrate/estimate.
