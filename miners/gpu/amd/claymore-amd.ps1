@@ -63,6 +63,7 @@ $(vars).AMDTypes | ForEach-Object {
                     $SelName = $_.Name
                     switch ($SelName) {
                         "nicehash" { $AddArgs = "-esm 3 -estale 0 " }
+                        "nicehash_v1" { $AddArgs = "-esm 3 -estale 0 " }
                         default { $AddArgs = "" }
                     }
                     if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }

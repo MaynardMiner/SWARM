@@ -57,11 +57,12 @@ $(vars).NVIDIATypes | ForEach-Object {
                         "ethash" {
                             Switch ($SelName) {
                                 "nicehash" { $Stratum = "ethnh+tcp://"; $A = "ethash" }
+                                "nicehash_v1" { $Stratum = "ethnh+tcp://"; $A = "ethash" }
                                 "whalesburg" { $Stratum = "stratum+ssl://"; $A = "ethash" }
                             }
                         }
                         "cuckaroo29" { $Stratum = "stratum+tcp://"; $A = "cuckaroo" }
-                        "cuckarood29" { $Stratum = "stratum+tcp://"; $A = "cuckaroo" }
+                        "cuckaroo29d" { $Stratum = "stratum+tcp://"; $A = "cuckaroo" }
                         "cuckatoo31" { $Stratum = "stratum+tcp://"; $A = "cuckatoo" }
                         default { $Stratum = "stratum+tcp://" }
                     }        

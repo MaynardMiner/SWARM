@@ -442,3 +442,35 @@ SWARM 2.4.8
 * lolminer updated
 * gminer updated
 * cpuminer-opt/sugarchain updated
+
+# SWARM 2.5.1
+
+Note: I am still trying to figure out the new changes
+for nicehash and grin miners. I believe I have it
+set between both nicehash platforms, consider it all
+beta changes- report if you have issues.
+
+## New Features!
+* cuckaroo29d support
+* added color and formatting to new miner list
+  on main screen.
+* chmod +x miners before starting them (in case
+  developers screwed permissions).
+
+## Updates
+* teamredminer updated
+* nbminer updated
+* lolminer updated
+* gminer updated
+* xmrig-amd updated
+* xmrstak updated
+* cpuminer-opt updated
+* bminer updated
+
+## Fixes
+* better temporary support for nicehash_v1
+   * Some miners weren't launching correctly,
+   due to certain features being specifically for
+   nicehash- Added nicehash_v1 to those features.
+* removed grin-miner AMD (need to re-compile), with
+  nicehash support and cuckaroo29d.
