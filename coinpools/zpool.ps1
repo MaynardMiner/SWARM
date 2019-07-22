@@ -98,8 +98,8 @@ if ($Name -in $(arg).PoolName) {
                 $zpool_Algorithm = $zpool_UnSorted.$_.algo.ToLower()
                 $zpool_Symbol = $zpool_UnSorted.$_.sym.ToUpper()
                 $Fees = [Double]$(vars).FeeTable.zpool.$zpool_Algorithm
-                $Estimate = [Double]$zpool_UnSorted.$_.estimate * 0.001
-                $Divisor = (1000000 * [Double]$(vars).divisortable.zpool.$zpool_Algorithm)
+                $Estimate = [Double]$zpool_UnSorted.$_.estimate
+                $Divisor =  (1000000 * [Double]$(vars).divisortable.zpool.$zpool_Algorithm)
                 $Workers = [Double]$zpool_UnSorted.$_.Workers
                 $Cut = ConvertFrom-Fees $Fees $Workers $Estimate $Divisor
                 try { 
@@ -118,7 +118,7 @@ if ($Name -in $(arg).PoolName) {
             $zpool_Port = $zpool_Sorted.$_.port
             $Zpool_Host = "$($zpool_Request.$_.Original_Algo).$($region).mine.zpool.ca$X"
             $Fees = [Double]$(vars).FeeTable.zpool.$zpool_Algorithm
-            $Estimate = [Double]$zpool_Sorted.$_.estimate * 0.001
+            $Estimate = [Double]$zpool_Sorted.$_.estimate
             $Divisor = (1000000 * [Double]$(vars).divisortable.zpool.$zpool_Algorithm)
             $Workers = $zpool_Sorted.$_.Workers
 
@@ -159,7 +159,7 @@ if ($Name -in $(arg).PoolName) {
             }
                 
             if ($(vars).All_AltWallets) {
-                $(vars).All_AltWallets.PSObject.Properties.Name | ForEach-Object {
+                $(vars).All_AltWallets.keys | ForEach-Object {
                     $Sym = $_
                     $Zpool_Sym = $zpool_Symbol -split "-" | Select -First 1
                     if ($(vars).All_AltWallets.$Sym.exchange -ne "Yes") {

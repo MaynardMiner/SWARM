@@ -51,6 +51,7 @@ function Global:get-NIST {
 }
 
 function Global:Add-New_Variables {
+$(vars).Add("No_Miner",0)
 $(vars).Add("Instance",1)
 $(vars).Add("ActiveMinerPrograms",@())
 $(vars).Add("options",0)

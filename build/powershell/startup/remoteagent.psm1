@@ -38,6 +38,9 @@ function Global:start-update {
         $PreviousVersions += "SWARM.2.4.4"
         $PreviousVersions += "SWARM.2.4.5"
         $PreviousVersions += "SWARM.2.4.6"
+        $PreviousVersions += "SWARM.2.4.7"
+        $PreviousVersions += "SWARM.2.4.8"
+        $PreviousVersions += "SWARM.2.4.9"
 
         $StatsOnly = $null
 
@@ -118,17 +121,58 @@ function Global:start-update {
 
                                 try{$Data = $JsonData | ConvertFrom-Json -ErrorAction Stop} catch{}
 
-                                #if ($ChangeFile -eq "cryptodredge.json") {
-                                #   $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
-                                #      if ($_ -ne "name") {
-                                #         $Data.$_.commands | Add-Member "argon2d4096" "" -ErrorAction SilentlyContinue
-                                #        $Data.$_.difficulty | Add-Member "argon2d4096" "" -ErrorAction SilentlyContinue 
-                                #       $Data.$_.naming | Add-Member "argon2d4096" "argon2d4096" -ErrorAction SilentlyContinue
-                                #       $Data.$_.fee | Add-Member "argon2d4096" 1 -ErrorAction SilentlyContinue
-                                #   }
-                                # }
-                                #}
+                                if ($ChangeFile -eq "lolminer.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "equihash_125/4" "equihash_125/4" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "equihash_125/4" 1 -ErrorAction SilentlyContinue
 
+                                            $Data.$_.commands | Add-Member "cuckaroo29" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "cuckaroo29" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "cuckaroo29" "cuckaroo29" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "cuckaroo29" 1 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "cuckaroo29d" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "cuckaroo29d" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "cuckaroo29d" "cuckaroo29d" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "cuckaroo29d" 1 -ErrorAction SilentlyContinue
+                                        }
+                                    }
+                                }
+
+                                if ($ChangeFile -eq "nbminer.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands | Add-Member "cuckaroo29d" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "cuckaroo29d" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "cuckaroo29d" "cuckaroo29d" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "cuckaroo29d" 2 -ErrorAction SilentlyContinue
+                                        }
+                                    }
+                                }
+                                if ($ChangeFile -eq "bminer.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands | Add-Member "cuckaroo29d" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "cuckaroo29d" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "cuckaroo29d" "cuckaroo29d" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "cuckaroo29d" 2 -ErrorAction SilentlyContinue
+                                        }
+                                    }
+                                }
+
+                                if ($ChangeFile -eq "nv-lolminer.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "equihash_125/4" "equihash_125/4" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "equihash_125/4" 1 -ErrorAction SilentlyContinue
+                                        }
+                                    }
+                                }
 
                                 if ($ChangeFile -eq "wildrig.json") {
                                     $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
@@ -159,6 +203,17 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "equihash_150/5" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "equihash_150/5" "equihash_150/5" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "equihash_150/5" 2 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "equihash_192/7" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "equihash_192/7" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "equihash_192/7" "equihash_192/7" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "equihash_192/7" 2 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "equihash_125/4" "equihash_125/4" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "equihash_125/4" 2 -ErrorAction SilentlyContinue
+
                                         }
                                     }
                                 }
@@ -185,6 +240,11 @@ function Global:start-update {
                                             $Data.$_.naming | Add-Member "cuckatoo31" "cuckatoo31" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "cuckatoo31" 2 -ErrorAction SilentlyContinue
 
+                                            $Data.$_.commands | Add-Member "cuckaroo29d" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "cuckaroo29d" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "cuckaroo29d" "cuckaroo29d" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "cuckaroo29d" 2 -ErrorAction SilentlyContinue
+
                                             $Data.$_.commands | Add-Member "equihash_96/5" "" -ErrorAction SilentlyContinue
                                             $Data.$_.difficulty | Add-Member "equihash_96/5" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "equihash_96/5" "equihash_96/5" -ErrorAction SilentlyContinue
@@ -205,6 +265,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "cuckatoo31" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "cuckatoo31" "cuckatoo31" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "cuckatoo31" 2 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "cuckaroo29d" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "cuckaroo29d" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "cuckaroo29d" "cuckaroo29d" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "cuckaroo29d" 2 -ErrorAction SilentlyContinue
 
                                             $Data.$_.commands | Add-Member "equihash_96/5" "" -ErrorAction SilentlyContinue
                                             $Data.$_.difficulty | Add-Member "equihash_96/5" "" -ErrorAction SilentlyContinue 
@@ -279,6 +344,7 @@ function Global:start-update {
                                 if($ChangeFile -eq "pool-algos.json") {
                                     $Data | add-Member "x25x" @{alt_names = @("x25x"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
                                     $Data | add-Member "lyra2z330" @{alt_names = @("lyra2z330"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
+                                    $Data | add-Member "cuckaroo29d" @{alt_names = @("cuckaroo29d","grincuckaroo29d"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
                                 }
 
                                 if($ChangeFile -eq "oc-algos.json") {
@@ -319,6 +385,41 @@ function Global:start-update {
                                     } -ErrorAction SilentlyContinue
 
                                    $Data| Add-Member "anime" @{
+                                        "NVIDIA1" = @{
+                                            "Fans" = ""
+                                            "ETHPill"= ""
+                                            "Core"=""
+                                            "Memory"=""
+                                            "Power"= ""
+                                            "PillDelay"= ""
+                                        };               
+                                        "NVIDIA2" = @{
+                                            "Fans" = ""
+                                            "ETHPill"= ""
+                                            "Core"=""
+                                            "Memory"=""
+                                            "Power"= ""
+                                            "PillDelay"= ""
+                                        };                          
+                                        "NVIDIA3" = @{
+                                            "Fans" = ""
+                                            "ETHPill"= ""
+                                            "Core"=""
+                                            "Memory"=""
+                                            "Power"= ""
+                                            "PillDelay"= ""
+                                        };                         
+                                        "AMD1"= @{
+                                            "fans"= ""
+                                            "v"= ""
+                                            "dpm"= ""
+                                            "mem"= ""
+                                            "mdpm"= ""
+                                            "core"= ""
+                                        }                                
+                                    } -ErrorAction SilentlyContinue
+
+                                    $Data| Add-Member "cuckaroo29d" @{
                                         "NVIDIA1" = @{
                                             "Fans" = ""
                                             "ETHPill"= ""

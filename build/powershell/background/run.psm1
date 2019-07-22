@@ -18,7 +18,7 @@ function Global:Write-MinerData1 {
 }
 
 function Global:Write-MinerData2 {
-    $global:MinerTable.ADD("$($global:MinerType)",$global:RAW)
+    $global:MinerTable.ADD("$($global:MinerType)", @{ hash = $global:RAW} )
     Write-Host "Miner $global:Name was clocked at $( $global:RAW | Global:ConvertTo-Hash )/s" -foreground Yellow
 }
 

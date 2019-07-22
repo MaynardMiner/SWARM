@@ -152,7 +152,7 @@ if ($Name -in $(arg).PoolName) {
         }
                 
         if ($(vars).All_AltWallets) {
-            $(vars).All_AltWallets.PSObject.Properties.Name | ForEach-Object {
+            $(vars).All_AltWallets.keys | ForEach-Object {
                 $Sym = $_
                 $Zerg_Sym = $Zergpool_Symbol -split "-" | Select -First 1
                 if ($Sym -eq $Zerg_Sym -or $Sym -eq $Zergpool_Symbol) {

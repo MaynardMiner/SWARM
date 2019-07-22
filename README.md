@@ -1,8 +1,10 @@
 # SWARM: Profit Switching AI For HiveOS, SMOS, Linux, & Windows
 
-**Developer Notice** : SWARM does perform occassional disk read/writes, more than a typical mining OS. If you are using a usb stick and have issues- It is likely the quality of the USB stick/condition. SWARM will also degrade USB flash drives faster- It cannot be helped. It creates/stores a small database for profit tracking.
+**Developer Notice** : SWARM does perform occassional disk read/writes, more than a typical mining OS. If you are using a usb stick and have issues- It is likely the quality of the USB stick/condition. SWARM will also degrade USB flash drives faster- It cannot be helped. It creates/stores a small database for profit tracking. Also - The first issue that begins to happen when degradation happens and/or rig is running out of resoures- You begin to see "ConvertTo-Json" errors.
 
 **IMPORTANT** : SWARM attempts to provide miners that work for as many cards as possible. Some miners may work for your cards, some may not. All miners are set with default settings provided from developers themselves. There is a ``-Bans`` argument that lets you remotely remove miners from the list. SWARM should support, if not all late model cards.
+
+**NOTE**: RTX fan control does not currently work in Windows, but all other oc does. I am working on my own command line program to do this.
 
 ## SWARM wiki:
 
@@ -22,7 +24,7 @@ To focus solely on SWARM's project mission: SWARM was written to integrate fully
 
 ### SMOS Integration
 
-After many user requests, SWARM now works in Simple Miner. See Wiki on how to setup. Simplemining.net is lighter than HiveOS, which makes it generally easier to use for an experienced miner, but non-experienced Linux user.
+After many user requests, SWARM now works in Simple Miner. See Wiki on how to setup. Simplemining.net is lighter than HiveOS, which makes it generally easier to use for an experienced miner, but non-experienced Linux user. I don't personally regularly use SMOS, so if you have an issue, post in issues section, and I will plug in and update SMOS compatibility.
 
 ### Highly Sophisticated Customization
 * OC Tuning by algorithm
@@ -142,7 +144,7 @@ Reddit: https://www.reddit.com/r/SWARM_Miner
 
 BTC WALLET: 1FpuMha1QPaWS4PTPZpU1zGRzKMevnDpwg
 
-NICEHASH WALLET: 3JfBiUZZV17DTjAFCnZb97UpBgtLPLLDop
+NICEHASH WALLET: 39iUh6aforxHcBr3Ayywmnqw2ZHcbmy9Wj
 
 RVN WALLET: RKirUe978mBoa2MRWqeMGqDzVAKTafKh8H
 

@@ -435,7 +435,16 @@ While ($true) {
             Remove-Variable -Name HiveMessage -ErrorAction Ignore
             Remove-Variable -Name HiveWarning -ErrorAction Ignore
             Remove-Variable -Name Sel -ErrorAction Ignore
-            #start-sleep $(arg).Interval;
+
+            ## Go to sleep for interval
+            start-sleep $(arg).Interval;
+
+            ## Check How many times it occurred.
+            ## If it occurred more than 10 times-
+            ## Remove all current hashrates, and migrate backup hashrates
+            ## to stats folder. Then Restart Computer.
+            $(vars).No_Miners++
+            Global:Confirm-Backup
 
             ##remove all active parameters, Then restart loop
             remove all
@@ -445,6 +454,7 @@ While ($true) {
         ##Sort The Miners
         Global:Add-Module "$($(vars).miner)\sorting.psm1"
         if ($(arg).Volume -eq "Yes") { Get-Volume }
+        Global:Start-MinerDownloads
         $CutMiners = Global:Start-MinerReduction
         $CutMiners | ForEach-Object { $(vars).Miners.Remove($_) } | Out-Null;
         Remove-Variable -Name CutMiners -ErrorAction Ignore
@@ -504,7 +514,6 @@ While ($true) {
         ## Ammend Their Pricing
         Global:Add-Module "$($(vars).control)\config.psm1"
         Global:Add-Module "$($(vars).control)\initial.psm1"
-        Global:Start-MinerDownloads
         Global:Get-ActiveMiners
         Global:Get-BestActiveMiners
         Global:Get-ActivePricing

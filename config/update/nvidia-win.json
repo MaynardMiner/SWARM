@@ -18,9 +18,9 @@
         "NVIDIA2": ".\\bin\\nbminer-2\\nbminer.exe",
         "NVIDIA3": ".\\bin\\nbminer-3\\nbminer.exe",
         "minername": "nbminer.exe",
-        "version": "23.3",
+        "version": "24.2",
         "optional": "No",
-        "uri": "https://github.com/NebuTech/NBMiner/releases/download/v23.3/NBMiner_23.3_Win.zip"
+        "uri": "https://github.com/NebuTech/NBMiner/releases/download/v24.2/NBMiner_24.2_Win.zip"
       },    
     "cc-mtp": {
         "name": "cc-mtp",
@@ -62,9 +62,9 @@
         "NVIDIA2": ".\\bin\\bminer-2\\bminer.exe",
         "NVIDIA3": ".\\bin\\bminer-3\\bminer.exe",
         "minername": "bminer.exe",
-        "version": "15.5.3",
+        "version": "15.7.2",
         "optional": "No",
-        "uri": "https://www.bminercontent.com/releases/bminer-lite-v15.5.3-747d98e-amd64.zip"
+        "uri": "https://www.bminercontent.com/releases/bminer-lite-v15.7.2-7c03408-amd64.zip"
     },
     "ehssand": {
         "name": "ehssand",
@@ -84,9 +84,9 @@
         "NVIDIA2": ".\\bin\\gminer-2\\miner.exe",
         "NVIDIA3": ".\\bin\\gminer-3\\miner.exe",
         "minername": "miner.exe",
-        "version": "1.50",
+        "version": "1.52",
         "optional": "No",
-        "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.50/gminer_1_50_windows64.zip"
+        "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.52/gminer_1_52_windows64.zip"
     },
     "claymore": {
         "name": "claymore",
@@ -260,8 +260,8 @@
         "NVIDIA2":".\\bin\\nv-lolminer-2\\lolMiner.exe", 
         "NVIDIA3":".\\bin\\nv-lolminer-3\\lolMiner.exe", 
         "minername":"lolMiner.exe", 
-        "version":"0.8.3", 
+        "version":"0.8.5", 
         "optional": "Yes",
-        "uri":"https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.8.3/lolMiner_v083_Win64.zip"
+        "uri":"https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.8.5/lolMiner_v085_Win64.zip"
         }     
 }

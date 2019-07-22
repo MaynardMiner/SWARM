@@ -7,21 +7,25 @@
         "commands": {
             "ethash": "",
             "cuckaroo29": "",
+            "cuckaroo29d": "",
             "cuckatoo31": ""
         },
         "difficulty": {
             "ethash": "",
             "cuckaroo29": "",
+            "cuckaroo29d": "",
             "cuckatoo31": ""
         },
         "naming": {
-            "ethash": "",
-            "cuckaroo29": "",
-            "cuckatoo31": ""
+            "ethash": "ethash",
+            "cuckaroo29": "cuckaroo29",
+            "cuckaroo29d": "cuckaroo29d",
+            "cuckatoo31": "cuckatoo31"
         },
         "fee": {
             "ethash": 0.65,
             "cuckaroo29": 2,
+            "cuckaroo29d": 2,
             "cuckatoo31": 2
         }
     },
@@ -32,21 +36,25 @@
         "commands": {
             "ethash": "",
             "cuckaroo29": "",
+            "cuckaroo29d": "",
             "cuckatoo31": ""
         },
         "difficulty": {
             "ethash": "",
             "cuckaroo29": "",
+            "cuckaroo29d": "",
             "cuckatoo31": ""
         },
         "naming": {
-            "ethash": "",
-            "cuckaroo29": "",
-            "cuckatoo31": ""
+            "ethash": "ethash",
+            "cuckaroo29": "cuckaroo29",
+            "cuckaroo29d": "cuckaroo29d",
+            "cuckatoo31": "cuckatoo31"
         },
         "fee": {
             "ethash": 0.65,
             "cuckaroo29": 2,
+            "cuckaroo29d": 2,
             "cuckatoo31": 2
         }
     },
@@ -57,21 +65,25 @@
         "commands": {
             "ethash": "",
             "cuckaroo29": "",
+            "cuckaroo29d": "",
             "cuckatoo31": ""
         },
         "difficulty": {
             "ethash": "",
             "cuckaroo29": "",
+            "cuckaroo29d": "",
             "cuckatoo31": ""
         },
         "naming": {
-            "ethash": "",
-            "cuckaroo29": "",
-            "cuckatoo31": ""
+            "ethash": "ethash",
+            "cuckaroo29": "cuckaroo29",
+            "cuckaroo29d": "cuckaroo29d",
+            "cuckatoo31": "cuckatoo31"
         },
         "fee": {
             "ethash": 0.65,
             "cuckaroo29": 2,
+            "cuckaroo29d": 2,
             "cuckatoo31": 2
         }
     }

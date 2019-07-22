@@ -40,9 +40,9 @@ function Global:Get-MinerHashTable {
     else { $Miner_Hash = $null }
 
     $TypeTable = @{ }
-    $cpu.PSobject.Properties.Name | %{ if($_ -ne "name"){$TypeTable.Add("$($_)","CPU")} }
-    $amd.PSObject.Properties.Name | %{if($_ -ne "name"){$TypeTable.Add("$($_)-1","AMD1")}}
-    $nvidia.PSObject.Properties.Name | % {
+    $(vars).cpu.PSobject.Properties.Name | %{ if($_ -ne "name"){$TypeTable.Add("$($_)","CPU")} }
+    $(vars).amd.PSObject.Properties.Name | %{if($_ -ne "name"){$TypeTable.Add("$($_)-1","AMD1")}}
+    $(vars).nvidia.PSObject.Properties.Name | % {
         if($_ -ne "name"){
             $TypeTable.Add("$($_)-1","NVIDIA1")
             $TypeTable.Add("$($_)-2","NVIDIA2")

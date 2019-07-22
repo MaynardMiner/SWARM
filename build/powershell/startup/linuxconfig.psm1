@@ -228,6 +228,14 @@ function Global:Get-Data {
         Set-Location "/"
         Set-Location $($(vars).dir)     
     }
+
+    if (Test-Path ".\build\bash\send-config") {
+        Copy-Item ".\build\bash\send-config" -Destination "/usr/bin" -force | Out-Null
+        Set-Location "/usr/bin"
+        Start-Process "chmod" -ArgumentList "+x send-config"
+        Set-Location "/"
+        Set-Location $($(vars).dir)     
+    }
    
     Set-Location $($(vars).dir)
     

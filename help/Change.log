@@ -365,6 +365,15 @@ Changelog
 
 SWARM.2.4.7
 
+## Improvements
+* No more generated errors for multiple device groups in Windows
+* SWARM will not just download miners that get on stats list
+  but all miners that require binaries now. So you can
+  monitor downloading.
+* typo in bminer on windows side- Added 'export LD_LIBRARY'
+  from linux side, didn't cause any issues, but fixed
+  to prevent error.
+
 ## Fixes
 * Wallets.json full depth was not being covertedto-Json on update.
   This is resolved.
@@ -379,3 +388,57 @@ SWARM.2.4.7
   * another note: SWARM skips over coins or algorithms with no hashrate.
 * new teamredminer added
   * cuckatoo31 added
+
+
+SWARM 2.4.8
+
+## FEATURES
+* Nicehash v2 api/methods added. SWARM will connect
+  to new platform.
+* If ``-Startup`` is "Yes" (Default is "Yes")
+  SWARM will migrate backup stats from backup
+  folder to stats folder, and restart rig.
+  After 10 intervals of "No Miner Found!"
+
+## Fixes
+* Fixed iDictionary error for Device Groups.
+* Fixed "Name" missing for All_Altwallets
+   ( solo mining can now work again).
+
+# SWARM.2.4.9
+
+## NEW COMMAND!
+* ``send-config`` [linux only]
+  * Usage-example: ``send-config power '[your power .json config]'``
+  * Having the .json between ' ' is very important!
+  * Allows you to send a .json config remotely through
+  HiveOS web interface.
+  * ``send-config [json name without .json at end] [.json data]``
+  * Will have it work for Windows soon, but am still testing.
+
+## Features
+* Added nicehash_v1 file. You have to specify -Poolname nicehash_v1
+  * You can use either or. You cannot use both!
+
+## Updates
+* lolminer updated
+* added some algos to miniz that were missed.
+
+# SWARM 2.5.0
+
+## New Features!
+* Added more to GUI
+  * every minute:
+    * Active Miner
+    * Rejections & Shares
+    * Command to view screen
+    * Arguments (excluding -d parameter, added at runtime)
+  * will add color to make output easier to read later.
+
+## Fixes
+* Corrected zpool currencies statistics. (Algo was fine).
+
+## Updates
+* lolminer updated
+* gminer updated
+* cpuminer-opt/sugarchain updated

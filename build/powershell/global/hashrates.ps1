@@ -69,11 +69,7 @@ function Global:Get-HTTP {
 }
 
 
-function Global:Get-HashRate {
-    param(
-        [Parameter(Mandatory = $true)]
-        [String]$Type
-    )
+function Global:Get-SWARMTCP {
 
     $Port = 5099
     $Message = "summary"
@@ -102,22 +98,42 @@ function Global:Get-HashRate {
 
     if($response) {
         $response = $response | ConvertFrom-Json
-        $response = [Double]$response.summary.$Type
-    }
-    else{$response = [Double]0}
+        $Response = $Response.Summary
+    } else {$response = $null}
 
     $Response
 }
-filter Global:ConvertTo-Hash {
-    $Hash = $_
-    switch ([math]::truncate([math]::log($Hash, [Math]::Pow(1000, 1)))) {
-        0 {"{0:n2} H" -f ($Hash / [Math]::Pow(1000, 0))}
-        1 {"{0:n2} KH" -f ($Hash / [Math]::Pow(1000, 1))}
-        2 {"{0:n2} MH" -f ($Hash / [Math]::Pow(1000, 2))}
-        3 {"{0:n2} GH" -f ($Hash / [Math]::Pow(1000, 3))}
-        4 {"{0:n2} TH" -f ($Hash / [Math]::Pow(1000, 4))}
-        Default {"{0:n2} PH" -f ($Hash / [Math]::Pow(1000, 5))}
-    }
+
+function Global:Get-Rejections {
+    param(
+        [Parameter(Mandatory = $true)]
+        [String]$Type
+    )
+
+    $res = Global:Get-SWARMTCP
+    if($res.$Type.rej){
+        $data = $res.$Type.rej
+    } else {
+        $data = "0:0"
+   }
+
+   $data
+}
+
+function Global:Get-HashRate {
+    param(
+        [Parameter(Mandatory = $true)]
+        [String]$Type
+    )
+
+    $res = Global:Get-SWARMTCP
+    if($res.$Type.hash){
+        $data = [Double]$res.$Type.hash
+    } else {
+        $data = 0
+   }
+   
+   $data
 }
 
 function Global:Get-MinerHashRate {
