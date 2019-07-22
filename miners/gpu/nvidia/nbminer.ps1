@@ -56,8 +56,8 @@ $(vars).NVIDIATypes | ForEach-Object {
                     switch ($MinerAlgo) {
                         "ethash" {
                             Switch ($SelName) {
-                                "nicehash" { $Stratum = "ethnh+tcp://"; $A = "ethash" }
-                                "nicehash_v1" { $Stratum = "ethnh+tcp://"; $A = "ethash" }
+                                "nicehash" { $Stratum = "nicehash+tcp://"; $A = "ethash" }
+                                "nicehash_v1" { $Stratum = "nicehash+tcp://"; $A = "ethash" }
                                 "whalesburg" { $Stratum = "stratum+ssl://"; $A = "ethash" }
                             }
                         }
