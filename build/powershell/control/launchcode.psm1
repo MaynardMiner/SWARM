@@ -431,6 +431,11 @@ function Global:Start-LaunchCode($MinerCurrent,$AIP) {
             $Proc = Start-Process "chmod" -ArgumentList "+x $MinerDir/startup.sh" -PassThru
             $Proc | Wait-Process
 
+            ##chmod miner (sometimes they don't set permissions correctly)
+            $MinerFP = $(Resolve-Path $MinerCurrent.Path).Path
+            $Proc = Start-Process "chmod" -ArgumentList "+x $MinerFP" -PassThru
+            $Proc | Wait-Process
+
             ##Launch The Config
             $Proc = Start-Process ".\build\bash\startup.sh" -PassThru
             $Proc | Wait-Process

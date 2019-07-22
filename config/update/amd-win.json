@@ -117,9 +117,9 @@
     "AMD2": ".\\bin\\xmrstak-2\\xmr-stak.exe",
     "AMD3": ".\\bin\\xmrstak-3\\xmr-stak.exe",
     "minername": "xmr-stak.exe",
-    "version": "2.10.5",
+    "version": "2.10.6",
     "optional": "No",
-    "uri": "https://github.com/fireice-uk/xmr-stak/releases/download/2.10.5/xmr-stak-win64-2.10.5.zip"
+    "uri": "https://github.com/fireice-uk/xmr-stak/releases/download/2.10.6/xmr-stak-win64-2.10.6.zip"
   },
   "wildrig": {
     "name": "wildrig",
@@ -150,9 +150,9 @@
     "AMD2": ".\\bin\\xmrig-amd-2\\xmrig-amd.exe",
     "AMD3": ".\\bin\\xmrig-amd-3\\xmrig-amd.exe",
     "minername": "xmrig-amd.exe",
-    "version": "2.14.4",
+    "version": "2.14.5",
     "optional": "No",
-    "uri": "https://github.com/xmrig/xmrig-amd/releases/download/v2.14.4/xmrig-amd-2.14.4-msvc-win64.zip"
+    "uri": "https://github.com/xmrig/xmrig-amd/releases/download/v2.14.5/xmrig-amd-2.14.5-msvc-win64.zip"
   },
   "srbminer": {
     "name": "srbminer",

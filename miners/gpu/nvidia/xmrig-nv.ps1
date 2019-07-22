@@ -1,35 +1,29 @@
-$(vars).AMDTypes | ForEach-Object {
+$(vars).NVIDIATypes | ForEach-Object {
     
-    $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
-    $CName = "claymore-amd"
+    $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
+    $CName = "xmrig-nv"
 
     ##Miner Path Information
-    if ($(vars).amd.$CName.$ConfigType) { $Path = "$($(vars).amd.$CName.$ConfigType)" }
+    if ($(vars).nvidia.$CName.$ConfigType) { $Path = "$($(vars).nvidia.$CName.$ConfigType)" }
     else { $Path = "None" }
-    if ($(vars).amd.$CName.uri) { $Uri = "$($(vars).amd.$CName.uri)" }
+    if ($(vars).nvidia.$CName.uri) { $Uri = "$($(vars).nvidia.$CName.uri)" }
     else { $Uri = "None" }
-    if ($(vars).amd.$CName.minername) { $MinerName = "$($(vars).amd.$CName.minername)" }
+    if ($(vars).nvidia.$CName.minername) { $MinerName = "$($(vars).nvidia.$CName.minername)" }
     else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "2000$Num"
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "5200$Num";
 
     Switch ($Num) {
-        1 { $Get_Devices = $(vars).AMDDevices1; $Rig = $(arg).Rigname1 }
+        1 { $Get_Devices = $(vars).NVIDIADevices1; $Rig = $(arg).RigName1 }
+        2 { $Get_Devices = $(vars).NVIDIADevices2; $Rig = $(arg).RigName2 }
+        3 { $Get_Devices = $(vars).NVIDIADevices3; $Rig = $(arg).RigName3 }
     }
 
     ##Log Directory
     $Log = Join-Path $($(vars).dir) "logs\$ConfigType.log"
 
     ##Parse -GPUDevices
-    if ($Get_Devices -ne "none") {
-        $ClayDevices1 = $Get_Devices -split ","
-        $ClayDevices1 = Switch ($ClayDevices1) { "10" { "a" }; "11" { "b" }; "12" { "c" }; "13" { "d" }; "14" { "e" }; "15" { "f" }; "16" { "g" }; "17" { "h" }; "18" { "i" }; "19" { "j" }; "20" { "k" }; default { "$_" }; }
-        $ClayDevices1 = $ClayDevices1 | ForEach-Object { $_ -replace ("$($_)", ",$($_)") }
-        $ClayDevices1 = $ClayDevices1 -join ""
-        $ClayDevices1 = $ClayDevices1.TrimStart(" ", ",")  
-        $ClayDevices1 = $ClayDevices1 -replace (",", "")
-        $Devices = $ClayDevices1
-    }
+    if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
     else { $Devices = $Get_Devices }
 
     ##Get Configuration File
@@ -60,15 +54,7 @@ $(vars).AMDTypes | ForEach-Object {
         
             if ($Check.RAW -ne "Bad") {
                 $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
-                    $SelName = $_.Name
-                    switch ($SelName) {
-                        "nicehash" { $AddArgs = "-esm 3 -estale 0 " }
-                        "nicehash_v1" { $AddArgs = "-esm 3 -estale 0 " }
-                        default { $AddArgs = "" }
-                    }
                     if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
-                    if ($_.Worker) { $MinerWorker = "-eworker $($_.Worker) " }
-                    else { $MinerWorker = "-epsw $($_.$Pass)$($Diff) " }
                     [PSCustomObject]@{
                         MName      = $Name
                         Coin       = $(vars).Coins
@@ -81,21 +67,21 @@ $(vars).AMDTypes | ForEach-Object {
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($(vars).amd.$CName.version)"
-                        DeviceCall = "claymore"
-                        Arguments  = "-platform 1 -mport $Port $AddArgs-mode 1 -allcoins 1 $AddArgs-allpools 1 -epool $($_.Protocol)://$($_.Host):$($_.Port) -logfile `'$Log`' -ewal $($_.$User) $MinerWorker-wd 0 -gser 2 -dbg -1 -eres 1 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                        Version    = "$($(vars).nvidia.$CName.version)"
+                        DeviceCall = "xmrstak"
+                        Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --api-port=$Port -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.$User) -p $($_.$Pass)$($Diff) --donate-level 1 --nicehash $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"    
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
-                        API        = "claymore"
+                        MinerPool  = "$($_.Name)"
                         Port       = $Port
                         Worker     = $Rig
-                        MinerPool  = "$($_.Name)"
+                        API        = "xmrstak"
                         Wallet     = "$($_.$User)"
                         URI        = $Uri
                         Server     = "localhost"
-                        Algo       = "$($_.Algorithm)"
-                        Log        = "miner_generated"                               
+                        Algo       = "$($_.Algorithm)"                         
+                        Log        = $Log 
                     }            
                 }
             }

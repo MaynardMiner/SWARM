@@ -161,9 +161,9 @@
     "AMD2": ".\\bin\\xmrstak-2\\xmr-stak",
     "AMD3": ".\\bin\\xmrstak-3\\xmr-stak",
     "minername": "xmr-stak",
-    "version": "2.10.5",
+    "version": "2.10.6",
     "optional": "No",
-    "uri": "https://github.com/fireice-uk/xmr-stak/releases/download/2.10.5/xmr-stak-linux-2.10.5-cpu_opencl-amd.tar.xz"
+    "uri": "https://github.com/fireice-uk/xmr-stak/releases/download/2.10.6/xmr-stak-linux-2.10.6-cpu_opencl-amd.tar.xz"
   },
   "wildrig": {
     "name": "wildrig",
@@ -194,9 +194,9 @@
     "AMD2": ".\\bin\\xmrig-amd-2\\xmrig-amd",
     "AMD3": ".\\bin\\xmrig-amd-3\\xmrig-amd",
     "minername": "xmrig-amd",
-    "version": "2.14.4",
+    "version": "2.14.5",
     "optional": "No",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/xmrig-amd-linux.tar.gz"
+    "uri": "https://github.com/xmrig/xmrig-amd/releases/download/v2.14.5/xmrig-amd-2.14.5-xenial-x64.tar.gz"
   },
   "progminer-amd": {
     "name": "progminer-amd",
