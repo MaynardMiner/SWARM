@@ -76,6 +76,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                         "equihash_150/5" { $AddArgs = "--algo 150_5 --pers auto " }
                         "cuckoo_cycle" { $AddArgs = "--algo aeternity " }
                         "cuckaroo29" { $AddArgs = "--algo grin29 " }
+                        "cuckarood29" { $AddArgs = "--algo grin29 " }
                         "cuckatoo31" { $AddArgs = "--algo grin31 " }
                         "equihash_96/5" { $AddArgs = "--algo 96_5 --pers auto " }
                         "equihash_192/7" { $AddArgs = "--algo 192_7 --pers auto " }
@@ -99,7 +100,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
                         Version    = "$($(vars).nvidia.gminer.version)"
                         DeviceCall = "gminer"
-                        Arguments  = "--api $Port --server $($_.Host) --port $($_.Port) $AddArgs--user $($_.$User) --logfile `'$Log`' --pass $($_.$Pass)$Diff $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                        Arguments  = "--api $Port --server $($_.Host) --nvml 0 --port $($_.Port) $AddArgs--user $($_.$User) --logfile `'$Log`' --pass $($_.$Pass)$Diff $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 

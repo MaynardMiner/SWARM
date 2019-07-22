@@ -23,7 +23,8 @@ function Global:Set-Countdown {
     if ($(arg).SWARM_Mode -eq "Yes" -and $(vars).BenchmarkMode -eq $false) { 
         $CountDown = Global:Invoke-SWARMMode $global:SwitchTime; $CountDown = $Countdown * -1 
         $CountMessage = "SWARM Mode Starts: $($Countdown) seconds"
-    } else { 
+    }
+    else { 
         $Countdown = ([math]::Round(($(vars).MinerInterval - 20) - $(vars).MinerWatch.Elapsed.TotalSeconds)) 
         $CountMessage = "Time Left Until Database Starts: $($Countdown) seconds"
     }
@@ -39,35 +40,39 @@ function Global:Restart-Miner {
 
 function Global:Start-Timer {
     $i = 0;
-    do{
+    do {
         if ($(vars).SWARM_IT) { $(vars).ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
         if ($(vars).ModeCheck -gt 0) { $global:continue = $false }
-        if ($(vars).MinerWatch.Elapsed.TotalSeconds -ge ($(vars).MinerInterval - 20)) {$global:continue = $false }
+        if ($(vars).MinerWatch.Elapsed.TotalSeconds -ge ($(vars).MinerInterval - 20)) { $global:continue = $false }
         Start-Sleep -S 1
         $i++
-   }until($i -ge 15 -or $global:continue -eq $false)
+    }until($i -ge 15 -or $global:continue -eq $false)
 }
 
 function Global:Get-MinerChart {
     log "
     
 Current Miners:
-
-$(
-        $(vars).BestActiveMiners | ForEach-Object {
-        $Rj = "$(Get-Rejections -Type $_.Type)"
-        $Percent =  $RJ -split "`:" | Select -First 1
-        $Shares =  $RJ -split "`:" | Select -Last 1
-
-"Miner: $($_.MinerName)
-Rejection Percent: $([math]::Round($Percent,0))
-Total Shares: $Shares
-Current Screen: $($_.Type) (Run `'screen -r $($_.Type)`' To View Active Mining Screen)
-Arguments: $($_.Arguments)
-
 "
+
+    $(vars).BestActiveMiners | ForEach-Object {
+        $Rj = "$(Get-Rejections -Type $_.Type)"
+        $Percent = $RJ -split "`:" | Select-Object -First 1
+        $Shares = $RJ -split "`:" | Select-Object -Last 1
+
+        log "Miner: " -foreground Green -NoNewLine -Start
+        log "$($_.MinerName)" -End
+        log "Rejection Percent: " -foreground Red -NoNewLine -Start
+        log "$([math]::Round($Percent,0))" -End
+        log "Total Shares: " -foregroundcolor Yellow -NoNewLine -Start
+        log "$Shares" -End
+        log "Current Screen: " -foreground Cyan -NoNewLine -Start
+        log "$($_.Type) (Run `'screen -r $($_.Type)`' To View Active Mining Screen)" -End
+        log "Arguments: " -foreground Magenta -NoNewLine -Start
+        log "$($_.Arguments)" -End
+        Write-Host ""
     }
-)"
+
 }
 
 function Global:Start-MinerLoop {
@@ -77,7 +82,7 @@ function Global:Start-MinerLoop {
         Global:Set-Countdown
         Global:Get-MinerHashRate
         Global:Start-Timer
-        if($global:continue -eq $false) { break }
+        if ($global:continue -eq $false) { break }
 
         ## Step 2 15 sec
         log "
@@ -90,14 +95,14 @@ function Global:Start-MinerLoop {
         Global:Set-Countdown
         Global:Get-MinerHashRate
         Global:Start-Timer
-        if($global:continue -eq $false) { break }
+        if ($global:continue -eq $false) { break }
 
         ## Step 3 30 sec
         Global:Set-Countdown
         Global:Restart-Miner
         Global:Get-MinerHashRate
         Global:Start-Timer
-        if($global:continue -eq $false) { break }
+        if ($global:continue -eq $false) { break }
 
         ## Step 4 45 sec
         log "
@@ -109,13 +114,13 @@ function Global:Start-MinerLoop {
         Global:Set-Countdown
         Global:Get-MinerHashRate
         Global:Start-Timer
-        if($global:continue -eq $false) { break }
+        if ($global:continue -eq $false) { break }
 
         ## Step 12 60 sec
         Global:Set-Countdown
         Global:Restart-Miner
         Global:Get-MinerChart
         Global:Start-Timer
-        if($global:continue -eq $false) { break }
+        if ($global:continue -eq $false) { break }
     }While ($(vars).MinerWatch.Elapsed.TotalSeconds -lt ($(vars).MinerInterval - 20))
 }

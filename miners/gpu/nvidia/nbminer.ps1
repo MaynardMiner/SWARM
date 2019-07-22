@@ -61,6 +61,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                             }
                         }
                         "cuckaroo29" { $Stratum = "stratum+tcp://"; $A = "cuckaroo" }
+                        "cuckarood29" { $Stratum = "stratum+tcp://"; $A = "cuckaroo" }
                         "cuckatoo31" { $Stratum = "stratum+tcp://"; $A = "cuckatoo" }
                         default { $Stratum = "stratum+tcp://" }
                     }        
