@@ -241,11 +241,6 @@ function Global:start-update {
                                             $Data.$_.naming | Add-Member "cuckatoo31" "cuckatoo31" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "cuckatoo31" 2 -ErrorAction SilentlyContinue
 
-                                            $Data.$_.commands | Add-Member "cuckaroo29d" "" -ErrorAction SilentlyContinue
-                                            $Data.$_.difficulty | Add-Member "cuckaroo29d" "" -ErrorAction SilentlyContinue 
-                                            $Data.$_.naming | Add-Member "cuckaroo29d" "cuckaroo29d" -ErrorAction SilentlyContinue
-                                            $Data.$_.fee | Add-Member "cuckaroo29d" 2 -ErrorAction SilentlyContinue
-
                                             $Data.$_.commands | Add-Member "equihash_96/5" "" -ErrorAction SilentlyContinue
                                             $Data.$_.difficulty | Add-Member "equihash_96/5" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "equihash_96/5" "equihash_96/5" -ErrorAction SilentlyContinue
