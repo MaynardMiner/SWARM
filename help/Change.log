@@ -456,6 +456,9 @@ beta changes- report if you have issues.
   on main screen.
 * chmod +x miners before starting them (in case
   developers screwed permissions).
+* nanominer added
+  * I did not add ethash - It was crashing cards within a minute.
+  * You can add ethash to nanominer.json if you wish to try yourself.
 
 ## Updates
 * teamredminer updated
@@ -466,6 +469,7 @@ beta changes- report if you have issues.
 * xmrstak updated
 * cpuminer-opt updated
 * bminer updated
+* ttminer updated
 
 ## Fixes
 * better temporary support for nicehash_v1
