@@ -128,7 +128,7 @@
         "NVIDIA2": ".\\bin\\z-enemy-2\\z-enemy.exe",
         "NVIDIA3": ".\\bin\\z-enemy-3\\z-enemy.exe",
         "minername": "z-enemy.exe",
-        "version": "2.00",
+        "version": "2.1",
         "optional": "No",
         "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/z-enemy-windows.zip"
     },
