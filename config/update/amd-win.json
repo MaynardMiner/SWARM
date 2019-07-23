@@ -175,5 +175,16 @@
     "version": "1.12",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/progminer-windows.zip"
+  },
+  "nanominer": {
+    "name": "nanominer",
+    "type": "amd",
+    "AMD1": ".\\bin\\nanominer-1\\nanominer.exe",
+    "AMD2": ".\\bin\\nanominer-2\\nanominer.exe",
+    "AMD3": ".\\bin\\nanominer-3\\nanominer.exe",
+    "minername": "nanominer.exe",
+    "version": "1.5.2",
+    "optional": "No",
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v1.5.2/nanominer-windows-1.5.2.zip"
   }
 }

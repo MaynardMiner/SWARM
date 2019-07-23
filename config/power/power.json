@@ -1,36 +1,309 @@
 {
-    "KWh":  {
-                "note":  "You can now set Kw/h by hour. KW/h is based on your fiat currency. So the below 0.1 would be .10 USD",
-                "0":  "0.1",
-                "1":  "0.1",
-                "2":  "0.1",
-                "3":  "0.1",
-                "4":  "0.1",
-                "5":  "0.1",
-                "6":  "0.1",
-                "7":  "0.1",
-                "8":  "0.1",
-                "9":  "0.1",
-                "10":  "0.1",
-                "11":  "0.1",
-                "12":  "0.1",
-                "13":  "0.1",
-                "14":  "0.1",
-                "15":  "0.1",
-                "16":  "0.1",
-                "17":  "0.1",
-                "18":  "0.1",
-                "19":  "0.1",
-                "20":  "0.1",
-                "21":  "0.1",
-                "22":  "0.1",
-                "23":  "0.1"
-            },
-    "default":  {
-                    "NVIDIA1_Watts":  "",
-                    "NVIDIA2_Watts":  "",
-                    "NVIDIA3_Watts":  "",
-                    "AMD1_Watts":  "",
-                    "CPU_Watts":  ""
-                }
+  "KWh": {
+    "note": "You can now set Kw/h by hour. KW/h is based on your fiat currency. So the below 0.1 would be .10 USD",
+    "0": "0.1",
+    "1": "0.1",
+    "2": "0.1",
+    "3": "0.1",
+    "4": "0.1",
+    "5": "0.1",
+    "6": "0.1",
+    "7": "0.1",
+    "8": "0.1",
+    "9": "0.1",
+    "10": "0.1",
+    "11": "0.1",
+    "12": "0.1",
+    "13": "0.1",
+    "14": "0.1",
+    "15": "0.1",
+    "16": "0.1",
+    "17": "0.1",
+    "18": "0.1",
+    "19": "0.1",
+    "20": "0.1",
+    "21": "0.1",
+    "22": "0.1",
+    "23": "0.1"
+  },
+  "default": {
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "",
+    "NVIDIA3_Watts": "",
+    "AMD1_Watts": "",
+    "CPU_Watts": ""
+  },
+  "mtp": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "",
+    "AMD1_Watts": "489.632764832878"
+  },
+  "veil": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "225",
+    "AMD1_Watts": "441.322264894763"
+  },
+  "ethash": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "225",
+    "AMD1_Watts": "457"
+  },
+  "argon2d4096": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "225",
+    "AMD1_Watts": ""
+  },
+  "progpow": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "225",
+    "AMD1_Watts": "478.066666666667"
+  },
+  "x16s": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "225",
+    "AMD1_Watts": "475.810493281503"
+  },
+  "x16rt": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "225",
+    "AMD1_Watts": "453.483660130719"
+  },
+  "hmq1725": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "225",
+    "AMD1_Watts": "411.109090909091"
+  },
+  "x16r": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "225",
+    "AMD1_Watts": "471.74679943101"
+  },
+  "x25x": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "225",
+    "AMD1_Watts": "216"
+  },
+  "xevan": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "",
+    "AMD1_Watts": "419.27835511604"
+  },
+  "equihash_144/5": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "225",
+    "AMD1_Watts": "391.333333333333"
+  },
+  "sonoa": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "225",
+    "AMD1_Watts": "456.333333333333"
+  },
+  "polytimos": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "225",
+    "AMD1_Watts": "397.333333333333"
+  },
+  "c11": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "225",
+    "AMD1_Watts": "447.666666666667"
+  },
+  "equihash_192/7": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "225",
+    "AMD1_Watts": "385.8"
+  },
+  "x17": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "225",
+    "AMD1_Watts": "485"
+  },
+  "x21s": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "225",
+    "AMD1_Watts": "450.333333333333"
+  },
+  "argon2d500": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "225",
+    "AMD1_Watts": "487"
+  },
+  "allium": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "225",
+    "AMD1_Watts": "288.844444444444"
+  },
+  "bitcore": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "225",
+    "AMD1_Watts": "465"
+  },
+  "phi": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "225",
+    "AMD1_Watts": "355"
+  },
+  "neoscrypt": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "225",
+    "AMD1_Watts": ""
+  },
+  "timetravel": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "225",
+    "AMD1_Watts": "447"
+  },
+  "honeycomb": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "225",
+    "AMD1_Watts": "404"
+  },
+  "hex": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "",
+    "AMD1_Watts": "496"
+  },
+  "equihash_96/5": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "225",
+    "AMD1_Watts": "404"
+  },
+  "phi2": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "225",
+    "AMD1_Watts": "417"
+  },
+  "astralhash": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "225",
+    "AMD1_Watts": "480"
+  },
+  "argon2d250": {
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "225",
+    "AMD1_Watts": ""
+  },
+  "bcd": {
+    "NVIDIA1_Watts": "",
+    "NVIDIA3_Watts": "",
+    "AMD1_Watts": "",
+    "CPU_Watts": "",
+    "NVIDIA2_Watts": "225"
+  },
+  "pawelhash": {
+    "NVIDIA2_Watts": "225",
+    "AMD1_Watts": "",
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": ""
+  },
+  "jeonghash": {
+    "NVIDIA2_Watts": "225",
+    "AMD1_Watts": "",
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": ""
+  },
+  "equihash_150/5": {
+    "NVIDIA2_Watts": "",
+    "AMD1_Watts": "412",
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": "",
+    "NVIDIA1_Watts": ""
+  },
+  "padihash": {
+    "NVIDIA1_Watts": "",
+    "AMD1_Watts": "493",
+    "NVIDIA3_Watts": "",
+    "CPU_Watts": "",
+    "NVIDIA2_Watts": "225"
+  },
+  "tribus": {
+    "NVIDIA1_Watts": "",
+    "AMD1_Watts": "",
+    "NVIDIA3_Watts": "",
+    "CPU_Watts": "",
+    "NVIDIA2_Watts": "225"
+  },
+  "cuckaroo29": {
+    "AMD1_Watts": "410",
+    "NVIDIA2_Watts": "",
+    "NVIDIA3_Watts": "",
+    "CPU_Watts": "",
+    "NVIDIA1_Watts": ""
+  },
+  "cuckaroo29d": {
+    "AMD1_Watts": "401",
+    "NVIDIA2_Watts": "0",
+    "NVIDIA3_Watts": "",
+    "CPU_Watts": "",
+    "NVIDIA1_Watts": ""
+  },
+  "cryptonight-r": {
+    "NVIDIA1_Watts": "",
+    "NVIDIA2_Watts": "",
+    "AMD1_Watts": "282",
+    "CPU_Watts": "",
+    "NVIDIA3_Watts": ""
+  }
 }

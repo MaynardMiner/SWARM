@@ -79,7 +79,7 @@ function Global:Start-LaunchCode($MinerCurrent,$AIP) {
                         "lolminer" { $MinerArguments = "--devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "xmrstak" { $MinerArguments = "--cuda-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "progminer" { $MinerArguments = "--cuda-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
-                        "grin-miner" { set-minerconfig $NewMiner $Logs }
+                        "grin-miner" { global:set-minerconfig $NewMiner $Logs }
                         "zjazz" {
                             $GetDevices = $($MinerCurrent.Devices) -split ","
                             $GetDevices | ForEach-Object { $LaunchDevices += "-d $($_) " }         
@@ -103,7 +103,7 @@ function Global:Start-LaunchCode($MinerCurrent,$AIP) {
                             $NiceDevices = Global:Get-DeviceString -TypeCount $NHDevices.NVIDIA.Count
                             set-nicehash $($MinerCurrent.NPool) 3200 $($MinerCurrent.NUser) $($MinerCurrent.Algo) $($MinerCurrent.CommandFile) "$NiceDevices"
                         }
-                        "grin-miner" { set-minerconfig $NewMiner $Logs }
+                        "grin-miner" { global:set-minerconfig $NewMiner $Logs }
                         "gminer" { $MinerArguments = "-d $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)" }
                         "lolminer" { $MinerArguments = "--devices NVIDIA $($MinerCurrent.Arguments)" }
                         default { $MinerArguments = "$($MinerCurrent.Arguments)" }
@@ -140,6 +140,7 @@ function Global:Start-LaunchCode($MinerCurrent,$AIP) {
                             $NewLines | Set-Content ".\lyclMiner.conf"
                             Set-Location $($(vars).dir)
                         }
+                        "nanominer" {global:set-minerconfig $MinerCurrent $Logs}
                         default { $MinerArguments = "$($MinerCurrent.Arguments)" }           
                     }
                 }
@@ -165,6 +166,7 @@ function Global:Start-LaunchCode($MinerCurrent,$AIP) {
                         "grin-miner" { Global:set-minerconfig $MinerCurrent $Logs }
                         "gminer" { $MinerArguments = "-d $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)" }
                         "lolminer" { $MinerArguments = "--devices AMD $($MinerCurrent.Arguments)" }
+                        "nanominer" {global:set-minerconfig $MinerCurrent $Logs }
                         default { $MinerArguments = "$($MinerCurrent.Arguments)" }
                     }
                 }

@@ -1,20 +1,21 @@
 $(vars).AMDTypes | ForEach-Object {
     
     $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
-    $CName = "ehssand-amd"
 
-    if ($(vars).amd.$CName.$ConfigType) { $Path = "$($(vars).amd.$CName.$ConfigType)" }
+    ##Miner Path Information
+    if ($(vars).amd.nanominer.$ConfigType) { $Path = "$($(vars).amd.nanominer.$ConfigType)" }
     else { $Path = "None" }
-    if ($(vars).amd.$CName.uri) { $Uri = "$($(vars).amd.$CName.uri)" }
+    if ($(vars).amd.nanominer.uri) { $Uri = "$($(vars).amd.nanominer.uri)" }
     else { $Uri = "None" }
-    if ($(vars).amd.$CName.minername) { $MinerName = "$($(vars).amd.$CName.minername)" }
+    if ($(vars).amd.nanominer.minername) { $MinerName = "$($(vars).amd.nanominer.minername)" }
     else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "3500$Num"
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "nanominer-$Num"; $Port = "3800$Num"
 
     Switch ($Num) {
         1 { $Get_Devices = $(vars).AMDDevices1; $Rig = $(arg).Rigname1 }
     }
+
     ##Log Directory
     $Log = Join-Path $($(vars).dir) "logs\$ConfigType.log"
 
@@ -22,10 +23,15 @@ $(vars).AMDTypes | ForEach-Object {
     if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
     else { $Devices = $Get_Devices }
 
-    ##Get Configuration File
-    $MinerConfig = $Global:config.miners.$CName
+    if ($Get_Devices -ne "none") {
+        $GPUDevices1 = $Get_Devices
+    }
+    else { $(vars).GCount.AMD.PSObject.Properties.Name | ForEach-Object { $ArgDevices += "$($(vars).GCount.AMD.$_)," }; $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1) }
 
-    ##Export would be /path/to/[SWARMVERSION]/build/export && Bleeding Edge Check##
+    ##Get Configuration File
+    $MinerConfig = $Global:config.miners.nanominer
+
+    ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = Join-Path $($(vars).dir) "build\export"
 
     ##Prestart actions before miner launch
@@ -38,7 +44,7 @@ $(vars).AMDTypes | ForEach-Object {
     if ($(vars).Coins) { $Pools = $(vars).CoinPools } else { $Pools = $(vars).AlgoPools }
 
     if ($(vars).Bancount -lt 1) { $(vars).Bancount = 5 }
-
+    
     ##Build Miner Settings
     $MinerConfig.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
 
@@ -57,28 +63,37 @@ $(vars).AMDTypes | ForEach-Object {
                         Coin       = $(vars).Coins
                         Delay      = $MinerConfig.$ConfigType.delay
                         Fees       = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
-                        Symbol     = "$($_.Symbol)"
-                        MinerName  = $MinerName
+                        Symbol     = "$($_.Symbol)"                    
+                        MinerName  = $MinerName                    
                         Prestart   = $PreStart
                         Type       = $ConfigType
                         Path       = $Path
                         Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($(vars).amd.$CName.version)"
-                        DeviceCall = "sgminer-gm"
-                        Arguments  = "--gpu-platform $() --api-listen --api-port $Port -k $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.$User) -p $($_.$Pass)$($Diff) -T $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                        Version    = "$($(vars).amd.nanominer.version)"
+                        DeviceCall = "nanominer"
+                        ## Use Host because there is already an object set
+                        Host     = @{
+                            algorithm = "$($($MinerConfig.$ConfigType.naming.$($_.Algorithm)))"
+                            wallet = "$($_.$User)";
+                            password = "$($_.$Pass)$($Diff)";
+                            pool = "$($_.Host):$($_.Port)";
+                            port = $Port;
+                            devices = $ArgDevices
+                        }
+                        Arguments  = "`[$($($MinerConfig.$ConfigType.naming.$($_.Algorithm)))`] wallet=$($_.$User) rigPassword=$($_.$Pass)$($Diff) pool1=$($_.Host):$($_.Port) webport=$Port logPath=$Log"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                         MinerPool  = "$($_.Name)"
                         Port       = $Port
                         Worker     = $Rig
-                        API        = "sgminer-gm"
+                        API        = "Nanominer"
                         Wallet     = "$($_.$User)"
                         URI        = $Uri
                         Server     = "localhost"
                         Algo       = "$($_.Algorithm)"                         
-                        Log        = $Log 
+                        Log        = "miner_generated" 
                     }            
                 }
             }
