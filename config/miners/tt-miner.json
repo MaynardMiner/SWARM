@@ -17,7 +17,6 @@
             "ubqhash": "",
             "mtp": "",
             "ethash": "",
-            "myr-gr": "",
             "lyra2rev3": ""
         },
         "naming": {
@@ -25,7 +24,6 @@
             "ubqhash": "UBQHASH-101",
             "mtp": "MTP-101",
             "ethash": "ETHASH-101",
-            "myr-gr": "MYRGR-101",
             "lyra2rev3": "LYRA2V3-101"
         },
         "fee": {
@@ -33,7 +31,6 @@
             "ubqhash": 1,
             "mtp": 1,
             "ethash": 1,
-            "myr-gr": 1,
             "lyra2rev3": 1
         }
     },
@@ -54,7 +51,6 @@
             "ubqhash": "",
             "mtp": "",
             "ethash": "",
-            "myr-gr": "",
             "lyra2rev3": ""
         },
         "naming": {
@@ -62,7 +58,6 @@
             "ubqhash": "UBQHASH-101",
             "mtp": "MTP-101",
             "ethash": "ETHASH-101",
-            "myr-gr": "MYRGR-101",
             "lyra2rev3": "LYRA2V3-101"
         },
         "fee": {
@@ -70,7 +65,6 @@
             "ubqhash": 1,
             "mtp": 1,
             "ethash": 1,
-            "myr-gr": 1,
             "lyra2rev3": 1
         }
     },
@@ -83,7 +77,6 @@
             "ubqhash": "",
             "mtp": "",
             "ethash": "",
-            "myr-gr": "",
             "lyra2rev3": ""
         },
         "difficulty": {
@@ -91,7 +84,6 @@
             "ubqhash": "",
             "mtp": "",
             "ethash": "",
-            "myr-gr": "",
             "lyra2rev3": ""
         },
         "naming": {
@@ -99,7 +91,6 @@
             "ubqhash": "UBQHASH-101",
             "mtp": "MTP-101",
             "ethash": "ETHASH-101",
-            "myr-gr": "MYRGR-101",
             "lyra2rev3": "LYRA2V3-101"
         },
         "fee": {
@@ -107,7 +98,6 @@
             "ubqhash": 1,
             "mtp": 1,
             "ethash": 1,
-            "myr-gr": 1,
             "lyra2rev3": 1
         }
     }
