@@ -237,7 +237,7 @@ function Global:Stop-AllMiners {
                         $MinerInfo = ".\build\pid\$($_.InstanceName)_info.txt"
                         if (Test-Path $MinerInfo) {
                             $_.Status = "Idle"
-                           $(vars).PreviousMinerPorts.$($_.Type) = "($_.Port)"
+                            $(vars).PreviousMinerPorts.$($_.Type) = "($_.Port)"
                             $MI = Get-Content $MinerInfo | ConvertFrom-Json
                             $PIDTime = [DateTime]$MI.start_date
                             $Exec = Split-Path $MI.miner_exec -Leaf
