@@ -285,5 +285,16 @@
     "version": "0.8.5",
     "optional": "Yes",
     "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.8.5/lolMiner_v085_Lin64.tar.gz"
-  }
+  },
+  "tt-miner": {
+    "name": "tt-miner",
+    "type": "nvidia",
+    "NVIDIA1": ".\\bin\\tt-miner-1\\TT-Miner",
+    "NVIDIA2": ".\\bin\\tt-miner-2\\TT-Miner",
+    "NVIDIA3": ".\\bin\\tt-miner-3\\TT-Miner",
+    "minername": "TT-Miner",
+    "version": "2.2.5",
+    "optional": "No",
+    "uri": "https://tradeproject.de/download/Miner/TT-Miner-3.0.0-beta1.tar.xz"
+}
 }

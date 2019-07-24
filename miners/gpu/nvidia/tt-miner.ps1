@@ -5,9 +5,9 @@ $(vars).NVIDIATypes | ForEach-Object {
     $CName = "tt-miner"
 
     ##Miner Path Information
-    if ($(vars).nvidia.$CName.$ConfigType -and $(arg).Platform -eq "windows") { $Path = "$($(vars).nvidia.$CName.$ConfigType)" }
+    if ($(vars).nvidia.$CName.$ConfigType) { $Path = "$($(vars).nvidia.$CName.$ConfigType)" }
     else { $Path = "None" }
-    if ($(vars).nvidia.$CName.uri -and $(arg).Platform -eq "windows") { $Uri = "$($(vars).nvidia.$CName.uri)" }
+    if ($(vars).nvidia.$CName.uri) { $Uri = "$($(vars).nvidia.$CName.uri)" }
     else { $Uri = "None" }
     if ($(vars).nvidia.$CName.minername) { $MinerName = "$($(vars).nvidia.$CName.minername)" }
     else { $MinerName = "None" }
