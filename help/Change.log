@@ -488,9 +488,9 @@ beta changes- report if you have issues.
     * ``-Optional ethminer``
     * ``-Optional etminer-amd``
 * tt-miner beta linux test version added.
+  * ``-Optional tt-miner`` must be specified to use.
   * Placed for testing by developer.
-  * Report issues in discord, so developer
-   username ``trailingstop`` can investigate.
+  * Report issues in discord (nvidia channel)
   * myr-gr algorithm removed.
 * GPU watchdog looks for power as well as temperature.
    * more accurate detector of a crashed card for AMD
@@ -504,3 +504,4 @@ beta changes- report if you have issues.
 ## Updates
 * Bminer updated
 * ttminer updated (This is beta release for testing)
+* cc-mtp updated

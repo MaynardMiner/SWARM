@@ -58,14 +58,14 @@ $(vars).NVIDIATypes | ForEach-Object {
                     if ($_.Worker) { $Worker = "-worker $($_.Worker) " }else { $Worker = $Null }
                     if ($IsWindows) { $continue = $true }
                     ## only three algos for now
-                    elseif ($IsLinux) {
+                    elseif ($IsLinux -and "tt-miner" -in $(args).optional) {
                         switch ($MinerAlgo) {
                             "mtp" { $continue = $true }
                             "ethash" { $continue = $true }
                             "progpow" { $continue = $true }
                         }
                     }
-                    if ($contine -eq $true) {
+                    if ($continue -eq $true) {
                         [PSCustomObject]@{
                             MName      = $Name
                             Coin       = $(vars).Coins
