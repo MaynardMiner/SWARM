@@ -62,7 +62,7 @@
     "NVIDIA2": ".\\bin\\cc-mtp-2\\ccminer",
     "NVIDIA3": ".\\bin\\cc-mtp-3\\ccminer",
     "minername": "ccminer",
-    "version": "1.1.22",
+    "version": "1.1.25",
     "optional": "Yes",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/cc-mtp-linux.tar.gz"
   },
@@ -205,9 +205,9 @@
     "NVIDIA2": ".\\bin\\gminer-2\\miner",
     "NVIDIA3": ".\\bin\\gminer-3\\miner",
     "minername": "miner",
-    "version": "1.52",
+    "version": "1.53",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.52/gminer_1_52_linux64.tar.xz"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.53/gminer_1_53_linux64.tar.xz"
   },
   "grin-miner": {
     "name": "grin-miner",
@@ -227,9 +227,9 @@
     "NVIDIA2": ".\\bin\\bminer-2\\bminer",
     "NVIDIA3": ".\\bin\\bminer-3\\bminer",
     "minername": "bminer",
-    "version": "15.7.2",
+    "version": "15.7.4",
     "optional": "No",
-    "uri": "https://www.bminercontent.com/releases/bminer-v15.7.2-7c03408-amd64.tar.xz"
+    "uri": "https://www.bminercontent.com/releases/bminer-v15.7.4-564ee38-amd64.tar.xz"
   },
   "miniz": {
     "name": "miniz",
@@ -285,5 +285,27 @@
     "version": "0.8.5",
     "optional": "Yes",
     "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.8.5/lolMiner_v085_Lin64.tar.gz"
+  },
+  "tt-miner": {
+    "name": "tt-miner",
+    "type": "nvidia",
+    "NVIDIA1": ".\\bin\\tt-miner-1\\TT-Miner",
+    "NVIDIA2": ".\\bin\\tt-miner-2\\TT-Miner",
+    "NVIDIA3": ".\\bin\\tt-miner-3\\TT-Miner",
+    "minername": "TT-Miner",
+    "version": "3.0.0-beta2",
+    "optional": "No",
+    "uri": "https://tradeproject.de/download/Miner/TT-Miner-3.0.0-beta2.tar.xz"
+  },
+  "ethminer": {
+    "name": "ethminer",
+    "type": "nvidia",
+    "NVIDIA1": ".\\bin\\ethminer-1\\ethminer",
+    "NVIDIA2": ".\\bin\\ethminer-2\\ethminer",
+    "NVIDIA3": ".\\bin\\ethminer-3\\ethminer",
+    "minername": "ethminer",
+    "version": "0.19.0-alpha.0",
+    "optional": "Yes",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/ethminer-linux.tar.gz"
   }
 }

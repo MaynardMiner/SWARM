@@ -41,6 +41,13 @@ function Global:Get-Data {
         Set-Location $($(vars).dir)     
     }
 
+    if (-not (Test-Path ".\build\export\libcurl.so.3")) {
+        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libcurl.so.3.0.0 $($(vars).dir)/build/export/libcurl.so.3" -PassThru
+        $Proc | Wait-Process
+        Set-Location "/"
+        Set-Location $($(vars).dir)     
+    }
+
     if (-not (Test-Path ".\build\export\libnvrtc-builtins.so.10.1")) {
         $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc-builtins.so.10.1.105 $($(vars).dir)/build/export/libnvrtc-builtins.so.10.1" -PassThru
         $Proc | Wait-Process

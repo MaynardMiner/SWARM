@@ -51,7 +51,7 @@ function Global:Remove-ASICPools {
     }
 }
 
-function Global:Start-LaunchCode($MinerCurrent,$AIP) {
+function Global:Start-LaunchCode($MinerCurrent, $AIP) {
 
     if ($MinerCurrent.Type -notlike "*ASIC*") {
         ##Remove Old PID FIle
@@ -140,7 +140,7 @@ function Global:Start-LaunchCode($MinerCurrent,$AIP) {
                             $NewLines | Set-Content ".\lyclMiner.conf"
                             Set-Location $($(vars).dir)
                         }
-                        "nanominer" {global:set-minerconfig $MinerCurrent $Logs}
+                        "nanominer" { global:set-minerconfig $MinerCurrent $Logs }
                         default { $MinerArguments = "$($MinerCurrent.Arguments)" }           
                     }
                 }
@@ -166,7 +166,7 @@ function Global:Start-LaunchCode($MinerCurrent,$AIP) {
                         "grin-miner" { Global:set-minerconfig $MinerCurrent $Logs }
                         "gminer" { $MinerArguments = "-d $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)" }
                         "lolminer" { $MinerArguments = "--devices AMD $($MinerCurrent.Arguments)" }
-                        "nanominer" {global:set-minerconfig $MinerCurrent $Logs }
+                        "nanominer" { global:set-minerconfig $MinerCurrent $Logs }
                         default { $MinerArguments = "$($MinerCurrent.Arguments)" }
                     }
                 }
@@ -222,7 +222,8 @@ function Global:Start-LaunchCode($MinerCurrent,$AIP) {
                         $Program = Join-Path "$WorkingDirectory" "$($MinerCurrent.MinerName)"
                         New-NetFirewallRule -DisplayName "SWARM $($MinerCurrent.Minername)" -Direction Inbound -Program $Program -Action Allow | Out-Null
                     }
-                } catch {}
+                }
+                catch { }
 
                 ##Build Start Script
                 $script = @()
@@ -376,10 +377,15 @@ function Global:Start-LaunchCode($MinerCurrent,$AIP) {
             if ($FileChecked -eq $false) { Write-Warning "Failed To Write Miner Details To File" }
 
             ##Bash Script to free Port
-            if($MinerCurrent.Port -ne 0) {
-            Write-Log "Clearing Miner Port `($($MinerCurrent.Port)`)..." -ForegroundColor Cyan
-            $proc = Start-Process ".\build\bash\killcx.sh" -ArgumentList $MinerCurrent.Port -PassThru
-            $proc | Wait-Process
+            if ($MinerCurrent.Port -ne 0) {
+                Write-Log "Clearing Miner Port `($($MinerCurrent.Port)`).." -ForegroundColor Cyan
+                $proc = Start-Process ".\build\bash\killcx.sh" -ArgumentList $MinerCurrent.Port -PassThru
+                do {
+                    $proc | Wait-Process -Timeout 5 -ErrorAction Ignore
+                    if ($proc.HasExited -eq $false) {
+                        log "Still Waiting For Port To Clear..." -ForegroundColor Cyan
+                    }
+                }while ($Proc.HasExited -eq $false)
             }
             ##Notification To User That Miner Is Attempting To start
             log "Starting $($MinerCurrent.Name) Mining $($MinerCurrent.Symbol) on $($MinerCurrent.Type)" -ForegroundColor Cyan

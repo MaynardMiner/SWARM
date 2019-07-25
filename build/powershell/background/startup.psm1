@@ -1,6 +1,7 @@
 function Global:Get-Params {
     $global:Config.Add("params", @{ })
     $global:Config.Add("hive_params", @{ })
+    $global:Config.Add("SWARM_Params", @{ })
     $global:Config.Add("stats", @{ })
     $global:Config.Add("summary",@{ })
     if (Test-Path ".\config\parameters\newarguments.json") {
@@ -35,6 +36,7 @@ function Global:Get-Params {
     }
 
     if (-not $global:Config.SWARM_Params.Id) {
+        Write-Host "No Id- SWARM website Disabled"
         $global:Config.SWARM_Params.Add("Id", $Null)
         $global:Config.SWARM_Params.Add("Password", $Null)
         $global:Config.SWARM_Params.Add("Worker", $Null)

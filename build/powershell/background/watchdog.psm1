@@ -88,7 +88,7 @@ $Message" -ForegroundColor Red
     if ($Global:Config.hive_params.WD_CHECK_GPU -eq 1) {
         if ($global:GetMiners.Count -gt 0 -and $global:GETSWARM.HasExited -eq $false) {
             for ($i = 0; $i -lt $Global:GPUHashTable.Count; $i++) {
-                if ([Double]$global:GPUTempTable[$i] -le 0) { 
+                if ([Double]$global:GPUTempTable[$i] -le 0 -or [Double]$global:GPUPowerTable[$i] -le 0) { 
                     $BadGPU = $true
                     $This_GPU = $i
                     $reason = 2
@@ -96,8 +96,8 @@ $Message" -ForegroundColor Red
             }
         }
         if($BadGPU -eq $true){ $(vars).GPU_Bad++ }else{ $(vars).GPU_Bad = 0 }
-        if ( $(vars).GPU_Bad -ge 10 ) {
-            $Message = "GPU Watchdog: GPU $This_GPU Showing No Temps, Rebooting."
+        if ( $(vars).GPU_Bad -ge 5 ) {
+            $Message = "GPU are lost, Rebooting."
             $Warning = @{result = @{command = "timeout" } }
             if ($(vars).WebSites) {
                 $(vars).WebSites | ForEach-Object {
@@ -132,7 +132,7 @@ Watchdog: OK" -ForegroundColor Cyan
         }
         2 {
             Write-Host "
-GPU Watchdog: WARNING GPU $This_GPU Showing No Temps." -ForeGroundColor Cyan       
+GPU Watchdog: WARNING GPU $This_GPU Showing No Temps or Power." -ForeGroundColor Cyan       
         }
         3 {
             Write-Host "

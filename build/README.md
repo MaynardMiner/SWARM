@@ -1,6 +1,6 @@
 # Build folder:
 
-This is codebase for SWARM.
+This is core codebase for SWARM.
 
 ## api
 

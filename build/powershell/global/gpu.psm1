@@ -59,16 +59,25 @@ function Global:Set-NvidiaStats {
         }
 
         "windows" {
-            invoke-expression ".\build\cmd\nvidia-smi.bat --query-gpu=power.draw,fan.speed,temperature.gpu --format=csv" | Tee-Object -Variable nvidiaout | Out-Null
-            if ($nvidiaout) { $ninfo = $nvidiaout | ConvertFrom-Csv }
-            $NVIDIAFans = $ninfo.'fan.speed [%]' | ForEach-Object { $_ -replace ("\%", "") }
-            $NVIDIATemps = $ninfo.'temperature.gpu'
-            $NVIDIAPower = $ninfo.'power.draw [W]' | ForEach-Object { $_ -replace ("\[Not Supported\]", "75") } | ForEach-Object { $_ -replace (" W", "") }        
-            $NVIDIAStats = @{ }
-            $NVIDIAStats.Add("Fans", $NVIDIAFans)
-            $NVIDIAStats.Add("Temps", $NVIDIATemps)
-            $NVIDIAStats.Add("Watts", $NVIDIAPower)
-            $nvinfo = $NVIDIAStats  
+            $nvidiaout = ".\build\txt\nv-stats.txt"
+            $continue = $false
+            try {
+                if (Test-Path $nvidiaout) { clear-content $nvidiaout -ErrorAction Stop }
+                $Proc = start-process ".\build\cmd\nvidia-smi.bat" -Argumentlist "--query-gpu=power.draw,fan.speed,temperature.gpu --format=csv" -NoNewWindow -PassThru -RedirectStandardOutput $nvidiaout -ErrorAction Stop
+                $Proc | Wait-Process -Timeout 5 -ErrorAction Stop 
+                $continue = $true
+            } catch { Write-Host "WARNING: Failed to get nvidia stats" -ForegroundColor DarkRed }
+            if ((Test-Path $nvidiaout) -and $continue -eq $true ) { 
+                $ninfo = Get-Content $nvidiaout | ConvertFrom-Csv 
+                $NVIDIAFans = $ninfo.'fan.speed [%]' | ForEach-Object { $_ -replace ("\%", "") }
+                $NVIDIATemps = $ninfo.'temperature.gpu'
+                $NVIDIAPower = $ninfo.'power.draw [W]' | ForEach-Object { $_ -replace ("\[Not Supported\]", "75") } | ForEach-Object { $_ -replace (" W", "") }        
+                $NVIDIAStats = @{ }
+                $NVIDIAStats.Add("Fans", $NVIDIAFans)
+                $NVIDIAStats.Add("Temps", $NVIDIATemps)
+                $NVIDIAStats.Add("Watts", $NVIDIAPower)
+                $nvinfo = $NVIDIAStats  
+            }
         }
     }
     $nvinfo
@@ -79,10 +88,18 @@ function Global:Set-AMDStats {
 
     switch ($(arg).Platform) {
         "windows" {
-            Invoke-Expression ".\build\apps\odvii.exe s" | Tee-Object -Variable amdout | Out-Null
-            if ($amdout) {
+            $amdout = ".\build\txt\amd-stats.txt"
+            $continue = $false
+            try {
+                if (Test-Path $amdout) { clear-content $amdout -ErrorAction Stop }
+                $Proc = start-process ".\build\apps\odvii.exe" -Argumentlist "s" -NoNewWindow -PassThru -RedirectStandardOutput $amdout -ErrorAction Stop
+                $Proc | Wait-Process -Timeout 5 -ErrorAction Stop 
+                $continue = $true
+            }
+            catch { Write-Host "WARNING: Failed to get amd stats" -ForegroundColor DarkRed }
+            if ((Test-Path $amdout) -and $continue -eq $true) {
                 $AMDStats = @{ }
-                $amdinfo = $amdout | ConvertFrom-StringData
+                $amdinfo = Get-Content $amdout | ConvertFrom-StringData
                 $ainfo = @{ }
                 $aerrors = @{ }
                 $aerrors.Add("Errors", @())

@@ -5,9 +5,9 @@ $(vars).NVIDIATypes | ForEach-Object {
     $CName = "tt-miner"
 
     ##Miner Path Information
-    if ($(vars).nvidia.$CName.$ConfigType -and $(arg).Platform -eq "windows") { $Path = "$($(vars).nvidia.$CName.$ConfigType)" }
+    if ($(vars).nvidia.$CName.$ConfigType) { $Path = "$($(vars).nvidia.$CName.$ConfigType)" }
     else { $Path = "None" }
-    if ($(vars).nvidia.$CName.uri -and $(arg).Platform -eq "windows") { $Uri = "$($(vars).nvidia.$CName.uri)" }
+    if ($(vars).nvidia.$CName.uri) { $Uri = "$($(vars).nvidia.$CName.uri)" }
     else { $Uri = "None" }
     if ($(vars).nvidia.$CName.minername) { $MinerName = "$($(vars).nvidia.$CName.minername)" }
     else { $MinerName = "None" }
@@ -34,9 +34,7 @@ $(vars).NVIDIATypes | ForEach-Object {
     $ExportDir = Join-Path $($(vars).dir) "build\export"
 
     ##Prestart actions before miner launch
-    $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
     $Prestart = @()
-    if (Test-Path $BE) { $Prestart += "export LD_PRELOAD=libcurl-compat.so.3.0.0" }
     $PreStart += "export LD_LIBRARY_PATH=$ExportDir"
     $MinerConfig.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 
@@ -56,35 +54,47 @@ $(vars).NVIDIATypes | ForEach-Object {
 
             if ($Check.RAW -ne "Bad") {
                 $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
+                    $continue = $false
                     if ($_.Worker) { $Worker = "-worker $($_.Worker) " }else { $Worker = $Null }
-                    [PSCustomObject]@{
-                        MName      = $Name
-                        Coin       = $(vars).Coins
-                        Delay      = $MinerConfig.$ConfigType.delay
-                        Fees       = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
-                        Symbol     = "$($_.Symbol)"
-                        MinerName  = $MinerName
-                        Prestart   = $PreStart
-                        Type       = $ConfigType
-                        Path       = $Path
-                        Devices    = $Devices
-                        Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($(vars).nvidia.$CName.version)"
-                        DeviceCall = "ttminer"
-                        Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --nvidia -o $($_.Protocol)://$($_.Host):$($_.Port) $Worker-b localhost:$Port -u $($_.$User) -p $($_.$Pass) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                        HashRates  = $Stat.Hour
-                        Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
-                        Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
-                        MinerPool  = "$($_.Name)"
-                        Port       = $Port
-                        Worker     = $Rig
-                        API        = "claymore"
-                        Wallet     = "$($_.$User)"
-                        URI        = $Uri
-                        Server     = "localhost"
-                        Algo       = "$($_.Algorithm)"                         
-                        Log        = $Log 
-                    }            
+                    if ($IsWindows) { $continue = $true }
+                    ## only three algos for now
+                    elseif ($IsLinux -and "tt-miner" -in $(args).optional) {
+                        switch ($MinerAlgo) {
+                            "mtp" { $continue = $true }
+                            "ethash" { $continue = $true }
+                            "progpow" { $continue = $true }
+                        }
+                    }
+                    if ($continue -eq $true) {
+                        [PSCustomObject]@{
+                            MName      = $Name
+                            Coin       = $(vars).Coins
+                            Delay      = $MinerConfig.$ConfigType.delay
+                            Fees       = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
+                            Symbol     = "$($_.Symbol)"
+                            MinerName  = $MinerName
+                            Prestart   = $PreStart
+                            Type       = $ConfigType
+                            Path       = $Path
+                            Devices    = $Devices
+                            Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
+                            Version    = "$($(vars).nvidia.$CName.version)"
+                            DeviceCall = "ttminer"
+                            Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --nvidia -o $($_.Protocol)://$($_.Host):$($_.Port) $Worker-b localhost:$Port -u $($_.$User) -p $($_.$Pass) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                            HashRates  = $Stat.Hour
+                            Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
+                            Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
+                            MinerPool  = "$($_.Name)"
+                            Port       = $Port
+                            Worker     = $Rig
+                            API        = "claymore"
+                            Wallet     = "$($_.$User)"
+                            URI        = $Uri
+                            Server     = "localhost"
+                            Algo       = "$($_.Algorithm)"                         
+                            Log        = $Log 
+                        }            
+                    }
                 }
             }
         }

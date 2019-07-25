@@ -18,9 +18,9 @@
     "AMD2": ".\\bin\\gminer-amd-2\\miner",
     "AMD3": ".\\bin\\gminer-amd-3\\miner",
     "minername": "miner",
-    "version": "1.52",
+    "version": "1.53",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.52/gminer_1_52_linux64.tar.xz"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.53/gminer_1_53_linux64.tar.xz"
   },
   "kbminer-amd": {
     "name": "kbminer-amd",
@@ -209,6 +209,17 @@
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/progminer-linux-10.tar.gz"
   },
+  "ethminer-amd": {
+    "name": "ethminer-amd",
+    "type": "amd",
+    "AMD1": ".\\bin\\ethminer-amd-1\\ethminer",
+    "AMD2": ".\\bin\\ethminer-amd-2\\ethminer",
+    "AMD3": ".\\bin\\ethminer-amd-3\\ethminer",
+    "minername": "ethminer",
+    "version": "0.19.0-alpha.0",
+    "optional": "Yes",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/ethminer-linux.tar.gz"
+  },        
   "nanominer": {
     "name": "nanominer",
     "type": "amd",

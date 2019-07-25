@@ -405,6 +405,7 @@ While ($true) {
 
         create Thresholds @()
         create Miners (New-Object System.Collections.ArrayList)
+        create PreviousMinerPorts @{AMD1 = ""; NVIDIA1 = ""; NVIDIA2 = ""; NVIDIA3 = ""; CPU = "" }
 
         ##Insert Miners Single Modules Here
 
@@ -498,7 +499,6 @@ While ($true) {
         ## Build the Current Active Miners
         create Restart $false
         create NoMiners $false
-        create PreviousMinerPorts @{AMD1 = ""; NVIDIA1 = ""; NVIDIA2 = ""; NVIDIA3 = ""; CPU = "" }
         create SWARM_IT $false
         create MinerInterval $null
         create MinerStatInt $null
