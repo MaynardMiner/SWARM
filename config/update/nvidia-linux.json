@@ -305,7 +305,7 @@
     "NVIDIA3": ".\\bin\\ethminer-3\\ethminer",
     "minername": "ethminer",
     "version": "0.19.0-alpha.0",
-    "optional": "No",
+    "optional": "Yes",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/ethminer-linux.tar.gz"
   }
 }

@@ -1,7 +1,7 @@
 $(vars).AMDTypes | ForEach-Object {
     
     $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
-    $CName = "progminer-amd"
+    $CName = "ethminer-amd"
 
     ##Miner Path Information
     if ($(vars).amd.$CName.$ConfigType) { $Path = "$($(vars).amd.$CName.$ConfigType)" }
@@ -11,7 +11,7 @@ $(vars).AMDTypes | ForEach-Object {
     if ($(vars).amd.$CName.minername) { $MinerName = "$($(vars).amd.$CName.minername)" }
     else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "2700$Num"
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "3700$Num"
 
     Switch ($Num) {
         1 { $Get_Devices = $(vars).AMDDevices1; $Rig = $(arg).Rigname1 }
@@ -69,7 +69,7 @@ $(vars).AMDTypes | ForEach-Object {
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
                         Version    = "$($(vars).amd.$CName.version)"
                         DeviceCall = "progminer_amd"
-                        Arguments  = "-P stratum2+tcp://$($_.$User).$($_.$Pass):x@$($_.Host):$($_.Port) --opencl --api-bind 0.0.0.0:$Port --noeval --dag-load-mode 1 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                        Arguments  = "-P stratum2+tcp://$($_.$User).$($_.$Pass):x@$($_.Host):$($_.Port) --opencl --api-bind 0.0.0.0:$Port --noeval $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
