@@ -293,9 +293,9 @@
     "NVIDIA2": ".\\bin\\tt-miner-2\\TT-Miner",
     "NVIDIA3": ".\\bin\\tt-miner-3\\TT-Miner",
     "minername": "TT-Miner",
-    "version": "3.0.0",
+    "version": "3.0.0-beta2",
     "optional": "No",
-    "uri": "https://tradeproject.de/download/Miner/TT-Miner-3.0.0-beta1.tar.xz"
+    "uri": "https://tradeproject.de/download/Miner/TT-Miner-3.0.0-beta2.tar.xz"
   },
   "ethminer": {
     "name": "ethminer",
