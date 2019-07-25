@@ -10,7 +10,7 @@ $(vars).AMDTypes | ForEach-Object {
     if ($(vars).amd.srbminer.minername) { $MinerName = "$($(vars).amd.srbminer.minername)" }
     else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "srbminer-$Num"; $Port = "3300$Num"
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "srbminer-$Num"; $Port = "3400$Num"
 
     Switch ($Num) {
         1 { $Get_Devices = $(vars).AMDDevices1; $Rig = $(arg).Rigname1 }

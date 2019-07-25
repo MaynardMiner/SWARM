@@ -483,6 +483,14 @@ While ($True) {
                     }
                     catch { Global:Get-OhNo } 
                 }
+                'nanominer' { 
+                    try { 
+                        Global:Add-Module "$($(vars).miners)\nanominer.psm1"; 
+                        Global:Get-StatsNanominer
+                        Remove-Module -name "nanominer"
+                    }
+                    catch { Global:Get-OhNo } 
+                }
             }
 
             ##Check To See if High Rejections

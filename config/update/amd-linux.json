@@ -219,5 +219,16 @@
     "version": "0.19.0-alpha.0",
     "optional": "Yes",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/ethminer-linux.tar.gz"
-  }        
+  },        
+  "nanominer": {
+    "name": "nanominer",
+    "type": "amd",
+    "AMD1": ".\\bin\\nanominer-1\\nanominer",
+    "AMD2": ".\\bin\\nanominer-2\\nanominer",
+    "AMD3": ".\\bin\\nanominer-3\\nanominer",
+    "minername": "nanominer",
+    "version": "1.5.2",
+    "optional": "No",
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v1.5.2/nanominer-linux-1.5.2.tar.gz"
+  }
 }

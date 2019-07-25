@@ -55,15 +55,15 @@ $(vars).NVIDIATypes | ForEach-Object {
                     switch ($MinerAlgo) {
                         "ethash" {
                             Switch ($SelName) {
-                                "nicehash" { $Stratum = "ethnh+tcp://"; $A = "ethash" }
-                                "nicehash_v1" { $Stratum = "ethnh+tcp://"; $A = "ethash" }
+                                "nicehash" { $Stratum = "nicehash+tcp://"; $A = "ethash" }
+                                "nicehash_v1" { $Stratum = "nicehash+tcp://"; $A = "ethash" }
                                 "whalesburg" { $Stratum = "stratum+ssl://"; $A = "ethash" }
                             }
                         }
-                        "cuckaroo29" { $Stratum = "stratum+tcp://"; $A = "cuckaroo" }
-                        "cuckaroo29d" { $Stratum = "stratum+tcp://"; $A = "cuckaroo" }
-                        "cuckatoo31" { $Stratum = "stratum+tcp://"; $A = "cuckatoo" }
-                        default { $Stratum = "stratum+tcp://" }
+                        "cuckaroo29" { $Stratum = "nicehash+tcp://"; $A = "cuckarood" }
+                        "cuckaroo29d" { $Stratum = "nicehash+tcp://"; $A = "cuckarood" }
+                        "cuckatoo31" { $Stratum = "nicehash+tcp://"; $A = "cuckatoo" }
+                        default { $Stratum = "nicehash+tcp://" }
                     }        
                     if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
                     [PSCustomObject]@{

@@ -1,0 +1,28 @@
+{
+    "AMD1": {
+        "name": "AMD1",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "cuckaroo29": "",
+            "cuckaroo29d": "",
+            "cryptonight-r": ""
+        },
+        "difficulty": {
+            "cuckaroo29": "",
+            "cuckaroo29d": "",
+            "cryptonight-r": ""
+        },
+        "naming": {
+            "cuckaroo29": "cuckaroo29",
+            "cuckaroo29d": "cuckaroo29d",
+            "cryptonight-r": "cryptonight-r"
+        },
+        "fee": {
+            "cuckaroo29": 2,
+            "cuckaroo29d": 2,
+            "cryptonight-r": 1
+        }
+    },
+    "name": "nanominer"
+}
