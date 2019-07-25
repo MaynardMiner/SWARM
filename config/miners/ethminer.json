@@ -1,0 +1,54 @@
+{
+    "name": "ethminer",
+    "NVIDIA1": {
+        "name": "NVIDIA1",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "ethash": ""
+        },
+        "difficulty": {
+            "ethash": ""
+        },
+        "naming": {
+            "ethash": "ethash"
+        },
+        "fee": {
+            "ethash": 0
+        }
+    },
+    "NVIDIA2": {
+        "name": "NVIDIA2",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "ethash": ""
+        },
+        "difficulty": {
+            "ethash": ""
+        },
+        "naming": {
+            "ethash": "ethash"
+        },
+        "fee": {
+            "ethash": 0
+        }
+    },
+    "NVIDIA3": {
+        "name": "NVIDIA3",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "ethash": ""
+        },
+        "difficulty": {
+            "ethash": ""
+        },
+        "naming": {
+            "ethash": "ethash"
+        },
+        "fee": {
+            "ethash": 0
+        }
+    }
+}

@@ -10,7 +10,7 @@ $(vars).NVIDIATypes | ForEach-Object {
     if ($(vars).nvidia.'cc-yescrypt'.minername -and $(arg).Cuda -eq "10") { $MinerName = "$($(vars).nvidia.'cc-yescrypt'.minername)" }
     else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "cc-yescrypt-$Num"; $Port = "5500$Num";
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "cc-yescrypt-$Num"; $Port = "5600$Num";
 
     Switch ($Num) {
         1 { $Get_Devices = $(vars).NVIDIADevices1; $Rig = $(arg).RigName1 }
@@ -32,9 +32,7 @@ $(vars).NVIDIATypes | ForEach-Object {
     $ExportDir = Join-Path $($(vars).dir) "build\export"
 
     ##Prestart actions before miner launch
-    $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
     $Prestart = @()
-    if (Test-Path $BE) { $Prestart += "export LD_PRELOAD=libcurl-compat.so.3.0.0" }
     $PreStart += "export LD_LIBRARY_PATH=$ExportDir"
     $MinerConfig.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 

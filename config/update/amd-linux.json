@@ -208,5 +208,16 @@
     "version": "0.17.0",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/progminer-linux-10.tar.gz"
-  }
+  },
+  "ethminer-amd": {
+    "name": "ethminer-amd",
+    "type": "amd",
+    "AMD1": ".\\bin\\ethminer-amd-1\\ethminer",
+    "AMD2": ".\\bin\\ethminer-amd-2\\ethminer",
+    "AMD3": ".\\bin\\ethminer-amd-3\\ethminer",
+    "minername": "ethminer",
+    "version": "0.19.0-alpha.0",
+    "optional": "No",
+    "uri": "https://github.com/ethereum-mining/ethminer/releases/download/v0.19.0-alpha.0/ethminer-0.19.0-alpha.0-cuda10.0-windows-amd64.zip"
+  }        
 }

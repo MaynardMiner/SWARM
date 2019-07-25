@@ -1,16 +1,17 @@
 $(vars).AMDTypes | ForEach-Object {
     
     $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
+    $CName = "progminer-amd"
 
     ##Miner Path Information
-    if ($(vars).amd.wildrig.$ConfigType) { $Path = "$($(vars).amd.wildrig.$ConfigType)" }
+    if ($(vars).amd.$CName.$ConfigType) { $Path = "$($(vars).amd.$CName.$ConfigType)" }
     else { $Path = "None" }
-    if ($(vars).amd.wildrig.uri) { $Uri = "$($(vars).amd.wildrig.uri)" }
+    if ($(vars).amd.$CName.uri) { $Uri = "$($(vars).amd.$CName.uri)" }
     else { $Uri = "None" }
-    if ($(vars).amd.wildrig.minername) { $MinerName = "$($(vars).amd.wildrig.minername)" }
+    if ($(vars).amd.$CName.minername) { $MinerName = "$($(vars).amd.$CName.minername)" }
     else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "wildrig-$Num"; $Port = "2900$Num"
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "2700$Num"
 
     Switch ($Num) {
         1 { $Get_Devices = $(vars).AMDDevices1; $Rig = $(arg).Rigname1 }
@@ -20,11 +21,15 @@ $(vars).AMDTypes | ForEach-Object {
     $Log = Join-Path $($(vars).dir) "logs\$ConfigType.log"
 
     ##Parse -GPUDevices
-    if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
-    else { $Devices = $Get_Devices }    
+    if ($Get_Devices -ne "none") {
+        $GPUDevices1 = $Get_Devices
+        $GPUDevices1 = $GPUDevices1 -replace ',', ' '
+        $Devices = $GPUDevices1
+    }
+    else { $Devices = $Get_Devices }
 
     ##Get Configuration File
-    $MinerConfig = $Global:config.miners.wildrig
+    $MinerConfig = $Global:config.miners.$CName
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = Join-Path $($(vars).dir) "build\export"
@@ -50,7 +55,6 @@ $(vars).AMDTypes | ForEach-Object {
         
             if ($Check.RAW -ne "Bad") {
                 $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
-                    if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
                     [PSCustomObject]@{
                         MName      = $Name
                         Coin       = $(vars).Coins
@@ -61,23 +65,23 @@ $(vars).AMDTypes | ForEach-Object {
                         Prestart   = $PreStart
                         Type       = $ConfigType
                         Path       = $Path
-                        Devices    = "none"
+                        Devices    = $Devices
                         Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
-                        Version    = "$($(vars).amd.wildrig.version)"
-                        DeviceCall = "wildrig"
-                        Arguments  = "--opencl-platform=$($(vars).AMDPlatform) --api-port $Port --algo $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --url stratum+tcp://$($_.Host):$($_.Port) --donate-level 1 --user $($_.$User) --pass $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($MinerConfig.$ConfigType.naming.$($_.Algorithm)))"
+                        Version    = "$($(vars).amd.$CName.version)"
+                        DeviceCall = "progminer_amd"
+                        Arguments  = "-P stratum2+tcp://$($_.$User).$($_.$Pass):x@$($_.Host):$($_.Port) --opencl --api-bind 0.0.0.0:$Port --noeval --dag-load-mode 1 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
-                        MinerPool  = "$($_.Name)"
+                        API        = "claymore"
                         Port       = $Port
                         Worker     = $Rig
-                        API        = "wildrig"
+                        MinerPool  = "$($_.Name)"
                         Wallet     = "$($_.$User)"
                         URI        = $Uri
                         Server     = "localhost"
                         Algo       = "$($_.Algorithm)"                         
-                        Log        = $Log
+                        Log        = $Log 
                     }            
                 }
             }
