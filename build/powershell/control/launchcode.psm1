@@ -379,7 +379,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                 Write-Log "Clearing Miner Port `($($MinerCurrent.Port)`)..." -ForegroundColor Cyan
                 $proc = Start-Process ".\build\bash\killcx.sh" -ArgumentList $MinerCurrent.Port -PassThru
                 do {
-                    $proc | Wait-Process -Timeout 5
+                    $proc | Wait-Process -Timeout 5 -ErrorAction Ignore
                     log "Still Waiting For Port To Clear" -ForegroundColor Cyan
                 }while ($Proc.HasExited -eq $false)
             }

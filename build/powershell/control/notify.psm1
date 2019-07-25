@@ -83,7 +83,8 @@ function Global:Get-Interval {
     ##Determine Benchmarking
     $NoHash = $false
     $(vars).BestActiveMiners | ForEach-Object {
-        $StatAlgo = $_.Algo -replace "`_", "`-"        
+        $StatAlgo = $_.Algo -replace "`_", "`-"
+        $StatAlgo = $StatAlgo -replace "`/","`-"        
         if (-not (Test-Path ".\stats\$($_.Name)_$($StatAlgo)_hashrate.txt")) { 
             $NoHash = $true
             $(vars).BenchmarkMode = $true; 
