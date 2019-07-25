@@ -479,3 +479,28 @@ beta changes- report if you have issues.
    nicehash- Added nicehash_v1 to those features.
 * removed grin-miner AMD (need to re-compile), with
   nicehash support and cuckaroo29d.
+
+# SWARM 2.5.2
+
+## New Features
+* ethminer added
+  * Is an optional miner
+    * ``-Optional ethminer``
+    * ``-Optional etminer-amd``
+* tt-miner beta linux test version added.
+  * Placed for testing by developer.
+  * Report issues in discord, so developer
+   username ``trailingstop`` can investigate.
+  * myr-gr algorithm removed.
+* GPU watchdog looks for power as well as temperature.
+   * more accurate detector of a crashed card for AMD
+* Prevent agent screen from freezing if a card crashes.
+  * Set a timeout for running gpu stat programs.
+  * If it fails, it will continue on, not wait endlessly.
+
+## Fixes
+* Fixed equihash miners occasionally stuck in benchmarking
+
+## Updates
+* Bminer updated
+* ttminer updated (This is beta release for testing)
