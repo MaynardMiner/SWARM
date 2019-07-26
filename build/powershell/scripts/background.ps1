@@ -36,7 +36,7 @@ if ($Net) {
 }
 $Net = $null
 
-if ($IsWindows) { Start-Process "powershell" -ArgumentList "Set-Location `'$($(vars).dir)`'; .\build\powershell\scripts\icon.ps1 `'$($(vars).dir)\build\apps\comb.ico`'" -NoNewWindow }
+if ($IsWindows) { Start-Process "powershell" -ArgumentList "Set-Location `'$($(vars).dir)`'; .\build\powershell\scripts\icon.ps1 `'$($(vars).dir)\build\apps\icons\comb.ico`'" -NoNewWindow }
 
 $(vars).Add("global", "$($(vars).dir)\build\powershell\global")
 $(vars).Add("background", "$($(vars).dir)\build\powershell\background")
