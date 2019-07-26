@@ -271,7 +271,7 @@ function Global:Start-Webcommand {
                         }
                         Start-Sleep -S 5
                         if ($Failed -eq $false) {
-                            $proc = Start-Process "$($(vars).dir)\build\apps\7z.exe" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -PassThru -WindowStyle Minimized
+                            $proc = Start-Process "$($(vars).dir)\build\apps\7z\7z.exe" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -PassThru -WindowStyle Minimized
                             $proc | Wait-Process
                             Start-Sleep -S 3
                             $line += "Config Command Initiated- Restarting SWARM`n"

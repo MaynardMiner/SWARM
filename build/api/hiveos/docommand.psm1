@@ -251,7 +251,7 @@ function Global:Start-Webcommand {
                         }
                         Start-Sleep -S 5
                         if ($Failed -eq $false) {
-                            $proc = Start-Process "$($(vars).dir)\build\apps\7z.exe" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -WindowStyle Minimized -PassThru
+                            $proc = Start-Process "$($(vars).dir)\build\apps\7z\7z.exe" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -WindowStyle Minimized -PassThru
                             $proc | Wait-Process
 
                             Start-Sleep -S 3

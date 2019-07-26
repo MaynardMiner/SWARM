@@ -28,7 +28,7 @@ function Global:Set-NvidiaStats {
         "linux" {
             switch ($(arg).HiveOS) {
                 "No" {
-                    timeout -s9 10 ./build/apps/VII-smi | Tee-Object -Variable getstats | Out-Null
+                    timeout -s9 10 ./build/apps/VII/VII-smi | Tee-Object -Variable getstats | Out-Null
                     if ($getstats) {
                         $nvidiai = $getstats | ConvertFrom-StringData
                         $nvinfo = @{ }
@@ -92,7 +92,7 @@ function Global:Set-AMDStats {
             $continue = $false
             try {
                 if (Test-Path $amdout) { clear-content $amdout -ErrorAction Stop }
-                $Proc = start-process ".\build\apps\odvii.exe" -Argumentlist "s" -NoNewWindow -PassThru -RedirectStandardOutput $amdout -ErrorAction Stop
+                $Proc = start-process ".\build\apps\odvii\odvii.exe" -Argumentlist "s" -NoNewWindow -PassThru -RedirectStandardOutput $amdout -ErrorAction Stop
                 $Proc | Wait-Process -Timeout 5 -ErrorAction Stop 
                 $continue = $true
             }

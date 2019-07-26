@@ -64,7 +64,7 @@ function Global:Get-Params {
 
 function Global:Set-Window {
     if ($(arg).Platform -eq "windows") {
-        . .\build\powershell\scripts\icon.ps1 '.\build\apps\comb.ico'
+        . .\build\powershell\scripts\icon.ps1 '.\build\apps\icons\comb.ico'
         $Host.UI.RawUI.BackgroundColor = ($bckgrnd = 'Black'); $Host.UI.RawUI.ForegroundColor = 'White';
         $Host.PrivateData.ErrorForegroundColor = 'Red'; $Host.PrivateData.ErrorBackgroundColor = $bckgrnd;
         $Host.PrivateData.WarningForegroundColor = 'Magenta'; $Host.PrivateData.WarningBackgroundColor = $bckgrnd;

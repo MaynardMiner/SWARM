@@ -41,7 +41,7 @@ function Global:Get-RigData {
             $RigData.cpu.Add("cores", $cpucores)
             $cpuid = $cpud.DeviceID
             $RigData.cpu.Add("cpu_id", $cpuid)
-            $AES = $(Invoke-Expression ".\build\apps\features-win.exe" | Select -Skip 1 | ConvertFrom-StringData)."AES-NI"
+            $AES = $(Invoke-Expression ".\build\apps\features-win\features-win.exe" | Select -Skip 1 | ConvertFrom-StringData)."AES-NI"
             if ($AES -eq "Yes") { $HasAES = 1 }else { $HasAES = 0 }
             $RigData.cpu.Add("aes", $HasAES)
             $disk = $(Get-CimInstance win32_diskdrive).model
@@ -72,8 +72,8 @@ function Global:Get-RigData {
         $false {
             ##dmidecode 3.1
             $RigData = @{ }
-            $cpuid = "$(Invoke-Expression "./build/apps/dmidecode -t 4" | Select-String "ID: " | %{$_ -split "ID: " | Select -Last 1})" -replace " ", ""
-            $uuid = Invoke-Expression "./build/apps/dmidecode -s system-uuid"
+            $cpuid = "$(Invoke-Expression "./build/apps/dmidecode/dmidecode -t 4" | Select-String "ID: " | %{$_ -split "ID: " | Select -Last 1})" -replace " ", ""
+            $uuid = Invoke-Expression "./build/apps/dmidecode/dmidecode -s system-uuid"
             $net = Invoke-Expression "ip -o link | grep -vE `'LOOPBACK|POINTOPOINT|sit0|can0`'"
             $net_interfaces = @()
             $net | % { $eth = $_.Split(" ") | Select -Skip 1 -First 1; $mac = $_.Split(" ") | Select -Last 3 | Select -First 1; $net_interfaces += [PSCustomObject]@{ iface = $eth; mac = $mac } }
@@ -105,8 +105,8 @@ function Global:Get-RigData {
             if(-not $amd_ver){$amd_ver = "OpenCL" }
             $RigData.Add("nvidia_version",$nv_ver)
             $RigData.Add("amd_version",$amd_ver)
-            $mb_manufacturer = Invoke-Expression "./build/apps/dmidecode | grep -A4 `'`^Base Board Information`' | grep `"Manufacturer:`" | sed -E `'s`/`\sManufacturer:`\`s`+(`.`*)`/`\1`/`'"
-            $mb_product = Invoke-Expression "./build/apps/dmidecode | grep -A4 `'`^Base Board Information' | grep `"Product Name:`" | sed -E `'s`/`\sProduct Name:`\`s`+(`.`*)`/`\1`/'"
+            $mb_manufacturer = Invoke-Expression "./build/apps/dmidecode/dmidecode | grep -A4 `'`^Base Board Information`' | grep `"Manufacturer:`" | sed -E `'s`/`\sManufacturer:`\`s`+(`.`*)`/`\1`/`'"
+            $mb_product = Invoke-Expression "./build/apps/dmidecode/dmidecode | grep -A4 `'`^Base Board Information' | grep `"Product Name:`" | sed -E `'s`/`\sProduct Name:`\`s`+(`.`*)`/`\1`/'"
             $RigData.Add("mb",@{
                 manufacturer = $mb_manufacturer
                 product = $mb_product

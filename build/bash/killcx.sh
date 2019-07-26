@@ -12,7 +12,7 @@
 
 while true; do
   for con in `netstat -anp 2>/dev/null | grep TIME_WAIT | grep $1 | awk '{print $5}'`; do
-    sudo ./build/apps/killcx $con lo >/dev/null 2>&1
+    sudo ./build/apps/killcx/killcx $con lo >/dev/null 2>&1
   done
     sudo netstat -anp 2>/dev/null | grep TIME_WAIT | grep $1 > /dev/null &&
     continue ||

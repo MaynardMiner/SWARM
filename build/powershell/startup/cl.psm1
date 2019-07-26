@@ -1,7 +1,7 @@
 function Global:get-AMDPlatform {
 
     if ($(arg).Platform -eq "linux") {
-        $A = Invoke-Expression ".\build\apps\getplatforms" | Tee-Object -Variable amdclplatform
+        $A = Invoke-Expression ".\build\apps\platforms\getplatforms" | Tee-Object -Variable amdclplatform
         Start-Sleep -S .5
         $GPUPlatform = $amdclplatform | Select-String "AMD Accelerated Parallel Processing"
         $GPUPlatform = $GPUPlatform -replace (" ", "")

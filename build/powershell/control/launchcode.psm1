@@ -228,7 +228,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                 ##Build Start Script
                 $script = @()
                 $script += "`$OutputEncoding = [System.Text.Encoding]::ASCII"
-                $script += "Start-Process `"powershell`" -ArgumentList `"Set-Location ``'$($(vars).dir)``'; .\build\powershell\scripts\icon.ps1 ``'$($(vars).dir)\build\apps\miner.ico``'`" -NoNewWindow"
+                $script += "Start-Process `"powershell`" -ArgumentList `"Set-Location ``'$($(vars).dir)``'; .\build\powershell\scripts\icon.ps1 ``'$($(vars).dir)\build\apps\icons\miner.ico``'`" -NoNewWindow"
                 $script += "`$host.ui.RawUI.WindowTitle = `'$($MinerCurrent.Name) - $($MinerCurrent.Algo)`';"
                 $MinerCurrent.Prestart | ForEach-Object {
                     if ($_ -notlike "export LD_LIBRARY_PATH=$($(vars).dir)\build\export") {
@@ -379,7 +379,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
             ##Bash Script to free Port
             if ($MinerCurrent.Port -ne 0) {
                 Write-Log "Clearing Miner Port `($($MinerCurrent.Port)`).." -ForegroundColor Cyan
-                $proc = Start-Process ".\build\bash\killcx.sh" -ArgumentList $MinerCurrent.Port -PassThru
+                $proc = Start-Process ".\build\bash\killcx\killcx.sh" -ArgumentList $MinerCurrent.Port -PassThru
                 do {
                     $proc | Wait-Process -Timeout 5 -ErrorAction Ignore
                     if ($proc.HasExited -eq $false) {

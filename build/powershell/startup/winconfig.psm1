@@ -63,7 +63,7 @@ Function Global:Get-Bus {
         }
         Set-Location $(vars).dir
 
-        $proc = Start-Process ".\build\apps\gpu-z.exe" -ArgumentList "-dump $($(vars).dir)\build\txt\data.xml" -PassThru
+        $proc = Start-Process ".\build\apps\gpu-z\gpu-z.exe" -ArgumentList "-dump $($(vars).dir)\build\txt\data.xml" -PassThru
         $proc | Wait-Process
         
         if (test-Path ".\build\txt\data.xml") {
@@ -280,7 +280,7 @@ function Global:Start-WindowsConfig {
         else {
             log "extracting NVSMI folder.." -ForegroundColor Yellow
             if(test-path ".\build\data\NVSMI"){ Remove-Item ".\build\data\NVSMI" -Force -Recurse}
-            $Proc = Start-Process ".\build\apps\7z.exe" "x `"$($(vars).dir)\build\data\NVSMI.zip`" -o`"$($(vars).dir)\build\data`" -y" -PassThru -WindowStyle Minimized -verb Runas
+            $Proc = Start-Process ".\build\apps\7z\7z.exe" "x `"$($(vars).dir)\build\data\NVSMI.zip`" -o`"$($(vars).dir)\build\data`" -y" -PassThru -WindowStyle Minimized -verb Runas
             $Proc | Wait-Process
             if(test-path ".\build\data\NVSMI"){
                 log "extraction was a success!" -ForeGroundColor Green
