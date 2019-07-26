@@ -115,7 +115,7 @@ function Global:Expand-WebRequest {
     }
     if (Test-Path $Path) {
         $Version | Set-Content ".\bin\$BinPath\swarm-version.txt"
-        log "Finished Successfully!" -ForegroundColor Green 
+        log "Finished Successfully!" -ForegroundColor Green  
     }
 }
 
