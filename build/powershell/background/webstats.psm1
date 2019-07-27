@@ -14,8 +14,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ## The below is for interfacing with HiveOS.
 
 function Global:Send-WebStats {
-    Write-Host $global:Config.SWARM_Params.Id
-    Write-Host $global:Config.SWARM_Params.Mirror
     if (($global:Config.hive_params.Id -and -not (test-Path "/hive/miners")) -or ($global:Config.SWARM_Params.Id)) {
         $(vars).WebSites | ForEach-Object {
             Write-Host "Sending stats to $($_) website"
