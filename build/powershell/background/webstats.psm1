@@ -14,8 +14,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ## The below is for interfacing with HiveOS.
 
 function Global:Send-WebStats {
-    if ($global:Config.hive_params.Id -and -not (test-Path "/hive/miners")) {
+    Write-Host $global:Config.SWARM_Params.Id
+    Write-Host $global:Config.SWARM_Params.Mirror
+    if (($global:Config.hive_params.Id -and -not (test-Path "/hive/miners")) -or ($global:Config.SWARM_Params.Id)) {
         $(vars).WebSites | ForEach-Object {
+            Write-Host "Sending stats to $($_) website"
             Global:Get-WebModules $_
             $Stats = Global:Set-Stats $_
             $response = $Stats | Global:Invoke-WebCommand -Site $_ -Action "message"
@@ -63,5 +66,7 @@ function Global:Send-WebStats {
                 }
             }
         }
+    } else {
+        Write-Host "Failed to select a website for stats"
     }
 }
