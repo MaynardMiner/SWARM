@@ -509,6 +509,10 @@ beta changes- report if you have issues.
 # SWARM 2.5.3
 
 ## New Features
+* SWARM-MINER added
+  * Optimized/improved version of basic ccminer.
+  * replaces tpruvot's version, which is falling out of date.
+  * Does bmw512 algorithm (with some miner kernel optimizations).
 * ``version update`` not supports links that are direct
     binaries, not just zip or tar files.
 * ethminer added
