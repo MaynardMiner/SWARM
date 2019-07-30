@@ -13,7 +13,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 function Global:Set-Stats($Site) {
     Switch ($Site) {
         "HiveOS" { $Params = "hive_params" }
-        "SWARM" { $Params = "Swarm_Params" }
+        "SWARM" { $Params = "SWARM_Params" }
     }
     $mem = @($($global:ramfree), $($global:ramtotal - $global:ramfree))
     $global:GPUHashTable = $global:GPUHashTable | foreach { $_ -replace ("GPUKHS=", "") }
@@ -81,7 +81,7 @@ function Global:Set-Response {
      
     Switch ($Site) {
         "HiveOS" { $Params = "hive_params" }
-        "SWARM" { $Params = "Swarm_Params" }
+        "SWARM" { $Params = "SWARM_Params" }
     }
     
     $myresponse = @{

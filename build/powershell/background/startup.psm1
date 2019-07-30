@@ -35,6 +35,12 @@ function Global:Get-Params {
         $global:Config.hive_params.Add("Timezone", $Null)
     }
 
+    if (Test-Path ".\build\txt\SWARM_Params_keys.txt") {
+        $SWARMStuff = Get-Content ".\build\txt\SWARM_Params_keys.txt" | ConvertFrom-Json
+        $SWARMStuff.PSObject.Properties.Name | % { $global:Config.SWARM_Params.Add("$($_)", $SWARMStuff.$_) }
+        Write-Host $global:Config.SWARM_Params.Mirror
+        $SWARMStuff = $null
+    }
     if (-not $global:Config.SWARM_Params.Id) {
         Write-Host "No Id- SWARM website Disabled"
         $global:Config.SWARM_Params.Add("Id", $Null)
@@ -53,9 +59,9 @@ function Global:Get-Params {
         $global:Config.SWARM_Params.Add("PUSH_INTERVAL", $Null)
         $global:Config.SWARM_Params.Add("MINER_DELAY", $Null)
     }
-    
+
     if (-not $(arg).Platform) {
-        write-Host "Detecting Platform..." -Foreground Cyan
+        Write-Host "Detecting Platform..." -Foreground Cyan
         if ($IsWindows) { $(arg).Platform = "windows" }
         else { $(arg).Platform = "linux" }
         Write-Host "OS = $($(arg).Platform)" -ForegroundColor Green
