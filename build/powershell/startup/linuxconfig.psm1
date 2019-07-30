@@ -282,7 +282,7 @@ function Global:Get-GPUCount {
         }
         if ($GetBus -like "*Advanced Micro Devices*" -and $GetBus -notlike "*RS880*" -and $GetBus -notlike "*Stoney*") {
             $ROCM = invoke-expression "dmesg" | Select-String "amdgpu"
-            $AMDMem = invoke-expression "./build/apps/amdmeminfo"
+            $AMDMem = invoke-expression "./build/apps/amdmeminfo/amdmeminfo"
             $PCIArray = @()
             $PCICount = 0
             $PCI = $AMDMem | Select-String "Found Card: ", "PCI: ", "BIOS Version", "Memory Model"

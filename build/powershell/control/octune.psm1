@@ -67,7 +67,7 @@ function Global:Start-OC($Miner) {
             $PillScript = @()
             $PillScript += "`#`!/usr/bin/env bash"
             if ($(arg).HiveOS -eq "Yes") { $PillScript += "export DISPLAY=`":0`"" }
-            $PillScript += "./build/apps/OhGodAnETHlargementPill-r2 $PillDevices"
+            $PillScript += "./build/apps/ohgodatool/OhGodAnETHlargementPill-r2 $PillDevices"
             $Proc = Start-Process "screen" -ArgumentList "-S pill-$($Miner.Type) -d -m" -PassThru
             $Proc | Wait-Process
             Start-Sleep -S $PillDelay
@@ -83,7 +83,7 @@ function Global:Start-OC($Miner) {
             else { $PillSleep = 1 }
             $PillTimer = New-Object -TypeName System.Diagnostics.Stopwatch
             $PL = Join-Path "$($(vars).dir)" ".\build\apps"
-            $command = Start-Process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -noexit -command `"&{`$host.ui.RawUI.WindowTitle = `'ETH-Pill`'; Set-Location $PL; Start-Sleep $PillSleep; Invoke-Expression `'.\OhGodAnETHlargementPill-r2.exe $PillDevices`'}`"" -WindowStyle Minimized -PassThru -Verb Runas
+            $command = Start-Process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -noexit -command `"&{`$host.ui.RawUI.WindowTitle = `'ETH-Pill`'; Set-Location $PL; Start-Sleep $PillSleep; Invoke-Expression `'.\ohgodatool\OhGodAnETHlargementPill-r2.exe $PillDevices`'}`"" -WindowStyle Minimized -PassThru -Verb Runas
             $command.ID | Set-Content ".\build\pid\pill_pid.txt"
             $PillTimer.Restart()
             do {
@@ -381,7 +381,7 @@ if ($Miner.Type -like "*AMD*") {
         }
 
         if ($(arg).Platform -eq "windows") {
-            Invoke-Expression ".\build\apps\odvii.exe s" | Tee-Object -Variable stats | OUt-Null
+            Invoke-Expression ".\build\apps\odvii\odvii.exe s" | Tee-Object -Variable stats | OUt-Null
             $stats = $stats | ConvertFrom-StringData
             $Model = $stats.keys | % { if ($_ -like "*Model*") { $stats.$_ } }
             $Default_Core_Clock = @{ }
@@ -394,7 +394,7 @@ if ($Miner.Type -like "*AMD*") {
             $stats.keys | % { if ($_ -like "*Mem Voltage*") { $Default_Mem_Voltage.Add($_, $stats.$_) } }
                                     
             $Ascript += "`$host.ui.RawUI.WindowTitle = `'OC-Start`';"
-            Invoke-Expression ".\build\apps\odvii.exe s" | Tee-Object -Variable Model | OUt-Null
+            Invoke-Expression ".\build\apps\odvii\odvii.exe s" | Tee-Object -Variable Model | OUt-Null
             $Model = $Model | ConvertFrom-StringData
             $Model = $Model.keys | % { if ($_ -like "*Model*") { $Model.$_ } }
     
@@ -470,7 +470,7 @@ if ($Miner.Type -like "*AMD*") {
                     $AScreenFans = "$($Miner.Type) Fans is $($Fans) "
                 }
             }
-            $AScript += "`$Proc = Start-Process `".\OverdriveNTool.exe`" -ArgumentList `"$OCArgs`" -WindowStyle hidden -PassThru; `$Proc | Wait-Process"
+            $AScript += "`$Proc = Start-Process `".\overdriventool\OverdriveNTool.exe`" -ArgumentList `"$OCArgs`" -WindowStyle hidden -PassThru; `$Proc | Wait-Process"
         }
     }
 }
@@ -478,7 +478,7 @@ if ($Miner.Type -like "*AMD*") {
 if ($DoNVIDIAOC -eq $true -and $(arg).Platform -eq "windows") {
     $script = @()
     $script += "`$host.ui.RawUI.WindowTitle = `'OC-Start`';"
-    $script += "Invoke-Expression `'.\nvidiaInspector.exe $NVIDIAOCArgs`'"
+    $script += "Invoke-Expression `'.\inspector\nvidiaInspector.exe $NVIDIAOCArgs`'"
     Set-Location ".\build\apps"
     $script | Out-File "NVIDIA-oc-start.ps1"
     $Proc = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle hidden -command "".\NVIDIA-oc-start.ps1""" -PassThru -WindowStyle Minimized

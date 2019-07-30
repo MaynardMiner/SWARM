@@ -42,8 +42,8 @@ if (Test-Path ".\build\bash\view") {
     Set-Location $Dir     
 }
 
-if (Test-Path ".\build\apps\wolfamdctrl") {
-    $proc = Start-Process ln -ArgumentList "-s $dir/build/apps/wolfamdctrl /usr/bin/wolfamdctrl" -PassThru
+if (Test-Path ".\build\apps\wolfamdctrl\wolfamdctrl") {
+    $proc = Start-Process ln -ArgumentList "-s $dir/build/apps/wolfamdctrl/wolfamdctrl /usr/bin/wolfamdctrl/wolfamdctrl" -PassThru
     $proc | Wait-Process
     Set-Location "/usr/bin"
     Start-Process "chmod" -ArgumentList "+x wolfamdctrl"

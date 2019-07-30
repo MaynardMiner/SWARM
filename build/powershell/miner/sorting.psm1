@@ -88,7 +88,6 @@ function Global:Expand-WebRequest {
             $DirName = Split-Path $Contents -Leaf
             Move-Item -Path $Contents -Destination ".\bin" -Force | Out-Null; Start-Sleep -S 1
             Rename-Item -Path ".\bin\$DirName" -NewName "$BinPath" | Out-Null; Start-Sleep -S 1
-            if (Test-Path $Path) { log "Finished Successfully!" -ForegroundColor Green }
             if (Test-Path ".\x64\$Temp") { Remove-Item ".\x64\$Temp" -Recurse -Force | Out-Null }
         }
         "zip" {
@@ -100,7 +99,7 @@ function Global:Expand-WebRequest {
             else { log "Download Failed!" -ForegroundColor DarkRed; break }
 
             New-Item -Path ".\x64\$temp" -ItemType "Directory" -Force | Out-Null; Start-Sleep -S 1
-            if ($IsWindows) { $Proc = Start-Process ".\build\apps\7z.exe" "x `"$($(vars).dir)\$X64_zip`" -o`"$($(vars).dir)\x64\$temp`" -y" -PassThru -WindowStyle Minimized -verb Runas; $Proc | Wait-Process }
+            if ($IsWindows) { $Proc = Start-Process ".\build\apps\7z\7z.exe" "x `"$($(vars).dir)\$X64_zip`" -o`"$($(vars).dir)\x64\$temp`" -y" -PassThru -WindowStyle Minimized -verb Runas; $Proc | Wait-Process}
             else { $Proc = Start-Process "unzip" -ArgumentList "$($(vars).dir)/$X64_zip -d $($(vars).dir)/x64/$temp" -PassThru; $Proc | Wait-Process }
 
             $Stuff = Get-ChildItem ".\x64\$Temp"
@@ -129,7 +128,7 @@ function Global:Expand-WebRequest {
     }
     if (Test-Path $Path) {
         $Version | Set-Content ".\bin\$BinPath\swarm-version.txt"
-        log "Finished Successfully!" -ForegroundColor Green 
+        log "Finished Successfully!" -ForegroundColor Green  
     }
 }
 

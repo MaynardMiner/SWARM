@@ -60,12 +60,14 @@ function Global:Start-Hello($RigData) {
             gpu_count_amd          = "$($RigData.gpu_count_amd)"
             gpu_count_nvidia       = "$($RigData.gpu_count_nvidia)"
             gpus_attributes        = $RigData.gpu
-            cpus_attributes        = @{
+            cpus_attributes        = @(
+                @{
                 model  = "$($RigData.cpu.model)"
                 cores  = "$($RigData.cpu.cores)"
                 aes    = "$($RigData.cpu.aes)"
                 cpu_id = "$($RigData.cpu.cpu_id)"
-            }
+                }
+            )
             motherboard_attributes = @{
                 manufacturer = "$($RigData.mb.manufacturer)"
                 product      = "$($RigData.mb.product)"
@@ -101,23 +103,23 @@ function Global:Start-WebStartup($response, $Site) {
         "SWARM" { $Params = "SWARM_Params" }
     }
 
-    if ($response.result) { $RigConf = $response }
+    if ($response.id) { $RigConf = $response }
     elseif (Test-Path ".\build\txt\get-swarm-hello.txt") {
         log "WARNGING: Failed To Contact SWARM. Using Last Known Configuration"
         Start-Sleep -S 2
         $RigConf = Get-Content ".\build\txt\get-swarm-hello.txt" | ConvertFrom-Json
     }
     if ($RigConf) {
-        $RigConf.result | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+        $RigConf | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
             $Action = $_
             Switch ($Action) {
                 "config" {
-                    $Rig = [string]$RigConf.result.config | ConvertFrom-StringData                
-                    $global:Config.$Params.Worker = $Rig.WORKER_NAME -replace "`"", ""
-                    $global:Config.$Params.Password = $Rig.RIG_PASSWD -replace "`"", ""
-                    $global:Config.$Params.Mirror = $Rig.HIVE_HOST_URL -replace "`"", ""
-                    $global:Config.$Params.FarmID = $Rig.FARM_ID -replace "`"", ""
-                    $global:Config.$Params.Id = $Rig.RIG_ID -replace "`"", ""
+                    $Rig = [string]$RigConf.config | ConvertFrom-StringData
+                    $global:Config.$Params.Worker = $RigConf.name -replace "`"", ""
+                    $global:Config.$Params.Password = $RigConf.password -replace "`"", ""
+                    #$global:Config.$Params.Mirror = $Rig.HIVE_HOST_URL -replace "`"", ""
+                    #$global:Config.$Params.FarmID = $Rig.FARM_ID -replace "`"", ""
+                    $global:Config.$Params.Id = $RigConf.id -replace "`"", ""
                     $global:Config.$Params.Wd_enabled = $Rig.WD_ENABLED -replace "`"", ""
                     $global:Config.$Params.Wd_Miner = $Rig.WD_MINER -replace "`"", ""
                     $global:Config.$Params.Wd_reboot = $Rig.WD_REBOOT -replace "`"", ""
@@ -153,15 +155,15 @@ function Global:Start-WebStartup($response, $Site) {
 
                 ##If Hive Sent OC Start SWARM OC
                 "nvidia_oc" {
-                    Global:Start-NVIDIAOC $RigConf.result.nvidia_oc 
+                    Global:Start-NVIDIAOC $RigConf.nvidia_oc
                 }
                 "amd_oc" {
-                    Global:Start-AMDOC $RigConf.result.amd_oc
+                    Global:Start-AMDOC $RigConf.amd_oc
                 }
             }
         }
         ## Print Data to output, so it can be recorded in transcript
-        $RigConf.result.config
+        $RigConf.config
     }
     else {
         log "No SWARM Config- Do you have an account? Did you use your farm hash?"

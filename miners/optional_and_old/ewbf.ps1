@@ -37,6 +37,8 @@ $(vars).NVIDIATypes | ForEach-Object {
 
     ##Prestart actions before miner launch
     $Prestart = @()
+    $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
+    if (Test-Path $BE) { $Prestart += "export LD_PRELOAD=libcurl-compat.so.3.0.0" }
     $PreStart += "export LD_LIBRARY_PATH=$ExportDir"
     $MinerConfig.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 

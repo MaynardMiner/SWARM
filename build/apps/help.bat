@@ -1,1 +1,0 @@
-nvidiainspector.exe -help

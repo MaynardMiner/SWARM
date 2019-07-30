@@ -22,7 +22,7 @@ function Global:Get-Parameters {
     if (-not $global:Config.hive_params.Id) {
         $global:Config.hive_params.Add("Id", $Null)
         $global:Config.hive_params.Add("Password", $Null)
-        $global:Config.hive_params.Add("Worker", $Null)
+        $global:Config.hive_params.Add("Worker", "$($global:Config.user_params.Worker)")
         $global:Config.hive_params.Add("Mirror", "https://api.hiveos.farm")
         $global:Config.hive_params.Add("FarmID", $Null)
         $global:Config.hive_params.Add("Wd_Enabled", $null)
@@ -36,10 +36,16 @@ function Global:Get-Parameters {
         $global:Config.hive_params.Add("PUSH_INTERVAL", $Null)
         $global:Config.hive_params.Add("MINER_DELAY", $Null)
     }
+
+    if (Test-Path ".\build\txt\SWARM_Params_keys.txt") {
+        $SWARMStuff = Get-Content ".\build\txt\SWARM_Params_keys.txt" | ConvertFrom-Json
+        $SWARMStuff.PSObject.Properties.Name | % { $global:Config.SWARM_Params.Add("$($_)", $SWARMStuff.$_) }
+        $SWARMStuff = $null
+    }
     if (-not $global:Config.SWARM_Params.Id) {
         $global:Config.SWARM_Params.Add("Id", $Null)
         $global:Config.SWARM_Params.Add("Password", $Null)
-        $global:Config.SWARM_Params.Add("Worker", $Null)
+        $global:Config.SWARM_Params.Add("Worker", "$($global:Config.user_params.Worker)")
         $global:Config.SWARM_Params.Add("Mirror", "https://swarm-web.davisinfo.ro")
         $global:Config.SWARM_Params.Add("FarmID", $Null)
         $global:Config.SWARM_Params.Add("Wd_Enabled", $null)

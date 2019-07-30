@@ -31,7 +31,7 @@ function Global:Start-NVIDIAOC($NewOC) {
                     if ($HiveNVOC.OHGODAPILL_START_TIMEOUT -gt 0) { $Sleep = "timeout $($HiveNVOC.OHGODAPILL_START_TIMEOUT) > NUL" }
                     $Script = @()
                     $Script += "$Sleep"
-                    $Script += "start /min `"`" `"$($(vars).dir)\build\apps\OhGodAnETHlargementPill-r2.exe`" $PillArg"
+                    $Script += "start /min `"`" `"$($(vars).dir)\build\apps\ohgodatool\OhGodAnETHlargementPill-r2.exe`" $PillArg"
                     $Script | Set-Content ".\build\apps\pill.bat"
                     $Process = Start-Process ".\build\apps\pill.bat" -WindowStyle Minimized
                 }
@@ -115,7 +115,7 @@ function Global:Start-NVIDIAOC($NewOC) {
         }
     }
 
-    $script += "Invoke-Expression `'.\nvidiaInspector.exe $OCArgs`'"
+    $script += "Invoke-Expression `'.\inspector\nvidiaInspector.exe $OCArgs`'"
     Set-Location ".\build\apps"
     $script | Out-File "nvoc-start.ps1"
     $Proc = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle hidden -command "".\nvoc-start.ps1""" -PassThru -WindowStyle Minimized
@@ -137,7 +137,7 @@ function Global:Start-AMDOC($NewOC) {
     $script += "`$host.ui.RawUI.WindowTitle = `'OC-Start`';"
 
     ##Get BrandName
-    Invoke-Expression ".\build\apps\odvii.exe s" | Tee-Object -Variable stats | OUt-Null
+    Invoke-Expression ".\build\apps\odvii\odvii.exe s" | Tee-Object -Variable stats | OUt-Null
     $stats = $stats | ConvertFrom-StringData
     $Model = $stats.keys | % { if ($_ -like "*Model*") { $stats.$_ } }
     $Default_Core_Clock = @{ }
@@ -260,7 +260,7 @@ function Global:Start-AMDOC($NewOC) {
         }
     }
    
-    $Script += "`$Proc = Start-Process `".\OverdriveNTool.exe`" -ArgumentList `"$OCArgs`" -WindowStyle Minimized -PassThru; `$Proc | Wait-Process"
+    $Script += "`$Proc = Start-Process `".\overdriventool\OverdriveNTool.exe`" -ArgumentList `"$OCArgs`" -WindowStyle Minimized -PassThru; `$Proc | Wait-Process"
         
     Set-Location ".\build\apps"
     $Script | OUt-File "AMDOC-start.ps1"

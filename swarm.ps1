@@ -55,7 +55,7 @@ if ($IsWindows) {
     Remove-Variable -name Net -ErrorAction Ignore
 
     ## Windows Icon
-    Start-Process "powershell" -ArgumentList "Set-Location `'$($(vars).dir)`'; .\build\powershell\scripts\icon.ps1 `'$($(vars).dir)\build\apps\SWARM.ico`'" -NoNewWindow
+    Start-Process "powershell" -ArgumentList "Set-Location `'$($(vars).dir)`'; .\build\powershell\scripts\icon.ps1 `'$($(vars).dir)\build\apps\icon\SWARM.ico`'" -NoNewWindow
 }
 
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
@@ -174,7 +174,7 @@ $WebArg = @("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "")
 if ($(arg).Hive_Hash -notin $WebArg -or (Test-Path "/hive/miners") ) { $(vars).NetModules += ".\build\api\hiveos"; $(vars).WebSites += "HiveOS" }
 else { $(arg).HiveOS = "No" }
 Remove-Variable -Name WebArg -ErrorAction Ignore
-##if ($Config.Params.Swarm_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") { $(vars).NetModules += ".\build\api\swarm"; $(vars).WebSites += "SWARM" }
+if ($Config.Params.Swarm_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") { $(vars).NetModules += ".\build\api\swarm"; $(vars).WebSites += "SWARM" }
 
 ## Initialize
 $(vars).Add("GPU_Count", $Null)

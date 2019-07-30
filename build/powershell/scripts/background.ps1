@@ -36,7 +36,7 @@ if ($Net) {
 }
 $Net = $null
 
-if ($IsWindows) { Start-Process "powershell" -ArgumentList "Set-Location `'$($(vars).dir)`'; .\build\powershell\scripts\icon.ps1 `'$($(vars).dir)\build\apps\comb.ico`'" -NoNewWindow }
+if ($IsWindows) { Start-Process "powershell" -ArgumentList "Set-Location `'$($(vars).dir)`'; .\build\powershell\scripts\icon.ps1 `'$($(vars).dir)\build\apps\icons\comb.ico`'" -NoNewWindow }
 
 $(vars).Add("global", "$($(vars).dir)\build\powershell\global")
 $(vars).Add("background", "$($(vars).dir)\build\powershell\background")
@@ -78,11 +78,12 @@ Global:Set-Window
 $(vars).Add("NetModules", @())
 $(vars).Add("WebSites", @())
 if ($Config.Params.Hive_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" -and -not (Test-Path "/hive/miners") ) { $(vars).NetModules += ".\build\api\hiveos"; $(vars).WebSites += "HiveOS" }
-##if ($Config.Params.Swarm_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") { $(vars).NetModules += ".\build\api\SWARM"; $(vars).WebSites += "SWARM" }
+if ($Config.Params.Swarm_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") { $(vars).NetModules += ".\build\api\swarm"; $(vars).WebSites += "SWARM" }
 
 if ( (Test-Path "/hive/miners") -or $(arg).Hive_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" ) { $(arg).HiveOS = "Yes" }
 Write-Host "Platform is $($(arg).Platform)"; 
-Write-Host "HiveOS ID is $($global:Config.hive_params.Id)"; 
+Write-Host "HiveOS ID is $($global:Config.hive_params.Id)";
+Write-Host "SWARM ID is $($global:Config.SWARM_Params.Id)";
 Write-Host "HiveOS = $($(arg).HiveOS)"
 
 Global:Start-Servers
@@ -654,6 +655,8 @@ While ($True) {
         Global:Add-Module "$($(vars).web)\methods.psm1"
         Global:Add-Module "$($(vars).background)\webstats.psm1"
         Global:Send-WebStats
+    } else {
+        Write-Host "No website to send stats to"
     }
 
     if ($IsWindows -and $global:Config.params.startup -eq "Yes" -and $global:Config.hive_params.Wd_enabled -eq "1") {
