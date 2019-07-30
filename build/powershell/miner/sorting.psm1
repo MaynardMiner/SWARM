@@ -101,7 +101,6 @@ function Global:Expand-WebRequest {
             New-Item -Path ".\x64\$temp" -ItemType "Directory" -Force | Out-Null; Start-Sleep -S 1
             if ($IsWindows) { $Proc = Start-Process ".\build\apps\7z\7z.exe" "x `"$($(vars).dir)\$X64_zip`" -o`"$($(vars).dir)\x64\$temp`" -y" -PassThru -WindowStyle Minimized -verb Runas; $Proc | Wait-Process}
             else { $Proc = Start-Process "unzip" -ArgumentList "$($(vars).dir)/$X64_zip -d $($(vars).dir)/x64/$temp" -PassThru; $Proc | Wait-Process }
-
             $Stuff = Get-ChildItem ".\x64\$Temp"
             if ($Stuff) { log "Extraction Succeeded!" -ForegroundColor Green }
             else { log "Extraction Failed!" -ForegroundColor darkred; break }
