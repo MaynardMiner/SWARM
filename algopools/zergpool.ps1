@@ -31,7 +31,7 @@ if ($Name -in $(arg).PoolName) {
                 $Fees = $Zergpool_Request.$_.fees
                 $(vars).FeeTable.zergpool.Add($Zergpool_Algorithm, $Zergpool_Request.$_.fees)
                 $StatPath = ".\stats\($Name)_$($Zergpool_Algorithm)_profit.txt"
-                $Hashrate = $Zergpool_Request.$_.hashrate
+                $Hashrate = $Zergpool_Request.$_.hashrate_shared
 
                 if (-not (Test-Path $StatPath)) {
                     $StatAlgo = $Zergpool_Algorithm -replace "`_","`-"
