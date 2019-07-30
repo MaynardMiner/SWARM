@@ -31,7 +31,7 @@ if ($Name -in $(arg).PoolName) {
             if ($Name -notin $global:Config.Pool_Algos.$blockpool_Algorithm.exclusions -and $blockpool_Algorithm -notin $(vars).BanHammer) {
                 $blockpool_Host = "$($Region)blockmasters.co$X"
                 $blockpool_Port = $blockpool_Request.$_.port
-                $Divisor = (1000000 * $blockpool_Request.$_.mbtc_mh_factor)
+                $Divisor = (1000000 * ($blockpool_Request.$_.mbtc_mh_factor * 100))
                 $StatPath = ".\stats\($Name)_$($blockpool_Algorithm)_profit.txt"
                 $Hashrate = $blockpool_Request.$_.hashrate
 

@@ -29,9 +29,9 @@
         "NVIDIA2": ".\\bin\\cc-mtp-2\\ccminer.exe",
         "NVIDIA3": ".\\bin\\cc-mtp-3\\ccminer.exe",
         "minername": "ccminer.exe",
-        "version": "1.1.25",
+        "version": "1.1.26",
         "optional": "Yes",
-        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/cc-mtp-windows.zip"
+        "uri": "https://github.com/zcoinofficial/ccminer/releases/download/1.1.26/ccminer.exe"
     },
     "cc-verus": {
         "name": "cc-verus",

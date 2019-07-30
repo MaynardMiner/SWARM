@@ -62,9 +62,9 @@
     "NVIDIA2": ".\\bin\\cc-mtp-2\\ccminer",
     "NVIDIA3": ".\\bin\\cc-mtp-3\\ccminer",
     "minername": "ccminer",
-    "version": "1.1.25",
+    "version": "1.1.26",
     "optional": "Yes",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/cc-mtp-linux.tar.gz"
+    "uri": "https://github.com/zcoinofficial/ccminer/releases/download/1.1.26/ccminer-linux-cuda101"
   },
   "dstm": {
     "name": "dstm",
@@ -293,9 +293,9 @@
     "NVIDIA2": ".\\bin\\tt-miner-2\\TT-Miner",
     "NVIDIA3": ".\\bin\\tt-miner-3\\TT-Miner",
     "minername": "TT-Miner",
-    "version": "3.0.0-beta2",
+    "version": "3.0.0-beta3",
     "optional": "No",
-    "uri": "https://tradeproject.de/download/Miner/TT-Miner-3.0.0-beta2.tar.xz"
+    "uri": "https://tradeproject.de/download/Miner/TT-Miner-3.0.0-beta3.tar.xz"
   },
   "ethminer": {
     "name": "ethminer",

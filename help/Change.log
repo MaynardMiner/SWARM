@@ -494,14 +494,44 @@ beta changes- report if you have issues.
   * myr-gr algorithm removed.
 * GPU watchdog looks for power as well as temperature.
    * more accurate detector of a crashed card for AMD
+
+## Fixes
+* Fixed equihash miners occasionally stuck in benchmarking.
 * Prevent agent screen from freezing if a card crashes.
   * Set a timeout for running gpu stat programs.
   * If it fails, it will continue on, not wait endlessly.
-
-## Fixes
-* Fixed equihash miners occasionally stuck in benchmarking
 
 ## Updates
 * Bminer updated
 * ttminer updated (This is beta release for testing)
 * cc-mtp updated
+
+# SWARM 2.5.3
+
+## New Features
+* ``version update`` not supports links that are direct
+    binaries, not just zip or tar files.
+* ethminer added
+  * Is an optional miner
+    * ``-Optional ethminer``
+    * ``-Optional etminer-amd``
+* tt-miner beta linux test version added.
+  * ``-Optional tt-miner`` must be specified to use.
+  * Placed for testing by developer.
+  * Report issues in discord (nvidia channel)
+  * myr-gr algorithm removed.
+* GPU watchdog looks for power as well as temperature.
+   * more accurate detector of a crashed card for AMD
+
+## Fixes
+* Fixed equihash miners occasionally stuck in benchmarking.
+* Prevent agent screen from freezing if a card crashes.
+  * Set a timeout for running gpu stat programs.
+  * If it fails, it will continue on, not wait endlessly.
+* Fixed path assertion for amdmeminfo (linux).
+
+## Updates
+* Bminer updated
+* ttminer updated (This is beta release for testing)
+* cc-mtp updated
+* Updated Blockmasters estimate divisor.
