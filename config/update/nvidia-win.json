@@ -184,7 +184,7 @@
         "NVIDIA3": ".\\bin\\tpruvot-3\\ccminer-x64.exe",
         "minername": "ccminer-x64.exe",
         "version": "2.3.1",
-        "optional": "No",
+        "optional": "Yes",
         "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/tpruvot-windows.zip"
     },
     "cc-rfv2": {
@@ -274,5 +274,16 @@
             "version": "0.19.0-alpha.0",
             "optional": "Yes",
             "uri": "https://github.com/ethereum-mining/ethminer/releases/download/v0.19.0-alpha.0/ethminer-0.19.0-alpha.0-cuda10.0-windows-amd64.zip"
+          },
+          "swarm-miner": {
+            "name": "swarm-miner",
+            "type": "nvidia",
+            "NVIDIA1": ".\\bin\\swarm-miner-1\\SWARM-MINER.exe",
+            "NVIDIA2": ".\\bin\\swarm-miner-2\\SWARM-MINER.exe",
+            "NVIDIA3": ".\\bin\\swarm-miner-3\\SWARM-MINER.exe",
+            "minername": "SWARM-MINER.exe",
+            "version": "1.03",
+            "optional": "No",
+            "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/SWARM-MINER-windows.zip"
           }        
 }

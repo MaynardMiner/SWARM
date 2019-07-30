@@ -151,7 +151,7 @@
     "NVIDIA3": ".\\bin\\tpruvot-3\\ccminer",
     "minername": "ccminer",
     "version": "2.3.1",
-    "optional": "No",
+    "optional": "Yes",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/tpruvot-linux-10.tar.gz"
   },
   "cc-rfv2": {
@@ -307,5 +307,16 @@
     "version": "0.19.0-alpha.0",
     "optional": "Yes",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/ethminer-linux.tar.gz"
-  }
+  },
+  "swarm-miner": {
+    "name": "swarm-miner",
+    "type": "nvidia",
+    "NVIDIA1": ".\\bin\\swarm-miner-1\\SWARM-MINER",
+    "NVIDIA2": ".\\bin\\swarm-miner-2\\SWARM-MINER",
+    "NVIDIA3": ".\\bin\\swarm-miner-3\\SWARM-MINER",
+    "minername": "SWARM-MINER",
+    "version": "1.03",
+    "optional": "No",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/SWARM-MINER-linuz.tar.gz"
+  }        
 }

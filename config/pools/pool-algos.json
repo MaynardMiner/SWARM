@@ -84,6 +84,15 @@
       "comma seperated"
     ]
   },
+  "bmw512": {
+    "alt_names": [
+      "bmw512"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "equihash_125/4": {
     "alt_names": [
       "zelcash",
@@ -784,6 +793,15 @@
   "x16rt": {
     "alt_names": [
       "x16rt"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "x14": {
+    "alt_names": [
+      "x14"
     ],
     "exclusions": [
       "add pool or miner here",
