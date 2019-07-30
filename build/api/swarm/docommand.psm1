@@ -27,7 +27,7 @@ function Global:Start-Webcommand {
 
     switch ($WebSite) {
         "HiveOS" { $Param = "hive_params" }
-        "Swarm" { $Param = "swarm_params" }
+        "Swarm" { $Param = "SWARM_Params" }
     }
 
     
@@ -399,7 +399,7 @@ function Global:Start-Webcommand {
         }
   
         "config" {
-            $Command.result | ConvertTo-Json | Set-Content ".\build\txt\hiveconfig.txt"
+            $Command.result | ConvertTo-Json | Set-Content ".\build\txt\swarmconfig.txt"
             if ($command.result.config) {
                 $rig = [string]$command.result.config | ConvertFrom-StringData
                 $Worker = $rig.WORKER_NAME -replace "`"", ""

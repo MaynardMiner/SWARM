@@ -163,7 +163,7 @@ function Global:Invoke-WebCommand {
     ##First load Correct Modules
     Switch ($Site) {
         "HiveOS" { $URL = $global:config.hive_params.Mirror; }
-        "SWARM" { $URL = $global:Config.swarm_params.SWARMMirror; }
+        "SWARM" { $URL = $global:Config.SWARM_Params.Mirror; }
     }
 
     ##Run Command Based on action
