@@ -539,3 +539,17 @@ beta changes- report if you have issues.
 * ttminer updated (This is beta release for testing)
 * cc-mtp updated
 * Updated Blockmasters estimate divisor.
+
+# SWARM 2.5.4
+
+
+## Fixes
+* miniz miner was not downloading correctly with last
+  miner download change- Fixed.
+* bmw512 was not loading when you updated- Fixed.
+  both x14 and bmw512 should work via remote update.
+
+## Adjustments
+* zergpool hashrate volume is measured by
+  hashrate_shared, and not hashrate (both shared and solo).
+  Should slightly improve ``-Volume`` argument.
