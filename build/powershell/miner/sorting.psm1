@@ -19,7 +19,9 @@ function Global:Expand-WebRequest {
 
     ##First Determine the file type:
     $FileType = $Zip
-    if ($Zip.Contains(".")) {
+    if ($Zip.Contains(".") -eq $false -and $Zip.Contains("=") -eq $false) { ## "=" is for miniz download
+        $Extraction = "binary"
+    } else {
         $FileType = $FileType -split "\."
         if ("7z" -in $FileType) { $Extraction = "zip" }
         elseif ("zip" -in $FileType) { $Extraction = "zip" }
@@ -40,7 +42,7 @@ function Global:Expand-WebRequest {
             }
             log "WARNING: File download type is unknown attepting to guess file type as $Zip" -ForeGroundColor Yellow
         }
-    } else {$Extraction = "binary"}
+    }
 
     if ($Extraction -eq "tar") {
         if ("gz" -in $FileType) { $Tar = "gz" }
