@@ -574,3 +574,28 @@ issues- It is network related.
 * zergpool hashrate volume is measured by
   hashrate_shared, and not hashrate (both shared and solo).
   Should slightly improve ``-Volume`` argument.
+
+# SWARM 2.5.5
+
+Notes: SWARM will continue to update miners. If you
+have issues, you can use the remote command ``version update``
+to roll them back.
+
+## Fixes
+* Noticed last change with port clearing caused killcx
+  to get 'stuck' in background- fixed. Should Reduced
+  cpu load by 5%
+
+## Updates
+* Wildrig Windows updated
+* xmrig cpu updated
+* jayddee cpu updated
+* bminer updated
+* Phoenix miner updated.
+* Swarm-Miner updated to version 1.03
+  * Slighly better optimizations for RTX
+    card performance
+* SWARM will send nofitication for 
+  incompatible mega.nz links.
+* SWARM notifies how to clear bans.
+
