@@ -542,6 +542,10 @@ beta changes- report if you have issues.
 
 # SWARM 2.5.4
 
+Notes: At the time of this release, there was
+issues with grin network/nicehash. If you experience
+issues- It is network related.
+
 ## New Features!
 * ASIC improvements:
   * ASIC miners on main screen listed
