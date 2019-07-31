@@ -542,6 +542,23 @@ beta changes- report if you have issues.
 
 # SWARM 2.5.4
 
+## New Features!
+* ASIC improvements:
+  * ASIC miners on main screen listed
+    by designated nickname
+  * background agent lists hashrates
+    for each ASIC.
+* Port Checking
+ * SWARM will now only attempt to run
+   ``killcx`` for 10 seconds. If it
+    continues to fail: It stops and
+    moves on, printing a lesser warning.
+    In most cases, this will not harm
+    api and hashrate gathering.
+* Agent improvements:
+  * Agent will now wait until ALL
+    miner groups have launched/switched,
+    before it continues to query API.
 
 ## Fixes
 * miniz miner was not downloading correctly with last

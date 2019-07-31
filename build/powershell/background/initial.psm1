@@ -13,12 +13,15 @@ function Global:Invoke-MinerCheck {
     if ($global:GetMiners -and $global:GETSWARM.HasExited -eq $false) {
         $global:GetMiners | ForEach-Object { if (-not ($global:CurrentMiners | Where-Object Path -eq $_.Path | Where-Object Arguments -eq $_.Arguments )) { $Switched = $true } }
         if ($Switched -eq $True) {
-            Write-Host "Miners Have Switched
-    " -ForegroundColor Cyan
+            Write-Host "Miners Have Switched `n" -ForegroundColor Cyan
             $global:CurrentMiners = $global:GetMiners;
             $global:StartTime = Get-Date
-            ##Set Starting Date & Device Flags
-            ## Determine Which GPU's to stat
+            Write-Host "Waiting for all miners to launch `n"
+            $Check = $false;
+            do{
+                $check = Test-Path ".\build\pid\start.txt"; 
+                start-sleep -S 1
+            }while($check -eq $false)
         }
     }
         
@@ -92,12 +95,12 @@ function Global:New-StatTables {
     if ($global:DoASIC) { 
         $ASICS = $global:CurrentMiners.Type | Where { $_ -like "*ASIC*" }
         for ($i = 0; $i -lt $ASICS.Count; $i++) {
-            $global:ASICHashRates | Add-Member -MemberType NoteProperty -Name "0" -Value 0; 
+            $global:ASICHashRates | Add-Member -MemberType NoteProperty -Name "$i" -Value 0; 
         }
     }
 }
 function Global:Get-Metrics {
-    if ($(arg).Platform -eq "windows") {
+    if ($IsWindows) {
         ## Rig Metrics
         if ($(arg).HiveOS -eq "Yes") {
             $diskSpace = try { Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'" -ErrorAction Stop | Select-Object Freespace } catch {  Write-Host "Failed To Get disk info" -ForegroundColor Red; 0 }

@@ -9,21 +9,21 @@ function Global:Get-StatsCgminer {
         if ($response."KHS 5s") { $global:RAW = [Double]$response."KHS 5s" * $Hash_Table.KHS }
         if ($response."MHS 5s") { $global:RAW = [Double]$response."MHS 5s" * $Hash_Table.MHS }
         if ($response."GHS 5s") { $global:RAW = [Double]$response."GHS 5s" * $Hash_Table.GHS }
-        if ($response."THS 5s") { $global:RAW = [Double]$response."MHS 5s" * $Hash_Table.THS }
-        if ($response."PHS 5s") { $global:RAW = [Double]$response."MHS 5s" * $Hash_Table.PHS }
+        if ($response."THS 5s") { $global:RAW = [Double]$response."THS 5s" * $Hash_Table.THS }
+        if ($response."PHS 5s") { $global:RAW = [Double]$response."PHS 5s" * $Hash_Table.PHS }
         if ($response."HS_5s") { $global:RAW = [Double]$response."HS_5s" * $Hash_Table.HS }
         if ($response."KHS_5s") { $global:RAW = [Double]$response."KHS_5s" * $Hash_Table.KHS }
         if ($response."MHS_5s") { $global:RAW = [Double]$response."MHS_5s" * $Hash_Table.MHS }
         if ($response."GHS_5s") { $global:RAW = [Double]$response."GHS_5s" * $Hash_Table.GHS }
-        if ($response."THS_5s") { $global:RAW = [Double]$response."MHS_5s" * $Hash_Table.THS }
-        if ($response."PHS_5s") { $global:RAW = [Double]$response."MHS_5s" * $Hash_Table.PHS }
+        if ($response."THS_5s") { $global:RAW = [Double]$response."THS_5s" * $Hash_Table.THS }
+        if ($response."PHS_5s") { $global:RAW = [Double]$response."PHS_5s" * $Hash_Table.PHS }
         Global:Write-MinerData2;
         $global:ASICKHS += if ($global:RAW -ne 0) { [Double]$global:RAW / 1000 }
-        $global:ASICHashRates."0" = if ($global:RAW -ne 0) { [Double]$global:RAW / 1000 }
+        $global:ASICHashRates.$($global:Anumber) = if ($global:RAW -ne 0) { [Double]$global:RAW / 1000 }
         $global:MinerREJ += $response.Rejected
         $global:MinerACC += $response.Accepted
         $global:ALLACC += $global:MinerACC
         $global:ALLREJ += $global:MinerREJ
-    }
+    } 
     else { Global:Set-APIFailure }
 }

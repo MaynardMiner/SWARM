@@ -26,7 +26,7 @@ function Global:Remove-ASICPools {
     Switch ($Name) {
         "cgminer" {
             $ASICM = "cgminer"
-            log "Clearing all previous cgminer pools." -ForegroundColor "Yellow"
+            log "Clearing all previous miner pools." -ForegroundColor "Yellow"
             $ASIC_Pools.Add($ASICM, @{ })
             ##First we need to discover all pools
             $Commands = @{command = "pools"; parameter = 0 } | ConvertTo-Json -Compress
@@ -46,7 +46,7 @@ function Global:Remove-ASICPools {
                     $response
                 }
             }
-            else { log "WARNING: Failed To Gather cgminer Pool List!" -ForegroundColor Yellow }
+            else { log "WARNING: Failed To Gather Miner Pool List!" -ForegroundColor Yellow }
         }
     }
 }
@@ -205,7 +205,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
 
                 ##Remove Old Logs
                 Remove-Item ".\logs\*$($MinerCurrent.Type)*" -Force -ErrorAction SilentlyContinue
-                Start-Sleep -S 1
+                Start-Sleep -S .5
 
                 ##Make Test.bat for users
                 if (-not (Test-Path "$WorkingDirectory\swarm-start.bat")) {
@@ -362,7 +362,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
             ##Remove Old Logs
             $MinerLogs = Get-ChildItem "logs" | Where-Object Name -like "*$($MinerCurrent.Type)*"
             $MinerLogs | ForEach-Object { if (Test-Path "$($_)") { Remove-Item "$($_)" -Force } }
-            Start-Sleep -S 1
+            Start-Sleep -S .5
 
             ##Ensure bestminers.txt has been written (for slower storage drives)
             $FileTimer = New-Object -TypeName System.Diagnostics.Stopwatch
@@ -371,7 +371,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
             do {
                 $FileCheck = ".\build\txt\bestminers.txt"
                 if (Test-Path $FileCheck) { $FileChecked = $true }
-                Start-Sleep -s 1
+                Start-Sleep -s .1
             }until($FileChecked -eq $true -or $FileTimer.Elapsed.TotalSeconds -gt 9)
             $FileTimer.Stop()
             if ($FileChecked -eq $false) { Write-Warning "Failed To Write Miner Details To File" }
@@ -379,13 +379,18 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
             ##Bash Script to free Port
             if ($MinerCurrent.Port -ne 0) {
                 Write-Log "Clearing Miner Port `($($MinerCurrent.Port)`).." -ForegroundColor Cyan
+                $warn = 0;
                 $proc = Start-Process ".\build\bash\killcx.sh" -ArgumentList $MinerCurrent.Port -PassThru
                 do {
                     $proc | Wait-Process -Timeout 5 -ErrorAction Ignore
                     if ($proc.HasExited -eq $false) {
                         log "Still Waiting For Port To Clear..." -ForegroundColor Cyan
-                    }
-                }while ($Proc.HasExited -eq $false)
+                        $warn++
+                    } else{ $warn = 10 }
+                }while ($warn -lt 2)
+                
+                if($warn -eq 2) { log "Warning: Port still listed as TIME_WAIT, but launching anyway" -ForegroundColor Yellow } 
+                elseif($Warn -eq 10) {log "Port Was Cleared" -ForegroundColor Cyan}
             }
             ##Notification To User That Miner Is Attempting To start
             log "Starting $($MinerCurrent.Name) Mining $($MinerCurrent.Symbol) on $($MinerCurrent.Type)" -ForegroundColor Cyan
@@ -430,8 +435,8 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
             $Script | Set-Content ".\build\bash\startup.sh"
             $TestScript | Set-Content "$MinerDir\startup.sh"
     
-            ## 2 Second Delay After Read/Write Of Config Files. For Slower Drives.
-            Start-Sleep -S 2
+            ## .5 Second Delay After Read/Write Of Config Files. For Slower Drives.
+            Start-Sleep -S .5
 
             ##chmod again, to be safe.
             $Proc = Start-Process "chmod" -ArgumentList "+x build/bash/startup.sh" -PassThru
