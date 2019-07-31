@@ -55,7 +55,7 @@ if ($IsWindows) {
     Remove-Variable -name Net -ErrorAction Ignore
 
     ## Windows Icon
-    Start-Process "powershell" -ArgumentList "Set-Location `'$($(vars).dir)`'; .\build\powershell\scripts\icon.ps1 `'$($(vars).dir)\build\apps\icon\SWARM.ico`'" -NoNewWindow
+    Start-Process "powershell" -ArgumentList "Set-Location `'$($(vars).dir)`'; .\build\powershell\scripts\icon.ps1 `'$($(vars).dir)\build\apps\icons\SWARM.ico`'" -NoNewWindow
 }
 
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
