@@ -392,9 +392,9 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                 if($warn -eq 2) { 
                     log "Warning: Port still listed as TIME_WAIT, but launching anyway" -ForegroundColor Yellow 
                     if($Proc.HasExited -eq $false) {
-                        kill $Proc.Id -ErrorAction Ignore
+                        Stop-Process -Id $Proc.Id -ErrorAction Ignore
                     }
-                }
+                } 
                 elseif($Warn -eq 10) {log "Port Was Cleared" -ForegroundColor Cyan}
             }
             ##Notification To User That Miner Is Attempting To start
