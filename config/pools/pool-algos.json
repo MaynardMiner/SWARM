@@ -140,6 +140,15 @@
       "comma seperated"
     ]
   },
+  "cpupower": {
+    "alt_names": [
+      "cpupower"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "c11": {
     "alt_names": [
       "c11"
