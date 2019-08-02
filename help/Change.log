@@ -599,3 +599,4 @@ to roll them back.
   incompatible mega.nz links.
 * SWARM notifies how to clear bans.
 * tt-miner updated (beta test version)
+* Adjusted nlpool mbtc_mh_factor.

@@ -30,7 +30,7 @@ if ($Name -in $(arg).PoolName) {
             if ($Name -notin $global:Config.Pool_Algos.$nlpoolAlgo_Algorithm.exclusions -and $nlpoolAlgo_Algorithm -notin $(vars).BanHammer) {
                 $nlpoolAlgo_Host = "mine.nlpool.nl$X"
                 $nlpoolAlgo_Port = $nlpool_Request.$_.port
-                $Divisor = (1000000 * $nlpool_Request.$_.mbtc_mh_factor)
+                $Divisor = (1000000 * ($nlpool_Request.$_.mbtc_mh_factor * 100))
                 $StatPath = ".\stats\($Name)_$($nlpoolAlgo_Algorithm)_profit.txt"
                 $Hashrate = $nlpool_Request.$_.hashrate
 
