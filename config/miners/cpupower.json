@@ -1,0 +1,20 @@
+{
+    "CPU": {
+        "name": "CPU",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "cpupower": ""
+        },
+        "difficulty": {
+            "cpupower": ""
+        },
+        "naming": {
+            "cpupower": "cpupower"
+        },
+        "fee": {
+            "cpupower": 0
+        }
+    },
+    "name": "cpupower"
+}
