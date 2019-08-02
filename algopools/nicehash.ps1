@@ -75,7 +75,7 @@ if ($Name -in $(arg).PoolName) {
                 $nicehash_Host = "$($Algo).$Region-new.nicehash.com$X"
                 $nicehash_excavator = "nhmp.$Region-new.nicehash.com$X"
                 $nicehash_Port = $nicehash_ports.$Algo
-                $Divisor = 1000000000
+                $Divisor = 100000000
 
                 ## Nicehash is pretty straightforward being PPS. In
                 ## My experience, whatever they state is return- Is

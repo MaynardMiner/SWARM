@@ -93,7 +93,12 @@ function Global:Get-Miners {
     }
     
     $ScreenedMiners | ForEach-Object { $GetMiners.Remove($_) } | Out-Null;
-    if ($Note) { $Note | ForEach-Object { log "$($_)" -ForegroundColor Magenta } }
+    if ($Note) { 
+        $Note | ForEach-Object { 
+            log "$($_)" -ForegroundColor Magenta 
+            } 
+        log "To clear bans- Run command 'benchmark timeout', or delete timeout folder" -ForegroundColor Magenta
+    }
     $GetMiners
 }
 function Global:Get-AlgoMiners {

@@ -45,6 +45,7 @@ function Global:start-update {
         $PreviousVersions += "SWARM.2.5.1"
         $PreviousVersions += "SWARM.2.5.2"
         $PreviousVersions += "SWARM.2.5.3"
+        $PreviousVersions += "SWARM.2.5.4"
 
         $StatsOnly = $null
 
@@ -346,7 +347,9 @@ function Global:start-update {
                                     $Data | add-Member "cuckaroo29d" @{alt_names = @("cuckaroo29d","grincuckaroo29d"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
                                     $Data | add-Member "bmw512" @{alt_names = @("bmw512"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
                                     $Data | add-Member "x14" @{alt_names = @("x14"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
+                                    $Data | add-Member "cpupower" @{alt_names = @("cpupower"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
                                 }
+                                
 
                                 if($ChangeFile -eq "oc-algos.json") {
 

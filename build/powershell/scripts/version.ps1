@@ -37,6 +37,11 @@ if ($IsLinux) {
     $Uri = $Uri -replace "!", ""
 }
 
+if($Uri -like "*mega.nz*") {
+    $Message += "uri is a mega.nz link, it is not a direct download. It will not work"
+    Write-Host "uri is a mega.nz link, it is not a direct download. It will not work"
+}
+
 if ($Command) {
     $Message += "Command is $Command"
     Write-Host $($Message | Select -last 1)

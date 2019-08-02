@@ -14,17 +14,26 @@
     "type": "cpu",
     "CPU": ".\\bin\\xmrig-cpu-1\\xmrig.exe",
     "minername": "xmrig.exe",
-    "version": "2.99.0",
+    "version": "2.99.3",
     "optional": "No",
-    "uri": "https://github.com/xmrig/xmrig/releases/download/v2.99.0-beta/xmrig-2.99.0-beta-msvc-win64.zip"
+    "uri": "https://github.com/xmrig/xmrig/releases/download/v2.99.3-beta/xmrig-2.99.3-beta-msvc-win64.zip"
   },
   "sugarchain": {
     "name": "sugarchain",
     "type": "cpu",
     "CPU": ".\\bin\\sugarchain-1\\cpuminer-avx2.exe",
     "minername": "cpuminer-avx2.exe",
-    "version": "3.9.6.1",
+    "version": "3.9.6.2",
     "optional": "No",
-    "uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.9.6.1/cpuminer-opt-3.9.6.1-windows.zip"
+    "uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.9.6.2/cpuminer-opt-3.9.6.2-windows.zip"
+  },
+  "cpupower": {
+    "name": "cpupower",
+    "type": "cpu",
+    "CPU": ".\\bin\\cpupower-1\\cpuminer-avx2.exe",
+    "minername": "cpuminer-avx2.exe",
+    "version": "3.9.6.2",
+    "optional": "No",
+    "uri": "https://github.com/cpu-pool/cpuminer-opt-cpupower/releases/download/v1.0/Cpuminer-opt-cpupower.zip"
   }
 }
