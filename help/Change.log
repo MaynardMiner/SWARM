@@ -581,6 +581,9 @@ Notes: SWARM will continue to update miners. If you
 have issues, you can use the remote command ``version update``
 to roll them back.
 
+## New features!
+* CPU miner for cpupower added.
+
 ## Fixes
 * Noticed last change with port clearing caused killcx
   to get 'stuck' in background- fixed. Should Reduced
@@ -599,4 +602,5 @@ to roll them back.
   incompatible mega.nz links.
 * SWARM notifies how to clear bans.
 * tt-miner updated (beta test version)
+  * still optional.
 * Adjusted nlpool mbtc_mh_factor.
