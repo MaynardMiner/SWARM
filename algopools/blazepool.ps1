@@ -1,7 +1,7 @@
 
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $blazepool_Request = [PSCustomObject]@{ } 
-$Meets_Threshold = $false
+$Meets_Threshold = $true
 
 
 if($(arg).xnsub -eq "Yes"){$X = "#xnsub"}
@@ -18,7 +18,7 @@ if ($Name -in $(arg).PoolName) {
     $blazepool_Request | 
     Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
     Select-Object -ExpandProperty Name | 
-    Where-Object { $blazepool_Request.$_.hashrate -gt 0 } | 
+    Where-Object { $blazepool_Request.$_.estimate_current -gt 0 } | 
     Where-Object {
         $Algo = $blazepool_Request.$_.name.ToLower();
         $local:blazepool_Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name | Where { $Algo -in $global:Config.Pool_Algos.$_.alt_names }
@@ -28,36 +28,35 @@ if ($Name -in $(arg).PoolName) {
         if ($(vars).Algorithm -contains $blazepool_Algorithm -or $(arg).ASIC_ALGO -contains $blazepool_Algorithm) {
             if ($Name -notin $global:Config.Pool_Algos.$blazepool_Algorithm.exclusions -and $blazepool_Algorithm -notin $(vars).BanHammer) {
 
-                if ( $blazepool_Request.$_.estimate_current -lt $blazepool_Request.$_.actual_last24h) {
-                    $Meets_Threshold = Global:Get-Requirement $blazepool_Request.$_.estimate_current $blazepool_Request.$_.actual_last24h
-                } else { $Meets_Threshold = $true }
+                $StatAlgo = $blazepool_Algorithm -replace "`_", "`-"
+                $StatPath = ".\stats\($Name)_$($StatAlgo)_profit.txt"
+                if(Test-Path $StatPath) { $Estimate = [Double]$blazepool_Request.$_.estimate_current }
+                else { $Estimate = [Double]$blazepool_Request.$_.actual_last24h * 0.001}
+
+                if ($(arg).mode -eq "easy") {
+                    if( $blazepool_Request.$_.actual_last24h -eq 0 ){ $Meets_Threshold = $false } else {$Meets_Threshold = $True}
+                    $Shuffle = Shuffle $blazepool_Request.$_.estimate_current $blazepool_Request.$_.actual_last24h
+                } else {$Meets_Threshold = $true}
 
                 $blazepool_Host = "$_.mine.blazepool.com$X"
                 $blazepool_Port = $blazepool_Request.$_.port
                 $Divisor = 1000000 * $blazepool_Request.$_.mbtc_mh_factor
-                $Fees = $blazepool_Request.$_.fees
-                $Workers = $blazepool_Request.$_.Workers
-                $StatPath = ".\stats\($Name)_$($blazepool_Algorithm)_profit.txt"
                 $Hashrate = $blazepool_Request.$_.hashrate
 
-                if (-not (Test-Path $StatPath)) {
-                    $StatAlgo = $blazepool_Algorithm -replace "`_","`-"
-                    $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( [Double]$blazepool_Request.$_.estimate_last24h / $Divisor * (1 - ($blazepool_Request.$_.fees / 100)))
-                } 
-                else {
-                    $StatAlgo = $blazepool_Algorithm -replace "`_","`-"
-                    $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( [Double]$blazepool_Request.$_.estimate_current / $Divisor * (1 - ($blazepool_Request.$_.fees / 100)))
+                $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( $Estimate / $Divisor * (1 - ($blazepool_Request.$_.fees / 100))) -Shuffle $Shuffle
+                if (-not $(vars).Pool_Hashrates.$blazepool_Algorithm) { $(vars).Pool_Hashrates.Add("$blazepool_Algorithm", @{ }) }
+                if (-not $(vars).Pool_Hashrates.$blazepool_Algorithm.$Name) { $(vars).Pool_Hashrates.$blazepool_Algorithm.Add("$Name", @{HashRate = "$($Stat.HashRate)"; Percent = "" }) }
+    
+                $Level = $Stat.$($(arg).Stat_Algo)
+                if($(arg).mode -eq "easy") {
+                    $SmallestValue = 1E-20 
+                    $Level = [Math]::Max($Level + ($Level * $Stat.Deviation), $SmallestValue)
                 }
 
-                if (-not $(vars).Pool_Hashrates.$blazepool_Algorithm) { $(vars).Pool_Hashrates.Add("$blazepool_Algorithm", @{ })
-                }
-                if (-not $(vars).Pool_Hashrates.$blazepool_Algorithm.$Name) { $(vars).Pool_Hashrates.$blazepool_Algorithm.Add("$Name", @{HashRate = "$($Stat.HashRate)"; Percent = "" })
-                }
-    
                 [PSCustomObject]@{
                     Symbol    = "$blazepool_Algorithm-Algo"
                     Algorithm = $blazepool_Algorithm
-                    Price     = $Stat.$($(arg).Stat_Algo)
+                    Price     = $Level
                     Protocol  = "stratum+tcp"
                     Host      = $blazepool_Host
                     Port      = $blazepool_Port

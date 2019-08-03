@@ -363,6 +363,7 @@ While ($true) {
         create AlgoPools 1
         create CoinPools 1
         create Pool_Hashrates @{ }
+        if($(arg).Mode -eq "Easy") { create Cut_Items @{ } }
 
         ##Insert Pools Single Modules Here
 

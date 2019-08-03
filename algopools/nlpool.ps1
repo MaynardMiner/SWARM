@@ -1,6 +1,6 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName
 $nlpool_Request = [PSCustomObject]@{ }
-$Meets_Threshold = $false
+$Meets_Threshold = $true
 
 if($(arg).xnsub -eq "Yes"){$X = "#xnsub"}
 
@@ -18,8 +18,6 @@ if ($Name -in $(arg).PoolName) {
     $nlpool_Request | 
     Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
     Select-Object -ExpandProperty Name | 
-    Where-Object { $nlpool_Request.$_.hashrate -gt 0 } | 
-    Where-Object { $nlpool_Request.$_.name -NE "sha256" } | 
     Where-Object { $($nlpool_Request.$_.estimate_current) -gt 0 } |
     Where-Object {
         $Algo = $nlpool_Request.$_.name.ToLower();
@@ -29,29 +27,30 @@ if ($Name -in $(arg).PoolName) {
     ForEach-Object {
         if ($(vars).Algorithm -contains $nlpoolAlgo_Algorithm -or $(arg).ASIC_ALGO -contains $nlpoolAlgo_Algorithm) {
             if ($Name -notin $global:Config.Pool_Algos.$nlpoolAlgo_Algorithm.exclusions -and $nlpoolAlgo_Algorithm -notin $(vars).BanHammer) {
+                
+                $StatAlgo = $nlpoolAlgo_Algorithm -replace "`_", "`-"
+                $StatPath = ".\stats\($Name)_$($StatAlgo)_profit.txt"
+                if(Test-Path $StatPath) { $Estimate = [Double]$nlpool_Request.$_.estimate_current }
+                else { $Estimate = [Double]$nlpool_Request.$_.actual_last24h * 0.001 }
 
-                if ( $nlpool_Request.$_.estimate_current -lt $nlpool_Request.$_.actual_last24h) {
-                    $Meets_Threshold = Global:Get-Requirement $nlpool_Request.$_.estimate_current $nlpool_Request.$_.actual_last24h
-                } else { $Meets_Threshold = $true }
+                if ($(arg).mode -eq "easy") {
+                    if( $nlpool_Request.$_.actual_last24h -eq 0 ){ $Meets_Threshold = $false } else {$Meets_Threshold = $True}
+                    $Shuffle = Shuffle $nlpool_Request.$_.estimate_current $nlpool_Request.$_.actual_last24h
+                } else {$Meets_Threshold = $true}
 
                 $nlpoolAlgo_Host = "mine.nlpool.nl$X"
                 $nlpoolAlgo_Port = $nlpool_Request.$_.port
                 $Divisor = 1000000 * $nlpool_Request.$_.mbtc_mh_factor
-                $StatPath = ".\stats\($Name)_$($nlpoolAlgo_Algorithm)_profit.txt"
                 $Hashrate = $nlpool_Request.$_.hashrate
 
-                if (-not (Test-Path $StatPath)) {
-                    $StatAlgo = $nlpoolAlgo_Algorithm -replace "`_","`-"
-                    $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -Hashrate $Hashrate -Value ( [Double]$nlpool_Request.$_.estimate_last24h / $Divisor * (1 - ($nlpool_Request.$_.fees / 100)))
-                } 
-                else {
-                    $StatAlgo = $nlpoolAlgo_Algorithm -replace "`_","`-"
-                    $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -Hashrate $HashRates -Value ( [Double]$nlpool_Request.$_.estimate_current / $Divisor * (1 - ($nlpool_Request.$_.fees / 100)))
-                }
+                $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( $Estimate / $Divisor * (1 - ($nlpool_Request.$_.fees / 100))) -Shuffle $Shuffle
+                if (-not $(vars).Pool_Hashrates.$nlpoolAlgo_Algorithm) { $(vars).Pool_Hashrates.Add("$nlpoolAlgo_Algorithm", @{ }) }
+                if (-not $(vars).Pool_Hashrates.$nlpoolAlgo_Algorithm.$Name) { $(vars).Pool_Hashrates.$nlpoolAlgo_Algorithm.Add("$Name", @{HashRate = "$($Stat.HashRate)"; Percent = "" }) }
 
-                if (-not $(vars).Pool_Hashrates.$nlpoolAlgo_Algorithm) { $(vars).Pool_Hashrates.Add("$nlpoolAlgo_Algorithm", @{ })
-                }
-                if (-not $(vars).Pool_Hashrates.$nlpoolAlgo_Algorithm.$Name) { $(vars).Pool_Hashrates.$nlpoolAlgo_Algorithm.Add("$Name", @{HashRate = "$($Stat.HashRate)"; Percent = "" })
+                $Level = $Stat.$($(arg).Stat_Algo)
+                if($(arg).mode -eq "easy") {
+                    $SmallestValue = 1E-20 
+                    $Level = [Math]::Max($Level + ($Level * $Stat.Deviation), $SmallestValue)
                 }
         
                 $Pass1 = $global:Wallets.Wallet1.Keys
@@ -89,7 +88,7 @@ if ($Name -in $(arg).PoolName) {
                 [PSCustomObject]@{
                     Symbol    = "$nlpoolAlgo_Algorithm-Algo"
                     Algorithm = $nlpoolAlgo_Algorithm
-                    Price     = $Stat.$($(arg).Stat_Algo)
+                    Price     = $Level
                     Protocol  = "stratum+tcp"
                     Host      = $nlpoolAlgo_Host
                     Port      = $nlpoolAlgo_Port

@@ -1,6 +1,6 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $Hashrefinery_Request = [PSCustomObject]@{ } 
-$Meets_Threshold = $false
+$Meets_Threshold = $true
 
 if($(arg).xnsub -eq "Yes"){$X = "#xnsub"}
  
@@ -16,7 +16,7 @@ if ($Name -in $(arg).PoolName) {
     $Hashrefinery_Request | 
     Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
     Select-Object -ExpandProperty Name | 
-    Where-Object { $Hashrefinery_Request.$_.hashrate -gt 0 } | 
+    Where-Object { $Hashrefinery_Request.$_.estimate_current -gt 0 } | 
     Where-Object {
         $Algo = $Hashrefinery_Request.$_.name.ToLower();
         $local:Hashrefinery_Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name | Where { $Algo -in $global:Config.Pool_Algos.$_.alt_names }
@@ -26,36 +26,35 @@ if ($Name -in $(arg).PoolName) {
         if ($(vars).Algorithm -contains $Hashrefinery_Algorithm -or $(arg).ASIC_ALGO -contains $Hashrefinery_Algorithm) {
             if ($Name -notin $global:Config.Pool_Algos.$Hashrefinery_Algorithm.exclusions -and $Hashrefinery_Algorithm -notin $(vars).BanHammer) {
 
-                if ( $Hashrefinery_Request.$_.estimate_current -lt $Hashrefinery_Request.$_.actual_last24h) {
-                    $Meets_Threshold = Global:Get-Requirement $Hashrefinery_Request.$_.estimate_current $Hashrefinery_Request.$_.actual_last24h
-                } else { $Meets_Threshold = $true }
+                $StatAlgo = $Hashrefinery_Algorithm -replace "`_", "`-"
+                $StatPath = ".\stats\($Name)_$($StatAlgo)_profit.txt"
+                if(Test-Path $StatPath) { $Estimate = [Double]$Hashrefinery_Request.$_.estimate_current }
+                else { $Estimate = [Double]$Hashrefinery_Request.$_.actual_last24h * 0.001 }
+
+                if ($(arg).mode -eq "easy") {
+                    if( $Hashrefinery_Request.$_.actual_last24h -eq 0 ){ $Meets_Threshold = $false } else {$Meets_Threshold = $True}
+                    $Shuffle = Shuffle $Hashrefinery_Request.$_.estimate_current $Hashrefinery_Request.$_.actual_last24h
+                } else {$Meets_Threshold = $true}
 
                 $Hashrefinery_Host = "$_.us.hashrefinery.com$X"
                 $Hashrefinery_Port = $Hashrefinery_Request.$_.port
                 $Divisor = 1000000 * $Hashrefinery_Request.$_.mbtc_mh_factor
-                $Fees = $Hashrefinery_Request.$_.fees
-                $Workers = $Hashrefinery_Request.$_.Workers
-                $StatPath = ".\stats\($Name)_$($Hashrefinery_Algorithm)_profit.txt"
                 $Hashrate = $Hashrefinery_Request.$_.hashrate
 
-                if (-not (Test-Path $StatPath)) {
-                    $StatAlgo = $Hashrefinery_Algorithm -replace "`_","`-"
-                    $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( [Double]$Hashrefinery_Request.$_.estimate_last24h / $Divisor * (1 - ($Hashrefinery_Request.$_.fees / 100)))
-                } 
-                else {
-                    $StatAlgo = $Hashrefinery_Algorithm -replace "`_","`-"
-                    $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( [Double]$Hashrefinery_Request.$_.estimate_current / $Divisor * (1 - ($Hashrefinery_Request.$_.fees / 100)))
+                $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( $Estimate / $Divisor * (1 - ($Hashrefinery_Request.$_.fees / 100))) -Shuffle $Shuffle
+                if (-not $(vars).Pool_Hashrates.$Hashrefinery_Algorithm) { $(vars).Pool_Hashrates.Add("$Hashrefinery_Algorithm", @{ }) }
+                if (-not $(vars).Pool_Hashrates.$Hashrefinery_Algorithm.$Name) { $(vars).Pool_Hashrates.$Hashrefinery_Algorithm.Add("$Name", @{HashRate = "$($Stat.HashRate)"; Percent = "" }) }
+
+               $Level = $Stat.$($(arg).Stat_Algo)
+                if($(arg).mode -eq "easy") {
+                    $SmallestValue = 1E-20 
+                    $Level = [Math]::Max($Level + ($Level * $Stat.Deviation), $SmallestValue)
                 }
 
-                if (-not $(vars).Pool_Hashrates.$Hashrefinery_Algorithm) { $(vars).Pool_Hashrates.Add("$Hashrefinery_Algorithm", @{ })
-                }
-                if (-not $(vars).Pool_Hashrates.$Hashrefinery_Algorithm.$Name) { $(vars).Pool_Hashrates.$Hashrefinery_Algorithm.Add("$Name", @{HashRate = "$($Stat.HashRate)"; Percent = "" })
-                }
-        
                 [PSCustomObject]@{            
                     Symbol    = "$Hashrefinery_Algorithm-Algo"
                     Algorithm = $Hashrefinery_Algorithm
-                    Price     = $Stat.$($(arg).Stat_Algo)
+                    Price     = $Level
                     Protocol  = "stratum+tcp"
                     Host      = $Hashrefinery_Host
                     Port      = $Hashrefinery_Port

@@ -1,6 +1,6 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $Zergpool_Request = [PSCustomObject]@{ } 
-$Meets_Threshold = $false
+$Meets_Threshold = $true
 
 if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" } 
  
@@ -16,7 +16,7 @@ if ($Name -in $(arg).PoolName) {
     $Zergpool_Request | 
     Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
     Select-Object -ExpandProperty Name | 
-    Where-Object { $Zergpool_Request.$_.hashrate -gt 0 } | 
+    Where-Object { $($Zergpool_Request.$_.estimate_current) -gt 0 } |
     Where-Object {
         $Algo = $Zergpool_Request.$_.name.ToLower();
         $local:Zergpool_Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name | Where { $Algo -in $global:Config.Pool_Algos.$_.alt_names }
@@ -27,33 +27,33 @@ if ($Name -in $(arg).PoolName) {
 
             if ($Name -notin $global:Config.Pool_Algos.$Zergpool_Algorithm.exclusions -and $Zergpool_Algorithm -notin $(vars).BanHammer) {
 
-                if ( $Zergpool_Request.$_.estimate_current -lt $Zergpool_Request.$_.actual_last24h) {
-                    $Meets_Threshold = Global:Get-Requirement $Zergpool_Request.$_.estimate_current $Zergpool_Request.$_.actual_last24h
-                } else { $Meets_Threshold = $true }
+                $StatAlgo = $Zergpool_Algorithm -replace "`_", "`-"
+                $StatPath = ".\stats\($Name)_$($StatAlgo)_profit.txt"
+                if(Test-Path $StatPath) { $Estimate = [Double]$Zergpool_Request.$_.estimate_current }
+                else { $Estimate = [Double]$Zergpool_Request.$_.actual_last24h * 0.001 }
+
+                if ($(arg).mode -eq "easy") {
+                    if( $Zergpool_Request.$_.actual_last24h -eq 0 ){ $Meets_Threshold = $false } else {$Meets_Threshold = $True}
+                    $Shuffle = Shuffle $Zergpool_Request.$_.estimate_current $Zergpool_Request.$_.actual_last24h
+                } else {$Meets_Threshold = $true}
 
                     $Zergpool_Port = $Zergpool_Request.$_.port
                     $Zergpool_Host = "$($Zergpool_Request.$_.name.ToLower()).mine.zergpool.com$X"
                     $Divisor = 1000000 * $Zergpool_Request.$_.mbtc_mh_factor
                     $(vars).divisortable.zergpool.Add($Zergpool_Algorithm, $Zergpool_Request.$_.mbtc_mh_factor)
-                    $Fees = $Zergpool_Request.$_.fees
                     $(vars).FeeTable.zergpool.Add($Zergpool_Algorithm, $Zergpool_Request.$_.fees)
-                    $StatPath = ".\stats\($Name)_$($Zergpool_Algorithm)_profit.txt"
                     $Hashrate = $Zergpool_Request.$_.hashrate_shared
 
-                    if (-not (Test-Path $StatPath)) {
-                        $StatAlgo = $Zergpool_Algorithm -replace "`_", "`-"
-                        $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( [Double]$Zergpool_Request.$_.estimate_last24h / $Divisor * (1 - ($Zergpool_Request.$_.fees / 100)))
-                    } 
-                    else {
-                        $StatAlgo = $Zergpool_Algorithm -replace "`_", "`-"
-                        $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( [Double]$Zergpool_Request.$_.estimate_current / $Divisor * (1 - ($Zergpool_Request.$_.fees / 100)))
+                    $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( $Estimate / $Divisor * (1 - ($Zergpool_Request.$_.fees / 100))) -Shuffle $Shuffle
+                    if (-not $(vars).Pool_Hashrates.$Zergpool_Algorithm) { $(vars).Pool_Hashrates.Add("$Zergpool_Algorithm", @{ }) }
+                    if (-not $(vars).Pool_Hashrates.$Zergpool_Algorithm.$Name) { $(vars).Pool_Hashrates.$Zergpool_Algorithm.Add("$Name", @{HashRate = "$($Stat.HashRate)"; Percent = "" }) }
+    
+                    $Level = $Stat.$($(arg).Stat_Algo)
+                    if($(arg).mode -eq "easy") {
+                        $SmallestValue = 1E-20 
+                        $Level = [Math]::Max($Level + ($Level * $Stat.Deviation), $SmallestValue)
                     }
-
-                    if (-not $(vars).Pool_Hashrates.$Zergpool_Algorithm) { $(vars).Pool_Hashrates.Add("$Zergpool_Algorithm", @{ })
-                    }
-                    if (-not $(vars).Pool_Hashrates.$Zergpool_Algorithm.$Name) { $(vars).Pool_Hashrates.$Zergpool_Algorithm.Add("$Name", @{HashRate = "$($Stat.HashRate)"; Percent = "" })
-                    }
-
+            
                     $Pass1 = $global:Wallets.Wallet1.Keys
                     $User1 = $global:Wallets.Wallet1.$($(arg).Passwordcurrency1).address
                     $Pass2 = $global:Wallets.Wallet2.Keys
@@ -89,7 +89,7 @@ if ($Name -in $(arg).PoolName) {
                     [PSCustomObject]@{
                         Symbol    = "$Zergpool_Algorithm-Algo"
                         Algorithm = $Zergpool_Algorithm
-                        Price     = $Stat.$($(arg).Stat_Algo)
+                        Price     = $Level
                         Protocol  = "stratum+tcp"
                         Host      = $Zergpool_Host
                         Port      = $Zergpool_Port

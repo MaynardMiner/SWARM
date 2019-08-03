@@ -10,6 +10,7 @@
 ## to nicehash, but it seems to cause weird bugs in miners.
 
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
+$Meets_Threshold = $True
 $Whalesburg_Request = [PSCustomObject]@{} 
 if($(arg).xnsub -eq "Yes"){$X = "#xnsub"} 
  
@@ -51,7 +52,7 @@ if ($(arg).PoolName -eq $Name) {
             CPUser        = $(arg).ETH
             Worker        = "$($(arg).Worker)"
             Location      = $(arg).Location
-            SSL           = $false
+            Meets_Threshold = $Meets_Threshold
         }
     }
 }

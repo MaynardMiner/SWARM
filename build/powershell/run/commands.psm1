@@ -35,6 +35,31 @@ function Global:Get-StatusLite {
     $screen
 }
 
+function global:Get-EasyStats {
+    if ($(arg).Mode -eq "Easy") {
+        $Easy_Stats = @()
+        $Easy_Stats += ""
+        $Easy_Stats += ""
+        $Easy_Stats += "EASY MODE IS ACTIVATED"
+        $Easy_Stats += "So I hear you like things easy, so this is what we did:"
+
+        if ($(vars).Cut_Items.AlgoPools) {
+            $(vars).Cut_Items.AlgoPools | ForEach-Object {
+                $Easy_Stats += "$($_.Algo) on $($_.Pool) return was showing over 30% of realistic return: So we removed it."
+            }
+        }
+
+        if ($(vars).Cut_Items.CoinPools) {
+            $(vars).Cut_Items.CoinPools | ForEach-Object {
+                $Easy_Stats += "Some Coins on $($_.Algo) were showing a return of over 30% of realistic return: So we removed them."
+            }
+        }
+
+        $Easy_Stats
+
+    }
+}
+
 function Global:Get-PriceMessage {
     $(vars).BestActiveMIners | % {
         if ($_.Profit_Day -ne "bench") { $ScreenProfit = "$(($_.Profit_Day * $(vars).Rates.$($(arg).Currency)).ToString("N2")) $($(arg).Currency)/Day" } else { $ScreenProfit = "Benchmarking" }
@@ -82,6 +107,8 @@ function Global:Get-Commands {
     $StatusLite | Out-File ".\build\txt\minerstatslite.txt" -Append
     $BanMessage | Out-File ".\build\txt\minerstatslite.txt" -Append
     $MiningStatus | Out-File ".\build\txt\minerstatslite.txt" -Append
+    $EasyMode = Global:Get-EasyStats
+    $EasyMode | Out-File ".\build\txt\minerstats.txt" -Append
 }
 
 function Global:Get-Logo {
@@ -108,7 +135,7 @@ function Global:Update-Logging {
         Remove-Item ".\logs\*crash_report*" -Force -Recurse -ErrorAction SilentlyContinue
         $global:log_params.lognum = 0
     }
-    if((Get-ChildItem ".\logs" | Where BaseName -match "crash_report").count -gt 12){
+    if ((Get-ChildItem ".\logs" | Where BaseName -match "crash_report").count -gt 12) {
         Remove-Item ".\logs\*crash_report*" -Force -Recurse -ErrorAction SilentlyContinue
     }
     if ($(vars).logtimer.Elapsed.TotalSeconds -ge 3600) {
@@ -128,7 +155,7 @@ function Global:Update-Logging {
 }
 
 function Global:Get-MinerActive {
-    $(vars).ActiveMinerPrograms | Sort-Object -Descending Status,Instance | Select-Object -First (1 + 6 + 6) | Format-Table -Wrap -GroupBy Status (
+    $(vars).ActiveMinerPrograms | Sort-Object -Descending Status, Instance | Select-Object -First (1 + 6 + 6) | Format-Table -Wrap -GroupBy Status (
         @{Label = "Name"; Expression = { "$($_.Name)" } },
         @{Label = "#"; Expression = { "$($_.Instance)" } },
         @{Label = "Active"; Expression = { "{0:hh} Hours {0:mm} Minutes" -f $(if ($null -eq $_.XProcess) { $_.Active }else { if ($_.XProcess.HasExited) { ($_.Active) }else { ($_.Active + ((Get-Date) - $_.XProcess.StartTime)) } }) }; Align = 'center' },

@@ -2,6 +2,7 @@ $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty Ba
 $zpool_Request = [PSCustomObject]@{ }
 $zpool_Sorted = [PSCustomObject]@{ }
 $zpool_UnSorted = [PSCustomObject]@{ }
+$Meets_Threshold = $true
 
 if ($(arg).Ban_GLT -eq "Yes") { $NoGLT = "GLT" }
 
@@ -58,10 +59,18 @@ if ($Name -in $(arg).PoolName) {
     } else {
         $Algos | ForEach-Object {
             $Selected = $_
-            $AlgoPool_list = $zpool_Request.PSObject.Properties.Value | Where Algo -eq $Selected
+            $AlgoPool_list = $zpool_Request.PSObject.Properties.Value | 
+                Where-Object Algo -eq $Selected |
+                Where-Object Algo -in $(vars).FeeTable.zpool.keys | 
+                Where-Object Algo -in $(vars).divisortable.zpool.Keys |
+                Where-Object { $global:Config.Pool_Algos.$($_.Algo) } |
+                Where-Object { $Name -notin $global:Config.Pool_Algos.$($_.sym).exclusions } |
+                Where-Object Sym -notin $(vars).BanHammer |
+                Where-Object Sym -notlike "*$NoGLT*" |
+                Where-Object estimate -gt 0
 
             ## Only choose coins with 24 hour returns or choose all coins (since they all have historical ttf longer than 24 hr).
-            if ( ($Algopool."24h_btc" | Measure-Object -Sum | select -ExpandProperty Sum -ne 0) ) {
+            if ( ($Algopool."24h_btc" | Measure-Object -Sum | select -ExpandProperty Sum) -ne 0 ) {
                 $BestCoins = $AlgoPool_list | Where "24h_btc" -ne 0
             } else { $BestCoins = $AlgoPool_list }
 
@@ -70,27 +79,17 @@ if ($Name -in $(arg).PoolName) {
             ## Not a GLT coin (if -Ban_GLT is "Yes")
             ## Is specified by user (i.e. the algorithm wasn't specifically banned.)
             ## estimate isn't 0
-            $Best = $BestCoins | 
-                Where-Object $DoAutoCoin -eq $true |
-                Where-Object Algo -eq $Selected | 
-                Where-Object Algo -in $(vars).FeeTable.zpool.keys | 
-                Where-Object Algo -in $(vars).divisortable.zpool.Keys |
-                Where-Object { $global:Config.Pool_Algos.$($_.Algo) } |
-                Where-Object { $Name -notin $global:Config.Pool_Algos.$($_.sym).exclusions } |
-                Where-Object Sym -notin $(vars).BanHammer |
-                Where-Object Sym -notlike "*$NoGLT*" |
-                Where-Object estimate -gt 0 | 
-                Sort-Object Price -Descending |
-                Select -First 1
+            $Best = $BestCoins | Sort-Object Price -Descending | Select -First 1
 
             ## Add It to the sorting list
-            if ($Best) { $zpool_Sorted | Add-Member $_.sym $_ }
+            if ($Best) { $zpool_Sorted | Add-Member $Best.sym $Best -Force }
 
             ## Add remaining coins for historical stats if user specified a
             ## time frame higher than live. If it is live, there is no point
             ## to record all coins.
             if ($(arg).Stat_Coin -ne "live") {
-                $AlgoPool_list | Where sym -ne $Best.sym | ForEach-Object {
+                $AlgoPool_list | Where sym -ne $Best.sym | 
+                ForEach-Object {
                     $zpool_UnSorted | Add-Member $_.sym $_ -Force 
                 }
             }
@@ -102,40 +101,32 @@ if ($Name -in $(arg).PoolName) {
     $zpool_UnSorted | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | ForEach-Object {
         $zpool_Algorithm = $zpool_UnSorted.$_.algo.ToLower()
         $zpool_Symbol = $zpool_UnSorted.$_.sym.ToUpper()
-        $Fees = [Double]$(vars).FeeTable.zpool.$zpool_Algorithm
-        $Estimate = [Double]$zpool_UnSorted.$_.estimate
-        $Divisor = 1000000 * [Double]$(vars).divisortable.zergpool.$Zergpool_Algorithm
-        $Workers = [Double]$zpool_UnSorted.$_.Workers
-        $Cut = ConvertFrom-Fees $Fees $Workers $Estimate $Divisor
-
-        ## Stat Zpool Coin. Throw error if there is an issue with pool stat.
-        try { 
-            $StatAlgo = $zpool_Symbol -replace "`_", "`-" 
-            $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_coin_profit" -Value $Cut
-        }
-        catch { log "Failed To Calculate Stat For $zpool_Symbol" }
+        $zpool_Fees = [Double]$(vars).FeeTable.zpool.$zpool_Algorithm
+        $zpool_Estimate = [Double]$zpool_UnSorted.$_.estimate
+        $Divisor = 1000000 * [Double]$(vars).divisortable.zpool.$zpool_Algorithm 
+        $StatAlgo = $zpool_Symbol -replace "`_", "`-" 
+        $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_coin_profit" -Value ([double]$zpool_Estimate / $Divisor * (1 - ($zpool_fees / 100))) 
     }
 
     ## Now to the best coins.
     $zpool_Sorted | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | ForEach-Object {
 
-        if ( $zpool_Sorted.$_.estimate_current -lt $zpool_Sorted.$_.actual_last24h) {
-            $Meets_Threshold = Global:Get-Requirement $zpool_Sorted.$_.estimate_current $zpool_Sorted.$_.actual_last24h
-        } else { $Meets_Threshold = $true }
-
+        if($(arg).Mode -eq "Easy") {
+            if ( $zpool_Sorted.$_.estimate -lt $zpool_Sorted.$_."24h_btc" -or [Double]$zpool_Sorted.$_."24h_btc" -eq 0) {
+                $Meets_Threshold = Global:Get-Requirement $zpool_Sorted.$_.estimate $zpool_Sorted.$_."24h_btc"
+            } else { $Meets_Threshold = $true }
+        }
+        
         $zpool_Algorithm = $zpool_Sorted.$_.algo.ToLower()
         $zpool_Symbol = $zpool_Sorted.$_.sym.ToUpper()
         $zap = "zap=$zpool_Symbol,"
         $zpool_Port = $zpool_Sorted.$_.port
         $Zpool_Host = "$($zpool_Request.$_.Original_Algo).$($region).mine.zpool.ca$X"
-        $Fees = [Double]$(vars).FeeTable.zpool.$zpool_Algorithm
-        $Estimate = [Double]$zpool_Sorted.$_.estimate
-        $Divisor = 1000000 * [Double]$(vars).divisortable.zergpool.$zpool_Algorithm
-        $Workers = $zpool_Sorted.$_.Workers
-        $Cut = ConvertFrom-Fees $Fees $Workers $Estimate $Divisor
-
-        $Stat = Global:Set-Stat -Name "$($Name)_$($zpool_Symbol)_coin_profit" -Value $Cut
-
+        $zpool_Fees = [Double]$(vars).FeeTable.zpool.$zpool_Algorithm
+        $zpool_Estimate = [Double]$zpool_Sorted.$_.estimate
+        $Divisor = 1000000 * [Double]$(vars).divisortable.zpool.$zpool_Algorithm 
+        $StatAlgo = $zpool_Symbol -replace "`_", "`-" 
+        $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_coin_profit" -Value ([double]$zpool_Estimate / $Divisor * (1 - ($zpool_fees / 100))) 
 
         ## Wallet Swapping/Solo mining
         $Pass1 = $global:Wallets.Wallet1.Keys

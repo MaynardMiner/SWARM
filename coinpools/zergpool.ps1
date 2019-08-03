@@ -1,5 +1,5 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
-$Meets_Threshold = $false
+$Meets_Threshold = $true
 
 $zergpool_Request = [PSCustomObject]@{ }
 $Zergpool_Sorted = [PSCustomObject]@{ }
@@ -54,7 +54,23 @@ if ($Name -in $(arg).PoolName) {
     else {
         $Algos | ForEach-Object {
             $Selected = $_
-            $AlgoPool_list = $zergpool_Request.PSObject.Properties.Value | Where Algo -eq $Selected
+            $AlgoPool_list = $zergpool_Request.PSObject.Properties.Value | 
+                Where-Object Algo -eq $Selected |
+                Where-Object Algo -in $(vars).FeeTable.zergpool.keys | 
+                Where-Object Algo -in $(vars).divisortable.zergpool.Keys |
+                Where-Object { $global:Config.Pool_Algos.$($_.Algo) } |
+                Where-Object { $Name -notin $global:Config.Pool_Algos.$($_.Algo).exclusions } |
+                Where-Object Sym -notin $(vars).BanHammer |
+                Where-Object Sym -notlike "*$NoGLT*" |
+                Where-Object noautotrade -eq "0" | 
+                Where-Object estimate -gt 0 | 
+                Where-Object hashrate -ne 0 
+
+            if ($(arg).mode -eq "easy") {
+                $AlgoPool_list | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | ForEach-Object {
+                    $_ | Add-Member "Shuffle" (Coin_Shuffle $Zergpool_Request.$_.estimate $Zergpool_Request.$_.actual_last24h)
+                }
+            }          
 
             ## Only choose coins with 24 hour returns or choose all coins (since they all have historical ttf longer than 24 hr).
             if ( ($Algopool."24h_btc_shared" | Measure-Object -Sum | select -ExpandProperty Sum) -ne 0 ) {
@@ -67,22 +83,10 @@ if ($Name -in $(arg).PoolName) {
             ## Not a GLT coin (if -Ban_GLT is "Yes")
             ## Is specified by user (i.e. the algorithm wasn't specifically banned.)
             ## estimate isn't 0
-            $Best = $BestCoins | 
-                Where-Object Algo -eq $Selected | 
-                Where-Object Algo -in $(vars).FeeTable.zergpool.keys | 
-                Where-Object Algo -in $(vars).divisortable.zergpool.Keys |
-                Where-Object { $global:Config.Pool_Algos.$($_.Algo) } |
-                Where-Object { $Name -notin $global:Config.Pool_Algos.$($_.Algo).exclusions } |
-                Where-Object Sym -notin $(vars).BanHammer |
-                Where-Object Sym -notlike "*$NoGLT*" |
-                Where-Object noautotrade -eq "0" | 
-                Where-Object estimate -gt 0 | 
-                Where-Object hashrate -ne 0 | 
-                Sort-Object Price -Descending |
-                Select -First 1
+            $Best = $BestCoins | Sort-Object Price -Descending | Select -First 1
 
             ## Add It to the sorting list
-            if ($Best) { $Zergpool_Sorted | Add-Member $Best.sym $Best }
+            if ($Best) { $Zergpool_Sorted | Add-Member $Best.sym $Best -Force }
 
             ## Add remaining coins for historical stats if user specified a
             ## time frame higher than live. If it is live, there is no point
@@ -99,23 +103,29 @@ if ($Name -in $(arg).PoolName) {
     $Zergpool_UnSorted | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | ForEach-Object {
         $Zergpool_Algorithm = $Zergpool_UnSorted.$_.algo.ToLower()
         $Zergpool_Symbol = $Zergpool_UnSorted.$_.sym.ToUpper()
+
+        $StatAlgo = $Zergpool_Algorithm -replace "`_", "`-"
+        $StatPath = ".\stats\($Name)_$($StatAlgo)_profit.txt"
+        if (Test-Path $StatPath) { $Estimate = [Double]$Zergpool_Request.$_.estimate * 0.001 }
+        else { $Estimate = [Double]$Zergpool_Request.$_."24h_btc_shared" }
+
+        if ($(arg).mode -eq "easy") { $Shuffle = Shuffle $Zergpool_Request.$_.estimate_current $Zergpool_Request.$_.actual_last24h }
+
         $zergpool_Fees = [Double]$(vars).FeeTable.zergpool.$Zergpool_Algorithm
-        $zergpool_Estimate = [Double]$Zergpool_UnSorted.$_.estimate * 0.001
         $Divisor = 1000000 * [Double]$(vars).divisortable.zergpool.$Zergpool_Algorithm 
 
-        try {
-            $StatAlgo = $Zergpool_Symbol -replace "`_", "`-" 
-            $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_coin_profit" -Value ([double]$zergpool_Estimate / $Divisor * (1 - ($zergpool_fees / 100))) 
-        }
-        catch { log "Failed To Calculate Stat For $Zergpool_Symbol" }
+        $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_coin_profit" -Value ( $Estimate / $Divisor * (1 - ($zergpool_fees / 100))) 
     }
 
     ## Now to the best coins.
     $Zergpool_Sorted | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | ForEach-Object {
 
-        if ( $Zergpool_Sorted.$_.estimate_current -lt $Zergpool_Sorted.$_.actual_last24h) {
-            $Meets_Threshold = Global:Get-Requirement $Zergpool_Sorted.$_.estimate_current $Zergpool_Sorted.$_.actual_last24h
-        } else { $Meets_Threshold = $true }
+        if ($(arg).Mode -eq "easy") {
+            if ( $Zergpool_Sorted.$_.estimate -lt $Zergpool_Sorted.$_."24h_btc_shared" -or [Double]$Zergpool_Sorted.$_."24h_btc_shared" -eq 0) {
+                $Meets_Threshold = Global:Get-Requirement $Zergpool_Sorted.$_.estimate $Zergpool_Sorted.$_."24h_btc_shared"
+            }
+            else { $Meets_Threshold = $true }
+        }
 
         $Zergpool_Algorithm = $Zergpool_Sorted.$_.algo.ToLower()
         $Zergpool_Symbol = $Zergpool_Sorted.$_.sym.ToUpper()
@@ -124,9 +134,9 @@ if ($Name -in $(arg).PoolName) {
         $zergpool_Host = "$($Zergpool_Sorted.$_.Original_Algo).mine.zergpool.com$X"
         $zergpool_Fees = [Double]$(vars).FeeTable.zergpool.$Zergpool_Algorithm
         $zergpool_Estimate = [Double]$Zergpool_Sorted.$_.estimate * 0.001
-        $Divisor = 1000000 * [Double]$(vars).divisortable.zergpool.$Zergpool_Algorithm
-
-        try { $Stat = Global:Set-Stat -Name "$($Name)_$($Zergpool_Symbol)_coin_profit" -Value ([double]$zergpool_Estimate / $Divisor * (1 - ($zergpool_fees / 100))) }catch { log "Failed To Calculate Stat For $Zergpool_Symbol" }
+        $Divisor = 1000000 * [Double]$(vars).divisortable.zergpool.$Zergpool_Algorithm 
+        $StatAlgo = $Zergpool_Symbol -replace "`_", "`-" 
+        $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_coin_profit" -Value ([double]$zergpool_Estimate / $Divisor * (1 - ($zergpool_fees / 100))) 
 
         ## Wallet Swapping/Solo mining
         $Pass1 = $global:Wallets.Wallet1.Keys
@@ -185,18 +195,18 @@ if ($Name -in $(arg).PoolName) {
         }
 
         [PSCustomObject]@{
-            Symbol    = "$Zergpool_Symbol-Coin"
-            Algorithm = $zergpool_Algorithm
-            Price     = $Stat.$($(arg).Stat_Coin)
-            Protocol  = "stratum+tcp"
-            Host      = $zergpool_Host
-            Port      = $zergpool_Port
-            User1     = $User1
-            User2     = $User2
-            User3     = $User3
-            Pass1     = "c=$Pass1,$($mc)id=$($(arg).RigName1)"
-            Pass2     = "c=$Pass2,$($mc)id=$($(arg).RigName2)"
-            Pass3     = "c=$Pass3,$($mc)id=$($(arg).RigName3)"
+            Symbol          = "$Zergpool_Symbol-Coin"
+            Algorithm       = $zergpool_Algorithm
+            Price           = $Stat.$($(arg).Stat_Coin)
+            Protocol        = "stratum+tcp"
+            Host            = $zergpool_Host
+            Port            = $zergpool_Port
+            User1           = $User1
+            User2           = $User2
+            User3           = $User3
+            Pass1           = "c=$Pass1,$($mc)id=$($(arg).RigName1)"
+            Pass2           = "c=$Pass2,$($mc)id=$($(arg).RigName2)"
+            Pass3           = "c=$Pass3,$($mc)id=$($(arg).RigName3)"
             Meets_Threshold = $Meets_Threshold
         } 
     }

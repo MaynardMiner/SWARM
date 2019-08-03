@@ -122,24 +122,6 @@
       "comma seperated"
     ]
   },
-  "blake": {
-    "alt_names": [
-      "blake"
-    ],
-    "exclusions": [
-      "add pool or miner here",
-      "comma seperated"
-    ]
-  },
-  "blake2s": {
-    "alt_names": [
-      "blake2s"
-    ],
-    "exclusions": [
-      "add pool or miner here",
-      "comma seperated"
-    ]
-  },
   "cpupower": {
     "alt_names": [
       "cpupower"
@@ -172,15 +154,6 @@
     "alt_names": [
       "cnsuperfast",
       "cryptonight-sfast"
-    ],
-    "exclusions": [
-      "add pool or miner here",
-      "comma seperated"
-    ]
-  },
-  "cryptonight": {
-    "alt_names": [
-      "cryptonight"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -283,15 +256,6 @@
     "alt_names": [
       "cuckatoo31",
       "grincuckatoo31"
-    ],
-    "exclusions": [
-      "add pool or miner here",
-      "comma seperated"
-    ]
-  },
-  "dedal": {
-    "alt_names": [
-      "dedal"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -554,15 +518,6 @@
       "comma seperated"
     ]
   },
-  "myr-gr": {
-    "alt_names": [
-      "myr-gr"
-    ],
-    "exclusions": [
-      "add pool or miner here",
-      "comma seperated"
-    ]
-  },
   "neoscrypt": {
     "alt_names": [
       "neoscrypt"
@@ -655,24 +610,6 @@
       "comma seperated"
     ]
   },
-  "scrypt": {
-    "alt_names": [
-      "scrypt"
-    ],
-    "exclusions": [
-      "add pool or miner here",
-      "comma seperated"
-    ]
-  },
-  "sha256": {
-    "alt_names": [
-      "sha256"
-    ],
-    "exclusions": [
-      "add pool or miner here",
-      "comma seperated"
-    ]
-  },
   "sha256q": {
     "alt_names": [
       "sha256q"
@@ -685,24 +622,6 @@
   "sha256t": {
     "alt_names": [
       "sha256t"
-    ],
-    "exclusions": [
-      "add pool or miner here",
-      "comma seperated"
-    ]
-  },
-  "sib": {
-    "alt_names": [
-      "sib"
-    ],
-    "exclusions": [
-      "add pool or miner here",
-      "comma seperated"
-    ]
-  },
-  "skein": {
-    "alt_names": [
-      "skein"
     ],
     "exclusions": [
       "add pool or miner here",

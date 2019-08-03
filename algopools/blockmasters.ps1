@@ -1,6 +1,6 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $blockpool_Request = [PSCustomObject]@{ } 
-$Meets_Threshold = $false
+$Meets_Threshold = $true
 
 if($(arg).xnsub -eq "Yes"){$X = "#xnsub"}
  
@@ -21,7 +21,7 @@ if ($Name -in $(arg).PoolName) {
     $blockpool_Request | 
     Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
     Select-Object -ExpandProperty Name | 
-    Where-Object { $blockpool_Request.$_.hashrate -gt 0 } | 
+    Where-Object { $blockpool_Request.$_.estimate_current -gt 0 } | 
     Where-Object {
         $Algo = $blockpool_Request.$_.name.ToLower();
         $local:blockpool_Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name | Where { $Algo -in $global:Config.Pool_Algos.$_.alt_names }
@@ -31,28 +31,29 @@ if ($Name -in $(arg).PoolName) {
         if ($(vars).Algorithm -contains $blockpool_Algorithm -or $(arg).ASIC_ALGO -contains $blockpool_Algorithm) {
             if ($Name -notin $global:Config.Pool_Algos.$blockpool_Algorithm.exclusions -and $blockpool_Algorithm -notin $(vars).BanHammer) {
 
-                if ( $blockpool_Request.$_.estimate_current -lt $blockpool_Request.$_.actual_last24h) {
-                    $Meets_Threshold = Global:Get-Requirement $blockpool_Request.$_.estimate_current $blockpool_Request.$_.actual_last24h
-                } else { $Meets_Threshold = $true }
+                $StatAlgo = $blockpool_Algorithm -replace "`_", "`-"
+                $StatPath = ".\stats\($Name)_$($StatAlgo)_profit.txt"
+                if(Test-Path $StatPath) { $Estimate = [Double]$blockpool_Request.$_.estimate_current }
+                else { $Estimate = [Double]$blockpool_Request.$_.actual_last24h * 0.001 }
+
+                if ($(arg).mode -eq "easy") {
+                    if( $blockpool_Request.$_.actual_last24h -eq 0 ){ $Meets_Threshold = $false } else {$Meets_Threshold = $True}
+                    $Shuffle = Shuffle $blockpool_Request.$_.estimate_current $blockpool_Request.$_.actual_last24h
+                } else {$Meets_Threshold = $true}
 
                 $blockpool_Host = "$($Region)blockmasters.co$X"
                 $blockpool_Port = $blockpool_Request.$_.port
                 $Divisor = 1000000 * $blockpool_Request.$_.mbtc_mh_factor
-                $StatPath = ".\stats\($Name)_$($blockpool_Algorithm)_profit.txt"
                 $Hashrate = $blockpool_Request.$_.hashrate
 
-                if (-not (Test-Path $StatPath)) {
-                    $StatAlgo = $blazepool_Algorithm -replace "`_","`-"
-                    $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( [Double]$blockpool_Request.$_.estimate_last24h / $Divisor * (1 - ($blockpool_Request.$_.fees / 100)))
-                } 
-                else {
-                    $StatAlgo = $blazepool_Algorithm -replace "`_","`-"
-                    $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( [Double]$blockpool_Request.$_.estimate_current / $Divisor * (1 - ($blockpool_Request.$_.fees / 100)))
-                }
+                $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( $Estimate / $Divisor * (1 - ($blockpool_Request.$_.fees / 100))) -Shuffle $Shuffle
+                if (-not $(vars).Pool_Hashrates.$blockpool_Algorithm) { $(vars).Pool_Hashrates.Add("$blockpool_Algorithm", @{ }) }
+                if (-not $(vars).Pool_Hashrates.$blockpool_Algorithm.$Name) { $(vars).Pool_Hashrates.$blockpool_Algorithm.Add("$Name", @{HashRate = "$($Stat.HashRate)"; Percent = "" }) }
 
-                if (-not $(vars).Pool_Hashrates.$blockpool_Algorithm) { $(vars).Pool_Hashrates.Add("$blockpool_Algorithm", @{ })
-                }
-                if (-not $(vars).Pool_Hashrates.$blockpool_Algorithm.$Name) { $(vars).Pool_Hashrates.$blockpool_Algorithm.Add("$Name", @{HashRate = "$($Stat.HashRate)"; Percent = "" })
+                $Level = $Stat.$($(arg).Stat_Algo)
+                if($(arg).mode -eq "easy") {
+                    $SmallestValue = 1E-20 
+                    $Level = [Math]::Max($Level + ($Level * $Stat.Deviation), $SmallestValue)
                 }
 
                 $Pass1 = $global:Wallets.Wallet1.Keys
@@ -90,7 +91,7 @@ if ($Name -in $(arg).PoolName) {
                 [PSCustomObject]@{            
                     Symbol    = "$blockpool_Algorithm-Algo"
                     Algorithm = $blockpool_Algorithm
-                    Price     = $Stat.$($(arg).Stat_Algo)
+                    Price     = $Level
                     Protocol  = "stratum+tcp"
                     Host      = $blockpool_Host
                     Port      = $blockpool_Port
