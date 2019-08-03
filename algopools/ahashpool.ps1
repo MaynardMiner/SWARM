@@ -17,7 +17,6 @@ if ($Name -in $(arg).PoolName) {
     $ahashpool_Request |
     Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
     Select-Object -ExpandProperty Name | 
-    Where-Object { $ahashpool_Request.$_.hashrate -gt 0 } | 
     Where-Object {
         $Algo = $ahashpool_Request.$_.name.ToLower();
         $local:ahashpool_Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name | Where { $Algo -in $global:Config.Pool_Algos.$_.alt_names }
@@ -29,7 +28,13 @@ if ($Name -in $(arg).PoolName) {
                 $ahashpool_Host = "$_.mine.ahashpool.com$X"
                 $ahashpool_Port = $ahashpool_Request.$_.port
                 $Fees = $ahashpool_Request.$_.fees
-                $Divisor = (1000000 * $ahashpool_Request.$_.mbtc_mh_factor)
+                ## mbtc - 6 bit estimates mh
+                ## check to see for yiimp bug:
+                if($ahashpool_Request.$_.actual_last24h -gt 0) { $Divisor = (1000000 * $ahashpool_Request.$_.mbtc_mh_factor)} 
+                else {
+                    ## returns are not actually mbtc/day - Flaw with yiimp calculation:
+                    $Divisor = ( 1000000 * ($ahashpool_Request.$_.mbtc_mh_factor/2) )
+                }
                 $Workers = $ahashpool_Request.$_.Workers
                 $StatPath = ".\stats\($Name)_$($ahashpool_Algorithm)_profit.txt"
                 $Hashrate = $ahashpool_Request.$_.hashrate

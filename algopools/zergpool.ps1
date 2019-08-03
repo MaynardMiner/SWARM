@@ -26,7 +26,13 @@ if ($Name -in $(arg).PoolName) {
             if ($Name -notin $global:Config.Pool_Algos.$Zergpool_Algorithm.exclusions -and $Zergpool_Algorithm -notin $(vars).BanHammer) {
                 $Zergpool_Port = $Zergpool_Request.$_.port
                 $Zergpool_Host = "$($Zergpool_Request.$_.name.ToLower()).mine.zergpool.com$X"
-                $Divisor = (1000000 * $Zergpool_Request.$_.mbtc_mh_factor)
+                ## mbtc - 6 bit estimates mh
+                ## check to see for yiimp bug:
+                if($Zergpool_Request.$_.actual_last24h -gt 0) { $Divisor = (1000000 * $Zergpool_Request.$_.mbtc_mh_factor)} 
+                else {
+                    ## returns are not actually mbtc/day - Flaw with yiimp calculation:
+                    $Divisor = ( 1000000 * ($Zergpool_Request.$_.mbtc_mh_factor/2) )
+                }
                 $(vars).divisortable.zergpool.Add($Zergpool_Algorithm, $Zergpool_Request.$_.mbtc_mh_factor)
                 $Fees = $Zergpool_Request.$_.fees
                 $(vars).FeeTable.zergpool.Add($Zergpool_Algorithm, $Zergpool_Request.$_.fees)

@@ -32,7 +32,13 @@ if ($Name -in $(arg).PoolName) {
             if ($Name -notin $global:Config.Pool_Algos.$Zpool_Algorithm.exclusions -and $Zpool_Algorithm -notin $(vars).BanHammer) {
                 $Zpool_Port = $Zpool_Request.$_.port
                 $Zpool_Host = "$($Zpool_Request.$_.name.ToLower()).$($region).mine.zpool.ca$X"
-                $Divisor = (1000000 * $Zpool_Request.$_.mbtc_mh_factor)
+                ## mbtc - 6 bit estimates mh
+                ## check to see for yiimp bug:
+                if($Zpool_Request.$_.actual_last24h -gt 0) { $Divisor = (1000000 * $Zpool_Request.$_.mbtc_mh_factor)} 
+                else {
+                    ## returns are not actually mbtc/day - Flaw with yiimp calculation:
+                    $Divisor = ( 1000000 * ($Zpool_Request.$_.mbtc_mh_factor/2) )
+                }
                 $Fees = $Zpool_Request.$_.fees
                 $Workers = $Zpool_Request.$_.Workers
                 $Hashrate = $Zpool_Request.$_.hashrate

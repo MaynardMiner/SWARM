@@ -28,7 +28,13 @@ if ($Name -in $(arg).PoolName) {
             if ($Name -notin $global:Config.Pool_Algos.$blazepool_Algorithm.exclusions -and $blazepool_Algorithm -notin $(vars).BanHammer) {
                 $blazepool_Host = "$_.mine.blazepool.com$X"
                 $blazepool_Port = $blazepool_Request.$_.port
-                $Divisor = (1000000 * $blazepool_Request.$_.mbtc_mh_factor)
+                ## btc - 8 bit estimates mh
+                ## check to see for yiimp bug:
+                if($blazepool_Request.$_.actual_last24h -gt 0) { $Divisor = (1000000 * $blazepool_Request.$_.mbtc_mh_factor)} 
+                else {
+                    ## returns are not actually mbtc/day - Flaw with yiimp calculation:
+                    $Divisor = ( 1000000 * ($blazepool_Request.$_.mbtc_mh_factor/2) )
+                }
                 $Fees = $blazepool_Request.$_.fees
                 $Workers = $blazepool_Request.$_.Workers
                 $StatPath = ".\stats\($Name)_$($blazepool_Algorithm)_profit.txt"

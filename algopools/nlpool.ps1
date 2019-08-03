@@ -30,7 +30,13 @@ if ($Name -in $(arg).PoolName) {
             if ($Name -notin $global:Config.Pool_Algos.$nlpoolAlgo_Algorithm.exclusions -and $nlpoolAlgo_Algorithm -notin $(vars).BanHammer) {
                 $nlpoolAlgo_Host = "mine.nlpool.nl$X"
                 $nlpoolAlgo_Port = $nlpool_Request.$_.port
-                $Divisor = (1000000 * ($nlpool_Request.$_.mbtc_mh_factor * 100))
+                ## btc - 8 bit estimates mh
+                ## check to see for yiimp bug:
+                if($nlpool_Request.$_.actual_last24h -gt 0) { $Divisor = (1000000 * $nlpool_Request.$_.mbtc_mh_factor)} 
+                else {
+                    ## returns are not actually mbtc/day - Flaw with yiimp calculation:
+                    $Divisor = ( 1000000 * ($nlpool_Request.$_.mbtc_mh_factor/2) )
+                }
                 $StatPath = ".\stats\($Name)_$($nlpoolAlgo_Algorithm)_profit.txt"
                 $Hashrate = $nlpool_Request.$_.hashrate
 

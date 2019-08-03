@@ -31,7 +31,13 @@ if ($Name -in $(arg).PoolName) {
             if ($Name -notin $global:Config.Pool_Algos.$blockpool_Algorithm.exclusions -and $blockpool_Algorithm -notin $(vars).BanHammer) {
                 $blockpool_Host = "$($Region)blockmasters.co$X"
                 $blockpool_Port = $blockpool_Request.$_.port
-                $Divisor = (1000000 * ($blockpool_Request.$_.mbtc_mh_factor * 100))
+                ## btc - 8 bit estimates mh
+                ## check to see for yiimp bug:
+                if($blockpool_Request.$_.actual_last24h -gt 0) { $Divisor = (1000000 * $blockpool_Request.$_.mbtc_mh_factor)} 
+                else {
+                    ## returns are not actually mbtc/day - Flaw with yiimp calculation:
+                    $Divisor = ( 1000000 * ($blockpool_Request.$_.mbtc_mh_factor/2) )
+                }
                 $StatPath = ".\stats\($Name)_$($blockpool_Algorithm)_profit.txt"
                 $Hashrate = $blockpool_Request.$_.hashrate
 

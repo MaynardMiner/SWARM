@@ -32,7 +32,13 @@ if ($Name -in $(arg).PoolName) {
             if ($Name -notin $global:Config.Pool_Algos.$fairpool_Algorithm.exclusions -and $fairpool_Algorithm -notin $(vars).BanHammer) {
                 $fairpool_Host = "$region$X"
                 $fairpool_Port = $fairpool_Request.$_.port
-                $Divisor = (1000000 * $fairpool_Request.$_.mbtc_mh_factor)
+                ## btc - 8 bit estimates mh
+                ## check to see for yiimp bug:
+                if($fairpool_Request.$_.actual_last24h -gt 0) { $Divisor = (1000000 * $fairpool_Request.$_.mbtc_mh_factor)} 
+                else {
+                    ## returns are not actually mbtc/day - Flaw with yiimp calculation:
+                    $Divisor = ( 1000000 * ($fairpool_Request.$_.mbtc_mh_factor/2) )
+                }
                 $Fees = $fairpool_Request.$_.fees
                 $Workers = $fairpool_Request.$_.Workers
                 $StatPath = ".\stats\($Name)_$($fairpool_Algorithm)_profit.txt"

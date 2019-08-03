@@ -26,7 +26,13 @@ if ($Name -in $(arg).PoolName) {
             if ($Name -notin $global:Config.Pool_Algos.$Hashrefinery_Algorithm.exclusions -and $Hashrefinery_Algorithm -notin $(vars).BanHammer) {
                 $Hashrefinery_Host = "$_.us.hashrefinery.com$X"
                 $Hashrefinery_Port = $Hashrefinery_Request.$_.port
-                $Divisor = (1000000 * $Hashrefinery_Request.$_.mbtc_mh_factor)
+                ## mbtc - 6 bit estimates mh
+                ## check to see for yiimp bug:
+                if($Hashrefinery_Request.$_.actual_last24h -gt 0) { $Divisor = (1000000 * $Hashrefinery_Request.$_.mbtc_mh_factor)} 
+                else {
+                    ## returns are not actually mbtc/day - Flaw with yiimp calculation:
+                    $Divisor = ( 1000000 * ($Hashrefinery_Request.$_.mbtc_mh_factor/2) )
+                }
                 $Fees = $Hashrefinery_Request.$_.fees
                 $Workers = $Hashrefinery_Request.$_.Workers
                 $StatPath = ".\stats\($Name)_$($Hashrefinery_Algorithm)_profit.txt"
