@@ -1,6 +1,7 @@
 
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $blazepool_Request = [PSCustomObject]@{ } 
+$Meets_Threshold = $false
 
 
 if($(arg).xnsub -eq "Yes"){$X = "#xnsub"}
@@ -26,15 +27,14 @@ if ($Name -in $(arg).PoolName) {
     ForEach-Object {
         if ($(vars).Algorithm -contains $blazepool_Algorithm -or $(arg).ASIC_ALGO -contains $blazepool_Algorithm) {
             if ($Name -notin $global:Config.Pool_Algos.$blazepool_Algorithm.exclusions -and $blazepool_Algorithm -notin $(vars).BanHammer) {
+
+                if ( $blazepool_Request.$_.estimate_current -lt $blazepool_Request.$_.actual_last24h) {
+                    $Meets_Threshold = Global:Get-Requirement $blazepool_Request.$_.estimate_current $blazepool_Request.$_.actual_last24h
+                } else { $Meets_Threshold = $true }
+
                 $blazepool_Host = "$_.mine.blazepool.com$X"
                 $blazepool_Port = $blazepool_Request.$_.port
-                ## btc - 8 bit estimates mh
-                ## check to see for yiimp bug:
-                if($blazepool_Request.$_.actual_last24h -gt 0) { $Divisor = (1000000 * $blazepool_Request.$_.mbtc_mh_factor)} 
-                else {
-                    ## returns are not actually mbtc/day - Flaw with yiimp calculation:
-                    $Divisor = ( 1000000 * ($blazepool_Request.$_.mbtc_mh_factor/2) )
-                }
+                $Divisor = 1000000 * $blazepool_Request.$_.mbtc_mh_factor
                 $Fees = $blazepool_Request.$_.fees
                 $Workers = $blazepool_Request.$_.Workers
                 $StatPath = ".\stats\($Name)_$($blazepool_Algorithm)_profit.txt"
@@ -67,6 +67,7 @@ if ($Name -in $(arg).PoolName) {
                     Pass1     = "c=$($global:Wallets.Wallet1.keys),id=$($(arg).RigName1)"
                     Pass2     = "c=$($global:Wallets.Wallet2.keys),id=$($(arg).RigName2)"
                     Pass3     = "c=$($global:Wallets.Wallet3.keys),id=$($(arg).RigName3)"
+                    Meets_Threshold = $Meets_Threshold
                 }
             }
         }

@@ -1,6 +1,7 @@
 
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $fairpool_Request = [PSCustomObject]@{ } 
+$Meets_Threshold = $false
 
 if($(arg).xnsub -eq "Yes"){$X = "#xnsub"}
  
@@ -30,15 +31,14 @@ if ($Name -in $(arg).PoolName) {
     ForEach-Object {
         if ($(vars).Algorithm -contains $fairpool_Algorithm -or $(arg).ASIC_ALGO -contains $fairpool_Algorithm) {
             if ($Name -notin $global:Config.Pool_Algos.$fairpool_Algorithm.exclusions -and $fairpool_Algorithm -notin $(vars).BanHammer) {
+
+                if ( $fairpool_Request.$_.estimate_current -lt $fairpool_Request.$_.actual_last24h) {
+                    $Meets_Threshold = Global:Get-Requirement $fairpool_Request.$_.estimate_current $fairpool_Request.$_.actual_last24h
+                } else { $Meets_Threshold = $true }
+
                 $fairpool_Host = "$region$X"
                 $fairpool_Port = $fairpool_Request.$_.port
-                ## btc - 8 bit estimates mh
-                ## check to see for yiimp bug:
-                if($fairpool_Request.$_.actual_last24h -gt 0) { $Divisor = (1000000 * $fairpool_Request.$_.mbtc_mh_factor)} 
-                else {
-                    ## returns are not actually mbtc/day - Flaw with yiimp calculation:
-                    $Divisor = ( 1000000 * ($fairpool_Request.$_.mbtc_mh_factor/2) )
-                }
+                $Divisor = 1000000 * $fairpool_Request.$_.mbtc_mh_factor
                 $Fees = $fairpool_Request.$_.fees
                 $Workers = $fairpool_Request.$_.Workers
                 $StatPath = ".\stats\($Name)_$($fairpool_Algorithm)_profit.txt"
@@ -71,6 +71,7 @@ if ($Name -in $(arg).PoolName) {
                     Pass1     = "c=$($global:Wallets.Wallet1.keys),id=$($(arg).RigName1)"
                     Pass2     = "c=$($global:Wallets.Wallet2.keys),id=$($(arg).RigName2)"
                     Pass3     = "c=$($global:Wallets.Wallet3.keys),id=$($(arg).RigName3)"
+                    Meets_Threshold = $Meets_Threshold
                 }
             }
         }

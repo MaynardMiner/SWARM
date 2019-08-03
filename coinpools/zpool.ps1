@@ -104,15 +104,7 @@ if ($Name -in $(arg).PoolName) {
         $zpool_Symbol = $zpool_UnSorted.$_.sym.ToUpper()
         $Fees = [Double]$(vars).FeeTable.zpool.$zpool_Algorithm
         $Estimate = [Double]$zpool_UnSorted.$_.estimate
-
-        # mbtc - 6 bit estimates mh
-        ## check to see for yiimp bug:
-        if ($zpool_UnSorted.$_."24h_btc_shared" -gt 0) { $Divisor = (1000000 * [Double]$(vars).divisortable.zergpool.$Zergpool_Algorithm) } 
-        else {
-            ## Returns are not actually mbtc/day - Flaw with yiimp calculation with everything based on daily returns:
-            $Divisor = ( 1000000 * ( [Double]$(vars).divisortable.zergpool.$Zergpool_Algorithm / 2 ) )
-        }
-
+        $Divisor = 1000000 * [Double]$(vars).divisortable.zergpool.$Zergpool_Algorithm
         $Workers = [Double]$zpool_UnSorted.$_.Workers
         $Cut = ConvertFrom-Fees $Fees $Workers $Estimate $Divisor
 
@@ -126,6 +118,11 @@ if ($Name -in $(arg).PoolName) {
 
     ## Now to the best coins.
     $zpool_Sorted | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | ForEach-Object {
+
+        if ( $zpool_Sorted.$_.estimate_current -lt $zpool_Sorted.$_.actual_last24h) {
+            $Meets_Threshold = Global:Get-Requirement $zpool_Sorted.$_.estimate_current $zpool_Sorted.$_.actual_last24h
+        } else { $Meets_Threshold = $true }
+
         $zpool_Algorithm = $zpool_Sorted.$_.algo.ToLower()
         $zpool_Symbol = $zpool_Sorted.$_.sym.ToUpper()
         $zap = "zap=$zpool_Symbol,"
@@ -133,13 +130,7 @@ if ($Name -in $(arg).PoolName) {
         $Zpool_Host = "$($zpool_Request.$_.Original_Algo).$($region).mine.zpool.ca$X"
         $Fees = [Double]$(vars).FeeTable.zpool.$zpool_Algorithm
         $Estimate = [Double]$zpool_Sorted.$_.estimate
-        # mbtc - 6 bit estimates mh
-        ## check to see for yiimp bug:
-        if ($zpool_Sorted.$_."24h_btc" -gt 0) { $Divisor = (1000000 * [Double]$(vars).divisortable.zergpool.$Zergpool_Algorithm) } 
-        else {
-            ## returns are not actually mbtc/day - Flaw with yiimp calculation:
-            $Divisor = ( 1000000 * ( [Double]$(vars).divisortable.zergpool.$Zergpool_Algorithm / 2 ) )
-        }
+        $Divisor = 1000000 * [Double]$(vars).divisortable.zergpool.$zpool_Algorithm
         $Workers = $zpool_Sorted.$_.Workers
         $Cut = ConvertFrom-Fees $Fees $Workers $Estimate $Divisor
 
@@ -211,6 +202,7 @@ if ($Name -in $(arg).PoolName) {
             Pass1     = "c=$Pass1,$($zap)id=$($(arg).RigName1)"
             Pass2     = "c=$Pass2,$($zap)id=$($(arg).RigName2)"
             Pass3     = "c=$Pass3,$($zap)id=$($(arg).RigName3)"
+            Meets_Threshold = $Meets_Threshold
         } 
 
         ## Done

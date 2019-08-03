@@ -1,4 +1,5 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
+$Meets_Threshold = $false
 
 $zergpool_Request = [PSCustomObject]@{ }
 $Zergpool_Sorted = [PSCustomObject]@{ }
@@ -56,7 +57,7 @@ if ($Name -in $(arg).PoolName) {
             $AlgoPool_list = $zergpool_Request.PSObject.Properties.Value | Where Algo -eq $Selected
 
             ## Only choose coins with 24 hour returns or choose all coins (since they all have historical ttf longer than 24 hr).
-            if ( ($Algopool."24h_btc_shared" | Measure-Object -Sum | select -ExpandProperty Sum -ne 0) ) {
+            if ( ($Algopool."24h_btc_shared" | Measure-Object -Sum | select -ExpandProperty Sum) -ne 0 ) {
                 $BestCoins = $AlgoPool_list | Where "24h_btc_shared" -ne 0
             }
             else { $BestCoins = $AlgoPool_list }
@@ -81,7 +82,7 @@ if ($Name -in $(arg).PoolName) {
                 Select -First 1
 
             ## Add It to the sorting list
-            if ($Best) { $Zergpool_Sorted | Add-Member $_.sym $_ }
+            if ($Best) { $Zergpool_Sorted | Add-Member $Best.sym $Best }
 
             ## Add remaining coins for historical stats if user specified a
             ## time frame higher than live. If it is live, there is no point
@@ -100,13 +101,7 @@ if ($Name -in $(arg).PoolName) {
         $Zergpool_Symbol = $Zergpool_UnSorted.$_.sym.ToUpper()
         $zergpool_Fees = [Double]$(vars).FeeTable.zergpool.$Zergpool_Algorithm
         $zergpool_Estimate = [Double]$Zergpool_UnSorted.$_.estimate * 0.001
-        # mbtc - 6 bit estimates mh
-        ## check to see for yiimp bug:
-        if ($Zergpool_UnSorted.$_."24h_btc_shared" -gt 0) { $Divisor = (1000000 * [Double]$(vars).divisortable.zergpool.$Zergpool_Algorithm) } 
-        else {
-            ## returns are not actually mbtc/day - Flaw with yiimp calculation:
-            $Divisor = ( 1000000 * ( [Double]$(vars).divisortable.zergpool.$Zergpool_Algorithm / 2 ) )
-        }
+        $Divisor = 1000000 * [Double]$(vars).divisortable.zergpool.$Zergpool_Algorithm 
 
         try {
             $StatAlgo = $Zergpool_Symbol -replace "`_", "`-" 
@@ -117,6 +112,11 @@ if ($Name -in $(arg).PoolName) {
 
     ## Now to the best coins.
     $Zergpool_Sorted | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Select-Object -ExpandProperty Name | ForEach-Object {
+
+        if ( $Zergpool_Sorted.$_.estimate_current -lt $Zergpool_Sorted.$_.actual_last24h) {
+            $Meets_Threshold = Global:Get-Requirement $Zergpool_Sorted.$_.estimate_current $Zergpool_Sorted.$_.actual_last24h
+        } else { $Meets_Threshold = $true }
+
         $Zergpool_Algorithm = $Zergpool_Sorted.$_.algo.ToLower()
         $Zergpool_Symbol = $Zergpool_Sorted.$_.sym.ToUpper()
         $mc = "mc=$Zergpool_Symbol,"
@@ -124,13 +124,7 @@ if ($Name -in $(arg).PoolName) {
         $zergpool_Host = "$($Zergpool_Sorted.$_.Original_Algo).mine.zergpool.com$X"
         $zergpool_Fees = [Double]$(vars).FeeTable.zergpool.$Zergpool_Algorithm
         $zergpool_Estimate = [Double]$Zergpool_Sorted.$_.estimate * 0.001
-        # mbtc - 6 bit estimates mh
-        ## check to see for yiimp bug:
-        if ($Zergpool_UnSorted.$_."24h_btc_shared" -gt 0) { $Divisor = (1000000 * [Double]$(vars).divisortable.zergpool.$Zergpool_Algorithm) } 
-        else {
-            ## returns are not actually mbtc/day - Flaw with yiimp calculation:
-            $Divisor = ( 1000000 * ( [Double]$(vars).divisortable.zergpool.$Zergpool_Algorithm / 2 ) )
-        }
+        $Divisor = 1000000 * [Double]$(vars).divisortable.zergpool.$Zergpool_Algorithm
 
         try { $Stat = Global:Set-Stat -Name "$($Name)_$($Zergpool_Symbol)_coin_profit" -Value ([double]$zergpool_Estimate / $Divisor * (1 - ($zergpool_fees / 100))) }catch { log "Failed To Calculate Stat For $Zergpool_Symbol" }
 
@@ -203,6 +197,7 @@ if ($Name -in $(arg).PoolName) {
             Pass1     = "c=$Pass1,$($mc)id=$($(arg).RigName1)"
             Pass2     = "c=$Pass2,$($mc)id=$($(arg).RigName2)"
             Pass3     = "c=$Pass3,$($mc)id=$($(arg).RigName3)"
+            Meets_Threshold = $Meets_Threshold
         } 
     }
 }

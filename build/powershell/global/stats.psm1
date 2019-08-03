@@ -13,6 +13,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 function Global:Get-Alpha($X) { (2 / ($X + 1) ) }
 
+function Global:Get-Requirement($X,$Y) {
+    $X = $X * 1000
+    $Z = $X * 0.25
+    $A = $Y - $X
+    if($A -lt $Z) { return $true }
+    else { return $false }
+}
+
 function Global:Get-Theta { 
     param (
         [Parameter(Mandatory = $true)]

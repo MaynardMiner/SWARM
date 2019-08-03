@@ -1,6 +1,7 @@
 
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $ahashpool_Request = [PSCustomObject]@{ } 
+$Meets_Threshold = $false
 
 
 if($(arg).xnsub -eq "Yes"){$X = "#xnsub"}
@@ -25,16 +26,15 @@ if ($Name -in $(arg).PoolName) {
     ForEach-Object {
         if ($(vars).Algorithm -contains $ahashpool_Algorithm -or $(arg).ASIC_ALGO -contains $ahashpool_Algorithm) {
             if ($Name -notin $global:Config.Pool_Algos.$ahashpool_Algorithm.exclusions -and $ahashpool_Algorithm -notin $(vars).BanHammer) {
+
+                if ( $ahashpool_Request.$_.estimate_current -lt $ahashpool_Request.$_.actual_last24h) {
+                    $Meets_Threshold = Global:Get-Requirement $ahashpool_Request.$_.estimate_current $ahashpool_Request.$_.actual_last24h
+                } else { $Meets_Threshold = $true }
+
                 $ahashpool_Host = "$_.mine.ahashpool.com$X"
                 $ahashpool_Port = $ahashpool_Request.$_.port
                 $Fees = $ahashpool_Request.$_.fees
-                ## mbtc - 6 bit estimates mh
-                ## check to see for yiimp bug:
-                if($ahashpool_Request.$_.actual_last24h -gt 0) { $Divisor = (1000000 * $ahashpool_Request.$_.mbtc_mh_factor)} 
-                else {
-                    ## returns are not actually mbtc/day - Flaw with yiimp calculation:
-                    $Divisor = ( 1000000 * ($ahashpool_Request.$_.mbtc_mh_factor/2) )
-                }
+                $Divisor = 1000000 * $ahashpool_Request.$_.mbtc_mh_factor
                 $Workers = $ahashpool_Request.$_.Workers
                 $StatPath = ".\stats\($Name)_$($ahashpool_Algorithm)_profit.txt"
                 $Hashrate = $ahashpool_Request.$_.hashrate
@@ -66,6 +66,7 @@ if ($Name -in $(arg).PoolName) {
                     Pass1     = "c=$($global:Wallets.Wallet1.keys),id=$($(arg).RigName1)"
                     Pass2     = "c=$($global:Wallets.Wallet2.keys),id=$($(arg).RigName2)"
                     Pass3     = "c=$($global:Wallets.Wallet3.keys),id=$($(arg).RigName3)"
+                    Meets_Threshold = $Meets_Threshold
                 }
             }
         }

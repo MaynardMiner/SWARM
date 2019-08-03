@@ -1,5 +1,6 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName
 $nlpool_Request = [PSCustomObject]@{ }
+$Meets_Threshold = $false
 
 if($(arg).xnsub -eq "Yes"){$X = "#xnsub"}
 
@@ -28,15 +29,14 @@ if ($Name -in $(arg).PoolName) {
     ForEach-Object {
         if ($(vars).Algorithm -contains $nlpoolAlgo_Algorithm -or $(arg).ASIC_ALGO -contains $nlpoolAlgo_Algorithm) {
             if ($Name -notin $global:Config.Pool_Algos.$nlpoolAlgo_Algorithm.exclusions -and $nlpoolAlgo_Algorithm -notin $(vars).BanHammer) {
+
+                if ( $nlpool_Request.$_.estimate_current -lt $nlpool_Request.$_.actual_last24h) {
+                    $Meets_Threshold = Global:Get-Requirement $nlpool_Request.$_.estimate_current $nlpool_Request.$_.actual_last24h
+                } else { $Meets_Threshold = $true }
+
                 $nlpoolAlgo_Host = "mine.nlpool.nl$X"
                 $nlpoolAlgo_Port = $nlpool_Request.$_.port
-                ## btc - 8 bit estimates mh
-                ## check to see for yiimp bug:
-                if($nlpool_Request.$_.actual_last24h -gt 0) { $Divisor = (1000000 * $nlpool_Request.$_.mbtc_mh_factor)} 
-                else {
-                    ## returns are not actually mbtc/day - Flaw with yiimp calculation:
-                    $Divisor = ( 1000000 * ($nlpool_Request.$_.mbtc_mh_factor/2) )
-                }
+                $Divisor = 1000000 * $nlpool_Request.$_.mbtc_mh_factor
                 $StatPath = ".\stats\($Name)_$($nlpoolAlgo_Algorithm)_profit.txt"
                 $Hashrate = $nlpool_Request.$_.hashrate
 
@@ -99,6 +99,7 @@ if ($Name -in $(arg).PoolName) {
                     Pass1     = "c=$Pass1,id=$($(arg).RigName1)"
                     Pass2     = "c=$Pass2,id=$($(arg).RigName2)"
                     Pass3     = "c=$Pass3,id=$($(arg).RigName3)"
+                    Meets_Threshold = $Meets_Threshold
                 }
             }
         }

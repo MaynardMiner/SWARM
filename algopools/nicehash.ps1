@@ -1,6 +1,7 @@
 
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $nicehash_Request = [PSCustomObject]@{ } 
+$Meets_Threshold = $true
 
 ## Make a Port map so I don't have to pull from nicehash twice
 $Nicehash_Ports = 
@@ -99,6 +100,7 @@ if ($Name -in $(arg).PoolName) {
                     Pass1     = "x"
                     Pass2     = "x"
                     Pass3     = "x"
+                    Meets_Threshold = $Meets_Threshold
                 }
             }
         }
