@@ -16,8 +16,8 @@ function Global:Get-Alpha($X) { (2 / ($X + 1) ) }
 function Global:Start-Shuffle($X, $Y) {
     $X = [Double]$X * 1000
     $Z = [Double]$Y - $X
-    $X = [math]::Round( $Z / $X, 4)
-    if($X -gt 0.001){$X = 0.001}
+    $X = [math]::Round( ($Z / $X) , 4)
+    if($X -gt 0.50) { $X = 0.50 }
     return $X
 }
 

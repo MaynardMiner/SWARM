@@ -3,6 +3,7 @@ $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty Ba
 $ahashpool_Request = [PSCustomObject]@{ } 
 $Meets_Threshold = $true;
 $Shuffle = 0;
+$SmallestValue = 1E-20 
 
 if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" }
 
@@ -29,9 +30,7 @@ if ($Name -in $(arg).PoolName) {
             if ($Name -notin $global:Config.Pool_Algos.$ahashpool_Algorithm.exclusions -and $ahashpool_Algorithm -notin $(vars).BanHammer) {
                 
                 $StatAlgo = $ahashpool_Algorithm -replace "`_", "`-"
-                $StatPath = ".\stats\($Name)_$($StatAlgo)_profit.txt"
-                if(Test-Path $StatPath) { $Estimate = [Double]$ahashpool_Request.$_.estimate_current }
-                else { $Estimate = [Double]$ahashpool_Request.$_.estimate_last24h }
+                $Estimate = [Double]$ahashpool_Request.$_.estimate_current
 
                 if ($(arg).mode -eq "easy") {
                     if( $ahashpool_Request.$_.actual_last24h -eq 0 ){ $Meets_Threshold = $false } else {$Meets_Threshold = $True}
@@ -42,6 +41,7 @@ if ($Name -in $(arg).PoolName) {
                 $ahashpool_Port = $ahashpool_Request.$_.port
                 $Divisor = 1000000 * $ahashpool_Request.$_.mbtc_mh_factor
                 $Hashrate = $ahashpool_Request.$_.hashrate
+                $previous = [Math]::Max(([Double]$ahashpool_Request.$_.actual_last24h * 0.001)  / $Divisor * (1 - ($ahashpool_Request.$_.fees / 100)),$SmallestValue)
 
                 $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( $Estimate / $Divisor * (1 - ($ahashpool_Request.$_.fees / 100))) -Shuffle $Shuffle
                 if (-not $(vars).Pool_Hashrates.$ahashpool_Algorithm) { $(vars).Pool_Hashrates.Add("$ahashpool_Algorithm", @{ }) }
@@ -49,7 +49,6 @@ if ($Name -in $(arg).PoolName) {
 
                 $Level = $Stat.$($(arg).Stat_Algo)
                 if($(arg).mode -eq "easy") {
-                    $SmallestValue = 1E-20 
                     $Level = [Math]::Max($Level + ($Level * $Stat.Deviation), $SmallestValue)
                 }
 
@@ -67,6 +66,7 @@ if ($Name -in $(arg).PoolName) {
                     Pass2           = "c=$($global:Wallets.Wallet2.keys),id=$($(arg).RigName2)"
                     Pass3           = "c=$($global:Wallets.Wallet3.keys),id=$($(arg).RigName3)"
                     Meets_Threshold = $Meets_Threshold
+                    Previous        = $Previous
                 }
             }
         }

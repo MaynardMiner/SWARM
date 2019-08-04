@@ -27,9 +27,7 @@ if ($Name -in $(arg).PoolName) {
             if ($Name -notin $global:Config.Pool_Algos.$Hashrefinery_Algorithm.exclusions -and $Hashrefinery_Algorithm -notin $(vars).BanHammer) {
 
                 $StatAlgo = $Hashrefinery_Algorithm -replace "`_", "`-"
-                $StatPath = ".\stats\($Name)_$($StatAlgo)_profit.txt"
-                if(Test-Path $StatPath) { $Estimate = [Double]$Hashrefinery_Request.$_.estimate_current }
-                else { $Estimate = [Double]$Hashrefinery_Request.$_.estimate_last24h }
+                $Estimate = [Double]$Hashrefinery_Request.$_.estimate_current
 
                 if ($(arg).mode -eq "easy") {
                     if( $Hashrefinery_Request.$_.actual_last24h -eq 0 ){ $Meets_Threshold = $false } else {$Meets_Threshold = $True}
@@ -40,6 +38,7 @@ if ($Name -in $(arg).PoolName) {
                 $Hashrefinery_Port = $Hashrefinery_Request.$_.port
                 $Divisor = 1000000 * $Hashrefinery_Request.$_.mbtc_mh_factor
                 $Hashrate = $Hashrefinery_Request.$_.hashrate
+                $previous = [Math]::Max(([Double]$Hashrefinery_Request.$_.actual_last24h * 0.001)  / $Divisor * (1 - ($Hashrefinery_Request.$_.fees / 100)),$SmallestValue)
 
                 $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( $Estimate / $Divisor * (1 - ($Hashrefinery_Request.$_.fees / 100))) -Shuffle $Shuffle
                 if (-not $(vars).Pool_Hashrates.$Hashrefinery_Algorithm) { $(vars).Pool_Hashrates.Add("$Hashrefinery_Algorithm", @{ }) }
@@ -65,6 +64,7 @@ if ($Name -in $(arg).PoolName) {
                     Pass2     = "c=$($global:Wallets.Wallet2.keys),id=$($(arg).RigName2)"
                     Pass3     = "c=$($global:Wallets.Wallet3.keys),id=$($(arg).RigName3)"
                     Meets_Threshold = $Meets_Threshold
+                    Previous  = $Previous
                 }
             }
         }

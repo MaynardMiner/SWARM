@@ -33,9 +33,7 @@ if ($Name -in $(arg).PoolName) {
             if ($Name -notin $global:Config.Pool_Algos.$fairpool_Algorithm.exclusions -and $fairpool_Algorithm -notin $(vars).BanHammer) {
 
                 $StatAlgo = $fairpool_Algorithm -replace "`_", "`-"
-                $StatPath = ".\stats\($Name)_$($StatAlgo)_profit.txt"
-                if(Test-Path $StatPath) { $Estimate = [Double]$fairpool_Request.$_.estimate_current }
-                else { $Estimate = [Double]$fairpool_Request.$_.estimate_last24h }
+                $Estimate = [Double]$fairpool_Request.$_.estimate_current
 
                 if ($(arg).mode -eq "easy") {
                     if( $fairpool_Request.$_.actual_last24h -eq 0 ){ $Meets_Threshold = $false } else {$Meets_Threshold = $True}
@@ -46,7 +44,8 @@ if ($Name -in $(arg).PoolName) {
                 $fairpool_Host = "$region$X"
                 $fairpool_Port = $fairpool_Request.$_.port
                 $Divisor = 1000000 * $fairpool_Request.$_.mbtc_mh_factor
-                $Hashrate = $blockpool_Request.$_.hashrate
+                $Hashrate = $fairpool_Request.$_.hashrate
+                $previous = [Math]::Max(([Double]$fairpool_Request.$_.actual_last24h * 0.001)  / $Divisor * (1 - ($fairpool_Request.$_.fees / 100)),$SmallestValue)
 
                 $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( $Estimate / $Divisor * (1 - ($fairpool_Request.$_.fees / 100))) -Shuffle $Shuffle
                 if (-not $(vars).Pool_Hashrates.$fairpool_Algorithm) { $(vars).Pool_Hashrates.Add("$fairpool_Algorithm", @{ }) }
@@ -72,6 +71,7 @@ if ($Name -in $(arg).PoolName) {
                     Pass2     = "c=$($global:Wallets.Wallet2.keys),id=$($(arg).RigName2)"
                     Pass3     = "c=$($global:Wallets.Wallet3.keys),id=$($(arg).RigName3)"
                     Meets_Threshold = $Meets_Threshold
+                    Previous  = $previous
                 }
             }
         }

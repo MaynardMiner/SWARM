@@ -78,6 +78,7 @@ if ($Name -in $(arg).PoolName) {
                 $nicehash_Port = $nicehash_ports.$Algo
                 ## 8 bit estimates
                 $Divisor = 100000000
+                $previous = [Math]::Max($_.paying * 0.001  / $Divisor * (1 - ($Fee / 100)),$SmallestValue)
 
                 ## Nicehash is pretty straightforward being PPS. In
                 ## My experience, whatever they state is return- Is
@@ -101,6 +102,7 @@ if ($Name -in $(arg).PoolName) {
                     Pass2     = "x"
                     Pass3     = "x"
                     Meets_Threshold = $Meets_Threshold
+                    Previous  = $Previous
                 }
             }
         }

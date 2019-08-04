@@ -28,9 +28,7 @@ if ($Name -in $(arg).PoolName) {
             if ($Name -notin $global:Config.Pool_Algos.$Zergpool_Algorithm.exclusions -and $Zergpool_Algorithm -notin $(vars).BanHammer) {
 
                 $StatAlgo = $Zergpool_Algorithm -replace "`_", "`-"
-                $StatPath = ".\stats\($Name)_$($StatAlgo)_profit.txt"
-                if(Test-Path $StatPath) { $Estimate = [Double]$Zergpool_Request.$_.estimate_current }
-                else { $Estimate = [Double]$Zergpool_Request.$_.estimate_last24h }
+                $Estimate = [Double]$Zergpool_Request.$_.estimate_current
 
                 if ($(arg).mode -eq "easy") {
                     if( $Zergpool_Request.$_.actual_last24h -eq 0 ){ $Meets_Threshold = $false } else {$Meets_Threshold = $True}
@@ -43,6 +41,7 @@ if ($Name -in $(arg).PoolName) {
                     $(vars).divisortable.zergpool.Add($Zergpool_Algorithm, $Zergpool_Request.$_.mbtc_mh_factor)
                     $(vars).FeeTable.zergpool.Add($Zergpool_Algorithm, $Zergpool_Request.$_.fees)
                     $Hashrate = $Zergpool_Request.$_.hashrate_shared
+                    $previous = [Math]::Max(([Double]$Zergpool_Request.$_.actual_last24h * 0.001)  / $Divisor * (1 - ($Zergpool_Request.$_.fees / 100)),$SmallestValue)
 
                     $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( $Estimate / $Divisor * (1 - ($Zergpool_Request.$_.fees / 100))) -Shuffle $Shuffle
                     if (-not $(vars).Pool_Hashrates.$Zergpool_Algorithm) { $(vars).Pool_Hashrates.Add("$Zergpool_Algorithm", @{ }) }
@@ -100,6 +99,7 @@ if ($Name -in $(arg).PoolName) {
                         Pass2     = "c=$Pass2,id=$($(arg).RigName2)"
                         Pass3     = "c=$Pass3,id=$($(arg).RigName3)"
                         Meets_Threshold = $Meets_Threshold
+                        Previous  = $previous
                 }
             }
         }

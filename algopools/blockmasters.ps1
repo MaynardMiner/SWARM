@@ -32,9 +32,7 @@ if ($Name -in $(arg).PoolName) {
             if ($Name -notin $global:Config.Pool_Algos.$blockpool_Algorithm.exclusions -and $blockpool_Algorithm -notin $(vars).BanHammer) {
 
                 $StatAlgo = $blockpool_Algorithm -replace "`_", "`-"
-                $StatPath = ".\stats\($Name)_$($StatAlgo)_profit.txt"
-                if(Test-Path $StatPath) { $Estimate = [Double]$blockpool_Request.$_.estimate_current }
-                else { $Estimate = [Double]$blockpool_Request.$_.estimate_last24h }
+                $Estimate = [Double]$blockpool_Request.$_.estimate_current
 
                 if ($(arg).mode -eq "easy") {
                     if( $blockpool_Request.$_.actual_last24h -eq 0 ){ $Meets_Threshold = $false } else {$Meets_Threshold = $True}
@@ -45,6 +43,7 @@ if ($Name -in $(arg).PoolName) {
                 $blockpool_Port = $blockpool_Request.$_.port
                 $Divisor = 1000000 * $blockpool_Request.$_.mbtc_mh_factor
                 $Hashrate = $blockpool_Request.$_.hashrate
+                $previous = [Math]::Max(([Double]$blockpool_Request.$_.actual_last24h * 0.001)  / $Divisor * (1 - ($blockpool_Request.$_.fees / 100)),$SmallestValue)
 
                 $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -HashRate $HashRate -Value ( $Estimate / $Divisor * (1 - ($blockpool_Request.$_.fees / 100))) -Shuffle $Shuffle
                 if (-not $(vars).Pool_Hashrates.$blockpool_Algorithm) { $(vars).Pool_Hashrates.Add("$blockpool_Algorithm", @{ }) }
@@ -102,6 +101,7 @@ if ($Name -in $(arg).PoolName) {
                     Pass2     = "c=$Pass2,id=$($(arg).RigName2)"
                     Pass3     = "c=$Pass3,id=$($(arg).RigName3)"
                     Meets_Threshold = $Meets_Threshold
+                    Previous  = $previous
                 }
             }
         }
