@@ -18,7 +18,7 @@ if ($Name -in $(arg).PoolName) {
     $blazepool_Request | 
     Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
     Select-Object -ExpandProperty Name | 
-    Where-Object { $blazepool_Request.$_.estimate_current -gt 0 } | 
+    Where-Object { [Double]$blazepool_Request.$_.estimate_current -gt 0 } | 
     Where-Object {
         $Algo = $blazepool_Request.$_.name.ToLower();
         $local:blazepool_Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name | Where { $Algo -in $global:Config.Pool_Algos.$_.alt_names }
@@ -31,7 +31,7 @@ if ($Name -in $(arg).PoolName) {
                 $StatAlgo = $blazepool_Algorithm -replace "`_", "`-"
                 $StatPath = ".\stats\($Name)_$($StatAlgo)_profit.txt"
                 if(Test-Path $StatPath) { $Estimate = [Double]$blazepool_Request.$_.estimate_current }
-                else { $Estimate = [Double]$blazepool_Request.$_.actual_last24h * 0.001}
+                else { $Estimate = [Double]$blazepool_Request.$_.estimate_last24h}
 
                 if ($(arg).mode -eq "easy") {
                     if( $blazepool_Request.$_.actual_last24h -eq 0 ){ $Meets_Threshold = $false } else {$Meets_Threshold = $True}

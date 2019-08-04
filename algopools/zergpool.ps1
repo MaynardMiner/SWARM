@@ -16,7 +16,7 @@ if ($Name -in $(arg).PoolName) {
     $Zergpool_Request | 
     Get-Member -MemberType NoteProperty -ErrorAction Ignore | 
     Select-Object -ExpandProperty Name | 
-    Where-Object { $($Zergpool_Request.$_.estimate_current) -gt 0 } |
+    Where-Object { [Double]$Zergpool_Request.$_.estimate_current -gt 0 } |
     Where-Object {
         $Algo = $Zergpool_Request.$_.name.ToLower();
         $local:Zergpool_Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name | Where { $Algo -in $global:Config.Pool_Algos.$_.alt_names }
@@ -30,11 +30,11 @@ if ($Name -in $(arg).PoolName) {
                 $StatAlgo = $Zergpool_Algorithm -replace "`_", "`-"
                 $StatPath = ".\stats\($Name)_$($StatAlgo)_profit.txt"
                 if(Test-Path $StatPath) { $Estimate = [Double]$Zergpool_Request.$_.estimate_current }
-                else { $Estimate = [Double]$Zergpool_Request.$_.actual_last24h_shared * 0.001 }
+                else { $Estimate = [Double]$Zergpool_Request.$_.estimate_last24h }
 
                 if ($(arg).mode -eq "easy") {
-                    if( $Zergpool_Request.$_.actual_last24h_shared -eq 0 ){ $Meets_Threshold = $false } else {$Meets_Threshold = $True}
-                    $Shuffle = Shuffle $Zergpool_Request.$_.estimate_current $Zergpool_Request.$_.actual_last24h_shared
+                    if( $Zergpool_Request.$_.actual_last24h -eq 0 ){ $Meets_Threshold = $false } else {$Meets_Threshold = $True}
+                    $Shuffle = Shuffle $Zergpool_Request.$_.estimate_current $Zergpool_Request.$_.actual_last24h
                 } else {$Meets_Threshold = $true}
 
                     $Zergpool_Port = $Zergpool_Request.$_.port

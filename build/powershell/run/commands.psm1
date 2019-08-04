@@ -45,7 +45,7 @@ function global:Get-EasyStats {
 
         if ($(vars).Cut_Items.AlgoPools) {
             $(vars).Cut_Items.AlgoPools | ForEach-Object {
-                $Easy_Stats += "$($_.Algo) on $($_.Pool) return was showing over 30% of realistic return: So we removed it."
+                $Easy_Stats += "$($_.Algo) on $($_.Pool) return was showing no returns in 24 hours: So we removed it."
             }
         }
 
