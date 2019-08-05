@@ -49,7 +49,15 @@
   },
   "argon2d500": {
     "alt_names": [
-      "argon2d500",
+      "argon2d500"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "argon2d-dyn": {
+    "alt_names": [
       "argon2d-dyn"
     ],
     "exclusions": [
@@ -96,7 +104,8 @@
   "equihash_125/4": {
     "alt_names": [
       "zelcash",
-      "equihash_125/4"
+      "equihash_125/4",
+      "equihash125"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -106,7 +115,8 @@
   "equihash_150/5": {
     "alt_names": [
       "beam",
-      "equihash_150/5"
+      "equihash_150/5",
+      "equihash150"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -116,24 +126,6 @@
   "bitcore": {
     "alt_names": [
       "bitcore"
-    ],
-    "exclusions": [
-      "add pool or miner here",
-      "comma seperated"
-    ]
-  },
-  "blake": {
-    "alt_names": [
-      "blake"
-    ],
-    "exclusions": [
-      "add pool or miner here",
-      "comma seperated"
-    ]
-  },
-  "blake2s": {
-    "alt_names": [
-      "blake2s"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -172,15 +164,6 @@
     "alt_names": [
       "cnsuperfast",
       "cryptonight-sfast"
-    ],
-    "exclusions": [
-      "add pool or miner here",
-      "comma seperated"
-    ]
-  },
-  "cryptonight": {
-    "alt_names": [
-      "cryptonight"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -283,15 +266,6 @@
     "alt_names": [
       "cuckatoo31",
       "grincuckatoo31"
-    ],
-    "exclusions": [
-      "add pool or miner here",
-      "comma seperated"
-    ]
-  },
-  "dedal": {
-    "alt_names": [
-      "dedal"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -554,15 +528,6 @@
       "comma seperated"
     ]
   },
-  "myr-gr": {
-    "alt_names": [
-      "myr-gr"
-    ],
-    "exclusions": [
-      "add pool or miner here",
-      "comma seperated"
-    ]
-  },
   "neoscrypt": {
     "alt_names": [
       "neoscrypt"
@@ -655,24 +620,6 @@
       "comma seperated"
     ]
   },
-  "scrypt": {
-    "alt_names": [
-      "scrypt"
-    ],
-    "exclusions": [
-      "add pool or miner here",
-      "comma seperated"
-    ]
-  },
-  "sha256": {
-    "alt_names": [
-      "sha256"
-    ],
-    "exclusions": [
-      "add pool or miner here",
-      "comma seperated"
-    ]
-  },
   "sha256q": {
     "alt_names": [
       "sha256q"
@@ -685,24 +632,6 @@
   "sha256t": {
     "alt_names": [
       "sha256t"
-    ],
-    "exclusions": [
-      "add pool or miner here",
-      "comma seperated"
-    ]
-  },
-  "sib": {
-    "alt_names": [
-      "sib"
-    ],
-    "exclusions": [
-      "add pool or miner here",
-      "comma seperated"
-    ]
-  },
-  "skein": {
-    "alt_names": [
-      "skein"
     ],
     "exclusions": [
       "add pool or miner here",

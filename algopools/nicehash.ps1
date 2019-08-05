@@ -75,7 +75,9 @@ if ($Name -in $(arg).PoolName) {
                 $nicehash_Host = "$($Algo).$Region-new.nicehash.com$X"
                 $nicehash_excavator = "nhmp.$Region-new.nicehash.com$X"
                 $nicehash_Port = $nicehash_ports.$Algo
+                ## 8 bit estimates
                 $Divisor = 100000000
+                $previous = [Math]::Max($_.paying * 0.001  / $Divisor * (1 - ($Fee / 100)),$SmallestValue)
 
                 ## Nicehash is pretty straightforward being PPS. In
                 ## My experience, whatever they state is return- Is
@@ -98,6 +100,7 @@ if ($Name -in $(arg).PoolName) {
                     Pass1     = "x"
                     Pass2     = "x"
                     Pass3     = "x"
+                    Previous  = $Previous
                 }
             }
         }

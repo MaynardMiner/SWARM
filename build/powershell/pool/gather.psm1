@@ -7,12 +7,9 @@ function Global:Get-Pools {
     )
 
     Switch ($PoolType) {
-        "Algo" { $GetPools = if ($Items) { Global:Get-ChildItemContent -Items $Items | ForEach { if ($_ -ne $Null) { $_.Content | Add-Member @{Name = $_.Name } -PassThru } } }
-        }
-        "Coin" { $GetPools = if ($Items) { Global:Get-ChildItemContent -Items $Items | ForEach { if ($_ -ne $Null) { $_.Content | Add-Member @{Name = $_.Name } -PassThru } } }
-        }
-        "Custom" { $GetPools = if ($Items) { Global:Get-ChildItemContent -Items $Items | ForEach { if ($_ -ne $Null) { $_.Content | Add-Member @{Name = $_.Name } -PassThru } } }
-        }
+        "Algo" { $GetPools = if ($Items) { Global:Get-ChildItemContent -Items $Items | ForEach { if ($_ -ne $Null) { $_.Content | Add-Member @{Name = $_.Name } -PassThru } } } }
+        "Coin" { $GetPools = if ($Items) { Global:Get-ChildItemContent -Items $Items | ForEach { if ($_ -ne $Null) { $_.Content | Add-Member @{Name = $_.Name } -PassThru } } } }
+        "Custom" { $GetPools = if ($Items) { Global:Get-ChildItemContent -Items $Items | ForEach { if ($_ -ne $Null) { $_.Content | Add-Member @{Name = $_.Name } -PassThru } } } }
     }
 
     $GetPools
@@ -45,7 +42,7 @@ function Global:Get-AlgoPools {
             Sort-Object Price -Descending | 
             Select-Object -First 3 |
             ForEach-Object { $(vars).AlgoPools.Add($_) | Out-Null }
-        };
+        }
         $(vars).QuickTimer.Stop()
         log "Algo Pools Loading Time: $([math]::Round($(vars).QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green
     }
@@ -60,13 +57,13 @@ function Global:Get-CoinPools {
         $(vars).CoinPools = New-Object System.Collections.ArrayList
         $AllCoinPools.algorithm | Select-Object -Unique | ForEach-Object { 
             $AllCoinPools | 
-                Where-Object algorithm -EQ $_ | 
-                Sort-Object Price -Descending | 
-                Select-Object -First 3 | 
-                ForEach-Object { 
-                    $(vars).CoinPools.ADD($_) | Out-Null 
-                } 
-            }
+            Where-Object algorithm -EQ $_ | 
+            Sort-Object Price -Descending | 
+            Select-Object -First 3 | 
+            ForEach-Object { 
+                $(vars).CoinPools.ADD($_) | Out-Null 
+            } 
+        }
         $(vars).CoinPools.Name | Select-Object -Unique | ForEach-Object {
             $Remove = $(vars).AlgoPools | Where-Object Name -eq $_
             $Remove | ForEach-Object { $(vars).AlgoPools.Remove($_) | Out-Null }

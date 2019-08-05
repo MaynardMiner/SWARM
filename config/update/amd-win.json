@@ -117,9 +117,9 @@
     "AMD2": ".\\bin\\xmrstak-2\\xmr-stak.exe",
     "AMD3": ".\\bin\\xmrstak-3\\xmr-stak.exe",
     "minername": "xmr-stak.exe",
-    "version": "2.10.6",
+    "version": "2.10.7",
     "optional": "No",
-    "uri": "https://github.com/fireice-uk/xmr-stak/releases/download/2.10.6/xmr-stak-win64-2.10.6.zip"
+    "uri": "https://github.com/fireice-uk/xmr-stak/releases/download/2.10.7/xmr-stak-win64-2.10.7.zip"
   },
   "wildrig": {
     "name": "wildrig",
@@ -194,8 +194,8 @@
     "AMD2": ".\\bin\\nanominer-2\\nanominer.exe",
     "AMD3": ".\\bin\\nanominer-3\\nanominer.exe",
     "minername": "nanominer.exe",
-    "version": "1.5.2",
+    "version": "1.5.3",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/v1.5.2/nanominer-windows-1.5.2.zip"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v1.5.3/nanominer-windows-1.5.3.zip"
   }
 }

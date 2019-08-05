@@ -68,11 +68,6 @@ $(vars).NVIDIATypes | ForEach-Object {
                                 "ethash" { $AddArgs = "-proto 4 -stales 0 " }
                             }
                         }
-                        "nicehash_v1" {
-                            switch ($SelAlgo) {
-                                "ethash" { $AddArgs = "-proto 4 -stales 0 " }
-                            }
-                        }
                         "whalesburg" {
                             switch ($SelAlgo) {
                                 "ethash" { $AddArgs = "-proto 2 -rate 1 " }

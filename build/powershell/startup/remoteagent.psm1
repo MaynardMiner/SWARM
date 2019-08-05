@@ -46,6 +46,7 @@ function Global:start-update {
         $PreviousVersions += "SWARM.2.5.2"
         $PreviousVersions += "SWARM.2.5.3"
         $PreviousVersions += "SWARM.2.5.4"
+        $PreviousVersions += "SWARM.2.5.5"
 
         $StatsOnly = $null
 
@@ -238,8 +239,13 @@ function Global:start-update {
                                 }
 
                                 if ($ChangeFile -eq "gminer-amd.json") {
-                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach { 
                                         if ($_ -ne "name") {
+                                            $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "equihash125/4"
+                                            $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "equihash125/4"
+                                            $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "equihash125/4"
+                                            $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "equihash125/4"
+
                                             $Data.$_.commands | Add-Member "cuckatoo31" "" -ErrorAction SilentlyContinue
                                             $Data.$_.difficulty | Add-Member "cuckatoo31" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "cuckatoo31" "cuckatoo31" -ErrorAction SilentlyContinue
@@ -249,11 +255,6 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "equihash_96/5" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "equihash_96/5" "equihash_96/5" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "equihash_96/5" 2 -ErrorAction SilentlyContinue
-
-                                            $Data.$_.commands | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue
-                                            $Data.$_.difficulty | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue 
-                                            $Data.$_.naming | Add-Member "equihash_125/4" "equihash_125/4" -ErrorAction SilentlyContinue
-                                            $Data.$_.fee | Add-Member "equihash_125/4" 2 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }
@@ -348,7 +349,11 @@ function Global:start-update {
                                     $Data | add-Member "bmw512" @{alt_names = @("bmw512"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
                                     $Data | add-Member "x14" @{alt_names = @("x14"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
                                     $Data | add-Member "cpupower" @{alt_names = @("cpupower"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
-                                }
+                                    $Data | add-Member "equihash_125/4" @{alt_names = @("zelcash","equihash_125/4","equihash125"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force
+                                    $Data | add-Member "equihash_150/5" @{alt_names = @("equihash_150/5","equihash150","beam"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force                                   
+                                    $Data | add-Member "argon2d500" @{alt_names = @("argon2d500"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force         
+                                    $Data | add-Member "argon2d-dyn" @{alt_names = @("argon2d-dyn"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force                                                             
+                                } 
                                 
 
                                 if($ChangeFile -eq "oc-algos.json") {

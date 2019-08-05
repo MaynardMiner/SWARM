@@ -18,8 +18,7 @@
             "equihash_192/7": "",
             "equihash_144/5": "",
             "equihash_210/9": "",
-            "equihash_200/9": "",
-            "equihash_125/4": ""
+            "equihash_200/9": ""
         },
         "difficulty": {
             "equihash_150/5": "",
@@ -30,8 +29,7 @@
             "equihash_192/7": "",
             "equihash_144/5": "",
             "equihash_210/9": "",
-            "equihash_200/9": "",
-            "equihash_125/4": ""
+            "equihash_200/9": ""
         },
         "naming": {
             "equihash_150/5": "equihash_150/5",
@@ -42,8 +40,7 @@
             "equihash_192/7": "equihash_192/7",
             "equihash_144/5": "equihash_144/5",
             "equihash_210/9": "equihash_210/9",
-            "equihash_200/9": "equihash_210/9",
-            "equihash_125/4": "equihash_125/4"
+            "equihash_200/9": "equihash_210/9"
         },
         "fee": {
             "equihash_150/5": 2,
@@ -54,8 +51,7 @@
             "equihash_192/7": 2,
             "equihash_144/5": 2,
             "equihash_210/9": 2,
-            "equihash_200/9": 2,
-            "equihash_125/4": 2
+            "equihash_200/9": 2
         }
     }
 }
