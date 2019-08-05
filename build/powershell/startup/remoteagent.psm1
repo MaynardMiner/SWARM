@@ -46,6 +46,7 @@ function Global:start-update {
         $PreviousVersions += "SWARM.2.5.2"
         $PreviousVersions += "SWARM.2.5.3"
         $PreviousVersions += "SWARM.2.5.4"
+        $PreviousVersions += "SWARM.2.5.5"
 
         $StatsOnly = $null
 
@@ -348,8 +349,10 @@ function Global:start-update {
                                     $Data | add-Member "bmw512" @{alt_names = @("bmw512"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
                                     $Data | add-Member "x14" @{alt_names = @("x14"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
                                     $Data | add-Member "cpupower" @{alt_names = @("cpupower"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
-                                    $Data | add-Member "equihash_125/4" @{alt_names = @("equihash_125/4"); exclusions = @("zelcash","equihash_125/4","equihash125")} -ErrorAction SilentlyContinue -Force
-                                    $Data | add-Member "equihash_150/5" @{alt_names = @("equihash_125/4"); exclusions = @("equihash_150/5","equihash150","beam")} -ErrorAction SilentlyContinue -Force                                   
+                                    $Data | add-Member "equihash_125/4" @{alt_names = @("zelcash","equihash_125/4","equihash125"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force
+                                    $Data | add-Member "equihash_150/5" @{alt_names = @("equihash_150/5","equihash150","beam"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force                                   
+                                    $Data | add-Member "argon2d500" @{alt_names = @("argon2d500"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force         
+                                    $Data | add-Member "argon2d-dyn" @{alt_names = @("argon2d-dyn"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force                                                             
                                 } 
                                 
 
