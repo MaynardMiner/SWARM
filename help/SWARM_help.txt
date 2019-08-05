@@ -57,6 +57,21 @@ These arguments can be added for additional customization and options
 
 Argument      Options             Explanation
 
+-Historical_Bias [0-100]            Expressed as Percentage. 
+                                    Will only affect Auto_Algo.
+                                    Will not affect niechash.
+                                    Historical_Bias bias does two things:
+                                     -Reduces algorithms that have no 24h returns to 100%
+                                     -Compares the deviation between 24hr estimates and 24hr
+                                      returns into a %, which then creates a EMA with each
+                                      value. (for smoothing). SWARM then applies a bonus/penality
+                                      to the algorithm based on how well it has performed
+                                      over time historically. SWARM will only apply a % penality
+                                      or bonus of x%, where x is -Historical_Bias figure.
+                                      Deviations will be listed in stat files.
+                                      If you use, reccommended starting values are somewhere
+                                      around 25-35% historical bias.
+
 -Admin_Fee    [0-50]                Expressed as Percentage. 
                                     Admin_Fee allows users to set a seperate wallet, and specify
                                     a certain percentage of time mined on that wallet a day. Admin
