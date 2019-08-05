@@ -227,8 +227,8 @@
     "AMD2": ".\\bin\\nanominer-2\\nanominer",
     "AMD3": ".\\bin\\nanominer-3\\nanominer",
     "minername": "nanominer",
-    "version": "1.5.2",
+    "version": "1.5.3",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/v1.5.2/nanominer-linux-1.5.2.tar.gz"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v1.5.3/nanominer-linux-1.5.3.tar.gz"
   }
 }
