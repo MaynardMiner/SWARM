@@ -604,3 +604,51 @@ to roll them back.
 * tt-miner updated (beta test version)
   * still optional.
 * Adjusted nlpool mbtc_mh_factor.
+
+# SWARM 2.5.6 (beta)
+
+## Old Arguments Removed!
+* ``-Stat_all`` is no longer needed. Do not use.
+* ``-Ban_GLT`` default is now "No". (was "Yes").
+
+## New Arguments! (beta)
+* ``-Historical_Bias``   [0-100]   Expressed as Percentage. 
+  * Will only affect Auto_Algo.
+  * Will not affect niechash or whalesburg.
+  * This if for users who ONLY want coins that historically
+    turn a profit. However, the drawback is that you may
+    avoid profitable coins due to bad luck streaks.
+  * You may completely different algorithms at the
+    top of the list using this parameter, depending on
+    how high you set the bias.
+  * Historical_Bias bias does two things:
+    * Reduces algorithms that have no 24h returns by 100%
+    * Compares the deviation between 24hr estimates and 24hr
+      returns into a %, and then creates a EMA with each
+      value. (for smoothing). SWARM then applies a bonus/penality
+      to the algorithm based on how well it has performed
+      over time historically. SWARM will only apply a % penality
+      or bonus of x%, where x is -Historical_Bias figure.
+      Deviations will be listed in stat files.
+      If you use, reccommended starting values are somewhere
+      around 25-35% historical bias.
+
+## Updates
+* Pool files were heavily changed/updated to increase
+  speed, and add new features.
+* Nicehash file updated to new platform (You require a
+  new account and update from old nicehash platform).
+* nanominer update (warning: users were stating in linux
+  it was failing, though settings were correct. Contact dev
+  if that is the case.
+* t-rex updated
+* new equihash algos added.
+
+## Fixes:
+* Pool files were updated/fixed, and tested individually.
+  * Note: If you recieve a fairly high estimate, notify
+    pool that their mbtc_mh_factor is incorrect for that
+    item. Please let me know if you spot any bugs.
+* Prevent agent in Windows from locking up if you close
+  main screen while "waiting for miners to start"
+  message appears.
