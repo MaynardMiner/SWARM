@@ -5,7 +5,7 @@ $zpool_Request = [PSCustomObject]@{ }
 $zpool_Sorted = [PSCustomObject]@{ }
 
 if ($(arg).Ban_GLT -eq "Yes") { $NoGLT = "GLT" }
-else{ $NoGLT = "SWARM" }
+else{ $NoGLT = "SWARM1234" }
 if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" } 
 
 ## Skip if user didn't specify

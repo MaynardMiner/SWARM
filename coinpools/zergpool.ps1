@@ -6,7 +6,7 @@ $Zergpool_Sorted = [PSCustomObject]@{ }
 $SmallestValue = 1E-20 
 
 if ($(arg).Ban_GLT -eq "Yes") { $NoGLT = "GLT" }
-else{ $NOGLT = "SWARM"} 
+else{ $NOGLT = "SWARM1234"} 
 if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" } 
 
 ## Skip if user didn't specify
