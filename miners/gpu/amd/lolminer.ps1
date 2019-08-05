@@ -54,9 +54,9 @@ $(vars).AMDTypes | ForEach-Object {
                     switch ($SelAlgo) {
                         "equihash_144/5" { $AddArgs = "--coin AUTO144_5 " }
                         "equihash_96/5" { $AddArgs = "--coin MNX " }
-                        "equihash_192/7" { $AddArgs = "--coin AUTO192_7 " }
-                        "equihash_150/5" { $AddArgs = "--coin BEAM --tls 0 " }
                         "equihash_125/4" { $AddArgs = "--coin ZEL --tls 0 " }
+                        "equihash_150/5" { $AddArgs = "--coin BEAM --tls 0 " }
+                        "equihash_192/7" { $AddArgs = "--coin AUTO192_7 " }
                         "cuckaroo29" { $AddArgs = "--coin GRIN-AD29 " }
                         "cuckarood29" { $AddArgs = "--coin GRIN-AD29 " }
                         "cuckatoo31" { $AddArgs = "--coin GRIN-AT31 " }
