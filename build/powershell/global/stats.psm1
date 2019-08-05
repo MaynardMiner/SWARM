@@ -17,7 +17,11 @@ function Global:Start-Shuffle($X, $Y) {
     $X = [Double]$X * 1000
     $Z = [Double]$Y - $X
     $X = [math]::Round( ($Z / $X) , 4)
-    if($X -gt 0.50) { $X = 0.50 }
+    if($X -gt 0.30){$X = 0.30}
+    if($X -lt -0.30){
+        if($X -le -1){ $X = -1 }
+        else{ $X = -0.30 }
+    }
     return $X
 }
 

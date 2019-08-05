@@ -49,7 +49,15 @@
   },
   "argon2d500": {
     "alt_names": [
-      "argon2d500",
+      "argon2d500"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "argon2d-dyn": {
+    "alt_names": [
       "argon2d-dyn"
     ],
     "exclusions": [

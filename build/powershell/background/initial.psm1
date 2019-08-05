@@ -18,10 +18,13 @@ function Global:Invoke-MinerCheck {
             $global:StartTime = Get-Date
             Write-Host "Waiting for all miners to launch `n"
             $Check = $false;
+            $Time = 0
             do{
                 $check = Test-Path ".\build\pid\start.txt"; 
                 start-sleep -S 1
-            }while($check -eq $false)
+                $Time++
+                if($Time -gt 29){$check = $true}
+            }Until($check -eq $true)
         }
     }
         

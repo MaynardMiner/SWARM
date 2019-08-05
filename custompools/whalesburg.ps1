@@ -10,9 +10,7 @@
 ## to nicehash, but it seems to cause weird bugs in miners.
 
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
-$Meets_Threshold = $True
 $Whalesburg_Request = [PSCustomObject]@{} 
-if($(arg).xnsub -eq "Yes"){$X = "#xnsub"} 
  
 if ($(arg).PoolName -eq $Name) {
     try {$Whalesburg_Request = Invoke-RestMethod "https://payouts.whalesburg.com/profitabilities/share_price" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop} 
@@ -35,6 +33,7 @@ if ($(arg).PoolName -eq $Name) {
         $Prorate = 2
         ## btc/mhs/day
         $Estimate = ((([Double]$Whalesburg_Request.mh_per_second_price * 86400))) * $ETHExchangeRate
+        $Previous = $Estimate
 
         $Stat = Global:Set-Stat -Name "$($Name)_$($Whalesburg_Algorithm)_profit" -Value ([Double]$Estimate * (1 - ($Prorate / 100)))
 
@@ -52,7 +51,7 @@ if ($(arg).PoolName -eq $Name) {
             CPUser        = $(arg).ETH
             Worker        = "$($(arg).Worker)"
             Location      = $(arg).Location
-            Meets_Threshold = $Meets_Threshold
+            Previous      = $Previous
         }
     }
 }

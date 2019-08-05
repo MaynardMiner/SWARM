@@ -119,7 +119,7 @@ function Global:Get-CoinMiners {
         $(vars).Coins = $true
         log "Checking Coin Miners. . . . ." -ForegroundColor Yellow
         ##Load Only Needed Coin Miners
-        Get-Miners | % { $(vars).Miners.Add($_) | Out-Null }
+        Global:Get-Miners | % { $(vars).Miners.Add($_) | Out-Null }
         remove CoinPools
         $(vars).QuickTimer.Stop()
         log "Coin Miners Loading Time: $([math]::Round($(vars).QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green    
