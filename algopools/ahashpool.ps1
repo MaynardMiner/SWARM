@@ -49,7 +49,7 @@ if ($Name -in $(arg).PoolName) {
         if (-not $(vars).Pool_Hashrates.$($_.Name).$Name) { $(vars).Pool_Hashrates.$($_.Name).Add("$Name", @{HashRate = "$($Stat.HashRate)"; Percent = "" })}
         
         $Level = $Stat.$($(arg).Stat_Algo)
-        if ($(arg).mode -eq "easy") {
+        if ($(arg).Historical_Bias -gt 0) {
             $SmallestValue = 1E-20 
             $Level = [Math]::Max($Level + ($Level * $Stat.Deviation), $SmallestValue)
         }

@@ -48,6 +48,7 @@
     "GPUDevices3": [
         ""
     ],
+    "Historical_Bias": 0,
     "Hive_Hash": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     "HiveOS": "No",
     "Interval": 300,

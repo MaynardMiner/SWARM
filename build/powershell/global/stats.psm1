@@ -17,10 +17,12 @@ function Global:Start-Shuffle($X, $Y) {
     $X = [Double]$X * 1000
     $Z = [Double]$Y - $X
     $X = [math]::Round( ($Z / $X) , 4)
-    if($X -gt 0.30){$X = 0.30}
-    if($X -lt -0.30){
+    $historical_P = ($(arg).historical_bias / 100)
+    $historical_N = ($(arg).historical_bias / 100) * -1
+    if( $X -gt $historical_P ){ $X = $historical_P }
+    if($X -lt $historical_N ){
         if($X -le -1){ $X = -1 }
-        else{ $X = -0.30 }
+        else{ $X = $historical_N }
     }
     return $X
 }
