@@ -62,9 +62,9 @@
     "NVIDIA2": ".\\bin\\cc-mtp-2\\ccminer",
     "NVIDIA3": ".\\bin\\cc-mtp-3\\ccminer",
     "minername": "ccminer",
-    "version": "1.1.26",
+    "version": "1.2.0",
     "optional": "Yes",
-    "uri": "https://github.com/zcoinofficial/ccminer/releases/download/1.1.26/ccminer-linux-cuda101"
+    "uri": "https://github.com/zcoinofficial/ccminer/releases/download/1.2.0/ccminer_linux_cuda101"
   },
   "dstm": {
     "name": "dstm",

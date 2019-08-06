@@ -29,9 +29,9 @@
         "NVIDIA2": ".\\bin\\cc-mtp-2\\ccminer.exe",
         "NVIDIA3": ".\\bin\\cc-mtp-3\\ccminer.exe",
         "minername": "ccminer.exe",
-        "version": "1.1.26",
+        "version": "1.2.0",
         "optional": "Yes",
-        "uri": "https://github.com/zcoinofficial/ccminer/releases/download/1.1.26/ccminer.exe"
+        "uri": "https://github.com/zcoinofficial/ccminer/releases/download/1.2.0/ccminer.exe"
     },
     "cc-verus": {
         "name": "cc-verus",
