@@ -238,9 +238,9 @@
         "NVIDIA2": ".\\bin\\tt-miner-2\\TT-Miner.exe",
         "NVIDIA3": ".\\bin\\tt-miner-3\\TT-Miner.exe",
         "minername": "TT-Miner.exe",
-        "version": "3.0.0-beta7",
+        "version": "3.0.0",
         "optional": "No",
-        "uri": "https://tradeproject.de/download/Miner/TT-Miner.zip"
+        "uri": "https://TradeProject.de/download/Miner/TT-Miner.tar.xz"
     },
     "xmrig-nv": {
         "name": "xmrig-nv",
