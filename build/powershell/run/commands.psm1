@@ -35,31 +35,6 @@ function Global:Get-StatusLite {
     $screen
 }
 
-function global:Get-EasyStats {
-    if ($(arg).Mode -eq "Easy") {
-        $Easy_Stats = @()
-        $Easy_Stats += ""
-        $Easy_Stats += ""
-        $Easy_Stats += "EASY MODE IS ACTIVATED"
-        $Easy_Stats += "So I hear you like things easy, so this is what we did:"
-
-        if ($(vars).Cut_Items.AlgoPools) {
-            $(vars).Cut_Items.AlgoPools | ForEach-Object {
-                $Easy_Stats += "$($_.Algo) on $($_.Pool) return was showing no returns in 24 hours: So we removed it."
-            }
-        }
-
-        if ($(vars).Cut_Items.CoinPools) {
-            $(vars).Cut_Items.CoinPools | ForEach-Object {
-                $Easy_Stats += "Some Coins on $($_.Algo) were showing a return of over 30% of realistic return: So we removed them."
-            }
-        }
-
-        $Easy_Stats
-
-    }
-}
-
 function Global:Get-PriceMessage {
     $(vars).BestActiveMIners | % {
         if ($_.Profit_Day -ne "bench") { $ScreenProfit = "$(($_.Profit_Day * $(vars).Rates.$($(arg).Currency)).ToString("N2")) $($(arg).Currency)/Day" } else { $ScreenProfit = "Benchmarking" }
@@ -107,8 +82,6 @@ function Global:Get-Commands {
     $StatusLite | Out-File ".\build\txt\minerstatslite.txt" -Append
     $BanMessage | Out-File ".\build\txt\minerstatslite.txt" -Append
     $MiningStatus | Out-File ".\build\txt\minerstatslite.txt" -Append
-    $EasyMode = Global:Get-EasyStats
-    $EasyMode | Out-File ".\build\txt\minerstats.txt" -Append
 }
 
 function Global:Get-Logo {
