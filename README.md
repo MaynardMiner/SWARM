@@ -4,8 +4,6 @@
 
 **IMPORTANT** : SWARM attempts to provide miners that work for as many cards as possible. Some miners may work for your cards, some may not. All miners are set with default settings provided from developers themselves. There is a ``-Bans`` argument that lets you remotely remove miners from the list. SWARM should support, if not all late model cards.
 
-**NOTE**: RTX fan control does not currently work in Windows, but all other oc does. I am working on my own command line program to do this.
-
 ## SWARM wiki:
 
 https://github.com/MaynardMiner/SWARM/wiki
