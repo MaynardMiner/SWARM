@@ -154,6 +154,10 @@ SWARM uses the following programs to help with oc tuning:
 -OhGodAnETHlargementPill-r2
 -techPowerUp GPU-Z
 
+nvfans (self-created app in SWARM) uses the following wrapper for nvidia control in Windows:
+
+https://github.com/falahati/NvAPIWrapper
+
 All licenses and developer information are included. I am not responsible for
 these softwares, nor do I maintain them. They are downloaded from their
 known distrubution sources and/or are included in mining OS. USE AT YOUR OWN DISCRETION.
