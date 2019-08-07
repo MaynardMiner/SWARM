@@ -100,7 +100,7 @@ function Global:Start-OC($Miner) {
     $Card = $Card -split ","
     
     #OC For Devices
-    $NVIDIAOCArgs = @(); $NVIDIAPowerArgs = @(); $NScript = @(); $AScript = @()
+    $NVIDIAOCArgs = @(); $NVIDIAPowerArgs = @(); $NScript = @(); $AScript = @(); $NFanArgs = @();
     if ($OC_Algo.Memory -or $OC_Algo.Core -or $OC_Algo.Fans) { $SettingsArgs = $true }
     elseif ($Default.Memory -or $Default.Core -or $Default.Fans) { $SettingsArgs = $true }
     
@@ -186,7 +186,7 @@ function Global:Start-OC($Miner) {
                     } else { $Fans = $Fan | Select -First 1 }
                     $GPU = $OCDevices[$i]
                     if ($(arg).Platform -eq "linux") { $NSettings += " -a [gpu:$GPU]/GPUFanControlState=1 -a [fan:$($(vars).GCount.NVIDIA.$GPU)]/GPUTargetFanSpeed=$($Fans)" }
-                    if ($(arg).Platform -eq "windows") { $NVIDIAOCArgs += "-setFanSpeed:$GPU,$($Fans) " }
+                    if ($(arg).Platform -eq "windows") { $NFanArgs += "--index $GPU --speed $($Fans)" }
                 }
                 $NScreenFan += "$($Miner.Type) Fan is $Fan "
             }
@@ -479,6 +479,7 @@ if ($DoNVIDIAOC -eq $true -and $(arg).Platform -eq "windows") {
     $script = @()
     $script += "`$host.ui.RawUI.WindowTitle = `'OC-Start`';"
     $script += "Invoke-Expression `'.\inspector\nvidiaInspector.exe $NVIDIAOCArgs`'"
+    if($NFanArgs) { $NFansArgs | ForEach-Object { $script += "Invoke-Expression `'.\nvfans\nvfans.exe $($_)`'"} }
     Set-Location ".\build\apps"
     $script | Out-File "NVIDIA-oc-start.ps1"
     $Proc = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle hidden -command "".\NVIDIA-oc-start.ps1""" -PassThru -WindowStyle Minimized
