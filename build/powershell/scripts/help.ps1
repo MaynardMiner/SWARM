@@ -94,8 +94,8 @@ Please choose an advanced setting you wish to modify:
 16 I wish to turn off/on WattOMeter for power/day calculations. (-WattOMeter)
 17 I wish to specify my kilowatt/hour cost of electricity. (-KWH)
 18 I wish to change the maximum periods of estimates SWARM will save (-Max_Periods)
-19 I wish to stat all coins all the time, not just when it is most profitable (-Stat_All)
-20 I wish to define a custom period rather than time frame from statistics (-Custom_Periods)
+19 I wish to define a custom period rather than time frame from statistics (-Custom_Periods)
+20 I wish to place a bias on current profit estimate calculations using historical data (-historical_bias)
 
 [Admin]
 21 There is an algorithm/miner/pool giving me problems. I wish to disable it (-Bans)
@@ -129,6 +129,15 @@ Please choose an advanced setting you wish to modify:
 43 SWARM is not detecting the correct OpenCL platform for AMD (-CLPlatform)
 44 I wish to turn on updates (-Update)
 45 I wish to increase the maximum number of issues before SWARM restarts computer (-TypeBanCount)
+
+[Self-Profit]
+46 I am controlling SWARM for someone else, and wish to add an admin fee. (-Admin_Fee)
+47 I would like to specify the wallet for my admin fee. (-Admin)
+48 I would like to specify the coin symbol for my admin wallet. (-Admin_Pass)
+
+I wish to use an optional miner from the optional miner folder (-Optional)
+      * Note you can just move the file into nvida or amd folder.
+        This help option not available yet.
 
 Answer"
         $Check = Global:Confirm-Answer $ans @(1 .. 44)
@@ -801,6 +810,11 @@ Answer"
                     elseif ($(vars).input -in 41 .. 44) {
                         Add-Module "$hd\maintenance.psm1"
                         Global:Get-Maintenance
+                        Global:Remove-Modules
+                    }
+                    elseif ($(vars).input -in 46 .. 48) {
+                        Add-Module "$hd\profit.psm1"
+                        Global:Get-profit
                         Global:Remove-Modules
                     }
                 }

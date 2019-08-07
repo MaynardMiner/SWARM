@@ -342,7 +342,7 @@ Note: -Stat_Algo Custom and -Stat_Coin Custom should be specified.
 Please enter a custom moving average value"
         do{
             clear-host
-            $Confirm = Read-Host "You have entered custom moving average of $ans periods
+            $Confirm = Read-Host -Prompt "You have entered custom moving average of $ans periods
             
 Is this correct?
 
@@ -359,6 +359,54 @@ Answer"
      }while($Confirm -ne "1")
      if ( $(vars).config.Containskey("Custom_Periods") ) { $(vars).config.Custom_Periods = $ans }else { $(vars).config.Add("Custom_Periods", $ans) }
 }
+
+function Global:Get-Historical_Bias {
+    Write-Host "Doing Historical_Bias"
+    Start-Sleep -S 3
+    do {
+        Clear-Host
+
+        $ans = Read-Host -Prompt "-Historical_Bias [0-100]          
+        
+Expressed as Percentage. 
+Will only affect Auto_Algo.
+Will not affect niechash.
+Historical_Bias bias does two things:
+ -Reduces algorithms that have no 24h returns to 100%
+ -Compares the deviation between 24hr estimates and 24hr
+  returns into a %, which then creates a EMA with each
+  value. (for smoothing). SWARM then applies a bonus/penality
+  to the algorithm based on how well it has performed
+  over time historically. SWARM will only apply a % penality
+  or bonus of x%, where x is -Historical_Bias figure.
+  Deviations will be listed in stat files.
+  If you use, reccommended starting values are somewhere
+  around 25-35% historical bias.
+
+Please enter a number 0-100 on the maximum % bias penalty you wish to
+place on algorithms that do not return well over 24 hours.
+
+Answer"
+do{
+    clear-host
+    $Confirm = Read-Host -Prompt "You have entered a % bias of $ans
+    
+Is this correct?
+
+1 Yes
+2 No
+
+Answer"
+    $Check = Global:Confirm-Answer $Confirm @("1","2")
+}while($Check -eq 1)
+if($Confirm -ne "1"){
+    Write-Host "Okay, lets try again"
+    Start-Sleep -S 3
+}
+}while($Confirm -ne "1")
+if ( $(vars).config.Containskey("Historical_Bias") ) { $(vars).config.Historical_Bias = $ans }else { $(vars).config.Add("Historical_Bias", $ans) }
+}
+
 function Global:Get-Statistics { 
     switch ($(vars).input) {
         "13" { Global:Get-Stat_Algo }
@@ -369,6 +417,7 @@ function Global:Get-Statistics {
         "18" { Global:Get-Max_Periods }
         "19" { Global:Get-Stat_All }
         "20" { Global:Get-Custom_Periods }
+        "20" { Global:Get-Historical_Bias }
     }
 
     do {

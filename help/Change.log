@@ -653,7 +653,9 @@ to roll them back.
   main screen while "waiting for miners to start"
   message appears.
 
-# SWARM 2.5.6 (beta)
+###########################################
+###########################################
+# SWARM 2.5.7
 
 ## Beta changes
 * Includes all new features from beta.
@@ -671,3 +673,30 @@ to roll them back.
   typo in pool files.
 * Removed easy-mode message (not
   used feature).
+###########################################
+###########################################
+
+# SWARM 2.5.8
+
+## Note: Cuckaroo29 will likely timeout.
+This is due to miners switching to 29d fork.
+You can prevent needlessy benchmarking by use
+-Bans argument, or you can downgrade miner to
+an older version using ``version update`` command.
+I will work on splitting miners for each algo.
+
+## NEW FEATURES!
+* Fan control now works for RTX cards in
+  Windows- Program created by me. (beta).
+  * Will control dual fan-control GPUS.
+
+## Updates
+* TeamRedMiner updated
+* SWARM-MINER updated
+  * New windows version
+  * improved performance on bmw512
+* TT-Miner updated
+  * Did not do linux yet.
+    Read api specs may have changed.
+    Need to test further.
+* Swarm help programs/commands updated.
