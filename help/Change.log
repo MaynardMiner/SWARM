@@ -652,3 +652,22 @@ to roll them back.
 * Prevent agent in Windows from locking up if you close
   main screen while "waiting for miners to start"
   message appears.
+
+# SWARM 2.5.6 (beta)
+
+## Beta changes
+* Includes all new features from beta.
+* See release prior.
+
+## Updates
+* wilrig updated
+* tt-miner updated
+* cc-mtp updated
+* SWARM-MINER updated
+  * improved hasrate on bmw512
+
+## Fixes:
+* Removed -Volume errors caused by
+  typo in pool files.
+* Removed easy-mode message (not
+  used feature).
