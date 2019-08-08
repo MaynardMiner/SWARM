@@ -271,15 +271,6 @@
       "comma seperated"
     ]
   },
-  "dedal": {
-    "alt_names": [
-      "dedal"
-    ],
-    "exclusions": [
-      "add pool or miner here",
-      "comma seperated"
-    ]
-  },
   "equihash_144/5": {
     "alt_names": [
       "equihash_144/5",
