@@ -62,16 +62,6 @@ $(vars).NVIDIATypes | ForEach-Object {
                                 "equihash_144/5" { $Pass = ""; $Naming = "zhash"; $AddArgs = "" }
                             }
                         }
-                        "nicehash_v1" {
-                            switch ($Sel) {
-                                "ethash" { $Pass = ""; $Naming = "ethstratum"; $AddArgs = "" }
-                                "cuckaroo29" { $Pass = ""; $Naming = "cuckaroo29"; $AddArgs = "-pers auto " }
-                                "cuckaroo29d" { $Pass = ""; $Naming = "cuckaroo29d"; $AddArgs = "-pers auto " }
-                                "cuckatoo31" { $Pass = ""; $Naming = "cuckatoo31"; $AddArgs = "-pers auto " }
-                                "equihash_150/5" { $Pass = ""; $Naming = "beam"; $AddArgs = "" }
-                                "equihash_144/5" { $Pass = ""; $Naming = "zhash"; $AddArgs = "" }
-                            }
-                        }
                         "whalesburg" {
                             switch ($Sel) {
                                 "ethash" { $Pass = ""; $Naming = "ethproxy+ssl"; $AddArgs = "" }

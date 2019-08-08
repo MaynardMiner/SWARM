@@ -7,7 +7,7 @@ $(vars).ASICTypes | ForEach-Object {
     $MinerName = "cgminer"
     $Path = "no path"
 
-    $User = "User1"; $Name = "asicminer-$Num"
+    $User = "User1"; $Name = "$($(vars).ASICS.$ConfigType.NickName)"
 
     $Devices = $null
 

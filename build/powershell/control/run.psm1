@@ -243,11 +243,15 @@ function Global:Start-NewMiners {
             else {
                 $Miner.Status = "Running"
                 if ($Miner.Type -notlike "*ASIC*") { log "Process Id is $($Miner.XProcess.ID)" }
-                log "$($Miner.MinerName) Is Running!" -ForegroundColor Green
+                if($Miner.Type -notlike "*ASIC*"){ log "$($Miner.MinerName) Is Running!" -ForegroundColor Green}
+                else{log "$($Miner.Name) has successfully switched pools!" -ForeGroundColor Green}
                 $(vars).current_procs += $Miner.Xprocess.ID
             }
         }
     }
+
+    "done" | Set-Content ".\build\pid\start.txt"
+
     if ($Reason -eq "Restart" -and $(vars).Restart -eq $true) {
         log "
 

@@ -108,7 +108,7 @@ function Global:Update-Logging {
         Remove-Item ".\logs\*crash_report*" -Force -Recurse -ErrorAction SilentlyContinue
         $global:log_params.lognum = 0
     }
-    if((Get-ChildItem ".\logs" | Where BaseName -match "crash_report").count -gt 12){
+    if ((Get-ChildItem ".\logs" | Where BaseName -match "crash_report").count -gt 12) {
         Remove-Item ".\logs\*crash_report*" -Force -Recurse -ErrorAction SilentlyContinue
     }
     if ($(vars).logtimer.Elapsed.TotalSeconds -ge 3600) {
@@ -128,7 +128,7 @@ function Global:Update-Logging {
 }
 
 function Global:Get-MinerActive {
-    $(vars).ActiveMinerPrograms | Sort-Object -Descending Status,Instance | Select-Object -First (1 + 6 + 6) | Format-Table -Wrap -GroupBy Status (
+    $(vars).ActiveMinerPrograms | Sort-Object -Descending Status, Instance | Select-Object -First (1 + 6 + 6) | Format-Table -Wrap -GroupBy Status (
         @{Label = "Name"; Expression = { "$($_.Name)" } },
         @{Label = "#"; Expression = { "$($_.Instance)" } },
         @{Label = "Active"; Expression = { "{0:hh} Hours {0:mm} Minutes" -f $(if ($null -eq $_.XProcess) { $_.Active }else { if ($_.XProcess.HasExited) { ($_.Active) }else { ($_.Active + ((Get-Date) - $_.XProcess.StartTime)) } }) }; Align = 'center' },

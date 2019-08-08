@@ -18,6 +18,7 @@ function Global:Start-NVIDIAOC($NewOC) {
     $HiveNVOC = $NewOC | ConvertFrom-StringData
     $ocmessage = @()
     $OCCount = Get-Content ".\build\txt\oclist.txt" | ConvertFrom-JSon
+    $FansArgs = @()
 
     $HiveNVOC.Keys | % {
         $key = $_
@@ -46,13 +47,13 @@ function Global:Start-NVIDIAOC($NewOC) {
                     $NVOCFAN = $NVOCFan -split " "
                     if ($NVOCFAN.Count -eq 1) {
                         for ($i = 0; $i -lt $OCCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {
-                            $OCArgs += "-setFanSpeed:$($OCCount.NVIDIA.$i),$($NVOCFan) "
+                            $FansArgs += "--index $i --speed $($NVOCFan)"
                             $ocmessage += "Setting GPU $($OCCount.NVIDIA.$i) Fan Speed To $($NVOCFan)`%"
                         }
                     }
                     else {
                         for ($i = 0; $i -lt $NVOCFAN.Count; $i++) {
-                            $OCArgs += "-setFanSpeed:$i,$($NVOCFAN[$i]) "
+                            $FansArgs += "--index $i --speed $($NVOCFan[$i])"
                             $ocmessage += "Setting GPU $i Fan Speed To $($NVOCFan[$i])`%"
                         }
                     }
@@ -116,10 +117,12 @@ function Global:Start-NVIDIAOC($NewOC) {
     }
 
     $script += "Invoke-Expression `'.\inspector\nvidiaInspector.exe $OCArgs`'"
+    if($FansArgs) { $FansArgs | ForEach-Object { $script += "Invoke-Expression `'.\nvfans\nvfans.exe $($_)`'"} }
     Set-Location ".\build\apps"
     $script | Out-File "nvoc-start.ps1"
-    $Proc = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle hidden -command "".\nvoc-start.ps1""" -PassThru -WindowStyle Minimized
+    $Proc = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle hidden -command "".\nvoc-start.ps1""; " -PassThru -WindowStyle Minimized
     $Proc | Wait-Process
+    if($FansArgs) {$Process = ".\nvfans "}
     Set-Location $($(vars).dir)
     Start-Sleep -s .5
     $ocmessage | Set-Content ".\build\txt\ocnvidia.txt"

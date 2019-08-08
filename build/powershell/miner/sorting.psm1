@@ -19,7 +19,9 @@ function Global:Expand-WebRequest {
 
     ##First Determine the file type:
     $FileType = $Zip
-    if ($Zip.Contains(".")) {
+    if ($Zip.Contains(".") -eq $false -and $Zip.Contains("=") -eq $false) { ## "=" is for miniz download
+        $Extraction = "binary"
+    } else {
         $FileType = $FileType -split "\."
         if ("7z" -in $FileType) { $Extraction = "zip" }
         elseif ("zip" -in $FileType) { $Extraction = "zip" }
@@ -40,7 +42,7 @@ function Global:Expand-WebRequest {
             }
             log "WARNING: File download type is unknown attepting to guess file type as $Zip" -ForeGroundColor Yellow
         }
-    } else {$Extraction = "binary"}
+    }
 
     if ($Extraction -eq "tar") {
         if ("gz" -in $FileType) { $Tar = "gz" }
@@ -101,7 +103,6 @@ function Global:Expand-WebRequest {
             New-Item -Path ".\x64\$temp" -ItemType "Directory" -Force | Out-Null; Start-Sleep -S 1
             if ($IsWindows) { $Proc = Start-Process ".\build\apps\7z\7z.exe" "x `"$($(vars).dir)\$X64_zip`" -o`"$($(vars).dir)\x64\$temp`" -y" -PassThru -WindowStyle Minimized -verb Runas; $Proc | Wait-Process}
             else { $Proc = Start-Process "unzip" -ArgumentList "$($(vars).dir)/$X64_zip -d $($(vars).dir)/x64/$temp" -PassThru; $Proc | Wait-Process }
-
             $Stuff = Get-ChildItem ".\x64\$Temp"
             if ($Stuff) { log "Extraction Succeeded!" -ForegroundColor Green }
             else { log "Extraction Failed!" -ForegroundColor darkred; break }

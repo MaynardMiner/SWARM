@@ -1,10 +1,8 @@
 # SWARM: Profit Switching AI For HiveOS, SMOS, Linux, & Windows
 
-**Developer Notice** : SWARM does perform occassional disk read/writes, more than a typical mining OS. If you are using a usb stick and have issues- It is likely the quality of the USB stick/condition. SWARM will also degrade USB flash drives faster- It cannot be helped. It creates/stores a small database for profit tracking. Also - The first issue that begins to happen when degradation happens and/or rig is running out of resoures- You begin to see "ConvertTo-Json" errors.
+**Developer Notice** : SWARM does perform occassional disk read/writes, more than a typical mining OS. If you are using a usb stick and have issues- It is likely the quality of the USB stick/condition.
 
 **IMPORTANT** : SWARM attempts to provide miners that work for as many cards as possible. Some miners may work for your cards, some may not. All miners are set with default settings provided from developers themselves. There is a ``-Bans`` argument that lets you remotely remove miners from the list. SWARM should support, if not all late model cards.
-
-**NOTE**: RTX fan control does not currently work in Windows, but all other oc does. I am working on my own command line program to do this.
 
 ## SWARM wiki:
 
@@ -155,6 +153,10 @@ SWARM uses the following programs to help with oc tuning:
 -overdriventool
 -OhGodAnETHlargementPill-r2
 -techPowerUp GPU-Z
+
+nvfans (self-created app in SWARM) uses the following wrapper for nvidia control in Windows:
+
+https://github.com/falahati/NvAPIWrapper
 
 All licenses and developer information are included. I am not responsible for
 these softwares, nor do I maintain them. They are downloaded from their

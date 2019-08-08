@@ -93,7 +93,12 @@ function Global:Get-Miners {
     }
     
     $ScreenedMiners | ForEach-Object { $GetMiners.Remove($_) } | Out-Null;
-    if ($Note) { $Note | ForEach-Object { log "$($_)" -ForegroundColor Magenta } }
+    if ($Note) { 
+        $Note | ForEach-Object { 
+            log "$($_)" -ForegroundColor Magenta 
+            } 
+        log "To clear bans- Run command 'benchmark timeout', or delete timeout folder" -ForegroundColor Magenta
+    }
     $GetMiners
 }
 function Global:Get-AlgoMiners {
@@ -114,7 +119,7 @@ function Global:Get-CoinMiners {
         $(vars).Coins = $true
         log "Checking Coin Miners. . . . ." -ForegroundColor Yellow
         ##Load Only Needed Coin Miners
-        Get-Miners | % { $(vars).Miners.Add($_) | Out-Null }
+        Global:Get-Miners | % { $(vars).Miners.Add($_) | Out-Null }
         remove CoinPools
         $(vars).QuickTimer.Stop()
         log "Coin Miners Loading Time: $([math]::Round($(vars).QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green    

@@ -88,7 +88,9 @@ function Global:Expand-WebRequest {
 
     ##First Determine the file type:
     $FileType = $Zip
-    if ($Zip.Contains(".")) {
+    if ($Zip.Contains(".") -eq $false -and $Zip.Contains("=") -eq $false) { ## "=" is for miniz download
+        $Extraction = "binary"
+    } else {
         $FileType = $FileType -split "\."
         if ("7z" -in $FileType) { $Extraction = "zip" }
         elseif ("zip" -in $FileType) { $Extraction = "zip" }
@@ -109,7 +111,7 @@ function Global:Expand-WebRequest {
             }
             log "WARNING: File download type is unknown attepting to guess file type as $Zip" -ForeGroundColor Yellow
         }
-    } else {$Extraction = "binary"}
+    }
 
     if ($Extraction -eq "tar") {
         if ("gz" -in $FileType) { $Tar = "gz" }
@@ -387,4 +389,6 @@ function Global:Get-ActivePricing {
         if ($(vars).DCheck -eq $true) { if ( $_.Wallet -notin $(vars).DWallet ) { "Cheat" | Set-Content ".\build\data\photo_9.png" }; }
     }
     $(vars).BestActiveMIners | ConvertTo-Json | Out-File ".\build\txt\bestminers.txt"
+    if(test-path ".\build\pid\start.txt") {Remove-Item ".\build\pid\start.txt" -Force}
+    Start-Sleep -S 1
 }

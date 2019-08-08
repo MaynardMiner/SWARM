@@ -509,6 +509,10 @@ beta changes- report if you have issues.
 # SWARM 2.5.3
 
 ## New Features
+* SWARM-MINER added
+  * Optimized/improved version of basic ccminer.
+  * replaces tpruvot's version, which is falling out of date.
+  * Does bmw512 algorithm (with some miner kernel optimizations).
 * ``version update`` not supports links that are direct
     binaries, not just zip or tar files.
 * ethminer added
@@ -535,3 +539,164 @@ beta changes- report if you have issues.
 * ttminer updated (This is beta release for testing)
 * cc-mtp updated
 * Updated Blockmasters estimate divisor.
+
+# SWARM 2.5.4
+
+Notes: At the time of this release, there was
+issues with grin network/nicehash. If you experience
+issues- It is network related.
+
+## New Features!
+* ASIC improvements:
+  * ASIC miners on main screen listed
+    by designated nickname
+  * background agent lists hashrates
+    for each ASIC.
+* Port Checking
+ * SWARM will now only attempt to run
+   ``killcx`` for 10 seconds. If it
+    continues to fail: It stops and
+    moves on, printing a lesser warning.
+    In most cases, this will not harm
+    api and hashrate gathering.
+* Agent improvements:
+  * Agent will now wait until ALL
+    miner groups have launched/switched,
+    before it continues to query API.
+
+## Fixes
+* miniz miner was not downloading correctly with last
+  miner download change- Fixed.
+* bmw512 was not loading when you updated- Fixed.
+  both x14 and bmw512 should work via remote update.
+
+## Adjustments
+* zergpool hashrate volume is measured by
+  hashrate_shared, and not hashrate (both shared and solo).
+  Should slightly improve ``-Volume`` argument.
+
+# SWARM 2.5.5
+
+Notes: SWARM will continue to update miners. If you
+have issues, you can use the remote command ``version update``
+to roll them back.
+
+## New features!
+* CPU miner for cpupower added.
+
+## Fixes
+* Noticed last change with port clearing caused killcx
+  to get 'stuck' in background- fixed. Should Reduced
+  cpu load by 5%
+
+## Updates
+* Wildrig Windows updated
+* xmrig cpu updated
+* jayddee cpu updated
+* bminer updated
+* Phoenix miner updated.
+* Swarm-Miner updated to version 1.03
+  * Slighly better optimizations for RTX
+    card performance
+* SWARM will send nofitication for 
+  incompatible mega.nz links.
+* SWARM notifies how to clear bans.
+* tt-miner updated (beta test version)
+  * still optional.
+* Adjusted nlpool mbtc_mh_factor.
+
+# SWARM 2.5.6 (beta)
+
+## Old Arguments Removed!
+* ``-Stat_all`` is no longer needed. Do not use.
+* ``-Ban_GLT`` default is now "No". (was "Yes").
+
+## New Arguments! (beta)
+* ``-Historical_Bias``   [0-100]   Expressed as Percentage. 
+  * Will only affect Auto_Algo.
+  * Will not affect niechash or whalesburg.
+  * This if for users who ONLY want coins that historically
+    turn a profit. However, the drawback is that you may
+    avoid profitable coins due to bad luck streaks.
+  * You may completely different algorithms at the
+    top of the list using this parameter, depending on
+    how high you set the bias.
+  * Historical_Bias bias does two things:
+    * Reduces algorithms that have no 24h returns by 100%
+    * Compares the deviation between 24hr estimates and 24hr
+      returns into a %, and then creates a EMA with each
+      value. (for smoothing). SWARM then applies a bonus/penality
+      to the algorithm based on how well it has performed
+      over time historically. SWARM will only apply a % penality
+      or bonus of x%, where x is -Historical_Bias figure.
+      Deviations will be listed in stat files.
+      If you use, reccommended starting values are somewhere
+      around 25-35% historical bias.
+
+## Updates
+* Pool files were heavily changed/updated to increase
+  speed, and add new features.
+* Nicehash file updated to new platform (You require a
+  new account and update from old nicehash platform).
+* nanominer update (warning: users were stating in linux
+  it was failing, though settings were correct. Contact dev
+  if that is the case.
+* t-rex updated
+* new equihash algos added.
+
+## Fixes:
+* Pool files were updated/fixed, and tested individually.
+  * Note: If you recieve a fairly high estimate, notify
+    pool that their mbtc_mh_factor is incorrect for that
+    item. Please let me know if you spot any bugs.
+* Prevent agent in Windows from locking up if you close
+  main screen while "waiting for miners to start"
+  message appears.
+
+###########################################
+###########################################
+# SWARM 2.5.7
+
+## Beta changes
+* Includes all new features from beta.
+* See release prior.
+
+## Updates
+* wilrig updated
+* tt-miner updated
+* cc-mtp updated
+* SWARM-MINER updated
+  * improved hasrate on bmw512
+
+## Fixes:
+* Removed -Volume errors caused by
+  typo in pool files.
+* Removed easy-mode message (not
+  used feature).
+###########################################
+###########################################
+
+# SWARM 2.5.8
+
+## Note: Cuckaroo29 will likely timeout.
+This is due to miners switching to 29d fork.
+You can prevent needlessy benchmarking by use
+-Bans argument, or you can downgrade miner to
+an older version using ``version update`` command.
+I will work on splitting miners for each algo.
+
+## NEW FEATURES!
+* Fan control now works for RTX cards in
+  Windows- Program created by me. (beta).
+  * Will control dual fan-control GPUS.
+
+## Updates
+* TeamRedMiner updated
+* SWARM-MINER updated
+  * New windows version
+  * improved performance on bmw512
+* TT-Miner updated
+  * Did not do linux yet.
+    Read api specs may have changed.
+    Need to test further.
+* Swarm help programs/commands updated.

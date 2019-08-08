@@ -181,7 +181,11 @@ While ($True) {
             if ($global:MinerType -like "*NVIDIA*") { $global:TypeS = "NVIDIA" }
             elseif ($global:MinerType -like "*AMD*") { $global:TypeS = "AMD" }
             elseif ($global:MinerType -like "*CPU*") { $global:TypeS = "CPU" }
-            elseif ($global:MinerType -like "*ASIC*") { $global:TypeS = "ASIC" }
+            elseif ($global:MinerType -like "*ASIC*") { 
+                $global:TypeS = "ASIC" 
+                $global:Anumber = $global:MinerType -replace "ASIC",""
+                $global:Anumber = $global:ANumber - 1
+            }
 
             ##Build Algo Table
             switch ($global:MinerType) {
@@ -532,7 +536,8 @@ While ($True) {
         }
     }
     if ($global:DoASIC) {
-        $global:ASICHashTable += 0;
+        $numbers = $($global:CurrentMiners | Where-Object Type -like "*ASIC*").Count
+        for($global:i = 0; $global:i -lt $numbers; $global:i++) { $global:ASICHashTable += 0; }
     }
 
     if ($global:DoNVIDIA) {
@@ -550,6 +555,19 @@ While ($True) {
             $global:GPUTempTable[$($(vars).GCount.AMD.$global:i)] = "$($global:GPUTemps.$($(vars).GCount.AMD.$global:i))"
             $global:GPUPowerTable[$($(vars).GCount.AMD.$global:i)] = "$($global:GPUPower.$($(vars).GCount.AMD.$global:i))"
         }
+    }
+
+    if ($global:DoCPU) {
+        for ($global:i = 0; $global:i -lt $(vars).GCount.CPU.PSObject.Properties.Value.Count; $global:i++) {
+            $global:CPUHashTable[$($(vars).GCount.CPU.$global:i)] = "{0:f4}" -f $($global:CPUHashrates.$($(vars).GCount.CPU.$global:i))
+        }
+    }
+
+    if ($global:DoASIC) {
+        for($global:i = 0; $global:i -lt $numbers; $global:i++) { 
+            $global:ASICHashTable[$global:i] = "{0:f4}" -f $($global:ASICHashrates.$($global:i)) 
+        } 
+        Remove-Variable numbers -ErrorAction Ignore
     }
 
     ##Select Only For Each Device Group
@@ -582,14 +600,6 @@ While ($True) {
     }
 
     Remove-Variable DeviceTable -ErrorAction Ignore
-
-    if ($global:DoCPU) {
-        for ($global:i = 0; $global:i -lt $(vars).GCount.CPU.PSObject.Properties.Value.Count; $global:i++) {
-            $global:CPUHashTable[$($(vars).GCount.CPU.$global:i)] = "{0:f4}" -f $($global:CPUHashrates.$($(vars).GCount.CPU.$global:i))
-        }
-    }
-
-    if ($global:DoASIC) { $global:ASICHashTable[0] = "{0:f4}" -f $($global:ASICHashrates."0") }
 
     if ($global:DoAMD -or $global:DoNVIDIA) { $global:GPUKHS = [Math]::Round($global:GPUKHS, 4) }
     if ($global:DoCPU) { $global:CPUKHS = [Math]::Round($global:CPUKHS, 4) }

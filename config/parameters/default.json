@@ -21,7 +21,7 @@
     ],
     "Auto_Algo": "Yes",
     "Auto_Coin": "No",
-    "Ban_GLT": "Yes",
+    "Ban_GLT": "No",
     "Bans": [],
     "Benchmark": 190,
     "CLPlatform": "",
@@ -48,6 +48,7 @@
     "GPUDevices3": [
         ""
     ],
+    "Historical_Bias": 0,
     "Hive_Hash": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     "HiveOS": "No",
     "Interval": 300,
@@ -56,6 +57,7 @@
     "Location": "US",
     "Max_Periods": 288,
     "MinerBanCount": 4,
+    "Mode": "Easy",
     "Nicehash_Fee": "",
     "Nicehash_Wallet1": "",
     "Nicehash_Wallet2": "",
@@ -80,7 +82,6 @@
     "Rigname3": "SWARM",
     "Startup": "Yes",
     "Stat_Algo": "Live",
-    "Stat_All": "No",
     "Stat_Coin": "Live",
     "StatsInterval": 1,
     "SWARM_Hash": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",

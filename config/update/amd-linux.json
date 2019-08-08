@@ -84,7 +84,7 @@
     "AMD2": ".\\bin\\phoenix-amd-2\\PhoenixMiner",
     "AMD3": ".\\bin\\phoenix-amd-3\\PhoenixMiner",
     "minername": "PhoenixMiner",
-    "version": "4.2c",
+    "version": "4.5c",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/phoenix-linux.tar.gz"
   },
@@ -150,9 +150,9 @@
     "AMD2": ".\\bin\\teamredminer-2\\teamredminer",
     "AMD3": ".\\bin\\teamredminer-3\\teamredminer",
     "minername": "teamredminer",
-    "version": "0.5.6",
+    "version": "0.5.7",
     "optional": "No",
-    "uri": "https://github.com/todxx/teamredminer/releases/download/0.5.6/teamredminer-v0.5.6-linux.tgz"
+    "uri": "https://github.com/todxx/teamredminer/releases/download/0.5.7/teamredminer-v0.5.7-linux.tgz"
   },
   "xmr-stak": {
     "name": "xmr-stak",
@@ -161,9 +161,9 @@
     "AMD2": ".\\bin\\xmrstak-2\\xmr-stak",
     "AMD3": ".\\bin\\xmrstak-3\\xmr-stak",
     "minername": "xmr-stak",
-    "version": "2.10.6",
+    "version": "2.10.7",
     "optional": "No",
-    "uri": "https://github.com/fireice-uk/xmr-stak/releases/download/2.10.6/xmr-stak-linux-2.10.6-cpu_opencl-amd.tar.xz"
+    "uri": "https://github.com/fireice-uk/xmr-stak/releases/download/2.10.7/xmr-stak-linux-2.10.7-cpu_opencl-amd.tar.xz"
   },
   "wildrig": {
     "name": "wildrig",
@@ -172,9 +172,9 @@
     "AMD2": ".\\bin\\wildrig-2\\wildrig-multi",
     "AMD3": ".\\bin\\wildrig-3\\wildrig-multi",
     "minername": "wildrig-multi",
-    "version": "0.17.9",
+    "version": "0.19.1",
     "optional": "No",
-    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.17.9/wildrig-multi-linux-0.17.9-beta.tar.gz"
+    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.19.1/wildrig-multi-linux-0.19.1-preview.tar.gz"
   },
   "fancyix": {
     "name": "fancyix",
@@ -227,8 +227,8 @@
     "AMD2": ".\\bin\\nanominer-2\\nanominer",
     "AMD3": ".\\bin\\nanominer-3\\nanominer",
     "minername": "nanominer",
-    "version": "1.5.2",
+    "version": "1.5.3",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/v1.5.2/nanominer-linux-1.5.2.tar.gz"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v1.5.3/nanominer-linux-1.5.3.tar.gz"
   }
 }
