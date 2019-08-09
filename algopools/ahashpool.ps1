@@ -41,10 +41,10 @@ if ($Name -in $(arg).PoolName) {
         $Pool_Port = $_.port
         $Pool_Host = "$($_.Original_Algo).mine.ahashpool.com$X"
         $Divisor = 1000000 * $_.mbtc_mh_factor
-        $Hashrate = $_.hashrate_shared
+        $Hashrate = $_.hashrate
         $previous = [Math]::Max(([Double]$_.actual_last24h * 0.001) / $Divisor * (1 - ($_.fees / 100)), $SmallestValue)
     
-        $Stat = Global:Set-Stat -Name $StatPath -HashRate $HashRate -Value ( $Estimate / $Divisor * (1 - ($_.fees / 100))) -Shuffle $_.deviation 
+        $Stat = Global:Set-Stat -Name $StatPath -HashRate $HashRate -Value ( $Estimate / $Divisor * (1 - ($_.fees / 100))) -Shuffle $_.deviation
         if (-not $(vars).Pool_Hashrates.$($_.Name)) { $(vars).Pool_Hashrates.Add("$($_.Name)", @{ }) }
         if (-not $(vars).Pool_Hashrates.$($_.Name).$Name) { $(vars).Pool_Hashrates.$($_.Name).Add("$Name", @{HashRate = "$($Stat.HashRate)"; Percent = "" })}
         
