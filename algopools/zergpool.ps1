@@ -43,6 +43,7 @@ if ($Name -in $(arg).PoolName) {
         $(vars).divisortable.zergpool.Add($_.Name, $_.mbtc_mh_factor)
         $(vars).FeeTable.zergpool.Add($_.Name, $_.fees)
         $Hashrate = $_.hashrate_shared
+        if([double]$HashRate -le 0){ $Hashrate = 1 }  ## Set to prevent volume dividebyzero error
         $previous = [Math]::Max(([Double]$_.actual_last24h_shared * 0.001) / $Divisor * (1 - ($_.fees / 100)), $SmallestValue)
 
         $Stat = Global:Set-Stat -Name $StatPath -HashRate $HashRate -Value ( $Estimate / $Divisor * (1 - ($_.fees / 100))) -Shuffle $_.deviation 
