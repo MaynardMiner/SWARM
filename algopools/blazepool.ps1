@@ -29,7 +29,7 @@ if ($Name -in $(arg).PoolName) {
     ## Add 24 hour deviation.
     $Pool_Sorted | ForEach-Object {
         $Raw = shuffle $_.estimate_last24h $_.actual_last24h
-        $_ | Add-Member "deviation" $Raw
+        $_ | Add-Member "deviation" [Double]$Raw
     }
 
     $Pool_Sorted | ForEach-Object {
