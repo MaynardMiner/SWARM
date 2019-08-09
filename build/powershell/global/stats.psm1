@@ -196,11 +196,12 @@ function Global:Set-Stat {
         $Theta = (Global:Get-Theta -Calcs $Calcs.$_ -Values $T)
         $Alpha = [Double](Global:Get-Alpha($Theta.Count))
         $Zeta = [Double]$Theta.Sum / $Theta.Count
-        $Stat.$_ = [Math]::Round([Math]::Max( ( $Zeta * $Alpha + $($Stat.$_) * (1 - $Alpha) ) , $SmallestValue ), 15)
+        $Stat.$_ = [Math]::Max( ( $Zeta * $Alpha + $($Stat.$_) * (1 - $Alpha) ) , $SmallestValue )
+        $Stat.$_ = [Math]::Round( $Stat.$_, 15 )
     }
 
     ## Calculate simple rolling moving average for each pool hashrate / deviation / Rejects
-    if($Shuffle) { $Stat.Deviation = [Math]::Round( (($Stat.Deviation * $Stat.Deviation_Periods) + $Shuffle) / ($Stat.Deviation_Periods + 1), 4 ) }
+    if($Shuffle) { $Stat.Deviation = [Math]::Round( ( ($Stat.Deviation * $Stat.Deviation_Periods) + $Shuffle) / ($Stat.Deviation_Periods + 1), 4 ) }
     if($HashRate) { $Stat.Hashrate = [Math]::Round( ( ($Stat.Hashrate * $Stat.Hashrate_Periods) + $HashRate ) / ($Stat.Hashrate_Periods + 1), 0 ) }
     if($Rejects) { $Stat.Rejection = [Math]::Round( ( ($Stat.Rejection * $Stat.Rejection_Periods) + $Rejects ) / ($Stat.Rejection_Periods + 1), 4 ) }
 
