@@ -161,10 +161,6 @@ Argument      Options             Explanation
                                     Otherwise, it will assume it is operating in windows. This parameter is
                                     optional, only used to force an OS.
 
--Stat_All        [Yes,No]           Default is No. When enabled to Yes, it will pull / save ALL coin stats. 
-                                    However, this is a huge expenditure of CPU and system resources to do.
-				    Not reccommended to run if Using -Type CPU with all threads used for mining.
-
 -Custom_Periods    [number]         Default is 1. This will allow the user to specify the number of periods 
                                     that SWARM should gather its data from, with "periods" defined as each 
                                     pull from pool. Default is 1 (to reduce use). If used, -Stat_Algo and /or
