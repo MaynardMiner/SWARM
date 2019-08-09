@@ -19,8 +19,8 @@ function Global:Start-Shuffle($X, $Y) {
     $X = [math]::Round( ($Z / $X) , 4)
     $historical_P = ($(arg).historical_bias / 100)
     $historical_N = ($(arg).historical_bias / 100) * -1
-    if( $X -gt $historical_P ){ $X = $historical_P }
-    if($X -lt $historical_N ){
+    if( $X -gt $historical_P){ $X = $historical_P }
+    if($X -lt $historical_N -and $(arg).historical_bias -ne 0){
         if($X -le -1){ $X = -1 }
         else{ $X = $historical_N }
     }
