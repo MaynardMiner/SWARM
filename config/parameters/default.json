@@ -92,6 +92,7 @@
     "TCP_Port": 6099,
     "Threshold": 0.02,
     "Timeout": 24,
+    "Time_Wait": 10,
     "Track_Shares": "Yes",
     "Type": [],
     "TypeBanCount": 5,
