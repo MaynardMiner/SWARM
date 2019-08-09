@@ -118,6 +118,7 @@ $(vars).ADD("BackgroundTimer", (New-Object -TypeName System.Diagnostics.Stopwatc
 $(vars).ADD("watchdog_start", (Get-Date))
 $(vars).ADD("watchdog_triggered", $false)
 $(vars).Add("GPU_Bad", 0)
+if(Test-Path ".\build\txt\load-average.txt"){Remove-Item ".\build\txt\load-average.txt"}
 
 ## If miner was restarted due to watchdog
 if (test-path ".\build\txt\watchdog.txt") { 
