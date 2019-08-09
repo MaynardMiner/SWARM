@@ -207,7 +207,7 @@ function Global:Start-NewMiners {
                         }Until($false -notin $Child.HasExited)
                     }
                     if ($Sel.SubProcesses -and $false -in $Sel.SubProcesses.HasExited) { 
-                        $Sel.SubProcesses | % { $Check = $_.CloseMainWindow(); if ($Check -eq $False) { Stop-Process -Id $_.Id } }
+                        $Sel.SubProcesses | % { $Check = $_.CloseMainWindow(); if ($Check -eq $False) { Stop-Process -Id $_.Id -ErrorAction Ignore} }
                     }
                 }
             }
