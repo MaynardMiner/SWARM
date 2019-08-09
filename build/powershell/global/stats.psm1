@@ -17,13 +17,6 @@ function Global:Start-Shuffle($X, $Y) {
     $X = [Double]$X * 1000
     $Z = [Double]$Y - $X
     $X = [math]::Round( ($Z / $X) , 4)
-    $historical_P = ($(arg).historical_bias / 100)
-    $historical_N = ($(arg).historical_bias / 100) * -1
-    if( $X -gt $historical_P){ $X = $historical_P }
-    if($X -lt $historical_N ){
-        if($X -le -1){ $X = -1 }
-        else{ $X = $historical_N }
-    }
     return $X
 }
 
@@ -74,6 +67,17 @@ function Global:Set-Stat {
         $Calcs.Add("Custom", [Math]::Max([Math]::Round(14400 / $Interval), 1))
     }
 
+    ## Adjust for historical_bias argument
+    if ($(arg).historical_bias -ne 0 -and $Shuffle) {
+        $historical_P = ($(arg).historical_bias / 100)
+        $historical_N = $historical_P * -1
+        if ( $Shuffle -gt $historical_P) { $Shuffle = $historical_P }
+        if ($Shuffle -lt $historical_N ) {
+            if ($Shuffle -le -1) { $Shuffle = -1 }
+            else { $Shuffle = $historical_N }
+        }
+    }
+
     ## Define maximum period calcalations
     if ($AsHashrate) { $Max_Periods = 15 }
     else { $Max_Periods = $(arg).Max_Periods }
@@ -122,38 +126,40 @@ function Global:Set-Stat {
             $Stat | Add-Member "Hour_4" $Hour_4
             $Stat | Add-Member "Day" $Day
             $Stat | Add-Member "Custom" $Custom
-        } else {
+        }
+        else {
             $Stat | Add-Member "Hour_4" $Value
             $Stat | Add-Member "Day" $Value
             $Stat | Add-Member "Custom" $Value
         }
 
         ## Add extra values if pool hashrate
-        if($HashRate) {
+        if ($HashRate) {
             if ($Check) {
-            $Stat | Add-Member "Hashrate" $S_Hash
-            $Stat | Add-Member "Hashrate_Periods" $S_Hash_Count
-            } else {
+                $Stat | Add-Member "Hashrate" $S_Hash
+                $Stat | Add-Member "Hashrate_Periods" $S_Hash_Count
+            }
+            else {
                 $Stat | Add-Member "Hashrate" $HashRate
                 $Stat | Add-Member "Hashrate_Periods" 0
             }
         }
 
         ## Add extra values if historical bias
-        if($Shuffle) {
-            if($Check) {
+        if ($Shuffle) {
+            if ($Check) {
                 $Stat | Add-member "Deviation" $Deviation 
                 $Stat | Add-member "Deviation_Periods" $Deviation_Periods
             }
-            else{
+            else {
                 $Stat | Add-Member "Deviation" $Shuffle
                 $Stat | Add-Member "Deviation_Periods" 0
             }
         }
 
         ## Add extra values if rejection bias
-        if($Rejects) {
-            if($Check) {
+        if ($Rejects) {
+            if ($Check) {
                 $Stat | Add-member "Rejection" $Rejections
                 $Stat | Add-Member "Rejection_Periods" $Rejection_Periods
             }
@@ -166,7 +172,7 @@ function Global:Set-Stat {
     
     ## Set initial values
     $Stat | Add-Member "Values" @()
-    if($Check){ $Stat.Values = @($GetStat.Values) }
+    if ($Check) { $Stat.Values = @($GetStat.Values) }
 
     ## Add new values, rotate first value if above max periods
     $Stat.Values += [decimal]$Value
@@ -175,20 +181,20 @@ function Global:Set-Stat {
     ## Same for hashrate, only it is a rolling moving average (no values)
     if ($HashRate) {
         if ($Stat.Hashrate_Periods -lt $Hash_Max) { $Stat.Hashrate_Periods++ }
-        else{ $Stat.Hashrate_Periods = $Hash_Max }
+        else { $Stat.Hashrate_Periods = $Hash_Max }
     }
 
     ## Same for historical bias, but is a rolling moving average (no values)
-    if($Shuffle) {
+    if ($Shuffle) {
         if ( $Stat.Deviation_Periods -lt $Max_Periods) { $Stat.Deviation_Periods++ }
-        else{ $Stat.Deviation_Periods = $Max_Periods }
+        else { $Stat.Deviation_Periods = $Max_Periods }
     }
 
     ## Same for rejection bias, but is a rolling moving average (no values)
-    if($Rejects) {
-            if ( $Stat.Rejection_Periods -lt $Hash_Max) { $Stat.Rejection_Periods++ }
-            else{ $Stat.Rejection_Periods = $Hash_Max }
-        }    
+    if ($Rejects) {
+        if ( $Stat.Rejection_Periods -lt $Hash_Max) { $Stat.Rejection_Periods++ }
+        else { $Stat.Rejection_Periods = $Hash_Max }
+    }    
 
     ## Calculate moving average for each time period
     $Calcs.keys | foreach {
@@ -201,9 +207,9 @@ function Global:Set-Stat {
     }
 
     ## Calculate simple rolling moving average for each pool hashrate / deviation / Rejects
-    if($Shuffle) { $Stat.Deviation = [Math]::Round( ( ($Stat.Deviation * $Stat.Deviation_Periods) + $Shuffle) / ($Stat.Deviation_Periods + 1), 4 ) }
-    if($HashRate) { $Stat.Hashrate = [Math]::Round( ( ($Stat.Hashrate * $Stat.Hashrate_Periods) + $HashRate ) / ($Stat.Hashrate_Periods + 1), 0 ) }
-    if($Rejects) { $Stat.Rejection = [Math]::Round( ( ($Stat.Rejection * $Stat.Rejection_Periods) + $Rejects ) / ($Stat.Rejection_Periods + 1), 4 ) }
+    if ($Shuffle) { $Stat.Deviation = [Math]::Round( ( ($Stat.Deviation * $Stat.Deviation_Periods) + $Shuffle) / ($Stat.Deviation_Periods + 1), 4 ) }
+    if ($HashRate) { $Stat.Hashrate = [Math]::Round( ( ($Stat.Hashrate * $Stat.Hashrate_Periods) + $HashRate ) / ($Stat.Hashrate_Periods + 1), 0 ) }
+    if ($Rejects) { $Stat.Rejection = [Math]::Round( ( ($Stat.Rejection * $Stat.Rejection_Periods) + $Rejects ) / ($Stat.Rejection_Periods + 1), 4 ) }
 
     ## In case it doesn't exist.
     if (-not (Test-Path "stats")) { New-Item "stats" -ItemType "directory" }
@@ -215,10 +221,10 @@ function Global:Set-Stat {
     $Stat.Minute_5 = [Decimal]$Stat.Minute_5
     $Stat.Minute_15 = [Decimal]$Stat.Minute_15
     $Stat.Hour = [Decimal]$Stat.Hour
-    if($Stat.Hour_4){$Stat.Hour_4 = [Decimal]$Stat.Hour_4}
-    if($Stat.Day){$Stat.Day = [Decimal]$Stat.Day}
-    if($Stat.Custom){$Stat.Custom = [Decimal]$Stat.Custom}
-    if($Stat.Hashrate){$Stat.Hashrate = [Decimal]$Stat.Hashrate}
+    if ($Stat.Hour_4) { $Stat.Hour_4 = [Decimal]$Stat.Hour_4 }
+    if ($Stat.Day) { $Stat.Day = [Decimal]$Stat.Day }
+    if ($Stat.Custom) { $Stat.Custom = [Decimal]$Stat.Custom }
+    if ($Stat.Hashrate) { $Stat.Hashrate = [Decimal]$Stat.Hashrate }
 
     $Stat | ConvertTo-Json | Set-Content $Path
 
