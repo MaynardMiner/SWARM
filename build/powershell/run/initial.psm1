@@ -128,7 +128,7 @@ function Global:Get-MinerStatus {
                 @{Label = "Miner`|Coin"; Expression = { "$me[${white};1m$($global:index) $($_.Name)${me}[0m `| $me[${green};1m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left'},
                 @{Label = "Speed"; Expression = { $($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$me[${white};1m$($_ | Global:ConvertTo-Hash)/s${me}[0m" }else { "$me[${white};1mBench${me}[0m" } } }; Align = 'right' },
                 @{Label = "BTC`|$($(arg).CoinExchange)`|$($(arg).Currency)/Day"; Expression = {"$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m`|$me[${green};1m$($($_.Pool_Estimate) | ForEach-Object { if ($null -ne $_) { ($_ / $(vars).BTCExchangeRate).ToString("N5") }else { "Bench" } } )${me}[0m`|$me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $(vars).Rates.$($(arg).Currency)).ToString("N2") }else { "Bench" } })${me}[0m"}; Align ='right'},
-                @{Label = "Pool"; Expression = { "$me[${white};1m$($_.MinerPool)${me}[0m" }; Align = 'center' },
+                @{Label = "Pool"; Expression = { "$me[${white};1m$($_.MinerPool)${me}[0m" }; Align = 'center' }
             )
         }
     }
