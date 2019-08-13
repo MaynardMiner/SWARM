@@ -26,13 +26,30 @@ function Global:Get-AltWallets {
 
     ##Get Wallet Config
     $Wallet_Json = Get-Content ".\config\wallets\wallets.json" | ConvertFrom-Json
+
+    ## example: -Coin_Params RVN:RKirUe978mBoa2MRWqeMGqDzVAKTafKh8H:Yes:No,MTP:39iUh6aforxHcBr3Ayywmnqw2ZHcbmy9Wj:Yes:Yes
+    if ($(arg).coin_params) {
+        $(arg).coin_params | ForEach-Object {
+            $Coin_Param = $_ -split "`:"
+            $symbol = $Coin_Param | Select -First 1
+            $address = $Coin_Param | Select -Skip 1 -First 1
+            if($address -eq "none"){$address = "add address of coin if you wish to mine to that address, or leave alone."}
+            $solo = $Coin_Param | Select -Skip 2 -First 1
+            $exchange = $Coin_Param | Select -Skip 3 -First 1
+            if ($symbol) {
+                if ($symbol -notin $Wallets."Passive Alternative Wallets"."coin list") {
+                    $Wallet_Json."Passive Alternative Wallets"."coin list" | Add-Member "$symbol" @{address = $address; solo = $solo; exchange = $exchange}
+                }
+            }
+        }
+    }
     
     if ([string]$(arg).AltWallet1 -eq "") {
-            $(vars).All_AltWallets = @{}
-            $Wallet_Json."Passive Alternative Wallets"."coin list".PSObject.Properties.Name | 
-            Where { $_ -ne "add coin symbol here" } | 
-            Where { $_ -ne "Add another symbol of coin here" } |
-            ForEach-Object { $(vars).All_AltWallets.ADD("$($_)",$Wallet_Json."Passive Alternative Wallets"."coin list".$_) }
+        $(vars).All_AltWallets = @{ }
+        $Wallet_Json."Passive Alternative Wallets"."coin list".PSObject.Properties.Name | 
+        Where { $_ -ne "add coin symbol here" } | 
+        Where { $_ -ne "Add another symbol of coin here" } |
+        ForEach-Object { $(vars).All_AltWallets.ADD("$($_)", $Wallet_Json."Passive Alternative Wallets"."coin list".$_) }
     }
     else { $(vars).All_AltWallets = $null }
 

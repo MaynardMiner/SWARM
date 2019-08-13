@@ -106,8 +106,7 @@ function Global:Start-Webcommand {
                 "stats" {
                     $method = "message"
                     $messagetype = "info"
-                    $data = "stats"
-                    $getpayload = Get-Content ".\build\txt\minerstats.txt"
+                    $getpayload = Invoke-Expression "get stats"
                     $line = @()
                     $getpayload | foreach { $line += "$_`n" }
                     $payload = $line
@@ -120,8 +119,7 @@ function Global:Start-Webcommand {
                 "active" {
                     $method = "message"
                     $messagetype = "info"
-                    $data = "active"
-                    $getpayload = Get-Content ".\build\txt\mineractive.txt"
+                    $getpayload = Invoke-Expression "get active"
                     $line = @()
                     $getpayload | foreach { $line += "$_`n" }
                     $payload = $line
@@ -298,10 +296,8 @@ function Global:Start-Webcommand {
                         }     
                     }
                     else {
-                        $proc = start-process "pwsh" -Workingdirectory ".\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -command "".\get.ps1 $arguments""" -PassThru -WindowStyle Minimized -Verb Runas 
-                        $proc | Wait-Process
+                        $getpayload = Invoke-Expression "$($command.result.exec)"
                         $Trigger = "exec"
-                        $getpayload = Get-Content ".\build\txt\get.txt"
                         $getpayload | foreach { $line += "$_`n" }
                         $payload = $line
                     }
@@ -469,15 +465,18 @@ function Global:Start-Webcommand {
                                 "Coin" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
                                 "Algorithm" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
                                 "GPUDevices3" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
-                                "Config.params.GPUDevices2" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "GPUDevices2" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
                                 "GPUDevices1" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
                                 "Asic_Algo" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "Asic_IP" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "optional" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
                                 "Type" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
                                 "Poolname" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
                                 "Currency" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
                                 "PasswordCurrency1" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
                                 "PasswordCurrency2" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
                                 "PasswordCurrency3" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "coin_params" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
                             }
                         }
                     }

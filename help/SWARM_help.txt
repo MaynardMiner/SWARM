@@ -57,6 +57,42 @@ These arguments can be added for additional customization and options
 
 Argument      Options             Explanation
 
+-Coin_Params [See Explanation]      Before using this parameter, view ".\config\wallets\wallets.json"
+                                    file. This parameter allows you to remotely add to the 
+                                    "Passive Alternative Wallets" section.
+                                    Requires:
+                                    * -Auto_Coin param set to yes.
+                                    * -Poolname param specifies zpool or zergpool.
+                                    * No -Altwallet parameters specified.
+
+                                    The format of the argument is as followed:
+                                    [symbol:address:solo:exchange],[symbol:address:solo:exchange]
+                                    You can add as many params as you want, comma separating each one.
+
+                                    solo and exchange are either set to 'yes' or 'no'
+                                    solo can only be done on zergpool.
+                                    address is ONLY added if you mining the coin directly (no auto-exchange)
+                                    if you do not wish to mine the coin directly- use "none" 
+
+                                    These will only be enacted when coin is most profitble on the list,
+                                    and the most profitable pool is one of the auto_coin pools. You can
+                                    use arguments like -Algorithm and -Coin to narrow the amount of algorithms/coins,
+                                    So you will switch to these items regularly.
+
+                                    Example of argument use-
+
+                                    Solo mine RVN coin, and auto-exchange reward when it is most profitable:
+                                    -Coin_Params RVN:none:Yes:Yes
+
+                                    Mine RVN coin directly, but do not solo mine it:
+                                    -Coin_Params RVN:RKirUe978mBoa2MRWqeMGqDzVAKTafKh8H:No:No
+                                                    (Note: this would be a RVN address)
+
+                                    Solo mine RVN, but do not auto-exchange reward:
+                                    -Coin_Params RVN:RKirUe978mBoa2MRWqeMGqDzVAKTafKh8H:Yes:No
+                                                     (Note: this would be a RVN address)
+
+
 -Historical_Bias [0-100]            Expressed as Percentage. 
                                     Will only affect Auto_Algo.
                                     Will not affect niechash.
