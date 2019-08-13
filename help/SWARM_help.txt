@@ -67,7 +67,8 @@ Argument      Options             Explanation
 
                                     The format of the argument is as followed:
                                     [symbol:address:solo:exchange],[symbol:address:solo:exchange]
-                                    You can add as many params as you want, comma separating each one.
+                                    You can add as many different combinations as you want, comma 
+				    separating each one.
 
                                     solo and exchange are either set to 'yes' or 'no'
                                     solo can only be done on zergpool.
