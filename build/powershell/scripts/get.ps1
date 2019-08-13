@@ -382,13 +382,16 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
             if ($Stat_Table) {
                 $me = [char]27;
                 $white = "37";
-                $blue = "34";
+                $blue = "94";
                 $yellow = "33";
                 $green = "32";
                 $cyan = "36";
                 $red = "31";
-                $magenta = "35";            
-                if(test-Path ".\build\txt\rates.txt"){$Rates = Get-Content ".\build\txt\rates.txt" | ConvertFrom-Json}
+                $gray = "90";
+                $orange = "93"
+                $magenta = "35";
+                $pink = "95";
+                if (test-Path ".\build\txt\rates.txt") { $Rates = Get-Content ".\build\txt\rates.txt" | ConvertFrom-Json }
                 $WattTable = $false
                 $ShareTable = $false
                 $VolumeTable = $false
@@ -399,85 +402,221 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 $Test = "$me[${white};1mMiner${me}[0m"
                 $Type | ForEach-Object {
                     $Miner_Table = $Stat_Table | Where Type -eq $_
-                    if ($Argument2) { $Miner_Table = $Miner_Table | Sort-Object -Property Price -Descending | Select -First ([int]($Argument2 + 1)) }
+                    if ($Argument2) { $Miner_Table = $Miner_Table | Sort-Object -Property Price -Descending | Select -First ([int]$Argument2) }
                     $global:index = 0
                     if ($WattTable -and $ShareTable -and $VolumeTable) {
                         $Get += $Miner_Table | Sort-Object -Property Profit -Descending | Format-Table -GroupBy Type (
-                            @{Label = "Miner `| Coin"; Expression = { "$me[${white};1m$($global:index) $($_.Name)${me}[0m `| $me[${green};1m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left'},
-                            @{Label = "Speed `| Watt/Day"; Expression = { "$me[${white};1m$($($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$($_ | Global:ConvertTo-Hash)/s" }else { "Bench" } })${me}[0 m`| $me[${green};1m$($($_.Power_Day) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m"}; Align = 'left' },
-                            @{Label = "BTC `| $($Rates.Coin) `| $($Rates.Currency)/Day"; Expression = {"$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m `| $me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m `| $me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m"}; Align ='center'},
-                            @{Label = "Pool"; Expression = { "$me[${white};1m$($_.MinerPool)${me}[0m" }; Align = 'center' },
+                            @{Label = "Miner `| Coin"; Expression = { "$me[${white};1m$($global:index) $($_.Name)${me}[0m `| $me[${green};1m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left' },
+                            @{Label = "Speed `| Watt/Day"; Expression = { "$me[${white};1m$($($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$($_ | Global:ConvertTo-Hash)/s" }else { "Bench" } })${me}[0 m`| $me[${green};1m$($($_.Power_Day) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'left' },
+                            @{Label = "BTC `| $($Rates.Coin) `| $($Rates.Currency)/Day"; Expression = { "$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m `| $me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m `| $me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'center' },
+                            @{Label = "Pool"; Expression = { 
+                                    "$(
+                                        $Pool = $_.MinerPool
+                                        switch ($Pool) {
+                                    "nicehash" { "$me[${yellow};1m$($Pool)${me}[0m" }
+                                    "zergpool" { "$me[${green};1m$($Pool)${me}[0m" }
+                                    "nlpool" { "$me[${blue};1m$($Pool)${me}[0m" }
+                                    "blazepool" { "$me[${red};1m$($Pool)${me}[0m" }
+                                    "ahashpool" { "$me[${orange};1m$($Pool)${me}[0m" }
+                                    "blockmasters" { "$me[${cyan};1m$($Pool)${me}[0m" }
+                                    "fairpool" { "$me[${white};1m$($Pool)${me}[0m" }
+                                    "hasrefinery" { "$me[${magenta};1m$($Pool)${me}[0m" }
+                                    "zpool" { "$me[${gray};1m$($Pool)${me}[0m" }
+                                    "whalesburg" { "$me[${pink};1m$($Pool)${me}[0m" }
+                                })"
+                                }; 
+                                Align = 'center'
+                            },
                             @{Label = "Shares"; Expression = { $($_.Shares -as [Decimal]).ToString("N2") }; Align = 'center' },
                             @{Label = "Vol."; Expression = { $($_.Volume) | ForEach-Object { if ($null -ne $_) { "$([math]::Round(100 - $_,0).ToString())`%" }else { "Bench" } } }; Align = 'left' }
                         )
                     }
                     elseif ($WattTable -and $ShareTable) {
                         $Get += $Miner_Table | Sort-Object -Property Profit -Descending | Format-Table -GroupBy Type (
-                            @{Label = "Miner `| Coin"; Expression = { "$me[${white};1m$($global:index) $($_.Name)${me}[0m `| $me[${green};1m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left'},
-                            @{Label = "Speed `| Watt/Day"; Expression = { "$me[${white};1m$($($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$($_ | Global:ConvertTo-Hash)/s" }else { "Bench" } })${me}[0m `| $me[${green};1m$($($_.Power_Day) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m"}; Align = 'left' },
-                            @{Label = "BTC `| $($Rates.Coin) `| $($Rates.Currency)/Day"; Expression = {"$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m `| $me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m `| $me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m"}; Align ='center'},
-                            @{Label = "Pool"; Expression = { "$me[${white};1m$($_.MinerPool)${me}[0m" }; Align = 'center' },
+                            @{Label = "Miner `| Coin"; Expression = { "$me[${white};1m$($global:index) $($_.Name)${me}[0m `| $me[${green};1m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left' },
+                            @{Label = "Speed `| Watt/Day"; Expression = { "$me[${white};1m$($($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$($_ | Global:ConvertTo-Hash)/s" }else { "Bench" } })${me}[0m `| $me[${green};1m$($($_.Power_Day) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'left' },
+                            @{Label = "BTC `| $($Rates.Coin) `| $($Rates.Currency)/Day"; Expression = { "$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m `| $me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m `| $me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'center' },
+                            @{Label = "Pool"; Expression = { 
+                                    "$(
+                                    $Pool = $_.MinerPool
+                                    switch ($Pool) {
+                                "nicehash" { "$me[${yellow};1m$($Pool)${me}[0m" }
+                                "zergpool" { "$me[${green};1m$($Pool)${me}[0m" }
+                                "nlpool" { "$me[${blue};1m$($Pool)${me}[0m" }
+                                "blazepool" { "$me[${red};1m$($Pool)${me}[0m" }
+                                "ahashpool" { "$me[${orange};1m$($Pool)${me}[0m" }
+                                "blockmasters" { "$me[${cyan};1m$($Pool)${me}[0m" }
+                                "fairpool" { "$me[${white};1m$($Pool)${me}[0m" }
+                                "hasrefinery" { "$me[${magenta};1m$($Pool)${me}[0m" }
+                                "zpool" { "$me[${gray};1m$($Pool)${me}[0m" }
+                                "whalesburg" { "$me[${pink};1m$($Pool)${me}[0m" }
+                            })"
+                                }; 
+                                Align = 'center'
+                            },
                             @{Label = "Shares"; Expression = { $($_.Shares -as [Decimal]).ToString("N2") }; Align = 'center' }
                         )
                     }
                     elseif ($WattTable -and $VolumeTable) {
                         $Get += $Miner_Table | Sort-Object -Property Profit -Descending | Format-Table -GroupBy Type (
-                            @{Label = "Miner `| Coin"; Expression = { "$me[${white};m$($global:index) $($_.Name)${me}[0m `| $me[${green};m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left'},
-                            @{Label = "Speed `| Watt/Day"; Expression = { "$me[${white};m$($($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$($_ | Global:ConvertTo-Hash)/s" }else { "Bench" } })${me}[0m `| $me[${green};m$($($_.Power_Day) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m"}; Align = 'left' },
-                            @{Label = "BTC `| $($Rates.Coin) `| $($Rates.Currency)/Day"; Expression = {"$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m `| $me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m `| $me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m"}; Align ='center'},
-                            @{Label = "Pool"; Expression = { "$me[${white};m$($_.MinerPool)${me}[0m" }; Align = 'center' },
+                            @{Label = "Miner `| Coin"; Expression = { "$me[${white};m$($global:index) $($_.Name)${me}[0m `| $me[${green};m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left' },
+                            @{Label = "Speed `| Watt/Day"; Expression = { "$me[${white};m$($($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$($_ | Global:ConvertTo-Hash)/s" }else { "Bench" } })${me}[0m `| $me[${green};m$($($_.Power_Day) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'left' },
+                            @{Label = "BTC `| $($Rates.Coin) `| $($Rates.Currency)/Day"; Expression = { "$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m `| $me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m `| $me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'center' },
+                            @{Label = "Pool"; Expression = { 
+                                    "$(
+                                    $Pool = $_.MinerPool
+                                    switch ($Pool) {
+                                "nicehash" { "$me[${yellow};1m$($Pool)${me}[0m" }
+                                "zergpool" { "$me[${green};1m$($Pool)${me}[0m" }
+                                "nlpool" { "$me[${blue};1m$($Pool)${me}[0m" }
+                                "blazepool" { "$me[${red};1m$($Pool)${me}[0m" }
+                                "ahashpool" { "$me[${orange};1m$($Pool)${me}[0m" }
+                                "blockmasters" { "$me[${cyan};1m$($Pool)${me}[0m" }
+                                "fairpool" { "$me[${white};1m$($Pool)${me}[0m" }
+                                "hasrefinery" { "$me[${magenta};1m$($Pool)${me}[0m" }
+                                "zpool" { "$me[${gray};1m$($Pool)${me}[0m" }
+                                "whalesburg" { "$me[${pink};1m$($Pool)${me}[0m" }
+                            })"
+                                }; 
+                                Align = 'center'
+                            },
                             @{Label = "Vol."; Expression = { $($_.Volume) | ForEach-Object { if ($null -ne $_) { "$([math]::Round(100 - $_,0).ToString())`%" }else { "Bench" } } }; Align = 'left' }
                         )
                     }
                     elseif ($WattTable) {
                         $Get += $Miner_Table | Sort-Object -Property Profit -Descending | Format-Table -GroupBy Type (
-                            @{Label = "Miner `| Coin"; Expression = { "$me[${white};1m$($global:index) $($_.Name)${me}[0m `| $me[${green};1m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left'},
-                            @{Label = "Speed `| Watt/Day"; Expression = { "$me[${white};1m$($($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$($_ | Global:ConvertTo-Hash)/s" }else { "Bench" } })${me}[0m `| $me[${green};1m$($($_.Power_Day) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m"}; Align = 'left' },
-                            @{Label = "BTC `| $($Rates.Coin) `| $($Rates.Currency)/Day"; Expression = {"$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m `| $me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m `| $me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m"}; Align ='center'},
-                            @{Label = "Pool"; Expression = { "$me[${white};1m$($_.MinerPool)${me}[0m" }; Align = 'center' }
+                            @{Label = "Miner `| Coin"; Expression = { "$me[${white};1m$($global:index) $($_.Name)${me}[0m `| $me[${green};1m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left' },
+                            @{Label = "Speed `| Watt/Day"; Expression = { "$me[${white};1m$($($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$($_ | Global:ConvertTo-Hash)/s" }else { "Bench" } })${me}[0m `| $me[${green};1m$($($_.Power_Day) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'left' },
+                            @{Label = "BTC `| $($Rates.Coin) `| $($Rates.Currency)/Day"; Expression = { "$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m `| $me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m `| $me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'center' },
+                            @{Label = "Pool"; Expression = { 
+                                    "$(
+                                    $Pool = $_.MinerPool
+                                    switch ($Pool) {
+                                "nicehash" { "$me[${yellow};1m$($Pool)${me}[0m" }
+                                "zergpool" { "$me[${green};1m$($Pool)${me}[0m" }
+                                "nlpool" { "$me[${blue};1m$($Pool)${me}[0m" }
+                                "blazepool" { "$me[${red};1m$($Pool)${me}[0m" }
+                                "ahashpool" { "$me[${orange};1m$($Pool)${me}[0m" }
+                                "blockmasters" { "$me[${cyan};1m$($Pool)${me}[0m" }
+                                "fairpool" { "$me[${white};1m$($Pool)${me}[0m" }
+                                "hasrefinery" { "$me[${magenta};1m$($Pool)${me}[0m" }
+                                "zpool" { "$me[${gray};1m$($Pool)${me}[0m" }
+                                "whalesburg" { "$me[${pink};1m$($Pool)${me}[0m" }
+                            })"
+                                }; 
+                                Align = 'center'
+                            }
                         )
                     }
                     elseif ($ShareTable -and $VolumeTable) {
                         $Get += $Miner_Table | Sort-Object -Property Profit -Descending | Format-Table -GroupBy Type (
-                            @{Label = "Miner `| Coin"; Expression = { "$me[${white};1m$($global:index) $($_.Name)${me}[0m `| $me[${green};1m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left'},
+                            @{Label = "Miner `| Coin"; Expression = { "$me[${white};1m$($global:index) $($_.Name)${me}[0m `| $me[${green};1m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left' },
                             @{Label = "Speed"; Expression = { $($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$me[${white};1m$($_ | Global:ConvertTo-Hash)/s${me}[0m" }else { "$me[${white};1mBench${me}[0m" } } }; Align = 'right' },
-                            @{Label = "BTC `| $($Rates.Coin) `| $($Rates.Currency)/Day"; Expression = {"$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m `| $me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m `| $me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m"}; Align ='center'},
-                            @{Label = "Pool"; Expression = { "$me[${white};1m$($_.MinerPool)${me}[0m" }; Align = 'center' },
+                            @{Label = "BTC `| $($Rates.Coin) `| $($Rates.Currency)/Day"; Expression = { "$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m `| $me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m `| $me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'center' },
+                            @{Label = "Pool"; Expression = { 
+                                    "$(
+                                    $Pool = $_.MinerPool
+                                    switch ($Pool) {
+                                "nicehash" { "$me[${yellow};1m$($Pool)${me}[0m" }
+                                "zergpool" { "$me[${green};1m$($Pool)${me}[0m" }
+                                "nlpool" { "$me[${blue};1m$($Pool)${me}[0m" }
+                                "blazepool" { "$me[${red};1m$($Pool)${me}[0m" }
+                                "ahashpool" { "$me[${orange};1m$($Pool)${me}[0m" }
+                                "blockmasters" { "$me[${cyan};1m$($Pool)${me}[0m" }
+                                "fairpool" { "$me[${white};1m$($Pool)${me}[0m" }
+                                "hasrefinery" { "$me[${magenta};1m$($Pool)${me}[0m" }
+                                "zpool" { "$me[${gray};1m$($Pool)${me}[0m" }
+                                "whalesburg" { "$me[${pink};1m$($Pool)${me}[0m" }
+                            })"
+                                }; 
+                                Align = 'center'
+                            },
                             @{Label = "Shares"; Expression = { $($_.Shares -as [Decimal]).ToString("N2") }; Align = 'center' },
                             @{Label = "Vol."; Expression = { $($_.Volume) | ForEach-Object { if ($null -ne $_) { "$([math]::Round(100 - $_,0).ToString())`%" }else { "Bench" } } }; Align = 'left' }
                         )
                     }
                     elseif ($ShareTable) {
                         $Get += $Miner_Table | Sort-Object -Property Profit -Descending | Format-Table -GroupBy Type (
-                            @{Label = "Miner `| Coin"; Expression = { "$me[${white};1m$($global:index) $($_.Name)${me}[0m `| $me[${green};1m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left'},
+                            @{Label = "Miner `| Coin"; Expression = { "$me[${white};1m$($global:index) $($_.Name)${me}[0m `| $me[${green};1m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left' },
                             @{Label = "Speed"; Expression = { $($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$me[${white};1m$($_ | Global:ConvertTo-Hash)/s${me}[0m" }else { "$me[${white};1mBench${me}[0m" } } }; Align = 'right' },
-                            @{Label = "BTC `| $($Rates.Coin) `| $($Rates.Currency)/Day"; Expression = {"$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m `| $me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m `| $me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m"}; Align ='center'},
-                            @{Label = "Pool"; Expression = { "$me[${white};1m$($_.MinerPool)${me}[0m" }; Align = 'center' },
+                            @{Label = "BTC `| $($Rates.Coin) `| $($Rates.Currency)/Day"; Expression = { "$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m `| $me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m `| $me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'center' },
+                            @{Label = "Pool"; Expression = { 
+                                    "$(
+                                    $Pool = $_.MinerPool
+                                    switch ($Pool) {
+                                "nicehash" { "$me[${yellow};1m$($Pool)${me}[0m" }
+                                "zergpool" { "$me[${green};1m$($Pool)${me}[0m" }
+                                "nlpool" { "$me[${blue};1m$($Pool)${me}[0m" }
+                                "blazepool" { "$me[${red};1m$($Pool)${me}[0m" }
+                                "ahashpool" { "$me[${orange};1m$($Pool)${me}[0m" }
+                                "blockmasters" { "$me[${cyan};1m$($Pool)${me}[0m" }
+                                "fairpool" { "$me[${white};1m$($Pool)${me}[0m" }
+                                "hasrefinery" { "$me[${magenta};1m$($Pool)${me}[0m" }
+                                "zpool" { "$me[${gray};1m$($Pool)${me}[0m" }
+                                "whalesburg" { "$me[${pink};1m$($Pool)${me}[0m" }
+                            })"
+                                }; 
+                                Align = 'center'
+                            },
                             @{Label = "Shares"; Expression = { $($_.Shares -as [Decimal]).ToString("N2") }; Align = 'center' }
                         )
                     }
                     elseif ($VolumeTable) {
                         $Get += $Miner_Table | Sort-Object -Property Profit -Descending | Format-Table -GroupBy Type (
-                            @{Label = "Miner `| Coin"; Expression = { "$me[${white};1m$($global:index) $($_.Name)${me}[0m `| $me[${green};1m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left'},
+                            @{Label = "Miner `| Coin"; Expression = { "$me[${white};1m$($global:index) $($_.Name)${me}[0m `| $me[${green};1m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left' },
                             @{Label = "Speed"; Expression = { $($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$me[${white};1m$($_ | Global:ConvertTo-Hash)/s${me}[0m" }else { "$me[${white};1mBench${me}[0m" } } }; Align = 'right' },
-                            @{Label = "BTC `| $($Rates.Coin) `| $($Rates.Currency)/Day"; Expression = {"$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m `| $me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m `| $me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m"}; Align ='center'},
-                            @{Label = "Pool"; Expression = { "$me[${white};1m$($_.MinerPool)${me}[0m" }; Align = 'center' },
+                            @{Label = "BTC `| $($Rates.Coin) `| $($Rates.Currency)/Day"; Expression = { "$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m `| $me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m `| $me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'center' },
+                            @{Label = "Pool"; Expression = { 
+                                    "$(
+                                    $Pool = $_.MinerPool
+                                    switch ($Pool) {
+                                "nicehash" { "$me[${yellow};1m$($Pool)${me}[0m" }
+                                "zergpool" { "$me[${green};1m$($Pool)${me}[0m" }
+                                "nlpool" { "$me[${blue};1m$($Pool)${me}[0m" }
+                                "blazepool" { "$me[${red};1m$($Pool)${me}[0m" }
+                                "ahashpool" { "$me[${orange};1m$($Pool)${me}[0m" }
+                                "blockmasters" { "$me[${cyan};1m$($Pool)${me}[0m" }
+                                "fairpool" { "$me[${white};1m$($Pool)${me}[0m" }
+                                "hasrefinery" { "$me[${magenta};1m$($Pool)${me}[0m" }
+                                "zpool" { "$me[${gray};1m$($Pool)${me}[0m" }
+                                "whalesburg" { "$me[${pink};1m$($Pool)${me}[0m" }
+                            })"
+                                }; 
+                                Align = 'center'
+                            },
                             @{Label = "Vol."; Expression = { $($_.Volume) | ForEach-Object { if ($null -ne $_) { "$([math]::Round(100 - $_,0).ToString())`%" }else { "Bench" } } }; Align = 'left' }
                         )
                     }
                     else {
                         $Get += $Miner_Table | Sort-Object -Property Profit -Descending | Format-Table -GroupBy Type (
-                            @{Label = "Miner`| Coin"; Expression = { "$me[${white};1m$($global:index) $($_.Name)${me}[0m `| $me[${green};1m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left'},
+                            @{Label = "Miner`| Coin"; Expression = { "$me[${white};1m$($global:index) $($_.Name)${me}[0m `| $me[${green};1m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left' },
                             @{Label = "Speed"; Expression = { $($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$me[${white};1m$($_ | Global:ConvertTo-Hash)/s${me}[0m" }else { "$me[${white};1mBench${me}[0m" } } }; Align = 'right' },
-                            @{Label = "BTC `| $($Rates.Coin) `| $($Rates.Currency)/Day"; Expression = {"$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m `| $me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m `| $me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m"}; Align ='center'},
-                            @{Label = "Pool"; Expression = { "$me[${white};1m$($_.MinerPool)${me}[0m" }; Align = 'center' }
+                            @{Label = "BTC `| $($Rates.Coin) `| $($Rates.Currency)/Day"; Expression = { "$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m `| $me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m `| $me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'center' },
+                            @{Label = "Pool"; Expression = { 
+                                    "$(
+                                    $Pool = $_.MinerPool
+                                    switch ($Pool) {
+                                "nicehash" { "$me[${yellow};1m$($Pool)${me}[0m" }
+                                "zergpool" { "$me[${green};1m$($Pool)${me}[0m" }
+                                "nlpool" { "$me[${blue};1m$($Pool)${me}[0m" }
+                                "blazepool" { "$me[${red};1m$($Pool)${me}[0m" }
+                                "ahashpool" { "$me[${orange};1m$($Pool)${me}[0m" }
+                                "blockmasters" { "$me[${cyan};1m$($Pool)${me}[0m" }
+                                "fairpool" { "$me[${white};1m$($Pool)${me}[0m" }
+                                "hasrefinery" { "$me[${magenta};1m$($Pool)${me}[0m" }
+                                "zpool" { "$me[${gray};1m$($Pool)${me}[0m" }
+                                "whalesburg" { "$me[${pink};1m$($Pool)${me}[0m" }
+                            })"
+                                }; 
+                                Align = 'center'
+                            }
                         )
                     }
                 }
             }
         }
         $MSFile = ".\build\txt\minerstats.txt"
-        if(test-Path ".\build\txt\minerstats.txt"){$Get += Get-Content ".\build\txt\minerstats.txt"}
+        if (test-Path ".\build\txt\minerstats.txt") { $Get += Get-Content ".\build\txt\minerstats.txt" }
         Remove-Module "hashrates"
     }
     "charts" { if (Test-Path ".\build\txt\charts.txt") { $Get += Get-Content ".\build\txt\charts.txt" } }
