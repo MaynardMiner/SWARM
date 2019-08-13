@@ -399,30 +399,30 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 $Stat_Table | ForEach-Object { if ([Double]$_.Shares -gt 0) { $ShareTable = $True } }
                 $Stat_Table | ForEach-Object { if ([Double]$_.Volume -gt 0) { $VolumeTable = $True } }            
                 $Type = $Stat_table.Type | Select -Unique
-                $Test = "$me[${white};1mMiner${me}[0m"
+                $Test = "$me[${white}mMiner${me}[0m"
                 $Type | ForEach-Object {
                     $Miner_Table = $Stat_Table | Where Type -eq $_
                     if ($Argument2) { $Miner_Table = $Miner_Table | Sort-Object -Property Price -Descending | Select -First ([int]$Argument2) }
                     $global:index = 0
                     if ($WattTable -and $ShareTable -and $VolumeTable) {
                         $Get += $Miner_Table | Sort-Object -Property Profit -Descending | Format-Table -GroupBy Type (
-                            @{Label = "Miner`|Coin"; Expression = { "$me[${white};1m$($global:index) $($_.Name)${me}[0m`|$me[${green};1m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left' },
-                            @{Label = "Speed`|Watt/Day"; Expression = { "$me[${white};1m$($($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$($_ | Global:ConvertTo-Hash)/s" }else { "Bench" } })${me}[0 m`| $me[${green};1m$($($_.Power_Day) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'left' },
-                            @{Label = "BTC`|$($Rates.Coin)`|$($Rates.Currency)/Day"; Expression = { "$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m`|$me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m`|$me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'center' },
+                            @{Label = "Miner`|Coin"; Expression = { "$me[${white}m$($global:index) $($_.Name)${me}[0m`|$me[${green}m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left' },
+                            @{Label = "Speed`|Watt/Day"; Expression = { "$me[${white}m$($($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$($_ | Global:ConvertTo-Hash)/s" }else { "Bench" } })${me}[0 m`| $me[${green}m$($($_.Power_Day) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'left' },
+                            @{Label = "BTC`|$($Rates.Coin)`|$($Rates.Currency)/Day"; Expression = { "$me[${white}m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m`|$me[${cyan}m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m`|$me[${green}m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'center' },
                             @{Label = "Pool"; Expression = { 
                                     "$(
                                         $Pool = $_.MinerPool
                                         switch ($Pool) {
-                                    "nicehash" { "$me[${yellow};1m$($Pool)${me}[0m" }
-                                    "zergpool" { "$me[${green};1m$($Pool)${me}[0m" }
-                                    "nlpool" { "$me[${blue};1m$($Pool)${me}[0m" }
-                                    "blazepool" { "$me[${red};1m$($Pool)${me}[0m" }
-                                    "ahashpool" { "$me[${orange};1m$($Pool)${me}[0m" }
-                                    "blockmasters" { "$me[${cyan};1m$($Pool)${me}[0m" }
-                                    "fairpool" { "$me[${white};1m$($Pool)${me}[0m" }
-                                    "hasrefinery" { "$me[${magenta};1m$($Pool)${me}[0m" }
-                                    "zpool" { "$me[${gray};1m$($Pool)${me}[0m" }
-                                    "whalesburg" { "$me[${pink};1m$($Pool)${me}[0m" }
+                                    "nicehash" { "$me[${yellow}m$($Pool)${me}[0m" }
+                                    "zergpool" { "$me[${green}m$($Pool)${me}[0m" }
+                                    "nlpool" { "$me[${blue}m$($Pool)${me}[0m" }
+                                    "blazepool" { "$me[${red}m$($Pool)${me}[0m" }
+                                    "ahashpool" { "$me[${orange}m$($Pool)${me}[0m" }
+                                    "blockmasters" { "$me[${cyan}m$($Pool)${me}[0m" }
+                                    "fairpool" { "$me[${white}m$($Pool)${me}[0m" }
+                                    "hasrefinery" { "$me[${magenta}m$($Pool)${me}[0m" }
+                                    "zpool" { "$me[${gray}m$($Pool)${me}[0m" }
+                                    "whalesburg" { "$me[${pink}m$($Pool)${me}[0m" }
                                 })"
                                 }; 
                                 Align = 'center'
@@ -433,23 +433,23 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                     }
                     elseif ($WattTable -and $ShareTable) {
                         $Get += $Miner_Table | Sort-Object -Property Profit -Descending | Format-Table -GroupBy Type (
-                            @{Label = "Miner`|Coin"; Expression = { "$me[${white};1m$($global:index) $($_.Name)${me}[0m`|$me[${green};1m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left' },
-                            @{Label = "Speed`|Watt/Day"; Expression = { "$me[${white};1m$($($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$($_ | Global:ConvertTo-Hash)/s" }else { "Bench" } })${me}[0m`|$me[${green};1m$($($_.Power_Day) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'left' },
-                            @{Label = "BTC`|$($Rates.Coin)`|$($Rates.Currency)/Day"; Expression = { "$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m`|$me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m`|$me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'center' },
+                            @{Label = "Miner`|Coin"; Expression = { "$me[${white}m$($global:index) $($_.Name)${me}[0m`|$me[${green}m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left' },
+                            @{Label = "Speed`|Watt/Day"; Expression = { "$me[${white}m$($($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$($_ | Global:ConvertTo-Hash)/s" }else { "Bench" } })${me}[0m`|$me[${green}m$($($_.Power_Day) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'left' },
+                            @{Label = "BTC`|$($Rates.Coin)`|$($Rates.Currency)/Day"; Expression = { "$me[${white}m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m`|$me[${cyan}m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m`|$me[${green}m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'center' },
                             @{Label = "Pool"; Expression = { 
                                     "$(
                                     $Pool = $_.MinerPool
                                     switch ($Pool) {
-                                "nicehash" { "$me[${yellow};1m$($Pool)${me}[0m" }
-                                "zergpool" { "$me[${green};1m$($Pool)${me}[0m" }
-                                "nlpool" { "$me[${blue};1m$($Pool)${me}[0m" }
-                                "blazepool" { "$me[${red};1m$($Pool)${me}[0m" }
-                                "ahashpool" { "$me[${orange};1m$($Pool)${me}[0m" }
-                                "blockmasters" { "$me[${cyan};1m$($Pool)${me}[0m" }
-                                "fairpool" { "$me[${white};1m$($Pool)${me}[0m" }
-                                "hasrefinery" { "$me[${magenta};1m$($Pool)${me}[0m" }
-                                "zpool" { "$me[${gray};1m$($Pool)${me}[0m" }
-                                "whalesburg" { "$me[${pink};1m$($Pool)${me}[0m" }
+                                "nicehash" { "$me[${yellow}m$($Pool)${me}[0m" }
+                                "zergpool" { "$me[${green}m$($Pool)${me}[0m" }
+                                "nlpool" { "$me[${blue}m$($Pool)${me}[0m" }
+                                "blazepool" { "$me[${red}m$($Pool)${me}[0m" }
+                                "ahashpool" { "$me[${orange}m$($Pool)${me}[0m" }
+                                "blockmasters" { "$me[${cyan}m$($Pool)${me}[0m" }
+                                "fairpool" { "$me[${white}m$($Pool)${me}[0m" }
+                                "hasrefinery" { "$me[${magenta}m$($Pool)${me}[0m" }
+                                "zpool" { "$me[${gray}m$($Pool)${me}[0m" }
+                                "whalesburg" { "$me[${pink}m$($Pool)${me}[0m" }
                             })"
                                 }; 
                                 Align = 'center'
@@ -461,21 +461,21 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                         $Get += $Miner_Table | Sort-Object -Property Profit -Descending | Format-Table -GroupBy Type (
                             @{Label = "Miner`|Coin"; Expression = { "$me[${white};m$($global:index) $($_.Name)${me}[0m`|$me[${green};m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left' },
                             @{Label = "Speed`|Watt/Day"; Expression = { "$me[${white};m$($($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$($_ | Global:ConvertTo-Hash)/s" }else { "Bench" } })${me}[0m`|$me[${green};m$($($_.Power_Day) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'left' },
-                            @{Label = "BTC`|$($Rates.Coin)`|$($Rates.Currency)/Day"; Expression = { "$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m`|$me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m`|$me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'center' },
+                            @{Label = "BTC`|$($Rates.Coin)`|$($Rates.Currency)/Day"; Expression = { "$me[${white}m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m`|$me[${cyan}m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m`|$me[${green}m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'center' },
                             @{Label = "Pool"; Expression = { 
                                     "$(
                                     $Pool = $_.MinerPool
                                     switch ($Pool) {
-                                "nicehash" { "$me[${yellow};1m$($Pool)${me}[0m" }
-                                "zergpool" { "$me[${green};1m$($Pool)${me}[0m" }
-                                "nlpool" { "$me[${blue};1m$($Pool)${me}[0m" }
-                                "blazepool" { "$me[${red};1m$($Pool)${me}[0m" }
-                                "ahashpool" { "$me[${orange};1m$($Pool)${me}[0m" }
-                                "blockmasters" { "$me[${cyan};1m$($Pool)${me}[0m" }
-                                "fairpool" { "$me[${white};1m$($Pool)${me}[0m" }
-                                "hasrefinery" { "$me[${magenta};1m$($Pool)${me}[0m" }
-                                "zpool" { "$me[${gray};1m$($Pool)${me}[0m" }
-                                "whalesburg" { "$me[${pink};1m$($Pool)${me}[0m" }
+                                "nicehash" { "$me[${yellow}m$($Pool)${me}[0m" }
+                                "zergpool" { "$me[${green}m$($Pool)${me}[0m" }
+                                "nlpool" { "$me[${blue}m$($Pool)${me}[0m" }
+                                "blazepool" { "$me[${red}m$($Pool)${me}[0m" }
+                                "ahashpool" { "$me[${orange}m$($Pool)${me}[0m" }
+                                "blockmasters" { "$me[${cyan}m$($Pool)${me}[0m" }
+                                "fairpool" { "$me[${white}m$($Pool)${me}[0m" }
+                                "hasrefinery" { "$me[${magenta}m$($Pool)${me}[0m" }
+                                "zpool" { "$me[${gray}m$($Pool)${me}[0m" }
+                                "whalesburg" { "$me[${pink}m$($Pool)${me}[0m" }
                             })"
                                 }; 
                                 Align = 'center'
@@ -485,23 +485,23 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                     }
                     elseif ($WattTable) {
                         $Get += $Miner_Table | Sort-Object -Property Profit -Descending | Format-Table -GroupBy Type (
-                            @{Label = "Miner`|Coin"; Expression = { "$me[${white};1m$($global:index) $($_.Name)${me}[0m`|$me[${green};1m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left' },
-                            @{Label = "Speed`|Watt/Day"; Expression = { "$me[${white};1m$($($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$($_ | Global:ConvertTo-Hash)/s" }else { "Bench" } })${me}[0m`|$me[${green};1m$($($_.Power_Day) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'left' },
-                            @{Label = "BTC`|$($Rates.Coin)`|$($Rates.Currency)/Day"; Expression = { "$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m`|$me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m`|$me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'center' },
+                            @{Label = "Miner`|Coin"; Expression = { "$me[${white}m$($global:index) $($_.Name)${me}[0m`|$me[${green}m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left' },
+                            @{Label = "Speed`|Watt/Day"; Expression = { "$me[${white}m$($($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$($_ | Global:ConvertTo-Hash)/s" }else { "Bench" } })${me}[0m`|$me[${green}m$($($_.Power_Day) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'left' },
+                            @{Label = "BTC`|$($Rates.Coin)`|$($Rates.Currency)/Day"; Expression = { "$me[${white}m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m`|$me[${cyan}m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m`|$me[${green}m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'center' },
                             @{Label = "Pool"; Expression = { 
                                     "$(
                                     $Pool = $_.MinerPool
                                     switch ($Pool) {
-                                "nicehash" { "$me[${yellow};1m$($Pool)${me}[0m" }
-                                "zergpool" { "$me[${green};1m$($Pool)${me}[0m" }
-                                "nlpool" { "$me[${blue};1m$($Pool)${me}[0m" }
-                                "blazepool" { "$me[${red};1m$($Pool)${me}[0m" }
-                                "ahashpool" { "$me[${orange};1m$($Pool)${me}[0m" }
-                                "blockmasters" { "$me[${cyan};1m$($Pool)${me}[0m" }
-                                "fairpool" { "$me[${white};1m$($Pool)${me}[0m" }
-                                "hasrefinery" { "$me[${magenta};1m$($Pool)${me}[0m" }
-                                "zpool" { "$me[${gray};1m$($Pool)${me}[0m" }
-                                "whalesburg" { "$me[${pink};1m$($Pool)${me}[0m" }
+                                "nicehash" { "$me[${yellow}m$($Pool)${me}[0m" }
+                                "zergpool" { "$me[${green}m$($Pool)${me}[0m" }
+                                "nlpool" { "$me[${blue}m$($Pool)${me}[0m" }
+                                "blazepool" { "$me[${red}m$($Pool)${me}[0m" }
+                                "ahashpool" { "$me[${orange}m$($Pool)${me}[0m" }
+                                "blockmasters" { "$me[${cyan}m$($Pool)${me}[0m" }
+                                "fairpool" { "$me[${white}m$($Pool)${me}[0m" }
+                                "hasrefinery" { "$me[${magenta}m$($Pool)${me}[0m" }
+                                "zpool" { "$me[${gray}m$($Pool)${me}[0m" }
+                                "whalesburg" { "$me[${pink}m$($Pool)${me}[0m" }
                             })"
                                 }; 
                                 Align = 'center'
@@ -510,23 +510,23 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                     }
                     elseif ($ShareTable -and $VolumeTable) {
                         $Get += $Miner_Table | Sort-Object -Property Profit -Descending | Format-Table -GroupBy Type (
-                            @{Label = "Miner`|Coin"; Expression = { "$me[${white};1m$($global:index) $($_.Name)${me}[0m`|$me[${green};1m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left' },
-                            @{Label = "Speed"; Expression = { $($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$me[${white};1m$($_ | Global:ConvertTo-Hash)/s${me}[0m" }else { "$me[${white};1mBench${me}[0m" } } }; Align = 'right' },
-                            @{Label = "BTC`|$($Rates.Coin)`|$($Rates.Currency)/Day"; Expression = { "$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m`|$me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m`|$me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'center' },
+                            @{Label = "Miner`|Coin"; Expression = { "$me[${white}m$($global:index) $($_.Name)${me}[0m`|$me[${green}m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left' },
+                            @{Label = "Speed"; Expression = { $($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$me[${white}m$($_ | Global:ConvertTo-Hash)/s${me}[0m" }else { "$me[${white}mBench${me}[0m" } } }; Align = 'right' },
+                            @{Label = "BTC`|$($Rates.Coin)`|$($Rates.Currency)/Day"; Expression = { "$me[${white}m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m`|$me[${cyan}m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m`|$me[${green}m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'center' },
                             @{Label = "Pool"; Expression = { 
                                     "$(
                                     $Pool = $_.MinerPool
                                     switch ($Pool) {
-                                "nicehash" { "$me[${yellow};1m$($Pool)${me}[0m" }
-                                "zergpool" { "$me[${green};1m$($Pool)${me}[0m" }
-                                "nlpool" { "$me[${blue};1m$($Pool)${me}[0m" }
-                                "blazepool" { "$me[${red};1m$($Pool)${me}[0m" }
-                                "ahashpool" { "$me[${orange};1m$($Pool)${me}[0m" }
-                                "blockmasters" { "$me[${cyan};1m$($Pool)${me}[0m" }
-                                "fairpool" { "$me[${white};1m$($Pool)${me}[0m" }
-                                "hasrefinery" { "$me[${magenta};1m$($Pool)${me}[0m" }
-                                "zpool" { "$me[${gray};1m$($Pool)${me}[0m" }
-                                "whalesburg" { "$me[${pink};1m$($Pool)${me}[0m" }
+                                "nicehash" { "$me[${yellow}m$($Pool)${me}[0m" }
+                                "zergpool" { "$me[${green}m$($Pool)${me}[0m" }
+                                "nlpool" { "$me[${blue}m$($Pool)${me}[0m" }
+                                "blazepool" { "$me[${red}m$($Pool)${me}[0m" }
+                                "ahashpool" { "$me[${orange}m$($Pool)${me}[0m" }
+                                "blockmasters" { "$me[${cyan}m$($Pool)${me}[0m" }
+                                "fairpool" { "$me[${white}m$($Pool)${me}[0m" }
+                                "hasrefinery" { "$me[${magenta}m$($Pool)${me}[0m" }
+                                "zpool" { "$me[${gray}m$($Pool)${me}[0m" }
+                                "whalesburg" { "$me[${pink}m$($Pool)${me}[0m" }
                             })"
                                 }; 
                                 Align = 'center'
@@ -537,23 +537,23 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                     }
                     elseif ($ShareTable) {
                         $Get += $Miner_Table | Sort-Object -Property Profit -Descending | Format-Table -GroupBy Type (
-                            @{Label = "Miner`|Coin"; Expression = { "$me[${white};1m$($global:index) $($_.Name)${me}[0m`|$me[${green};1m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left' },
-                            @{Label = "Speed"; Expression = { $($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$me[${white};1m$($_ | Global:ConvertTo-Hash)/s${me}[0m" }else { "$me[${white};1mBench${me}[0m" } } }; Align = 'right' },
-                            @{Label = "BTC`|$($Rates.Coin)`|$($Rates.Currency)/Day"; Expression = { "$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m`|$me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m`|$me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'center' },
+                            @{Label = "Miner`|Coin"; Expression = { "$me[${white}m$($global:index) $($_.Name)${me}[0m`|$me[${green}m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left' },
+                            @{Label = "Speed"; Expression = { $($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$me[${white}m$($_ | Global:ConvertTo-Hash)/s${me}[0m" }else { "$me[${white}mBench${me}[0m" } } }; Align = 'right' },
+                            @{Label = "BTC`|$($Rates.Coin)`|$($Rates.Currency)/Day"; Expression = { "$me[${white}m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m`|$me[${cyan}m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m`|$me[${green}m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'center' },
                             @{Label = "Pool"; Expression = { 
                                     "$(
                                     $Pool = $_.MinerPool
                                     switch ($Pool) {
-                                "nicehash" { "$me[${yellow};1m$($Pool)${me}[0m" }
-                                "zergpool" { "$me[${green};1m$($Pool)${me}[0m" }
-                                "nlpool" { "$me[${blue};1m$($Pool)${me}[0m" }
-                                "blazepool" { "$me[${red};1m$($Pool)${me}[0m" }
-                                "ahashpool" { "$me[${orange};1m$($Pool)${me}[0m" }
-                                "blockmasters" { "$me[${cyan};1m$($Pool)${me}[0m" }
-                                "fairpool" { "$me[${white};1m$($Pool)${me}[0m" }
-                                "hasrefinery" { "$me[${magenta};1m$($Pool)${me}[0m" }
-                                "zpool" { "$me[${gray};1m$($Pool)${me}[0m" }
-                                "whalesburg" { "$me[${pink};1m$($Pool)${me}[0m" }
+                                "nicehash" { "$me[${yellow}m$($Pool)${me}[0m" }
+                                "zergpool" { "$me[${green}m$($Pool)${me}[0m" }
+                                "nlpool" { "$me[${blue}m$($Pool)${me}[0m" }
+                                "blazepool" { "$me[${red}m$($Pool)${me}[0m" }
+                                "ahashpool" { "$me[${orange}m$($Pool)${me}[0m" }
+                                "blockmasters" { "$me[${cyan}m$($Pool)${me}[0m" }
+                                "fairpool" { "$me[${white}m$($Pool)${me}[0m" }
+                                "hasrefinery" { "$me[${magenta}m$($Pool)${me}[0m" }
+                                "zpool" { "$me[${gray}m$($Pool)${me}[0m" }
+                                "whalesburg" { "$me[${pink}m$($Pool)${me}[0m" }
                             })"
                                 }; 
                                 Align = 'center'
@@ -563,23 +563,23 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                     }
                     elseif ($VolumeTable) {
                         $Get += $Miner_Table | Sort-Object -Property Profit -Descending | Format-Table -GroupBy Type (
-                            @{Label = "Miner`|Coin"; Expression = { "$me[${white};1m$($global:index) $($_.Name)${me}[0m`|$me[${green};1m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left' },
-                            @{Label = "Speed"; Expression = { $($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$me[${white};1m$($_ | Global:ConvertTo-Hash)/s${me}[0m" }else { "$me[${white};1mBench${me}[0m" } } }; Align = 'right' },
-                            @{Label = "BTC`|$($Rates.Coin)`|$($Rates.Currency)/Day"; Expression = { "$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m`|$me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m`|$me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'center' },
+                            @{Label = "Miner`|Coin"; Expression = { "$me[${white}m$($global:index) $($_.Name)${me}[0m`|$me[${green}m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left' },
+                            @{Label = "Speed"; Expression = { $($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$me[${white}m$($_ | Global:ConvertTo-Hash)/s${me}[0m" }else { "$me[${white}mBench${me}[0m" } } }; Align = 'right' },
+                            @{Label = "BTC`|$($Rates.Coin)`|$($Rates.Currency)/Day"; Expression = { "$me[${white}m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m`|$me[${cyan}m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m`|$me[${green}m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'center' },
                             @{Label = "Pool"; Expression = { 
                                     "$(
                                     $Pool = $_.MinerPool
                                     switch ($Pool) {
-                                "nicehash" { "$me[${yellow};1m$($Pool)${me}[0m" }
-                                "zergpool" { "$me[${green};1m$($Pool)${me}[0m" }
-                                "nlpool" { "$me[${blue};1m$($Pool)${me}[0m" }
-                                "blazepool" { "$me[${red};1m$($Pool)${me}[0m" }
-                                "ahashpool" { "$me[${orange};1m$($Pool)${me}[0m" }
-                                "blockmasters" { "$me[${cyan};1m$($Pool)${me}[0m" }
-                                "fairpool" { "$me[${white};1m$($Pool)${me}[0m" }
-                                "hasrefinery" { "$me[${magenta};1m$($Pool)${me}[0m" }
-                                "zpool" { "$me[${gray};1m$($Pool)${me}[0m" }
-                                "whalesburg" { "$me[${pink};1m$($Pool)${me}[0m" }
+                                "nicehash" { "$me[${yellow}m$($Pool)${me}[0m" }
+                                "zergpool" { "$me[${green}m$($Pool)${me}[0m" }
+                                "nlpool" { "$me[${blue}m$($Pool)${me}[0m" }
+                                "blazepool" { "$me[${red}m$($Pool)${me}[0m" }
+                                "ahashpool" { "$me[${orange}m$($Pool)${me}[0m" }
+                                "blockmasters" { "$me[${cyan}m$($Pool)${me}[0m" }
+                                "fairpool" { "$me[${white}m$($Pool)${me}[0m" }
+                                "hasrefinery" { "$me[${magenta}m$($Pool)${me}[0m" }
+                                "zpool" { "$me[${gray}m$($Pool)${me}[0m" }
+                                "whalesburg" { "$me[${pink}m$($Pool)${me}[0m" }
                             })"
                                 }; 
                                 Align = 'center'
@@ -589,23 +589,23 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                     }
                     else {
                         $Get += $Miner_Table | Sort-Object -Property Profit -Descending | Format-Table -GroupBy Type (
-                            @{Label = "Miner`| Coin"; Expression = { "$me[${white};1m$($global:index) $($_.Name)${me}[0m`|$me[${green};1m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left' },
-                            @{Label = "Speed"; Expression = { $($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$me[${white};1m$($_ | Global:ConvertTo-Hash)/s${me}[0m" }else { "$me[${white};1mBench${me}[0m" } } }; Align = 'right' },
-                            @{Label = "BTC`|$($Rates.Coin)`|$($Rates.Currency)/Day"; Expression = { "$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m`|$me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m`|$me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'center' },
+                            @{Label = "Miner`| Coin"; Expression = { "$me[${white}m$($global:index) $($_.Name)${me}[0m`|$me[${green}m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left' },
+                            @{Label = "Speed"; Expression = { $($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$me[${white}m$($_ | Global:ConvertTo-Hash)/s${me}[0m" }else { "$me[${white}mBench${me}[0m" } } }; Align = 'right' },
+                            @{Label = "BTC`|$($Rates.Coin)`|$($Rates.Currency)/Day"; Expression = { "$me[${white}m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m`|$me[${cyan}m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m`|$me[${green}m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m" }; Align = 'center' },
                             @{Label = "Pool"; Expression = { 
                                     "$(
                                     $Pool = $_.MinerPool
                                     switch ($Pool) {
-                                "nicehash" { "$me[${yellow};1m$($Pool)${me}[0m" }
-                                "zergpool" { "$me[${green};1m$($Pool)${me}[0m" }
-                                "nlpool" { "$me[${blue};1m$($Pool)${me}[0m" }
-                                "blazepool" { "$me[${red};1m$($Pool)${me}[0m" }
-                                "ahashpool" { "$me[${orange};1m$($Pool)${me}[0m" }
-                                "blockmasters" { "$me[${cyan};1m$($Pool)${me}[0m" }
-                                "fairpool" { "$me[${white};1m$($Pool)${me}[0m" }
-                                "hasrefinery" { "$me[${magenta};1m$($Pool)${me}[0m" }
-                                "zpool" { "$me[${gray};1m$($Pool)${me}[0m" }
-                                "whalesburg" { "$me[${pink};1m$($Pool)${me}[0m" }
+                                "nicehash" { "$me[${yellow}m$($Pool)${me}[0m" }
+                                "zergpool" { "$me[${green}m$($Pool)${me}[0m" }
+                                "nlpool" { "$me[${blue}m$($Pool)${me}[0m" }
+                                "blazepool" { "$me[${red}m$($Pool)${me}[0m" }
+                                "ahashpool" { "$me[${orange}m$($Pool)${me}[0m" }
+                                "blockmasters" { "$me[${cyan}m$($Pool)${me}[0m" }
+                                "fairpool" { "$me[${white}m$($Pool)${me}[0m" }
+                                "hasrefinery" { "$me[${magenta}m$($Pool)${me}[0m" }
+                                "zpool" { "$me[${gray}m$($Pool)${me}[0m" }
+                                "whalesburg" { "$me[${pink}m$($Pool)${me}[0m" }
                             })"
                                 }; 
                                 Align = 'center'
