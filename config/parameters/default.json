@@ -28,6 +28,7 @@
     "Coin": [
         ""
     ],
+    "Coin_Params": [],
     "CoinExchange": "ETH",
     "Conserve": "No",
     "CPUOnly": "No",
