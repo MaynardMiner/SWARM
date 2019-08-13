@@ -107,7 +107,7 @@ function Global:Start-Webcommand {
                     $method = "message"
                     $messagetype = "info"
                     $data = "stats"
-                    $getpayload = Get-Content ".\build\txt\minerstats.txt"
+                    $getpayload = Invoke-Expression "get stats"
                     $line = @()
                     $getpayload | foreach { $line += "$_`n" }
                     $payload = $line
@@ -279,10 +279,8 @@ function Global:Start-Webcommand {
                         }     
                     }
                     else {
-                        $proc = start-process "pwsh" -Workingdirectory ".\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -command "".\get.ps1 $arguments""" -WindowStyle Minimized -Verb Runas -PassThru
-                        $proc | Wait-Process 
+                        $getpayload = Invoke-Expression "$($command.result.exec)"
                         $Trigger = "exec"
-                        $getpayload = Get-Content ".\build\txt\get.txt"
                         $getpayload | foreach { $line += "$_`n" }
                         $payload = $line
                     }

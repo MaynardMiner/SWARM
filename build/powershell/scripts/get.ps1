@@ -31,17 +31,18 @@ param(
 $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
 [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
 $dir = (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
-$dir = $dir -replace "/var/tmp","/root"
+$dir = $dir -replace "/var/tmp", "/root"
 Set-Location $dir
 
 . .\build\powershell\global\modules.ps1
 
-if(-not $(vars) ){$Global:Config = @{}; $Global:Config.Add("vars",@{}) }
-if(-not $(vars).startup ){$(vars).Add("startup","$dir\build\powershell\startup")}
-if(-not $(vars).global ){$(vars).Add("global","$dir\build\powershell\global")}
-if(-not $(vars).build ){$(vars).Add("build","$dir\build\powershell\build")}
-if(-not $(vars).pool ){$(vars).Add("pool","$dir\build\powershell\pool")}
-if(-not $(vars).web ){$(vars).Add("web","$dir\build\api\web")}
+if (-not $(vars) ) { $Global:Config = @{ }; $Global:Config.Add("vars", @{ }) 
+}
+if (-not $(vars).startup ) { $(vars).Add("startup", "$dir\build\powershell\startup") }
+if (-not $(vars).global ) { $(vars).Add("global", "$dir\build\powershell\global") }
+if (-not $(vars).build ) { $(vars).Add("build", "$dir\build\powershell\build") }
+if (-not $(vars).pool ) { $(vars).Add("pool", "$dir\build\powershell\pool") }
+if (-not $(vars).web ) { $(vars).Add("web", "$dir\build\api\web") }
 
 $p = [Environment]::GetEnvironmentVariable("PSModulePath")
 if ($P -notlike "*$dir\build\powershell*") {
@@ -54,7 +55,7 @@ if ($P -notlike "*$dir\build\powershell*") {
 }
 
 $Get = @()
-if(test-path ".\build\txt\get.txt"){ Clear-Content ".\build\txt\get.txt" }
+if (test-path ".\build\txt\get.txt") { Clear-Content ".\build\txt\get.txt" }
 
 Import-Module -Name "$($(vars).global)\stats.psm1" -Scope Global
 
@@ -354,12 +355,14 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
 
     "wallets" {
         Import-Module "$($(vars).global)\wallettable.psm1" -Scope Global
-        if($asjson){
-        $Get = Global:Get-WalletTable -asjson
-        } else {$Get += Global:Get-WalletTable}
+        if ($asjson) {
+            $Get = Global:Get-WalletTable -asjson
+        }
+        else { $Get += Global:Get-WalletTable }
         Remove-Module "wallettable"
     }
     "stats" {
+        Import-Module -Name "$($(vars).global)\hashrates.psm1" -Scope Global
         if ($Argument2 -eq "lite") {
             if ($Argument3) {
                 $Total = [int]$Argument3 + 1
@@ -374,20 +377,108 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
             }
         }
         else {
-            if ($Argument2) {
-                $Total = [int]$Argument2 + 1
-                if (Test-Path ".\build\txt\minerstats.txt") {
-                    $Get += Get-Content ".\build\txt\minerstats.txt"
-                    $Get += $Get | % { $Number = 0; if ($_ -ne "") { $Number = $_.SubString(0, 2); $Number = $Number -replace " ", ""; try { $Number = [int]$Number }catch { $Number = 0 } }; if ($Number -lt $Total) { $_ } }
+            if (test-path ".\build\txt\profittable.txt") { $Stat_Table = Get-Content ".\build\txt\profittable.txt" | ConvertFrom-Json }
+            else { $Get += "No Stats History Found" }
+            if ($Stat_Table) {
+                $me = [char]27;
+                $white = "37";
+                $blue = "34";
+                $yellow = "33";
+                $green = "32";
+                $cyan = "36";
+                $red = "31";
+                $magenta = "35";            
+                if(test-Path ".\build\txt\rates.txt"){$Rates = Get-Content ".\build\txt\rates.txt" | ConvertFrom-Json}
+                $WattTable = $false
+                $ShareTable = $false
+                $VolumeTable = $false
+                $Stat_Table | ForEach-Object { if ([Double]$_.Power_Day -gt 0) { $WattTable = $True } }
+                $Stat_Table | ForEach-Object { if ([Double]$_.Shares -gt 0) { $ShareTable = $True } }
+                $Stat_Table | ForEach-Object { if ([Double]$_.Volume -gt 0) { $VolumeTable = $True } }            
+                $Type = $Stat_table.Type | Select -Unique
+                $Test = "$me[${white};1mMiner${me}[0m"
+                $Type | ForEach-Object {
+                    $Miner_Table = $Stat_Table | Where Type -eq $_
+                    if ($Argument2) { $Miner_Table = $Miner_Table | Sort-Object -Property Price -Descending | Select -First ([int]($Argument2 + 1)) }
+                    $global:index = 0
+                    if ($WattTable -and $ShareTable -and $VolumeTable) {
+                        $Get += $Miner_Table | Sort-Object -Property Profit -Descending | Format-Table -GroupBy Type (
+                            @{Label = "Miner `| Coin"; Expression = { "$me[${white};1m$($global:index) $($_.Name)${me}[0m `| $me[${green};1m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left'},
+                            @{Label = "Speed `| Watt/Day"; Expression = { "$me[${white};1m$($($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$($_ | Global:ConvertTo-Hash)/s" }else { "Bench" } })${me}[0 m`| $me[${green};1m$($($_.Power_Day) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m"}; Align = 'left' },
+                            @{Label = "BTC `| $($Rates.Coin) `| $($Rates.Currency)/Day"; Expression = {"$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m `| $me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m `| $me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m"}; Align ='center'},
+                            @{Label = "Pool"; Expression = { "$me[${white};1m$($_.MinerPool)${me}[0m" }; Align = 'center' },
+                            @{Label = "Shares"; Expression = { $($_.Shares -as [Decimal]).ToString("N2") }; Align = 'center' },
+                            @{Label = "Vol."; Expression = { $($_.Volume) | ForEach-Object { if ($null -ne $_) { "$([math]::Round(100 - $_,0).ToString())`%" }else { "Bench" } } }; Align = 'left' }
+                        )
+                    }
+                    elseif ($WattTable -and $ShareTable) {
+                        $Get += $Miner_Table | Sort-Object -Property Profit -Descending | Format-Table -GroupBy Type (
+                            @{Label = "Miner `| Coin"; Expression = { "$me[${white};1m$($global:index) $($_.Name)${me}[0m `| $me[${green};1m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left'},
+                            @{Label = "Speed `| Watt/Day"; Expression = { "$me[${white};1m$($($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$($_ | Global:ConvertTo-Hash)/s" }else { "Bench" } })${me}[0m `| $me[${green};1m$($($_.Power_Day) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m"}; Align = 'left' },
+                            @{Label = "BTC `| $($Rates.Coin) `| $($Rates.Currency)/Day"; Expression = {"$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m `| $me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m `| $me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m"}; Align ='center'},
+                            @{Label = "Pool"; Expression = { "$me[${white};1m$($_.MinerPool)${me}[0m" }; Align = 'center' },
+                            @{Label = "Shares"; Expression = { $($_.Shares -as [Decimal]).ToString("N2") }; Align = 'center' }
+                        )
+                    }
+                    elseif ($WattTable -and $VolumeTable) {
+                        $Get += $Miner_Table | Sort-Object -Property Profit -Descending | Format-Table -GroupBy Type (
+                            @{Label = "Miner `| Coin"; Expression = { "$me[${white};m$($global:index) $($_.Name)${me}[0m `| $me[${green};m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left'},
+                            @{Label = "Speed `| Watt/Day"; Expression = { "$me[${white};m$($($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$($_ | Global:ConvertTo-Hash)/s" }else { "Bench" } })${me}[0m `| $me[${green};m$($($_.Power_Day) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m"}; Align = 'left' },
+                            @{Label = "BTC `| $($Rates.Coin) `| $($Rates.Currency)/Day"; Expression = {"$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m `| $me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m `| $me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m"}; Align ='center'},
+                            @{Label = "Pool"; Expression = { "$me[${white};m$($_.MinerPool)${me}[0m" }; Align = 'center' },
+                            @{Label = "Vol."; Expression = { $($_.Volume) | ForEach-Object { if ($null -ne $_) { "$([math]::Round(100 - $_,0).ToString())`%" }else { "Bench" } } }; Align = 'left' }
+                        )
+                    }
+                    elseif ($WattTable) {
+                        $Get += $Miner_Table | Sort-Object -Property Profit -Descending | Format-Table -GroupBy Type (
+                            @{Label = "Miner `| Coin"; Expression = { "$me[${white};1m$($global:index) $($_.Name)${me}[0m `| $me[${green};1m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left'},
+                            @{Label = "Speed `| Watt/Day"; Expression = { "$me[${white};1m$($($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$($_ | Global:ConvertTo-Hash)/s" }else { "Bench" } })${me}[0m `| $me[${green};1m$($($_.Power_Day) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m"}; Align = 'left' },
+                            @{Label = "BTC `| $($Rates.Coin) `| $($Rates.Currency)/Day"; Expression = {"$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m `| $me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m `| $me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m"}; Align ='center'},
+                            @{Label = "Pool"; Expression = { "$me[${white};1m$($_.MinerPool)${me}[0m" }; Align = 'center' }
+                        )
+                    }
+                    elseif ($ShareTable -and $VolumeTable) {
+                        $Get += $Miner_Table | Sort-Object -Property Profit -Descending | Format-Table -GroupBy Type (
+                            @{Label = "Miner `| Coin"; Expression = { "$me[${white};1m$($global:index) $($_.Name)${me}[0m `| $me[${green};1m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left'},
+                            @{Label = "Speed"; Expression = { $($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$me[${white};1m$($_ | Global:ConvertTo-Hash)/s${me}[0m" }else { "$me[${white};1mBench${me}[0m" } } }; Align = 'right' },
+                            @{Label = "BTC `| $($Rates.Coin) `| $($Rates.Currency)/Day"; Expression = {"$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m `| $me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m `| $me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m"}; Align ='center'},
+                            @{Label = "Pool"; Expression = { "$me[${white};1m$($_.MinerPool)${me}[0m" }; Align = 'center' },
+                            @{Label = "Shares"; Expression = { $($_.Shares -as [Decimal]).ToString("N2") }; Align = 'center' },
+                            @{Label = "Vol."; Expression = { $($_.Volume) | ForEach-Object { if ($null -ne $_) { "$([math]::Round(100 - $_,0).ToString())`%" }else { "Bench" } } }; Align = 'left' }
+                        )
+                    }
+                    elseif ($ShareTable) {
+                        $Get += $Miner_Table | Sort-Object -Property Profit -Descending | Format-Table -GroupBy Type (
+                            @{Label = "Miner `| Coin"; Expression = { "$me[${white};1m$($global:index) $($_.Name)${me}[0m `| $me[${green};1m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left'},
+                            @{Label = "Speed"; Expression = { $($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$me[${white};1m$($_ | Global:ConvertTo-Hash)/s${me}[0m" }else { "$me[${white};1mBench${me}[0m" } } }; Align = 'right' },
+                            @{Label = "BTC `| $($Rates.Coin) `| $($Rates.Currency)/Day"; Expression = {"$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m `| $me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m `| $me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m"}; Align ='center'},
+                            @{Label = "Pool"; Expression = { "$me[${white};1m$($_.MinerPool)${me}[0m" }; Align = 'center' },
+                            @{Label = "Shares"; Expression = { $($_.Shares -as [Decimal]).ToString("N2") }; Align = 'center' }
+                        )
+                    }
+                    elseif ($VolumeTable) {
+                        $Get += $Miner_Table | Sort-Object -Property Profit -Descending | Format-Table -GroupBy Type (
+                            @{Label = "Miner `| Coin"; Expression = { "$me[${white};1m$($global:index) $($_.Name)${me}[0m `| $me[${green};1m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left'},
+                            @{Label = "Speed"; Expression = { $($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$me[${white};1m$($_ | Global:ConvertTo-Hash)/s${me}[0m" }else { "$me[${white};1mBench${me}[0m" } } }; Align = 'right' },
+                            @{Label = "BTC `| $($Rates.Coin) `| $($Rates.Currency)/Day"; Expression = {"$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m `| $me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m `| $me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m"}; Align ='center'},
+                            @{Label = "Pool"; Expression = { "$me[${white};1m$($_.MinerPool)${me}[0m" }; Align = 'center' },
+                            @{Label = "Vol."; Expression = { $($_.Volume) | ForEach-Object { if ($null -ne $_) { "$([math]::Round(100 - $_,0).ToString())`%" }else { "Bench" } } }; Align = 'left' }
+                        )
+                    }
+                    else {
+                        $Get += $Miner_Table | Sort-Object -Property Profit -Descending | Format-Table -GroupBy Type (
+                            @{Label = "Miner`| Coin"; Expression = { "$me[${white};1m$($global:index) $($_.Name)${me}[0m `| $me[${green};1m$($_.ScreenName)${me}[0m"; $global:index += 1 }; Align = 'left'},
+                            @{Label = "Speed"; Expression = { $($_.HashRates) | ForEach-Object { if ($null -ne $_) { "$me[${white};1m$($_ | Global:ConvertTo-Hash)/s${me}[0m" }else { "$me[${white};1mBench${me}[0m" } } }; Align = 'right' },
+                            @{Label = "BTC `| $($Rates.Coin) `| $($Rates.Currency)/Day"; Expression = {"$me[${white};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { $_.ToString("N5") }else { "Bench" } })${me}[0m `| $me[${cyan};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ / $Rates.Exchange).ToString("N5") }else { "Bench" } } )${me}[0m `| $me[${green};1m$($($_.Profit) | ForEach-Object { if ($null -ne $_) { ($_ * $Rates.Rate).ToString("N2") }else { "Bench" } })${me}[0m"}; Align ='center'},
+                            @{Label = "Pool"; Expression = { "$me[${white};1m$($_.MinerPool)${me}[0m" }; Align = 'center' }
+                        )
+                    }
                 }
-                else { $Get += "No Stats History Found" }    
-
-            }
-            else {
-                if (Test-Path ".\build\txt\minerstats.txt") { $Get += Get-Content ".\build\txt\minerstats.txt" }
-                else { $Get += "No Stats History Found" }
             }
         }
+        $MSFile = ".\build\txt\minerstats.txt"
+        if(test-Path ".\build\txt\minerstats.txt"){$Get += Get-Content ".\build\txt\minerstats.txt"}
+        Remove-Module "hashrates"
     }
     "charts" { if (Test-Path ".\build\txt\charts.txt") { $Get += Get-Content ".\build\txt\charts.txt" } }
     "active" {
@@ -395,9 +486,9 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
         else { $Get += "No Miner History Found" }
     }
     "parameters" {
-        if (Test-Path ".\config\parameters\newarguments.json") {$FilePath = ".\config\parameters\newarguments.json"}
-        else {$FilePath = ".\config\parameters\arguments.json"}
-        if(Test-Path $FilePath) {
+        if (Test-Path ".\config\parameters\newarguments.json") { $FilePath = ".\config\parameters\newarguments.json" }
+        else { $FilePath = ".\config\parameters\arguments.json" }
+        if (Test-Path $FilePath) {
             $SwarmParameters = @()
             $MinerArgs = Get-Content $FilePath | ConvertFrom-Json
             $MinerArgs | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Foreach { $SwarmParameters += "$($_): $($MinerArgs.$_)" }
@@ -577,5 +668,4 @@ to see a list of availble items.
     }
 }
 
-    $Get
-    $Get | Set-Content ".\build\txt\get.txt"
+$Get

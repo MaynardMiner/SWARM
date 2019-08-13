@@ -564,7 +564,6 @@ While ($true) {
         Global:Clear-Commands
         Get-Date | Out-File ".\build\txt\minerstats.txt"
         Get-Date | Out-File ".\build\txt\charts.txt"
-        Global:Get-MinerStatus | Out-File ".\build\txt\minerstats.txt" -Append
         Global:Get-Charts | Out-File ".\build\txt\charts.txt" -Append
 
         ## Refreshing Pricing Data
