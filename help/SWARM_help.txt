@@ -84,7 +84,7 @@ Argument      Options             Explanation
 
                                     These will only be enacted when coin is most profitble on the list,
                                     and the most profitable pool is one of the auto_coin pools. You can
-                                    use arguments like -Algorithm and -Coin to narrow the amount of algorithms/coins,
+                                    use arguments like -Algorithm to narrow the amount of algorithms/coins,
                                     So you will switch to these items regularly.
 
                                     Example of argument use-
