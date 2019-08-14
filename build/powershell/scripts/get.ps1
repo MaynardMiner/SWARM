@@ -402,7 +402,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 $Test = "$me[${white}mMiner${me}[0m"
                 $Type | ForEach-Object {
                     $Miner_Table = $Stat_Table | Where Type -eq $_
-                    if ($Argument2) { $Miner_Table = $Miner_Table | Sort-Object -Property Price -Descending | Select -First ([int]$Argument2) }
+                    if ($Argument2) { $Miner_Table = $Miner_Table | Sort-Object -Property Profit -Descending | Select -First ([int]$Argument2) }
                     $global:index = 0
                     if ($WattTable -and $ShareTable -and $VolumeTable) {
                         $Get += $Miner_Table | Sort-Object -Property Profit -Descending | Format-Table -GroupBy Type (
