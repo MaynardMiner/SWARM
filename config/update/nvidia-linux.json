@@ -315,7 +315,7 @@
     "NVIDIA2": ".\\bin\\swarm-miner-2\\SWARM-MINER",
     "NVIDIA3": ".\\bin\\swarm-miner-3\\SWARM-MINER",
     "minername": "SWARM-MINER",
-    "version": "1.04",
+    "version": "1.05",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/SWARM-MINER-linux.tar.gz"
   }        
