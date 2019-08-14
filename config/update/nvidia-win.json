@@ -84,9 +84,9 @@
         "NVIDIA2": ".\\bin\\gminer-2\\miner.exe",
         "NVIDIA3": ".\\bin\\gminer-3\\miner.exe",
         "minername": "miner.exe",
-        "version": "1.53",
+        "version": "1.55",
         "optional": "No",
-        "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.53/gminer_1_53_windows64.zip"
+        "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.55/gminer_1_55_windows64.zip"
     },
     "claymore": {
         "name": "claymore",
@@ -106,9 +106,9 @@
         "NVIDIA2": ".\\bin\\cryptodredge-2\\CryptoDredge.exe",
         "NVIDIA3": ".\\bin\\cryptodredge-3\\CryptoDredge.exe",
         "minername": "CryptoDredge.exe",
-        "version": "0.20.2",
+        "version": "0.21.0",
         "optional": "No",
-        "uri": "https://github.com/technobyl/CryptoDredge/releases/download/v0.20.2/CryptoDredge_0.20.2_cuda_10.1_windows.zip"
+        "uri": "https://github.com/technobyl/CryptoDredge/releases/download/v0.21.0/CryptoDredge_0.21.0_cuda_10.1_windows.zip"
     },
     "dstm": {
         "name": "dstm",
@@ -161,9 +161,9 @@
         "NVIDIA2": ".\\bin\\miniz-2\\miniZ.exe",
         "NVIDIA3": ".\\bin\\miniz-3\\miniZ.exe",
         "minername": "miniZ.exe",
-        "version": "v1.4o",
+        "version": "v1.5p",
         "optional": "No",
-        "uri": "https://miniz.ch/?smd_process_download=1&download_id=2682"
+        "uri": "https://miniz.ch/?smd_process_download=1&download_id=2806"
     },
     "phoenix": {
         "name": "phoenix",
@@ -282,7 +282,7 @@
             "NVIDIA2": ".\\bin\\swarm-miner-2\\SWARM-MINER.exe",
             "NVIDIA3": ".\\bin\\swarm-miner-3\\SWARM-MINER.exe",
             "minername": "SWARM-MINER.exe",
-            "version": "1.04",
+            "version": "1.05",
             "optional": "No",
             "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/SWARM-MINER-windows.zip"
           }        

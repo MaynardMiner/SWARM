@@ -700,3 +700,52 @@ I will work on splitting miners for each algo.
     Read api specs may have changed.
     Need to test further.
 * Swarm help programs/commands updated.
+###########################################
+###########################################
+
+# SWARM 2.5.9
+
+## New Parameters!
+
+* ``-Time_Wait`` Default is 10 seconds.
+               For linux version only.
+               The maximum amount of time
+               SWARM will continue to 
+               clear miner API ports,
+               before continuing on.
+
+* ``-Coin_params`` See SWARM_help.txt for usage.
+                 Is meant to allow remote change
+                 of wallets.json for solo mining
+                 or direct mining of coins.
+
+
+## Updates!
+* miniz updated
+* gminer updated
+* cryptodredge updated
+* cpuminer-opt updated
+* xmrig update
+* lolminer updated
+* swarm-miner updated
+   * slight improvements
+     to speed (1%-2%)
+     for bmw512.
+   * Fix small issues in
+     Windows version. 
+
+## New Features
+* Condensed ``get stats`` command
+  to fit on screen remotely.
+  Colorized output.
+
+* Stat files have a new format.
+   (profit.txt)
+
+## Fixes
+* Fixed potential issue with parsing
+  Windows flight sheet for multiple
+  NVIDIA device groups.
+* Fixed issues with ``-Volume`` parameter,
+  and divide by 0 when pool hashrate was
+  0.

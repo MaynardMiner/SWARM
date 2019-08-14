@@ -28,7 +28,9 @@ if ($Name -in $(arg).PoolName) {
 
     ## Add 24 hour deviation.
     $Pool_Sorted | ForEach-Object {
-        $Raw = shuffle $_.estimate_last24h $_.actual_last24h
+        $Day_Estimate = [Double]$_.estimate_last24h;
+        $Day_Return = [Double]$_.actual_last24h;
+        $Raw = shuffle $Day_Estimate $Day_Return
         $_ | Add-Member "deviation" $Raw
     }
   
@@ -41,10 +43,12 @@ if ($Name -in $(arg).PoolName) {
         $Pool_Port = $_.port
         $Pool_Host = "$($_.Original_Algo).mine.ahashpool.com$X"
         $Divisor = 1000000 * $_.mbtc_mh_factor
-        $Hashrate = $_.hashrate_shared
+        $Hashrate = $_.hashrate
+        if([double]$HashRate -eq 0){ $Hashrate = 1 }  ## Set to prevent volume dividebyzero error
         $previous = [Math]::Max(([Double]$_.actual_last24h * 0.001) / $Divisor * (1 - ($_.fees / 100)), $SmallestValue)
     
-        $Stat = Global:Set-Stat -Name $StatPath -HashRate $HashRate -Value ( $Estimate / $Divisor * (1 - ($_.fees / 100))) -Shuffle $_.deviation 
+        $Deviation = $_.Deviation
+        $Stat = Global:Set-Stat -Name $StatPath -HashRate $HashRate -Value ( $Estimate / $Divisor * (1 - ($_.fees / 100))) -Shuffle $Deviation
         if (-not $(vars).Pool_Hashrates.$($_.Name)) { $(vars).Pool_Hashrates.Add("$($_.Name)", @{ }) }
         if (-not $(vars).Pool_Hashrates.$($_.Name).$Name) { $(vars).Pool_Hashrates.$($_.Name).Add("$Name", @{HashRate = "$($Stat.HashRate)"; Percent = "" })}
         

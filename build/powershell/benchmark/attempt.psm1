@@ -233,11 +233,12 @@ function Global:Start-Benchmark {
                                     if (-not (Test-Path $NewHashrateFilePath)) {
                                         Copy-Item $HashrateFilePath -Destination $NewHashrateFilePath -force
                                         log "$($_.Name) $($_.Symbol) Was Benchmarked And Backed Up" -foregroundcolor yellow
+                                        log "Was this stat not correct? You can run command 'benchmark miner $($_.Name)' or 'benchmark algorithm $($_.algo)' to reset benchmark`n" -foregroundcolor cyan
                                     }
                                     $global:WasBenchmarked = $True
                                     Global:Get-Intensity $_.Type $_.Symbol $_.Path
-                                    log "Stat Written
-" -foregroundcolor green
+                                    log "Stat Written" -foregroundcolor green
+                                    log "Was this stat not correct? You can run command 'benchmark miner $($_.Name)' or 'benchmark algorithm $($_.algo)' to reset benchmark`n" -foregroundcolor cyan
                                     $Global:Strike = $false
                                 } 
                             }

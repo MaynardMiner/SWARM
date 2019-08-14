@@ -49,6 +49,7 @@ function Global:start-update {
         $PreviousVersions += "SWARM.2.5.5"
         $PreviousVersions += "SWARM.2.5.6"
         $PreviousVersions += "SWARM.2.5.7"
+        $PreviousVersions += "SWARM.2.5.8"
 
         $StatsOnly = $null
 
@@ -112,7 +113,6 @@ function Global:start-update {
                 if ($StatsOnly -ne "Yes") {
                     $Jsons = @("asic","miners","oc","pools","power","wallets")
                     $UpdateType = @("CPU", "AMD1", "NVIDIA1", "NVIDIA2", "NVIDIA3")
-                    if ($CurrentVersion -le 243) { $Exclude += "wallets.json" }
 
                     $Jsons | foreach {
                         $OldJson_Path = Join-Path $OldConfig "$($_)";
@@ -221,6 +221,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "equihash_125/4" "equihash_125/4" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "equihash_125/4" 2 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "equihash_96/5" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "equihash_96/5" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "equihash_96/5" "equihash_125/4" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "equihash_96/5" 2 -ErrorAction SilentlyContinue
 
                                         }
                                     }

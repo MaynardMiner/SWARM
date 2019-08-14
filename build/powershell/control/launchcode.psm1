@@ -385,9 +385,9 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                     $proc | Wait-Process -Timeout 5 -ErrorAction Ignore
                     if ($proc.HasExited -eq $false) {
                         log "Still Waiting For Port To Clear..." -ForegroundColor Cyan
-                        $warn++
-                    } else{ $warn = 10 }
-                }while ($warn -lt 2)
+                        $warn += 5 
+                    } else{ $warn = $(arg).time_wait }
+                }while ($warn -lt $(arg).time_wait)
                 
                 if($warn -eq 2) { 
                     log "Warning: Port still listed as TIME_WAIT, but launching anyway" -ForegroundColor Yellow 

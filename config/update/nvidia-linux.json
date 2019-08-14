@@ -51,9 +51,9 @@
     "NVIDIA2": ".\\bin\\cryptodredge-2\\CryptoDredge",
     "NVIDIA3": ".\\bin\\cryptodredge-3\\CryptoDredge",
     "minername": "CryptoDredge",
-    "version": "0.20.2",
+    "version": "0.21.0",
     "optional": "No",
-    "uri": "https://github.com/technobyl/CryptoDredge/releases/download/v0.20.2/CryptoDredge_0.20.2_cuda_10.1_linux.tar.gz"
+    "uri": "https://github.com/technobyl/CryptoDredge/releases/download/v0.21.0/CryptoDredge_0.21.0_cuda_10.1_linux.tar.gz"
   },
   "cc-mtp": {
     "name": "cc-mtp",
@@ -205,9 +205,9 @@
     "NVIDIA2": ".\\bin\\gminer-2\\miner",
     "NVIDIA3": ".\\bin\\gminer-3\\miner",
     "minername": "miner",
-    "version": "1.53",
+    "version": "1.55",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.53/gminer_1_53_linux64.tar.xz"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.55/gminer_1_55_linux64.tar.xz"
   },
   "grin-miner": {
     "name": "grin-miner",
@@ -238,9 +238,9 @@
     "NVIDIA2": ".\\bin\\miniz-2\\miniZ",
     "NVIDIA3": ".\\bin\\miniz-3\\miniZ",
     "minername": "miniZ",
-    "version": "v1.4o",
+    "version": "v1.5p",
     "optional": "No",
-    "uri": "https://miniz.ch/?smd_process_download=1&download_id=2684"
+    "uri": "https://miniz.ch/?smd_process_download=1&download_id=2808"
   },
   "progminer": {
     "name": "progminer",
@@ -315,7 +315,7 @@
     "NVIDIA2": ".\\bin\\swarm-miner-2\\SWARM-MINER",
     "NVIDIA3": ".\\bin\\swarm-miner-3\\SWARM-MINER",
     "minername": "SWARM-MINER",
-    "version": "1.04",
+    "version": "1.05",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/SWARM-MINER-linux.tar.gz"
   }        
