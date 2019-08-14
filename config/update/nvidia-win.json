@@ -161,9 +161,9 @@
         "NVIDIA2": ".\\bin\\miniz-2\\miniZ.exe",
         "NVIDIA3": ".\\bin\\miniz-3\\miniZ.exe",
         "minername": "miniZ.exe",
-        "version": "v1.4o",
+        "version": "v1.5p",
         "optional": "No",
-        "uri": "https://miniz.ch/?smd_process_download=1&download_id=2682"
+        "uri": "https://miniz.ch/?smd_process_download=1&download_id=2806"
     },
     "phoenix": {
         "name": "phoenix",
