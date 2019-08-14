@@ -57,6 +57,13 @@ These arguments can be added for additional customization and options
 
 Argument      Options             Explanation
 
+-Time_Wait     [seconds]            Default is 10.
+                                    For linux version only.
+                                    The maximum amount of time
+                                    SWARM will continue to 
+                                    clear miner API ports,
+                                    before continuing on.
+
 -Coin_Params [See Explanation]      Before using this parameter, view ".\config\wallets\wallets.json"
                                     file. This parameter allows you to remotely add to the 
                                     "Passive Alternative Wallets" section.
