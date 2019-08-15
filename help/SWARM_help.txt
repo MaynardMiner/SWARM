@@ -73,31 +73,36 @@ Argument      Options             Explanation
                                     * No -Altwallet parameters specified.
 
                                     The format of the argument is as followed:
-                                    [symbol:address:solo:exchange],[symbol:address:solo:exchange]
+                                    [symbol:address:params:exchange],[symbol:address:params:exchange]
                                     You can add as many different combinations as you want, comma 
 				    separating each one.
 
-                                    solo and exchange are either set to 'yes' or 'no'
-                                    solo can only be done on zergpool.
+                                    exchange are either set to 'yes' or 'no'.
+
+                                    params are m= params, is used on zergpool.
+                                     * If you mine on zpool, you will shared mine, no m= parameter.
+                                     * If you mine on zpool only, use "none"
+                                     * If you are not using m= params, use "none"
+
                                     address is ONLY added if you mining the coin directly (no auto-exchange)
-                                    if you do not wish to mine the coin directly- use "none" 
+                                     * If you do not wish to mine the coin directly- use "none" 
 
                                     These will only be enacted when coin is most profitble on the list,
                                     and the most profitable pool is one of the auto_coin pools. You can
                                     use arguments like -Algorithm to narrow the amount of algorithms/coins,
                                     So you will switch to these items regularly.
 
-                                    Example of argument use-
+                                    Examples of argument use-
 
                                     Solo mine RVN coin, and auto-exchange reward when it is most profitable:
-                                    -Coin_Params RVN:none:Yes:Yes
+                                    -Coin_Params RVN:none:solo:Yes
 
                                     Mine RVN coin directly, but do not solo mine it:
-                                    -Coin_Params RVN:RKirUe978mBoa2MRWqeMGqDzVAKTafKh8H:No:No
+                                    -Coin_Params RVN:RKirUe978mBoa2MRWqeMGqDzVAKTafKh8H:None:No
                                                     (Note: this would be a RVN address)
 
-                                    Solo mine RVN, but do not auto-exchange reward:
-                                    -Coin_Params RVN:RKirUe978mBoa2MRWqeMGqDzVAKTafKh8H:Yes:No
+                                    Party mine RVN, but do not auto-exchange reward:
+                                    -Coin_Params RVN:RKirUe978mBoa2MRWqeMGqDzVAKTafKh8H:myparty.mypartypass:No
                                                      (Note: this would be a RVN address)
 
 
