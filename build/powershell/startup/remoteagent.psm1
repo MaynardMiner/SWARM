@@ -494,7 +494,7 @@ function Global:start-update {
 
                                 }
 
-                                $Data | ConvertTo-Json -Depth 3 | Set-Content $NewJson;
+                                $Data | ConvertTo-Json -Depth 10 | Set-Content $NewJson;
                                 log "Wrote To $NewJson"
                             }
                         }
@@ -510,7 +510,7 @@ function Global:start-update {
                         log "Pulled $NameJson"
                         $Data = $JsonData | ConvertFrom-Json;
                         $Data | Add-Member "name" "$NewName" -ErrorAction SilentlyContinue
-                        $Data | ConvertTo-Json -Depth 5 | Set-Content $NameJson;
+                        $Data | ConvertTo-Json -Depth 10 | Set-Content $NameJson;
                         log "Wrote To $NameJson"
                     }
 
