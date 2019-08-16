@@ -28,7 +28,7 @@ $Nicehash_Ports =
 
 "lyra2rev3":"3373",         "mtp":"3374",               "cryptonightr":"3375",      "cuckoocycle":"3376",
 
-"grincuckarood29":"3377"
+"grincuckarood29":"3377",   "beamv2":3378
 
 }'    
 

@@ -262,6 +262,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "equihash_96/5" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "equihash_96/5" "equihash_96/5" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "equihash_96/5" 2 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "beamv2" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "beamv2" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "beamv2" "beamv2" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "beamv2" 2 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }
@@ -360,6 +365,7 @@ function Global:start-update {
                                     $Data | add-Member "equihash_150/5" @{alt_names = @("equihash_150/5","equihash150","beam"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force                                   
                                     $Data | add-Member "argon2d500" @{alt_names = @("argon2d500"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force         
                                     $Data | add-Member "argon2d-dyn" @{alt_names = @("argon2d-dyn"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force                                                             
+                                    $Data | add-Member "beamv2" @{alt_names = @("beamv2"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force                                                             
                                 } 
                                 
 
