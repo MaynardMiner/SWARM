@@ -70,7 +70,7 @@ $(vars).AMDTypes | ForEach-Object {
                 $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                     $SelAlgo = $_.Algorithm
                     switch ($SelAlgo) {
-                        "equihash_150/5" { $AddArgs = "--algo 150_5 --pers auto " }
+                        "equihash_150/5" { $AddArgs = "--algo 150_5 " }
                         "cuckoo_cycle" { $AddArgs = "--algo aeternity " }
                         "cuckaroo29" { $AddArgs = "--algo grin29 " }
                         "cuckatoo31" { $AddArgs = "--algo grin31 " }
