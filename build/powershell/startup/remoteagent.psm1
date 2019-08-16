@@ -146,6 +146,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "cuckaroo29d" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "cuckaroo29d" "cuckaroo29d" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "cuckaroo29d" 1 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "beamv2" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "beamv2" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "beamv2" "beamv2" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "beamv2" 1 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }
