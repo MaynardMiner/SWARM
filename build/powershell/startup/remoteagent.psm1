@@ -172,6 +172,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "cuckaroo29d" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "cuckaroo29d" "cuckaroo29d" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "cuckaroo29d" 2 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "beamv2" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "beamv2" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "beamv2" "beamv2" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "beamv2" 2 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }
@@ -231,6 +236,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "equihash_96/5" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "equihash_96/5" "equihash_125/4" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "equihash_96/5" 2 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "beamv2" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "beamv2" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "beamv2" "beamv2" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "beamv2" 2 -ErrorAction SilentlyContinue
 
                                         }
                                     }
