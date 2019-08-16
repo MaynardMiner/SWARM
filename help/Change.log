@@ -749,3 +749,27 @@ I will work on splitting miners for each algo.
 * Fixed issues with ``-Volume`` parameter,
   and divide by 0 when pool hashrate was
   0.
+
+###########################################
+###########################################
+
+# SWARM 2.6.0
+
+## Changes
+* wallets.json has changed. "solo" has
+  become "params"
+* ``-Coin_Params`` argument has changed.
+   [symbol]:[address]:[params]:[exchange]
+* See SWARM_help.txt and wallets.json
+  for info - Allows party mining as well.
+
+## Updates
+* bminer updated
+* lolminer updated
+* beamv2 on nicehash added
+
+## Fixes
+Adjusted -Stat_Algo Day & -Stat_Coin Day
+to allow full values.
+
+
