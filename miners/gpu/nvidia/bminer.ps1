@@ -60,6 +60,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                                 "cuckatoo31" { $Pass = ""; $Naming = "cuckatoo31"; $AddArgs = "-pers auto " }
                                 "equihash_150/5" { $Pass = ""; $Naming = "beam"; $AddArgs = "" }
                                 "equihash_144/5" { $Pass = ""; $Naming = "zhash"; $AddArgs = "" }
+                                "beamv2" { $Pass = ""; $Naming = "beamhash2"; $AddArgs = "" }
                             }
                         }
                         "whalesburg" {
