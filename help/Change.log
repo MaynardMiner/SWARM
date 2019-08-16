@@ -769,7 +769,6 @@ I will work on splitting miners for each algo.
 * beamv2 on nicehash added
 
 ## Fixes
-Adjusted -Stat_Algo Day & -Stat_Coin Day
+* Adjusted -Stat_Algo Day & -Stat_Coin Day
 to allow full values.
-
-
+* Fixed new ``get stats lite`` table
