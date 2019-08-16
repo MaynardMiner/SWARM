@@ -34,7 +34,8 @@ function Global:Get-AltWallets {
             $symbol = $Coin_Param | Select -First 1
             $address = $Coin_Param | Select -Skip 1 -First 1
             if($address -eq "none"){$address = "add address of coin if you wish to mine to that address, or leave alone."}
-            $solo = $Coin_Param | Select -Skip 2 -First 1
+            $params = $Coin_Param | Select -Skip 2 -First 1
+            if($params -eq "none"){$params = "enter additional params here, such as 'm=solo' or m=party.partypassword"}
             $exchange = $Coin_Param | Select -Skip 3 -First 1
             if ($symbol) {
                 if ($symbol -notin $Wallets."Passive Alternative Wallets"."coin list") {

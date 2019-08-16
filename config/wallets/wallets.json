@@ -73,12 +73,12 @@
         "coin list": {
             "add coin symbol here": {
                 "address": "add address of coin if you wish to mine to that address, or leave alone.",
-                "solo": "'Yes' for solo mode. 'No' for normal mode",
+                "params": "enter additional params here, such as 'm=solo' or m=party.partypassword",
                 "exchange": "'Yes' if you wish to auto-exchange. 'No' if you wish to mine this coin directly- address is required."
             },
             "Add another symbol of coin here": {
                 "address": "add address of coin if you wish to mine to that address, or leave alone.",
-                "solo": "'Yes' for solo mode. 'No' for normal mode",
+                "params": "enter additional params here, such as 'm=solo' or m=party.partypassword",
                 "exchange": "'Yes' if you wish to auto-exchange. 'No' if you wish to mine this coin directly- address is required."
             }
         }

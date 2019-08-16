@@ -308,9 +308,9 @@ Argument          Options           Explanation
 		    Day                 you choose price averages, what average to base it on. Default
                     Custom              is day. If using -Custom_Periods, this must be set to Custom.
 
-************************************************************************************
-*************** Miner Control ******************************************************
-************************************************************************************
+***********************************************************************************************************
+*************** Miner Control *****************************************************************************
+***********************************************************************************************************
 
    These arguments are meant to control miners.
 
@@ -360,9 +360,9 @@ Argument          Options           Explanation
                filenames]           example: -optional zjazz,avermore  /  "optional": ["avermore","zjazz"]
 
         
-************************************************************************************************************
-*********** Maintenance Parameters *************************************************************************
-************************************************************************************************************
+***********************************************************************************************************
+*********** Maintenance Parameters ************************************************************************
+***********************************************************************************************************
 
   These Parameters Control How SWARM handles issues
 
@@ -413,9 +413,9 @@ Argument          Options           Explanation
                                     miners in a row- Where x is -TypeBanCount. When x has been reached, SWARM
                                     will reset all timeouts, then restart computer.
 
-**************************************************************************************************
-*********************** Admin Parameters *********************************************************
-**************************************************************************************************
+***********************************************************************************************************
+*********************** Admin Parameters ******************************************************************
+***********************************************************************************************************
 
         Be Your Own Developer- Manage Other's Rigs, And Get Paid To Do So!
 
@@ -434,9 +434,9 @@ Argument          Options           Explanation
 
 -Admin_Pass   [Symbol]              Default is BTC. The address coin symbol of -Admin.
 
-***********************************************************************************************
-******************** API Parameters ***********************************************************
-***********************************************************************************************
+***********************************************************************************************************
+******************** API Parameters ***********************************************************************
+***********************************************************************************************************
 
                 Enable API to track SWARM
 
@@ -455,9 +455,9 @@ Argument          Options           Explanation
                                     new endpoint for api is http://ipaddress:port/APIPassword/,
                                     instead of usual http://ipaddress:port/
 
-*********************************************************************************************
-*************** Single Coin Mining **********************************************************
-*********************************************************************************************
+***********************************************************************************************************
+*************** Single Coin Mining ************************************************************************
+***********************************************************************************************************
 
 Quickly Switch Between Profit Switching To Direct Coin Mining
 
@@ -469,9 +469,9 @@ Quickly Switch Between Profit Switching To Direct Coin Mining
                                         -Wallet1 should be coin address
                                         -PasswordCurrency1 should be coin Symbol.
 
-********************************************************************************************
-************* Coin Parameters **************************************************************
-********************************************************************************************
+***********************************************************************************************************
+************* Coin Parameters *****************************************************************************
+***********************************************************************************************************
 
 Used with Auto_Coin - Allows you to specify parameters for specific coins.
 They will be enabled when coin is most profitable.
@@ -480,46 +480,57 @@ They will be enabled when coin is most profitable.
                                     file. This parameter allows you to remotely add to the 
                                     "Passive Alternative Wallets" section.
                                     Requires:
-                                    * -Auto_Coin param set to yes.
-                                    * -Poolname param specifies zpool or zergpool.
-                                    * No -Altwallet parameters specified.
+                                      * -Auto_Coin param set to yes.
+                                      * -Poolname param specifies zpool or zergpool.
+                                      * No -Altwallet parameters specified.
 
                                     The format of the argument is as followed:
-                                    [symbol:address:solo:exchange],[symbol:address:solo:exchange]
+                                    [symbol:address:params:exchange],[symbol:address:params:exchange]
                                     You can add as many different combinations as you want, comma 
 				    separating each one.
 
-                                    solo and exchange are either set to 'yes' or 'no'
-                                    solo can only be done on zergpool.
-                                    address is ONLY added if you mining the coin directly (no auto-exchange)
-                                    if you do not wish to mine the coin directly- use "none" 
+                                    exchange are either set to 'yes' or 'no'.
+
+                                    params are m= params, is used on zergpool.
+                                     * If you mine on zpool, you will shared mine, no m= parameter.
+                                     * If you mine on zpool only, use "none"
+                                     * If you are not using m= params, use "none"
+
+                                    address is ONLY added if you are mining the coin directly (no auto-exchange)
+                                     * If you do not wish to mine the coin directly- use "none" 
 
                                     These will only be enacted when coin is most profitble on the list,
                                     and the most profitable pool is one of the auto_coin pools. You can
-                                    use arguments like -Algorithm and -Coin to narrow the amount of algorithms/coins,
+                                    use arguments like -Algorithm to narrow the amount of algorithms/coins,
                                     So you will switch to these items regularly.
 
-                                    Example of argument use-
+                                    Examples of argument use-
 
                                     Solo mine RVN coin, and auto-exchange reward when it is most profitable:
-                                    -Coin_Params RVN:none:Yes:Yes
+                                    -Coin_Params RVN:none:solo:Yes
 
                                     Mine RVN coin directly, but do not solo mine it:
-                                    -Coin_Params RVN:RKirUe978mBoa2MRWqeMGqDzVAKTafKh8H:No:No
+                                    -Coin_Params RVN:RKirUe978mBoa2MRWqeMGqDzVAKTafKh8H:None:No
                                                     (Note: this would be a RVN address)
 
-                                    Solo mine RVN, but do not auto-exchange reward:
-                                    -Coin_Params RVN:RKirUe978mBoa2MRWqeMGqDzVAKTafKh8H:Yes:No
+                                    Party mine RVN, but do not auto-exchange reward:
+                                    -Coin_Params RVN:RKirUe978mBoa2MRWqeMGqDzVAKTafKh8H:myparty.mypartypass:No
                                                      (Note: this would be a RVN address)
 
+***********************************************************************************************************
 ************** Whalesburg Pool Paramters*******************************************************************
+***********************************************************************************************************
+
         Required If Using -Poolname Whalesburg
 
 -ETH           [Etherium Address]   Etherium Address. Needed for Whalesburg Pool.
 
 -Worker        [WorkerName]         Worker name from Whalesburg pool.
 
-*************** Depreciated / Future Use *****************************************************************
+
+***********************************************************************************************************
+*************** Depreciated / Future Use ******************************************************************
+***********************************************************************************************************
 
 -HiveOS         [YES or No]         Default is "Yes". Specifies Unix version whether or not operating system
                                     is HiveOS. HiveOS version operates slightly different that *nix version. This

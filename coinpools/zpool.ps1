@@ -150,9 +150,6 @@ if ($Name -in $(arg).PoolName) {
                                     $User3 = $(vars).All_AltWallets.$Sym.address
                                 }
                             }
-                            if ($(vars).All_AltWallets.$Sym.solo -eq "Yes") {
-                                $mc += "m=solo,"
-                            }    
                         }   
                     }
                 }
