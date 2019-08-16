@@ -247,6 +247,7 @@ Argument          Options           Explanation
                                       Deviations will be listed in stat files.
                                       If you use, reccommended starting values are somewhere
                                       around 25-35% historical bias.
+				      
 -Algorithm   [algorithm,algorithm,etc.] When this is specified, SWARM will not use
                                         Algorithms from pool-algos.json, and defer
                                         to these algorithms instead. Can be used
