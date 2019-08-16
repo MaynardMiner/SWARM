@@ -63,7 +63,7 @@ function Global:Set-Stat {
     ## If pool stat - Add more time frames
     if (-not $AsHashrate) {
         $Calcs.Add("Hour_4", [Math]::Max([Math]::Round(14400 / $Interval), 1))
-        $Calcs.Add("Day", [Math]::Max([Math]::Round(14400 / $Interval), 1))
+        $Calcs.Add("Day", [Math]::Max([Math]::Round(86400 / $Interval), 1))
         $Calcs.Add("Custom", [Math]::Max([Math]::Round(14400 / $Interval), 1))
     }
 

@@ -10,7 +10,8 @@
             "equihash_150/5": "",
             "cuckaroo29": "",
             "cuckaroo29d": "",
-            "cuckatoo31": ""
+            "cuckatoo31": "",
+            "beamv2":""
         },
         "difficulty": {
             "ethash": "",
@@ -18,7 +19,8 @@
             "equihash_150/5": "",
             "cuckaroo29": "",
             "cuckaroo29d": "",
-            "cuckatoo31": ""
+            "cuckatoo31": "",
+            "beamv2":""
         },
         "naming": {
             "ethash": "ethash",
@@ -26,7 +28,8 @@
             "equihash_150/5": "equihash_150/5",
             "cuckaroo29": "cuckaroo29",
             "cuckaroo29d": "cuckaroo29d",
-            "cuckatoo31": "cuckatoo31"
+            "cuckatoo31": "cuckatoo31",
+            "beamv2":"beamv2"
         },
         "fee": {
             "ethash": 0.65,
@@ -34,7 +37,8 @@
             "equihash_150": 2,
             "cuckaroo29": 1,
             "cuckaroo29d": 2,
-            "cuckatoo31": 1
+            "cuckatoo31": 1,
+            "beamv2":2
         }
     },
     "NVIDIA2": {
@@ -47,7 +51,8 @@
             "equihash_150/5": "",
             "cuckaroo29": "",
             "cuckaroo29d": "",
-            "cuckatoo31": ""
+            "cuckatoo31": "",
+            "beamv2":""
         },
         "difficulty": {
             "ethash": "",
@@ -55,7 +60,8 @@
             "equihash_150/5": "",
             "cuckaroo29": "",
             "cuckaroo29d": "",
-            "cuckatoo31": ""
+            "cuckatoo31": "",
+            "beamv2":""
         },
         "naming": {
             "ethash": "ethash",
@@ -63,7 +69,8 @@
             "equihash_150/5": "equihash_150/5",
             "cuckaroo29": "cuckaroo29",
             "cuckaroo29d": "cuckaroo29d",
-            "cuckatoo31": "cuckatoo31"
+            "cuckatoo31": "cuckatoo31",
+            "beamv2":"beamv2"
         },
         "fee": {
             "ethash": 0.65,
@@ -71,7 +78,8 @@
             "equihash_150": 2,
             "cuckaroo29": 1,
             "cuckaroo29d": 2,
-            "cuckatoo31": 1
+            "cuckatoo31": 1,
+            "beamv2":2
         }
     },
     "NVIDIA3": {
@@ -84,7 +92,8 @@
             "equihash_150/5": "",
             "cuckaroo29": "",
             "cuckaroo29d": "",
-            "cuckatoo31": ""
+            "cuckatoo31": "",
+            "beamv2":""
         },
         "difficulty": {
             "ethash": "",
@@ -92,7 +101,8 @@
             "equihash_150/5": "",
             "cuckaroo29": "",
             "cuckaroo29d": "",
-            "cuckatoo31": ""
+            "cuckatoo31": "",
+            "beamv2":""
         },
         "naming": {
             "ethash": "ethash",
@@ -100,7 +110,8 @@
             "equihash_150/5": "equihash_150/5",
             "cuckaroo29": "cuckaroo29",
             "cuckaroo29d": "cuckaroo29d",
-            "cuckatoo31": "cuckatoo31"
+            "cuckatoo31": "cuckatoo31",
+            "beamv2":"beamv2"
         },
         "fee": {
             "ethash": 0.65,
@@ -108,7 +119,8 @@
             "equihash_150": 2,
             "cuckaroo29": 1,
             "cuckaroo29d": 2,
-            "cuckatoo31": 1
+            "cuckatoo31": 1,
+            "beamv2":2
         }
     }
 }

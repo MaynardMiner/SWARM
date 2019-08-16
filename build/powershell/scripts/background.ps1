@@ -175,6 +175,7 @@ While ($True) {
             ##Algorithm Parsing For Stats
             $HiveAlgo = $global:MinerAlgo -replace "`_", " "
             $HiveAlgo = $HiveAlgo -replace "veil", "x16rt"
+            $HiveAlgo = $HiveAlgo -replace "beamv2", "equihash 150/5"
             $NewName = $global:MinerAlgo -replace "`/", "`-"
             $NewName = $global:MinerAlgo -replace "`_", "`-"
 

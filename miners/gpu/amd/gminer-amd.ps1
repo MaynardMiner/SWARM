@@ -74,6 +74,7 @@ $(vars).AMDTypes | ForEach-Object {
                         "cuckoo_cycle" { $AddArgs = "--algo aeternity " }
                         "cuckaroo29" { $AddArgs = "--algo grin29 " }
                         "cuckatoo31" { $AddArgs = "--algo grin31 " }
+                        "beamv2" { $AddArgs = "--algo 150_5 " }
                         "equihash_96/5" { $AddArgs = "--algo 96_5 --pers auto " }
                         "equihash_192/7" { $AddArgs = "--algo 192_7 --pers auto " }
                         "equihash_144/5" { $AddArgs = "--algo 144_5 --pers auto " }
