@@ -224,7 +224,7 @@ Argument          Options           Explanation
                                     Default is "No".
 				    
 -Auto_Algo     [Yes,No]		    Default is "Yes". Should always be set to "Yes", except when using the -Coin
-				    Parameter with multiple coins. See -Coin for more information.
+				                      Parameter with multiple coins. See -Coin for more information.
 
 -Volume         [0-100]             Default is No. Volume calculates pool hashrate % in comparision
                                     to other pools, and will penalize pools based on percent difference
@@ -247,7 +247,6 @@ Argument          Options           Explanation
                                       Deviations will be listed in stat files.
                                       If you use, reccommended starting values are somewhere
                                       around 25-35% historical bias.
-
 -Algorithm   [algorithm,algorithm,etc.] When this is specified, SWARM will not use
                                         Algorithms from pool-algos.json, and defer
                                         to these algorithms instead. Can be used
