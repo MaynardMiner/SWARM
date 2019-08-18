@@ -1495,40 +1495,6 @@
             "core": ""
         }
     },
-    "keccakc": {
-        "NVIDIA1": {
-            "Fans": "",
-            "ETHPill": "",
-            "Core": "",
-            "Memory": "",
-            "Power": "",
-            "PillDelay": ""
-        },
-        "NVIDIA2": {
-            "Fans": "",
-            "ETHPill": "",
-            "Core": "",
-            "Memory": "",
-            "Power": "",
-            "PillDelay": ""
-        },
-        "NVIDIA3": {
-            "Fans": "",
-            "ETHPill": "",
-            "Core": "",
-            "Memory": "",
-            "Power": "",
-            "PillDelay": ""
-        },
-        "AMD1": {
-            "fans": "",
-            "v": "",
-            "dpm": "",
-            "mem": "",
-            "mdpm": "",
-            "core": ""
-        }
-    },
     "lbk3": {
         "NVIDIA1": {
             "Fans": "",

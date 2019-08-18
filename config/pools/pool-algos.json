@@ -363,15 +363,6 @@
       "comma seperated"
     ]
   },
-  "groestl": {
-    "alt_names": [
-      "groestl"
-    ],
-    "exclusions": [
-      "add pool or miner here",
-      "comma seperated"
-    ]
-  },
   "hex": {
     "alt_names": [
       "hex"
@@ -444,15 +435,6 @@
       "comma seperated"
     ]
   },
-  "keccakc": {
-    "alt_names": [
-      "keccakc"
-    ],
-    "exclusions": [
-      "add pool or miner here",
-      "comma seperated"
-    ]
-  },
   "lbk3": {
     "alt_names": [
       "lbk3"
@@ -475,16 +457,6 @@
   "lyra2z330": {
     "alt_names": [
       "lyra2z330"
-    ],
-    "exclusions": [
-      "add pool or miner here",
-      "comma seperated"
-    ]
-  },
-  "lyra2rev2": {
-    "alt_names": [
-      "lyra2rev2",
-      "lyra2v2"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -677,15 +649,6 @@
   "timetravel": {
     "alt_names": [
       "timetravel"
-    ],
-    "exclusions": [
-      "add pool or miner here",
-      "comma seperated"
-    ]
-  },
-  "tribus": {
-    "alt_names": [
-      "tribus"
     ],
     "exclusions": [
       "add pool or miner here",
