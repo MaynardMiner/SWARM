@@ -786,6 +786,7 @@ to allow full values.
 ## Updates
 * TT-Updated
 * Gminer Updated
+* Updated ``get help``
 
 ## Fixes
 * Fixed ``-coin_param`` params value
