@@ -21,8 +21,8 @@
   "sugarchain": {
     "name": "sugarchain",
     "type": "cpu",
-    "CPU": ".\\bin\\sugarchain-1\\cpuminer-avx2.exe",
-    "minername": "cpuminer-avx2.exe",
+    "CPU": ".\\bin\\sugarchain-1\\cpuminer.exe",
+    "minername": "cpuminer.exe",
     "version": "3.8.8.1.7",
     "optional": "No",
     "uri": "https://github.com/cryptozeny/cpuminer-opt-sugarchain/releases/download/v3.8.8.1.7rc1/cpuminer-opt-sugarchain-v3.8.8.1.7-w64.zip"
