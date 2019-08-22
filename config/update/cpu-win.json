@@ -25,7 +25,7 @@
     "minername": "cpuminer-avx2.exe",
     "version": "3.8.8.1.7",
     "optional": "No",
-    "uri": "cpuminer-opt-sugarchain-v3.8.8.1.7-w64.zip"
+    "uri": "https://github.com/cryptozeny/cpuminer-opt-sugarchain/releases/download/v3.8.8.1.7rc1/cpuminer-opt-sugarchain-v3.8.8.1.7-w64.zip"
   },
   "jayddee": {
     "name": "jayddee",
