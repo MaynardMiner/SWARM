@@ -39,7 +39,7 @@ function Global:Get-AltWallets {
             $exchange = $Coin_Param | Select -Skip 3 -First 1
             if ($symbol) {
                 if ($symbol -notin $Wallets."Passive Alternative Wallets"."coin list") {
-                    $Wallet_Json."Passive Alternative Wallets"."coin list" | Add-Member "$symbol" @{address = $address; solo = $solo; exchange = $exchange}
+                    $Wallet_Json."Passive Alternative Wallets"."coin list" | Add-Member "$symbol" @{address = $address; params = $params; exchange = $exchange}
                 }
             }
         }
