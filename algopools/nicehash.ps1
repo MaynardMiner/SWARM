@@ -4,31 +4,18 @@ $nicehash_Request = [PSCustomObject]@{ }
 ## Make a Port map so I don't have to pull from nicehash twice
 $Nicehash_Ports = 
 '{
-
 "scrypt":"3333",            "btc":"3334",               "scryptnf":"3335",          "x11":"3336",
-
 "x13":"3337",               "keccak":"3338",            "x15":"3339",               "nist5":"3340",
-
 "neoscrypt":"3341",         "lyra2re":"3342",           "whirlpoolx":"3343",        "qubit":"3344",
-
 "quark":"3345",             "axiom":"3346",             "lyra2rev2":"3347",         "scryptjanenf16":"3348",
-
 "blake256r8":"3349",        "blake256r14":"3350",       "blake256r8vnl":"3351",     "hodl":"3352",
-
 "daggerhashimoto":"3353",   "decred":"3354",            "cryptonight":"3355",       "lbry":"3356",
-
 "equihash":"3357",          "pascal":"3358",            "x11ghost":"3359",          "sia":"3360",
-
 "blake2s":"3361",           "skunk":"3362",             "cryptonightv7":"3363",     "cryptonightheavy":"3364",
-
 "lyra2z":"3365",            "x16r":"3366",              "cryptonightv8":"3367",     "sha256asicboost":"3368",
-
 "zhash":"3369",             "beam":"3370",              "grincuckaroo29":"3371",    "grincuckatoo31":"3372",
-
 "lyra2rev3":"3373",         "mtp":"3374",               "cryptonightr":"3375",      "cuckoocycle":"3376",
-
 "grincuckarood29":"3377",   "beamv2":3378
-
 }'    
 
 $Nicehash_Ports = $Nicehash_Ports | ConvertFrom-Json
@@ -84,32 +71,33 @@ if ($Name -in $(arg).PoolName) {
 
                 $StatAlgo = $Nicehash_Algorithm -replace "`_","`-"
                 $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -Value ([Double]$_.paying / $Divisor * (1 - ($Fee / 100)))
+                $Level = $Stat.$($(arg).Stat_Algo)
      
                 [Pool]::New(
                     ## Symbol
-                    "$($_.Name)-Algo",
+                    "$($nicehash_Algorithm)-Algo",
                     ## Algorithm
-                    "$($_.Name)",
+                    $nicehash_Algorithm,
                     ## Level
                     $Level,
                     ## Stratum
                     "stratum+tcp",
                     ## Pool_Host
-                    $Pool_Host,
+                    $nicehash_Host,
                     ## Pool_Port
-                    $Pool_Port,
+                    $nicehash_Port,
                     ## User1
-                    $User1,
+                    "$NH_Wallet1.$($(arg).RigName1)",
                     ## User2
-                    $User2,
+                    "$NH_Wallet2.$($(arg).RigName2)",
                     ## User3
-                    $User3,
+                    "$NH_Wallet3.$($(arg).RigName3)",
                     ## Pass1
-                    "c=$Pass1,id=$($(arg).RigName1)",
+                    "x",
                     ## Pass2
-                    "c=$Pass2,id=$($(arg).RigName2)",
+                    "x",
                     ## Pass3
-                    "c=$Pass3,id=$($(arg).RigName3)",
+                    "x",
                     ## Previous
                     $previous
                 )
