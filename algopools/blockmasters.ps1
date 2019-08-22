@@ -91,20 +91,33 @@ if ($Name -in $(arg).PoolName) {
             }
         }
 
-        [PSCustomObject]@{
-            Symbol    = "$($_.Name)-Algo"
-            Algorithm = "$($_.Name)"
-            Price     = $Level
-            Protocol  = "stratum+tcp"
-            Host      = $Pool_Host
-            Port      = $Pool_Port
-            User1     = $User1
-            User2     = $User2
-            User3     = $User3
-            Pass1     = "c=$Pass1,id=$($(arg).RigName1)"
-            Pass2     = "c=$Pass2,id=$($(arg).RigName2)"
-            Pass3     = "c=$Pass3,id=$($(arg).RigName3)"
-            Previous  = $previous
-        }
+        [pool]::New(
+            ## Symbol
+            "$($_.Name)-Algo",
+            ## Algorithm
+            "$($_.Name)",
+            ## Level
+            $Level,
+            ## Stratum
+            "stratum+tcp",
+            ## Pool_Host
+            $Pool_Host,
+            ## Pool_Port
+            $Pool_Port,
+            ## User1
+            $User1,
+            ## User2
+            $User2,
+            ## User3
+            $User3,
+            ## Pass1
+            "c=$Pass1,id=$($(arg).RigName1)",
+            ## Pass2
+            "c=$Pass2,id=$($(arg).RigName2)",
+            ## Pass3
+            "c=$Pass3,id=$($(arg).RigName3)",
+            ## Previous
+            $previous
+        )
     }
 }
