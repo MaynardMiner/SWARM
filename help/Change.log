@@ -818,3 +818,5 @@ to allow full values.
 ## CRITICAL UPDATE
 * Fixes first time load of pool stats
   For ``-Auto_Coin``
+* This is only for users with ``Auto_Coin``
+  You can ignore if not using.
