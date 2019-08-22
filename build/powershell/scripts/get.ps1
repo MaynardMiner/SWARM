@@ -80,6 +80,9 @@ get oc NVIDIA1 aergo power
 
 ITEMS:
 
+###################################################################
+###################################################################
+
 miners
  can be used to view background miner information.
 
@@ -119,6 +122,8 @@ miners
             get miners NVIDIA1 enemy oc hex core 
             (Will list oc core setting for hex algorithm)
 
+###################################################################
+###################################################################
 
 screen
     can be used to remotely view SWARM's transcripts. Great way to
@@ -133,6 +138,8 @@ screen
         platform:
         [miner] [NVIDIA1] [NVIDIA2] [NVIDIA3] [CPU] [AMD1]
 
+###################################################################
+###################################################################
 
 version
     used to view current version of miner.
@@ -147,6 +154,8 @@ version
             name of miner, as per the names of .json in config/miners
             if you are unsure of miner name, choose 'all' to identify.
 
+###################################################################
+###################################################################
 
 benchmarks
     used to view current a benchmark.
@@ -163,6 +172,8 @@ benchmarks
         algo
             the algorithm stat you wish to view.
 
+###################################################################
+###################################################################
 
 stats
     Used to view SWARM stats screen. This will display current
@@ -172,6 +183,8 @@ stats
 
         get stats
 
+###################################################################
+###################################################################
 
 active
     Used to view current and historical launched miners, and
@@ -182,28 +195,9 @@ active
 
         get active
 
-
-power
-    Used to view power benchmarks/table. This allows you to view
-    either WattOMeter stats, or config/power settings depending
-    on use.
-
-    USES:
-
-        get power [platform] [type] [algo]
-
-    OPTIONS:
-
-        platform
-        [NVIDIA1] [NVIDIA2] [NVIDIA3] [AMD1] [CPU]
-
-        type
-        [wattometer] [stat]
-
-        algo
-        all avaiable algorithms in SWARM
-
-
+###################################################################
+###################################################################
+        
 paramters
     Used to view SWARM's current parameters/arguments/settings
 
@@ -217,6 +211,8 @@ paramters
             name of parameter you wish to view. If you are unsure,
             specify 'all'
 
+###################################################################
+###################################################################
 
 wallets
     print balance sheet of your current wallet balances
@@ -227,6 +223,8 @@ wallets
    
     OPTIONS: none
 
+###################################################################
+###################################################################
 
 update 
     will perform a remote update. Currently works only for windows.
@@ -245,6 +243,10 @@ update
             1.) Must end with SWARM.number.of.version.zip
             2.) Link cannot contain spaces
             3.) Must be using a SWARM.number.of.version file
+
+###################################################################
+###################################################################
+
 
 asic
     Will que ASIC connect to swarm to get further information
@@ -265,6 +267,54 @@ asic
 
                     etc.
 
+###################################################################
+###################################################################
+
+charts
+    Gets a visual bar chart break down of stats, instead of a table.
+
+###################################################################
+###################################################################
+
+                    End all get commands.
+
+###################################################################
+###################################################################
+
+
+OTHER USEFUL COMMANDS that are not part of get, but work for SWARM:
+
+clear_profits
+        Clears all stat files for pools
+
+clear_watts
+        Clears all watt files
+        Resets power.json
+
+benchmark
+        USAGE:
+            [miner or algorithm] [name]
+            [timeout]
+
+        benchmark miner [name] 
+            will clear all benchmarks for that miner
+        benchmark algorithm [name] 
+            will clear all benchmarks for that algorithm
+        becchmark timeout 
+            will clear all bans
+
+nview
+        USAGE:
+            [-n] [-onchange]
+
+        EXAMPLES:
+
+            nview get stats -n 30 
+                Will run command get stats every thirty seconds
+
+            nview get stats -n 10 -Onchange
+                Will run get stats command every 10 seconds
+                Will only refresh screen if data has changed.
 
 to see all available SWARM commands, go to:
 

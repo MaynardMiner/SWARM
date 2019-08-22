@@ -105,7 +105,7 @@ $(arg).TCP_Port | Out-File ".\build\txt\port.txt"
 Import-Module "$($(vars).global)\stats.psm1" -Scope Global
 Import-Module "$($(vars).global)\hashrates.psm1" -Scope Global
 Import-Module "$($(vars).global)\gpu.psm1" -Scope Global
-
+. .\build\powershell\global\classes.ps1
 
 if ($IsWindows -and [string]$Global:config.hive_params.MINER_DELAY -ne "") {
     Write-Host "Miner Delay Specified- Sleeping for $($Global:config.hive_params.MINER_DELAY)"

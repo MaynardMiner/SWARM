@@ -69,10 +69,10 @@ $(vars).NVIDIATypes | ForEach-Object {
                         Type       = $ConfigType
                         Path       = $Path
                         Devices    = $Devices
-                        Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
+                        Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
                         Version    = "$($(vars).nvidia.ethminer.version)"
                         DeviceCall = "progminer"
-                        Arguments  = "-P stratum2+tcp://$($_.$User).$($_.$Pass):x@$($_.Host):$($_.Port) --cuda --api-bind 127.0.0.1:$Port --noeval --dag-load-mode 1 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                        Arguments  = "-P stratum2+tcp://$($_.$User).$($_.$Pass):x@$($_.Pool_Host):$($_.Port) --cuda --api-bind 127.0.0.1:$Port --noeval --dag-load-mode 1 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 

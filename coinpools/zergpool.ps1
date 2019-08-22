@@ -6,7 +6,7 @@ $Zergpool_Sorted = [PSCustomObject]@{ }
 $SmallestValue = 1E-20 
 
 if ($(arg).Ban_GLT -eq "Yes") { $NoGLT = "GLT" }
-else{ $NOGLT = "SWARM1234"} 
+else { $NOGLT = "SWARM1234" } 
 if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" } 
 
 ## Skip if user didn't specify
@@ -85,89 +85,103 @@ if ($Name -in $(arg).PoolName) {
     $Algos | ForEach-Object {
         $Selected = $_
 
-        $Best = $Zergpool_Sorted.PSObject.Properties.Value | Where-Object Algo -eq $Selected | Sort-Object Level -Descending | Select-Object -First 1
+        $Zergpool_Sorted.PSObject.Properties.Value | 
+        Where-Object Algo -eq $Selected | 
+        Sort-Object Level -Descending | 
+        Select-Object -First 1 | 
+        ForEach-Object { 
 
-        if ($Best) {
-            $Best | ForEach-Object { 
+            $Zergpool_Algo = $_.algo.ToLower()
+            $Zergpool_Symbol = $_.sym.ToUpper()
+            $mc = "mc=$Zergpool_Symbol,"
+            $zergpool_Port = $_.port
+            $zergpool_Host = "$($_.Original_Algo).mine.zergpool.com$X"
+            $previous = $null
 
-                $Zergpool_Algo = $_.algo.ToLower()
-                $Zergpool_Symbol = $_.sym.ToUpper()
-                $mc = "mc=$Zergpool_Symbol,"
-                $zergpool_Port = $_.port
-                $zergpool_Host = "$($_.Original_Algo).mine.zergpool.com$X"
+            ## Wallet Swapping/Solo mining
+            $Pass1 = $global:Wallets.Wallet1.Keys
+            $User1 = $global:Wallets.Wallet1.$($(arg).Passwordcurrency1).address
+            $Pass2 = $global:Wallets.Wallet2.Keys
+            $User2 = $global:Wallets.Wallet2.$($(arg).Passwordcurrency2).address
+            $Pass3 = $global:Wallets.Wallet3.Keys
+            $User3 = $global:Wallets.Wallet3.$($(arg).Passwordcurrency3).address
 
-                ## Wallet Swapping/Solo mining
-                $Pass1 = $global:Wallets.Wallet1.Keys
-                $User1 = $global:Wallets.Wallet1.$($(arg).Passwordcurrency1).address
-                $Pass2 = $global:Wallets.Wallet2.Keys
-                $User2 = $global:Wallets.Wallet2.$($(arg).Passwordcurrency2).address
-                $Pass3 = $global:Wallets.Wallet3.Keys
-                $User3 = $global:Wallets.Wallet3.$($(arg).Passwordcurrency3).address
-
-                if ($global:Wallets.AltWallet1.keys) {
-                    $global:Wallets.AltWallet1.Keys | ForEach-Object {
-                        if ($global:Wallets.AltWallet1.$_.Pools -contains $Name) {
-                            $Pass1 = $_;
-                            $User1 = $global:Wallets.AltWallet1.$_.address;
-                        }
+            if ($global:Wallets.AltWallet1.keys) {
+                $global:Wallets.AltWallet1.Keys | ForEach-Object {
+                    if ($global:Wallets.AltWallet1.$_.Pools -contains $Name) {
+                        $Pass1 = $_;
+                        $User1 = $global:Wallets.AltWallet1.$_.address;
                     }
                 }
-                if ($global:Wallets.AltWallet2.keys) {
-                    $global:Wallets.AltWallet2.Keys | ForEach-Object {
-                        if ($global:Wallets.AltWallet2.$_.Pools -contains $Name) {
-                            $Pass2 = $_;
-                            $User2 = $global:Wallets.AltWallet2.$_.address;
-                        }
-                    }
-                }
-                if ($global:Wallets.AltWallet3.keys) {
-                    $global:Wallets.AltWallet3.Keys | ForEach-Object {
-                        if ($global:Wallets.AltWallet3.$_.Pools -contains $Name) {
-                            $Pass3 = $_;
-                            $User3 = $global:Wallets.AltWallet3.$_.address;
-                        }
-                    }
-                }
-                
-                if ($(vars).All_AltWallets) {
-                    $(vars).All_AltWallets.keys | ForEach-Object {
-                        $Sym = $_
-                        $Zerg_Sym = $Zergpool_Symbol -split "-" | Select -First 1
-                        if ($Sym -eq $Zerg_Sym -or $Sym -eq $Zergpool_Symbol) {
-                            if ($(vars).All_AltWallets.$Sym.exchange -ne "Yes") {
-                                $Pass1 = $Sym
-                                $Pass2 = $Sym
-                                $Pass3 = $Sym
-                                $mc = ""
-                                if ($(vars).All_AltWallets.$Sym.address -ne "add address of coin if you wish to mine to that address, or leave alone." -and $(vars).All_AltWallets.$_.address -ne "") {
-                                    $User1 = $(vars).All_AltWallets.$Sym.address
-                                    $User2 = $(vars).All_AltWallets.$Sym.address
-                                    $User3 = $(vars).All_AltWallets.$Sym.address
-                                }
-                            }
-                            if ($(vars).All_AltWallets.$Sym.params -ne "enter additional params here, such as 'm=solo' or m=party.partypassword") {
-                                $mc += "m=$($(vars).All_AltWallets.$Sym.params),"
-                            }    
-                        }   
-                    }
-                }
-
-                [PSCustomObject]@{
-                    Symbol          = "$ZergPool_Symbol-Coin"
-                    Algorithm       = $Zergpool_Algo
-                    Price           = $_.Level
-                    Protocol        = "stratum+tcp"
-                    Host            = $zergpool_Host
-                    Port            = $zergpool_Port
-                    User1           = $User1
-                    User2           = $User2
-                    User3           = $User3
-                    Pass1           = "c=$Pass1,$($mc)id=$($(arg).RigName1)"
-                    Pass2           = "c=$Pass2,$($mc)id=$($(arg).RigName2)"
-                    Pass3           = "c=$Pass3,$($mc)id=$($(arg).RigName3)"
-                    Meets_Threshold = $Meets_Threshold
-                } 
             }
+            if ($global:Wallets.AltWallet2.keys) {
+                $global:Wallets.AltWallet2.Keys | ForEach-Object {
+                    if ($global:Wallets.AltWallet2.$_.Pools -contains $Name) {
+                        $Pass2 = $_;
+                        $User2 = $global:Wallets.AltWallet2.$_.address;
+                    }
+                }
+            }
+            if ($global:Wallets.AltWallet3.keys) {
+                $global:Wallets.AltWallet3.Keys | ForEach-Object {
+                    if ($global:Wallets.AltWallet3.$_.Pools -contains $Name) {
+                        $Pass3 = $_;
+                        $User3 = $global:Wallets.AltWallet3.$_.address;
+                    }
+                }
+            }
+                
+            if ($(vars).All_AltWallets) {
+                $(vars).All_AltWallets.keys | ForEach-Object {
+                    $Sym = $_
+                    $Zerg_Sym = $Zergpool_Symbol -split "-" | Select -First 1
+                    if ($Sym -eq $Zerg_Sym -or $Sym -eq $Zergpool_Symbol) {
+                        if ($(vars).All_AltWallets.$Sym.exchange -ne "Yes") {
+                            $Pass1 = $Sym
+                            $Pass2 = $Sym
+                            $Pass3 = $Sym
+                            $mc = ""
+                            if ($(vars).All_AltWallets.$Sym.address -ne "add address of coin if you wish to mine to that address, or leave alone." -and $(vars).All_AltWallets.$_.address -ne "") {
+                                $User1 = $(vars).All_AltWallets.$Sym.address
+                                $User2 = $(vars).All_AltWallets.$Sym.address
+                                $User3 = $(vars).All_AltWallets.$Sym.address
+                            }
+                        }
+                        if ($(vars).All_AltWallets.$Sym.params -ne "enter additional params here, such as 'm=solo' or m=party.partypassword") {
+                            $mc += "m=$($(vars).All_AltWallets.$Sym.params),"
+                        }    
+                    }   
+                }
+            }
+
+            [Pool]::New(
+                ## Symbol
+                "$ZergPool_Symbol-Coin",
+                ## Algorithm
+                $Zergpool_Algo,
+                ## Level
+                $Level,
+                ## Stratum
+                "stratum+tcp",
+                ## Pool_Host
+                $zergpool_Host,
+                ## Pool_Port
+                $zergpool_Port,
+                ## User1
+                $User1,
+                ## User2
+                $User2,
+                ## User3
+                $User3,
+                ## Pass1
+                "c=$Pass1,$($mc)id=$($(arg).RigName1)",
+                ## Pass2
+                "c=$Pass2,$($mc)id=$($(arg).RigName2)",
+                ## Pass3
+                "c=$Pass3,$($mc)id=$($(arg).RigName3)",
+                ## Previous
+                $previous
+            )
         }
     }
 }

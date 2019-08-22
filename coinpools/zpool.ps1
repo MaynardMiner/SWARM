@@ -5,7 +5,7 @@ $zpool_Request = [PSCustomObject]@{ }
 $zpool_Sorted = [PSCustomObject]@{ }
 
 if ($(arg).Ban_GLT -eq "Yes") { $NoGLT = "GLT" }
-else{ $NoGLT = "SWARM1234" }
+else { $NoGLT = "SWARM1234" }
 if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" } 
 
 ## Skip if user didn't specify
@@ -90,86 +90,99 @@ if ($Name -in $(arg).PoolName) {
     $Algos | ForEach-Object {
         $Selected = $_
 
-        $Best = $zpool_Sorted.PSObject.Properties.Value | Where-Object Algo -eq $Selected | Sort-Object Level -Descending | Select-Object -First 1
+        $zpool_Sorted.PSObject.Properties.Value | 
+        Where-Object Algo -eq $Selected | 
+        Sort-Object Level -Descending | 
+        Select-Object -First 1 | 
+        ForEach-Object { 
 
-        if ($Best) {
-            $Best | ForEach-Object { 
+            $zpool_Algo = $_.algo.ToLower()
+            $zpool_Symbol = $_.sym.ToUpper()
+            $mc = "zap=$zpool_Symbol,"
+            $zpool_Port = $_.port
+            $zpool_Host = "$($_.Original_Algo).$($region).mine.zpool.ca$X"
 
-                $zpool_Algo = $_.algo.ToLower()
-                $zpool_Symbol = $_.sym.ToUpper()
-                $mc = "zap=$zpool_Symbol,"
-                $zpool_Port = $_.port
-                $zpool_Host = "$($_.Original_Algo).$($region).mine.zpool.ca$X"
+            ## Wallet Swapping/Solo mining
+            $Pass1 = $global:Wallets.Wallet1.Keys
+            $User1 = $global:Wallets.Wallet1.$($(arg).Passwordcurrency1).address
+            $Pass2 = $global:Wallets.Wallet2.Keys
+            $User2 = $global:Wallets.Wallet2.$($(arg).Passwordcurrency2).address
+            $Pass3 = $global:Wallets.Wallet3.Keys
+            $User3 = $global:Wallets.Wallet3.$($(arg).Passwordcurrency3).address
 
-                ## Wallet Swapping/Solo mining
-                $Pass1 = $global:Wallets.Wallet1.Keys
-                $User1 = $global:Wallets.Wallet1.$($(arg).Passwordcurrency1).address
-                $Pass2 = $global:Wallets.Wallet2.Keys
-                $User2 = $global:Wallets.Wallet2.$($(arg).Passwordcurrency2).address
-                $Pass3 = $global:Wallets.Wallet3.Keys
-                $User3 = $global:Wallets.Wallet3.$($(arg).Passwordcurrency3).address
-
-                if ($global:Wallets.AltWallet1.keys) {
-                    $global:Wallets.AltWallet1.Keys | ForEach-Object {
-                        if ($global:Wallets.AltWallet1.$_.Pools -contains $Name) {
-                            $Pass1 = $_;
-                            $User1 = $global:Wallets.AltWallet1.$_.address;
-                        }
+            if ($global:Wallets.AltWallet1.keys) {
+                $global:Wallets.AltWallet1.Keys | ForEach-Object {
+                    if ($global:Wallets.AltWallet1.$_.Pools -contains $Name) {
+                        $Pass1 = $_;
+                        $User1 = $global:Wallets.AltWallet1.$_.address;
                     }
                 }
-                if ($global:Wallets.AltWallet2.keys) {
-                    $global:Wallets.AltWallet2.Keys | ForEach-Object {
-                        if ($global:Wallets.AltWallet2.$_.Pools -contains $Name) {
-                            $Pass2 = $_;
-                            $User2 = $global:Wallets.AltWallet2.$_.address;
-                        }
-                    }
-                }
-                if ($global:Wallets.AltWallet3.keys) {
-                    $global:Wallets.AltWallet3.Keys | ForEach-Object {
-                        if ($global:Wallets.AltWallet3.$_.Pools -contains $Name) {
-                            $Pass3 = $_;
-                            $User3 = $global:Wallets.AltWallet3.$_.address;
-                        }
-                    }
-                }
-                
-                if ($(vars).All_AltWallets) {
-                    $(vars).All_AltWallets.keys | ForEach-Object {
-                        $Sym = $_
-                        $zpool_sym = $zpool_Symbol -split "-" | Select -First 1
-                        if ($Sym -eq $zpool_sym -or $Sym -eq $zpool_Symbol) {
-                            if ($(vars).All_AltWallets.$Sym.exchange -ne "Yes") {
-                                $Pass1 = $Sym
-                                $Pass2 = $Sym
-                                $Pass3 = $Sym
-                                $mc = ""
-                                if ($(vars).All_AltWallets.$Sym.address -ne "add address of coin if you wish to mine to that address, or leave alone." -and $(vars).All_AltWallets.$_.address -ne "") {
-                                    $User1 = $(vars).All_AltWallets.$Sym.address
-                                    $User2 = $(vars).All_AltWallets.$Sym.address
-                                    $User3 = $(vars).All_AltWallets.$Sym.address
-                                }
-                            }
-                        }   
-                    }
-                }
-
-                [PSCustomObject]@{
-                    Symbol          = "$zpool_Symbol-Coin"
-                    Algorithm       = $zpool_Algo
-                    Price           = $_.Level
-                    Protocol        = "stratum+tcp"
-                    Host            = $zpool_Host
-                    Port            = $zpool_Port
-                    User1           = $User1
-                    User2           = $User2
-                    User3           = $User3
-                    Pass1           = "c=$Pass1,$($mc)id=$($(arg).RigName1)"
-                    Pass2           = "c=$Pass2,$($mc)id=$($(arg).RigName2)"
-                    Pass3           = "c=$Pass3,$($mc)id=$($(arg).RigName3)"
-                    Meets_Threshold = $Meets_Threshold
-                } 
             }
+            if ($global:Wallets.AltWallet2.keys) {
+                $global:Wallets.AltWallet2.Keys | ForEach-Object {
+                    if ($global:Wallets.AltWallet2.$_.Pools -contains $Name) {
+                        $Pass2 = $_;
+                        $User2 = $global:Wallets.AltWallet2.$_.address;
+                    }
+                }
+            }
+            if ($global:Wallets.AltWallet3.keys) {
+                $global:Wallets.AltWallet3.Keys | ForEach-Object {
+                    if ($global:Wallets.AltWallet3.$_.Pools -contains $Name) {
+                        $Pass3 = $_;
+                        $User3 = $global:Wallets.AltWallet3.$_.address;
+                    }
+                }
+            }
+                
+            if ($(vars).All_AltWallets) {
+                $(vars).All_AltWallets.keys | ForEach-Object {
+                    $Sym = $_
+                    $zpool_sym = $zpool_Symbol -split "-" | Select -First 1
+                    if ($Sym -eq $zpool_sym -or $Sym -eq $zpool_Symbol) {
+                        if ($(vars).All_AltWallets.$Sym.exchange -ne "Yes") {
+                            $Pass1 = $Sym
+                            $Pass2 = $Sym
+                            $Pass3 = $Sym
+                            $mc = ""
+                            if ($(vars).All_AltWallets.$Sym.address -ne "add address of coin if you wish to mine to that address, or leave alone." -and $(vars).All_AltWallets.$_.address -ne "") {
+                                $User1 = $(vars).All_AltWallets.$Sym.address
+                                $User2 = $(vars).All_AltWallets.$Sym.address
+                                $User3 = $(vars).All_AltWallets.$Sym.address
+                            }
+                        }
+                    }   
+                }
+            }
+
+            [Pool]::New(
+                ## Symbol
+                "$ZPool_Symbol-Coin",
+                ## Algorithm
+                $Zpool_Algo,
+                ## Level
+                $Level,
+                ## Stratum
+                "stratum+tcp",
+                ## Pool_Host
+                $Zpool_Host,
+                ## Pool_Port
+                $Zpool_Port,
+                ## User1
+                $User1,
+                ## User2
+                $User2,
+                ## User3
+                $User3,
+                ## Pass1
+                "c=$Pass1,$($mc)id=$($(arg).RigName1)",
+                ## Pass2
+                "c=$Pass2,$($mc)id=$($(arg).RigName2)",
+                ## Pass3
+                "c=$Pass3,$($mc)id=$($(arg).RigName3)",
+                ## Previous
+                $previous
+            )
         }
     }
 }

@@ -37,10 +37,10 @@ $(vars).ASICTypes | ForEach-Object {
                     Type       = $ConfigType
                     Path       = $Path
                     Devices    = $Devices
-                    Stratum    = "$($_.Stratum)://$($_.Host):$($_.Port)" 
+                    Stratum    = "$($_.Stratum)://$($_.Pool_Host):$($_.Port)" 
                     DeviceCall = "cgminer"
                     Wallet     = "$($_.$User)"
-                    Arguments  = "stratum+tcp://$($_.Host):$($_.Port),$($_.$User),$Pass"
+                    Arguments  = "stratum+tcp://$($_.Pool_Host):$($_.Port),$($_.$User),$Pass"
                     HashRates  = $Stat.Hour
                     Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                     Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 }

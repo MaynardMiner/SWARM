@@ -60,10 +60,10 @@ $(vars).CPUTypes | ForEach-Object {
                         Type       = $ConfigType
                         Path       = $Path
                         Devices    = $Devices
-                        Stratum    = "$($_.Protocol)://$($_.Host):$($_.Port)" 
+                        Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
                         Version    = "$($(vars).cpu.$CName.version)"
                         DeviceCall = "xmrig-opt"
-                        Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --http-enabled --http-port=10002 -o stratum+tcp://$($_.Host):$($_.Port) -u $($_.User1) -p $($_.Pass1)$($Diff) --donate-level=1 --nicehash $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                        Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --http-enabled --http-port=10002 -o stratum+tcp://$($_.Pool_Host):$($_.Port) -u $($_.User1) -p $($_.Pass1)$($Diff) --donate-level=1 --nicehash $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Worker     = $(arg).Rigname1
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }

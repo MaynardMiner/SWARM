@@ -25,15 +25,12 @@ if ($Name -in $(arg).PoolName) {
         if ($_.Name) { if ($_.Name -in $Algos -and $Name -notin $global:Config.Pool_Algos.$($_.Name).exclusions -and $_.Name -notin $(vars).BanHammer) { $_ } }
     }
 
-    ## Add 24 hour deviation.
     $Pool_Sorted | ForEach-Object {
         $Day_Estimate = [Double]$_.estimate_last24h;
         $Day_Return = [Double]$_.actual_last24h;
         $Raw = shuffle $Day_Estimate $Day_Return
         $_ | Add-Member "deviation" $Raw
-    }
 
-    $Pool_Sorted | ForEach-Object {
         $StatAlgo = $_.Name -replace "`_", "`-"
         $StatPath = "$($Name)_$($StatAlgo)_profit"
         if (-not (test-Path ".\stats\$StatPath") ) { $Estimate = [Double]$_.estimate_last24h }
@@ -90,20 +87,33 @@ if ($Name -in $(arg).PoolName) {
         }
 
                     
-        [PSCustomObject]@{
-            Symbol    = "$($_.Name)-Algo"
-            Algorithm = "$($_.Name)"
-            Price     = $Level
-            Protocol  = "stratum+tcp"
-            Host      = $Pool_Host
-            Port      = $Pool_Port
-            User1     = $global:Wallets.Wallet1.$($(arg).Passwordcurrency1).address
-            User2     = $global:Wallets.Wallet2.$($(arg).Passwordcurrency2).address
-            User3     = $global:Wallets.Wallet3.$($(arg).Passwordcurrency3).address
-            Pass1     = "c=$($global:Wallets.Wallet1.keys),id=$($(arg).RigName1)"
-            Pass2     = "c=$($global:Wallets.Wallet2.keys),id=$($(arg).RigName2)"
-            Pass3     = "c=$($global:Wallets.Wallet3.keys),id=$($(arg).RigName3)"
-            Previous  = $previous
-        }
+        [Pool]::New(
+            ## Symbol
+            "$($_.Name)-Algo",
+            ## Algorithm
+            "$($_.Name)",
+            ## Level
+            $Level,
+            ## Stratum
+            "stratum+tcp",
+            ## Pool_Host
+            $Pool_Host,
+            ## Pool_Port
+            $Pool_Port,
+            ## User1
+            $User1,
+            ## User2
+            $User2,
+            ## User3
+            $User3,
+            ## Pass1
+            "c=$Pass1,id=$($(arg).RigName1)",
+            ## Pass2
+            "c=$Pass2,id=$($(arg).RigName2)",
+            ## Pass3
+            "c=$Pass3,id=$($(arg).RigName3)",
+            ## Previous
+            $previous
+        )
     }
 }

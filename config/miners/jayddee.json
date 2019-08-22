@@ -1,0 +1,60 @@
+{
+    "CPU": {
+        "name": "CPU",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "yescryptr8": "",
+            "yescrypt": "",
+            "yescryptr16": "",
+            "yescryptr24": "",
+            "yescryptr32": "",
+            "yespower": "",
+            "yespowerr8": "",
+            "yespowerr16": "",
+            "yespowerr24": "",
+            "yespowerr32": "",
+            "lyra2z330": ""
+        },
+        "difficulty": {
+            "yescryptr8": "",
+            "yescrypt": "",
+            "yescryptr16": "",
+            "yescryptr24": "",
+            "yescryptr32": "",
+            "yespower": "",
+            "yespowerr8": "",
+            "yespowerr16": "",
+            "yespowerr24": "",
+            "yespowerr32": "",
+            "lyra2z330": ""
+        },
+        "naming": {
+            "yescryptr8": "yescryptr8",
+            "yescrypt": "yescrypt",
+            "yescryptr16": "yescryptr16",
+            "yescryptr24": "yescryptr24",
+            "yescryptr32": "yescryptr32",
+            "yespower": "yespower",
+            "yespowerr8": "yespowerr8",
+            "yespowerr16": "yespowerr16",
+            "yespowerr24": "yespowerr24",
+            "yespowerr32": "yespowerr32",
+            "lyra2z330": "lyra2z330"
+        },
+        "fee": {
+            "yescryptr8": 0,
+            "yescrypt": 0,
+            "yescryptr16": 0,
+            "yescryptr24": 0,
+            "yescryptr32": 0,
+            "yespower": 0,
+            "yespowerr8": 0,
+            "yespowerr16": 0,
+            "yespowerr24": 0,
+            "yespowerr32": 0,
+            "lyra2z330": 0
+        }
+    },
+    "name": "jayddee"
+}

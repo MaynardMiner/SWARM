@@ -767,8 +767,32 @@ I will work on splitting miners for each algo.
 * bminer updated
 * lolminer updated
 * beamv2 on nicehash added
+* nbminer updated
+* updated cpuminers
 
 ## Fixes
 * Adjusted -Stat_Algo Day & -Stat_Coin Day
 to allow full values.
 * Fixed new ``get stats lite`` table
+
+############################################
+############################################
+
+# SWARM 2.6.1
+
+## New features
+* ``get stats`` will show daily profit for rig.
+* hiveos version creates a newarguments.json
+  like windows version.
+* Slight improvemnt to pool load times
+
+## Updates
+* TT-Updated
+* Gminer Updated
+* Updated ``get help``
+
+## Fixes
+* Fixed ``-coin_param`` params value
+* Fixed gminer equihash_150/5
+* Removed "Waiting for all miners to launch"
+  * It can cause issues with hiveos oc settings.

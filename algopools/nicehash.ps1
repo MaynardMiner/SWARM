@@ -1,4 +1,3 @@
-
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $nicehash_Request = [PSCustomObject]@{ } 
 
@@ -86,23 +85,35 @@ if ($Name -in $(arg).PoolName) {
                 $StatAlgo = $Nicehash_Algorithm -replace "`_","`-"
                 $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -Value ([Double]$_.paying / $Divisor * (1 - ($Fee / 100)))
      
-                [PSCustomObject]@{
-                    Excavator = $nicehash_excavator
-                    Symbol    = "$nicehash_Algorithm-Algo"
-                    Algorithm = $nicehash_Algorithm
-                    Price     = $Stat.$($(arg).Stat_Algo)
-                    Protocol  = "stratum+tcp"
-                    Host      = $nicehash_Host
-                    Port      = $nicehash_Port
-                    User1     = "$NH_Wallet1.$($(arg).RigName1)"
-                    User2     = "$NH_Wallet2.$($(arg).RigName2)"
-                    User3     = "$NH_Wallet3.$($(arg).RigName3)"
-                    Pass1     = "x"
-                    Pass2     = "x"
-                    Pass3     = "x"
-                    Previous  = $Previous
-                }
-            }
+                [Pool]::New(
+                    ## Symbol
+                    "$($_.Name)-Algo",
+                    ## Algorithm
+                    "$($_.Name)",
+                    ## Level
+                    $Level,
+                    ## Stratum
+                    "stratum+tcp",
+                    ## Pool_Host
+                    $Pool_Host,
+                    ## Pool_Port
+                    $Pool_Port,
+                    ## User1
+                    $User1,
+                    ## User2
+                    $User2,
+                    ## User3
+                    $User3,
+                    ## Pass1
+                    "c=$Pass1,id=$($(arg).RigName1)",
+                    ## Pass2
+                    "c=$Pass2,id=$($(arg).RigName2)",
+                    ## Pass3
+                    "c=$Pass3,id=$($(arg).RigName3)",
+                    ## Previous
+                    $previous
+                )
+                    }
         }
     }
 }
