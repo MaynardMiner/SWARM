@@ -18,19 +18,11 @@ if ($Name -in $(arg).PoolName) {
     $Algos = $Algos | ForEach-Object { if ($Bad_pools.$_ -notcontains $Name) { $_ } }
 
     ## Only get algos we need & convert name to universal schema
-    $Pool_Sorted = $Pool_Request.PSobject.Properties.Value | Where-Object {[Double]$_.estimate_current -gt 0} | ForEach-Object { 
+    $Pool_Sorted = $Pool_Request.PSobject.Properties.Value | Where-Object { [Double]$_.estimate_current -gt 0 } | ForEach-Object { 
         $N = $_.Name;
         $_ | Add-Member "Original_Algo" $N
         $_.Name = $global:Config.Pool_Algos.PSObject.Properties.Name | Where { $N -in $global:Config.Pool_Algos.$_.alt_names };
         if ($_.Name) { if ($_.Name -in $Algos -and $Name -notin $global:Config.Pool_Algos.$($_.Name).exclusions -and $_.Name -notin $(vars).BanHammer) { $_ } }
-    }
-
-    ## Add 24 hour deviation.
-    $Pool_Sorted | ForEach-Object {
-        $Day_Estimate = [Double]$_.estimate_last24h;
-        $Day_Return = [Double]$_.actual_last24h;
-        $Raw = shuffle $Day_Estimate $Day_Return
-        $_ | Add-Member "deviation" $Raw
     }
 
     Switch ($(arg).Location) {
@@ -39,6 +31,12 @@ if ($Name -in $(arg).PoolName) {
     }    
   
     $Pool_Sorted | ForEach-Object {
+
+        $Day_Estimate = [Double]$_.estimate_last24h;
+        $Day_Return = [Double]$_.actual_last24h;
+        $Raw = shuffle $Day_Estimate $Day_Return
+        $_ | Add-Member "deviation" $Raw
+    
         $StatAlgo = $_.Name -replace "`_", "`-"
         $StatPath = "$($Name)_$($StatAlgo)_profit"
         if (-not (test-Path ".\stats\$StatPath") ) { $Estimate = [Double]$_.estimate_last24h }
@@ -48,13 +46,15 @@ if ($Name -in $(arg).PoolName) {
         $Pool_Host = "$region$X"
         $Divisor = 1000000 * $_.mbtc_mh_factor
         $Hashrate = $_.hashrate
-        if([double]$HashRate -eq 0){ $Hashrate = 1 }  ## Set to prevent volume dividebyzero error
+        if ([double]$HashRate -eq 0) { $Hashrate = 1 }  ## Set to prevent volume dividebyzero error
         $previous = [Math]::Max(([Double]$_.actual_last24h * 0.001) / $Divisor * (1 - ($_.fees / 100)), $SmallestValue)
     
         $Deviation = $_.Deviation
         $Stat = Global:Set-Stat -Name $StatPath -HashRate $HashRate -Value ( $Estimate / $Divisor * (1 - ($_.fees / 100))) -Shuffle $Deviation
-        if (-not $(vars).Pool_Hashrates.$($_.Name)) { $(vars).Pool_Hashrates.Add("$($_.Name)", @{ }) }
-        if (-not $(vars).Pool_Hashrates.$($_.Name).$Name) { $(vars).Pool_Hashrates.$($_.Name).Add("$Name", @{HashRate = "$($Stat.HashRate)"; Percent = "" })}
+        if (-not $(vars).Pool_Hashrates.$($_.Name)) { $(vars).Pool_Hashrates.Add("$($_.Name)", @{ }) 
+        }
+        if (-not $(vars).Pool_Hashrates.$($_.Name).$Name) { $(vars).Pool_Hashrates.$($_.Name).Add("$Name", @{HashRate = "$($Stat.HashRate)"; Percent = "" })
+        }
         
         $Level = $Stat.$($(arg).Stat_Algo)
         if ($(arg).Historical_Bias -gt 0) {

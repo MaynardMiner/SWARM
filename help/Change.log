@@ -782,6 +782,9 @@ to allow full values.
 
 ## New features
 * ``get stats`` will show daily profit for rig.
+* hiveos version creates a newarguments.json
+  like windows version.
+* Slight improvemnt to pool load times
 
 ## Updates
 * TT-Updated

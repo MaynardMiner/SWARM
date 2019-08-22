@@ -25,14 +25,6 @@ if ($Name -in $(arg).PoolName) {
         if ($_.Name) { if ($_.Name -in $Algos -and $Name -notin $global:Config.Pool_Algos.$($_.Name).exclusions -and $_.Name -notin $(vars).BanHammer) { $_ } }
     }
 
-    ## Add 24 hour deviation.
-    $Pool_Sorted | ForEach-Object {
-        $Day_Estimate = [Double]$_.estimate_last24h;
-        $Day_Return = [Double]$_.actual_last24h;
-        $Raw = shuffle $Day_Estimate $Day_Return
-        $_ | Add-Member "deviation" $Raw
-    }
-
     Switch ($(arg).Location) {
         "US" { $region = "na" }
         "EUROPE" { $region = "eu" }
@@ -40,6 +32,11 @@ if ($Name -in $(arg).PoolName) {
     }    
 
     $Pool_Sorted | ForEach-Object {
+        $Day_Estimate = [Double]$_.estimate_last24h;
+        $Day_Return = [Double]$_.actual_last24h;
+        $Raw = shuffle $Day_Estimate $Day_Return
+        $_ | Add-Member "deviation" $Raw
+
         $StatAlgo = $_.Name -replace "`_", "`-"
         $StatPath = "$($Name)_$($StatAlgo)_profit"
         if (-not (test-Path ".\stats\$StatPath") ) { $Estimate = [Double]$_.estimate_last24h }
