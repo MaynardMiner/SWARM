@@ -1,5 +1,5 @@
 {
-  "name": "cpu-linux",
+  "name": "bubasik",
   "bubasik": {
     "name": "bubasik",
     "type": "cpu",
@@ -23,16 +23,25 @@
     "type": "cpu",
     "CPU": ".\\bin\\sugarchain-1\\cpuminer",
     "minername": "cpuminer",
-    "version": "3.9.6.2",
+    "version": "3.8.8.1.7",
     "optional": "No",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v8.0/cpuminer-jayddee.tar.gz"
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v8.0/sugarchain-linux.tar.gz"
+  },
+  "jayddee": {
+    "name": "jayddee",
+    "type": "cpu",
+    "CPU": ".\\bin\\jayddee-1\\cpuminer",
+    "minername": "cpuminer",
+    "version": "3.9.7",
+    "optional": "No",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v8.0/jayddee-linux.tar.gz"
   },
   "cpupower": {
     "name": "cpupower",
     "type": "cpu",
     "CPU": ".\\bin\\cpupower-1\\cpuminer",
     "minername": "cpuminer",
-    "version": "3.9.6.2",
+    "version": "1.0",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v8.0/cpupower-linux.tar.gz"
   }

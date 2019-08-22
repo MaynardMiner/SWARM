@@ -18,9 +18,9 @@
     "NVIDIA2": ".\\bin\\nbminer-2\\nbminer",
     "NVIDIA3": ".\\bin\\nbminer-3\\nbminer",
     "minername": "nbminer",
-    "version": "24.2",
+    "version": "24.4",
     "optional": "No",
-    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v24.2/NBMiner_24.2_Linux.tgz"
+    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v24.4/NBMiner_24.4_Linux.tgz"
   },
   "multiminer": {
     "name": "multiminer",
@@ -205,9 +205,9 @@
     "NVIDIA2": ".\\bin\\gminer-2\\miner",
     "NVIDIA3": ".\\bin\\gminer-3\\miner",
     "minername": "miner",
-    "version": "1.55",
+    "version": "1.59",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.55/gminer_1_55_linux64.tar.xz"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.59/gminer_1_59_linux64.tar.xz"
   },
   "grin-miner": {
     "name": "grin-miner",
@@ -227,9 +227,9 @@
     "NVIDIA2": ".\\bin\\bminer-2\\bminer",
     "NVIDIA3": ".\\bin\\bminer-3\\bminer",
     "minername": "bminer",
-    "version": "15.8.2",
+    "version": "15.8.3",
     "optional": "No",
-    "uri": "https://www.bminercontent.com/releases/bminer-v15.8.2-7f347c7-amd64.tar.xz"
+    "uri": "https://www.bminercontent.com/releases/bminer-v15.8.3-fc8dae9-amd64.tar.xz"
   },
   "miniz": {
     "name": "miniz",
@@ -293,9 +293,9 @@
     "NVIDIA2": ".\\bin\\tt-miner-2\\TT-Miner",
     "NVIDIA3": ".\\bin\\tt-miner-3\\TT-Miner",
     "minername": "TT-Miner",
-    "version": "3.0.0",
+    "version": "3.0.4",
     "optional": "No",
-    "uri": "https://TradeProject.de/download/Miner/TT-Miner.tar.xz"
+    "uri": "https://tradeproject.de/download/Miner/TT-Miner.tar.xz"
   },
   "ethminer": {
     "name": "ethminer",

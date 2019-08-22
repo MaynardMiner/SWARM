@@ -18,9 +18,9 @@
         "NVIDIA2": ".\\bin\\nbminer-2\\nbminer.exe",
         "NVIDIA3": ".\\bin\\nbminer-3\\nbminer.exe",
         "minername": "nbminer.exe",
-        "version": "24.2",
+        "version": "24.4",
         "optional": "No",
-        "uri": "https://github.com/NebuTech/NBMiner/releases/download/v24.2/NBMiner_24.2_Win.zip"
+        "uri": "https://github.com/NebuTech/NBMiner/releases/download/v24.4/NBMiner_24.4_Win.zip"
       },    
     "cc-mtp": {
         "name": "cc-mtp",
@@ -62,9 +62,9 @@
         "NVIDIA2": ".\\bin\\bminer-2\\bminer.exe",
         "NVIDIA3": ".\\bin\\bminer-3\\bminer.exe",
         "minername": "bminer.exe",
-        "version": "15.8.2",
+        "version": "15.8.3",
         "optional": "No",
-        "uri": "https://www.bminercontent.com/releases/bminer-lite-v15.8.2-7f347c7-amd64.zip"
+        "uri": "https://www.bminercontent.com/releases/bminer-lite-v15.8.3-fc8dae9-amd64.zip"
     },
     "ehssand": {
         "name": "ehssand",
@@ -238,7 +238,7 @@
         "NVIDIA2": ".\\bin\\tt-miner-2\\TT-Miner.exe",
         "NVIDIA3": ".\\bin\\tt-miner-3\\TT-Miner.exe",
         "minername": "TT-Miner.exe",
-        "version": "3.0.1",
+        "version": "3.0.4",
         "optional": "No",
         "uri": "https://tradeproject.de/download/Miner/TT-Miner.zip"
     },

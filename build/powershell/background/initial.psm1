@@ -16,15 +16,6 @@ function Global:Invoke-MinerCheck {
             Write-Host "Miners Have Switched `n" -ForegroundColor Cyan
             $global:CurrentMiners = $global:GetMiners;
             $global:StartTime = Get-Date
-            Write-Host "Waiting for all miners to launch `n"
-            $Check = $false;
-            $Time = 0
-            do{
-                $check = Test-Path ".\build\pid\start.txt"; 
-                start-sleep -S 1
-                $Time++
-                if($Time -gt 29){$check = $true}
-            }Until($check -eq $true)
         }
     }
         

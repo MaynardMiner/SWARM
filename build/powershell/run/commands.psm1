@@ -36,12 +36,17 @@ function Global:Get-StatusLite {
 }
 
 function Global:Get-PriceMessage {
+    $Total = 0;
     $(vars).BestActiveMIners | % {
-        if ($_.Profit_Day -ne "bench") { $ScreenProfit = "$(($_.Profit_Day * $(vars).Rates.$($(arg).Currency)).ToString("N2")) $($(arg).Currency)/Day" } else { $ScreenProfit = "Benchmarking" }
+        if ($_.Profit_Day -ne "bench") { $ScreenProfit = "$($Value = $_.Profit_Day * $(vars).Rates.$($(arg).Currency); $Total += $Value; $Value.ToString("N2")) $($(arg).Currency)/Day" } else { $ScreenProfit = "Benchmarking" }
         $ProfitMessage = "Current Daily Profit For $($_.Type): $ScreenProfit"
         $ProfitMessage | Out-File ".\build\txt\minerstats.txt" -Append
         $ProfitMessage | Out-File ".\build\txt\charts.txt" -Append
     }
+    $ProfitMessage = "Current Daily Profit For Rig: $($Total.ToString("N2")) $($(arg).Currency)/Day"
+    $ProfitMessage | Out-File ".\build\txt\minerstats.txt" -Append
+    $ProfitMessage | Out-File ".\build\txt\charts.txt" -Append
+
 }
 
 
