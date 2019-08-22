@@ -161,7 +161,7 @@ if ($Name -in $(arg).PoolName) {
                 ## Algorithm
                 $Zpool_Algo,
                 ## Level
-                $Level,
+                $_.Level,
                 ## Stratum
                 "stratum+tcp",
                 ## Pool_Host
