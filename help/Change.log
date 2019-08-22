@@ -809,3 +809,12 @@ to allow full values.
 
 ## Updates
 * Updates Gminer Windows
+
+############################################
+############################################
+
+# SWARM 2.6.3
+
+## CRITICAL UPDATE
+* Fixes first time load of pool stats
+  For ``-Auto_Coin``
