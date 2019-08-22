@@ -87,11 +87,11 @@ if ($Name -in $(arg).PoolName) {
                     ## Pool_Port
                     $nicehash_Port,
                     ## User1
-                    $NH_Wallet1.$($(arg).RigName1),
+                    "$NH_Wallet1.$($(arg).RigName1)",
                     ## User2
-                    $NH_Wallet2.$($(arg).RigName2),
+                    "$NH_Wallet2.$($(arg).RigName2)",
                     ## User3
-                    $NH_Wallet3.$($(arg).RigName3),
+                    "$NH_Wallet3.$($(arg).RigName3)",
                     ## Pass1
                     "x",
                     ## Pass2
