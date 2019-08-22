@@ -266,6 +266,40 @@ asic
                     etc.
 
 
+OTHER USEFUL COMMANDS that are not part of get, but work for SWARM:
+
+clear_profits
+        Clears all stat files for pools
+
+clear_watts
+        Clears all watt files
+        Resets power.json
+
+benchmark
+        USAGE:
+            [miner or algorithm] [name]
+            [timeout]
+
+        benchmark miner [name] 
+            will clear all benchmarks for that miner
+        benchmark algorithm [name] 
+            will clear all benchmarks for that algorithm
+        becchmark timeout 
+            will clear all bans
+
+nview
+        USAGE:
+            [-n] [-onchange]
+
+        EXAMPLES:
+
+            nview get stats -n 30 
+                Will run command get stats every thirty seconds
+
+            nview get stats -n 10 -Onchange
+                Will run get stats command every 10 seconds
+                Will only refresh screen if data has changed.
+
 to see all available SWARM commands, go to:
 
 https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
