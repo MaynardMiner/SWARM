@@ -53,6 +53,13 @@ if ($Name -in $(arg).PoolName) {
             $SmallestValue = 1E-20 
             $Level = [Math]::Max($Level + ($Level * $Stat.Deviation), $SmallestValue)
         }
+
+        $Pass1 = $global:Wallets.Wallet1.Keys
+        $User1 = $global:Wallets.Wallet1.$($(arg).Passwordcurrency1).address
+        $Pass2 = $global:Wallets.Wallet2.Keys
+        $User2 = $global:Wallets.Wallet2.$($(arg).Passwordcurrency2).address
+        $Pass3 = $global:Wallets.Wallet3.Keys
+        $User3 = $global:Wallets.Wallet3.$($(arg).Passwordcurrency3).address
                     
         [Pool]::New(
             ## Symbol

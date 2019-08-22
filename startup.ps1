@@ -83,6 +83,11 @@ if ($Start -eq $true) {
         Start-Process "CMD" -ArgumentList "/C `"pwsh -noexit -executionpolicy Bypass -WindowStyle Maximized -command `"Set-Location C:\; Set-Location `'$Dir`'; .\swarm.ps1`"`"" -Verb RunAs
     }
     else {
+        ## Add Arguments to new arguments.json for GUI for HiveOS
+        if(test-path "/hive-config") {
+            Write-Host "Saving Arguments To .\config\parameters\newarguments.json" -ForegroundColor Yellow
+            $Parsed | ConvertTo-Json | Out-File ".\config\parameters\newarguments.json"
+        }
         Invoke-Expression ".\swarm.ps1"
     }
 }
