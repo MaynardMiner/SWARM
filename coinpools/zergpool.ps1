@@ -96,6 +96,7 @@ if ($Name -in $(arg).PoolName) {
             $mc = "mc=$Zergpool_Symbol,"
             $zergpool_Port = $_.port
             $zergpool_Host = "$($_.Original_Algo).mine.zergpool.com$X"
+            $previous = $null
 
             ## Wallet Swapping/Solo mining
             $Pass1 = $global:Wallets.Wallet1.Keys
@@ -153,21 +154,34 @@ if ($Name -in $(arg).PoolName) {
                 }
             }
 
-            [PSCustomObject]@{
-                Symbol          = "$ZergPool_Symbol-Coin"
-                Algorithm       = $Zergpool_Algo
-                Price           = $_.Level
-                Protocol        = "stratum+tcp"
-                Host            = $zergpool_Host
-                Port            = $zergpool_Port
-                User1           = $User1
-                User2           = $User2
-                User3           = $User3
-                Pass1           = "c=$Pass1,$($mc)id=$($(arg).RigName1)"
-                Pass2           = "c=$Pass2,$($mc)id=$($(arg).RigName2)"
-                Pass3           = "c=$Pass3,$($mc)id=$($(arg).RigName3)"
-                Meets_Threshold = $Meets_Threshold
-            } 
+            [Pool]::New(
+                ## Symbol
+                "$ZergPool_Symbol-Coin",
+                ## Algorithm
+                $Zergpool_Algo,
+                ## Level
+                $Level,
+                ## Stratum
+                "stratum+tcp",
+                ## Pool_Host
+                $zergpool_Host,
+                ## Pool_Port
+                $zergpool_Port,
+                ## User1
+                $User1,
+                ## User2
+                $User2,
+                ## User3
+                $User3,
+                ## Pass1
+                "c=$Pass1,$($mc)id=$($(arg).RigName1)",
+                ## Pass2
+                "c=$Pass2,$($mc)id=$($(arg).RigName2)",
+                ## Pass3
+                "c=$Pass3,$($mc)id=$($(arg).RigName3)",
+                ## Previous
+                $previous
+            )
         }
     }
 }

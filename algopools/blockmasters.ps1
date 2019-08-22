@@ -91,7 +91,7 @@ if ($Name -in $(arg).PoolName) {
             }
         }
 
-        [pool]::New(
+        [Pool]::New(
             ## Symbol
             "$($_.Name)-Algo",
             ## Algorithm

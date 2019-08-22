@@ -55,7 +55,7 @@ if ($Name -in $(arg).PoolName) {
             $Level = [Math]::Max($Level + ($Level * $Stat.Deviation), $SmallestValue)
         }
 
-        [pool]::New(
+        [Pool]::New(
             ## Symbol
             "$($_.Name)-Algo",
             ## Algorithm

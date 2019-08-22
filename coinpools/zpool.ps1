@@ -155,21 +155,34 @@ if ($Name -in $(arg).PoolName) {
                 }
             }
 
-            [PSCustomObject]@{
-                Symbol          = "$zpool_Symbol-Coin"
-                Algorithm       = $zpool_Algo
-                Price           = $_.Level
-                Protocol        = "stratum+tcp"
-                Host            = $zpool_Host
-                Port            = $zpool_Port
-                User1           = $User1
-                User2           = $User2
-                User3           = $User3
-                Pass1           = "c=$Pass1,$($mc)id=$($(arg).RigName1)"
-                Pass2           = "c=$Pass2,$($mc)id=$($(arg).RigName2)"
-                Pass3           = "c=$Pass3,$($mc)id=$($(arg).RigName3)"
-                Meets_Threshold = $Meets_Threshold
-            } 
+            [Pool]::New(
+                ## Symbol
+                "$ZPool_Symbol-Coin",
+                ## Algorithm
+                $Zpool_Algo,
+                ## Level
+                $Level,
+                ## Stratum
+                "stratum+tcp",
+                ## Pool_Host
+                $Zpool_Host,
+                ## Pool_Port
+                $Zpool_Port,
+                ## User1
+                $User1,
+                ## User2
+                $User2,
+                ## User3
+                $User3,
+                ## Pass1
+                "c=$Pass1,$($mc)id=$($(arg).RigName1)",
+                ## Pass2
+                "c=$Pass2,$($mc)id=$($(arg).RigName2)",
+                ## Pass3
+                "c=$Pass3,$($mc)id=$($(arg).RigName3)",
+                ## Previous
+                $previous
+            )
         }
     }
 }

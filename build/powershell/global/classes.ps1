@@ -4,7 +4,7 @@ class pool {
     [double]$Price
     [string]$Protocol
     [string]$Pool_Host
-    [string]$Pool_Port
+    [string]$Port
     [string]$User1
     [string]$User2
     [string]$User3
@@ -24,7 +24,7 @@ class pool {
             [double]$this.Price = $Price
             [string]$this.Protocol = $Protocol
             [string]$this.Pool_Host = $Pool_Host
-            [string]$this.Pool_Port = $Pool_Port
+            [string]$this.Port = $Pool_Port
             [string]$this.User1 = $User1
             [string]$this.User2 = $User2
             [string]$this.User3 = $User3

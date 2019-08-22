@@ -85,7 +85,7 @@ if ($Name -in $(arg).PoolName) {
                 $StatAlgo = $Nicehash_Algorithm -replace "`_","`-"
                 $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -Value ([Double]$_.paying / $Divisor * (1 - ($Fee / 100)))
      
-                [pool]::New(
+                [Pool]::New(
                     ## Symbol
                     "$($_.Name)-Algo",
                     ## Algorithm
