@@ -796,3 +796,13 @@ to allow full values.
 * Fixed gminer equihash_150/5
 * Removed "Waiting for all miners to launch"
   * It can cause issues with hiveos oc settings.
+
+############################################
+############################################
+
+# SWARM 2.6.2
+
+## CRITICAL UPDATE
+* Restores Nicehash Pool
+  From Last Release's
+  changes with pool.
