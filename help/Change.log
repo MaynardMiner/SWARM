@@ -820,3 +820,19 @@ to allow full values.
   For ``-Auto_Coin``
 * This is only for users with ``Auto_Coin``
   You can ignore if not using.
+
+############################################
+############################################
+
+# SWARM 2.6.4
+
+## Fixes
+* Resolved issues with Windows ``get update``
+  * Should now work from this version forward.
+* Fixed some more pool issues- Everything
+  should be resolved now.
+
+## Updates
+* HiveOS SWARM will now write newarguments.json
+  on startup- For future use. You will see
+  "New arguments detected message- This is normal."
