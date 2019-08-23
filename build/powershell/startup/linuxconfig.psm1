@@ -327,7 +327,7 @@ function Global:Get-GPUCount {
                 log "No GPU's Detected- Using CPU"
                 $(arg).Type += "CPU"
                 ## Get Threads:
-                $(arg).CPUThreads = $(Get-CimInstance -ClassName 'Win32_Processor' | Select-Object -Property 'NumberOfCores').NumberOfCores;
+                $(arg).CPUThreads = grep -c ^processor /proc/cpuinfo;
             }
         }
 
