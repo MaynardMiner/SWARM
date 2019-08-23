@@ -84,10 +84,12 @@ Function Global:Get-Bus {
         $NVSMI | % { $_."pci.bus_id" = $_."pci.bus_id".split("00000000:") | Select -Last 1 }
     }
 
+    $GPUData = @()
+
     $Data | % {
         if ($_.vendorid -eq "1002") {
             $busid = $(Global:Get-PCISlot $_.location)
-            $GPUS += [PSCustomObject]@{
+            $GPUData += [PSCustomObject]@{
                 "busid"     = $busid
                 "name"      = $_.cardname
                 "brand"     = "amd"
@@ -100,7 +102,7 @@ Function Global:Get-Bus {
         elseif ($_.vendorid -eq "10DE") {
             $busid = $(Global:Get-PCISlot $_.location)
             $SMI = $NVSMI | Where "pci.bus_id" -eq $busid
-            $GPUS += [PSCustomObject]@{
+            $GPUData += [PSCustomObject]@{
                 busid     = $busid
                 name      = $_.cardname
                 brand     = "nvidia"
@@ -114,7 +116,7 @@ Function Global:Get-Bus {
         }
         else {
             $busid = $(Global:Get-PCISlot $_.location)
-            $GPUS += [PSCustomObject]@{
+            $GPUData += [PSCustomObject]@{
                 busid = $busid
                 name  = $_.cardname
                 brand = "cpu"
@@ -122,13 +124,18 @@ Function Global:Get-Bus {
         }
     }
 
+    ### Sort list so onboard is first
+    $GPUS += $GPUData | Where busid -eq "00:02.0"
+    $GPUs += $GPUData | Where busid -ne "00:02.0" | Sort-Object -Property busid
+
     $NewCount | Set-Content ".\build\txt\gpu-count.txt"
+
     $GPUS
 }
 
 function Global:Get-GPUCount {
 
-    $Bus = $(vars).BusData | Sort-Object busid
+    $Bus = $(vars).BusData
     $DeviceList = @{ AMD = @{ }; NVIDIA = @{ }; CPU = @{ } }
     $OCList = @{ AMD = @{ }; Onboard = @{ }; NVIDIA = @{ }; }
     $GN = $false
