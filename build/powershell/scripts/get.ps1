@@ -806,39 +806,62 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                     Write-Host "Detected New Version Should Be $VersionNumber"    
                     $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$VersionNumber/SWARM.$VersionNumber.zip"
                 }
-                Write-Host "Main Directory is $Location`n"
-                $line += "Main Directory is $Location`n"
-                $NewLocation = Join-Path (Split-Path $Dir) "SWARM.$VersionNumber"
-                $line += "New Location is $NewLocation"
-                Write-Host "New Location is $NewLocation"
-                $FileName = join-path "$Dir\x64" "SWARM.$VersionNumber.zip"
-                Write-Host "New"
-                $DLFileName = Join-Path "$Dir" "x64\SWARM.$VersionNumber.zip"
-                $line += "Extraction Path is $DLFileName"
-                Write-Host "Extraction Path is $DLFileName"
+                Write-Host "Main Directory is $(Split-Path $Dir)`n"
+
+                $BaseDir = (Split-Path $Dir)
+                $FileName = join-path "$Dir" "x64\SWARM.$VersionNumber.zip"
+                $DLFileName = Join-Path "$Dir" "x64\SWARM.$VersionNumber"
+
                 $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$versionNumber/SWARM.$VersionNumber.zip"
-                try { Invoke-WebRequest $URI -OutFile $FileName -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }catch { $Failed = $true; Write-Host "Failed To Contact Github For Download! Must Do So Manually" }
+                Write-Host "URI should be $URI"
+                try { Invoke-WebRequest $URI -OutFile $FileName -SkipCertificateCheck -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }catch { $Failed = $true; Write-Host "Failed To Contact Github For Download! Must Do So Manually" }
                 Start-Sleep -S 5
                 if ($Failed -eq $false) {
-                    Get-Location | Out-Host
-                    $Proc = Start-Process "$Dir\build\apps\7z\7z.exe" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -PassThru -WindowStyle Minimized
+
+                    Write-Host "Extraction Path is $FileName"
+                    Write-Host "Extracting to $DLFileName"
+                    $Proc = Start-Process "$Dir\build\apps\7z\7z.exe" "x `"$($FileName)`" -o`"$($DLFileName)`" -y" -PassThru -WindowStyle Minimized
                     $Proc | Wait-Process
                     Start-Sleep -S 3
-                    Write-Host "Config Command Initiated- Restarting SWARM`n"
+
+                    $Search = Get-ChildItem -Path ".\x64\SWARM.$VersionNumber" -Filter "SWARM.bat" -Recurse -ErrorAction SilentlyContinue
+                    if (-not $Search) { Write-Host "NEW SWARM Was Not Found" -ForegroundColor DarkRed; break }        
+                    $Contents = $Search.Directory.FullName | Select-Object -First 1
+                    Move-Item -Path $Contents -Destination "$BaseDir" -Force | Out-Null; Start-Sleep -S 1
+                    $DirName = Join-Path $BaseDir $(Split-Path $Contents -Leaf)
+                    if($DirName -ne (Join-Path $BaseDir "SWARM.$VersionNumber")){
+                    Rename-Item -Path "$DirName" -NewName "SWARM.$VersionNumber" -Force | Out-Null
+                    }
+                    if(Test-Path $DLFileName) { Remove-Item $DLFileName -Recurse -Force }
+
+                    $NewDIR = Join-Path $BaseDir "SWARM.$($VersionNumber)"
+
                     $MinerFile = "$Dir\build\pid\miner_pid.txt"
                     if (Test-Path $MinerFile) { $MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue }
-                    Stop-Process $MinerId -Force
-                    Write-Host "Stopping Old Miner`n"
+                    if($MinerID) { Stop-Process $MinerId -Force}
+                    Write-Host "Stopping Old Miner and waiting 5 seconds`n"
                     Start-Sleep -S 5
-                    Write-Host "Attempting to start new SWARM verison at $NewLocation\SWARM.bat"
+
                     Write-Host "Downloaded and extracted SWARM successfully`n"
-                    Copy-Item "$Dir\SWARM.bat" -Destination $NewLocation -Force
-                    Copy-Item "$Dir\config\parameters\newarguments.json" -Destination "$NewLocation\config\parameters" -Force
-                    New-Item -Name "pid" -Path "$NewLocation\build" -ItemType "Directory"
-                    Copy-Item "$Dir\build\pid\background_pid.txt" -Destination "$NewLocation\build\pid" -Force
-                    Set-Location $NewLocation
+                    Write-Host "Attempting to start new SWARM verison $NewDIR\SWARM.bat"
+
+                    Copy-Item "$Dir\SWARM.bat" -Destination $NewDIR -Force
+
+                    $Params = Join-Path $NewDir "config\parameters"
+                    if(Test-Path ".\config\parameters\newarguments.json"){$New_Params = ".\config\parameters\newarguments.json"}
+                    else{$New_Params = ".\config\parameters\arguments.json"}
+
+                    Copy-Item $New_Params -Destination $Params -Force
+                    Write-Host "Copied $New_Params to new SWARM"
+
+                    $MPID = Join-Path "$NewDir" "build\pid"
+                    if(-not (Test-Path $MPID) ){New-Item -Name "pid" -Path "$NewDIR\build" -ItemType "Directory"}
+                    if(test-path "$Dir\build\pid\background_pid.txt"){ Copy-Item "$Dir\build\pid\background_pid.txt" -Destination "$NewDIR\build\pid" -Force }
+                    Write-Host "Copied Previous Process Data To SWARM."
+                    
+                    Set-Location "$NewDIR"
+                    Write-Host "Starting $($NewDIR)\SWARM.bat"    
                     Start-Process "SWARM.bat"
-                    Set-Location $Dir
                 }
             }
             else { $Get += "Cannot update. Are you administrator?" }
