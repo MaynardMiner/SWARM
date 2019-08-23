@@ -306,23 +306,28 @@ function Global:Get-GPUCount {
             $GA = $true
         }
 
-        if ($GA -or $GN) {
-            $TypeArray = @("NVIDIA1", "NVIDIA2", "NVIDIA3", "AMD1")
-            $TypeArray | ForEach-Object { if ($_ -in $(arg).Type) { $NoType = $false } }
-            if ($NoType -eq $true) {
-                log "Searching GPU Types" -ForegroundColor Yellow
-                if ($GA) { 
-                    log "AMD Detected: Adding AMD" -ForegroundColor Magenta
-                    $(arg).Type += "AMD1" 
-                }
-                if ($GN -and $GA) {
-                    log "NVIDIA Also Detected" -ForegroundColor Magenta
-                    $(arg).Type += "NVIDIA2" 
-                }
-                elseif ($GN) {
-                    log "NVIDIA Detected: Adding NVIDIA" -ForegroundColor Magenta
-                    $(arg).Type += "NVIDIA1" 
-                }
+        $TypeArray = @("NVIDIA1", "NVIDIA2", "NVIDIA3", "AMD1")
+        $TypeArray | ForEach-Object { if ($_ -in $(arg).Type) { $NoType = $false } }
+        if ($NoType -eq $true) {
+            log "Searching GPU Types" -ForegroundColor Yellow
+            $(arg).Type = @()
+            if ($GN -and $GA) {
+                log "AMD and NVIDIA Detected" -ForegroundColor Magenta
+                $(arg).Type += "AMD1,NVIDIA2" 
+            }
+            elseif ($GN) { 
+                log "NVIDIA Detected: Adding NVIDIA" -ForegroundColor Magenta
+                $(arg).Type += "NVIDIA1" 
+            }
+            elseif ($GA) {
+                log "AMD Detected: Adding AMD" -ForegroundColor Magenta
+                $(arg).Type += "AMD1" 
+            }
+            elseif ("ASIC" -notin $(arg).Type) {
+                log "No GPU's Detected- Using CPU"
+                $(arg).Type += "CPU"
+                ## Get Threads:
+                $(arg).CPUThreads = $(Get-CimInstance -ClassName 'Win32_Processor' | Select-Object -Property 'NumberOfCores').NumberOfCores;
             }
         }
 

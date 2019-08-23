@@ -166,26 +166,30 @@ function Global:Get-GPUCount {
         }
     }
 
-    if ($GA -or $GN) {
-        $TypeArray = @("NVIDIA1", "NVIDIA2", "NVIDIA3", "AMD1")
-        $TypeArray | ForEach-Object { if ($_ -in $(arg).Type) { $NoType = $false } }
-        if ($NoType -eq $true) {
-            log "Searching GPU Types" -ForegroundColor Yellow
-            if ($GA) { 
-                log "AMD Detected: Adding AMD" -ForegroundColor Magenta
-                $(arg).Type += "AMD1" 
-            }
-            if ($GN -and $GA) {
-                log "NVIDIA Also Detected" -ForegroundColor Magenta
-                $(arg).Type += "NVIDIA2" 
-            }
-            elseif ($GN) { 
-                log "NVIDIA Detected: Adding NVIDIA" -ForegroundColor Magenta
-                $(arg).Type += "NVIDIA1" 
-            }
+    $TypeArray = @("NVIDIA1", "NVIDIA2", "NVIDIA3", "AMD1")
+    $TypeArray | ForEach-Object { if ($_ -in $(arg).Type) { $NoType = $false } }
+    if ($NoType -eq $true) {
+        log "Searching GPU Types" -ForegroundColor Yellow
+        $(arg).Type = @()
+        if ($GN -and $GA) {
+            log "AMD and NVIDIA Detected" -ForegroundColor Magenta
+            $(arg).Type += "AMD1,NVIDIA2" 
+        }
+        elseif ($GN) {
+            log "NVIDIA Detected: Adding NVIDIA" -ForegroundColor Magenta
+            $(arg).Type += "NVIDIA1" 
+        }
+        elseif ($GA) {
+            log "AMD Detected: Adding AMD" -ForegroundColor Magenta
+            $(arg).Type += "AMD1" 
+        }
+        elseif ($(arg).Type -ne "ASIC") {
+            log "No GPU's Detected- Using CPU"
+            $(arg).Type += "CPU"
+            ## Get Threads:
+            $(arg).CPUThreads = $(Get-CimInstance -ClassName 'Win32_Processor' | Select-Object -Property 'NumberOfCores').NumberOfCores;
         }
     }
-
     
     if ($(arg).Type -like "*CPU*") { for ($i = 0; $i -lt $(arg).CPUThreads; $i++) { $DeviceList.CPU.Add("$($i)", $i) } }
     $DeviceList | ConvertTo-Json | Set-Content ".\build\txt\devicelist.txt"
@@ -272,26 +276,28 @@ function Global:Start-WindowsConfig {
         $Install_NVSMI = $true
     }
 
-    if($Install_NVSMI -eq $true) {
+    if ($Install_NVSMI -eq $true) {
         log "SWARM is going to attempt to install NVSMI, but it could be incorrect drivers were installed." -ForegroundColor Red
-        if(-not (Test-Path "C:\Program Files\NVIDIA Corporation")) { 
+        if (-not (Test-Path "C:\Program Files\NVIDIA Corporation")) { 
             log "SWARM failed to install NVSMI folder- No NVIDIA Corporation file found in C:\Program Files" -ForegroundColor Red
         } 
         else {
             log "extracting NVSMI folder.." -ForegroundColor Yellow
-            if(test-path ".\build\data\NVSMI"){ Remove-Item ".\build\data\NVSMI" -Force -Recurse}
+            if (test-path ".\build\data\NVSMI") { Remove-Item ".\build\data\NVSMI" -Force -Recurse }
             $Proc = Start-Process ".\build\apps\7z\7z.exe" "x `"$($(vars).dir)\build\data\NVSMI.zip`" -o`"$($(vars).dir)\build\data`" -y" -PassThru -WindowStyle Minimized -verb Runas
             $Proc | Wait-Process
-            if(test-path ".\build\data\NVSMI"){
+            if (test-path ".\build\data\NVSMI") {
                 log "extraction was a success!" -ForeGroundColor Green
                 Start-Sleep -S 3
                 Move-Item ".\build\data\NVSMI" -Destination "C:\Program Files\NVIDIA Corporation" -Force
                 Start-Sleep -S 3
-                if(test-Path "C:\Program Files\NVIDIA Corporation\NVSMI"){
+                if (test-Path "C:\Program Files\NVIDIA Corporation\NVSMI") {
                     log "NVSMI installed!" -ForeGroundColor Green
                     Start-Sleep -S 1
-                } else {log "Failed to install NVSMI" -ForeGroundColor Red}
-            } else {log "Failed to extract NVSMI.zip" -ForeGroundColor Red}
+                }
+                else { log "Failed to install NVSMI" -ForeGroundColor Red }
+            }
+            else { log "Failed to extract NVSMI.zip" -ForeGroundColor Red }
         }
     }
     
@@ -302,10 +308,10 @@ function Global:Start-WindowsConfig {
     ## GPU Bus Hash Table
     $DoBus = $true
     if ($(arg).Type -like "*CPU*" -or $(arg).Type -like "*ASIC*") {
-        if("AMD1" -notin $(arg).type -and "NVIDIA1" -notin $(arg).type -and "NVIDIA2" -notin $(arg).type -and "NVIDIA3" -notin $(arg).type) {
-        $Dobus = $false
+        if ("AMD1" -notin $(arg).type -and "NVIDIA1" -notin $(arg).type -and "NVIDIA2" -notin $(arg).type -and "NVIDIA3" -notin $(arg).type) {
+            $Dobus = $false
+        }
     }
-}
 
     if ($DoBus -eq $true) { $(vars).BusData = Global:Get-Bus }
     $(vars).GPU_Count = Global:Get-GPUCount
