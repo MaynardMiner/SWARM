@@ -846,4 +846,5 @@ to allow full values.
 ## Updates
 * Removed lolminer equihash_150/5
 * Updated lolminer
-* Update miniz
+* Updated miniz
+* Updated tt-miner
