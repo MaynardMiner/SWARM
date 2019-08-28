@@ -883,3 +883,17 @@ to allow full values.
   stat files over time.
 
 ############################################
+
+############################################
+############################################
+
+# SWARM 2.6.6
+
+## Fixes
+* This fixes the new ``swarm_batch`` command.
+  There was an issue with syntax I wasn't aware
+  of. It should now be able to run any SWARM
+  command, and do so on all workers running
+  SWARM if ``-API_Key`` is supplied. You
+  just run through shell or can do
+  through command dashboard.

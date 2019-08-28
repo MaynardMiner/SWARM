@@ -19,7 +19,15 @@ try { $A = Invoke-RestMethod @Splat -TimeoutSec 10 -ErrorAction Stop } catch { W
 $Workers = $A.data
 $SWARM_Workers = $($Workers | Where {$_.flight_sheet.items.miner_alt -like "*SWARM*"}).id
 
-$command = @{ worker_ids = @($SWARM_Workers); data = @{ command = [string]$args; data = @{}};} | ConvertTo-Json -Depth 10
+$command = @{ 
+    worker_ids = @($SWARM_Workers); 
+    data = @{ 
+        command = "exec";
+        data = @{"cmd" = [string]$args;}
+    };
+}
+
+$command = $command | ConvertTo-Json -Depth 10 -Compress
 $command
 $T = @{Authorization = "Bearer $API" }
 $Url = "https://api2.hiveos.farm/api/v2/farms/$($Keys.FarmID)/workers/command"
