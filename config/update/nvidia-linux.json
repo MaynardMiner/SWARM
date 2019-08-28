@@ -7,9 +7,9 @@
     "NVIDIA2": ".\\bin\\claymore-2\\ethdcrminer64",
     "NVIDIA3": ".\\bin\\claymore-3\\ethdcrminer64",
     "minername": "ethdcrminer64",
-    "version": "14.7",
+    "version": "15.0",
     "optional": "No",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/Claymore-Linux.tar.gz"
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/Claymore-Linux-AMD.tar.gz"
   },
   "nbminer": {
     "name": "nbminer",
@@ -227,9 +227,9 @@
     "NVIDIA2": ".\\bin\\bminer-2\\bminer",
     "NVIDIA3": ".\\bin\\bminer-3\\bminer",
     "minername": "bminer",
-    "version": "15.8.3",
+    "version": "15.8.4",
     "optional": "No",
-    "uri": "https://www.bminercontent.com/releases/bminer-v15.8.3-fc8dae9-amd64.tar.xz"
+    "uri": "https://www.bminercontent.com/releases/bminer-v15.8.4-3212522-amd64.tar.xz"
   },
   "miniz": {
     "name": "miniz",
