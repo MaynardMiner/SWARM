@@ -12,7 +12,7 @@ function Global:Get-Data {
     if (Test-Path ".\build\bash\swarm_batch") {
         Copy-Item ".\build\bash\swarm_batch" -Destination "/usr/bin" -force | Out-Null
         Set-Location "/usr/bin"
-        Start-Process "chmod" -ArgumentList "+x stats"
+        Start-Process "chmod" -ArgumentList "+x swarm_batch"
         Set-Location "/"
         Set-Location $($(vars).dir)     
     }    

@@ -11,4 +11,4 @@
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-pwsh -command "$(< $mydir/dir.sh)/build/powershell/scripts/get.ps1 $@"
+pwsh -command "$(< $mydir/dir.sh)/build/powershell/scripts/swarm_batch.ps1 $@"
