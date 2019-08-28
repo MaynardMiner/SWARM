@@ -836,3 +836,13 @@ to allow full values.
 * HiveOS SWARM will now write newarguments.json
   on startup- For future use. You will see
   "New arguments detected message- This is normal."
+
+############################################
+############################################
+
+# SWARM 2.6.4
+
+
+## Updates
+* Removed lolminer equihash_150/5
+* Updated lolminer
