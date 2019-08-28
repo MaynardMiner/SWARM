@@ -842,6 +842,12 @@ to allow full values.
 
 # SWARM 2.6.5
 
+# Improvements
+* Force bind onboard card to first on list
+  * Caviet- If gpu crashes and drivers reload
+    It will change the order in Windows.
+* If no GPU cards are detected- SWARM should
+  default cpu mine, and auto detect -CPUthreads.
 
 ## Updates
 * Removed lolminer equihash_150/5
@@ -850,5 +856,10 @@ to allow full values.
 * Updated tt-miner
 * Updated Bminer
 * Claymore updated
+
+## Notes
+* If you experience errors after updating-
+  Run ``clear_profits``. I have changed
+  stat files over time.
 
 ############################################
