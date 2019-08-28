@@ -7,7 +7,7 @@
     "AMD2": ".\\bin\\claymore-amd-2\\ethdcrminer64.exe",
     "AMD3": ".\\bin\\claymore-amd-3\\ethdcrminer64.exe",
     "minername": "ethdcrminer64.exe",
-    "version": "14.7",
+    "version": "15.0",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/claymore-windows.zip"
   },
@@ -95,9 +95,9 @@
     "AMD2": ".\\bin\\lolMiner-AMD-2\\lolMiner.exe",
     "AMD3": ".\\bin\\lolMiner-AMD-3\\lolMiner.exe",
     "minername": "lolMiner.exe",
-    "version": "0.8.7",
+    "version": "0.8.8",
     "optional": "No",
-    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.8.7/lolMiner_v087_Win64.zip"
+    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.8.8/lolMiner_v088_Win64.zip"
   },
   "teamredminer": {
     "name": "teamredminer",

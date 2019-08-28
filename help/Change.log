@@ -836,3 +836,50 @@ to allow full values.
 * HiveOS SWARM will now write newarguments.json
   on startup- For future use. You will see
   "New arguments detected message- This is normal."
+
+############################################
+############################################
+
+# SWARM 2.6.5
+
+## New Command! [Highly Expiremental]
+* ``swarm_batch``
+  * Will only work if you are using
+    ``-API_Key`` argument
+  * Allows users to run a command that
+    will run on all rigs in farm running
+    SWARM.
+  * Example: ``swarm_batch clear_profits``
+    * will run ``clear_profits`` on all
+      rigs.
+  * The issue is, is that HiveOS API
+    was not working for me. I could 
+    only get "reboot" command to work.
+    I notified web dev, and command is created
+    for when their API is working correctly. 
+    If you would like it working- try command 
+    and post your output to developers. It will 
+    output the .json sent to their API.
+
+## Improvements
+* Force bind onboard card to first on list
+  * Caviet- If gpu crashes and drivers reload
+    It will change the order in Windows.
+* If no GPU cards are detected- SWARM should
+  default cpu mine, and auto detect -CPUthreads.
+* Improved windows output on HiveOS connect failure.
+
+## Updates
+* Removed lolminer equihash_150/5
+* Updated lolminer
+* Updated miniz
+* Updated tt-miner
+* Updated Bminer
+* Claymore updated
+
+## Notes
+* If you experience errors after updating-
+  Run ``clear_profits``. I have changed
+  stat files over time.
+
+############################################

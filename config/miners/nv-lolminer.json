@@ -9,9 +9,7 @@
             "equihash_96/5": "",
             "equihash_144/5": "",
             "equihash_192/7": "",
-            "equihash_150/5": "",
             "equihash_125/4": "",
-            "beamv2": "",
             "cuckatoo31": "",
             "cuckaroo29": ""
         },
@@ -19,9 +17,7 @@
             "equihash_96/5": "",
             "equihash_144/5": "",
             "equihash_192/7": "",
-            "equihash_150/5": "",
             "equihash_125/4": "",
-            "beamv2": "",
             "cuckatoo31": "",
             "cuckaroo29": ""
         },
@@ -29,9 +25,7 @@
             "equihash_96/5": "equihash_144/5",
             "equihash_144/5": "equihash_144/5",
             "equihash_192/7": "equihash_192/7",
-            "equihash_150/5": "equihash_150/5",
             "equihash_125/4": "equihash_125/4",
-            "beamv2": "beamv2",
             "cuckatoo31": "cuckatoo31",
             "cuckaroo29": "cuckaroo29"
         },
@@ -39,9 +33,7 @@
             "equihash_96/5": 1,
             "equihash_144/5": 1,
             "equihash_192/7": 1,
-            "equihash_150/5": 1,
             "equihash_125/4": 1,
-            "beamv2": 1,
             "cuckatoo31": 1,
             "cuckatoo29": 1
         }
@@ -55,7 +47,6 @@
             "equihash_96/5": "",
             "equihash_144/5": "",
             "equihash_192/7": "",
-            "equihash_150/5": "",
             "equihash_125/4": "",
             "cuckatoo31": "",
             "cuckaroo29": ""
@@ -64,7 +55,6 @@
             "equihash_96/5": "",
             "equihash_144/5": "",
             "equihash_192/7": "",
-            "equihash_150/5": "",
             "equihash_125/4": "",
             "cuckatoo31": "",
             "cuckaroo29": ""
@@ -73,7 +63,6 @@
             "equihash_96/5": "equihash_144/5",
             "equihash_144/5": "equihash_144/5",
             "equihash_192/7": "equihash_192/7",
-            "equihash_150/5": "equihash_150/5",
             "equihash_125/4": "equihash_125/4",
             "cuckatoo31": "cuckatoo31",
             "cuckaroo29": "cuckaroo29"
@@ -82,7 +71,6 @@
             "equihash_96/5": 1,
             "equihash_144/5": 1,
             "equihash_192/7": 1,
-            "equihash_150/5": 1,
             "equihash_125/4": 1,
             "cuckatoo31": 1,
             "cuckatoo29": 1
@@ -97,7 +85,6 @@
             "equihash_96/5": "",
             "equihash_144/5": "",
             "equihash_192/7": "",
-            "equihash_150/5": "",
             "equihash_125/4": "",
             "cuckatoo31": "",
             "cuckaroo29": ""
@@ -106,7 +93,6 @@
             "equihash_96/5": "",
             "equihash_144/5": "",
             "equihash_192/7": "",
-            "equihash_150/5": "",
             "equihash_125/4": "",
             "cuckatoo31": "",
             "cuckaroo29": ""
@@ -115,7 +101,6 @@
             "equihash_96/5": "equihash_144/5",
             "equihash_144/5": "equihash_144/5",
             "equihash_192/7": "equihash_192/7",
-            "equihash_150/5": "equihash_150/5",
             "equihash_125/4": "equihash_125/4",
             "cuckatoo31": "cuckatoo31",
             "cuckaroo29": "cuckaroo29"
@@ -124,7 +109,6 @@
             "equihash_96/5": 1,
             "equihash_144/5": 1,
             "equihash_192/7": 1,
-            "equihash_150/5": 1,
             "equihash_125/4": 1,
             "cuckatoo31": 1,
             "cuckatoo29": 1

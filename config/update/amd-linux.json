@@ -7,9 +7,9 @@
     "AMD2": ".\\bin\\claymore-amd-2\\ethdcrminer64",
     "AMD3": ".\\bin\\claymore-amd-3\\ethdcrminer64",
     "minername": "ethdcrminer64",
-    "version": "14.7",
+    "version": "15.0",
     "optional": "No",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/Claymore-Linux.tar.gz"
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/Claymore-Linux-AMD.tar.gz"
   },
   "gminer-amd": {
     "name": "gminer-amd",
@@ -95,9 +95,9 @@
     "AMD2": ".\\bin\\lolMiner-AMD-2\\lolMiner",
     "AMD3": ".\\bin\\lolMiner-AMD-3\\lolMiner",
     "minername": "lolMiner",
-    "version": "0.8.7",
+    "version": "0.8.8",
     "optional": "No",
-    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.8.7/lolMiner_v087_Lin64.tar.gz"
+    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.8.8/lolMiner_v088_Lin64.tar.gz"
   },
   "avermore": {
     "name": "avermore",

@@ -64,15 +64,11 @@ function Global:Start-Hello($RigData) {
         $response | ConvertTo-Json | Out-File ".\build\txt\get-hive-hello.txt"
         $message = $response
     }
-    catch { 
-            $message += " `n"
-            $message += "Failed To Contact HiveOS.Farm `n" 
-            $message += "Caught the following exception- `n"
-            $message += "Exception Type: $($_.Exception.GetType().FullName) `n"
-            $message += "Exception Message: $($_.Exception.Message) `n"
-            log "$message" -ForegroundColor DarkRed
+    catch [Exception]
+    {
+        log "Exception: "$_.Exception.Message -ForegroundColor Red;
     }
-    
+        
     return $message
 }
 

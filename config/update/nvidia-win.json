@@ -62,9 +62,9 @@
         "NVIDIA2": ".\\bin\\bminer-2\\bminer.exe",
         "NVIDIA3": ".\\bin\\bminer-3\\bminer.exe",
         "minername": "bminer.exe",
-        "version": "15.8.3",
+        "version": "15.8.4",
         "optional": "No",
-        "uri": "https://www.bminercontent.com/releases/bminer-lite-v15.8.3-fc8dae9-amd64.zip"
+        "uri": "https://www.bminercontent.com/releases/bminer-lite-v15.8.4-3212522-amd64.zip"
     },
     "ehssand": {
         "name": "ehssand",
@@ -95,7 +95,7 @@
         "NVIDIA2": ".\\bin\\claymore-2\\ethdcrminer64.exe",
         "NVIDIA3": ".\\bin\\claymore-3\\ethdcrminer64.exe",
         "minername": "ethdcrminer64.exe",
-        "version": "14.7",
+        "version": "15.0",
         "optional": "No",
         "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/claymore-windows.zip"
     },
@@ -161,9 +161,9 @@
         "NVIDIA2": ".\\bin\\miniz-2\\miniZ.exe",
         "NVIDIA3": ".\\bin\\miniz-3\\miniZ.exe",
         "minername": "miniZ.exe",
-        "version": "v1.5p",
+        "version": "v1.5q2",
         "optional": "No",
-        "uri": "https://miniz.ch/?smd_process_download=1&download_id=2806"
+        "uri": "https://miniz.ch/?smd_process_download=1&download_id=2874"
     },
     "phoenix": {
         "name": "phoenix",
@@ -238,7 +238,7 @@
         "NVIDIA2": ".\\bin\\tt-miner-2\\TT-Miner.exe",
         "NVIDIA3": ".\\bin\\tt-miner-3\\TT-Miner.exe",
         "minername": "TT-Miner.exe",
-        "version": "3.0.4",
+        "version": "3.0.5",
         "optional": "No",
         "uri": "https://tradeproject.de/download/Miner/TT-Miner.zip"
     },
@@ -260,9 +260,9 @@
         "NVIDIA2":".\\bin\\nv-lolminer-2\\lolMiner.exe", 
         "NVIDIA3":".\\bin\\nv-lolminer-3\\lolMiner.exe", 
         "minername":"lolMiner.exe", 
-        "version":"0.8.5", 
+        "version":"0.8.8", 
         "optional": "Yes",
-        "uri":"https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.8.5/lolMiner_v085_Win64.zip"
+        "uri":"https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.8.8/lolMiner_v088_Win64.zip"
         },
         "ethminer": {
             "name": "ethminer",

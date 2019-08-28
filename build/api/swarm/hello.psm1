@@ -85,12 +85,9 @@ function Global:Start-Hello($RigData) {
         $response | ConvertTo-Json | Out-File ".\build\txt\get-swarm-hello.txt"
         $message = $response
     }
-    catch { 
-        $message += "Failed To Contact HiveOS.Farm" 
-        $message += "Caught an exception:"
-        $message += "Exception Type: $($_.Exception.GetType().FullName)"
-        $message += "Exception Message: $($_.Exception.Message)"
-        $message | Out-Host
+    catch [Exception]
+    {
+        log "Exception: "$_.Exception.Message -ForegroundColor Red;
     }
 
     return $message

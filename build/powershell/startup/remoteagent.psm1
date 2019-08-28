@@ -55,6 +55,7 @@ function Global:start-update {
         $PreviousVersions += "SWARM.2.6.1"
         $PreviousVersions += "SWARM.2.6.2"
         $PreviousVersions += "SWARM.2.6.3"
+        $PreviousVersions += "SWARM.2.6.4"
 
         $StatsOnly = $null
 
@@ -156,6 +157,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "beamv2" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "beamv2" "beamv2" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "beamv2" 1 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "equihash_150/5"
+                                            $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "equihash_150/5"
+                                            $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "equihash_150/5"
+                                            $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "equihash_150/5"
                                         }
                                     }
                                 }
@@ -193,6 +199,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "equihash_125/4" "equihash_125/4" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "equihash_125/4" 1 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "equihash_150/5"
+                                            $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "equihash_150/5"
+                                            $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "equihash_150/5"
+                                            $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "equihash_150/5"
                                         }
                                     }
                                 }
