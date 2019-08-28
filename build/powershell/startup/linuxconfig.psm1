@@ -9,6 +9,14 @@ function Global:Get-Data {
         Set-Location $($(vars).dir)     
     }
 
+    if (Test-Path ".\build\bash\swarm_batch") {
+        Copy-Item ".\build\bash\swarm_batch" -Destination "/usr/bin" -force | Out-Null
+        Set-Location "/usr/bin"
+        Start-Process "chmod" -ArgumentList "+x stats"
+        Set-Location "/"
+        Set-Location $($(vars).dir)     
+    }    
+
     if (Test-Path ".\build\bash\nview") {
         Copy-Item ".\build\bash\nview" -Destination "/usr/bin" -force | Out-Null
         Set-Location "/usr/bin"

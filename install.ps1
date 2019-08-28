@@ -34,6 +34,14 @@ if (Test-Path ".\build\bash\stats") {
     Set-Location $Dir     
 }
 
+if (Test-Path ".\build\bash\swarm_batch") {
+    Copy-Item ".\build\bash\swarm_batch" -Destination "/usr/bin" -force | Out-Null
+    Set-Location "/usr/bin"
+    Start-Process "chmod" -ArgumentList "+x stats"
+    Set-Location "/"
+    Set-Location $Dir     
+}
+
 if (Test-Path ".\build\bash\view") {
     Copy-Item ".\build\bash\view" -Destination "/usr/bin" -force | Out-Null
     Set-Location "/usr/bin"
