@@ -30,6 +30,10 @@ function Global:Start-Webcommand {
         "Swarm" { $Param = "SWARM_Params" }
     }
 
+    ## Make sure env is set:
+    $Path = $env:Path -split ";"
+    if ("$($(vars).dir)\build\cmd" -notin $Path) { $env:Path += ";$($(vars).dir)\build\cmd" }        
+
     
     Switch ($Command.result.command) {
 
@@ -65,15 +69,10 @@ function Global:Start-Webcommand {
         }
 
         "exec" {
-            ## Make sure env is set:
-            $Path = $env:Path -split ";"
-            if("$($(vars).dir)\build\cmd" -notin $Path) { $env:Path += ";$($(vars).dir)\build\cmd" }
-            $Command = $command.result.exec -split " " | Select -First 1
-            $Args = $command.result.exec -split " " | Select -Skip 1
             $method = "message"
             $messagetype = "info"
-            $data = "$firstword"
-            Invoke-Expression "$($command.result.exec)" | Tee-Object -Variable payload
+            $data = "$($command.result.exec)"
+            Invoke-Expression $Data | Tee-Object -Variable payload
             $line = @()
             $payload | foreach { $line += "$_`n" }
             $payload = $line

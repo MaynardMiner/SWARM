@@ -30,6 +30,9 @@ function Global:Start-Webcommand {
         "Swarm" { $Param = "swarm_params" }
     }
 
+    ## Make sure env is set:
+    $Path = $env:Path -split ";"
+    if ("$($(vars).dir)\build\cmd" -notin $Path) { $env:Path += ";$($(vars).dir)\build\cmd" }    
     
     Switch ($Command.result.command) {
 
@@ -65,15 +68,10 @@ function Global:Start-Webcommand {
         }
 
         "exec" {
-            ## Make sure env is set:
-            $Path = $env:Path -split ";"
-            if("$($(vars).dir)\build\cmd" -notin $Path) { $env:Path += ";$($(vars).dir)\build\cmd" }
-            $Command = $command.result.exec -split " " | Select -First 1
-            $Args = $command.result.exec -split " " | Select -Skip 1
             $method = "message"
             $messagetype = "info"
-            $data = "$firstword"
-            Invoke-Expression "$($command.result.exec)" | Tee-Object -Variable payload
+            $data = "$($command.result.exec)"
+            Invoke-Expression $Data | Tee-Object -Variable payload
             $line = @()
             $payload | foreach { $line += "$_`n" }
             $payload = $line
@@ -81,8 +79,8 @@ function Global:Start-Webcommand {
             $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
             $SendResponse = Invoke-RestMethod "$($global:config.$Param.Mirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
             Write-Host $method $messagetype $data
-        }
-        
+        }    
+
         "nvidia_oc" {
             $method = "message"
             $messagetype = "success"
