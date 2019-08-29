@@ -30,8 +30,13 @@ function Global:Start-Webcommand {
         "Swarm" { $Param = "SWARM_Params" }
     }
 
+    ## Make sure env is set:
+    $Path = $env:Path -split ";"
+    if ("$($(vars).dir)\build\cmd" -notin $Path) { $env:Path += ";$($(vars).dir)\build\cmd" }        
+
     
-    Switch ($Command.result.command) { 
+    Switch ($Command.result.command) {
+
         "timeout" {
             $method = "message"
             $messagetype = "warning"
@@ -62,306 +67,21 @@ function Global:Start-Webcommand {
             Start-Process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle maximized -command `".\build\powershell\scripts\reboot.ps1`""
             exit
         }
-  
-        ##upgrade
-  
+
         "exec" {
-            $firstword = $command.result.exec -split " " | Select -First 1
-            $secondword = $command.result.exec -split " " | Select -Skip 1 -First 1
-            Switch ($firstword) {
-                "nvidia-smi" {
-                    $method = "message"
-                    $messagetype = "info"
-                    $data = "nvidia-smi"
-                    invoke-expression ".\build\cmd\nvidia-smi.bat" | Tee-Object ".\build\txt\getcommand.txt" | Out-Null
-                    $getpayload = Get-Content ".\build\txt\getcommand.txt"
-                    $line = @()
-                    $getpayload | foreach { $line += "$_`n" }
-                    $payload = $line
-                    $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
-                    $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                    $SendResponse = Invoke-RestMethod "$($global:config.$Param.Mirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
-                    Write-Host $method $messagetype $data
-                    $trigger = "exec"
-                    if (Test-Path ".\build\txt\getcommand.txt") { Clear-Content ".\build\txt\getcommand.txt" }  
-                }
-                "ps" {
-                    $method = "message"
-                    $messagetype = "info"
-                    $data = "ps"
-                    $pscommand = $command.result.exec -split "ps ", ""
-                    $Proc = Start-Process "pwsh" -ArgumentList "-executionpolicy bypass -command `"$pscommand | Tee-Object `"$($(vars).dir)\build\txt\getcommand.txt`"`"" -Verb RunAs -PassThru
-                    $Proc | Wait-Process
-                    $getpayload = Get-Content ".\build\txt\getcommand.txt"
-                    $line = @()
-                    $getpayload | foreach { $line += "$_`n" }
-                    $payload = $line
-                    $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
-                    $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                    $SendResponse = Invoke-RestMethod "$($global:config.$Param.Mirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
-                    Write-Host $method $messagetype $data
-                    $trigger = "exec"
-                    if (Test-Path ".\build\txt\getcommand.txt") { Clear-Content ".\build\txt\getcommand.txt" }
-                }
-                "stats" {
-                    $method = "message"
-                    $messagetype = "info"
-                    $getpayload = Invoke-Expression "get stats"
-                    $line = @()
-                    $getpayload | foreach { $line += "$_`n" }
-                    $payload = $line
-                    $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
-                    $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                    $SendResponse = Invoke-RestMethod "$($global:config.$Param.Mirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
-                    Write-Host $method $messagetype $data
-                    $trigger = "exec"
-                }
-                "active" {
-                    $method = "message"
-                    $messagetype = "info"
-                    $getpayload = Invoke-Expression "get active"
-                    $line = @()
-                    $getpayload | foreach { $line += "$_`n" }
-                    $payload = $line
-                    $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload
-                    $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                    $SendResponse = Invoke-RestMethod "$($global:config.$Param.Mirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
-                    Write-Host $method $messagetype $data
-                    $trigger = "exec"
-                }
-                "version" {
-                    Switch ($secondword) {
-                        "query" {
-                            $method = "message"
-                            $messagetype = "info"
-                            $data = "$($command.result.exec)"
-                            $proc = start-process "pwsh" -Workingdirectory ".\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command query""" -PassThru -WindowStyle Minimized -Verb RunAs
-                            $proc | Wait-Process
-                            $getpayload = Get-Content ".\build\txt\version.txt"
-                            $line = @()
-                            $getpayload | foreach { $line += "$_`n" }
-                            $payload = $line
-                            $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
-                            $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                            $SendResponse = Invoke-RestMethod "$($global:config.$Param.Mirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
-                            Write-Host $method $messagetype $data
-                            $trigger = "exec"
-                        }
-                        "update" {
-                            $method = "message"
-                            $messagetype = "info"
-                            $data = "$($command.result.exec)"
-                            $arguments = $data -replace ("version ", "")
-                            $proc = start-process "pwsh" -Workingdirectory ".\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -command "".\version.ps1 -platform windows -command $arguments""" -WindowStyle Minimized -Verb Runas -PassThru
-                            $proc | Wait-Process
-                            $getpayload = Get-Content ".\build\txt\version.txt"
-                            $line = @()
-                            $getpayload | foreach { $line += "$_`n" }
-                            $payload = $line
-                            $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
-                            $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                            $SendResponse = Invoke-RestMethod "$($global:config.$Param.Mirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
-                            Write-Host $method $messagetype $data
-                            Start-Process ".\SWARM.bat"
-                            Start-Sleep -S 2
-                            $ID = ".\build\pid\background_pid.txt"
-                            $BackGroundID = Get-Process -id (Get-Content "$ID" -ErrorAction SilentlyContinue) -ErrorAction SilentlyContinue
-                            Stop-Process $BackGroundID | Out-Null
-                        }
-                    }
-                }
-                "clear_profits" {
-                    $method = "message"
-                    $messagetype = "info"
-                    $data = "clear_profits"
-                    $proc = start-process "pwsh" -Workingdirectory ".\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -command "".\clear_profits.ps1""" -WindowStyle Minimized -Verb Runas -PassThru
-                    $proc | Wait-Process
-                    $getpayload = Get-Content ".\build\txt\get.txt"
-                    $line = @()
-                    $getpayload | foreach { $line += "$_`n" }
-                    $payload = $line 
-                    $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
-                    $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                    $SendResponse = Invoke-RestMethod "$($global:config.$Param.Mirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
-                    Write-Host $method $messagetype $data
-                    $trigger = "exec"
-                }
-                "clear_watts" {
-                    $method = "message"
-                    $messagetype = "info"
-                    $data = "clear_watts"
-                    $proc = start-process "pwsh" -Workingdirectory ".\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -command "".\clear_watts.ps1""" -WindowStyle Minimized -Verb Runas -PassThru
-                    $proc | Wait-Process
-                    $getpayload = Get-Content ".\build\txt\get.txt"
-                    $line = @()
-                    $getpayload | foreach { $line += "$_`n" }
-                    $payload = $line 
-                    $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
-                    $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                    $SendResponse = Invoke-RestMethod "$($global:config.$Param.Mirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
-                    Write-Host $method $messagetype $data
-                    $trigger = "exec"
-                }
-                "get" {
-                    $method = "message"
-                    $messagetype = "info"
-                    $data = "$($command.result.exec)"
-                    $arguments = $data -replace ("get ", "")
-                    $line = @()
-                    if ($data -eq "get update") {
-                        $Arg = $arguments -split " "
-                        $Arg1 = $Arg | select -First 1
-                        $Arg2 = $Arg | Select -skip 1 -First 1
-                        $version = Get-Content ".\build\txt\version.txt"
-                        $versionnumber = $version -replace "SWARM.", ""
-                        $version1 = $versionnumber[4]
-                        $version1 = $version1 | % { iex $_ }
-                        $version1 = $version1 + 1
-                        $version2 = $versionnumber[2]
-                        $version3 = $versionnumber[0]
-                        if ($version1 -eq 10) {
-                            $version1 = 0; 
-                            $version2 = $version2 | % { iex $_ }
-                            $version2 = $version2 + 1
-                        }
-                        if ($version2 -eq 10) {
-                            $version2 = 0; 
-                            $version3 = $version3 | % { iex $_ }
-                            $version3 = $version3 + 1
-                        }
-                        $versionnumber = "$version3.$version2.$version1"    
-                        $Failed = $false
-                        $line += "Operating System Is Windows: Updating via 'get' is possible`n"
-                        if ($Arg2) {
-                            $EndLink = split-path $arg2 -Leaf
-                            if ($EndLink -match "SWARM.") {
-                                $URI = $Arg2
-                            }
-                            else {
-                                $Failed = $true
-                                $line += "Detected link supplied did not end with SWARM"
-                                Write-Host "Detected link supplied did not end with SWARM" -ForegroundColor Red
-                                $URI = $null
-                            }
-                        }
-                        else {
-                            $line += "Detected New Version Should Be $VersionNumber`n"
-                            Write-Host "Detected New Version Should Be $VersionNumber"    
-                            $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$VersionNumber/SWARM.$VersionNumber.zip"
-                        }
-                        $Location = Split-Path $($(vars).dir)
-                        $line += "Main Directory is $Location`n"
-                        Write-Host "Main Directory is $Location"
-                        $NewLocation = Join-Path (Split-Path $($(vars).dir)) "SWARM.$VersionNumber"
-                        $FileName = join-path "$($(vars).dir)\x64" "SWARM.$VersionNumber.zip"
-                        $DLFileName = Join-Path "$($(vars).dir)" "x64\SWARM.$VersionNumber.zip"
-                        if ($URI) {
-                            $line += "Attempting To Download New Version at $URI`n"
-                            Write-Host "Attempting To Download New Version at $URI"
-                            try { 
-                                Invoke-WebRequest $URI -OutFile $FileName -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop 
-                            }
-                            catch {
-                                $Failed = $true; 
-                                $line += "Failed To Contact Github For Download! Must Try Again, Or Do So Manually."
-                                Write-Host "Failed To Contact Github For Download! Must Try Again, Or Do So Manually." -ForegroundColor Red
-                            }
-                        }
-                        Start-Sleep -S 5
-                        if ($Failed -eq $false) {
-                            $proc = Start-Process "$($(vars).dir)\build\apps\7z\7z.exe" "x `"$($DLFileName)`" -o`"$($Location)`" -y" -PassThru -WindowStyle Minimized
-                            $proc | Wait-Process
-                            Start-Sleep -S 3
-                            $line += "Config Command Initiated- Restarting SWARM`n"
-                            Write-Host "Config Command Initiated- Restarting SWARM"
-                            $MinerFile = "$($(vars).dir)\build\pid\miner_pid.txt"
-                            if (Test-Path $MinerFile) { $MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue }
-                            if ($MinerId) {
-                                Stop-Process $MinerId -Force
-                                $line += "Stopping Old Miner`n"
-                                Write-Host "Stopping Old Miner"
-                                Start-Sleep -S 5
-                                Write-Host "Attempting to start new SWARM verison at $NewLocation\SWARM.bat"
-                                $line += "Downloaded and extracted SWARM successfully`n"
-                                Copy-Item ".\SWARM.bat" -Destination $NewLocation -Force
-                                Copy-Item ".\config\parameters\newarguments.json" -Destination "$NewLocation\config\parameters" -Force
-                                New-Item -Name "pid" -Path "$NewLocation\build" -ItemType "Directory"
-                                Copy-Item ".\build\pid\background_pid.txt" -Destination "$NewLocation\build\pid" -Force
-                                Set-Location $NewLocation
-                                Start-Process "SWARM.bat"
-                                Set-Location $($(vars).dir)
-                                $payload = $line
-                                $Trigger = "update"
-                            }
-                        }     
-                    }
-                    else {
-                        $getpayload = Invoke-Expression "$($command.result.exec)"
-                        $Trigger = "exec"
-                        $getpayload | foreach { $line += "$_`n" }
-                        $payload = $line
-                    }
-                    $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
-                    $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                    $SendResponse = Invoke-RestMethod "$($global:config.$Param.Mirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
-                    Write-Host $method $messagetype $data
-                }
-                "miner" {
-                    switch ($secondword) {
-                        "restart" {
-                            $method = "message"
-                            $messagetype = "success"
-                            $data = "Miner Restarted"
-                            $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Site $WebSite
-                            $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                            $SendResponse = Invoke-RestMethod "$($global:config.$Param.Mirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
-                            Write-Host $method $messagetype $data
-                            $trigger = "config"
-                        }
-                        "stop" {
-                            $method = "message"
-                            $messagetype = "success"
-                            $data = "Miner stopped"
-                            $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Site $WebSite
-                            $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                            $SendResponse = Invoke-RestMethod "$($global:config.$Param.Mirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
-                            Write-Host $method $messagetype $data
-                            $GetMiner = Get-Content ".\build\pid\miner_pid.txt"
-                            if ($GetMiner) { $MinerProcess = Get-PRocess -ID $GetMiner -ErrorAction SilentlyContinue; if ($MinerProcess) { Stop-Process $MinerProcess } }
-                            $trigger = "exec"
-                        }
-                        "start" {
-                            $method = "message"
-                            $messagetype = "success"
-                            $data = "Miner started"
-                            $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Site $WebSite
-                            $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                            $SendResponse = Invoke-RestMethod "$($global:config.$Param.Mirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
-                            Write-Host $method $messagetype $data
-                            $trigger = "config"
-                        }
-                    }
-                } 
-                "benchmark" {
-                    $method = "message"
-                    $messagetype = "info"
-                    $data = "$($command.result.exec)"
-                    $arguments = $data -replace ("benchmark ", "")
-                    $proc = start-process "pwsh" -Workingdirectory ".\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -command "".\benchmark.ps1 $arguments""" -PassThru -WindowStyle Minimized -Verb Runas
-                    $proc | Wait-Process
-                    $getpayload = Get-Content ".\build\txt\get.txt"
-                    $line = @()
-                    $getpayload | foreach { $line += "$_`n" }
-                    $payload = $line 
-                    $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
-                    $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
-                    $SendResponse = Invoke-RestMethod "$($global:config.$Param.Mirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
-                    Write-Host $method $messagetype $data
-                    $trigger = "exec"
-                }
-            }
+            $method = "message"
+            $messagetype = "info"
+            $data = "$($command.result.exec)"
+            Invoke-Expression $Data | Tee-Object -Variable payload
+            $line = @()
+            $payload | foreach { $line += "$_`n" }
+            $payload = $line
+            $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
+            $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+            $SendResponse = Invoke-RestMethod "$($global:config.$Param.Mirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
+            Write-Host $method $messagetype $data
         }
-  
+        
         "nvidia_oc" {
             $method = "message"
             $messagetype = "success"

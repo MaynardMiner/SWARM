@@ -897,3 +897,37 @@ to allow full values.
   SWARM if ``-API_Key`` is supplied. You
   just run through shell or can do
   through command dashboard.
+
+############################################
+############################################
+
+# SWARM 2.6.7
+
+## Improvements
+* Heavily cleaned up web methods for
+  Windows HiveOS. Simplified codebase.
+* Added ``swarm_batch`` command to Windows.
+  * Alredy in HiveOS version.
+  * Allows you to send command to one rig,
+    which will execute that command on all
+    rigs in that farm running SWARM.
+    * Example:
+      * ``swarm_batch get stats``
+         All rigs running SWARM in your
+        farm will all simulatenously
+        run ``get stats``
+      * This should work with most native
+        HiveOS commands as well, but will
+        only run on rigs running SWARM. I
+        can't gurantee or support this- Just
+        SWARM specific commands.
+  * Requires using ``-API_Key argument``
+
+* created ``miner stop|start|restart|log``
+  commands that can run locally on Windows
+  version. (Note- ``miner stop`` does not
+  close agent, just stops SWARM``), so you
+  can still communicate with HiveOS
+
+
+
