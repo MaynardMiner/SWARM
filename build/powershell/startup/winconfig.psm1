@@ -371,8 +371,26 @@ function Global:Start-WindowsConfig {
             "ASIC" | Out-File ".\build\txt\minertype.txt" -Force
             log "Group 1 is ASIC- Commands and Stats will work for ASIC" -foreground yellow
         }
-    }    
+    }
 
+    ## Start AutoFan
+    if (test-path ".\build\txt\autofan.txt") {
+        $Enabled = $(cat ".\build\txt\autofan.txt" | ConvertFrom-Json | ConvertFrom-StringData).ENABLED
+        if ($Enabled -eq 1) {
+            log "Starting Autofan" -ForeGroundColor Cyan
+            $BackgroundTimer = New-Object -TypeName System.Diagnostics.Stopwatch
+            $command = Start-Process "pwsh" -WorkingDirectory "$($(vars).dir)\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -NoExit -windowstyle minimized -command `"&{`$host.ui.RawUI.WindowTitle = `'AutoFan`'; &.\autofan.ps1 -WorkingDir `'$($(vars).dir)`'}`"" -WindowStyle Minimized -PassThru -Verb Runas
+            $command.ID | Set-Content ".\build\pid\autofan.txt"
+            $BackgroundTimer.Restart()
+            do {
+                Start-Sleep -S 1
+                log "Getting Process ID for AutoFan"
+                $ProcessId = if (Test-Path ".\build\pid\autofan.txt") { Get-Content ".\build\pid\autofan.txt" }
+                if ($ProcessID -ne $null) { $Process = Get-Process $ProcessId -ErrorAction SilentlyContinue }
+            }until($ProcessId -ne $null -or ($BackgroundTimer.Elapsed.TotalSeconds) -ge 10)  
+            $BackgroundTimer.Stop()    
+        }
+    }
     ## Aaaaannnnd...Que that sexy logo. Go Time.
 
     Global:Get-SexyWinLogo
