@@ -37,6 +37,17 @@ function Global:Start-Webcommand {
     
     Switch ($Command.result.command) {
 
+        "autofan" {
+            $method = "message"
+            $messagetype = "success"
+            $Data = "Autofan config applied"
+            $Command.result.autofan | ConvertTo-Json -Depth 10 | Set-Content ".\build\txt\autofan.txt"
+            $DoResponse = Set-Response -Method $method -messagetype $messagetype -Data $data -Site $WebSite
+            $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
+            $SendResponse = Invoke-RestMethod "$($global:config.$Param.Mirror)/worker/api" -TimeoutSec 10 -Method POST -Body $DoResponse -ContentType 'application/json'
+            $trigger = "exec"
+        }
+
         "timeout" {
             $method = "message"
             $messagetype = "warning"
