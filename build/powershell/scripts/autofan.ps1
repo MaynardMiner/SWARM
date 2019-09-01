@@ -449,7 +449,7 @@ While ($True) {
     $Rig.Handle_Errors($Config.Websites, $Config.AutoFan_Conf.REBOOT_ON_ERROR, $Config.AutoFan_Conf.CRITICAL_TEMP_ACTION)
 
     ## Log Reset
-    $Variables.Log_Reset()
+    $Config.Log_Reset()
 
     ## Sleep
     Start-Sleep -S 10
