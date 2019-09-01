@@ -21,7 +21,7 @@ class variables {
     [string]$Dir = (Split-Path(Split-Path(Split-Path(Split-Path($script:MyInvocation.MyCommand.Path)))))
     [string[]]$Websites
     [PSCustomObject]$AutoFan_Conf
-    [System.Diagnostics.Stopwatch]$Timer
+    $Timer
 
     Set_Dir() { Set-Location $this.Dir }
 
@@ -33,7 +33,8 @@ class variables {
         if ($null -eq $this.AutoFan_Conf) { Write-Host "No configs found"; exit }
     }
     
-    Log() { 
+    Log() {
+        $this.Timer = New-Object -Type System.Diagnostics.Stopwatch
         Start-Transcript -Path "$($this.Dir)\logs\autofan.log" 
         $This.Timer.Restart()
     }
