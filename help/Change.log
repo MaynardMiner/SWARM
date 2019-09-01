@@ -929,5 +929,14 @@ to allow full values.
   close agent, just stops SWARM``), so you
   can still communicate with HiveOS
 
+############################################
+############################################
 
+# SWARM 2.6.8
+
+## New Features!
+* Autofan for HiveOS now works in windows!
+
+## Updates
+* Gminer - added 125/4 for AMD.
 
