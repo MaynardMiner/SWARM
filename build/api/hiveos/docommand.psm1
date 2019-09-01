@@ -45,6 +45,33 @@ function Global:Start-Webcommand {
             $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
             $SendResponse = Invoke-RestMethod "$($global:config.$Param.Mirror)/worker/api" -TimeoutSec 10 -Method POST -Body $DoResponse -ContentType 'application/json'
             $trigger = "exec"
+            $Enabled = $(cat ".\build\txt\autofan.txt" | ConvertFrom-Json | ConvertFrom-StringData).ENABLED
+            if ($Enabled -eq 1) {
+                $ID = ".\build\pid\autofan.txt"
+                if (Test-Path $ID) { $Agent = Get-Content $ID }
+                if ($Agent) { $BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue }
+                if (-not $BackGroundId -or $BackGroundID.name -ne "pwsh") {
+                    Write-Host "Starting Autofan" -ForeGroundColor Cyan              
+                    $BackgroundTimer = New-Object -TypeName System.Diagnostics.Stopwatch
+                    $command = Start-Process "pwsh" -WorkingDirectory "$($(vars).dir)\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -NoExit -windowstyle minimized -command `"&{`$host.ui.RawUI.WindowTitle = `'AutoFan`'; &.\autofan.ps1 -WorkingDir `'$($(vars).dir)`'}`"" -WindowStyle Minimized -PassThru -Verb Runas
+                    $command.ID | Set-Content ".\build\pid\autofan.txt"
+                    $BackgroundTimer.Restart()
+                    do {
+                        Start-Sleep -S 1
+                        Write-Host "Getting Process ID for AutoFan"
+                        $ProcessId = if (Test-Path ".\build\pid\autofan.txt") { Get-Content ".\build\pid\autofan.txt" }
+                        if ($ProcessID -ne $null) { $Process = Get-Process $ProcessId -ErrorAction SilentlyContinue }
+                    }until($ProcessId -ne $null -or ($BackgroundTimer.Elapsed.TotalSeconds) -ge 10)  
+                    $BackgroundTimer.Stop()
+                }
+            }
+            else {
+                Write-Host "Stopping Autofan" -ForegroundColor Cyan
+                $ID = ".\build\pid\autofan.txt"
+                if (Test-Path $ID) { $Agent = Get-Content $ID }
+                if ($Agent) { $BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue }
+                if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }                   
+            }
         }
 
         "timeout" {

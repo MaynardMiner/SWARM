@@ -34,6 +34,18 @@ class variables {
     }
     
     Log() { Start-Transcript -Path "$($this.Dir)\logs\autofan.log" }
+
+    Set_Websites() {
+        if (test-path ".\config\parameters\newarguments.json") {
+            $Params = cat ".\config\parameters\newarguments.json" | jq
+            if ([string]$Params.Hive_Hash -ne "" -or [string]$Params.Hive_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") {
+                $this.Websites += "HiveOS"
+            }
+            if ([string]$Params.SWARM_Hash -ne "" -or [string]$Params.SWARM_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") {
+                $this.Websites += "SWARM"
+            }
+        }
+    }
 }
 
 Class GPU {
@@ -58,22 +70,22 @@ Class GPU {
     }
 
     Calculate_Deviation([Int]$Target) {
-        if($this.Prev_Temp -ne 0 -and $this.Temperature -gt $Target) {
-            if($this.Temperature -lt $this.Prev_Temp){
-            $this.Deviation = -1
+        if ($this.Prev_Temp -ne 0 -and $this.Temperature -gt $Target) {
+            if ($this.Temperature -lt $this.Prev_Temp) {
+                $this.Deviation = -1
             }
-            elseif($this.Temperature -ge $this.Prev_Temp) {
+            elseif ($this.Temperature -ge $this.Prev_Temp) {
                 $this.Deviation = $this.Temperature - $Target - 1
             }
         }
-        elseif($this.Prev_Temp -ne 0 -and $this.Temperature -lt $Target) {
-            if($this.Temperature -gt $this.Prev_Temp){
+        elseif ($this.Prev_Temp -ne 0 -and $this.Temperature -lt $Target) {
+            if ($this.Temperature -gt $this.Prev_Temp) {
                 $this.Deviation = 1
-                if(($this.Temperature - 2) -gt $this.Prev_Temp) {
+                if (($this.Temperature - 2) -gt $this.Prev_Temp) {
                     $this.Deviation = $this.temperature - $this.Prev_Temp
                 }
             }
-            elseif($this.Temperature -le $This.Prev_Temp) {
+            elseif ($this.Temperature -le $This.Prev_Temp) {
                 $this.Deviation = $this.temperature - $Target + 1
             }
         }
@@ -91,10 +103,11 @@ Class GPU {
     }
 
     Stat_Temp([int]$Temp, [int]$Critical) {
-        if ($temp -lt 101 -and $temp -gt 0) {
+        if ($temp -lt 120 -and $temp -gt 0) {
             $this.Temperature = $temp
             if ($temp -gt $Critical) { $This.Errors += "Critical" }
-        }
+        } 
+        elseif ($Temp -gt 120) { $This.Errors += "Unreal" }
         else { $this.Errors += "No Temp" }
     }
 
@@ -114,6 +127,7 @@ Class GPU {
 class RIG {
     [GPU[]]$GPUS
     [String[]]$Models
+    [bool]$IsMinerStopped = $false
 
     Add_GPUs([String]$Path1, [String]$Path2) {
         $GPU_List = $(cat $Path1 | jq).params.gpu
@@ -142,116 +156,208 @@ class RIG {
 
     }
 
-    Get_GPUData([Int]$Critical) {
-        $this.Models | % {
-            $Model = $_
-            Switch ($Model) {
-                "NVIDIA" {
-                    $nvidiaout = ".\build\txt\nv-autofan.txt"
-                    $continue = $false
-                    try {
-                        if (Test-Path $nvidiaout) { clear-content $nvidiaout -ErrorAction Stop }
-                        $Proc = start-process ".\build\cmd\nvidia-smi.bat" -Argumentlist "--query-gpu=gpu_bus_id,power.draw,fan.speed,temperature.gpu --format=csv" -NoNewWindow -PassThru -RedirectStandardOutput $nvidiaout -ErrorAction Stop
-                        $Proc | Wait-Process -Timeout 5 -ErrorAction Stop 
-                        $continue = $true
-                    }
-                    catch { Write-Host "WARNING: Failed to get NVIDIA fans and temps" -ForegroundColor DarkRed }
-                    if ((Test-Path $nvidiaout) -and $continue -eq $true ) {
-                        $Stats = @()
+    Get_NVIDIAGPUData([Int]$Critical) {
+        $nvidiaout = ".\build\txt\nv-autofan.txt"
+        $continue = $false
+        try {
+            if (Test-Path $nvidiaout) { clear-content $nvidiaout -ErrorAction Stop }
+            $Proc = start-process ".\build\cmd\nvidia-smi.bat" -Argumentlist "--query-gpu=gpu_bus_id,power.draw,fan.speed,temperature.gpu --format=csv" -NoNewWindow -PassThru -RedirectStandardOutput $nvidiaout -ErrorAction Stop
+            $Proc | Wait-Process -Timeout 5 -ErrorAction Stop 
+            $continue = $true
+        }
+        catch { Write-Host "WARNING: Failed to get NVIDIA fans and temps" -ForegroundColor DarkRed }
+        if ((Test-Path $nvidiaout) -and $continue -eq $true ) {
+            $Stats = @()
 
-                        $ninfo = cat $nvidiaout | ConvertFrom-Csv | % {
-                            $Stats += @{ $($_.'pci.bus_id' -replace '00000000:', '') = @{
-                                    fan  = $( $_.'fan.speed [%]' -replace ' \%', '')
-                                    temp = $($_.'temperature.gpu')
-                                }
-                            }
-                        }
-
-                        $This.GPUS | Where Model -eq "NVIDIA" | % {
-                            $_.Set_OldTemp()
-                            if ($Stats.$($_.Bus_Id)) {
-                                $_.Stat_Temp([int]$Stats.$($_.Bus_Id).temp, [int]$Critical)
-                                $_.Stat_Fan([int]$Stats.$($_.Bus_Id).fan)
-                            }
-                            else { $_.No_Data() }
-                        }
-                    }
-                    else {
-                        $This.GPUS | Where Model -eq "NVIDIA" | % {
-                            $_.No_Data()
-                        }
+            $ninfo = cat $nvidiaout | ConvertFrom-Csv | % {
+                $Stats += @{ $($_.'pci.bus_id' -replace '00000000:', '') = @{
+                        fan  = $( $_.'fan.speed [%]' -replace ' \%', '')
+                        temp = $($_.'temperature.gpu')
                     }
                 }
-                "AMD" {
-                    $amdout = ".\build\txt\amd-autofan.txt"
-                    $continue = $false
-                    try {
-                        if (Test-Path $amdout) { clear-content $amdout -ErrorAction Stop }
-                        $Proc = start-process ".\build\apps\odvii\odvii.exe" -Argumentlist "s" -NoNewWindow -PassThru -RedirectStandardOutput $amdout -ErrorAction Stop
-                        $Proc | Wait-Process -Timeout 5 -ErrorAction Stop 
-                        $continue = $true
-                    }
-                    catch { Write-Host "WARNING: Failed to get AMD fans and temps" -ForegroundColor DarkRed }
-                    if ((Test-Path $amdout) -and $continue -eq $true) {
-                        $ainfo = cat $amdout | sd
-                        $Cards = $This.GPUS | Where Model -eq "AMD"
+            }
 
-                        ## First Check To Make Sure All Values Are There:
-                        $Temps = $ainfo | Where { $_.keys -like "*Temp*" } | % { $_.Values }
-                        $Fans = $ainfo | Where { $_.keys -like "*Fan*" } | % { $_.Values }
-
-                        ## Add New Temperature Readings
-                        for ($i = 0; $i -lt $Temps.Count; $i++) {
-                            $this.GPUS | Where model -eq "AMD" | Where Device_Number -eq $i | % {
-                                $_.Set_OldTemp(); 
-                                $_.Stat_Temp($Temps[$i], $Critical) 
-                            } 
-                        }
-                        ## Add New Fan Readings
-                        for ($i = 0; $i -lt $Fans.Count; $i++) {
-                            $this.GPUS | Where model -eq "AMD" | Where Device_Number -eq $i | % { 
-                                $_.Stat_Fan($Fans[$i]) 
-                            } 
-                        }
-                    }
-                    else {
-                        $This.GPUS | Where Model -eq "AMD" | % {
-                            $_.No_Data()
-                        }
-                    }
+            $This.GPUS | Where Model -eq "NVIDIA" | % {
+                $_.Set_OldTemp()
+                if ($Stats.$($_.Bus_Id)) {
+                    $_.Stat_Temp([int]$Stats.$($_.Bus_Id).temp, [int]$Critical)
+                    $_.Stat_Fan([int]$Stats.$($_.Bus_Id).fan)
                 }
+                else { $_.No_Data() }
+            }
+        }
+        else {
+            $This.GPUS | Where Model -eq "NVIDIA" | % {
+                $_.No_Data()
             }
         }
     }
 
-    Get_Deviations([Int]$Target) {
-        $This.GPUS | % { $_.Calculate_Deviation($Target) }
+    Get_AMDGPUData([int]$Critical) {
+        $amdout = ".\build\txt\amd-autofan.txt"
+        $continue = $false
+        try {
+            if (Test-Path $amdout) { clear-content $amdout -ErrorAction Stop }
+            $Proc = start-process ".\build\apps\odvii\odvii.exe" -Argumentlist "s" -NoNewWindow -PassThru -RedirectStandardOutput $amdout -ErrorAction Stop
+            $Proc | Wait-Process -Timeout 5 -ErrorAction Stop 
+            $continue = $true
+        }
+        catch { Write-Host "WARNING: Failed to get AMD fans and temps" -ForegroundColor DarkRed }
+        if ((Test-Path $amdout) -and $continue -eq $true) {
+            $ainfo = cat $amdout | sd
+            $Cards = $This.GPUS | Where Model -eq "AMD"
+
+            ## First Check To Make Sure All Values Are There:
+            $Temps = $ainfo | Where { $_.keys -like "*Temp*" } | % { $_.Values }
+            $Fans = $ainfo | Where { $_.keys -like "*Fan*" } | % { $_.Values }
+
+            ## Add New Temperature Readings
+            for ($i = 0; $i -lt $Temps.Count; $i++) {
+                $this.GPUS | Where model -eq "AMD" | Where Device_Number -eq $i | % {
+                    $_.Set_OldTemp(); 
+                    $_.Stat_Temp($Temps[$i], $Critical) 
+                } 
+            }
+            ## Add New Fan Readings
+            for ($i = 0; $i -lt $Fans.Count; $i++) {
+                $this.GPUS | Where model -eq "AMD" | Where Device_Number -eq $i | % { 
+                    $_.Stat_Fan($Fans[$i]) 
+                } 
+            }
+        }
+        else {
+            $This.GPUS | Where Model -eq "AMD" | % {
+                $_.No_Data()
+            }
+        }
     }
 
-    Get_New_Speed([int]$MinSpeed, [Int]$MaxSpeed) {
-        $This.GPUS | % { $_.Get_Speed($MinSpeed, $MaxSpeed) }
+    Get_NVIDIADeviations([Int]$Target) {
+        $this.GPUS | Where model -eq "nvidia" | % {
+            $_.Calculate_Deviation($Target)
+        }
     }
 
-    Set_Fan_Speed() {
-        $this.Models | % {
-            Switch ($_) {
-                "NVIDIA" {
-                    $this.GPUS | Where Model -eq "NVIDIA" | ForEach-Object {
-                        if ($_.New_Speed -ne $_.FanSpeed) {
-                            $SetFan = $null
-                            Invoke-Expression ".\build\apps\nvfans\nvfans.exe --index $($_.OC_Number) --speed $($_.New_Speed)" | Tee-Object -Variable SetFan
+    Get_AMDDeviations([Int]$Target) {
+        $this.GPUS | Where model -eq "amd" | % {
+            $_.Calculate_Deviation($Target)
+        }
+    }
+
+    Get_NVIDIA_New_Speed([int]$MinSpeed, [Int]$MaxSpeed) {
+        $this.GPUS | Where Model -eq "nvidia" | % {
+            $_.Get_Speed($MinSpeed, $MaxSpeed)
+        }
+    }
+
+    Get_AMD_New_Speed([int]$MinSpeed, [Int]$MaxSpeed) {
+        $this.GPUS | Where Model -eq "amd" | % {
+            $_.Get_Speed($MinSpeed, $MaxSpeed)
+        }
+    }
+
+    Set_NVIDIAFanSpeed() {
+        $this.GPUS | Where Model -eq "NVIDIA" | ForEach-Object {
+            if ($_.New_Speed -ne $_.FanSpeed) {
+                $SetFan = $null
+                Invoke-Expression ".\build\apps\nvfans\nvfans.exe --index $($_.OC_Number) --speed $($_.New_Speed)" | Tee-Object -Variable SetFan
+            }
+        }
+    }
+
+    Set_AMDFanSpeed() {
+        $this.GPUS | Where Model -eq "AMD" | ForEach-Object {
+            if ($_.New_Speed -ne $_.FanSpeed) {
+                $FanArgs = "-ac$($_.OC_Number) Fan_P0=80;$($_.New_Speed) Fan_P1=80;$($_.New_Speed) Fan_P2=80;$($_.New_Speed) Fan_P3=80;$($_.New_Speed) Fan_P4=80;$($_.New_Speed)"
+                $Proc = Start-Process ".\build\apps\overdriventool\OverdriveNTool.exe" -ArgumentList $FanArgs -PassThru
+                $Proc | Wait-Process
+            }
+        }
+    }
+
+    Handle_Errors([String[]]$Websites, [Int]$Reboot, [String]$Critical_Action) {
+        $this.GPUS | % {
+            $Errors = $_.Errors
+            ## Determine Error
+            if ($Errors) {
+                switch ($Errors) {
+                    "No Speed" {
+                        switch ($Reboot) {
+                            1 { $Message = "GPU driver error, no fan speed, rebooting"; $Action = 1 }
+                        }
+                    }
+                    "No Temp" {
+                        switch ($Reboot) {
+                            1 { $Message = "GPU driver error, no temps, rebooting"; $Action = 1 }
+                        }
+                    }
+                    "No Data" {
+                        switch ($Reboot) {
+                            1 { $Message = "GPU driver error, no data, rebooting"; $Action = 1 }
+                        }
+                    }
+                    "Critical" {
+                        switch ($Critical_Action) {
+                            "shutdown" { $Message = "GPU $($_.Rig_Number) Critical- shutting down"; $Action = 2 }
+                            "reboot" { $Message = "GPU $($_.Rig_Number) Critical- rebooting"; $Action = 1 }
+                            default { $Message = "GPU $($_.Rig_Number) Critical- mining stopped"; $Action = 3 }
+                        }
+                    }
+                    "Unreal" {
+                        switch ($Reboot) {
+                            1 { $Message = "Autofan: GPU temperature is unreal, driver error, rebooting" }
                         }
                     }
                 }
-                "AMD" {
-                    $this.GPUS | Where Model -eq "AMD" | ForEach-Object {
-                        if($_.New_Speed -ne $_.FanSpeed) {
-                            $FanArgs = "-ac$($_.OC_Number) Fan_P0=80;$($_.New_Speed) Fan_P1=80;$($_.New_Speed) Fan_P2=80;$($_.New_Speed) Fan_P3=80;$($_.New_Speed) Fan_P4=80;$($_.New_Speed)"
-                            $Proc = Start-Process ".\build\apps\overdriventool\OverdriveNTool.exe" -ArgumentList $FanArgs -PassThru
-                            $Proc | Wait-Process
+
+                ## Notify Website:
+                if ($Message -and $Websites) {
+                    $Warning = @{result = @{command = "timeout" } }
+                    $Message = $Message | Select -First 1
+                    $Website | ForEach-Object {
+                        $Sel = $_
+                        try {
+                            Import-Module ".\build\api\web\methods.psm1" -Global
+                            Global:Get-WebModules $Sel
+                            $SendToHive = Global:Start-webcommand -command $Warning -swarm_message $Message -Website "$($Sel)"
                         }
+                        catch { Write-Host "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow }     
                     }
                 }
+
+                ## Take Action:
+                if ($Action) {
+                    switch ($Action) {
+                        1 { Restart-Computer -Force }
+                        2 { Stop-Computer -Force }
+                        3 { Invoke-Expression "miner stop"; $this.IsMinerStopped = $True }
+                    }
+                }
+                
+                ## Print Errors
+                Write-Host ""
+                Write-Host "GPU $($_.Rig_Number): $($_.Errors)" -ForegroundColor Red
+                Write-Host ""            
+            }
+
+            ## Reset Errors
+            $_.Errors = $Null
+        }
+    }
+
+    Restart() {
+        if ($this.IsMinerStopped -eq $true) {
+            $Restart = $true
+            $this.GPUS.Errors | % {
+                if ([string]$_ -ne "") {
+                    $Restart = $false
+                }
+            }
+            if ($Restart -eq $True) {
+                Write-Host ""
+                Write-Host "No Errors Found- Restarting Miner" -ForegroundColor Green
+                Write-Host ""
+                Invoke-Expression "miner start"
             }
         }
     }
@@ -262,6 +368,7 @@ class RIG {
 $global:Config = [variables]::New()
 $Config.Set_Dir()
 $Config.Set_Configs(".\build\txt\autofan.txt")
+$Config.Set_Websites()
 $Config.Log()
 
 ## Build RIG
@@ -274,21 +381,26 @@ $Rig.GPUS | % {
 }
 
 While ($True) {
-
+    
     ## Set Config If Changed
     $config.Set_Configs(".\build\txt\autofan.txt")
 
     ## Refresh GPU Data
-    $RIG.Get_GPUData($Config.AutoFan_Conf.CRITICAL_TEMP)
+    $RIG.Get_NVIDIAGPUData($Config.AutoFan_Conf.CRITICAL_TEMP)
+    if ($Config.AutoFan_Conf.No_AMD -ne 1) { $RIG.Get_AMDGPUData($Config.AutoFan_Conf.CRITICAL_TEMP) }
 
     ## Calculate Deviation Between Temp and Target Temp For Each GPU
-    $Rig.Get_Deviations($Config.AutoFan_Conf.TARGET_TEMP)
-    $Rig.Get_New_Speed($Config.AutoFan_Conf.MIN_FAN, $Config.AutoFan_Conf.MAX_FAN)
+    $Rig.Get_NVIDIADeviations($Config.AutoFan_Conf.TARGET_TEMP)
+    if ($Config.AutoFan_Conf.No_AMD -ne 1) { $Rig.Get_AMDDeviations($Config.AutoFan_Conf.TARGET_TEMP) }
+
+    $Rig.Get_NVIDIA_New_Speed($Config.AutoFan_Conf.MIN_FAN, $Config.AutoFan_Conf.MAX_FAN)
+    if ($Config.AutoFan_Conf.No_AMD -ne 1) { $Rig.Get_AMD_New_Speed($Config.AutoFan_Conf.MIN_FAN, $Config.AutoFan_Conf.MAX_FAN) }
 
     Write-Host ""
     Write-Host "Target Temp is $($Config.AutoFan_Conf.TARGET_TEMP)" -ForegroundColor "Yellow"
 
-    $Rig.GPUS | % {
+    if ($Rig.GPUS | Where Model -eq "nvidia") { Write-Host "NVIDIA GPUS:" -ForegroundColor Green }
+    $Rig.GPUS | Where model -eq "nvidia" | % {
         Write-Host "GPU $($_.Rig_Number): " -NoNewLine
         Write-Host "Temp: $($_.Temperature), " -ForegroundColor Red -NoNewline
         Write-Host "Fan Speed: $($_.FanSpeed), " -ForegroundColor Cyan -NoNewline 
@@ -297,12 +409,27 @@ While ($True) {
         Write-Host ""
     }
 
-    ## Set New Fan Speeds
-    $Rig.Set_Fan_Speed()
+    if ($Config.AutoFan_Conf.No_AMD -ne 1) {
+        if ($Rig.GPUS | Where Model -eq "amd") { Write-Host "AMD GPUS:" -ForegroundColor Red}
+        $Rig.GPUS | Where model -eq "amd" | % {
+            Write-Host "GPU $($_.Rig_Number): " -NoNewLine
+            Write-Host "Temp: $($_.Temperature), " -ForegroundColor Red -NoNewline
+            Write-Host "Fan Speed: $($_.FanSpeed), " -ForegroundColor Cyan -NoNewline 
+            Write-Host "Desired % Adjustment: $($_.Deviation), " -ForegroundColor Yellow -NoNewline
+            Write-Host "Actual New Fan Speed %: $($_.New_Speed)" -ForegroundColor Green -NoNewline
+            Write-Host ""
+        }
+    }
 
+    ## Set New Fan Speeds
+    $Rig.Set_NVIDIAFanSpeed()
+    if ($Config.AutoFan_Conf.No_AMD -ne 1) { $Rig.Set_AMDFanSpeed() }
+
+    ## Check if Miner Needs To Be Restarted
+    $Rig.Restart()
 
     ## Handle Errors
-    #$Rig.Handle_Errors()
+    $Rig.Handle_Errors($Config.Websites, $Config.AutoFan_Conf.REBOOT_ON_ERROR, $Config.AutoFan_Conf.CRITICAL_TEMP_ACTION)
 
     ## Sleep
     Start-Sleep -S 10

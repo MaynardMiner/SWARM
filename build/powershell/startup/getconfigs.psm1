@@ -67,7 +67,12 @@ Setting Path Variable For Commands: May require reboot to use.
     $ID = ".\build\pid\pill_pid.txt"
     if (Test-Path $ID) { $Agent = Get-Content $ID }
     if ($Agent) { $BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue }
-    if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }    
+    if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }
+    log "Stopping Previous Autofan"
+    $ID = ".\build\pid\autofan.txt"
+    if (Test-Path $ID) { $Agent = Get-Content $ID }
+    if ($Agent) { $BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue }
+    if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }       
 }
 
 
