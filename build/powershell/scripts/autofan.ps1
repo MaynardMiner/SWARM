@@ -379,6 +379,30 @@ class RIG {
             }
         }
     }
+
+    Print_NVIDIA_Changes(){
+        if ($This.GPUS | Where Model -eq "nvidia") { Write-Host "NVIDIA GPUS:" -ForegroundColor Green }
+        $This.GPUS | Where model -eq "nvidia" | % {
+            Write-Host "GPU $($_.Rig_Number): " -NoNewLine
+            Write-Host "Temp: $($_.Temperature), " -ForegroundColor Red -NoNewline
+            Write-Host "Fan Speed: $($_.FanSpeed), " -ForegroundColor Cyan -NoNewline 
+            Write-Host "Desired % Adjustment: $($_.Deviation), " -ForegroundColor Yellow -NoNewline
+            Write-Host "Actual New Fan Speed %: $($_.New_Speed)" -ForegroundColor Green -NoNewline
+            Write-Host ""
+        }
+    }
+
+    Print_AMD_Changes(){
+        if ($This.GPUS | Where Model -eq "amd") { Write-Host "AMD GPUS:" -ForegroundColor Red }
+        $This.GPUS | Where model -eq "amd" | % {
+            Write-Host "GPU $($_.Rig_Number): " -NoNewLine
+            Write-Host "Temp: $($_.Temperature), " -ForegroundColor Red -NoNewline
+            Write-Host "Fan Speed: $($_.FanSpeed), " -ForegroundColor Cyan -NoNewline 
+            Write-Host "Desired % Adjustment: $($_.Deviation), " -ForegroundColor Yellow -NoNewline
+            Write-Host "Actual New Fan Speed %: $($_.New_Speed)" -ForegroundColor Green -NoNewline
+            Write-Host ""
+        }
+    }
 }
 
 
@@ -414,30 +438,11 @@ While ($True) {
     $Rig.Get_NVIDIA_New_Speed($Config.AutoFan_Conf.MIN_FAN, $Config.AutoFan_Conf.MAX_FAN)
     if ($Config.AutoFan_Conf.No_AMD -ne 1) { $Rig.Get_AMD_New_Speed($Config.AutoFan_Conf.MIN_FAN, $Config.AutoFan_Conf.MAX_FAN) }
 
+    ## Print Changes
     Write-Host ""
     Write-Host "Target Temp is $($Config.AutoFan_Conf.TARGET_TEMP)" -ForegroundColor "Yellow"
-
-    if ($Rig.GPUS | Where Model -eq "nvidia") { Write-Host "NVIDIA GPUS:" -ForegroundColor Green }
-    $Rig.GPUS | Where model -eq "nvidia" | % {
-        Write-Host "GPU $($_.Rig_Number): " -NoNewLine
-        Write-Host "Temp: $($_.Temperature), " -ForegroundColor Red -NoNewline
-        Write-Host "Fan Speed: $($_.FanSpeed), " -ForegroundColor Cyan -NoNewline 
-        Write-Host "Desired % Adjustment: $($_.Deviation), " -ForegroundColor Yellow -NoNewline
-        Write-Host "Actual New Fan Speed %: $($_.New_Speed)" -ForegroundColor Green -NoNewline
-        Write-Host ""
-    }
-
-    if ($Config.AutoFan_Conf.No_AMD -ne 1) {
-        if ($Rig.GPUS | Where Model -eq "amd") { Write-Host "AMD GPUS:" -ForegroundColor Red}
-        $Rig.GPUS | Where model -eq "amd" | % {
-            Write-Host "GPU $($_.Rig_Number): " -NoNewLine
-            Write-Host "Temp: $($_.Temperature), " -ForegroundColor Red -NoNewline
-            Write-Host "Fan Speed: $($_.FanSpeed), " -ForegroundColor Cyan -NoNewline 
-            Write-Host "Desired % Adjustment: $($_.Deviation), " -ForegroundColor Yellow -NoNewline
-            Write-Host "Actual New Fan Speed %: $($_.New_Speed)" -ForegroundColor Green -NoNewline
-            Write-Host ""
-        }
-    }
+    $Rig.Print_NVIDIA_Changes()
+    if ($Config.AutoFan_Conf.No_AMD -ne 1) { $Rig.Print_AMD_Changes() }
 
     ## Set New Fan Speeds
     $Rig.Set_NVIDIAFanSpeed()
