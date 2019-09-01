@@ -58,6 +58,7 @@ function Global:start-update {
         $PreviousVersions += "SWARM.2.6.4"
         $PreviousVersions += "SWARM.2.6.5"
         $PreviousVersions += "SWARM.2.6.6"
+        $PreviousVersions += "SWARM.2.6.7"
 
         $StatsOnly = $null
 
@@ -281,11 +282,6 @@ function Global:start-update {
                                 if ($ChangeFile -eq "gminer-amd.json") {
                                     $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach { 
                                         if ($_ -ne "name") {
-                                            $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "equihash125/4"
-                                            $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "equihash125/4"
-                                            $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "equihash125/4"
-                                            $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "equihash125/4"
-
                                             $Data.$_.commands | Add-Member "cuckatoo31" "" -ErrorAction SilentlyContinue
                                             $Data.$_.difficulty | Add-Member "cuckatoo31" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "cuckatoo31" "cuckatoo31" -ErrorAction SilentlyContinue
@@ -295,6 +291,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "equihash_96/5" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "equihash_96/5" "equihash_96/5" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "equihash_96/5" 2 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "equihash_125/4" "equihash_125/4" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "equihash_125/4" 2 -ErrorAction SilentlyContinue
 
                                             $Data.$_.commands | Add-Member "beamv2" "" -ErrorAction SilentlyContinue
                                             $Data.$_.difficulty | Add-Member "beamv2" "" -ErrorAction SilentlyContinue 
