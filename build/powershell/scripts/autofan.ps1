@@ -21,7 +21,7 @@ class variables {
     [string]$Dir = (Split-Path(Split-Path(Split-Path(Split-Path($script:MyInvocation.MyCommand.Path)))))
     [string[]]$Websites
     [PSCustomObject]$AutoFan_Conf
-    
+    [System.Diagnostics.Stopwatch]$Timer
 
     Set_Dir() { Set-Location $this.Dir }
 
@@ -33,7 +33,24 @@ class variables {
         if ($null -eq $this.AutoFan_Conf) { Write-Host "No configs found"; exit }
     }
     
-    Log() { Start-Transcript -Path "$($this.Dir)\logs\autofan.log" }
+    Log() { 
+        Start-Transcript -Path "$($this.Dir)\logs\autofan.log" 
+        $This.Timer.Restart()
+    }
+
+    Log_Reset(){
+        if($This.Timer.Elapsed.TotalSeconds -ge 3600){
+            Write-Host ""
+            Write-Host "Clearing AutoFan Log"
+            Write-Host ""
+            Stop-Transcript
+            Start-Sleep -S 3
+            Clear-Content "$($this.Dir)\logs\autofan.log" -Force
+            Start-Sleep -S 3
+            Start-Transcript -Path "$($this.Dir)\logs\autofan.log" 
+            $This.Timer.Restart()
+        }
+    }
 
     Set_Websites() {
         if (test-path ".\config\parameters\newarguments.json") {
@@ -430,6 +447,9 @@ While ($True) {
 
     ## Handle Errors
     $Rig.Handle_Errors($Config.Websites, $Config.AutoFan_Conf.REBOOT_ON_ERROR, $Config.AutoFan_Conf.CRITICAL_TEMP_ACTION)
+
+    ## Log Reset
+    $Variables.Log_Reset()
 
     ## Sleep
     Start-Sleep -S 10
