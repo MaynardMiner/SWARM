@@ -179,6 +179,8 @@ function Global:Start-AMDOC($NewOC) {
     $AMDOCV = $AMDOC.CORE_VDDC -replace "`"", ""
     $AMDOCV = $AMDOCV -split " "
     $AMDAgg = $AMDOC.AGGRESSIVE
+    $AMDREF = $AMDOC.REF -replace "`"",""
+    $AMDREF = $AMDREF -split " "
   
     for ($i = 0; $i -lt $AMDCount; $i++) {
         $Select = $OCCount.AMD.PSOBject.Properties.Name
@@ -268,7 +270,19 @@ function Global:Start-AMDOC($NewOC) {
                             }          
                         }
                     }
-                }        
+                } 
+                "REF"{
+                    if ([String]$AMDREF -ne "") {
+                        if ($AMDREF.Count -eq 1) {
+                        $REF = Invoke-Expression ".\build\apps\amdtweak\WinAMDTweak.exe --gpu $i --REF $AMDREF"
+                        $OCmessage += "Setting GPU $($OCCount.AMD.$i) memory REF to $AMDREF"
+                        }
+                        else{
+                            $Ref = Invoke-Expression ".\build\apps\amdtweak\WinAMDTweak.exe --gpu $i --REF $AMDREF[$i]" | Tee-Object -Variable Out
+                            $OCmessage += "Setting GPU $($OCCount.AMD.$i) memory REF to $($AMDREF[$i])"
+                        }
+                    }
+                }
             }
         }
     }
