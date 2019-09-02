@@ -941,6 +941,8 @@ to test new Expiremental features.
 * Autofan for HiveOS now works in Windows!
   * This is a expiremental beta implementation
     please notify if you have issues.
+* AMD Memtweak settings from HiveOS added
+  to OC in Windows.
 
 ## Updates
 * Gminer - added 125/4 for AMD.
@@ -957,4 +959,3 @@ to test new Expiremental features.
   * typo with $dir path in one of the install transfers.
 * Adjusted nvidia oc Pl to work as watts, not % in Windows
   * This means it matches HiveOS's website interface.
-
