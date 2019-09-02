@@ -62,9 +62,9 @@
         "NVIDIA2": ".\\bin\\bminer-2\\bminer.exe",
         "NVIDIA3": ".\\bin\\bminer-3\\bminer.exe",
         "minername": "bminer.exe",
-        "version": "15.8.4",
+        "version": "15.8.5",
         "optional": "No",
-        "uri": "https://www.bminercontent.com/releases/bminer-lite-v15.8.4-3212522-amd64.zip"
+        "uri": "https://www.bminercontent.com/releases/bminer-lite-v15.8.5-d2c3d7c-amd64.zip"
     },
     "ehssand": {
         "name": "ehssand",

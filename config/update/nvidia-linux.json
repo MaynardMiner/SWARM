@@ -227,9 +227,9 @@
     "NVIDIA2": ".\\bin\\bminer-2\\bminer",
     "NVIDIA3": ".\\bin\\bminer-3\\bminer",
     "minername": "bminer",
-    "version": "15.8.4",
+    "version": "15.8.5",
     "optional": "No",
-    "uri": "https://www.bminercontent.com/releases/bminer-v15.8.4-3212522-amd64.tar.xz"
+    "uri": "https://www.bminercontent.com/releases/bminer-v15.8.5-d2c3d7c-amd64.tar.xz"
   },
   "miniz": {
     "name": "miniz",
