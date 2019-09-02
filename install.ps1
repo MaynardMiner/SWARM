@@ -51,6 +51,7 @@ if (Test-Path ".\build\bash\view") {
 }
 
 if (Test-Path ".\build\apps\wolfamdctrl\wolfamdctrl") {
+    Copy-Item ".\build\apps\wolfamdctrl" -Destination "/usr/bin" -force | Out-Null
     $proc = Start-Process ln -ArgumentList "-s $dir/build/apps/wolfamdctrl/wolfamdctrl /usr/bin/wolfamdctrl/wolfamdctrl" -PassThru
     $proc | Wait-Process
     Set-Location "/usr/bin"
