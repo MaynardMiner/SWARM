@@ -20,6 +20,10 @@ function Global:Start-NVIDIAOC($NewOC) {
     $OCCount = Get-Content ".\build\txt\oclist.txt" | ConvertFrom-JSon
     $FansArgs = @()
 
+    ## Get Power limits
+    $Max_Power = invoke-expression "nvidia-smi --query-gpu=power.max_limit --format=csv" | ConvertFrom-CSV
+    $Max_Power = $Max_Power.'power.max_limit [W]'| % {$_ = $_ -replace " W",""; $_}
+
     $HiveNVOC.Keys | % {
         $key = $_
         Switch ($key) {
@@ -101,14 +105,20 @@ function Global:Start-NVIDIAOC($NewOC) {
                     $NVOCPL = $NVOCPL -split " "
                     if ($NVOCPL.Count -eq 1) {
                         for ($i = 0; $i -lt $OCCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {
-                            $OCArgs += "-setPowerTarget:$($OCCount.NVIDIA.$i),$($NVOCPL) "
-                            $ocmessage += "Setting GPU $($OCCount.NVIDIA.$i) Power Limit To $($NVOCPL)"
+                            [Double]$Max = $Max_Power[$i]
+                            [Double]$Value = $NVOCPL | %{iex $_}  ## String to double/int issue.
+                            [Double]$Limit = [math]::Round(($Value/$Max) * 100, 0)
+                            $OCArgs += "-setPowerTarget:$($OCCount.NVIDIA.$i),$($Limit) "
+                            $ocmessage += "Setting GPU $($OCCount.NVIDIA.$i) Power Limit To $($Limit)%"
                         }
                     }
                     else {
-                        for ($i = 0; $i -lt $NVOCPL.Count; $i++) {
-                            $OCArgs += "-setPowerTarget:$($i),$($NVOCPL[$i]) "
-                            $ocmessage += "Setting GPU $i Power Limit To $($NVOCPL[$i])"
+                            for($i=0; $i -lt $NVOCPL.Count; $i++){
+                            [Double]$Max = $Max_Power[$i]
+                            [Double]$Value = $NVOCPL[$i] | %{iex $_} ## String to double/int issue.
+                            [Double]$Limit = [math]::Round(($Value/$Max) * 100, 0)
+                            $OCArgs += "-setPowerTarget:$($i),$($Limit) "
+                            $ocmessage += "Setting GPU $i Power Limit To $($Limit)%"
                         }
                     }
                 }
