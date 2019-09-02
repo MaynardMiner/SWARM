@@ -14,8 +14,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 $dir = (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
 $dir = $dir -replace "/var/tmp","/root"
 Set-Location $dir
-Write-Host "Clearing All Previous Stored HiveOS Data"
+Write-Host "Clearing All Previous Stored Website Data"
 if(test-path ".\build\txt"){Remove-Item ".\build\txt\*" -Force}
 if(test-path ".\config\parameters\newarguments.json"){Remove-Item ".\config\parameters\newarguments.json" -Force}
 if(test-Path ".\config\parameters\arguments.json"){Remove-Item ".\config\parameters\arguments.json" -Force}
+if(test-path ".\config\parameters\SWARM_params_keys.json"){Remove-Item ".\config\parameters\SWARM_params_keys.json" -Force}
+if(test-Path ".\config\parameters\hive_params_keys.json"){Remove-Item ".\config\parameters\hive_params_keys.json" -Force}
+if(test-Path ".\config\parameters\autofan"){Remove-Item ".\config\parameters\autofan" -Force}
 Write-Host "All Data Is Removed!"
