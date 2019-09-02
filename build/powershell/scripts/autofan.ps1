@@ -17,6 +17,41 @@ Set-Alias -Name "jq" -Value ConvertFrom-Json
 Set-Alias -Name "jc" -Value Convertto-Json
 Set-Alias -Name "sd" -Value ConvertFrom-StringData
 
+class Message {
+    [string]$method
+    [string]$rig_id
+    [string]$jsonrpc = "2.0"
+    [string]$id = "0"
+    [hashtable]$params = @{
+        rig_id = $null
+        passwd = $null
+        type   = $null
+        data   = $null
+    }
+
+    Message([string]$method, [string]$type, [string]$data, [string]$site) {
+
+        $miner_keys = $null
+        
+        ## Get Rig ID & Password
+        Switch ($site) {
+            "HiveOS" { if (test-path ".\build\txt\hive_params_keys.txt") { $miner_keys = cat ".\build\txt\hive_params_keys.txt" | jq } }
+            "SWARM" { if (Test-Path ".\build\txt\SWARM_Params_keys.txt") { $miner_keys = cat ".\build\txt\SWARM_Params_keys.txt" | jq } }
+        }
+
+        $this.params.rig_id = $miner_keys.id
+        $this.params.passwd = $miner_keys.Password
+        $this.params.type = $type
+        $this.params.data = $data
+        $this.method = $method
+        $this.rig_id = $miner_keys.id
+    
+        $json = $this | ConvertTo-Json -Depth 10 -Compress
+
+        $Answer = try { Invoke-RestMethod "$($miner_keys.mirror)/worker/api" -TimeoutSec 10 -Method POST -Body $json -ContentType 'application/json' } catch [Exception] { Write-Host "Exception: "$_.Exception.Message -ForegroundColor Red;}
+    }
+}
+
 class variables {
     [string]$Dir = (Split-Path(Split-Path(Split-Path(Split-Path($script:MyInvocation.MyCommand.Path)))))
     [string[]]$Websites
@@ -39,8 +74,8 @@ class variables {
         $This.Timer.Restart()
     }
 
-    Log_Reset(){
-        if($This.Timer.Elapsed.TotalSeconds -ge 3600){
+    Log_Reset() {
+        if ($This.Timer.Elapsed.TotalSeconds -ge 3600) {
             Write-Host ""
             Write-Host "Clearing AutoFan Log"
             Write-Host ""
@@ -56,10 +91,10 @@ class variables {
     Set_Websites() {
         if (test-path ".\config\parameters\newarguments.json") {
             $Params = cat ".\config\parameters\newarguments.json" | jq
-            if ([string]$Params.Hive_Hash -ne "" -or [string]$Params.Hive_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") {
+            if ([string]$Params.Hive_Hash -ne "" -and [string]$Params.Hive_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") {
                 $this.Websites += "HiveOS"
             }
-            if ([string]$Params.SWARM_Hash -ne "" -or [string]$Params.SWARM_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") {
+            if ([string]$Params.SWARM_Hash -ne "" -and [string]$Params.SWARM_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") {
                 $this.Websites += "SWARM"
             }
         }
@@ -293,7 +328,7 @@ class RIG {
         }
     }
 
-    Handle_Errors([String[]]$Websites, [Int]$Reboot, [String]$Critical_Action) {
+    Handle_Errors([String[]]$Websites, [Int]$Reboot, [String]$Critical_Action, [string]$Dir) {
         $this.GPUS | % {
             $Errors = $_.Errors
             ## Determine Error
@@ -330,17 +365,7 @@ class RIG {
 
                 ## Notify Website:
                 if ($Message -and $Websites) {
-                    $Warning = @{result = @{command = "timeout" } }
-                    $Message = $Message | Select -First 1
-                    $Website | ForEach-Object {
-                        $Sel = $_
-                        try {
-                            Import-Module ".\build\api\web\methods.psm1" -Global
-                            Global:Get-WebModules $Sel
-                            $SendToHive = Global:Start-webcommand -command $Warning -swarm_message $Message -Website "$($Sel)"
-                        }
-                        catch { Write-Host "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow }     
-                    }
+                    $Websites | % { $Send = [Message]::New("message", "warning", $message, "$($_)") }
                 }
 
                 ## Take Action:
@@ -380,7 +405,7 @@ class RIG {
         }
     }
 
-    Print_NVIDIA_Changes(){
+    Print_NVIDIA_Changes() {
         if ($This.GPUS | Where Model -eq "nvidia") { Write-Host "NVIDIA GPUS:" -ForegroundColor Green }
         $This.GPUS | Where model -eq "nvidia" | % {
             Write-Host "GPU $($_.Rig_Number): " -NoNewLine
@@ -392,7 +417,7 @@ class RIG {
         }
     }
 
-    Print_AMD_Changes(){
+    Print_AMD_Changes() {
         if ($This.GPUS | Where Model -eq "amd") { Write-Host "AMD GPUS:" -ForegroundColor Red }
         $This.GPUS | Where model -eq "amd" | % {
             Write-Host "GPU $($_.Rig_Number): " -NoNewLine
@@ -452,7 +477,7 @@ While ($True) {
     $Rig.Restart()
 
     ## Handle Errors
-    $Rig.Handle_Errors($Config.Websites, $Config.AutoFan_Conf.REBOOT_ON_ERROR, $Config.AutoFan_Conf.CRITICAL_TEMP_ACTION)
+    $Rig.Handle_Errors($Config.Websites, $Config.AutoFan_Conf.REBOOT_ON_ERROR, $Config.AutoFan_Conf.CRITICAL_TEMP_ACTION, $Config.Dir)
 
     ## Log Reset
     $Config.Log_Reset()
