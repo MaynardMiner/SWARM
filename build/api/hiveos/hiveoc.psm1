@@ -278,7 +278,7 @@ function Global:Start-AMDOC($NewOC) {
                         $OCmessage += "Setting GPU $($OCCount.AMD.$i) memory REF to $AMDREF"
                         }
                         else{
-                            $Ref = Invoke-Expression ".\build\apps\amdtweak\WinAMDTweak.exe --gpu $i --REF $AMDREF[$i]" | Tee-Object -Variable Out
+                            $Ref = Invoke-Expression ".\build\apps\amdtweak\WinAMDTweak.exe --gpu $i --REF $($AMDREF[$i])" | Tee-Object -Variable Out
                             $OCmessage += "Setting GPU $($OCCount.AMD.$i) memory REF to $($AMDREF[$i])"
                         }
                     }
