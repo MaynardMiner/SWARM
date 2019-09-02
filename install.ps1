@@ -109,7 +109,7 @@ if (Test-Path ".\build\export\libcurl.so.3.0.0") {
     $Proc = Start-Process ln -ArgumentList "-s $dir/build/export/libcurl.so.3.0.0 $dir/build/export/libcurl.so.3" -PassThru
     $Proc | Wait-Process
     Set-Location "/"
-    Set-Location $($(vars).dir)     
+    Set-Location $Dir    
 }
 
 if (Test-Path ".\build\export\libcudart.so.10.1.105") {

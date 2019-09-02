@@ -9,4 +9,4 @@ rm -rf /tmp/powershell.tar.gz
 fi
 pwsh -command "./install.ps1"
 chmod 777 -R $HOME/.local/share/powershell
-pwsh -command "./help.ps1"
+pwsh -command "./build/powershell/scripts/help.ps1"
