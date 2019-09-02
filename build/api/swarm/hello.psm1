@@ -129,7 +129,7 @@ function Global:Start-WebStartup($response, $Site) {
                     $global:Config.$Params.MINER_DELAY = $Rig.MINER_DELAY -replace "`"", ""
 
 
-                    if (Test-Path ".\build\txt\$($Params)_keys.txt") { $OldKeys = Get-Content ".\build\txt\$($Params)_keys.txt" | ConvertFrom-Json }
+                    if (Test-Path ".\config\parameters\$($Params)_keys.json") { $OldKeys = Get-Content ".\config\parameters\$($Params)_keys.json" | ConvertFrom-Json }
 
                     ## If password was changed- Let Hive know message was recieved
 
@@ -147,7 +147,7 @@ function Global:Start-WebStartup($response, $Site) {
                     }
 
                     ## Set Arguments/New Parameters
-                    $global:Config.$Params | ConvertTo-Json | Set-Content ".\build\txt\$($Params)_keys.txt"
+                    $global:Config.$Params | ConvertTo-Json | Set-Content ".\config\parameters\$($Params)_keys.json"
                 }
 
                 ##If Hive Sent OC Start SWARM OC

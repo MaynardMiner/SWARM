@@ -14,8 +14,8 @@ function Global:Get-Parameters {
         $arguments.PSObject.Properties.Name | % { $Global:Config.user_params.Add("$($_)", $arguments.$_) }
         $arguments = $Null
     }
-    if (Test-Path ".\build\txt\hive_params_keys.txt") {
-        $HiveStuff = Get-Content ".\build\txt\hive_params_keys.txt" | ConvertFrom-Json
+    if (Test-Path ".\config\parameters\Hive_params_keys.json") {
+        $HiveStuff = Get-Content ".\config\parameters\Hive_params_keys.json" | ConvertFrom-Json
         $HiveStuff.PSObject.Properties.Name | % { $global:Config.hive_params.Add("$($_)", $HiveStuff.$_) }
         $HiveStuff = $null
     }
@@ -37,8 +37,8 @@ function Global:Get-Parameters {
         $global:Config.hive_params.Add("MINER_DELAY", $Null)
     }
 
-    if (Test-Path ".\build\txt\SWARM_Params_keys.txt") {
-        $SWARMStuff = Get-Content ".\build\txt\SWARM_Params_keys.txt" | ConvertFrom-Json
+    if (Test-Path ".\config\parameters\SWARM_params_keys.json") {
+        $SWARMStuff = Get-Content ".\config\parameters\SWARM_params_keys.json" | ConvertFrom-Json
         $SWARMStuff.PSObject.Properties.Name | % { $global:Config.SWARM_Params.Add("$($_)", $SWARMStuff.$_) }
         $SWARMStuff = $null
     }

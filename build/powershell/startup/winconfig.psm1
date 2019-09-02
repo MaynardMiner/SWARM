@@ -374,8 +374,8 @@ function Global:Start-WindowsConfig {
     }
 
     ## Start AutoFan
-    if (test-path ".\build\txt\autofan.txt") {
-        $Enabled = $(cat ".\build\txt\autofan.txt" | ConvertFrom-Json | ConvertFrom-StringData).ENABLED
+    if (test-path ".\config\parameters\autofan.json") {
+        $Enabled = $(cat ".\config\parameters\autofan.json" | ConvertFrom-Json | ConvertFrom-StringData).ENABLED
         if ($Enabled -eq 1) {
             log "Starting Autofan" -ForeGroundColor Cyan
             $BackgroundTimer = New-Object -TypeName System.Diagnostics.Stopwatch

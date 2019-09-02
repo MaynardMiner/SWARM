@@ -5,7 +5,7 @@ $dir = (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCo
 $dir = $dir -replace "/var/tmp", "/root"
 Set-Location $dir
 
-$Keys = Get-Content ".\build\txt\hive_params_keys.txt" | ConvertFrom-Json
+$Keys = Get-Content ".\config\parameters\Hive_params_keys.json" | ConvertFrom-Json
 $API = $(Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json).API_Key
 $Url = "https://api2.hiveos.farm/api/v2/farms/$($Keys.FarmID)/workers"
 

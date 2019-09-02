@@ -519,6 +519,6 @@ function Global:Start-LinuxConfig {
 
     ## Set Arguments/New Parameters
     if ($global:Config.hive_params.Id) {
-        $global:Config.hive_params | ConvertTo-Json | Set-Content ".\build\txt\hive_params_keys.txt"
+        $global:Config.hive_params | ConvertTo-Json | Set-Content ".\config\parameters\Hive_params_keys.json"
     }
 }

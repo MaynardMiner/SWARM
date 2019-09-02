@@ -35,8 +35,8 @@ class Message {
         
         ## Get Rig ID & Password
         Switch ($site) {
-            "HiveOS" { if (test-path ".\build\txt\hive_params_keys.txt") { $miner_keys = cat ".\build\txt\hive_params_keys.txt" | jq } }
-            "SWARM" { if (Test-Path ".\build\txt\SWARM_Params_keys.txt") { $miner_keys = cat ".\build\txt\SWARM_Params_keys.txt" | jq } }
+            "HiveOS" { if (test-path ".\config\parameters\Hive_params_keys.json") { $miner_keys = cat ".\config\parameters\Hive_params_keys.json" | jq } }
+            "SWARM" { if (Test-Path ".\config\parameters\SWARM_params_keys.json") { $miner_keys = cat ".\config\parameters\SWARM_params_keys.json" | jq } }
         }
 
         $this.params.rig_id = $miner_keys.id
@@ -434,7 +434,7 @@ class RIG {
 ## Gather Script Variables
 $global:Config = [variables]::New()
 $Config.Set_Dir()
-$Config.Set_Configs(".\build\txt\autofan.txt")
+$Config.Set_Configs(".\config\parameters\autofan.json")
 $Config.Set_Websites()
 $Config.Log()
 
@@ -450,7 +450,7 @@ $Rig.GPUS | % {
 While ($True) {
     
     ## Set Config If Changed
-    $config.Set_Configs(".\build\txt\autofan.txt")
+    $config.Set_Configs(".\config\parameters\autofan.json")
 
     ## Refresh GPU Data
     $RIG.Get_NVIDIAGPUData($Config.AutoFan_Conf.CRITICAL_TEMP)
