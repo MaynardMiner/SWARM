@@ -7,5 +7,5 @@ chmod +x /opt/microsoft/powershell/6.2.1/pwsh
 ln -s /opt/microsoft/powershell/6.2.1/pwsh /usr/bin/pwsh
 rm -rf /tmp/powershell.tar.gz
 fi
-pwsh -command "./install.ps1"
 chmod 777 -R $HOME/.local/share/powershell
+pwsh -command "./install.ps1"
