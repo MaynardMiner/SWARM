@@ -9,6 +9,11 @@ $Keys = Get-Content ".\config\parameters\Hive_params_keys.json" | ConvertFrom-Js
 $API = $(Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json).API_Key
 $Url = "https://api2.hiveos.farm/api/v2/farms/$($Keys.FarmID)/workers"
 
+if("-windows" -in $args){$Windows = $True}
+if("-linux" -in $args){$Linux = $True}
+
+$args = $args | Where {$_ -ne "-windows"}
+$args = $args | Where {$_ -ne "-linux"}
 Write-Host "Command is $([string]$args)"
 
 Write-Host "Getting Workers Running SWARM"
@@ -17,7 +22,12 @@ $Splat = @{ Method = "GET"; Uri = $Url; Headers = $T; ContentType = 'application
 try { $A = Invoke-RestMethod @Splat -TimeoutSec 10 -ErrorAction Stop } catch { Write-Host "WARNING: Failed to Contact HiveOS for Worker List" -ForegroundColor Yellow; return }
 
 $Workers = $A.data
-$SWARM_Workers = $($Workers | Where {$_.flight_sheet.items.miner_alt -like "*SWARM*"}).id
+$SWARM_Workers = $Workers | Where {$_.flight_sheet.items.miner_alt -like "*SWARM*"}
+
+if($Windows){$SWARM_Workers = $SWARM_Workers | Where {$_.flight_sheet.items.miner_alt -like "*windows*"}}
+if($Linux){$SWARM_Workers = $SWARM_Workers | Where {$_.flight_sheet.items.miner_alt -like "*linux*"}}
+
+$SWARM_Workers = $SWARM_Workers.id
 
 $command = @{ 
     worker_ids = @($SWARM_Workers); 
