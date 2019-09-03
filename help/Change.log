@@ -943,6 +943,11 @@ to test new Expiremental features.
     please notify if you have issues.
 * AMD Memtweak settings from HiveOS added
   to OC in Windows.
+* ``swarm_batch`` can accept -windows or -linux
+    to specify specific OS.
+    * example:
+      * ``swarm_batch get stats -linux``
+        * Will only run ``get stats`` in linux rigs.
 
 ## Updates
 * Gminer - added 125/4 for AMD.
