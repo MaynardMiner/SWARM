@@ -804,15 +804,15 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 else {
                     $line += "Detected New Version Should Be $VersionNumber`n"
                     Write-Host "Detected New Version Should Be $VersionNumber"    
-                    $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$VersionNumber/SWARM.$VersionNumber.zip"
+                    $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$VersionNumber/SWARM.$VersionNumber.windows.zip"
                 }
                 Write-Host "Main Directory is $(Split-Path $Dir)`n"
 
                 $BaseDir = (Split-Path $Dir)
-                $FileName = join-path "$Dir" "x64\SWARM.$VersionNumber.zip"
+                $FileName = join-path "$Dir" "x64\SWARM.$VersionNumber.windows.zip"
                 $DLFileName = Join-Path "$Dir" "x64\SWARM.$VersionNumber"
 
-                $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$versionNumber/SWARM.$VersionNumber.zip"
+                $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$versionNumber/SWARM.$VersionNumber.windows.zip"
                 Write-Host "URI should be $URI"
                 try { Invoke-WebRequest $URI -OutFile $FileName -SkipCertificateCheck -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }catch { $Failed = $true; Write-Host "Failed To Contact Github For Download! Must Do So Manually" }
                 Start-Sleep -S 5
