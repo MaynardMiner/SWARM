@@ -38,6 +38,7 @@ Function Global:Get-PCISlot($X) {
 }
 
 
+
 Function Global:Get-Bus {
 
     $GPUS = @()
