@@ -965,3 +965,10 @@ to test new Expiremental features.
   * typo with $dir path in one of the install transfers.
 * Adjusted nvidia oc Pl to work as watts, not % in Windows
   * This means it matches HiveOS's website interface.
+
+# SWARM 2.6.9
+
+## Updates
+* Gminer updated
+* bminer updated
+* xmrig updated
