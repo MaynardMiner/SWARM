@@ -978,3 +978,5 @@ to test new Expiremental features.
   with whalesburg pool- It was fixed. Updated
   pool to new pool class like rest.
 
+* ethminer should work on whalesburg (optional miner)
+* updated phoenix miner arguments.
