@@ -18,9 +18,9 @@
     "AMD2": ".\\bin\\gminer-amd-2\\miner",
     "AMD3": ".\\bin\\gminer-amd-3\\miner",
     "minername": "miner",
-    "version": "1.62",
+    "version": "1.64",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.62/gminer_1_62_linux64.tar.xz"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.64/gminer_1_64_linux64.tar.xz"
   },
   "kbminer-amd": {
     "name": "kbminer-amd",
@@ -84,7 +84,7 @@
     "AMD2": ".\\bin\\phoenix-amd-2\\PhoenixMiner",
     "AMD3": ".\\bin\\phoenix-amd-3\\PhoenixMiner",
     "minername": "PhoenixMiner",
-    "version": "4.5c",
+    "version": "4.6c",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/phoenix-linux.tar.gz"
   },

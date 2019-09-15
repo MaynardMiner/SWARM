@@ -18,9 +18,9 @@
     "NVIDIA2": ".\\bin\\nbminer-2\\nbminer",
     "NVIDIA3": ".\\bin\\nbminer-3\\nbminer",
     "minername": "nbminer",
-    "version": "24.4",
+    "version": "25.2",
     "optional": "No",
-    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v24.4/NBMiner_24.4_Linux.tgz"
+    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v25.2/NBMiner_25.2_Linux.tgz"
   },
   "multiminer": {
     "name": "multiminer",
@@ -40,7 +40,7 @@
     "NVIDIA2": ".\\bin\\phoenix-2\\PhoenixMiner",
     "NVIDIA3": ".\\bin\\phoenix-3\\PhoenixMiner",
     "minername": "PhoenixMiner",
-    "version": "4.5c",
+    "version": "4.6c",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/phoenix-linux.tar.gz"
   },
@@ -205,9 +205,9 @@
     "NVIDIA2": ".\\bin\\gminer-2\\miner",
     "NVIDIA3": ".\\bin\\gminer-3\\miner",
     "minername": "miner",
-    "version": "1.62",
+    "version": "1.64",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.62/gminer_1_62_linux64.tar.xz"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.64/gminer_1_64_linux64.tar.xz"
   },
   "grin-miner": {
     "name": "grin-miner",

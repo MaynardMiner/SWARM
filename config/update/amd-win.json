@@ -51,9 +51,9 @@
     "AMD2": ".\\bin\\gminer-amd-2\\miner.exe",
     "AMD3": ".\\bin\\gminer-amd-3\\miner.exe",
     "minername": "miner.exe",
-    "version": "1.62",
+    "version": "1.64",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.62/gminer_1_62_windows64.zip"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.64/gminer_1_64_windows64.zip"
   },
   "phoenix-amd": {
     "name": "phoenix-amd",
@@ -62,7 +62,7 @@
     "AMD2": ".\\bin\\phoenix-amd-2\\PhoenixMiner.exe",
     "AMD3": ".\\bin\\phoenix-amd-3\\PhoenixMiner.exe",
     "minername": "PhoenixMiner.exe",
-    "version": "4.5c",
+    "version": "4.6c",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/phoenix-miner-windows.zip"
   },
