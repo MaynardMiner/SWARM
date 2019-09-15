@@ -972,3 +972,9 @@ to test new Expiremental features.
 * Gminer updated
 * bminer updated
 * xmrig updated
+
+## fixes
+* Users stated they were having some Issues
+  with whalesburg pool- It was fixed. Updated
+  pool to new pool class like rest.
+

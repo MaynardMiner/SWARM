@@ -10,19 +10,19 @@
 ## to nicehash, but it seems to cause weird bugs in miners.
 
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
-$Whalesburg_Request = [PSCustomObject]@{} 
+$Whalesburg_Request = [PSCustomObject]@{ } 
  
 if ($(arg).PoolName -eq $Name) {
-    try {$Whalesburg_Request = Invoke-RestMethod "https://payouts.whalesburg.com/profitabilities/share_price" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop} 
-    catch {Write-Warning "SWARM contacted ($Name) but there was no response."; return}
+    try { $Whalesburg_Request = Invoke-RestMethod "https://payouts.whalesburg.com/profitabilities/share_price" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
+    catch { Write-Warning "SWARM contacted ($Name) but there was no response."; return }
   
     if (-not $Whalesburg_Request.mh_per_second_price) { 
         Write-Warning "SWARM contacted ($Name) but ($Name) the response was empty.";
         return
     }
 
-    try {$ETHExchangeRate = Invoke-WebRequest "https://min-api.cryptocompare.com/data/pricemulti?fsyms=ETH&tsyms=BTC" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop | ConvertFrom-Json | Select-Object -ExpandProperty "ETH" | Select-Object -ExpandProperty "BTC"}
-    catch {Write-Warning "SWARM failed to get ETH Pricing for $Name"; return}
+    try { $ETHExchangeRate = Invoke-WebRequest "https://min-api.cryptocompare.com/data/pricemulti?fsyms=ETH&tsyms=BTC" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop | ConvertFrom-Json | Select-Object -ExpandProperty "ETH" | Select-Object -ExpandProperty "BTC" }
+    catch { Write-Warning "SWARM failed to get ETH Pricing for $Name"; return }
 
     $Whalesburg_Algorithm = "ethash"
   
@@ -36,22 +36,31 @@ if ($(arg).PoolName -eq $Name) {
         $Previous = $Estimate
 
         $Stat = Global:Set-Stat -Name "$($Name)_$($Whalesburg_Algorithm)_profit" -Value ([Double]$Estimate * (1 - ($Prorate / 100)))
+        $Level = $Stat.$($(arg).Stat_Algo)
 
-        [PSCustomObject]@{
-            Priority      = $Priorities.Pool_Priorities.$Name
-            Algorithm     = $Whalesburg_Algorithm
-            Symbol        = "$Whalesburg_Algorithm-Algo"
-            Price         = $Stat.$($(arg).Stat_Algo)
-            Protocol      = "stratum+ssl"
-            Host          = $Whalesburg_Host
-            Port          = $Whalesburg_Port
-            User1         = $(arg).ETH
-            User2         = $(arg).ETH
-            User3         = $(arg).ETH
-            CPUser        = $(arg).ETH
-            Worker        = "$($(arg).Worker)"
-            Location      = $(arg).Location
-            Previous      = $Previous
-        }
+        [Pool]::New(
+            ## Symbol
+            "$Whalesburg_Algorithm-Algo",
+            ## Algorithm
+            "$Whalesburg_Algorithm",
+            ## Level
+            $Level,
+            ## Stratum
+            "stratum+ssl",
+            ## Pool_Host
+            $Whalesburg_Host,
+            ## Pool_Port
+            $Whalesburg_Port,
+            ## User1
+            $(arg).ETH,
+            ## User2
+            $(arg).ETH,
+            ## User3
+            $(arg).ETH,
+            ## Worker
+            "$($(arg).Worker)",
+            ## Previous
+            $previous
+        )
     }
 }
