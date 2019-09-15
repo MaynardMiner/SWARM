@@ -57,6 +57,8 @@ $(vars).NVIDIATypes | ForEach-Object {
             if ($Check.RAW -ne "Bad") {
                 $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                     if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
+                    if($_.Worker){$tcp = 'stratum1+ssl'; $work = $_.Worker}
+                    else{$tcp = 'stratum2+tcp'; $work = "$($_.$Pass):x"}
                     [PSCustomObject]@{
                         MName      = $Name
                         Coin       = $(vars).Coins
@@ -72,7 +74,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                         Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
                         Version    = "$($(vars).nvidia.ethminer.version)"
                         DeviceCall = "progminer"
-                        Arguments  = "-P stratum2+tcp://$($_.$User).$($_.$Pass):x@$($_.Pool_Host):$($_.Port) --cuda --api-bind 127.0.0.1:$Port --noeval --dag-load-mode 1 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                        Arguments  = "-P $($tcp)://$($_.$User).$($work)@$($_.Pool_Host):$($_.Port) --cuda --api-bind 127.0.0.1:$Port --noeval --dag-load-mode 1 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
