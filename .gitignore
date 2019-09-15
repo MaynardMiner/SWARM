@@ -42,3 +42,4 @@ build/export/libnvrtc-builtins.so.10.1
 build/export/libnvrtc-builtins.so
 build/cmd/dir.txt
 admin
+config/parameters/hive_params_keys.json
