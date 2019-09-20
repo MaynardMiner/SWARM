@@ -982,3 +982,21 @@ to test new Expiremental features.
 
 * ethminer should work on whalesburg (optional miner)
 * updated phoenix miner arguments.
+
+
+# SWARM 2.7.0
+
+## Updates
+* gminer 1.65
+* tt-miner moved from optional to
+  regular miner in linux.
+
+
+## Fixes
+* Found bug regarding auto-restart
+  after 10 bad intervals- It was
+  resolved. Should migrate backups,
+  clear, bans, and automatically restart
+  if 10 bad intervals of no hash.
+
+

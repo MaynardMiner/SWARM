@@ -58,7 +58,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     if ($_.Worker) { $Worker = "-worker $($_.Worker) " }else { $Worker = $Null }
                     if ($IsWindows) { $continue = $true }
                     ## only three algos for now
-                    elseif ($IsLinux -and "tt-miner" -in $(args).optional) {
+                    else {
                         switch ($MinerAlgo) {
                             "mtp" { $continue = $true }
                             "ethash" { $continue = $true }
