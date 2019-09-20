@@ -700,6 +700,15 @@
       "comma seperated"
     ]
   },
+  "x16rv2": {
+    "alt_names": [
+      "x16rv2"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "x16rt": {
     "alt_names": [
       "x16rt"
