@@ -987,11 +987,15 @@ to test new Expiremental features.
 # SWARM 2.7.0
 
 ## Updates
-* gminer 1.65
+* gminer 1.66
 * tt-miner moved from optional to
   regular miner in linux.
-* teamredminer
-
+* tt-miner updated
+* teamredminer updated
+* z-enemy updated
+* t-rex updated
+* SWARM is x16rv2 ready
+* xmrig (cpu) updated.
 
 ## Fixes
 * Found bug regarding auto-restart
@@ -999,8 +1003,12 @@ to test new Expiremental features.
   resolved. Should migrate backups,
   clear, bans, and automatically restart
   if 10 consecutive bad intervals of no hash.
+* Some mismatched algo names in teamredminer config.
+  Is now fixed.
 
 ## What's New?
 * Shortened "cryptonight" to "cnight" to
   help with fitting stats on screen.
 * ``get stats`` will sort device groups by name.
+* nlpool divisor is no correct on some algos-
+  manually adjusted them until fixed.
