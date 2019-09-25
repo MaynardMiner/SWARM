@@ -358,6 +358,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "mtp" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "mtp" "mtp" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "mtp" 2.5 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "cuckarood29d" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "cuckarood29d" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "cuckarood29d" "cuckarood29" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "cuckarood29d" 2.5 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }

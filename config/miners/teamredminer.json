@@ -12,54 +12,62 @@
         "commands": {
             "phi2": "",
             "cryptonight-v8": "",
-            "lyra2re": "",
-            "lyra2rev3": "",
+            "lyra2z": "",
+            "lyra2v3": "",
             "cryptonight-r": "",
             "x16r" : "",
             "x16s" : "",
             "x16rt" : "",
             "veil": "",
             "mtp": "",
-            "cuckatoo31": ""
+            "cuckaroo29d": "",
+            "cuckatoo31": "",
+            "chukwa512": ""
         },
         "difficulty": {
             "phi2": "",
             "cryptonight-v8": "",
-            "lyra2re": "",
-            "lyra2rev3": "",
+            "lyra2z": "",
+            "lyra2v3": "",
             "cryptonight-r": "",
             "x16r" : "",
             "x16s" : "",
             "x16rt" : "",
             "veil": "",
             "mtp": "",
-            "cuckatoo31": ""
+            "cuckaroo29d": "",
+            "cuckatoo31": "",
+            "chukwa512": ""
         },
         "naming": {
             "phi2": "phi2",
             "cryptonight-v8": "cnv8",
-            "lyra2re": "lyra2z",
-            "lyra2rev3": "lyra2rev3",
+            "lyra2z": "lyra2z",
+            "lyra2v3": "lyra2rev3",
             "cryptonight-r": "cnr",
             "x16r" : "x16r",
             "x16s" : "x16s",
             "x16rt" : "x16rt",
             "veil": "x16rt",
             "mtp": "mtp",
-            "cuckatoo31": "cuckatoo31_grin"
+            "cuckaroo29d": "cuckarood29",
+            "cuckatoo31": "cuckatoo31_grin",
+            "chukwa512": "trtl_chukwa"
         },
         "fee": {
             "phi2": 3,
             "cryptonight-v8": 2.5,
-            "lyra2re": 3,
-            "lyra2rev3": 2.5,
+            "lyra2z": 3,
+            "lyra2v3": 2.5,
             "cryptonight-r": 2.5,
             "x16r" : 2.5,
             "x16s" : 2.5,
             "x16rt" : 2.5,
             "veil": 2.5,
             "mtp": 2.5,
-            "cuckatoo31": 2.5
+            "cuckaroo29d": 2.5,
+            "cuckatoo31": 2.5,
+            "chukwa512": 2.5
         }
     }
 }

@@ -990,6 +990,7 @@ to test new Expiremental features.
 * gminer 1.65
 * tt-miner moved from optional to
   regular miner in linux.
+* teamredminer
 
 
 ## Fixes
@@ -997,6 +998,5 @@ to test new Expiremental features.
   after 10 bad intervals- It was
   resolved. Should migrate backups,
   clear, bans, and automatically restart
-  if 10 bad intervals of no hash.
-
+  if 10 consecutive bad intervals of no hash.
 
