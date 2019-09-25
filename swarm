@@ -22,4 +22,4 @@
 
 ## This creates a screen for SWARM to work in, and then runs startup:
 
-screen -S miner -m pwsh -command "&.\startup.ps1 -HiveOS No -Auto_Coin No -RigName1 SWARM1 -Currency USD -Location US -PoolName hashrefinery,zergpool,fairpool,nicehash,nlpool,blockmasters,zpool,blazepool,ahashpool -Type NVIDIA1,CPU -CPUThreads 2 -Wallet1 1FpuMha1QPaWS4PTPZpU1zGRzKMevnDpwg -Donate .5 -WattOMeter Yes"
+screen -S miner -m pwsh -command "&.\startup.ps1"

@@ -68,16 +68,22 @@ elseif (Test-Path ".\config\parameters\arguments.json") {
     $arguments.PSObject.Properties.Name | % { $Parsed.Add("$($_)", $arguments.$_) }
 }
 else {
-    Write-Host "No Arguments or arguments.json file found. Exiting."
+    if ($IsWindows) {
+        $host.ui.RawUI.WindowTitle = "SWARM";
+        Start-Process "CMD" -ArgumentList "/C `"pwsh -noexit -executionpolicy Bypass -WindowStyle Maximized -command `"Set-Location C:\; Set-Location `'$Dir`'; .\build\powershell\scripts\help.ps1`"`"" -Verb RunAs
+    }
+    else {
+        Invoke-Expression ".\help.ps1"
+    }        
     Start-Sleep -S 3
     exit
 }
 
+if ($Start -eq $true) {
 $Defaults.PSObject.Properties.Name | % { if ($_ -notin $Parsed.keys) { $Parsed.Add("$($_)", $Defaults.$_) } }
 
 $Parsed | convertto-json | Out-File ".\config\parameters\arguments.json"
 
-if ($Start -eq $true) {
     if ($IsWindows) {
         $host.ui.RawUI.WindowTitle = "SWARM";
         Start-Process "CMD" -ArgumentList "/C `"pwsh -noexit -executionpolicy Bypass -WindowStyle Maximized -command `"Set-Location C:\; Set-Location `'$Dir`'; .\swarm.ps1`"`"" -Verb RunAs
