@@ -39,6 +39,12 @@ if ($Name -in $(arg).PoolName) {
         $Pool_Port = $_.port
         $Pool_Host = "mine.nlpool.nl$X"
         $Divisor = 1000000 * $_.mbtc_mh_factor
+        switch($_.Name) {
+                "equihash_125/4" { $Divisor *= 2 }
+                "equihash_144/5" { $Divisor *= 2 }
+                "equihash_192/7" { $Divisor *= 2 }
+                "verushash"   { $Divisor *= 2 }
+        }
         $Hashrate = $_.hashrate
         if([double]$HashRate -eq 0){ $Hashrate = 1 }  ## Set to prevent volume dividebyzero error
         $previous = [Math]::Max(([Double]$_.actual_last24h * 0.001) / $Divisor * (1 - ($_.fees / 100)), $SmallestValue)
