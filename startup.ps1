@@ -67,6 +67,12 @@ elseif (Test-Path ".\config\parameters\arguments.json") {
     $arguments = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
     $arguments.PSObject.Properties.Name | % { $Parsed.Add("$($_)", $arguments.$_) }
 }
+elseif (Test-Path ".\config\parameters\newarguments.json") {
+    $Start = $true
+    $parsed = @{ }
+    $arguments = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json
+    $arguments.PSObject.Properties.Name | % { $Parsed.Add("$($_)", $arguments.$_) }
+}
 else {
     if ($IsWindows) {
         $host.ui.RawUI.WindowTitle = "SWARM";

@@ -1012,3 +1012,5 @@ to test new Expiremental features.
 * ``get stats`` will sort device groups by name.
 * nlpool divisor is no correct on some algos-
   manually adjusted them until fixed.
+* SWARM will run --help by default if no arguments
+  are specified (in SWARM.bat or swarm).
