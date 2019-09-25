@@ -1000,3 +1000,7 @@ to test new Expiremental features.
   clear, bans, and automatically restart
   if 10 consecutive bad intervals of no hash.
 
+## What's New?
+* Shortened "cryptonight" to "cnight" to
+  help with fitting stats on screen.
+* ``get stats`` will sort device groups by name.
