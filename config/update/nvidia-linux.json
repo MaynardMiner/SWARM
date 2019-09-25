@@ -172,9 +172,9 @@
     "NVIDIA2": ".\\bin\\t-rex-2\\t-rex",
     "NVIDIA3": ".\\bin\\t-rex-3\\t-rex",
     "minername": "t-rex",
-    "version": "0.13.2",
+    "version": "0.14.4",
     "optional": "No",
-    "uri": "https://github.com/trexminer/T-Rex/releases/download/0.13.2/t-rex-0.13.2-linux-cuda10.0.tar.gz"
+    "uri": "https://github.com/trexminer/T-Rex/releases/download/0.14.4/t-rex-0.14.4-linux-cuda10.0.tar.gz"
   },
   "zjazz": {
     "name": "zjazz",

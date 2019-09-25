@@ -392,6 +392,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "honeycomb" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "honeycomb" "honeycomb" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "honeycomb" 1 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "x16rv2" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "x16rv2" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "x16rv2" "x16rv2" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "x16rv2" 1 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }
