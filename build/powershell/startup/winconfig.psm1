@@ -231,8 +231,8 @@ function Global:Start-WindowsConfig {
     }
     
     ##Create a CMD.exe shortcut for SWARM on desktop
-    $CurrentUser = $env:UserName
-    $Desk_Term = "C:\Users\$CurrentUser\desktop\SWARM-TERMINAL.bat"
+    $Desktop = [Environment]::GetFolderPath("Desktop")
+    $Desk_Term = "$Desktop\SWARM-TERMINAL.bat"
     if (-Not (Test-Path $Desk_Term)) {
         log "
             
