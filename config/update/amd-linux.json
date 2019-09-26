@@ -20,7 +20,7 @@
     "minername": "miner",
     "version": "1.66",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.66/gminer_1_66_windows64.zip"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.66/gminer_1_66_linux64.tar.xz"
   },
   "kbminer-amd": {
     "name": "kbminer-amd",
