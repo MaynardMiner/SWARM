@@ -986,6 +986,17 @@ to test new Expiremental features.
 
 # SWARM 2.7.0
 
+## Guided Help
+* Windows: Run SWARM.bat
+* Linux: Run ./swarm
+* HiveOS: Specify SWARM as custom miner
+  * extra config arguments no longer mandatory.
+* SWARM should now run guided help
+on first launch if no arguments
+are specified. Simply answer the
+very simple questions, and you
+are mining!
+
 ## Updates
 * gminer 1.66
 * tt-miner moved from optional to
@@ -1013,8 +1024,4 @@ to test new Expiremental features.
 * nlpool divisor is no correct on some algos-
   manually adjusted them until fixed.
 * SWARM will run --help by default if no arguments
-  are specified in Windows. (SWARM.bat)
-  * It should work with linux running ./swarm
-    NOT while in a terminal multiplexer (like ``screen``).
-    There are issues with ``read-host`` and ``clear-host``
-    cmdlets while in a multiplexer.
+  are specified.
