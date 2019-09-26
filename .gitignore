@@ -24,7 +24,7 @@ SWARM.conf
 arguments.json
 config/parameters/arguments.json
 config/parameters/newarguments.json
-config/parameters/hive_params_keys.json
+config/parameters/Hive_params_keys.json
 config/parameters/SWARM_params_keys.json
 config/parameters/autofan.json
 config/power/power.json
