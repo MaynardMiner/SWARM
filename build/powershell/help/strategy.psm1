@@ -3,7 +3,7 @@ function Global:Get-PasswordCurrency {
     Start-Sleep -S 3
     $(vars).config.Type | % {
         do {
-            Clear-Host
+            if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
             Write-Host "PasswordCurrency:
     
                 Symbol of your wallet address, specifically for Wallet1. Most pools
@@ -21,7 +21,7 @@ function Global:Get-PasswordCurrency {
                 $ans = Read-Host -Prompt "
 Please enter new symbol for $Password"
                 do {
-                    Clear-Host
+                    if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
                     $Confirm = Read-Host -Prompt "You have entered $ans
 Is this correct?
 
@@ -44,7 +44,7 @@ function Global:Get-AltWallets {
     Start-Sleep -S 3
     $(vars).config.Type | % {
         do {
-            Clear-Host
+            if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
             Write-Host "AltWallet       
             
 [Wallet Address]    
@@ -80,7 +80,7 @@ Please enter new symbol for $Password"
                 $ans2 = Read-Host "
 Please enter address for $Wallet"
                 do {
-                    Clear-Host
+                    if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
                     $Confirm = Read-Host -Prompt "You have entered 
 
 $Password`: $ans1
@@ -110,7 +110,7 @@ function Global:Get-Benchmark {
     Start-Sleep -S 3
     
     do {
-        clear-host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         Write-Host "Benchmark
 
         [0-100000]           
@@ -126,7 +126,7 @@ you wish to set benchmark parameter.
 seconds"
 
         do {
-            Clear-Host
+            if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
             $Confirm = Read-Host -Prompt "You have entered $ans seconds
         
 Is this correct?
@@ -145,7 +145,7 @@ function Global:Get-Conserve {
     Write-Host "Doing Conserve"
     Start-Sleep -S 3
     do {
-        clear-host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         Write-Host "Conserve        
 [Yes or No]        
 
@@ -173,7 +173,7 @@ function Global:Get-Algorithm {
     Start-Sleep -S 3
 
     do {
-        clear-host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         Write-Host "Algorithm   
     
 [algorithm,algorithm,etc.] 
@@ -230,7 +230,7 @@ function Global:Get-Coin {
     Start-Sleep -S 3
 
     Do {
-        clear-host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         Write-Host "Coin        
 
 [Pool Symbol Of Coin]      
@@ -287,7 +287,7 @@ function Global:Get-Strategy {
     }
 
     do {
-        clear-host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $Confirm = Read-Host -Prompt "Do You Wish To Continue?
     
 1 Yes

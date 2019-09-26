@@ -2,9 +2,9 @@ function Global:Get-Platform {
     Write-Host "Doing Platform"
     Start-Sleep -S 3
     do {
-        Clear-Host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         do{
-        Clear-Host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host -Prompt "Platform      
         
 [linux,windows]      
@@ -22,7 +22,7 @@ Answer"
             $Check = Global:Confirm-Answer $ans @("1","2")
         }While($Check -eq 1)
         do{
-            clear-host
+            if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
             Switch($ans) {
                 "1" {$ans = "windows"}
                 "2" {$ans = "linux"}
@@ -45,7 +45,7 @@ function Global:Get-Startup {
     Write-Host "Doing Startup"
     Start-Sleep -S 3
     do {
-        Clear-Host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host -Prompt "Would you like SWARM to start up on Windows?
 
 1 Yes
@@ -65,7 +65,7 @@ function Global:Get-CLPlatform{
     Write-Host "Doing CLPlatform"
     Start-Sleep -S 3
     do {
-        Clear-Host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host -Prompt "CLPlatform
 
 [number]             
@@ -76,7 +76,7 @@ SWARM ~should~ auto-detect correct platform.
 
 Please enter you opencl platform for AMD"
         do{
-            Clear-Host
+            if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
             $Confirm = "You have entered $ans
         
 Is this correct?
@@ -95,7 +95,7 @@ function Global:Get-Update {
     Write-Host "Doing Update"
     Start-Sleep -S 3
     do {
-        Clear-Host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host -Prompt "Update
         
 [Yes or No]
@@ -127,7 +127,7 @@ function Global:Get-TypeBanCount {
     Write-Host "Doing TypeBanCount"
     Start-Sleep -S 3
     do {
-        Clear-Host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host -Prompt "TypeBanCount    
         
 [0-10]             
@@ -141,7 +141,7 @@ How many miners must be banned before SWARM restart computer?
 
 Answer"
         do{
-            clear-host
+            if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
             $Confirm = Read-Host -Prompt "You have entered $ans
             
 Is this correct?
@@ -165,7 +165,7 @@ function Global:Get-Maintenance {
     }
 
     do {
-        clear-host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $Confirm = Read-Host -Prompt "Do You Wish To Continue?
     
 1 Yes

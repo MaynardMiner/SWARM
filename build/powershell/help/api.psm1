@@ -2,7 +2,7 @@ function Global:Start-API {
     Write-Host "Doing API"
     Start-Sleep -S 3
     do {
-        Clear-Host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host -Prompt "API
         
 [Yes or No]
@@ -28,7 +28,7 @@ function Global:Get-Remote {
     Write-Host "Doing Remote"
     Start-Sleep -S 3
     do {
-        Clear-Host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host -Prompt "Remote         
         
 [Yes or No]         
@@ -54,7 +54,7 @@ function Global:Get-APIPassword {
     Write-Host "Doing APIPassword"
     Start-Sleep -S 3
     do {
-        Clear-Host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host -Prompt "APIPassword    
         
 [chacters]          
@@ -67,7 +67,7 @@ Please enter a new HTML API password
 
 Password"
         do {
-            clear-host
+            if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
             $Confirm = Read-Host -Prompt "You have entered $ans
             
 Is this correct?
@@ -86,7 +86,7 @@ function Global:Get-TCP {
     Write-Host "Doing TCP"
     Start-Sleep -S 3
     do {
-        Clear-Host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host -Prompt "TCP            
         
 [Yes or No]         
@@ -113,7 +113,7 @@ function Global:Get-TCP_Port {
     Write-Host "Doing TCP_Port"
     Start-Sleep -S 3
     do {
-        Clear-Host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host -Prompt "TCP_Port       
 
 [Integer]               
@@ -122,7 +122,7 @@ Default is 6099. Activates TCP Port for API.
     
 Port"
         do {
-            Clear-Host
+            if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
             $Confirm = Read-Host -Prompt "You have entered $ans
          
 Is this correct?
@@ -141,7 +141,7 @@ function Global:Get-TCP_IP {
     Write-Host "Doing TCP_IP"
     Start-Sleep -S 3
     do {
-        Clear-Host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host -Prompt "TCP_IP       
     
 [IP Address]          
@@ -151,7 +151,7 @@ Remote is 0.0.0.0
 
 Ip Address for TCP API"
         do {
-            clear-host
+            if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
             $Confirm = Read-Host -Prompt "You have entered $ans
 
 Is this correct?
@@ -170,7 +170,7 @@ function Global:Get-API_Key {
     Write-Host "Doing API_Key"
     Start-Sleep -S 3
     do {
-        Clear-Host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host -Prompt "API_Key        
         
 [HiveOS API key]    
@@ -186,7 +186,7 @@ settings.
 
 HiveOS API Key For This IP Address"
         do {
-            Clear-Host
+            if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
             $Confirm = Read-Host -Prompt "You have entered $ans
             
 Is this correct?
@@ -213,7 +213,7 @@ function Global:Get-API {
     }
 
     do {
-        clear-host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $Confirm = Read-Host -Prompt "Do You Wish To Continue?
     
 1 Yes

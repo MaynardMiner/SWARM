@@ -3,7 +3,7 @@ function Global:Get-Auto_Coin {
     Start-Sleep -S 3
 
     do {
-        clear-host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host -Prompt "Auto_Coin      
 
 [Yes,No]            
@@ -32,7 +32,7 @@ function Global:Get-Auto_Algo {
     Write-Host "Doing Auto_Algo"
     Start-Sleep -S 3
     do {
-        clear-host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host -Prompt "-Auto_Algo     
        
 [Yes,No]		    
@@ -59,7 +59,7 @@ Function Global:Get-Interval {
     Write-Host "Doing Interval"
     Start-Sleep -S 3
     Do {
-        clear-host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host -Prompt "Interval         
         
 [1-1000]          
@@ -73,7 +73,7 @@ Please specify the interval you wish to use
 
 seconds"
         do {
-            clear-host
+            if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
             $Confirm = Read-Host -Prompt "You have entered $ans seconds
          
 Is this correct?
@@ -96,7 +96,7 @@ function  Global:Get-SWARM_MODE {
     Write-Host "Doing SWARM_MODE"
     Start-Sleep -S 3
     do {
-        clear-host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host "SWARM_Mode      
     
 [Yes or No]          
@@ -129,7 +129,7 @@ function Global:Get-StatsInterval {
     Write-Host "Doing StatsInterval"
     Start-Sleep -S 3
     do {
-        Clear-Host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host -Prompt "StatsInterval   
         
 [1-10000]            
@@ -145,7 +145,7 @@ Please enter the StatInterval you wish to use.
 
 Seconds"
         Do {
-            clear-host
+            if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
             $Confirm = Read-Host -Prompt "You have entered $ans seconds.
             
 Is this correct?
@@ -168,7 +168,7 @@ function Global:Get-Switch_Threshold {
     Write-Host "Doing Switch_Threshold"
     Start-Sleep -S 3
     Do{
-        Clear-Host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host -Prompt "Switch_Threshold   
         
 [0-1000]          
@@ -183,7 +183,7 @@ Please enter a new switch_threshold
 Percent"
 
       do{
-        Clear-Host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $Confirm = Read-Host -Prompt "You have entered $ans percent.
 
 Is this correct?
@@ -213,7 +213,7 @@ function Global:Get-Switching {
     }
 
     do {
-        clear-host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $Confirm = Read-Host -Prompt "Do You Wish To Continue?
     
 1 Yes

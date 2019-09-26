@@ -166,7 +166,7 @@ While ($Room -ne 0) {
     #
     # Shows temporary message. Message is cleared after each command
     # 
-    Clear-Host
+    if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
     Write-Host $Message
     $Message=""  
     #

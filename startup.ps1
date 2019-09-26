@@ -1,7 +1,7 @@
 $Dir = Split-Path $script:MyInvocation.MyCommand.Path
 $Dir = $Dir -replace "/var/tmp", "/root"
 Set-Location $Dir
-if($IsWindows){try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$Dir`'" -WindowStyle Minimized } }catch { }}
+if ($IsWindows) { try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$Dir`'" -WindowStyle Minimized } }catch { } }
 
 
 if (Test-Path ".\config\parameters\default.json") {
@@ -16,7 +16,9 @@ else {
 $List = $Defaults.PSObject.Properties.Name
 $parsed = @{ }
 $start = $false
+$noconfig = $false
 
+## Arguments take highest priority
 if ($args) {
     if ( "-help" -in $args ) {
         if ($IsWindows) {
@@ -55,24 +57,49 @@ if ($args) {
         }
     }
 }
+## Check if h-run.sh ran config.json
 elseif (test-path ".\config.json") {
-    $Start = $true
     $parsed = @{ }
     $arguments = Get-Content ".\config.json" | ConvertFrom-Json
-    $arguments.PSObject.Properties.Name | % { $Parsed.Add("$($_)", $arguments.$_) }
+    if ([string]$arguments -ne "") {
+        $Start = $true
+        $arguments.PSObject.Properties.Name | % { $Parsed.Add("$($_)", $arguments.$_) }
+    }
+    ## run help if no newarguments
+    elseif(-not (test-path ".\config\parameters\newarguments.json")) {
+        if ($IsWindows) {
+            $host.ui.RawUI.WindowTitle = "SWARM";
+            Start-Process "CMD" -ArgumentList "/C `"pwsh -noexit -executionpolicy Bypass -WindowStyle Maximized -command `"Set-Location C:\; Set-Location `'$Dir`'; .\build\powershell\scripts\help.ps1`"`"" -Verb RunAs
+        }
+        else {
+            Invoke-Expression "./help.sh"
+        }        
+        Start-Sleep -S 3
+        exit    
+    }
+    elseif(".\config\parameters\newarguments.json") {
+        $Start = $true
+        $parsed = @{ }
+        $arguments = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json
+        $arguments.PSObject.Properties.Name | % { $Parsed.Add("$($_)", $arguments.$_) }    
+    }
 }
+## Check for arguments.json (not hiveOS/help written arguments)
 elseif (Test-Path ".\config\parameters\arguments.json") {
     $Start = $true
     $parsed = @{ }
     $arguments = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
     $arguments.PSObject.Properties.Name | % { $Parsed.Add("$($_)", $arguments.$_) }
 }
+
+## Check for hiveos saved/help saved config
 elseif (Test-Path ".\config\parameters\newarguments.json") {
     $Start = $true
     $parsed = @{ }
     $arguments = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json
     $arguments.PSObject.Properties.Name | % { $Parsed.Add("$($_)", $arguments.$_) }
 }
+## Run help if all fails
 else {
     if ($IsWindows) {
         $host.ui.RawUI.WindowTitle = "SWARM";
@@ -86,17 +113,17 @@ else {
 }
 
 if ($Start -eq $true) {
-$Defaults.PSObject.Properties.Name | % { if ($_ -notin $Parsed.keys) { $Parsed.Add("$($_)", $Defaults.$_) } }
+    $Defaults.PSObject.Properties.Name | % { if ($_ -notin $Parsed.keys) { $Parsed.Add("$($_)", $Defaults.$_) } }
 
-$Parsed | convertto-json | Out-File ".\config\parameters\arguments.json"
+    $Parsed | convertto-json | Out-File ".\config\parameters\arguments.json"
 
     if ($IsWindows) {
         $host.ui.RawUI.WindowTitle = "SWARM";
         Start-Process "CMD" -ArgumentList "/C `"pwsh -noexit -executionpolicy Bypass -WindowStyle Maximized -command `"Set-Location C:\; Set-Location `'$Dir`'; .\swarm.ps1`"`"" -Verb RunAs
     }
     else {
-        ## Add Arguments to new arguments.json for GUI for HiveOS
-        if(test-path "/hive-config") {
+        ## Add Arguments to newarguments.json
+        if (test-path "/hive-config") {
             Write-Host "Saving Arguments To .\config\parameters\newarguments.json" -ForegroundColor Yellow
             $Parsed | ConvertTo-Json | Out-File ".\config\parameters\newarguments.json"
         }

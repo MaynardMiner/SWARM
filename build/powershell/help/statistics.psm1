@@ -9,7 +9,7 @@ function Global:Get-Stat_Algo {
     $Table.Add("5","Hour_4")
     $Table.Add("6","Custom")
     do {
-        clear-host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host -Prompt "Stat_Algo         
         
 [Live,		 
@@ -41,7 +41,7 @@ Please select the time period wou with to use
 Time Period"
     do{
        $ans = $Table.$ans
-       Clear-Host
+       if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
        $Confirm = Read-Host -Prompt "You have selected $ans.
        
 Is this correct?
@@ -71,7 +71,7 @@ function Global:Get-Stat_Coin {
     $Table.Add("5","Hour_4")
     $Table.Add("6","Custom")
     do {
-        clear-host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host -Prompt "Stat_Coin       
         
 [Live,		 
@@ -103,7 +103,7 @@ Please select the time period wou with to use
 Time Period"
     do{
         $ans = $Table.$ans
-       Clear-Host
+       if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
        $Confirm = Read-Host -Prompt "You have selected $ans.
        
 Is this correct?
@@ -126,7 +126,7 @@ function Global:Get-Volume {
     Write-Host "Doing Volume"
     Start-Sleep -S 3
     do{
-        Clear-Host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host -Prompt "Volume         
         
 [Yes,No]            
@@ -156,7 +156,7 @@ function Global:Get-WattOMeter {
     Write-Host "Doing WattOMeter"
     Start-Sleep -S 3
     do{
-        Clear-Host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host -Prompt "WattOMeter   
         
 [Yes or No]           
@@ -185,7 +185,7 @@ function Global:Get-WattOMeter {
     Write-Host "Doing WattOMeter"
     Start-Sleep -S 3
     do{
-        Clear-Host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host -Prompt "WattOMeter   
         
 [Yes or No]           
@@ -214,7 +214,7 @@ function Global:Get-KWH {
     Write-Host "Doing KWH"
     Start-Sleep -S 3
     Do {
-        clear-host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host -Prompt "kwh          
         
 [decimal number]      
@@ -230,7 +230,7 @@ If so, please enter kw/h here, in decimal, i.e.  0.11
 
 kilowatt/hour"
         do{
-            Clear-Host
+            if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
             $Confirm = Read-Host -Prompt "You have entered a kwh of $ans
 
 Is this correct?
@@ -253,7 +253,7 @@ Function Global:Get-Max_Periods {
     Write-Host "Doing Max_Periods"
     Start-Sleep -S 3
     do {
-        Clear-Host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host -Prompt "Max_Periods    
         
 [integer]        
@@ -275,7 +275,7 @@ Please specify the maximum periods you wish SWARM to record.
 
 Maximum Periods"
         do{
-            Clear-Host
+            if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
             $Confirm = Read-Host -Prompt "You have entered a maximum period of $ans
             
 Is this correct?
@@ -299,7 +299,7 @@ function  Global:Get-Stat_All {
     Start-Sleep -S 3
 
     do {
-        Clear-Host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host -Prompt "Stat_All        
     
 [Yes,No]           
@@ -327,7 +327,7 @@ Function Global:Get-Custom_Periods{
     Write-Host "Doing Custom_Periods"
     Start-Sleep -S 3
      do{
-         clear-host
+         if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
          $ans = Read-Host "Custom_Periods    
          
 [integer]         
@@ -341,7 +341,7 @@ Note: -Stat_Algo Custom and -Stat_Coin Custom should be specified.
 
 Please enter a custom moving average value"
         do{
-            clear-host
+            if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
             $Confirm = Read-Host -Prompt "You have entered custom moving average of $ans periods
             
 Is this correct?
@@ -364,7 +364,7 @@ function Global:Get-Historical_Bias {
     Write-Host "Doing Historical_Bias"
     Start-Sleep -S 3
     do {
-        Clear-Host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
 
         $ans = Read-Host -Prompt "-Historical_Bias [0-100]          
         
@@ -388,7 +388,7 @@ place on algorithms that do not return well over 24 hours.
 
 Answer"
 do{
-    clear-host
+    if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
     $Confirm = Read-Host -Prompt "You have entered a % bias of $ans
     
 Is this correct?
@@ -421,7 +421,7 @@ function Global:Get-Statistics {
     }
 
     do {
-        clear-host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $Confirm = Read-Host -Prompt "Do You Wish To Continue?
     
 1 Yes

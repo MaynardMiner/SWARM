@@ -2,7 +2,7 @@ function Global:Get-Admin_Fee {
     Write-Host "Doing Admin_Fee"
     Start-Sleep -S 3
     do {
-        Clear-Host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
 
         $ans = Read-Host -Prompt "-Admin_Fee    [0-50]                
         
@@ -23,7 +23,7 @@ Please enter the percent you wish to mine for yourself
 
 Answer"
         do {
-            clear-host
+            if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
             $Confirm = Read-Host -Prompt "You have entered a % figure of $ans
     
 Is this correct?
@@ -47,7 +47,7 @@ function Global:Get-Admin {
     Write-Host "Doing Admin"
     Start-Sleep -S 3
     do {
-        Clear-Host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
 
         $ans = Read-Host -Prompt "-Admin        
         
@@ -61,7 +61,7 @@ Please enter your wallet address:
 
 Answer"
         do {
-            clear-host
+            if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
             $Confirm = Read-Host -Prompt "You have entered a wallet address of $ans
     
 Is this correct?
@@ -84,7 +84,7 @@ function Global:Get-Admin_Pass {
     Write-Host "Doing Admin_Pass"
     Start-Sleep -S 3
     do {
-        Clear-Host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
 
         $ans = Read-Host -Prompt "-Admin_Pass        
         
@@ -98,7 +98,7 @@ Please enter Coin symbol of your wallet address:
 
 Answer"
         do {
-            clear-host
+            if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
             $Confirm = Read-Host -Prompt "You have entered the symbol of $ans
     
 Is this correct?
@@ -125,7 +125,7 @@ function Global:Get-Profit {
     }
 
     do {
-        clear-host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $Confirm = Read-Host -Prompt "Do You Wish To Continue?
     
 1 Yes

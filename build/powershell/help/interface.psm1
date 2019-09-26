@@ -2,7 +2,7 @@ function Global:Get-Track_Shares {
     Write-Host "Doing Track_Shares"
     Start-Sleep -S 3
     do {
-        Clear-Host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host -Prompt "NOTE: Interface is limited to the amount of information it can track.
     
 Track_Shares   
@@ -33,7 +33,7 @@ function Global:Get-CoinExchange {
     Write-Host "Doing CoinExchange"
     Start-Sleep -S 3
     do {
-        Clear-Host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host -Prompt "NOTE: Interface is limited to the amount of information it can track.
        
 CoinExchange      
@@ -47,7 +47,7 @@ other than BTC. This figure does not include modifiers.
 
 Please enter an additional coin you wish to track"
         do {
-            clear-host
+            if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
             $Confirm = Read-Host -Prompt "You have entered $ans
             
 Is this correct?
@@ -66,7 +66,7 @@ function Global:Get-Currency {
     Write-Host "Doing Currency"
     Start-Sleep -S 3
     do {
-        Clear-Host    
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}    
         $ans = Read-Host -Prompt "Currency          
     
 [Any]            
@@ -77,7 +77,7 @@ is USD
 
 Please Enter Symbol of Currency You wish SWARM to track"
         do {
-            Clear-Host
+            if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
             $Confirm = Read-Host -Prompt "You have enetered $ans
 Is this correct?
 
@@ -95,7 +95,7 @@ function Global:Get-Hive_Hash {
     Write-Host "Doing Hive_Hash"
     Start-Sleep -S 3
     do {
-        clear-host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host -Prompt "Hive_Hash     
         
 [address]            
@@ -115,7 +115,7 @@ Note: You must make a Custom miner flight sheet with SWARM afterwards.
 Please enter your farm_hash"
 
         Do {
-            clear-host
+            if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
             $Confirm = Read-Host -Prompt "You have entered $ans.
             
 Is this correct?
@@ -134,7 +134,7 @@ function Global:Get-CPUOnly {
     Write-Host "Doing CPUOnly"
     Start-Sleep -S 3
     do {
-        Clear-Host
+        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         $ans = Read-Host -Prompt "CPUOnly	   
         
 [Yes or No]		
@@ -170,7 +170,7 @@ Answer"
         }
 
         do {
-            clear-host
+            if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
             $Confirm = Read-Host -Prompt "Do You Wish To Continue?
     
 1 Yes
