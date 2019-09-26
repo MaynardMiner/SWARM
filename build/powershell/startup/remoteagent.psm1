@@ -60,6 +60,7 @@ function Global:start-update {
         $PreviousVersions += "SWARM.2.6.6"
         $PreviousVersions += "SWARM.2.6.7"
         $PreviousVersions += "SWARM.2.6.8"
+        $PreviousVersions += "SWARM.2.6.9"
 
         $StatsOnly = $null
 
