@@ -771,6 +771,8 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
             if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator) -ne $false) {
                 $version = Get-Content ".\build\txt\version.txt"
                 $versionnumber = $version -replace "SWARM.", ""
+                $versionnumber = $versionnumber -replace ".windows", ""
+                $versionnumber = $versionnumber -replace ".linux", ""
                 $version1 = $versionnumber[4]
                 $version1 = $version1 | % { iex $_ }
                 $version1 = $version1 + 1
