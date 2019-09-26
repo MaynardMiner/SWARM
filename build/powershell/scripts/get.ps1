@@ -771,8 +771,6 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
             if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator) -ne $false) {
                 $version = Get-Content ".\build\txt\version.txt"
                 $versionnumber = $version -replace "SWARM.", ""
-                $versionnumber = $versionnumber -replace ".windows", ""
-                $versionnumber = $versionnumber -replace ".linux", ""
                 $version1 = $versionnumber[4]
                 $version1 = $version1 | % { iex $_ }
                 $version1 = $version1 + 1
@@ -812,7 +810,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
 
                 $BaseDir = (Split-Path $Dir)
                 $FileName = join-path "$Dir" "x64\SWARM.$VersionNumber.windows.zip"
-                $DLFileName = Join-Path "$Dir" "x64\SWARM.$VersionNumber"
+                $DLFileName = Join-Path "$Dir" "x64\SWARM.$VersionNumber.windows"
 
                 $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$versionNumber/SWARM.$VersionNumber.windows.zip"
                 Write-Host "URI should be $URI"
@@ -826,17 +824,17 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                     $Proc | Wait-Process
                     Start-Sleep -S 3
 
-                    $Search = Get-ChildItem -Path ".\x64\SWARM.$VersionNumber" -Filter "SWARM.bat" -Recurse -ErrorAction SilentlyContinue
+                    $Search = Get-ChildItem -Path ".\x64\SWARM.$VersionNumber.windows" -Filter "SWARM.bat" -Recurse -ErrorAction SilentlyContinue
                     if (-not $Search) { Write-Host "NEW SWARM Was Not Found" -ForegroundColor DarkRed; break }        
                     $Contents = $Search.Directory.FullName | Select-Object -First 1
                     Move-Item -Path $Contents -Destination "$BaseDir" -Force | Out-Null; Start-Sleep -S 1
                     $DirName = Join-Path $BaseDir $(Split-Path $Contents -Leaf)
-                    if($DirName -ne (Join-Path $BaseDir "SWARM.$VersionNumber")){
-                    Rename-Item -Path "$DirName" -NewName "SWARM.$VersionNumber" -Force | Out-Null
+                    if($DirName -ne (Join-Path $BaseDir "SWARM.$VersionNumber.windows")){
+                    Rename-Item -Path "$DirName" -NewName "SWARM.$VersionNumber.windows" -Force | Out-Null
                     }
                     if(Test-Path $DLFileName) { Remove-Item $DLFileName -Recurse -Force }
 
-                    $NewDIR = Join-Path $BaseDir "SWARM.$($VersionNumber)"
+                    $NewDIR = Join-Path $BaseDir "SWARM.$($VersionNumber).windows"
 
                     $MinerFile = "$Dir\build\pid\miner_pid.txt"
                     if (Test-Path $MinerFile) { $MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue }
