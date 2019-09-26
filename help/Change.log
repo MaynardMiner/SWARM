@@ -1013,4 +1013,8 @@ to test new Expiremental features.
 * nlpool divisor is no correct on some algos-
   manually adjusted them until fixed.
 * SWARM will run --help by default if no arguments
-  are specified (in SWARM.bat or swarm).
+  are specified in Windows. (SWARM.bat)
+  * It should work with linux running ./swarm
+    NOT while in a terminal multiplexer (like ``screen``).
+    There are issues with ``read-host`` and ``clear-host``
+    cmdlets while in a multiplexer.

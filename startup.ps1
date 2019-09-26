@@ -24,7 +24,7 @@ if ($args) {
             Start-Process "CMD" -ArgumentList "/C `"pwsh -noexit -executionpolicy Bypass -WindowStyle Maximized -command `"Set-Location C:\; Set-Location `'$Dir`'; .\build\powershell\scripts\help.ps1`"`"" -Verb RunAs
         }
         else {
-            Invoke-Expression ".\help.ps1"
+            Invoke-Expression "./help.sh"
         }        
     }
     else {
@@ -79,7 +79,7 @@ else {
         Start-Process "CMD" -ArgumentList "/C `"pwsh -noexit -executionpolicy Bypass -WindowStyle Maximized -command `"Set-Location C:\; Set-Location `'$Dir`'; .\build\powershell\scripts\help.ps1`"`"" -Verb RunAs
     }
     else {
-        Invoke-Expression ".\help.ps1"
+        Invoke-Expression "./help.sh"
     }        
     Start-Sleep -S 3
     exit
