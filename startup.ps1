@@ -66,7 +66,7 @@ elseif (test-path ".\config.json") {
         $arguments.PSObject.Properties.Name | % { $Parsed.Add("$($_)", $arguments.$_) }
     }
     ## run help if no newarguments
-    elseif(-not (test-path ".\config\parameters\newarguments.json")) {
+    elseif (-not (test-path ".\config\parameters\newarguments.json")) {
         if ($IsWindows) {
             $host.ui.RawUI.WindowTitle = "SWARM";
             Start-Process "CMD" -ArgumentList "/C `"pwsh -noexit -executionpolicy Bypass -WindowStyle Maximized -command `"Set-Location C:\; Set-Location `'$Dir`'; .\build\powershell\scripts\help.ps1`"`"" -Verb RunAs
@@ -77,7 +77,7 @@ elseif (test-path ".\config.json") {
         Start-Sleep -S 3
         exit    
     }
-    elseif(".\config\parameters\newarguments.json") {
+    elseif (".\config\parameters\newarguments.json") {
         $Start = $true
         $parsed = @{ }
         $arguments = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json
@@ -91,7 +91,6 @@ elseif (Test-Path ".\config\parameters\arguments.json") {
     $arguments = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
     $arguments.PSObject.Properties.Name | % { $Parsed.Add("$($_)", $arguments.$_) }
 }
-
 ## Check for hiveos saved/help saved config
 elseif (Test-Path ".\config\parameters\newarguments.json") {
     $Start = $true
