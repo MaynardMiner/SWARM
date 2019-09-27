@@ -966,6 +966,9 @@ to test new Expiremental features.
 * Adjusted nvidia oc Pl to work as watts, not % in Windows
   * This means it matches HiveOS's website interface.
 
+############################################
+############################################
+
 # SWARM 2.6.9
 
 ## Updates
@@ -983,6 +986,8 @@ to test new Expiremental features.
 * ethminer should work on whalesburg (optional miner)
 * updated phoenix miner arguments.
 
+############################################
+############################################
 
 # SWARM 2.7.0
 
@@ -1026,6 +1031,9 @@ are mining!
 * SWARM will run --help by default if no arguments
   are specified.
 
+############################################
+############################################
+
 # SWARM 2.7.2
 
 ## Guided Help
@@ -1060,4 +1068,18 @@ are mining!
 ## Fixes
 * Desktop for Windows to add a SWARM_Terminal link will be
   set, even if user is using one drive.
-* Removed Nvidia table-add error if cpu mining only.
+* Removed Nvidia table-add error if cpu mining only
+
+############################################
+############################################
+
+# SWARM 2.7.3
+
+# What's New?
+* ``benchmark`` command has been changed to
+  ``bench``. Wiki will be updated soon to
+  reflect this.
+* ``bench timeout`` is now ``bench bans``.
+
+## Updates
+* tt-miner was updated.
