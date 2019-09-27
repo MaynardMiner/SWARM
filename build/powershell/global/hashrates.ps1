@@ -155,8 +155,8 @@ function Global:Get-MinerHashRate {
         log "$($_.Type) is currently mining $($_.Algo) on $($_.MinerPool)" -foregroundcolor Cyan
         log "$($_.Type) previous hashrates for $($_.Symbol) is" -NoNewLine -Start
         log " $MinerPrevious/s" -foreground yellow -End
-        log "Current Pool Projection: $CurrentProfit.  (This is live value with no modifiers)"
-        log "Current Daily Profit: $ScreenProfit.      (This is daily average with watt calculations)
+        log "Current Pool Projection: $CurrentProfit $($_.Profit_Day.ToString("N5"))/Day BTC.  (This is live value with no modifiers)"
+        log "Current Daily Profit: $ScreenProfit $($_.Fiat_Day.ToString("N5"))/Day BTC.      (This is daily average with watt calculations)
 "
     }
 }
