@@ -84,13 +84,6 @@ elseif (test-path ".\config.json") {
         $arguments.PSObject.Properties.Name | % { $Parsed.Add("$($_)", $arguments.$_) }    
     }
 }
-## Check for arguments.json (not hiveOS/help written arguments)
-elseif (Test-Path ".\config\parameters\arguments.json") {
-    $Start = $true
-    $parsed = @{ }
-    $arguments = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
-    $arguments.PSObject.Properties.Name | % { $Parsed.Add("$($_)", $arguments.$_) }
-}
 ## Check for hiveos saved/help saved config
 elseif (Test-Path ".\config\parameters\newarguments.json") {
     $Start = $true

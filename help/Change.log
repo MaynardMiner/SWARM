@@ -1025,3 +1025,39 @@ are mining!
   manually adjusted them until fixed.
 * SWARM will run --help by default if no arguments
   are specified.
+
+# SWARM 2.7.2
+
+## Guided Help
+* Windows: Run SWARM.bat
+* Linux: Run ./swarm
+* HiveOS: Specify SWARM as custom miner
+  * extra config arguments no longer mandatory.
+* SWARM should now run guided help
+on first launch if no arguments
+are specified. Simply answer the
+very simple questions, and you
+are mining!
+
+## What's New?
+* Made it so that arguments.json is ALWAYS
+  overidden by newarguments.json. arguments.json
+  is local config, while newarguments.json is a config
+  created either by guided help or remotely (HiveOS).
+* Force initial params to be user_params. In some rare
+  circumstances if you ran guided help, it would load
+  defaults initially (must have taken a specific course
+  of action). user_params are now force overidden by default.
+* ``-CPUthreads`` param is not overidden if leaving SWARM to autodetect
+  system (no ``-Type`` parameter used).
+* added sample of adding args to ./swarm and ./swarm.bat,
+  since initial arguments are removed (to initiate guided help).
+
+## Updates
+* TeamRedMiner x16rv2 added.
+* tt-miner
+
+## Fixes
+* Desktop for Windows to add a SWARM_Terminal link will be
+  set, even if user is using one drive.
+* Removed Nvidia table-add error if cpu mining only.

@@ -275,10 +275,10 @@ function Global:Get-GPUCount {
     ## GPU Bus Hash Table
     $DoBus = $true
     if ($(arg).Type -like "*CPU*" -or $(arg).Type -like "*ASIC*") {
-        if("AMD1" -notin $(arg).type -and "NVIDIA1" -notin $(arg).type -and "NVIDIA2" -notin $(arg).type -and "NVIDIA3" -notin $(arg).type) {
-        $Dobus = $false
+        if ("AMD1" -notin $(arg).type -and "NVIDIA1" -notin $(arg).type -and "NVIDIA2" -notin $(arg).type -and "NVIDIA3" -notin $(arg).type) {
+            $Dobus = $false
+        }
     }
-}
 
     
     if ($DoBus -eq $true) {
@@ -318,24 +318,24 @@ function Global:Get-GPUCount {
         $TypeArray | ForEach-Object { if ($_ -in $(arg).Type) { $NoType = $false } }
         if ($NoType -eq $true) {
             log "Searching GPU Types" -ForegroundColor Yellow
-            $(arg).Type = @()
+            $types = @()
             if ($GN -and $GA) {
                 log "AMD and NVIDIA Detected" -ForegroundColor Magenta
-                $(arg).Type += "AMD1,NVIDIA2" 
+                $types += "AMD1,NVIDIA2" 
             }
             elseif ($GN) { 
                 log "NVIDIA Detected: Adding NVIDIA" -ForegroundColor Magenta
-                $(arg).Type += "NVIDIA1" 
+                $types += "NVIDIA1" 
             }
             elseif ($GA) {
                 log "AMD Detected: Adding AMD" -ForegroundColor Magenta
-                $(arg).Type += "AMD1" 
+                $types += "AMD1" 
             }
             elseif ("ASIC" -notin $(arg).Type) {
-                log "No GPU's Detected- Using CPU"
-                $(arg).Type += "CPU"
+                log "No GPU's Detected And ASIC not configured- Using CPU"
+                $types += "CPU"
                 ## Get Threads:
-                $(arg).CPUThreads = grep -c ^processor /proc/cpuinfo;
+                if([string]$(arg).CPUThreads -eq ""){ $(arg).CPUThreads = grep -c ^processor /proc/cpuinfo; }
             }
         }
 

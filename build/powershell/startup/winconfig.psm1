@@ -178,25 +178,26 @@ function Global:Get-GPUCount {
     $TypeArray | ForEach-Object { if ($_ -in $(arg).Type) { $NoType = $false } }
     if ($NoType -eq $true) {
         log "Searching GPU Types" -ForegroundColor Yellow
-        $(arg).Type = @()
+        $types = @()
         if ($GN -and $GA) {
             log "AMD and NVIDIA Detected" -ForegroundColor Magenta
-            $(arg).Type += "AMD1,NVIDIA2" 
+            $types += "AMD1,NVIDIA2" 
         }
         elseif ($GN) {
             log "NVIDIA Detected: Adding NVIDIA" -ForegroundColor Magenta
-            $(arg).Type += "NVIDIA1" 
+            $types += "NVIDIA1" 
         }
         elseif ($GA) {
             log "AMD Detected: Adding AMD" -ForegroundColor Magenta
-            $(arg).Type += "AMD1" 
+            $types += "AMD1" 
         }
         elseif ($(arg).Type -ne "ASIC") {
-            log "No GPU's Detected- Using CPU"
-            $(arg).Type += "CPU"
+            log "No GPU's Detected And ASIC not configured- Using CPU"
+            $types += "CPU"
             ## Get Threads:
-            $(arg).CPUThreads = $(Get-CimInstance -ClassName 'Win32_Processor' | Select-Object -Property 'NumberOfCores').NumberOfCores;
+            if([string]$(arg).CPUThreads -eq ""){ $(arg).CPUThreads = $(Get-CimInstance -ClassName 'Win32_Processor' | Select-Object -Property 'NumberOfCores').NumberOfCores;}
         }
+        $(arg).type = $types
     }
     
     if ($(arg).Type -like "*CPU*") { for ($i = 0; $i -lt $(arg).CPUThreads; $i++) { $DeviceList.CPU.Add("$($i)", $i) } }

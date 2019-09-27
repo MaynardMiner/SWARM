@@ -23,5 +23,8 @@ REM Hive_Hash: HiveOS Farm Hash
 REM ************NOTE***********************
 REM If you do not intend to use HiveOS, add -HiveOS No
 REM FOR ALL ARGUMENTS: SEE help folder. Explanation on how to use -Type NVIDIA1,NVIDIA2,NVIDIA3 is provided.
+REM HERE is an example of basic arguments:
+REM
+REM pwsh -executionpolicy Bypass -command ".\startup.ps1 -RigName1 SWARM -Location US -PoolName nlpool,blockmasters,zergpool,nicehash,fairpool,ahashpool,blazepool,hashrefinery,zpool -Type AMD1 -Wallet1 1RVNsdO6iuwEHfoiuwe123hsdfljk -Donate .5"
 
 pwsh -executionpolicy Bypass -command ".\startup.ps1"

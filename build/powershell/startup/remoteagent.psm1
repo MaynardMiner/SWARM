@@ -62,6 +62,7 @@ function Global:start-update {
         $PreviousVersions += "SWARM.2.6.8"
         $PreviousVersions += "SWARM.2.6.9"
         $PreviousVersions += "SWARM.2.7.0"
+        $PreviousVersions += "SWARM.2.7.1"
 
         $PreviousVersions | ForEach-Object {
             $PreviousVersions += "$($_).linux"
@@ -358,6 +359,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "x16r" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "x16r" "x16r" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "x16r" 2.5 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "x16rv2" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "x16rv2" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "x16rv2" "x16rv2" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "x16rv2" 2.5 -ErrorAction SilentlyContinue
 
                                             $Data.$_.commands | Add-Member "x16s" "" -ErrorAction SilentlyContinue
                                             $Data.$_.difficulty | Add-Member "x16s" "" -ErrorAction SilentlyContinue 

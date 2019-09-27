@@ -734,6 +734,7 @@ do {
         $Defaults.PSObject.Properties.Name | % { if ($_ -notin $(vars).config.keys) { $(vars).config.Add("$($_)", $Defaults.$_) } }
         $(vars).config | ConvertTo-Json | Set-Content ".\config\parameters\newarguments.json"
         Start-Sleep -S 2
+        Write-Host "If you ever wish to manually override this config with arguments locally (not through HiveOS), delete newarguments.json first!"
         Write-Host "Settings Saved to `".\config\parameter\newarguments.json`" ! You can Run SWARM.bat (windows) or ./swarm (linux as root) to start SWARM!"
     }
     if ($Confirm -eq "2") {
