@@ -19,11 +19,11 @@
             "lyra2rev3": ""
         },
         "naming": {
-            "progpow": "PROGPOW-101",
-            "ubqhash": "UBQHASH-101",
-            "mtp": "MTP-101",
-            "ethash": "ETHASH-101",
-            "lyra2rev3": "LYRA2V3-101"
+            "progpow": "PROGPOW",
+            "ubqhash": "UBQHASH",
+            "mtp": "MTP",
+            "ethash": "ETHASH",
+            "lyra2rev3": "LYRA2V3"
         },
         "fee": {
             "progpow": 1,
@@ -52,11 +52,11 @@
             "lyra2rev3": ""
         },
         "naming": {
-            "progpow": "PROGPOW-101",
-            "ubqhash": "UBQHASH-101",
-            "mtp": "MTP-101",
-            "ethash": "ETHASH-101",
-            "lyra2rev3": "LYRA2V3-101"
+            "progpow": "PROGPOW",
+            "ubqhash": "UBQHASH",
+            "mtp": "MTP",
+            "ethash": "ETHASH",
+            "lyra2rev3": "LYRA2V3"
         },
         "fee": {
             "progpow": 1,
@@ -85,11 +85,11 @@
             "lyra2rev3": ""
         },
         "naming": {
-            "progpow": "PROGPOW-101",
-            "ubqhash": "UBQHASH-101",
-            "mtp": "MTP-101",
-            "ethash": "ETHASH-101",
-            "lyra2rev3": "LYRA2V3-101"
+            "progpow": "PROGPOW",
+            "ubqhash": "UBQHASH",
+            "mtp": "MTP",
+            "ethash": "ETHASH",
+            "lyra2rev3": "LYRA2V3"
         },
         "fee": {
             "progpow": 1,
