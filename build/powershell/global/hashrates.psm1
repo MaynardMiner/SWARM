@@ -152,6 +152,8 @@ function Global:Get-MinerHashRate {
     $(vars).BestActiveMiners | ForEach-Object {
         if ($_.Profit_Day -ne "bench") { $ScreenProfit = "$(($_.Profit_Day * $(vars).Rates.$($(arg).Currency)).ToString("N2")) $($(arg).Currency)/Day" } else { $ScreenProfit = "Benchmarking" }
         if ($_.Fiat_Day -ne "bench") { $CurrentProfit = "$($_.Fiat_Day) $($(arg).Currency)/Day" } else { $CurrentProfit = "Benchmarking" }
+        if ($_.Profit_Day -ne "bench") { $BTCScreenProfit = "$($($_.Profit_Day).ToString("N5") ) BTC/Day" } else { $BTCScreenProfit = "Benchmarking" }
+        if ($_.Fiat_Day -ne "bench") { $BTCCurrentProfit = "$($($_.Fiat_Day / $(vars).Rates.$($(arg).Currency)).ToString("N5")) BTC/Day" } else { $BTCCurrentProfit = "Benchmarking" }
         if ($null -eq $_.Xprocess -or $_.XProcess.HasExited) { $_.Status = "Failed" }
         $Miner_HashRates = Global:Get-HashRate -Type $_.Type
         $NewName = $_.Algo -replace "`_","`-"
@@ -167,8 +169,8 @@ function Global:Get-MinerHashRate {
         log "$($_.Type) is currently mining $($_.Algo) on $($_.MinerPool)" -foregroundcolor Cyan
         log "$($_.Type) previous hashrates for $($_.Symbol) is" -NoNewLine -Start
         log " $MinerPrevious/s" -foreground yellow -End
-        log "Current Pool Projection: $CurrentProfit.  (This is live value with no modifiers)"
-        log "Current Daily Profit: $ScreenProfit.      (This is daily average with watt calculations)
+        log "Current Pool Projection: $CurrentProfit `| $BTCCurrentProfit  (This is live value with no modifiers)"
+        log "Current Daily Profit   : $ScreenProfit `| $BTCScreenProfit  (This is daily average with watt calculations)
 "
     }
 }
