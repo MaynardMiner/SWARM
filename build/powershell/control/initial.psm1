@@ -335,50 +335,6 @@ function Global:Stop-AllMiners {
     }
 }
 
-function Global:Start-MinerDownloads {
-    $MinersStopped = $False
-    $(vars).Miners | ForEach-Object {
-        $Sel = $_
-        $Success = 0;
-        if ( $Sel.Type -notlike "*ASIC*") {
-            $CheckPath = Test-Path $Sel.Path
-            $VersionPath = Join-Path (Split-Path $Sel.Path) "swarm-version.txt"
-            if ( $CheckPath -eq $false ) {
-                if ($MinersStopped -eq $false) {
-                    Global:Stop-AllMiners
-                    $MinersStopped = $true
-                }
-                $Success = Global:Get-MinerBinary $Sel "New"
-            }
-            elseif (test-path $VersionPath) {
-                [String]$Old_Version = Get-Content $VersionPath
-                if ($Old_Version -ne [string]$Sel.Version) {
-                    if ($MinersStopped -eq $false) {
-                        Global:Stop-AllMiners
-                        $MinersStopped = $true
-                    }
-                    Write-Log "There is a new version availble for $($Sel.Name), Downloading" -ForegroundColor Yellow
-                    $Success = Global:Get-MinerBinary $Sel "Update"
-                }
-            }
-            else {
-                if ($MinersStopped -eq $false) {
-                    Global:Stop-AllMiners
-                    $MinersStopped = $true
-                }
-                Write-Log "Binary found, but swarm-version.txt is missing for $($Sel.Name), Downloading" -ForegroundColor Yellow
-                $Success = Global:Get-MinerBinary $Sel "Update"
-            }
-        }
-        else { $Success = 1 }
-        if ($Success -eq 2) {
-            log "WARNING: Miner Failed To Download Three Times- Restarting SWARM" -ForeGroundColor Yellow
-            remove all
-            continue
-        }
-    }
-}
-
 function Global:Get-ActivePricing {
     $(vars).BestActiveMIners | ForEach-Object {
         $SelectedMiner = $(vars).bestminers_combo | Where-Object Type -EQ $_.Type | Where-Object Path -EQ $_.Path | Where-Object Arguments -EQ $_.Arguments
