@@ -291,16 +291,16 @@ clear_watts
         Clears all watt files
         Resets power.json
 
-benchmark
+bench
         USAGE:
             [miner or algorithm] [name]
             [timeout]
 
-        benchmark miner [name] 
+        bench miner [name] 
             will clear all benchmarks for that miner
-        benchmark algorithm [name] 
+        bench algorithm [name] 
             will clear all benchmarks for that algorithm
-        becchmark timeout 
+        bench bans
             will clear all bans
 
 nview

@@ -243,10 +243,10 @@ if (Test-Path ".\build\bash\dir.sh") {
     Set-Location $Dir     
 }
 
-if (Test-Path ".\build\bash\benchmark") {
-    Copy-Item ".\build\bash\benchmark" -Destination "/usr/bin" -force | Out-Null
+if (Test-Path ".\build\bash\bench") {
+    Copy-Item ".\build\bash\bench" -Destination "/usr/bin" -force | Out-Null
     Set-Location "/usr/bin"
-    Start-Process "chmod" -ArgumentList "+x benchmark"
+    Start-Process "chmod" -ArgumentList "+x bench"
     Set-Location "/"
     Set-Location $Dir     
 }

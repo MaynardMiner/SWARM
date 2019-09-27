@@ -12,7 +12,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
 param(
-    [parameter(Position = 0, Mandatory = $true)]
+    [parameter(Position = 0, Mandatory = $false)]
     [String]$command,
     [parameter(Position = 1, Mandatory = $false)]
     [String]$Name = $Null,
@@ -31,30 +31,30 @@ $Get = @()
 Switch ($command) {
     "help" {
     $Get += 
-"benchmark help guide
+"bench help guide
 
-benchmark miner [minername]
+bench miner [minername]
     -This will benchmark miner of given name. [minername] must match name
      on 'get stats' screen.
     -By Extension This will lift all bans on miner
 
-benchmark algorithm [algoname]
+bench algorithm [algoname]
     -This will benchmark algorithm of given name. [algoname] must match name
      on 'get stats' screen.
 
-benchmark miner [minername] [algoname]
+bench miner [minername] [algoname]
     -This will benchmark on the algorithm of given name on the miner of the
      given name. Both must match names on 'get stats' screen.
      -By Extension This will lift all bans on miner
 
-benchmark timeout
+bench bans
     -This will remove all bans.
 
-benchmark all
+bench all
     -This will benchmark everything. CANNOT BE UNDONE!
 "
     }
-    "timeout" {
+    "bans" {
         if (Test-Path ".\timeout") {Remove-Item ".\timeout" -Recurse -Force}
         $Get += "Removed All Timeouts and Bans"
     }
@@ -167,7 +167,29 @@ benchmark all
         }
     }
     default {
-        $Get += "No Command Given"
+        $Get += 
+        "bench help guide
+
+        bench miner [minername]
+            -This will benchmark miner of given name. [minername] must match name
+             on 'get stats' screen.
+            -By Extension This will lift all bans on miner
+        
+        bench algorithm [algoname]
+            -This will benchmark algorithm of given name. [algoname] must match name
+             on 'get stats' screen.
+        
+        bench miner [minername] [algoname]
+            -This will benchmark on the algorithm of given name on the miner of the
+             given name. Both must match names on 'get stats' screen.
+             -By Extension This will lift all bans on miner
+        
+        bench bans
+            -This will remove all bans.
+        
+        bench all
+            -This will benchmark everything. CANNOT BE UNDONE!
+        "        
     }
 }
 $Get += "Effects will taked place after next miner benchmark/interval period."

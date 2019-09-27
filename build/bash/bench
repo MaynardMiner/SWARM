@@ -11,4 +11,4 @@
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-pwsh -command "$(< $mydir/dir.sh)/build/powershell/scripts/benchmark.ps1 $1 $2 $3"
+pwsh -command "$(< $mydir/dir.sh)/build/powershell/scripts/bench.ps1 $1 $2 $3"
