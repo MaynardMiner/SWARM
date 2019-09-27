@@ -314,10 +314,8 @@ function Global:Get-GPUCount {
             $GA = $true
         }
 
-        $TypeArray = @("NVIDIA1", "NVIDIA2", "NVIDIA3", "AMD1")
-        $TypeArray | ForEach-Object { if ($_ -in $(arg).Type) { $NoType = $false } }
-        if ($NoType -eq $true) {
-            log "Searching GPU Types" -ForegroundColor Yellow
+        if ([string]$(arg).type -eq "") {
+            log "Searching For Mining Types" -ForegroundColor Yellow
             $types = @()
             if ($GN -and $GA) {
                 log "AMD and NVIDIA Detected" -ForegroundColor Magenta
@@ -331,12 +329,10 @@ function Global:Get-GPUCount {
                 log "AMD Detected: Adding AMD" -ForegroundColor Magenta
                 $types += "AMD1" 
             }
-            elseif ("ASIC" -notin $(arg).Type) {
-                log "No GPU's Detected And ASIC not configured- Using CPU"
-                $types += "CPU"
-                ## Get Threads:
-                if([string]$(arg).CPUThreads -eq ""){ $(arg).CPUThreads = grep -c ^processor /proc/cpuinfo; }
-            }
+            log "Adding CPU"
+            if([string]$(arg).CPUThreads -eq ""){ $(arg).CPUThreads = $(Get-CimInstance -ClassName 'Win32_Processor' | Select-Object -Property 'NumberOfCores').NumberOfCores;}
+            log "Using $($(arg).CPUThreads) for mining"
+            $(arg).type = $types
         }
 
         $GetBus | Foreach {
