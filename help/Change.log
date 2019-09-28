@@ -1083,3 +1083,22 @@ are mining!
 
 ## Updates
 * tt-miner was updated.
+
+############################################
+############################################
+
+# SWARM 2.7.4
+
+THIS IS A CRITICAL UPDATE- IF USING 2.7.0
+OR NEWER- UPDATE IMMEDIATELY.
+
+## Fixes
+* Powershell changed slightly how syncronized hashtables
+  worked in 6.2.3 (or maybe I found bug). This can a potential 
+  issue with donation parameters vs user parameters! I have 
+  created a workaround to update from the new change.
+
+## What's New?
+* Per user request - Added BTC/Day on main screen.
+* cpuminer jayddee updated.
+* gminer updated (good RTX cuckaroo29d improvement)
