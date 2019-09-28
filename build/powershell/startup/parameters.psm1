@@ -65,13 +65,17 @@ function Global:Get-Parameters {
     if ([string]$global:config.user_params.Platform -eq "") {
         write-Host "Detecting Platform..." -Foreground Cyan
         if ($IsWindows) { 
-            $global:config.user_params.Platform = "windows" }
-        elseif($IsLinux) { $global:config.user_params.Platform = "linux" }
+            $global:config.user_params.Platform = "windows" 
+            $(arg).Platform = "windows"
+        }
+        elseif($IsLinux) { 
+            $global:config.user_params.Platform = "linux" 
+            $(arg).Platform = "linux"
+        }
         Write-Host "OS = $($global:config.user_params.Platform)" -ForegroundColor Green
     }
     if (-not (Test-Path ".\build\txt")) { New-Item -Name "txt" -ItemType "Directory" -Path ".\build" | Out-Null }
     $global:config.user_params.Platform | Set-Content ".\build\txt\os.txt"
     ## Get Algorithms
     $global:Config.Add("Pool_Algos",(Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json))
-    $global:Config.params = $global:Config.user_params
 }
