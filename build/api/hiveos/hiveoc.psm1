@@ -22,7 +22,7 @@ function Global:Start-NVIDIAOC($NewOC) {
 
     ## Get Power limits
     $Max_Power = invoke-expression "nvidia-smi --query-gpu=power.max_limit --format=csv" | ConvertFrom-CSV
-    $Max_Power = $Max_Power.'power.max_limit [W]'| % {$_ = $_ -replace " W",""; $_}
+    $Max_Power = $Max_Power.'power.max_limit [W]' | % { $_ = $_ -replace " W", ""; $_ }
 
     $HiveNVOC.Keys | % {
         $key = $_
@@ -106,17 +106,17 @@ function Global:Start-NVIDIAOC($NewOC) {
                     if ($NVOCPL.Count -eq 1) {
                         for ($i = 0; $i -lt $OCCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {
                             [Double]$Max = $Max_Power[$i]
-                            [Double]$Value = $NVOCPL | %{iex $_}  ## String to double/int issue.
-                            [Double]$Limit = [math]::Round(($Value/$Max) * 100, 0)
+                            [Double]$Value = $NVOCPL | % { iex $_ }  ## String to double/int issue.
+                            [Double]$Limit = [math]::Round(($Value / $Max) * 100, 0)
                             $OCArgs += "-setPowerTarget:$($OCCount.NVIDIA.$i),$($Limit) "
                             $ocmessage += "Setting GPU $($OCCount.NVIDIA.$i) Power Limit To $($Limit)%"
                         }
                     }
                     else {
-                            for($i=0; $i -lt $NVOCPL.Count; $i++){
+                        for ($i = 0; $i -lt $NVOCPL.Count; $i++) {
                             [Double]$Max = $Max_Power[$i]
-                            [Double]$Value = $NVOCPL[$i] | %{iex $_} ## String to double/int issue.
-                            [Double]$Limit = [math]::Round(($Value/$Max) * 100, 0)
+                            [Double]$Value = $NVOCPL[$i] | % { iex $_ } ## String to double/int issue.
+                            [Double]$Limit = [math]::Round(($Value / $Max) * 100, 0)
                             $OCArgs += "-setPowerTarget:$($i),$($Limit) "
                             $ocmessage += "Setting GPU $i Power Limit To $($Limit)%"
                         }
@@ -126,18 +126,20 @@ function Global:Start-NVIDIAOC($NewOC) {
         }
     }
 
-    $script += "Invoke-Expression `'.\inspector\nvidiaInspector.exe $OCArgs`'"
-    if($FansArgs) { $FansArgs | ForEach-Object { $script += "Invoke-Expression `'.\nvfans\nvfans.exe $($_)`'"} }
-    Set-Location ".\build\apps"
-    $script | Out-File "nvoc-start.ps1"
-    $Proc = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle hidden -command "".\nvoc-start.ps1""; " -PassThru -WindowStyle Minimized
-    $Proc | Wait-Process
-    if($FansArgs) {$Process = ".\nvfans "}
-    Set-Location $($(vars).dir)
-    Start-Sleep -s .5
-    $ocmessage | Set-Content ".\build\txt\ocnvidia.txt"
-    Start-Sleep -S .5
-    $ocmessage
+    if ([string]$OcArgs -ne "") {
+        $script += "Invoke-Expression `'.\inspector\nvidiaInspector.exe $OCArgs`'"
+        if ($FansArgs) { $FansArgs | ForEach-Object { $script += "Invoke-Expression `'.\nvfans\nvfans.exe $($_)`'" } }
+        Set-Location ".\build\apps"
+        $script | Out-File "nvoc-start.ps1"
+        $Proc = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle hidden -command "".\nvoc-start.ps1""; " -PassThru -WindowStyle Minimized
+        $Proc | Wait-Process
+        if ($FansArgs) { $Process = ".\nvfans " }
+        Set-Location $($(vars).dir)
+        Start-Sleep -s .5
+        $ocmessage | Set-Content ".\build\txt\ocnvidia.txt"
+        Start-Sleep -S .5
+        $ocmessage
+    }
 }
 
 
@@ -179,7 +181,7 @@ function Global:Start-AMDOC($NewOC) {
     $AMDOCV = $AMDOC.CORE_VDDC -replace "`"", ""
     $AMDOCV = $AMDOCV -split " "
     $AMDAgg = $AMDOC.AGGRESSIVE
-    $AMDREF = $AMDOC.REF -replace "`"",""
+    $AMDREF = $AMDOC.REF -replace "`"", ""
     $AMDREF = $AMDREF -split " "
   
     for ($i = 0; $i -lt $AMDCount; $i++) {
@@ -271,13 +273,13 @@ function Global:Start-AMDOC($NewOC) {
                         }
                     }
                 } 
-                "REF"{
+                "REF" {
                     if ([String]$AMDREF -ne "") {
                         if ($AMDREF.Count -eq 1) {
-                        $REF = Invoke-Expression ".\build\apps\amdtweak\WinAMDTweak.exe --gpu $i --REF $AMDREF"
-                        $OCmessage += "Setting GPU $($OCCount.AMD.$i) memory REF to $AMDREF"
+                            $REF = Invoke-Expression ".\build\apps\amdtweak\WinAMDTweak.exe --gpu $i --REF $AMDREF"
+                            $OCmessage += "Setting GPU $($OCCount.AMD.$i) memory REF to $AMDREF"
                         }
-                        else{
+                        else {
                             $Ref = Invoke-Expression ".\build\apps\amdtweak\WinAMDTweak.exe --gpu $i --REF $($AMDREF[$i])" | Tee-Object -Variable Out
                             $OCmessage += "Setting GPU $($OCCount.AMD.$i) memory REF to $($AMDREF[$i])"
                         }
@@ -287,15 +289,16 @@ function Global:Start-AMDOC($NewOC) {
         }
     }
    
-    $Script += "`$Proc = Start-Process `".\overdriventool\OverdriveNTool.exe`" -ArgumentList `"$OCArgs`" -WindowStyle Minimized -PassThru; `$Proc | Wait-Process"
-        
-    Set-Location ".\build\apps"
-    $Script | OUt-File "AMDOC-start.ps1"
-    $Proc = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle hidden -command "".\AMDOC-start.ps1""" -PassThru -WindowStyle Minimized
-    $Proc | Wait-Process
-    Start-Sleep -S .5
-    $ocmessage
-    Set-Location $($(vars).dir)
-    $ocmessage | Set-Content ".\build\txt\ocamd.txt"
-    Start-Sleep -s .5
+    if ([string]$OcArgs -ne "") {
+        $Script += "`$Proc = Start-Process `".\overdriventool\OverdriveNTool.exe`" -ArgumentList `"$OCArgs`" -WindowStyle Minimized -PassThru; `$Proc | Wait-Process" 
+        Set-Location ".\build\apps"
+        $Script | OUt-File "AMDOC-start.ps1"
+        $Proc = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle hidden -command "".\AMDOC-start.ps1""" -PassThru -WindowStyle Minimized
+        $Proc | Wait-Process
+        Start-Sleep -S .5
+        $ocmessage
+        Set-Location $($(vars).dir)
+        $ocmessage | Set-Content ".\build\txt\ocamd.txt"
+        Start-Sleep -s .5
+    }
 }
