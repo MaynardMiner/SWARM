@@ -429,6 +429,7 @@ function Global:start-update {
  
                                 if($ChangeFile -eq "pool-algos.json") {
                                     $Data | add-Member "x25x" @{alt_names = @("x25x"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
+                                    $Data | add-Member "x16rv2" @{alt_names = @("x16rv2"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
                                     $Data | add-Member "lyra2z330" @{alt_names = @("lyra2z330"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
                                     $Data | add-Member "cuckaroo29d" @{alt_names = @("cuckaroo29d","grincuckaroo29d"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
                                     $Data | add-Member "bmw512" @{alt_names = @("bmw512"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
