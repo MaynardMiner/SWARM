@@ -1102,3 +1102,23 @@ OR NEWER- UPDATE IMMEDIATELY.
 * Per user request - Added BTC/Day on main screen.
 * cpuminer jayddee updated.
 * gminer updated (good RTX cuckaroo29d improvement)
+
+############################################
+############################################
+
+# SWARM 2.7.5
+
+## What's New?
+* SWARM should not run oc programs if no
+  oc is set through HiveOS.
+
+## Fixes
+* Fixed miniz- equihash_96/5 was removed,
+  added it back.
+
+## Updates
+* Added x16rv2 to pool-algos.json, this means
+  it will start attempting to mine it. You can
+  ban it until ready with ``-Bans x16rv2:Poolname``
+
+  
