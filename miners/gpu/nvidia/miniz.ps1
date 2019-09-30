@@ -58,6 +58,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                 $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                     $SelAlgo = $_.Algorithm
                     switch ($SelAlgo) {
+                        "equihash_96/5" { $AddArgs = "--par=96,5 --pers auto " }
                         "equihash_144/5" { $AddArgs = "--par=144,5 --pers auto " }
                         "equihash_210/9" { $AddArgs = "--par=210,9 --pers auto " }
                         "equihash_200/9" { $AddArgs = "--par=200,9 --pers auto " } 
