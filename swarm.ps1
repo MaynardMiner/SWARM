@@ -30,6 +30,8 @@ $env:Path += ";$($(vars).dir)\build\cmd"
 
 ## Window Security Items
 if ($IsWindows) {
+    $Host.UI.RawUI.BackgroundColor = 'Black'
+    $Host.UI.RawUI.ForegroundColor = 'White'
     try { Get-ChildItem $($(vars).dir) -Recurse | Unblock-File } catch { }
     ## Exclusion Windows Defender
     try { 
@@ -38,7 +40,6 @@ if ($IsWindows) {
         } 
     }
     catch { }
-
     ## Set Firewall Rule
     try { 
         $Net = Get-NetFireWallRule 
@@ -56,6 +57,9 @@ if ($IsWindows) {
 
     ## Windows Icon
     Start-Process "powershell" -ArgumentList "Set-Location `'$($(vars).dir)`'; .\build\powershell\scripts\icon.ps1 `'$($(vars).dir)\build\apps\icons\SWARM.ico`'" -NoNewWindow
+
+    ## Add .dll
+    Add-Type -Path ".\build\apps\launchcode.dll"
 }
 
 ## Debug Mode- Allow you to run with last known arguments or arguments.json.
