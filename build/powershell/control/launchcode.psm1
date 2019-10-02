@@ -228,15 +228,16 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                 catch { }
 
                 ##Build Start Script
-                $Prestart = @()
-                $MinerCurrent.Prestart | ForEach-Object {
-                    if ($_ -notlike "export LD_LIBRARY_PATH=$($(vars).dir)\build\export") {
-                        $setx = $_ -replace "export ", "set "
-                        $setx = $setx -replace "=", " "
-                        $Prestart += "$setx"
+                if ($MinerCurrent.Prestart) {
+                    $Prestart = @()
+                    $MinerCurrent.Prestart | ForEach-Object {
+                        if ($_ -notlike "export LD_LIBRARY_PATH=$($(vars).dir)\build\export") {
+                            $setx = $_ -replace "export ", "set "
+                            $setx = $setx -replace "=", " "
+                            $Prestart += "$setx`n"
+                        }
                     }
                 }
-
                 ##Determine if Miner needs logging
                 if ($MinerCurrent.Log -ne "miner_generated") {
                     Switch ($MinerCurrent.API) {
@@ -276,7 +277,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
 
                 $script = 
 
-"
+                "
 `#`# Window Title
 `$host.ui.RawUI.WindowTitle = `'$($MinerCurrent.Name) - $($MinerCurrent.Algo)`';
 `#`# set encoding for logging
@@ -295,7 +296,7 @@ $start
 
                 ##Start Miner Job
                 $Job = Start-Job -ArgumentList $PID, $WorkingDirectory, (Convert-Path ".\build\apps\launchcode.dll") {
-                    param($ControllerProcessID, $WorkingDirectory,$dll)
+                    param($ControllerProcessID, $WorkingDirectory, $dll)
                     Set-Location $WorkingDirectory
                     $ControllerProcess = Get-Process -Id $ControllerProcessID
                     if ($null -eq $ControllerProcess) { return }
@@ -305,7 +306,7 @@ $start
                     $CommandLine = '"' + $FilePath + '"'
                     $arguments = "-executionpolicy bypass -command `".\swarm-start.ps1`""
                     $CommandLine += " " + $arguments
-                    $New_Miner = $start.New_Miner($filepath,$CommandLine,$WorkingDirectory)
+                    $New_Miner = $start.New_Miner($filepath, $CommandLine, $WorkingDirectory)
                     $Process = Get-Process -id $New_Miner.dwProcessId -ErrorAction Ignore
                     if ($null -eq $Process) { 
                         [PSCustomObject]@{ProcessId = $null }
@@ -408,16 +409,17 @@ $start
                     if ($proc.HasExited -eq $false) {
                         log "Still Waiting For Port To Clear..." -ForegroundColor Cyan
                         $warn += 5 
-                    } else{ $warn = $(arg).time_wait }
+                    }
+                    else { $warn = $(arg).time_wait }
                 }while ($warn -lt $(arg).time_wait)
                 
-                if($warn -eq 2) { 
+                if ($warn -eq 2) { 
                     log "Warning: Port still listed as TIME_WAIT, but launching anyway" -ForegroundColor Yellow 
-                    if($Proc.HasExited -eq $false) {
+                    if ($Proc.HasExited -eq $false) {
                         kill $Proc.Id -ErrorAction Ignore
                     }
                 } 
-                elseif($Warn -eq 10) {log "Port Was Cleared" -ForegroundColor Cyan}
+                elseif ($Warn -eq 10) { log "Port Was Cleared" -ForegroundColor Cyan }
             }
             ##Notification To User That Miner Is Attempting To start
             log "Starting $($MinerCurrent.Name) Mining $($MinerCurrent.Symbol) on $($MinerCurrent.Type)" -ForegroundColor Cyan
@@ -507,7 +509,8 @@ $start
         log "Switching To New Pool"
         $Commands = "switchpool|1"
         $response = Global:Get-TCP -Server $AIP -Port $MinerCurrent.Port -Timeout 10 -Message $Commands
-        if ($response) { $MinerProcess = @{StartTime = (Get-Date); HasExited = $false }
+        if ($response) {
+            $MinerProcess = @{StartTime = (Get-Date); HasExited = $false }
         }
         $MinerProcess
     }
