@@ -64,8 +64,7 @@ function Global:Start-Hello($RigData) {
         $response | ConvertTo-Json | Out-File ".\build\txt\get-hive-hello.txt"
         $message = $response
     }
-    catch [Exception]
-    {
+    catch [Exception] {
         log "Exception: "$_.Exception.Message -ForegroundColor Red;
     }
         
@@ -178,24 +177,34 @@ function Global:Start-WebStartup($response, $Site) {
                             }
                         }
                         $Params | convertto-Json | Out-File ".\config\parameters\newarguments.json"
-                    }
-                    else{Write-Log "WARNING: User Flight Sheet Arguments Did Not Contain -Wallet1 argument. They were ignored!" -ForegroundColor Yellow; Start-Sleep -S 3}
+
+                        ## Change parameters after getting them.
+                        $global:Config.params = @{ }
+                        $global:Config.user_params = @{ }
+                        $params.keys | % {
+                            $Global:Config.params.Add($_ , $Params.$_ ) 
+                            $Global:Config.user_params.Add( $_ , $Params.$_ )
+                        }
+                        $Global:Config.params.Platform = "windows"
+                        $global:Config.user_params.Platform = "windows"
                 }
-                ##If Hive Sent OC Start SWARM OC
-                "nvidia_oc" {
-                    Global:Start-NVIDIAOC $RigConf.result.nvidia_oc 
-                }
-                "amd_oc" {
-                    Global:Start-AMDOC $RigConf.result.amd_oc
-                }
+                else { Write-Log "WARNING: User Flight Sheet Arguments Did Not Contain -Wallet1 argument. They were ignored!" -ForegroundColor Yellow; Start-Sleep -S 3 }
+            }
+            ##If Hive Sent OC Start SWARM OC
+            "nvidia_oc" {
+                Global:Start-NVIDIAOC $RigConf.result.nvidia_oc 
+            }
+            "amd_oc" {
+                Global:Start-AMDOC $RigConf.result.amd_oc
             }
         }
-        ## Print Data to output, so it can be recorded in transcript
-        $RigConf.result.config
     }
-    else {
-        log "No HiveOS Rig.conf- Do you have an account? Did you use your farm hash?"
-        log "Try running Hive_Windows_Reset.bat then try again."
-        Start-Sleep -S 2
-    }
+    ## Print Data to output, so it can be recorded in transcript
+    $RigConf.result.config
+}
+else {
+    log "No HiveOS Rig.conf- Do you have an account? Did you use your farm hash?"
+    log "Try running Hive_Windows_Reset.bat then try again."
+    Start-Sleep -S 2
+}
 }
