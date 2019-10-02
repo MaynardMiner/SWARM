@@ -63,9 +63,9 @@ $(vars).CPUTypes | ForEach-Object {
                         Version    = "$($(vars).cpu.bubasik.version)"
                         DeviceCall = "cpuminer-opt"
                         Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Pool_Host):$($_.Port) -b 0.0.0.0:10001 -u $($_.User1) -p $($_.Pass1)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                        HashRates  = $Stat.Hour
+                        HashRates  = $Stat.Hour_4
                         Worker     = $(arg).Rigname1
-                        Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
+                        Quote      = if ($Stat.Hour_4) { $Stat.Hour_4 * ($_.Price) }else { 0 }
                         Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                         MinerPool  = "$($_.Name)"
                         Port       = 10001

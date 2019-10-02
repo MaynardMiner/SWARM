@@ -80,8 +80,8 @@ $(vars).NVIDIATypes | ForEach-Object {
                         Version    = "$($(vars).nvidia.nbminer.version)"
                         DeviceCall = "ccminer"
                         Arguments  = "-a $A --api 0.0.0.0:$Port --no-nvml --log-file `'$log`' --url $Stratum$($_.Pool_Host):$($_.Port) --user $($_.$User) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                        HashRates  = $Stat.Hour
-                        Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
+                        HashRates  = $Stat.Hour_4
+                        Quote      = if ($Stat.Hour_4) { $Stat.Hour_4 * ($_.Price) }else { 0 }
                         Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                         MinerPool  = "$($_.Name)"
                         API        = "nebutech"

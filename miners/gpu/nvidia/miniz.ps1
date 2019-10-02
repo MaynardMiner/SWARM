@@ -83,8 +83,8 @@ $(vars).NVIDIATypes | ForEach-Object {
                         Version    = "$($(vars).nvidia.miniz.version)"
                         DeviceCall = "miniz"
                         Arguments  = "--telemetry 0.0.0.0:$Port --server $($_.Pool_Host) --port $($_.Port) $AddArgs--user $($_.$User) --pass $($_.$Pass)$($Diff) --logfile=`'$log`' $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                        HashRates  = $Stat.Hour
-                        Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
+                        HashRates  = $Stat.Hour_4
+                        Quote      = if ($Stat.Hour_4) { $Stat.Hour_4 * ($_.Price) }else { 0 }
                         Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                         MinerPool  = "$($_.Name)"
                         API        = "miniz"
