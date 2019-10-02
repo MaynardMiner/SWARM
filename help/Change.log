@@ -1121,4 +1121,26 @@ OR NEWER- UPDATE IMMEDIATELY.
   it will start attempting to mine it. You can
   ban it until ready with ``-Bans x16rv2:Poolname``
 
-  
+############################################
+############################################
+
+# SWARM 2.7.6
+
+## What's New?
+* Moved cc-rfv2 to optional miners
+  * Was causing high CPU issues.
+  * Was getting "invalid arguments"
+    CUDA errors.
+* -no-nvml added to nbminer
+* -log added to nbminer,
+   SWARM logging is removed in Windows.
+* Windows now start miners without
+  application lost of focus.
+  * Added custom launchcode.dll in apps folder.
+* Removed extra console launch in Windows version.
+
+## Fixes
+* Fixed AMD errors for autofan in Windows
+  if only using NVIDIA.
+* removed cuckaroo from nbminer.
+  * cuckaroo29d still present.
