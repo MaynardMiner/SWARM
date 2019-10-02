@@ -1,21 +1,8 @@
-#settings (for autofan.conf without DEF_), default values
-##DEF_TARGET_TEMP=
-#minimal fan speed
-##DEF_MIN_FAN=30
-#maximum fan speed
-##DEF_MAX_FAN=100
-#temperature to stop miner
-##DEF_CRITICAL_TEMP=90
-#action on reaching critical temp. "" to stop mining, reboot, shutdown
-##DEF_CRITICAL_TEMP_ACTION=
-#AMD fan control (AMD control enable-0/AMD control disable-1)
-##DEF_NO_AMD=0
-#Reboot rig if GPU error (enable-1/disable-0)
-##DEF_REBOOT_ON_ERROR=0
-
 Set-Alias -Name "jq" -Value ConvertFrom-Json
 Set-Alias -Name "jc" -Value Convertto-Json
 Set-Alias -Name "sd" -Value ConvertFrom-StringData
+
+clear-host
 
 class Message {
     [string]$method
@@ -48,7 +35,7 @@ class Message {
     
         $json = $this | ConvertTo-Json -Depth 10 -Compress
 
-        $Answer = try { Invoke-RestMethod "$($miner_keys.mirror)/worker/api" -TimeoutSec 10 -Method POST -Body $json -ContentType 'application/json' } catch [Exception] { Write-Host "Exception: "$_.Exception.Message -ForegroundColor Red;}
+        $Answer = try { Invoke-RestMethod "$($miner_keys.mirror)/worker/api" -TimeoutSec 10 -Method POST -Body $json -ContentType 'application/json' } catch [Exception] { Write-Host "Exception: "$_.Exception.Message -ForegroundColor Red; }
     }
 }
 
@@ -247,40 +234,42 @@ class RIG {
     }
 
     Get_AMDGPUData([int]$Critical) {
-        $amdout = ".\build\txt\amd-autofan.txt"
-        $continue = $false
-        try {
-            if (Test-Path $amdout) { clear-content $amdout -ErrorAction Stop }
-            $Proc = start-process ".\build\apps\odvii\odvii.exe" -Argumentlist "s" -NoNewWindow -PassThru -RedirectStandardOutput $amdout -ErrorAction Stop
-            $Proc | Wait-Process -Timeout 5 -ErrorAction Stop 
-            $continue = $true
-        }
-        catch { Write-Host "WARNING: Failed to get AMD fans and temps" -ForegroundColor DarkRed }
-        if ((Test-Path $amdout) -and $continue -eq $true) {
-            $ainfo = cat $amdout | sd
-            $Cards = $This.GPUS | Where Model -eq "AMD"
-
-            ## First Check To Make Sure All Values Are There:
-            $Temps = $ainfo | Where { $_.keys -like "*Temp*" } | % { $_.Values }
-            $Fans = $ainfo | Where { $_.keys -like "*Fan*" } | % { $_.Values }
-
-            ## Add New Temperature Readings
-            for ($i = 0; $i -lt $Temps.Count; $i++) {
-                $this.GPUS | Where model -eq "AMD" | Where Device_Number -eq $i | % {
-                    $_.Set_OldTemp(); 
-                    $_.Stat_Temp($Temps[$i], $Critical) 
-                } 
+        if ($this.GPUS | Where model -eq "AMD") {
+            $amdout = ".\build\txt\amd-autofan.txt"
+            $continue = $false
+            try {
+                if (Test-Path $amdout) { clear-content $amdout -ErrorAction Stop }
+                $Proc = start-process ".\build\apps\odvii\odvii.exe" -Argumentlist "s" -NoNewWindow -PassThru -RedirectStandardOutput $amdout -ErrorAction Stop
+                $Proc | Wait-Process -Timeout 5 -ErrorAction Stop 
+                $continue = $true
             }
-            ## Add New Fan Readings
-            for ($i = 0; $i -lt $Fans.Count; $i++) {
-                $this.GPUS | Where model -eq "AMD" | Where Device_Number -eq $i | % { 
-                    $_.Stat_Fan($Fans[$i]) 
-                } 
+            catch { Write-Host "WARNING: Failed to get AMD fans and temps" -ForegroundColor DarkRed }
+            if ((Test-Path $amdout) -and $continue -eq $true) {
+                $ainfo = cat $amdout | sd
+                $Cards = $This.GPUS | Where Model -eq "AMD"
+
+                ## First Check To Make Sure All Values Are There:
+                $Temps = $ainfo | Where { $_.keys -like "*Temp*" } | % { $_.Values }
+                $Fans = $ainfo | Where { $_.keys -like "*Fan*" } | % { $_.Values }
+
+                ## Add New Temperature Readings
+                for ($i = 0; $i -lt $Temps.Count; $i++) {
+                    $this.GPUS | Where model -eq "AMD" | Where Device_Number -eq $i | % {
+                        $_.Set_OldTemp(); 
+                        $_.Stat_Temp($Temps[$i], $Critical) 
+                    } 
+                }
+                ## Add New Fan Readings
+                for ($i = 0; $i -lt $Fans.Count; $i++) {
+                    $this.GPUS | Where model -eq "AMD" | Where Device_Number -eq $i | % { 
+                        $_.Stat_Fan($Fans[$i]) 
+                    } 
+                }
             }
-        }
-        else {
-            $This.GPUS | Where Model -eq "AMD" | % {
-                $_.No_Data()
+            else {
+                $This.GPUS | Where Model -eq "AMD" | % {
+                    $_.No_Data()
+                }
             }
         }
     }
@@ -437,6 +426,7 @@ $Config.Set_Dir()
 $Config.Set_Configs(".\config\parameters\autofan.json")
 $Config.Set_Websites()
 $Config.Log()
+if ($IsWindows) { Start-Process "powershell" -ArgumentList "Set-Location `'$($config.dir)`'; .\build\powershell\scripts\icon.ps1 `'$($config.dir)\build\apps\icons\comb.ico`'" -NoNewWindow }
 
 ## Build RIG
 $global:RIG = [RIG]::New()
