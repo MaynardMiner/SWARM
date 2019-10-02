@@ -421,6 +421,7 @@ class RIG {
 
 
 ## Gather Script Variables
+$host.ui.RawUI.WindowTitle = "Autofan"
 $global:Config = [variables]::New()
 $Config.Set_Dir()
 $Config.Set_Configs(".\config\parameters\autofan.json")

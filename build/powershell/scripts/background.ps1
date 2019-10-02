@@ -17,6 +17,7 @@ Param (
 )
 
 [cultureinfo]::CurrentCulture = 'en-US'
+if($IsWIndows) { $host.ui.RawUI.WindowTitle = "Background Agent" }
 #$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
 #$WorkingDir = "/root/hive/miners/custom/SWARM"
 Set-Location $WorkingDir
