@@ -79,7 +79,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                         Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
                         Version    = "$($(vars).nvidia.nbminer.version)"
                         DeviceCall = "ccminer"
-                        Arguments  = "-a $A --api 0.0.0.0:$Port --url $Stratum$($_.Pool_Host):$($_.Port) --user $($_.$User) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                        Arguments  = "-a $A --api 0.0.0.0:$Port --no-nvml --log-file `'$log`' --url $Stratum$($_.Pool_Host):$($_.Port) --user $($_.$User) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
@@ -91,7 +91,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                         URI        = $Uri
                         Server     = "localhost"
                         Algo       = "$($_.Algorithm)"                         
-                        Log        = $Log
+                        Log        = "miner_generated"
                     }            
                 }
             }
