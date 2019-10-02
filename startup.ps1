@@ -111,7 +111,7 @@ if ($Start -eq $true) {
 
     if ($IsWindows) {
         $host.ui.RawUI.WindowTitle = "SWARM";
-        Start-Process "CMD" -ArgumentList "/C `"pwsh -noexit -executionpolicy Bypass -WindowStyle Maximized -command `"Set-Location C:\; Set-Location `'$Dir`'; .\swarm.ps1`"`"" -Verb RunAs
+        Start-Process "pwsh" -ArgumentList "-noexit -executionpolicy Bypass -WindowStyle Maximized -command `"Set-Location C:\; Set-Location `'$Dir`'; .\swarm.ps1`"" -Verb RunAs
     }
     else {
         ## Add Arguments to newarguments.json
