@@ -479,9 +479,6 @@ While ($true) {
         $(vars).Watts = $null
         remove CoinPools 
         remove AlgoPools 
-        remove amd 
-        remove nvidia 
-        remove cpu 
         remove SWARMAlgorithm
         remove BanHammer
         remove ASICTypes

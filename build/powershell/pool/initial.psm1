@@ -1,3 +1,16 @@
+<#
+SWARM is open-source software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+SWARM is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#>
+
 function Global:Get-PoolTables {
     $(vars).FeeTable.Add("zpool", @{ })
     $(vars).FeeTable.Add("zergpool", @{ })
@@ -33,6 +46,7 @@ function Global:Remove-BanHashrates {
     }
 }
 function Global:Get-MinerHashTable {
+
     Invoke-Expression ".\build\powershell\scripts\get.ps1 benchmarks all -asjson" | Tee-Object -Variable Miner_Hash | Out-Null
     if ($Miner_Hash -and $Miner_Hash -ne "No Stats Found") {
         $Miner_Hash = $Miner_Hash | ConvertFrom-Json
