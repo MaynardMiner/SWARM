@@ -1157,10 +1157,10 @@ OR NEWER- UPDATE IMMEDIATELY.
 ## Fixes
 * Fixed AMD errors for autofan in Windows
   if only using NVIDIA.
-* removed cuckaroo from nbminer.
+* Removed cuckaroo from nbminer.
   * cuckaroo29d still present.
-* rare error that arguments aren't saved
+* Rare error that arguments aren't saved
   after first time connection to HiveOS
   when user used guided help.
-* missed port for x16rv2 on nicehash- fixed.
-* t-rex x16rv instead of x16rv2 - fixed.
+* Missed port for x16rv2 on nicehash- fixed.
+* T-rex x16rv instead of x16rv2 - fixed.
