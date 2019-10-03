@@ -233,11 +233,14 @@ function Global:Start-Benchmark {
                                     if (-not (Test-Path $NewHashrateFilePath)) {
                                         Copy-Item $HashrateFilePath -Destination $NewHashrateFilePath -force
                                         log "$($_.Name) $($_.Symbol) Was Benchmarked And Backed Up" -foregroundcolor yellow
+                                        log "if SWARM was able to record intesity and/or difficulty, it is in .\bin\$($_.name)" -foregroundcolor yellow
                                     }
                                     $global:WasBenchmarked = $True
                                     Global:Get-Intensity $_.Type $_.Symbol $_.Path
                                     log "Stat Written" -foregroundcolor green
                                     log "Was this stat not correct? You can run command 'bench miner $($_.Name)' or 'bench algorithm $($_.algo)' to reset benchmark`n" -foregroundcolor cyan
+                                    if($IsWindows) { log "There is also a batch file labeled swarm_start_$($_.algo).bat for testing in .\bin\$($_.name)" -foregroundcolor cyan }
+                                    if($IsLinux) { log "There is also a bash file labeled swarm_start_$($_.algo).sh for testing in .\bin\$($_.name)" -foregroundcolor cyan }
                                     $Global:Strike = $false
                                 } 
                             }
