@@ -66,6 +66,7 @@ function Global:start-update {
         $PreviousVersions += "SWARM.2.7.2"
         $PreviousVersions += "SWARM.2.7.3"
         $PreviousVersions += "SWARM.2.7.4"
+        $PreviousVersions += "SWARM.2.7.5"
 
         $PreviousVersions | ForEach-Object {
             $PreviousVersions += "$($_).linux"
@@ -188,6 +189,17 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "cuckaroo29d" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "cuckaroo29d" "cuckaroo29d" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "cuckaroo29d" 2 -ErrorAction SilentlyContinue
+                                        }
+                                    }
+                                }
+
+                                if ($ChangeFile -eq "cryptodredge.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands | Add-Member "x16rv2" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "x16rv2" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "x16rv2" "x16rv2" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "x16rv2" 1 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }
