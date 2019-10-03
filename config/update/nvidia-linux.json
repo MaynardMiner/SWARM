@@ -51,9 +51,9 @@
     "NVIDIA2": ".\\bin\\cryptodredge-2\\CryptoDredge",
     "NVIDIA3": ".\\bin\\cryptodredge-3\\CryptoDredge",
     "minername": "CryptoDredge",
-    "version": "0.21.0",
+    "version": "0.22.0",
     "optional": "No",
-    "uri": "https://github.com/technobyl/CryptoDredge/releases/download/v0.21.0/CryptoDredge_0.21.0_cuda_10.1_linux.tar.gz"
+    "uri": "https://github.com/technobyl/CryptoDredge/releases/download/v0.22.0/CryptoDredge_0.22.0_cuda_10.1_linux.tar.gz"
   },
   "cc-mtp": {
     "name": "cc-mtp",
@@ -163,7 +163,7 @@
     "minername": "ccminer",
     "version": "1.0.2",
     "optional": "No",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/cc-rfv2-linux.tar.gz"
+    "uri": "https://github.com/MicroBitcoinOrg/CudaMiner/releases/download/1.0.2/ccminer.tar.gz"
   },
   "t-rex": {
     "name": "t-rex",
