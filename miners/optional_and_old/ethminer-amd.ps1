@@ -70,8 +70,8 @@ $(vars).AMDTypes | ForEach-Object {
                         Version    = "$($(vars).amd.$CName.version)"
                         DeviceCall = "progminer_amd"
                         Arguments  = "-P stratum2+tcp://$($_.$User).$($_.$Pass):x@$($_.Pool_Host):$($_.Port) --opencl --api-bind 127.0.0.1:$Port --noeval --dag-load-mode 1 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                        HashRates  = $Stat.Hour_4
-                        Quote      = if ($Stat.Hour_4) { $Stat.Hour_4 * ($_.Price) }else { 0 }
+                        HashRates  = $Stat.Hour
+                        Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                         API        = "claymore"
                         Port       = $Port

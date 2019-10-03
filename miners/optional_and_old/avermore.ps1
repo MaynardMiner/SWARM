@@ -68,8 +68,8 @@ $(vars).AMDTypes | ForEach-Object {
                         Version    = "$($(vars).amd.avermore.version)"
                         DeviceCall = "sgminer-gm"
                         Arguments  = "--gpu-platform $($(vars).AMDPlatform) --api-listen --api-port $Port -k $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Pool_Host):$($_.Port) -u $($_.$User) -p $($_.$Pass)$($Diff) -T $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                        HashRates  = $Stat.Hour_4
-                        Quote      = if ($Stat.Hour_4) { $Stat.Hour_4 * ($_.Price) }else { 0 }
+                        HashRates  = $Stat.Hour
+                        Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                         MinerPool  = "$($_.Name)"
                         Port       = $Port

@@ -96,8 +96,8 @@ $(vars).AMDTypes | ForEach-Object {
                         Version    = "$($(vars).amd.$CName.version)"
                         DeviceCall = "claymore"
                         Arguments  = "-amd -acm -mport $Port -mode 1 -allcoins 1 -allpools 1 $AddArgs-epool $($_.Protocol)://$($_.Pool_Host):$($_.Port) -ewal $($_.$User) $MinerWorker-wd 0 -logfile `'$(Split-Path $Log -Leaf)`' -logdir `'$(Split-Path $Log)`' -gser 2 -dbg -1 -eres 2 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                        HashRates  = $Stat.Hour_4
-                        Quote      = if ($Stat.Hour_4) { $Stat.Hour_4 * ($_.Price) }else { 0 }
+                        HashRates  = $Stat.Hour
+                        Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                         API        = "claymore"
                         Port       = $Port
