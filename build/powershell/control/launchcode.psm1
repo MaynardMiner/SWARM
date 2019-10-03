@@ -210,13 +210,12 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                 Start-Sleep -S .5
 
                 ##Make Test.bat for users
-                if (-not (Test-Path "$WorkingDirectory\swarm-start.bat")) {
-                    $minerbat = @()
-                    $minerbat += "CMD /r pwsh -ExecutionPolicy Bypass -command `".\swarm-start.ps1`""
-                    $minerbat += "cmd.exe"
-                    $miner_bat = Join-Path $WorkingDirectory "swarm-start.bat"
-                    $minerbat | Set-Content $miner_bat
-                }
+                $Algo = ($MinerCurrent.Algo).Replace("`/", "_")
+                $minerbat = @()
+                ## pwsh to launch powershell window to fully emulate SWARM launching
+                $minerbat += "pwsh -ExecutionPolicy Bypass -command `"Start-Process `"pwsh`" -ArgumentList `"-noexit -executionpolicy Bypass -Command `".\swarm_start_$($Algo).ps1`"`""
+                $miner_bat = Join-Path $WorkingDirectory "swarm_start_$($Algo).bat"
+                $minerbat | Set-Content $miner_bat
 
                 try { 
                     $Net = Get-NetFireWallRule | Where DisplayName -eq "SWARM $($MinerCurrent.MinerName)"
@@ -291,12 +290,12 @@ $Prestart
 $start
 "
 
-                $script | Out-File "$WorkingDirectory\swarm-start.ps1"
+                $script | Out-File "$WorkingDirectory\swarm_start_$($Algo).ps1"
                 Start-Sleep -S .5
 
                 ##Start Miner Job
-                $Job = Start-Job -ArgumentList $PID, $WorkingDirectory, (Convert-Path ".\build\apps\launchcode.dll") {
-                    param($ControllerProcessID, $WorkingDirectory, $dll)
+                $Job = Start-Job -ArgumentList $PID, $WorkingDirectory, (Convert-Path ".\build\apps\launchcode.dll"), ".\swarm_start_$($Algo).ps1" {
+                    param($ControllerProcessID, $WorkingDirectory, $dll, $ps1)
                     Set-Location $WorkingDirectory
                     $ControllerProcess = Get-Process -Id $ControllerProcessID
                     if ($null -eq $ControllerProcess) { return }
@@ -304,7 +303,7 @@ $start
                     $start = [launchcode]::New()
                     $FilePath = "$PSHome\pwsh.exe"
                     $CommandLine = '"' + $FilePath + '"'
-                    $arguments = "-executionpolicy bypass -command `".\swarm-start.ps1`""
+                    $arguments = "-executionpolicy bypass -command `"$ps1`""
                     $CommandLine += " " + $arguments
                     $New_Miner = $start.New_Miner($filepath, $CommandLine, $WorkingDirectory)
                     $Process = Get-Process -id $New_Miner.dwProcessId -ErrorAction Ignore
@@ -354,9 +353,6 @@ $start
 
             ##Build Daemon
             $Daemon = "start-stop-daemon --start --make-pidfile --chdir $MinerDir --pidfile $PIDPath --exec $MinerEXE -- $MinerArgs"
-
-            ##Test config -- Allows users to test miner settings written in miner dir
-            $TestConfigPath = Join-Path $MinerDir "config.sh"
 
             ##Actual Config - config.sh has already +x chmod from git.
             $Daemon | Set-Content ".\build\bash\config.sh" -Force
@@ -462,7 +458,9 @@ $start
 
             ##Write Both Scripts
             $Script | Set-Content ".\build\bash\startup.sh"
-            $TestScript | Set-Content "$MinerDir\startup.sh"
+            ## Test config for users.
+            $Algo = ($MinerCurrent.Algo).Replace("`/", "_")
+            $TestScript | Set-Content "$MinerDir/swarm_start_$($Algo).sh"
     
             ## .5 Second Delay After Read/Write Of Config Files. For Slower Drives.
             Start-Sleep -S .5
@@ -470,7 +468,7 @@ $start
             ##chmod again, to be safe.
             $Proc = Start-Process "chmod" -ArgumentList "+x build/bash/startup.sh" -PassThru
             $Proc | Wait-Process
-            $Proc = Start-Process "chmod" -ArgumentList "+x $MinerDir/startup.sh" -PassThru
+            $Proc = Start-Process "chmod" -ArgumentList "+x $MinerDir/swarm_start_$($Algo).sh" -PassThru
             $Proc | Wait-Process
 
             ##chmod miner (sometimes they don't set permissions correctly)
