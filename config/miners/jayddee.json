@@ -14,7 +14,8 @@
             "yespowerr16": "",
             "yespowerr24": "",
             "yespowerr32": "",
-            "lyra2z330": ""
+            "lyra2z330": "",
+            "x16rv2": ""
         },
         "difficulty": {
             "yescryptr8": "",
@@ -27,7 +28,8 @@
             "yespowerr16": "",
             "yespowerr24": "",
             "yespowerr32": "",
-            "lyra2z330": ""
+            "lyra2z330": "",
+            "x16rv2": ""
         },
         "naming": {
             "yescryptr8": "yescryptr8",
@@ -40,7 +42,8 @@
             "yespowerr16": "yespowerr16",
             "yespowerr24": "yespowerr24",
             "yespowerr32": "yespowerr32",
-            "lyra2z330": "lyra2z330"
+            "lyra2z330": "lyra2z330",
+            "x16rv2": "x16rv2"
         },
         "fee": {
             "yescryptr8": 0,
@@ -53,7 +56,8 @@
             "yespowerr16": 0,
             "yespowerr24": 0,
             "yespowerr32": 0,
-            "lyra2z330": 0
+            "lyra2z330": 0,
+            "x16rv2": 0
         }
     },
     "name": "jayddee"
