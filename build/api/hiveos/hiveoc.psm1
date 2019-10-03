@@ -129,16 +129,18 @@ function Global:Start-NVIDIAOC($NewOC) {
     if ([string]$OcArgs -ne "") {
         $script += "Invoke-Expression `'.\inspector\nvidiaInspector.exe $OCArgs`'"
         if ($FansArgs) { $FansArgs | ForEach-Object { $script += "Invoke-Expression `'.\nvfans\nvfans.exe $($_)`'" } }
-        Set-Location ".\build\apps"
-        $script | Out-File "nvoc-start.ps1"
-        $Proc = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle hidden -command "".\nvoc-start.ps1""; " -PassThru -WindowStyle Minimized
+        $ScriptFile = "$($(vars).dir)\build\apps\hive_nvoc_start.ps1"
+        $Script | OUt-File $ScriptFile
+        $start = [launchcode]::New()
+        $FilePath = "$PSHome\pwsh.exe"
+        $CommandLine = '"' + $FilePath + '"'
+        $arguments = "-executionpolicy bypass -command `"$ScriptFile`""
+        $CommandLine += " " + $arguments
+        $start_oc = $start.New_Miner($filepath, $CommandLine, (split-path $ScriptFile))
+        $Proc = Get-Process -id $start_oc.dwProcessId -ErrorAction Ignore
         $Proc | Wait-Process
-        if ($FansArgs) { $Process = ".\nvfans " }
-        Set-Location $($(vars).dir)
-        Start-Sleep -s .5
-        $ocmessage | Set-Content ".\build\txt\ocnvidia.txt"
-        Start-Sleep -S .5
         $ocmessage
+        $ocmessage | Set-Content ".\build\txt\ocnvidia.txt"
     }
 }
 
@@ -290,15 +292,18 @@ function Global:Start-AMDOC($NewOC) {
     }
    
     if ([string]$OcArgs -ne "") {
-        $Script += "`$Proc = Start-Process `".\overdriventool\OverdriveNTool.exe`" -ArgumentList `"$OCArgs`" -WindowStyle Minimized -PassThru; `$Proc | Wait-Process" 
-        Set-Location ".\build\apps"
-        $Script | OUt-File "AMDOC-start.ps1"
-        $Proc = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle hidden -command "".\AMDOC-start.ps1""" -PassThru -WindowStyle Minimized
+        $Script += "`$Proc = Start-Process `".\overdriventool\OverdriveNTool.exe`" -ArgumentList `"$OCArgs`" -NoNewWindow -PassThru; `$Proc | Wait-Process" 
+        $ScriptFile = "$($(vars).dir)\build\apps\hive_amdoc_start.ps1"
+        $Script | OUt-File $ScriptFile
+        $start = [launchcode]::New()
+        $FilePath = "$PSHome\pwsh.exe"
+        $CommandLine = '"' + $FilePath + '"'
+        $arguments = "-executionpolicy bypass -command `"$ScriptFile`""
+        $CommandLine += " " + $arguments
+        $start_oc = $start.New_Miner($filepath, $CommandLine, (split-path $ScriptFile))
+        $Proc = Get-Process -id $start_oc.dwProcessId -ErrorAction Ignore
         $Proc | Wait-Process
-        Start-Sleep -S .5
         $ocmessage
-        Set-Location $($(vars).dir)
         $ocmessage | Set-Content ".\build\txt\ocamd.txt"
-        Start-Sleep -s .5
     }
 }
