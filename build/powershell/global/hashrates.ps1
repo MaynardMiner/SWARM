@@ -160,5 +160,8 @@ function Global:Get-MinerHashRate {
         log "Current Pool Projection: $CurrentProfit `| $BTCCurrentProfit  (This is live value with no modifiers)"
         log "Current Daily Profit   : $ScreenProfit `| $BTCScreenProfit  (This is daily average with watt calculations)
 "
+        if($_.Algo -eq "veil") {
+            log "WARNING: You are mining veil. Compare pool 24 hour actual to current- Veil almost always returns less than 50% of estimate." -ForegroundColor Yellow
+        }
     }
 }
