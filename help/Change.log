@@ -1126,6 +1126,12 @@ OR NEWER- UPDATE IMMEDIATELY.
 
 # SWARM 2.7.6
 
+## NOTE: There is some larger Windows
+   changes in this release. If using
+   Windows, and have issues, let me know
+   and I will fix asap. So far I have been
+   unable to find any issues.
+
 ## What's New?
 * Moved cc-rfv2 to optional miners
   * Was causing high CPU issues.
