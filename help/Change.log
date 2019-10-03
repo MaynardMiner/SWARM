@@ -1138,9 +1138,34 @@ OR NEWER- UPDATE IMMEDIATELY.
   application lost of focus.
   * Added custom launchcode.dll in apps folder.
 * Removed extra console launch in Windows version.
+  * cmd.exe isn't used anymore in SWARM.
+  * everything works directly from pwsh.exe
+* Add more console info.
+   * notifies user test batch files are made
+     to test miners, and location
+   * notifies user that SWARM attempt to
+     record difficulty and intensity for
+     them.
+   * veil warning.
+* Fixed cc-rfv2 link.
+  * moved to optional folder-
+    Cuda error: invalid params.
+* Increased benchmark averages to
+  a 4-hour weight average instead of hourly.
+  Should help prevent miners jumping
+  back and forth between same algorithm,
+  but there are params to help this.
+* SWARM now not only generates batch/bash
+  files for testing, but one for each algorithm.
+  * It uses same environment params as SWARM itself.
 
 ## Fixes
 * Fixed AMD errors for autofan in Windows
   if only using NVIDIA.
 * removed cuckaroo from nbminer.
   * cuckaroo29d still present.
+* rare error that arguments aren't saved
+  after first time connection to HiveOS
+  when user used guided help.
+* missed port for x16rv2 on nicehash- fixed.
+* t-rex x16rv instead of x16rv2 - fixed.
