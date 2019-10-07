@@ -81,7 +81,7 @@ $(vars).AMDTypes | ForEach-Object {
                         Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
                         Version    = "$($(vars).amd.$CName.version)"
                         DeviceCall = "claymore"
-                        Arguments  = "-platform 1 -mport $Port $AddArgs-mode 1 -allcoins 1 $AddArgs-allpools 1 -epool $($_.Protocol)://$($_.Pool_Host):$($_.Port) -logfile `'$Log`' -ewal $($_.$User) $MinerWorker-wd 0 -gser 2 -dbg -1 -eres 1 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                        Arguments  = "-platform 1 -mport $Port $AddArgs-mode 1 -allcoins 1 $AddArgs-allpools 1 -epool $($_.Protocol)://$($_.Pool_Host):$($_.Port) -logfile `'$Log`' -ewal $($_.$User) $MinerWorker-wd 0 -gser 2 -dbg -1 -eres 0 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates  = $Stat.Hour
                         Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
                         Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
