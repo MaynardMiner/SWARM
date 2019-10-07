@@ -13,6 +13,7 @@
         "commands": {
             "x22i": "--gpu-threads 2 -w 256 -I 22",
             "phi2": "--gpu-threads 2 -w 256 -I 22",
+            "phi2-lux": "--gpu-threads 2 -w 256 -I 22",
             "allium": "--gpu-threads 2 -w 256 -I 22",
             "lyra2rev3": "--gpu-threads 2 -w 256 -I 24",
             "argon2d500": "--gpu-threads 2 -w 64 -g 2",
@@ -22,6 +23,7 @@
         "difficulty": {
             "x22i": "",
             "phi2": "",
+            "phi2-lux": "",
             "allium": "",
             "lyra2rev3": "",
             "argon2d500": "",
@@ -31,6 +33,7 @@
         "naming": {
             "x22i": "x22i",
             "phi2": "phi2",
+            "phi2-lux": "phi2",
             "allium": "allium",
             "lyra2rev3": "lyra2rev3",
             "argon2d500": "argon2d",
@@ -40,6 +43,7 @@
         "fee": {
             "x22i": 0,
             "phi2": 0,
+            "phi2-lux": 0,
             "allium": 0,
             "lyra2rev3": 0,
             "argon2d500": 0,

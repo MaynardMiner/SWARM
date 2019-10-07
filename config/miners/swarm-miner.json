@@ -9,6 +9,7 @@
             "sha256q": "",
             "exosis": "",
             "skein2": "",
+            "x12": "",
             "x14": "",
             "bmw512": "",
             "lyra2z": ""
@@ -19,6 +20,7 @@
             "sha256q": "",
             "exosis": "",
             "skein2": "",
+            "x12": "",
             "x14": "",
             "bmw512": "",
             "lyra2z": ""
@@ -29,6 +31,7 @@
             "sha256q": "sha256q",
             "exosis": "exosis",
             "skein2": "skein2",
+            "x12": "x12",
             "x14": "x14",
             "bmw512": "bmw512",
             "lyra2z": "lyra2z"
@@ -39,10 +42,10 @@
             "sha256q": 0,
             "exosis": 0,
             "skein2": 0,
+            "x12": 0,
             "x14": 0,
             "bmw512": 0,
             "lyra2z": 0
-
         }
     },
     "NVIDIA2": {
@@ -54,6 +57,7 @@
             "sha256q": "",
             "exosis": "",
             "skein2": "",
+            "x12": "",
             "x14": "",
             "bmw512": "",
             "lyra2z": ""
@@ -64,6 +68,7 @@
             "sha256q": "",
             "exosis": "",
             "skein2": "",
+            "x12": "",
             "x14": "",
             "bmw512": "",
             "lyra2z": ""
@@ -74,6 +79,7 @@
             "sha256q": "sha256q",
             "exosis": "exosis",
             "skein2": "skein2",
+            "x12": "x12",
             "x14": "x14",
             "bmw512": "bmw512",
             "lyra2z": "lyra2z"
@@ -84,10 +90,10 @@
             "sha256q": 0,
             "exosis": 0,
             "skein2": 0,
+            "x12": 0,
             "x14": 0,
             "bmw512": 0,
             "lyra2z": 0
-
         }
     },
     "NVIDIA3": {
@@ -99,6 +105,7 @@
             "sha256q": "",
             "exosis": "",
             "skein2": "",
+            "x12": "",
             "x14": "",
             "bmw512": "",
             "lyra2z": ""
@@ -109,6 +116,7 @@
             "sha256q": "",
             "exosis": "",
             "skein2": "",
+            "x12": "",
             "x14": "",
             "bmw512": "",
             "lyra2z": ""
@@ -119,6 +127,7 @@
             "sha256q": "sha256q",
             "exosis": "exosis",
             "skein2": "skein2",
+            "x12": "x12",
             "x14": "x14",
             "bmw512": "bmw512",
             "lyra2z": "lyra2z"
@@ -129,10 +138,10 @@
             "sha256q": 0,
             "exosis": 0,
             "skein2": 0,
+            "x12": 0,
             "x14": 0,
             "bmw512": 0,
             "lyra2z": 0
-
         }
     }
 }
