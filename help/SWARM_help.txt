@@ -177,7 +177,7 @@ Argument          Options           Explanation
                                           Used when -Type NVIDIA2 is specified. Will not
                                           work with Pools that only use BTC.
 
--AltWallet2  [Wallet Address]           Altcoin wallet adddress. Is used in combinatation of -Wallet1
+-AltWallet3  [Wallet Address]           Altcoin wallet adddress. Is used in combinatation of -Wallet1
                                          argument. This will tell SWARM if it switches to pool
                                          to auto-exchange into a coin other than BTC.
                                          Used when -Type NVIDIA2 is specified. Will not
@@ -223,8 +223,8 @@ Argument          Options           Explanation
 -Auto_Coin      [Yes,No]            Turns on Auto_Coin switching for pools that are capable of it.
                                     Default is "No".
 				    
--Auto_Algo     [Yes,No]		    Default is "Yes". Should always be set to "Yes", except when using the -Coin
-				                      Parameter with multiple coins. See -Coin for more information.
+-Auto_Algo     [Yes,No]		    Default is "Yes". Should always be set to "Yes", even when single
+                                    coin mining. Only avaiable for debug purposes.
 
 -Volume         [0-100]             Default is No. Volume calculates pool hashrate % in comparision
                                     to other pools, and will penalize pools based on percent difference
@@ -256,7 +256,8 @@ Argument          Options           Explanation
 -Switch_Threshold   0-1000          Expression is in percentage. This will add a percentage based
                                     increase in profit of current miner, in order to decrease
                                     switching unless profit breaks over x%, where x is the number
-                                    specified. Default is 1%.
+                                    specified. Default is 1%. This increase is set on INCOMING
+                                    estimates, not its current profit/day.
 
 -Threshold     [.1 - 100000]	    Expressed in BTC/day. Default is .02. If the total daily profits of a
 				    particular algo/coin exceed the -Threshold argument, it will be removed
