@@ -87,6 +87,7 @@ if ($Name -in $(arg).PoolName) {
 
         $Zergpool_Sorted.PSObject.Properties.Value | 
         Where-Object Algo -eq $Selected | 
+        Where-Object { if($(arg).coin -ne ""){$_.sym -in $(arg).coin} else{$true} }
         Sort-Object Level -Descending | 
         Select-Object -First 1 | 
         ForEach-Object { 
