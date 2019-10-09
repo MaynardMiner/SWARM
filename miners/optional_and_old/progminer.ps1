@@ -54,39 +54,35 @@ $(vars).NVIDIATypes | ForEach-Object {
         if ($MinerAlgo -in $(vars).Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $(vars).BanHammer) {
             $StatAlgo = $MinerAlgo -replace "`_", "`-"
             $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
-            $Check = $(vars).Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
-
-            if ($Check.RAW -ne "Bad") {
-                $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
-                    [PSCustomObject]@{
-                        MName      = $Name
-                        Coin       = $(vars).Coins
-                        Delay      = $MinerConfig.$ConfigType.delay
-                        Fees       = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
-                        Symbol     = "$($_.Symbol)"
-                        MinerName  = $MinerName
-                        Prestart   = $PreStart
-                        Type       = $ConfigType
-                        Path       = $Path
-                        Devices    = $Devices
-                        Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
-                        Version    = "$($(vars).nvidia.progminer.version)"
-                        DeviceCall = "progminer"
-                        Arguments  = "-U -P stratum+tcp://$($_.$User)@$($_.Pool_Host):$($_.Port) --api-port -$Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                        HashRates  = $Stat.Hour
-                        Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
-                        Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
-                        API        = "claymore"
-                        Port       = $Port
-                        Worker     = $Rig
-                        MinerPool  = "$($_.Name)"
-                        Wallet     = "$($_.$User)"
-                        URI        = $Uri
-                        Server     = "localhost"
-                        Algo       = "$($_.Algorithm)"                         
-                        Log        = $Log 
-                    }            
-                }
+            $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
+                [PSCustomObject]@{
+                    MName      = $Name
+                    Coin       = $(vars).Coins
+                    Delay      = $MinerConfig.$ConfigType.delay
+                    Fees       = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
+                    Symbol     = "$($_.Symbol)"
+                    MinerName  = $MinerName
+                    Prestart   = $PreStart
+                    Type       = $ConfigType
+                    Path       = $Path
+                    Devices    = $Devices
+                    Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
+                    Version    = "$($(vars).nvidia.progminer.version)"
+                    DeviceCall = "progminer"
+                    Arguments  = "-U -P stratum+tcp://$($_.$User)@$($_.Pool_Host):$($_.Port) --api-port -$Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    HashRates  = $Stat.Hour
+                    Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
+                    Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
+                    API        = "claymore"
+                    Port       = $Port
+                    Worker     = $Rig
+                    MinerPool  = "$($_.Name)"
+                    Wallet     = "$($_.$User)"
+                    URI        = $Uri
+                    Server     = "localhost"
+                    Algo       = "$($_.Algorithm)"                         
+                    Log        = $Log 
+                }            
             }
         }
     }

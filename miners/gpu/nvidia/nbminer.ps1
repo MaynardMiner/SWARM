@@ -48,52 +48,49 @@ $(vars).NVIDIATypes | ForEach-Object {
         if ($MinerAlgo -in $(vars).Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $(vars).BanHammer) {
             $StatAlgo = $MinerAlgo -replace "`_", "`-"
             $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
-            $Check = $(vars).Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
-            if ($Check.RAW -ne "Bad") {
-                $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
-                    $SelName = $_.Name
-                    switch ($MinerAlgo) {
-                        "ethash" {
-                            Switch ($SelName) {
-                                "nicehash" { $Stratum = "nicehash+tcp://"; $A = "ethash" }
-                                "whalesburg" { $Stratum = "stratum+ssl://"; $A = "ethash" }
-                            }
+            $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
+                $SelName = $_.Name
+                switch ($MinerAlgo) {
+                    "ethash" {
+                        Switch ($SelName) {
+                            "nicehash" { $Stratum = "nicehash+tcp://"; $A = "ethash" }
+                            "whalesburg" { $Stratum = "stratum+ssl://"; $A = "ethash" }
                         }
-                        "cuckaroo29" { $Stratum = "nicehash+tcp://"; $A = "cuckarood" }
-                        "cuckaroo29d" { $Stratum = "nicehash+tcp://"; $A = "cuckarood" }
-                        "cuckatoo31" { $Stratum = "nicehash+tcp://"; $A = "cuckatoo" }
-                        default { $Stratum = "nicehash+tcp://" }
-                    }        
-                    if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
-                    [PSCustomObject]@{
-                        MName      = $Name
-                        Coin       = $(vars).Coins
-                        Delay      = $MinerConfig.$ConfigType.delay
-                        Fees       = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
-                        Symbol     = "$($_.Symbol)"
-                        MinerName  = $MinerName
-                        Prestart   = $PreStart
-                        Type       = $ConfigType
-                        Path       = $Path
-                        Devices    = $Devices
-                        Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
-                        Version    = "$($(vars).nvidia.nbminer.version)"
-                        DeviceCall = "ccminer"
-                        Arguments  = "-a $A --api 0.0.0.0:$Port --no-nvml --log-file `'$log`' --url $Stratum$($_.Pool_Host):$($_.Port) --user $($_.$User) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                        HashRates  = $Stat.Hour
-                        Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
-                        Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
-                        MinerPool  = "$($_.Name)"
-                        API        = "nebutech"
-                        Port       = $Port
-                        Worker     = $Rig
-                        Wallet     = "$($_.$User)"
-                        URI        = $Uri
-                        Server     = "localhost"
-                        Algo       = "$($_.Algorithm)"                         
-                        Log        = "miner_generated"
-                    }            
-                }
+                    }
+                    "cuckaroo29" { $Stratum = "nicehash+tcp://"; $A = "cuckarood" }
+                    "cuckaroo29d" { $Stratum = "nicehash+tcp://"; $A = "cuckarood" }
+                    "cuckatoo31" { $Stratum = "nicehash+tcp://"; $A = "cuckatoo" }
+                    default { $Stratum = "nicehash+tcp://" }
+                }        
+                if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
+                [PSCustomObject]@{
+                    MName      = $Name
+                    Coin       = $(vars).Coins
+                    Delay      = $MinerConfig.$ConfigType.delay
+                    Fees       = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
+                    Symbol     = "$($_.Symbol)"
+                    MinerName  = $MinerName
+                    Prestart   = $PreStart
+                    Type       = $ConfigType
+                    Path       = $Path
+                    Devices    = $Devices
+                    Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
+                    Version    = "$($(vars).nvidia.nbminer.version)"
+                    DeviceCall = "ccminer"
+                    Arguments  = "-a $A --api 0.0.0.0:$Port --no-nvml --log-file `'$log`' --url $Stratum$($_.Pool_Host):$($_.Port) --user $($_.$User) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    HashRates  = $Stat.Hour
+                    Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
+                    Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
+                    MinerPool  = "$($_.Name)"
+                    API        = "nebutech"
+                    Port       = $Port
+                    Worker     = $Rig
+                    Wallet     = "$($_.$User)"
+                    URI        = $Uri
+                    Server     = "localhost"
+                    Algo       = "$($_.Algorithm)"                         
+                    Log        = "miner_generated"
+                }            
             }
         }
     }
