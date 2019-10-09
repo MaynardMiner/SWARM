@@ -86,7 +86,7 @@
     "minername": "z-enemy",
     "version": "2.3",
     "optional": "No",
-    "uri": "https://github.com/z-enemy/z-enemy/releases/download/ver-2.3/z-enemy-2.3-linux-cuda101-libcurl4.tar.gz"
+    "uri": "https://github.com/z-enemy/z-enemy/releases/download/ver-2.3/z-enemy-2.3-linux-cuda100.tar.gz"
   },
   "ewbf": {
     "name": "ewbf",
