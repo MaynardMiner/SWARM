@@ -1,5 +1,4 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
-$Meets_Threshold = $true
 
 $zpool_Request = [PSCustomObject]@{ }
 $zpool_Sorted = [PSCustomObject]@{ }
@@ -92,6 +91,7 @@ if ($Name -in $(arg).PoolName) {
 
         $zpool_Sorted.PSObject.Properties.Value | 
         Where-Object Algo -eq $Selected | 
+        Where-Object { if([string]$(arg).coin -ne "") { $_.sym -in $(arg).coin } else{$_} } |
         Sort-Object Level -Descending | 
         Select-Object -First 1 | 
         ForEach-Object { 

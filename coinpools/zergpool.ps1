@@ -1,9 +1,7 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
-$Meets_Threshold = $true
 
 $zergpool_Request = [PSCustomObject]@{ }
 $Zergpool_Sorted = [PSCustomObject]@{ }
-$SmallestValue = 1E-20 
 
 if ($(arg).Ban_GLT -eq "Yes") { $NoGLT = "GLT" }
 else { $NOGLT = "SWARM1234" } 
@@ -87,7 +85,7 @@ if ($Name -in $(arg).PoolName) {
 
         $Zergpool_Sorted.PSObject.Properties.Value | 
         Where-Object Algo -eq $Selected | 
-        Where-Object { if($(arg).coin -ne ""){$_.sym -in $(arg).coin} else{$true} }
+        Where-Object { if([string]$(arg).coin -ne "") { $_.sym -in $(arg).coin } else{$_} } |
         Sort-Object Level -Descending | 
         Select-Object -First 1 | 
         ForEach-Object { 
