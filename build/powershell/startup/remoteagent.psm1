@@ -67,6 +67,7 @@ function Global:start-update {
         $PreviousVersions += "SWARM.2.7.3"
         $PreviousVersions += "SWARM.2.7.4"
         $PreviousVersions += "SWARM.2.7.5"
+        $PreviousVersions += "SWARM.2.7.6"
 
         $PreviousVersions | ForEach-Object {
             $PreviousVersions += "$($_).linux"

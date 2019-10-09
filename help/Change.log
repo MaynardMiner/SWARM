@@ -1207,3 +1207,8 @@ OR NEWER- UPDATE IMMEDIATELY.
 * Remember: -Auto_Coin on works on pools with mc= argument. If you add other pools, SWARM
    will default auto-algo switch with them instead using algorithms in ``-Algorithm`` argument.
 
+## Updates
+* z-enemy updated
+* cryptodredge updated
+* tt-miner updated
+* nbminer updated
