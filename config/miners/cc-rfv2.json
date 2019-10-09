@@ -5,7 +5,7 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "rainforestv2": "-i 11"
+            "rainforestv2": "-i 28"
         },
         "difficulty": {
             "rainforestv2": ""
@@ -20,7 +20,7 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "rainforestv2": "-i 11"
+            "rainforestv2": "-i 28"
         },
         "difficulty": {
             "rainforestv2": ""
@@ -38,7 +38,7 @@
             "rainforestv2": ""
         },
         "difficulty": {
-            "rainforestv2": "-i 11"
+            "rainforestv2": "-i 28"
         },
         "naming": {
             "rainforestv2": "rfv2"

@@ -55,47 +55,43 @@ $(vars).AMDTypes | ForEach-Object {
         if ($MinerAlgo -in $(vars).Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $(vars).BanHammer) {
             $StatAlgo = $MinerAlgo -replace "`_", "`-"
             $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
-            $Check = $(vars).Miner_HashTable | Where Miner -eq $Name | Where Algo -eq $MinerAlgo | Where Type -Eq $ConfigType
-        
-            if ($Check.RAW -ne "Bad") {
-                $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
-                    $SelName = $_.Name
-                    switch ($SelName) {
-                        "nicehash" { $AddArgs = "-esm 3 -estale 0 " }
-                        default { $AddArgs = "" }
-                    }
-                    if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
-                    if ($_.Worker) { $MinerWorker = "-eworker $($_.Worker) " }
-                    else { $MinerWorker = "-epsw $($_.$Pass)$($Diff) " }
-                    [PSCustomObject]@{
-                        MName      = $Name
-                        Coin       = $(vars).Coins
-                        Delay      = $MinerConfig.$ConfigType.delay
-                        Fees       = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
-                        Symbol     = "$($_.Symbol)"
-                        MinerName  = $MinerName
-                        Prestart   = $PreStart
-                        Type       = $ConfigType
-                        Path       = $Path
-                        Devices    = $Devices
-                        Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
-                        Version    = "$($(vars).amd.$CName.version)"
-                        DeviceCall = "claymore"
-                        Arguments  = "-platform 1 -mport $Port $AddArgs-mode 1 -allcoins 1 $AddArgs-allpools 1 -epool $($_.Protocol)://$($_.Pool_Host):$($_.Port) -logfile `'$Log`' -ewal $($_.$User) $MinerWorker-wd 0 -gser 2 -dbg -1 -eres 0 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                        HashRates  = $Stat.Hour
-                        Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
-                        Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
-                        API        = "claymore"
-                        Port       = $Port
-                        Worker     = $Rig
-                        MinerPool  = "$($_.Name)"
-                        Wallet     = "$($_.$User)"
-                        URI        = $Uri
-                        Server     = "localhost"
-                        Algo       = "$($_.Algorithm)"
-                        Log        = "miner_generated"                               
-                    }            
+            $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
+                $SelName = $_.Name
+                switch ($SelName) {
+                    "nicehash" { $AddArgs = "-esm 3 -estale 0 " }
+                    default { $AddArgs = "" }
                 }
+                if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
+                if ($_.Worker) { $MinerWorker = "-eworker $($_.Worker) " }
+                else { $MinerWorker = "-epsw $($_.$Pass)$($Diff) " }
+                [PSCustomObject]@{
+                    MName      = $Name
+                    Coin       = $(vars).Coins
+                    Delay      = $MinerConfig.$ConfigType.delay
+                    Fees       = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
+                    Symbol     = "$($_.Symbol)"
+                    MinerName  = $MinerName
+                    Prestart   = $PreStart
+                    Type       = $ConfigType
+                    Path       = $Path
+                    Devices    = $Devices
+                    Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
+                    Version    = "$($(vars).amd.$CName.version)"
+                    DeviceCall = "claymore"
+                    Arguments  = "-platform 1 -mport $Port $AddArgs-mode 1 -allcoins 1 $AddArgs-allpools 1 -epool $($_.Protocol)://$($_.Pool_Host):$($_.Port) -logfile `'$Log`' -ewal $($_.$User) $MinerWorker-wd 0 -gser 2 -dbg -1 -eres 0 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    HashRates  = $Stat.Hour
+                    Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
+                    Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
+                    API        = "claymore"
+                    Port       = $Port
+                    Worker     = $Rig
+                    MinerPool  = "$($_.Name)"
+                    Wallet     = "$($_.$User)"
+                    URI        = $Uri
+                    Server     = "localhost"
+                    Algo       = "$($_.Algorithm)"
+                    Log        = "miner_generated"                               
+                }            
             }
         }
     }

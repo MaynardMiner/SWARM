@@ -329,7 +329,6 @@ While ($true) {
         . .\build\powershell\scripts\bans.ps1 "add" $(arg).Bans "process" | Out-Null
         Global:Add-Algorithms
         Global:Set-Donation
-        if ($(arg).Coin.Count -eq 1 -and $(arg).Coin -ne "") { $(arg).Auto_Coin = "No" }
 
         # Pricing and Clearing Timeouts 
         Global:Add-Module "$($(vars).build)\pricing.psm1"
@@ -383,8 +382,6 @@ While ($true) {
             . .\build\data\json.ps1
             Global:Get-Message
         }
-
-        create Miner_HashTable (Global:Get-MinerHashTable)
 
         ##Add Global Modules - They Get Removed in Above Function
         Global:Remove-Modules
@@ -489,7 +486,6 @@ While ($true) {
         remove Algorithm
         remove Coins
         remove SingleMode
-        remove Miner_HashTable
         remove Miners_Combo
         remove Pool_HashRates
 
