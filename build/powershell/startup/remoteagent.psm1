@@ -439,6 +439,17 @@ function Global:start-update {
                                         }
                                     }
                                 }
+
+                                if ($ChangeFile -eq "swarm-miner.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands | Add-Member "x12" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "x12" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "x12" "x12" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "x12" 0 -ErrorAction SilentlyContinue
+                                        }
+                                    }
+                                }
  
                                 if($ChangeFile -eq "pool-algos.json") {
                                     $Data | add-Member "x25x" @{alt_names = @("x25x"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
@@ -452,7 +463,8 @@ function Global:start-update {
                                     $Data | add-Member "equihash_150/5" @{alt_names = @("equihash_150/5","equihash150","beam"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force                                   
                                     $Data | add-Member "argon2d500" @{alt_names = @("argon2d500"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force         
                                     $Data | add-Member "argon2d-dyn" @{alt_names = @("argon2d-dyn"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force                                                             
-                                    $Data | add-Member "beamv2" @{alt_names = @("beamv2"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force                                                             
+                                    $Data | add-Member "beamv2" @{alt_names = @("beamv2"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force           
+                                    $Data | add-Member "x12" @{alt_names = @("x12"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force                                                                                                               
                                 } 
                                 
 
