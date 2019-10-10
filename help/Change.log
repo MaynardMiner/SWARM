@@ -1170,3 +1170,45 @@ OR NEWER- UPDATE IMMEDIATELY.
   when user used guided help.
 * Missed port for x16rv2 on nicehash- fixed.
 * T-rex x16rv instead of x16rv2 - fixed.
+
+############################################
+############################################
+
+# SWARM 2.7.7
+
+## What's New?
+* Added x12 algorithm to SWARM-MINER and
+  SWARM.
+* Improved AI to make better miner choices
+  when multiple bans start occurring.
+* Removed miner_hashtable variable - previous
+  optimization made feature no longer needed.
+* Set Claymore argument -eres to 0 to help
+  with Windows mining. You can change in
+  respective claymore and claymore-amd.ps1
+  files in the "Arguments=" line.
+* AMD no longer requires voltages to be set
+  for overclocking in windows, and vice-versa
+  in HiveOS. (still need to change in local
+  SWARM oc if used, and it requires both voltages
+  and clock speed)
+* ``-Coin`` Parameter behaves differently now.
+  * ``Auto_Coin`` set to "No", you will direct mine
+    the coin (c=``-PasswordCurrency1``) in pool.
+  * ``Auto_Coin`` set to Yes, you will auto-exchange
+    coin. (c=``-PasswordCurrency1``,mc=``-Coin``)
+  * Examples of both:
+    ``-Algorithm x16rv2 -Auto_Coin No -Coin RVN -Wallet1 [RAVEN ADDRESS] -PasswordCurrency1 RVN`` 
+      You will mine RVN to RVN wallet.
+    ``-Algorithm x16rv2 -Auto_Coin Yes -Coin RVN -Wallet1 [BTC ADDRESS] -PasswordCurrency1 BTC`` 
+      You will mine RVN and auto-exchange to BTC wallet.
+    ``-Algorithm mtp,x16rv2 -Auto_Coin Yes -Coin RVN,XZC -Wallet1 [BTC ADDRESS] -PasswordCurrency1 BTC``
+      You will mine either RVN and XZC (which ever one is more profitable), and auto-exchange to BTC
+* Remember: -Auto_Coin on works on pools with mc= argument. If you add other pools, SWARM
+   will default auto-algo switch with them instead using algorithms in ``-Algorithm`` argument.
+
+## Updates
+* z-enemy updated
+* cryptodredge updated
+* tt-miner updated
+* nbminer updated

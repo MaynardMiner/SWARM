@@ -128,9 +128,9 @@
         "NVIDIA2": ".\\bin\\z-enemy-2\\z-enemy.exe",
         "NVIDIA3": ".\\bin\\z-enemy-3\\z-enemy.exe",
         "minername": "z-enemy.exe",
-        "version": "2.2",
+        "version": "2.3",
         "optional": "No",
-        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/z-enemy-windows.zip"
+        "uri": "https://github.com/z-enemy/z-enemy/releases/download/ver-2.3/z-enemy-2.3-win-cuda10.1.zip"
     },
     "ewbf": {
         "name": "ewbf",
@@ -238,7 +238,7 @@
         "NVIDIA2": ".\\bin\\tt-miner-2\\TT-Miner.exe",
         "NVIDIA3": ".\\bin\\tt-miner-3\\TT-Miner.exe",
         "minername": "TT-Miner.exe",
-        "version": "3.0.9",
+        "version": "3.0.10",
         "optional": "No",
         "uri": "https://tradeproject.de/download/Miner/TT-Miner.zip"
     },

@@ -24,7 +24,7 @@ To focus solely on SWARM's project mission: SWARM was written to integrate fully
 
 ### SMOS Integration
 
-After many user requests, SWARM now works in Simple Miner. See Wiki on how to setup. Simplemining.net is lighter than HiveOS, which makes it generally easier to use for an experienced miner, but non-experienced Linux user. I don't personally regularly use SMOS, so if you have an issue, post in issues section, and I will plug in and update SMOS compatibility.
+After many user requests, SWARM now works in Simple Miner. See Wiki on how to setup. Simplemining.net is lighter than HiveOS, which makes it generally easier to use for an experienced miner, but non-experienced Linux user. I don't personally regularly use SMOS, nor maintain SMOS support, so if you have an issue, post in issues section, and I will plug in and update SMOS compatibility.
 
 ### Highly Sophisticated Customization
 * OC Tuning by algorithm

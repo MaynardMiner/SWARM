@@ -177,7 +177,7 @@ Argument          Options           Explanation
                                           Used when -Type NVIDIA2 is specified. Will not
                                           work with Pools that only use BTC.
 
--AltWallet2  [Wallet Address]           Altcoin wallet adddress. Is used in combinatation of -Wallet1
+-AltWallet3  [Wallet Address]           Altcoin wallet adddress. Is used in combinatation of -Wallet1
                                          argument. This will tell SWARM if it switches to pool
                                          to auto-exchange into a coin other than BTC.
                                          Used when -Type NVIDIA2 is specified. Will not
@@ -223,8 +223,8 @@ Argument          Options           Explanation
 -Auto_Coin      [Yes,No]            Turns on Auto_Coin switching for pools that are capable of it.
                                     Default is "No".
 				    
--Auto_Algo     [Yes,No]		    Default is "Yes". Should always be set to "Yes", except when using the -Coin
-				                      Parameter with multiple coins. See -Coin for more information.
+-Auto_Algo     [Yes,No]		    Default is "Yes". Should always be set to "Yes", even when single
+                                    coin mining. Only avaiable for debug purposes.
 
 -Volume         [0-100]             Default is No. Volume calculates pool hashrate % in comparision
                                     to other pools, and will penalize pools based on percent difference
@@ -256,7 +256,8 @@ Argument          Options           Explanation
 -Switch_Threshold   0-1000          Expression is in percentage. This will add a percentage based
                                     increase in profit of current miner, in order to decrease
                                     switching unless profit breaks over x%, where x is the number
-                                    specified. Default is 1%.
+                                    specified. Default is 1%. This increase is set on INCOMING
+                                    estimates, not its current profit/day.
 
 -Threshold     [.1 - 100000]	    Expressed in BTC/day. Default is .02. If the total daily profits of a
 				    particular algo/coin exceed the -Threshold argument, it will be removed
@@ -461,13 +462,25 @@ Argument          Options           Explanation
 
 Quickly Switch Between Profit Switching To Direct Coin Mining
 
--Coin        [Pool Symbol Of Coin]      When this is specified, SWARM will convert
-                                        c= in pool string to this symbol, allowing
-                                        you to mine a single coin. Must be used in
-                                        conjuction with Algorithm parameter, only
-                                        one coin can be selected. 
-                                        -Wallet1 should be coin address
-                                        -PasswordCurrency1 should be coin Symbol.
+-Coin        [Pool Symbol Of Coin]      Coin has two different modes:
+                                        1.) If used with Auto_Coin "Yes", you can
+                                            mine a sub-set of specific coins, and
+                                            auto-exchange them. Works only with pools
+                                            capable of -Auto_Coin. For example:
+                                            
+                                        -Algorithm mtp,x16rv2 -Coin RVN,XZC -Auto_Coin Yes -PasswordCurrency1 BTC
+
+                                          This will allow you to switch between either RVN or XZC, which ever is
+                                          more profitable, and auto-exchange to BTC wallet (-Wallet1 parameter).
+                                          You can mine just one coin, or mutliple.
+
+                                        2.) If used with -Auto_Coin "No", you will directly mine
+                                            a single coin.
+                                        
+                                        -Algorithm x16rv2 -Coin RVN -Auto_Coin No -PasswordCurrency1 RVN
+
+                                          This will allow you to switch to single coin mining, and mine to
+                                          RVN wallet.
 
 ***********************************************************************************************************
 ************* Coin Parameters *****************************************************************************
@@ -518,7 +531,7 @@ They will be enabled when coin is most profitable.
                                                      (Note: this would be a RVN address)
 
 ***********************************************************************************************************
-************** Whalesburg Pool Paramters*******************************************************************
+************** Whalesburg Pool Paramters ******************************************************************
 ***********************************************************************************************************
 
         Required If Using -Poolname Whalesburg
@@ -547,7 +560,7 @@ Dividing Miner
 
 SWARM has the capability of dividing miner into seperate device groups. By default, 
 it is set to use Wallet1 & PasswordCurrency1. You can however choose to divide you miner, up to three 
-different groups. This is the commands/options you must add to do so:
+different groups with NVIDIA. This is the commands/options you must add to do so:
 
 -Type
  
@@ -646,5 +659,5 @@ Example of use;
 
 This will tell miner to use NVIDIA1 with Wallet1 which is BTC, and to use same wallet for CPU which is 
 BTC. It will use wallet1 when mining on nlpool, and -Nicehash_Wallet1 when mining on nicehash. 
-Both are BTC wallets.
+Both are BTC wallets. CPU miner will use 3 cpu cores.
 **************************
