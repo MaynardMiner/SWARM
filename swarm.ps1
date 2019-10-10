@@ -183,6 +183,8 @@ if ($Config.Params.Swarm_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") { $(vars).N
 ## Initialize
 $(vars).Add("GPU_Count", $Null)
 $(vars).Add("BusData", $Null)
+$(vars).Add("types",@())
+$(vars).Add("threads",$null)
 switch ($(arg).Platform) {
     "linux" {
         Global:Add-Module "$($(vars).startup)\linuxconfig.psm1"

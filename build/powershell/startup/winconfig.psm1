@@ -188,24 +188,38 @@ function Global:Get-GPUCount {
     }
 
     if ([string]$(arg).type -eq "") {
+        $global:Config.user_params.type = @()
+        $global:Config.params.type = @()
         log "Searching For Mining Types" -ForegroundColor Yellow
-        $types = @()
         if ($GN -and $GA) {
             log "AMD and NVIDIA Detected" -ForegroundColor Magenta
-            $types += "AMD1,NVIDIA2" 
+            $(vars).types += "AMD1", "NVIDIA2"
+            $global:config.user_params.type += "AMD1", "NVIDIA2"
+            $global:config.params.type += "AMD1", "NVIDIA2"                  
         }
         elseif ($GN) {
             log "NVIDIA Detected: Adding NVIDIA" -ForegroundColor Magenta
-            $types += "NVIDIA1" 
+            $(vars).types += "NVIDIA1" 
+            $global:config.user_params.type += "NVIDIA1" 
+            $global:config.params.type += "NVIDIA1"        
         }
         elseif ($GA) {
             log "AMD Detected: Adding AMD" -ForegroundColor Magenta
-            $types += "AMD1" 
+            $(vars).types += "AMD1" 
+            $global:config.user_params.type += "AMD1" 
+            $global:config.params.type += "AMD1"    
         }
         log "Adding CPU"
-        if([string]$(arg).CPUThreads -eq ""){ $(arg).CPUThreads = $(Get-CimInstance -ClassName 'Win32_Processor' | Select-Object -Property 'NumberOfCores').NumberOfCores;}
-        log "Using $($(arg).CPUThreads) for mining"
-        $(arg).type = $types
+        if ([string]$(arg).CPUThreads -eq "") { 
+            $threads = $(Get-CimInstance -ClassName 'Win32_Processor' | Select-Object -Property 'NumberOfCores').NumberOfCores; 
+            $(vars).threads = $threads
+            $global:config.user_params.CPUThreads = $threads
+            $global:config.params.CPUThreads = $threads
+        }
+        log "Using $($(arg).CPUThreads) cores for mining"
+        $(vars).types += "CPU"
+        $global:config.user_params.type += "CPU"
+        $global:config.params.type += "CPU"
     }
     
     if ($(arg).Type -like "*CPU*") { for ($i = 0; $i -lt $(arg).CPUThreads; $i++) { $DeviceList.CPU.Add("$($i)", $i) } }
@@ -393,7 +407,7 @@ function Global:Start-WindowsConfig {
             $CommandLine = '"' + $FilePath + '"'
             $arguments = "-executionpolicy bypass -command `".\build\powershell\scripts\autofan.ps1`""
             $CommandLine += " " + $arguments
-            $New_Miner = $start.New_Miner($filepath,$CommandLine,$global:Dir)
+            $New_Miner = $start.New_Miner($filepath, $CommandLine, $global:Dir)
             $Process = Get-Process -id $New_Miner.dwProcessId -ErrorAction Ignore
             $Process.ID | Set-Content ".\build\pid\autofan.txt"
         }
