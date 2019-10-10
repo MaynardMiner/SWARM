@@ -32,7 +32,7 @@
     "CoinExchange": "ETH",
     "Conserve": "No",
     "CPUOnly": "No",
-    "CPUThreads": 1,
+    "CPUThreads": "",
     "Cuda": "10",
     "Currency": [
         "USD"
