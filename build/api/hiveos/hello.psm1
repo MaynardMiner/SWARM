@@ -65,7 +65,7 @@ function Global:Start-Hello($RigData) {
         $message = $response
     }
     catch [Exception] {
-        log "Exception: "$_.Exception.Message -ForegroundColor Red;
+        log "Exception: $($_.Exception.Message)" -ForegroundColor Red;
     }
         
     return $message
