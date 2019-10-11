@@ -58,8 +58,8 @@ if ($Name -in $(arg).PoolName) {
                 if (-not $(arg).Nicehash_Wallet2) { $NH_Wallet2 = $(arg).Wallet2; [Double]$Fee = 5; }else { $NH_Wallet2 = $(arg).Nicehash_Wallet2; [Double]$Fee = $(arg).Nicehash_Fee }
                 if (-not $(arg).Nicehash_Wallet3) { $NH_Wallet3 = $(arg).Wallet3; [Double]$Fee = 5; }else { $NH_Wallet3 = $(arg).Nicehash_Wallet3; [Double]$Fee = $(arg).Nicehash_Fee }
 
-                $nicehash_Host = "$($Algo).$Region-new.nicehash.com$X"
-                $nicehash_excavator = "nhmp.$Region-new.nicehash.com$X"
+                $nicehash_Host = "$($Algo).$Region.nicehash.com$X"
+                $nicehash_excavator = "nhmp.$Region.nicehash.com$X"
                 $nicehash_Port = $nicehash_ports.$Algo
                 ## 8 bit estimates
                 $Divisor = 100000000
