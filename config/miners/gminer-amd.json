@@ -10,7 +10,6 @@
             "export GPU_MAX_ALLOC_PERCENT=100"
         ],
         "commands": {
-            "equihash_150/5": "",
             "cuckoo_cycle": "",
             "cuckatoo31": "",
             "beamv2": "",
@@ -22,7 +21,6 @@
             "equihash_200/9": ""
         },
         "difficulty": {
-            "equihash_150/5": "",
             "cuckoo_cycle": "",
             "cuckatoo31": "",
             "beamv2": "",
@@ -34,7 +32,6 @@
             "equihash_200/9": ""
         },
         "naming": {
-            "equihash_150/5": "equihash_150/5",
             "cuckoo_cycle": "cuckoo_cycle",
             "cuckatoo31": "cuckatoo31",
             "beamv2": "beamv2",
@@ -46,7 +43,6 @@
             "equihash_200/9": "equihash_210/9"
         },
         "fee": {
-            "equihash_150/5": 2,
             "cuckoo_cycle": 2,
             "cuckatoo31": 2,
             "beamv2": 2,
