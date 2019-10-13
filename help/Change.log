@@ -1212,3 +1212,32 @@ OR NEWER- UPDATE IMMEDIATELY.
 * cryptodredge updated
 * tt-miner updated
 * nbminer updated
+
+############################################
+############################################
+
+# SWARM 2.7.8
+
+## Updates
+* Removed cuckaroo29 from gminer (but d29 still available)
+* updated gminer
+* updated t-rex
+* updated nbminer
+* updated wildrig-multi
+* updated phoenix miner
+* updated tt-miner
+
+## Fixes
+* EU users were having issues with nicehash.
+  its "-new" stratum. Changed to original stratum,
+  and seemed to resolved.
+
+## Notes
+* It has been confirmed that cuckaroo29 dredge has issues
+  in hashrate API.
+* It has been confirmed that lower end cards have issues
+  with ethash in Windows for most miners (don't message me
+  as it is miner).
+* If you have issues with miners, consider changing
+  driver, older drivers have been reporting to work
+  better.

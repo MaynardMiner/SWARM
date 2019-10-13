@@ -68,6 +68,7 @@ function Global:start-update {
         $PreviousVersions += "SWARM.2.7.4"
         $PreviousVersions += "SWARM.2.7.5"
         $PreviousVersions += "SWARM.2.7.6"
+        $PreviousVersions += "SWARM.2.7.7"
 
         $PreviousVersions | ForEach-Object {
             $PreviousVersions += "$($_).linux"
@@ -257,6 +258,11 @@ function Global:start-update {
                                             $Data.$_.naming | Add-Member "x25x" "x25x" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "x25x" 1 -ErrorAction SilentlyContinue
 
+                                            $Data.$_.commands | Add-Member "x16rv2" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "x16rv2" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "x16rv2" "x16rv2" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "x16rv2" 1 -ErrorAction SilentlyContinue
+
                                             $Data.$_.commands | Add-Member "anime" "" -ErrorAction SilentlyContinue
                                             $Data.$_.difficulty | Add-Member "anime" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "anime" "anime" -ErrorAction SilentlyContinue
@@ -339,6 +345,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "beamv2" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "beamv2" "beamv2" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "beamv2" 2 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "equihash_150/5"
+                                            $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "equihash_150/5"
+                                            $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "equihash_150/5"
+                                            $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "equihash_150/5"
                                         }
                                     }
                                 }
@@ -365,6 +376,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "equihash_125/4" "equihash_125/4" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "equihash_125/4" 2 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "equihash_150/5"
+                                            $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "equihash_150/5"
+                                            $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "equihash_150/5"
+                                            $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "equihash_150/5"
                                         }
                                     }
                                 }
