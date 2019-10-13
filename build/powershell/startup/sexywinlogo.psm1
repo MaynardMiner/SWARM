@@ -40,7 +40,7 @@ log "
                                                                                      |.          .|
                                                                                      .MMMMMMMMMMMM.
                 Using Latest Drivers                                                 .MMMMMMMMMMMM.
-             May Not Alway Be Beneficial                                              \.        ./
+             May Not Always Be Beneficial                                             \.        ./
                                                                                         :MMMMMM:
                                                                                           :MMM:
                                                                                            \./
