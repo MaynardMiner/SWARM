@@ -42,8 +42,8 @@ log "
                                                                                  /    +mMMMMMMMMm+    \
                                                                                      |.          .|
                                                                                      .MMMMMMMMMMMM.
-                                                                                     .MMMMMMMMMMMM.
-                                                                                      \.        ./
+                Using Latest Drivers                                                 .MMMMMMMMMMMM.
+             May Not Alway Be Beneficial                                              \.        ./
                                                                                         :MMMMMM:
                                                                                           :MMM:
                                                                                            \./

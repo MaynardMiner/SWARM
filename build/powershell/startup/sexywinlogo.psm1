@@ -39,8 +39,8 @@ log "
                                                                                  /    +mMMMMMMMMm+    \
                                                                                      |.          .|
                                                                                      .MMMMMMMMMMMM.
-                                                                                     .MMMMMMMMMMMM.
-                                                                                      \.        ./
+                Using Latest Drivers                                                 .MMMMMMMMMMMM.
+             May Not Alway Be Beneficial                                              \.        ./
                                                                                         :MMMMMM:
                                                                                           :MMM:
                                                                                            \./
@@ -51,6 +51,6 @@ log "
 						       BTC DONATION ADDRESS TO SUPPORT DEVELOPMENT: 1FpuMha1QPaWS4PTPZpU1zGRzKMevnDpwg
 				  	             This Software Is Open-Source. However, 1.50% Dev Fee Was Written In This Code
 							   Dev Fee is NOT 1.50% of all Mining. 1.50% of 86400 seconds (24 hours)
-					                   It Can Take Awhile To Load At First Time Start-Up. Please Be Patient!
+                             It Can Take Awhile To Load At First Time Start-Up. Please Be Patient!
 " -foregroundColor Yellow
 }
