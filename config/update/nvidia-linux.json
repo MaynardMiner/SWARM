@@ -40,7 +40,7 @@
     "NVIDIA2": ".\\bin\\phoenix-2\\PhoenixMiner",
     "NVIDIA3": ".\\bin\\phoenix-3\\PhoenixMiner",
     "minername": "PhoenixMiner",
-    "version": "4.6c",
+    "version": "4.7c",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/phoenix-linux.tar.gz"
   },
@@ -293,7 +293,7 @@
     "NVIDIA2": ".\\bin\\tt-miner-2\\TT-Miner",
     "NVIDIA3": ".\\bin\\tt-miner-3\\TT-Miner",
     "minername": "TT-Miner",
-    "version": "3.0.10",
+    "version": "3.0.10r",
     "optional": "No",
     "uri": "https://tradeproject.de/download/Miner/TT-Miner.tar.xz"
   },

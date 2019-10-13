@@ -172,7 +172,7 @@
         "NVIDIA2": ".\\bin\\phoenix-2\\PhoenixMiner.exe",
         "NVIDIA3": ".\\bin\\phoenix-3\\PhoenixMiner.exe",
         "minername": "PhoenixMiner.exe",
-        "version": "4.6c",
+        "version": "4.7c",
         "optional": "No",
         "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/phoenix-miner-windows.zip"
     },
@@ -238,7 +238,7 @@
         "NVIDIA2": ".\\bin\\tt-miner-2\\TT-Miner.exe",
         "NVIDIA3": ".\\bin\\tt-miner-3\\TT-Miner.exe",
         "minername": "TT-Miner.exe",
-        "version": "3.0.10",
+        "version": "3.0.10r",
         "optional": "No",
         "uri": "https://tradeproject.de/download/Miner/TT-Miner.zip"
     },
