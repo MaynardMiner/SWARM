@@ -1231,6 +1231,8 @@ OR NEWER- UPDATE IMMEDIATELY.
 * EU users were having issues with nicehash.
   its "-new" stratum. Changed to original stratum,
   and seemed to resolved.
+* Fixed issues with auto-detection of -type if not
+  specified.
 
 ## Notes
 * It has been confirmed that cuckaroo29 dredge has issues
