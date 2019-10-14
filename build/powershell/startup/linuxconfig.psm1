@@ -327,8 +327,8 @@ function Global:Get-GPUCount {
         }
 
         if ([string]$(arg).type -eq "") {
-            $global:config.user_params = @()
-            $global:config.params = @()
+            $global:config.user_params.type = @()
+            $global:config.params.type = @()
             log "Searching For Mining Types" -ForegroundColor Yellow
             if ($GN -and $GA) {
                 log "AMD and NVIDIA Detected" -ForegroundColor Magenta
