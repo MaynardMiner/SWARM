@@ -51,9 +51,9 @@
     "AMD2": ".\\bin\\gminer-amd-2\\miner.exe",
     "AMD3": ".\\bin\\gminer-amd-3\\miner.exe",
     "minername": "miner.exe",
-    "version": "1.68",
+    "version": "1.70",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.68/gminer_1_68_windows64.zip"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.70/gminer_1_70_windows64.zip"
   },
   "phoenix-amd": {
     "name": "phoenix-amd",
