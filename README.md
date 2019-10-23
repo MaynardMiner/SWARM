@@ -18,6 +18,8 @@ SWARM is an collection scripts written in both powershell and bash, and is a pro
 
 **This is not a fork of multiminer/nemosminer/sniffdog. This is original software.**
 
+This miner is a commandline tool. It does not require a desktop environment in Linux, and can operate purely from ssh/terminal with commands that can be called from usr/bin. It was designed to leverage the abilities of Linux, not just to be compatible with it.
+
 ### HiveOS Integration (Windows or Linux)
 
 **Note: SWARM is developed and used regulary on latest HiveOS 16.04 image, and is recommended for Ubuntu 16.04, which is the linux version most miners are developed on. If you experience isssues using 18.04 (bleeding edge/beta image), please report issue, and I will connect to bleeding edge image, and fix asap.**
