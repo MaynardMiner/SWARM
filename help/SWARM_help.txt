@@ -388,7 +388,7 @@ Argument          Options           Explanation
 -Conserve        [Yes or No]        Default is "No". This option will determine if SWARM should continue
                                     mining even though all estimates are negative figures.
 
--Rejections 	    [0-100]	    Default is 50. This the % of rejections required for SWARM to 
+-Rejections 	    [0-100]	    Default is 75. This the % of rejections required for SWARM to 
 				    consider benchmark as a bad benchmark.
 
 -Timeout          [0-24]            Expression is in hours. Decimal can be used (0.5). When SWARM

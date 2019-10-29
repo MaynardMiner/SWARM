@@ -1243,3 +1243,14 @@ OR NEWER- UPDATE IMMEDIATELY.
 * If you have issues with miners, consider changing
   driver, older drivers have been reporting to work
   better.
+
+############################################
+############################################
+
+# SWARM 2.7.9
+
+## Updates
+* nanominer updated.
+* gminer updated.
+* wildrig updated.
+* miniz updated

@@ -1,10 +1,10 @@
 # SWARM: Profit Switching AI For HiveOS, SMOS, Linux, & Windows
 
-**Developer Notice** : SWARM does perform occassional disk read/writes, more than a typical mining OS. If you are using a usb stick and have issues- It is likely the quality of the USB stick/condition.
+**Developer Notice** : Commits have slowed down, due to the fact that I am working on SWARM_V2, which will work very differently than current SWARM. I will however continue to maintain this repsository until I finish new project. SWARM_V2 will be built with a much larger framework in mind, and further attempts to reduce its memory footprint. I am also attempting to further make it more developer-freindly in hopes to garner assistance from other developers to help debug/maintain.
 
 **IMPORTANT** : SWARM attempts to provide miners that work for as many cards as possible. Some miners may work for your cards, some may not. All miners are set with default settings provided from developers themselves. There is a ``-Bans`` argument that lets you remotely remove miners from the list. SWARM should support, if not all late model cards.
 
-**Windows Version Does Not Require HiveOS Windows. SWARM is built with all HiveOS methods.**
+**Windows Version Does Not Require HiveOS Windows. SWARM is built with all HiveOS API methods, and its own utilities like autofan, and overclocking. However, the overclocking for AMD is slightly different, an requires prior registry modifications and compute mode activated to fully manipulate power play tables.**
 
 ## SWARM wiki:
 
@@ -17,6 +17,8 @@ https://github.com/MaynardMiner/SWARM/wiki
 SWARM is an collection scripts written in both powershell and bash, and is a profit switching mining script that will work within any OS with very few/little changes. (The miners that SWARM uses may vary) SWARM, is written to be used as an all purpose/all platform mining system that can be implemented/managed on a large scale basis. It was developed for larger mining administrators, who are generally unable to interact with every mining unit/rig directly, but would like to work with auto-exchange/profit switching mining. It favors command line interfacing vs. GUI.
 
 **This is not a fork of multiminer/nemosminer/sniffdog. This is original software.**
+
+This miner is a commandline tool. It does not require a desktop environment in Linux, and can operate purely from ssh/terminal with commands that can be called from /usr/bin. It was designed to leverage the abilities of Linux, not just to be compatible with it.
 
 ### HiveOS Integration (Windows or Linux)
 
@@ -68,7 +70,8 @@ I am a sole developer, and this is a large project. I prioritize workload by req
 
 **SWARM requires no installation. However there are a few pre-requisites:**
 * Windows 10 is supported, but it should work in Windows 7/8.
-* Have recent cuda/amd drivers installed.
+* Have recent cuda/amd drivers installed. 
+  * Note- The latest drivers aren't always the best to use, see discord support if you have questions.
 * Latest C++ Redistributable Packages for Visual Studio.
 * HiveOS user account, your farm hash ready. Ideally a pre-made flight sheet for SWARM. See wiki on how to setup a flight sheet.
   * https://hiveos.farm/
