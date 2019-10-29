@@ -128,9 +128,9 @@
     "AMD2": ".\\bin\\wildrig-2\\wildrig.exe",
     "AMD3": ".\\bin\\wildrig-3\\wildrig.exe",
     "minername": "wildrig.exe",
-    "version": "0.19.3",
+    "version": "0.20.0.3",
     "optional": "No",
-    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.19.3/wildrig-multi-windows-0.19.3-beta.7z"
+    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.20.0/wildrig-multi-windows-0.20.0.3.7z"
   },
   "fancyix": {
     "name": "fancyix",

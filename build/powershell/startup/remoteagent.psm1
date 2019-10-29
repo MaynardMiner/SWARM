@@ -69,6 +69,7 @@ function Global:start-update {
         $PreviousVersions += "SWARM.2.7.5"
         $PreviousVersions += "SWARM.2.7.6"
         $PreviousVersions += "SWARM.2.7.7"
+        $PreviousVersions += "SWARM.2.7.8"
 
         $PreviousVersions | ForEach-Object {
             $PreviousVersions += "$($_).linux"
@@ -272,6 +273,16 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "skein2" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "skein2" "skein2" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "skein2" 1 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "mtp" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "mtp" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "mtp" "mtp" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "mtp" 1 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "mtp-tcr" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "mtp-tcr" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "mtp-tcr" "mtp-tcr" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "mtp-tcr" 1 -ErrorAction SilentlyContinue
 
                                         }
                                     }
