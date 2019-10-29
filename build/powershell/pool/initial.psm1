@@ -15,10 +15,12 @@ function Global:Get-PoolTables {
     $(vars).FeeTable.Add("zpool", @{ })
     $(vars).FeeTable.Add("zergpool", @{ })
     $(vars).FeeTable.Add("fairpool", @{ })
+    $(vars).FeeTable.Add("blockmasters", @{ })
 
     $(vars).divisortable.Add("zpool", @{ })
     $(vars).divisortable.Add("zergpool", @{ })
     $(vars).divisortable.Add("fairpool", @{ })
+    $(vars).divisortable.Add("blockmasters", @{ })
     
     if ($(arg).Coin.Count -eq 1 -and $(arg).Coin -ne "" -and $(vars).SWARMAlgorithm.Count -eq 1 -and $(arg).SWARM_Mode -ne "") {
         $(vars).SingleMode = $true

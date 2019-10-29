@@ -44,6 +44,8 @@ if ($Name -in $(arg).PoolName) {
         $Pool_Port = $_.port
         $Pool_Host = "$($Region)blockmasters.co$X"
         $Divisor = 1000000 * $_.mbtc_mh_factor
+        $(vars).divisortable.blockmasters.Add($_.Name, $_.mbtc_mh_factor)
+        $(vars).FeeTable.blockmasters.Add($_.Name, $_.fees)
         $Hashrate = $_.hashrate
         if([double]$HashRate -eq 0){ $Hashrate = 1 }  ## Set to prevent volume dividebyzero error
         $previous = [Math]::Max(([Double]$_.actual_last24h * 0.001) / $Divisor * (1 - ($_.fees / 100)), $SmallestValue)
