@@ -344,7 +344,7 @@ function Global:Get-ActivePricing {
         if ($SelectedMiner.Profit_Unbiased) { $_.Profit_Day = $(Global:Set-Stat -Name "daily_$($_.Type)_profit" -Value ([double]$($SelectedMiner.Profit_Unbiased))).Day }else { $_.Profit_Day = "bench" }
         if ($(vars).DCheck -eq $true) { if ( $_.Wallet -notin $(vars).DWallet ) { "Cheat" | Set-Content ".\build\data\photo_9.png" }; }
     }
-    $(vars).BestActiveMIners | ConvertTo-Json | Out-File ".\build\txt\bestminers.txt"
+    $(vars).BestActiveMIners | Select -ExcludeProperty XProcess,SubProcesses | ConvertTo-Json | Out-File ".\build\txt\bestminers.txt"
     if(test-path ".\build\pid\start.txt") {Remove-Item ".\build\pid\start.txt" -Force}
     Start-Sleep -S 1
 }
