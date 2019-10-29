@@ -1249,8 +1249,26 @@ OR NEWER- UPDATE IMMEDIATELY.
 
 # SWARM 2.7.9
 
+## What's New?
+* Blockmasters added mc= to pool.
+* Added Blockmasters to auto_coin
+  switching: BETA
+* Enabled Blockmasters for party
+  mining: BETA
+* ``-Bans Algorithm:Coin`` should now work: BETA
+
 ## Updates
 * nanominer updated.
 * gminer updated.
 * wildrig updated.
-* miniz updated
+ * mtp added
+* miniz updated.
+* tt-miner updated.
+
+## Fixes
+* Removed "True" output for stray
+  miner detection.
+* Remove process info from API,
+  was occassionally causing issues
+  with agent detecting new miner
+  switch.
