@@ -31,7 +31,7 @@ function Global:Start-NVIDIAOC($NewOC) {
                 if ($HiveNVOC.OHGODAPILL_ENABLED -eq 1) {
                     $PillArg = $HiveNVOC.OHGODAPILL_ARG
                     $PillDelay = $HiveNVOC.RUNNING_DELAY
-                    $PillProc = Get-Process -Name "OhGodAnETHlargementPill-r2" -ErrorAction SilentlyContinue
+                    $PillProc = Get-Process | Where Name -eq "OhGodAnETHlargementPill-r2"
                     if ($PillProc) { $PillProc | % { Stop-Process -Id $_.ID } }
                     if ($HiveNVOC.OHGODAPILL_START_TIMEOUT -gt 0) { $Sleep = "timeout $($HiveNVOC.OHGODAPILL_START_TIMEOUT) > NUL" }
                     $Script = @()
@@ -41,7 +41,7 @@ function Global:Start-NVIDIAOC($NewOC) {
                     $Process = Start-Process ".\build\apps\pill.bat" -WindowStyle Minimized
                 }
                 else {
-                    $PillProc = Get-Process -Name "OhGodAnETHlargementPill-r2" -ErrorAction SilentlyContinue
+                    $PillProc = Get-Process | Where Name -eq "OhGodAnETHlargementPill-r2"
                     if ($PillProc) { $PillProc | % { Stop-Process -Id $_.ID } }
                 }
             }
