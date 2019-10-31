@@ -62,13 +62,21 @@ function Global:Set-NvidiaStats {
             $nvidiaout = ".\build\txt\nv-stats.txt"
             $continue = $false
             try {
-                if (Test-Path $nvidiaout) { clear-content $nvidiaout -ErrorAction Stop }
-                $Proc = start-process ".\build\cmd\nvidia-smi.bat" -Argumentlist "--query-gpu=power.draw,fan.speed,temperature.gpu --format=csv" -NoNewWindow -PassThru -RedirectStandardOutput $nvidiaout -ErrorAction Stop
-                $Proc | Wait-Process -Timeout 5 -ErrorAction Stop 
-                $continue = $true
+                $smi = "$($env:ProgramFiles)\NVIDIA Corporation\NVSMI\nvidia-smi.exe"
+                $info = [System.Diagnostics.ProcessStartInfo]::new()
+                $info.FileName = $smi
+                $info.Arguments = "--query-gpu=power.draw,fan.speed,temperature.gpu --format=csv"
+                $info.UseShellExecute = $false
+                $info.RedirectStandardOutput = $true
+                $info.Verb = "runas"
+                $Proc = [System.Diagnostics.Process]::New()
+                $proc.StartInfo = $Info
+                $proc.Start() | Out-Null
+                $proc.WaitForExit()
+                $nvidiaout = $Proc.StandardOutput.ReadToEnd()
             } catch { Write-Host "WARNING: Failed to get nvidia stats" -ForegroundColor DarkRed }
-            if ((Test-Path $nvidiaout) -and $continue -eq $true ) { 
-                $ninfo = Get-Content $nvidiaout | ConvertFrom-Csv 
+            if ($nvidiaout) { 
+                $ninfo = $nvidiaout | ConvertFrom-CSV
                 $NVIDIAFans = $ninfo.'fan.speed [%]' | ForEach-Object { $_ -replace ("\%", "") }
                 $NVIDIATemps = $ninfo.'temperature.gpu'
                 $NVIDIAPower = $ninfo.'power.draw [W]' | ForEach-Object { $_ -replace ("\[Not Supported\]", "75") } | ForEach-Object { $_ -replace (" W", "") }        
@@ -91,15 +99,22 @@ function Global:Set-AMDStats {
             $amdout = ".\build\txt\amd-stats.txt"
             $continue = $false
             try {
-                if (Test-Path $amdout) { clear-content $amdout -ErrorAction Stop }
-                $Proc = start-process ".\build\apps\odvii\odvii.exe" -Argumentlist "s" -NoNewWindow -PassThru -RedirectStandardOutput $amdout -ErrorAction Stop
-                $Proc | Wait-Process -Timeout 5 -ErrorAction Stop 
-                $continue = $true
-            }
-            catch { Write-Host "WARNING: Failed to get amd stats" -ForegroundColor DarkRed }
-            if ((Test-Path $amdout) -and $continue -eq $true) {
+                $odvii = "$Global:Dir\build\apps\odvii\odvii.exe"
+                $info = [System.Diagnostics.ProcessStartInfo]::new()
+                $info.FileName = $odvii
+                $info.Arguments = "s"
+                $info.UseShellExecute = $false
+                $info.RedirectStandardOutput = $true
+                $info.Verb = "runas"
+                $Proc = [System.Diagnostics.Process]::New()
+                $proc.StartInfo = $Info
+                $proc.Start() | Out-Null
+                $proc.WaitForExit()
+                $odvii_out = $Proc.StandardOutput.ReadToEnd()
+            } catch { Write-Host "WARNING: Failed to get amd stats" -ForegroundColor DarkRed }
+            if ($odvii_out) {
                 $AMDStats = @{ }
-                $amdinfo = Get-Content $amdout | ConvertFrom-StringData
+                $amdinfo = $odvii_out | ConvertFrom-StringData
                 $ainfo = @{ }
                 $aerrors = @{ }
                 $aerrors.Add("Errors", @())
