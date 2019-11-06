@@ -180,7 +180,7 @@ function Global:Add-Algorithms {
     if ($(arg).Type -notlike "*NVIDIA*") {
         if ($(arg).Type -notlike "*AMD*") {
             if ($(arg).Type -notlike "*CPU*") {
-                $(vars).Algorithm -eq $null
+                $(vars).Algorithm = $null
             }
         }
     }
