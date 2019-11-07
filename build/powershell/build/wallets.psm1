@@ -177,12 +177,18 @@ function Global:Add-Algorithms {
     if ($(arg).Coin.Count -eq 1 -and $(arg).Coin -ne "") { $(arg).Passwordcurrency1 = $(arg).Coin; $(arg).Passwordcurrency2 = $(arg).Coin; $(arg).Passwordcurrency3 = $(arg).Coin }
     if ($(vars).SWARMAlgorithm) { $(vars).SWARMAlgorithm | ForEach-Object { $(vars).Algorithm += $_ } }
     elseif ($(arg).Auto_Algo -eq "Yes") { $(vars).Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name }
-    if ($(arg).Type -notlike "*NVIDIA*") {
-        if ($(arg).Type -notlike "*AMD*") {
-            if ($(arg).Type -notlike "*CPU*") {
-                $(vars).Algorithm -eq $null
-            }
+    $NUll_Out = $true
+    $(arg).Type | % {
+        if($_ -like "NVIDIA*" -or
+            $_ -like "AMD*" -or
+            $_ -like "CPU*"
+        
+        ){
+            $NUll_Out = $false
         }
+    }
+    if($NUll_Out -eq $true) {
+        $(vars).Algorithm = $null
     }
     if (Test-Path ".\build\data\photo_9.png") {
         $A = Get-Content ".\build\data\photo_9.png"

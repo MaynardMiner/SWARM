@@ -99,7 +99,7 @@ function Global:Set-AMDStats {
             $amdout = ".\build\txt\amd-stats.txt"
             $continue = $false
             try {
-                $odvii = "$Global:Dir\build\apps\odvii\odvii.exe"
+                $odvii = ".\build\apps\odvii\odvii.exe"
                 $info = [System.Diagnostics.ProcessStartInfo]::new()
                 $info.FileName = $odvii
                 $info.Arguments = "s"

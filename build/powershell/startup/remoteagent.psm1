@@ -392,6 +392,11 @@ function Global:start-update {
                                             $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "equihash_150/5"
                                             $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "equihash_150/5"
                                             $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "equihash_150/5"
+
+                                            $Data.$_.commands | Add-Member "ethash" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "ethash" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "ethash" "ethash" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "ethash" 0.65 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }
