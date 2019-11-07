@@ -172,9 +172,9 @@
     "AMD2": ".\\bin\\wildrig-2\\wildrig-multi",
     "AMD3": ".\\bin\\wildrig-3\\wildrig-multi",
     "minername": "wildrig-multi",
-    "version": "0.20.0.3",
+    "version": "0.20.1",
     "optional": "No",
-    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.20.0/wildrig-multi-linux-0.20.0.3.tar.gz"
+    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.20.1/wildrig-multi-linux-0.20.1.tar.gz"
   },
   "fancyix": {
     "name": "fancyix",
