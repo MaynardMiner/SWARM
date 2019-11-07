@@ -187,6 +187,7 @@ function Global:Add-Algorithms {
             $NUll_Out = $false
         }
     }
+    ## This means it is ASIC only. Use only -ASIC_ALGO parameter
     if($NUll_Out -eq $true) {
         $(vars).Algorithm = $null
     }
