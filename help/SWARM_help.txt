@@ -402,7 +402,8 @@ Argument          Options           Explanation
                                     every [x] hours, where [x] is your -Timeout parameter.
 
 -PoolBanCount    [0-10]             Default is 3. Number of strikes/bad benchmarks required before
-                                    miner is banned from using pool.
+                                    miner is banned from using pool. NOTE: This does not apply if user
+                                    is using only 1 pool.
 
 -AlgoBanCount    [0-10]             Default is 4. Number of strikes/bad benchmarks required before
                                     miner is banned from using algo.
