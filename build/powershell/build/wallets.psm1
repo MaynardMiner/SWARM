@@ -124,13 +124,8 @@ function Global:Get-Wallets {
     $AltWallet_Config = Global:Get-AltWallets
     
     ##Remove NiceHash From Regular Wallet
-    if ($(arg).Nicehash_Wallet1) { $(arg).PoolName | % { if ($_ -ne "nicehash") { $NewWallet1 += $_ } } }
-    else { $(arg).PoolName | % { $NewWallet1 += $_ } }
-    if ($(arg).Nicehash_Wallet2) { $(arg).PoolName | % { if ($_ -ne "nicehash") { $NewWallet2 += $_ } } }
-    else { $(arg).PoolName | % { $NewWallet1 += $_ } }
-    if ($(arg).Nicehash_Wallet3) { $(arg).PoolName | % { if ($_ -ne "nicehash") { $NewWallet3 += $_ } } }
-    else { $(arg).PoolName | % { $NewWallet3 += $_ } }
-    
+     $(arg).PoolName | % { $NewWallet1 += $_; $NewWallet2 += $_; $NewWallet3 += $_ } 
+     
     $C = $true
     if ($(arg).Coin) { $C = $false }
     if ($C -eq $false) { log "Coin Parameter Specified, disabling All alternative wallets." -ForegroundColor Yellow }
