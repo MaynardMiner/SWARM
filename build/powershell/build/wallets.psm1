@@ -123,7 +123,11 @@ function Global:Get-Wallets {
     $NewWallet3 = @()
     $AltWallet_Config = Global:Get-AltWallets
     
-    ##Remove NiceHash From Regular Wallet
+    ## All pool tags to each wallet index.
+    ## NOTE: Cannot retrieve data for nicehash_wallets. SWARM
+    ## would require account information. But new changes
+    ## will allow get wallets command to work for external BTC Addresses.
+    
      $(arg).PoolName | % { $NewWallet1 += $_; $NewWallet2 += $_; $NewWallet3 += $_ } 
      
     $C = $true
