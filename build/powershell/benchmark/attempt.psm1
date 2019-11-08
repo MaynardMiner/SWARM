@@ -290,7 +290,7 @@ function Global:Start-Benchmark {
 
                         if ($(vars).Warnings."$($_.Name)".bad -ge $(arg).MinerBanCount) { $MinerBan = $true }
                         if ($(vars).Warnings."$($_.Name)_$($_.Algo)".bad -ge $(arg).AlgoBanCount) { $MinerAlgoBan = $true; }
-                        if ($(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)".bad -ge $(arg).PoolBanCount) { $MinerPoolBan = $true }    
+                        if($(arg).Poolname.Count -gt 1){ if ($(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)".bad -ge $(arg).PoolBanCount) { $MinerPoolBan = $true } }
 
                         ##Strike One
                         if (-not $MinerPoolBan -and -not $MinerAlgoBan -and -not $MinerBan ) {
