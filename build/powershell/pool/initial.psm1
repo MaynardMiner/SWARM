@@ -37,10 +37,10 @@ function Global:Remove-BanHashrates {
             $Sel = $Sel -replace "`_","`-"        
             $A.BaseName | ForEach-Object {
                 $Parse = $_ -split "`_"
-                if ($Parse[0] -eq $Sel) {
-                    Remove-Item ".\stats\$($_).txt" -Force
+                if ($Parse[0] -eq $Sel -and (test-path ".\stats\$($_).txt")) {
+                   Remove-Item ".\stats\$($_).txt" -Force
                 }
-                elseif ($Parse[1] -eq $Sel) {
+                elseif ($Parse[1] -eq $Sel -and (test-path ".\stats\$($_).txt")) {
                     Remove-Item ".\stats\$($_).txt" -Force
                 }
             }
