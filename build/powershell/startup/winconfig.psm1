@@ -271,7 +271,7 @@ function Global:Start-WindowsConfig {
         $Term_Script += "ECHO       get stats"
         $Term_Script += "ECHO       get active"
         $Term_Script += "ECHO       get help"
-        $Term_Script += "ECHO       benchmark timeout"
+        $Term_Script += "ECHO       bench bans"
         $Term_Script += "ECHO       version query"
         $Term_Script += "echo.       "
         $Term_Script += "echo.       "

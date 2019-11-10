@@ -110,7 +110,7 @@ function Global:Get-Miners {
         $Note | ForEach-Object { 
             log "$($_)" -ForegroundColor Magenta 
             } 
-        log "To clear bans- Run command 'benchmark timeout', or delete timeout folder" -ForegroundColor Magenta
+        log "To clear bans- Run command 'bench bans', or delete timeout folder" -ForegroundColor Magenta
     }
     $GetMiners
 }
