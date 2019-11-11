@@ -21,7 +21,7 @@ if ($(arg).PoolName -eq $Name) {
         return
     }
 
-    try { $ETHExchangeRate = Invoke-WebRequest "https://min-api.cryptocompare.com/data/pricemulti?fsyms=ETH&tsyms=BTC" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop | ConvertFrom-Json | Select-Object -ExpandProperty "ETH" | Select-Object -ExpandProperty "BTC" }
+    try { $ETHExchangeRate = Invoke-RestMethod "https://min-api.cryptocompare.com/data/pricemulti?fsyms=ETH&tsyms=BTC" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }
     catch { Write-Warning "SWARM failed to get ETH Pricing for $Name"; return }
 
     $Whalesburg_Algorithm = "ethash"
@@ -32,7 +32,7 @@ if ($(arg).PoolName -eq $Name) {
         ## add fee to compare to nicehash (Still trying to understand PPS+)
         $Prorate = 2
         ## btc/mhs/day
-        $Estimate = ((([Double]$Whalesburg_Request.mh_per_second_price * 86400))) * $ETHExchangeRate
+        $Estimate = ((([Double]$Whalesburg_Request.mh_per_second_price * 86400))) * $ETHExchangeRate.ETH.BTC
         $Previous = $Estimate
 
         $Stat = Global:Set-Stat -Name "$($Name)_$($Whalesburg_Algorithm)_profit" -Value ([Double]$Estimate * (1 - ($Prorate / 100)))
