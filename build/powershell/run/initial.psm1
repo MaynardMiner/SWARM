@@ -16,7 +16,9 @@ Function Global:Get-ExchangeRate {
     [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
     if ($(arg).CoinExchange) {
         $Uri = "https://min-api.cryptocompare.com/data/pricemulti?fsyms=$($(arg).CoinExchange)&tsyms=BTC"
-        $(vars).BTCExchangeRate = Invoke-WebRequest $URI -UseBasicParsing | ConvertFrom-Json | Select-Object -ExpandProperty $(arg).CoinExchange | Select-Object -ExpandProperty "BTC"
+        try{
+        $(vars).BTCExchangeRate = Invoke-RestMethod $URI -UseBasicParsing | Select-Object -ExpandProperty $(arg).CoinExchange | Select-Object -ExpandProperty "BTC"
+        } catch {log "Failed To Get $($(arg).CoinExchange) Price" -Foregroundcolor Red}
         $Rates = @{}
         $Rates.Add("rate",$(vars).Rates.$($(arg).Currency))
         if($(vars).BTCExchangeRate){$Rates.Add("exchange",$(vars).BTCExchangeRate)}
