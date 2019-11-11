@@ -1272,3 +1272,30 @@ OR NEWER- UPDATE IMMEDIATELY.
   was occassionally causing issues
   with agent detecting new miner
   switch.
+
+############################################
+############################################
+
+# SWARM 2.8.0
+
+## What's New?
+* Added new nicehash API for wallet data
+  ``get wallets``
+  * Will only work for external wallets.
+    ``-NiceHash_Wallet`` will be skipped over.
+* Added ethash for gminer (NVIDIA).
+* ``-PoolBanCount`` is no longer in affect if
+  user is using only 1 pool. If they are using
+  only one pool, there is no reason to create
+  a pool ban if there are no other pools to mine
+  to.
+
+## Improvements
+* System.Diagnostic.Data is not recorded in
+  ban information to prevent .json conversion.
+* Small typo fix for ASIC.
+
+## Updates
+* Gminer updated.
+* Tt-miner updated.
+* Wildrig updated.

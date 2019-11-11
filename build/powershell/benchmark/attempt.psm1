@@ -290,7 +290,7 @@ function Global:Start-Benchmark {
 
                         if ($(vars).Warnings."$($_.Name)".bad -ge $(arg).MinerBanCount) { $MinerBan = $true }
                         if ($(vars).Warnings."$($_.Name)_$($_.Algo)".bad -ge $(arg).AlgoBanCount) { $MinerAlgoBan = $true; }
-                        if ($(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)".bad -ge $(arg).PoolBanCount) { $MinerPoolBan = $true }    
+                        if($(arg).Poolname.Count -gt 1){ if ($(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)".bad -ge $(arg).PoolBanCount) { $MinerPoolBan = $true } }
 
                         ##Strike One
                         if (-not $MinerPoolBan -and -not $MinerAlgoBan -and -not $MinerBan ) {
@@ -307,7 +307,7 @@ function Global:Start-Benchmark {
                             $NewPoolBlock = @()
                             if (Test-Path ".\timeout\pool_block\pool_block.txt") { $GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json }
                             Start-Sleep -S 1
-                            if ($GetPoolBlock) { $GetPoolBlock | ForEach-Object { $NewPoolBlock += $_ } }
+                            if ($GetPoolBlock) { $GetPoolBlock | ForEach-Object { $NewPoolBlock += $_ | Select-Object -ExcludeProperty Xprocess } }
                             $NewPoolBlock += $_
                             $NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt"
                             Global:Set-Warnings clear "$($_.Name)_$($_.Algo)_$($_.MinerPool)"
@@ -325,7 +325,7 @@ function Global:Start-Benchmark {
                             if (Test-Path $HashRateFilePath) { Remove-Item $HashRateFilePath -Force }
                             if (Test-Path ".\timeout\algo_block\algo_block.txt") { $GetAlgoBlock = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json }
                             Start-Sleep -S 1
-                            if ($GetAlgoBlock) { $GetAlgoBlock | ForEach-Object { $NewAlgoBlock += $_ } }
+                            if ($GetAlgoBlock) { $GetAlgoBlock | ForEach-Object { $NewAlgoBlock += $_ | Select-Object -ExcludeProperty Xprocess } }
                             $NewAlgoBlock += $_
                             $NewAlgoBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block\algo_block.txt"
                             Global:Set-Warnings clear "$($_.Name)_$($_.Algo)_$($_.MinerPool)"
@@ -344,7 +344,7 @@ function Global:Start-Benchmark {
                             if (Test-Path $HashRateFilePath) { Remove-Item $HashRateFilePath -Force }
                             if (Test-Path ".\timeout\miner_block\miner_block.txt") { $GetMinerBlock = Get-Content ".\timeout\miner_block\miner_block.txt" | ConvertFrom-Json }
                             Start-Sleep -S 1
-                            if ($GetMinerBlock) { $GetMinerBlock | ForEach-Object { $NewMinerBlock += $_ } }
+                            if ($GetMinerBlock) { $GetMinerBlock | ForEach-Object { $NewMinerBlock += $_ | Select-Object -ExcludeProperty Xprocess } }
                             $NewMinerBlock += $_
                             $NewMinerBlock | ConvertTo-Json | Set-Content ".\timeout\miner_block\miner_block.txt"
                             Global:Set-Warnings clear "$($_.Name)_$($_.Algo)_$($_.MinerPool)"
