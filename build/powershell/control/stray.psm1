@@ -1,6 +1,6 @@
 
 function global:Stop-Stray($X) {
-    $proc = Get-Process -id $X.ParentProcessID  ## Want to close powershell window they are in.
+    $proc = Get-Process | Where id -eq $X.ParentProcessID  ## Want to close powershell window they are in.
     $proc.CloseMainWindow() | Out-Null
     log "waiting 5 seconds to confirm $($X.name) window has closed..." -ForeGroundColor Yellow
     Start-Sleep -S 3

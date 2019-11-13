@@ -836,8 +836,8 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
 
                     $NewDIR = Join-Path $BaseDir "SWARM.$($VersionNumber).windows"
 
-                    $MinerFile = "$Dir\build\pid\miner_pid.txt"
-                    if (Test-Path $MinerFile) { $MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue }
+                    $MinerFile = Get-Content "$Dir\build\pid\miner_pid.txt"
+                    if (Test-Path $MinerFile) { $MinerId = Get-Process | Where Id -eq $MinerFile }
                     if($MinerID) { Stop-Process $MinerId -Force}
                     Write-Host "Stopping Old Miner and waiting 5 seconds`n"
                     Start-Sleep -S 5

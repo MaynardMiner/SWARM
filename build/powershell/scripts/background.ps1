@@ -113,7 +113,7 @@ $Global:StartTime = Get-Date
 $CheckForSWARM = ".\build\pid\miner_pid.txt"
 if (Test-Path $CheckForSWARM) { 
     $global:GETSWARMID = Get-Content $CheckForSWARM; 
-    $Global:GETSWARM = Get-Process -ID $global:GETSWARMID -ErrorAction SilentlyContinue 
+    $Global:GETSWARM = Get-Process | Where ID -eq $global:GETSWARMID
 }
 $(vars).ADD("GCount", (Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json))
 $(vars).ADD("BackgroundTimer", (New-Object -TypeName System.Diagnostics.Stopwatch))

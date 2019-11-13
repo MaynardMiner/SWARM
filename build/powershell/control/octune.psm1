@@ -38,7 +38,7 @@ function Global:Start-OC($Miner) {
         if (Test-Path (".\build\pid\pill_pid.txt")) {
             $PillPID = Get-Content ".\build\pid\pill_pid.txt"
             if ($PillPID) {
-                $PillProcess = Get-Process -ID $PillPID
+                $PillProcess = Get-Process | Where id -eq $PillPID
                 if ($PillProcess.HasExited -eq $false) {
                     Stop-Process -Id $PillPID
                 }
@@ -89,7 +89,7 @@ function Global:Start-OC($Miner) {
             do {
                 Start-Sleep -S 1
                 $ProcessId = if (Test-Path ".\build\pid\pill_pid.txt") { Get-Content ".\build\pid\pill_pid.txt" }
-                if ($ProcessID -ne $null) { $Process = Get-Process $ProcessId -ErrorAction SilentlyContinue }
+                if ($ProcessID -ne $null) { $Process = Get-Process | Where id -eq $ProcessId }
             }until($ProcessId -ne $null -or ($PillTimer.Elapsed.TotalSeconds) -ge 10)  
             $PillTimer.Stop()
         }

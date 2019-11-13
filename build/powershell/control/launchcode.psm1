@@ -297,7 +297,7 @@ $start
                 $Job = Start-Job -ArgumentList $PID, $WorkingDirectory, (Convert-Path ".\build\apps\launchcode.dll"), ".\swarm_start_$($Algo).ps1" {
                     param($ControllerProcessID, $WorkingDirectory, $dll, $ps1)
                     Set-Location $WorkingDirectory
-                    $ControllerProcess = Get-Process -Id $ControllerProcessID
+                    $ControllerProcess = Get-Process | Where Id -eq $ControllerProcessID
                     if ($null -eq $ControllerProcess) { return }
                     Add-Type -Path $dll
                     $start = [launchcode]::New()
@@ -306,7 +306,7 @@ $start
                     $arguments = "-executionpolicy bypass -command `"$ps1`""
                     $CommandLine += " " + $arguments
                     $New_Miner = $start.New_Miner($filepath, $CommandLine, $WorkingDirectory)
-                    $Process = Get-Process -id $New_Miner.dwProcessId -ErrorAction Ignore
+                    $Process = Get-Process | Where id -eq $New_Miner.dwProcessId
                     if ($null -eq $Process) { 
                         [PSCustomObject]@{ProcessId = $null }
                         return
@@ -491,7 +491,7 @@ $start
                 log "Getting Process ID for $($MinerCurrent.MinerName)"
                 if (Test-Path $PIDPath) { $MinerPID = Get-Content $PIDPath | Select-Object -First 1 }
                 ##Powershell Get Process Instance
-                if ($MinerPID) { $MinerProcess = Get-Process -ID $MinerPid -ErrorAction SilentlyContinue }
+                if ($MinerPID) { $MinerProcess = Get-Process | Where id -eq $MinerPid }
             }until($MinerProcess -ne $null -or ($MinerTimer.Elapsed.TotalSeconds) -ge 10)  
             ##Stop Timer
             $MinerTimer.Stop()

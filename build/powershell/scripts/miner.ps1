@@ -25,7 +25,7 @@ Switch($Args) {
     "restart" {
         if($Id) {
             Write-Host "Searching for SWARM Process ID $ID"
-            $Found = Get-Process -Id $Id -ErrorAction SilentlyContinue
+            $Found = Get-Process | Where Id -eq $Id
             if($found) {
                 Write-Host "Found running SWARM process- Stopping"
                 Stop-Process -Id $Found.Id -Force -ErrorAction SilentlyContinue
@@ -37,7 +37,7 @@ Switch($Args) {
     "stop" {
         if($Id) {
             Write-Host "Searching for SWARM Process ID $ID"
-            $Found = Get-Process -Id $Id -ErrorAction SilentlyContinue
+            $Found = Get-Process | Where Id -eq $Id
             if($found) {
                 Write-Host "Found running SWARM process- Stopping"
                 Stop-Process -Id $Found.Id -Force -ErrorAction SilentlyContinue

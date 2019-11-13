@@ -137,7 +137,7 @@ function Global:Start-NVIDIAOC($NewOC) {
         $arguments = "-executionpolicy bypass -command `"$ScriptFile`""
         $CommandLine += " " + $arguments
         $start_oc = $start.New_Miner($filepath, $CommandLine, (split-path $ScriptFile))
-        $Proc = Get-Process -id $start_oc.dwProcessId -ErrorAction Ignore
+        $Proc = Get-Process | Where id -eq $start_oc.dwProcessId
         $Proc | Wait-Process
         $ocmessage
         $ocmessage | Set-Content ".\build\txt\ocnvidia.txt"
@@ -329,7 +329,7 @@ function Global:Start-AMDOC($NewOC) {
         $arguments = "-executionpolicy bypass -command `"$ScriptFile`""
         $CommandLine += " " + $arguments
         $start_oc = $start.New_Miner($filepath, $CommandLine, (split-path $ScriptFile))
-        $Proc = Get-Process -id $start_oc.dwProcessId -ErrorAction Ignore
+        $Proc = Get-Process | Where id -eq $start_oc.dwProcessId
         $Proc | Wait-Process
         $ocmessage
         $ocmessage | Set-Content ".\build\txt\ocamd.txt"

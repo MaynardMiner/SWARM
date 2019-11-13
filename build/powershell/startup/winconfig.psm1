@@ -408,7 +408,7 @@ function Global:Start-WindowsConfig {
             $arguments = "-executionpolicy bypass -command `".\build\powershell\scripts\autofan.ps1`""
             $CommandLine += " " + $arguments
             $New_Miner = $start.New_Miner($filepath, $CommandLine, $global:Dir)
-            $Process = Get-Process -id $New_Miner.dwProcessId -ErrorAction Ignore
+            $Process = Get-Process | Where id -eq $New_Miner.dwProcessId
             $Process.ID | Set-Content ".\build\pid\autofan.txt"
         }
     }

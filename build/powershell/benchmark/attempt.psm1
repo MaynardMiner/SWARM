@@ -6,7 +6,7 @@ function Global:Get-MinerTimeout($miner) {
         if ($null -eq $miner.xprocess) { $reason = "no start" }
         else {
             if ($Miner.Type -ne "*ASIC*") {
-                $MinerProc = Get-Process -Id $miner.xprocess.id -ErrorAction SilentlyContinue
+                $MinerProc = Get-Process | Where Id -eq $miner.xprocess.id
                 if ($null -eq $MinerProc) { $reason = "crashed" }
                 else { $reason = "no hash" }
             }

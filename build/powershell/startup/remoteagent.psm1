@@ -108,7 +108,7 @@ function Global:start-update {
                 if ($(arg).Platform -eq "windows") {
                     log "Stopping Previous Agent"
                     if (Test-Path $ID) { $Agent = Get-Content $ID }
-                    if ($Agent) { $BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue }
+                    if ($Agent) { $BackGroundID = Get-Process | Where id -eq $Agent }
                     if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }
                 }
                 $OldBackup = Join-Path $PreviousPath "backup"
@@ -743,11 +743,11 @@ Setting Path Variable For Commands: May require reboot to use.
     log "Stopping Previous Agent"
     $ID = ".\build\pid\background_pid.txt"
     if (Test-Path $ID) { $Agent = Get-Content $ID }
-    if ($Agent) { $BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue }
+    if ($Agent) { $BackGroundID = Get-Process | Where id -eq $Agent }
     if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }
     $ID = ".\build\pid\pill_pid.txt"
     if (Test-Path $ID) { $Agent = Get-Content $ID }
-    if ($Agent) { $BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue }
+    if ($Agent) { $BackGroundID = Get-Process | Where id -eq $Agent }
     if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }    
 }
 

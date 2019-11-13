@@ -18,7 +18,7 @@ function Global:Start-Background {
     $arguments = "-executionpolicy bypass -command `".\build\powershell\scripts\background.ps1 -WorkingDir $($(vars).Dir)`""
     $CommandLine += " " + $arguments
     $New_Miner = $start.New_Miner($filepath,$CommandLine,$(vars).Dir)
-    $Process = Get-Process -id $New_Miner.dwProcessId -ErrorAction Ignore
+    $Process = Get-Process | Where id -eq $New_Miner.dwProcessId
     $Process.ID | Set-Content ".\build\pid\background_pid.txt"
 }
 
@@ -71,16 +71,16 @@ Setting Path Variable For Commands: May require reboot to use.
     log "Stopping Previous Agent"
     $ID = ".\build\pid\background_pid.txt"
     if (Test-Path $ID) { $Agent = Get-Content $ID }
-    if ($Agent) { $BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue }
+    if ($Agent) { $BackGroundID = Get-Process | Where id -eq $Agent }
     if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }
     $ID = ".\build\pid\pill_pid.txt"
     if (Test-Path $ID) { $Agent = Get-Content $ID }
-    if ($Agent) { $BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue }
+    if ($Agent) { $BackGroundID = Get-Process | Where id -eq $Agent }
     if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }
     log "Stopping Previous Autofan"
     $ID = ".\build\pid\autofan.txt"
     if (Test-Path $ID) { $Agent = Get-Content $ID }
-    if ($Agent) { $BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue }
+    if ($Agent) { $BackGroundID = Get-Process | Where id -eq $Agent }
     if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }       
 }
 
