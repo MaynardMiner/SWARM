@@ -194,8 +194,8 @@
     "AMD2": ".\\bin\\nanominer-2\\nanominer.exe",
     "AMD3": ".\\bin\\nanominer-3\\nanominer.exe",
     "minername": "nanominer.exe",
-    "version": "1.6.1",
+    "version": "1.6.2",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/v1.6.1/nanominer-windows-1.6.1.zip"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v1.6.2/nanominer-windows-1.6.2.zip"
   }
 }
