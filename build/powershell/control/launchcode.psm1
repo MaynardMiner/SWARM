@@ -231,8 +231,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                     $Prestart = @()
                     $MinerCurrent.Prestart | ForEach-Object {
                         if ($_ -notlike "export LD_LIBRARY_PATH=$($(vars).dir)\build\export") {
-                            $setx = $_ -replace "export ", "set "
-                            $setx = $setx -replace "=", " "
+                            $setx = $_ -replace "export ", "`$env:"
                             $Prestart += "$setx`n"
                         }
                     }
