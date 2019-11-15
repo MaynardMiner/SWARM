@@ -156,10 +156,26 @@ RVN WALLET: RKirUe978mBoa2MRWqeMGqDzVAKTafKh8H
 SWARM uses the following programs to help with oc tuning:
 
 -nvidiainspector
+
 -wolfamdctrl/ohgodatool
+
 -overdriventool
+
 -OhGodAnETHlargementPill-r2
+
 -techPowerUp GPU-Z
+
+-AMDMemoryTweak
+
+-ODVII (self-created app in SWARM) for AMD ADL methods.
+
+-Lspci
+
+-Dmidecode
+
+-AmdMemInfo
+
+-Killcx
 
 nvfans (self-created app in SWARM) uses the following wrapper for nvidia control in Windows:
 
