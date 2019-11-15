@@ -2,7 +2,7 @@
 
 **Developer Notice** : Commits have slowed down, due to the fact that I am working on SWARM_V2, which will work very differently than current SWARM. I will however continue to maintain this repsository until I finish new project. SWARM_V2 will be built with a much larger framework in mind, and further attempts to reduce its memory footprint. I am also attempting to further make it more developer-freindly in hopes to garner assistance from other developers to help debug/maintain.
 
-**IMPORTANT** : SWARM attempts to provide miners that work for as many cards as possible. Some miners may work for your cards, some may not. All miners are set with default settings provided from developers themselves. There is a ``-Bans`` argument that lets you remotely remove miners from the list. SWARM should support, if not all late model cards.
+**IMPORTANT** : SWARM attempts to provide miners that work for as many cards as possible. Some miners may work for your cards, some may not. All miners are set with default settings provided from developers themselves (with logging enabled, if available). There is a ``-Bans`` argument that lets you remotely remove miners from the list. SWARM should support, if not all late model cards.
 
 **Windows Version Does Not Require HiveOS Windows. SWARM is built with all HiveOS API methods, and its own utilities like autofan, and overclocking. However, the overclocking for AMD is slightly different, an requires prior registry modifications and compute mode activated to fully manipulate power play tables.**
 
