@@ -4,7 +4,7 @@
 
 **IMPORTANT** : SWARM attempts to provide miners that work for as many cards as possible. Some miners may work for your cards, some may not. All miners are set with default settings provided from developers themselves (with logging enabled, if available). There is a ``-Bans`` argument that lets you remotely remove miners from the list. SWARM should support, if not all late model cards.
 
-**Windows Version Does Not Require HiveOS Windows. SWARM is built with all HiveOS API methods, and its own utilities like autofan, and overclocking. However, the overclocking for AMD is slightly different, an requires prior registry modifications and compute mode activated to fully manipulate power play tables. AMD DPM features is not used in Windows (cannot force states). The remaining items should be available to tweak using ADL Overdrive (OverdriveNTool)**
+**Windows Version Does Not Require HiveOS Windows. SWARM is built with all HiveOS API methods, and its own utilities like autofan, and overclocking. However, the overclocking for AMD is slightly different, an requires prior registry modifications and compute mode activated to fully manipulate power play tables. AMD DPM features is not used in Windows (cannot modify VBIOS). The remaining items should be available to tweak using ADL Overdrive (OverdriveNTool)**
 
 ## SWARM wiki:
 
