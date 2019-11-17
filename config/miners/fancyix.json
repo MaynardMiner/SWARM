@@ -5,10 +5,10 @@
         "delay": "1",
         "prestart": [
             "export GPU_FORCE_64BIT_PTR=1",
-            "export GPU_MAX_HEAP_SIZE=100",
+            "export GPU_MAX_HEAP_SIZE=95",
             "export GPU_USE_SYNC_OBJECTS=1",
-            "export GPU_SINGLE_ALLOC_PERCENT=100",
-            "export GPU_MAX_ALLOC_PERCENT=100"
+            "export GPU_SINGLE_ALLOC_PERCENT=95",
+            "export GPU_MAX_ALLOC_PERCENT=95"
         ],
         "commands": {
             "x22i": "--gpu-threads 2 -w 256 -I 22",
