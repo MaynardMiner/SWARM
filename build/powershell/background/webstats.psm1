@@ -42,7 +42,7 @@ function Global:Send-WebStats {
                     if ($SwarmResponse -eq "config") {
                         Write-Warning "Config Command Initiated- Restarting SWARM"
                         $MinerFile = Get-Content ".\build\pid\miner_pid.txt"
-                        if (Test-Path $MinerFile) { $MinerId = Get-Process | Where Id -eq $MinerFile }
+                        if ($MinerFile) { $MinerId = Get-Process | Where Id -eq $MinerFile }
                         if ($MinerId) {
                             Stop-Process $MinerId
                             Start-Sleep -S 3
