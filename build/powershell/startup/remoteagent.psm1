@@ -489,6 +489,17 @@ function Global:start-update {
                                         }
                                     }
                                 }
+
+                                if ($ChangeFile -eq "jayddee.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands | Add-Member "power2b" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "power2b" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "power2b" "power2b" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "power2b" 0 -ErrorAction SilentlyContinue
+                                        }
+                                    }
+                                }
  
                                 if($ChangeFile -eq "pool-algos.json") {
                                     $Data | add-Member "x25x" @{alt_names = @("x25x"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
