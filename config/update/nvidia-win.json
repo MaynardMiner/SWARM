@@ -7,9 +7,9 @@
         "NVIDIA2": ".\\bin\\cc-yescrypt-2\\ccminer.exe",
         "NVIDIA3": ".\\bin\\cc-yescrypt-3\\ccminer.exe",
         "minername": "ccminer.exe",
-        "version": "10a",
-        "optional": "Yes",
-        "uri": "https://github.com/nemosminer/ccminerKlausTyescrypt/releases/download/v10/ccminerKlausTyescryptv10.7z"
+        "version": "10b",
+        "optional": "No",
+        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/cc-yescrypt-win.zip"
     },
     "nbminer": {
         "name": "nbminer",
