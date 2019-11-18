@@ -106,9 +106,9 @@
     "NVIDIA2": ".\\bin\\cc-yescrypt-2\\ccminer",
     "NVIDIA3": ".\\bin\\cc-yescrypt-3\\ccminer",
     "minername": "ccminer",
-    "version": "10a",
-    "optional": "Yes",
-    "uri": "https://github.com/MaynardMiner/ccminerKlausTyescrypt/releases/download/v.10a/ccmineryescrypt-linux-10.tar.gz"
+    "version": "10b",
+    "optional": "No",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/cc-yescrypt-linux.tar.gz"
   },
   "energiminer": {
     "name": "energiminer",
