@@ -509,6 +509,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "yescryptr8g" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "yescryptr8g" "yescryptr8g" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "yescryptr8g" 0 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands.yescrypt = ""
+                                            $Data.$_.commands.yescryptr8 = ""
+                                            $Data.$_.commands.yescryptr16 = ""
+                                            $Data.$_.commands.yescryptr32 = ""
                                         }
                                     }
                                 }
