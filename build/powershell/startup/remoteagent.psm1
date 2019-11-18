@@ -71,6 +71,7 @@ function Global:start-update {
         $PreviousVersions += "SWARM.2.7.7"
         $PreviousVersions += "SWARM.2.7.8"
         $PreviousVersions += "SWARM.2.7.9"
+        $PreviousVersions += "SWARM.2.8.0"
 
         $PreviousVersions | ForEach-Object {
             $PreviousVersions += "$($_).linux"
@@ -497,6 +498,17 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "power2b" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "power2b" "power2b" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "power2b" 0 -ErrorAction SilentlyContinue
+                                        }
+                                    }
+                                }
+
+                                if ($ChangeFile -eq "cc-yescrypt.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands | Add-Member "yescryptr8g" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "yescryptr8g" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "yescryptr8g" "yescryptr8g" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "yescryptr8g" 0 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }
