@@ -565,6 +565,24 @@
       "comma seperated"
     ]
   },
+  "phi2-lux": {
+    "alt_names": [
+      "phi2-lux"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "power2b": {
+    "alt_names": [
+      "power2b"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "polytimos": {
     "alt_names": [
       "polytimos"
@@ -828,7 +846,16 @@
   },
   "yescryptr8": {
     "alt_names": [
-      "yescrypt"
+      "yescryptr8"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "yescryptr8g": {
+    "alt_names": [
+      "yescryptr8g"
     ],
     "exclusions": [
       "add pool or miner here",
