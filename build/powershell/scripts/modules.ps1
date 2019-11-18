@@ -39,7 +39,7 @@ if (Test-Path $Path) {
         if (test-path ".\build\pid\miner_pid.txt") {
             ##windows
             if ($IsWindows) {
-                $MPID = Get-Content ".\build\pid\miner_pid.txt" | % { Get-Process -Id $_ -ErrorAction SilentlyContinue }
+                $MPID = Get-Content ".\build\pid\miner_pid.txt" | % { Get-Process | Where Id -eq $_ }
                 if ($MPID) {
                     Stop-Process -Id $MPID.ID
                     Start-Sleep -S 5

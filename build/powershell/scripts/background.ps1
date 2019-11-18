@@ -113,7 +113,7 @@ $Global:StartTime = Get-Date
 $CheckForSWARM = ".\build\pid\miner_pid.txt"
 if (Test-Path $CheckForSWARM) { 
     $global:GETSWARMID = Get-Content $CheckForSWARM; 
-    $Global:GETSWARM = Get-Process -ID $global:GETSWARMID -ErrorAction SilentlyContinue 
+    $Global:GETSWARM = Get-Process | Where ID -eq $global:GETSWARMID
 }
 $(vars).ADD("GCount", (Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json))
 $(vars).ADD("BackgroundTimer", (New-Object -TypeName System.Diagnostics.Stopwatch))
@@ -179,6 +179,8 @@ While ($True) {
             $HiveAlgo = $HiveAlgo -replace "veil", "x16rt"
             $HiveAlgo = $HiveAlgo -replace "beamv2", "equihash 150/5"
             $HiveAlgo = $HiveAlgo -replace "phi2-lux", "phi2"
+            $HiveAlgo = $HiveAlgo -replace "cuckaroo29", "cuckoo"
+            $HiveAlgo = $HiveAlgo -replace "cuckaroo29d", "cuckoo"
             $NewName = $global:MinerAlgo -replace "`/", "`-"
             $NewName = $global:MinerAlgo -replace "`_", "`-"
 

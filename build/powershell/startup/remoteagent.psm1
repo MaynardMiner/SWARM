@@ -71,6 +71,7 @@ function Global:start-update {
         $PreviousVersions += "SWARM.2.7.7"
         $PreviousVersions += "SWARM.2.7.8"
         $PreviousVersions += "SWARM.2.7.9"
+        $PreviousVersions += "SWARM.2.8.0"
 
         $PreviousVersions | ForEach-Object {
             $PreviousVersions += "$($_).linux"
@@ -108,7 +109,7 @@ function Global:start-update {
                 if ($(arg).Platform -eq "windows") {
                     log "Stopping Previous Agent"
                     if (Test-Path $ID) { $Agent = Get-Content $ID }
-                    if ($Agent) { $BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue }
+                    if ($Agent) { $BackGroundID = Get-Process | Where id -eq $Agent }
                     if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }
                 }
                 $OldBackup = Join-Path $PreviousPath "backup"
@@ -438,6 +439,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "cuckarood29d" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "cuckarood29d" "cuckarood29" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "cuckarood29d" 2.5 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "phi2-lux" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "phi2-lux" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "phi2-lux" "phi2-lux" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "phi2-lux" 3 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }
@@ -484,6 +490,33 @@ function Global:start-update {
                                         }
                                     }
                                 }
+
+                                if ($ChangeFile -eq "jayddee.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands | Add-Member "power2b" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "power2b" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "power2b" "power2b" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "power2b" 0 -ErrorAction SilentlyContinue
+                                        }
+                                    }
+                                }
+
+                                if ($ChangeFile -eq "cc-yescrypt.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands | Add-Member "yescryptr8g" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "yescryptr8g" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "yescryptr8g" "yescryptr8g" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "yescryptr8g" 0 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands.yescrypt = ""
+                                            $Data.$_.commands.yescryptr8 = ""
+                                            $Data.$_.commands.yescryptr16 = ""
+                                            $Data.$_.commands.yescryptr32 = ""
+                                        }
+                                    }
+                                }
  
                                 if($ChangeFile -eq "pool-algos.json") {
                                     $Data | add-Member "x25x" @{alt_names = @("x25x"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
@@ -498,7 +531,10 @@ function Global:start-update {
                                     $Data | add-Member "argon2d500" @{alt_names = @("argon2d500"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force         
                                     $Data | add-Member "argon2d-dyn" @{alt_names = @("argon2d-dyn"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force                                                             
                                     $Data | add-Member "beamv2" @{alt_names = @("beamv2"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force           
-                                    $Data | add-Member "x12" @{alt_names = @("x12"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force                                                                                                               
+                                    $Data | add-Member "x12" @{alt_names = @("x12"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force
+                                    $Data | add-Member "power2b" @{alt_names = @("power2b"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force                                                                                                                                                                                                                             
+                                    $Data | add-Member "yescryptr8g" @{alt_names = @("yescryptr8g"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force                                                                                                                                                                                                                             
+                                    $Data | add-Member "phi2-lux" @{alt_names = @("phi2-lux"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force                                                                                                                                                                                                                             
                                 } 
                                 
 
@@ -743,11 +779,11 @@ Setting Path Variable For Commands: May require reboot to use.
     log "Stopping Previous Agent"
     $ID = ".\build\pid\background_pid.txt"
     if (Test-Path $ID) { $Agent = Get-Content $ID }
-    if ($Agent) { $BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue }
+    if ($Agent) { $BackGroundID = Get-Process | Where id -eq $Agent }
     if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }
     $ID = ".\build\pid\pill_pid.txt"
     if (Test-Path $ID) { $Agent = Get-Content $ID }
-    if ($Agent) { $BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue }
+    if ($Agent) { $BackGroundID = Get-Process | Where id -eq $Agent }
     if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }    
 }
 

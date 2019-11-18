@@ -1,3 +1,5 @@
+## Note- OC Profiles Have Not Been Tested In Awhile. It is advised to use ``-API_Key`` argument and set OC through HiveOS with OC Profiles.
+
 
 # Initializing / Starting OC Tuning / Default Settings
 

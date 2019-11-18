@@ -38,7 +38,7 @@ function Global:Start-OC($Miner) {
         if (Test-Path (".\build\pid\pill_pid.txt")) {
             $PillPID = Get-Content ".\build\pid\pill_pid.txt"
             if ($PillPID) {
-                $PillProcess = Get-Process -ID $PillPID
+                $PillProcess = Get-Process | Where id -eq $PillPID
                 if ($PillProcess.HasExited -eq $false) {
                     Stop-Process -Id $PillPID
                 }
@@ -89,7 +89,7 @@ function Global:Start-OC($Miner) {
             do {
                 Start-Sleep -S 1
                 $ProcessId = if (Test-Path ".\build\pid\pill_pid.txt") { Get-Content ".\build\pid\pill_pid.txt" }
-                if ($ProcessID -ne $null) { $Process = Get-Process $ProcessId -ErrorAction SilentlyContinue }
+                if ($ProcessID -ne $null) { $Process = Get-Process | Where id -eq $ProcessId }
             }until($ProcessId -ne $null -or ($PillTimer.Elapsed.TotalSeconds) -ge 10)  
             $PillTimer.Stop()
         }
@@ -220,10 +220,8 @@ function Global:Start-OC($Miner) {
     
             $NPL = @()
             if ($Power) {
-                if ($IsWindows) {
-                    $Max_Power = invoke-expression "nvidia-smi --query-gpu=power.max_limit --format=csv" | ConvertFrom-CSV
-                    $Max_Power = $Max_Power.'power.max_limit [W]' | % { $_ = $_ -replace " W", ""; $_ }            
-                }
+                $Max_Power = invoke-expression "nvidia-smi --query-gpu=power.max_limit --format=csv" | ConvertFrom-CSV
+                $Max_Power = $Max_Power.'power.max_limit [W]' | % { $_ = $_ -replace " W", ""; $_ }            
                 $DONVIDIAOC = $true
                 for ($i = 0; $i -lt $OCDevices.Count; $i++) {
                     if ($Power.Count -gt 1) {

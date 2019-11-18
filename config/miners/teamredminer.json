@@ -11,6 +11,7 @@
         ],
         "commands": {
             "phi2": "",
+            "phi2-lux": "",
             "cryptonight-v8": "",
             "lyra2z": "",
             "lyra2v3": "",
@@ -27,6 +28,7 @@
         },
         "difficulty": {
             "phi2": "",
+            "phi2-lux": "",
             "cryptonight-v8": "",
             "lyra2z": "",
             "lyra2v3": "",
@@ -43,6 +45,7 @@
         },
         "naming": {
             "phi2": "phi2",
+            "phi2-lux": "phi2",
             "cryptonight-v8": "cnv8",
             "lyra2z": "lyra2z",
             "lyra2v3": "lyra2rev3",
@@ -59,6 +62,7 @@
         },
         "fee": {
             "phi2": 3,
+            "phi2-lux": 3,
             "cryptonight-v8": 2.5,
             "lyra2z": 3,
             "lyra2v3": 2.5,

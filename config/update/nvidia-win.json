@@ -7,9 +7,9 @@
         "NVIDIA2": ".\\bin\\cc-yescrypt-2\\ccminer.exe",
         "NVIDIA3": ".\\bin\\cc-yescrypt-3\\ccminer.exe",
         "minername": "ccminer.exe",
-        "version": "10a",
-        "optional": "Yes",
-        "uri": "https://github.com/nemosminer/ccminerKlausTyescrypt/releases/download/v10/ccminerKlausTyescryptv10.7z"
+        "version": "10b",
+        "optional": "No",
+        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/cc-yescrypt-win.zip"
     },
     "nbminer": {
         "name": "nbminer",
@@ -18,9 +18,9 @@
         "NVIDIA2": ".\\bin\\nbminer-2\\nbminer.exe",
         "NVIDIA3": ".\\bin\\nbminer-3\\nbminer.exe",
         "minername": "nbminer.exe",
-        "version": "26.0",
+        "version": "26.1",
         "optional": "No",
-        "uri": "https://github.com/NebuTech/NBMiner/releases/download/v26.0/NBMiner_26.0_Win.zip"
+        "uri": "https://github.com/NebuTech/NBMiner/releases/download/v26.1/NBMiner_26.1_Win.zip"
       },    
     "cc-mtp": {
         "name": "cc-mtp",
@@ -62,9 +62,9 @@
         "NVIDIA2": ".\\bin\\bminer-2\\bminer.exe",
         "NVIDIA3": ".\\bin\\bminer-3\\bminer.exe",
         "minername": "bminer.exe",
-        "version": "15.8.6",
+        "version": "15.8.7",
         "optional": "No",
-        "uri": "https://www.bminercontent.com/releases/bminer-lite-v15.8.6-5f20661-amd64.zip"
+        "uri": "https://www.bminercontent.com/releases/bminer-lite-v15.8.7-6831c33-amd64.zip"
     },
     "ehssand": {
         "name": "ehssand",
@@ -84,9 +84,9 @@
         "NVIDIA2": ".\\bin\\gminer-2\\miner.exe",
         "NVIDIA3": ".\\bin\\gminer-3\\miner.exe",
         "minername": "miner.exe",
-        "version": "1.72",
+        "version": "1.75",
         "optional": "No",
-        "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.72/gminer_1_72_windows64.zip"
+        "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.75/gminer_1_75_windows64.zip"
     },
     "claymore": {
         "name": "claymore",

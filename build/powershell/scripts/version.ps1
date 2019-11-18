@@ -86,7 +86,7 @@ if ($Command) {
                 Write-Host $($Message | Select -last 1)
                 if ($IsWindows) {
                     $ID = Get-Content ".\build\pid\miner_pid.txt"
-                    if (Get-Process -id $ID -ErrorAction SilentlyContinue) { Stop-Process -Id $ID }
+                    if ((Get-Process | Where id -eq $ID)) { Stop-Process -Id $ID }
                     Start-Sleep -S 5
                 }
                 elseif ($IsLinux) {

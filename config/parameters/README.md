@@ -7,7 +7,7 @@ There can be up to three different files here, each has a specific purpose.
 * Comes with SWARM from start.
 * Should never be modified. 
 * Is the basic default settings.
-* If a user does not specify a setting, the setting here will be used.
+* If a user does not specify an argument, the setting here will be used.
 
 ## arguments.json
 * Created when launched.

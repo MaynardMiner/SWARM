@@ -18,9 +18,9 @@
     "AMD2": ".\\bin\\gminer-amd-2\\miner",
     "AMD3": ".\\bin\\gminer-amd-3\\miner",
     "minername": "miner",
-    "version": "1.72",
+    "version": "1.75",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.72/gminer_1_72_linux64.tar.xz"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.75/gminer_1_75_linux64.tar.xz"
   },
   "kbminer-amd": {
     "name": "kbminer-amd",
@@ -183,9 +183,9 @@
     "AMD2": ".\\bin\\fancyix-2\\sgminer",
     "AMD3": ".\\bin\\fancyix-3\\sgminer",
     "minername": "sgminer",
-    "version": "0.6.0.0",
+    "version": "0.6.0.1",
     "optional": "No",
-    "uri": "https://github.com/fancyIX/sgminer-phi2-branch/releases/download/5.6.1.3.b6/sgminer-phi2-fancyIX-linux-amd64-0.6.0.0.zip"
+    "uri": "https://github.com/fancyIX/sgminer-phi2-branch/releases/download/5.6.1.3.b6a/sgminer-phi2-fancyIX-linux-amd64-0.6.0.1.zip"
   },
   "xmrig": {
     "name": "xmrig",
@@ -227,8 +227,8 @@
     "AMD2": ".\\bin\\nanominer-2\\nanominer",
     "AMD3": ".\\bin\\nanominer-3\\nanominer",
     "minername": "nanominer",
-    "version": "1.6.1",
+    "version": "1.6.2",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/v1.6.1/nanominer-linux-1.6.1.tar.gz"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v1.6.2/nanominer-linux-1.6.2.tar.gz"
   }
 }

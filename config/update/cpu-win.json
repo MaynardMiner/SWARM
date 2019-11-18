@@ -9,6 +9,15 @@
     "optional": "No",
     "uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.9.3.1/cpuminer-opt-3.9.3.1-windows.zip"
   },
+  "rplant": {
+    "name": "rplant",
+    "type": "cpu",
+    "CPU": ".\\bin\\rplant-1\\cpuminer-avx2.exe",
+    "minername": "cpuminer-avx2.exe",
+    "version": "4.0.27",
+    "optional": "No",
+    "uri": "https://github.com/rplant8/cpuminer-opt-rplant/releases/download/4.0.27/cpuminer-opt-win.zip"
+  },
   "xmrig-cpu": {
     "name": "xmrig-cpu",
     "type": "cpu",
@@ -32,9 +41,9 @@
     "type": "cpu",
     "CPU": ".\\bin\\jayddee-1\\cpuminer-avx2.exe",
     "minername": "cpuminer-avx2.exe",
-    "version": "3.9.8",
+    "version": "3.9.9.1",
     "optional": "No",
-    "uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.9.8/cpuminer-opt-3.9.8-windows.zip"
+    "uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.9.9.1/cpuminer-opt-3.9.9.1-windows.zip"
   },
   "cpupower": {
     "name": "cpupower",
