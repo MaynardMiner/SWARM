@@ -106,5 +106,6 @@
     "Xnsub": "",
     "Admin": "",
     "Admin_Fee": 0,
-    "Admin_Pass": "BTC"
+    "Admin_Pass": "BTC",
+    "Rej_Factor": "Yes"
 }
