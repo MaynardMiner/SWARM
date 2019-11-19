@@ -225,7 +225,7 @@ function Global:Set-Stat {
     if ($Stat.Day) { $Stat.Day = [Decimal]$Stat.Day }
     if ($Stat.Custom) { $Stat.Custom = [Decimal]$Stat.Custom }
     if ($Stat.Hashrate) { $Stat.Hashrate = [Decimal]$Stat.Hashrate }
-    if ($Stat.Rejections -gt -1 -and $AsHashrate) { $Stat.Rejections = [Decimal]$Stat.Rejections }
+    if ($Stat.Rejections -and $AsHashrate) { $Stat.Rejections = [Decimal]$Stat.Rejections }
 
     $Stat | ConvertTo-Json | Set-Content $Path
 
