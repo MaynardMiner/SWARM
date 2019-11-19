@@ -4,28 +4,24 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "yescrypt": "",
             "yescryptr8": "",
             "yescryptr8g": "",
             "yescryptr16": "",
             "yescryptr32": ""
         },
         "difficulty": {
-            "yescrypt": "",
             "yescryptr8": "",
             "yescryptr8g": "",
             "yescryptr16": "",
             "yescryptr32": ""
         },
         "naming": {
-            "yescrypt": "yescrypt",
             "yescryptr8": "yescryptr8",
             "yescryptr8g": "yescrypt",
             "yescryptr16": "yescryptr16",
             "yescryptr32": "yescryptr32"
         },
         "fee": {
-            "yescrypt": 0,
             "yescryptr8": 0,
             "yescryptr8g": 0,
             "yescryptr16": 0,
@@ -37,27 +33,23 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "yescrypt": "",
             "yescryptr8": "",
             "yescryptr8g": "",
             "yescryptr16": "",
             "yescryptr32": ""
         },
         "difficulty": {
-            "yescrypt": "",
             "yescryptr8": "",
             "yescryptr16": "",
             "yescryptr32": ""
         },
         "naming": {
-            "yescrypt": "yescrypt",
             "yescryptr8": "yescryptr8",
             "yescryptr8g": "yescrypt",
             "yescryptr16": "yescryptr16",
             "yescryptr32": "yescryptr32"
         },
         "fee": {
-            "yescrypt": 0,
             "yescryptr8": 0,
             "yescryptr8g": 0,
             "yescryptr16": 0,
@@ -69,28 +61,24 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "yescrypt": "",
             "yescryptr8": "",
             "yescryptr8g": "",
             "yescryptr16": "",
             "yescryptr32": ""
         },
         "difficulty": {
-            "yescrypt": "",
             "yescryptr8": "",
             "yescryptr8g": "",
             "yescryptr16": "",
             "yescryptr32": ""
         },
         "naming": {
-            "yescrypt": "yescrypt",
             "yescryptr8": "yescryptr8",
             "yescryptr8g": "yescrypt",
             "yescryptr16": "yescryptr16",
             "yescryptr32": "yescryptr32"
         },
         "fee": {
-            "yescrypt": 0,
             "yescryptr8": 0,
             "yescryptr8g": 0,
             "yescryptr16": 0,
