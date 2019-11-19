@@ -1307,8 +1307,22 @@ OR NEWER- UPDATE IMMEDIATELY.
 
 ## What's New?
 * Added new cc-yescrypt compiled miner.
-  - Does yescryptr8g
+  - Does most yescryptr algorithms for nvidia.
+  - warning: it produces nearly 100% rejections for
+    yescrypt algorithm. New miner file has yescrypt
+    removed, updating may keep alogorithm.
+  - warning: It is common for yescrypt algorithms
+    to produce rejections due to stale share submission.
 * Added new cpuminer 'rplant'
+* New argument/parameter: "Rej_Factor"
+  * Default Is "Yes".
+  * Options are "Yes"/"No"
+  * Will factor average rejection rate
+    of shares into profit/hash equation,
+    reducing profitabilty if miner is
+    known to produce rejections.
+  * This is a beta feature- If you are not
+    interested in testing, set ``-Rej_Factor No``
 
 ## Improvements
 * Removed -Id from all Process detection
@@ -1318,6 +1332,10 @@ OR NEWER- UPDATE IMMEDIATELY.
 * cuckaroo29 and cuckaroo29d will register from SWARM
   to HiveoS as 'Cuckoo'.
 * change set to $env for windows environment variables.
+* did some miner file cleanup.
+* fixed issue with nvidia-smi not running on local oc
+  in linux to gather max power-limit, if pl was not
+  set in config.
 
 ## Updates
 * gminer updated
