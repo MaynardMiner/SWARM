@@ -172,6 +172,14 @@ function Global:Start-Benchmark {
                 if ($WasActive -ge $(vars).MinerStatInt) {
                     log "$($_.Name) $($_.Symbol) Was Active for $WasActive Seconds"
                     log "Attempting to record hashrate for $($_.Name) $($_.Symbol)" -foregroundcolor "Cyan"
+                    ##Check For High Rejections
+                    $Rj = Global:Get-Rejections -Type $_.Type
+                    $Percent = $RJ -split "`:" | Select -First 1
+                    $Shares = $RJ -Split "`:" | Select -Last 1
+                    if ([Double]$Percent -gt $(arg).Rejections -and [Double]$Shares -gt 0) {
+                        log "Rejection Percentage at $Percent out of $Shares shares- Adding Strike Against Miner" -Foreground Red
+                        $Global:Strike = $True
+                    }
                     for ($i = 0; $i -lt 4; $i++) {
                         $Miner_HashRates = Global:Get-HashRate -Type $_.Type
                         $_.HashRate = $Miner_HashRates
@@ -217,7 +225,7 @@ function Global:Start-Benchmark {
                                         $GetWatts | ConvertTo-Json -Depth 3 | Set-Content ".\config\power\power.json"
                                     }
                                 }
-                                $Stat = Global:Set-Stat -Name "$($_.Name)_$($NewName)_hashrate" -Value $Miner_HashRates -AsHashRate
+                                $Stat = Global:Set-Stat -Name "$($_.Name)_$($NewName)_hashrate" -Value $Miner_HashRates -Rejects $Percent -AsHashRate
                                 Start-Sleep -s 1
                                 $GetLiveStat = Global:Get-Stat "$($_.Name)_$($NewName)_hashrate"
                                 $StatCheck = "$($GetLiveStat.Live)"
@@ -239,26 +247,16 @@ function Global:Start-Benchmark {
                                     Global:Get-Intensity $_.Type $_.Symbol $_.Path
                                     log "Stat Written" -foregroundcolor green
                                     log "Was this stat not correct? You can run command 'bench miner $($_.Name)' or 'bench algorithm $($_.algo)' to reset benchmark" -foregroundcolor cyan
-                                    if($IsWindows) { log "There is also a batch file labeled swarm_start_$($_.algo).bat for testing in .\bin\$($_.name)`n" -foregroundcolor cyan }
-                                    if($IsLinux) { log "There is also a bash file labeled swarm_start_$($_.algo).sh for testing in .\bin\$($_.name)`n" -foregroundcolor cyan }
+                                    if ($IsWindows) { log "There is also a batch file labeled swarm_start_$($_.algo).bat for testing in .\bin\$($_.name)`n" -foregroundcolor cyan }
+                                    if ($IsLinux) { log "There is also a bash file labeled swarm_start_$($_.algo).sh for testing in .\bin\$($_.name)`n" -foregroundcolor cyan }
                                     $Global:Strike = $false
+                                    $i = 5;
                                 } 
                             }
                         }
                     }
-
-                    ##Check For High Rejections
-                    $Rj = Global:Get-Rejections -Type $_.Type
-                    if($RJ) {
-                    $Percent = $RJ -split "`:" | Select -First 1
-                    $Shares = $RJ -Split "`:" | Select -Last 1
-                    if ([Double]$Percent -gt $(arg).Rejections -and [Double]$Shares -gt 0) {
-                        log "Rejection Percentage at $Percent out of $Shares shares- Adding Strike Against Miner" -Foreground Red
-                        $Global:Strike = $True
-                    }
                 }
             }
-        }
 
             ## If benchmark was successful- Reset the warnings
             if ($Global:Strike -ne $true) {
@@ -290,7 +288,7 @@ function Global:Start-Benchmark {
 
                         if ($(vars).Warnings."$($_.Name)".bad -ge $(arg).MinerBanCount) { $MinerBan = $true }
                         if ($(vars).Warnings."$($_.Name)_$($_.Algo)".bad -ge $(arg).AlgoBanCount) { $MinerAlgoBan = $true; }
-                        if($(arg).Poolname.Count -gt 1){ if ($(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)".bad -ge $(arg).PoolBanCount) { $MinerPoolBan = $true } }
+                        if ($(arg).Poolname.Count -gt 1) { if ($(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)".bad -ge $(arg).PoolBanCount) { $MinerPoolBan = $true } }
 
                         ##Strike One
                         if (-not $MinerPoolBan -and -not $MinerAlgoBan -and -not $MinerBan ) {

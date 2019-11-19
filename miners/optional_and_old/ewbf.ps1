@@ -54,6 +54,8 @@ $(vars).NVIDIATypes | ForEach-Object {
         if ($MinerAlgo -in $(vars).Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $(vars).BanHammer) {
             $StatAlgo = $MinerAlgo -replace "`_", "`-"
             $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
+            if($(arg).Rej_Factor -eq "Yes" -and $Stat.Rejections -gt 0){$HashStat = $Stat.Hour * (1 - ($Stat.Rejections * 0.01)) }
+            else{$HashStat = $Stat.Hour}
             $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                 $SelAlgo = $_.Algo
                 switch ($SelAlgo) {
@@ -80,7 +82,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     DeviceCall = "ewbf"
                     Arguments  = "--api 0.0.0.0:$Port --server $($_.Pool_Host) $AddArgs--port $($_.Port) --user $($_.$User) --pass $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = $Stat.Hour
-                    Quote      = if ($Stat.Hour) { $Stat.Hour * ($_.Price) }else { 0 }
+                    Quote      = if ($HashStat) { $HashStat * ($_.Price) }else { 0 }
                     Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                     MinerPool  = "$($_.Name)"
                     API        = "EWBF"
