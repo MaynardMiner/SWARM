@@ -68,6 +68,7 @@ $(vars).AMDTypes | ForEach-Object {
                     Arguments  = "--platform $($(vars).AMDPlatform) -a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --api_listen=0.0.0.0:$Port -o stratum+tcp://$($_.Pool_Host):$($_.Port) -u $($_.$User) --log_file `'$Log`' --bus_reorder -p $($_.$Pass)$($DIff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = $Stat.Hour
                     Quote      = if ($HashStat) { $HashStat * ($_.Price) }else { 0 }
+                    Rejections = $Stat.Rejections
                     Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                     MinerPool  = "$($_.Name)"
                     Port       = $Port

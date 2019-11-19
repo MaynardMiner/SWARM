@@ -104,6 +104,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Arguments  = "--api $Port --server $($_.Pool_Host) --nvml 0 --port $($_.Port) $AddArgs--user $($_.$User) --logfile `'$Log`' --pass $($_.$Pass)$Diff $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = $Stat.Hour
                     Quote      = if ($HashStat) { $HashStat * ($_.Price) }else { 0 }
+                    Rejections = $Stat.Rejections
                     Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                     MinerPool  = "$($_.Name)"
                     API        = "gminer"

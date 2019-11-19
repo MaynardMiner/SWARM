@@ -65,6 +65,7 @@ $(vars).CPUTypes | ForEach-Object {
                     HashRates  = $Stat.Hour
                     Worker     = $(arg).Rigname1
                     Quote      = if ($HashStat) { $HashStat * ($_.Price) }else { 0 }
+                    Rejections = $Stat.Rejections
                     Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                     MinerPool  = "$($_.Name)"
                     Port       = 10001

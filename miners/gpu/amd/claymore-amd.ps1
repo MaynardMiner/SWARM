@@ -83,6 +83,7 @@ $(vars).AMDTypes | ForEach-Object {
                     Arguments  = "-platform 1 -mport $Port $AddArgs-mode 1 -allcoins 1 $AddArgs-allpools 1 -epool $($_.Protocol)://$($_.Pool_Host):$($_.Port) -logfile `'$Log`' -ewal $($_.$User) $MinerWorker-wd 0 -gser 2 -dbg -1 -eres 0 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = $Stat.Hour
                     Quote      = if ($HashStat) { $HashStat * ($_.Price) }else { 0 }
+                    Rejections = $Stat.Rejections
                     Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                     API        = "claymore"
                     Port       = $Port

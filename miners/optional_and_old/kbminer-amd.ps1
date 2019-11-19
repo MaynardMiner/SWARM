@@ -69,6 +69,7 @@ $(vars).AMDTypes | ForEach-Object {
                     Arguments  = "--algorithm $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --enableapi --apiaddr $Port --pool $($_.Pool_Host):$($_.Port) --user $($_.$User) --pass $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = $Stat.Hour
                     Quote      = if ($HashStat) { $HashStat * ($_.Price) }else { 0 }
+                    Rejections = $Stat.Rejections
                     Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                     MinerPool  = "$($_.Name)"
                     Port       = $Port
