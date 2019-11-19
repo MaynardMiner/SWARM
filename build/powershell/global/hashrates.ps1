@@ -157,6 +157,7 @@ function Global:Get-MinerHashRate {
         log "$($_.Type) is currently mining $($_.Algo) on $($_.MinerPool)" -foregroundcolor Cyan
         log "$($_.Type) previous hashrates for $($_.Symbol) is" -NoNewLine -Start
         log " $MinerPrevious/s" -foreground yellow -End
+        log "$($_.Name) average rejection percentage is $($($_.Rejections).ToString("N2"))`%"
         log "Current Pool Projection: $CurrentProfit `| $BTCCurrentProfit  (This is live value with no modifiers)"
         log "Current Daily Profit   : $ScreenProfit `| $BTCScreenProfit  (This is daily average with watt calculations)
 "
