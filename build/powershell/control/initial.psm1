@@ -39,6 +39,7 @@ function Global:Get-ActiveMiners {
                 Instance     = 0
                 Worker       = $_.Worker
                 SubProcesses = $null
+                Rejections   = $_.Rejections
             }
 
             $(vars).ActiveMinerPrograms | Where-Object Path -eq $_.Path | Where-Object Type -eq $_.Type | Where-Object Arguments -eq $_.Arguments | % {
