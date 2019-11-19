@@ -1299,3 +1299,29 @@ OR NEWER- UPDATE IMMEDIATELY.
 * Gminer updated.
 * Tt-miner updated.
 * Wildrig updated.
+
+############################################
+############################################
+
+# SWARM 2.8.1
+
+## What's New?
+* Added new cc-yescrypt compiled miner.
+  - Does yescryptr8g
+* Added new cpuminer 'rplant'
+
+## Improvements
+* Removed -Id from all Process detection
+  to prevent erroneous errors.
+* Cleaned up pool files/algorithms including
+  fixing bad algorithm links (suck as phi2 -> phi2-lux)
+* cuckaroo29 and cuckaroo29d will register from SWARM
+  to HiveoS as 'Cuckoo'.
+* change set to $env for windows environment variables.
+
+## Updates
+* gminer updated
+* bminer updated
+* nbminer updated
+* jayddee updated
+* phoenix-miner updated
