@@ -75,8 +75,8 @@ function Global:Get-Data {
         Set-Location $($(vars).dir)     
     }
 
-    if (-not (Test-Path ".\build\export\libnvrtc-builtins.so")) {
-        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc-builtins.so.10.1 $($(vars).dir)/build/export/libnvrtc-builtins.so" -PassThru
+    if (-not (Test-Path ".\build\export\libnvrtc-builtins.so.10.2")) {
+        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc-builtins.so.10.2.89 $($(vars).dir)/build/export/libnvrtc-builtins.so.10.2" -PassThru
         $Proc | Wait-Process
         Set-Location "/"
         Set-Location $($(vars).dir)     
@@ -116,6 +116,13 @@ function Global:Get-Data {
         Set-Location "/"
         Set-Location $($(vars).dir)     
     }
+
+    if (-not (Test-Path ".\build\export\libcudart.so.10.2")) {
+        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libcudart.so.10.2.89 $($(vars).dir)/build/export/libcudart.so.10.2" -PassThru
+        $Proc | Wait-Process
+        Set-Location "/"
+        Set-Location $($(vars).dir)     
+    }
     
     if (-not (Test-Path ".\build\export\libhwloc.so.5")) {
         $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libhwloc.so.5.5.0 $($(vars).dir)/build/export/libhwloc.so.5" -PassThru
@@ -147,6 +154,13 @@ function Global:Get-Data {
 
     if (-not (Test-Path ".\build\export\libnvrtc.so.10.1")) {
         $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc.so.10.1.105 $($(vars).dir)/build/export/libnvrtc.so.10.1" -PassThru
+        $Proc | Wait-Process
+        Set-Location "/"
+        Set-Location $($(vars).dir)     
+    }
+
+    if (-not (Test-Path ".\build\export\libnvrtc.so.10.2")) {
+        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc.so.10.2.89 $($(vars).dir)/build/export/libnvrtc.so.10.2" -PassThru
         $Proc | Wait-Process
         Set-Location "/"
         Set-Location $($(vars).dir)     

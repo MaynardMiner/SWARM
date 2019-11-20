@@ -106,6 +106,13 @@ if (Test-Path ".\build\export\libcudart.so.10.0.130") {
     Set-Location $Dir     
 }
 
+if (Test-Path ".\build\export\libcudart.so.10.2.89") {
+    $Proc = Start-Process ln -ArgumentList "-s $dir/build/export/libcudart.so.10.2.89 $dir/build/export/libcudart.so.10.2" -PassThru
+    $Proc | Wait-Process
+    Set-Location "/"
+    Set-Location $Dir     
+}
+
 if (Test-Path ".\build\export\libcurl.so.3.0.0") {
     $Proc = Start-Process ln -ArgumentList "-s $dir/build/export/libcurl.so.3.0.0 $dir/build/export/libcurl.so.3" -PassThru
     $Proc | Wait-Process
@@ -164,19 +171,19 @@ if (Test-Path ".\build\export\libnvrtc.so.10.1.105") {
     Set-Location $Dir     
 }
 
+if (Test-Path ".\build\export\libnvrtc.so.10.2.89") {
+    $Proc = Start-Process ln -ArgumentList "-s $dir/build/export/libnvrtc.so.10.2.89 $dir/build/export/libnvrtc.so.10.2" -PassThru
+    $Proc | Wait-Process
+    Set-Location "/"
+    Set-Location $Dir     
+}
+
 if (Test-Path ".\build\export\libnvrtc-builtins.so.10.1.105") {
     $Proc = Start-Process ln -ArgumentList "-s $dir/build/export/libnvrtc-builtins.so.10.1.105 $dir/build/export/libnvrtc-builtins.so.10.1" -PassThru
     $Proc | Wait-Process
     Set-Location "/"
     Set-Location $Dir
     Start-Sleep -S 1
-}
-
-if (Test-Path ".\build\export\libnvrtc-builtins.so.10.1") {
-    $Proc = Start-Process ln -ArgumentList "-s $dir/build/export/libnvrtc-builtins.so.10.1 $dir/build/export/libnvrtc-builtins.so" -PassThru
-    $Proc | Wait-Process
-    Set-Location "/"
-    Set-Location $Dir     
 }
  
 if (Test-Path ".\build\bash\get-oc") {
