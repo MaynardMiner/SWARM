@@ -72,6 +72,7 @@ function Global:start-update {
         $PreviousVersions += "SWARM.2.7.8"
         $PreviousVersions += "SWARM.2.7.9"
         $PreviousVersions += "SWARM.2.8.0"
+        $PreviousVersions += "SWARM.2.8.1"
 
         $PreviousVersions | ForEach-Object {
             $PreviousVersions += "$($_).linux"
@@ -505,15 +506,26 @@ function Global:start-update {
                                 if ($ChangeFile -eq "cc-yescrypt.json") {
                                     $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                         if ($_ -ne "name") {
+
+                                            $Data.$_.commands = $Data.$_.commands | Select -ExcludeProperty "yescrypt"
+                                            $Data.$_.difficulty = $Data.$_.difficulty | Select -ExcludeProperty "yescrypt"
+                                            $Data.$_.naming = $Data.$_.naming | Select -ExcludeProperty "yescrypt"
+                                            $Data.$_.fee = $Data.$_.fee | Select -ExcludeProperty "yescrypt"
+
                                             $Data.$_.commands | Add-Member "yescryptr8g" "" -ErrorAction SilentlyContinue
                                             $Data.$_.difficulty | Add-Member "yescryptr8g" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "yescryptr8g" "yescryptr8g" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "yescryptr8g" 0 -ErrorAction SilentlyContinue
 
-                                            $Data.$_.commands.yescrypt = ""
                                             $Data.$_.commands.yescryptr8 = ""
+                                            $Data.$_.commands.yescryptr8g = ""
                                             $Data.$_.commands.yescryptr16 = ""
                                             $Data.$_.commands.yescryptr32 = ""
+
+                                            $Data.$_.naming.yescryptr8 = "yescryptr8"
+                                            $Data.$_.naming.yescryptr8g = "yescrypt"
+                                            $Data.$_.naming.yescryptr16 = "yescryptr16"
+                                            $Data.$_.naming.yescryptr32 = "yescryptr16"
                                         }
                                     }
                                 }
