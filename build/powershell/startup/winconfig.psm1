@@ -290,10 +290,7 @@ function Global:Start-WindowsConfig {
     
     ## Windows Bug- Set Cudas to match PCI Bus Order
     if ($(arg).Type -like "*NVIDIA*") { [Environment]::SetEnvironmentVariable("CUDA_DEVICE_ORDER", "PCI_BUS_ID", "User") }
-    
-    ##Set Cuda For Commands
-    if ($(arg).Type -like "*NVIDIA*") { $(arg).Cuda = "10"; $(arg).Cuda | Set-Content ".\debug\cuda.txt" }
-    
+        
     ##Detect if drivers are installed, not generic- Close if not. Print message on screen
     $Install_NVSMI = $false
     if ($(arg).Type -like "*NVIDIA*" -and -not (Test-Path "C:\Program Files\NVIDIA Corporation\NVSMI\nvml.dll")) {
@@ -368,9 +365,6 @@ function Global:Start-WindowsConfig {
         }
         Remove-Module -Name "methods"
     }
-
-    ## Set Cuda for commands
-    if ($(arg).Type -like "*NVIDIA*") { $(arg).Cuda | Set-Content ".\debug\cuda.txt" }
     
     ## Let User Know What Platform commands will work for- Will always be Group 1.
     if ($(arg).Type -like "*NVIDIA1*") {

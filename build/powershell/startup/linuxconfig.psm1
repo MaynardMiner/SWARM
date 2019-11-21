@@ -515,9 +515,6 @@ function Global:Start-LinuxConfig {
             $Trash | % { log $_ }
         }
     }
-
-    ## Set Cuda for commands
-    if ($(arg).Type -like "*NVIDIA*") { $(arg).Cuda | Set-Content ".\debug\cuda.txt" }
     
     ## Let User Know What Platform commands will work for- Will always be Group 1.
     if ($(arg).Type -like "*NVIDIA1*") {

@@ -301,7 +301,7 @@ While ($true) {
         #Get Miner Config Files
         Global:Add-Module "$($(vars).build)\miners.psm1"
         if ($(arg).Type -like "*CPU*") { create cpu (Global:Get-minerfiles -Types "CPU") }
-        if ($(arg).Type -like "*NVIDIA*") { create nvidia (Global:Get-minerfiles -Types "NVIDIA" -Cudas $(arg).Cuda) }
+        if ($(arg).Type -like "*NVIDIA*") { create nvidia (Global:Get-minerfiles -Types "NVIDIA") }
         if ($(arg).Type -like "*AMD*") { create amd (Global:Get-minerfiles -Types "AMD") }
 
         ## Check to see if wallet is present:

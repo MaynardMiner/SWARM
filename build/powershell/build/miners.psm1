@@ -1,9 +1,7 @@
 function Global:Get-minerfiles {
     param(
         [Parameter(Mandatory = $false)]
-        [string]$Types,
-        [Parameter(Mandatory = $false)]
-        [string]$Cudas
+        [string]$Types
     )
  
     $miner_update = [PSCustomObject]@{ }
@@ -16,8 +14,7 @@ function Global:Get-minerfiles {
 
         "NVIDIA" {
             if ($(arg).Platform -eq "linux") {
-                if ($Cudas -eq "10") { $(arg).Update = Get-Content ".\config\update\nvidia-linux.json" | ConvertFrom-Json }
-                if ($Cudas -eq "9.2") { $(arg).Update = Get-Content ".\config\update\nvidia9.2-linux.json" | ConvertFrom-Json }
+                $(arg).Update = Get-Content ".\config\update\nvidia-linux.json" | ConvertFrom-Json
             }
             elseif ($(arg).Platform -eq "windows") { $(arg).Update = Get-Content ".\config\update\nvidia-win.json" | ConvertFrom-Json }
         }
