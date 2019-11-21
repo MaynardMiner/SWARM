@@ -23,62 +23,20 @@ function Global:start-update {
         [String]$Update
     )
 
+    Global:Get-Version
     $Location = split-Path $($(vars).dir)
     $StartUpdate = $true
     if ($(arg).Platform -eq "linux" -and $Update -eq "No") { $StartUpdate = $false }
 
     if ($StartUpdate -eq $true) {
-        $PreviousVersions = @()
-        $PreviousVersions += "SWARM.2.3.8"
-        $PreviousVersions += "SWARM.2.3.9"
-        $PreviousVersions += "SWARM.2.4.0"
-        $PreviousVersions += "SWARM.2.4.1"
-        $PreviousVersions += "SWARM.2.4.2"
-        $PreviousVersions += "SWARM.2.4.3"        
-        $PreviousVersions += "SWARM.2.4.4"
-        $PreviousVersions += "SWARM.2.4.5"
-        $PreviousVersions += "SWARM.2.4.6"
-        $PreviousVersions += "SWARM.2.4.7"
-        $PreviousVersions += "SWARM.2.4.8"
-        $PreviousVersions += "SWARM.2.4.9"
-        $PreviousVersions += "SWARM.2.5.0"
-        $PreviousVersions += "SWARM.2.5.1"
-        $PreviousVersions += "SWARM.2.5.2"
-        $PreviousVersions += "SWARM.2.5.3"
-        $PreviousVersions += "SWARM.2.5.4"
-        $PreviousVersions += "SWARM.2.5.5"
-        $PreviousVersions += "SWARM.2.5.6"
-        $PreviousVersions += "SWARM.2.5.7"
-        $PreviousVersions += "SWARM.2.5.8"
-        $PreviousVersions += "SWARM.2.5.9"
-        $PreviousVersions += "SWARM.2.6.0"
-        $PreviousVersions += "SWARM.2.6.1"
-        $PreviousVersions += "SWARM.2.6.2"
-        $PreviousVersions += "SWARM.2.6.3"
-        $PreviousVersions += "SWARM.2.6.4"
-        $PreviousVersions += "SWARM.2.6.5"
-        $PreviousVersions += "SWARM.2.6.6"
-        $PreviousVersions += "SWARM.2.6.7"
-        $PreviousVersions += "SWARM.2.6.8"
-        $PreviousVersions += "SWARM.2.6.9"
-        $PreviousVersions += "SWARM.2.7.0"
-        $PreviousVersions += "SWARM.2.7.1"
-        $PreviousVersions += "SWARM.2.7.2"
-        $PreviousVersions += "SWARM.2.7.3"
-        $PreviousVersions += "SWARM.2.7.4"
-        $PreviousVersions += "SWARM.2.7.5"
-        $PreviousVersions += "SWARM.2.7.6"
-        $PreviousVersions += "SWARM.2.7.7"
-        $PreviousVersions += "SWARM.2.7.8"
-        $PreviousVersions += "SWARM.2.7.9"
-        $PreviousVersions += "SWARM.2.8.0"
-        $PreviousVersions += "SWARM.2.8.1"
-
-        $PreviousVersions | ForEach-Object {
-            $PreviousVersions += "$($_).linux"
-            $PreviousVersions += "$($_).windows"
+        
+        ## Find previous SWARM versions.
+        $PreviousVersions = $(Get-ChildItem (Split-Path $(vars).Dir)).Name | Where {
+            $_ -like "*SWARM.*" -and 
+            $_ -ne "SWARM.$($Global:Version).linux" -and
+            $_ -ne "SWARM.$($Global:Version).windows"
         }
-
+        
         ## Files to exclude- use latest by default
         $Exclude = "cc-yescrpyt.json"
 
