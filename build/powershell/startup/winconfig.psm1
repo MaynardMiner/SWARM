@@ -194,18 +194,21 @@ function Global:Get-GPUCount {
         if ($GN -and $GA) {
             log "AMD and NVIDIA Detected" -ForegroundColor Magenta
             $(vars).types += "AMD1", "NVIDIA2"
+            $(arg).Type += "AMD1", "NVIDIA2"
             $global:config.user_params.type += "AMD1", "NVIDIA2"
             $global:config.params.type += "AMD1", "NVIDIA2"                  
         }
         elseif ($GN) {
             log "NVIDIA Detected: Adding NVIDIA" -ForegroundColor Magenta
             $(vars).types += "NVIDIA1" 
+            $(arg).Type += "NVIDIA1"
             $global:config.user_params.type += "NVIDIA1" 
             $global:config.params.type += "NVIDIA1"        
         }
         elseif ($GA) {
             log "AMD Detected: Adding AMD" -ForegroundColor Magenta
             $(vars).types += "AMD1" 
+            $(arg).Type += "AMD1"
             $global:config.user_params.type += "AMD1" 
             $global:config.params.type += "AMD1"    
         }
@@ -213,11 +216,13 @@ function Global:Get-GPUCount {
         if ([string]$(arg).CPUThreads -eq "") { 
             $threads = $(Get-CimInstance -ClassName 'Win32_Processor' | Select-Object -Property 'NumberOfCores').NumberOfCores; 
             $(vars).threads = $threads
+            $(arg).CPUThreads = $threads
             $global:config.user_params.CPUThreads = $threads
             $global:config.params.CPUThreads = $threads
         }
         log "Using $($(arg).CPUThreads) cores for mining"
         $(vars).types += "CPU"
+        $(arg).Type += "CPU"
         $global:config.user_params.type += "CPU"
         $global:config.params.type += "CPU"
     }
