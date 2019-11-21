@@ -69,7 +69,7 @@ function Global:start-update {
                 if ($RollbackVersion -gt $CurrentVersion) { $Rolling_Back = $true }
                 if ($Rolling_Back) {
                     log "Version deteced is a new version than current" -ForeGroundColor Yellow
-                    log "Transferring only stats, leaving configs!" -ForeGroundColor
+                    log "Transferring only stats, leaving configs!" -ForeGroundColor Yellow
                 }
                 else {
                     log "Gathering Old Version Config And HashRates- Then Deleting"
