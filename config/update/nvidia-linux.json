@@ -106,7 +106,7 @@
     "NVIDIA2": ".\\bin\\cc-yescrypt-2\\ccminer",
     "NVIDIA3": ".\\bin\\cc-yescrypt-3\\ccminer",
     "minername": "ccminer",
-    "version": "10b",
+    "version": "10c",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/cc-yescrypt-linux.tar.gz"
   },
