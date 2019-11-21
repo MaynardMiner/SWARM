@@ -69,7 +69,7 @@ function Global:start-update {
                 if ($RollbackVersion -gt $CurrentVersion) { $Rolling_Back = $true }
                 if ($Rolling_Back) {
                     log "Version deteced is a new version than current" -ForeGroundColor Yellow
-                    log "Transferring only stats, leaving configs!" -ForeGroundColor Yellow
+                    log "Transferring old settings, but cannot transfer config\miners  and config\pools folder data!" -ForeGroundColor Yellow
                 }
                 else {
                     log "Gathering Old Version Config And HashRates- Then Deleting"
@@ -108,8 +108,12 @@ function Global:start-update {
                     if (Test-Path "$OldTimeout\algo_block") { Get-ChildItem -Path "$($OldTimeout)\pool_block" -Include *.txt, *.conf -Recurse | Copy-Item -Destination ".\timeout\pool_block" }
                     Get-ChildItem -Path "$($OldTimeout)\*" -Include *.txt | Copy-Item -Destination ".\timeout"
                 }
-                if ($StatsOnly -ne "Yes" -and -not $Rolling_Back) {
-                    $Jsons = @("asic", "miners", "oc", "pools", "power", "wallets")
+                if ($StatsOnly -ne "Yes") {
+                    if (-not $Rolling_Back) {
+                        $Jsons = @("asic", "miners", "oc", "pools", "power", "wallets")
+                    } else {
+                        $Jsons = @("asic","oc","power","wallets")
+                    }
                     $UpdateType = @("CPU", "AMD1", "NVIDIA1", "NVIDIA2", "NVIDIA3")
 
                     $Jsons | foreach {
