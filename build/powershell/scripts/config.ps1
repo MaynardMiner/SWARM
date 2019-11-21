@@ -22,7 +22,7 @@ param(
 $dir = (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
 $dir = $dir -replace "/var/tmp", "/root"
 Set-Location $dir
-Clear-Content ".\build\txt\get.txt"
+Clear-Content ".\debug\get.txt"
 [cultureinfo]::CurrentCulture = 'en-US'
 
 $Get = @()
@@ -76,4 +76,4 @@ if ($continue -eq $true) {
     }
 }
 
-$Get | Set-Content ".\build\txt\get.txt"
+$Get | Set-Content ".\debug\get.txt"

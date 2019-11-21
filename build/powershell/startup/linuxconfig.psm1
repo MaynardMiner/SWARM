@@ -291,7 +291,7 @@ function Global:Get-GPUCount {
     $NoType = $true
     $DeviceList = @{ AMD = @{ }; NVIDIA = @{ }; CPU = @{ }; }
     Invoke-Expression "lspci" | Tee-Object -Variable lspci | Out-null
-    $lspci | Set-Content ".\build\txt\gpucount.txt"
+    $lspci | Set-Content ".\debug\gpucount.txt"
     $GetBus = $lspci | Select-String "VGA", "3D"
     $AMDCount = 0
     $NVIDIACount = 0
@@ -433,7 +433,7 @@ function Global:Get-GPUCount {
         }
     }
 
-    $DeviceList | ConvertTo-Json | Set-Content ".\build\txt\devicelist.txt"
+    $DeviceList | ConvertTo-Json | Set-Content ".\debug\devicelist.txt"
     $GPUCount = 0
     $GPUCount += $DeviceList.Nvidia.Count
     $GPUCount += $DeviceList.AMD.Count
@@ -517,29 +517,29 @@ function Global:Start-LinuxConfig {
     }
 
     ## Set Cuda for commands
-    if ($(arg).Type -like "*NVIDIA*") { $(arg).Cuda | Set-Content ".\build\txt\cuda.txt" }
+    if ($(arg).Type -like "*NVIDIA*") { $(arg).Cuda | Set-Content ".\debug\cuda.txt" }
     
     ## Let User Know What Platform commands will work for- Will always be Group 1.
     if ($(arg).Type -like "*NVIDIA1*") {
-        "NVIDIA1" | Out-File ".\build\txt\minertype.txt" -Force
+        "NVIDIA1" | Out-File ".\debug\minertype.txt" -Force
         log "Group 1 is NVIDIA- Commands and Stats will work for NVIDIA1" -foreground yellow
         Start-Sleep -S 3
     }
     elseif ($(arg).Type -like "*AMD1*") {
-        "AMD1" | Out-File ".\build\txt\minertype.txt" -Force
+        "AMD1" | Out-File ".\debug\minertype.txt" -Force
         log "Group 1 is AMD- Commands and Stats will work for AMD1" -foreground yellow
         Start-Sleep -S 3
     }
     elseif ($(arg).Type -like "*CPU*") {
         if ($(vars).GPU_Count -eq 0) {
-            "CPU" | Out-File ".\build\txt\minertype.txt" -Force
+            "CPU" | Out-File ".\debug\minertype.txt" -Force
             log "Group 1 is CPU- Commands and Stats will work for CPU" -foreground yellow
             Start-Sleep -S 3
         }
     }
     elseif ($(arg).Type -like "*ASIC*") {
         if ($(vars).GPU_Count -eq 0) {
-            "ASIC" | Out-File ".\build\txt\minertype.txt" -Force
+            "ASIC" | Out-File ".\debug\minertype.txt" -Force
             log "Group 1 is ASIC- Commands and Stats will work for ASIC" -foreground yellow
         }
     }

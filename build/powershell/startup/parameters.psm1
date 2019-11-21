@@ -87,8 +87,8 @@ function Global:Get-Parameters {
         }
         Write-Host "OS = $($global:config.user_params.Platform)" -ForegroundColor Green
     }
-    if (-not (Test-Path ".\build\txt")) { New-Item -Name "txt" -ItemType "Directory" -Path ".\build" | Out-Null }
-    $global:config.user_params.Platform | Set-Content ".\build\txt\os.txt"
+    if (-not (Test-Path ".\debug")) { New-Item -Name "txt" -ItemType "Directory" -Path ".\build" | Out-Null }
+    $global:config.user_params.Platform | Set-Content ".\debug\os.txt"
     ## Get Algorithms
     $global:Config.Add("Pool_Algos",(Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json))
 }

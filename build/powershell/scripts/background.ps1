@@ -46,8 +46,8 @@ $(vars).Add("tcp", "$($(vars).dir)\build\api\tcp")
 $(vars).Add("html", "$($(vars).dir)\build\api\html")
 $(vars).Add("web", "$($(vars).dir)\build\api\web")
 
-if (Test-Path ".\build\txt\data.xml") {
-    $(vars).Add("onboard", ([xml](Get-Content ".\build\txt\data.xml")))
+if (Test-Path ".\debug\data.xml") {
+    $(vars).Add("onboard", ([xml](Get-Content ".\debug\data.xml")))
     $(vars).onboard = $(vars).onboard.gpuz_dump.card | Where vendor -ne "AMD/ATI" | Where vendor -ne "NVIDIA"
 }
 
@@ -115,18 +115,18 @@ if (Test-Path $CheckForSWARM) {
     $global:GETSWARMID = Get-Content $CheckForSWARM; 
     $Global:GETSWARM = Get-Process | Where ID -eq $global:GETSWARMID
 }
-$(vars).ADD("GCount", (Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json))
+$(vars).ADD("GCount", (Get-Content ".\debug\devicelist.txt" | ConvertFrom-Json))
 $(vars).ADD("BackgroundTimer", (New-Object -TypeName System.Diagnostics.Stopwatch))
 $(vars).ADD("watchdog_start", (Get-Date))
 $(vars).ADD("watchdog_triggered", $false)
 $(vars).Add("GPU_Bad", 0)
-if(Test-Path ".\build\txt\load-average.txt"){Remove-Item ".\build\txt\load-average.txt"}
+if(Test-Path ".\debug\load-average.txt"){Remove-Item ".\debug\load-average.txt"}
 
 ## If miner was restarted due to watchdog
-if (test-path ".\build\txt\watchdog.txt") { 
-    $(vars).watchdog_start = Get-Content ".\build\txt\watchdog.txt" 
+if (test-path ".\debug\watchdog.txt") { 
+    $(vars).watchdog_start = Get-Content ".\debug\watchdog.txt" 
     $(vars).watchdog_triggered = $True
-    Remove-Item ".\build\txt\watchdog.txt" -Force
+    Remove-Item ".\debug\watchdog.txt" -Force
 }
 
 Remove-Module -Name "startup"

@@ -3,7 +3,7 @@ function Global:set-minerconfig($ConfigMiner, $Logs) {
     $ConfigPathDir = Split-Path $ConfigMiner.Path
     if ($ConfigMiner.Devices -ne "none") { $MinerDevices = Global:Get-DeviceString -TypeDevices $ConfigMiner.Devices }
     else {
-        $(vars).GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
+        $(vars).GCount = Get-Content ".\debug\devicelist.txt" | ConvertFrom-Json
         if ($ConfigMiner.Type -like "*NVIDIA*") { $TypeS = "NVIDIA" }
         if ($ConfigMiner.Type -like "*AMD*") { $TypeS = "AMD" }
         $MinerDevices = Global:Get-DeviceString -TypeCount $($(vars).GCount.$TypeS.PSObject.Properties.Value.Count)
@@ -62,7 +62,7 @@ function Global:set-minerconfig($ConfigMiner, $Logs) {
                     }
                 }
                 "cuckatoo31" {
-                    $NDevices = Get-Content ".\build\txt\gpucount.txt"
+                    $NDevices = Get-Content ".\debug\gpucount.txt"
                     $NDevices = $NDevices | Select-String "VGA", "3D"
                     $NDevices = $NDevices | Where { $_ -like "*NVIDIA*" -and $_ -notlike "*nForce*" }
                     $MinerDevices | % {

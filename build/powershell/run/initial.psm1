@@ -27,17 +27,17 @@ Function Global:Get-ExchangeRate {
             $Rates.Add("currency", $(arg).Currency)
             $Rates.Add("coin", $(arg).CoinExchange)
         }
-        $Rates | ConvertTo-Json | Set-Content ".\build\txt\rates.txt" -Force
+        $Rates | ConvertTo-Json | Set-Content ".\debug\rates.txt" -Force
     }
 }
 
 function Global:Clear-Commands {
     ## This section pulls relavant statics that users require, and then outputs them to screen or file, to be pulled on command.
-    $MSFile = ".\build\txt\minerstats.txt"
-    if (Test-Path $MSFIle) { Clear-Content ".\build\txt\minerstats.txt" -Force }
+    $MSFile = ".\debug\minerstats.txt"
+    if (Test-Path $MSFIle) { Clear-Content ".\debug\minerstats.txt" -Force }
     $StatusDate = Get-Date
-    $StatusDate | Out-File ".\build\txt\minerstats.txt"
-    $StatusDate | Out-File ".\build\txt\charts.txt"    
+    $StatusDate | Out-File ".\debug\minerstats.txt"
+    $StatusDate | Out-File ".\debug\charts.txt"    
 }
 
 function Global:Get-ScreenName {

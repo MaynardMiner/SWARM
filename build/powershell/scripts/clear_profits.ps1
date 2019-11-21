@@ -20,4 +20,4 @@ $Get += "Gathering All Profit Stats"
 if (Test-Path ".\stats\*profit.txt*") {Remove-Item ".\stats\*profit.txt*" -Force}
 Write-Host "Cleared All Profit Stats" -Foreground Green
 $Get += "Cleared All Profit Stats"
-$Get | Set-Content ".\build\txt\get.txt"
+$Get | Set-Content ".\debug\get.txt"

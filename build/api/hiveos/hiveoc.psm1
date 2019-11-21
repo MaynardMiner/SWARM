@@ -17,7 +17,7 @@ function Global:Start-NVIDIAOC($NewOC) {
     $OcArgs = @()
     $HiveNVOC = $NewOC | ConvertFrom-StringData
     $ocmessage = @()
-    $OCCount = Get-Content ".\build\txt\oclist.txt" | ConvertFrom-JSon
+    $OCCount = Get-Content ".\debug\oclist.txt" | ConvertFrom-JSon
     $FansArgs = @()
 
     ## Get Power limits
@@ -140,7 +140,7 @@ function Global:Start-NVIDIAOC($NewOC) {
         $Proc = Get-Process | Where id -eq $start_oc.dwProcessId
         $Proc | Wait-Process
         $ocmessage
-        $ocmessage | Set-Content ".\build\txt\ocnvidia.txt"
+        $ocmessage | Set-Content ".\debug\ocnvidia.txt"
     }
 }
 
@@ -148,7 +148,7 @@ function Global:Start-NVIDIAOC($NewOC) {
 function Global:Start-AMDOC($NewOC) {
   
     $AMDOC = $NewOC | ConvertFrom-StringData
-    $OCCount = Get-Content ".\build\txt\oclist.txt" | ConvertFrom-JSon
+    $OCCount = Get-Content ".\debug\oclist.txt" | ConvertFrom-JSon
     $ocmessage = @()
     $script = @()
     $script += "`$host.ui.RawUI.WindowTitle = `'OC-Start`';"
@@ -332,6 +332,6 @@ function Global:Start-AMDOC($NewOC) {
         $Proc = Get-Process | Where id -eq $start_oc.dwProcessId
         $Proc | Wait-Process
         $ocmessage
-        $ocmessage | Set-Content ".\build\txt\ocamd.txt"
+        $ocmessage | Set-Content ".\debug\ocamd.txt"
     }
 }

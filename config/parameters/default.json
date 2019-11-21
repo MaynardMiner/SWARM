@@ -33,7 +33,7 @@
     "Conserve": "No",
     "CPUOnly": "No",
     "CPUThreads": "",
-    "Cuda": "10",
+    "Cuda": "10.1",
     "Currency": [
         "USD"
     ],

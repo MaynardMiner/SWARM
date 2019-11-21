@@ -85,7 +85,7 @@ function Global:Set-Stat {
 
     ## Define Stat paths
     $name = $name -replace "`/", "`-"
-    if ($name -eq "load-average") { $Max_Periods = 90; $Path = "build\txt\$Name.txt" }
+    if ($name -eq "load-average") { $Max_Periods = 90; $Path = "debug\$Name.txt" }
     else { $Path = "stats\$Name.txt" }
     $Check = Test-Path $Path
 
@@ -241,7 +241,7 @@ function Global:Get-Stat {
 
     $name = $name -replace "`/", "`-"
     if (-not (Test-Path "stats")) { New-Item "stats" -ItemType "directory" }
-    if ($name -eq "load-average") { Get-ChildItem "build\txt" | Where-Object Extension -NE ".ps1" | Where-Object BaseName -EQ $Name | Get-Content | ConvertFrom-Json }
+    if ($name -eq "load-average") { Get-ChildItem "debug" | Where-Object Extension -NE ".ps1" | Where-Object BaseName -EQ $Name | Get-Content | ConvertFrom-Json }
     else { Get-ChildItem "stats" | Where-Object Extension -NE ".ps1" | Where-Object BaseName -EQ $Name | Get-Content | ConvertFrom-Json }
 }
 

@@ -101,7 +101,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                             $MinerDirectory = Split-Path ($MinerCurrent.Path) -Parent
                             $CommandFilePath = Join-Path $($(vars).dir) "$($MinerDirectory)\command.json"
                             $MinerArguments = "-c command.json -p $($MinerCurrent.Port)"
-                            $NHDevices = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
+                            $NHDevices = Get-Content ".\debug\devicelist.txt" | ConvertFrom-Json
                             $NiceDevices = Global:Get-DeviceString -TypeCount $NHDevices.NVIDIA.Count
                             set-nicehash $($MinerCurrent.NPool) 3200 $($MinerCurrent.NUser) $($MinerCurrent.Algo) $($MinerCurrent.CommandFile) "$NiceDevices"
                         }
@@ -387,7 +387,7 @@ $start
             $FileTimer.Restart()
             $FileChecked = $false
             do {
-                $FileCheck = ".\build\txt\bestminers.txt"
+                $FileCheck = ".\debug\bestminers.txt"
                 if (Test-Path $FileCheck) { $FileChecked = $true }
                 Start-Sleep -s .1
             }until($FileChecked -eq $true -or $FileTimer.Elapsed.TotalSeconds -gt 9)

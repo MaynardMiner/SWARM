@@ -124,7 +124,7 @@ function Global:Start-Webcommand {
             $messagetype = "success"
             $data = "Nvidia settings applied"
             Start-NVIDIAOC $Command.result.nvidia_oc
-            $getpayload = Get-Content ".\build\txt\ocnvidia.txt"
+            $getpayload = Get-Content ".\debug\ocnvidia.txt"
             $line = @()
             $getpayload | foreach { $line += "$_`n" }
             $payload = $line
@@ -140,7 +140,7 @@ function Global:Start-Webcommand {
             $messagetype = "success"
             $data = "AMD settings applied"
             Start-AMDOC $Command.result.amd_oc
-            $getpayload = Get-Content ".\build\txt\ocamd.txt"
+            $getpayload = Get-Content ".\debug\ocamd.txt"
             $line = @()
             $getpayload | foreach { $line += "$_`n" }
             $payload = $line
@@ -152,7 +152,7 @@ function Global:Start-Webcommand {
         }
   
         "config" {
-            $Command.result | ConvertTo-Json | Set-Content ".\build\txt\hiveconfig.txt"
+            $Command.result | ConvertTo-Json | Set-Content ".\debug\hiveconfig.txt"
             if ($command.result.config) {
                 $rig = [string]$command.result.config | ConvertFrom-StringData
                 $Worker = $rig.WORKER_NAME -replace "`"", ""
@@ -249,6 +249,6 @@ function Global:Start-Webcommand {
         }
   
     }
-    if (Test-Path ".\build\txt\get.txt") { Clear-Content ".\build\txt\get.txt" }
+    if (Test-Path ".\debug\get.txt") { Clear-Content ".\debug\get.txt" }
     $trigger
 }

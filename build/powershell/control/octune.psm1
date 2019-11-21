@@ -13,8 +13,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 function Global:Start-OC($Miner) {
     Switch ($(arg).Platform) {
-        "linux" { $(vars).GCount = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json }
-        "windows" { $(vars).GCount = Get-Content ".\build\txt\oclist.txt" | ConvertFrom-Json }
+        "linux" { $(vars).GCount = Get-Content ".\debug\devicelist.txt" | ConvertFrom-Json }
+        "windows" { $(vars).GCount = Get-Content ".\debug\oclist.txt" | ConvertFrom-Json }
     }
     
     $nvidiaOC = $false; $DoNVIDIAOC = $false; $DoAMDOC = $false
@@ -571,6 +571,6 @@ function Global:Start-OC($Miner) {
         log "$($_)" -ForegroundColor Cyan
     }
 
-    $OCMessage | Add-Content -Path ".\build\txt\oc-settings.txt"
+    $OCMessage | Add-Content -Path ".\debug\oc-settings.txt"
     
 }

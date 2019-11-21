@@ -210,7 +210,7 @@ class RIG {
     }
 
     Get_NVIDIAGPUData([Int]$Critical) {
-        $nvidiaout = ".\build\txt\nv-autofan.txt"
+        $nvidiaout = ".\debug\nv-autofan.txt"
         $continue = $false
         try {
             if (Test-Path $nvidiaout) { clear-content $nvidiaout -ErrorAction Stop }
@@ -248,7 +248,7 @@ class RIG {
 
     Get_AMDGPUData([int]$Critical) {
         if ($this.GPUS | Where model -eq "AMD") {
-            $amdout = ".\build\txt\amd-autofan.txt"
+            $amdout = ".\debug\amd-autofan.txt"
             $continue = $false
             try {
                 if (Test-Path $amdout) { clear-content $amdout -ErrorAction Stop }
@@ -444,7 +444,7 @@ if ($IsWindows) { Start-Process "powershell" -ArgumentList "Set-Location `'$($co
 
 ## Build RIG
 $global:RIG = [RIG]::New()
-$RIG.Add_GPUs(".\build\txt\hive_hello.txt", ".\build\txt\oclist.txt")
+$RIG.Add_GPUs(".\debug\hive_hello.txt", ".\debug\oclist.txt")
 
 ## Print RIG stats
 $Rig.GPUS | % {

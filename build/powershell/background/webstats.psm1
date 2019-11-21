@@ -20,7 +20,7 @@ function Global:Send-WebStats {
             Global:Get-WebModules $_
             $Stats = Global:Set-Stats $_
             $response = $Stats | Global:Invoke-WebCommand -Site $_ -Action "message"
-            $response | ConvertTo-Json | Set-Content ".\build\txt\response.txt"
+            $response | ConvertTo-Json | Set-Content ".\debug\response.txt"
             if ($response) {
                 if ($response.result.command -eq "batch") {
                     $batch = $response.result.commands

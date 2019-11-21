@@ -59,7 +59,7 @@ function Global:Set-NvidiaStats {
         }
 
         "windows" {
-            $nvidiaout = ".\build\txt\nv-stats.txt"
+            $nvidiaout = ".\debug\nv-stats.txt"
             $continue = $false
             try {
                 $smi = "$($env:ProgramFiles)\NVIDIA Corporation\NVSMI\nvidia-smi.exe"
@@ -96,7 +96,7 @@ function Global:Set-AMDStats {
 
     switch ($(arg).Platform) {
         "windows" {
-            $amdout = ".\build\txt\amd-stats.txt"
+            $amdout = ".\debug\amd-stats.txt"
             $continue = $false
             try {
                 $odvii = ".\build\apps\odvii\odvii.exe"

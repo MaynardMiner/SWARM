@@ -4,7 +4,7 @@ function Global:Invoke-MinerCheck {
     $Switched = $false
     
     ##Determine if Miner Switched
-    $CheckForMiners = ".\build\txt\bestminers.txt"
+    $CheckForMiners = ".\debug\bestminers.txt"
     if (Test-Path $CheckForMiners) { $global:GetMiners = Get-Content $CheckForMiners | ConvertFrom-Json -ErrorAction Stop }
     else { Write-Host "No Miners Running..." }
     if ($global:GETSWARM.HasExited -eq $true) { Write-Host "SWARM Has Exited..."; }
@@ -22,7 +22,7 @@ function Global:Invoke-MinerCheck {
     ## Determine if CPU in only used. Set Flags for what to do.
     $global:CurrentMiners | ForEach-Object {
         if ($_.Type -like "*NVIDIA*" -or $_.Type -like "*AMD*" -or $_.Type -like "*ASIC*") {
-            $global:CPUOnly = $false; "GPU" | Set-Content ".\build\txt\miner.txt"
+            $global:CPUOnly = $false; "GPU" | Set-Content ".\debug\miner.txt"
         }
         if ($_.Type -like "*NVIDIA*") {
             $global:DoNVIDIA = $true
@@ -101,7 +101,7 @@ function Global:Get-Metrics {
             $diskSpace = $diskSpace.Freespace / [math]::pow( 1024, 3 )
             $diskSpace = [math]::Round($diskSpace)
             $global:diskSpace = "$($diskSpace)G"
-            $global:ramtotal = Get-Content ".\build\txt\ram.txt" | Select-Object -First 1
+            $global:ramtotal = Get-Content ".\debug\ram.txt" | Select-Object -First 1
             $Global:cpu = try { ((Get-CimInstance Win32_PerfFormattedData_PerfOS_System -ErrorAction Stop).ProcessorQueueLength) + 0.01 } catch { Write-Host "Failed To Get CPU load" -ForegroundColor Red; 0  }
             $LoadAverage = Global:Set-Stat -Name "load-average" -Value $Global:cpu
             $Global:LoadAverages = @("$([Math]::Round($LoadAverage.Minute,2))", "$([Math]::Round($LoadAverage.Minute_5,2))", "$([Math]::Round($LoadAverage.Minute_15,2))")

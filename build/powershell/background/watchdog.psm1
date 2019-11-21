@@ -71,7 +71,7 @@ $Message" -ForegroundColor Red
         $Trigger = "OKAY"
     }
     if ($trigger -eq "restart") {
-        Get-Date | Set-Content ".\build\txt\watchdog.txt"
+        Get-Date | Set-Content ".\debug\watchdog.txt"
         $MinerFile = Get-Content ".\build\pid\miner_pid.txt"
         if ($MinerFile) { $MinerId = Get-Process Where Id -eq  $MinerFile }
         if ($MinerId) {

@@ -13,7 +13,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 function Global:Get-Version {
 $global:Version = Get-Content ".\h-manifest.conf" | ConvertFrom-StringData
-$global:Version.CUSTOM_VERSION | Set-Content ".\build\txt\version.txt"
+$global:Version.CUSTOM_VERSION | Set-Content ".\debug\version.txt"
 $global:Version = $global:Version.CUSTOM_VERSION
 }
 

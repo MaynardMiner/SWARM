@@ -56,14 +56,14 @@ Function Global:Get-Bus {
 
     $GPUS = @()
     
-    $OldCount = if (Test-Path ".\build\txt\gpu-count.txt") { $(Get-Content ".\build\txt\gpu-count.txt") }
+    $OldCount = if (Test-Path ".\debug\gpu-count.txt") { $(Get-Content ".\debug\gpu-count.txt") }
     if ($OldCount) {
         Write-Log "Previously Detected GPU Count is:" -ForegroundColor Yellow
         $OldCount | Out-Host
         Start-Sleep -S .5
     }
-    Invoke-Expression ".\build\apps\pci\lspci.exe" | Select-String "VGA compatible controller" | Tee-Object -FilePath ".\build\txt\gpu-count.txt" | Out-Null
-    $NewCount = if (Test-Path ".\build\txt\gpu-count.txt") { $(Get-Content ".\build\txt\gpu-count.txt") } else { "nothing" }
+    Invoke-Expression ".\build\apps\pci\lspci.exe" | Select-String "VGA compatible controller" | Tee-Object -FilePath ".\debug\gpu-count.txt" | Out-Null
+    $NewCount = if (Test-Path ".\debug\gpu-count.txt") { $(Get-Content ".\debug\gpu-count.txt") } else { "nothing" }
 
     if ([string]$NewCount -ne [string]$OldCount) {
         Write-Log "GPU count is different - Gathering GPU information" -ForegroundColor Yellow
@@ -77,18 +77,18 @@ Function Global:Get-Bus {
         }
         Set-Location $(vars).dir
 
-        $proc = Start-Process ".\build\apps\gpu-z\gpu-z.exe" -ArgumentList "-dump $($(vars).dir)\build\txt\data.xml" -PassThru
+        $proc = Start-Process ".\build\apps\gpu-z\gpu-z.exe" -ArgumentList "-dump $($(vars).dir)\debug\data.xml" -PassThru
         $proc | Wait-Process
         
-        if (test-Path ".\build\txt\data.xml") {
-            $Data = $([xml](Get-Content ".\build\txt\data.xml")).gpuz_dump.card
+        if (test-Path ".\debug\data.xml") {
+            $Data = $([xml](Get-Content ".\debug\data.xml")).gpuz_dump.card
         }
         else {
             Write-Log "WARNING: Failed to gather GPU data" -ForegroundColor Yellow
         }
     }
-    elseif (test-path ".\build\txt\data.xml") {
-        $Data = $([xml](Get-Content ".\build\txt\data.xml")).gpuz_dump.card
+    elseif (test-path ".\debug\data.xml") {
+        $Data = $([xml](Get-Content ".\debug\data.xml")).gpuz_dump.card
     }
     else { log "WARNING: No GPU Data file found!" -ForegroundColor Yellow }
 
@@ -142,7 +142,7 @@ Function Global:Get-Bus {
     $GPUS += $GPUData | Where busid -eq "00:02.0"
     $GPUs += $GPUData | Where busid -ne "00:02.0" | Sort-Object -Property busid
 
-    $NewCount | Set-Content ".\build\txt\gpu-count.txt"
+    $NewCount | Set-Content ".\debug\gpu-count.txt"
 
     $GPUS
 }
@@ -223,8 +223,8 @@ function Global:Get-GPUCount {
     }
     
     if ($(arg).Type -like "*CPU*") { for ($i = 0; $i -lt $(arg).CPUThreads; $i++) { $DeviceList.CPU.Add("$($i)", $i) } }
-    $DeviceList | ConvertTo-Json | Set-Content ".\build\txt\devicelist.txt"
-    $OCList | ConvertTo-Json | Set-Content ".\build\txt\oclist.txt"
+    $DeviceList | ConvertTo-Json | Set-Content ".\debug\devicelist.txt"
+    $OCList | ConvertTo-Json | Set-Content ".\debug\oclist.txt"
     $GPUCount = 0
     $GPUCount += $DeviceList.Nvidia.Count
     $GPUCount += $DeviceList.AMD.Count
@@ -292,7 +292,7 @@ function Global:Start-WindowsConfig {
     if ($(arg).Type -like "*NVIDIA*") { [Environment]::SetEnvironmentVariable("CUDA_DEVICE_ORDER", "PCI_BUS_ID", "User") }
     
     ##Set Cuda For Commands
-    if ($(arg).Type -like "*NVIDIA*") { $(arg).Cuda = "10"; $(arg).Cuda | Set-Content ".\build\txt\cuda.txt" }
+    if ($(arg).Type -like "*NVIDIA*") { $(arg).Cuda = "10"; $(arg).Cuda | Set-Content ".\debug\cuda.txt" }
     
     ##Detect if drivers are installed, not generic- Close if not. Print message on screen
     $Install_NVSMI = $false
@@ -334,7 +334,7 @@ function Global:Start-WindowsConfig {
     
     ## Fetch Ram Size, Write It To File (For Commands)
     $TotalMemory = [math]::Round((Get-CimInstance -ClassName CIM_ComputerSystem).TotalPhysicalMemory / 1mb, 2) 
-    $TotalMemory | Set-Content ".\build\txt\ram.txt"
+    $TotalMemory | Set-Content ".\debug\ram.txt"
     
     ## GPU Bus Hash Table
     $DoBus = $true
@@ -370,29 +370,29 @@ function Global:Start-WindowsConfig {
     }
 
     ## Set Cuda for commands
-    if ($(arg).Type -like "*NVIDIA*") { $(arg).Cuda | Set-Content ".\build\txt\cuda.txt" }
+    if ($(arg).Type -like "*NVIDIA*") { $(arg).Cuda | Set-Content ".\debug\cuda.txt" }
     
     ## Let User Know What Platform commands will work for- Will always be Group 1.
     if ($(arg).Type -like "*NVIDIA1*") {
-        "NVIDIA1" | Out-File ".\build\txt\minertype.txt" -Force
+        "NVIDIA1" | Out-File ".\debug\minertype.txt" -Force
         log "Group 1 is NVIDIA- Commands and Stats will work for NVIDIA1" -foreground yellow
         Start-Sleep -S 3
     }
     elseif ($(arg).Type -like "*AMD1*") {
-        "AMD1" | Out-File ".\build\txt\minertype.txt" -Force
+        "AMD1" | Out-File ".\debug\minertype.txt" -Force
         log "Group 1 is AMD- Commands and Stats will work for AMD1" -foreground yellow
         Start-Sleep -S 3
     }
     elseif ($(arg).Type -like "*CPU*") {
         if ($(vars).GPU_Count -eq 0) {
-            "CPU" | Out-File ".\build\txt\minertype.txt" -Force
+            "CPU" | Out-File ".\debug\minertype.txt" -Force
             log "Group 1 is CPU- Commands and Stats will work for CPU" -foreground yellow
             Start-Sleep -S 3
         }
     }
     elseif ($(arg).Type -like "*ASIC*") {
         if ($(vars).GPU_Count -eq 0) {
-            "ASIC" | Out-File ".\build\txt\minertype.txt" -Force
+            "ASIC" | Out-File ".\debug\minertype.txt" -Force
             log "Group 1 is ASIC- Commands and Stats will work for ASIC" -foreground yellow
         }
     }

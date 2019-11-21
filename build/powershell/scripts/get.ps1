@@ -55,7 +55,7 @@ if ($P -notlike "*$dir\build\powershell*") {
 }
 
 $Get = @()
-if (test-path ".\build\txt\get.txt") { Clear-Content ".\build\txt\get.txt" }
+if (test-path ".\debug\get.txt") { Clear-Content ".\debug\get.txt" }
 
 Import-Module -Name "$($(vars).global)\stats.psm1" -Scope Global
 
@@ -321,12 +321,12 @@ to see all available SWARM commands, go to:
 https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
 "
         $help
-        $help | out-file ".\build\txt\get.txt"
+        $help | out-file ".\debug\get.txt"
     }
 
     "asic" {
         Import-Module -Name "$($(vars).global)\hashrates.psm1"
-        if (Test-Path ".\build\txt\bestminers.txt") { $BestMiners = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-Json }
+        if (Test-Path ".\debug\bestminers.txt") { $BestMiners = Get-Content ".\debug\bestminers.txt" | ConvertFrom-Json }
         else { $Get += "No miners running" }
         $ASIC = $BestMiners | Where Type -eq $argument2
         if ($ASIC) {
@@ -398,7 +398,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 $Get += $BenchTable | ConvertTo-Json
             }
             else { $Get += Get-BenchTable }
-            Get-BenchTable | Out-File ".\build\txt\get.txt"
+            Get-BenchTable | Out-File ".\debug\get.txt"
         }
         else { $Get += "No Stats Found" }
     }
@@ -416,18 +416,18 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
         if ($Argument2 -eq "lite") {
             if ($Argument3) {
                 $Total = [int]$Argument3 + 1
-                if (Test-Path ".\build\txt\minerstatslite.txt") {
-                    $Get += Get-Content ".\build\txt\minerstatslite.txt"
+                if (Test-Path ".\debug\minerstatslite.txt") {
+                    $Get += Get-Content ".\debug\minerstatslite.txt"
                 }
                 else { $Get += "No Stats History Found" }    
             }
             else {
-                if (Test-Path ".\build\txt\minerstatslite.txt") { $Get += Get-Content ".\build\txt\minerstatslite.txt" }
+                if (Test-Path ".\debug\minerstatslite.txt") { $Get += Get-Content ".\debug\minerstatslite.txt" }
                 else { $Get += "No Stats History Found" }
             }
         }
         else {
-            if (test-path ".\build\txt\profittable.txt") { $Stat_Table = Get-Content ".\build\txt\profittable.txt" | ConvertFrom-Json }
+            if (test-path ".\debug\profittable.txt") { $Stat_Table = Get-Content ".\debug\profittable.txt" | ConvertFrom-Json }
             else { $Get += "No Stats History Found" }
             if ($Stat_Table) {
                 $me = [char]27;
@@ -441,7 +441,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 $orange = "93"
                 $magenta = "35";
                 $pink = "95";
-                if (test-Path ".\build\txt\rates.txt") { $Rates = Get-Content ".\build\txt\rates.txt" | ConvertFrom-Json }
+                if (test-Path ".\debug\rates.txt") { $Rates = Get-Content ".\debug\rates.txt" | ConvertFrom-Json }
                 $WattTable = $false
                 $ShareTable = $false
                 $VolumeTable = $false
@@ -665,13 +665,13 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 }
             }
         }
-        $MSFile = ".\build\txt\minerstats.txt"
-        if (test-Path ".\build\txt\minerstats.txt") { $Get += Get-Content ".\build\txt\minerstats.txt" }
+        $MSFile = ".\debug\minerstats.txt"
+        if (test-Path ".\debug\minerstats.txt") { $Get += Get-Content ".\debug\minerstats.txt" }
         Remove-Module "hashrates"
     }
-    "charts" { if (Test-Path ".\build\txt\charts.txt") { $Get += Get-Content ".\build\txt\charts.txt" } }
+    "charts" { if (Test-Path ".\debug\charts.txt") { $Get += Get-Content ".\debug\charts.txt" } }
     "active" {
-        if (Test-Path ".\build\txt\mineractive.txt") { $Get += Get-Content ".\build\txt\mineractive.txt" }
+        if (Test-Path ".\debug\mineractive.txt") { $Get += Get-Content ".\debug\mineractive.txt" }
         else { $Get += "No Miner History Found" }
     }
     "parameters" {
@@ -691,7 +691,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
         $Get += $Get | Select -Last 300
     }
     "oc" {
-        if (Test-Path ".\build\txt\oc-settings.txt") { $Get += Get-Content ".\build\txt\oc-settings.txt" }
+        if (Test-Path ".\debug\oc-settings.txt") { $Get += Get-Content ".\debug\oc-settings.txt" }
         else { $Get += "No oc settings found" }
     }
     "miners" {
@@ -704,8 +704,8 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
             $ConvertJsons.PSObject.Properties.Name | Where { $ConvertJsons.$_.$Argument2 } | foreach { $Get += "$($_)" }
             $Selected = $ConvertJsons.PSObject.Properties.Name | Where { $_ -eq $Argument3 } | % { $ConvertJsons.$_ }
             if ($Selected) {
-                $Cuda = Get-Content ".\build\txt\cuda.txt"
-                $Platform = Get-Content ".\build\txt\os.txt"
+                $Cuda = Get-Content ".\debug\cuda.txt"
+                $Platform = Get-Content ".\debug\os.txt"
                 if ($argument2 -like "*NVIDIA*") {
                     $Number = $argument2 -Replace "NVIDIA", ""
                     if ($Platform -eq "linux") {
@@ -769,7 +769,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
         if ($IsWindows) {
             $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
             if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator) -ne $false) {
-                $version = Get-Content ".\build\txt\version.txt"
+                $version = Get-Content ".\debug\version.txt"
                 $versionnumber = $version -replace "SWARM.", ""
                 $version1 = $versionnumber[4]
                 $version1 = $version1 | % { iex $_ }

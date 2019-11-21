@@ -1,6 +1,7 @@
 backup/
 bin/
 gui/
+debug/
 build/data/error.txt
 build/data/info.txt
 build/data/system.txt

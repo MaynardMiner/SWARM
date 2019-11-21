@@ -17,7 +17,7 @@ function Global:Start-NVIDIAOC($NewOC) {
     $OcArgs = @()
     $HiveNVOC = $NewOC | ConvertFrom-StringData
     $ocmessage = @()
-    $OCCount = Get-Content ".\build\txt\oclist.txt" | ConvertFrom-JSon
+    $OCCount = Get-Content ".\debug\oclist.txt" | ConvertFrom-JSon
 
     $HiveNVOC.Keys | % {
         $key = $_
@@ -113,7 +113,7 @@ function Global:Start-NVIDIAOC($NewOC) {
     $Proc | Wait-Process
     Set-Location $($(vars).dir)
     Start-Sleep -s .5
-    $ocmessage | Set-Content ".\build\txt\ocnvidia.txt"
+    $ocmessage | Set-Content ".\debug\ocnvidia.txt"
     Start-Sleep -S .5
     $ocmessage
 }
@@ -122,7 +122,7 @@ function Global:Start-NVIDIAOC($NewOC) {
 function Global:Start-AMDOC($NewOC) {
   
     $AMDOC = $NewOC | ConvertFrom-StringData
-    $OCCount = Get-Content ".\build\txt\oclist.txt" | ConvertFrom-JSon
+    $OCCount = Get-Content ".\debug\oclist.txt" | ConvertFrom-JSon
     $ocmessage = @()
     $script = @()
     $script += "`$host.ui.RawUI.WindowTitle = `'OC-Start`';"
@@ -256,6 +256,6 @@ function Global:Start-AMDOC($NewOC) {
     Start-Sleep -S .5
     $ocmessage
     Set-Location $($(vars).dir)
-    $ocmessage | Set-Content ".\build\txt\ocamd.txt"
+    $ocmessage | Set-Content ".\debug\ocamd.txt"
     Start-Sleep -s .5
 }

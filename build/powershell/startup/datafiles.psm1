@@ -34,11 +34,11 @@ function Global:get-argnotice {
 
 function Global:Clear-Stats {
     $FileClear = @()
-    $FileClear += ".\build\txt\minerstats.txt"
-    $FileClear += ".\build\txt\mineractive.txt"
+    $FileClear += ".\debug\minerstats.txt"
+    $FileClear += ".\debug\mineractive.txt"
     $FileClear += ".\build\bash\hivecpu.sh"
-    $FileClear += ".\build\txt\profittable.txt"
-    $FileClear += ".\build\txt\bestminers.txt"
+    $FileClear += ".\debug\profittable.txt"
+    $FileClear += ".\debug\bestminers.txt"
     $FileClear | ForEach-Object { if (Test-Path $_) { Remove-Item $_ -Force } }
 }
 

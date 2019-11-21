@@ -53,12 +53,12 @@ function Global:Get-PriceMessage {
     $(vars).BestActiveMIners | % {
         if ($_.Profit_Day -ne "bench") { $ScreenProfit = "$($Value = $_.Profit_Day * $(vars).Rates.$($(arg).Currency); $Total += $Value; $Value.ToString("N2")) $($(arg).Currency)/Day" } else { $ScreenProfit = "Benchmarking" }
         $ProfitMessage = "Current Daily Profit For $($_.Type): $ScreenProfit"
-        $ProfitMessage | Out-File ".\build\txt\minerstats.txt" -Append
-        $ProfitMessage | Out-File ".\build\txt\charts.txt" -Append
+        $ProfitMessage | Out-File ".\debug\minerstats.txt" -Append
+        $ProfitMessage | Out-File ".\debug\charts.txt" -Append
     }
     $ProfitMessage = "Current Daily Profit For Rig: $($Total.ToString("N2")) $($(arg).Currency)/Day"
-    $ProfitMessage | Out-File ".\build\txt\minerstats.txt" -Append
-    $ProfitMessage | Out-File ".\build\txt\charts.txt" -Append
+    $ProfitMessage | Out-File ".\debug\minerstats.txt" -Append
+    $ProfitMessage | Out-File ".\debug\charts.txt" -Append
 
 }
 
@@ -79,10 +79,10 @@ function Global:Get-Commands {
     $mcolor = "93"
     $me = [char]27
     $MiningStatus = "$me[${mcolor}mCurrently Mining $($(vars).bestminers_combo.Algo) Algorithm on $($(vars).bestminers_combo.MinerPool)${me}[0m"
-    $MiningStatus | Out-File ".\build\txt\minerstats.txt" -Append
-    $MiningStatus | Out-File ".\build\txt\charts.txt" -Append
-    $(vars).Thresholds | Out-File ".\build\txt\minerstats.txt" -Append
-    $(vars).Thresholds | Out-File ".\build\txt\charts.txt" -Append
+    $MiningStatus | Out-File ".\debug\minerstats.txt" -Append
+    $MiningStatus | Out-File ".\debug\charts.txt" -Append
+    $(vars).Thresholds | Out-File ".\debug\minerstats.txt" -Append
+    $(vars).Thresholds | Out-File ".\debug\charts.txt" -Append
     $BanMessage = @()
     $mcolor = "91"
     $me = [char]27
@@ -92,14 +92,14 @@ function Global:Get-Commands {
     if ($StatusDownloadBans) { $StatusDownloadBans | ForEach-Object { $BanMessage += "$me[${mcolor}m$($_.Name) is banned: Download Failed${me}[0m" } }
     if ($GetDLBans) { $GetDLBans | ForEach-Object { $BanMessage += "$me[${mcolor}m$($_) failed to download${me}[0m" } }
     if ($ConserveMessage) { $ConserveMessage | ForEach-Object { $BanMessage += "$me[${mcolor}m$($_)${me}[0m" } }
-    $BanMessage | Out-File ".\build\txt\minerstats.txt" -Append
-    $BanMessage | Out-File ".\build\txt\charts.txt" -Append
+    $BanMessage | Out-File ".\debug\minerstats.txt" -Append
+    $BanMessage | Out-File ".\debug\charts.txt" -Append
     $StatusLite = Global:Get-StatusLite
     $StatusDate = Get-Date
-    $StatusDate | Out-File ".\build\txt\minerstatslite.txt"
-    $StatusLite | Out-File ".\build\txt\minerstatslite.txt" -Append
-    $BanMessage | Out-File ".\build\txt\minerstatslite.txt" -Append
-    $MiningStatus | Out-File ".\build\txt\minerstatslite.txt" -Append
+    $StatusDate | Out-File ".\debug\minerstatslite.txt"
+    $StatusLite | Out-File ".\debug\minerstatslite.txt" -Append
+    $BanMessage | Out-File ".\debug\minerstatslite.txt" -Append
+    $MiningStatus | Out-File ".\debug\minerstatslite.txt" -Append
 }
 
 function Global:Get-Logo {
