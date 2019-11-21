@@ -1373,6 +1373,9 @@ What's New?
    * will only work on 2.8.2 and up with new
      code changes.
    * this is a beta test-change.
+* debug folder added.
+  * contains helpful debug information for SWARM.
+  * was previously build\txt.
 
 
 Fixes
