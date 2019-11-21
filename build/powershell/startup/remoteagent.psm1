@@ -35,7 +35,7 @@ function Global:start-update {
         Where { $_ -like "*SWARM.*" } |
         Where { $_ -ne "SWARM.$($Global:Version).linux" } |
         Where { $_ -ne "SWARM.$($Global:Version).windows"} |
-        Where { $_ -ne "SWARM.$($Global:Version) }
+        Where { $_ -ne "SWARM.$($Global:Version)" }
         
         ## Files to exclude- use latest by default
         $Exclude = "cc-yescrpyt.json"
