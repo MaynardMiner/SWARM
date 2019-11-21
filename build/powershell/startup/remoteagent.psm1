@@ -12,9 +12,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
 function Global:Get-Version {
-$global:Version = Get-Content ".\h-manifest.conf" | ConvertFrom-StringData
-$global:Version.CUSTOM_VERSION | Set-Content ".\debug\version.txt"
-$global:Version = $global:Version.CUSTOM_VERSION
+    $global:Version = Get-Content ".\h-manifest.conf" | ConvertFrom-StringData
+    $global:Version.CUSTOM_VERSION | Set-Content ".\debug\version.txt"
+    $global:Version = $global:Version.CUSTOM_VERSION
 }
 
 function Global:start-update {
@@ -31,11 +31,10 @@ function Global:start-update {
     if ($StartUpdate -eq $true) {
         
         ## Find previous SWARM versions.
-        $PreviousVersions = $(Get-ChildItem (Split-Path $(vars).Dir)).Name | Where {
-            $_ -like "*SWARM.*" -and 
-            $_ -ne "SWARM.$($Global:Version).linux" -and
-            $_ -ne "SWARM.$($Global:Version).windows"
-        }
+        $PreviousVersions = $(Get-ChildItem (Split-Path $(vars).Dir)).Name | 
+        Where { $_ -like "*SWARM.*" } |
+        Where { $_ -ne "SWARM.$($Global:Version).linux" } |
+        Where { $_ -ne "SWARM.$($Global:Version).windows" }
         
         ## Files to exclude- use latest by default
         $Exclude = "cc-yescrpyt.json"
@@ -62,9 +61,19 @@ function Global:start-update {
         $PreviousVersions | foreach {
             $PreviousPath = Join-Path "$Location" "$_"
             if (Test-Path $PreviousPath) {
+                $Rolling_Back = $false
                 log "Detected Previous Version"
                 log "Previous Version is $($PreviousPath)"
-                log "Gathering Old Version Config And HashRates- Then Deleting"
+                $Rollback = (( $($_).replace("SWARM.", '') ).replace('linux', '')).replace('windows', '')
+                $RollbackVersion = "$($Rollback[0])$($Rollback[2])$($Rollback[4])"
+                if ($RollbackVersion -gt $CurrentVersion) { $Rolling_Back = $true }
+                if ($Rolling_Back) {
+                    log "Version deteced is a new version than current" -ForeGroundColor Yellow
+                    log "Transferring only stats, leaving configs!" -ForeGroundColor
+                }
+                else {
+                    log "Gathering Old Version Config And HashRates- Then Deleting"
+                }
                 Start-Sleep -S 10
                 $ID = ".\build\pid\background_pid.txt"
                 if ($(arg).Platform -eq "windows") { Start-Sleep -S 10 }
@@ -86,7 +95,7 @@ function Global:start-update {
                     Get-ChildItem -Path "$($OldStats)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\stats"
                     Get-ChildItem -Path "$($OldBackup)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\backup"
                 }
-                if (Test-Path $OldAdmin){
+                if (Test-Path $OldAdmin) {
                     if (-not (Test-Path ".\admin")) { New-Item ".\admin" -ItemType "directory" | Out-Null }
                     Get-ChildItem -Path "$($OldAdmin)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\admin"
                 }
@@ -99,8 +108,8 @@ function Global:start-update {
                     if (Test-Path "$OldTimeout\algo_block") { Get-ChildItem -Path "$($OldTimeout)\pool_block" -Include *.txt, *.conf -Recurse | Copy-Item -Destination ".\timeout\pool_block" }
                     Get-ChildItem -Path "$($OldTimeout)\*" -Include *.txt | Copy-Item -Destination ".\timeout"
                 }
-                if ($StatsOnly -ne "Yes") {
-                    $Jsons = @("asic","miners","oc","pools","power","wallets")
+                if ($StatsOnly -ne "Yes" -and -not $Rolling_Back) {
+                    $Jsons = @("asic", "miners", "oc", "pools", "power", "wallets")
                     $UpdateType = @("CPU", "AMD1", "NVIDIA1", "NVIDIA2", "NVIDIA3")
 
                     $Jsons | foreach {
@@ -116,7 +125,7 @@ function Global:start-update {
                                 $JsonData = Get-Content $OldJson;
                                 log "Pulled $OldJson"
 
-                                try{$Data = $JsonData | ConvertFrom-Json -ErrorAction Stop} catch{}
+                                try { $Data = $JsonData | ConvertFrom-Json -ErrorAction Stop } catch { }
 
                                 if ($ChangeFile -eq "lolminer.json") {
                                     $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
@@ -464,130 +473,130 @@ function Global:start-update {
                                     }
                                 }
  
-                                if($ChangeFile -eq "pool-algos.json") {
-                                    $Data | add-Member "x25x" @{alt_names = @("x25x"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
-                                    $Data | add-Member "x16rv2" @{alt_names = @("x16rv2"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
-                                    $Data | add-Member "lyra2z330" @{alt_names = @("lyra2z330"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
-                                    $Data | add-Member "cuckaroo29d" @{alt_names = @("cuckaroo29d","grincuckaroo29d"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
-                                    $Data | add-Member "bmw512" @{alt_names = @("bmw512"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
-                                    $Data | add-Member "x14" @{alt_names = @("x14"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
-                                    $Data | add-Member "cpupower" @{alt_names = @("cpupower"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
-                                    $Data | add-Member "equihash_125/4" @{alt_names = @("zelcash","equihash_125/4","equihash125"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force
-                                    $Data | add-Member "equihash_150/5" @{alt_names = @("equihash_150/5","equihash150","beam"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force                                   
-                                    $Data | add-Member "argon2d500" @{alt_names = @("argon2d500"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force         
-                                    $Data | add-Member "argon2d-dyn" @{alt_names = @("argon2d-dyn"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force                                                             
-                                    $Data | add-Member "beamv2" @{alt_names = @("beamv2"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force           
-                                    $Data | add-Member "x12" @{alt_names = @("x12"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force
-                                    $Data | add-Member "power2b" @{alt_names = @("power2b"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force                                                                                                                                                                                                                             
-                                    $Data | add-Member "yescryptr8g" @{alt_names = @("yescryptr8g"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force                                                                                                                                                                                                                             
-                                    $Data | add-Member "phi2-lux" @{alt_names = @("phi2-lux"); exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue -Force                                                                                                                                                                                                                             
+                                if ($ChangeFile -eq "pool-algos.json") {
+                                    $Data | add-Member "x25x" @{alt_names = @("x25x"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
+                                    $Data | add-Member "x16rv2" @{alt_names = @("x16rv2"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
+                                    $Data | add-Member "lyra2z330" @{alt_names = @("lyra2z330"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
+                                    $Data | add-Member "cuckaroo29d" @{alt_names = @("cuckaroo29d", "grincuckaroo29d"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
+                                    $Data | add-Member "bmw512" @{alt_names = @("bmw512"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
+                                    $Data | add-Member "x14" @{alt_names = @("x14"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
+                                    $Data | add-Member "cpupower" @{alt_names = @("cpupower"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
+                                    $Data | add-Member "equihash_125/4" @{alt_names = @("zelcash", "equihash_125/4", "equihash125"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force
+                                    $Data | add-Member "equihash_150/5" @{alt_names = @("equihash_150/5", "equihash150", "beam"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force                                   
+                                    $Data | add-Member "argon2d500" @{alt_names = @("argon2d500"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force         
+                                    $Data | add-Member "argon2d-dyn" @{alt_names = @("argon2d-dyn"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force                                                             
+                                    $Data | add-Member "beamv2" @{alt_names = @("beamv2"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force           
+                                    $Data | add-Member "x12" @{alt_names = @("x12"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force
+                                    $Data | add-Member "power2b" @{alt_names = @("power2b"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force                                                                                                                                                                                                                             
+                                    $Data | add-Member "yescryptr8g" @{alt_names = @("yescryptr8g"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force                                                                                                                                                                                                                             
+                                    $Data | add-Member "phi2-lux" @{alt_names = @("phi2-lux"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force                                                                                                                                                                                                                             
                                 } 
                                 
 
-                                if($ChangeFile -eq "oc-algos.json") {
+                                if ($ChangeFile -eq "oc-algos.json") {
 
                                     $Data | Add-Member "x25x" @{
                                         "NVIDIA1" = @{
-                                            "Fans" = ""
-                                            "ETHPill"= ""
-                                            "Core"=""
-                                            "Memory"=""
-                                            "Power"= ""
-                                            "PillDelay"= ""
+                                            "Fans"      = ""
+                                            "ETHPill"   = ""
+                                            "Core"      = ""
+                                            "Memory"    = ""
+                                            "Power"     = ""
+                                            "PillDelay" = ""
                                         };               
                                         "NVIDIA2" = @{
-                                            "Fans" = ""
-                                            "ETHPill"= ""
-                                            "Core"=""
-                                            "Memory"=""
-                                            "Power"= ""
-                                            "PillDelay"= ""
+                                            "Fans"      = ""
+                                            "ETHPill"   = ""
+                                            "Core"      = ""
+                                            "Memory"    = ""
+                                            "Power"     = ""
+                                            "PillDelay" = ""
                                         };                          
                                         "NVIDIA3" = @{
-                                            "Fans" = ""
-                                            "ETHPill"= ""
-                                            "Core"=""
-                                            "Memory"=""
-                                            "Power"= ""
-                                            "PillDelay"= ""
+                                            "Fans"      = ""
+                                            "ETHPill"   = ""
+                                            "Core"      = ""
+                                            "Memory"    = ""
+                                            "Power"     = ""
+                                            "PillDelay" = ""
                                         };                         
-                                        "AMD1"= @{
-                                            "fans"= ""
-                                            "v"= ""
-                                            "dpm"= ""
-                                            "mem"= ""
-                                            "mdpm"= ""
-                                            "core"= ""
+                                        "AMD1"    = @{
+                                            "fans" = ""
+                                            "v"    = ""
+                                            "dpm"  = ""
+                                            "mem"  = ""
+                                            "mdpm" = ""
+                                            "core" = ""
                                         }                                
                                     } -ErrorAction SilentlyContinue
 
-                                   $Data| Add-Member "anime" @{
+                                    $Data | Add-Member "anime" @{
                                         "NVIDIA1" = @{
-                                            "Fans" = ""
-                                            "ETHPill"= ""
-                                            "Core"=""
-                                            "Memory"=""
-                                            "Power"= ""
-                                            "PillDelay"= ""
+                                            "Fans"      = ""
+                                            "ETHPill"   = ""
+                                            "Core"      = ""
+                                            "Memory"    = ""
+                                            "Power"     = ""
+                                            "PillDelay" = ""
                                         };               
                                         "NVIDIA2" = @{
-                                            "Fans" = ""
-                                            "ETHPill"= ""
-                                            "Core"=""
-                                            "Memory"=""
-                                            "Power"= ""
-                                            "PillDelay"= ""
+                                            "Fans"      = ""
+                                            "ETHPill"   = ""
+                                            "Core"      = ""
+                                            "Memory"    = ""
+                                            "Power"     = ""
+                                            "PillDelay" = ""
                                         };                          
                                         "NVIDIA3" = @{
-                                            "Fans" = ""
-                                            "ETHPill"= ""
-                                            "Core"=""
-                                            "Memory"=""
-                                            "Power"= ""
-                                            "PillDelay"= ""
+                                            "Fans"      = ""
+                                            "ETHPill"   = ""
+                                            "Core"      = ""
+                                            "Memory"    = ""
+                                            "Power"     = ""
+                                            "PillDelay" = ""
                                         };                         
-                                        "AMD1"= @{
-                                            "fans"= ""
-                                            "v"= ""
-                                            "dpm"= ""
-                                            "mem"= ""
-                                            "mdpm"= ""
-                                            "core"= ""
+                                        "AMD1"    = @{
+                                            "fans" = ""
+                                            "v"    = ""
+                                            "dpm"  = ""
+                                            "mem"  = ""
+                                            "mdpm" = ""
+                                            "core" = ""
                                         }                                
                                     } -ErrorAction SilentlyContinue
 
-                                    $Data| Add-Member "cuckaroo29d" @{
+                                    $Data | Add-Member "cuckaroo29d" @{
                                         "NVIDIA1" = @{
-                                            "Fans" = ""
-                                            "ETHPill"= ""
-                                            "Core"=""
-                                            "Memory"=""
-                                            "Power"= ""
-                                            "PillDelay"= ""
+                                            "Fans"      = ""
+                                            "ETHPill"   = ""
+                                            "Core"      = ""
+                                            "Memory"    = ""
+                                            "Power"     = ""
+                                            "PillDelay" = ""
                                         };               
                                         "NVIDIA2" = @{
-                                            "Fans" = ""
-                                            "ETHPill"= ""
-                                            "Core"=""
-                                            "Memory"=""
-                                            "Power"= ""
-                                            "PillDelay"= ""
+                                            "Fans"      = ""
+                                            "ETHPill"   = ""
+                                            "Core"      = ""
+                                            "Memory"    = ""
+                                            "Power"     = ""
+                                            "PillDelay" = ""
                                         };                          
                                         "NVIDIA3" = @{
-                                            "Fans" = ""
-                                            "ETHPill"= ""
-                                            "Core"=""
-                                            "Memory"=""
-                                            "Power"= ""
-                                            "PillDelay"= ""
+                                            "Fans"      = ""
+                                            "ETHPill"   = ""
+                                            "Core"      = ""
+                                            "Memory"    = ""
+                                            "Power"     = ""
+                                            "PillDelay" = ""
                                         };                         
-                                        "AMD1"= @{
-                                            "fans"= ""
-                                            "v"= ""
-                                            "dpm"= ""
-                                            "mem"= ""
-                                            "mdpm"= ""
-                                            "core"= ""
+                                        "AMD1"    = @{
+                                            "fans" = ""
+                                            "v"    = ""
+                                            "dpm"  = ""
+                                            "mem"  = ""
+                                            "mdpm" = ""
+                                            "core" = ""
                                         }                                
                                     } -ErrorAction SilentlyContinue
 
