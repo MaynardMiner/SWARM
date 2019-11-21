@@ -385,13 +385,15 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                     Algo      = $_ -split "_" | Select -Skip 1 -First 1; 
                     HashRates = $Stats."$($_)".Hour | Global:ConvertTo-Hash; 
                     Raw       = $Stats."$($_)".Hour
+                    Rejections = $Stats."$($_)".Rejections
                 }
             }
             function Global:Get-BenchTable {
                 $BenchTable | Sort-Object -Property Algo -Descending | Format-Table (
                     @{Label = "Miner"; Expression = { $($_.Miner) } },
                     @{Label = "Algorithm"; Expression = { $($_.Algo) } },
-                    @{Label = "Speed"; Expression = { $($_.HashRates) } }    
+                    @{Label = "Speed"; Expression = { $($_.HashRates) } },    
+                    @{Label = "Rejection Avg."; Expression = { if($_.Rejections){ "$($_.Rejections.ToString("N2"))`%" }else{"0`%"} } }
                 )
             }
             if ($asjson) {
