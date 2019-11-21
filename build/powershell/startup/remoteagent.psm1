@@ -34,7 +34,8 @@ function Global:start-update {
         $PreviousVersions = $(Get-ChildItem (Split-Path $(vars).Dir)).Name | 
         Where { $_ -like "*SWARM.*" } |
         Where { $_ -ne "SWARM.$($Global:Version).linux" } |
-        Where { $_ -ne "SWARM.$($Global:Version).windows" }
+        Where { $_ -ne "SWARM.$($Global:Version).windows"} |
+        Where { $_ -ne "SWARM.$($Global:Version) }
         
         ## Files to exclude- use latest by default
         $Exclude = "cc-yescrpyt.json"
