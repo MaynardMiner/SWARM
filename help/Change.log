@@ -1343,3 +1343,47 @@ OR NEWER- UPDATE IMMEDIATELY.
 * nbminer updated
 * jayddee updated
 * phoenix-miner updated
+
+############################################
+############################################
+
+# SWARM 2.8.2
+
+What's New?
+* Price Factoring For Algos With
+  Share Rejections - Final
+  * average rejection rate will
+     update every loop, not just
+     when miners switch on screen.
+  * very minor corrections to system.
+  * See 2.8.1 release notes on details
+    regarding new addition.
+* Linux cuda 10.2 libs added.
+  * No cuda 10.2 miners yet in SWARM. 
+  * Next release will have compiled
+    10.2 miners- You may want to 
+    update drivers and test issues now.
+* ``get benchmarks`` command now shows
+   rejections for all algorithms.
+* ROLLBACK. From this verion on- You will
+  now be able to rollback SWARM versions
+  if you have issues with a new version.
+   * miner configs are not saved on rollback.
+   * pool configs are not saved on rollback.
+   * will only work on 2.8.2 and up with new
+     code changes.
+   * this is a beta test-change.
+
+
+Fixes
+* Attempted fix towards auto-detection
+  * If it still has issues, notify me
+    and I will try other things.
+  * You can always you ``-Type`` arguement
+    to force devices used in SWARM.
+* Recompiled cc-yescrypt, should work now.
+  * typo in compile instruction.
+
+Updates
+* gminer updated
+* lolminer updated.
