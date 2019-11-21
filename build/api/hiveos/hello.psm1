@@ -178,6 +178,8 @@ function Global:Start-WebStartup($response, $Site) {
                         }
                         $Params | convertto-Json | Out-File ".\config\parameters\newarguments.json"
 
+                                ## Force Auto-Coin if Coin is specified.
+                        if([string]$params.coin -ne ""){$params.Auto_Coin = "Yes"}
                         ## Change parameters after getting them.
                         ## First change -Type and -Cputhreads if empty
                         if([string]$Params.Type -eq "") { $params.type = $(vars).types }

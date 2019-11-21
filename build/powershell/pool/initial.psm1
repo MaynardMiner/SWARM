@@ -21,10 +21,6 @@ function Global:Get-PoolTables {
     $(vars).divisortable.Add("zergpool", @{ })
     $(vars).divisortable.Add("fairpool", @{ })
     $(vars).divisortable.Add("blockmasters", @{ })
-    
-    if ($(arg).Coin.Count -eq 1 -and $(arg).Coin -ne "" -and $(vars).SWARMAlgorithm.Count -eq 1 -and $(arg).SWARM_Mode -ne "") {
-        $(vars).SingleMode = $true
-    }
 }
 
 function Global:Remove-BanHashrates {

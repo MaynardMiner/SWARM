@@ -19,12 +19,16 @@ function Global:Get-Parameters {
     ## Use new arguments first.
     if (Test-Path ".\config\parameters\newarguments.json") {
         $arguments = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json
+        ## Force Auto-Coin if Coin is specified.
+        if([string]$arguments.coin -ne ""){$arguments.Auto_Coin = "Yes"}
         $arguments.PSObject.Properties.Name | % { $(arg).Add("$($_)", $arguments.$_) }
         $arguments.PSObject.Properties.Name | % { $Global:Config.user_params.Add("$($_)", $arguments.$_) }
     }
     ## else use arguments user specified.
     else {
         $arguments = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
+        ## Force Auto-Coin if Coin is specified.
+        if([string]$arguments.coin -ne ""){$arguments.Auto_Coin = "Yes"}
         $arguments.PSObject.Properties.Name | % { $(arg).Add("$($_)", $arguments.$_) }
         $arguments.PSObject.Properties.Name | % { $Global:Config.user_params.Add("$($_)", $arguments.$_) }
         $arguments = $Null

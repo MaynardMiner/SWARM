@@ -39,7 +39,7 @@ function Global:Get-AlgoPools {
     $(vars).AlgoPools = New-Object System.Collections.ArrayList
     $AllCustomPools = Global:Get-Pools -PoolType "Custom" -Items $Files
 
-    if ($(arg).Auto_Algo -eq "Yes" -or $(vars).SingleMode -eq $True) {
+    if ($(arg).Auto_Algo -eq "Yes") {
 
         ## Select the best 3 of each algorithm
         $AllAlgoPools.Symbol | Select-Object -Unique | ForEach-Object { 
