@@ -20,7 +20,6 @@ build/export/libnvrtc.so.10.0
 build/export/libnvrtc.so.10.1
 build/export/libstdc++.so.6
 build/pid/
-build/txt/
 logs/
 stats/
 timeout/
