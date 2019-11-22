@@ -17,7 +17,7 @@ Param (
 )
 
 [cultureinfo]::CurrentCulture = 'en-US'
-if($IsWIndows) { $host.ui.RawUI.WindowTitle = "Background Agent" }
+if ($IsWIndows) { $host.ui.RawUI.WindowTitle = "Background Agent" }
 #$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
 #$WorkingDir = "/root/hive/miners/custom/SWARM"
 Set-Location $WorkingDir
@@ -68,7 +68,7 @@ Import-Module "$($(vars).global)\stats.psm1" -Scope Global
 Import-Module "$($(vars).global)\hashrates.psm1" -Scope Global
 Import-Module "$($(vars).global)\gpu.psm1" -Scope Global
 Global:Add-Module "$($(vars).background)\startup.psm1"
-if($IsWIndows) { Add-Type -Path ".\build\apps\launchcode.dll" }
+if ($IsWIndows) { Add-Type -Path ".\build\apps\launchcode.dll" }
 
 ## Get Parameters
 Global:Get-Params
@@ -120,7 +120,7 @@ $(vars).ADD("BackgroundTimer", (New-Object -TypeName System.Diagnostics.Stopwatc
 $(vars).ADD("watchdog_start", (Get-Date))
 $(vars).ADD("watchdog_triggered", $false)
 $(vars).Add("GPU_Bad", 0)
-if(Test-Path ".\debug\load-average.txt"){Remove-Item ".\debug\load-average.txt"}
+if (Test-Path ".\debug\load-average.txt") { Remove-Item ".\debug\load-average.txt" }
 
 ## If miner was restarted due to watchdog
 if (test-path ".\debug\watchdog.txt") { 
@@ -190,7 +190,7 @@ While ($True) {
             elseif ($global:MinerType -like "*CPU*") { $global:TypeS = "CPU" }
             elseif ($global:MinerType -like "*ASIC*") { 
                 $global:TypeS = "ASIC" 
-                $global:Anumber = $global:MinerType -replace "ASIC",""
+                $global:Anumber = $global:MinerType -replace "ASIC", ""
                 $global:Anumber = $global:ANumber - 1
             }
 
@@ -230,9 +230,14 @@ While ($True) {
             if ($global:TypeS -eq "NVIDIA") { $StatPower = $NVIDIAStats.Watts }
             if ($global:TypeS -eq "AMD") { $StatPower = $AMDStats.Watts }
             if ($global:TypeS -eq "NVIDIA" -or $global:TypeS -eq "AMD") {
-                if ($StatPower -ne "" -or $StatPower -ne $null) {
+                if ($StatPower.Watts.Count -gt 0) {
                     for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
                         $global:GPUPower.$(Global:Get-GPUs) = Global:Set-Array $StatPower $global:Devices[$global:i]
+                    }
+                }
+                else {
+                    for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
+                        $global:GPUPower.$(Global:Get-GPUs) = 0
                     }
                 }
             }
@@ -243,13 +248,27 @@ While ($True) {
                 "NVIDIA" {
                     switch ($(arg).Platform) {
                         "Windows" {
-                            for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
-                                try { $global:GPUFans.$(Global:Get-GPUs) = Global:Set-Array $NVIDIAStats.Fans $global:Devices[$global:i] }
-                                catch { Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break }
+                            if ($NVIDIAStats.Fan.Count -gt 0) {
+                                for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
+                                    try { $global:GPUFans.$(Global:Get-GPUs) = Global:Set-Array $NVIDIAStats.Fans $global:Devices[$global:i] }
+                                    catch { Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break }
+                                }
                             }
-                            for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
-                                try { $global:GPUTemps.$(Global:Get-GPUs) = Global:Set-Array $NVIDIAStats.Temps $global:Devices[$global:i] }
-                                catch { Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break }
+                            else {
+                                for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
+                                    $global:GPUFans.$(Global:Get-GPUs) = 0
+                                }
+                            }
+                            if ($NVIDIAStats.Temps.Count -gt 0) {
+                                for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
+                                    try { $global:GPUTemps.$(Global:Get-GPUs) = Global:Set-Array $NVIDIAStats.Temps $global:Devices[$global:i] }
+                                    catch { Write-Host "Failed To Parse GPU Temp Array" -foregroundcolor red; break }
+                                }
+                            }
+                            else {
+                                for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
+                                    $global:GPUTemps.$(Global:Get-GPUs) = 0
+                                }
                             }
                         }
                         "linux" {
@@ -281,13 +300,28 @@ While ($True) {
                 "AMD" {
                     Switch ($(arg).Platform) {
                         "windows" {
-                            for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
-                                try { $global:GPUFans.$(Global:Get-GPUs) = Global:Set-Array $AMDStats.Fans $global:Devices[$global:i] }
-                                catch { Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break }
+                            if ($AMDStats.fans.Count -gt 0) {
+                                for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
+                                    try { $global:GPUFans.$(Global:Get-GPUs) = Global:Set-Array $AMDStats.Fans $global:Devices[$global:i] }
+                                    catch { Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break }
+                                }
                             }
-                            for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
-                                try { $global:GPUTemps.$(Global:Get-GPUs) = Global:Set-Array $AMDStats.Temps $global:Devices[$global:i] }
-                                catch { Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break }
+                            else {
+                                for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
+                                    $global:GPUFans.$(Global:Get-GPUs) = 0
+                                }
+                            }
+
+                            if ($AMDStats.Temps.Count -gt 0) {
+                                for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
+                                    try { $global:GPUTemps.$(Global:Get-GPUs) = Global:Set-Array $AMDStats.Temps $global:Devices[$global:i] }
+                                    catch { Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break }
+                                }
+                            }
+                            else {
+                                for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
+                                    $global:GPUTemps.$(Global:Get-GPUs) = 0
+                                }
                             }
                         }
                         "linux" {
@@ -544,7 +578,7 @@ While ($True) {
     }
     if ($global:DoASIC) {
         $numbers = $($global:CurrentMiners | Where-Object Type -like "*ASIC*").Count
-        for($global:i = 0; $global:i -lt $numbers; $global:i++) { $global:ASICHashTable += 0; }
+        for ($global:i = 0; $global:i -lt $numbers; $global:i++) { $global:ASICHashTable += 0; }
     }
 
     if ($global:DoNVIDIA) {
@@ -571,7 +605,7 @@ While ($True) {
     }
 
     if ($global:DoASIC) {
-        for($global:i = 0; $global:i -lt $numbers; $global:i++) { 
+        for ($global:i = 0; $global:i -lt $numbers; $global:i++) { 
             $global:ASICHashTable[$global:i] = "{0:f4}" -f $($global:ASICHashrates.$($global:i)) 
         } 
         Remove-Variable numbers -ErrorAction Ignore
@@ -672,7 +706,8 @@ While ($True) {
         Global:Add-Module "$($(vars).web)\methods.psm1"
         Global:Add-Module "$($(vars).background)\webstats.psm1"
         Global:Send-WebStats
-    } else {
+    }
+    else {
         Write-Host "No website to send stats to"
     }
 

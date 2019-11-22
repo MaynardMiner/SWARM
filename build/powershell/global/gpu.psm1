@@ -72,9 +72,11 @@ function Global:Set-NvidiaStats {
                 $Proc = [System.Diagnostics.Process]::New()
                 $proc.StartInfo = $Info
                 $proc.Start() | Out-Null
-                $proc.WaitForExit()
-                $nvidiaout = $Proc.StandardOutput.ReadToEnd()
-            } catch { Write-Host "WARNING: Failed to get nvidia stats" -ForegroundColor DarkRed }
+                $proc.WaitForExit(10000)
+                if ($proc.HasExited) { $nvidiaout = $Proc.StandardOutput.ReadToEnd() }
+                else { $proc.kill() | Out-Null; $proc.Dispose() }
+            }
+            catch { Write-Host "WARNING: Failed to get nvidia stats" -ForegroundColor DarkRed }
             if ($nvidiaout) { 
                 $ninfo = $nvidiaout | ConvertFrom-CSV
                 $NVIDIAFans = $ninfo.'fan.speed [%]' | ForEach-Object { $_ -replace ("\%", "") }
@@ -85,6 +87,10 @@ function Global:Set-NvidiaStats {
                 $NVIDIAStats.Add("Temps", $NVIDIATemps)
                 $NVIDIAStats.Add("Watts", $NVIDIAPower)
                 $nvinfo = $NVIDIAStats  
+            }
+            else {
+                Write-Host "WARNING: Failed to get amd gpu stats" -ForegroundColor DarkRed
+                break
             }
         }
     }
@@ -102,38 +108,38 @@ function Global:Set-AMDStats {
                 $odvii = ".\build\apps\odvii\odvii.exe"
                 $info = [System.Diagnostics.ProcessStartInfo]::new()
                 $info.FileName = $odvii
-                $info.Arguments = "s"
                 $info.UseShellExecute = $false
                 $info.RedirectStandardOutput = $true
                 $info.Verb = "runas"
                 $Proc = [System.Diagnostics.Process]::New()
                 $proc.StartInfo = $Info
                 $proc.Start() | Out-Null
-                $proc.WaitForExit()
-                $odvii_out = $Proc.StandardOutput.ReadToEnd()
-            } catch { Write-Host "WARNING: Failed to get amd stats" -ForegroundColor DarkRed }
+                $proc.WaitForExit(10000) | Out-Null
+                if ($proc.HasExited) { $odvii_out = $Proc.StandardOutput.ReadToEnd() }
+                else { $proc.kill() | Out-Null }
+            }
+            catch { Write-Host "WARNING: Failed to get amd stats" -ForegroundColor DarkRed; }
             if ($odvii_out) {
                 $AMDStats = @{ }
-                $amdinfo = $odvii_out | ConvertFrom-StringData
+                $amdinfo = $odvii_out | ConvertFrom-Json
                 $ainfo = @{ }
-                $aerrors = @{ }
-                $aerrors.Add("Errors", @())
                 $ainfo.Add("Fans", @())
                 $ainfo.Add("Temps", @())
                 $ainfo.Add("Watts", @())
-                $amdinfo.keys | ForEach-Object { if ($_ -like "*Fan*") { $ainfo.Fans += $amdinfo.$_ } }
-                $amdinfo.keys | ForEach-Object { if ($_ -like "*Temp*") { $ainfo.Temps += $amdinfo.$_ } }
-                $amdinfo.keys | ForEach-Object { if ($_ -like "*Watts*") { $ainfo.Watts += $amdinfo.$_ } }
-                $amdinfo.keys | ForEach-Object { if ($_ -like "*Errors*") { $aerrors.Errors += $amdinfo.$_ } }
+                $amdinfo | ForEach-Object {
+                    if ($_.'Fan Speed %') { $ainfo.Fans += $_.'Fan Speed %' }else { $ainfo.Fans += "511" }
+                    if ($_.'Temperature') { $ainfo.Temps += $_.'Temperature' }else { $ainfo.Temps += "511" }
+                    if ($_.'Wattage') { $ainfo.Watts += $_.'Wattage' }else { $ainfo.Watts += "0" }
+                }
                 $AMDFans = $ainfo.Fans
                 $AMDTemps = $ainfo.Temps
                 $AMDWatts = $ainfo.Watts
-                if ($aerrors.Errors) {
-                    Write-Host "Warning Errors Detected From Drivers:" -ForegroundColor Red
-                    $aerrors.Errors | ForEach-Object { Write-Host "$($_)" -ForegroundColor Red }
-                    Write-Host "Drivers/Settings May Be Set Incorrectly/Not Compatible
-      " -ForegroundColor Red
-                }
+            }
+            else {
+                Write-Host "WARNING: Failed to get amd gpu stats" -ForegroundColor DarkRed
+                $AMDFans = @()
+                $AMDTemps = @()
+                $AMDWatts = @()
             }
         }
 
