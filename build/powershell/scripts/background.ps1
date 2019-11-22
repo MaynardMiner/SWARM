@@ -18,7 +18,7 @@ Param (
 
 [cultureinfo]::CurrentCulture = 'en-US'
 if ($IsWIndows) { $host.ui.RawUI.WindowTitle = "Background Agent" }
-#$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
+$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
 #$WorkingDir = "/root/hive/miners/custom/SWARM"
 Set-Location $WorkingDir
 $UtcTime = Get-Date -Date "1970-01-01 00:00:00Z"
@@ -230,7 +230,7 @@ While ($True) {
             if ($global:TypeS -eq "NVIDIA") { $StatPower = $NVIDIAStats.Watts }
             if ($global:TypeS -eq "AMD") { $StatPower = $AMDStats.Watts }
             if ($global:TypeS -eq "NVIDIA" -or $global:TypeS -eq "AMD") {
-                if ($StatPower.Watts.Count -gt 0) {
+                if ($StatPower.Count -gt 0) {
                     for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
                         $global:GPUPower.$(Global:Get-GPUs) = Global:Set-Array $StatPower $global:Devices[$global:i]
                     }
@@ -248,7 +248,7 @@ While ($True) {
                 "NVIDIA" {
                     switch ($(arg).Platform) {
                         "Windows" {
-                            if ($NVIDIAStats.Fan.Count -gt 0) {
+                            if ($NVIDIAStats.Fans.Count -gt 0) {
                                 for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
                                     try { $global:GPUFans.$(Global:Get-GPUs) = Global:Set-Array $NVIDIAStats.Fans $global:Devices[$global:i] }
                                     catch { Write-Host "Failed To Parse GPU Fan Array" -foregroundcolor red; break }
