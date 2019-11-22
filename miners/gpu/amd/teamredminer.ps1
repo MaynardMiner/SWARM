@@ -65,7 +65,7 @@ $(vars).AMDTypes | ForEach-Object {
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
                     Version    = "$($(vars).amd.teamredminer.version)"
                     DeviceCall = "tdxminer"
-                    Arguments  = "--platform $($(vars).AMDPlatform) -a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --api_listen=0.0.0.0:$Port -o stratum+tcp://$($_.Pool_Host):$($_.Port) -u $($_.$User) --log_file `'$Log`' --bus_reorder -p $($_.$Pass)$($DIff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "--platform $($(vars).AMDPlatform) -a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --no_gpu_monitor --api_listen=0.0.0.0:$Port -o stratum+tcp://$($_.Pool_Host):$($_.Port) -u $($_.$User) --log_file `'$Log`' --bus_reorder -p $($_.$Pass)$($DIff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = $Stat.Hour
                     Quote      = if ($HashStat) { $HashStat * ($_.Price) }else { 0 }
                     Rejections = $Stat.Rejections
