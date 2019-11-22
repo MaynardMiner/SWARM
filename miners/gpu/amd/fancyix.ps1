@@ -67,7 +67,7 @@ $(vars).AMDTypes | ForEach-Object {
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
                     Version    = "$($(vars).amd.fancyix.version)"
                     DeviceCall = "sgminer-gm"
-                    Arguments  = "--gpu-platform $($(vars).AMDPlatform) --api-listen --api-port $Port -k $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Pool_Host):$($_.Port) -u $($_.$User) -p $($_.$Pass)$($Diff) -T $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "--gpu-platform $($(vars).AMDPlatform) --no_adl --api-listen --api-port $Port -k $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Pool_Host):$($_.Port) -u $($_.$User) -p $($_.$Pass)$($Diff) -T $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = $Stat.Hour
                     Quote      = if ($HashStat) { $HashStat * ($_.Price) }else { 0 }
                     Rejections = $Stat.Rejections
