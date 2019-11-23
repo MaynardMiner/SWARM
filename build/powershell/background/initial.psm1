@@ -117,7 +117,8 @@ function Global:Get-Metrics {
             ## https://documentation.solarwindsmsp.com/remote-management/helpcontents/processorqueuelength.htm
             ## 'A bottleneck on the processor may be thought to occur where the number of threads in the queue is more than 2 times the
             ## number of processor cores over a continuous period.'
-            ## Therefor to match linux a Processor Queue Length of 2 = 1 LA in linux
+            ## Therefor to match linux a Processor Queue Length of 2 = 1 LA in linux for a single core processor.
+            ## 8 = 4 LA in Linux for a quad core processor, etc.
 
             [Decimal]$LOADAVG_FACTOR_1F = 0.9200444146293232478931553241
             [Decimal]$LOADAVG_FACTOR_5F = 0.6592406302004437462547604110
