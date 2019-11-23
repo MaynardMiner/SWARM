@@ -78,8 +78,8 @@ function Global:Set-Stats($Site) {
             power     = @($HGPUPowerTable)
             df        = "$global:diskspace"
             mem       = @($mem)
-            cpuavg    = $global:LoadAverages
-        }
+            cpuavg    = @($global:load_avg_1m,$global:load_avg_5m,$global:load_avg_15m)
+           }
     }
     $Stats | ConvertTo-Json -Compress -Depth 3 | Out-Host
     write-host ""

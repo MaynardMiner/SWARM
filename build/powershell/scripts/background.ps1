@@ -91,6 +91,9 @@ Write-Host "HiveOS = $($(arg).HiveOS)"
 Global:Start-Servers
 
 ##Starting Variables.
+$Global:load_avg_1m = 0;
+$Global:load_avg_5m = 0;
+$Global:load_avg_15m = 0;
 $global:GPUHashrates = $null       
 $global:GPUFans = $null
 $global:GPUTemps = $null
@@ -108,7 +111,6 @@ $global:ramfree = $null
 $global:diskSpace = $null
 $global:ramtotal = $null
 $Global:cpu = $null
-$Global:LoadAverages = $null
 $Global:StartTime = Get-Date
 $CheckForSWARM = ".\build\pid\miner_pid.txt"
 if (Test-Path $CheckForSWARM) { 

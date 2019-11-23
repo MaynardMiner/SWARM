@@ -97,15 +97,40 @@ function Global:Get-Metrics {
     if ($IsWindows) {
         ## Rig Metrics
         if ($(arg).HiveOS -eq "Yes") {
-            $diskSpace = try { Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'" -ErrorAction Stop | Select-Object Freespace } catch {  Write-Host "Failed To Get disk info" -ForegroundColor Red; 0 }
+            $diskSpace = try { Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'" -ErrorAction Stop | Select-Object Freespace } catch { Write-Host "Failed To Get disk info" -ForegroundColor Red; 0 }
             $diskSpace = $diskSpace.Freespace / [math]::pow( 1024, 3 )
             $diskSpace = [math]::Round($diskSpace)
             $global:diskSpace = "$($diskSpace)G"
             $global:ramtotal = Get-Content ".\debug\ram.txt" | Select-Object -First 1
-            $Global:cpu = try { ((Get-CimInstance Win32_PerfFormattedData_PerfOS_System -ErrorAction Stop).ProcessorQueueLength) + 0.01 } catch { Write-Host "Failed To Get CPU load" -ForegroundColor Red; 0  }
-            $LoadAverage = Global:Set-Stat -Name "load-average" -Value $Global:cpu
-            $Global:LoadAverages = @("$([Math]::Round($LoadAverage.Minute,2))", "$([Math]::Round($LoadAverage.Minute_5,2))", "$([Math]::Round($LoadAverage.Minute_15,2))")
-            $global:ramfree = try { [math]::Round((Get-Ciminstance Win32_OperatingSystem -ErrorAction Stop | Select FreePhysicalMemory).FreePhysicalMemory / 1kb, 2) } catch {Write-Host "Failed To Get RAM Size" -ForegroundColor Red, 0 }
+            $global:ramfree = try { [math]::Round((Get-Ciminstance Win32_OperatingSystem -ErrorAction Stop | Select FreePhysicalMemory).FreePhysicalMemory / 1kb, 2) } catch { Write-Host "Failed To Get RAM Size" -ForegroundColor Red, 0 }
+
+            ## LOAD AVERAGE NOTES FOR WINDOWS:
+            ## We use an exponentially weighted moving average, just like Unix systems do
+            ## https://en.wikipedia.org/wiki/Load_(computing)#Unix-style_load_calculation
+            ##
+            ## These constants serve as the damping factor and are calculated with
+            ## 1 / exp(sampling interval in seconds / window size in seconds)
+            ##
+            ## This formula comes from linux's include/linux/sched/loadavg.h
+            ## https://github.com/torvalds/linux/blob/345671ea0f9258f410eb057b9ced9cefbbe5dc78/include/linux/sched/loadavg.h#L20-L23
+
+            ## https://documentation.solarwindsmsp.com/remote-management/helpcontents/processorqueuelength.htm
+            ## 'A bottleneck on the processor may be thought to occur where the number of threads in the queue is more than 2 times the
+            ## number of processor cores over a continuous period.'
+            ## Therefor to match linux a Processor Queue Length of 2 = 1 LA in linux
+
+            [Decimal]$LOADAVG_FACTOR_1F = 0.9200444146293232478931553241
+            [Decimal]$LOADAVG_FACTOR_5F = 0.6592406302004437462547604110
+            [Decimal]$LOADAVG_FACTOR_15F = 0.2865047968601901003248854266
+            $Length = 0
+            $CPU = [Decimal[]](Get-CimInstance -className Win32_PerfFormattedData_PerfOS_System).ProcessorQueueLength
+            $Length += $($CPU | Measure-Object -Sum).Sum
+            ## Divide by 2 (2 x Cores = bottlenecking)
+            if($Length -gt 0){ $Length = $Length / 2}
+            $Global:load_avg_1m = [math]::Round($global:load_avg_1m * $LOADAVG_FACTOR_1F + $Length * (1.0 - $LOADAVG_FACTOR_1F), 2)
+            $global:load_avg_5m = [math]::Round($global:load_avg_5m * $LOADAVG_FACTOR_5F + $Length * (1.0 - $LOADAVG_FACTOR_5F), 2)
+            $global:load_avg_15m = [math]::Round($global:load_avg_15m * $LOADAVG_FACTOR_15F + $Length * (1.0 - $LOADAVG_FACTOR_15F), 2)
+            Write-Host "Load Averages- 1m: $Global:load_avg_1m, 5m: $global:load_avg_5m, 15m: $global:load_avg_15m" -ForegroundColor Yellow
         }
     }
 }
