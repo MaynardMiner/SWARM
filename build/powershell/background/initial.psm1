@@ -131,7 +131,7 @@ function Global:Get-Metrics {
             $Global:load_avg_1m = [math]::Round($global:load_avg_1m * $LOADAVG_FACTOR_1F + $Length * (1.0 - $LOADAVG_FACTOR_1F), 2)
             $global:load_avg_5m = [math]::Round($global:load_avg_5m * $LOADAVG_FACTOR_5F + $Length * (1.0 - $LOADAVG_FACTOR_5F), 2)
             $global:load_avg_15m = [math]::Round($global:load_avg_15m * $LOADAVG_FACTOR_15F + $Length * (1.0 - $LOADAVG_FACTOR_15F), 2)
-            Write-Host "Load Averages- 1m: $Global:load_avg_1m, 5m: $global:load_avg_5m, 15m: $global:load_avg_15m" -ForegroundColor Yellow
+            Write-Host "CPU Load Averages- 1m: $Global:load_avg_1m, 5m: $global:load_avg_5m, 15m: $global:load_avg_15m" -ForegroundColor Yellow
         }
     }
 }
