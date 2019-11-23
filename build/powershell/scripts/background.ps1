@@ -91,9 +91,10 @@ Write-Host "HiveOS = $($(arg).HiveOS)"
 Global:Start-Servers
 
 ##Starting Variables.
-$Global:load_avg_1m = 0;
-$Global:load_avg_5m = 0;
-$Global:load_avg_15m = 0;
+## Initial load avg value to let user know it is working.
+$Global:load_avg_1m = 0.01;
+$Global:load_avg_5m = 0.01;
+$Global:load_avg_15m = 0.01;
 $global:GPUHashrates = $null       
 $global:GPUFans = $null
 $global:GPUTemps = $null
