@@ -418,7 +418,7 @@ function Global:start-update {
 
                                             $Data.$_.commands | Add-Member "phi2-lux" "" -ErrorAction SilentlyContinue
                                             $Data.$_.difficulty | Add-Member "phi2-lux" "" -ErrorAction SilentlyContinue 
-                                            $Data.$_.naming | Add-Member "phi2-lux" "phi2-lux" -ErrorAction SilentlyContinue
+                                            $Data.$_.naming | Add-Member "phi2-lux" "phi2" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "phi2-lux" 3 -ErrorAction SilentlyContinue
                                         }
                                     }
