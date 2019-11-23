@@ -233,11 +233,13 @@ While ($True) {
                 if ($StatPower.Count -gt 0) {
                     for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
                         $global:GPUPower.$(Global:Get-GPUs) = Global:Set-Array $StatPower $global:Devices[$global:i]
+                        $WattValue = 0
                     }
                 }
                 else {
                     for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
                         $global:GPUPower.$(Global:Get-GPUs) = 0
+                        if ( $global:MinerTable.$($global:MinerType) ) { $global:MinerTable.$($global:MinerType).Add("Watts","0") }
                     }
                 }
             }
@@ -545,7 +547,11 @@ While ($True) {
             if ( $global:MinerTable.$($global:MinerType) ) { $global:MinerTable.$($global:MinerType).Add("rej", "$RJPercent`:$Shares") }
             if ($RJPercent -gt $(arg).Rejections -and $Shares -gt 0) {
                 Write-Host "Warning: Miner is reaching Rejection Limit- $($RJPercent.ToString("N2")) Percent Out of $Shares Shares" -foreground yellow
-            } 
+            }
+            
+            ## ADD Power to API
+            $GPUPower.PSObject.Properties.Value | % { $WattValue += $_ }
+            if ( $global:MinerTable.$($global:MinerType) ) { $global:MinerTable.$($global:MinerType).Add("Watts","$WattValue") }
         }
     }
 
