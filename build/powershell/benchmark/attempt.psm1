@@ -62,28 +62,6 @@ function Global:Get-HiveWarning($HiveMessage) {
     }
 }
 
-function Global:Set-Power {
-    param(
-        [Parameter(Position = 0, Mandatory = $true)]
-        [String]$PwrType,
-        [Parameter(Position = 1, Mandatory = $true)]
-        [String]$PwrDevices
-    )
-    $GPUPower = 0
-    switch -Wildcard ($PwrType) {
-        "*AMD*" { $GPUPower = (Global:Set-AMDStats).watts }
-        "*NVIDIA*" { 
-            $D = Global:Get-DeviceString -TypeCount $($(vars).GCount.NVIDIA.PSObject.Properties.Value.Count) -TypeDevices $PwrDevices
-            $Power = (Global:Set-NvidiaStats).watts 
-            for ($i = 0; $i -lt $D.Count; $i++) {
-                $DI = $D[$i]
-                $GPUPower += $Power[$DI]
-            }
-        }
-    }
-    $($GPUPower | Measure-Object -Sum).Sum
-}
-
 function Global:Get-Intensity {
     param(
         [Parameter(Position = 0, Mandatory = $false)]
@@ -209,7 +187,7 @@ function Global:Start-Benchmark {
                                 }
                             }
                             else {
-                                if ($(arg).WattOMeter -eq "Yes" -and $_.Type -ne "CPU") { try { $GPUPower = Global:Set-Power $($_.Type) $($_.Devices) }catch { log "WattOMeter Failed"; $GPUPower = 0 } }
+                                if ($(arg).WattOMeter -eq "Yes" -and $_.Type -ne "CPU") { $GPUPower = Global:Get-Power $($_.Type) }
                                 else { $GPUPower = 1 }
                                 if ($(arg).WattOMeter -eq "Yes" -and $_.Type -ne "CPU") {
                                     $GetWatts = Get-Content ".\config\power\power.json" | ConvertFrom-Json

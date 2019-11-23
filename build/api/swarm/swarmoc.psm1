@@ -126,37 +126,38 @@ function Global:Start-AMDOC($NewOC) {
     $ocmessage = @()
     $script = @()
     $script += "`$host.ui.RawUI.WindowTitle = `'OC-Start`';"
-
-    ##Get BrandName
-    Invoke-Expression ".\build\apps\odvii\odvii.exe s" | Tee-Object -Variable stats | OUt-Null
-    $stats = $stats | ConvertFrom-StringData
-    $Model = $stats.keys | % {if ($_ -like "*Model*") {$stats.$_}}
-    $Default_Core_Clock = @{}
-    $Default_Core_Voltage = @{}
-    $Default_Mem_Clock = @{}
-    $Default_Mem_Voltage = @{}
-    $stats.keys | % {if ($_ -like "*Core Clock*") {$Default_Core_Clock.Add($_, $stats.$_)}}
-    $stats.keys | % {if ($_ -like "*Core Voltage*") {$Default_Core_Voltage.Add($_, $stats.$_)}}
-    $stats.keys | % {if ($_ -like "*Mem Clock*") {$Default_Mem_Clock.Add($_, $stats.$_)}}
-    $stats.keys | % {if ($_ -like "*Mem Voltage*") {$Default_Mem_Voltage.Add($_, $stats.$_)}}
-
-
-
+    
+    try {
+        $odvii = ".\build\apps\odvii\odvii.exe"
+        $info = [System.Diagnostics.ProcessStartInfo]::new()
+        $info.FileName = $odvii
+        $info.UseShellExecute = $false
+        $info.RedirectStandardOutput = $true
+        $info.Verb = "runas"
+        $Proc = [System.Diagnostics.Process]::New()
+        $proc.StartInfo = $Info
+        $proc.Start() | Out-Null
+        $proc.WaitForExit(15000) | Out-Null
+        if ($proc.HasExited) { $stats = $Proc.StandardOutput.ReadToEnd() }
+        else { Stop-Process -Id $Proc.Id -ErrorAction Ignore }
+    }
+    catch { Write-Host "WARNING: Failed to get amd stats" -ForegroundColor DarkRed }
+    if ($stats) {
+        $stats = $stats | ConvertFrom-Json
+    }
+    else {
+        log "Failed To Get Gpu Data From OverdriveN API! Cannot Do OC For AMD!" -ForegroundColor Red;
+        break;
+    }
     $AMDCount = $OCCount.AMD.PSObject.Properties.Name.Count
-
-    $AMDOCFan = $AMDOC.FAN -replace "`"", ""
-    $AMDOCFAN = $AMDOCFan -split " "
-    $AMDOCMem = $AMDOC.MEM_CLOCK -replace "`"", ""
-    $AMDOCMem = $AMDOCMem -split " "
-    $AMDOCCore = $AMDOC.CORE_CLOCK -replace "`"", ""
-    $AMDOCCore = $AMDOCCore -split " "
-    $AMDOCCV = $AMDOC.CORE_VDDC -replace "`"", ""
-    $AMDOCCV = $AMDOCCV -split " "
-    $AMDOCMV = $AMDOC.MEM_STATE -replace "`"", ""
-    $AMDOCMV = $AMDOCMV -split " "
-    $AMDOCV = $AMDOC.CORE_VDDC -replace "`"", ""
-    $AMDOCV = $AMDOCV -split " "
+    $AMDOCFAN = ($AMDOC.FAN.replace("`"", "")).split(" ")
+    $AMDOCCore = ($AMDOC.CORE_CLOCK.replace("`"", "")).split(" ")
+    $AMD_Core_State = ($AMDOC.CORE_STATE.replace("`"", "")).split(" ")
+    $AMDOCCV = ($AMDOC.CORE_VDDC.replace("`"", "")).split(" ")
+    $AMDOCMem = ($AMDOC.MEM_CLOCK.replace("`"", "")).split(" ")
+    $AMD_Mem_State = ($AMDOC.MEM_STATE.replace("`"", "")).split(" ")
     $AMDAgg = $AMDOC.AGGRESSIVE
+    $AMDREF = ($AMDOC.REF.replace("`"", "")).split(" ")
   
     for ($i = 0; $i -lt $AMDCount; $i++) {
 

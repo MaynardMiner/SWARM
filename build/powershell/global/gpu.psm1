@@ -72,7 +72,7 @@ function Global:Set-NvidiaStats {
                 $Proc = [System.Diagnostics.Process]::New()
                 $proc.StartInfo = $Info
                 $proc.Start() | Out-Null
-                $proc.WaitForExit(10000)
+                $proc.WaitForExit(15000)
                 if ($proc.HasExited) { $nvidiaout = $Proc.StandardOutput.ReadToEnd() }
                 else { $proc.kill() | Out-Null; $proc.Dispose() }
             }
@@ -114,11 +114,16 @@ function Global:Set-AMDStats {
                 $Proc = [System.Diagnostics.Process]::New()
                 $proc.StartInfo = $Info
                 $proc.Start() | Out-Null
-                $proc.WaitForExit(10000) | Out-Null
+                $proc.WaitForExit(15000) | Out-Null
                 if ($proc.HasExited) { $odvii_out = $Proc.StandardOutput.ReadToEnd() }
-                else { $proc.kill() | Out-Null }
+                else { Stop-Process -Id $Proc.Id -ErrorAction Ignore }
             }
-            catch { Write-Host "WARNING: Failed to get amd stats" -ForegroundColor DarkRed; }
+            catch { 
+                Write-Host "WARNING: Failed to query driver for gpu stats" -ForegroundColor DarkRed; 
+                $AMDFans = @()
+                $AMDTemps = @()
+                $AMDWatts = @()
+            }
             if ($odvii_out) {
                 $AMDStats = @{ }
                 $amdinfo = $odvii_out | ConvertFrom-Json
@@ -129,14 +134,14 @@ function Global:Set-AMDStats {
                 $amdinfo | ForEach-Object {
                     if ($_.'Fan Speed %') { $ainfo.Fans += $_.'Fan Speed %' }else { $ainfo.Fans += "511" }
                     if ($_.'Temperature') { $ainfo.Temps += $_.'Temperature' }else { $ainfo.Temps += "511" }
-                    if ($_.'Wattage') { $ainfo.Watts += $_.'Wattage' }else { $ainfo.Watts += "0" }
+                    if ($_.'Wattage') { $ainfo.Watts += $_.'Wattage' }else { $ainfo.Watts += "5111" }
                 }
                 $AMDFans = $ainfo.Fans
                 $AMDTemps = $ainfo.Temps
                 $AMDWatts = $ainfo.Watts
             }
             else {
-                Write-Host "WARNING: Failed to get amd gpu stats" -ForegroundColor DarkRed
+                Write-Host "WARNING: Failed to query driver for gpu stats" -ForegroundColor DarkRed
                 $AMDFans = @()
                 $AMDTemps = @()
                 $AMDWatts = @()

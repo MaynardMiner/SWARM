@@ -163,9 +163,9 @@ function Global:Start-AMDOC($NewOC) {
         $Proc = [System.Diagnostics.Process]::New()
         $proc.StartInfo = $Info
         $proc.Start() | Out-Null
-        $proc.WaitForExit(1000) | Out-Null
+        $proc.WaitForExit(15000) | Out-Null
         if ($proc.HasExited) { $stats = $Proc.StandardOutput.ReadToEnd() }
-        else { $proc.kill() | Out-Null; $proc.Dispose() }
+        else { Stop-Process -Id $Proc.Id -ErrorAction Ignore }
     }
     catch { Write-Host "WARNING: Failed to get amd stats" -ForegroundColor DarkRed }
     if ($stats) {

@@ -136,6 +136,22 @@ function Global:Get-HashRate {
    $data
 }
 
+function Global:Get-Power {
+    param(
+        [Parameter(Mandatory = $true)]
+        [String]$Type
+    )
+
+    $res = Global:Get-SWARMTCP
+    if($res.$Type.hash){
+        $data = [Double]$res.$Type.Watts
+    } else {
+        $data = 0
+   }
+   
+   $data
+}
+
 filter Global:ConvertTo-Hash {
     $Hash = $_
     switch ([math]::truncate([math]::log($Hash, [Math]::Pow(1000, 1)))) {
