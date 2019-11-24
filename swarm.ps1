@@ -30,6 +30,9 @@ if($PSVersionTable.PSVersion -ne "6.2.3") {
     Write-Host "WARNING: Powershell Core Version is $($PSVersionTable.PSVersion)" -ForegroundColor Red
     Write-Host "Currently supported version for SWARM is 6.2.3" -ForegroundColor Red
     Write-Host "SWARM will continue anyways- It may cause issues." -ForegroundColor Red
+    ## Create a pause in case window is scrolling too fast.
+    Start-Sleep -S 10
+
 }
 
 ##filepath dir
