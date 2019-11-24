@@ -275,6 +275,17 @@
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/cc-verus-linux.tar.gz"
   },
+  "cc-lyra2z330": {
+    "name": "cc-lyra2z330",
+    "type": "nvidia",
+    "NVIDIA1": ".\\bin\\cc-lyra2z330-1\\ccminer",
+    "NVIDIA2": ".\\bin\\cc-lyra2z330-2\\ccminer",
+    "NVIDIA3": ".\\bin\\cc-lyra2z330-3\\ccminer",
+    "minername": "ccminer",
+    "version": "1.0",
+    "optional": "No",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/cc-lyra2z330-linux.tar.gz"
+  },
   "nv-lolminer": {
     "name": "nv-lolminer",
     "type": "nvidia",
