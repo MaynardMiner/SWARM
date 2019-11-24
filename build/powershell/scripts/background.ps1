@@ -242,7 +242,7 @@ While ($True) {
                 else {
                     for ($global:i = 0; $global:i -lt $global:Devices.Count; $global:i++) {
                         $global:GPUPower.$(Global:Get-GPUs) = 0
-                        if ( $global:MinerTable.$($global:MinerType) ) { $global:MinerTable.$($global:MinerType).Add("Watts","0") }
+                        if ( $global:MinerTable.$($global:MinerType) ) { $global:MinerTable.$($global:MinerType).Add("Watts", "0") }
                     }
                 }
             }
@@ -553,8 +553,14 @@ While ($True) {
             }
             
             ## ADD Power to API
-            $GPUPower.PSObject.Properties.Value | % { $WattValue += $_ }
-            if ( $global:MinerTable.$($global:MinerType) ) { $global:MinerTable.$($global:MinerType).Add("Watts","$WattValue") }
+            $WattValue = 0
+            $Global:Devices | % { 
+                $WattGPU = $(vars).GCOUNT.$global:TypeS.$_
+                if ($GPUPower.$WattGPU) { 
+                    $WattValue += $GPUPower.$WattGPU
+                }
+            }
+            if ( $global:MinerTable.$($global:MinerType) ) { $global:MinerTable.$($global:MinerType).Add("Watts", "$WattValue") }
         }
     }
 
