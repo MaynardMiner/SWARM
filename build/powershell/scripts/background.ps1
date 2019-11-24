@@ -553,14 +553,16 @@ While ($True) {
             }
             
             ## ADD Power to API
-            $WattValue = 0
-            $Global:Devices | % { 
-                $WattGPU = $(vars).GCOUNT.$global:TypeS.$_
-                if ($GPUPower.$WattGPU) { 
-                    $WattValue += $GPUPower.$WattGPU
+            if ($global:TypeS -eq "NVIDIA" -or $global:TypeS -eq "AMD") {
+                $WattValue = 0
+                $Global:Devices | % { 
+                    $WattGPU = $(vars).GCOUNT.$global:TypeS.$_
+                    if ($GPUPower.$WattGPU) { 
+                        $WattValue += $GPUPower.$WattGPU
+                    }
                 }
+                if ( $global:MinerTable.$($global:MinerType) ) { $global:MinerTable.$($global:MinerType).Add("Watts", "$WattValue") }
             }
-            if ( $global:MinerTable.$($global:MinerType) ) { $global:MinerTable.$($global:MinerType).Add("Watts", "$WattValue") }
         }
     }
 
