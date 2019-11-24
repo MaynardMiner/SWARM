@@ -105,7 +105,7 @@ function Global:Set-AMDStats {
             $amdout = ".\debug\amd-stats.txt"
             $continue = $false
             try {
-                if([Environment]::Is64BitOperatingSystem) {
+                if ([Environment]::Is64BitOperatingSystem) {
                     $odvii = ".\build\apps\odvii\odvii_x64.exe"
                 } 
                 else {
@@ -132,18 +132,26 @@ function Global:Set-AMDStats {
             if ($odvii_out) {
                 $AMDStats = @{ }
                 $amdinfo = $odvii_out | ConvertFrom-Json
-                $ainfo = @{ }
-                $ainfo.Add("Fans", @())
-                $ainfo.Add("Temps", @())
-                $ainfo.Add("Watts", @())
-                $amdinfo | ForEach-Object {
-                    if ($_.'Fan Speed %') { $ainfo.Fans += $_.'Fan Speed %' }else { $ainfo.Fans += "511" }
-                    if ($_.'Temperature') { $ainfo.Temps += $_.'Temperature' }else { $ainfo.Temps += "511" }
-                    if ($_.'Wattage') { $ainfo.Watts += $_.'Wattage' }else { $ainfo.Watts += "5111" }
+                if ($amdinfo.count -gt 0) { 
+                    $ainfo = @{ }
+                    $ainfo.Add("Fans", @())
+                    $ainfo.Add("Temps", @())
+                    $ainfo.Add("Watts", @())
+                    $amdinfo | ForEach-Object {
+                        if ($_.'Fan Speed %') { $ainfo.Fans += $_.'Fan Speed %' }else { $ainfo.Fans += "511" }
+                        if ($_.'Temperature') { $ainfo.Temps += $_.'Temperature' }else { $ainfo.Temps += "511" }
+                        if ($_.'Wattage') { $ainfo.Watts += $_.'Wattage' }else { $ainfo.Watts += "5111" }
+                    }
+                    $AMDFans = $ainfo.Fans
+                    $AMDTemps = $ainfo.Temps
+                    $AMDWatts = $ainfo.Watts
                 }
-                $AMDFans = $ainfo.Fans
-                $AMDTemps = $ainfo.Temps
-                $AMDWatts = $ainfo.Watts
+                else {
+                    Write-Host "Queried Driver For Stats, But It Returned NULL" -ForegroundColor DarkRed
+                    $AMDFans = @()
+                    $AMDTemps = @()
+                    $AMDWatts = @()
+                }    
             }
             else {
                 Write-Host "WARNING: Failed to query driver for gpu stats" -ForegroundColor DarkRed
