@@ -25,6 +25,13 @@ $Global:Config.vars.dir = $Global:Config.vars.dir -replace "/var/tmp", "/root"
 Set-Location $Global:Config.vars.dir
 if(-not (test-path ".\debug")){New-Item -Path "debug" -ItemType Directory | Out-Null}
 
+## Check Powershell version. Output warning.
+if($PSVersionTable.PSVersion -ne "6.2.3") {
+    Write-Host "WARNING: Powershell Core Version is $($PSVersionTable.PSVersion)" -ForegroundColor Red
+    Write-Host "Currently supported version for SWARM is 6.2.3" -ForegroundColor Red
+    Write-Host "SWARM will continue anyways- It may cause issues." -ForegroundColor Red
+}
+
 ##filepath dir
 . .\build\powershell\global\modules.ps1
 $env:Path += ";$($(vars).dir)\build\cmd"
