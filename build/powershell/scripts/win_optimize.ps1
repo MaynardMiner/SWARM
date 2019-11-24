@@ -56,7 +56,6 @@ invoke-expression "reg add `"HKLM\Software\Policies\Microsoft\Windows\OneDrive`"
 ## AMD REGISTRY
 [string]$regKeyName = 'SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}'
 [string]$internalLargePageName = 'KMD_EnableInternalLargePage'
-[string]$kmd_blockchain = 'KMD_BlockchainSupport'
 [string]$enableulps = 'EnableUlps'
 [string]$enablecrossfireautolink = 'EnableCrossFireAutoLink'
 [string]$aMDPnPId = 'AMD'
@@ -76,8 +75,6 @@ if ($reg) {
                         Write-Host "Detected GPU $gpuitem in registry to be AMD - Modifying Registries" -ForeGround Cyan 
                         $gpukey.SetValue($internalLargePageName, 2, [Microsoft.Win32.RegistryValueKind]::DWord)
                         Write-Host "GPU $gpuitem KMD_EnableInternalLargePage Set to 2" -ForeGround Yellow 
-                        $gpukey.SetValue($kmd_blockchain, 1, [Microsoft.Win32.RegistryValueKind]::DWord)
-                        Write-Host "GPU $gpuitem KMD_BlockchainSupport Set to 1" -ForeGround Yellow 
                         $gpukey.SetValue($enableulps, 0, [Microsoft.Win32.RegistryValueKind]::DWord)
                         Write-Host "GPU $gpuitem EnableUlps Set to 0" -ForeGround Yellow 
                         $gpukey.SetValue($enablecrossfireautolink, 0, [Microsoft.Win32.RegistryValueKind]::DWord)
