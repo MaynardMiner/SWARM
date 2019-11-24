@@ -33,6 +33,17 @@
         "optional": "Yes",
         "uri": "https://github.com/zcoinofficial/ccminer/releases/download/1.2.0/ccminer.exe"
     },
+    "cc-lyra2z330": {
+        "name": "cc-lyra2z330",
+        "type": "nvidia",
+        "NVIDIA1": ".\\bin\\cc-lyra2z330-1\\ccminer.exe",
+        "NVIDIA2": ".\\bin\\cc-lyra2z330-2\\ccminer.exe",
+        "NVIDIA3": ".\\bin\\cc-lyra2z330-3\\ccminer.exe",
+        "minername": "ccminer.exe",
+        "version": "1.0.1",
+        "optional": "No",
+        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/cc-lyra2z330-windows.zip"
+    },
     "cc-verus": {
         "name": "cc-verus",
         "type": "nvidia",
