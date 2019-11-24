@@ -1,2 +1,0 @@
-odvii.exe
-pause

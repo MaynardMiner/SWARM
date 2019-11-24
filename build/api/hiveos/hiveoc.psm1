@@ -154,7 +154,12 @@ function Global:Start-AMDOC($NewOC) {
     $script += "`$host.ui.RawUI.WindowTitle = `'OC-Start`';"
     
     try {
-        $odvii = ".\build\apps\odvii\odvii.exe"
+        if([Environment]::Is64BitOperatingSystem) {
+            $odvii = ".\build\apps\odvii\odvii_x64.exe"
+        } 
+        else {
+            $odvii = ".\build\apps\odvii\odvii_x86.exe"
+        }
         $info = [System.Diagnostics.ProcessStartInfo]::new()
         $info.FileName = $odvii
         $info.UseShellExecute = $false

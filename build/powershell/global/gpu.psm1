@@ -105,7 +105,12 @@ function Global:Set-AMDStats {
             $amdout = ".\debug\amd-stats.txt"
             $continue = $false
             try {
-                $odvii = ".\build\apps\odvii\odvii.exe"
+                if([Environment]::Is64BitOperatingSystem) {
+                    $odvii = ".\build\apps\odvii\odvii_x64.exe"
+                } 
+                else {
+                    $odvii = ".\build\apps\odvii\odvii_x86.exe"
+                }
                 $info = [System.Diagnostics.ProcessStartInfo]::new()
                 $info.FileName = $odvii
                 $info.UseShellExecute = $false
