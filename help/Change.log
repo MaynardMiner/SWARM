@@ -1391,3 +1391,32 @@ Updates
 * gminer updated.
 * lolminer updated.
 * nbminer updated.
+
+############################################
+############################################
+
+# SWARM 2.8.3
+
+## What's New?
+* Issue #214
+  * added cc-Lyraz330 to Nvidia miners.
+
+## Improvements
+* Issue #222
+  * Improved Load Average/Detection in Windows.
+* Issue #225
+  * Fixed small typos on SWARM Screen.
+
+## Fixes
+* Issue #213
+  * Updated odvii.exe
+  * Updated how SWARM gathers information from odvii.exe
+  * Removed need to run wattometer - stats pulled from agent API.
+  * Extended wait time for gpu stats to 15 seconds.
+
+## Updates
+* Issue #219
+  * gminer updated.
+* Issue #220
+  * teamredminer updated.
+  * ethash added.
