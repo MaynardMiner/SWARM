@@ -99,6 +99,10 @@ function Global:Set-NvidiaStats {
 
 ## AMD HWMON
 function Global:Set-AMDStats {
+    $AMDStats = @{ }
+    $AMDFans = @()
+    $AMDTemps = @()
+    $AMDWatts = @()
 
     switch ($(arg).Platform) {
         "windows" {
@@ -125,39 +129,22 @@ function Global:Set-AMDStats {
             }
             catch { 
                 Write-Host "WARNING: Failed to query driver for gpu stats" -ForegroundColor DarkRed; 
-                $AMDFans = @()
-                $AMDTemps = @()
-                $AMDWatts = @()
             }
             if ($odvii_out) {
-                $AMDStats = @{ }
                 $amdinfo = $odvii_out | ConvertFrom-Json
                 if ($amdinfo.count -gt 0) { 
-                    $ainfo = @{ }
-                    $ainfo.Add("Fans", @())
-                    $ainfo.Add("Temps", @())
-                    $ainfo.Add("Watts", @())
                     $amdinfo | ForEach-Object {
-                        if ($_.'Fan Speed %') { $ainfo.Fans += $_.'Fan Speed %' }else { $ainfo.Fans += "511" }
-                        if ($_.'Temperature') { $ainfo.Temps += $_.'Temperature' }else { $ainfo.Temps += "511" }
-                        if ($_.'Wattage') { $ainfo.Watts += $_.'Wattage' }else { $ainfo.Watts += "5111" }
+                        if ($_.'Fan Speed %') { $AMDFans += $_.'Fan Speed %' }else { $AMDFans += "511" }
+                        if ($_.'Temperature') { $AMDTemps += $_.'Temperature' }else { $AMDTemps += "511" }
+                        if ($_.'Wattage') { $AMDWatts += $_.'Wattage' }else { $AMDWatts += "5111" }
                     }
-                    $AMDFans = $ainfo.Fans
-                    $AMDTemps = $ainfo.Temps
-                    $AMDWatts = $ainfo.Watts
                 }
                 else {
                     Write-Host "Queried Driver For Stats, But It Returned NULL" -ForegroundColor DarkRed
-                    $AMDFans = @()
-                    $AMDTemps = @()
-                    $AMDWatts = @()
                 }    
             }
             else {
                 Write-Host "WARNING: Failed to query driver for gpu stats" -ForegroundColor DarkRed
-                $AMDFans = @()
-                $AMDTemps = @()
-                $AMDWatts = @()
             }
         }
 
@@ -169,7 +156,6 @@ function Global:Set-AMDStats {
                         for ($global:i = 0; $global:i -lt 20; $global:i++) {
                             if (Test-Path $HiveStats) { try { $GetHiveStats = Get-Content $HiveStats | ConvertFrom-Json -ErrorAction Stop }catch { $GetHiveStats = $null } }
                             if ($GetHiveStats -ne $null) {
-                                $AMDStats = @{ }
                                 $AMDFans = $( $GetHiveStats.fan | ForEach-Object { if ($_ -ne 0) { $_ } } )
                                 $AMDTemps = $( $GetHiveStats.temp | ForEach-Object { if ($_ -ne 0) { $_ } } )
                                 $AMDWatts = $( $GetHiveStats.power | ForEach-Object { if ($_ -ne 0) { $_ } } )
@@ -179,7 +165,6 @@ function Global:Set-AMDStats {
                     }while ($GetHiveStats.temp.count -lt 1 -and $GetHiveStats.fan.count -lt 1 -and $GetHiveStats.power.count -lt 1)
                 }
                 "No" {
-                    $AMDStats = @{ }
                     timeout -s9 10 rocm-smi -f | Tee-Object -Variable AMDFans | Out-Null
                     $AMDFans = $AMDFans | Select-String "%" | ForEach-Object { $_ -split "\(" | Select-Object -Skip 1 -first 1 } | ForEach-Object { $_ -split "\)" | Select-Object -first 1 }
                     timeout -s9 10 rocm-smi -t | Tee-Object -Variable AMDTemps | Out-Null
