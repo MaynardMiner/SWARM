@@ -74,6 +74,8 @@ Current Miners:
 
         log "Miner: " -foreground Green -NoNewLine -Start
         log "$($_.MinerName)" -End
+        log "File Path: " -foreground White -NoNewLine -Start
+        log "$($_.Path)" -End
         log "Rejection Percent: " -foreground Red -NoNewLine -Start
         log "$([math]::Round($Percent,0))" -End
         log "Total Shares: " -foregroundcolor Yellow -NoNewLine -Start
@@ -100,7 +102,7 @@ function Global:Start-MinerLoop {
         log "
 
     Type 'get stats' in a new terminal to view miner statistics- This IS a remote command!
-        Windows Users: Open cmd.exe or SWARM TERMINAL on desktop and enter command
+        Windows Users: Open cmd.exe or SWARM-TERMINAL on desktop and enter command
     https://github.com/MaynardMiner/SWARM/wiki/Commands-&-Suggested-Apps for more info.
         
         " -foreground Magenta        
@@ -120,7 +122,7 @@ function Global:Start-MinerLoop {
         log "
 
     Type 'get active' in a new terminal to view miner launch commands- This IS a remote command!
-            Windows Users: Open cmd.exe or SWARM TERMINAL on desktop and enter command
+            Windows Users: Open cmd.exe or SWARM-TERMINAL on desktop and enter command
        https://github.com/MaynardMiner/SWARM/wiki/Commands-&-Suggested-Apps for more info.
         " -foreground Magenta        
         Global:Set-Countdown
