@@ -23,7 +23,7 @@ $(vars).CPUTypes | ForEach-Object {
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = Join-Path $($(vars).dir) "build\export"
-    $Miner_Dir = Split-Path $Path
+    $Miner_Dir = Join-Path ($(vars).dir) ((Split-Path $Path).replace(".",""))
 
     ##Prestart actions before miner launch
     $Prestart = @()
