@@ -77,7 +77,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     MinerPool  = "$($_.Name)"
                     Port       = $Port
                     Worker     = $Rig
-                    API        = "xmrstak"
+                    API        = "xmrig"
                     Wallet     = "$($_.$User)"
                     URI        = $Uri
                     Server     = "localhost"

@@ -256,13 +256,13 @@
   "xmrig-nv": {
     "name": "xmrig-nv",
     "type": "nvidia",
-    "NVIDIA1": ".\\bin\\xmrig-nv-1\\xmrig-nvidia",
-    "NVIDIA2": ".\\bin\\xmrig-nv-2\\xmrig-nvidia",
-    "NVIDIA3": ".\\bin\\xmrig-nv-3\\xmrig-nvidia",
-    "minername": "xmrig-nvidia",
-    "version": "2.14.4",
+    "NVIDIA1": ".\\bin\\xmrig-nv-1\\xmrig",
+    "NVIDIA2": ".\\bin\\xmrig-nv-2\\xmrig",
+    "NVIDIA3": ".\\bin\\xmrig-nv-3\\xmrig",
+    "minername": "xmrig",
+    "version": "5.1.0",
     "optional": "Yes",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/xmrig-nvidia-linux.tar.gz"
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v8.0/xmrig-linux.tar.gz"
   },
   "cc-verus": {
     "name": "cc-verus",
