@@ -35,6 +35,7 @@ if ($Name -in $(arg).PoolName) {
         "US" { $Region = "usa" }
         "ASIA" { $Region = "hk" }
         "EUROPE" { $Region = "eu" }
+        "JAPAN" { $Region = "hk"}
     }
 
 

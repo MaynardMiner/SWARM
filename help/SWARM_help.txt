@@ -32,7 +32,7 @@ Argument          Options           Explanation
                                     hasn't ran for 24 hours. Default is .5
 
 -Location       [US,EUROPE,ASIA]    Locations of pools you wish to mine from, for pools that have multiple
-                                    Locations to choose from. Default is US
+                     JAPAN          Locations to choose from. Default is US (yay 'murica)
 
 ***********************************************************************************************************
 ***********************************************************************************************************
