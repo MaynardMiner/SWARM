@@ -23,9 +23,9 @@
     "type": "cpu",
     "CPU": ".\\bin\\xmrig-cpu-1\\xmrig.exe",
     "minername": "xmrig.exe",
-    "version": "4.0.1",
+    "version": "5.1.0",
     "optional": "No",
-    "uri": "https://github.com/xmrig/xmrig/releases/download/v4.0.1-beta/xmrig-4.0.1-beta-gcc-win64.zip"
+    "uri": "https://github.com/xmrig/xmrig/releases/download/v5.1.0/xmrig-5.1.0-msvc-win64.zip"
   },
   "sugarchain": {
     "name": "sugarchain",

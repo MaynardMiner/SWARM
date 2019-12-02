@@ -51,9 +51,9 @@
     "AMD2": ".\\bin\\gminer-amd-2\\miner.exe",
     "AMD3": ".\\bin\\gminer-amd-3\\miner.exe",
     "minername": "miner.exe",
-    "version": "1.77",
+    "version": "1.82",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.77/gminer_1_77_windows64.zip"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.82/gminer_1_82_windows64.zip"
   },
   "phoenix-amd": {
     "name": "phoenix-amd",
@@ -146,13 +146,13 @@
   "xmrig": {
     "name": "xmrig",
     "type": "amd",
-    "AMD1": ".\\bin\\xmrig-amd-1\\xmrig-amd.exe",
-    "AMD2": ".\\bin\\xmrig-amd-2\\xmrig-amd.exe",
-    "AMD3": ".\\bin\\xmrig-amd-3\\xmrig-amd.exe",
-    "minername": "xmrig-amd.exe",
-    "version": "2.14.6",
+    "AMD1": ".\\bin\\xmrig-amd-1\\xmrig.exe",
+    "AMD2": ".\\bin\\xmrig-amd-2\\xmrig.exe",
+    "AMD3": ".\\bin\\xmrig-amd-3\\xmrig.exe",
+    "minername": "xmrig.exe",
+    "version": "5.1.0",
     "optional": "No",
-    "uri": "https://github.com/xmrig/xmrig-amd/releases/download/v2.14.6/xmrig-amd-2.14.6-msvc-win64.zip"
+    "uri": "https://github.com/xmrig/xmrig/releases/download/v5.1.0/xmrig-5.1.0-msvc-win64.zip"
   },
   "srbminer": {
     "name": "srbminer",
