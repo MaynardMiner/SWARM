@@ -601,6 +601,16 @@
       "comma seperated"
     ]
   },
+  "randomx": {
+    "alt_names": [
+      "randomxmonero",
+      "randomx"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "renesis": {
     "alt_names": [
       "renesis"
