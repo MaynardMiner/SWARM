@@ -15,28 +15,28 @@
             "cryptonight-v7": "",
             "cryptonight-heavy": "",
             "cryptonight-r": "",
-            "randomxmonero": ""
+            "randomx": ""
         },
         "difficulty": {
             "cryptonight-v8": "",
             "cryptonight-v7": "",
             "cryptonight-heavy": "",
             "cryptonight-r": "",
-            "randomxmonero": ""
+            "randomx": ""
         },
         "naming": {
             "cryptonight-v8": "cn/2",
             "cryptonight-v7": "cn/1",
             "cryptonight-heavy": "cn-heavy",
             "cryptonight-r": "cn/r",
-            "randomxmonero": "rx/0"
+            "randomx": "rx/0"
         },
         "fee": {
             "cryptonight-v8": 1,
             "cryptonight-v7": 1,
             "cryptonight-heavy": 1,
             "cryptonight-r": 1,
-            "randomxmonero": 1
+            "randomx": 1
         }
     }
 }
