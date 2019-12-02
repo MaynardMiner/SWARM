@@ -88,15 +88,16 @@ $(vars).Add("BanCount",0)
 $(vars).Add("BanPass",0)
 $(vars).Add("Priority",@{Admin = $false; Other = $false})
 $(vars).Add("AdminTime",0)
-if(test-Path ".\build\data\deviation.txt"){$(vars).Add("Deviation",[Double](Get-Content ".\build\data\deviation.txt"))} 
+if(test-Path ".\build\data\deviation.txt"){$(vars).Add("Deviation",[Double](Get-Content ".\build\data\deviation.txt"))}
 else{$(vars).Add("Deviation",0)}
-$(vars).Add("BenchmarkMode",$true)
-$(vars).Add("bestminers_combo",$Null)
-$(vars).Add("Active_Variables",(New-Object System.Collections.ArrayList))
-$(vars).Add("NetModules",@())
-$(vars).Add("WebSites",@())
-$(vars).Add("ActiveSymbol",@())
-$GetBanCheck2 = Get-Content ".\build\data\verification.conf" -Force
-$BanCheck2 = $([Double]$GetBanCheck2[0] - 5 + ([Double]$GetBanCheck2[1] * 2))
-$(vars).BanPass = "$($BanCheck2)"
+$(vars).Add("BenchmarkMode",$true);
+$(vars).Add("bestminers_combo",$Null);
+$(vars).Add("Active_Variables",(New-Object System.Collections.ArrayList));
+$(vars).Add("NetModules",@());
+$(vars).Add("WebSites",@());
+$(vars).Add("ActiveSymbol",@());
+$(vars).Add("HugePages",$false);
+$GetBanCheck2 = Get-Content ".\build\data\verification.conf" -Force;
+$BanCheck2 = $([Double]$GetBanCheck2[0] - 5 + ([Double]$GetBanCheck2[1] * 2));
+$(vars).BanPass = "$($BanCheck2)";
 }

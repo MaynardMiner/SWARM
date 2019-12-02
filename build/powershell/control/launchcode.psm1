@@ -467,6 +467,15 @@ $start
             ## .5 Second Delay After Read/Write Of Config Files. For Slower Drives.
             Start-Sleep -S .5
 
+            ## Run HiveOS hugepages commmand if algo is randomx
+            if(
+                $MinerCurrent.algo -eq "randomx" -and
+                $(arg).HiveOS -eq "Yes"
+              ) {
+                log "Setting HiveOS hugepages for RandomX" -ForegroundColor Cyan
+                Invoke-Expression "hugepages -rx"
+            }
+
             ##chmod again, to be safe.
             $Proc = Start-Process "chmod" -ArgumentList "+x build/bash/startup.sh" -PassThru
             $Proc | Wait-Process

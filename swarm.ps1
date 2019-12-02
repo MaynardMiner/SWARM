@@ -23,10 +23,10 @@ $Global:Config.Add("vars", @{ })
 $Global:Config.vars.Add( "dir", (Split-Path $script:MyInvocation.MyCommand.Path) )
 $Global:Config.vars.dir = $Global:Config.vars.dir -replace "/var/tmp", "/root"
 Set-Location $Global:Config.vars.dir
-if(-not (test-path ".\debug")){New-Item -Path "debug" -ItemType Directory | Out-Null}
+if (-not (test-path ".\debug")) { New-Item -Path "debug" -ItemType Directory | Out-Null }
 
 ## Check Powershell version. Output warning.
-if($PSVersionTable.PSVersion -ne "6.2.3") {
+if ($PSVersionTable.PSVersion -ne "6.2.3") {
     Write-Host "WARNING: Powershell Core Version is $($PSVersionTable.PSVersion)" -ForegroundColor Red
     Write-Host "Currently supported version for SWARM is 6.2.3" -ForegroundColor Red
     Write-Host "SWARM will continue anyways- It may cause issues." -ForegroundColor Red
@@ -194,8 +194,8 @@ if ($Config.Params.Swarm_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") { $(vars).N
 ## Initialize
 $(vars).Add("GPU_Count", $Null)
 $(vars).Add("BusData", $Null)
-$(vars).Add("types",@())
-$(vars).Add("threads",$null)
+$(vars).Add("types", @())
+$(vars).Add("threads", $null)
 switch ($(arg).Platform) {
     "linux" {
         Global:Add-Module "$($(vars).startup)\linuxconfig.psm1"
@@ -264,7 +264,7 @@ if ([String]$(arg).Admin_Fee -eq 0) { if (test-Path ".\admin") { Remove-Item ".\
 
 ## Stop stray miners from previous run before loop
 Global:Add-Module "$($(vars).control)\stray.psm1"
-if($IsWindows) { Global:Stop-StrayMiners -Startup }
+if ($IsWindows) { Global:Stop-StrayMiners -Startup }
 
 ##Get Optional Miners
 Global:Get-Optional
@@ -532,15 +532,22 @@ While ($true) {
         Global:Get-BestActiveMiners
         Global:Get-ActivePricing
 
-        ## Start / Stop / Restart Miners        
+        ## Start / Stop / Restart Miners - Load Modules
         Global:Add-Module "$($(vars).control)\run.psm1"
         Global:Add-Module "$($(vars).control)\launchcode.psm1"
         Global:Add-Module "$($(vars).control)\config.psm1"
         Global:Add-Module "$($(vars).control)\stray.psm1"
+        Global:Add-Module "$($(vars).control)\hugepage.psm1"
+
         ## Stop miners that need to be stopped
         Global:Stop-ActiveMiners
+        
         ## Attack Stray Miners, if they are running
-        if($IsWindows) { Global:Stop-StrayMiners }
+        if ($IsWindows) { Global:Stop-StrayMiners }
+
+        ## Randomx Hugepages Before starting miners
+        Global:Start-HugePage_Check
+
         ## Start New Miners
         Global:Start-NewMiners -Reason "Launch"
 

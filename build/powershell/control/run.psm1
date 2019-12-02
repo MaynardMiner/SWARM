@@ -57,7 +57,7 @@ function Global:Stop-ActiveMiners {
             }
 
             if ($(arg).Platform -eq "linux") {
-                if ($_.XProcess -eq $Null -and $_.Status -ne "Idle") { $_.Status = "Failed" }
+                if ($null -eq $_.XProcess -and $_.Status -ne "Idle") { $_.Status = "Failed" }
                 else {
                     if ($_.Type -notlike "*ASIC*") {
                         $MinerInfo = ".\build\pid\$($_.InstanceName)_info.txt"
