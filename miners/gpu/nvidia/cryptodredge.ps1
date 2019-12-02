@@ -30,10 +30,11 @@ $(vars).NVIDIATypes | ForEach-Object {
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = Join-Path $($(vars).dir) "build\export"
+    $Miner_Dir = Split-Path $Path
 
     ##Prestart actions before miner launch
     $Prestart = @()
-    $PreStart += "export LD_LIBRARY_PATH=$ExportDir"
+    $PreStart += "export LD_LIBRARY_PATH=$ExportDir`:$Miner_Dir"
     $MinerConfig.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 
     if ($(vars).Coins) { $Pools = $(vars).CoinPools } else { $Pools = $(vars).AlgoPools }

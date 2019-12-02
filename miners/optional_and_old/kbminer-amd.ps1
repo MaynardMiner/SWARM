@@ -30,6 +30,7 @@ $(vars).AMDTypes | ForEach-Object {
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = Join-Path $($(vars).dir) "build\export"
+    $Miner_Dir = Split-Path $Path
 
     ##Prestart actions before miner launch
     $Prestart = @()

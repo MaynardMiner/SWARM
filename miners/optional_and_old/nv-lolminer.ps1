@@ -31,12 +31,13 @@ $(vars).NVIDIATypes | ForEach-Object {
 
     ##Export would be /path/to/[SWARMVERSION]/build/export && Bleeding Edge Check##
     $ExportDir = Join-Path $($(vars).dir) "build\export"
+    $Miner_Dir = Split-Path $Path
 
     ##Prestart actions before miner launch
     $Prestart = @()
     $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
     if (Test-Path $BE) { $Prestart += "export LD_PRELOAD=libcurl-compat.so.3.0.0" }
-    $PreStart += "export LD_LIBRARY_PATH=$ExportDir"
+    $PreStart += "export LD_LIBRARY_PATH=$ExportDir`:$Miner_Dir"
     $MinerConfig.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 
     if ($(vars).Coins) { $Pools = $(vars).CoinPools } else { $Pools = $(vars).AlgoPools }
