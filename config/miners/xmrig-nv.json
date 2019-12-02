@@ -14,19 +14,22 @@
             "cryptonight-v8": "",
             "cryptonight-v7": "",
             "cryptonight-heavy": "",
-            "cryptonight-r": ""
+            "cryptonight-r": "",
+            "randomxmonero": ""
         },
         "naming": {
             "cryptonight-v8": "cn/2",
             "cryptonight-v7": "cn/1",
             "cryptonight-heavy": "cn-heavy",
-            "cryptonight-r": "cn/r"
+            "cryptonight-r": "",
+            "randomxmonero": ""
         },
         "fee": {
             "cryptonight-v8": 1,
             "cryptonight-v7": 1,
             "cryptonight-heavy": 1,
-            "cryptonight-r": 1
+            "cryptonight-r": 1,
+            "randomxmonero": 1
         }
     },
     "NVIDIA2": {
@@ -43,19 +46,22 @@
             "cryptonight-v8": "",
             "cryptonight-v7": "",
             "cryptonight-heavy": "",
-            "cryptonight-r": ""
+            "cryptonight-r": "",
+            "randomxmonero": ""
         },
         "naming": {
             "cryptonight-v8": "cn/2",
             "cryptonight-v7": "cn/1",
             "cryptonight-heavy": "cn-heavy",
-            "cryptonight-r": "cn/r"
+            "cryptonight-r": "",
+            "randomxmonero": ""
         },
         "fee": {
             "cryptonight-v8": 1,
             "cryptonight-v7": 1,
             "cryptonight-heavy": 1,
-            "cryptonight-r": 1
+            "cryptonight-r": 1,
+            "randomxmonero": 1
         }
     },
     "NVIDIA3": {
@@ -72,19 +78,22 @@
             "cryptonight-v8": "",
             "cryptonight-v7": "",
             "cryptonight-heavy": "",
-            "cryptonight-r": ""
+            "cryptonight-r": "",
+            "randomxmonero": ""
         },
         "naming": {
             "cryptonight-v8": "cn/2",
             "cryptonight-v7": "cn/1",
             "cryptonight-heavy": "cn-heavy",
-            "cryptonight-r": "cn/r"
+            "cryptonight-r": "",
+            "randomxmonero": ""
         },
         "fee": {
             "cryptonight-v8": 1,
             "cryptonight-v7": 1,
             "cryptonight-heavy": 1,
-            "cryptonight-r": 1
+            "cryptonight-r": 1,
+            "randomxmonero": 1
         }
     }
 }
