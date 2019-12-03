@@ -120,8 +120,7 @@ function Global:start-update {
                     $Jsons | foreach {
                         $OldJson_Path = Join-Path $OldConfig "$($_)";
                         $NewJson_Path = Join-Path ".\config" "$($_)";
-                        $GetOld_Json = Get-ChildItem $OldJson_Path;
-                        $GetOld_Json = $GetOld_Json.Name
+                        $GetOld_Json = (Get-ChildItem $OldJson_Path).Name | Where-Object {$_ -notlike "*md*"};
                         $GetOld_Json | foreach {
                             $ChangeFile = $_
                             $OldJson = Join-Path $OldJson_Path "$ChangeFile";
@@ -159,6 +158,44 @@ function Global:start-update {
                                             $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "equihash_150/5"
                                             $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "equihash_150/5"
                                             $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "equihash_150/5"
+                                        }
+                                    }
+                                }
+
+                                if ($ChangeFile -eq "xmrig.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands | Add-Member "randomx" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "randomx" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "randomx" "randomx" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "randomx" 1 -ErrorAction SilentlyContinue
+                                        }
+                                    }
+                                }
+
+                                if ($ChangeFile -eq "xmrig-cpu.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands | Add-Member "randomx" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "randomx" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "randomx" "randomx" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "randomx" 1 -ErrorAction SilentlyContinue
+                                        }
+                                    }
+                                }
+
+                                if ($ChangeFile -eq "xmr-stak.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands | Add-Member "randomx" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "randomx" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "randomx" "randomx" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "randomx" 0 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "cryptonight-v7","cryptonight-v8","cryptonight-heavy","cryptonight-gpu","cryptonight-superfast","cryptonight-r"
+                                            $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "cryptonight-v7","cryptonight-v8","cryptonight-heavy","cryptonight-gpu","cryptonight-superfast","cryptonight-r"
+                                            $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "cryptonight-v7","cryptonight-v8","cryptonight-heavy","cryptonight-gpu","cryptonight-superfast","cryptonight-r"
+                                            $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "cryptonight-v7","cryptonight-v8","cryptonight-heavy","cryptonight-gpu","cryptonight-superfast","cryptonight-r"
                                         }
                                     }
                                 }
