@@ -1428,7 +1428,7 @@ Updates
 
 ## What's New?
 * Issue #237
-  * added support for randomx algorithm.
+  * Added support for randomx algorithm.
   * SWARM will run HiveOS hugepages command for
     randomx.
 * Issue #218
@@ -1453,6 +1453,8 @@ Updates
      parameter in conjunction.
      * example:
        ``-Coin RVN,XZC,GUN``
+* #242
+  * Added instructions in batch files on what they do.
 
 ## Fixes
 * Issue #235
