@@ -1420,3 +1420,56 @@ Updates
 * Issue #220
   * teamredminer updated.
   * ethash added.
+
+############################################
+############################################
+
+# SWARM 2.8.4
+
+## What's New?
+* Issue #237
+  * added support for randomx algorithm.
+  * SWARM will run HiveOS hugepages command for
+    randomx.
+* Issue #218
+  * Added win_optimize.ps1 in build\powershell\scripts.
+    * Runs various commands to update registry in windows
+      to disable things like defender/one-drive/hibernation.
+    * Auto-Optimizes registry for AMD cards.
+      * Will reset drivers, so don't be alarm if screen
+        flashes.
+  * Standalone script for now, will integrate in SWARM. Not
+    Fully completed either.
+
+## Improvements
+* Issue #238
+  * ``-Location JAPAN`` argument
+* Issue #233
+  * Fixed small typos on SWARM Screen.
+* Issue #225
+  * ``-Coin`` parameter can be used a
+     an array, to specify a finite number
+     of coins to mine (must use ``-alogorithm``)
+     parameter in conjunction.
+     * example:
+       ``-Coin RVN,XZC,GUN``
+
+## Fixes
+* Issue #235
+  * xmr-stak api updated in case total hasrate
+    is $null.
+* Issue #234
+  * Miner dir is pointed as a library path
+    as well as exports folder in linux.
+
+## Updates
+* Issue #230
+  * gminer updated.
+* Issue #239
+  * teamredminer updated.
+* Issue #229
+  * lolminer updated.
+* Issue #237
+  * xmrig upated
+  * removed no longer supported algos
+    on xmr-stak.
