@@ -42,7 +42,7 @@
         "minername": "ccminer.exe",
         "version": "1.0.2",
         "optional": "No",
-        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/cc-lyra2z330-windows.zip"
+        "uri": "https://github.com/Minerx117/ccminer8.21r9-lyra2z330/releases/download/v3/ccminerlyra2z330v3.zip"
     },
     "cc-verus": {
         "name": "cc-verus",
