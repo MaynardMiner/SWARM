@@ -28,4 +28,8 @@ REM THIS NEEDS TO RUN AS ADMIN.
 
 cd %~dp0
 
+REM DON'T RUN WITH SWARM RUNNING!
+
 pwsh -executionpolicy Bypass -command ".\build\powershell\scripts\win_optimize.ps1"
+
+REM REBOOT advised afterwards.
