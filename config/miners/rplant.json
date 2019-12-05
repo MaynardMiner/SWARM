@@ -1,0 +1,20 @@
+{
+    "CPU": {
+        "name": "CPU",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "yescryptr8g": ""
+        },
+        "difficulty": {
+            "yescryptr8g": ""
+        },
+        "naming": {
+            "yescryptr8g": "yescryptr8g"
+        },
+        "fee": {
+            "yescryptr8g": 0
+        }
+    },
+    "name": "rplant"
+}

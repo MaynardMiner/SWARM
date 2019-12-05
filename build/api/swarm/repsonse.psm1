@@ -57,7 +57,7 @@ function Global:Set-Stats($Site) {
             power     = @($global:GPUPowerTable)
             df        = "$global:diskspace"
             mem       = @($mem)
-            cpuavg    = $global:LoadAverages
+            cpuavg    = @($global:load_avg_1m,$global:load_avg_5m,$global:load_avg_15m)
         }
     }
     $Stats

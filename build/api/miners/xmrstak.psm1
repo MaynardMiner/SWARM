@@ -5,8 +5,12 @@ function Global:Get-StatsXmrstak {
     if ($Request) {
         try { $Data = $Request.Content | ConvertFrom-Json -ErrorAction Stop; }catch { Write-Host "Failed To gather summary" -ForegroundColor Red; break }
         $HashRate_Total = [Double]$Data.hashrate.total[0]
-        if (-not $HashRate_Total) { $HashRate_Total = [Double]$Data.hashrate.total[1] } #fix
-        if (-not $HashRate_Total) { $HashRate_Total = [Double]$Data.hashrate.total[2] } #fix
+        if ($HashRate_Total -eq 0) { $HashRate_Total = [Double]$Data.hashrate.total[1] } #fix
+        if ($HashRate_Total -eq 0) { $HashRate_Total = [Double]$Data.hashrate.total[2] } #fix
+        if($HashRate_Total -eq 0){
+            $HashRate_Total = 0
+            $Data.hashrate.threads | %{$HashRate_Total += [double]$_[0]}
+        }
         $global:RAW = $HashRate_Total
         $global:GPUKHS += [Double]$HashRate_Total / 1000
         Write-Host "Note: XMR-STAK/XMRig API is not great. You can't match threads to specific GPU." -ForegroundColor Yellow

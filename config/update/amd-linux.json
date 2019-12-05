@@ -18,9 +18,9 @@
     "AMD2": ".\\bin\\gminer-amd-2\\miner",
     "AMD3": ".\\bin\\gminer-amd-3\\miner",
     "minername": "miner",
-    "version": "1.70",
+    "version": "1.79",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.70/gminer_1_70_linux64.tar.gz"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.79/gminer_1_79_linux64.tar.xz"
   },
   "kbminer-amd": {
     "name": "kbminer-amd",
@@ -84,7 +84,7 @@
     "AMD2": ".\\bin\\phoenix-amd-2\\PhoenixMiner",
     "AMD3": ".\\bin\\phoenix-amd-3\\PhoenixMiner",
     "minername": "PhoenixMiner",
-    "version": "4.7c",
+    "version": "4.8b",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/phoenix-linux.tar.gz"
   },
@@ -95,9 +95,9 @@
     "AMD2": ".\\bin\\lolMiner-AMD-2\\lolMiner",
     "AMD3": ".\\bin\\lolMiner-AMD-3\\lolMiner",
     "minername": "lolMiner",
-    "version": "0.8.8",
+    "version": "0.9.1",
     "optional": "No",
-    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.8.8/lolMiner_v088_Lin64.tar.gz"
+    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.91/lolMiner_v091_Lin64.tar.gz"
   },
   "avermore": {
     "name": "avermore",
@@ -150,20 +150,20 @@
     "AMD2": ".\\bin\\teamredminer-2\\teamredminer",
     "AMD3": ".\\bin\\teamredminer-3\\teamredminer",
     "minername": "teamredminer",
-    "version": "0.5.9",
+    "version": "0.6.1",
     "optional": "No",
-    "uri": "https://github.com/todxx/teamredminer/releases/download/0.5.9/teamredminer-v0.5.9-linux.tgz"
+    "uri": "https://github.com/todxx/teamredminer/releases/download/0.6.1/teamredminer-v0.6.1-linux.tgz"
   },
   "xmr-stak": {
     "name": "xmr-stak",
     "type": "amd",
-    "AMD1": ".\\bin\\xmrstak-1\\xmr-stak",
-    "AMD2": ".\\bin\\xmrstak-2\\xmr-stak",
-    "AMD3": ".\\bin\\xmrstak-3\\xmr-stak",
-    "minername": "xmr-stak",
-    "version": "2.10.7",
+    "AMD1": ".\\bin\\xmrstak-1\\xmr-stak-rx",
+    "AMD2": ".\\bin\\xmrstak-2\\xmr-stak-rx",
+    "AMD3": ".\\bin\\xmrstak-3\\xmr-stak-rx",
+    "minername": "xmr-stak-rx",
+    "version": "1.0.1",
     "optional": "No",
-    "uri": "https://github.com/fireice-uk/xmr-stak/releases/download/2.10.7/xmr-stak-linux-2.10.7-cpu_opencl-amd.tar.xz"
+    "uri": "https://github.com/fireice-uk/xmr-stak/releases/download/1.0.1-rx/xmr-stak-rx-linux-1.0.1-cpu_opencl-amd.tar.xz"
   },
   "wildrig": {
     "name": "wildrig",
@@ -183,20 +183,20 @@
     "AMD2": ".\\bin\\fancyix-2\\sgminer",
     "AMD3": ".\\bin\\fancyix-3\\sgminer",
     "minername": "sgminer",
-    "version": "0.6.0.0",
+    "version": "0.6.0.1",
     "optional": "No",
-    "uri": "https://github.com/fancyIX/sgminer-phi2-branch/releases/download/5.6.1.3.b6/sgminer-phi2-fancyIX-linux-amd64-0.6.0.0.zip"
+    "uri": "https://github.com/fancyIX/sgminer-phi2-branch/releases/download/5.6.1.3.b6a/sgminer-phi2-fancyIX-linux-amd64-0.6.0.1.zip"
   },
   "xmrig": {
     "name": "xmrig",
     "type": "amd",
-    "AMD1": ".\\bin\\xmrig-amd-1\\xmrig-amd",
-    "AMD2": ".\\bin\\xmrig-amd-2\\xmrig-amd",
-    "AMD3": ".\\bin\\xmrig-amd-3\\xmrig-amd",
-    "minername": "xmrig-amd",
-    "version": "2.14.6",
+    "AMD1": ".\\bin\\xmrig-amd-1\\xmrig",
+    "AMD2": ".\\bin\\xmrig-amd-2\\xmrig",
+    "AMD3": ".\\bin\\xmrig-amd-3\\xmrig",
+    "minername": "xmrig",
+    "version": "5.1.0",
     "optional": "No",
-    "uri": "https://github.com/xmrig/xmrig-amd/releases/download/v2.14.6/xmrig-amd-2.14.6-xenial-x64.tar.gz"
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v8.0/xmrig-linux.tar.gz"
   },
   "progminer-amd": {
     "name": "progminer-amd",
@@ -227,8 +227,8 @@
     "AMD2": ".\\bin\\nanominer-2\\nanominer",
     "AMD3": ".\\bin\\nanominer-3\\nanominer",
     "minername": "nanominer",
-    "version": "1.6.1",
+    "version": "1.6.2",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/v1.6.1/nanominer-linux-1.6.1.tar.gz"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v1.6.2/nanominer-linux-1.6.2.tar.gz"
   }
 }

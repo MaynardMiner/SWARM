@@ -6,7 +6,7 @@ function Global:Get-MinerTimeout($miner) {
         if ($null -eq $miner.xprocess) { $reason = "no start" }
         else {
             if ($Miner.Type -ne "*ASIC*") {
-                $MinerProc = Get-Process -Id $miner.xprocess.id -ErrorAction SilentlyContinue
+                $MinerProc = Get-Process | Where Id -eq $miner.xprocess.id
                 if ($null -eq $MinerProc) { $reason = "crashed" }
                 else { $reason = "no hash" }
             }
@@ -60,28 +60,6 @@ function Global:Get-HiveWarning($HiveMessage) {
             Global:Remove-WebModules $sel
         }
     }
-}
-
-function Global:Set-Power {
-    param(
-        [Parameter(Position = 0, Mandatory = $true)]
-        [String]$PwrType,
-        [Parameter(Position = 1, Mandatory = $true)]
-        [String]$PwrDevices
-    )
-    $GPUPower = 0
-    switch -Wildcard ($PwrType) {
-        "*AMD*" { $GPUPower = (Global:Set-AMDStats).watts }
-        "*NVIDIA*" { 
-            $D = Global:Get-DeviceString -TypeCount $($(vars).GCount.NVIDIA.PSObject.Properties.Value.Count) -TypeDevices $PwrDevices
-            $Power = (Global:Set-NvidiaStats).watts 
-            for ($i = 0; $i -lt $D.Count; $i++) {
-                $DI = $D[$i]
-                $GPUPower += $Power[$DI]
-            }
-        }
-    }
-    $($GPUPower | Measure-Object -Sum).Sum
 }
 
 function Global:Get-Intensity {
@@ -172,6 +150,15 @@ function Global:Start-Benchmark {
                 if ($WasActive -ge $(vars).MinerStatInt) {
                     log "$($_.Name) $($_.Symbol) Was Active for $WasActive Seconds"
                     log "Attempting to record hashrate for $($_.Name) $($_.Symbol)" -foregroundcolor "Cyan"
+                    ##Check For High Rejections
+                    $Rj = Global:Get-Rejections -Type $_.Type
+                    $Percent = $RJ -split "`:" | Select -First 1
+                    $Percent = $RJ.replace("NaN","0").Split(':') | Select -First 1
+                    $Shares = $RJ.Split(':') | Select -Last 1
+                    if ([Double]$Percent -gt $(arg).Rejections -and [Double]$Shares -gt 0) {
+                        log "Rejection Percentage at $Percent out of $Shares shares- Adding Strike Against Miner" -Foreground Red
+                        $Global:Strike = $True
+                    }
                     for ($i = 0; $i -lt 4; $i++) {
                         $Miner_HashRates = Global:Get-HashRate -Type $_.Type
                         $_.HashRate = $Miner_HashRates
@@ -200,7 +187,7 @@ function Global:Start-Benchmark {
                                 }
                             }
                             else {
-                                if ($(arg).WattOMeter -eq "Yes" -and $_.Type -ne "CPU") { try { $GPUPower = Global:Set-Power $($_.Type) $($_.Devices) }catch { log "WattOMeter Failed"; $GPUPower = 0 } }
+                                if ($(arg).WattOMeter -eq "Yes" -and $_.Type -ne "CPU") { $GPUPower = Global:Get-Power $($_.Type) }
                                 else { $GPUPower = 1 }
                                 if ($(arg).WattOMeter -eq "Yes" -and $_.Type -ne "CPU") {
                                     $GetWatts = Get-Content ".\config\power\power.json" | ConvertFrom-Json
@@ -217,7 +204,7 @@ function Global:Start-Benchmark {
                                         $GetWatts | ConvertTo-Json -Depth 3 | Set-Content ".\config\power\power.json"
                                     }
                                 }
-                                $Stat = Global:Set-Stat -Name "$($_.Name)_$($NewName)_hashrate" -Value $Miner_HashRates -AsHashRate
+                                $Stat = Global:Set-Stat -Name "$($_.Name)_$($NewName)_hashrate" -Value $Miner_HashRates -Rejects $Percent -AsHashRate
                                 Start-Sleep -s 1
                                 $GetLiveStat = Global:Get-Stat "$($_.Name)_$($NewName)_hashrate"
                                 $StatCheck = "$($GetLiveStat.Live)"
@@ -239,26 +226,16 @@ function Global:Start-Benchmark {
                                     Global:Get-Intensity $_.Type $_.Symbol $_.Path
                                     log "Stat Written" -foregroundcolor green
                                     log "Was this stat not correct? You can run command 'bench miner $($_.Name)' or 'bench algorithm $($_.algo)' to reset benchmark" -foregroundcolor cyan
-                                    if($IsWindows) { log "There is also a batch file labeled swarm_start_$($_.algo).bat for testing in .\bin\$($_.name)`n" -foregroundcolor cyan }
-                                    if($IsLinux) { log "There is also a bash file labeled swarm_start_$($_.algo).sh for testing in .\bin\$($_.name)`n" -foregroundcolor cyan }
+                                    if ($IsWindows) { log "There is also a batch file labeled swarm_start_$($_.algo).bat for testing in .\bin\$($_.name)`n" -foregroundcolor cyan }
+                                    if ($IsLinux) { log "There is also a bash file labeled swarm_start_$($_.algo).sh for testing in .\bin\$($_.name)`n" -foregroundcolor cyan }
                                     $Global:Strike = $false
+                                    $i = 5;
                                 } 
                             }
                         }
                     }
-
-                    ##Check For High Rejections
-                    $Rj = Global:Get-Rejections -Type $_.Type
-                    if($RJ) {
-                    $Percent = $RJ -split "`:" | Select -First 1
-                    $Shares = $RJ -Split "`:" | Select -Last 1
-                    if ([Double]$Percent -gt $(arg).Rejections -and [Double]$Shares -gt 0) {
-                        log "Rejection Percentage at $Percent out of $Shares shares- Adding Strike Against Miner" -Foreground Red
-                        $Global:Strike = $True
-                    }
                 }
             }
-        }
 
             ## If benchmark was successful- Reset the warnings
             if ($Global:Strike -ne $true) {
@@ -290,7 +267,7 @@ function Global:Start-Benchmark {
 
                         if ($(vars).Warnings."$($_.Name)".bad -ge $(arg).MinerBanCount) { $MinerBan = $true }
                         if ($(vars).Warnings."$($_.Name)_$($_.Algo)".bad -ge $(arg).AlgoBanCount) { $MinerAlgoBan = $true; }
-                        if ($(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)".bad -ge $(arg).PoolBanCount) { $MinerPoolBan = $true }    
+                        if ($(arg).Poolname.Count -gt 1) { if ($(vars).Warnings."$($_.Name)_$($_.Algo)_$($_.MinerPool)".bad -ge $(arg).PoolBanCount) { $MinerPoolBan = $true } }
 
                         ##Strike One
                         if (-not $MinerPoolBan -and -not $MinerAlgoBan -and -not $MinerBan ) {
@@ -307,7 +284,7 @@ function Global:Start-Benchmark {
                             $NewPoolBlock = @()
                             if (Test-Path ".\timeout\pool_block\pool_block.txt") { $GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json }
                             Start-Sleep -S 1
-                            if ($GetPoolBlock) { $GetPoolBlock | ForEach-Object { $NewPoolBlock += $_ } }
+                            if ($GetPoolBlock) { $GetPoolBlock | ForEach-Object { $NewPoolBlock += $_ | Select-Object -ExcludeProperty Xprocess } }
                             $NewPoolBlock += $_
                             $NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt"
                             Global:Set-Warnings clear "$($_.Name)_$($_.Algo)_$($_.MinerPool)"
@@ -325,7 +302,7 @@ function Global:Start-Benchmark {
                             if (Test-Path $HashRateFilePath) { Remove-Item $HashRateFilePath -Force }
                             if (Test-Path ".\timeout\algo_block\algo_block.txt") { $GetAlgoBlock = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json }
                             Start-Sleep -S 1
-                            if ($GetAlgoBlock) { $GetAlgoBlock | ForEach-Object { $NewAlgoBlock += $_ } }
+                            if ($GetAlgoBlock) { $GetAlgoBlock | ForEach-Object { $NewAlgoBlock += $_ | Select-Object -ExcludeProperty Xprocess } }
                             $NewAlgoBlock += $_
                             $NewAlgoBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block\algo_block.txt"
                             Global:Set-Warnings clear "$($_.Name)_$($_.Algo)_$($_.MinerPool)"
@@ -344,7 +321,7 @@ function Global:Start-Benchmark {
                             if (Test-Path $HashRateFilePath) { Remove-Item $HashRateFilePath -Force }
                             if (Test-Path ".\timeout\miner_block\miner_block.txt") { $GetMinerBlock = Get-Content ".\timeout\miner_block\miner_block.txt" | ConvertFrom-Json }
                             Start-Sleep -S 1
-                            if ($GetMinerBlock) { $GetMinerBlock | ForEach-Object { $NewMinerBlock += $_ } }
+                            if ($GetMinerBlock) { $GetMinerBlock | ForEach-Object { $NewMinerBlock += $_ | Select-Object -ExcludeProperty Xprocess } }
                             $NewMinerBlock += $_
                             $NewMinerBlock | ConvertTo-Json | Set-Content ".\timeout\miner_block\miner_block.txt"
                             Global:Set-Warnings clear "$($_.Name)_$($_.Algo)_$($_.MinerPool)"

@@ -11,14 +11,8 @@ function Global:Set-Donation {
         $(arg).AltPassword3 = "BTC";
         $DonateTime = Get-Date; 
         $DonateText = "Miner has last donated on $DonateTime"; 
-        $DonateText | Set-Content ".\build\txt\donate.txt"
+        $DonateText | Set-Content ".\debug\donate.txt"
         if ($(vars).SWARMAlgorithm.Count -gt 0 -and $(vars).SWARMAlgorithm -ne "") { $(vars).SWARMAlgorithm = $Null }
-        if ($(arg).Coin -gt 0) { $(arg).Coin = $Null }
-    }
-    elseif ($(arg).Coin.Count -eq 1 -and [string]$(arg).Coin -ne "") {
-        $(arg).Passwordcurrency1 = $(arg).Coin
-        $(arg).Passwordcurrency2 = $(arg).Coin
-        $(arg).Passwordcurrency3 = $(arg).Coin
     }
 }
 
@@ -123,14 +117,13 @@ function Global:Get-Wallets {
     $NewWallet3 = @()
     $AltWallet_Config = Global:Get-AltWallets
     
-    ##Remove NiceHash From Regular Wallet
-    if ($(arg).Nicehash_Wallet1) { $(arg).PoolName | % { if ($_ -ne "nicehash") { $NewWallet1 += $_ } } }
-    else { $(arg).PoolName | % { $NewWallet1 += $_ } }
-    if ($(arg).Nicehash_Wallet2) { $(arg).PoolName | % { if ($_ -ne "nicehash") { $NewWallet2 += $_ } } }
-    else { $(arg).PoolName | % { $NewWallet1 += $_ } }
-    if ($(arg).Nicehash_Wallet3) { $(arg).PoolName | % { if ($_ -ne "nicehash") { $NewWallet3 += $_ } } }
-    else { $(arg).PoolName | % { $NewWallet3 += $_ } }
+    ## All pool tags to each wallet index.
+    ## NOTE: Cannot retrieve data for nicehash_wallets. SWARM
+    ## would require account information. But new changes
+    ## will allow get wallets command to work for external BTC Addresses.
     
+     $(arg).PoolName | % { $NewWallet1 += $_; $NewWallet2 += $_; $NewWallet3 += $_ } 
+     
     $C = $true
     if ($(arg).Coin) { $C = $false }
     if ($C -eq $false) { log "Coin Parameter Specified, disabling All alternative wallets." -ForegroundColor Yellow }
@@ -174,15 +167,21 @@ function Global:Get-Wallets {
 }
 
 function Global:Add-Algorithms {
-    if ($(arg).Coin.Count -eq 1 -and $(arg).Coin -ne "") { $(arg).Passwordcurrency1 = $(arg).Coin; $(arg).Passwordcurrency2 = $(arg).Coin; $(arg).Passwordcurrency3 = $(arg).Coin }
     if ($(vars).SWARMAlgorithm) { $(vars).SWARMAlgorithm | ForEach-Object { $(vars).Algorithm += $_ } }
     elseif ($(arg).Auto_Algo -eq "Yes") { $(vars).Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name }
-    if ($(arg).Type -notlike "*NVIDIA*") {
-        if ($(arg).Type -notlike "*AMD*") {
-            if ($(arg).Type -notlike "*CPU*") {
-                $(vars).Algorithm = $null
-            }
+    $NUll_Out = $true
+    $(arg).Type | % {
+        if($_ -like "NVIDIA*" -or
+            $_ -like "AMD*" -or
+            $_ -like "CPU*"
+        
+        ){
+            $NUll_Out = $false
         }
+    }
+    ## This means it is ASIC only. Use only -ASIC_ALGO parameter
+    if($NUll_Out -eq $true) {
+        $(vars).Algorithm = $null
     }
     if (Test-Path ".\build\data\photo_9.png") {
         $A = Get-Content ".\build\data\photo_9.png"

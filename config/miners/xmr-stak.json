@@ -11,36 +11,16 @@
             "export GPU_MAX_ALLOC_PERCENT=100"
         ],
         "commands": {
-            "cryptonight-v7": "",
-            "cryptonight-v8": "",
-            "cryptonight-heavy": "",
-            "cryptonight-gpu": "",
-            "cryptonight-superfast": "",
-            "cryptonight-r": ""
+            "randomx": ""
         },
         "difficulty": {
-            "cryptonight-v7": "",
-            "cryptonight-v8": "",
-            "cryptonight-heavy": "",
-            "cryptonight-gpu": "",
-            "cryptonight-superfast": "",
-            "cryptonight-r": ""
+            "randomx": ""
         },
         "naming": {
-            "cryptonight-v7": "cryptonight_v7",
-            "cryptonight-v8": "cryptonight_v8",
-            "cryptonight-heavy": "cryptonight_heavy",
-            "cryptonight-gpu": "cryptonight_gpu",
-            "cryptonight-superfast": "cryptonight_superfast",
-            "cryptonight-r": "cryptonight_r"
+            "randomx": "randomx"
         },
         "fee": {
-            "cryptonight-v7": 1,
-            "cryptonight-v8": 1,
-            "cryptonight-heavy": 1,
-            "cryptonight-gpu": 1,
-            "cryptonight-superfast": 1,
-            "cryptonight-r": 1
+            "randomx": 0
         }
     }
 }

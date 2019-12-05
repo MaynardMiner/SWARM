@@ -23,6 +23,17 @@ $Global:Config.Add("vars", @{ })
 $Global:Config.vars.Add( "dir", (Split-Path $script:MyInvocation.MyCommand.Path) )
 $Global:Config.vars.dir = $Global:Config.vars.dir -replace "/var/tmp", "/root"
 Set-Location $Global:Config.vars.dir
+if (-not (test-path ".\debug")) { New-Item -Path "debug" -ItemType Directory | Out-Null }
+
+## Check Powershell version. Output warning.
+if ($PSVersionTable.PSVersion -ne "6.2.3") {
+    Write-Host "WARNING: Powershell Core Version is $($PSVersionTable.PSVersion)" -ForegroundColor Red
+    Write-Host "Currently supported version for SWARM is 6.2.3" -ForegroundColor Red
+    Write-Host "SWARM will continue anyways- It may cause issues." -ForegroundColor Red
+    ## Create a pause in case window is scrolling too fast.
+    Start-Sleep -S 10
+
+}
 
 ##filepath dir
 . .\build\powershell\global\modules.ps1
@@ -101,7 +112,7 @@ $(vars).Add("Modules", @())
 ## Get Parameters
 Global:Add-Module "$($(vars).startup)\parameters.psm1"
 Global:Get-Parameters
-$(arg).TCP_Port | Out-File ".\build\txt\port.txt"
+$(arg).TCP_Port | Out-File ".\debug\port.txt"
 
 ##Insert Single Modules Here
 
@@ -144,7 +155,7 @@ if ($(arg).Platform -eq "windows") {
 }
 
 ## create debug/command folder
-if (-not (Test-Path ".\build\txt")) { New-Item -Path ".\build" -Name "txt" -ItemType "directory" | Out-Null }
+if (-not (Test-Path ".\debug")) { New-Item -Path ".\build" -Name "txt" -ItemType "directory" | Out-Null }
 
 ##Start Data Collection
 Global:Add-Module "$($(vars).startup)\datafiles.psm1"
@@ -183,8 +194,8 @@ if ($Config.Params.Swarm_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") { $(vars).N
 ## Initialize
 $(vars).Add("GPU_Count", $Null)
 $(vars).Add("BusData", $Null)
-$(vars).Add("types",@())
-$(vars).Add("threads",$null)
+$(vars).Add("types", @())
+$(vars).Add("threads", $null)
 switch ($(arg).Platform) {
     "linux" {
         Global:Add-Module "$($(vars).startup)\linuxconfig.psm1"
@@ -212,8 +223,8 @@ if ($(arg).Type -like "*AMD*") {
 
 ##GPU-Count- Parse the hashtable between devices.
 if ($(arg).Type -like "*NVIDIA*" -or $(arg).Type -like "*AMD*" -or $(arg).Type -like "*CPU*") {
-    if (Test-Path ".\build\txt\nvidiapower.txt") { Remove-Item ".\build\txt\nvidiapower.txt" -Force }
-    if (Test-Path ".\build\txt\amdpower.txt") { Remove-Item ".\build\txt\amdpower.txt" -Force }
+    if (Test-Path ".\debug\nvidiapower.txt") { Remove-Item ".\debug\nvidiapower.txt" -Force }
+    if (Test-Path ".\debug\amdpower.txt") { Remove-Item ".\debug\amdpower.txt" -Force }
     if ($(vars).GPU_Count -eq 0) { $Device_Count = $(arg).CPUThreads }
     else { $Device_Count = $(vars).GPU_Count }
     log "Device Count = $Device_Count" -foregroundcolor green
@@ -232,7 +243,7 @@ if ($(arg).Type -like "*NVIDIA*" -or $(arg).Type -like "*AMD*" -or $(arg).Type -
     if ([string]$(arg).GPUDevices2) { $(vars).Add("NVIDIADevices2", ([String]$(arg).GPUDevices2 -replace " ", ",")) } else { $(vars).Add("NVIDIADevices2", "none") }
     if ([string]$(arg).GPUDevices3) { $(vars).Add("NVIDIADevices3", ([String]$(arg).GPUDevices3 -replace " ", ",")) } else { $(vars).Add("NVIDIADevices3", "none") }
 
-    $(vars).Add("GCount", (Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json))
+    $(vars).Add("GCount", (Get-Content ".\debug\devicelist.txt" | ConvertFrom-Json))
     $(vars).Add("NVIDIATypes", @()); if ($(arg).Type -like "*NVIDIA*") { $(arg).Type | Where { $_ -like "*NVIDIA*" } | % { $(vars).NVIDIATypes += $_ } }
     $(vars).Add("CPUTypes", @()); if ($(arg).Type -like "*CPU*") { $(arg).Type | Where { $_ -like "*CPU*" } | % { $(vars).CPUTypes += $_ } }
     $(vars).Add("AMDTypes", @()); if ($(arg).Type -like "*AMD*") { $(arg).Type | Where { $_ -like "*AMD*" } | % { $(vars).AMDTypes += $_ } }
@@ -253,7 +264,7 @@ if ([String]$(arg).Admin_Fee -eq 0) { if (test-Path ".\admin") { Remove-Item ".\
 
 ## Stop stray miners from previous run before loop
 Global:Add-Module "$($(vars).control)\stray.psm1"
-if($IsWindows) { Global:Stop-StrayMiners -Startup }
+if ($IsWindows) { Global:Stop-StrayMiners -Startup }
 
 ##Get Optional Miners
 Global:Get-Optional
@@ -300,7 +311,7 @@ While ($true) {
         #Get Miner Config Files
         Global:Add-Module "$($(vars).build)\miners.psm1"
         if ($(arg).Type -like "*CPU*") { create cpu (Global:Get-minerfiles -Types "CPU") }
-        if ($(arg).Type -like "*NVIDIA*") { create nvidia (Global:Get-minerfiles -Types "NVIDIA" -Cudas $(arg).Cuda) }
+        if ($(arg).Type -like "*NVIDIA*") { create nvidia (Global:Get-minerfiles -Types "NVIDIA") }
         if ($(arg).Type -like "*AMD*") { create amd (Global:Get-minerfiles -Types "AMD") }
 
         ## Check to see if wallet is present:
@@ -521,15 +532,22 @@ While ($true) {
         Global:Get-BestActiveMiners
         Global:Get-ActivePricing
 
-        ## Start / Stop / Restart Miners        
+        ## Start / Stop / Restart Miners - Load Modules
         Global:Add-Module "$($(vars).control)\run.psm1"
         Global:Add-Module "$($(vars).control)\launchcode.psm1"
         Global:Add-Module "$($(vars).control)\config.psm1"
         Global:Add-Module "$($(vars).control)\stray.psm1"
+        Global:Add-Module "$($(vars).control)\hugepage.psm1"
+
         ## Stop miners that need to be stopped
         Global:Stop-ActiveMiners
+        
         ## Attack Stray Miners, if they are running
-        if($IsWindows) { Global:Stop-StrayMiners }
+        if ($IsWindows) { Global:Stop-StrayMiners }
+
+        ## Randomx Hugepages Before starting miners
+        Global:Start-HugePage_Check
+
         ## Start New Miners
         Global:Start-NewMiners -Reason "Launch"
 
@@ -567,11 +585,11 @@ While ($true) {
         Global:Add-Module "$($(vars).run)\initial.psm1"
         Global:Get-ExchangeRate
         Global:Get-ScreenName
-        $(vars).Miners | ConvertTo-Json -Depth 4 | Set-Content ".\build\txt\profittable.txt"
+        $(vars).Miners | ConvertTo-Json -Depth 4 | Set-Content ".\debug\profittable.txt"
         Global:Clear-Commands
-        Get-Date | Out-File ".\build\txt\minerstats.txt"
-        Get-Date | Out-File ".\build\txt\charts.txt"
-        Global:Get-Charts | Out-File ".\build\txt\charts.txt" -Append
+        Get-Date | Out-File ".\debug\minerstats.txt"
+        Get-Date | Out-File ".\debug\charts.txt"
+        Global:Get-Charts | Out-File ".\debug\charts.txt" -Append
 
         ## Refreshing Pricing Data
         Global:Add-Module "$($(vars).run)\commands.psm1"
@@ -580,8 +598,8 @@ While ($true) {
         remove Miners
         Global:Get-Logo
         Global:Update-Logging
-        Get-Date | Out-File ".\build\txt\mineractive.txt"
-        Global:Get-MinerActive | Out-File ".\build\txt\mineractive.txt" -Append
+        Get-Date | Out-File ".\debug\mineractive.txt"
+        Global:Get-MinerActive | Out-File ".\debug\mineractive.txt" -Append
 
         ##Start SWARM Loop
         Global:Add-Module "$($(vars).run)\loop.psm1"

@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-sudo screen -r $(< $(< $mydir/dir.sh)/build/txt/minertype.txt)
+sudo screen -r $(< $(< $mydir/dir.sh)/debug/minertype.txt)
 

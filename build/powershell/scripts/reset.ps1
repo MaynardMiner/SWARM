@@ -15,7 +15,7 @@ $dir = (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCo
 $dir = $dir -replace "/var/tmp","/root"
 Set-Location $dir
 Write-Host "Clearing All Previous Stored Website Data"
-if(test-path ".\build\txt"){Remove-Item ".\build\txt\*" -Force}
+if(test-path ".\debug"){Remove-Item ".\debug\*" -Force}
 if(test-path ".\config\parameters\newarguments.json"){Remove-Item ".\config\parameters\newarguments.json" -Force}
 if(test-Path ".\config\parameters\arguments.json"){Remove-Item ".\config\parameters\arguments.json" -Force}
 if(test-path ".\config\parameters\SWARM_params_keys.json"){Remove-Item ".\config\parameters\SWARM_params_keys.json" -Force}

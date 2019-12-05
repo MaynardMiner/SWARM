@@ -56,12 +56,12 @@ function Global:Start-Hello($RigData) {
       
     log "Saying Hello To Hive"
     $GetHello = $Hello | ConvertTo-Json -Depth 3 -Compress
-    $GetHello | Set-Content ".\build\txt\hive_hello.txt"
+    $GetHello | Set-Content ".\debug\hive_hello.txt"
     log "$GetHello" -ForegroundColor Green
 
     try {
         $response = Invoke-RestMethod "$($Global:Config.hive_params.Mirror)/worker/api" -TimeoutSec 15 -Method POST -Body ($Hello | ConvertTo-Json -Depth 3 -Compress) -ContentType 'application/json'
-        $response | ConvertTo-Json | Out-File ".\build\txt\get-hive-hello.txt"
+        $response | ConvertTo-Json | Out-File ".\debug\get-hive-hello.txt"
         $message = $response
     }
     catch [Exception] {
@@ -79,10 +79,10 @@ function Global:Start-WebStartup($response, $Site) {
     }
 
     if ($response.result) { $RigConf = $response }
-    elseif (Test-Path ".\build\txt\get-hive-hello.txt") {
+    elseif (Test-Path ".\debug\get-hive-hello.txt") {
         log "WARNGING: Failed To Contact HiveOS. Using Last Known Configuration"
         Start-Sleep -S 2
-        $RigConf = Get-Content ".\build\txt\get-hive-hello.txt" | ConvertFrom-Json
+        $RigConf = Get-Content ".\debug\get-hive-hello.txt" | ConvertFrom-Json
     }
     if ($RigConf) {
         $RigConf.result | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
@@ -178,6 +178,8 @@ function Global:Start-WebStartup($response, $Site) {
                         }
                         $Params | convertto-Json | Out-File ".\config\parameters\newarguments.json"
 
+                                ## Force Auto-Coin if Coin is specified.
+                        if([string]$params.coin -ne ""){$params.Auto_Coin = "Yes"}
                         ## Change parameters after getting them.
                         ## First change -Type and -Cputhreads if empty
                         if([string]$Params.Type -eq "") { $params.type = $(vars).types }

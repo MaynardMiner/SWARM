@@ -57,7 +57,7 @@ function Global:Stop-ActiveMiners {
             }
 
             if ($(arg).Platform -eq "linux") {
-                if ($_.XProcess -eq $Null -and $_.Status -ne "Idle") { $_.Status = "Failed" }
+                if ($null -eq $_.XProcess -and $_.Status -ne "Idle") { $_.Status = "Failed" }
                 else {
                     if ($_.Type -notlike "*ASIC*") {
                         $MinerInfo = ".\build\pid\$($_.InstanceName)_info.txt"
@@ -94,7 +94,7 @@ function Global:Start-NewMiners {
         if ($null -eq $Miner.XProcess -or $Miner.XProcess.HasExited -and $(arg).Lite -eq "No") {
 
             if($New_OC_File -eq $false -and $Miner.Type -notlike "*ASIC*" -and $Miner.Type -ne "CPU"){
-                "Current OC Settings:" | Set-Content ".\build\txt\oc-settings.txt"; $New_OC_File = $true
+                "Current OC Settings:" | Set-Content ".\debug\oc-settings.txt"; $New_OC_File = $true
             }
 
             Global:Add-Module "$($(vars).control)\launchcode.psm1"

@@ -33,7 +33,7 @@
     "Conserve": "No",
     "CPUOnly": "No",
     "CPUThreads": "",
-    "Cuda": "10",
+    "Cuda": "10.1",
     "Currency": [
         "USD"
     ],
@@ -106,5 +106,6 @@
     "Xnsub": "",
     "Admin": "",
     "Admin_Fee": 0,
-    "Admin_Pass": "BTC"
+    "Admin_Pass": "BTC",
+    "Rej_Factor": "Yes"
 }

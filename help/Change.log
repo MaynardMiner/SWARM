@@ -1272,3 +1272,206 @@ OR NEWER- UPDATE IMMEDIATELY.
   was occassionally causing issues
   with agent detecting new miner
   switch.
+
+############################################
+############################################
+
+# SWARM 2.8.0
+
+## What's New?
+* Added new nicehash API for wallet data
+  ``get wallets``
+  * Will only work for external wallets.
+    ``-NiceHash_Wallet`` will be skipped over.
+* Added ethash for gminer (NVIDIA).
+* ``-PoolBanCount`` is no longer in affect if
+  user is using only 1 pool. If they are using
+  only one pool, there is no reason to create
+  a pool ban if there are no other pools to mine
+  to.
+
+## Improvements
+* System.Diagnostic.Data is not recorded in
+  ban information to prevent .json conversion.
+* Small typo fix for ASIC.
+
+## Updates
+* Gminer updated.
+* Tt-miner updated.
+* Wildrig updated.
+
+############################################
+############################################
+
+# SWARM 2.8.1
+
+## What's New?
+* Added new cc-yescrypt compiled miner.
+  - Does most yescryptr algorithms for nvidia.
+  - warning: it produces nearly 100% rejections for
+    yescrypt algorithm. New miner file has yescrypt
+    removed, updating may keep alogorithm.
+  - warning: It is common for yescrypt algorithms
+    to produce rejections due to stale share submission.
+* Added new cpuminer 'rplant'
+* New argument/parameter: "Rej_Factor"
+  * Default Is "Yes".
+  * Options are "Yes"/"No"
+  * Will factor average rejection rate
+    of shares into profit/hash equation,
+    reducing profitabilty if miner is
+    known to produce rejections.
+  * This is a beta feature- If you are not
+    interested in testing, set ``-Rej_Factor No``
+
+## Improvements
+* Removed -Id from all Process detection
+  to prevent erroneous errors.
+* Cleaned up pool files/algorithms including
+  fixing bad algorithm links (suck as phi2 -> phi2-lux)
+* cuckaroo29 and cuckaroo29d will register from SWARM
+  to HiveoS as 'Cuckoo'.
+* change set to $env for windows environment variables.
+* did some miner file cleanup.
+* fixed issue with nvidia-smi not running on local oc
+  in linux to gather max power-limit, if pl was not
+  set in config.
+
+## Updates
+* gminer updated
+* bminer updated
+* nbminer updated
+* jayddee updated
+* phoenix-miner updated
+
+############################################
+############################################
+
+# SWARM 2.8.2
+
+What's New?
+* Price Factoring For Algos With
+  Share Rejections - Final
+  * average rejection rate will
+     update every loop, not just
+     when miners switch on screen.
+  * very minor corrections to system.
+  * See 2.8.1 release notes on details
+    regarding new addition.
+* Linux cuda 10.2 libs added.
+  * No cuda 10.2 miners yet in SWARM. 
+  * Next release will have compiled
+    10.2 miners- You may want to 
+    update drivers and test issues now.
+* ``get benchmarks`` command now shows
+   rejections for all algorithms.
+* ROLLBACK. From this verion on- You will
+  now be able to rollback SWARM versions
+  if you have issues with a new version.
+   * miner configs are not saved on rollback.
+   * pool configs are not saved on rollback.
+   * will only work on 2.8.2 and up with new
+     code changes.
+   * this is a beta test-change.
+* debug folder added.
+  * contains helpful debug information for SWARM.
+  * was previously build\txt.
+
+
+Fixes
+* Attempted fix towards auto-detection
+  * If it still has issues, notify me
+    and I will try other things.
+  * You can always you ``-Type`` arguement
+    to force devices used in SWARM.
+* Recompiled cc-yescrypt, should work now.
+  * typo in compile instruction.
+
+Updates
+* gminer updated.
+* lolminer updated.
+* nbminer updated.
+
+############################################
+############################################
+
+# SWARM 2.8.3
+
+## What's New?
+* Issue #214
+  * added cc-Lyraz330 to Nvidia miners.
+
+## Improvements
+* Issue #222
+  * Improved Load Average/Detection in Windows.
+* Issue #225
+  * Fixed small typos on SWARM Screen.
+
+## Fixes
+* Issue #213
+  * Updated odvii.exe
+  * Updated how SWARM gathers information from odvii.exe
+  * Removed need to run wattometer - stats pulled from agent API.
+  * Extended wait time for gpu stats to 15 seconds.
+
+## Updates
+* Issue #219
+  * gminer updated.
+* Issue #220
+  * teamredminer updated.
+  * ethash added.
+
+############################################
+############################################
+
+# SWARM 2.8.4
+
+## What's New?
+* Issue #237
+  * Added support for randomx algorithm.
+  * SWARM will run HiveOS hugepages command for
+    randomx.
+* Issue #218
+  * Added win_optimize.ps1 in build\powershell\scripts.
+    * Runs various commands to update registry in windows
+      to disable things like defender/one-drive/hibernation.
+    * Auto-Optimizes registry for AMD cards.
+      * Will reset drivers, so don't be alarm if screen
+        flashes.
+  * Standalone script for now, will integrate in SWARM. Not
+    Fully completed either.
+
+## Improvements
+* Issue #238
+  * ``-Location JAPAN`` argument
+* Issue #233
+  * Fixed small typos on SWARM Screen.
+* Issue #225
+  * ``-Coin`` parameter can be used a
+     an array, to specify a finite number
+     of coins to mine (must use ``-alogorithm``)
+     parameter in conjunction.
+     * example:
+       ``-Coin RVN,XZC,GUN``
+* #242
+  * Added instructions in batch files on what they do.
+
+## Fixes
+* Issue #235
+  * xmr-stak api updated in case total hasrate
+    is $null.
+* Issue #234
+  * Miner dir is pointed as a library path
+    as well as exports folder in linux.
+
+## Updates
+* Issue #230
+  * gminer updated.
+* Issue #239
+  * teamredminer updated.
+* Issue #229
+  * lolminer updated.
+* Issue #237
+  * xmrig upated
+  * removed no longer supported algos
+    on xmr-stak.

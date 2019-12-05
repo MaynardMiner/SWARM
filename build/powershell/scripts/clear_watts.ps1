@@ -22,4 +22,4 @@ if (Test-Path ".\config\power\power.json") {$Defaults | Set-Content ".\config\po
 Get-ChildItem "stats" | Where BaseName -like "*Watts*" | Remove-Item -Force
 Write-Host "Cleared All Profit Stats" -Foreground Green
 $Get += "Cleared All Watt Stats"
-$Get | Set-Content ".\build\txt\get.txt"
+$Get | Set-Content ".\debug\get.txt"

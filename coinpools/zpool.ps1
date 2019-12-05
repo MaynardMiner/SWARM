@@ -84,6 +84,7 @@ if ($Name -in $(arg).PoolName) {
         "US" { $region = "na" }
         "EUROPE" { $region = "eu" }
         "ASIA" { $region = "sea" }
+        "JAPAN" { $region = "jp" }
     }    
 
     ## Break the algos to groups to sort it down.

@@ -50,7 +50,7 @@ function Global:Start-Webcommand {
             if ($Enabled -eq 1) {
                 $ID = ".\build\pid\autofan.txt"
                 if (Test-Path $ID) { $Agent = Get-Content $ID }
-                if ($Agent) { $BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue }
+                if ($Agent) { $BackGroundID = Get-Process | Where id -eq $Agent}
                 if (-not $BackGroundId -or $BackGroundID.name -ne "pwsh") {
                     Write-Host "Starting Autofan" -ForeGroundColor Cyan              
                     $BackgroundTimer = New-Object -TypeName System.Diagnostics.Stopwatch
@@ -61,7 +61,7 @@ function Global:Start-Webcommand {
                         Start-Sleep -S 1
                         Write-Host "Getting Process ID for AutoFan"
                         $ProcessId = if (Test-Path ".\build\pid\autofan.txt") { Get-Content ".\build\pid\autofan.txt" }
-                        if ($ProcessID -ne $null) { $Process = Get-Process $ProcessId -ErrorAction SilentlyContinue }
+                        if ($ProcessID -ne $null) { $Process = Get-Process | Where Id -eq $ProcessId }
                     }until($ProcessId -ne $null -or ($BackgroundTimer.Elapsed.TotalSeconds) -ge 10)  
                     $BackgroundTimer.Stop()
                 }
@@ -70,7 +70,7 @@ function Global:Start-Webcommand {
                 Write-Host "Stopping Autofan" -ForegroundColor Cyan
                 $ID = ".\build\pid\autofan.txt"
                 if (Test-Path $ID) { $Agent = Get-Content $ID }
-                if ($Agent) { $BackGroundID = Get-Process -id $Agent -ErrorAction SilentlyContinue }
+                if ($Agent) { $BackGroundID = Get-Process | Where id -eq $Agent }
                 if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }                   
             }
         }
@@ -96,8 +96,8 @@ function Global:Start-Webcommand {
             $SendResponse = Invoke-RestMethod "$($global:config.$Param.Mirror)/worker/api" -TimeoutSec 10 -Method POST -Body $DoResponse -ContentType 'application/json'
             Write-Host $method $messagetype $data
             $trigger = "reboot"
-            $MinerFile = ".\build\pid\miner_pid.txt"
-            if (Test-Path $MinerFile) { $MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue }
+            $MinerFile = Get-Content ".\build\pid\miner_pid.txt"
+            if ($MinerFile) { $MinerId = Get-Process | Where Id -eq $MinerFile }
             if ($MinerId) {
                 Stop-Process $MinerId
                 Start-Sleep -S 3
@@ -125,7 +125,7 @@ function Global:Start-Webcommand {
             $messagetype = "success"
             $data = "Nvidia settings applied"
             Start-NVIDIAOC $Command.result.nvidia_oc
-            $getpayload = Get-Content ".\build\txt\ocnvidia.txt"
+            $getpayload = Get-Content ".\debug\ocnvidia.txt"
             $line = @()
             $getpayload | foreach { $line += "$_`n" }
             $payload = $line
@@ -141,7 +141,7 @@ function Global:Start-Webcommand {
             $messagetype = "success"
             $data = "AMD settings applied"
             Start-AMDOC $Command.result.amd_oc
-            $getpayload = Get-Content ".\build\txt\ocamd.txt"
+            $getpayload = Get-Content ".\debug\ocamd.txt"
             $line = @()
             $getpayload | foreach { $line += "$_`n" }
             $payload = $line
@@ -153,7 +153,7 @@ function Global:Start-Webcommand {
         }
   
         "config" {
-            $Command.result | ConvertTo-Json | Set-Content ".\build\txt\swarmconfig.txt"
+            $Command.result | ConvertTo-Json | Set-Content ".\debug\swarmconfig.txt"
             if ($command.result.config) {
                 $rig = [string]$command.result.config | ConvertFrom-StringData
                 $Worker = $rig.WORKER_NAME -replace "`"", ""
@@ -250,6 +250,6 @@ function Global:Start-Webcommand {
         }
   
     }
-    if (Test-Path ".\build\txt\get.txt") { Clear-Content ".\build\txt\get.txt" }
+    if (Test-Path ".\debug\get.txt") { Clear-Content ".\debug\get.txt" }
     $trigger
 }

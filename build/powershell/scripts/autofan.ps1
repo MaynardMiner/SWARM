@@ -210,19 +210,37 @@ class RIG {
     }
 
     Get_NVIDIAGPUData([Int]$Critical) {
-        $nvidiaout = ".\build\txt\nv-autofan.txt"
         $continue = $false
+        $nvidiaout = $null
         try {
-            if (Test-Path $nvidiaout) { clear-content $nvidiaout -ErrorAction Stop }
-            $Proc = start-process ".\build\cmd\nvidia-smi.bat" -Argumentlist "--query-gpu=gpu_bus_id,power.draw,fan.speed,temperature.gpu --format=csv" -NoNewWindow -PassThru -RedirectStandardOutput $nvidiaout -ErrorAction Stop
-            $Proc | Wait-Process -Timeout 5 -ErrorAction Stop 
-            $continue = $true
+            $smi = "$($env:ProgramFiles)\NVIDIA Corporation\NVSMI\nvidia-smi.exe"
+            $info = [System.Diagnostics.ProcessStartInfo]::new()
+            $info.FileName = $smi
+            $info.Arguments = "--query-gpu=gpu_bus_id,power.draw,fan.speed,temperature.gpu --format=csv"
+            $info.UseShellExecute = $false
+            $info.RedirectStandardOutput = $true
+            $info.Verb = "runas"
+            $Proc = [System.Diagnostics.Process]::New()
+            $proc.StartInfo = $Info
+            $proc.Start() | Out-Null
+            $proc.WaitForExit(15000)
+            if ($proc.HasExited) { $nvidiaout = $Proc.StandardOutput.ReadToEnd() }
+            else { $proc.kill() | Out-Null; $proc.Dispose() }
         }
-        catch { Write-Host "WARNING: Failed to get NVIDIA fans and temps" -ForegroundColor DarkRed }
-        if ((Test-Path $nvidiaout) -and $continue -eq $true ) {
+        catch { Write-Host "WARNING: Failed to get nvidia stats" -ForegroundColor DarkRed }
+
+        if($nvidiaout) {
+            $nvidiaout = $nvidiaout | ConvertFrom-Csv
+            $Continue = $true
+        }
+        else {
+            Write-Host "WARNING: Failed to get nvidia stats" -ForegroundColor DarkRed
+        }
+        
+        if ($nvidiaout -and $continue -eq $true ) {
             $Stats = @()
 
-            $ninfo = cat $nvidiaout | ConvertFrom-Csv | % {
+            $ninfo = $nvidiaout | % {
                 $Stats += @{ $($_.'pci.bus_id' -replace '00000000:', '') = @{
                         fan  = $( $_.'fan.speed [%]' -replace ' \%', '')
                         temp = $($_.'temperature.gpu')
@@ -248,22 +266,44 @@ class RIG {
 
     Get_AMDGPUData([int]$Critical) {
         if ($this.GPUS | Where model -eq "AMD") {
-            $amdout = ".\build\txt\amd-autofan.txt"
             $continue = $false
+            $stats = $null
+            
             try {
-                if (Test-Path $amdout) { clear-content $amdout -ErrorAction Stop }
-                $Proc = start-process ".\build\apps\odvii\odvii.exe" -Argumentlist "s" -NoNewWindow -PassThru -RedirectStandardOutput $amdout -ErrorAction Stop
-                $Proc | Wait-Process -Timeout 5 -ErrorAction Stop 
+                if([Environment]::Is64BitOperatingSystem) {
+                    $odvii = ".\build\apps\odvii\odvii_x64.exe"
+                } 
+                else {
+                    $odvii = ".\build\apps\odvii\odvii_x86.exe"
+                }
+                $info = [System.Diagnostics.ProcessStartInfo]::new()
+                $info.FileName = $odvii
+                $info.UseShellExecute = $false
+                $info.RedirectStandardOutput = $true
+                $info.Verb = "runas"
+                $Proc = [System.Diagnostics.Process]::New()
+                $proc.StartInfo = $Info
+                $proc.Start() | Out-Null
+                $proc.WaitForExit(15000) | Out-Null
+                if ($proc.HasExited) { $stats = $Proc.StandardOutput.ReadToEnd() }
+                else { Stop-Process -Id $Proc.Id -ErrorAction Ignore }
+            }
+            catch { Write-Host "WARNING: Failed to get amd stats" -ForegroundColor DarkRed }
+
+            if ($stats) {
+                $stats = $stats | ConvertFrom-Json
                 $continue = $true
             }
-            catch { Write-Host "WARNING: Failed to get AMD fans and temps" -ForegroundColor DarkRed }
-            if ((Test-Path $amdout) -and $continue -eq $true) {
-                $ainfo = cat $amdout | sd
+            else {
+                Write-Host "Failed To Get Gpu Data From OverdriveN API! Cannot Do OC For AMD!" -ForegroundColor Red;
+            }
+
+            if ($stats -and $continue -eq $true) {
                 $Cards = $This.GPUS | Where Model -eq "AMD"
 
                 ## First Check To Make Sure All Values Are There:
-                $Temps = $ainfo | Where { $_.keys -like "*Temp*" } | % { $_.Values }
-                $Fans = $ainfo | Where { $_.keys -like "*Fan*" } | % { $_.Values }
+                $Temps = $stats | % { $_.Temperature }
+                $Fans = $stats | % { $_.'Fan Speed %' }
 
                 ## Add New Temperature Readings
                 for ($i = 0; $i -lt $Temps.Count; $i++) {
@@ -444,7 +484,7 @@ if ($IsWindows) { Start-Process "powershell" -ArgumentList "Set-Location `'$($co
 
 ## Build RIG
 $global:RIG = [RIG]::New()
-$RIG.Add_GPUs(".\build\txt\hive_hello.txt", ".\build\txt\oclist.txt")
+$RIG.Add_GPUs(".\debug\hive_hello.txt", ".\debug\oclist.txt")
 
 ## Print RIG stats
 $Rig.GPUS | % {

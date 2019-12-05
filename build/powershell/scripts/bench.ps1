@@ -194,4 +194,4 @@ bench all
 }
 $Get += "Effects will taked place after next miner benchmark/interval period."
 $Get
-$Get | Out-File ".\build\txt\get.txt"
+$Get | Out-File ".\debug\get.txt"

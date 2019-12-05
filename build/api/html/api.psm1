@@ -56,9 +56,9 @@ function Global:Get-APIServer {
                     if ($requestcom) {
                         switch ($requestcom) {
                             "summary" {
-                                if (Test-Path ".\build\txt\profittable.txt") {
+                                if (Test-Path ".\debug\profittable.txt") {
                                     $result = @()
-                                    $getsummary = Get-Content ".\build\txt\profittable.txt" | ConvertFrom-Json;
+                                    $getsummary = Get-Content ".\debug\profittable.txt" | ConvertFrom-Json;
                                     $Types = $getsummary.type | Select-Object -Unique
                                     $Types | ForEach-Object {
                                         $MinersOn = $false
@@ -87,9 +87,9 @@ function Global:Get-APIServer {
                                 }
                             }
                             "getbest" {
-                                if (Test-Path ".\build\txt\bestminers.txt") {
+                                if (Test-Path ".\debug\bestminers.txt") {
                                     $result = @()
-                                    $getbest = Get-Content ".\build\txt\bestminers.txt" | ConvertFrom-Json
+                                    $getbest = Get-Content ".\debug\bestminers.txt" | ConvertFrom-Json
                                     $Types = $getbest.type | Select-Object -Unique
                                     $Types | ForEach-Object {
                                         $MinersOn = $false

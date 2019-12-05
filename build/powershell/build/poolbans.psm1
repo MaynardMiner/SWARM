@@ -199,13 +199,7 @@ function Global:Set-Donation {
         $(arg).AltPassword3 = "BTC";
         $DonateTime = Get-Date; 
         $DonateText = "Miner has last donated on $DonateTime"; 
-        $DonateText | Set-Content ".\build\txt\donate.txt"
+        $DonateText | Set-Content ".\debug\donate.txt"
         if ($(vars).SWARMAlgorithm.Count -gt 0 -and $(vars).SWARMAlgorithm -ne "") { $(vars).SWARMAlgorithm = $Null }
-        if ($(arg).Coin -gt 0) { $(arg).Coin = $Null }
-    }
-    elseif ($(arg).Coin.Count -eq 1 -and [string]$(arg).Coin -ne "") {
-        $(arg).Passwordcurrency1 = $(arg).Coin
-        $(arg).Passwordcurrency2 = $(arg).Coin
-        $(arg).Passwordcurrency3 = $(arg).Coin
     }
 }

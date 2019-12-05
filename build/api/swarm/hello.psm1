@@ -77,12 +77,12 @@ function Global:Start-Hello($RigData) {
       
     log "Saying Hello To SWARM"
     $GetHello = $Hello | ConvertTo-Json -Depth 3 -Compress
-    $GetHello | Set-Content ".\build\txt\swarm_hello.txt"
+    $GetHello | Set-Content ".\debug\swarm_hello.txt"
     log "$GetHello" -ForegroundColor Green
 
     try {
         $response = Invoke-RestMethod "$($Global:Config.swarm_params.Mirror)/api/v1/workers/connect" -TimeoutSec 15 -Method POST -Body $GetHello -ContentType 'application/json'
-        $response | ConvertTo-Json | Out-File ".\build\txt\get-swarm-hello.txt"
+        $response | ConvertTo-Json | Out-File ".\debug\get-swarm-hello.txt"
         $message = $response
     }
     catch [Exception]
@@ -101,10 +101,10 @@ function Global:Start-WebStartup($response, $Site) {
     }
 
     if ($response.id) { $RigConf = $response }
-    elseif (Test-Path ".\build\txt\get-swarm-hello.txt") {
+    elseif (Test-Path ".\debug\get-swarm-hello.txt") {
         log "WARNGING: Failed To Contact SWARM. Using Last Known Configuration"
         Start-Sleep -S 2
-        $RigConf = Get-Content ".\build\txt\get-swarm-hello.txt" | ConvertFrom-Json
+        $RigConf = Get-Content ".\debug\get-swarm-hello.txt" | ConvertFrom-Json
     }
     if ($RigConf) {
         $RigConf | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {

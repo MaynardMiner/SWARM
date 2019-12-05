@@ -56,14 +56,14 @@ Function Global:Get-Bus {
 
     $GPUS = @()
     
-    $OldCount = if (Test-Path ".\build\txt\gpu-count.txt") { $(Get-Content ".\build\txt\gpu-count.txt") }
+    $OldCount = if (Test-Path ".\debug\gpu-count.txt") { $(Get-Content ".\debug\gpu-count.txt") }
     if ($OldCount) {
         Write-Log "Previously Detected GPU Count is:" -ForegroundColor Yellow
         $OldCount | Out-Host
         Start-Sleep -S .5
     }
-    Invoke-Expression ".\build\apps\pci\lspci.exe" | Select-String "VGA compatible controller" | Tee-Object -FilePath ".\build\txt\gpu-count.txt" | Out-Null
-    $NewCount = if (Test-Path ".\build\txt\gpu-count.txt") { $(Get-Content ".\build\txt\gpu-count.txt") } else { "nothing" }
+    Invoke-Expression ".\build\apps\pci\lspci.exe" | Select-String "VGA compatible controller" | Tee-Object -FilePath ".\debug\gpu-count.txt" | Out-Null
+    $NewCount = if (Test-Path ".\debug\gpu-count.txt") { $(Get-Content ".\debug\gpu-count.txt") } else { "nothing" }
 
     if ([string]$NewCount -ne [string]$OldCount) {
         Write-Log "GPU count is different - Gathering GPU information" -ForegroundColor Yellow
@@ -77,18 +77,18 @@ Function Global:Get-Bus {
         }
         Set-Location $(vars).dir
 
-        $proc = Start-Process ".\build\apps\gpu-z\gpu-z.exe" -ArgumentList "-dump $($(vars).dir)\build\txt\data.xml" -PassThru
+        $proc = Start-Process ".\build\apps\gpu-z\gpu-z.exe" -ArgumentList "-dump $($(vars).dir)\debug\data.xml" -PassThru
         $proc | Wait-Process
         
-        if (test-Path ".\build\txt\data.xml") {
-            $Data = $([xml](Get-Content ".\build\txt\data.xml")).gpuz_dump.card
+        if (test-Path ".\debug\data.xml") {
+            $Data = $([xml](Get-Content ".\debug\data.xml")).gpuz_dump.card
         }
         else {
             Write-Log "WARNING: Failed to gather GPU data" -ForegroundColor Yellow
         }
     }
-    elseif (test-path ".\build\txt\data.xml") {
-        $Data = $([xml](Get-Content ".\build\txt\data.xml")).gpuz_dump.card
+    elseif (test-path ".\debug\data.xml") {
+        $Data = $([xml](Get-Content ".\debug\data.xml")).gpuz_dump.card
     }
     else { log "WARNING: No GPU Data file found!" -ForegroundColor Yellow }
 
@@ -142,7 +142,7 @@ Function Global:Get-Bus {
     $GPUS += $GPUData | Where busid -eq "00:02.0"
     $GPUs += $GPUData | Where busid -ne "00:02.0" | Sort-Object -Property busid
 
-    $NewCount | Set-Content ".\build\txt\gpu-count.txt"
+    $NewCount | Set-Content ".\debug\gpu-count.txt"
 
     $GPUS
 }
@@ -194,18 +194,21 @@ function Global:Get-GPUCount {
         if ($GN -and $GA) {
             log "AMD and NVIDIA Detected" -ForegroundColor Magenta
             $(vars).types += "AMD1", "NVIDIA2"
+            $(arg).Type += "AMD1", "NVIDIA2"
             $global:config.user_params.type += "AMD1", "NVIDIA2"
             $global:config.params.type += "AMD1", "NVIDIA2"                  
         }
         elseif ($GN) {
             log "NVIDIA Detected: Adding NVIDIA" -ForegroundColor Magenta
             $(vars).types += "NVIDIA1" 
+            $(arg).Type += "NVIDIA1"
             $global:config.user_params.type += "NVIDIA1" 
             $global:config.params.type += "NVIDIA1"        
         }
         elseif ($GA) {
             log "AMD Detected: Adding AMD" -ForegroundColor Magenta
             $(vars).types += "AMD1" 
+            $(arg).Type += "AMD1"
             $global:config.user_params.type += "AMD1" 
             $global:config.params.type += "AMD1"    
         }
@@ -213,18 +216,20 @@ function Global:Get-GPUCount {
         if ([string]$(arg).CPUThreads -eq "") { 
             $threads = $(Get-CimInstance -ClassName 'Win32_Processor' | Select-Object -Property 'NumberOfCores').NumberOfCores; 
             $(vars).threads = $threads
+            $(arg).CPUThreads = $threads
             $global:config.user_params.CPUThreads = $threads
             $global:config.params.CPUThreads = $threads
         }
         log "Using $($(arg).CPUThreads) cores for mining"
         $(vars).types += "CPU"
+        $(arg).Type += "CPU"
         $global:config.user_params.type += "CPU"
         $global:config.params.type += "CPU"
     }
     
     if ($(arg).Type -like "*CPU*") { for ($i = 0; $i -lt $(arg).CPUThreads; $i++) { $DeviceList.CPU.Add("$($i)", $i) } }
-    $DeviceList | ConvertTo-Json | Set-Content ".\build\txt\devicelist.txt"
-    $OCList | ConvertTo-Json | Set-Content ".\build\txt\oclist.txt"
+    $DeviceList | ConvertTo-Json | Set-Content ".\debug\devicelist.txt"
+    $OCList | ConvertTo-Json | Set-Content ".\debug\oclist.txt"
     $GPUCount = 0
     $GPUCount += $DeviceList.Nvidia.Count
     $GPUCount += $DeviceList.AMD.Count
@@ -271,7 +276,7 @@ function Global:Start-WindowsConfig {
         $Term_Script += "ECHO       get stats"
         $Term_Script += "ECHO       get active"
         $Term_Script += "ECHO       get help"
-        $Term_Script += "ECHO       benchmark timeout"
+        $Term_Script += "ECHO       bench bans"
         $Term_Script += "ECHO       version query"
         $Term_Script += "echo.       "
         $Term_Script += "echo.       "
@@ -290,10 +295,7 @@ function Global:Start-WindowsConfig {
     
     ## Windows Bug- Set Cudas to match PCI Bus Order
     if ($(arg).Type -like "*NVIDIA*") { [Environment]::SetEnvironmentVariable("CUDA_DEVICE_ORDER", "PCI_BUS_ID", "User") }
-    
-    ##Set Cuda For Commands
-    if ($(arg).Type -like "*NVIDIA*") { $(arg).Cuda = "10"; $(arg).Cuda | Set-Content ".\build\txt\cuda.txt" }
-    
+        
     ##Detect if drivers are installed, not generic- Close if not. Print message on screen
     $Install_NVSMI = $false
     if ($(arg).Type -like "*NVIDIA*" -and -not (Test-Path "C:\Program Files\NVIDIA Corporation\NVSMI\nvml.dll")) {
@@ -334,7 +336,7 @@ function Global:Start-WindowsConfig {
     
     ## Fetch Ram Size, Write It To File (For Commands)
     $TotalMemory = [math]::Round((Get-CimInstance -ClassName CIM_ComputerSystem).TotalPhysicalMemory / 1mb, 2) 
-    $TotalMemory | Set-Content ".\build\txt\ram.txt"
+    $TotalMemory | Set-Content ".\debug\ram.txt"
     
     ## GPU Bus Hash Table
     $DoBus = $true
@@ -368,31 +370,28 @@ function Global:Start-WindowsConfig {
         }
         Remove-Module -Name "methods"
     }
-
-    ## Set Cuda for commands
-    if ($(arg).Type -like "*NVIDIA*") { $(arg).Cuda | Set-Content ".\build\txt\cuda.txt" }
     
     ## Let User Know What Platform commands will work for- Will always be Group 1.
     if ($(arg).Type -like "*NVIDIA1*") {
-        "NVIDIA1" | Out-File ".\build\txt\minertype.txt" -Force
+        "NVIDIA1" | Out-File ".\debug\minertype.txt" -Force
         log "Group 1 is NVIDIA- Commands and Stats will work for NVIDIA1" -foreground yellow
         Start-Sleep -S 3
     }
     elseif ($(arg).Type -like "*AMD1*") {
-        "AMD1" | Out-File ".\build\txt\minertype.txt" -Force
+        "AMD1" | Out-File ".\debug\minertype.txt" -Force
         log "Group 1 is AMD- Commands and Stats will work for AMD1" -foreground yellow
         Start-Sleep -S 3
     }
     elseif ($(arg).Type -like "*CPU*") {
         if ($(vars).GPU_Count -eq 0) {
-            "CPU" | Out-File ".\build\txt\minertype.txt" -Force
+            "CPU" | Out-File ".\debug\minertype.txt" -Force
             log "Group 1 is CPU- Commands and Stats will work for CPU" -foreground yellow
             Start-Sleep -S 3
         }
     }
     elseif ($(arg).Type -like "*ASIC*") {
         if ($(vars).GPU_Count -eq 0) {
-            "ASIC" | Out-File ".\build\txt\minertype.txt" -Force
+            "ASIC" | Out-File ".\debug\minertype.txt" -Force
             log "Group 1 is ASIC- Commands and Stats will work for ASIC" -foreground yellow
         }
     }
@@ -408,7 +407,7 @@ function Global:Start-WindowsConfig {
             $arguments = "-executionpolicy bypass -command `".\build\powershell\scripts\autofan.ps1`""
             $CommandLine += " " + $arguments
             $New_Miner = $start.New_Miner($filepath, $CommandLine, $global:Dir)
-            $Process = Get-Process -id $New_Miner.dwProcessId -ErrorAction Ignore
+            $Process = Get-Process | Where id -eq $New_Miner.dwProcessId
             $Process.ID | Set-Content ".\build\pid\autofan.txt"
         }
     }

@@ -101,7 +101,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                             $MinerDirectory = Split-Path ($MinerCurrent.Path) -Parent
                             $CommandFilePath = Join-Path $($(vars).dir) "$($MinerDirectory)\command.json"
                             $MinerArguments = "-c command.json -p $($MinerCurrent.Port)"
-                            $NHDevices = Get-Content ".\build\txt\devicelist.txt" | ConvertFrom-Json
+                            $NHDevices = Get-Content ".\debug\devicelist.txt" | ConvertFrom-Json
                             $NiceDevices = Global:Get-DeviceString -TypeCount $NHDevices.NVIDIA.Count
                             set-nicehash $($MinerCurrent.NPool) 3200 $($MinerCurrent.NUser) $($MinerCurrent.Algo) $($MinerCurrent.CommandFile) "$NiceDevices"
                         }
@@ -230,9 +230,8 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                 if ($MinerCurrent.Prestart) {
                     $Prestart = @()
                     $MinerCurrent.Prestart | ForEach-Object {
-                        if ($_ -notlike "export LD_LIBRARY_PATH=$($(vars).dir)\build\export") {
-                            $setx = $_ -replace "export ", "set "
-                            $setx = $setx -replace "=", " "
+                        if ($_ -notlike "*export LD_LIBRARY_PATH=*") {
+                            $setx = $_ -replace "export ", "`$env:"
                             $Prestart += "$setx`n"
                         }
                     }
@@ -256,6 +255,9 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                             $start = "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FilePath ""$Logs"" -Append; `$Output | Out-Host;}`'" 
                         }
                         "xmrig-opt" {
+                            $start = "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FilePath ""$Logs"" -Append; `$Output | Out-Host;}`'" 
+                        }
+                        "xmrig" {
                             $start = "Invoke-Expression `'.\$($MinerCurrent.MinerName) $($MinerArguments) *>&1 | %{`$Output = `$_ -replace `"\\[\d+(;\d+)?m`"; `$OutPut | Out-File -FilePath ""$Logs"" -Append; `$Output | Out-Host;}`'" 
                         }
                         "wildrig" {
@@ -297,7 +299,7 @@ $start
                 $Job = Start-Job -ArgumentList $PID, $WorkingDirectory, (Convert-Path ".\build\apps\launchcode.dll"), ".\swarm_start_$($Algo).ps1" {
                     param($ControllerProcessID, $WorkingDirectory, $dll, $ps1)
                     Set-Location $WorkingDirectory
-                    $ControllerProcess = Get-Process -Id $ControllerProcessID
+                    $ControllerProcess = Get-Process | Where Id -eq $ControllerProcessID
                     if ($null -eq $ControllerProcess) { return }
                     Add-Type -Path $dll
                     $start = [launchcode]::New()
@@ -306,7 +308,7 @@ $start
                     $arguments = "-executionpolicy bypass -command `"$ps1`""
                     $CommandLine += " " + $arguments
                     $New_Miner = $start.New_Miner($filepath, $CommandLine, $WorkingDirectory)
-                    $Process = Get-Process -id $New_Miner.dwProcessId -ErrorAction Ignore
+                    $Process = Get-Process | Where id -eq $New_Miner.dwProcessId
                     if ($null -eq $Process) { 
                         [PSCustomObject]@{ProcessId = $null }
                         return
@@ -388,7 +390,7 @@ $start
             $FileTimer.Restart()
             $FileChecked = $false
             do {
-                $FileCheck = ".\build\txt\bestminers.txt"
+                $FileCheck = ".\debug\bestminers.txt"
                 if (Test-Path $FileCheck) { $FileChecked = $true }
                 Start-Sleep -s .1
             }until($FileChecked -eq $true -or $FileTimer.Elapsed.TotalSeconds -gt 9)
@@ -465,6 +467,15 @@ $start
             ## .5 Second Delay After Read/Write Of Config Files. For Slower Drives.
             Start-Sleep -S .5
 
+            ## Run HiveOS hugepages commmand if algo is randomx
+            if(
+                $MinerCurrent.algo -eq "randomx" -and
+                $(arg).HiveOS -eq "Yes"
+              ) {
+                log "Setting HiveOS hugepages for RandomX" -ForegroundColor Cyan
+                Invoke-Expression "hugepages -rx"
+            }
+
             ##chmod again, to be safe.
             $Proc = Start-Process "chmod" -ArgumentList "+x build/bash/startup.sh" -PassThru
             $Proc | Wait-Process
@@ -491,7 +502,7 @@ $start
                 log "Getting Process ID for $($MinerCurrent.MinerName)"
                 if (Test-Path $PIDPath) { $MinerPID = Get-Content $PIDPath | Select-Object -First 1 }
                 ##Powershell Get Process Instance
-                if ($MinerPID) { $MinerProcess = Get-Process -ID $MinerPid -ErrorAction SilentlyContinue }
+                if ($MinerPID) { $MinerProcess = Get-Process | Where id -eq $MinerPid }
             }until($MinerProcess -ne $null -or ($MinerTimer.Elapsed.TotalSeconds) -ge 10)  
             ##Stop Timer
             $MinerTimer.Stop()

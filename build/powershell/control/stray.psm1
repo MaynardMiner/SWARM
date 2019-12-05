@@ -1,6 +1,6 @@
 
 function global:Stop-Stray($X) {
-    $proc = Get-Process -id $X.ParentProcessID  ## Want to close powershell window they are in.
+    $proc = Get-Process | Where id -eq $X.ParentProcessID  ## Want to close powershell window they are in.
     $proc.CloseMainWindow() | Out-Null
     log "waiting 5 seconds to confirm $($X.name) window has closed..." -ForeGroundColor Yellow
     Start-Sleep -S 3
@@ -32,7 +32,7 @@ function global:Stop-StrayMiners {
     if ($startup) {
         Global:Add-Module "$($(vars).build)\miners.psm1"
         if ($(arg).Type -like "*CPU*") { create cpu (Global:Get-minerfiles -Types "CPU") }
-        if ($(arg).Type -like "*NVIDIA*") { create nvidia (Global:Get-minerfiles -Types "NVIDIA" -Cudas $(arg).Cuda) }
+        if ($(arg).Type -like "*NVIDIA*") { create nvidia (Global:Get-minerfiles -Types "NVIDIA") }
         if ($(arg).Type -like "*AMD*") { create amd (Global:Get-minerfiles -Types "AMD") }
     }
     if ($(vars).cpu) { $(vars).cpu.PSObject.Properties.name | % { $Exec_List += (Split-Path $(vars).cpu.$_.CPU -Leaf) } }

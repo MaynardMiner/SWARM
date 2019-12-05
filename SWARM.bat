@@ -9,7 +9,7 @@ REM
 REM Rigname: Name of your rig
 REM Currency: Preferred Fiat Currency
 REM CoinExchange: AltCoin Coin Pricing (Besides BTC).
-REM Location: EUROPE ASIA US (Choose one).
+REM Location: EUROPE ASIA US JAPAN (Choose one).
 REM Poolname: Remove Pools As You See Fit. Add Custom Pools If You Like.
 REM Type: NVIDIA1 or AMD1 or AMD1,NVIDIA2 or NVIDIA1,NVIDIA2,NVIDIA3 (maximum of three)
 REM Type: CPU can be added, but -CPUThreads must be used (see help on arguments)

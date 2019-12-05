@@ -29,6 +29,7 @@ if ($Name -in $(arg).PoolName) {
         "US" { $region = "na" }
         "EUROPE" { $region = "eu" }
         "ASIA" { $region = "sea" }
+        "JAPAN" { $region = "jp" }
     }    
 
     $Pool_Sorted | ForEach-Object {

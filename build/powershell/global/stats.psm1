@@ -85,7 +85,7 @@ function Global:Set-Stat {
 
     ## Define Stat paths
     $name = $name -replace "`/", "`-"
-    if ($name -eq "load-average") { $Max_Periods = 90; $Path = "build\txt\$Name.txt" }
+    if ($name -eq "load-average") { $Max_Periods = 90; $Path = "debug\$Name.txt" }
     else { $Path = "stats\$Name.txt" }
     $Check = Test-Path $Path
 
@@ -116,7 +116,7 @@ function Global:Set-Stat {
         $S_Hash_Count = $GetStat.Hashrate_Periods
         $Deviation = $GetStat.Deviation
         $Deviation_Periods = $GetStat.Deviation_Periods
-        $Rejections = $GetStat.Rejection
+        $Rejections = $GetStat.Rejections
         $Rejection_Periods = $GetStat.Rejection_Periods
     }
 
@@ -156,19 +156,19 @@ function Global:Set-Stat {
                 $Stat | Add-Member "Deviation_Periods" 0
             }
         }
-
-        ## Add extra values if rejection bias
-        if ($Rejects) {
-            if ($Check) {
-                $Stat | Add-member "Rejection" $Rejections
-                $Stat | Add-Member "Rejection_Periods" $Rejection_Periods
-            }
-            else {
-                $Stat | Add-Member "Rejection" $Rejects
-                $Stat | Add-Member "Rejection_Periods" 0
-            }
-        }
     }
+
+    ## Add extra values if rejection bias
+    if ($Rejects -gt -1 -and $AsHashrate) {
+        if ($Check) {
+            $Stat | Add-member "Rejections" $Rejections
+            $Stat | Add-Member "Rejection_Periods" $Rejection_Periods
+        }
+        else {
+            $Stat | Add-Member "Rejections" $Rejects
+            $Stat | Add-Member "Rejection_Periods" 0
+        }
+    }    
     
     ## Set initial values
     $Stat | Add-Member "Values" @()
@@ -191,7 +191,7 @@ function Global:Set-Stat {
     }
 
     ## Same for rejection bias, but is a rolling moving average (no values)
-    if ($Rejects) {
+    if ($Rejects -gt -1 -and $AsHashrate) {
         if ( $Stat.Rejection_Periods -lt $Hash_Max) { $Stat.Rejection_Periods++ }
         else { $Stat.Rejection_Periods = $Hash_Max }
     }    
@@ -209,7 +209,7 @@ function Global:Set-Stat {
     ## Calculate simple rolling moving average for each pool hashrate / deviation / Rejects
     if ($Shuffle) { $Stat.Deviation = [Math]::Round( ( ($Stat.Deviation * $Stat.Deviation_Periods) + $Shuffle) / ($Stat.Deviation_Periods + 1), 4 ) }
     if ($HashRate) { $Stat.Hashrate = [Math]::Round( ( ($Stat.Hashrate * $Stat.Hashrate_Periods) + $HashRate ) / ($Stat.Hashrate_Periods + 1), 0 ) }
-    if ($Rejects) { $Stat.Rejection = [Math]::Round( ( ($Stat.Rejection * $Stat.Rejection_Periods) + $Rejects ) / ($Stat.Rejection_Periods + 1), 4 ) }
+    if ($Rejects -gt -1 -and $AsHashrate) { $Stat.Rejections = [Math]::Round( ( ($Stat.Rejections * $Stat.Rejection_Periods) + $Rejects ) / ($Stat.Rejection_Periods + 1), 4 ) }
 
     ## In case it doesn't exist.
     if (-not (Test-Path "stats")) { New-Item "stats" -ItemType "directory" }
@@ -225,6 +225,7 @@ function Global:Set-Stat {
     if ($Stat.Day) { $Stat.Day = [Decimal]$Stat.Day }
     if ($Stat.Custom) { $Stat.Custom = [Decimal]$Stat.Custom }
     if ($Stat.Hashrate) { $Stat.Hashrate = [Decimal]$Stat.Hashrate }
+    if ($Stat.Rejections -and $AsHashrate) { $Stat.Rejections = [Decimal]$Stat.Rejections }
 
     $Stat | ConvertTo-Json | Set-Content $Path
 
@@ -240,7 +241,7 @@ function Global:Get-Stat {
 
     $name = $name -replace "`/", "`-"
     if (-not (Test-Path "stats")) { New-Item "stats" -ItemType "directory" }
-    if ($name -eq "load-average") { Get-ChildItem "build\txt" | Where-Object Extension -NE ".ps1" | Where-Object BaseName -EQ $Name | Get-Content | ConvertFrom-Json }
+    if ($name -eq "load-average") { Get-ChildItem "debug" | Where-Object Extension -NE ".ps1" | Where-Object BaseName -EQ $Name | Get-Content | ConvertFrom-Json }
     else { Get-ChildItem "stats" | Where-Object Extension -NE ".ps1" | Where-Object BaseName -EQ $Name | Get-Content | ConvertFrom-Json }
 }
 

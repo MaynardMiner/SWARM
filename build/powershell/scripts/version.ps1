@@ -69,7 +69,7 @@ if ($Command) {
             Write-Host $($Message | Select -last 1)
             $Message += "Selected Uri is $URI"
             Write-Host $($Message | Select -last 1)
-            $GetCuda = ".\build\txt\cuda.txt"
+            $GetCuda = ".\debug\cuda.txt"
             if (test-path $GetCuda) { $CudaVersion = Get-Content $GetCuda }
             else { $Message += "Warning: Unable to detect cuda version."; Write-Host $($Message | Select -last 1) }
             $Sel = $MinerSearch | Where { $_.$Name }
@@ -86,7 +86,7 @@ if ($Command) {
                 Write-Host $($Message | Select -last 1)
                 if ($IsWindows) {
                     $ID = Get-Content ".\build\pid\miner_pid.txt"
-                    if (Get-Process -id $ID -ErrorAction SilentlyContinue) { Stop-Process -Id $ID }
+                    if ((Get-Process | Where id -eq $ID)) { Stop-Process -Id $ID }
                     Start-Sleep -S 5
                 }
                 elseif ($IsLinux) {
@@ -120,5 +120,5 @@ if ($Command) {
         }
     }
 }
-$Message | Set-Content ".\build\txt\get.txt"
-if ($MinerTables) { Write-Host "Miner Table List:"; $MinerTables | Out-Host; $MinerTables | Out-File ".\build\txt\get.txt" -Append }
+$Message | Set-Content ".\debug\get.txt"
+if ($MinerTables) { Write-Host "Miner Table List:"; $MinerTables | Out-Host; $MinerTables | Out-File ".\debug\get.txt" -Append }

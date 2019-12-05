@@ -71,9 +71,9 @@ $Message" -ForegroundColor Red
         $Trigger = "OKAY"
     }
     if ($trigger -eq "restart") {
-        Get-Date | Set-Content ".\build\txt\watchdog.txt"
-        $MinerFile = ".\build\pid\miner_pid.txt"
-        if (Test-Path $MinerFile) { $MinerId = Get-Process -Id (Get-Content $MinerFile) -ErrorAction SilentlyContinue }
+        Get-Date | Set-Content ".\debug\watchdog.txt"
+        $MinerFile = Get-Content ".\build\pid\miner_pid.txt"
+        if ($MinerFile) { $MinerId = Get-Process Where Id -eq  $MinerFile }
         if ($MinerId) {
             Stop-Process $MinerId
             Start-Sleep -S 3

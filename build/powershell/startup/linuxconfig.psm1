@@ -75,8 +75,8 @@ function Global:Get-Data {
         Set-Location $($(vars).dir)     
     }
 
-    if (-not (Test-Path ".\build\export\libnvrtc-builtins.so")) {
-        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc-builtins.so.10.1 $($(vars).dir)/build/export/libnvrtc-builtins.so" -PassThru
+    if (-not (Test-Path ".\build\export\libnvrtc-builtins.so.10.2")) {
+        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc-builtins.so.10.2.89 $($(vars).dir)/build/export/libnvrtc-builtins.so.10.2" -PassThru
         $Proc | Wait-Process
         Set-Location "/"
         Set-Location $($(vars).dir)     
@@ -116,6 +116,13 @@ function Global:Get-Data {
         Set-Location "/"
         Set-Location $($(vars).dir)     
     }
+
+    if (-not (Test-Path ".\build\export\libcudart.so.10.2")) {
+        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libcudart.so.10.2.89 $($(vars).dir)/build/export/libcudart.so.10.2" -PassThru
+        $Proc | Wait-Process
+        Set-Location "/"
+        Set-Location $($(vars).dir)     
+    }
     
     if (-not (Test-Path ".\build\export\libhwloc.so.5")) {
         $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libhwloc.so.5.5.0 $($(vars).dir)/build/export/libhwloc.so.5" -PassThru
@@ -147,6 +154,13 @@ function Global:Get-Data {
 
     if (-not (Test-Path ".\build\export\libnvrtc.so.10.1")) {
         $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc.so.10.1.105 $($(vars).dir)/build/export/libnvrtc.so.10.1" -PassThru
+        $Proc | Wait-Process
+        Set-Location "/"
+        Set-Location $($(vars).dir)     
+    }
+
+    if (-not (Test-Path ".\build\export\libnvrtc.so.10.2")) {
+        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc.so.10.2.89 $($(vars).dir)/build/export/libnvrtc.so.10.2" -PassThru
         $Proc | Wait-Process
         Set-Location "/"
         Set-Location $($(vars).dir)     
@@ -277,7 +291,7 @@ function Global:Get-GPUCount {
     $NoType = $true
     $DeviceList = @{ AMD = @{ }; NVIDIA = @{ }; CPU = @{ }; }
     Invoke-Expression "lspci" | Tee-Object -Variable lspci | Out-null
-    $lspci | Set-Content ".\build\txt\gpucount.txt"
+    $lspci | Set-Content ".\debug\gpucount.txt"
     $GetBus = $lspci | Select-String "VGA", "3D"
     $AMDCount = 0
     $NVIDIACount = 0
@@ -333,18 +347,21 @@ function Global:Get-GPUCount {
             if ($GN -and $GA) {
                 log "AMD and NVIDIA Detected" -ForegroundColor Magenta
                 $(vars).types += "AMD1","NVIDIA2"
+                $(arg).Type += "AMD1","NVIDIA2"
                 $global:config.user_params.type += "AMD1","NVIDIA2"
                 $global:config.params.type += "AMD1","NVIDIA2"                  
             }
             elseif ($GN) { 
                 log "NVIDIA Detected: Adding NVIDIA" -ForegroundColor Magenta
                 $(vars).types += "NVIDIA1" 
+                $(arg).Type += "NVIDIA1"
                 $global:config.user_params.type += "NVIDIA1" 
                 $global:config.params.type += "NVIDIA1"        
             }
             elseif ($GA) {
                 log "AMD Detected: Adding AMD" -ForegroundColor Magenta
                 $(vars).types += "AMD1" 
+                $(arg).Type += "NVIDIA2"
                 $global:config.user_params.type += "AMD1" 
                 $global:config.params.type += "AMD1"    
             }
@@ -352,11 +369,14 @@ function Global:Get-GPUCount {
             if([string]$(arg).CPUThreads -eq "") { 
                 $threads = Invoke-Expression "nproc";
                 $(vars).threads = $threads
+                $(vars).CPUThreads = $threads
+                $(arg).CPUThreads = $Threads
                 $global:config.user_params.CPUThreads = $threads
                 $global:config.params.CPUThreads = $threads    
             }
             log "Using $($(arg).CPUThreads) cores for mining"
             $(vars).types += "CPU"
+            $(arg).Type += "CPU"
             $global:config.user_params.type += "CPU"
             $global:config.params.type += "CPU"
         }
@@ -419,7 +439,7 @@ function Global:Get-GPUCount {
         }
     }
 
-    $DeviceList | ConvertTo-Json | Set-Content ".\build\txt\devicelist.txt"
+    $DeviceList | ConvertTo-Json | Set-Content ".\debug\devicelist.txt"
     $GPUCount = 0
     $GPUCount += $DeviceList.Nvidia.Count
     $GPUCount += $DeviceList.AMD.Count
@@ -501,31 +521,28 @@ function Global:Start-LinuxConfig {
             $Trash | % { log $_ }
         }
     }
-
-    ## Set Cuda for commands
-    if ($(arg).Type -like "*NVIDIA*") { $(arg).Cuda | Set-Content ".\build\txt\cuda.txt" }
     
     ## Let User Know What Platform commands will work for- Will always be Group 1.
     if ($(arg).Type -like "*NVIDIA1*") {
-        "NVIDIA1" | Out-File ".\build\txt\minertype.txt" -Force
+        "NVIDIA1" | Out-File ".\debug\minertype.txt" -Force
         log "Group 1 is NVIDIA- Commands and Stats will work for NVIDIA1" -foreground yellow
         Start-Sleep -S 3
     }
     elseif ($(arg).Type -like "*AMD1*") {
-        "AMD1" | Out-File ".\build\txt\minertype.txt" -Force
+        "AMD1" | Out-File ".\debug\minertype.txt" -Force
         log "Group 1 is AMD- Commands and Stats will work for AMD1" -foreground yellow
         Start-Sleep -S 3
     }
     elseif ($(arg).Type -like "*CPU*") {
         if ($(vars).GPU_Count -eq 0) {
-            "CPU" | Out-File ".\build\txt\minertype.txt" -Force
+            "CPU" | Out-File ".\debug\minertype.txt" -Force
             log "Group 1 is CPU- Commands and Stats will work for CPU" -foreground yellow
             Start-Sleep -S 3
         }
     }
     elseif ($(arg).Type -like "*ASIC*") {
         if ($(vars).GPU_Count -eq 0) {
-            "ASIC" | Out-File ".\build\txt\minertype.txt" -Force
+            "ASIC" | Out-File ".\debug\minertype.txt" -Force
             log "Group 1 is ASIC- Commands and Stats will work for ASIC" -foreground yellow
         }
     }

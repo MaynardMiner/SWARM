@@ -11,6 +11,7 @@
         ],
         "commands": {
             "phi2": "",
+            "phi2-lux": "",
             "cryptonight-v8": "",
             "lyra2z": "",
             "lyra2v3": "",
@@ -23,10 +24,12 @@
             "mtp": "",
             "cuckaroo29d": "",
             "cuckatoo31": "",
-            "chukwa512": ""
+            "chukwa512": "",
+            "ethash" : ""
         },
         "difficulty": {
             "phi2": "",
+            "phi2-lux": "",
             "cryptonight-v8": "",
             "lyra2z": "",
             "lyra2v3": "",
@@ -39,10 +42,12 @@
             "mtp": "",
             "cuckaroo29d": "",
             "cuckatoo31": "",
-            "chukwa512": ""
+            "chukwa512": "",
+            "ethash": ""
         },
         "naming": {
             "phi2": "phi2",
+            "phi2-lux": "phi2",
             "cryptonight-v8": "cnv8",
             "lyra2z": "lyra2z",
             "lyra2v3": "lyra2rev3",
@@ -55,10 +60,12 @@
             "mtp": "mtp",
             "cuckaroo29d": "cuckarood29_grin",
             "cuckatoo31": "cuckatoo31_grin",
-            "chukwa512": "trtl_chukwa"
+            "chukwa512": "trtl_chukwa",
+            "ethash": "ethash"
         },
         "fee": {
             "phi2": 3,
+            "phi2-lux": 3,
             "cryptonight-v8": 2.5,
             "lyra2z": 3,
             "lyra2v3": 2.5,
@@ -71,7 +78,8 @@
             "mtp": 2.5,
             "cuckaroo29d": 2.5,
             "cuckatoo31": 2.5,
-            "chukwa512": 2.5
+            "chukwa512": 2.5,
+            "ethash": 2.5
         }
     }
 }

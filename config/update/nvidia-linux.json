@@ -18,9 +18,9 @@
     "NVIDIA2": ".\\bin\\nbminer-2\\nbminer",
     "NVIDIA3": ".\\bin\\nbminer-3\\nbminer",
     "minername": "nbminer",
-    "version": "26.0",
+    "version": "26.2",
     "optional": "No",
-    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v26.0/NBMiner_26.0_Linux.tgz"
+    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v26.2/NBMiner_26.2_Linux.tgz"
   },
   "multiminer": {
     "name": "multiminer",
@@ -40,7 +40,7 @@
     "NVIDIA2": ".\\bin\\phoenix-2\\PhoenixMiner",
     "NVIDIA3": ".\\bin\\phoenix-3\\PhoenixMiner",
     "minername": "PhoenixMiner",
-    "version": "4.7c",
+    "version": "4.8b",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/phoenix-linux.tar.gz"
   },
@@ -62,7 +62,7 @@
     "NVIDIA2": ".\\bin\\cc-mtp-2\\ccminer",
     "NVIDIA3": ".\\bin\\cc-mtp-3\\ccminer",
     "minername": "ccminer",
-    "version": "1.2.0",
+    "version": "1.3.1",
     "optional": "Yes",
     "uri": "https://github.com/zcoinofficial/ccminer/releases/download/1.2.0/ccminer_linux_cuda101"
   },
@@ -106,9 +106,9 @@
     "NVIDIA2": ".\\bin\\cc-yescrypt-2\\ccminer",
     "NVIDIA3": ".\\bin\\cc-yescrypt-3\\ccminer",
     "minername": "ccminer",
-    "version": "10a",
-    "optional": "Yes",
-    "uri": "https://github.com/MaynardMiner/ccminerKlausTyescrypt/releases/download/v.10a/ccmineryescrypt-linux-10.tar.gz"
+    "version": "10c",
+    "optional": "No",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/cc-yescrypt-linux.tar.gz"
   },
   "energiminer": {
     "name": "energiminer",
@@ -205,9 +205,9 @@
     "NVIDIA2": ".\\bin\\gminer-2\\miner",
     "NVIDIA3": ".\\bin\\gminer-3\\miner",
     "minername": "miner",
-    "version": "1.70",
+    "version": "1.79",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.70/gminer_1_70_linux64.tar.gz"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.79/gminer_1_79_linux64.tar.xz"
   },
   "grin-miner": {
     "name": "grin-miner",
@@ -227,9 +227,9 @@
     "NVIDIA2": ".\\bin\\bminer-2\\bminer",
     "NVIDIA3": ".\\bin\\bminer-3\\bminer",
     "minername": "bminer",
-    "version": "15.8.6",
+    "version": "15.8.7",
     "optional": "No",
-    "uri": "https://www.bminercontent.com/releases/bminer-v15.8.6-5f20661-amd64.tar.xz"
+    "uri": "https://www.bminercontent.com/releases/bminer-v15.8.7-6831c33-amd64.tar.xz"
   },
   "miniz": {
     "name": "miniz",
@@ -256,13 +256,13 @@
   "xmrig-nv": {
     "name": "xmrig-nv",
     "type": "nvidia",
-    "NVIDIA1": ".\\bin\\xmrig-nv-1\\xmrig-nvidia",
-    "NVIDIA2": ".\\bin\\xmrig-nv-2\\xmrig-nvidia",
-    "NVIDIA3": ".\\bin\\xmrig-nv-3\\xmrig-nvidia",
-    "minername": "xmrig-nvidia",
-    "version": "2.14.4",
+    "NVIDIA1": ".\\bin\\xmrig-nv-1\\xmrig",
+    "NVIDIA2": ".\\bin\\xmrig-nv-2\\xmrig",
+    "NVIDIA3": ".\\bin\\xmrig-nv-3\\xmrig",
+    "minername": "xmrig",
+    "version": "5.1.0",
     "optional": "Yes",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/xmrig-nvidia-linux.tar.gz"
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v8.0/xmrig-linux.tar.gz"
   },
   "cc-verus": {
     "name": "cc-verus",
@@ -274,6 +274,17 @@
     "version": "6.1",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/cc-verus-linux.tar.gz"
+  },
+  "cc-lyra2z330": {
+    "name": "cc-lyra2z330",
+    "type": "nvidia",
+    "NVIDIA1": ".\\bin\\cc-lyra2z330-1\\ccminer",
+    "NVIDIA2": ".\\bin\\cc-lyra2z330-2\\ccminer",
+    "NVIDIA3": ".\\bin\\cc-lyra2z330-3\\ccminer",
+    "minername": "ccminer",
+    "version": "1.0",
+    "optional": "No",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/cc-lyra2z330-linux.tar.gz"
   },
   "nv-lolminer": {
     "name": "nv-lolminer",
@@ -293,7 +304,7 @@
     "NVIDIA2": ".\\bin\\tt-miner-2\\TT-Miner",
     "NVIDIA3": ".\\bin\\tt-miner-3\\TT-Miner",
     "minername": "TT-Miner",
-    "version": "3.1.0-beta2",
+    "version": "3.1.0b3",
     "optional": "No",
     "uri": "https://tradeproject.de/download/Miner/TT-Miner.tar.xz"
   },

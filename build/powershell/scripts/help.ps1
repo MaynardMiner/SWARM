@@ -463,6 +463,7 @@ Answer"
 1 EUROPE
 2 US
 3 ASIA
+4 JAPAN
 
 Answer"
             $Check = Global:Confirm-Answer $ans @("1", "2", "3")
@@ -472,6 +473,7 @@ Answer"
             "1" { $choice = "EUROPE" }
             "2" { $choice = "US" }
             "3" { $choice = "ASIA" }
+            "4" { $choice = "JAPAN" }
         }
         if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         do {
