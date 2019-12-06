@@ -149,6 +149,8 @@ if ($Name -in $(arg).PoolName) {
                         }
                         if ($(vars).All_AltWallets.$Sym.params -ne "enter additional params here, such as 'm=solo' or m=party.partypassword") {
                             $mc += "m=$($(vars).All_AltWallets.$Sym.params),"
+                            $mc.replace("SOLO","solo")
+                            $mc.replace("PARTY","party")
                         }    
                     }   
                 }
