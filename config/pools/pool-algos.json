@@ -152,6 +152,7 @@
   "cryptonight-lite": {
     "alt_names": [
       "cryptonight-lite",
+      "crptonight_lite",
       "aeon"
     ],
     "exclusions": [
@@ -162,6 +163,7 @@
   "cryptonight-fast-v8": {
     "alt_names": [
       "cryptonight-fast-v8",
+      "cryptonight_fast_v8",
       "cnfastv2"
     ],
     "exclusions": [
@@ -172,7 +174,8 @@
   "cryptonight-sfast": {
     "alt_names": [
       "cnsuperfast",
-      "cryptonight-sfast"
+      "cryptonight-sfast",
+      "cryptonight_sfast"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -194,6 +197,17 @@
     "alt_names": [
       "cryptonight-heavy",
       "cryptonightheavy",
+      "cryptonight_heavy"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "cryptonight-heavyx": {
+    "alt_names": [
+      "cryptonight-heavyx",
+      "cryptonightheavyx",
       "cryptonight_heavyx"
     ],
     "exclusions": [
@@ -204,7 +218,8 @@
   "cryptonight-r": {
     "alt_names": [
       "cryptonightr",
-      "cryptonightmonero"
+      "cryptonightmonero",
+      "cryptonight_r"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -214,7 +229,8 @@
   "cryptonight-superfast": {
     "alt_names": [
       "cryptonight-superfast",
-      "cryptonightsuperfast"
+      "cryptonightsuperfast",
+      "cryptonight_superfast"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -234,7 +250,8 @@
   "cryptonight-v8": {
     "alt_names": [
       "cryptonight-v8",
-      "cryptonightv8"
+      "cryptonightv8",
+      "cryptonight_v8"
     ],
     "exclusions": [
       "add pool or miner here",
