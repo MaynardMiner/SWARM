@@ -199,7 +199,7 @@ function Global:start-update {
 
                                             $Data.$_.commands | Add-Member "cryptonight-saber" "" -ErrorAction SilentlyContinue
                                             $Data.$_.difficulty | Add-Member "cryptonight-saber" "" -ErrorAction SilentlyContinue 
-                                            $Data.$_.naming | Add-Member "cryptonight-saber" "cryptonight_saber" -ErrorAction SilentlyContinue
+                                            $Data.$_.naming | Add-Member "cryptonight-saber" "cryptonight_bittube2" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "cryptonight-saber" 2 -ErrorAction SilentlyContinue
 
                                             $Data.$_.commands | Add-Member "cryptonight-v7" "" -ErrorAction SilentlyContinue
