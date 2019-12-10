@@ -8,28 +8,37 @@
             "cryptonight-v8": "",
             "cryptonight-v7": "",
             "cryptonight-heavy": "",
+            "cryptonight-saber": "",
             "cryptonight-r": "",
+            "cryptonight-gpu": "",
             "randomx": ""
         },
         "difficulty": {
             "cryptonight-v8": "",
             "cryptonight-v7": "",
             "cryptonight-heavy": "",
+            "cryptonight-saber": "",
             "cryptonight-r": "",
+            "cryptonight-gpu": "",
             "randomx": ""
         },
         "naming": {
             "cryptonight-v8": "cn/2",
             "cryptonight-v7": "cn/1",
             "cryptonight-heavy": "cn-heavy",
+            "cryptonight-heavyx": "cn-heavy/xhv",
+            "cryptonight-saber": "cn-heavy/tube",
             "cryptonight-r": "cn/r",
+            "cryptonight-gpu": "cn/gpu",
             "randomx": "rx/0"
         },
         "fee": {
             "cryptonight-v8": 1,
             "cryptonight-v7": 1,
             "cryptonight-heavy": 1,
+            "cryptonight-saber": 1,
             "cryptonight-r": 1,
+            "cryptonight-gpu": 1,
             "randomx": 1
         }
     },
@@ -41,28 +50,37 @@
             "cryptonight-v8": "",
             "cryptonight-v7": "",
             "cryptonight-heavy": "",
+            "cryptonight-saber": "",
             "cryptonight-r": "",
+            "cryptonight-gpu": "",
             "randomx": ""
         },
         "difficulty": {
             "cryptonight-v8": "",
             "cryptonight-v7": "",
             "cryptonight-heavy": "",
+            "cryptonight-saber": "",
             "cryptonight-r": "",
+            "cryptonight-gpu": "",
             "randomx": ""
         },
         "naming": {
             "cryptonight-v8": "cn/2",
             "cryptonight-v7": "cn/1",
             "cryptonight-heavy": "cn-heavy",
+            "cryptonight-heavyx": "cn-heavy/xhv",
+            "cryptonight-saber": "cn-heavy/tube",
             "cryptonight-r": "cn/r",
+            "cryptonight-gpu": "cn/gpu",
             "randomx": "rx/0"
         },
         "fee": {
             "cryptonight-v8": 1,
             "cryptonight-v7": 1,
             "cryptonight-heavy": 1,
+            "cryptonight-saber": 1,
             "cryptonight-r": 1,
+            "cryptonight-gpu": 1,
             "randomx": 1
         }
     },
@@ -74,28 +92,37 @@
             "cryptonight-v8": "",
             "cryptonight-v7": "",
             "cryptonight-heavy": "",
+            "cryptonight-saber": "",
             "cryptonight-r": "",
+            "cryptonight-gpu": "",
             "randomx": ""
         },
         "difficulty": {
             "cryptonight-v8": "",
             "cryptonight-v7": "",
             "cryptonight-heavy": "",
+            "cryptonight-saber": "",
             "cryptonight-r": "",
+            "cryptonight-gpu": "",
             "randomx": ""
         },
         "naming": {
             "cryptonight-v8": "cn/2",
             "cryptonight-v7": "cn/1",
             "cryptonight-heavy": "cn-heavy",
+            "cryptonight-heavyx": "cn-heavy/xhv",
+            "cryptonight-saber": "cn-heavy/tube",
             "cryptonight-r": "cn/r",
+            "cryptonight-gpu": "cn/gpu",
             "randomx": "rx/0"
         },
         "fee": {
             "cryptonight-v8": 1,
             "cryptonight-v7": 1,
             "cryptonight-heavy": 1,
+            "cryptonight-saber": 1,
             "cryptonight-r": 1,
+            "cryptonight-gpu": 1,
             "randomx": 1
         }
     }

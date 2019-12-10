@@ -32,6 +32,7 @@
             "cryptonight-v8": "cn/2",
             "cryptonight-v7": "cn/1",
             "cryptonight-heavy": "cn-heavy",
+            "cryptonight-heavyx": "cn-heavy/xhv",
             "cryptonight-saber": "cn-heavy/tube",
             "cryptonight-r": "cn/r",
             "cryptonight-gpu": "cn/gpu",

@@ -179,6 +179,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "cryptonight-gpu" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "cryptonight-gpu" "cn/gpu" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "cryptonight-gpu" 1 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "cryptonight-heavyx" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "cryptonight-heavyx" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "cryptonight-heavyx" "cn-heavy/xhv" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "cryptonight-heavyx" 1 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }
@@ -196,10 +201,10 @@ function Global:start-update {
                                             $Data.$_.naming | Add-Member "cryptonight-saber" "cn-heavy/tube" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "cryptonight-saber" 1 -ErrorAction SilentlyContinue
 
-                                            $Data.$_.commands | Add-Member "cryptonight-gpu" "" -ErrorAction SilentlyContinue
-                                            $Data.$_.difficulty | Add-Member "cryptonight-gpu" "" -ErrorAction SilentlyContinue 
-                                            $Data.$_.naming | Add-Member "cryptonight-gpu" "cn/gpu" -ErrorAction SilentlyContinue
-                                            $Data.$_.fee | Add-Member "cryptonight-gpu" 1 -ErrorAction SilentlyContinue
+                                            $Data.$_.commands | Add-Member "cryptonight-heavyx" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "cryptonight-heavyx" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "cryptonight-heavyx" "cn-heavy/xhv" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "cryptonight-heavyx" 1 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }

@@ -4,10 +4,18 @@
         "name": "CPU",
         "delay": "1",
         "prestart": [],
+        "prestart": [
+            "export GPU_FORCE_64BIT_PTR=1",
+            "export GPU_MAX_HEAP_SIZE=100",
+            "export GPU_USE_SYNC_OBJECTS=1",
+            "export GPU_SINGLE_ALLOC_PERCENT=100",
+            "export GPU_MAX_ALLOC_PERCENT=100"
+        ],
         "commands": {
             "cryptonight-v8": "",
             "cryptonight-v7": "",
             "cryptonight-heavy": "",
+            "cryptonight-saber": "",
             "cryptonight-r": "",
             "randomx": ""
         },
@@ -15,6 +23,7 @@
             "cryptonight-v8": "",
             "cryptonight-v7": "",
             "cryptonight-heavy": "",
+            "cryptonight-saber": "",
             "cryptonight-r": "",
             "randomx": ""
         },
@@ -22,6 +31,8 @@
             "cryptonight-v8": "cn/2",
             "cryptonight-v7": "cn/1",
             "cryptonight-heavy": "cn-heavy",
+            "cryptonight-heavyx": "cn-heavy/xhv",
+            "cryptonight-saber": "cn-heavy/tube",
             "cryptonight-r": "cn/r",
             "randomx": "rx/0"
         },
@@ -29,6 +40,7 @@
             "cryptonight-v8": 1,
             "cryptonight-v7": 1,
             "cryptonight-heavy": 1,
+            "cryptonight-saber": 1,
             "cryptonight-r": 1,
             "randomx": 1
         }
