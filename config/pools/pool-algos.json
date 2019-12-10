@@ -1,14 +1,4 @@
 {
-  "cryptonight-lite": {
-    "alt_names": [
-      "cryptonight-lite",
-      "aeon"
-    ],
-    "exclusions": [
-      "add pool or miner here",
-      "comma seperated"
-    ]
-  },
   "aergo": {
     "alt_names": [
       "aergo"
@@ -159,6 +149,16 @@
       "comma seperated"
     ]
   },
+  "cryptonight-lite": {
+    "alt_names": [
+      "cryptonight-lite",
+      "aeon"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "cryptonight-fast-v8": {
     "alt_names": [
       "cryptonight-fast-v8",
@@ -182,7 +182,8 @@
   "cryptonight-gpu": {
     "alt_names": [
       "cryptonight-gpu",
-      "cryptonightgpu"
+      "cryptonightgpu",
+      "cryptonight_gpu"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -192,7 +193,8 @@
   "cryptonight-heavy": {
     "alt_names": [
       "cryptonight-heavy",
-      "cryptonightheavy"
+      "cryptonightheavy",
+      "cryptonight_heavyx"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -221,7 +223,8 @@
   },
   "cryptonight-v7": {
     "alt_names": [
-      "cryptonightv7"
+      "cryptonightv7",
+      "cryptonight_v7"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -232,6 +235,17 @@
     "alt_names": [
       "cryptonight-v8",
       "cryptonightv8"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "cryptonight-saber": {
+    "alt_names": [
+      "cryptonight-saber",
+      "cryptonightsaber",
+      "cryptonight_saber"
     ],
     "exclusions": [
       "add pool or miner here",
