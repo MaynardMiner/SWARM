@@ -187,15 +187,26 @@ function Global:start-update {
                                 if ($ChangeFile -eq "xmr-stak.json") {
                                     $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                         if ($_ -ne "name") {
-                                            $Data.$_.commands | Add-Member "randomx" "" -ErrorAction SilentlyContinue
-                                            $Data.$_.difficulty | Add-Member "randomx" "" -ErrorAction SilentlyContinue 
-                                            $Data.$_.naming | Add-Member "randomx" "randomx" -ErrorAction SilentlyContinue
-                                            $Data.$_.fee | Add-Member "randomx" 0 -ErrorAction SilentlyContinue
+                                            $Data.$_.commands | Add-Member "cryptonight-gpu" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "cryptonight-gpu" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "cryptonight-gpu" "cryptonight_gpu" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "cryptonight-gpu" 2 -ErrorAction SilentlyContinue
 
-                                            $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "cryptonight-v7","cryptonight-v8","cryptonight-heavy","cryptonight-gpu","cryptonight-superfast","cryptonight-r"
-                                            $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "cryptonight-v7","cryptonight-v8","cryptonight-heavy","cryptonight-gpu","cryptonight-superfast","cryptonight-r"
-                                            $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "cryptonight-v7","cryptonight-v8","cryptonight-heavy","cryptonight-gpu","cryptonight-superfast","cryptonight-r"
-                                            $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "cryptonight-v7","cryptonight-v8","cryptonight-heavy","cryptonight-gpu","cryptonight-superfast","cryptonight-r"
+                                            $Data.$_.commands | Add-Member "cryptonight-heavyx" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "cryptonight-heavyx" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "cryptonight-heavyx" "cryptonight_heavyx" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "cryptonight-heavyx" 2 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "cryptonight-saber" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "cryptonight-saber" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "cryptonight-saber" "cryptonight_saber" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "cryptonight-saber" 2 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "cryptonight-v7" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "cryptonight-v7" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "cryptonight-v7" "cryptonight_v7" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "cryptonight-v7" 2 -ErrorAction SilentlyContinue
+
                                         }
                                     }
                                 }
@@ -462,6 +473,16 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "ethash" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "ethash" "ethash" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "ethash" 2.5 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "cryptonight-heavyx" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "cryptonight-heavyx" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "cryptonight-heavyx" "cnv8_dbl" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "cryptonight-heavyx" 2.5 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "cryptonight-saber" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "cryptonight-saber" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "cryptonight-saber" "cn_saber" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "cryptonight-saber" 2.5 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }
