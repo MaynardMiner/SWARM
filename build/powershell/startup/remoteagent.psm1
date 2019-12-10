@@ -169,6 +169,16 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "randomx" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "randomx" "randomx" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "randomx" 1 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "cryptonight-saber" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "cryptonight-saber" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "cryptonight-saber" "cn-heavy/tube" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "cryptonight-saber" 1 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "cryptonight-gpu" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "cryptonight-gpu" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "cryptonight-gpu" "cn/gpu" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "cryptonight-gpu" 1 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }
@@ -180,6 +190,16 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "randomx" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "randomx" "randomx" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "randomx" 1 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "cryptonight-saber" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "cryptonight-saber" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "cryptonight-saber" "cn-heavy/tube" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "cryptonight-saber" 1 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "cryptonight-gpu" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "cryptonight-gpu" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "cryptonight-gpu" "cn/gpu" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "cryptonight-gpu" 1 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }
