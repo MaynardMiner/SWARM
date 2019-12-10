@@ -25,7 +25,7 @@
         "naming": {
             "cryptonight-gpu": "cryptonight_gpu",
             "cryptonight-heavyx": "cryptonight_v8_double",
-            "cryptonight-saber": "cryptonight_saber",
+            "cryptonight-saber": "cryptonight_bittube2",
             "cryptonight-v7": "cryptonight_v7"
         },
         "fee": {

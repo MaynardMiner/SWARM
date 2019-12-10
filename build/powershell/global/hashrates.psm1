@@ -58,7 +58,7 @@ function Global:Get-HTTP {
         [Parameter(Mandatory = $false)]
         [String]$Message,
         [Parameter(Mandatory = $false)]
-        [Int]$Timeout = 10 #seconds
+        [Int]$Timeout = 5 #seconds
     )
 
     try {
