@@ -1494,6 +1494,12 @@ Updates
   * Added cryptonight algorithm support for zergpool.
   * Created xmr-stak-rx and xmr-stak as they are
     seperate miners.
+  * Since ``get stats`` command shows cryponight
+    algorithms as abbreviated (cnight), made it so
+    that ``bench`` and ``get`` commands, along with
+    user arguments will auto-convert 'cnight' to
+    'cryptonight', which is proper. So 'cnight-v8'
+    should become 'cryptonight-v8'.
 
 ## Fixes
 * Issue #251
