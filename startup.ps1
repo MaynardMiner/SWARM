@@ -32,6 +32,7 @@ if ($args) {
     else {
         $Start = $true
         $args | % {
+            $_ = $_.replace("cnight","cryptonight")
             $Command = $false
             $ListCheck = $_ -replace "-", ""
             if ($_[0] -eq "-") { $Command = $true; $Com = $_ -replace "-", "" }

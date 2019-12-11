@@ -27,6 +27,13 @@ param(
     [Parameter(Mandatory = $false)]
     [switch]$asjson
 )
+
+$argument2 = $argument2.replace("cnight","cryptonight")
+$argument3 = $argument3.replace("cnight","cryptonight")
+$argument4 = $argument4.replace("cnight","cryptonight")
+$argument5 = $argument5.replace("cnight","cryptonight")
+$argument6 = $argument6.replace("cnight","cryptonight")
+
 [cultureinfo]::CurrentCulture = 'en-US'
 $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
 [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols

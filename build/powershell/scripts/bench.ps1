@@ -20,6 +20,8 @@ param(
     [String]$Arg1 = $Null
 )
 
+$Arg1 = $Arg1.Replace("cnight","cryptonight")
+
 [cultureinfo]::CurrentCulture = 'en-US'
 $dir = (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
 $dir = $dir -replace "/var/tmp","/root"
