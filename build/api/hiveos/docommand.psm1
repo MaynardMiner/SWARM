@@ -109,7 +109,7 @@ function Global:Start-Webcommand {
             $method = "message"
             $messagetype = "info"
             $data = "$($command.result.exec)"
-            Invoke-Expression $Data | Tee-Object -Variable payload
+            $payload = Invoke-Expression $Data | Out-String
             $line = @()
             $payload | foreach { $line += "$_`n" }
             $payload = $line
