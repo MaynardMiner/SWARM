@@ -260,9 +260,9 @@
         "NVIDIA2": ".\\bin\\xmrig-nv-2\\xmrig-nvidia.exe",
         "NVIDIA3": ".\\bin\\xmrig-nv-3\\xmrig-nvidia.exe",
         "minername": "xmrig-nvidia.exe",
-        "version": "2.14.5",
+        "version": "5.1.1",
         "optional": "Yes",
-        "uri": "https://github.com/xmrig/xmrig-nvidia/releases/download/v2.14.5/xmrig-nvidia-2.14.5-cuda10_1-win64.zip"
+        "uri": "https://github.com/xmrig/xmrig/releases/download/v5.1.1/xmrig-5.1.1-msvc-cuda10_1-win64.zip"
     },
     "nv-lolminer": {
         "name":"nv-lolminer", 
