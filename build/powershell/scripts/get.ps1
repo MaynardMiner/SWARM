@@ -79,58 +79,11 @@ get [item] [argument2] [argument3] [argument4] [argument5]
 
 EXAMPLE USES:
 
-get miners NVIDIA1 trex x16r difficulty
-get miners CPU jayddee all
 get screen miner
 get stats
 get oc NVIDIA1 aergo power 
 
 ITEMS:
-
-###################################################################
-###################################################################
-
-miners
- can be used to view background miner information.
-
-    USES:
-        get miners [platform] [name] [param] [sub-param1] [sub-param2]
-
-    OPTIONS:
-        
-        platform
-        [NVIDIA1] [NVIDIA2] [NVIDIA3] [AMD1] [CPU] [all]
-
-        name
-        name of miner, as per the names of .json in config/miners
-        if you are unsure of miner name, running-
-
-            get miners [platform]
-    
-        to see all miners for that platform
-
-    params
-        [prestart] [commands] [difficulty] [naming]   [oc]
-
-        sub-param1   [algo]     [algo]      [algo]   [algo]
-
-        sub-param2                                   [power]
-                                                     [core]
-                                                     [mem]
-                                                     [dpm]
-                                                      [v]
-                                                     [mdpm]
-
-        example uses of params:
-
-            get miners NVIDIA1 enemy naming 
-            (Will list all naming items)
-
-            get miners NVIDIA1 enemy oc hex core 
-            (Will list oc core setting for hex algorithm)
-
-###################################################################
-###################################################################
 
 screen
     can be used to remotely view SWARM's transcripts. Great way to
@@ -713,15 +666,11 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
             $ConvertJsons.PSObject.Properties.Name | Where { $ConvertJsons.$_.$Argument2 } | foreach { $Get += "$($_)" }
             $Selected = $ConvertJsons.PSObject.Properties.Name | Where { $_ -eq $Argument3 } | % { $ConvertJsons.$_ }
             if ($Selected) {
-                $Cuda = Get-Content ".\debug\cuda.txt"
                 $Platform = Get-Content ".\debug\os.txt"
                 if ($argument2 -like "*NVIDIA*") {
                     $Number = $argument2 -Replace "NVIDIA", ""
                     if ($Platform -eq "linux") {
-                        switch ($Cuda) {
-                            "9.2" { $UpdateJson = Get-Content ".\config\update\nvidia9.2-linux.json" | ConvertFrom-Json }
-                            "10" { $UpdateJson = Get-Content ".\config\update\nvidia-linux.json" | ConvertFrom-Json }
-                        }
+                            $UpdateJson = Get-Content ".\config\update\nvidia-linux.json" | ConvertFrom-Json
                     }
                     else { $UpdateJson = Get-Content ".\config\update\nvidia-win.json" | ConvertFrom-JSon }
                 }
@@ -729,14 +678,14 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                     $Number = $argument2 -Replace "AMD", ""
                     switch ($Platform) {
                         "linux" { $UpdateJson = Get-Content ".\config\update\amd-linux.json" | ConvertFrom-Json }
-                        "windows" { $UpdateJson = Get-Content ".\config\update\amd-windows.json" | ConvertFrom-Json }
+                        "windows" { $UpdateJson = Get-Content ".\config\update\amd-win.json" | ConvertFrom-Json }
                     }
                 }
                 if ($argument2 -like "*CPU*") {
                     $Number = 1
                     switch ($Platform) {  
                         "linux" { $UpdateJson = Get-Content ".\config\update\cpu-linux.json" | ConvertFrom-Json }
-                        "windows" { $UpdateJson = Get-Content ".\config\update\cpu-windows.json" | ConvertFrom-Json }
+                        "windows" { $UpdateJson = Get-Content ".\config\update\cpu-win.json" | ConvertFrom-Json }
                     }
                 }
                 $getpath = "path$($Number)"
