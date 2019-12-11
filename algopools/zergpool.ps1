@@ -34,7 +34,10 @@ if ($Name -in $(arg).PoolName) {
 
         $StatAlgo = $_.Name -replace "`_", "`-"
         $StatPath = "$($Name)_$($StatAlgo)_profit"
-        if(-not (test-Path ".\stats\$StatPath") ){ $Estimate = [Double]$_.estimate_last24h }
+        if(
+            -not (test-Path ".\stats\$StatPath") -and
+            $_.Original_Algo -ne "cryptonight_heavyx"  ## Temp fix.
+        ) { $Estimate = [Double]$_.estimate_last24h }
         else{ $Estimate = [Double]$_.estimate_current }
 
         $Pool_Port = $_.port
