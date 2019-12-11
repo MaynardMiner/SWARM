@@ -1475,3 +1475,44 @@ Updates
   * xmrig upated
   * removed no longer supported algos
     on xmr-stak.
+
+
+############################################
+############################################
+
+# SWARM 2.8.5
+
+## BETA RELEASE
+* A lot of changes were made to SWARM to support
+  cryptonight changes. Please let me know if you have
+  issues.
+  
+## What's New?
+* Issue #254
+  * Updated cryptonight miners (except srbminer, will
+    do next release/soon).
+  * Added cryptonight algorithm support for zergpool.
+  * Created xmr-stak-rx and xmr-stak as they are
+    seperate miners.
+
+## Fixes
+* Issue #251
+  * removed ``get version`` command
+  * removed ``get miners`` command
+  * both were depreciatied.
+
+* Issues #252
+  * Use -log argument for tt-miner instead
+    of tee
+
+* Issue #245
+  * default m=solo for zergpool (force lower case for
+    solo and party for ``-coin_params``)
+  * default m=SOLO for blockmasters (force upper case for
+    solo and party for ``-coin_params``)
+
+## Updates
+* TT-miner updated
+* xmrig updated (cpu, nvidia, and amd)
+* xmr-stak updated
+* gminer updated
