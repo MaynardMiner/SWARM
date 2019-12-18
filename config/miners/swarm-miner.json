@@ -5,6 +5,7 @@
         "delay": "1",
         "prestart": [],
         "commands": {
+            "lyra2rev2": "",
             "lyra2rev3": "",
             "sha256q": "",
             "exosis": "",
@@ -12,7 +13,8 @@
             "x12": "",
             "x14": "",
             "bmw512": "",
-            "lyra2z": ""
+            "lyra2z": "",
+            "keccakc": ""
         },
         "difficulty": {
             "lyra2rev2": "",
@@ -23,7 +25,8 @@
             "x12": "",
             "x14": "",
             "bmw512": "",
-            "lyra2z": ""
+            "lyra2z": "",
+            "keccakc": ""
         },
         "naming": {
             "lyra2rev2": "lyra2v2",
@@ -34,7 +37,8 @@
             "x12": "x12",
             "x14": "x14",
             "bmw512": "bmw512",
-            "lyra2z": "lyra2z"
+            "lyra2z": "lyra2z",
+            "keccakc": "keccakc"
         },
         "fee": {
             "lyra2rev2": 0,
@@ -45,7 +49,8 @@
             "x12": 0,
             "x14": 0,
             "bmw512": 0,
-            "lyra2z": 0
+            "lyra2z": 0,
+            "keccakc": 0
         }
     },
     "NVIDIA2": {
@@ -53,6 +58,7 @@
         "delay": "1",
         "prestart": [],
         "commands": {
+            "lyra2rev2": "",
             "lyra2rev3": "",
             "sha256q": "",
             "exosis": "",
@@ -60,7 +66,8 @@
             "x12": "",
             "x14": "",
             "bmw512": "",
-            "lyra2z": ""
+            "lyra2z": "",
+            "keccakc": ""
         },
         "difficulty": {
             "lyra2rev2": "",
@@ -71,7 +78,8 @@
             "x12": "",
             "x14": "",
             "bmw512": "",
-            "lyra2z": ""
+            "lyra2z": "",
+            "keccakc": ""
         },
         "naming": {
             "lyra2rev2": "lyra2v2",
@@ -82,7 +90,8 @@
             "x12": "x12",
             "x14": "x14",
             "bmw512": "bmw512",
-            "lyra2z": "lyra2z"
+            "lyra2z": "lyra2z",
+            "keccakc": "keccakc"
         },
         "fee": {
             "lyra2rev2": 0,
@@ -93,7 +102,8 @@
             "x12": 0,
             "x14": 0,
             "bmw512": 0,
-            "lyra2z": 0
+            "lyra2z": 0,
+            "keccakc": 0
         }
     },
     "NVIDIA3": {
@@ -101,6 +111,7 @@
         "delay": "1",
         "prestart": [],
         "commands": {
+            "lyra2rev2": "",
             "lyra2rev3": "",
             "sha256q": "",
             "exosis": "",
@@ -108,7 +119,8 @@
             "x12": "",
             "x14": "",
             "bmw512": "",
-            "lyra2z": ""
+            "lyra2z": "",
+            "keccakc": ""
         },
         "difficulty": {
             "lyra2rev2": "",
@@ -119,7 +131,8 @@
             "x12": "",
             "x14": "",
             "bmw512": "",
-            "lyra2z": ""
+            "lyra2z": "",
+            "keccakc": ""
         },
         "naming": {
             "lyra2rev2": "lyra2v2",
@@ -130,7 +143,8 @@
             "x12": "x12",
             "x14": "x14",
             "bmw512": "bmw512",
-            "lyra2z": "lyra2z"
+            "lyra2z": "lyra2z",
+            "keccakc": "keccakc"
         },
         "fee": {
             "lyra2rev2": 0,
@@ -141,7 +155,8 @@
             "x12": 0,
             "x14": 0,
             "bmw512": 0,
-            "lyra2z": 0
+            "lyra2z": 0,
+            "keccakc": 0
         }
     }
 }

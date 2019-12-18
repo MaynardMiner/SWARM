@@ -335,6 +335,11 @@ function Global:start-update {
                                             $Data.$_.naming | Add-Member "mtp-tcr" "mtp-tcr" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "mtp-tcr" 1 -ErrorAction SilentlyContinue
 
+                                            $Data.$_.commands | Add-Member "lyra2rev2" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "lyra2rev2" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "lyra2rev2" "lyra2v2" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "lyra2rev2" 1 -ErrorAction SilentlyContinue
+
                                         }
                                     }
                                 }
@@ -551,6 +556,21 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "x12" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "x12" "x12" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "x12" 0 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "lyra2rev2" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "lyra2rev2" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "lyra2rev2" "lyra2v2" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "lyra2rev2" 0 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "lyra2rev3" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "lyra2rev3" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "lyra2rev3" "lyra2v3" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "lyra2rev2" 0 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "keccakc" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "keccakc" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "keccakc" "keccakc" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "keccakc" 0 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }
@@ -583,6 +603,9 @@ function Global:start-update {
                                     $Data | add-Member "power2b" @{alt_names = @("power2b"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force                                                                                                                                                                                                                             
                                     $Data | add-Member "yescryptr8g" @{alt_names = @("yescryptr8g"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force                                                                                                                                                                                                                             
                                     $Data | add-Member "phi2-lux" @{alt_names = @("phi2-lux"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force                                                                                                                                                                                                                             
+                                    $Data | add-Member "tribus" @{alt_names = @("tribus"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force
+                                    $Data | add-Member "keccakc" @{alt_names = @("keccakc"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+                                    $Data | add-Member "lyra2v2" @{alt_names = @("lyra2v2"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force                                                                                                                                                                                                                                                                                                                                                                                                                                                          
                                 } 
                                 
 

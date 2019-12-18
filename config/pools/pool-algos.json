@@ -466,6 +466,15 @@
       "comma seperated"
     ]
   },
+  "keccakc": {
+    "alt_names": [
+      "keccakc"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "lbk3": {
     "alt_names": [
       "lbk3"
@@ -494,10 +503,20 @@
       "comma seperated"
     ]
   },
-  "lyra2v3": {
+  "lyra2rev3": {
     "alt_names": [
       "lyra2v3",
       "lyra2rev3"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "lyra2rev2": {
+    "alt_names": [
+      "lyra2v2",
+      "lyra2rev2"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -708,6 +727,15 @@
   "timetravel": {
     "alt_names": [
       "timetravel"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "tribus": {
+    "alt_names": [
+      "tribus"
     ],
     "exclusions": [
       "add pool or miner here",
