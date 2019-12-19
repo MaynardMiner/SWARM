@@ -32,7 +32,9 @@ if ($args) {
     else {
         $Start = $true
         $args | % {
-            $_ = $_.replace("cnight","cryptonight")
+            if ($_ -is [string]) {
+                $_ = $_.replace("cnight", "cryptonight")
+            }
             $Command = $false
             $ListCheck = $_ -replace "-", ""
             if ($_[0] -eq "-") { $Command = $true; $Com = $_ -replace "-", "" }
@@ -40,7 +42,8 @@ if ($args) {
                 if ($ListCheck -in $List) {
                     if ($ListCheck -notin $parsed.keys) {
                         $parsed.Add($Com, "new")
-                    } else {
+                    }
+                    else {
                         Write-Host "Found $Listcheck twice in arguments" -ForegroundColor Red
                         Write-Host "Contiuning startup, but this may cause major issues." -ForegroundColor red
                         Start-Sleep -S 3
