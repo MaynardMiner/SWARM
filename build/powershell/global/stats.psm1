@@ -217,6 +217,8 @@ function Global:Set-Stat {
         if ($Shuffle) { $Stat.Deviation = [Math]::Round( ( ($Stat.Deviation * $Stat.Deviation_Periods) + $Shuffle) / ($Stat.Deviation_Periods + 1), 4 ) }
         if ($HashRate) { $Stat.Hashrate = [Math]::Round( ( ($Stat.Hashrate * $Stat.Hashrate_Periods) + $HashRate ) / ($Stat.Hashrate_Periods + 1), 0 ) }
         if ($Rejects -gt -1 -and $AsHashrate) { $Stat.Rejections = [Math]::Round( ( ($Stat.Rejections * $Stat.Rejection_Periods) + $Rejects ) / ($Stat.Rejection_Periods + 1), 4 ) }
+    } else {
+        log "Warning: Cannot change stat - `'Locked`' in stat file is set to true" -Foreground yellow
     }
 
     ## In case it doesn't exist.
