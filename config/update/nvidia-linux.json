@@ -205,9 +205,9 @@
     "NVIDIA2": ".\\bin\\gminer-2\\miner",
     "NVIDIA3": ".\\bin\\gminer-3\\miner",
     "minername": "miner",
-    "version": "1.83",
+    "version": "1.88",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.83/gminer_1_83_linux64.tar.xz"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.88/gminer_1_88_linux64.tar.xz"
   },
   "grin-miner": {
     "name": "grin-miner",
@@ -271,9 +271,9 @@
     "NVIDIA2": ".\\bin\\cc-verus-2\\ccminer",
     "NVIDIA3": ".\\bin\\cc-verus-3\\ccminer",
     "minername": "ccminer",
-    "version": "6.1",
+    "version": "3.611",
     "optional": "No",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/cc-verus-linux.tar.gz"
+    "uri": "https://github.com/monkins1010/ccminer/releases/download/v3.611/ccminer.ubuntu.18.zip"
   },
   "cc-lyra2z330": {
     "name": "cc-lyra2z330",
@@ -304,7 +304,7 @@
     "NVIDIA2": ".\\bin\\tt-miner-2\\TT-Miner",
     "NVIDIA3": ".\\bin\\tt-miner-3\\TT-Miner",
     "minername": "TT-Miner",
-    "version": "3.2.0",
+    "version": "3.2.2",
     "optional": "No",
     "uri": "https://tradeproject.de/download/Miner/TT-Miner.tar.xz"
   },

@@ -51,9 +51,9 @@
         "NVIDIA2": ".\\bin\\cc-verus-2\\ccminer.exe",
         "NVIDIA3": ".\\bin\\cc-verus-3\\ccminer.exe",
         "minername": "ccminer.exe",
-        "version": "6.1",
+        "version": "3.611",
         "optional": "No",
-        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/cc-verus.zip"
+        "uri": "https://github.com/monkins1010/ccminer/releases/download/v3.611/ccminergpuverus2.11.newer.zip"
     },
     "energiminer": {
         "name": "energiminer",
@@ -95,9 +95,9 @@
         "NVIDIA2": ".\\bin\\gminer-2\\miner.exe",
         "NVIDIA3": ".\\bin\\gminer-3\\miner.exe",
         "minername": "miner.exe",
-        "version": "1.83",
+        "version": "1.88",
         "optional": "No",
-        "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.83/gminer_1_83_windows64.zip"
+        "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.88/gminer_1_88_windows64.zip"
     },
     "claymore": {
         "name": "claymore",
@@ -249,7 +249,7 @@
         "NVIDIA2": ".\\bin\\tt-miner-2\\TT-Miner.exe",
         "NVIDIA3": ".\\bin\\tt-miner-3\\TT-Miner.exe",
         "minername": "TT-Miner.exe",
-        "version": "3.2.0",
+        "version": "3.2.2",
         "optional": "No",
         "uri": "https://tradeproject.de/download/Miner/TT-Miner.zip"
     },
