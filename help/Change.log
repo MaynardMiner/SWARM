@@ -1522,3 +1522,50 @@ Updates
 * xmrig updated (cpu, nvidia, and amd)
 * xmr-stak updated
 * gminer updated
+
+############################################
+############################################
+
+# SWARM 2.8.6
+
+## What's New?
+ * Issue #248
+   * Users can now 'lock' stats.
+    * there is a new value in every stat file:
+      "locked": false
+    * if you change it to true, it will not update
+      the file. This means you can set your own
+      hashrate/watt/etc., and it will stay 
+      that way.
+    * It will still record benchmarked values,
+      and pool estimates for troubleshooting, 
+      but it will not change the 
+      values SWARM uses.
+    * This is a beta change.
+    * Command to do this remotely coming soon.
+      * want to verify no user issues.
+ * Issue #258
+   * Added new ccminer-verus
+   * Compiled for Sandybridge CPU only.
+   * If it doesn't work- you will have to compile
+     your own version:
+     https://github.com/monkins1010/ccminer/releases
+ * Issue #257
+   * Added old algorithms back.
+     * zergpool lists them as GPU algorithms.
+
+## Improvements
+ * Issue #252
+   * ``get stats`` starts at position 1 not 0.
+ * Issue #242
+   * hugepages is set to default on exit.
+   * hugepages is set to default on start.
+     (in case user closes and restarts SWARM
+      very quickly).
+ 
+
+## Updates
+* tt-miner updated
+* cc-verus updated
+* gminer updated
+* lolminer updated (linux version is newer)
