@@ -53,7 +53,7 @@
         "minername": "ccminer.exe",
         "version": "3.611",
         "optional": "No",
-        "uri": "https://github.com/monkins1010/ccminer/releases/download/v3.611/ccminergpuverus2.11.newer.zip"
+        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/cc-verus-windows.zip"
     },
     "energiminer": {
         "name": "energiminer",
