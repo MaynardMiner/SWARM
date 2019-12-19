@@ -85,6 +85,11 @@ function Global:start-killscript {
     }
     $Proc = Start-Process ".\build\bash\killall.sh" -ArgumentList "background" -PassThru
     $Proc | Wait-Process
+    
+    <# Reset Hugepages #>
+    if(test-path "/hive/bin") { <# Is HiveOS #>
+        Invoke-expression "hugepages -r";
+    }
 }
 
 function Global:Add-Module($Path) {

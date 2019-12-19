@@ -141,7 +141,10 @@ While ($True) {
     ## Timer For When To Restart Loop
     $(vars).BackgroundTimer.Restart()
 
-    if ($(arg).Platform -eq "linux" -and -not $(vars).WebSites) {
+    ##close down this agent if SWARM is not running.
+    ##this will also reset hugepages
+    ##this will also close down miners
+    if ($IsLinux) {
         if ($global:GETSWARM.HasExited -eq $true) {
             Write-Host "Closing down SWARM" -ForegroundColor Yellow
             Global:start-killscript
