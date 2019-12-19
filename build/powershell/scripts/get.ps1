@@ -415,7 +415,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 $Type | Sort-Object | ForEach-Object {
                     $Miner_Table = $Stat_Table | Where Type -eq $_
                     if ($Argument2) { $Miner_Table = $Miner_Table | Sort-Object -Property Profit -Descending | Select -First ([int]$Argument2) }
-                    $global:index = 0
+                    $global:index = 1
                     if ($WattTable -and $ShareTable -and $VolumeTable) {
                         $Get += $Miner_Table | Sort-Object -Property Profit -Descending | Format-Table -GroupBy Type (
                             @{Label = "Miner`|Coin"; Expression = { "$me[${white}m$($global:index) $($_.Name)${me}[0m`|$me[${green}m$($_.ScreenName.replace("cryptonight","cnight"))${me}[0m"; $global:index += 1 }; Align = 'left' },

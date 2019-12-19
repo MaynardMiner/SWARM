@@ -56,7 +56,7 @@ Function Global:Get-WalletTable {
         $Sym | % {
             $Grouping = $WalletTable | Where Ticker -eq $_
             $Total_Unpaid = 0
-            $Total_Balace = 0
+            $Total_Balance = 0
             $Grouping.Unpaid | % { $Total_Unpaid += $_ }
             $Grouping.Balance | % { $Total_Balance += $_ }
 

@@ -99,6 +99,7 @@ function Global:Set-Stat {
         Minute_5  = [Double]$Value
         Minute_15 = [Double]$Value
         Hour      = [Double]$Value
+        Locked    = $false
     }
 
     ## Change default table if stat already exists
@@ -108,6 +109,10 @@ function Global:Set-Stat {
         $Stat.Minute_5 = [Double]$GetStat.Minute_5
         $Stat.Minute_15 = [Double]$GetStat.Minute_15
         $Stat.Hour = [Double]$GetStat.Hour
+        
+        if ($GetStat.Locked) {
+            $Stat.Locked = [bool]$GetStat.Locked
+        }
 
         $Hour_4 = [Double]$GetStat.Hour_4
         $Day = [Double]$GetStat.Day
@@ -169,47 +174,50 @@ function Global:Set-Stat {
             $Stat | Add-Member "Rejection_Periods" 0
         }
     }    
-    
+
     ## Set initial values
     $Stat | Add-Member "Values" @()
     if ($Check) { $Stat.Values = @($GetStat.Values) }
-
+    
     ## Add new values, rotate first value if above max periods
     $Stat.Values += [decimal]$Value
-    if ($Stat.Values.Count -gt $Max_Periods) { $Stat.Values = $Stat.Values | Select -Skip 1 }
+    if ($Stat.Values.Count -gt $Max_Periods) { $Stat.Values = $Stat.Values | Select -Skip 1 }    
+    
+    if ($Stat.Locked -eq $false) {
 
-    ## Same for hashrate, only it is a rolling moving average (no values)
-    if ($HashRate) {
-        if ($Stat.Hashrate_Periods -lt $Hash_Max) { $Stat.Hashrate_Periods++ }
-        else { $Stat.Hashrate_Periods = $Hash_Max }
+        ## Same for hashrate, only it is a rolling moving average (no values)
+        if ($HashRate) {
+            if ($Stat.Hashrate_Periods -lt $Hash_Max) { $Stat.Hashrate_Periods++ }
+            else { $Stat.Hashrate_Periods = $Hash_Max }
+        }
+
+        ## Same for historical bias, but is a rolling moving average (no values)
+        if ($Shuffle) {
+            if ( $Stat.Deviation_Periods -lt $Max_Periods) { $Stat.Deviation_Periods++ }
+            else { $Stat.Deviation_Periods = $Max_Periods }
+        }
+
+        ## Same for rejection bias, but is a rolling moving average (no values)
+        if ($Rejects -gt -1 -and $AsHashrate) {
+            if ( $Stat.Rejection_Periods -lt $Hash_Max) { $Stat.Rejection_Periods++ }
+            else { $Stat.Rejection_Periods = $Hash_Max }
+        }    
+
+        ## Calculate moving average for each time period
+        $Calcs.keys | foreach {
+            $T = $Stat.Values
+            $Theta = (Global:Get-Theta -Calcs $Calcs.$_ -Values $T)
+            $Alpha = [Double](Global:Get-Alpha($Theta.Count))
+            $Zeta = [Double]$Theta.Sum / $Theta.Count
+            $Stat.$_ = [Math]::Max( ( $Zeta * $Alpha + $($Stat.$_) * (1 - $Alpha) ) , $SmallestValue )
+            $Stat.$_ = [Math]::Round( $Stat.$_, 15 )
+        }
+
+        ## Calculate simple rolling moving average for each pool hashrate / deviation / Rejects
+        if ($Shuffle) { $Stat.Deviation = [Math]::Round( ( ($Stat.Deviation * $Stat.Deviation_Periods) + $Shuffle) / ($Stat.Deviation_Periods + 1), 4 ) }
+        if ($HashRate) { $Stat.Hashrate = [Math]::Round( ( ($Stat.Hashrate * $Stat.Hashrate_Periods) + $HashRate ) / ($Stat.Hashrate_Periods + 1), 0 ) }
+        if ($Rejects -gt -1 -and $AsHashrate) { $Stat.Rejections = [Math]::Round( ( ($Stat.Rejections * $Stat.Rejection_Periods) + $Rejects ) / ($Stat.Rejection_Periods + 1), 4 ) }
     }
-
-    ## Same for historical bias, but is a rolling moving average (no values)
-    if ($Shuffle) {
-        if ( $Stat.Deviation_Periods -lt $Max_Periods) { $Stat.Deviation_Periods++ }
-        else { $Stat.Deviation_Periods = $Max_Periods }
-    }
-
-    ## Same for rejection bias, but is a rolling moving average (no values)
-    if ($Rejects -gt -1 -and $AsHashrate) {
-        if ( $Stat.Rejection_Periods -lt $Hash_Max) { $Stat.Rejection_Periods++ }
-        else { $Stat.Rejection_Periods = $Hash_Max }
-    }    
-
-    ## Calculate moving average for each time period
-    $Calcs.keys | foreach {
-        $T = $Stat.Values
-        $Theta = (Global:Get-Theta -Calcs $Calcs.$_ -Values $T)
-        $Alpha = [Double](Global:Get-Alpha($Theta.Count))
-        $Zeta = [Double]$Theta.Sum / $Theta.Count
-        $Stat.$_ = [Math]::Max( ( $Zeta * $Alpha + $($Stat.$_) * (1 - $Alpha) ) , $SmallestValue )
-        $Stat.$_ = [Math]::Round( $Stat.$_, 15 )
-    }
-
-    ## Calculate simple rolling moving average for each pool hashrate / deviation / Rejects
-    if ($Shuffle) { $Stat.Deviation = [Math]::Round( ( ($Stat.Deviation * $Stat.Deviation_Periods) + $Shuffle) / ($Stat.Deviation_Periods + 1), 4 ) }
-    if ($HashRate) { $Stat.Hashrate = [Math]::Round( ( ($Stat.Hashrate * $Stat.Hashrate_Periods) + $HashRate ) / ($Stat.Hashrate_Periods + 1), 0 ) }
-    if ($Rejects -gt -1 -and $AsHashrate) { $Stat.Rejections = [Math]::Round( ( ($Stat.Rejections * $Stat.Rejection_Periods) + $Rejects ) / ($Stat.Rejection_Periods + 1), 4 ) }
 
     ## In case it doesn't exist.
     if (-not (Test-Path "stats")) { New-Item "stats" -ItemType "directory" }
