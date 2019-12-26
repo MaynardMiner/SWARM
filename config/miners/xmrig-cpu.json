@@ -36,7 +36,7 @@
             "cryptonight-heavyx": "cn-heavy/xhv",
             "cryptonight-saber": "cn-heavy/tube",
             "cryptonight-r": "cn/r",
-            "cryptonight-fast": "cn/fast",
+            "cryptonight-fast": "cn/half",
             "randomx": "rx/0"
         },
         "fee": {
