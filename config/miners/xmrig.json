@@ -17,6 +17,7 @@
             "cryptonight-saber": "",
             "cryptonight-r": "",
             "cryptonight-gpu": "",
+            "cryptonight-fast": "",
             "randomx": ""
         },
         "difficulty": {
@@ -26,6 +27,7 @@
             "cryptonight-saber": "",
             "cryptonight-r": "",
             "cryptonight-gpu": "",
+            "cryptonight-fast": "",
             "randomx": ""
         },
         "naming": {
@@ -36,6 +38,7 @@
             "cryptonight-saber": "cn-heavy/tube",
             "cryptonight-r": "cn/r",
             "cryptonight-gpu": "cn/gpu",
+            "cryptonight-fast": "cn/fast",
             "randomx": "rx/0"
         },
         "fee": {
@@ -45,6 +48,7 @@
             "cryptonight-saber": 1,
             "cryptonight-r": 1,
             "cryptonight-gpu": 1,
+            "cryptonight-fast": 1,
             "randomx": 1
         }
     }

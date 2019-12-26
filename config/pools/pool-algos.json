@@ -160,6 +160,17 @@
       "comma seperated"
     ]
   },
+  "cryptonight-fast": {
+    "alt_names": [
+      "cryptonight-fast",
+      "cryptonight_fast",
+      "cnfastv2"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "cryptonight-fast-v8": {
     "alt_names": [
       "cryptonight-fast-v8",
