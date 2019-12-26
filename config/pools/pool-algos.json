@@ -204,6 +204,17 @@
       "comma seperated"
     ]
   },
+  "cryptonight-xeq": {
+    "alt_names": [
+      "cryptonight-xeq",
+      "cryptonightxeq",
+      "cryptonight_xeq"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "cryptonight-heavy": {
     "alt_names": [
       "cryptonight-heavy",
