@@ -673,6 +673,28 @@
       "comma seperated"
     ]
   },
+  "randomsfx": {
+    "alt_names": [
+      "random-sfx",
+      "random_sfx",
+      "randomsfx"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "randomv": {
+    "alt_names": [
+      "random-v",
+      "random_v",
+      "randomv"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "randomx": {
     "alt_names": [
       "randomxmonero",
