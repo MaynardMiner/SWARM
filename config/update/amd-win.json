@@ -161,9 +161,9 @@
     "AMD2": ".\\bin\\xmrig-amd-2\\xmrig.exe",
     "AMD3": ".\\bin\\xmrig-amd-3\\xmrig.exe",
     "minername": "xmrig.exe",
-    "version": "5.1.1",
+    "version": "5.4.0",
     "optional": "No",
-    "uri": "https://github.com/xmrig/xmrig/releases/download/v5.1.1/xmrig-5.1.1-msvc-win64.zip"
+    "uri": "https://github.com/xmrig/xmrig/releases/download/v5.4.0/xmrig-5.4.0-msvc-win64.zip"
   },
   "srbminer": {
     "name": "srbminer",

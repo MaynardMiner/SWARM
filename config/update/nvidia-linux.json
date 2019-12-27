@@ -260,9 +260,9 @@
     "NVIDIA2": ".\\bin\\xmrig-nv-2\\xmrig",
     "NVIDIA3": ".\\bin\\xmrig-nv-3\\xmrig",
     "minername": "xmrig",
-    "version": "5.1.1",
+    "version": "5.4.0",
     "optional": "Yes",
-    "uri": "https://github.com/xmrig/xmrig/releases/download/v5.1.1/xmrig-5.1.1-xenial-x64.tar.gz"
+    "uri": "https://github.com/xmrig/xmrig/releases/download/v5.4.0/xmrig-5.4.0-xenial-x64.tar.gz"
   },
   "cc-verus": {
     "name": "cc-verus",
