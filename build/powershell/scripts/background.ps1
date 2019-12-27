@@ -187,6 +187,7 @@ While ($True) {
             $HiveAlgo = $HiveAlgo -replace "phi2-lux", "phi2"
             $HiveAlgo = $HiveAlgo -replace "cuckaroo29", "cuckoo"
             $HiveAlgo = $HiveAlgo -replace "cuckaroo29d", "cuckoo"
+            $HiveAlgo = $HiveAlgo -replace "cryptonight-xeq", "cryptonight-gpu"
             $NewName = $global:MinerAlgo -replace "`/", "`-"
             $NewName = $global:MinerAlgo -replace "`_", "`-"
 
