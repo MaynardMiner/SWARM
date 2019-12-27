@@ -1569,3 +1569,26 @@ Updates
 * cc-verus updated
 * gminer updated
 * lolminer updated (linux version is newer)
+
+############################################
+############################################
+
+# SWARM 2.8.7
+
+## What's New?
+ * Issue #260
+   * New algos for cryptonight added.
+ * Issue #261
+   * Future cpu algorithms added.
+
+## Improvements
+ * Issue #262
+  * Swarm will notify on main screen when
+    stats and active data had been refreshed for
+    commands.
+
+## Updates
+ * gminer updated
+ * xmrig updated
+ * jayddee updated
+ * rplant updated
