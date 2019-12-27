@@ -723,6 +723,15 @@
       "comma seperated"
     ]
   },
+  "sha256csm": {
+    "alt_names": [
+      "sha256csm"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "sha256q": {
     "alt_names": [
       "sha256q"
@@ -978,6 +987,39 @@
   "yespower": {
     "alt_names": [
       "yespower"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "yespoweriots": {
+    "alt_names": [
+      "yespoweriots",
+      "yespower-iots",
+      "yespower_iots"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "yespoweritc": {
+    "alt_names": [
+      "yespoweritc",
+      "yespower-itc",
+      "yespower_itc"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "yespoweric": {
+    "alt_names": [
+      "yespoweric",
+      "yespower-ic",
+      "yespower_ic"
     ],
     "exclusions": [
       "add pool or miner here",
