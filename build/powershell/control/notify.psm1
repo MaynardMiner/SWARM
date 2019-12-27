@@ -82,6 +82,7 @@ function Global:Get-LaunchNotification {
 function Global:Get-Interval {
     ##Determine Benchmarking
     $NoHash = $false
+    log "Stats and active miners have been updated for commands." -foreground Yellow;
     $(vars).BestActiveMiners | ForEach-Object {
         $StatAlgo = $_.Algo -replace "`_", "`-"
         $StatAlgo = $StatAlgo -replace "`/","`-"        
