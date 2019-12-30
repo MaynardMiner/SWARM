@@ -1637,11 +1637,13 @@ to true in order to prevent SWARM from
 changing it- It is in simple .json format.
 
 ## Improvements
- * Issue #266
-  * Correct link for xmrig windows for CUDA
-
- * Issue #269
-  * Fixed ``version`` command for Windows.
+  * Issue #266
+    * Correct link for xmrig windows for CUDA
+  * Issue #269
+    * Fixed ``version`` command for Windows.
+  * Issue #247
+    * export folder is packaged as tar.gz,
+      is extracted on first run.
 
 ## Updates
  * Jayddee updated
