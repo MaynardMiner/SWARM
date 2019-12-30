@@ -1603,7 +1603,6 @@ Updates
 
 # SWARM 2.8.8
 
-
 ## What's New?
  * Issue #266
    Fixed xmrig issue in NVIDIA (linux)
@@ -1621,3 +1620,29 @@ Updates
 ## Updates
  * xmrig update
  * xmr-stak-rx update
+
+############################################
+############################################
+
+# SWARM 2.8.9
+
+## Note
+Pay attention to pool hashrate for
+cryptonight algorithms and miner hashrate-
+They may not be the same.
+
+You can manually adjust the stat in the
+.\stats folder, and then set 'locked'
+to true in order to prevent SWARM from
+changing it- It is in simple .json format.
+
+## Improvements
+ * Issue #266
+  * Correct link for xmrig windows for CUDA
+
+ * Issue #269
+  * Fixed ``version`` command for Windows.
+
+## Updates
+ * Jayddee updated
+

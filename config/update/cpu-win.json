@@ -41,9 +41,9 @@
     "type": "cpu",
     "CPU": ".\\bin\\jayddee-1\\cpuminer-avx2.exe",
     "minername": "cpuminer-avx2.exe",
-    "version": "3.10.6",
+    "version": "3.10.7",
     "optional": "No",
-    "uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.10.6/cpuminer-opt-3.10.6-windows.zip"
+    "uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.10.7/cpuminer-opt-3.10.7-windows.zip"
   },
   "cpupower": {
     "name": "cpupower",
