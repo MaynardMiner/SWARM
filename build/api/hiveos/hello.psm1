@@ -127,14 +127,17 @@ function Global:Start-WebStartup($response, $Site) {
                     $global:Config.$Params | ConvertTo-Json | Set-Content ".\config\parameters\$($Params)_keys.json"
                 }
                 "wallet" {
-                    $arguments = [string]$RigConf.result.wallet
+                    $arguments = [string]$RigConf.result.wallet | ConvertFrom-StringData
+                    if($arguments.CUSTOM_USER_CONFIG) {
+                        ## Remove the "'" at front and end.
+                        $arguments = $arguments.CUSTOM_USER_CONFIG.TrimStart("'").TrimEnd("'");
+
+                    } else {
+                        Write-Log "Warning: No CUSTOM_USER_CONFIG found!" -ForegroundColor Red
+                        Write-Log "Make sure you are using a Custom User Config section in HiveOS" -ForegroundColor Red
+                    }
                     if ($arguments -like "*-wallet1*" -or $arguments -like "*`"wallet1`"*") {
                         $argjson = @{ }
-                        $start = $arguments.Lastindexof("CUSTOM_USER_CONFIG=") + 20
-                        $end = $arguments.LastIndexOf("META") - 3
-                        $arguments = $arguments.substring($start, ($end - $start))
-                        $arguments = $arguments -replace "\'\\\'", ""
-                        $arguments = $arguments -replace "\u0027", "`'"
                         try { $test = "$arguments" | ConvertFrom-Json; if ($test) { $isjson = $true } } catch { $isjson = $false }
                         if ($isjson) {
                             $Params = @{ }
