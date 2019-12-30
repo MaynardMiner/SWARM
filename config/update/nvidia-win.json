@@ -21,7 +21,7 @@
         "version": "26.2",
         "optional": "No",
         "uri": "https://github.com/NebuTech/NBMiner/releases/download/v26.2/NBMiner_26.2_Win.zip"
-      },    
+    },
     "cc-mtp": {
         "name": "cc-mtp",
         "type": "nvidia",
@@ -208,8 +208,8 @@
         "version": "1.0.2",
         "optional": "No",
         "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/cc-rfv2-windows.zip"
-      },
-      "multiminer": {
+    },
+    "multiminer": {
         "name": "multiminer",
         "type": "nvidia",
         "NVIDIA1": ".\\bin\\multiminer-1\\multiminer.exe",
@@ -219,7 +219,7 @@
         "version": "1.1.0",
         "optional": "Yes",
         "uri": "https://github.com/bogdanadnan/multiminer/releases/download/v1.1.0/multiminer_v1.1.0_24.01.2019.zip"
-      },
+    },
     "t-rex": {
         "name": "t-rex",
         "type": "nvidia",
@@ -256,45 +256,45 @@
     "xmrig-nv": {
         "name": "xmrig-nv",
         "type": "nvidia",
-        "NVIDIA1": ".\\bin\\xmrig-nv-1\\xmrig-nvidia.exe",
-        "NVIDIA2": ".\\bin\\xmrig-nv-2\\xmrig-nvidia.exe",
-        "NVIDIA3": ".\\bin\\xmrig-nv-3\\xmrig-nvidia.exe",
-        "minername": "xmrig-nvidia.exe",
+        "NVIDIA1": ".\\bin\\xmrig-nv-1\\xmrig.exe",
+        "NVIDIA2": ".\\bin\\xmrig-nv-2\\xmrig.exe",
+        "NVIDIA3": ".\\bin\\xmrig-nv-3\\xmrig.exe",
+        "minername": "xmrig.exe",
         "version": "5.4.0",
         "optional": "No",
         "uri": "https://github.com/xmrig/xmrig/releases/download/v5.4.0/xmrig-5.4.0-msvc-cuda10_1-win64.zip"
     },
     "nv-lolminer": {
-        "name":"nv-lolminer", 
-        "type":"nvidia", 
-        "NVIDIA1":".\\bin\\nv-lolminer-1\\lolMiner.exe", 
-        "NVIDIA2":".\\bin\\nv-lolminer-2\\lolMiner.exe", 
-        "NVIDIA3":".\\bin\\nv-lolminer-3\\lolMiner.exe", 
-        "minername":"lolMiner.exe", 
-        "version":"0.9.3", 
+        "name": "nv-lolminer",
+        "type": "nvidia",
+        "NVIDIA1": ".\\bin\\nv-lolminer-1\\lolMiner.exe",
+        "NVIDIA2": ".\\bin\\nv-lolminer-2\\lolMiner.exe",
+        "NVIDIA3": ".\\bin\\nv-lolminer-3\\lolMiner.exe",
+        "minername": "lolMiner.exe",
+        "version": "0.9.3",
         "optional": "Yes",
-        "uri":"https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.93/lolMiner_v093_Win64.zip"
-        },
-        "ethminer": {
-            "name": "ethminer",
-            "type": "nvidia",
-            "NVIDIA1": ".\\bin\\ethminer-1\\ethminer.exe",
-            "NVIDIA2": ".\\bin\\ethminer-2\\ethminer.exe",
-            "NVIDIA3": ".\\bin\\ethminer-3\\ethminer.exe",
-            "minername": "ethminer.exe",
-            "version": "0.19.0-alpha.0",
-            "optional": "Yes",
-            "uri": "https://github.com/ethereum-mining/ethminer/releases/download/v0.19.0-alpha.0/ethminer-0.19.0-alpha.0-cuda10.0-windows-amd64.zip"
-          },
-          "swarm-miner": {
-            "name": "swarm-miner",
-            "type": "nvidia",
-            "NVIDIA1": ".\\bin\\swarm-miner-1\\SWARM-MINER.exe",
-            "NVIDIA2": ".\\bin\\swarm-miner-2\\SWARM-MINER.exe",
-            "NVIDIA3": ".\\bin\\swarm-miner-3\\SWARM-MINER.exe",
-            "minername": "SWARM-MINER.exe",
-            "version": "1.05",
-            "optional": "No",
-            "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/SWARM-MINER-windows.zip"
-          }        
+        "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.93/lolMiner_v093_Win64.zip"
+    },
+    "ethminer": {
+        "name": "ethminer",
+        "type": "nvidia",
+        "NVIDIA1": ".\\bin\\ethminer-1\\ethminer.exe",
+        "NVIDIA2": ".\\bin\\ethminer-2\\ethminer.exe",
+        "NVIDIA3": ".\\bin\\ethminer-3\\ethminer.exe",
+        "minername": "ethminer.exe",
+        "version": "0.19.0-alpha.0",
+        "optional": "Yes",
+        "uri": "https://github.com/ethereum-mining/ethminer/releases/download/v0.19.0-alpha.0/ethminer-0.19.0-alpha.0-cuda10.0-windows-amd64.zip"
+    },
+    "swarm-miner": {
+        "name": "swarm-miner",
+        "type": "nvidia",
+        "NVIDIA1": ".\\bin\\swarm-miner-1\\SWARM-MINER.exe",
+        "NVIDIA2": ".\\bin\\swarm-miner-2\\SWARM-MINER.exe",
+        "NVIDIA3": ".\\bin\\swarm-miner-3\\SWARM-MINER.exe",
+        "minername": "SWARM-MINER.exe",
+        "version": "1.05",
+        "optional": "No",
+        "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/SWARM-MINER-windows.zip"
+    }
 }
