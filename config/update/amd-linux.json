@@ -172,9 +172,9 @@
     "AMD2": ".\\bin\\xmrstak-rx-2\\xmr-stak-rx",
     "AMD3": ".\\bin\\xmrstak-rx-3\\xmr-stak-rx",
     "minername": "xmr-stak-rx",
-    "version": "1.0.2",
+    "version": "1.0.4",
     "optional": "No",
-    "uri": "https://github.com/fireice-uk/xmr-stak/releases/download/1.0.2-rx/xmr-stak-rx-linux-1.0.2-cpu_opencl-amd.tar.xz"
+    "uri": "https://github.com/fireice-uk/xmr-stak/releases/download/1.0.4-rx/xmr-stak-rx-linux-1.0.4-cpu_opencl-amd.tar.xz"
   },
   "wildrig": {
     "name": "wildrig",
