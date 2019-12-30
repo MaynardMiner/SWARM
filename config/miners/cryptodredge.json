@@ -16,6 +16,11 @@
             "neoscrypt": "",
             "cryptonight-v8": "",
             "cryptonight-heavy": "",
+            "cryptonight-gpu": "",
+            "cryptonight-xeq": "",
+            "cryptonight-saber": "",
+            "cryptonight-conceal": "",
+            "cryptonight-fast": "",
             "phi2": "",
             "phi2-lux": "",
             "skunk": "",
@@ -27,8 +32,7 @@
             "x16rv2": "",
             "veil": "",
             "lyra2zz": "",
-            "mtp": "",
-            "lyra2vc0ban": ""
+            "mtp": ""
         },
         "difficulty": {
             "cuckaroo29": "",
@@ -42,6 +46,11 @@
             "neoscrypt": "",
             "cryptonight-v8": "",
             "cryptonight-heavy": "",
+            "cryptonight-gpu": "",
+            "cryptonight-xeq": "",
+            "cryptonight-saber": "",
+            "cryptonight-conceal": "",
+            "cryptonight-fast": "",
             "phi2": "",
             "phi2-lux": "",
             "skunk": "",
@@ -53,8 +62,7 @@
             "x16rv2": "",
             "veil": "",
             "lyra2zz": "",
-            "mtp": "",
-            "lyra2vc0ban": ""
+            "mtp": ""
         },
         "naming": {
             "cuckaroo29": "cuckaroo29",
@@ -68,6 +76,11 @@
             "neoscrypt": "neoscrypt",
             "cryptonight-heavy": "cryptonightheavy",
             "cryptonight-v8": "cnv8",
+            "cryptonight-gpu": "cngpu",
+            "cryptonight-xeq": "cngpu",
+            "cryptonight-saber": "cnsaber",
+            "cryptonight-conceal": "cnconceal",
+            "cryptonight-fast": "cnfast",
             "phi2": "phi2",
             "phi2-lux": "phi2",
             "skunk": "skunk",
@@ -79,8 +92,7 @@
             "x16rv2": "x16rv2",
             "veil": "x16rt",
             "lyra2zz": "lyra2zz",
-            "mtp": "mtp",
-            "lyra2vc0ban": "lyra2vc0ban"
+            "mtp": "mtp"
         },
         "fee": {
             "cuckaroo29": 1,
@@ -94,9 +106,11 @@
             "neoscrypt": 1,
             "cryptonight-heavy": 1,
             "cryptonight-v8": 1,
-            "aeon": 1,
-            "masari": 1,
-            "stellite": 1,
+            "cryptonight-gpu": 1,
+            "cryptonight-xeq": 1,
+            "cryptonight-saber": 1,
+            "cryptonight-conceal": 1,
+            "cryptonight-fast": 1,
             "phi2": 1,
             "phi2-lux": 1,
             "skunk": 1,
@@ -108,10 +122,7 @@
             "x16rv2": 1,
             "veil": 1,
             "lyra2zz": 1,
-            "mtp": 2,
-            "lyra2vc0ban": 1,
-            "cnfastv2": 1,
-            "cnsuperfast": 1
+            "mtp": 2
         }
     },
     "NVIDIA2": {
@@ -130,6 +141,11 @@
             "neoscrypt": "",
             "cryptonight-v8": "",
             "cryptonight-heavy": "",
+            "cryptonight-gpu": "",
+            "cryptonight-xeq": "",
+            "cryptonight-saber": "",
+            "cryptonight-conceal": "",
+            "cryptonight-fast": "",
             "phi2": "",
             "phi2-lux": "",
             "skunk": "",
@@ -141,8 +157,7 @@
             "x16rv2": "",
             "veil": "",
             "lyra2zz": "",
-            "mtp": "",
-            "lyra2vc0ban": ""
+            "mtp": ""
         },
         "difficulty": {
             "cuckaroo29": "",
@@ -156,6 +171,11 @@
             "neoscrypt": "",
             "cryptonight-v8": "",
             "cryptonight-heavy": "",
+            "cryptonight-gpu": "",
+            "cryptonight-xeq": "",
+            "cryptonight-saber": "",
+            "cryptonight-conceal": "",
+            "cryptonight-fast": "",
             "phi2": "",
             "phi2-lux": "",
             "skunk": "",
@@ -167,8 +187,7 @@
             "x16rv2": "",
             "veil": "",
             "lyra2zz": "",
-            "mtp": "",
-            "lyra2vc0ban": ""
+            "mtp": ""
         },
         "naming": {
             "cuckaroo29": "cuckaroo29",
@@ -182,6 +201,11 @@
             "neoscrypt": "neoscrypt",
             "cryptonight-heavy": "cryptonightheavy",
             "cryptonight-v8": "cnv8",
+            "cryptonight-gpu": "cngpu",
+            "cryptonight-xeq": "cngpu",
+            "cryptonight-saber": "cnsaber",
+            "cryptonight-conceal": "cnconceal",
+            "cryptonight-fast": "cnfast",
             "phi2": "phi2",
             "phi2-lux": "phi2",
             "skunk": "skunk",
@@ -193,8 +217,7 @@
             "x16rv2": "x16rv2",
             "veil": "x16rt",
             "lyra2zz": "lyra2zz",
-            "mtp": "mtp",
-            "lyra2vc0ban": "lyra2vc0ban"
+            "mtp": "mtp"
         },
         "fee": {
             "cuckaroo29": 1,
@@ -208,9 +231,11 @@
             "neoscrypt": 1,
             "cryptonight-heavy": 1,
             "cryptonight-v8": 1,
-            "aeon": 1,
-            "masari": 1,
-            "stellite": 1,
+            "cryptonight-gpu": 1,
+            "cryptonight-xeq": 1,
+            "cryptonight-saber": 1,
+            "cryptonight-conceal": 1,
+            "cryptonight-fast": 1,
             "phi2": 1,
             "phi2-lux": 1,
             "skunk": 1,
@@ -222,10 +247,7 @@
             "x16rv2": 1,
             "veil": 1,
             "lyra2zz": 1,
-            "mtp": 2,
-            "lyra2vc0ban": 1,
-            "cnfastv2": 1,
-            "cnsuperfast": 1
+            "mtp": 2
         }
     },
     "NVIDIA3": {
@@ -244,6 +266,11 @@
             "neoscrypt": "",
             "cryptonight-v8": "",
             "cryptonight-heavy": "",
+            "cryptonight-gpu": "",
+            "cryptonight-xeq": "",
+            "cryptonight-saber": "",
+            "cryptonight-conceal": "",
+            "cryptonight-fast": "",
             "phi2": "",
             "phi2-lux": "",
             "skunk": "",
@@ -255,8 +282,7 @@
             "x16rv2": "",
             "veil": "",
             "lyra2zz": "",
-            "mtp": "",
-            "lyra2vc0ban": ""
+            "mtp": ""
         },
         "difficulty": {
             "cuckaroo29": "",
@@ -270,6 +296,11 @@
             "neoscrypt": "",
             "cryptonight-v8": "",
             "cryptonight-heavy": "",
+            "cryptonight-gpu": "",
+            "cryptonight-xeq": "",
+            "cryptonight-saber": "",
+            "cryptonight-conceal": "",
+            "cryptonight-fast": "",
             "phi2": "",
             "phi2-lux": "",
             "skunk": "",
@@ -281,8 +312,7 @@
             "x16rv2": "",
             "veil": "",
             "lyra2zz": "",
-            "mtp": "",
-            "lyra2vc0ban": ""
+            "mtp": ""
         },
         "naming": {
             "cuckaroo29": "cuckaroo29",
@@ -296,6 +326,11 @@
             "neoscrypt": "neoscrypt",
             "cryptonight-heavy": "cryptonightheavy",
             "cryptonight-v8": "cnv8",
+            "cryptonight-gpu": "cngpu",
+            "cryptonight-xeq": "cngpu",
+            "cryptonight-saber": "cnsaber",
+            "cryptonight-conceal": "cnconceal",
+            "cryptonight-fast": "cnfast",
             "phi2": "phi2",
             "phi2-lux": "phi2",
             "skunk": "skunk",
@@ -307,8 +342,7 @@
             "x16rv2": "x16rv2",
             "veil": "x16rt",
             "lyra2zz": "lyra2zz",
-            "mtp": "mtp",
-            "lyra2vc0ban": "lyra2vc0ban"
+            "mtp": "mtp"
         },
         "fee": {
             "cuckaroo29": 1,
@@ -322,9 +356,11 @@
             "neoscrypt": 1,
             "cryptonight-heavy": 1,
             "cryptonight-v8": 1,
-            "aeon": 1,
-            "masari": 1,
-            "stellite": 1,
+            "cryptonight-gpu": 1,
+            "cryptonight-xeq": 1,
+            "cryptonight-saber": 1,
+            "cryptonight-conceal": 1,
+            "cryptonight-fast": 1,
             "phi2": 1,
             "phi2-lux": 1,
             "skunk": 1,
@@ -336,10 +372,7 @@
             "x16rv2": 1,
             "veil": 1,
             "lyra2zz": 1,
-            "mtp": 2,
-            "lyra2vc0ban": 1,
-            "cnfastv2": 1,
-            "cnsuperfast": 1
+            "mtp": 2
         }
     }
 }

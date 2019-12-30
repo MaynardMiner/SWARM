@@ -149,6 +149,18 @@
       "comma seperated"
     ]
   },
+  "cryptonight-conceal": {
+    "alt_names": [
+      "cryptonight-conceal",
+      "crptonight_conceal",
+      "crptonightconceal",
+      "aeon"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "cryptonight-lite": {
     "alt_names": [
       "cryptonight-lite",
