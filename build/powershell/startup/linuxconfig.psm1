@@ -554,14 +554,14 @@ function Global:Start-LinuxConfig {
         }
     }
     
+    ##Data and Hive Configs
+    log "Getting Data" -ForegroundColor Yellow
+    Global:Get-Data
+    
     ## Aaaaannnd...Que that sexy loading screen
     Global:Get-SexyUnixLogo
     $Proc = Start-Process ".\build\bash\screentitle.sh" -PassThru
     $Proc | Wait-Process
-
-    ##Data and Hive Configs
-    log "Getting Data" -ForegroundColor Yellow
-    Global:Get-Data
 
     ## Set Arguments/New Parameters
     if ($global:Config.hive_params.Id) {
