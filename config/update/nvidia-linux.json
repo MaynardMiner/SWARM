@@ -261,7 +261,7 @@
     "NVIDIA3": ".\\bin\\xmrig-nv-3\\xmrig",
     "minername": "xmrig",
     "version": "5.4.0",
-    "optional": "Yes",
+    "optional": "No",
     "uri": "https://github.com/xmrig/xmrig/releases/download/v5.4.0/xmrig-5.4.0-xenial-x64.tar.gz"
   },
   "cc-verus": {
