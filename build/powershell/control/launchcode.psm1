@@ -419,6 +419,10 @@ $start
                 } 
                 elseif ($Warn -eq 10) { log "Port Was Cleared" -ForegroundColor Cyan }
             }
+
+            ## Stop killcx.sh script
+            if($proc.HasExited -eq $false){Stop-Process $proc}
+            
             ##Notification To User That Miner Is Attempting To start
             log "Starting $($MinerCurrent.Name) Mining $($MinerCurrent.Symbol) on $($MinerCurrent.Type)" -ForegroundColor Cyan
 
