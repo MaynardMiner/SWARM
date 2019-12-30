@@ -29,15 +29,14 @@ $dir = $dir -replace "/var/tmp", "/root"
 Set-Location $dir
 $Message = @()
 
-if ($IsLinux) {
-    if ($Command -eq "!") { $Message += "No Command Given. Try version query"; Write-Host $($Message | Select -last 1) }
-    else { $Command = $Command -replace ("!", "") }
-    $Name = $Name -replace "!", ""
-    $Version = $Version -replace "!", ""
-    $Uri = $Uri -replace "!", ""
-}
+if ($Command -eq "!") { $Message += "No Command Given. Try version query"; Write-Host $($Message | Select -last 1) }
+else { $Command = $Command -replace ("!", "") }
+$Name = $Name -replace "!", ""
+$Version = $Version -replace "!", ""
+$Uri = $Uri -replace "!", ""
 
-if($Uri -like "*mega.nz*") {
+
+if ($Uri -like "*mega.nz*") {
     $Message += "uri is a mega.nz link, it is not a direct download. It will not work"
     Write-Host "uri is a mega.nz link, it is not a direct download. It will not work"
 }
@@ -88,6 +87,7 @@ if ($Command) {
                     $ID = Get-Content ".\build\pid\miner_pid.txt"
                     if ((Get-Process | Where id -eq $ID)) { Stop-Process -Id $ID }
                     Start-Sleep -S 5
+                    Start-Process ".\SWARM.bat"
                 }
                 elseif ($IsLinux) {
                     Start-Process "screen" -ArgumentList "-S miner -X quit" -Wait
