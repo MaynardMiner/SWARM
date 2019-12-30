@@ -21,7 +21,7 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "lyra2z330": "-i 12.5"
+            "lyra2z330": ""
         },
         "difficulty": {
             "lyra2z330": ""
