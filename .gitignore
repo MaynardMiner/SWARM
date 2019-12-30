@@ -38,8 +38,8 @@ config/parameters/newarguments.json
 config/parameters/Hive_params_keys.json
 config/parameters/SWARM_params_keys.json
 config/parameters/autofan.json
+config/power/power.json
 config/wallets/wallets.json
-config/power/
 SWARM.conf
 build/bash/startup.sh
 build/export/libcudart.so.10.1
