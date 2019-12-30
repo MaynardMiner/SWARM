@@ -1586,6 +1586,10 @@ Updates
   * Swarm will notify on main screen when
     stats and active data had been refreshed for
     commands.
+ * Issue #265
+  * Latest HiveOS broke 'hello' for Windows.
+  * Fixed hello connection, and ensured it
+    won't happen again.
 
 ## Updates
  * gminer updated
