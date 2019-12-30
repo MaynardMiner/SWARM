@@ -1596,3 +1596,28 @@ Updates
  * xmrig updated
  * jayddee updated
  * rplant updated
+
+
+############################################
+############################################
+
+# SWARM 2.8.8
+
+
+## What's New?
+ * Issue #266
+   Fixed xmrig issue in NVIDIA (linux)
+   new lib added to exports folder.
+
+ * Issue #267
+   Added algorithms back to cryptodredge.
+   Added cryptonight_conceal.
+
+## Improvements
+ * Issue #268
+   * Improved xmrig/xmr-stak api
+     for HiveOS
+
+## Updates
+ * xmrig update
+ * xmr-stak-rx update
