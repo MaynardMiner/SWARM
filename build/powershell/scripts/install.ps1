@@ -26,6 +26,12 @@ $Proc | Wait-Process
 
 $dir | set-content ".\build\bash\dir.sh"
 
+## Extract export folder.
+if(-not (test-path ".\build\export")) {
+    New-Item -ItemType Directory -Name "export" -path ".\build" | Out-Null
+    $Proc = Start-Process "tar" -ArgumentList "-xzvf build/export.tar.gz -C build" -PassThru; $Proc | Wait-Process
+}
+
 if (Test-Path ".\build\bash\stats") {
     Copy-Item ".\build\bash\stats" -Destination "/usr/bin" -force | Out-Null
     Set-Location "/usr/bin"
