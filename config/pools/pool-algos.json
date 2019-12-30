@@ -215,6 +215,17 @@
       "comma seperated"
     ]
   },
+  "cryptonight-haven": {
+    "alt_names": [
+      "cryptonight-haven",
+      "cryptonighthaven",
+      "cryptonight_haven"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "cryptonight-heavy": {
     "alt_names": [
       "cryptonight-heavy",

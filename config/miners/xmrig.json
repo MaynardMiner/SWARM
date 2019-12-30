@@ -14,6 +14,8 @@
             "cryptonight-v8": "",
             "cryptonight-v7": "",
             "cryptonight-heavy": "",
+            "cryptonight-heavyx": "",
+            "cryptonight-haven": "",
             "cryptonight-saber": "",
             "cryptonight-r": "",
             "cryptonight-gpu": "",
@@ -27,6 +29,8 @@
             "cryptonight-v8": "",
             "cryptonight-v7": "",
             "cryptonight-heavy": "",
+            "cryptonight-heavyx": "",
+            "cryptonight-haven": "",
             "cryptonight-saber": "",
             "cryptonight-r": "",
             "cryptonight-gpu": "",
@@ -40,7 +44,8 @@
             "cryptonight-v8": "cn/2",
             "cryptonight-v7": "cn/1",
             "cryptonight-heavy": "cn-heavy",
-            "cryptonight-heavyx": "cn-heavy/xhv",
+            "cryptonight-heavyx": "cn/double",
+            "cryptonight-haven": "cn-heavy/xhv",
             "cryptonight-saber": "cn-heavy/tube",
             "cryptonight-r": "cn/r",
             "cryptonight-gpu": "cn/gpu",
@@ -54,6 +59,8 @@
             "cryptonight-v8": 1,
             "cryptonight-v7": 1,
             "cryptonight-heavy": 1,
+            "cryptonight-heavyx": 1,
+            "cryptonight-haven": 1,
             "cryptonight-saber": 1,
             "cryptonight-r": 1,
             "cryptonight-gpu": 1,
@@ -62,6 +69,6 @@
             "randomsfx": 1,
             "randomv": 1,
             "randomx": 1
-        }
+        }   
     }
 }
