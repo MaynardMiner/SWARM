@@ -23,9 +23,9 @@
     "type": "cpu",
     "CPU": ".\\bin\\xmrig-cpu-1\\xmrig",
     "minername": "xmrig",
-    "version": "5.4.0",
+    "version": "5.5.0",
     "optional": "No",
-    "uri": "https://github.com/xmrig/xmrig/releases/download/v5.4.0/xmrig-5.4.0-xenial-x64.tar.gz"
+    "uri": "https://github.com/xmrig/xmrig/releases/download/v5.5.0/xmrig-5.5.0-xenial-x64.tar.gz"
   },
   "sugarchain": {
     "name": "sugarchain",
