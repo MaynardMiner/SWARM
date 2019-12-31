@@ -68,21 +68,24 @@ function Global:Stop-ActiveMiners {
                             $PIDTime = [DateTime]$MI.start_date
                             $Exec = Split-Path $MI.miner_exec -Leaf
                             $_.Active += (Get-Date) - $PIDTime
-
-                            ## Kill all process ids register with the miner path
-                            $Proc = Start-Process ".\build\bash\killapp.sh" -ArgumentList $MI.miner_exec -PassThru;
-                            $Proc | Wait-Process;
-
                             ## Wait up to 15 seconds for process to end
-                            $timer = 0
-                            do{
-                                log "waiting up to 15 seconds for $Exec for $($_.Type) to end..." -ForegroundColor Cyan
+                            log "waiting up to 15 seconds for $Exec for $($_.Type) to end..." -ForegroundColor Cyan
+                            $Procs = Get-Process | Where Path -eq $MI.miner_exec;
+                            if ($False -in $Procs.HasExited) { 
+                                $To_Kill = $Procs | Where HasExited -eq $false
+                                $To_Kill | Foreach-Object { Stop-Process $_ }
+                            }
+                            do {
                                 $timer++
                                 Start-Sleep -Seconds 1
                             } while ( 
-                                $_.Xprocess.HasExited -eq $false -or
+                                $false -in $Procs.HasExited -or
                                 $timer -lt 14
                             )
+                            if ($false -in $Procs.HasExited) {
+                                log "ERROR: Miner is failing to close! This can harm process tracking!" -ForegroundColor Red
+                                log "Attempting to close screen miner is in, and hope it shuts down miner!" -ForegroundColor Red
+                            }
                         }
                     }
                     else { $_.Xprocess.HasExited = $true; $_.XProcess.StartTime = $null; $_.Status = "Idle" }
@@ -106,7 +109,7 @@ function Global:Start-NewMiners {
 
         if ($null -eq $Miner.XProcess -or $Miner.XProcess.HasExited -and $(arg).Lite -eq "No") {
 
-            if($New_OC_File -eq $false -and $Miner.Type -notlike "*ASIC*" -and $Miner.Type -ne "CPU"){
+            if ($New_OC_File -eq $false -and $Miner.Type -notlike "*ASIC*" -and $Miner.Type -ne "CPU") {
                 "Current OC Settings:" | Set-Content ".\debug\oc-settings.txt"; $New_OC_File = $true
             }
 
@@ -220,7 +223,7 @@ function Global:Start-NewMiners {
                         }Until($false -notin $Child.HasExited)
                     }
                     if ($Sel.SubProcesses -and $false -in $Sel.SubProcesses.HasExited) { 
-                        $Sel.SubProcesses | % { $Check = $_.CloseMainWindow(); if ($Check -eq $False) { Stop-Process -Id $_.Id -ErrorAction Ignore} }
+                        $Sel.SubProcesses | % { $Check = $_.CloseMainWindow(); if ($Check -eq $False) { Stop-Process -Id $_.Id -ErrorAction Ignore } }
                     }
                 }
             }
@@ -250,14 +253,14 @@ function Global:Start-NewMiners {
             ##Confirm They are Running
             if ($Miner.XProcess -eq $null -or $Miner.Xprocess.HasExited -eq $true) {
                 $Miner.Status = "Failed"
-               $(vars).NoMiners = $true
+                $(vars).NoMiners = $true
                 log "$($Miner.MinerName) Failed To Launch" -ForegroundColor Darkred
             }
             else {
                 $Miner.Status = "Running"
                 if ($Miner.Type -notlike "*ASIC*") { log "Process Id is $($Miner.XProcess.ID)" }
-                if($Miner.Type -notlike "*ASIC*"){ log "$($Miner.MinerName) Is Running!" -ForegroundColor Green}
-                else{log "$($Miner.Name) has successfully switched pools!" -ForeGroundColor Green}
+                if ($Miner.Type -notlike "*ASIC*") { log "$($Miner.MinerName) Is Running!" -ForegroundColor Green }
+                else { log "$($Miner.Name) has successfully switched pools!" -ForeGroundColor Green }
                 $(vars).current_procs += $Miner.Xprocess.ID
             }
         }

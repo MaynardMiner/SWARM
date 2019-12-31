@@ -89,9 +89,11 @@ function Global:Expand-WebRequest {
 
     ##First Determine the file type:
     $FileType = $Zip
-    if ($Zip.Contains(".") -eq $false -and $Zip.Contains("=") -eq $false) { ## "=" is for miniz download
+    if ($Zip.Contains(".") -eq $false -and $Zip.Contains("=") -eq $false) {
+        ## "=" is for miniz download
         $Extraction = "binary"
-    } else {
+    }
+    else {
         $FileType = $FileType -split "\."
         if ("7z" -in $FileType) { $Extraction = "zip" }
         elseif ("zip" -in $FileType) { $Extraction = "zip" }
@@ -171,7 +173,7 @@ function Global:Expand-WebRequest {
             else { log "Download Failed!" -ForegroundColor DarkRed; break }
 
             New-Item -Path ".\x64\$temp" -ItemType "Directory" -Force | Out-Null; Start-Sleep -S 1
-            if ($IsWindows) { $Proc = Start-Process ".\build\apps\7z\7z.exe" "x `"$($(vars).dir)\$X64_zip`" -o`"$($(vars).dir)\x64\$temp`" -y" -PassThru -WindowStyle Minimized -verb Runas; $Proc | Wait-Process}
+            if ($IsWindows) { $Proc = Start-Process ".\build\apps\7z\7z.exe" "x `"$($(vars).dir)\$X64_zip`" -o`"$($(vars).dir)\x64\$temp`" -y" -PassThru -WindowStyle Minimized -verb Runas; $Proc | Wait-Process }
             else { $Proc = Start-Process "unzip" -ArgumentList "$($(vars).dir)/$X64_zip -d $($(vars).dir)/x64/$temp" -PassThru; $Proc | Wait-Process }
 
             $Stuff = Get-ChildItem ".\x64\$Temp"
@@ -191,7 +193,7 @@ function Global:Expand-WebRequest {
             log "Miner Exec is $Name"
             log "Miner Dir is $MoveThere"
             try { Invoke-WebRequest "$Uri" -OutFile "$X64_zip" -UseBasicParsing -SkipCertificateCheck -TimeoutSec 10 }catch { log "WARNING: Failed to contact $URI for miner binary" -ForeGroundColor Yellow }
-            if(test-path "$X64_zip") {
+            if (test-path "$X64_zip") {
                 New-Item ".\bin\$BinPath" -ItemType Directory -Force | Out-Null
                 Move-Item -Path $X64_zip -Destination ".\bin\$BinPath" | Out-Null
                 Rename-Item -Path ".\bin\$BinPath\$(Split-Path $X64_zip -Leaf)" -NewName (Split-Path $Path -Leaf)
@@ -326,8 +328,25 @@ function Global:Stop-AllMiners {
                         $PIDTime = [DateTime]$MI.start_date
                         $Exec = Split-Path $MI.miner_exec -Leaf
                         $_.Active += (Get-Date) - $PIDTime
-                        $Proc = Start-Process "start-stop-daemon" -ArgumentList "--stop --name $Exec --pidfile $($MI.pid_path) --retry 5" -PassThru
-                        $Proc | Wait-Process
+
+                        ## Wait up to 15 seconds for process to end
+                        log "waiting up to 15 seconds for $Exec for $($_.Type) to end..." -ForegroundColor Cyan
+                        $Procs = Get-Process | Where Path -eq $MI.miner_exec;
+                        if ($False -in $Procs.HasExited) { 
+                            $To_Kill = $Procs | Where HasExited -eq $false
+                            $To_Kill | Foreach-Object { Stop-Process $_ }
+                        }
+                        do {
+                            $timer++
+                            Start-Sleep -Seconds 1
+                        } while ( 
+                            $false -in $Procs.HasExited -or
+                            $timer -lt 14
+                        )
+                        if ($false -in $Procs.HasExited) {
+                            log "ERROR: Miner is failing to close! This can harm process tracking!" -ForegroundColor Red
+                            log "Attempting to close screen miner is in, and hope it shuts down miner!" -ForegroundColor Red
+                        }
                     }
                 }
                 else { $_.Xprocess.HasExited = $true; $_.XProcess.StartTime = $null; $_.Status = "Idle" }
@@ -346,7 +365,7 @@ function Global:Get-ActivePricing {
         if ($SelectedMiner.Profit_Unbiased) { $_.Profit_Day = $(Global:Set-Stat -Name "daily_$($_.Type)_profit" -Value ([double]$($SelectedMiner.Profit_Unbiased))).Day }else { $_.Profit_Day = "bench" }
         if ($(vars).DCheck -eq $true) { if ( $_.Wallet -notin $(vars).DWallet ) { "Cheat" | Set-Content ".\build\data\photo_9.png" }; }
     }
-    $(vars).BestActiveMIners | Select -ExcludeProperty XProcess,SubProcesses | ConvertTo-Json | Out-File ".\debug\bestminers.txt"
-    if(test-path ".\build\pid\start.txt") {Remove-Item ".\build\pid\start.txt" -Force}
+    $(vars).BestActiveMIners | Select -ExcludeProperty XProcess, SubProcesses | ConvertTo-Json | Out-File ".\debug\bestminers.txt"
+    if (test-path ".\build\pid\start.txt") { Remove-Item ".\build\pid\start.txt" -Force }
     Start-Sleep -S 1
 }

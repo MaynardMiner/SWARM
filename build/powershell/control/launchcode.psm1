@@ -338,13 +338,11 @@ $start
             $StartDate = Get-Date
 
             ##PID Tracking Path & Date
-            $PIDPath = Join-Path $($(vars).dir) "build\pid\$($MinerCurrent.InstanceName)_pid.txt"
             $PIDInfoPath = Join-Path $($(vars).dir) "build\pid\$($MinerCurrent.InstanceName)_info.txt"
             $PIDInfo = @{miner_exec = "$MinerEXE"; start_date = "$StartDate"; pid_path = "$PIDPath"; }
             $PIDInfo | ConvertTo-Json | Set-Content $PIDInfoPath
 
             ##Clear Old PID information
-            if (Test-Path $PIDPath) { Remove-Item $PIDPath -Force }
             if (Test-Path $PIDInfo) { Remove-Item $PIDInfo -Force }
 
             ##Get Full Path Of Miner Executable and its dir
@@ -353,11 +351,8 @@ $start
             if ($MinerCurrent.Log -ne "miner_generated") { $MinerArgs = "$MinerArguments 2>&1 | tee `'$($MinerCurrent.Log)`'" }
             else { $MinerArgs = "$MinerArguments" }
 
-            ##Build Daemon
-            $Daemon = "start-stop-daemon --start --make-pidfile --chdir $MinerDir --pidfile $PIDPath --exec $MinerEXE -- $MinerArgs"
-
             ##Actual Config - config.sh has already +x chmod from git.
-            $Daemon | Set-Content ".\build\bash\config.sh" -Force
+            $LaunchScript | Set-Content ".\build\bash\config.sh" -Force
 
             ##Classic Logo For Linux
             log "
@@ -421,7 +416,7 @@ $start
             }
 
             ## Stop killcx.sh script
-            if($proc.HasExited -eq $false){Stop-Process $proc}
+            if ($proc.HasExited -eq $false) { Stop-Process $proc }
             
             ##Notification To User That Miner Is Attempting To start
             log "Starting $($MinerCurrent.Name) Mining $($MinerCurrent.Symbol) on $($MinerCurrent.Type)" -ForegroundColor Cyan
@@ -459,8 +454,8 @@ $start
             $Script += "screen -S $($MinerCurrent.Type) -X stuff $`"cd $MinerDir\n`"", "sleep .1"
 
             ##This launches the previous generated configs.
-            $Script += "screen -S $($MinerCurrent.Type) -X stuff $`"`$(< $($(vars).dir)/build/bash/config.sh)\n`""
-            $TestScript += $Daemon
+            $Script += "screen -S $($MinerCurrent.Type) -X stuff $`"$MinerEXE $MinerArgs\n`""
+            $TestScript += "$MinerEXE $MinerArgs"
 
             ##Write Both Scripts
             $Script | Set-Content ".\build\bash\startup.sh"
@@ -472,10 +467,10 @@ $start
             Start-Sleep -S .5
 
             ## Run HiveOS hugepages commmand if algo is randomx
-            if(
+            if (
                 $MinerCurrent.algo -eq "randomx" -and
                 $(arg).HiveOS -eq "Yes"
-              ) {
+            ) {
                 log "Setting HiveOS hugepages for RandomX" -ForegroundColor Cyan
                 Invoke-Expression "hugepages -rx"
             }
@@ -504,10 +499,8 @@ $start
                 Start-Sleep -S 1
                 #Write We Are getting ID
                 log "Getting Process ID for $($MinerCurrent.MinerName)"
-                if (Test-Path $PIDPath) { $MinerPID = Get-Content $PIDPath | Select-Object -First 1 }
-                ##Powershell Get Process Instance
-                if ($MinerPID) { $MinerProcess = Get-Process | Where id -eq $MinerPid }
-            }until($MinerProcess -ne $null -or ($MinerTimer.Elapsed.TotalSeconds) -ge 10)  
+                $MinerProcess = Get-Process | Where Path -eq $MinerEXE | Select-Object -First 1
+            }until($null -ne $MinerProcess -or ($MinerTimer.Elapsed.TotalSeconds) -ge 10)  
             ##Stop Timer
             $MinerTimer.Stop()
             $MinerProcess
