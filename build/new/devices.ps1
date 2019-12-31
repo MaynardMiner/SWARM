@@ -106,12 +106,12 @@ class DEVICE_GROUP {
     [Int]$Rej_Percent ## Rejection Percent
     [Array]$Devices = @() ## Can be AMD cards, NVIDIA cards, ASIC, CPU
 
-    Add_GPU([GPU]$GPU){
+    Add_GPU([GPU]$GPU) {
         $this.Devices += $GPU
         $this.Device = $GPU.Brand
     }
 
-    Add_Thread([Thread]$Thread){
+    Add_Thread([Thread]$Thread) {
         $this.Devices += $Thread
         $this.Device = $Thread.Brand
     }
@@ -127,11 +127,11 @@ class GPU {
     [Int]$Fan = 0; #Current Fan Speed
     [Int]$Wattage = 0; #Current Wattage
 
-    GPU([AMD_GPU]$gpu){
+    GPU([AMD_GPU]$gpu) {
 
     }
 
-    GPU([NVIDIA]$gpu){
+    GPU([NVIDIA]$gpu) {
 
     }
 }
@@ -282,21 +282,21 @@ class DISK {
     [string]$disk_model
 
     DISK() {
-            if ($global:ISLinux) {
-                $bootpart = "$(Invoke-Expression "readlink -f /dev/block/`$(mountpoint -d `/)")"
-                $bootpart = $bootpart.Substring(0, $bootpart.Length - 1)
-                $disk = Invoke-Expression "parted -ml | grep -m1 `"$bootpart`:`""
-                $disk = $disk -split ":"
-                $disk = "$($disk | Select-Object -Last 2 | Select-Object -First 1) $($disk | Select-Object -Skip 1 -First 1)"
-                $this.disk_model = $disk
-            }
-            if ($global:IsWindows) {
-                $model = (Get-CimInstance win32_diskdrive).model | Select -First 1
-                $size = Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'" | Select-Object Size
-                $size = $size.Size / [math]::pow( 1024, 3 )
-                $size = [math]::Round($size)
-                $this.disk_model = "$model $($size)GB"
-            }
+        if ($global:ISLinux) {
+            $bootpart = "$(Invoke-Expression "readlink -f /dev/block/`$(mountpoint -d `/)")"
+            $bootpart = $bootpart.Substring(0, $bootpart.Length - 1)
+            $disk = Invoke-Expression "parted -ml | grep -m1 `"$bootpart`:`""
+            $disk = $disk -split ":"
+            $disk = "$($disk | Select-Object -Last 2 | Select-Object -First 1) $($disk | Select-Object -Skip 1 -First 1)"
+            $this.disk_model = $disk
+        }
+        if ($global:IsWindows) {
+            $model = (Get-CimInstance win32_diskdrive).model | Select -First 1
+            $size = Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'" | Select-Object Size
+            $size = $size.Size / [math]::pow( 1024, 3 )
+            $size = [math]::Round($size)
+            $this.disk_model = "$model $($size)GB"
+        }
     }
 
     static [string] Get_FreeSpace() {
@@ -377,7 +377,7 @@ class RAM {
 class RIG_RUN {
 
     ## Get GPU information
-    static [Array] get_gpus(){
+    static [Array] get_gpus() {
         $gpus = @()
         
         ## Insert Code Here
@@ -512,7 +512,7 @@ class RIG_RUN {
 <# 
 
     Methods For GPU Specific Device Query 
-    
+
 #>
 
 ## NVIDIA specific
