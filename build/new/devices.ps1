@@ -6,6 +6,145 @@ class MINER {
 
 }
 
+## Base Class For RIG.
+## After Constructed, Used To Send 'hello' to HiveOS
+class RIG {
+    [CPU]$cpu = [CPU]::New();
+    [MOTHERBOARD]$mb = [MOTHERBOARD]::New();
+    [DISK]$disk = [DISK]::New();
+    [RAM]$ram = [RAM]::New();
+    [DEVICE_GROUP[]]$Groups;
+    [Array]$gpu = @(); ##Mix of nvidia and amd cards
+    [Hashtable]$net_interfaces = @{ };
+    [hashtable]$lan_config = @{ };
+    [String]$version;
+    [String]$nvidia_version;
+    [String]$amd_version;
+    [String]$gpu_count_nvidia;
+    [String]$gpu_count_amd;
+    [String]$uid;
+    [String]$openvpn;
+    [String]$kernel;
+    [string[]]$ip
+    [String]$boot_time;
+
+    RIG() {
+        ## Kernel
+        $this.kernel = [RIG_RUN]::get_kernel();
+
+        ## Net Interfaces & uid
+        $data = [RIG_RUN]::uid();
+        $this.net_interfaces = $data.net_interfaces;
+        $this.uid = $data.uid;
+
+        ## AMD Driver
+        $this.amd_version = [AMD]::get_driver();
+
+        ## NVIDIA Driver
+        $this.nvidia_version = [NVIDIA]::get_driver();
+
+        ## Boot Time
+        $this.boot_time = [RIG_RUN]::get_uptime();
+
+        ## IPs
+        $this.ip = [RIG_RUN]::get_ip();
+
+        ## LAN config
+        $this.lan_config = [RIG_RUN]::get_lan();
+
+        ## Version
+        $this.version = ([filedata]::stringdata("$Global:Dir\h-manifest.conf")).CUSTOM_VERSION
+
+        ## Get GPU Information
+        $GPU_Data = [RIG_RUN]::get_gpus();
+    }
+
+    ## Returns JSON for hello method.
+    [string] hello ($worker_name = $null, $farm_hash = $null, $worker_id = $null, $server_url = $null) {
+        $Hello = @{ };
+        $Hello.Add('method', "hello");
+        $Hello.Add('jsonrpc', '2.0');
+        $Hello.Add('id', "0");
+        $Hello.Add('params', @{ });
+        $Hello.params.Add("cpu", $this.cpu);
+        $Hello.params.Add("version", $this.version);
+        $Hello.params.Add("nvidia_version", $this.nvidia_version);
+        $Hello.params.Add("amd_version", $this.amd_version);
+        $Hello.params.Add("gpu_count_nvidia", $this.gpu_count_nvidia);
+        $Hello.params.Add("gpu_count_amd", $this.gpu_count_amd);
+        $Hello.params.Add("gpu", $this.gpu);
+        $Hello.params.Add("uid", $this.uid);
+        $Hello.params.Add("disk_model", $this.disk.disk_model);
+        $Hello.params.Add("mb", $this.mb);
+        $Hello.params.Add("net_interfaces", $this.net_interfaces);
+        $Hello.params.Add("kernel", $this.kernel);
+        $Hello.params.Add("ip", $this.ip);
+        $Hello.params.Add("boot_time", $this.boot_time);
+
+        if ($worker_name) {
+            $Hello.params.Add("worker_name", $worker_name)
+        }
+        if ($farm_hash) {
+            $Hello.params.Add("farm_hash", $farm_hash)
+        }
+        else {
+            $Hello.params.Add("worker_id", $worker_id)
+        }
+
+        return $Hello | ConvertTo-Json -Depth 5 -Compress;
+    }
+}
+
+## Device Groups Used To Execute Miner.
+class DEVICE_GROUP {
+    [String]$Name #User denoted name of group
+    [String]$Device #Device this is (NVIDIA,AMD,CPU,ASIC)
+    [String]$Hashrate #Current Hashrate
+    [Miner]$Miner #Current Miner
+    [Int]$Accepted ## Miner Current Accepted Shares
+    [Int]$Rejected ## Miner Current Rejected Shares
+    [Int]$Rej_Percent ## Rejection Percent
+    [Array]$Devices = @() ## Can be AMD cards, NVIDIA cards, ASIC, CPU
+
+    Add_GPU([GPU]$GPU){
+        $this.Devices += $GPU
+        $this.Device = $GPU.Brand
+    }
+
+    Add_Thread([Thread]$Thread){
+        $this.Devices += $Thread
+        $this.Device = $Thread.Brand
+    }
+}
+
+## GPU class constructor for SWARM. These are cards used for mining.
+class GPU {
+    [String]$Brand;
+    [Int]$PCI_SLOT; #Denoted Order It Is On The Bus
+    [Int]$Device; #Denoted Order It Is Among Same Model Cards
+    [Decimal]$Speed; #Current Hashrate
+    [Int]$Temp = 0; #Current Temperature
+    [Int]$Fan = 0; #Current Fan Speed
+    [Int]$Wattage = 0; #Current Wattage
+
+    GPU([AMD_GPU]$gpu){
+
+    }
+
+    GPU([NVIDIA]$gpu){
+
+    }
+}
+
+## Mining Threads for CPU
+class THREAD : CPU {
+    [String]$Brand = "CPU"
+    [Decimal]$Speed; #Current Hashrate
+    [Int]$Temp = 0; #Current Temperature Not Used Yet
+    [Int]$Fan = 0; #Current Fan Speed Not Used Yet
+    [Int]$Wattage = 0; #Current Wattage Not Used Yet
+}
+
 ## Base class for video card
 class VIDEO_CARD {
     [String]$busid; 
@@ -59,47 +198,6 @@ class AMD_GPU : VIDEO_CARD {
     }
 }
 
-## GPU class constructor for SWARM. These are cards used for mining.
-class GPU {
-    [String]$Brand;
-    [Int]$PCI_SLOT; #Denoted Order It Is On The Bus
-    [Int]$Device; #Denoted Order It Is Among Same Model Cards
-    [Decimal]$Speed; #Current Hashrate
-    [Int]$Temp = 0; #Current Temperature
-    [Int]$Fan = 0; #Current Fan Speed
-    [Int]$Wattage = 0; #Current Wattage
-
-    GPU([AMD_GPU]$gpu){
-
-    }
-
-    GPU([NVIDIA]$gpu){
-
-    }
-}
-
-## Device Groups Used To Execute Miner.
-class DEVICE_GROUP {
-    [String]$Name #User denoted name of group
-    [String]$Device #Device this is (NVIDIA,AMD,CPU,ASIC)
-    [String]$Hashrate #Current Hashrate
-    [Miner]$Miner #Current Miner
-    [Int]$Accepted ## Miner Current Accepted Shares
-    [Int]$Rejected ## Miner Current Rejected Shares
-    [Int]$Rej_Percent ## Rejection Percent
-    [Array]$Devices = @() ## Can be AMD cards, NVIDIA cards, ASIC, CPU
-
-    Add_GPU([GPU]$GPU){
-        $this.Devices += $GPU
-        $this.Device = $GPU.Brand
-    }
-
-    Add_Thread([Thread]$Thread){
-        $this.Devices += $Thread
-        $this.Device = $Thread.Brand
-    }
-}
-
 ## BASE CPU class constructor
 class CPU {
     [string]$aes;
@@ -145,15 +243,6 @@ class CPU {
     }
 }
 
-## Mining Threads for CPU
-class THREAD : CPU {
-    [String]$Brand = "CPU"
-    [Decimal]$Speed; #Current Hashrate
-    [Int]$Temp = 0; #Current Temperature Not Used Yet
-    [Int]$Fan = 0; #Current Fan Speed Not Used Yet
-    [Int]$Wattage = 0; #Current Wattage Not Used Yet
-}
-
 ## Motherboard constructor
 class MOTHERBOARD {
     [String]$system_uuid;
@@ -189,10 +278,10 @@ class MOTHERBOARD {
 }
 
 ## Root Disk Constructor
-class Disk {
+class DISK {
     [string]$disk_model
 
-    Disk() {
+    DISK() {
             if ($global:ISLinux) {
                 $bootpart = "$(Invoke-Expression "readlink -f /dev/block/`$(mountpoint -d `/)")"
                 $bootpart = $bootpart.Substring(0, $bootpart.Length - 1)
@@ -271,102 +360,20 @@ class RAM {
     }
 }
 
+<# 
 
-## Base Class For RIG.
-## After Constructed, Used To Send 'hello' to HiveOS
-class RIG {
-    [CPU]$cpu = [CPU]::New();
-    [String]$version;
-    [String]$nvidia_version;
-    [String]$amd_version;
-    [String]$gpu_count_nvidia;
-    [String]$gpu_count_amd;
-    [Array]$gpu = @(); ##Mix of nvidia and amd cards
-    [String]$uid;
-    [hashtable]$lan_config = @{ };
-    [MOTHERBOARD]$mb = [MOTHERBOARD]::New();
-    [String]$openvpn;
-    [Hashtable]$net_interfaces = @{ };
-    [String]$kernel;
-    [string[]]$ip
-    [String]$boot_time;
-    [Disk]$disk = [Disk]::New();
-    [RAM]$ram = [RAM]::New();
-    [DEVICE_GROUP[]]$Groups;
+    Below are various methods to query information on RIG. 
+    These are the methods that will do things such as
+    gather detailed rig information, and query drivers
+    for information.
 
-    static [void] Get_Interface() {
+    For windows, there is a method to initiate GPU-Z
+    as well to gather detailed GPU information.
+#>
 
-    }
-
-    RIG() {
-        ## Kernel
-        $this.kernel = [RIG_RUN]::get_kernel();
-
-        ## Net Interfaces & uid
-        $data = [RIG_RUN]::uid();
-        $this.net_interfaces = $data.net_interfaces;
-        $this.uid = $data.uid;
-
-        ## AMD Driver
-        $this.amd_version = [AMD]::get_driver();
-
-        ## NVIDIA Driver
-        $this.nvidia_version = [NVIDIA]::get_driver();
-
-        ## Boot Time
-        $this.boot_time = [RIG_RUN]::get_uptime();
-
-        ## IPs
-        $this.ip = [RIG_RUN]::get_ip();
-
-        ## LAN config
-        $this.lan_config = [RIG_RUN]::get_lan();
-
-        ## Version
-        $this.version = ([filedata]::stringdata("$Global:Dir\h-manifest.conf")).CUSTOM_VERSION
-
-        ## Get GPU Information
-        $GPU_Data = [RIG_RUN]::get_gpus();
-    }
-
-    ## Returns JSON for hello method.
-    [string] hello ($worker_name = $null, $farm_hash = $null, $worker_id = $null, $server_url = $null) {
-        $Hello = @{ };
-        $Hello.Add('method', "hello");
-        $Hello.Add('jsonrpc', '2.0');
-        $Hello.Add('id', "0");
-        $Hello.Add('params', @{ });
-        $Hello.params.Add("cpu", $this.cpu);
-        $Hello.params.Add("version", $this.version);
-        $Hello.params.Add("nvidia_version", $this.nvidia_version);
-        $Hello.params.Add("amd_version", $this.amd_version);
-        $Hello.params.Add("gpu_count_nvidia", $this.gpu_count_nvidia);
-        $Hello.params.Add("gpu_count_amd", $this.gpu_count_amd);
-        $Hello.params.Add("gpu", $this.gpu);
-        $Hello.params.Add("uid", $this.uid);
-        $Hello.params.Add("disk_model", $this.disk.disk_model);
-        $Hello.params.Add("mb", $this.mb);
-        $Hello.params.Add("net_interfaces", $this.net_interfaces);
-        $Hello.params.Add("kernel", $this.kernel);
-        $Hello.params.Add("ip", $this.ip);
-        $Hello.params.Add("boot_time", $this.boot_time);
-
-        if ($worker_name) {
-            $Hello.params.Add("worker_name", $worker_name)
-        }
-        if ($farm_hash) {
-            $Hello.params.Add("farm_hash", $farm_hash)
-        }
-        else {
-            $Hello.params.Add("worker_id", $worker_id)
-        }
-
-        return $Hello | ConvertTo-Json -Depth 5 -Compress;
-    }
-}
-
-## Below are various methods to query information on RIG.
-## Methods for RIG Device Query
+<# 
+    Methods for RIG Device Query 
+#>
 class RIG_RUN {
 
     ## Get GPU information
@@ -502,7 +509,12 @@ class RIG_RUN {
     }
 }
 
-## Methods For GPU Specific Device Query
+<# 
+
+    Methods For GPU Specific Device Query 
+    
+#>
+
 ## NVIDIA specific
 class NVIDIA {
     static [string] get_driver() {
