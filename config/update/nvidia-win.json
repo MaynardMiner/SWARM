@@ -95,9 +95,9 @@
     "NVIDIA2": ".\\bin\\gminer-2\\miner.exe",
     "NVIDIA3": ".\\bin\\gminer-3\\miner.exe",
     "minername": "miner.exe",
-    "version": "1.91",
+    "version": "1.92",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.91/gminer_1_91_windows64.zip"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.92/gminer_1_92_windows64.zip"
   },
   "claymore": {
     "name": "claymore",
@@ -260,7 +260,7 @@
     "NVIDIA2": ".\\bin\\xmrig-nv-2\\xmrig.exe",
     "NVIDIA3": ".\\bin\\xmrig-nv-3\\xmrig.exe",
     "minername": "xmrig.exe",
-    "version": "5.5.0",
+    "version": "5.5.0a",
     "optional": "No",
     "uri": "https://github.com/xmrig/xmrig/releases/download/v5.5.0/xmrig-5.5.0-msvc-cuda10_1-win64.zip"
   },

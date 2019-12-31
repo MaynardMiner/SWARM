@@ -6,297 +6,27 @@ class MINER {
 
 }
 
-## Base class for video card
-class VIDEO_CARD {
-    [String]$busid; 
-    [String]$name;
-    [String]$brand;
-
-    VIDEO_CARD($Busid, $Name, $Brand) {
-        $this.busid = $Busid;
-        $this.name = $Name;
-        $this.brand = $Brand;
-    }
-}
-
-## A NVIDIA gpu
-class NVIDIA_GPU : VIDEO_CARD {
-    [String]$subvendor;
-    [String]$mem;
-    [String]$vbios;
-    [string]$plim_min;
-    [string]$plim_def;
-    [string]$plim_max;
-
-    NVIDIA_GPU($Busid, $Name, $Brand, $Subvendor, $Mem, $Vbios, $Plim_min, $Plim_def, $Plim_max) {
-        $this.busid = $Busid;
-        $this.name = $Name;
-        $this.brand = $Brand;
-        $this.subvendor = $Subvendor
-        $this.mem = $Mem;
-        $this.vbios = $Vbios;
-        $this.plim_min = $Plim_min;
-        $this.plim_def = $Plim_def;
-        $this.plim_max = $Plim_max;
-    }
-}
-
-## A AMD gpu
-class AMD_GPU : VIDEO_CARD {
-    [String]$subvendor
-    [String]$mem
-    [String]$vbios
-    [String]$mem_type
-
-    AMD_GPU($Busid, $Name, $Brand, $Subvendor, $Mem, $Vbios, $Mem_Type) {
-        $this.busid = $Busid;
-        $this.name = $Name;
-        $this.brand = $Brand;
-        $this.subvendor = $Subvendor
-        $this.mem = $Mem;
-        $this.vbios = $Vbios;
-        $this.mem_type = $Mem_Type;
-    }
-}
-
-## GPU class constructor for SWARM. These are cards used for mining.
-class GPU {
-    [String]$Brand;
-    [Int]$PCI_SLOT; #Denoted Order It Is On The Bus
-    [Int]$Device; #Denoted Order It Is Among Same Model Cards
-    [Decimal]$Speed; #Current Hashrate
-    [Int]$Temp = 0; #Current Temperature
-    [Int]$Fan = 0; #Current Fan Speed
-    [Int]$Wattage = 0; #Current Wattage
-
-    GPU([AMD_GPU]$gpu){
-
-    }
-
-    GPU([NVIDIA]$gpu){
-
-    }
-}
-
-## Device Groups Used To Execute Miner.
-class DEVICE_GROUP {
-    [String]$Name #User denoted name of group
-    [String]$Device #Device this is (NVIDIA,AMD,CPU,ASIC)
-    [String]$Hashrate #Current Hashrate
-    [Miner]$Miner #Current Miner
-    [Int]$Accepted ## Miner Current Accepted Shares
-    [Int]$Rejected ## Miner Current Rejected Shares
-    [Int]$Rej_Percent ## Rejection Percent
-    [Array]$Devices = @() ## Can be AMD cards, NVIDIA cards, ASIC, CPU
-
-    Add_GPU([GPU]$GPU){
-        $this.Devices += $GPU
-        $this.Device = $GPU.Brand
-    }
-
-    Add_Thread([Thread]$Thread){
-        $this.Devices += $Thread
-        $this.Device = $Thread.Brand
-    }
-}
-
-## BASE CPU class constructor
-class CPU {
-    [string]$aes;
-    [string]$model;
-    [string]$cpu_id;
-    [string]$cores;
-
-    CPU() {
-        $this.Model = $(
-            if ($global:IsLinux) {
-                Invoke-Expression "lscpu | grep `"Model name:`" | sed `'`s`/Model name:[ `\t]`*`/`/g`'"
-            }
-            if ($global:IsWindows) {
-                (Get-CimInstance -Class Win32_processor).Name.Trim()
-            }
-        )
-        $this.Cores = $(
-            if ($global:IsLinux) {
-                Invoke-Expression "lscpu | grep `"`^CPU(s):`" | sed `'s`/CPU(s):[ `\t]`*`/`/`g`'"
-            }
-            if ($global:IsWindows) {
-                (Get-CimInstance -Class Win32_processor).NumberOfCores
-            }
-        )
-        $this.Aes = $(
-            if ($global:IsLinux) {
-                Invoke-Expression "lscpu | grep `"`^Flags:`.`*aes`" | wc -l"
-            }
-            if ($global:IsWindows) {
-                $Get = $(Invoke-Expression ".\build\apps\features-win\features-win.exe" | Select-Object -Skip 1 | ConvertFrom-StringData)."AES-NI"
-                if ($Get -eq "Yes") { $HasAES = 1 }else { $HasAES = 0 }
-                $HasAES
-            }
-        )
-        $this.cpu_id = $(
-            if ($global:IsLinux) {
-                "$(Invoke-Expression "./build/apps/dmidecode/dmidecode -t 4" | Select-String "ID: " | ForEach-Object{$_ -split "ID: " | Select-Object -Last 1})" -replace " ", ""
-            }
-            if ($global:IsWindows) {
-                (Get-CimInstance -Class Win32_processor).ProcessorId
-            }
-        )
-    }
-}
-
-## Mining Threads for CPU
-class THREAD : CPU {
-    [String]$Brand = "CPU"
-    [Decimal]$Speed; #Current Hashrate
-    [Int]$Temp = 0; #Current Temperature Not Used Yet
-    [Int]$Fan = 0; #Current Fan Speed Not Used Yet
-    [Int]$Wattage = 0; #Current Wattage Not Used Yet
-}
-
-## Motherboard constructor
-class MOTHERBOARD {
-    [String]$system_uuid;
-    [String]$product;
-    [String]$manufacturer;
-
-    MOTHERBOARD() {
-        $this.manufacturer = $(
-            if ($global:ISLinux) {
-                Invoke-Expression "./build/apps/dmidecode/dmidecode | grep -A4 `'`^Base Board Information`' | grep `"Manufacturer:`" | sed -E `'s`/`\sManufacturer:`\`s`+(`.`*)`/`\1`/`'"
-            }
-            if ($global:IsWindows) {
-                (Get-CimInstance Win32_BaseBoard | Select-Object Manufacturer).Manufacturer
-            }
-        )
-        $this.product = $(
-            if ($global:IsLinux) {
-                Invoke-Expression "./build/apps/dmidecode/dmidecode | grep -A4 `'`^Base Board Information' | grep `"Product Name:`" | sed -E `'s`/`\sProduct Name:`\`s`+(`.`*)`/`\1`/'"
-            }
-            if ($global:IsWindows) {
-                (Get-CimInstance Win32_BaseBoard | Select-Object Product).Product
-            }
-        )
-        $this.system_uuid = $(
-            if ($global:ISLinux) {
-                Invoke-Expression "./build/apps/dmidecode/dmidecode -s system-uuid"
-            }
-            if ($global:IsWindows) {
-                (Get-CimInstance -ClassName Win32_ComputerSystemProduct).UUID
-            }
-        )
-    }
-}
-
-## Root Disk Constructor
-class Disk {
-    [string]$disk_model
-
-    Disk() {
-            if ($global:ISLinux) {
-                $bootpart = "$(Invoke-Expression "readlink -f /dev/block/`$(mountpoint -d `/)")"
-                $bootpart = $bootpart.Substring(0, $bootpart.Length - 1)
-                $disk = Invoke-Expression "parted -ml | grep -m1 `"$bootpart`:`""
-                $disk = $disk -split ":"
-                $disk = "$($disk | Select-Object -Last 2 | Select-Object -First 1) $($disk | Select-Object -Skip 1 -First 1)"
-                $this.disk_model = $disk
-            }
-            if ($global:IsWindows) {
-                $model = (Get-CimInstance win32_diskdrive).model | Select -First 1
-                $size = Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'" | Select-Object Size
-                $size = $size.Size / [math]::pow( 1024, 3 )
-                $size = [math]::Round($size)
-                $this.disk_model = "$model $($size)GB"
-            }
-    }
-
-    static [string] Get_FreeSpace() {
-        $freespace = "0"
-        if ($global:IsLinux) {
-            $freespace = invoke-expression "df -h / | awk '{ print `$4 }' | tail -n 1 | sed 's/%//'"
-        }
-        if ($global:IsWindows) {
-            $freespace = "$([math]::Round((Get-CIMInstance -ClassName Win32_LogicalDisk | Where-Object DeviceID -eq "C:").FreeSpace/1GB,0))G"
-        }
-        return $freespace;
-    }
-}
-
-## Onboard RAM constructor
-class RAM {
-    [string]$total_space
-    [string]$used_space
-
-    RAM() {
-        $this.total_space = $(
-            if ($global:ISLinux) {
-                Get-Content '/proc/meminfo' | Select-String "MemTotal:" | ForEach-Object { $($_ -split 'MemTotal:\s+' | Select-Object -Last 1).replace(" kB", "") }
-            }
-            if ($global:IsWindows) {
-                [math]::Round((Get-CimInstance -ClassName Win32_ComputerSystem).TotalPhysicalMemory / 1MB, 0)
-            }
-        )
-        $this.used_space = $(
-            if ($global:IsLinux) {
-                [math]::Round((Get-Content '/proc/meminfo' | Select-String "MemFree:" | ForEach-Object { $($_ -split 'MemFree:\s+' | Select-Object -Last 1).replace(" kB", "") }) / 1KB, 0)
-            }
-            if ($global:IsWindows) {
-                [math]::Round((Get-CimInstance -ClassName Win32_OperatingSystem).FreePhysicalMemory / 1KB, 0)
-            }
-        )
-    }
-
-    [string] Get_Total() {
-        $this.total_space = $(
-            if ($global:ISLinux) {
-                Get-Content '/proc/meminfo' | Select-String "MemTotal:" | ForEach-Object { $($_ -split 'MemTotal:\s+' | Select-Object -Last 1).replace(" kB", "") }
-            }
-            if ($global:IsWindows) {
-                [math]::Round((Get-CimInstance -ClassName Win32_ComputerSystem).TotalPhysicalMemory / 1MB, 0)
-            }
-        )
-        return $this.total_space
-    }
-
-    [string] Get_Used() {
-        $this.used_space = $(
-            if ($global:IsLinux) {
-                [math]::Round((Get-Content '/proc/meminfo' | Select-String "MemFree:" | ForEach-Object { $($_ -split 'MemFree:\s+' | Select-Object -Last 1).replace(" kB", "") }) / 1KB, 0)
-            }
-            if ($global:IsWindows) {
-                [math]::Round((Get-CimInstance -ClassName Win32_OperatingSystem).FreePhysicalMemory / 1KB, 0)
-            }
-        )
-        return $this.used_space
-    }
-}
-
-
 ## Base Class For RIG.
 ## After Constructed, Used To Send 'hello' to HiveOS
 class RIG {
     [CPU]$cpu = [CPU]::New();
+    [MOTHERBOARD]$mb = [MOTHERBOARD]::New();
+    [DISK]$disk = [DISK]::New();
+    [RAM]$ram = [RAM]::New();
+    [DEVICE_GROUP[]]$Groups;
+    [Array]$gpu = @(); ##Mix of nvidia and amd cards
+    [Hashtable]$net_interfaces = @{ };
+    [hashtable]$lan_config = @{ };
     [String]$version;
     [String]$nvidia_version;
     [String]$amd_version;
     [String]$gpu_count_nvidia;
     [String]$gpu_count_amd;
-    [Array]$gpu = @(); ##Mix of nvidia and amd cards
     [String]$uid;
-    [hashtable]$lan_config = @{ };
-    [MOTHERBOARD]$mb = [MOTHERBOARD]::New();
     [String]$openvpn;
-    [Hashtable]$net_interfaces = @{ };
     [String]$kernel;
     [string[]]$ip
     [String]$boot_time;
-    [Disk]$disk = [Disk]::New();
-    [RAM]$ram = [RAM]::New();
-    [DEVICE_GROUP[]]$Groups;
-
-    static [void] Get_Interface() {
-
-    }
 
     RIG() {
         ## Kernel
@@ -365,12 +95,289 @@ class RIG {
     }
 }
 
-## Below are various methods to query information on RIG.
-## Methods for RIG Device Query
+## Device Groups Used To Execute Miner.
+class DEVICE_GROUP {
+    [String]$Name #User denoted name of group
+    [String]$Device #Device this is (NVIDIA,AMD,CPU,ASIC)
+    [String]$Hashrate #Current Hashrate
+    [Miner]$Miner #Current Miner
+    [Int]$Accepted ## Miner Current Accepted Shares
+    [Int]$Rejected ## Miner Current Rejected Shares
+    [Int]$Rej_Percent ## Rejection Percent
+    [Array]$Devices = @() ## Can be AMD cards, NVIDIA cards, ASIC, CPU
+
+    Add_GPU([GPU]$GPU) {
+        $this.Devices += $GPU
+        $this.Device = $GPU.Brand
+    }
+
+    Add_Thread([Thread]$Thread) {
+        $this.Devices += $Thread
+        $this.Device = $Thread.Brand
+    }
+}
+
+## GPU class constructor for SWARM. These are cards used for mining.
+class GPU {
+    [String]$Brand;
+    [Int]$PCI_SLOT; #Denoted Order It Is On The Bus
+    [Int]$Device; #Denoted Order It Is Among Same Model Cards
+    [Decimal]$Speed; #Current Hashrate
+    [Int]$Temp = 0; #Current Temperature
+    [Int]$Fan = 0; #Current Fan Speed
+    [Int]$Wattage = 0; #Current Wattage
+
+    GPU([AMD_GPU]$gpu) {
+
+    }
+
+    GPU([NVIDIA]$gpu) {
+
+    }
+}
+
+## Mining Threads for CPU
+class THREAD : CPU {
+    [String]$Brand = "CPU"
+    [Decimal]$Speed; #Current Hashrate
+    [Int]$Temp = 0; #Current Temperature Not Used Yet
+    [Int]$Fan = 0; #Current Fan Speed Not Used Yet
+    [Int]$Wattage = 0; #Current Wattage Not Used Yet
+}
+
+## Base class for video card
+class VIDEO_CARD {
+    [String]$busid; 
+    [String]$name;
+    [String]$brand;
+
+    VIDEO_CARD($Busid, $Name, $Brand) {
+        $this.busid = $Busid;
+        $this.name = $Name;
+        $this.brand = $Brand;
+    }
+}
+
+## A NVIDIA gpu
+class NVIDIA_GPU : VIDEO_CARD {
+    [String]$subvendor;
+    [String]$mem;
+    [String]$vbios;
+    [string]$plim_min;
+    [string]$plim_def;
+    [string]$plim_max;
+
+    NVIDIA_GPU($Busid, $Name, $Brand, $Subvendor, $Mem, $Vbios, $Plim_min, $Plim_def, $Plim_max) {
+        $this.busid = $Busid;
+        $this.name = $Name;
+        $this.brand = $Brand;
+        $this.subvendor = $Subvendor
+        $this.mem = $Mem;
+        $this.vbios = $Vbios;
+        $this.plim_min = $Plim_min;
+        $this.plim_def = $Plim_def;
+        $this.plim_max = $Plim_max;
+    }
+}
+
+## A AMD gpu
+class AMD_GPU : VIDEO_CARD {
+    [String]$subvendor
+    [String]$mem
+    [String]$vbios
+    [String]$mem_type
+
+    AMD_GPU($Busid, $Name, $Brand, $Subvendor, $Mem, $Vbios, $Mem_Type) {
+        $this.busid = $Busid;
+        $this.name = $Name;
+        $this.brand = $Brand;
+        $this.subvendor = $Subvendor
+        $this.mem = $Mem;
+        $this.vbios = $Vbios;
+        $this.mem_type = $Mem_Type;
+    }
+}
+
+## BASE CPU class constructor
+class CPU {
+    [string]$aes;
+    [string]$model;
+    [string]$cpu_id;
+    [string]$cores;
+
+    CPU() {
+        $this.Model = $(
+            if ($global:IsLinux) {
+                Invoke-Expression "lscpu | grep `"Model name:`" | sed `'`s`/Model name:[ `\t]`*`/`/g`'"
+            }
+            if ($global:IsWindows) {
+                (Get-CimInstance -Class Win32_processor).Name.Trim()
+            }
+        )
+        $this.Cores = $(
+            if ($global:IsLinux) {
+                Invoke-Expression "lscpu | grep `"`^CPU(s):`" | sed `'s`/CPU(s):[ `\t]`*`/`/`g`'"
+            }
+            if ($global:IsWindows) {
+                (Get-CimInstance -Class Win32_processor).NumberOfCores
+            }
+        )
+        $this.Aes = $(
+            if ($global:IsLinux) {
+                Invoke-Expression "lscpu | grep `"`^Flags:`.`*aes`" | wc -l"
+            }
+            if ($global:IsWindows) {
+                $Get = $(Invoke-Expression ".\build\apps\features-win\features-win.exe" | Select-Object -Skip 1 | ConvertFrom-StringData)."AES-NI"
+                if ($Get -eq "Yes") { $HasAES = 1 }else { $HasAES = 0 }
+                $HasAES
+            }
+        )
+        $this.cpu_id = $(
+            if ($global:IsLinux) {
+                "$(Invoke-Expression "./build/apps/dmidecode/dmidecode -t 4" | Select-String "ID: " | ForEach-Object{$_ -split "ID: " | Select-Object -Last 1})" -replace " ", ""
+            }
+            if ($global:IsWindows) {
+                (Get-CimInstance -Class Win32_processor).ProcessorId
+            }
+        )
+    }
+}
+
+## Motherboard constructor
+class MOTHERBOARD {
+    [String]$system_uuid;
+    [String]$product;
+    [String]$manufacturer;
+
+    MOTHERBOARD() {
+        $this.manufacturer = $(
+            if ($global:ISLinux) {
+                Invoke-Expression "./build/apps/dmidecode/dmidecode | grep -A4 `'`^Base Board Information`' | grep `"Manufacturer:`" | sed -E `'s`/`\sManufacturer:`\`s`+(`.`*)`/`\1`/`'"
+            }
+            if ($global:IsWindows) {
+                (Get-CimInstance Win32_BaseBoard | Select-Object Manufacturer).Manufacturer
+            }
+        )
+        $this.product = $(
+            if ($global:IsLinux) {
+                Invoke-Expression "./build/apps/dmidecode/dmidecode | grep -A4 `'`^Base Board Information' | grep `"Product Name:`" | sed -E `'s`/`\sProduct Name:`\`s`+(`.`*)`/`\1`/'"
+            }
+            if ($global:IsWindows) {
+                (Get-CimInstance Win32_BaseBoard | Select-Object Product).Product
+            }
+        )
+        $this.system_uuid = $(
+            if ($global:ISLinux) {
+                Invoke-Expression "./build/apps/dmidecode/dmidecode -s system-uuid"
+            }
+            if ($global:IsWindows) {
+                (Get-CimInstance -ClassName Win32_ComputerSystemProduct).UUID
+            }
+        )
+    }
+}
+
+## Root Disk Constructor
+class DISK {
+    [string]$disk_model
+
+    DISK() {
+        if ($global:ISLinux) {
+            $bootpart = "$(Invoke-Expression "readlink -f /dev/block/`$(mountpoint -d `/)")"
+            $bootpart = $bootpart.Substring(0, $bootpart.Length - 1)
+            $disk = Invoke-Expression "parted -ml | grep -m1 `"$bootpart`:`""
+            $disk = $disk -split ":"
+            $disk = "$($disk | Select-Object -Last 2 | Select-Object -First 1) $($disk | Select-Object -Skip 1 -First 1)"
+            $this.disk_model = $disk
+        }
+        if ($global:IsWindows) {
+            $model = (Get-CimInstance win32_diskdrive).model | Select -First 1
+            $size = Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'" | Select-Object Size
+            $size = $size.Size / [math]::pow( 1024, 3 )
+            $size = [math]::Round($size)
+            $this.disk_model = "$model $($size)GB"
+        }
+    }
+
+    static [string] Get_FreeSpace() {
+        $freespace = "0"
+        if ($global:IsLinux) {
+            $freespace = invoke-expression "df -h / | awk '{ print `$4 }' | tail -n 1 | sed 's/%//'"
+        }
+        if ($global:IsWindows) {
+            $freespace = "$([math]::Round((Get-CIMInstance -ClassName Win32_LogicalDisk | Where-Object DeviceID -eq "C:").FreeSpace/1GB,0))G"
+        }
+        return $freespace;
+    }
+}
+
+## Onboard RAM constructor
+class RAM {
+    [string]$total_space
+    [string]$used_space
+
+    RAM() {
+        $this.total_space = $(
+            if ($global:ISLinux) {
+                Get-Content '/proc/meminfo' | Select-String "MemTotal:" | ForEach-Object { $($_ -split 'MemTotal:\s+' | Select-Object -Last 1).replace(" kB", "") }
+            }
+            if ($global:IsWindows) {
+                [math]::Round((Get-CimInstance -ClassName Win32_ComputerSystem).TotalPhysicalMemory / 1MB, 0)
+            }
+        )
+        $this.used_space = $(
+            if ($global:IsLinux) {
+                [math]::Round((Get-Content '/proc/meminfo' | Select-String "MemFree:" | ForEach-Object { $($_ -split 'MemFree:\s+' | Select-Object -Last 1).replace(" kB", "") }) / 1KB, 0)
+            }
+            if ($global:IsWindows) {
+                [math]::Round((Get-CimInstance -ClassName Win32_OperatingSystem).FreePhysicalMemory / 1KB, 0)
+            }
+        )
+    }
+
+    [string] Get_Total() {
+        $this.total_space = $(
+            if ($global:ISLinux) {
+                Get-Content '/proc/meminfo' | Select-String "MemTotal:" | ForEach-Object { $($_ -split 'MemTotal:\s+' | Select-Object -Last 1).replace(" kB", "") }
+            }
+            if ($global:IsWindows) {
+                [math]::Round((Get-CimInstance -ClassName Win32_ComputerSystem).TotalPhysicalMemory / 1MB, 0)
+            }
+        )
+        return $this.total_space
+    }
+
+    [string] Get_Used() {
+        $this.used_space = $(
+            if ($global:IsLinux) {
+                [math]::Round((Get-Content '/proc/meminfo' | Select-String "MemFree:" | ForEach-Object { $($_ -split 'MemFree:\s+' | Select-Object -Last 1).replace(" kB", "") }) / 1KB, 0)
+            }
+            if ($global:IsWindows) {
+                [math]::Round((Get-CimInstance -ClassName Win32_OperatingSystem).FreePhysicalMemory / 1KB, 0)
+            }
+        )
+        return $this.used_space
+    }
+}
+
+<# 
+
+    Below are various methods to query information on RIG. 
+    These are the methods that will do things such as
+    gather detailed rig information, and query drivers
+    for information.
+
+    For windows, there is a method to initiate GPU-Z
+    as well to gather detailed GPU information.
+#>
+
+<# 
+    Methods for RIG Device Query 
+#>
 class RIG_RUN {
 
     ## Get GPU information
-    static [Array] get_gpus(){
+    static [Array] get_gpus() {
         $gpus = @()
         
         ## Insert Code Here
@@ -502,7 +509,12 @@ class RIG_RUN {
     }
 }
 
-## Methods For GPU Specific Device Query
+<# 
+
+    Methods For GPU Specific Device Query 
+
+#>
+
 ## NVIDIA specific
 class NVIDIA {
     static [string] get_driver() {
