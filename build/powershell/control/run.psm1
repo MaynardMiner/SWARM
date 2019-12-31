@@ -68,6 +68,7 @@ function Global:Stop-ActiveMiners {
                             $PIDTime = [DateTime]$MI.start_date
                             $Exec = Split-Path $MI.miner_exec -Leaf
                             $_.Active += (Get-Date) - $PIDTime
+                            $Timer = 0;
                             ## Wait up to 15 seconds for process to end
                             log "waiting up to 15 seconds for $Exec for $($_.Type) to end..." -ForegroundColor Cyan
                             $Procs = Get-Process | Where Path -eq $MI.miner_exec;
@@ -78,10 +79,10 @@ function Global:Stop-ActiveMiners {
                             do {
                                 $timer++
                                 Start-Sleep -Seconds 1
-                            } while ( 
-                                $false -in $Procs.HasExited -or
-                                $timer -lt 14
-                            )
+                            } until ( 
+                                $false -notin $Procs.HasExited -or
+                                $timer -gt 14
+                                )
                             if ($false -in $Procs.HasExited) {
                                 log "ERROR: Miner is failing to close! This can harm process tracking!" -ForegroundColor Red
                                 log "Attempting to close screen miner is in, and hope it shuts down miner!" -ForegroundColor Red
