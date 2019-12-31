@@ -63,13 +63,26 @@ function Global:Stop-ActiveMiners {
                         $MinerInfo = ".\build\pid\$($_.InstanceName)_info.txt"
                         if (Test-Path $MinerInfo) {
                             $_.Status = "Idle"
-                           $(vars).PreviousMinerPorts.$($_.Type) = "($_.Port)"
+                            $(vars).PreviousMinerPorts.$($_.Type) = "($_.Port)"
                             $MI = Get-Content $MinerInfo | ConvertFrom-Json
                             $PIDTime = [DateTime]$MI.start_date
                             $Exec = Split-Path $MI.miner_exec -Leaf
                             $_.Active += (Get-Date) - $PIDTime
-                            $Proc = Start-Process "start-stop-daemon" -ArgumentList "--stop --name $Exec --pidfile $($MI.pid_path) --retry 5" -PassThru
-                            $Proc | Wait-Process
+
+                            ## Kill all process ids register with the miner path
+                            $Proc = Start-Process ".\build\bash\killapp.sh" -ArgumentList $MI.miner_exec -PassThru;
+                            $Proc | Wait-Process;
+
+                            ## Wait up to 15 seconds for process to end
+                            $timer = 0
+                            do{
+                                log "waiting up to 15 seconds for $Exec for $($_.Type) to end..." -ForegroundColor Cyan
+                                $timer++
+                                Start-Sleep -Seconds 1
+                            } while ( 
+                                $_.Xprocess.HasExited -eq $false -or
+                                $timer -lt 14
+                            )
                         }
                     }
                     else { $_.Xprocess.HasExited = $true; $_.XProcess.StartTime = $null; $_.Status = "Idle" }
