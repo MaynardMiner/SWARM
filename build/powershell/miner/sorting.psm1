@@ -293,7 +293,7 @@ function Global:Stop-AllMiners {
                     $Timer = 0;
                         
                     ## Send kill signal.
-                    Invoke-Express "screen -S $($_.Type) -X stuff `^C"
+                    Invoke-Expression "screen -S $($_.Type) -X stuff `^C"
 
                     ## Now wait with actions in between.
                     do {

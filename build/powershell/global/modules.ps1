@@ -79,30 +79,45 @@ function Global:start-killscript {
     $OpenScreens += "pill-NVIDIA2"
     $OpenScreens += "pill-NVIDIA3"
     $OpenScreens += "API"
-    $OpenScreens | foreach {
-        $Proc = Start-Process ".\build\bash\killall.sh" -ArgumentList $_ -PassThru
-        $Proc | Wait-Process
-    }
-    $Proc = Start-Process ".\build\bash\killall.sh" -ArgumentList "background" -PassThru
-    $Proc | Wait-Process
-    
-    <# Reset Hugepages #>
-    if(test-path "/hive/bin") { <# Is HiveOS #>
-        Invoke-expression "hugepages -r";
-    }
 
-    ## Get miner PIDs from miners, and start closing them.
-    if(test-path ".\build\pid") {
-        $Miner_PIDs = Get-ChildItem ".\build\pid" | Where BaseName -like "*info*"
-        if($Miner_PIDs) {
-            $Miner_PIDs % {
-                $Content = Get-Content $_ | ConvertFrom-Json
-                $Name = Split-Path $Content.miner_exec -Leaf
-                $Process = Get-Process | Where Id -eq $Content.pid | Where Name -eq $Content.Name
-                if($Process){$Process.kill()}
+    ## Send CTRL+C to all screens
+    $OpenedScreens = @()
+    $GetScreens = (invoke-expression "screen -ls" | Select-String $OpenScreens).Line
+    foreach ($screen in $OpenScreens) { 
+        $GetScreens | % { 
+            if ($_ -like "*$screen*") { 
+                $OpenedScreens += $screen 
             }
         }
     }
+    foreach ($screen in $OpenedScreens) {        
+        invoke-expression "screen -S $screen -X stuff `^C"
+    }
+
+    ## See which screens are still open
+    $OpenedScreens = @()
+    $GetScreens = (invoke-expression "screen -ls" | Select-String $OpenScreens).Line
+    foreach ($screen in $OpenScreens) { 
+        $GetScreens | % { 
+            if ($_ -like "*$screen*") { 
+                $OpenedScreens += $screen 
+            }
+        }
+    }
+
+    ## Close those screens
+    foreach ($screen in $OpenedScreens) {
+        Invoke-Expression "screen -S $screen -X quit" | Out-Null
+    }
+    
+    <# Reset Hugepages #>
+    if (test-path "/hive/bin") {
+        <# Is HiveOS #>
+        Invoke-expression "hugepages -r";
+    }
+
+    ## Close background
+    Invoke-Expression "screen -S background -X quit"
 }
 
 function Global:Add-Module($Path) {
@@ -127,7 +142,7 @@ function Global:Remove-Modules {
         $name = $(Get-Item $Path).BaseName
         if ($Name -in $mods) {
             Remove-Module -Name $name
-            $global:config.vars.modules = $global:config.vars.modules | where {$_ -ne $name}
+            $global:config.vars.modules = $global:config.vars.modules | where { $_ -ne $name }
         }
     }
     else {
@@ -203,17 +218,17 @@ function Global:Write-Log {
 }
 
 
-function Global:Get-Vars([string]$X) { if($X) {$Global:Config.vars.$X} else {$global:Config.vars} }
+function Global:Get-Vars([string]$X) { if ($X) { $Global:Config.vars.$X } else { $global:Config.vars } }
 
-function Global:Get-Args([string]$X) { if($X) {$global:Config.params.$X} else {$global:Config.Params} }
+function Global:Get-Args([string]$X) { if ($X) { $global:Config.params.$X } else { $global:Config.Params } }
 
-function Global:Build-Vars([string]$X,$Y) {
+function Global:Build-Vars([string]$X, $Y) {
 
-    if($X -notin $Global:Config.vars.Active_Variables){ $Global:Config.vars.Active_Variables.Add($X) | Out-Null }
-    if(-not $Global:Config.vars.ContainsKey($X)){ $Global:Config.vars.Add($X,$Y) }
+    if ($X -notin $Global:Config.vars.Active_Variables) { $Global:Config.vars.Active_Variables.Add($X) | Out-Null }
+    if (-not $Global:Config.vars.ContainsKey($X)) { $Global:Config.vars.Add($X, $Y) }
 
 }
-function Global:Confirm-Vars([string]$X){ if($Global:Config.vars.ContainsKey($X)){return $true} else{return $false}}
+function Global:Confirm-Vars([string]$X) { if ($Global:Config.vars.ContainsKey($X)) { return $true } else { return $false } }
 
 Set-Alias -Name vars -Value Global:Get-Vars -Scope Global
 Set-Alias -Name arg -Value Global:Get-Args -Scope Global
@@ -223,11 +238,12 @@ Set-Alias -Name check -Value Global:Confirm-Vars -Scope Global
 Set-Alias -Name log -Value Global:Write-Log -Scope Global
 
 function Global:Remove-Vars([string]$X) {
-    if($X -ne "all"){
-        if(check $X){ $Global:Config.vars.Remove($X) }
-        if($X -in $Global:Config.vars.Active_Variables){ $Global:Config.vars.Active_Variables.Remove($X) | Out-Null } 
-    } else {
-        $Global:Config.vars.Active_Variables | ForEach-Object { if(check $_) { $Global:Config.vars.Remove($_) } }
+    if ($X -ne "all") {
+        if (check $X) { $Global:Config.vars.Remove($X) }
+        if ($X -in $Global:Config.vars.Active_Variables) { $Global:Config.vars.Active_Variables.Remove($X) | Out-Null } 
+    }
+    else {
+        $Global:Config.vars.Active_Variables | ForEach-Object { if (check $_) { $Global:Config.vars.Remove($_) } }
         $Global:Config.vars.Active_Variables = (New-Object System.Collections.ArrayList)
     }
 }
