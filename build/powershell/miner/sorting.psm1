@@ -258,16 +258,18 @@ function Global:Stop-AllMiners {
             }
         }
 
-            ## Linux
-            if ($(arg).Platform -eq "linux") {
-                ## Miner never started to begin with. Nothing to do here.
-                if ($Null -eq $_.XProcess) { $_.Status = "Failed" }
-                ## Miner is running, needs to close, but is not ASIC.
-                elseif ($_.Type -notlike "*ASIC*") {
-                    ## Update Time and Status
-                    $_.Status = "Idle"
-                    $PIDTime = $_.Xprocess.StartTime
-                    $_.Active += (Get-Date) - $PIDTime
+        ## Linux
+        if ($(arg).Platform -eq "linux") {
+            ## Miner never started to begin with. Nothing to do here.
+            if ($Null -eq $_.XProcess) { $_.Status = "Failed" }
+            ## Miner is running, needs to close, but is not ASIC.
+            elseif ($_.XProcess.HasExited -eq $false) {
+                ## Update Time and Status
+                $_.Status = "Idle"
+                $PIDTime = $_.Xprocess.StartTime
+                $_.Active += (Get-Date) - $PIDTime     
+
+                if ($_.Type -notlike "*ASIC*") {
 
                     ## Update ports that need to be checked later.
                     $(vars).PreviousMinerPorts.$($_.Type) = "($_.Port)"
@@ -278,12 +280,16 @@ function Global:Stop-AllMiners {
                     $To_Kill = @()
                     $To_Kill += $_.XProcess
                     ## Get all sub-processes
-                    $To_KIll += Get-Process | Where { $_.Parent.Id -eq $_.Xprocess.ID }
+                    ## In this instance I define sub-process as processes
+                    ## with the same name spawned from original process.
+                    $To_KIll += Get-Process | 
+                    Where { $_.Parent.Id -eq $_.Xprocess.ID } | 
+                    Where { $_.Name -eq $_.XProcess.Name }
                         
 
                     ## Wait up to 2 minutes for process to end
                     ## Hacky-Lazy Timer style.
-                    log "waiting on $Exec for $($_.Type) to end..." -ForegroundColor Cyan
+                    log "waiting on miner for $($_.Type) to end..." -ForegroundColor Cyan
                     $Timer = 0;
                         
                     ## Send kill signal.
@@ -291,7 +297,6 @@ function Global:Stop-AllMiners {
 
                     ## Now wait with actions in between.
                     do {
-                        log "waiting for process to close..."
                         Start-Sleep -S 1
                         $Timer++
 
@@ -328,11 +333,12 @@ function Global:Stop-AllMiners {
                         }
                     }until($false -notin $To_Kill.HasExited)
                 }
-                ## Miner is ASIC.
                 else { $_.Xprocess.HasExited = $true; $_.XProcess.StartTime = $null; $_.Status = "Idle" }
             }
+        }
     }
 }
+
 function Global:Start-MinerDownloads {
     $MinersStopped = $False
     $(vars).Miners | ForEach-Object {

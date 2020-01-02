@@ -325,73 +325,78 @@ function Global:Stop-AllMiners {
             ## Miner never started to begin with. Nothing to do here.
             if ($Null -eq $_.XProcess) { $_.Status = "Failed" }
             ## Miner is running, needs to close, but is not ASIC.
-            elseif ($_.Type -notlike "*ASIC*") {
+            elseif ($_.XProcess.HasExited -eq $false) {
                 ## Update Time and Status
                 $_.Status = "Idle"
                 $PIDTime = $_.Xprocess.StartTime
-                $_.Active += (Get-Date) - $PIDTime
+                $_.Active += (Get-Date) - $PIDTime     
 
-                ## Update ports that need to be checked later.
-                $(vars).PreviousMinerPorts.$($_.Type) = "($_.Port)"
+                if ($_.Type -notlike "*ASIC*") {
 
-                ## First we need to identify all processes related
-                ## to miner. We need to make sure they are all killed
-                ## Or notate a warning to user there is an issue here.
-                $To_Kill = @()
-                $To_Kill += $_.XProcess
-                ## Get all sub-processes
-                $To_KIll += Get-Process | Where { $_.Parent.Id -eq $_.Xprocess.ID }
+                    ## Update ports that need to be checked later.
+                    $(vars).PreviousMinerPorts.$($_.Type) = "($_.Port)"
+
+                    ## First we need to identify all processes related
+                    ## to miner. We need to make sure they are all killed
+                    ## Or notate a warning to user there is an issue here.
+                    $To_Kill = @()
+                    $To_Kill += $_.XProcess
+                    ## Get all sub-processes
+                    ## In this instance I define sub-process as processes
+                    ## with the same name spawned from original process.
+                    $To_KIll += Get-Process | 
+                    Where { $_.Parent.Id -eq $_.Xprocess.ID } | 
+                    Where { $_.Name -eq $_.XProcess.Name }
                         
 
-                ## Wait up to 2 minutes for process to end
-                ## Hacky-Lazy Timer style.
-                log "waiting on $Exec for $($_.Type) to end..." -ForegroundColor Cyan
-                $Timer = 0;
+                    ## Wait up to 2 minutes for process to end
+                    ## Hacky-Lazy Timer style.
+                    log "waiting on miner for $($_.Type) to end..." -ForegroundColor Cyan
+                    $Timer = 0;
                         
-                ## Send kill signal.
-                $_.XProcess.Kill()
+                    ## Send kill signal.
+                    $_.XProcess.Kill()
 
-                ## Now wait with actions in between.
-                do {
-                    log "waiting for process to close..."
-                    Start-Sleep -S 1
-                    $Timer++
+                    ## Now wait with actions in between.
+                    do {
+                        Start-Sleep -S 1
+                        $Timer++
 
-                    ## ~ 10 second action
-                    ## Spam there is an issue.
-                    if ($Timer -gt 10) {
-                        Write-Log "SWARM IS WAITING FOR MINER TO CLOSE. IT WILL NOT CLOSE" -ForegroundColor Red
-                    }
-
-                    ## ~ 2 minute action
-                    if ($Timer -gt 180) {
-                        ## Houston we have a problem.
-                        ## Something isn't closing.
-                        ## We need to let user know there is an issue.
-                        ## This can break SWARM.
-                        if ($(arg).Startup -eq "Yes") {
-                            $HiveMessage = "2 minutes miner will not close on $($_.Type) - Restarting Computer"
-                            $HiveWarning = @{result = @{command = "timeout" } }
-                            if ($(vars).WebSites) {
-                                $(vars).WebSites | ForEach-Object {
-                                    $Sel = $_
-                                    try {
-                                        Global:Add-Module "$($(vars).web)\methods.psm1"
-                                        Global:Get-WebModules $Sel
-                                        $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
-                                    }
-                                    catch { log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
-                                    Global:Remove-WebModules $sel
-                                }
-                            }
-                            log "$HiveMessage" -ForegroundColor Red
-                            Invoke-Expression "reboot"
+                        ## ~ 10 second action
+                        ## Spam there is an issue.
+                        if ($Timer -gt 10) {
+                            Write-Log "SWARM IS WAITING FOR MINER TO CLOSE. IT WILL NOT CLOSE" -ForegroundColor Red
                         }
-                    }
-                }until($false -notin $To_Kill.HasExited)
+
+                        ## ~ 2 minute action
+                        if ($Timer -gt 180) {
+                            ## Houston we have a problem.
+                            ## Something isn't closing.
+                            ## We need to let user know there is an issue.
+                            ## This can break SWARM.
+                            if ($(arg).Startup -eq "Yes") {
+                                $HiveMessage = "2 minutes miner will not close on $($_.Type) - Restarting Computer"
+                                $HiveWarning = @{result = @{command = "timeout" } }
+                                if ($(vars).WebSites) {
+                                    $(vars).WebSites | ForEach-Object {
+                                        $Sel = $_
+                                        try {
+                                            Global:Add-Module "$($(vars).web)\methods.psm1"
+                                            Global:Get-WebModules $Sel
+                                            $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
+                                        }
+                                        catch { log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
+                                        Global:Remove-WebModules $sel
+                                    }
+                                }
+                                log "$HiveMessage" -ForegroundColor Red
+                                Invoke-Expression "reboot"
+                            }
+                        }
+                    }until($false -notin $To_Kill.HasExited)
+                }
+                else { $_.Xprocess.HasExited = $true; $_.XProcess.StartTime = $null; $_.Status = "Idle" }
             }
-            ## Miner is ASIC.
-            else { $_.Xprocess.HasExited = $true; $_.XProcess.StartTime = $null; $_.Status = "Idle" }
         }
     }
 }
