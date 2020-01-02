@@ -97,7 +97,8 @@ function Global:start-killscript {
         if($Miner_PIDs) {
             $Miner_PIDs % {
                 $Content = Get-Content $_ | ConvertFrom-Json
-                $Process = Get-Process | Where Id -eq $Content.pid
+                $Name = Split-Path $Content.miner_exec -Leaf
+                $Process = Get-Process | Where Id -eq $Content.pid | Where Name -eq $Content.Name
                 if($Process){$Process.kill()}
             }
         }
