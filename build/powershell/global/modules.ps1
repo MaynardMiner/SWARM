@@ -90,6 +90,18 @@ function Global:start-killscript {
     if(test-path "/hive/bin") { <# Is HiveOS #>
         Invoke-expression "hugepages -r";
     }
+
+    ## Get miner PIDs from miners, and start closing them.
+    if(test-path ".\build\pid") {
+        $Miner_PIDs = Get-ChildItem ".\build\pid" | Where BaseName -like "*info*"
+        if($Miner_PIDs) {
+            $Miner_PIDs % {
+                $Content = Get-Content $_ | ConvertFrom-Json
+                $Process = Get-Process | Where Id -eq $Content.pid
+                if($Process){$Process.kill()}
+            }
+        }
+    }
 }
 
 function Global:Add-Module($Path) {

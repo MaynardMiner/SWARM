@@ -377,17 +377,7 @@ $start
             $MinerEXE = Join-Path $($(vars).dir) $MinerCurrent.Path
             $MinerEXE = $(Resolve-Path $MinerExe).Path
             $StartDate = Get-Date
-
-            ##PID Tracking Path & Date
-            $PIDInfoPath = Join-Path $($(vars).dir) "build\pid\$($MinerCurrent.InstanceName)_info.txt"
-            $PIDInfo = @{miner_exec = "$MinerEXE"; start_date = "$StartDate"; pid_path = "$PIDPath"; }
-            $PIDInfo | ConvertTo-Json | Set-Content $PIDInfoPath
-
-            ##Clear Old PID information
-            if (Test-Path $PIDInfo) { Remove-Item $PIDInfo -Force }
-
-            ##Get Full Path Of Miner Executable and its dir
-        
+                    
             ##Add Logging To Arguments if needed
             if ($MinerCurrent.Log -ne "miner_generated") { $MinerArgs = "$MinerArguments 2>&1 | tee `'$($MinerCurrent.Log)`'" }
             else { $MinerArgs = "$MinerArguments" }
@@ -556,11 +546,22 @@ $start
                 ## Now we get all plausible process id's based on miner name
                 $Miner_IDs = Get-Process | Where Name -eq  (Split-Path $MinerEXE -Leaf)
                 ## We search the parent process's parent ID.
-                $MinerProcess = $Miner_IDs | Where { $($_.Parent).Parent.Id -eq $Screen_ID}
+                $MinerProcess = $Miner_IDs | Where { $($_.Parent).Parent.Id -eq $Screen_ID }
 
             }until($null -ne $MinerProcess -or ($MinerTimer.Elapsed.TotalSeconds) -ge 10)  
             ##Stop Timer
             $MinerTimer.Stop()
+
+            ## New Ubuntu Miners may not close if the Emulation window closes.
+            ## So on exit- We have to find and close these miners (background agent does that)
+            if($MinerProcess) {
+                ##PID Tracking Path & Date
+                $PIDInfoPath = Join-Path $($(vars).dir) "build\pid\$($MinerCurrent.InstanceName)_info.txt"
+                $PIDInfo = @{miner_exec = "$MinerEXE"; start_date = "$StartDate"; pid = "$($MinerProcess.Id)"; }
+            
+                $PIDInfo | ConvertTo-Json | Set-Content $PIDInfoPath
+            }
+
             $MinerProcess
         }
     }
