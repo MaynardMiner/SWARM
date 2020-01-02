@@ -97,7 +97,8 @@ function Global:Stop-ActiveMiners {
                         $Timer = 0;
                     
                         ## Send kill signal.
-                        Invoke-Expression "screen -S $($_.Type) -X stuff `^C"
+                        $Proc = Start-Process "screen" -ArgumentList "-S $($_.Type) -X stuff `^C" -PassThrough
+                        $Proc | Wait-Process
 
                         ## Now wait with actions in between.
                         do {

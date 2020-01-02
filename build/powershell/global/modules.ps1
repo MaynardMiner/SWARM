@@ -90,8 +90,9 @@ function Global:start-killscript {
             }
         }
     }
-    foreach ($screen in $OpenedScreens) {        
-        invoke-expression "screen -S $screen -X stuff `^C"
+    foreach ($screen in $OpenedScreens) { 
+        $Proc = Start-Proces "screen" -ArgumentList "-S $screen -X stuff `^C" -PassThrough
+        $Proc | Wait-Process
     }
 
     ## See which screens are still open
@@ -107,7 +108,8 @@ function Global:start-killscript {
 
     ## Close those screens
     foreach ($screen in $OpenedScreens) {
-        Invoke-Expression "screen -S $screen -X quit" | Out-Null
+        $Proc = Start-Proces "screen" -ArgumentList "-S $screen -X quit" -PassThrough
+        $Proc | Wait-Process
     }
     
     <# Reset Hugepages #>
