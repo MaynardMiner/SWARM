@@ -1649,3 +1649,40 @@ changing it- It is in simple .json format.
  * Jayddee updated
  * gminer updated
 
+############################################
+############################################
+
+# SWARM 2.9.0
+
+## Note
+There is some large beta changes in linux
+contained in this release, which could be
+greatly beneficial to how SWARM operates.
+Be advised they are potentially beneficial,
+but beta in design.
+
+## Improvements
+* Issue #270
+   * Process control improvements in linux.
+   * Process Parent is used to track/identify
+     actual core processes of miners within
+     terminal emulators (screen).
+   * Since definitive miner core processes can
+     be identified, a new system to
+     reboot computer on errors was written
+     if the process fails to close (if argument
+     ``startup`` is set to default "Yes").
+   * Users will be notified through HiveOS
+     if a process or one of its subprocesses
+     is a zombie process if using HiveOS
+     now in both Windows or Linux.
+
+## Fixes
+* Issue #271
+  * Last release there was a change implemented
+    for HiveOS hello in Windows. There was a
+    typo that was corrected.
+
+## Updates
+* None - This is a release to test linux
+  improvements.
