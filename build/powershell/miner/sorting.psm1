@@ -259,7 +259,7 @@ function Global:Stop-AllMiners {
         }
 
         ## Linux
-        if ($(arg).Platform -eq "linux") {
+        elseif ($(arg).Platform -eq "linux") {
             ## Miner never started to begin with. Nothing to do here.
             if ($Null -eq $_.XProcess) { $_.Status = "Failed" }
             ## Miner is running, needs to close, but is not ASIC.
