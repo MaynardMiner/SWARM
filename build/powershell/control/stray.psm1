@@ -1,7 +1,7 @@
 
 function global:Stop-Stray($X) {
     $proc = Get-Process | Where id -eq $X.ParentProcessID  ## Want to close powershell window they are in.
-    $proc.CloseMainWindow() | Out-Null
+    if ($proc) { $proc.CloseMainWindow() | Out-Null }
     log "waiting 5 seconds to confirm $($X.name) window has closed..." -ForeGroundColor Yellow
     Start-Sleep -S 3
     ## Check to see if process closed
@@ -62,7 +62,8 @@ function global:Stop-StrayMiners {
             $subprocesses | % {
                 Global:Stop-Stray $_
             }
-        } else {
+        }
+        else {
             ## Periodic Check. Only close miners that are not active
             $subprocesses = $subprocesses | where { $_.ParentProcessID -notin $(vars).BestActiveMiners.XProcess.Id }
             if ($subprocesses) {
