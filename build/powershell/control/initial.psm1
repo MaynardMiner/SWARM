@@ -355,7 +355,7 @@ function Global:Stop-AllMiners {
                     $Timer = 0;
                         
                     ## Send kill signal.
-                    $_.XProcess.Kill()
+                    Invoke-Express "screen -S $($_.Type) -X stuff `^C"
 
                     ## Now wait with actions in between.
                     do {
