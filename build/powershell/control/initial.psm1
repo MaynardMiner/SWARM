@@ -355,7 +355,7 @@ function Global:Stop-AllMiners {
                     $Timer = 0;
                         
                     ## Send kill signal.
-                    $Proc = Start-Process "screen" -ArgumentList "-S $($_.Type) -X stuff `^C" -PassThrough
+                    $Proc = Start-Process "screen" -ArgumentList "-S $($_.Type) -X stuff `^C" -PassThru
                     $Proc | Wait-Process
 
                     ## Now wait with actions in between.

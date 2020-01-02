@@ -91,7 +91,7 @@ function Global:start-killscript {
         }
     }
     foreach ($screen in $OpenedScreens) { 
-        $Proc = Start-Proces "screen" -ArgumentList "-S $screen -X stuff `^C" -PassThrough
+        $Proc = Start-Process "screen" -ArgumentList "-S $screen -X stuff `^C" -PassThru
         $Proc | Wait-Process
     }
 
@@ -108,7 +108,7 @@ function Global:start-killscript {
 
     ## Close those screens
     foreach ($screen in $OpenedScreens) {
-        $Proc = Start-Proces "screen" -ArgumentList "-S $screen -X quit" -PassThrough
+        $Proc = Start-Process "screen" -ArgumentList "-S $screen -X quit" -PassThru
         $Proc | Wait-Process
     }
     
