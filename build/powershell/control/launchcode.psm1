@@ -11,6 +11,47 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
+<# 
+
+There is an issue that happens in linux. It requires
+a complex solution. The beautiful challenges of .NET core
+in linux...
+
+1.) All processes MUST be spawned in a emulated terminal, which screen
+    is used. Each new miner is placed in a new screen. This means SWARM
+    cannot -passthrough the process to get the original process ID. However,
+    it DOES mean we can track a process based on the id of the parent screen
+    process it is launched in. It makes it complicated, but possible.
+
+2.) Some processes will often spawn processes that are
+    not the original process. Therefor tracking a process
+    by its id may cause spawned processes to go unnoticed. Their
+    is many an occassion when a spawned process will not be closed
+    Or SWARM tracks the spawned process rather than the original.
+
+3.) System.Diagnostic.Process.Path may not always be the path to the 
+    executable. In some cases it is the libs they are using. This makes
+    it further difficult...
+
+5.) We do not need to track subprocess when started, but we need to identify
+    them when we kill the process to ensure they have closed. This is because
+    buggy miners or users experiencing 'soft crashes' may have issues with
+    zobmie sub-processes. Not relevant here, but noted for those trying to
+    understand the difficulties.
+
+    The solution is a three prong attack:
+
+    1.) Keep all processes in separate screen emulations, so that each
+        can be referenced to the terminal emulator they are using.
+    
+    2.) Track processes indirectly through the emulator it is being
+        ran in
+    
+    3.) Identify sub-process using the information gleaned through
+        the above.
+
+#>
+
 function Global:Remove-ASICPools {
     param (
         [Parameter(Mandatory = $true, Position = 0)]
@@ -490,16 +531,33 @@ $start
             $Proc = Start-Process ".\build\bash\startup.sh" -PassThru
             $Proc | Wait-Process
 
-            ##Miner Should have started, PID will be written to specified file.
-            ##For up to 10 seconds, we want to check for the specified PID, and
-            ##Confirm the miner is running
+            ## A screen should have started that is titled the name of the Type
+            ## of the device. We must identify the process id. We so this with
+            ## a simple parsing of screen list.
+            ## I use bash to parse, becuase for some reason I can't get whitespace 
+            ## removed with pwsh from screen list using String.replace
+            [int]$Screen_ID = invoke-expression "screen -ls | grep $($MinerCurrent.Type) | cut -f1 -d'.' | sed 's/\W//g'"
+            
+            ## Now that we have a list of all Process with the name of the exectuable.
+            ## We used bash to launch the miner, so the parent of the core process
+            ## should be 'bash'.
+            ## That bash process should have a parent process of the screen ID.
+            ## This means we are looking for the parent ID of the parent process should
+            ## match the screen Screen_ID.
+            ## Since SWARM did not launch this process, there may be a delay in launch.
+            ## So we need to check for a set time.
             $MinerTimer.Restart()
+
             Do {
-                #Sleep for 1 every second
+
                 Start-Sleep -S 1
                 #Write We Are getting ID
                 log "Getting Process ID for $($MinerCurrent.MinerName)"
-                $MinerProcess = Get-Process | Where Path -eq $MinerEXE | Select-Object -First 1
+                ## Now we get all plausible process id's based on miner name
+                $Miner_IDs = Get-Process | Where Name -eq  (Split-Path $MinerEXE -Leaf)
+                ## We search the parent process's parent ID.
+                $MinerProcess = $Miner_IDs | Where { $($_.Parent).Parent.Id -eq $Screen_ID}
+
             }until($null -ne $MinerProcess -or ($MinerTimer.Elapsed.TotalSeconds) -ge 10)  
             ##Stop Timer
             $MinerTimer.Stop()
@@ -507,6 +565,13 @@ $start
         }
     }
     else {
+        ## ASIC is not a process. So we create an artifical tracking system based on
+        ## the data gleaned through TCP. We run switchpool api command, and confirm
+        ## That the pool has changed. If it has, we change the start-date to are artifical.
+        ## Tracking system, which is how we confirm that it has changed.
+        ## Essentially the date-stamp is our ID.
+        ## The fact that TCP responds in our nofication that the ASIC is running (HasExited)
+
         $clear = Global:Remove-ASICPools $AIP $MinerCurrent.Port $MinerCurrent.API
         $Commands = "addpool|$($MinerCurrent.Arguments)"
         log "Adding New Pool"

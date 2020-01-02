@@ -1,3 +1,4 @@
+
 function Global:Get-ActiveMiners {
     $(vars).bestminers_combo | ForEach-Object {
         $Sel = $_
@@ -264,6 +265,9 @@ function Global:Stop-AllMiners {
     $(vars).ActiveMinerPrograms | ForEach-Object {
         Write-Log "WARNING: Stopping All Miners For Download" -ForegroundColor Yellow
         ##Miners Not Set To Run        
+
+        ## Different for each platform.
+        ## Windows.
         if ($(arg).Platform -eq "windows") {
             if ($_.XProcess -eq $Null) { $_.Status = "Failed" }
             elseif ($_.XProcess.HasExited -eq $false) {
@@ -288,7 +292,7 @@ function Global:Stop-AllMiners {
                         }
                         if ($Num -gt 180) {
                             if ($(arg).Startup -eq "Yes") {
-                                $HiveMessage = "2 minutes miner will not close - Restarting Computer"
+                                $HiveMessage = "2 minutes miner will not close on $($_.Type) - Restarting Computer"
                                 $HiveWarning = @{result = @{command = "timeout" } }
                                 if ($(vars).WebSites) {
                                     $(vars).WebSites | ForEach-Object {
@@ -303,8 +307,8 @@ function Global:Stop-AllMiners {
                                     }
                                 }
                                 log "$HiveMessage" -ForegroundColor Red
+                                Restart-Computer
                             }
-                            Restart-Computer
                         }
                     }Until($false -notin $Child.HasExited)
                     if ($Sel.SubProcesses -and $false -in $Sel.SubProcesses.HasExited) { 
@@ -316,42 +320,78 @@ function Global:Stop-AllMiners {
             }
         }
 
+        ## Linux
         if ($(arg).Platform -eq "linux") {
-            if ($_.XProcess -eq $Null) { $_.Status = "Failed" }
-            else {
-                if ($_.Type -notlike "*ASIC*") {
-                    $MinerInfo = ".\build\pid\$($_.InstanceName)_info.txt"
-                    if (Test-Path $MinerInfo) {
-                        $_.Status = "Idle"
-                        $(vars).PreviousMinerPorts.$($_.Type) = "($_.Port)"
-                        $MI = Get-Content $MinerInfo | ConvertFrom-Json
-                        $PIDTime = [DateTime]$MI.start_date
-                        $Exec = Split-Path $MI.miner_exec -Leaf
-                        $_.Active += (Get-Date) - $PIDTime
-                        $Timer = 0;
-                        ## Wait up to 15 seconds for process to end
-                        log "waiting up to 15 seconds for $Exec for $($_.Type) to end..." -ForegroundColor Cyan
-                        $Procs = Get-Process | Where Path -eq $MI.miner_exec;
-                        if ($False -in $Procs.HasExited) { 
-                            $To_Kill = $Procs | Where HasExited -eq $false
-                            $To_Kill | Foreach-Object { Stop-Process $_ }
-                        }
-                        do {
-                            $timer++
-                            Start-Sleep -Seconds 1
-                        } until ( 
-                            $false -notin $Procs.HasExited -or
-                            $timer -gt 14
-                        )
-                        if ($false -in $Procs.HasExited) {
-                            log "ERROR: Miner is failing to close! This can harm process tracking!" -ForegroundColor Red
-                            log "Attempting to close screen miner is in, and hope it shuts down miner!" -ForegroundColor Red
-                        }
+            ## Miner never started to begin with. Nothing to do here.
+            if ($Null -eq $_.XProcess) { $_.Status = "Failed" }
+            ## Miner is running, needs to close, but is not ASIC.
+            elseif ($_.Type -notlike "*ASIC*") {
+                ## Update Time and Status
+                $_.Status = "Idle"
+                $PIDTime = $_.Xprocess.StartTime
+                $_.Active += (Get-Date) - $PIDTime
 
+                ## Update ports that need to be checked later.
+                $(vars).PreviousMinerPorts.$($_.Type) = "($_.Port)"
+
+                ## First we need to identify all processes related
+                ## to miner. We need to make sure they are all killed
+                ## Or notate a warning to user there is an issue here.
+                $To_Kill = @()
+                $To_Kill += $_.XProcess
+                ## Get all sub-processes
+                $To_KIll += Get-Process | Where { $_.Parent.Id -eq $_.Xprocess.ID }
+                        
+
+                ## Wait up to 2 minutes for process to end
+                ## Hacky-Lazy Timer style.
+                log "waiting on $Exec for $($_.Type) to end..." -ForegroundColor Cyan
+                $Timer = 0;
+                        
+                ## Send kill signal.
+                $_.XProcess.Kill()
+
+                ## Now wait with actions in between.
+                do {
+                    log "waiting for process to close..."
+                    Start-Sleep -S 1
+                    $Timer++
+
+                    ## ~ 10 second action
+                    ## Spam there is an issue.
+                    if ($Timer -gt 10) {
+                        Write-Log "SWARM IS WAITING FOR MINER TO CLOSE. IT WILL NOT CLOSE" -ForegroundColor Red
                     }
-                }
-                else { $_.Xprocess.HasExited = $true; $_.XProcess.StartTime = $null; $_.Status = "Idle" }
+
+                    ## ~ 2 minute action
+                    if ($Timer -gt 180) {
+                        ## Houston we have a problem.
+                        ## Something isn't closing.
+                        ## We need to let user know there is an issue.
+                        ## This can break SWARM.
+                        if ($(arg).Startup -eq "Yes") {
+                            $HiveMessage = "2 minutes miner will not close on $($_.Type) - Restarting Computer"
+                            $HiveWarning = @{result = @{command = "timeout" } }
+                            if ($(vars).WebSites) {
+                                $(vars).WebSites | ForEach-Object {
+                                    $Sel = $_
+                                    try {
+                                        Global:Add-Module "$($(vars).web)\methods.psm1"
+                                        Global:Get-WebModules $Sel
+                                        $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
+                                    }
+                                    catch { log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
+                                    Global:Remove-WebModules $sel
+                                }
+                            }
+                            log "$HiveMessage" -ForegroundColor Red
+                            Invoke-Expression "reboot"
+                        }
+                    }
+                }until($false -notin $To_Kill.HasExited)
             }
+            ## Miner is ASIC.
+            else { $_.Xprocess.HasExited = $true; $_.XProcess.StartTime = $null; $_.Status = "Idle" }
         }
     }
 }
