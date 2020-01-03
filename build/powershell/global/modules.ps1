@@ -67,7 +67,7 @@ function Global:start-killscript {
     if (test-path ".\build\pid") {
         $Miner_PIDs = Get-ChildItem ".\build\pid" | Where BaseName -like "*info*"
         if ($Miner_PIDs) {
-            $Miner_PIDs % {
+            $Miner_PIDs | % {
                 $Content = Get-Content $_ | ConvertFrom-Json
                 $Name = Split-Path $Content.miner_exec -Leaf
                 $To_Kill += Get-Process | Where Id -eq $Content.pid | Where Name -eq $Name
@@ -112,6 +112,7 @@ function Global:start-killscript {
     $Time = 0;
     do {
         $Time++
+        Write-Host "Waiting For Processes To Close"
         Start-Sleep -S 1
     }until(
         $false -notin $To_Kill.HasExited -or
