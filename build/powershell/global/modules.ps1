@@ -62,6 +62,19 @@ function Global:Get-ChildItemContent {
 
 function Global:start-killscript {
 
+    ## Get Processes That Could Be Running:
+    $To_Kill = @()
+    if (test-path ".\build\pid") {
+        $Miner_PIDs = Get-ChildItem ".\build\pid" | Where BaseName -like "*info*"
+        if ($Miner_PIDs) {
+            $Miner_PIDs % {
+                $Content = Get-Content $_ | ConvertFrom-Json
+                $Name = Split-Path $Content.miner_exec -Leaf
+                $To_Kill += Get-Process | Where Id -eq $Content.pid | Where Name -eq $Name
+            }
+        }
+    }
+
     ##Clear-Screens In Case Of Restart
     $OpenScreens = @()
     $OpenScreens += "NVIDIA1"
@@ -94,6 +107,16 @@ function Global:start-killscript {
         $Proc = Start-Process "screen" -ArgumentList "-S $screen -X stuff `^C" -PassThru
         $Proc | Wait-Process
     }
+
+    ## Wait For Process To Exit
+    $Time = 0;
+    do {
+        $Time++
+        Start-Sleep -S 1
+    }until(
+        $false -notin $To_Kill.HasExited -or
+        $Time -gt 10
+    )
 
     ## See which screens are still open
     $OpenedScreens = @()
