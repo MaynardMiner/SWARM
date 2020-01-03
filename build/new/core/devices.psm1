@@ -1,5 +1,8 @@
 Using namespace System;
 Using namespace System.Text;
+Using module ".\helper.psm1";
+
+if(-not $Global:DIR) { $Global:Dir = (Convert-Path ".")}
 
 ## Placeholder
 class MINER {
@@ -33,7 +36,7 @@ class RIG {
         $this.kernel = [RIG_RUN]::get_kernel();
 
         ## Net Interfaces & uid
-        $data = [RIG_RUN]::uid();
+        [hashtable]$data = [RIG_RUN]::uid();
         $this.net_interfaces = $data.net_interfaces;
         $this.uid = $data.uid;
 
@@ -53,7 +56,8 @@ class RIG {
         $this.lan_config = [RIG_RUN]::get_lan();
 
         ## Version
-        $this.version = ([filedata]::stringdata("$Global:Dir\h-manifest.conf")).CUSTOM_VERSION
+        [string]$Path = Join-Path $Global:Dir "h-manifest.conf"
+        $this.version = ([filedata]::stringdata("$($Path)")).CUSTOM_VERSION
 
         ## Get GPU Information
         $GPU_Data = [RIG_RUN]::get_gpus();
@@ -61,7 +65,7 @@ class RIG {
 
     ## Returns JSON for hello method.
     [string] hello ($worker_name = $null, $farm_hash = $null, $worker_id = $null, $server_url = $null) {
-        $Hello = @{ };
+        [hashtable]$Hello = @{ };
         $Hello.Add('method', "hello");
         $Hello.Add('jsonrpc', '2.0');
         $Hello.Add('id', "0");
@@ -134,15 +138,6 @@ class GPU {
     GPU([NVIDIA]$gpu) {
 
     }
-}
-
-## Mining Threads for CPU
-class THREAD : CPU {
-    [String]$Brand = "CPU"
-    [Decimal]$Speed; #Current Hashrate
-    [Int]$Temp = 0; #Current Temperature Not Used Yet
-    [Int]$Fan = 0; #Current Fan Speed Not Used Yet
-    [Int]$Wattage = 0; #Current Wattage Not Used Yet
 }
 
 ## Base class for video card
@@ -234,13 +229,22 @@ class CPU {
         )
         $this.cpu_id = $(
             if ($global:IsLinux) {
-                "$(Invoke-Expression "./build/apps/dmidecode/dmidecode -t 4" | Select-String "ID: " | ForEach-Object{$_ -split "ID: " | Select-Object -Last 1})" -replace " ", ""
+                "$(Invoke-Expression "dmidecode -t 4" | Select-String "ID: " | ForEach-Object{$_ -split "ID: " | Select-Object -Last 1})" -replace " ", ""
             }
             if ($global:IsWindows) {
                 (Get-CimInstance -Class Win32_processor).ProcessorId
             }
         )
     }
+}
+
+## Mining Threads for CPU
+class THREAD : CPU {
+    [String]$Brand = "CPU"
+    [Decimal]$Speed; #Current Hashrate
+    [Int]$Temp = 0; #Current Temperature Not Used Yet
+    [Int]$Fan = 0; #Current Fan Speed Not Used Yet
+    [Int]$Wattage = 0; #Current Wattage Not Used Yet
 }
 
 ## Motherboard constructor
@@ -252,7 +256,8 @@ class MOTHERBOARD {
     MOTHERBOARD() {
         $this.manufacturer = $(
             if ($global:ISLinux) {
-                Invoke-Expression "./build/apps/dmidecode/dmidecode | grep -A4 `'`^Base Board Information`' | grep `"Manufacturer:`" | sed -E `'s`/`\sManufacturer:`\`s`+(`.`*)`/`\1`/`'"
+                $data = [RIG_RUN]::dmidecode($null);
+                [string]((($data | Select-String "Base Board Information" -Context 0,4).Context.PostContext | Select-String "Manufacturer:").Line).Split("Manufacturer: ")[1]
             }
             if ($global:IsWindows) {
                 (Get-CimInstance Win32_BaseBoard | Select-Object Manufacturer).Manufacturer
@@ -260,7 +265,8 @@ class MOTHERBOARD {
         )
         $this.product = $(
             if ($global:IsLinux) {
-                Invoke-Expression "./build/apps/dmidecode/dmidecode | grep -A4 `'`^Base Board Information' | grep `"Product Name:`" | sed -E `'s`/`\sProduct Name:`\`s`+(`.`*)`/`\1`/'"
+                $data = [RIG_RUN]::dmidecode($null);
+                [string]((($data | Select-String "Base Board Information" -Context 0,4).Context.PostContext | Select-String "Product Name:").Line).Split("Product Name: ")[1]
             }
             if ($global:IsWindows) {
                 (Get-CimInstance Win32_BaseBoard | Select-Object Product).Product
@@ -268,7 +274,7 @@ class MOTHERBOARD {
         )
         $this.system_uuid = $(
             if ($global:ISLinux) {
-                Invoke-Expression "./build/apps/dmidecode/dmidecode -s system-uuid"
+                [string]([RIG_RUN]::dmidecode("-s system-uuid"));
             }
             if ($global:IsWindows) {
                 (Get-CimInstance -ClassName Win32_ComputerSystemProduct).UUID
@@ -497,8 +503,8 @@ class RIG_RUN {
             $mac = $($net.split(" "))
             $mac = $mac | Select -Skip ($mac.count - 3) -First 1
             $data.net_interfaces.Add("mac", $mac)
-            $get_uid = invoke-expression './build/apps/dmidecode/dmidecode -s system-uuid'
-            $cpu_id = invoke-expression "./build/apps/dmidecode/dmidecode -t 4 | grep ID | sed `'s`/.`*ID:`/`/`;s`/ `/`/g`'"
+            $get_uid = invoke-expression 'dmidecode -s system-uuid'
+            $cpu_id = invoke-expression "dmidecode -t 4 | grep ID | sed `'s`/.`*ID:`/`/`;s`/ `/`/g`'"
             $get_mac = $data.net_interfaces.mac.replace(":", "").ToLower()
             $get_uid = "$get_uid-$cpu_id-$get_mac"
             $StringBuilder = [StringBuilder]::New()
@@ -506,6 +512,28 @@ class RIG_RUN {
             $data.uid = $StringBuilder.ToString()     
         }
         return $data
+    }
+
+    ## Runs dmidecode. Is used for data
+    static [string[]] dmidecode($arguments = $null) {
+        [string[]] $dmidecode = @()
+        $info = [System.Diagnostics.ProcessStartInfo]::new()
+        $info.FileName = 'dmidecode'
+        $info.UseShellExecute = $false
+        $info.RedirectStandardOutput = $true
+        $info.Verb = "runas"
+        if($arguments) {$info.Arguments = $arguments}
+        $Proc = [System.Diagnostics.Process]::New()
+        $proc.StartInfo = $Info
+        $proc.Start() | Out-Null
+        $proc.WaitForExit(15000) | Out-Null
+        if ($proc.HasExited) {
+            while(-not $Proc.StandardOutput.EndOfStream){
+                $dmidecode += $Proc.StandardOutput.ReadLine()
+            }    
+        }
+        else { Stop-Process -Id $Proc.Id -ErrorAction Ignore }
+        return $dmidecode
     }
 }
 
