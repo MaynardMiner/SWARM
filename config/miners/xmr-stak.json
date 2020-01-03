@@ -14,25 +14,29 @@
             "cryptonight-gpu": "",
             "cryptonight-heavyx": "",
             "cryptonight-saber": "",
-            "cryptonight-v7": ""
+            "cryptonight-v7": "",
+            "cryptonight-conceal": ""
         },
         "difficulty": {
             "cryptonight-gpu": "",
             "cryptonight-heavyx": "",
             "cryptonight-saber": "",
-            "cryptonight-v7": ""
+            "cryptonight-v7": "",
+            "cryptonight-conceal": ""
         },
         "naming": {
             "cryptonight-gpu": "cryptonight_gpu",
             "cryptonight-heavyx": "cryptonight_v8_double",
             "cryptonight-saber": "cryptonight_bittube2",
-            "cryptonight-v7": "cryptonight_v7"
+            "cryptonight-v7": "cryptonight_v7",
+            "cryptonight-conceal": "cryptonight_conceal"
         },
         "fee": {
             "cryptonight-gpu": 2,
             "cryptonight-heavyx": 2,
             "cryptonight-saber": 2,
-            "cryptonight-v7": 2
+            "cryptonight-v7": 2,
+            "cryptonight-conceal": 2
         }
     }
 }

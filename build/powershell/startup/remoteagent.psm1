@@ -374,6 +374,11 @@ function Global:start-update {
                                             $Data.$_.naming | Add-Member "cryptonight-v7" "cryptonight_v7" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "cryptonight-v7" 2 -ErrorAction SilentlyContinue
 
+                                            $Data.$_.commands | Add-Member "cryptonight-conceal" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "cryptonight-conceal" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "cryptonight-conceal" "cryptonight_conceal" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "cryptonight-conceal" 2 -ErrorAction SilentlyContinue
+
                                         }
                                     }
                                 }
