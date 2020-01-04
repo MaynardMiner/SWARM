@@ -188,13 +188,15 @@ function Global:Start-Webcommand {
                 $method = "message"
                 $messagetype = "success"
                 $data = "Rig config changed"
-                $arguments = $command.result.wallet
-                $argjson = @{ }
-                $start = $arguments.Lastindexof("CUSTOM_USER_CONFIG=") + 20
-                $end = $arguments.LastIndexOf("META") - 3
-                $arguments = $arguments.substring($start, ($end - $start))
-                $arguments = $arguments -replace "\'\\\'", ""
-                $arguments = $arguments -replace "\u0027", "`'"
+                $arguments = [string]$Command.result.wallet | ConvertFrom-StringData
+                if($arguments.CUSTOM_USER_CONFIG) {
+                    ## Remove the "'" at front and end.
+                    $arguments = $arguments.CUSTOM_USER_CONFIG.TrimStart("'").TrimEnd("'");
+
+                } else {
+                    Write-Log "Warning: No CUSTOM_USER_CONFIG found!" -ForegroundColor Red
+                    Write-Log "Make sure you are using a Custom User Config section in HiveOS" -ForegroundColor Red
+                }
                 try { $test = "$arguments" | ConvertFrom-Json; if ($test) { $isjson = $true } } catch { $isjson = $false }
                 if ($isjson) {
                     $Params = @{ }
@@ -204,6 +206,7 @@ function Global:Start-Webcommand {
 
                 }
                 else {
+                    $argjson = @{}
                     $arguments = $arguments -split " -"
                     $arguments = $arguments | foreach { $_.trim(" ") }
                     $arguments = $arguments | % { $_.trimstart("-") }
@@ -245,8 +248,7 @@ function Global:Start-Webcommand {
                 $SendResponse = Invoke-RestMethod "$($global:config.$Param.Mirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
                 $SendResponse
                 $Params | convertto-Json | Out-File ".\config\parameters\newarguments.json"
-            }
-            $trigger = "config"
+            }            $trigger = "config"
         }
   
     }
