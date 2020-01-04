@@ -205,6 +205,7 @@ function Global:Start-Webcommand {
 
                 }
                 else {
+                    $argjson = @{}
                     $arguments = $arguments -split " -"
                     $arguments = $arguments | foreach { $_.trim(" ") }
                     $arguments = $arguments | % { $_.trimstart("-") }
