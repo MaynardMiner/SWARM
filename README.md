@@ -78,9 +78,11 @@ I am a sole developer, and this is a large project. I prioritize workload by req
 * HiveOS user account, your farm hash ready. Ideally a pre-made flight sheet for SWARM. See wiki on how to setup a flight sheet.
   * https://hiveos.farm/
 * Latest Powershell Core, along with it being set in your PATH environment variable (should be done during install of Powershell Core).
-  * https://github.com/PowerShell/PowerShell/releases/tag/v6.2.1
+    https://github.com/PowerShell/PowerShell/releases/tag/v6.2.3
 * Latest .NET core runtime.
   * https://dotnet.microsoft.com/download
+* Miners require various versions of C++ Redistributable. The latest are here:
+   https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads
 
 *Install Steps:*
 
@@ -103,7 +105,7 @@ Step 7: (Optional) Confirm SWARM has restarted- At this point when background ag
         
 ### HIVEOS
 
-NOTE: HiveOS currently uses Cuda 10 as default.
+NOTE: HiveOS currently uses Cuda 10.2 as default.
 
 SWARM is simple to install in linux environment, if a user is familiar with linux operating systems. There are plenty of users to help/support you, if you should decide to learn how to operate/use SWARM. However, it does take the commitment of learning how to use/manage linux.
 
@@ -155,7 +157,7 @@ NICEHASH WALLET: 39iUh6aforxHcBr3Ayywmnqw2ZHcbmy9Wj
 
 RVN WALLET: RKirUe978mBoa2MRWqeMGqDzVAKTafKh8H
 
-SWARM uses the following programs to help with oc tuning:
+SWARM uses the following programs to help with oc tuning/rig setup:
 
 -nvidiainspector
 
