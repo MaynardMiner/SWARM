@@ -28,11 +28,11 @@ param(
     [switch]$asjson
 )
 
-$argument2 = $argument2.replace("cnight","cryptonight")
-$argument3 = $argument3.replace("cnight","cryptonight")
-$argument4 = $argument4.replace("cnight","cryptonight")
-$argument5 = $argument5.replace("cnight","cryptonight")
-$argument6 = $argument6.replace("cnight","cryptonight")
+$argument2 = $argument2.replace("cnight", "cryptonight")
+$argument3 = $argument3.replace("cnight", "cryptonight")
+$argument4 = $argument4.replace("cnight", "cryptonight")
+$argument5 = $argument5.replace("cnight", "cryptonight")
+$argument6 = $argument6.replace("cnight", "cryptonight")
 
 [cultureinfo]::CurrentCulture = 'en-US'
 $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
@@ -43,7 +43,8 @@ Set-Location $dir
 
 . .\build\powershell\global\modules.ps1
 
-if (-not $(vars) ) { $Global:Config = @{ }; $Global:Config.Add("vars", @{ }) 
+if (-not $(vars) ) {
+    $Global:Config = @{ }; $Global:Config.Add("vars", @{ }) 
 }
 if (-not $(vars).startup ) { $(vars).Add("startup", "$dir\build\powershell\startup") }
 if (-not $(vars).global ) { $(vars).Add("global", "$dir\build\powershell\global") }
@@ -341,10 +342,10 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
             $BenchTable = @()
             $StatNames | Foreach {
                 $BenchTable += [PSCustomObject]@{
-                    Miner     = $_ -split "_" | Select -First 1; 
-                    Algo      = $_ -split "_" | Select -Skip 1 -First 1; 
-                    HashRates = $Stats."$($_)".Hour | Global:ConvertTo-Hash; 
-                    Raw       = $Stats."$($_)".Hour
+                    Miner      = $_ -split "_" | Select -First 1; 
+                    Algo       = $_ -split "_" | Select -Skip 1 -First 1; 
+                    HashRates  = $Stats."$($_)".Hour | Global:ConvertTo-Hash; 
+                    Raw        = $Stats."$($_)".Hour
                     Rejections = $Stats."$($_)".Rejections
                 }
             }
@@ -353,7 +354,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                     @{Label = "Miner"; Expression = { $($_.Miner) } },
                     @{Label = "Algorithm"; Expression = { $($_.Algo) } },
                     @{Label = "Speed"; Expression = { $($_.HashRates) } },    
-                    @{Label = "Rejection Avg."; Expression = { if($_.Rejections){ "$($_.Rejections.ToString("N2"))`%" }else{"0`%"} } }
+                    @{Label = "Rejection Avg."; Expression = { if ($_.Rejections) { "$($_.Rejections.ToString("N2"))`%" }else { "0`%" } } }
                 )
             }
             if ($asjson) {
@@ -670,7 +671,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 if ($argument2 -like "*NVIDIA*") {
                     $Number = $argument2 -Replace "NVIDIA", ""
                     if ($Platform -eq "linux") {
-                            $UpdateJson = Get-Content ".\config\update\nvidia-linux.json" | ConvertFrom-Json
+                        $UpdateJson = Get-Content ".\config\update\nvidia-linux.json" | ConvertFrom-Json
                     }
                     else { $UpdateJson = Get-Content ".\config\update\nvidia-win.json" | ConvertFrom-JSon }
                 }
@@ -747,30 +748,34 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 $versionnumber = "$version3.$version2.$version1"    
                 $Failed = $false
                 Write-Host "Operating System Is Windows: Updating via 'get' is possible`n"
+
                 if ($argument2) {
-                    $EndLink = split-path $argument2 -Leaf
-                    if ($EndLink -match "SWARM.") {
-                        $URI = $argument2
+                    $EndLink = split-path $argument2 -Leaf        
+                    if ($EndLink -like "*SWARM*") {
+                        $VersionNumber = $EndLink.Replace("SWARM.", "")
+                        $versionnumber = $versionnumber.Replace(".windows.zip", "")
                     }
                     else {
                         $Failed = $true
                         $line += "Detected link supplied did not end with SWARM"
                         Write-Host "Detected link supplied did not end with SWARM" -ForegroundColor Red
-                        $URI = $null
+                        exit
                     }
                 }
-                else {
-                    $line += "Detected New Version Should Be $VersionNumber`n"
-                    Write-Host "Detected New Version Should Be $VersionNumber"    
-                    $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$VersionNumber/SWARM.$VersionNumber.windows.zip"
-                }
+
                 Write-Host "Main Directory is $(Split-Path $Dir)`n"
 
-                $BaseDir = (Split-Path $Dir)
-                $FileName = join-path "$Dir" "x64\SWARM.$VersionNumber.windows.zip"
-                $DLFileName = Join-Path "$Dir" "x64\SWARM.$VersionNumber.windows"
+                if ($versionnumber) {
+                    $BaseDir = (Split-Path $Dir)
+                    $FileName = join-path "$Dir" "x64\SWARM.$VersionNumber.windows.zip"
+                    $DLFileName = Join-Path "$Dir" "x64\SWARM.$VersionNumber.windows"
+                    $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$versionNumber/SWARM.$VersionNumber.windows.zip"
+                }
+                Write-Host "URI should be $URI"
+                try { Invoke-WebRequest $URI -OutFile $FileName -SkipCertificateCheck -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }catch { $Failed = $true; Write-Host "Failed To Contact Github For Download! Must Do So Manually" }
+                Start-Sleep -S 5
 
-                $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$versionNumber/SWARM.$VersionNumber.windows.zip"
+                Write-Host "Main Directory is $(Split-Path $Dir)`n"
                 Write-Host "URI should be $URI"
                 try { Invoke-WebRequest $URI -OutFile $FileName -SkipCertificateCheck -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }catch { $Failed = $true; Write-Host "Failed To Contact Github For Download! Must Do So Manually" }
                 Start-Sleep -S 5
@@ -787,16 +792,16 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                     $Contents = $Search.Directory.FullName | Select-Object -First 1
                     Move-Item -Path $Contents -Destination "$BaseDir" -Force | Out-Null; Start-Sleep -S 1
                     $DirName = Join-Path $BaseDir $(Split-Path $Contents -Leaf)
-                    if($DirName -ne (Join-Path $BaseDir "SWARM.$VersionNumber.windows")){
-                    Rename-Item -Path "$DirName" -NewName "SWARM.$VersionNumber.windows" -Force | Out-Null
+                    if ($DirName -ne (Join-Path $BaseDir "SWARM.$VersionNumber.windows")) {
+                        Rename-Item -Path "$DirName" -NewName "SWARM.$VersionNumber.windows" -Force | Out-Null
                     }
-                    if(Test-Path $DLFileName) { Remove-Item $DLFileName -Recurse -Force }
+                    if (Test-Path $DLFileName) { Remove-Item $DLFileName -Recurse -Force }
 
                     $NewDIR = Join-Path $BaseDir "SWARM.$($VersionNumber).windows"
 
                     $MinerFile = Get-Content "$Dir\build\pid\miner_pid.txt"
                     if ($MinerFile) { $MinerId = Get-Process | Where Id -eq $MinerFile }
-                    if($MinerID) { Stop-Process $MinerId -Force}
+                    if ($MinerID) { Stop-Process $MinerId -Force }
                     Write-Host "Stopping Old Miner and waiting 5 seconds`n"
                     Start-Sleep -S 5
 
@@ -806,15 +811,15 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                     Copy-Item "$Dir\SWARM.bat" -Destination $NewDIR -Force
 
                     $Params = Join-Path $NewDir "config\parameters"
-                    if(Test-Path ".\config\parameters\newarguments.json"){$New_Params = ".\config\parameters\newarguments.json"}
-                    else{$New_Params = ".\config\parameters\arguments.json"}
+                    if (Test-Path ".\config\parameters\newarguments.json") { $New_Params = ".\config\parameters\newarguments.json" }
+                    else { $New_Params = ".\config\parameters\arguments.json" }
 
                     Copy-Item $New_Params -Destination $Params -Force
                     Write-Host "Copied $New_Params to new SWARM"
 
                     $MPID = Join-Path "$NewDir" "build\pid"
-                    if(-not (Test-Path $MPID) ){New-Item -Name "pid" -Path "$NewDIR\build" -ItemType "Directory"}
-                    if(test-path "$Dir\build\pid\background_pid.txt"){ Copy-Item "$Dir\build\pid\background_pid.txt" -Destination "$NewDIR\build\pid" -Force }
+                    if (-not (Test-Path $MPID) ) { New-Item -Name "pid" -Path "$NewDIR\build" -ItemType "Directory" }
+                    if (test-path "$Dir\build\pid\background_pid.txt") { Copy-Item "$Dir\build\pid\background_pid.txt" -Destination "$NewDIR\build\pid" -Force }
                     Write-Host "Copied Previous Process Data To SWARM."
                     
                     Set-Location "$NewDIR"

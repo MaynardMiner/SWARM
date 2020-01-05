@@ -152,6 +152,7 @@ function Global:Start-Webcommand {
         }
   
         "config" {
+            $update = $false
             $Command.result | ConvertTo-Json | Set-Content ".\debug\hiveconfig.txt"
             if ($command.result.config) {
                 $rig = [string]$command.result.config | ConvertFrom-StringData
@@ -184,6 +185,11 @@ function Global:Start-Webcommand {
             }
   
             if ($Command.result.wallet) {
+
+                ## Get Old Wallet
+                $Path = [IO.Path]::Join($($(vars).dir),"debug\get-hive-hello.txt")
+                $Old_Config = Get-Content $Path | ConvertFrom-Json
+
                 $method = "message"
                 $messagetype = "success"
                 $data = "Rig config changed"
@@ -247,8 +253,24 @@ function Global:Start-Webcommand {
                 $SendResponse = Invoke-RestMethod "$($global:config.$Param.Mirror)/worker/api" -TimeoutSec 15 -Method POST -Body $DoResponse -ContentType 'application/json'
                 $SendResponse
                 $Params | convertto-Json | Out-File ".\config\parameters\newarguments.json"
+
+                ## Check link for update.
+                $arguments = [string]$Command.result.wallet | ConvertFrom-StringData
+                $New_Url = ($arguments.CUSTOM_INSTALL_URL)
+                $New_Url = $New_Url.Replace("`"","")
+                $SWARM_Path = Split-Path $(vars).dir -leaf
+                $URL_Path = Split-Path $New_Url -Leaf
+                $URL_Path = $URL_Path.replace(".zip","")
+
+                if($URL_Path -ne $SWARM_Path) {
+                    $update = $true
+                    Write-Host "Custom Install URL is different- Attempting to get new SWARM"
+                    Invoke-Expression "get update $New_Url"
+                }
             }
-            $trigger = "config"
+            
+            if($update -eq $false) { $trigger = "config"}
+            else{$trigger = "exec"}
         }
   
     }
