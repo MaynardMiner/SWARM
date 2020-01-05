@@ -368,7 +368,8 @@ class RIG {
             if ($_.New_Speed -ne $_.FanSpeed) {
                 $FanArgs = "--index $($_.OC_Number) --speed $($_.New_Speed)"
                 $Path = [IO.Path]::Join($Global:Dir, "build\apps\nvfans\nvfans.exe")
-                $Proc = Start-Process $Path -ArgumentList "$FanArgs" -NoNewWindow -PassThru -RedirectStandardOutput null
+                $debug = [IO.Path]::Join($Global:Dir, "debug\nv_fan.txt")
+                $Proc = Start-Process $Path -ArgumentList "$FanArgs" -NoNewWindow -PassThru -RedirectStandardOutput $debug
                 $Proc | Wait-Process
             }
             Write-Host "GPU $($_.Rig_Number): " -NoNewLine
