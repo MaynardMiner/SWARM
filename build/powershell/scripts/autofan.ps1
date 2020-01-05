@@ -61,7 +61,7 @@ Class GPU {
                 $this.Deviation = -1
             }
             elseif ($this.cur_temp -ge $this.prev_temp) {
-                $this.Deviation = $this.cur_temp - $Config.TARGET_TEMP  - 1
+                $this.Deviation = $this.cur_temp - $Config.TARGET_TEMP - 1
             }
         }
         elseif ($this.prev_temp -ne 0 -and $this.cur_temp -lt $Config.TARGET_TEMP) {
@@ -207,11 +207,11 @@ class RIG {
             $this.Config.AUTO_SPEED = 25
         }
 
-        if([string]$this.Config.HIGH_TEMP -eq "") {
+        if ([string]$this.Config.HIGH_TEMP -eq "") {
             $this.Config.HIGH_TEMP = $this.Config.TARGET_TEMP + 1
         }
 
-        if([string]$this.Config.LOW_TEMP -eq "") {
+        if ([string]$this.Config.LOW_TEMP -eq "") {
             $this.Config.LOW_TEMP = $this.Config.TARGET_TEMP - 1
         }
 
@@ -234,6 +234,9 @@ class RIG {
 
     [void] Get_GPUData() {
 
+        ## Reset errors if miner was just stopped
+        $This.GPUS | % { [string[]]$_.Errors = @() }
+        
         if ("NVIDIA" -in $This.Models) {
             $this.Get_NVIDIA()
         }
@@ -272,7 +275,7 @@ class RIG {
         else {
             Write-Host "WARNING: Failed to get nvidia stats" -ForegroundColor DarkRed
         }
-        
+
         if ($nvidiaout -and $continue -eq $true ) {
             $Stats = @()
             $nvidiaout | % {
@@ -420,7 +423,7 @@ class RIG {
                         switch ($This.Config.CRITICAL_TEMP_ACTION) {
                             "shutdown" { $Message = "GPU $($_.Rig_Number) Critical- shutting down"; $Action = 2 }
                             "reboot" { $Message = "GPU $($_.Rig_Number) Critical- rebooting"; $Action = 1 }
-                            default { $Message = "GPU $($_.Rig_Number) Critical- mining stopped"; $Action = 3 }
+                            default { $Message = "GPU $($_.Rig_Number) Critical- mining stopped"; $Action = 3; $this.IsMinerStopped = $true }
                         }
                     }
                     "Unreal" {
@@ -441,6 +444,13 @@ class RIG {
                         1 { Restart-Computer -Force }
                         2 { Stop-Computer -Force }
                         3 { Invoke-Expression "miner stop"; $this.IsMinerStopped = $True }
+                    }
+                }
+
+                ## Restart Miner if Autofan stopped it.
+                if ($this.IsMinerStopped -eq $true) {
+                    if ($this.GPUS.Errors.count -eq 0) {
+                        Invoke-expression "miner start"; $this.IsMinerStopped = $false
                     }
                 }
                 
@@ -475,13 +485,13 @@ class Message {
         ## Get Rig ID & Password
         Switch ($site) {
             "HiveOS" { 
-                $Path = [IO.Path]::Join($Global:Dir,"config\parameters\Hive_params_keys.json")
+                $Path = [IO.Path]::Join($Global:Dir, "config\parameters\Hive_params_keys.json")
                 if (test-path $Path) { 
                     $miner_keys = cat ".\config\parameters\Hive_params_keys.json" | ConvertFrom-Json 
                 } 
             }
             "SWARM" { 
-                $Path = [IO.Path]::Join($Global:Dir,"config\parameters\SWARM_params_keys.json")
+                $Path = [IO.Path]::Join($Global:Dir, "config\parameters\SWARM_params_keys.json")
                 if (Test-Path ".\config\parameters\SWARM_params_keys.json") { 
                     $miner_keys = cat ".\config\parameters\SWARM_params_keys.json" | ConvertFrom-Json 
                 } 
