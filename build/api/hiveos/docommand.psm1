@@ -187,18 +187,19 @@ function Global:Start-Webcommand {
             if ($Command.result.wallet) {
 
                 ## Get Old Wallet
-                $Path = [IO.Path]::Join($($(vars).dir),"debug\get-hive-hello.txt")
+                $Path = [IO.Path]::Join($($(vars).dir), "debug\get-hive-hello.txt")
                 $Old_Config = Get-Content $Path | ConvertFrom-Json
 
                 $method = "message"
                 $messagetype = "success"
                 $data = "Rig config changed"
                 $arguments = [string]$Command.result.wallet | ConvertFrom-StringData
-                if($arguments.CUSTOM_USER_CONFIG) {
+                if ($arguments.CUSTOM_USER_CONFIG) {
                     ## Remove the "'" at front and end.
                     $arguments = $arguments.CUSTOM_USER_CONFIG.TrimStart("'").TrimEnd("'");
 
-                } else {
+                }
+                else {
                     Write-Log "Warning: No CUSTOM_USER_CONFIG found!" -ForegroundColor Red
                     Write-Log "Make sure you are using a Custom User Config section in HiveOS" -ForegroundColor Red
                 }
@@ -211,7 +212,7 @@ function Global:Start-Webcommand {
 
                 }
                 else {
-                    $argjson = @{}
+                    $argjson = @{ }
                     $arguments = $arguments -split " -"
                     $arguments = $arguments | foreach { $_.trim(" ") }
                     $arguments = $arguments | % { $_.trimstart("-") }
@@ -257,20 +258,21 @@ function Global:Start-Webcommand {
                 ## Check link for update.
                 $arguments = [string]$Command.result.wallet | ConvertFrom-StringData
                 $New_Url = ($arguments.CUSTOM_INSTALL_URL)
-                $New_Url = $New_Url.Replace("`"","")
-                $SWARM_Path = Split-Path $(vars).dir -leaf
-                $URL_Path = Split-Path $New_Url -Leaf
-                $URL_Path = $URL_Path.replace(".zip","")
-
-                if($URL_Path -ne $SWARM_Path) {
-                    $update = $true
-                    Write-Host "Custom Install URL is different- Attempting to get new SWARM"
-                    Invoke-Expression "get update $New_Url"
+                if ([string]$New_Url -ne "`"`"") {
+                    $New_Url = $New_Url.Replace("`"", "")
+                    $SWARM_Path = Split-Path $(vars).dir -leaf
+                    $URL_Path = Split-Path $New_Url -Leaf
+                    $URL_Path = $URL_Path.replace(".zip", "")
+                    if ($URL_Path -ne $SWARM_Path) {
+                        $update = $true
+                        Write-Host "Custom Install URL is different- Attempting to get new SWARM"
+                        Invoke-Expression "get update $New_Url"
+                    }
                 }
             }
-            
-            if($update -eq $false) { $trigger = "config"}
-            else{$trigger = "exec"}
+
+            if ($update -eq $false) { $trigger = "config" }
+            else { $trigger = "exec" }
         }
   
     }
