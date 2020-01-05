@@ -56,23 +56,23 @@ Class GPU {
         $speed = $this.FanSpeed
         ## Using original autofan = It works best
         ## The new version will overheat cards easily.
-        if ($this.Prev_Temp -ne 0 -and $this.Temperature -gt $Config.TARGET_TEMP) {
-            if ($this.Temperature -lt $this.Prev_Temp) {
+        if ($this.prev_temp -ne 0 -and $this.cur_temp -gt $Config.TARGET_TEMP) {
+            if ($this.cur_temp -lt $this.prev_temp) {
                 $this.Deviation = -1
             }
-            elseif ($this.Temperature -ge $this.Prev_Temp) {
-                $this.Deviation = $this.Temperature - $Config.TARGET_TEMP  - 1
+            elseif ($this.cur_temp -ge $this.prev_temp) {
+                $this.Deviation = $this.cur_temp - $Config.TARGET_TEMP  - 1
             }
         }
-        elseif ($this.Prev_Temp -ne 0 -and $this.Temperature -lt $Config.TARGET_TEMP) {
-            if ($this.Temperature -gt $this.Prev_Temp) {
+        elseif ($this.prev_temp -ne 0 -and $this.cur_temp -lt $Config.TARGET_TEMP) {
+            if ($this.cur_temp -gt $this.prev_temp) {
                 $this.Deviation = 1
-                if (($this.Temperature - 2) -gt $this.Prev_Temp) {
-                    $this.Deviation = $this.temperature - $this.Prev_Temp
+                if (($this.cur_temp - 2) -gt $this.prev_temp) {
+                    $this.Deviation = $this.cur_temp - $this.prev_temp
                 }
             }
-            elseif ($this.Temperature -le $This.Prev_Temp) {
-                $this.Deviation = $this.temperature - $Config.TARGET_TEMP + 1
+            elseif ($this.cur_temp -le $This.prev_temp) {
+                $this.Deviation = $this.cur_temp - $Config.TARGET_TEMP + 1
             }
         }
 
