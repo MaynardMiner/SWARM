@@ -2,7 +2,7 @@
 # SWARM Config files.
 
 ## asic Folder
-asic folder contains an optional .json for adding individual ASIC units to SWARM. Each ASIC created will add another ASIC unit for SWARM to track. See its README for more details.
+asic folder contains an optional .json for adding individual ASIC units to SWARM. Each ASIC created will add another ASIC unit for SWARM to track. See its README for more details. Note: This can be done with arguments, but this give the user the ability to create a long list that may be arbitrary to do through arguments.
 
 ## miners Folder
 miners folder contains user-adjustable control information for each miner. Each miner has a static .ps1 that is located in the miners folder within the main directory. These are meant to be static in design, and will not transfer on updates. The .json within the miners folder WILL transfer on update, so your settings are saved. Each .json allows you to add algorithms, add commands (arguments), adjust fee, and add a unique algorithm name for the algorithm (if the -algorithm argument does not match the name of the algorithm itself). They are seperate so that when updates are made, your data is saved. In some rare cases some data may be overwritten, usually notated on the release when this is the case.
