@@ -696,22 +696,22 @@
       "comma seperated"
     ]
   },
-  "randomsfx": {
+  "random-arq": {
     "alt_names": [
-      "random-sfx",
-      "random_sfx",
-      "randomsfx"
+      "random-arq",
+      "random_arq",
+      "randomarq"
     ],
     "exclusions": [
       "add pool or miner here",
       "comma seperated"
     ]
   },
-  "randomv": {
+  "random-sfx": {
     "alt_names": [
-      "random-v",
-      "random_v",
-      "randomv"
+      "random-sfx",
+      "random_sfx",
+      "randomsfx"
     ],
     "exclusions": [
       "add pool or miner here",
