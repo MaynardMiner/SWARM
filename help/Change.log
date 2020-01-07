@@ -1686,3 +1686,46 @@ but beta in design.
 ## Updates
 * None - This is a release to test linux
   improvements.
+
+############################################
+############################################
+
+# SWARM 2.9.1
+
+## NOTE - You cannot update this version in
+   Windows with a link. But next version, and
+   all versions after you should be able to
+   insert new download link for SWARM in
+   'custom url' link of HiveOS, and it should
+   start the update process. ``get update``
+   still works as well.
+
+## Improvements
+* Issue 196
+  * Autofan for Windows updated.
+    * Has default parameters set.
+    * Introduced some new changes
+      taken from HiveOS's linux autofan.
+    * Codebased cleaned up.
+
+* Issue 227
+  * Custom URL in Windows.
+    * custom URL in flight sheet in Windows
+      should work now following this version.
+
+* Issue 228
+  * Added Random-arq
+    * changed Randomsfx to 'Random-sfx' to match
+      HiveOS oc profiles. Your previous settings
+      will not transfer because of this.
+    * removed 'Randomv'
+
+## Fixes
+  * Issue 277
+    * Fixed small typo in SWARM recognizing wallet
+      information from HiveOS in Windows.
+  * GPU list at startup in Windows will show even
+    if list has changed.
+
+## Updates
+* no miner updates.
