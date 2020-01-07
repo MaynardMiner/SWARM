@@ -58,7 +58,7 @@ Function Global:Get-Bus {
     
     $OldCount = if (Test-Path ".\debug\gpu-count.txt") { $(Get-Content ".\debug\gpu-count.txt") }
     if ($OldCount) {
-        Write-Log "Previously Detected GPU Count is:" -ForegroundColor Yellow
+        Write-Log "Previously Detected GPU List Is:" -ForegroundColor Yellow
         $OldCount | Out-Host
         Start-Sleep -S .5
     }
@@ -66,7 +66,11 @@ Function Global:Get-Bus {
     $NewCount = if (Test-Path ".\debug\gpu-count.txt") { $(Get-Content ".\debug\gpu-count.txt") } else { "nothing" }
 
     if ([string]$NewCount -ne [string]$OldCount) {
-        Write-Log "GPU count is different - Gathering GPU information" -ForegroundColor Yellow
+        Write-Log "Current Detected GPU List Is:" -ForegroundColor Yellow
+        $NewCount | Out-Host
+        Start-Sleep -S .5
+        Write-Log ""
+        Write-Log "GPU count is different - Gathering GPU information" -ForegroundColor Magenta
 
         ## Add key to bypass install question:
         Set-Location HKCU:
