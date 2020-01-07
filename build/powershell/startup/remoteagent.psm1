@@ -223,6 +223,8 @@ function Global:start-update {
                                     $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                         if ($_ -ne "name") {
 
+                                            $Data.$_.prestart = @();
+
                                             $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "randomv","randomsfx"
                                             $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "randomv","randomsfx"
                                             $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "randomv","randomsfx"
