@@ -35,7 +35,7 @@ function Global:Set-Stat {
         [Parameter(Mandatory = $true)]
         [String]$Name, 
         [Parameter(Mandatory = $false)]
-        [Double]$HashRate,
+        [Double]$HashRate = $null,
         [Parameter(Mandatory = $true)]
         [Double]$Value, 
         [Parameter(Mandatory = $false)]
@@ -43,7 +43,7 @@ function Global:Set-Stat {
         [Parameter(Mandatory = $false)]
         [switch]$AsHashrate,
         [Parameter(Mandatory = $false)]
-        [Double]$Shuffle,
+        [Double]$Shuffle = $null,
         [Parameter(Mandatory = $false)]
         [Double]$Rejects
     )
@@ -139,7 +139,7 @@ function Global:Set-Stat {
         }
 
         ## Add extra values if pool hashrate
-        if ($HashRate) {
+        if ([string]$HashRate) {
             if ($Check) {
                 $Stat | Add-Member "Hashrate" $S_Hash
                 $Stat | Add-Member "Hashrate_Periods" $S_Hash_Count
@@ -151,7 +151,7 @@ function Global:Set-Stat {
         }
 
         ## Add extra values if historical bias
-        if ($Shuffle) {
+        if ([string]$Shuffle) {
             $Stat | Add-member "Deviation" $Shuffle 
         }
     }
