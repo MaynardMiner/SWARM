@@ -152,14 +152,7 @@ function Global:Set-Stat {
 
         ## Add extra values if historical bias
         if ($Shuffle) {
-            if ($Check) {
-                $Stat | Add-member "Deviation" $Deviation 
-                $Stat | Add-member "Deviation_Periods" $Deviation_Periods
-            }
-            else {
-                $Stat | Add-Member "Deviation" $Shuffle
-                $Stat | Add-Member "Deviation_Periods" 0
-            }
+            $Stat | Add-member "Deviation" $Shuffle 
         }
     }
 
@@ -191,12 +184,6 @@ function Global:Set-Stat {
             else { $Stat.Hashrate_Periods = $Hash_Max }
         }
 
-        ## Same for historical bias, but is a rolling moving average (no values)
-        if ($Shuffle) {
-            if ( $Stat.Deviation_Periods -lt $Max_Periods) { $Stat.Deviation_Periods++ }
-            else { $Stat.Deviation_Periods = $Max_Periods }
-        }
-
         ## Same for rejection bias, but is a rolling moving average (no values)
         if ($Rejects -gt -1 -and $AsHashrate) {
             if ( $Stat.Rejection_Periods -lt $Hash_Max) { $Stat.Rejection_Periods++ }
@@ -214,10 +201,10 @@ function Global:Set-Stat {
         }
 
         ## Calculate simple rolling moving average for each pool hashrate / deviation / Rejects
-        if ($Shuffle) { $Stat.Deviation = [Math]::Round( ( ($Stat.Deviation * $Stat.Deviation_Periods) + $Shuffle) / ($Stat.Deviation_Periods + 1), 4 ) }
         if ($HashRate) { $Stat.Hashrate = [Math]::Round( ( ($Stat.Hashrate * $Stat.Hashrate_Periods) + $HashRate ) / ($Stat.Hashrate_Periods + 1), 0 ) }
         if ($Rejects -gt -1 -and $AsHashrate) { $Stat.Rejections = [Math]::Round( ( ($Stat.Rejections * $Stat.Rejection_Periods) + $Rejects ) / ($Stat.Rejection_Periods + 1), 4 ) }
-    } else {
+    }
+    else {
         log "Warning: Cannot change stat - `'Locked`' in stat file is set to true" -Foreground yellow
     }
 

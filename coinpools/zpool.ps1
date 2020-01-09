@@ -75,7 +75,9 @@ if ($Name -in $(arg).PoolName) {
         $Divisor = 1000000 * [Convert]::ToDouble($(vars).divisortable.zpool.$zpool_Algo)
         $zpool_Fees = [Convert]::ToDouble($(vars).FeeTable.zpool.$zpool_Algo)
         $zpool_Estimate = [Convert]::ToDouble($zpool_Sorted.$_.estimate * 0.001)
-        $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_coin_profit" -Value ([Convert]::ToDouble($zpool_Estimate) / $Divisor * (1 - ($zpool_fees / 100))) -Shuffle $zpool_Sorted.$_.Shuffle     
+        $StatPath = "$($Name)_$($StatAlgo)_coin_profit"
+        $Hashrate = [convert]::ToDouble($zpool_Sorted.$_.hashrate)
+        $Stat = Global:Set-Stat -Name $StatPath -HashRate $HashRate -Value ($zpool_Estimate / $Divisor * (1 - ($zpool_fees / 100)))
         $Level = $Stat.$($(arg).Stat_Algo)
         $zpool_Sorted.$_ | Add-Member "Level" $Level 
     }

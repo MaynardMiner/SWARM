@@ -90,6 +90,7 @@ if ($Name -in $(arg).PoolName) {
         $zergpool_Estimate = [Convert]::ToDouble($Zergpool_Sorted.$_.estimate * 0.001)
         $Deviation = $Zergpool_Sorted.$_.Deviation
         $StatPath = "$($Name)_$($StatAlgo)_coin_profit"
+        $Hashrate = [convert]::ToDouble($Zergpool_Sorted.$_.hashrate_shared)
         $Stat = Global:Set-Stat -Name $StatPath -HashRate $HashRate -Value ($zergpool_Estimate / $Divisor * (1 - ($zergpool_Fees / 100))) -Shuffle $Deviation
         $Level = $Stat.$($(arg).Stat_Algo)
 
