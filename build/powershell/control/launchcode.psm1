@@ -254,7 +254,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                 $Algo = ($MinerCurrent.Algo).Replace("`/", "_")
                 $minerbat = @()
                 ## pwsh to launch powershell window to fully emulate SWARM launching
-                $minerbat += "pwsh -ExecutionPolicy Bypass -command `"Start-Process pwsh -ArgumentList `"`"-noexit -executionpolicy Bypass -Command `"`"`"`".\swarm_start_$($Algo).ps1`"`"`"`"`"`""
+                $minerbat += "pwsh -ExecutionPolicy Bypass -command `"Start-Process pwsh -verb runas -ArgumentList `"`"-noexit -executionpolicy Bypass -Command `"`"`"`".\swarm_start_$($Algo).ps1`"`"`"`"`"`""
                 $miner_bat = Join-Path $WorkingDirectory "swarm_start_$($Algo).bat"
                 $minerbat | Set-Content $miner_bat
 
@@ -270,10 +270,17 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                 ##Build Start Script
                 if ($MinerCurrent.Prestart) {
                     $Prestart = @()
+                    $Prestart +=  "`#`# Environment Targets"
+                    $Prestart += "`$Target = [EnvironmentVariableTarget]::Process;"
                     $MinerCurrent.Prestart | ForEach-Object {
-                        if ($_ -notlike "*export LD_LIBRARY_PATH=*") {
-                            $setx = $_ -replace "export ", "`$env:"
-                            $Prestart += "$setx`n"
+                        if ($_ -like "*export*" -and $_ -notlike "*export LD_LIBRARY_PATH=*") {
+                            $Total = $_.replace("export ", "");
+                            $Variable = $Total.Split("=")[0];
+                            $Value = $Total.Split("=")[1];
+                            $Prestart += "[environment]::SetEnvironmentVariable(`"$Variable`",$Value,`$Target);"
+                        } 
+                        elseif ($_ -notlike "*export LD_LIBRARY_PATH=*") {
+                            $Prestart += $_
                         }
                     }
                 }
@@ -317,21 +324,25 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                 }
                 else { $start += "Invoke-Expression "".\$($MinerCurrent.MinerName) $MinerArguments""" }
 
-                $script = 
-
+                $script = @()
+                $script +=
                 "
 `#`# Window Title
 `$host.ui.RawUI.WindowTitle = `'$($MinerCurrent.Name) - $($MinerCurrent.Algo)`';
+
 `#`# set encoding for logging
 `$OutputEncoding = [System.Text.Encoding]::ASCII
 `#`# Has to be powershell 5.0 to set icon
  `$proc = Start-Process `"powershell`" -ArgumentList `"Set-Location ``'$($(vars).dir)``'; .\build\powershell\scripts\icon.ps1 ``'$($(vars).dir)\build\apps\icons\miner.ico``'`" -NoNewWindow -Passthru
  `$proc | Wait-Process
  remove-variable `$proc -ErrorAction Ignore
-`#`# Start Miner - Logging if needed.
-$Prestart
-$start
+
 "
+foreach ($line in $Prestart) { $script += $line }
+$script += 
+"
+`#`# Start Miner - Logging if needed."
+$script += $start
 
                 $script | Out-File "$WorkingDirectory\swarm_start_$($Algo).ps1"
                 Start-Sleep -S .5
@@ -554,7 +565,7 @@ $start
 
             ## New Ubuntu Miners may not close if the Emulation window closes.
             ## So on exit- We have to find and close these miners (background agent does that)
-            if($MinerProcess) {
+            if ($MinerProcess) {
                 ##PID Tracking Path & Date
                 $PIDInfoPath = Join-Path $($(vars).dir) "build\pid\$($MinerCurrent.InstanceName)_info.txt"
                 $PIDInfo = @{miner_exec = "$MinerEXE"; start_date = "$StartDate"; pid = "$($MinerProcess.Id)"; }
