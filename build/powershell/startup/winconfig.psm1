@@ -300,43 +300,30 @@ function Global:Start-WindowsConfig {
     ## Windows Bug- Set Cudas to match PCI Bus Order
     if ($(arg).Type -like "*NVIDIA*") { [Environment]::SetEnvironmentVariable("CUDA_DEVICE_ORDER", "PCI_BUS_ID", "User") }
         
-    ##Detect if drivers are installed, not generic- Close if not. Print message on screen
-    $Install_NVSMI = $false
-    if ($(arg).Type -like "*NVIDIA*" -and -not (Test-Path "C:\Program Files\NVIDIA Corporation\NVSMI\nvml.dll")) {
-        log "nvml.dll is missing" -ForegroundColor Red
-        Start-Sleep -S 3
-        $Install_NVSMI = $true
-    }
-    if ($(arg).Type -like "*NVIDIA*" -and -not (Test-Path "C:\Program Files\NVIDIA Corporation\NVSMI\nvidia-smi.exe")) {
-        log "nvidia-smi.exe is missing" -ForegroundColor Red
-        Start-Sleep -S 3
-        $Install_NVSMI = $true
+    ## Check for NVIDIA-SMI and nvml.dll in system32. If it is there- copy to NVSMI
+    $x86_driver = [IO.Path]::Join(${env:ProgramFiles(x86)}, "NVIDIA Corporation")
+    $x64_driver = [IO.Path]::Join($env:ProgramFiles, "NVIDIA Corporation")
+    $x86_NVSMI = [IO.Path]::Join($x86_driver, "NVSMI")
+    $x64_NVSMI = [IO.Path]::Join($x64_driver, "NVSMI")
+    $smi = [IO.Path]::Join($env:windir, "system32\nvidia-smi.exe")
+    $nvml = [IO.Path]::Join($env:windir, "system32\nvml.dll")
+
+    if ( [IO.Directory]::Exists($x86_driver) ) {
+        if(-not [IO.Directory]::Exists($x86_NVSMI)){ [IO.Directory]::CreateDirectory($x86_NVSMI) | Out-Null }
+        $dest = [IO.Path]::Join($x86_NVSMI, "nvidia-smi.exe")
+        try { [IO.File]::Copy($smi, $dest, $true) | Out-Null } catch { }
+        $dest = [IO.Path]::Join($x86_NVSMI, "nvml.dll")
+        try { [IO.File]::Copy($nvml, $dest, $true) | Out-Null } catch { }
     }
 
-    if ($Install_NVSMI -eq $true) {
-        log "SWARM is going to attempt to install NVSMI, but it could be incorrect drivers were installed." -ForegroundColor Red
-        if (-not (Test-Path "C:\Program Files\NVIDIA Corporation")) { 
-            log "SWARM failed to install NVSMI folder- No NVIDIA Corporation file found in C:\Program Files" -ForegroundColor Red
-        } 
-        else {
-            log "extracting NVSMI folder.." -ForegroundColor Yellow
-            if (test-path ".\build\data\NVSMI") { Remove-Item ".\build\data\NVSMI" -Force -Recurse }
-            $Proc = Start-Process ".\build\apps\7z\7z.exe" "x `"$($(vars).dir)\build\data\NVSMI.zip`" -o`"$($(vars).dir)\build\data`" -y" -PassThru -WindowStyle Minimized -verb Runas
-            $Proc | Wait-Process
-            if (test-path ".\build\data\NVSMI") {
-                log "extraction was a success!" -ForeGroundColor Green
-                Start-Sleep -S 3
-                Move-Item ".\build\data\NVSMI" -Destination "C:\Program Files\NVIDIA Corporation" -Force
-                Start-Sleep -S 3
-                if (test-Path "C:\Program Files\NVIDIA Corporation\NVSMI") {
-                    log "NVSMI installed!" -ForeGroundColor Green
-                    Start-Sleep -S 1
-                }
-                else { log "Failed to install NVSMI" -ForeGroundColor Red }
-            }
-            else { log "Failed to extract NVSMI.zip" -ForeGroundColor Red }
-        }
+    if ( [IO.Directory]::Exists($x64_driver) ) {
+        if(-not [IO.Directory]::Exists($x64_NVSMI)){ [IO.Directory]::CreateDirectory($x64_NVSMI) | Out-Null }
+        $dest = [IO.Path]::Join($x64_NVSMI, "nvidia-smi.exe")
+        try { [IO.File]::Copy($smi, $dest, $true) | Out-Null } catch { }
+        $dest = [IO.Path]::Join($x64_NVSMI, "nvml.dll")
+        try { [IO.File]::Copy($nvml, $dest, $true) | Out-Null } catch { }
     }
+
     
     ## Fetch Ram Size, Write It To File (For Commands)
     $TotalMemory = [math]::Round((Get-CimInstance -ClassName CIM_ComputerSystem).TotalPhysicalMemory / 1mb, 2) 
