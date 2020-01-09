@@ -57,6 +57,7 @@ invoke-expression "reg add `"HKLM\Software\Policies\Microsoft\Windows\OneDrive`"
 [string]$regKeyName = 'SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}'
 [string]$internalLargePageName = 'KMD_EnableInternalLargePage'
 [string]$enableulps = 'EnableUlps'
+[string]$enableulps_NA = 'EnableUlps_NA'
 [string]$enablecrossfireautolink = 'EnableCrossFireAutoLink'
 [string]$aMDPnPId = 'AMD'
 $reg = [Microsoft.Win32.RegistryKey]::OpenBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine, [Microsoft.Win32.RegistryView]::Default)
@@ -77,6 +78,8 @@ if ($reg) {
                         Write-Host "GPU $gpuitem KMD_EnableInternalLargePage Set to 2" -ForeGround Yellow 
                         $gpukey.SetValue($enableulps, 0, [Microsoft.Win32.RegistryValueKind]::DWord)
                         Write-Host "GPU $gpuitem EnableUlps Set to 0" -ForeGround Yellow 
+                        $gpukey.SetValue($enableulps_NA, "0", [Microsoft.Win32.RegistryValueKind]::String)
+                        Write-Host "GPU $gpuitem EnableUlps_NA Set to 0" -ForeGround Yellow 
                         $gpukey.SetValue($enablecrossfireautolink, 0, [Microsoft.Win32.RegistryValueKind]::DWord)
                         Write-Host "GPU $gpuitem EnableCrossFireAutoLink Set to 0" -ForeGround Yellow 
                         Write-Host "done" -ForeGround green 
