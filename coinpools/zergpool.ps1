@@ -69,14 +69,35 @@ if ($Name -in $(arg).PoolName) {
     }
 
     $Zergpool_Sorted | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+
+        $Day_Estimate = [Convert]::ToDouble($Zergpool_Sorted.$_.estimate_last24);
+        $Day_Return = [Convert]::ToDouble($Zergpool_Sorted.$_.actual_last24h);
+        ## Calculate deviation from estimate and actual
+        if ($Day_Estimate -gt 0 -and $Day_Return -gt 0) {
+            $Raw = shuffle $Day_Estimate $Day_Return
+        } 
+        ## If either value is 0, deviation is 100% (either coin was not mined, or had no value)
+        else {
+            $Raw = -1
+        }
+        $Zergpool_Sorted.$_ | Add-Member "deviation" $Raw
+
         $Zergpool_Algo = $Zergpool_Sorted.$_.algo.ToLower()
         $Zergpool_Symbol = $Zergpool_Sorted.$_.sym.ToUpper()
         $StatAlgo = $Zergpool_Symbol -replace "`_", "`-" 
-        $Divisor = 1000000 * [Double]$(vars).divisortable.zergpool.$Zergpool_Algo
-        $zergpool_Fees = [Double]$(vars).FeeTable.zergpool.$Zergpool_Algo
-        $zergpool_Estimate = [Double]$Zergpool_Sorted.$_.estimate * 0.001
-        $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_coin_profit" -Value ([double]$zergpool_Estimate / $Divisor * (1 - ($zergpool_fees / 100))) -Shuffle $Zergpool_Sorted.$_.Shuffle     
+        $Divisor = 1000000 * [Convert]::ToDouble($(vars).divisortable.zergpool.$Zergpool_Algo)
+        $zergpool_Fees = [Convert]::ToDouble($(vars).FeeTable.zergpool.$Zergpool_Algo)
+        $zergpool_Estimate = [Convert]::ToDouble($Zergpool_Sorted.$_.estimate * 0.001)
+        $Deviation = $Zergpool_Sorted.$_.Deviation
+        $StatPath = "$($Name)_$($StatAlgo)_coin_profit"
+        $Stat = Global:Set-Stat -Name $StatPath -HashRate $HashRate -Value ($zergpool_Estimate / $Divisor * (1 - ($zergpool_Fees / 100))) -Shuffle $Deviation
         $Level = $Stat.$($(arg).Stat_Algo)
+
+        if ($(arg).Historical_Bias -gt 0) {
+            $SmallestValue = 1E-20 
+            $Level = [Math]::Max($Level + ($Level * $Stat.Deviation), $SmallestValue)
+        }
+
         $Zergpool_Sorted.$_ | Add-Member "Level" $Level 
     }
 
@@ -86,7 +107,7 @@ if ($Name -in $(arg).PoolName) {
 
         $Zergpool_Sorted.PSObject.Properties.Value | 
         Where-Object Algo -eq $Selected | 
-        Where-Object { if([string]$(arg).coin -ne "") { $_.sym -in $(arg).coin } else{$_} } |
+        Where-Object { if ([string]$(arg).coin -ne "") { $_.sym -in $(arg).coin } else { $_ } } |
         Sort-Object Level -Descending | 
         Select-Object -First 1 | 
         ForEach-Object { 
@@ -149,8 +170,8 @@ if ($Name -in $(arg).PoolName) {
                         }
                         if ($(vars).All_AltWallets.$Sym.params -ne "enter additional params here, such as 'm=solo' or m=party.partypassword") {
                             $mc += "m=$($(vars).All_AltWallets.$Sym.params),"
-                            $mc = $mc.replace("SOLO","solo")
-                            $mc = $mc.replace("PARTY","party")
+                            $mc = $mc.replace("SOLO", "solo")
+                            $mc = $mc.replace("PARTY", "party")
                         }    
                     }   
                 }

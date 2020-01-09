@@ -72,10 +72,10 @@ if ($Name -in $(arg).PoolName) {
         $zpool_Algo = $zpool_Sorted.$_.algo.ToLower()
         $zpool_Symbol = $zpool_Sorted.$_.sym.ToUpper()
         $StatAlgo = $zpool_Symbol -replace "`_", "`-" 
-        $Divisor = 1000000 * [Double]$(vars).divisortable.zpool.$zpool_Algo
-        $zpool_Fees = [Double]$(vars).FeeTable.zpool.$zpool_Algo
-        $zpool_Estimate = [Double]$zpool_Sorted.$_.estimate * 0.001
-        $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_coin_profit" -Value ([double]$zpool_Estimate / $Divisor * (1 - ($zpool_fees / 100))) -Shuffle $zpool_Sorted.$_.Shuffle     
+        $Divisor = 1000000 * [Convert]::ToDouble($(vars).divisortable.zpool.$zpool_Algo)
+        $zpool_Fees = [Convert]::ToDouble($(vars).FeeTable.zpool.$zpool_Algo)
+        $zpool_Estimate = [Convert]::ToDouble($zpool_Sorted.$_.estimate * 0.001)
+        $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_coin_profit" -Value ([Convert]::ToDouble($zpool_Estimate) / $Divisor * (1 - ($zpool_fees / 100))) -Shuffle $zpool_Sorted.$_.Shuffle     
         $Level = $Stat.$($(arg).Stat_Algo)
         $zpool_Sorted.$_ | Add-Member "Level" $Level 
     }

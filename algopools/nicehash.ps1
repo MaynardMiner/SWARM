@@ -71,7 +71,7 @@ if ($Name -in $(arg).PoolName) {
                 ## usually pretty close to actual.
 
                 $StatAlgo = $Nicehash_Algorithm -replace "`_","`-"
-                $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -Value ([Double]$_.paying / $Divisor * (1 - ($Fee / 100)))
+                $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -Value ([Convert]::ToDouble($_.paying) / $Divisor * (1 - ($Fee / 100)))
                 $Level = $Stat.$($(arg).Stat_Algo)
      
                 [Pool]::New(
