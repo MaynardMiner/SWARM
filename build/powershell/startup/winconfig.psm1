@@ -60,6 +60,7 @@ Function Global:Get-Bus {
     if ($OldCount) {
         Write-Log "Previously Detected GPU List Is:" -ForegroundColor Yellow
         $OldCount | Out-Host
+        Write-Log "Remove '.\debug\gpu-count.txt' if this is wrong to force a new count" -ForegroundColor Yellow
         Start-Sleep -S .5
     }
 
