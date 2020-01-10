@@ -27,6 +27,15 @@
     "optional": "No",
     "uri": "https://github.com/xmrig/xmrig/releases/download/v5.5.0/xmrig-5.5.0-xenial-x64.tar.gz"
   },
+  "xmrigcc-cpu": {
+    "name": "xmrigcc-cpu",
+    "type": "cpu",
+    "CPU": ".\\bin\\xmrigcc-cpu-1\\xmrigDaemon",
+    "minername": "xmrigDaemon",
+    "version": "2.5.0",
+    "optional": "No",
+    "uri": "https://github.com/Bendr0id/xmrigCC/releases/download/2.5.0/xmrigCC-2.5.0-with_tls_and_gzip-gcc7-linux-static-amd64.tar.gz"
+  },
   "sugarchain": {
     "name": "sugarchain",
     "type": "cpu",
