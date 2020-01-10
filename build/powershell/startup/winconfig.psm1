@@ -296,10 +296,7 @@ function Global:Start-WindowsConfig {
         $Term_Script += "cmd.exe"
         $Term_Script | Set-Content $Desk_Term
     }
-    
-    ## Windows Bug- Set Cudas to match PCI Bus Order
-    if ($(arg).Type -like "*NVIDIA*") { [Environment]::SetEnvironmentVariable("CUDA_DEVICE_ORDER", "PCI_BUS_ID", "User") }
-        
+            
     ## Check for NVIDIA-SMI and nvml.dll in system32. If it is there- copy to NVSMI
     $x86_driver = [IO.Path]::Join(${env:ProgramFiles(x86)}, "NVIDIA Corporation")
     $x64_driver = [IO.Path]::Join($env:ProgramFiles, "NVIDIA Corporation")
@@ -308,8 +305,13 @@ function Global:Start-WindowsConfig {
     $smi = [IO.Path]::Join($env:windir, "system32\nvidia-smi.exe")
     $nvml = [IO.Path]::Join($env:windir, "system32\nvml.dll")
 
+    ## Set the device order to match the PCI bus if NVIDIA is installed
+    if ([IO.Directory]::Exists($x86_driver) -or [IO.Directory]::Exists($x64_driver)) {
+        [Environment]::SetEnvironmentVariable("CUDA_DEVICE_ORDER", "PCI_BUS_ID", "Machine")
+    }
+
     if ( [IO.Directory]::Exists($x86_driver) ) {
-        if(-not [IO.Directory]::Exists($x86_NVSMI)){ [IO.Directory]::CreateDirectory($x86_NVSMI) | Out-Null }
+        if (-not [IO.Directory]::Exists($x86_NVSMI)) { [IO.Directory]::CreateDirectory($x86_NVSMI) | Out-Null }
         $dest = [IO.Path]::Join($x86_NVSMI, "nvidia-smi.exe")
         try { [IO.File]::Copy($smi, $dest, $true) | Out-Null } catch { }
         $dest = [IO.Path]::Join($x86_NVSMI, "nvml.dll")
@@ -317,7 +319,7 @@ function Global:Start-WindowsConfig {
     }
 
     if ( [IO.Directory]::Exists($x64_driver) ) {
-        if(-not [IO.Directory]::Exists($x64_NVSMI)){ [IO.Directory]::CreateDirectory($x64_NVSMI) | Out-Null }
+        if (-not [IO.Directory]::Exists($x64_NVSMI)) { [IO.Directory]::CreateDirectory($x64_NVSMI) | Out-Null }
         $dest = [IO.Path]::Join($x64_NVSMI, "nvidia-smi.exe")
         try { [IO.File]::Copy($smi, $dest, $true) | Out-Null } catch { }
         $dest = [IO.Path]::Join($x64_NVSMI, "nvml.dll")
