@@ -307,7 +307,10 @@ function Global:Start-WindowsConfig {
 
     ## Set the device order to match the PCI bus if NVIDIA is installed
     if ([IO.Directory]::Exists($x86_driver) -or [IO.Directory]::Exists($x64_driver)) {
-        [Environment]::SetEnvironmentVariable("CUDA_DEVICE_ORDER", "PCI_BUS_ID", "Machine")
+        $Target1 = [System.EnvironmentVariableTarget]::Machine
+        $Target2 = [System.EnvironmentVariableTarget]::Process
+        [Environment]::SetEnvironmentVariable("CUDA_DEVICE_ORDER", "PCI_BUS_ID", $Target1)
+        [Environment]::SetEnvironmentVariable("CUDA_DEVICE_ORDER", "PCI_BUS_ID", $Target2)
     }
 
     if ( [IO.Directory]::Exists($x86_driver) ) {
