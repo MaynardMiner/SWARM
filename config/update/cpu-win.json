@@ -27,6 +27,15 @@
     "optional": "No",
     "uri": "https://github.com/xmrig/xmrig/releases/download/v5.5.0/xmrig-5.5.0-msvc-win64.zip"
   },
+  "xmrigcc-cpu": {
+    "name": "xmrigcc-cpu",
+    "type": "cpu",
+    "CPU": ".\\bin\\xmrigcc-cpu-1\\xmrigDaemon.exe",
+    "minername": "xmrigDaemon.exe",
+    "version": "2.5.0",
+    "optional": "No",
+    "uri": "https://github.com/Bendr0id/xmrigCC/releases/download/2.5.0/xmrigCC-2.5.0-with_tls_and_gzip-mvc-win64.zip"
+  },
   "sugarchain": {
     "name": "sugarchain",
     "type": "cpu",

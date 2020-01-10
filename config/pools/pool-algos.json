@@ -314,6 +314,20 @@
       "comma seperated"
     ]
   },
+  "cryptonight-upx2": {
+    "alt_names": [
+      "cryptonight-upx",
+      "cryptonightupx",
+      "cryptonight_upx",
+      "cryptonight-upx2",
+      "cryptonightupx2",
+      "cryptonight_upx2"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "cuckoo_cycle": {
     "alt_names": [
       "cuckoocycle",

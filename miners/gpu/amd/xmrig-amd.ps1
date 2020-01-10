@@ -1,16 +1,17 @@
 $(vars).AMDTypes | ForEach-Object {
     
     $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
+    $Cname = "xmrig-amd"
 
     ##Miner Path Information
-    if ($(vars).amd.xmrig.$ConfigType) { $Path = "$($(vars).amd.xmrig.$ConfigType)" }
+    if ($(vars).amd.$Cname.$ConfigType) { $Path = "$($(vars).amd.$Cname.$ConfigType)" }
     else { $Path = "None" }
-    if ($(vars).amd.xmrig.uri) { $Uri = "$($(vars).amd.xmrig.uri)" }
+    if ($(vars).amd.$Cname.uri) { $Uri = "$($(vars).amd.$Cname.uri)" }
     else { $Uri = "None" }
-    if ($(vars).amd.xmrig.minername) { $MinerName = "$($(vars).amd.xmrig.minername)" }
+    if ($(vars).amd.$Cname.minername) { $MinerName = "$($(vars).amd.$Cname.minername)" }
     else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "xmrig-$Num"; $Port = "3100$Num"
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$Cname-$Num"; $Port = "3100$Num"
 
     Switch ($Num) {
         1 { $Get_Devices = $(vars).AMDDevices1; $Rig = $(arg).Rigname1 }
@@ -20,7 +21,7 @@ $(vars).AMDTypes | ForEach-Object {
     $Log = Join-Path $($(vars).dir) "logs\$ConfigType.log"
 
     ##Get Configuration File
-    $MinerConfig = $Global:config.miners.xmrig
+    $MinerConfig = $Global:config.miners.$Cname
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = Join-Path $($(vars).dir) "build\export"
@@ -61,7 +62,7 @@ $(vars).AMDTypes | ForEach-Object {
                     Path       = $Path
                     Devices    = "none"
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
-                    Version    = "$($(vars).amd.xmrig.version)"
+                    Version    = "$($(vars).amd.$Cname.version)"
                     DeviceCall = "xmrstak"
                     Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --http-enabled --http-port=$Port -o stratum+tcp://$($_.Pool_Host):$($_.Port) -u $($_.$User) -p $($_.$Pass)$($Diff) --donate-level=1 --nicehash --no-cpu --opencl $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"    
                     HashRates  = $Stat.Hour
