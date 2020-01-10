@@ -1,6 +1,6 @@
 {
     "name": "xmrigcc-amd",
-    "CPU": {
+    "AMD1": {
         "name": "AMD1",
         "delay": "1",
         "prestart": [
