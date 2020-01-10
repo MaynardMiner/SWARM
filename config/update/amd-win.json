@@ -165,6 +165,17 @@
     "optional": "No",
     "uri": "https://github.com/xmrig/xmrig/releases/download/v5.5.0/xmrig-5.5.0-msvc-win64.zip"
   },
+  "xmrigcc-amd": {
+    "name": "xmrigcc-amd",
+    "type": "amd",
+    "AMD1": ".\\bin\\xmrigcc-amd-1\\xmrigDaemon.exe",
+    "AMD2": ".\\bin\\xmrigcc-amd-2\\xmrigDaemon.exe",
+    "AMD3": ".\\bin\\xmrigcc-amd-3\\xmrigDaemon.exe",
+    "minername": "xmrigDaemon.exe",
+    "version": "1.9.3",
+    "optional": "No",
+    "uri": "https://github.com/Bendr0id/xmrigCC-amd/releases/download/1.9.3/xmrigCC-amd-1.9.3-with_tls-mvc-win64.zip"
+  },
   "srbminer": {
     "name": "srbminer",
     "type": "amd",

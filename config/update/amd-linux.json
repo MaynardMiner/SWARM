@@ -199,7 +199,7 @@
     "uri": "https://github.com/fancyIX/sgminer-phi2-branch/releases/download/5.6.1.3.b6a/sgminer-phi2-fancyIX-linux-amd64-0.6.0.1.zip"
   },
   "xmrig-amd": {
-    "name": "xmrig",
+    "name": "xmrig-amd",
     "type": "amd",
     "AMD1": ".\\bin\\xmrig-amd-1\\xmrig",
     "AMD2": ".\\bin\\xmrig-amd-2\\xmrig",
@@ -208,6 +208,17 @@
     "version": "5.5.0",
     "optional": "No",
     "uri": "https://github.com/xmrig/xmrig/releases/download/v5.5.0/xmrig-5.5.0-xenial-x64.tar.gz"
+  },
+  "xmrigcc-amd": {
+    "name": "xmrigcc-amd",
+    "type": "amd",
+    "AMD1": ".\\bin\\xmrigcc-amd-1\\xmrigDaemon",
+    "AMD2": ".\\bin\\xmrigcc-amd-2\\xmrigDaemon",
+    "AMD3": ".\\bin\\xmrigcc-amd-3\\xmrigDaemon",
+    "minername": "xmrigDaemon",
+    "version": "1.9.3",
+    "optional": "No",
+    "uri": "https://github.com/Bendr0id/xmrigCC-amd/releases/download/1.9.3/xmrigCC-amd-1.9.3-with_tls-gcc7-linux-static-miner_only-x64.tar.gz"
   },
   "progminer-amd": {
     "name": "progminer-amd",
