@@ -148,12 +148,15 @@ Please choose an advanced setting you wish to modify:
 47 I would like to specify the wallet for my admin fee. (-Admin)
 48 I would like to specify the coin symbol for my admin wallet. (-Admin_Pass)
 
+[CPU]
+49 I would like to set cpu priority for cpu miners (-cpu_priority)
+
 I wish to use an optional miner from the optional miner folder (-Optional)
       * Note you can just move the file into nvida or amd folder.
         This help option not available yet.
 
 Answer"
-        $Check = Global:Confirm-Answer $ans @(1 .. 44)
+        $Check = Global:Confirm-Answer $ans @(1 .. 49)
     }While ($Check -eq 1)
     $ans
 }
@@ -831,6 +834,11 @@ Answer"
                     elseif ($(vars).input -in 46 .. 48) {
                         Add-Module "$hd\profit.psm1"
                         Global:Get-profit
+                        Global:Remove-Modules
+                    }
+                    elseif ($(vars).input -eq 49) {
+                        Add-Module "$hd\cpu.psm1"
+                        Global:Get-CPU
                         Global:Remove-Modules
                     }
                 }
