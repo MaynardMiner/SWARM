@@ -91,6 +91,15 @@
       "comma seperated"
     ]
   },
+  "eaglesong": {
+    "alt_names": [
+      "eaglesong"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "equihash_125/4": {
     "alt_names": [
       "zelcash",

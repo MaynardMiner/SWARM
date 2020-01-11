@@ -12,6 +12,7 @@
         "commands": {
             "cuckoo_cycle": "",
             "beamv2": "",
+            "eaglesong": "",
             "equihash_125/4": "",
             "equihash_192/7": "",
             "equihash_144/5": "",
@@ -21,6 +22,7 @@
         "difficulty": {
             "cuckoo_cycle": "",
             "beamv2": "",
+            "eaglesong": "",
             "equihash_125/4": "",
             "equihash_192/7": "",
             "equihash_144/5": "",
@@ -30,6 +32,7 @@
         "naming": {
             "cuckoo_cycle": "cuckoo_cycle",
             "beamv2": "beamv2",
+            "eaglesong": "eaglesong",
             "equihash_125/4": "equihash_125/4",
             "equihash_192/7": "equihash_192/7",
             "equihash_144/5": "equihash_144/5",
@@ -39,6 +42,7 @@
         "fee": {
             "cuckoo_cycle": 2,
             "beamv2": 2,
+            "eaglesong": 2,
             "equihash_125/4": 2,
             "equihash_192/7": 2,
             "equihash_144/5": 2,

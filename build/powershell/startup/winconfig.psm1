@@ -60,7 +60,7 @@ Function Global:Get-Bus {
     if ($OldCount) {
         Write-Log "Previously Detected GPU List Is:" -ForegroundColor Yellow
         $OldCount | Out-Host
-        Write-Log "Run `Hive_Windows_Reset.bat' if this count is in error count again." -ForegroundColor Yellow
+        Write-Log "Run 'Hive_Windows_Reset.bat' if this count is in error count again." -ForegroundColor Yellow
         Start-Sleep -S .5
     }
 
