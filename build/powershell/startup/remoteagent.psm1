@@ -571,13 +571,20 @@ function Global:start-update {
                                 if ($ChangeFile -eq "fancyix.json") {
                                     $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                         if ($_ -ne "name") {
-                                            $Data.$_.commands.mtp = "-I 20"
-                                            $Data.$_.difficulty.mtp = "700"
-
-                                            $Data.$_.commands | Add-Member "x25x" "-gpu-threads 2 -w 256 -g 4" -ErrorAction SilentlyContinue
+                                            
+                                            $Data.$_.commands | Add-Member "x25x" "--gpu-threads 4 --worksize 256 --intensity 22" -ErrorAction SilentlyContinue
                                             $Data.$_.difficulty | Add-Member "x25x" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "x25x" "x25x" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "x25x" 0 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands.x22i = "--gpu-threads 2 --worksize 256 --intensity 23"
+                                            $Data.$_.commands.phi2 = "--gpu-threads 1 --worksize 256 --intensity 23"
+                                            $Data.$_.commands.'phi2-lux' = "--gpu-threads 1 --worksize 256 --intensity 23"
+                                            $Data.$_.commands.allium = "--gpu-threads 1 --worksize 256 --intensity 20"
+                                            $Data.$_.commands.lyra2rev3 = "--gpu-threads 1 --worksize 256 --intensity 24"
+                                            $Data.$_.commands.argon2d500 = "--worksize 64 -g 2"
+                                            $Data.$_.commands.mtp = "--intensity 18"
+                                            $Data.$_.commands.x25x = "--gpu-threads 4 --worksize 256 --intensity 22"
                                         }
                                     }
                                 }

@@ -17,7 +17,7 @@
             "allium": "--gpu-threads 1 --worksize 256 --intensity 20",
             "lyra2rev3": "--gpu-threads 1 --worksize 256 --intensity 24",
             "argon2d500": "--worksize 64 -g 2",
-            "mtp": "--intensity 18 -p 0,strict,verbose,d=700",
+            "mtp": "--intensity 18",
             "x25x": "--gpu-threads 4 --worksize 256 --intensity 22"
         },
         "difficulty": {
