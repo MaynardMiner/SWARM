@@ -65,7 +65,7 @@ $(vars).AMDTypes | ForEach-Object {
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
                     Version    = "$($(vars).amd.wildrig.version)"
                     DeviceCall = "wildrig"
-                    Arguments  = "--opencl-platform=$($(vars).AMDPlatform) --api-port $Port --algo $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --url stratum+tcp://$($_.Pool_Host):$($_.Port) --donate-level 1 --user $($_.$User) --pass $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($MinerConfig.$ConfigType.naming.$($_.Algorithm)))"
+                    Arguments  = "--opencl-platform=$($(vars).AMDPlatform) --api-port $Port --algo $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --url stratum+tcp://$($_.Pool_Host):$($_.Port) --donate-level 1 --user $($_.$User) --pass $($_.$Pass)$($Diff) --log-file `'$Log`' $($MinerConfig.$ConfigType.commands.$($MinerConfig.$ConfigType.naming.$($_.Algorithm)))"
                     HashRates  = $Stat.Hour
                     Quote      = if ($HashStat) { $HashStat * ($_.Price) }else { 0 }
                     Rejections = $Stat.Rejections
@@ -78,7 +78,7 @@ $(vars).AMDTypes | ForEach-Object {
                     URI        = $Uri
                     Server     = "localhost"
                     Algo       = "$($_.Algorithm)"                         
-                    Log        = $Log
+                    Log        = "miner_generated"
                 }            
             }
         }

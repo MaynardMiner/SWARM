@@ -60,12 +60,24 @@ Function Global:Get-Bus {
     if ($OldCount) {
         Write-Log "Previously Detected GPU List Is:" -ForegroundColor Yellow
         $OldCount | Out-Host
+        Write-Log "Run 'Hive_Windows_Reset.bat' if this count is in error count again." -ForegroundColor Yellow
         Start-Sleep -S .5
     }
-    Invoke-Expression ".\build\apps\pci\lspci.exe" | Select-String "VGA compatible controller" | Tee-Object -FilePath ".\debug\gpu-count.txt" | Out-Null
-    $NewCount = if (Test-Path ".\debug\gpu-count.txt") { $(Get-Content ".\debug\gpu-count.txt") } else { "nothing" }
 
-    if ([string]$NewCount -ne [string]$OldCount) {
+    $NewCount = @()
+    $info = [System.Diagnostics.ProcessStartInfo]::new();
+    $info.FileName = ".\build\apps\pci\lspci.exe";
+    $info.UseShellExecute = $false;
+    $info.RedirectStandardOutput = $true;
+    $info.Verb = "runas";
+    $Proc = [System.Diagnostics.Process]::New();
+    $proc.StartInfo = $Info;
+    $proc.Start() | Out-Null;
+    $proc.WaitForExit();
+    if ($proc.HasExited) { while (-not $proc.StandardOutput.EndOfStream) { $NewCount += $Proc.StandardOutput.ReadLine(); }}
+    $NewCount = $NewCount | Where {$_ -like "*VGA*" -or $_ -like "*3D controller*"}
+
+    if ([string]$OldCount -ne [string]$NewCount) {
         Write-Log "Current Detected GPU List Is:" -ForegroundColor Yellow
         $NewCount | Out-Host
         Start-Sleep -S .5

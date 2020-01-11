@@ -56,13 +56,13 @@ function Global:Get-HTTP {
         [Parameter(Mandatory = $true)]
         [String]$Port, 
         [Parameter(Mandatory = $false)]
-        [String]$Message,
+        [String]$Message = $null,
         [Parameter(Mandatory = $false)]
         [Int]$Timeout = 5 #seconds
     )
 
     try {
-        $response = Invoke-WebRequest "http://$($global:Server):$($Port)$($Message)" -UseBasicParsing -TimeoutSec $Timeout
+        $response = Invoke-WebRequest "http://$($Server):$($Port)$($Message)" -UseBasicParsing -TimeoutSec $Timeout
     }
     catch {$Error.Remove($error[$Error.Count - 1])}
     $response

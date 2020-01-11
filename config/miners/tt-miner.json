@@ -8,6 +8,7 @@
             "progpow": "",
             "ubqhash": "",
             "mtp": "",
+            "eaglesong": "",
             "ethash": "",
             "lyra2rev3": ""
         },
@@ -15,6 +16,7 @@
             "progpow": "",
             "ubqhash": "",
             "mtp": "",
+            "eaglesong": "",
             "ethash": "",
             "lyra2rev3": ""
         },
@@ -22,6 +24,7 @@
             "progpow": "PROGPOW",
             "ubqhash": "UBQHASH",
             "mtp": "MTP",
+            "eaglesong": "EAGLESONG",
             "ethash": "ETHASH",
             "lyra2rev3": "LYRA2V3"
         },
@@ -29,6 +32,7 @@
             "progpow": 1,
             "ubqhash": 1,
             "mtp": 1,
+            "eaglesong": 1,
             "ethash": 1,
             "lyra2rev3": 1
         }
@@ -41,6 +45,7 @@
             "progpow": "",
             "ubqhash": "",
             "mtp": "",
+            "eaglesong": "",
             "ethash": "",
             "lyra2rev3": ""
         },
@@ -48,6 +53,7 @@
             "progpow": "",
             "ubqhash": "",
             "mtp": "",
+            "eaglesong": "",
             "ethash": "",
             "lyra2rev3": ""
         },
@@ -55,6 +61,7 @@
             "progpow": "PROGPOW",
             "ubqhash": "UBQHASH",
             "mtp": "MTP",
+            "eaglesong": "EAGLESONG",
             "ethash": "ETHASH",
             "lyra2rev3": "LYRA2V3"
         },
@@ -62,6 +69,7 @@
             "progpow": 1,
             "ubqhash": 1,
             "mtp": 1,
+            "eaglesong": 1,
             "ethash": 1,
             "lyra2rev3": 1
         }
@@ -74,6 +82,7 @@
             "progpow": "",
             "ubqhash": "",
             "mtp": "",
+            "eaglesong": "",
             "ethash": "",
             "lyra2rev3": ""
         },
@@ -81,6 +90,7 @@
             "progpow": "",
             "ubqhash": "",
             "mtp": "",
+            "eaglesong": "",
             "ethash": "",
             "lyra2rev3": ""
         },
@@ -88,6 +98,7 @@
             "progpow": "PROGPOW",
             "ubqhash": "UBQHASH",
             "mtp": "MTP",
+            "eaglesong": "EAGLESONG",
             "ethash": "ETHASH",
             "lyra2rev3": "LYRA2V3"
         },
@@ -95,8 +106,9 @@
             "progpow": 1,
             "ubqhash": 1,
             "mtp": 1,
+            "eaglesong": 1,
             "ethash": 1,
             "lyra2rev3": 1
-        }
+        }    
     }
 }

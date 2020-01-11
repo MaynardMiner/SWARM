@@ -45,16 +45,12 @@ function Global:Get-ScreenName {
         $Miner = $_
         if ($Miner.Coin -eq $false) { $ScreenName = $Miner.Symbol }
         else {
-            switch ($Miner.Symbol) {
-                "GLT-PADIHASH" { $ScreenName = "GLT:PADIHASH" }
-                "GLT-JEONGHASH" { $ScreenName = "GLT:JEONGHASH" }
-                "GLT-ASTRALHASH" { $ScreenName = "GLT:ASTRALHASH" }
-                "GLT-PAWELHASH" { $ScreenName = "GLT:PAWELHASH" }
-                "GLT-SKUNK" { $ScreenName = "GLT:SKUNK" }
-                "XMY-ARGON2D4096" { $ScreenName = "XMY:ARGON2D4096" }
-                "ARG-ARGON2D4096" { $ScreenName = "ARG:ARGON2D4096" }
-                default { $ScreenName = "$($Miner.Symbol):$($Miner.Algo)".ToUpper() }
+            if($Miner.Symbol -like "*-*") {
+                $screen_coin = ($Miner.Symbol.split('-')[0]).ToUpper()
+                $screen_algo = ($Miner.Symbol.split('-')[1]).ToLower()
+                $ScreenName = "$screen_coin`:$screen_algo"
             }
+            else{$ScreenName = ("$($Miner.Symbol.ToUpper()):$($Miner.Algo)").Replace("cryptonight",'cnight')}
         }
         $Shares = $(vars).Share_Table.$($Miner.Type).$($Miner.MinerPool).$ScreenName.Percent -as [decimal]
         if ( $Shares -ne $null ) { $CoinShare = $Shares }else { $CoinShare = 0 }

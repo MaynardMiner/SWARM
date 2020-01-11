@@ -405,6 +405,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "cuckaroo29d" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "cuckaroo29d" "cuckaroo29d" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "cuckaroo29d" 2 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "eaglesong" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "eaglesong" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "eaglesong" "eaglesong" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "eaglesong" 2 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }
@@ -464,6 +469,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "beamv2" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "beamv2" "beamv2" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "beamv2" 2 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "eaglesong" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "eaglesong" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "eaglesong" "eaglesong" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "eaglesong" 2 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }
@@ -631,6 +641,11 @@ function Global:start-update {
                                             $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "equihash_150/5"
                                             $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "equihash_150/5"
 
+                                            $Data.$_.commands | Add-Member "eaglesong" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "eaglesong" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "eaglesong" "eaglesong" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "eaglesong" 2 -ErrorAction SilentlyContinue
+
                                             $Data.$_.commands | Add-Member "ethash" "" -ErrorAction SilentlyContinue
                                             $Data.$_.difficulty | Add-Member "ethash" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "ethash" "ethash" -ErrorAction SilentlyContinue
@@ -772,6 +787,17 @@ function Global:start-update {
                                         }
                                     }
                                 }
+                                
+                                if ($ChangeFile -eq "tt-miner.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands | Add-Member "eaglesong" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "eaglesong" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "eaglesong" "EAGLESONG" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "eaglesong" 0 -ErrorAction SilentlyContinue
+                                        }
+                                    }
+                                }
  
                                 if ($ChangeFile -eq "pool-algos.json") {
                                     $Data | add-Member "x25x" @{alt_names = @("x25x"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
@@ -800,6 +826,7 @@ function Global:start-update {
                                     $Data | add-Member "cryptonight-fast" @{alt_names = @("cryptonight-fast","cryptonightfast","cryptonight_fast"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                     $Data | add-Member "cryptonight-xeq" @{alt_names = @("cryptonight-xeq","cryptonightxeq","cryptonight_xeq"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                     $Data | add-Member "cryptonight-conceal" @{alt_names = @("cryptonight-conceal","cryptonightconceal","cryptonight_conceal"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
+                                    $Data | add-Member "cryptonight-upx2" @{alt_names = @("cryptonight-upx2","cryptonightupx2","cryptonight_upx2","cryptonight-upx","cryptonightupx","cryptonight_upx"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                     $Data | add-Member "randomsfx" @{alt_names = @("random-sfx","randomsfx","random_sfx"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                     $Data | add-Member "randomv" @{alt_names = @("random-v","randomv","random_v"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                     $Data | add-Member "randomx" @{alt_names = @("random-x","randomx","random_x"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
@@ -807,6 +834,7 @@ function Global:start-update {
                                     $Data | add-Member "yespoweriots" @{alt_names = @("yespoweriots"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                     $Data | add-Member "yespoweric" @{alt_names = @("yespoweric"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                     $Data | add-Member "sha256csm" @{alt_names = @("sha256csm"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
+                                    $Data | add-Member "eaglesong" @{alt_names = @("eaglesong"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                 }
                                 
 

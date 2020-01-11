@@ -499,6 +499,14 @@ While ($True) {
                     }
                     catch { Global:Get-OhNo } 
                 }
+                'xmrigcc' { 
+                    try { 
+                        Global:Add-Module "$($(vars).miners)\xmrigcc.psm1"; 
+                        Global:Get-Statsxmrigcc;
+                        Remove-Module -name "xmrigcc"
+                    }
+                    catch { Global:Get-OhNo } 
+                }
                 'xmrig-opt' { 
                     try { 
                         Global:Add-Module "$($(vars).miners)\xmrigopt.psm1"; 

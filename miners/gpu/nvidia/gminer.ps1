@@ -85,6 +85,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     "equihash_210/9" { $AddArgs = "--algo 210_9 --pers auto " }
                     "equihash_200/9" { $AddArgs = "--algo 200_9 --pers auto " }
                     "ethash" { $AddArgs = "--algo ethash --proto stratum " }
+                    "eaglesong" {$AddArgs = "--algo eaglesong "}
                 }
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
                 [PSCustomObject]@{

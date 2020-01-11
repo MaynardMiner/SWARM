@@ -64,7 +64,7 @@ $(vars).AMDTypes | ForEach-Object {
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
                     Version    = "$($(vars).amd.$Cname.version)"
                     DeviceCall = "xmrstak"
-                    Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --http-enabled --http-port=$Port -o stratum+tcp://$($_.Pool_Host):$($_.Port) -u $($_.$User) -p $($_.$Pass)$($Diff) --donate-level=1 --nicehash --no-cpu --opencl $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"    
+                    Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --api-port=$Port -o stratum+tcp://$($_.Pool_Host):$($_.Port) -u $($_.$User) -p $($_.$Pass)$($Diff) --donate-level=1 --nicehash --log-file=`'$Log`' $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"    
                     HashRates  = $Stat.Hour
                     Quote      = if ($HashStat) { $HashStat * ($_.Price) }else { 0 }
                     Rejections = $Stat.Rejections
@@ -72,12 +72,12 @@ $(vars).AMDTypes | ForEach-Object {
                     MinerPool  = "$($_.Name)"
                     Port       = $Port
                     Worker     = $Rig
-                    API        = "xmrig"
+                    API        = "xmrigcc"
                     Wallet     = "$($_.$User)"
                     URI        = $Uri
                     Server     = "localhost"
                     Algo       = "$($_.Algorithm)"                         
-                    Log        = $Log 
+                    Log        = "miner_generated"
                 }            
             }
         }

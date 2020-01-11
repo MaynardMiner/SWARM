@@ -222,7 +222,7 @@ function Global:Start-Webcommand {
                         if ($argjson.$_ -ne $Params.$_) {
                             switch ($_) {
                                 default { $Params.$_ = $argjson.$_ }
-                                "Bans" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "Bans" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_.replace('cnight','cryptonight') }; $Params.$_ = $NewParamArray }
                                 "Coin" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
                                 "Algorithm" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
                                 "GPUDevices3" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }

@@ -84,7 +84,7 @@
     "AMD2": ".\\bin\\phoenix-amd-2\\PhoenixMiner",
     "AMD3": ".\\bin\\phoenix-amd-3\\PhoenixMiner",
     "minername": "PhoenixMiner",
-    "version": "4.8c",
+    "version": "4.9c",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/phoenix-linux.tar.gz"
   },
@@ -212,9 +212,9 @@
   "xmrigcc-amd": {
     "name": "xmrigcc-amd",
     "type": "amd",
-    "AMD1": ".\\bin\\xmrigcc-amd-1\\xmrigDaemon",
-    "AMD2": ".\\bin\\xmrigcc-amd-2\\xmrigDaemon",
-    "AMD3": ".\\bin\\xmrigcc-amd-3\\xmrigDaemon",
+    "AMD1": ".\\bin\\xmrigcc-amd-1\\xmrigDaemon-amd",
+    "AMD2": ".\\bin\\xmrigcc-amd-2\\xmrigDaemon-amd",
+    "AMD3": ".\\bin\\xmrigcc-amd-3\\xmrigDaemon-amd",
     "minername": "xmrigDaemon",
     "version": "1.9.3",
     "optional": "No",

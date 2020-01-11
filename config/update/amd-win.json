@@ -62,7 +62,7 @@
     "AMD2": ".\\bin\\phoenix-amd-2\\PhoenixMiner.exe",
     "AMD3": ".\\bin\\phoenix-amd-3\\PhoenixMiner.exe",
     "minername": "PhoenixMiner.exe",
-    "version": "4.8c",
+    "version": "4.9c",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/phoenix-miner-windows.zip"
   },
@@ -168,10 +168,10 @@
   "xmrigcc-amd": {
     "name": "xmrigcc-amd",
     "type": "amd",
-    "AMD1": ".\\bin\\xmrigcc-amd-1\\xmrigDaemon.exe",
-    "AMD2": ".\\bin\\xmrigcc-amd-2\\xmrigDaemon.exe",
-    "AMD3": ".\\bin\\xmrigcc-amd-3\\xmrigDaemon.exe",
-    "minername": "xmrigDaemon.exe",
+    "AMD1": ".\\bin\\xmrigcc-amd-1\\xmrigDaemon-amd.exe",
+    "AMD2": ".\\bin\\xmrigcc-amd-2\\xmrigDaemon-amd.exe",
+    "AMD3": ".\\bin\\xmrigcc-amd-3\\xmrigDaemon-amd.exe",
+    "minername": "xmrigDaemon-amd.exe",
     "version": "1.9.3",
     "optional": "No",
     "uri": "https://github.com/Bendr0id/xmrigCC-amd/releases/download/1.9.3/xmrigCC-amd-1.9.3-with_tls-mvc-win64.zip"
