@@ -1729,3 +1729,53 @@ but beta in design.
 
 ## Updates
 * miniZ updated
+
+############################################
+############################################
+
+# SWARM 2.9.2
+
+## What's New?
+* Issue #281
+  * New Miner: XmrigCC
+  * New Miner: XmrigCC-amd
+  * Cryptonight_upx added
+
+* Issue #287
+  * Added eaglesong support on nicehash.
+
+* Issue #285
+  * New Argument: ``-cpu_priority``
+    * Default is 0
+    * Options: 0 2 5
+    * 0 is idle use
+    * 2 is normal use
+    * 5 is high priority use
+    * Sets process priority for
+      cpuminers. 
+
+## Improvements
+* Issue #282
+  * Better handling of
+    nvidia driver detection.
+  * Give user instruction on
+    screen to handle bad
+    gpu-detection issues.
+
+* Issue #286
+  * Fix ``get stats`` for auto_coin
+    truncate coins with "-algo"
+
+* Issue #284
+  * Changed fancyIX parameters- They will
+    overwrite current params on update.
+
+* Issue #279
+  * ``-Historical_Bias`` parameter
+    will now work with zergpool coins.
+    (Still works for -Auto_Algo, but will
+     now use ``-Historical_Bias`` if zergpool
+     is used for ``-Auto_Coin`` switching)
+
+## Updates
+* phoenix miner updated
