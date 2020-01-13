@@ -9,6 +9,9 @@ class SWARM {
 
         ## Start Logger
         $Global:Log = [Logging]::New()
+
+        ## Nvidia NVML
+        [NVIDIA]::get_nvml()
     
         ## Folder Check/Generation and Maintenence
         $Global:Log.screen('Checking For Directories And Making As Required')
