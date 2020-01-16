@@ -157,7 +157,7 @@ function Global:start-update {
                                     }
                                 }
 
-                                if ($ChangeFile -eq "xmrig.json") {
+                                if ($ChangeFile -eq "xmrig-amd.json") {
                                     $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                         if ($_ -ne "name") {
                                         
@@ -195,6 +195,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "random-sfx" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "random-sfx" "rx/sfx" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "random-sfx" 1 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "chukwa" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "chukwa" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "chukwa" "chukwa" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "chukwa" 1 -ErrorAction SilentlyContinue
 
                                             $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "randomv","randomsfx","cryptonight_gpu","cryptonight_xeq"
                                             $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "randomv","randomsfx","cryptonight_gpu","cryptonight_xeq"
@@ -250,6 +255,11 @@ function Global:start-update {
                                             $Data.$_.naming | Add-Member "random-sfx" "rx/sfx" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "random-sfx" 1 -ErrorAction SilentlyContinue
 
+                                            $Data.$_.commands | Add-Member "chukwa" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "chukwa" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "chukwa" "chukwa" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "chukwa" 1 -ErrorAction SilentlyContinue
+
                                             $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "randomv","randomsfx","cryptonight_gpu","cryptonight_xeq"
                                             $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "randomv","randomsfx","cryptonight_gpu","cryptonight_xeq"
                                             $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "randomv","randomsfx","cryptonight_gpu","cryptonight_xeq"
@@ -301,6 +311,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "random-sfx" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "random-sfx" "rx/sfx" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "random-sfx" 1 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "chukwa" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "chukwa" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "chukwa" "chukwa" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "chukwa" 1 -ErrorAction SilentlyContinue
 
                                             $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "randomv","randomsfx","cryptonight_gpu","cryptonight_xeq"
                                             $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "randomv","randomsfx","cryptonight_gpu","cryptonight_xeq"
