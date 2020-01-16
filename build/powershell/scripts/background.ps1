@@ -185,8 +185,6 @@ While ($True) {
             $HiveAlgo = $HiveAlgo -replace "veil", "x16rt"
             $HiveAlgo = $HiveAlgo -replace "beamv2", "equihash 150/5"
             $HiveAlgo = $HiveAlgo -replace "phi2-lux", "phi2"
-            $HiveAlgo = $HiveAlgo -replace "cuckaroo29", "cuckoo"
-            $HiveAlgo = $HiveAlgo -replace "cuckaroo29d", "cuckoo"
             $HiveAlgo = $HiveAlgo -replace "cryptonight-xeq", "cryptonight-gpu"
             $HiveAlgo = $HiveAlgo -replace "cryptonight-haven", "cryptonight-xhv"
             $HiveAlgo = $HiveAlgo -replace "cuckaroom", "cuckaroo29"
