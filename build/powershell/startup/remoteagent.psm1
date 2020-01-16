@@ -161,11 +161,6 @@ function Global:start-update {
                                     $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                         if ($_ -ne "name") {
                                         
-                                            $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "randomv","randomsfx"
-                                            $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "randomv","randomsfx"
-                                            $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "randomv","randomsfx"
-                                            $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "randomv","randomsfx"
-
                                             $Data.$_.commands | Add-Member "randomx" "" -ErrorAction SilentlyContinue
                                             $Data.$_.difficulty | Add-Member "randomx" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "randomx" "rx/0" -ErrorAction SilentlyContinue -Force
@@ -200,6 +195,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "random-sfx" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "random-sfx" "rx/sfx" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "random-sfx" 1 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "randomv","randomsfx","cryptonight_gpu","cryptonight_xeq"
+                                            $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "randomv","randomsfx","cryptonight_gpu","cryptonight_xeq"
+                                            $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "randomv","randomsfx","cryptonight_gpu","cryptonight_xeq"
+                                            $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "randomv","randomsfx","cryptonight_gpu","cryptonight_xeq"
                                         }
                                     }
                                 }
@@ -249,6 +249,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "random-sfx" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "random-sfx" "rx/sfx" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "random-sfx" 1 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "randomv","randomsfx","cryptonight_gpu","cryptonight_xeq"
+                                            $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "randomv","randomsfx","cryptonight_gpu","cryptonight_xeq"
+                                            $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "randomv","randomsfx","cryptonight_gpu","cryptonight_xeq"
+                                            $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "randomv","randomsfx","cryptonight_gpu","cryptonight_xeq"
                                         }
                                     }
                                 }
@@ -296,6 +301,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "random-sfx" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "random-sfx" "rx/sfx" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "random-sfx" 1 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "randomv","randomsfx","cryptonight_gpu","cryptonight_xeq"
+                                            $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "randomv","randomsfx","cryptonight_gpu","cryptonight_xeq"
+                                            $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "randomv","randomsfx","cryptonight_gpu","cryptonight_xeq"
+                                            $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "randomv","randomsfx","cryptonight_gpu","cryptonight_xeq"
                                         }
                                     }
                                 }
