@@ -718,6 +718,11 @@ function Global:start-update {
                                             $Data.$_.naming | Add-Member "cryptonight-upx2" "cn_saber" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "cryptonight-upx2" 2.5 -ErrorAction SilentlyContinue
 
+                                            $Data.$_.commands | Add-Member "chukwa" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "chukwa" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "chukwa" "trtl_chukwa" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "chukwa" 2.5 -ErrorAction SilentlyContinue
+
                                             $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "cuckaroo29d","cuckaroo29"
                                             $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "cuckaroo29d","cuckaroo29"
                                             $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "cuckaroo29d","cuckaroo29"

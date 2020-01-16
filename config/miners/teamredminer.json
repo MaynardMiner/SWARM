@@ -10,6 +10,7 @@
             "export GPU_MAX_ALLOC_PERCENT=100"
         ],
         "commands": {
+            "chukwa": "",
             "phi2": "",
             "phi2-lux": "",
             "cryptonight-v8": "",
@@ -26,10 +27,10 @@
             "veil": "",
             "mtp": "",
             "cuckatoo31": "",
-            "chukwa512": "",
             "ethash" : ""
         },
         "difficulty": {
+            "chukwa": "",
             "phi2": "",
             "phi2-lux": "",
             "cryptonight-v8": "",
@@ -46,10 +47,10 @@
             "veil": "",
             "mtp": "",
             "cuckatoo31": "",
-            "chukwa512": "",
             "ethash": ""
         },
         "naming": {
+            "chukwa": "trtl_chukwa",
             "phi2": "phi2",
             "phi2-lux": "phi2",
             "cryptonight-v8": "cnv8",
@@ -66,10 +67,10 @@
             "veil": "x16rt",
             "mtp": "mtp",
             "cuckatoo31": "cuckatoo31_grin",
-            "chukwa512": "trtl_chukwa",
             "ethash": "ethash"
         },
         "fee": {
+            "chukwa": 2.5,
             "phi2": 3,
             "phi2-lux": 3,
             "cryptonight-v8": 2.5,

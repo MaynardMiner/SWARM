@@ -140,6 +140,16 @@
       "comma seperated"
     ]
   },
+  "chukwa": {
+    "alt_names": [
+      "chukwa",
+      "chuckwa512"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "cpupower": {
     "alt_names": [
       "cpupower"
