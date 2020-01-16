@@ -6,8 +6,6 @@
         "prestart": [],
         "commands": {
             "cuckoo_cycle": "",
-            "cuckaroo29": "",
-            "cuckaroo29d": "",
             "cuckaroom": "",
             "cuckatoo31": "",
             "beamv2": "",
@@ -22,8 +20,6 @@
         },
         "difficulty": {
             "cuckoo_cycle": "",
-            "cuckaroo29": "",
-            "cuckaroo29d": "",
             "cuckaroom": "",
             "cuckatoo31": "",
             "beamv2": "",
@@ -38,8 +34,6 @@
         },
         "naming": {
             "cuckoo_cycle": "cuckoo_cycle",
-            "cuckaroo29": "cuckaroo29",
-            "cuckaroo29d": "cuckaroo29d",
             "cuckaroom": "cuckaroom",
             "cuckatoo31": "cuckatoo31",
             "beamv2": "beamv2",
@@ -54,8 +48,6 @@
         },
         "fee": {
             "cuckoo_cycle": 2,
-            "cuckaroo29": 2,
-            "cuckaroo29d": 2,
             "cuckaroom": 2,
             "cuckatoo31": 2,
             "beamv2": 2,
@@ -75,8 +67,6 @@
         "prestart": [],
         "commands": {
             "cuckoo_cycle": "",
-            "cuckaroo29": "",
-            "cuckaroo29d": "",
             "cuckaroom": "",
             "cuckatoo31": "",
             "beamv2": "",
@@ -91,8 +81,6 @@
         },
         "difficulty": {
             "cuckoo_cycle": "",
-            "cuckaroo29": "",
-            "cuckaroo29d": "",
             "cuckaroom": "",
             "cuckatoo31": "",
             "beamv2": "",
@@ -107,8 +95,6 @@
         },
         "naming": {
             "cuckoo_cycle": "cuckoo_cycle",
-            "cuckaroo29": "cuckaroo29",
-            "cuckaroo29d": "cuckaroo29d",
             "cuckaroom": "cuckaroom",
             "cuckatoo31": "cuckatoo31",
             "beamv2": "beamv2",
@@ -123,8 +109,6 @@
         },
         "fee": {
             "cuckoo_cycle": 2,
-            "cuckaroo29": 2,
-            "cuckaroo29d": 2,
             "cuckaroom": 2,
             "cuckatoo31": 2,
             "beamv2": 2,
@@ -144,8 +128,6 @@
         "prestart": [],
         "commands": {
             "cuckoo_cycle": "",
-            "cuckaroo29": "",
-            "cuckaroo29d": "",
             "cuckaroom": "",
             "cuckatoo31": "",
             "beamv2": "",
@@ -160,8 +142,6 @@
         },
         "difficulty": {
             "cuckoo_cycle": "",
-            "cuckaroo29": "",
-            "cuckaroo29d": "",
             "cuckaroom": "",
             "cuckatoo31": "",
             "beamv2": "",
@@ -176,8 +156,6 @@
         },
         "naming": {
             "cuckoo_cycle": "cuckoo_cycle",
-            "cuckaroo29": "cuckaroo29",
-            "cuckaroo29d": "cuckaroo29d",
             "cuckaroom": "cuckaroom",
             "cuckatoo31": "cuckatoo31",
             "beamv2": "beamv2",
@@ -192,8 +170,6 @@
         },
         "fee": {
             "cuckoo_cycle": 2,
-            "cuckaroo29": 2,
-            "cuckaroo29d": 2,
             "cuckaroom": 2,
             "cuckatoo31": 2,
             "beamv2": 2,

@@ -35,25 +35,21 @@
         "prestart": [],
         "commands": {
             "ethash": "",
-            "cuckaroo29d": "",
             "cuckatoo31": "",
             "eaglesong": ""
         },
         "difficulty": {
             "ethash": "",
-            "cuckaroo29d": "",
             "cuckatoo31": "",
             "eaglesong": ""
         },
         "naming": {
             "ethash": "ethash",
-            "cuckaroo29d": "cuckaroo29d",
             "cuckatoo31": "cuckatoo31",
             "eaglesong": "eaglesong"
         },
         "fee": {
             "ethash": 0.65,
-            "cuckaroo29d": 2,
             "cuckatoo31": 2,
             "eaglesong": 2
         }
@@ -64,25 +60,21 @@
         "prestart": [],
         "commands": {
             "ethash": "",
-            "cuckaroo29d": "",
             "cuckatoo31": "",
             "eaglesong": ""
         },
         "difficulty": {
             "ethash": "",
-            "cuckaroo29d": "",
             "cuckatoo31": "",
             "eaglesong": ""
         },
         "naming": {
             "ethash": "ethash",
-            "cuckaroo29d": "cuckaroo29d",
             "cuckatoo31": "cuckatoo31",
             "eaglesong": "eaglesong"
         },
         "fee": {
             "ethash": 0.65,
-            "cuckaroo29d": 2,
             "cuckatoo31": 2,
             "eaglesong": 2
         }
