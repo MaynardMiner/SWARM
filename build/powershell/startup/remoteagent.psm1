@@ -154,6 +154,11 @@ function Global:start-update {
                                             $Data.$_.naming | Add-Member "beamv2" "beamv2" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "beamv2" 1 -ErrorAction SilentlyContinue
 
+                                            $Data.$_.commands | Add-Member "cuckaroom" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "cuckaroom" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "cuckaroom" "cuckaroom" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "cuckaroom" 2 -ErrorAction SilentlyContinue
+
                                             $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "equihash_150/5"
                                             $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "equihash_150/5"
                                             $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "equihash_150/5"
@@ -582,6 +587,11 @@ function Global:start-update {
                                             $Data.$_.naming | Add-Member "beamv2" "beamv2" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "beamv2" 2 -ErrorAction SilentlyContinue
 
+                                            $Data.$_.commands | Add-Member "cuckaroom" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "cuckaroom" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "cuckaroom" "cuckaroom" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "cuckaroom" 2 -ErrorAction SilentlyContinue
+
                                             $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "equihash_150/5"
                                             $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "equihash_150/5"
                                             $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "equihash_150/5"
@@ -627,6 +637,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "ethash" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "ethash" "ethash" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "ethash" 0.65 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "cuckaroom" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "cuckaroom" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "cuckaroom" "cuckaroom" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "cuckaroom" 2 -ErrorAction SilentlyContinue
                                         }
                                     }
                                 }
@@ -812,6 +827,7 @@ function Global:start-update {
                                     $Data | add-Member "yespoweric" @{alt_names = @("yespoweric"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                     $Data | add-Member "sha256csm" @{alt_names = @("sha256csm"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                     $Data | add-Member "eaglesong" @{alt_names = @("eaglesong"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
+                                    $Data | add-Member "cuckaroom" @{alt_names = @("cuckaroom"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                 }
                                 
 
