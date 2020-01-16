@@ -53,16 +53,6 @@ function Global:Set-NewType {
     }    
 }
 
-function Global:get-NIST {
-    $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
-    [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
-    try {$WebRequest = Invoke-WebRequest -Uri 'http://nist.time.gov/actualtime.cgi' -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop} catch{Write-Warning "NIST Server Timed Out. Using Local Time"; return Get-Date }
-    $milliseconds = [int64](($webRequest.Content -replace '.*timestamp time="|" delay=".*') / 1000)
-    $NistTime = (New-Object -TypeName DateTime -ArgumentList (1970, 1, 1)).AddMilliseconds($milliseconds)
-    $GetNIST = [System.TimeZoneInfo]::ConvertTimeFromUtc($NistTime, (Get-Timezone))
-    return $GetNIST
-}
-
 function Global:Add-New_Variables {
 $(vars).Add("No_Miner",0)
 $(vars).Add("Instance",1)

@@ -166,17 +166,7 @@ Global:Get-DateFiles
 Global:Clear-Stats
 Global:Get-ArgNotice
 Global:Set-NewType
-if ($(arg).SWARM_Mode -eq "Yes") {
-    log "Sycronizing Time To Nist" -ForegroundColor Yellow
-    $Sync = Global:Get-Nist
-    try {
-        Set-Date $Sync -ErrorAction Stop 
-    }
-    catch { 
-        log "Failed to syncronize time- Are you root/administrator?" -ForegroundColor red; 
-        Start-Sleep -S 5 
-    }
-}
+
 ##HiveOS Confirmation
 if ( (Test-Path "/hive/miners") -or $(arg).Hive_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" ) { $(arg).HiveOS = "Yes" }
 log "HiveOS = $($(arg).HiveOS)"
