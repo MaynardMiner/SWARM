@@ -128,9 +128,9 @@
     "AMD2": ".\\bin\\xmrstak-rx-2\\xmr-stak-rx.exe",
     "AMD3": ".\\bin\\xmrstak-rx-3\\xmr-stak-rx.exe",
     "minername": "xmr-stak-rx.exe",
-    "version": "1.0.4",
+    "version": "1.0.3",
     "optional": "No",
-    "uri": "https://github.com/fireice-uk/xmr-stak/releases/download/1.0.4-rx/xmr-stak-rx-win64-1.0.4.zip"
+    "uri": "https://github.com/fireice-uk/xmr-stak/releases/download/1.0.3-rx/xmr-stak-rx-win64-1.0.3.zip"
   },
   "wildrig": {
     "name": "wildrig",
