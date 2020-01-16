@@ -139,16 +139,6 @@ function Global:start-update {
                                             $Data.$_.naming | Add-Member "equihash_125/4" "equihash_125/4" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "equihash_125/4" 1 -ErrorAction SilentlyContinue
 
-                                            $Data.$_.commands | Add-Member "cuckaroo29" "" -ErrorAction SilentlyContinue
-                                            $Data.$_.difficulty | Add-Member "cuckaroo29" "" -ErrorAction SilentlyContinue 
-                                            $Data.$_.naming | Add-Member "cuckaroo29" "cuckaroo29" -ErrorAction SilentlyContinue
-                                            $Data.$_.fee | Add-Member "cuckaroo29" 1 -ErrorAction SilentlyContinue
-
-                                            $Data.$_.commands | Add-Member "cuckaroo29d" "" -ErrorAction SilentlyContinue
-                                            $Data.$_.difficulty | Add-Member "cuckaroo29d" "" -ErrorAction SilentlyContinue 
-                                            $Data.$_.naming | Add-Member "cuckaroo29d" "cuckaroo29d" -ErrorAction SilentlyContinue
-                                            $Data.$_.fee | Add-Member "cuckaroo29d" 1 -ErrorAction SilentlyContinue
-
                                             $Data.$_.commands | Add-Member "beamv2" "" -ErrorAction SilentlyContinue
                                             $Data.$_.difficulty | Add-Member "beamv2" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "beamv2" "beamv2" -ErrorAction SilentlyContinue
@@ -159,10 +149,10 @@ function Global:start-update {
                                             $Data.$_.naming | Add-Member "cuckaroom" "cuckaroom" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "cuckaroom" 2 -ErrorAction SilentlyContinue
 
-                                            $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "equihash_150/5"
-                                            $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "equihash_150/5"
-                                            $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "equihash_150/5"
-                                            $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "equihash_150/5"
+                                            $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "equihash_150/5","cuckaroo29d","cuckaroo29"
+                                            $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "equihash_150/5","cuckaroo29d","cuckaroo29"
+                                            $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "equihash_150/5","cuckaroo29d","cuckaroo29"
+                                            $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "equihash_150/5","cuckaroo29d","cuckaroo29"
                                         }
                                     }
                                 }
@@ -376,15 +366,15 @@ function Global:start-update {
                                 if ($ChangeFile -eq "nbminer.json") {
                                     $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                         if ($_ -ne "name") {
-                                            $Data.$_.commands | Add-Member "cuckaroo29d" "" -ErrorAction SilentlyContinue
-                                            $Data.$_.difficulty | Add-Member "cuckaroo29d" "" -ErrorAction SilentlyContinue 
-                                            $Data.$_.naming | Add-Member "cuckaroo29d" "cuckaroo29d" -ErrorAction SilentlyContinue
-                                            $Data.$_.fee | Add-Member "cuckaroo29d" 2 -ErrorAction SilentlyContinue
-
                                             $Data.$_.commands | Add-Member "eaglesong" "" -ErrorAction SilentlyContinue
                                             $Data.$_.difficulty | Add-Member "eaglesong" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "eaglesong" "eaglesong" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "eaglesong" 2 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "cuckaroo29d","cuckaroo29"
+                                            $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "cuckaroo29d","cuckaroo29"
+                                            $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "cuckaroo29d","cuckaroo29"
+                                            $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "cuckaroo29d","cuckaroo29"
                                         }
                                     }
                                 }
@@ -435,10 +425,10 @@ function Global:start-update {
                                 if ($ChangeFile -eq "bminer.json") {
                                     $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                         if ($_ -ne "name") {
-                                            $Data.$_.commands | Add-Member "cuckaroo29d" "" -ErrorAction SilentlyContinue
-                                            $Data.$_.difficulty | Add-Member "cuckaroo29d" "" -ErrorAction SilentlyContinue 
-                                            $Data.$_.naming | Add-Member "cuckaroo29d" "cuckaroo29d" -ErrorAction SilentlyContinue
-                                            $Data.$_.fee | Add-Member "cuckaroo29d" 2 -ErrorAction SilentlyContinue
+                                            $Data.$_.commands | Add-Member "cuckaroom" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "cuckaroom" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "cuckaroom" "cuckaroom" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "cuckaroom" 2 -ErrorAction SilentlyContinue
 
                                             $Data.$_.commands | Add-Member "beamv2" "" -ErrorAction SilentlyContinue
                                             $Data.$_.difficulty | Add-Member "beamv2" "" -ErrorAction SilentlyContinue 
@@ -449,6 +439,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "eaglesong" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "eaglesong" "eaglesong" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "eaglesong" 2 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "cuckaroo29d","cuckaroo29"
+                                            $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "cuckaroo29d","cuckaroo29"
+                                            $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "cuckaroo29d","cuckaroo29"
+                                            $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "cuckaroo29d","cuckaroo29"
                                         }
                                     }
                                 }
@@ -461,10 +456,15 @@ function Global:start-update {
                                             $Data.$_.naming | Add-Member "equihash_125/4" "equihash_125/4" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "equihash_125/4" 1 -ErrorAction SilentlyContinue
 
-                                            $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "equihash_150/5"
-                                            $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "equihash_150/5"
-                                            $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "equihash_150/5"
-                                            $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "equihash_150/5"
+                                            $Data.$_.commands | Add-Member "cuckaroom" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "cuckaroom" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "cuckaroom" "cuckaroom" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "cuckaroom" 2 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "equihash_150/5","cuckaroo29d","cuckaroo29"
+                                            $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "equihash_150/5","cuckaroo29d","cuckaroo29"
+                                            $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "equihash_150/5","cuckaroo29d","cuckaroo29"
+                                            $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "equihash_150/5","cuckaroo29d","cuckaroo29"
                                         }
                                     }
                                 }
@@ -592,10 +592,10 @@ function Global:start-update {
                                             $Data.$_.naming | Add-Member "cuckaroom" "cuckaroom" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "cuckaroom" 2 -ErrorAction SilentlyContinue
 
-                                            $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "equihash_150/5"
-                                            $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "equihash_150/5"
-                                            $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "equihash_150/5"
-                                            $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "equihash_150/5"
+                                            $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "equihash_150/5","cuckaroo29d","cuckaroo29"
+                                            $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "equihash_150/5","cuckaroo29d","cuckaroo29"
+                                            $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "equihash_150/5","cuckaroo29d","cuckaroo29"
+                                            $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "equihash_150/5","cuckaroo29d","cuckaroo29"
                                         }
                                     }
                                 }
@@ -642,6 +642,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "cuckaroom" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "cuckaroom" "cuckaroom" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "cuckaroom" 2 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "cuckaroo29d","cuckaroo29"
+                                            $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "cuckaroo29d","cuckaroo29"
+                                            $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "cuckaroo29d","cuckaroo29"
+                                            $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "cuckaroo29d","cuckaroo29"
                                         }
                                     }
                                 }
@@ -678,11 +683,6 @@ function Global:start-update {
                                             $Data.$_.naming | Add-Member "mtp" "mtp" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "mtp" 2.5 -ErrorAction SilentlyContinue
 
-                                            $Data.$_.commands | Add-Member "cuckarood29d" "" -ErrorAction SilentlyContinue
-                                            $Data.$_.difficulty | Add-Member "cuckarood29d" "" -ErrorAction SilentlyContinue 
-                                            $Data.$_.naming | Add-Member "cuckarood29d" "cuckarood29" -ErrorAction SilentlyContinue
-                                            $Data.$_.fee | Add-Member "cuckarood29d" 2.5 -ErrorAction SilentlyContinue
-
                                             $Data.$_.commands | Add-Member "phi2-lux" "" -ErrorAction SilentlyContinue
                                             $Data.$_.difficulty | Add-Member "phi2-lux" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "phi2-lux" "phi2" -ErrorAction SilentlyContinue
@@ -707,6 +707,11 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "cryptonight-upx2" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "cryptonight-upx2" "cn_saber" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "cryptonight-upx2" 2.5 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "cuckaroo29d","cuckaroo29"
+                                            $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "cuckaroo29d","cuckaroo29"
+                                            $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "cuckaroo29d","cuckaroo29"
+                                            $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "cuckaroo29d","cuckaroo29"
                                         }
                                     }
                                 }
