@@ -5,7 +5,6 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "chukwa": "",
             "cryptonight-v8": "",
             "cryptonight-v7": "",
             "cryptonight-heavy": "",
@@ -19,7 +18,6 @@
             "randomx": ""
         },
         "difficulty": {
-            "chukwa": "",
             "cryptonight-v8": "",
             "cryptonight-v7": "",
             "cryptonight-heavy": "",
@@ -33,7 +31,6 @@
             "randomx": ""
         },
         "naming": {
-            "chukwa": "chukwa",
             "cryptonight-v8": "cn/2",
             "cryptonight-v7": "cn/1",
             "cryptonight-heavy": "cn-heavy",
@@ -47,7 +44,6 @@
             "randomx": "rx/0"
         },
         "fee": {
-            "chukwa": 1,
             "cryptonight-v8": 1,
             "cryptonight-v7": 1,
             "cryptonight-heavy": 1,
@@ -66,7 +62,6 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "chukwa": "",
             "cryptonight-v8": "",
             "cryptonight-v7": "",
             "cryptonight-heavy": "",
@@ -80,7 +75,6 @@
             "randomx": ""
         },
         "difficulty": {
-            "chukwa": "",
             "cryptonight-v8": "",
             "cryptonight-v7": "",
             "cryptonight-heavy": "",
@@ -94,7 +88,6 @@
             "randomx": ""
         },
         "naming": {
-            "chukwa": "chukwa",
             "cryptonight-v8": "cn/2",
             "cryptonight-v7": "cn/1",
             "cryptonight-heavy": "cn-heavy",
@@ -108,7 +101,6 @@
             "randomx": "rx/0"
         },
         "fee": {
-            "chukwa": 1,
             "cryptonight-v8": 1,
             "cryptonight-v7": 1,
             "cryptonight-heavy": 1,
@@ -127,7 +119,6 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "chukwa": "",
             "cryptonight-v8": "",
             "cryptonight-v7": "",
             "cryptonight-heavy": "",
@@ -141,7 +132,6 @@
             "randomx": ""
         },
         "difficulty": {
-            "chukwa": "",
             "cryptonight-v8": "",
             "cryptonight-v7": "",
             "cryptonight-heavy": "",
@@ -155,7 +145,6 @@
             "randomx": ""
         },
         "naming": {
-            "chukwa": "chukwa",
             "cryptonight-v8": "cn/2",
             "cryptonight-v7": "cn/1",
             "cryptonight-heavy": "cn-heavy",
@@ -169,7 +158,6 @@
             "randomx": "rx/0"
         },
         "fee": {
-            "chukwa": 1,
             "cryptonight-v8": 1,
             "cryptonight-v7": 1,
             "cryptonight-heavy": 1,
