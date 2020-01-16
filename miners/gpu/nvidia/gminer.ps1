@@ -74,8 +74,6 @@ $(vars).NVIDIATypes | ForEach-Object {
                 switch ($SelAlgo) {
                     "equihash_150/5" { $AddArgs = "--algo 150_5 " }
                     "cuckoo_cycle" { $AddArgs = "--algo aeternity " }
-                    "cuckaroo29" { $AddArgs = "--algo grin29 " }
-                    "cuckaroo29d" { $AddArgs = "--algo grin29 " }
                     "cuckaroom" { $AddArgs = "--algo grin29 " }
                     "cuckatoo31" { $AddArgs = "--algo grin31 " }
                     "beamv2" { $AddArgs = "--algo 150_5 " }
