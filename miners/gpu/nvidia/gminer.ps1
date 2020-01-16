@@ -76,6 +76,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     "cuckoo_cycle" { $AddArgs = "--algo aeternity " }
                     "cuckaroo29" { $AddArgs = "--algo grin29 " }
                     "cuckaroo29d" { $AddArgs = "--algo grin29 " }
+                    "cuckaroom" { $AddArgs = "--algo grin29 " }
                     "cuckatoo31" { $AddArgs = "--algo grin31 " }
                     "beamv2" { $AddArgs = "--algo 150_5 " }
                     "equihash_96/5" { $AddArgs = "--algo 96_5 --pers auto " }
