@@ -18,6 +18,7 @@
             "beamv2": "",
             "cuckatoo31": "",
             "cuckaroo29": "",
+            "cuckaroom": "",
             "cuckaroo29d": ""        
         },
         "difficulty": {
@@ -28,6 +29,7 @@
             "beamv2": "",
             "cuckatoo31": "",
             "cuckaroo29": "",
+            "cuckaroom": "",
             "cuckaroo29d": ""
         },
         "naming": {
@@ -38,6 +40,7 @@
             "beamv2": "beamv2",
             "cuckatoo31": "cuckatoo31",
             "cuckaroo29": "cuckaroo29",
+            "cuckaroom": "cuckaroom",
             "cuckaroo29d": "cuckaroo29d"        
         },
         "fee": {
@@ -48,6 +51,7 @@
             "beamv2": 1,
             "cuckatoo31": 1,
             "cuckatoo29": 1,
+            "cuckaroom": 1,
             "cuckaroo29d": 1
         }
     }
