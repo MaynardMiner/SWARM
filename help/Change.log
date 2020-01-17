@@ -1779,3 +1779,23 @@ but beta in design.
 
 ## Updates
 * phoenix miner updated
+
+############################################
+############################################
+
+# SWARM 2.9.3
+
+## What's New?
+  * Chukwa added
+  * cuckaroom added
+    * appears as cuckaroo29 on HiveOS
+    * appears as cuckaroom in SWARM
+
+## Improvements
+  * Removed nist-time sync.
+  * Scrubbed SWARM of old cuckaroo29
+    algos.
+
+## Updates
+  * bminer updated
+  * gminer updated
