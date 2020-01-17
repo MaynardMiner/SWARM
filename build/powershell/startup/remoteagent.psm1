@@ -263,6 +263,17 @@ function Global:start-update {
                                     }
                                 }
 
+                                if ($ChangeFile -eq "xmrigcc-cpu.json") {
+                                    $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                        if ($_ -ne "name") {
+                                            $Data.$_.commands | Add-Member "chukwa" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "chukwa" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "chukwa" "argon2/chukwa" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "chukwa" 1 -ErrorAction SilentlyContinue
+                                        }
+                                    }
+                                }
+
                                 if ($ChangeFile -eq "xmrig-nv.json") {
                                     $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                         if ($_ -ne "name") {

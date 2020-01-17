@@ -5,6 +5,7 @@
         "delay": "1",
         "prestart": [],
         "commands": {
+            "chukwa": "",
             "cryptonight-v8": "",
             "cryptonight-v7": "",
             "cryptonight-heavy": "",
@@ -19,6 +20,7 @@
             "cryptonight-upx2": ""
         },
         "difficulty": {
+            "chukwa": "",
             "cryptonight-v8": "",
             "cryptonight-v7": "",
             "cryptonight-heavy": "",
@@ -33,6 +35,7 @@
             "cryptonight-upx2": ""
         },
         "naming": {
+            "chukwa": "argon2/chukwa",
             "cryptonight-v8": "cn/2",
             "cryptonight-v7": "cn/1",
             "cryptonight-heavy": "cn-heavy",
@@ -47,6 +50,7 @@
             "cryptonight-upx2": "cn-extremelite/upx2"
         },
         "fee": {
+            "chukwa": 1,
             "cryptonight-v8": 1,
             "cryptonight-v7": 1,
             "cryptonight-heavy": 1,
