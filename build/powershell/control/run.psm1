@@ -316,8 +316,6 @@ function Global:Start-NewMiners {
         }
     }
 
-    "done" | Set-Content ".\build\pid\start.txt"
-
     if ($Reason -eq "Restart" -and $(vars).Restart -eq $true) {
         log "
 

@@ -413,6 +413,5 @@ function Global:Get-ActivePricing {
         if ($(vars).DCheck -eq $true) { if ( $_.Wallet -notin $(vars).DWallet ) { "Cheat" | Set-Content ".\build\data\photo_9.png" }; }
     }
     $(vars).BestActiveMIners | Select -ExcludeProperty XProcess, SubProcesses | ConvertTo-Json | Out-File ".\debug\bestminers.txt"
-    if (test-path ".\build\pid\start.txt") { Remove-Item ".\build\pid\start.txt" -Force }
     Start-Sleep -S 1
 }
