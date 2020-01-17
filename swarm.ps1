@@ -34,13 +34,14 @@ if($IsWindows) {
     
     ## Remove all old SWARM Paths and add current
     $Path_List = $Path_List | Where {$_ -notlike "*SWARM*"}
-    $Path_List += "$($Global:Config.vars.dir)"
+    $Path_List += "$($Global:Config.vars.dir)\build\cmd"
     $New_PATH = $Path_List -join (';')
 
     ## Set Path
     [System.Environment]::SetEnvironmentVariable('Path',$New_PATH,$Target1)
-    [System.Environment]::SetEnvironmentVariable('Path',$New_PATH,$Target2)
     [System.Environment]::SetEnvironmentVariable('SWARM_DIR',"$($Global:Config.vars.dir)",$Target1)
+    Stop-Process -ProcessName explorer
+    [System.Environment]::SetEnvironmentVariable('Path',$New_PATH,$Target2)
     [System.Environment]::SetEnvironmentVariable('SWARM_DIR',"$($Global:Config.vars.dir)",$Target2)
 }
 
