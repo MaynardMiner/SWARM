@@ -5,7 +5,7 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "cuckaroo29": "",
+            "chukwa" : "",
             "argon2d500": "",
             "argon2d250": "",
             "argon2d4096": "",
@@ -34,7 +34,7 @@
             "mtp": ""
         },
         "difficulty": {
-            "cuckaroo29": "",
+            "chuckwa": "",
             "argon2d500": "",
             "argon2d250": "",
             "argon2d4096": "",
@@ -63,7 +63,7 @@
             "mtp": ""
         },
         "naming": {
-            "cuckaroo29": "cuckaroo29",
+            "chukwa": "argon2-512",
             "argon2d500": "argon2d-dyn",
             "argon2d4096": "argon2d4096",
             "argon2d250": "argon2d250",
@@ -92,6 +92,7 @@
             "mtp": "mtp"
         },
         "fee": {
+            "chukwa": 1,
             "cuckaroo29": 1,
             "argon2d500": 1,
             "argon2d4096": 1,
@@ -126,7 +127,7 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "cuckaroo29": "",
+            "chukwa" : "",
             "argon2d500": "",
             "argon2d250": "",
             "argon2d4096": "",
@@ -155,7 +156,7 @@
             "mtp": ""
         },
         "difficulty": {
-            "cuckaroo29": "",
+            "chuckwa": "",
             "argon2d500": "",
             "argon2d250": "",
             "argon2d4096": "",
@@ -184,7 +185,7 @@
             "mtp": ""
         },
         "naming": {
-            "cuckaroo29": "cuckaroo29",
+            "chukwa": "argon2-512",
             "argon2d500": "argon2d-dyn",
             "argon2d4096": "argon2d4096",
             "argon2d250": "argon2d250",
@@ -213,6 +214,7 @@
             "mtp": "mtp"
         },
         "fee": {
+            "chukwa": 1,
             "cuckaroo29": 1,
             "argon2d500": 1,
             "argon2d4096": 1,
@@ -247,7 +249,7 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "cuckaroo29": "",
+            "chukwa" : "",
             "argon2d500": "",
             "argon2d250": "",
             "argon2d4096": "",
@@ -276,7 +278,7 @@
             "mtp": ""
         },
         "difficulty": {
-            "cuckaroo29": "",
+            "chuckwa": "",
             "argon2d500": "",
             "argon2d250": "",
             "argon2d4096": "",
@@ -305,7 +307,7 @@
             "mtp": ""
         },
         "naming": {
-            "cuckaroo29": "cuckaroo29",
+            "chukwa": "argon2-512",
             "argon2d500": "argon2d-dyn",
             "argon2d4096": "argon2d4096",
             "argon2d250": "argon2d250",
@@ -334,6 +336,7 @@
             "mtp": "mtp"
         },
         "fee": {
+            "chukwa": 1,
             "cuckaroo29": 1,
             "argon2d500": 1,
             "argon2d4096": 1,

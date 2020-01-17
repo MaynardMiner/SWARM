@@ -432,6 +432,16 @@ function Global:start-update {
                                             $Data.$_.difficulty | Add-Member "cryptonight-conceal" "" -ErrorAction SilentlyContinue 
                                             $Data.$_.naming | Add-Member "cryptonight-conceal" "cnconceal" -ErrorAction SilentlyContinue
                                             $Data.$_.fee | Add-Member "cryptonight-conceal" 1 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands | Add-Member "chukwa" "" -ErrorAction SilentlyContinue
+                                            $Data.$_.difficulty | Add-Member "chukwa" "" -ErrorAction SilentlyContinue 
+                                            $Data.$_.naming | Add-Member "chukwa" "argon2-512" -ErrorAction SilentlyContinue
+                                            $Data.$_.fee | Add-Member "chukwa" 1 -ErrorAction SilentlyContinue
+
+                                            $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "cuckaroo29d","cuckaroo29"
+                                            $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "cuckaroo29d","cuckaroo29"
+                                            $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "cuckaroo29d","cuckaroo29"
+                                            $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "cuckaroo29d","cuckaroo29"
                                         }
                                     }
                                 }
