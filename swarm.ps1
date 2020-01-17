@@ -40,6 +40,8 @@ if($IsWindows) {
     ## Set Path
     [System.Environment]::SetEnvironmentVariable('Path',$New_PATH,$Target1)
     [System.Environment]::SetEnvironmentVariable('Path',$New_PATH,$Target2)
+    [System.Environment]::SetEnvironmentVariable('SWARM_DIR',"$($Global:Config.vars.dir)",$Target1)
+    [System.Environment]::SetEnvironmentVariable('SWARM_DIR',"$($Global:Config.vars.dir)",$Target2)
 }
 
 ## Check Powershell version. Output warning.
