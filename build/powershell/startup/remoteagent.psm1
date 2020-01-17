@@ -1098,23 +1098,6 @@ function Global:start-update {
 }
 
 function Global:Start-AgentCheck {
-
-    $($(vars).dir) | Set-Content ".\build\cmd\dir.txt"
-
-    ##Get current path envrionments
-    $oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
-
-    ##First remove old Paths, in case this is an update / new dir
-    $oldpathlist = "$oldpath" -split ";"
-    $oldpathlist | ForEach-Object { if ($_ -like "*SWARM*" -and $_ -notlike "*$($(vars).dir)\build\cmd*" ) { Global:Set-NewPath "remove" "$($_)" } }
-
-    if ($oldpath -notlike "*;$($(vars).dir)\build\cmd*") {
-        log "
-Setting Path Variable For Commands: May require reboot to use.
-" -ForegroundColor Yellow
-        $newpath = "$($(vars).dir)\build\cmd"
-        Global:Set-NewPath "add" $newpath
-    }
     log "Stopping Previous Agent"
     $ID = ".\build\pid\background_pid.txt"
     if (Test-Path $ID) { $Agent = Get-Content $ID }

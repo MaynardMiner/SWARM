@@ -22,52 +22,7 @@ function Global:Start-Background {
     $Process.ID | Set-Content ".\build\pid\background_pid.txt"
 }
 
-function Global:Set-NewPath {
-    param (
-        [Parameter(Mandatory = $true, Position = 0)]
-        [string]$Action,
-        [Parameter(Mandatory = $true, Position = 1)]
-        [string]$Addendum
-    )
-
-    $regLocation = 
-    "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment"
-    $path = (Get-ItemProperty -Path $regLocation -Name PATH).path
-
-    # Add an item to PATH
-    if ($action -eq "add") {
-        $path = "$path;$addendum"
-        Set-ItemProperty -Path $regLocation -Name PATH -Value $path
-    }
-
-    # Remove an item from PATH
-    if ($action -eq "remove") {
-        $path = ($path.Split(';') | Where-Object { $_ -ne "$addendum" }) -join ';'
-        Set-ItemProperty -Path $regLocation -Name PATH -Value $path
-    }
-
-}
-
-
 function Global:Start-AgentCheck {
-
-    $($(vars).dir) | Set-Content ".\build\cmd\dir.txt"
-
-    ##Get current path envrionments
-    $oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
-
-    ##First remove old Paths, in case this is an update / new dir
-    $oldpathlist = "$oldpath" -split ";"
-    $oldpathlist | ForEach-Object { if ($_ -like "*SWARM*" -and $_ -notlike "*$($(vars).dir)\build\cmd*" ) { Global:Set-NewPath "remove" "$($_)" } }
-
-    if ($oldpath -notlike "*;$($(vars).dir)\build\cmd*") {
-        log "
-Setting Path Variable For Commands: May require reboot to use.
-" -ForegroundColor Yellow
-        $newpath = "$($(vars).dir)\build\cmd"
-        Global:Set-NewPath "add" $newpath
-    }
-    $newpath = "$oldpath;$($(vars).dir)\build\cmd"
     log "Stopping Previous Agent"
     $ID = ".\build\pid\background_pid.txt"
     if (Test-Path $ID) { $Agent = Get-Content $ID }
