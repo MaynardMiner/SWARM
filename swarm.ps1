@@ -25,6 +25,23 @@ $Global:Config.vars.dir = $Global:Config.vars.dir -replace "/var/tmp", "/root"
 Set-Location $Global:Config.vars.dir
 if (-not (test-path ".\debug")) { New-Item -Path "debug" -ItemType Directory | Out-Null }
 
+if($IsWindows) {
+    ## Fix weird PATH issues for commands
+    $Target1 = [System.EnvironmentVariableTarget]::Machine
+    $Target2 = [System.EnvironmentVariableTarget]::Process
+    $Path = [System.Environment]::GetEnvironmentVariable('Path',$Target1)
+    $Path_List = $Path.Split(';')
+    
+    ## Remove all old SWARM Paths and add current
+    $Path_List = $Path_List | Where {$_ -notlike "*SWARM*"}
+    $Path_List += "$($Global:Config.vars.dir)"
+    $New_PATH = $Path_List -join (';')
+
+    ## Set Path
+    [System.Environment]::SetEnvironmentVariable('Path',$New_PATH,$Target1)
+    [System.Environment]::SetEnvironmentVariable('Path',$New_PATH,$Target2)
+}
+
 ## Check Powershell version. Output warning.
 if ($PSVersionTable.PSVersion -ne "6.2.3") {
     Write-Host "WARNING: Powershell Core Version is $($PSVersionTable.PSVersion)" -ForegroundColor Red
