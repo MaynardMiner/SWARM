@@ -40,7 +40,10 @@ if($IsWindows) {
     ## Set Path
     [System.Environment]::SetEnvironmentVariable('Path',$New_PATH,$Target1)
     [System.Environment]::SetEnvironmentVariable('SWARM_DIR',"$($Global:Config.vars.dir)",$Target1)
+    ## By stopping explorer, it restarts retroactively with path refreshed
+    ## for commands.
     Stop-Process -ProcessName explorer
+    ## Now set env variables for process- Just in case.
     [System.Environment]::SetEnvironmentVariable('Path',$New_PATH,$Target2)
     [System.Environment]::SetEnvironmentVariable('SWARM_DIR',"$($Global:Config.vars.dir)",$Target2)
 }
