@@ -26,3 +26,5 @@
 ## This creates a screen for SWARM to work in, and then runs startup:
 
 screen -S miner -m pwsh -command "&.\startup.ps1"
+echo "swarm started on miner screen"
+echo "type screen -r miner to view"

@@ -28,7 +28,7 @@ if ($args) {
             Start-Process "CMD" -ArgumentList "/C `"pwsh -noexit -executionpolicy Bypass -WindowStyle Maximized -command `"Set-Location C:\; Set-Location `'$Dir`'; .\build\powershell\scripts\help.ps1`"`"" -Verb RunAs
         }
         else {
-            Invoke-Expression "./help_linux.sh"
+            Invoke-Expression "./help_linux"
         }        
     }
     else {
@@ -84,7 +84,7 @@ elseif (test-path ".\config.json") {
             Start-Process "CMD" -ArgumentList "/C `"pwsh -noexit -executionpolicy Bypass -WindowStyle Maximized -command `"Set-Location C:\; Set-Location `'$Dir`'; .\build\powershell\scripts\help.ps1`"`"" -Verb RunAs
         }
         else {
-            Invoke-Expression "./help_linux.sh"
+            Invoke-Expression "./help_linux"
         }        
         Start-Sleep -S 3
         exit    
@@ -110,7 +110,7 @@ else {
         Start-Process "CMD" -ArgumentList "/C `"pwsh -noexit -executionpolicy Bypass -WindowStyle Maximized -command `"Set-Location C:\; Set-Location `'$Dir`'; .\build\powershell\scripts\help.ps1`"`"" -Verb RunAs
     }
     else {
-        Invoke-Expression "./help_linux.sh"
+        Invoke-Expression "./help_linux"
     }        
     Start-Sleep -S 3
     exit
