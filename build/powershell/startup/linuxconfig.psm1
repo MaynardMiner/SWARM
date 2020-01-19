@@ -307,47 +307,43 @@ function Global:Get-GPUCount {
     $CardCount = 0
     $(vars).BusData = @()
 
-    ## GPU Bus Hash Table
-    $DoBus = $true
-    if ($(arg).Type -like "*CPU*" -or $(arg).Type -like "*ASIC*") {
-        if ("AMD1" -notin $(arg).type -and "NVIDIA1" -notin $(arg).type -and "NVIDIA2" -notin $(arg).type -and "NVIDIA3" -notin $(arg).type) {
-            $Dobus = $false
-        }
+    ## NVIDIA Cards
+    if ($GetBus -like "*NVIDIA*" -and $GetBus -notlike "*nForce*") {
+        invoke-expression "nvidia-smi --query-gpu=gpu_bus_id,gpu_name,memory.total,power.min_limit,power.default_limit,power.max_limit,vbios_version --format=csv" | Tee-Object -Variable NVSMI | Out-Null
+        $NVSMI = $NVSMI | ConvertFrom-Csv
+        $NVSMI | % { $_."pci.bus_id" = $_."pci.bus_id" -replace "00000000:", "" }
     }
 
-    
-    if ($DoBus -eq $true) {
-        if ($GetBus -like "*NVIDIA*" -and $GetBus -notlike "*nForce*") {
-            invoke-expression "nvidia-smi --query-gpu=gpu_bus_id,gpu_name,memory.total,power.min_limit,power.default_limit,power.max_limit,vbios_version --format=csv" | Tee-Object -Variable NVSMI | Out-Null
-            $NVSMI = $NVSMI | ConvertFrom-Csv
-            $NVSMI | % { $_."pci.bus_id" = $_."pci.bus_id" -replace "00000000:", "" }
-            $GN = $true
-        }
-        if ($GetBus -like "*Advanced Micro Devices*" -and $GetBus -notlike "*RS880*" -and $GetBus -notlike "*Stoney*") {
-            $ROCM = invoke-expression "dmesg" | Select-String "amdgpu"
-            $AMDMem = invoke-expression "./build/apps/amdmeminfo/amdmeminfo"
-            $PCIArray = @()
-            $PCICount = 0
-            $PCI = $AMDMem | Select-String "Found Card: ", "PCI: ", "BIOS Version", "Memory Model"
-            $PCI | % { 
-                if ($_ -like "*Memory Model*") {
-                    $PCIArray += @{ 
-                        $($PCI[$PCICount - 1] -split "PCI: " | Select -Last 1) = @{ 
-                            name   = $(
-                                $PCI[$PCICount - 3] -split "Found Card: " | Select -Last 1 | % {
-                                    $Get = [String]$_; $Get1 = $Get.Substring($Get.IndexOf("(")) -replace "\(", ""; 
-                                    $Get2 = $Get1 -replace "\)", ""; $Get2
-                                }
-                            ); 
-                            bios   = $($PCI[$PCICount - 2] -split "Bios Version: " | Select -Last 1); 
-                            memory = $($PCI[$PCICount] -split "Memory Model: " | Select -Last 1);
-                        }
-                    }
-                }; 
-                $PCIcount++ 
+    ## AMD Cards
+    if ($GetBus -like "*Advanced Micro Devices*" -and $GetBus -notlike "*RS880*" -and $GetBus -notlike "*Stoney*") {
+        invoke-expression ".\build\apps\rocm\rocm-smi --showproductname --showid --showvbios --showbus --json" | Tee-Object -Variable ROCMSMI | Out-Null
+        $ROCMSMI = $ROCMSMI | ConvertFrom-Json
+        $GETSMI = @()
+        $ROCMSMI.PSObject.Properties.Name | % { $ROCMSMI.$_."PCI Bus" = $ROCMSMI.$_."PCI Bus".replace("0000:",""); $GETSMI += [PSCustomObject]@{ "VBIOS version"  = $ROCMSMI.$_."VBIOS version"; "PCI Bus" = $ROCMSMI.$_."PCI Bus"; "Card vendor" = $ROCMSMI.$_."Card vendor"}}
+        $ROCMSMI = $GETSMI
+    }
+
+    ## Add cards based on bus order
+    $GetBus | % {
+        if ($_ -like "*Advanced Micro Devices*" -or 
+            $_ -like "*NVIDIA*" -and
+            $_ -notlike "*RS880*" -and 
+            $_ -notlike "*Stoney*" -and
+            $_ -notlike "nForce"
+        ) {
+            $busid = $_.split(" VGA")[0]
+            $busid = $busid.split(" 3D")[0]
+            $name = 
+            if($_ -like "*Advanced Micro Devices*") {
+                $SMI = $ROCMSMI | Where {$_."PCI Bus" -eq $busid}
             }
-            $GA = $true
+            elseif($_ -like "*NVIDIA*")
+
+        } else {
+
         }
+    }
+    
 
         if ([string]$(arg).type -eq "") {
             $global:config.user_params.type = @()
