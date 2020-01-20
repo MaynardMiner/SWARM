@@ -14,6 +14,7 @@
 # and settings within SWARM, and give you the arguments you wish to use for
 # HiveOS flight sheet.
 
+## If powershell doesn't exist- Assume it is a first time run.
 if ! [ -x "$(command -v pwsh)" ]; then
 echo 'pwsh not found- installing 6.2.3'
 wget https://github.com/PowerShell/PowerShell/releases/download/v6.2.3/powershell-6.2.3-linux-x64.tar.gz -O /tmp/powershell.tar.gz --no-check-certificate
@@ -22,7 +23,10 @@ tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/6.2.3
 chmod +x /opt/microsoft/powershell/6.2.3/pwsh
 ln -s /opt/microsoft/powershell/6.2.3/pwsh /usr/bin/pwsh
 rm -rf /tmp/powershell.tar.gz
-fi
 chmod 777 -R $HOME/.local/share/powershell
 echo 'starting install script'
+pwsh -command ".\build\powershell\scripts\install.ps1"
+fi
+
+## Start the help script.
 pwsh -command ".\build\powershell\scripts\help.ps1"
