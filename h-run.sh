@@ -59,7 +59,10 @@ rm -rf /tmp/powershell.tar.gz
 fi
 
 ## remove old config.json
-rm -f config.json
+SWARM_CONFIG_FILE=config.json
+if [ -f "$SWARM_CONFIG_FILE" ]; then
+    rm -f $SWARM_CONFIG_FILE
+fi
 
 ## Check to see if user sent a config as a json format rather than arguments
 json=`echo cat $SWARMCONF`
