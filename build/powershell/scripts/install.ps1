@@ -16,6 +16,8 @@ $dir = $dir -replace "/var/tmp", "/root"
 Set-Location $dir
 
 ##Check for libc
+$Proc = Start-Process ".\build\bash\python.sh" -PassThru
+$Proc | Wait-Process
 $Proc = Start-Process ".\build\bash\libc.sh" -PassThru
 $Proc | Wait-Process
 Start-Process ".\build\bash\libv.sh" -PassThru
