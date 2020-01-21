@@ -773,7 +773,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 }
                 Write-Host "URI should be $URI"
                 try { 
-                    Invoke-WebRequest $URI -OutFile $FileName -SkipCertificateCheck -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop 
+                    Invoke-WebRequest $URI -OutFile $FileName -SkipCertificateCheck -UseBasicParsing -TimeoutSec 60 -ErrorAction Stop 
                 }
                 catch { 
                     $Failed = $true; Write-Host "Failed To Contact Github For Download! Must Do So Manually"
@@ -782,7 +782,6 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 Write-Host "Main Directory is $(Split-Path $Dir)`n"
                 Start-Sleep -S 5
                 if ($Failed -eq $false) {
-
                     Write-Host "Extraction Path is $FileName"
                     Write-Host "Extracting to $DLFileName"
                     $Proc = Start-Process "$Dir\build\apps\7z\7z.exe" "x `"$($FileName)`" -o`"$($DLFileName)`" -y" -PassThru -WindowStyle Minimized
