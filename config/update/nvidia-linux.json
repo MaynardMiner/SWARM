@@ -84,7 +84,7 @@
     "NVIDIA2": ".\\bin\\z-enemy-2\\z-enemy",
     "NVIDIA3": ".\\bin\\z-enemy-3\\z-enemy",
     "minername": "z-enemy",
-    "version": "2.3",
+    "version": "2.4",
     "optional": "No",
     "uri": "https://github.com/z-enemy/z-enemy/releases/download/ver-2.3/z-enemy-2.3-linux-cuda100.tar.gz"
   },
@@ -205,9 +205,9 @@
     "NVIDIA2": ".\\bin\\gminer-2\\miner",
     "NVIDIA3": ".\\bin\\gminer-3\\miner",
     "minername": "miner",
-    "version": "1.94",
+    "version": "1.95",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.94/gminer_1_94_linux64.tar.xz"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.95/gminer_1_95_linux64.tar.xz"
   },
   "grin-miner": {
     "name": "grin-miner",
@@ -227,9 +227,9 @@
     "NVIDIA2": ".\\bin\\bminer-2\\bminer",
     "NVIDIA3": ".\\bin\\bminer-3\\bminer",
     "minername": "bminer",
-    "version": "16.0.0",
+    "version": "16.0.1",
     "optional": "No",
-    "uri": "https://www.bminercontent.com/releases/bminer-v16.0.0-362b272-amd64.tar.xz"
+    "uri": "https://www.bminercontent.com/releases/bminer-v16.0.1-bd5656b-amd64.tar.xz"
   },
   "miniz": {
     "name": "miniz",
