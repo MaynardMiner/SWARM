@@ -32,19 +32,5 @@
     "NVIDIA3_Watts": "",
     "AMD1_Watts": "",
     "CPU_Watts": ""
-  },
-  "ethash": {
-    "AMD1_Watts": "0",
-    "NVIDIA3_Watts": "",
-    "NVIDIA1_Watts": "",
-    "NVIDIA2_Watts": "",
-    "CPU_Watts": ""
-  },
-  "allium": {
-    "NVIDIA1_Watts": "",
-    "NVIDIA2_Watts": "",
-    "NVIDIA3_Watts": "",
-    "AMD1_Watts": "0",
-    "CPU_Watts": ""
   }
 }
