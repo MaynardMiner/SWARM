@@ -28,8 +28,6 @@ param(
     [switch]$asjson
 )
 
-$argument1 = "update"
-
 $argument2 = $argument2.replace("cnight", "cryptonight")
 $argument3 = $argument3.replace("cnight", "cryptonight")
 $argument4 = $argument4.replace("cnight", "cryptonight")
