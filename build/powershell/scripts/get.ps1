@@ -28,6 +28,8 @@ param(
     [switch]$asjson
 )
 
+$argument1 = "update"
+
 $argument2 = $argument2.replace("cnight", "cryptonight")
 $argument3 = $argument3.replace("cnight", "cryptonight")
 $argument4 = $argument4.replace("cnight", "cryptonight")
@@ -772,12 +774,14 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                     $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$versionNumber/SWARM.$VersionNumber.windows.zip"
                 }
                 Write-Host "URI should be $URI"
-                try { Invoke-WebRequest $URI -OutFile $FileName -SkipCertificateCheck -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }catch { $Failed = $true; Write-Host "Failed To Contact Github For Download! Must Do So Manually" }
+                try { 
+                    Invoke-WebRequest $URI -OutFile $FileName -SkipCertificateCheck -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop 
+                }
+                catch { 
+                    $Failed = $true; Write-Host "Failed To Contact Github For Download! Must Do So Manually"
+                }
                 Start-Sleep -S 5
-
                 Write-Host "Main Directory is $(Split-Path $Dir)`n"
-                Write-Host "URI should be $URI"
-                try { Invoke-WebRequest $URI -OutFile $FileName -SkipCertificateCheck -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }catch { $Failed = $true; Write-Host "Failed To Contact Github For Download! Must Do So Manually" }
                 Start-Sleep -S 5
                 if ($Failed -eq $false) {
 
