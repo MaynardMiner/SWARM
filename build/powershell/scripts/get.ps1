@@ -775,8 +775,12 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 try { 
                     Invoke-WebRequest $URI -OutFile $FileName -SkipCertificateCheck -UseBasicParsing -TimeoutSec 60 -ErrorAction Stop 
                 }
-                catch { 
-                    $Failed = $true; Write-Host "Failed To Contact Github For Download! Must Do So Manually"
+                catch [System.Net.WebException] { 
+                    $Failed = $true; 
+                    Write-Host "Failed To Contact Github For Download! Must Do So Manually"
+                    $statusCodeInt = [int]$response.BaseResponse.StatusCode
+                    Write-Host "$statusCodeInt`: $($_.Exception.Message)"
+                    Write-Host "$($_.Exception.Response)"
                 }
                 Start-Sleep -S 5
                 Write-Host "Main Directory is $(Split-Path $Dir)`n"
