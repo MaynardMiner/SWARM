@@ -646,7 +646,12 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
             $MinerArgs | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Foreach { $SwarmParameters += "$($_): $($MinerArgs.$_)" }
         }
         else { $SwarmParameters += "No Parameters For SWARM found" }
-        $Get += $SwarmParameters
+        if($argument2 -eq "json") {
+            $Get += $SwarmParameters | ConvertTo-Json -Depth 5 -Compress
+        }
+        else {
+            $Get += $SwarmParameters
+        }
     }
     "screen" {
         if (Test-Path ".\logs\$($argument2).log") { $Get += Get-Content ".\logs\$($argument2).log" }
