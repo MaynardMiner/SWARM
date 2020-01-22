@@ -540,12 +540,14 @@ function Global:Start-LinuxConfig {
         ## HiveOS Specific Stuff
         if ($NotHiveOS -eq $false) {
             if ($(arg).Type -like "*NVIDIA*" -or $(arg).Type -like "*AMD*") {
-                Invoke-Expression ".\build\bash\python.sh" | Tee-Object -Variable lib | Out-Null
-                Invoke-Expression ".\build\bash\libc.sh" | Tee-Object -Variable lib | Out-Null
-                Invoke-Expression ".\build\bash\libv.sh" | Tee-Object -Variable lib | Out-Null
-                $libc | % { log $_ }
+                Invoke-Expression ".\build\bash\python.sh" | Tee-Object -Variable liba | Out-Null
+                $liba | % { log $_ }
                 Start-Sleep -S 1
-                $libv | % { log $_ }
+                Invoke-Expression ".\build\bash\libc.sh" | Tee-Object -Variable libb | Out-Null
+                $libb | % { log $_ }
+                Start-Sleep -S 1
+                Invoke-Expression ".\build\bash\libv.sh" | Tee-Object -Variable libc | Out-Null
+                $libc | % { log $_ }
                 Start-Sleep -S 1
             }
 
