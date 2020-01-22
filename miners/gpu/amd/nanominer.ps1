@@ -36,9 +36,8 @@ $(vars).AMDTypes | ForEach-Object {
     $Miner_Dir = Join-Path ($(vars).dir) ((Split-Path $Path).replace(".",""))
 
     ##Prestart actions before miner launch
-    $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
     $Prestart = @()
-    if (Test-Path $BE) { $Prestart += "export LD_PRELOAD=libcurl-compat.so.3.0.0" }
+    if($IsLinux) { $Prestart += "export LD_PRELOAD=$(Join-Path $(vars).Dir "build\libcurl\libcurl-compat.so.3.0.0")" }    
     $PreStart += "export LD_LIBRARY_PATH=$ExportDir`:$Miner_Dir"
     $MinerConfig.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 

@@ -34,7 +34,7 @@ $(vars).AMDTypes | ForEach-Object {
 
     ##Prestart actions before miner launch
     $Prestart = @()
-    $PreStart += "export LD_LIBRARY_PATH=`.`/"
+    $PreStart += "export LD_LIBRARY_PATH=$ExportDir`:$Miner_Dir"
     $MinerConfig.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 
     if ($(vars).Coins) { $Pools = $(vars).CoinPools } else { $Pools = $(vars).AlgoPools }
