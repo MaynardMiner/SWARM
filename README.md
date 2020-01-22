@@ -196,3 +196,19 @@ PROCESS IN GENERAL PRIOR TO USING SWARM.
 
 You may see other apps inside apps folder- These are depreciated, and no longer
 in use.
+
+Special Thanks To:
+
+The other developers of open-source mining software, and their efforts. I note these, as I have at one point in time over history consulted their codebase/wisdom looking for solutions to issues. If you are not happy with SWARM, here are some other software you can use that other powershell developers work on:
+
+https://github.com/MrPlusGH/NPlusMiner / https://github.com/nemosminer/NemosMiner
+
+https://github.com/Sniffdog/Sniffdogminer
+
+https://github.com/MultiPoolMiner/MultiPoolMiner
+
+https://github.com/Quake4/MindMiner
+
+https://github.com/RainbowMiner/RainbowMiner
+
+All projects go in different directions and have different perceptions/perspectives on profit switching and profit calculation.
