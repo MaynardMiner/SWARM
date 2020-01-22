@@ -1799,3 +1799,34 @@ but beta in design.
 ## Updates
   * bminer updated
   * gminer updated
+
+############################################
+############################################
+
+# SWARM 2.9.4
+
+## What's New?
+* Issue 294
+  * Linux improvements for AMD:
+    * Add export DISPLAY to miner shell.
+    * Add rocm-smi built-in.
+    * Auto-Install python-minimal with ``install_linux``
+    * Various small env tweaks in AMD configs.
+
+* Issue 295
+  * Auto-Install screen.
+
+## Improvements
+ * Added more notes in bash scripts.
+ * Added 'echo action' to some bash
+   scripts to let user know what it
+   doing.
+ * using rocm-smi built-in, normal
+   non-hiveos systems should now
+   show fans/temps/power in non-hiveos
+   unix distros.
+
+  ## Updates
+  * bminer updated
+  * lolminer updated
+  * gminer updated

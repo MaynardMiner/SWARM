@@ -307,135 +307,159 @@ function Global:Get-GPUCount {
     $CardCount = 0
     $(vars).BusData = @()
 
-    ## GPU Bus Hash Table
-    $DoBus = $true
-    if ($(arg).Type -like "*CPU*" -or $(arg).Type -like "*ASIC*") {
-        if ("AMD1" -notin $(arg).type -and "NVIDIA1" -notin $(arg).type -and "NVIDIA2" -notin $(arg).type -and "NVIDIA3" -notin $(arg).type) {
-            $Dobus = $false
+    ## NVIDIA Cards
+    if ($GetBus -like "*NVIDIA*" -and $GetBus -notlike "*nForce*") {
+        invoke-expression "nvidia-smi --query-gpu=gpu_bus_id,gpu_name,memory.total,power.min_limit,power.default_limit,power.max_limit,vbios_version --format=csv" | Tee-Object -Variable NVSMI | Out-Null
+        $NVSMI = $NVSMI | ConvertFrom-Csv
+        $NVSMI | % { $_."pci.bus_id" = $_."pci.bus_id" -replace "00000000:", "" }
+    }
+
+    ## AMD Cards
+    if ($GetBus -like "*Advanced Micro Devices*" -and $GetBus -notlike "*RS880*" -and $GetBus -notlike "*Stoney*") {
+        invoke-expression ".\build\apps\rocm\rocm-smi --showproductname --showid --showvbios --showbus --json" | Tee-Object -Variable ROCMSMI | Out-Null
+        $ROCMSMI = $ROCMSMI | ConvertFrom-Json
+        $GETSMI = @()
+        $ROCMSMI.PSObject.Properties.Name | % { $ROCMSMI.$_."PCI Bus" = $ROCMSMI.$_."PCI Bus".replace("0000:", ""); $GETSMI += [PSCustomObject]@{ "VBIOS version" = $ROCMSMI.$_."VBIOS version"; "PCI Bus" = $ROCMSMI.$_."PCI Bus"; "Card vendor" = $ROCMSMI.$_."Card vendor" } }
+        $ROCMSMI = $GETSMI
+        invoke-expression ".\build\apps\amdmeminfo\amdmeminfo" | Tee-Object  -Variable amdmeminfo | Out-Null
+        $amdmeminfo = $amdmeminfo | where { $_ -notlike "*AMDMemInfo by Zuikkis `<zuikkis`@gmail.com`>*" } | where { $_ -notlike "*Updated by Yann St.Arnaud `<ystarnaud@gmail.com`>*" }
+        $amdmeminfo = $amdmeminfo | Select -skip 1
+        $amdmeminfo = $amdmeminfo.replace("Found Card: ", "Found Card=")
+        $amdmeminfo = $amdmeminfo.replace("Chip Type: ", "Chip Type=")
+        $amdmeminfo = $amdmeminfo.replace("BIOS Version: ", "BIOS Version=")
+        $amdmeminfo = $amdmeminfo.replace("PCI: ", "PCI=")
+        $amdmeminfo = $amdmeminfo.replace("OpenCL Platform: ", "OpenCL Platform=")
+        $amdmeminfo = $amdmeminfo.replace("OpenCL ID: ", "OpenCL ID=")
+        $amdmeminfo = $amdmeminfo.replace("Subvendor: ", "Subvendor=")
+        $amdmeminfo = $amdmeminfo.replace("Subdevice: ", "Subdevice=")
+        $amdmeminfo = $amdmeminfo.replace("Sysfs Path: ", "Sysfs Path=")
+        $amdmeminfo = $amdmeminfo.replace("Memory Type: ", "Memory Type=")
+        $amdmeminfo = $amdmeminfo.replace("Memory Model: ", "Memory Model=")
+        for ($i = 0; $i -lt $amdmeminfo.count; $i++) { $amdmeminfo[$i] = "$($amdmeminfo[$i]);" }
+        $amdmeminfo | % { $_ = $_ + ";" }
+        $amdmeminfo = [string]$amdmeminfo
+        $amdmeminfo = $amdmeminfo.split("-----------------------------------;")
+        $memarray = @()
+        for ($i = 0; $i -lt $amdmeminfo.count; $i++) { $item = $amdmeminfo[$i].split(";"); $data = $item | ConvertFrom-StringData; $memarray += [PSCustomObject]@{"busid" = $data."PCI"; "mem_type" = $data."Memory Type"; "mem_model" = $data."Memory Model"; } }
+        $amdmeminfo = $memarray
+    }
+
+    ## Add cards based on bus order
+    $GetBus | % {
+        if ($_ -like "*Advanced Micro Devices*" -or 
+            $_ -like "*NVIDIA*" -and
+            $_ -notlike "*RS880*" -and 
+            $_ -notlike "*Stoney*" -and
+            $_ -notlike "nForce"
+        ) {
+            $busid = $_.line.split(" VGA")[0]
+            $busid = $busid.split(" 3D")[0]
+            if ($_ -like "*Advanced Micro Devices*") {
+                $name = ($_.line.Split("[AMD/ATI] ")[1]).split(" (")[0]
+                $SMI = $ROCMSMI | Where { $_."PCI Bus" -eq $busid }
+                $meminfo = $amdmeminfo | Where busid -eq $busid
+                $(vars).BusData += [PSCustomObject]@{
+                    busid     = $busid
+                    name      = $name
+                    brand     = "amd"
+                    subvendor = $SMI."Card vendor"
+                    mem       = $meminfo."mem_model"
+                    vbios     = $SMI."VBIOS version"
+                    mem_type  = $meminfo."mem_type"
+                }
+            }
+            elseif ($_ -like "*NVIDIA*") {
+                $Regex = '\[(.*)\]';
+                $match = ([Regex]::Matches($card, $Regex).Value)
+                if ([string]$match -ne "") {
+                    $name = ($match.replace('[', '')).replace(']', '')
+                }
+                else {
+                    $name = $_.line.split('controller: ')[1]
+                    $name = $name.split(' (')[0]
+                }
+                $subvendor = invoke-expression "lspci -vmms $busid" | Tee-Object -Variable subvendor | % { $_ | Select-String "SVendor" | % { $_ -split "SVendor:\s" | Select -Last 1 } }
+                $smi = $NVSMI | Where "pci.bus_id" -eq $busid
+                $(vars).BusData += [PSCustomObject]@{
+                    busid     = $busid
+                    name      = $name
+                    brand     = "nvidia"
+                    subvendor = $subvendor
+                    mem       = $smi."memory.total [MiB]"
+                    vbios     = $smi.vbios_version
+                    plim_min  = $smi."power.min_limit [W]"
+                    plim_def  = $smi."power.default_limit [W]"
+                    plim_max  = $smi."power.max_limit [W]"
+                }
+            }
+        }
+        else {
+            $busid = $_.line.split(" VGA")[0]
+            $busid = $busid.split(" 3D")[0]
+            $name = $_.line.split('controller: ')[1]
+            $name = "$name".split(' (')[0]
+            $(vars).BusData += [PSCustomObject]@{
+                busid = $busid
+                name  = $name
+                brand = "cpu"
+            }   
         }
     }
 
-    
-    if ($DoBus -eq $true) {
-        if ($GetBus -like "*NVIDIA*" -and $GetBus -notlike "*nForce*") {
-            invoke-expression "nvidia-smi --query-gpu=gpu_bus_id,gpu_name,memory.total,power.min_limit,power.default_limit,power.max_limit,vbios_version --format=csv" | Tee-Object -Variable NVSMI | Out-Null
-            $NVSMI = $NVSMI | ConvertFrom-Csv
-            $NVSMI | % { $_."pci.bus_id" = $_."pci.bus_id" -replace "00000000:", "" }
-            $GN = $true
+    if ([string]$(arg).type -eq "") {
+        log "Searching For Mining Types" -ForegroundColor Yellow
+        log "Adding CPU"
+        $(arg).type = @()
+        $(vars).Type = @()
+        $global:Config.user_params.type = @()
+        $global:Config.params.type = @()
+        $(arg).type += "CPU"
+        $(vars).Type += "CPU"
+        $global:Config.user_params.type += "CPU"
+        $global:Config.params.type += "CPU"
+        $threads = Invoke-Expression "nproc";
+        $(vars).threads = $threads
+        $(vars).CPUThreads = $threads
+        $(arg).CPUThreads = $Threads
+        $global:config.user_params.CPUThreads = $threads
+        $global:config.params.CPUThreads = $threads    
+        if ($(vars).BusData | Where brand -eq "amd") {
+            log "AMD Detected: Adding AMD" -ForegroundColor Magenta
+            $(arg).type += "AMD1"
+            $(vars).Type += "AMD1"
+            $global:Config.user_params.type += "AMD1"
+            $global:Config.params.type += "AMD1"
         }
-        if ($GetBus -like "*Advanced Micro Devices*" -and $GetBus -notlike "*RS880*" -and $GetBus -notlike "*Stoney*") {
-            $ROCM = invoke-expression "dmesg" | Select-String "amdgpu"
-            $AMDMem = invoke-expression "./build/apps/amdmeminfo/amdmeminfo"
-            $PCIArray = @()
-            $PCICount = 0
-            $PCI = $AMDMem | Select-String "Found Card: ", "PCI: ", "BIOS Version", "Memory Model"
-            $PCI | % { 
-                if ($_ -like "*Memory Model*") {
-                    $PCIArray += @{ 
-                        $($PCI[$PCICount - 1] -split "PCI: " | Select -Last 1) = @{ 
-                            name   = $(
-                                $PCI[$PCICount - 3] -split "Found Card: " | Select -Last 1 | % {
-                                    $Get = [String]$_; $Get1 = $Get.Substring($Get.IndexOf("(")) -replace "\(", ""; 
-                                    $Get2 = $Get1 -replace "\)", ""; $Get2
-                                }
-                            ); 
-                            bios   = $($PCI[$PCICount - 2] -split "Bios Version: " | Select -Last 1); 
-                            memory = $($PCI[$PCICount] -split "Memory Model: " | Select -Last 1);
-                        }
-                    }
-                }; 
-                $PCIcount++ 
-            }
-            $GA = $true
-        }
-
-        if ([string]$(arg).type -eq "") {
-            $global:config.user_params.type = @()
-            $global:config.params.type = @()
-            log "Searching For Mining Types" -ForegroundColor Yellow
-            if ($GN -and $GA) {
-                log "AMD and NVIDIA Detected" -ForegroundColor Magenta
-                $(vars).types += "AMD1", "NVIDIA2"
-                $(arg).Type += "AMD1", "NVIDIA2"
-                $global:config.user_params.type += "AMD1", "NVIDIA2"
-                $global:config.params.type += "AMD1", "NVIDIA2"                  
-            }
-            elseif ($GN) { 
+        if ($(vars).BusData | Where brand -eq "NVIDIA") {
+            if ("AMD1" -in $(arg).type) {
                 log "NVIDIA Detected: Adding NVIDIA" -ForegroundColor Magenta
-                $(vars).types += "NVIDIA1" 
-                $(arg).Type += "NVIDIA1"
-                $global:config.user_params.type += "NVIDIA1" 
-                $global:config.params.type += "NVIDIA1"        
+                $(arg).type += "NVIDIA2"
+                $(vars).Type += "NVIDIA2"
+                $global:Config.user_params.type += "NVIDIA2"
+                $global:Config.params.type += "NVIDIA2"
             }
-            elseif ($GA) {
-                log "AMD Detected: Adding AMD" -ForegroundColor Magenta
-                $(vars).types += "AMD1" 
-                $(arg).Type += "NVIDIA2"
-                $global:config.user_params.type += "AMD1" 
-                $global:config.params.type += "AMD1"    
+            else {
+                log "NVIDIA Detected: Adding NVIDIA" -ForegroundColor Magenta
+                $(arg).type += "NVIDIA1"
+                $(vars).Type += "NVIDIA1"
+                $global:Config.user_params.type += "NVIDIA1"
+                $global:Config.params.type += "NVIDIA1"
             }
-            log "Adding CPU"
-            if ([string]$(arg).CPUThreads -eq "") { 
-                $threads = Invoke-Expression "nproc";
-                $(vars).threads = $threads
-                $(vars).CPUThreads = $threads
-                $(arg).CPUThreads = $Threads
-                $global:config.user_params.CPUThreads = $threads
-                $global:config.params.CPUThreads = $threads    
-            }
-            log "Using $($(arg).CPUThreads) cores for mining"
-            $(vars).types += "CPU"
-            $(arg).Type += "CPU"
-            $global:config.user_params.type += "CPU"
-            $global:config.params.type += "CPU"
         }
+    }
 
-        $GetBus | Foreach {
-            if ($_ -like "*Advanced Micro Devices*" -or $_ -like "*NVIDIA*") {
-                ##AMD
-                if ($_ -like "*Advanced Micro Devices*" -and $_ -notlike "*RS880*" -and $_ -notlike "*Stoney*") {
-                    if ($(arg).Type -like "*AMD*") {
-                        $Sel = $_
-                        $busid = $Sel -split " " | Select -First 1            
-                        $DeviceList.AMD.Add("$AMDCount", "$CardCount")
-                        $AMDCount++
-                        $CardCount++
-                        $subvendor = invoke-expression "lspci -vmms $busid" | Tee-Object -Variable subvendor | % { $_ | Select-String "SVendor" | % { $_ -split "SVendor:\s" | Select -Last 1 } }
-                        $mem = "$($ROCM | Select-String "amdgpu 0000`:$busid`: VRAM`: " | %{ $_ -split "amdgpu 0000`:$busid`: VRAM`: " | Select -Last 1} | % {$_ -split "M" | Select -First 1})M"
-                        $(vars).BusData += [PSCustomObject]@{
-                            busid     = $busid
-                            name      = $PCIArray.$busid.name
-                            brand     = "amd"
-                            subvendor = $subvendor
-                            mem       = $mem
-                            vbios     = $PCIArray.$busid.bios
-                            mem_type  = $PCIArray.$busid.memory
-                        }
-                    }
-                }
-                if ($_ -like "*NVIDIA*" -and $_ -notlike "*nForce*") {
-                    $Sel = $_
-                    $busid = $Sel -split " " | Select -First 1
-                    $subvendor = invoke-expression "lspci -vmms $busid" | Tee-Object -Variable subvendor | % { $_ | Select-String "SVendor" | % { $_ -split "SVendor:\s" | Select -Last 1 } }
-                    $NVSMI | Where "pci.bus_id" -eq $busid | % {
+    $(vars).BusData = $(vars).BusData | Sort-Object busid
 
-                        $(vars).BusData += [PSCustomObject]@{
-                            busid     = $busid
-                            name      = $_.name
-                            brand     = "nvidia"
-                            subvendor = $subvendor
-                            mem       = $_."memory.total [MiB]"
-                            vbios     = $_.vbios_version
-                            plim_min  = $_."power.min_limit [W]"
-                            plim_def  = $_."power.default_limit [W]"
-                            plim_max  = $_."power.max_limit [W]"
-                        }
-                    }
-                    $DeviceList.NVIDIA.Add("$NVIDIACount", "$CardCount")
-                    $NVIDIACount++
-                    $CardCount++
-                }
-            }
+    $(vars).BusData | ForEach-Object {
+        if ($_.brand -eq "amd") {
+            $DeviceList.AMD.Add("$AMDCount", "$CardCount")
+            $AMDCount++
+            $CardCount++
+        }
+        elseif ($_.brand -eq "nvidia") {
+            $DeviceList.NVIDIA.Add("$NVIDIACount", "$CardCount")
+            $NVIDIACount++
+            $CardCount++
         }
     }
 
@@ -453,7 +477,6 @@ function Global:Get-GPUCount {
     $GPUCount += $DeviceList.Nvidia.Count
     $GPUCount += $DeviceList.AMD.Count
     $GPUCount
-    
 }
 
 function Global:Start-LinuxConfig {
@@ -517,6 +540,7 @@ function Global:Start-LinuxConfig {
         ## HiveOS Specific Stuff
         if ($NotHiveOS -eq $false) {
             if ($(arg).Type -like "*NVIDIA*" -or $(arg).Type -like "*AMD*") {
+                Invoke-Expression ".\build\bash\python.sh" | Tee-Object -Variable libc | Out-Nul
                 Invoke-Expression ".\build\bash\libc.sh" | Tee-Object -Variable libc | Out-Null
                 Invoke-Expression ".\build\bash\libv.sh" | Tee-Object -Variable libv | Out-Null
                 $libc | % { log $_ }

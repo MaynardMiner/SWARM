@@ -11,17 +11,20 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
-$dir = (Split-Path $script:MyInvocation.MyCommand.Path)
-$dir = $dir -replace "/var/tmp","/root"
+$dir = (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
+$dir = $dir -replace "/var/tmp", "/root"
 Set-Location $dir
-$dir
 
 ##Check for libc
+$Proc = Start-Process ".\build\bash\screen.sh" -PassThru
+$Proc | Wait-Process
+$Proc = Start-Process ".\build\bash\python.sh" -PassThru
+$Proc | Wait-Process
 $Proc = Start-Process ".\build\bash\libc.sh" -PassThru
 $Proc | Wait-Process
-Start-Process ".\build\bash\libv.sh" -PassThru
+$Proc = Start-Process ".\build\bash\libv.sh" -PassThru
 $Proc | Wait-Process
-Start-Process ".\build\bash\libcurl3.sh" -PassThru
+$Proc = Start-Process ".\build\bash\libcurl3.sh" -PassThru
 $Proc | Wait-Process
 
 $dir | set-content ".\build\bash\dir.sh"

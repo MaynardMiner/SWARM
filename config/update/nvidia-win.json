@@ -73,9 +73,9 @@
     "NVIDIA2": ".\\bin\\bminer-2\\bminer.exe",
     "NVIDIA3": ".\\bin\\bminer-3\\bminer.exe",
     "minername": "bminer.exe",
-    "version": "16.0.0",
+    "version": "16.0.1",
     "optional": "No",
-    "uri": "https://www.bminercontent.com/releases/bminer-lite-v16.0.0-362b272-amd64.zip"
+    "uri": "https://www.bminercontent.com/releases/bminer-lite-v16.0.1-bd5656b-amd64.zip"
   },
   "ehssand": {
     "name": "ehssand",
@@ -95,9 +95,9 @@
     "NVIDIA2": ".\\bin\\gminer-2\\miner.exe",
     "NVIDIA3": ".\\bin\\gminer-3\\miner.exe",
     "minername": "miner.exe",
-    "version": "1.94",
+    "version": "1.95",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.94/gminer_1_94_windows64.zip"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.95/gminer_1_95_windows64.zip"
   },
   "claymore": {
     "name": "claymore",
@@ -139,7 +139,7 @@
     "NVIDIA2": ".\\bin\\z-enemy-2\\z-enemy.exe",
     "NVIDIA3": ".\\bin\\z-enemy-3\\z-enemy.exe",
     "minername": "z-enemy.exe",
-    "version": "2.3",
+    "version": "2.4",
     "optional": "No",
     "uri": "https://github.com/z-enemy/z-enemy/releases/download/ver-2.3/z-enemy-2.3-win-cuda10.1.zip"
   },

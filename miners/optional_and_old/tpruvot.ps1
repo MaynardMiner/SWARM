@@ -36,6 +36,7 @@ $(vars).NVIDIATypes | ForEach-Object {
     $Prestart = @()
     if($IsLinux) { $Prestart += "export LD_PRELOAD=$(Join-Path $(vars).Dir "build\libcurl\libcurl-compat.so.3.0.0")" }    
     $PreStart += "export LD_LIBRARY_PATH=$ExportDir`:$Miner_Dir"
+    if($IsLinux){$Prestart += "export DISPLAY=:0"}
     $MinerConfig.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 
     if ($(vars).Coins) { $Pools = $(vars).CoinPools } else { $Pools = $(vars).AlgoPools }

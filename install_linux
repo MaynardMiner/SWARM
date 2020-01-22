@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# ************swarm_help**************************************************
+#
+#
+# This will start swarm with -help command.
+# This will run through a guided setup to start SWARM.
+# When finished it will save your settings.
+# It will install pwsh if not installed.
+
+# Once you have first ran SWARM, you can run this guided help again
+# through terminal with the commmand ``swarm_help``
+# This command can be ran at anytime, and will allow you to change arguments
+# and settings within SWARM, and give you the arguments you wish to use for
+# HiveOS flight sheet.
+
+## If powershell doesn't exist- Assume it is a first time run.
+if ! [ -x "$(command -v pwsh)" ]; then
+echo 'pwsh not found- installing 6.2.3'
+wget https://github.com/PowerShell/PowerShell/releases/download/v6.2.3/powershell-6.2.3-linux-x64.tar.gz -O /tmp/powershell.tar.gz --no-check-certificate
+mkdir -p /opt/microsoft/powershell/6.2.3
+tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/6.2.3
+chmod +x /opt/microsoft/powershell/6.2.3/pwsh
+ln -s /opt/microsoft/powershell/6.2.3/pwsh /usr/bin/pwsh
+rm -rf /tmp/powershell.tar.gz
+chmod 777 -R $HOME/.local/share/powershell
+fi
+
+## Run install script per command request.
+echo 'starting install script'
+pwsh -command ".\build\powershell\scripts\install.ps1"

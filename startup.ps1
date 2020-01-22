@@ -1,6 +1,8 @@
 $Dir = Split-Path $script:MyInvocation.MyCommand.Path
 $Dir = $Dir -replace "/var/tmp", "/root"
 Set-Location $Dir
+
+if ($IsLinux) {$Global:EUID = (Invoke-Expression "bash -c set" | ConvertFrom-StringData).EUID}
 if ($IsWindows) { try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$Dir`'" -WindowStyle Minimized } }catch { } }
 
 
@@ -26,7 +28,7 @@ if ($args) {
             Start-Process "CMD" -ArgumentList "/C `"pwsh -noexit -executionpolicy Bypass -WindowStyle Maximized -command `"Set-Location C:\; Set-Location `'$Dir`'; .\build\powershell\scripts\help.ps1`"`"" -Verb RunAs
         }
         else {
-            Invoke-Expression "./help.sh"
+            Invoke-Expression "./help_linux"
         }        
     }
     else {
@@ -82,7 +84,7 @@ elseif (test-path ".\config.json") {
             Start-Process "CMD" -ArgumentList "/C `"pwsh -noexit -executionpolicy Bypass -WindowStyle Maximized -command `"Set-Location C:\; Set-Location `'$Dir`'; .\build\powershell\scripts\help.ps1`"`"" -Verb RunAs
         }
         else {
-            Invoke-Expression "./help.sh"
+            Invoke-Expression "./help_linux"
         }        
         Start-Sleep -S 3
         exit    
@@ -108,7 +110,7 @@ else {
         Start-Process "CMD" -ArgumentList "/C `"pwsh -noexit -executionpolicy Bypass -WindowStyle Maximized -command `"Set-Location C:\; Set-Location `'$Dir`'; .\build\powershell\scripts\help.ps1`"`"" -Verb RunAs
     }
     else {
-        Invoke-Expression "./help.sh"
+        Invoke-Expression "./help_linux"
     }        
     Start-Sleep -S 3
     exit

@@ -772,15 +772,23 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                     $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$versionNumber/SWARM.$VersionNumber.windows.zip"
                 }
                 Write-Host "URI should be $URI"
-                try { Invoke-WebRequest $URI -OutFile $FileName -SkipCertificateCheck -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }catch { $Failed = $true; Write-Host "Failed To Contact Github For Download! Must Do So Manually" }
+                if(not (test-path ".\x64")) {
+                    New-Item -ItemType Directory -Name "x64" | Out-Null
+                }
+                try { 
+                    Invoke-WebRequest $URI -OutFile $FileName -SkipCertificateCheck -UseBasicParsing -TimeoutSec 60 -ErrorAction Stop 
+                }
+                catch [System.Net.WebException] { 
+                    $Failed = $true; 
+                    Write-Host "Failed To Contact Github For Download! Must Do So Manually"
+                    $statusCodeInt = [int]$response.BaseResponse.StatusCode
+                    Write-Host "$statusCodeInt`: $($_.Exception.Message)"
+                    Write-Host "$($_.Exception.Response)"
+                }
                 Start-Sleep -S 5
-
                 Write-Host "Main Directory is $(Split-Path $Dir)`n"
-                Write-Host "URI should be $URI"
-                try { Invoke-WebRequest $URI -OutFile $FileName -SkipCertificateCheck -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }catch { $Failed = $true; Write-Host "Failed To Contact Github For Download! Must Do So Manually" }
                 Start-Sleep -S 5
                 if ($Failed -eq $false) {
-
                     Write-Host "Extraction Path is $FileName"
                     Write-Host "Extracting to $DLFileName"
                     $Proc = Start-Process "$Dir\build\apps\7z\7z.exe" "x `"$($FileName)`" -o`"$($DLFileName)`" -y" -PassThru -WindowStyle Minimized

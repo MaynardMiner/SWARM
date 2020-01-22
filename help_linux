@@ -14,15 +14,19 @@
 # and settings within SWARM, and give you the arguments you wish to use for
 # HiveOS flight sheet.
 
+## If powershell doesn't exist- Assume it is a first time run.
 if ! [ -x "$(command -v pwsh)" ]; then
-wget https://github.com/PowerShell/PowerShell/releases/download/v6.1.0/powershell-6.1.0-linux-x64.tar.gz -O /tmp/powershell.tar.gz
-mkdir -p /opt/microsoft/powershell/6.1.0
-tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/6.1.0
-chmod +x /opt/microsoft/powershell/6.1.0/pwsh
-ln -s /opt/microsoft/powershell/6.1.0/pwsh /usr/bin/pwsh
+echo 'pwsh not found- installing 6.2.3'
+wget https://github.com/PowerShell/PowerShell/releases/download/v6.2.3/powershell-6.2.3-linux-x64.tar.gz -O /tmp/powershell.tar.gz --no-check-certificate
+mkdir -p /opt/microsoft/powershell/6.2.3
+tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/6.2.3
+chmod +x /opt/microsoft/powershell/6.2.3/pwsh
+ln -s /opt/microsoft/powershell/6.2.3/pwsh /usr/bin/pwsh
 rm -rf /tmp/powershell.tar.gz
-fi
-pwsh -command "./install.ps1"
 chmod 777 -R $HOME/.local/share/powershell
-pwsh -command "./build/powershell/scripts/help.ps1"
+echo 'starting install script'
+pwsh -command ".\build\powershell\scripts\install.ps1"
+fi
 
+## Start the help script.
+pwsh -command ".\build\powershell\scripts\help.ps1"
