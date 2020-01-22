@@ -197,7 +197,7 @@ PROCESS IN GENERAL PRIOR TO USING SWARM.
 You may see other apps inside apps folder- These are depreciated, and no longer
 in use.
 
-Special Thanks To:
+### Special Thanks To:
 
 The other developers of open-source mining software, and their efforts. I note these, as I have at one point in time over history consulted their codebase/wisdom looking for solutions to issues. If you are not happy with SWARM, here are some other software you can use that other powershell developers work on:
 
