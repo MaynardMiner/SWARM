@@ -101,6 +101,20 @@ if (Test-Path ".\build\bash\get-lambo") {
     Set-Location $Dir     
 }
 
+if (Test-Path ".\build\libcurl\libcurl.so.4.4.0") {
+    $Proc = Start-Process ln -ArgumentList "-s $dir/build/export/libcurl.so.4.4.0 $dir/build/export/libcurl.so.4" -PassThru
+    $Proc | Wait-Process
+    Set-Location "/"
+    Set-Location $Dir     
+}
+
+if (Test-Path ".\build\libcurl\libcurl.so.4") {
+    $Proc = Start-Process ln -ArgumentList "-s $dir/build/export/libcurl.so.4 $dir/build/export/libcurl.so.3" -PassThru
+    $Proc | Wait-Process
+    Set-Location "/"
+    Set-Location $Dir     
+}
+
 if (Test-Path ".\build\export\libcudart.so.9.2.148") {
     $Proc = Start-Process ln -ArgumentList "-s $dir/build/export/libcudart.so.9.2.148 $dir/build/export/libcudart.so.9.2" -PassThru
     $Proc | Wait-Process
