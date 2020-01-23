@@ -70,14 +70,14 @@ function Global:Get-Data {
     }
 
 
-    if (-not (Test-Path ".\build\libcurl\libcurl.so.4")) {
-        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/libcurl/libcurl.so.4.4.0 $($(vars).dir)/build/libcurl/libcurl.so.4" -PassThru
+    if (-not (Test-Path ".\build\export\libcurl.so.4")) {
+        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libcurl.so.4.4.0 $($(vars).dir)/build/export/libcurl.so.4" -PassThru
         $Proc | Wait-Process
         Set-Location $($(vars).dir)     
     }
     
     if (-not (Test-Path ".\build\libcurl\libcurl.so.3")) {
-        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/libcurl/libcurl.so.4 $($(vars).dir)/build/libcurl/libcurl.so.3" -PassThru
+        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/export/libcurl/libcurl.so.4 $($(vars).dir)/export/libcurl/libcurl.so.3" -PassThru
         $Proc | Wait-Process
         Set-Location $($(vars).dir)     
     }
