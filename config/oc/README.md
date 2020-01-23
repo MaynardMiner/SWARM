@@ -124,6 +124,9 @@ Note: Singular values CAN be used.
 
 ## AMD Example (Windows):
 
+**NOTE: AMD IS CURRENTLY NOT WORKING WITH THESE SETTINGS. HOWEVER, IF YOU SET AN OC THROUGH HIVEOS- IT WILL WORK!**
+**I JUST HAVE NOT UPDATED THE LOCAL OVERCLOCKING METHODS YET - LOW REQUESTS FOR IT, SINCE MOST USERS USE HIVEOS**
+
 AMD Windows works differently:
 
 CPU And Memory voltages are set across all P-States by default. You have three methods in which you can set overclock:
