@@ -27,7 +27,7 @@ if ($Global:WalletKeys.Wallet3.BTC.address -ne "" -and $Global:WalletKeys.Wallet
     }
 }
 
-$Query | ForEach-Object { try { $Response = Invoke-RestMethod "$PoolQuery$($_.address)" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } Catch { Write-Warning "failed to contact $Name For $($_.Address) Info"; $Response = $Null } $_.Response = $Response}
+$Query | ForEach-Object { try { $Response = Invoke-RestMethod "$PoolQuery$($_.address)" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } Catch { Write-Warning "failed to contact $Name For $($_.Address) Info"; $Response = $Null } $_.Response = $Response }
 
 $Query | ForEach-Object {
     if ($_.Response.unsold -eq 0) {
