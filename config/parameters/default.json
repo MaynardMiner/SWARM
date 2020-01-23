@@ -70,7 +70,6 @@
     "PoolBanCount": 2,
     "PoolBans": "Yes",
     "Poolname": [
-        "nlpool",
         "zergpool",
         "nicehash"
     ],

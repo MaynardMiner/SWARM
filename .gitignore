@@ -27,7 +27,6 @@ config/parameters/SWARM_params_keys.json
 config/parameters/autofan.json
 config/power/power.json
 config/wallets/wallets.json
-SWARM.conf
 build/bash/startup.sh
 build/export/libcudart.so.10.1
 build/export/libcudart.so.10.2
@@ -43,5 +42,6 @@ build/export/libnvrtc-builtins.so.10.2
 build/export/libnvrtc-builtins.so
 build/cmd/dir.txt
 admin
-config/parameters/hive_params_keys.json
+swarm
+SWARM.bat
 config.json
