@@ -7,7 +7,7 @@ function Global:Get-Choices {
     Start-Sleep -S 1
     
     Write-Host "
-These settings along with default advanced settings will be saved to `".\config\parameter\newarguments.json`""
+These settings along with default advanced settings will be saved to `".\config\parameters\newarguments.json`""
     Write-Host "If you run -help again in future, it will prompt if you wish to load your basic configs."
     Write-Host "
                 
