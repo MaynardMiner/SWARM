@@ -647,7 +647,11 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
         }
         else { $SwarmParameters += "No Parameters For SWARM found" }
         if($argument2 -eq "json") {
-            $Get += $SwarmParameters | ConvertTo-Json -Depth 5 -Compress
+            if($argument3 -eq "decompress") {
+            $Get += $MinerArgs | ConvertTo-Json -Depth 5
+            } else {
+                $Get += $MinerArgs | Convertto-Json -Depth 5 -Compress
+            }
         }
         else {
             $Get += $SwarmParameters
