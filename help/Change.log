@@ -1830,3 +1830,41 @@ but beta in design.
   * bminer updated
   * lolminer updated
   * gminer updated
+
+############################################
+############################################
+
+# SWARM 2.9.5
+
+## What's New
+  * Issue #303
+    * ``get parameters`` command can now accept
+      arguments ``json`` and ``json decompress``
+    * ``json`` will print a copy/paste .json
+      of your current parameters (arguemts) in SWARM, 
+      which can be used in HiveOS flight sheets
+    * ``json compressed`` prints .json in a
+       non-compressed form for easier editing
+       after copy/paste.
+
+## Improvements
+  * Issue #296
+    * handle libcurl for all UNIX
+    * re-bundled export.tar.gz
+      and symlinks.
+  * Issue #297
+    * fixed broken linux hashtable function
+      in ``swarm_help``
+    * found small typos in ``swarm_help`` that
+      was fixed.
+  * Issue #295
+    * Add screen for package install in
+      ``install_linux``
+  * Issue #299
+    * Better AMD card detection/Stat
+      detection for linux. rocm-smi
+      package.
+
+## Updates
+* bminer updated
+* gminer updated
