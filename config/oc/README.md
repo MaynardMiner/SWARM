@@ -17,7 +17,30 @@ For Cards: Enter as shown below in "Cards" example P-Model Cards Must Be Specifi
 }
 ```
 
-If Cards Is Not Empty: Defaults MUST Be Specified For ALL Cards! You cannot leave blank! "default" is settings used for algorithms left without any oc settings. Have "Cards" set will essentially "turn on" OC-Tuning.
+If Cards Is Not Empty: Defaults MUST Be Specified For ALL Cards! You cannot leave blank! "default" is settings used for algorithms left without any oc settings. Have "Cards" set will essentially "turn on" OC-Tuning. Why does SWARM require cards? Different cards have different states, such as 1050ti power state vs. 1080, or how vega has 3 mem states instead of 2. Sample abreviations:
+
+NVIDIA:
+
+970
+1080
+1050ti
+1070ti
+2080
+2080ti
+
+etc.
+
+AMD
+
+RX580
+RadeonVII
+Vega64
+Vega56
+RX5700
+
+etc.
+
+Note: I cannot guarantee that oc will work on all cards. Currently linux oc doesn't support Vega cards. Fix is coming soon.
 
 ```
 "default_NVIDIA1": {
