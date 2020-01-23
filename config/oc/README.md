@@ -40,7 +40,7 @@ RX5700
 
 etc.
 
-Note: I cannot guarantee that oc will work on all cards. Currently linux oc doesn't support Vega cards. Fix is coming soon.
+Note: I cannot guarantee that oc will work on all cards. Currently linux oc doesn't support Vega cards. Fix is coming soon. However using HiveOS to handle OC is a great current alternative.
 
 ```
 "default_NVIDIA1": {
