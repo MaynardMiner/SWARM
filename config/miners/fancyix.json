@@ -15,7 +15,7 @@
             "phi2": "--gpu-threads 1 --worksize 256 --intensity 23",
             "phi2-lux": "--gpu-threads 1 --worksize 256 --intensity 23",
             "allium": "--gpu-threads 1 --worksize 256 --intensity 20",
-            "lyra2rev3": "--gpu-threads 1 --worksize 256 --intensity 24",
+            "lyra2rev3": "--gpu-threads 1 --worksize 256 --intensity 22",
             "argon2d500": "--worksize 64 -g 2",
             "mtp": "--intensity 18",
             "x25x": "--gpu-threads 2 --worksize 256 --intensity 22"
