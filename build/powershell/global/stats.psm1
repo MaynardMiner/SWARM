@@ -24,12 +24,6 @@ function Global:Get-Theta($Calcs, $Values) {
     $Values | Select -Last $Calcs | Measure-Object -Sum 
 }
 
-function Global:Get-Zinterval($X) {
-    $C = @{
-        
-    }
-}
-
 function Global:Set-Stat {
     param(
         [Parameter(Mandatory = $true)]

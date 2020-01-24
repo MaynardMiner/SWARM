@@ -23,14 +23,13 @@ $(vars).CPUTypes | ForEach-Object {
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = Join-Path $($(vars).dir) "build\export"
-    $Miner_Dir = Join-Path ($(vars).dir) ((Split-Path $Path).replace(".",""))
+    $Miner_Dir = Join-Path ($(vars).dir) ((Split-Path $Path).replace(".", ""))
 
     ##Prestart actions before miner launch
     $Prestart = @()
-    $BE = "/usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0"
-    if (Test-Path $BE) { $Prestart += "export LD_PRELOAD=libcurl-compat.so.3.0.0" }
+    if ($IsLinux) { $Prestart += "export LD_PRELOAD=$(Join-Path $(vars).Dir "build\libcurl\libcurl.so.3")" }    
     $PreStart += "export LD_LIBRARY_PATH=$ExportDir`:$Miner_Dir"
-    if($IsLinux){$Prestart += "export DISPLAY=:0"}
+    if ($IsLinux) { $Prestart += "export DISPLAY=:0" }
     $MinerConfig.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 
     if ($(vars).Coins) { $Pools = $(vars).CoinPools } else { $Pools = $(vars).AlgoPools }
@@ -41,11 +40,16 @@ $(vars).CPUTypes | ForEach-Object {
 
         $MinerAlgo = $_
 
-        if ($MinerAlgo -in $(vars).Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $(vars).BanHammer) {
+        if ( 
+            $MinerAlgo -in $(vars).Algorithm -and 
+            $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and 
+            $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and 
+            $Name -notin $(vars).BanHammer
+        ) {
             $StatAlgo = $MinerAlgo -replace "`_", "`-"
             $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
-            if($(arg).Rej_Factor -eq "Yes" -and $Stat.Rejections -gt 0 -and $Stat.Rejection_Periods -ge 3){$HashStat = $Stat.Hour * (1 - ($Stat.Rejections * 0.01)) }
-            else{$HashStat = $Stat.Hour}
+            if ($(arg).Rej_Factor -eq "Yes" -and $Stat.Rejections -gt 0 -and $Stat.Rejection_Periods -ge 3) { $HashStat = $Stat.Hour * (1 - ($Stat.Rejections * 0.01)) }
+            else { $HashStat = $Stat.Hour }
             $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
                 [PSCustomObject]@{

@@ -30,12 +30,12 @@ $(vars).NVIDIATypes | ForEach-Object {
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = Join-Path $($(vars).dir) "build\export"
-    $Miner_Dir = Join-Path ($(vars).dir) ((Split-Path $Path).replace(".",""))
+    $Miner_Dir = Join-Path ($(vars).dir) ((Split-Path $Path).replace(".", ""))
 
     ##Prestart actions before miner launch
     $Prestart = @()
     $PreStart += "export LD_LIBRARY_PATH=$ExportDir`:$Miner_Dir"
-    if($IsLinux){$Prestart += "export DISPLAY=:0"}
+    if ($IsLinux) { $Prestart += "export DISPLAY=:0" }
     $MinerConfig.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 
     if ($(vars).Coins) { $Pools = $(vars).CoinPools } else { $Pools = $(vars).AlgoPools }
@@ -47,44 +47,49 @@ $(vars).NVIDIATypes | ForEach-Object {
 
         $MinerAlgo = $_
 
-        if ($MinerAlgo -in $(vars).Algorithm -and $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and $Name -notin $(vars).BanHammer) {
+        if ( 
+            $MinerAlgo -in $(vars).Algorithm -and 
+            $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and 
+            $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and 
+            $Name -notin $(vars).BanHammer
+        ) {
             $StatAlgo = $MinerAlgo -replace "`_", "`-"
             $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
-            if($(arg).Rej_Factor -eq "Yes" -and $Stat.Rejections -gt 0 -and $Stat.Rejection_Periods -ge 3){$HashStat = $Stat.Hour * (1 - ($Stat.Rejections * 0.01)) }
-            else{$HashStat = $Stat.Hour}
-                $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
-                    if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
-                    [PSCustomObject]@{
-                        MName      = $Name
-                        Coin       = $(vars).Coins
-                        Delay      = $MinerConfig.$ConfigType.delay
-                        Fees       = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
-                        Platform   = $(arg).Platform
-                        Symbol     = "$($_.Symbol)"
-                        MinerName  = $MinerName
-                        Prestart   = $PreStart
-                        Type       = $ConfigType
-                        Path       = $Path
-                        Devices    = $Devices
-                        Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
-                        Version    = "$($(vars).nvidia.cryptodredge.version)"
-                        DeviceCall = "ccminer"
-                        Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Pool_Host):$($_.Port) -b 0.0.0.0:$Port --log `'$Log`' -u $($_.$User) -p $($_.$Pass)$($Diff) --no-nvml $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                        HashRates  = $Stat.Hour
-                        Quote      = if ($HashStat) { $HashStat * ($_.Price) }else { 0 }
+            if ($(arg).Rej_Factor -eq "Yes" -and $Stat.Rejections -gt 0 -and $Stat.Rejection_Periods -ge 3) { $HashStat = $Stat.Hour * (1 - ($Stat.Rejections * 0.01)) }
+            else { $HashStat = $Stat.Hour }
+            $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
+                if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
+                [PSCustomObject]@{
+                    MName      = $Name
+                    Coin       = $(vars).Coins
+                    Delay      = $MinerConfig.$ConfigType.delay
+                    Fees       = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
+                    Platform   = $(arg).Platform
+                    Symbol     = "$($_.Symbol)"
+                    MinerName  = $MinerName
+                    Prestart   = $PreStart
+                    Type       = $ConfigType
+                    Path       = $Path
+                    Devices    = $Devices
+                    Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
+                    Version    = "$($(vars).nvidia.cryptodredge.version)"
+                    DeviceCall = "ccminer"
+                    Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Pool_Host):$($_.Port) -b 0.0.0.0:$Port --log `'$Log`' -u $($_.$User) -p $($_.$Pass)$($Diff) --no-nvml $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    HashRates  = $Stat.Hour
+                    Quote      = if ($HashStat) { $HashStat * ($_.Price) }else { 0 }
                     Rejections = $Stat.Rejections
-                        Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
-                        MinerPool  = "$($_.Name)"
-                        Port       = $Port
-                        Worker     = $Rig
-                        API        = "Ccminer"
-                        Wallet     = "$($_.$User)"
-                        URI        = $Uri
-                        Server     = "localhost"
-                        Algo       = "$($_.Algorithm)"                         
-                        Log        = "miner_generated"
-                    }
+                    Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
+                    MinerPool  = "$($_.Name)"
+                    Port       = $Port
+                    Worker     = $Rig
+                    API        = "Ccminer"
+                    Wallet     = "$($_.$User)"
+                    URI        = $Uri
+                    Server     = "localhost"
+                    Algo       = "$($_.Algorithm)"                         
+                    Log        = "miner_generated"
                 }
             }
         }
     }
+}

@@ -2,7 +2,7 @@ $Dir = Split-Path $script:MyInvocation.MyCommand.Path
 $Dir = $Dir -replace "/var/tmp", "/root"
 Set-Location $Dir
 
-if ($IsLinux) {$Global:EUID = (Invoke-Expression "bash -c set" | ConvertFrom-StringData).EUID}
+if ($IsLinux) { $Global:EUID = (Invoke-Expression "bash -c set" | ConvertFrom-StringData).EUID }
 if ($IsWindows) { try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$Dir`'" -WindowStyle Minimized } }catch { } }
 
 
