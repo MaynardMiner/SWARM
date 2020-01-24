@@ -16,8 +16,8 @@ function Global:Add-ASICS {
     if ($(arg).ASIC_ALGO -and $(arg).ASIC_ALGO -ne "") {
         $(arg).ASIC_ALGO | ForEach-Object {
             if ($_ -notin $global:Config.Pool_Algos.PSObject.Properties.Name) {
-                $global:Config.Pool_Algos | Add-Member $_ @{"alt_names" = $_; exclusions = @("add pool or miner here", "comma seperated") }
-                $global:Config.Pool_Algos | Set-Content ".\config\pools\pool-algos.json"
+                $global:Config.Pool_Algos | add-Member "$($_)" ([PSCustomObject]@{alt_names = $_; exclusions = @("add pool or miner here", "comma seperated") })
+                $global:Config.Pool_Algos | ConvertTo-Json -Depth 5 | Set-Content ".\config\pools\pool-algos.json"
             }
         } 
     }
