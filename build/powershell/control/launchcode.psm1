@@ -269,7 +269,6 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                     ## Add if miner path is not listed.
                     if (-not ($net | Where DisplayName -eq $NetPath)) {
                         New-NetFirewallRule -DisplayName "$NetPath" -Direction Inbound -Program $NetPath -Action Allow | Out-Null
-                        New-NetFirewallRule -DisplayName "$NetPath" -Direction Outbound -Program $NetPath -Action Allow | Out-Null
                     }
                 }
                 catch { }
