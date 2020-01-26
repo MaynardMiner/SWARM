@@ -259,10 +259,17 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                 $minerbat | Set-Content $miner_bat
 
                 try { 
-                    $Net = Get-NetFireWallRule | Where DisplayName -eq "SWARM $($MinerCurrent.MinerName)"
-                    if (-not $net) {
-                        $Program = Join-Path "$WorkingDirectory" "$($MinerCurrent.MinerName)"
-                        New-NetFirewallRule -DisplayName "SWARM $($MinerCurrent.Minername)" -Direction Inbound -Program $Program -Action Allow | Out-Null
+                    $NetPath = Join-Path $(vars).dir $MinerCurrent.Path.replace(".\","")
+                    $NetName = Split-Path $MinerCurrent.Path -leaf
+                    $Net = Get-NetFireWallRule | Where DisplayName -like "*$NetName*"
+                    ## Clear old names from older versions.
+                    foreach($name in $net) {
+                        if($name.DisplayName -ne $NetPath) { Remove-NetFirewallRule -DisplayName $name.DisplayName | Out-Null }
+                    }
+                    ## Add if miner path is not listed.
+                    if (-not ($net | Where DisplayName -eq $NetPath)) {
+                        New-NetFirewallRule -DisplayName "$NetPath" -Direction Inbound -Program $NetPath -Action Allow | Out-Null
+                        New-NetFirewallRule -DisplayName "$NetPath" -Direction Outbound -Program $NetPath -Action Allow | Out-Null
                     }
                 }
                 catch { }
@@ -271,7 +278,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                 if ($MinerCurrent.Prestart) {
                     $Prestart = @()
                     $Prestart +=  "`#`# Environment Targets"
-                    $Prestart += "`$Target = [EnvironmentVariableTarget]::Process;"
+                    $Prestart += "`$Target = [EnvironmentVariableTarget]::Machine;"
                     $MinerCurrent.Prestart | ForEach-Object {
                         if ($_ -like "*export*" -and $_ -notlike "*export LD_LIBRARY_PATH=*") {
                             $Total = $_.replace("export ", "");
