@@ -55,6 +55,17 @@
     "optional": "No",
     "uri": "https://github.com/technobyl/CryptoDredge/releases/download/v0.22.0/CryptoDredge_0.22.0_cuda_10.1_linux.tar.gz"
   },
+  "cc-sha3d": {
+    "name": "cc-sha3d",
+    "type": "nvidia",
+    "NVIDIA1": ".\\bin\\cc-sha3d-1\\ccminer",
+    "NVIDIA2": ".\\bin\\cc-sha3d-2\\ccminer",
+    "NVIDIA3": ".\\bin\\cc-sha3d-3\\ccminer",
+    "minername": "ccminer",
+    "version": "1.0.1",
+    "optional": "No",
+    "uri": "https://github.com/brian112358/ccminer-bsha3/releases/download/v1.0/ccminer-bsha3-v1.0-linux.tar.gz"
+  },
   "cc-mtp": {
     "name": "cc-mtp",
     "type": "nvidia",

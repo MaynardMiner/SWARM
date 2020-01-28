@@ -767,6 +767,15 @@
       "comma seperated"
     ]
   },
+  "sha3d": {
+    "alt_names": [
+      "sha3d"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "sha256csm": {
     "alt_names": [
       "sha256csm"
