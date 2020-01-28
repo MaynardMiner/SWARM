@@ -153,6 +153,11 @@ function Global:start-update {
                                                 $Data.$_.naming | Add-Member "cuckaroom" "cuckaroom" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "cuckaroom" 2 -ErrorAction SilentlyContinue
 
+                                                $Data.$_.commands | Add-Member "cuckatoo32" "" -ErrorAction SilentlyContinue
+                                                $Data.$_.difficulty | Add-Member "cuckatoo32" "" -ErrorAction SilentlyContinue 
+                                                $Data.$_.naming | Add-Member "cuckatoo32" "cuckatoo32" -ErrorAction SilentlyContinue
+                                                $Data.$_.fee | Add-Member "cuckatoo32" 2 -ErrorAction SilentlyContinue
+
                                                 $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "equihash_150/5", "cuckaroo29d", "cuckaroo29"
                                                 $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "equihash_150/5", "cuckaroo29d", "cuckaroo29"
                                                 $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "equihash_150/5", "cuckaroo29d", "cuckaroo29"
@@ -879,6 +884,7 @@ function Global:start-update {
                                         $Data | add-Member "eaglesong" @{alt_names = @("eaglesong"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                         $Data | add-Member "cuckaroom" @{alt_names = @("cuckaroom"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                         $Data | add-Member "sha3d" @{alt_names = @("sha3d"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
+                                        $Data | add-Member "cuckatoo32" @{alt_names = @("cuckatoo32","grincuckatoo32"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                     }
                                 
 
