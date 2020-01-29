@@ -27,4 +27,4 @@ REM HERE is an example of basic arguments:
 REM
 REM pwsh -executionpolicy Bypass -command ".\startup.ps1 -RigName1 SWARM -Location US -PoolName nlpool,blockmasters,zergpool,nicehash,fairpool,ahashpool,blazepool,hashrefinery,zpool -Type AMD1 -Wallet1 1RVNsdO6iuwEHfoiuwe123hsdfljk -Donate .5"
 
-pwsh -executionpolicy Bypass -command ".\startup.ps1 -Hive_Hash ab1172091a9de3006185116f29aa32a7814796b7"
+pwsh -executionpolicy Bypass -command ".\startup.ps1"
