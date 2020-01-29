@@ -781,7 +781,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                     $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$versionNumber/SWARM.$VersionNumber.windows.zip"
                 }
                 Write-Host "URI should be $URI"
-                if(not (test-path ".\x64")) {
+                if(-not (test-path ".\x64")) {
                     New-Item -ItemType Directory -Name "x64" | Out-Null
                 }
                 try { 
