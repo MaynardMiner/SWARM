@@ -86,21 +86,26 @@ I am a sole developer, and this is a large project. I prioritize workload by req
 
 *Install Steps:*
 
-Step 1: Open SWARM.bat, change wallet with your BTC wallet, modify/add/replace arguments to your specifications. See help
-        files for a list of arguments. Or use github wiki. If using HiveOS- You will only ever have to do this once.
+Optional: Open SWARM.bat, change wallet with your BTC wallet, modify/add/replace arguments to your specifications. See help
+          files for a list of arguments. Or use github wiki. If using HiveOS- You will only ever have to do this once.
+          You could also instead copy ``config\parameters\defaults.json`` as ``newarguments.json`` in same directory, and edit 
+          it as desired.
 
-Step 2: (Optional): If you wish to use HiveOS, add your farm hash as ``-Hive_Hash``
+Launch SWARM.bat. First time run will start ``swarm_help``.
 
-Step 3: Launch SWARM.bat (or run Help_Windows.bat for a very easy to use guided setup that will give instructions).
+If you chose to use HiveOS:
 
-Step 4: (Optional) When background agent starts- Go to HiveOS.
+Step 1: Copy your arguments from swarm. It will instruct you what to copy. 
 
-Step 5: (Optional) Create a flight sheet for SWARM (SEE HiveOS install below), you can omit Installation URL, but not arguments!
+Step 1: When background agent starts- Go to HiveOS.
 
-Step 6: (Optional) Apply flight sheet to your newly created SWARM worker.
+Step 2: Create a flight sheet for SWARM (SEE HiveOS install below), you can omit Installation URL since you are already
+        Installed. Copy arguments you pasted in flight sheet. See photos below. 
 
-Step 7: (Optional) Confirm SWARM has restarted- At this point when background agent starts- SWARM should communicate stats to
-        HiveOS, and should be ready to accept commands. You will no longer need to modify the .bat file- You modify arguments
+Step 3: Apply flight sheet to your newly created SWARM worker.
+
+Step 4: Confirm SWARM has restarted- At this point when background agent starts- SWARM should communicate stats to
+        HiveOS, and should be ready to accept commands. You will no longer need to modify the .bat file/json- You modify arguments
         through HiveOS and your flight sheet.
         
 ### HIVEOS
