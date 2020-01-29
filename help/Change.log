@@ -1868,3 +1868,19 @@ but beta in design.
 ## Updates
 * bminer updated
 * gminer updated
+
+############################################
+############################################
+
+# SWARM 2.9.6
+
+## What's New?
+ * Sha3d Added
+ * GrinCuckatoo32 added (for AMD)
+
+## Improvements
+ * Fix some exports for generic Unix version.
+
+## Updates
+* ccminer sha3d added
+* lolminer update to 0.9.6
