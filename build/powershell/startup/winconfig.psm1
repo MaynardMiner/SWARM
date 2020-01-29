@@ -275,40 +275,6 @@ function Global:Start-WindowsConfig {
     }
     
     ##Create a CMD.exe shortcut for SWARM on desktop
-    $Desktop = [Environment]::GetFolderPath("Desktop")
-    $Desk_Term = "$Desktop\SWARM-TERMINAL.bat"
-    if (-Not (Test-Path $Desk_Term)) {
-        log "
-            
-    Making a terminal on desktop. This can be used for commands.
-    
-    " -ForegroundColor Yellow
-        $Term_Script = @()
-        $Term_Script += "`@`Echo Off"
-        $Term_Script += "ECHO You can run terminal commands here."
-        $Term_Script += "ECHO Commands such as:"
-        $Term_Script += "echo.       "
-        $Term_Script += "echo.       "
-        $Term_Script += "ECHO       get stats"
-        $Term_Script += "ECHO       get active"
-        $Term_Script += "ECHO       get help"
-        $Term_Script += "ECHO       bench bans"
-        $Term_Script += "ECHO       version query"
-        $Term_Script += "echo.       "
-        $Term_Script += "echo.       "
-        $Term_Script += "echo.       "
-        $Term_Script += "ECHO For full command list, see: https://github.com/MaynardMiner/SWARM/wiki"
-        $Term_Script += "echo.       "
-        $Term_Script += "echo.       "
-        $Term_Script += "echo.       "
-        $Term_Script += "ECHO Starting CMD.exe"
-        $Term_Script += "echo.       "
-        $Term_Script += "echo.       "
-        $Term_Script += "echo.       "
-        $Term_Script += "cmd.exe"
-        $Term_Script | Set-Content $Desk_Term
-    }
-
     ## Create Shortcut
     $Exec_Shortcut = [IO.Path]::Combine($HOME, "Desktop\SWARM.lnk")
     $Term_Shortcut = [IO.Path]::Combine($HOME, "Desktop\SWARM terminal.lnk")
