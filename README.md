@@ -140,6 +140,8 @@ There is a guide which allows SMOS users to load SWARM into SMOS. It can be foun
 
 https://github.com/MaynardMiner/SWARM/wiki/SMOS-Install
 
+Note: I have no users request SMOS use, so I no longer maintain. Post issue if you problems.
+
 **Note**
 
 You may need to Rocket Launch/Reboot in order to have Agent restart and start recieving data from SWARM
@@ -162,7 +164,9 @@ NICEHASH WALLET: 39iUh6aforxHcBr3Ayywmnqw2ZHcbmy9Wj
 
 RVN WALLET: RKirUe978mBoa2MRWqeMGqDzVAKTafKh8H
 
-SWARM uses the following programs to help with oc tuning/rig setup:
+SWARM uses the following programs to help with oc tuning/rig setup,
+
+Thank you to the developers that created them:
 
 -nvidiainspector
 
@@ -178,20 +182,16 @@ SWARM uses the following programs to help with oc tuning/rig setup:
 
 -ODVII (self-created app in SWARM) for AMD ADL methods.
 
--Lspci
-
--Dmidecode
-
 -AmdMemInfo
 
--Killcx
+Consider Donating to these developers for their efforts.
 
 nvfans (self-created app in SWARM) uses the following wrapper for nvidia control in Windows:
 
 https://github.com/falahati/NvAPIWrapper
 
 All licenses and developer information are included. I am not responsible for
-these softwares, nor do I maintain them. They are downloaded from their
+their software, nor do I maintain them. They are downloaded from their
 known distrubution sources and/or are included in mining OS. USE AT YOUR OWN DISCRETION.
 
 THIS SOFTWARE IS PROVIDED AS-IS, USE AT YOUR OWN DISCRETION- DEVELOPERS TAKE NO RESPONSIBILITY
@@ -206,7 +206,9 @@ in use.
 
 The other developers of open-source mining software, and their efforts. I note these, as I have at one point in time over history consulted their codebase/wisdom looking for solutions to issues. If you are not happy with SWARM, here are some other software you can use that other powershell developers work on:
 
-https://github.com/MrPlusGH/NPlusMiner / https://github.com/nemosminer/NemosMiner
+https://github.com/MrPlusGH/NPlusMiner 
+
+https://github.com/nemosminer/NemosMiner
 
 https://github.com/Sniffdog/Sniffdogminer
 
