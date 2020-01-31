@@ -91,7 +91,6 @@ $Libs += [PSCustomObject]@{ link = "libcudart.so.9.2"; path = "libcudart.so.9.2.
 $Libs += [PSCustomObject]@{ link = "libcudart.so.10.0"; path = "libcudart.so.10.0.130" }
 $Libs += [PSCustomObject]@{ link = "libcudart.so.10.1"; path = "libcudart.so.10.1.105" }
 $Libs += [PSCustomObject]@{ link = "libcudart.so.10.2"; path = "libcudart.so.10.2.89" }
-$Libs += [PSCustomObject]@{ link = "libcudart.so"; path = "libcudart.so.10.2" }
 $Libs += [PSCustomObject]@{ link = "libmicrohttpd.so.10"; path = "libmicrohttpd.so.10.34.0" }
 $Libs += [PSCustomObject]@{ link = "libhwloc.so.5"; path = "libhwloc.so.5.6.8" }
 $Libs += [PSCustomObject]@{ link = "libstdc++.so.6"; path = "libstdc++.so.6.0.25" }
@@ -101,7 +100,6 @@ $Libs += [PSCustomObject]@{ link = "libnvrtc.so.9.2"; path = "libnvrtc.so.9.2.14
 $Libs += [PSCustomObject]@{ link = "libnvrtc.so.10.0"; path = "libnvrtc.so.10.0.130" }
 $Libs += [PSCustomObject]@{ link = "libnvrtc.so.10.1"; path = "libnvrtc.so.10.1.105" }
 $Libs += [PSCustomObject]@{ link = "libnvrtc.so.10.2"; path = "libnvrtc.so.10.2.89" }
-$Libs += [PSCustomObject]@{ link = "libnvrtc.so"; path = "libnvrtc.so.10.2" }
 
 foreach ($lib in $Libs) {
     $link = "$dir/build/export/$($lib.link)"
