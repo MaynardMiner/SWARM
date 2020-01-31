@@ -14,7 +14,7 @@
 # This is independent of swarm.ps1 in case user attempts to start swarm
 # not as a root user. I however cannot gurantee miners will work, nor will
 # they not have issues if they attempt to run swarm not as root.
-*******************************************************************************
+# *******************************************************************************
 
 ## If powershell doesn't exist- Assume it is a first time run.
 if ! [ -x "$(command -v pwsh)" ]; then
