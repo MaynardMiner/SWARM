@@ -1,18 +1,20 @@
 #!/bin/bash
 
-# ************swarm_help**************************************************
+# ************install script**************************************************
 #
+# This will install correct version of powershell. No dependencies should be
+# be required.
 #
-# This will start swarm with -help command.
-# This will run through a guided setup to start SWARM.
-# When finished it will save your settings.
-# It will install pwsh if not installed.
-
-# Once you have first ran SWARM, you can run this guided help again
-# through terminal with the commmand ``swarm_help``
-# This command can be ran at anytime, and will allow you to change arguments
-# and settings within SWARM, and give you the arguments you wish to use for
-# HiveOS flight sheet.
+# This should be ran as root, so that it can make pwsh an exectuable.
+#
+# This will also run install.ps1, which will install commands in /usr/bin
+# so that they can be open from any terminal. To see list of commands
+# run command 'get help' after running this script.
+#
+# This is independent of swarm.ps1 in case user attempts to start swarm
+# not as a root user. I however cannot gurantee miners will work, nor will
+# they not have issues if they attempt to run swarm not as root.
+*******************************************************************************
 
 ## If powershell doesn't exist- Assume it is a first time run.
 if ! [ -x "$(command -v pwsh)" ]; then
