@@ -76,10 +76,11 @@ function Global:Get-Data {
     $Libs += [PSCustomObject]@{ link = "libnvrtc.so.10.2"; path = "libnvrtc.so.10.2.89" }
 
     foreach ($lib in $Libs) {
-        $link = [IO.Path]::Join($(vars).dir, "build/export/$($lib.link)")
-        $path = [IO.Path]::Join($(vars).dir, "build/export/$($lib.path)")
-        if (Test-Path $link) {
-            Remove-Item $link -Force | Out-Null
+        $link = "$($(vars).dir)/build/export/$($lib.link)"
+        $path = "$($(vars).dir)/build/export/$($lib.path)"
+        $check = [IO.File]::exists($link)
+        if ($check) {
+            Remove-Item $link -Force
         }
         $Proc = Start-Process "ln" -ArgumentList "-s $path $link" -PassThru
         $Proc | Wait-Process
