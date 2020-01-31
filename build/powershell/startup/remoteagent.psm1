@@ -88,6 +88,7 @@ function Global:start-update {
                         if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }
                     }
                     $OldBackup = Join-Path $PreviousPath "backup"
+                    $OldBin = Join-Path $PreviousPath "bin"
                     $OldStats = Join-Path $PreviousPath "stats"
                     $OldTime = Join-Path $PreviousPath "build\data"
                     $OldConfig = Join-Path $PreviousPath "config"
@@ -95,8 +96,24 @@ function Global:start-update {
                     $OldAdmin = Join-Path $PreviousPath "admin"
                     if (-not (Test-Path "backup")) { New-Item "backup" -ItemType "directory" | Out-Null }
                     if (-not (Test-Path "stats")) { New-Item "stats" -ItemType "directory" | Out-Null }
-                    if (Test-Path $OldBackup) {
+                    if (Test-Path $OldBin) { 
+                        try {
+                          Move-Item $OldBin -Destination "$($(vars).dir)" -Force | Out-Null 
+                        }
+                        catch{
+                            $Message = 
+"
+SWARM attempted to move old bin folder but
+there was a background process from a miner still active.
+Access Denied Error prevented.
+"                            
+                            log $Message -foreground Yellow
+                        }
+                    }
+                    if(test-path $OldStats) {
                         Get-ChildItem -Path "$($OldStats)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\stats"
+                    }
+                    if(test-path $OldBackup) {
                         Get-ChildItem -Path "$($OldBackup)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\backup"
                     }
                     if (Test-Path $OldAdmin) {
