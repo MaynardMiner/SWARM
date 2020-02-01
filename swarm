@@ -25,6 +25,10 @@
 
 ## This creates a screen for SWARM to work in, and then runs startup:
 
+## Remove '#' if you wish to automatically run install linux
+## Needs to be started as root
+## ./install_linux
+
 screen -S miner -m pwsh -command "&.\startup.ps1"
 echo "swarm started on miner screen"
 echo "type sudo screen -r miner to view"
