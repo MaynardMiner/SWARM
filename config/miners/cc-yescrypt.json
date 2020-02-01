@@ -7,7 +7,7 @@
             "yescryptr8": "-i 12.5",
             "yescryptr8g": "-i 12.5",
             "yescryptr16": "-i 12.5",
-            "yescryptr32": "-i 12.5"
+            "yescryptr32": ""
         },
         "difficulty": {
             "yescryptr8": "",
@@ -36,7 +36,7 @@
             "yescryptr8": "-i 12.5",
             "yescryptr8g": "-i 12.5",
             "yescryptr16": "-i 12.5",
-            "yescryptr32": "-i 12.5"
+            "yescryptr32": ""
         },
         "difficulty": {
             "yescryptr8": "",
@@ -64,7 +64,7 @@
             "yescryptr8": "-i 12.5",
             "yescryptr8g": "-i 12.5",
             "yescryptr16": "-i 12.5",
-            "yescryptr32": "-i 12.5"
+            "yescryptr32": ""
         },
         "difficulty": {
             "yescryptr8": "",
