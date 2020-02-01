@@ -67,22 +67,22 @@ if ($Name -in $(arg).PoolName) {
         }
 
         $Pass1 = $global:Wallets.Wallet1.Keys
-        $id = ".id=$($(arg).RigName1)"
+        $id = ".$($(arg).RigName1)"
         $User1 = "$($global:Wallets.Wallet1.$($(arg).Passwordcurrency1).address)$id"
 
         $Pass2 = $global:Wallets.Wallet2.Keys
-        $id = ".id=$($(arg).RigName2)"
+        $id = ".$($(arg).RigName2)"
         $User2 = "$($global:Wallets.Wallet2.$($(arg).Passwordcurrency2).address)$id"
 
         $Pass3 = $global:Wallets.Wallet3.Keys
-        $id = ".id=$($(arg).RigName3)"
+        $id = ".$($(arg).RigName3)"
         $User3 = "$($global:Wallets.Wallet3.$($(arg).Passwordcurrency3).address)$id"
 
         if ($global:Wallets.AltWallet1.keys) {
             $global:Wallets.AltWallet1.Keys | ForEach-Object {
                 if ($global:Wallets.AltWallet1.$_.Pools -contains $Name) {
                     $Pass1 = $_;
-                    $id = ".id=$($(arg).RigName1)"
+                    $id = ".$($(arg).RigName1)"
                     $User1 = "$($global:Wallets.AltWallet1.$_.address)$id"
                 }
             }
@@ -91,7 +91,7 @@ if ($Name -in $(arg).PoolName) {
             $global:Wallets.AltWallet2.Keys | ForEach-Object {
                 if ($global:Wallets.AltWallet2.$_.Pools -contains $Name) {
                     $Pass2 = $_;
-                    $id = ".id=$($(arg).RigName2)"
+                    $id = ".$($(arg).RigName2)"
                     $User2 = "$($global:Wallets.AltWallet2.$_.address)$id"
                 }
             }
@@ -100,7 +100,7 @@ if ($Name -in $(arg).PoolName) {
             $global:Wallets.AltWallet3.Keys | ForEach-Object {
                 if ($global:Wallets.AltWallet3.$_.Pools -contains $Name) {
                     $Pass3 = $_;
-                    $id = ".id=$($(arg).RigName3)"
+                    $id = ".$($(arg).RigName3)"
                     $User3 = "$($global:Wallets.AltWallet3.$_.address)$id"
                 }
             }

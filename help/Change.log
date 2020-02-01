@@ -1884,3 +1884,18 @@ but beta in design.
 ## Updates
 * ccminer sha3d added
 * lolminer update to 0.9.6
+
+############################################
+############################################
+
+# SWARM 2.9.8
+
+## Improvements
+  * nlpool will dislpay rigname
+  * Removed -i 12.5 for cc-Lyraz330.
+    It doesn't seem to parse it right.
+    You may have to play around to get
+    right intensity.
+  * Removed -i 12.5 for yescryptr32,
+    using default. Will crash lower
+    grade cards.
