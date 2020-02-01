@@ -19,8 +19,7 @@
     "AMD3": ".\\bin\\gminer-amd-3\\miner",
     "minername": "miner",
     "version": "1.96",
-    "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.96/gminer_1_96_windows64.zip"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.96/gminer_1_96_linux64.tar.xz"
   },
   "kbminer-amd": {
     "name": "kbminer-amd",
@@ -95,9 +94,9 @@
     "AMD2": ".\\bin\\lolMiner-AMD-2\\lolMiner",
     "AMD3": ".\\bin\\lolMiner-AMD-3\\lolMiner",
     "minername": "lolMiner",
-    "version": "0.95",
+    "version": "0.96",
     "optional": "No",
-    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.95/lolMiner_v0951_Lin64.tar.gz"
+    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.96/lolMiner_v0961_Lin64.tar.gz"
   },
   "avermore": {
     "name": "avermore",

@@ -22,6 +22,17 @@
     "optional": "No",
     "uri": "https://github.com/NebuTech/NBMiner/releases/download/v26.2/NBMiner_26.2_Win.zip"
   },
+  "cc-sha3d": {
+    "name": "cc-sha3d",
+    "type": "nvidia",
+    "NVIDIA1": ".\\bin\\cc-sha3d-1\\ccminer.exe",
+    "NVIDIA2": ".\\bin\\cc-sha3d-2\\ccminer.exe",
+    "NVIDIA3": ".\\bin\\cc-sha3d-3\\ccminer.exe",
+    "minername": "ccminer.exe",
+    "version": "1.0.1",
+    "optional": "No",
+    "uri": "https://github.com/brian112358/ccminer-bsha3/releases/download/v1.0/ccminer-bsha3-v1.0-win64.zip"
+  },
   "cc-mtp": {
     "name": "cc-mtp",
     "type": "nvidia",
@@ -172,9 +183,9 @@
     "NVIDIA2": ".\\bin\\miniz-2\\miniZ.exe",
     "NVIDIA3": ".\\bin\\miniz-3\\miniZ.exe",
     "minername": "miniZ.exe",
-    "version": "v1.5s",
+    "version": "v1.5t",
     "optional": "No",
-    "uri": "https://miniz.ch/?smd_process_download=1&download_id=3269"
+    "uri": "https://miniz.ch/?smd_process_download=1&download_id=3369"
   },
   "phoenix": {
     "name": "phoenix",

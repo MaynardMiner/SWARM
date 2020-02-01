@@ -86,21 +86,26 @@ I am a sole developer, and this is a large project. I prioritize workload by req
 
 *Install Steps:*
 
-Step 1: Open SWARM.bat, change wallet with your BTC wallet, modify/add/replace arguments to your specifications. See help
-        files for a list of arguments. Or use github wiki. If using HiveOS- You will only ever have to do this once.
+Optional: Open SWARM.bat, change wallet with your BTC wallet, modify/add/replace arguments to your specifications. See help
+          files for a list of arguments. Or use github wiki. If using HiveOS- You will only ever have to do this once.
+          You could also instead copy ``config\parameters\defaults.json`` as ``newarguments.json`` in same directory, and edit 
+          it as desired.
 
-Step 2: (Optional): If you wish to use HiveOS, add your farm hash as ``-Hive_Hash``
+Launch SWARM.bat. First time run will start ``swarm_help``.
 
-Step 3: Launch SWARM.bat (or run Help_Windows.bat for a very easy to use guided setup that will give instructions).
+If you chose to use HiveOS:
 
-Step 4: (Optional) When background agent starts- Go to HiveOS.
+Step 1: Copy your arguments from swarm. It will instruct you what to copy. 
 
-Step 5: (Optional) Create a flight sheet for SWARM (SEE HiveOS install below), you can omit Installation URL, but not arguments!
+Step 1: When background agent starts- Go to HiveOS.
 
-Step 6: (Optional) Apply flight sheet to your newly created SWARM worker.
+Step 2: Create a flight sheet for SWARM (SEE HiveOS install below), you can omit Installation URL since you are already
+        Installed. Copy arguments you pasted in flight sheet. See photos below. 
 
-Step 7: (Optional) Confirm SWARM has restarted- At this point when background agent starts- SWARM should communicate stats to
-        HiveOS, and should be ready to accept commands. You will no longer need to modify the .bat file- You modify arguments
+Step 3: Apply flight sheet to your newly created SWARM worker.
+
+Step 4: Confirm SWARM has restarted- At this point when background agent starts- SWARM should communicate stats to
+        HiveOS, and should be ready to accept commands. You will no longer need to modify the .bat file/json- You modify arguments
         through HiveOS and your flight sheet.
         
 ### HIVEOS
@@ -135,6 +140,8 @@ There is a guide which allows SMOS users to load SWARM into SMOS. It can be foun
 
 https://github.com/MaynardMiner/SWARM/wiki/SMOS-Install
 
+Note: I have no users request SMOS use, so I no longer maintain. Post issue if you problems.
+
 **Note**
 
 You may need to Rocket Launch/Reboot in order to have Agent restart and start recieving data from SWARM
@@ -157,7 +164,11 @@ NICEHASH WALLET: 39iUh6aforxHcBr3Ayywmnqw2ZHcbmy9Wj
 
 RVN WALLET: RKirUe978mBoa2MRWqeMGqDzVAKTafKh8H
 
-SWARM uses the following programs to help with oc tuning/rig setup:
+### Integrated Software
+
+SWARM uses the following programs to help with oc tuning/rig setup,
+
+Thank you to the developers that created them:
 
 -nvidiainspector
 
@@ -173,20 +184,16 @@ SWARM uses the following programs to help with oc tuning/rig setup:
 
 -ODVII (self-created app in SWARM) for AMD ADL methods.
 
--Lspci
-
--Dmidecode
-
 -AmdMemInfo
 
--Killcx
+Consider Donating to these developers for their efforts.
 
 nvfans (self-created app in SWARM) uses the following wrapper for nvidia control in Windows:
 
 https://github.com/falahati/NvAPIWrapper
 
 All licenses and developer information are included. I am not responsible for
-these softwares, nor do I maintain them. They are downloaded from their
+their software, nor do I maintain them. They are downloaded from their
 known distrubution sources and/or are included in mining OS. USE AT YOUR OWN DISCRETION.
 
 THIS SOFTWARE IS PROVIDED AS-IS, USE AT YOUR OWN DISCRETION- DEVELOPERS TAKE NO RESPONSIBILITY
@@ -201,7 +208,9 @@ in use.
 
 The other developers of open-source mining software, and their efforts. I note these, as I have at one point in time over history consulted their codebase/wisdom looking for solutions to issues. If you are not happy with SWARM, here are some other software you can use that other powershell developers work on:
 
-https://github.com/MrPlusGH/NPlusMiner / https://github.com/nemosminer/NemosMiner
+https://github.com/MrPlusGH/NPlusMiner 
+
+https://github.com/nemosminer/NemosMiner
 
 https://github.com/Sniffdog/Sniffdogminer
 

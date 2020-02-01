@@ -781,7 +781,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                     $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$versionNumber/SWARM.$VersionNumber.windows.zip"
                 }
                 Write-Host "URI should be $URI"
-                if(not (test-path ".\x64")) {
+                if(-not (test-path ".\x64")) {
                     New-Item -ItemType Directory -Name "x64" | Out-Null
                 }
                 try { 
@@ -824,6 +824,15 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
 
                     Write-Host "Downloaded and extracted SWARM successfully`n"
                     Write-Host "Attempting to start new SWARM verison $NewDIR\SWARM.bat"
+
+                    ## Add new setting:
+                    $Get = Get-Content (Join-Path $Dir "SWARM.bat")
+                    if($Get) {
+                        if($Get[1] -ne "IF NOT [%SWARM_DIR%]==[] cd %SWARM_DIR%") {
+                            $Get[1] = "IF NOT [%SWARM_DIR%]==[] cd %SWARM_DIR%"
+                        }
+                    }
+                    $Get | Set-Content "$Dir\SWARM.bat"
 
                     Copy-Item "$Dir\SWARM.bat" -Destination $NewDIR -Force
 

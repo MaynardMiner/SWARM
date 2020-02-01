@@ -378,6 +378,16 @@
       "comma seperated"
     ]
   },
+  "cuckatoo32": {
+    "alt_names": [
+      "cuckatoo32",
+      "grincuckatoo32"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "equihash_144/5": {
     "alt_names": [
       "equihash_144/5",
@@ -761,6 +771,15 @@
   "rainforestv2": {
     "alt_names": [
       "rfv2"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "sha3d": {
+    "alt_names": [
+      "sha3d"
     ],
     "exclusions": [
       "add pool or miner here",

@@ -38,7 +38,7 @@ $(vars).NVIDIATypes | ForEach-Object {
 
     ##Prestart actions before miner launch
     $Prestart = @()
-    if ($IsLinux) { $Prestart += "export LD_PRELOAD=$(Join-Path $(vars).Dir "build\libcurl\libcurl.so.3")" }   
+    if ($IsLinux) { $Prestart += "export LD_PRELOAD=$(Join-Path $(vars).Dir "build\export\libcurl.so.3")" }   
     $PreStart += "export LD_LIBRARY_PATH=$ExportDir`:$Miner_Dir"
     if ($IsLinux) { $Prestart += "export DISPLAY=:0" }
     $MinerConfig.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }

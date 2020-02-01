@@ -74,8 +74,8 @@ Function Global:Get-Bus {
     $proc.StartInfo = $Info;
     $proc.Start() | Out-Null;
     $proc.WaitForExit();
-    if ($proc.HasExited) { while (-not $proc.StandardOutput.EndOfStream) { $NewCount += $Proc.StandardOutput.ReadLine(); }}
-    $NewCount = $NewCount | Where {$_ -like "*VGA*" -or $_ -like "*3D controller*"}
+    if ($proc.HasExited) { while (-not $proc.StandardOutput.EndOfStream) { $NewCount += $Proc.StandardOutput.ReadLine(); } }
+    $NewCount = $NewCount | Where { $_ -like "*VGA*" -or $_ -like "*3D controller*" }
 
     if ([string]$OldCount -ne [string]$NewCount) {
         Write-Log "Current Detected GPU List Is:" -ForegroundColor Yellow
@@ -275,40 +275,38 @@ function Global:Start-WindowsConfig {
     }
     
     ##Create a CMD.exe shortcut for SWARM on desktop
-    $Desktop = [Environment]::GetFolderPath("Desktop")
-    $Desk_Term = "$Desktop\SWARM-TERMINAL.bat"
-    if (-Not (Test-Path $Desk_Term)) {
-        log "
-            
-    Making a terminal on desktop. This can be used for commands.
-    
-    " -ForegroundColor Yellow
-        $Term_Script = @()
-        $Term_Script += "`@`Echo Off"
-        $Term_Script += "ECHO You can run terminal commands here."
-        $Term_Script += "ECHO Commands such as:"
-        $Term_Script += "echo.       "
-        $Term_Script += "echo.       "
-        $Term_Script += "ECHO       get stats"
-        $Term_Script += "ECHO       get active"
-        $Term_Script += "ECHO       get help"
-        $Term_Script += "ECHO       bench bans"
-        $Term_Script += "ECHO       version query"
-        $Term_Script += "echo.       "
-        $Term_Script += "echo.       "
-        $Term_Script += "echo.       "
-        $Term_Script += "ECHO For full command list, see: https://github.com/MaynardMiner/SWARM/wiki"
-        $Term_Script += "echo.       "
-        $Term_Script += "echo.       "
-        $Term_Script += "echo.       "
-        $Term_Script += "ECHO Starting CMD.exe"
-        $Term_Script += "echo.       "
-        $Term_Script += "echo.       "
-        $Term_Script += "echo.       "
-        $Term_Script += "cmd.exe"
-        $Term_Script | Set-Content $Desk_Term
-    }
-            
+    ## Create Shortcut
+    $Exec_Shortcut = [IO.Path]::Combine($HOME, "Desktop\SWARM.lnk")
+    $Term_Shortcut = [IO.Path]::Combine($HOME, "Desktop\SWARM terminal.lnk")
+
+    if (test-Path $Exec_Shortcut) { Remove-Item $Exec_Shortcut -Force | Out-Null }
+    if (test-Path $Term_Shortcut) { Remove-Item $Term_Shortcut -Force | Out-Null }
+
+    $WshShell = New-Object -comObject WScript.Shell
+
+    $Shortcut = $WshShell.CreateShortcut($Exec_Shortcut)
+    $Shortcut.TargetPath = join-path $(vars).dir "SWARM.bat"
+    $Shortcut.WorkingDirectory = $(vars).dir
+    $Shortcut.IconLocation = Join-Path $(vars).dir "build\apps\icons\SWARM.ico"
+    $Shortcut.Description = "Shortcut For SWARM.bat. You can right-click -> edit this shortcut"
+    $Shortcut.Save()        
+
+    $Shortcut = $WshShell.CreateShortcut($Term_Shortcut)
+    $Shortcut.TargetPath = join-path $(vars).dir "SWARM Terminal.bat"
+    $Shortcut.WorkingDirectory = $(vars).dir
+    $Shortcut.IconLocation = Join-Path $(vars).dir "build\apps\icons\comb.ico"
+    $Shortcut.Description = "Shortcut To Open Terminal For SWARM. Will Run As Administrator"
+    $Shortcut.Save()
+
+    $bytes = [System.IO.File]::ReadAllBytes($Exec_Shortcut)
+    $bytes[0x15] = $bytes[0x15] -bor 0x20 #set byte 21 (0x15) bit 6 (0x20) ON (Use –bor to set RunAsAdministrator option and –bxor to unset)
+    [System.IO.File]::WriteAllBytes($Exec_Shortcut, $bytes)
+
+    $bytes = [System.IO.File]::ReadAllBytes($Term_Shortcut)
+    $bytes[0x15] = $bytes[0x15] -bor 0x20 #set byte 21 (0x15) bit 6 (0x20) ON (Use –bor to set RunAsAdministrator option and –bxor to unset)
+    [System.IO.File]::WriteAllBytes($Term_Shortcut, $bytes)
+
+
     ## Check for NVIDIA-SMI and nvml.dll in system32. If it is there- copy to NVSMI
     $x86_driver = [IO.Path]::Join(${env:ProgramFiles(x86)}, "NVIDIA Corporation")
     $x64_driver = [IO.Path]::Join($env:ProgramFiles, "NVIDIA Corporation")

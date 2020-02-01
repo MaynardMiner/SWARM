@@ -13,52 +13,34 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 function Global:Get-Data {
 
-    if (Test-Path ".\build\bash\stats") {
-        Copy-Item ".\build\bash\stats" -Destination "/usr/bin" -force | Out-Null
-        Set-Location "/usr/bin"
-        Start-Process "chmod" -ArgumentList "+x stats"
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }
+    $Execs = @()
+    $Execs += "stats"
+    $Execs += "swarm_batch"
+    $Execs += "nview"
+    $Execs += "bans"
+    $Execs += "modules"
+    $Execs += "get"
+    $Execs += "get-oc"
+    $Execs += "version"
+    $Execs += "mine"
+    $Execs += "background"
+    $Execs += "pidinfo"
+    $Execs += "dir.sh"
+    $Execs += "bench"
+    $Execs += "clear_profits"
+    $Execs += "clear_watts"
+    $Execs += "swarm_help"
+    $Execs += "send-config"
 
-    if (Test-Path ".\build\bash\swarm_batch") {
-        Copy-Item ".\build\bash\swarm_batch" -Destination "/usr/bin" -force | Out-Null
-        Set-Location "/usr/bin"
-        Start-Process "chmod" -ArgumentList "+x swarm_batch"
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }    
 
-    if (Test-Path ".\build\bash\nview") {
-        Copy-Item ".\build\bash\nview" -Destination "/usr/bin" -force | Out-Null
-        Set-Location "/usr/bin"
-        Start-Process "chmod" -ArgumentList "+x nview"
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }
-
-    if (Test-Path ".\build\bash\bans") {
-        Copy-Item ".\build\bash\bans" -Destination "/usr/bin" -force | Out-Null
-        Set-Location "/usr/bin"
-        Start-Process "chmod" -ArgumentList "+x bans"
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }
-
-    if (Test-Path ".\build\bash\modules") {
-        Copy-Item ".\build\bash\modules" -Destination "/usr/bin" -force | Out-Null
-        Set-Location "/usr/bin"
-        Start-Process "chmod" -ArgumentList "+x modules"
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }
-
-    if (Test-Path ".\build\bash\get") {
-        Copy-Item ".\build\bash\get" -Destination "/usr/bin" -force | Out-Null
-        Set-Location "/usr/bin"
-        Start-Process "chmod" -ArgumentList "+x get"
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
+    foreach ($exec in $Execs) {
+        if (Test-Path ".\build\bash\$exec") {
+            Copy-Item ".\build\bash\$exec" -Destination "/usr/bin" -Force | Out-Null
+            Set-Location "/usr/bin"
+            Start-Process "chmod" -ArgumentList "+x $exec"
+            Set-Location "/"
+            Set-Location $($(vars).dir)     
+        }
     }
 
     ## Extract export folder.
@@ -67,231 +49,43 @@ function Global:Get-Data {
         New-Item -ItemType Directory -Name "export" -path ".\build" | Out-Null;
         $Proc = Start-Process "tar" -ArgumentList "-xzvf build/export.tar.gz -C build" -PassThru; 
         $Proc | Wait-Process;
-    }
+    }    
 
-
-    if (-not (Test-Path ".\build\export\libcurl.so.4")) {
-        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libcurl.so.4.4.0 $($(vars).dir)/build/export/libcurl.so.4" -PassThru
-        $Proc | Wait-Process
-        Set-Location $($(vars).dir)     
-    }
+    $Libs = @()
+    $Libs += [PSCustomObject]@{ link = "libcurl.so.4"; path = "libcurl.so.4.4.0" }
+    $Libs += [PSCustomObject]@{ link = "libcurl.so.3"; path = "libcurl.so.4" }
+    $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.9.2"; path = "libnvrtc-builtins.so.9.2.148" }
+    $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.10.0"; path = "libnvrtc-builtins.so.10.0.130" }
+    $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.10.1"; path = "libnvrtc-builtins.so.10.1.105" }
+    $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.10.2"; path = "libnvrtc-builtins.so.10.2.89" }
+    $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so"; path = "libnvrtc-builtins.so.10.2" }
+    $Libs += [PSCustomObject]@{ link = "libcudart.so.8.0"; path = "libcudart.so.8.0.61" }
+    $Libs += [PSCustomObject]@{ link = "libcudart.so.9.0"; path = "libcudart.so.9.0.176" }
+    $Libs += [PSCustomObject]@{ link = "libcudart.so.9.1"; path = "libcudart.so.9.1.85" }
+    $Libs += [PSCustomObject]@{ link = "libcudart.so.9.2"; path = "libcudart.so.9.2.148" }
+    $Libs += [PSCustomObject]@{ link = "libcudart.so.10.0"; path = "libcudart.so.10.0.130" }
+    $Libs += [PSCustomObject]@{ link = "libcudart.so.10.1"; path = "libcudart.so.10.1.105" }
+    $Libs += [PSCustomObject]@{ link = "libcudart.so.10.2"; path = "libcudart.so.10.2.89" }
+    $Libs += [PSCustomObject]@{ link = "libmicrohttpd.so.10"; path = "libmicrohttpd.so.10.34.0" }
+    $Libs += [PSCustomObject]@{ link = "libhwloc.so.5"; path = "libhwloc.so.5.6.8" }
+    $Libs += [PSCustomObject]@{ link = "libstdc++.so.6"; path = "libstdc++.so.6.0.25" }
+    $Libs += [PSCustomObject]@{ link = "libnvrtc.so.9.0"; path = "libnvrtc.so.9.0.176" }
+    $Libs += [PSCustomObject]@{ link = "libnvrtc.so.9.1"; path = "libnvrtc.so.9.2.xxx" }
+    $Libs += [PSCustomObject]@{ link = "libnvrtc.so.9.2"; path = "libnvrtc.so.9.2.148" }
+    $Libs += [PSCustomObject]@{ link = "libnvrtc.so.10.0"; path = "libnvrtc.so.10.0.130" }
+    $Libs += [PSCustomObject]@{ link = "libnvrtc.so.10.1"; path = "libnvrtc.so.10.1.105" }
+    $Libs += [PSCustomObject]@{ link = "libnvrtc.so.10.2"; path = "libnvrtc.so.10.2.89" }
     
-    if (-not (Test-Path ".\build\libcurl\libcurl.so.3")) {
-        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/export/libcurl/libcurl.so.4 $($(vars).dir)/export/libcurl/libcurl.so.3" -PassThru
+    foreach ($lib in $Libs) {
+        $link = "$($(vars).dir)/build/export/$($lib.link)"
+        $path = "$($(vars).dir)/build/export/$($lib.path)"
+        $check = [IO.File]::exists($link)
+        if ($check) {
+            Remove-Item $link -Force
+        }
+        $Proc = Start-Process "ln" -ArgumentList "-s $path $link" -PassThru
         $Proc | Wait-Process
-        Set-Location $($(vars).dir)     
-    }
-    
-    if (-not (Test-Path ".\build\export\libnvrtc-builtins.so.10.1")) {
-        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc-builtins.so.10.1.105 $($(vars).dir)/build/export/libnvrtc-builtins.so.10.1" -PassThru
-        $Proc | Wait-Process
-        Set-Location $($(vars).dir)     
-    }
-
-    if (-not (Test-Path ".\build\export\libnvrtc-builtins.so.10.2")) {
-        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc-builtins.so.10.2.89 $($(vars).dir)/build/export/libnvrtc-builtins.so.10.2" -PassThru
-        $Proc | Wait-Process
-        Set-Location $($(vars).dir)     
-    }
-
-    if (-not (Test-Path ".\build\export\libcudart.so.10.1")) {
-        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libcudart.so.10.1.105 $($(vars).dir)/build/export/libcudart.so.10.1" -PassThru
-        $Proc | Wait-Process
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }
-
-    if (-not (Test-Path ".\build\export\libcudart.so.10.0")) {
-        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libcudart.so.10.0.130 $($(vars).dir)/build/export/libcudart.so.10.0" -PassThru
-        $Proc | Wait-Process
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }
-    
-    if (-not (Test-Path ".\build\export\libcudart.so.9.2")) {
-        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libcudart.so.9.2.148 $($(vars).dir)/build/export/libcudart.so.9.2" -PassThru
-        $Proc | Wait-Process
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }
-
-    if (-not (Test-Path ".\build\export\libmicrohttpd.so.10")) {
-        $proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libmicrohttpd.so.10.34.0 $($(vars).dir)/build/export/libmicrohttpd.so.10" -PassThru
-        $Proc | Wait-Process
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }
-
-    if (-not (Test-Path ".\build\export\libcudart.so.10.1")) {
-        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libcudart.so.10.0.130 $($(vars).dir)/build/export/libcudart.so.10.0" -PassThru
-        $Proc | Wait-Process
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }
-
-    if (-not (Test-Path ".\build\export\libcudart.so.10.2")) {
-        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libcudart.so.10.2.89 $($(vars).dir)/build/export/libcudart.so.10.2" -PassThru
-        $Proc | Wait-Process
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }
-    
-    if (-not (Test-Path ".\build\export\libhwloc.so.5")) {
-        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libhwloc.so.5.5.0 $($(vars).dir)/build/export/libhwloc.so.5" -PassThru
-        $Proc | Wait-Process
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }
-
-    if (-not (Test-Path ".\build\export\libstdc++.so.6")) {
-        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libstdc++.so.6.0.25 $($(vars).dir)/build/export/libstdc++.so.6" -PassThru
-        $Proc | Wait-Process
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }
-
-    if (-not (Test-Path ".\build\export\libnvrtc.so.9.2")) {
-        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc.so.9.2.148 $($(vars).dir)/build/export/libnvrtc.so.9.2" -PassThru
-        $Proc | Wait-Process
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }
-
-    if (-not (Test-Path ".\build\export\libnvrtc.so.10.0")) {
-        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc.so.10.0.130 $($(vars).dir)/build/export/libnvrtc.so.10.0" -PassThru
-        $Proc | Wait-Process
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }
-
-    if (-not (Test-Path ".\build\export\libnvrtc.so.10.1")) {
-        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc.so.10.1.105 $($(vars).dir)/build/export/libnvrtc.so.10.1" -PassThru
-        $Proc | Wait-Process
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }
-
-    if (-not (Test-Path ".\build\export\libnvrtc.so.10.2")) {
-        $Proc = Start-Process ln -ArgumentList "-s $($(vars).dir)/build/export/libnvrtc.so.10.2.89 $($(vars).dir)/build/export/libnvrtc.so.10.2" -PassThru
-        $Proc | Wait-Process
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }
-
-    if (Test-Path ".\build\bash\get-oc") {
-        Copy-Item ".\build\bash\get-oc" -Destination "/usr/bin" -force | Out-Null
-        Set-Location "/usr/bin"
-        Start-Process "chmod" -ArgumentList "+x get-oc"
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }
-   
-    if (Test-Path ".\build\bash\active") {
-        Copy-Item ".\build\bash\active" -Destination "/usr/bin" -force | Out-Null
-        Set-Location "/usr/bin"
-        Start-Process "chmod" -ArgumentList "+x active"
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }
-
-    if (Test-Path ".\build\bash\version") {
-        Copy-Item ".\build\bash\version" -Destination "/usr/bin" -force | Out-Null
-        Set-Location "/usr/bin"
-        Start-Process "chmod" -ArgumentList "+x version"
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }
-    
-    if (Test-Path ".\build\bash\get-screen") {
-        Copy-Item ".\build\bash\get-screen" -Destination "/usr/bin" -force | Out-Null
-        Set-Location "/usr/bin"
-        Start-Process "chmod" -ArgumentList "+x get-screen"
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }
-   
-    if (Test-Path ".\build\bash\mine") {
-        Copy-Item ".\build\bash\mine" -Destination "/usr/bin" -force | Out-Null
-        Set-Location "/usr/bin"
-        Start-Process "chmod" -ArgumentList "+x mine"
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }
-   
-    if (Test-Path ".\build\bash\background") {
-        Copy-Item ".\build\bash\background" -Destination "/usr/bin" -force | Out-Null
-        Set-Location "/usr/bin"
-        Start-Process "chmod" -ArgumentList "+x background"
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }
-   
-    if (Test-Path ".\build\bash\pidinfo") {
-        Copy-Item ".\build\bash\pidinfo" -Destination "/usr/bin" -force | Out-Null
-        Set-Location "/usr/bin"
-        Start-Process "chmod" -ArgumentList "+x pidinfo"
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }
-
-    if (Test-Path ".\build\bash\dir.sh") {
-        Copy-Item ".\build\bash\dir.sh" -Destination "/usr/bin" -force | Out-Null
-        Set-Location "/usr/bin"
-        Start-Process "chmod" -ArgumentList "+x dir.sh"
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }
-
-    if (Test-Path ".\build\bash\bench") {
-        Copy-Item ".\build\bash\bench" -Destination "/usr/bin" -force | Out-Null
-        Set-Location "/usr/bin"
-        Start-Process "chmod" -ArgumentList "+x bench"
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }
-
-    if (Test-Path ".\build\bash\clear_profits") {
-        Copy-Item ".\build\bash\clear_profits" -Destination "/usr/bin" -force | Out-Null
-        Set-Location "/usr/bin"
-        Start-Process "chmod" -ArgumentList "+x clear_profits"
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }  
-
-    if (Test-Path ".\build\bash\clear_watts") {
-        Copy-Item ".\build\bash\clear_watts" -Destination "/usr/bin" -force | Out-Null
-        Set-Location "/usr/bin"
-        Start-Process "chmod" -ArgumentList "+x clear_watts"
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }  
-
-    if (Test-Path ".\build\bash\get-lambo") {
-        Copy-Item ".\build\bash\get-lambo" -Destination "/usr/bin" -force | Out-Null
-        Set-Location "/usr/bin"
-        Start-Process "chmod" -ArgumentList "+x get-lambo"
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }
-
-    if (Test-Path ".\build\bash\swarm_help") {
-        Copy-Item ".\build\bash\swarm_help" -Destination "/usr/bin" -force | Out-Null
-        Set-Location "/usr/bin"
-        Start-Process "chmod" -ArgumentList "+x swarm_help"
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }
-
-    if (Test-Path ".\build\bash\send-config") {
-        Copy-Item ".\build\bash\send-config" -Destination "/usr/bin" -force | Out-Null
-        Set-Location "/usr/bin"
-        Start-Process "chmod" -ArgumentList "+x send-config"
-        Set-Location "/"
-        Set-Location $($(vars).dir)     
-    }
-   
-    Set-Location $($(vars).dir)
-    
+    }                                     
 }
 
 function Global:Get-GPUCount {

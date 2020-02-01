@@ -88,6 +88,7 @@ function Global:start-update {
                         if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }
                     }
                     $OldBackup = Join-Path $PreviousPath "backup"
+                    $OldBin = Join-Path $PreviousPath "bin"
                     $OldStats = Join-Path $PreviousPath "stats"
                     $OldTime = Join-Path $PreviousPath "build\data"
                     $OldConfig = Join-Path $PreviousPath "config"
@@ -95,8 +96,24 @@ function Global:start-update {
                     $OldAdmin = Join-Path $PreviousPath "admin"
                     if (-not (Test-Path "backup")) { New-Item "backup" -ItemType "directory" | Out-Null }
                     if (-not (Test-Path "stats")) { New-Item "stats" -ItemType "directory" | Out-Null }
-                    if (Test-Path $OldBackup) {
+                    if (Test-Path $OldBin) { 
+                        try {
+                          Move-Item $OldBin -Destination "$($(vars).dir)" -Force | Out-Null 
+                        }
+                        catch{
+                            $Message = 
+"
+SWARM attempted to move old bin folder but
+there was a background process from a miner still active.
+Access Denied Error prevented.
+"                            
+                            log $Message -foreground Yellow
+                        }
+                    }
+                    if(test-path $OldStats) {
                         Get-ChildItem -Path "$($OldStats)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\stats"
+                    }
+                    if(test-path $OldBackup) {
                         Get-ChildItem -Path "$($OldBackup)\*" -Include *.txt -Recurse | Copy-Item -Destination ".\backup"
                     }
                     if (Test-Path $OldAdmin) {
@@ -152,6 +169,11 @@ function Global:start-update {
                                                 $Data.$_.difficulty | Add-Member "cuckaroom" "" -ErrorAction SilentlyContinue 
                                                 $Data.$_.naming | Add-Member "cuckaroom" "cuckaroom" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "cuckaroom" 2 -ErrorAction SilentlyContinue
+
+                                                $Data.$_.commands | Add-Member "cuckatoo32" "" -ErrorAction SilentlyContinue
+                                                $Data.$_.difficulty | Add-Member "cuckatoo32" "" -ErrorAction SilentlyContinue 
+                                                $Data.$_.naming | Add-Member "cuckatoo32" "cuckatoo32" -ErrorAction SilentlyContinue
+                                                $Data.$_.fee | Add-Member "cuckatoo32" 2 -ErrorAction SilentlyContinue
 
                                                 $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "equihash_150/5", "cuckaroo29d", "cuckaroo29"
                                                 $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "equihash_150/5", "cuckaroo29d", "cuckaroo29"
@@ -474,11 +496,6 @@ function Global:start-update {
                                                 $Data.$_.difficulty | Add-Member "beamv2" "" -ErrorAction SilentlyContinue 
                                                 $Data.$_.naming | Add-Member "beamv2" "beamv2" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "beamv2" 2 -ErrorAction SilentlyContinue
-
-                                                $Data.$_.commands | Add-Member "eaglesong" "" -ErrorAction SilentlyContinue
-                                                $Data.$_.difficulty | Add-Member "eaglesong" "" -ErrorAction SilentlyContinue 
-                                                $Data.$_.naming | Add-Member "eaglesong" "eaglesong" -ErrorAction SilentlyContinue
-                                                $Data.$_.fee | Add-Member "eaglesong" 2 -ErrorAction SilentlyContinue
 
                                                 $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
                                                 $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
@@ -878,6 +895,8 @@ function Global:start-update {
                                         $Data | add-Member "sha256csm" @{alt_names = @("sha256csm"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                         $Data | add-Member "eaglesong" @{alt_names = @("eaglesong"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                         $Data | add-Member "cuckaroom" @{alt_names = @("cuckaroom"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
+                                        $Data | add-Member "sha3d" @{alt_names = @("sha3d"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
+                                        $Data | add-Member "cuckatoo32" @{alt_names = @("cuckatoo32","grincuckatoo32"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                     }
                                 
 

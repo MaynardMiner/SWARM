@@ -66,6 +66,7 @@ $(vars).AMDTypes | ForEach-Object {
                     "equihash_192/7" { $AddArgs = "--coin AUTO192_7 " }
                     "cuckatoo31" { $AddArgs = "--coin GRIN-AT31 " }
                     "cuckaroom" { $AddArgs = "--coin GRIN-C29M " }
+                    "cuckatoo32" { $AddArgs = "--coin GRIN-C32 " }
                 }
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
                 [PSCustomObject]@{

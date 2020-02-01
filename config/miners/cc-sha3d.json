@@ -1,0 +1,56 @@
+{
+    "NVIDIA1": {
+        "name": "NVIDIA1",
+        "delay": "1",
+        "prestart": [
+            "echo THIS MINER REQUIRES 6GB OF RAM MINIMUM"
+        ],
+        "commands": {
+            "sha3d": ""
+        },
+        "difficulty": {
+            "sha3d": ""
+        },
+        "naming": {
+            "sha3d": "keccak"
+        },
+        "fee": {
+            "sha3d": 1
+        }
+    },
+    "NVIDIA2": {
+        "name": "NVIDIA2",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "sha3d": ""
+        },
+        "difficulty": {
+            "sha3d": ""
+        },
+        "naming": {
+            "sha3d": "keccak"
+        },
+        "fee": {
+            "sha3d": 1
+        }
+    },
+    "NVIDIA3": {
+        "name": "NVIDIA3",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "sha3d": ""
+        },
+        "difficulty": {
+            "sha3d": ""
+        },
+        "naming": {
+            "sha3d": "keccak"
+        },
+        "fee": {
+            "sha3d": 1
+        }
+    },
+    "name": "cc-sha3d"
+}
