@@ -1,5 +1,5 @@
 @echo off
-IF NOT [%SWARM_DIR%]==[] cd %SWARM_DIR%
+cd /D %~dp0
 REM ************QUICK ARGUMENTS CHEAT SHEET**************************************************
 REM
 REM

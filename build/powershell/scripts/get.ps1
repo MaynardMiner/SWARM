@@ -646,10 +646,11 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
             $MinerArgs | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Foreach { $SwarmParameters += "$($_): $($MinerArgs.$_)" }
         }
         else { $SwarmParameters += "No Parameters For SWARM found" }
-        if($argument2 -eq "json") {
-            if($argument3 -eq "decompress") {
-            $Get += $MinerArgs | ConvertTo-Json -Depth 5
-            } else {
+        if ($argument2 -eq "json") {
+            if ($argument3 -eq "decompress") {
+                $Get += $MinerArgs | ConvertTo-Json -Depth 5
+            }
+            else {
                 $Get += $MinerArgs | Convertto-Json -Depth 5 -Compress
             }
         }
@@ -734,130 +735,268 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
         else { $Get += "No Platforms Selected: Please choose a platform NVIDIA1,NVIDIA2,NVIDIA3,AMD1,CPU" }
     }
     "update" {
+        $Dir = Convert-Path "."
+        Write-Host "Starting Update Request"
+        Write-Host "Note, this process can take over a minute. Be patient and await output..."
         if ($IsWindows) {
             $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
-            if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator) -ne $false) {
-                $version = Get-Content ".\debug\version.txt"
-                $versionnumber = $version -replace "SWARM.", ""
-                $version1 = $versionnumber[4]
-                $version1 = $version1 | % { iex $_ }
-                $version1 = $version1 + 1
-                $version2 = $versionnumber[2]
-                $version3 = $versionnumber[0]
-                if ($version1 -eq 10) {
-                    $version1 = 0; 
-                    $version2 = $version2 | % { iex $_ }
-                    $version2 = $version2 + 1
+            $Check = $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+        }
+        elseif ($IsLinux) {
+            $EUID = (Invoke-Expression "bash -c set" | ConvertFrom-StringData).EUID
+            $Check = $EUID -eq 0;
+        }
+        
+        if ($Check -ne $false) {
+            $Failed = $false;
+            $Endlink = $null;
+            $Dir = Convert-Path "."
+        
+            ## Get Current Version
+            $Current = (Get-Content ".\h-manifest.conf" | ConvertFrom-StringData).CUSTOM_VERSION;
+        
+            ## Find next version
+            $version_number = $Current -replace "SWARM.", "";
+            $version1 = $version_number[4];
+            $version1 = $version1 | % { iex $_ };
+            $version1 = $version1 + 1;
+            $version2 = $version_number[2];
+            $version3 = $version_number[0];
+            if ($version1 -eq 10) {
+                $version1 = 0; 
+                $version2 = $version2 | % { iex $_ };
+                $version2 = $version2 + 1;
+            }
+            if ($version2 -eq 10) {
+                $version2 = 0; 
+                $version3 = $version3 | % { iex $_ };
+                $version3 = $version3 + 1;
+            }
+            $version_number = "$version3.$version2.$version1"
+            if ($IsWindows) { $New = "SWARM.$version_number.windows.zip" }
+            elseif ($IsLinux) { $New = "SWARM.$version_number.linux.tar.gz" }
+        
+            ## If user supplied argument, then we use that instead
+            if ($argument2) {
+                $EndLink = split-path $argument2 -Leaf        
+                if ($EndLink -like "*SWARM*") {
+                    $version_number = $EndLink.Replace("SWARM.", "")
+                    $version_number = $version_number.Replace(".windows.zip", "")
+                    $version_number = $version_number.Replace(".linux.tar.gz", "")
                 }
-                if ($version2 -eq 10) {
-                    $version2 = 0; 
-                    $version3 = $version3 | % { iex $_ }
-                    $version3 = $version3 + 1
+                else {
+                    $Failed = $true
+                    $Get += "Detected link supplied did not end with SWARM"
+                    break
                 }
-                $versionnumber = "$version3.$version2.$version1"    
-                $Failed = $false
-                Write-Host "Operating System Is Windows: Updating via 'get' is possible`n"
-
-                if ($argument2) {
-                    $EndLink = split-path $argument2 -Leaf        
-                    if ($EndLink -like "*SWARM*") {
-                        $VersionNumber = $EndLink.Replace("SWARM.", "")
-                        $versionnumber = $versionnumber.Replace(".windows.zip", "")
+            }
+        
+            if ($IsWindows) { $New = "SWARM.$version_number.windows.zip" }
+            elseif ($IsLinux) { $New = "SWARM.$version_number.linux.tar.gz" }
+        
+            $Get += "Current Version of SWARM is $Current"
+            $Get += "User requested version of swarm is $New" 
+        
+            $Base_Dir = (Split-Path $Dir)
+            $Get += "Main Working Directory is $Base_Dir"
+        
+            ## Make x64 directory if there is none
+            if (-not (test-path "x64")) {
+                New-Item "x64" -ItemType Directory | Out-Null
+            }
+        
+            $Extract = $new.Replace('.zip', '')
+            $Extract = $Extract.Replace('.tar.gz', '')
+        
+            $Download_File = Join-Path "$Dir" "x64\$New"
+            $Extract_Path = Join-Path "$Dir" "x64\$Extract"
+            $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$version_number/$new"
+        
+            $Get += "SWARM update will be downloaded to $Download_File"
+            $Get += "SWARM update will be extracted to $Extract_Path"
+            $Get += "Contacting $URI for download. Timeout For Download is 60 seconds...."
+        
+            ## Remove old attempts, if they exist.
+            if (Test-Path $Download_File) {
+                Remove-Item $Download_File -Force -Recurse
+            }
+            if (Test-Path $Extract_Path) {
+                Remove-Item $Extract_Path -Recurse -Force
+            }
+        
+            ## Attempt to download SWARM
+            try { 
+                Invoke-WebRequest $URI -OutFile $Download_File -SkipCertificateCheck -UseBasicParsing -TimeoutSec 60 -ErrorAction Stop 
+            }
+            catch [System.Net.WebException] { 
+                $Failed = $true; 
+                $Get += "Failed To Contact Github For Download! Must Do So Manually"
+                $statusCodeInt = [int]$response.BaseResponse.StatusCode
+                $Get += "$statusCodeInt`: $($_.Exception.Message)"
+                $Get += "$($_.Exception.Response)"
+            }
+        
+            ## Place a pause, as it was found that it can be slow to write file
+            $Get += "Waiting 5 seconds for file to save."
+            Start-Sleep -S 5
+        
+            ## Extract The FIles.
+            ## Test if they were Successful.
+            ## Find Actual File Path to SWARM root directory.
+            if ($Failed -eq $false) {
+                if ($New -like "*.zip*") {
+                    $Get += "Using 7z to extract .zip file.."
+                    $Proc = Start-Process "$Dir\build\apps\7z\7z.exe" "x `"$($Download_File)`" -o`"$($Extract_Path)`" -y" -PassThru -WindowStyle Minimized
+                    $Proc | Wait-Process
+                    Start-Sleep -S 3
+                }
+                elseif ($New -like "*.tar.gz*") {
+                    $Proc = Start-Process "tar" -ArgumentList "-xzvf x64/$Download_File -C x64/$Extract_Path" -PassThru; 
+                    $Proc | Wait-Process
+                    Start-Sleep -S 3
+                }
+                $test = [IO.Directory]::Exists($Extract_Path)
+                if ($Test) {
+                    $Search = Get-ChildItem -Path "$Extract_Path" -Filter "SWARM.bat" -Recurse -ErrorAction SilentlyContinue
+                    if ($Search) {
+                        $Final_Extract_Path = Split-Path($Search.FullName);
                     }
                     else {
                         $Failed = $true
-                        $line += "Detected link supplied did not end with SWARM"
-                        Write-Host "Detected link supplied did not end with SWARM" -ForegroundColor Red
-                        exit
+                        $Get += "SWARM extracted to $Extract_Path, but SWARM.bat was missing."
                     }
                 }
-
-                Write-Host "Main Directory is $(Split-Path $Dir)`n"
-
-                if ($versionnumber) {
-                    $BaseDir = (Split-Path $Dir)
-                    $FileName = join-path "$Dir" "x64\SWARM.$VersionNumber.windows.zip"
-                    $DLFileName = Join-Path "$Dir" "x64\SWARM.$VersionNumber.windows"
-                    $URI = "https://github.com/MaynardMiner/SWARM/releases/download/v$versionNumber/SWARM.$VersionNumber.windows.zip"
+                else {
+                    $Failed = $true
+                    $Get += "Failed To Extract $New"
                 }
-                Write-Host "URI should be $URI"
-                if(-not (test-path ".\x64")) {
-                    New-Item -ItemType Directory -Name "x64" | Out-Null
-                }
-                try { 
-                    Invoke-WebRequest $URI -OutFile $FileName -SkipCertificateCheck -UseBasicParsing -TimeoutSec 60 -ErrorAction Stop 
-                }
-                catch [System.Net.WebException] { 
-                    $Failed = $true; 
-                    Write-Host "Failed To Contact Github For Download! Must Do So Manually"
-                    $statusCodeInt = [int]$response.BaseResponse.StatusCode
-                    Write-Host "$statusCodeInt`: $($_.Exception.Message)"
-                    Write-Host "$($_.Exception.Response)"
-                }
-                Start-Sleep -S 5
-                Write-Host "Main Directory is $(Split-Path $Dir)`n"
-                Start-Sleep -S 5
-                if ($Failed -eq $false) {
-                    Write-Host "Extraction Path is $FileName"
-                    Write-Host "Extracting to $DLFileName"
-                    $Proc = Start-Process "$Dir\build\apps\7z\7z.exe" "x `"$($FileName)`" -o`"$($DLFileName)`" -y" -PassThru -WindowStyle Minimized
-                    $Proc | Wait-Process
-                    Start-Sleep -S 3
-
-                    $Search = Get-ChildItem -Path ".\x64\SWARM.$VersionNumber.windows" -Filter "SWARM.bat" -Recurse -ErrorAction SilentlyContinue
-                    if (-not $Search) { Write-Host "NEW SWARM Was Not Found" -ForegroundColor DarkRed; break }        
-                    $Contents = $Search.Directory.FullName | Select-Object -First 1
-                    Move-Item -Path $Contents -Destination "$BaseDir" -Force | Out-Null; Start-Sleep -S 1
-                    $DirName = Join-Path $BaseDir $(Split-Path $Contents -Leaf)
-                    if ($DirName -ne (Join-Path $BaseDir "SWARM.$VersionNumber.windows")) {
-                        Rename-Item -Path "$DirName" -NewName "SWARM.$VersionNumber.windows" -Force | Out-Null
-                    }
-                    if (Test-Path $DLFileName) { Remove-Item $DLFileName -Recurse -Force }
-
-                    $NewDIR = Join-Path $BaseDir "SWARM.$($VersionNumber).windows"
-
+            }
+            else {
+                $Get += "SWARM Failed To Download. Please Wait Some Time And Try Again."
+            }
+        
+            if ($Failed -eq $False) {
+                ## Remove compressed file- No longer needed.
+                $Get += "Removing $Download_File"
+                if (Test-Path $Download_File) { Remove-Item $Download_File -Recurse -Force }
+        
+                ## Now we need to stop miner to prevent any read access issues.
+                if (Test-Path "$Dir\build\pid\miner_pid.txt") {
                     $MinerFile = Get-Content "$Dir\build\pid\miner_pid.txt"
                     if ($MinerFile) { $MinerId = Get-Process | Where Id -eq $MinerFile }
                     if ($MinerID) { Stop-Process $MinerId -Force }
-                    Write-Host "Stopping Old Miner and waiting 5 seconds`n"
+                    $Get += "Stopping Old Miner and waiting 5 seconds`n"
                     Start-Sleep -S 5
-
-                    Write-Host "Downloaded and extracted SWARM successfully`n"
-                    Write-Host "Attempting to start new SWARM verison $NewDIR\SWARM.bat"
-
-                    ## Add new setting:
-                    $Get = Get-Content (Join-Path $Dir "SWARM.bat")
-                    if($Get) {
-                        if($Get[1] -ne "IF NOT [%SWARM_DIR%]==[] cd %SWARM_DIR%") {
-                            $Get[1] = "IF NOT [%SWARM_DIR%]==[] cd %SWARM_DIR%"
-                        }
+                }
+                
+                ## stop miner if linux.
+                if ($ISLinux) { Invoke-Expression "miner stop" }
+        
+                $Get += "Downloaded and extracted SWARM Successfully. Attempting to move file to $Base_Dir"
+        
+                ## Check SWARM.bat For new change.
+                $Bat_file = Get-Content (Join-Path $Dir "SWARM.bat")
+                if ($Bat_file) {
+                    if ($Bat_file[1] -ne "cd `/D `%`~dp0") {
+                            $Get += "Appending old bat file."
+                            $Bat_file[1] = "cd `/D `%`~dp0"
                     }
-                    $Get | Set-Content "$Dir\SWARM.bat"
+                }
+                $Bat_file | Set-Content "$Dir\SWARM.bat"
+        
+                ## Move .bat file into extracted path
+                Copy-Item "$Dir\SWARM.bat" -Destination $Final_Extract_Path -Force
+        
+                ## Move parameters into extracted path
+                $Params = Join-Path $Final_Extract_Path "config\parameters"
+                if (Test-Path ".\config\parameters\newarguments.json") { $New_Params = ".\config\parameters\newarguments.json" }
+                else { $New_Params = ".\config\parameters\arguments.json" }
+        
+                Copy-Item $New_Params -Destination $Params -Force
+                $Get += "Copied $New_Params to new SWARM version"
+        
+                ## Copy Preivious Running PIDs
+                if (test-path "$Dir\build\pid") { Copy-Item "$Dir\build\pid" -Destination "$Final_Extract_Path\build\pid" -recurse -Force }
+                $Get += "Copied Previous Process Data To SWARM."
+        
+                ## Move to base directory
+                ## Delete if it exists already
+                $New_Path = Join-Path $Base_Dir $Extract
+                $New_Bat = Join-Path $New_Path "SWARM.bat"
+                if (test-path $New_Path) { Remove-Item $New_Path -Recurse -Force | Out-Null }
+                Move-Item $Final_Extract_Path -Destination $Base_Dir -Force | Out-Null
+                if (Test-Path $Extract_Path) { Remove-Item $Extract_path -recurse -Force | Out-Null }
+        
+                if (Test-Path $New_Path) {
+                    $Get += "Successfully moved old data into new version and to base directory"
+                    $Get += "Removed $Extract_Path.."
+                }
+                else {
+                    $Get += "failed to move old data into new version and move to base directory"
+                    $Get += "Removed $Extract_Path.."
+                    break
+                }
+        
+                ## If windows, we start the bat.
+                ## In linux, we run install_linux, then start the bat.
+                $Get += "Setting new SWARM_PATH environment variable to dir $New_Path."
+                $Target1 = [System.EnvironmentVariableTarget]::Machine
+                $Target2 = [System.EnvironmentVariableTarget]::Process
+                [System.Environment]::SetEnvironmentVariable('SWARM_DIR', $New_Path, $Target1)
+                [System.Environment]::SetEnvironmentVariable('SWARM_DIR', $New_Path, $Target2)
+        
+                ## By stopping explorer, it restarts retroactively with path refreshed
+                ## for commands.
+                Stop-Process -ProcessName explorer
+        
+                if ($IsWindows) {
+                    ## Update icons
+                    $Exec_Shortcut = [IO.Path]::Combine($HOME, "Desktop\SWARM.lnk")
+                    $Term_Shortcut = [IO.Path]::Combine($HOME, "Desktop\SWARM terminal.lnk")
+                
+                    if (test-Path $Exec_Shortcut) { Remove-Item $Exec_Shortcut -Force | Out-Null }
+                    if (test-Path $Term_Shortcut) { Remove-Item $Term_Shortcut -Force | Out-Null }
 
-                    Copy-Item "$Dir\SWARM.bat" -Destination $NewDIR -Force
+                    $WshShell = New-Object -comObject WScript.Shell
 
-                    $Params = Join-Path $NewDir "config\parameters"
-                    if (Test-Path ".\config\parameters\newarguments.json") { $New_Params = ".\config\parameters\newarguments.json" }
-                    else { $New_Params = ".\config\parameters\arguments.json" }
+                    $Shortcut = $WshShell.CreateShortcut($Exec_Shortcut)
+                    $Shortcut.TargetPath = $New_Bat
+                    $Shortcut.WorkingDirectory = $New_Path
+                    $Shortcut.IconLocation = Join-Path $New_Path "build\apps\icons\SWARM.ico"
+                    $Shortcut.Description = "Shortcut For SWARM.bat. You can right-click -> edit this shortcut"
+                    $Shortcut.Save()
+                
+                    $Shortcut = $WshShell.CreateShortcut($Term_Shortcut)
+                    $Shortcut.TargetPath = join-path $New_Path "SWARM Terminal.bat"
+                    $Shortcut.WorkingDirectory = $New_Path
+                    $Shortcut.IconLocation = Join-Path $New_Path "build\apps\icons\comb.ico"
+                    $Shortcut.Description = "Shortcut To Open Terminal For SWARM. Will Run As Administrator"
+                    $Shortcut.Save()
 
-                    Copy-Item $New_Params -Destination $Params -Force
-                    Write-Host "Copied $New_Params to new SWARM"
-
-                    $MPID = Join-Path "$NewDir" "build\pid"
-                    if (-not (Test-Path $MPID) ) { New-Item -Name "pid" -Path "$NewDIR\build" -ItemType "Directory" }
-                    if (test-path "$Dir\build\pid\background_pid.txt") { Copy-Item "$Dir\build\pid\background_pid.txt" -Destination "$NewDIR\build\pid" -Force }
-                    Write-Host "Copied Previous Process Data To SWARM."
-                    
-                    Set-Location "$NewDIR"
-                    Write-Host "Starting $($NewDIR)\SWARM.bat"    
-                    Start-Process "SWARM.bat"
+                    $bytes = [System.IO.File]::ReadAllBytes($Exec_Shortcut)
+                    $bytes[0x15] = $bytes[0x15] -bor 0x20
+                    [System.IO.File]::WriteAllBytes($Exec_Shortcut, $bytes)
+                
+                    $bytes = [System.IO.File]::ReadAllBytes($Term_Shortcut)
+                    $bytes[0x15] = $bytes[0x15] -bor 0x20
+                    [System.IO.File]::WriteAllBytes($Term_Shortcut, $bytes)                
+                                
+                    $Get += "Icons On Desktop Were Updated"
+                    Start-Process $New_Bat
+                    $Get += "Started $New_Bat"
+                }
+                elseif ($IsLinux) {
+                    $Proc = Start-Process "$New_Path\install_linux" -PassThru;
+                    $Proc | Wait-Process;
+                    $Get += "Ran $New_Path\install_Linux"
+                    invoke-expression "miner start"
                 }
             }
-            else { $Get += "Cannot update. Are you administrator?" }
         }
-        else { $Get += "get update can only run in windows currently..." }
+        else {
+            $Get += "Could not perform update- Access Denied. Are you administrator/root user?"
+        }
     }
-
     default {
         $Get +=
         "item not found or specified. use:

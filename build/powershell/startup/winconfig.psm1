@@ -289,7 +289,7 @@ function Global:Start-WindowsConfig {
     $Shortcut.WorkingDirectory = $(vars).dir
     $Shortcut.IconLocation = Join-Path $(vars).dir "build\apps\icons\SWARM.ico"
     $Shortcut.Description = "Shortcut For SWARM.bat. You can right-click -> edit this shortcut"
-    $Shortcut.Save()        
+    $Shortcut.Save()
 
     $Shortcut = $WshShell.CreateShortcut($Term_Shortcut)
     $Shortcut.TargetPath = join-path $(vars).dir "SWARM Terminal.bat"

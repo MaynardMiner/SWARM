@@ -1,5 +1,5 @@
 @Echo Off
-IF NOT [%SWARM_DIR%]==[] cd %SWARM_DIR%
+cd /D %~dp0
 ECHO You can run terminal commands here.
 ECHO Commands such as:
 echo.       
