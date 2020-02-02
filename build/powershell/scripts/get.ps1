@@ -898,11 +898,23 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 $Bat_file = Get-Content (Join-Path $Dir "SWARM.bat")
                 if ($Bat_file) {
                     if ($Bat_file[1] -ne "cd `/D `%`~dp0") {
-                            $Get += "Appending old bat file."
-                            $Bat_file[1] = "cd `/D `%`~dp0"
+                        $Get += "Appending old bat file."
+                        $Bat_file[1] = "cd `/D `%`~dp0"
                     }
                 }
                 $Bat_file | Set-Content "$Dir\SWARM.bat"
+
+                if (test-path (Join-Path $Dir "SWARM Terminal.bat")) {
+                    $Bat_file = Get-Content (Join-Path $Dir "SWARM Terminal.bat")
+                    if ($Bat_file) {
+                        if ($Bat_file[1] -ne "cd `/D `%`~dp0") {
+                            $Get += "Appending old bat file."
+                            $Bat_file[1] = "cd `/D `%`~dp0"
+                        }
+                    }
+                    $Bat_file | Set-Content "$Dir\SWARM Terminal.bat"
+                    Copy-Item "$Dir\SWARM Terminal.bat" -Destination $Final_Extract_Path -Force
+                }
         
                 ## Move .bat file into extracted path
                 Copy-Item "$Dir\SWARM.bat" -Destination $Final_Extract_Path -Force
