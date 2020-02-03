@@ -118,27 +118,43 @@ function Global:Get-GPUCount {
         $GETSMI = @()
         $ROCMSMI.PSObject.Properties.Name | % { $ROCMSMI.$_."PCI Bus" = $ROCMSMI.$_."PCI Bus".replace("0000:", ""); $GETSMI += [PSCustomObject]@{ "VBIOS version" = $ROCMSMI.$_."VBIOS version"; "PCI Bus" = $ROCMSMI.$_."PCI Bus"; "Card vendor" = $ROCMSMI.$_."Card vendor" } }
         $ROCMSMI = $GETSMI
-        invoke-expression ".\build\apps\amdmeminfo\amdmeminfo" | Tee-Object  -Variable amdmeminfo | Out-Null
-        $amdmeminfo = $amdmeminfo | where { $_ -notlike "*AMDMemInfo by Zuikkis `<zuikkis`@gmail.com`>*" } | where { $_ -notlike "*Updated by Yann St.Arnaud `<ystarnaud@gmail.com`>*" }
-        $amdmeminfo = $amdmeminfo | Select -skip 1
-        $amdmeminfo = $amdmeminfo.replace("Found Card: ", "Found Card=")
-        $amdmeminfo = $amdmeminfo.replace("Chip Type: ", "Chip Type=")
-        $amdmeminfo = $amdmeminfo.replace("BIOS Version: ", "BIOS Version=")
-        $amdmeminfo = $amdmeminfo.replace("PCI: ", "PCI=")
-        $amdmeminfo = $amdmeminfo.replace("OpenCL Platform: ", "OpenCL Platform=")
-        $amdmeminfo = $amdmeminfo.replace("OpenCL ID: ", "OpenCL ID=")
-        $amdmeminfo = $amdmeminfo.replace("Subvendor: ", "Subvendor=")
-        $amdmeminfo = $amdmeminfo.replace("Subdevice: ", "Subdevice=")
-        $amdmeminfo = $amdmeminfo.replace("Sysfs Path: ", "Sysfs Path=")
-        $amdmeminfo = $amdmeminfo.replace("Memory Type: ", "Memory Type=")
-        $amdmeminfo = $amdmeminfo.replace("Memory Model: ", "Memory Model=")
-        for ($i = 0; $i -lt $amdmeminfo.count; $i++) { $amdmeminfo[$i] = "$($amdmeminfo[$i]);" }
-        $amdmeminfo | % { $_ = $_ + ";" }
-        $amdmeminfo = [string]$amdmeminfo
-        $amdmeminfo = $amdmeminfo.split("-----------------------------------;")
-        $memarray = @()
-        for ($i = 0; $i -lt $amdmeminfo.count; $i++) { $item = $amdmeminfo[$i].split(";"); $data = $item | ConvertFrom-StringData; $memarray += [PSCustomObject]@{"busid" = $data."PCI"; "mem_type" = $data."Memory Type"; "mem_model" = $data."Memory Model"; } }
-        $amdmeminfo = $memarray
+        if (test-path $env:AMDMEMINFO_FILE) {
+            $memarray = @()
+            $file = cat $env:AMDMEMINFO_FILE
+            foreach ($line in $file) {
+                $split = $line.split(":")
+                $split[1] = $split[1].Remove(2, 1).Insert(2, ":")
+                $memarray += [PSCustomObject]@{
+                    busid    = $split[1]
+                    bios     = $split[3]
+                    mem_type = $split[4]
+                }
+            }
+            $amdmeminfo = $memarray
+        }
+        else {
+            invoke-expression ".\build\apps\amdmeminfo\amdmeminfo" | Tee-Object  -Variable amdmeminfo | Out-Null
+            $amdmeminfo = $amdmeminfo | where { $_ -notlike "*AMDMemInfo by Zuikkis `<zuikkis`@gmail.com`>*" } | where { $_ -notlike "*Updated by Yann St.Arnaud `<ystarnaud@gmail.com`>*" }
+            $amdmeminfo = $amdmeminfo | Select -skip 1
+            $amdmeminfo = $amdmeminfo.replace("Found Card: ", "Found Card=")
+            $amdmeminfo = $amdmeminfo.replace("Chip Type: ", "Chip Type=")
+            $amdmeminfo = $amdmeminfo.replace("BIOS Version: ", "BIOS Version=")
+            $amdmeminfo = $amdmeminfo.replace("PCI: ", "PCI=")
+            $amdmeminfo = $amdmeminfo.replace("OpenCL Platform: ", "OpenCL Platform=")
+            $amdmeminfo = $amdmeminfo.replace("OpenCL ID: ", "OpenCL ID=")
+            $amdmeminfo = $amdmeminfo.replace("Subvendor: ", "Subvendor=")
+            $amdmeminfo = $amdmeminfo.replace("Subdevice: ", "Subdevice=")
+            $amdmeminfo = $amdmeminfo.replace("Sysfs Path: ", "Sysfs Path=")
+            $amdmeminfo = $amdmeminfo.replace("Memory Type: ", "Memory Type=")
+            $amdmeminfo = $amdmeminfo.replace("Memory Model: ", "Memory Model=")
+            for ($i = 0; $i -lt $amdmeminfo.count; $i++) { $amdmeminfo[$i] = "$($amdmeminfo[$i]);" }
+            $amdmeminfo | % { $_ = $_ + ";" }
+            $amdmeminfo = [string]$amdmeminfo
+            $amdmeminfo = $amdmeminfo.split("-----------------------------------;")
+            $memarray = @()
+            for ($i = 0; $i -lt $amdmeminfo.count; $i++) { $item = $amdmeminfo[$i].split(";"); $data = $item | ConvertFrom-StringData; $memarray += [PSCustomObject]@{"busid" = $data."PCI"; "mem_type" = $data."Memory Model"; "bios" = $data."BIOS Version" } }
+            $amdmeminfo = $memarray
+        }
     }
 
     ## Add cards based on bus order
@@ -155,14 +171,16 @@ function Global:Get-GPUCount {
                 $name = ($_.line.Split("[AMD/ATI] ")[1]).split(" (")[0]
                 $SMI = $ROCMSMI | Where { $_."PCI Bus" -eq $busid }
                 $meminfo = $amdmeminfo | Where busid -eq $busid
+                ## Mem size
+                $mem = Invoke-Expression "dmesg | grep -oE `"amdgpu 0000`:${busid}`: VRAM:`\s.*`" | sed -n `'s`/.*VRAM:`\s`\([0-9MG]`\+`\).*`/`\1`/p'"
                 $(vars).BusData += [PSCustomObject]@{
                     busid     = $busid
                     name      = $name
                     brand     = "amd"
                     subvendor = $SMI."Card vendor"
-                    mem       = $meminfo."mem_model"
-                    vbios     = $SMI."VBIOS version"
-                    mem_type  = $meminfo."mem_type"
+                    mem       = $mem
+                    vbios     = $memino.bios
+                    mem_type  = $meminfo.mem_type
                 }
             }
             elseif ($_ -like "*NVIDIA*") {
@@ -206,46 +224,41 @@ function Global:Get-GPUCount {
     if ([string]$(arg).type -eq "") {
         log "Searching For Mining Types" -ForegroundColor Yellow
         log "Adding CPU"
-        $(arg).type = @()
-        $(vars).Type = @()
-        $global:Config.user_params.type = @()
-        $global:Config.params.type = @()
-        $(arg).type += "CPU"
-        $(vars).Type += "CPU"
-        $global:Config.user_params.type += "CPU"
-        $global:Config.params.type += "CPU"
+        $M_Types = @()
+        $M_Types += "CPU"
         $threads = Invoke-Expression "nproc";
-        $(vars).threads = $threads
-        $(vars).CPUThreads = $threads
-        $(arg).CPUThreads = $Threads
-        $global:config.user_params.CPUThreads = $threads
-        $global:config.params.CPUThreads = $threads    
         if ($(vars).BusData | Where brand -eq "amd") {
             log "AMD Detected: Adding AMD" -ForegroundColor Magenta
             $(arg).type += "AMD1"
             $(vars).Type += "AMD1"
-            $global:Config.user_params.type += "AMD1"
-            $global:Config.params.type += "AMD1"
+            $M_Types += "AMD1"
         }
         if ($(vars).BusData | Where brand -eq "NVIDIA") {
             if ("AMD1" -in $(arg).type) {
                 log "NVIDIA Detected: Adding NVIDIA" -ForegroundColor Magenta
                 $(arg).type += "NVIDIA2"
                 $(vars).Type += "NVIDIA2"
-                $global:Config.user_params.type += "NVIDIA2"
-                $global:Config.params.type += "NVIDIA2"
+                $M_Types += "NVIDIA2"
             }
             else {
                 log "NVIDIA Detected: Adding NVIDIA" -ForegroundColor Magenta
                 $(arg).type += "NVIDIA1"
                 $(vars).Type += "NVIDIA1"
-                $global:Config.user_params.type += "NVIDIA1"
-                $global:Config.params.type += "NVIDIA1"
+                $M_Types += "NVIDIA1"
             }
         }
+        $(vars).types = $M_Types
+        $(arg).Type = $M_Types
+        $global:config.user_params.type = $M_Types
+        $global:config.params.type = $M_types
+        $(vars).threads = $threads
+        $(arg).CPUThreads = $threads
+        $global:config.user_params.CPUThreads = $threads
+        $global:config.params.CPUThreads = $threads
     }
 
     $(vars).BusData = $(vars).BusData | Sort-Object busid
+    $(vars).BusData | ConvertTo-Json -Depth 5 | Set-Content ".\debug\busdata.txt"
 
     $(vars).BusData | ForEach-Object {
         if ($_.brand -eq "amd") {
