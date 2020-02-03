@@ -2,11 +2,6 @@
 
 cd `dirname $0`
 
-if [ -f /usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0 ]; then
-    echo "Exporting Libcurl"
-    export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu
-fi
-
 [ -t 1 ] && . colors
 
 . /hive-config/wallet.conf
