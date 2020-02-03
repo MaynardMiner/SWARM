@@ -1890,6 +1890,21 @@ but beta in design.
 
 # SWARM 2.9.8
 
+## Note: 
+  * Windows updater still had issues. Problem
+    was finally found, and should be resovled.
+    However the fix is in this version. You
+    can copy get.ps1 from repository, and
+    replace current build\powershell\scripts\get.ps1
+    to fix so you can update and transfer stats and
+    settings.
+
+## Fixes
+  * Fixed Updater for Windows
+  * Fixed lib issue with AMD/HiveOS
+  * Fixed amdmeminfo errors with AMD/HiveOS
+  * Fixed opencl platform errors with AMD/HiveOS
+
 ## Improvements
   * nlpool will dislpay rigname
   * Removed -i 12.5 for cc-Lyraz330.
