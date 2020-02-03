@@ -11,9 +11,9 @@
             "export GPU_MAX_ALLOC_PERCENT=95"
         ],
         "commands": {
-            "x22i": "--gpu-threads 2 --worksize 256 --intensity 23",
-            "phi2": "--gpu-threads 1 --worksize 256 --intensity 23",
-            "phi2-lux": "--gpu-threads 1 --worksize 256 --intensity 23",
+            "x22i": "--gpu-threads 2 --worksize 256 --intensity 22",
+            "phi2": "--gpu-threads 1 --worksize 256 --intensity 22",
+            "phi2-lux": "--gpu-threads 1 --worksize 256 --intensity 22",
             "allium": "--gpu-threads 1 --worksize 256 --intensity 20",
             "lyra2rev3": "--gpu-threads 1 --worksize 256 --intensity 22",
             "argon2d500": "--worksize 64 -g 2",
