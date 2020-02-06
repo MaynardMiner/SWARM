@@ -222,7 +222,6 @@ function Global:Get-GPUCount {
         if ([string]$(arg).CPUThreads -eq "") { 
             $threads = $(Get-CimInstance -ClassName 'Win32_Processor' | Select-Object -Property 'NumberOfCores').NumberOfCores; 
         }
-        log "Using $threads cores for mining"
         $M_Types += "CPU"
         $(vars).types = $M_Types
         $(arg).Type = $M_Types
@@ -232,6 +231,7 @@ function Global:Get-GPUCount {
         $(arg).CPUThreads = $threads
         $global:config.user_params.CPUThreads = $threads
         $global:config.params.CPUThreads = $threads
+        log "Using $threads cores for mining"
     }
     
     if ($(arg).Type -like "*CPU*") { for ($i = 0; $i -lt $(arg).CPUThreads; $i++) { $DeviceList.CPU.Add("$($i)", $i) } }

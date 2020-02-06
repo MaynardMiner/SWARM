@@ -239,6 +239,7 @@ function Global:Get-GPUCount {
         $(arg).CPUThreads = $threads
         $global:config.user_params.CPUThreads = $threads
         $global:config.params.CPUThreads = $threads
+        log "Using $threads cores for mining"
     }
 
     $(vars).BusData = $(vars).BusData | Sort-Object busid
