@@ -210,7 +210,6 @@ function Global:Get-GPUCount {
         log "Adding CPU"
         $M_Types = @()
         $M_Types += "CPU"
-        $threads = Invoke-Expression "nproc";
         if ($(vars).BusData | Where brand -eq "amd") {
             log "AMD Detected: Adding AMD" -ForegroundColor Magenta
             $(arg).type += "AMD1"
@@ -232,7 +231,7 @@ function Global:Get-GPUCount {
             }
         }
         if ([string]$(arg).CPUThreads -eq "") { 
-            $threads = $(Get-CimInstance -ClassName 'Win32_Processor' | Select-Object -Property 'NumberOfCores').NumberOfCores; 
+            $threads = Invoke-Expression "nproc";
         } else {
             $threads = $(arg).CPUThreads;
         }
