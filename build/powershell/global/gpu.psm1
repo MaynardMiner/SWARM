@@ -73,6 +73,13 @@ function Global:Set-NvidiaStats {
                 $timer = [System.Diagnostics.Stopwatch]::New()
                 $timer.Restart();
                 $proc.Start() | Out-Null
+                ## Note: Process.StandardOutput.ReadToEnd() is garbage.
+                ## Users were having issues, so I coudln't use waitforexit()
+                ## And then ReadToEnd().
+                ## Instead I created a timer that will start, and run
+                ## until timeout, then attempt to kill the process and move on.
+                ## Apparently issue was, was that it that stream was closing
+                ## before ReadToEnd() was working
                 while (-not $Proc.StandardOutput.EndOfStream) {
                     $nvidiaout += $Proc.StandardOutput.ReadLine();
                     if ($timer.Elapsed.Seconds -gt 15) {
@@ -130,6 +137,13 @@ function Global:Set-AMDStats {
                 $timer = [System.Diagnostics.Stopwatch]::New()
                 $timer.Restart();
                 $proc.Start() | Out-Null
+                ## Note: Process.StandardOutput.ReadToEnd() is garbage.
+                ## Users were having issues, so I coudln't use waitforexit()
+                ## And then ReadToEnd().
+                ## Instead I created a timer that will start, and run
+                ## until timeout, then attempt to kill the process and move on.
+                ## Apparently issue was, was that it that stream was closing
+                ## before ReadToEnd() was working
                 while (-not $Proc.StandardOutput.EndOfStream) {
                     $amdout += $Proc.StandardOutput.ReadLine();
                     if ($timer.Elapsed.Seconds -gt 15) {
