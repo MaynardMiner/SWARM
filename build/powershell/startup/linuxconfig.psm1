@@ -231,6 +231,11 @@ function Global:Get-GPUCount {
                 $M_Types += "NVIDIA1"
             }
         }
+        if ([string]$(arg).CPUThreads -eq "") { 
+            $threads = $(Get-CimInstance -ClassName 'Win32_Processor' | Select-Object -Property 'NumberOfCores').NumberOfCores; 
+        } else {
+            $threads = $(arg).CPUThreads;
+        }
         $(vars).types = $M_Types
         $(arg).Type = $M_Types
         $global:config.user_params.type = $M_Types

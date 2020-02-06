@@ -221,6 +221,8 @@ function Global:Get-GPUCount {
         log "Adding CPU"
         if ([string]$(arg).CPUThreads -eq "") { 
             $threads = $(Get-CimInstance -ClassName 'Win32_Processor' | Select-Object -Property 'NumberOfCores').NumberOfCores; 
+        } else {
+            $threads = $(arg).CPUThreads;
         }
         $M_Types += "CPU"
         $(vars).types = $M_Types
