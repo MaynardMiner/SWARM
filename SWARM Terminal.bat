@@ -20,4 +20,4 @@ ECHO Starting CMD.exe
 echo.       
 echo.      
 echo.     
-cmd.exe
+cmd.exe /D %~dp0
