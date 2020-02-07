@@ -125,7 +125,7 @@ foreach ($Device in $Devices) {
     $revision = $Device.HardwareID.substring($rev + 4, 2)
     $new_rev = "{0:x2}" -f $revision
 
-    $Device.Irev = $new_rev
+    $Device.Irev = $new_rev.ToLower()
     $Device.iTitle = ($title.split("   ")[1])
     $Device.iVendor = $vendor
     $Device.IDevice = $ideviceSubsys
