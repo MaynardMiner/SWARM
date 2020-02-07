@@ -9,8 +9,8 @@
 #GNU General Public License for more details.
 #You should have received a copy of the GNU General Public License
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
+source /etc/profile.d/SWARM.sh
 screen -S background -d -m
 sleep 1
-sudo screen -S $1 -X stuff $"pwsh -command ./build/powershell/scripts/background.ps1 -WorkingDir $2\n"
+sudo screen -S $1 -X stuff $"pwsh -command $SWARM_DIR/build/powershell/scripts/background.ps1 -WorkingDir $2\n"
 
