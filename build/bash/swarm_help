@@ -10,5 +10,5 @@
 #You should have received a copy of the GNU General Public License
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-pwsh -command "$(< $mydir/dir.sh)/build/powershell/scripts/help.ps1"
+source /etc/profile.d/SWARM.sh
+pwsh -command "$SWARM_DIR/build/powershell/scripts/help.ps1"

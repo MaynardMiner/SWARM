@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-sudo screen -r $(< $(< $mydir/dir.sh)/debug/minertype.txt)
+source /etc/profile.d/SWARM.sh
+sudo screen -r $(< $SWARM_DIR/debug/minertype.txt)
 

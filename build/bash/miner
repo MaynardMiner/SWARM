@@ -11,19 +11,19 @@
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 COMMAND=$1
-mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+source /etc/profile.d/SWARM.sh
 
 case $1 in
 
 	start)
         echo "Starting SWARM"
-        $(< $mydir/dir.sh)/swarm
+        $SWARM_DIR/swarm
         ;;
     restart)
            echo "Restarting SWARM"
            sudo screen -S miner -X quit
            sleep 3
-           $(< $mydir/dir.sh)/swarm
+           $SWARM_DIR/swarm
         ;;
     stop)
         echo "Stopping SWARM"

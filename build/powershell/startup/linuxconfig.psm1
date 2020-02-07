@@ -13,6 +13,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 function Global:Get-Data {
 
+    if(-not (test-path "/etc/profile.d/SWARM.sh")) {
+        "export SWARM_DIR=$($(vars).dir)" | Set-Content "/etc/profile.d/SWARM.sh"
+        invoke-expression "source /etc/profile.d/SWARM.sh"
+    }
+
     $Execs = @()
     $Execs += "stats"
     $Execs += "swarm_batch"
