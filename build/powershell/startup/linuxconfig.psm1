@@ -15,7 +15,8 @@ function Global:Get-Data {
 
     if(-not (test-path "/etc/profile.d/SWARM.sh")) {
         "export SWARM_DIR=$($(vars).dir)" | Set-Content "/etc/profile.d/SWARM.sh"
-        invoke-expression "source /etc/profile.d/SWARM.sh"
+        $Target = [System.EnvironmentVariableTarget]::Process
+        [System.Environment]::SetEnvironmentVariable('SWARM_DIR', "$($(vars).dir)", $Target)
     }
 
     $Execs = @()
