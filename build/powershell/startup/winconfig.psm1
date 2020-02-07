@@ -66,15 +66,23 @@ Function Global:Get-Bus {
 
     $NewCount = @()
     $info = [System.Diagnostics.ProcessStartInfo]::new();
-    $info.FileName = ".\build\apps\pci\lspci.exe";
+    $info.FileName = ".\build\cmd\lspci.bat";
     $info.UseShellExecute = $false;
     $info.RedirectStandardOutput = $true;
     $info.Verb = "runas";
     $Proc = [System.Diagnostics.Process]::New();
-    $proc.StartInfo = $Info;
-    $proc.Start() | Out-Null;
-    $proc.WaitForExit();
-    if ($proc.HasExited) { while (-not $proc.StandardOutput.EndOfStream) { $NewCount += $Proc.StandardOutput.ReadLine(); } }
+    $proc.StartInfo = $Info
+    $ttimer = [System.Diagnostics.Stopwatch]::New()
+    $ttimer.Restart();
+    $proc.Start() | Out-Null
+    while (-not $Proc.StandardOutput.EndOfStream) {
+        $NewCount += $Proc.StandardOutput.ReadLine();
+        if ($ttimer.Elapsed.Seconds -gt 15) {
+            $proc.kill() | Out-Null;
+            break;
+        }
+    }
+    $Proc.Dispose();            
     $NewCount = $NewCount | Where { $_ -like "*VGA*" -or $_ -like "*3D controller*" }
 
     if ([string]$OldCount -ne [string]$NewCount) {
@@ -222,7 +230,9 @@ function Global:Get-GPUCount {
         if ([string]$(arg).CPUThreads -eq "") { 
             $threads = $(Get-CimInstance -ClassName 'Win32_Processor' | Select-Object -Property 'NumberOfCores').NumberOfCores; 
         }
-        log "Using $threads cores for mining"
+        else {
+            $threads = $(arg).CPUThreads;
+        }
         $M_Types += "CPU"
         $(vars).types = $M_Types
         $(arg).Type = $M_Types
@@ -232,6 +242,7 @@ function Global:Get-GPUCount {
         $(arg).CPUThreads = $threads
         $global:config.user_params.CPUThreads = $threads
         $global:config.params.CPUThreads = $threads
+        log "Using $threads cores for mining"
     }
     
     if ($(arg).Type -like "*CPU*") { for ($i = 0; $i -lt $(arg).CPUThreads; $i++) { $DeviceList.CPU.Add("$($i)", $i) } }

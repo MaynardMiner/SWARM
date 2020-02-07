@@ -59,8 +59,7 @@ function Global:Set-NvidiaStats {
         }
 
         "windows" {
-            $nvidiaout = ".\debug\nv-stats.txt"
-            $continue = $false
+            $nvidiaout = @()
             try {
                 $smi = "$($env:ProgramFiles)\NVIDIA Corporation\NVSMI\nvidia-smi.exe"
                 $info = [System.Diagnostics.ProcessStartInfo]::new()
@@ -71,13 +70,27 @@ function Global:Set-NvidiaStats {
                 $info.Verb = "runas"
                 $Proc = [System.Diagnostics.Process]::New()
                 $proc.StartInfo = $Info
+                $timer = [System.Diagnostics.Stopwatch]::New()
+                $timer.Restart();
                 $proc.Start() | Out-Null
-                $proc.WaitForExit(15000)
-                if ($proc.HasExited) { $nvidiaout = $Proc.StandardOutput.ReadToEnd() }
-                else { $proc.kill() | Out-Null; $proc.Dispose() }
+                ## Note: Process.StandardOutput.ReadToEnd() is garbage.
+                ## Users were having issues, so I coudln't use waitforexit()
+                ## And then ReadToEnd().
+                ## Instead I created a timer that will start, and run
+                ## until timeout, then attempt to kill the process and move on.
+                ## Apparently issue was, was that it that stream was closing
+                ## before ReadToEnd() was working
+                while (-not $Proc.StandardOutput.EndOfStream) {
+                    $nvidiaout += $Proc.StandardOutput.ReadLine();
+                    if ($timer.Elapsed.Seconds -gt 15) {
+                        $proc.kill() | Out-Null;
+                        break;
+                    }
+                }
+                $Proc.Dispose();            
             }
             catch { Write-Host "WARNING: Failed to get nvidia stats" -ForegroundColor DarkRed }
-            if ($nvidiaout) { 
+            if ($nvidiaout.count -gt 0) { 
                 $ninfo = $nvidiaout | ConvertFrom-CSV
                 $NVIDIAFans = $ninfo.'fan.speed [%]' | ForEach-Object { $_ -replace ("\%", "") }
                 $NVIDIATemps = $ninfo.'temperature.gpu'
@@ -106,8 +119,7 @@ function Global:Set-AMDStats {
 
     switch ($(arg).Platform) {
         "windows" {
-            $amdout = ".\debug\amd-stats.txt"
-            $continue = $false
+            $amdout = @()
             try {
                 if ([Environment]::Is64BitOperatingSystem) {
                     $odvii = ".\build\apps\odvii\odvii_x64.exe"
@@ -122,16 +134,30 @@ function Global:Set-AMDStats {
                 $info.Verb = "runas"
                 $Proc = [System.Diagnostics.Process]::New()
                 $proc.StartInfo = $Info
+                $timer = [System.Diagnostics.Stopwatch]::New()
+                $timer.Restart();
                 $proc.Start() | Out-Null
-                $proc.WaitForExit(15000) | Out-Null
-                if ($proc.HasExited) { $odvii_out = $Proc.StandardOutput.ReadToEnd() }
-                else { Stop-Process -Id $Proc.Id -ErrorAction Ignore }
+                ## Note: Process.StandardOutput.ReadToEnd() is garbage.
+                ## Users were having issues, so I coudln't use waitforexit()
+                ## And then ReadToEnd().
+                ## Instead I created a timer that will start, and run
+                ## until timeout, then attempt to kill the process and move on.
+                ## Apparently issue was, was that it that stream was closing
+                ## before ReadToEnd() was working
+                while (-not $Proc.StandardOutput.EndOfStream) {
+                    $amdout += $Proc.StandardOutput.ReadLine();
+                    if ($timer.Elapsed.Seconds -gt 15) {
+                        $proc.kill() | Out-Null;
+                        break;
+                    }
+                }
+                $Proc.Dispose();            
             }
             catch { 
                 Write-Host "WARNING: Failed to query driver for gpu stats" -ForegroundColor DarkRed; 
             }
-            if ($odvii_out) {
-                $amdinfo = $odvii_out | ConvertFrom-Json
+            if ($amdout.count -gt 0) {
+                $amdinfo = $amdout | ConvertFrom-Json
                 if ($amdinfo.count -gt 0) { 
                     $amdinfo | ForEach-Object {
                         if ($_.'Fan Speed %') { $AMDFans += $_.'Fan Speed %' }else { $AMDFans += "511" }

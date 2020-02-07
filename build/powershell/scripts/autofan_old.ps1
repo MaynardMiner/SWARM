@@ -211,7 +211,7 @@ class RIG {
 
     Get_NVIDIAGPUData([Int]$Critical) {
         $continue = $false
-        $nvidiaout = $null
+        $nvidiaout = @()
         try {
             $smi = "$($env:ProgramFiles)\NVIDIA Corporation\NVSMI\nvidia-smi.exe"
             $info = [System.Diagnostics.ProcessStartInfo]::new()
@@ -223,13 +223,22 @@ class RIG {
             $Proc = [System.Diagnostics.Process]::New()
             $proc.StartInfo = $Info
             $proc.Start() | Out-Null
-            $proc.WaitForExit(15000)
-            if ($proc.HasExited) { $nvidiaout = $Proc.StandardOutput.ReadToEnd() }
-            else { $proc.kill() | Out-Null; $proc.Dispose() }
+            $proc.StartInfo = $Info
+            $timer = [System.Diagnostics.Stopwatch]::New()
+            $timer.Restart();
+            $proc.Start() | Out-Null
+            while (-not $Proc.StandardOutput.EndOfStream) {
+                $nvidiaout += $Proc.StandardOutput.ReadLine();
+                if ($timer.Elapsed.Seconds -gt 15) {
+                    $proc.kill() | Out-Null;
+                    break;
+                }
+            }
+            $Proc.Dispose();            
         }
         catch { Write-Host "WARNING: Failed to get nvidia stats" -ForegroundColor DarkRed }
 
-        if($nvidiaout) {
+        if ($nvidiaout) {
             $nvidiaout = $nvidiaout | ConvertFrom-Csv
             $Continue = $true
         }
@@ -267,10 +276,9 @@ class RIG {
     Get_AMDGPUData([int]$Critical) {
         if ($this.GPUS | Where model -eq "AMD") {
             $continue = $false
-            $stats = $null
-            
+            $stats = @()
             try {
-                if([Environment]::Is64BitOperatingSystem) {
+                if ([Environment]::Is64BitOperatingSystem) {
                     $odvii = ".\build\apps\odvii\odvii_x64.exe"
                 } 
                 else {
@@ -283,10 +291,17 @@ class RIG {
                 $info.Verb = "runas"
                 $Proc = [System.Diagnostics.Process]::New()
                 $proc.StartInfo = $Info
+                $timer = [System.Diagnostics.Stopwatch]::New()
+                $timer.Restart();
                 $proc.Start() | Out-Null
-                $proc.WaitForExit(15000) | Out-Null
-                if ($proc.HasExited) { $stats = $Proc.StandardOutput.ReadToEnd() }
-                else { Stop-Process -Id $Proc.Id -ErrorAction Ignore }
+                while (-not $Proc.StandardOutput.EndOfStream) {
+                    $stats += $Proc.StandardOutput.ReadLine();
+                    if ($timer.Elapsed.Seconds -gt 15) {
+                        $proc.kill() | Out-Null;
+                        break;
+                    }
+                }
+                $Proc.Dispose();            
             }
             catch { Write-Host "WARNING: Failed to get amd stats" -ForegroundColor DarkRed }
 
