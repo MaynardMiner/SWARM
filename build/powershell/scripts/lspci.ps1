@@ -103,6 +103,12 @@ foreach ($Device in $Devices) {
     if ($null -eq $ideviceSubsys) { 
         $ideviceSubsys = if ($device_name) { $device_name.split("   ")[1] } else { "Device $deviceId" }
     }
+    if($device_name) {
+        $sub_device_id = "Device $($device_name.split("   ")[0])"
+    }
+    else{
+        $sub_device_id = "Device $deviceId"
+    }
     $manufacturer = $pci.PSobject.Properties.name | Where { $_.substring(0, 4) -eq $manufacturerId }
 
     $CC = $device.CompatIds | Where { $_ -like "*CC_*" } | Select -First 1
@@ -114,9 +120,8 @@ foreach ($Device in $Devices) {
         $title = $pci.$title.PSObject.Properties.Name | Where { $_.substring(0, 2) -eq $Code_Id }
     }
 
-    $Device_Title = "Device $deviceId"
     if($null -eq $vendor){
-        $vendor = $Device_Title
+        $vendor = $sub_device_id
     }
     else{
         $vendor = $vendor.split("   ")[1]
@@ -129,7 +134,7 @@ foreach ($Device in $Devices) {
     $Device.iTitle = ($title.split("   ")[1])
     $Device.iVendor = $vendor
     $Device.IDevice = $ideviceSubsys
-    $Device.IDeviceId = $Device_Title
+    $Device.IDeviceId = $sub_device_id
     $Device.iManufacturer = if ($manufacturer) { ($manufacturer.split("   ")[1]) } 
 }
 
