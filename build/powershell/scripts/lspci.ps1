@@ -51,6 +51,7 @@ class Device {
 
 ## Use registry entries instead
 Set-Location $ENV:SWARM_DIR
+. .\build\apps\device\pci_ids.ps1
 $Devices = @()
 $PCI_List = Get-ChildItem "HKLM:\SYSTEM\CurrentControlSet\Enum\PCI"
 $Registry = [RegistryKey]::OpenBaseKey([RegistryHive]::LocalMachine, [RegistryView]::Default).OpenSubKey("SYSTEM\CurrentControlSet\Enum\PCI")
@@ -77,7 +78,7 @@ foreach ($item in $PCI_List) {
     }   
 }
 ## This is a json list of pci.ids.
-$pci = Get-Content ".\build\apps\device\pci_ids.json" | ConvertFrom-Json
+$pci_id = [PCI_ID]::New()
 
 ## IF using parsable argument to get a single device
 if ($args[0] -eq "-vmms") {
@@ -97,33 +98,35 @@ foreach ($Device in $Devices) {
     $deviceSubsysId = $IDs[2].Substring($IDs[2].Length - 4) + ' ' + $IDs[2].Substring($IDs[2].Length - 8, 4)
     $manufacturerId = $IDs[2].Substring($IDs[2].Length - 4)
  
-    $vendor = $pci.PSobject.Properties.name | Where { $_.substring(0, 4) -eq $vendorId }
-    $device_name = $pci.$vendor.PSObject.Properties.Name | Where { $_.substring(0, 4) -eq $deviceId }
-    $ideviceSubsys = $pci.$vendor.$device_name.$deviceSubsysId
+    $vendor = $pci_id.info.keys | Where { $_.substring(0, 4) -eq $vendorId }
+    $device_name = $pci_id.info.$vendor.keys | Where { $_.substring(0, 4) -eq $deviceId }
+    if ($device_name -and $vendor) {
+        $ideviceSubsys = $pci_id.info.$vendor.$device_name.$deviceSubsysId
+    }
     if ($null -eq $ideviceSubsys) { 
         $ideviceSubsys = if ($device_name) { $device_name.split("   ")[1] } else { "Device $deviceId" }
     }
-    if($device_name) {
+    if ($device_name) {
         $sub_device_id = "Device $($device_name.split("   ")[0])"
     }
-    else{
+    else {
         $sub_device_id = "Device $deviceId"
     }
-    $manufacturer = $pci.PSobject.Properties.name | Where { $_.substring(0, 4) -eq $manufacturerId }
+    $manufacturer = $pci_id.info.keys | Where { $_.substring(0, 4) -eq $manufacturerId }
 
     $CC = $device.CompatIds | Where { $_ -like "*CC_*" } | Select -First 1
     $CC = $CC.Substring(13 + 3, 4)
     $Code = $CC.Substring(0, 2)
     $Code_Id = $CC.Substring(2, 2)
-    $title = $pci.PSObject.Properties.Name | Where { $_.substring(0, 4) -eq "C $Code" }
-    if ($pci.$title.PSObject.Properties.Name) {
-        $title = $pci.$title.PSObject.Properties.Name | Where { $_.substring(0, 2) -eq $Code_Id }
+    $title = $pci_id.info.keys | Where { $_.substring(0, 4) -eq "C $Code" }
+    if ($pci_id.info.$title.keys) {
+        $title = $pci_id.info.$title.keys | Where { $_.substring(0, 2) -eq $Code_Id }
     }
 
-    if($null -eq $vendor){
+    if ($null -eq $vendor) {
         $vendor = $sub_device_id
     }
-    else{
+    else {
         $vendor = $vendor.split("   ")[1]
     }
     $rev = $Device.HardwareID.IndexOf("REV_")
