@@ -71,8 +71,6 @@ Function Global:Get-Bus {
     $info.RedirectStandardOutput = $true;
     $info.Verb = "runas";
     $Proc = [System.Diagnostics.Process]::New();
-    $proc.StartInfo = $Info;
-    $proc.Start() | Out-Null;
     $proc.StartInfo = $Info
     $ttimer = [System.Diagnostics.Stopwatch]::New()
     $ttimer.Restart();
