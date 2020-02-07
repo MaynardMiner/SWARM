@@ -963,9 +963,9 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
         
                 if ($IsWindows) {
                     ## Update icons
-                    $Exec_Shortcut = [IO.Path]::Combine($HOME, "Desktop\SWARM.lnk")
-                    $Term_Shortcut = [IO.Path]::Combine($HOME, "Desktop\SWARM terminal.lnk")
-                
+                    $Exec_Shortcut = [IO.Path]::Combine([Environment]::GetFolderPath("Desktop"), "SWARM.lnk")
+                    $Term_Shortcut = [IO.Path]::Combine([Environment]::GetFolderPath("Desktop"), "SWARM terminal.lnk")
+                                
                     if (test-Path $Exec_Shortcut) { Remove-Item $Exec_Shortcut -Force | Out-Null }
                     if (test-Path $Term_Shortcut) { Remove-Item $Term_Shortcut -Force | Out-Null }
 
