@@ -259,16 +259,26 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                 $minerbat | Set-Content $miner_bat
 
                 try { 
-                    $NetPath = Join-Path $(vars).dir $MinerCurrent.Path.replace(".\","")
+                    $NetPath = Join-Path $(vars).dir $MinerCurrent.Path.replace(".\", "")
                     $NetName = Split-Path $MinerCurrent.Path -leaf
                     $Net = Get-NetFireWallRule | Where DisplayName -like "*$NetName*"
                     ## Clear old names from older versions.
-                    foreach($name in $net) {
-                        if($name.DisplayName -ne $NetPath) { Remove-NetFirewallRule -DisplayName $name.DisplayName | Out-Null }
+                    foreach ($name in $net) {
+                        if ($name.DisplayName -ne $NetPath) {
+                            try {
+                                Remove-NetFirewallRule -DisplayName $name.DisplayName -ErrorAction Ignore | Out-Null 
+                            }
+                            catch { }
+                        }
                     }
                     ## Add if miner path is not listed.
                     if (-not ($net | Where DisplayName -eq $NetPath)) {
-                        New-NetFirewallRule -DisplayName "$NetPath" -Direction Inbound -Program $NetPath -Action Allow | Out-Null
+                        try {
+                        New-NetFirewallRule -DisplayName "$NetPath" -Direction Inbound -Program $NetPath -Action Allow -ErrorAction Ignore | Out-Null
+                        }
+                        catch {
+
+                        }
                     }
                 }
                 catch { }
@@ -276,7 +286,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                 ##Build Start Script
                 if ($MinerCurrent.Prestart) {
                     $Prestart = @()
-                    $Prestart +=  "`#`# Environment Targets"
+                    $Prestart += "`#`# Environment Targets"
                     $Prestart += "`$Target = [EnvironmentVariableTarget]::Machine;"
                     $MinerCurrent.Prestart | ForEach-Object {
                         if ($_ -like "*export*" -and $_ -notlike "*export LD_LIBRARY_PATH=*") {
@@ -344,11 +354,11 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
  remove-variable `$proc -ErrorAction Ignore
 
 "
-foreach ($line in $Prestart) { $script += $line }
-$script += 
-"
+                foreach ($line in $Prestart) { $script += $line }
+                $script += 
+                "
 `#`# Start Miner - Logging if needed."
-$script += $start
+                $script += $start
 
                 $script | Out-File "$WorkingDirectory\swarm_start_$($Algo).ps1"
                 Start-Sleep -S .5
