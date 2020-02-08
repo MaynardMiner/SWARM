@@ -11,6 +11,8 @@ ECHO       bench bans (resets all AI bans)
 ECHO       version query (lists all miners and their versions)
 ECHO       version update (updates a current miner)
 ECHO       swarm_help (starts configuration help)
+ECHO       clear_profits (deletes all profit data from pools)
+ECHO       clear_watts (removes all saved wattometer readings)
 echo.       
 echo.       
 echo.       
