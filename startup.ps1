@@ -2,10 +2,11 @@ $Dir = Split-Path $script:MyInvocation.MyCommand.Path
 $Dir = $Dir -replace "/var/tmp", "/root"
 Set-Location $Dir
 
+## EUID denotes if root or not.
 if ($IsLinux) { $Global:EUID = (Invoke-Expression "bash -c set" | ConvertFrom-StringData).EUID }
 if ($IsWindows) { try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$Dir`'" -WindowStyle Minimized } }catch { } }
 
-
+## Confirm user did not delect default.json
 if (Test-Path ".\config\parameters\default.json") {
     $Defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json
 }
@@ -22,6 +23,7 @@ $noconfig = $false
 
 ## Arguments take highest priority
 if ($args) {
+    ## First run -help
     if ( "-help" -in $args ) {
         if ($IsWindows) {
             $host.ui.RawUI.WindowTitle = "SWARM";
@@ -31,6 +33,9 @@ if ($args) {
             Invoke-Expression "./help_linux"
         }        
     }
+    ## Parse each argument. Convoluted way to scan arguments for issues.
+    ## This will add it to a hashtable, which will later add in any
+    ## defaults not specified.
     else {
         $Start = $true
         $args | % {
@@ -70,6 +75,9 @@ if ($args) {
     }
 }
 ## Check if h-run.sh ran config.json
+## If user threw a .json file in their wallet.config-
+## We simply pull the arguments and add in any defaults
+## They may have missed.
 elseif (test-path ".\config.json") {
     $parsed = @{ }
     $arguments = Get-Content ".\config.json" | ConvertFrom-Json
