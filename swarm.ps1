@@ -49,12 +49,20 @@ if ($IsWindows) {
 }
 
 ## Check Powershell version. Output warning.
-if ($PSVersionTable.PSVersion -ne "6.2.3") {
+if ($PSVersionTable.PSVersion -ne "6.2.4") {
     Write-Host "WARNING: Powershell Core Version is $($PSVersionTable.PSVersion)" -ForegroundColor Red
-    Write-Host "Currently supported version for SWARM is 6.2.3" -ForegroundColor Red
+    Write-Host "Currently supported version for SWARM is 6.2.4" -ForegroundColor Red
     Write-Host "SWARM will continue anyways- It may cause issues." -ForegroundColor Red
+    Write-Host "Links for Powershell:" -ForegroundColor Red
+    Write-Host "https://github.com/PowerShell/PowerShell/releases/tag/v6.2.4" -ForegroundColor Red
+
+    Write-Host ""
+    Write-Host "Windows: Microsoft Visual C++ Redistributable for Visual Studio 2015, 2017 and 2019" -ForegroundColor Red
+    Write-Host "Is Requried As Well:" -ForegroundColor Red
+    Write-Host "https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads" -ForegroundColor Red
+
     ## Create a pause in case window is scrolling too fast.
-    Start-Sleep -S 10
+    Start-Sleep -S 5
 }
 
 ##filepath dir

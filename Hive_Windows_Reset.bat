@@ -1,12 +1,12 @@
 @echo off
 
-REM ************Reset HiveOS**************************************************
-REM
-REM
-REM This will reset all saved settings with HiveOS.
-REM If you experience issues connecting, or other reasons
-REM That require resetting HiveOS connections (such as deleting working, reinstalling windows, etc.)
-REM Run this script to reset all saved settings. This will remove newarguments.json (current user parameters)
-REM as well.
+:: ************Reset HiveOS**************************************************
+::
+::
+:: This will reset all saved settings with HiveOS.
+:: If you experience issues connecting, or other reasons
+:: That require resetting HiveOS connections (such as deleting working, reinstalling windows, etc.)
+:: Run this script to reset all saved settings. This will ::ove newarguments.json (current user parameters)
+:: as well.
 
 pwsh -noexit -executionpolicy bypass -windowstyle maximized -command ".\build\powershell\scripts\reset.ps1"

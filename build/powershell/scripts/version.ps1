@@ -35,6 +35,38 @@ $Name = $Name -replace "!", ""
 $Version = $Version -replace "!", ""
 $Uri = $Uri -replace "!", ""
 
+if( $Command -eq "update" -and
+    $Name -eq "" -and
+    $Version -eq "" -and
+    $Uri -eq ""
+    ) {
+        $version_query = Invoke-expression "version query"
+        $version_query
+        $Name = Read-Host -Prompt "Please enter a miner name from the above list.
+        
+Miner"
+
+        $Version = Read-Host "Please enter new version number.
+
+*Note*: This is not specific. Just changing the version number will
+trigger SWARM to download the miner. It can be any value.
+
+Version"
+
+        $Uri = Read-Host "Please enter the link for the miner.
+
+*Note* Try using .tar.gz files for linux miners and .zip for Windows miners
+Using different compression methods may work, but not guranteed.
+
+*Note* If the executable name happens to be different- Go to config\update,
+find the miner in the appropriate .json file, and change the executable name
+and executable path there.
+
+*Last Note* Mega.nz is not direct download links. They will not work.
+
+URI"
+}
+
 
 if ($Uri -like "*mega.nz*") {
     $Message += "uri is a mega.nz link, it is not a direct download. It will not work"

@@ -308,6 +308,12 @@ Argument          Options           Explanation
 		    Hour_4,              you want to base switching on price averages, or live...And if
 		    Day                 you choose price averages, what average to base it on. Default
                     Custom              is day. If using -Custom_Periods, this must be set to Custom.
+		    
+-Rej_Factor        [Yes or No]		Default is Yes. Rej_Factor penalizes profit based on historical
+					rejection rate of shares. This means that if miners had 20% rejection
+					rate- The Next profit/day rating for that algo/miner combination would
+					be 20% lower. Rejection rate is based on a simple moving average
+					with each benchmark being the average period/samples.
 
 ***********************************************************************************************************
 *************** Miner Control *****************************************************************************
