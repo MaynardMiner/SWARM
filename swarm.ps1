@@ -26,6 +26,7 @@ Set-Location $Global:Config.vars.dir
 if (-not (test-path ".\debug")) { New-Item -Path "debug" -ItemType Directory | Out-Null }
 
 if ($IsWindows) {
+    Write-Host "Please Wait- Setting Environment Variables..." -ForegroundColor Green
     ## Fix weird PATH issues for commands
     $Target1 = [System.EnvironmentVariableTarget]::Machine
     $Target2 = [System.EnvironmentVariableTarget]::Process
@@ -42,7 +43,6 @@ if ($IsWindows) {
     [System.Environment]::SetEnvironmentVariable('SWARM_DIR', "$($Global:Config.vars.dir)", $Target1)
     ## By stopping explorer, it restarts retroactively with path refreshed
     ## for commands.
-    Stop-Process -ProcessName explorer
     ## Now set env variables for process- Just in case.
     [System.Environment]::SetEnvironmentVariable('Path', $New_PATH, $Target2)
     [System.Environment]::SetEnvironmentVariable('SWARM_DIR', "$($Global:Config.vars.dir)", $Target2)
