@@ -54,7 +54,7 @@ if ($PSVersionTable.PSVersion -ne "6.2.4") {
     Write-Host "Currently supported version for SWARM is 6.2.4" -ForegroundColor Red
     Write-Host "SWARM will continue anyways- It may cause issues." -ForegroundColor Red
     ## Create a pause in case window is scrolling too fast.
-    Start-Sleep -S 10
+    Start-Sleep -S 5
 }
 
 ##filepath dir
