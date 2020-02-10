@@ -74,7 +74,8 @@ I am a sole developer, and this is a large project. I prioritize workload by req
 * Windows 10 is supported, but it should work in Windows 7/8.
 * Have recent cuda/amd drivers installed. 
   * Note- The latest drivers aren't always the best to use, see discord support if you have questions.
-* Latest C++ Redistributable Packages for Visual Studio.
+* C++ Redistributable Packages for Visual Studio. (2012 and up)
+  * https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads
 * HiveOS user account, your farm hash ready. Ideally a pre-made flight sheet for SWARM. See wiki on how to setup a flight sheet.
   * https://hiveos.farm/
 * Latest Powershell Core, along with it being set in your PATH environment variable (should be done during install of Powershell Core).
