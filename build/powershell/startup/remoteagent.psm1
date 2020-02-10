@@ -897,6 +897,7 @@ Access Denied Error prevented.
                                         $Data | add-Member "cuckaroom" @{alt_names = @("cuckaroom"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                         $Data | add-Member "sha3d" @{alt_names = @("sha3d"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                         $Data | add-Member "cuckatoo32" @{alt_names = @("cuckatoo32","grincuckatoo32"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
+                                        $Data | add-Member "scryptn2" @{alt_names = @("scryptn2"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                     }
                                 
 
