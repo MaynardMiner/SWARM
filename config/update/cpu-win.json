@@ -1,5 +1,4 @@
 {
- "name": "bubasik",
   "bubasik": {
     "name": "bubasik",
     "type": "cpu",
@@ -8,6 +7,15 @@
     "version": "3.9.3.1",
     "optional": "No",
     "uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.9.3.1/cpuminer-opt-3.9.3.1-windows.zip"
+  },
+  "verium_miner": {
+    "name": "verium_miner",
+    "type": "cpu",
+    "CPU": ".\\bin\\verium_miner\\cpuminer.exe",
+    "minername": "cpuminer.exe",
+    "version": "1.4",
+    "optional": "No",
+    "uri": "https://github.com/fireworm71/veriumMiner/releases/download/v1.4/cpuminer_1.4_windows_x64_O2_GCC7.zip"
   },
   "rplant": {
     "name": "rplant",

@@ -777,6 +777,15 @@
       "comma seperated"
     ]
   },
+  "scryptn2": {
+    "alt_names": [
+      "scryptn2"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "sha3d": {
     "alt_names": [
       "sha3d"

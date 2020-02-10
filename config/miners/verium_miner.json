@@ -1,0 +1,20 @@
+{
+    "CPU": {
+        "name": "CPU",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "scryptn2": ""
+        },
+        "difficulty": {
+            "scryptn2": ""
+        },
+        "naming": {
+            "scryptn2": "scryptn2"
+        },
+        "fee": {
+            "scryptn2": 0
+        }
+    },
+    "name": "verium_miner"
+}
