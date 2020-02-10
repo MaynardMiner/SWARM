@@ -304,10 +304,10 @@ Access Denied Error prevented.
                                         $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                             if ($_ -ne "name") {
 
-                                                $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "randomv", "randomsfx"
-                                                $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "randomv", "randomsfx"
-                                                $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "randomv", "randomsfx"
-                                                $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "randomv", "randomsfx"
+                                                $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "randomv", "randomsfx", cryptonight_gpu
+                                                $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "randomv", "randomsfx", cryptonight_gpu
+                                                $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "randomv", "randomsfx", cryptonight_gpu
+                                                $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "randomv", "randomsfx", cryptonight_gpu
 
                                                 $Data.$_.commands | Add-Member "randomx" "" -ErrorAction SilentlyContinue
                                                 $Data.$_.difficulty | Add-Member "randomx" "" -ErrorAction SilentlyContinue 
