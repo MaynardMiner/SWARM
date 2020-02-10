@@ -13,6 +13,18 @@ ECHO       version update (updates a current miner)
 ECHO       swarm_help (starts configuration help)
 ECHO       clear_profits (deletes all profit data from pools)
 ECHO       clear_watts (removes all saved wattometer readings)
+ECHO
+ECHO       Note- all these commands can be ran and auto refreshed
+ECHO       Using 'nview' command
+ECHO       Example:
+ECHO
+ECHO       nview -n 30 -OnChange get stats 5
+ECHO
+ECHO       This command will run get stats 5 every 30 seconds
+ECHO       and refresh screen if data has changed.
+ECHO       get stats 5 will get top 5 stats.
+ECHO       get stats lite will get stats in Cell-Phone
+ECHO       friendly format (List format)
 echo.       
 echo.       
 echo.       
