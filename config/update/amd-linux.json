@@ -204,9 +204,9 @@
     "AMD2": ".\\bin\\xmrig-amd-2\\xmrig",
     "AMD3": ".\\bin\\xmrig-amd-3\\xmrig",
     "minername": "xmrig",
-    "version": "5.5.0",
+    "version": "5.5.3",
     "optional": "No",
-    "uri": "https://github.com/xmrig/xmrig/releases/download/v5.5.0/xmrig-5.5.0-xenial-x64.tar.gz"
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v8.0/xmrig-linux.tar.gz"
   },
   "xmrigcc-amd": {
     "name": "xmrigcc-amd",
