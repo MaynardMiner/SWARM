@@ -54,6 +54,8 @@ SWARM is very customizable. At the base layer- It is easy to setup by simply inp
 
 ![alt text](https://github.com/MaynardMiner/SWARM/blob/master/build/data/win%20example.png)
 
+![alt text](https://github.com/MaynardMiner/SWARM/blob/master/build/data/HiveOS_Example.png)
+
 ### Bash or Powershell Scripting
 
 SWARM was designed to make SWARM bigger than itself. All commands can be executed via bash scripts/shell commands on the linux side, and we are slowly implementing the same features to the window's side. With the ``Lite`` mode, SWARM can be easily incorporated into any current miningOS available, and users can customize/create their own launch process, independent of SWARM. In Windows, you should be able to run cmd.exe and powershell actions through HiveOS dashboard. An example of this would be:
