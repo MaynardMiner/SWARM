@@ -631,6 +631,8 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
         $MSFile = ".\debug\minerstats.txt"
         if (test-Path ".\debug\minerstats.txt") { $Get += Get-Content ".\debug\minerstats.txt" }
         Remove-Module "hashrates"
+        $Get += ""
+        $Get += "If you would like to have this to continue to refresh every 30 seconds- Use 'nview get stats -n 30'"
     }
     "charts" { if (Test-Path ".\debug\charts.txt") { $Get += Get-Content ".\debug\charts.txt" } }
     "active" {
