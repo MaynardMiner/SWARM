@@ -31,7 +31,7 @@ function Global:Start-Hello($RigData) {
             net_interfaces   = ""
             openvpn          = "0"
             lan_config       = ""
-            gpu              = if($RigData.gpu){$RigData.gpu}else{""}
+            gpu              = if($RigData.gpu){@($RigData.gpu)}else{""}
             gpu_count_amd    = "$($RigData.gpu_count_amd)"
             gpu_count_nvidia = "$($RigData.gpu_count_nvidia)"
             worker_name      = "$($global:Config.hive_params.Worker)" 
