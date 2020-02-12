@@ -37,11 +37,11 @@ SWARM then compresses that folder to save space. After 12 hours of successful ru
 delete these crash reports.
 
 ## Miner logs
-SWARM does its best to caputer standardoutput of all miners. In linux, this is relatively easy to do,
+SWARM does its best to capture standardoutput of all miners. In linux, this is relatively easy to do,
 but in Windows it is a constant challenge.
 
 Whatever miner is running, the output of the miner is sent to [GROUP].log, which means if using NVIDIA1
 that would be NVIDIA1.log
 
-This data can be pulled remotely with the command get screen [GROUP], which will show you as much of
+This data can be pulled remotely with the command ``get screen [GROUP]``, which will show you as much of
 the log it can print out and send remotely.
