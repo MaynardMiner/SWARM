@@ -722,6 +722,8 @@ Answer"
 
 Would you like to use HiveOS web dashboard for online statistics and remote control?
 
+Tip: Only works for GPUs. Will not stat CPU or ASIC types.
+
 1 Yes
 2 No
 
