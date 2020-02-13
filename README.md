@@ -83,9 +83,9 @@ I am a sole developer, and this is a large project. I prioritize workload by req
 * Latest Powershell Core, along with it being set in your PATH environment variable (should be done during install of Powershell Core).
     https://github.com/PowerShell/PowerShell/releases/tag/v6.2.3
 * Latest .NET core runtime.
-  * https://dotnet.microsoft.com/download
-* Miners require various versions of C++ Redistributable. The latest are here:
-   https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads
+  * https://dotnet.microsoft.com/download/dotnet-core/3.0
+* Latest .NET runtime.
+  * https://dotnet.microsoft.com/download/dotnet-framework/net472
 
 *Install Steps:*
 
