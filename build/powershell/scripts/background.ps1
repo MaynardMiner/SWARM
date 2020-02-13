@@ -22,7 +22,7 @@ $StartTime = [Math]::Round(((Get-Date) - $UtcTime).TotalSeconds)
 $Global:config = [hashtable]::Synchronized(@{ })
 $global:config.Add("vars", @{ })
 . .\build\powershell\global\modules.ps1
-$(vars).Add("dir", $WorkingDir)
+$(vars).Add("dir", $env:SWARM_DIR)
 $env:Path += ";$($(vars).dir)\build\cmd"
 $Target = [System.EnvironmentVariableTarget]::Process
 [System.Environment]::SetEnvironmentVariable('SWARM_DIR', $WorkingDir, $Target)
