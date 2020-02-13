@@ -15,6 +15,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #######                      Startup                                    ######
 ##############################################################################
 
+## any windows version below 10 invoke full screen mode.
+if($isWindows) {
+    $os_string = "$([System.Environment]::OSVersion.Version)".split(".") | Select -First 1
+    if([int]$os_string -lt 10) {
+        invoke-expression "mode 800"
+    }
+}
 ## Set Current Path
 $Global:config = [hashtable]::Synchronized(@{ })
 [cultureinfo]::CurrentCulture = 'en-US'
