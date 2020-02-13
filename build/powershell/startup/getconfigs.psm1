@@ -15,7 +15,7 @@ function Global:Start-Background {
     $start = [launchcode]::New()
     $FilePath = "$PSHome\pwsh.exe"
     $CommandLine = '"' + $FilePath + '"'
-    $arguments = "-executionpolicy bypass -command `".\build\powershell\scripts\background.ps1 -WorkingDir $($(vars).Dir)`""
+    $arguments = "-executionpolicy bypass -command `".\build\powershell\scripts\background.ps1`""
     $CommandLine += " " + $arguments
     $New_Miner = $start.New_Miner($filepath,$CommandLine,$(vars).Dir)
     $Process = Get-Process | Where id -eq $New_Miner.dwProcessId
