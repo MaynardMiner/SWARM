@@ -22,6 +22,7 @@ if($isWindows) {
         invoke-expression "mode 800"
     }
 }
+
 ## Set Current Path
 $Global:config = [hashtable]::Synchronized(@{ })
 [cultureinfo]::CurrentCulture = 'en-US'
