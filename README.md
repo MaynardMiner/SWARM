@@ -119,7 +119,7 @@ This is an example of how to remote install/update miner. It is the fastest way 
 
 Coin/Wallet is irrelevant. You can basically enter whatever you want. Then navigate to custom miner:
 
-![alt text](https://raw.githubusercontent.com/MaynardMiner/SWARM_PHOTOS/blob/master/First_Step.png)
+![alt text](https://github.com/MaynardMiner/SWARM_PHOTOS/blob/master/First_Step.png)
 
 From there you should see this window. Pool and URL are setup with arguments. However, Hive 2.0 requires those fields to not be empty. You can simply enter anything there. See photo below on how to setup miner. Just insert the name of the latest release, and the release tar.gz file link. Then insert your arguments in the bottom box:
 
