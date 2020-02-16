@@ -459,6 +459,11 @@ Access Denied Error prevented.
                                                 $Data.$_.naming | Add-Member "cryptonight-conceal" "cnconceal" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "cryptonight-conceal" 1 -ErrorAction SilentlyContinue
 
+                                                $Data.$_.commands | Add-Member "cryptonight-upx2" "" -ErrorAction SilentlyContinue
+                                                $Data.$_.difficulty | Add-Member "cryptonight-upx2" "" -ErrorAction SilentlyContinue 
+                                                $Data.$_.naming | Add-Member "cryptonight-upx2" "CryptoNightUPX" -ErrorAction SilentlyContinue
+                                                $Data.$_.fee | Add-Member "cryptonight-upx2" 1 -ErrorAction SilentlyContinue
+
                                                 $Data.$_.commands | Add-Member "chukwa" "" -ErrorAction SilentlyContinue
                                                 $Data.$_.difficulty | Add-Member "chukwa" "" -ErrorAction SilentlyContinue 
                                                 $Data.$_.naming | Add-Member "chukwa" "argon2-512" -ErrorAction SilentlyContinue
