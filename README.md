@@ -24,8 +24,6 @@ This miner is a commandline tool. It does not require a desktop environment in L
 
 To focus solely on SWARM's project mission: SWARM was written to integrate fully with HiveOS as of version 1.4.5. The developer of SWARM recognizes the attempt to make an OS/website as sophisticated as the years of development and effort placed into HiveOS would be pointless. Therefor, knowing that SWARM was capable of operating within HiveOS- SWARM was introduced to HiveOS as an available custom miner, and can be integrated rather easily. SWARM also has created a significant amout of scripts which can be ran automatically through HiveOS, and even locally on rig- Allowing you to run multiple terminals and windows, and customize your own setup. Commands like ``get stats`` and ``benchmark all`` can be ran at any moment- Allowing you to quick make changes as neccessary. You also have ALL of the functionality you would get with HiveOS, along with MOST of the functionality of HiveOS's website in the Windows version.
 
-### SMOS Integration
-
 After many user requests, SWARM now works in Simple Miner. See Wiki on how to setup. Simplemining.net is lighter than HiveOS, which makes it generally easier to use for an experienced miner, but non-experienced Linux user. I don't personally regularly use SMOS, nor maintain SMOS support, so if you have an issue, post in issues section, and I will plug in and update SMOS compatibility.
 
 ### Highly Sophisticated Customization
