@@ -131,7 +131,7 @@ From there you should see this window. Pool and URL are setup with arguments. Ho
 
 https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration)
 
-![alt text](https://raw.githubusercontent.com/MaynardMiner/SWARM_PHOTOS/blob/master/Second.png)
+![alt text](https://github.com/MaynardMiner/SWARM_PHOTOS/blob/master/Second.png)
 
 **Note**
 
