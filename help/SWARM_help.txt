@@ -227,13 +227,14 @@ Argument          Options           Explanation
                                     coin mining. Only avaiable for debug purposes.
 
 
--Max_TTF       [any integer]        Default is 86400 seconds (day).
+-Min_Blocks   [any integer]         Default is 1 (1 block a day).
                                     Will only affect Coin pools.
                                     Auto_Coin must be Yes, or this will be ignored.
-                                    SWARM will calculate the time pool (not your miner) is finding
-                                    blocks, and will not select coins that has a block time find
-                                    above this value. By default, SWARM will ignore any coins that
-                                    is taking the pool a day or longer to find.
+                                    This is the minium number of blocks required from pool
+                                    to find in a day for coin to be used. An example of this would
+                                    be if the ``-Min_Blocks`` is 5, and the coin in question is only
+                                    finding 3 blocks in the past 24 hours, that coin will be removed
+                                    from the database. This is based on shared pool block finds.
 
 -Volume       [Yes,No]              Default is No. Volume calculates pool hashrate % in comparision
                                     to other pools, and will penalize pools based on percent difference

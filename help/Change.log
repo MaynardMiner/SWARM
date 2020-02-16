@@ -1955,9 +1955,9 @@ but beta in design.
 # SWARM 3.0.0
 
 ## What's New?
-* New Argument: ``-Max_TTF``
+* New Argument: ``-Min_Blocks``
   * https://github.com/MaynardMiner/SWARM/blob/master/help/SWARM_help.txt#L230
-  * Sets a maximum block time find for coins, based on pool block time finds.
+  * Sets a maximum block find amount for coins, based on pool block finds.
 
 ## Improvements
 * Only run env changes when needed
