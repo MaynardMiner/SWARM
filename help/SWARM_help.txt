@@ -226,12 +226,20 @@ Argument          Options           Explanation
 -Auto_Algo     [Yes,No]		    Default is "Yes". Should always be set to "Yes", even when single
                                     coin mining. Only avaiable for debug purposes.
 
--Volume         [0-100]             Default is No. Volume calculates pool hashrate % in comparision
+
+-Max_TTF       [any integer]        Default is 86400 seconds (day).
+                                    Will only affect Coin pools.
+                                    Auto_Coin must be Yes, or this will be ignored.
+                                    SWARM will calculate the time pool (not your miner) is finding
+                                    blocks, and will not select coins that has a block time find
+                                    above this value. By default, SWARM will ignore any coins that
+                                    is taking the pool a day or longer to find.
+
+-Volume       [Yes,No]              Default is No. Volume calculates pool hashrate % in comparision
                                     to other pools, and will penalize pools based on percent difference
                                     from pool with highest hashrate. This means SWARM favors pools with
                                     the highest hashrates for each algorithm. The % values are displayed
-                                    on get stats screen, under Vol. SWARM will only penalize pools up to
-                                    x%, where x is this parameter.
+                                    on get stats screen.
 
 -Historical_Bias [0-100]            Expressed as Percentage. 
                                     Will only affect Auto_Algo.

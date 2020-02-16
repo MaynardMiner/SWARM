@@ -62,7 +62,7 @@ if ($IsWindows) {
     ## for commands.
     ## Now set env variables for process- Just in case.
     if ($restart -eq $true) {
-        Stop-Process -name "Explorer"
+        Stop-Process -ProcessName explorer
     }
 }
 
