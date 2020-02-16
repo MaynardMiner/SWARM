@@ -287,7 +287,8 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                 if ($MinerCurrent.Prestart) {
                     $Prestart = @()
                     $Prestart += "`#`# Environment Targets"
-                    $Prestart += "`$Target = [EnvironmentVariableTarget]::Machine;"
+                    $Prestart += "`$Target = [EnvironmentVariableTarget]::Process;"
+                    $Prestart += "Write-Host Setting Environment Variables..."
                     $MinerCurrent.Prestart | ForEach-Object {
                         if ($_ -like "*export*" -and $_ -notlike "*export LD_LIBRARY_PATH=*") {
                             $Total = $_.replace("export ", "");
