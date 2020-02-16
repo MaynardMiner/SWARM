@@ -13,6 +13,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 [cultureinfo]::CurrentCulture = 'en-US'
 if ($IsWIndows) { $host.ui.RawUI.WindowTitle = "Background Agent" }
+## any windows version below 10 invoke full screen mode.
+if ($isWindows) {
+    $os_string = "$([System.Environment]::OSVersion.Version)".split(".") | Select -First 1
+    if ([int]$os_string -lt 10) {
+        invoke-expression "mode 800"
+    }
+}
 #$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
 #$WorkingDir = "/root/hive/miners/custom/SWARM"
 Set-Location $env:SWARM_DIR

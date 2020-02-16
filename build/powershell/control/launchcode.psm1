@@ -294,6 +294,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                             $Total = $_.replace("export ", "");
                             $Variable = $Total.Split("=")[0];
                             $Value = $Total.Split("=")[1];
+                            $Prestart += "Write-Host `"$Variable=$Value`""
                             $Prestart += "[environment]::SetEnvironmentVariable(`"$Variable`",$Value,`$Target);"
                         } 
                         elseif ($_ -notlike "*export LD_LIBRARY_PATH=*") {

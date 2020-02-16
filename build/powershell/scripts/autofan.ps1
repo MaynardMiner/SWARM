@@ -529,6 +529,13 @@ class Message {
 
 ## Gather Script Variables
 $host.ui.RawUI.WindowTitle = "Autofan"
+## any windows version below 10 invoke full screen mode.
+if ($isWindows) {
+    $os_string = "$([System.Environment]::OSVersion.Version)".split(".") | Select -First 1
+    if ([int]$os_string -lt 10) {
+        invoke-expression "mode 800"
+    }
+}
 $Global:DIR = (Split-Path(Split-Path(Split-Path(Split-Path($script:MyInvocation.MyCommand.Path)))))
 $Config_Path = [IO.Path]::Join($Global:Dir, "config\parameters\autofan.json")
 Set-Location $GLobal:Dir
