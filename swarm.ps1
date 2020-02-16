@@ -16,9 +16,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##############################################################################
 
 ## any windows version below 10 invoke full screen mode.
-if($isWindows) {
+if ($isWindows) {
     $os_string = "$([System.Environment]::OSVersion.Version)".split(".") | Select -First 1
-    if([int]$os_string -lt 10) {
+    if ([int]$os_string -lt 10) {
         invoke-expression "mode 800"
     }
 }
@@ -34,26 +34,36 @@ Set-Location $Global:Config.vars.dir
 if (-not (test-path ".\debug")) { New-Item -Path "debug" -ItemType Directory | Out-Null }
 
 if ($IsWindows) {
-    Write-Host "Please Wait- Setting Environment Variables..." -ForegroundColor Green
     ## Fix weird PATH issues for commands
+    $restart = $false
     $Target1 = [System.EnvironmentVariableTarget]::Machine
     $Target2 = [System.EnvironmentVariableTarget]::Process
     $Path = [System.Environment]::GetEnvironmentVariable('Path', $Target1)
     $Path_List = $Path.Split(';')
     
     ## Remove all old SWARM Paths and add current
-    $Path_List = $Path_List | Where { $_ -notlike "*SWARM*" }
-    $Path_List += "$($Global:Config.vars.dir)\build\cmd"
-    $New_PATH = $Path_List -join (';')
+    if ("$($Global:Config.vars.dir)\build\cmd" -notin $Path_List) {
+        Write-Host "Please Wait- Setting Environment Variables..." -ForegroundColor Green
+        $Path_List = $Path_List | Where { $_ -notlike "*SWARM*" }
+        $Path_List += "$($Global:Config.vars.dir)\build\cmd"
+        $New_PATH = $Path_List -join (';')    
+        [System.Environment]::SetEnvironmentVariable('Path', $New_PATH, $Target1)
+        [System.Environment]::SetEnvironmentVariable('Path', $New_PATH, $Target2)
+        $restart = $true
+    }
 
     ## Set Path
-    [System.Environment]::SetEnvironmentVariable('Path', $New_PATH, $Target1)
-    [System.Environment]::SetEnvironmentVariable('SWARM_DIR', "$($Global:Config.vars.dir)", $Target1)
+    if ($Env:SWARM_DIR -ne $Global:Config.vars.dir) {
+        $restart = $true
+        [System.Environment]::SetEnvironmentVariable('SWARM_DIR', "$($Global:Config.vars.dir)", $Target1)
+        [System.Environment]::SetEnvironmentVariable('SWARM_DIR', "$($Global:Config.vars.dir)", $Target2)
+    }
     ## By stopping explorer, it restarts retroactively with path refreshed
     ## for commands.
     ## Now set env variables for process- Just in case.
-    [System.Environment]::SetEnvironmentVariable('Path', $New_PATH, $Target2)
-    [System.Environment]::SetEnvironmentVariable('SWARM_DIR', "$($Global:Config.vars.dir)", $Target2)
+    if ($restart -eq $true) {
+        Stop-Process -name "Explorer"
+    }
 }
 
 ## Check Powershell version. Output warning.
