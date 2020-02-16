@@ -151,12 +151,15 @@ Please choose an advanced setting you wish to modify:
 [CPU]
 49 I would like to set cpu priority for cpu miners (-cpu_priority)
 
+[Other]
+50 I would like to set maximum block time for coins. (-Max_TTF)
+
 I wish to use an optional miner from the optional miner folder (-Optional)
       * Note you can just move the file into nvida or amd folder.
         This help option not available yet.
 
 Answer"
-        $Check = Global:Confirm-Answer $ans @(1 .. 49)
+        $Check = Global:Confirm-Answer $ans @(1 .. 50)
     }While ($Check -eq 1)
     $ans
 }
@@ -870,6 +873,11 @@ Answer"
                     elseif ($(vars).input -eq 49) {
                         Add-Module "$hd\cpu.psm1"
                         Global:Get-CPU
+                        Global:Remove-Modules
+                    }
+                    elseif ($(vars).input -eq 50) {
+                        Add-Module "$hd\ttf.psm1"
+                        Global:Get-TTF
                         Global:Remove-Modules
                     }
                 }
