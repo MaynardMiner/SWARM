@@ -48,9 +48,9 @@ To focus solely on SWARM's project mission: SWARM was written to integrate fully
 
 SWARM is very customizable. At the base layer- It is easy to setup by simply inputting some basic user configuration at launch, and SWARM will handle the rest. However, beyond the base layer, SWARM offers a sophisticated oc tuning system, along with the ability to customize environment varibles, miner arguments, pool difficulty, and even a system for factoring power cost/calculation into profit analysis. SWARM allows you prohibt miners from certain algorithms, or prohibit mining certain algorithms on certain pools. SWARM also has the ability to control your overclocking internally, including support for AMD Vega in Windows using the latest drivers. It also supports accepting overclocking commands via HiveOS's website, with use of -API_key. 
 
-![alt text](https://github.com/MaynardMiner/SWARM/blob/master/build/data/win%20example.png)
+![alt text](https://github.com/MaynardMiner/SWARM_PHOTOS/blob/master/win%20example.png)
 
-![alt text](https://github.com/MaynardMiner/SWARM/blob/master/build/data/HiveOS_Example.png)
+![alt text](https://github.com/MaynardMiner/SWARM_PHOTOS/blob/master/HiveOS_Example.png)
 
 ### Bash or Powershell Scripting
 
@@ -119,7 +119,7 @@ This is an example of how to remote install/update miner. It is the fastest way 
 
 Coin/Wallet is irrelevant. You can basically enter whatever you want. Then navigate to custom miner:
 
-![alt text](https://raw.githubusercontent.com/MaynardMiner/SWARM/master/build/data/First_Step.png)
+![alt text](https://github.com/MaynardMiner/SWARM_PHOTOS/blob/master/First_Step.png)
 
 From there you should see this window. Pool and URL are setup with arguments. However, Hive 2.0 requires those fields to not be empty. You can simply enter anything there. See photo below on how to setup miner. Just insert the name of the latest release, and the release tar.gz file link. Then insert your arguments in the bottom box:
 
@@ -131,7 +131,7 @@ From there you should see this window. Pool and URL are setup with arguments. Ho
 
 https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration)
 
-![alt text](https://raw.githubusercontent.com/MaynardMiner/SWARM/master/build/data/Second.png)
+![alt text](https://github.com/MaynardMiner/SWARM_PHOTOS/blob/master/Second.png)
 
 **Note**
 
