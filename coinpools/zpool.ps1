@@ -95,6 +95,7 @@ if ($Name -in $(arg).PoolName) {
 
         $zpool_Sorted.PSObject.Properties.Value | 
         Where-Object Algo -eq $Selected | 
+        Where-Object { ([Convert]::ToDouble($_.timesincelast) + [Convert]::ToDouble($_.pool_ttf)) -lt $(arg).Max_TTF } |
         Where-Object { if([string]$(arg).coin -ne "") { $_.sym -in $(arg).coin } else{$_} } |
         Sort-Object Level -Descending | 
         Select-Object -First 1 | 

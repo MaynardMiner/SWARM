@@ -107,5 +107,6 @@
     "Admin_Fee": 0,
     "Admin_Pass": "BTC",
     "Rej_Factor": "Yes",
-    "cpu_priority": 0
+    "cpu_priority": 0,
+    "Max_TTF": 86401
 }
