@@ -30,7 +30,7 @@ Answer"
             $Check = 1;
         }
     }While ($Check -eq 1)
-    if ($(vars).config.ContainsKey("cpu_priority")) { $(vars).config.cpu_priority = $get } else { $(vars).config.Add("Max_TTF", $get) }
+    if ($(vars).config.ContainsKey("Max_TTF")) { $(vars).config.Max_TTF = $get } else { $(vars).config.Add("Max_TTF", $get) }
 }
 
 function Global:Get-TTF { 
