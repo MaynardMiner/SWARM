@@ -86,7 +86,7 @@ if ($Name -in $(arg).PoolName) {
 
         $block_sorted.PSObject.Properties.Value | 
         Where-Object Algo -eq $Selected | 
-        Where-Object { [Convert]::Int32($_."24h_blocks") -ge $(arg).Min_Blocks } |
+        Where-Object { [Convert]::ToInt32($_."24h_blocks") -ge $(arg).Min_Blocks } |
         Where-Object { if([string]$(arg).coin -ne "") { $_.sym -in $(arg).coin } else{$_} } |
         Sort-Object Level -Descending | 
         Select-Object -First 1 | 
