@@ -107,7 +107,11 @@ elseif (Test-Path ".\config\parameters\newarguments.json") {
 else {
     if ($IsWindows) {
         $host.ui.RawUI.WindowTitle = "SWARM";
-        Start-Process "CMD" -ArgumentList "/C `"pwsh -noexit -executionpolicy Bypass -WindowStyle Maximized -command `"Set-Location C:\; Set-Location `'$Dir`'; .\build\powershell\scripts\help.ps1`"`"" -Verb RunAs
+        $Windowstyle = "Maximized"
+        if ($Parsed.Hidden -eq "Yes") {
+            $Windowstyle = "Hidden"
+        }
+        Start-Process "CMD" -ArgumentList "/C `"pwsh -noexit -executionpolicy Bypass -WindowStyle $WindowStyle -command `"Set-Location C:\; Set-Location `'$Dir`'; .\build\powershell\scripts\help.ps1`"`"" -Verb RunAs
     }
     else {
         Invoke-Expression "./help_linux"
