@@ -108,6 +108,7 @@ if ($Name -in $(arg).PoolName) {
 
         $Zergpool_Sorted.PSObject.Properties.Value | 
         Where-Object Algo -eq $Selected | 
+        Where-Object { [Convert]::ToInt32($_."24h_blocks_shared") -ge $(arg).Min_Blocks } |
         Where-Object { if ([string]$(arg).coin -ne "") { $_.sym -in $(arg).coin } else { $_ } } |
         Sort-Object Level -Descending | 
         Select-Object -First 1 | 

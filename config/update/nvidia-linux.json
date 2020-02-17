@@ -51,9 +51,9 @@
     "NVIDIA2": ".\\bin\\cryptodredge-2\\CryptoDredge",
     "NVIDIA3": ".\\bin\\cryptodredge-3\\CryptoDredge",
     "minername": "CryptoDredge",
-    "version": "0.22.0",
+    "version": "0.23.0",
     "optional": "No",
-    "uri": "https://github.com/technobyl/CryptoDredge/releases/download/v0.22.0/CryptoDredge_0.22.0_cuda_10.1_linux.tar.gz"
+    "uri": "https://github.com/technobyl/CryptoDredge/releases/download/v0.23.0/CryptoDredge_0.23.0_cuda_10.1_linux.tar.gz"
   },
   "cc-sha3d": {
     "name": "cc-sha3d",
@@ -238,9 +238,9 @@
     "NVIDIA2": ".\\bin\\bminer-2\\bminer",
     "NVIDIA3": ".\\bin\\bminer-3\\bminer",
     "minername": "bminer",
-    "version": "16.0.2",
+    "version": "16.0.5",
     "optional": "No",
-    "uri": "https://www.bminercontent.com/releases/bminer-v16.0.2-9094ce6-amd64.tar.xz"
+    "uri": "https://www.bminercontent.com/releases/bminer-v16.0.5-21104ec-amd64.tar.xz"
   },
   "miniz": {
     "name": "miniz",
@@ -271,9 +271,9 @@
     "NVIDIA2": ".\\bin\\xmrig-nv-2\\xmrig",
     "NVIDIA3": ".\\bin\\xmrig-nv-3\\xmrig",
     "minername": "xmrig",
-    "version": "5.5.0",
+    "version": "5.5.3",
     "optional": "No",
-    "uri": "https://github.com/xmrig/xmrig/releases/download/v5.5.0/xmrig-5.5.0-xenial-x64.tar.gz"
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v8.0/xmrig-linux.tar.gz"
   },
   "cc-verus": {
     "name": "cc-verus",

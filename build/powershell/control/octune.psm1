@@ -83,7 +83,11 @@ function Global:Start-OC($Miner) {
             else { $PillSleep = 1 }
             $PillTimer = New-Object -TypeName System.Diagnostics.Stopwatch
             $PL = Join-Path "$($(vars).dir)" ".\build\apps"
-            $command = Start-Process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle minimized -noexit -command `"&{`$host.ui.RawUI.WindowTitle = `'ETH-Pill`'; Set-Location $PL; Start-Sleep $PillSleep; Invoke-Expression `'.\ohgodatool\OhGodAnETHlargementPill-r2.exe $PillDevices`'}`"" -WindowStyle Minimized -PassThru -Verb Runas
+            $WindowStlye = "Maximized"
+            if ($(arg).Hidden -eq "Yes") {
+                $Windowstyle = "Hidden"
+            }            
+            $command = Start-Process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle $WindowStlye -command `"&{`$host.ui.RawUI.WindowTitle = `'ETH-Pill`'; Set-Location $PL; Start-Sleep $PillSleep; Invoke-Expression `'.\ohgodatool\OhGodAnETHlargementPill-r2.exe $PillDevices`'}`"" -WindowStyle Minimized -PassThru -Verb Runas
             $command.ID | Set-Content ".\build\pid\pill_pid.txt"
             $PillTimer.Restart()
             do {

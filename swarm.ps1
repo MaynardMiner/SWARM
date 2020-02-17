@@ -15,6 +15,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #######                      Startup                                    ######
 ##############################################################################
 
+## any windows version below 10 invoke full screen mode.
+if ($isWindows) {
+    $os_string = "$([System.Environment]::OSVersion.Version)".split(".") | Select -First 1
+    if ([int]$os_string -lt 10) {
+        invoke-expression "mode 800"
+    }
+}
+
 ## Set Current Path
 $Global:config = [hashtable]::Synchronized(@{ })
 [cultureinfo]::CurrentCulture = 'en-US'
@@ -27,34 +35,52 @@ if (-not (test-path ".\debug")) { New-Item -Path "debug" -ItemType Directory | O
 
 if ($IsWindows) {
     ## Fix weird PATH issues for commands
+    $restart = $false
     $Target1 = [System.EnvironmentVariableTarget]::Machine
     $Target2 = [System.EnvironmentVariableTarget]::Process
     $Path = [System.Environment]::GetEnvironmentVariable('Path', $Target1)
     $Path_List = $Path.Split(';')
     
     ## Remove all old SWARM Paths and add current
-    $Path_List = $Path_List | Where { $_ -notlike "*SWARM*" }
-    $Path_List += "$($Global:Config.vars.dir)\build\cmd"
-    $New_PATH = $Path_List -join (';')
+    if ("$($Global:Config.vars.dir)\build\cmd" -notin $Path_List) {
+        Write-Host "Please Wait- Setting Environment Variables..." -ForegroundColor Green
+        $Path_List = $Path_List | Where { $_ -notlike "*SWARM*" }
+        $Path_List += "$($Global:Config.vars.dir)\build\cmd"
+        $New_PATH = $Path_List -join (';')    
+        [System.Environment]::SetEnvironmentVariable('Path', $New_PATH, $Target1)
+        [System.Environment]::SetEnvironmentVariable('Path', $New_PATH, $Target2)
+        $restart = $true
+    }
 
     ## Set Path
-    [System.Environment]::SetEnvironmentVariable('Path', $New_PATH, $Target1)
-    [System.Environment]::SetEnvironmentVariable('SWARM_DIR', "$($Global:Config.vars.dir)", $Target1)
+    if ($Env:SWARM_DIR -ne $Global:Config.vars.dir) {
+        $restart = $true
+        [System.Environment]::SetEnvironmentVariable('SWARM_DIR', "$($Global:Config.vars.dir)", $Target1)
+        [System.Environment]::SetEnvironmentVariable('SWARM_DIR', "$($Global:Config.vars.dir)", $Target2)
+    }
     ## By stopping explorer, it restarts retroactively with path refreshed
     ## for commands.
-    Stop-Process -ProcessName explorer
     ## Now set env variables for process- Just in case.
-    [System.Environment]::SetEnvironmentVariable('Path', $New_PATH, $Target2)
-    [System.Environment]::SetEnvironmentVariable('SWARM_DIR', "$($Global:Config.vars.dir)", $Target2)
+    if ($restart -eq $true) {
+        Stop-Process -ProcessName explorer
+    }
 }
 
 ## Check Powershell version. Output warning.
-if ($PSVersionTable.PSVersion -ne "6.2.3") {
+if ($PSVersionTable.PSVersion -ne "6.2.4") {
     Write-Host "WARNING: Powershell Core Version is $($PSVersionTable.PSVersion)" -ForegroundColor Red
-    Write-Host "Currently supported version for SWARM is 6.2.3" -ForegroundColor Red
+    Write-Host "Currently supported version for SWARM is 6.2.4" -ForegroundColor Red
     Write-Host "SWARM will continue anyways- It may cause issues." -ForegroundColor Red
+    Write-Host "Links for Powershell:" -ForegroundColor Red
+    Write-Host "https://github.com/PowerShell/PowerShell/releases/tag/v6.2.4" -ForegroundColor Red
+
+    Write-Host ""
+    Write-Host "Windows: Microsoft Visual C++ Redistributable for Visual Studio (2012) (2013) (2015,2017 and 2019)" -ForegroundColor Red
+    Write-Host "Is Requried As Well:" -ForegroundColor Red
+    Write-Host "https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads" -ForegroundColor Red
+
     ## Create a pause in case window is scrolling too fast.
-    Start-Sleep -S 10
+    Start-Sleep -S 5
 }
 
 ##filepath dir

@@ -15,6 +15,10 @@ $dir = (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCo
 $dir = $dir -replace "/var/tmp", "/root"
 Set-Location $dir
 
+if(-not (test-path "/etc/profile.d/SWARM.sh")) {
+    "export SWARM_DIR=$dir" | Set-Content "/etc/profile.d/SWARM.sh"
+}
+
 ##Check for libc
 $Proc = Start-Process ".\build\bash\screen.sh" -PassThru
 $Proc | Wait-Process

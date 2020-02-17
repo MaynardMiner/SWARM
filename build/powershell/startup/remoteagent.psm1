@@ -304,10 +304,10 @@ Access Denied Error prevented.
                                         $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                             if ($_ -ne "name") {
 
-                                                $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "randomv", "randomsfx"
-                                                $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "randomv", "randomsfx"
-                                                $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "randomv", "randomsfx"
-                                                $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "randomv", "randomsfx"
+                                                $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "randomv", "randomsfx", cryptonight_gpu
+                                                $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "randomv", "randomsfx", cryptonight_gpu
+                                                $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "randomv", "randomsfx", cryptonight_gpu
+                                                $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "randomv", "randomsfx", cryptonight_gpu
 
                                                 $Data.$_.commands | Add-Member "randomx" "" -ErrorAction SilentlyContinue
                                                 $Data.$_.difficulty | Add-Member "randomx" "" -ErrorAction SilentlyContinue 
@@ -458,6 +458,11 @@ Access Denied Error prevented.
                                                 $Data.$_.difficulty | Add-Member "cryptonight-conceal" "" -ErrorAction SilentlyContinue 
                                                 $Data.$_.naming | Add-Member "cryptonight-conceal" "cnconceal" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "cryptonight-conceal" 1 -ErrorAction SilentlyContinue
+
+                                                $Data.$_.commands | Add-Member "cryptonight-upx2" "" -ErrorAction SilentlyContinue
+                                                $Data.$_.difficulty | Add-Member "cryptonight-upx2" "" -ErrorAction SilentlyContinue 
+                                                $Data.$_.naming | Add-Member "cryptonight-upx2" "CryptoNightUPX" -ErrorAction SilentlyContinue
+                                                $Data.$_.fee | Add-Member "cryptonight-upx2" 1 -ErrorAction SilentlyContinue
 
                                                 $Data.$_.commands | Add-Member "chukwa" "" -ErrorAction SilentlyContinue
                                                 $Data.$_.difficulty | Add-Member "chukwa" "" -ErrorAction SilentlyContinue 
@@ -897,6 +902,7 @@ Access Denied Error prevented.
                                         $Data | add-Member "cuckaroom" @{alt_names = @("cuckaroom"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                         $Data | add-Member "sha3d" @{alt_names = @("sha3d"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                         $Data | add-Member "cuckatoo32" @{alt_names = @("cuckatoo32","grincuckatoo32"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
+                                        $Data | add-Member "scryptn2" @{alt_names = @("scryptn2"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                     }
                                 
 

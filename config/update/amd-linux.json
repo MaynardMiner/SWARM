@@ -94,9 +94,9 @@
     "AMD2": ".\\bin\\lolMiner-AMD-2\\lolMiner",
     "AMD3": ".\\bin\\lolMiner-AMD-3\\lolMiner",
     "minername": "lolMiner",
-    "version": "0.96",
+    "version": "0.97",
     "optional": "No",
-    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.96/lolMiner_v0961_Lin64.tar.gz"
+    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.97/lolMiner_v097_Lin64.tar.gz"
   },
   "avermore": {
     "name": "avermore",
@@ -204,9 +204,9 @@
     "AMD2": ".\\bin\\xmrig-amd-2\\xmrig",
     "AMD3": ".\\bin\\xmrig-amd-3\\xmrig",
     "minername": "xmrig",
-    "version": "5.5.0",
+    "version": "5.5.3",
     "optional": "No",
-    "uri": "https://github.com/xmrig/xmrig/releases/download/v5.5.0/xmrig-5.5.0-xenial-x64.tar.gz"
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v8.0/xmrig-linux.tar.gz"
   },
   "xmrigcc-amd": {
     "name": "xmrigcc-amd",

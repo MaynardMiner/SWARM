@@ -11,24 +11,28 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
-Param (
-    [Parameter(mandatory = $false)]
-    [string]$WorkingDir
-)
-
 [cultureinfo]::CurrentCulture = 'en-US'
 if ($IsWIndows) { $host.ui.RawUI.WindowTitle = "Background Agent" }
+## any windows version below 10 invoke full screen mode.
+if ($isWindows) {
+    $os_string = "$([System.Environment]::OSVersion.Version)".split(".") | Select -First 1
+    if ([int]$os_string -lt 10) {
+        invoke-expression "mode 800"
+    }
+}
 #$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
 #$WorkingDir = "/root/hive/miners/custom/SWARM"
-Set-Location $WorkingDir
+Set-Location $env:SWARM_DIR
 $UtcTime = Get-Date -Date "1970-01-01 00:00:00Z"
 $UTCTime = $UtcTime.ToUniversalTime()
 $StartTime = [Math]::Round(((Get-Date) - $UtcTime).TotalSeconds)
 $Global:config = [hashtable]::Synchronized(@{ })
 $global:config.Add("vars", @{ })
 . .\build\powershell\global\modules.ps1
-$(vars).Add("dir", $WorkingDir)
+$(vars).Add("dir", $env:SWARM_DIR)
 $env:Path += ";$($(vars).dir)\build\cmd"
+$Target = [System.EnvironmentVariableTarget]::Process
+[System.Environment]::SetEnvironmentVariable('SWARM_DIR', $WorkingDir, $Target)
 
 try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$WorkingDir`'" -WindowStyle Minimized } }catch { }
 try { $Net = Get-NetFireWallRule } catch { }

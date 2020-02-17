@@ -66,15 +66,23 @@ Function Global:Get-Bus {
 
     $NewCount = @()
     $info = [System.Diagnostics.ProcessStartInfo]::new();
-    $info.FileName = ".\build\apps\pci\lspci.exe";
+    $info.FileName = ".\build\cmd\lspci.bat";
     $info.UseShellExecute = $false;
     $info.RedirectStandardOutput = $true;
     $info.Verb = "runas";
     $Proc = [System.Diagnostics.Process]::New();
-    $proc.StartInfo = $Info;
-    $proc.Start() | Out-Null;
-    $proc.WaitForExit();
-    if ($proc.HasExited) { while (-not $proc.StandardOutput.EndOfStream) { $NewCount += $Proc.StandardOutput.ReadLine(); } }
+    $proc.StartInfo = $Info
+    $ttimer = [System.Diagnostics.Stopwatch]::New()
+    $ttimer.Restart();
+    $proc.Start() | Out-Null
+    while (-not $Proc.StandardOutput.EndOfStream) {
+        $NewCount += $Proc.StandardOutput.ReadLine();
+        if ($ttimer.Elapsed.Seconds -gt 15) {
+            $proc.kill() | Out-Null;
+            break;
+        }
+    }
+    $Proc.Dispose();            
     $NewCount = $NewCount | Where { $_ -like "*VGA*" -or $_ -like "*3D controller*" }
 
     if ([string]$OldCount -ne [string]$NewCount) {
@@ -221,7 +229,8 @@ function Global:Get-GPUCount {
         log "Adding CPU"
         if ([string]$(arg).CPUThreads -eq "") { 
             $threads = $(Get-CimInstance -ClassName 'Win32_Processor' | Select-Object -Property 'NumberOfCores').NumberOfCores; 
-        } else {
+        }
+        else {
             $threads = $(arg).CPUThreads;
         }
         $M_Types += "CPU"
@@ -269,8 +278,8 @@ function Global:Start-WindowsConfig {
     
     ##Create a CMD.exe shortcut for SWARM on desktop
     ## Create Shortcut
-    $Exec_Shortcut = [IO.Path]::Combine($HOME, "Desktop\SWARM.lnk")
-    $Term_Shortcut = [IO.Path]::Combine($HOME, "Desktop\SWARM terminal.lnk")
+    $Exec_Shortcut = [IO.Path]::Combine([Environment]::GetFolderPath("Desktop"), "SWARM.lnk")
+    $Term_Shortcut = [IO.Path]::Combine([Environment]::GetFolderPath("Desktop"), "SWARM terminal.lnk")
 
     if (test-Path $Exec_Shortcut) { Remove-Item $Exec_Shortcut -Force | Out-Null }
     if (test-Path $Term_Shortcut) { Remove-Item $Term_Shortcut -Force | Out-Null }

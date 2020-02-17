@@ -53,7 +53,11 @@ function Global:Start-Webcommand {
                 if (-not $BackGroundId -or $BackGroundID.name -ne "pwsh") {
                     Write-Host "Starting Autofan" -ForeGroundColor Cyan              
                     $BackgroundTimer = New-Object -TypeName System.Diagnostics.Stopwatch
-                    $command = Start-Process "pwsh" -WorkingDirectory "$($(vars).dir)\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -NoExit -windowstyle minimized -command `"&{`$host.ui.RawUI.WindowTitle = `'AutoFan`'; &.\autofan.ps1 -WorkingDir `'$($(vars).dir)`'}`"" -WindowStyle Minimized -PassThru -Verb Runas
+                    $Windowstyle = "Minimized"
+                    if ($(arg).Hidden -eq "Yes") {
+                        $Windowstyle = "Hidden"
+                    }            
+                    $command = Start-Process "pwsh" -WorkingDirectory "$($(vars).dir)\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -NoExit -windowstyle $WindowStyle -command `"&{`$host.ui.RawUI.WindowTitle = `'AutoFan`'; &.\autofan.ps1 -WorkingDir `'$($(vars).dir)`'}`"" -WindowStyle Minimized -PassThru -Verb Runas
                     $command.ID | Set-Content ".\build\pid\autofan.txt"
                     $BackgroundTimer.Restart()
                     do {

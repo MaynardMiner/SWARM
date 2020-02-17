@@ -9,7 +9,7 @@
 #GNU General Public License for more details.
 #You should have received a copy of the GNU General Public License
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
+source /etc/profile.d/SWARM.sh
 screen -S API -d -m
 sleep -S 1
-screen -S API -X stuff $"pwsh -command ./build/powershell/api.ps1"
+screen -S API -X stuff $"pwsh -command $SWARM_DIR/build/powershell/api.ps1"

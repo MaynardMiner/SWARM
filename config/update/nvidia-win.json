@@ -84,9 +84,9 @@
     "NVIDIA2": ".\\bin\\bminer-2\\bminer.exe",
     "NVIDIA3": ".\\bin\\bminer-3\\bminer.exe",
     "minername": "bminer.exe",
-    "version": "16.0.2",
+    "version": "16.0.5",
     "optional": "No",
-    "uri": "https://www.bminercontent.com/releases/bminer-lite-v16.0.1-bd5656b-amd64.zip"
+    "uri": "https://www.bminercontent.com/releases/bminer-lite-v16.0.5-21104ec-amd64.zip"
   },
   "ehssand": {
     "name": "ehssand",
@@ -128,9 +128,9 @@
     "NVIDIA2": ".\\bin\\cryptodredge-2\\CryptoDredge.exe",
     "NVIDIA3": ".\\bin\\cryptodredge-3\\CryptoDredge.exe",
     "minername": "CryptoDredge.exe",
-    "version": "0.22.0",
+    "version": "0.23.0",
     "optional": "No",
-    "uri": "https://github.com/technobyl/CryptoDredge/releases/download/v0.22.0/CryptoDredge_0.22.0_cuda_10.1_windows.zip"
+    "uri": "https://github.com/technobyl/CryptoDredge/releases/download/v0.23.0/CryptoDredge_0.23.0_cuda_10.1_windows.zip"
   },
   "dstm": {
     "name": "dstm",
@@ -271,9 +271,9 @@
     "NVIDIA2": ".\\bin\\xmrig-nv-2\\xmrig.exe",
     "NVIDIA3": ".\\bin\\xmrig-nv-3\\xmrig.exe",
     "minername": "xmrig.exe",
-    "version": "5.5.0a",
+    "version": "5.5.3",
     "optional": "No",
-    "uri": "https://github.com/xmrig/xmrig/releases/download/v5.5.0/xmrig-5.5.0-msvc-cuda10_1-win64.zip"
+    "uri": "https://github.com/xmrig/xmrig/releases/download/v5.5.3/xmrig-5.5.3-msvc-cuda10_1-win64.zip"
   },
   "nv-lolminer": {
     "name": "nv-lolminer",

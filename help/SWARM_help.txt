@@ -226,12 +226,21 @@ Argument          Options           Explanation
 -Auto_Algo     [Yes,No]		    Default is "Yes". Should always be set to "Yes", even when single
                                     coin mining. Only avaiable for debug purposes.
 
--Volume         [0-100]             Default is No. Volume calculates pool hashrate % in comparision
+
+-Min_Blocks   [any integer]         Default is 1 (1 block a day).
+                                    Will only affect Coin pools.
+                                    Auto_Coin must be Yes, or this will be ignored.
+                                    This is the minium number of blocks required from pool
+                                    to find in a day for coin to be used. An example of this would
+                                    be if the ``-Min_Blocks`` is 5, and the coin in question is only
+                                    finding 3 blocks in the past 24 hours, that coin will be removed
+                                    from the database. This is based on shared pool block finds.
+
+-Volume       [Yes,No]              Default is No. Volume calculates pool hashrate % in comparision
                                     to other pools, and will penalize pools based on percent difference
                                     from pool with highest hashrate. This means SWARM favors pools with
                                     the highest hashrates for each algorithm. The % values are displayed
-                                    on get stats screen, under Vol. SWARM will only penalize pools up to
-                                    x%, where x is this parameter.
+                                    on get stats screen.
 
 -Historical_Bias [0-100]            Expressed as Percentage. 
                                     Will only affect Auto_Algo.
@@ -308,6 +317,12 @@ Argument          Options           Explanation
 		    Hour_4,              you want to base switching on price averages, or live...And if
 		    Day                 you choose price averages, what average to base it on. Default
                     Custom              is day. If using -Custom_Periods, this must be set to Custom.
+		    
+-Rej_Factor        [Yes or No]		Default is Yes. Rej_Factor penalizes profit based on historical
+					rejection rate of shares. This means that if miners had 20% rejection
+					rate- The Next profit/day rating for that algo/miner combination would
+					be 20% lower. Rejection rate is based on a simple moving average
+					with each benchmark being the average period/samples.
 
 ***********************************************************************************************************
 *************** Miner Control *****************************************************************************

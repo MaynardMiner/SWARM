@@ -1,8 +1,8 @@
-# SWARM: Profit Switching AI For HiveOS, SMOS, Linux, & Windows
+# SWARM: Profit Switching AI For HiveOS, Linux, & Windows
 
 **IMPORTANT** : SWARM attempts to provide miners that work for as many cards as possible. Some miners may work for your cards, some may not. All miners are set with default settings provided from developers themselves (with logging enabled, if available). There is a ``-Bans`` argument that lets you remotely remove miners from the list. SWARM should support, if not all late model cards.
 
-Windows Version Does Not Require HiveOS Windows. SWARM is built with all HiveOS API methods, and its own utilities like autofan, and overclocking. However, the overclocking for AMD requires prior registry modifications and compute mode activated to fully manipulate power play tables.
+Windows Version Does Not Require HiveOS Windows. SWARM is built with all HiveOS API methods, and its own utilities like autofan, and overclocking. However, the overclocking for AMD requires prior registry modifications and compute mode activated to fully manipulate power play tables. If you are unsure how to do this- Run Win_Optimize.bat as an administrator. This will make an attempt to edit/make the registry entries for you, and set cards in compute mode. Reboot afterwards.
 
 ## SWARM wiki:
 
@@ -20,16 +20,12 @@ This miner is a commandline tool. It does not require a desktop environment in L
 
 ### HiveOS Integration (Windows or Linux)
 
-**Note: SWARM is developed and used regulary on latest HiveOS 16.04 image, and is recommended for Ubuntu 16.04, which is the linux version most miners are developed on. If you experience isssues using 18.04 (bleeding edge/beta image), please report issue, and I will connect to bleeding edge image, and fix asap.**
+**Note: SWARM is developed and used regulary on latest HiveOS Stable, and is recommended for Ubuntu 18.04, which is the linux version most miners are developed on. If you experience issues using bleeding edge/beta image, please report issue, and I will connect to bleeding edge image, and fix asap.**
 
 To focus solely on SWARM's project mission: SWARM was written to integrate fully with HiveOS as of version 1.4.5. The developer of SWARM recognizes the attempt to make an OS/website as sophisticated as the years of development and effort placed into HiveOS would be pointless. Therefor, knowing that SWARM was capable of operating within HiveOS- SWARM was introduced to HiveOS as an available custom miner, and can be integrated rather easily. SWARM also has created a significant amout of scripts which can be ran automatically through HiveOS, and even locally on rig- Allowing you to run multiple terminals and windows, and customize your own setup. Commands like ``get stats`` and ``benchmark all`` can be ran at any moment- Allowing you to quick make changes as neccessary. You also have ALL of the functionality you would get with HiveOS, along with MOST of the functionality of HiveOS's website in the Windows version.
 
-### SMOS Integration
-
-After many user requests, SWARM now works in Simple Miner. See Wiki on how to setup. Simplemining.net is lighter than HiveOS, which makes it generally easier to use for an experienced miner, but non-experienced Linux user. I don't personally regularly use SMOS, nor maintain SMOS support, so if you have an issue, post in issues section, and I will plug in and update SMOS compatibility.
-
 ### Highly Sophisticated Customization
-* OC Tuning by algorithm
+* OC Tuning by algorithm (May be out of date- Use HiveOS if you want this feature)
 * ``-API_Key`` allows oc_profiles in HiveOS
 * Customize environment variables, add starting scripts
   to miner launches.
@@ -52,7 +48,9 @@ After many user requests, SWARM now works in Simple Miner. See Wiki on how to se
 
 SWARM is very customizable. At the base layer- It is easy to setup by simply inputting some basic user configuration at launch, and SWARM will handle the rest. However, beyond the base layer, SWARM offers a sophisticated oc tuning system, along with the ability to customize environment varibles, miner arguments, pool difficulty, and even a system for factoring power cost/calculation into profit analysis. SWARM allows you prohibt miners from certain algorithms, or prohibit mining certain algorithms on certain pools. SWARM also has the ability to control your overclocking internally, including support for AMD Vega in Windows using the latest drivers. It also supports accepting overclocking commands via HiveOS's website, with use of -API_key. 
 
-![alt text](https://github.com/MaynardMiner/SWARM/blob/master/build/data/win%20example.png)
+![alt text](https://github.com/MaynardMiner/SWARM_PHOTOS/blob/master/win%20example.png)
+
+![alt text](https://github.com/MaynardMiner/SWARM_PHOTOS/blob/master/HiveOS_Example.png)
 
 ### Bash or Powershell Scripting
 
@@ -74,15 +72,16 @@ I am a sole developer, and this is a large project. I prioritize workload by req
 * Windows 10 is supported, but it should work in Windows 7/8.
 * Have recent cuda/amd drivers installed. 
   * Note- The latest drivers aren't always the best to use, see discord support if you have questions.
-* Latest C++ Redistributable Packages for Visual Studio.
+* C++ Redistributable Packages for Visual Studio. (2012 and up)
+  * https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads
 * HiveOS user account, your farm hash ready. Ideally a pre-made flight sheet for SWARM. See wiki on how to setup a flight sheet.
   * https://hiveos.farm/
 * Latest Powershell Core, along with it being set in your PATH environment variable (should be done during install of Powershell Core).
     https://github.com/PowerShell/PowerShell/releases/tag/v6.2.3
 * Latest .NET core runtime.
-  * https://dotnet.microsoft.com/download
-* Miners require various versions of C++ Redistributable. The latest are here:
-   https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads
+  * https://dotnet.microsoft.com/download/dotnet-core/3.0
+* Latest .NET runtime.
+  * https://dotnet.microsoft.com/download/dotnet-framework/net472
 
 *Install Steps:*
 
@@ -120,7 +119,7 @@ This is an example of how to remote install/update miner. It is the fastest way 
 
 Coin/Wallet is irrelevant. You can basically enter whatever you want. Then navigate to custom miner:
 
-![alt text](https://raw.githubusercontent.com/MaynardMiner/SWARM/master/build/data/First_Step.png)
+![alt text](https://github.com/MaynardMiner/SWARM_PHOTOS/blob/master/First_Step.png)
 
 From there you should see this window. Pool and URL are setup with arguments. However, Hive 2.0 requires those fields to not be empty. You can simply enter anything there. See photo below on how to setup miner. Just insert the name of the latest release, and the release tar.gz file link. Then insert your arguments in the bottom box:
 
@@ -132,15 +131,7 @@ From there you should see this window. Pool and URL are setup with arguments. Ho
 
 https://github.com/MaynardMiner/SWARM/wiki/Arguments-(Miner-Configuration)
 
-![alt text](https://raw.githubusercontent.com/MaynardMiner/SWARM/master/build/data/Second.png)
-
-### SMOS
-
-There is a guide which allows SMOS users to load SWARM into SMOS. It can be found in the wiki:
-
-https://github.com/MaynardMiner/SWARM/wiki/SMOS-Install
-
-Note: I have no users request SMOS use, so I no longer maintain. Post issue if you problems.
+![alt text](https://github.com/MaynardMiner/SWARM_PHOTOS/blob/master/Second.png)
 
 **Note**
 

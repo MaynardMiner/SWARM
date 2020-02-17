@@ -1914,3 +1914,65 @@ but beta in design.
   * Removed -i 12.5 for yescryptr32,
     using default. Will crash lower
     grade cards.
+
+############################################
+############################################
+
+# SWARM 2.9.9
+
+## What's new?
+* Swapped pciutils for powershell-pciutils
+  * self-made, if you have issues let me know.
+* New Miner - verium_miner
+
+## Improvements
+* Windows: Fixed icon issues on desktop.
+* Windows: ``lscpi`` can be ran from command prompt.
+ * only current argument is ``-vmms [busid]``
+* Linux: Created Global Variable: $SWARM_DIR.
+  * /etc/profile.d/SWARM.sh
+  * bash commands now source $SWARM_DIR.
+* Windows: Will output at start if powershell
+  version is incorrect, but will attempt to continue.
+  (Will notify user about Microsoft C++)
+* Updated comments in .bat files (though if updating
+  they won't change).
+* HiveOS: Auto-Update to powershell 6.2.4.
+  * Others: ``install_linux`` will update it.
+* Various small fixes in comments.
+* External process execution handled differently
+  * Users were having issues with ``Process.StandardOutput.Readall()``
+    .Net method.
+
+## Updates
+* lolminer updated
+* xmrig updated
+* bminer updated
+
+############################################
+############################################
+
+# SWARM 3.0.0
+
+## What's New?
+* New Argument: ``-Min_Blocks``
+  * https://github.com/MaynardMiner/SWARM/blob/master/help/SWARM_help.txt#L230
+  * Sets a maximum block find amount for coins, based on pool block finds.
+
+## Improvements
+* Only run env changes when needed
+* Set miner env to process not machine
+* Set mode 800 for Windows 7 machines
+  * Allows fullscreen.
+  * Note: Windows 7 some commands may require
+    to be ran in a command prompt that supports
+    ASCII color text like linux does.
+    * Windows 10 supports by default.
+
+## Fixes
+* Fix path assertion for background agent.
+  * Updated to use env variables.
+
+## UPDATES
+* Updated Cryptodredge
+  * Added crptonight_upx2

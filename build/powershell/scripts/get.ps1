@@ -631,6 +631,8 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
         $MSFile = ".\debug\minerstats.txt"
         if (test-Path ".\debug\minerstats.txt") { $Get += Get-Content ".\debug\minerstats.txt" }
         Remove-Module "hashrates"
+        $Get += ""
+        $Get += "If you would like to have this to continue to refresh every 30 seconds- Use 'nview get stats -n 30'"
     }
     "charts" { if (Test-Path ".\debug\charts.txt") { $Get += Get-Content ".\debug\charts.txt" } }
     "active" {
@@ -963,9 +965,9 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
         
                 if ($IsWindows) {
                     ## Update icons
-                    $Exec_Shortcut = [IO.Path]::Combine($HOME, "Desktop\SWARM.lnk")
-                    $Term_Shortcut = [IO.Path]::Combine($HOME, "Desktop\SWARM terminal.lnk")
-                
+                    $Exec_Shortcut = [IO.Path]::Combine([Environment]::GetFolderPath("Desktop"), "SWARM.lnk")
+                    $Term_Shortcut = [IO.Path]::Combine([Environment]::GetFolderPath("Desktop"), "SWARM terminal.lnk")
+                                
                     if (test-Path $Exec_Shortcut) { Remove-Item $Exec_Shortcut -Force | Out-Null }
                     if (test-Path $Term_Shortcut) { Remove-Item $Term_Shortcut -Force | Out-Null }
 
