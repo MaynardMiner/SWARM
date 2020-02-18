@@ -84,9 +84,9 @@
     "NVIDIA2": ".\\bin\\bminer-2\\bminer.exe",
     "NVIDIA3": ".\\bin\\bminer-3\\bminer.exe",
     "minername": "bminer.exe",
-    "version": "16.0.5",
+    "version": "16.0.6",
     "optional": "No",
-    "uri": "https://www.bminercontent.com/releases/bminer-lite-v16.0.5-21104ec-amd64.zip"
+    "uri": "https://www.bminercontent.com/releases/bminer-lite-v16.0.6-137dbe6-amd64.zip"
   },
   "ehssand": {
     "name": "ehssand",
