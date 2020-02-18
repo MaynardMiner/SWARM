@@ -13,11 +13,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 function Global:Get-Data {
 
-    if(-not (test-path "/etc/profile.d/SWARM.sh")) {
-        "export SWARM_DIR=$($(vars).dir)" | Set-Content "/etc/profile.d/SWARM.sh"
-        $Target = [System.EnvironmentVariableTarget]::Process
-        [System.Environment]::SetEnvironmentVariable('SWARM_DIR', "$($(vars).dir)", $Target)
-    }
+    "export SWARM_DIR=$($(vars).dir)" | Set-Content "/etc/profile.d/SWARM.sh"
+    $Target = [System.EnvironmentVariableTarget]::Process
+    [System.Environment]::SetEnvironmentVariable('SWARM_DIR', "$($(vars).dir)", $Target)
 
     $Execs = @()
     $Execs += "stats"
@@ -238,7 +236,8 @@ function Global:Get-GPUCount {
         }
         if ([string]$(arg).CPUThreads -eq "") { 
             $threads = Invoke-Expression "nproc";
-        } else {
+        }
+        else {
             $threads = $(arg).CPUThreads;
         }
         $(vars).types = $M_Types
