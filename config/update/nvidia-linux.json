@@ -271,9 +271,9 @@
     "NVIDIA2": ".\\bin\\xmrig-nv-2\\xmrig",
     "NVIDIA3": ".\\bin\\xmrig-nv-3\\xmrig",
     "minername": "xmrig",
-    "version": "5.5.3",
+    "version": "5.6.0",
     "optional": "No",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v8.0/xmrig-linux.tar.gz"
+    "uri": "https://github.com/xmrig/xmrig/releases/download/v5.6.0/xmrig-5.6.0-xenial-x64.tar.gz"
   },
   "cc-verus": {
     "name": "cc-verus",
