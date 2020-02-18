@@ -118,10 +118,12 @@ function Global:Get-GPUCount {
     ## AMD Cards
     if ($GetBus -like "*Advanced Micro Devices*" -and $GetBus -notlike "*RS880*" -and $GetBus -notlike "*Stoney*") {
         invoke-expression ".\build\apps\rocm\rocm-smi --showproductname --showid --showvbios --showbus --json" | Tee-Object -Variable ROCMSMI | Out-Null
-        $ROCMSMI = $ROCMSMI | ConvertFrom-Json
-        $GETSMI = @()
-        $ROCMSMI.PSObject.Properties.Name | % { $ROCMSMI.$_."PCI Bus" = $ROCMSMI.$_."PCI Bus".replace("0000:", ""); $GETSMI += [PSCustomObject]@{ "VBIOS version" = $ROCMSMI.$_."VBIOS version"; "PCI Bus" = $ROCMSMI.$_."PCI Bus"; "Card vendor" = $ROCMSMI.$_."Card vendor" } }
-        $ROCMSMI = $GETSMI
+        if ($ROCMSMI -and $ROCMSMI -ne "") {
+            $ROCMSMI = $ROCMSMI | ConvertFrom-Json
+            $GETSMI = @()
+            $ROCMSMI.PSObject.Properties.Name | % { $ROCMSMI.$_."PCI Bus" = $ROCMSMI.$_."PCI Bus".replace("0000:", ""); $GETSMI += [PSCustomObject]@{ "VBIOS version" = $ROCMSMI.$_."VBIOS version"; "PCI Bus" = $ROCMSMI.$_."PCI Bus"; "Card vendor" = $ROCMSMI.$_."Card vendor" } }
+            $ROCMSMI = $GETSMI
+        }
         invoke-expression ".\build\apps\amdmeminfo\amdmeminfo" | Tee-Object  -Variable amdmeminfo | Out-Null
         $amdmeminfo = $amdmeminfo | where { $_ -notlike "*AMDMemInfo by Zuikkis `<zuikkis`@gmail.com`>*" } | where { $_ -notlike "*Updated by Yann St.Arnaud `<ystarnaud@gmail.com`>*" }
         $amdmeminfo = $amdmeminfo | Select -skip 1
