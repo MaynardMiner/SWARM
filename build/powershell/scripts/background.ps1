@@ -30,9 +30,7 @@ $Global:config = [hashtable]::Synchronized(@{ })
 $global:config.Add("vars", @{ })
 . .\build\powershell\global\modules.ps1
 $(vars).Add("dir", $env:SWARM_DIR)
-$env:Path += ";$($(vars).dir)\build\cmd"
-$Target = [System.EnvironmentVariableTarget]::Process
-[System.Environment]::SetEnvironmentVariable('SWARM_DIR', $WorkingDir, $Target)
+if($isWindows){$env:Path += ";$($(vars).dir)\build\cmd"}
 
 try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$WorkingDir`'" -WindowStyle Minimized } }catch { }
 try { $Net = Get-NetFireWallRule } catch { }
