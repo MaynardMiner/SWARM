@@ -1976,3 +1976,27 @@ but beta in design.
 ## UPDATES
 * Updated Cryptodredge
   * Added crptonight_upx2
+
+############################################
+############################################
+
+# SWARM 3.0.1
+
+## Improvements
+* (Windows) SWARM will close previous running
+  SWARM if you restart.
+* Found rocm-smi.py was in some instances not working
+  correctly- Prevented error generation and workaround
+  in case it does not.
+* Added new expiremental parameter ``-Hidden``
+  For Windows- If set to Yes, will run SWARM in
+  hidden mode. This is expiremental, and still
+  work in progress. Default is No. (Disabled)
+
+## Fixes
+* Fixed Path environment resolution when
+  updating
+
+## Updates
+* xmrig updated
+* bminer updated
