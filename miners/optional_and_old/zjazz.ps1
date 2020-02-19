@@ -33,6 +33,7 @@ $(vars).NVIDIATypes | ForEach-Object {
     $Miner_Dir = Join-Path ($(vars).dir) ((Split-Path $Path).replace(".", ""))
 
     ##Prestart actions before miner launch
+    ##This can be edit in miner.json
     $Prestart = @()
     if ($IsLinux) { $Prestart += "export LD_PRELOAD=$(Join-Path $(vars).Dir "build\export\libcurl.so.3")" }
     $PreStart += "export LD_LIBRARY_PATH=$ExportDir`:$Miner_Dir"
