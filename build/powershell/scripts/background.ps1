@@ -25,7 +25,7 @@ if ($isWindows) {
 Set-Location $env:SWARM_DIR
 $UtcTime = Get-Date -Date "1970-01-01 00:00:00Z"
 $UTCTime = $UtcTime.ToUniversalTime()
-$StartTime = [Math]::Round(((Get-Date) - $UtcTime).TotalSeconds)
+$Global:StartTime = [Math]::Round(((Get-Date) - $UtcTime).TotalSeconds)
 $Global:config = [hashtable]::Synchronized(@{ })
 $global:config.Add("vars", @{ })
 . .\build\powershell\global\modules.ps1
@@ -710,9 +710,9 @@ While ($True) {
         power      = @($global:GPUPowerTable);
         accepted   = $global:AllACC;
         rejected   = $global:AllREJ;
-        stratum    = $Global:StatStratum
-        start_time = $StartTime
-        workername = $Global:StatWorker
+        stratum    = $Global:StatStratum;
+        start_time = $Global:StartTime;
+        workername = $Global:StatWorker;
     }
     $global:Config.params = $(arg)
 
@@ -732,9 +732,7 @@ While ($True) {
         Write-Host " ALGO: $Global:StatAlgo" -ForegroundColor White -NoNewline; Write-Host " `|" -NoNewline
         Write-Host " UPTIME: $global:UPTIME" -ForegroundColor Yellow
         Write-Host "STRATUM: $global:StatStratum" -ForegroundColor Cyan
-        $origin = New-Object -Type DateTime -ArgumentList 1970, 1, 1, 0, 0, 0, 0
-        $SysTime = $origin.AddSeconds([Double]$StartTime)
-        Write-Host "START_TIME: $SysTime" -ForegroundColor Magenta -NoNewline; Write-Host " `|" -NoNewline
+        Write-Host "START_TIME: $Global:StartTime" -ForegroundColor Magenta -NoNewline; Write-Host " `|" -NoNewline
         Write-Host " WORKER: $global:StatWorker
 " -ForegroundColor Yellow
     }
