@@ -670,6 +670,11 @@ Access Denied Error prevented.
                                                 $Data.$_.naming | Add-Member "cuckatoo31" "cuckatoo31" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "cuckatoo31" 2 -ErrorAction SilentlyContinue
 
+                                                $Data.$_.commands | Add-Member "cuckatoo32" "" -ErrorAction SilentlyContinue
+                                                $Data.$_.difficulty | Add-Member "cuckatoo32" "" -ErrorAction SilentlyContinue 
+                                                $Data.$_.naming | Add-Member "cuckatoo32" "cuckatoo32" -ErrorAction SilentlyContinue
+                                                $Data.$_.fee | Add-Member "cuckatoo32" 2 -ErrorAction SilentlyContinue
+
                                                 $Data.$_.commands | Add-Member "cuckaroo29d" "" -ErrorAction SilentlyContinue
                                                 $Data.$_.difficulty | Add-Member "cuckaroo29d" "" -ErrorAction SilentlyContinue 
                                                 $Data.$_.naming | Add-Member "cuckaroo29d" "cuckaroo29d" -ErrorAction SilentlyContinue
