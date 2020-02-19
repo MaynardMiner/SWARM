@@ -1996,6 +1996,11 @@ but beta in design.
 ## Fixes
 * Fixed Path environment resolution when
   updating
+* Close previous SWARM exec if user initiated
+  a new one (Windows)
+* Fix path resolution for commands in background
+  agent (You may have to run ``get update`` to update
+  this version if link fails in HiveOS)
 
 ## Updates
 * xmrig updated
