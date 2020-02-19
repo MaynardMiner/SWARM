@@ -41,7 +41,7 @@ if ($IsWindows) {
         if ($Get_SWARM) { 
             $SWARMID = Get-Process | Where id -eq $Agent 
             if ($SWARMID) {
-                $SWARMID.CloseMainWindow()
+                $SWARMID.Kill()
             }
         }
     }
