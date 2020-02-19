@@ -153,8 +153,6 @@ BTC WALLET: 1FpuMha1QPaWS4PTPZpU1zGRzKMevnDpwg
 
 NICEHASH WALLET: 39iUh6aforxHcBr3Ayywmnqw2ZHcbmy9Wj
 
-RVN WALLET: RKirUe978mBoa2MRWqeMGqDzVAKTafKh8H
-
 ### Integrated Software
 
 SWARM uses the following programs to help with oc tuning/rig setup,
