@@ -34,7 +34,7 @@ Set-Location $Global:Config.vars.dir
 if (-not (test-path ".\debug")) { New-Item -Path "debug" -ItemType Directory | Out-Null }
 
 if ($IsWindows) {
-    log "Stopping Any Previous SWARM Instances..."
+    Write-Host "Stopping Any Previous SWARM Instances..."
     $ID = ".\build\pid\miner_pid.txt"
     if (Test-Path $ID) { 
         $Get_SWARM = Get-Content $ID 
