@@ -97,7 +97,7 @@ elseif (test-path ".\config.json") {
         Start-Sleep -S 3
         exit    
     }
-    elseif (".\config\parameters\newarguments.json") {
+    else {
         $Start = $true
         $parsed = @{ }
         $arguments = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json
@@ -116,9 +116,6 @@ else {
     if ($IsWindows) {
         $host.ui.RawUI.WindowTitle = "SWARM";
         $Windowstyle = "Maximized"
-        if ($Parsed.Hidden -eq "Yes") {
-            $Windowstyle = "Hidden"
-        }
         Start-Process "CMD" -ArgumentList "/C `"pwsh -noexit -executionpolicy Bypass -WindowStyle $WindowStyle -command `"Set-Location C:\; Set-Location `'$Dir`'; .\build\powershell\scripts\help.ps1`"`"" -Verb RunAs
     }
     else {

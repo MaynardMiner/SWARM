@@ -412,7 +412,11 @@ function Global:Start-WindowsConfig {
             $start = [launchcode]::New()
             $FilePath = "$PSHome\pwsh.exe"
             $CommandLine = '"' + $FilePath + '"'
-            $arguments = "-executionpolicy bypass -command `".\build\powershell\scripts\autofan.ps1`""
+            $Windowstyle = "Minimized"
+            if ($(arg).Hidden -eq "Yes") {
+                $Windowstyle = "Hidden"
+            }            
+            $arguments = "-executionpolicy bypass -WindowStyle $WindowStyle -command `".\build\powershell\scripts\autofan.ps1`""
             $CommandLine += " " + $arguments
             $New_Miner = $start.New_Miner($filepath, $CommandLine, $global:Dir)
             $Process = Get-Process | Where id -eq $New_Miner.dwProcessId
