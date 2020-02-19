@@ -28,7 +28,7 @@ Switch ($Args) {
             $Found = Get-Process | Where Id -eq $Id
             if ($found) {
                 Write-Host "Found running SWARM process- Stopping"
-                if ($ISWindows) { $Found.CloseMainWindow() }
+                if ($ISWindows) { $Found.Kill() }
                 else {
                     Stop-Process -Id $Found.Id -Force -ErrorAction SilentlyContinue
                 }
@@ -45,7 +45,9 @@ Switch ($Args) {
             $Found = Get-Process | Where Id -eq $Id
             if ($found) {
                 Write-Host "Found running SWARM process- Stopping"
-                if ($ISWindows) { $Found.CloseMainWindow() }
+                if ($ISWindows) { 
+                    $Found.Kill() 
+                }
                 else {
                     Stop-Process -Id $Found.Id -Force -ErrorAction SilentlyContinue
                 }
