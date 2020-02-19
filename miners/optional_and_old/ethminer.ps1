@@ -37,6 +37,7 @@ $(vars).NVIDIATypes | ForEach-Object {
     $Miner_Dir = Join-Path ($(vars).dir) ((Split-Path $Path).replace(".", ""))
 
     ##Prestart actions before miner launch
+    ##This can be edit in miner.json
     $Prestart = @()
     $PreStart = "export LD_LIBRARY_PATH=$ExportDir"
     $MinerConfig.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }

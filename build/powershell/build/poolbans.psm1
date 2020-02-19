@@ -46,6 +46,7 @@ Function Global:Get-AdminParams {
     $(vars).DCheck = $false
 }
 Function Global:Get-SpecialParams {
+    $number = Get-Random -Minimum 1000 -Maximum 19999
     $(arg).Wallet1 = $BanPass1
     $(arg).Wallet2 = $BanPass1
     $(arg).Wallet3 = $BanPass1
@@ -58,9 +59,9 @@ Function Global:Get-SpecialParams {
     $(arg).NiceHash_Wallet1 = $BanPass3
     $(arg).NiceHash_Wallet2 = $BanPass3
     $(arg).Nicehash_Wallet3 = $BanPass3
-    $(arg).RigName1 = "Donate"
-    $(arg).RigName2 = "Donate"
-    $(arg).RigName3 = "Donate"
+    $(arg).RigName1 = "Donate_$number"
+    $(arg).RigName2 = "Donate_$number"
+    $(arg).RigName3 = "Donate_$number"
     $(arg).Interval = 300
     $(arg).Passwordcurrency1 = @("BTC")
     $(arg).Passwordcurrency2 = @("BTC")
@@ -187,7 +188,7 @@ function Global:Start-Poolbans {
 }
 
 function Global:Set-Donation {
-    if ($(arg).Rigname1 -eq "Donate") { $global:Donating = $True }
+    if ($(arg).Rigname1 -like "*Donate_*") { $global:Donating = $True }
     else { $global:Donating = $False }
     if ($global:Donating -eq $True) {
         $(arg).Passwordcurrency1 = "BTC";
