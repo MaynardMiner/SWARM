@@ -1,0 +1,20 @@
+{
+    "AMD1": {
+        "name": "AMD1",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "eaglesong": ""
+        },
+        "difficulty": {
+            "eaglesong": ""
+        },
+        "naming": {
+            "eaglesong": "eaglesong"
+        },
+        "fee": {
+            "eaglesong": 2
+        }
+    },
+    "name": "nbminer-amd"
+}

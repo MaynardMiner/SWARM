@@ -219,5 +219,16 @@
     "version": "1.8.2",
     "optional": "No",
     "uri": "https://github.com/nanopool/nanominer/releases/download/v1.8.2/nanominer-windows-1.8.2.zip"
+  },
+  "nbminer-amd": {
+    "name": "nbminer-amd",
+    "type": "amd",
+    "AMD1": ".\\bin\\nbminer-amd-1\\nbminer.exe",
+    "AMD2": ".\\bin\\nbminer-amd-2\\nbminer.exe",
+    "AMD3": ".\\bin\\nbminer-amd-3\\nbminer.exe",
+    "minername": "nbminer.exe",
+    "version": "27.0",
+    "optional": "No",
+    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v27.0/NBMiner_27.0_Win.zip"
   }
 }

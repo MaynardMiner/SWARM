@@ -251,5 +251,16 @@
     "version": "1.6.2",
     "optional": "No",
     "uri": "https://github.com/nanopool/nanominer/releases/download/v1.8.2/nanominer-linux-1.8.2.tar.gz"
+  },
+  "nbminer-amd": {
+    "name": "nbminer-amd",
+    "type": "amd",
+    "AMD1": ".\\bin\\nbminer-amd-1\\nbminer",
+    "AMD2": ".\\bin\\nbminer-amd-2\\nbminer",
+    "AMD3": ".\\bin\\nbminer-amd-3\\nbminer",
+    "minername": "nbminer",
+    "version": "27.0",
+    "optional": "No",
+    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v27.0/NBMiner_27.0_Linux.tgz"
   }
 }

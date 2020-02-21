@@ -1,21 +1,22 @@
-$(vars).NVIDIATypes | ForEach-Object {
+$(vars).AMDTypes | ForEach-Object {
     
-    $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
+    $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
+    $CName = "nbminer-amd"
 
     ##Miner Path Information
-    if ($(vars).nvidia.nbminer.$ConfigType) { $Path = "$($(vars).nvidia.nbminer.$ConfigType)" }
+    if ($(vars).AMD.$CName.$ConfigType) { $Path = "$($(vars).amd.$CName.$ConfigType)" }
     else { $Path = "None" }
-    if ($(vars).nvidia.nbminer.uri) { $Uri = "$($(vars).nvidia.nbminer.uri)" }
+    if ($(vars).AMD.$CName.uri) { $Uri = "$($(vars).amd.$CName.uri)" }
     else { $Uri = "None" }
-    if ($(vars).nvidia.nbminer.minername) { $MinerName = "$($(vars).nvidia.nbminer.minername)" }
+    if ($(vars).AMD.$CName.minername) { $MinerName = "$($(vars).amd.$CName.minername)" }
     else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "nbminer-$Num"; $Port = "6200$Num";
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "6200$Num";
 
     Switch ($Num) {
-        1 { $Get_Devices = $(vars).NVIDIADevices1; $Rig = $(arg).RigName1 }
-        2 { $Get_Devices = $(vars).NVIDIADevices2; $Rig = $(arg).RigName2 }
-        3 { $Get_Devices = $(vars).NVIDIADevices3; $Rig = $(arg).RigName3 }
+        1 { $Get_Devices = $(vars).AMDDevices1; $Rig = $(arg).RigName1 }
+        2 { $Get_Devices = $(vars).AMDDevices2; $Rig = $(arg).RigName2 }
+        3 { $Get_Devices = $(vars).AMDDevices3; $Rig = $(arg).RigName3 }
     }
 
     ##Log Directory
@@ -26,7 +27,7 @@ $(vars).NVIDIATypes | ForEach-Object {
     else { $Devices = $Get_Devices }
 
     ##Get Configuration File
-    $MinerConfig = $Global:config.miners.nbminer
+    $MinerConfig = $Global:config.miners.$CName
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = Join-Path $($(vars).dir) "build\export"
@@ -86,9 +87,9 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Path       = $Path
                     Devices    = $Devices
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
-                    Version    = "$($(vars).nvidia.nbminer.version)"
+                    Version    = "$($(vars).AMD.$CName.version)"
                     DeviceCall = "ccminer"
-                    Arguments  = "-a $A --api 0.0.0.0:$Port --no-nvml --platform 1 --log-file `'$log`' --url $Stratum$($_.Pool_Host):$($_.Port) --user $($_.$User) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "-a $A --api 0.0.0.0:$Port --no-nvml --platform 2 --log-file `'$log`' --url $Stratum$($_.Pool_Host):$($_.Port) --user $($_.$User) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = $Stat.Hour
                     Quote      = if ($HashStat) { $HashStat * ($_.Price) }else { 0 }
                     Rejections = $Stat.Rejections
