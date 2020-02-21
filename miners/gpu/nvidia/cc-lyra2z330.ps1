@@ -26,6 +26,7 @@ $(vars).NVIDIATypes | ForEach-Object {
     else { $Devices = $Get_Devices }
 
     ##Get Configuration File
+    ##This is located in config\miners
     $MinerConfig = $Global:config.miners.'cc-lyra2z330'
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##

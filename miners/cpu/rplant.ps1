@@ -19,6 +19,7 @@ $(vars).CPUTypes | ForEach-Object {
     if ($(arg).CPUThreads -ne '') { $Devices = $(arg).CPUThreads }
 
     ##Get Configuration File
+    ##This is located in config\miners
     $MinerConfig = $Global:config.miners.rplant
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##

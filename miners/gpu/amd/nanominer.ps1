@@ -29,6 +29,7 @@ $(vars).AMDTypes | ForEach-Object {
     else { $(vars).GCount.AMD.PSObject.Properties.Name | ForEach-Object { $ArgDevices += "$($(vars).GCount.AMD.$_)," }; $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1) }
 
     ##Get Configuration File
+    ##This is located in config\miners
     $MinerConfig = $Global:config.miners.nanominer
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##

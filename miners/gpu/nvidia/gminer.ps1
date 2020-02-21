@@ -44,6 +44,7 @@ $(vars).NVIDIATypes | ForEach-Object {
     else { $(vars).GCount.NVIDIA.PSObject.Properties.Name | ForEach-Object { $ArgDevices += "$($(vars).GCount.NVIDIA.$_) " }; $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1) }
 
     ##Get Configuration File
+    ##This is located in config\miners
     $MinerConfig = $Global:config.miners.gminer
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##

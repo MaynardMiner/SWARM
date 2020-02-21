@@ -21,6 +21,7 @@ $(vars).AMDTypes | ForEach-Object {
     $Log = Join-Path $($(vars).dir) "logs\$ConfigType.log"
 
     ##Get Configuration File
+    ##This is located in config\miners
     $MinerConfig = $Global:config.miners.$CName
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##

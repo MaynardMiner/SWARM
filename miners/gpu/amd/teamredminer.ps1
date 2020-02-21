@@ -24,6 +24,7 @@ $(vars).AMDTypes | ForEach-Object {
     else { $Devices = $Get_Devices }
 
     ##Get Configuration File
+    ##This is located in config\miners
     $MinerConfig = $Global:config.miners.teamredminer
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
