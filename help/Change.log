@@ -2017,3 +2017,26 @@ but beta in design.
   * cuckatoo32 added
 * jayddee (cpuminer) updated
 * rplant (cpuminer) updated
+
+############################################
+############################################
+
+# SWARM 3.0.3
+
+## What's New?
+* Added 'weekly' to stat files. 
+  * This is test implementation.
+  * Requires running clear_profits
+    after update if you wish to see working.
+  * Currently has no affect in any calculations,
+    this design is for proof of concept/testing.
+
+## Improvements
+ * Added support for ethash on zergpool.
+   * There were a fair amount of changes required
+     in each miner that does ethash to set correct
+     arguments, if you have issues- Report and I
+     will investigate
+
+## Fixes
+* Fixed potential "SWARM exited reason 1" issues
