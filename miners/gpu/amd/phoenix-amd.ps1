@@ -82,7 +82,7 @@ $(vars).AMDTypes | ForEach-Object {
                     "zergpool" {
                         switch ($SelAlgo) {
                             "progpow" { $AddArgs = "-coin bci -proto 1 " }
-                            "ethash" { $AddArgs = "-proto 4 -stales 0 " }
+                            "ethash" { $AddArgs = "-proto 2 -rate 1 " }
                         }
                     }
                 }
