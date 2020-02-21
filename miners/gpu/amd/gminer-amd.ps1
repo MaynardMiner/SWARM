@@ -87,7 +87,13 @@ $(vars).AMDTypes | ForEach-Object {
                     "equihash_144/5" { $AddArgs = "--algo 144_5 --pers auto " }
                     "equihash_210/9" { $AddArgs = "--algo 210_9 --pers auto " }
                     "equihash_200/9" { $AddArgs = "--algo 200_9 --pers auto " }
-                    "ethash" { $AddArgs = "--algo ethash --proto stratum " }            
+                    "ethash" { 
+                        switch ($SelName) {
+                            "nicehash" { $AddArgs = "--algo ethash --proto stratum " }
+                            "zergpool" { $AddArgs = "--algo ethash "}
+                            default { $AddArgs = "--algo ethash --proto stratum"}
+                        }
+                    }
                 }
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
                 [PSCustomObject]@{

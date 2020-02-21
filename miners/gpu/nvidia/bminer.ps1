@@ -72,7 +72,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     }
                     "zergpool" {
                         switch ($Sel) {
-                            "ethash" { $Pass = ""; $Naming = "ethstratum"; $AddArgs = "" }
+                            "ethash" { $Pass = ""; $Naming = "ethproxy"; $AddArgs = "" }
                             "cuckaroom" { $Pass = ""; $Naming = "cuckaroo29m"; $AddArgs = "-pers auto " }
                             "cuckatoo31" { $Pass = ""; $Naming = "cuckatoo31"; $AddArgs = "-pers auto " }
                             "equihash_150/5" { $Pass = ""; $Naming = "beam"; $AddArgs = "" }

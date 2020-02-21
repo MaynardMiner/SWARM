@@ -78,6 +78,7 @@ $(vars).NVIDIATypes | ForEach-Object {
             else { $HashStat = $Stat.Hour }
             $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                 $SelAlgo = $_.Algorithm
+                $SelName = $_.Name
                 switch ($SelAlgo) {
                     "equihash_150/5" { $AddArgs = "--algo 150_5 " }
                     "cuckoo_cycle" { $AddArgs = "--algo aeternity " }
@@ -91,7 +92,13 @@ $(vars).NVIDIATypes | ForEach-Object {
                     "equihash_144/5" { $AddArgs = "--algo 144_5 --pers auto " }
                     "equihash_210/9" { $AddArgs = "--algo 210_9 --pers auto " }
                     "equihash_200/9" { $AddArgs = "--algo 200_9 --pers auto " }
-                    "ethash" { $AddArgs = "--algo ethash --proto stratum " }
+                    "ethash" { 
+                        switch ($SelName) {
+                            "nicehash" { $AddArgs = "--algo ethash --proto stratum " }
+                            "zergpool" { $AddArgs = "--algo ethash "}
+                            default { $AddArgs = "--algo ethash --proto stratum"}
+                        }
+                    }
                     "eaglesong" { $AddArgs = "--algo eaglesong " }
                 }
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
