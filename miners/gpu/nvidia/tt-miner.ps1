@@ -60,7 +60,13 @@ $(vars).NVIDIATypes | ForEach-Object {
             $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
             if ($(arg).Rej_Factor -eq "Yes" -and $Stat.Rejections -gt 0 -and $Stat.Rejection_Periods -ge 3) { $HashStat = $Stat.Hour * (1 - ($Stat.Rejections * 0.01)) }
             else { $HashStat = $Stat.Hour }
-            $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
+            $Pools | 
+                Where-Object Algorithm -eq $MinerAlgo | 
+                Where-Object {
+                    if($_.Name -eq "zergpool" -and $_.Algorithm -ne "ethash"){$_}
+                    else{$_}
+                } |
+                ForEach-Object {
                 if ($_.Worker) { $Worker = "-worker $($_.Worker) " }else { $Worker = $Null }
                 [PSCustomObject]@{
                     MName      = $Name
