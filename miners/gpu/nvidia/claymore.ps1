@@ -67,6 +67,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                 $SelName = $_.Name
                 switch ($SelName) {
                     "nicehash" { $AddArgs = "-esm 3 -estale 0 " }
+                    "zergpool" { $AddArgs = "-esm 3 -estale 0 " }
                     default { $AddArgs = "" }
                 }
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }

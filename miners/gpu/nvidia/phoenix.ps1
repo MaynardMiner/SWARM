@@ -83,6 +83,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     "zergpool" {
                         switch ($SelAlgo) {
                             "progpow" { $AddArgs = "-coin bci -proto 1 " }
+                            "ethash" { $AddArgs = "-proto 4 -stales 0 " }
                         }
                     }
                 }
