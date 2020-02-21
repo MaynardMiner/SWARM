@@ -64,7 +64,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                 Where-Object Algorithm -eq $MinerAlgo | 
                 Where-Object {
                     if($_.Name -eq "zergpool" -and $_.Algorithm -ne "ethash"){$_}
-                    else{$_}
+                    elseif($_.Name -ne "zergpool"){$_}
                 } |
                 ForEach-Object {
                 if ($_.Worker) { $Worker = "-worker $($_.Worker) " }else { $Worker = $Null }
