@@ -263,5 +263,3 @@ class Miner_Stat : Stat {
 class Watt_Stat : Stat {
 
 }
-
-$A = [Pool_Stat]::New("test_x16r","0.00352","121234343","0.000312425",$false)

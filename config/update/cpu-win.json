@@ -3,7 +3,7 @@
     "name": "bubasik",
     "type": "cpu",
     "CPU": ".\\bin\\bubasik\\cpuminer-sse2.exe",
-    "minername": "cpuminer-sse2.exe",
+    "minername": "cpuminer-avx2.exe",
     "version": "3.9.3.1",
     "optional": "No",
     "uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.9.3.1/cpuminer-opt-3.9.3.1-windows.zip"
