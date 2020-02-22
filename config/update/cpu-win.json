@@ -2,7 +2,7 @@
   "bubasik": {
     "name": "bubasik",
     "type": "cpu",
-    "CPU": ".\\bin\\bubasik\\cpuminer-sse2.exe",
+    "CPU": ".\\bin\\bubasik\\cpuminer-avx2.exe",
     "minername": "cpuminer-avx2.exe",
     "version": "3.9.3.1",
     "optional": "No",
