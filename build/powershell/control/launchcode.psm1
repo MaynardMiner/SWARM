@@ -274,7 +274,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                     ## Add if miner path is not listed.
                     if (-not ($net | Where DisplayName -eq $NetPath)) {
                         try {
-                        New-NetFirewallRule -DisplayName "$NetPath" -Direction Inbound -Program $NetPath -Action Allow -ErrorAction Ignore | Out-Null
+                            New-NetFirewallRule -DisplayName "$NetPath" -Direction Inbound -Program $NetPath -Action Allow -ErrorAction Ignore | Out-Null
                         }
                         catch {
 
@@ -376,7 +376,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                     $FilePath = "$PSHome\pwsh.exe"
                     $CommandLine = '"' + $FilePath + '"'
                     $WindowStyle = "minimized"
-                    if($Hidden -eq "yes") {
+                    if ($Hidden -eq "yes") {
                         $WindowStyle = "hidden"
                     }
                     $arguments = "-executionpolicy bypass -Windowstyle $WindowStyle -command `"$ps1`""
@@ -578,7 +578,14 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
             }
             $Proc.Dispose();            
 
-            [int]$Screen_ID = $($Get_Screen | Select-String $MinerCurrent.Type).ToString().Split('.')[0].Replace("`t","")
+            ## User showed an error that there was no miner screen, and I don't know why.
+            ## Make an error generate if there is not a screen that matches current type
+            if ($Get_Screen -like "*$($MinerCurrent.Type)") {
+                [int]$Screen_ID = $($Get_Screen | Select-String $MinerCurrent.Type).ToString().Split('.')[0].Replace("`t", "")
+            }
+            else {
+                log "Warning- There was no screen that matches $($MinerCurrent.Type)" -Foreground Red
+            }
             
             ## Now that we have a list of all Process with the name of the exectuable.
             ## We used bash to launch the miner, so the parent of the core process
