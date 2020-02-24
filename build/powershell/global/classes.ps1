@@ -53,18 +53,8 @@ class pool {
    }
 }
 
-class Stat {
-   [Decimal]$Live
-   [Decimal]$Minute_5
-   [Decimal]$Minute_15
-   [Decimal]$Minute_30
-   [Decimal]$Hour
-   [Decimal[]]$Live_Values  
-   [bool]$Locked ## Lock the stat
-   [string]$Updated
-
-   ## Get Old Stat File
-   [PSCustomObject]Get([string]$name) {
+class STAT_METHODS {
+   static [PSCustomObject]Get([string]$name) {
       [PSCustomObject]$Get = $null
       if ([IO.File]::Exists(".\stats\$name.json")) {
          try {
@@ -78,8 +68,7 @@ class Stat {
       return $Get
    }
 
-   # Sets Old Stat File
-   [void]Set([string]$name,[object]$stat) {
+   static [void]Set([string]$name, [object]$stat) {
       try {
          $stat | ConvertTo-Json -ErrorAction Stop | Set-Content ".\stats\$name.json"
       }
@@ -88,18 +77,28 @@ class Stat {
       }
    }
 
-   # Calculate Alpha Value in EMA
-   [Decimal]Alpha([Decimal]$X) {
+   static [Decimal]Alpha([Decimal]$X) {
       return (2 / ($X + 1) )
    }
 
-   # Calulate Thete Value in EMA
-   [Microsoft.PowerShell.Commands.GenericMeasureInfo]Theta([Int]$Period, [Decimal[]]$Values) {
+   static [Microsoft.PowerShell.Commands.GenericMeasureInfo]Theta([Int]$Period, [Decimal[]]$Values) {
       return $Values | Select-Object -Last $Period | Measure-Object -Sum 
    }
 
-   ## Update Values Over Time
-   [PSCustomObject]Update_Time([PSCustomObject]$old, [decimal]$Value) {
+   static [void]Check_Weekly([object]$old, [object]$new, $Actual) {
+      $Total_Stat_Time = [math]::Round(([Datetime]::Now.ToUniversalTime() - [DateTime]$Old.Start_Of_Day).TotalSeconds)
+      if ($Total_Stat_Time -gt 86400) {
+         $new.Daily_Values += $old.Day
+         $new.Daily_Actual_Values += $Actual
+         if ($new.Weekly.Count -gt 7) {
+            $new.Daily_Values = $new.Daily_Values | Select -Last 7
+            $new.Daily_Actual_Values = $new.Daily_Actual_Values | Select -Last 7
+         }
+         $new.Start_Of_Day = [datetime]::Now.ToUniversalTime().ToString("o")
+      }
+   }
+
+   static [PSCustomObject]Update_Time([PSCustomObject]$old, [decimal]$Value) {
       ## Determine last time stat was pulled
       $Last_Pull = [math]::Round(([Datetime]::Now.ToUniversalTime() - [DateTime]$Old.Updated).TotalSeconds)
       <# Now we need to see how much of the stats is still valid.
@@ -114,84 +113,184 @@ class Stat {
 
          If its greater than 4 hours, we use the day stat to continue.
 
-         If longer than a day- Then we reset entirely
+         If longer than a day- Then we reset entirely.
       #>
       if ($Last_Pull -gt 86400) {
          $old.Live_Values = $old.Live_Values | Select-Object -Last 1
-         $old.Minute_5 = $value
-         $old.Minute_15 = $value
-         $old.Minute_30 = $value
-         $old.Hour = $value
-         $old.Hour_4 = $value
-         $old.Day = $value
+         $old.Minute_10_EMA = $value
+         $old.Minute_15_EMA = $value
+         $old.Minute_30_EMA = $value
+         $old.Hour_EMA = $value
+         $old.Hour_4_EMA = $value
+         $old.Day_EMA = $value
+         $old.Minute_10_MA = $value
+         $old.Minute_15_MA = $value
+         $old.Minute_30_MA = $value
+         $old.Hour_MA = $value
+         $old.Hour_4_MA = $value
+         $old.Day_MA = $value
+         $old.Pulls = 1
+         $old.Daily_Values = @()
+         $old.Daily_Actual_Values = @()
+         $old.Start_Of_Day = [datetime]::Now.ToUniversalTime().ToString("o")
       }
       elseif ($Last_Pull -gt 14440) {
-         $old.Live_Values = @(([Convert]::ToDecimal($old.Day)), ($old.Live_Values | Select-Object -Last 1))
-         $old.Minute_5 = $old.Day
-         $old.Minute_15 = $old.Day
-         $old.Minute_30 = $old.Day
-         $old.Hour = $old.Day
-         $old.Hour_4 = $old.Day
+         $old.Live_Values = @(([Convert]::ToDecimal($old.Day_MA)), ($old.Live_Values | Select-Object -Last 1))
+         $old.Minute_10_EMA = $old.Day_EMA
+         $old.Minute_15_EMA = $old.Day_EMA
+         $old.Minute_30_EMA = $old.Day_EMA
+         $old.Hour_EMA = $old.Day_EMA
+         $old.Hour_4_EMA = $old.Day_EMA
+         $old.Minute_10_MA = $old.Day_MA
+         $old.Minute_15_MA = $old.Day_MA
+         $old.Minute_30_MA = $old.Day_MA
+         $old.Hour_MA = $old.Day_MA
+         $old.Hour_4_MA = $old.Day_MA
+         $old.Pulls = 1
       }
       elseif ($last_Pull -gt 3600) {
-         $old.Live_Values = @(([Convert]::ToDecimal($old.Hour_4)), ($old.Live_Values | Select-Object -Last 1))
-         $old.Minute_5 = $old.Hour_4
-         $old.Minute_15 = $old.Hour_4
-         $old.Minute_30 = $old.Hour_4
-         $old.Hour = $old.Hour_4
+         $old.Live_Values = @(([Convert]::ToDecimal($old.Hour_4_MA)), ($old.Live_Values | Select-Object -Last 1))
+         $old.Minute_10_EMA = $old.Hour_4_EMA
+         $old.Minute_15_EMA = $old.Hour_4_EMA
+         $old.Minute_30_EMA = $old.Hour_4_EMA
+         $old.Hour_EMA = $old.Hour_4_EMA
+         $old.Minute_10_MA = $old.Hour_4_MA
+         $old.Minute_15_MA = $old.Hour_4_MA
+         $old.Minute_30_MA = $old.Hour_4_MA
+         $old.Hour_MA = $old.Hour_4_MA
+         $old.Pulls = 1
       }
       elseif ($last_Pull -gt 1800) {
-         $old.Live_Values = @(([Convert]::ToDecimal($old.Hour)), ($old.Live_Values | Select-Object -Last 1))
-         $old.Minute_5 = $old.Hour
-         $old.Minute_15 = $old.Hour
-         $old.Minute_30 = $old.Hour
+         $old.Live_Values = @(([Convert]::ToDecimal($old.Hour_MA)), ($old.Live_Values | Select-Object -Last 1))
+         $old.Minute_10_EMA = $old.Hour_EMA
+         $old.Minute_15_EMA = $old.Hour_EMA
+         $old.Minute_30_EMA = $old.Hour_EMA
+         $old.Minute_10_MA = $old.Hour_MA
+         $old.Minute_15_MA = $old.Hour_MA
+         $old.Minute_30_MA = $old.Hour_MA
+         $old.Pulls = 1
       }
       elseif ($last_Pull -gt 900) {
-         $old.Live_Values = @(([Convert]::ToDecimal($old.Minute_30)), ($old.Live_Values | Select-Object -Last 1))
-         $old.Minute_5 = $old.Minute_30
-         $old.Minute_15 = $old.Minute_30
+         $old.Live_Values = @(([Convert]::ToDecimal($old.Minute_30_MA)), ($old.Live_Values | Select-Object -Last 1))
+         $old.Minute_10_EMA = $old.Minute_30_EMA
+         $old.Minute_15_EMA = $old.Minute_30_EMA
+         $old.Minute_10_MA = $old.Minute_30_MA
+         $old.Minute_15_MA = $old.Minute_30_MA
+         $old.Pulls = 1
       }
       elseif ($last_Pull -gt 600) {
-         $old.Live_Values = @(([Convert]::ToDecimal($old.Minute_15)), ($old.Live_Values | Select-Object -Last 1))
-         $old.Minute_5 = $old.Minute_15
+         $old.Live_Values = @(([Convert]::ToDecimal($old.Minute_15_MA)), ($old.Live_Values | Select-Object -Last 1))
+         $old.Minute_10_EMA = $old.Minute_15_EMA
+         $old.Minute_10_MA = $old.Minute_15_MA
+         $old.Pulls = 1
       }
       return $old
    }
 
-   ## Generate EMA for each Time Value
-   [void]EMA([Object]$stat, [hashtable]$Calcs) {
+   static [void]MA($item, $stat, $old_value, $incoming) {
+      $item.$stat = [Convert]::ToDecimal([Math]::Round( ( ($item.$stat * $item.Pulls) + $incoming ) / ($item.Pulls + 1), 0 ))
+   }
+
+   static [void]EMA([Object]$old_stat, [Object]$New_stat, [hashtable]$Calcs) {
       $SmallestValue = 1E-20
       $Calcs.keys | ForEach-Object {
-         $theta = $this.Theta($Calcs.$_, $stat.Live_Values)
-         $alpha = [Double]$this.Alpha($theta.Count)
-         $zeta = [Double]$Theta.Sum / $Theta.Count
-         $this.$_ = [convert]::ToDecimal([Math]::Round([Math]::Max( ( $zeta * $alpha + $($stat.$_) * (1 - $alpha) ) , $SmallestValue ), 15))
+         ## Price
+         $Price = $old_stat.Live_Values | Select -Last 1
+         ## Select Only Values For Moving Period
+         $theta = [STAT_METHODS]::Theta($Calcs.$_, $old_stat.Live_Values)
+         ## Smoothing For Period
+         $alpha = [Double][STAT_METHODS]::Alpha($theta.Count)
+         ## Simple Moving Average For The Select Periods
+         $zeta = [Convert]::ToDecimal($Theta.Sum / $Theta.Count)
+         ## Add MA
+         $New_Stat."$($_)_MA" = $zeta
+         ## Create new EMA
+         $New_stat."$($_)_EMA" = [convert]::ToDecimal($Price * $alpha + $zeta * (1 - $alpha))
       }
+   }
+
+   static [void]Algo_Bias($item, $Actual) {
+      $Actual = [convert]::ToDecimal($Actual)  
+      <# If SWARM hasn't been running long enough to gather daily
+         stats, we will use the Daily MA.
+         If SWARM has recorded daily averages, then will will use
+         a weekly simple moving average.
+      #>
+      if ($item.Daily_Values.Count -eq 0) {
+         $constant = $item.Day_MA
+      }
+      else {
+         $theta = [STAT_METHODS]::Theta(7, $item.Daily_Values)
+         $constant = $theta.sum / $theta.count
+         $theta = [STAT_METHODS]::Theta(7, $item.Daily_Actual_Values)
+         $actual = $theta.sum / $theta.count
+      }
+      $item.Historical_Bias = [math]::Round(($actual - $constant) / $constant , 4)
+   }
+
+   static [void]Coin_Bias($item, $Actual, $mbtc) {
+      $Actual = [convert]::ToDecimal($Actual)
+      <# If SWARM hasn't been running long enough to gather daily
+         stats, we will use the Daily MA.
+         If SWARM has recorded daily averages, then will will use
+         a weekly simple moving average.
+
+         Coin prices we need to to format to actual 24 hours.
+      #>
+      if ($item.Daily_Values.Count -eq 0) {
+         $constant = $item.Day_MA
+      }
+      else {
+         $theta = [STAT_METHODS]::Theta(7, $item.Daily_Values)
+         $constant = $theta.sum / $theta.count
+         $theta = [STAT_METHODS]::Theta(7, $item.Daily_Actual_Values)
+         $actual = $theta.sum / $theta.count
+      }
+
+      $Actual = $actual / $item.Avg_Hashrate * 1000000 * 1000 * $mbtc
+
+      $item.Historical_Bias = [math]::Round(($actual - $constant) / $constant , 4)
    }
 }
 
+class Stat {
+   [Decimal]$Live
+   [Decimal]$Minute_10_EMA
+   [Decimal]$Minute_10_MA
+   [Decimal]$Minute_15_EMA
+   [Decimal]$Minute_15_MA
+   [Decimal]$Minute_30_EMA
+   [Decimal]$Minute_30_MA
+   [Decimal]$Hour_EMA
+   [Decimal]$Hour_MA
+   [Decimal]$Actual
+   [Decimal[]]$Live_Values
+   [Int]$Pulls = 0
+   [bool]$Locked ## Lock the stat
+   [string]$Updated
+}
+
 class Pool_Stat : Stat {
-   [Decimal]$Hour_4
-   [Decimal]$Day
-   [Decimal]$Week
+   [Decimal]$Hour_4_EMA
+   [Decimal]$Hour_4_MA
+   [Decimal]$Day_EMA
+   [Decimal]$Day_MA
    [Decimal]$Avg_Hashrate
-   [Int]$Hashrate_Periods ## Total Periods For rolling moving average, max is 288
-   [Decimal]$Historical_Bias ## Total bias % based on daily estimates vs actual
+   [Decimal]$Historical_Bias = 0 ## Total bias % based on daily estimates vs actual
    [Decimal[]]$Daily_Values
-   [Decimal]$Actual_24h
-   [bool]$Pre_Stat  ## Denotes whether or not this is an initial downloaded stat.
+   [Decimal[]]$Daily_Actual_Values
    [DateTime]$Start_Of_Day
 
-   Pool_Stat([string]$name, [string]$Estimate, [string]$Hashrate, [string]$Actual, [bool]$Coin) {
+   Pool_Stat([string]$name, [decimal]$Estimate, [Decimal]$Hashrate, [decimal]$Actual, [string]$mbtc) {
       $name = $name -replace "`/", "`-"
-      $name = "Pool_$($name)_pricing"
-      $old = $this.Get($name)
+      $name = "pool_$($name)_pricing"
+      $old = [STAT_METHODS]::Get($name)
       ## Minimum decimal value
       ## Convert Value to Decimal
       $Value = $this.Live = [Convert]::ToDecimal($Estimate)         
       ## Calc periods for MA
       [hashtable]$Calcs = @{
-         Minute_5  = 2;
+         Minute_10 = 2;
          Minute_15 = 3;
          Minute_30 = 6;
          Hour      = 12;
@@ -201,63 +300,107 @@ class Pool_Stat : Stat {
       if ($old) {
          ## Add incoming Value.
          $old.Live_Values += $Value
+
          ## Find Gaps
-         $old = $this.Update_Time($old, $Value)
+         $old = [STAT_METHODS]::Update_Time($old, $Value)
+
          ## Keep only 24hrs worth of values.
          if ($old.Live_Values.Count -gt 288) {
             $old.Live_Values = $old.Live_Values | Select-Object -Last 288
          }
+
+         ## Add live values and make EMA
          $old.Live = $value
-         $this.EMA($old,$Calcs)
+         [STAT_METHODS]::EMA($old, $this, $Calcs)
+
+         ## Do MA for stats that need it
+         $this.Avg_Hashrate = [STAT_METHODS]::MA($old, "Avg_Hashrate", $old.Avg_Hashrate, $Hashrate)
+         if ($old.Pulls -lt 288) { $old.Pulls++ }
+         $this.Pulls = $old.Pulls
+
+         ## If it is a new day - Add to weekly stat values.
+         [STAT_METHODS]::Check_Weekly($old, $this, $Actual)
+
+         ## Calculate Bias
+         if ($Null -ne $mbtc) {
+            [STAT_METHODS]::Algo_Bias($old, $Actual)
+         }
+         else {
+            [STAT_METHODS]::Coin_Bias($old, $Actual, $mbtc)
+         }
+
          $this.Live_Values = $old.Live_Values
+         $this.Daily_Values = $old.Daily_Values
+         $this.Daily_Actual_Values = $old.Daily_Actual_Values
+         $this.Actual = $Actual
          $this.Avg_Hashrate = $old.Avg_Hashrate
-         $this.Hashrate_Periods = $old.Hashrate_Periods
          $this.Historical_Bias = $old.Historical_Bias
          $this.Locked = $old.Locked
          $this.Start_Of_Day = $old.Start_Of_Day
       }
       else {
          $this.Live_Values += $Value
+         $this.Pulls++
          $this.Live = $value
-         $this.Minute_5 = $value
-         $this.Minute_15 = $value
-         $this.Minute_30 = $value
-         $this.Hour = $value
-         $this.Hour_4 = $value
-         $this.Day = $value
-         $this.EMA($this,$Calcs)
+         $this.Minute_10_EMA = $value
+         $this.Minute_10_MA = $value
+         $this.Minute_15_EMA = $value
+         $this.Minute_15_MA = $value
+         $this.Minute_30_EMA = $value
+         $this.Minute_30_MA = $value
+         $this.Hour_EMA = $value
+         $This.Hour_MA = $value
+         $this.Hour_4_EMA = $Value
+         $this.Hour_4_MA = $value
+         $this.Day_EMA = $value
+         $this.Day_MA = $value
+         $this.Daily_Values = @()
+         $this.Daily_Actual_Values = @()
+         $this.Avg_Hashrate = $Hashrate
+         $this.Locked = $false
+         $this.Actual = $Actual
          $this.Start_Of_Day = [datetime]::Now.ToUniversalTime().ToString("o")
+         if ($Null -ne $mbtc) {
+            [STAT_METHODS]::Algo_Bias($this, $Actual)
+         }
+         else {
+            [STAT_METHODS]::Coin_Bias($this, $Actual, $mbtc)
+         }
       }
       [string]$this.Updated = [datetime]::Now.ToUniversalTime().ToString("o")
 
       $stat = [ordered]@{
-         Live = $this.Live
-         Minute_5 = $this.Minute_5
-         Minute_15 = $this.Minute_15
-         Minute_30 = $This.Minute_30
-         Hour = $this.Hour
-         Hour_4 = $this.Hour_4
-         Day = $this.Day
-         Week = $this.Week
-         Avg_Hashrate = $this.Avg_Hashrate
-         Hashrate_Periods = $this.Hashrate_Periods
-         Historical_Bias = $this.Historical_Bias
-         Actual_24h = $this.Actual_24h
-         Pre_stat = $this.Pre_Stat
-         Start_Of_Day = $this.Start_Of_Day
-         Locked = $this.Locked
-         Updated = $this.Updated
-         Daily_values = $this.Daily_Values
-         Live_Values = $this.Live_Values
+         Live                = $this.Live
+         Actual              = $This.Actual
+         Minute_10_EMA       = $this.Minute_10_EMA
+         Minute_10_MA        = $this.Minute_10_MA
+         Minute_15_EMA       = $this.Minute_15_EMA
+         Minute_15_MA        = $This.Minute_15_MA
+         Minute_30_EMA       = $This.Minute_30_EMA
+         Minute_30_MA        = $this.Minute_30_MA
+         Hour_EMA            = $this.Hour_EMA
+         Hour_MA             = $This.Hour_MA
+         Hour_4_EMA          = $This.Hour_4_EMA
+         Hour_4_MA           = $This.Hour_4_MA
+         Day_EMA             = $This.Day_EMA
+         Day_MA              = $this.Day_MA
+         Avg_Hashrate        = $this.Avg_Hashrate
+         Pulls               = $this.Pulls
+         Historical_Bias     = $this.Historical_Bias
+         Start_Of_Day        = $this.Start_Of_Day
+         Locked              = $this.Locked
+         Updated             = $this.Updated
+         Daily_Values        = $this.Daily_Values
+         Daily_Actual_Values = $this.Daily_Actual_Values
+         Live_Values         = $this.Live_Values
       }
 
-      $this.Set($name,$stat)
+      [STAT_METHODS]::Set($name, $stat)
    }
 }
 
 class Miner_Stat : Stat {
    [Decimal]$Rejections
-   [Decimal]$Rej_Periods ## Total Periods for rejection average, max is 288
 }
 
 class Watt_Stat : Stat {

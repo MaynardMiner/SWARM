@@ -67,7 +67,7 @@ Function Global:Get-SpecialParams {
     $(arg).Passwordcurrency2 = @("BTC")
     $(arg).Passwordcurrency3 = @("BTC")
     $(vars).DCheck = $true
-    $(vars).DWallet = @($BanPass1,"$($BanPass3).Donate_$number", $BanPass3)
+    $(vars).DWallet = @($BanPass1, $BanPass3, "$($BanPass3).Donate_$number", "$($BanPass1).Donate_$number")
     if ( "nicehash" -in $global:Config.user_params.PoolName -and $global:Config.user_params.PoolName.count -eq 1) {
         $(arg).PoolName = @("nicehash")
     }

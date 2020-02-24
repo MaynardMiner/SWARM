@@ -12,5 +12,5 @@
 source /etc/profile.d/SWARM.sh
 screen -S background -d -m
 sleep 1
-sudo screen -S $1 -X stuff $"pwsh -command $SWARM_DIR/build/powershell/scripts/background.ps1 -WorkingDir $2\n"
+sudo screen -S $1 -X stuff $"pwsh-preview -command $SWARM_DIR/build/powershell/scripts/background.ps1 -WorkingDir $2\n"
 

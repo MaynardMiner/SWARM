@@ -12,5 +12,5 @@
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 source /etc/profile.d/SWARM.sh
-pwsh -command "$SWARM_DIR/build/powershell/scripts/active.ps1"
+pwsh-preview -command "$SWARM_DIR/build/powershell/scripts/active.ps1"
 

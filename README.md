@@ -56,7 +56,7 @@ SWARM is very customizable. At the base layer- It is easy to setup by simply inp
 
 SWARM was designed to make SWARM bigger than itself. All commands can be executed via bash scripts/shell commands on the linux side, and we are slowly implementing the same features to the window's side. With the ``Lite`` mode, SWARM can be easily incorporated into any current miningOS available, and users can customize/create their own launch process, independent of SWARM. In Windows, you should be able to run cmd.exe and powershell actions through HiveOS dashboard. An example of this would be:
 
-``get-process | Where-Object name -eq "pwsh"``
+``get-process | Where-Object name -eq "pwsh-preview"``
 
 Would give you a list of all powershell core processes.
 
@@ -77,7 +77,7 @@ I am a sole developer, and this is a large project. I prioritize workload by req
 * HiveOS user account, your farm hash ready. Ideally a pre-made flight sheet for SWARM. See wiki on how to setup a flight sheet.
   * https://hiveos.farm/
 * Latest Powershell Core, along with it being set in your PATH environment variable (should be done during install of Powershell Core).
-    https://github.com/PowerShell/PowerShell/releases/tag/v6.2.3
+    https://github.com/PowerShell/PowerShell/releases/tag/v7.0.0-rc.3
 * Latest .NET core runtime.
   * https://dotnet.microsoft.com/download/dotnet-core/3.0
 * Latest .NET runtime.

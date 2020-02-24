@@ -7,7 +7,7 @@
 :: This will run through a guided setup to start SWARM.
 :: When finished it will save your settings.
 
-pwsh -executionpolicy Bypass -command ".\startup.ps1 -help"
+pwsh-preview -executionpolicy Bypass -command ".\startup.ps1 -help"
 
 :: Once you have first ran SWARM, you can run this guided help again
 :: through command prompt with the commmand ``swarm_help``

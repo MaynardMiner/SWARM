@@ -12,4 +12,4 @@
 source /etc/profile.d/SWARM.sh
 screen -S API -d -m
 sleep -S 1
-screen -S API -X stuff $"pwsh -command $SWARM_DIR/build/powershell/api.ps1"
+screen -S API -X stuff $"pwsh-preview -command $SWARM_DIR/build/powershell/api.ps1"

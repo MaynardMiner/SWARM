@@ -21,6 +21,7 @@ $Nicehash_Ports =
 
 $Nicehash_Ports = $Nicehash_Ports | ConvertFrom-Json
 
+$X = ""
 if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" }
  
 if ($Name -in $(arg).PoolName) {
@@ -36,9 +37,8 @@ if ($Name -in $(arg).PoolName) {
         "US" { $Region = "usa" }
         "ASIA" { $Region = "hk" }
         "EUROPE" { $Region = "eu" }
-        "JAPAN" { $Region = "hk"}
+        "JAPAN" { $Region = "hk" }
     }
-
 
     $nicehash_Request.miningAlgorithms | 
     Where-Object paying -gt 0 | 
@@ -61,18 +61,19 @@ if ($Name -in $(arg).PoolName) {
                 if (-not $(arg).Nicehash_Wallet3) { $NH_Wallet3 = $(arg).Wallet3; [Double]$Fee = 5; }else { $NH_Wallet3 = $(arg).Nicehash_Wallet3; [Double]$Fee = $(arg).Nicehash_Fee }
 
                 $nicehash_Host = "$($Algo).$Region.nicehash.com$X"
-                $nicehash_excavator = "nhmp.$Region.nicehash.com$X"
                 $nicehash_Port = $nicehash_ports.$Algo
                 ## 8 bit estimates
                 $Divisor = 100000000
-                $previous = [Math]::Max($_.paying * 0.001  / $Divisor * (1 - ($Fee / 100)),$SmallestValue)
+                $previous = [Convert]::ToDecimal([Math]::Max($_.paying * 0.001  / $Divisor * (1 - ($Fee / 100)), $SmallestValue))
+                $hashrate = 1
 
                 ## Nicehash is pretty straightforward being PPS. In
                 ## My experience, whatever they state is return- Is
                 ## usually pretty close to actual.
 
-                $StatAlgo = $Nicehash_Algorithm -replace "`_","`-"
-                $Stat = Global:Set-Stat -Name "$($Name)_$($StatAlgo)_profit" -Value ([Convert]::ToDouble($_.paying) / $Divisor * (1 - ($Fee / 100)))
+                $StatAlgo = $Nicehash_Algorithm -replace "`_", "`-"
+                $Stat = [Pool_Stat]::New("$($Name)_$($StatAlgo)", $previous, $hashrate, $previous, $null)
+
                 $Level = $Stat.$($(arg).Stat_Algo)
      
                 [Pool]::New(
@@ -103,7 +104,7 @@ if ($Name -in $(arg).PoolName) {
                     ## Previous
                     $previous
                 )
-                    }
+            }
         }
     }
 }

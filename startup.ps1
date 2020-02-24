@@ -27,7 +27,9 @@ if ($args) {
     if ( "-help" -in $args ) {
         if ($IsWindows) {
             $host.ui.RawUI.WindowTitle = "SWARM";
-            Start-Process "CMD" -ArgumentList "/C `"pwsh -noexit -executionpolicy Bypass -WindowStyle Maximized -command `"Set-Location C:\; Set-Location `'$Dir`'; .\build\powershell\scripts\help.ps1`"`"" -Verb RunAs
+            $file = "$Dir\build\powershell\scripts\help.ps1"
+            $exec = "$PSHOME\pwsh.exe"
+            Start-Process $exec -ArgumentList "-noexit -executionpolicy Bypass -WindowStyle Maximized -file `"$file`"" -Verb RunAs
         }
         else {
             Invoke-Expression "./help_linux"
@@ -89,7 +91,9 @@ elseif (test-path ".\config.json") {
     elseif (-not (test-path ".\config\parameters\newarguments.json")) {
         if ($IsWindows) {
             $host.ui.RawUI.WindowTitle = "SWARM";
-            Start-Process "CMD" -ArgumentList "/C `"pwsh -noexit -executionpolicy Bypass -WindowStyle Maximized -command `"Set-Location C:\; Set-Location `'$Dir`'; .\build\powershell\scripts\help.ps1`"`"" -Verb RunAs
+            $file = "$Dir\build\powershell\scripts\help.ps1"
+            $exec = "$PSHOME\pwsh.exe"
+            Start-Process $exec -ArgumentList "-noexit -executionpolicy Bypass -WindowStyle Maximized -file `"$file`"" -Verb RunAs
         }
         else {
             Invoke-Expression "./help_linux"
@@ -115,8 +119,9 @@ elseif (Test-Path ".\config\parameters\newarguments.json") {
 else {
     if ($IsWindows) {
         $host.ui.RawUI.WindowTitle = "SWARM";
-        $Windowstyle = "Maximized"
-        Start-Process "CMD" -ArgumentList "/C `"pwsh -noexit -executionpolicy Bypass -WindowStyle $WindowStyle -command `"Set-Location C:\; Set-Location `'$Dir`'; .\build\powershell\scripts\help.ps1`"`"" -Verb RunAs
+        $file = "$Dir\build\powershell\scripts\help.ps1"
+        $exec = "$PSHOME\pwsh.exe"
+        Start-Process $exec -ArgumentList "-noexit -executionpolicy Bypass -WindowStyle Maximized -file `"$file`"" -Verb RunAs
     }
     else {
         Invoke-Expression "./help_linux"
@@ -136,7 +141,9 @@ if ($Start -eq $true) {
         if ($Parsed.Hidden -eq "Yes") {
             $Windowstyle = "Hidden"
         }
-        Start-Process "pwsh" -ArgumentList "-noexit -executionpolicy Bypass -WindowStyle $WindowStyle -command `"Set-Location C:\; Set-Location `'$Dir`'; .\swarm.ps1`"" -Verb RunAs
+        $file = "$Dir\swarm.ps1"
+        $exec = "$PSHOME\pwsh.exe"
+        Start-Process $exec -ArgumentList "-noexit -executionpolicy bypass -windowstyle $windowstyle -File `"$file`"" -Verb Runas
     }
     else {
         ## Add Arguments to newarguments.json

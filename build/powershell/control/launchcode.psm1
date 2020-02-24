@@ -253,8 +253,11 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                 ##Make Test.bat for users
                 $Algo = ($MinerCurrent.Algo).Replace("`/", "_")
                 $minerbat = @()
-                ## pwsh to launch powershell window to fully emulate SWARM launching
-                $minerbat += "pwsh -ExecutionPolicy Bypass -command `"Start-Process pwsh -verb runas -ArgumentList `"`"-noexit -executionpolicy Bypass -Command `"`"`"`".\swarm_start_$($Algo).ps1`"`"`"`"`"`""
+                ## pwsh-preview to launch powershell window to fully emulate SWARM launching
+                $file = "$WorkingDirectory\swarm_start_$($Algo).ps1"
+                $exec = "$PSHOME\pwsh.exe"
+                $command = "`"Start-Process `"`"$exec`"`" -Verb Runas -ArgumentList `"`"-noexit -executionpolicy bypass -file `"`"`"`"$file`"`"`"`"`"`"`""
+                $minerbat += "pwsh-preview -ExecutionPolicy Bypass -command $Command"
                 $miner_bat = Join-Path $WorkingDirectory "swarm_start_$($Algo).bat"
                 $minerbat | Set-Content $miner_bat
 
@@ -274,7 +277,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                     ## Add if miner path is not listed.
                     if (-not ($net | Where DisplayName -eq $NetPath)) {
                         try {
-                        New-NetFirewallRule -DisplayName "$NetPath" -Direction Inbound -Program $NetPath -Action Allow -ErrorAction Ignore | Out-Null
+                            New-NetFirewallRule -DisplayName "$NetPath" -Direction Inbound -Program $NetPath -Action Allow -ErrorAction Ignore | Out-Null
                         }
                         catch {
 
@@ -376,10 +379,10 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                     $FilePath = "$PSHome\pwsh.exe"
                     $CommandLine = '"' + $FilePath + '"'
                     $WindowStyle = "minimized"
-                    if($Hidden -eq "yes") {
+                    if ($Hidden -eq "yes") {
                         $WindowStyle = "hidden"
                     }
-                    $arguments = "-executionpolicy bypass -Windowstyle $WindowStyle -command `"$ps1`""
+                    $arguments = "-executionpolicy bypass -Windowstyle $WindowStyle -file `"$ps1`""
                     $CommandLine += " " + $arguments
                     $New_Miner = $start.New_Miner($filepath, $CommandLine, $WorkingDirectory)
                     $Process = Get-Process | Where id -eq $New_Miner.dwProcessId
@@ -395,8 +398,9 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                 do { sleep 1; $JobOutput = Receive-Job $Job }
                 while ($JobOutput -eq $null)
       
-                $Process = Get-Process | Where-Object Id -EQ $JobOutput.ProcessId
-                $Process.Handle | Out-Null
+                if ($JobOutput.ProcessId -ne 0) {
+                    $Process = Get-Process | Where-Object Id -EQ $JobOutput.ProcessId
+                }
                 $Process
             }
             else { $MinerProcess }
@@ -557,28 +561,9 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
             ## A screen should have started that is titled the name of the Type
             ## of the device. We must identify the process id. We so this with
             ## a simple parsing of screen list.
-            $Get_Screen = @()
-            $info = [System.Diagnostics.ProcessStartInfo]::new()
-            $info.FileName = "screen"
-            $info.Arguments = "-ls $($MinerCurrent.Type)"
-            $info.UseShellExecute = $false
-            $info.RedirectStandardOutput = $true
-            $info.Verb = "runas"
-            $Proc = [System.Diagnostics.Process]::New()
-            $proc.StartInfo = $Info
-            $timer = [System.Diagnostics.Stopwatch]::New()
-            $timer.Restart();
-            $proc.Start() | Out-Null
-            while (-not $Proc.StandardOutput.EndOfStream) {
-                $Get_Screen += $Proc.StandardOutput.ReadLine();
-                if ($timer.Elapsed.Seconds -gt 15) {
-                    $proc.kill() | Out-Null;
-                    break;
-                }
-            }
-            $Proc.Dispose();            
-
-            [int]$Screen_ID = $($Get_Screen | Select-String $MinerCurrent.Type).ToString().Split('.')[0].Replace("`t","")
+            ## I use bash to parse, becuase for some reason I can't get whitespace 
+            ## removed with pwsh-preview from screen list using String.replace
+            [int]$Screen_ID = invoke-expression "screen -ls | grep $($MinerCurrent.Type) | cut -f1 -d'.' | sed 's/\W//g'"
             
             ## Now that we have a list of all Process with the name of the exectuable.
             ## We used bash to launch the miner, so the parent of the core process

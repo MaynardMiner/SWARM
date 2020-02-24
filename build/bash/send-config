@@ -11,4 +11,4 @@
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 source /etc/profile.d/SWARM.sh
-pwsh -command "$SWARM_DIR/build/powershell/scripts/config.ps1 $1 \'$2\'"
+pwsh-preview -command "$SWARM_DIR/build/powershell/scripts/config.ps1 $1 \'$2\'"

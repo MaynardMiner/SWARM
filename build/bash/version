@@ -16,4 +16,4 @@ c="!$3"
 d="!$4"
 
 source /etc/profile.d/SWARM.sh
-pwsh -command "$SWARM_DIR/build/powershell/scripts/version.ps1 -command $a -name $b -version $c -uri \"$d\""
+pwsh-preview -command "$SWARM_DIR/build/powershell/scripts/version.ps1 -command $a -name $b -version $c -uri \"$d\""

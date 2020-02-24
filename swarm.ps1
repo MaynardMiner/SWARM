@@ -33,7 +33,19 @@ $Global:Config.vars.dir = $Global:Config.vars.dir -replace "/var/tmp", "/root"
 Set-Location $Global:Config.vars.dir
 if (-not (test-path ".\debug")) { New-Item -Path "debug" -ItemType Directory | Out-Null }
 
+if($GLobal:Config.vars.dir -like "* *") {
+    Write-Host "Warning: Detected File Path To Be $($Global:Config.vars.dir)" -ForegroundColor Red
+    Write-Host "Because there is a space within a parent directory," -ForegroundColor Red
+    Write-Host "This will cause certain logs and miners to not start." -ForegroundColor Red
+    Write-Host "Due to SWARM attempting to set logging arguments in miners." -ForegroundColor Red
+    Write-Host "If you would like to use all features of SWARM, do not place" -ForegroundColor Red
+    Write-Host "SWARM folder in a parent directory that contains spaces." -ForegroundColor Red
+    Write-Host "Miner anti-debugging and poor miner argument parsing/development make this a problem." -ForegroundColor Red
+    Start-Sleep -S 10
+}
+
 if ($IsWindows) {
+    ## Warn User about path
     Write-Host "Stopping Any Previous SWARM Instances..."
     $ID = ".\build\pid\miner_pid.txt"
     if (Test-Path $ID) { 
@@ -78,13 +90,13 @@ if ($IsWindows) {
 }
 
 ## Check Powershell version. Output warning.
-if ($PSVersionTable.PSVersion -ne "6.2.4") {
+if ($PSVersionTable.PSVersion -ne "7.0.0-rc.3") {
     Write-Host "WARNING: Powershell Core Version is $($PSVersionTable.PSVersion)" -ForegroundColor Red
-    Write-Host "Currently supported version for SWARM is 6.2.4" -ForegroundColor Red
+    Write-Host "Currently supported version for SWARM is 7.0.0-rc.3" -ForegroundColor Red
     Write-Host "SWARM will continue anyways- It may cause issues." -ForegroundColor Red
     Write-Host ""
     Write-Host "Link for Powershell:" -ForegroundColor Red
-    Write-Host "https://github.com/PowerShell/PowerShell/releases/tag/v6.2.4" -ForegroundColor Red
+    Write-Host "https://github.com/PowerShell/PowerShell/releases/tag/v7.0.0-rc.3" -ForegroundColor Red
     Write-Host ""
     Write-Host "Windows: Microsoft Visual C++ Redistributable for Visual Studio (2012) (2013) (2015,2017 and 2019)" -ForegroundColor Red
     Write-Host "Link For download:" -ForegroundColor Red

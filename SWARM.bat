@@ -27,4 +27,4 @@ cd /D %~dp0
 ::
 :: pwsh -executionpolicy Bypass -command ".\startup.ps1 -RigName1 SWARM -Location US -PoolName nlpool,blockmasters,zergpool,nicehash,fairpool,ahashpool,blazepool,hashrefinery,zpool -Type AMD1 -Wallet1 1RVNsdO6iuwEHfoiuwe123hsdfljk -Donate .5"
 
-pwsh -executionpolicy Bypass -command ".\startup.ps1"
+pwsh-preview -executionpolicy Bypass -command ".\startup.ps1"
