@@ -33,6 +33,17 @@ $Global:Config.vars.dir = $Global:Config.vars.dir -replace "/var/tmp", "/root"
 Set-Location $Global:Config.vars.dir
 if (-not (test-path ".\debug")) { New-Item -Path "debug" -ItemType Directory | Out-Null }
 
+if($GLobal:Config.vars.dir -like "* *") {
+    Write-Host "Warning: Detected File Path To Be $($Global:Config.vars.dir)" -ForegroundColor Red
+    Write-Host "Because there is a space within a parent directory," -ForegroundColor Red
+    Write-Host "This will cause certain logs and miners to not start." -ForegroundColor Red
+    Write-Host "Due to SWARM attempting to set logging arguments in miners." -ForegroundColor Red
+    Write-Host "If you would like to use all features of SWARM, do not place" -ForegroundColor Red
+    Write-Host "SWARM folder in a parent directory that contains spaces." -ForegroundColor Red
+    Write-Host "Miner anti-debugging and poor miner argument parsing/development make this a problem." -ForegroundColor Red
+    Start-Sleep -S 10
+}
+
 if ($IsWindows) {
     Write-Host "Stopping Any Previous SWARM Instances..."
     $ID = ".\build\pid\miner_pid.txt"
