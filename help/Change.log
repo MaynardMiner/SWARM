@@ -2040,3 +2040,17 @@ but beta in design.
 
 ## Fixes
 * Fixed potential "SWARM exited reason 1" issues
+
+############################################
+############################################
+
+# SWARM 3.0.4
+
+## Improvements.
+* Fixed another potential "SWARM exited reason 1" issue.
+* Removed rounding of estimates which have very small
+  values.
+* SWARM will output a notice if user has SWARM in
+  a parent directory/path with spaces in it. This
+  causes an issues with miners parsing their '-log'
+  arguments. (Not SWARM issue).
