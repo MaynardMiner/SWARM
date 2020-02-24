@@ -200,7 +200,7 @@ function Global:Set-Stat {
             $Alpha = [Double](Global:Get-Alpha($Theta.Count))
             $Zeta = [Double]$Theta.Sum / $Theta.Count
             $Stat.$_ = [Math]::Max( ( $Zeta * $Alpha + $($Stat.$_) * (1 - $Alpha) ) , $SmallestValue )
-            $Stat.$_ = [Math]::Round( $Stat.$_, 15 )
+            $Stat.$_ = $Stat.$_
         }
         
         if(-not $AsHashrate) {

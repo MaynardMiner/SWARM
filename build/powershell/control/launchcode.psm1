@@ -561,9 +561,35 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
             ## A screen should have started that is titled the name of the Type
             ## of the device. We must identify the process id. We so this with
             ## a simple parsing of screen list.
-            ## I use bash to parse, becuase for some reason I can't get whitespace 
-            ## removed with pwsh-preview from screen list using String.replace
-            [int]$Screen_ID = invoke-expression "screen -ls | grep $($MinerCurrent.Type) | cut -f1 -d'.' | sed 's/\W//g'"
+            $Get_Screen = @()
+            $info = [System.Diagnostics.ProcessStartInfo]::new()
+            $info.FileName = "screen"
+            $info.Arguments = "-ls $($MinerCurrent.Type)"
+            $info.UseShellExecute = $false
+            $info.RedirectStandardOutput = $true
+            $info.Verb = "runas"
+            $Proc = [System.Diagnostics.Process]::New()
+            $proc.StartInfo = $Info
+            $timer = [System.Diagnostics.Stopwatch]::New()
+            $timer.Restart();
+            $proc.Start() | Out-Null
+            while (-not $Proc.StandardOutput.EndOfStream) {
+                $Get_Screen += $Proc.StandardOutput.ReadLine();
+                if ($timer.Elapsed.Seconds -gt 15) {
+                    $proc.kill() | Out-Null;
+                    break;
+                }
+            }
+            $Proc.Dispose();            
+
+            ## User showed an error that there was no miner screen, and I don't know why.
+            ## Make an error generate if there is not a screen that matches current type
+            if ($Get_Screen -like "*$($MinerCurrent.Type)") {
+                [int]$Screen_ID = $($Get_Screen | Select-String $MinerCurrent.Type).ToString().Split('.')[0].Replace("`t", "")
+            }
+            else {
+                log "Warning- There was no screen that matches $($MinerCurrent.Type)" -Foreground Red
+            }
             
             ## Now that we have a list of all Process with the name of the exectuable.
             ## We used bash to launch the miner, so the parent of the core process
