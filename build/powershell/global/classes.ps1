@@ -367,7 +367,6 @@ class Pool_Stat : Stat {
 
 
          $this.Live_Values = $old.Live_Values
-         $this.Avg_Hashrate = $old.Avg_Hashrate
          $this.Actual = $old.Actual
          $this.Historical_Bias = $old.Historical_Bias
          $this.Locked = $old.Locked
