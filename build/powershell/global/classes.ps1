@@ -54,6 +54,7 @@ class pool {
 }
 
 class STAT_METHODS {
+   ## Get the stat file
    static [PSCustomObject]Get([string]$name) {
       [PSCustomObject]$Get = $null
       if ([IO.File]::Exists(".\stats\$name.json")) {
@@ -68,6 +69,7 @@ class STAT_METHODS {
       return $Get
    }
 
+   ## Sets the stat file
    static [void]Set([string]$name, [object]$stat) {
       try {
          $stat | ConvertTo-Json -ErrorAction Stop | Set-Content ".\stats\$name.json"
@@ -77,14 +79,18 @@ class STAT_METHODS {
       }
    }
 
+   ## Calculate Weight
    static [Decimal]Alpha([Decimal]$X) {
       return (2 / ($X + 1) )
    }
 
+   ## Get Sum of values
    static [Microsoft.PowerShell.Commands.GenericMeasureInfo]Theta([Int]$Period, [Decimal[]]$Values) {
       return $Values | Select-Object -Last $Period | Measure-Object -Sum 
    }
 
+   ## Checks if a day has passed, and whether or not
+   ## stat should add new daily values.
    static [void]Check_Weekly([object]$old, [object]$new, $Actual) {
       $new.Daily_Values = $old.Daily_values
       $new.Daily_Actual_Values = $old.Daily_Actual_Values
@@ -105,6 +111,7 @@ class STAT_METHODS {
 
    }
 
+   ## Resets particular stats if SWARM was shut off
    static [PSCustomObject]Update_Time([PSCustomObject]$old, [decimal]$Value) {
       ## Determine last time stat was pulled
       $Last_Pull = [math]::Round(([Datetime]::Now.ToUniversalTime() - [DateTime]$Old.Updated).TotalSeconds)
@@ -195,10 +202,12 @@ class STAT_METHODS {
       return $old
    }
 
+   ## Simply Moving Average
    static [void]MA($item, $stat, $old_value, $incoming) {
       $item.$stat = [Convert]::ToDecimal([Math]::Round( ( ($item.$stat * $item.Pulls) + $incoming ) / ($item.Pulls + 1), 0 ))
    }
 
+   ## Weighted Moving Average
    static [void]EMA([Object]$old_stat, [Object]$New_stat, [hashtable]$Calcs) {
       $SmallestValue = 1E-20
       $Calcs.keys | ForEach-Object {
@@ -217,6 +226,7 @@ class STAT_METHODS {
       }
    }
 
+   ## Calculate Historical Earnings.
    static [void]Algo_Bias($item, $Actual) {
       $Actual = [convert]::ToDecimal($Actual)  
       <# If SWARM hasn't been running long enough to gather daily
@@ -241,6 +251,7 @@ class STAT_METHODS {
       }
    }
 
+   ## Calculate Historical Earnings For Coin
    static [void]Coin_Bias($item, $Actual) {
       $Actual = [convert]::ToDecimal($Actual)
 
@@ -287,6 +298,7 @@ class STAT_METHODS {
    }
 }
 
+## Basic Stat Class
 class Stat {
    [Decimal]$Live
    [Decimal]$Minute_10_EMA
@@ -304,6 +316,7 @@ class Stat {
    [string]$Updated
 }
 
+## A Pool Stat
 class Pool_Stat : Stat {
    [Decimal]$Hour_4_EMA
    [Decimal]$Hour_4_MA
@@ -333,6 +346,7 @@ class Pool_Stat : Stat {
          Day       = 288;
       }
 
+      ## IF there was a previous stat file
       if ($old) {
          ## Add incoming Value.
          $old.Live_Values += $Value
