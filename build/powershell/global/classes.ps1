@@ -225,7 +225,11 @@ class STAT_METHODS {
          $theta = [STAT_METHODS]::Theta(7, $item.Daily_Actual_Values)
          $actual = $theta.sum / $theta.count
       }
-      $item.Historical_Bias = [math]::Round(($actual - $constant) / $constant , 4)
+      if ($constant -ne 0 -and $Actual -ne 0) {
+         $item.Historical_Bias = [math]::Round(($actual - $constant) / $constant , 4)
+      } else {
+         $item.Historical_Bias = -1
+      }
    }
 
    static [void]Coin_Bias($item, $Actual, $mbtc) {
