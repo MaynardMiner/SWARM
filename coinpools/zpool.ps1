@@ -36,8 +36,7 @@ if ($Name -in $(arg).PoolName) {
     $Algos = @()
     $Algos += $(vars).Algorithm
     $Algos += $(arg).ASIC_ALGO
-    $Algos = $Algos | ForEach-Object { if ($Bad_pools.$_ -notcontains $Name) { $_ } }
-
+    
     ## Convert estimate to decimal
     $zpool_Request.PSObject.Properties.Value | ForEach-Object { $_.Estimate = [Decimal]$_.Estimate }
 

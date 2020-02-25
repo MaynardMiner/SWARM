@@ -17,8 +17,7 @@ if ($Name -in $(arg).PoolName) {
     $Algos = @()
     $Algos += $(vars).Algorithm
     $Algos += $(arg).ASIC_ALGO
-    $Algos = $Algos | ForEach-Object { if ($Bad_pools.$_ -notcontains $Name) { $_ } }
-
+    
     ## Only get algos we need & convert name to universal schema
     $Pool_Algos = $global:Config.Pool_Algos;
     $Ban_Hammer = $global:Config.vars.BanHammer;
@@ -68,21 +67,26 @@ if ($Name -in $(arg).PoolName) {
 
         $Stat = [Pool_Stat]::New($StatName, $current, [Convert]::ToDecimal($Hashrate), $actual, $null)
 
-        if(-not $H_Table.$($_.Name)) {
-            $H_Table.Add("$($_.Name)",@{})
+        if (-not $H_Table.$($_.Name)) {
+            $H_Table.Add("$($_.Name)", @{ })
         }
         elseif (-not $H_Table.$($_.Name).$P_Name) {
             $H_Table.$($_.Name).Add("$P_Name", @{
-                Hashrate = "$Hashrate"
-                Percent = ""
-             })
+                    Hashrate = "$Hashrate"
+                    Percent  = ""
+                })
         }
 
         $Level = $Stat.$($Params.Stat_Algo)
 
         if ($Params.Historical_Bias -gt 0) {
             $SmallestValue = 1E-20 
-            $Deviation = [Math]::Min($Stat.Historical_Bias, $Params.Historical_Bias)
+            if ($Stat.Historical_Bias -lt 0) {
+                $Deviation = [Math]::Max($Stat.Historical_Bias, ($Params.Historical_Bias * -0.01))
+            }
+            else {
+                $Deviation = [Math]::Min($Stat.Historical_Bias, ($Params.Historical_Bias * 0.01))
+            }
             $Level = [Math]::Max($Level + ($Level * $Deviation), $SmallestValue)
         }
 

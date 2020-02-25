@@ -227,7 +227,8 @@ class STAT_METHODS {
       }
       if ($constant -ne 0 -and $Actual -ne 0) {
          $item.Historical_Bias = [math]::Round(($actual - $constant) / $constant , 4)
-      } else {
+      }
+      else {
          $item.Historical_Bias = -1
       }
    }
@@ -250,10 +251,19 @@ class STAT_METHODS {
          $theta = [STAT_METHODS]::Theta(7, $item.Daily_Actual_Values)
          $actual = $theta.sum / $theta.count
       }
-
-      $Actual = $actual / $item.Avg_Hashrate * 1000000 * 1000 * $mbtc
-
-      $item.Historical_Bias = [math]::Round(($actual - $constant) / $constant , 4)
+      if ($actual -ne 0 -and $item.Avg_Hashrate -gt 1) {
+         $actual = $actual / $item.Avg_Hashrate
+      }
+      else {
+         $actual = 0
+      }
+      $item.Actual = $actual
+      if ($constant -ne 0 -and $Actual -ne 0) {
+         $item.Historical_Bias = [math]::Round(($actual - $constant) / $constant , 4)
+      }
+      else {
+         $item.Historical_Bias = -1
+      }
    }
 }
 
@@ -301,6 +311,7 @@ class Pool_Stat : Stat {
          Hour_4    = 48;
          Day       = 288;
       }
+
       if ($old) {
          ## Add incoming Value.
          $old.Live_Values += $Value
@@ -322,22 +333,23 @@ class Pool_Stat : Stat {
          if ($old.Pulls -lt 288) { $old.Pulls++ }
          $this.Pulls = $old.Pulls
 
+         ## Calculate Bias
+         if ($Null -ne $mbtc) {
+            [STAT_METHODS]::Coin_Bias($old, $Actual)
+         }
+         else {
+            [STAT_METHODS]::Algo_Bias($old, $Actual, $mbtc)
+         }         
+
          ## If it is a new day - Add to weekly stat values.
          [STAT_METHODS]::Check_Weekly($old, $this, $Actual)
 
-         ## Calculate Bias
-         if ($Null -ne $mbtc) {
-            [STAT_METHODS]::Algo_Bias($old, $Actual)
-         }
-         else {
-            [STAT_METHODS]::Coin_Bias($old, $Actual, $mbtc)
-         }
 
          $this.Live_Values = $old.Live_Values
          $this.Daily_Values = $old.Daily_Values
          $this.Daily_Actual_Values = $old.Daily_Actual_Values
-         $this.Actual = $Actual
          $this.Avg_Hashrate = $old.Avg_Hashrate
+         $this.Actual = $old.Actual
          $this.Historical_Bias = $old.Historical_Bias
          $this.Locked = $old.Locked
          $this.Start_Of_Day = $old.Start_Of_Day
@@ -365,10 +377,10 @@ class Pool_Stat : Stat {
          $this.Actual = $Actual
          $this.Start_Of_Day = [datetime]::Now.ToUniversalTime().ToString("o")
          if ($Null -ne $mbtc) {
-            [STAT_METHODS]::Algo_Bias($this, $Actual)
+            [STAT_METHODS]::Coin_Bias($this, $Actual, $mbtc)
          }
          else {
-            [STAT_METHODS]::Coin_Bias($this, $Actual, $mbtc)
+            [STAT_METHODS]::Algo_Bias($this, $Actual)
          }
       }
       [string]$this.Updated = [datetime]::Now.ToUniversalTime().ToString("o")

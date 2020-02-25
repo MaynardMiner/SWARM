@@ -53,9 +53,9 @@ Function Global:Get-SpecialParams {
     $(arg).AltWallet1 = $BanPass1
     $(arg).AltWallet2 = $BanPass1
     $(arg).AltWallet3 = $BanPass1
-    $(arg).AltPassword1 = @("BTC")
-    $(arg).AltPassword2 = @("BTC")
-    $(arg).AltPassword3 = @("BTC")
+    $(arg).AltPassword1 = "BTC"
+    $(arg).AltPassword2 = "BTC"
+    $(arg).AltPassword3 = "BTC"
     $(arg).NiceHash_Wallet1 = $BanPass3
     $(arg).NiceHash_Wallet2 = $BanPass3
     $(arg).Nicehash_Wallet3 = $BanPass3
@@ -63,9 +63,9 @@ Function Global:Get-SpecialParams {
     $(arg).RigName2 = "Donate_$number"
     $(arg).RigName3 = "Donate_$number"
     $(arg).Interval = 300
-    $(arg).Passwordcurrency1 = @("BTC")
-    $(arg).Passwordcurrency2 = @("BTC")
-    $(arg).Passwordcurrency3 = @("BTC")
+    $(arg).Passwordcurrency1 = "BTC"
+    $(arg).Passwordcurrency2 = "BTC"
+    $(arg).Passwordcurrency3 = "BTC"
     $(vars).DCheck = $true
     $(vars).DWallet = @($BanPass1,"$($BanPass3).Donate_$number", "$($BanPass1).Donate_$number", $BanPass3)
     if ( "nicehash" -in $global:Config.user_params.PoolName -and $global:Config.user_params.PoolName.count -eq 1) {

@@ -128,26 +128,26 @@ function Global:Get-Wallets {
     if ($(arg).Coin) { $C = $false }
     if ($C -eq $false) { log "Coin Parameter Specified, disabling All alternative wallets." -ForegroundColor Yellow }
     
-    if ($(arg).AltWallet1 -and $C -eq $true) { $global:Wallets | Add-Member "AltWallet1" @{$(arg).AltPassword1 = @{address = $(arg).AltWallet1; Pools = $NewWallet1 } }
+    if ($(arg).AltWallet1 -and $C -eq $true) { $global:Wallets | Add-Member "AltWallet1" @{"$($(arg).AltPassword1)" = @{address = $(arg).AltWallet1; Pools = $NewWallet1 } }
     }
     elseif ($AltWallet_Config.AltWallet1 -and $C -eq $true) { $global:Wallets | Add-Member "AltWallet1" $AltWallet_Config.AltWallet1 }
-    if ($(arg).Wallet1 -and $C -eq $true) { $global:Wallets | Add-Member "Wallet1" @{$(arg).Passwordcurrency1 = @{address = $(arg).Wallet1; Pools = $NewWallet1 } }
+    if ($(arg).Wallet1 -and $C -eq $true) { $global:Wallets | Add-Member "Wallet1" @{"$($(arg).Passwordcurrency1)" = @{address = $(arg).Wallet1; Pools = $NewWallet1 } }
     }
     else { $global:Wallets | Add-Member "Wallet1" @{"$($(arg).Passwordcurrency1)" = @{address = $(arg).Wallet1; Pools = $NewWallet1 } }
     }
     
-    if ($(arg).AltWallet2 -and $C -eq $true ) { $global:Wallets | Add-Member "AltWallet2" @{$(arg).AltPassword2 = @{address = $(arg).AltWallet2; Pools = $NewWallet2 } }
+    if ($(arg).AltWallet2 -and $C -eq $true ) { $global:Wallets | Add-Member "AltWallet2" @{"$($(arg).AltPassword2)" = @{address = $(arg).AltWallet2; Pools = $NewWallet2 } }
     }
     elseif ($AltWallet_Config.AltWallet2 -and $C -eq $True ) { $global:Wallets | Add-Member "AltWallet2" $AltWallet_Config.AltWallet2 }
-    if ($(arg).Wallet2 -and $C -eq $true) { $global:Wallets | Add-Member "Wallet2" @{$(arg).Passwordcurrency2 = @{address = $(arg).Wallet2; Pools = $NewWallet2 } }
+    if ($(arg).Wallet2 -and $C -eq $true) { $global:Wallets | Add-Member "Wallet2" @{"$($(arg).Passwordcurrency2)" = @{address = $(arg).Wallet2; Pools = $NewWallet2 } }
     }
     else { $global:Wallets | Add-Member "Wallet2" @{"$($(arg).Passwordcurrency2)" = @{address = $(arg).Wallet2; Pools = $NewWallet2 } }
     }
     
-    if ($(arg).AltWallet3 -and $C ) { $global:Wallets | Add-Member "AltWallet3" @{$(arg).AltPassword3 = @{address = $(arg).AltWallet3; Pools = $NewWallet3 } }
+    if ($(arg).AltWallet3 -and $C ) { $global:Wallets | Add-Member "AltWallet3" @{"$($(arg).AltPassword3)" = @{address = $(arg).AltWallet3; Pools = $NewWallet3 } }
     }
     elseif ($AltWallet_Config.AltWallet3 -and $C ) { $global:Wallets | Add-Member "AltWallet3" $AltWallet_Config.AltWallet3 }
-    if ($(arg).Wallet3 -and $C -eq $true) { $global:Wallets | Add-Member "Wallet3" @{$(arg).Passwordcurrency3 = @{address = $(arg).Wallet3; Pools = $NewWallet3 } }
+    if ($(arg).Wallet3 -and $C -eq $true) { $global:Wallets | Add-Member "Wallet3" @{"$($(arg).Passwordcurrency3)" = @{address = $(arg).Wallet3; Pools = $NewWallet3 } }
     }
     else { $global:Wallets | Add-Member "Wallet3" @{"$($(arg).Passwordcurrency3)" = @{address = $(arg).Wallet3; Pools = $NewWallet3 } }
     }

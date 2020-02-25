@@ -38,8 +38,6 @@ if ($Name -in $(arg).PoolName) {
     $BlockAlgos = @()
     $BlockAlgos += $(vars).Algorithm
     $BlockAlgos += $(arg).ASIC_ALGO
-    $Algos = $BlockAlgos | ForEach-Object { if ($Bad_pools.$_ -notcontains $Name) { $_ } }
-
     $block_request.PSObject.Properties.Value | ForEach-Object { $_.Estimate = [Decimal]$_.Estimate }
 
     ## Automatically add Active Coins for calcs. Active Coins are coins that are currently being mined.
