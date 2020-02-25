@@ -85,14 +85,16 @@ class STAT_METHODS {
       return $Values | Select-Object -Last $Period | Measure-Object -Sum 
    }
 
-   static [void]Check_Weekly([object]$old, [object]$new, $Actual) {
+   static [void]Check_Weekly_Algo([object]$old, [object]$new, $Actual) {
       $Total_Stat_Time = [math]::Round(([Datetime]::Now.ToUniversalTime() - [DateTime]$Old.Start_Of_Day).TotalSeconds)
       if ($Total_Stat_Time -gt 86400) {
-         $new.Daily_Values += $old.Day
+         $new.Daily_Values += $old.Day_MA
          $new.Daily_Actual_Values += $Actual
-         if ($new.Weekly.Count -gt 7) {
+         $new.Daily_Hashrate_Values += $old.Avg_Hashrate
+         if ($new.Daily_Values.Count -gt 7) {
             $new.Daily_Values = $new.Daily_Values | Select -Last 7
             $new.Daily_Actual_Values = $new.Daily_Actual_Values | Select -Last 7
+            $new.Daily_Hashrate_Values = $new.Daily_Hashrate_Values | Select -Last 7
          }
          $new.Start_Of_Day = [datetime]::Now.ToUniversalTime().ToString("o")
       }
@@ -235,6 +237,7 @@ class STAT_METHODS {
 
    static [void]Coin_Bias($item, $Actual, $mbtc) {
       $Actual = [convert]::ToDecimal($Actual)
+
       <# If SWARM hasn't been running long enough to gather daily
          stats, we will use the Daily MA.
          If SWARM has recorded daily averages, then will will use
@@ -242,22 +245,33 @@ class STAT_METHODS {
 
          Coin prices we need to to format to actual 24 hours.
       #>
+
       if ($item.Daily_Values.Count -eq 0) {
          $constant = $item.Day_MA
+         if ($actual -ne 0 -and $item.Avg_Hashrate -gt 1) {
+            $actual = $actual / $item.Avg_Hashrate
+         }
+         else {
+            $actual = 0
+         }
       }
       else {
          $theta = [STAT_METHODS]::Theta(7, $item.Daily_Values)
          $constant = $theta.sum / $theta.count
+
          $theta = [STAT_METHODS]::Theta(7, $item.Daily_Actual_Values)
-         $actual = $theta.sum / $theta.count
+         $actual_MA = $theta.sum / $theta.count
+
+         $theta = [STAT_METHODS]::Theta(7, $item.Daily_Hashrate_Values)
+         $hashrate_MA = $theta.sum / $theta.count
+
+         if ($actual_MA -ne 0 -and $hashrate_MA -gt 1) {
+            $actual = $actual_MA / $hashrate_MA
+         }
+         else {
+            $actual = 0
+         }
       }
-      if ($actual -ne 0 -and $item.Avg_Hashrate -gt 1) {
-         $actual = $actual / $item.Avg_Hashrate
-      }
-      else {
-         $actual = 0
-      }
-      $item.Actual = $actual
       if ($constant -ne 0 -and $Actual -ne 0) {
          $item.Historical_Bias = [math]::Round(($actual - $constant) / $constant , 4)
       }
@@ -293,6 +307,7 @@ class Pool_Stat : Stat {
    [Decimal]$Historical_Bias = 0 ## Total bias % based on daily estimates vs actual
    [Decimal[]]$Daily_Values
    [Decimal[]]$Daily_Actual_Values
+   [Decimal[]]$Daily_Hashrate_Values
    [DateTime]$Start_Of_Day
 
    Pool_Stat([string]$name, [decimal]$Estimate, [Decimal]$Hashrate, [decimal]$Actual, [string]$mbtc) {
@@ -335,10 +350,10 @@ class Pool_Stat : Stat {
 
          ## Calculate Bias
          if ($Null -ne $mbtc) {
-            [STAT_METHODS]::Coin_Bias($old, $Actual)
+            [STAT_METHODS]::Coin_Bias($old, $Actual, $mbtc)
          }
          else {
-            [STAT_METHODS]::Algo_Bias($old, $Actual, $mbtc)
+            [STAT_METHODS]::Algo_Bias($old, $Actual)
          }         
 
          ## If it is a new day - Add to weekly stat values.
@@ -346,12 +361,11 @@ class Pool_Stat : Stat {
 
 
          $this.Live_Values = $old.Live_Values
-         $this.Daily_Values = $old.Daily_Values
-         $this.Daily_Actual_Values = $old.Daily_Actual_Values
          $this.Avg_Hashrate = $old.Avg_Hashrate
          $this.Actual = $old.Actual
          $this.Historical_Bias = $old.Historical_Bias
          $this.Locked = $old.Locked
+         $this.Actual = $Actual
          $this.Start_Of_Day = $old.Start_Of_Day
       }
       else {
@@ -372,6 +386,7 @@ class Pool_Stat : Stat {
          $this.Day_MA = $value
          $this.Daily_Values = @()
          $this.Daily_Actual_Values = @()
+         $this.Daily_Hashrate_Values = @()
          $this.Avg_Hashrate = $Hashrate
          $this.Locked = $false
          $this.Actual = $Actual
