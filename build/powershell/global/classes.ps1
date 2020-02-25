@@ -367,10 +367,9 @@ class Pool_Stat : Stat {
 
 
          $this.Live_Values = $old.Live_Values
-         $this.Actual = $old.Actual
+         $this.Actual = $Actual
          $this.Historical_Bias = $old.Historical_Bias
          $this.Locked = $old.Locked
-         $this.Actual = $Actual
          $this.Start_Of_Day = $old.Start_Of_Day
       }
       else {
