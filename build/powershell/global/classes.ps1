@@ -350,7 +350,7 @@ class Pool_Stat : Stat {
          [STAT_METHODS]::EMA($old, $this, $Calcs)
 
          ## Do MA for stats that need it
-         $this.Avg_Hashrate = [STAT_METHODS]::MA($old, "Avg_Hashrate", $old.Avg_Hashrate, $Hashrate)
+         [STAT_METHODS]::MA($this, "Avg_Hashrate", $old.Avg_Hashrate, $Hashrate)
          if ($old.Pulls -lt 288) { $old.Pulls++ }
          $this.Pulls = $old.Pulls
 
