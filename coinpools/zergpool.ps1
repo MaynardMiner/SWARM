@@ -64,7 +64,7 @@ if ($Name -in $(arg).PoolName) {
     }
 
     $Get_Params = $Global:Config.params
-    $Zergpool_Sorted | ForEach-Object  -Parallel {
+    $Zergpool_Sorted | ForEach-Object -Parallel {
         . .\build\powershell\global\classes.ps1
         $F_Table = $using:Fee_Table;
         $D_Table = $using:Divisor_Table;
@@ -77,14 +77,13 @@ if ($Name -in $(arg).PoolName) {
         }
         $StatName = "$($P_Name)_$($coin_name)"
         $Hashrate = [math]::Max($_.hashrate_shared, 1)
-        $mbtc = $D_Table.$($_.algo)
         $Divisor = 1000000 * [Convert]::ToDouble($D_Table.$($_.algo))
         $Fee = [Convert]::ToDouble($F_Table.$($_.algo))
         $Estimate = [Convert]::ToDecimal($_.estimate) * 0.001
         $actual = [Convert]::ToDecimal($_.'24h_btc_shared')
         $current = [Convert]::ToDecimal($Estimate / $Divisor * (1 - ($Fee / 100)))
 
-        $Stat = [Pool_Stat]::New($StatName, $current, [Convert]::ToDecimal($Hashrate), $actual, $mbtc)
+        $Stat = [Pool_Stat]::New($StatName, $current, [Convert]::ToDecimal($Hashrate), $actual, $true)
 
         $Level = $Stat.$($Params.Stat_Coin)
 

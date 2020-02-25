@@ -47,6 +47,7 @@ if ($Name -in $(arg).PoolName) {
         $sub = $using:X
         $Params = $using:Get_Params
         $Wallets = $using:Get_Wallets
+        ##
         $StatAlgo = $_.Name -replace "`_", "`-"
         $Divisor = 1000000 * $_.mbtc_mh_factor
         $Pool_Port = $_.port
@@ -65,7 +66,7 @@ if ($Name -in $(arg).PoolName) {
         $new_actual = [Convert]::ToDecimal($_.actual_last24h_shared)
         $actual = [Convert]::ToDecimal(($new_actual * 0.001) / $Divisor * (1 - ($_.fees / 100)))
 
-        $Stat = [Pool_Stat]::New($StatName, $current, [Convert]::ToDecimal($Hashrate), $actual, $null)
+        $Stat = [Pool_Stat]::New($StatName, $current, [Convert]::ToDecimal($Hashrate), $actual, $false)
 
         if(-not $H_Table.$($_.Name)) {
             $H_Table.Add("$($_.Name)",@{})

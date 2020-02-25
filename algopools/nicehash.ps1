@@ -72,7 +72,7 @@ if ($Name -in $(arg).PoolName) {
                 ## usually pretty close to actual.
 
                 $StatAlgo = $Nicehash_Algorithm -replace "`_", "`-"
-                $Stat = [Pool_Stat]::New("$($Name)_$($StatAlgo)", $previous, $hashrate, $previous, $null)
+                $Stat = [Pool_Stat]::New("$($Name)_$($StatAlgo)", $previous, $hashrate, $previous, $false)
 
                 $Level = $Stat.$($(arg).Stat_Algo)
      

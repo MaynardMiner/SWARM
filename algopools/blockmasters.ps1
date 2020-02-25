@@ -71,7 +71,7 @@ if ($Name -in $(arg).PoolName) {
         $new_actual = [Convert]::ToDecimal($_.actual_last24h)
         $actual = [Convert]::ToDecimal(($new_actual * 0.001) / $Divisor * (1 - ($_.fees / 100)))
 
-        $Stat = [Pool_Stat]::New($StatName, $current, [Convert]::ToDecimal($Hashrate), $actual, $null)
+        $Stat = [Pool_Stat]::New($StatName, $current, [Convert]::ToDecimal($Hashrate), $actual, $false)
 
         if(-not $H_Table.$($_.Name)) {
             $H_Table.Add("$($_.Name)",@{})
