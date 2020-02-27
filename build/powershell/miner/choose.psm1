@@ -45,7 +45,11 @@ function Global:Get-BestMiners {
             $OldTypeMiners | foreach { $_ | Add-Member "Old" "Yes" }
         }
         if ($OldTypeMiners) { $MinerCombo += $OldTypeMiners }
-        if (-not $OldTypeMiners -or $OldTypeMiners -and $(vars).Check_Interval.Elapsed.TotalSeconds -ge $(arg).Interval -or $(vars).first_run) {
+        if (
+            -not $OldTypeMiners -or 
+            $OldTypeMiners -and ($(vars).Check_Interval.Elapsed.TotalSeconds + $(vars).QuickTimer.Elapsed.TotalSeconds) -ge ($(arg).Interval * 60)  -or 
+            $(vars).first_run -eq $true
+        ) {
             $MinerCombo += $TypeMiners | Where Profit -NE $NULL
             $BestTypeMiners += $TypeMiners | Where Profit -EQ $NULL | Select -First 1
             $BestTypeMiners += $MinerCombo | Where Profit -NE $Null | Where Profit -gt 0 | Sort-Object { ($_ | Measure Profit -Sum).Sum } -Descending | Select -First 1

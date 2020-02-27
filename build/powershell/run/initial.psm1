@@ -15,11 +15,16 @@ Function Global:Get-ExchangeRate {
     $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
     [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
     if ($(arg).CoinExchange) {
-        $Uri = "https://min-api.cryptocompare.com/data/pricemulti?fsyms=$($(arg).CoinExchange)&tsyms=BTC"
-        try {
-            $(vars).BTCExchangeRate = Invoke-RestMethod $URI -UseBasicParsing | Select-Object -ExpandProperty $(arg).CoinExchange | Select-Object -ExpandProperty "BTC"
+        if ($(arg).CoinExchange -eq "ETH" -and $(vars).ETH_exchange -gt 0) {
+            $(vars).BTCExchangeRate = $(vars).ETH_exchange
         }
-        catch { log "Failed To Get $($(arg).CoinExchange) Price" -Foregroundcolor Red }
+        else {
+            $Uri = "https://min-api.cryptocompare.com/data/pricemulti?fsyms=$($(arg).CoinExchange)&tsyms=BTC"
+            try {
+                $(vars).BTCExchangeRate = Invoke-RestMethod $URI -UseBasicParsing | Select-Object -ExpandProperty $(arg).CoinExchange | Select-Object -ExpandProperty "BTC"
+            }
+            catch { log "Failed To Get $($(arg).CoinExchange) Price" -Foregroundcolor Red }
+        }
         $Rates = @{ }
         if ($(vars).BTCExchangeRate) {
             $Rates.Add("rate", $(vars).Rates.$($(arg).Currency))
@@ -45,12 +50,12 @@ function Global:Get-ScreenName {
         $Miner = $_
         if ($Miner.Coin -eq $false) { $ScreenName = $Miner.Symbol }
         else {
-            if($Miner.Symbol -like "*-*") {
+            if ($Miner.Symbol -like "*-*") {
                 $screen_coin = ($Miner.Symbol.split('-')[0]).ToUpper()
                 $screen_algo = ($Miner.Symbol.split('-')[1]).ToLower()
                 $ScreenName = "$screen_coin`:$screen_algo"
             }
-            else{$ScreenName = ("$($Miner.Symbol.ToUpper()):$($Miner.Algo)").Replace("cryptonight",'cnight')}
+            else { $ScreenName = ("$($Miner.Symbol.ToUpper()):$($Miner.Algo)").Replace("cryptonight", 'cnight') }
         }
         $Shares = $(vars).Share_Table.$($Miner.Type).$($Miner.MinerPool).$ScreenName.Percent -as [decimal]
         if ( $Shares -ne $null ) { $CoinShare = $Shares }else { $CoinShare = 0 }

@@ -337,6 +337,7 @@ $(vars).Remove("GPU_Count")
 $(vars).Add("Check_Interval",[System.Diagnostics.Stopwatch]::New());
 $(vars).Check_Interval.Restart();
 $(vars).Add("first_run",$true);
+$(vars).Add("ETH_exchange",0);
 [GC]::Collect()
 [GC]::WaitForPendingFinalizers()
 [GC]::Collect()    
@@ -371,6 +372,7 @@ While ($true) {
         create All_AltWalltes $null
         create SWARMAlgorithm $(arg).Algorithm
         $(vars).QuickTimer.Restart()
+        $(vars).ETH_exchange = 0;
         
         ##Insert Build Single Modules Here
 

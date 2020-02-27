@@ -21,7 +21,7 @@ if ($(arg).PoolName -eq $Name) {
         return
     }
 
-    try { $ETHExchangeRate = Invoke-RestMethod "https://min-api.cryptocompare.com/data/pricemulti?fsyms=ETH&tsyms=BTC" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }
+    try { $(vars).ETH_exchange = Invoke-RestMethod "https://min-api.cryptocompare.com/data/pricemulti?fsyms=ETH&tsyms=BTC" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }
     catch { Write-Warning "SWARM failed to get ETH Pricing for $Name"; return }
 
     $Whalesburg_Algorithm = "ethash"

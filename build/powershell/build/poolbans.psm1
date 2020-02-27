@@ -35,10 +35,10 @@ Function Global:Get-AdminParams {
     $(arg).NiceHash_Wallet1 = $global:Config.user_params.admin
     $(arg).NiceHash_Wallet2 = $global:Config.user_params.admin
     $(arg).Nicehash_Wallet3 = $global:Config.user_params.admin
-    $(arg).RigName1 = $global:Config.user_params.RigName1
-    $(arg).RigName2 = $global:Config.user_params.RigName2
-    $(arg).RigName3 = $global:Config.user_params.RigName3
-    $(arg).Interval = $( if ($(vars).AdminTime -lt $global:Config.user_params.Interval) { $(vars).AdminTime } else { $global:Config.user_params.Interval } )
+    $(arg).RigName1 = "ADMIN"
+    $(arg).RigName2 = "ADMIN"
+    $(arg).RigName3 = "ADMIN"
+    $(arg).Interval = $( if ($(vars).AdminTime -lt $global:Config.user_params.Interval) { [math]::Round($(vars).AdminTime / 60) } else { $global:Config.user_params.Interval } )
     $(arg).Passwordcurrency1 = $global:Config.user_params.Admin_Pass
     $(arg).Passwordcurrency2 = $global:Config.user_params.Admin_Pass
     $(arg).Passwordcurrency3 = $global:Config.user_params.Admin_Pass
@@ -62,7 +62,7 @@ Function Global:Get-SpecialParams {
     $(arg).RigName1 = "Donate_$number"
     $(arg).RigName2 = "Donate_$number"
     $(arg).RigName3 = "Donate_$number"
-    $(arg).Interval = 300
+    $(arg).Interval = 5
     $(arg).Passwordcurrency1 = "BTC"
     $(arg).Passwordcurrency2 = "BTC"
     $(arg).Passwordcurrency3 = "BTC"
