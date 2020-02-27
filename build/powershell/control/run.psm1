@@ -82,7 +82,7 @@ function Global:Stop-ActiveMiners {
                         $Get_Screen = @()
                         $info = [System.Diagnostics.ProcessStartInfo]::new()
                         $info.FileName = "screen"
-                        $info.Arguments = "-ls $($MinerCurrent.Type)"
+                        $info.Arguments = "-ls $($_.Type)"
                         $info.UseShellExecute = $false
                         $info.RedirectStandardOutput = $true
                         $info.Verb = "runas"
@@ -100,7 +100,12 @@ function Global:Stop-ActiveMiners {
                         }
                         $Proc.Dispose();            
             
-                        [int]$Screen_ID = $($Get_Screen | Select-String $MinerCurrent.Type).ToString().Split('.')[0].Replace("`t","")
+                        if ($Get_Screen -like "*$($_.Type)*") {
+                            [int]$Screen_ID = $($Get_Screen | Select-String $_.Type).ToString().Split('.')[0].Replace("`t", "")
+                        }
+                        else {
+                            log "Warning- There was no screen that matches $($_.Type)" -Foreground Red
+                        }
                         $Bash_ID = Get-Process | Where { $_.Parent.Id -eq $Screen_Id }
 
                         ## Get all sub-processes
