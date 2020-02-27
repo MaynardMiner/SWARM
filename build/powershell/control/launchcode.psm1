@@ -584,7 +584,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
 
             ## User showed an error that there was no miner screen, and I don't know why.
             ## Make an error generate if there is not a screen that matches current type
-            if ($Get_Screen -like "*$($MinerCurrent.Type)") {
+            if ($Get_Screen -like "*$($MinerCurrent.Type)*") {
                 [int]$Screen_ID = $($Get_Screen | Select-String $MinerCurrent.Type).ToString().Split('.')[0].Replace("`t", "")
             }
             else {

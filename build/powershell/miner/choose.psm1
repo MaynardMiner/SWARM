@@ -58,13 +58,13 @@ function Global:Get-BestMiners {
             if (-not $(vars).first_run) {
                 $(vars).Check_Interval.Restart()
             }
-            $(vars).first_run = $false
         }
         else {
             log "Interval has not elapsed since last sort- Using Same Miners" -Foreground Cyan
             $BestMiners = $OldTypeMiners
         }
     }
+    $(vars).first_run = $false
     $BestMiners
 }
 
