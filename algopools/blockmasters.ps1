@@ -13,9 +13,10 @@ if ($Name -in $(arg).PoolName) {
         return 
     }
 
-    $PoolAlgos = @()
-    $PoolAlgos += $(vars).Algorithm
-    $PoolAlgos += $(arg).ASIC_ALGO
+    $Algos = @()
+    $Algos += $(vars).Algorithm
+    $Algos += $(arg).ASIC_ALGO
+    
     ## Only get algos we need & convert name to universal schema
     $Pool_Algos = $global:Config.Pool_Algos;
     $Ban_Hammer = $global:Config.vars.BanHammer;
@@ -161,5 +162,8 @@ if ($Name -in $(arg).PoolName) {
     $Global:Config.vars.DivisorTable = $DivisorTable
     $Global:Config.vars.FeeTable = $FeeTable
     $Global:Config.vars.Pool_HashRates = $Hashrate_Table
+    [GC]::Collect()
+    [GC]::WaitForPendingFinalizers()
+    [GC]::Collect()    
     $Pool_Data
 }

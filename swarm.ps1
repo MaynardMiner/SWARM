@@ -334,6 +334,12 @@ Global:Remove-Modules
 
 $(vars).Remove("BusData")
 $(vars).Remove("GPU_Count")
+$(vars).Add("Check_Interval",[System.Diagnostics.Stopwatch]::New());
+$(vars).Check_Interval.Restart();
+$(vars).Add("first_run",$true);
+[GC]::Collect()
+[GC]::WaitForPendingFinalizers()
+[GC]::Collect()    
 
 ##############################################################################
 #######                      End Startup                                ######
@@ -364,7 +370,8 @@ While ($true) {
         create ASICS @{ }
         create All_AltWalltes $null
         create SWARMAlgorithm $(arg).Algorithm
-
+        $(vars).QuickTimer.Restart()
+        
         ##Insert Build Single Modules Here
 
         ##Insert Build Looping Modules Here
@@ -425,6 +432,9 @@ While ($true) {
         Remove-Variable -Name BanJson -ErrorAction Ignore
         Remove-Variable -Name Action -ErrorAction Ignore
         Global:Remove-Modules
+        [GC]::Collect()
+        [GC]::WaitForPendingFinalizers()
+        [GC]::Collect()    
 
         ##############################################################################
         #######                         END PHASE 1                             ######
@@ -464,7 +474,13 @@ While ($true) {
         ##Get Algorithm Pools
         Global:Add-Module "$($(vars).pool)\gather.psm1"
         Global:Get-AlgoPools
+        [GC]::Collect()
+        [GC]::WaitForPendingFinalizers()
+        [GC]::Collect()    
         Global:Get-CoinPools
+        [GC]::Collect()
+        [GC]::WaitForPendingFinalizers()
+        [GC]::Collect()    
         Global:Remove-Modules
 
         ## Phase Clean up
@@ -493,7 +509,13 @@ While ($true) {
         ##Load The Miners
         Global:Add-Module "$($(vars).miner)\gather.psm1"
         Global:Get-AlgoMiners
+        [GC]::Collect()
+        [GC]::WaitForPendingFinalizers()
+        [GC]::Collect()    
         Global:Get-CoinMiners
+        [GC]::Collect()
+        [GC]::WaitForPendingFinalizers()
+        [GC]::Collect()    
 
         ##Send error if no miners found
         if ($(vars).Miners.Count -eq 0) {
@@ -517,7 +539,7 @@ While ($true) {
             Remove-Variable -Name Sel -ErrorAction Ignore
 
             ## Go to sleep for interval
-            start-sleep $(arg).Interval;
+            start-sleep 30;
 
             ## Check How many times it occurred.
             ## If it occurred more than 10 times-
@@ -562,6 +584,9 @@ While ($true) {
         remove SingleMode
         remove Miners_Combo
         remove Pool_HashRates
+        [GC]::Collect()
+        [GC]::WaitForPendingFinalizers()
+        [GC]::Collect()    
 
         ##############################################################################
         #######                        End Phase 3                             ######
@@ -628,6 +653,9 @@ While ($true) {
         remove PreviousMinerPorts
         remove Restart
         remove NoMiners
+        [GC]::Collect()
+        [GC]::WaitForPendingFinalizers()
+        [GC]::Collect()    
 
         ##############################################################################
         #######                        End Phase 4                              ######
@@ -664,7 +692,12 @@ While ($true) {
 
         ##Start SWARM Loop
         Global:Add-Module "$($(vars).run)\loop.psm1"
+        [GC]::Collect()
+        [GC]::WaitForPendingFinalizers()
+        [GC]::Collect()        
         Global:Start-MinerLoop
+
+        $(vars).Add_Time = 0;
 
         ## Phase Clean up
         Global:Remove-Modules
@@ -674,6 +707,9 @@ While ($true) {
         remove ASICS
         remove Share_Table
         remove ModeCheck
+        [GC]::Collect()
+        [GC]::WaitForPendingFinalizers()
+        [GC]::Collect()    
 
         ##############################################################################
         #######                        End Phase 5                              ######
@@ -694,6 +730,9 @@ While ($true) {
 
         ##Try To Benchmark
         Global:Start-Benchmark
+        [GC]::Collect()
+        [GC]::WaitForPendingFinalizers()
+        [GC]::Collect()    
 
         ##############################################################################
         #######                       End Phase 6                               ######

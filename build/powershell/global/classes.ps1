@@ -95,9 +95,9 @@ class STAT_METHODS {
       $new.Daily_Values = $old.Daily_values
       $new.Daily_Actual_Values = $old.Daily_Actual_Values
       $new.Daily_Hashrate_Values = $old.Daily_Hashrate_Values
-
       $Total_Stat_Time = [math]::Round(([Datetime]::Now.ToUniversalTime() - [DateTime]$Old.Start_Of_Day).TotalSeconds)
-      if ($Total_Stat_Time -gt 86400) {
+      $new.Start_Of_Day = $old.Start_Of_Day
+      if ($Total_Stat_Time -ge 86400) {
          $new.Daily_Values += $old.Day_MA
          $new.Daily_Actual_Values += $Actual
          $new.Daily_Hashrate_Values += $old.Avg_Hashrate
@@ -108,7 +108,6 @@ class STAT_METHODS {
          }
          $new.Start_Of_Day = [datetime]::Now.ToUniversalTime().ToString("o")
       }
-
    }
 
    ## Resets particular stats if SWARM was shut off
@@ -384,7 +383,6 @@ class Pool_Stat : Stat {
          $this.Actual = $Actual
          $this.Historical_Bias = $old.Historical_Bias
          $this.Locked = $old.Locked
-         $this.Start_Of_Day = $old.Start_Of_Day
       }
       else {
          $this.Live_Values += $Value
@@ -416,6 +414,7 @@ class Pool_Stat : Stat {
             [STAT_METHODS]::Algo_Bias($this, $Actual)
          }
       }
+
       [string]$this.Updated = [datetime]::Now.ToUniversalTime().ToString("o")
 
       $stat = [ordered]@{

@@ -44,7 +44,7 @@ function Global:Set-Stat {
 
     ## Define Set Interval for load average
     if ($name -eq "load-average") { $Interval = 10 }
-    else { $Interval = $(arg).Interval }
+    else { $Interval = 300 }
 
     ## Define total # of values for each time frame
     $Calcs = @{

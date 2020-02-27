@@ -130,5 +130,8 @@ if ($Name -in $(arg).PoolName) {
     $Global:Config.vars.DivisorTable = $DivisorTable
     $Global:Config.vars.FeeTable = $FeeTable
     $Global:Config.vars.Pool_HashRates = $Hashrate_Table
+    [GC]::Collect()
+    [GC]::WaitForPendingFinalizers()
+    [GC]::Collect()    
     $Pool_Data
 }
