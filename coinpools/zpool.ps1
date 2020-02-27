@@ -126,7 +126,7 @@ if ($Name -in $(arg).PoolName) {
             Where-Object { [Convert]::ToInt32($_."24h_blocks_shared") -ge $Params.Min_Blocks } |
             Sort-Object Level -Descending |
             Select-Object -First 1
-        $To_Add += $Sorted | Where-Object { "$($_.Symbol)-Coin" -in $Active -and $_ -notin $To_Add }
+        $To_Add += $Sorted | Where-Object { $_.Sym -in $Active -and $_ -notin $To_Add }
 
         $To_Add | ForEach-Object { 
             $Pool_Port = $_.port
