@@ -30,6 +30,7 @@ if ($Name -in $(arg).PoolName) {
     $Ban_Hammer = $global:Config.vars.BanHammer;
     $Fee_Table = $(vars).FeeTable.blockmasters;
     $Divisor_Table = $(vars).divisortable.blockmasters;
+    $Active_Symbols =  $(vars).ActiveSymbol;
 
     ## Change to universal naming schema and only items we need to add
     $Pool_Sorted = $Pool_Request.PSobject.Properties.Name | 
@@ -63,6 +64,11 @@ if ($Name -in $(arg).PoolName) {
             return $request.$_
         }
     }
+
+    $Pool_Request = $null;
+    [GC]::Collect()
+    [GC]::WaitForPendingFinalizers()
+    [GC]::Collect()    
 
     Switch ($(arg).Location) {
         "us" { $Region = $null }
@@ -117,6 +123,7 @@ if ($Name -in $(arg).PoolName) {
         $AltWallets = $using:Get_AltWallets
         $Params = $using:Get_Params
         $reg = $using:Region
+        $Active = $using:Active_Symbols;
         #######################################
         $To_Add = @()
         $To_Add += $Sorted | 

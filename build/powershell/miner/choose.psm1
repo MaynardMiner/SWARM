@@ -47,7 +47,7 @@ function Global:Get-BestMiners {
         if ($OldTypeMiners) { $MinerCombo += $OldTypeMiners }
         if (
             -not $OldTypeMiners -or 
-            $OldTypeMiners -and ($(vars).Check_Interval.Elapsed.TotalSeconds + $(vars).QuickTimer.Elapsed.TotalSeconds) -ge ($(arg).Interval * 60)  -or 
+            $OldTypeMiners -and $(vars).Check_Interval.Elapsed.TotalSeconds -ge ($(arg).Interval * 60)  -or 
             $(vars).first_run -eq $true
         ) {
             $MinerCombo += $TypeMiners | Where Profit -NE $NULL

@@ -63,6 +63,11 @@ if ($Name -in $(arg).PoolName) {
         }
     }
 
+    $Pool_Request = $null;
+    [GC]::Collect()
+    [GC]::WaitForPendingFinalizers()
+    [GC]::Collect()    
+
     $Get_Params = $Global:Config.params
     $Pool_Sorted | ForEach-Object -Parallel {
         . .\build\powershell\global\classes.ps1

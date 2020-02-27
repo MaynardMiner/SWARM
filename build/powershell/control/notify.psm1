@@ -106,7 +106,7 @@ function Global:Get-Interval {
             $(vars).MinerInterval = 10000000;
         }
         else { 
-            $(vars).MinerInterval = [math]::Round([math]::Max((300 - $(vars).QuickTimer.Elapsed.TotalSeconds),1))
+            $(vars).MinerInterval = [math]::Round([math]::Max((300 - $(vars).Load_Timer.Elapsed.TotalSeconds),1))
         }
     }
 }

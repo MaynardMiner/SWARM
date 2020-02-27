@@ -338,6 +338,7 @@ $(vars).Add("Check_Interval",[System.Diagnostics.Stopwatch]::New());
 $(vars).Check_Interval.Restart();
 $(vars).Add("first_run",$true);
 $(vars).Add("ETH_exchange",0);
+$(vars).Add("Load_Timer",[System.Diagnostics.Stopwatch]::New());
 [GC]::Collect()
 [GC]::WaitForPendingFinalizers()
 [GC]::Collect()    
@@ -371,7 +372,7 @@ While ($true) {
         create ASICS @{ }
         create All_AltWalltes $null
         create SWARMAlgorithm $(arg).Algorithm
-        $(vars).QuickTimer.Restart()
+        $(vars).Load_Timer.Restart()
         $(vars).ETH_exchange = 0;
         
         ##Insert Build Single Modules Here
