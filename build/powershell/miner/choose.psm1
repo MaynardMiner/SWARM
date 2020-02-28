@@ -45,26 +45,27 @@ function Global:Get-BestMiners {
             $OldTypeMiners | foreach { $_ | Add-Member "Old" "Yes" }
         }
         if ($OldTypeMiners) { $MinerCombo += $OldTypeMiners }
-        if (
-            -not $OldTypeMiners -or 
-            $OldTypeMiners -and $(vars).Check_Interval.Elapsed.TotalSeconds -ge ($(arg).Interval * 60)  -or 
-            $(vars).first_run -eq $true
-        ) {
+        if ($(vars).switch -eq $true) {
             $MinerCombo += $TypeMiners | Where Profit -NE $NULL
             $BestTypeMiners += $TypeMiners | Where Profit -EQ $NULL | Select -First 1
             $BestTypeMiners += $MinerCombo | Where Profit -NE $Null | Where Profit -gt 0 | Sort-Object { ($_ | Measure Profit -Sum).Sum } -Descending | Select -First 1
             $BestTypeMiners += $MinerCombo | Where Profit -NE $Null | Where Profit -lt 0 | Sort-Object { ($_ | Measure Profit -Sum).Sum } -Descending | Select -First 1
             $BestMiners += $BestTypeMiners | Select -first 1
-            if (-not $(vars).first_run) {
-                $(vars).Check_Interval.Restart()
-            }
+            $(vars).switch = $false
         }
         else {
-            log "Interval has not elapsed since last sort- Using Same Miners" -Foreground Cyan
-            $BestMiners = $OldTypeMiners
+            log "Interval has not elapsed since last sort- Using Same Miner for $_ If Pool Had Data" -Foreground Cyan
+            if($OldTypeMiners) {
+                $BestMiners += $Oldminers
+            } else {
+                $MinerCombo += $TypeMiners | Where Profit -NE $NULL
+                $BestTypeMiners += $TypeMiners | Where Profit -EQ $NULL | Select -First 1
+                $BestTypeMiners += $MinerCombo | Where Profit -NE $Null | Where Profit -gt 0 | Sort-Object { ($_ | Measure Profit -Sum).Sum } -Descending | Select -First 1
+                $BestTypeMiners += $MinerCombo | Where Profit -NE $Null | Where Profit -lt 0 | Sort-Object { ($_ | Measure Profit -Sum).Sum } -Descending | Select -First 1
+                $BestMiners += $BestTypeMiners | Select -first 1    
+            }
         }
     }
-    $(vars).first_run = $false
     $BestMiners
 }
 

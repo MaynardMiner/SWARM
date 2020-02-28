@@ -335,10 +335,10 @@ Global:Remove-Modules
 $(vars).Remove("BusData")
 $(vars).Remove("GPU_Count")
 $(vars).Add("Check_Interval",[System.Diagnostics.Stopwatch]::New());
-$(vars).Check_Interval.Restart();
-$(vars).Add("first_run",$true);
+$(vars).Add("switch",$true);
 $(vars).Add("ETH_exchange",0);
 $(vars).Add("Load_Timer",[System.Diagnostics.Stopwatch]::New());
+$(vars).Check_Interval.Restart()
 [GC]::Collect()
 [GC]::WaitForPendingFinalizers()
 [GC]::Collect()    
@@ -366,13 +366,21 @@ While ($true) {
         ##  This allows the abililty to remove/add variables to both, as well as clear them all with a single command.
         ##  These are all global values- It can be used with user-created modules.
 
+        if(
+            $(vars).switch -ne $true -and 
+            $(vars).Check_Interval.Elapsed.TotalSeconds -ge ($(arg).Interval * 60)
+        ) {
+           $(vars).switch = $true
+           $(vars).Check_Interval.Restart()
+        }
+        $(vars).Load_Timer.Restart()
+
         create Algorithm @()
         create BanHammer @()
         create ASICTypes @()
         create ASICS @{ }
         create All_AltWalltes $null
         create SWARMAlgorithm $(arg).Algorithm
-        $(vars).Load_Timer.Restart()
         $(vars).ETH_exchange = 0;
         
         ##Insert Build Single Modules Here
