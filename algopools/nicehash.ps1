@@ -64,7 +64,7 @@ if ($Name -in $(arg).PoolName) {
                 $nicehash_Port = $nicehash_ports.$Algo
                 ## 8 bit estimates
                 $Divisor = 100000000
-                $value = ([Convert]::ToDouble($_.paying) / $Divisor * (1 - ($Fee / 100)))
+                $value = ([Convert]::ToDecimal($_.paying) / $Divisor * (1 - ($Fee / 100)))
                 $hashrate = 1
 
                 ## Nicehash is pretty straightforward being PPS. In
