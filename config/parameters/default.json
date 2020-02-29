@@ -34,9 +34,7 @@
     "CPUOnly": "No",
     "CPUThreads": "",
     "Cuda": "10.1",
-    "Currency": [
-        "USD"
-    ],
+    "Currency": "USD",
     "Custom_Periods": 1,
     "Donate": 0.5,
     "ETH": "",
@@ -58,7 +56,7 @@
     "Location": "US",
     "Max_Periods": 288,
     "MinerBanCount": 4,
-    "Nicehash_Fee": "",
+    "Nicehash_Fee": 2,
     "Nicehash_Wallet1": "",
     "Nicehash_Wallet2": "",
     "Nicehash_Wallet3": "",
