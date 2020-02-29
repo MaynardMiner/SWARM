@@ -64,7 +64,7 @@ if ($Name -in $(arg).PoolName) {
                 $nicehash_Port = $nicehash_ports.$Algo
                 ## 8 bit estimates
                 $Divisor = 100000000
-                $previous = [Convert]::ToDecimal([Math]::Max($_.paying * 0.001  / $Divisor * (1 - ($Fee / 100)), $SmallestValue))
+                $value = ([Convert]::ToDouble($_.paying) / $Divisor * (1 - ($Fee / 100)))
                 $hashrate = 1
 
                 ## Nicehash is pretty straightforward being PPS. In
@@ -72,7 +72,9 @@ if ($Name -in $(arg).PoolName) {
                 ## usually pretty close to actual.
 
                 $StatAlgo = $Nicehash_Algorithm -replace "`_", "`-"
-                $Stat = [Pool_Stat]::New("$($Name)_$($StatAlgo)", $previous, $hashrate, $previous, $false)
+                $Stat = [Pool_Stat]::New("$($Name)_$($StatAlgo)", $value, $hashrate, $value, $false)
+
+                $previous = $Stat.Day_MA
 
                 $Level = $Stat.$($(arg).Stat_Algo)
      

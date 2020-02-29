@@ -104,6 +104,8 @@ function Global:Get-Interval {
             $global:SwitchTime = Get-Date
             log "SWARM Mode Start Time is $global:SwitchTime" -ForegroundColor Cyan;
             $(vars).MinerInterval = 10000000;
+            ## Set to switch after next pull
+            $(vars).switch = $true;
         }
         else { 
             $(vars).MinerInterval = [math]::Round([math]::Max((300 - $(vars).Load_Timer.Elapsed.TotalSeconds),1))
