@@ -235,7 +235,7 @@ function Global:Start-Benchmark {
                 }
             }
             else{
-                log "$($_.Name) $($_.Symbol) has not ran for $($(vars).MinerStatInt) seconds, skipping benchmark"
+                log "$($_.Name) $($_.Symbol) has not ran for $($(vars).MinerStatInt) seconds, skipping benchmark" -Foreground magenta
             }
         }
 
