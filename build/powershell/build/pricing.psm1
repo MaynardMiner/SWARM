@@ -11,6 +11,10 @@ function Global:Get-Pricing {
     try {
         log "SWARM Is Building The Database. Auto-Coin Switching: $($(arg).Auto_Coin)" -foreground "yellow"
         $(vars).Rates = Invoke-RestMethod "https://api.coinbase.com/v2/exchange-rates?currency=BTC" -UseBasicParsing | Select-Object -ExpandProperty data | Select-Object -ExpandProperty rates | Select-Object "$($(arg).Currency)"
+        if(-not $(vars).Rates) {
+            log "Warning: Either too many pulls from coinbase or $($(arg).Currency) is wrong symbol. Using USD" -foreground Yellow
+            $(vars).Rates = Invoke-RestMethod "https://api.coinbase.com/v2/exchange-rates?currency=BTC" -UseBasicParsing | Select-Object -ExpandProperty data | Select-Object -ExpandProperty rates | Select-Object "USD"
+        }
         $(vars).WattEx = [Double](((1 / $(vars).Rates.$($(arg).Currency)) * $global:WattHour))
     }
     catch {

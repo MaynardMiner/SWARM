@@ -105,7 +105,14 @@ elseif (test-path ".\config.json") {
         $Start = $true
         $parsed = @{ }
         $arguments = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json
+        $defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json
         $arguments.PSObject.Properties.Name | % { $Parsed.Add("$($_)", $arguments.$_) }    
+        $defaults.PSObject.Properties.Name | % {
+            if($_ -notin $Parsed.keys) {
+                $Parsed.Add("$($_)",$defaults.$_)
+            }
+        }
+        $Parsed | ConvertTo-Json -Depth 5 | Set-Content ".\config\parameters\newarguments.json"
     }
 }
 ## Check for hiveos saved/help saved config
@@ -113,7 +120,14 @@ elseif (Test-Path ".\config\parameters\newarguments.json") {
     $Start = $true
     $parsed = @{ }
     $arguments = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json
+    $defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json
     $arguments.PSObject.Properties.Name | % { $Parsed.Add("$($_)", $arguments.$_) }
+    $defaults.PSObject.Properties.Name | % {
+        if($_ -notin $Parsed.keys) {
+            $Parsed.Add("$($_)",$defaults.$_)
+        }
+    }
+    $Parsed | ConvertTo-Json -Depth 5 | Set-Content ".\config\parameters\newarguments.json"
 }
 ## Run help if all fails
 else {
