@@ -63,7 +63,7 @@ if ($Name -in $(arg).PoolName) {
         ) {
             return $request.$_
         }
-    }
+    } -ThrottleLimit $(arg).Throttle
 
     $Pool_Request = $null;
     [GC]::Collect()
@@ -227,7 +227,8 @@ if ($Name -in $(arg).PoolName) {
                 $previous
             )
         }
-    }
+    } -ThrottleLimit $(arg).Throttle
+    
     [GC]::Collect()
     [GC]::WaitForPendingFinalizers()
     [GC]::Collect()    

@@ -30,7 +30,7 @@ if ($Name -in $(arg).PoolName) {
         $_ | Add-Member "Original_Algo" $N;
         $_.Name = $Pipe_Algos.PSObject.Properties.Name | Where { $N -in $Pipe_Algos.$_.alt_names };
         if ($_.Name) { if ($_.Name -in $Algo_List -and $Pipe_Name -notin $Pipe_Algos.$($_.Name).exclusions -and $_.Name -notin $Pipe_Hammer) { return $_ } }
-    }
+    } -ThrottleLimit $(arg).Throttle
 
     ## These are modified, then returned back to the original
     ## value below. This is so that threading can be done.
@@ -164,7 +164,8 @@ if ($Name -in $(arg).PoolName) {
             ## Previous
             $actual
         )
-    }
+    } -ThrottleLimit $(arg).Throttle
+    
     $Global:Config.vars.DivisorTable = $DivisorTable
     $Global:Config.vars.FeeTable = $FeeTable
     $Global:Config.vars.Pool_HashRates = $Hashrate_Table

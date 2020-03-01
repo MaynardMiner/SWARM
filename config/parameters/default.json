@@ -107,5 +107,6 @@
     "Rej_Factor": "Yes",
     "cpu_priority": 0,
     "Min_Blocks": 1,
-    "Hidden": "No"
+    "Hidden": "No",
+    "Throttle": 2
 }

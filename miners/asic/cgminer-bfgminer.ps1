@@ -47,7 +47,7 @@ $(vars).ASICTypes | ForEach-Object {
                     Wallet     = "$($_.$User)"
                     Arguments  = "stratum+tcp://$($_.Pool_Host):$($_.Port),$($_.$User),$Pass"
                     HashRates  = $Stat.Hour
-                    Quote      = if ($HashStat) { $HashStat * ($_.Price) }else { 0 }
+                    Quote      = if ($HashStat) { [Convert]::ToDecimal($HashStat * $_.Price) }else { 0 }
                     Rejections = $Stat.Rejections
                     Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 }
                     MinerPool  = "$($_.Name)"

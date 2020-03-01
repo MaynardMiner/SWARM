@@ -94,7 +94,8 @@ function Global:Get-Interval {
     if ($NoHash -eq $true) {
         log "SWARM is Benchmarking Miners." -Foreground Yellow;
         $(vars).MinerStatInt = 1
-        $(vars).MinerInterval = [math]::Round([math]::Max((300 - $(vars).Load_Timer.Elapsed.TotalSeconds),1))
+        $Difference = [math]::Round((([DateTime]::Now) - $(vars).Load_Timer).TotalSeconds)
+        $(vars).MinerInterval = [math]::Round([math]::Max((300 - $Difference), 1))
         $(vars).switch = $true;
     }
     else {
@@ -110,7 +111,8 @@ function Global:Get-Interval {
             $(vars).switch = $true;
         }
         else { 
-            $(vars).MinerInterval = [math]::Round([math]::Max((300 - $(vars).Load_Timer.Elapsed.TotalSeconds),1))
+            $Difference = [math]::Round((([DateTime]::Now) - $(vars).Load_Timer).TotalSeconds)
+            $(vars).MinerInterval = [math]::Round([math]::Max((300 - $Difference), 1))
         }
     }
 }

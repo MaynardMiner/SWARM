@@ -334,11 +334,10 @@ Global:Remove-Modules
 
 $(vars).Remove("BusData")
 $(vars).Remove("GPU_Count")
-$(vars).Add("Check_Interval",[System.Diagnostics.Stopwatch]::New());
+$(vars).Add("Check_Interval",[datetime]::Now);
 $(vars).Add("switch",$true);
 $(vars).Add("ETH_exchange",0);
-$(vars).Add("Load_Timer",[System.Diagnostics.Stopwatch]::New());
-$(vars).Check_Interval.Restart()
+$(vars).Add("Load_Timer",[datetime]::Now);
 [GC]::Collect()
 [GC]::WaitForPendingFinalizers()
 [GC]::Collect()    
@@ -368,12 +367,12 @@ While ($true) {
 
         if(
             $(vars).switch -ne $true -and 
-            $(vars).Check_Interval.Elapsed.TotalSeconds -ge ($(arg).Interval * 60)
+            [math]::Round((([DateTime]::Now) - $(vars).Check_Interval).TotalSeconds) -ge $($(arg).Interval * 60)
         ) {
            $(vars).switch = $true
-           $(vars).Check_Interval.Restart()
+           $(vars).Check_Interval = [datetime]::Now
         }
-        $(vars).Load_Timer.Restart()
+        $(vars).Load_Timer = [datetime]::Now
 
         create Algorithm @()
         create BanHammer @()
@@ -549,7 +548,7 @@ While ($true) {
             Remove-Variable -Name Sel -ErrorAction Ignore
 
             ## Go to sleep for interval
-            start-sleep [math]::Round([math]::Max((300 - $(vars).Load_Timer.Elapsed.TotalSeconds),1));
+            start-sleep -S [Int]([math]::Round((([DateTime]::Now) - $(vars).Load_Timer).TotalSeconds))
             $(vars).switch = $true;
 
             ## Check How many times it occurred.
