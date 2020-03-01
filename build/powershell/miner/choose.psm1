@@ -22,7 +22,6 @@ function Global:Remove-BadMiners {
         } 
     }
     $BadMiners | ForEach-Object { $(vars).Miners.Remove($_) }
-    $BadMiners = $Null
 }
 
 function Global:Get-BestMiners {
