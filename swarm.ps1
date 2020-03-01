@@ -380,7 +380,6 @@ While ($true) {
         create ASICTypes @()
         create ASICS @{ }
         create All_AltWalltes $null
-        create SWARMAlgorithm $(arg).Algorithm
         $(vars).ETH_exchange = 0;
         
         ##Insert Build Single Modules Here
@@ -587,7 +586,6 @@ While ($true) {
         $(vars).Watts = $null
         remove CoinPools 
         remove AlgoPools 
-        remove SWARMAlgorithm
         remove BanHammer
         remove ASICTypes
         remove Algorithm
