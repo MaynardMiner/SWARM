@@ -64,7 +64,7 @@ function Global:Get-BestMiners {
             }
         }
     }
-    if($trigger){$(vars).switch = $true}
+    if($trigger){$(vars).switch = $False}
     $BestMiners
 }
 
