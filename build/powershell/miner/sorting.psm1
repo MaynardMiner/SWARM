@@ -430,7 +430,7 @@ function Global:Start-Sorting {
      
         $MinerPool = $Miner.MinerPool | Select-Object -Unique
 
-        if ($Miner.Power -gt 0) { $WattCalc3 = (((([Convert]::ToDecimal($Miner.Power * 24) / 1000) * $(vars).WattEx) * -1)) }
+        if ($Miner.Power -gt 0) { $WattCalc3 = [Convert]::ToDecimal((((([Double]$Miner.Power * 24) / 1000) * $(vars).WattEx) * -1)) }
         else { $WattCalc3 = 0 }
             
         if ($(vars).Pool_Hashrates.$($Miner.Algo).$MinerPool.Percent -gt 0) { $Hash_Percent = [Convert]::ToDecimal($(vars).Pool_Hashrates.$($Miner.Algo).$MinerPool.Percent * 100) }
