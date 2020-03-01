@@ -110,7 +110,7 @@ function Global:Get-Interval {
             $(vars).switch = $true;
         }
         else { 
-            $(vars).MinerInterval = [math]::Round([math]::Max((300 - $(vars).Check_Interval.Elapsed.TotalSeconds),1))
+            $(vars).MinerInterval = [math]::Round([math]::Max((300 - $(vars).Load_Timer.Elapsed.TotalSeconds),1))
         }
     }
 }
