@@ -201,6 +201,5 @@ function Global:Set-Donation {
         $DonateTime = Get-Date; 
         $DonateText = "Miner has last donated on $DonateTime"; 
         $DonateText | Set-Content ".\debug\donate.txt"
-        if ($(vars).SWARMAlgorithm.Count -gt 0 -and $(vars).SWARMAlgorithm -ne "") { $(vars).SWARMAlgorithm = $Null }
     }
 }
