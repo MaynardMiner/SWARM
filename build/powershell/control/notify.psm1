@@ -93,7 +93,7 @@ function Global:Get-Interval {
     }
     if ($NoHash -eq $true) {
         log "SWARM is Benchmarking Miners." -Foreground Yellow;
-        $(vars).MinerStatInt = 1
+        $(vars).MinerStatInt = 300
         $Difference = [math]::Round((([DateTime]::Now) - $(vars).Load_Timer).TotalSeconds)
         $(vars).MinerInterval = [math]::Round([math]::Max((300 - $Difference), 1))
         $(vars).switch = $true;

@@ -234,6 +234,9 @@ function Global:Start-Benchmark {
                     }
                 }
             }
+            else{
+                log "$($_.Name) $($_.Symbol) has not ran for $($(vars).MinerStatInt) seconds, skipping benchmark"
+            }
         }
 
         ## If benchmark was successful- Reset the warnings
