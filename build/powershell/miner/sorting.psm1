@@ -230,7 +230,7 @@ function Global:Stop-AllMiners {
                         }
                         if ($Num -gt 180) {
                             if ($(arg).Startup -eq "Yes") {
-                                $HiveMessage = "2 minutes miner will not close - Restarting Computer"
+                                $HiveMessage = "2 minutes miner will not close on $($_.Type) - Restarting Computer"
                                 $HiveWarning = @{result = @{command = "timeout" } }
                                 if ($(vars).WebSites) {
                                     $(vars).WebSites | ForEach-Object {

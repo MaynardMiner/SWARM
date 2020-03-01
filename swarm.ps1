@@ -549,7 +549,8 @@ While ($true) {
             Remove-Variable -Name Sel -ErrorAction Ignore
 
             ## Go to sleep for interval
-            start-sleep 30;
+            start-sleep [math]::Round([math]::Max((300 - $(vars).Check_Interval.Elapsed.TotalSeconds),1));
+            $(vars).switch = $true;
 
             ## Check How many times it occurred.
             ## If it occurred more than 10 times-

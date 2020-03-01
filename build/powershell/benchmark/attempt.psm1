@@ -205,7 +205,6 @@ function Global:Start-Benchmark {
                                 }
                             }
                             $Stat = Global:Set-Stat -Name "$($_.Name)_$($NewName)_hashrate" -Value $Miner_HashRates -Rejects $Percent -AsHashRate
-                            Start-Sleep -s 1
                             $GetLiveStat = Global:Get-Stat "$($_.Name)_$($NewName)_hashrate"
                             $StatCheck = "$($GetLiveStat.Live)"
                             $ScreenCheck = "$($StatCheck | Global:ConvertTo-Hash)"
@@ -257,7 +256,6 @@ function Global:Start-Benchmark {
                     if (-not (Test-Path ".\timeout\algo_block")) { New-Item -Path ".\timeout" -Name "algo_block" -ItemType "directory" | Out-Null }
                     if (-not (Test-Path ".\timeout\miner_block")) { New-Item -Path ".\timeout" -Name "miner_block" -ItemType "directory" | Out-Null }
                     if (-not (Test-Path ".\timeout\warnings")) { New-Item -Path ".\timeout" -Name "warnings" -ItemType "directory" | Out-Null }
-                    Start-Sleep -S .25
 
                     ## Add To warnings is not present
                     Global:Set-Warnings add "$($_.Name)"
@@ -283,12 +281,10 @@ function Global:Start-Benchmark {
                         Global:Get-HiveWarning $HiveMessage
                         $NewPoolBlock = @()
                         if (Test-Path ".\timeout\pool_block\pool_block.txt") { $GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json }
-                        Start-Sleep -S 1
                         if ($GetPoolBlock) { $GetPoolBlock | ForEach-Object { $NewPoolBlock += $_ | Select-Object -ExcludeProperty Xprocess } }
                         $NewPoolBlock += $_
                         $NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt"
                         Global:Set-Warnings clear "$($_.Name)_$($_.Algo)_$($_.MinerPool)"
-                        Start-Sleep -S 1
                     }
                             
                     ##Strike Three: He's Outta Here
@@ -301,13 +297,11 @@ function Global:Start-Benchmark {
                         $NewAlgoBlock = @()
                         if (Test-Path $HashRateFilePath) { Remove-Item $HashRateFilePath -Force }
                         if (Test-Path ".\timeout\algo_block\algo_block.txt") { $GetAlgoBlock = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json }
-                        Start-Sleep -S 1
                         if ($GetAlgoBlock) { $GetAlgoBlock | ForEach-Object { $NewAlgoBlock += $_ | Select-Object -ExcludeProperty Xprocess } }
                         $NewAlgoBlock += $_
                         $NewAlgoBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block\algo_block.txt"
                         Global:Set-Warnings clear "$($_.Name)_$($_.Algo)_$($_.MinerPool)"
                         Global:Set-Warnings clear "$($_.Name)_$($_.Algo)"
-                        Start-Sleep -S 1
                     }
 
                     ##Strike Four: Miner is Finished
@@ -320,7 +314,6 @@ function Global:Start-Benchmark {
                         $NewMinerBlock = @()
                         if (Test-Path $HashRateFilePath) { Remove-Item $HashRateFilePath -Force }
                         if (Test-Path ".\timeout\miner_block\miner_block.txt") { $GetMinerBlock = Get-Content ".\timeout\miner_block\miner_block.txt" | ConvertFrom-Json }
-                        Start-Sleep -S 1
                         if ($GetMinerBlock) { $GetMinerBlock | ForEach-Object { $NewMinerBlock += $_ | Select-Object -ExcludeProperty Xprocess } }
                         $NewMinerBlock += $_
                         $NewMinerBlock | ConvertTo-Json | Set-Content ".\timeout\miner_block\miner_block.txt"
@@ -329,7 +322,6 @@ function Global:Start-Benchmark {
                         Global:Set-Warnings clear "$($_.Name)"
                         Global:Set-Warnings add "$($_.Type)"
                         if ($(vars).Warnings."$($_.Type)".bad -ge $(arg).TypeBanCount ) { $TypeBan = $true }
-                        Start-Sleep -S 1
                     }
 
                     ## Restart Computer
