@@ -95,6 +95,7 @@ function Global:Get-Interval {
         log "SWARM is Benchmarking Miners." -Foreground Yellow;
         $(vars).MinerStatInt = 1
         $(vars).MinerInterval = [math]::Round([math]::Max((300 - $(vars).Load_Timer.Elapsed.TotalSeconds),1))
+        $(vars).switch = $true;
     }
     else {
         $(vars).BenchmarkMode = $false
