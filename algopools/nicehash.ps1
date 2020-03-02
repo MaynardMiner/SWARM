@@ -40,28 +40,42 @@ if ($Name -in $(arg).PoolName) {
         "JAPAN" { $Region = "hk" }
     }
 
-    $nicehash_Request.miningAlgorithms | 
+    $Get_Params = $Global:Config.params
+    $Algos = @()
+    $Algos += $(vars).Algorithm
+    $Algos += $(arg).ASIC_ALGO;
+    $Pool_Algos = $global:Config.Pool_Algos
+    $Ban_Hammer = $global:Config.vars.BanHammer;
+
+    $Pool_Data = $nicehash_Request.miningAlgorithms | 
     Where-Object paying -gt 0 | 
-    Where-Object {
-        $Algo = $_.Algorithm.ToLower();
-        $local:Nicehash_Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name | Where { $Algo -in $global:Config.Pool_Algos.$_.alt_names }
-        return $Nicehash_Algorithm
-    } |
-    ForEach-Object {
-        if ($(vars).Algorithm -contains $nicehash_Algorithm -or $(arg).ASIC_ALGO -contains $nicehash_Algorithm) {
-            if ($Name -notin $global:Config.Pool_Algos.$nicehash_Algorithm.exclusions -and $nicehash_Algorithm -notin $(vars).BanHammer) {
+    ForEach-Object -Parallel {
+        $N = $using:name
+        $P_ALgos = $using:Pool_Algos;
+        $Algorithms = $using:Algos;
+        $Pipe_Hammer = $using:Ban_Hammer;
+        $Algo = $_.Algorithm.ToLower()
+        $Nicehash_Algorithm = $P_ALgos.PSObject.Properties.Name | Where { $Algo -in $P_ALgos.$_.alt_names }
+        if ($Algorithms -contains $Nicehash_Algorithm) {
+            if ($N -notin $P_ALgos.$Nicehash_Algorithm.exclusions -and $Nicehash_Algorithm -notin $Pipe_Hammer) {
+
+                . .\build\powershell\global\classes.ps1
+                $reg = $using:Region;
+                $params = $using:Get_Params;
+                $ports = $using:Nicehash_Ports;
+                $sub = $using:X
 
                 ## Nicehash 'Gets' you with the fees. If you read the fine print,
                 ## If you do not use a nicehash wallet- Your total fee will end up
                 ## becoming 5%. If you use a nicehash wallet, the fee is variable,
                 ## but usually around 2%.
             
-                if (-not $(arg).Nicehash_Wallet1) { $NH_Wallet1 = $(arg).Wallet1; [Double]$Fee = 5; }else { $NH_Wallet1 = $(arg).Nicehash_Wallet1; [Double]$Fee = $(arg).Nicehash_Fee }
-                if (-not $(arg).Nicehash_Wallet2) { $NH_Wallet2 = $(arg).Wallet2; [Double]$Fee = 5; }else { $NH_Wallet2 = $(arg).Nicehash_Wallet2; [Double]$Fee = $(arg).Nicehash_Fee }
-                if (-not $(arg).Nicehash_Wallet3) { $NH_Wallet3 = $(arg).Wallet3; [Double]$Fee = 5; }else { $NH_Wallet3 = $(arg).Nicehash_Wallet3; [Double]$Fee = $(arg).Nicehash_Fee }
+                if (-not $params.Nicehash_Wallet1) { $NH_Wallet1 = $params.Wallet1; [Double]$Fee = 5; }else { $NH_Wallet1 = $params.Nicehash_Wallet1; [Double]$Fee = $params.Nicehash_Fee }
+                if (-not $params.Nicehash_Wallet2) { $NH_Wallet2 = $params.Wallet2; [Double]$Fee = 5; }else { $NH_Wallet2 = $params.Nicehash_Wallet2; [Double]$Fee = $params.Nicehash_Fee }
+                if (-not $params.Nicehash_Wallet3) { $NH_Wallet3 = $params.Wallet3; [Double]$Fee = 5; }else { $NH_Wallet3 = $params.Nicehash_Wallet3; [Double]$Fee = $params.Nicehash_Fee }
 
-                $nicehash_Host = "$($Algo).$Region.nicehash.com$X"
-                $nicehash_Port = $nicehash_ports.$Algo
+                $nicehash_Host = "${Algo}.${reg}.nicehash.com${sub}"
+                $nicehash_Port = $ports.$Algo
                 ## 8 bit estimates
                 $Divisor = 100000000
                 $value = ([Convert]::ToDecimal($_.paying) / $Divisor * (1 - ($Fee / 100)))
@@ -72,11 +86,11 @@ if ($Name -in $(arg).PoolName) {
                 ## usually pretty close to actual.
 
                 $StatAlgo = $Nicehash_Algorithm -replace "`_", "`-"
-                $Stat = [Pool_Stat]::New("$($Name)_$($StatAlgo)", $value, $hashrate, $value, $false)
+                $Stat = [Pool_Stat]::New("$($N)_$($StatAlgo)", $value, $hashrate, $value, $false)
 
                 $previous = $Stat.Day_MA
 
-                $Level = $Stat.$($(arg).Stat_Algo)
+                $Level = $Stat.$($Params.Stat_Algo)
      
                 [Pool]::New(
                     ## Symbol
@@ -92,11 +106,11 @@ if ($Name -in $(arg).PoolName) {
                     ## Pool_Port
                     $nicehash_Port,
                     ## User1
-                    "$NH_Wallet1.$($(arg).RigName1)",
+                    "$NH_Wallet1.$($Params.Rigname1)",
                     ## User2
-                    "$NH_Wallet2.$($(arg).RigName2)",
+                    "$NH_Wallet2.$($Params.RigName2)",
                     ## User3
-                    "$NH_Wallet3.$($(arg).RigName3)",
+                    "$NH_Wallet3.$($Params.RigName3)",
                     ## Pass1
                     "x",
                     ## Pass2
@@ -108,5 +122,10 @@ if ($Name -in $(arg).PoolName) {
                 )
             }
         }
-    }
+    } -ThrottleLimit $(arg).Throttle
+
+    [GC]::Collect()
+    [GC]::WaitForPendingFinalizers()
+    [GC]::Collect()    
+    $Pool_Data
 }
