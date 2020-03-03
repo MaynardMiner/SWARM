@@ -243,19 +243,19 @@ Argument          Options           Explanation
                                     on get stats screen.
 
 -Historical_Bias [0-100]            Expressed as Percentage. 
-                                    Will only affect Auto_Algo.
-                                    Will not affect niechash.
                                     Historical_Bias bias does two things when set:
-                                     -Reduces algorithms that have no 24h returns to 100%
+                                     -Reduces algorithms/coins that have no 24h returns by 100%
+				      (effectively removes them)
                                      -Compares the deviation between 24hr estimates and 24hr
-                                      returns into a %, which then creates a EMA with each
-                                      value. (for smoothing). SWARM then applies a bonus/penality
+                                      returns into a %. SWARM then applies a bonus/penality
                                       to the algorithm based on how well it has performed
                                       over time historically. SWARM will only apply a max % penality
                                       or bonus of x%, where x is -Historical_Bias figure.
-                                      Deviations will be listed in stat files.
                                       If you use, reccommended starting values are somewhere
                                       around 25-35% historical bias.
+				    Once SWARM has gathered enough data- It will begin to use
+				    weekly data rather than 24 hour (daily) data for better
+				    figures.
 				      
 -Algorithm   [algorithm,algorithm,etc.] When this is specified, SWARM will not use
                                         Algorithms from pool-algos.json, and defer
@@ -282,41 +282,34 @@ Argument          Options           Explanation
                                         have factored into nicehash profit calculation. This allows user
                                         to fine tune profitability based on the variable rates and extra
                                         fees associated with using the nicehash service. Default is 2.                     
-
--Custom_Periods    [number]         Default is 1. This will allow the user to specify the number of periods 
-                                    that SWARM should gather its data from, with "periods" defined as each 
-                                    pull from pool. Default is 1 (to reduce use). If used, -Stat_Algo and /or
-                                    -Stat_Coin should be set to "custom"
-
-
--Max_Periods    [any number]        Default is 288. SWARM calculates profit via a rolling expontenial
-                                    moving average, with each new period happening at the end of your
-                                    interval. With a default interval of 300 seconds (5 minutes),
-                                    and 288 periods: That means you will have factored 86400 seconds
-                                    of pricing data, or an entire day of pricing pulls from pools.
-                                    It is not advised to set this number higher than 288. This is
-                                    only available to help reduce SWARM's memory footprint. If you
-                                    are using -Stat_Algo and -Stat_Coin live, there is no reason to
-                                    record 288 periods of data, since you are using live pricing.
-                                    You can set this number to 1. If you were using Minute_15
-                                    with an -interval of 300 (5 minutes), there is no real reason
-                                    to store nore than 3 periods of data (15 minutes total).
+					
+-Stat_Algo         [Live,		This will allow you to factor period average smoothing. 
+        	    Minute_10_MA,       Live is current pool estimates. The various time frames
+		    Minute_15_MA,       are average estimates of that particular time frame.
+		    Minute_30_MA,       So Hour_MA would be the hourly estimate.
+		    Hour_MA,            MA means "Moving Average", it is a simple average of
+		    Hour_4_MA,          all values pulled. EMA is a weighted moving average,
+		    Day_MA,             which is a smooted price average that favors more
+		    Minute_10_EMA,      recent pricing. This is for algorithms only.
+		    Minute_15_EMA,
+		    Minute_30_EMA,
+		    Hour_EMA,
+		    Hour_4_EMA,
+		    Day_EMA
 
 -Stat_Algo         [Live,		This will allow you to factor period average smoothing. 
-        	    Minute_5,		By default everything is day pricing. This will allow you to
-		    Minute_15,		smooth out stat fluctuations if you so desired into the period 
-                    Hour                specified. Essentially it will allow you choose whether or not 
-		    Hour_4,              you want to base switching on price averages, or live...And if
-		    Day                 you choose price averages, what average to base it on. Default
-                    Custom              is day. If using -Custom_Periods, this must be set to Custom.
-
--Stat_Coin         [Live,		This will allow you to factor period average smoothing. 
-        	    Minute_5,		By default everything is day pricing. This will allow you to
-		    Minute_15,		smooth out stat fluctuations if you so desired into the period 
-                    Hour                specified. Essentially it will allow you choose whether or not 
-		    Hour_4,              you want to base switching on price averages, or live...And if
-		    Day                 you choose price averages, what average to base it on. Default
-                    Custom              is day. If using -Custom_Periods, this must be set to Custom.
+        	    Minute_10_MA,       Live is current pool estimates. The various time frames
+		    Minute_15_MA,       are average estimates of that particular time frame.
+		    Minute_30_MA,       So Hour_MA would be the hourly estimate.
+		    Hour_MA,            MA means "Moving Average", it is a simple average of
+		    Hour_4_MA,          all values pulled. EMA is a weighted moving average,
+		    Day_MA,             which is a smooted price average that favors more
+		    Minute_10_EMA,      recent pricing. This is for coins only. (-Auto_Coin Yes)
+		    Minute_15_EMA,
+		    Minute_30_EMA,
+		    Hour_EMA,
+		    Hour_4_EMA,
+		    Day_EMA
 		    
 -Rej_Factor        [Yes or No]		Default is Yes. Rej_Factor penalizes profit based on historical
 					rejection rate of shares. This means that if miners had 20% rejection
@@ -338,21 +331,20 @@ Argument          Options           Explanation
                                     updates, and whether or not it is safe to transfer files. This does not
 				    work in Windows- Windows users run get update command.
 
--Benchmark     [0-100000]           Expressed in seconds. Default 180. Sets specific interval time for when coin 
-				    is in benchmark mode. Can be used for faster benchmarking. When coin has
-				    a set hashrate- Miner will defer to time expressed in -Interval parameter.
+-Benchmark     [minutes]           This is the minimum amount of time require for a miner process to run before
+				   SWARM will benchmark it when it is performing its first benchmark or when
+				   it is re-benchmarking a miner after clearing a ban. If the miner has already
+				   been benchmarked, then this parameter is ignored, and -StatsInterval is used
+				   intstead.
 
--Interval         [1-1000]          Expression is in seconds. Time before miner begins checking pools for 
-                                    pricing. Ideal target goal should be miner windows close/open every 
-                                    5 minutes. Slower cpus may need to fine tune due to the length of time
-                                    needed to search pools and find most profitable coin/algo. Defaut is 300
+-Interval         [minutes]        Integer expression based on minutes. Default is 5. This is the amount of time
+			           before SWARM is allowed to switch miners. Setting this to 15 minutes, means that
+				   SWARM will not switch miners until 15 minutes has passed.
 
--StatsInterval   1-10000            Expression is in seconds. This is time required for miner apps to run
-                                    before miner write/re-writes benchmarking. This is not be confused 
-                                    with -Interval argument, which is used for when miner begins swithing 
-                                    process. leave 1 if you want dynamic benchmarking. 
-                                    1000 for more smoother benchmarking. 10000 to disable 
-                                    benchmarking altogether. (lock stats)
+-StatsInterval   [Minutes]         Integer expression based on minutes. Default is 3. This is the amount of time
+				   a miner process must run before SWARM can benchmark it. If miner has no historical
+				   hashrate, then this parameter is ignored, and the -benchmark parameter is used
+				   instead.
 
 -Time_Wait     [seconds]            Default is 10.
                                     For linux version only.
