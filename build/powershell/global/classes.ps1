@@ -255,6 +255,9 @@ class STAT_METHODS {
       else {
          $item.Historical_Bias = -1
       }
+      if($item.Historical_Bias -lt -1) {
+         $item.Historical_Bias -eq -1
+      }
    }
 
    ## Calculate Historical Earnings For Coin
@@ -300,6 +303,9 @@ class STAT_METHODS {
       }
       else {
          $item.Historical_Bias = -1
+      }
+      if($item.Historical_Bias -lt -1) {
+         $item.Historical_Bias -eq -1
       }
    }
 }
