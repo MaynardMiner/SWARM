@@ -38,7 +38,7 @@ if ($(arg).PoolName -eq $Name) {
         $Value = [convert]::ToDecimal($Estimate * (1 - ($Prorate / 100)))
         $hashrate = 1
 
-        $Stat = [Pool_Stat]::New("$($Name)_$($Whalesburg_Algorithm)", $Value, $hashrate, $Value, $false)
+        $Stat = [Pool_Stat]::New("$($Name)_$($Whalesburg_Algorithm)", $Value, $hashrate, -1, $false)
 
         $Level = $Stat.$($(arg).Stat_Algo)
         $previous = $Stat.Day_MA

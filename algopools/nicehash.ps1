@@ -86,7 +86,7 @@ if ($Name -in $(arg).PoolName) {
                 ## usually pretty close to actual.
 
                 $StatAlgo = $Nicehash_Algorithm -replace "`_", "`-"
-                $Stat = [Pool_Stat]::New("$($N)_$($StatAlgo)", $value, $hashrate, $value, $false)
+                $Stat = [Pool_Stat]::New("$($N)_$($StatAlgo)", $value, $hashrate, -1, $false)
 
                 $previous = $Stat.Day_MA
 
