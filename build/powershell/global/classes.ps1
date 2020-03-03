@@ -57,7 +57,7 @@ class STAT_METHODS {
    ## Get the stat file
    static [PSCustomObject]Get([string]$name) {
       [PSCustomObject]$Get = $null
-      if ([IO.File]::Exists(".\stats\$name.json")) {
+      if (Test-Path ".\stats\$name.json") {
          try {
             $Get = Get-Content ".\stats\$name.json" -ErrorAction Stop | 
             ConvertFrom-Json -ErrorAction Stop
@@ -143,11 +143,11 @@ class STAT_METHODS {
          $old.Hour_MA = $value
          $old.Hour_4_MA = $value
          $old.Day_MA = $value
-         $old.Pulls = 1
          $old.Daily_Values = @()
          $old.Daily_Actual_Values = @()
          $old.Daily_Hashrate_Values = @()
          $old.Start_Of_Day = [datetime]::Now.ToUniversalTime().ToString("o")
+         $old.Pulls = 1
       }
       elseif ($Last_Pull -gt 14440) {
          $old.Live_Values = @(([Convert]::ToDecimal($old.Day_MA)), ($old.Live_Values | Select-Object -Last 1))
@@ -161,7 +161,6 @@ class STAT_METHODS {
          $old.Minute_30_MA = $old.Day_MA
          $old.Hour_MA = $old.Day_MA
          $old.Hour_4_MA = $old.Day_MA
-         $old.Pulls = 1
       }
       elseif ($last_Pull -gt 3600) {
          $old.Live_Values = @(([Convert]::ToDecimal($old.Hour_4_MA)), ($old.Live_Values | Select-Object -Last 1))
@@ -173,7 +172,6 @@ class STAT_METHODS {
          $old.Minute_15_MA = $old.Hour_4_MA
          $old.Minute_30_MA = $old.Hour_4_MA
          $old.Hour_MA = $old.Hour_4_MA
-         $old.Pulls = 1
       }
       elseif ($last_Pull -gt 1800) {
          $old.Live_Values = @(([Convert]::ToDecimal($old.Hour_MA)), ($old.Live_Values | Select-Object -Last 1))
@@ -183,7 +181,6 @@ class STAT_METHODS {
          $old.Minute_10_MA = $old.Hour_MA
          $old.Minute_15_MA = $old.Hour_MA
          $old.Minute_30_MA = $old.Hour_MA
-         $old.Pulls = 1
       }
       elseif ($last_Pull -gt 900) {
          $old.Live_Values = @(([Convert]::ToDecimal($old.Minute_30_MA)), ($old.Live_Values | Select-Object -Last 1))
@@ -191,13 +188,11 @@ class STAT_METHODS {
          $old.Minute_15_EMA = $old.Minute_30_EMA
          $old.Minute_10_MA = $old.Minute_30_MA
          $old.Minute_15_MA = $old.Minute_30_MA
-         $old.Pulls = 1
       }
       elseif ($last_Pull -gt 600) {
          $old.Live_Values = @(([Convert]::ToDecimal($old.Minute_15_MA)), ($old.Live_Values | Select-Object -Last 1))
          $old.Minute_10_EMA = $old.Minute_15_EMA
          $old.Minute_10_MA = $old.Minute_15_MA
-         $old.Pulls = 1
       }
       return $old
    }
@@ -346,7 +341,7 @@ class Pool_Stat : Stat {
       $old = [STAT_METHODS]::Get($name)
       ## Minimum decimal value
       ## Convert Value to Decimal
-      $Value = $this.Live = [Convert]::ToDecimal($Estimate)         
+      $Value = [Convert]::ToDecimal($Estimate)         
       ## Calc periods for MA
       [hashtable]$Calcs = @{
          Minute_10 = 2;
@@ -359,6 +354,7 @@ class Pool_Stat : Stat {
 
       ## IF there was a previous stat file
       if ($old) {
+
          ## Add incoming Value.
          $old.Live_Values += $Value
 
@@ -393,6 +389,7 @@ class Pool_Stat : Stat {
 
          $this.Live_Values = $old.Live_Values
          $this.Actual = $Actual
+         $this.Live = $Value
          $this.Historical_Bias = $old.Historical_Bias
          $this.Locked = $old.Locked
       }
