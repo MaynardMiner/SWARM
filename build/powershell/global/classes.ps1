@@ -233,14 +233,25 @@ class STAT_METHODS {
          If SWARM has recorded daily averages, then will will use
          a weekly simple moving average.
       #>
+
+      ## PPS Pools (Nicehash and Whalesburg) have no actual 24_hour values
+      ## Based on how they operate- Live vs. 24 hours or week vs. day
+      ## will work fine. It will still build a trend.
+
       if ($item.Daily_Values.Count -eq 0) {
          $constant = $item.Day_MA
+         if ($Actual -eq -1) {
+            $Actual = $item.Live
+         }
       }
       else {
          $theta = [STAT_METHODS]::Theta(7, $item.Daily_Values)
          $constant = $theta.sum / $theta.count
          $theta = [STAT_METHODS]::Theta(7, $item.Daily_Actual_Values)
          $actual = $theta.sum / $theta.count
+         if($Actual -eq -1) {
+          $Actual = $item.Day_MA  
+         }
       }
       if ($constant -ne 0 -and $Actual -ne 0) {
          $item.Historical_Bias = [math]::Round(($actual - $constant) / $constant , 4)

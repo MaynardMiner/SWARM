@@ -147,7 +147,19 @@ function Global:Start-Benchmark {
             $_.HashRate = 0
             $global:WasBenchmarked = $False
             $WasActive = [math]::Round(((Get-Date) - $_.XProcess.StartTime).TotalSeconds)
-            if ($WasActive -ge $(vars).MinerStatInt) {
+            $Do_Benchmark = $false;
+            if ($(vars).BenchmarkMode) {
+                if ($_.Hashrates -eq 0 -and $WasActive -ge ($(arg).Benchmark * 60)) {
+                    $Do_Benchmark = $true
+                }
+                elseif ( $WasActive -ge $(vars).MinerStatInt) {
+                    $Do_Benchmark = $true
+                }    
+            }
+            elseif ( $WasActive -ge $(vars).MinerStatInt) {
+                $Do_Benchmark = $true
+            }
+            if ($Do_Benchmark) {
                 log "$($_.Name) $($_.Symbol) Was Active for $WasActive Seconds"
                 log "Attempting to record hashrate for $($_.Name) $($_.Symbol)" -foregroundcolor "Cyan"
                 ##Check For High Rejections
@@ -172,7 +184,8 @@ function Global:Start-Benchmark {
                             log "Stat Attempt Yielded 0" -Foregroundcolor Red
                             Start-Sleep -S .25
                             $GPUPower = 0
-                            if ($(arg).WattOMeter -eq "Yes" -and $_.Type -ne "CPU") {
+                            $No_Watts = @("CPU","ASIC")
+                            if ($(arg).WattOMeter -eq "Yes" -and $_.Type -notin $No_Watts) {
                                 $GetWatts = Get-Content ".\config\power\power.json" | ConvertFrom-Json
                                 if ($GetWatts.$($_.Algo)) {
                                     $GetWatts.$($_.Algo)."$($_.Type)_Watts" = "$GPUPower"
@@ -187,9 +200,13 @@ function Global:Start-Benchmark {
                             }
                         }
                         else {
-                            if ($(arg).WattOMeter -eq "Yes" -and $_.Type -ne "CPU") { $GPUPower = Global:Get-Power $($_.Type) }
-                            else { $GPUPower = 1 }
-                            if ($(arg).WattOMeter -eq "Yes" -and $_.Type -ne "CPU") {
+                            $No_Watts = @("CPU","ASIC")
+                            if ($(arg).WattOMeter -eq "Yes" -and $_.Type -notin $No_Watts) { $GPUPower = Global:Get-Power $($_.Type) }
+                            else { 
+                                $GPUPower = 1 
+                            }
+                            $No_Watts = @("CPU","ASIC")
+                            if ($(arg).WattOMeter -eq "Yes" -and $_.Type -notin $No_Watts) {
                                 $GetWatts = Get-Content ".\config\power\power.json" | ConvertFrom-Json
                                 if ($GetWatts.$($_.Algo)) {
                                     $StatPower = Global:Set-Stat -Name "$($_.Name)_$($NewName)_Watts" -Value $GPUPower
@@ -215,7 +232,10 @@ function Global:Start-Benchmark {
                             }
                             else {
                                 log "Recorded Hashrate For $($_.Name) $($_.Symbol) Is $($ScreenCheck)" -foregroundcolor "magenta"
-                                if ($(arg).WattOMeter -eq "Yes") { log "Watt-O-Meter scored $($_.Name) $($_.Symbol) at $($GPUPower) Watts" -ForegroundColor magenta }
+                                $No_Watts = @("CPU","ASIC")
+                                if ($(arg).WattOMeter -eq "Yes" -and $_.Type -notin $No_Watts) {
+                                    log "Watt-O-Meter scored $($_.Name) $($_.Symbol) at $($GPUPower) Watts" -ForegroundColor magenta 
+                                }
                                 if (-not (Test-Path $NewHashrateFilePath)) {
                                     Copy-Item $HashrateFilePath -Destination $NewHashrateFilePath -force
                                     log "$($_.Name) $($_.Symbol) Was Benchmarked And Backed Up" -foregroundcolor yellow
@@ -234,7 +254,7 @@ function Global:Start-Benchmark {
                     }
                 }
             }
-            else{
+            else {
                 log "$($_.Name) $($_.Symbol) has not ran for $($(vars).MinerStatInt) seconds, skipping benchmark" -Foreground magenta
             }
         }

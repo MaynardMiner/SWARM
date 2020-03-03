@@ -23,7 +23,7 @@
     "Auto_Coin": "No",
     "Ban_GLT": "No",
     "Bans": [],
-    "Benchmark": 300,
+    "Benchmark": 2,
     "CLPlatform": "",
     "Coin": [
         ""
@@ -50,7 +50,7 @@
     "Historical_Bias": 0,
     "Hive_Hash": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     "HiveOS": "No",
-    "Interval": 300,
+    "Interval": 5,
     "kwh": "",
     "Lite": "No",
     "Location": "US",
@@ -80,7 +80,7 @@
     "Startup": "Yes",
     "Stat_Algo": "Live",
     "Stat_Coin": "Live",
-    "StatsInterval": 1,
+    "StatsInterval": 3,
     "SWARM_Hash": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     "SWARM_Mode": "No",
     "Switch_Threshold": "0",

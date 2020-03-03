@@ -80,7 +80,11 @@ function Global:Get-LaunchNotification {
 }
 
 function Global:Get-Interval {
-    ##Determine Benchmarking
+
+    ## MinerStatInt is to delegate -Interval
+    ## Before benchmarking starts.
+    
+    ##Determine if Benchmarking
     $NoHash = $false
     log "Stats and active miners have been updated for commands." -foreground Yellow;
     $(vars).BestActiveMiners | ForEach-Object {
@@ -91,29 +95,36 @@ function Global:Get-Interval {
             $(vars).BenchmarkMode = $true; 
         }
     }
+
+    ## If benchmarking
     if ($NoHash -eq $true) {
         log "SWARM is Benchmarking Miners." -Foreground Yellow;
-        $(vars).MinerStatInt = 300
+        ## SWARM should switch miners next loop and Interval should
+        ## Be 1 (irrelevant, doesn't check)
+        $(vars).MinerStatInt = 1
+        $(vars).switch = $true;
         $Difference = [math]::Round((([DateTime]::Now) - $(vars).Load_Timer).TotalSeconds)
         $(vars).MinerInterval = [math]::Round([math]::Max((300 - $Difference), 1))
-        $(vars).switch = $true;
     }
     else {
-        $(vars).BenchmarkMode = $false
-        $(vars).MinerStatInt = $(arg).StatsInterval
         if ($(arg).SWARM_Mode -eq "Yes") {
             $(vars).SWARM_IT = $true
             log "SWARM MODE ACTIVATED!" -ForegroundColor Green;
             $global:SwitchTime = Get-Date
             log "SWARM Mode Start Time is $global:SwitchTime" -ForegroundColor Cyan;
-            $(vars).MinerInterval = 10000000;
-            ## Set to switch after next pull
-            $(vars).switch = $true;
+            $(vars).MinerInterval = 1000000000;
         }
         else { 
             $Difference = [math]::Round((([DateTime]::Now) - $(vars).Load_Timer).TotalSeconds)
             $(vars).MinerInterval = [math]::Round([math]::Max((300 - $Difference), 1))
         }
+        if ($(arg).MinerStatInt -eq 0) {
+            $(vars).MinerStatInt = 1
+        }
+        else {
+            $(vars).MinerStatInt = $(arg).StatsInterval * 60
+        }
+        $(vars).BenchmarkMode = $false
     }
 }
 

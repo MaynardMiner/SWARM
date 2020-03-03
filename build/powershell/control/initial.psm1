@@ -20,6 +20,7 @@ function Global:Get-ActiveMiners {
                 Port         = $_.Port
                 Symbol       = $_.Symbol
                 Coin         = $_.Coin
+                Hashrates     = if($Null -ne $_.HashRates){$_.Hashrates}else{0}
                 Active       = [TimeSpan]0
                 Status       = "Idle"
                 HashRate     = 0
