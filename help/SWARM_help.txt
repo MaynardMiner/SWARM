@@ -259,7 +259,7 @@ Argument          Options           Explanation
 				      -Historical_Bias 1:25
 				    If you would like to test this stat, and are unsure where to start- 10% - 30%
 				    bonus maximums and penalties are suggested.
-				    The maximum bonus can go beyond 100%. I have seen pools return 800% that predicted
+				    The maximum bonus can go beyond 100%. I have seen pools return 800% than predicted
 				    on 1 coin in 24 hours.
 				    The negative maximum penalty is 100%.
 				      
