@@ -18,7 +18,6 @@ if ($Name -in $(arg).PoolName) {
         return
     }
 
-
     # Make an algo list, include asic algorithms not usually in SWARM
     ## Remove algos that users/SWARM have banned.
     $Algos = @();
@@ -31,6 +30,8 @@ if ($Name -in $(arg).PoolName) {
     $Fee_Table = $(vars).FeeTable.blockmasters;
     $Divisor_Table = $(vars).divisortable.blockmasters;
     $Active_Symbols = $(vars).ActiveSymbol;
+
+
 
     ## Change to universal naming schema and only items we need to add
     $Pool_Sorted = $Pool_Request.PSobject.Properties.Name | 
@@ -47,7 +48,7 @@ if ($Name -in $(arg).PoolName) {
         $Algo_List = $using:Algos;       
         $F_Table = $using:Fee_Table;
         $D_Table = $using:Divisor_Table;
-        $Get_GLT = $using:NoGLT
+        $Get_GLT = $using:NoGLT;
         ################################
         $request.$_ | Add-Member "sym" $_
         $request.$_ | Add-Member "Original_Algo" $request.$_.Algo.ToLower()
@@ -74,7 +75,7 @@ if ($Name -in $(arg).PoolName) {
         "us" { $Region = $null }
         default { $Region = "eu." }
     }
-
+    
     $Get_Params = $Global:Config.params
     $Pool_Sorted | ForEach-Object -Parallel {
         . .\build\powershell\global\classes.ps1
@@ -134,10 +135,10 @@ if ($Name -in $(arg).PoolName) {
         #######################################
         $To_Add = @()
         $To_Add += $Sorted | 
-        Where-Object Algo -eq $Selected | 
-        Where-Object { [Convert]::ToInt32($_."24h_blocks_shared") -ge $Params.Min_Blocks } |
-        Sort-Object Level -Descending |
-        Select-Object -First 1
+            Where-Object Algo -eq $Selected | 
+            Where-Object { [Convert]::ToInt32($_."24h_blocks") -ge $Params.Min_Blocks } |
+            Sort-Object Level -Descending |
+            Select-Object -First 1
         $To_Add += $Sorted | Where-Object { $_.Sym -in $Active -and $_ -notin $To_Add }
 
         $To_Add | ForEach-Object { 
