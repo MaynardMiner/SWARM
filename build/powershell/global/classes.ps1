@@ -95,8 +95,9 @@ class STAT_METHODS {
       $new.Daily_Values = $old.Daily_values
       $new.Daily_Actual_Values = $old.Daily_Actual_Values
       $new.Daily_Hashrate_Values = $old.Daily_Hashrate_Values
-      $Total_Stat_Time = [math]::Round(([Datetime]::Now.ToUniversalTime() - [DateTime]$Old.Start_Of_Day).TotalSeconds)
       $new.Start_Of_Day = $old.Start_Of_Day
+
+      $Total_Stat_Time = [math]::Round(([Datetime]::Now.ToUniversalTime() - [DateTime]$Old.Start_Of_Day).TotalSeconds)
       if ($Total_Stat_Time -ge 86400) {
          $new.Daily_Values += $old.Day_MA
          $new.Daily_Actual_Values += $Actual
