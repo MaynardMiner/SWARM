@@ -91,7 +91,24 @@ if ($Name -in $(arg).PoolName) {
                 $previous = $Stat.Day_MA
 
                 $Level = $Stat.$($Params.Stat_Algo)
-     
+
+                if ($Params.Historical_Bias) {
+                    $SmallestValue = 1E-20 
+                    $Values = $Params.Historical_Bias.Split("`:")
+                    $Max_Penalty = $Values | Select -First 1
+                    $Max_Bonus = $Values | Select -Last 1
+        
+                    ## Penalize
+                    if ($Stat.Historical_Bias -lt 0) {
+                        $Deviation = [Math]::Max($Stat.Historical_Bias, ($Max_Penalty * -0.01))
+                    }
+                    ## Bonus
+                    else {
+                        $Deviation = [Math]::Min($Stat.Historical_Bias, ($Max_Bonus * 0.01))
+                    }
+                    $Level = [Math]::Max($Level + ($Level * $Deviation), $SmallestValue)
+                }        
+
                 [Pool]::New(
                     ## Symbol
                     "$($nicehash_Algorithm)-Algo",

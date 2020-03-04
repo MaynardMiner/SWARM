@@ -30,7 +30,7 @@ if ($Name -in $(arg).PoolName) {
     $Ban_Hammer = $global:Config.vars.BanHammer;
     $Fee_Table = $(vars).FeeTable.blockmasters;
     $Divisor_Table = $(vars).divisortable.blockmasters;
-    $Active_Symbols =  $(vars).ActiveSymbol;
+    $Active_Symbols = $(vars).ActiveSymbol;
 
     ## Change to universal naming schema and only items we need to add
     $Pool_Sorted = $Pool_Request.PSobject.Properties.Name | 
@@ -99,16 +99,23 @@ if ($Name -in $(arg).PoolName) {
 
         $Level = $Stat.$($Params.Stat_Coin)
 
-        if ($Params.Historical_Bias -gt 0) {
+        if ($Params.Historical_Bias) {
             $SmallestValue = 1E-20 
+            $Values = $Params.Historical_Bias.Split("`:")
+            $Max_Penalty = $Values | Select -First 1
+            $Max_Bonus = $Values | Select -Last 1
+
+            ## Penalize
             if ($Stat.Historical_Bias -lt 0) {
-                $Deviation = [Math]::Max($Stat.Historical_Bias, ($Params.Historical_Bias * -0.01))
+                $Deviation = [Math]::Max($Stat.Historical_Bias, ($Max_Penalty * -0.01))
             }
+            ## Bonus
             else {
-                $Deviation = [Math]::Min($Stat.Historical_Bias, ($Params.Historical_Bias * 0.01))
+                $Deviation = [Math]::Min($Stat.Historical_Bias, ($Max_Bonus * 0.01))
             }
             $Level = [Math]::Max($Level + ($Level * $Deviation), $SmallestValue)
-        }
+        }        
+
         $_ | Add-Member "Level" $Level 
         $_ | Add-Member "Previous" $stat.Actual
     }
@@ -130,7 +137,7 @@ if ($Name -in $(arg).PoolName) {
         $To_Add = @()
         $To_Add += $Sorted | 
             Where-Object Algo -eq $Selected | 
-            Where-Object { [Convert]::ToInt32($_."24h_blocks_shared") -ge $Params.Min_Blocks } |
+            Where-Object { [Convert]::ToInt32($_."24h_blocks") -ge $Params.Min_Blocks } |
             Sort-Object Level -Descending |
             Select-Object -First 1
         $To_Add += $Sorted | Where-Object { $_.Sym -in $Active -and $_ -notin $To_Add }

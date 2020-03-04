@@ -17,6 +17,7 @@ Set-Location $dir
 Write-Host "Gathering All Profit Stats"
 $Get += "Gathering All Profit Stats"
 if (Test-Path ".\stats\*pricing.json*") {Remove-Item ".\stats\*pricing.json*" -Force}
+if (Test-Path ".\stats\*profit.txt*") {Remove-Item ".\stats\*profit.txt*" -Force}
 Write-Host "Cleared All Profit Stats" -Foreground Green
 $Get += "Cleared All Profit Stats"
 $Get | Set-Content ".\debug\get.txt"
