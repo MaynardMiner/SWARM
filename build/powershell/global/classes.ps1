@@ -112,6 +112,7 @@ class STAT_METHODS {
    }
 
    ## Resets particular stats if SWARM was shut off
+   ## TODO Actually grab good values rather than use EMA.
    static [PSCustomObject]Update_Time([PSCustomObject]$old, [decimal]$Value) {
       ## Determine last time stat was pulled
       $Last_Pull = [math]::Round(((Get-Date).ToUniversalTime() - [DateTime]$Old.Updated).TotalSeconds)
