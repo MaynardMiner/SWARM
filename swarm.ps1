@@ -367,7 +367,7 @@ While ($true) {
 
         if(
             $(vars).switch -ne $true -and 
-            [math]::Round((([DateTime]::Now) - $(vars).Check_Interval).TotalSeconds) -ge $($(arg).Interval * 60)
+            [math]::Round((([DateTime]::Now) - $(vars).Check_Interval).TotalSeconds) -ge $(($(arg).Interval - .2) * 60)
         ) {
            $(vars).switch = $true
            $(vars).Check_Interval = [datetime]::Now
