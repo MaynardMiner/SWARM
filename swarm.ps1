@@ -342,6 +342,10 @@ $(vars).Add("Load_Timer",[datetime]::Now);
 [GC]::WaitForPendingFinalizers()
 [GC]::Collect()    
 
+if($(arg).Throttle -eq 0) {
+    $(arg).Throttle = ([Environment]::ProcessorCount + 1)
+}
+
 ##############################################################################
 #######                      End Startup                                ######
 ##############################################################################

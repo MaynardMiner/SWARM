@@ -108,5 +108,5 @@
     "cpu_priority": 0,
     "Min_Blocks": 1,
     "Hidden": "No",
-    "Throttle": 2
+    "Throttle": 0
 }
