@@ -103,8 +103,8 @@ function Global:Get-Interval {
         ## Be 1 (irrelevant, doesn't check)
         $(vars).MinerStatInt = 1
         $(vars).switch = $true;
-        $Difference = [math]::Round((([DateTime]::Now) - $(vars).Load_Timer).TotalSeconds)
-        $(vars).MinerInterval = [math]::Round([math]::Max((300 - $Difference), 1))
+        $Difference = [math]::Round(((Get-Date).ToUniversalTime() - $(vars).Load_Timer).TotalSeconds)
+        $(vars).MinerInterval = [math]::Round([math]::Max((300 - $Difference)))
     }
     else {
         if ($(arg).SWARM_Mode -eq "Yes") {
@@ -115,8 +115,8 @@ function Global:Get-Interval {
             $(vars).MinerInterval = 1000000000;
         }
         else { 
-            $Difference = [math]::Round((([DateTime]::Now) - $(vars).Load_Timer).TotalSeconds)
-            $(vars).MinerInterval = [math]::Round([math]::Max((300 - $Difference), 1))
+            $Difference = [math]::Round(((Get-Date).ToUniversalTime() - $(vars).Load_Timer).TotalSeconds)
+            $(vars).MinerInterval = [math]::Round([math]::Max((300 - $Difference)))
         }
         if ($(arg).MinerStatInt -eq 0) {
             $(vars).MinerStatInt = 1

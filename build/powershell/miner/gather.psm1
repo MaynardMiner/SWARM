@@ -116,7 +116,7 @@ function Global:Get-Miners {
 }
 function Global:Get-AlgoMiners {
     if ($(vars).AlgoPools.Count -gt 0 -and $(vars).AlgoPools -ne 1) {
-        $start_time = [datetime]::Now
+        $start_time = (Get-Date).ToUniversalTime()
         log "Checking Algo Miners. . . ." -ForegroundColor Yellow
         ##Load Only Needed Algorithm Miners
         Global:Get-Miners | % { $(vars).Miners.Add($_) | Out-Null }
@@ -124,14 +124,14 @@ function Global:Get-AlgoMiners {
         [GC]::Collect()
         [GC]::WaitForPendingFinalizers()
         [GC]::Collect()  
-        $time = [math]::Round((([DateTime]::Now) - $start_time).TotalSeconds)      
+        $time = [math]::Round(((Get-Date).ToUniversalTime() - $start_time).TotalSeconds)      
         log "Algo Miners Loading Time: $time seconds" -Foreground Green    
     }
 }
 
 function Global:Get-CoinMiners {
     if ($(vars).CoinPools.Count -gt 0 -and $(vars).CoinPools -ne 1) {
-        $start_time = [datetime]::Now
+        $start_time = (Get-Date).ToUniversalTime()
         $(vars).Coins = $true
         log "Checking Coin Miners. . . . ." -ForegroundColor Yellow
         ##Load Only Needed Coin Miners
@@ -140,7 +140,7 @@ function Global:Get-CoinMiners {
         [GC]::Collect()
         [GC]::WaitForPendingFinalizers()
         [GC]::Collect()        
-        $time = [math]::Round((([DateTime]::Now) - $start_time).TotalSeconds)      
+        $time = [math]::Round(((Get-Date).ToUniversalTime() - $start_time).TotalSeconds)      
         log "Coin Miners Loading Time: $time seconds" -Foreground Green    
     }
 }

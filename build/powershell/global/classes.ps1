@@ -97,7 +97,7 @@ class STAT_METHODS {
       $new.Daily_Hashrate_Values = $old.Daily_Hashrate_Values
       $new.Start_Of_Day = $old.Start_Of_Day
 
-      $Total_Stat_Time = [math]::Round(([Datetime]::Now.ToUniversalTime() - [DateTime]$Old.Start_Of_Day).TotalSeconds)
+      $Total_Stat_Time = [math]::Round(((Get-Date).ToUniversalTime() - [DateTime]$Old.Start_Of_Day).TotalSeconds)
       if ($Total_Stat_Time -ge 86400) {
          $new.Daily_Values += $old.Day_MA
          $new.Daily_Actual_Values += $Actual
@@ -107,14 +107,14 @@ class STAT_METHODS {
             $new.Daily_Actual_Values = $new.Daily_Actual_Values | Select -Last 7
             $new.Daily_Hashrate_Values = $new.Daily_Hashrate_Values | Select -Last 7
          }
-         $new.Start_Of_Day = [datetime]::Now.ToUniversalTime().ToString("o")
+         $new.Start_Of_Day = (Get-Date).ToUniversalTime().ToString("o")
       }
    }
 
    ## Resets particular stats if SWARM was shut off
    static [PSCustomObject]Update_Time([PSCustomObject]$old, [decimal]$Value) {
       ## Determine last time stat was pulled
-      $Last_Pull = [math]::Round(([Datetime]::Now.ToUniversalTime() - [DateTime]$Old.Updated).TotalSeconds)
+      $Last_Pull = [math]::Round(((Get-Date).ToUniversalTime() - [DateTime]$Old.Updated).TotalSeconds)
       <# Now we need to see how much of the stats is still valid.
          If user shut off SWARM for 10 minutes for example, then
          technically, the minute_15 stat is still viable. So 
@@ -146,7 +146,7 @@ class STAT_METHODS {
          $old.Daily_Values = @()
          $old.Daily_Actual_Values = @()
          $old.Daily_Hashrate_Values = @()
-         $old.Start_Of_Day = [datetime]::Now.ToUniversalTime().ToString("o")
+         $old.Start_Of_Day = (Get-Date).ToUniversalTime().ToString("o")
          $old.Pulls = 1
       }
       elseif ($Last_Pull -gt 14440) {
@@ -421,7 +421,7 @@ class Pool_Stat : Stat {
          $this.Avg_Hashrate = $Hashrate
          $this.Locked = $false
          $this.Actual = $Actual
-         $this.Start_Of_Day = [datetime]::Now.ToUniversalTime().ToString("o")
+         $this.Start_Of_Day = (Get-Date).ToUniversalTime().ToString("o")
          if ($coin) {
             [STAT_METHODS]::Coin_Bias($this, $Actual)
          }
@@ -430,7 +430,7 @@ class Pool_Stat : Stat {
          }
       }
 
-      [string]$this.Updated = [datetime]::Now.ToUniversalTime().ToString("o")
+      [string]$this.Updated = (Get-Date).ToUniversalTime().ToString("o")
 
       $stat = [ordered]@{
          Live                  = $this.Live
