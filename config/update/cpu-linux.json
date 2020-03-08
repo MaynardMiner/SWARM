@@ -40,9 +40,9 @@
     "type": "cpu",
     "CPU": ".\\bin\\xmrigcc-cpu-1\\xmrigDaemon",
     "minername": "xmrigDaemon",
-    "version": "2.5.0",
+    "version": "2.6.2",
     "optional": "No",
-    "uri": "https://github.com/Bendr0id/xmrigCC/releases/download/2.5.0/xmrigCC-2.5.0-with_tls_and_gzip-gcc7-linux-static-amd64.tar.gz"
+    "uri": "https://github.com/Bendr0id/xmrigCC/releases/download/2.6.2/xmrigCC-2.6.2-with_tls_and_gzip-mvc-win64.zip"
   },
   "sugarchain": {
     "name": "sugarchain",
