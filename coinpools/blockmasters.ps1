@@ -119,8 +119,8 @@ if ($Name -in $(arg).PoolName) {
         $_ | Add-Member "Previous" $stat.Actual
     }
 
-    $Get_Wallets = $Wallets
-    $Get_AltWallets = $AltWallets
+    $Get_Wallets = $Global:Wallets
+    $Get_AltWallets = $(vars).All_AltWallets
     ## Break the algos to groups to sort it down.
     $Pool_Data = $Algos | ForEach-Object -Parallel {
         . .\build\powershell\global\classes.ps1
