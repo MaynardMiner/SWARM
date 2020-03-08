@@ -12,7 +12,6 @@ function Global:Set-Donation {
         $DonateTime = Get-Date; 
         $DonateText = "Miner has last donated on $DonateTime"; 
         $DonateText | Set-Content ".\debug\donate.txt"
-        if ($(vars).SWARMAlgorithm.Count -gt 0 -and $(vars).SWARMAlgorithm -ne "") { $(vars).SWARMAlgorithm = $Null }
     }
 }
 
@@ -27,13 +26,13 @@ function Global:Get-AltWallets {
             $Coin_Param = $_ -split "`:"
             $symbol = $Coin_Param | Select -First 1
             $address = $Coin_Param | Select -Skip 1 -First 1
-            if($address -eq "none"){$address = "add address of coin if you wish to mine to that address, or leave alone."}
+            if ($address -eq "none") { $address = "add address of coin if you wish to mine to that address, or leave alone." }
             $params = $Coin_Param | Select -Skip 2 -First 1
-            if($params -eq "none"){$params = "enter additional params here, such as 'm=solo' or m=party.partypassword"}
+            if ($params -eq "none") { $params = "enter additional params here, such as 'm=solo' or m=party.partypassword" }
             $exchange = $Coin_Param | Select -Skip 3 -First 1
             if ($symbol) {
                 if ($symbol -notin $Wallets."Passive Alternative Wallets"."coin list") {
-                    $Wallet_Json."Passive Alternative Wallets"."coin list" | Add-Member "$symbol" @{address = $address; params = $params; exchange = $exchange}
+                    $Wallet_Json."Passive Alternative Wallets"."coin list" | Add-Member "$symbol" @{address = $address; params = $params; exchange = $exchange }
                 }
             }
         }
@@ -122,43 +121,38 @@ function Global:Get-Wallets {
     ## would require account information. But new changes
     ## will allow get wallets command to work for external BTC Addresses.
     
-     $(arg).PoolName | % { $NewWallet1 += $_; $NewWallet2 += $_; $NewWallet3 += $_ } 
-     
-    $C = $true
-    if ($(arg).Coin) { $C = $false }
-    if ($C -eq $false) { log "Coin Parameter Specified, disabling All alternative wallets." -ForegroundColor Yellow }
-    
-    if ($(arg).AltWallet1 -and $C -eq $true) { $global:Wallets | Add-Member "AltWallet1" @{$(arg).AltPassword1 = @{address = $(arg).AltWallet1; Pools = $NewWallet1 } }
+    $(arg).PoolName | % { $NewWallet1 += $_; $NewWallet2 += $_; $NewWallet3 += $_ } 
+    $global:Wallets | Add-Member "Wallet1" @{$($(arg).Passwordcurrency1) = @{address = $(arg).Wallet1; Pools = $NewWallet1 } }
+    $global:Wallets | Add-Member "Wallet2" @{$($(arg).Passwordcurrency2) = @{address = $(arg).Wallet1; Pools = $NewWallet1 } }
+    $global:Wallets | Add-Member "Wallet3" @{$($(arg).Passwordcurrency3) = @{address = $(arg).Wallet1; Pools = $NewWallet1 } }
+
+    if ($(arg).AltWallet1 -ne "") {
+        $global:Wallets | Add-Member "AltWallet1" @{$($(arg).AltPassword1) = @{address = $(arg).AltWallet1; Pools = $NewWallet1 } }
     }
-    elseif ($AltWallet_Config.AltWallet1 -and $C -eq $true) { $global:Wallets | Add-Member "AltWallet1" $AltWallet_Config.AltWallet1 }
-    if ($(arg).Wallet1 -and $C -eq $true) { $global:Wallets | Add-Member "Wallet1" @{$(arg).Passwordcurrency1 = @{address = $(arg).Wallet1; Pools = $NewWallet1 } }
+    elseif ($AltWallet_Config.AltWallet1 -ne "") { 
+        $global:Wallets | Add-Member "AltWallet1" $AltWallet_Config.AltWallet1 
+    }    
+    if ($(arg).AltWallet2 -ne "" ) {
+        $global:Wallets | Add-Member "AltWallet2" @{$($(arg).AltPassword2) = @{address = $(arg).AltWallet2; Pools = $NewWallet2 } }
     }
-    else { $global:Wallets | Add-Member "Wallet1" @{"$($(arg).Passwordcurrency1)" = @{address = $(arg).Wallet1; Pools = $NewWallet1 } }
+    elseif ($AltWallet_Config.AltWallet2 -ne "" ) { 
+        $global:Wallets | Add-Member "AltWallet2" $AltWallet_Config.AltWallet2 
+    }    
+    if ($(arg).AltWallet3 -ne "") {
+        $global:Wallets | Add-Member "AltWallet3" @{$($(arg).AltPassword3) = @{address = $(arg).AltWallet3; Pools = $NewWallet3 } }
     }
-    
-    if ($(arg).AltWallet2 -and $C -eq $true ) { $global:Wallets | Add-Member "AltWallet2" @{$(arg).AltPassword2 = @{address = $(arg).AltWallet2; Pools = $NewWallet2 } }
+    elseif ($AltWallet_Config.AltWallet3 -ne "" ) { 
+        $global:Wallets | Add-Member "AltWallet3" $AltWallet_Config.AltWallet3 
+    }    
+    if ($(arg).Nicehash_Wallet1 -ne "") {
+        $global:Wallets | Add-Member "Nicehash_Wallet1" @{"BTC" = @{address = $(arg).Nicehash_Wallet1; Pools = "nicehash" } }
     }
-    elseif ($AltWallet_Config.AltWallet2 -and $C -eq $True ) { $global:Wallets | Add-Member "AltWallet2" $AltWallet_Config.AltWallet2 }
-    if ($(arg).Wallet2 -and $C -eq $true) { $global:Wallets | Add-Member "Wallet2" @{$(arg).Passwordcurrency2 = @{address = $(arg).Wallet2; Pools = $NewWallet2 } }
+    if ($(arg).Nicehash_Wallet2 -ne "") {
+        $global:Wallets | Add-Member "Nicehash_Wallet2" @{"BTC" = @{address = $(arg).Nicehash_Wallet2; Pools = "nicehash" } }
     }
-    else { $global:Wallets | Add-Member "Wallet2" @{"$($(arg).Passwordcurrency2)" = @{address = $(arg).Wallet2; Pools = $NewWallet2 } }
+    if ($(arg).Nicehash_Wallet3 -ne "") {
+        $global:Wallets | Add-Member "Nicehash_Wallet3" @{"BTC" = @{address = $(arg).Nicehash_Wallet3; Pools = "nicehash" } }
     }
-    
-    if ($(arg).AltWallet3 -and $C ) { $global:Wallets | Add-Member "AltWallet3" @{$(arg).AltPassword3 = @{address = $(arg).AltWallet3; Pools = $NewWallet3 } }
-    }
-    elseif ($AltWallet_Config.AltWallet3 -and $C ) { $global:Wallets | Add-Member "AltWallet3" $AltWallet_Config.AltWallet3 }
-    if ($(arg).Wallet3 -and $C -eq $true) { $global:Wallets | Add-Member "Wallet3" @{$(arg).Passwordcurrency3 = @{address = $(arg).Wallet3; Pools = $NewWallet3 } }
-    }
-    else { $global:Wallets | Add-Member "Wallet3" @{"$($(arg).Passwordcurrency3)" = @{address = $(arg).Wallet3; Pools = $NewWallet3 } }
-    }
-    
-    if ($(arg).Nicehash_Wallet1) { $global:Wallets | Add-Member "Nicehash_Wallet1" @{"BTC" = @{address = $(arg).Nicehash_Wallet1; Pools = "nicehash" } }
-    }
-    if ($(arg).Nicehash_Wallet2) { $global:Wallets | Add-Member "Nicehash_Wallet2" @{"BTC" = @{address = $(arg).Nicehash_Wallet2; Pools = "nicehash" } }
-    }
-    if ($(arg).Nicehash_Wallet3) { $global:Wallets | Add-Member "Nicehash_Wallet3" @{"BTC" = @{address = $(arg).Nicehash_Wallet3; Pools = "nicehash" } }
-    }
-    
     
     if (Test-Path ".\wallet\keys") { $Oldkeys = Get-ChildItem ".\wallet\keys" }
     if ($Oldkeys) { Remove-Item ".\wallet\keys\*" -Force }
@@ -167,20 +161,22 @@ function Global:Get-Wallets {
 }
 
 function Global:Add-Algorithms {
-    if ($(vars).SWARMAlgorithm) { $(vars).SWARMAlgorithm | ForEach-Object { $(vars).Algorithm += $_ } }
+    if ([string]($(arg).Algorithm) -ne "") { 
+        $(arg).Algorithm | ForEach-Object { $(vars).Algorithm += $_ } 
+    }
     elseif ($(arg).Auto_Algo -eq "Yes") { $(vars).Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name }
     $NUll_Out = $true
     $(arg).Type | % {
-        if($_ -like "NVIDIA*" -or
+        if ($_ -like "NVIDIA*" -or
             $_ -like "AMD*" -or
             $_ -like "CPU*"
         
-        ){
+        ) {
             $NUll_Out = $false
         }
     }
     ## This means it is ASIC only. Use only -ASIC_ALGO parameter
-    if($NUll_Out -eq $true) {
+    if ($NUll_Out -eq $true) {
         $(vars).Algorithm = $null
     }
     if (Test-Path ".\build\data\photo_9.png") {

@@ -1,4 +1,4 @@
 @echo off
 cd %SWARM_DIR%
 
-pwsh -command ".\build\powershell\scripts\lspci.ps1 %*"
+pwsh-preview -command ".\build\powershell\scripts\lspci.ps1 %*"

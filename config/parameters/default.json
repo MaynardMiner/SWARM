@@ -23,7 +23,7 @@
     "Auto_Coin": "No",
     "Ban_GLT": "No",
     "Bans": [],
-    "Benchmark": 300,
+    "Benchmark": 2,
     "CLPlatform": "",
     "Coin": [
         ""
@@ -34,9 +34,7 @@
     "CPUOnly": "No",
     "CPUThreads": "",
     "Cuda": "10.1",
-    "Currency": [
-        "USD"
-    ],
+    "Currency": "USD",
     "Custom_Periods": 1,
     "Donate": 0.5,
     "ETH": "",
@@ -49,16 +47,16 @@
     "GPUDevices3": [
         ""
     ],
-    "Historical_Bias": 0,
+    "Historical_Bias": "1:1",
     "Hive_Hash": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     "HiveOS": "No",
-    "Interval": 300,
+    "Interval": 5,
     "kwh": "",
     "Lite": "No",
     "Location": "US",
     "Max_Periods": 288,
     "MinerBanCount": 4,
-    "Nicehash_Fee": "",
+    "Nicehash_Fee": 2,
     "Nicehash_Wallet1": "",
     "Nicehash_Wallet2": "",
     "Nicehash_Wallet3": "",
@@ -82,7 +80,7 @@
     "Startup": "Yes",
     "Stat_Algo": "Live",
     "Stat_Coin": "Live",
-    "StatsInterval": 1,
+    "StatsInterval": 3,
     "SWARM_Hash": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     "SWARM_Mode": "No",
     "Switch_Threshold": "0",
@@ -109,5 +107,6 @@
     "Rej_Factor": "Yes",
     "cpu_priority": 0,
     "Min_Blocks": 1,
-    "Hidden": "No"
+    "Hidden": "No",
+    "Throttle": 0
 }

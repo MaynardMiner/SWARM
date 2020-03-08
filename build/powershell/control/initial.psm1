@@ -20,6 +20,7 @@ function Global:Get-ActiveMiners {
                 Port         = $_.Port
                 Symbol       = $_.Symbol
                 Coin         = $_.Coin
+                Hashrates     = if($Null -ne $_.HashRates){$_.Hashrates}else{0}
                 Active       = [TimeSpan]0
                 Status       = "Idle"
                 HashRate     = 0
@@ -66,7 +67,6 @@ function Global:Get-BestActiveMiners {
         if ($(vars).bestminers_combo | Where-Object Type -EQ $_.Type | Where-Object Path -EQ $_.Path | Where-Object Arguments -EQ $_.Arguments) { $_.BestMiner = $true; $(vars).BestActiveMiners += $_ }
         else { $_.BestMiner = $false }
     }
-
 }
 
 function Global:Expand-WebRequest {

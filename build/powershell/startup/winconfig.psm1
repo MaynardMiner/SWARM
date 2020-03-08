@@ -265,7 +265,9 @@ function Global:Start-WindowsConfig {
                 log "Attempting to add current SWARM.bat to startup" -ForegroundColor Magenta
                 log "If you do not wish SWARM to start on startup, use -Startup No argument"
                 log "Startup FilePath: $Startup_Path"
-                $bat = "CMD /r pwsh -ExecutionPolicy Bypass -command `"Set-Location C:\; Set-Location `'$($(vars).dir)`'; Start-Process `"SWARM.bat`"`""
+                $exec = "$PSHOME\pwsh.exe".Replace("C:\","")
+                $exec = "C:\`"$exec`""
+                $bat = "CMD /r $exec -ExecutionPolicy Bypass -command `"Set-Location C:\; Set-Location `'$($(vars).dir)`'; Start-Process `"SWARM.bat`"`""
                 $Bat_Startup = Join-Path $Startup_Path "SWARM.bat"
                 $bat | Set-Content $Bat_Startup
             }

@@ -1,10 +1,11 @@
 $Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
 $Pool_Request = [PSCustomObject]@{ } 
 
+$X = ""
 if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" } 
 
 if ($Name -in $(arg).PoolName) {
-    try { $Pool_Request = Invoke-RestMethod "http://www.zpool.ca/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
+    try { $Pool_Request = Invoke-RestMethod "https://www.zpool.ca/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
     catch { log "SWARM contacted ($Name) but there was no response."; return }
  
     if (($Pool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) { 
@@ -15,15 +16,20 @@ if ($Name -in $(arg).PoolName) {
     $Algos = @()
     $Algos += $(vars).Algorithm
     $Algos += $(arg).ASIC_ALGO
-    $Algos = $Algos | ForEach-Object { if ($Bad_pools.$_ -notcontains $Name) { $_ } }
-
+    
     ## Only get algos we need & convert name to universal schema
-    $Pool_Sorted = $Pool_Request.PSobject.Properties.Value | Where-Object { [Convert]::ToDouble($_.estimate_current) -gt 0 } | ForEach-Object { 
+    $Pool_Algos = $global:Config.Pool_Algos;
+    $Ban_Hammer = $global:Config.vars.BanHammer;
+    $Pool_Sorted = $Pool_Request.PSobject.Properties.Value | ForEach-Object -Parallel { 
+        $Pipe_Algos = $using:Pool_Algos;
+        $Pipe_Hammer = $using:Ban_Hammer;
+        $Algo_List = $using:Algos;
+        $Pipe_Name = $using:Name;
         $N = $_.Name;
-        $_ | Add-Member "Original_Algo" $N
-        $_.Name = $global:Config.Pool_Algos.PSObject.Properties.Name | Where { $N -in $global:Config.Pool_Algos.$_.alt_names };
-        if ($_.Name) { if ($_.Name -in $Algos -and $Name -notin $global:Config.Pool_Algos.$($_.Name).exclusions -and $_.Name -notin $(vars).BanHammer) { $_ } }
-    }
+        $_ | Add-Member "Original_Algo" $N;
+        $_.Name = $Pipe_Algos.PSObject.Properties.Name | Where { $N -in $Pipe_Algos.$_.alt_names };
+        if ($_.Name) { if ($_.Name -in $Algo_List -and $Pipe_Name -notin $Pipe_Algos.$($_.Name).exclusions -and $_.Name -notin $Pipe_Hammer) { return $_ } }
+    } -ThrottleLimit $(arg).Throttle
 
     Switch ($(arg).Location) {
         "US" { $region = "na" }
@@ -32,74 +38,105 @@ if ($Name -in $(arg).PoolName) {
         "JAPAN" { $region = "jp" }
     }    
 
-    $Pool_Sorted | ForEach-Object {
-        $Day_Estimate = [Convert]::ToDouble($_.estimate_last24h);
-        $Day_Return = [Convert]::ToDouble($_.actual_last24h);
-        if ($Day_Estimate -gt 0 -and $Day_Return -gt 0) {
-            $Raw = shuffle $Day_Estimate $Day_Return
-        } 
-        ## If either value is 0, deviation is 100% (either coin was not mined, or had no value)
-        else {
-            $Raw = -1
-        }
-        $_ | Add-Member "deviation" $Raw
+    ## These are modified, then returned back to the original
+    ## value below. This is so that threading can be done.
+    $DivisorTable = $Global:Config.vars.DivisorTable
+    $FeeTable = $Global:Config.vars.FeeTable
+    $Hashrate_Table = $Global:Config.vars.Pool_HashRates
+    $Get_Params = $Global:Config.params
+    $Get_Wallets = $Global:Wallets
 
+    $Pool_Data = $Pool_Sorted | ForEach-Object -Parallel {
+        . .\build\powershell\global\classes.ps1
+        $D_Table = $using:DivisorTable
+        $F_Table = $using:FeeTable
+        $H_Table = $using:Hashrate_Table
+        $P_Name = $using:Name
+        $sub = $using:X
+        $reg = $using:region
+        $Params = $using:Get_Params
+        $Wallets = $using:Get_Wallets
         $StatAlgo = $_.Name -replace "`_", "`-"
-        $StatPath = "$($Name)_$($StatAlgo)_profit"
-        if (-not (test-Path ".\stats\$StatPath") ) { $Estimate = [Convert]::ToDouble($_.estimate_last24h) }
-        else { $Estimate = [Convert]::ToDouble($_.estimate_current) }
-    
-        $Pool_Port = $_.port
-        $Pool_Host = "$($_.Original_Algo).$($region).mine.zpool.ca$X"
         $Divisor = 1000000 * $_.mbtc_mh_factor
+        $Pool_Port = $_.port
+        $Pool_Host = "$($_.Original_Algo).$($reg).mine.zpool.ca$sub"
+        $StatName = "$($P_Name)_$($StatAlgo)"
+        $Get_Path = [IO.File]::Exists(".\stats\pool_$($StatName)_pricing.json")
         $Hashrate = $_.hashrate
-        if ([Convert]::ToDouble($HashRate) -eq 0) { $Hashrate = 1 }  ## Set to prevent volume dividebyzero error
-        $previous = [Math]::Max(([Convert]::ToDouble($_.actual_last24h) * 0.001) / $Divisor * (1 - ($_.fees / 100)), $SmallestValue)
-    
-        $Deviation = $_.Deviation
-        $Stat = Global:Set-Stat -Name $StatPath -HashRate $HashRate -Value ( $Estimate / $Divisor * (1 - ($_.fees / 100))) -Shuffle $Deviation
-        if (-not $(vars).Pool_Hashrates.$($_.Name)) { $(vars).Pool_Hashrates.Add("$($_.Name)", @{ }) }
-        if (-not $(vars).Pool_Hashrates.$($_.Name).$Name) { $(vars).Pool_Hashrates.$($_.Name).Add("$Name", @{HashRate = "$($Stat.HashRate)"; Percent = "" }) }
-        
-        $Level = $Stat.$($(arg).Stat_Algo)
-        if ($(arg).Historical_Bias -gt 0) {
+        $Estimate = $_.estimate_last24h
+        if ($Get_Path) { $Estimate = $_.estimate_current }
+
+        $D_Table.zpool.Add($_.Name, $_.mbtc_mh_factor)
+        $F_Table.zpool.Add($_.Name, $_.Fees)
+
+        $new_estimate = [Convert]::ToDecimal($Estimate)
+        $current = [Convert]::ToDecimal($new_estimate / $Divisor * (1 - ($_.fees / 100)))
+        $new_actual = [Convert]::ToDecimal($_.actual_last24h)
+        $actual = [Convert]::ToDecimal(($new_actual * 0.001) / $Divisor * (1 - ($_.fees / 100)))
+
+        $Stat = [Pool_Stat]::New($StatName, $current, [Convert]::ToDecimal($Hashrate), $actual, $false)
+
+        if(-not $H_Table.$($_.Name)) {
+            $H_Table.Add("$($_.Name)",@{})
+        }
+        elseif (-not $H_Table.$($_.Name).$P_Name) {
+            $H_Table.$($_.Name).Add("$P_Name", @{
+                Hashrate = "$Hashrate"
+                Percent = ""
+             })
+        }
+
+        $Level = $Stat.$($Params.Stat_Algo)
+
+        if ($Params.Historical_Bias) {
             $SmallestValue = 1E-20 
-            $Level = [Math]::Max($Level + ($Level * $Stat.Deviation), $SmallestValue)
-        }
+            $Values = $Params.Historical_Bias.Split("`:")
+            $Max_Penalty = $Values | Select -First 1
+            $Max_Bonus = $Values | Select -Last 1
 
-        $Pass1 = $global:Wallets.Wallet1.Keys
-        $User1 = $global:Wallets.Wallet1.$($(arg).Passwordcurrency1).address
-        $Pass2 = $global:Wallets.Wallet2.Keys
-        $User2 = $global:Wallets.Wallet2.$($(arg).Passwordcurrency2).address
-        $Pass3 = $global:Wallets.Wallet3.Keys
-        $User3 = $global:Wallets.Wallet3.$($(arg).Passwordcurrency3).address
-
-        if ($global:Wallets.AltWallet1.keys) {
-            $global:Wallets.AltWallet1.Keys | ForEach-Object {
-                if ($global:Wallets.AltWallet1.$_.Pools -contains $Name) {
+            ## Penalize
+            if ($Stat.Historical_Bias -lt 0) {
+                $Deviation = [Math]::Max($Stat.Historical_Bias, ($Max_Penalty * -0.01))
+            }
+            ## Bonus
+            else {
+                $Deviation = [Math]::Min($Stat.Historical_Bias, ($Max_Bonus * 0.01))
+            }
+            $Level = [Math]::Max($Level + ($Level * $Deviation), $SmallestValue)
+        }        
+    
+        $Pass1 = $Wallets.Wallet1.Keys
+        $User1 = $Wallets.Wallet1.$($Params.Passwordcurrency1).address
+        $Pass2 = $Wallets.Wallet2.Keys
+        $User2 = $Wallets.Wallet2.$($Params.Passwordcurrency2).address
+        $Pass3 = $Wallets.Wallet3.Keys
+        $User3 = $Wallets.Wallet3.$($Params.Passwordcurrency3).address
+                
+        if ($Wallets.AltWallet1.keys) {
+            $Wallets.AltWallet1.Keys | ForEach-Object {
+                if ($Wallets.AltWallet1.$_.Pools -contains $Name) {
                     $Pass1 = $_;
-                    $User1 = $global:Wallets.AltWallet1.$_.address;
+                    $User1 = $Wallets.AltWallet1.$_.address;
                 }
             }
         }
-        if ($global:Wallets.AltWallet2.keys) {
-            $global:Wallets.AltWallet2.Keys | ForEach-Object {
-                if ($global:Wallets.AltWallet2.$_.Pools -contains $Name) {
+        if ($Wallets.AltWallet2.keys) {
+            $Wallets.AltWallet2.Keys | ForEach-Object {
+                if ($Wallets.AltWallet2.$_.Pools -contains $Name) {
                     $Pass2 = $_;
-                    $User2 = $global:Wallets.AltWallet2.$_.address;
+                    $User2 = $Wallets.AltWallet2.$_.address;
                 }
             }
         }
-        if ($global:Wallets.AltWallet3.keys) {
-            $global:Wallets.AltWallet3.Keys | ForEach-Object {
-                if ($global:Wallets.AltWallet3.$_.Pools -contains $Name) {
+        if ($Wallets.AltWallet3.keys) {
+            $Wallets.AltWallet3.Keys | ForEach-Object {
+                if ($Wallets.AltWallet3.$_.Pools -contains $Name) {
                     $Pass3 = $_;
-                    $User3 = $global:Wallets.AltWallet3.$_.address;
+                    $User3 = $Wallets.AltWallet3.$_.address;
                 }
             }
         }
 
-                    
         [Pool]::New(
             ## Symbol
             "$($_.Name)-Algo",
@@ -120,13 +157,21 @@ if ($Name -in $(arg).PoolName) {
             ## User3
             $User3,
             ## Pass1
-            "c=$Pass1,id=$($(arg).RigName1)",
+            "c=$Pass1,id=$($Params.RigName1)",
             ## Pass2
-            "c=$Pass2,id=$($(arg).RigName2)",
+            "c=$Pass2,id=$($Params.RigName2)",
             ## Pass3
-            "c=$Pass3,id=$($(arg).RigName3)",
+            "c=$Pass3,id=$($Params.RigName3)",
             ## Previous
-            $previous
+            $actual
         )
-    }
+    } -ThrottleLimit $(arg).Throttle
+
+    $Global:Config.vars.DivisorTable = $DivisorTable
+    $Global:Config.vars.FeeTable = $FeeTable
+    $Global:Config.vars.Pool_HashRates = $Hashrate_Table
+    [GC]::Collect()
+    [GC]::WaitForPendingFinalizers()
+    [GC]::Collect()    
+    $Pool_Data
 }

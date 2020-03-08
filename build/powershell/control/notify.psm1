@@ -73,41 +73,58 @@ Most Profitable Miners Are Running
 
 function Global:Get-LaunchNotification {
     $(vars).MinerWatch.Restart()
-    if ($(vars).Restart -eq $true -and$(vars).NoMiners -eq $true) { Global:Invoke-MinerWarning }
-    if ($(arg).Platform -eq "linux" -and $(vars).Restart -eq $true -and$(vars).NoMiners -eq $false) { Global:Invoke-MinerSuccess }
-    if ($(arg).Platform -eq "windows" -and $(vars).Restart -eq $true -and$(vars).NoMiners -eq $false) { Global:Invoke-MinerSuccess }
+    if ($(vars).Restart -eq $true -and $(vars).NoMiners -eq $true) { Global:Invoke-MinerWarning }
+    if ($(arg).Platform -eq "linux" -and $(vars).Restart -eq $true -and $(vars).NoMiners -eq $false) { Global:Invoke-MinerSuccess }
+    if ($(arg).Platform -eq "windows" -and $(vars).Restart -eq $true -and $(vars).NoMiners -eq $false) { Global:Invoke-MinerSuccess }
     if ($(vars).Restart -eq $false) { Global:Invoke-NoChange }
 }
 
 function Global:Get-Interval {
-    ##Determine Benchmarking
+
+    ## MinerStatInt is to delegate -Interval
+    ## Before benchmarking starts.
+    
+    ##Determine if Benchmarking
     $NoHash = $false
     log "Stats and active miners have been updated for commands." -foreground Yellow;
     $(vars).BestActiveMiners | ForEach-Object {
         $StatAlgo = $_.Algo -replace "`_", "`-"
-        $StatAlgo = $StatAlgo -replace "`/","`-"        
+        $StatAlgo = $StatAlgo -replace "`/", "`-"        
         if (-not (Test-Path ".\stats\$($_.Name)_$($StatAlgo)_hashrate.txt")) { 
             $NoHash = $true
             $(vars).BenchmarkMode = $true; 
         }
     }
 
+    ## If benchmarking
     if ($NoHash -eq $true) {
         log "SWARM is Benchmarking Miners." -Foreground Yellow;
-        $(vars).MinerInterval = $(arg).Benchmark
+        ## SWARM should switch miners next loop and Interval should
+        ## Be 1 (irrelevant, doesn't check)
         $(vars).MinerStatInt = 1
+        $(vars).switch = $true;
+        $Difference = [math]::Round(((Get-Date).ToUniversalTime() - $(vars).Load_Timer).TotalSeconds)
+        $(vars).MinerInterval = [math]::Round([math]::Max((300 - $Difference),1))
     }
     else {
-        $(vars).BenchmarkMode = $false
-        $(vars).MinerStatInt = $(arg).StatsInterval
         if ($(arg).SWARM_Mode -eq "Yes") {
             $(vars).SWARM_IT = $true
             log "SWARM MODE ACTIVATED!" -ForegroundColor Green;
             $global:SwitchTime = Get-Date
             log "SWARM Mode Start Time is $global:SwitchTime" -ForegroundColor Cyan;
-            $(vars).MinerInterval = 10000000;
+            $(vars).MinerInterval = 1000000000;
         }
-        else { $(vars).MinerInterval = $(arg).Interval }
+        else { 
+            $Difference = [math]::Round(((Get-Date).ToUniversalTime() - $(vars).Load_Timer).TotalSeconds)
+            $(vars).MinerInterval = [math]::Round([math]::Max((300 - $Difference),1))
+        }
+        if ($(arg).MinerStatInt -eq 0) {
+            $(vars).MinerStatInt = 1
+        }
+        else {
+            $(vars).MinerStatInt = $(arg).StatsInterval * 60
+        }
+        $(vars).BenchmarkMode = $false
     }
 }
 
@@ -140,7 +157,7 @@ function Global:Get-CoinShares {
 }
 
 function Global:Confirm-Nofitication {
-    if([Double]$(vars).BanPass -ne (0.65 + 0.85)){ 
+    if ([Double]$(vars).BanPass -ne (0.65 + 0.85)) { 
         $(vars).BanPass = (2.65 + 2.35) 
         $(vars).BanCount = (2.65 + 2.53)
     }

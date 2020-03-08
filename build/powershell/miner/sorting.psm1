@@ -230,7 +230,7 @@ function Global:Stop-AllMiners {
                         }
                         if ($Num -gt 180) {
                             if ($(arg).Startup -eq "Yes") {
-                                $HiveMessage = "2 minutes miner will not close - Restarting Computer"
+                                $HiveMessage = "2 minutes miner will not close on $($_.Type) - Restarting Computer"
                                 $HiveWarning = @{result = @{command = "timeout" } }
                                 if ($(vars).WebSites) {
                                     $(vars).WebSites | ForEach-Object {
@@ -430,19 +430,19 @@ function Global:Start-Sorting {
      
         $MinerPool = $Miner.MinerPool | Select-Object -Unique
 
-        if ($Miner.Power -gt 0) { $WattCalc3 = (((([Double]$Miner.Power * 24) / 1000) * $(vars).WattEx) * -1) }
+        if ($Miner.Power -gt 0) { $WattCalc3 = (((([Double]$Miner.Power * 24) / 1000) * $(vars).WattEx) * -1)}
         else { $WattCalc3 = 0 }
             
-        if ($(vars).Pool_Hashrates.$($Miner.Algo).$MinerPool.Percent -gt 0) { $Hash_Percent = $(vars).Pool_Hashrates.$($Miner.Algo).$MinerPool.Percent * 100 }
+        if ($(vars).Pool_Hashrates.$($Miner.Algo).$MinerPool.Percent -gt 0) { $Hash_Percent = [Convert]::ToDecimal($(vars).Pool_Hashrates.$($Miner.Algo).$MinerPool.Percent * 100) }
         else { $Hash_Percent = 0 }
 
-        $Miner_Volume = ([Double]($Miner.Quote * (1 - ($Hash_Percent / 100))))
-        $Miner_Modified = ([Double]($Miner_Volume * (1 - ($Miner.Fees / 100))))
+        $Miner_Volume = ([Convert]::TODecimal($Miner.Quote * (1 - ($Hash_Percent / 100))))
+        $Miner_Modified = ([Convert]::ToDecimal($Miner_Volume * (1 - ($Miner.Fees / 100))))
 
-        $Miner | Add-Member Profit ([Double]($Miner_Modified + $WattCalc3)) ##Used to calculate BTC/Day and sort miners
-        $Miner | Add-Member Profit_Unbiased ([Double]($Miner_Modified + $WattCalc3)) ##Uset to calculate Daily profit/day moving averages
-        $Miner | Add-Member Pool_Estimate ([Double]($Miner.Quote)) ##RAW calculation for Live Value (Used On screen)
-        $Miner | Add-Member Volume $( if ($(vars).Pool_Hashrates.$($Miner.Algo).$MinerPool.Percent -gt 0) { [Double]$(vars).Pool_Hashrates.$($Miner.Algo).$MinerPool.Percent * 100 } else { 0 } )
+        $Miner | Add-Member Profit ([Convert]::TODecimal($Miner_Modified + $WattCalc3)) ##Used to calculate BTC/Day and sort miners
+        $Miner | Add-Member Profit_Unbiased ([Convert]::ToDecimal($Miner_Modified + $WattCalc3)) ##Uset to calculate Daily profit/day moving averages
+        $Miner | Add-Member Pool_Estimate ([Convert]::ToDecimal($Miner.Quote)) ##RAW calculation for Live Value (Used On screen)
+        $Miner | Add-Member Volume $( if ($(vars).Pool_Hashrates.$($Miner.Algo).$MinerPool.Percent -gt 0) { [Convert]::ToDecimal($(vars).Pool_Hashrates.$($Miner.Algo).$MinerPool.Percent * 100) } else { 0 } )
             
         if (-not $Miner.HashRates) {
             $miner.HashRates = $null

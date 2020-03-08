@@ -216,9 +216,9 @@
     "NVIDIA2": ".\\bin\\gminer-2\\miner",
     "NVIDIA3": ".\\bin\\gminer-3\\miner",
     "minername": "miner",
-    "version": "1.97",
+    "version": "2.00",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.97/gminer_1_97_linux64.tar.xz"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.00/gminer_2_00_linux64.tar.xz"
   },
   "grin-miner": {
     "name": "grin-miner",
@@ -249,9 +249,9 @@
     "NVIDIA2": ".\\bin\\miniz-2\\miniZ",
     "NVIDIA3": ".\\bin\\miniz-3\\miniZ",
     "minername": "miniZ",
-    "version": "1.5t",
+    "version": "1.5t2",
     "optional": "No",
-    "uri": "https://miniz.ch/?smd_process_download=1&download_id=3370"
+    "uri": "https://miniz.ch/?smd_process_download=1&download_id=3563"
   },
   "progminer": {
     "name": "progminer",

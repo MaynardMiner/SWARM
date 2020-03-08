@@ -13,21 +13,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 function Global:Remove-BadMiners {
     $BadMiners = @()
-    if ($(arg).Threshold -ne 0) { $(vars).Miners | ForEach-Object { 
-        if ($_.Profit -gt $(arg).Threshold) { 
-            $BadMiners += $_ 
-            $(vars).Thresholds += "$($_.Name) mining $($_.Algo) was removed this run: Profit/Day above $($(arg).Threshold) BTC"
+    if ($(arg).Threshold -ne 0) {
+        $(vars).Miners | ForEach-Object { 
+            if ($_.Profit -gt $(arg).Threshold) { 
+                $BadMiners += $_ 
+                $(vars).Thresholds += "$($_.Name) mining $($_.Algo) was removed this run: Profit/Day above $($(arg).Threshold) BTC"
             }
         } 
     }
     $BadMiners | ForEach-Object { $(vars).Miners.Remove($_) }
-    $BadMiners = $Null
 }
 
 function Global:Get-BestMiners {
-
     $BestMiners = @()
-
+    $trigger = $False;
     $(arg).Type | foreach {
         $SelType = $_
         $BestTypeMiners = @()
@@ -44,13 +43,28 @@ function Global:Get-BestMiners {
             $OldTypeMiners | foreach { $_ | Add-Member "Old" "Yes" }
         }
         if ($OldTypeMiners) { $MinerCombo += $OldTypeMiners }
-        $MinerCombo += $TypeMiners | Where Profit -NE $NULL
-        $BestTypeMiners += $TypeMiners | Where Profit -EQ $NULL | Select -First 1
-        $BestTypeMiners += $MinerCombo | Where Profit -NE $Null | Where Profit -gt 0 | Sort-Object { ($_ | Measure Profit -Sum).Sum } -Descending | Select -First 1
-        $BestTypeMiners += $MinerCombo | Where Profit -NE $Null | Where Profit -lt 0 | Sort-Object { ($_ | Measure Profit -Sum).Sum } -Descending | Select -First 1
-        $BestMiners += $BestTypeMiners | Select -first 1
+        if ($(vars).switch -eq $true) {
+            $MinerCombo += $TypeMiners | Where Profit -NE $NULL
+            $BestTypeMiners += $TypeMiners | Where Profit -EQ $NULL | Select -First 1
+            $BestTypeMiners += $MinerCombo | Where Profit -NE $Null | Where Profit -gt 0 | Sort-Object { ($_ | Measure Profit -Sum).Sum } -Descending | Select -First 1
+            $BestTypeMiners += $MinerCombo | Where Profit -NE $Null | Where Profit -lt 0 | Sort-Object { ($_ | Measure Profit -Sum).Sum } -Descending | Select -First 1
+            $BestMiners += $BestTypeMiners | Select -first 1
+            $trigger = $true
+        }
+        else {
+            log "Interval has not elapsed since last sort- Using Same Miner for $_ If Pool Had Data" -Foreground Cyan
+            if($OldTypeMiners) {
+                $BestMiners += $OldTypeMiners
+            } else {
+                $MinerCombo += $TypeMiners | Where Profit -NE $NULL
+                $BestTypeMiners += $TypeMiners | Where Profit -EQ $NULL | Select -First 1
+                $BestTypeMiners += $MinerCombo | Where Profit -NE $Null | Where Profit -gt 0 | Sort-Object { ($_ | Measure Profit -Sum).Sum } -Descending | Select -First 1
+                $BestTypeMiners += $MinerCombo | Where Profit -NE $Null | Where Profit -lt 0 | Sort-Object { ($_ | Measure Profit -Sum).Sum } -Descending | Select -First 1
+                $BestMiners += $BestTypeMiners | Select -first 1    
+            }
+        }
     }
-
+    if($trigger){$(vars).switch = $False}
     $BestMiners
 }
 

@@ -57,7 +57,9 @@ function Global:Start-Webcommand {
                     if ($(arg).Hidden -eq "Yes") {
                         $Windowstyle = "Hidden"
                     }            
-                    $command = Start-Process "pwsh" -WorkingDirectory "$($(vars).dir)\build\powershell\scripts" -ArgumentList "-executionpolicy bypass -NoExit -windowstyle $WindowStyle -command `"&{`$host.ui.RawUI.WindowTitle = `'AutoFan`'; &.\autofan.ps1 -WorkingDir `'$($(vars).dir)`'}`"" -WindowStyle Minimized -PassThru -Verb Runas
+                    $File = "$($(vars).Dir)\build\powershell\scripts\autofan.ps1"
+                    $exec = "$PSHOME/pwsh.exe"
+                    $command = Start-Process $exec -ArgumentList "-executionpolicy bypass -noexit -windowstyle $windowstyle -file `"$file`"" -WindowStyle Minimized -PassThru -Verb Runas
                     $command.ID | Set-Content ".\build\pid\autofan.txt"
                     $BackgroundTimer.Restart()
                     do {
@@ -105,7 +107,9 @@ function Global:Start-Webcommand {
                 Stop-Process $MinerId
                 Start-Sleep -S 3
             }
-            Start-Process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle maximized -command `".\build\powershell\scripts\reboot.ps1`""
+            $exec = "$PSHOME\pwsh.exe"
+            $File = $"($(vars).Dir)\build\powershell\scripts\reboot.ps1"
+            Start-Process $exec -ArgumentList "-executionpolicy bypass -windowstyle maximized -file `"$file`"" -WindowStyle Minimized -Verb Runas
             exit
         }
 
@@ -243,10 +247,6 @@ function Global:Start-Webcommand {
                                 "optional" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
                                 "Type" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
                                 "Poolname" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
-                                "Currency" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
-                                "PasswordCurrency1" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
-                                "PasswordCurrency2" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
-                                "PasswordCurrency3" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
                                 "coin_params" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
                             }
                         }

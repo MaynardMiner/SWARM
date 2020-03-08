@@ -61,6 +61,20 @@ Argument          Options           Explanation
               Sorted by their category
 
 ***********************************************************************************************************
+*************** Performance Specifications ****************************************************************
+***********************************************************************************************************
+
+-Throttle   [0 - 10]             Default is 0 (AUTO). Specificies the maximum number of threads allowed to 
+                                 run in parallel when SWARM is performing parallel execution. When set to
+                                 0, SWARM determines optimal number of threads. Increasing or lowering
+                                 this parameter may improve database perforamnce and RIG load averages.
+                                 Optimal settings is N + 1 CPU cores.
+
+-Cpu_Priority [0, 2, or 5]      Default is 0. Sets the process priority for CPU mining. 0 is idle, 2
+                                is normal, 5 is high.
+
+
+***********************************************************************************************************
 *************** Rig Specifications ************************************************************************
 ***********************************************************************************************************
 
@@ -233,20 +247,26 @@ Argument          Options           Explanation
                                     on get stats screen, under Vol. SWARM will only penalize pools up to
                                     x%, where x is this parameter.
 
--Historical_Bias [0-100]            Expressed as Percentage. 
-                                    Will only affect Auto_Algo.
-                                    Will not affect niechash.
-                                    Historical_Bias bias does two things when set:
-                                     -Reduces algorithms that have no 24h returns to 100%
-                                     -Compares the deviation between 24hr estimates and 24hr
-                                      returns into a %, which then creates a EMA with each
-                                      value. (for smoothing). SWARM then applies a bonus/penality
-                                      to the algorithm based on how well it has performed
-                                      over time historically. SWARM will only apply a max % penality
-                                      or bonus of x%, where x is -Historical_Bias figure.
-                                      Deviations will be listed in stat files.
-                                      If you use, reccommended starting values are somewhere
-                                      around 25-35% historical bias.
+-Historical_Bias [penalty:bonus]    Default is 1:1. The first value is penalty modifier. Second value is
+                                    bonus modifier. Historical bias is a value that checks pools estimates
+				    vs. their actual returns, and creates a % difference between the two that
+				    is either positive (did better than predicted) or negative (did worse than 
+				    predicted). These values set the maximum penalty or bonus SWARM should give
+				    when determining profitibility. The default 1:1 sets a maximum penalty of 1%
+				    or maximum bonus of 1%. These values begin applying it to the Daily estimates
+				    and daily returns.
+				    Once SWARM begins to record more data, and generates weekly statistics, SWARM 
+				    begins to base penalty and bonus on weekly data rather than 24 hours, which is often
+				    more accurate.
+				    If you wish to only penalize a pools by a maximum of 25%, then you would use
+				      -Historical_Bias 25:1
+				    If you wish to only give a pool a bonus by a maximum of 25%, the you would use
+				      -Historical_Bias 1:25
+				    If you would like to test this stat, and are unsure where to start- 10% - 30%
+				    bonus maximums and penalties are suggested.
+				    The maximum bonus can go beyond 100%. I have seen pools return 800% than predicted
+				    on 1 coin in 24 hours.
+				    The negative maximum penalty is 100%.
 				      
 -Algorithm   [algorithm,algorithm,etc.] When this is specified, SWARM will not use
                                         Algorithms from pool-algos.json, and defer

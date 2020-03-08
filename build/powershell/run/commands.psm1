@@ -59,7 +59,6 @@ function Global:Get-PriceMessage {
     $ProfitMessage = "Current Daily Profit For Rig: $($Total.ToString("N2")) $($(arg).Currency)/Day"
     $ProfitMessage | Out-File ".\debug\minerstats.txt" -Append
     $ProfitMessage | Out-File ".\debug\charts.txt" -Append
-
 }
 
 

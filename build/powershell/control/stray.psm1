@@ -24,7 +24,7 @@ function global:Stop-StrayMiners {
     )
 
     ## Get Process, and sort them.
-    $processes = (Get-CIMInstance win32_process | where { $_.ProcessName -eq ‘pwsh.exe’ } | select processid)
+    $processes = (Get-CIMInstance win32_process | where { $_.ProcessName -eq 'pwsh.exe' } | select processid)
     $subprocesses = $processes.processid | % { $id = $_; Get-CimInstance Win32_Process | where { $_.ParentProcessId -eq $id } }
 
     ## Get Miner executable names

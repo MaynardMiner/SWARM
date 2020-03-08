@@ -51,9 +51,9 @@
     "AMD2": ".\\bin\\gminer-amd-2\\miner.exe",
     "AMD3": ".\\bin\\gminer-amd-3\\miner.exe",
     "minername": "miner.exe",
-    "version": "1.97",
+    "version": "2.00",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.97/gminer_1_97_windows64.zip"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.00/gminer_2_00_windows64.zip"
   },
   "phoenix-amd": {
     "name": "phoenix-amd",
@@ -139,9 +139,9 @@
     "AMD2": ".\\bin\\wildrig-2\\wildrig.exe",
     "AMD3": ".\\bin\\wildrig-3\\wildrig.exe",
     "minername": "wildrig.exe",
-    "version": "0.20.1",
+    "version": "0.20.4",
     "optional": "No",
-    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.20.1/wildrig-multi-windows-0.20.1.7z"
+    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.20.4/wildrig-multi-windows-0.20.4.7z"
   },
   "fancyix": {
     "name": "fancyix",
@@ -227,8 +227,8 @@
     "AMD2": ".\\bin\\nbminer-amd-2\\nbminer.exe",
     "AMD3": ".\\bin\\nbminer-amd-3\\nbminer.exe",
     "minername": "nbminer.exe",
-    "version": "27.0",
+    "version": "27.5",
     "optional": "No",
-    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v27.0/NBMiner_27.0_Win.zip"
+    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v27.5/NBMiner_27.5_Win.zip"
   }
 }

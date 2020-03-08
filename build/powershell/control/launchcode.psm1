@@ -253,8 +253,11 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                 ##Make Test.bat for users
                 $Algo = ($MinerCurrent.Algo).Replace("`/", "_")
                 $minerbat = @()
-                ## pwsh to launch powershell window to fully emulate SWARM launching
-                $minerbat += "pwsh -ExecutionPolicy Bypass -command `"Start-Process pwsh -verb runas -ArgumentList `"`"-noexit -executionpolicy Bypass -Command `"`"`"`".\swarm_start_$($Algo).ps1`"`"`"`"`"`""
+                ## pwsh-preview to launch powershell window to fully emulate SWARM launching
+                $file = "$WorkingDirectory\swarm_start_$($Algo).ps1"
+                $exec = "$PSHOME\pwsh.exe"
+                $command = "`"Start-Process `"`"$exec`"`" -Verb Runas -ArgumentList `"`"-noexit -executionpolicy bypass -file `"`"`"`"$file`"`"`"`"`"`"`""
+                $minerbat += "pwsh-preview -ExecutionPolicy Bypass -command $Command"
                 $miner_bat = Join-Path $WorkingDirectory "swarm_start_$($Algo).bat"
                 $minerbat | Set-Content $miner_bat
 
@@ -379,7 +382,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                     if ($Hidden -eq "yes") {
                         $WindowStyle = "hidden"
                     }
-                    $arguments = "-executionpolicy bypass -Windowstyle $WindowStyle -command `"$ps1`""
+                    $arguments = "-executionpolicy bypass -Windowstyle $WindowStyle -file `"$ps1`""
                     $CommandLine += " " + $arguments
                     $New_Miner = $start.New_Miner($filepath, $CommandLine, $WorkingDirectory)
                     $Process = Get-Process | Where id -eq $New_Miner.dwProcessId
@@ -395,8 +398,9 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                 do { sleep 1; $JobOutput = Receive-Job $Job }
                 while ($JobOutput -eq $null)
       
-                $Process = Get-Process | Where-Object Id -EQ $JobOutput.ProcessId
-                $Process.Handle | Out-Null
+                if ($JobOutput.ProcessId -ne 0) {
+                    $Process = Get-Process | Where-Object Id -EQ $JobOutput.ProcessId
+                }
                 $Process
             }
             else { $MinerProcess }

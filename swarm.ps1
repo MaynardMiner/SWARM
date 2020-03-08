@@ -45,6 +45,7 @@ if($GLobal:Config.vars.dir -like "* *") {
 }
 
 if ($IsWindows) {
+    ## Warn User about path
     Write-Host "Stopping Any Previous SWARM Instances..."
     $ID = ".\build\pid\miner_pid.txt"
     if (Test-Path $ID) { 
@@ -89,13 +90,13 @@ if ($IsWindows) {
 }
 
 ## Check Powershell version. Output warning.
-if ($PSVersionTable.PSVersion -ne "6.2.4") {
+if ($PSVersionTable.PSVersion -ne "7.0.0-rc.3") {
     Write-Host "WARNING: Powershell Core Version is $($PSVersionTable.PSVersion)" -ForegroundColor Red
-    Write-Host "Currently supported version for SWARM is 6.2.4" -ForegroundColor Red
+    Write-Host "Currently supported version for SWARM is 7.0.0-rc.3" -ForegroundColor Red
     Write-Host "SWARM will continue anyways- It may cause issues." -ForegroundColor Red
     Write-Host ""
     Write-Host "Link for Powershell:" -ForegroundColor Red
-    Write-Host "https://github.com/PowerShell/PowerShell/releases/tag/v6.2.4" -ForegroundColor Red
+    Write-Host "https://github.com/PowerShell/PowerShell/releases/tag/v7.0.0-rc.3" -ForegroundColor Red
     Write-Host ""
     Write-Host "Windows: Microsoft Visual C++ Redistributable for Visual Studio (2012) (2013) (2015,2017 and 2019)" -ForegroundColor Red
     Write-Host "Link For download:" -ForegroundColor Red
@@ -333,6 +334,17 @@ Global:Remove-Modules
 
 $(vars).Remove("BusData")
 $(vars).Remove("GPU_Count")
+$(vars).Add("Check_Interval",(Get-Date).ToUniversalTime());
+$(vars).Add("switch",$true);
+$(vars).Add("ETH_exchange",0);
+$(vars).Add("Load_Timer",(Get-Date).ToUniversalTime());
+[GC]::Collect()
+[GC]::WaitForPendingFinalizers()
+[GC]::Collect()    
+
+if($(arg).Throttle -eq 0) {
+    $(arg).Throttle = ([Environment]::ProcessorCount + 1)
+}
 
 ##############################################################################
 #######                      End Startup                                ######
@@ -357,13 +369,22 @@ While ($true) {
         ##  This allows the abililty to remove/add variables to both, as well as clear them all with a single command.
         ##  These are all global values- It can be used with user-created modules.
 
+        if(
+            $(vars).switch -ne $true -and 
+            [math]::Round(((Get-Date).ToUniversalTime() - $(vars).Check_Interval).TotalSeconds) -ge $(($(arg).Interval) * 60)
+        ) {
+           $(vars).switch = $true
+           $(vars).Check_Interval = (Get-Date).ToUniversalTime()
+        }
+        $(vars).Load_Timer = (Get-Date).ToUniversalTime()
+
         create Algorithm @()
         create BanHammer @()
         create ASICTypes @()
         create ASICS @{ }
         create All_AltWalltes $null
-        create SWARMAlgorithm $(arg).Algorithm
-
+        $(vars).ETH_exchange = 0;
+        
         ##Insert Build Single Modules Here
 
         ##Insert Build Looping Modules Here
@@ -424,6 +445,9 @@ While ($true) {
         Remove-Variable -Name BanJson -ErrorAction Ignore
         Remove-Variable -Name Action -ErrorAction Ignore
         Global:Remove-Modules
+        [GC]::Collect()
+        [GC]::WaitForPendingFinalizers()
+        [GC]::Collect()    
 
         ##############################################################################
         #######                         END PHASE 1                             ######
@@ -463,7 +487,13 @@ While ($true) {
         ##Get Algorithm Pools
         Global:Add-Module "$($(vars).pool)\gather.psm1"
         Global:Get-AlgoPools
+        [GC]::Collect()
+        [GC]::WaitForPendingFinalizers()
+        [GC]::Collect()    
         Global:Get-CoinPools
+        [GC]::Collect()
+        [GC]::WaitForPendingFinalizers()
+        [GC]::Collect()    
         Global:Remove-Modules
 
         ## Phase Clean up
@@ -492,7 +522,13 @@ While ($true) {
         ##Load The Miners
         Global:Add-Module "$($(vars).miner)\gather.psm1"
         Global:Get-AlgoMiners
+        [GC]::Collect()
+        [GC]::WaitForPendingFinalizers()
+        [GC]::Collect()    
         Global:Get-CoinMiners
+        [GC]::Collect()
+        [GC]::WaitForPendingFinalizers()
+        [GC]::Collect()    
 
         ##Send error if no miners found
         if ($(vars).Miners.Count -eq 0) {
@@ -516,7 +552,8 @@ While ($true) {
             Remove-Variable -Name Sel -ErrorAction Ignore
 
             ## Go to sleep for interval
-            start-sleep $(arg).Interval;
+            start-sleep -S ([math]::Round(((Get-Date).ToUniversalTime() - $(vars).Load_Timer).TotalSeconds))
+            $(vars).switch = $true;
 
             ## Check How many times it occurred.
             ## If it occurred more than 10 times-
@@ -553,7 +590,6 @@ While ($true) {
         $(vars).Watts = $null
         remove CoinPools 
         remove AlgoPools 
-        remove SWARMAlgorithm
         remove BanHammer
         remove ASICTypes
         remove Algorithm
@@ -561,6 +597,9 @@ While ($true) {
         remove SingleMode
         remove Miners_Combo
         remove Pool_HashRates
+        [GC]::Collect()
+        [GC]::WaitForPendingFinalizers()
+        [GC]::Collect()    
 
         ##############################################################################
         #######                        End Phase 3                             ######
@@ -627,6 +666,9 @@ While ($true) {
         remove PreviousMinerPorts
         remove Restart
         remove NoMiners
+        [GC]::Collect()
+        [GC]::WaitForPendingFinalizers()
+        [GC]::Collect()    
 
         ##############################################################################
         #######                        End Phase 4                              ######
@@ -663,7 +705,12 @@ While ($true) {
 
         ##Start SWARM Loop
         Global:Add-Module "$($(vars).run)\loop.psm1"
+        [GC]::Collect()
+        [GC]::WaitForPendingFinalizers()
+        [GC]::Collect()        
         Global:Start-MinerLoop
+
+        $(vars).Add_Time = 0;
 
         ## Phase Clean up
         Global:Remove-Modules
@@ -673,6 +720,9 @@ While ($true) {
         remove ASICS
         remove Share_Table
         remove ModeCheck
+        [GC]::Collect()
+        [GC]::WaitForPendingFinalizers()
+        [GC]::Collect()    
 
         ##############################################################################
         #######                        End Phase 5                              ######
@@ -693,6 +743,9 @@ While ($true) {
 
         ##Try To Benchmark
         Global:Start-Benchmark
+        [GC]::Collect()
+        [GC]::WaitForPendingFinalizers()
+        [GC]::Collect()    
 
         ##############################################################################
         #######                       End Phase 6                               ######

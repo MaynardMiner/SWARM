@@ -29,7 +29,7 @@ function Global:Get-Pools {
   
 }
 function Global:Get-AlgoPools {
-    $(vars).QuickTimer.Restart()
+    $start_time = (Get-Date).ToUniversalTime()
     $Files = Get-ChildItem "algopools" | Where BaseName -in $(arg).poolname
     log "Checking Algo Pools." -Foregroundcolor yellow;
     $AllAlgoPools = Global:Get-Pools -PoolType "Algo" -Items $Files
@@ -56,14 +56,14 @@ function Global:Get-AlgoPools {
                 Select-Object -First 3 |
                 ForEach-Object { $(vars).AlgoPools.Add($_) | Out-Null }
         }
-        $(vars).QuickTimer.Stop()
-        log "Algo Pools Loading Time: $([math]::Round($(vars).QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green
+        $time = [math]::Round(((Get-Date).ToUniversalTime() - $start_time).TotalSeconds)      
+        log "Algo Pools Loading Time: $time seconds" -Foreground Green
     }
 }
 function Global:Get-CoinPools {
     ##Optional: Load Coin Database
     if ($(arg).Auto_Coin -eq "Yes") {
-        $(vars).QuickTimer.Restart()
+        $start_time = (Get-Date).ToUniversalTime()
         $coin_files = Get-ChildItem "coinpools" | Where BaseName -in $(arg).poolname
         log "Adding Coin Pools. . ." -ForegroundColor Yellow
         $AllCoinPools = Global:Get-Pools -PoolType "Coin" -Items $coin_files        
@@ -81,8 +81,8 @@ function Global:Get-CoinPools {
             $Remove = $(vars).AlgoPools | Where-Object Name -eq $_
             $Remove | ForEach-Object { $(vars).AlgoPools.Remove($_) | Out-Null }
         }
-        $(vars).QuickTimer.Stop()
-        log "Coin Pools Loading Time: $([math]::Round($(vars).QuickTimer.Elapsed.TotalSeconds)) seconds" -Foreground Green
+        $time = [math]::Round(((Get-Date).ToUniversalTime() - $start_time).TotalSeconds)      
+        log "Coin Pools Loading Time: $time seconds" -Foreground Green
     }
 }
 

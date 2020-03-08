@@ -91,7 +91,7 @@ while true; do
     echo -e $xNO$xRED$xBOLD"Please set Your email address in config file and reboot rig to start mining."$xNO
     read
   elif [ $MINER_PATH != "null" ]; then
-    sudo pwsh -command "$MINER_PATH $MINER_OPTIONS_GO"
+    sudo pwsh-preview -command "$MINER_PATH $MINER_OPTIONS_GO"
     sleep=$((10+i))
     [ $sleep -gt 60 ] && sleep=60
     echo -e $xNO$xRED$xBOLD"Miner ended or crashed. Restarting miner in $sleep seconds..."$xNO

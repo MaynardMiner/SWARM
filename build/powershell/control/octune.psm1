@@ -87,7 +87,8 @@ function Global:Start-OC($Miner) {
             if ($(arg).Hidden -eq "Yes") {
                 $Windowstyle = "Hidden"
             }            
-            $command = Start-Process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle $WindowStlye -command `"&{`$host.ui.RawUI.WindowTitle = `'ETH-Pill`'; Set-Location $PL; Start-Sleep $PillSleep; Invoke-Expression `'.\ohgodatool\OhGodAnETHlargementPill-r2.exe $PillDevices`'}`"" -WindowStyle Minimized -PassThru -Verb Runas
+            $exec = "$PSHOME\pwsh.exe"
+            $command = Start-Process $exec -ArgumentList "-executionpolicy bypass -windowstyle $WindowStlye -command `"&{`$host.ui.RawUI.WindowTitle = `'ETH-Pill`'; Set-Location $PL; Start-Sleep $PillSleep; Invoke-Expression `'.\ohgodatool\OhGodAnETHlargementPill-r2.exe $PillDevices`'}`"" -WindowStyle Minimized -PassThru -Verb Runas
             $command.ID | Set-Content ".\build\pid\pill_pid.txt"
             $PillTimer.Restart()
             do {
@@ -505,7 +506,9 @@ function Global:Start-OC($Miner) {
         if ($NFanArgs) { $NFansArgs | ForEach-Object { $script += "Invoke-Expression `'.\nvfans\nvfans.exe $($_)`'" } }
         Set-Location ".\build\apps"
         $script | Out-File "NVIDIA-oc-start.ps1"
-        $Proc = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle hidden -command "".\NVIDIA-oc-start.ps1""" -PassThru -WindowStyle Minimized
+        $exec = "$PSHOME\pwsh.exe"
+        $file = "$($(vars).dir)\build\apps\NVIDIA-oc-start.ps1"
+        $Proc = start-process $exec -ArgumentList "-executionpolicy bypass -windowstyle hidden -file `"$file`"" -PassThru -WindowStyle Minimized -Verb Runas
         $Proc | Wait-Process
         Set-Location $($(vars).dir)
     }
@@ -513,7 +516,9 @@ function Global:Start-OC($Miner) {
     if ($DoAMDOC -eq $true -and $(arg).Platform -eq "windows") {
         Set-Location ".\build\apps"
         $Ascript | Out-File "AMD-oc-start.ps1"
-        $Proc = start-process "pwsh" -ArgumentList "-executionpolicy bypass -windowstyle hidden -command "".\AMD-oc-start.ps1""" -PassThru -WindowStyle Minimized
+        $exec = "$PSHOME\pwsh.exe"
+        $file = "$($(vars).dir)\build\apps\AMD-oc-start.ps1"
+        $Proc = start-process $exec -ArgumentList "-executionpolicy bypass -windowstyle hidden -file `"$file`"" -PassThru -WindowStyle Minimized -Verb Runas
         $Proc | Wait-Process
         Set-Location $($(vars).dir)
     }

@@ -2,6 +2,21 @@ $Dir = Split-Path $script:MyInvocation.MyCommand.Path
 $Dir = $Dir -replace "/var/tmp", "/root"
 Set-Location $Dir
 
+## Check to make sure that Windows was start with correct pwsh
+if ($IsWindows) {
+    $Bat_File = Get-Content ".\SWARM.bat"
+    $Preview = $Bat_File | Select-String "pwsh -executionpolicy Bypass"
+    if($Preview) {
+        $Bat_File = $Bat_File.Replace("pwsh -executionpolicy Bypass","pwsh-preview -executionpolicy Bypass")
+        $Bat_File | Set-Content ".\SWARM.bat"
+        Write-Host "Edited Bat File to use pwsh-preview then restarted."
+        Write-Host "This will only happen once."
+        Start-Sleep -S 5
+        Start-Process "SWARM.bat"
+        exit    
+    }
+}
+
 ## EUID denotes if root or not.
 if ($IsLinux) { $Global:EUID = (Invoke-Expression "bash -c set" | ConvertFrom-StringData).EUID }
 if ($IsWindows) { try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$Dir`'" -WindowStyle Minimized } }catch { } }
@@ -27,7 +42,9 @@ if ($args) {
     if ( "-help" -in $args ) {
         if ($IsWindows) {
             $host.ui.RawUI.WindowTitle = "SWARM";
-            Start-Process "CMD" -ArgumentList "/C `"pwsh -noexit -executionpolicy Bypass -WindowStyle Maximized -command `"Set-Location C:\; Set-Location `'$Dir`'; .\build\powershell\scripts\help.ps1`"`"" -Verb RunAs
+            $file = "$Dir\build\powershell\scripts\help.ps1"
+            $exec = "$PSHOME\pwsh.exe"
+            Start-Process $exec -ArgumentList "-noexit -executionpolicy Bypass -WindowStyle Maximized -file `"$file`"" -Verb RunAs
         }
         else {
             Invoke-Expression "./help_linux"
@@ -89,7 +106,9 @@ elseif (test-path ".\config.json") {
     elseif (-not (test-path ".\config\parameters\newarguments.json")) {
         if ($IsWindows) {
             $host.ui.RawUI.WindowTitle = "SWARM";
-            Start-Process "CMD" -ArgumentList "/C `"pwsh -noexit -executionpolicy Bypass -WindowStyle Maximized -command `"Set-Location C:\; Set-Location `'$Dir`'; .\build\powershell\scripts\help.ps1`"`"" -Verb RunAs
+            $file = "$Dir\build\powershell\scripts\help.ps1"
+            $exec = "$PSHOME\pwsh.exe"
+            Start-Process $exec -ArgumentList "-noexit -executionpolicy Bypass -WindowStyle Maximized -file `"$file`"" -Verb RunAs
         }
         else {
             Invoke-Expression "./help_linux"
@@ -101,7 +120,14 @@ elseif (test-path ".\config.json") {
         $Start = $true
         $parsed = @{ }
         $arguments = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json
+        $defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json
         $arguments.PSObject.Properties.Name | % { $Parsed.Add("$($_)", $arguments.$_) }    
+        $defaults.PSObject.Properties.Name | % {
+            if ($_ -notin $Parsed.keys) {
+                $Parsed.Add("$($_)", $defaults.$_)
+            }
+        }
+        $Parsed | ConvertTo-Json -Depth 5 | Set-Content ".\config\parameters\newarguments.json"
     }
 }
 ## Check for hiveos saved/help saved config
@@ -109,14 +135,22 @@ elseif (Test-Path ".\config\parameters\newarguments.json") {
     $Start = $true
     $parsed = @{ }
     $arguments = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json
+    $defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json
     $arguments.PSObject.Properties.Name | % { $Parsed.Add("$($_)", $arguments.$_) }
+    $defaults.PSObject.Properties.Name | % {
+        if ($_ -notin $Parsed.keys) {
+            $Parsed.Add("$($_)", $defaults.$_)
+        }
+    }
+    $Parsed | ConvertTo-Json -Depth 5 | Set-Content ".\config\parameters\newarguments.json"
 }
 ## Run help if all fails
 else {
     if ($IsWindows) {
         $host.ui.RawUI.WindowTitle = "SWARM";
-        $Windowstyle = "Maximized"
-        Start-Process "CMD" -ArgumentList "/C `"pwsh -noexit -executionpolicy Bypass -WindowStyle $WindowStyle -command `"Set-Location C:\; Set-Location `'$Dir`'; .\build\powershell\scripts\help.ps1`"`"" -Verb RunAs
+        $file = "$Dir\build\powershell\scripts\help.ps1"
+        $exec = "$PSHOME\pwsh.exe"
+        Start-Process $exec -ArgumentList "-noexit -executionpolicy Bypass -WindowStyle Maximized -file `"$file`"" -Verb RunAs
     }
     else {
         Invoke-Expression "./help_linux"
@@ -136,7 +170,9 @@ if ($Start -eq $true) {
         if ($Parsed.Hidden -eq "Yes") {
             $Windowstyle = "Hidden"
         }
-        Start-Process "pwsh" -ArgumentList "-noexit -executionpolicy Bypass -WindowStyle $WindowStyle -command `"Set-Location C:\; Set-Location `'$Dir`'; .\swarm.ps1`"" -Verb RunAs
+        $file = "$Dir\swarm.ps1"
+        $exec = "$PSHOME\pwsh.exe"
+        Start-Process $exec -ArgumentList "-noexit -executionpolicy bypass -windowstyle $windowstyle -File `"$file`"" -Verb Runas
     }
     else {
         ## Add Arguments to newarguments.json

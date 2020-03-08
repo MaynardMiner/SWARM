@@ -106,9 +106,9 @@
     "NVIDIA2": ".\\bin\\gminer-2\\miner.exe",
     "NVIDIA3": ".\\bin\\gminer-3\\miner.exe",
     "minername": "miner.exe",
-    "version": "1.97",
+    "version": "2.00",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/1.97/gminer_1_97_windows64.zip"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.00/gminer_2_00_windows64.zip"
   },
   "claymore": {
     "name": "claymore",
@@ -183,9 +183,9 @@
     "NVIDIA2": ".\\bin\\miniz-2\\miniZ.exe",
     "NVIDIA3": ".\\bin\\miniz-3\\miniZ.exe",
     "minername": "miniZ.exe",
-    "version": "v1.5t",
+    "version": "v1.5t2",
     "optional": "No",
-    "uri": "https://miniz.ch/?smd_process_download=1&download_id=3369"
+    "uri": "https://miniz.ch/?smd_process_download=1&download_id=3562"
   },
   "phoenix": {
     "name": "phoenix",
