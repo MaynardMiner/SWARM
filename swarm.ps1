@@ -552,7 +552,7 @@ While ($true) {
             Remove-Variable -Name Sel -ErrorAction Ignore
 
             ## Go to sleep for interval
-            start-sleep -S [Int]([math]::Round(((Get-Date).ToUniversalTime() - $(vars).Load_Timer).TotalSeconds))
+            start-sleep -S ([math]::Round(((Get-Date).ToUniversalTime() - $(vars).Load_Timer).TotalSeconds))
             $(vars).switch = $true;
 
             ## Check How many times it occurred.
