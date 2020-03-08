@@ -9,9 +9,9 @@ if ($IsWindows) {
     if($Preview) {
         $Bat_File = $Bat_File.Replace("pwsh -executionpolicy Bypass","pwsh-preview -executionpolicy Bypass")
         $Bat_File | Set-Content ".\SWARM.bat"
-        Start-Sleep -S 1
         Write-Host "Edited Bat File to use pwsh-preview then restarted."
         Write-Host "This will only happen once."
+        Start-Sleep -S 5
         Start-Process "SWARM.bat"
         exit    
     }
