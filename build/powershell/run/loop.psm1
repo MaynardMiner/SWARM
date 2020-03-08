@@ -37,7 +37,7 @@ function Global:Set-Countdown {
         $CountMessage = "SWARM Mode Starts: $($Countdown) seconds"
     }
     else { 
-        $Countdown = ([math]::Round(($(vars).MinerInterval - 20) - $(vars).MinerWatch.Elapsed.TotalSeconds)) 
+        $Countdown = ([math]::Round(($(vars).MinerInterval) - $(vars).MinerWatch.Elapsed.TotalSeconds)) 
         $CountMessage = "Time Left Until Database Starts: $($Countdown) seconds"
     }
     log "$CountMessage 
@@ -55,7 +55,7 @@ function Global:Start-Timer {
     do {
         if ($(vars).SWARM_IT) { $(vars).ModeCheck = Global:Invoke-SWARMMode $global:SwitchTime }
         if ($(vars).ModeCheck -gt 0) { $global:continue = $false }
-        if ($(vars).MinerWatch.Elapsed.TotalSeconds -ge ($(vars).MinerInterval - 20)) { $global:continue = $false }
+        if ($(vars).MinerWatch.Elapsed.TotalSeconds -ge ($(vars).MinerInterval)) { $global:continue = $false }
         Start-Sleep -S 1
         $i++
     }until($i -ge 15 -or $global:continue -eq $false)
@@ -136,5 +136,5 @@ function Global:Start-MinerLoop {
         Global:Get-MinerChart
         Global:Start-Timer
         if ($global:continue -eq $false) { break }
-    }While ($(vars).MinerWatch.Elapsed.TotalSeconds -lt ($(vars).MinerInterval - 20))
+    }While ($(vars).MinerWatch.Elapsed.TotalSeconds -lt ($(vars).MinerInterval))
 }
