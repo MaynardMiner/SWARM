@@ -17,8 +17,7 @@
             "equihash_144/5": "",
             "equihash_210/9": "",
             "equihash_200/9": "",
-            "equihash_125/4": "",
-            "progpow": ""
+            "equihash_125/4": ""
         },
         "difficulty": {
             "cuckoo_cycle": "",
@@ -33,8 +32,7 @@
             "equihash_144/5": "",
             "equihash_210/9": "",
             "equihash_200/9": "",
-            "equihash_125/4": "",
-            "progpow": ""
+            "equihash_125/4": ""
         },
         "naming": {
             "cuckoo_cycle": "cuckoo_cycle",
@@ -49,8 +47,7 @@
             "equihash_144/5": "equihash_144/5",
             "equihash_210/9": "equihash_210/9",
             "equihash_200/9": "equihash_210/9",
-            "equihash_125/4": "equihash_125/4",
-            "progpow": "progpow"
+            "equihash_125/4": "equihash_125/4"
         },
         "fee": {
             "cuckoo_cycle": 2,
@@ -65,8 +62,7 @@
             "equihash_144/5": 2,
             "equihash_210/9": 2,
             "equihash_200/9": 2,
-            "equihash_125/4": 2,
-            "progpow": 2
+            "equihash_125/4": 2
         }
     },
     "NVIDIA2": {
@@ -86,8 +82,7 @@
             "equihash_144/5": "",
             "equihash_210/9": "",
             "equihash_200/9": "",
-            "equihash_125/4": "",
-            "progpow": ""
+            "equihash_125/4": ""
         },
         "difficulty": {
             "cuckoo_cycle": "",
@@ -102,8 +97,7 @@
             "equihash_144/5": "",
             "equihash_210/9": "",
             "equihash_200/9": "",
-            "equihash_125/4": "",
-            "progpow": ""
+            "equihash_125/4": ""
         },
         "naming": {
             "cuckoo_cycle": "cuckoo_cycle",
@@ -118,8 +112,7 @@
             "equihash_144/5": "equihash_144/5",
             "equihash_210/9": "equihash_210/9",
             "equihash_200/9": "equihash_210/9",
-            "equihash_125/4": "equihash_125/4",
-            "progpow": "progpow"
+            "equihash_125/4": "equihash_125/4"
         },
         "fee": {
             "cuckoo_cycle": 2,
@@ -134,8 +127,7 @@
             "equihash_144/5": 2,
             "equihash_210/9": 2,
             "equihash_200/9": 2,
-            "equihash_125/4": 2,
-            "progpow": 2
+            "equihash_125/4": 2
         }
     },
     "NVIDIA3": {
@@ -155,8 +147,7 @@
             "equihash_144/5": "",
             "equihash_210/9": "",
             "equihash_200/9": "",
-            "equihash_125/4": "",
-            "progpow": ""
+            "equihash_125/4": ""
         },
         "difficulty": {
             "cuckoo_cycle": "",
@@ -171,8 +162,7 @@
             "equihash_144/5": "",
             "equihash_210/9": "",
             "equihash_200/9": "",
-            "equihash_125/4": "",
-            "progpow": ""
+            "equihash_125/4": ""
         },
         "naming": {
             "cuckoo_cycle": "cuckoo_cycle",
@@ -187,8 +177,7 @@
             "equihash_144/5": "equihash_144/5",
             "equihash_210/9": "equihash_210/9",
             "equihash_200/9": "equihash_210/9",
-            "equihash_125/4": "equihash_125/4",
-            "progpow": "progpow"
+            "equihash_125/4": "equihash_125/4"
         },
         "fee": {
             "cuckoo_cycle": 2,
@@ -203,8 +192,7 @@
             "equihash_144/5": 2,
             "equihash_210/9": 2,
             "equihash_200/9": 2,
-            "equihash_125/4": 2,
-            "progpow": 2
+            "equihash_125/4": 2
         }
     }
 }

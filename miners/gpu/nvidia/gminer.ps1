@@ -87,13 +87,6 @@ $(vars).NVIDIATypes | ForEach-Object {
                     "cuckatoo31" { $AddArgs = "--algo grin31 " }
                     "cuckatoo32" { $AddArgs = "--algo grin32 " }
                     "beamv2" { $AddArgs = "--algo 150_5 " }
-                    "progpow" {
-                        switch ($SelName) {
-                            "nicehash" { $AddArgs = "--algo progpow --proto stratum " }
-                            "zergpool" { $AddArgs = "--algo progpow " }
-                            default { $AddArgs = "--algo progpow --proto stratum" }
-                        }
-                    }
                     "equihash_96/5" { $AddArgs = "--algo 96_5 --pers auto " }
                     "equihash_125/4" { $AddArgs = "--algo 125_4 --pers auto " }
                     "equihash_192/7" { $AddArgs = "--algo 192_7 --pers auto " }
