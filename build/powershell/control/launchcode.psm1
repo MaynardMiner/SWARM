@@ -253,11 +253,11 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                 ##Make Test.bat for users
                 $Algo = ($MinerCurrent.Algo).Replace("`/", "_")
                 $minerbat = @()
-                ## pwsh-preview to launch powershell window to fully emulate SWARM launching
+                ## pwsh to launch powershell window to fully emulate SWARM launching
                 $file = "$WorkingDirectory\swarm_start_$($Algo).ps1"
                 $exec = "$PSHOME\pwsh.exe"
                 $command = "`"Start-Process `"`"$exec`"`" -Verb Runas -ArgumentList `"`"-noexit -executionpolicy bypass -file `"`"`"`"$file`"`"`"`"`"`"`""
-                $minerbat += "pwsh-preview -ExecutionPolicy Bypass -command $Command"
+                $minerbat += "pwsh -ExecutionPolicy Bypass -command $Command"
                 $miner_bat = Join-Path $WorkingDirectory "swarm_start_$($Algo).bat"
                 $minerbat | Set-Content $miner_bat
 

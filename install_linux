@@ -5,7 +5,7 @@
 # This will install correct version of powershell. No dependencies should be
 # be required.
 #
-# This should be ran as root, so that it can make pwsh-preview an exectuable.
+# This should be ran as root, so that it can make pwsh an exectuable.
 #
 # This will also run install.ps1, which will install commands in /usr/bin
 # so that they can be open from any terminal. To see list of commands
@@ -17,32 +17,32 @@
 # *******************************************************************************
 
 ## If powershell doesn't exist- Assume it is a first time run.
-if ! [ -x "$(command -v pwsh-preview)" ]; then
-echo 'pwsh-preview not found- installing 7.0.0-rc.3'
-wget https://github.com/PowerShell/PowerShell/releases/download/v7.0.0-rc.3/powershell-7.0.0-rc.3-linux-x64.tar.gz -O /tmp/powershell.tar.gz --no-check-certificate
-mkdir -p /opt/microsoft/powershell/7.0.0-rc.3
-tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7.0.0-rc.3
-chmod +x /opt/microsoft/powershell/7.0.0-rc.3/pwsh-preview
-ln -s /opt/microsoft/powershell/7.0.0-rc.3/pwsh-preview /usr/bin/pwsh-preview
+if ! [ -x "$(command -v pwsh)" ]; then
+echo 'pwsh not found- installing 7.0.0'
+wget https://github.com/PowerShell/PowerShell/releases/download/v7.0.0/powershell-7.0.0-linux-x64.tar.gz -O /tmp/powershell.tar.gz --no-check-certificate
+mkdir -p /opt/microsoft/powershell/7.0.0
+tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7.0.0
+chmod +x /opt/microsoft/powershell/7.0.0/pwsh
+ln -s /opt/microsoft/powershell/7.0.0/pwsh /usr/bin/pwsh
 rm -rf /tmp/powershell.tar.gz
 chmod 777 -R $HOME/.local/share/powershell
 fi
 
-PVERSION=`pwsh-preview -version`
+PVERSION=`pwsh -version`
 
-## If pwsh-preview is wrong version, install it again.
-if [ "$PVERSION" != "PowerShell 7.0.0-rc.3" ]; then
+## If pwsh is wrong version, install it again.
+if [ "$PVERSION" != "PowerShell 7.0.0" ]; then
 echo "updating powershell to latest version"
 rm -rf /opt/microsoft/powershell/
 rm -rf /usr/bin/pwsh
-wget https://github.com/PowerShell/PowerShell/releases/download/v7.0.0-rc.3/powershell-7.0.0-rc.3-linux-x64.tar.gz -O /tmp/powershell.tar.gz --no-check-certificate
-mkdir -p /opt/microsoft/powershell/7.0.0-rc.3
-tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7.0.0-rc.3
-chmod +x /opt/microsoft/powershell/7.0.0-rc.3/pwsh-preview
-ln -s /opt/microsoft/powershell/7.0.0-rc.3/pwsh-preview /usr/bin/pwsh-preview
+wget https://github.com/PowerShell/PowerShell/releases/download/v7.0.0/powershell-7.0.0-linux-x64.tar.gz -O /tmp/powershell.tar.gz --no-check-certificate
+mkdir -p /opt/microsoft/powershell/7.0.0
+tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7.0.0
+chmod +x /opt/microsoft/powershell/7.0.0/pwsh
+ln -s /opt/microsoft/powershell/7.0.0/pwsh /usr/bin/pwsh
 rm -rf /tmp/powershell.tar.gz
 fi
 
 ## Run install script per command request.
 echo 'starting install script'
-pwsh-preview -command ".\build\powershell\scripts\install.ps1"
+pwsh -command ".\build\powershell\scripts\install.ps1"

@@ -56,7 +56,7 @@ SWARM is very customizable. At the base layer- It is easy to setup by simply inp
 
 SWARM was designed to make SWARM bigger than itself. All commands can be executed via bash scripts/shell commands on the linux side, and we are slowly implementing the same features to the window's side. With the ``Lite`` mode, SWARM can be easily incorporated into any current miningOS available, and users can customize/create their own launch process, independent of SWARM. In Windows, you should be able to run cmd.exe and powershell actions through HiveOS dashboard. An example of this would be:
 
-``get-process | Where-Object name -eq "pwsh-preview"``
+``get-process | Where-Object name -eq "pwsh"``
 
 Would give you a list of all powershell core processes.
 

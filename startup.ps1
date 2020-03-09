@@ -5,11 +5,11 @@ Set-Location $Dir
 ## Check to make sure that Windows was start with correct pwsh
 if ($IsWindows) {
     $Bat_File = Get-Content ".\SWARM.bat"
-    $Preview = $Bat_File | Select-String "pwsh -executionpolicy Bypass"
+    $Preview = $Bat_File | Select-String "pwsh-preview -executionpolicy Bypass"
     if($Preview) {
-        $Bat_File = $Bat_File.Replace("pwsh -executionpolicy Bypass","pwsh-preview -executionpolicy Bypass")
+        $Bat_File = $Bat_File.Replace("pwsh-preview -executionpolicy Bypass","pwsh -executionpolicy Bypass")
         $Bat_File | Set-Content ".\SWARM.bat"
-        Write-Host "Edited Bat File to use pwsh-preview then restarted."
+        Write-Host "Edited Bat File to use pwsh then restarted."
         Write-Host "This will only happen once."
         Start-Sleep -S 5
         Start-Process "SWARM.bat"
