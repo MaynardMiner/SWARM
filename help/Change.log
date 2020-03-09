@@ -2064,7 +2064,7 @@ but beta in design.
 ## NOTE
 * Powershell version 7.0 or higher is required in this
   release for those not using HiveOS. The exec name of
-  powershell should be 'pwsh-preview'. ``install_linux``
+  powershell should be 'pwsh'. ``install_linux``
   should install it.
 
 Due to the amount of changes in release- A wiki article

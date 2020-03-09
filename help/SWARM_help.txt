@@ -32,7 +32,7 @@ Argument          Options           Explanation
                                     hasn't ran for 24 hours. Default is .5
 
 -Location       [US,EUROPE,ASIA]    Locations of pools you wish to mine from, for pools that have multiple
-                     JAPAN          Locations to choose from. Default is US (yay 'murica)
+                                    Locations to choose from. Default is US
 
 ***********************************************************************************************************
 ***********************************************************************************************************
@@ -240,21 +240,12 @@ Argument          Options           Explanation
 -Auto_Algo     [Yes,No]		    Default is "Yes". Should always be set to "Yes", even when single
                                     coin mining. Only avaiable for debug purposes.
 
-
--Min_Blocks   [any integer]         Default is 1 (1 block a day).
-                                    Will only affect Coin pools.
-                                    Auto_Coin must be Yes, or this will be ignored.
-                                    This is the minium number of blocks required from pool
-                                    to find in a day for coin to be used. An example of this would
-                                    be if the ``-Min_Blocks`` is 5, and the coin in question is only
-                                    finding 3 blocks in the past 24 hours, that coin will be removed
-                                    from the database. This is based on shared pool block finds.
-
--Volume       [Yes,No]              Default is No. Volume calculates pool hashrate % in comparision
+-Volume         [0-100]             Default is No. Volume calculates pool hashrate % in comparision
                                     to other pools, and will penalize pools based on percent difference
                                     from pool with highest hashrate. This means SWARM favors pools with
                                     the highest hashrates for each algorithm. The % values are displayed
-                                    on get stats screen.
+                                    on get stats screen, under Vol. SWARM will only penalize pools up to
+                                    x%, where x is this parameter.
 
 -Historical_Bias [penalty:bonus]    Default is 1:1. The first value is penalty modifier. Second value is
                                     bonus modifier. Historical bias is a value that checks pools estimates
@@ -337,12 +328,6 @@ Argument          Options           Explanation
 		    Hour_4,              you want to base switching on price averages, or live...And if
 		    Day                 you choose price averages, what average to base it on. Default
                     Custom              is day. If using -Custom_Periods, this must be set to Custom.
-		    
--Rej_Factor        [Yes or No]		Default is Yes. Rej_Factor penalizes profit based on historical
-					rejection rate of shares. This means that if miners had 20% rejection
-					rate- The Next profit/day rating for that algo/miner combination would
-					be 20% lower. Rejection rate is based on a simple moving average
-					with each benchmark being the average period/samples.
 
 ***********************************************************************************************************
 *************** Miner Control *****************************************************************************
@@ -406,7 +391,6 @@ Argument          Options           Explanation
                algo:miner           Using [algo] only, SWARM will block all instances of that algo.
                algo:Type            Using [algo]:[Type], SWARM will block algorithm from that device type.
                algo:pool            Using [algo]:[Pool], SWARM will block algorithm from that pool.
-               algo:coin            Using [algo]:[Coin], SWARM will block algorithm from that specific coin.
                miner]               Using [algo]:[Miner], SWARM will block algorithm from that specific miner.
                                     Using [COIN]:[Pool], SWARM will block that particular coin from pool.
                                     [COIN] is only relevant for -Auto_Coin "yes".
@@ -424,7 +408,7 @@ Argument          Options           Explanation
 -Conserve        [Yes or No]        Default is "No". This option will determine if SWARM should continue
                                     mining even though all estimates are negative figures.
 
--Rejections 	    [0-100]	    Default is 75. This the % of rejections required for SWARM to 
+-Rejections 	    [0-100]	    Default is 50. This the % of rejections required for SWARM to 
 				    consider benchmark as a bad benchmark.
 
 -Timeout          [0-24]            Expression is in hours. Decimal can be used (0.5). When SWARM
@@ -437,8 +421,7 @@ Argument          Options           Explanation
                                     every [x] hours, where [x] is your -Timeout parameter.
 
 -PoolBanCount    [0-10]             Default is 3. Number of strikes/bad benchmarks required before
-                                    miner is banned from using pool. NOTE: This does not apply if user
-                                    is using only 1 pool.
+                                    miner is banned from using pool.
 
 -AlgoBanCount    [0-10]             Default is 4. Number of strikes/bad benchmarks required before
                                     miner is banned from using algo.

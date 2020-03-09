@@ -15,13 +15,13 @@
 # HiveOS flight sheet.
 
 ## If powershell doesn't exist- Assume it is a first time run.
-if ! [ -x "$(command -v pwsh-preview)" ]; then
-echo 'pwsh-preview not found- installing 7.0.0-rc.3'
+if ! [ -x "$(command -v pwsh)" ]; then
+echo 'pwsh not found- installing 7.0.0-rc.3'
 wget https://github.com/PowerShell/PowerShell/releases/download/v7.0.0-rc.3/powershell-7.0.0-rc.3-linux-x64.tar.gz -O /tmp/powershell.tar.gz --no-check-certificate
 mkdir -p /opt/microsoft/powershell/7.0.0-rc.3
 tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7.0.0-rc.3
-chmod +x /opt/microsoft/powershell/7.0.0-rc.3/pwsh-preview
-ln -s /opt/microsoft/powershell/7.0.0-rc.3/pwsh-preview /usr/bin/pwsh-preview
+chmod +x /opt/microsoft/powershell/7.0.0-rc.3/pwsh
+ln -s /opt/microsoft/powershell/7.0.0-rc.3/pwsh /usr/bin/pwsh
 rm -rf /tmp/powershell.tar.gz
 chmod 777 -R $HOME/.local/share/powershell
 echo 'starting install script'

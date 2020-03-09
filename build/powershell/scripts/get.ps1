@@ -903,7 +903,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                         $Get += "Appending old bat file."
                         $Bat_file[1] = "cd `/D `%`~dp0"
                     }
-                    $Bat_file.replace("pwsh -executionpolicy Bypass","pwsh-preview -executionpolicy Bypass")
+                    $Bat_file.replace("pwsh-preview -executionpolicy Bypass","pwsh -executionpolicy Bypass")
                 }
                 $Bat_file | Set-Content "$Dir\SWARM.bat"
 
