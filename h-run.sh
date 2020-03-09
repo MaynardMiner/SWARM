@@ -27,7 +27,7 @@ fi
 ## SWARM does its own logging
 logs-off
 
-## If pwsh is not installed.
+## If pwsh-preview is not installed.
 if ! [ -x "$(command -v pwsh)" ]; then
 disk-expand
 rm -rf /opt/microsoft/powershell/
