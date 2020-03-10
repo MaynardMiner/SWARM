@@ -5,7 +5,7 @@ Set-Location $Dir
 ## Check to make sure that Windows was start with correct pwsh
 if ($IsWindows) {
     $Bat_File = Get-Content ".\SWARM.bat"
-    $Preview = $Bat_File | Select-String "pwsh -executionpolicy Bypass"
+    $Preview = $Bat_File | Select-String "pwsh-preview -executionpolicy Bypass"
     if($Preview) {
         $Bat_File = $Bat_File.Replace("pwsh-preview -executionpolicy Bypass","pwsh -executionpolicy Bypass")
         $Bat_File | Set-Content ".\SWARM.bat"
