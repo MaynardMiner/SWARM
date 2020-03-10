@@ -20,7 +20,13 @@ Function Global:Get-WalletTable {
     if (Test-Path ".\wallet\values\*") { Remove-Item ".\wallet\values\*" -Force }
     
     $global:WalletKeys = [PSCustomObject]@{ }
-    Global:Get-ChildItemContent -Path ".\wallet\keys" | ForEach { $global:WalletKeys | Add-Member $_.Name $_.Content } 
+    $Keys = Get-ChildItem ".\wallet\keys"
+    $Keys | Foreach-Object {
+        $Content = Get-Content $_ | ConvertFrom-Json
+        if($null -ne $Content) {
+            $global:WalletKeys | Add-Member $_.BaseName $Content
+        }
+    }
     Global:Get-ChildItemContent -Path ".\wallet\pools"
 
     $WalletTable = @()
@@ -35,7 +41,7 @@ Function Global:Get-WalletTable {
             Ticker         = $GetWStats.$_.Symbol
             Unpaid         = $GetWStats.$_.Unpaid -as [decimal]
             Balance        = $GetWStats.$_.Balance -as [decimal]
-            "Last Checked" = $GetWStats.$_.Date
+            "Last Checked" = $GetWStats.$_.Date.ToLocalTime()
         }
         if ($Sym -notcontains $GetWStats.$_.Symbol) { $Sym += $GetWStats.$_.Symbol }
     }
