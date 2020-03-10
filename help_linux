@@ -6,7 +6,7 @@
 # This will start swarm with -help command.
 # This will run through a guided setup to start SWARM.
 # When finished it will save your settings.
-# It will install pwsh-preview if not installed.
+# It will install pwsh if not installed.
 
 # Once you have first ran SWARM, you can run this guided help again
 # through terminal with the commmand ``swarm_help``
@@ -25,8 +25,8 @@ ln -s /opt/microsoft/powershell/7.0.0-rc.3/pwsh /usr/bin/pwsh
 rm -rf /tmp/powershell.tar.gz
 chmod 777 -R $HOME/.local/share/powershell
 echo 'starting install script'
-pwsh-preview -command ".\build\powershell\scripts\install.ps1"
+pwsh -command ".\build\powershell\scripts\install.ps1"
 fi
 
 ## Start the help script.
-pwsh-preview -command ".\build\powershell\scripts\help.ps1"
+pwsh -command ".\build\powershell\scripts\help.ps1"

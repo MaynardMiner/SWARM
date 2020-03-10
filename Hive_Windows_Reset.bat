@@ -9,4 +9,4 @@
 :: Run this script to reset all saved settings. This will ::ove newarguments.json (current user parameters)
 :: as well.
 
-pwsh-preview -noexit -executionpolicy bypass -windowstyle maximized -command ".\build\powershell\scripts\reset.ps1"
+pwsh -noexit -executionpolicy bypass -windowstyle maximized -command ".\build\powershell\scripts\reset.ps1"

@@ -30,6 +30,6 @@ cd %~dp0
 
 REM DON'T RUN WITH SWARM RUNNING!
 
-pwsh-preview -executionpolicy Bypass -command ".\build\powershell\scripts\win_optimize.ps1"
+pwsh -executionpolicy Bypass -command ".\build\powershell\scripts\win_optimize.ps1"
 
 REM REBOOT advised afterwards.
