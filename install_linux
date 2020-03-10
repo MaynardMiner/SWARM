@@ -5,7 +5,7 @@
 # This will install correct version of powershell. No dependencies should be
 # be required.
 #
-# This should be ran as root, so that it can make pwsh an exectuable.
+# This should be ran as root, so that it can make pwsh-preview an exectuable.
 #
 # This will also run install.ps1, which will install commands in /usr/bin
 # so that they can be open from any terminal. To see list of commands
@@ -28,13 +28,14 @@ rm -rf /tmp/powershell.tar.gz
 chmod 777 -R $HOME/.local/share/powershell
 fi
 
-PVERSION=`pwsh -version`
+PVERSION=`pwsh-preview -version`
 
 ## If pwsh is wrong version, install it again.
 if [ "$PVERSION" != "PowerShell 7.0.0" ]; then
 echo "updating powershell to latest version"
 rm -rf /opt/microsoft/powershell/
 rm -rf /usr/bin/pwsh
+rm -rf /usr/bin/pwsh-preview
 wget https://github.com/PowerShell/PowerShell/releases/download/v7.0.0/powershell-7.0.0-linux-x64.tar.gz -O /tmp/powershell.tar.gz --no-check-certificate
 mkdir -p /opt/microsoft/powershell/7.0.0
 tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7.0.0
@@ -45,4 +46,4 @@ fi
 
 ## Run install script per command request.
 echo 'starting install script'
-pwsh -command ".\build\powershell\scripts\install.ps1"
+pwsh-preview -command ".\build\powershell\scripts\install.ps1"
