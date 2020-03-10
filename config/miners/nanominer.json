@@ -6,22 +6,22 @@
         "commands": {
             "cuckaroo29": "",
             "cuckaroo29d": "",
-            "cryptonight-r": ""
+            "randomx": ""
         },
         "difficulty": {
             "cuckaroo29": "",
             "cuckaroo29d": "",
-            "cryptonight-r": ""
+            "randomx": ""
         },
         "naming": {
             "cuckaroo29": "cuckaroo29",
             "cuckaroo29d": "cuckaroo29d",
-            "cryptonight-r": "cryptonight-r"
+            "randomx": "randomx"
         },
         "fee": {
             "cuckaroo29": 2,
             "cuckaroo29d": 2,
-            "cryptonight-r": 1
+            "randomx": 1
         }
     },
     "name": "nanominer"
