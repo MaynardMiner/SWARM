@@ -63,6 +63,7 @@ function Global:Set-Stats($Site) {
         jsonrpc = "2.0"
         id      = "0"
         params  = @{
+            v         = 1
             rig_id    = $global:Config.$Params.Id
             passwd    = $global:Config.$Params.Password
             miner     = "custom"
