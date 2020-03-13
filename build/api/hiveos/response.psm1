@@ -57,7 +57,7 @@ function Global:Set-Stats($Site) {
         $HGPUPowerTable =$global:GPUPowerTable
     }
 
-    $Stats = @{
+    $Stats = [ordered]@{
         method  = "stats"
         rig_id  = $global:Config.$Params.Id
         jsonrpc = "2.0"
