@@ -10,48 +10,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
-
-Function Global:Get-PCISlot($X) { 
-
-    switch ($X) {
-        "0:2:2" { $busId = "00:02.0" }
-        "1:0:0" { $busID = "01:00.0" }
-        "2:0:0" { $busID = "02:00.0" }
-        "3:0:0" { $busID = "03:00.0" }
-        "4:0:0" { $busID = "04:00.0" }
-        "5:0:0" { $busID = "05:00.0" }
-        "6:0:0" { $busID = "06:00.0" }
-        "7:0:0" { $busID = "07:00.0" }
-        "8:0:0" { $busID = "08:00.0" }
-        "9:0:0" { $busID = "09:00.0" }
-        "10:0:0" { $busID = "0a:00.0" }
-        "11:0:0" { $busID = "0b:00.0" }
-        "12:0:0" { $busID = "0c:00.0" }
-        "13:0:0" { $busID = "0d:00.0" }
-        "14:0:0" { $busID = "0e:00.0" }
-        "15:0:0" { $busID = "0f:00.0" }
-        "16:0:0" { $busID = "0g:00.0" }
-        "17:0:0" { $busID = "0h:00.0" }
-        "18:0:0" { $busID = "0i:00.0" }
-        "19:0:0" { $busID = "0j:00.0" }
-        "20:0:0" { $busID = "0k:00.0" }
-        "21:0:0" { $busID = "0l:00.0" }
-        "22:0:0" { $busID = "0m:00.0" }
-        "23:0:0" { $busID = "0n:00.0" }
-        "24:0:0" { $busID = "0o:00.0" }
-        "25:0:0" { $busID = "0p:00.0" }
-        "26:0:0" { $busID = "0q:00.0" }
-        "27:0:0" { $busID = "0r:00.0" }
-        "28:0:0" { $busID = "0s:00.0" }
-        "29:0:0" { $busID = "0t:00.0" }
-        "30:0:0" { $busID = "0u:00.0" }
-    }
-
-    $busID
-}
-
-
-
 Function Global:Get-Bus {
 
     $GPUS = @()
@@ -126,7 +84,13 @@ Function Global:Get-Bus {
 
     $Data | % {
         if ($_.vendorid -eq "1002") {
-            $busid = $(Global:Get-PCISlot $_.location)
+            $first_hex = [int]($_.location -split ":" | Select -First 1)
+            $second_hex = [int]($_.location -split ":" | Select -Skip 1 -First 1)
+            $third_hex = [int]($_.location -split ":" | Select -Last 1)
+            $first_hex = "{0:x2}" -f $first_hex
+            $second_hex = "{0:x2}" -f $second_hex
+            $third_hex = "{0:x1}" -f $third_hex
+            $busid = "$first_hex`:$second_hex`.$third_hex"
             $GPUData += [PSCustomObject]@{
                 "busid"     = $busid
                 "name"      = $_.cardname
@@ -138,7 +102,13 @@ Function Global:Get-Bus {
             }
         }
         elseif ($_.vendorid -eq "10DE") {
-            $busid = $(Global:Get-PCISlot $_.location)
+            $first_hex = [int]($_.location -split ":" | Select -First 1)
+            $second_hex = [int]($_.location -split ":" | Select -Skip 1 -First 1)
+            $third_hex = [int]($_.location -split ":" | Select -Last 1)
+            $first_hex = "{0:x2}" -f $first_hex
+            $second_hex = "{0:x2}" -f $second_hex
+            $third_hex = "{0:x1}" -f $third_hex
+            $busid = "$first_hex`:$second_hex`.$third_hex"
             $SMI = $NVSMI | Where "pci.bus_id" -eq $busid
             $GPUData += [PSCustomObject]@{
                 busid     = $busid
@@ -153,7 +123,13 @@ Function Global:Get-Bus {
             }
         }
         else {
-            $busid = $(Global:Get-PCISlot $_.location)
+            $first_hex = [int]($_.location -split ":" | Select -First 1)
+            $second_hex = [int]($_.location -split ":" | Select -Skip 1 -First 1)
+            $third_hex = [int]($_.location -split ":" | Select -Last 1)
+            $first_hex = "{0:x2}" -f $first_hex
+            $second_hex = "{0:x2}" -f $second_hex
+            $third_hex = "{0:x1}" -f $third_hex
+            $busid = "$first_hex`:$second_hex`.$third_hex"
             $GPUData += [PSCustomObject]@{
                 busid = $busid
                 name  = $_.cardname

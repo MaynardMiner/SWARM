@@ -108,7 +108,7 @@ function Global:Set-Response {
         "SWARM" { $Params = "Swarm_Params" }
     }
     
-    $myresponse = @{
+    $myresponse = [ordered]@{
         method  = $method
         rig_id  = $global:Config.$Params.Id
         jsonrpc = "2.0"
