@@ -2074,3 +2074,27 @@ https://github.com/MaynardMiner/SWARM/wiki/beta2-changes
 
 Please see changes, there is a good change your arguments
 as is will not work correctly.
+
+############################################
+############################################
+
+# SWARM 3.0.6
+
+## What's new?
+* Includes beta release updates. See
+  beta release and beta2 wiki on changes
+  as arguments may have changed.
+
+## Improvements
+* Windows: Fix issues with mb and bus_id
+* updated odvii.
+* Fix ordering of .json in agent screen to
+  read easier.
+* SWARM_help.txt updated to reflect changes
+  with beta2 release.
+* ``swarm_help`` updated to reflect changes
+  with beta2 release.
+
+## Updates
+* Gminer updated
+* Nbminer updated
