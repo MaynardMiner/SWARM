@@ -18,9 +18,9 @@
     "NVIDIA2": ".\\bin\\nbminer-2\\nbminer.exe",
     "NVIDIA3": ".\\bin\\nbminer-3\\nbminer.exe",
     "minername": "nbminer.exe",
-    "version": "27.0",
+    "version": "27.7",
     "optional": "No",
-    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v27.0/NBMiner_27.0_Win.zip"
+    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v27.7/NBMiner_27.7_Win.zip"
   },
   "cc-sha3d": {
     "name": "cc-sha3d",
