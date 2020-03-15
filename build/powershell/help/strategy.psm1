@@ -113,17 +113,19 @@ function Global:Get-Benchmark {
         if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
         Write-Host "Benchmark
 
-        [0-100000]           
+[0-1000]           
         
-        Expressed in seconds. Default 180. Sets specific interval time for when coin 
-        is in benchmark mode. Can be used for faster benchmarking. When coin has
-        a set hashrate- Miner will defer to time expressed in -Interval parameter."        
+Expressed in minues. Default 3. Sets specific interval time for when SWARM 
+is in benchmark mode. Can be used for faster benchmarking. When SWARM has
+a set hashrate- Miner will defer to time expressed in -Interval parameter.
+This means you can benchmark algorithms faster that you would during normal
+run (benchmarking stats)"
         $ans = Read-Host -Prompt "
 
-Please enter the number of seconds
+Please enter the number of minutes
 you wish to set benchmark parameter.
 
-seconds"
+minutes"
 
         do {
             if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}

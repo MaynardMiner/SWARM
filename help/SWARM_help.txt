@@ -99,7 +99,7 @@ Argument          Options           Explanation
                NVIDIA3,         benchmarking, or to prevent entire miner from becoming inoperable if
                AMD1,            one gpu fails. Currently only 1 AMD group supported. NVIDIA2 and NVIDIA3
                ASIC]            require wallet2 and wallet3 arguments, along with GPUDevices1,2,3
-	                        respectively (See advanced section).
+	                              respectively (See advanced section).
 
 -Platform      [linux,windows]      NOTE: SWARM will auto-detect Platform. This is only meant to force-bind.
                                     know to build itself for Windows operation. SWARM will attempt to detects
@@ -254,14 +254,14 @@ Argument          Options           Explanation
 				    predicted). These values set the maximum penalty or bonus SWARM should give
 				    when determining profitibility. The default 1:1 sets a maximum penalty of 1%
 				    or maximum bonus of 1%. These values begin applying it to the Daily estimates
-				    and daily returns.
+			            and daily returns.
 				    Once SWARM begins to record more data, and generates weekly statistics, SWARM 
 				    begins to base penalty and bonus on weekly data rather than 24 hours, which is often
 				    more accurate.
 				    If you wish to only penalize a pools by a maximum of 25%, then you would use
-				      -Historical_Bias 25:1
+				    -Historical_Bias 25:1
 				    If you wish to only give a pool a bonus by a maximum of 25%, the you would use
-				      -Historical_Bias 1:25
+				    -Historical_Bias 1:25
 				    If you would like to test this stat, and are unsure where to start- 10% - 30%
 				    bonus maximums and penalties are suggested.
 				    The maximum bonus can go beyond 100%. I have seen pools return 800% than predicted
@@ -313,21 +313,33 @@ Argument          Options           Explanation
                                     with an -interval of 300 (5 minutes), there is no real reason
                                     to store nore than 3 periods of data (15 minutes total).
 
--Stat_Algo         [Live,		This will allow you to factor period average smoothing. 
-        	    Minute_5,		By default everything is day pricing. This will allow you to
-		    Minute_15,		smooth out stat fluctuations if you so desired into the period 
-                    Hour                specified. Essentially it will allow you choose whether or not 
-		    Hour_4,              you want to base switching on price averages, or live...And if
-		    Day                 you choose price averages, what average to base it on. Default
-                    Custom              is day. If using -Custom_Periods, this must be set to Custom.
+-Stat_Algo    [Live,		       This will allow you to factor period average smoothing. 
+        	    Minute_10_MA,    By default everything is day pricing. This will allow you to
+		          Minute_10_EMA,	 smooth out stat fluctuations if you so desired into the period 
+              Minute_15_MA,    specified. Essentially it will allow you choose whether or not 
+		          Minute_15_EMA,   you want to base switching on price averages, or live...And if
+		          Minute_30_MA,    you choose price averages, what average to base it on. Default
+              Minute_30_EMA,   is day. MA is a simple average of the time period specified. EMA
+              Hour_MA,         is a weighted average which favors more recent pricing.
+              Hour_EMA,
+              Hour_4_MA,
+              Hour_4,EMA,
+              Day_MA,
+              Day_EMA]
 
--Stat_Coin         [Live,		This will allow you to factor period average smoothing. 
-        	    Minute_5,		By default everything is day pricing. This will allow you to
-		    Minute_15,		smooth out stat fluctuations if you so desired into the period 
-                    Hour                specified. Essentially it will allow you choose whether or not 
-		    Hour_4,              you want to base switching on price averages, or live...And if
-		    Day                 you choose price averages, what average to base it on. Default
-                    Custom              is day. If using -Custom_Periods, this must be set to Custom.
+-Stat_Coin    [Live,		       This will allow you to factor period average smoothing. 
+        	    Minute_10_MA,    By default everything is day pricing. This will allow you to
+		          Minute_10_EMA,	 smooth out stat fluctuations if you so desired into the period 
+              Minute_15_MA,    specified. Essentially it will allow you choose whether or not 
+		          Minute_15_EMA,   you want to base switching on price averages, or live...And if
+		          Minute_30_MA,    you choose price averages, what average to base it on. Default
+              Minute_30_EMA,   is day. MA is a simple average of the time period specified. EMA
+              Hour_MA,         is a weighted average which favors more recent pricing.
+              Hour_EMA,        This value works specifically for coin values (-Auto_Coin Yes).
+              Hour_4_MA,
+              Hour_4,EMA,
+              Day_MA,
+              Day_EMA]
 
 ***********************************************************************************************************
 *************** Miner Control *****************************************************************************
@@ -343,21 +355,24 @@ Argument          Options           Explanation
                                     updates, and whether or not it is safe to transfer files. This does not
 				    work in Windows- Windows users run get update command.
 
--Benchmark     [0-100000]           Expressed in seconds. Default 180. Sets specific interval time for when coin 
-				    is in benchmark mode. Can be used for faster benchmarking. When coin has
+-Benchmark     [0-1000]             Expressed in minues. Default 3. Sets specific interval time for when SWARM 
+			            is in benchmark mode. Can be used for faster benchmarking. When SWARM has
 				    a set hashrate- Miner will defer to time expressed in -Interval parameter.
+                                    This means you can benchmark algorithms faster that you would during normal
+                                    run (benchmarking stats)
 
--Interval         [1-1000]          Expression is in seconds. Time before miner begins checking pools for 
-                                    pricing. Ideal target goal should be miner windows close/open every 
-                                    5 minutes. Slower cpus may need to fine tune due to the length of time
-                                    needed to search pools and find most profitable coin/algo. Defaut is 300
+-Interval         [1-1000]          Expression is in minutes. This parameter defines the minimum time
+                                    required to wait before executing a switch. However, if SWARM detected
+                                    an error on gathering data on what you are currently mining- It will
+                                    ignore this parameter and switch anyways (in case pool is having issues).
 
--StatsInterval   1-10000            Expression is in seconds. This is time required for miner apps to run
+-StatsInterval   [1-10000]          Expression is in minues. This is time required for miner apps to run
                                     before miner write/re-writes benchmarking. This is not be confused 
                                     with -Interval argument, which is used for when miner begins swithing 
-                                    process. leave 1 if you want dynamic benchmarking. 
-                                    1000 for more smoother benchmarking. 10000 to disable 
-                                    benchmarking altogether. (lock stats)
+                                    process. leave at 3 if you want dynamic benchmarking, and for initial 
+                                    benchmarking. 10 for more smoother benchmarking. 10000 to disable 
+                                    benchmarking altogether.
+
 
 -Time_Wait     [seconds]            Default is 10.
                                     For linux version only.
@@ -409,7 +424,7 @@ Argument          Options           Explanation
                                     mining even though all estimates are negative figures.
 
 -Rejections 	    [0-100]	    Default is 50. This the % of rejections required for SWARM to 
-				    consider benchmark as a bad benchmark.
+				                      consider benchmark as a bad benchmark.
 
 -Timeout          [0-24]            Expression is in hours. Decimal can be used (0.5). When SWARM
                                     encounters issues with miners, it will disable it. SWARM will

@@ -64,14 +64,13 @@ Function Global:Get-Interval {
         
 [1-1000]          
 
-Expression is in seconds. Time before miner begins checking pools for 
-pricing. Ideal target goal should be miner windows close/open every 
-5 minutes. Slower cpus may need to fine tune due to the length of time
-needed to search pools and find most profitable coin/algo. Defaut is 300
+Expression is in minutes. Default is 5. This parameter defines the minimum time
+required to wait before executing a switch. However, if SWARM detected
+an error on gathering data on what you are currently mining- It will
+ignore this parameter and switch anyways (in case pool is having issues).
+Please specify the interval you wish to use.
 
-Please specify the interval you wish to use
-
-seconds"
+minues"
         do {
             if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
             $Confirm = Read-Host -Prompt "You have entered $ans seconds
@@ -134,16 +133,16 @@ function Global:Get-StatsInterval {
         
 [1-10000]            
 
-Expression is in seconds. This is time required for miner apps to run
+Expression is in minutes. This is time required for miner apps to run
 before miner write/re-writes benchmarking. This is not be confused 
 with -Interval argument, which is used for when miner begins swithing 
-process. leave 1 if you want dynamic benchmarking, and for initial 
-benchmarking. 1000 for more smoother benchmarking. 10000 to disable 
+process. leave at 3 if you want dynamic benchmarking, and for initial 
+benchmarking. 10 for more smoother benchmarking. 10000 to disable 
 benchmarking altogether.
 
 Please enter the StatInterval you wish to use.
 
-Seconds"
+Minutes"
         Do {
             if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
             $Confirm = Read-Host -Prompt "You have entered $ans seconds.

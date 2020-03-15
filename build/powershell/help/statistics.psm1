@@ -1,48 +1,71 @@
 function Global:Get-Stat_Algo {
     Write-Host "Doing Stat_Algo"
     Start-Sleep -S 3
-    $Table = [ordered]@{}
-    $Table.Add("1","Live")
-    $Table.Add("2","Minute_5")
-    $Table.Add("3","Minute_15")
-    $Table.Add("4","Hour")
-    $Table.Add("5","Hour_4")
-    $Table.Add("6","Custom")
+    $Table = [ordered]@{ }
+    $Table.Add("1", "Live")
+    $Table.Add("2", "Minute_10_MA")
+    $Table.Add("3", "Minute_10_EMA")
+    $Table.Add("4", "Minute_15_MA")
+    $Table.Add("5", "Minute_15_EMA")
+    $Table.Add("6", "Minute_30_MA")
+    $Table.Add("7", "Minute_30_EMA")
+    $Table.Add("8", "Hour_MA")
+    $Table.Add("9", "Hour_EMA")
+    $Table.Add("10", "Hour_4_MA")
+    $Table.Add("11", "Hour_4_EMA")
+    $Table.Add("12", "Day_MA")
+    $Table.Add("13", "Day_EMA")
     do {
-        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
+        if ($IsWindows) { Clear-Host } elseif ($IsLinux) { $Host.UI.Write("`e[3;J`e[H`e[2J") }
         $ans = Read-Host -Prompt "Stat_Algo         
         
-[Live,		 
- Minute_5,		
- Minute_15,
- Hour
- Hour_4,
- Day,
- Custom]
-
+Live (Last price pull from pool)
+Minute_10_MA
+Minute_10_EMA
+Minute_15_MA
+Minute_15_EMA
+Minute_30_MA
+Minute_30_EMA
+Hour_MA
+Hour_EMA
+Hour_4_MA
+Hour_4_EMA
+Day_MA
+Day_EMA
+     
 This will allow you to factor period average smoothing.
-By default everything is day pricing. This will allow you to
+By default everything is Live pricing. This will allow you to
 smooth out stat fluctuations if you so desired into the period
 specified. Essentially it will allow you choose whether or not
 you want to base switching on price averages, or live...And if
 you choose price averages, what average to base it on. Default
-is day. If using -Custom_Periods, this must be set to Custom.
+is live.
+
+MA is a simple moving average of estimate pricing
+EMA is a weight moving average of estimate pricing, favoring
+more recent pricing.
 
 Please select the time period wou with to use
 
 1 Live
-2 5 Minute Moving Average
-3 15 Minute Moving Average
-4 1 Hour Moving Average
-5 4 Hour Moving Average
-6 Daily Moving Average
-7 Custom Moving Average (must set Custom_Periods)
+2 Minute_10_MA
+3 Minute_10_EMA
+4 Minute_15_MA
+5 Minute_15_EMA
+6 Minute_30_MA
+7 Minute_30_EMA
+8 Hour_MA
+9 Hour_EMA
+10 Hour_4_MA
+11 Hour_4_EMA
+12 Day_MA
+13 Day_EMA
 
 Time Period"
-    do{
-       $ans = $Table.$ans
-       if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
-       $Confirm = Read-Host -Prompt "You have selected $ans.
+        do {
+            $ans = $Table.$ans
+            if ($IsWindows) { Clear-Host } elseif ($IsLinux) { $Host.UI.Write("`e[3;J`e[H`e[2J") }
+            $Confirm = Read-Host -Prompt "You have selected $ans.
        
 Is this correct?
 
@@ -50,61 +73,86 @@ Is this correct?
 2 No
 
 Answer"
-        $Check = Global:Confirm-Answer $Confirm @("1","2")
-    }while($Check -eq 1)
-    if($Confirm -ne "1") {
-        Write-Host "Okay, lets try again"
-        Start-Sleep -S 3
-    }
-    }while($Confirm -ne "1")
+            $Check = Global:Confirm-Answer $Confirm @("1", "2")
+        }while ($Check -eq 1)
+        if ($Confirm -ne "1") {
+            Write-Host "Okay, lets try again"
+            Start-Sleep -S 3
+        }
+    }while ($Confirm -ne "1")
     if ( $(vars).config.Containskey("Stat_Algo") ) { $(vars).config.Stat_Algo = $ans }else { $(vars).config.Add("Stat_Algo", $ans) }
 }
 
 function Global:Get-Stat_Coin {
     Write-Host "Doing Stat_Coin"
     Start-Sleep -S 3
-    $Table = [ordered]@{}
-    $Table.Add("1","Live")
-    $Table.Add("2","Minute_5")
-    $Table.Add("3","Minute_15")
-    $Table.Add("4","Hour")
-    $Table.Add("5","Hour_4")
-    $Table.Add("6","Custom")
+    $Table = [ordered]@{ }
+    $Table.Add("1", "Live")
+    $Table.Add("2", "Minute_10_MA")
+    $Table.Add("3", "Minute_10_EMA")
+    $Table.Add("4", "Minute_15_MA")
+    $Table.Add("5", "Minute_15_EMA")
+    $Table.Add("6", "Minute_30_MA")
+    $Table.Add("7", "Minute_30_EMA")
+    $Table.Add("8", "Hour_MA")
+    $Table.Add("9", "Hour_EMA")
+    $Table.Add("10", "Hour_4_MA")
+    $Table.Add("11", "Hour_4_EMA")
+    $Table.Add("12", "Day_MA")
+    $Table.Add("13", "Day_EMA")
     do {
-        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
+        if ($IsWindows) { Clear-Host } elseif ($IsLinux) { $Host.UI.Write("`e[3;J`e[H`e[2J") }
         $ans = Read-Host -Prompt "Stat_Coin       
         
-[Live,		 
- Minute_5,		
- Minute_15,
- Hour
- Hour_4,
- Day,
- Custom]
-
+Live (Last price pull from pool)
+Minute_10_MA
+Minute_10_EMA
+Minute_15_MA
+Minute_15_EMA
+Minute_30_MA
+Minute_30_EMA
+Hour_MA
+Hour_EMA
+Hour_4_MA
+Hour_4_EMA
+Day_MA
+Day_EMA
+             
 This will allow you to factor period average smoothing.
-By default everything is day pricing. This will allow you to
+By default everything is Live pricing. This will allow you to
 smooth out stat fluctuations if you so desired into the period
 specified. Essentially it will allow you choose whether or not
 you want to base switching on price averages, or live...And if
 you choose price averages, what average to base it on. Default
-is day. If using -Custom_Periods, this must be set to Custom.
+is live.
+        
+MA is a simple moving average of estimate pricing
+EMA is a weight moving average of estimate pricing, favoring
+more recent pricing.
 
+This value is specifically for coins (-Auto_Coin Yes)
+        
 Please select the time period wou with to use
-
+        
 1 Live
-2 5 Minute Moving Average
-3 15 Minute Moving Average
-4 1 Hour Moving Average
-5 4 Hour Moving Average
-6 Daily Moving Average
-7 Custom Moving Average (must set Custom_Periods)
-
+2 Minute_10_MA
+3 Minute_10_EMA
+4 Minute_15_MA
+5 Minute_15_EMA
+6 Minute_30_MA
+7 Minute_30_EMA
+8 Hour_MA
+9 Hour_EMA
+10 Hour_4_MA
+11 Hour_4_EMA
+12 Day_MA
+13 Day_EMA
+        
 Time Period"
-    do{
-        $ans = $Table.$ans
-       if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
-       $Confirm = Read-Host -Prompt "You have selected $ans.
+        do {
+            $ans = $Table.$ans
+            if ($IsWindows) { Clear-Host } elseif ($IsLinux) { $Host.UI.Write("`e[3;J`e[H`e[2J") }
+            $Confirm = Read-Host -Prompt "You have selected $ans.
        
 Is this correct?
 
@@ -112,21 +160,21 @@ Is this correct?
 2 No
 
 Answer"
-        $Check = Global:Confirm-Answer $Confirm @("1","2")
-    }while($Check -eq 1)
-    if($Confirm -ne "1") {
-        Write-Host "Okay, lets try again"
-        Start-Sleep -S 3
-    }
-    }while($Confirm -ne "1")
+            $Check = Global:Confirm-Answer $Confirm @("1", "2")
+        }while ($Check -eq 1)
+        if ($Confirm -ne "1") {
+            Write-Host "Okay, lets try again"
+            Start-Sleep -S 3
+        }
+    }while ($Confirm -ne "1")
     if ( $(vars).config.Containskey("Stat_Coin") ) { $(vars).config.Stat_Coin = $ans }else { $(vars).config.Add("Stat_Coin", $ans) }
 }
 
 function Global:Get-Volume {
     Write-Host "Doing Volume"
     Start-Sleep -S 3
-    do{
-        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
+    do {
+        if ($IsWindows) { Clear-Host } elseif ($IsLinux) { $Host.UI.Write("`e[3;J`e[H`e[2J") }
         $ans = Read-Host -Prompt "Volume         
         
 [Yes,No]            
@@ -143,11 +191,11 @@ Would you like to active the Volume modifier?
 2 No
 
 Answer"
-     $Check = Global:Confirm-Answer $ans @("1","2")
-    }while($Check -eq 1)
-    switch($ans) {
-        "1"{$ans = "Yes"}
-        "2"{$ans = "No"}
+        $Check = Global:Confirm-Answer $ans @("1", "2")
+    }while ($Check -eq 1)
+    switch ($ans) {
+        "1" { $ans = "Yes" }
+        "2" { $ans = "No" }
     }
     if ( $(vars).config.Containskey("Volume") ) { $(vars).config.Volume = $ans }else { $(vars).config.Add("Volume", $ans) }
 }
@@ -155,8 +203,8 @@ Answer"
 function Global:Get-WattOMeter {
     Write-Host "Doing WattOMeter"
     Start-Sleep -S 3
-    do{
-        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
+    do {
+        if ($IsWindows) { Clear-Host } elseif ($IsLinux) { $Host.UI.Write("`e[3;J`e[H`e[2J") }
         $ans = Read-Host -Prompt "WattOMeter   
         
 [Yes or No]           
@@ -172,11 +220,11 @@ Would you SWARM to save Watt Values for each GPU?
 2 No
 
 Answer"
-     $Check = Global:Confirm-Answer $ans @("1","2")
-    }while($Check -eq 1)
-    switch($ans) {
-        "1"{$ans = "Yes"}
-        "2"{$ans = "No"}
+        $Check = Global:Confirm-Answer $ans @("1", "2")
+    }while ($Check -eq 1)
+    switch ($ans) {
+        "1" { $ans = "Yes" }
+        "2" { $ans = "No" }
     }
     if ( $(vars).config.Containskey("WattOMeter") ) { $(vars).config.WattOMeter = $ans }else { $(vars).config.Add("WattOMeter", $ans) }
 }
@@ -184,8 +232,8 @@ Answer"
 function Global:Get-WattOMeter {
     Write-Host "Doing WattOMeter"
     Start-Sleep -S 3
-    do{
-        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
+    do {
+        if ($IsWindows) { Clear-Host } elseif ($IsLinux) { $Host.UI.Write("`e[3;J`e[H`e[2J") }
         $ans = Read-Host -Prompt "WattOMeter   
         
 [Yes or No]           
@@ -201,11 +249,11 @@ Would you SWARM to save Watt Values for each GPU?
 2 No
 
 Answer"
-     $Check = Global:Confirm-Answer $ans @("1","2")
-    }while($Check -eq 1)
-    switch($ans) {
-        "1"{$ans = "Yes"}
-        "2"{$ans = "No"}
+        $Check = Global:Confirm-Answer $ans @("1", "2")
+    }while ($Check -eq 1)
+    switch ($ans) {
+        "1" { $ans = "Yes" }
+        "2" { $ans = "No" }
     }
     if ( $(vars).config.Containskey("WattOMeter") ) { $(vars).config.WattOMeter = $ans }else { $(vars).config.Add("WattOMeter", $ans) }
 }
@@ -214,7 +262,7 @@ function Global:Get-KWH {
     Write-Host "Doing KWH"
     Start-Sleep -S 3
     Do {
-        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
+        if ($IsWindows) { Clear-Host } elseif ($IsLinux) { $Host.UI.Write("`e[3;J`e[H`e[2J") }
         $ans = Read-Host -Prompt "kwh          
         
 [decimal number]      
@@ -229,8 +277,8 @@ Would you like to specify your electricity kilowatt/hour cost for rig?
 If so, please enter kw/h here, in decimal, i.e.  0.11
 
 kilowatt/hour"
-        do{
-            if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
+        do {
+            if ($IsWindows) { Clear-Host } elseif ($IsLinux) { $Host.UI.Write("`e[3;J`e[H`e[2J") }
             $Confirm = Read-Host -Prompt "You have entered a kwh of $ans
 
 Is this correct?
@@ -239,13 +287,13 @@ Is this correct?
 2 No
 
 Answer"
-            $Check = Global:Confirm-Answer $Confirm @("1","2")
-        }while($Check -eq 1)
-        if($Confirm -ne "1"){
+            $Check = Global:Confirm-Answer $Confirm @("1", "2")
+        }while ($Check -eq 1)
+        if ($Confirm -ne "1") {
             Write-Host "Okay, let's try again"
             Start-Sleep -S 3
         }
-    }While($Confirm -ne "1")
+    }While ($Confirm -ne "1")
     if ( $(vars).config.Containskey("kwh") ) { $(vars).config.kwh = $ans }else { $(vars).config.Add("kwh", $ans) }
 }
 
@@ -253,7 +301,7 @@ Function Global:Get-Max_Periods {
     Write-Host "Doing Max_Periods"
     Start-Sleep -S 3
     do {
-        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
+        if ($IsWindows) { Clear-Host } elseif ($IsLinux) { $Host.UI.Write("`e[3;J`e[H`e[2J") }
         $ans = Read-Host -Prompt "Max_Periods    
         
 [integer]        
@@ -274,8 +322,8 @@ to store nore than 3 periods of data (15 minutes total).
 Please specify the maximum periods you wish SWARM to record.
 
 Maximum Periods"
-        do{
-            if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
+        do {
+            if ($IsWindows) { Clear-Host } elseif ($IsLinux) { $Host.UI.Write("`e[3;J`e[H`e[2J") }
             $Confirm = Read-Host -Prompt "You have entered a maximum period of $ans
             
 Is this correct?
@@ -284,13 +332,13 @@ Is this correct?
 2 No
 
 Answer"
-            $Check = Global:Confirm-Answer $Confirm @("1","2")
-        }While($Check -eq 1)
-        if($Confirm -ne "1"){
+            $Check = Global:Confirm-Answer $Confirm @("1", "2")
+        }While ($Check -eq 1)
+        if ($Confirm -ne "1") {
             Write-Host "Okay, lets try again"
             Start-Sleep -S 3
         }
-    }While($Confirm -ne "1")
+    }While ($Confirm -ne "1")
     if ( $(vars).config.Containskey("Max_Periods") ) { $(vars).config.Max_Periods = $ans }else { $(vars).config.Add("Max_Periods", $ans) }
 }
 
@@ -299,7 +347,7 @@ function  Global:Get-Stat_All {
     Start-Sleep -S 3
 
     do {
-        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
+        if ($IsWindows) { Clear-Host } elseif ($IsLinux) { $Host.UI.Write("`e[3;J`e[H`e[2J") }
         $ans = Read-Host -Prompt "Stat_All        
     
 [Yes,No]           
@@ -314,21 +362,21 @@ Would you like to record all coin stats when -Auto_Coin is on
 2 No
 
 Answer"
-        $Check = Global:Confirm-Answer $ans @("1","2")
-    }While($Check -eq 1)
-    switch($ans) {
-        "1"{$ans = "Yes"}
-        "2"{$ans = "No"}
+        $Check = Global:Confirm-Answer $ans @("1", "2")
+    }While ($Check -eq 1)
+    switch ($ans) {
+        "1" { $ans = "Yes" }
+        "2" { $ans = "No" }
     }
     if ( $(vars).config.Containskey("Stat_All") ) { $(vars).config.Stat_All = $ans }else { $(vars).config.Add("Stat_All", $ans) }
 }
 
-Function Global:Get-Custom_Periods{
+Function Global:Get-Custom_Periods {
     Write-Host "Doing Custom_Periods"
     Start-Sleep -S 3
-     do{
-         if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
-         $ans = Read-Host "Custom_Periods    
+    do {
+        if ($IsWindows) { Clear-Host } elseif ($IsLinux) { $Host.UI.Write("`e[3;J`e[H`e[2J") }
+        $ans = Read-Host "Custom_Periods    
          
 [integer]         
 
@@ -340,8 +388,8 @@ pull from pool. Default is 1 (to reduce use). If used, -Stat_Algo and /or
 Note: -Stat_Algo Custom and -Stat_Coin Custom should be specified.
 
 Please enter a custom moving average value"
-        do{
-            if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
+        do {
+            if ($IsWindows) { Clear-Host } elseif ($IsLinux) { $Host.UI.Write("`e[3;J`e[H`e[2J") }
             $Confirm = Read-Host -Prompt "You have entered custom moving average of $ans periods
             
 Is this correct?
@@ -350,46 +398,51 @@ Is this correct?
 2 No
 
 Answer"
-            $Check = Global:Confirm-Answer $Confirm @("1","2")
-        }while($Check -eq 1)
-        if($Confirm -ne "1"){
+            $Check = Global:Confirm-Answer $Confirm @("1", "2")
+        }while ($Check -eq 1)
+        if ($Confirm -ne "1") {
             Write-Host "Okay, lets try again"
             Start-Sleep -S 3
         }
-     }while($Confirm -ne "1")
-     if ( $(vars).config.Containskey("Custom_Periods") ) { $(vars).config.Custom_Periods = $ans }else { $(vars).config.Add("Custom_Periods", $ans) }
+    }while ($Confirm -ne "1")
+    if ( $(vars).config.Containskey("Custom_Periods") ) { $(vars).config.Custom_Periods = $ans }else { $(vars).config.Add("Custom_Periods", $ans) }
 }
 
 function Global:Get-Historical_Bias {
     Write-Host "Doing Historical_Bias"
     Start-Sleep -S 3
     do {
-        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
+        if ($IsWindows) { Clear-Host } elseif ($IsLinux) { $Host.UI.Write("`e[3;J`e[H`e[2J") }
 
-        $ans = Read-Host -Prompt "-Historical_Bias [0-100]          
+        $ans = Read-Host -Prompt "-Historical_Bias 
         
-Expressed as Percentage. 
-Will only affect Auto_Algo.
-Will not affect niechash.
-Historical_Bias bias does two things:
- -Reduces algorithms that have no 24h returns to 100%
- -Compares the deviation between 24hr estimates and 24hr
-  returns into a %, which then creates a EMA with each
-  value. (for smoothing). SWARM then applies a bonus/penality
-  to the algorithm based on how well it has performed
-  over time historically. SWARM will only apply a % penality
-  or bonus of x%, where x is -Historical_Bias figure.
-  Deviations will be listed in stat files.
-  If you use, reccommended starting values are somewhere
-  around 25-35% historical bias.
-
-Please enter a number 0-100 on the maximum % bias penalty you wish to
-place on algorithms that do not return well over 24 hours.
+[penalty:bonus]          
+        
+Default is 1:1. The first value is penalty modifier. Second value is
+bonus modifier. Historical bias is a value that checks pools estimates
+vs. their actual returns, and creates a % difference between the two that
+is either positive (did better than predicted) or negative (did worse than 
+predicted). These values set the maximum penalty or bonus SWARM should give
+when determining profitibility. The default 1:1 sets a maximum penalty of 1%
+or maximum bonus of 1%. These values begin applying it to the Daily estimates
+and daily returns.
+Once SWARM begins to record more data, and generates weekly statistics, SWARM 
+begins to base penalty and bonus on weekly data rather than 24 hours, which is often
+more accurate.
+If you wish to only penalize a pools by a maximum of 25%, then you would use
+-Historical_Bias 25:1
+If you wish to only give a pool a bonus by a maximum of 25%, the you would use
+-Historical_Bias 1:25
+If you would like to test this stat, and are unsure where to start- 10% - 30%
+bonus maximums and penalties are suggested.
+The maximum bonus can go beyond 100%. I have seen pools return 800% than predicted
+on 1 coin in 24 hours.
+The negative maximum penalty is 100%.
 
 Answer"
-do{
-    if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
-    $Confirm = Read-Host -Prompt "You have entered a % bias of $ans
+        do {
+            if ($IsWindows) { Clear-Host } elseif ($IsLinux) { $Host.UI.Write("`e[3;J`e[H`e[2J") }
+            $Confirm = Read-Host -Prompt "You have entered a bias of $ans
     
 Is this correct?
 
@@ -397,14 +450,14 @@ Is this correct?
 2 No
 
 Answer"
-    $Check = Global:Confirm-Answer $Confirm @("1","2")
-}while($Check -eq 1)
-if($Confirm -ne "1"){
-    Write-Host "Okay, lets try again"
-    Start-Sleep -S 3
-}
-}while($Confirm -ne "1")
-if ( $(vars).config.Containskey("Historical_Bias") ) { $(vars).config.Historical_Bias = $ans }else { $(vars).config.Add("Historical_Bias", $ans) }
+            $Check = Global:Confirm-Answer $Confirm @("1", "2")
+        }while ($Check -eq 1)
+        if ($Confirm -ne "1") {
+            Write-Host "Okay, lets try again"
+            Start-Sleep -S 3
+        }
+    }while ($Confirm -ne "1")
+    if ( $(vars).config.Containskey("Historical_Bias") ) { $(vars).config.Historical_Bias = $ans }else { $(vars).config.Add("Historical_Bias", $ans) }
 }
 
 function Global:Get-Statistics { 
@@ -421,7 +474,7 @@ function Global:Get-Statistics {
     }
 
     do {
-        if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
+        if ($IsWindows) { Clear-Host } elseif ($IsLinux) { $Host.UI.Write("`e[3;J`e[H`e[2J") }
         $Confirm = Read-Host -Prompt "Do You Wish To Continue?
     
 1 Yes
@@ -429,9 +482,9 @@ function Global:Get-Statistics {
 
 Answer"
         $check = Global:Confirm-Answer $Confirm @("1", "2")
-        Switch($Confirm){
-            "1" {$(vars).continue = $true}
-            "2" {$(vars).continue = $false}
+        Switch ($Confirm) {
+            "1" { $(vars).continue = $true }
+            "2" { $(vars).continue = $false }
         }
     }while ($check -eq 1)
 }
