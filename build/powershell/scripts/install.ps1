@@ -72,7 +72,7 @@ if (Test-Path ".\build\apps\wolfamdctrl\wolfamdctrl") {
 
 ## Extract export folder.
 if (-not (test-path ".\build\export")) {
-    log "export folder not found. Exracting export.tar.gz" -ForegroundColor Yellow;
+    write-host "export folder not found. Exracting export.tar.gz" -ForegroundColor Yellow;
     New-Item -ItemType Directory -Name "export" -path ".\build" | Out-Null;
     $Proc = Start-Process "tar" -ArgumentList "-xzvf build/export.tar.gz -C build" -PassThru; 
     $Proc | Wait-Process;
