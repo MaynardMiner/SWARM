@@ -346,6 +346,11 @@ if($(arg).Throttle -eq 0) {
     $(arg).Throttle = ([Environment]::ProcessorCount + 1)
 }
 
+## Make stats folder if it doesn't exist
+if(-not (test-path ".\stats")) {
+    new-item "stats" -ItemType Directory | Out-Null
+}
+
 ##############################################################################
 #######                      End Startup                                ######
 ##############################################################################
