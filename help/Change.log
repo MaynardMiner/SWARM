@@ -2098,3 +2098,16 @@ as is will not work correctly.
 ## Updates
 * Gminer updated
 * Nbminer updated
+
+############################################
+############################################
+
+# SWARM 3.0.7
+
+## Improvments-
+* Prevent erroneous error output when first loading
+  SWARM (no stats folder).
+* Prevent erroneous error output when using ``install_linux``
+
+## Updates
+* Gminer updated.
