@@ -2111,3 +2111,25 @@ as is will not work correctly.
 
 ## Updates
 * Gminer updated.
+
+############################################
+############################################
+
+# SWARM 3.0.8 (Includes 3.0.7)
+
+## What's New?
+* Added x17r to Wildrig miner, in case pools add.
+
+## Improvments-
+* Prevent erroneous error output when first loading
+  SWARM (no stats folder).
+* Prevent erroneous error output when using ``install_linux``
+
+## Fixes
+* Powershell PCIUtils fix - Return Device title in case
+  sub device title code does not match pci.ids list
+  (Prevents error generation).
+
+## Updates
+* Gminer updated.
+* Wildrig updated
