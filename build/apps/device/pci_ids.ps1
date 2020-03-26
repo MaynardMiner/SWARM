@@ -45,6 +45,7 @@ Class PCI_ID {
 		"018a   LevelOne" = @{
 			"0106   FPC-0106TX misprogrammed [RTL81xx]" = @{}
 		}
+		"01de   Oxide Computer Company" = @{}
 		"021b   Compaq Computer Corporation" = @{
 			"8139   HNE-300 (RealTek RTL8139c) [iPaq Networking]" = @{}
 		}
@@ -455,6 +456,8 @@ Class PCI_ID {
 				"1028 1fd1" = "PERC H730P MX"
 				"17aa 1052" = "ThinkServer RAID 720i"
 				"17aa 1053" = "ThinkServer RAID 720ix"
+				"1bd4 0014" = "12G SAS3108 2G"
+				"1bd4 0015" = "12G SAS3108 4G"
 				"1d49 0600" = "ThinkSystem RAID 730-8i 1GB Cache PCIe 12Gb Adapter"
 				"1d49 0608" = "ThinkSystem RAID 730-8i 2GB Flash PCIe 12Gb Adapter"
 				"1d49 0609" = "ThinkSystem RAID 730-8i 4GB Flash PCIe 12Gb Adapter"
@@ -532,6 +535,11 @@ Class PCI_ID {
 				"1028 1f1f" = "PERC H200 Modular"
 				"1028 1f20" = "PERC H200 Embedded"
 				"1028 1f22" = "PERC H200 Internal Tape Adapter"
+				"1734 1177" = "HBA Ctrl SAS 6G 0/1 [D2607]"
+				"1bd4 000d" = "6G SAS2008IT"
+				"1bd4 000e" = "6G SAS2008IR"
+				"1bd4 000f" = "6G SAS2008IT SA5248"
+				"1bd4 0010" = "6G SAS2008IR SA5248"
 				"8086 350f" = "RMS2LL040 RAID Controller"
 				"8086 3700" = "SSD 910 Series"
 			}
@@ -646,6 +654,8 @@ Class PCI_ID {
 				"1590 0041" = "H220i"
 				"1590 0042" = "H221 / 9207-8e"
 				"1590 0044" = "H220i"
+				"1bd4 0009" = "6G SAS2308IR"
+				"1bd4 000a" = "6G SAS2308IT"
 				"8086 3000" = "RS25GB008 RAID Controller"
 				"8086 3060" = "RS25FB044 RAID Controller"
 				"8086 3516" = "RMS25JB080 RAID Controller"
@@ -678,6 +688,10 @@ Class PCI_ID {
 				"1bd4 000b" = "12G SAS3008IR"
 				"1bd4 000c" = "12G SAS3008IT"
 				"1bd4 0011" = "Inspur 12Gb 8i-3008 IT SAS HBA"
+				"1bd4 0012" = "12Gb SAS3008IR UDM"
+				"1bd4 0026" = "12G SAS3008IT RACK"
+				"1bd4 0027" = "12G SAS3008IMR RACK"
+				"1bd4 0028" = "12G SAS3008IR RACK"
 			}
 			"00ab   SAS3516 Fusion-MPT Tri-Mode RAID On Chip (ROC)" = @{
 				"1000 3040" = "HBA 9400-8i8e"
@@ -919,8 +933,12 @@ Class PCI_ID {
 			"1305   Kaveri" = @{}
 			"1306   Kaveri" = @{}
 			"1307   Kaveri" = @{}
-			"1308   Kaveri HDMI/DP Audio Controller" = @{}
-			"1309   Kaveri [Radeon R6/R7 Graphics]" = @{}
+			"1308   Kaveri HDMI/DP Audio Controller" = @{
+				"17aa 3988" = "Z50-75"
+			}
+			"1309   Kaveri [Radeon R6/R7 Graphics]" = @{
+				"17aa 3830" = "Z50-75"
+			}
 			"130a   Kaveri [Radeon R6 Graphics]" = @{}
 			"130b   Kaveri [Radeon R4 Graphics]" = @{}
 			"130c   Kaveri [Radeon R7 Graphics]" = @{}
@@ -951,6 +969,7 @@ Class PCI_ID {
 			"1561   Anubis" = @{}
 			"15d8   Picasso" = @{
 				"103c 8615" = "Pavilion Laptop 15-cw1xxx"
+				"17aa 5124" = "ThinkPad E595"
 			}
 			"15dd   Raven Ridge [Radeon Vega Series / Radeon Vega Mobile Series]" = @{
 				"103c 83c6" = "Radeon Vega 8 Mobile"
@@ -958,6 +977,7 @@ Class PCI_ID {
 			}
 			"15de   Raven/Raven2/Fenghuang HDMI/DP Audio Controller" = @{
 				"103c 8615" = "Pavilion Laptop 15-cw1xxx"
+				"17aa 5124" = "ThinkPad E595"
 			}
 			"15df   Raven/Raven2/Fenghuang/Renoir Cryptographic Coprocessor" = @{
 				"103c 8615" = "Pavilion Laptop 15-cw1xxx"
@@ -1162,7 +1182,7 @@ Class PCI_ID {
 			"4382   SB600 AC97 Audio" = @{}
 			"4383   SBx00 Azalia (Intel HDA)" = @{
 				"1019 2120" = "A785GM-M"
-				"103c 1611" = "Pavilion DM1Z-3000"
+				"103c 1611" = "Pavilion dm1z-3000"
 				"103c 280a" = "DC5750 Microtower"
 				"1043 8230" = "M3A78-EH Motherboard"
 				"1043 836c" = "M4A785TD Motherboard"
@@ -2034,8 +2054,9 @@ Class PCI_ID {
 				"1642 3c91" = "Radeon HD 8670"
 				"1642 3f09" = "Radeon R7 350"
 			}
-			"6611   Oland [Radeon HD 8570 / R7 240/340 OEM]" = @{
+			"6611   Oland [Radeon HD 8570 / R7 240/340 / Radeon 520 OEM]" = @{
 				"1028 210b" = "Radeon R5 240 OEM"
+				"1642 1869" = "Radeon 520 OEM"
 				"174b 4248" = "Radeon R7 240 OEM"
 				"174b a240" = "Radeon R7 240 OEM"
 				"174b d340" = "Radeon R7 340 OEM"
@@ -2108,7 +2129,7 @@ Class PCI_ID {
 			}
 			"6664   Jet XT [Radeon R5 M240]" = @{}
 			"6665   Jet PRO [Radeon R5 M230 / R7 M260DX / Radeon 520 Mobile]" = @{
-				"17aa 1309" = "Radeon R7 M260DX"
+				"17aa 1309" = "Z50-75 Radeon R7 M260DX"
 				"17aa 368f" = "Radeon R5 A230"
 			}
 			"6667   Jet ULT [Radeon R5 M230]" = @{}
@@ -2764,7 +2785,7 @@ Class PCI_ID {
 				"1462 3418" = "Radeon RX 580 Armor 4G OC"
 				"1462 341e" = "Radeon RX 570 Armor 4G OC"
 				"1462 8a92" = "Radeon RX 580"
-				"148c 2372" = "Radeon RX 480"
+				"148c 2372" = "Radeon RX 480 [Red Dragon]"
 				"148c 2373" = "Radeon RX 470"
 				"1682 9470" = "Radeon RX 470"
 				"1682 9480" = "Radeon RX 480"
@@ -5085,16 +5106,23 @@ Class PCI_ID {
 			"15db   Raven/Raven2 Internal PCIe GPP Bridge 0 to Bus A" = @{}
 			"15dc   Raven/Raven2 Internal PCIe GPP Bridge 0 to Bus B" = @{}
 			"15de   Raven/Raven2/FireFlight HD Audio Controller" = @{}
-			"15df   Family 17h (Models 10h-1fh) Platform Security Processor" = @{}
+			"15df   Family 17h (Models 10h-1fh) Platform Security Processor" = @{
+				"17aa 5124" = "ThinkPad E595"
+			}
 			"15e0   Raven USB 3.1" = @{
 				"103c 8615" = "Pavilion Laptop 15-cw1xxx"
+				"17aa 5124" = "ThinkPad E595"
 			}
 			"15e1   Raven USB 3.1" = @{
 				"103c 8615" = "Pavilion Laptop 15-cw1xxx"
+				"17aa 5124" = "ThinkPad E595"
 			}
-			"15e2   Raven/Raven2/FireFlight/Renoir Audio Processor" = @{}
+			"15e2   Raven/Raven2/FireFlight/Renoir Audio Processor" = @{
+				"17aa 5124" = "ThinkPad E595"
+			}
 			"15e3   Family 17h (Models 10h-1fh) HD Audio Controller" = @{
 				"103c 8615" = "Pavilion Laptop 15-cw1xxx"
+				"17aa 5124" = "ThinkPad E595"
 			}
 			"15e4   Raven/Raven2/Renoir Sensor Fusion Hub" = @{}
 			"15e5   Raven2 USB 3.1" = @{}
@@ -5319,6 +5347,7 @@ Class PCI_ID {
 			"7801   FCH SATA Controller [AHCI mode]" = @{
 				"103c 168b" = "ProBook 4535s Notebook"
 				"103c 194e" = "ProBook 455 G1 Notebook"
+				"17aa 3988" = "Z50-75"
 				"1849 7801" = "QC5000-ITX/PH"
 			}
 			"7802   FCH SATA Controller [RAID mode]" = @{}
@@ -5331,20 +5360,24 @@ Class PCI_ID {
 			"7807   FCH USB OHCI Controller" = @{
 				"103c 194e" = "ProBook 455 G1 Notebook"
 				"103c 1985" = "Pavilion 17-e163sg Notebook PC"
+				"17aa 3988" = "Z50-75"
 				"1849 7807" = "QC5000-ITX/PH"
 			}
 			"7808   FCH USB EHCI Controller" = @{
 				"103c 194e" = "ProBook 455 G1 Notebook"
 				"103c 1985" = "Pavilion 17-e163sg Notebook PC"
+				"17aa 3988" = "Z50-75"
 				"1849 7808" = "QC5000-ITX/PH"
 			}
 			"7809   FCH USB OHCI Controller" = @{
 				"103c 194e" = "ProBook 455 G1 Notebook"
+				"17aa 3988" = "Z50-75"
 			}
 			"780a   Kabini/Mullins SATA Raid/AHCI Mode (DotHill driver)" = @{}
 			"780b   FCH SMBus Controller" = @{
 				"103c 194e" = "ProBook 455 G1 Notebook"
 				"103c 1985" = "Pavilion 17-e163sg Notebook PC"
+				"17aa 3988" = "Z50-75"
 				"1849 780b" = "QC5000-ITX/PH"
 			}
 			"780c   FCH IDE Controller" = @{}
@@ -5352,11 +5385,13 @@ Class PCI_ID {
 				"103c 194e" = "ProBook 455 G1 Notebook"
 				"103c 1985" = "Pavilion 17-e163sg Notebook PC"
 				"1043 8444" = "F2A85-M Series"
+				"17aa 3988" = "Z50-75"
 				"1849 8892" = "QC5000-ITX/PH"
 			}
 			"780e   FCH LPC Bridge" = @{
 				"103c 194e" = "ProBook 455 G1 Notebook"
 				"103c 1985" = "Pavilion 17-e163sg Notebook PC"
+				"17aa 3988" = "Z50-75"
 				"1849 780e" = "QC5000-ITX/PH"
 			}
 			"780f   FCH PCI Bridge" = @{}
@@ -5365,6 +5400,7 @@ Class PCI_ID {
 			"7814   FCH USB XHCI Controller" = @{
 				"103c 194e" = "ProBook 455 G1 Notebook"
 				"103c 1985" = "Pavilion 17-e163sg Notebook PC"
+				"17aa 3988" = "Z50-75"
 				"1849 7814" = "QC5000-ITX/PH"
 			}
 			"7900   FCH SATA Controller [IDE mode]" = @{}
@@ -5380,10 +5416,12 @@ Class PCI_ID {
 			"790b   FCH SMBus Controller" = @{
 				"103c 8615" = "Pavilion Laptop 15-cw1xxx"
 				"1462 7c37" = "X570-A PRO motherboard"
+				"17aa 5124" = "ThinkPad E595"
 			}
 			"790e   FCH LPC Bridge" = @{
 				"103c 8615" = "Pavilion Laptop 15-cw1xxx"
 				"1462 7c37" = "X570-A PRO motherboard"
+				"17aa 5124" = "ThinkPad E595"
 			}
 			"790f   FCH PCI Bridge" = @{}
 			"7914   FCH USB XHCI Controller" = @{}
@@ -7121,6 +7159,7 @@ Class PCI_ID {
 			"4802   Falcon" = @{}
 			"4803   Hawk" = @{}
 			"4806   CPX8216" = @{}
+			"480b   MPC7410" = @{}
 			"4d68   20268" = @{}
 			"5600   SM56 PCI Modem" = @{
 				"1057 0300" = "SM56 PCI Speakerphone Modem"
@@ -7611,6 +7650,8 @@ Class PCI_ID {
 				"1077 02e4" = "QLE2772 Dual Port 32GFC PCIe Gen4 x8 Adapter"
 				"1077 02ee" = "QLE2870 Single Port 64GFC PCIe Gen4 x8 Adapter"
 				"1077 02f0" = "QLE2770 Single Port 32GFC PCIe Gen4 x8 Adapter"
+				"1077 02f2" = "QLogic 1x32Gb QLE2770 FC HBA"
+				"1077 02f3" = "QLogic 2x32Gb QLE2772 FC HBA"
 				"1590 02d3" = "SN1610Q - 1P Enhanced 32GFC Single Port Fibre Channel Host Bus Adapter"
 				"1590 02d4" = "SN1610Q – 2P Enhanced 32GFC Dual Port Fibre Channel Host Bus Adapter"
 			}
@@ -7699,6 +7740,8 @@ Class PCI_ID {
 				"1077 0055" = "QLogic 2x10GE QL41132HQCU NIC"
 				"1077 0056" = "2x10GE QL41132HxRJ NIC"
 				"1077 0057" = "2x25GE QL41232HxCU NIC"
+				"1077 0065" = "QLogic 4x10GE QL41154HQRJ CNA"
+				"1077 0066" = "QLogic 4x10GE QL41154HQCU CNA"
 				"1077 0068" = "10GbE 2p SFP+ QL41132HLCU-HC Adapter"
 				"1077 0069" = "10GbE 2p BASE-T QL41132HQRJ-HC OCP3 Adapter"
 				"1077 0070" = "10GbE 2p BASE-T QL41132HLRJ-HC Adapter"
@@ -7744,6 +7787,8 @@ Class PCI_ID {
 				"1077 000d" = "FastLinQ QL41262H 25GbE iSCSI Adapter"
 				"1077 000e" = "FastLinQ QL41162H 10GbE iSCSI Adapter"
 				"1077 000f" = "2x25GE QL41262HMKR CNA"
+				"1077 0065" = "QLogic 4x10GE QL41154HQRJ CNA"
+				"1077 0066" = "QLogic 4x10GE QL41154HQCU CNA"
 				"1590 021a" = "10GbE 2P QL41162HLRJ-HP Adapter"
 				"1590 021b" = "10GbE 2P QL41162HLRJ-HP Adapter"
 			}
@@ -7769,6 +7814,8 @@ Class PCI_ID {
 				"1077 0055" = "QLogic 2x10GE QL41132HQCU NIC"
 				"1077 0056" = "2x10GE QL41132HxRJ NIC"
 				"1077 0057" = "2x25GE QL41232HxCU NIC"
+				"1077 0065" = "QLogic 4x10GE QL41154HQRJ CNA"
+				"1077 0066" = "QLogic 4x10GE QL41154HQCU CNA"
 				"1590 021a" = "10GbE 2P QL41162HLRJ-HP Adapter"
 				"1590 021b" = "10GbE 2P QL41162HLRJ-HP Adapter"
 				"1590 021e" = "10/25GbE 2P QL41162HMRJ-HP Adapter"
@@ -12067,6 +12114,7 @@ Class PCI_ID {
 			"0fb9   GP107GL High Definition Audio Controller" = @{}
 			"0fba   GM206 High Definition Audio Controller" = @{}
 			"0fbb   GM204 High Definition Audio Controller" = @{}
+			"0fbc   GM107 High Definition Audio Controller [GeForce 940MX]" = @{}
 			"0fc0   GK107 [GeForce GT 640 OEM]" = @{}
 			"0fc1   GK107 [GeForce GT 640]" = @{}
 			"0fc2   GK107 [GeForce GT 630 OEM]" = @{}
@@ -12884,7 +12932,9 @@ Class PCI_ID {
 			"1402   GM206 [GeForce GTX 950]" = @{}
 			"1406   GM206 [GeForce GTX 960 OEM]" = @{}
 			"1407   GM206 [GeForce GTX 750 v2]" = @{}
-			"1427   GM206M [GeForce GTX 965M]" = @{}
+			"1427   GM206M [GeForce GTX 965M]" = @{
+				"103c 825b" = "OMEN-17-w001nv"
+			}
 			"1430   GM206GL [Quadro M2000]" = @{}
 			"1431   GM206GL [Tesla M4]" = @{}
 			"1436   GM206GLM [Quadro M2200 Mobile]" = @{}
@@ -12904,7 +12954,9 @@ Class PCI_ID {
 			"174d   GM108M [GeForce MX130]" = @{}
 			"174e   GM108M [GeForce MX110]" = @{}
 			"1789   GM107GL [GRID M3-3020]" = @{}
-			"179c   GM107 [GeForce 940MX]" = @{}
+			"179c   GM107 [GeForce 940MX]" = @{
+				"1025 1094" = "Acer Aspire E5-575G"
+			}
 			"17c2   GM200 [GeForce GTX TITAN X]" = @{}
 			"17c8   GM200 [GeForce GTX 980 Ti]" = @{}
 			"17f0   GM200GL [Quadro M6000]" = @{
@@ -12923,6 +12975,7 @@ Class PCI_ID {
 				"1043 8673" = "TURBO-RTX2070-8G"
 			}
 			"1aeb   TU116 High Definition Audio Controller" = @{}
+			"1aec   TU116 USB 3.1 Host Controller" = @{}
 			"1aed   TU116 [GeForce GTX 1650 SUPER]" = @{}
 			"1b00   GP102 [TITAN X]" = @{}
 			"1b01   GP102 [GeForce GTX 1080 Ti 10GB]" = @{}
@@ -13015,6 +13068,7 @@ Class PCI_ID {
 			"1c91   GP107M [GeForce GTX 1050 3 GB Max-Q]" = @{}
 			"1c92   GP107M [GeForce GTX 1050 Mobile]" = @{}
 			"1c94   GP107M [GeForce MX350]" = @{}
+			"1c96   GP107M [GeForce MX350]" = @{}
 			"1ca7   GP107GL" = @{}
 			"1ca8   GP107GL" = @{}
 			"1caa   GP107GL" = @{}
@@ -13036,6 +13090,8 @@ Class PCI_ID {
 			"1cbd   GP107GLM [Quadro P620]" = @{}
 			"1ccc   GP107BM [GeForce GTX 1050 Ti Mobile]" = @{}
 			"1ccd   GP107BM [GeForce GTX 1050 Mobile]" = @{}
+			"1cfa   GP107GL [Quadro P2000]" = @{}
+			"1cfb   GP107GL [Quadro P1000]" = @{}
 			"1d01   GP108 [GeForce GT 1030]" = @{}
 			"1d10   GP108M [GeForce MX150]" = @{
 				"17aa 225e" = "ThinkPad T480"
@@ -13063,6 +13119,8 @@ Class PCI_ID {
 			"1dba   GV100GL [Quadro GV100]" = @{
 				"10de 12eb" = "TITAN V CEO Edition"
 			}
+			"1df0   GV100GL [Tesla PG500-216]" = @{}
+			"1df2   GV100GL [Tesla PG503-216]" = @{}
 			"1df5   GV100GL [Tesla V100 SXM2 16GB]" = @{}
 			"1df6   GV100GL [Tesla V100S PCIe 32GB]" = @{}
 			"1e02   TU102 [TITAN RTX]" = @{}
@@ -13075,6 +13133,12 @@ Class PCI_ID {
 			"1e30   TU102GL [Quadro RTX 6000/8000]" = @{
 				"10de 129e" = "Quadro RTX 8000"
 				"10de 12ba" = "Quadro RTX 6000"
+			}
+			"1e36   TU102GL" = @{}
+			"1e37   TU102GL [GRID RTX T10-4/T10-8/T10-16]" = @{
+				"10de 1347" = "GRID RTX T10-8"
+				"10de 1348" = "GRID RTX T10-4"
+				"10de 1370" = "GRID RTX T10-16"
 			}
 			"1e38   TU102GL" = @{}
 			"1e3c   TU102GL" = @{}
@@ -13109,8 +13173,11 @@ Class PCI_ID {
 			"1f06   TU106 [GeForce RTX 2060 SUPER]" = @{}
 			"1f07   TU106 [GeForce RTX 2070 Rev. A]" = @{}
 			"1f08   TU106 [GeForce RTX 2060 Rev. A]" = @{}
+			"1f09   TU106 [GeForce GTX 1660 SUPER]" = @{}
 			"1f10   TU106M [GeForce RTX 2070 Mobile]" = @{}
 			"1f11   TU106M [GeForce RTX 2060 Mobile]" = @{}
+			"1f12   TU106 [GeForce RTX 2060]" = @{}
+			"1f15   TU106 [GeForce RTX 2060]" = @{}
 			"1f2e   TU106M" = @{}
 			"1f36   TU106GLM [Quadro RTX 3000 Mobile / Max-Q]" = @{}
 			"1f42   TU106 [GeForce RTX 2060 SUPER]" = @{}
@@ -13121,6 +13188,7 @@ Class PCI_ID {
 			"1f82   TU117 [GeForce GTX 1650]" = @{}
 			"1f91   TU117M [GeForce GTX 1650 Mobile / Max-Q]" = @{}
 			"1f92   TU117M [GeForce GTX 1650 Mobile]" = @{}
+			"1f95   TU117M [GeForce GTX 1650 Ti Mobile]" = @{}
 			"1f96   TU117M [GeForce GTX 1650 Mobile / Max-Q]" = @{}
 			"1fae   TU117GL" = @{}
 			"1fb8   TU117GLM [Quadro T2000 Mobile / Max-Q]" = @{}
@@ -13367,6 +13435,8 @@ Class PCI_ID {
 			}
 			"522a   RTS522A PCI Express Card Reader" = @{
 				"103c 8079" = "EliteBook 840 G3"
+				"103c 825b" = "OMEN-17-w001nv"
+				"17aa 5124" = "ThinkPad E595"
 			}
 			"5249   RTS5249 PCI Express Card Reader" = @{
 				"103c 1909" = "ZBook 15"
@@ -13380,7 +13450,9 @@ Class PCI_ID {
 			}
 			"5260   RTS5260 PCI Express Card Reader" = @{}
 			"5286   RTS5286 PCI Express Card Reader" = @{}
-			"5287   RTL8411B PCI Express Card Reader" = @{}
+			"5287   RTL8411B PCI Express Card Reader" = @{
+				"1025 1094" = "Acer Aspire E5-575G"
+			}
 			"5288   RTS5288 PCI Express Card Reader" = @{}
 			"5289   RTL8411 PCI Express Card Reader" = @{
 				"1043 1457" = "K55A Laptop"
@@ -13470,6 +13542,7 @@ Class PCI_ID {
 			}
 			"8168   RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller" = @{
 				"1019 8168" = "RTL8111/8168 PCI Express Gigabit Ethernet controller"
+				"1025 1094" = "Acer Aspire E5-575G"
 				"1028 0283" = "Vostro 220"
 				"1028 04b2" = "Vostro 3350"
 				"1028 04da" = "Vostro 3750"
@@ -13478,6 +13551,7 @@ Class PCI_ID {
 				"103c 1611" = "Pavilion DM1Z-3000"
 				"103c 1950" = "ProBook 450/455"
 				"103c 2a6f" = "Asus IPIBL-LB Motherboard"
+				"103c 825b" = "OMEN-17-w001nv"
 				"103c 8615" = "Pavilion Laptop 15-cw1xxx"
 				"1043 11f5" = "Notebook motherboard (one of many models)"
 				"1043 16d5" = "U6V/U31J laptop"
@@ -13497,6 +13571,8 @@ Class PCI_ID {
 				"1462 7522" = "X58 Pro-E"
 				"1462 7c37" = "X570-A PRO motherboard"
 				"1775 11cc" = "CC11/CL11"
+				"17aa 3814" = "Z50-75"
+				"17aa 5124" = "ThinkPad E595"
 				"1849 8168" = "Motherboard (one of many)"
 				"7470 3468" = "TG-3468 Gigabit PCI Express Network Adapter"
 				"8086 2055" = "NUC Kit DN2820FYKH"
@@ -13553,9 +13629,12 @@ Class PCI_ID {
 			"8821   RTL8821AE 802.11ac PCIe Wireless Network Adapter" = @{}
 			"b723   RTL8723BE PCIe Wireless Network Adapter" = @{
 				"10ec 8739" = "Dell Wireless 1801"
+				"17aa b736" = "Z50-75"
 			}
 			"b822   RTL8822BE 802.11a/b/g/n/ac WiFi adapter" = @{
 				"103c 831b" = "Realtek RTL8822BE 802.11ac 2 × 2 Wi-Fi + Bluetooth 4.2 Combo Adapter (MU-MIMO supported)"
+				"17aa 5124" = "ThinkPad E595"
+				"17aa b023" = "ThinkPad E595"
 			}
 			"c821   RTL8821CE 802.11ac PCIe Wireless Network Adapter" = @{}
 			"c822   RTL8822CE 802.11ac PCIe Wireless Network Adapter" = @{}
@@ -13674,7 +13753,11 @@ Class PCI_ID {
 				"1102 806c" = "SB0221 SBLive! 5.1"
 				"1102 8071" = "SB0150 SoundBlaster PCI512"
 			}
-			"0003   SB AWE64(D)" = @{}
+			"0003   SB AWE64(D)" = @{
+				"1102 0010" = "CT4600 AWE64D"
+				"1102 0030" = "CT4650 AWE64D"
+				"1102 0031" = "CT4655 AWE64D"
+			}
 			"0004   EMU10k2/CA0100/CA0102/CA10200 [Sound Blaster Audigy Series]" = @{
 				"1102 0040" = "SB0090 Audigy Player"
 				"1102 0041" = "CT4820 SBLive!2"
@@ -13717,7 +13800,11 @@ Class PCI_ID {
 				"1102 002c" = "X-Fi XtremeGamer FATAL1TY PRO"
 				"1102 1003" = "X-Fi XtremeMusic"
 			}
-			"0006   EMU10k1X [SB Live! Value/OEM Series]" = @{}
+			"0006   EMU10k1X / CA0103 [SB Live! OEM / SB 5.1 / Ectiva 5.1]" = @{
+				"1102 1001" = "SB0680 Sound Blaster 5.1"
+				"1102 1003" = "SB0203 SB Live! 5.1 (Dell)"
+				"1102 1004" = "TP0033 Ectiva Audio 5.1"
+			}
 			"0007   CA0106/CA0111 [SB Live!/Audigy/X-Fi Series]" = @{
 				"1102 0007" = "SBLive! 24bit"
 				"1102 1001" = "SB0310 Audigy LS"
@@ -17798,6 +17885,8 @@ Class PCI_ID {
 		"12d7   Biotronic SRL" = @{}
 		"12d8   Pericom Semiconductor" = @{
 			"01a7   7C21P100 2-port PCI-X to PCI-X Bridge" = @{}
+			"0303   PCI Express Switch 3-3" = @{}
+			"0508   PI7C9X20508GP PCI Express Switch 5Port-8Lane" = @{}
 			"2304   PI7C9X2G304 EL/SL PCIe2 3-Port/4-Lane Packet Switch" = @{}
 			"2404   PI7C9X2G404 EL/SL PCIe2 4-Port/4-Lane Packet Switch" = @{}
 			"2608   PI7C9X2G608GP PCIe2 6-Port/8-Lane Packet Switch" = @{}
@@ -19792,6 +19881,18 @@ Class PCI_ID {
 				"1028 1ff9" = "Express Flash PM1725b 6.4TB AIC"
 				"1028 1ffa" = "Express Flash PM1725b 12.8TB AIC"
 			}
+			"a824   NVMe SSD Controller PM173X" = @{
+				"1028 2040" = "EMC PowerEdge Express Flash Ent NVMe AGN SED MU U.2 Gen4 1.6TB / AGN MU U.2 Gen4 1.6TB"
+				"1028 2041" = "EMC PowerEdge Express Flash Ent NVMe AGN SED MU U.2 Gen4 3.2TB"
+				"1028 2042" = "EMC PowerEdge Express Flash Ent NVMe AGN SED MU U.2 Gen4 6.4TB"
+				"1028 2043" = "EMC PowerEdge Express Flash Ent NVMe AGN SED MU U.2 Gen4 12.8TB"
+				"1028 2044" = "EMC PowerEdge Express Flash Ent NVMe AGN SED MU AIC Gen4 1.6TB"
+				"1028 2045" = "EMC PowerEdge Express Flash Ent NVMe AGN SED MU AIC Gen4 3.2TB"
+				"1028 2046" = "EMC PowerEdge Express Flash Ent NVMe AGN SED MU AIC Gen4 6.4TB"
+				"1028 2070" = "EMC PowerEdge Express Flash Ent NVMe AGN SED RI U.2 Gen4 1.92TB"
+				"1028 2071" = "EMC PowerEdge Express Flash Ent NVMe AGN SED RI U.2 Gen4 3.84TB"
+				"1028 2072" = "EMC PowerEdge Express Flash Ent NVMe AGN SED RI U.2 Gen4 7.68TB"
+			}
 		}
 		"144e   OLITEC" = @{}
 		"144f   Askey Computer Corp." = @{}
@@ -21761,8 +21862,10 @@ Class PCI_ID {
 			"1976   MT28908 Family [ConnectX-6 PCIe Bridge]" = @{}
 			"1977   MT2892 Family [ConnectX-6 Dx PCIe Bridge]" = @{}
 			"1978   MT42822 Family [BlueField-2 SoC PCIe Bridge]" = @{}
+			"1979   MT2910 Family [ConnectX-7 PCIe Bridge]" = @{}
 			"4117   MT27712A0-FDCF-AE" = @{
 				"1bd4 0039" = "SN10XMP2P25"
+				"1bd4 003a" = "25G SFP28 SP EO251FM9 Adapter"
 				"1bd4 004d" = "SN10XMP2P25,YZPC-01191-101"
 			}
 			"5274   MT21108 InfiniBridge" = @{}
@@ -22442,7 +22545,9 @@ Class PCI_ID {
 			}
 			"0040   QCA9980/9990 802.11ac Wireless Network Adapter" = @{}
 			"0041   QCA6164 802.11ac Wireless Network Adapter" = @{}
-			"0042   QCA9377 802.11ac Wireless Network Adapter" = @{}
+			"0042   QCA9377 802.11ac Wireless Network Adapter" = @{
+				"11ad 08a6" = "Qualcomm Atheros QCA9377 802.11ac Wireless Network Adapter"
+			}
 			"0046   QCA9984 802.11ac Wave 2 Wireless Network Adapter" = @{}
 			"0050   QCA9887 802.11ac Wireless Network Adapter" = @{}
 			"0207   AR5210 Wireless Network Adapter [AR5000 802.11a]" = @{}
@@ -23970,6 +24075,7 @@ Class PCI_ID {
 			}
 			"0200   Hi1822 Family (2*100GE)" = @{
 				"19e5 d139" = "Hi1822 SP572 (2*100GE)"
+				"19e5 d13d" = "Hi1822 SC371 (2*100GE)"
 			}
 			"0202   Hi1822 Family (2*32G FC)" = @{
 				"19e5 d302" = "Hi1822 SP521 (2*32G FC)"
@@ -23984,6 +24090,7 @@ Class PCI_ID {
 			}
 			"0206   Hi1822 Family (2*25GE)" = @{
 				"19e5 d138" = "Hi1822 SP582 (2*25GE)"
+				"19e5 d13a" = "Hi1822 SC381 (2*25GE)"
 			}
 			"0210   Hi1822 Family (4*25GE)" = @{
 				"19e5 df2e" = "Hi1822 MZ532 MEZZ (4*25GE)"
@@ -23991,6 +24098,7 @@ Class PCI_ID {
 			"0211   Hi1822 Family (4*25GE)" = @{
 				"19e5 d12f" = "Hi1822 SP571 (4*25GE)"
 				"19e5 d137" = "Hi1822 SP581 (4*25GE)"
+				"19e5 d142" = "Hi1822 SP583 (4*25GE)"
 			}
 			"0212   Hi1822 Family (2*8G FC)" = @{
 				"19e5 d303" = "Hi1822 SP522 (2*8G FC)"
@@ -24001,6 +24109,7 @@ Class PCI_ID {
 			"1822   Hi1822 Family (4*25GE)" = @{
 				"19e5 d129" = "Hi1822 SP570 (4*25GE)"
 				"19e5 d136" = "Hi1822 SP580 (4*25GE)"
+				"19e5 d141" = "Hi1822 SP583 (4*25GE)"
 			}
 			"371e   Hi1822 Family Virtual Bridge" = @{}
 			"375e   Hi1822 Family Virtual Function" = @{}
@@ -24014,7 +24123,12 @@ Class PCI_ID {
 			"a127   HiSilicon SDI Accelerator" = @{}
 			"a12a   HiSilicon Add-on PCI-PCI Bridge" = @{}
 			"a220   HNS GE Network Controller" = @{}
-			"a221   HNS GE/10GE/25GE Network Controller" = @{}
+			"a221   HNS GE/10GE/25GE Network Controller" = @{
+				"19e5 0454" = "TM280"
+				"19e5 04cc" = "TM210"
+				"19e5 d14a" = "TM280 4*25G"
+				"19e5 d14b" = "TM210 4*GE"
+			}
 			"a222   HNS GE/10GE/25GE RDMA Network Controller" = @{}
 			"a224   HNS GE/10GE/25GE/50GE RDMA Network Controller" = @{}
 			"a226   HNS GE/10GE/25GE/50GE/100GE RDMA Network Controller" = @{}
@@ -24184,6 +24298,9 @@ Class PCI_ID {
 			"4006   Memory Ballooning Controller" = @{}
 		}
 		"1ab9   Espia Srl" = @{}
+		"1ac1   Global Unichip Corp." = @{
+			"089a   Coral Edge TPU" = @{}
+		}
 		"1ac8   Aeroflex Gaisler" = @{}
 		"1acc   Point of View BV" = @{}
 		"1ad7   Spectracom Corporation" = @{
@@ -24546,7 +24663,14 @@ Class PCI_ID {
 		"1c1c   Symphony" = @{
 			"0001   82C101" = @{}
 		}
-		"1c1f   SoftLab-NSK" = @{}
+		"1c1f   SoftLab-NSK" = @{
+			"0015   FD842" = @{}
+			"0019   FD722" = @{}
+			"001a   FD788" = @{}
+			"001b   FD720" = @{}
+			"001c   FD922" = @{}
+			"001d   Vega" = @{}
+		}
 		"1c28   Lite-On IT Corp. / Plextor" = @{
 			"0122   M6e PCI Express SSD [Marvell 88SS9183]" = @{}
 		}
@@ -24606,6 +24730,7 @@ Class PCI_ID {
 			"1283   PC300 NVMe Solid State Drive 256GB" = @{}
 			"1284   PC300 NVMe Solid State Drive 512GB" = @{}
 			"1285   PC300 NVMe Solid State Drive 1TB" = @{}
+			"1327   BC501 NVMe Solid State Drive 512GB" = @{}
 			"1504   SC300 512GB M.2 2280 SATA Solid State Drive" = @{}
 		}
 		"1c5f   Beijing Memblaze Technology Co. Ltd." = @{
@@ -24899,6 +25024,7 @@ Class PCI_ID {
 			"0401   StarDragon4800 PCI Express Root Port" = @{}
 		}
 		"1dc5   FADU Inc." = @{}
+		"1dcd   Liqid Inc." = @{}
 		"1dd8   Pensando Systems Inc" = @{
 			"1000   DSC Capri Upstream Port" = @{
 				"1dd8 4000" = "Naples 100Gb 2-port QSFP28 x16 8GB"
@@ -24984,6 +25110,9 @@ Class PCI_ID {
 		"1dfc   JSC NT-COM" = @{
 			"1181   TDM 8 Port E1/T1/J1 Adapter" = @{}
 		}
+		"1e0f   KIOXIA Corporation" = @{
+			"0007   NVMe SSD Controller Cx6" = @{}
+		}
 		"1e17   Arnold & Richter Cine Technik GmbH & Co. Betriebs KG" = @{}
 		"1e24   Squirrels Research Labs" = @{
 			"0101   Acorn CLE-101" = @{}
@@ -24995,6 +25124,9 @@ Class PCI_ID {
 			"1635   JCM35" = @{}
 		}
 		"1e26   Fujitsu Client Computing Limited" = @{}
+		"1e36   Shanghai Enflame Technology Co. Ltd" = @{
+			"0001   T10 [CloudBlazer]" = @{}
+		}
 		"1e38   Blaize, Inc" = @{}
 		"1e3d   Burlywood, Inc" = @{}
 		"1e49   Yangtze Memory Technologies Co.,Ltd" = @{}
@@ -25013,6 +25145,7 @@ Class PCI_ID {
 			"0002   Quantis-PCIe-40M" = @{}
 			"0003   Quantis-PCIe-240M" = @{}
 		}
+		"1e94   Calian SED" = @{}
 		"1fc0   Ascom (Finland) Oy" = @{
 			"0300   E2200 Dual E1/Rawpipe Card" = @{}
 			"0301   C5400 SHDSL/E1 Card" = @{}
@@ -26054,6 +26187,7 @@ Class PCI_ID {
 			"02d3   Comet Lake SATA AHCI Controller" = @{}
 			"02e0   Comet Lake Management Engine Interface" = @{}
 			"02e8   Serial IO I2C Host Controller" = @{}
+			"02e9   Comet Lake Serial IO I2C Host Controller" = @{}
 			"02f0   Wireless-AC 9462" = @{}
 			"02f9   Comet Lake Thermal Subsytem" = @{}
 			"02fc   Comet Lake Integrated Sensor Solution" = @{}
@@ -26136,6 +26270,27 @@ Class PCI_ID {
 				"8086 01f7" = "SCRU32"
 			}
 			"061f   80303 I/O Processor" = @{}
+			"068d   Comet Lake LPC Controller" = @{}
+			"06a3   Comet Lake PCH SMBus Controller" = @{}
+			"06a4   Comet Lake PCH SPI Controller" = @{}
+			"06a8   Comet Lake PCH Serial IO UART Host Controller #0" = @{}
+			"06a9   Comet Lake PCH Serial IO UART Host Controller #1" = @{}
+			"06aa   Comet Lake PCH Serial IO SPI Controller #0" = @{}
+			"06ab   Comet Lake PCH Serial IO SPI Controller #1" = @{}
+			"06ac   Comet Lake PCI Express Root Port #21" = @{}
+			"06b0   Comet Lake PCI Express Root Port #9" = @{}
+			"06c0   Comet Lake PCI Express Root Port #17" = @{}
+			"06c8   Comet Lake PCH cAVS" = @{}
+			"06e0   Comet Lake HECI Controller" = @{}
+			"06e8   Comet Lake PCH Serial IO I2C Controller #0" = @{}
+			"06e9   Comet Lake PCH Serial IO I2C Controller #1" = @{}
+			"06ea   Comet Lake PCH Serial IO I2C Controller #2" = @{}
+			"06eb   Comet Lake PCH Serial IO I2C Controller #3" = @{}
+			"06ed   Comet Lake USB 3.1 xHCI Host Controller" = @{}
+			"06ef   Comet Lake PCH Shared SRAM" = @{}
+			"06f0   Wi-Fi 6 AX201" = @{}
+			"06f9   Comet Lake PCH Thermal Controller" = @{}
+			"06fb   Comet Lake PCH Serial IO SPI Controller #2" = @{}
 			"0700   CE Media Processor A/V Bridge" = @{}
 			"0701   CE Media Processor NAND Flash Controller" = @{}
 			"0703   CE Media Processor Media Control Unit 1" = @{}
@@ -26960,6 +27115,7 @@ Class PCI_ID {
 				"1179 0001" = "PRO/1000 MT Mobile Connection"
 				"8086 101e" = "PRO/1000 MT Mobile Connection"
 			}
+			"101f   Ethernet Controller V710 for 5GBASE-T" = @{}
 			"1026   82545GM Gigabit Ethernet Controller" = @{
 				"1028 0168" = "Precision Workstation 670 Mainboard"
 				"1028 0169" = "Precision 470"
@@ -27789,6 +27945,7 @@ Class PCI_ID {
 				"108e 7b15" = "Sun Dual Port 10 GbE PCIe 2.0 Low Profile Adapter, Base-T"
 				"1137 00bf" = "Ethernet Converged Network Adapter X540-T2"
 				"1170 0052" = "Ethernet Controller 10-Gigabit X540-AT2"
+				"15d9 0734" = "AOC-STG-I2T"
 				"17aa 1073" = "ThinkServer X540-T2 AnyFabric"
 				"17aa 4006" = "Ethernet Controller 10-Gigabit X540-AT2"
 				"1bd4 001a" = "10G base-T DP ER102Ti3 Rack Adapter"
@@ -28222,6 +28379,7 @@ Class PCI_ID {
 			"1903   Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor Thermal Subsystem" = @{
 				"1028 06dc" = "Latitude E7470"
 				"1028 06e4" = "XPS 15 9550"
+				"103c 825b" = "OMEN-17-w001nv"
 				"17aa 225d" = "ThinkPad T480"
 			}
 			"1904   Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor Host Bridge/DRAM Registers" = @{
@@ -28240,6 +28398,7 @@ Class PCI_ID {
 			"190f   Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor Host Bridge/DRAM Registers" = @{}
 			"1910   Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor Host Bridge/DRAM Registers" = @{
 				"1028 06e4" = "XPS 15 9550"
+				"103c 825b" = "OMEN-17-w001nv"
 			}
 			"1911   Xeon E3-1200 v5/v6 / E3-1500 v5 / 6th/7th/8th Gen Core Processor Gaussian Mixture Model" = @{
 				"17aa 2247" = "ThinkPad T570"
@@ -28256,6 +28415,7 @@ Class PCI_ID {
 			"1919   Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor Imaging Unit" = @{}
 			"191b   HD Graphics 530" = @{
 				"1028 06e4" = "XPS 15 9550"
+				"103c 825b" = "OMEN-17-w001nv"
 			}
 			"191d   HD Graphics P530" = @{}
 			"191e   HD Graphics 515" = @{}
@@ -32567,6 +32727,7 @@ Class PCI_ID {
 				"1028 02da" = "OptiPlex 980"
 				"1028 040a" = "Latitude E6410"
 				"1028 040b" = "Latitude E6510"
+				"103c 1521" = "EliteBook 8540p"
 				"144d c06a" = "R730 Laptop"
 				"15d9 060d" = "C7SIM-Q Motherboard"
 				"17c0 10d2" = "Medion Akoya E7214 Notebook PC [MD98410]"
@@ -32920,6 +33081,7 @@ Class PCI_ID {
 			"5901   Xeon E3-1200 v6/7th Gen Core Processor PCIe Controller (x16)" = @{}
 			"5902   HD Graphics 610" = @{}
 			"5904   Xeon E3-1200 v6/7th Gen Core Processor Host Bridge/DRAM Registers" = @{
+				"1025 115f" = "Aspire E5-575G"
 				"17aa 2247" = "ThinkPad T570"
 				"17aa 224f" = "ThinkPad X1 Carbon 5th Gen"
 			}
@@ -32936,6 +33098,7 @@ Class PCI_ID {
 				"17aa 225d" = "ThinkPad T480"
 			}
 			"5916   HD Graphics 620" = @{
+				"1025 1094" = "Aspire E5-575G"
 				"17aa 2248" = "ThinkPad T570"
 				"17aa 224f" = "ThinkPad X1 Carbon 5th Gen"
 			}
@@ -33383,7 +33546,11 @@ Class PCI_ID {
 			"8a1f   Ice Lake Thunderbolt 3 PCI Express Root Port #1" = @{}
 			"8a21   Ice Lake Thunderbolt 3 PCI Express Root Port #2" = @{}
 			"8a23   Ice Lake Thunderbolt 3 PCI Express Root Port #3" = @{}
+			"8a51   Intel Iris Plus Graphics G7 (Ice Lake)" = @{}
 			"8a52   Iris Plus Graphics G7" = @{}
+			"8a56   Iris Plus Graphics G1 (Ice Lake)" = @{}
+			"8a5a   Iris Plus Graphics G4 (Ice Lake)" = @{}
+			"8a5c   Intel Iris Plus Graphics G4 (Ice Lake)" = @{}
 			"8c00   8 Series/C220 Series Chipset Family 4-port SATA Controller 1 [IDE mode]" = @{}
 			"8c01   8 Series Chipset Family 4-port SATA Controller 1 [IDE mode] - Mobile" = @{}
 			"8c02   8 Series/C220 Series Chipset Family 6-port SATA Controller 1 [AHCI mode]" = @{
@@ -33624,6 +33791,9 @@ Class PCI_ID {
 			"96a1   Integrated RAID" = @{}
 			"9a0b   Volume Management Device NVMe RAID Controller" = @{}
 			"9b41   UHD Graphics" = @{}
+			"9b54   10th Gen Core Processor Host Bridge/DRAM Registers" = @{}
+			"9b64   10th Gen Core Processor Host Bridge/DRAM Registers" = @{}
+			"9bc4   UHD Graphics" = @{}
 			"9c00   8 Series SATA Controller 1 [IDE mode]" = @{}
 			"9c01   8 Series SATA Controller 1 [IDE mode]" = @{}
 			"9c02   8 Series SATA Controller 1 [AHCI mode]" = @{}
@@ -33737,6 +33907,7 @@ Class PCI_ID {
 			"9ce5   Wildcat Point-LP Serial IO GSPI Controller #0" = @{}
 			"9ce6   Wildcat Point-LP Serial IO GSPI Controller #1" = @{}
 			"9d03   Sunrise Point-LP SATA Controller [AHCI mode]" = @{
+				"1025 115f" = "Acer Aspire E5-575G"
 				"1028 06dc" = "Latitude E7470"
 				"1028 06f3" = "Latitude 3570"
 				"103c 8079" = "EliteBook 840 G3"
@@ -33761,6 +33932,7 @@ Class PCI_ID {
 			"9d19   Sunrise Point-LP PCI Express Root Port #10" = @{}
 			"9d1a   Sunrise Point-LP PCI Express Root Port #11" = @{}
 			"9d21   Sunrise Point-LP PMC" = @{
+				"1025 115f" = "Acer Aspire E5-575G"
 				"1028 06dc" = "Latitude E7470"
 				"1028 06f3" = "Latitude 3570"
 				"103c 8079" = "EliteBook 840 G3"
@@ -33769,6 +33941,7 @@ Class PCI_ID {
 				"17aa 382a" = "B51-80 Laptop"
 			}
 			"9d23   Sunrise Point-LP SMBus" = @{
+				"1025 115f" = "Acer Aspire E5-575G"
 				"1028 06dc" = "Latitude E7470"
 				"1028 06f3" = "Latitude 3570"
 				"103c 8079" = "EliteBook 840 G3"
@@ -33783,6 +33956,7 @@ Class PCI_ID {
 			"9d2a   Sunrise Point-LP Serial IO SPI Controller #1" = @{}
 			"9d2d   Sunrise Point-LP Secure Digital IO Controller" = @{}
 			"9d2f   Sunrise Point-LP USB 3.0 xHCI Controller" = @{
+				"1025 115f" = "Acer Aspire E5-575G"
 				"1028 06dc" = "Latitude E7470"
 				"1028 06f3" = "Latitude 3570"
 				"103c 8079" = "EliteBook 840 G3"
@@ -33791,6 +33965,7 @@ Class PCI_ID {
 				"17aa 382a" = "B51-80 Laptop"
 			}
 			"9d31   Sunrise Point-LP Thermal subsystem" = @{
+				"1025 115f" = "Acer Aspire E5-575G"
 				"1028 06dc" = "Latitude E7470"
 				"1028 06f3" = "Latitude 3570"
 				"103c 8079" = "EliteBook 840 G3"
@@ -33801,6 +33976,7 @@ Class PCI_ID {
 			}
 			"9d35   Sunrise Point-LP Integrated Sensor Hub" = @{}
 			"9d3a   Sunrise Point-LP CSME HECI #1" = @{
+				"1025 115f" = "Acer Aspire E5-575G"
 				"1028 06dc" = "Latitude E7470"
 				"1028 06f3" = "Latitude 3570"
 				"103c 8079" = "EliteBook 840 G3"
@@ -33826,10 +34002,12 @@ Class PCI_ID {
 			"9d50   Sunrise Point LPC Controller" = @{}
 			"9d56   Sunrise Point-LP LPC Controller" = @{}
 			"9d58   Sunrise Point-LP LPC Controller" = @{
+				"1025 115f" = "Acer Aspire E5-575G"
 				"17aa 2247" = "ThinkPad T570"
 				"17aa 224f" = "ThinkPad X1 Carbon 5th Gen"
 			}
 			"9d60   Sunrise Point-LP Serial IO I2C Controller #0" = @{
+				"1025 115f" = "Acer Aspire E5-575G"
 				"1028 06f3" = "Latitude 3570"
 				"103c 8079" = "EliteBook 840 G3"
 				"17aa 225d" = "ThinkPad T480"
@@ -33848,6 +34026,7 @@ Class PCI_ID {
 				"17aa 382a" = "B51-80 Laptop"
 			}
 			"9d71   Sunrise Point-LP HD Audio" = @{
+				"1025 1094" = "Acer Aspire E5-575G"
 				"17aa 224f" = "ThinkPad X1 Carbon 5th Gen"
 				"17aa 225d" = "ThinkPad T480"
 			}
@@ -33914,6 +34093,7 @@ Class PCI_ID {
 			"a102   Q170/Q150/B150/H170/H110/Z170/CM236 Chipset SATA Controller [AHCI Mode]" = @{}
 			"a103   HM170/QM170 Chipset SATA Controller [AHCI Mode]" = @{
 				"1028 06e4" = "XPS 15 9550"
+				"103c 825b" = "OMEN-17-w001nv"
 			}
 			"a105   Sunrise Point-H SATA Controller [RAID mode]" = @{}
 			"a106   Q170/H170/Z170/CM236 Chipset SATA Controller [RAID Mode]" = @{}
@@ -33938,10 +34118,12 @@ Class PCI_ID {
 			"a120   100 Series/C230 Series Chipset Family P2SB" = @{}
 			"a121   100 Series/C230 Series Chipset Family Power Management Controller" = @{
 				"1028 06e4" = "XPS 15 9550"
+				"103c 825b" = "OMEN-17-w001nv"
 			}
 			"a122   Sunrise Point-H cAVS" = @{}
 			"a123   100 Series/C230 Series Chipset Family SMBus" = @{
 				"1028 06e4" = "XPS 15 9550"
+				"103c 825b" = "OMEN-17-w001nv"
 			}
 			"a124   100 Series/C230 Series Chipset Family SPI Controller" = @{}
 			"a125   100 Series/C230 Series Chipset Family Gigabit Ethernet Controller" = @{}
@@ -33952,15 +34134,18 @@ Class PCI_ID {
 			"a12a   100 Series/C230 Series Chipset Family Serial IO GSPI #1" = @{}
 			"a12f   100 Series/C230 Series Chipset Family USB 3.0 xHCI Controller" = @{
 				"1028 06e4" = "XPS 15 9550"
+				"103c 825b" = "OMEN-17-w001nv"
 			}
 			"a130   100 Series/C230 Series Chipset Family USB Device Controller (OTG)" = @{}
 			"a131   100 Series/C230 Series Chipset Family Thermal Subsystem" = @{
 				"1028 06e4" = "XPS 15 9550"
+				"103c 825b" = "OMEN-17-w001nv"
 			}
 			"a133   Sunrise Point-H Northpeak ACPI Function" = @{}
 			"a135   100 Series/C230 Series Chipset Family Integrated Sensor Hub" = @{}
 			"a13a   100 Series/C230 Series Chipset Family MEI Controller #1" = @{
 				"1028 06e4" = "XPS 15 9550"
+				"103c 825b" = "OMEN-17-w001nv"
 			}
 			"a13b   100 Series/C230 Series Chipset Family MEI Controller #2" = @{}
 			"a13c   100 Series/C230 Series Chipset Family IDE Redirection" = @{}
@@ -33982,6 +34167,7 @@ Class PCI_ID {
 			"a14d   QM170 Chipset LPC/eSPI Controller" = @{}
 			"a14e   HM170 Chipset LPC/eSPI Controller" = @{
 				"1028 06e4" = "XPS 15 9550"
+				"103c 825b" = "OMEN-17-w001nv"
 			}
 			"a14f   Sunrise Point-H LPC Controller" = @{}
 			"a150   CM236 Chipset LPC/eSPI Controller" = @{}
@@ -34002,6 +34188,7 @@ Class PCI_ID {
 			"a15f   Sunrise Point-H LPC Controller" = @{}
 			"a160   100 Series/C230 Series Chipset Family Serial IO I2C Controller #0" = @{
 				"1028 06e4" = "XPS 15 9550"
+				"103c 825b" = "OMEN-17-w001nv"
 			}
 			"a161   100 Series/C230 Series Chipset Family Serial IO I2C Controller #1" = @{
 				"1028 06e4" = "XPS 15 9550"
@@ -34015,6 +34202,7 @@ Class PCI_ID {
 			"a16a   100 Series/C230 Series Chipset Family PCI Express Root Port #20" = @{}
 			"a170   100 Series/C230 Series Chipset Family HD Audio Controller" = @{
 				"1028 06e4" = "XPS 15 9550"
+				"103c 825b" = "OMEN-17-w001nv"
 			}
 			"a171   CM238 HD Audio Controller" = @{}
 			"a182   C620 Series Chipset Family SATA Controller [AHCI mode]" = @{}
@@ -34153,6 +34341,7 @@ Class PCI_ID {
 			"a306   Q370 Chipset LPC/eSPI Controller" = @{}
 			"a309   Cannon Point-LP LPC Controller" = @{}
 			"a30c   QM370 Chipset LPC/eSPI Controller" = @{}
+			"a30d   HM470 Chipset LPC/eSPI Controller" = @{}
 			"a323   Cannon Lake PCH SMBus Controller" = @{}
 			"a324   Cannon Lake PCH SPI Controller" = @{}
 			"a328   Cannon Lake PCH Serial IO UART Host Controller" = @{}
@@ -34238,7 +34427,9 @@ Class PCI_ID {
 			"d157   Core Processor System Control and Status Registers" = @{}
 			"d158   Core Processor Miscellaneous Registers" = @{}
 			"f1a5   SSD 600P Series" = @{}
-			"f1a6   SSD Pro 7600p/760p/E 6100p Series" = @{}
+			"f1a6   SSD Pro 7600p/760p/E 6100p Series" = @{
+				"8086 390b" = "Intel Corporation SSD Pro 7600p/760p/E 6100p Series [NVM Express]"
+			}
 			"f1a8   SSD 660P Series" = @{}
 		}
 		"8088   Beijing Wangxun Technology Co., Ltd." = @{

@@ -1,4 +1,4 @@
-$pci_ids = Get-Content ".\apps\device\pci.ids" | Where { $_[0] -ne '#' -and $_ -ne "" }
+$pci_ids = Get-Content ".\build\apps\device\pci.ids" | Where { $_[0] -ne '#' -and $_ -ne "" }
 
 $device_list = @{ }
 
@@ -33,4 +33,4 @@ $pci_ids | % {
     }
 }
 
-$device_list | ConvertTo-Json -Depth 10 | Set-Content ".\apps\device\pci_ids.json"
+$device_list | ConvertTo-Json -Depth 10 | Set-Content ".\build\apps\device\pci_ids.json"
