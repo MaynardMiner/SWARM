@@ -45,7 +45,8 @@
             "wildkeccak": "",
             "xevan": "",
             "x25x": "",
-            "skein2": ""
+            "skein2": "",
+            "x17r": ""
         },
         "difficulty": {
             "anime": "",
@@ -88,7 +89,8 @@
             "wildkeccak": "",
             "xevan": "",
             "x25x": "",
-            "skein2": ""
+            "skein2": "",
+            "x17r": ""
         },
         "naming": {
             "anime": "anime",
@@ -131,7 +133,8 @@
             "wildkeccak": "wildkeccak",
             "xevan": "xevan",
             "x25x": "x25x",
-            "skein2": "skein2"
+            "skein2": "skein2",
+            "x17r": "x17r"
         },
         "fee": {
             "anime": 1,
@@ -174,7 +177,8 @@
             "wildkeccak": 1,
             "xevan": 1,
             "x25x": 1,
-            "skein2": 1
+            "skein2": 1,
+            "x17r": 1
         }
     }
 }

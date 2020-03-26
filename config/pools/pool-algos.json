@@ -966,6 +966,15 @@
       "comma seperated"
     ]
   },
+  "x17r": {
+    "alt_names": [
+      "x17r"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "x18": {
     "alt_names": [
       "x18"
