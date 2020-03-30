@@ -2133,3 +2133,27 @@ as is will not work correctly.
 ## Updates
 * Gminer updated.
 * Wildrig updated
+
+############################################
+############################################
+
+# SWARM 3.0.9
+
+## What's New?
+ * Windows version now supports AMD Navi GPU
+   (Stats and overclocking in HiveOS).
+  * Note: Some miners may not support Navi GPUs
+
+## Improvments-
+ * Fixed setting P_States for Vega Cards.
+ * Optimized OC for Navi GPU.
+   * DPM and MDPM stats are ignored.
+ * added grincuckarood back to lolminer.
+
+## Fixes
+ * Fixed eaglesong for AMD in gminer.
+
+## Updates
+* lolminer updated
+* gminer updated
+* NBminer updated
