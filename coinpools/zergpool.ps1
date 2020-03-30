@@ -150,7 +150,7 @@ if ($Name -in $(arg).PoolName) {
 
             if ($Wallets.AltWallet1.keys) {
                 $Wallets.AltWallet1.Keys | ForEach-Object {
-                    if ($Wallets.AltWallet1.$_.Pools -contains $Name) {
+                    if ($Wallets.AltWallet1.$_.Pools -contains $P_Name) {
                         $Pass1 = $_;
                         $User1 = $Wallets.AltWallet1.$_.address;
                     }
@@ -158,7 +158,7 @@ if ($Name -in $(arg).PoolName) {
             }
             if ($Wallets.AltWallet2.keys) {
                 $Wallets.AltWallet2.Keys | ForEach-Object {
-                    if ($Wallets.AltWallet2.$_.Pools -contains $Name) {
+                    if ($Wallets.AltWallet2.$_.Pools -contains $P_Name) {
                         $Pass2 = $_;
                         $User2 = $Wallets.AltWallet2.$_.address;
                     }
@@ -166,7 +166,7 @@ if ($Name -in $(arg).PoolName) {
             }
             if ($Wallets.AltWallet3.keys) {
                 $Wallets.AltWallet3.Keys | ForEach-Object {
-                    if ($Wallets.AltWallet3.$_.Pools -contains $Name) {
+                    if ($Wallets.AltWallet3.$_.Pools -contains $P_Name) {
                         $Pass3 = $_;
                         $User3 = $Wallets.AltWallet3.$_.address;
                     }

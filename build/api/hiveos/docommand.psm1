@@ -108,7 +108,7 @@ function Global:Start-Webcommand {
                 Start-Sleep -S 3
             }
             $exec = "$PSHOME\pwsh.exe"
-            $File = "($(vars).Dir)\build\powershell\scripts\reboot.ps1"
+            $File = "$($(vars).Dir)\build\powershell\scripts\reboot.ps1"
             Start-Process $exec -ArgumentList "-executionpolicy bypass -windowstyle maximized -file `"$file`"" -WindowStyle Minimized -Verb Runas
             exit
         }
