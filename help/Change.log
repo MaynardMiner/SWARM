@@ -2151,9 +2151,13 @@ as is will not work correctly.
  * added grincuckarood back to lolminer.
  * Windows: Mem type and Mem vendor for AMD cards on HiveOS.
  * Windows: Force Pstate2 is turned off in each GPU.
+ * Windows: teamredminer is now optional ``-Optional teamredminer``
+   * Windows only. Teamredminer works fine in linux, but does not
+     support NAVI gpu.
 
 ## Fixes
  * Fixed eaglesong for AMD in gminer.
+ * Fixed Altwallet settings in wallet.json
 
 ## Updates
 * lolminer updated
