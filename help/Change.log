@@ -2150,6 +2150,7 @@ as is will not work correctly.
    * DPM and MDPM stats are ignored.
  * added grincuckarood back to lolminer.
  * Windows: Mem type and Mem vendor for AMD cards on HiveOS.
+ * Windows: Force Pstate2 is turned off in each GPU.
 
 ## Fixes
  * Fixed eaglesong for AMD in gminer.
