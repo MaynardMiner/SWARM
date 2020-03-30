@@ -18,9 +18,9 @@
     "NVIDIA2": ".\\bin\\nbminer-2\\nbminer.exe",
     "NVIDIA3": ".\\bin\\nbminer-3\\nbminer.exe",
     "minername": "nbminer.exe",
-    "version": "27.7",
+    "version": "28.0",
     "optional": "No",
-    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v27.7/NBMiner_27.7_Win.zip"
+    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v28.0/NBMiner_28.0_Win.zip"
   },
   "cc-sha3d": {
     "name": "cc-sha3d",
@@ -106,9 +106,9 @@
     "NVIDIA2": ".\\bin\\gminer-2\\miner.exe",
     "NVIDIA3": ".\\bin\\gminer-3\\miner.exe",
     "minername": "miner.exe",
-    "version": "2.03",
+    "version": "2.04",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.03/gminer_2_03_windows64.zip"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.04/gminer_2_04_windows64.zip"
   },
   "claymore": {
     "name": "claymore",

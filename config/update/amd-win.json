@@ -51,9 +51,9 @@
     "AMD2": ".\\bin\\gminer-amd-2\\miner.exe",
     "AMD3": ".\\bin\\gminer-amd-3\\miner.exe",
     "minername": "miner.exe",
-    "version": "2.03",
+    "version": "2.04",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.03/gminer_2_03_windows64.zip"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.04/gminer_2_04_windows64.zip"
   },
   "phoenix-amd": {
     "name": "phoenix-amd",
@@ -227,8 +227,8 @@
     "AMD2": ".\\bin\\nbminer-amd-2\\nbminer.exe",
     "AMD3": ".\\bin\\nbminer-amd-3\\nbminer.exe",
     "minername": "nbminer.exe",
-    "version": "27.7",
+    "version": "28.0",
     "optional": "No",
-    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v27.7/NBMiner_27.7_Win.zip"
+    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v28.0/NBMiner_28.0_Win.zip"
   }
 }

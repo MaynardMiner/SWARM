@@ -671,6 +671,11 @@ Access Denied Error prevented.
                                     if ($ChangeFile -eq "gminer.json") {
                                         $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                             if ($_ -ne "name") {
+                                                $Data.$_.commands | Add-Member "kaapow" "" -ErrorAction SilentlyContinue
+                                                $Data.$_.difficulty | Add-Member "kaapow" "" -ErrorAction SilentlyContinue 
+                                                $Data.$_.naming | Add-Member "kaapow" "kapow" -ErrorAction SilentlyContinue
+                                                $Data.$_.fee | Add-Member "kaapow" 2 -ErrorAction SilentlyContinue
+
                                                 $Data.$_.commands | Add-Member "cuckatoo31" "" -ErrorAction SilentlyContinue
                                                 $Data.$_.difficulty | Add-Member "cuckatoo31" "" -ErrorAction SilentlyContinue 
                                                 $Data.$_.naming | Add-Member "cuckatoo31" "cuckatoo31" -ErrorAction SilentlyContinue
@@ -914,6 +919,7 @@ Access Denied Error prevented.
                                         $Data | add-Member "sha3d" @{alt_names = @("sha3d"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                         $Data | add-Member "cuckatoo32" @{alt_names = @("cuckatoo32","grincuckatoo32"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                         $Data | add-Member "scryptn2" @{alt_names = @("scryptn2"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
+                                        $Data | add-Member "kaapow" @{alt_names = @("kaapow,kapow"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                     }
                                 
 

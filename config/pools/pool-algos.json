@@ -533,6 +533,16 @@
       "comma seperated"
     ]
   },
+  "kaapow": {
+    "alt_names": [
+      "kapow",
+      "kaapow"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "keccak": {
     "alt_names": [
       "keccak"
