@@ -126,6 +126,10 @@ function Global:Start-NVIDIAOC($NewOC) {
         }
     }
 
+    for ($i = 0; $i -lt $OCCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {
+        $OCArgs += "-forcepstate:$($i);0 "
+    }
+
     if ([string]$OcArgs -ne "") {
         $script += "Invoke-Expression `'.\inspector\nvidiaInspector.exe $OCArgs`'"
         if ($FansArgs) { $FansArgs | ForEach-Object { $script += "Invoke-Expression `'.\nvfans\nvfans.exe $($_)`'" } }
@@ -314,7 +318,7 @@ function Global:Start-AMDOC($NewOC) {
             if ($CoreSpeed) { 
                 $ClockSpeed = $CoreSpeed
             }
-            if($CoreVoltage) {
+            if ($CoreVoltage) {
                 $ClockVoltage = $CoreVoltage
             }
             $OCArgs += "GPU_Min=$Min "
