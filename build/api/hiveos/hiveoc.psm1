@@ -155,7 +155,7 @@ function Global:Start-AMDOC($NewOC) {
     
     try {
         $stats = @()
-        if([Environment]::Is64BitOperatingSystem) {
+        if ([Environment]::Is64BitOperatingSystem) {
             $odvii = ".\build\apps\odvii\odvii_x64.exe"
         } 
         else {
@@ -247,63 +247,86 @@ function Global:Start-AMDOC($NewOC) {
             else { $Ref_setting = $AMDREF[$Select] }
         }
 
-        ## Core Settings
-        if ($CoreState) {
-            $ClockVoltage = $stats[$select].'Clock Defaults'."Vddc P_State 0"
-            $ClockSpeed = $stats[$select].'Clock Defaults'."Clock P_State 0"
+        ## Core Settings            
+        
+        $Version = $stats[$select].Version;
+
+        $ClockVoltage = $stats[$select].'Clock Defaults'."Vddc P_State 0"
+        $ClockSpeed = $stats[$select].'Clock Defaults'."Clock P_State 0"
+        $Core_States = $stats[$select].'Core P_States';
+        $Min = $ClockSpeed
+        
+        if ($version -eq "8") {
+            $OCArgs += "GPU_P0=$ClockSpeed;$ClockVoltage "
+        }
+        else {
             $OCArgs += "GPU_P0=$ClockSpeed;$ClockVoltage;0 "
-            $ocmessage += "Setting GPU $($OCCount.AMD.$i) P0 Core Clock To $($ClockSpeed), Voltage to $ClockVoltage"
-        }        
+        }
+        $ocmessage += "Setting GPU $($OCCount.AMD.$i) P0 Core Clock To $($ClockSpeed), Voltage to $ClockVoltage"     
 
-        $Core_States = $stats[$select].'Core P_States'
-        for ($j = 1; $j -lt $Core_States; $j++) {
-
-            $ClockVoltage = $stats[$select].'Clock Defaults'."Vddc P_State $j"
-            $ClockSpeed = $stats[$select].'Clock Defaults'."Clock P_State $j"
-
-            if ($CoreSpeed) { 
-                if ($AMDAgg -eq 1) {
-                    $ClockSpeed = $CoreSpeed 
-                } 
-                elseif ($CoreState -eq $j) {
-                    $ClockSpeed = $CoreSpeed
+        if ($Version -ne "8") {
+            for ($j = 1; $j -lt $Core_States; $j++) {
+                $ClockVoltage = $stats[$select].'Clock Defaults'."Vddc P_State $j"
+                $ClockSpeed = $stats[$select].'Clock Defaults'."Clock P_State $j"
+                if ($CoreSpeed) { 
+                    if ($AMDAgg -eq 1) {
+                        $ClockSpeed = $CoreSpeed 
+                    } 
+                    elseif ($CoreState -eq $j) {
+                        $ClockSpeed = $CoreSpeed
+                    }
+                    elseif ($j -eq ($Core_States - 1)) {
+                        $ClockSpeed = $CoreSpeed
+                    }
                 }
-                elseif ($j -eq ($Core_States - 1)) {
-                    $ClockSpeed = $CoreSpeed
+                if ($CoreVoltage) { 
+                    if ($AMDAgg -eq 1) {
+                        $ClockVoltage = $CoreVoltage 
+                    } 
+                    elseif ($CoreState -eq $j) {
+                        $ClockVoltage = $CoreVoltage
+                    }
+                    elseif ($j -eq ($Core_States - 1)) {
+                        $ClockVoltage = $CoreVoltage
+                    }
                 }
-            }
 
-            if ($CoreVoltage) { 
-                if ($AMDAgg -eq 1) {
-                    $ClockVoltage = $CoreVoltage 
-                } 
-                elseif ($CoreState -eq $j) {
-                    $ClockVoltage = $CoreVoltage
-                }
-                elseif ($j -eq ($Core_States - 1)) {
-                    $ClockVoltage = $CoreVoltage
-                }
-            }
-
-            if ($CoreState) {
-                if ($j -eq $CoreState) {
-                    $OCArgs += "GPU_P$j=$ClockSpeed;$ClockVoltage "
-                    $ocmessage += "Setting GPU DPM To P$J"
-                    $ocmessage += "Setting GPU $($OCCount.AMD.$i) P$J Core Clock To $($ClockSpeed), Voltage to $ClockVoltage"
+                if ($CoreState) {
+                    if ($j -eq $CoreState) {
+                        $OCArgs += "GPU_P$j=$ClockSpeed;$ClockVoltage "
+                        $ocmessage += "Setting GPU DPM To P$J"
+                        $ocmessage += "Setting GPU $($OCCount.AMD.$i) P$J Core Clock To $($ClockSpeed), Voltage to $ClockVoltage"
+                    }
+                    else {
+                        $OCArgs += "GPU_P$j=$ClockSpeed;$ClockVoltage;0 "
+                        $ocmessage += "Setting GPU $($OCCount.AMD.$i) P$J Core Clock To $($ClockSpeed), Voltage to $ClockVoltage"
+                    }
                 }
                 else {
-                    $OCArgs += "GPU_P$j=$ClockSpeed;$ClockVoltage;0 "
+                    $OCArgs += "GPU_P$j=$ClockSpeed;$ClockVoltage "
                     $ocmessage += "Setting GPU $($OCCount.AMD.$i) P$J Core Clock To $($ClockSpeed), Voltage to $ClockVoltage"
                 }
             }
-            else {
-                $OCArgs += "GPU_P$j=$ClockSpeed;$ClockVoltage "
-                $ocmessage += "Setting GPU $($OCCount.AMD.$i) P$J Core Clock To $($ClockSpeed), Voltage to $ClockVoltage"
+        }
+        else {
+            $ClockVoltage = $stats[$select].'Clock Defaults'."Vddc P_State 2"
+            $ClockSpeed = $stats[$select].'Clock Defaults'."Clock P_State 2"
+            if ($CoreSpeed) { 
+                $ClockSpeed = $CoreSpeed
             }
+            if($CoreVoltage) {
+                $ClockVoltage = $CoreVoltage
+            }
+            $OCArgs += "GPU_Min=$Min "
+            $OCArgs += "GPU_Max=$ClockSpeed "
+            $OCArgs += "GPU_P2=$ClockSpeed;$ClockVoltage "
+            $ocmessage += "Setting GPU $($OCCount.AMD.$i) P2 Core Clock To $($ClockSpeed), Voltage to $ClockVoltage"
+            $ocmessage += "Setting GPU $($OCCount.AMD.$i) Min Core Clock To $($Min)"
+            $ocmessage += "Setting GPU $($OCCount.AMD.$i) Max Core Clock To $($ClockSpeed)"
         }
 
         ## Mem Settings
-        if ($MemState) {
+        if ($MemState -and $version -ne "8") {
             $ClockVoltage = $stats[$select].'Memory Defaults'."Vddc P_State 0"
             $ClockSpeed = $stats[$select].'Memory Defaults'."Clock P_State 0"
             $OCArgs += "Mem_P0=$ClockSpeed;$ClockVoltage;0 "
@@ -311,7 +334,11 @@ function Global:Start-AMDOC($NewOC) {
         }
 
         $Mem_States = $stats[$select].'Memory P_States'
-        for ($j = 1; $j -lt $Mem_States; $j++) {
+        $states = 0;
+        if ($version -ne "8") {
+            $states = 1
+        }
+        for ($j = $states; $j -lt $Mem_States; $j++) {
 
             $ClockVoltage = $stats[$select].'Memory Defaults'."Vddc P_State $j"
             $ClockSpeed = $stats[$select].'Memory Defaults'."Clock P_State $j"
@@ -325,26 +352,33 @@ function Global:Start-AMDOC($NewOC) {
                 }
             }
 
-            if ($MemState) {
-                if ($j -eq $MemState) {
-                    $OCArgs += "Mem_P$j=$ClockSpeed;$ClockVoltage "
-                    $ocmessage += "Setting GPU MDPM To P$J "
-                    $ocmessage += "Setting GPU $($OCCount.AMD.$i) P$J Memory Clock To $($ClockSpeed)"
+            if ($version -ne "8") {
+                if ($MemState) {
+                    if ($j -eq $MemState) {
+                        $OCArgs += "Mem_P$j=$ClockSpeed;$ClockVoltage "
+                        $ocmessage += "Setting GPU MDPM To P$J "
+                        $ocmessage += "Setting GPU $($OCCount.AMD.$i) P$J Memory Clock To $($ClockSpeed)"
+                    }
+                    else {
+                        $OCArgs += "Mem_P$j=$ClockSpeed;$ClockVoltage;0 "
+                        $ocmessage += "Setting GPU $($OCCount.AMD.$i) P$J Memory Clock To $($ClockSpeed)"
+                    }
                 }
                 else {
-                    $OCArgs += "Mem_P$j=$ClockSpeed;$ClockVoltage;0 "
+                    $OCArgs += "Mem_P$j=$ClockSpeed;$ClockVoltage "
                     $ocmessage += "Setting GPU $($OCCount.AMD.$i) P$J Memory Clock To $($ClockSpeed)"
                 }
             }
             else {
-                $OCArgs += "Mem_P$j=$ClockSpeed;$ClockVoltage "
-                $ocmessage += "Setting GPU $($OCCount.AMD.$i) P$J Memory Clock To $($ClockSpeed)"
+                $OCArgs += "Mem_Max=$MemSpeed "
+                $ocmessage += "Setting GPU $($OCCount.AMD.$i) Memory Max Speed to $($MemSpeed)"
             }
+
         }
 
         ## Fan Settings
         if ($FanSpeed) {
-            $OCArgs += "Fan_ZeroRPM=0 Fan_P0=85;$($FanSpeed) Fan_P1=85;$($FanSpeed) Fan_P2=85;$($FanSpeed) Fan_P3=85;$($FanSpeed) Fan_P4=85;$($FanSpeed) "
+            $OCArgs += "Fan_ZeroRPM=0 Fan_P0=25;$($FanSpeed) Fan_P1=25;$($FanSpeed) Fan_P2=25;$($FanSpeed) Fan_P3=25;$($FanSpeed) Fan_P4=25;$($FanSpeed) "
             $ocmessage += "Setting GPU $($OCCount.AMD.$i) Fan Speed To $($FanSpeed)`%"
         }
         
