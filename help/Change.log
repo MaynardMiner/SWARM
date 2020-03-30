@@ -2142,7 +2142,7 @@ as is will not work correctly.
 ## What's New?
  * Windows version now supports AMD Navi GPU
    (Stats and overclocking in HiveOS).
-  * Note: Some miners may not support Navi GPUs
+   * Note: Some miners may not support Navi GPUs
 
 ## Improvments-
  * Fixed setting P_States for Vega Cards.
