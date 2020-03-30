@@ -98,7 +98,7 @@ Function Global:Get-Bus {
                 "subvendor" = $_.subvendor
                 "mem"       = "$($_.memsize)MB"
                 "vbios"     = $_.biosversion
-                "mem_type"  = $_.memvendor
+                "mem_type"  = "$($_.memvendor) $($_.memtype)"
             }
         }
         elseif ($_.vendorid -eq "10DE") {
