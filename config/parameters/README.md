@@ -9,7 +9,7 @@ There can be up to three different files here, each has a specific purpose.
 * Is the basic default settings.
 * If a user does not specify an argument, the setting here will be used.
 
-## arguments.json
+## commandline.json
 * Created when launched.
 * Contains starting arguments for user.
 * If user did not specify a parameter- SWARM will use from default.json.

@@ -26,7 +26,7 @@ function Global:Get-Parameters {
     }
     ## else use arguments user specified.
     else {
-        $arguments = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
+        $arguments = Get-Content ".\config\parameters\commandline.json" | ConvertFrom-Json
         ## Force Auto-Coin if Coin is specified.
         if([string]$arguments.coin -ne ""){$arguments.Auto_Coin = "Yes"}
         $arguments.PSObject.Properties.Name | % { $(arg).Add("$($_)", $arguments.$_) }

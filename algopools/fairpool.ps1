@@ -37,7 +37,7 @@ if ($Name -in $(arg).PoolName) {
     $FeeTable = $Global:Config.vars.FeeTable
     $Hashrate_Table = $Global:Config.vars.Pool_HashRates
     $Get_Params = $Global:Config.params
-    $Get_Wallets = $Wallets
+    $Get_Wallets = $Global:Wallets
 
     Switch ($(arg).Location) {
         "US" { $Region = "us1.fairpool.pro" }
@@ -53,7 +53,7 @@ if ($Name -in $(arg).PoolName) {
         $sub = $using:X
         $reg = $using:Region
         $Params = $using:Get_Params
-        $Wallets = $using:Get_Wallets
+        $A_Wallets = $using:Get_Wallets
         $StatAlgo = $_.Name -replace "`_", "`-"
         $Divisor = 1000000 * $_.mbtc_mh_factor
         $Pool_Port = $_.port
@@ -100,12 +100,12 @@ if ($Name -in $(arg).PoolName) {
             $Level = [Math]::Max($Level + ($Level * $Deviation), $SmallestValue)
         }
 
-        $Pass1 = $Wallets.Wallet1.Keys
-        $User1 = $Wallets.Wallet1.$($Params.Passwordcurrency1).address
-        $Pass2 = $Wallets.Wallet2.Keys
-        $User2 = $Wallets.Wallet2.$($Params.Passwordcurrency2).address
-        $Pass3 = $Wallets.Wallet3.Keys
-        $User3 = $Wallets.Wallet3.$($Params.Passwordcurrency3).address
+        $Pass1 = $A_Wallets.Wallet1.Keys
+        $User1 = $A_Wallets.Wallet1.$($Params.Passwordcurrency1).address
+        $Pass2 = $A_Wallets.Wallet2.Keys
+        $User2 = $A_Wallets.Wallet2.$($Params.Passwordcurrency2).address
+        $Pass3 = $A_Wallets.Wallet3.Keys
+        $User3 = $A_Wallets.Wallet3.$($Params.Passwordcurrency3).address
 
         [Pool]::New(
             ## Symbol

@@ -162,7 +162,7 @@ else {
 if ($Start -eq $true) {
     $Defaults.PSObject.Properties.Name | % { if ($_ -notin $Parsed.keys) { $Parsed.Add("$($_)", $Defaults.$_) } }
 
-    $Parsed | convertto-json | Out-File ".\config\parameters\arguments.json"
+    $Parsed | convertto-json | Out-File ".\config\parameters\commandline.json"
 
     if ($IsWindows) {
         $host.ui.RawUI.WindowTitle = "SWARM";

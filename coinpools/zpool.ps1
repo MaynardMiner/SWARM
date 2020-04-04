@@ -128,7 +128,8 @@ if ($Name -in $(arg).PoolName) {
         $Selected = $_
         $Sorted = $using:Pool_Sorted 
         $sub = $using:X
-        $Wallets = $using:Get_Wallets
+        $P_Name = $using:Name
+        $A_Wallets = $using:Get_Wallets
         $AltWallets = $using:Get_AltWallets
         $Params = $using:Get_Params
         $reg = $using:Region
@@ -150,34 +151,34 @@ if ($Name -in $(arg).PoolName) {
             $mc = "zap=$Pool_Symbol,"
 
             ## Wallet Swapping/Solo mining
-            $Pass1 = $Wallets.Wallet1.Keys
-            $User1 = $Wallets.Wallet1.$($Params.Passwordcurrency1).address
-            $Pass2 = $Wallets.Wallet2.Keys
-            $User2 = $Wallets.Wallet2.$($Params.Passwordcurrency2).address
-            $Pass3 = $Wallets.Wallet3.Keys
-            $User3 = $Wallets.Wallet3.$($Params.Passwordcurrency3).address
+            $Pass1 = $A_Wallets.Wallet1.Keys
+            $User1 = $A_Wallets.Wallet1.$($Params.Passwordcurrency1).address
+            $Pass2 = $A_Wallets.Wallet2.Keys
+            $User2 = $A_Wallets.Wallet2.$($Params.Passwordcurrency2).address
+            $Pass3 = $A_Wallets.Wallet3.Keys
+            $User3 = $A_Wallets.Wallet3.$($Params.Passwordcurrency3).address
 
-            if ($Wallets.AltWallet1.keys) {
-                $Wallets.AltWallet1.Keys | ForEach-Object {
-                    if ($Wallets.AltWallet1.$_.Pools -contains $P_Name) {
+            if ($A_Wallets.AltWallet1.keys) {
+                $A_Wallets.AltWallet1.Keys | ForEach-Object {
+                    if ($A_Wallets.AltWallet1.$_.Pools -contains $P_Name) {
                         $Pass1 = $_;
-                        $User1 = $Wallets.AltWallet1.$_.address;
+                        $User1 = $A_Wallets.AltWallet1.$_.address;
                     }
                 }
             }
-            if ($Wallets.AltWallet2.keys) {
-                $Wallets.AltWallet2.Keys | ForEach-Object {
-                    if ($Wallets.AltWallet2.$_.Pools -contains $P_Name) {
+            if ($A_Wallets.AltWallet2.keys) {
+                $A_Wallets.AltWallet2.Keys | ForEach-Object {
+                    if ($A_Wallets.AltWallet2.$_.Pools -contains $P_Name) {
                         $Pass2 = $_;
-                        $User2 = $Wallets.AltWallet2.$_.address;
+                        $User2 = $A_Wallets.AltWallet2.$_.address;
                     }
                 }
             }
-            if ($Wallets.AltWallet3.keys) {
-                $Wallets.AltWallet3.Keys | ForEach-Object {
-                    if ($Wallets.AltWallet3.$_.Pools -contains $P_Name) {
+            if ($A_Wallets.AltWallet3.keys) {
+                $A_Wallets.AltWallet3.Keys | ForEach-Object {
+                    if ($A_Wallets.AltWallet3.$_.Pools -contains $P_Name) {
                         $Pass3 = $_;
-                        $User3 = $Wallets.AltWallet3.$_.address;
+                        $User3 = $A_Wallets.AltWallet3.$_.address;
                     }
                 }
             }
