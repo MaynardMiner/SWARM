@@ -4,16 +4,20 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "eaglesong": ""
+            "eaglesong": "",
+            "handshake": ""
         },
         "difficulty": {
-            "eaglesong": ""
+            "eaglesong": "",
+            "handshake": ""
         },
         "naming": {
-            "eaglesong": "eaglesong"
+            "eaglesong": "eaglesong",
+            "handshake": "hns"
         },
         "fee": {
-            "eaglesong": 2
+            "eaglesong": 2,
+            "handshake": 2
         }
     },
     "name": "nbminer-amd"

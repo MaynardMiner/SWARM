@@ -423,10 +423,26 @@ Access Denied Error prevented.
                                                 $Data.$_.naming | Add-Member "eaglesong" "eaglesong" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "eaglesong" 2 -ErrorAction SilentlyContinue
 
+                                                $Data.$_.commands | Add-Member "handshake" "" -ErrorAction SilentlyContinue
+                                                $Data.$_.difficulty | Add-Member "handshake" "" -ErrorAction SilentlyContinue 
+                                                $Data.$_.naming | Add-Member "handshake" "hns" -ErrorAction SilentlyContinue
+                                                $Data.$_.fee | Add-Member "handshake" 2 -ErrorAction SilentlyContinue
+
                                                 $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
                                                 $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
                                                 $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
                                                 $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
+                                            }
+                                        }
+                                    }
+
+                                    if ($ChangeFile -eq "nbminer-amd.json") {
+                                        $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                                            if ($_ -ne "name") {
+                                                $Data.$_.commands | Add-Member "handshake" "" -ErrorAction SilentlyContinue
+                                                $Data.$_.difficulty | Add-Member "handshake" "" -ErrorAction SilentlyContinue 
+                                                $Data.$_.naming | Add-Member "handshake" "hns" -ErrorAction SilentlyContinue
+                                                $Data.$_.fee | Add-Member "handshake" 2 -ErrorAction SilentlyContinue
                                             }
                                         }
                                     }
