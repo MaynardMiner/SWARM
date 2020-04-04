@@ -9,28 +9,32 @@
             "cuckaroo29d": "",
             "cuckatoo31": "",
             "eaglesong": "",
-            "handshake": ""
+            "handshake": "",
+            "kaapow": ""
         },
         "difficulty": {
             "ethash": "",
             "cuckaroo29d": "",
             "cuckatoo31": "",
             "eaglesong": "",
-            "handshake": ""
+            "handshake": "",
+            "kaapow": ""
         },
         "naming": {
             "ethash": "ethash",
             "cuckaroo29d": "cuckaroo29d",
             "cuckatoo31": "cuckatoo31",
             "eaglesong": "eaglesong",
-            "handshake": ""
+            "handshake": "hns",
+            "kaapow": "kapow"
         },
         "fee": {
             "ethash": 0.65,
             "cuckaroo29d": 2,
             "cuckatoo31": 2,
             "eaglesong": 2,
-            "handshake": 2
+            "handshake": 2,
+            "kaapow": 2
         }
     },
     "NVIDIA2": {
@@ -42,28 +46,32 @@
             "cuckaroo29d": "",
             "cuckatoo31": "",
             "eaglesong": "",
-            "handshake": ""
+            "handshake": "",
+            "kaapow": ""
         },
         "difficulty": {
             "ethash": "",
             "cuckaroo29d": "",
             "cuckatoo31": "",
             "eaglesong": "",
-            "handshake": ""
+            "handshake": "",
+            "kaapow": ""
         },
         "naming": {
             "ethash": "ethash",
             "cuckaroo29d": "cuckaroo29d",
             "cuckatoo31": "cuckatoo31",
             "eaglesong": "eaglesong",
-            "handshake": "hns"
+            "handshake": "hns",
+            "kaapow": "kapow"
         },
         "fee": {
             "ethash": 0.65,
             "cuckaroo29d": 2,
             "cuckatoo31": 2,
             "eaglesong": 2,
-            "handshake": 2
+            "handshake": 2,
+            "kaapow": 2
         }
     },
     "NVIDIA3": {
@@ -75,28 +83,32 @@
             "cuckaroo29d": "",
             "cuckatoo31": "",
             "eaglesong": "",
-            "handshake": ""
+            "handshake": "",
+            "kaapow": ""
         },
         "difficulty": {
             "ethash": "",
             "cuckaroo29d": "",
             "cuckatoo31": "",
             "eaglesong": "",
-            "handshake": ""
+            "handshake": "",
+            "kaapow": ""
         },
         "naming": {
             "ethash": "ethash",
             "cuckaroo29d": "cuckaroo29d",
             "cuckatoo31": "cuckatoo31",
             "eaglesong": "eaglesong",
-            "handshake": ""
+            "handshake": "hns",
+            "kaapow": "kapow"
         },
         "fee": {
             "ethash": 0.65,
             "cuckaroo29d": 2,
             "cuckatoo31": 2,
             "eaglesong": 2,
-            "handshake": 2
+            "handshake": 2,
+            "kaapow": 2
         }
     }
 }

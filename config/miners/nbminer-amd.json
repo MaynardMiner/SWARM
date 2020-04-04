@@ -5,19 +5,23 @@
         "prestart": [],
         "commands": {
             "eaglesong": "",
-            "handshake": ""
+            "handshake": "",
+            "kaapow": ""
         },
         "difficulty": {
             "eaglesong": "",
-            "handshake": ""
+            "handshake": "",
+            "kaapow": ""
         },
         "naming": {
             "eaglesong": "eaglesong",
-            "handshake": "hns"
+            "handshake": "hns",
+            "kaapow": "kapow"
         },
         "fee": {
             "eaglesong": 2,
-            "handshake": 2
+            "handshake": 2,
+            "kaapow": 2
         }
     },
     "name": "nbminer-amd"

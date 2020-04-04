@@ -428,6 +428,11 @@ Access Denied Error prevented.
                                                 $Data.$_.naming | Add-Member "handshake" "hns" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "handshake" 2 -ErrorAction SilentlyContinue
 
+                                                $Data.$_.commands | Add-Member "kaapow" "" -ErrorAction SilentlyContinue
+                                                $Data.$_.difficulty | Add-Member "kaapow" "" -ErrorAction SilentlyContinue 
+                                                $Data.$_.naming | Add-Member "kaapow" "kapow" -ErrorAction SilentlyContinue
+                                                $Data.$_.fee | Add-Member "kaapow" 2 -ErrorAction SilentlyContinue
+
                                                 $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
                                                 $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
                                                 $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
@@ -443,6 +448,11 @@ Access Denied Error prevented.
                                                 $Data.$_.difficulty | Add-Member "handshake" "" -ErrorAction SilentlyContinue 
                                                 $Data.$_.naming | Add-Member "handshake" "hns" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "handshake" 2 -ErrorAction SilentlyContinue
+
+                                                $Data.$_.commands | Add-Member "kaapow" "" -ErrorAction SilentlyContinue
+                                                $Data.$_.difficulty | Add-Member "kaapow" "" -ErrorAction SilentlyContinue 
+                                                $Data.$_.naming | Add-Member "kaapow" "kapow" -ErrorAction SilentlyContinue
+                                                $Data.$_.fee | Add-Member "kaapow" 2 -ErrorAction SilentlyContinue
                                             }
                                         }
                                     }
