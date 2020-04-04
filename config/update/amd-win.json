@@ -227,8 +227,8 @@
     "AMD2": ".\\bin\\nbminer-amd-2\\nbminer.exe",
     "AMD3": ".\\bin\\nbminer-amd-3\\nbminer.exe",
     "minername": "nbminer.exe",
-    "version": "28.0",
+    "version": "29.0",
     "optional": "No",
-    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v28.0/NBMiner_28.0_Win.zip"
+    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v29.0/NBMiner_29.0_Win.zip"
   }
 }

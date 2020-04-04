@@ -18,9 +18,9 @@
     "NVIDIA2": ".\\bin\\nbminer-2\\nbminer",
     "NVIDIA3": ".\\bin\\nbminer-3\\nbminer",
     "minername": "nbminer",
-    "version": "28.0",
+    "version": "29.0",
     "optional": "No",
-    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v28.0/NBMiner_28.0_Linux.tgz"
+    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v29.0/NBMiner_29.0_Linux.tgz"
   },
   "multiminer": {
     "name": "multiminer",
