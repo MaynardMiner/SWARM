@@ -21,7 +21,7 @@ build/bash/dir.sh
 build/bash/config.sh
 build/bash/startup.sh
 SWARM.conf
-config/parameters/arguments.json
+config/parameters/commandline.json
 config/parameters/newarguments.json
 config/parameters/Hive_params_keys.json
 config/parameters/SWARM_params_keys.json

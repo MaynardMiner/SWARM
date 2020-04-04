@@ -641,7 +641,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
     }
     "parameters" {
         if (Test-Path ".\config\parameters\newarguments.json") { $FilePath = ".\config\parameters\newarguments.json" }
-        else { $FilePath = ".\config\parameters\arguments.json" }
+        else { $FilePath = ".\config\parameters\commandline.json" }
         if (Test-Path $FilePath) {
             $SwarmParameters = @()
             $MinerArgs = Get-Content $FilePath | ConvertFrom-Json
@@ -925,7 +925,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 ## Move parameters into extracted path
                 $Params = Join-Path $Final_Extract_Path "config\parameters"
                 if (Test-Path ".\config\parameters\newarguments.json") { $New_Params = ".\config\parameters\newarguments.json" }
-                else { $New_Params = ".\config\parameters\arguments.json" }
+                else { $New_Params = ".\config\parameters\commandline.json" }
         
                 Copy-Item $New_Params -Destination $Params -Force
                 $Get += "Copied $New_Params to new SWARM version"

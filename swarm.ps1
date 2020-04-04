@@ -144,7 +144,7 @@ if ($IsWindows) {
     Add-Type -Path ".\build\apps\launchcode.dll"
 }
 
-## Debug Mode- Allow you to run with last known arguments or arguments.json.
+## Debug Mode- Allow you to run with last known arguments or commandline.json.
 $(vars).Add("debug", $false)
 if ($global:config.vars.debug -eq $True) {
     Start-Transcript ".\logs\debug.log"

@@ -10,7 +10,7 @@ function Global:Get-Params {
         $arguments = $null
     }
     else {
-        $arguments = Get-Content ".\config\parameters\arguments.json" | ConvertFrom-Json
+        $arguments = Get-Content ".\config\parameters\commandline.json" | ConvertFrom-Json
         $arguments.PSObject.Properties.Name | % { $global:Config.params.Add("$($_)", $arguments.$_) }
         $arguments = $null
     }

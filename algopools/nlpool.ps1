@@ -38,7 +38,7 @@ if ($Name -in $(arg).PoolName) {
     $FeeTable = $Global:Config.vars.FeeTable
     $Hashrate_Table = $Global:Config.vars.Pool_HashRates
     $Get_Params = $Global:Config.params
-    $Get_Wallets = $Wallets
+    $Get_Wallets = $Global:Wallets
 
     $Pool_Data = $Pool_Sorted | ForEach-Object -Parallel {
         . .\build\powershell\global\classes.ps1
@@ -48,7 +48,7 @@ if ($Name -in $(arg).PoolName) {
         $P_Name = $using:Name
         $sub = $using:X
         $Params = $using:Get_Params
-        $Wallets = $using:Get_Wallets
+        $A_Wallets = $using:Get_Wallets
         $StatAlgo = $_.Name -replace "`_", "`-"
         $Divisor = 1000000 * $_.mbtc_mh_factor
         $Pool_Port = $_.port
@@ -102,42 +102,42 @@ if ($Name -in $(arg).PoolName) {
             $Level = [Math]::Max($Level + ($Level * $Deviation), $SmallestValue)
         }        
 
-        $Pass1 = $Wallets.Wallet1.Keys
+        $Pass1 = $A_Wallets.Wallet1.Keys
         $id = ".$($Params.Rigname1)"
-        $User1 = "$($Wallets.Wallet1.$($Params.Passwordcurrency1).address)$id"
+        $User1 = "$($A_Wallets.Wallet1.$($Params.Passwordcurrency1).address)$id"
 
-        $Pass2 = $Wallets.Wallet2.Keys
+        $Pass2 = $A_Wallets.Wallet2.Keys
         $id = ".$($Params.Rigname2)"
-        $User2 = "$($Wallets.Wallet2.$($Params.Passwordcurrency2).address)$id"
+        $User2 = "$($A_Wallets.Wallet2.$($Params.Passwordcurrency2).address)$id"
 
-        $Pass3 = $Wallets.Wallet3.Keys
+        $Pass3 = $A_Wallets.Wallet3.Keys
         $id = ".$($Params.Rigname3)"
-        $User3 = "$($Wallets.Wallet3.$($Params.Passwordcurrency3).address)$id"
+        $User3 = "$($A_Wallets.Wallet3.$($Params.Passwordcurrency3).address)$id"
 
-        if ($Wallets.AltWallet1.keys) {
-            $Wallets.AltWallet1.Keys | ForEach-Object {
-                if ($Wallets.AltWallet1.$_.Pools -contains $P_Name) {
+        if ($A_Wallets.AltWallet1.keys) {
+            $A_Wallets.AltWallet1.Keys | ForEach-Object {
+                if ($A_Wallets.AltWallet1.$_.Pools -contains $P_Name) {
                     $Pass1 = $_;
                     $id = ".$($Params.Rigname1)"
-                    $User1 = "$($Wallets.AltWallet1.$_.address)$id"
+                    $User1 = "$($A_Wallets.AltWallet1.$_.address)$id"
                 }
             }
         }
-        if ($Wallets.AltWallet2.keys) {
-            $Wallets.AltWallet2.Keys | ForEach-Object {
-                if ($Wallets.AltWallet2.$_.Pools -contains $P_Name) {
+        if ($A_Wallets.AltWallet2.keys) {
+            $A_Wallets.AltWallet2.Keys | ForEach-Object {
+                if ($A_Wallets.AltWallet2.$_.Pools -contains $P_Name) {
                     $Pass2 = $_;
                     $id = ".$($Params.Rigname2)"
-                    $User2 = "$($Wallets.AltWallet2.$_.address)$id"
+                    $User2 = "$($A_Wallets.AltWallet2.$_.address)$id"
                 }
             }
         }
-        if ($Wallets.AltWallet3.keys) {
-            $Wallets.AltWallet3.Keys | ForEach-Object {
-                if ($Wallets.AltWallet3.$_.Pools -contains $P_Name) {
+        if ($A_Wallets.AltWallet3.keys) {
+            $A_Wallets.AltWallet3.Keys | ForEach-Object {
+                if ($A_Wallets.AltWallet3.$_.Pools -contains $P_Name) {
                     $Pass3 = $_;
                     $id = ".$($Params.Rigname3)"
-                    $User3 = "$($Wallets.AltWallet3.$_.address)$id"
+                    $User3 = "$($A_Wallets.AltWallet3.$_.address)$id"
                 }
             }
         }

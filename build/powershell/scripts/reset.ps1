@@ -17,7 +17,7 @@ Set-Location $dir
 Write-Host "Clearing All Previous Stored Website Data"
 if(test-path ".\debug"){Remove-Item ".\debug\*" -Force}
 if(test-path ".\config\parameters\newarguments.json"){Remove-Item ".\config\parameters\newarguments.json" -Force}
-if(test-Path ".\config\parameters\arguments.json"){Remove-Item ".\config\parameters\arguments.json" -Force}
+if(test-Path ".\config\parameters\commandline.json"){Remove-Item ".\config\parameters\commandline.json" -Force}
 if(test-path ".\config\parameters\SWARM_params_keys.json"){Remove-Item ".\config\parameters\SWARM_params_keys.json" -Force}
 if(test-Path ".\config\parameters\hive_params_keys.json"){Remove-Item ".\config\parameters\hive_params_keys.json" -Force}
 if(test-Path ".\config\parameters\autofan"){Remove-Item ".\config\parameters\autofan" -Force}
