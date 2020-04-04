@@ -479,6 +479,16 @@
       "comma seperated"
     ]
   },
+  "handshake": {
+    "alt_names": [
+      "handshake",
+      "hns"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "hex": {
     "alt_names": [
       "hex"
