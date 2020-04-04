@@ -2163,3 +2163,17 @@ as is will not work correctly.
 * lolminer updated
 * gminer updated
 * NBminer updated
+
+############################################
+############################################
+
+# SWARM 3.1.0
+
+## What's New?
+ * Added handshake support for nicehash.
+   * Note: Also known as 'HNS'
+
+## Updates
+ * Gminer updated
+ * Nbminer updated
+ * Bminer updated
