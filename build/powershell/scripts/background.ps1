@@ -12,7 +12,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
 [cultureinfo]::CurrentCulture = 'en-US'
-if ($IsWIndows) { $host.ui.RawUI.WindowTitle = "Background Agent" }
+if ($IsWIndows) { $host.ui.RawUI.WindowTitle = "Background Agent: Keep Open!" }
 ## any windows version below 10 invoke full screen mode.
 if ($isWindows) {
     $os_string = "$([System.Environment]::OSVersion.Version)".split(".") | Select -First 1
