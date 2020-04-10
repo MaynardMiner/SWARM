@@ -172,7 +172,7 @@ function Global:Start-Benchmark {
                     $Global:Strike = $True
                 }
                 for ($i = 0; $i -lt 4; $i++) {
-                    $Miner_HashRates = Global:Get-HashRate -Type $_.Type
+                    $Miner_HashRates = $(Vars).Hashtable.$($_.Type).Hashrate;
                     $_.HashRate = $Miner_HashRates
                     if ($global:WasBenchmarked -eq $False) {
                         $HashRateFilePath = Join-Path ".\stats" "$($_.Name)_$($NewName)_hashrate.txt"
@@ -201,7 +201,7 @@ function Global:Start-Benchmark {
                         }
                         else {
                             $No_Watts = @("CPU","ASIC")
-                            if ($(arg).WattOMeter -eq "Yes" -and $_.Type -notin $No_Watts) { $GPUPower = Global:Get-Power $($_.Type) }
+                            if ($(arg).WattOMeter -eq "Yes" -and $_.Type -notin $No_Watts) { $GPUPower = $(vars).$($_.Type).watts; }
                             else { 
                                 $GPUPower = 1 
                             }
