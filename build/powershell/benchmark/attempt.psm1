@@ -201,7 +201,7 @@ function Global:Start-Benchmark {
                         }
                         else {
                             $No_Watts = @("CPU","ASIC")
-                            if ($(arg).WattOMeter -eq "Yes" -and $_.Type -notin $No_Watts) { $GPUPower = $(vars).$($_.Type).watts; }
+                            if ($(arg).WattOMeter -eq "Yes" -and $_.Type -notin $No_Watts) { $GPUPower = "$($(vars).Hashtable.$($_.Type).watts.ToString("N2"))"; }
                             else { 
                                 $GPUPower = 1 
                             }
@@ -224,7 +224,7 @@ function Global:Start-Benchmark {
                             $Stat = Global:Set-Stat -Name "$($_.Name)_$($NewName)_hashrate" -Value $Miner_HashRates -Rejects $Percent -AsHashRate
                             $GetLiveStat = Global:Get-Stat "$($_.Name)_$($NewName)_hashrate"
                             $StatCheck = "$($GetLiveStat.Live)"
-                            $ScreenCheck = "$($StatCheck | Global:ConvertTo-Hash)"
+                            $ScreenCheck = "$($StatCheck.ToString("N2") | Global:ConvertTo-Hash)"
                             if ($ScreenCheck -eq "0.00 PH" -or $null -eq $StatCheck) {
                                 $Global:Strike = $true
                                 $global:WasBenchmarked = $False
