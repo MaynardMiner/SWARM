@@ -48,7 +48,7 @@ function Global:Set-Hashtable {
         $key = $_
         $Miner_HashRates = [decimal](Global:Get-HashRate -Type $key);
         if ($(arg).WattOMeter -eq "Yes" -and $key -notin $No_Watts) { 
-            $GPUPower = [decima](Global:Get-Power $key); 
+            $GPUPower = [decimal](Global:Get-Power $key); 
         }
         $(vars).Hashtable.$key.actual = $Miner_HashRates
         if($(vars).Hashtable.$key.counts -ne 0 -and $Miner_HashRates -ne 0) {
