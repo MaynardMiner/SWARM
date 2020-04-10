@@ -184,7 +184,7 @@ function Global:Get-MinerHashRate {
         log "$($_.Name) current avg. hashrate for $($_.Symbol) is" -nonewline
         log " $ScreenHash/s" -foreground green -End
         log "$($_.Name) current hashrate for $($_.Symbol) is" -NoNewLine -Start
-        log " $( $(vars).hashtable.$($_.type).actual.ToString("N2") ) | Global:ConvertTo-Hash)/s" -foreground yellow -End
+        log " $( $(vars).hashtable.$($_.type).actual.ToString("N2") | Global:ConvertTo-Hash )/s" -foreground yellow -End
         log "$($_.Name) previous hashrates for $($_.Symbol) is" -NoNewLine -Start
         log " $MinerPrevious/s " -foreground yellow -End
         $No_Watts = @("CPU","ASIC")
