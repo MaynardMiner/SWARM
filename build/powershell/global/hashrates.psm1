@@ -184,13 +184,13 @@ function Global:Get-MinerHashRate {
         log "$($_.Name) current avg. hashrate for $($_.Symbol) is" -nonewline
         log " $ScreenHash/s" -foreground green -End
         log "$($_.Name) current hashrate for $($_.Symbol) is" -NoNewLine -Start
-        log " $($(vars).hashtable.$($_.type).actual | Global:ConvertTo-Hash)/s" -foreground yellow -End
+        log " $($(vars).hashtable.$($_.type).actual -f "{0:n2}" | Global:ConvertTo-Hash)/s" -foreground yellow -End
         log "$($_.Name) previous hashrates for $($_.Symbol) is" -NoNewLine -Start
-        log " $MinerPrevious/s" -foreground yellow -End
+        log " $MinerPrevious/s " -foreground yellow -End
         $No_Watts = @("CPU","ASIC")
         if($(arg).Wattometer -eq "yes" -and $_.type -notin $No_Watts) {
             log "$($_.Name) current power usage for $($_.Symbol) is" -NoNewLine -Start
-            log " $($(vars).hashtable.$($_.type).watts) watts" -End    
+            log " $($(vars).hashtable.$($_.type).watts -f "{0:n2}") watts" -End    
         }
         log "$($_.Type) is currently mining $($_.Algo) on $($_.MinerPool)" -foregroundcolor Cyan
         log "$($_.Name) average rejection percentage for $($_.Algo) is " -NoNewLine -Start
