@@ -246,8 +246,8 @@ class STAT_METHODS {
          $constant = $theta.sum / $theta.count
          $theta = [STAT_METHODS]::Theta(7, $item.Daily_Actual_Values)
          $actual = $theta.sum / $theta.count
-         if($Actual -eq -1) {
-          $Actual = $item.Day_MA  
+         if ($Actual -eq -1) {
+            $Actual = $item.Day_MA  
          }
       }
       if ($constant -ne 0 -and $Actual -ne 0) {
@@ -256,7 +256,7 @@ class STAT_METHODS {
       else {
          $item.Historical_Bias = -1
       }
-      if($item.Historical_Bias -lt -1) {
+      if ($item.Historical_Bias -lt -1) {
          $item.Historical_Bias -eq -1
       }
    }
@@ -305,7 +305,7 @@ class STAT_METHODS {
       else {
          $item.Historical_Bias = -1
       }
-      if($item.Historical_Bias -lt -1) {
+      if ($item.Historical_Bias -lt -1) {
          $item.Historical_Bias -eq -1
       }
    }
@@ -346,121 +346,123 @@ class Pool_Stat : Stat {
       $name = $name -replace "`/", "`-"
       $name = "pool_$($name)_pricing"
       $old = [STAT_METHODS]::Get($name)
-      ## Minimum decimal value
-      ## Convert Value to Decimal
-      $Value = [Convert]::ToDecimal($Estimate)         
-      ## Calc periods for MA
-      [hashtable]$Calcs = @{
-         Minute_10 = 2;
-         Minute_15 = 3;
-         Minute_30 = 6;
-         Hour      = 12;
-         Hour_4    = 48;
-         Day       = 288;
-      }
-
-      ## IF there was a previous stat file
-      if ($old) {
-
-         ## Add incoming Value.
-         $old.Live_Values += $Value
-
-         ## Find Gaps
-         $old = [STAT_METHODS]::Update_Time($old, $Value)
-
-         ## Keep only 24hrs worth of values.
-         if ($old.Live_Values.Count -gt 288) {
-            $old.Live_Values = $old.Live_Values | Select-Object -Last 288
+      if (-not $old.locked) {
+         ## Minimum decimal value
+         ## Convert Value to Decimal
+         $Value = [Convert]::ToDecimal($Estimate)         
+         ## Calc periods for MA
+         [hashtable]$Calcs = @{
+            Minute_10 = 2;
+            Minute_15 = 3;
+            Minute_30 = 6;
+            Hour      = 12;
+            Hour_4    = 48;
+            Day       = 288;
          }
 
-         ## Add live values and make EMA
-         $old.Live = $value
-         [STAT_METHODS]::EMA($old, $this, $Calcs)
+         ## IF there was a previous stat file
+         if ($old) {
 
-         ## Do MA for stats that need it
-         [STAT_METHODS]::MA($this, "Avg_Hashrate", $old.Avg_Hashrate, $Hashrate)
-         if ($old.Pulls -lt 288) { $old.Pulls++ }
-         $this.Pulls = $old.Pulls
+            ## Add incoming Value.
+            $old.Live_Values += $Value
 
-         ## Calculate Bias
-         if ($coin) {
-            [STAT_METHODS]::Coin_Bias($old, $Actual)
-         }
-         else {
-            [STAT_METHODS]::Algo_Bias($old, $Actual)
-         }         
+            ## Find Gaps
+            $old = [STAT_METHODS]::Update_Time($old, $Value)
 
-         ## If it is a new day - Add to weekly stat values.
-         [STAT_METHODS]::Check_Weekly($old, $this, $Actual)
+            ## Keep only 24hrs worth of values.
+            if ($old.Live_Values.Count -gt 288) {
+               $old.Live_Values = $old.Live_Values | Select-Object -Last 288
+            }
+
+            ## Add live values and make EMA
+            $old.Live = $value
+            [STAT_METHODS]::EMA($old, $this, $Calcs)
+
+            ## Do MA for stats that need it
+            [STAT_METHODS]::MA($this, "Avg_Hashrate", $old.Avg_Hashrate, $Hashrate)
+            if ($old.Pulls -lt 288) { $old.Pulls++ }
+            $this.Pulls = $old.Pulls
+
+            ## Calculate Bias
+            if ($coin) {
+               [STAT_METHODS]::Coin_Bias($old, $Actual)
+            }
+            else {
+               [STAT_METHODS]::Algo_Bias($old, $Actual)
+            }         
+
+            ## If it is a new day - Add to weekly stat values.
+            [STAT_METHODS]::Check_Weekly($old, $this, $Actual)
 
 
-         $this.Live_Values = $old.Live_Values
-         $this.Actual = $Actual
-         $this.Live = $Value
-         $this.Historical_Bias = $old.Historical_Bias
-         $this.Locked = $old.Locked
-      }
-      else {
-         $this.Live_Values += $Value
-         $this.Pulls++
-         $this.Live = $value
-         $this.Minute_10_EMA = $value
-         $this.Minute_10_MA = $value
-         $this.Minute_15_EMA = $value
-         $this.Minute_15_MA = $value
-         $this.Minute_30_EMA = $value
-         $this.Minute_30_MA = $value
-         $this.Hour_EMA = $value
-         $This.Hour_MA = $value
-         $this.Hour_4_EMA = $Value
-         $this.Hour_4_MA = $value
-         $this.Day_EMA = $value
-         $this.Day_MA = $value
-         $this.Daily_Values = @()
-         $this.Daily_Actual_Values = @()
-         $this.Daily_Hashrate_Values = @()
-         $this.Avg_Hashrate = $Hashrate
-         $this.Locked = $false
-         $this.Actual = $Actual
-         $this.Start_Of_Day = (Get-Date).ToUniversalTime().ToString("o")
-         if ($coin) {
-            [STAT_METHODS]::Coin_Bias($this, $Actual)
+            $this.Live_Values = $old.Live_Values
+            $this.Actual = $Actual
+            $this.Live = $Value
+            $this.Historical_Bias = $old.Historical_Bias
+            $this.Locked = $old.Locked
          }
          else {
-            [STAT_METHODS]::Algo_Bias($this, $Actual)
+            $this.Live_Values += $Value
+            $this.Pulls++
+            $this.Live = $value
+            $this.Minute_10_EMA = $value
+            $this.Minute_10_MA = $value
+            $this.Minute_15_EMA = $value
+            $this.Minute_15_MA = $value
+            $this.Minute_30_EMA = $value
+            $this.Minute_30_MA = $value
+            $this.Hour_EMA = $value
+            $This.Hour_MA = $value
+            $this.Hour_4_EMA = $Value
+            $this.Hour_4_MA = $value
+            $this.Day_EMA = $value
+            $this.Day_MA = $value
+            $this.Daily_Values = @()
+            $this.Daily_Actual_Values = @()
+            $this.Daily_Hashrate_Values = @()
+            $this.Avg_Hashrate = $Hashrate
+            $this.Locked = $false
+            $this.Actual = $Actual
+            $this.Start_Of_Day = (Get-Date).ToUniversalTime().ToString("o")
+            if ($coin) {
+               [STAT_METHODS]::Coin_Bias($this, $Actual)
+            }
+            else {
+               [STAT_METHODS]::Algo_Bias($this, $Actual)
+            }
          }
+
+         [string]$this.Updated = (Get-Date).ToUniversalTime().ToString("o")
+
+         $stat = [ordered]@{
+            Live                  = $this.Live
+            Actual                = $This.Actual
+            Minute_10_EMA         = $this.Minute_10_EMA
+            Minute_10_MA          = $this.Minute_10_MA
+            Minute_15_EMA         = $this.Minute_15_EMA
+            Minute_15_MA          = $This.Minute_15_MA
+            Minute_30_EMA         = $This.Minute_30_EMA
+            Minute_30_MA          = $this.Minute_30_MA
+            Hour_EMA              = $this.Hour_EMA
+            Hour_MA               = $This.Hour_MA
+            Hour_4_EMA            = $This.Hour_4_EMA
+            Hour_4_MA             = $This.Hour_4_MA
+            Day_EMA               = $This.Day_EMA
+            Day_MA                = $this.Day_MA
+            Avg_Hashrate          = $this.Avg_Hashrate
+            Pulls                 = $this.Pulls
+            Historical_Bias       = $this.Historical_Bias
+            Start_Of_Day          = $this.Start_Of_Day
+            Locked                = $this.Locked
+            Updated               = $this.Updated
+            Daily_Values          = $this.Daily_Values
+            Daily_Actual_Values   = $this.Daily_Actual_Values
+            Daily_Hashrate_Values = $this.Daily_Hashrate_Values
+            Live_Values           = $this.Live_Values
+         }
+
+         [STAT_METHODS]::Set($name, $stat)
       }
-
-      [string]$this.Updated = (Get-Date).ToUniversalTime().ToString("o")
-
-      $stat = [ordered]@{
-         Live                  = $this.Live
-         Actual                = $This.Actual
-         Minute_10_EMA         = $this.Minute_10_EMA
-         Minute_10_MA          = $this.Minute_10_MA
-         Minute_15_EMA         = $this.Minute_15_EMA
-         Minute_15_MA          = $This.Minute_15_MA
-         Minute_30_EMA         = $This.Minute_30_EMA
-         Minute_30_MA          = $this.Minute_30_MA
-         Hour_EMA              = $this.Hour_EMA
-         Hour_MA               = $This.Hour_MA
-         Hour_4_EMA            = $This.Hour_4_EMA
-         Hour_4_MA             = $This.Hour_4_MA
-         Day_EMA               = $This.Day_EMA
-         Day_MA                = $this.Day_MA
-         Avg_Hashrate          = $this.Avg_Hashrate
-         Pulls                 = $this.Pulls
-         Historical_Bias       = $this.Historical_Bias
-         Start_Of_Day          = $this.Start_Of_Day
-         Locked                = $this.Locked
-         Updated               = $this.Updated
-         Daily_Values          = $this.Daily_Values
-         Daily_Actual_Values   = $this.Daily_Actual_Values
-         Daily_Hashrate_Values = $this.Daily_Hashrate_Values
-         Live_Values           = $this.Live_Values
-      }
-
-      [STAT_METHODS]::Set($name, $stat)
    }
 }
 
