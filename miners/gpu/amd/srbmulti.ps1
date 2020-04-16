@@ -3,14 +3,14 @@ $(vars).AMDTypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
 
     ##Miner Path Information
-    if ($(vars).amd.srbminer.$ConfigType) { $Path = "$($(vars).amd.srbminer.$ConfigType)" }
+    if ($(vars).amd.srbmulti.$ConfigType) { $Path = "$($(vars).amd.srbmulti.$ConfigType)" }
     else { $Path = "None" }
-    if ($(vars).amd.srbminer.uri) { $Uri = "$($(vars).amd.srbminer.uri)" }
+    if ($(vars).amd.srbmulti.uri) { $Uri = "$($(vars).amd.srbmulti.uri)" }
     else { $Uri = "None" }
-    if ($(vars).amd.srbminer.minername) { $MinerName = "$($(vars).amd.srbminer.minername)" }
+    if ($(vars).amd.srbmulti.minername) { $MinerName = "$($(vars).amd.srbmulti.minername)" }
     else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "srbminer-$Num"; $Port = "3400$Num"
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "srbmulti-$Num"; $Port = "3400$Num"
 
     Switch ($Num) {
         1 { $Get_Devices = $(vars).AMDDevices1; $Rig = $(arg).Rigname1 }
@@ -25,7 +25,7 @@ $(vars).AMDTypes | ForEach-Object {
 
     ##Get Configuration File
     ##This is located in config\miners
-    $MinerConfig = $Global:config.miners.srbminer
+    $MinerConfig = $Global:config.miners.srbmulti
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = Join-Path $($(vars).dir) "build\export"
@@ -72,9 +72,9 @@ $(vars).AMDTypes | ForEach-Object {
                     Path       = $Path
                     Devices    = $Devices
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
-                    Version    = "$($(vars).amd.srbminer.version)"
+                    Version    = "$($(vars).amd.srbmulti.version)"
                     DeviceCall = "srbminer"
-                    Arguments  = "--adldisable --ccryptonighttype $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -cgpuid $Devices --cnicehash true --cpool $($_.Pool_Host):$($_.Port) --cwallet $($_.$User) --cpassword $($_.$Pass) --apienable --logfile `'$Log`' --apiport $Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "--adldisable --ccryptonighttype $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -cgpuid $Devices --cnicehash true --cpool $($_.Pool_Host):$($_.Port) --cwallet $($_.$User) --cpassword $($_.$Pass)$Diff --apienable --logfile `'$Log`' --apiport $Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = $Stat.Hour
                     Quote      = if ($HashStat) { [Convert]::ToDecimal($HashStat * $_.Price) }else { 0 }
                     Rejections = $Stat.Rejections

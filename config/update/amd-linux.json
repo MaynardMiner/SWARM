@@ -1,4 +1,16 @@
 {
+  "name": "srbmulti",
+  "srbmulti": {
+    "name": "srbmulti",
+    "type": "amd",
+    "AMD1": ".\\bin\\srbmulti-1\\SRBMiner-MULTI",
+    "AMD2": ".\\bin\\srbmulti-2\\SRBMiner-MULTI",
+    "AMD3": ".\\bin\\srbmulti-3\\SRBMiner-MULTI",
+    "minername": "SRBMiner-MULTI",
+    "version": "0.4.3",
+    "optional": "No",
+    "uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/0.4.3/SRBMiner-Multi-0-4-3-Linux.tar.xz"
+  },
   "name": "amd-linux",
   "claymore-amd": {
     "name": "claymore-amd",
