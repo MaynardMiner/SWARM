@@ -78,7 +78,7 @@ $(vars).AMDTypes | ForEach-Object {
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
                     Version    = "$($(vars).amd.srbmulti.version)"
                     DeviceCall = "srbminer"
-                    Arguments  = "$Nicehash--adl-disable --gpu-platform $($(vars).AMDPlatform) --gpu-id 0,2,3 --disable-cpu --algorithm $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --pool $($_.Pool_Host):$($_.Port) --wallet $($_.$User) --password $($_.$Pass)$Diff --api-enable --logfile `'$Log`' --api-port $Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "$Nicehash--adl-disable --gpu-platform $($(vars).AMDPlatform) --disable-cpu --algorithm $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --pool $($_.Pool_Host):$($_.Port) --wallet $($_.$User) --password $($_.$Pass)$Diff --api-enable --logfile `'$Log`' --api-port $Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = $Stat.Hour
                     Quote      = if ($HashStat) { [Convert]::ToDecimal($HashStat * $_.Price) }else { 0 }
                     Rejections = $Stat.Rejections
