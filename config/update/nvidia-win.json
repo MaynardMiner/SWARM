@@ -185,7 +185,7 @@
     "minername": "miniZ.exe",
     "version": "v1.5t2",
     "optional": "No",
-    "uri": "https://miniz.ch/?smd_process_download=1&download_id=3562"
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/miniz-windows.zip"
   },
   "phoenix": {
     "name": "phoenix",
