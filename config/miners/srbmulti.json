@@ -11,52 +11,16 @@
             "export GPU_MAX_ALLOC_PERCENT=100"
         ],
         "commands": {
-            "bl2bsha3": "",
-            "blake2b": "",
-            "blake2s": "",
-            "kangaroo12": "",
-            "kadena": "",
-            "keccak": "",
-            "mtp": "",
-            "rainforestv2": "",
-            "tellor": "",
-            "yescrypt": ""
+            "kangaroo12": ""
         },
         "difficulty": {
-            "bl2bsha3": "",
-            "blake2b": "",
-            "blake2s": "",
-            "kangaroo12": "",
-            "kadena": "",
-            "keccak": "",
-            "mtp": "",
-            "rainforestv2": "",
-            "tellor": "",
-            "yescrypt": ""
+            "kangaroo12": ""
         },
         "naming": {
-            "bl2bsha3": "bl2bsha3",
-            "blake2b": "blake2b",
-            "blake2s": "blake2s",
-            "kangaroo12": "kangaroo12",
-            "kadena": "kadena",
-            "keccak": "keccak",
-            "mtp": "mtp",
-            "rainforestv2": "rfv2",
-            "tellor": "tellor",
-            "yescrypt": "yescrypt"
+            "kangaroo12": "kangaroo12"
         },
         "fee": {
-            "bl2bsha3": 0.85,
-            "blake2b": 0.85,
-            "blake2s": 0.85,
-            "kangaroo12": 0.85,
-            "kadena": 0.85,
-            "keccak": 0.85,
-            "mtp": 0.85,
-            "rainforestv2": 0.85,
-            "tellor": 0.85,
-            "yescrypt": 0.85
+            "kangaroo12": 0.85
         }
     }
 }
