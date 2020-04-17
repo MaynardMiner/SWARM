@@ -59,6 +59,10 @@ $(vars).AMDTypes | ForEach-Object {
             if ($(arg).Rej_Factor -eq "Yes" -and $Stat.Rejections -gt 0 -and $Stat.Rejection_Periods -ge 3) { $HashStat = $Stat.Hour * (1 - ($Stat.Rejections * 0.01)) }
             else { $HashStat = $Stat.Hour }
             $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
+                $Nicehash = ""
+                if($_.Name -eq "Nicehash") {
+                    $Nicehash = "--Nicehash true "
+                }
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
                 [PSCustomObject]@{
                     MName      = $Name
@@ -74,7 +78,7 @@ $(vars).AMDTypes | ForEach-Object {
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
                     Version    = "$($(vars).amd.srbmulti.version)"
                     DeviceCall = "srbminer"
-                    Arguments  = "--adl-disable --gpu-platform $($(vars).AMDPlatform) --disable-cpu --algorithm $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --gpu-id $Devices --pool $($_.Pool_Host):$($_.Port) --wallet $($_.$User) --password $($_.$Pass)$Diff --api-enable --logfile `'$Log`' --api-port $Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "$Nicehash--adl-disable --gpu-platform $($(vars).AMDPlatform) --gpu-id 0,2,3 --disable-cpu --algorithm $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --pool $($_.Pool_Host):$($_.Port) --wallet $($_.$User) --password $($_.$Pass)$Diff --api-enable --logfile `'$Log`' --api-port $Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = $Stat.Hour
                     Quote      = if ($HashStat) { [Convert]::ToDecimal($HashStat * $_.Price) }else { 0 }
                     Rejections = $Stat.Rejections
@@ -82,7 +86,7 @@ $(vars).AMDTypes | ForEach-Object {
                     MinerPool  = "$($_.Name)"
                     Port       = $Port
                     Worker     = $Rig 
-                    API        = "srbminer"
+                    API        = "srbmulti"
                     Wallet     = "$($_.$User)"
                     URI        = $Uri
                     Server     = "localhost"

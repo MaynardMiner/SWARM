@@ -468,6 +468,14 @@ While ($True) {
                     }
                     catch { Global:Get-OhNo } 
                 }
+                'srbmulti' {
+                    try { 
+                        Global:Add-Module "$($(vars).miners)\srbmulti.psm1"; 
+                        Global:Get-StatsSrbmulti;
+                        Remove-Module -name "srbmulti"
+                    }
+                    catch { Global:Get-OhNo } 
+                }
                 'sgminer-gm' { 
                     try { 
                         Global:Add-Module "$($(vars).miners)\sgminer.psm1"; 
