@@ -2177,3 +2177,28 @@ as is will not work correctly.
  * Gminer updated
  * Nbminer updated
  * Bminer updated
+
+############################################
+############################################
+
+# SWARM 3.1.1
+
+## What's New?
+* srbmulti (k12) added for AMD.
+* Hashrate/Watt sampling for benchmarking,
+  rather than 1 time sample. 
+  * Sampling is based on 15 second average.
+  * Sampling begins when miner starts to hash.
+
+## Improvements
+* "Locked" parameter works for pool stat files
+  * You can set a locked price for a particular
+    algorithm within the stat file, by setting
+    "Locked": True,
+* Fixed minor issues with wallets.json
+* Fixed download links for wildrig & miniz.
+
+## Updates
+* SRBMulti added (does not do Navi cards).
+* Wildrig udpated.
+* Miniz updated.
