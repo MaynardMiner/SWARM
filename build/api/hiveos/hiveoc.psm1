@@ -127,7 +127,7 @@ function Global:Start-NVIDIAOC($NewOC) {
     }
 
     for ($i = 0; $i -lt $OCCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {
-        $OCArgs += "-forcepstate:$($i);0 "
+        $OCArgs += "-forcepstate:$($i),0 "
     }
 
     if ([string]$OcArgs -ne "") {
