@@ -338,6 +338,7 @@ $(vars).Add("Check_Interval",(Get-Date).ToUniversalTime());
 $(vars).Add("switch",$true);
 $(vars).Add("ETH_exchange",0);
 $(vars).Add("Load_Timer",(Get-Date).ToUniversalTime());
+$(vars).Add("Hashtable",@{});
 [GC]::Collect()
 [GC]::WaitForPendingFinalizers()
 [GC]::Collect()    
@@ -712,7 +713,11 @@ While ($true) {
         Global:Add-Module "$($(vars).run)\loop.psm1"
         [GC]::Collect()
         [GC]::WaitForPendingFinalizers()
-        [GC]::Collect()        
+        [GC]::Collect() 
+        
+        ## Before starting miner loop- build data table for
+        ## Hashrates and Power sampling.
+        Global:Build-Hashtable
         Global:Start-MinerLoop
 
         $(vars).Add_Time = 0;

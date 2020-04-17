@@ -552,6 +552,16 @@
       "comma seperated"
     ]
   },
+  "kangaroo12": {
+    "alt_names": [
+      "kangaroo12",
+      "k12"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "kaapow": {
     "alt_names": [
       "kapow",

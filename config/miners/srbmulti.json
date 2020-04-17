@@ -1,0 +1,26 @@
+{
+    "name": "srbmulti",
+    "AMD1": {
+        "name": "AMD1",
+        "delay": "1",
+        "prestart": [
+            "export GPU_FORCE_64BIT_PTR=1",
+            "export GPU_MAX_HEAP_SIZE=100",
+            "export GPU_USE_SYNC_OBJECTS=1",
+            "export GPU_SINGLE_ALLOC_PERCENT=100",
+            "export GPU_MAX_ALLOC_PERCENT=100"
+        ],
+        "commands": {
+            "kangaroo12": ""
+        },
+        "difficulty": {
+            "kangaroo12": ""
+        },
+        "naming": {
+            "kangaroo12": "kangaroo12"
+        },
+        "fee": {
+            "kangaroo12": 0.85
+        }
+    }
+}

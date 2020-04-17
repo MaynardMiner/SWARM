@@ -172,7 +172,7 @@ function Global:Get-MinerHashRate {
         if ($_.Profit_Day -ne "bench") { $BTCScreenProfit = "$($($_.Profit_Day).ToString("N5") ) BTC/Day" } else { $BTCScreenProfit = "Benchmarking" }
         if ($_.Fiat_Day -ne "bench") { $BTCCurrentProfit = "$($($_.Fiat_Day / $(vars).Rates.$($(arg).Currency)).ToString("N5")) BTC/Day" } else { $BTCCurrentProfit = "Benchmarking" }
         if ($null -eq $_.Xprocess -or $_.XProcess.HasExited) { $_.Status = "Failed" }
-        $Miner_HashRates = Global:Get-HashRate -Type $_.Type
+        $Miner_HashRates = $(vars).Hashtable.$($_.type).hashrate;
         $NewName = $_.Algo -replace "`_","`-"
         $GetDayStat = Global:Get-Stat "$($_.Name)_$($NewName)_HashRate"
         $DayStat = "$($GetDayStat.Hour)"
@@ -181,11 +181,18 @@ function Global:Get-MinerHashRate {
         log "$($_.Type) is currently" -foreground Green -NoNewLine -Start
         if ($_.Status -eq "Running") { log " Running: " -ForegroundColor green -nonewline }
         if ($_.Status -eq "Failed") { log " Not Running: " -ForegroundColor darkred -nonewline } 
-        log "$($_.Name) current hashrate for $($_.Symbol) is" -nonewline
+        log "$($_.Name) current avg. hashrate for $($_.Symbol) is" -nonewline
         log " $ScreenHash/s" -foreground green -End
+        log "$($_.Name) current hashrate for $($_.Symbol) is" -NoNewLine -Start
+        log " $( $(vars).hashtable.$($_.type).actual.ToString("N2") | Global:ConvertTo-Hash )/s" -foreground yellow -End
+        log "$($_.Name) previous hashrates for $($_.Symbol) is" -NoNewLine -Start
+        log " $MinerPrevious/s " -foreground yellow -End
+        $No_Watts = @("CPU","ASIC")
+        if($(arg).Wattometer -eq "yes" -and $_.type -notin $No_Watts) {
+            log "$($_.Name) current power usage for $($_.Symbol) is" -NoNewLine -Start
+            log " $( $(vars).hashtable.$($_.type).watts.ToString("N2") ) watts" -ForegroundColor Cyan -End    
+        }
         log "$($_.Type) is currently mining $($_.Algo) on $($_.MinerPool)" -foregroundcolor Cyan
-        log "$($_.Type) previous hashrates for $($_.Symbol) is" -NoNewLine -Start
-        log " $MinerPrevious/s" -foreground yellow -End
         log "$($_.Name) average rejection percentage for $($_.Algo) is " -NoNewLine -Start
         log "$( if($_.Rejections){ $( $($_.Rejections).ToString("N2") ) }else{"0.00"})`%" -foregroundcolor yellow -End
         log "Current Pool Projection: $CurrentProfit `| $BTCCurrentProfit  (This is live value with no modifiers)"

@@ -11,6 +11,62 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
+
+function Global:Build-Hashtable {
+    $(vars).Hashtable = @{};
+    foreach($type in $(vars).BestActiveMiners.Type) {
+        $(vars).Hashtable.Add($type, 
+        @{
+            hashrate = [decimal]0; 
+            watts = [decimal]0; 
+            counts = [decimal]0;
+            actual = [decimal]0;
+        }
+        )
+    }
+}
+
+function Global:Get-Power {
+    param(
+        [Parameter(Mandatory = $true)]
+        [String]$Type
+    )
+
+    $res = Global:Get-SWARMTCP
+    if($res.$Type.hash){
+        $data = [Double]$res.$Type.Watts
+    } else {
+        $data = 0
+   }
+   
+   $data
+}
+
+function Global:Set-Hashtable {
+    $No_Watts = @("CPU","ASIC")
+    $(vars).Hashtable.keys | Foreach {
+        $key = $_
+        $Miner_HashRates = [decimal](Global:Get-HashRate -Type $key);
+        if ($(arg).WattOMeter -eq "Yes" -and $key -notin $No_Watts) { 
+            $GPUPower = [decimal](Global:Get-Power $key); 
+        }
+        $(vars).Hashtable.$key.actual = $Miner_HashRates
+        if($(vars).Hashtable.$key.counts -ne 0 -and $Miner_HashRates -ne 0) {
+            $(vars).Hashtable.$key.counts++;
+            $(vars).Hashtable.$key.hashrate = [decimal]( ( ($(vars).Hashtable.$key.hashrate * $(vars).Hashtable.$key.counts) + $Miner_HashRates ) / ( $(vars).Hashtable.$key.counts + 1) );
+            if($GPUPower) {
+                $(vars).Hashtable.$key.watts =   [decimal]( ( ($(vars).Hashtable.$key.watts * $(vars).Hashtable.$key.counts) + $GPUPower ) / ( $(vars).Hashtable.$key.counts + 1) );
+            }
+        } elseif($Miner_HashRates -ne 0) {
+            $(vars).Hashtable.$key.counts++;
+            $(vars).Hashtable.$key.hashrate =  [decimal]$Miner_HashRates;
+            if($GPUPower) {
+                $(vars).Hashtable.$key.watts =  [decimal]$GPUPower;
+            }
+        }
+    }
+}
+
 function Global:Invoke-SwarmMode {
 
     param (
@@ -94,6 +150,7 @@ function Global:Start-MinerLoop {
     Do {
         ## Step 1 0 sec
         Global:Set-Countdown
+        Global:Set-Hashtable
         Global:Get-MinerHashRate
         Global:Start-Timer
         if ($global:continue -eq $false) { break }
@@ -107,12 +164,14 @@ function Global:Start-MinerLoop {
         
         " -foreground Magenta        
         Global:Set-Countdown
+        Global:Set-Hashtable
         Global:Get-MinerHashRate
         Global:Start-Timer
         if ($global:continue -eq $false) { break }
 
         ## Step 3 30 sec
         Global:Set-Countdown
+        Global:Set-Hashtable
         Global:Restart-Miner
         Global:Get-MinerHashRate
         Global:Start-Timer
@@ -126,6 +185,7 @@ function Global:Start-MinerLoop {
        https://github.com/MaynardMiner/SWARM/wiki/Commands-&-Suggested-Apps for more info.
         " -foreground Magenta        
         Global:Set-Countdown
+        Global:Set-Hashtable
         Global:Get-MinerHashRate
         Global:Start-Timer
         if ($global:continue -eq $false) { break }
@@ -133,6 +193,7 @@ function Global:Start-MinerLoop {
         ## Step 12 60 sec
         Global:Set-Countdown
         Global:Restart-Miner
+        Global:Set-Hashtable
         Global:Get-MinerChart
         Global:Start-Timer
         if ($global:continue -eq $false) { break }
