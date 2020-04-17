@@ -223,8 +223,8 @@ function Global:Start-Benchmark {
                             }
                             $Stat = Global:Set-Stat -Name "$($_.Name)_$($NewName)_hashrate" -Value $Miner_HashRates -Rejects $Percent -AsHashRate
                             $GetLiveStat = Global:Get-Stat "$($_.Name)_$($NewName)_hashrate"
-                            $StatCheck = "$($GetLiveStat.Live)"
-                            $ScreenCheck = "$($StatCheck.ToString("N2") | Global:ConvertTo-Hash)"
+                            $StatCheck = "$($GetLiveStat.Live.ToString("N2"))"
+                            $ScreenCheck = "$($StatCheck | Global:ConvertTo-Hash)"
                             if ($ScreenCheck -eq "0.00 PH" -or $null -eq $StatCheck) {
                                 $Global:Strike = $true
                                 $global:WasBenchmarked = $False
