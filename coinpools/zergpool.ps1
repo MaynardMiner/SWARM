@@ -130,6 +130,7 @@ if ($Name -in $(arg).PoolName) {
         $To_Add += $Sorted | 
         Where-Object Algo -eq $Selected | 
         Where-Object { [Convert]::ToInt32($_."24h_blocks_shared") -ge $Params.Min_Blocks } |
+        Where-Object { $_.noautotrade -eq 0 } |
         Sort-Object Level -Descending |
         Select-Object -First 1
         $To_Add += $Sorted | Where-Object { $_.Sym -in $Active -and $_ -notin $To_Add }
