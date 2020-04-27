@@ -84,9 +84,9 @@
     "NVIDIA2": ".\\bin\\bminer-2\\bminer.exe",
     "NVIDIA3": ".\\bin\\bminer-3\\bminer.exe",
     "minername": "bminer.exe",
-    "version": "16.1.0",
+    "version": "16.1.1",
     "optional": "No",
-    "uri": "https://www.bminercontent.com/releases/bminer-lite-v16.1.0-f55fff0-amd64.zip"
+    "uri": "https://www.bminercontent.com/releases/bminer-lite-v16.1.1-4cf17ad-amd64.zip"
   },
   "ehssand": {
     "name": "ehssand",
@@ -260,7 +260,7 @@
     "NVIDIA2": ".\\bin\\tt-miner-2\\TT-Miner.exe",
     "NVIDIA3": ".\\bin\\tt-miner-3\\TT-Miner.exe",
     "minername": "TT-Miner.exe",
-    "version": "3.2.2",
+    "version": "4.0.2",
     "optional": "No",
     "uri": "https://tradeproject.de/download/Miner/TT-Miner.zip"
   },
