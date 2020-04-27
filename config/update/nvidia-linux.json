@@ -218,7 +218,7 @@
     "minername": "miner",
     "version": "2.07",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.07/gminer_2_07_linux64.tar.xz"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.08/gminer_2_08_linux64.tar.xz"
   },
   "grin-miner": {
     "name": "grin-miner",
