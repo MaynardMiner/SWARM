@@ -428,10 +428,10 @@ Access Denied Error prevented.
                                                 $Data.$_.naming | Add-Member "handshake" "hns" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "handshake" 2 -ErrorAction SilentlyContinue
 
-                                                $Data.$_.commands | Add-Member "kaapow" "" -ErrorAction SilentlyContinue
-                                                $Data.$_.difficulty | Add-Member "kaapow" "" -ErrorAction SilentlyContinue 
-                                                $Data.$_.naming | Add-Member "kaapow" "kawpow" -ErrorAction SilentlyContinue
-                                                $Data.$_.fee | Add-Member "kaapow" 2 -ErrorAction SilentlyContinue
+                                                $Data.$_.commands | Add-Member "kawpow" "" -ErrorAction SilentlyContinue
+                                                $Data.$_.difficulty | Add-Member "kawpow" "" -ErrorAction SilentlyContinue 
+                                                $Data.$_.naming | Add-Member "kawpow" "kawpow" -ErrorAction SilentlyContinue
+                                                $Data.$_.fee | Add-Member "kawpow" 2 -ErrorAction SilentlyContinue
 
                                                 $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
                                                 $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
@@ -449,10 +449,10 @@ Access Denied Error prevented.
                                                 $Data.$_.naming | Add-Member "handshake" "hns" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "handshake" 2 -ErrorAction SilentlyContinue
 
-                                                $Data.$_.commands | Add-Member "kaapow" "" -ErrorAction SilentlyContinue
-                                                $Data.$_.difficulty | Add-Member "kaapow" "" -ErrorAction SilentlyContinue 
-                                                $Data.$_.naming | Add-Member "kaapow" "kawpow" -ErrorAction SilentlyContinue
-                                                $Data.$_.fee | Add-Member "kaapow" 2 -ErrorAction SilentlyContinue
+                                                $Data.$_.commands | Add-Member "kawpow" "" -ErrorAction SilentlyContinue
+                                                $Data.$_.difficulty | Add-Member "kawpow" "" -ErrorAction SilentlyContinue 
+                                                $Data.$_.naming | Add-Member "kawpow" "kawpow" -ErrorAction SilentlyContinue
+                                                $Data.$_.fee | Add-Member "kawpow" 2 -ErrorAction SilentlyContinue
                                             }
                                         }
                                     }
@@ -697,10 +697,10 @@ Access Denied Error prevented.
                                     if ($ChangeFile -eq "gminer.json") {
                                         $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                             if ($_ -ne "name") {
-                                                $Data.$_.commands | Add-Member "kaapow" "" -ErrorAction SilentlyContinue
-                                                $Data.$_.difficulty | Add-Member "kaapow" "" -ErrorAction SilentlyContinue 
-                                                $Data.$_.naming | Add-Member "kaapow" "kawpow" -ErrorAction SilentlyContinue
-                                                $Data.$_.fee | Add-Member "kaapow" 2 -ErrorAction SilentlyContinue
+                                                $Data.$_.commands | Add-Member "kawpow" "" -ErrorAction SilentlyContinue
+                                                $Data.$_.difficulty | Add-Member "kawpow" "" -ErrorAction SilentlyContinue 
+                                                $Data.$_.naming | Add-Member "kawpow" "kawpow" -ErrorAction SilentlyContinue
+                                                $Data.$_.fee | Add-Member "kawpow" 2 -ErrorAction SilentlyContinue
 
                                                 $Data.$_.commands | Add-Member "cuckatoo31" "" -ErrorAction SilentlyContinue
                                                 $Data.$_.difficulty | Add-Member "cuckatoo31" "" -ErrorAction SilentlyContinue 
@@ -828,10 +828,10 @@ Access Denied Error prevented.
                                     if ($ChangeFile -eq "t-rex.json") {
                                         $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                             if ($_ -ne "name") {
-                                                $Data.$_.commands | Add-Member "kaapow" "" -ErrorAction SilentlyContinue
-                                                $Data.$_.difficulty | Add-Member "kaapow" "" -ErrorAction SilentlyContinue 
-                                                $Data.$_.naming | Add-Member "kaapow" "kawpow" -ErrorAction SilentlyContinue
-                                                $Data.$_.fee | Add-Member "kaapow" 1 -ErrorAction SilentlyContinue
+                                                $Data.$_.commands | Add-Member "kawpow" "" -ErrorAction SilentlyContinue
+                                                $Data.$_.difficulty | Add-Member "kawpow" "" -ErrorAction SilentlyContinue 
+                                                $Data.$_.naming | Add-Member "kawpow" "kawpow" -ErrorAction SilentlyContinue
+                                                $Data.$_.fee | Add-Member "kawpow" 1 -ErrorAction SilentlyContinue
 
                                                 $Data.$_.commands | Add-Member "x25x" "" -ErrorAction SilentlyContinue
                                                 $Data.$_.difficulty | Add-Member "x25x" "" -ErrorAction SilentlyContinue 
@@ -950,7 +950,7 @@ Access Denied Error prevented.
                                         $Data | add-Member "sha3d" @{alt_names = @("sha3d"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                         $Data | add-Member "cuckatoo32" @{alt_names = @("cuckatoo32","grincuckatoo32"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                         $Data | add-Member "scryptn2" @{alt_names = @("scryptn2"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
-                                        $Data | add-Member "kaapow" @{alt_names = @("kaapow,kapow,kawpow"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force
+                                        $Data | add-Member "kawpow" @{alt_names = @("kawpow","kapow","kaapow"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force
                                         $Data | add-Member "kangaroo12" @{alt_names = @("kangaroo12,k12"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                     }
                                 

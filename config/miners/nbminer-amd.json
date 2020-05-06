@@ -6,22 +6,22 @@
         "commands": {
             "eaglesong": "",
             "handshake": "",
-            "kaapow": ""
+            "kawpow": ""
         },
         "difficulty": {
             "eaglesong": "",
             "handshake": "",
-            "kaapow": ""
+            "kawpow": ""
         },
         "naming": {
             "eaglesong": "eaglesong",
             "handshake": "hns",
-            "kaapow": "kawpow"
+            "kawpow": "kawpow"
         },
         "fee": {
             "eaglesong": 2,
             "handshake": 2,
-            "kaapow": 2
+            "kawpow": 2
         }
     },
     "name": "nbminer-amd"

@@ -73,7 +73,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     "cuckaroo29d" { $Stratum = "nicehash+tcp://"; $A = "cuckarood" }
                     "cuckatoo31" { $Stratum = "nicehash+tcp://"; $A = "cuckatoo" }
                     "handshake" { $Stratum = "stratum+tcp://"; $A = "hns" }
-                    "kaapow" { $Stratum = "stratum+tcp://"; $A = "kawpow" }
+                    "kawpow" { $Stratum = "stratum+tcp://"; $A = "kawpow" }
                     default { $Stratum = "stratum+tcp://"; $A = "$($MinerConfig.$ConfigType.naming.$MinerAlgo)" }
                 }        
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
