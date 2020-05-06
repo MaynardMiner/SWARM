@@ -2202,3 +2202,32 @@ as is will not work correctly.
 * SRBMulti added (does not do Navi cards).
 * Wildrig udpated.
 * Miniz updated.
+
+############################################
+############################################
+
+# SWARM 3.1.2
+
+## What's new?
+* Kawpow updates- All current miners that can
+  do kawpow has been added.
+  * note- Stability/Rejection issues are present
+    after testing. Not SWARM at cause. Especially
+    on nicehash.
+
+## Improvements
+  * see prior releases that were not announced.
+  * improvments on running screen data, and
+    hashrate sampling.
+
+## Fixes
+  * Fixed kawpow naming schema
+  * Fixed cuda error on version update.
+  * Fixed blank algorithm data issue on nicehash,
+    which could cause endless looping of benchmarking.
+
+## updates
+  * z-enemy updated (kawpow not added yet. Was least stable).
+  * g-miner updated
+  * nbminer updated
+  * t-rex updated
