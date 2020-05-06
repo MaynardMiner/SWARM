@@ -14,8 +14,7 @@
             "x16rv2": "",
             "x16s": "",
             "bitcore": "",
-            "tribus": "",
-            "kawpow": ""
+            "tribus": ""
         },
         "difficulty": {
             "aergo": "",
@@ -27,8 +26,7 @@
             "x16rv2": "",
             "x16s": "",
             "bitcore": "",
-            "tribus": "",
-            "kawpow": ""
+            "tribus": ""
         },
         "naming": {
             "aergo": "aeriumx",
@@ -40,8 +38,7 @@
             "x16rv2": "x16rv2",
             "x16s": "x16s",
             "bitcore": "bitcore",
-            "tribus": "tribus",
-            "kawpow": "kawpow"
+            "tribus": "tribus"
         },
         "fee": {
             "aergo": 1,
@@ -53,8 +50,7 @@
             "x16rv2": 1,
             "x16s": 1,
             "bitcore": 1,
-            "tribus": 1,
-            "kawpow": 1
+            "tribus": 1
         }
     },
     "NVIDIA2": {
@@ -71,8 +67,7 @@
             "x16rv2": "",
             "x16s": "",
             "bitcore": "",
-            "tribus": "",
-            "kawpow": ""
+            "tribus": ""
         },
         "difficulty": {
             "aergo": "",
@@ -84,8 +79,7 @@
             "x16rv2": "",
             "x16s": "",
             "bitcore": "",
-            "tribus": "",
-            "kawpow": ""
+            "tribus": ""
         },
         "naming": {
             "aergo": "aeriumx",
@@ -97,8 +91,7 @@
             "x16rv2": "x16rv2",
             "x16s": "x16s",
             "bitcore": "bitcore",
-            "tribus": "tribus",
-            "kawpow": "kawpow"
+            "tribus": "tribus"
         },
         "fee": {
             "aergo": 1,
@@ -110,8 +103,7 @@
             "x16rv2": 1,
             "x16s": 1,
             "bitcore": 1,
-            "tribus": 1,
-            "kawpow": 1
+            "tribus": 1
         }
     },
     "NVIDIA3": {
@@ -128,8 +120,7 @@
             "x16rv2": "",
             "x16s": "",
             "bitcore": "",
-            "tribus": "",
-            "kawpow": ""
+            "tribus": ""
         },
         "difficulty": {
             "aergo": "",
@@ -141,8 +132,7 @@
             "x16rv2": "",
             "x16s": "",
             "bitcore": "",
-            "tribus": "",
-            "kawpow": ""
+            "tribus": ""
         },
         "naming": {
             "aergo": "aeriumx",
@@ -154,8 +144,7 @@
             "x16rv2": "x16rv2",
             "x16s": "x16s",
             "bitcore": "bitcore",
-            "tribus": "tribus",
-            "kawpow": "kawpow"
+            "tribus": "tribus"
         },
         "fee": {
             "aergo": 1,
@@ -167,8 +156,7 @@
             "x16rv2": 1,
             "x16s": 1,
             "bitcore": 1,
-            "tribus": 1,
-            "kawpow": 1
+            "tribus": 1
         }
     }
 }
