@@ -844,11 +844,6 @@ Access Denied Error prevented.
                                     if ($ChangeFile -eq "t-rex.json") {
                                         $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
                                             if ($_ -ne "name") {
-                                                $Data.$_.commands | Add-Member "progpow" "" -ErrorAction SilentlyContinue
-                                                $Data.$_.difficulty | Add-Member "progpow" "" -ErrorAction SilentlyContinue 
-                                                $Data.$_.naming | Add-Member "progpow" "progpow" -ErrorAction SilentlyContinue
-                                                $Data.$_.fee | Add-Member "progpow" 1 -ErrorAction SilentlyContinue
-
                                                 $Data.$_.commands | Add-Member "kawpow" "" -ErrorAction SilentlyContinue
                                                 $Data.$_.difficulty | Add-Member "kawpow" "" -ErrorAction SilentlyContinue 
                                                 $Data.$_.naming | Add-Member "kawpow" "kawpow" -ErrorAction SilentlyContinue
