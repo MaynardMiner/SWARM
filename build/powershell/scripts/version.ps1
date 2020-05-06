@@ -100,9 +100,6 @@ if ($Command) {
             Write-Host $($Message | Select -last 1)
             $Message += "Selected Uri is $URI"
             Write-Host $($Message | Select -last 1)
-            $GetCuda = ".\debug\cuda.txt"
-            if (test-path $GetCuda) { $CudaVersion = Get-Content $GetCuda }
-            else { $Message += "Warning: Unable to detect cuda version."; Write-Host $($Message | Select -last 1) }
             $Sel = $MinerSearch | Where { $_.$Name }
             if ($Sel) {
                 $Sel.$Name.version = $Version
