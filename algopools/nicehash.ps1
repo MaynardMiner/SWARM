@@ -90,6 +90,7 @@ if ($Name -in $(arg).PoolName) {
                     $Stat = [Pool_Stat]::New("$($N)_$($StatAlgo)", $value, $hashrate, -1, $false)
                 } else {
                     log "Warning: SWARM recieved API from nicehash with mining algorithm field empty" -foregroundcolor yellow
+                    break
                 }
 
                 $previous = $Stat.Day_MA
