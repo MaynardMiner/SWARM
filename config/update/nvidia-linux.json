@@ -95,9 +95,9 @@
     "NVIDIA2": ".\\bin\\z-enemy-2\\z-enemy",
     "NVIDIA3": ".\\bin\\z-enemy-3\\z-enemy",
     "minername": "z-enemy",
-    "version": "2.4",
+    "version": "2.5",
     "optional": "No",
-    "uri": "https://github.com/z-enemy/z-enemy/releases/download/ver-2.3/z-enemy-2.3-linux-cuda100.tar.gz"
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/z-enemy-linux.tar.gz"
   },
   "ewbf": {
     "name": "ewbf",
