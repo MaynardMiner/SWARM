@@ -2227,7 +2227,7 @@ as is will not work correctly.
     which could cause endless looping of benchmarking.
 
 ## updates
-  * z-enemy updated (kawpow not added yet. Was least stable).
+  * z-enemy updated
   * g-miner updated
   * nbminer updated
   * t-rex updated
