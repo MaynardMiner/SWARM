@@ -34,7 +34,8 @@
             "mtp": "",
             "x25x": "",
             "honeycomb": "",
-            "kawpow": ""
+            "kawpow": "",
+            "progpow": ""
         },
         "difficulty": {
             "tribus": "",
@@ -67,7 +68,8 @@
             "mtp": "",
             "x25x": "",
             "honeycomb": "",
-            "kawpow": ""
+            "kawpow": "",
+            "progpow": ""
         },
         "naming": {
             "tribus": "tribus",
@@ -100,7 +102,8 @@
             "mtp": "mtp",
             "x25x": "x25x",
             "honeycomb": "honeycomb",
-            "kawpow": "kawpow"
+            "kawpow": "kawpow",
+            "progpow": "progpow"
         },
         "fee": {
             "tribus": 1,
@@ -133,7 +136,8 @@
             "mtp": 1,
             "x25x": 1,
             "honeycomb": 1,
-            "kawpow": 1
+            "kawpow": 1,
+            "progpow": 1
         }
     },
     "NVIDIA2": {
@@ -171,7 +175,8 @@
             "mtp": "",
             "x25x": "",
             "honeycomb": "",
-            "kawpow": ""
+            "kawpow": "",
+            "progpow": ""
         },
         "difficulty": {
             "tribus": "",
@@ -204,7 +209,8 @@
             "mtp": "",
             "x25x": "",
             "honeycomb": "",
-            "kawpow": ""
+            "kawpow": "",
+            "progpow": ""
         },
         "naming": {
             "tribus": "tribus",
@@ -237,7 +243,8 @@
             "mtp": "mtp",
             "x25x": "x25x",
             "honeycomb": "honeycomb",
-            "kawpow": "kawpow"
+            "kawpow": "kawpow",
+            "progpow": "progpow"
         },
         "fee": {
             "tribus": 1,
@@ -270,7 +277,8 @@
             "mtp": 1,
             "x25x": 1,
             "honeycomb": 1,
-            "kawpow": 1
+            "kawpow": 1,
+            "progpow": 1
         }
     },
     "NVIDIA3": {
@@ -308,7 +316,8 @@
             "mtp": "",
             "x25x": "",
             "honeycomb": "",
-            "kawpow": ""
+            "kawpow": "",
+            "progpow": ""
         },
         "difficulty": {
             "tribus": "",
@@ -341,7 +350,8 @@
             "mtp": "",
             "x25x": "",
             "honeycomb": "",
-            "kawpow": ""
+            "kawpow": "",
+            "progpow": ""
         },
         "naming": {
             "tribus": "tribus",
@@ -374,7 +384,8 @@
             "mtp": "mtp",
             "x25x": "x25x",
             "honeycomb": "honeycomb",
-            "kawpow": "kawpow"
+            "kawpow": "kawpow",
+            "progpow": "progpow"
         },
         "fee": {
             "tribus": 1,
@@ -407,7 +418,8 @@
             "mtp": 1,
             "x25x": 1,
             "honeycomb": 1,
-            "kawpow": 1
+            "kawpow": 1,
+            "progpow": 1
         }
     },
     "name": "t-rex"
