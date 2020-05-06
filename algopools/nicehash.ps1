@@ -16,7 +16,8 @@ $Nicehash_Ports =
 "zhash":"3369",             "beam":"3370",              "grincuckaroo29":"3371",    "grincuckatoo31":"3372",
 "lyra2rev3":"3373",         "mtp":"3374",               "cryptonightr":"3375",      "cuckoocycle":"3376",
 "grincuckarood29":"3377",   "beamv2":"3378",            "x16rv2":"3379",            "randomxmonero":"3380",
-"eaglesong":"3381",         "cuckaroom": "3382",        "grincuckatoo32":"3383",    "handshake":"3384"
+"eaglesong":"3381",         "cuckaroom": "3382",        "grincuckatoo32":"3383",    "handshake":"3384",
+"kawpow": "3385"
 }'    
 
 $Nicehash_Ports = $Nicehash_Ports | ConvertFrom-Json
