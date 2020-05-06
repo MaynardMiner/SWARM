@@ -430,7 +430,7 @@ Access Denied Error prevented.
 
                                                 $Data.$_.commands | Add-Member "kaapow" "" -ErrorAction SilentlyContinue
                                                 $Data.$_.difficulty | Add-Member "kaapow" "" -ErrorAction SilentlyContinue 
-                                                $Data.$_.naming | Add-Member "kaapow" "kapow" -ErrorAction SilentlyContinue
+                                                $Data.$_.naming | Add-Member "kaapow" "kawpow" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "kaapow" 2 -ErrorAction SilentlyContinue
 
                                                 $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
@@ -451,7 +451,7 @@ Access Denied Error prevented.
 
                                                 $Data.$_.commands | Add-Member "kaapow" "" -ErrorAction SilentlyContinue
                                                 $Data.$_.difficulty | Add-Member "kaapow" "" -ErrorAction SilentlyContinue 
-                                                $Data.$_.naming | Add-Member "kaapow" "kapow" -ErrorAction SilentlyContinue
+                                                $Data.$_.naming | Add-Member "kaapow" "kawpow" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "kaapow" 2 -ErrorAction SilentlyContinue
                                             }
                                         }
@@ -699,7 +699,7 @@ Access Denied Error prevented.
                                             if ($_ -ne "name") {
                                                 $Data.$_.commands | Add-Member "kaapow" "" -ErrorAction SilentlyContinue
                                                 $Data.$_.difficulty | Add-Member "kaapow" "" -ErrorAction SilentlyContinue 
-                                                $Data.$_.naming | Add-Member "kaapow" "kapow" -ErrorAction SilentlyContinue
+                                                $Data.$_.naming | Add-Member "kaapow" "kawpow" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "kaapow" 2 -ErrorAction SilentlyContinue
 
                                                 $Data.$_.commands | Add-Member "cuckatoo31" "" -ErrorAction SilentlyContinue
@@ -830,7 +830,7 @@ Access Denied Error prevented.
                                             if ($_ -ne "name") {
                                                 $Data.$_.commands | Add-Member "kaapow" "" -ErrorAction SilentlyContinue
                                                 $Data.$_.difficulty | Add-Member "kaapow" "" -ErrorAction SilentlyContinue 
-                                                $Data.$_.naming | Add-Member "kaapow" "kapow" -ErrorAction SilentlyContinue
+                                                $Data.$_.naming | Add-Member "kaapow" "kawpow" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "kaapow" 1 -ErrorAction SilentlyContinue
 
                                                 $Data.$_.commands | Add-Member "x25x" "" -ErrorAction SilentlyContinue

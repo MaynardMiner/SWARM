@@ -93,7 +93,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     "equihash_144/5" { $AddArgs = "--algo 144_5 --pers auto " }
                     "equihash_210/9" { $AddArgs = "--algo 210_9 --pers auto " }
                     "equihash_200/9" { $AddArgs = "--algo 200_9 --pers auto " }
-                    "kaapow" { $AddArgs = "--algo kapow " }
+                    "kaapow" { $AddArgs = "--algo kawpow " }
                     "ethash" { 
                         switch ($SelName) {
                             "nicehash" { $AddArgs = "--algo ethash --proto stratum " }

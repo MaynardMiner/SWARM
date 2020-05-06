@@ -50,7 +50,7 @@
             "equihash_210/9": "equihash_210/9",
             "equihash_200/9": "equihash_210/9",
             "equihash_125/4": "equihash_125/4",
-            "kaapow": "kapow"
+            "kaapow": "kawpow"
         },
         "fee": {
             "cuckoo_cycle": 2,
@@ -119,7 +119,7 @@
             "equihash_210/9": "equihash_210/9",
             "equihash_200/9": "equihash_210/9",
             "equihash_125/4": "equihash_125/4",
-            "kaapow": "kapow"
+            "kaapow": "kawpow"
         },
         "fee": {
             "cuckoo_cycle": 2,
@@ -188,7 +188,7 @@
             "equihash_210/9": "equihash_210/9",
             "equihash_200/9": "equihash_210/9",
             "equihash_125/4": "equihash_125/4",
-            "kaapow": "kapow"
+            "kaapow": "kawpow"
         },
         "fee": {
             "cuckoo_cycle": 2,
