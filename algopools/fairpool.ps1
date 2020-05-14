@@ -83,11 +83,11 @@ if ($Name -in $(arg).PoolName) {
 
         $Level = $Stat.$($Params.Stat_Algo)
 
-        if ($Params.Historical_Bias) {
+        if ($Params.Historical_Bias -ne "") {
             $SmallestValue = 1E-20 
             $Values = $Params.Historical_Bias.Split("`:")
-            $Max_Penalty = $Values | Select -First 1
-            $Max_Bonus = $Values | Select -Last 1
+            $Max_Penalty = [double]($Values | Select -First 1)
+            $Max_Bonus = [double]($Values | Select -Last 1)
 
             ## Penalize
             if ($Stat.Historical_Bias -lt 0) {
