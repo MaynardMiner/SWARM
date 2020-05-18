@@ -218,7 +218,15 @@ function Global:Get-MinerBinary($Miner, $Reason) {
     if ($Reason -eq "Update" -and $Miner.Type -notlike "*ASIC*") {
         if (test-path $Miner.Path) {
             Write-Log "Removing Old Miner..." -ForegroundColor Yellow
-            Remove-Item (Split-Path $Miner.Path) -Recurse -Force | Out-Null
+            $A = Resolve-Path $Miner.Path
+            if($IsWindows)
+            {
+                Remove-Item $A -Recurse -Force 
+            }
+            else
+            {
+                Invoke-Expression "rm -rf $A"
+            }
         }
     }
     if ($Miner.Type -notlike "*ASIC*") {

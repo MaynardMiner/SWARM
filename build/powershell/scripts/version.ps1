@@ -35,25 +35,25 @@ $Name = $Name -replace "!", ""
 $Version = $Version -replace "!", ""
 $Uri = $Uri -replace "!", ""
 
-if( $Command -eq "update" -and
+if ( $Command -eq "update" -and
     $Name -eq "" -and
     $Version -eq "" -and
     $Uri -eq ""
-    ) {
-        $version_query = Invoke-expression "version query"
-        $version_query
-        $Name = Read-Host -Prompt "Please enter a miner name from the above list.
+) {
+    $version_query = Invoke-expression "version query"
+    $version_query
+    $Name = Read-Host -Prompt "Please enter a miner name from the above list.
         
 Miner"
 
-        $Version = Read-Host "Please enter new version number.
+    $Version = Read-Host "Please enter new version number.
 
 *Note*: This is not specific. Just changing the version number will
 trigger SWARM to download the miner. It can be any value.
 
 Version"
 
-        $Uri = Read-Host "Please enter the link for the miner.
+    $Uri = Read-Host "Please enter the link for the miner.
 
 *Note* Try using .tar.gz files for linux miners and .zip for Windows miners
 Using different compression methods may work, but not guranteed.
@@ -130,7 +130,19 @@ if ($Command) {
                 $Message += "Removing Old Miner From Bin"
                 Write-Host $($Message | Select -last 1)
                 $Dirs = $Sel.$Name.PSObject.Properties.Name | % { if ( $_ -in $Types ) { Split-Path $Sel.$Name.$_ } }
-                $Dirs | % { if (Test-Path $_) { Remove-Item $_ -Recurse -Force } }
+                $Dirs | % { 
+                    if (Test-Path $_) { 
+                        $A = Resolve-Path $_
+                        if($IsWindows)
+                        {
+                            Remove-Item $_ -Recurse -Force 
+                        }
+                        else
+                        {
+                            Invoke-Expression "rm -rf $A"
+                        }
+                    } 
+                }
                 $Message += "Depending on OS- Miner May Need To Be Manually Restarted."
                 Write-Host $($Message | Select -last 1)
             }
