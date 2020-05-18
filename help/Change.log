@@ -2232,3 +2232,21 @@ as is will not work correctly.
   * nbminer updated
   * t-rex updated
   * nanominer updated
+
+############################################
+############################################
+
+# SWARM 3.1.3
+
+## Improvements 
+* linux version runs native command ``rm``
+  to delete miner folders on update. (required
+  as a certain miner creates a file with unknown
+  attributes in .NET)
+* Fixed potential issue with ``-Historical_Bias``
+  argument that was specfic to linux. (string to double conversion).
+
+
+## Updates
+* jayddee updated
+* nanominer updated
