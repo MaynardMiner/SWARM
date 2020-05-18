@@ -84,9 +84,9 @@
     "NVIDIA2": ".\\bin\\bminer-2\\bminer.exe",
     "NVIDIA3": ".\\bin\\bminer-3\\bminer.exe",
     "minername": "bminer.exe",
-    "version": "16.1.0",
+    "version": "16.2.1",
     "optional": "No",
-    "uri": "https://www.bminercontent.com/releases/bminer-lite-v16.1.0-f55fff0-amd64.zip"
+    "uri": "https://www.bminercontent.com/releases/bminer-lite-v16.2.1-ae15079-amd64.zip"
   },
   "ehssand": {
     "name": "ehssand",
@@ -150,7 +150,7 @@
     "NVIDIA2": ".\\bin\\z-enemy-2\\z-enemy.exe",
     "NVIDIA3": ".\\bin\\z-enemy-3\\z-enemy.exe",
     "minername": "z-enemy.exe",
-    "version": "2.5",
+    "version": "2.6.2",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/z-enemy-windows.zip"
   },
@@ -238,9 +238,9 @@
     "NVIDIA2": ".\\bin\\trex-2\\t-rex.exe",
     "NVIDIA3": ".\\bin\\trex-3\\t-rex.exe",
     "minername": "t-rex.exe",
-    "version": "0.15.3",
+    "version": "0.15.6",
     "optional": "No",
-    "uri": "https://github.com/trexminer/T-Rex/releases/download/0.15.3/t-rex-0.15.3-win-cuda10.0.zip"
+    "uri": "https://github.com/trexminer/T-Rex/releases/download/0.15.6/t-rex-0.15.6-win-cuda10.0.zip"
   },
   "zjazz": {
     "name": "zjazz",

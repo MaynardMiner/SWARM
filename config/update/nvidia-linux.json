@@ -95,7 +95,7 @@
     "NVIDIA2": ".\\bin\\z-enemy-2\\z-enemy",
     "NVIDIA3": ".\\bin\\z-enemy-3\\z-enemy",
     "minername": "z-enemy",
-    "version": "2.5",
+    "version": "2.6.2",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/z-enemy-linux.tar.gz"
   },
@@ -183,9 +183,9 @@
     "NVIDIA2": ".\\bin\\t-rex-2\\t-rex",
     "NVIDIA3": ".\\bin\\t-rex-3\\t-rex",
     "minername": "t-rex",
-    "version": "0.15.3",
+    "version": "0.15.6",
     "optional": "No",
-    "uri": "https://github.com/trexminer/T-Rex/releases/download/0.15.3/t-rex-0.15.3-linux-cuda10.0.tar.gz"
+    "uri": "https://github.com/trexminer/T-Rex/releases/download/0.15.6/t-rex-0.15.6-linux-cuda10.0.tar.gz"
   },
   "zjazz": {
     "name": "zjazz",
@@ -238,9 +238,9 @@
     "NVIDIA2": ".\\bin\\bminer-2\\bminer",
     "NVIDIA3": ".\\bin\\bminer-3\\bminer",
     "minername": "bminer",
-    "version": "16.1.0",
+    "version": "16.2.1",
     "optional": "No",
-    "uri": "https://www.bminercontent.com/releases/bminer-v16.1.0-f55fff0-amd64.tar.xz"
+    "uri": "https://www.bminercontent.com/releases/bminer-v16.2.1-ae15079-amd64.tar.xz"
   },
   "miniz": {
     "name": "miniz",

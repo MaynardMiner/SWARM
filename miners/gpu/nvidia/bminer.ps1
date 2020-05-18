@@ -69,6 +69,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                             "equihash_144/5" { $Pass = ""; $Naming = "zhash"; $AddArgs = "" }
                             "beamv2" { $Pass = ""; $Naming = "beamhash2"; $AddArgs = "" }
                             "eaglesong" { $Pass = ""; $Naming = "eaglesong"; $AddArgs = "" }
+                            "kawpow" { $Pass = ""; $Naming = "raven"; $AddArgs = "" }
                         }
                     }
                     "zergpool" {
@@ -80,6 +81,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                             "equihash_144/5" { $Pass = ""; $Naming = "zhash"; $AddArgs = "" }
                             "beamv2" { $Pass = ""; $Naming = "beamhash2"; $AddArgs = "" }
                             "eaglesong" { $Pass = ""; $Naming = "eaglesong"; $AddArgs = "" }
+                            "kawpow" { $Pass = ""; $Naming = "raven"; $AddArgs = "" }
                         }
                     }
                     "whalesburg" {
