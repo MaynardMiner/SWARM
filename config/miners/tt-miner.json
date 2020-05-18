@@ -29,12 +29,12 @@
             "lyra2rev3": "LYRA2V3"
         },
         "fee": {
-            "progpow": 1,
-            "ubqhash": 1,
-            "mtp": 1,
-            "eaglesong": 1,
-            "ethash": 1,
-            "lyra2rev3": 1
+            "progpow": 0,
+            "ubqhash": 0,
+            "mtp": 0,
+            "eaglesong": 0,
+            "ethash": 0,
+            "lyra2rev3": 0
         }
     },
     "NVIDIA2": {
@@ -66,12 +66,12 @@
             "lyra2rev3": "LYRA2V3"
         },
         "fee": {
-            "progpow": 1,
-            "ubqhash": 1,
-            "mtp": 1,
-            "eaglesong": 1,
-            "ethash": 1,
-            "lyra2rev3": 1
+            "progpow": 0,
+            "ubqhash": 0,
+            "mtp": 0,
+            "eaglesong": 0,
+            "ethash": 0,
+            "lyra2rev3": 0
         }
     },
     "NVIDIA3": {
@@ -103,12 +103,12 @@
             "lyra2rev3": "LYRA2V3"
         },
         "fee": {
-            "progpow": 1,
-            "ubqhash": 1,
-            "mtp": 1,
-            "eaglesong": 1,
-            "ethash": 1,
-            "lyra2rev3": 1
+            "progpow": 0,
+            "ubqhash": 0,
+            "mtp": 0,
+            "eaglesong": 0,
+            "ethash": 0,
+            "lyra2rev3": 0
         }    
     }
 }
