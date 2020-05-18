@@ -539,6 +539,11 @@ Access Denied Error prevented.
                                                 $Data.$_.naming | Add-Member "cuckaroom" "cuckaroom" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "cuckaroom" 2 -ErrorAction SilentlyContinue
 
+                                                $Data.$_.commands | Add-Member "kawpow" "" -ErrorAction SilentlyContinue
+                                                $Data.$_.difficulty | Add-Member "kawpow" "" -ErrorAction SilentlyContinue 
+                                                $Data.$_.naming | Add-Member "kawpow" "raven" -ErrorAction SilentlyContinue
+                                                $Data.$_.fee | Add-Member "kawpow" 2 -ErrorAction SilentlyContinue
+
                                                 $Data.$_.commands | Add-Member "beamv2" "" -ErrorAction SilentlyContinue
                                                 $Data.$_.difficulty | Add-Member "beamv2" "" -ErrorAction SilentlyContinue 
                                                 $Data.$_.naming | Add-Member "beamv2" "beamv2" -ErrorAction SilentlyContinue
