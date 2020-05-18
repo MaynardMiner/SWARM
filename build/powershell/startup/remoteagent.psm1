@@ -622,6 +622,11 @@ Access Denied Error prevented.
                                                 $Data.$_.naming | Add-Member "lyra2rev2" "lyra2v2" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "lyra2rev2" 1 -ErrorAction SilentlyContinue
 
+                                                $Data.$_.commands | Add-Member "kawpow" "" -ErrorAction SilentlyContinue
+                                                $Data.$_.difficulty | Add-Member "kawpow" "" -ErrorAction SilentlyContinue 
+                                                $Data.$_.naming | Add-Member "kawpow" "kawpow" -ErrorAction SilentlyContinue
+                                                $Data.$_.fee | Add-Member "kawpow" 1 -ErrorAction SilentlyContinue
+
                                             }
                                         }
                                     }

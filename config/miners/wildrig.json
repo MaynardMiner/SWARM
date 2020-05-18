@@ -46,7 +46,8 @@
             "xevan": "",
             "x25x": "",
             "skein2": "",
-            "x17r": ""
+            "x17r": "",
+            "kawpow": ""
         },
         "difficulty": {
             "anime": "",
@@ -90,7 +91,8 @@
             "xevan": "",
             "x25x": "",
             "skein2": "",
-            "x17r": ""
+            "x17r": "",
+            "kawpow": ""
         },
         "naming": {
             "anime": "anime",
@@ -134,7 +136,8 @@
             "xevan": "xevan",
             "x25x": "x25x",
             "skein2": "skein2",
-            "x17r": "x17r"
+            "x17r": "x17r",
+            "kawpow": "kawpow"
         },
         "fee": {
             "anime": 1,
@@ -178,7 +181,8 @@
             "xevan": 1,
             "x25x": 1,
             "skein2": 1,
-            "x17r": 1
+            "x17r": 1,
+            "kawpow": 1
         }
     }
 }
