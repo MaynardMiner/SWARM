@@ -935,7 +935,7 @@ Access Denied Error prevented.
 
                                                 $Data.$_.commands | Add-Member "kawpow" "" -ErrorAction SilentlyContinue
                                                 $Data.$_.difficulty | Add-Member "kawpow" "" -ErrorAction SilentlyContinue 
-                                                $Data.$_.naming | Add-Member "kawpow" "rvn" -ErrorAction SilentlyContinue
+                                                $Data.$_.naming | Add-Member "kawpow" "KAWPOW" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "kawpow" 0 -ErrorAction SilentlyContinue
                                             }
                                         }
