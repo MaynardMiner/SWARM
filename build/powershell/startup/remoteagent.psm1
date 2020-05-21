@@ -843,6 +843,11 @@ Access Denied Error prevented.
                                                 $Data.$_.naming | Add-Member "chukwa" "trtl_chukwa" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "chukwa" 2.5 -ErrorAction SilentlyContinue
 
+                                                $Data.$_.commands | Add-Member "kawpow" "" -ErrorAction SilentlyContinue
+                                                $Data.$_.difficulty | Add-Member "kawpow" "" -ErrorAction SilentlyContinue 
+                                                $Data.$_.naming | Add-Member "kawpow" "kawpow" -ErrorAction SilentlyContinue
+                                                $Data.$_.fee | Add-Member "kawpow" 2.5 -ErrorAction SilentlyContinue
+
                                                 $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
                                                 $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
                                                 $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"

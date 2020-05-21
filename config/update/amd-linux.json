@@ -161,9 +161,9 @@
     "AMD2": ".\\bin\\teamredminer-2\\teamredminer",
     "AMD3": ".\\bin\\teamredminer-3\\teamredminer",
     "minername": "teamredminer",
-    "version": "0.6.1",
+    "version": "0.7.1",
     "optional": "No",
-    "uri": "https://github.com/todxx/teamredminer/releases/download/0.6.1/teamredminer-v0.6.1-linux.tgz"
+    "uri": "https://github.com/todxx/teamredminer/releases/download/0.7.1/teamredminer-v0.7.1-linux.tgz"
   },
   "xmr-stak": {
     "name": "xmr-stak",
