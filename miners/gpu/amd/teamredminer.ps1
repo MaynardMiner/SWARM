@@ -5,23 +5,14 @@ $(vars).AMDTypes | ForEach-Object {
     ##Miner Path Information
     if ($(vars).amd.teamredminer.$ConfigType) { 
         $Path = "$($(vars).amd.teamredminer.$ConfigType)" 
-        if($IsWindows -and "teamredminer" -notin $(arg).optional) {
-            $Path = "None"
-        }
     }
     else { $Path = "None" }
     if ($(vars).amd.teamredminer.uri) { 
         $Uri = "$($(vars).amd.teamredminer.uri)" 
-        if($IsWindows -and "teamredminer" -notin $(arg).optional) {
-            $Uri = "None"
-        }
     }
     else { $Uri = "None" }
     if ($(vars).amd.teamredminer.minername) { 
         $MinerName = "$($(vars).amd.teamredminer.minername)" 
-        if($IsWindows -and "teamredminer" -notin $(arg).optional) {
-            $MinerName = "None"
-        }
     }
     else { $MinerName = "None" }
 
